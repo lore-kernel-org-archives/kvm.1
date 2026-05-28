@@ -1,122 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED663B0AE7
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 09:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1193B4EA0
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 09:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779961510; cv=none; b=ucDZW+OR9VlKhnnefBsKVKmFoNy9gV90MikQ4XDc1VnzeNK3ohwPaPkkoGUHSfxX77ur0p+lzXqa5PjpAcmxnGxBuZY1eUJlIGf2/xKcjeI/IYVEd0NNcMPjNS7vPa+dzDOgTRKl+NasSFEwhneCO5/EXeYiL3W9s5YrQ1zfPv8=
+	t=1779961520; cv=none; b=HjQzS/jeDD0Os/HYDnLoT7YWC0RM1MaTqXBsaupujawkNZxXBgt1ron1b0ot6vaagtZOERnCK7/qyLms5Me4MJW3jM53Ee5l3h9lWTYiwuqHWLq8KhJFyTJ/VcEDZrHw+a26O6Ab9jFcBJGyXWoemuHa54GpQL2Ty5x1jsS3LY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779961510; c=relaxed/simple;
-	bh=qQ34hoxTfiDHz0fVKBjA80a667A+Td+I2M6HuwvaCmo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tcGvcLf3Rhuu2d5v55E6aw2HZtcqswD9fWqSUk7ozFcptQsALonmRLnarQ6utdLrjCyGgfPzTEpEqUUpax3ADlRROMvJvjB+uhVnxUY4MDFqN6w1iQr+pX8bTW9f1ZEWGK3kFF9FZhR/JKveNCnpvB1YVd1PAX3jsR5QWjWq5Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CWhkHX9E; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779961520; c=relaxed/simple;
+	bh=aAxjtdxJ6r1CP4Z3IDgAZpRSUpL+wMyFZJH7GiXQ4iQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MLAjeQDJ9ARUQmhvzJ5dqfiDXV2EsgCDtZtknmMjY3UJ9ucQE0JnbxczSutEmYeJ93lUnRyvj43wlmc88FtmseHErTbj9+FzO7oje5sgv4riFZhyTJTTffcbYuErfzF5ZWnRqXgHU1VvzqNrQi/kbgEkKkaoMGrIykiC1duvKB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f5KE3C2k; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CWhkHX9E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF631F000E9;
-	Thu, 28 May 2026 09:45:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f5KE3C2k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76701F000E9;
+	Thu, 28 May 2026 09:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779961509;
-	bh=+EWWTzcINrQvnUfYjA7PSfmmNlg1QQRGo/pHmu3Um7w=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CWhkHX9ENHV4plo+3t7OkYOShw3I3zmZbYG4P/jqBJJOUGTAbe4HD4/29QteuqzYK
-	 Rvu129XJ73NqW0BOlBYGdt+pUWfhEgNCogQ+qYf6ouNBLO5veD4n5PvTHiOeX7m8ei
-	 IUqlCcBy+G0a2WTFNrLcup2097HPmCrzMma5lpWn3WUfYmoDcmaDGft/+eSTnVJisn
-	 N2c7LDpNL0NB64SCvpIvZwBk/dv3UMejbJbkIkP43yE3lmiODjMIe/SOY72seU3TJP
-	 rtf4ZgBQWEvMxo0aFXP4WfmkXiHT7YLT+yMnURFmvhZPC+e0JYS9z5EXQC1NG2bu0b
-	 GFT/mlKNdND3Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 05/15] KVM: TDX: Move KVM_BUG_ON()s in
- __tdp_mmu_set_spte_atomic() to TDX code
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yan Zhao" <yan.y.zhao@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260528081139.10284-1-yan.y.zhao@intel.com>
-References: <20260528081139.10284-1-yan.y.zhao@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 28 May 2026 09:45:08 +0000
-Message-Id: <20260528094509.3EF631F000E9@smtp.kernel.org>
+	s=k20260515; t=1779961518;
+	bh=24KtZet5bNtxE/kz3ESLDjWR/8+B0zqHRym7ghogGko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=f5KE3C2kT5DPmE+38+WW+USaYcnj1bBXzI/++IbGy9OgJl9RLIVhVzLg05LvCj3Hr
+	 nTTfjEx4V8VpR5kXEytYdrNyQZi1eXPeP8HlWcTYDDfRN1/K9S+x0v/38NJReaE7L5
+	 1W/wP7wP/9+bGHCof1lLIYkS3q0ddTC2bWVUzR0YOYfCGgEAlbHvPFckoxhzcDWRTw
+	 avC80wKAo9BDjReZdG6CrKrdqNxn16rM5/hzIPCWqnXxML/pvzv8Xpg3jo8xFwsINL
+	 i295PK3dkGE13XdFig73JhObpz7QKc/zkJQstq4F88Azxh6E1yi3B9iKkHCGY2Nh9h
+	 Cwg6eZmnl6z3w==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3A430F4007C;
+	Thu, 28 May 2026 05:45:17 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 28 May 2026 05:45:17 -0400
+X-ME-Sender: <xms:rQ4Yalb-30S2wTAlZWzDn6YHPkBfV48Lst5l_rYwMmjTdJmBQhLGPg>
+    <xme:rQ4YarWTUzEre8fIXLz9GHeMLIIlUHGVqfg5DOf2yUmnoAxupS-GXrZytC7swvsMd
+    YrPJJdQUGUejA7TfCXfx5CpGP_axObkk6bSbUwasVSfPSL7W7fB6uY>
+X-ME-Received: <xmr:rQ4YakD10GsVqfXiWzRV6hZ0vtPkYmiNhK_oThtw5Gp0MldXFgUoaO8FugYi8Q>
+X-ME-Proxy-Cause: dmFkZTGIABqz5JrsRfWGM2QWd4mfSrGlRGGw4sK8tceuGzEiMjpd74J6+evRD8XyrDDv9g
+    fLqQ/LLZCgxljT2lkm7eyQ0WmobREAYEYgf0OCLhIbODTvXP8Ocx4qaeHFrmkcvnfPSct+
+    bZg4qB2A/xoDG+Xzjog/WDQMxqYEzges53bhoRDw5ezoUB1c6TuIw/nBHfol/gHLUBYGr6
+    ovRlheURHTgetz8CEEPsBGi1ZkJlyg/8zQzco6ZWQlagEl7YtwPAdtTZLnCAon8P//ZK6i
+    b0FYVhjHP+Q19N3C3NxxiQtbIRBMIDDLYooIy8NnQ6GpEmXRf8R+fPbWQ9HWD6LHYn0Uh8
+    VCWjnq/D1YlaDtr0XTFWcDh8QjCuIAXk7kGX1vHsBS7eTR1axmbd+89Qf1HbTcRmmYfKwu
+    C44FhaWNYLz0NpLCmfc9Zdw6D92itwKm8Hx+HaRsNsk6ZFjhd/bXzpnTK0LAsLKEcNp7se
+    JszAzn6oxeWw0P46dqOwn4W9tUuFxkTWzi8dbkcV1FS8pOiio018HvDeeB5cYjYIUkNbyM
+    gewaMy+fQGv3GBbAAKTGeObYYWTTBDKv42BaJBEdWS9ULxh51e51P7kmnX+LJMsqEFXouB
+    cpoenYXpX8Km8xn9rBNdIRSUDe8dLeLode4NVC7TFRQphXkqQQVOpuSCOLMQ
+X-ME-Proxy: <xmx:rQ4YanJcM5yvIVB_kZN2YvB465RxMlmwd-QXpMLbhS1rHfKtf8MHfQ>
+    <xmx:rQ4YaiuYlhLbZrtivywz2l3CD0RfA_lxRnqNEJZY6jWJK9qDA-P-sQ>
+    <xmx:rQ4YavV2JONoGGMwusx8tSkpsO1RvFQX5hiu4dVhbzZNLH7YnHmMQA>
+    <xmx:rQ4YatIj9kzkUtbs0VhT4g_qWNyF07Igh1Uo3VumM1NLN7dFViP4pg>
+    <xmx:rQ4Yak905R4QBGwDcblmyl37lNwgjbp7CAlkd3OLLlSmOANtgZRf-u0D>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 28 May 2026 05:45:15 -0400 (EDT)
+Date: Thu, 28 May 2026 10:45:08 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: dave.hansen@linux.intel.com, x86@kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com
+Subject: Re: [PATCH] MAINTAINERS: Move Rick Edgecombe to TDX maintainer
+Message-ID: <ahgOHFuYD2YIP3Q7@thinkstation>
+References: <20260527221342.415814-1-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260527221342.415814-1-rick.p.edgecombe@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Wed, May 27, 2026 at 03:13:42PM -0700, Rick Edgecombe wrote:
+> Per some offline discussion with Kiryl, he could use some help on the TDX
+> host side. I have worked on the TDX host side for the past few years
+> including wrangling the initial KVM support, and can help with this.
+> 
+> I am already listed as TDX reviewer. Move it to maintainer.
+> 
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Cc: Kiryl Shutsemau <kas@kernel.org>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
 
-Pre-existing issues:
-- [High] Returning a deterministic error (-EIO or -EBUSY) from mirror SPTE =
-modification paths causes an unkillable in-kernel infinite loop in TDP MMU =
-iterators, converting a VM-scoped bug into a host kernel hang.
---
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-commit e15424312043140d3e6eda83d94e044749575d32
-Author: Rick Edgecombe <rick.p.edgecombe@intel.com>
-
-KVM: TDX: Move KVM_BUG_ON()s in __tdp_mmu_set_spte_atomic() to TDX code
-
-Drop some KVM_BUG_ON()s that are guarding against TDP MMU attempting to
-propagate unsupported changes to the external page table through
-__tdp_mmu_set_spte_atomic(). Have TDX code trigger them instead.
-
-[ ... ]
-
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 6a48bbab5f141..8e97af221b40e 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -1717,6 +1717,9 @@ static int tdx_sept_set_private_spte(struct kvm *kv=
-m, gfn_t gfn, u64 old_spte,
->  				     u64 new_spte, enum pg_level level)
->  {
-> +	if (KVM_BUG_ON(is_shadow_present_pte(old_spte), kvm))
-> +		return -EIO;
-> +
-
-[Severity: High]
-This is a pre-existing issue, but does returning a deterministic error
-(-EIO) here cause an unkillable in-kernel infinite loop in the TDP MMU
-iterators?
-
-Looking at the TDP MMU iterators, they evaluate the return value of
-tdp_mmu_set_spte_atomic() and execute goto retry on any non-zero value,
-assuming a transient cmpxchg race.
-
-If tdx_sept_set_private_spte() returns -EIO, this propagates back to
-__tdp_mmu_set_spte_atomic(), which restores the unmodified iter->old_spte
-and returns the error:
-
-arch/x86/kvm/mmu/tdp_mmu.c:__tdp_mmu_set_spte_atomic() {
-    ...
-		ret =3D kvm_x86_call(set_external_spte)(kvm, iter->gfn, iter->old_spte,
-						      new_spte, iter->level);
-
-		if (ret)
-			__kvm_tdp_mmu_write_spte(iter->sptep, iter->old_spte);
-    ...
-		return ret;
-}
-
-Because the memory is restored and try_cmpxchg64() isn't used to update
-iter->old_spte on this failure path, the local iterator state remains
-unchanged. The loop retries, evaluates the exact same conditions, hits
-the KVM_BUG_ON() again, and fails endlessly.
-
-Since tdp_mmu_iter_cond_resched() refuses to yield without forward progress,
-can this tight loop hold the RCU read lock and burn 100% CPU, leading to an
-RCU stall or soft lockup?
-
-Prior to this patch, the same livelock occurred when
-__tdp_mmu_set_spte_atomic() returned -EBUSY directly, or when
-set_external_spte() returned -EIO due to hardware rejection.
-
->  	if (KVM_BUG_ON(!is_shadow_present_pte(new_spte), kvm))
->  		return -EIO;
->
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528080856.1014=
-1-1-yan.y.zhao@intel.com?part=3D5
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
