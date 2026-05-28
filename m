@@ -1,63 +1,63 @@
 Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5142F49FD
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 03:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306BD30567A
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 03:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779938571; cv=none; b=fXoqFheEuuyhL8pu0gdZaJ9YEed4TM7NBTbaSFEFCsUXVRgWjd3ITrraEsPmXXhi8AOoBKNMAAl4S7a3eXC4Pv6yrn8oFn3Bz5QLcqXZMRcsEA2OqIaVX8FslPByRff2K7yxFmTeUFJ8VNlziFddG5MX2WJNYJ32A3BnHH+tO40=
+	t=1779938574; cv=none; b=OGdMZu/jsw/3fU1lXBAG99rBDLeftolFF5FEygmZyI42AejlymCmul9ky88apBZTy8kbU8iJqY1Kn9kXFAS2VGf1PRp0rnxhv9fM3YokSCoWHjqmVqAURYs2fMr2P/9V79XoNU0vyVjTFifvB2p2XH+Qr/9p98zVxueEJ1Kwlm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779938571; c=relaxed/simple;
-	bh=tDF3ZmKVpEC4shYM/JHRfNnBmzTPIz70W6cP79CziYI=;
+	s=arc-20240116; t=1779938574; c=relaxed/simple;
+	bh=eMORQvS9aR5FjqYCVZbdydejsuj+xDuXWlicDHJHYgE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CQgA/fBK2pxxJ29thxbPQ7xKVfaPKpLk9uforPCj9XMuhxP6C92M0Z+TH1ZGh48I6eyednPNfSinHREmP1Sl9Qnl7qx70lP39smLo7K5t9fBLeehy+81VgvDM9N0sm8NiTDyN7a7pWC59zp+a/SPSI5q86if9vVTb8GYr4/nbnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YpO9D6T+; arc=none smtp.client-ip=74.125.82.50
+	 MIME-Version; b=rMSyK5Qpqmct87AU2OPoCR89/F8QYD91YKp6qfo2bOjPtCdCuQJjDqQHBXCc2CAYFMdXQ+o69nkUn56yoP/amZd96FH+dUxrZ2e1lyx7ENvByu08MgWa1RZTlMrQj9FDHcQn5W5eU5A3DLsYrMMwP28ji0SwNO7JrLq/GfqQVtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bIg7dBd2; arc=none smtp.client-ip=74.125.82.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YpO9D6T+"
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-134fe980658so14342484c88.1
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 20:22:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bIg7dBd2"
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1363fe80fe8so7095384c88.0
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 20:22:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779938567; x=1780543367; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779938570; x=1780543370; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0R9tOzrr8KJ8Ew/2llqW/EXyCybA2lhbdpTnPfEMUP0=;
-        b=YpO9D6T+gu7EOSyIi1mo8/gguA3k+CWyfNP1/sggLUZI365twxqZyQxWQs+GLKwk2E
-         ERF61R8ZDNd3WXUm3rOFzQ625LlgSlpfhV/xNHGJF5ETOHmovFmsE8QDTrp10FGhlWVX
-         1webr4vziTLnLi40xSdCpTd+LFELKOfUO2AsjJxClpLuvuMoF2Tm4ZhwXPaVOQM/4t6D
-         wL8We2Cc6KKAMPMPLNDwnKjCdJRdtxLqeWngtX221rG5DYVvoiTLARW1azEpmuz8Z4Q1
-         MqPg22hOB2kV4sSGc6S6mxlGpfuuC7M+Kxg9IgYvAqAzBhA90cmtDpo35WqB6YnmO/Cc
-         twHg==
+        bh=yWz98vafF6jvWb4m4QX8sFPHOZ07yidVKCklk7kM428=;
+        b=bIg7dBd25ZHNQgZw/s/MnbkyotIkmHVy4VGeBahIkYbMHPS+BbQ3Jnzn+Ou8/PsoKy
+         /1pkiXrLcYGY0lLVR5LNgJkCdWke1rwQBa6Cai1nrZOB4h/q6yjMPhY1OblV30ye+e1k
+         C1TPNpx8FH/ikaXU7WcFg+uSmiuXpw1RR1SBEov7vmxMPZI2UliqA0uKZHc4VpHz6KWX
+         xV0r4aCX0MRMitAf37Wtz9UN1+g6cp0yr1STgX1SeZzJtLKIKfzIEgmpD/+NCIHPiuMX
+         sZhFNLfVJnhcX3Qxbp3GIPlzyhDG8MxdmESw9JI4Q9xwJMXCOjFqRV6jsA9ktYCSp3q9
+         74pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779938567; x=1780543367;
+        d=1e100.net; s=20251104; t=1779938570; x=1780543370;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=0R9tOzrr8KJ8Ew/2llqW/EXyCybA2lhbdpTnPfEMUP0=;
-        b=BroC8ZVQ4WSp2xJ+lw1WYzNDmFOCPghffS9W03y5IQi18De6n5Ka+/hSaCGt1c9pnB
-         NerXMMdIIu7fteB3ps7Qe4Q3MiOWlwcsetVJmdayEKMdbpAvIrBsYVyY2E7NZhFBgLH2
-         yRT0PKvqvbDViJwEU4htR5Gg/FKsIqsfBJSRxmvaW4RFzf4cNvrztjhmnrLgxyqIT7uJ
-         o6xmrd61gIv/MUxf1uEdZ52yVRnHbyNYnWUCTAp0ihFdLVHxbgDAnrOQaeE0BGgbD8Vi
-         xMFojRbqllq7xV/xZ4Kt7Wyh0xdJrfMGRwE4GRfjZW04D7o+/WGznZHaf66WLKU3xUtZ
-         355g==
-X-Forwarded-Encrypted: i=1; AFNElJ8OvHFj5V1ompv7kIftmq5T3QqONzzo2jao3NhoZZvrh6WpuE6pG1XVYdfA4ABpeH5K5j4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyM/qsWybrD+iQsIwVGgQ/DLblb+Z+UbC/9jGZKixSsySputp6X
-	PzzlKc2gF5wZXwxOD+jaykh866QyvhwrSjsvG8CpszrgBFqj8DBTo8H/
-X-Gm-Gg: Acq92OHcoRcznRkviocw5tF89Lg/2l7bHvnjiin0D/lLQg/Cu3PQj0sz625pHGnPoWl
-	bNwYCfIG43NIuvQvGi5q6JE3CLp1yQlluL/e5+XBQ0Mzr2aedoX4bTd+miiX78+BF6mFsu8N7+b
-	ihjeHg31sg1UJQNozhZY78XYDDL0y0rJdzWIhE9xuK/td3cPcJkDRHjIP/uqVY5Gy/e6VPCgpY4
-	Se8lvq3D+FB+jcfXp1fWQFjcnvABG7U1n4mpICx+JO2Ut6xKjvARmoC/2CpgYEbGVb1ujohA6Tx
-	c41eDOUiRzqXG1OvrGLkSy+65IDfh2RtiEJrYUV93W0/+0WSg4F0ve7hyYnS0xeLuj6tQNrNHBM
-	1s6RU/ViXZt+Rr5mH1iEXPjeG1GeIa2iSUJ4X6Vm69rkZbUywLvz4WnSFNBNmgV2cLfmu/viEtO
-	baA/kMinmaXhl5MznXNoQ08207BZA2Z6IJn0lMn/wFuPlwcj+ozicyzKNxfTI=
-X-Received: by 2002:a05:7022:fd0a:b0:136:4103:a5b8 with SMTP id a92af1059eb24-1365fa38819mr8508431c88.22.1779938566980;
-        Wed, 27 May 2026 20:22:46 -0700 (PDT)
+        bh=yWz98vafF6jvWb4m4QX8sFPHOZ07yidVKCklk7kM428=;
+        b=V1TzXL8JSv5ctlE1x1YndS79DFBydswOpOyeuTfWN/na1bFVecHlLwZ+B5YUl+6HnZ
+         PvcpmGkzHOTNzTd7aGzbJ3AcEcZsDpU6xOuB5ijwqNshb0Gxw8uzwcEp3jEvrpIFuoAz
+         d1t2nHTIwyXzaWNpg9Jdp7TqclUK1AGFpEzgFJLHxuuZQD5CIhnSX/H/v8zrpm+JVmDU
+         cRuu6JEVmZ+enMLOT0A8DzOEUK409dQlMeeYx+jhqbjIjjQ19FSwhGnBtiuUwyTn333B
+         EByreaIjcDHeF6yi1hCnNFXuvWGT2QXJvBXD/v0QKKJ2ofjIemDvLv86YkilwyrmB0Yb
+         kDJg==
+X-Forwarded-Encrypted: i=1; AFNElJ+Wp5UxMo1TGmuVNPKFyPK9H0m61gPY02ssKZnDZYKDAEgsU3sBVo9uJ/Mayu941XCXAYw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5iA6rVZ586yTkzjXK77vFIKh/wceYuLw28QQnT6Aln8NiNobz
+	k37kSRq3dYbIoHbSbuIQ4B4eZY7z/UXVyMLT+jMxTbCXgPULob8gCDjZ
+X-Gm-Gg: Acq92OFDNB6Khb+1Xh3ADJz0dJFoc1bzqHCJTwAk0OWBxnygnKai/YBr/Ls3x3aVIin
+	TDI72cwdyaOqLUtF0v2FjjoagFNtjsq1jLBkaEMKCbIczRE58ksmvi/ITXEa5uxd0p8O2xkweZ/
+	mRsioeBPpKIaAVOP4KBl10mbK12C3Hgw8/qXWfxXETdbp737lXbCZDLwnkNXgEHxQq/w/44k/fy
+	ezGlZYiD88kYR6yBJT+bFsuOwjD4rnpCz0twJCIznVBO6uL24nXZjCH8chNT2O/nS0itNjzrDww
+	QcXmXLlfb5wT5MxwnS2MtbtMvzPA8bLZH4hRIsqkNIklOHpwePhwoZIP15c+75RKfDlV9emOvRQ
+	KRqKkENXKwYwaIRE6feo0l2wMhzFW4AdQGthPK0KO7zEd8Z8lE5WGaH5aN4iEuuGD/lfz9JvWxu
+	q6urbcLi+dW3PTdWnLmb5812l+EohiDzZzOMX7XfWxbWKZr4vUYI4TascI6e4kbncJaybSsQ==
+X-Received: by 2002:a05:7022:689d:b0:127:5cd6:fa45 with SMTP id a92af1059eb24-1365f818ee5mr10812257c88.14.1779938570253;
+        Wed, 27 May 2026 20:22:50 -0700 (PDT)
 Received: from ewan-server.tailb932da.ts.net ([154.26.185.247])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1366aa88c7esm11650007c88.10.2026.05.27.20.22.44
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1366aa88c7esm11650007c88.10.2026.05.27.20.22.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 20:22:46 -0700 (PDT)
+        Wed, 27 May 2026 20:22:50 -0700 (PDT)
 From: Ewan Hai <ewandevelop@gmail.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -73,9 +73,9 @@ Cc: binbin.wu@linux.intel.com,
 	ewanhai@zhaoxin.com,
 	cobechen@zhaoxin.com,
 	tonywwang@zhaoxin.com
-Subject: [PATCH v2 2/5] KVM: x86: Expose Zhaoxin CCS (SM3 + SM4) CPUID feature
-Date: Thu, 28 May 2026 11:22:31 +0800
-Message-Id: <20260528032234.1322565-3-ewandevelop@gmail.com>
+Subject: [PATCH v2 3/5] KVM: x86: Expose Zhaoxin RNG2 CPUID feature
+Date: Thu, 28 May 2026 11:22:32 +0800
+Message-Id: <20260528032234.1322565-4-ewandevelop@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260528032234.1322565-1-ewandevelop@gmail.com>
 References: <20260528032234.1322565-1-ewandevelop@gmail.com>
@@ -87,28 +87,22 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Advertise the Zhaoxin CCS (Chinese Cryptography Standard) feature to
-guests via CPUID 0xC0000001 EDX bits 4 (CCS) and 5 (CCS_EN). CCS groups
-two user-mode instructions for Chinese national cryptographic
-primitives, documented in the Zhaoxin GMI Instruction Set Reference,
-chapter 2 ("CCS instruction group"):
+Advertise the Zhaoxin second-generation hardware RNG to guests via
+CPUID 0xC0000001 EDX bits 22 (RNG2) and 23 (RNG2_EN).
 
-  - SM3 (encoding F3 0F A6 E8, subsection 2.1) implements the SM3 hash
-    algorithm specified in GM/T 0004-2012. It supports two modes
-    selected by RAX: auto-padding stream mode (RAX=0) and pre-padded
-    block mode (RAX=-1).
+RNG2 is exposed by the REP XRNG2 instruction (encoding F3 0F A7 F8),
+documented in the Zhaoxin PadLock Instruction Reference, subsection 1.3
+("REP XRNG2"). It produces random bytes from two on-die RNG sources
+selectable via RAX bits[10:9] and an output mode (raw vs post-processed)
+controlled by RDX bits[1:0], providing high-quality entropy intended
+for cryptographic operations.
 
-  - SM4 (encoding F3 0F A7 F0, subsection 2.2) implements the SM4 block
-    cipher specified in GM/T 0002-2012, supporting ECB / CBC / CFB /
-    OFB / CTR modes via a control word in RAX, and CBC-MAC / CFB-MAC
-    when RAX bit[11] is set.
-
-Both instructions are unprivileged (no CPL restriction) and available
-in all CPU modes, with no associated MSR control. The CCS and CCS_EN
-bits are redundant by hardware design (set or cleared together) and
-both serve purely as CPUID-level feature-presence reporting flags
-requiring no KVM emulation. Both bits are advertised because different
-software may probe either one when checking for CCS availability.
+REP XRNG2 is unprivileged (no CPL restriction) and available in all
+CPU modes, with no associated MSR control. The RNG2 and RNG2_EN bits
+are redundant by hardware design (set or cleared together) and both
+serve purely as CPUID-level feature-presence reporting flags requiring
+no KVM emulation. Both bits are advertised because different software
+may probe either one when checking for RNG2 availability.
 
 Signed-off-by: Ewan Hai <ewandevelop@gmail.com>
 ---
@@ -117,31 +111,31 @@ Signed-off-by: Ewan Hai <ewandevelop@gmail.com>
  2 files changed, 4 insertions(+)
 
 diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 20b33413189c..276e4ef90bd0 100644
+index 276e4ef90bd0..e264758d58e2 100644
 --- a/arch/x86/include/asm/cpufeatures.h
 +++ b/arch/x86/include/asm/cpufeatures.h
-@@ -140,6 +140,8 @@
- #define X86_FEATURE_SM2_EN		( 5*32+ 1) /* "sm2_en" SM2 enabled */
- #define X86_FEATURE_XSTORE		( 5*32+ 2) /* "rng" RNG present (xstore) */
- #define X86_FEATURE_XSTORE_EN		( 5*32+ 3) /* "rng_en" RNG enabled */
-+#define X86_FEATURE_CCS			( 5*32+ 4) /* "ccs" SM3 + SM4 instructions */
-+#define X86_FEATURE_CCS_EN		( 5*32+ 5) /* "ccs_en" CCS enabled */
- #define X86_FEATURE_XCRYPT		( 5*32+ 6) /* "ace" on-CPU crypto (xcrypt) */
- #define X86_FEATURE_XCRYPT_EN		( 5*32+ 7) /* "ace_en" on-CPU crypto enabled */
- #define X86_FEATURE_ACE2		( 5*32+ 8) /* "ace2" Advanced Cryptography Engine v2 */
+@@ -150,6 +150,8 @@
+ #define X86_FEATURE_PHE_EN		( 5*32+11) /* "phe_en" PHE enabled */
+ #define X86_FEATURE_PMM			( 5*32+12) /* "pmm" PadLock Montgomery Multiplier */
+ #define X86_FEATURE_PMM_EN		( 5*32+13) /* "pmm_en" PMM enabled */
++#define X86_FEATURE_RNG2		( 5*32+22) /* "rng2" RNG v2 */
++#define X86_FEATURE_RNG2_EN		( 5*32+23) /* "rng2_en" RNG2 enabled */
+ 
+ /* More extended AMD flags: CPUID level 0x80000001, ECX, word 6 */
+ #define X86_FEATURE_LAHF_LM		( 6*32+ 0) /* "lahf_lm" LAHF/SAHF in long mode */
 diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 1eb4b88aaa80..8aaa3f20670e 100644
+index 8aaa3f20670e..087c41341240 100644
 --- a/arch/x86/kvm/cpuid.c
 +++ b/arch/x86/kvm/cpuid.c
-@@ -1276,6 +1276,8 @@ void kvm_initialize_cpu_caps(void)
- 		F(SM2_EN),
- 		F(XSTORE),
- 		F(XSTORE_EN),
-+		F(CCS),
-+		F(CCS_EN),
- 		F(XCRYPT),
- 		F(XCRYPT_EN),
- 		F(ACE2),
+@@ -1286,6 +1286,8 @@ void kvm_initialize_cpu_caps(void)
+ 		F(PHE_EN),
+ 		F(PMM),
+ 		F(PMM_EN),
++		F(RNG2),
++		F(RNG2_EN),
+ 	);
+ 
+ 	/*
 -- 
 2.34.1
 
