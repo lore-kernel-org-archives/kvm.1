@@ -1,166 +1,243 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010035.outbound.protection.outlook.com [40.93.198.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452E532BF5D;
-	Thu, 28 May 2026 19:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998154; cv=fail; b=vEDX8AGE+mGv5gDmW+6D4rbCmYjUPgrFZzXdjIJKrxw2m+5k3bBSV6lQK3xGEMIuKBoFUcpP4MOR+kYIsZ454BjE9NFvwtyXAPq1vkziYSgyUoIHlX6FNwv3FeWQnHQ1LAywbCDccQGFJbBVFIFJvvzfqH3cBFX8+Yp7IdmRSQs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998154; c=relaxed/simple;
-	bh=5smqwzYg4iB+UPDaZ2S21C/x5++xItNUEeii3yA6svQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=PbbI7cl15P8VZLQNsqqoRZxaIronuNvXaogTIs7sU8DfkYMXJoNf2kLjVg88jE7yc9eq5fNQUSwiFvf/tbzQclgCZBi4SuAI+yu380CGP+jIouuhehNcTsLdKBm5c+0KS6CypeLS3r95uA6IC7XhelUCi5xma4caI4rxNCf3Lp0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=B9w1p06Q; arc=fail smtp.client-ip=40.93.198.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9660D34D4D6
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 19:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779998308; cv=none; b=IOiTjYIhNUPqRXINIuE5BNean3SlpF6SzRJgN72v01066yREsEnAejFV8SRg471zxGPqqNt0WwU8k6htMilrUtRXVNm/kvUBWzie8ARwWGfP1ZrW4Z68PArNsXuZkHvwPDeZcetVCNUXvfXqOvgchV4FSwhlhWMP86t32XeuzhU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779998308; c=relaxed/simple;
+	bh=WTTIpQ7jQ/NRd9fEiQtD8QkYgfCehLlyMwVPbgSShLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tdHtyZTC4+BZ4FtiPAd8W5uguZuX+5QVuJIxSVAHzCTU06liEPEAke3CNqlTIcOikmJH9tRHV0Jl2c+L0EUSj44LF0XZkhdfj+BTTlr2SxrbklZBAGjShY9lYxjXm6CdBIhZw9+nQcUAhp/WQVZK4lfHqazBnhyuWVB9LAplcbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sc33oHFL; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="B9w1p06Q"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dBScqGbIJO6aqy1+jaZRdam2ZY4tI1f6cyR35xEk8bymIuswekT5c/XN13seedPXKGUBhSB3Fk9fX7j3vwCB9qR+WHCl70IjPeGi+zFdlz00nHnoH2ze8UYqeFYmPyQ/xJuhJCIJjL0iUzV73MXP2XevVOVMzqsJDVko6kYEyZENWBEb5RlR537fmNM1cD+HZ+vkhmUM96mxiOg5DPL3Y2iFY6Lqeo7/kyt5OYNsBlx9T26JHRDEcMGx8KiUxo9Tyc5i85zih2UO+cEmMAzGl75BAL610KiEefcU4kIgNeD0a6TpoKlzSmeZXYrKtwbFSwR0Wqn+EX7tz/3JX1bAtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IhOuKVLVID+bqAYR65aTbFqh8HSILzIL3gMoygKLL0I=;
- b=BD2rCCIeCTW968sQ90RuqbYpoG0134l5R1kBd8bXwA7GBXksUN9iSWjvcbIlwU3slU+J5R+irbCC4Oc+2PnpKgbJbUBGzwvxf4tp8BTfcttCXOQbEVQ5mORRkeCwATbpEn4Ob63sCkiQ8R0anJMu0w2hd6ZCA8SBJ6Ct/j6M+MglDFOnT3me9Q1vnp9zVfhCd7cjXrjsppOH2D43zuv6nrKGGmHuPzQxQ3UxvtBDD9zk+imCJbQuZQMcc5dOG+JJ08u9l4OsJsXl1dhwVZJuSdckiC4OfZiCx9Q8yc7Hesk8tXTlvK2WVxNJjSNMSq7cgF48P+A81CMaRDXxW9yQRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IhOuKVLVID+bqAYR65aTbFqh8HSILzIL3gMoygKLL0I=;
- b=B9w1p06QI7c2ReULc9T4LjyO3+5O8VCbqm8/FEnqVJ4s0Xltwh/tLnkmD6Jo/Ymi0ky9LCnlAGjB/uxiv252pjV7dhLhm8gcAgwkGcfzZYbM/8eijUm1Xl9eQdivT9YxO1aYUM25NfHe+M7AX+pMicYzIpKv2auPDNSy2rib5Lo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by PH8PR12MB7256.namprd12.prod.outlook.com (2603:10b6:510:223::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.13; Thu, 28 May
- 2026 19:55:48 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%6]) with mapi id 15.21.0071.011; Thu, 28 May 2026
- 19:55:48 +0000
-Message-ID: <3334a64a-9a5e-4ad5-94f3-01fef788df2e@amd.com>
-Date: Thu, 28 May 2026 14:55:44 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/7] x86/msr: add wrmsrq_on_cpus helper
-To: Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
- ardb@kernel.org, pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
- rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
- pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
- nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1779133590.git.ashish.kalra@amd.com>
- <c9fe5c2fef063f5006cc9bfa03eec824ac015db7.1779133590.git.ashish.kalra@amd.com>
- <20260527210603.GCahdcu8zvVjfKfGEL@fat_crate.local>
- <eea0497f-6930-43e3-947d-dae139e657ad@intel.com>
- <20260528004332.GDahePtGqVp2boiEJL@fat_crate.local>
- <2d164e19-5cc6-47ca-9150-f4d432dd10c4@amd.com>
- <c40dcb8c-5706-4c0f-ac85-c22957b9e192@intel.com>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <c40dcb8c-5706-4c0f-ac85-c22957b9e192@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0PR03CA0334.namprd03.prod.outlook.com
- (2603:10b6:610:11a::25) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sc33oHFL"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49050bfe053so37763015e9.3
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 12:58:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779998304; x=1780603104; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ea+7QZi8CgY0HmyJuCQXCsEGJlQb2tlTWQbckXtNEc0=;
+        b=Sc33oHFLCylxQ93c5qdbKt8LyUhpd646ZgF6BDcksrwu4z7ieIt16M94UGcwXSVcCw
+         JDzarArm4suWHXq9GlWuWmPeSKG4NwIv5CW6HO4sDWYFu8cPoBpIHuW4pgcWhIkVods5
+         RfnJmVrux/qQymYkabi6HMAw33T8APN/yS0kNPuDzqfxC/c5UuqiK8SfBCEgu+2l4XdX
+         3fXaa/SyO3FJSYVkxaMIvZY4DLt4vdc+6ijBx/qEcjICScC08CrmXf9FRWod+nD0lrSm
+         DIYsOZSKUIoxynqdEdFBPRcId2Ci10IRdX5sW5r/nyTai6U6Q7pKDqYZoAka4LtZ1xYn
+         3vzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779998304; x=1780603104;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ea+7QZi8CgY0HmyJuCQXCsEGJlQb2tlTWQbckXtNEc0=;
+        b=RLwB24e+Wl1YUaqu9PRZe3F0TSUS+U9No1x0kwqSvWfAvs2bW4D8U95z5vCARjuodU
+         Vpmf/fkeefffn4ccAr3TQvaYKBngc/8WjzmF/XZB15VqE7LY5e9nm10Rx5RZfvjSvCSm
+         zZAzjmytpRg/bCKH5sNQBWnO/xDbYTyuC2jooGlYnlZ4U5vRL3lV/2MYFCMeaUYINKWE
+         wf6bRlHonHz7oRVssLrWRkONwT+B/t7+DgbVo9xEKZkxVStjFoo4CfOELHsTo56J0mf+
+         RIMhfgDts/JBoqAeTDezfNScr1QJcKuuTzPy0Yz7NUNfRPv9d9WyYQW+KtreJAXoagun
+         pMOQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Y751SUNIXibF5mgMI+kSlKjFgw/bOikqdZP+tLXZa2/m1l7HsPJifiwEHOGlsEYeZpm4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4ZfrbeyOwXYbXIUpjtfYqFNCPvSx2fZ52V+RbCUFN/vuAuIlb
+	L/92kUzrZAhF12WZPQuvWG1q+su4la9UWNRYyFQ7BHgmgtbS+yXF/JxT
+X-Gm-Gg: Acq92OGS5jte+0v+YkqwOve+q66RMeyUU6LwXqCp1kkfg2uXqhqZhUYC5BNYlnUAKWW
+	CLePeZVkSnk+10FkWbe5xTFaIIbPEDTzHMMVYciQ48zKcz0cVPw1u0L21yxDdJr6mL2xtnbWDey
+	rhhRWN8NbbW6cbSAxC3Sb98Hjp0ic25+H6XqTcLwo0k5RiR+/kUuq72hQpvUABNGBG0SryZsfvl
+	GU9msVAlpgXSk5tWYkXQ+J3eR23PSN9YwPLIj1Qlp/1lJ93JMRydySGfvmskMxGBl/SMk6wHjQg
+	bnbJY7uLTkUOn8pO9HOUANY04gSzSB4uoci+zhgXd/aazOepvJLmgdHpnr+Fb3l9DjI3mqm3bGN
+	uOAeY5t29rSomnSip1QdZ2QNE/7m8szQiUNiDDjz7dBF+SLyQXzY37I9qGw6vLFvtqXS3J9Rica
+	Vb4BpTuKdGkf62N1MBxbZE7yoAg6g3cYx5nrNQ71fke0OkYYiDUxhnuDuQJuDM5RGltCDv1HFoC
+	H74qFFuWA==
+X-Received: by 2002:a05:600d:8496:20b0:48f:be94:d82c with SMTP id 5b1f17b1804b1-4909bfcc3bcmr676545e9.19.1779998303798;
+        Thu, 28 May 2026 12:58:23 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49091d57c0dsm93170965e9.0.2026.05.28.12.58.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 12:58:23 -0700 (PDT)
+Date: Thu, 28 May 2026 20:58:22 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Dave Hansen <dave.hansen@intel.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin"
+ <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Kuppuswamy
+ Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Kai Huang
+ <kai.huang@intel.com>, Sean Christopherson <seanjc@google.com>, Borys
+ Tsyrulnikov <tsyrulnikov.borys@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
+Message-ID: <20260528205822.26840d6e@pumpkin>
+In-Reply-To: <ahgUBLjBRGhxULu3@thinkstation>
+References: <20260527120544.2903923-1-kas@kernel.org>
+	<20260527120544.2903923-3-kas@kernel.org>
+	<5ed6121c-314e-4cf0-9a11-b0661c87c694@intel.com>
+	<ahgUBLjBRGhxULu3@thinkstation>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|PH8PR12MB7256:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2debc339-3106-4104-b9f2-08debcf31cff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|18002099003|22082099003|4143699003|3023799007|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	ogy4UwgawSVT/IUtRHpWKjAS/2BJ3eY6pZ6f7hcO0QcVE00Com/rOdtZyL4C4CqNqDkEbrxfbkocJtBcdpQ6qBqr+edhw+EDjRQm+7yx+kKE+HXUgI+7WlVpbycPOfe9hnV/Rh9T3T49mD4g6lqn6SydB5s3udfrN+SjkkEJtLdRTWyA9wgBIOTleAIFMOeNqK4UydGW8AYBzeLg/j34ZabCCK+kcZXpyqYKCjER2gfC6Yq6Er5yhV1DjcvRSDbUjSzfZhObhTHGLvskyj96M0uUo0TA6eYRIBjW36hKmIIxTlxVrW9JA3WopnxKDNWags20enfcDrWNXGOnOLWEvcnI9oergRot0U5GX0pbMyz+/Iq8IhZAH0E/z9Uc831ItUb52LmgkG4K8nkYsW0LpoCks8gAuWRbAKaKoROR5EU2eCp6OwRFRSzBvpLLi/DcPmQ31rl11raoo1L+ZrAo8bEjTo0ad1li9GU/EeBRrqIU0OMKsFd7uMlvp0uDQ6GPNlrOdB9GZhS4lMccnqi7zSyjEzFwd/MSpbvYVRr3bhNLE7tOrOqbwoeuoVG6ZU5jmBbYaJ9w6GpbFEPu1OP6BIXFTWxwyaCPSXAmIXyHr7UdHhJP2k/syrGrg/DE5LaMPQCw/gUddnHn1WzplmJo3w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(18002099003)(22082099003)(4143699003)(3023799007)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aytmOG1vR0s3SE5hR3NHaXF3aFhKWGpySXFNbENKL0tidk5BZUVBNXNycWJ5?=
- =?utf-8?B?U2M0Tk9Xb3N4d0dTaW9nL3VVNUxMc3hERzNpR0lucXUyQWg5dWEzL21sNEdX?=
- =?utf-8?B?Ump0M1I0b0U1NDRRQkRoZjdHUDVIVERzVWVSeFlCYzhzY0dPY1M5YW9NL3h4?=
- =?utf-8?B?Y2VMb3Z5ZjVXdmErTHlmT3Q1dXlzaUZaNzNhd0ROdEhJeHJvQnpTUDJyNzR6?=
- =?utf-8?B?OFVPb2JqOXphOEVGR2V3bXM4Tnd2bS9uME1EY0hzNFhXOWVjWXcxVWdHbTFZ?=
- =?utf-8?B?RlhZSHFWZU40QUFwY0ZZVnIxMlIrdjFmK2plZ3h3YndHeXBqQll5M2txeHFa?=
- =?utf-8?B?djlKeTdQTnJXZS9PY2ZtNnhEN05ySXE4UUVoYnp4NW5GaGxlQWRYVHZsODBM?=
- =?utf-8?B?bnpCaGlNZVRVOW5WSm82SWtiNVF3ZnhGVHNVc0oxN1FoUEF4S29sclRYTDRN?=
- =?utf-8?B?aTUyQ05OVWVzazU3MlQ5SGZ5RSsvMFowQWY1VngzbENCTFVKT0F6ODNlTCtD?=
- =?utf-8?B?bWRrT2pWbThkWnFHdVJIbnFwSzhtbGp5Z0JtZHh3aWNUdmhqMklnZzJvQm1S?=
- =?utf-8?B?d3VKL1YyYWZFZ09FSE5MZ2pJUjFHQnZSN3FvNzdRUHdnZGtCVE05eVlYZGJl?=
- =?utf-8?B?UmRkRWhIZEd5S0YxRWpUMEhSVGJaYk5mQmovVkZBQ1BPQzVESG5yaTFsbUpl?=
- =?utf-8?B?TmtwWFpNWGtaRTFoeDJqakhXSnNZc0FKdFl5Y3lEK3M2WHhhRkpVR2ZvS1I1?=
- =?utf-8?B?VlU1dGozeWJBY2ZtR2RUa1VNb0Q2QkxFSlZlSUhlNWNKWGJyME43L1VGcmJw?=
- =?utf-8?B?Wi9sUUpDTjNuU1JaRG5paDBmVS8vV1FyQ2J6aFlsV1g0S0VPMjVoYVZJK1dD?=
- =?utf-8?B?U1hXV0hyNjdtN1VGOTJrRG1URGVVdVBPbk1MVkVXTVpmQnRqWmp2Q2xWbnNh?=
- =?utf-8?B?NTRlckZ1Nk0vTlZTZytXbGdoV1IwMzJJaVBkYmtrUVdNR20rcmwwd2N4b2dG?=
- =?utf-8?B?T29oNzVWVVBYaHB5UHBpR0xzeng0SURDbUx2N2w1VnpMakxadjRhTkxDWWpa?=
- =?utf-8?B?cHVPZFBpOGVQMXVFMk03S2tRQVMyd3B6b09uOWJVbERJVGVLL043dFJHZ3lw?=
- =?utf-8?B?cVRsK0hHRmFJQWg2OTQ1Z1NPcHBLbG85T01nWVFZR2lwWVZxcHRjWXJrNXR4?=
- =?utf-8?B?U3JoQk1rUTdTQVVZMitPUWdrbGVLV1FVVzJlT0hMMGVwdkVVbXMvWUl4Mi8w?=
- =?utf-8?B?QnZiZ1lQcmdzeXA0elJaR05iQVUyVnV0U050Z3hQRTBzMHE5a0JJVlg5MjVu?=
- =?utf-8?B?bFgzNURISDN3c0F2MlJlTjZIQlV3Z0Q2S0JYOVY0TFBHWDloUWhTdTFPdmlW?=
- =?utf-8?B?NERWUmlNbzJTNGlHa296ZkR1WlMyd1p0clJaOFg3WkVBd1lSSXJXK2UvSUNq?=
- =?utf-8?B?ajJkZ1JnRlp6UG5uaFJUZXRrMWpQY0U2WjZpTUVRaGhyWGJXOWxvQ29GSXFZ?=
- =?utf-8?B?ZklvRTdSYm9seW45MHg0RlZZU2I2dWQ5d0hwcU0xdGJmZkRyVUpyNHk5Rit6?=
- =?utf-8?B?Q1dOTmIzSUxZOFBaK1ZhS25kZzdHWnU2V2F6WTBOWUp0cUJBRDVqelVITVpN?=
- =?utf-8?B?WTA2QmpHbk9rZUxpWnF4NHVKTVE1N1hQd2N0R1F1WWFFWlJXN1RWYVF4NHhu?=
- =?utf-8?B?SStaVmNNZzVaZGxQSCt2ZjVLWW5mcld0WGJPN0U0eEJVSmlxUnJrQ3hiWUxj?=
- =?utf-8?B?YldqV1N2VnZ0dnBLQVQ1UWI3NEJnOFNTT0l2VktXQWdoWXNZVkZ0bEc3aXZI?=
- =?utf-8?B?QzRvb1lBVnhjUUh1TzhJTG0zN1paSkhaa2RSSkRkYi9xQzVlRU5oQjgyWmhG?=
- =?utf-8?B?S29seVhGbzM1dmxWMGR6bVV2VnVIamhnTEZTTWoxRnVjZmUyYzlEaXVuWkNI?=
- =?utf-8?B?Vld2QU9qdytYdElHaXZ2Z0MrUkNveTJNT1lWajVVQVlac0V3QnhwTXZSOEVo?=
- =?utf-8?B?VlBPTjJTTWUzN2V5RlN6eklJK21DeDJyNzhicXVCYkdhN25Yc0UxS3hDdGlJ?=
- =?utf-8?B?ek00NWRuNUE5VDU5ZUdUR3dIbkpnN1NjYm0zNkhVQTllcDk5WThSS1Z2amxu?=
- =?utf-8?B?RjhpWEZOY1F1Mmd3dXY4eUROZGMzNUZXUjBvSmJQVnJBK0x6OWg5dUZZM28z?=
- =?utf-8?B?NzdRbmprb2xsQ1hhd1NsTlhEa0tvZVN4MGlwem9ZSHdwTU9aWVFYekNsR2th?=
- =?utf-8?B?QXhvbnRpSkE0bis1SEhtWnljejZwRkhmWkRhYlpYN3NoL2NQL09xbHdmRXVD?=
- =?utf-8?Q?alRSY14k2nAr2JW7CI?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2debc339-3106-4104-b9f2-08debcf31cff
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2026 19:55:48.4759
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9nmAz3xydUwu/ekwX5jUAhKSUhiaTr5G06DRiV2QnxKDxC6ylSGBG6JEJqu03vGEtRJWRhzDuhOYoQCPSOH5fg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7256
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello Dave,
+On Thu, 28 May 2026 11:14:38 +0100
+Kiryl Shutsemau <kas@kernel.org> wrote:
 
-On 5/28/2026 2:50 PM, Dave Hansen wrote:
-> On 5/28/26 12:37, Kalra, Ashish wrote:
->> A simple loop would be perfectly fine and avoids the need for the wrmsrq_on_cpus() helper entirely:
->>
->>   for_each_cpu(cpu, &rmpopt_cpumask)
->>       wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+> On Wed, May 27, 2026 at 10:45:28AM -0700, Dave Hansen wrote:
+> > On 5/27/26 05:05, Kiryl Shutsemau (Meta) wrote:
+> > ...  
+> > > -	/* Update part of the register affected by the emulated instruction */
+> > > -	regs->ax &= ~mask;
+> > > +	/*
+> > > +	 * IN writes the result into a sub-register of RAX. Only the
+> > > +	 * 32-bit form zero-extends; the smaller forms leave the upper
+> > > +	 * bits untouched:
+> > > +	 *
+> > > +	 *   insn  dest  size  bits written     bits preserved
+> > > +	 *   inb   AL    1     RAX[ 7: 0]       RAX[63: 8]
+> > > +	 *   inw   AX    2     RAX[15: 0]       RAX[63:16]
+> > > +	 *   inl   EAX   4     RAX[63: 0]       (none, zero-extended)
+> > > +	 *
+> > > +	 * 'mask' only covers the low 'size' bytes, which is exactly the
+> > > +	 * range affected for size 1 and 2. For size 4 the write also
+> > > +	 * clears RAX[63:32], so widen the clear-mask.
+> > > +	 */
+> > > +	if (size == 4)
+> > > +		regs->ax = 0;
+> > > +	else
+> > > +		regs->ax &= ~mask;
+> > > +  
+> > 
+> > Is there any way we could do this with fewer comments and more code?
+> > 
+> > I mean, there's only three cases. Why have;
+> > 
+> > 	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+> > 
+> > When there are only 3 possible cases:
+> > 
+> > 	1 => 0xf
+> > 	2 => 0xff
+> > 	4 => 0xffff
+> > 
+> > and one of those cases needs a special case on top of it.
+> > 
+> > Maybe something like this?
+> > 
+> > 	/* Clear out part of RAX so part of args.r11 can be OR'd in: */
+> > 	switch (size) {
+> > 	case 1:
+> > 		/* inb consumes lower 8 bits of r11: */
+> > 		regs->ax &= ~GENMASK_ULL(7, 0);
+> > 		args.r11 &=  GENMASK_ULL(7, 0);
+> > 		break;
+> > 	case 2:
+> > 		/* inw consumes lower 16 bits of r11: */
+> > 		regs->ax &= ~GENMASK_ULL(15, 0);
+> > 		args.r11 &=  GENMASK_ULL(15, 0);
+> > 		break;
+> > 	case 4:
+> > 		/* inl is weird and zeros the whole register: */
+> > 		regs->ax &= ~GENMASK_ULL(63, 0);
+> > 		/* But only consumes 32-bits from r11: */
+> > 		args.r11 &=  GENMASK_ULL(31, 0);
+> > 		break;
+> > 	default:
+> > 		/* Probable TDX module bug. Illegal in[bwl] size: */
+> > 		WARN_ON_ONCE(1);
+> > 		success = 0;
+> > 	}
+> > 
+> > 	if (success)
+> > 		regs->ax |= args.r11;
+> > 
+> > It might need a temporary variable for args.r11, but you get the point.
+> > That's basically the data from the comment but written as code.  
 > 
-> I'm glad we're on the same page finally. I just hope we can get to this
-> point more quickly next time. I started off with exactly this
-> suggestion, but someone chimed in to the thread and said it was "slower":
+> I hate how verbose it is. All these GENMASK_ULL() make it hard to
+> follow.
 > 
->> https://lore.kernel.org/lkml/6a50d050-f602-43fd-a44a-cecedd9823eb@amd.com/
+> What about the patch below. Inspired by kvm's assign_register().
 > 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 65119362f9a2..460b9fbabf14 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -693,8 +693,8 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+>  		.r13 = PORT_READ,
+>  		.r14 = port,
+>  	};
+> -	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+>  	bool success;
+> +	u32 val;
+>  
+>  	/*
+>  	 * Emulate the I/O read via hypercall. More info about ABI can be found
+> @@ -703,10 +703,33 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+>  	 */
+>  	success = !__tdx_hypercall(&args);
+>  
+> -	/* Update part of the register affected by the emulated instruction */
+> -	regs->ax &= ~mask;
+>  	if (success)
+> -		regs->ax |= args.r11 & mask;
+> +		val = args.r11;
+> +	else
+> +		val = 0;
+> +
+> +	/*
+> +	 * IN writes the result into a sub-register of RAX.
+> +	 *
+> +	 * Only the 32-bit form zero-extends; the smaller forms leave
+> +	 * the upper bits untouched.
+> +	 */
+> +	switch (size) {
+> +	case 1:
+> +		*(u8 *)&regs->ax = (u8)val;
+> +		break;
+> +	case 2:
+> +		*(u16 *)&regs->ax = (u16)val;
+> +		break;
+> +	case 4:
+> +		/* zero-extended */
+> +		regs->ax = val;
+> +		break;
+> +	default:
+> +		/* Probable TDX module bug. Illegal in[bwl] size. */
+> +		WARN_ON_ONCE(1);
+> +		break;
+> +	}
 
-Yes, actually i should have made it explicitly clear that we need to do it in
-parallel especially for issuing the RMPOPT instruction itself, as that is
-in a performance critical path (and for that we are using on_each_cpu_mask()).
+Just write it as normal arithmetic code:
 
-Thanks,
-Ashish
+	/* IN writes the result into a sub-register of RAX. */
+	switch (size) {
+	case 1:
+		regs->ax = (regs->ax & ~0xfful) | (val & 0xff);
+		break;
+	case 2:
+		regs->ax = (regs->ax & ~0xfffful) | (val & 0xffff);
+		break;
+	case 4:
+	default:
+		/* 32bit 'INB' will zero the high bits. */
+		regs->ax = val
+		break;
+	}
+
+Succinct, obvious and readable.
+
+-- David
+
+
+>  
+>  	return success;
+>  }
+
