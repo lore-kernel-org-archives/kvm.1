@@ -1,263 +1,152 @@
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51732E7381;
-	Thu, 28 May 2026 17:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE66EEA8
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 17:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779990979; cv=none; b=PT7vRw0Bd6xWKm/KB3a0q+E35gHv4XlyiFWouUuB/2wKJ1E23zHRf5VSQdE4ewqGIqjjAlAWbCy8mKaBeBOUXhfIUzfloD8R4133vyOA3WsuJhC0E7xEaPGh8Igr88fZZnv+Y2aiNifYr2zcs4kQb1trvIqScoqulFg8MvBRqPk=
+	t=1779991033; cv=none; b=SoEeyDjOr3L3/g2Yw+4n0tNEInE02CkmFh2f0peKLdkROQVsm+Aky003XA+ByeuK045UpHnRxKKljLjr7y7lv9yEVqLrPy2498wVno/lsMQbT70YemwXE8JHHp8wOXDr/YQdjQGXN0IwuhzoG8CDkd/VVtTr8vX3ffM+Y968Nxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779990979; c=relaxed/simple;
-	bh=5IAd/d86LGDJmiGwKf94grwTTmzqJARx9yHiBU//my0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IRONkT5vb9ayn+zDPcXJiVkc2R0ZyjuR9LgHoaWgrH8c28LwdAhiD9UfbPr7KSuO6c+now8pcLkyRyEgUAyo2csRn70fPyBOaQwcKNa7Z2xSDNrGm5T68ETMohSD0TMn2M6l8zDl79EhlSsIsAj7y6DRLndoDAiRDXTTpzwYF9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=U5b8X6TW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=s9kDh4xd; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1779991033; c=relaxed/simple;
+	bh=ebEs6UlwDXpwVS/9E0xMnRBc1cCeBxMSXmp1KUZ8q6Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=eSanLvXRZlrZO/SslYtSj2TyF6Jc/dz+X3/m3XRshivH2Y15pX1fAnLpwFxYtKAb3ZqDcVrhhOxhqPNhi+G/TvjFjsxo3VVccFzUbty/ca8hMpNKmgrLDhXiR80BazAEBpfjbpVZo6ozOUe78210uHeW+a9WX62JKATir5HkyQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c8DqJXFE; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="U5b8X6TW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="s9kDh4xd"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id DF8B81400039;
-	Thu, 28 May 2026 13:56:15 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 28 May 2026 13:56:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1779990975;
-	 x=1780077375; bh=xhdRneveyKRi4yHcO3iqq3pnUZtlH2liMhHlRhXnA0Y=; b=
-	U5b8X6TW6/mRwVCLpOChvT0k1k1QzHmVrFEzS/hjAI0rwststC41Yv25lRmFuyvO
-	hOhnag/lzB1wIXyzGveTSFmAksgeukCGtGdQBvI3sLI2yew3jTNHc0koq1QnBbRn
-	sW9yABS/RG2gujsA6HUoxHCKNSfOdXmJALBFbfDUgsfwCFae+femUG+v13WBxZYH
-	DyecqNnvFriz+3qTWvF7EdVX6bHA+BD0Jp0mixf2CdZK+lomAU0AuA5zuDtu1xUG
-	HawyHfiFqbjlj1K1oUGI7G+r1SwG4fFKO4i5Qg+8K1pcYnWDcaKiUrNTdnHbsoqD
-	UwkmurZB99o8W/ZDrn6BJg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779990975; x=
-	1780077375; bh=xhdRneveyKRi4yHcO3iqq3pnUZtlH2liMhHlRhXnA0Y=; b=s
-	9kDh4xdhlfozXI1QMU03sC+FCHnJH8hfoa+aoSZZQ7aJsIrjUawKdzuVjjkec73b
-	/wM60wxFtit3KBq6Blj+YSjhc6BDvvA7OrsBIcTh/SxB0ZWL2Z2Ey+ex4KeLEq/L
-	2RQ+qcmwEQByYsYct6ziIdKef5NIuB652gXHTv0wgZwihSJamnuJsrBavyehkI7e
-	SYl84r5QkuAWLlK7mxUfIis251SgZY4ZIC5c0j+iF4OOqF0ToUQhJPqWcSM96EkW
-	FZLoTMDb7uWvJLfRQh1BTq84KeU3eaDWa9BSJ6fISwIaYfsywEbRTmJqFTbDi6Rj
-	XBsJgTMOnmAecUtYnF9jA==
-X-ME-Sender: <xms:v4EYaiTilyCCC3TszYpzNwYh2iObnl4WUsqiBuWJFNspCyx43Qb0GA>
-    <xme:v4EYatwYCuAiGhYYgMfx6t4jRV5l_IbiFcOI-gRgr-E2ja3HrfiUpUI0ddipAjGIi
-    IPrXzGP__kq7-uLt7yjpnDfbKTP0OWOloB2VNAZlfLoPnNPBV0w>
-X-ME-Received: <xmr:v4EYaqqmMr20NKnzCZpiW2GHTgVMyz9eBHHmkMMzUzW5MmQtc79meqmG0-o>
-X-ME-Proxy-Cause: dmFkZTGA7+e1nJ1HX9UeCel4mN6+q+8r4YO/idRUFSnYVbZsNnYtC7QCAtx81d87OgaOir
-    IbdMySc9qWfxObwF3Stohx7T1d7dnVbgXA6B9H2I0YgtkeZlCiMkeSFisx6RZwGlUtEs9l
-    XFrGJI1iLNdHLNfXmBHhnsnBa+UEIjJaX+gowTkyhy9H0fAs6HXgZzBP1Rh80ZaBtoiIfu
-    IOlGpi4SWnlTNVfI7FqfNHOIDHYo8asj4cgBXOF5fLaNwI4ec0bCwzGPw4y64T1K3X6D4e
-    mk0kUvMvWCoAw6Yy9WcsezdeUMixvoWa49cns0/NqxlNXugDQ/vZK90M3vo11NFHxhctZH
-    HK5r07gj9lMDRuJ1NnjQwCWiasochE105a2AA8/SQOoO1qtSpGCVL4e8nKQR2UV8wGYFoi
-    pxI9g0wUo1mGLyEHoBPr41efVEzcYZHaMUy8F1UODHZmX7x5Hoe2PZgw1oOIc7DkLI4+Xi
-    B21g89ykhixr8r8Pn7/ezhevbiyx8mY2XXinpWEA1HwRzhnjX4WhefjZ4/ynQwfrbN6sqD
-    OA/yYOYg4Toq3R9SQNwros+7tA++Si0xYsJGfl8QBe/Ej+6OhanrulXNKjV9UB+WwbqxWP
-    BKtl+jZAfkEFCJ9MshdUrhTpSJNX/lNCds4WPwNiko14QKK4bh4NPVFd7sXA
-X-ME-Proxy: <xmx:v4EYag3Dd-NmQM8BldDFKzxoj8y7jhEZeN-FU5-xFGaKcVzjIBxUHQ>
-    <xmx:v4EYaqx8shKaaRaubqV-xI-05Vg1eSgniPn89SHxuVwMYzXtOchAgg>
-    <xmx:v4EYakgjCss8-9hsqHREDl1CHwfup6hDa8HGcgxX4AAEHvufi8gZEg>
-    <xmx:v4EYalr5sXxwHkV2gXMswNtHsaSv_37mBN3aX7JpSp2wWpMqqhtPsQ>
-    <xmx:v4EYamtjZXs6hr2IbNiPGyPyIeyi2rYMH09X2HAXh8g85Sma-_joFU3l>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 28 May 2026 13:56:14 -0400 (EDT)
-Date: Thu, 28 May 2026 11:56:13 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Ankit Agrawal <ankita@nvidia.com>
-Cc: <kvm@vger.kernel.org>, <jgg@ziepe.ca>, <yishaih@nvidia.com>,
- <skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <bhelgaas@google.com>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- alex@shazbot.org
-Subject: Re: [PATCH v7 1/1] vfio/nvgrace-gpu: Add Blackwell-Next GPU
- readiness check via CXL DVSEC
-Message-ID: <20260528115613.63f1b178@shazbot.org>
-In-Reply-To: <20260528093840.4018-1-ankita@nvidia.com>
-References: <20260528093840.4018-1-ankita@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c8DqJXFE"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8281d4cef8so6217687a12.2
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 10:57:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779991032; x=1780595832; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JEMSSn0T8rB37WhRL7Ut7EvjCk5z+cpcWvTEziBYfA0=;
+        b=c8DqJXFElKpHm4i4UMw0B54DaW9Q/hrFF0mxnvbxLjg2DS9eDBZ7YQMzGKihppa546
+         qrdjmsQJFF5ZtCTDmYv/Xt7sjh8PrtJTToggOkYymRSjFL2EHmblnpwnMmQP7Tjrmy3r
+         hVlT04XvRlKQz4fIpU3WEiiIPI6kgrzdkUFauf2gxOnck3Yo7ZEEaCNvV47YFBRjKnSk
+         HFeTQvIRLMKEb1d1mckgyau25q0xNN1ZaHohL3U8WUSerlH0QmkBnzNlxN2P7eHUzF0w
+         X3B/oedCgvnlguQTMH6A0yNBvjI4fJVm9fHrSzr6NWsWpFpczcuSuhEnPKdpSsP5T25/
+         oJtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779991032; x=1780595832;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JEMSSn0T8rB37WhRL7Ut7EvjCk5z+cpcWvTEziBYfA0=;
+        b=KMFw9zzsc2jp0jasCo6jwtRiR3VfVlgfEgHh+y6mXLH8thwymgXoj4JTzZj81jXA1q
+         M4TbaJ2O5AVrermaTdO/8b2N8ZNcgz6T5jQh1rvFC3h/D15DUj/jv8133MVCx+GworVx
+         GgbjzEVsjiqM/2BUNllaUZSlVWWO8wUEzRLZf7/a94IkWepX0XqgCDqy4nbavvrvcdTf
+         HBAju0V1qZ0IOX8w9QlfciH2RqDb/jenrngQqXgTl9c/uvwED8dLE0LIStrH1ZmfH3hi
+         rStB1inlLOeZ/igOf7le5ahtQR5IPtJnFsP8RMEI7OAgzHQ9HOlKPEbVY+zL7ec4EPRb
+         OanA==
+X-Forwarded-Encrypted: i=1; AFNElJ9/EP8xAc2MnKm55mLPx0gYcg641wWfEFZokL0MIXiQuTxjY5qq8D+EEOIoc8OkZRJG0+s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwU0iN4nmeMQA6X8VL95ISC0iyr5o2EDCrFdc7/vx1VaYVOg1l4
+	63Ca//YpTMNctcO182AjQKfU1lcWRTMLR9ps4Qb68vb0dcifRFk167URxIzngW2u4jpizVKW64U
+	9ThjIiA==
+X-Received: from pffy28.prod.google.com ([2002:aa7:93dc:0:b0:83e:ae1d:a060])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4392:b0:82c:e692:1f91
+ with SMTP id d2e1a72fcca58-8420c1d8aabmr39627b3a.39.1779991031400; Thu, 28
+ May 2026 10:57:11 -0700 (PDT)
+Date: Thu, 28 May 2026 10:57:10 -0700
+In-Reply-To: <CAEvNRgFAt2NSbK91Oc95iKA7eLo-3Pw==2X0PQvbonhVM_bZ7Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260528021117.107984-1-seanjc@google.com> <20260528021117.107984-2-seanjc@google.com>
+ <CAEvNRgFAt2NSbK91Oc95iKA7eLo-3Pw==2X0PQvbonhVM_bZ7Q@mail.gmail.com>
+Message-ID: <ahiB9uD1aeWt4H7P@google.com>
+Subject: Re: [PATCH v3 1/3] KVM: guest_memfd: Treat memslot binding
+ offset+size as unsigned values
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 28 May 2026 09:38:40 +0000
-Ankit Agrawal <ankita@nvidia.com> wrote:
-...
->  drivers/vfio/pci/nvgrace-gpu/main.c | 144 ++++++++++++++++++++++++++--
->  include/uapi/linux/pci_regs.h       |   1 +
-
-Bjorn, I assume you don't object to this trivial addition:
-
-> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-> index 14f634ab9350..718fb630f5bb 100644
-> --- a/include/uapi/linux/pci_regs.h
-> +++ b/include/uapi/linux/pci_regs.h
-> @@ -1357,6 +1357,7 @@
->  #define  PCI_DVSEC_CXL_RANGE_SIZE_LOW(i)		(0x1C + (i * 0x10))
->  #define   PCI_DVSEC_CXL_MEM_INFO_VALID			_BITUL(0)
->  #define   PCI_DVSEC_CXL_MEM_ACTIVE			_BITUL(1)
-> +#define   PCI_DVSEC_CXL_MEM_ACTIVE_TIMEOUT		__GENMASK(15, 13)
->  #define   PCI_DVSEC_CXL_MEM_SIZE_LOW			__GENMASK(31, 28)
->  #define  PCI_DVSEC_CXL_RANGE_BASE_HIGH(i)		(0x20 + (i * 0x10))
->  #define  PCI_DVSEC_CXL_RANGE_BASE_LOW(i)		(0x24 + (i * 0x10))
-
->  2 files changed, 136 insertions(+), 9 deletions(-)
-
-Replying to the sashiko comments in thread to keep all the reviewers in
-the loop...
-
-On Thu, 28 May 2026 10:22:14 +0000
-sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [High] TOCTOU race in lockless device readiness checks causes unexpected -EAGAIN or VM_FAULT_SIGBUS errors instead of waiting for the device.
-> - [High] The 256-second device readiness polling uses uninterruptible `msleep()` loops, which can trigger hung task panics and renders user tasks unkillable.
-> --
+On Thu, May 28, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
 > 
-> commit a85819b2171b67b275d15e9b87eb7447b4dd63a4
-> Author: Ankit Agrawal <ankita@nvidia.com>
+> >
+> > [...snip...]
+> >
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index bf9659a7b0f6..a1cb72e66288 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -640,15 +640,16 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
+> >  }
+> >
+> >  int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+> > -		  unsigned int fd, loff_t offset)
+> > +		  unsigned int fd, uoff_t offset)
+> >  {
+> > -	loff_t size = slot->npages << PAGE_SHIFT;
+> > +	uoff_t size = slot->npages << PAGE_SHIFT;
 > 
-> vfio/nvgrace-gpu: Add Blackwell-Next GPU readiness check via CXL DVSEC
-> 
-> Adds a CXL DVSEC-based readiness check for Blackwell-Next GPUs in addition
-> to the existing legacy BAR0 polling. The device readiness is determined by
-> polling the Memory_Active bit outside the memory lock for up to 256 seconds.
-> 
-> > diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-> > index fa056b69f899a..04fcc0d088f54 100644
-> > --- a/drivers/vfio/pci/nvgrace-gpu/main.c
-> > +++ b/drivers/vfio/pci/nvgrace-gpu/main.c  
-> 
-> [ ... ]
-> 
-> > +static int nvgrace_gpu_wait_device_ready_cxl(struct nvgrace_gpu_pci_core_device *nvdev)
-> > +{
-> > +	unsigned long deadline = jiffies + msecs_to_jiffies(POLL_QUANTUM_MS);
-> > +	bool active_phase = false;
-> > +	u32 status;
-> > +	int ret;
-> > +
-> > +	for (;;) {  
-> 
-> [ ... ]
-> 
-> > +		if (time_after(jiffies, deadline))
-> > +			return -ETIME;
-> > +
-> > +		msleep(POLL_QUANTUM_MS);
-> > +	}
-> > +}  
-> 
-> [Severity: High]
-> Will this uninterruptible sleep trigger hung task panics?
-> 
-> Since the CXL device readiness can take up to 256 seconds and msleep() places
-> the task in the TASK_UNINTERRUPTIBLE state, processes accessing the device
-> during a reset will become unresponsive and immune to signals (including
-> SIGKILL) for up to 4 minutes.
-> 
-> With the default Linux hung_task_timeout_secs at 120 seconds, blocking here
-> is highly likely to trigger the hung task detector and cause a kernel panic
-> on systems with hung_task_panic enabled. Would it be better to use an
-> interruptible sleep and abort on pending fatal signals?
+> I get why uoff_t is chosen for byte offset, but why is uoff_t also
+> picked for size, over size_t?
 
-The legacy path already has this same issue, but the timeout is 30s
-rather than 256s.  Both locations could pretty trivially change to:
+Because size describes the max offset.
 
-	msleep_interruptible(POLL_QUANTUM_MS);
-	if (fatal_signal_pending(current))
-		return -EINTR;
+> Not trying to nitpick, guest_memfd deals with lots of sizes, byte and
+> page offsets so I'd like to derive a mental model for using these types
+> in functions.
 
-It's maybe worth a follow-up to address both for a little more
-robustness.
+Earlier you asked what I meant by "same domain", and I forgot to respond.  What
+I meant by "domain" is that both "size" and "offset" operate in the "number of
+bytes in the file" domain, and so should use the same type.
 
-> > @@ -313,6 +399,21 @@ static vm_fault_t nvgrace_gpu_vfio_pci_huge_fault(struct vm_fault *vmf,
-> >  	pfn = PHYS_PFN(memregion->memphys) + addr_to_pgoff(vma, addr);
-> >  
-> >  	if (is_aligned_for_order(vma, addr, pfn, order)) {
-> > +		/*
-> > +		 * Exit early under memory_lock to avoid a potentially lengthy
-> > +		 * device readiness wait on a runtime-suspended device. Any
-> > +		 * race after the lock is dropped is benign as the re-check
-> > +		 * inside the scoped guard below catches it.
-> > +		 */
-> > +		scoped_guard(rwsem_read, &vdev->memory_lock) {
-> > +			if (vdev->pm_runtime_engaged)
-> > +				return VM_FAULT_SIGBUS;
-> > +		}
-> > +
-> > +		if (nvdev->cxl_dvsec && READ_ONCE(nvdev->reset_done) &&
-> > +		    nvgrace_gpu_wait_device_ready_cxl(nvdev))
-> > +			return VM_FAULT_SIGBUS;  
+E.g. size_t isn't literally just for sizes, it's also used when comparing against
+a size, e.g. 
+
+  $ git grep "size_t i;" | wc -l
+  476
+
+Changing all of those to uoff_t because their effectively offsets, not sizes,
+would be nonsensical.
+
+> >  	unsigned long start, end;
+> >  	struct gmem_file *f;
+> >  	struct inode *inode;
+> >  	struct file *file;
+> >  	int r = -EINVAL;
+> >
+> > +	BUILD_BUG_ON(sizeof(gpa_t) != sizeof(offset));
+> >  	BUILD_BUG_ON(sizeof(gfn_t) != sizeof(slot->gmem.pgoff));
+> >
 > 
-> [Severity: High]
-> Can this lockless check race with a concurrent device reset and bypass the
-> intended polling mechanism?
-> 
-> If a concurrent device reset finishes and sets reset_done = true right after
-> this lockless check evaluates to false, the thread proceeds without polling
-> and blocks waiting for memory_lock.
-> 
-> Once the lock is acquired, the thread calls nvgrace_gpu_check_device_ready()
-> which observes reset_done == true and invokes the fallback
-> nvgrace_gpu_test_device_ready_cxl() under the lock. Because this CXL test is
-> non-blocking, it immediately returns -EAGAIN, causing
-> nvgrace_gpu_vfio_pci_huge_fault() to return VM_FAULT_SIGBUS and crash user
-> applications instead of waiting.
+> I never knew this was meant to show the concept/typing relationship
+> between gpa_t and byte offset, gfn_t and page offset. Can we add a
+> comment to explain the presence of BUILD_BUG_ON()?
 
-This doesn't really seem to break our contract with userspace, they're
-issuing a reset while the device is taking a fault, reset necessarily
-disables memory, therefore a sigbus is a valid outcome.  We could make
-this a bit more robust to such a race with a retry, but it would be
-contingent on the interruptible msleep above or else the user could
-potentially trigger endless resets during fault.  Something like this:
+Eh, I'd honestly rather not.  I agree that on the whole, the kernel tends to be
+far too stingy with comments.  However, at some point a baseline of knowledge is
+required.  For me, understanding trunctation falls well below that line.  It
+does require the reader to know that guest_memfd bindings are gpa:offset, but
+that too is core/basic knowledge that the reader needs to have to make any sense
+of this code.
 
-diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-index 01b819156c03..9e7f8a7e1abc 100644
---- a/drivers/vfio/pci/nvgrace-gpu/main.c
-+++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-@@ -415,14 +415,21 @@ static vm_fault_t nvgrace_gpu_vfio_pci_huge_fault(struct vm_fault *vmf,
-                        if (vdev->pm_runtime_engaged)
-                                return VM_FAULT_SIGBUS;
-                }
--
-+retry:
-                if (nvdev->cxl_dvsec && READ_ONCE(nvdev->reset_done) &&
-                    nvgrace_gpu_wait_device_ready_cxl(nvdev))
-                        return VM_FAULT_SIGBUS;
- 
-                scoped_guard(rwsem_read, &vdev->memory_lock) {
--                       if (vdev->pm_runtime_engaged ||
--                           nvgrace_gpu_check_device_ready(nvdev))
-+                       int rc;
-+
-+                       if (vdev->pm_runtime_engaged)
-+                               return VM_FAULT_SIGBUS;
-+
-+                       rc = nvgrace_gpu_check_device_ready(nvdev);
-+                       if (rc == -EAGAIN)
-+                               goto retry;
-+                       if (rc)
-                                return VM_FAULT_SIGBUS;
- 
-                        ret = vfio_pci_vmf_insert_pfn(vdev, vmf, pfn, order);
+> Also, what's the rationale for picking BUILD_BUG_ON() over
+> static_assert()? 
 
-Note that the read/write paths also have this gap where we can wait for
-the device to be ready, but the check under memory_lock returns
--EAGAIN.  The difference is that userspace will already automatically
-handle the -EAGAIN vs the SIGBUS could be fatal.
+https://lore.kernel.org/all/aI05DvQlMWJXewUi@google.com
 
-I think both of the above would be good improvements, though I don't
-think either is strictly necessary.  I don't spot any other must-fix
-issues, any concerns from others?  Thanks,
+> static_assert() could be placed outside block scope which makes this
+> relationship declaration more general/global. Putting it in the function
+> makes it seem local (seems to suggest trying to assert some guard for just
+> this function).
 
-Alex
+Well, yeah, because it is local.  _This_ code relies on the sizes being the same,
+otherwise we'd have to deal with potential truncation, whereas overall KVM does
+NOT.  The purpose of adding asserts like this is to document an assumption and
+guard against future breakage.
+
+Just because we _can_ put the assertion in a global location doesn't mean we
+should.
+
+KVM does use static_assert().  But without exception (at least in x86, haven't
+checked other architectures), every usage is still co-located with the exact code
+that relies on the assumption that's guarded by the assertion.
