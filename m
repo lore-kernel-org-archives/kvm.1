@@ -1,85 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4604036921B;
-	Thu, 28 May 2026 22:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2D7340405
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 22:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780006255; cv=none; b=R1NAaQRyhClTkVqdeyC7Uzx5qT6MdgvE3W5WNKQyjVVZyEjbEXngOb6gJrPFuy2uVIRwze+R97yF4cT1pYpCln+qQOzHLza6Nbt5PAk8tbSj6lVc9etP6CA23w0As9lSGbv3LYdl08HIYau2TVUMe+yD7KK3RtdFx1u8X/zwYBU=
+	t=1780006379; cv=none; b=qdxrx4bOq8Y0gONf/8OM3b8gXMzWIkXPQ3CqdFQ+99GeIBRS0wsoyaAiC0jbDSrmxoa/0TjA0HlcaeInn6zwG5nslQuU05JptFkdkSUOL2hit5G+CQ55An18cxGQ5D3jW3QpgYTm0SBrtwO+cx894h9f09PmhQKiUMFlj38ON/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780006255; c=relaxed/simple;
-	bh=MJauyLPrVOjMmdZZN3XBhbIELzrdJUSo7zqyIvmbsJI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=bl7/b/2VCL0gow08uT1pONkZgyYFv7fSehUwIPN7FGu2QCWvVcp+HySRilUrWhnexYuS3KZiHPFrZJbg5VLJoGeeic4FgxPT6ywH5E/Dwp1MDgMMmtYAK0qDY7kDaSMyRgJhpAspuh0hBzskOcgOwDQQcIjMweXaZRRXf0DFd68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VXX5xbKA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780006379; c=relaxed/simple;
+	bh=jgbqz6eIQF58YkyQEmzEEc2oMlTbRn7MPg4Jz/evSCU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eyszFL7k1hk7IQ2p5nVIb8QdlfbGdRadXTxIugi13bHBaY4Ifl07z0QPnNAMxDE86u7bf2a7H7XD2nWyk0Zav5av2ZUp9jWAMIm1CEM4sUQwK9q3RmSWDYJHG4FqO9k1oYM5zJXCnQ6gAck+uKTPBVb+gj3rBBkP+NYdBTYR/Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQ1JLxYo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VXX5xbKA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A69F1F000E9;
-	Thu, 28 May 2026 22:10:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQ1JLxYo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA4E1F00A3A
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 22:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780006253;
-	bh=MihBZLmSF5hf5EffR//CvVrqExmU2M8+W8fSnVreuok=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VXX5xbKA4r1zdkmqIxdJtFVukUE90VmHw0fekU2gVd1+ejfe9g6Dh7hGr+LUmyehY
-	 dSSkEnumE3QcVg0jn4lLGq615aVBcidIYrtxaDIymiFdm5iSIt20Y0vEqo7E/0q1pu
-	 rwWgEve2ZL9SXpaeJeeRAZca4Fdwbknsfu6d4C0KvhBiuapT35rtFqDMCaxeSYQ+QY
-	 peJCAO3XkGWH1sKpI589G+k3NqQFl1eUyPNJPnHbHE3XOftAZw5SLUGo73vAT6Lcv3
-	 M9Zji6Pd+F8upcQB8FUwksPSY2SODoZP1HXqPRN7EVi5IDtdCYMhapF4oVgdeq6liM
-	 9oK7e81lvxD0g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93AC73811977;
-	Thu, 28 May 2026 22:10:58 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1780006378;
+	bh=ewqX6HNUiCn2x5rR1E0zpP4kogsLFhvBW0yMF9l/S4k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=aQ1JLxYovBWEGth4BfgDzElPeXXLXcBFx+ZJ8tnrKolA+0tSWCRv5Ymw3AiLq/UQn
+	 QuWuvIx6b4iKX5nN1w1XD9G1dnKER7TULxo8QcRKz/4uNKZr4ujajzdvidLe3DYIqh
+	 DIFq5g1HT9lFgARfDBG1tpuEO0EbbutNGteVmpuFC9Ha2XjLBxUfBuyyjgxyGX59xT
+	 GlsdYzEH+g3Aov3mUNhL+O3+GG36E+9FcivDfM6+tC2GpFMLxVg6F1yZtumf3B+qD1
+	 pq1iZOSLrod5nOV+Py0L9ZoKgnWpFOXvDsVmkGuJMlyZWkRJ2/Q7Gc/fm6Vj8+IrOK
+	 C6C0yacg0daOg==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bce57c132b2so2352568266b.0
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 15:12:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ86jEXkfsyc5MZG1emKn3Fnu6yp62upN4J25uX+fZiq/ZG0y4/snGfCKQn1kG9LWtpriLs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYYs6FA4xr1eizxD6P7GpIrG0PJzeUvnOUBwKOxGosc9KMof2Z
+	DSnMl4Jk+U4/7elPPrRxS5VmlAWKHLmOffHjUcQe93sJbvohk0KpqYqAla+eqludkX/XHI6B9SW
+	xd/VDp/lw9Vx2PdmJ+HCQEd8D4sDiMpQ=
+X-Received: by 2002:a17:907:72ca:b0:bd4:8286:466d with SMTP id
+ a640c23a62f3a-be9a5e40e50mr18546566b.12.1780006376881; Thu, 28 May 2026
+ 15:12:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH RESEND net] Revert "vsock/virtio: fix skb overhead
- overflow on
- 32-bit builds"
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178000625714.1533055.10719008699075181524.git-patchwork-notify@kernel.org>
-Date: Thu, 28 May 2026 22:10:57 +0000
-References: <20260527171046.130211-1-sgarzare@redhat.com>
-In-Reply-To: <20260527171046.130211-1-sgarzare@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, eperezma@redhat.com,
- virtualization@lists.linux.dev, kuba@kernel.org,
- linux-kernel@vger.kernel.org, xuanzhuo@linux.alibaba.com, mst@redhat.com,
- kvm@vger.kernel.org, pabeni@redhat.com, jasowang@redhat.com,
- horms@kernel.org, stefanha@redhat.com, edumazet@google.com,
- david.laight.linux@gmail.com
+References: <20260518202514.2037078-1-yosry@kernel.org> <20260518202514.2037078-6-yosry@kernel.org>
+In-Reply-To: <20260518202514.2037078-6-yosry@kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 28 May 2026 15:12:45 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNqYA6CACeGTVLcyj4bJ2XPAzEXL+y9tLuCU5Y-F=D-WA@mail.gmail.com>
+X-Gm-Features: AVHnY4KEKQ1lWxVA2Fh4mMSVDYgJWgPC8N_82F-w679hlsEdWu04PhhPOSH1odU
+Message-ID: <CAO9r8zNqYA6CACeGTVLcyj4bJ2XPAzEXL+y9tLuCU5Y-F=D-WA@mail.gmail.com>
+Subject: Re: [PATCH 5/8] KVM: selftests: Add basic stress test for
+ save+restore and #PF handling
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosryahmed@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+> index caefcd12df8d2..6708fa8b6a304 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+> @@ -343,6 +343,17 @@ void virt_map_level(struct kvm_vm *vm, gva_t gva, gpa_t gpa,
+>         }
+>  }
+>
+> +void virt_map_page_tables(struct kvm_vm *vm)
+> +{
+> +       gpa_t gpa = KVM_GUEST_PAGE_TABLE_MIN_PADDR;
+> +       struct userspace_mem_region *region;
+> +       u64 pt_size;
+> +
+> +       region = memslot2region(vm, vm->memslots[MEM_REGION_PT]);
+> +       pt_size = region->region.guest_phys_addr + region->region.memory_size - gpa;
+> +       virt_map(vm, gpa, gpa, pt_size / getpagesize());
+> +}
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This is wrong. It tries to map the entire memslot for MEM_REGION_PT,
+starting at KVM_GUEST_PAGE_TABLE_MIN_PADDR. The problem is, the
+memslot is shared with other things like ELF. So this tries to map
+everything from KVM_GUEST_PAGE_TABLE_MIN_PADDR (0x180000) to the end
+of the memslot (0x291000 in this case) using identity GVA->GPA
+mappings.
 
-On Wed, 27 May 2026 19:10:46 +0200 you wrote:
-> From: Stefano Garzarella <sgarzare@redhat.com>
-> 
-> This reverts commit 4157501b9a8f ("vsock/virtio: fix skb overhead
-> overflow on 32-bit builds"). The fix was semantically correct (although
-> it would have been better to use mul_u32_u32(), as David pointed out),
-> but in practice we are estimating the memory used to allocate the SKBs,
-> and this will never cause a 32-bit variable to overflow on a 32-bit
-> system, since the memory would have run out long before that. On 64-bit,
-> SKB_TRUESIZE() already evaluates to size_t, so the multiplication is
-> already in 64-bit arithmetic without the cast.
-> 
-> [...]
+When using clang's LLD, ELF starts at GVA 0x20000, so this tries to
+remap the ELF GVAs to a different GPAs, and an assertion fires in
+__virt_pg_map().
 
-Here is the summary with links:
-  - [RESEND,net] Revert "vsock/virtio: fix skb overhead overflow on 32-bit builds"
-    https://git.kernel.org/netdev/net-next/c/e03f0b53b4bd
+Without LLD (when I did my initial testing), ELF starts at GVA
+0x40000, so it's outside the range mapped by virt_map_page_tables().
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+We can fix this by creating a separate memslot for page tables like
+other archs do, but I think for this case, it's probably simpler if
+the test just walks the page tables and maps them. It should be one
+page at each level.
