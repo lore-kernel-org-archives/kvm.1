@@ -1,259 +1,438 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8024311959
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 05:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779947480; cv=none; b=rQMWW56awvN+nYYhEBnVn5gAXhIoLgg8mOUxz+3aT57Bcf/026m4yu6tDrRiRsveNeZEdRewNZIQEAcIx7yavi2Wnm+n/ZnGT8MQZY/0XdsyE2glfhjUEuhqN1Nk4cAhAnBdwJB3zEzRqmdralKabBauhwGVbovfAr36BVaEIDw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779947480; c=relaxed/simple;
-	bh=FHRVIhUAFH5KDpn/shPHOAVCNvEYbouCioZUb/GVzo4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d0OC49jXj2GX+VxU1Ie+XvhUgdEL41QCodN2bfMrpGPph+iqC7SdjSq1KF3Y8l7lvlaAJYmTI8dh4EIlaztExc9Hv277D6TlpzBvqJ7VaZIsgRa8aH5s0SVJLKTlEOLuf3sBKKnecW2AIdBhPrq+Wn8RykfNIvD3qW7J1H9tJ7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cgLmVrNn; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cboReHVk; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63CF30C353
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 05:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779947711; cv=fail; b=CSeY13T4dQRJ4F2W6pOX8l37+XD8OnltQ1UWkDnSMsQ+6+7xUmsq+q2EMFbKGZpymeMzXg/qRFUsT0uwqo7HH8d1dqluIjYAu7TaL2fRJ2rgzzNY5hh0hAWXlLq7oJpEjvA//Mig7BnnwT0d9+Ol2y0mPbcbCNZ8S8K2HRNGKUo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779947711; c=relaxed/simple;
+	bh=5iwsiCJ1qeiS0l/pE9qpH/G/kMlLOpTQJgijlOnz9I8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AFf+6Qm7QvFJzpUmRGRyIYJEMnwoPytcbFunR4Y2D8lfqQne0YtCco+JJEBZBr6wwaTsOr4EvmWg4cUw7FnzuHaSB/CkhPgCEl3b91wkb9ygf0TunKQl7WBdOY/6N8gzwjfXHKXqiXpNn+qyaCS6JRJ3rlK9rLfCwx9j5esaRZw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=tbSbpLMQ; arc=fail smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cgLmVrNn";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cboReHVk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779947478;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yaJmUdTEXFkt0b6LYeGSP6p56fd+jhXHb8g1dv7VOCM=;
-	b=cgLmVrNnW6NgqCoEx4Exd+UzsvBH0ig3fwZwgpiAq9qeU12EaBUD5Rk2uc0ihHn4nntCeP
-	+Lm/cX1EtChI4FdPrV/IQ/Zjla/ChIrEkgsCBt46drmngsTJFotRNL3tfg4UlyvwUyp1gW
-	w5uVKHs0X3EyNYzwjrBsbqA3CZvMdjk=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-112-tQ81EBBDO-O33P7NFdjrQg-1; Thu, 28 May 2026 01:51:16 -0400
-X-MC-Unique: tQ81EBBDO-O33P7NFdjrQg-1
-X-Mimecast-MFC-AGG-ID: tQ81EBBDO-O33P7NFdjrQg_1779947475
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-36b982ec27aso139260a91.1
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:51:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779947475; x=1780552275; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yaJmUdTEXFkt0b6LYeGSP6p56fd+jhXHb8g1dv7VOCM=;
-        b=cboReHVkTfeIU+sAx7L+vD+tztCKOi90ILuvIjp9/sZznXfnpJD8//JN6sHFjn276x
-         pWdjh67gnB4F32ZK9i0xM7X0tbDCy84wJQVMebe7NEFjDhnE95e1TH9XVUhJPYHqO5L8
-         5MhRxcOu8wqhrA2sZskm6y7/mlVnV9abvG7fGqFQfrSsHTZJ6xQnEmRsP/EqXOe3ua+4
-         GWRJNtK5vik6QZqRuwFMzLcJQWQ9d674/BmrWTkCHd5iGCl0xT9n6Sw1ZcmMJ002BpU/
-         Qw81BM3p+8izIX2RnPffnD66ONMKS1tkYWFXvSpAfSiG6jWucupufzp1aHZlZWKoFlIP
-         pbJw==
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="tbSbpLMQ"
+Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64S2TdZT919768
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:55:07 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=fCWJk+yJSEw0QmMgTgm6c5hQ8WDFshVgdpTjabTs05U=; b=tbSbpLMQe9V1
+	fRrJsZLmCEINOnKwTwP24JHLpfkIKwEepx/Dh3tfucJeXjyBmxUl4K+3pzS40lhe
+	Vk0KGeyW3V3XwtowE8EShojrRZa6LzLLYzZHk0cQiurg9iLcff5bt/+GGIVjUhJg
+	GS2yjzLlbBm1Fz4V9mfBh9ZrCRYNbh87Q2e58QbU0kZl0LslSz8HIGX1FN2WqmJn
+	V6u86OtEtfnMzSmkk0ZLjfBzjM5sNOAWRA7g+AaUWdIpOcgd0eCkAao9PZ/W168l
+	EQ62MMb9iFTIqzogr6WSS9W4iYEsdvQL/qDgcEewoSbDNuHTRvFxM9ZwvkmAy0OU
+	GhfeODKKwA==
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ee7x1ae5k-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:55:07 -0700 (PDT)
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7e6691e48b7so3115344a34.2
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:55:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779947707; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BqUF3/c0Db8kVvWEaH8UeJxxgNWMup/uDuhDEsTPtNZEWKW172TajhNu1+jPWpx3/K
+         YCH+87zBi6kWVRM7l4qRqn9qx4pyrdSNmPZQ4El1d3wAUTsT7fCLxDu8U9O8XADlzUET
+         st4/TNmEsm5sUTnDROjQfA68ZUx8YUlE4ycxDl2Y0cs9pvNSZ2x3fy4CpVyoPuBKzQ6R
+         8v4oz8evxzaJAeOQcWyf8wVOASTZ2IWzrdX9foQ97bP16pvZftebjW2RrX6fCxrMQUFW
+         tgXtI1Y4yXqNBDG1gYIGhtkwK5MVbmeRrCJXxU8VSc1COdnXD2vjtmqJNRRzwNCwkNjm
+         H0iA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=7OjunUEtjbIoqlgaeDvI71z7AvyuDzMU0DogPcHFH+E=;
+        fh=G88Eht3hcfGC2vB0vxTNMaHixjl8eDhjnsd5D9u0tt4=;
+        b=Dm+896VZTwFPf+jIWAu47S4GSAWWAHOtqqEfByQlvnr4lAoLiwaI7o/1v8Lqq1hsHc
+         AOjwJC9WW4Hkht34C3TBOTNAwA2XWd5zv3+j4n23TQe3/p79UPRXo5Hqqz0CmnEaEjXT
+         Z7P7T6eGg1klZ6uE4nHXi/db3CVfkAxXz3EsmrrIlo+sHjY9snbnOOa/3coWcfs0GbGY
+         Eq7WQ2CtkAM6MyIQav5iz7cuwktstxUsaAT7MROZjbkwxNr1L5A/YuLbm/Q2e6+fsYcD
+         89FtDqJhS1sU8tcMb9Fcr8vHaCLQN28fDbafds0RwcoP4tqsUEk7aQ6oWG6aHljKcfqs
+         lpNw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779947475; x=1780552275;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yaJmUdTEXFkt0b6LYeGSP6p56fd+jhXHb8g1dv7VOCM=;
-        b=Bvx938yn4zR1xthmQ89ibXYF9uKiDJMRg/86bSlKAxg2vVaGRIqr08szUnVBs7wRj/
-         0bdW93tNjE3zNbajtZ9JTtpH6z9xZHqdCHACeQw8iEj9Qt9N+aIg2iI3RX0cGxGp5TFD
-         i6kjGPl/c7hEmpyNRpLM/75w4uqD6Aiur14hJqXYL1OjzOFUdE12ygGYlgkGGYQ07//V
-         0fM6Z9X0IPyfHeHlKDq0BR6eWsKswG0MdAlpTM3LdLqS+zZNP2Kn1RemKX9SOlRc1c2Y
-         MHuBTtk0O9DcqSFaJ7v98UgJl4qxzcwIa9tS/IRgSv5l4LxAiIWuMZBJsAp/DD64F+VS
-         1Q3w==
-X-Forwarded-Encrypted: i=1; AFNElJ/21D3vl1LtWGstotD7NrwDNi9HJiTFrvQ3x7sQCFZ/5n1hQiF3uLamPCPU8QiUCn08UnY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9f/VPKOWMIAnMc8KFltlGqwfBS/iFelfBC9wFUVjm02onOLnc
-	/tjSAWUYZHKw8YQL6ZVkO4M0RuRoDoZSReb4Nxwv3Sjzpjd9L14Cmn4u+gNPu7VC4zbvBejnhJG
-	/rQ4k1vYD3WzswpkTmLk3S7S61CEp4lZfm+N5EhaJX8tlb1lKm4g6NQ==
-X-Gm-Gg: Acq92OGDncaYT5l56hXjeM/vn1klFZ6A6Pha4SEiyTJ5tW6dXhXVYvJlxrZbWr5KP1E
-	gFxm8TCZeiDFcOPow2MrK6bt3/Rsq2ECFo3tXcnhEfzVg8gacGNwL8jJg2KQ+48KOToYhTXDvec
-	nYNbWJ3yJ7HCnkSOScZNZvrRmASq0fGzLPnIFfL0w6xr9SZhI0kB6jy0fkiavUkVM/qTwHWkHBJ
-	XY+gj37E4jlce0bARzQ8SmoDe1ZXBRqiCHNdhtGS50ZUbQBtSkvvzVNrBC3XVsHvFFhUSiBueuH
-	lNoHFCblw60VfSsRqTr7hQ9m2r55Brd/MEDSR8p+tf82mysjgTw3dwDHgRqIcvWdxdSF1oklAlY
-	0RMRwrBbQ22oQdtsfio7ZeV5XeFcDifQVUux6L0N6wV3ZZU3tLfJUpNus/RkWv/dOa84a3kGre0
-	s=
-X-Received: by 2002:a17:90a:da8f:b0:36b:98a3:4a85 with SMTP id 98e67ed59e1d1-36b98a35a8amr592445a91.27.1779947474731;
-        Wed, 27 May 2026 22:51:14 -0700 (PDT)
-X-Received: by 2002:a17:90a:da8f:b0:36b:98a3:4a85 with SMTP id 98e67ed59e1d1-36b98a35a8amr592407a91.27.1779947474246;
-        Wed, 27 May 2026 22:51:14 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36b9096a918sm660809a91.16.2026.05.27.22.51.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 May 2026 22:51:13 -0700 (PDT)
-Message-ID: <80b6ab2d-1a3e-4c15-b06b-00aaa23fcf74@redhat.com>
-Date: Thu, 28 May 2026 15:51:02 +1000
+        d=1e100.net; s=20251104; t=1779947707; x=1780552507;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7OjunUEtjbIoqlgaeDvI71z7AvyuDzMU0DogPcHFH+E=;
+        b=QoCp65JWqvVdYF3dQdRONM/M97GRspdu1dPcusKQuNIxaUkpblejbssgpr4VZoRsj/
+         H4mfv1mvrfXV5MNyAPByq9pXyZAOMZVCsitwag6C2QHewrrvmbN/d61RVaL2f85v/DC+
+         31bzqwgIriIRH5JQ1zbsQZ7ZodPUS/KODexHnkTVwb3pa8QQK79w0bc3xbnbD1X9LJGJ
+         j37UXZIL/EZFc046zKtbUa0I+QVoiOko2L87phjcc0j3H4j3F49eBpAZg5d457CS0XQS
+         AIUG3TiEWWsxJkXnpNioshSdpN4pngR5wa0QsTwL7UDie4M6ns7FPFlIhLOliAbzNFVV
+         EITQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+l1btrfKMkimJe5KD17hWw3PQ03b5jD/Nj0JwUU+Yl8OGSyD58E9T3Vae46fWM4h926YE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvhbQuDQH04Wf52kUtAgBZ7CCGj8NC557B9F0JtxRPQMOWxteO
+	hTYny/SvyvxONIXwmCFUk01o9rXkAEPtTOJSniGnN9C/Y6GGlZEWtKwmjkWFzzgH4eP550WaTMY
+	t8X90ZhfmHS/dSQun0W9J+bBfePM/RUmnuWxRaTjdGpfftwWqyRBrTdtpLHxPixgXckFZie4MhF
+	ITHtBsIOxFOerS/cjwOMpa4JhbNy0=
+X-Gm-Gg: Acq92OFhxN0hl/vrfBc5fIEjZOfwmGN/H+QcE1v0Iqz+4H+FpcyfjaBdHiFykKZpwnJ
+	HU7s2eCBNvAk1r4w16of411H1xh/WqXx0mUsNFP4uX58sY+Ahd2RG3IPu3O/au4dW9PE2kS2Ljr
+	UpFsE8HQWhgVWW7iK3dL9KTSFIqrDosJBnjb6Z6BBsYnL9+RI0FbIc50tY98ysKbPhrE6c3QPfo
+	Cm/cZaqCWg5cMFxB4lGiI+IIN7l8I2QCSP3/7jPrVRiXV+UoSo=
+X-Received: by 2002:a05:6830:6d4d:b0:7d7:f158:1f44 with SMTP id 46e09a7af769-7e5feef5d68mr16377929a34.21.1779947706899;
+        Wed, 27 May 2026 22:55:06 -0700 (PDT)
+X-Received: by 2002:a05:6830:6d4d:b0:7d7:f158:1f44 with SMTP id
+ 46e09a7af769-7e5feef5d68mr16377893a34.21.1779947706138; Wed, 27 May 2026
+ 22:55:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 28/44] arm64: RMI: Create the realm descriptor
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-29-steven.price@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260513131757.116630-29-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260526144401.1485788-1-zhipingz@meta.com> <20260526144401.1485788-5-zhipingz@meta.com>
+ <20260527130045.704a4502@shazbot.org>
+In-Reply-To: <20260527130045.704a4502@shazbot.org>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Wed, 27 May 2026 22:54:54 -0700
+X-Gm-Features: AVHnY4ICjE7MkEm4LXONvDpsmeBdG0UBYV3y_krDxSXZVAQVCJMknB8fJo9QBXs
+Message-ID: <CAH3zFs2RuXC06tkg2gBNMLfBuL4FXzu+AV_axEh+ZnzdGCo1XQ@mail.gmail.com>
+Subject: Re: [PATCH v5 4/4] RDMA/mlx5: get tph for p2p access when registering
+ dma-buf mr
+To: Alex Williamson <alex@shazbot.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian Konig <christian.koenig@amd.com>,
+        Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+        Yishai Hadas <yishaih@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: coPAgMpFSO8F5JamXKphu_VcVz9yqG2_
+X-Authority-Analysis: v=2.4 cv=Yu8/gYYX c=1 sm=1 tr=0 ts=6a17d8bb cx=c_pps
+ a=7uPEO8VhqeOX8vTJ3z8K6Q==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=xtH7KyWI9dI7BmFOsl-x:22
+ a=r1p2_3pzAAAA:8 a=VabnemYjAAAA:8 a=25xbtWhBidXVKMBX-WEA:9 a=QEXdDO2ut3YA:10
+ a=EXS-LbY8YePsIyqnH6vw:22 a=r_pkcD-q9-ctt7trBg_g:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDA1NiBTYWx0ZWRfX5oVBC23lUtp0
+ zY00QadKIYECt0OPY8zg3jCrWf7DafqsgxClzVbZVVnG+GIyfqRLDgiMEmUG8uUHBV4LcUnERal
+ wBDV0GKO3+YiCOVHyF+ypxv+cr5533gWHyOllwwSnt4o8DWFox1iPBZFH0bRBlAYtCXQbsJmd1P
+ fjX3f/IPXY0E/irTTcAWL7BuDbN/5Q/pobI8EXLHIyqtakkyLdgQ2lPVpCMQNAfr/sG7ktt5ow0
+ wOSpOsI33FXx1wRfe7l9s/PPodEF0gK/W37BA7VQghv+QfpSZab/aE8rtGN74A4P/z/TKDGCinG
+ bH/3WSoFjJUUwziUptxDal2vWKade8ZxmO6Sgr1B6i7G1blVZOD4ehBZVcw3iIl8tQAs6pOWuyK
+ Ayd+uZCIpK3SjXMgEhCPVuxiRGdki3rLXFSGN3bx6AXd5+jUYEeGDibwXHpY4Q+ybi/XVLpULoj
+ ZaK2wlmjQfqIlRiCgdA==
+X-Proofpoint-ORIG-GUID: coPAgMpFSO8F5JamXKphu_VcVz9yqG2_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-28_01,2026-05-26_03,2025-10-01_01
 
-Hi Steve,
+On Wed, May 27, 2026 at 12:00=E2=80=AFPM Alex Williamson <alex@shazbot.org>=
+ wrote:
+>
+> >
+> On Tue, 26 May 2026 07:43:56 -0700
+> Zhiping Zhang <zhipingz@meta.com> wrote:
+>
+> > Query dma-buf TPH metadata when registering a dma-buf MR for peer-to-
+> > peer access and translate the returned steering tag into an mlx5 ST
+> > index. Keep the DMAH path as the first priority and only fall back to
+> > DMA-buf metadata when no DMAH is supplied.
+> >
+> > Track per-MR ownership of the allocated ST index and release it on MR
+> > setup failure, destroy, and FRMR-pool reuse. Release the ST index before
+> > the MR is pushed back into the FRMR pool, and free mlx5_st_idx_data when
+> > its refcount reaches zero so repeated allocation/deallocation does not
+> > leak memory.
+> >
+> > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> > ---
+> >  drivers/infiniband/hw/mlx5/mlx5_ib.h          |  6 ++
+> >  drivers/infiniband/hw/mlx5/mr.c               | 86 ++++++++++++++++++-
+> >  .../net/ethernet/mellanox/mlx5/core/lib/st.c  | 28 ++++--
+> >  include/linux/mlx5/driver.h                   |  7 ++
+> >  4 files changed, 115 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/=
+hw/mlx5/mlx5_ib.h
+> > index e156dc4d7529..4ab867392267 100644
+> > --- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
+> > +++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+> > @@ -721,6 +721,12 @@ struct mlx5_ib_mr {
+> >                       u8 revoked :1;
+> >                       /* Indicates previous dmabuf page fault occurred =
+*/
+> >                       u8 dmabuf_faulted:1;
+> > +                     /* Set when the MR owns dmabuf_st_index and must
+> > +                      * release it via mlx5_st_dealloc_index() once the
+> > +                      * firmware mkey is no longer referencing it.
+> > +                      */
+> > +                     u8 dmabuf_st_owned:1;
+> > +                     u16 dmabuf_st_index;
+> >                       struct mlx5_ib_mkey null_mmkey;
+> >               };
+> >       };
+> > diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/ml=
+x5/mr.c
+> > index 3b6da45061a5..8059b5e4da97 100644
+> > --- a/drivers/infiniband/hw/mlx5/mr.c
+> > +++ b/drivers/infiniband/hw/mlx5/mr.c
+> > @@ -38,6 +38,7 @@
+> >  #include <linux/delay.h>
+> >  #include <linux/dma-buf.h>
+> >  #include <linux/dma-resv.h>
+> > +#include <linux/pci-tph.h>
+> >  #include <rdma/frmr_pools.h>
+> >  #include <rdma/ib_umem_odp.h>
+> >  #include "dm.h"
+> > @@ -46,6 +47,8 @@
+> >  #include "data_direct.h"
+> >  #include "dmah.h"
+> >
+> > +MODULE_IMPORT_NS("DMA_BUF");
+> > +
+>
+> This doesn't appear to add any dma-buf namespace dependencies.
+>
 
-On 5/13/26 11:17 PM, Steven Price wrote:
-> Creating a realm involves first creating a realm descriptor (RD). This
-> involves passing the configuration information to the RMM. Do this as
-> part of realm_ensure_created() so that the realm is created when it is
-> first needed.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v13:
->   * The RMM no longer uses AUX granules, so no need to ask it how many it
->     needs.
->   * Adapted to other changes.
-> Changes since v12:
->   * Since RMM page size is now equal to the host's page size various
->     calculations are simplified.
->   * Switch to using range based APIs to delegate/undelegate.
->   * VMID handling is now handled entirely by the RMM.
-> ---
->   arch/arm64/kvm/rmi.c | 88 +++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 86 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index fb96bcaa73ed..cae29fd3353c 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -418,6 +418,77 @@ static void realm_unmap_shared_range(struct kvm *kvm,
->   			     start, end);
->   }
->   
-> +static int realm_create_rd(struct kvm *kvm)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	struct realm_params *params = realm->params;
-> +	void *rd = NULL;
-> +	phys_addr_t rd_phys, params_phys;
-> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
-> +	int r;
-> +
-> +	realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
-> +
-> +	if (WARN_ON(realm->rd || !realm->params))
-> +		return -EEXIST;
-> +
-> +	rd = (void *)__get_free_page(GFP_KERNEL_ACCOUNT);
-> +	if (!rd)
-> +		return -ENOMEM;
-> +
-> +	rd_phys = virt_to_phys(rd);
-> +	if (rmi_delegate_page(rd_phys)) {
-> +		r = -ENXIO;
-> +		goto free_rd;
-> +	}
-> +
-> +	if (rmi_delegate_range(kvm->arch.mmu.pgd_phys, pgd_size)) {
-> +		r = -ENXIO;
-> +		goto out_undelegate_tables;
-> +	}
-> +
-> +	params->s2sz = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
-> +	params->rtt_level_start = get_start_level(realm);
-> +	params->rtt_num_start = pgd_size / PAGE_SIZE;
-> +	params->rtt_base = kvm->arch.mmu.pgd_phys;
-> +
-> +	if (kvm->arch.arm_pmu) {
-> +		params->pmu_num_ctrs = kvm->arch.nr_pmu_counters;
-> +		params->flags |= RMI_REALM_PARAM_FLAG_PMU;
-> +	}
-> +
-> +	if (kvm_lpa2_is_enabled())
-> +		params->flags |= RMI_REALM_PARAM_FLAG_LPA2;
-> +
-> +	params_phys = virt_to_phys(params);
-> +
-> +	if (rmi_realm_create(rd_phys, params_phys)) {
-> +		r = -ENXIO;
-> +		goto out_undelegate_tables;
-> +	}
-> +
-> +	realm->rd = rd;
-> +	kvm_set_realm_state(kvm, REALM_STATE_NEW);
-> +	/* The realm is up, free the parameters.  */
-> +	free_page((unsigned long)realm->params);
-> +	realm->params = NULL;
-> +
-> +	return 0;
-> +
-> +out_undelegate_tables:
-> +	if (WARN_ON(rmi_undelegate_range(kvm->arch.mmu.pgd_phys, pgd_size))) {
-> +		/* Leak the pages if they cannot be returned */
-> +		kvm->arch.mmu.pgt = NULL;
-> +	}
+sure let me check and drop if not necessary.
 
-In the latest RMM implementation (topics/rmm-v2.0-poc_2), rmi_delegate_range() works
-with the granularity of granule (4KB) and it can fail on any granule. For example,
-we have 16x granule as the root RTT and rmi_delegate_range() fails on the first
-granule, we're going to undelegate all these 16x granules, which were never delegated
-to RMM. It eventually leads to error and memory leakage.
+> >  static int mkey_max_umr_order(struct mlx5_ib_dev *dev)
+> >  {
+> >       if (MLX5_CAP_GEN(dev->mdev, umr_extended_translation_offset))
+> > @@ -899,6 +902,63 @@ static struct dma_buf_attach_ops mlx5_ib_dmabuf_at=
+tach_ops =3D {
+> >       .invalidate_mappings =3D mlx5_ib_dmabuf_invalidate_cb,
+> >  };
+> >
+> > +/*
+> > + * Query TPH metadata from @dmabuf and translate the raw steering tag =
+into
+> > + * an mlx5 ST index. On success, returns 0 and the caller becomes the
+> > + * owner of *@st_index (must be released with mlx5_st_dealloc_index()
+> > + * once the firmware mkey no longer references it). On any failure
+> > + * *@st_index and *@ph are left as the no-TPH defaults set by the call=
+er.
+> > + *
+> > + * @dmabuf must already be referenced by the caller (e.g. via the umem=
+'s
+> > + * attachment) so we don't re-resolve the user's fd here and avoid a
+> > + * dup2() TOCTOU between umem creation and TPH lookup.
+> > + */
+> > +static void get_tph_mr_dmabuf(struct mlx5_ib_dev *dev, struct dma_buf =
+*dmabuf,
+> > +                           u16 *st_index, u8 *ph)
+> > +{
+> > +     u8 req_type;
+> > +     u16 steering_tag;
+> > +     u8 st_width;
+> > +     int ret;
+> > +
+> > +     if (!dmabuf->ops->get_tph)
+> > +             return;
+> > +
+> > +     req_type =3D pcie_tph_enabled_req_type(dev->mdev->pdev);
+> > +     switch (req_type) {
+> > +     case PCI_TPH_REQ_TPH_ONLY:
+> > +             st_width =3D 8;
+> > +             break;
+> > +     case PCI_TPH_REQ_EXT_TPH:
+> > +             st_width =3D 16;
+> > +             break;
+> > +     default:
+> > +             return;
+> > +     }
+> > +
+> > +     ret =3D dmabuf->ops->get_tph(dmabuf, &steering_tag, ph, st_width);
+> > +     if (ret) {
+> > +             mlx5_ib_dbg(dev, "get_tph failed (%d)\n", ret);
+> > +             *ph =3D MLX5_IB_NO_PH;
+> > +             return;
+> > +     }
+> > +
+> > +     ret =3D mlx5_st_alloc_index_by_tag(dev->mdev, steering_tag, st_in=
+dex);
+> > +     if (ret) {
+> > +             *ph =3D MLX5_IB_NO_PH;
+> > +             mlx5_ib_dbg(dev, "st_alloc_index_by_tag failed (%d)\n", r=
+et);
+> > +     }
+> > +}
+>
+> ph handling is inconsistent, why not use a local variable and only set
+> the caller's pointer on success?
+>
 
-For this, rmi_delegate_range() could be improved to return the number of granules that
-have been delegated. The return value can be used by the caller to handle the erroneous
-case by passing the correct range to rmi_undelegate_page().
+good point -- will do that.
 
-> +	if (WARN_ON(rmi_undelegate_page(rd_phys))) {
-> +		/* Leak the page if it isn't returned */
-> +		return r;
-> +	}
-> +free_rd:
-> +	free_page((unsigned long)rd);
-> +	return r;
-> +}
-> +
->   static void realm_unmap_private_range(struct kvm *kvm,
->   				      unsigned long start,
->   				      unsigned long end,
-> @@ -647,8 +718,21 @@ static int realm_init_ipa_state(struct kvm *kvm,
->   
->   static int realm_ensure_created(struct kvm *kvm)
->   {
-> -	/* Provided in later patch */
-> -	return -ENXIO;
-> +	int ret;
-> +
-> +	switch (kvm_realm_state(kvm)) {
-> +	case REALM_STATE_NONE:
-> +		break;
-> +	case REALM_STATE_NEW:
-> +		return 0;
-> +	case REALM_STATE_DEAD:
-> +		return -ENXIO;
-> +	default:
-> +		return -EBUSY;
-> +	}
-> +
-> +	ret = realm_create_rd(kvm);
-> +	return ret;
->   }
->   
->   static int set_ripas_of_protected_regions(struct kvm *kvm)
+> > +
+> > +static void mlx5_ib_mr_put_dmabuf_st(struct mlx5_ib_mr *mr)
+> > +{
+> > +     if (mr->umem && mr->dmabuf_st_owned) {
+> > +             mlx5_st_dealloc_index(mr_to_mdev(mr)->mdev,
+> > +                                   mr->dmabuf_st_index);
+> > +             mr->dmabuf_st_owned =3D 0;
+> > +     }
+> > +}
+> > +
+> >  static struct ib_mr *
+> >  reg_user_mr_dmabuf(struct ib_pd *pd, struct device *dma_device,
+> >                  u64 offset, u64 length, u64 virt_addr,
+> > @@ -941,16 +1001,26 @@ reg_user_mr_dmabuf(struct ib_pd *pd, struct devi=
+ce *dma_device,
+> >               ph =3D dmah->ph;
+> >               if (dmah->valid_fields & BIT(IB_DMAH_CPU_ID_EXISTS))
+> >                       st_index =3D mdmah->st_index;
+> > +     } else {
+> > +             get_tph_mr_dmabuf(dev, umem_dmabuf->attach->dmabuf,
+> > +                               &st_index, &ph);
+> >       }
+> >
+> >       mr =3D alloc_cacheable_mr(pd, &umem_dmabuf->umem, virt_addr,
+> >                               access_flags, access_mode,
+> >                               st_index, ph);
+> >       if (IS_ERR(mr)) {
+> > +             if (!dmah && st_index !=3D MLX5_MKC_PCIE_TPH_NO_STEERING_=
+TAG_INDEX)
+> > +                     mlx5_st_dealloc_index(dev->mdev, st_index);
+> >               ib_umem_release(&umem_dmabuf->umem);
+> >               return ERR_CAST(mr);
+> >       }
+> >
+> > +     if (!dmah && st_index !=3D MLX5_MKC_PCIE_TPH_NO_STEERING_TAG_INDE=
+X) {
+> > +             mr->dmabuf_st_index =3D st_index;
+> > +             mr->dmabuf_st_owned =3D 1;
+> > +     }
+> > +
+> >       mlx5_ib_dbg(dev, "mkey 0x%x\n", mr->mmkey.key);
+> >
+> >       atomic_add(ib_umem_num_pages(mr->umem), &dev->mdev->priv.reg_page=
+s);
+> > @@ -1377,9 +1447,17 @@ static int mlx5r_handle_mkey_cleanup(struct mlx5=
+_ib_mr *mr)
+> >       bool is_odp =3D is_odp_mr(mr);
+> >       int ret;
+> >
+> > -     if (mr->ibmr.frmr.pool && !mlx5_umr_revoke_mr_with_lock(mr) &&
+> > -         !ib_frmr_pool_push(mr->ibmr.device, &mr->ibmr))
+> > -             return 0;
+> > +     if (mr->ibmr.frmr.pool && !mlx5_umr_revoke_mr_with_lock(mr)) {
+> > +             /*
+> > +              * The mkey has been revoked: firmware no longer referenc=
+es
+> > +              * dmabuf_st_index, so release it before this mr can re-e=
+nter
+> > +              * the FRMR cache for reuse by another registration.
+> > +              */
+> > +             mlx5_ib_mr_put_dmabuf_st(mr);
+> > +
+> > +             if (!ib_frmr_pool_push(mr->ibmr.device, &mr->ibmr))
+> > +                     return 0;
+> > +     }
+> >
+> >       if (is_odp)
+> >               mutex_lock(&to_ib_umem_odp(mr->umem)->umem_mutex);
+> > @@ -1400,6 +1478,8 @@ static int mlx5r_handle_mkey_cleanup(struct mlx5_=
+ib_mr *mr)
+> >               dma_resv_unlock(
+> >                       to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv=
+);
+> >       }
+> > +     if (!ret)
+> > +             mlx5_ib_mr_put_dmabuf_st(mr);
+> >       return ret;
+> >  }
+> >
+> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c b/drivers=
+/net/ethernet/mellanox/mlx5/core/lib/st.c
+> > index 997be91f0a13..8929c17c88bc 100644
+> > --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
+> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
+> > @@ -29,7 +29,7 @@ struct mlx5_st *mlx5_st_create(struct mlx5_core_dev *=
+dev)
+> >       u8 direct_mode =3D 0;
+> >       u16 num_entries;
+> >       u32 tbl_loc;
+> > -     int ret;
+> > +     int ret =3D 0;
+>
+> Unnecessary change.
+>
+
+ack, will check and revert.
+
+> >
+> >       if (!MLX5_CAP_GEN(dev, mkey_pcie_tph))
+> >               return NULL;
+> > @@ -92,23 +92,18 @@ void mlx5_st_destroy(struct mlx5_core_dev *dev)
+> >       kfree(st);
+> >  }
+> >
+> > -int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type m=
+em_type,
+> > -                     unsigned int cpu_uid, u16 *st_index)
+> > +int mlx5_st_alloc_index_by_tag(struct mlx5_core_dev *dev, u16 tag,
+> > +                            u16 *st_index)
+> >  {
+> >       struct mlx5_st_idx_data *idx_data;
+> >       struct mlx5_st *st =3D dev->st;
+> >       unsigned long index;
+> >       u32 xa_id;
+> > -     u16 tag;
+> > -     int ret;
+> > +     int ret =3D 0;
+> >
+> >       if (!st)
+> >               return -EOPNOTSUPP;
+> >
+> > -     ret =3D pcie_tph_get_cpu_st(dev->pdev, mem_type, cpu_uid, &tag);
+> > -     if (ret)
+> > -             return ret;
+> > -
+> >       if (st->direct_mode) {
+> >               *st_index =3D tag;
+> >               return 0;
+> > @@ -152,6 +147,20 @@ int mlx5_st_alloc_index(struct mlx5_core_dev *dev,=
+ enum tph_mem_type mem_type,
+> >       mutex_unlock(&st->lock);
+> >       return ret;
+> >  }
+> > +EXPORT_SYMBOL_GPL(mlx5_st_alloc_index_by_tag);
+> > +
+> > +int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type m=
+em_type,
+> > +                     unsigned int cpu_uid, u16 *st_index)
+> > +{
+> > +     u16 tag;
+> > +     int ret;
+> > +
+> > +     ret =3D pcie_tph_get_cpu_st(dev->pdev, mem_type, cpu_uid, &tag);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     return mlx5_st_alloc_index_by_tag(dev, tag, st_index);
+> > +}
+> >  EXPORT_SYMBOL_GPL(mlx5_st_alloc_index);
+> >
+> >  int mlx5_st_dealloc_index(struct mlx5_core_dev *dev, u16 st_index)
+> > @@ -175,6 +184,7 @@ int mlx5_st_dealloc_index(struct mlx5_core_dev *dev=
+, u16 st_index)
+> >
+> >       if (refcount_dec_and_test(&idx_data->usecount)) {
+> >               xa_erase(&st->idx_xa, st_index);
+> > +             kfree(idx_data);
+> >               /* We leave PCI config space as was before, no mkey will =
+refer to it */
+> >       }
+>
+> Should this be pulled out as a fix separate from the feature added
+> here?  Thanks,
+>
+> Alex
+>
+
+Yes, will split it out as its own patch.
 
 Thanks,
-Gavin
-
+Zhiping
