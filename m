@@ -1,356 +1,514 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA21278F26
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 05:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779946238; cv=none; b=uTGrjAr1MEH6OGgx+nN5erxOoQGK/7eAR/JGMG7w/Dm7+OBDh0IKyN5lyfsLXN++x8YE2MpZVmwfGEFqf+EiGquvGaSvWzlE26bJR3Y90SaJMPq3ZlaGG2nt7RyTZnIAmcerl83v7r/SmV3EX+j2i0SN0V+0n1l0UsspK4DsZZk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779946238; c=relaxed/simple;
-	bh=DgWGKIje13k1TapEkr+MBgcoQR7z1LfAsyvCQ1fD20E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=APkgsXUbhqUvP4Qj7rBnxL/vXtTWqtgNRDWzQSDonoEZgRQPbPBOUiVtGXNf666PdN3a6UXyZdVSXCBRVOWwLD0tM0jD1M5uW5Lu5SDITcS3CaiJqhG8ys3dMN/hNpOsx/sqRLj8ZTGeJXJqMfvfHiHKqJPTrUcxVrr8JlpobaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qa6Gis8B; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=aYpfyNsM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370381F938
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 05:34:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779946464; cv=fail; b=mIe9DLvtwapZLQRl9S+byAwhhsrqP4sT7+vjsA8b1rHT2fqkp5uhOqMl93OnHwsiiQB77QdrY8mCXFaUpxRn3DMS5aP3zXOY5DskLwuqHROhxRvkmCyrapgzHvgbRNIkH9WbMHWe52EFYkAkkUMgldYO+4u/AMBIPh7opylg3GU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779946464; c=relaxed/simple;
+	bh=cALqvNRDJ3SvmYO6VwdSoDom/q0D0p+PH58Um9nkiNs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=vCTNU2nHv1DFXqhRs0HoKz79gmQnq7M689b9747Zthgx8Q1PqQrQZulbH6PoE4EgkH1gPWeOwKAggkACuc7gA9lS3O2XaGkpy1qTFtjxZyFhvXkHGwDDwNmTZ+Thkq30dFe4JxIlNP3JNl2f6E2dJUiFMvvSPVo/dwN8KbC5G38=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=uc/+wgvg; arc=fail smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qa6Gis8B";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="aYpfyNsM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779946234;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q73WX9HWItM842HL8te6BLbm9UQjrRb26yA0hD3pI7M=;
-	b=Qa6Gis8BG1wUGDSH62+t+2Tlwjygubw1RSeXwSNm5LryKxXY0WB95vzYad0xD3s8fSqzRb
-	ghLLKYGzhlndFD/dE0XT5m+EaanMLlyJil0Z/Gt6XpHgLNl2QhIg/006MIQ8vhiZrMx4Fh
-	054RR9oi7fjT9RrI0m2ukVAFXWz6oXY=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-263-zfMtgf-nMHa86Q5l_A1k3w-1; Thu, 28 May 2026 01:30:33 -0400
-X-MC-Unique: zfMtgf-nMHa86Q5l_A1k3w-1
-X-Mimecast-MFC-AGG-ID: zfMtgf-nMHa86Q5l_A1k3w_1779946232
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ba86e35aa1so197235035ad.1
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:30:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779946232; x=1780551032; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q73WX9HWItM842HL8te6BLbm9UQjrRb26yA0hD3pI7M=;
-        b=aYpfyNsMQ+u3dwqOoOgK9J1OKMwJRev8vivUKe4iuMMMMprC3O+5zKludhvvlVEGkL
-         ieOUUyaI4T5BgQcjWW5QDqVxsJumRO2Uo67gU9Va1Fnk/n1DxxKewj0XTfPxObp9/wr4
-         +5kQ0HMrRBlEHKWOTiyTS4dhWaRBbamRSKUlYVvdc3goNH2wCDO3zSzsOPJrnH4sLQLA
-         CcqQF/wkeiWgy0yk/2g8xqEI0IIhmigaRSQdfY75/JPZx/iQ0wWk8Yg6SNO7NoE5cJpl
-         nbJilESPIwLQnlUOZJAb4YVs7Nw7PxU674dKA302JIgKSXP7mtN7Mq4n79wcsQrdgv3N
-         a35A==
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="uc/+wgvg"
+Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64RKoDO3257215
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:34:21 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=yigIwCbHimjWd+a6wHDY1b3tSI1vv5FfPy4Pq/4DlQw=; b=uc/+wgvgCCA+
+	dSWOwnjyOqXpj98DA/6ncZvRaWij2CDBABR7wAHevHeUoBOHl8oAm8V7edgPrs/E
+	dUc+fGzhHlUo64J2CoEAfQqr96FtbyNuoBxzXkJaS1nSay8C04QylaGzIJyjdDnM
+	gHR/aiA3luAwRbH1KLjkr/2EOBdVckA4KSbzfL295pNZDkCDCqGEzBmANwfBZDhj
+	BpL/eLKVqA85pwb26QIxUWCNwQ3B3jVNVXq3lgCLMTuw4RD0dol23gx+dIlwYr2V
+	romXbIAH31Qb8d55S94nZHU9W2uH5QposzDj3qWWjy1EPwLWHZ4z2HZyaUU45ZPU
+	gKiTAWkw0A==
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ee808tb9n-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:34:21 -0700 (PDT)
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7dccbd50e3fso29524948a34.2
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:34:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779946461; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dfofMGzlMtrkDcDWtW8o2UXACR5U12UB83LUlIwsokYKVT1Zqpat2BfjKGtmh+lIiq
+         oK7XB0+f7HoGKS7Lx9dyzSqZ0So2tOhogcX6/TGE+CRSDtBgdouZkrJ2XIIlUhN8o42N
+         Dd2iksYyFHNgdPcXdDPkk48VLDFvUvMQFydABKBfgobQ8i5ESKfeT/TPmZxmayicU0rh
+         p0X/y8QiVPE6e8fSzFNl6kmqmH8P6B+4CNFb8+DzmyqYo/e0nr5e6O0hastsgSbBG6ar
+         a6iiL79klKk0AhMoQetGmE5nAxUE9TOzDwXCA54TjKwkqBl175H0EQNPYHVcPNLsVXsX
+         4v7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=NsemaC8yIGA+q/PWkZ1wuh9lBXS1IQhsEGeGywafozI=;
+        fh=1S0429EINkg3tG7z8i+Ynnic/j5qXdQTiKj2IBT7/+8=;
+        b=TA9MB33N41tc+PptmF+HuDaA1LHh7vgLAixFO6MRPaFwWyb8pG57Bm+KY/M6ix/0c7
+         +OC5Whf/1nmmwoRHrVvK/OtICOfOFq3hG2gghdqO3ECnna4jSSF0EtR51XhZ4R8E0iUV
+         5+0oIc1LR30Oa9xtiUPD/0hxW6zl00O5aayy+sWwIBpZgd2crpQiEVJxgYuY95upYeD9
+         pHe3GBOmp+s20/filFL3aWbfI06ho5gwrtRh0yNSH6Hhd+aAIcUlDULq6PZyboU0MYrU
+         He+gtsS1KFm2zNOrxltvoEaak66i6dbiUVsmcI1e4Us8bVn3OBF2F2KZ51rf0umDjsZM
+         XcqA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779946232; x=1780551032;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=q73WX9HWItM842HL8te6BLbm9UQjrRb26yA0hD3pI7M=;
-        b=bvwLKSttSpNMhDpRkx/fDZtctbAIyGS/qsZsUlvE4fA8HKC+5sP+gILC+mb/3zU1Kc
-         poOIHdI9q6iCoPlLtkHlu1KLfTLPHDN4s1G2SknbaCGUlhAiJogZ9k7oP9fMzOqqm4ku
-         mvU5iw29mR/6RcfxKBsjNG4MnyPdB6lo88A4z7yxPWEZn9l1ibJVngCRRCfzOxBlfCiy
-         S6MTzvFesoOvnubvjtDqqxGn5Eaor/QFQXTSQnTNtv/qWisx3NHfD2FOeWYqp97bZMV5
-         0WrKrFdW3ic1AIR4VTcde41A6B6GHP7BRufy2BxcTvG7PvinCSjEbZXpdMvzFUMbOKMI
-         1p6A==
-X-Forwarded-Encrypted: i=1; AFNElJ/ax75v1oYqvZ1ek5BAba1q6dzJEuLn389jsGorKi2FesMllUG94Lop5PfdendDZrXqzvI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYGYV1Nvu7vZng4ge5U50WgKDA7zn53DINoZvCqx2ck/3hoe9w
-	5NgwSz7iB3Hk9QnOUNmmu4TEsI5GOWzHVpcsTn0VLkqJvuxarbqRV+L6eAMp4oL5k/DkcWt7hsV
-	jMghTqxkgyWB1XdCU3N7qWKQAMQf5xK21QDTzZpJqhLjM08kc6Pu+TQ==
-X-Gm-Gg: Acq92OFxQm1wL7Vkuee4GpH6X6CmbON2AaxFrzBq1869JAkP4kUZ8NrGygUpPyKDZZG
-	BptwmvAY4lrPDZH//Xm6WDrWDqHWoNYIP4nzy2sMt1F3QraKJVQAXidm28n/4dCDK32EfC8O15H
-	ISGMcmVTKb6xtm156wm48jPTIydUSY3c+xOzg74WatFj8saHr7naX+8ZUXSZVS+kvpoGgFWDR0/
-	RfoXVeidZsSsL7+cJYrQbuchMmqpaMZIqZb+uUQDOvpg20r+Q9MJQYEwwWBM9mxwLk1TN+JTnpO
-	W8jV4+s5z/UTHgxNo7uks4tyMHV6WN+gIk/hSl+B6a9HZkq8Lu3TtRPwnxgVzO7efmVm9FB8Ht6
-	nKixm8GdUeCPkRQ/b2kzaSNeM0jeLmTrbp4JRTns2+Adz9VJO/4DgX+smICC5waNPb8Ds8Xc67F
-	A=
-X-Received: by 2002:a17:903:4b07:b0:2bd:5b20:a5b5 with SMTP id d9443c01a7336-2beb066cd73mr260282265ad.37.1779946232115;
-        Wed, 27 May 2026 22:30:32 -0700 (PDT)
-X-Received: by 2002:a17:903:4b07:b0:2bd:5b20:a5b5 with SMTP id d9443c01a7336-2beb066cd73mr260281545ad.37.1779946231485;
-        Wed, 27 May 2026 22:30:31 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56d2702sm173761155ad.31.2026.05.27.22.30.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 May 2026 22:30:30 -0700 (PDT)
-Message-ID: <ea4be6c5-9506-4253-80c5-c76c9ac3b77d@redhat.com>
-Date: Thu, 28 May 2026 15:30:19 +1000
+        d=1e100.net; s=20251104; t=1779946461; x=1780551261;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NsemaC8yIGA+q/PWkZ1wuh9lBXS1IQhsEGeGywafozI=;
+        b=ZahPQt8Rq9+qr7d6OyNjVmbfEwoWB/qLS5aw5/nSMmbsLT3YGAF0iCvFjXJJEkp7Uq
+         ApRXMsI96RfwFLmnnLGbukOIogJXqRgreL923oS2rG4uOIZW0meKadY0fzGTlufEM30M
+         oRsR8yNwwLnJzKfE2F36rbv/tnXT02Fd+3JZU1VfD+0/h9EFfaa/gky1xUGnL4lo1Op1
+         YW0H7xFWuSBb4yYDnp5ZTVHLjLjc6xcfsWgfQetPy8nVGNEswerYu/MbJT88MsiTaMPq
+         JwptRKDyGyBtKKGKD36/nMk5vPxFKEK1wIrL7QgJTCtK+iWW4uQDBUCIQaLUEfukC9Jd
+         H5bg==
+X-Forwarded-Encrypted: i=1; AFNElJ+Mo+K3x9BQK4JgvfLW9HSpACCxTYqjnxvYlKDqYFuviPLJHv178Qy/jT5mXhP3FvwliCE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPJB+72ZXPqfWeURw1txXBEFWCohbRQ7Z+80fXIkhxb3S/hvTR
+	g0gPEl5pUbpvNOeETsgfaIl2loOJtnYvODu4VD6PD2aRZPf/RinBm9m0Dc2KsVJhCyD/0l6LJ0+
+	HDwSm4+mKRGJQVlSAuNJCNVmc5y/7FNpGcUizQZfPgMRSmF2Gq6MIuTDR3ft8GLdwQaKv36TVhK
+	qDEdRDgzDVBleHm/fLxBH2R0ulv4U=
+X-Gm-Gg: Acq92OFZ0twl4VxwDM6kxK2cc4SRki61XXo3tf+GLIIqr6KKnpJYepbrvwO8LvmBg10
+	/3O+et9UIXPmS+VoThI5L35P8P6arHS7JuQ5Yxn80YDLxWOAM5lKiKPDpnA1XF+2OzoIoFxL+yD
+	FtxzBOpCPAhfoeAkyNqzRYP8DzmeTVSguxIwoBcffSO/xq1tVb7wIzQj9y0wxlyjy2f/Bb30+lr
+	V1QbBdOmbFwtT/BCN3cmK+0WWcaD0F/QFecTCdxiiq+/tPtdIk=
+X-Received: by 2002:a05:6830:d09:b0:7d7:e142:2ead with SMTP id 46e09a7af769-7e5fef2fed1mr15293304a34.20.1779946460515;
+        Wed, 27 May 2026 22:34:20 -0700 (PDT)
+X-Received: by 2002:a05:6830:d09:b0:7d7:e142:2ead with SMTP id
+ 46e09a7af769-7e5fef2fed1mr15293297a34.20.1779946459924; Wed, 27 May 2026
+ 22:34:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 26/44] arm64: RMI: Allow populating initial contents
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-27-steven.price@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260513131757.116630-27-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260526144401.1485788-1-zhipingz@meta.com> <20260526144401.1485788-4-zhipingz@meta.com>
+ <20260527120607.248867c1@shazbot.org>
+In-Reply-To: <20260527120607.248867c1@shazbot.org>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Wed, 27 May 2026 22:34:09 -0700
+X-Gm-Features: AVHnY4IPizydUUisI1vbdajmFSBFq1y3z7-Dj6POour1Bigd-el14zQJMiUUXOQ
+Message-ID: <CAH3zFs0dxty7VPd+_00E2yHtw8a0V2Givn9k57RA2ytGdHBXUg@mail.gmail.com>
+Subject: Re: [PATCH v5 3/4] vfio/pci: implement get_tph and DMA_BUF_TPH feature
+To: Alex Williamson <alex@shazbot.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian Konig <christian.koenig@amd.com>,
+        Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+        Yishai Hadas <yishaih@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-ORIG-GUID: qbtsWCU8FJjhQxNAJkwCwVjuSvSofDlr
+X-Authority-Analysis: v=2.4 cv=UYZhjqSN c=1 sm=1 tr=0 ts=6a17d3dd cx=c_pps
+ a=+3WqYijBVYhDct2f5Fivkw==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22
+ a=r1p2_3pzAAAA:8 a=VabnemYjAAAA:8 a=QGR5yYSNmr8It09QZWMA:9 a=QEXdDO2ut3YA:10
+ a=eYe2g0i6gJ5uXG_o6N4q:22 a=r_pkcD-q9-ctt7trBg_g:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDA1MyBTYWx0ZWRfX1SdkDPdsnsVu
+ USIG+vtLAkFZZWIHxYjOBLOgu22X4wR5DC4CIeLtPW9EaPfdAu78W3X78wT8eB2S0uMGIqSRjVq
+ /PJjoOuZbLmMJOJrBsdfTHbrJbIg/p7zOcsiSsjzwROKbRn+RUJOykAZ2oGwICdhDimQFucy4PB
+ C8jktANGiMyWV4QMYNTPcpLYu/zyD7gVJk1ahie4UzXND/T5mn/+1VzTbfqvk52nzO0vLjKUivc
+ tC3CBazvVgnEn0G/MurtRhz+6jZ4IzyG8ISpFm4YdpnYaYy4T40sKC+Dk58QpBZpuyCvEDQsRgs
+ JTKU0Cm/xxE0YWHCHmFlfuO1kEM/Wqyrat6I6RzjHioW0/jHRt2CVrXMSrv1hPisKdIlcndVnow
+ yOi48bJTi8GREa9hbqWaJ52hdfTUAg1PmbSUqRuCnMxDS25Y5GidilghSrTJueWHHupRxK3Dq8M
+ sd9/hyzFf2cyXbIKiuA==
+X-Proofpoint-GUID: qbtsWCU8FJjhQxNAJkwCwVjuSvSofDlr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-28_01,2026-05-26_03,2025-10-01_01
 
-Hi Steve,
+On Wed, May 27, 2026 at 11:06=E2=80=AFAM Alex Williamson <alex@shazbot.org>=
+ wrote:
+>
+> >
+> On Tue, 26 May 2026 07:43:55 -0700
+> Zhiping Zhang <zhipingz@meta.com> wrote:
+>
+> > Implement the dma-buf get_tph callback for vfio-pci-exported dma-bufs
+> > and add VFIO_DEVICE_FEATURE_DMA_BUF_TPH so userspace can attach TPH
+> > metadata to such a dma-buf.
+> >
+> > 8-bit ST and 16-bit Extended ST are distinct PCIe TPH namespaces; the
+> > uAPI carries both with explicit validity flags, and get_tph() returns
+> > the value matching the importer's requested width (or -EOPNOTSUPP).
+> >
+> > The TPH descriptor is published under a new per-dma-buf mutex
+> > (priv->lock) and read by get_tph() under the same mutex. The same
+> > mutex serialises with the priv->vdev clear in
+> > vfio_pci_dma_buf_cleanup() so a SET racing with device teardown
+> > cannot observe a half-detached dma-buf. memory_lock remain on the
+> > existing dma-buf paths; the outer order is memory_lock -> priv->lock.
+> >
+> > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> > ---
+> >  drivers/vfio/pci/vfio_pci_core.c   |   3 +
+> >  drivers/vfio/pci/vfio_pci_dmabuf.c | 110 ++++++++++++++++++++++++++++-
+> >  drivers/vfio/pci/vfio_pci_priv.h   |  12 ++++
+> >  include/uapi/linux/vfio.h          |  37 ++++++++++
+> >  4 files changed, 161 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_p=
+ci_core.c
+> > index 050e7542952e..4fa36f2f7555 100644
+> > --- a/drivers/vfio/pci/vfio_pci_core.c
+> > +++ b/drivers/vfio/pci/vfio_pci_core.c
+> > @@ -1569,6 +1569,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_devic=
+e *device, u32 flags,
+> >               return vfio_pci_core_feature_token(vdev, flags, arg, args=
+z);
+> >       case VFIO_DEVICE_FEATURE_DMA_BUF:
+> >               return vfio_pci_core_feature_dma_buf(vdev, flags, arg, ar=
+gsz);
+> > +     case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
+> > +             return vfio_pci_core_feature_dma_buf_tph(vdev, flags, arg,
+> > +                                                      argsz);
+> >       default:
+> >               return -ENOTTY;
+> >       }
+> > diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio=
+_pci_dmabuf.c
+> > index 1a177ce7de54..3ea2978c376c 100644
+> > --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > @@ -19,7 +19,19 @@ struct vfio_pci_dma_buf {
+> >       u32 nr_ranges;
+> >       struct kref kref;
+> >       struct completion comp;
+> > -     u8 revoked : 1;
+> > +     /*
+> > +      * @lock serializes TPH SET vs get_tph and the priv->vdev clear in
+> > +      * vfio_pci_dma_buf_cleanup(). It nests inside memory_lock:
+> > +      * the outer order across these paths is
+> > +      * memory_lock -> priv->lock.
+> > +      */
+> > +     struct mutex lock;
+> > +     u8 tph_st_valid:1;      /* priv->lock */
+> > +     u8 tph_st_ext_valid:1;  /* priv->lock */
+> > +     u8 tph_ph:2;            /* priv->lock */
+> > +     u8 tph_st;              /* priv->lock */
+> > +     u16 tph_st_ext;         /* priv->lock */
+> > +     u8 revoked:1;           /* dma_resv_lock */
+> >  };
+> >
+> >  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
+> > @@ -69,6 +81,38 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *atta=
+chment,
+> >       return ret;
+> >  }
+> >
+> > +static int vfio_pci_dma_buf_get_tph(struct dma_buf *dmabuf, u16 *steer=
+ing_tag,
+> > +                                 u8 *ph, u8 st_width)
+> > +{
+> > +     struct vfio_pci_dma_buf *priv =3D dmabuf->priv;
+> > +     int ret =3D 0;
+> > +
+> > +     mutex_lock(&priv->lock);
+>
+> Use guard semantics and drop ret, return from the error branch directly.
+>
 
-On 5/13/26 11:17 PM, Steven Price wrote:
-> The VMM needs to populate the realm with some data before starting (e.g.
-> a kernel and initrd). This is measured by the RMM and used as part of
-> the attestation later on.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v13:
->   * Rename realm_create_protected_data_page() to realm_data_map_init().
-> Changes since v12:
->   * The ioctl now updates the structure with the amount populated rather
->     than returning this through the ioctl return code.
->   * Use the new RMM v2.0 range based RMI calls.
->   * Adapt to upstream changes in kvm_gmem_populate().
-> Changes since v11:
->   * The multiplex CAP is gone and there's a new ioctl which makes use of
->     the generic kvm_gmem_populate() functionality.
-> Changes since v7:
->   * Improve the error codes.
->   * Other minor changes from review.
-> Changes since v6:
->   * Handle host potentially having a larger page size than the RMM
->     granule.
->   * Drop historic "par" (protected address range) from
->     populate_par_region() - it doesn't exist within the current
->     architecture.
->   * Add a cond_resched() call in kvm_populate_realm().
-> Changes since v5:
->   * Refactor to use PFNs rather than tracking struct page in
->     realm_create_protected_data_page().
->   * Pull changes from a later patch (in the v5 series) for accessing
->     pages from a guest memfd.
->   * Do the populate in chunks to avoid holding locks for too long and
->     triggering RCU stall warnings.
-> ---
->   arch/arm64/include/asm/kvm_rmi.h |   4 ++
->   arch/arm64/kvm/Kconfig           |   1 +
->   arch/arm64/kvm/arm.c             |  13 ++++
->   arch/arm64/kvm/rmi.c             | 106 +++++++++++++++++++++++++++++++
->   4 files changed, 124 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index 007249a13dbc..a2b6bc412a22 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -88,6 +88,10 @@ int kvm_rec_enter(struct kvm_vcpu *vcpu);
->   int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
->   int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
->   
-> +struct kvm_arm_rmi_populate;
-> +
-> +int kvm_arm_rmi_populate(struct kvm *kvm,
-> +			 struct kvm_arm_rmi_populate *arg);
->   void kvm_realm_unmap_range(struct kvm *kvm,
->   			   unsigned long ipa,
->   			   unsigned long size,
-> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-> index 4e16719fda22..d0cd011cf672 100644
-> --- a/arch/arm64/kvm/Kconfig
-> +++ b/arch/arm64/kvm/Kconfig
-> @@ -38,6 +38,7 @@ menuconfig KVM
->   	select GUEST_PERF_EVENTS if PERF_EVENTS
->   	select KVM_GUEST_MEMFD
->   	select KVM_GENERIC_MEMORY_ATTRIBUTES
-> +	select HAVE_KVM_ARCH_GMEM_POPULATE
->   	help
->   	  Support hosting virtualized guest machines.
->   
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index ed88a203b892..073ba9181da9 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -2131,6 +2131,19 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->   			return -EFAULT;
->   		return kvm_vm_ioctl_get_reg_writable_masks(kvm, &range);
->   	}
-> +	case KVM_ARM_RMI_POPULATE: {
-> +		struct kvm_arm_rmi_populate req;
-> +		int ret;
-> +
-> +		if (!kvm_is_realm(kvm))
-> +			return -ENXIO;
-> +		if (copy_from_user(&req, argp, sizeof(req)))
-> +			return -EFAULT;
-> +		ret = kvm_arm_rmi_populate(kvm, &req);
-> +		if (copy_to_user(argp, &req, sizeof(req)))
-> +			return -EFAULT;
-> +		return ret;
-> +	}
+ack, will do.
 
-s/return ret/return 0; The variable 'ret' can be dropped.
+> > +     switch (st_width) {
+> > +     case 8:
+> > +             if (!priv->tph_st_valid) {
+> > +                     ret =3D -EOPNOTSUPP;
+> > +                     break;
+> > +             }
+> > +             *steering_tag =3D priv->tph_st;
+> > +             *ph =3D priv->tph_ph;
+> > +             break;
+> > +     case 16:
+> > +             if (!priv->tph_st_ext_valid) {
+> > +                     ret =3D -EOPNOTSUPP;
+> > +                     break;
+> > +             }
+> > +             *steering_tag =3D priv->tph_st_ext;
+> > +             *ph =3D priv->tph_ph;
+> > +             break;
+> > +     default:
+> > +             ret =3D -EINVAL;
+> > +             break;
+> > +     }
+> > +     mutex_unlock(&priv->lock);
+> > +     return ret;
+> > +}
+> > +
+> >  static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachme=
+nt,
+> >                                  struct sg_table *sgt,
+> >                                  enum dma_data_direction dir)
+> > @@ -95,12 +139,14 @@ static void vfio_pci_dma_buf_release(struct dma_bu=
+f *dmabuf)
+> >               up_write(&priv->vdev->memory_lock);
+> >               vfio_device_put_registration(&priv->vdev->vdev);
+> >       }
+> > +     mutex_destroy(&priv->lock);
+> >       kfree(priv->phys_vec);
+> >       kfree(priv);
+> >  }
+> >
+> >  static const struct dma_buf_ops vfio_pci_dmabuf_ops =3D {
+> >       .attach =3D vfio_pci_dma_buf_attach,
+> > +     .get_tph =3D vfio_pci_dma_buf_get_tph,
+> >       .map_dma_buf =3D vfio_pci_dma_buf_map,
+> >       .unmap_dma_buf =3D vfio_pci_dma_buf_unmap,
+> >       .release =3D vfio_pci_dma_buf_release,
+> > @@ -265,6 +311,7 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_c=
+ore_device *vdev, u32 flags,
+> >               ret =3D -ENOMEM;
+> >               goto err_free_ranges;
+> >       }
+> > +     mutex_init(&priv->lock);
+> >       priv->phys_vec =3D kzalloc_objs(*priv->phys_vec, get_dma_buf.nr_r=
+anges);
+> >       if (!priv->phys_vec) {
+> >               ret =3D -ENOMEM;
+> > @@ -327,12 +374,71 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci=
+_core_device *vdev, u32 flags,
+> >  err_free_phys:
+> >       kfree(priv->phys_vec);
+> >  err_free_priv:
+> > +     mutex_destroy(&priv->lock);
+> >       kfree(priv);
+> >  err_free_ranges:
+> >       kfree(dma_ranges);
+> >       return ret;
+> >  }
+> >
+> > +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vde=
+v,
+> > +                                   u32 flags,
+> > +                                   struct vfio_device_feature_dma_buf_=
+tph __user *arg,
+> > +                                   size_t argsz)
+> > +{
+> > +     struct vfio_device_feature_dma_buf_tph set_tph;
+> > +     struct vfio_pci_dma_buf *priv;
+> > +     struct dma_buf *dmabuf;
+> > +     int ret;
+> > +
+> > +     ret =3D vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET,
+> > +                              sizeof(set_tph));
+> > +     if (ret !=3D 1)
+> > +             return ret;
+>
+> Don't we need to test whether the device supports the TPH capability
+> somewhere here?  AIUI the device must exposed a TPH capability to act
+> as a TPH completer.
+>
 
->   	default:
->   		return -EINVAL;
->   	}
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index a89873a5eb77..209087bcf399 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -486,6 +486,75 @@ void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start,
->   		realm_unmap_private_range(kvm, start, end, may_block);
->   }
->   
-> +static int realm_data_map_init(struct kvm *kvm, unsigned long ipa,
-> +			       kvm_pfn_t dst_pfn, kvm_pfn_t src_pfn,
-> +			       unsigned long flags)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	phys_addr_t rd = virt_to_phys(realm->rd);
-> +	phys_addr_t dst_phys, src_phys;
-> +	int ret;
-> +
-> +	dst_phys = __pfn_to_phys(dst_pfn);
-> +	src_phys = __pfn_to_phys(src_pfn);
-> +
-> +	if (rmi_delegate_page(dst_phys))
-> +		return -ENXIO;
-> +
-> +	ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys, flags);
-> +	if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
-> +		/* Create missing RTTs and retry */
-> +		int level = RMI_RETURN_INDEX(ret);
-> +
-> +		KVM_BUG_ON(level == KVM_PGTABLE_LAST_LEVEL, kvm);
+Good catch, i will discuss this with my team internally and see if the
+test/check is
+necessary. In practice the device owner should know whether the device supp=
+orts
+TPH, so this would be a sanity gate.
 
-		KVM_BUG_ON(level >= KVM_PGTABLE_LAST_LEVEL, kvm);> +
-> +		ret = realm_create_rtt_levels(realm, ipa, level,
-> +					      KVM_PGTABLE_LAST_LEVEL, NULL);
-> +		if (!ret) {
-> +			ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys,
-> +						    flags);
-> +		}
-> +	}
-> +
-> +	if (ret) {
-> +		if (WARN_ON(rmi_undelegate_page(dst_phys))) {
-> +			/* Undelegate failed, so we leak the page */
-> +			get_page(pfn_to_page(dst_pfn));
-> +		}
-> +	}
-> +
+> > +
+> > +     if (copy_from_user(&set_tph, arg, sizeof(set_tph)))
+> > +             return -EFAULT;
+> > +
+> > +     if (set_tph.flags & ~(VFIO_DMA_BUF_TPH_ST | VFIO_DMA_BUF_TPH_ST_E=
+XT))
+> > +             return -EINVAL;
+> > +
+> > +     if (!set_tph.flags)
+> > +             return -EINVAL;
+>
+> This seems to block the path to marking both steering tags to invalid
+> without any particular reason to do so.
+>
 
-	if (ret && WARN_ON(rmi_undelegate_page(dst_phys)) {
-		/* Leak the page that fails to be undelegated */
-		get_page(pfn_to_page(dst_pfn));
-	}
+Agreed, i will drop the check.
 
-> +	return ret;
-> +}
-> +
-> +static int populate_region_cb(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> +			      struct page *src_page, void *opaque)
-> +{
-> +	unsigned long data_flags = *(unsigned long *)opaque;
-> +	phys_addr_t ipa = gfn_to_gpa(gfn);
-> +
-> +	if (!src_page)
-> +		return -EOPNOTSUPP;
-> +
-> +	return realm_data_map_init(kvm, ipa, pfn, page_to_pfn(src_page),
-> +				   data_flags);
-> +}
-> +
-> +static long populate_region(struct kvm *kvm,
-> +			    gfn_t base_gfn,
-> +			    unsigned long pages,
-> +			    u64 uaddr,
-> +			    unsigned long data_flags)
-> +{
-> +	long ret = 0;
-> +
-> +	mutex_lock(&kvm->slots_lock);
-> +	ret = kvm_gmem_populate(kvm, base_gfn, u64_to_user_ptr(uaddr), pages,
-> +				populate_region_cb, &data_flags);
-> +	mutex_unlock(&kvm->slots_lock);
-> +
-> +	return ret;
-> +}
-> +
->   enum ripas_action {
->   	RIPAS_INIT,
->   	RIPAS_SET,
-> @@ -574,6 +643,43 @@ static int realm_ensure_created(struct kvm *kvm)
->   	return -ENXIO;
->   }
->   
-> +int kvm_arm_rmi_populate(struct kvm *kvm,
-> +			 struct kvm_arm_rmi_populate *args)
-> +{
-> +	unsigned long data_flags = 0;
-> +	unsigned long ipa_start = args->base;
-> +	unsigned long ipa_end = ipa_start + args->size;
-> +	long pages_populated;
-> +	int ret;
-> +
-> +	if (args->reserved ||
-> +	    (args->flags & ~KVM_ARM_RMI_POPULATE_FLAGS_MEASURE) ||
-> +	    !IS_ALIGNED(ipa_start, PAGE_SIZE) ||
-> +	    !IS_ALIGNED(ipa_end, PAGE_SIZE) ||
-> +	    !IS_ALIGNED(args->source_uaddr, PAGE_SIZE))
-> +		return -EINVAL;
-> +
+> > +
+> > +     /* PCIe TLP Processing Hint is a 2-bit field. */
+> > +     if (set_tph.ph & ~0x3)
+> > +             return -EINVAL;
+> > +
+> > +     dmabuf =3D dma_buf_get(set_tph.dmabuf_fd);
+> > +     if (IS_ERR(dmabuf))
+> > +             return PTR_ERR(dmabuf);
+> > +
+> > +     if (dmabuf->ops !=3D &vfio_pci_dmabuf_ops) {
+> > +             ret =3D -EINVAL;
+> > +             goto out_put;
+> > +     }
+> > +
+> > +     priv =3D dmabuf->priv;
+> > +     mutex_lock(&priv->lock);
+>
+> Use guards.
+>
 
-There are more conditions missed here:
+ack, will do.
 
-	args->size == 0, return 0;
-	args->base + args->size < args->base, return -EINVAL;  // wrapped range
+> > +     if (priv->vdev !=3D vdev) {
+>
+> For here and the next chunk, why is priv->vdev pulled into this lock?
+> We're calling an ioctl on the vdev, that's stable.  We have a reference
+> to the dma-buf, that's stable.  I think the ordering prevents this from
+> needing to be under the lock, which probably means it should be
+> s/lock/tph_lock/.
+>
 
-> +	ret = realm_ensure_created(kvm);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (args->flags & KVM_ARM_RMI_POPULATE_FLAGS_MEASURE)
-> +		data_flags |= RMI_MEASURE_CONTENT;
-> +
-> +	pages_populated = populate_region(kvm, gpa_to_gfn(ipa_start),
-> +					  args->size >> PAGE_SHIFT,
-> +					  args->source_uaddr, data_flags);
-> +
-> +	if (pages_populated < 0)
-> +		return pages_populated;
+ You're right. I'll:
+  - rename priv->lock to priv->tph_lock to make the scope obvious,
+  - move the priv->vdev !=3D vdev check outside the lock,
+  - drop the lock around priv->vdev =3D NULL in
+  vfio_pci_dma_buf_cleanup.
 
-pages_populaged is 'unsigned long', this function returns a 'int' value.
+> > +             ret =3D -EINVAL;
+> > +             goto out_unlock;
+> > +     }
+> > +
+> > +     priv->tph_st =3D set_tph.steering_tag;
+> > +     priv->tph_st_ext =3D set_tph.steering_tag_ext;
+> > +     priv->tph_ph =3D set_tph.ph;
+> > +     priv->tph_st_valid =3D !!(set_tph.flags & VFIO_DMA_BUF_TPH_ST);
+> > +     priv->tph_st_ext_valid =3D !!(set_tph.flags & VFIO_DMA_BUF_TPH_ST=
+_EXT);
+> > +     ret =3D 0;
+> > +
+> > +out_unlock:
+> > +     mutex_unlock(&priv->lock);
+> > +out_put:
+> > +     dma_buf_put(dmabuf);
+> > +     return ret;
+> > +}
+> > +
+> >  void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool rev=
+oked)
+> >  {
+> >       struct vfio_pci_dma_buf *priv;
+> > @@ -398,7 +504,9 @@ void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_=
+device *vdev)
+> >                       continue;
+> >
+> >               list_del_init(&priv->dmabufs_elm);
+> > +             mutex_lock(&priv->lock);
+> >               priv->vdev =3D NULL;
+> > +             mutex_unlock(&priv->lock);
+>
+> As above, seems unnecessary.
+>
 
-> +
-> +	args->size -= pages_populated << PAGE_SHIFT;
-> +	args->source_uaddr += pages_populated << PAGE_SHIFT;
-> +	args->base += pages_populated << PAGE_SHIFT;
-> +
-> +	return 0;
-> +}
-> +
->   static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
->   {
->   	struct kvm *kvm = vcpu->kvm;
+ack, as replied above.
+
+> >               vfio_device_put_registration(&vdev->vdev);
+> >               fput(priv->dmabuf->file);
+> >       }
+> > diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_p=
+ci_priv.h
+> > index fca9d0dfac90..c58f369be4b3 100644
+> > --- a/drivers/vfio/pci/vfio_pci_priv.h
+> > +++ b/drivers/vfio/pci/vfio_pci_priv.h
+> > @@ -118,6 +118,10 @@ static inline bool vfio_pci_is_vga(struct pci_dev =
+*pdev)
+> >  int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u=
+32 flags,
+> >                                 struct vfio_device_feature_dma_buf __us=
+er *arg,
+> >                                 size_t argsz);
+> > +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vde=
+v,
+> > +                                   u32 flags,
+> > +                                   struct vfio_device_feature_dma_buf_=
+tph __user *arg,
+> > +                                   size_t argsz);
+> >  void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev);
+> >  void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool rev=
+oked);
+> >  #else
+> > @@ -128,6 +132,14 @@ vfio_pci_core_feature_dma_buf(struct vfio_pci_core=
+_device *vdev, u32 flags,
+> >  {
+> >       return -ENOTTY;
+> >  }
+> > +
+> > +static inline int
+> > +vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev, u=
+32 flags,
+> > +                               struct vfio_device_feature_dma_buf_tph =
+__user *arg,
+> > +                               size_t argsz)
+> > +{
+> > +     return -ENOTTY;
+> > +}
+> >  static inline void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_devic=
+e *vdev)
+> >  {
+> >  }
+> > diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> > index 5de618a3a5ee..55cac3b7122c 100644
+> > --- a/include/uapi/linux/vfio.h
+> > +++ b/include/uapi/linux/vfio.h
+> > @@ -1534,6 +1534,43 @@ struct vfio_device_feature_dma_buf {
+> >   */
+> >  #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
+> >
+> > +/**
+> > + * Upon VFIO_DEVICE_FEATURE_SET associate TPH (TLP Processing Hints) m=
+etadata
+> > + * with a vfio-exported dma-buf. The dma-buf must have been created by
+> > + * VFIO_DEVICE_FEATURE_DMA_BUF on this device.
+> > + *
+> > + * dmabuf_fd is the file descriptor returned by VFIO_DEVICE_FEATURE_DM=
+A_BUF.
+> > + *
+> > + * 8-bit ST (steering_tag) and 16-bit Extended ST (steering_tag_ext) a=
+re
+> > + * distinct namespaces in the PCIe TPH ST table and may both be presen=
+t with
+> > + * different values. Userspace should populate the value(s) it has fro=
+m the
+> > + * firmware ST table for this device and set the matching VFIO_DMA_BUF=
+_TPH_ST /
+> > + * VFIO_DMA_BUF_TPH_ST_EXT bit in @flags. An importer requests a speci=
+fic
+> > + * width and receives the matching value; if the requested width is not
+> > + * present, the importer is told TPH is unavailable for this dma-buf.
+> > + *
+> > + * ph is the 2-bit TLP Processing Hint and must be in the range [0, 3].
+> > + *
+> > + * Userspace is responsible for setting TPH on the dma-buf before hand=
+ing the
+> > + * fd to the importer. Calling SET again replaces the previously publi=
+shed
+> > + * values; racing a SET against an importer that is already consuming =
+the
+> > + * dma-buf is a userspace ordering problem.
+> > + *
+> > + * Return: 0 on success, -errno on failure.
+> > + */
+> > +#define VFIO_DEVICE_FEATURE_DMA_BUF_TPH 13
+> > +
+> > +#define VFIO_DMA_BUF_TPH_ST          (1 << 0)  /* steering_tag valid */
+> > +#define VFIO_DMA_BUF_TPH_ST_EXT              (1 << 1)  /* steering_tag=
+_ext valid */
+> > +
+> > +struct vfio_device_feature_dma_buf_tph {
+> > +     __s32   dmabuf_fd;
+> > +     __u32   flags;
+> > +     __u8    steering_tag;
+> > +     __u8    ph;
+>
+> Nit, I'd swap the order of these so the steering_tag fields are
+> back-to-back.  Thanks,
+>
+> Alex
+
+sure, will re-order.
 
 Thanks,
-Gavin
-
+Zhiping
