@@ -1,71 +1,71 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5123F9A18
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:04:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF94407CFA
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779991476; cv=none; b=T75o1phmNQVf1eVG3ls69a+3T6pePBnoM3gdsKHkvH9/l15SsDXBUe3qrB+0amIO7ZuOLWanxEcrTxTQs8po4+SYgeKtqwMlWkr/49ZRH6z3Ux2CnOuH8appxUBdD5N2LEJYIWLKTjVEvg2U+qLn2akpfb4mqBPld+aPLdlfLM8=
+	t=1779991547; cv=none; b=LUfwzeu2xWkueR52T4SH1Vm7RsaGloUdfPRiTim/4P+X4kNuNLn1tmbO3yzEKqBXS99LYAb9OfQ1Ft4l/L8Vd0igF5KCL/OJ2eO4lJ60AvqUsSPqSdVqRdU6piGGTFBIUseDpw5/PVMZ6vpkr82GvDUf61lk56ExnH0IJSw6/b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779991476; c=relaxed/simple;
-	bh=+fninTk2fwWXvI75bX2g/Sj0KUrOHEb4XanS80kJkOg=;
+	s=arc-20240116; t=1779991547; c=relaxed/simple;
+	bh=ezWkMf1/nBuwKvq1Ie6nTfMcUtAMsxfURYeysfpXWtg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=vGD7KHH02bmrON8yJjkrpIDfBATpDne95TdBIucIwwZ8mdxr+cHKeArEpTOq+2Hyw4tWXabrM+Ei8t3dcQupP/BRPcR0FB/MxXZK4o99KKZopRUKFPI8csEq648y1Z56wU8WOR8ceqAYJMFltqzSnf2xhh3HYS/c45s/bQo9Tug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MrjxsmrT; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=oOcD0PRnO+Ne3pI1XCF3uqAGHb81EOKUx9auFe409Jwv8vh49UIzqC1keu8t1E5el3HbOTcocMVo0cn8+wGQdTBDmhNmr+RdRl7HYOCXI510j53lvTDvcC5QJKvnuebofmCKSLQkHlvQgOGjGz0kiMn8ERkCQibbjANE7frE2tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=muFhEEvl; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MrjxsmrT"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ba5f794825so104489565ad.0
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:04:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="muFhEEvl"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bd6cc53fd6so135693915ad.3
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:05:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779991474; x=1780596274; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779991545; x=1780596345; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0awCcTjj5cBY+k+iW3PYD8qjXoaqFyvWYPYnm5OQPnY=;
-        b=MrjxsmrTbanbayy/ZAP8i4Waw63Z8oIWW8pWzYiPpW3n1wfhvS97UZ0bNnmJTXH+0r
-         PrsxKysH5wdLvVM4an9yw/mpjP25zrpkhQm6Iopf/JgYorwDA8JIBsKinKBCYkCz9JMl
-         tMvjdWD03DfvdBwJkNad2+BTFYxDBJ8rKcaW3b16QQRdKmjJCw3sPZ/mtQLFqDsE8GGR
-         Vzzs18gJ3xWV5+3LNcH93aFbEAPZyf1u2FuGx7Ip8kMSigap6MUee+qCQJl3d0T6mtrm
-         LLXm7uQHhYcuPdOnmkYdwd2eLxErhLWVakdf8UOc+Z6fLevK2PwtTdT3nuEuxxstgD5k
-         QF9Q==
+        bh=EAX4aGyOlp58kUC6uPoUPFDHIumnxZdWSgRHitD9Mr4=;
+        b=muFhEEvlrm7+GSocv/9jaos8tn4Q0MtvzGVvQjYomUkuFPutXZy0y8V4CXWsyuiTwa
+         ghmHnRH6YVmCM4hFv60x1RtXU5XAalgYnPBM/3cZjOsA/eiEm1PDgyyFWNR1yeSf2NwD
+         vqnDa5JGfxODQGDgQO11O5aoef8/uNSzHBl/7JGBSkrTJX0HrGOQLIV8aW8lgUtvxsEZ
+         FD6U40iUwAqzlyYc2Ndg4uyE1QkR/PbJOZGU3v0PQLUgE97yp+oNoeM9U0inlJlfvFyg
+         feomkO0kcx1sEeVMQNLneFXLqq4P4/vkbkaYPSHNDgAVWo0kxCEIs0C0fFai09orc7LF
+         htBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779991474; x=1780596274;
+        d=1e100.net; s=20251104; t=1779991545; x=1780596345;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=0awCcTjj5cBY+k+iW3PYD8qjXoaqFyvWYPYnm5OQPnY=;
-        b=dMdyixo5xDRZmlu6bxnRu7ZlTzb8wbqp0+olKZFfhFP/Kz5/Y2FvqTDfTkRvW82zTP
-         RkPU3JtzxxAEQ+HH8QFiC9BZFcPsbw/Nwd7OFouSmf9uKr8/ppbVBdo7JaFEyvvEWu1b
-         1YFAGxWm/XouxSW+0d+t0qSUm9oBMoORnlJuxjF+oPX0Q3JoqQF/LGO9Qfz1RTxxIeHI
-         9gukAzmzogj6cA+WNHhsnt4juPg2/AFxaRr71n6C3wEOSV9yTHHEgwjTrA5j2/SaOdBm
-         Pw59hsGKbxS5wuF+bwrd9YXhJ6jr41HacdmUhEs27C58Z3syJn80nz5hyVFkc9wpKF0N
-         E3Dg==
-X-Forwarded-Encrypted: i=1; AFNElJ965cnQDiq5HrGubJFNroMX7EPUEUf2OldHotpOAB67WzpIqDnvuPrF91ZNKcf1+V3fMQo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVxSnZEmp9PBfn2eKo//POsbtwO8GDSOJl4tg70zmfpscDL9pt
-	S2Lf9eiRtlzsmo3hNoh8dK+hDhh6lgmko5q1K3xQWiNAfwP1tQZasZ5EtoD7mdqXmyLwOmAt/Ej
-	U7j7A0g==
-X-Received: from plbjx14.prod.google.com ([2002:a17:903:138e:b0:2bf:1274:c8f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce88:b0:2bd:a3c5:6d96
- with SMTP id d9443c01a7336-2beb0756707mr307756445ad.14.1779991474177; Thu, 28
- May 2026 11:04:34 -0700 (PDT)
-Date: Thu, 28 May 2026 11:04:33 -0700
-In-Reply-To: <CAO9r8zNzFWYBqZ_ACC_rfaYoxARn18UdUUymkYaroXizj_+cog@mail.gmail.com>
+        bh=EAX4aGyOlp58kUC6uPoUPFDHIumnxZdWSgRHitD9Mr4=;
+        b=A5Fmsxwfm8WhadMDqTGiaDZQhPEl20Qu21TZ6IHvIrpCkPbhddkaF5M/SkHcKl82ov
+         LKY2Aym3ToMmZrx28wj6pYLVGprwX56wvfZXhfyqm/LHmKeIBLtcXqNvLdS3ibWY51l2
+         ouTgyJNLM01VZMr6lS1TGKWRBvvDJPD1CWT97AqLJsxaXTMcXOV52+F0fhNq+oHBmNDp
+         zUNaimzhKSDwHs2gjcscVE1O9XdXBIHapxmeFtKF9zCH8IIzsZtiKB6vqoiUnE6vVbKe
+         J8FD8ed18QB7sRajKZ7SAnu02QfuPV14D8E8A0IifdDJeCl/ugx+xoDfBHcqPxvB/3e8
+         5Uig==
+X-Forwarded-Encrypted: i=1; AFNElJ/R2eyHOhnStUeOrazV41GSEZPaT+eeuqMtqO8k3ZOZGMVXpn1lWr2NaogECBq0mAzi8uc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdSmtIuPXe1mzbjV9V1j+2Nmmk1fjd+yt1tpJFhVJkawMtfrUU
+	BVdc47hxUd7Paxx2HzmSwOa5klB4EsQcWTzQ+SURMeSR4agNmZbmDTXbfAoJwd72MCv1Gh7ReDx
+	N38O4wQ==
+X-Received: from plbkg11.prod.google.com ([2002:a17:903:60b:b0:2ae:41d1:278d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2388:b0:2b4:5cb8:99eb
+ with SMTP id d9443c01a7336-2beb07e9e15mr313634085ad.27.1779991544602; Thu, 28
+ May 2026 11:05:44 -0700 (PDT)
+Date: Thu, 28 May 2026 11:05:43 -0700
+In-Reply-To: <CAO9r8zNgjATxV6KL4gv-_JwCQyUt-ygG9t4dKAe00sUVVLg=8w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260527234711.4175166-1-yosry@kernel.org> <20260527234711.4175166-18-yosry@kernel.org>
- <ahenmnACHMNKO3WC@google.com> <CAO9r8zNzFWYBqZ_ACC_rfaYoxARn18UdUUymkYaroXizj_+cog@mail.gmail.com>
-Message-ID: <ahiDsTe5Pge2qNxC@google.com>
-Subject: Re: [PATCH v7 17/17] KVM: selftests: Add svm_pmu_host_guest_test for
+References: <20260527234711.4175166-1-yosry@kernel.org> <aheoLra4MFZj7ID7@google.com>
+ <CAO9r8zNgjATxV6KL4gv-_JwCQyUt-ygG9t4dKAe00sUVVLg=8w@mail.gmail.com>
+Message-ID: <ahiD99VKTEseNlCL@google.com>
+Subject: Re: [PATCH v7 00/17] KVM: x86/pmu: Add support for AMD
  Host-Only/Guest-Only bits
 From: Sean Christopherson <seanjc@google.com>
 To: Yosry Ahmed <yosry@kernel.org>
-Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
 	Dapeng Mi <dapeng1.mi@linux.intel.com>, Sandipan Das <sandipan.das@amd.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
 	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
@@ -76,48 +76,62 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Thu, May 28, 2026, Yosry Ahmed wrote:
-> On Wed, May 27, 2026 at 7:25=E2=80=AFPM Sean Christopherson <seanjc@googl=
+> On Wed, May 27, 2026 at 7:28=E2=80=AFPM Sean Christopherson <seanjc@googl=
 e.com> wrote:
 > >
 > > On Wed, May 27, 2026, Yosry Ahmed wrote:
-> > > +int main(int argc, char *argv[])
-> > > +{
-> > > +     struct kvm_pmu_event_filter *filter;
-> > > +     struct kvm_vcpu *vcpu;
-> > > +     struct kvm_vm *vm;
-> > > +     struct ucall uc;
-> > > +     gva_t svm_gva;
-> > > +
-> > > +     TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
-> > > +     TEST_REQUIRE(kvm_is_pmu_enabled());
-> > > +     TEST_REQUIRE(get_kvm_amd_param_bool("enable_mediated_pmu"));
+> > > Jim Mattson (2):
+> > >   KVM: x86/pmu: Allow Host-Only/Guest-Only bits with nSVM and mediate=
+d
+> > >     PMU
+> > >   KVM: selftests: Add svm_pmu_host_guest_test for Host-Only/Guest-Onl=
+y
+> > >     bits
+> > >
+> > > Yosry Ahmed (15):
+> > >   KVM: nSVM: Stop leaking single-stepping on VMRUN into L2
+> > >   KVM: nSVM: Bail early out of VMRUN emulation if advancing RIP fails
+> > >   KVM: nSVM: Unify RIP and PMU handling calls when emulating VMRUN
+> > >   KVM: nSVM: Move VMRUN instruction retirement after entering guest m=
+ode
+> > >   KVM: x86: Move enable_pmu/enable_mediated_pmu to pmu.h and pmu.c
+> > >   KVM: x86/pmu: Rename reprogram_counters() to clarify usage
+> > >   KVM: x86/pmu: Do a single atomic OR when reprogramming counters
+> > >   KVM: x86/pmu: Check mediated PMU counter enablement before event
+> > >     filters
+> > >   KVM: x86/pmu: Add support for KVM_X86_PMU_OP_OPTIONAL_RET0
+> > >   KVM: x86/pmu: Disable counters based on Host-Only/Guest-Only bits i=
+n
+> > >     SVM
+> > >   KVM: x86/pmu: Track mediated PMU counters with mode-specific enable=
+s
+> > >   KVM: x86/pmu: Reprogram Host/Guest-Only counters on nested transiti=
+ons
+> > >   KVM: selftests: Refactor allocating guest stack into a helper
+> > >   KVM: selftests: Allocate a dedicated guest page for x86 L2 guest st=
+ack
+> > >   KVM: selftests: Drop L1-provided stacks for L2 guests on x86
 > >
-> > This can and should be handled in a helper, using either host_cpu_is_in=
-tel or
-> > host_cpu_is_amd_compatible to choose while vendor to query.
+> > This all looks good.  I'll get the KVM changes applied and pushed (assu=
+ming they
+> > pass testing).
 > >
-> > > +     TEST_REQUIRE(host_cpu_is_amd && kvm_cpu_family() >=3D 0x17);
+> > For the selftests, I'm going to hold off on applying them until after t=
+he initial
+> > pull requests for 7.2 are merged into Paolo's tree.  The (AWESOME!!!) L=
+2 stack
+> > changes are going to cause conflict hell, and it's easy enough for me t=
+o carry
+> > them out of tree for a few weeks.
 > >
-> > Why the family check?  Actually, why check host_cpu_is_amd at all?
+> > I'll send a refreshed version of the selftest once kvm-x86 has settled =
+down for
+> > 7.2, e.g. to account for the gpat test as well.
 >=20
-> I assume you mean that we don't need host_cpu_is_amd because we
-> require X86_FEATURE_SVM above?=20
+> So do you plan on getting it merged later in the 7.2 merge window or
+> for 7.3? I think the former but I am not quite sure.
 
-Yes.=20
-
-> Unless H/G emulation doesn't really work for cross-vendor emulation? I
-> honestly don't know.
-
-Not just cross-vendor emulation, KVM and selftests also support Hygon CPUs.
-
-> I will defer to Jim for the family check, I took this as-is. My guess
-> is that maybe older families did not support H/G bits or some of the
-> other PMU features used by the test.
-
-If that's true, then the mediated PMU shouldn't be enabled.  If the mediate=
-d PMU
-_can_ be enabled for CPUs that do _and_ don't support H/G bits, then we nee=
-d to
-figure out a way to enumerate H/G support to userspace.  Because telling us=
-erspace
-to check F/M/S ain't going to fly.
+Ideally, later in the 7.2 merge window.  Worst case scenario, super duper e=
+arly
+in kvm/next for 7.3, so that developers (and me) can build on the functiona=
+lity.
