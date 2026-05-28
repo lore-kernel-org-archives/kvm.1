@@ -1,91 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C852A2F8E93
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 16:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779984268; cv=none; b=qyq/a+GV2jsiYvKrOrWzlcD8QxSkfUWK7ofxrhEVdQch72IjpvGqgrXOF45vnp1uCWPmGT94Xey42S7cxpYM16h+sNKEIriUEQLeqqwHCNmaKRK9rhr0QHvjExqoSXKkfn8G0+nWo8XMBPrww8Gjvp8P9TSoP9nLaZqMxkFYnWU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779984268; c=relaxed/simple;
-	bh=eKUvg/G5IKi/8bWdHHPVA9mSQbUVivO2us1BVsxbM7M=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cMSdCSVL3zHZqotd4eGDGXw7prBmnqfRYU3P1Sqed8pa7qk36YHPldl91QaVw1k4lbXI9cD1coXsLmf8YrfUVD8PF/G2v67hNKsINN425ZAjl9eWu84EAQSw1cbwAKXcJilT3dYxH1avb0P30T55eRmRr2wQSm8OxeYHR0VR6u8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P+kYZURg; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3802E2E541F
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 16:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779984364; cv=pass; b=FKDyLiWMCsdl+69sjup0LOxE6GKh8+LQj+rrTysupqtrsTpmK1IimCpOJ/AGQaqngQTWXiSz388knRMUC2CIStm6NpJrEX3sT5YIdBbj5NIOCaqpuZdxabtRnH+a/Q2LlXrzQux1sptSa9bSWYxxBget3u/fW8j3dGIgPEqIH6k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779984364; c=relaxed/simple;
+	bh=3WPDyIonSBCgGlVYifqoCBmZfz+ZrP/eDqswI+ER1VM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MsQkllHEIAwfso/sSiu5+x5K5LRCqXhdYXGD8GA6rFUp1mJvIqDAEUa9uWlkjIVCq69TFheeVIdZI6Oa9D6E7b3jiHsppLST6JPz6t4se+ik6ov/m9bAnvWZKlSLSFNFfGfUGqemy24g1dwtLE4mYl1G1gnRRE85gxEAS+kLom4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kan4fwwb; arc=pass smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P+kYZURg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0DF1F000E9;
-	Thu, 28 May 2026 16:04:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779984267;
-	bh=P5QPrEgXfm+Y2Iz1URDNCOQd0d4yChpgPIKYgRFIIh8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=P+kYZURg+77P4iY9UfG1Timg6vX7+uH/6R6tZ/T+uXYhnmnJm2ateYWU1ycWDkUy+
-	 695eF4ZnbD99sVtrl4KJ/M0SvDOIsGrkHSaN5rem6/8zwe5Q8qhy/XBRxTW3+MrCpo
-	 imCq0muqNEYOaWtZvC+i62ynvuSZfxLuaMM+fxvQNImgoADKQbvFBeDF3pPriuAlBD
-	 Enf7mZ4BQ+4Uub4rWHrdV7I3B/qK5XAjtJxCigQ8MlPgH82NTEOLPDtmtcq4IvGjdj
-	 /iTPmDeSLXAUNpoiwCprPg/VjD3bZP2WaVHfzmltKdSw3opAZkVeMpzK3IVeWkojA7
-	 jGukjCpx3wLuQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] KVM: selftests: hyperv_tlb_flush: use swap() to swap
- PTEs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Piotr Zarycki" <piotr.zarycki@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260528154003.3594107-1-piotr.zarycki@gmail.com>
-References: <20260528154003.3594107-1-piotr.zarycki@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 28 May 2026 16:04:26 +0000
-Message-Id: <20260528160426.DF0DF1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kan4fwwb"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-7dc6d090381so10738367b3.2
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 09:06:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779984362; cv=none;
+        d=google.com; s=arc-20240605;
+        b=k7kHGCpw3JcyAoUn2jW4J8EnTUMjvIPH5qa9IihJdd0tq1+02m1VwVo5YFqH3ixec6
+         z2Q4KNoUW5SNE74tTnh0asX/eswHHcJaxRUYlbRFQcSRb+TVZqmvJ5ZkgLiiloqkTQ1a
+         uf0i1Oq+pviNQ0YqqLhPuGNjxjBjC/b6oimTZGWs4pnxfEA82lHreqzdKVsc8GL7sjEW
+         /xfqTbDCBvO45aBqcOBI7/OPwEVXSuZU/jNUBWzuP2iGvrjX4kf8zUJkQwoCkCpgF8qn
+         gXd40ntujaLWELlVioDsy1QOkkX9bCHbwJeIUzk0mg1AwpvNLYoXOVxGNDqmsjHbMEjJ
+         diyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3WPDyIonSBCgGlVYifqoCBmZfz+ZrP/eDqswI+ER1VM=;
+        fh=Mn5+X4o8YTt3GJDX+wweM2gv6l2rgq8uq9h+a2rcXMA=;
+        b=E2uWcU0FU8akF4g8b5GFDpD1NvG4Qm7vtYAE2PPCdjs2yQTqsbAPmFSUU8xorNHVYL
+         3vlnG6U/LAC6BizBrVUE29e/wVOocrxau5ATUkiPK+mw+Ty2vEyqhBDiFo4E/hn+3Xqy
+         qYeRdYr1po/IhUzBLwlO4twVa1CeTwD1hUr54Eksrz5lsMhpr74R8/7ocCjVOpzeTxuQ
+         f/iN+G8kXEP+5+SPfFCLyJIlS04UcqndC4wo3KNOYE8+fW9YZmjel0TpC4uUldsM27pG
+         ihCRzwkos204hbSE1ys+y6UqKA7di/MAhQJ3fymauZA7UBQ5CjWC8LrS3modR7YBaKzw
+         Squw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1779984362; x=1780589162; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3WPDyIonSBCgGlVYifqoCBmZfz+ZrP/eDqswI+ER1VM=;
+        b=kan4fwwbJoDA1JSBkRixk879tO+eaQjG0CAu0rrprIcsRv1DhLEO4vvRvFFMFQReEk
+         4CL9lD/7Nsu+Ks7GOvftFJ/PHtadXR0NUnq58oPrtb6xege5azBmT+xtSh6dy/uCiEwV
+         v3txQQa90Km08BXePgILoh7DyoxjN29dP5Lu+So5j02HAOBmXDqBSS6VeaGJdzy+YJo9
+         7iREq+I9LBPWBeFdUcVLD7F/hz4RIVg/Jh8H4dRMGUsUT41ZGoW/N9otono3rLX8HlrN
+         CuOsufh3vpuvCBMB5mJ3U+rKZEK4JRclyf7wO9a9ctLvVS2ma6gwHvtV+9EAY/qIutPi
+         elfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779984362; x=1780589162;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3WPDyIonSBCgGlVYifqoCBmZfz+ZrP/eDqswI+ER1VM=;
+        b=M/5qJ84b7LpJpLX21GLm0SX4/T2mIBuHt//v6xDzophFM9u5vY8IruCyavnlPdsXq2
+         h2CWbO8SFOxFlVTQjFMlwdue9NTw2vny6aVFZ5GvFDpoA0ZHRbxE63LB9Yxgb0vHDJm+
+         HmclJvMIv4E54wshOaKZk2ce0s+Np31DzFsPqf+slYWpWfv0gsEEDDaEkgY3zpg3bnjs
+         CqjlHIjf7YWE4O0Zm0CGBubsyyVbPxtHk/0r3NWq7Omem3y9isgVmp5cz+7RtctkYcVG
+         qoZBLdWs2T2HqvRupd1tY5h7tkRpL0z1G6tNLGFvou8c4fTarABbCCSPISmnDVvLK9JY
+         SGiA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Uyk0q2uEW0tqGL7Sv3YSRsxBOoF2aYPGHJcdAPuDVMyvVCoZtT1v6ylLx4kghiuKpk6U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQsTH7cSHx4B/rLBpKiPl2C2R/JNBrkWXjE2ciQrkhcgx61ghZ
+	LwlT/GH+eFsg9bOULxQP0eHg6HPhovYYdITz1ugiCoN+L5MzWQdxd7rWMp6Ur/j+YIgg3Qgf2bf
+	RRfjJth6SORUbnXpWQhnbWKmWw9As3hM2mKDIJ9J9qQ==
+X-Gm-Gg: Acq92OE+XFN/ZmIfyT4WITuQAFZqUmHjK6M7tQUmZDQqzTCOk2Au/QG2T4yCFKDvFyh
+	LatRtV267L8cmn2gbulZKObzRGGWrn+9EixBEZep7D1cfxKIlfp29W/m9g7dWFBgr/aXvmy2PDy
+	EmoYgwR/9/giMz8t8uXwHctPGYIG7pFNk7L1lx5TSslSbsTgWZTmXGAjw77v3myjuGfFdh4AoV/
+	Hqc0eP5JtniSunZGhLbhhz42ZWHoTga2YXz0LbqTuw+Sp+u+DO3ve1PL/K3+NHxYI9xpIUwgZll
+	vDd3iVby5BGpoNAqO/sHvhjZ/g/GR0qYHvV/Y/aZ5NbRTSEilR0z3Pf3zbXiwNjIzoYtRO/AaKO
+	n1wLwdVkRtBKj
+X-Received: by 2002:a05:690c:368c:b0:7dc:2f45:d036 with SMTP id
+ 00721157ae682-7dc2f45d29amr46894057b3.41.1779984362125; Thu, 28 May 2026
+ 09:06:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260527114320.1581552-1-alex.bennee@linaro.org> <20260527114320.1581552-2-alex.bennee@linaro.org>
+In-Reply-To: <20260527114320.1581552-2-alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 28 May 2026 17:05:50 +0100
+X-Gm-Features: AVHnY4Kzu_yhLWNBW-7DlJzmuj9Pp4fD2a-EoJBaUpYYftjQUzoGD_6uwx3F36c
+Message-ID: <CAFEAcA_-rY7A0Q2GZcFBVd4WOn8S5TXM4kaAnz_Gzn2wHLnikQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/8] target/arm: fix WFET typo in syndrome
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Mohamed Mediouni <mohamed@unpredictable.fr>, Pedro Barbuda <pbarbuda@microsoft.com>, 
+	Alexander Graf <agraf@csgraf.de>, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Adding the `swap()` macro to `kselftest.h` introduces a macro redef=
-inition warning in the mm selftests.
---
+On Wed, 27 May 2026 at 12:43, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+> A stray x slipped in and we didn't notice!
 
-commit 677f4e84e8344f4b974940d4980c2813e71714b6
-Author: Piotr Zarycki <piotr.zarycki@gmail.com>
+You might mention that this didn't cause any actual bugs because
+at the moment we don't use the "WFET" enum value anywhere, only
+"WFI" and "WFIT".
 
-KVM: selftests: hyperv_tlb_flush: use swap() to swap PTEs
-
-This commit replaces the open-coded variable swapping in the hyperv_tlb_flu=
-sh
-selftest by introducing a swap() macro in the shared kselftest.h header.
-
-> diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftest=
-s/kselftest.h
-> index 60838b61a2da5..7f53751523d89 100644
-> --- a/tools/testing/selftests/kselftest.h
-> +++ b/tools/testing/selftests/kselftest.h
-> @@ -64,6 +64,10 @@
->  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
->  #endif
-> =20
-> +#ifndef swap
-> +#define swap(a, b)  do { typeof(a) __tmp =3D (a); (a) =3D (b); (b) =3D _=
-_tmp; } while (0)
-> +#endif
-
-[Severity: Low]
-Does adding this swap() macro to the global kselftest.h header cause a macro
-redefinition warning elsewhere in the selftests?
-
-The tools/testing/selftests/mm/uffd-stress.c test includes kselftest.h (via
-uffd-common.h) and unconditionally defines its own swap(a, b) macro using
-__auto_type. Because this patch adds swap() to the shared kselftest.h heade=
-r,
-compiling uffd-stress.c will now trigger a compiler warning for macro
-redefinition.
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528154003.3594=
-107-1-piotr.zarycki@gmail.com?part=3D1
+thanks
+-- PMM
