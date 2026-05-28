@@ -1,136 +1,155 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7072EA47C
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B91B194C98
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780009328; cv=pass; b=IZzO5Q+8cecI4xmD5NO8XHMzpl7q2jeiYcsIAWOjT9VNWgp7hvhO5LMkou8PPkfrRR4SkEUcHprCfOgYp0YUs7dSgdIMt6ic7gY6vWKeWwS/sTVeyzZfgy0zUhjQAsVpSw+bapa1lY8HtiFJkL3F4w6vP6U+dGVLMSR+Twzoxi4=
+	t=1780009351; cv=pass; b=JT7z3Yl+185yiIteiRprTQpKkB+Zq7rgMyBOi0dHnR++rQ9ENYyRxDy41XPSTaIU8rQXTkTxC5odSfTPiYu5klUf7AAYL14bkvHjoPFw4T7p4jCxnyyszI+6qrK2aMF66KZfT7w7yxe2H3vnWxZfqF5/QhHNUgIU6GV0vDPghgI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780009328; c=relaxed/simple;
-	bh=ts0310NVS84irQjXAL/V89Vvi+LCGn9zVinw6Aj3vjU=;
+	s=arc-20240116; t=1780009351; c=relaxed/simple;
+	bh=Ys5YWJyjUpS/tTCRPkjAUhkgYOqsYb4FXCGAKLn47/A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r/SsHWU7CVVZ8ZSMbtaHPTWwfT2pg0Ig4inCHL6FwmKrd3+ri8ydhFsYO+goNKosAb6+DKKWG8gKmfwK9MbCvWXPPhyu9LprLtEER9UM/8fjM7X33Epq2VBjlh6QWny/d5BUqhjJO1y2b6Oxm6DLnQvyidLLps0cXSN8D03sCdo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gKyQnU8t; arc=pass smtp.client-ip=209.85.160.179
+	 To:Cc:Content-Type; b=hKo3iwLXlU8D7D71yo9TsJ2PI6EuIIjTCCwwqjD1hnM5LmheqTCh92+YutTprGBWh4Lglv7I2No1KU0uKeVxQL6AEkeaB9O0zJkjmEmQqeyZ9mX8Xwt326XNA7hcYZwwzGXAzl+vd6fdN84YLG70j1ucDcDvZ2b8ahTdKqS2kUw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qmdKG7yG; arc=pass smtp.client-ip=209.85.160.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gKyQnU8t"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-516d1ddcdf4so1871cf.0
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 16:02:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780009326; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qmdKG7yG"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50e61648f10so8791cf.1
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 16:02:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780009349; cv=none;
         d=google.com; s=arc-20240605;
-        b=EVlIe1ZRpMjSr74yte1BH+NG403cHHcCfG7S30S36nbo7o9PtUhY/BLor080HDydVu
-         PGFqayTAgvzulEtbgXY5TccX3hfxaF4lFGh8Rx/42pWg2WELUUW2TjrVjST3uOIhSklc
-         /mQrGcygFiZbwYiKwSmOaf8c0fFfeO5lQM7vQXzlYnRgwFktluowXeFmqj033DF07F5a
-         GL8rZchLgoiJzdsfC3DkfxQqy60a+LCI6m+5def0DTuEY93JIDI1aU77CN8XcjrUGeIy
-         fnDyUXN8J9FHlcUUX46Zxgavbp1faZgTLuRHwgbPdRB+W3+2EXqU05lInWTJF0LwIRyL
-         35Dg==
+        b=ChT66kdrKM9F+K9K13EZsMSCWhZJxlI02lI/N8Zc0FaoiUEkfLEXYBY7UBzkayFF9J
+         CvPQ9sYkLYH6aU0Vy6itVYMFbNg3tSmD/Rf88AdgCfilyFIBFlCHChrvYhlYuYxXc4aV
+         gYv2cfJaDlEVHgvAD0Ogr0DFHB5SXkkJxh0NHlNOppA7RuINQnqcg4TkG78arm61vsJZ
+         YAGORyf5CTQfih/6WFlLA9mxm4dNFh7Uby1YMjCGBsgYgQ6qkcGqLVz/37gCXG8Bj4dG
+         8cKlH05IjWIDDPMl2NUmaTIFxek7TUYE1U4NS0rYqcYTdchBNsZzfmxm0Y9+UQeV/Ar9
+         Uegg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=AtpnK30NPSYs041J6tfbjVjHCITU0crTiELBmrfL80A=;
-        fh=42t/zt3978dZFupawhuITbHmyk/FN4t+FQQFsoMearA=;
-        b=DLcXyLGnB680BT6PnihIdXxL07oV/GocnMJEIUTw5C/IfP4IDZZGYk2Hi1R5fAlPwf
-         SlMt7SxCGdkN/fLFaBVWecqNr7yDl6SCZjCsxHBHkydvR9eE7ItAIOujrm0J1J+oj7of
-         k3ep/3GXB3MHCtWiCKTc1sTPQ+JQr7gS5GezGBUvQBK3WlAJ2VBgSX76p4bLj4SKZDyv
-         OIXT+Z3pWFnn7v8P/96y+02FabOW0Gazbpm27QUIluZ4p7TVV9OeDTOLt4g9m+tt2wV7
-         SjKBFfwbWcyc4+sFTdjlMqEWXjH1QleGUbt/gXPVs8HRNd3yjHdl8zTQnMlqQ3Krdk0z
-         jTlg==;
+        bh=Xwg+jbISvLhyapm1uoj8khKZjC/OWtORRE+im9Nb9ek=;
+        fh=rLixPcV/JuCDEqLfbPHgJm+So/X2SCePWKvIEQKYYI8=;
+        b=RC5nd9/h73dlgZ9azQUeNd9VQdZmaxydiKjZPJyWRGwJyT6zWu3cF5SToCeHfrfx4Q
+         0b95eFFWEHj60uFv/AjvwXM8p7K184cp/T9vx9onbf7UZlEHUZC9HC5n+hbUX3OQKu9Z
+         bOQB7RZmvOwBMXY9TpmG+AzHmH/JhkEC58IeYVkaRAH1j4yZDMEGDn/HQMe2PwCQi+Zg
+         I7z1co6ygJAdX9d0mrZBwdq49UHxQ4zvNjEFlNtRz/E1WM0dPazWLgsp113Db0khn5xH
+         C7HOF2HHI44oEQ7rti5YcS0V63ZwSVR3GMHbLPPfTO3achj8z8tHuWVYs+otpr2jaRx8
+         L+6Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780009326; x=1780614126; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780009349; x=1780614149; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AtpnK30NPSYs041J6tfbjVjHCITU0crTiELBmrfL80A=;
-        b=gKyQnU8tgJE6GvxHH9qNnbjWm+GTtQaNdhI0eYAI2FpVGDqdsYtLe1A8zg7myH256S
-         lM+egVy5Z2e8VHf9VG0rPvQ6w239hty9B2ZpwpXKQdmaW+oPPpsfVL0NuK//kgW24K3G
-         O7WD/uOWrJw8UuVc0o+XKE6Ofejt5PRKS2iPZ2bDP4yIw7afYsJmN4YzPzzeRMhvv1wG
-         CRH4jvEQdnW9R11cui+33nc2V+IRRElF3xBi0AbMLC4eFAMN4+nIglco+1k2j3sIcy8n
-         D+TWWrwgXf758leS47axwuhTqYgKD0yB5R+oyqDr662TgOq0qUsJLY4U7KZLscfdFJKP
-         pZfw==
+        bh=Xwg+jbISvLhyapm1uoj8khKZjC/OWtORRE+im9Nb9ek=;
+        b=qmdKG7yGRy+l5ujoOSd2xRCLS7Ocb8cwn/knVL20RjckHO26r9PLsxee5tyh2QVESY
+         Dd6dUZ51Y8gwPbi9vdHKmw+43X2MkrGrpejS1iCb6eKJs2eSOxCeB+Tw9vA+2OrJNQ0y
+         9sAQHt3n1iGDlOGeckHirqG5yGusKJUhObzbj5ZC2uycE/A0xsVFaecqSLVMD0Xe1ObF
+         3BIkxX9sdIRoG6b6y+TVD+SA4Ieql2LCWbfLvZ+DItZ8hWXKIUlWPZ47Mv5gcD6ZOYPl
+         MjMzSMn//sOMdlpA63bV+vyzC4nNmdiIBDGQnpsmwHZrXuT1Cdm9YxJ9cFHIwgbKNzhE
+         9KGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780009326; x=1780614126;
+        d=1e100.net; s=20251104; t=1780009349; x=1780614149;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=AtpnK30NPSYs041J6tfbjVjHCITU0crTiELBmrfL80A=;
-        b=qxqI6H947F7BbziI8lnn3M0ggHSKlmVDsSp9U4ClXK0NTa4lnm356m+pZrH2Wn0qG5
-         JKWEfQvdZO7lnFNyv2ypKlmMXlxD1qR2ApCbVfTaY03GQZPeqYOYmtiMUJJh56ChJ/C8
-         6ksMI0fthFRNlg4/R542ZsZoC16vqEOsCA6TqqH2sUTH0BJoeijUTXo8gA8gj0QZKrz6
-         sNFEM8CIu7xEyE6n/pazdjKJztHZlTlU0At+UeeQh8S0yyrgbynEP5qQUaq83Hzzot7t
-         XE1MPmqY4KrJZQlleAHfa4cWJoZbq+V2MH9Lo9H4pUD2F1XfGex+u8GwI3UwhFmwl4p9
-         2LXw==
-X-Forwarded-Encrypted: i=1; AFNElJ8vqvrMFr77Yg9R5pUthbGXXNqb7udmHL4Zx9Usa/DxRs09aTngQxtV7nLi0NnB9J0ejBU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYwjtlcpg4oCJDfFgGkPfQeHuGxL6/mH64jNlkBtjdkP8TQ/Ue
-	w2OSq1b2na56o4T0GTFQ8cj6uSaJp2vkFWMmGbXyyysxHWuBnS8YIt17mnbV3C67/yNUTLn+fUD
-	RN7a3/grRJcm2m2eidiRm1hwQrmfyoz6EUdJPakY=
-X-Gm-Gg: Acq92OEFd3CQ0zaCFtXkFtRZ7q3SooQkLvMMrzIBfWULqP/d3gVXG8bfhL5Usg1cwjB
-	J+qCXU+TkcNL9cka21MWbqW+mQDbERyylASZSPAIWTuuP0y4ZHmFleHIuK5RMPtVDFUskAUEdk4
-	CAT6WWG21cJTaZsuGX18bZu84DKLYULpBKrnFTNyB8QcqcCHoxSD66e87mr4qY51lTn8pBJ7LHe
-	CUc9+HqLfNyXc7j23xoQtRfkA6wAHTnYNL0VrhiLvpX8ySCTC6v4Lv3sb+2ZpezgyfCizTEo5s/
-	VhxDJAHQOK1LlEVNZXURqe/mkcRx53HpWMGKbOIheiN3xIs=
-X-Received: by 2002:a05:622a:d02:b0:510:f9b:fb5f with SMTP id
- d75a77b69052e-5172ddf7d2fmr2090641cf.16.1780009325915; Thu, 28 May 2026
- 16:02:05 -0700 (PDT)
+        bh=Xwg+jbISvLhyapm1uoj8khKZjC/OWtORRE+im9Nb9ek=;
+        b=X1nwVBNyX9PbJIruGPK9q2rUUewhMScfXaYLBLX8u0R2P+F0xwEga3fKSImhYb7Rt8
+         VfZzpzXOGfnjpyRmAc7flfMCcSKRc9qqWcJh5lywD7G/MHwWYE4SY9Oz/fx8DZJzv+ay
+         PVhmn6WQS2yC5yKJ/FNvwBP8+iagXtgPdVE1MUITKrGnSPuh1nS11t/xp04dr6JNvQPl
+         dQ4hJNomEWyKmB+R15jMYraMBR5APZTCB/do8aZb2uLeWmuQOUl6a8e82nhL0Rovl71K
+         kji2wsLboB6tp1c0KF86INPZ2HFitDGbLXERXwHiP0jO71Xii2WNK0IjFt0aRjMOqQId
+         NjZg==
+X-Forwarded-Encrypted: i=1; AFNElJ/krItfn6Cpsqas6T03zKJbEaH1xtl+PErLvINMn48r21shixXJWvg0G0QxFrjECpVeHF0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrVjC+PsbZxNctQYvfmy7hobwMDc9cxzCgEpr6ZjziRly0xdhX
+	3Dl59NRSYPYmMQPNNtjqrK3Pw3/dn8YLJG6Ewmti6Edytkqbv6C20uIy6rcRJxLPxI6JBWuL6LQ
+	tyGxPsyqJ2sv4r9NvMOsJTaGLESze1dRz/wsqrvvi1Dava0RznyYJrRE=
+X-Gm-Gg: Acq92OEy0/emROfdYY5Kbva+528P+eaJ0E7RC8mxBOibLH2Vg2JIojlMql8fyDejgcw
+	5HLmQjuxbXS1fJjnxgU3jJkqqgkxElbmKzUnKH9QHfNjEX3dtqUIHLHrchxaWmaa8N7SMol9jpa
+	M/KOE+6mYOCJEMyTAIkNVl/KLeYXboFC/BJh19qYX4jKVml6s5S1tPPS46EZ1QgDvQbFi52Ivtt
+	B71pclC1KT0Pa4UE1dKi4t54IwLeHJ14wsQspN95rMXIOSrj2zN6fZqsJrBUtWaf9OIcFmqqos0
+	cHO++ChfMDXFLQcbeQPTF/UD2STcUeWiZdbfMk5l663AkQ9N9rEoY0XIiw==
+X-Received: by 2002:a05:622a:a591:b0:516:4f62:85ea with SMTP id
+ d75a77b69052e-5172df66553mr1613561cf.21.1780009348892; Thu, 28 May 2026
+ 16:02:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260421231557.1254270-1-jrhilke@google.com> <20260421231557.1254270-6-jrhilke@google.com>
- <ahZPvCt_8J86Ak3F@google.com>
-In-Reply-To: <ahZPvCt_8J86Ak3F@google.com>
+References: <20260421231557.1254270-1-jrhilke@google.com> <20260421231557.1254270-7-jrhilke@google.com>
+ <ahZSrlqWwe77HWw6@google.com>
+In-Reply-To: <ahZSrlqWwe77HWw6@google.com>
 From: Josh Hilke <jrhilke@google.com>
-Date: Thu, 28 May 2026 16:01:53 -0700
-X-Gm-Features: AVHnY4KweaTk_K2-osStf9h8w_0Sy-p8ida00erG5d7COSEliAII9dnaTf6cmm0
-Message-ID: <CAAdrzjtsHdc=fWKc_GsuUfgMVwRgk5Vpu4r8tMwDOv7-FAmj6Q@mail.gmail.com>
-Subject: Re: [PATCH v3 05/16] KVM: selftests: Add helper to generate random
- u64 in range [min,max]
+Date: Thu, 28 May 2026 16:02:16 -0700
+X-Gm-Features: AVHnY4JghApBFFkwfJrZiK4BfUlNR05uahKZMrSJGxSPdwTmCMcN-RwHHKKJMvs
+Message-ID: <CAAdrzjsoJeCWsSmQOnbtyk_8JxXRfjxvdfTpeyaoNLJ-aKRUHg@mail.gmail.com>
+Subject: Re: [PATCH v3 06/16] KVM: selftests: Add IRQ injection test
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 26, 2026 at 6:58=E2=80=AFPM Sean Christopherson <seanjc@google.=
+On Tue, May 26, 2026 at 7:10=E2=80=AFPM Sean Christopherson <seanjc@google.=
 com> wrote:
 >
 > On Tue, Apr 21, 2026, Josh Hilke wrote:
-> > +/* Returns a random u64 in the inclusive range [min, max] */
+> > +     for (i =3D 0; i < nr_irqs; i++) {
+> > +             struct kvm_vcpu *vcpu =3D vcpus[i % nr_vcpus];
+> > +             struct timespec start;
+> > +
+> > +             kvm_route_msi(vm, gsi, vcpu, vector);
+> > +
+> > +             for (j =3D 0; j < nr_vcpus; j++)
+> > +                     TEST_ASSERT(
 >
-> Put the comment above the definition (But thank you for writing it!  I ha=
-d typed
-> up a response asking for exactly this, before I realized it was there, ju=
-st on
-> the declaration).
-
-Will do
-
-> > +uint64_t kvm_random_u64_in_range(struct kvm_random_state *state, uint6=
-4_t min, uint64_t max)
+> Thou hast committed the cardinal sin of leaking the demonic influence of =
+Google3
+> into the kernel.
 >
-> Wrap.
+> Never, ever wrap immediately after the opening '('.
 
-Will do.
+I'll grab my rosary beads to pay penance (and fix this in v4).
 
-> > +     TEST_ASSERT(min <=3D max, "min (0x%lx) cannot be greater than max=
- (0x%lx)", min, max);
+> > +                             !SYNC_FROM_GUEST_AND_READ(vm, guest_recei=
+ved_irq[vcpus[j]->id]),
 >
-> LOL, that's a rather hilarious error message.  Partly because it's so poi=
-ntless
-> (gotta love TEST_ASSERT()), partly because @min obviously _can_ be greate=
-r than
-> @max :-)
+> Hmm, give how many times this shows up, maybe add a wrapper macro?
 >
-> The "min <=3D max" that gets printed is pretty darn self-explanatory, may=
-be take
-> the opportunity to throw shade at the user/developer?
+> #define GUEST_RECEIVED_IRQ(__vcpu)      \
+>         SYNC_FROM_GUEST_AND_READ((__vcpu)->vm, guest_received_irq[(__vcpu=
+)->id])
 >
->         TEST_ASSERT(min <=3D max, "PEBKAC, min =3D 0x%lx, max =3D 0x%lx",=
- min, max);
+> Then this becomes:
+>
+>                         TEST_ASSERT(GUEST_RECEIVED_IRQ(vcpus[j]),
+>                                     "Blah blah blah");
+>
+> > +                             "IRQ flag for vCPU %d not clear prior to =
+test",
+> > +                             vcpus[j]->id);
+> > +
+> > +             /* Trigger interrupt */
+> > +             eventfd_write(eventfd, 1);
+> > +
+> > +             clock_gettime(CLOCK_MONOTONIC, &start);
+> > +             for (;;) {
+> > +                     if (SYNC_FROM_GUEST_AND_READ(vm, guest_received_i=
+rq[vcpu->id]))
+> > +                             break;
+> > +
+> > +                     if (timespec_to_ns(timespec_elapsed(start)) > tim=
+eout_ns)
+> > +                             TEST_FAIL(
+> > +                                     "vCPU %d timed out waiting for IR=
+Q from GSI %d (Vector 0x%x) !\n",
+>
+> Best get to reading Dante's Inferno.
 
-I love a good roast ;)
+Which circle am I going to? Need to know whether to bring a parka or
+one of those mist fans people use at the beach to stay cool.
