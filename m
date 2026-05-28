@@ -1,81 +1,94 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33F13B5847
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 17:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949AC4028CF
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779991139; cv=none; b=XhHCNF9KH4APG+iLoevo0K58ZFdwPORh0DPy5ZDGCNAM8iZgG8lgUFpIUU0mT2V2Q3pY+gf5uzeKJbHk8FUuGvh0gTuILn6+/lN+X1d5OtPlAI9S3rqQTGIuA4Sy1rLYBoSATRt1AgXziDJKPKIh73t3Z61IzANGB6mv/sA3lrE=
+	t=1779991277; cv=none; b=MzNtX6GLThFa3etmWDVvkyQO00KdmfTcRTVP9jKswAGqNgToep108n77u1mIe05yCuV/fjaJtWGfI1TMD9FAVvwODTrGy6NwgomDXn5fAVnS/yB56mZTsMpGlaRJyWk2afQTrK+z8vRLFy4OCRqIzYgoXxj1jox/MFhPQ/wvQUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779991139; c=relaxed/simple;
-	bh=ZqBcudEw9Z6vSLnei2QIjH60VApuA7OKpc1Dfb5/E0M=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gMGXqwX8fYSpDtqAP9M7Em0DJeobDEJmlottOf98gH3se0AWDrZRbOL1Ej2+JIStZUhiJgDFsv/7pb3dP4mxnZ9anXy8oQdMvJbaInXnctD52PKZVzVAvIrw1ZpKnS9YdFHKT0mWdGmAnU/MAq6admTLprkWkaeA8oCGDQSfxuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r465Oa0C; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779991277; c=relaxed/simple;
+	bh=1hn5YJzkxLhRI3XqC2gnKN/osRX1SPQ92F3PeYRvdkE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MgUdUuax+himU4MDYhIbu+CbpTDUE/jULkYrhX803N1fCzit+awtg/F+BdgJleWSoDP3iZrNXPkkaJUWrN1hUSEqjc+hR2at5eHNU6hFcElJhbM+9LWhwLeOX4CL7iMjVQH/Yn24Iq73wXOezCyG2b5CZ81kBwL8MJHlrbJZWMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ee/CdgWR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r465Oa0C"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36b808bedfaso1549376a91.1
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 10:58:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779991138; x=1780595938; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fz3t5lbB71ohvi6IyaDk9/HoF4A21GuANEUjdy5yBoI=;
-        b=r465Oa0Cv5rKfZE4dss+bSXpWnLnem9ZgILVczVeomUiKS2RfLTm09jtHYTBoXEHFj
-         LTjXeCGqVYdBSTu7IsLlXT95fsHio8Q5NgjmnVDUkEglomVwY80XjhYdO+enfZowqLnt
-         e0y66Q5egmxVxBBdL9bZgH3XxJtOKWoivyjmJ4sSqhL0xqmoJpksS8J5ulTG8z0QHrgm
-         uJqOhF5lGpVv+iOhdtLWlPOJezZiMeJe7Oj8en6J9f50RB44E6CIMULDJGOCws1Dtdm5
-         cTgzQmEywtseeuZ3NONubaaF13H+Zd11Vm9yRpTV1l77GOWeOS/EUjSJPVzQ8L/QIx1X
-         rN0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779991138; x=1780595938;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fz3t5lbB71ohvi6IyaDk9/HoF4A21GuANEUjdy5yBoI=;
-        b=ooiHnsCoHsKt4Vtry+Gu3QrgM85yhRS2wbs1uv8pAr1+LEXO3DX0kzP8hJtYe+2QMW
-         6BmX4k0m6K8RsWaEBaOaNk8zLjPT3Xk9QmdQFouHYX/0sG05IFE+ZVxcs2N4myjY6UHC
-         1r01PdI1iA/61PtkTgjjUgmKicftj8hmOARI/FS3vE8VlkJvNyy/PN15Knuxuq1W3Txd
-         brfJmOSbREhvHTt20hyfTXMeWBoS1ADWP78luQ9EsoMGj/UPd+hiyc9xaFN7oa62FjUY
-         COfNSQjQKKXjaVkD60f0PUiGdlngCagsjqIFWD7XDKxAgF6wPu16B1QQVjxR7uTwbcBm
-         7IfQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9WUKyRVydwUiJMTbn6JAbzqS+TJmBAIWxPjXe9FuwkCiLoGh9rboD0g96FsRE+pnXigGQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXRmKmT+oSJ/f1JnJ/X8F6lrmGKO+2NVmoIda0BO9bBMkXir4l
-	Qj71BUOQvx1Wey1MCxJoEuu9UBfGVD2lHhcfd3OUvYmIYYJXabPsIo50FxLAuJuMp2udnnyREdB
-	Ez9DYqQ==
-X-Received: from pgah14.prod.google.com ([2002:a05:6a02:4e8e:b0:c82:7805:9e52])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6005:b0:398:bbd6:80b9
- with SMTP id adf61e73a8af0-3b328d6bffemr30557506637.23.1779991138002; Thu, 28
- May 2026 10:58:58 -0700 (PDT)
-Date: Thu, 28 May 2026 10:58:56 -0700
-In-Reply-To: <CAO9r8zM5YDdGY0nJ6E_0OFtiTosPG7owhSEZ-cd9hRJvaPagSw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ee/CdgWR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539B61F01558
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:01:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779991276;
+	bh=SKkCuNebNzBFgHPFFB39Dbr205adDp6mF0qE0r+N75I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Ee/CdgWRJUoXmr7gwV4dX3u4KD5B29ELWG5sVvFp8yRMfTYvT6vQuqdiqfpIc7bM7
+	 vWDo6UwJdlQt8C9ZGKAFzTTK5QjzgEYoP9lI8ukxGDA8AAHKJcklJ5GJ01JxOOLTNt
+	 mbLsKBT9o5mwTrQgqrtQdE5/SS2LiEZBuRw6Lg/MsLcABQGK9I2ON12ad0Fr6Ud9h3
+	 +lHyU28KHikxCTX86j9xGHI1hJKWwl8Rr9vDgUnY+hlPM+GTt3hGsWdr9YlHGUAdkv
+	 hEjhMip9dncXpZ9xYpxnPntIsh2GqM56BQpPsO8rAVd8MHUJ2437n4BZ7zdDoUAmSN
+	 mLa12a53jvX1Q==
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-bd8f9889a8cso1583513466b.1
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:01:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+IGFv/i3J5tHHSK9XeEdjVFdePZq1qUM2FbpbhzsdV9yFywEL8lVIQWGvkyftctd4rmTU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyBKHhd/Y5fHC1ZTaEMk2B1XwUlmFJp9b4KvUIvhiABIz1B+3s
+	JlLb19q1g8LM6PEZpM970XaUyftfq1ib67mBK/IGoxxrLM/RdDtsH/klO/OZQJRDH4iiXHWlv0D
+	P5jsC2oPzk0tPlYL4QvEZKTu9Lmk9T8Y=
+X-Received: by 2002:a17:907:944b:b0:bda:25eb:1893 with SMTP id
+ a640c23a62f3a-be97299d287mr15529566b.20.1779991275164; Thu, 28 May 2026
+ 11:01:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260521175948.522757-1-yosry@kernel.org> <aheT_AUgWYJxZJlR@google.com>
- <CAO9r8zM5YDdGY0nJ6E_0OFtiTosPG7owhSEZ-cd9hRJvaPagSw@mail.gmail.com>
-Message-ID: <ahiCYBf_WQ5IzX1n@google.com>
-Subject: Re: [PATCH v3] KVM: selftests: Add a test for gPAT handling in L2
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
+MIME-Version: 1.0
+References: <20260527234711.4175166-1-yosry@kernel.org> <20260527234711.4175166-18-yosry@kernel.org>
+ <ahenmnACHMNKO3WC@google.com>
+In-Reply-To: <ahenmnACHMNKO3WC@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 28 May 2026 11:01:00 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNzFWYBqZ_ACC_rfaYoxARn18UdUUymkYaroXizj_+cog@mail.gmail.com>
+X-Gm-Features: AVHnY4ICC6hM--Zx7Tg_EpPXkrARphCKKvzfR3G7G7HBs0vNKsXYOHfXSbodiZY
+Message-ID: <CAO9r8zNzFWYBqZ_ACC_rfaYoxARn18UdUUymkYaroXizj_+cog@mail.gmail.com>
+Subject: Re: [PATCH v7 17/17] KVM: selftests: Add svm_pmu_host_guest_test for
+ Host-Only/Guest-Only bits
+To: Sean Christopherson <seanjc@google.com>, Jim Mattson <jmattson@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Sandipan Das <sandipan.das@amd.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 28, 2026, Yosry Ahmed wrote:
-> > If we're going to use macro shenanigans, let's actually use them!  I've got this
-> > working, I'll post a v4.
-> >
-> > #define gpat_test(test_name, guest_code, npt_input)                     \
-> > do {                                                                    \
-> >         npt_input;                                                      \
-> 
-> Oh I like this very much. Passing in "npt = true" or "npt = false" is
-> great. I wouldn't call it npt_input (maybe npt_setting or sth), but
-> that doesn't matter much.
+On Wed, May 27, 2026 at 7:25=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Wed, May 27, 2026, Yosry Ahmed wrote:
+> > +int main(int argc, char *argv[])
+> > +{
+> > +     struct kvm_pmu_event_filter *filter;
+> > +     struct kvm_vcpu *vcpu;
+> > +     struct kvm_vm *vm;
+> > +     struct ucall uc;
+> > +     gva_t svm_gva;
+> > +
+> > +     TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
+> > +     TEST_REQUIRE(kvm_is_pmu_enabled());
+> > +     TEST_REQUIRE(get_kvm_amd_param_bool("enable_mediated_pmu"));
+>
+> This can and should be handled in a helper, using either host_cpu_is_inte=
+l or
+> host_cpu_is_amd_compatible to choose while vendor to query.
+>
+> > +     TEST_REQUIRE(host_cpu_is_amd && kvm_cpu_family() >=3D 0x17);
+>
+> Why the family check?  Actually, why check host_cpu_is_amd at all?
 
-I like npt_setting.
+I assume you mean that we don't need host_cpu_is_amd because we
+require X86_FEATURE_SVM above? Unless H/G emulation doesn't really
+work for cross-vendor emulation? I honestly don't know.
+
+I will defer to Jim for the family check, I took this as-is. My guess
+is that maybe older families did not support H/G bits or some of the
+other PMU features used by the test.
