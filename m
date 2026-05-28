@@ -1,94 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa9.hc1455-7.c3s2.iphmx.com (esa9.hc1455-7.c3s2.iphmx.com [139.138.36.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2D7340405
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 22:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE873346BE;
+	Thu, 28 May 2026 22:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780006379; cv=none; b=qdxrx4bOq8Y0gONf/8OM3b8gXMzWIkXPQ3CqdFQ+99GeIBRS0wsoyaAiC0jbDSrmxoa/0TjA0HlcaeInn6zwG5nslQuU05JptFkdkSUOL2hit5G+CQ55An18cxGQ5D3jW3QpgYTm0SBrtwO+cx894h9f09PmhQKiUMFlj38ON/w=
+	t=1780006459; cv=none; b=k+FIuNl8SPsoTdOit2m/1duFEKYL10mUdz06eU8M49IsoHEo6w8Nz7xnHpDS+BHyfruVqg3lB9mtj9UFJ0vlOZSMVwE4vNzCjTyqpZHApNw0Gl1tYsWrDqYvDzH3AWS1aZkXq5Qph8v3n1Si6PdIjtnJU3+losVTDT7t/BCyCEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780006379; c=relaxed/simple;
-	bh=jgbqz6eIQF58YkyQEmzEEc2oMlTbRn7MPg4Jz/evSCU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eyszFL7k1hk7IQ2p5nVIb8QdlfbGdRadXTxIugi13bHBaY4Ifl07z0QPnNAMxDE86u7bf2a7H7XD2nWyk0Zav5av2ZUp9jWAMIm1CEM4sUQwK9q3RmSWDYJHG4FqO9k1oYM5zJXCnQ6gAck+uKTPBVb+gj3rBBkP+NYdBTYR/Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQ1JLxYo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780006459; c=relaxed/simple;
+	bh=FWIBzXhLkf8QASpXt/e0kLaIXQ8j42MXyINrPuFKZF0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nS1BRXZkQmpVxUH9SzFQ2o6oodcTfUOSbce93by0jnoCQH434w39u1vxi+qGmNnjFobSlLk6o02wxWhn5eSppU3SVDTVcWUT8wsXxUskAnm7YFAVpH8yBzlHmlac+TH3LBsooBsxhyIVurpxVCJKh38prNORORk5dOO4/PhoEEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=UbDmhZgv; arc=none smtp.client-ip=139.138.36.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQ1JLxYo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA4E1F00A3A
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 22:12:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780006378;
-	bh=ewqX6HNUiCn2x5rR1E0zpP4kogsLFhvBW0yMF9l/S4k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=aQ1JLxYovBWEGth4BfgDzElPeXXLXcBFx+ZJ8tnrKolA+0tSWCRv5Ymw3AiLq/UQn
-	 QuWuvIx6b4iKX5nN1w1XD9G1dnKER7TULxo8QcRKz/4uNKZr4ujajzdvidLe3DYIqh
-	 DIFq5g1HT9lFgARfDBG1tpuEO0EbbutNGteVmpuFC9Ha2XjLBxUfBuyyjgxyGX59xT
-	 GlsdYzEH+g3Aov3mUNhL+O3+GG36E+9FcivDfM6+tC2GpFMLxVg6F1yZtumf3B+qD1
-	 pq1iZOSLrod5nOV+Py0L9ZoKgnWpFOXvDsVmkGuJMlyZWkRJ2/Q7Gc/fm6Vj8+IrOK
-	 C6C0yacg0daOg==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bce57c132b2so2352568266b.0
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 15:12:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ86jEXkfsyc5MZG1emKn3Fnu6yp62upN4J25uX+fZiq/ZG0y4/snGfCKQn1kG9LWtpriLs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYYs6FA4xr1eizxD6P7GpIrG0PJzeUvnOUBwKOxGosc9KMof2Z
-	DSnMl4Jk+U4/7elPPrRxS5VmlAWKHLmOffHjUcQe93sJbvohk0KpqYqAla+eqludkX/XHI6B9SW
-	xd/VDp/lw9Vx2PdmJ+HCQEd8D4sDiMpQ=
-X-Received: by 2002:a17:907:72ca:b0:bd4:8286:466d with SMTP id
- a640c23a62f3a-be9a5e40e50mr18546566b.12.1780006376881; Thu, 28 May 2026
- 15:12:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="UbDmhZgv"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1780006457; x=1811542457;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FWIBzXhLkf8QASpXt/e0kLaIXQ8j42MXyINrPuFKZF0=;
+  b=UbDmhZgvL0O+JZB1wS+gBfvXh0pv41RQKw7qmlR0syFXz+EcuJQPmhzq
+   Kh5YYtyNF5c2nyrx74Kq08SpIcLq0SDkbUCi7HP0qo2VpD5svLGGdooLY
+   oMZWfjk9M+DQ2Tp61J6Auq27zIGulBCqCHGEiCY3t1qcxR+PvMiOPVZQu
+   g9I3WQaOmyC78trFvVY5RS3Ztz/XZRpSth8ROHqK317h7GGIK0lC3MENR
+   d4WW8gQLn6XhTIwMQNUrZIZohfaFQF3+0puKB8mBn5nyRNQqA1qVOK2h+
+   5xefAUrwU/zGsX/EAeFjQzDEylnVdpCw6uvxpNrunRSYu3j0hkwlvWI0d
+   Q==;
+X-CSE-ConnectionGUID: HsdRsbaiQbSrc9Om8Y1f4Q==
+X-CSE-MsgGUID: L9tAxflHTEasNOg6SR6oSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="229565395"
+X-IronPort-AV: E=Sophos;i="6.24,174,1774278000"; 
+   d="scan'208";a="229565395"
+Received: from gmgwnl01.global.fujitsu.com (HELO mgmgwnl01.global.fujitsu.com) ([52.143.17.124])
+  by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 07:14:15 +0900
+Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mgmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 991912BB4;
+	Thu, 28 May 2026 22:14:15 +0000 (UTC)
+Received: from az2nlsmom1.o.css.fujitsu.com (unknown [10.150.26.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 4F35DC19F6B;
+	Thu, 28 May 2026 22:14:15 +0000 (UTC)
+Received: from sm-arm-grace07 (unknown [10.124.178.20])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmom1.o.css.fujitsu.com (Postfix) with ESMTPS id 1348B82C235;
+	Thu, 28 May 2026 22:14:09 +0000 (UTC)
+Date: Fri, 29 May 2026 07:14:07 +0900
+From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+To: Wei-Lin Chang <weilin.chang@arm.com>
+Cc: catalin.marinas@arm.com, joey.gouly@arm.com, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com,
+	shuah@kernel.org, suzuki.poulose@arm.com, will@kernel.org,
+	yuzenghui@huawei.com
+Subject: Re: [PATCH] KVM: selftest: arm64: Run shadow_stage2 varying guest
+ modes
+Message-ID: <ahi-L_HQXkxPuCYL@sm-arm-grace07>
+References: <20260516183003.799058-6-weilin.chang@arm.com>
+ <20260528045930.450339-1-itaru.kitayama@fujitsu.com>
+ <r2dui45c3mp2qzns6dplqj6pfima5tq7huhvbwus225xamuccn@aw753ihdimz5>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260518202514.2037078-1-yosry@kernel.org> <20260518202514.2037078-6-yosry@kernel.org>
-In-Reply-To: <20260518202514.2037078-6-yosry@kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 28 May 2026 15:12:45 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNqYA6CACeGTVLcyj4bJ2XPAzEXL+y9tLuCU5Y-F=D-WA@mail.gmail.com>
-X-Gm-Features: AVHnY4KEKQ1lWxVA2Fh4mMSVDYgJWgPC8N_82F-w679hlsEdWu04PhhPOSH1odU
-Message-ID: <CAO9r8zNqYA6CACeGTVLcyj4bJ2XPAzEXL+y9tLuCU5Y-F=D-WA@mail.gmail.com>
-Subject: Re: [PATCH 5/8] KVM: selftests: Add basic stress test for
- save+restore and #PF handling
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosryahmed@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <r2dui45c3mp2qzns6dplqj6pfima5tq7huhvbwus225xamuccn@aw753ihdimz5>
 
-> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-> index caefcd12df8d2..6708fa8b6a304 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-> @@ -343,6 +343,17 @@ void virt_map_level(struct kvm_vm *vm, gva_t gva, gpa_t gpa,
->         }
->  }
->
-> +void virt_map_page_tables(struct kvm_vm *vm)
-> +{
-> +       gpa_t gpa = KVM_GUEST_PAGE_TABLE_MIN_PADDR;
-> +       struct userspace_mem_region *region;
-> +       u64 pt_size;
-> +
-> +       region = memslot2region(vm, vm->memslots[MEM_REGION_PT]);
-> +       pt_size = region->region.guest_phys_addr + region->region.memory_size - gpa;
-> +       virt_map(vm, gpa, gpa, pt_size / getpagesize());
-> +}
+On Thu, May 28, 2026 at 05:02:30PM +0100, Wei-Lin Chang wrote:
+> Hi Itaru,
+> 
+> On Thu, May 28, 2026 at 01:59:30PM +0900, Itaru Kitayama wrote:
+> > Refactor main() to use for_each_guest_mode() helper to create
+> > a single VCPU VM with a guest mode ID.
+> > 
+> > Signed-off-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+> > ---
+> >  tools/testing/selftests/kvm/arm64/shadow_stage2.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/tools/testing/selftests/kvm/arm64/shadow_stage2.c b/tools/testing/selftests/kvm/arm64/shadow_stage2.c
+> > index 5bce55abdea7..05acca22eafe 100644
+> > --- a/tools/testing/selftests/kvm/arm64/shadow_stage2.c
+> > +++ b/tools/testing/selftests/kvm/arm64/shadow_stage2.c
+> > @@ -105,7 +105,7 @@ static void guest_code(void)
+> >  	GUEST_DONE();
+> >  }
+> >  
+> > -int main(void)
+> > +int run_test(enum vm_guest_mode mode, void *unused)
+> >  {
+> >  	struct kvm_vcpu_init init;
+> >  	struct kvm_vcpu *vcpu;
+> > @@ -114,7 +114,8 @@ int main(void)
+> >  	gpa_t gpa;
+> >  
+> >  	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
+> > -	vm = vm_create(1);
+> > +	vm = __vm_create(VM_SHAPE(mode), 1, 0);
+> > +
+> >  
+> >  	kvm_get_default_vcpu_target(vm, &init);
+> >  	init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
+> > @@ -163,3 +164,7 @@ int main(void)
+> >  	kvm_vm_free(vm);
+> >  	return 0;
+> >  }
+> > +
+> > +int main(void) {
+> > +	for_each_guest_mode(run_test, NULL);
+> > +}
+> > -- 
+> > 2.43.0
+> > 
+> 
+> Thanks! I think this is valuable.
+> I can add your patch into the next version if you don't mind?
 
-This is wrong. It tries to map the entire memslot for MEM_REGION_PT,
-starting at KVM_GUEST_PAGE_TABLE_MIN_PADDR. The problem is, the
-memslot is shared with other things like ELF. So this tries to map
-everything from KVM_GUEST_PAGE_TABLE_MIN_PADDR (0x180000) to the end
-of the memslot (0x291000 in this case) using identity GVA->GPA
-mappings.
+No, I would not, for the record your test rans with all the available guest
+modes without an issue (ie ended DONE!) on QEMU in tcg mode.
 
-When using clang's LLD, ELF starts at GVA 0x20000, so this tries to
-remap the ELF GVAs to a different GPAs, and an assertion fires in
-__virt_pg_map().
+Thanks,
+Itaru.
 
-Without LLD (when I did my initial testing), ELF starts at GVA
-0x40000, so it's outside the range mapped by virt_map_page_tables().
-
-We can fix this by creating a separate memslot for page tables like
-other archs do, but I think for this case, it's probably simpler if
-the test just walks the page tables and maps them. It should be one
-page at each level.
+> 
+> Thanks,
+> Wei-Lin Chang
