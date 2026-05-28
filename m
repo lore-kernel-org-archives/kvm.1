@@ -1,126 +1,117 @@
-Received: from esa4.hc1455-7.c3s2.iphmx.com (esa4.hc1455-7.c3s2.iphmx.com [68.232.139.117])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D83D30C63B;
-	Thu, 28 May 2026 04:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834231F938
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 05:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779944392; cv=none; b=LAPNDhyIGMhFtVPTmcR2xqILMM7WykSUGCnGzRsoq9rYF12mQKN2Z1oXGy8LIPmmJhok3pf7xqeGroeDdBJPHtyuUhiO1wrKA2ZRY0t07yNRmWkDGAPip98FJPXkkWSaHyLELUeHhUZotdWK64dyYZN/ZkIXfUarhIxlbhlr0Ik=
+	t=1779944602; cv=none; b=Dcex0ZRoV8Ylpciuydi7NLIMgJtODMEBHz/pG84JA0hBkEC1wle8KuVYBYWxEVRE8SAX4m3bdahU8Gm8zw4vL48UZibLTJYjmR06SdD8nCCwySiaahwYtA5RZx60JDgiKGffQmx9eiVAUaywspLd1oBD1SBHi8Lm4/F/foX1Mkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779944392; c=relaxed/simple;
-	bh=VPHE8yc9++1Vdm0H0mvGHvExX7WWaEVR/unz16UcOc4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gV0uxs1c+Anb1w1Bc26eYBq7o8G3LLvoFQpyPL8RiUDjyzH8ktBpMRGmEjfD0uexkG4b/eJgE3//GcNvNdyb3lFrLIXRJNZKfmdBx4231uD2xXL6qrPfGi9vWDTSqg6GrzbD3UsMsl52hA/R5iXvTo374CBnKBol/T9Iiv6/Ns8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=Lpz/ebQf; arc=none smtp.client-ip=68.232.139.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1779944602; c=relaxed/simple;
+	bh=rDQOxxxSBx1DSW2b6HbCu4OKCaBO5K35yqDlaOATt6g=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=fH04eS+nCZs4uEQHKttTJY4+rUnuaIn8VnEvL2r+b7F4WTafGewdNXuPQGXYKzc3QcXiR8XymPBr9MJLrHv6Hdh1+ElXkinat2WsK6VvlA0tlqZbAyHfXQKMUzpbv6TaC8vasPr07dwvcQYATFIyI4X9ByUeV1FjYC0Fq0UKkG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WzNwEzo6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="Lpz/ebQf"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1779944390; x=1811480390;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=VPHE8yc9++1Vdm0H0mvGHvExX7WWaEVR/unz16UcOc4=;
-  b=Lpz/ebQfXObIO422FyNAlwtz837jhUyu2lZAR88xpQ1ulS9dF0B+uZcR
-   dE52xxsPV02pGNScfeYilEgTdIvUWSsbPckMQRT6j6CpKVA6GpB48MoVM
-   n468QUCuURxV5Nkmr+D1cM0PlUoa9oLyoDEdJoDCo9dqzaD4VQCLZVyrH
-   maPFYlynsjaDw01eNwtHeP7qMNU258i+Z59LgFCGNufI1uVnjlMh2HJIJ
-   67bxamTpHwFMhVxz/whyesocMAfHSkG1JtIVRy1Kj5307l0u6IMRh1I3T
-   x93EtJPR2wFgXi7OyvElPG7VafGETj9C5q4wf+uYIKzE5C+taBUXqu2al
-   Q==;
-X-CSE-ConnectionGUID: thABvmsOThuSmNFJMnIO4A==
-X-CSE-MsgGUID: Nd5j1YTPTHWhrLoHiJwJTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="241530603"
-X-IronPort-AV: E=Sophos;i="6.24,172,1774278000"; 
-   d="scan'208";a="241530603"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 13:59:43 +0900
-Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 5DE221C000E7;
-	Thu, 28 May 2026 04:59:43 +0000 (UTC)
-Received: from az2nlsmom3.fujitsu.com (unknown [10.150.26.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 0C41C1C4DEAD;
-	Thu, 28 May 2026 04:59:43 +0000 (UTC)
-Received: from sm-arm-grace07.ssoft.mng.com (unknown [10.124.178.20])
-	by az2nlsmom3.fujitsu.com (Postfix) with ESMTP id 9EBC7101E475;
-	Thu, 28 May 2026 04:59:37 +0000 (UTC)
-From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-To: weilin.chang@arm.com
-Cc: catalin.marinas@arm.com,
-	itaru.kitayama@fujitsu.com,
-	joey.gouly@arm.com,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	maz@kernel.org,
-	oupton@kernel.org,
-	pbonzini@redhat.com,
-	shuah@kernel.org,
-	suzuki.poulose@arm.com,
-	will@kernel.org,
-	yuzenghui@huawei.com
-Subject: [PATCH] KVM: selftest: arm64: Run shadow_stage2 varying guest modes
-Date: Thu, 28 May 2026 13:59:30 +0900
-Message-ID: <20260528045930.450339-1-itaru.kitayama@fujitsu.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260516183003.799058-6-weilin.chang@arm.com>
-References: <20260516183003.799058-6-weilin.chang@arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WzNwEzo6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD3A1F000E9;
+	Thu, 28 May 2026 05:03:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779944601;
+	bh=EHOVr1wPshRCZx8z5C3nKjsUMIyxufovc/8SKG6WjPw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=WzNwEzo6ZvfD0EgUcgAkqpLG0APml+PqXIlLcaWFbN6H9zchqvbUvb66yCrozq/tt
+	 bIexsermU+yH6a1dYIOSFDZqn6vSQ4FpDPC76X8SUFNHc+pBADHwOlFKnh/uXZOkQn
+	 R9qkMiw9egLiVZ8C7HvIJHhXUF2wqXRNWV0/7cmq2AvegD7oKfAbOzLnUPaOg5kd/Z
+	 6gw+ZIhurkdyw6ZsjWGGeZ3ry2u9Uqdxm9MuVDbML8AGYNh/Dc4ppW6aeEiVeRTptH
+	 hgdOdtwawhpkqvqhDyCQDyOtVoobhv3KyfYogE2H3HDvgoF0sskonw9lr8RTGkIHSY
+	 /GSJ2yNgXwbtw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 5/5] KVM: x86: Expose Zhaoxin RSA CPUID feature
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ewan Hai" <ewandevelop@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260528032234.1322565-6-ewandevelop@gmail.com>
+References: <20260528032234.1322565-6-ewandevelop@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 28 May 2026 05:03:20 +0000
+Message-Id: <20260528050321.0DD3A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Refactor main() to use for_each_guest_mode() helper to create
-a single VCPU VM with a guest mode ID.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Exposing the RSA big-number arithmetic engine to untrusted guests =
+creates a severe local denial-of-service vulnerability (Instruction Time Do=
+S).
+- [Low] The newly added X86_FEATURE_RSA and X86_FEATURE_RSA_EN flags were n=
+ot synchronized to the tools/ directory.
+--
 
-Signed-off-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
----
- tools/testing/selftests/kvm/arm64/shadow_stage2.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+commit 39b1d23089ffb8d188fc17bb71d4da69fbf1ff4a
+Author: Ewan Hai <ewandevelop@gmail.com>
 
-diff --git a/tools/testing/selftests/kvm/arm64/shadow_stage2.c b/tools/testing/selftests/kvm/arm64/shadow_stage2.c
-index 5bce55abdea7..05acca22eafe 100644
---- a/tools/testing/selftests/kvm/arm64/shadow_stage2.c
-+++ b/tools/testing/selftests/kvm/arm64/shadow_stage2.c
-@@ -105,7 +105,7 @@ static void guest_code(void)
- 	GUEST_DONE();
- }
- 
--int main(void)
-+int run_test(enum vm_guest_mode mode, void *unused)
- {
- 	struct kvm_vcpu_init init;
- 	struct kvm_vcpu *vcpu;
-@@ -114,7 +114,8 @@ int main(void)
- 	gpa_t gpa;
- 
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
--	vm = vm_create(1);
-+	vm = __vm_create(VM_SHAPE(mode), 1, 0);
-+
- 
- 	kvm_get_default_vcpu_target(vm, &init);
- 	init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
-@@ -163,3 +164,7 @@ int main(void)
- 	kvm_vm_free(vm);
- 	return 0;
- }
-+
-+int main(void) {
-+	for_each_guest_mode(run_test, NULL);
-+}
--- 
-2.43.0
+KVM: x86: Expose Zhaoxin RSA CPUID feature
 
+This patch advertises the Zhaoxin big-number arithmetic engine to guests
+by exposing the RSA and RSA_EN CPUID feature flags. It allows guests to
+use REP XMODEXP and REP MONTMUL2 instructions for accelerating public-key
+operations.
+
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cp=
+ufeatures.h
+> index 3702d7a30ae61..a769c83588f7c 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -154,6 +154,8 @@
+>  #define X86_FEATURE_RNG2_EN		( 5*32+23) /* "rng2_en" RNG2 enabled */
+>  #define X86_FEATURE_PHE2		( 5*32+25) /* "phe2" PadLock Hash Engine v2 */
+>  #define X86_FEATURE_PHE2_EN		( 5*32+26) /* "phe2_en" PHE2 enabled */
+> +#define X86_FEATURE_RSA			( 5*32+27) /* "rsa" Big-number arithmetic */
+> +#define X86_FEATURE_RSA_EN		( 5*32+28) /* "rsa_en" RSA enabled */
+
+[Severity: Low]
+Should these new flags also be synchronized to
+tools/arch/x86/include/asm/cpufeatures.h?=20
+
+It looks like check-tools-headers might warn during the build if the tools
+header isn't kept in sync with the main cpufeatures.h additions.
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+> index 3fb81f7a61076..94ea9abae566d 100644
+> --- a/arch/x86/kvm/cpuid.c
+> +++ b/arch/x86/kvm/cpuid.c
+> @@ -1290,6 +1290,8 @@ void kvm_initialize_cpu_caps(void)
+>  		F(RNG2_EN),
+>  		F(PHE2),
+>  		F(PHE2_EN),
+> +		F(RSA),
+> +		F(RSA_EN),
+
+[Severity: High]
+Does exposing these instructions to untrusted guests risk a denial of
+service?
+
+Since REP XMODEXP and REP MONTMUL2 are unprivileged and support operands up
+to 32768 bits, can a guest user-space application force the physical CPU co=
+re
+into a prolonged computation?
+
+If the hardware doesn't efficiently yield to external host interrupts during
+these massive operations, it seems like this could stall the host, delaying
+interrupts and VM-exits, potentially triggering host RCU stalls or watchdog
+lockups.
+
+>  	);
+> =20
+>  	/*
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528032234.1322=
+565-1-ewandevelop@gmail.com?part=3D5
