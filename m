@@ -1,116 +1,108 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30A2282F24;
-	Thu, 28 May 2026 13:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4C928727D
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 13:59:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779976662; cv=none; b=L93ttAnIErQ7JWAOtuya+1L045XPwoxIngbTX6a428i8cQK84WUfN5uMehACaR2t97XCPM0WLS3/xGHV7dK3egxhiIak3PnxOIlcNFjYdK00I+b3A86uqycTeYNwe6Xx2jl/rhM7Cx7YvH9nt2pJjpMjDrxBbCKXqpCsrBEvo5I=
+	t=1779976774; cv=none; b=EDMrWCBQN9tctC+PzydmT+a/bw7YQYk2bphqt+1D76NwWlBFix1T27NGFKxaMBv3pSlWQ/ujTs/rwq8payQOlvUWGPzAQ1hk7hlptA+RdHOk1Ntg6PEeHBJepNv1N40Dhh0GCFs89ir7UnXV4mtjUbqJDTi8rQT9UTXVT+4V+TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779976662; c=relaxed/simple;
-	bh=N9yrfBQ3KVJO9i3uwNEz/J6ea+yaqAFF9md+/3Z2aik=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=HoeLIpQaZ5mDtvd46as9OH2eav9LGhS8kVvg1LatnafbVZuRXo6IUEnoUUpjASO/RBj/pkySuAKRHMbfMBBb3LN+3UwdNWoa3ifThTEV/UPQ4q3VOAiypsEJTmPqkAe/VmAgHX56xd+An3PuGlZgjYQUT51l2jJYjhqQrxJFg8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RcVbgjCB; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1779976774; c=relaxed/simple;
+	bh=UZdlt+FJYk4S92LZv+gfeOHVzOQJPKlvSnNFcuqiqCU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Mgy75BhcmF4o0F8UtgSo17Z43sK6QmZcwqrHprFvDHZU/ptN6P7/9ZvdpH3T/nWrAulV+NuUxu2JBPgGQCJhs2qLe2VBihbbG/PwW9aGG7hp8EegMjKKL+97tjQIJJ8Y4A9RMMDzKZP3LU/ejgWlvn87nkjoiesw0tPMv80dOmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oLr9StLm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RcVbgjCB"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SDAx1a035943;
-	Thu, 28 May 2026 13:57:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=2QsCyu
-	XWUMad2spc+jD9qGAw0sMJCrDvnu4waPyEMnY=; b=RcVbgjCBuYG7povsFSei+Z
-	fpqNhKMCbXsSxVryQnNqQCtQhQyd6jPrKkr7Xv9gqJdS74jqB4I2XJavempTnp7L
-	FhYJJr9rQKGGH0sETG/xIsZd+rlWWau89m1ZqecX0LQ8nynhFH3SnHYcCLdQ2zoO
-	4333Y5+WrqpGETFont2iKERD6rFEMzd0Ek+lisCMg7gG6QZr597HfKATHqyA9TQF
-	1bK7Rfo79IjG/vVbi0EBkz2bXKicBLzMq3g12Y2KsFuTW9nF1MtMUioiPWaKBPlS
-	Sc/hu9WFTX7JVJF8yf8LS1esDGoSUigAxsz5lw/ebEUetv/gv6TmptiBJsUbktNw
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee88bb5a5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 May 2026 13:57:32 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64SDs6hh018664;
-	Thu, 28 May 2026 13:57:31 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4edjrc0b5j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 May 2026 13:57:31 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64SDvUJo47251872
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 May 2026 13:57:30 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3F68958058;
-	Thu, 28 May 2026 13:57:30 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 00D7158059;
-	Thu, 28 May 2026 13:57:29 +0000 (GMT)
-Received: from [9.61.144.185] (unknown [9.61.144.185])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 28 May 2026 13:57:28 +0000 (GMT)
-Message-ID: <0b3282c6-cdc5-469e-9aec-1a2b9d22ce08@linux.ibm.com>
-Date: Thu, 28 May 2026 09:57:28 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oLr9StLm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E6C1F000E9;
+	Thu, 28 May 2026 13:59:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779976773;
+	bh=b4XRJdw/OmMaWmv/P/7RRz82++6XEvgR/Szq+hzeo9A=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=oLr9StLmq0UGhtdOA1G0lwCdKeoSJks9wkrQyPHcKhUP4xOPf5xEIALG59CBXiNij
+	 sueHcM+dtq9IFi/kHKXsw0lvLajj4BTFiw5HtTE/cHjCbgaJaIZrMEpk0RrSBG8CYJ
+	 wh/689n9H4C63DURfBLQo7qKcD33WjpmNkVEmCi7YtskmEt4wTAjlkCfB/atCQyeT3
+	 F0uKxqVcX0U0yg7E4p7VyA1JNokTcTiPW9AlBxxBdLzogO1Rqj4JmL4rV9IQ7zX/Xc
+	 EX/vqoN7WkBAy+P57r8ylw7swADATgQ9JNT+ISgDZhC41OD6WOOXjoMseQaXD0cPml
+	 Sbf64MRk9EtfA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/4] LoongArch: KVM: Preserve auto-enabled PV
+ features on userspace override
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tao Cui" <cuitao@kylinos.cn>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260528133558.2196416-2-cuitao@kylinos.cn>
+References: <20260528133558.2196416-2-cuitao@kylinos.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 28 May 2026 13:59:32 +0000
+Message-Id: <20260528135933.21E6C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/3] KVM: s390: Enable adapter_indicators_set to use
- mapped pages
-To: Douglas Freimuth <freimuth@linux.ibm.com>, borntraeger@linux.ibm.com,
-        imbrenda@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260526015323.207343-1-freimuth@linux.ibm.com>
- <20260526015323.207343-3-freimuth@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20260526015323.207343-3-freimuth@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDEzOCBTYWx0ZWRfX78V7mkm8WNsa
- FdWIYE7Ujg2fN2m/y5b8uPXdoMw5AYxcExUX8wBPdEsB0ZbKWxxNNlWmFdTFvZ8XHQ2FMQJFOCZ
- 71/uoOG4VFOQR1ldrZhFulww+4l8wN4R7pUAVPCMVGVCSmfXC+3JKSfQvMEJbVXKCy6EnXBhboW
- aIBmfe43nVX/bO3/c/xyt0k77XEd+TKPpYJL7T7PjcO/XFwocoBeS5+Tw5h38KQH8pRhqceooz3
- 8bgtX71Uwtjc3ApwyxVbOBT0CZqayIV9H8EEQYRJzYFlFg0kWtR0DsoAis8Ncgk2x+fJq00FXwR
- Gx8Zaasi8/C0fV9/LOL/ohc7jZbnBWoeAOhcals6Z062ZewByxsW/UZivvEcWTU0tQ3Hj2z7Sta
- bUw5OMhhVR2S4LPK/I/4omYmBb04HWD9APvNdMRYMxwj0Kb+sX2rGXRLT4Z40hn6D0gVnZI2W48
- GHB61FkO4gTYRg068cQ==
-X-Proofpoint-ORIG-GUID: dZ8kwBjkFAijiXyEw2vNGUiujqtCp3w3
-X-Authority-Analysis: v=2.4 cv=IJEyzAvG c=1 sm=1 tr=0 ts=6a1849cc cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=YjX8BNTOaeBdKTrvYLMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: dZ8kwBjkFAijiXyEw2vNGUiujqtCp3w3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-28_03,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 clxscore=1015 spamscore=0 bulkscore=0
- adultscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
- definitions=main-2605280138
 
-On 5/25/26 9:53 PM, Douglas Freimuth wrote:
-> The s390 adapter_indicators_set function can now be optimized to use
-> long-term mapped pages when available so that work can be
-> processed on a fast path when interrupts are disabled.
-> If adapter indicator pages are not mapped then local mapping is
-> done on a slow path as it is prior to this patch. For example, Secure
-> Execution environments will take the local mapping path as it does prior to
-> this patch.
-> 
-> Signed-off-by: Douglas Freimuth <freimuth@linux.ibm.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Setting CPUCFG_KVM_FEATURE on multi-vCPU VMs fails with -EINVAL if=
+ userspace does not explicitly include auto-enabled PV features.
+- [High] Unconditionally forcing auto-enabled PV features overrides userspa=
+ce intent, preventing the disablement of features and breaking live migrati=
+on compatibility.
+--
 
-Review tag was given in v7, please include for v9.
+commit 95ab045927fa0c15f853bc0aab6acbd07c86541d
+Author: Tao Cui <cuitao@kylinos.cn>
+
+LoongArch: KVM: Preserve auto-enabled PV features on userspace override
+
+This commit adds a pv_auto_features field to struct kvm_arch to save the
+kernel-default PV features. It then includes these saved features back into
+the user-provided configuration during KVM_SET_DEVICE_ATTR.
+
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index e28084c49e682..d82782b90457b 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -1169,7 +1169,7 @@ static int kvm_loongarch_cpucfg_set_attr(struct kvm=
+_vcpu *vcpu,
+>  		if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
+>  				&& ((kvm->arch.pv_features & valid) !=3D val))
+>  			return -EINVAL;
+> -		kvm->arch.pv_features =3D val | LOONGARCH_PV_FEAT_UPDATED;
+> +		kvm->arch.pv_features =3D (val | kvm->arch.pv_auto_features) | LOONGAR=
+CH_PV_FEAT_UPDATED;
+
+[Severity: High]
+Does this break VM creation for multi-vCPU configurations?
+
+When kvm_loongarch_cpucfg_set_attr() is called for the first vCPU,
+kvm->arch.pv_features is updated to include both the user-provided val
+and kvm->arch.pv_auto_features, and the LOONGARCH_PV_FEAT_UPDATED flag
+is set.
+
+When the ioctl is subsequently called for the second vCPU with the
+identical val from userspace, the compatibility check above compares the
+newly modified pv_features (which now includes auto-enabled features)
+against the user's val (which lacks them). Because they do not match,
+the check will fail and return -EINVAL.
+
+[Severity: High]
+Does unconditionally forcing auto-enabled PV features override userspace
+intent and prevent feature disablement?
+
+KVM API semantics expect userspace to have authoritative control over the
+CPU features exposed to the guest. By unconditionally including
+kvm->arch.pv_auto_features into the user-provided configuration mask,
+the kernel actively ignores userspace's explicit requests to clear those
+feature bits, which prevents deliberately disabling features for live
+migration compatibility.
+
+>  		return 0;
+>  	default:
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528133558.2196=
+416-1-cuitao@kylinos.cn?part=3D1
