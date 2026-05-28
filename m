@@ -1,107 +1,165 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF923F39F1
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 13:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779974469; cv=none; b=Ix0hxM1Y7C8BEz548uBOCwOb/zsju79W0LJJuzTxcccqCI/Tj4idAEQWWAfXa0xfqNGmOCyAF/BycpVUDpHCys4xiT6cYMh7spIsT1RIfIve5f5ke8wBaXfPLsFcd+dBCvQT6H+MvxXdtIA5yA9My2F1ZArPDXB/fw0bQzZVAtQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779974469; c=relaxed/simple;
-	bh=KycBQ9WQVwk13VRyQWEJeBpD8BVbZhadC15kR85B8sU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nP53Vfas5yBPfEjWc9x8BVSnqhf0KbRGjaZybXM+Xe6MwK6ymKj5py1bVUZDBkOpq3N8qDiEuG0AifBW9C0VGk4+G79xjNGVgYkplvT01zYf67oUf8od4im2VwKG14L6GjYg6bOjzevTkUmkRWWBEBz24i4uCk7hEcCi+VNJqzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gurxxBX6; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87323E0758
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 13:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779975366; cv=pass; b=LIk4O6/Ngd2BTyjsygWnVWD5TQANavuCDSZ449wPXeoTuhI47F8f3210PdiEU3b6RxlEWWQSnViJwrZtn45A8D5ib6WSPnwn4CM4gqXrKX81wRSFN7AMyfkAXvlGPg6wh4QKpWMvatDUykm21y07/lwKPsBgW2KadYes8kBHrtg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779975366; c=relaxed/simple;
+	bh=P3IrmMXLL4fCFKTzkSjp/aO/dyw4SFgXHah2BzkaNuI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XrDBFnqltEkOy5shNgOtMEwAG2eOWnBdiWQa5Waeww8isNuxerP4WOtVtpknxWqV2wVd/ggt/nwXoG2/HooNar5EUtDbZL8Em1v7VQsY03I/0XcAt+7TdkSpMHaJtzr0SO0cDf7ZK+Sswi9ZCcEQHouZyFHDWG4pK/piIougTXs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cpPV3Lu3; arc=pass smtp.client-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gurxxBX6"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36641bb3d97so8097382a91.3
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 06:21:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cpPV3Lu3"
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5751770a178so4237560e0c.3
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 06:36:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779975364; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GXxrLSE7/wzz5gsTrNASRLagA1YkEqRNkEoD3Jrgq0jvz0EzO0MfrC7B8FityHG7PE
+         dGNSyYMXPgHxvAs1xuHjt6F7Q6TK+kMoQ08jusZydIz+Dj5h1NEfUghRhQDj0uUHVO0S
+         IuqbOaLmqoKfGHUCVI5CWSvB1xonmoUhbICtqN+aGvfYgVeEhFExM5m/C3fKRJEeQNYC
+         wDOC6fToWxFY4Y272+64X6hNLx7yk/MJ8fI5C73khFR7wlVJEEGb7Uc+XGBv7J3l098s
+         LlqQSZMg6YXm1HpluiKB5SBBNCppEsMkoUiQwmqD7W7a6qKqSFwKdws77Sghy1kNi7Ld
+         vCKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mPeJHskhd3lDys7i6trkIEfX9tWtfy1Nmsn6Xgo+Gyk=;
+        fh=qsdwhE9bSPJsmIaaYaNycx83pC1gKHmlQz9cI0QLAb4=;
+        b=MpiOuDN5/NeY5A5YYytgNfA2vcPVSp6oFUEQcpZxxO6F2zZ9Gu2PJZ8lBLWvAFb3g2
+         FwX4w4yHzPorzWoopLjQXkJmLyJDeNn78eblS4zKAFNGIA+d8LapC/H/Qgv9JfT9RSiw
+         bqxbe8WhoTTXBf2wmSgp9wnvZ9fEXYpHOc0Gm20zHSZeoKczX8vAT0E39JKcTnlsOjVK
+         Yd0rrqDiKoLGWWzVLvcuEjxqYj1CmL2i19491+IJfYM3hVhxZRFaFqKHU6JL/r46Alv1
+         POVjuCNbZ6Rhb+zvp0O0lDc8nt2CiKezVSoUnPpi6PB/jMqswLjsoMw00cFwihZDHiSW
+         /3kQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779974466; x=1780579266; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KycBQ9WQVwk13VRyQWEJeBpD8BVbZhadC15kR85B8sU=;
-        b=gurxxBX6+6K6f5C+6c2Gkfv9KZkd2bWA6yZSZv7mTfvMoy8VkioCT0BM/NDXO6A6f/
-         gWVi747qxB4Fl2Ny/UCOnZL9scQB6l0Jc1aGLrRJMrrqwUST4nN4fLE8PuYsrbTWONhw
-         Yx+HhL6AtMAco44mnjmY6R5nC372bKZ+6aWxbDlImkjmbjQ5vQW6I5PWsTPX11FTT+Dk
-         Dhfd5KLS9rcKx3lytrZglfKGEhpf9fIdzpMDm65QYQ7IQUfay3k6uzBHBeSXphl/hZcw
-         5XSzWKJ+6mgBA2a3sTJW1PSPWJvuAK1YVUT2T2b4IMqthfM7bsSVZTJT/mi3cEgeQqVQ
-         iW9A==
+        d=gmail.com; s=20251104; t=1779975364; x=1780580164; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mPeJHskhd3lDys7i6trkIEfX9tWtfy1Nmsn6Xgo+Gyk=;
+        b=cpPV3Lu3QsQvkemNpeFgOUZsB/ZquJVRAwXZ1Xf7Omc5k9oIoRD0kaAy1iWcL13oAZ
+         RbU5szSeFDcGblVCCqPZRJ/kycqfWeM/UKWAg7t7Tvku4taccR3Anta3amB09uw5y3ji
+         1hhc6KrWRZLsVDqglQe5PzehO9X8VUbjLEx/65tJwkgczVErCu/TNS7adMq33/rbPRcw
+         wrCxnQ61Q02iK0/B7uwgVQ/W71WKz35InWNQIRbtfrP/2xNjcYJfTuBsyLGO5aZH8KiV
+         12cD1ZX8jBl6rRy3lBO1hPH94Rz7BGepVP2DfaG3e/2x0DD242lyHGG37HwpVdhTHtLJ
+         wzHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779974466; x=1780579266;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=KycBQ9WQVwk13VRyQWEJeBpD8BVbZhadC15kR85B8sU=;
-        b=TLhTZZY5n8w9mLTjVFTIXiDYHgQfzmiM9y/14Ec7RblR6hm4/c4e8l8EBUPXs8251D
-         A5R5ihNWVZE7J6dTxE4aNA22L9bzJEIihvLYYYBnxq2s+ZaoFJxs7ktQMXDjVBhQGGt/
-         +ZkFmOYZCOcFWWN4Zr1qxP6Fl/5B5RjMmvC1HcNLMEmx1pjMC88tGtLC/If6Ak/o+e4g
-         bCy2qdS6dHy/9fL3cDn+ZNCtjgfqFsJe5NXpGgx/cB+8QBk0zYV3oOPxHESsofSSxead
-         X0q378a4icAAMLvkYH+vzClSTYWG4af/cpleiCWdONwSbePC+8CoKZFwNe0zfzMqUc1u
-         EcSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+p+j4X+SopOtQxR2vpjcntKlas85TxQ5yCQluMSMb3WJz5/cSuSkSjNlMKvC2E7HRvs+4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgTOPrLuQay/vrB4ICn7OkJoYHOF/9hqjlmrYV4FGgIN6aNuka
-	52lRDsPxxkAFH9yxtmTiHhfh0N7Rqs7DR7KwYSp+jk7g3TFdU28huQdIs+SMNLOPWgcB/1gU5fk
-	YUnYrbw==
-X-Received: from pgiy11.prod.google.com ([2002:a63:de4b:0:b0:c74:497:507e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:56ce:b0:36a:cace:a4b6
- with SMTP id 98e67ed59e1d1-36acacea4d5mr18554876a91.9.1779974465476; Thu, 28
- May 2026 06:21:05 -0700 (PDT)
-Date: Thu, 28 May 2026 06:21:04 -0700
-In-Reply-To: <476964db-837a-45d8-a647-c5a2ea8b0cb6@suse.com>
+        d=1e100.net; s=20251104; t=1779975364; x=1780580164;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mPeJHskhd3lDys7i6trkIEfX9tWtfy1Nmsn6Xgo+Gyk=;
+        b=EOP945ytU100BlLl/jlg6EJSosGO/KI7PTEcqQhpo4LYtSynDgy04RuOTckLsVWoFb
+         /pAxICrZjcnvCizGSqlDNZzjjS4F5lO4R8E7Cp0wvmf0Nfm+iXIxAHlo2Xh61Kv71wV9
+         2WY88DJyn2FgskNJcvH1QGNVnDUzxPg7iLx7VWH72My1fBHs9WAfmUzpNnLHDOzwlNAy
+         PRjQ8MB+JH9zb1rCMLqAh2gPUV5gG+5yfN+zMZOQErjFfbHyjtil4WwWuaiyX3QZ1OOr
+         c4bgAhmtTs9HBg649Q7n3LRcU1fZHhsQHTsNIZfJ0POzjcEYWT1vdQBttbCkgsbipZ75
+         342g==
+X-Forwarded-Encrypted: i=1; AFNElJ9hP7xDaINnQa0Su6B3TpJYwG6iNU3ZCGUftTFHuEzU++qBYr0QNfiKdGYBf8N+FEw/fVM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWKjB4DZ4V7t3OPVZjTb+oXDO5oDkSQe4nE6W/OQ8xiAph/iuM
+	n3WYkSmZQMNYNhAAFx3O86uJlKCyjd+Vqw7x3X5tqVMQMS86IyVgYw/H7LExh9XmNcwMHaVatRj
+	NnKbEA8V/vpMzWU9JUbt0hBRRvIRvVyo=
+X-Gm-Gg: Acq92OHNNUeSQgnl+B2vK8FhqVHm5qUtZPn01mb+LQouiR3w8+GXN7DxWhj9en4zShU
+	PLZqO3EF4iYubd7NflJ7iFrDwm2Fv3/2uVnAUyOeeUrKkIfHrCzY4I0FqvE2RK4uvLbW73hlbc1
+	ZcRB92/YIPBOaBsMdn4wyrYi6tf2KNgML4i29yd3oZmHiO/wnC18FfUKaRi1EzG3hE+wbBJV/r5
+	oS+4x2b1UUk4ciojuxgC/wdtEZ2TZ+Pi2zGMGMLEo/KLaSpPKhYko99XYigAdzX8Ty/5sz4hepw
+	/kyplYhAEqDg6Fw6QETHx1L62ovwtlNIrwjDlBAde4FzMzcKSknloD4mFOA=
+X-Received: by 2002:a05:6122:488b:b0:56d:9e98:4676 with SMTP id
+ 71dfb90a1353d-5866357db32mr16295687e0c.13.1779975363787; Thu, 28 May 2026
+ 06:36:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260528113605.267111-1-jgross@suse.com> <a8f495f0-b4a9-42b6-be74-4fa9d83c7346@suse.com>
- <ahg-bEiwyqYTdWOD@google.com> <476964db-837a-45d8-a647-c5a2ea8b0cb6@suse.com>
-Message-ID: <ahhBQDvyzHQfTCBD@google.com>
-Subject: Re: [PATCH v2 0/6] KVM/x86: Drop "1" as MSR emulation return value
-From: Sean Christopherson <seanjc@google.com>
-To: "=?utf-8?B?SsO8cmdlbiBHcm/Dnw==?=" <jgross@suse.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Paul Durrant <paul@xen.org>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260528032234.1322565-2-ewandevelop@gmail.com>
+ <20260528034244.DC8041F000E9@smtp.kernel.org> <CAG2uPc4E4mW9Rvxb7PdzRByd9teW0KcJaKHB=ZBHQWLa_6iiJw@mail.gmail.com>
+ <ahg53BN4d0czbjDV@google.com>
+In-Reply-To: <ahg53BN4d0czbjDV@google.com>
+From: Ewan Hai <ewandevelop@gmail.com>
+Date: Thu, 28 May 2026 21:35:52 +0800
+X-Gm-Features: AVHnY4LJsniyqGtalKkBuOM_W9C5cFOO2ChbZ2YbxUmgshSdSRhpK_snLHS2uBU
+Message-ID: <CAG2uPc42aof-csbd7ZEyof79UG0A_8vvTtMhJx0cdmmGq+YDRg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] KVM: x86: Expose Zhaoxin SM2 CPUID feature
+To: Sean Christopherson <seanjc@google.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 28, 2026, J=C3=BCrgen Gro=C3=9F wrote:
-> On 28.05.26 15:09, Sean Christopherson wrote:
-> > On Thu, May 28, 2026, Juergen Gross wrote:
-> > > Please disregard this series, there is one complication sashiko made =
-me
-> > > aware of.
-> >=20
-> > Sashiko beat me to the punch. :-)
-> >=20
-> > See commit 2368048bf5c2 ("KVM: x86: Signal #GP, not -EPERM, on bad WRMS=
-R(MCi_CTL/STATUS)")
-> > for a real world example of how things can and will go wrong.
->=20
-> Yeah, with Sashiko's pointer it was easy to spot.
->=20
-> Question now is whether the already existing cases of -errno passed as re=
-turn
-> value are wrong or on purpose.=20
+On Thu, May 28, 2026 at 8:49=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Thu, May 28, 2026, Ewan Hai wrote:
+> > On Thu, May 28, 2026 at 11:42=E2=80=AFAM <sashiko-bot@kernel.org> wrote=
+:
+> > >
+> > > Thank you for your contribution! Sashiko AI review found 1 potential =
+issue(s) to consider:
+> > > - [Low] The patch modifies `arch/x86/include/asm/cpufeatures.h` witho=
+ut syncing the changes to the tooling copy at `tools/arch/x86/include/asm/c=
+pufeatures.h`.
+> > > --
+> > >
+> > > commit 17e8fbfd326bc812ee6f132253d520b0c7201874
+> > > Author: Ewan Hai <ewandevelop@gmail.com>
+> > >
+> > > KVM: x86: Expose Zhaoxin SM2 CPUID feature
+> > >
+> > > This commit advertises the Zhaoxin SM2 algorithm and SM2_EN features =
+to KVM
+> > > guests via CPUID 0xC0000001 EDX bits 0 and 1. It updates the CPU feat=
+ures
+> > > header and the KVM CPU caps initialization.
+> > >
+> > > > diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/=
+asm/cpufeatures.h
+> > > > index 1d506e5d6f46a..20b33413189c2 100644
+> > > > --- a/arch/x86/include/asm/cpufeatures.h
+> > > > +++ b/arch/x86/include/asm/cpufeatures.h
+> > > > @@ -136,6 +136,8 @@
+> > > >  #define X86_FEATURE_HYPERVISOR               ( 4*32+31) /* "hyperv=
+isor" Running on a hypervisor */
+> > > >
+> > > >  /* VIA/Cyrix/Centaur-defined CPU features, CPUID level 0xC0000001,=
+ word 5 */
+> > > > +#define X86_FEATURE_SM2                      ( 5*32+ 0) /* "sm2" S=
+M2 algorithm */
+> > > > +#define X86_FEATURE_SM2_EN           ( 5*32+ 1) /* "sm2_en" SM2 en=
+abled */
+> > >
+> > > [Severity: Low]
+> > > Since arch/x86/include/asm/cpufeatures.h is modified here, should thi=
+s patch
+> > > also update the tooling copy at tools/arch/x86/include/asm/cpufeature=
+s.h?
+> > >
+> > > Without syncing the tooling header, tools/perf/check-headers.sh will =
+emit a
+> > > warning during the perf tools build process indicating that the kerne=
+l ABI
+> > > header differs from the tooling version.
+> >
+> > good catch, I'll fold that into v3.
+>
+> No, ignore Sashiko.  The perf tooling folks keep the tools/ headers synch=
+ronized,
+> they are very deliberately not used by KVM selftests.
+>
 
-What are the existing cases?
+Got it!
 
-> If the latter, there should be a comment for
-> that, otherwise they need to be fixed..
->=20
-> Disentangling the MSR emulation return values from the "normal" ones ("re=
-turn
-> to guest"/"return to user mode") will be quite interesting with the overl=
-oaded
-> semantics of "1".
+> P.S. Please don't top-post.
+>
 
-LOL, "interesting".
+Apologies, won't top-post again.
+
+> https://people.kernel.org/tglx/notes-about-netiquette
