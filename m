@@ -1,91 +1,85 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37613332612
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 22:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4604036921B;
+	Thu, 28 May 2026 22:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780005761; cv=none; b=TgcsmqQaZ+B/ERm1G41VsgPFh0esmDN9hichJrs2Muov9PwgCXV6uUYTCHQw8It54jKcVyQ4DIywUoN1+ZxvJJf10g++PIM8acnKJwyR8jnibalWNGcGCNwI/eFNIbBWSOUY/ke2xuYbSJp2gZJ/YGUI8SyKO2/0NM7zZO0Z4nM=
+	t=1780006255; cv=none; b=R1NAaQRyhClTkVqdeyC7Uzx5qT6MdgvE3W5WNKQyjVVZyEjbEXngOb6gJrPFuy2uVIRwze+R97yF4cT1pYpCln+qQOzHLza6Nbt5PAk8tbSj6lVc9etP6CA23w0As9lSGbv3LYdl08HIYau2TVUMe+yD7KK3RtdFx1u8X/zwYBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780005761; c=relaxed/simple;
-	bh=LdY5w1w9JKQhpaZBSyVUr8rGqdk+R+saAIJWzDuNvjo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T8qgJZUGsUAX/YsMJ3DgPMU4owvFiGjhzRUHtgUcucLgy7j1AMQxNDyGs25/JZqergLoSeg1PIgjdUHoCgmOdQ2/dguvLUVXY8vgw72G8Xrki6cz7vq3XglS0p2sHHEGDlooWXqJrDF1PWCjuyQuzpIuLJ5cei9kDRYMbxU+2IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jZwU5P5p; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1780006255; c=relaxed/simple;
+	bh=MJauyLPrVOjMmdZZN3XBhbIELzrdJUSo7zqyIvmbsJI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=bl7/b/2VCL0gow08uT1pONkZgyYFv7fSehUwIPN7FGu2QCWvVcp+HySRilUrWhnexYuS3KZiHPFrZJbg5VLJoGeeic4FgxPT6ywH5E/Dwp1MDgMMmtYAK0qDY7kDaSMyRgJhpAspuh0hBzskOcgOwDQQcIjMweXaZRRXf0DFd68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VXX5xbKA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jZwU5P5p"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c8025f1c227so10071527a12.2
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 15:02:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780005759; x=1780610559; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=a7lu1PeNcCkgTIxgc3W2FpjZdWenBKdIMuLJ/NcoWBc=;
-        b=jZwU5P5p3FTmdDG+AARv7m1FxkGzt/xkXiN6mu9dlBJJ+wYiJUBE4ZX4bILYM7+Rhj
-         gGdZ0fezVJqD7hPQGNyiGQc3C+z7jjK0/LB1Lxw/1fHUR6V9W7gzk1zTmmSswrZcVFmn
-         iFJDu5MAd61uo5ATATVm0eV2eojLn1fJ1RdQG9H5vFLvl/lcCcFlOz9XPAnIA0oAr0Op
-         Z56mScARGdAwb5wZDzrSNHofRBGuYMQETy/8TlQbOX+MkyimBIDptf7i36rSKCy2v31r
-         6A2xIrDD7GOt0/82jKQE/XCWEKMrqSMcdahg7erlbjTZO5UivapaP3wkzMDC2bsIoHAi
-         W3/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780005759; x=1780610559;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a7lu1PeNcCkgTIxgc3W2FpjZdWenBKdIMuLJ/NcoWBc=;
-        b=BzJeXnNrxcLP93GZhUSjNBZBgLgTMeM84ROYKhZc16HftnGBl74qzZtDgucB4/fDlc
-         N4Bh+jKeJ+OZnSqy6vpREKAcJX3Ukzu11jxIW+TctupTC4A6hQBK1ia0u01OI31YE13y
-         BPUtIRMz1RYYTiDvWJodF/c6zZFYrZrY7jBqPjtqoYP60IKLJmY/gRNPCf7GIu4F/8m3
-         ZpOtpbcD+tkq4B9IjCENHzT/RroGUq4kXKuXcBp5yCV/r+t/SlrZWM3t7LG0umckdctf
-         ZThziUlmoRk9gHJtZqQ63AeuNw7SXDhegKW/B3qi6r4cFaU1esz5obmDwA1GV6G1GU0m
-         i4eQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/gEX3vwrbX3myyXjsD5Tm2Qdopv/N/aR5Q5f0Vp8pQGJpZEOKWR63wgFCJo2sCTBv9Mb0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+zA4mTdTVQY/boLuHBig7qmCU9qm6xlxD3mVzuEyaDAOgak1y
-	P6Yka16zVBWdhUmRjWppZ9WjMqTS8rvv1mmiHFbKX/07Z/UmUyJexaZ7dfNCny/efw==
-X-Gm-Gg: Acq92OFJFoBVIEgHy5xLfXx9xt1GOUjbxn9/JjedwPvmI9/nFcKI/1nREkX3qr39nHy
-	VwiaTEMFuBiJXhYCbHUrYHCwdxkfEvIpISAa2zFKNjUkZmjnObRRFYG73qFf0ThJmrwVaz2ALX+
-	imOMKcbmr45gPMvyD8juMTOY0LttIy9230sP1gTaDylb7mM+HuUCnj/EPQo2iNEp/S/m5CcTxL5
-	lf5MgYDXoYcmklo77v+U/yEf3VI7ZLqbyQsJ+aDQykQ6wBKdMoXi8WICRG5HnPBaXSFIcOq5sEO
-	HLOz3wyN3/kZXA0DwBU//bHSJLKNP5Z/tEe3ajFAo8qb3LZYRHR2SdL72KeVCuWzRIa9siikLoT
-	f1eh71Q11b/qeOjGdFPWZ/ysIZgmSocINuXCOBrpATb08QdUaTEhyqB3z4nU6bK+kid06aXUGZc
-	5+Z2r5tGiWwxUlMnMTLTIOmSM0VXaKdcU974bNIjB1AIwXyJ363+85BetdfwcKeve7mQf5nBF/
-X-Received: by 2002:a05:6a21:648f:b0:39b:9644:6e94 with SMTP id adf61e73a8af0-3b40e32b279mr628896637.9.1780005758951;
-        Thu, 28 May 2026 15:02:38 -0700 (PDT)
-Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85759af1f5sm31047a12.11.2026.05.28.15.02.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 15:02:38 -0700 (PDT)
-Date: Thu, 28 May 2026 22:02:35 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
-	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	patches@lists.linux.dev
-Subject: Re: [PATCH v2 08/11] vfio: selftests: Add dev_dbg
-Message-ID: <ahi7e1MEoHwk-rtF@google.com>
-References: <0-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
- <8-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VXX5xbKA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A69F1F000E9;
+	Thu, 28 May 2026 22:10:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780006253;
+	bh=MihBZLmSF5hf5EffR//CvVrqExmU2M8+W8fSnVreuok=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=VXX5xbKA4r1zdkmqIxdJtFVukUE90VmHw0fekU2gVd1+ejfe9g6Dh7hGr+LUmyehY
+	 dSSkEnumE3QcVg0jn4lLGq615aVBcidIYrtxaDIymiFdm5iSIt20Y0vEqo7E/0q1pu
+	 rwWgEve2ZL9SXpaeJeeRAZca4Fdwbknsfu6d4C0KvhBiuapT35rtFqDMCaxeSYQ+QY
+	 peJCAO3XkGWH1sKpI589G+k3NqQFl1eUyPNJPnHbHE3XOftAZw5SLUGo73vAT6Lcv3
+	 M9Zji6Pd+F8upcQB8FUwksPSY2SODoZP1HXqPRN7EVi5IDtdCYMhapF4oVgdeq6liM
+	 9oK7e81lvxD0g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93AC73811977;
+	Thu, 28 May 2026 22:10:58 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH RESEND net] Revert "vsock/virtio: fix skb overhead
+ overflow on
+ 32-bit builds"
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178000625714.1533055.10719008699075181524.git-patchwork-notify@kernel.org>
+Date: Thu, 28 May 2026 22:10:57 +0000
+References: <20260527171046.130211-1-sgarzare@redhat.com>
+In-Reply-To: <20260527171046.130211-1-sgarzare@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, eperezma@redhat.com,
+ virtualization@lists.linux.dev, kuba@kernel.org,
+ linux-kernel@vger.kernel.org, xuanzhuo@linux.alibaba.com, mst@redhat.com,
+ kvm@vger.kernel.org, pabeni@redhat.com, jasowang@redhat.com,
+ horms@kernel.org, stefanha@redhat.com, edumazet@google.com,
+ david.laight.linux@gmail.com
 
-On 2026-05-15 02:30 PM, Jason Gunthorpe wrote:
-> Enable it with a #define DEBUG at the top of the file. Allows leaving
-> behind debugging prints that are useful in case future changes are
-> required.
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 27 May 2026 19:10:46 +0200 you wrote:
+> From: Stefano Garzarella <sgarzare@redhat.com>
 > 
-> Assisted-by: Claude:claude-opus-4.6
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> This reverts commit 4157501b9a8f ("vsock/virtio: fix skb overhead
+> overflow on 32-bit builds"). The fix was semantically correct (although
+> it would have been better to use mul_u32_u32(), as David pointed out),
+> but in practice we are estimating the memory used to allocate the SKBs,
+> and this will never cause a 32-bit variable to overflow on a 32-bit
+> system, since the memory would have run out long before that. On 64-bit,
+> SKB_TRUESIZE() already evaluates to size_t, so the multiplication is
+> already in 64-bit arithmetic without the cast.
+> 
+> [...]
 
-Reviewed-by: David Matlack <dmatlack@google.com>
+Here is the summary with links:
+  - [RESEND,net] Revert "vsock/virtio: fix skb overhead overflow on 32-bit builds"
+    https://git.kernel.org/netdev/net-next/c/e03f0b53b4bd
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
