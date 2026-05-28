@@ -1,64 +1,64 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A912F3C18
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 02:25:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE11A1A680F
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 02:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779935133; cv=none; b=OcxSQbKKSq568EkyOJZ4v6m3uQ8S6/tRrtXiJlef0nevV+83ZLXf+cjdctlflkF8c6ALQU5gIL5uyml+3BdGtTtONj/wF4dtPfo1/OW0uLiYLVz9Gfji24rljbSVc1nWKBJ0sg/5VYif3R8h0poVYU8eAFCGywMEoWXwaBGLwww=
+	t=1779935280; cv=none; b=FCiVknncWQ3aIDYj8PkAMP/cJk03HCYPNwMRfP4GDJfF4L54uhCMwzULsu/HTy/zHKCVUFzH5Gmkg2ijqGGjF5OffLavenwJPuw57OLU267R5ww/3lwAlyFxG1yS90r0i83p00/PrjNvsD1bU9ELvExy8fDbjm/IR1x3EEWDmP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779935133; c=relaxed/simple;
-	bh=RtoCWqOrG874W5Zl+3ahOMFu8XhwOJUoMHM8lStfWK0=;
+	s=arc-20240116; t=1779935280; c=relaxed/simple;
+	bh=nLLPuCdNmRQZ0Oo8285nt0spZY7+o3nE86Yfg1dYGiw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=In6XdM53hGB0bM+IMdNKT45LCrM2fzSlPwMZOEnw4kVtWr1ewoXZB1vBUQbwEXCPgDExNQOiYGnJhXHCKgKQnPC5SSOfy9WX3DPuWlxqLiZ+bGSFmMSOEADEMFgrT8pz131H+FRtYdrJi2TJgQIPhp5SwJy3qyRXWGV4skKRISM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q/3HSqTJ; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=GoxmSbwkJCpEVflP7tt+75ZOncj+HpO6zddON0EE+FS7QDFuCXHGwPtsAE6A9a1TaIVUOBXgSkHEDqP5BaDGT23oYoldh3vzs9TcQB8so0VM6bKFvyPUDSaTNaEDN50I87Tt5Ie8o82PXFgyQjWtxYN4TJ9TN3NbS4N3wsHi3+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FoeA6Sqj; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q/3HSqTJ"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-365d4d2fa04so11447471a91.3
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 19:25:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FoeA6Sqj"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8353b042152so13470934b3a.3
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 19:27:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779935132; x=1780539932; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779935279; x=1780540079; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j+6hXAGsinkLM4tFpg7kCHTNUeNBAxzveih1+rVtcWQ=;
-        b=Q/3HSqTJ8afUIlfcz5QM8SRDBneZqSyXhKdksUg6SuFElZB+Nt0VuAz7YiRcAyzHjr
-         LzoUCDoxYCpB8EY4rnwWBMgRX0dz72o6RRK3ful9+RHYR9mS/qIOOYHjsg/Xpr2+CfxN
-         b04LdhkUMP/KaFUpkg6KUuzZQ0434M0REBfgSiUkMlBV4HwwroH/bDDsEs8/lMlggFCb
-         YOpZH4YEsD0oL7gD6YAgtbWliYjBg6lXYnNPFGWhTjb3OxJzdCv7Ck+UzN0Q+2ASzt+K
-         bX/A6ZZnHkToLuRbIuqqNa3njSo2weS08mgQMIZFSZ08qU1Ttt9vWOiIh8310rPA1khf
-         29qA==
+        bh=quuJWlyAppDPgAPcSZyEzPmuCUDWESYO2v/WDSRk9CE=;
+        b=FoeA6Sqj6TlSRYx/ACOXdIAL7MMxRTGcXpkqUjtoNj83gOWr93suhJXS5z5waOXh+s
+         NLcan+kpYGN1huxWOoJNFMGNMZx0IJYbZeEeRV3POsaOt/vWIJGFrKBXigRnP/vV+Fd8
+         pQRAHns1YxHohOmAMGuFoXEbtlFtgKdF4QwBc3bVE4n0eL1aHJj/jQkakBzp9+uKxKvh
+         PNzqVr2oMTPC8Yp30urmDZ+4EZ5Zc/9E+7MEpKP6M+n3OsMwQBLWAnJisP2rVwdeuHPG
+         EtXMya0NUrk3pQh9RQKq1ejbksGvavFU4hIcOeHzZlGKl6mzuTBnwXz9lMPOluf3gbtM
+         r1Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779935132; x=1780539932;
+        d=1e100.net; s=20251104; t=1779935279; x=1780540079;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=j+6hXAGsinkLM4tFpg7kCHTNUeNBAxzveih1+rVtcWQ=;
-        b=UV6mhyNwYpM9193ynTmWUOH1r8G8U1H/tl70nAGhu0jCyQiCA5mQV3vJyle1Eol365
-         381ynPJac+z1t+/6PvFqmSERKbtUUTn1w43+sEIdkVflPu14DAhL9rz2PJ83PQS/DU9U
-         brd1PTi17VtmA72uirfzRs8IfKLwn5ncyiILp3W4EFmymLAoWFpipSuHKOZY4gSmS0un
-         GTdQD0pxIi9/XZY0BaXn+/iXplHOgev+0d7w7loVfOhhqsGXOLCVzQKlVsUyvEYuvYmG
-         CzGY9WoZAyx12M+J87VylvQhjp5RRTrMMhyBKYGgyXAIYdVlLhhWNOM+ziS9nz6ecZYH
-         649w==
-X-Forwarded-Encrypted: i=1; AFNElJ+HVVa0ZsFvJjqIE5KlBYrvB8pfLvrS6Cuw0ENc6qnx2nSRNmw6nonWzdnRN3bT2baPLX4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzxP5mbS7ggbL0KVGl31vUUpd5m3vKEImQ7jc9Ei5WtcOZYJh3
-	Uko0E+zwvN+QjILPcp0Mqfw2PUmX/V8bfYYebRZIEL73XUI3u1ZwMPPAWFI97awSysJvA1INQq5
-	vTtcxQA==
-X-Received: from pjbgz20.prod.google.com ([2002:a17:90b:ed4:b0:36b:8abb:86c4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:380b:b0:35d:a3b4:2f0d
- with SMTP id 98e67ed59e1d1-36a6773cb46mr23074897a91.6.1779935131309; Wed, 27
- May 2026 19:25:31 -0700 (PDT)
-Date: Wed, 27 May 2026 19:25:30 -0700
-In-Reply-To: <20260527234711.4175166-18-yosry@kernel.org>
+        bh=quuJWlyAppDPgAPcSZyEzPmuCUDWESYO2v/WDSRk9CE=;
+        b=AcJ+/h1f3r2dDeRYw8lujUwHNVOJzTxlJ+BD2/dvDKlLAr2uTtvuJwYVY+A0Nz3q3w
+         LKRPK4yirwx5/Z9MPrSMZ8JmN67Ib7s0ezWXzDLgDZJT+z/+P8I2KQ4ZeznXQXUDvwvL
+         Jr7F+WQg6gmH+i+dTD1QKvgUGYE4d96wD2XY6Cx3klEbcWC4F6mAOL/1pl9y1TjODWj1
+         C3fX2t1rKuB5+ny5Tkorhiq+3U+ddcnePm0c1s8fUpJy9v52gfLBFTgCeSNAOB6Wu5M7
+         TahXfi1nUvv3nUgOMoSlq9McPej3FnMShh3TCYB+JaNpuxeLF/Uko3X7HOHeVnR0lCnG
+         kkcA==
+X-Forwarded-Encrypted: i=1; AFNElJ9KfMN3f+DV9vr8WY6pM2y7ER8rNTq4zJnozRESnVaFfjXpwLie16LH/9Gp/5Z9dd0VCqA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMltyo+mpy+c7V6vJAMoCUsvB5jyjygeGMTNQ4Wvrk6Nfq6UiS
+	YIbV5YOQRX6gfWlBSPJl7Wpyj54tbZNwT7D6IwA+k3JzzMyBUJy+DMZ/P2V5Tod+KnGsCqKF8tf
+	80qpnOQ==
+X-Received: from pfch18.prod.google.com ([2002:a05:6a00:1712:b0:841:c352:f7c0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:66df:b0:835:3949:3c25
+ with SMTP id d2e1a72fcca58-8417a84cd06mr17518553b3a.24.1779935278743; Wed, 27
+ May 2026 19:27:58 -0700 (PDT)
+Date: Wed, 27 May 2026 19:27:58 -0700
+In-Reply-To: <20260527234711.4175166-1-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260527234711.4175166-1-yosry@kernel.org> <20260527234711.4175166-18-yosry@kernel.org>
-Message-ID: <ahenmnACHMNKO3WC@google.com>
-Subject: Re: [PATCH v7 17/17] KVM: selftests: Add svm_pmu_host_guest_test for
+References: <20260527234711.4175166-1-yosry@kernel.org>
+Message-ID: <aheoLra4MFZj7ID7@google.com>
+Subject: Re: [PATCH v7 00/17] KVM: x86/pmu: Add support for AMD
  Host-Only/Guest-Only bits
 From: Sean Christopherson <seanjc@google.com>
 To: Yosry Ahmed <yosry@kernel.org>
@@ -72,21 +72,38 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>,
 Content-Type: text/plain; charset="us-ascii"
 
 On Wed, May 27, 2026, Yosry Ahmed wrote:
-> +int main(int argc, char *argv[])
-> +{
-> +	struct kvm_pmu_event_filter *filter;
-> +	struct kvm_vcpu *vcpu;
-> +	struct kvm_vm *vm;
-> +	struct ucall uc;
-> +	gva_t svm_gva;
-> +
-> +	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
-> +	TEST_REQUIRE(kvm_is_pmu_enabled());
-> +	TEST_REQUIRE(get_kvm_amd_param_bool("enable_mediated_pmu"));
+> Jim Mattson (2):
+>   KVM: x86/pmu: Allow Host-Only/Guest-Only bits with nSVM and mediated
+>     PMU
+>   KVM: selftests: Add svm_pmu_host_guest_test for Host-Only/Guest-Only
+>     bits
+> 
+> Yosry Ahmed (15):
+>   KVM: nSVM: Stop leaking single-stepping on VMRUN into L2
+>   KVM: nSVM: Bail early out of VMRUN emulation if advancing RIP fails
+>   KVM: nSVM: Unify RIP and PMU handling calls when emulating VMRUN
+>   KVM: nSVM: Move VMRUN instruction retirement after entering guest mode
+>   KVM: x86: Move enable_pmu/enable_mediated_pmu to pmu.h and pmu.c
+>   KVM: x86/pmu: Rename reprogram_counters() to clarify usage
+>   KVM: x86/pmu: Do a single atomic OR when reprogramming counters
+>   KVM: x86/pmu: Check mediated PMU counter enablement before event
+>     filters
+>   KVM: x86/pmu: Add support for KVM_X86_PMU_OP_OPTIONAL_RET0
+>   KVM: x86/pmu: Disable counters based on Host-Only/Guest-Only bits in
+>     SVM
+>   KVM: x86/pmu: Track mediated PMU counters with mode-specific enables
+>   KVM: x86/pmu: Reprogram Host/Guest-Only counters on nested transitions
+>   KVM: selftests: Refactor allocating guest stack into a helper
+>   KVM: selftests: Allocate a dedicated guest page for x86 L2 guest stack
+>   KVM: selftests: Drop L1-provided stacks for L2 guests on x86
 
-This can and should be handled in a helper, using either host_cpu_is_intel or
-host_cpu_is_amd_compatible to choose while vendor to query.
+This all looks good.  I'll get the KVM changes applied and pushed (assuming they
+pass testing).
 
-> +	TEST_REQUIRE(host_cpu_is_amd && kvm_cpu_family() >= 0x17);
+For the selftests, I'm going to hold off on applying them until after the initial
+pull requests for 7.2 are merged into Paolo's tree.  The (AWESOME!!!) L2 stack
+changes are going to cause conflict hell, and it's easy enough for me to carry
+them out of tree for a few weeks.
 
-Why the family check?  Actually, why check host_cpu_is_amd at all?
+I'll send a refreshed version of the selftest once kvm-x86 has settled down for
+7.2, e.g. to account for the gpat test as well.
