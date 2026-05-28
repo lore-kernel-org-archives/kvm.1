@@ -1,180 +1,246 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816DE317158
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779993214; cv=pass; b=rpTtNjHi6QV3J2QOOPXL7rXmXO4dvHWSuLLIiHQogdwYYeN2qthuO7d3YhpubPW3NAkPU36plDcjJ1Wle4Q1swdJS8Mg1jECkmNc4I7rhz0XhFKmHJy5xlBVa60F9U5uDOPl3/0PFLPr2Flmt4uVDDWgsD1fEpwgztwrPr7GIKc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779993214; c=relaxed/simple;
-	bh=Ppb817bzRtNdqefsX9PQ7sZnHjM/MR5bByGhoQxVaUg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hcwXlcWZ0SZ76RY7duTliUF13KMveVnV2x/ykRADlkPgD0kqmSDCxDqJygcsTMLdyAbZfVeKgOYimNRoYSLPIuZ+q11yGon7nSu8MsUFg3Y62JuyEOyf8PEykum1jJmLwV+V0Qn4+2xDQL9vLAo/fZC98hNF24pFZdvjzERlstw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=La9+GTH7; arc=pass smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29B9331A6D
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779994786; cv=none; b=oJQ9b3canHDZ2eM9CJ66nQX8CQj/CrmUc9FvJ4gYq5z2Pzl1syaWOcZLYcVGVyjsXtpMLRBbQ69FrFcY+e9b0ZCB7LLZYkuf0d0NDoWgjhN/M4RKJ46ucs42bayoLJktJaQbAZc5TfMMgN3hoVmpv+hgTmrZUNiStEVPTtGcAF4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779994786; c=relaxed/simple;
+	bh=K+u3BaAhGcvOwP6Hri5H/3Q3PATtfO+X6e86JxPROrE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PvGuukOFOAmhJ+R0tronu3QEdBeXUOUS5P4OGgZ4wsy4EIaJseXofywj9/oZjgJgOFK7NWcP5qAb70jNJ4/LKH1zXLPJPRCgDBkqrD+j1U7hAWWDciQxBiL3LnOrEQOvpgehV05kL7/pPVXpQDO8W53Vyv8hlYbsx2ZtOwlGYEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tPmEL+fV; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="La9+GTH7"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-516d1ddcdf4so3691cf.0
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:33:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779993212; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WC6cTMPX2pWQYi6ZJ+bM38qzKV5/SgjcFfEDDDcPNFKswWjOFhhYL5iH7hA6N0wO/D
-         mZJzK9aA9E77ZF2xjaJ61Lgy+qfix+ccMWgKIZW0nG3Wun491H8AUoQAVt5GGwd+yZoF
-         z16IuoktuRjDBNf72HSzmowHAftFMtp3dyo3axn71TYp6pkpgfzHsAqe4DoSCiBgIYUg
-         OyThztHEYc7JRZy7zcjkhRQWE/sB6IqrXPpwHuhksBpJYgeLAWfB1AjsB9WnJn4Ktw7L
-         EF/Bt9GhsZEg7mQvzP+LfFzClwsKLP08lkLqWrT9fbcWwDWRbaA69aP/vPLaDHlVu5bj
-         agjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8GUHjGyui/Ils6qL59KIp+/r5MshBC/5T8zpHUnaWbQ=;
-        fh=EBc7KIBj53jAQHhxLIujeF0z4nI+MiaamDmBhbFQZ98=;
-        b=MyZnTFhe6ozm+qupHOcIfDvtrJM5oS+mZtVfnu/MlrNAeMtyNnZT+SMoqaAy+CAnZM
-         nHF/628v0cAHHVnJvCxMEcLhXE/0W7l8/sIgUmPaUEeG+J1T8ShFmjXV3/aeRKmlUjnq
-         sVI7IDprFnND5IJ6csSUwV7X2rhoRY5rZbBSOEynLfcxT73rBvpv5HaZq+Leebw9a02G
-         +3YeFfyVzFbngaqnjtCxJyLX0N55n8WHxges4pITLgCG2qUh3MIgQRUXdbP7kacGYpS4
-         ErOhbS3EvXqCuWmQECyaLlUqcK8J3scjNZw1Ti5LVHp3anNuuVeF16DBOPxVvYqPLcQX
-         uo1Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tPmEL+fV"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-83ec36a13e9so6727492b3a.0
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:59:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779993212; x=1780598012; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8GUHjGyui/Ils6qL59KIp+/r5MshBC/5T8zpHUnaWbQ=;
-        b=La9+GTH7x8cbq+O6G9wlQl2KAct/SSea+zRVAI6HmT1OBwNcJmkAq2hp2kFPbZIeqk
-         7WM2yS+Nrv3Nt5TGOqwc5axaog45CEvemXW3gut1CHxQxHmIQrCXWbvojMPSuaLJTu58
-         mbCVrLwsZFMIW8WiZbUqg5njULH90nnTwVfJj9nU02jNwakqkoUCnju4otoi2NjGnDcc
-         wykjEB1RXE8JEEzUu8+dUlR6fXfV3seoaAoTPEKJDxEd8CoKZhgmGFPF1gKTLME9gwNB
-         +MErOL8my+DvrTbulTsiDtU9YCtFpjLvBY3/xpF0HmUb3QZU2OHrUd3DEEfUWw3+1PA9
-         Nnhw==
+        d=google.com; s=20251104; t=1779994782; x=1780599582; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=C2ZUBuHYLFWaBCKcO06WPiLzxJQqwEviAmU64GiN9ok=;
+        b=tPmEL+fVHSrGRYBfCJcVg3KCj+ESdSPwsJ+dQSLrg/rIO2ss3m/6+ePSbybnXOxqs5
+         i9rkUFw+8+PvxNJqwZn/Jz1r0EtOa4EGZ5PmranxCn7LpN9Lx1lgqPMF5i9Pl4gIEJyp
+         tdacW7QZ9tIG2BM3SmfJ4y1RbXG2dReefH5XyHKS32tG62lo7jNDgIT/+ETT3eOBhOO0
+         oZWyoPH20vz/i7TTo7GcN0WUiHLOpZ0L7RiYr+dPLilrw0GhZlD0MfHihql+nS0N6V2z
+         QwGcofRsG1Z+fKDuuGyt7wBYw23r8bD1CahfGKDhF7Axr/dfA3jMJK5JAh3/HKu+IR5i
+         fE+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779993212; x=1780598012;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8GUHjGyui/Ils6qL59KIp+/r5MshBC/5T8zpHUnaWbQ=;
-        b=MXwZmyfDZcRWwlC+Z5L3mDNrpdbCcHFVW5poBlvdvzhwvYp/FJXt9V1JU495baPnPd
-         wA31fkNh3RLMqMN2355DqaTqY5OBgOsgTwXDnGdt5wtiTTZ7hiT1hHDT6+JjSRv5pMj4
-         Mwk9yno9n0Wzz0uM4FkPdjREvskol4vAsNZjAkwt3rZ2ejTuMOA3XMnpfYr6X0jHhZ/6
-         xZhnSgkYztjI57qRkBvS/xR0U5O3xc9g7zbCCqI50HyawdYZ7l+UKXzZF481ow+4ELXe
-         YwkepdKJYT8xl2ePgRxbAcx7js74Ne9ICO2IIImvxK2ozmWe6CRIIVQOMjq/esgILJIY
-         UzRg==
-X-Forwarded-Encrypted: i=1; AFNElJ/QIGzrN89l2mBK2HRx08S7QsOJC6vRsiDJtdQUR9S/28w9Fjvg8SG6LqLGY+gKkfI8TlI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwaV1mM5PBYRe+pByfxWuEpqKNSQgWtp9Rk8nO46NfFhdOT1ki
-	Ma3muh8ijrLw81Oy6EKQSjI1M6A/+BUf+/SMNoN64pTFsY1KT32dQpdmigCU3GXw0774V7Y8M4G
-	I6JbWr+IiZN74m1gB8Ns3Tx8wT1hn9iyEO6Yt+pCC
-X-Gm-Gg: Acq92OG4eQac6Ro2OR26JY2UP9DCyf6BnLneCnE2z43unnn9MK5PnmC38sGDaV3uwbL
-	57KdFh89Xt5Sgs8EMPz/5rSNMh+nMz+29XoxL4T4bewk8wvGq7xg+QMf/2Hj0p4dzlXO7ACA7tA
-	tNHLq370X3v6q9J7Ox0XI35NPtOqj+Dsf5DIj5LrgXY6SPhv7n1Hn2rphGrFSxQoF/ifr3uSeB1
-	VYKMSe2mYeNCiVadY9ZhcoPHPApoMjFeqajm/wADc3fafFbm0SSyyUESPp4s8tCxEcpSRCibUOm
-	6ZtOLx3bAfBlmEXLMA==
-X-Received: by 2002:ac8:6887:0:b0:516:4f62:85e6 with SMTP id
- d75a77b69052e-5172c8d7f31mr216891cf.17.1779993211840; Thu, 28 May 2026
- 11:33:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779994782; x=1780599582;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C2ZUBuHYLFWaBCKcO06WPiLzxJQqwEviAmU64GiN9ok=;
+        b=JzPGnAGVC7g7MXbA1vXGz5dnLao+mtpm86VPFDtvQX8EQ9ICvKCtNF7L6Yyv1VGMDK
+         p/nY9bcraagv6UPmnMDyzC9La9Y/SW2aMPpOfC4qX1ryFsGtAPdgZ7DvzviU4My1+Bnj
+         2DD6/drQJYBewZevSShADbfw1ximb+84w6or/OVQgjeDR9xG/QVLlfSeL5pPC1t4rSAT
+         cIX21V12au5dEjn7pc06/oRJvuc1tYcTXS4NEz1o7VmfmxpBS/++ePf1k7ecbl1wlBgg
+         8yFlILc26DV0iDDu5+HjymivprmeEKb5dc3dZ459x6Gkrtw3FNh8EoSfO6pbeFQxH+Z4
+         Y56g==
+X-Forwarded-Encrypted: i=1; AFNElJ97xPTz+ahaWzEDrpjC8VsmvDfw4tBRPQ0OcL9ZfiyOE6InqDQ34Rl4l93Nv0VAEKPXMA0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4ZIGbKPK7GCSWWJDDHZIqmN/LBPlt/K6X3EtMGBdZrnVJ6+Pw
+	kgLYo7YVfjbXhHiRd8L3W4zMX1pEdAnq+dJE2QVvrbcqXafPipCymR4bN/+hNJvlDQ==
+X-Gm-Gg: Acq92OEtVnOPyUHrdLiWyAaxjHDDtJ7hj2OI7hiWXjWV4vo6YCLzs7JnKAtfuRL9j9P
+	rtQIRZJFe9aHXo4a+gw3OoP2yGjwy+3+2TdHCD3awzZTZafo9XCl4DLxORWHkmsn/Rv7WpJ1Qms
+	Af12WsaF5cPmOr66jAPTitIbkUO1+8a7KyBHqV07ar4D544trQc9+60s9MsRGd1sIXpoC48nCz0
+	g0rtuV8b4hi6X9cd23htZ7KFtbM2exM5ocotbxxf/zk9zyUxaPPlnr/kVcEgm8WxRy+uue28Mk9
+	eU7Sm81WB4p010l87BF7FhO7sdjOwp3OBhaopgmr8k9hFFwKz9aVECftU665d4qsPstfkQwZUCI
+	7hFf0RtQhUAMtgn1I/p+Vq60U8TMoRzyhJwemB3jNKaXLpR7w4pzJm9ioQdUhF+b4OuJ7TUFXVH
+	lSBak0/fsRWBHU4mtIxEeAuN//OAHrreskXYJWqJkTRB8SIRNPKdy3gdDi/249iwI1C5/anf88
+X-Received: by 2002:a05:6a00:9099:b0:841:dc7d:306a with SMTP id d2e1a72fcca58-8420c4b6859mr239429b3a.25.1779994781790;
+        Thu, 28 May 2026 11:59:41 -0700 (PDT)
+Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d70bb654sm7090146b3a.29.2026.05.28.11.59.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 11:59:41 -0700 (PDT)
+Date: Thu, 28 May 2026 18:59:38 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	patches@lists.linux.dev
+Subject: Re: [PATCH v2 07/11] vfio: selftests: Allow drivers to specify
+ required region size
+Message-ID: <ahiQmnWscsbWPqRo@google.com>
+References: <0-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
+ <7-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260527120600.20696-1-pbonzini@redhat.com> <20260527120600.20696-4-pbonzini@redhat.com>
- <aheD8XjfMrL9wGFa@google.com> <bfc136b4-106b-41dc-a161-b39ca8d63161@redhat.com>
-In-Reply-To: <bfc136b4-106b-41dc-a161-b39ca8d63161@redhat.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 28 May 2026 11:33:18 -0700
-X-Gm-Features: AVHnY4I_A-NZ8KOxwEGlELAZ4I4SMhhZA-pCOPIuInR6T-gqryQwaXKU52mRN9I
-Message-ID: <CALMp9eQrvHjO4RtWYdqDtzWiXvBgfZA93FxM9nB3KVF8syeZjg@mail.gmail.com>
-Subject: Re: [PATCH 3/4] KVM: nSVM: invalidate cached PDPTRs across nested NPT transitions
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
 
-On Thu, May 28, 2026 at 1:44=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> On 5/28/26 01:53, Sean Christopherson wrote:
-> > I would rather use kvm_clear_available_registers() than add yet another=
- API,
-> > which isn't even a good fit here since SVM never expects the PDPTRs to =
-be dirty.
-> >
-> > Though I think it's a moot point, because nSVM should be clearing *all*
-> > lazy-loaded registers.  It just so happens that PDPTRs are the only suc=
-h "register".
-> >
-> > I haven't checked to see if this would actually be correct, I'm just mi=
-micking
-> > the nVMX code.  But conceptually, I think we want something like so:
-> > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> > index e74fcde6155e..0c6ab00766b1 100644
-> > --- a/arch/x86/kvm/svm/svm.c
-> > +++ b/arch/x86/kvm/svm/svm.c
-> > @@ -1303,6 +1303,8 @@ void svm_switch_vmcb(struct vcpu_svm *svm, struct=
- kvm_vmcb_info *target_vmcb)
-> >   {
-> >          svm->current_vmcb =3D target_vmcb;
-> >          svm->vmcb =3D target_vmcb->ptr;
-> > +
-> > +       kvm_clear_available_registers(&svm->vcpu, SVM_REGS_LAZY_LOAD_SE=
-T);
-> >   }
-> >
-> >   static int svm_vcpu_precreate(struct kvm *kvm)
->
-> I actually started with something like that.  nSVM should indeed be
-> clearing all other lazy-loaded registers too (except there isn't any).
-> I ended up doing it the other way for two reasons, both boiling down to
-> PDPTRs being weird.
->
-> First, the PDPTRs are cached processor state but not a field of the
-> VMCB; changing the VMCB should have no effect on them.  For SVM, changes
-> to their cache state are purely a result of writes to CR3 or CR4.PAE.
+On 2026-05-15 02:30 PM, Jason Gunthorpe wrote:
+> Add a region_size field to struct vfio_pci_driver_ops so drivers can
+> declare how much DMA-mapped region they need. The mlx5 driver will need
+> ~18MB for firmware pages. Existing drivers pass in the sizeof their state
+> struct. The core code will round up and minimize it to SZ_2M so as not to
+> change any test behavior.
+> 
+> Assisted-by: Claude:claude-opus-4.6
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c         | 1 +
+>  tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c       | 1 +
+>  .../selftests/vfio/lib/include/libvfio/vfio_pci_driver.h   | 6 ++++++
+>  tools/testing/selftests/vfio/vfio_pci_driver_test.c        | 7 ++++++-
+>  4 files changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
+> index 19d9630b24c23f..40b8541b588eee 100644
+> --- a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
+> +++ b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
+> @@ -418,6 +418,7 @@ static void dsa_send_msi(struct vfio_pci_device *device)
+>  
+>  const struct vfio_pci_driver_ops dsa_ops = {
+>  	.name = "dsa",
+> +	.region_size = sizeof(struct dsa_state),
+>  	.probe = dsa_probe,
+>  	.init = dsa_init,
+>  	.remove = dsa_remove,
+> diff --git a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
+> index a871b935542bad..c9b28365c5eb6b 100644
+> --- a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
+> +++ b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
+> @@ -226,6 +226,7 @@ static void ioat_send_msi(struct vfio_pci_device *device)
+>  
+>  const struct vfio_pci_driver_ops ioat_ops = {
+>  	.name = "ioat",
+> +	.region_size = sizeof(struct ioat_state),
+>  	.probe = ioat_probe,
+>  	.init = ioat_init,
+>  	.remove = ioat_remove,
+> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
+> index e5ada209b1d102..547369c5cff95a 100644
+> --- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
+> +++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
+> @@ -9,6 +9,12 @@ struct vfio_pci_device;
+>  struct vfio_pci_driver_ops {
+>  	const char *name;
+>  
+> +	/*
+> +	 * Size of the driver's state structure overlaid on
+> +	 * device->driver.region.vaddr
+> +	 */
+> +	u64 region_size;
+> +
+>  	/**
+>  	 * @probe() - Check if the driver supports the given device.
+>  	 *
+> diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+> index afa0480ddd9b2a..5a46800cde4c8d 100644
+> --- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+> +++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+> @@ -2,6 +2,7 @@
+>  #include <sys/ioctl.h>
+>  #include <sys/mman.h>
+>  
+> +#include <linux/log2.h>
+>  #include <linux/sizes.h>
+>  #include <linux/vfio.h>
+>  
+> @@ -80,7 +81,11 @@ FIXTURE_SETUP(vfio_pci_driver_test)
+>  	driver = &self->device->driver;
+>  
+>  	region_setup(self->iommu, self->iova_allocator, &self->memcpy_region, SZ_1G);
+> -	region_setup(self->iommu, self->iova_allocator, &driver->region, SZ_2M);
+> +
+> +	VFIO_ASSERT_NE(driver->ops->region_size, 0);
+> +	region_setup(self->iommu, self->iova_allocator, &driver->region,
+> +		     max_t(u64, roundup_pow_of_two(driver->ops->region_size),
+> +			   SZ_2M));
 
-Huh?
+We have some other upcoming tests that want to set up the driver region, so it
+would be nice to move this into the library.
 
-The SDM says, "The behavior of PAE mode in a nested-paging guest
-differs slightly from the behavior of (host-only) legacy PAE mode, in
-that the guest=E2=80=99s four PDPEs are not loaded into the processor at th=
-e
-time CR3 is written. Instead, the PDPEs are accessed on demand as part
-of a table walk. This has the side-effect that illegal bit
-combinations in the PDPEs are not signaled at the time that CR3 is
-written, but instead when the faulty PDPE is accessed as part of a
-table walk.
+  * https://lore.kernel.org/kvm/20260511234802.2280368-17-vipinsh@google.com/
+  * https://lore.kernel.org/kvm/20260421231557.1254270-8-jrhilke@google.com/
 
-So, they are only cached as part of a partial walk, just like the
-entries at any other level. And, unlike Intel, changes to the PDPTRs
-in memory *may* be visible in a future page walk without changing CR3.
+What about something like this?
 
-> Thus it seemed more explicit to single out the PAE+nNPT case when
-> loading CR3:
->
->         if (nested_npt)
->                 kvm_register_mark_for_reload
->         else if (!load_pdptrs(...))
->                 return -EINVAL;
->
-> instead of the slightly more opaque
->
->         if (!nested_npt && !load_pdptrs(...))
->                 return -EINVAL;
->
-> Second, with nNPT it's not even entirely correct to cache them at all.
-> Strictly speaking they should never even be marked available, that way
-> you'd go through load_pdptrs() on every PAE memory access.  Thus
-> kvm_register_mark_for_reload() could also be tied to the CR4 write, but
-> in any case not to the VMCB switch.
->
-> I'd rather keep it like this but yeah, it can be done either way.  If
-> there were other registers in the lazy load set, relying on
-> svm_switch_vmcb() would make sense but you'd want to add a comment above
-> the two instances of "if (!nested_npt && !load_pdptrs())".
->
-> Paolo
->
->
+diff --git a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
+index 19d9630b24c2..40b8541b588e 100644
+--- a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
++++ b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
+@@ -418,6 +418,7 @@ static void dsa_send_msi(struct vfio_pci_device *device)
+
+ const struct vfio_pci_driver_ops dsa_ops = {
+        .name = "dsa",
++       .region_size = sizeof(struct dsa_state),
+        .probe = dsa_probe,
+        .init = dsa_init,
+        .remove = dsa_remove,
+diff --git a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
+index a871b935542b..c9b28365c5eb 100644
+--- a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
++++ b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
+@@ -226,6 +226,7 @@ static void ioat_send_msi(struct vfio_pci_device *device)
+
+ const struct vfio_pci_driver_ops ioat_ops = {
+        .name = "ioat",
++       .region_size = sizeof(struct ioat_state),
+        .probe = ioat_probe,
+        .init = ioat_init,
+        .remove = ioat_remove,
+diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
+index e5ada209b1d1..547369c5cff9 100644
+--- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
++++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
+@@ -9,6 +9,12 @@ struct vfio_pci_device;
+ struct vfio_pci_driver_ops {
+        const char *name;
+
++       /*
++        * Size of the driver's state structure overlaid on
++        * device->driver.region.vaddr
++        */
++       u64 region_size;
++
+        /**
+         * @probe() - Check if the driver supports the given device.
+         *
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+index 6827f4a6febe..c70c22b1a86c 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+@@ -28,6 +28,9 @@ void vfio_pci_driver_probe(struct vfio_pci_device *device)
+                        continue;
+
+                device->driver.ops = ops;
++
++               VFIO_ASSERT_NE(ops->region_size, 0);
++               device->driver.region.size = roundup(ops->region_size, getpagesize());
+        }
+ }
+
+diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+index afa0480ddd9b..36d977542274 100644
+--- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
++++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
+@@ -80,7 +80,7 @@ FIXTURE_SETUP(vfio_pci_driver_test)
+        driver = &self->device->driver;
+
+        region_setup(self->iommu, self->iova_allocator, &self->memcpy_region, SZ_1G);
+-       region_setup(self->iommu, self->iova_allocator, &driver->region, SZ_2M);
++       region_setup(self->iommu, self->iova_allocator, &driver->region, driver->region.size);
+
+        /* Any IOVA that doesn't overlap memcpy_region and driver->region. */
+        self->unmapped_iova = iova_allocator_alloc(self->iova_allocator, SZ_1G);
+
+>  
+>  	/* Any IOVA that doesn't overlap memcpy_region and driver->region. */
+>  	self->unmapped_iova = iova_allocator_alloc(self->iova_allocator, SZ_1G);
+> -- 
+> 2.43.0
+> 
