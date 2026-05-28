@@ -1,80 +1,100 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391793EEAD7
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 13:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D60391E4C
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 13:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779973743; cv=none; b=jp7KrzSxV2l4p+2X+9TaVTyttbjAiwwUU2HnX8iTjRYs6yEM99VS6n8hL5BITRcSRgHDiYidOQCjz1TadlgJwUXZfGs9+G6dHVeK/l4reJokBB3ctK3Hnf1Ay4iQ7MRnywjJoSTYy08Aj4g4hSt9qLYu+U2WlvsLzNk153m+rFc=
+	t=1779973812; cv=none; b=Vhjz0gvmWDC8ESG+vY6mT0HTMUoqp6aAcDQ2naa5+4pJggFQXzEHoHKWVL15Bo067eLuvQR/z4XGS/FRDWMCJzOxiyI56uRiNz26BaQrHLtAviICfFO/XX7Ka/hOgGWm1tCerRXxLfhFGPTnpy16h3GWQBCAUcAyQrplwywTPfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779973743; c=relaxed/simple;
-	bh=oBmK9WOIKlWbMEaKPBbTmm7YEGcIoyZ57guz/RjSxNU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kcPP4sqQ81HYIm02v8o9Yiz/gztHUMsYZCCAp/duHOkzkph97wDmv/HSFAK6e7EM++lfc2iiQM/EnscAlpyYUjCKPBf/XAnAPsrGE5aH67Bwff+rjYvg/83cCTLDY1597u9Q2k/FoOJSltSJgruObChuEU6lF9zYpuXGLBBLLG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KgRD/rwx; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779973812; c=relaxed/simple;
+	bh=nasYBxxQBhtM49uNyZJAnEEjQtOJTV+QSFfn0KkXktY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=neoQMXTegDnfL7dFMMMUEFaQTLBj0Wn6dUARISfsv+9SnptetZr2CiGSnmZjv6pRfuXFpWzut7K8S54Ld1fIM3Kdw8c+IO1kuM4FUhallQzms7YvrsFrxW4PBbXFtT38PuGpEebGeFmG2nccdY3JAPs9DCzA8vI0R/L2JP8/Vr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5gZETno; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KgRD/rwx"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c827bda2e60so7506752a12.3
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 06:09:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779973741; x=1780578541; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oBmK9WOIKlWbMEaKPBbTmm7YEGcIoyZ57guz/RjSxNU=;
-        b=KgRD/rwx1figqoa3EHBtLBfq9cix6W5eBofIeaJ/3wr2KrrmdOoXNLFxghkOfmBvjf
-         U7oW5zLmNkjj5vpwv3bXbQQlciJV/eW+5Zg9h0S+g2bq8vMDk5zsVg4rK7ZJGCRFdYda
-         gjf9DNYAI8dafT1QMuLYPBmaeu6bN03/aaMfAAfJwwtQH32ZIr8a/F3dC2m3QglBilCv
-         jZv3j8YGPAJv6VLnjmQBoCk0eFZMODTJULIqodaTj0/8T77Jxeuj0s7jJFIOze8lS5D/
-         17f/qnOB1QqvEB17jiSxMniOZen8t+CZ2AqGznSdWj2Ci8uXf3JsyD2iqXRiFoxzdeJr
-         v8VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779973741; x=1780578541;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oBmK9WOIKlWbMEaKPBbTmm7YEGcIoyZ57guz/RjSxNU=;
-        b=LTTrvC229q8iMXH1ILv6aiuPqxgole0YxOm/89k3buXy2skTFKUufwr35QmabUwzuF
-         U2b6qyPIPSGFlcXDo0nqYbemlQ8IMOchQC8SxS22XWHIrXWKLD0E09BVrE0EFVSNDVqa
-         kMZZ3xTIBmzzeT721n3vcv6bu7n0gNO6sOUt3YjxvAAEm8q9qfqYHvHSU8avpmMFfLnG
-         H8oZ6binyMUl/Uj4OJUkmK0XvoerK2fxEQl5d+jiD1DApxaIMDUyn78vwYkCDAk3OR/X
-         qU5BMHduQiKYKIW3NLBbCQbkGLweWblqSWVEjX2XbFH5Z8EKqN4OnpSNvI2jDqNGZn1i
-         n9Rw==
-X-Forwarded-Encrypted: i=1; AFNElJ/OsC8MdaNsZ6GKJqMxS1R1Rr4jT3YONXPcRfSrOr6am/xqYiuzlhs4Ui/kmIEOSux3+uU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1CVeg/rYsTpjPnCkIoRtUQtcXY6cC0+3NL2gCeh5XAv9HHPND
-	dPHlPZOcCgfEwX/8XtHEbSLoAOJ4Ct6vEkjecHtm+MCHQI14mfiWCFCt+CUBMC9TwqGhWDluAFh
-	9zx008g==
-X-Received: from pgkn21.prod.google.com ([2002:a63:ee55:0:b0:c85:a9c:435f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6490:b0:39b:87f0:758e
- with SMTP id adf61e73a8af0-3b328c6ad42mr29658480637.8.1779973741256; Thu, 28
- May 2026 06:09:01 -0700 (PDT)
-Date: Thu, 28 May 2026 06:09:00 -0700
-In-Reply-To: <a8f495f0-b4a9-42b6-be74-4fa9d83c7346@suse.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5gZETno"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456D51F00A3A;
+	Thu, 28 May 2026 13:10:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779973811;
+	bh=Nv+sSHGK/7w7XSI+xK5P8FypgRkQwDYdhRz87xwQSOA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=P5gZETnoAneUvfiLxASjyVKfDx//yh+uBTmEuE7b9z/ZONvnHfRcESp6+cAHeMkst
+	 IZ6yOr8WPFd8xtPxQkUaVZQb1gBwvnOa2jEF0ZVv7P0Q4vAML9KnDUG+iyZeoaWEep
+	 JECOgbsjoqFrc82es6pufx0Ezu3ZzkKm6GAI9zbxO3xPwtakyMJaibNT+nIq2pGlH4
+	 2QnxbwUE0N1ft0WkI22GsVTqlFYTLPQqieupMM7yN5zSy5EOtEyJLd4JKRqFpRuUmI
+	 OIesg+zjBfHzA6Qnd0zw5VLYGIHvi3ZGlxPa18nor7quSikQuISjCHsc7w4CvVvrfd
+	 wsa/OMM4NNwRA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 3/5] KVM/x86: Return -errno instead of "1" for
+ Hyper-V related MSR emulation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Juergen Gross" <jgross@suse.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260528111357.264809-4-jgross@suse.com>
+References: <20260528111357.264809-4-jgross@suse.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 28 May 2026 13:10:10 +0000
+Message-Id: <20260528131011.456D51F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260528113605.267111-1-jgross@suse.com> <a8f495f0-b4a9-42b6-be74-4fa9d83c7346@suse.com>
-Message-ID: <ahg-bEiwyqYTdWOD@google.com>
-Subject: Re: [PATCH v2 0/6] KVM/x86: Drop "1" as MSR emulation return value
-From: Sean Christopherson <seanjc@google.com>
-To: Juergen Gross <jgross@suse.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Paul Durrant <paul@xen.org>
-Content-Type: text/plain; charset="us-ascii"
 
-On Thu, May 28, 2026, Juergen Gross wrote:
-> Please disregard this series, there is one complication sashiko made me
-> aware of.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Returning negative error codes (e.g., -EINVAL, -EFAULT) from MSR h=
+andlers instead of 1 causes KVM to abort the VM instead of injecting an arc=
+hitectural #GP exception, creating a guest-triggerable Denial of Service.
+--
 
-Sashiko beat me to the punch. :-)
+commit 4122a3bbc2071f6540c3f278e39fcef59eeaf6c9
+Author: Juergen Gross <jgross@suse.com>
 
-See commit 2368048bf5c2 ("KVM: x86: Signal #GP, not -EPERM, on bad WRMSR(MCi_CTL/STATUS)")
-for a real world example of how things can and will go wrong.
+KVM/x86: Return -errno instead of "1" for Hyper-V related MSR emulation
+
+This commit changes the return values for Hyper-V related MSR emulation
+handlers, replacing the literal "1" with standard negative errno values
+like -EINVAL and -EFAULT.
+
+> diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+> index 4438ecac9a89b..809752a6d0ac5 100644
+> --- a/arch/x86/kvm/hyperv.c
+> +++ b/arch/x86/kvm/hyperv.c
+> @@ -167,7 +167,7 @@ static int synic_set_sint(struct kvm_vcpu_hv_synic *s=
+ynic, int sint,
+>  	 * allow zero-initing the register from host as well.
+>  	 */
+>  	if (vector < HV_SYNIC_FIRST_VALID_VECTOR && !host && !masked)
+> -		return 1;
+> +		return -EINVAL;
+
+[Severity: High]
+In KVM's x86 MSR emulation framework, doesn't returning 1 from MSR handlers
+signal an emulation failure that should be handled by injecting a General
+Protection Fault (#GP) into the guest?
+
+Looking at __kvm_emulate_wrmsr(), there is a specific check for negative
+return values:
+
+    if (r < 0)
+        return r;
+
+If we return -EINVAL or -EFAULT here instead of 1, won't the negative value
+propagate all the way up the call stack (e.g., through kvm_emulate_msr_write
+and vcpu_run) and terminate the KVM_RUN ioctl with an error?
+
+Since userspace VMMs typically treat unexpected negative returns from KVM_R=
+UN
+as fatal, could a guest OS use this to intentionally crash its own VM proce=
+ss
+on the host by performing a WRMSR to an unsupported MSR?
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528111357.2648=
+09-1-jgross@suse.com?part=3D3
