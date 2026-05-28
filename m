@@ -1,79 +1,68 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A563E51C3
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777C32FE591;
+	Thu, 28 May 2026 11:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779968339; cv=none; b=gNA63Vp9iVm/tYp26NecDY8ssO+/O2ZS4vr/cMeBPiyzqLv23LILGr16OzLqyUFGFRKT1JAlHV2r+oPZUu40HTnQbn/Hsc/BWwM4TF4hxMVKAmN//sGDFXGj8qeqdIRJyxtQDo3o1kfp0nLoS9a35dMhzSKurQHiYlQzmttawSg=
+	t=1779968858; cv=none; b=PDqLgN3PWdVjMwIesPk7WA9Oud+avUDeUsnA17Ppr5qhcaPRZZDYzW4GkhVDkJmvK4rLDuDyMbxSiXql4wL+VkUf0Tb2NmAgLo6X/G7Qimu//bCd67o1HdzC65bqsvdircFc/29dI9ZuyxMJqNEKt1rpdGzRhoi2+16AezDVE/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779968339; c=relaxed/simple;
-	bh=R+idNd6VQHryMkE7s+xh+chHq0O9Dd0htuOKJxMUPRk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F4DTXFWrdsXvhGkH7HHb36oyQYBH2yPWeiCRyAmlSqqGTrCbskWcegL8/TBIig5jd6mL3dFaS5OpEq4vs3YC1tbkdF7hI8XRh7pQb0Ecll1wZT0oN9Z38L6WQ0JduzoOtrCFr9GiLPEht4oNZs9gbJywNHZqaBMOGlXwIuMvCrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=meWzqMFl; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779968858; c=relaxed/simple;
+	bh=TA19f/y+xYkIMPOziRqykOvXcPvgaeEOtK5SLEvFYY4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j2LLyEwrz6bcYS8CnDgdtqM7yKQWXwaIHjH4JptrgSJIDeeXobxK7jitlmcL8PjkskCdzFw3islsUvHYXr4weyhi/G4R1V24sm6mw54cbu0osfUx4MdtswB5UT0go0C58wyTCOuQFFGVqIRxyINqFIqq2lb31PNtOKo0f+CTjSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CApc8Sfv; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="meWzqMFl"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b4650d5f5cso53561255ad.0
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 04:38:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779968334; x=1780573134; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HQOVqn7f6Wpqd2/fSU+ahSddV1Hbd7ryZ20yjrjfDWg=;
-        b=meWzqMFl3d8z49Vt2+bTgy2xVVVq+gyz3ZObwOqZHrh3IkyRIgDdRNjdlCLk2lVX9B
-         iHmm80AKtAeEbgzCkEiBukayly8CgFJ9m87W1uTL/RiCLM9dq20izt57mAeWFki9KpHR
-         MQF1SEOoxlWbKqCGxtkdTMe31it1Md5H+HY4jImgpoW9gSMWRkG8AVKDUvnFraqwyM+4
-         iVZLB3xilqeXy3KnAEeHuAsENuwYaTASkojDrbgqT6XZVcs+MDAUnjL+E4/W94QDRZEJ
-         fxi3JDVN7kj7+CcMYmTOlh/w48ELzNmOlE+slw76ZG06CWjEEUqzj+JOsbr3Ca1C1I7n
-         g3kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779968334; x=1780573134;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HQOVqn7f6Wpqd2/fSU+ahSddV1Hbd7ryZ20yjrjfDWg=;
-        b=cLkcpV16MOYYQsDO27ivgDDJZfghHjNWe6poZRcQQlQ94oOtEHw5yMxt7y7EGbQHJR
-         GuGxZiW7ZrJEpvnr5inpAzq5JS18n1IViybSL/h/Yxs2Os+8Kmqj8yX9/PfqQaECXp34
-         qcjQa4/cgOzodS2UQZ0eIFICHXbhNy209fcA4KON3OyVZY7BlcPNhu+lbFEMTQ79SloP
-         /kRIcIaRJ37HPIkLe66wqofBR4HbLC/RKbC7eBTBmgpz0CVrUHOt5KRPh6jIlzN3gfIP
-         H/xFjAW7aDIKAdjdmBr8uFxIt1tlMsaiQJxu5H31v668eh8h39XvyjobYs9JoOKyQlnJ
-         7aZg==
-X-Forwarded-Encrypted: i=1; AFNElJ9BtGgS0DyD1du/sMa7E7mxXU6+4gMpsNZcpDCQHV6jsKXEZp8TQuxXBRQRMois/CNZuos=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuVfBOMNCA3RxGAIMW0J6AoyJmqyNPHRRLdA3xYH0eO9UGxwEd
-	9iKprg9ebDZbR2LCrTPGVI6FRb7T6s4ztJ8KBdhd+mAVGTNZBruRPsqG
-X-Gm-Gg: Acq92OGrIdl1+W7ddcacrJlQDDb4AAUkfpmhF4i7j1L2oK68nlmykOKm3zleGpnbj75
-	xY9c/g4mRuumY9Eb1LkzhFaOEkxjt1QEBYE0RcpYcKhvlsRVS2yOb/hSWz1Xe6YzcsV0ZMlPB9j
-	HnJ8Fu12MpfJZrGSDamGY/fRvvs62gmJK3dWHW1BS6tg3Za8GdXrL/3Ox0TBePy6pgcRSVqJ6zN
-	wnokON259JnUd4vIiXnD3AvfXo83EHUhNU6BHm5nmLqVi9TQzxf3e0D/19y4bBilWYb3GGlWDrF
-	nbnCJKfMLEvLdGiMPirSlI1PXdZWo3rQFTy3VuKcR5jZfdH3LDhwBsdj0xo1fDhLzQdyJmCddOf
-	ZeW+BmlSsQBKXW4Ysdw4+q5cHE22QwT/9C9NXCTaqqxAej/ELA7dUtB8EDd6vmTmgeBP0ILKJh3
-	InnySCobPF0TRLeOfIAweVtdNEtfZ1F+mtiQ==
-X-Received: by 2002:a17:902:cec7:b0:2b2:ccfb:8387 with SMTP id d9443c01a7336-2beb0613c3bmr312598815ad.28.1779968334356;
-        Thu, 28 May 2026 04:38:54 -0700 (PDT)
-Received: from localhost ([2001:19f0:8001:1b2d:5400:5ff:fefa:a95d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56958d3sm170611355ad.12.2026.05.28.04.38.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 04:38:53 -0700 (PDT)
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>
-Cc: Inochi Amaoto <inochiama@gmail.com>,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Yixun Lan <dlan@gentoo.org>,
-	Longbin Li <looong.bin@gmail.com>
-Subject: [PATCH] RISC-V: KVM: Enhance the logging check for mmu mapping
-Date: Thu, 28 May 2026 19:38:39 +0800
-Message-ID: <20260528113840.2629186-1-inochiama@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CApc8Sfv"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64RL7EpG3427730;
+	Thu, 28 May 2026 11:47:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=9cZdFG36hpHKqsXo9
+	r26skXAs7oGLrh9lGr45S/uobs=; b=CApc8SfvVymPau0J5xtttNakIyoVslVPO
+	FgR0qRnJsCYeSsF1myp0lI3kg/UfVIhNwASz1Qg6gjhpGXxo+cy5bbC3foUR+Vui
+	r52z7jiNDmOTFOBYxLb6NhIKiG5xl4dh53B6KxJMvNBlfuXFGUnN5IsTfgMX5bHM
+	0X+PmQBH+8D4f8cnWKTH+JG+PPC5M3OcNRP2uiPplldL3I97F/zKQrrLdRWW2nAQ
+	CKmSvm/hYjgZ4SdkXvg6+a/+Tw2M2ZLaCpj3cq/oZ3z0FeSUf6FV+R/0A5Vug+rc
+	dwNRHhw/Hn9P56MdrVzuKPdb+fqHAy8QnkJPj4ndVgcWkCIYncQNw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee884jsyk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 May 2026 11:47:35 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64SBd7d5030830;
+	Thu, 28 May 2026 11:47:34 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4edjrb7wd8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 May 2026 11:47:34 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64SBlTKb51118570
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 May 2026 11:47:29 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4707720040;
+	Thu, 28 May 2026 11:47:29 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 17BEA20043;
+	Thu, 28 May 2026 11:47:29 +0000 (GMT)
+Received: from p-imbrenda.aag-de.ibm.com (unknown [9.52.223.175])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 28 May 2026 11:47:29 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
+Subject: [PATCH v1 4/7] KVM: s390: Fix fault-in code
+Date: Thu, 28 May 2026 13:47:24 +0200
+Message-ID: <20260528114727.142178-5-imbrenda@linux.ibm.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260528114727.142178-1-imbrenda@linux.ibm.com>
+References: <20260528114727.142178-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,48 +70,93 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=L4MtheT8 c=1 sm=1 tr=0 ts=6a182b57 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=p5SjDoQbJD9XZwj20uYA:9
+X-Proofpoint-ORIG-GUID: gOjCw9x0yXmXcl4XwywLXYDuH4fVJ3sh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDExNyBTYWx0ZWRfX2EMJmR6LWJef
+ f3ptVy8XoXlwEtg/uuODKt+P9wd+bGWWv5znYeuuOT7lD0wRJVcS9RWFYPEgIOTh8rcKGdI+D+7
+ 88MaylgRpEqj/uDgInW/pBIrd2LmdkNzAA31+ljaPqI/uPpKV3xHLGpZGs9rmNUcLjyPRpLyP9h
+ 88MgrlFVl5pPh2Hocx4Z89ugq95/+O22zf3sNyrsN+cIiCTJt5UIbtWypCQjDjPNKAmkAM/1sG4
+ USbXtyQRGjJdrTR5EIhEpQodabdi/uhlDU/ZoGh1z0rSuwVyrGWQTISgFN7wENSPpkmr+JNd7xc
+ TFye2vsQqxqAmv3bmN2nieRhRyCZuya+CID4WCO5FBQDnNrJQtGPVCApAyndb83/E530HlqdWiz
+ QWFYC9LVZEMhzS1L1aLroUSB5/TMxZloPwIm9o2TQsa9DIQUt0ShnYYSxcAyeTI+UYilipjMngr
+ pTGiHcwlMXYDHqx0QWg==
+X-Proofpoint-GUID: gOjCw9x0yXmXcl4XwywLXYDuH4fVJ3sh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-28_03,2026-05-28_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ bulkscore=0 impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605280117
 
-When enabling dirty ring, the dirty bitmap is disable, and the logging
-check is always false as the RISC-V architecture does not select
-"NEED_KVM_DIRTY_RING_WITH_BITMAP". Although the dirty log is recorded
-since the write path already trying to add the dirty log, the logic for
-logging check is broken and some side effect will occurs.
+Fix the fault-in code so that it does not return success if a
+concurrent unmap event invalidated the fault-in process between the
+best-effort lockless check and the proper check with lock.
 
-Enhance the logging check for mmu mapping so it can check both the dirty
-ring and the dirty bitmap.
+The new behaviour is to retry, like the best-effort lockless check
+already did.
 
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+This prevents the fault-in handler from returning success without
+having actually faulted in the requested page.
+
+Fixes: e907ae530133 ("KVM: s390: Add helper functions for fault handling")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 ---
- arch/riscv/kvm/mmu.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/s390/kvm/faultin.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 2d3def024270..b5873bca9dce 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -142,9 +142,8 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
- 				enum kvm_mr_change change)
- {
- 	/*
--	 * At this point memslot has been committed and there is an
--	 * allocated dirty_bitmap[], dirty pages will be tracked while
--	 * the memory slot is write protected.
-+	 * At this point memslot has been committed and dirty pages will be
-+	 * tracked while the memory slot is write protected.
- 	 */
- 	if (change != KVM_MR_DELETE && new->flags & KVM_MEM_LOG_DIRTY_PAGES) {
- 		if (kvm_dirty_log_manual_protect_and_init_set(kvm))
-@@ -433,8 +432,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	struct vm_area_struct *vma;
- 	struct kvm *kvm = vcpu->kvm;
- 	struct kvm_mmu_memory_cache *pcache = &vcpu->arch.mmu_page_cache;
--	bool logging = (memslot->dirty_bitmap &&
--			!(memslot->flags & KVM_MEM_READONLY)) ? true : false;
-+	bool logging = kvm_slot_dirty_track_enabled(memslot) &&
-+		       !(memslot->flags & KVM_MEM_READONLY);
- 	unsigned long vma_pagesize, mmu_seq;
- 	struct kvm_gstage gstage;
- 	struct page *page;
+diff --git a/arch/s390/kvm/faultin.c b/arch/s390/kvm/faultin.c
+index ddf0ca71f374..3047dfdc8be4 100644
+--- a/arch/s390/kvm/faultin.c
++++ b/arch/s390/kvm/faultin.c
+@@ -36,7 +36,7 @@ int kvm_s390_faultin_gfn(struct kvm_vcpu *vcpu, struct kvm *kvm, struct guest_fa
+ 	struct kvm_s390_mmu_cache *mc = NULL;
+ 	struct kvm_memory_slot *slot;
+ 	unsigned long inv_seq;
+-	int foll, rc = 0;
++	int foll, rc = -EAGAIN;
+ 
+ 	foll = f->write_attempt ? FOLL_WRITE : 0;
+ 	foll |= f->attempt_pfault ? FOLL_NOWAIT : 0;
+@@ -53,7 +53,7 @@ int kvm_s390_faultin_gfn(struct kvm_vcpu *vcpu, struct kvm *kvm, struct guest_fa
+ 			return 0;
+ 	}
+ 
+-	while (1) {
++	while (rc == -EAGAIN) {
+ 		f->valid = false;
+ 		inv_seq = kvm->mmu_invalidate_seq;
+ 		/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
+@@ -110,20 +110,19 @@ int kvm_s390_faultin_gfn(struct kvm_vcpu *vcpu, struct kvm *kvm, struct guest_fa
+ 			if (!mmu_invalidate_retry_gfn(kvm, inv_seq, f->gfn)) {
+ 				f->valid = true;
+ 				rc = gmap_link(mc, kvm->arch.gmap, f, slot);
+-				kvm_release_faultin_page(kvm, f->page, !!rc, f->write_attempt);
+-				f->page = NULL;
+ 			}
++			kvm_release_faultin_page(kvm, f->page, !!rc, f->write_attempt);
+ 		}
+-		kvm_release_faultin_page(kvm, f->page, true, false);
+ 
+ 		if (rc == -ENOMEM) {
+ 			rc = kvm_s390_mmu_cache_topup(mc);
+ 			if (rc)
+ 				return rc;
+-		} else if (rc != -EAGAIN) {
+-			return rc;
++			rc = -EAGAIN;
+ 		}
+ 	}
++
++	return rc;
+ }
+ 
+ int kvm_s390_get_guest_page(struct kvm *kvm, struct guest_fault *f, gfn_t gfn, bool w)
 -- 
 2.54.0
 
