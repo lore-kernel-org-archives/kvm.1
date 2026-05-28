@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA712F12CE
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 14:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057CD3EFD00
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 14:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779978979; cv=none; b=XJzwGolngs1Pd3QSGSSPwVFSvfyMTd3A5Dn3ql7josl6i77UTQw9Rr2rKi0tef1qqS0kizEgPVcVf/P3ReTNBboUhg3BmW8d/Tn/iuu7T7z+diJOkTBYOeBMQfIl1I4iwCf3PwKnFEJXBpC/abeDb9qtsxYNXBgV7f42td3Bq+c=
+	t=1779979123; cv=none; b=Qi/9gCiCj+KRuL5XZzhzFrPVBWyt6ja9qNNWO7hftxNGqBWCiwxgXDvf0N5m1Oe9pJWPN0VNYkci9cmNe3HlWY5X/Wvm1w8p+C0FCLM5vv8q3v+NFlt9ty6pWe2VZt4kYHKmbYhA99aFtPqSOQvp8z4/hE4v5iWtRGUiucxJE4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779978979; c=relaxed/simple;
-	bh=vTzzWbUBLdCBRmavGH9+PlNlAMEZstuSSPjafl37zww=;
+	s=arc-20240116; t=1779979123; c=relaxed/simple;
+	bh=b9Mzxd1L/I8CKxifUqxYIDZshZwnGrvOOX8MpbbO3H0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=pFSDgOFaw3Ioj0Bmq9HZMPZtbRI1gpFemCLA/sBndW3b5+qcWOls0b9ZpfsTPtsQ4uYFL9ssZf2DIalbA0DRJXih83UKcUhsrtnlrOIARcxyTDNNgzCoBKMFSWAp4TLiej/0ZUyM/iQN4Y7Jzumn15yigJ0+6ksyvLXawHJKYSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kp864jIq; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=eAxC51rE4i7F10HqqRmzTHDyyGYnYsMGWL2JKIins06RtF4vZ0P0mjSuQYzxJquDYADor35vqlpJpYulwSjQWgbV7bHSqWuK/b94cAH5TwXz2/oQxDNSLFhVXP14FvFGTs/RSpzAjLIJCGvIzNgV6bkl/NZy4+Hea1YjQ4QZDTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6KlcgRJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kp864jIq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A501F00A3A;
-	Thu, 28 May 2026 14:36:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6KlcgRJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5131F000E9;
+	Thu, 28 May 2026 14:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779978978;
-	bh=bp/HKOHUwENnU7joarl/ygLqLiCPuJ9XOnsc5cn7YS0=;
+	s=k20260515; t=1779979121;
+	bh=/bgYGWcfVwhL1qLaZVuoTQfs/MA6NCx4JMtfIagWzsQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kp864jIqigOYDZkR11L6oT1ceoUasV2qTmta6sxGcun07DAp/KHuohcFjglyu+mEU
-	 xbPi2FqfvcWtoXuSj3A4xHdlW3E/RcYSqHfIAQget/xFU+DMAejBT8POHWW6Nw9vxg
-	 OMPYPsJNX52A5vCgboqUoNhHVFPidG6msSMWbzqEJzYkb6hr1Krf5DNETNtYsZAYUZ
-	 oZRehzb9j0ybERwVpq4y4NyPAS9qtVlDNOH0QxCe4+Cqx5c7YyONRPLKdHSUKoLUHD
-	 e29yj3hM8jCIa254e2ajOqMaBRs939ChS8i34+9WtTiC2CpKn3PBSxbnchRcmn0uPr
-	 uWPQNY+FGIegA==
+	b=Q6KlcgRJf0qPbPhRWBi1uZIrd0De3jRyWlTKlmjUHcJPbBqiXEmcc369uoVX1Ttdp
+	 a+RQUn5HHX53g5xkyzhlpj14Hi4ludw6mkgZ7M3wufgZv18bh9AyDBLEEDTNpsJNh8
+	 Eq8BgntJ3m9BbCnVpxQJWPoe6eLhgtjet11poOouOEmxJHUMhBpOdVbWHUBVKq2ZB8
+	 ktf+jNP4RjAJvhki7Lh1F4XIJQmfKCyCoNWTinjNyddT1Lk26Zx3Ixr9ZodXxwnc9+
+	 z8LYPOMugqvXZ2uDwtUiYcmoTeQfCBxUd9UbKyQCJJev5MNiTdG4IwFhk87ji0WC/e
+	 H0sFMrpMBFIAg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/5] KVM/x86: Return -errno instead of "1" for VMX
- related MSR emulation
+Subject: Re: [PATCH v2 2/4] LoongArch: KVM: Add PV TLB flush support via
+ steal-time shared memory
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Juergen Gross" <jgross@suse.com>
+To: "Tao Cui" <cuitao@kylinos.cn>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260528111357.264809-5-jgross@suse.com>
-References: <20260528111357.264809-5-jgross@suse.com>
+In-Reply-To: <20260528133558.2196416-3-cuitao@kylinos.cn>
+References: <20260528133558.2196416-3-cuitao@kylinos.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 28 May 2026 14:36:17 +0000
-Message-Id: <20260528143618.49A501F00A3A@smtp.kernel.org>
+Date: Thu, 28 May 2026 14:38:40 +0000
+Message-Id: <20260528143841.8D5131F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,76 +46,72 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Guest-to-Host Denial of Service via MSR Emulation (KVM_RUN ioctl a=
-bort)
+- [High] The 32-bit atomic swap instruction amswap_db.w clobbers reserved p=
+adding bytes in the UAPI kvm_steal_time struct.
 --
 
-commit 68dde399e7fbf1e1f2516727d71c3f6a0bd2fb77
-Author: Juergen Gross <jgross@suse.com>
+commit d4000d1116a018c602e41566e436903cda12c70f
+Author: Tao Cui <cuitao@kylinos.cn>
 
-KVM/x86: Return -errno instead of "1" for VMX related MSR emulation
+LoongArch: KVM: Add PV TLB flush support via steal-time shared memory
 
-This patch updates VMX MSR emulation routines to return negative errno valu=
-es
-instead of a literal "1" when signaling an error.
+This commit implements paravirtualized TLB flush for LoongArch KVM guests
+using the existing steal-time shared memory page. It uses the preempted
+byte in struct kvm_steal_time with an additional KVM_VCPU_FLUSH_TLB flag bi=
+t.
 
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index 3fe88f29be7a9..2236f15ffab22 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -1611,7 +1611,7 @@ int vmx_get_vmx_msr(struct nested_vmx_msrs *msrs, u=
-32 msr_index, u64 *pdata)
->  		*pdata =3D msrs->vmfunc_controls;
->  		break;
->  	default:
-> -		return 1;
-> +		return -EINVAL;
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index d82782b90457b..3b505a1c0a9f6 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
 
-[Severity: High]
-Will returning a negative error code here bypass #GP injection and=20
-terminate the VM?
+[ ... ]
 
-In KVM's x86 MSR emulation framework, returning 1 from an MSR handler=20
-signals KVM to inject a General Protection Fault (#GP) into the guest.=20
-
-If this is changed to a negative error like -EINVAL, the error handling path
-in __kvm_emulate_rdmsr() and __kvm_emulate_wrmsr() treats it as a fatal=20
-error:
-
-    r =3D kvm_set_msr(vcpu, msr_index, data);
-    if (r < 0)
-        return r;
-
-This propagates the negative error code directly up the call stack to=20
-vcpu_run(), terminating the KVM_RUN ioctl with an error. Since userspace VM=
-Ms=20
-like QEMU generally treat KVM_RUN failures as fatal, does this allow any=20
-guest to trivially crash its own hypervisor process by performing an invali=
-d=20
-MSR access?
-
+> @@ -173,7 +173,37 @@ static void kvm_update_stolen_time(struct kvm_vcpu *=
+vcpu)
 >  	}
 > =20
->  	return 0;
+>  	st =3D (struct kvm_steal_time __user *)ghc->hva;
+> -	if (kvm_guest_has_pv_feature(vcpu, KVM_FEATURE_PREEMPT)) {
+> +	if (kvm_guest_has_pv_feature(vcpu, KVM_FEATURE_PV_TLB_FLUSH)) {
+> +		u32 old =3D 0;
+> +		int err =3D 0;
+> +
+> +		/*
+> +		 * Atomically read and clear st->preempted.  amswap_db.w
+> +		 * provides full barrier semantics and avoids the race with
+> +		 * guest-side try_cmpxchg().  Operates on the 32-bit aligned
+> +		 * word containing preempted (pad bytes are always zero).
+> +		 */
+> +		asm volatile(
+> +		"1: amswap_db.w %1, %z3, %2	\n"
+> +		"2:				\n"
+> +		_ASM_EXTABLE_UACCESS_ERR_ZERO(1b, 2b, %0, %1)
+> +		: "+r" (err), "+&r" (old),
+> +		  "+ZB" (*(u32 *)&st->preempted)
 
-[ ... ]
+[Severity: High]
+Does this 32-bit atomic swap clobber the UAPI padding bytes?
 
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index 49feecb286b23..f6ec51dc7c778 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -2359,7 +2359,7 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_d=
-ata *msr_info)
->  		break;
->  	case MSR_IA32_DEBUGCTLMSR:
->  		if (!vmx_is_valid_debugctl(vcpu, data, msr_info->host_initiated))
-> -			return 1;
-> +			return -EINVAL;
-> =20
->  		data &=3D vmx_get_supported_debugctl(vcpu, msr_info->host_initiated);
+st->preempted is defined as a 1-byte __u8 field in struct kvm_steal_time,
+followed by a 47-byte pad array.
 
-[ ... ]
+By using amswap_db.w with a value of 0, it seems this writes a 32-bit zero =
+into
+guest memory, which unconditionally zeroes out pad[0], pad[1], and pad[2].
+
+This would prevent future KVM features from safely using those padding byte=
+s,
+as older hosts would continuously overwrite them.
+
+Could this be done using an atomic AND (amand_db.w) with a mask of 0xffffff=
+00
+(since LoongArch is little-endian) or an ll.w/sc.w loop to clear only the
+preempted byte?
+
+> +		: "Jr" (0)
+> +		: "memory");
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528111357.2648=
-09-1-jgross@suse.com?part=3D4
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528133558.2196=
+416-1-cuitao@kylinos.cn?part=3D2
