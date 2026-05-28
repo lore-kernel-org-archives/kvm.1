@@ -1,137 +1,140 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF94407CFA
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:05:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B571305669
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779991547; cv=none; b=LUfwzeu2xWkueR52T4SH1Vm7RsaGloUdfPRiTim/4P+X4kNuNLn1tmbO3yzEKqBXS99LYAb9OfQ1Ft4l/L8Vd0igF5KCL/OJ2eO4lJ60AvqUsSPqSdVqRdU6piGGTFBIUseDpw5/PVMZ6vpkr82GvDUf61lk56ExnH0IJSw6/b8=
+	t=1779992007; cv=none; b=HY41ZhphpExWrqYRGROTjXngdUaVcH1KcIDOcLNgo3ASK4QUxiyo3yRqBHx2qOtnuxSrhyNb80olHThGnRQGweDfoS9Bp9o7Osy24yif2+iScHqHHgacVcHTApn1/9bPkDWxs1OUtD25luOUL35E6EOHmj064h9UioU7qlf/jok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779991547; c=relaxed/simple;
-	bh=ezWkMf1/nBuwKvq1Ie6nTfMcUtAMsxfURYeysfpXWtg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oOcD0PRnO+Ne3pI1XCF3uqAGHb81EOKUx9auFe409Jwv8vh49UIzqC1keu8t1E5el3HbOTcocMVo0cn8+wGQdTBDmhNmr+RdRl7HYOCXI510j53lvTDvcC5QJKvnuebofmCKSLQkHlvQgOGjGz0kiMn8ERkCQibbjANE7frE2tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=muFhEEvl; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779992007; c=relaxed/simple;
+	bh=5j2sJUYj905ZYCpGHja6+/wgUl4hi14Fk24VF9g3Yhg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=DfBwa0d5UVrJtmNGOpKqNM4FWzSoIh+U3jpECSD5jie/Zz3RMixiwmt/Cpkh+Y3eMlYl7sT98BDWt82Nb4lGVgc+n/dZkccapUZP3+MUsz2E64I0YYR+0KjJfhjB087tTWZFZ5fOJwuYyAXjX2WF8rjGCWdHVdKR07XBxZ7vVFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iqN/UZir; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="muFhEEvl"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bd6cc53fd6so135693915ad.3
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:05:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779991545; x=1780596345; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EAX4aGyOlp58kUC6uPoUPFDHIumnxZdWSgRHitD9Mr4=;
-        b=muFhEEvlrm7+GSocv/9jaos8tn4Q0MtvzGVvQjYomUkuFPutXZy0y8V4CXWsyuiTwa
-         ghmHnRH6YVmCM4hFv60x1RtXU5XAalgYnPBM/3cZjOsA/eiEm1PDgyyFWNR1yeSf2NwD
-         vqnDa5JGfxODQGDgQO11O5aoef8/uNSzHBl/7JGBSkrTJX0HrGOQLIV8aW8lgUtvxsEZ
-         FD6U40iUwAqzlyYc2Ndg4uyE1QkR/PbJOZGU3v0PQLUgE97yp+oNoeM9U0inlJlfvFyg
-         feomkO0kcx1sEeVMQNLneFXLqq4P4/vkbkaYPSHNDgAVWo0kxCEIs0C0fFai09orc7LF
-         htBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779991545; x=1780596345;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EAX4aGyOlp58kUC6uPoUPFDHIumnxZdWSgRHitD9Mr4=;
-        b=A5Fmsxwfm8WhadMDqTGiaDZQhPEl20Qu21TZ6IHvIrpCkPbhddkaF5M/SkHcKl82ov
-         LKY2Aym3ToMmZrx28wj6pYLVGprwX56wvfZXhfyqm/LHmKeIBLtcXqNvLdS3ibWY51l2
-         ouTgyJNLM01VZMr6lS1TGKWRBvvDJPD1CWT97AqLJsxaXTMcXOV52+F0fhNq+oHBmNDp
-         zUNaimzhKSDwHs2gjcscVE1O9XdXBIHapxmeFtKF9zCH8IIzsZtiKB6vqoiUnE6vVbKe
-         J8FD8ed18QB7sRajKZ7SAnu02QfuPV14D8E8A0IifdDJeCl/ugx+xoDfBHcqPxvB/3e8
-         5Uig==
-X-Forwarded-Encrypted: i=1; AFNElJ/R2eyHOhnStUeOrazV41GSEZPaT+eeuqMtqO8k3ZOZGMVXpn1lWr2NaogECBq0mAzi8uc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdSmtIuPXe1mzbjV9V1j+2Nmmk1fjd+yt1tpJFhVJkawMtfrUU
-	BVdc47hxUd7Paxx2HzmSwOa5klB4EsQcWTzQ+SURMeSR4agNmZbmDTXbfAoJwd72MCv1Gh7ReDx
-	N38O4wQ==
-X-Received: from plbkg11.prod.google.com ([2002:a17:903:60b:b0:2ae:41d1:278d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2388:b0:2b4:5cb8:99eb
- with SMTP id d9443c01a7336-2beb07e9e15mr313634085ad.27.1779991544602; Thu, 28
- May 2026 11:05:44 -0700 (PDT)
-Date: Thu, 28 May 2026 11:05:43 -0700
-In-Reply-To: <CAO9r8zNgjATxV6KL4gv-_JwCQyUt-ygG9t4dKAe00sUVVLg=8w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iqN/UZir"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D980A1F000E9;
+	Thu, 28 May 2026 18:13:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779992006;
+	bh=gi2JNGIG/jJAN75Qckkmw5RT/OojAFc1WmcEx3LfWwM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=iqN/UZirTc5wQM5DLZiEpoUnkh2oTyXk3NA/bZT5DMVreLVhsiWCCDNdbgmQ98OHa
+	 8TAAzdXcjbDY8onvD4Mp90Eez7eQXlPM1KBJXuRoj7Wvfwvtxbves56Twifm9D/ozs
+	 4OSqQ5hz+nGOcggQcSXG7BOGLPfMYzQMYDVyoE3wvTT1atiXr1+1zJZmvrIkKOQKFR
+	 pfry0KDhllKd6ZWP78codHWgqBrAOGd34ldVIE0LMaf893TxWVbWpd8bPZxv00MvZV
+	 SLKZSim8a11PRj/WGXacWBIUt87AjjarLJlCGMXl3AFq2QpqLo3fw07fySP7rpFoiO
+	 3szPp45myyH0Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v1 7/7] KVM: s390: Prevent memslots outside the ASCE
+ range
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260528114727.142178-8-imbrenda@linux.ibm.com>
+References: <20260528114727.142178-8-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 28 May 2026 18:13:25 +0000
+Message-Id: <20260528181325.D980A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260527234711.4175166-1-yosry@kernel.org> <aheoLra4MFZj7ID7@google.com>
- <CAO9r8zNgjATxV6KL4gv-_JwCQyUt-ygG9t4dKAe00sUVVLg=8w@mail.gmail.com>
-Message-ID: <ahiD99VKTEseNlCL@google.com>
-Subject: Re: [PATCH v7 00/17] KVM: x86/pmu: Add support for AMD
- Host-Only/Guest-Only bits
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Sandipan Das <sandipan.das@amd.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 28, 2026, Yosry Ahmed wrote:
-> On Wed, May 27, 2026 at 7:28=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Wed, May 27, 2026, Yosry Ahmed wrote:
-> > > Jim Mattson (2):
-> > >   KVM: x86/pmu: Allow Host-Only/Guest-Only bits with nSVM and mediate=
-d
-> > >     PMU
-> > >   KVM: selftests: Add svm_pmu_host_guest_test for Host-Only/Guest-Onl=
-y
-> > >     bits
-> > >
-> > > Yosry Ahmed (15):
-> > >   KVM: nSVM: Stop leaking single-stepping on VMRUN into L2
-> > >   KVM: nSVM: Bail early out of VMRUN emulation if advancing RIP fails
-> > >   KVM: nSVM: Unify RIP and PMU handling calls when emulating VMRUN
-> > >   KVM: nSVM: Move VMRUN instruction retirement after entering guest m=
-ode
-> > >   KVM: x86: Move enable_pmu/enable_mediated_pmu to pmu.h and pmu.c
-> > >   KVM: x86/pmu: Rename reprogram_counters() to clarify usage
-> > >   KVM: x86/pmu: Do a single atomic OR when reprogramming counters
-> > >   KVM: x86/pmu: Check mediated PMU counter enablement before event
-> > >     filters
-> > >   KVM: x86/pmu: Add support for KVM_X86_PMU_OP_OPTIONAL_RET0
-> > >   KVM: x86/pmu: Disable counters based on Host-Only/Guest-Only bits i=
-n
-> > >     SVM
-> > >   KVM: x86/pmu: Track mediated PMU counters with mode-specific enable=
-s
-> > >   KVM: x86/pmu: Reprogram Host/Guest-Only counters on nested transiti=
-ons
-> > >   KVM: selftests: Refactor allocating guest stack into a helper
-> > >   KVM: selftests: Allocate a dedicated guest page for x86 L2 guest st=
-ack
-> > >   KVM: selftests: Drop L1-provided stacks for L2 guests on x86
-> >
-> > This all looks good.  I'll get the KVM changes applied and pushed (assu=
-ming they
-> > pass testing).
-> >
-> > For the selftests, I'm going to hold off on applying them until after t=
-he initial
-> > pull requests for 7.2 are merged into Paolo's tree.  The (AWESOME!!!) L=
-2 stack
-> > changes are going to cause conflict hell, and it's easy enough for me t=
-o carry
-> > them out of tree for a few weeks.
-> >
-> > I'll send a refreshed version of the selftest once kvm-x86 has settled =
-down for
-> > 7.2, e.g. to account for the gpat test as well.
->=20
-> So do you plan on getting it merged later in the 7.2 merge window or
-> for 7.3? I think the former but I am not quite sure.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-Ideally, later in the 7.2 merge window.  Worst case scenario, super duper e=
-arly
-in kvm/next for 7.3, so that developers (and me) can build on the functiona=
-lity.
+New issues:
+- [High] Accessing `kvm_memslots(kvm)` without holding `kvm->slots_lock` or=
+ the KVM SRCU read lock triggers an unconditional lockdep warning.
+- [Medium] Asymmetrical memory limit checks can cause false-positive `-EBUS=
+Y` errors when re-applying the exact same memory limit.
+
+Pre-existing issues:
+- [Critical] A data race on `kvm->created_vcpus` allows the memory limit to=
+ be modified concurrently with VCPU creation and execution, leading to hard=
+ware use-after-free or host panic.
+--
+
+commit d947d07a1de4770a70d881cc020678eb270baac3
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+
+KVM: s390: Prevent memslots outside the ASCE range
+
+This commit introduces checks to prevent creating memslots beyond the
+configured maximum guest address and prevents lowering the limit below the
+highest existing memslot.
+
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index e09960c2e6ed1..875f6e2a4a52a 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+> @@ -1015,8 +1015,26 @@ static int kvm_s390_set_mem_control(struct kvm *kv=
+m, struct kvm_device_attr *att
+>  			return -EINVAL;
+> =20
+>  		ret =3D -EBUSY;
+> -		if (!kvm->created_vcpus)
+> -			ret =3D gmap_set_limit(kvm->arch.gmap, gpa_to_gfn(new_limit));
+> +		if (!kvm->created_vcpus) {
+
+[Severity: Critical]
+This is a pre-existing issue, but is it safe to check kvm->created_vcpus
+locklessly here?
+
+A concurrent KVM_CREATE_VCPU ioctl, which holds kvm->lock, could increment
+created_vcpus and allow the newly created VCPU to start running via KVM_RUN.
+If that happens, gmap_set_limit() might mutate the gmap->asce value
+concurrently with the VCPU running in SIE.
+
+Because gmap_set_limit() can free top-level page tables, the running VCPU
+could read a torn asce.val or continue using the old ASCE while its tables
+are freed. Could this block be protected by kvm->lock, similar to how
+KVM_S390_VM_MEM_ENABLE_CMMA handles it?
+
+> +			struct kvm_memslots *slots;
+> +			struct kvm_memory_slot *ms;
+> +			int bkt;
+> +
+> +			ret =3D 0;
+> +			mutex_lock(&kvm->slots_arch_lock);
+> +			slots =3D kvm_memslots(kvm);
+
+[Severity: High]
+Does this trigger a lockdep warning?
+
+The kvm_memslots() accessor invokes srcu_dereference_check(), which expects
+either kvm->slots_lock or the KVM SRCU read lock to be held. Since only
+slots_arch_lock is acquired here, an unprivileged user calling
+KVM_S390_VM_MEM_LIMIT_SIZE might deterministically hit a lockdep assertion.
+
+> +			if (slots && !kvm_memslots_empty(slots)) {
+> +				kvm_for_each_memslot(ms, bkt, slots) {
+> +					if (gpa_to_gfn(new_limit) < ms->base_gfn + ms->npages) {
+
+[Severity: Medium]
+Will this check cause false-positive -EBUSY errors if the exact same memory
+limit is re-applied?
+
+KVM_SET_USER_MEMORY_REGION allows creating memslots up to the rounded
+hardware ASCE limit. If a user sets a limit and creates a memslot that gets
+rounded up beyond the requested limit (which succeeds), and then tries to
+re-apply the same limit, it appears this check would evaluate to true and
+fail.
+
+> +						ret =3D -EBUSY;
+> +						break;
+> +					}
+> +				}
+> +			}
+> +			if (!ret)
+> +				ret =3D gmap_set_limit(kvm->arch.gmap, gpa_to_gfn(new_limit));
+> +			mutex_unlock(&kvm->slots_arch_lock);
+> +		}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528114727.1421=
+78-1-imbrenda@linux.ibm.com?part=3D7
