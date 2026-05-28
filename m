@@ -1,94 +1,102 @@
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9260F32E6BC
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94D6367F45
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780009942; cv=none; b=pOriexOPsxAbXv8x88q/0aMA3dlsm4QFAjxLfnyt3FOlOER42gZq7fy9FCQDEdAGOKbfHX8YUzQpy9OcsvAtpUnylQseBLCIUKjjubQC+7fag6qLPJ07P2dG3WoWPL941jEtXKRdEXF+Dvsnsb6hLlb+yu9jpo650BllrCxMmUI=
+	t=1780010050; cv=none; b=t6krEO5ZQqSLKhnWqzXD6zlnySBsdBfYYWNO86kfJ1UHvhvJ8EaXz7RDtBygeORYdskdZRbSi/clNEJn0YeMHD1RlIThWN2jZ9CbEKr1QGtWKh1eTt3GDvvskfIqH6jq5iavDivCBFxnanBqb3H7ij1uGJQ19DXIOcbdBGy2Y7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780009942; c=relaxed/simple;
-	bh=bVPsmHC32xMRnbCUQzo2sQikrGCF693UprcC5PbkroU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=c2H0l4qj4rpXRZcLNTjQve8r0dcLnvKzRs4xjNecpDwqAlO3hVQZA60Aq03rRaZeREAqTji5iuJCHfJTUZMLFwhEpTumv4Z7YLJ71UCqyGES3rCZsbdygPW5HqBefdg0Fz9JUkTs6IPnZuwoTwftLTL/Cv5kNYHtzF/646dxCFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fhbku1QA; arc=none smtp.client-ip=91.218.175.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1780010050; c=relaxed/simple;
+	bh=AXhVk+k68NDO877j6vfyI3k9axu8UA9UWPHybBF1ZQo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=gj8DI0dH+IhoQPB11tuTS6GUDAyMg2sQZ3MfOiUv3Xn4BbA/ujM8jZ2V94hSkg+thHyXbSOJ4fW0UXD9UNuAdouuZbG9t6/QrIiOfIkRk/bwbUC9aliimszFcHZUm8yGIg+NbTJ3B3EbRngL7+ODLoFt5eFNPC6TomiKp7qczzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XjL69tzu; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fhbku1QA"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780009928;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ee5LGH1mkBrJOdssFnEtVdpG6R6AtAmt3hnR2uiZ+kU=;
-	b=fhbku1QAuBnhIqfvm5s0FPPQK3B6XIFAoLV/zwOcoCLIgFb0DZjJoPBF/PNCIsj5HU3unC
-	LoRMInPlcITIuutgWFavAu+v1eNnFS+JcGcNjV76d7bBtGwbTvI7USqkJZWsN9keo+LhEo
-	j8XEs+xq13SPdSHCbmm6xAggUzbJyKk=
-From: Atish Patra <atish.patra@linux.dev>
-Date: Thu, 28 May 2026 16:11:39 -0700
-Subject: [PATCH 2/2] crypto: ccp: Fix possible deadlock in SEV init failure
- path
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XjL69tzu"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2beff6b6e74so19168365ad.1
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 16:14:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780010049; x=1780614849; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wsC+LCajCg1t59+zt6iIt3qMuixyj1fPVjF6TGvJZ8M=;
+        b=XjL69tzuzTavimvRMO/3sn2Df+AKlYUekga4H3zuTFuHQUXf32eo/aujWpOLpXEvOQ
+         9loOVMTQyfWM5w+7kq0xSnlFazloNT752bG1nSc9erZVqffbJhIHDPwV+3Yw5K7MzNLz
+         2VMxza0F+vkdM5FAwoBup89I85O0+LeeZMr4PeHfLyKPn+BzI4yFzCfsdlMAw824jkVo
+         hW/8OP3J5DXhWRqfMeJyZcPW9BS+ZbPZkdHZg5OjP8732fesCp/atakrUbeIq3NwzB9u
+         E3S/KxuIFWD4RSjVdT66g15IeoNL1lsQW2Qz9zYfR5XEm1RMvkcY97WLSEMHseXRNZPm
+         r6yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780010049; x=1780614849;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wsC+LCajCg1t59+zt6iIt3qMuixyj1fPVjF6TGvJZ8M=;
+        b=GHclBweJxCZTgkNPqGbIgkquKoJa5jprcEDvcwSOiioISO+qMKa48x2yl5gA6u1Hql
+         /MXGJYeSfjc1uK4x7zBzjL9jEptJxKZIvW1DmtZS0m5iPVoSaMr5gl/2n2bNI7kRLLCr
+         zIlayVK45qqpPMuj3aeGcm+ABNotxg8fz5ig9X8l+Y2XJZt628tQ9yyDxrKhbPJ3iP8f
+         fmMbU1iBHAQ/CH5sOGH8NCFnYKewql36S1h8fdINtHJKQIdeIxYx3XG28NzidDDeToU6
+         gznUbYUKZ2vAGXFGlMluKIWquqok4lSJC0yyjUvqucIOxnNZJYq3ca5q54yJ9jje86uN
+         zGew==
+X-Forwarded-Encrypted: i=1; AFNElJ9ASmDPizqckWIxLoDDdNEE45ZyEywkrzPusrizHJBob1vuQ45u76PxM2/cR2YS2pRxvFE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqTcTLo3QP51BpIMlHgslh9v4910rFJ6Gcp6PXW8nlINR7r/YC
+	39sJvAkn5qG8w+zT979E0/PMtMcyjUUEiPEWYCJgl1WU5gYjimu566SEf/z9fHJ20Dg4rnXe8KS
+	ith6/XQ==
+X-Received: from plim16.prod.google.com ([2002:a17:903:3b50:b0:2bd:3ebe:ef7e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e890:b0:2b7:aa20:3c61
+ with SMTP id d9443c01a7336-2bf20bb2911mr4909125ad.33.1780010048831; Thu, 28
+ May 2026 16:14:08 -0700 (PDT)
+Date: Thu, 28 May 2026 23:14:08 +0000
+In-Reply-To: <CAAdrzjs37a-hEneORNmzOvOkh4TX4Dmn6bWKEm5L4hgmkUO0wA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20260421231557.1254270-1-jrhilke@google.com> <20260421231557.1254270-7-jrhilke@google.com>
+ <ahZQA1HO0wNG6MeU@google.com> <CAAdrzjs37a-hEneORNmzOvOkh4TX4Dmn6bWKEm5L4hgmkUO0wA@mail.gmail.com>
+Message-ID: <ahjMQCqJzqJgSs1-@google.com>
+Subject: Re: [PATCH v3 06/16] KVM: selftests: Add IRQ injection test
+From: Sean Christopherson <seanjc@google.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260528-sev_snp_fixes-v1-2-d67a08151779@meta.com>
-References: <20260528-sev_snp_fixes-v1-0-d67a08151779@meta.com>
-In-Reply-To: <20260528-sev_snp_fixes-v1-0-d67a08151779@meta.com>
-To: Sean Christopherson <seanjc@google.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
- Marc Orr <marcorr@google.com>, Peter Gonda <pgonda@google.com>, 
- Brijesh Singh <brijesh.singh@amd.com>, Youngjae Lee <youngjaelee@meta.com>, 
- Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>, 
- John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>
-Cc: clm@meta.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-crypto@vger.kernel.org, stable@vger.kernel.org, 
- Atish Patra <atishp@meta.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: quoted-printable
 
-From: Atish Patra <atishp@meta.com>
++lists and cc (I assume you accidentally replied only to me)
 
-__sev_platform_init_handle_init_ex_path() called
-rmp_mark_pages_firmware() with locked=false but while the parent
-function of init_ex_path already acquired the sev_cmd_mutex.
-In case of a rmpupdate failure for any page after the first, the cleanup
-path would invoke reclaim pages which would result in a deadlock in
-sev_do_cmd.
+On Thu, May 28, 2026, Josh Hilke wrote:
+> On Tue, May 26, 2026 at 6:59=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > On Tue, Apr 21, 2026, Josh Hilke wrote:
+> > > From: David Matlack <dmatlack@google.com>
+> > >
+> > > Add a new test, irq_test.c, which verifies that KVM correctly injects
+> > > interrupts into a running guest when triggered via an eventfd bound t=
+o a
+> > > GSI using the irqfd mechanism.
+> >
+> > Can you add some color explaining that this will/should work with IRQ b=
+ypass?
+> > I assume it does right out of the gate.
+>=20
+> I think that explanation should go into patch 7 where we add support
+> for routing interrupts from a real device:
+> "KVM: selftests: Verify device IRQs are routed to vCPUs"
 
-Pass locked=true to honor the lock status of the parent function.
-
-Fixes: 7364a6fbca45 ("crypto: ccp: Handle non-volatile INIT_EX data when SNP is enabled")
-
-Reported-by: Chris Mason <clm@meta.com>
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Atish Patra <atishp@meta.com>
----
- drivers/crypto/ccp/sev-dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index d1e9e0ac63b6..3d4793e8e34b 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -1557,7 +1557,7 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
- 		unsigned long npages;
- 
- 		npages = 1UL << get_order(NV_LENGTH);
--		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, false)) {
-+		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, true)) {
- 			dev_err(sev->dev, "SEV: INIT_EX NV memory page state change failed.\n");
- 			return -ENOMEM;
- 		}
-
--- 
-2.53.0-Meta
-
+Yeah, I belatedly remembered that the test initially only supported injecti=
+on.
+Can you expand the changelog to call out that the initial commit is intenti=
+onally
+"barebones", and that support for things like real devices/VFs and IRQ bypa=
+ss will
+be added in the future?  Doesn't have to be much, just something to clue in=
+ the
+reader that they aren't missing anything.
