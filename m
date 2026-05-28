@@ -1,337 +1,293 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD8430C359
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 06:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779948458; cv=fail; b=RQKfJ+S+aRvGLwzqfSuJ/E0lNxvMsI+Lr0n9amoKXygTLPhjMS2RPnFlquBPw9YDXgnnWjX5ueqsTAeSjL9Ui5Azcxl62Zua+3NAtliu1aTrLjYTjtMdRDvv2WCMymzFcF+w4MLExeaymFgDddhVUUDCN9qT4Hykt8xhZCn+v8k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779948458; c=relaxed/simple;
-	bh=HybfouVWXzRjvqZuKWAwoAOqax6hVl/L0qzWeXk42y0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qJ5T7fuf4EvIAwxLhL7dKx4+gY10cg9sq41kAnBNZG4bOhGKjIZ6rO4ExhA/x89xP6X8OeRGFArSleGZXHtoDJ96c0VYYEqRAsc8X+lsGa3aIJqeThiYGg/MZbFnM93sdKicLvMKWsM5k7h30yIotlRdZgvmsIK3cdf5bM9OwE8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=ZOFqU3Ho; arc=fail smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC76343D8A
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 06:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779951323; cv=none; b=UFguFsSMhvxSRtbsYafJCAnC0Q2cdGfY1Mf0Jj8UnU7BxAYUmj2aN1r1oLAoXWA8fu0JlY960J4zOBBs5IGUwzJpmpcYO4GCbwLXlDPDoHzrWb6BejccXuTJvY2btQnGF1KSzJRroyuXKKSa78eVU1uAqWKKO/1dHltQPKo7B0k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779951323; c=relaxed/simple;
+	bh=ij85/aAKgcDYX+cdb77sOhYL+oKjAi0tecDfGmXPEAQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kiv4ccnxvLgalJyyflzKk0obk68nyk/b9rcW8WhWeKIebevFjjvMuodnUkWh49xr3Wsen/68stX7fQS6zjRvIGj/5dKpwUh7D8G//oGOHuUDzQbiXPyMP58h+e8K9y60ORJtsShOtnf+eMfb7hnS3jxPCclTRwbLO1rVPn548V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KwLoRPhv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=X3xEO0Bs; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="ZOFqU3Ho"
-Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64RKlqmw3164863
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 23:07:35 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=GzyvN6ALmGZhc9sEe0zXVntaZeAULheQgTQ/UjOlmfA=; b=ZOFqU3Hokw+Y
-	1tWm8OSAw3VppcsXhCy7NjQiED7GF+zwJ1AY0cTIbpcpdYBGC9llvuLJbd1+8rlL
-	AXglm2b6A1JTOk8fAn271XgFKVQJNxo2oeVdhw6YawXARksZ4FY4tBG2ugql/lrl
-	OpiEUZkdO9HHKOHR42fEty/p77Y0/ml5/z5VbIqwt1zZ3po1sXwT9rtBHbQ0Yd0z
-	OPfICWCY2j6tJ46Bv6NfLAq1xI7tfkCqinN5m/CdB/cWEoFzjnUgH0lExTWRP6QW
-	U1M02kqSfyicM6TQnFCDh+VID+oYzzysKR/LHRJ/8h9AQoXwa+/h4ymbOE6Zwdfz
-	Cn+zoh4Arg==
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ee7y42f5y-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 23:07:35 -0700 (PDT)
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7dcd7302f00so1976938a34.0
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 23:07:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779948455; cv=none;
-        d=google.com; s=arc-20240605;
-        b=b77n2pJFDgS2RCD/58IgsE1e4xN+099ucx3WkmEnhcCRiEPo516nGn/IyLxd1uSjfi
-         z2HVbmVfSp9tWau9zPKb5broMMPgs5G2dz+ZVveWep86a/Z4aB5MTHX4S0vK+XI0rAvX
-         V8edi42w0bRa6+LLWEa5UVzEY4Kukcu8DXIUKxcvE5O05ZSHTeFPqVOTzcFCITV4vlLq
-         Wai6xbZbOJ8pbjgNblloW2tody923km2q3D3XGuOQf0hmxJUyryG9DIDBPFcJlxriV74
-         3xcRmqkI4iCwZdLD/Wcy0RnhgUtbbP0nINWC51QVNHPKbt5MMNcbhz6pBtygtWRTrJ5v
-         rkkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=UyukGN55miahfwjIGNs2ZpmYU5zHedrWyyN1uj6F1U8=;
-        fh=aLOWNdlIX2i3vgiCN/JR7MP+GsF2xN3RDOiaRuFdMW8=;
-        b=lZ6LagD/eOnt0sn2sUJn5wVnobXNeeWchCNp2codVn69TdXazoMQxUcs9I6r6vNjzG
-         6FMdjex92sOxZ3915UJg4e38X2LzK9x6SXT5hT6HrQAYd9Nc0QdwsRalXlS6kQrKIr+C
-         eChfbdTFPOUnEBGev1ZrkgRu7n7vPkJGx1iU+bv/WeHS8qn3nVhP9eDOSyU4KXVWPiMe
-         PkEQLFyI7W9/XrPByhlE34PUE9Njwi7KIaiLTtZ/03NmFPisAe8W9dgvzZ5TEjQtkgI5
-         wFOHWewuP07FExtL0Xaj7ffMPOJ3xMpEGnLfQkjzfQCRrvBu0UIkUHoYRIyglb9hLkSG
-         KT3Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KwLoRPhv";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="X3xEO0Bs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779951321;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5mmDhoG17mw4NgiWZMgx23xHdUQBzuYviNZS63oMCAI=;
+	b=KwLoRPhvQNGrBSFMTwsyRynXML2CBXGc+HacSxn2fxDFWLQbPN1zz8yHhWcE3/BFkwBveY
+	JDc/IGN+8XjIC2ogkCMHQoxVuRu9qbWc8+lkHavZ30IOdyGkpnEU7/GQmix0ZddiM60MJ5
+	vhLwR0XXbg7AXP9HeLrCt468hsxcRDw=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-134-Mqyei_AMO9a4LH1YSK3zeA-1; Thu, 28 May 2026 02:55:19 -0400
+X-MC-Unique: Mqyei_AMO9a4LH1YSK3zeA-1
+X-Mimecast-MFC-AGG-ID: Mqyei_AMO9a4LH1YSK3zeA_1779951319
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c8525f0807aso8045225a12.3
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 23:55:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779951319; x=1780556119; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5mmDhoG17mw4NgiWZMgx23xHdUQBzuYviNZS63oMCAI=;
+        b=X3xEO0BsPTZzmmedsI+2p+t+rn8bNxnKFPe0bo55Dffqi81e3nr/FhodEdHeecmcki
+         jjntRLkVgNzihkwVAumKHP2bWzRE+p9fOx7rdTB1o6FdRuAal4CIe1ZTFtOfvWU7PW2l
+         KwinOAo2zMYY8WlBnxbnPhbrhyKB7v499tVoZ9mv+6Nwupq8yLbqHhIRXFQ+N8Fg9WIL
+         p/6CEgb9LGZ31MtLIqqgfC+Otis3juR3yIgy4iv/Hge67DWl/D2SXW65bvmnx9nV8+XQ
+         VkrschNPd4cIaEEFAfdPsdXbK9apPwhxKrg8IomXUlLVVjvB5cfFXgsKAfDzCNex6uNi
+         WOmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779948455; x=1780553255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UyukGN55miahfwjIGNs2ZpmYU5zHedrWyyN1uj6F1U8=;
-        b=UDGDleDiFE2zfRzIgt74lYwsX0MuJBG+rZm1wz3IVSH1CvEdHBmmpEB0ulSB07uu1V
-         kqXORRdpahaNDJT6uJhlGNP16DH0R36QUtVX4AlPNbjD2ZptFBsNceMwsWSuAB1jXqTw
-         I28ciHFg9KU1gifKcYC1Gox+cyQ4S9wubSA4t3Cp0cBtHQq9Wcmn9Lwj0CPpXNgEnVE4
-         gYRaVVKv5Tr1UWsqPvoP8CVIuswfmXNdF2CE887Q6nm8yrooIVY7l7a6xxi0Dp5XmPkJ
-         4H4iYgsTSmSmdL1hIWNGj/bjgFZBRF8DZR+K79GVXS+YhcP48uUYQgCrUoGYxmdZyD4B
-         8r4g==
-X-Forwarded-Encrypted: i=1; AFNElJ8bTnv7wbxXwLfnWCwxDrNVg8Zqb42ZKI0/oqvRLRmC13XK59lYDlDc+ZNsAWT5GlZOkDU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzgKN5ekY16k5hK9YmohiJ2lduAcsQ3GWBrV0HD609u/S5MJVi
-	2eNobCfQNGZfjs/nLo4bvMPBmsZGO+/tVY55rCiU1fkhHSuzoqoTX3CfA9wOMiK/FmhorPx8/Ay
-	Vh4QTaNAfj+ngorWVmWUe2ZADmXoqyKYARx9/5Xu0eqxqT2vOsAqqWJeAVT/sR77yLRJV3BenZX
-	jxQNbxZ9Yrakm1nrf5RvyRDa55XtM=
-X-Gm-Gg: Acq92OHu2Edn5fegK1VcxLV3jyDinZq6TIuUKijsI7M/atkJFU8m5+n8wEyrVQRbG8L
-	BpCoHUL/6b3ri+AqOO+oWJU35a4ts8FvS66nA/cmyH8hZifs4CVuHfsMco0z4yqTIciXbBekj5s
-	4DyQMeP8ey+T28X0pjqbT/8trxdD51+fFV8nDECTbvJPiQDZNDaZoPicEnrQzYfQktP54JRRLLW
-	rcknrjqR4YNiEZ04WNoxq7IIvJkTV8BKtMdEvxskoU1TEPypL0=
-X-Received: by 2002:a05:6830:3789:b0:7dc:cdea:7d4 with SMTP id 46e09a7af769-7e5fed4d4c7mr17428832a34.11.1779948454554;
-        Wed, 27 May 2026 23:07:34 -0700 (PDT)
-X-Received: by 2002:a05:6830:3789:b0:7dc:cdea:7d4 with SMTP id
- 46e09a7af769-7e5fed4d4c7mr17428818a34.11.1779948454085; Wed, 27 May 2026
- 23:07:34 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779951319; x=1780556119;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5mmDhoG17mw4NgiWZMgx23xHdUQBzuYviNZS63oMCAI=;
+        b=bUMAyDkerV/y2lm1c+MEN592hnuw8sYrIgjpe7zfJc3XJzpKyHXIurjPf7EDfWbhLM
+         zVV+2pifNzRc6tqlhLlYcrQh16/yA4d1a4A6ZksUV3jV/Z020znKBJZ/w0nUdfQ89XL1
+         8KcAmIa03pKuwpBrXaFRARXuG2upuezwUR0sHIHaVqjxhNyxoGEFSJeNO3QB+qmGrPa0
+         TMQ9Qd81rXErQG55e4DsNaxvf8k2mujNQLawKOxlF/T+HbJRPWiQh704AumoUIntm1yA
+         es3y7uaLIuouAu1JYUKgiMMZ5I0nNYvUHiIB2+OTVCZMD2BKTlDcDvF/dIt3mvvsjd6O
+         sFjw==
+X-Forwarded-Encrypted: i=1; AFNElJ+VrSAz+Gu5Hoi6UuVMJaxtUKx19SEzdI1yuGZPKOoLswPCxANs1erYv+V69lSlYN/L2sk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzq1pCbLGeyrSY5QAFZ3KLMiORDk62ureW2iT+m6M1c/fJiypW9
+	a9aF5VXCGFEkdPS0Kx+l2S9WuduLaVWZDiZnWxpBdxW3oozubDCac3aNJ4oVXj0rNTdbrdTUDnF
+	BPCC+1YkWT8phXgyXdBdCB0s1AL6l7vQ3jow+EWP/jc9DicG1PaZ9lw==
+X-Gm-Gg: Acq92OHE9Xd6yiK80/9PYbfY+FiKcLXAhs+gn2FHCUcKeSnfmvbfPLY31ACWwYQ4BjU
+	QN4nCkQMr855n7jfMSaFNfpa/j4oVJbnXMAmEKYFySNoCWrj6+sOnZglksJOhhtFrSL2dSjSGw8
+	E9QqwZlTa+J/kBab2JrDgnn4MCdbKhEicgf3Ar2/ayEi9RRZZHJCMMrQJTLzcpplwZlQteu8p6L
+	hPLAXREIdJvdiHddzN0GBIEwOKaEMt5BiQ9ac0DLBUnoDPurwGnC7wID7LZshX4qh3iMBffCfqs
+	iNDiksvdvBa3LwkaZH/jtkt+aoLtS9Gjt3MPYiuVYHodF7TOfGU6XOXDDhMDX6cy7iMOmffAH6d
+	QudXtCfZ+5ATYc42ZDTZJZmNK1vT1nuLyRQ7oxNtdrwC46IxObwkKpvC2P3/4hxtkyiWF+jNRMU
+	k=
+X-Received: by 2002:a05:6a00:13a5:b0:82f:6858:3f6 with SMTP id d2e1a72fcca58-8415ef53fd6mr25752388b3a.0.1779951318688;
+        Wed, 27 May 2026 23:55:18 -0700 (PDT)
+X-Received: by 2002:a05:6a00:13a5:b0:82f:6858:3f6 with SMTP id d2e1a72fcca58-8415ef53fd6mr25752335b3a.0.1779951318036;
+        Wed, 27 May 2026 23:55:18 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d7301255sm4623141b3a.57.2026.05.27.23.55.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 May 2026 23:55:17 -0700 (PDT)
+Message-ID: <775a0d29-4d92-4ecc-96dd-5b0eaeff1528@redhat.com>
+Date: Thu, 28 May 2026 16:55:06 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260526144401.1485788-1-zhipingz@meta.com> <20260526144401.1485788-5-zhipingz@meta.com>
- <55b57a12-6714-4c51-8ce1-f47c97cfecde@nvidia.com>
-In-Reply-To: <55b57a12-6714-4c51-8ce1-f47c97cfecde@nvidia.com>
-From: Zhiping Zhang <zhipingz@meta.com>
-Date: Wed, 27 May 2026 23:07:23 -0700
-X-Gm-Features: AVHnY4K3avPQ8FNE3xy07LlbZrchvRUwd-Dc4i84TnsR6M8GdnFKvihXHQqWEMo
-Message-ID: <CAH3zFs27rY5E5q1ybjYf0jjMc_t7NCs6T1dt=1P4io9MOrK5nQ@mail.gmail.com>
-Subject: Re: [PATCH v5 4/4] RDMA/mlx5: get tph for p2p access when registering
- dma-buf mr
-To: Michael Gur <michaelgur@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian Konig <christian.koenig@amd.com>,
-        Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-        Yishai Hadas <yishaih@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: UNhtu0GhFg9HaUR6YpR9FNN6KJqyqOFO
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDA1OCBTYWx0ZWRfX9Cp0GOrwJ61L
- qBQgmZkBLu2a0kLRvhTlv60ZYg3ny4O8d4nsKJJ8OEb78LJBmvBANUu+ihBMv77NOIYhWeDNxVP
- A4q+SfTLA7vrMbYCx0g3pgLiqnFcHPm1FpEzq+BdcCDz2FA+6E5bPh1ifmwpftRcDPOW+P5fcXw
- 0wAGxQFki0oLlFQ1WloBW29oRCVrxzxXETNt3gbGAVe3WWEZSqDbLgv4W+BLOgFRGzRf+oTo7rW
- BlU6DIsa9t6Xq0HMu+69IvwWYM2eedUWWR8lenjotbPik4jDZIJjSxve698CXNpkSfJN/NqF+vf
- gWCDWaEVw8uDzfM7s8WUSYCjNAkrHC5aN8sPRH7ZUE7Qt+h2IHRjHafSBLN2Lk3Z9r79v/1+nEG
- tq0r4ZmHzFuOg9FgwKdy0cg4g8TY0JHxka5Yin4YfRvSlz5nfSno/81lx5yz7MViW3ndeY8myH0
- jGwShzlE5FZu9L7ArKg==
-X-Authority-Analysis: v=2.4 cv=Xci5Co55 c=1 sm=1 tr=0 ts=6a17dba7 cx=c_pps
- a=+3WqYijBVYhDct2f5Fivkw==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=8elwO82fXORLTBIkMd32:22
- a=Ikd4Dj_1AAAA:8 a=VabnemYjAAAA:8 a=rnG5qNUxfvSO4QYeIecA:9 a=QEXdDO2ut3YA:10
- a=eYe2g0i6gJ5uXG_o6N4q:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-ORIG-GUID: UNhtu0GhFg9HaUR6YpR9FNN6KJqyqOFO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-28_01,2026-05-26_03,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 32/44] KVM: arm64: Handle Realm PSCI requests
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-33-steven.price@arm.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20260513131757.116630-33-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 27, 2026 at 3:55=E2=80=AFPM Michael Gur <michaelgur@nvidia.com>=
- wrote:
->
-> >
->
-> On 5/26/2026 5:43 PM, Zhiping Zhang wrote:
-> > Query dma-buf TPH metadata when registering a dma-buf MR for peer-to-
-> > peer access and translate the returned steering tag into an mlx5 ST
-> > index. Keep the DMAH path as the first priority and only fall back to
-> > DMA-buf metadata when no DMAH is supplied.
-> >
-> > Track per-MR ownership of the allocated ST index and release it on MR
-> > setup failure, destroy, and FRMR-pool reuse. Release the ST index before
-> > the MR is pushed back into the FRMR pool, and free mlx5_st_idx_data when
-> > its refcount reaches zero so repeated allocation/deallocation does not
-> > leak memory.
-> >
-> > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> > ---
-> >   drivers/infiniband/hw/mlx5/mlx5_ib.h          |  6 ++
-> >   drivers/infiniband/hw/mlx5/mr.c               | 86 ++++++++++++++++++-
-> >   .../net/ethernet/mellanox/mlx5/core/lib/st.c  | 28 ++++--
-> >   include/linux/mlx5/driver.h                   |  7 ++
-> >   4 files changed, 115 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/=
-hw/mlx5/mlx5_ib.h
-> > index e156dc4d7529..4ab867392267 100644
-> > --- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-> > +++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-> > @@ -721,6 +721,12 @@ struct mlx5_ib_mr {
-> >                       u8 revoked :1;
-> >                       /* Indicates previous dmabuf page fault occurred =
-*/
-> >                       u8 dmabuf_faulted:1;
-> > +                     /* Set when the MR owns dmabuf_st_index and must
-> > +                      * release it via mlx5_st_dealloc_index() once the
-> > +                      * firmware mkey is no longer referencing it.
-> > +                      */
-> mkey st value is kept after revoke, regardless of st alloc and dealloc.
-> mkeys are kept in FRMR pool for future reuse even if their st index is
-> currently stale.
+Hi Steve,
 
-Understood, i'll work the comment accordingly.
+On 5/13/26 11:17 PM, Steven Price wrote:
+> The RMM needs to be informed of the target REC when a PSCI call is made
+> with an MPIDR argument.
+> 
+> This requirement will be removed in a future release of the RMM 2.0
+> specification but is still required for v2.0-bet1.
+> 
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Chanegs since v13:
+>   * The ioctl KVM_ARM_VCPU_RMI_PSCI_COMPLETE has gone. The RMI call is
+>     made automatically just before entering the REC again.
+> Changes since v12:
+>   * Chance return code for non-realms to -ENXIO to better represent that
+>     the ioctl is invalid for non-realms (checkpatch is insistent that
+>     "ENOSYS means 'invalid syscall nr' and nothing else").
+> Changes since v11:
+>   * RMM->RMI renaming.
+> Changes since v6:
+>   * Use vcpu_is_rec() rather than kvm_is_realm(vcpu->kvm).
+>   * Minor renaming/formatting fixes.
+> ---
+>   arch/arm64/include/asm/kvm_rmi.h |  3 ++
+>   arch/arm64/kvm/psci.c            | 15 ++++++++-
+>   arch/arm64/kvm/rmi.c             | 58 ++++++++++++++++++++++++++++++++
+>   3 files changed, 75 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> index b65cfec10dee..eacf82a7467d 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -109,6 +109,9 @@ int realm_map_non_secure(struct realm *realm,
+>   			 unsigned long size,
+>   			 enum kvm_pgtable_prot prot,
+>   			 struct kvm_mmu_memory_cache *memcache);
+> +int realm_psci_complete(struct kvm_vcpu *source,
+> +			struct kvm_vcpu *target,
+> +			unsigned long status);
+>   
+>   static inline bool kvm_realm_is_private_address(struct realm *realm,
+>   						unsigned long addr)
+> diff --git a/arch/arm64/kvm/psci.c b/arch/arm64/kvm/psci.c
+> index 3b5dbe9a0a0e..a2cd55dc7b5b 100644
+> --- a/arch/arm64/kvm/psci.c
+> +++ b/arch/arm64/kvm/psci.c
+> @@ -103,7 +103,6 @@ static unsigned long kvm_psci_vcpu_on(struct kvm_vcpu *source_vcpu)
+>   
+>   	reset_state->reset = true;
+>   	kvm_make_request(KVM_REQ_VCPU_RESET, vcpu);
+> -
 
-> > +                     u8 dmabuf_st_owned:1;
-> > +                     u16 dmabuf_st_index;
-> st_index can be read from the frmr pool key. No need to store again.
-> >                       struct mlx5_ib_mkey null_mmkey;
-> >               };
-> >       };
-> > diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/ml=
-x5/mr.c
-> > index 3b6da45061a5..8059b5e4da97 100644
-> > --- a/drivers/infiniband/hw/mlx5/mr.c
-> > +++ b/drivers/infiniband/hw/mlx5/mr.c
-> > @@ -38,6 +38,7 @@
-> >   #include <linux/delay.h>
-> >   #include <linux/dma-buf.h>
-> >   #include <linux/dma-resv.h>
-> > +#include <linux/pci-tph.h>
-> >   #include <rdma/frmr_pools.h>
-> >   #include <rdma/ib_umem_odp.h>
-> >   #include "dm.h"
-> > @@ -46,6 +47,8 @@
-> >   #include "data_direct.h"
-> >   #include "dmah.h"
-> >
-> > +MODULE_IMPORT_NS("DMA_BUF");
-> > +
-> >   static int mkey_max_umr_order(struct mlx5_ib_dev *dev)
-> >   {
-> >       if (MLX5_CAP_GEN(dev->mdev, umr_extended_translation_offset))
-> > @@ -899,6 +902,63 @@ static struct dma_buf_attach_ops mlx5_ib_dmabuf_at=
-tach_ops =3D {
-> >       .invalidate_mappings =3D mlx5_ib_dmabuf_invalidate_cb,
-> >   };
-> >
-> > +/*
-> > + * Query TPH metadata from @dmabuf and translate the raw steering tag =
-into
-> > + * an mlx5 ST index. On success, returns 0 and the caller becomes the
-> > + * owner of *@st_index (must be released with mlx5_st_dealloc_index()
-> > + * once the firmware mkey no longer references it). On any failure
-> > + * *@st_index and *@ph are left as the no-TPH defaults set by the call=
-er.
-> > + *
-> > + * @dmabuf must already be referenced by the caller (e.g. via the umem=
-'s
-> > + * attachment) so we don't re-resolve the user's fd here and avoid a
-> > + * dup2() TOCTOU between umem creation and TPH lookup.
-> > + */
-> > +static void get_tph_mr_dmabuf(struct mlx5_ib_dev *dev, struct dma_buf =
-*dmabuf,
-> > +                           u16 *st_index, u8 *ph)
-> > +{
-> > +     u8 req_type;
-> > +     u16 steering_tag;
-> > +     u8 st_width;
-> > +     int ret;
-> > +
-> > +     if (!dmabuf->ops->get_tph)
-> > +             return;
-> > +
-> > +     req_type =3D pcie_tph_enabled_req_type(dev->mdev->pdev);
-> > +     switch (req_type) {
-> > +     case PCI_TPH_REQ_TPH_ONLY:
-> > +             st_width =3D 8;
-> > +             break;
-> > +     case PCI_TPH_REQ_EXT_TPH:
-> > +             st_width =3D 16;
-> > +             break;
-> > +     default:
-> > +             return;
-> > +     }
-> > +
-> > +     ret =3D dmabuf->ops->get_tph(dmabuf, &steering_tag, ph, st_width);
-> > +     if (ret) {
-> > +             mlx5_ib_dbg(dev, "get_tph failed (%d)\n", ret);
-> > +             *ph =3D MLX5_IB_NO_PH;
-> > +             return;
-> > +     }
-> > +
-> > +     ret =3D mlx5_st_alloc_index_by_tag(dev->mdev, steering_tag, st_in=
-dex);
-> > +     if (ret) {
-> > +             *ph =3D MLX5_IB_NO_PH;
-> > +             mlx5_ib_dbg(dev, "st_alloc_index_by_tag failed (%d)\n", r=
-et);
-> > +     }
-> > +}
-> > +
-> > +static void mlx5_ib_mr_put_dmabuf_st(struct mlx5_ib_mr *mr)
-> > +{
-> > +     if (mr->umem && mr->dmabuf_st_owned) {
-> > +             mlx5_st_dealloc_index(mr_to_mdev(mr)->mdev,
-> > +                                   mr->dmabuf_st_index);
-> > +             mr->dmabuf_st_owned =3D 0;
-> > +     }
-> > +}
-> > +
-> >   static struct ib_mr *
-> >   reg_user_mr_dmabuf(struct ib_pd *pd, struct device *dma_device,
-> >                  u64 offset, u64 length, u64 virt_addr,
-> > @@ -941,16 +1001,26 @@ reg_user_mr_dmabuf(struct ib_pd *pd, struct devi=
-ce *dma_device,
-> >               ph =3D dmah->ph;
-> >               if (dmah->valid_fields & BIT(IB_DMAH_CPU_ID_EXISTS))
-> >                       st_index =3D mdmah->st_index;
-> > +     } else {
-> > +             get_tph_mr_dmabuf(dev, umem_dmabuf->attach->dmabuf,
-> > +                               &st_index, &ph);
-> >       }
-> >
-> >       mr =3D alloc_cacheable_mr(pd, &umem_dmabuf->umem, virt_addr,
-> >                               access_flags, access_mode,
-> >                               st_index, ph);
-> >       if (IS_ERR(mr)) {
-> > +             if (!dmah && st_index !=3D MLX5_MKC_PCIE_TPH_NO_STEERING_=
-TAG_INDEX)
-> > +                     mlx5_st_dealloc_index(dev->mdev, st_index);
-> >               ib_umem_release(&umem_dmabuf->umem);
-> >               return ERR_CAST(mr);
-> >       }
-> >
-> > +     if (!dmah && st_index !=3D MLX5_MKC_PCIE_TPH_NO_STEERING_TAG_INDE=
-X) {
-> > +             mr->dmabuf_st_index =3D st_index;
-> > +             mr->dmabuf_st_owned =3D 1;
-> > +     }
-> > +
-> >       mlx5_ib_dbg(dev, "mkey 0x%x\n", mr->mmkey.key);
-> >
-> >       atomic_add(ib_umem_num_pages(mr->umem), &dev->mdev->priv.reg_page=
-s);
-> > @@ -1377,9 +1447,17 @@ static int mlx5r_handle_mkey_cleanup(struct mlx5=
-_ib_mr *mr)
-> >       bool is_odp =3D is_odp_mr(mr);
-> >       int ret;
-> >
-> > -     if (mr->ibmr.frmr.pool && !mlx5_umr_revoke_mr_with_lock(mr) &&
-> > -         !ib_frmr_pool_push(mr->ibmr.device, &mr->ibmr))
-> > -             return 0;
-> > +     if (mr->ibmr.frmr.pool && !mlx5_umr_revoke_mr_with_lock(mr)) {
-> > +             /*
-> > +              * The mkey has been revoked: firmware no longer referenc=
-es
-> > +              * dmabuf_st_index, so release it before this mr can re-e=
-nter
-> > +              * the FRMR cache for reuse by another registration.
-> > +              */
-> > +             mlx5_ib_mr_put_dmabuf_st(mr);
-> > +
-> > +             if (!ib_frmr_pool_push(mr->ibmr.device, &mr->ibmr))
-> > +                     return 0;
-> > +     }
->
-> The Sashiko comment on previous version of this series was wrong about
-> the concept of FRMR pools and its reuse of mkeys.
->
-> Please move the st put operation outside the mkey cleanup flow.
->
+This change isn't supposed to be part of this patch :-)
 
-will do.
+>   	/*
+>   	 * Make sure the reset request is observed if the RUNNABLE mp_state is
+>   	 * observed.
+> @@ -142,6 +141,20 @@ static unsigned long kvm_psci_vcpu_affinity_info(struct kvm_vcpu *vcpu)
+>   	/* Ignore other bits of target affinity */
+>   	target_affinity &= target_affinity_mask;
+>   
+> +	if (vcpu_is_rec(vcpu)) {
+> +		struct kvm_vcpu *target_vcpu;
+> +
+> +		/* RMM supports only zero affinity level */
+> +		if (lowest_affinity_level != 0)
+> +			return PSCI_RET_INVALID_PARAMS;
+> +
+> +		target_vcpu = kvm_mpidr_to_vcpu(kvm, target_affinity);
+> +		if (!target_vcpu)
+> +			return PSCI_RET_INVALID_PARAMS;
+> +
+> +		return PSCI_RET_SUCCESS;
+> +	}
+> +
+>   	/*
+>   	 * If one or more VCPU matching target affinity are running
+>   	 * then ON else OFF
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index 761b38a4071c..2b03e962ee41 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -3,6 +3,7 @@
+>    * Copyright (C) 2023-2025 ARM Ltd.
+>    */
+>   
+> +#include <uapi/linux/psci.h>
+>   #include <linux/kvm_host.h>
+>   
+>   #include <asm/kvm_emulate.h>
+> @@ -127,6 +128,25 @@ static void free_rtt(phys_addr_t phys)
+>   	kvm_account_pgtable_pages(phys_to_virt(phys), -1);
+>   }
+>   
+> +int realm_psci_complete(struct kvm_vcpu *source, struct kvm_vcpu *target,
+> +			unsigned long status)
+> +{
+> +	int ret;
+> +
+> +	/*
+> +	 * XXX: RMM-v2.0 doesn't require the target REC address for completing
+> +	 * PSCI requests. Temporary hack until RMM implementation catches up
+> +	 * to the full spec.
+> +	 */
+> +	ret = rmi_psci_complete(virt_to_phys(source->arch.rec.rec_page),
+> +				virt_to_phys(target->arch.rec.rec_page),
+> +				status);
+> +	if (ret)
+> +		return -EINVAL;
+
+		return -ENXIO;
+
+> +
+> +	return 0;
+> +}
+> +
+>   static int realm_rtt_create(struct realm *realm,
+>   			    unsigned long addr,
+>   			    int level,
+> @@ -1004,6 +1024,41 @@ static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
+>   	rec->run->exit.ripas_base = base;
+>   }
+>   
+> +static void kvm_rec_complete_psci(struct kvm_vcpu *vcpu)
+> +{
+> +	struct rec_run *run = vcpu->arch.rec.run;
+> +	unsigned long status = PSCI_RET_DENIED;
+> +	unsigned long ret = vcpu_get_reg(vcpu, 0);
+> +	struct kvm_vcpu *target;
+> +
+> +	switch (run->exit.gprs[0]) {
+> +	/*
+> +	 * XXX: RMM-v2.0 doesn't cause RMI_EXIT_PSCI for AFFINITY_INFO
+> +	 * Temporary hack until tf-RMM gets the REC to MPIDR mapping via
+> +	 * RD Auxiliary granules.
+> +	 * For now always report SUCCESS
+> +	 */
+> +	case PSCI_0_2_FN64_AFFINITY_INFO:
+> +		status = PSCI_RET_SUCCESS;
+> +		break;
+> +	case PSCI_0_2_FN64_CPU_ON: {
+> +		if (ret != PSCI_RET_SUCCESS &&
+> +		    ret != PSCI_RET_ALREADY_ON)
+> +			status = PSCI_RET_DENIED;
+> +		else
+> +			status = PSCI_RET_SUCCESS;
+> +		break;
+> +	}
+> +	default:
+> +		return;
+> +	}
+> +
+> +	target = kvm_mpidr_to_vcpu(vcpu->kvm, run->exit.gprs[1]);
+> +	/* RMM makes sure that we don't get RMI_EXIT_PSCI for invalid mpidrs */
+> +	if (target)
+> +		realm_psci_complete(vcpu, target, status);
+> +}
+> +
+>   /*
+>    * kvm_rec_pre_enter - Complete operations before entering a REC
+>    *
+> @@ -1028,6 +1083,9 @@ int kvm_rec_pre_enter(struct kvm_vcpu *vcpu)
+>   		for (int i = 0; i < REC_RUN_GPRS; i++)
+>   			rec->run->enter.gprs[i] = vcpu_get_reg(vcpu, i);
+>   		break;
+> +	case RMI_EXIT_PSCI:
+> +		kvm_rec_complete_psci(vcpu);
+> +		break;
+>   	case RMI_EXIT_RIPAS_CHANGE:
+>   		kvm_complete_ripas_change(vcpu);
+>   		break;
 
 Thanks,
-Zhiping
+Gavin
+
