@@ -1,103 +1,155 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012022.outbound.protection.outlook.com [52.101.48.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2263672A5
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780010678; cv=none; b=SG5rZUqwlaCn9aq9bAaXKqSF5+xj8CGp6szxPp3bR5zbfIcZPVMiiIAk4GjqceRZDpZmNDIs1gcU5pREasYxnwZn5yue89Lvf37e4XWi8oRBSTscpfFqmJMSDD4TNWEcQxitt2Vj25GVQiDh/8CVusRKurWP5/fwtSEfjXz9qgE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780010678; c=relaxed/simple;
-	bh=TWqZwy/3Jey7/CGM5VfOqYkKRZCqkP+zivV/dXxJyNE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CZn5NnD13jE9sFpt9UpAKXnlvfAzEKMuIrba38KXYuDc+N6ZJpI3nyTI58eDB56+rM6Ajs8Fu8F8HgVjFcDz3lj+kItr6NL873LH61p88G20Gaq06vFdulYdQJONQb3gogbzZD4bcGvkYqA37A48sG27N6exjlPGp3TMi0nDHdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cQxej3Jg; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEECA15B998;
+	Thu, 28 May 2026 23:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780010751; cv=fail; b=sULw+wGsrIWYaQvUhJ9syCVAnsP3doU9vRVk02t+phn+7kYLSbBVkpahOPmwMiKs23laMlGB7TmM/+3dqULPkPCynOs1CvSaRahJNT9XLJF0K6yxBvgqlzBWDwF4V/jU40W3PTcsZDDqXZn9/MHAJ6WBiuzgp0A5YKY6AXNppXo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780010751; c=relaxed/simple;
+	bh=s0CXPHKQsGVlDQqboSNc4f0So46jb0kMPN330DrseKA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bgZMGanWgGB1boUPvETyEOftF+YfLLNc0NnX1Pl/Y5/3n5ZdUmOahFdQSvPo58vYA6964L0rjUj1LCj2Zrr5HkgRrYEblP0nuVxwoMZf382Nkj6eGKOGN3KQUyFYhuIO+ckAvnr+z/UFI2BEGLHEKGrG1IrClJtdF/u30EOYlG0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tWRQBo+z; arc=fail smtp.client-ip=52.101.48.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cQxej3Jg"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c85759a8f33so45813a12.0
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 16:24:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780010677; x=1780615477; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=d0m+heJGDubzLIP1KpTWwY3lrbALj6Yalx0MFIfyuaE=;
-        b=cQxej3JgC3oPvoN7OWqVlAh3Kc9OKyKFIzfLg+JVeHZZHjyRaW3MNH0bT99VfIqzfW
-         c+gruuuMqJVtHdfrzPuwrVlANWmlJ4akB8mvh9KgWAUaxbqhNfUS66nbeWXJgr1sdKns
-         uqfPDgDPRVmppneZh/X/EtfqUphyh293eQHNbuILBqgYjZiocQ/euTbTWWHvoCjI2DWf
-         vNIeGVixvqgFNIpqsPxlyHqwrx90wtJorUuehvbIU8FYzJQq2E91oB9oIr1uCdZLIjl4
-         l4GyUQFVyIjbNUr6MdUh1UhH9QmiptSFXzOJsLqi+gURM9gQ3Bt//VszktQHUmpFjpH4
-         AFRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780010677; x=1780615477;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=d0m+heJGDubzLIP1KpTWwY3lrbALj6Yalx0MFIfyuaE=;
-        b=NXDLkx7LnQHgoU7xZKzZgjP56T/yoVyJOHFIiekxRnHMa9iJ99/UvP156ioFj7ZgyA
-         YsRxyccoMYljyciL0hpZqWUS/NKzjSHL63TvUhlyNOojdzcrCCrUTX2NpEUdLlGHm8RS
-         8/yS58gfgmzmL0VuET8ZENMeDnE1YnG72nVeGshwtVqLoHNEFESePNKETE/1U5OJj0aY
-         UVxwkuCuzOeiVbMxBDly5wIQe47sWs53JsbVU9WwzciddFaqTPLrLjk0jMuQ5FQdHME7
-         1SQmiavHhID9qcBjXF/f0koQQCRXpu/ntLJgjMJ7AYqoNR8kTDTbgqZFHFAZdz5YfM02
-         R+1g==
-X-Forwarded-Encrypted: i=1; AFNElJ+FP+LPQVnUESH8FBrK8TKrUdanB4PeCPhzZoAspWrnvdKK1TkjWVL1mnGdOSXfohmMs/E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrmyvkP08o0fyIRc+Jz6Xj//iK7uHhrvbj02JInrh1k2faNA67
-	a1j3QQAnXDR51RG0K8bOYXg5ruhVffadG7MndzvKdMhH3JdLbahgNIm/SzoorKu8pvYkgsIjZOV
-	chDLdIg==
-X-Received: from pgcv28.prod.google.com ([2002:a05:6a02:531c:b0:c85:10c0:3c90])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9e11:b0:3a3:128f:1c77
- with SMTP id adf61e73a8af0-3b4101adbc2mr402443637.12.1780010676885; Thu, 28
- May 2026 16:24:36 -0700 (PDT)
-Date: Thu, 28 May 2026 23:24:36 +0000
-In-Reply-To: <CAAdrzjuUEX=p0uX6mavaNv318AkgNG29263JPtXJGqjnmfxrfg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tWRQBo+z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rCf15c4jatadm9Gz07t2G1s1xPKyhMjCcIR0vQwSKOoEWsB6N/awmt3zNDuCXtTpk0BRhRGF99Ux5aqMBn2T/shHTLM7IfKrIbux9eq4pSvUp8DzURkmwxqm55k27eVjo1uQrtvmU7ZkXp785sPtl/LOTPFsX41dMQFB9i8bd/Oe7J12nQhZX5S3eCtriQu23NCVVf1VPfC+JXDeiwwyl+c9g7lKkmQDVwc4Og/NuIXS9zgLfPNEteJYBbZ0YCkN9NhfkC98avahD6Ax8kOL1l9j8PJmKZixo22ncUr+46jKNljuXZP3XJ13THhzYM7ZNJcPAKe/U92mQ4Vf0NQ3gQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zbeDfuWPg+eJSt+lQl1+vmMElwX/ky4iJdp1+/V8j20=;
+ b=xPHsdRRAUTbWnMTld2lA9aUCGXp81zyKa74SDsFfEkfopLK+TVWrjg2wocwXWlVt0ZSdJbP7rGmCxDxWyDDawJS/uQpjVtgs2vf6K2NdJaSP41gr51WqAheGb3xaI2TjG8YJC/VfqgsTF1OsnJT6CbLVrNtLce5WZJ9fwco4EOTiWCY5I6Ce384s7igfaJCRTaLNbatBMHIHx4oC8d6fYOLuOAmqQjpPoiNvAwsMQQjnlb+erNjNpa6geChUxfyQuu6Tg/EDdB2f/v/It/rGptiNIW8dGWap/7XF3QWzUF6leKeiSns0m0xe4CHGb1d7NiQ7S7HBl1+500iXAn7NIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zbeDfuWPg+eJSt+lQl1+vmMElwX/ky4iJdp1+/V8j20=;
+ b=tWRQBo+zmvSLlSBExDnCJJ3gqzEelrbCWwEitaLudLjlrxqAZnNrDa6m1bxGl08l5bGUl2exJShv/2tjplWv7aNAX71weCDoJ4Sm1zh9xldtqA7bgRpEJuE81jsT148T8CYab0htaMJj/IfayLXqlYkCIOFC++0KaN0fygWR5Xo=
+Received: from CH0PR03CA0403.namprd03.prod.outlook.com (2603:10b6:610:11b::13)
+ by PH7PR12MB7967.namprd12.prod.outlook.com (2603:10b6:510:273::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Thu, 28 May
+ 2026 23:25:40 +0000
+Received: from CH3PEPF00000017.namprd21.prod.outlook.com
+ (2603:10b6:610:11b:cafe::23) by CH0PR03CA0403.outlook.office365.com
+ (2603:10b6:610:11b::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.13 via Frontend Transport; Thu, 28
+ May 2026 23:25:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH3PEPF00000017.mail.protection.outlook.com (10.167.244.122) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.92.0 via Frontend Transport; Thu, 28 May 2026 23:25:40 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 28 May
+ 2026 18:25:40 -0500
+Date: Thu, 28 May 2026 18:25:23 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Ackerley Tng <ackerleytng@google.com>
+Subject: Re: [PATCH v3 1/3] KVM: guest_memfd: Treat memslot binding
+ offset+size as unsigned values
+Message-ID: <evegopwgjm5imjibprosovtzxwrntsqjrapnfumlocbozh2h4h@67l75d6vvdd5>
+References: <20260528021117.107984-1-seanjc@google.com>
+ <20260528021117.107984-2-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260421231557.1254270-1-jrhilke@google.com> <20260421231557.1254270-14-jrhilke@google.com>
- <ahZVi0njg6j38Q2f@google.com> <CAAdrzjuUEX=p0uX6mavaNv318AkgNG29263JPtXJGqjnmfxrfg@mail.gmail.com>
-Message-ID: <ahjOtF4c16hVkN36@google.com>
-Subject: Re: [PATCH v3 13/16] KVM: selftests: Verify vCPU migration during IRQ delivery
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260528021117.107984-2-seanjc@google.com>
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000017:EE_|PH7PR12MB7967:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81e5b541-fdee-4f57-6d9a-08debd106e98
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|22082099003|18002099003|6133799003|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	iQ2aux+Q6w85r0Z/sZWBOFrovQB3c0/WLoWAngkuabGhbbAM5bbWG74XsZhFoVyPME5GllYWOLobBw2Ms5zbM8rTK32lZioT9OxmZTJ2/milgcGdQeVj8dNji4wdH9iKfHJH39rv6yIbty8RX817WLwES8l4LR68jUG2rELDiLFKFiDQwvTOvwnHp1TZULWrz8qA3aTjPst8bmHZVj7EXNfR+f4LnlWbzyC8knI2nTJ98Tyj6D9RRz/ivbSfPHahCyi1BXQMbQklzEzSbaXZyE8ccAWPdMYPqPVzvc/BsMWWVKtc0Lbh6nyENLBX8ECLGFwiBi/dA6qRwz9y5NNi+NTRto0U/A51nDTM6dzZrE1sZkE5BB06qzA0UImkPaJ7lnu9aA1AqZUuUOGG9n8a5PcYZfRPhtpzcOIKRDM/F56lnicsXYm9H6aHh2Fa+sVI0TNZTLjlQDDXL2uwB9glbesXQ5w7g7KyE4oxdGxXOpi4je+DhFA+7mjWDcN3N3f0NZglxczlI82vF98Od+z6x2Om7gMJOImYZ77vKqdmvFa7Mok5OykhPWRR2WFwu1qzO7FWP0sH3k02wgcBgGxs2JUGehook6E0fkigbXxOp/hTFKVnql5lYarac1ScpiOZZBdcBAHGEoFScHtzmC1yxugDug6Oihu07eOQ0qg5JP8+RTW6jsZZFwmhQ/SlZcmt+7qAlMjCPUP/kSqZyC1OJ+/0sjnp0S0ASDFFdjPH4sI=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(22082099003)(18002099003)(6133799003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	qH9faBqAT4B947FTHrdqgRsZVYRWDWONftXMSNc5oDyI9Kp/3OF69/ktlwIRMmu/4t9xLSQA0Rrm39kmAV62OXUl9SUZybRpEZRqup4vlLXP7u44AzNajuUzagTOagyVPRvlLQZRocQRwUAX7/HqGn3W4QzHxxo+oZd7KB2Xm1edJ3K8Q/Rxs0xNtZrNGw3lTNIVnHfmL/TJZBaNPM5kVxQvcdCrmDYIARYr8/GeuK42w3DpM55GNCDwphDcV36d4wr5WmkYQqqX10yXA0Ft1JRxPTAoUNcsreGpw/Pln4RrE7WkG14Wl17dQpeczaI1pYQAcHqnm73SoZNZEL73nVs0bAC5yCrSB16ettkVsCL+x2qrIGmibfmLFocaW88HgHCberGdCm0i/KXdeefwr5GIOnaR+qF4V56PoFDJbNPVTYUotGXAL9SJ4j3nZzhv
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2026 23:25:40.5243
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81e5b541-fdee-4f57-6d9a-08debd106e98
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF00000017.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7967
 
-On Thu, May 28, 2026, Josh Hilke wrote:
-> On Tue, May 26, 2026 at 7:23=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Tue, Apr 21, 2026, Josh Hilke wrote:
-> > > +static inline int gettid(void)
-> >
-> > gettid() already exists in at least some of my environments:
->=20
-> Should we just use syscall(__NR_gettid) to avoid any compatibility
-> issues? It's only used once in the test.
+On Wed, May 27, 2026 at 07:11:15PM -0700, Sean Christopherson wrote:
+> When binding a memslot to a guest_memfd file, treat the offset and size as
+> unsigned values to fix a bug where the sum of the two can result in a false
+> negative when checking for overflow against the size of the file.  Passing
+> unsigned values also avoids relying on somewhat obscure checks in other
+> flows for safety, and tracks the offset and size as they are intended to be
+> tracked, as unsigned values.
+> 
+> On 64-bit kernels, the number of pages a memslot contains and thus the size
+> (and offset) of its guest_memfd binding are unsigned 64-bit values.  Taking
+> the offset+size as an loff_t instead of a uoff_t inadvertently converts
+> the unsigned value to a signed value if the offset and/or size is massive.
+> 
+> Locally storing the offset and size as signed values is benign in and of
+> itself (though even that is *extremely* difficult to discern), but
+> operating on their sum is not.
+> 
+> For the offset, KVM explicitly checks against a negative value, which might
+> seem like a bug as KVM could incorrectly reject a legitimate binding, but
+> that's not actually the case as KVM_CREATE_GUEST_MEMFD takes a signed value
+> for its size, i.e. a would-be-negative offset is also greater than the
+> maximum possible size of any guest_memfd file.
+> 
+> Regarding the size, while KVM lacks an explicit check for a negative value,
+> i.e. seemingly has a flawed overflow check, KVM restricts the number of
+> pages in a single memslot to the largest positive signed 32-bit value:
+> 
+>         if (id < KVM_USER_MEM_SLOTS &&
+>             (mem->memory_size >> PAGE_SHIFT) > KVM_MEM_MAX_NR_PAGES)
+>                 return -EINVAL;
+> 
+> and so that maximum "size" will ever be is 0x7fffffff000.
+> 
+> The sum of the two is, however, problematic.  While the size is restricted
+> by KVM's memslot logic, the offset is not, i.e. the offset is completely
+> unchecked until the "offset + size > i_size_read(inode)" check.  If the
+> offset is the (nearly) largest possible _positive_ value, then adding size
+> to the offset can result in a signed, negative 64-bit value.  When compared
+> against the size of the file (guaranteed to be positive), the negative sum
+> is always smaller, and KVM incorrectly allows the absurd offset.
+> 
+> Opportunistically add missing includes in kvm_mm.h (instead of relying on
+> its parents).
+> 
+> Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
+> Cc: stable@vger.kernel.org
+> Cc: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Hmm, maybe open code it in kvm_gettid()?  And use it straightaway in
-tools/testing/selftests/kvm/demand_paging_test.c.
-
-I'm a-ok open coding the syscall() somewhere, but I don't want to end up in=
- a
-state where we're open coding it "everywhere".
-
-Oh, nice, "This call is always successful.".  All the more reason to open c=
-ode
-it as kvm_gettid(), as the kvm_ prefix communicates that the function guara=
-ntees
-success (or fails the test), it just so happens that we don't need to do an=
-ything
-to guarantee success.  E.g.
-
-static inline pid_t kvm_gettid(void)
-{
-	/* Per kernel documentation, gettid "is always successful". */
-	return syscall(__NR_gettid);
-}
+Reviewed-by: Michael Roth <michael.roth@amd.com>
