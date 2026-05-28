@@ -1,94 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3274D3EFFB3
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 13:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F353F0A95
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 13:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779973208; cv=none; b=JIUZAd10rDn+NewOLVajnoq+s/ikpYdZ/PVbGNhAWR1nGHHzZ3AOwwvAb0rZaYY2ARhG9LF/raqsIU98M1expt8anDJGihcOrM9xfqPAg3sRznQzv4TBjtwFH0GBJP2IcDHQ7z+qC+16/x3ALLniTTtB6d3anyh/J/ulT61/wNw=
+	t=1779973263; cv=none; b=Iv7smrTqEmrp2yJaWXNqbN9rShGH1OPdB46jyLVBp+e/J7FWy/igtc6f0Ys4xeLC1IDMI1F0zp6jOardyPArsM8nomyKDQT+1tEJOSihgmJ92wC5l/TibVMkbr7GtHICcMjSbXZ9fd7v+KDb95jD2StbInSkcHSqiw60o/3ik4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779973208; c=relaxed/simple;
-	bh=i+YIvFhG1E4BxRnoXAwGqifvPcifRpxQCwZ6WTEikDM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MvAjo8/hrW2N5ms6qeF9gM2loIr6asmpTsQXLCOy+KwoJ4bc/5ltz/U8jf/QSroJ4lGQoka3YfG3dW5fojgilvRQ/nKlX/+5tNFPU0+eBvMo28YfkOribFmKmyQeHm9yciggrpiQOLzHD3g4RUdYWE8yO2imjr83qzRtwN0iqKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bw+djJ3k; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779973263; c=relaxed/simple;
+	bh=BomnCaWw3yF6MWCixmAUHRDKEuHyoU2SOULQoPH2OqQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ODMryeVn3zDHxgBCZ/xUaa7JIBzMmHL2TMSTLDgNeQ1Hxq7qKR5elZo2Mw93cbWRWVBkYS2vbHyp0ze4H/LMTSMdoLZZD30774zLbOm6uLNHs4PSiOWwspXsu83MKB5MTdNQTXKF7gHuO/Boxnadn7M+zGbvY+4YegqSsapJxH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T/O3XE8F; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bw+djJ3k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7ABB1F00A3A;
-	Thu, 28 May 2026 13:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779973206;
-	bh=GC4dTs7KtQtSKLSO0VnfACFd0y+dWw0dpVHMn2mL+pg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bw+djJ3krDDCP0jtaCtgKM/+sR+hKLTE/igfgG69cWOHqHuDNylr7lRI3RKx2ELSF
-	 yBFtdkLS/GITDXtu+EXizAkzp20UHHrq5WaqqyOHLDACfQjbtv7NVMXBElCi1TrzOz
-	 W6pFacZJ69Ajg7YTRqUpG6adFb59RXRA6XbAHsl14UTtcH6lTlvQgMlF0oByZKz1Ln
-	 YS7UY+djJFd/TMY+7rDHpFr+iGvGRVHIt0ljybUPH+nC3chTNBm810qE+MRRaQPU5Y
-	 VfzKACOgKUFdKuJxQBgI+2FG2nERrQtuniLjQSHL264EHk/YJQ4vVa74leG7SpRY1L
-	 jd76FE7mim6MQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/6] KVM/x86: Return -errno instead of "1" for
- Hyper-V related MSR emulation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Juergen Gross" <jgross@suse.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260528113605.267111-4-jgross@suse.com>
-References: <20260528113605.267111-4-jgross@suse.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 28 May 2026 13:00:05 +0000
-Message-Id: <20260528130006.B7ABB1F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T/O3XE8F"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ba3245a43dso144507865ad.0
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 06:01:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779973261; x=1780578061; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UvB2rHH5Zh/6yFKETh++PPYrvjeDOz8ZuprlUZqaUB0=;
+        b=T/O3XE8Fxk5Rx1p+plrjDfRvJEB5VqDCJFjIDLbciwmq2wuK1c5RbGaUGhkiwAhMGO
+         CWCmQcnK0YPvaE+Cvu8jMQm2NpAEn+bekI6mPxWWc2wfSnYjLkKS2p5iZP9yFndcSopa
+         AssnVMfE5lqUUrc5KEY7hmDcaKkgCNJhuUQZeIlk4FtQKPuvFofgap5UZgrC0EVkUrsT
+         s0KvOiZDofrEVdg6/kxRpQEAWa9/bU+mcwnl7TVTxhGqLJ8j0udFgtyw+vq24VK76ckH
+         1AEdGKnRS/61Y37I/QFTiyafZMQPRcfGkYRG7m9PMW1AgpKazYDRkvlFUrx72t9Wg49Y
+         vCOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779973261; x=1780578061;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UvB2rHH5Zh/6yFKETh++PPYrvjeDOz8ZuprlUZqaUB0=;
+        b=ENZQe3MwX1ee7fohWO5RR1RjHeuvJYqFa5ZxYaOgtN0VXuN149toI7i75jg4EplDi/
+         vH4EndYUV7hu2gEaS87RpVnOV7DRfy5lzKypvJIPpwAHQGuc5+Pb19TOmm0CYEvum9lH
+         JI4DlBp3qX8T/D/P3HP4CagIo0zcuGDCa47S3o6WVjYYtGPQ3YQoGUEzwTzJIuB1mmjC
+         VEFvHuGhW5duOyPkUiwPC81FXEy1PdpoXSl0v2CqWXEj1DAOyHP+LUi3Bz7bcJhiJxOy
+         caAYo66W0z5OXDgJd+iEMl4CFTcyeoDKvn9uoNXc6bWnTKUPQ7J/t5+pz8G8ancbDv8+
+         ejog==
+X-Forwarded-Encrypted: i=1; AFNElJ/HCFIglFhpGeMl0K5aP09STaaG+k1aO7/rmOA5t4Lt2Ojkkn1cqDJTAgi9z7cEdCelgUg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJ4aUCgm6F5HWoLFf6QBabu8VMFTg5Z4MpRqmRqv3Gh9JPpzuF
+	ffAaWv6jSRg9t7p/KFUriFfV11gUTHLu3+O8BVHIrNpFWTp3NPRwihJWvxaYXrjv1gLuawlqhnY
+	Hxyrx7w==
+X-Received: from plpw23.prod.google.com ([2002:a17:902:9a97:b0:2bd:e92a:169b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3b8c:b0:2be:1db0:f166
+ with SMTP id d9443c01a7336-2beb0346484mr302553785ad.10.1779973260553; Thu, 28
+ May 2026 06:01:00 -0700 (PDT)
+Date: Thu, 28 May 2026 06:00:59 -0700
+In-Reply-To: <20260528071712.1407929-1-xiaoyao.li@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260528071712.1407929-1-xiaoyao.li@intel.com>
+Message-ID: <ahg8i_Zv9TRk-UzE@google.com>
+Subject: Re: [kvm-unit-tests PATCH] x86/run: Use separate "-accel" option to
+ configure the accelerator
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Returning negative error codes instead of `1` from KVM MSR handler=
-s causes KVM to abort the VM execution instead of injecting a #GP exception=
-, allowing unprivileged guests to trivially crash the host VMM.
---
+On Thu, May 28, 2026, Xiaoyao Li wrote:
+> When configuring accelerator via machine's "accel" property, it cannot
+> pass additional ACCEL_PROPS. For example, it hits following error when
+> configuring KVM with "notify-vmexit":
+> 
+>   # ACCEL="kvm,notify-vmexit=internal-error" ./x86-run x86/apic.c
+>   #   qemu-system-x86_64: Property 'pc-i440fx-11.1-machine.notify-vmexit' not found
+> 
+> Switch to use separate "-accel" option to configure the accelerator.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  x86/run | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/x86/run b/x86/run
+> index dd38f14c871f..a68d469dd1b8 100755
+> --- a/x86/run
+> +++ b/x86/run
+> @@ -43,7 +43,7 @@ fi
+>  pit="-global kvm-pit.lost_tick_policy=discard"
+>  
+>  command="${qemu} --no-reboot -nodefaults $pit $pc_testdev -display none -serial stdio $pci_testdev"
+> -command+=" -machine accel=$ACCEL$ACCEL_PROPS"
+> +command+=" -accel $ACCEL$ACCEL_PROPS"
 
-commit 868e38a1726825f4fe428f84907ee4e517306725
-Author: Juergen Gross <jgross@suse.com>
+This breaks my setup for specifying kernel_irqchip=split.
 
-KVM/x86: Return -errno instead of "1" for Hyper-V related MSR emulation
+  qemu: -accel kvm,kernel_irqchip=split: Property 'kvm-accel.kernel_irqchip' not found
 
-This commit changes the emulation code of Hyper-V related MSR registers to
-return a negative errno value instead of a literal "1" when signaling an
-error.
-
-> diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-> index 4438ecac9a89b..809752a6d0ac5 100644
-> --- a/arch/x86/kvm/hyperv.c
-> +++ b/arch/x86/kvm/hyperv.c
-> @@ -167,7 +167,7 @@ static int synic_set_sint(struct kvm_vcpu_hv_synic *s=
-ynic, int sint,
->  	 * allow zero-initing the register from host as well.
->  	 */
->  	if (vector < HV_SYNIC_FIRST_VALID_VECTOR && !host && !masked)
-> -		return 1;
-> +		return -EINVAL;
-
-[Severity: High]
-Is it safe to return negative error codes like -EINVAL here?
-
-Looking at __kvm_emulate_wrmsr(), if kvm_emulate_msr_write() returns a
-negative value (r < 0), it skips complete_emulated_msr() and directly retur=
-ns
-the negative value.
-
-This negative return value bypasses #GP injection and propagates up through
-the VM exit handlers to vcpu_run(). The KVM_RUN ioctl then fails, which
-causes userspace to treat it as a fatal hypervisor error and abort the VM.
-
-Could this allow an unprivileged guest to intentionally crash the VM by
-writing to an affected Hyper-V MSR?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528113605.2671=
-11-1-jgross@suse.com?part=3D3
+>  if [ "${CONFIG_EFI}" != y ]; then
+>  	command+=" -kernel"
+>  fi
+> -- 
+> 2.43.0
+> 
