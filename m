@@ -1,126 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916272FFDCC
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 03:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from outbound.baidu.com (mx24.baidu.com [111.206.215.185])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id B4C0323393D
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 03:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.206.215.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779937259; cv=none; b=b09baLJljD8yqxD36OJBASs2PwNOIiUpr4BfQ0Bi0Il0slgCBwvxsz6e/sCJmg8gRwzhdUsdx5prE6+VQ+Qqldi6AxH4E0bWOFasP2Nm66j9rMrw4CucbaCrncAcSeJByPyYrySaugfN2OHLgkz9IcVNdS6wunoDdI4Azv3n3Us=
+	t=1779938167; cv=none; b=RQ/PKL0h2zyF1JphtJnEYh2tt9YToB8QDhTBHDNGtIfUpP7BiqSECrMkRHguvZt1EMQ0IefmQVIgM7jaE/uzHGFD9zVIDjThcwv0d9nS+QKxa+lOVAA6RdpNXl8mKYSLKNUKKp/slADCeaqv/0fCl5k2wAmENFVQ0VdBHHS0j4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779937259; c=relaxed/simple;
-	bh=yx1GtHjHc8M7bUwnbYFm5Z/fR3ykoU5h3SkUmgV2DyA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FTsC0LSdHcZhqmJgr6l/aor148D9cfXJwLAW1Xx4OGm+WevESTd52aXF5Pqj6gP84zvj8HNaI9bqgeLMCpgmYx/6EJEsmHCU0j7oPCqIPmpcdmErbw9sbLSw+IjTSlDhnx3SbmAgx/hYJ3HydbpfKYDYePxP3xZ/Y7ZgQcxH1j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HK5hCSg/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779938167; c=relaxed/simple;
+	bh=TnN2BO3slTqKF7IC7z48aJoA7xog/D3wjztyDsgQV1I=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GJROB4fCj9gyzz30HE+O6FYuVA8FMdBhYyfBRaMMZLq88DOmhdP1PzHsvFPhe0ueoFSvj7b8LqxF32vOLQYWDt6lHbJDWCrvz/PkfC3pKEDuWHTYp9FONF8dKMngCFjXQdzSSIxSpXd0+/xcYc25qfIotgfbmBU0cdpnlHQbrp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=oV6dnWz/; arc=none smtp.client-ip=111.206.215.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HK5hCSg/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F9C1F000E9;
-	Thu, 28 May 2026 03:00:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779937258;
-	bh=lhkuD763ZXihyJp12jd10lC4dAFu5L+pP3GQcw7JSfU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HK5hCSg/LBvGA42hgRBUP12yM0Y2KDFW0LbfuRzvCbCp5YFcO7ZjMW504Ps0dvs/9
-	 ANGy5WRf3N8FBqfJ1A5QW/OLiMnhrf6chM6fuoMxQQydxhBrk8nIdwlMrkV7DKeIdm
-	 XIgyICFserMkUp81FSoULFtD6HDXRo1YxjKqYSlFGpGPm+9/m2EOl1AMrvikXh66Oe
-	 pZAAnsDvKBB+yptoADtogFkiWT01ALQ/A9Coy5MCudhEbpi4i+5Wr8Ov0gyghgmxzT
-	 5jb7pMYYjspWwiF9g3UO2I/gFPjFY5b1fLBiOsLXfgM2wvL9yVWEpyaiYKqqGj1xwN
-	 zQdDfnh8zdXqw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/3] KVM: guest_memfd: Treat memslot binding
- offset+size as unsigned values
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260528021117.107984-2-seanjc@google.com>
-References: <20260528021117.107984-2-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 28 May 2026 03:00:57 +0000
-Message-Id: <20260528030058.12F9C1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="oV6dnWz/"
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.47
+From: lirongqing <lirongqing@baidu.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H . Peter Anvin"
+	<hpa@zytor.com>, <kvm@vger.kernel.org>
+CC: Li RongQing <lirongqing@baidu.com>
+Subject: [PATCH] KVM: x86: Fix wrong return value type in guest_cpuid_has()
+Date: Wed, 27 May 2026 23:15:45 -0400
+Message-ID: <20260528031545.1879-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-ClientProxiedBy: bjhj-exc6.internal.baidu.com (172.31.3.16) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1779938157;
+	bh=aIy0DvSDVDbVP8PKcJl3ucIz+RtTsOwelwN9/pPpDAI=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=oV6dnWz/Ik4qnH+QERFFB/T3xmox/pk0+1u3WnGAtQXqK+npcIzXqqAVyAsZbd13D
+	 Y/GTNNOs3J1yLiqMzeb4KoUhrQbwUGhUQvbnTNQNq8jHTy//CAJlC4NtCFy2wtS/Np
+	 vi65104yByhz0ni5WtPE5OJw2DQSLH3dGfrsKVYUP/zGVLRLaJWnSbfGsoWHcy6B69
+	 rDNrVxdiRT5iWJeCA/xa7LbAEY3+N8PH8r98uvITy9Y45MnmrWqlgpsCu3ZuSjuI4o
+	 NYQF51LvcSWtoWLpw5X4oSWaXjJutCdJaJCtukJe0m/nNBvrc2LjRRt/m55oDv2a7q
+	 UqZqGSIReAvdw==
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+From: Li RongQing <lirongqing@baidu.com>
 
-Pre-existing issues:
-- [Critical] The return value of `xa_store_range()` is ignored in `kvm_gmem=
-_bind()`, leading to a silent failure to record the memslot binding and cau=
-sing a potential Use-After-Free.
---
+The function guest_cpuid_has() is declared with a return type of 'bool'.
+However, when kvm_find_cpuid_entry_index() fails to locate a valid CPUID
+entry, the code incorrectly returns 'NULL' instead of 'false'.
 
-commit 501192c5cb0ca04a3b338baa0236457046c2b566
-Author: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+---
+ arch/x86/kvm/cpuid.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-KVM: guest_memfd: Treat memslot binding offset+size as unsigned values
+diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
+index 039b8e6..b0ca723 100644
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -124,7 +124,7 @@ static __always_inline bool guest_cpuid_has(struct kvm_vcpu *vcpu,
+ 
+ 	entry = kvm_find_cpuid_entry_index(vcpu, cpuid.function, cpuid.index);
+ 	if (!entry)
+-		return NULL;
++		return false;
+ 
+ 	reg = __cpuid_entry_get_reg(entry, cpuid.reg);
+ 	if (!reg)
+-- 
+2.9.4
 
-This commit changes the offset and size values when binding a memslot to a
-guest_memfd file to be unsigned. This fixes an overflow bug that could
-result in a false negative when checking the bounds against the file size.
-
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-[ ... ]
-> @@ -664,8 +665,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_=
-slot *slot,
-> =20
->  	inode =3D file_inode(file);
-> =20
-> -	if (offset < 0 || !PAGE_ALIGNED(offset) ||
-> -	    offset + size > i_size_read(inode))
-> +	if (!PAGE_ALIGNED(offset) || offset + size > i_size_read(inode))
->  		goto err;
-> =20
->  	filemap_invalidate_lock(inode->i_mapping);
-[ ... ]
->  	WRITE_ONCE(slot->gmem.file, file);
->  	slot->gmem.pgoff =3D start;
->  	if (kvm_gmem_supports_mmap(inode))
->  		slot->flags |=3D KVM_MEMSLOT_GMEM_ONLY;
-> =20
->  	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but does this ignore the return
-value of xa_store_range()?
-
-If memory allocation fails internally within xa_store_range(), it returns an
-error pointer instead of storing the node. Because the error is ignored,
-kvm_gmem_bind() proceeds to return success.
-
-At this point, slot->gmem.file has already been set via WRITE_ONCE(), but t=
-he
-memslot is missing from the f->bindings array.
-
-If the user later closes the guest_memfd file descriptor, kvm_gmem_release()
-runs and iterates over f->bindings to nullify all slot->gmem.file pointers.
-Since the failed memslot is not in the array, its pointer is never cleared.
-
-When the VM is subsequently destroyed or the memslot is unbound,
-kvm_gmem_unbind() will try to dereference this dangling slot->gmem.file
-pointer, potentially triggering a use-after-free on a file that has already
-been freed.
-
-Could we check the return value here and handle the error appropriately?
-
->  	filemap_invalidate_unlock(inode->i_mapping);
-> =20
->  	/*
->  	 * Drop the reference to the file, even on success.  The file pins KVM,
->  	 * not the other way 'round.  Active bindings are invalidated if the
->  	 * file is closed before memslots are destroyed.
->  	 */
->  	r =3D 0;
-> err:
->  	fput(file);
->  	return r;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528021117.1079=
-84-1-seanjc@google.com?part=3D1
