@@ -1,94 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949AC4028CF
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062EC4028CF
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779991277; cv=none; b=MzNtX6GLThFa3etmWDVvkyQO00KdmfTcRTVP9jKswAGqNgToep108n77u1mIe05yCuV/fjaJtWGfI1TMD9FAVvwODTrGy6NwgomDXn5fAVnS/yB56mZTsMpGlaRJyWk2afQTrK+z8vRLFy4OCRqIzYgoXxj1jox/MFhPQ/wvQUw=
+	t=1779991301; cv=none; b=KMSQezG4yqMSq/Ht84DvMLUgH6VnY6HagpODEMTcqOP6eVZmPx3M+gzHJ2Kr0g2eLBRJGq24MeJCF2ZzPAkWrALNPHThpCAtUSPqKgh0vM54WPNp64INOcLeHcYhBdvBlmh2JELPQwMVztfvRvI8dDTiZ+tBaxWww45sPzsp9mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779991277; c=relaxed/simple;
-	bh=1hn5YJzkxLhRI3XqC2gnKN/osRX1SPQ92F3PeYRvdkE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MgUdUuax+himU4MDYhIbu+CbpTDUE/jULkYrhX803N1fCzit+awtg/F+BdgJleWSoDP3iZrNXPkkaJUWrN1hUSEqjc+hR2at5eHNU6hFcElJhbM+9LWhwLeOX4CL7iMjVQH/Yn24Iq73wXOezCyG2b5CZ81kBwL8MJHlrbJZWMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ee/CdgWR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779991301; c=relaxed/simple;
+	bh=cfQuRTSFGpuROy8sOY9+zm602caKcY7BSXa/YhoQBlo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HhjIbn83PXvsZ7FJRKReNSu8MpT+N2W42gFCH0nccmvsjy2/on8U936K9e6o73DzAzY83W4S72Umw6eLbY2JcSrK5JP3aNDA4xrF1OcTCJrHfeGZiyfH/ruTrozn/YJvt9Uetu1yoZGSjRiievh1uRotDww/zv1MH4STxCXyMP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q3TwIA2M; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ee/CdgWR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539B61F01558
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:01:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779991276;
-	bh=SKkCuNebNzBFgHPFFB39Dbr205adDp6mF0qE0r+N75I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Ee/CdgWRJUoXmr7gwV4dX3u4KD5B29ELWG5sVvFp8yRMfTYvT6vQuqdiqfpIc7bM7
-	 vWDo6UwJdlQt8C9ZGKAFzTTK5QjzgEYoP9lI8ukxGDA8AAHKJcklJ5GJ01JxOOLTNt
-	 mbLsKBT9o5mwTrQgqrtQdE5/SS2LiEZBuRw6Lg/MsLcABQGK9I2ON12ad0Fr6Ud9h3
-	 +lHyU28KHikxCTX86j9xGHI1hJKWwl8Rr9vDgUnY+hlPM+GTt3hGsWdr9YlHGUAdkv
-	 hEjhMip9dncXpZ9xYpxnPntIsh2GqM56BQpPsO8rAVd8MHUJ2437n4BZ7zdDoUAmSN
-	 mLa12a53jvX1Q==
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-bd8f9889a8cso1583513466b.1
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:01:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+IGFv/i3J5tHHSK9XeEdjVFdePZq1qUM2FbpbhzsdV9yFywEL8lVIQWGvkyftctd4rmTU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyBKHhd/Y5fHC1ZTaEMk2B1XwUlmFJp9b4KvUIvhiABIz1B+3s
-	JlLb19q1g8LM6PEZpM970XaUyftfq1ib67mBK/IGoxxrLM/RdDtsH/klO/OZQJRDH4iiXHWlv0D
-	P5jsC2oPzk0tPlYL4QvEZKTu9Lmk9T8Y=
-X-Received: by 2002:a17:907:944b:b0:bda:25eb:1893 with SMTP id
- a640c23a62f3a-be97299d287mr15529566b.20.1779991275164; Thu, 28 May 2026
- 11:01:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q3TwIA2M"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8514f8ed5dso5339074a12.3
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:01:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779991299; x=1780596099; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cqxIbCcsyYXCWcOhnGOc2rtddu5l+XPaABmEAFuWVho=;
+        b=q3TwIA2M4MMoC0KRFoj0WRd3RxgbtomAgjrE1i5xixtAB9u9AhWGzEuJdmaca+oQZ5
+         5gCaXPhOlSTPvU6zi97mbx2pUWve8ErzL1s1u9znj4xbjl3TRVlEYnn360jhL6axMCBU
+         pkYbzrRywi9bw4nU19yJ9gqKRJimQkvwSzxIeq+CBztvhHaJXjMk7aAg6aTIPJXCCyXv
+         T8lyE46Zsv2MbbBdZHwGhqqTknymbBoII/0e2c/0bBAJA8I1jYu51pBUmG6mG/Wm8uGo
+         aJxKidmXqtfu0TukC2GrJz/OobCuM3KeFi5o8AwrwgHBH9NEU3kjd8OxMG534CpDeNQX
+         G8mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779991299; x=1780596099;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cqxIbCcsyYXCWcOhnGOc2rtddu5l+XPaABmEAFuWVho=;
+        b=h/34trU/WEE9RskXkSeFPYNu7PdZTla+vBrUAAJ0ymIp8t+ZMtM59otIrBMJC8ahO/
+         1hXwp/sNKerE11KM5sQiAmit/idobwQ9XLGdX2Udk7AV0h9vLbBpqOIgHrMZvksqZOIs
+         WAPi3qU/0ig8Hfo9FaGQIaiuYPbVULiLAWl4LslKHq3UVuk/6VG9x4FAhfsvRpiQqIiq
+         QeCx4kVPFiVhoBuzIimTTfMCFjl2bIyQA7F5r3BQXFvXnN0hTK4FnqzHrcdXUjoxSu3w
+         Ul+eRHl9EXLR0+wdsFePUxuuyHbh6gOMVUfEMxX/hYDiSPxAlIFxH+4Cm6LiJaCY3tbg
+         sFOg==
+X-Forwarded-Encrypted: i=1; AFNElJ/xSDrvTLPteNf57k8lShrNz/PkHhPiBPgsuKdrS8Txi0faolKTKWAYpCNf/At4g2uOos4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykNwR8SJrN216kxPQaf4IhAg4T+akc/vZ7267KDGK8cK1JpfyX
+	XyU0yN0JCN/g3NCU7LevdvAGY1LAU5iG7WgP/8k5J+PdYKWCY2sFPAxoe5qSW00R84H6u4RwT51
+	2Dnp5Cw==
+X-Received: from pfbmx6.prod.google.com ([2002:a05:6a00:6ec6:b0:841:9a22:890c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:10ca:b0:83c:928:6e5a
+ with SMTP id d2e1a72fcca58-8420bfbf1b5mr92594b3a.13.1779991299023; Thu, 28
+ May 2026 11:01:39 -0700 (PDT)
+Date: Thu, 28 May 2026 11:01:38 -0700
+In-Reply-To: <CAO9r8zNw+iFdZn3uE6p7cCZYVPNeBxAwKhGtKgTErWQ3WL9tWw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260527234711.4175166-1-yosry@kernel.org> <20260527234711.4175166-18-yosry@kernel.org>
- <ahenmnACHMNKO3WC@google.com>
-In-Reply-To: <ahenmnACHMNKO3WC@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 28 May 2026 11:01:00 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNzFWYBqZ_ACC_rfaYoxARn18UdUUymkYaroXizj_+cog@mail.gmail.com>
-X-Gm-Features: AVHnY4ICC6hM--Zx7Tg_EpPXkrARphCKKvzfR3G7G7HBs0vNKsXYOHfXSbodiZY
-Message-ID: <CAO9r8zNzFWYBqZ_ACC_rfaYoxARn18UdUUymkYaroXizj_+cog@mail.gmail.com>
-Subject: Re: [PATCH v7 17/17] KVM: selftests: Add svm_pmu_host_guest_test for
- Host-Only/Guest-Only bits
-To: Sean Christopherson <seanjc@google.com>, Jim Mattson <jmattson@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Sandipan Das <sandipan.das@amd.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+Mime-Version: 1.0
+References: <20260527234711.4175166-1-yosry@kernel.org> <20260527234711.4175166-16-yosry@kernel.org>
+ <aheu-KReRnd7qK1l@google.com> <CAO9r8zNw+iFdZn3uE6p7cCZYVPNeBxAwKhGtKgTErWQ3WL9tWw@mail.gmail.com>
+Message-ID: <ahiDAiyU6M2iNJJH@google.com>
+Subject: Re: [PATCH v7 15/17] KVM: selftests: Allocate a dedicated guest page
+ for x86 L2 guest stack
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Sandipan Das <sandipan.das@amd.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
 	Mark Rutland <mark.rutland@arm.com>, 
 	Alexander Shishkin <alexander.shishkin@linux.intel.com>, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 27, 2026 at 7:25=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Wed, May 27, 2026, Yosry Ahmed wrote:
-> > +int main(int argc, char *argv[])
-> > +{
-> > +     struct kvm_pmu_event_filter *filter;
-> > +     struct kvm_vcpu *vcpu;
-> > +     struct kvm_vm *vm;
-> > +     struct ucall uc;
-> > +     gva_t svm_gva;
-> > +
-> > +     TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
-> > +     TEST_REQUIRE(kvm_is_pmu_enabled());
-> > +     TEST_REQUIRE(get_kvm_amd_param_bool("enable_mediated_pmu"));
->
-> This can and should be handled in a helper, using either host_cpu_is_inte=
-l or
-> host_cpu_is_amd_compatible to choose while vendor to query.
->
-> > +     TEST_REQUIRE(host_cpu_is_amd && kvm_cpu_family() >=3D 0x17);
->
-> Why the family check?  Actually, why check host_cpu_is_amd at all?
+On Thu, May 28, 2026, Yosry Ahmed wrote:
+> On Wed, May 27, 2026 at 7:56=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > On Wed, May 27, 2026, Yosry Ahmed wrote:
+> > > Instead of relying on the L1-provided stack for L2, which is usually =
+an
+> > > array on L1's own stack, allocate a dedicated page of VM memory for t=
+he
+> > > L2 stack in vcpu_alloc_{vmx/svm}() and use that as L2's RSP in the
+> > > VMCS/VMCB instead of the L1-provided value.
+> > >
+> > > Most L1 guest code does not do anything with the L2 stack other than
+> > > stuff it in RSP, so this change is transparent and the L1-provided st=
+ack
+> > > is silently ignored. The only exception is memstress nested L1 code
+> > > which puts the vCPU index on L2's stack, so update this code to use t=
+he
+> > > newly allocated stack.
+> > >
+> > > L1-provided stacks will be dropped and cleaned up separately.
+> > >
+> > > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> > > ---
+> >
+> > Blech.  This exposed a nasty edge in selftests.  For tests that enable =
+TDP, the
+> > slots need to be identity mapped *after* allocating SVM/VMX.  Found out=
+ the hard
+> > way: the gPAT test starting failing.
+> >
+> > Not worth worrying about right now, just one more wart in selftests tha=
+t needs
+> > to be cleaned up.
+>=20
+> I would squash that diff below to the gPAT test rather than this
+> patch, but up to you.
 
-I assume you mean that we don't need host_cpu_is_amd because we
-require X86_FEATURE_SVM above? Unless H/G emulation doesn't really
-work for cross-vendor emulation? I honestly don't know.
+Ya, that's the plan.
 
-I will defer to Jim for the family check, I took this as-is. My guess
-is that maybe older families did not support H/G bits or some of the
-other PMU features used by the test.
+> Generally speaking, the tdp_identity_map_default_memslots() API sucks.
+> It has to be called after all mappings/allocations are done, which is
+> soooo user unfriendly and when it breaks it takes time to figure out
+> what's going on.
+>=20
+> I think it should go away. Ideally either:
+> (a) When TDP is enabled in the VM, tdp_identity_map_default_memslots()
+> is called, and then every time we create a new mapping in the VM we
+> mirror it in TDP page tables.
+>=20
+> (b) Every time we update guest mappings, we mark the TDP page tables
+> as "out of sync", and we "resync" on vCPU run as needed.
+>=20
+> Either way, it is not as straightforward as just calling
+> tdp_identity_map_default_memslots(), because the current code reuses
+> the same logic as stage-1 mappings, and it fails if there's already a
+> PTE. So consecutive calls will fail if they try to map the whole thing
+> -- unless we free all TDP page tables first.
+>=20
+> I don't think I have time to spend on this right now, mainly
+> documenting my thoughts, and putting this out here in case you (or
+> anyone else) has enough hatred for the API to go do this before I get
+> the time to.
+
+We're on the same page, this probably doesn't even crack my Top 10 list of =
+things
+I want to fix in selftests.  Ok, it's probably in the Top 10, but not the T=
+op 5.
+
+I responded on-list mostly to point out the problem in case someone else ha=
+ppens
+to have in-flight code that will be affected.
+
