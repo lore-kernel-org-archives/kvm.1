@@ -1,159 +1,102 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824A9407598
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779992156; cv=pass; b=YFcjKNfOucHhtNfjQfhlQAVJKFNVE8/zNSGSUnM3OLMqBWIpYx0gDMhhxgocIL7M+OcYJ4hH51dm0f0fopbOzDiSmKMlQbvMlzNVERdWxCAFiouZOmobVISz0ixXgf4L2ywLd19QV+/9wuPijFB6mEPMrvNqUVnwK4+UdJf09I4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779992156; c=relaxed/simple;
-	bh=5JQJW42qHMleCXvSU5fTbstaP7/3alPlHerGe6sypRI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D3+uFLkwlWMlbiR4MX8G+31nAliT8xZCWUS0RvRwwgTOV5LkWHLPoQMtjWvOR+JFEtyIBE146RcunCovQDY7vFw93NOCnApydN3XkrqaSbBVfY+OhAb+0uda5hdYAfxV8Ci18RvP3Sx39enThXxm/oaOaLWiZkBBg5B8DI8AuI4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P30+tvO2; arc=pass smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC59407598
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 18:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779992196; cv=none; b=rWHuAvIovJNlBxjra24lq84H2kZA0eIBcYVmQwATGBbTmTHrQU7h2MP7ZlU/FsuhERZBED1lZHR5W3u7gu+qqD2AfcCdHhEs6r7YA5nt/ctFYn2zEg1ZTf1SQcVLNfaQ7We1xbxv6V4/mrs9YMlMmxB1rkiMwYg4Xh1rJA+iq48=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779992196; c=relaxed/simple;
+	bh=Ds1Jip4Q+szH28JOmLE2MWPcuCX4YqkYawFCTzZTR90=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s5cpg5igKogWx8K4D17QadwHCiPJvnXT+z+kY9xF8sihtEhpIR/yxNek32oIbzQNBmhyjiRRh3Fxh0wEPvlFMagCMZCJ4ahqnSmMhtItqgQs55A9xl9OVImjmDbR16dqs2oHxZeWHmFgdj3u+Ga4t+gaQJSpOUIJ1U4EFZBp9UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RyZNpRs+; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P30+tvO2"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-671f1a0d0c5so284a12.0
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:15:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779992154; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OlcDguOTolktVVGbCE8+hU8wJmBIZb6F9wx08pG4/Nby4p/39QuQ5kuPtkQjhDjlzs
-         8jUFv1jQN3erHXOBwwt9RPo8jTzvpmXrDs9D5LlYqk+q/U+JMfRI7Kfs+3/6DqkdnZhH
-         bDCyjNRn5wsjLGMxTuFfmTX59zweK2pd83KQCbVCVdqWKQExe8Ld8XeWJLdzrloFNCCb
-         bSwlg+JiQX20lPyoJg4R+YNOQJtic9l24Ar6jMs6tlxha1x399kXmrvIOtHRbgIVX+Jz
-         uXHIdBYgzdFSxqIVqKlFZ/kcwIfWTI0ym4UWNjWrnwrbsCAxn3IQARQBa0cYH0J6FMXz
-         UrMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6xndtT2YQxXDMNCl45esU4g7iivqG3FpYPEf1rUXYMY=;
-        fh=qXRMZ8wUzj/8bYomX8xsGhlKZ4snU9EJlwX5yFyqOIg=;
-        b=T0tc6ygPFNBsS3604axkt9+kjRIxufBWI4o0gn+X7DQu8Px5/xWabMqDVFd7uuM3nv
-         xvkYt2DdqZhznaGjDQqZaoyxdOa/T/BX4X3OE/xfUW8N3UQvn6c7C2+0qC5iYsn6vf4k
-         jJL0WabXOxopC2IpA4gw2Me8gB3nyM2oGjX2aoiwSqguQNZSTw9fEpM+pypPVERryrOr
-         Dt4++aDxtSBpuyjpMmMlC3vv87XLUVJCqJJtwP9U5aKkqpPqB/32yQfcEAXg50RaEYnO
-         6f3hK6h3rqzo/6OBraGzxrTlw69HDkZa4WC/lvFWg+DGJ7a1Z5VHsdwADTP8mmrSBg6b
-         LtIQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RyZNpRs+"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2bf1cda2b17so634695ad.1
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:16:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779992154; x=1780596954; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6xndtT2YQxXDMNCl45esU4g7iivqG3FpYPEf1rUXYMY=;
-        b=P30+tvO2SmsO7yaadQSg1wvyOf7mL9rE2PuBeJKjbdIhI4qNdDhYufGkY6XpjGAG2E
-         BDCyBgrldt7XtF45w0Owdgtix0Tl6bSwGg0BWKtU1YH3NS8jskhwd/fTVHvZoqlQSq/l
-         iVpieKIFoDVMSk3090r751cwbVNBidg0rb5FGH4qHgciZp0OTEj4UW1QjYeSLpZpVOEV
-         xEHlM+FI2MLmytnTtxxdUfy9xZKyKYS0b1S6DE2PrQpj36rIdl30ZSM5cErxQJnWJRb3
-         J0LvnYSiY2n7mjUI9fXK314XtL5F0mDvwXTiFuxar9RPoC1+RJn8yjc2ZRfPJ1YqyV+i
-         lQtw==
+        d=google.com; s=20251104; t=1779992194; x=1780596994; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=H98Vwp3bRkB0ayStNiyEfxNXiTSUpiEWRaZG/RbuOdc=;
+        b=RyZNpRs+WU8aaHArotM1GhEH+4IG/W6JG/A180LYcb6mTAbHHfMA3yWAmrY+A2tCwJ
+         hCaDauM5MjOTuOTGCKs0S+LnmxMyz73w/HFyeJIWiFBGq6owf2Ibf2s37PZw2q15/mXS
+         6f77pnlux284O/7Id3CkJRFJpeeUeNb2UmM8c7arhefVic/AvOaOwKQ9ed537esl+aG4
+         FYktz9N2sWlGqPOUNaO3T4IlEzWPJfu21Vvn1f7/T7T2nF54UnCmfcVNj953WncNb3MX
+         jdeTrDcjKcPiXq/fbjjQ7vW7uf5M9eTU9HdmHeWRJx5Nfvn+Fh7aTrgghxa2b7/6A4Ga
+         jhdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779992154; x=1780596954;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6xndtT2YQxXDMNCl45esU4g7iivqG3FpYPEf1rUXYMY=;
-        b=alVi9iI4UfkwQHJGrXk9FpOZiB89MKx6pqDtX/XEbEjdpzCy2l7GnQvtywtXeP/LhD
-         ddmt30aT2Faa6zi8gj9L+5rK7/tOSdjfMkHpv7bwBfL4RlOtJ4sSj9H+ot7FBsCJaNhj
-         FNpvoyoQRUDVqk0D7FTNGI9gKk2XJEbhNUPyZxueDS81KhFtoMRMnf1diIN0/WEKZl3v
-         4gMj8IcUr2mQ6rqNZCklhDEucYlyxZE2Q2m491Hqt8KslOEjX5DQkgxJsUc8tMKBEyv9
-         zuGbikbu+Ap8TDMM1MS5295MrKoTjZ6n2afnPuMhplLZx0zWCmWCyV7so/jG4RMG8ANB
-         gCFQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8W7weSkuXFoGocFcTO5BbYMbVp10+NJeOPV5UyZSulMvEUsx1LExZpoqfrqBKx/7qRJCA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpHgkZb2zmQuDDSRgblYf6GhLQmuj7p/zG6v6W9cx5HB9v1bpZ
-	8I4uQqyj8CSiRcZEjXvlOH92Cx1OxDz87A0VJad5D/hgvnsJ4+i+r0afejlh0SyHbJYXGjFTaUe
-	3/4PAdj6aAkuyLnW+26pRdv2354qbwzS5ql56nn67
-X-Gm-Gg: Acq92OGECGxva3a0271o3qRBgEo0PI6Hp5L1iry825x0xEl059G1yoNIkP9HVsRo1dh
-	3/dbCQPpteTGkuiA+Fg8yDs8OAY8R5njWNwwMP626PoUWl97vQUm6Hr1emC+UBqkH4kpID3mACI
-	pbb0Z4Bz7sgJ7CRdvLfYTauOvqSp1X4xDgVyJ2SZsVPzpCl1Ac2cmfYBM/sq80D4pPy+h0H9p7H
-	576YXGV9OGeglHTlte6wN2BPynuIm1fjlDj80EGT9FSZA0qeGkmstZYlymRD8nM/86FZlRX5cBF
-	QHakyEvTZBn5iRSlDA==
-X-Received: by 2002:a05:6402:14d4:b0:68a:83c2:9c75 with SMTP id
- 4fb4d7f45d1cf-68bef1b2518mr30a12.0.1779992153438; Thu, 28 May 2026 11:15:53
- -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779992194; x=1780596994;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H98Vwp3bRkB0ayStNiyEfxNXiTSUpiEWRaZG/RbuOdc=;
+        b=Bd2Whid91zzHuKZhIpMt4x05keAVTwXteP3We9GIJ8lqHio8MmiJfmH+7GwaxTle8Q
+         R/kyKfzvn023f0NUBcKjN9rt0SKYjRGbomfxu+H/9yRK2GfS84zlCwfTu5Y7I2WQiuwN
+         L9dXWGIMiPTMvp+dLZu4Hjkz6q7ayBXCRxz4PyzQmTpdgRyF+OrGtOt9ujz6vziHyH30
+         gBgsyCg4IB8lqQKZeFQtCvhgLThSqdGJ4+niAML2iWB64hgjw3535kvbdhtf3ySzebN3
+         DBPLMeEidQIDDqrEH0V9uA9YaVY5OINYWh2xDOZhjYtTW+3wh+vggDAsl8XcV/q3Faxd
+         jByQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+pUC68Uud92BIl2AdBPdWz1gmGvVyH6ZFgAxDJUjikboWJ/HLwySoLyK9AEKDj7P1e9K8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3oHHSp1SPtCGuI1SuZ00oZHGFQWTb92/5ABlMO1JF6U/EWSBM
+	+Fg56eL3Fh+wDQpUVnHs0e2/c2UWUIe7znKc/pV9jLsoL0xbgH231F7vDUHrEIbewg==
+X-Gm-Gg: Acq92OGfxntxD9h7o//CZTnQYlrR8nSUaccMg2LeRbLoA25CER9atWgJ6PSBgi/dAgT
+	C2jB8HaTzbB2InFc5iQlW166VnntDh+y7UFOyJ8zb6HFyHLo0u2kfMiII9mkKRifwEH6Ywd+nBN
+	FgbRyAPJ5naTH6lXm3hwPbQGuDHwGj8HWQm0xSehpi1Fkphe1Mo5rlWh3k7PVdEl1uN302hzvFe
+	6m8p7MWd6XBLqYXAQOCQ4mLQzo9CKU3txj2BVNBWBfN7D3+p91NTxDtrFMV0LfaE45QLTOaxdLJ
+	KFVK8Sf1hYKaP9l8xUwQ/YrIHtnfu/JFkdtCtBuReCNymos9Tip3Q6Kn0PO/pWW/3hE7P84C+Ci
+	ATKRK02MsDywt/STNuVU9BKW66MQy9hJNaztBymc56LU3z15/Uk+lmWoBxJNq8uleCRkoHUeOLG
+	m3muokPyMeOpdf42yLWZFKEg+GnZ1gaZ8nsK7n1wI2XwTHgw4Oo9XJLH1UG6WcdKYZvWybdR8n
+X-Received: by 2002:a17:902:db05:b0:2bf:1845:baf5 with SMTP id d9443c01a7336-2bf1845bde2mr12584885ad.12.1779992193939;
+        Thu, 28 May 2026 11:16:33 -0700 (PDT)
+Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58dde4fsm198930285ad.67.2026.05.28.11.16.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 11:16:33 -0700 (PDT)
+Date: Thu, 28 May 2026 18:16:30 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	patches@lists.linux.dev
+Subject: Re: [PATCH v2 05/11] selftests: Add additional kernel functions to
+ tools/include/
+Message-ID: <ahiGflOWOOk0U_b4@google.com>
+References: <0-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
+ <5-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260527234711.4175166-1-yosry@kernel.org> <20260527234711.4175166-18-yosry@kernel.org>
- <ahenmnACHMNKO3WC@google.com> <CAO9r8zNzFWYBqZ_ACC_rfaYoxARn18UdUUymkYaroXizj_+cog@mail.gmail.com>
- <ahiDsTe5Pge2qNxC@google.com>
-In-Reply-To: <ahiDsTe5Pge2qNxC@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 28 May 2026 11:15:40 -0700
-X-Gm-Features: AVHnY4JQRHwT-1kJx8zGOg1FrVgMqQGJ618Zs64dRkCJw_EioF3ThXmMPfSxp7Q
-Message-ID: <CALMp9eQ72U9XS9hZtVvq_w=oP3hvA+LLk2SQXx9GJcyDRe9J5A@mail.gmail.com>
-Subject: Re: [PATCH v7 17/17] KVM: selftests: Add svm_pmu_host_guest_test for
- Host-Only/Guest-Only bits
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Sandipan Das <sandipan.das@amd.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
 
-On Thu, May 28, 2026 at 11:04=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> On Thu, May 28, 2026, Yosry Ahmed wrote:
-> > On Wed, May 27, 2026 at 7:25=E2=80=AFPM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > >
-> > > On Wed, May 27, 2026, Yosry Ahmed wrote:
-> > > > +int main(int argc, char *argv[])
-> > > > +{
-> > > > +     struct kvm_pmu_event_filter *filter;
-> > > > +     struct kvm_vcpu *vcpu;
-> > > > +     struct kvm_vm *vm;
-> > > > +     struct ucall uc;
-> > > > +     gva_t svm_gva;
-> > > > +
-> > > > +     TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
-> > > > +     TEST_REQUIRE(kvm_is_pmu_enabled());
-> > > > +     TEST_REQUIRE(get_kvm_amd_param_bool("enable_mediated_pmu"));
-> > >
-> > > This can and should be handled in a helper, using either host_cpu_is_=
-intel or
-> > > host_cpu_is_amd_compatible to choose while vendor to query.
-> > >
-> > > > +     TEST_REQUIRE(host_cpu_is_amd && kvm_cpu_family() >=3D 0x17);
-> > >
-> > > Why the family check?  Actually, why check host_cpu_is_amd at all?
-> >
-> > I assume you mean that we don't need host_cpu_is_amd because we
-> > require X86_FEATURE_SVM above?
->
-> Yes.
->
-> > Unless H/G emulation doesn't really work for cross-vendor emulation? I
-> > honestly don't know.
->
-> Not just cross-vendor emulation, KVM and selftests also support Hygon CPU=
-s.
->
-> > I will defer to Jim for the family check, I took this as-is. My guess
-> > is that maybe older families did not support H/G bits or some of the
-> > other PMU features used by the test.
->
-> If that's true, then the mediated PMU shouldn't be enabled.  If the media=
-ted PMU
-> _can_ be enabled for CPUs that do _and_ don't support H/G bits, then we n=
-eed to
-> figure out a way to enumerate H/G support to userspace.  Because telling =
-userspace
-> to check F/M/S ain't going to fly.
+On 2026-05-15 02:30 PM, Jason Gunthorpe wrote:
+> These are needed by the VFIO mlx5 selftest in the following patches,
+> which includes some headers from mlx5 and also needs a few more
+> MMIO-related features.
+> 
+> - DECLARE_FLEX_ARRAY in new tools/include/linux/stddef.h (wraps
+>   existing __DECLARE_FLEX_ARRAY from uapi/linux/stddef.h)
+> 
+> - dma_wmb/dma_rmb barriers: x86 uses compiler barrier
+>   (DMA-coherent), arm64 uses dmb oshst/oshld (outer-shareable for
+>   device visibility), generic fallback uses wmb/rmb
+> 
+> - ioread32be/iowrite32be in tools/include/asm-generic/io.h for
+>   big-endian MMIO register access
+> 
+> Assisted-by: Claude:claude-opus-4.6
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 
-The test counts AMD_ZEN_INSTRUCTIONS_RETIRED, so I tested for
-"Zen."This is admittedly pedantic, as I don't think AMD has ever
-changed this event code. Blame AMD for not having any architected
-events. :)
+Reviewed-by: David Matlack <dmatlack@google.com>
