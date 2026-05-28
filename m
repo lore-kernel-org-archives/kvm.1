@@ -1,543 +1,122 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E48305693
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 04:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7772F547F;
+	Thu, 28 May 2026 04:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779943162; cv=none; b=YHJDbIYhNaGQjdFZJGgPiyu6e3+atSIwmRD7ehbSdsseYOrezulnGcMeprFBHqVHKLAnoyRfX8It5xy2sdBrqNcpXcEPh+ii4fKJOrRNZ8X1J6rX9BGrWvOh77xe3F1KpCL3kRD/TtN9XQdFB1myoyx7GDWypFsChoBIC9gQano=
+	t=1779943799; cv=none; b=VKGK8bHiC6gcZ1hWKJvSi8AP5C3avq/JfgxH11Mpelvi/UGeRXhewdq16rUmwYbmPcw15X62HLTQkZ318CjMDsOf3fnQQL8m7aNjtqjwntu53MWAnTBkNvZ404B31/9zY76/KwkgvPSHczF2M37zhPEpAvmSmqJfll0ijDRwQdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779943162; c=relaxed/simple;
-	bh=WL8oPC0tQPNO9RBReVPyEOAMrt26615ac7FRki2rZ9c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RyuqDqTKilKGtl+79OQHkifTsGfiJAofrQer4mNEKYgfR897yg1ukeYpxpY8Q5fnjz6rcVsFQQ2QfmHULzmVkYHfRUp+QGd8fcs9dOLrsGDfZjevlo80JjexBchg10rlNCEEKdk9gJny79WnsHoaI6p3F8nz23W/zIfxuSH2fz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fNM6xk7T; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=X1iW9AME; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779943799; c=relaxed/simple;
+	bh=jSR0QcfdqpffkBeKE+I9lQuyBGyEuNJVQtIZkrY5uaA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ixkgQRMITySs6WlwsLIf6cKTmpDN0uhRIzbVNDXWobOR/ua7blxUEq+NcX3+bGNNuGdr7p1oA+K0DMR8ix9vB6uK/0yv6/DGGgNS2pMCqWCkgQ+29wiR/cNwmrTxJRjX/BioG7oPNgkeTLf4u1DnRyyFxAbGXOb4iUGc/feZBzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cAijzi+u; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fNM6xk7T";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="X1iW9AME"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779943159;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jXQOc51jw9CbTzkn1dp+Gluq7g3RzHfKmC/71EKuA3w=;
-	b=fNM6xk7Tuq/8cAAhPvrQmh94N6U4nlwDRn0UYVMJQkQfqF0Mfj0pSNGXPZrzHDWnGvCX30
-	2RDLLtOMJGhG6mw3ps7Q9jP/tpTgcC4oYI8xxd87wfcPRrgSjOl+B5oOeSbfNBsnyzB39U
-	eqDQNexqVK+JChKRVj6sa4t1a1TW1S0=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-286-6RNdiEeNNoODuImrCd-5iA-1; Thu, 28 May 2026 00:39:15 -0400
-X-MC-Unique: 6RNdiEeNNoODuImrCd-5iA-1
-X-Mimecast-MFC-AGG-ID: 6RNdiEeNNoODuImrCd-5iA_1779943155
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-36781927b4dso6228390a91.0
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 21:39:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779943155; x=1780547955; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jXQOc51jw9CbTzkn1dp+Gluq7g3RzHfKmC/71EKuA3w=;
-        b=X1iW9AMEhPeeChN1A7nlCuM9PApCDuWHIcoeqbsrPPCwg/isbcnqarntSb6FQjdlgy
-         BkPc+MZP4AGfY7iw+OlmY85hIQ/eK9o27A3M9y7zfVha1pBys68o5obvBVPSfyKUK+45
-         Lf1mKsKul5iEpbk34LL1vas+JRHzg/A192JFqlaM3QVmfdrsiY7xkLNOfdwnn0bfvq52
-         ItC3/n1cfIRqenSXm6ONERpz1M9tGtbcccNwUnSbv8EEG3cPo2H2UpY7HdTRAgW7wJK0
-         9x6VQbndSZJlgRYu31K4U9J9JtL65GKuQ2JzGt7OXI411Ui2ZnzsilVjjF6KmVSa+UjV
-         MG2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779943155; x=1780547955;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jXQOc51jw9CbTzkn1dp+Gluq7g3RzHfKmC/71EKuA3w=;
-        b=PdN296Z06ysxT96I6Q8w604xPkvyy71tetupEzk/V4RDGHKcJlOMcS6YqLoY+4tc+6
-         h2U4JawShm16/5c5cpU7jlQUWQm9TV8JkrMEGr85WZ3CXqEK2Chb6ZavoJS1Z5Rs6uMl
-         7OzscBJLOcfgPa+64iVTSLUDyyJB6NPfD1H8hHHtoSvPPhWQ/JLlvhPNi5F8AdZ8lQ1u
-         pjY1hNo8xMnJF3r4fSS22AeO8OM2pCYtLNExn7mSh4dnSSHxMtip4ADVA/OEufrRucF+
-         0nR/1+Hg5ZxDjqMAD5VDngLAfdEzGIQbw1XfIjeYxlt2xGWZojXIJEWnlpzQb/RfPfIX
-         TPMw==
-X-Forwarded-Encrypted: i=1; AFNElJ+UgXVB8HmIQARkvLJgQjQiPahNMtZBhYq0KeAq4z2wrgPOF3qaaOCi7UAbREZVQ8s66tQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw64qbOib0KfxXyL9tgEbOpvclNLB9Ia1ofNNJorcpHtqKr2fGF
-	vI3TRuIeyRVPKFnyec0q5bZKme2Vj7EQSAS+iQ2PjmcbUuHiXO8pinscc0baVTradizgWlNFXSc
-	tJ8/LAJzj1B3/IvVsq8kWDjDG+m3aa2sNlEYqOhBucrczQIkR1krbeQ==
-X-Gm-Gg: Acq92OFNLTZVZytLf8bgHE1YYtnapzgkVHpZdxbyeEj//6kYupzMginm9T6LGLzkgcX
-	d80RN1dSvfm8jHOGYpI5i0XvcZIw/ziJFi4PwVw/00730GG0Fz5QDufPnyO1zG1WWyber/nrO6i
-	85htlpBuv728tBRKXOpuAOWTtEPaihs1HR/3PaTucrSBf+bpUAIg2TJoTplbcY4ETqQZcqdmXII
-	QNDQmNRPny0O6WSD5zmYcvqF9aaIoRyfpk/8XI9d0vQZ+CYHn2u/LejwI3hMvMcz8wJxeJL3JKU
-	FGZ7AvEhX/TrqrPiUJ6auYMjE86FFm4hileL+9T+s+RI5JT4HI/rYKZ6nEWSnhc0pnyzwacsxg1
-	/gMGG8OzJpZO+WnO4pp9T76L0GHaITk+/zOCi9in37rMYW4gPzIe6n0jVk+kOkJy3Dph473z3Mr
-	4=
-X-Received: by 2002:a17:90b:2e8c:b0:368:a297:bd38 with SMTP id 98e67ed59e1d1-36a67704b2cmr24847561a91.7.1779943154547;
-        Wed, 27 May 2026 21:39:14 -0700 (PDT)
-X-Received: by 2002:a17:90b:2e8c:b0:368:a297:bd38 with SMTP id 98e67ed59e1d1-36a67704b2cmr24847511a91.7.1779943153881;
-        Wed, 27 May 2026 21:39:13 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36b90d23ef2sm463249a91.17.2026.05.27.21.39.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 May 2026 21:39:13 -0700 (PDT)
-Message-ID: <e6cb82fc-a8be-49d3-8fa3-0107c8ab97f7@redhat.com>
-Date: Thu, 28 May 2026 14:38:59 +1000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cAijzi+u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779943798; x=1811479798;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jSR0QcfdqpffkBeKE+I9lQuyBGyEuNJVQtIZkrY5uaA=;
+  b=cAijzi+uKwRsEHUcmmp24JTRHfSOzroPtb29j0BhD0HEy8By722ZjgtF
+   R22bxZubA6UuOJttQNKqHONPpXW2Sk6Waw35i1dif6n3nASTdspcUy+eG
+   JDynyHeMCIT7p7F7n5MfSXMs/RHHweQ9yuCAlrFsB2Uoo1NA/IN0obmfn
+   Den31VGCRsmFpaColmCOFreUJBnAO7+r55cAQai/FPkDm2mQiJLeIO/+4
+   Dczx3/s3re/RAp3ccbIKfZARz8W6vl+m/tkdoMUx9DnphsdwmVwrhVjcw
+   dEndokSXFXlCXq9QQqfRcKBPiyiaoxGrCGAEWHA3hY44kHjlkPL/Ch8VM
+   Q==;
+X-CSE-ConnectionGUID: 3uNlJBw7S4mSvl4Ro8wk0g==
+X-CSE-MsgGUID: XhCOiCKcTfObMnBDkwgAgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="92170182"
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="92170182"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 21:49:58 -0700
+X-CSE-ConnectionGUID: rUjBSPePQxeyGYhS5DCRJw==
+X-CSE-MsgGUID: k7y22UbpSNSpqBzrN3IdxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="272776026"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa002.jf.intel.com with ESMTP; 27 May 2026 21:49:54 -0700
+Date: Thu, 28 May 2026 12:25:56 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, djbw@kernel.org,
+	rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
+Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
+ Extensions
+Message-ID: <ahfD1KMYnTrXJziq@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-2-yilun.xu@linux.intel.com>
+ <956fa1e6-2920-4b2e-8037-d4b9d812ae53@intel.com>
+ <ahcDvwEES7vqLLvg@thinkstation>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 22/44] arm64: RMI: Handle realm enter/exit
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-23-steven.price@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260513131757.116630-23-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahcDvwEES7vqLLvg@thinkstation>
 
-Hi Steve,
+On Wed, May 27, 2026 at 04:35:36PM +0100, Kiryl Shutsemau wrote:
+> On Mon, May 25, 2026 at 02:54:40PM +0800, Xiaoyao Li wrote:
+> > On 5/22/2026 11:41 AM, Xu Yilun wrote:
+> > ...
+> > > +static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
+> > > +{
+> > > +	int ret = 0;
+> > > +	u64 val;
+> > > +
+> > > +	if (!ret && !(ret = read_sys_metadata_field(0x3100000100000000, &val)))
+> > > +		sysinfo_ext->memory_pool_required_pages = val;
+> > > +	if (!ret && !(ret = read_sys_metadata_field(0x3100000000000001, &val)))
+> > > +		sysinfo_ext->ext_required = val;
+> > > +
+> > > +	return ret;
+> > > +}
+> > > +
+> > >   static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+> > >   {
+> > >   	int ret = 0;
+> > > @@ -116,5 +129,8 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+> > >   	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
+> > >   	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
+> > > +	if (sysinfo->features.tdx_features0 & TDX_FEATURES0_EXT)
+> > > +		ret = ret ?: get_tdx_sys_info_ext(&sysinfo->ext);
+> > 
+> > Is it correct to read "memory_pool_required_pages" and "ext_required" so
+> > early in get_tdx_sys_info()? get_tdx_sys_info() is called before
+> > config_tdx_module() which calls TDH.SYS.CONFIG.
+> > 
+> > If I read the TDX module base spec correctly, the amount of memory for
+> > extensions and EXT_REQUIRED field depends on the enabled features, which is
+> > determined by TDH.SYS.CONFIG/TDH.SYS.UPDATE ?
 
-On 5/13/26 11:17 PM, Steven Price wrote:
-> Entering a realm is done using a SMC call to the RMM. On exit the
-> exit-codes need to be handled slightly differently to the normal KVM
-> path so define our own functions for realm enter/exit and hook them
-> in if the guest is a realm guest.
+Yes.
+
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> ---
-> Chanegs since v13:
->   * The RMM is now required to provide an ESR value with the correct
->     information to emulate MMIO, so we no longer need to hardcode 0s in
->     rec_exit_sys_reg().
->   * The PSCI changes mean that there is a potential race when turning on
->     a VCPU which can cause a RMI_ERROR_REC return. Exit to user space
->     with -EAGAIN in this case.
-> Changes since v12:
->   * Call guest_state_{enter,exit}_irqoff() around rmi_rec_enter().
->   * Add handling of the IRQ exception case where IRQs need to be briefly
->     enabled before exiting guest timing.
-> Changes since v8:
->   * Introduce kvm_rec_pre_enter() called before entering an atomic
->     section to handle operations that might require memory allocation
->     (specifically completing a RIPAS change introduced in a later patch).
->   * Updates to align with upstream changes to hpfar_el2 which now (ab)uses
->     HPFAR_EL2_NS as a valid flag.
->   * Fix exit reason when racing with PSCI shutdown to return
->     KVM_EXIT_SHUTDOWN rather than KVM_EXIT_UNKNOWN.
-> Changes since v7:
->   * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
->     been read (although that can never happen in the current code). Tidy
->     up the condition to handle any future refactoring.
-> Changes since v6:
->   * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
->     vcpu to the error.
->   * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
->     this exit type.
->   * Split code handling a RIPAS change triggered by the guest to the
->     following patch.
-> Changes since v5:
->   * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
->     change on next entry rather than immediately on the exit. This allows
->     the VMM to 'reject' a RIPAS change by refusing to continue
->     scheduling.
-> Changes since v4:
->   * Rename handle_rme_exit() to handle_rec_exit()
->   * Move the loop to copy registers into the REC enter structure from the
->     to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
->     where the handler exits to user space and user space wants to modify
->     the GPRS.
->   * Some code rearrangement in rec_exit_ripas_change().
-> Changes since v2:
->   * realm_set_ipa_state() now provides an output parameter for the
->     top_iap that was changed. Use this to signal the VMM with the correct
->     range that has been transitioned.
->   * Adapt to previous patch changes.
-> ---
->   arch/arm64/include/asm/kvm_rmi.h |   4 +
->   arch/arm64/kvm/Makefile          |   2 +-
->   arch/arm64/kvm/arm.c             |  26 ++++-
->   arch/arm64/kvm/rmi-exit.c        | 186 +++++++++++++++++++++++++++++++
->   arch/arm64/kvm/rmi.c             |  42 +++++++
->   5 files changed, 254 insertions(+), 6 deletions(-)
->   create mode 100644 arch/arm64/kvm/rmi-exit.c
-> 
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index d99bf4fc3c39..feb534a6678e 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -84,6 +84,10 @@ void kvm_destroy_realm(struct kvm *kvm);
->   void kvm_realm_destroy_rtts(struct kvm *kvm);
->   void kvm_destroy_rec(struct kvm_vcpu *vcpu);
->   
-> +int kvm_rec_enter(struct kvm_vcpu *vcpu);
-> +int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
-> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
-> +
->   static inline bool kvm_realm_is_private_address(struct realm *realm,
->   						unsigned long addr)
->   {
-> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
-> index ed3cf30eb06e..4a2d52fdb6a2 100644
-> --- a/arch/arm64/kvm/Makefile
-> +++ b/arch/arm64/kvm/Makefile
-> @@ -16,7 +16,7 @@ CFLAGS_handle_exit.o += -Wno-override-init
->   kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
->   	 inject_fault.o va_layout.o handle_exit.o config.o \
->   	 guest.o debug.o reset.o sys_regs.o stacktrace.o \
-> -	 vgic-sys-reg-v3.o fpsimd.o pkvm.o rmi.o \
-> +	 vgic-sys-reg-v3.o fpsimd.o pkvm.o rmi.o rmi-exit.o \
->   	 arch_timer.o trng.o vmid.o emulate-nested.o nested.o at.o \
->   	 vgic/vgic.o vgic/vgic-init.o \
->   	 vgic/vgic-irqfd.o vgic/vgic-v2.o \
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 21d9dfdb1ea0..ed88a203b892 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -1331,6 +1331,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->   		if (ret > 0)
->   			ret = check_vcpu_requests(vcpu);
->   
-> +		if (ret > 0 && vcpu_is_rec(vcpu))
-> +			ret = kvm_rec_pre_enter(vcpu);
-> +
->   		/*
->   		 * Preparing the interrupts to be injected also
->   		 * involves poking the GIC, which must be done in a
-> @@ -1378,7 +1381,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->   		trace_kvm_entry(*vcpu_pc(vcpu));
->   		guest_timing_enter_irqoff();
->   
-> -		ret = kvm_arm_vcpu_enter_exit(vcpu);
-> +		if (vcpu_is_rec(vcpu))
-> +			ret = kvm_rec_enter(vcpu);
-> +		else
-> +			ret = kvm_arm_vcpu_enter_exit(vcpu);
->   
->   		vcpu->mode = OUTSIDE_GUEST_MODE;
->   		vcpu->stat.exits++;
-> @@ -1424,7 +1430,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->   		 * context synchronization event) is necessary to ensure that
->   		 * pending interrupts are taken.
->   		 */
-> -		if (ARM_EXCEPTION_CODE(ret) == ARM_EXCEPTION_IRQ) {
-> +		if (ARM_EXCEPTION_CODE(ret) == ARM_EXCEPTION_IRQ ||
-> +		    (vcpu_is_rec(vcpu) &&
-> +		     vcpu->arch.rec.run->exit.exit_reason == RMI_EXIT_IRQ)) {
->   			local_irq_enable();
->   			isb();
->   			local_irq_disable();
+> This is my read too. Looks like we need a separate step after
+> config_tdx_module() to readout config-dependatant metadata.
 
-The condition could be posssibly imprecise because ARM_EXCEPTION_CODE(ret)
-can be ARM_EXCEPTION_IRQ even for a REC. So the precise condition would be:
 
-		if ((!vcpu_is_rec(vcpu) && ARM_EXCEPTION_CODE(ret) == ARM_EXCEPTION_IRQ) ||
-		    (vcpu_is_rec(vcpu) && vcpu->arch.rec.run->exit.exit_reason == RMI_EXIT_IRQ)) {
+The timing for when metadata becomes valid is now variable, e.g., the
+TDX QUOTING metadata is only valid after TDH.QUOTE.INIT [1].
 
-> @@ -1436,8 +1444,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->   
->   		trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu), *vcpu_pc(vcpu));
->   
-> -		/* Exit types that need handling before we can be preempted */
-> -		handle_exit_early(vcpu, ret);
-> +		if (!vcpu_is_rec(vcpu)) {
-> +			/*
-> +			 * Exit types that need handling before we can be
-> +			 * preempted
-> +			 */
-> +			handle_exit_early(vcpu, ret);
-> +		}
->   
->   		kvm_nested_sync_hwstate(vcpu);
->   
-> @@ -1462,7 +1475,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->   			ret = ARM_EXCEPTION_IL;
->   		}
->   
-> -		ret = handle_exit(vcpu, ret);
-> +		if (vcpu_is_rec(vcpu))
-> +			ret = handle_rec_exit(vcpu, ret);
-> +		else
-> +			ret = handle_exit(vcpu, ret);
->   	}
->   
->   	/* Tell userspace about in-kernel device output levels */
-> diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
-> new file mode 100644
-> index 000000000000..e7c51b6cf6ce
-> --- /dev/null
-> +++ b/arch/arm64/kvm/rmi-exit.c
-> @@ -0,0 +1,186 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2023 ARM Ltd.
-> + */
-> +
-> +#include <linux/kvm_host.h>
-> +#include <kvm/arm_hypercalls.h>
-> +#include <kvm/arm_psci.h>
-> +
-> +#include <asm/rmi_smc.h>
-> +#include <asm/kvm_emulate.h>
-> +#include <asm/kvm_rmi.h>
-> +#include <asm/kvm_mmu.h>
-> +
-> +typedef int (*exit_handler_fn)(struct kvm_vcpu *vcpu);
-> +
-> +static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +
-> +	vcpu_err(vcpu, "Unhandled exit reason from realm (ESR: %#llx)\n",
-> +		 rec->run->exit.esr);
-> +	return -ENXIO;
-> +}
-> +
+Based on recent discussion, I think we should introduce runtime metadata
+reading interfaces for specific metadata sets as needed, rather than
+another catch-all step right after config_tdx_module(). See [2] for the
+proposed approach for Extensions metadata.
 
-s/rec->run->exit.esr/kvm_vcpu_get_esr(vcpu), rec->run->exit.esr has been
-copied to the storage space pointed by kvm_vcpu_get_esr() in its caller.
-
-> +static int rec_exit_sync_dabt(struct kvm_vcpu *vcpu)
-> +{
-> +	return kvm_handle_guest_abort(vcpu);
-> +}
-> +
-> +static int rec_exit_sync_iabt(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +
-> +	vcpu_err(vcpu, "Unhandled instruction abort (ESR: %#llx).\n",
-> +		 rec->run->exit.esr);
-> +	return -ENXIO;
-> +}
-> +
-
-s/rec->run->exit.esr/kvm_vcpu_get_esr(vcpu)
-
-> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	unsigned long esr = kvm_vcpu_get_esr(vcpu);
-> +	int rt = kvm_vcpu_sys_get_rt(vcpu);
-> +	bool is_write = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) == ESR_ELx_SYS64_ISS_DIR_WRITE;
-> +	int ret;
-> +
-> +	if (is_write)
-> +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
-> +
-> +	ret = kvm_handle_sys_reg(vcpu);
-> +	if (!is_write)
-> +		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
-> +
-> +	return ret;
-> +}
-> +
-> +static exit_handler_fn rec_exit_handlers[] = {
-> +	[0 ... ESR_ELx_EC_MAX]	= rec_exit_reason_notimpl,
-> +	[ESR_ELx_EC_SYS64]	= rec_exit_sys_reg,
-> +	[ESR_ELx_EC_DABT_LOW]	= rec_exit_sync_dabt,
-> +	[ESR_ELx_EC_IABT_LOW]	= rec_exit_sync_iabt
-> +};
-> +
-> +static int rec_exit_psci(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	int i;
-> +
-> +	for (i = 0; i < REC_RUN_GPRS; i++)
-> +		vcpu_set_reg(vcpu, i, rec->run->exit.gprs[i]);
-> +
-> +	return kvm_smccc_call_handler(vcpu);
-> +}
-> +
-> +static int rec_exit_ripas_change(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	struct realm *realm = &kvm->arch.realm;
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	unsigned long base = rec->run->exit.ripas_base;
-> +	unsigned long top = rec->run->exit.ripas_top;
-> +	unsigned long ripas = rec->run->exit.ripas_value;
-> +
-> +	if (!kvm_realm_is_private_address(realm, base) ||
-> +	    !kvm_realm_is_private_address(realm, top - 1)) {
-> +		vcpu_err(vcpu, "Invalid RIPAS_CHANGE for %#lx - %#lx, ripas: %#lx\n",
-> +			 base, top, ripas);
-> +		/* Set RMI_REJECT bit */
-> +		rec->run->enter.flags = REC_ENTER_FLAG_RIPAS_RESPONSE;
-> +		return -EINVAL;
-> +	}
-
-I doubt if the flag (REC_ENTER_FLAG_RIPAS_RESPONSE) will be handed over to RMM
-since the negative return value forces we're exiting to VMM like QEMU where
-how this problematic case can be handled is TBD.
-
-> +
-> +	/* Exit to VMM, the actual RIPAS change is done on next entry */
-> +	kvm_prepare_memory_fault_exit(vcpu, base, top - base, false, false,
-> +				      ripas == RMI_RAM);
-> +
-> +	/*
-> +	 * KVM_EXIT_MEMORY_FAULT requires an return code of -EFAULT, see the
-> +	 * API documentation
-> +	 */
-> +	return -EFAULT;
-> +}
-> +
-> +static void update_arch_timer_irq_lines(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +
-> +	__vcpu_assign_sys_reg(vcpu, CNTV_CTL_EL0, rec->run->exit.cntv_ctl);
-> +	__vcpu_assign_sys_reg(vcpu, CNTV_CVAL_EL0, rec->run->exit.cntv_cval);
-> +	__vcpu_assign_sys_reg(vcpu, CNTP_CTL_EL0, rec->run->exit.cntp_ctl);
-> +	__vcpu_assign_sys_reg(vcpu, CNTP_CVAL_EL0, rec->run->exit.cntp_cval);
-> +
-> +	kvm_realm_timers_update(vcpu);
-> +}
-> +
-> +/*
-> + * Return > 0 to return to guest, < 0 on error, 0 (and set exit_reason) on
-> + * proper exit to userspace.
-> + */
-> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	u8 esr_ec = ESR_ELx_EC(rec->run->exit.esr);
-> +	unsigned long status, index;
-> +
-> +	status = RMI_RETURN_STATUS(rec_run_ret);
-> +	index = RMI_RETURN_INDEX(rec_run_ret);
-> +
-> +	/*
-> +	 * If a PSCI_SYSTEM_OFF request raced with a vcpu executing, we might
-> +	 * see the following status code and index indicating an attempt to run
-> +	 * a REC when the RD state is SYSTEM_OFF.  In this case, we just need to
-> +	 * return to user space which can deal with the system event or will try
-> +	 * to run the KVM VCPU again, at which point we will no longer attempt
-> +	 * to enter the Realm because we will have a sleep request pending on
-> +	 * the VCPU as a result of KVM's PSCI handling.
-> +	 */
-> +	if (status == RMI_ERROR_REALM) {
-> +		vcpu->run->exit_reason = KVM_EXIT_SHUTDOWN;
-> +		return 0;
-> +	}
-> +
-> +	/*
-> +	 * If a VCPU has been turned on, but the REC state hasn't been updated
-> +	 * we may experience RMI_ERROR_REC. Exit to the userspace with -EAGAIN
-> +	 * for a retry.
-> +	 */
-> +	if (status == RMI_ERROR_REC)
-> +		return -EAGAIN;
-> +	if (rec_run_ret)
-> +		return -ENXIO;
-> +
-> +	vcpu->arch.fault.esr_el2 = rec->run->exit.esr;
-> +	vcpu->arch.fault.far_el2 = rec->run->exit.far;
-> +	/* HPFAR_EL2 is only valid for RMI_EXIT_SYNC */
-> +	vcpu->arch.fault.hpfar_el2 = 0;
-> +
-> +	update_arch_timer_irq_lines(vcpu);
-> +
-> +	/* Reset the emulation flags for the next run of the REC */
-> +	rec->run->enter.flags = 0;
-> +
-> +	switch (rec->run->exit.exit_reason) {
-> +	case RMI_EXIT_SYNC:
-> +		/*
-> +		 * HPFAR_EL2_NS is hijacked to indicate a valid HPFAR value,
-> +		 * see __get_fault_info()
-> +		 */
-> +		vcpu->arch.fault.hpfar_el2 = rec->run->exit.hpfar | HPFAR_EL2_NS;
-> +		return rec_exit_handlers[esr_ec](vcpu);
-> +	case RMI_EXIT_IRQ:
-> +	case RMI_EXIT_FIQ:
-> +	case RMI_EXIT_SERROR:
-> +		return 1;
-> +	case RMI_EXIT_PSCI:
-> +		return rec_exit_psci(vcpu);
-> +	case RMI_EXIT_RIPAS_CHANGE:
-> +		return rec_exit_ripas_change(vcpu);
-> +	}
-> +
-> +	kvm_pr_unimpl("Unsupported exit reason: %u\n",
-> +		      rec->run->exit.exit_reason);
-> +	vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-> +	return 0;
-> +}
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index 353a5ca45e78..d8a5fb12db2d 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -173,6 +173,48 @@ static int realm_ensure_created(struct kvm *kvm)
->   	return -ENXIO;
->   }
->   
-> +/*
-> + * kvm_rec_pre_enter - Complete operations before entering a REC
-> + *
-> + * Some operations require work to be completed before entering a realm. That
-> + * work may require memory allocation so cannot be done in the kvm_rec_enter()
-> + * call.
-> + *
-> + * Return: 1 if we should enter the guest
-> + *	   0 if we should exit to userspace
-> + *	   < 0 if we should exit to userspace, where the return value indicates
-> + *	   an error
-> + */
-> +int kvm_rec_pre_enter(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +
-> +	if (kvm_realm_state(vcpu->kvm) != REALM_STATE_ACTIVE)
-> +		return -EINVAL;
-> +
-> +	switch (rec->run->exit.exit_reason) {
-> +	case RMI_EXIT_HOST_CALL:
-> +		for (int i = 0; i < REC_RUN_GPRS; i++)
-> +			rec->run->enter.gprs[i] = vcpu_get_reg(vcpu, i);
-> +		break;
-> +	}
-> +
-> +	return 1;
-> +}
-> +
-> +int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	int ret;
-> +
-> +	guest_state_enter_irqoff();
-> +	ret = rmi_rec_enter(virt_to_phys(rec->rec_page),
-> +			    virt_to_phys(rec->run));
-> +	guest_state_exit_irqoff();
-> +
-> +	return ret;
-> +}
-> +
->   static int kvm_create_rec(struct kvm_vcpu *vcpu)
->   {
->   	struct user_pt_regs *vcpu_regs = vcpu_gp_regs(vcpu);
-
-Thanks,
-Gavin
+[1]: https://lore.kernel.org/all/20260522034128.3144354-7-yilun.xu@linux.intel.com/
+[2]: https://lore.kernel.org/all/ahXAL41ZmIDHmgfu@yilunxu-OptiPlex-7050/
 
