@@ -1,76 +1,79 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31603E639F
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A563E51C3
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 11:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779968209; cv=none; b=pjeAH6gzXH6wvPBioFJsN4Fn+1rtl3Oojl17QJHNjv3ytqhoeIE/fNGbGLRVakbWih5VvGAeOeqMq23CgmJIy8nCk3/D1Nn0YfpM2pomSXPhy4DFHFuVKNo7NeNKlXP8uRkUovKQO+95xAH0Bs61VZioaCHmXe7IbTKPnO5TR9s=
+	t=1779968339; cv=none; b=gNA63Vp9iVm/tYp26NecDY8ssO+/O2ZS4vr/cMeBPiyzqLv23LILGr16OzLqyUFGFRKT1JAlHV2r+oPZUu40HTnQbn/Hsc/BWwM4TF4hxMVKAmN//sGDFXGj8qeqdIRJyxtQDo3o1kfp0nLoS9a35dMhzSKurQHiYlQzmttawSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779968209; c=relaxed/simple;
-	bh=7f5srVmH0Xx0XEVGgWQLheUGHQMkiUXvXlV4c4bqp74=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOQKfDrsNCysRKe4BpG/GDupszH0VNJcxN6ZB79WI4BXkQb/bM8bVMhXb9TTE8ZsoXC+PH0YndXz9umO9wChjTxxc0g8k/Twc+m1cQMVKRfv0mlfkP054PWDDyt92q6tdvzz9TafSmZ00F4ZplymDDWTDmzEywSRlxjq+Spj9ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=bMc6zICu; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=bMc6zICu; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1779968339; c=relaxed/simple;
+	bh=R+idNd6VQHryMkE7s+xh+chHq0O9Dd0htuOKJxMUPRk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F4DTXFWrdsXvhGkH7HHb36oyQYBH2yPWeiCRyAmlSqqGTrCbskWcegL8/TBIig5jd6mL3dFaS5OpEq4vs3YC1tbkdF7hI8XRh7pQb0Ecll1wZT0oN9Z38L6WQ0JduzoOtrCFr9GiLPEht4oNZs9gbJywNHZqaBMOGlXwIuMvCrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=meWzqMFl; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="bMc6zICu";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="bMc6zICu"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9BA2B6AE1C;
-	Thu, 28 May 2026 11:36:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1779968199; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MAdbQ14wwNd5QTrRHnWRpm3W34C4IvV7gYCGkiD+Grs=;
-	b=bMc6zICujgwDn7wQ1D8kIA/BzoXvf9kyMMTtPK0FOYMQ0ZEl4NRaMKmq9gmNubnJz7X5dC
-	SdhNy9OOvu8g0v5huh0tbat6kr3d7JtvzOfZipliajfcEQhca5tgGp2a/a0W9rvQd5KxCI
-	2/d1nAEEOmX7hK84guFngaGQm4ZdnQ4=
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1779968199; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MAdbQ14wwNd5QTrRHnWRpm3W34C4IvV7gYCGkiD+Grs=;
-	b=bMc6zICujgwDn7wQ1D8kIA/BzoXvf9kyMMTtPK0FOYMQ0ZEl4NRaMKmq9gmNubnJz7X5dC
-	SdhNy9OOvu8g0v5huh0tbat6kr3d7JtvzOfZipliajfcEQhca5tgGp2a/a0W9rvQd5KxCI
-	2/d1nAEEOmX7hK84guFngaGQm4ZdnQ4=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5DD9F5AD77;
-	Thu, 28 May 2026 11:36:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vRO9FccoGGrqSQAAD6G6ig
-	(envelope-from <jgross@suse.com>); Thu, 28 May 2026 11:36:39 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	kvm@vger.kernel.org
-Cc: Juergen Gross <jgross@suse.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v2 5/6] KVM/x86: Return -errno instead of "1" for SVM related MSR emulation
-Date: Thu, 28 May 2026 13:36:04 +0200
-Message-ID: <20260528113605.267111-6-jgross@suse.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="meWzqMFl"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b4650d5f5cso53561255ad.0
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 04:38:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779968334; x=1780573134; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HQOVqn7f6Wpqd2/fSU+ahSddV1Hbd7ryZ20yjrjfDWg=;
+        b=meWzqMFl3d8z49Vt2+bTgy2xVVVq+gyz3ZObwOqZHrh3IkyRIgDdRNjdlCLk2lVX9B
+         iHmm80AKtAeEbgzCkEiBukayly8CgFJ9m87W1uTL/RiCLM9dq20izt57mAeWFki9KpHR
+         MQF1SEOoxlWbKqCGxtkdTMe31it1Md5H+HY4jImgpoW9gSMWRkG8AVKDUvnFraqwyM+4
+         iVZLB3xilqeXy3KnAEeHuAsENuwYaTASkojDrbgqT6XZVcs+MDAUnjL+E4/W94QDRZEJ
+         fxi3JDVN7kj7+CcMYmTOlh/w48ELzNmOlE+slw76ZG06CWjEEUqzj+JOsbr3Ca1C1I7n
+         g3kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779968334; x=1780573134;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HQOVqn7f6Wpqd2/fSU+ahSddV1Hbd7ryZ20yjrjfDWg=;
+        b=cLkcpV16MOYYQsDO27ivgDDJZfghHjNWe6poZRcQQlQ94oOtEHw5yMxt7y7EGbQHJR
+         GuGxZiW7ZrJEpvnr5inpAzq5JS18n1IViybSL/h/Yxs2Os+8Kmqj8yX9/PfqQaECXp34
+         qcjQa4/cgOzodS2UQZ0eIFICHXbhNy209fcA4KON3OyVZY7BlcPNhu+lbFEMTQ79SloP
+         /kRIcIaRJ37HPIkLe66wqofBR4HbLC/RKbC7eBTBmgpz0CVrUHOt5KRPh6jIlzN3gfIP
+         H/xFjAW7aDIKAdjdmBr8uFxIt1tlMsaiQJxu5H31v668eh8h39XvyjobYs9JoOKyQlnJ
+         7aZg==
+X-Forwarded-Encrypted: i=1; AFNElJ9BtGgS0DyD1du/sMa7E7mxXU6+4gMpsNZcpDCQHV6jsKXEZp8TQuxXBRQRMois/CNZuos=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuVfBOMNCA3RxGAIMW0J6AoyJmqyNPHRRLdA3xYH0eO9UGxwEd
+	9iKprg9ebDZbR2LCrTPGVI6FRb7T6s4ztJ8KBdhd+mAVGTNZBruRPsqG
+X-Gm-Gg: Acq92OGrIdl1+W7ddcacrJlQDDb4AAUkfpmhF4i7j1L2oK68nlmykOKm3zleGpnbj75
+	xY9c/g4mRuumY9Eb1LkzhFaOEkxjt1QEBYE0RcpYcKhvlsRVS2yOb/hSWz1Xe6YzcsV0ZMlPB9j
+	HnJ8Fu12MpfJZrGSDamGY/fRvvs62gmJK3dWHW1BS6tg3Za8GdXrL/3Ox0TBePy6pgcRSVqJ6zN
+	wnokON259JnUd4vIiXnD3AvfXo83EHUhNU6BHm5nmLqVi9TQzxf3e0D/19y4bBilWYb3GGlWDrF
+	nbnCJKfMLEvLdGiMPirSlI1PXdZWo3rQFTy3VuKcR5jZfdH3LDhwBsdj0xo1fDhLzQdyJmCddOf
+	ZeW+BmlSsQBKXW4Ysdw4+q5cHE22QwT/9C9NXCTaqqxAej/ELA7dUtB8EDd6vmTmgeBP0ILKJh3
+	InnySCobPF0TRLeOfIAweVtdNEtfZ1F+mtiQ==
+X-Received: by 2002:a17:902:cec7:b0:2b2:ccfb:8387 with SMTP id d9443c01a7336-2beb0613c3bmr312598815ad.28.1779968334356;
+        Thu, 28 May 2026 04:38:54 -0700 (PDT)
+Received: from localhost ([2001:19f0:8001:1b2d:5400:5ff:fefa:a95d])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56958d3sm170611355ad.12.2026.05.28.04.38.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 04:38:53 -0700 (PDT)
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>
+Cc: Inochi Amaoto <inochiama@gmail.com>,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Yixun Lan <dlan@gentoo.org>,
+	Longbin Li <looong.bin@gmail.com>
+Subject: [PATCH] RISC-V: KVM: Enhance the logging check for mmu mapping
+Date: Thu, 28 May 2026 19:38:39 +0800
+Message-ID: <20260528113840.2629186-1-inochiama@gmail.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528113605.267111-1-jgross@suse.com>
-References: <20260528113605.267111-1-jgross@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -78,214 +81,48 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -6.80
-X-Spam-Level: 
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.998];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:mid,imap1.dmz-prg2.suse.org:helo];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
 
-Instead of a literal "1" for signalling an error, use a negative errno
-value in the emulation code of SVM related MSR registers.
+When enabling dirty ring, the dirty bitmap is disable, and the logging
+check is always false as the RISC-V architecture does not select
+"NEED_KVM_DIRTY_RING_WITH_BITMAP". Although the dirty log is recorded
+since the write path already trying to add the dirty log, the logic for
+logging check is broken and some side effect will occurs.
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Enhance the logging check for mmu mapping so it can check both the dirty
+ring and the dirty bitmap.
+
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
 ---
-V2:
-- use -errno instead of KVM_MSR_RET_ERR
----
- arch/x86/kvm/svm/pmu.c |  4 ++--
- arch/x86/kvm/svm/svm.c | 36 ++++++++++++++++++------------------
- 2 files changed, 20 insertions(+), 20 deletions(-)
+ arch/riscv/kvm/mmu.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-index 7aa298eeb072..1c325d602baa 100644
---- a/arch/x86/kvm/svm/pmu.c
-+++ b/arch/x86/kvm/svm/pmu.c
-@@ -144,7 +144,7 @@ static int amd_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		return 0;
- 	}
- 
--	return 1;
-+	return -EINVAL;
- }
- 
- static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
-@@ -173,7 +173,7 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		return 0;
- 	}
- 
--	return 1;
-+	return -EINVAL;
- }
- 
- static void amd_pmu_refresh(struct kvm_vcpu *vcpu)
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index e02a38da5296..f8d9df822ab3 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2791,7 +2791,7 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	case MSR_AMD64_TSC_RATIO:
- 		if (!msr_info->host_initiated &&
- 		    !guest_cpu_cap_has(vcpu, X86_FEATURE_TSCRATEMSR))
--			return 1;
-+			return -EINVAL;
- 		msr_info->data = svm->tsc_ratio_msr;
- 		break;
- 	case MSR_STAR:
-@@ -2860,7 +2860,7 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	case MSR_IA32_SPEC_CTRL:
- 		if (!msr_info->host_initiated &&
- 		    !guest_has_spec_ctrl_msr(vcpu))
--			return 1;
-+			return -EINVAL;
- 
- 		if (boot_cpu_has(X86_FEATURE_V_SPEC_CTRL))
- 			msr_info->data = svm->vmcb->save.spec_ctrl;
-@@ -2870,7 +2870,7 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	case MSR_AMD64_VIRT_SPEC_CTRL:
- 		if (!msr_info->host_initiated &&
- 		    !guest_cpu_cap_has(vcpu, X86_FEATURE_VIRT_SSBD))
--			return 1;
-+			return -EINVAL;
- 
- 		msr_info->data = svm->virt_spec_ctrl;
- 		break;
-@@ -2907,7 +2907,7 @@ static int svm_complete_emulated_msr(struct kvm_vcpu *vcpu, int err)
- 		return kvm_complete_insn_gp(vcpu, err);
- 
- 	svm_vmgexit_inject_exception(svm, X86_TRAP_GP);
--	return 1;
-+	return -EINVAL;
- }
- 
- static int svm_set_vm_cr(struct kvm_vcpu *vcpu, u64 data)
-@@ -2916,7 +2916,7 @@ static int svm_set_vm_cr(struct kvm_vcpu *vcpu, u64 data)
- 	int svm_dis, chg_mask;
- 
- 	if (data & ~SVM_VM_CR_VALID_MASK)
--		return 1;
-+		return -EINVAL;
- 
- 	chg_mask = SVM_VM_CR_VALID_MASK;
- 
-@@ -2930,7 +2930,7 @@ static int svm_set_vm_cr(struct kvm_vcpu *vcpu, u64 data)
- 
- 	/* check for svm_disable while efer.svme is set */
- 	if (svm_dis && (vcpu->arch.efer & EFER_SVME))
--		return 1;
-+		return -EINVAL;
- 
- 	return 0;
- }
-@@ -2952,7 +2952,7 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_TSCRATEMSR)) {
- 
- 			if (!msr->host_initiated)
--				return 1;
-+				return -EINVAL;
- 			/*
- 			 * In case TSC scaling is not enabled, always
- 			 * leave this MSR at the default value.
-@@ -2962,12 +2962,12 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 			 * Ignore this value as well.
- 			 */
- 			if (data != 0 && data != svm->tsc_ratio_msr)
--				return 1;
-+				return -EINVAL;
- 			break;
- 		}
- 
- 		if (data & SVM_TSC_RATIO_RSVD)
--			return 1;
-+			return -EINVAL;
- 
- 		svm->tsc_ratio_msr = data;
- 
-@@ -2989,10 +2989,10 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 	case MSR_IA32_SPEC_CTRL:
- 		if (!msr->host_initiated &&
- 		    !guest_has_spec_ctrl_msr(vcpu))
--			return 1;
-+			return -EINVAL;
- 
- 		if (kvm_spec_ctrl_test_value(data))
--			return 1;
-+			return -EINVAL;
- 
- 		if (boot_cpu_has(X86_FEATURE_V_SPEC_CTRL))
- 			svm->vmcb->save.spec_ctrl = data;
-@@ -3017,10 +3017,10 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 	case MSR_AMD64_VIRT_SPEC_CTRL:
- 		if (!msr->host_initiated &&
- 		    !guest_cpu_cap_has(vcpu, X86_FEATURE_VIRT_SSBD))
--			return 1;
-+			return -EINVAL;
- 
- 		if (data & ~SPEC_CTRL_SSBD)
--			return 1;
-+			return -EINVAL;
- 
- 		svm->virt_spec_ctrl = data;
- 		break;
-@@ -3115,7 +3115,7 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		}
- 
- 		if (data & DEBUGCTL_RESERVED_BITS)
--			return 1;
-+			return -EINVAL;
- 
- 		if (svm->vmcb->save.dbgctl == data)
- 			break;
-@@ -3131,7 +3131,7 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		if (!lbrv)
- 			return KVM_MSR_RET_UNSUPPORTED;
- 		if (!msr->host_initiated)
--			return 1;
-+			return -EINVAL;
- 		*svm_vmcb_lbr(svm, ecx) = data;
- 		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
- 		break;
-@@ -3143,7 +3143,7 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		 * originating from those kernels.
- 		 */
- 		if (!msr->host_initiated && !page_address_valid(vcpu, data))
--			return 1;
-+			return -EINVAL;
- 
- 		svm->nested.hsave_msr = data & PAGE_MASK;
- 		break;
-@@ -3156,10 +3156,10 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		u64 supported_de_cfg;
- 
- 		if (svm_get_feature_msr(ecx, &supported_de_cfg))
--			return 1;
-+			return -EINVAL;
- 
- 		if (data & ~supported_de_cfg)
--			return 1;
-+			return -EINVAL;
- 
- 		svm->msr_decfg = data;
- 		break;
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 2d3def024270..b5873bca9dce 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -142,9 +142,8 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+ 				enum kvm_mr_change change)
+ {
+ 	/*
+-	 * At this point memslot has been committed and there is an
+-	 * allocated dirty_bitmap[], dirty pages will be tracked while
+-	 * the memory slot is write protected.
++	 * At this point memslot has been committed and dirty pages will be
++	 * tracked while the memory slot is write protected.
+ 	 */
+ 	if (change != KVM_MR_DELETE && new->flags & KVM_MEM_LOG_DIRTY_PAGES) {
+ 		if (kvm_dirty_log_manual_protect_and_init_set(kvm))
+@@ -433,8 +432,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	struct vm_area_struct *vma;
+ 	struct kvm *kvm = vcpu->kvm;
+ 	struct kvm_mmu_memory_cache *pcache = &vcpu->arch.mmu_page_cache;
+-	bool logging = (memslot->dirty_bitmap &&
+-			!(memslot->flags & KVM_MEM_READONLY)) ? true : false;
++	bool logging = kvm_slot_dirty_track_enabled(memslot) &&
++		       !(memslot->flags & KVM_MEM_READONLY);
+ 	unsigned long vma_pagesize, mmu_seq;
+ 	struct kvm_gstage gstage;
+ 	struct page *page;
 -- 
 2.54.0
 
