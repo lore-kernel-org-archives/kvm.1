@@ -1,87 +1,87 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63CF30C353
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 05:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD8430C359
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 06:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779947711; cv=fail; b=CSeY13T4dQRJ4F2W6pOX8l37+XD8OnltQ1UWkDnSMsQ+6+7xUmsq+q2EMFbKGZpymeMzXg/qRFUsT0uwqo7HH8d1dqluIjYAu7TaL2fRJ2rgzzNY5hh0hAWXlLq7oJpEjvA//Mig7BnnwT0d9+Ol2y0mPbcbCNZ8S8K2HRNGKUo=
+	t=1779948458; cv=fail; b=RQKfJ+S+aRvGLwzqfSuJ/E0lNxvMsI+Lr0n9amoKXygTLPhjMS2RPnFlquBPw9YDXgnnWjX5ueqsTAeSjL9Ui5Azcxl62Zua+3NAtliu1aTrLjYTjtMdRDvv2WCMymzFcF+w4MLExeaymFgDddhVUUDCN9qT4Hykt8xhZCn+v8k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779947711; c=relaxed/simple;
-	bh=5iwsiCJ1qeiS0l/pE9qpH/G/kMlLOpTQJgijlOnz9I8=;
+	s=arc-20240116; t=1779948458; c=relaxed/simple;
+	bh=HybfouVWXzRjvqZuKWAwoAOqax6hVl/L0qzWeXk42y0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AFf+6Qm7QvFJzpUmRGRyIYJEMnwoPytcbFunR4Y2D8lfqQne0YtCco+JJEBZBr6wwaTsOr4EvmWg4cUw7FnzuHaSB/CkhPgCEl3b91wkb9ygf0TunKQl7WBdOY/6N8gzwjfXHKXqiXpNn+qyaCS6JRJ3rlK9rLfCwx9j5esaRZw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=tbSbpLMQ; arc=fail smtp.client-ip=67.231.153.30
+	 To:Cc:Content-Type; b=qJ5T7fuf4EvIAwxLhL7dKx4+gY10cg9sq41kAnBNZG4bOhGKjIZ6rO4ExhA/x89xP6X8OeRGFArSleGZXHtoDJ96c0VYYEqRAsc8X+lsGa3aIJqeThiYGg/MZbFnM93sdKicLvMKWsM5k7h30yIotlRdZgvmsIK3cdf5bM9OwE8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=ZOFqU3Ho; arc=fail smtp.client-ip=67.231.145.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="tbSbpLMQ"
-Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64S2TdZT919768
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:55:07 -0700
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="ZOFqU3Ho"
+Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64RKlqmw3164863
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 23:07:35 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=fCWJk+yJSEw0QmMgTgm6c5hQ8WDFshVgdpTjabTs05U=; b=tbSbpLMQe9V1
-	fRrJsZLmCEINOnKwTwP24JHLpfkIKwEepx/Dh3tfucJeXjyBmxUl4K+3pzS40lhe
-	Vk0KGeyW3V3XwtowE8EShojrRZa6LzLLYzZHk0cQiurg9iLcff5bt/+GGIVjUhJg
-	GS2yjzLlbBm1Fz4V9mfBh9ZrCRYNbh87Q2e58QbU0kZl0LslSz8HIGX1FN2WqmJn
-	V6u86OtEtfnMzSmkk0ZLjfBzjM5sNOAWRA7g+AaUWdIpOcgd0eCkAao9PZ/W168l
-	EQ62MMb9iFTIqzogr6WSS9W4iYEsdvQL/qDgcEewoSbDNuHTRvFxM9ZwvkmAy0OU
-	GhfeODKKwA==
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ee7x1ae5k-1
+	 bh=GzyvN6ALmGZhc9sEe0zXVntaZeAULheQgTQ/UjOlmfA=; b=ZOFqU3Hokw+Y
+	1tWm8OSAw3VppcsXhCy7NjQiED7GF+zwJ1AY0cTIbpcpdYBGC9llvuLJbd1+8rlL
+	AXglm2b6A1JTOk8fAn271XgFKVQJNxo2oeVdhw6YawXARksZ4FY4tBG2ugql/lrl
+	OpiEUZkdO9HHKOHR42fEty/p77Y0/ml5/z5VbIqwt1zZ3po1sXwT9rtBHbQ0Yd0z
+	OPfICWCY2j6tJ46Bv6NfLAq1xI7tfkCqinN5m/CdB/cWEoFzjnUgH0lExTWRP6QW
+	U1M02kqSfyicM6TQnFCDh+VID+oYzzysKR/LHRJ/8h9AQoXwa+/h4ymbOE6Zwdfz
+	Cn+zoh4Arg==
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ee7y42f5y-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:55:07 -0700 (PDT)
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7e6691e48b7so3115344a34.2
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:55:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779947707; cv=none;
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 23:07:35 -0700 (PDT)
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7dcd7302f00so1976938a34.0
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 23:07:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779948455; cv=none;
         d=google.com; s=arc-20240605;
-        b=BqUF3/c0Db8kVvWEaH8UeJxxgNWMup/uDuhDEsTPtNZEWKW172TajhNu1+jPWpx3/K
-         YCH+87zBi6kWVRM7l4qRqn9qx4pyrdSNmPZQ4El1d3wAUTsT7fCLxDu8U9O8XADlzUET
-         st4/TNmEsm5sUTnDROjQfA68ZUx8YUlE4ycxDl2Y0cs9pvNSZ2x3fy4CpVyoPuBKzQ6R
-         8v4oz8evxzaJAeOQcWyf8wVOASTZ2IWzrdX9foQ97bP16pvZftebjW2RrX6fCxrMQUFW
-         tgXtI1Y4yXqNBDG1gYIGhtkwK5MVbmeRrCJXxU8VSc1COdnXD2vjtmqJNRRzwNCwkNjm
-         H0iA==
+        b=b77n2pJFDgS2RCD/58IgsE1e4xN+099ucx3WkmEnhcCRiEPo516nGn/IyLxd1uSjfi
+         z2HVbmVfSp9tWau9zPKb5broMMPgs5G2dz+ZVveWep86a/Z4aB5MTHX4S0vK+XI0rAvX
+         V8edi42w0bRa6+LLWEa5UVzEY4Kukcu8DXIUKxcvE5O05ZSHTeFPqVOTzcFCITV4vlLq
+         Wai6xbZbOJ8pbjgNblloW2tody923km2q3D3XGuOQf0hmxJUyryG9DIDBPFcJlxriV74
+         3xcRmqkI4iCwZdLD/Wcy0RnhgUtbbP0nINWC51QVNHPKbt5MMNcbhz6pBtygtWRTrJ5v
+         rkkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version;
-        bh=7OjunUEtjbIoqlgaeDvI71z7AvyuDzMU0DogPcHFH+E=;
-        fh=G88Eht3hcfGC2vB0vxTNMaHixjl8eDhjnsd5D9u0tt4=;
-        b=Dm+896VZTwFPf+jIWAu47S4GSAWWAHOtqqEfByQlvnr4lAoLiwaI7o/1v8Lqq1hsHc
-         AOjwJC9WW4Hkht34C3TBOTNAwA2XWd5zv3+j4n23TQe3/p79UPRXo5Hqqz0CmnEaEjXT
-         Z7P7T6eGg1klZ6uE4nHXi/db3CVfkAxXz3EsmrrIlo+sHjY9snbnOOa/3coWcfs0GbGY
-         Eq7WQ2CtkAM6MyIQav5iz7cuwktstxUsaAT7MROZjbkwxNr1L5A/YuLbm/Q2e6+fsYcD
-         89FtDqJhS1sU8tcMb9Fcr8vHaCLQN28fDbafds0RwcoP4tqsUEk7aQ6oWG6aHljKcfqs
-         lpNw==;
+        bh=UyukGN55miahfwjIGNs2ZpmYU5zHedrWyyN1uj6F1U8=;
+        fh=aLOWNdlIX2i3vgiCN/JR7MP+GsF2xN3RDOiaRuFdMW8=;
+        b=lZ6LagD/eOnt0sn2sUJn5wVnobXNeeWchCNp2codVn69TdXazoMQxUcs9I6r6vNjzG
+         6FMdjex92sOxZ3915UJg4e38X2LzK9x6SXT5hT6HrQAYd9Nc0QdwsRalXlS6kQrKIr+C
+         eChfbdTFPOUnEBGev1ZrkgRu7n7vPkJGx1iU+bv/WeHS8qn3nVhP9eDOSyU4KXVWPiMe
+         PkEQLFyI7W9/XrPByhlE34PUE9Njwi7KIaiLTtZ/03NmFPisAe8W9dgvzZ5TEjQtkgI5
+         wFOHWewuP07FExtL0Xaj7ffMPOJ3xMpEGnLfQkjzfQCRrvBu0UIkUHoYRIyglb9hLkSG
+         KT3Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779947707; x=1780552507;
+        d=1e100.net; s=20251104; t=1779948455; x=1780553255;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7OjunUEtjbIoqlgaeDvI71z7AvyuDzMU0DogPcHFH+E=;
-        b=QoCp65JWqvVdYF3dQdRONM/M97GRspdu1dPcusKQuNIxaUkpblejbssgpr4VZoRsj/
-         H4mfv1mvrfXV5MNyAPByq9pXyZAOMZVCsitwag6C2QHewrrvmbN/d61RVaL2f85v/DC+
-         31bzqwgIriIRH5JQ1zbsQZ7ZodPUS/KODexHnkTVwb3pa8QQK79w0bc3xbnbD1X9LJGJ
-         j37UXZIL/EZFc046zKtbUa0I+QVoiOko2L87phjcc0j3H4j3F49eBpAZg5d457CS0XQS
-         AIUG3TiEWWsxJkXnpNioshSdpN4pngR5wa0QsTwL7UDie4M6ns7FPFlIhLOliAbzNFVV
-         EITQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+l1btrfKMkimJe5KD17hWw3PQ03b5jD/Nj0JwUU+Yl8OGSyD58E9T3Vae46fWM4h926YE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvhbQuDQH04Wf52kUtAgBZ7CCGj8NC557B9F0JtxRPQMOWxteO
-	hTYny/SvyvxONIXwmCFUk01o9rXkAEPtTOJSniGnN9C/Y6GGlZEWtKwmjkWFzzgH4eP550WaTMY
-	t8X90ZhfmHS/dSQun0W9J+bBfePM/RUmnuWxRaTjdGpfftwWqyRBrTdtpLHxPixgXckFZie4MhF
-	ITHtBsIOxFOerS/cjwOMpa4JhbNy0=
-X-Gm-Gg: Acq92OFhxN0hl/vrfBc5fIEjZOfwmGN/H+QcE1v0Iqz+4H+FpcyfjaBdHiFykKZpwnJ
-	HU7s2eCBNvAk1r4w16of411H1xh/WqXx0mUsNFP4uX58sY+Ahd2RG3IPu3O/au4dW9PE2kS2Ljr
-	UpFsE8HQWhgVWW7iK3dL9KTSFIqrDosJBnjb6Z6BBsYnL9+RI0FbIc50tY98ysKbPhrE6c3QPfo
-	Cm/cZaqCWg5cMFxB4lGiI+IIN7l8I2QCSP3/7jPrVRiXV+UoSo=
-X-Received: by 2002:a05:6830:6d4d:b0:7d7:f158:1f44 with SMTP id 46e09a7af769-7e5feef5d68mr16377929a34.21.1779947706899;
-        Wed, 27 May 2026 22:55:06 -0700 (PDT)
-X-Received: by 2002:a05:6830:6d4d:b0:7d7:f158:1f44 with SMTP id
- 46e09a7af769-7e5feef5d68mr16377893a34.21.1779947706138; Wed, 27 May 2026
- 22:55:06 -0700 (PDT)
+        bh=UyukGN55miahfwjIGNs2ZpmYU5zHedrWyyN1uj6F1U8=;
+        b=UDGDleDiFE2zfRzIgt74lYwsX0MuJBG+rZm1wz3IVSH1CvEdHBmmpEB0ulSB07uu1V
+         kqXORRdpahaNDJT6uJhlGNP16DH0R36QUtVX4AlPNbjD2ZptFBsNceMwsWSuAB1jXqTw
+         I28ciHFg9KU1gifKcYC1Gox+cyQ4S9wubSA4t3Cp0cBtHQq9Wcmn9Lwj0CPpXNgEnVE4
+         gYRaVVKv5Tr1UWsqPvoP8CVIuswfmXNdF2CE887Q6nm8yrooIVY7l7a6xxi0Dp5XmPkJ
+         4H4iYgsTSmSmdL1hIWNGj/bjgFZBRF8DZR+K79GVXS+YhcP48uUYQgCrUoGYxmdZyD4B
+         8r4g==
+X-Forwarded-Encrypted: i=1; AFNElJ8bTnv7wbxXwLfnWCwxDrNVg8Zqb42ZKI0/oqvRLRmC13XK59lYDlDc+ZNsAWT5GlZOkDU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzgKN5ekY16k5hK9YmohiJ2lduAcsQ3GWBrV0HD609u/S5MJVi
+	2eNobCfQNGZfjs/nLo4bvMPBmsZGO+/tVY55rCiU1fkhHSuzoqoTX3CfA9wOMiK/FmhorPx8/Ay
+	Vh4QTaNAfj+ngorWVmWUe2ZADmXoqyKYARx9/5Xu0eqxqT2vOsAqqWJeAVT/sR77yLRJV3BenZX
+	jxQNbxZ9Yrakm1nrf5RvyRDa55XtM=
+X-Gm-Gg: Acq92OHu2Edn5fegK1VcxLV3jyDinZq6TIuUKijsI7M/atkJFU8m5+n8wEyrVQRbG8L
+	BpCoHUL/6b3ri+AqOO+oWJU35a4ts8FvS66nA/cmyH8hZifs4CVuHfsMco0z4yqTIciXbBekj5s
+	4DyQMeP8ey+T28X0pjqbT/8trxdD51+fFV8nDECTbvJPiQDZNDaZoPicEnrQzYfQktP54JRRLLW
+	rcknrjqR4YNiEZ04WNoxq7IIvJkTV8BKtMdEvxskoU1TEPypL0=
+X-Received: by 2002:a05:6830:3789:b0:7dc:cdea:7d4 with SMTP id 46e09a7af769-7e5fed4d4c7mr17428832a34.11.1779948454554;
+        Wed, 27 May 2026 23:07:34 -0700 (PDT)
+X-Received: by 2002:a05:6830:3789:b0:7dc:cdea:7d4 with SMTP id
+ 46e09a7af769-7e5fed4d4c7mr17428818a34.11.1779948454085; Wed, 27 May 2026
+ 23:07:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -89,16 +89,17 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260526144401.1485788-1-zhipingz@meta.com> <20260526144401.1485788-5-zhipingz@meta.com>
- <20260527130045.704a4502@shazbot.org>
-In-Reply-To: <20260527130045.704a4502@shazbot.org>
+ <55b57a12-6714-4c51-8ce1-f47c97cfecde@nvidia.com>
+In-Reply-To: <55b57a12-6714-4c51-8ce1-f47c97cfecde@nvidia.com>
 From: Zhiping Zhang <zhipingz@meta.com>
-Date: Wed, 27 May 2026 22:54:54 -0700
-X-Gm-Features: AVHnY4ICjE7MkEm4LXONvDpsmeBdG0UBYV3y_krDxSXZVAQVCJMknB8fJo9QBXs
-Message-ID: <CAH3zFs2RuXC06tkg2gBNMLfBuL4FXzu+AV_axEh+ZnzdGCo1XQ@mail.gmail.com>
+Date: Wed, 27 May 2026 23:07:23 -0700
+X-Gm-Features: AVHnY4K3avPQ8FNE3xy07LlbZrchvRUwd-Dc4i84TnsR6M8GdnFKvihXHQqWEMo
+Message-ID: <CAH3zFs27rY5E5q1ybjYf0jjMc_t7NCs6T1dt=1P4io9MOrK5nQ@mail.gmail.com>
 Subject: Re: [PATCH v5 4/4] RDMA/mlx5: get tph for p2p access when registering
  dma-buf mr
-To: Alex Williamson <alex@shazbot.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+To: Michael Gur <michaelgur@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
         Sumit Semwal <sumit.semwal@linaro.org>,
         Christian Konig <christian.koenig@amd.com>,
         Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
@@ -108,32 +109,31 @@ Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
         Yishai Hadas <yishaih@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: coPAgMpFSO8F5JamXKphu_VcVz9yqG2_
-X-Authority-Analysis: v=2.4 cv=Yu8/gYYX c=1 sm=1 tr=0 ts=6a17d8bb cx=c_pps
- a=7uPEO8VhqeOX8vTJ3z8K6Q==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=xtH7KyWI9dI7BmFOsl-x:22
- a=r1p2_3pzAAAA:8 a=VabnemYjAAAA:8 a=25xbtWhBidXVKMBX-WEA:9 a=QEXdDO2ut3YA:10
- a=EXS-LbY8YePsIyqnH6vw:22 a=r_pkcD-q9-ctt7trBg_g:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDA1NiBTYWx0ZWRfX5oVBC23lUtp0
- zY00QadKIYECt0OPY8zg3jCrWf7DafqsgxClzVbZVVnG+GIyfqRLDgiMEmUG8uUHBV4LcUnERal
- wBDV0GKO3+YiCOVHyF+ypxv+cr5533gWHyOllwwSnt4o8DWFox1iPBZFH0bRBlAYtCXQbsJmd1P
- fjX3f/IPXY0E/irTTcAWL7BuDbN/5Q/pobI8EXLHIyqtakkyLdgQ2lPVpCMQNAfr/sG7ktt5ow0
- wOSpOsI33FXx1wRfe7l9s/PPodEF0gK/W37BA7VQghv+QfpSZab/aE8rtGN74A4P/z/TKDGCinG
- bH/3WSoFjJUUwziUptxDal2vWKade8ZxmO6Sgr1B6i7G1blVZOD4ehBZVcw3iIl8tQAs6pOWuyK
- Ayd+uZCIpK3SjXMgEhCPVuxiRGdki3rLXFSGN3bx6AXd5+jUYEeGDibwXHpY4Q+ybi/XVLpULoj
- ZaK2wlmjQfqIlRiCgdA==
-X-Proofpoint-ORIG-GUID: coPAgMpFSO8F5JamXKphu_VcVz9yqG2_
+X-Proofpoint-GUID: UNhtu0GhFg9HaUR6YpR9FNN6KJqyqOFO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDA1OCBTYWx0ZWRfX9Cp0GOrwJ61L
+ qBQgmZkBLu2a0kLRvhTlv60ZYg3ny4O8d4nsKJJ8OEb78LJBmvBANUu+ihBMv77NOIYhWeDNxVP
+ A4q+SfTLA7vrMbYCx0g3pgLiqnFcHPm1FpEzq+BdcCDz2FA+6E5bPh1ifmwpftRcDPOW+P5fcXw
+ 0wAGxQFki0oLlFQ1WloBW29oRCVrxzxXETNt3gbGAVe3WWEZSqDbLgv4W+BLOgFRGzRf+oTo7rW
+ BlU6DIsa9t6Xq0HMu+69IvwWYM2eedUWWR8lenjotbPik4jDZIJjSxve698CXNpkSfJN/NqF+vf
+ gWCDWaEVw8uDzfM7s8WUSYCjNAkrHC5aN8sPRH7ZUE7Qt+h2IHRjHafSBLN2Lk3Z9r79v/1+nEG
+ tq0r4ZmHzFuOg9FgwKdy0cg4g8TY0JHxka5Yin4YfRvSlz5nfSno/81lx5yz7MViW3ndeY8myH0
+ jGwShzlE5FZu9L7ArKg==
+X-Authority-Analysis: v=2.4 cv=Xci5Co55 c=1 sm=1 tr=0 ts=6a17dba7 cx=c_pps
+ a=+3WqYijBVYhDct2f5Fivkw==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=8elwO82fXORLTBIkMd32:22
+ a=Ikd4Dj_1AAAA:8 a=VabnemYjAAAA:8 a=rnG5qNUxfvSO4QYeIecA:9 a=QEXdDO2ut3YA:10
+ a=eYe2g0i6gJ5uXG_o6N4q:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: UNhtu0GhFg9HaUR6YpR9FNN6KJqyqOFO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-05-28_01,2026-05-26_03,2025-10-01_01
 
-On Wed, May 27, 2026 at 12:00=E2=80=AFPM Alex Williamson <alex@shazbot.org>=
+On Wed, May 27, 2026 at 3:55=E2=80=AFPM Michael Gur <michaelgur@nvidia.com>=
  wrote:
 >
 > >
-> On Tue, 26 May 2026 07:43:56 -0700
-> Zhiping Zhang <zhipingz@meta.com> wrote:
 >
+> On 5/26/2026 5:43 PM, Zhiping Zhang wrote:
 > > Query dma-buf TPH metadata when registering a dma-buf MR for peer-to-
 > > peer access and translate the returned steering tag into an mlx5 ST
 > > index. Keep the DMAH path as the first priority and only fall back to
@@ -147,11 +147,11 @@ On Wed, May 27, 2026 at 12:00=E2=80=AFPM Alex Williamson <alex@shazbot.org>=
 > >
 > > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
 > > ---
-> >  drivers/infiniband/hw/mlx5/mlx5_ib.h          |  6 ++
-> >  drivers/infiniband/hw/mlx5/mr.c               | 86 ++++++++++++++++++-
-> >  .../net/ethernet/mellanox/mlx5/core/lib/st.c  | 28 ++++--
-> >  include/linux/mlx5/driver.h                   |  7 ++
-> >  4 files changed, 115 insertions(+), 12 deletions(-)
+> >   drivers/infiniband/hw/mlx5/mlx5_ib.h          |  6 ++
+> >   drivers/infiniband/hw/mlx5/mr.c               | 86 ++++++++++++++++++-
+> >   .../net/ethernet/mellanox/mlx5/core/lib/st.c  | 28 ++++--
+> >   include/linux/mlx5/driver.h                   |  7 ++
+> >   4 files changed, 115 insertions(+), 12 deletions(-)
 > >
 > > diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/=
 hw/mlx5/mlx5_ib.h
@@ -167,8 +167,15 @@ hw/mlx5/mlx5_ib.h
 > > +                      * release it via mlx5_st_dealloc_index() once the
 > > +                      * firmware mkey is no longer referencing it.
 > > +                      */
+> mkey st value is kept after revoke, regardless of st alloc and dealloc.
+> mkeys are kept in FRMR pool for future reuse even if their st index is
+> currently stale.
+
+Understood, i'll work the comment accordingly.
+
 > > +                     u8 dmabuf_st_owned:1;
 > > +                     u16 dmabuf_st_index;
+> st_index can be read from the frmr pool key. No need to store again.
 > >                       struct mlx5_ib_mkey null_mmkey;
 > >               };
 > >       };
@@ -178,32 +185,26 @@ x5/mr.c
 > > --- a/drivers/infiniband/hw/mlx5/mr.c
 > > +++ b/drivers/infiniband/hw/mlx5/mr.c
 > > @@ -38,6 +38,7 @@
-> >  #include <linux/delay.h>
-> >  #include <linux/dma-buf.h>
-> >  #include <linux/dma-resv.h>
+> >   #include <linux/delay.h>
+> >   #include <linux/dma-buf.h>
+> >   #include <linux/dma-resv.h>
 > > +#include <linux/pci-tph.h>
-> >  #include <rdma/frmr_pools.h>
-> >  #include <rdma/ib_umem_odp.h>
-> >  #include "dm.h"
+> >   #include <rdma/frmr_pools.h>
+> >   #include <rdma/ib_umem_odp.h>
+> >   #include "dm.h"
 > > @@ -46,6 +47,8 @@
-> >  #include "data_direct.h"
-> >  #include "dmah.h"
+> >   #include "data_direct.h"
+> >   #include "dmah.h"
 > >
 > > +MODULE_IMPORT_NS("DMA_BUF");
 > > +
->
-> This doesn't appear to add any dma-buf namespace dependencies.
->
-
-sure let me check and drop if not necessary.
-
-> >  static int mkey_max_umr_order(struct mlx5_ib_dev *dev)
-> >  {
+> >   static int mkey_max_umr_order(struct mlx5_ib_dev *dev)
+> >   {
 > >       if (MLX5_CAP_GEN(dev->mdev, umr_extended_translation_offset))
 > > @@ -899,6 +902,63 @@ static struct dma_buf_attach_ops mlx5_ib_dmabuf_at=
 tach_ops =3D {
 > >       .invalidate_mappings =3D mlx5_ib_dmabuf_invalidate_cb,
-> >  };
+> >   };
 > >
 > > +/*
 > > + * Query TPH metadata from @dmabuf and translate the raw steering tag =
@@ -258,13 +259,6 @@ dex);
 et);
 > > +     }
 > > +}
->
-> ph handling is inconsistent, why not use a local variable and only set
-> the caller's pointer on success?
->
-
-good point -- will do that.
-
 > > +
 > > +static void mlx5_ib_mr_put_dmabuf_st(struct mlx5_ib_mr *mr)
 > > +{
@@ -275,8 +269,8 @@ good point -- will do that.
 > > +     }
 > > +}
 > > +
-> >  static struct ib_mr *
-> >  reg_user_mr_dmabuf(struct ib_pd *pd, struct device *dma_device,
+> >   static struct ib_mr *
+> >   reg_user_mr_dmabuf(struct ib_pd *pd, struct device *dma_device,
 > >                  u64 offset, u64 length, u64 virt_addr,
 > > @@ -941,16 +1001,26 @@ reg_user_mr_dmabuf(struct ib_pd *pd, struct devi=
 ce *dma_device,
@@ -330,109 +324,14 @@ nter
 > > +             if (!ib_frmr_pool_push(mr->ibmr.device, &mr->ibmr))
 > > +                     return 0;
 > > +     }
-> >
-> >       if (is_odp)
-> >               mutex_lock(&to_ib_umem_odp(mr->umem)->umem_mutex);
-> > @@ -1400,6 +1478,8 @@ static int mlx5r_handle_mkey_cleanup(struct mlx5_=
-ib_mr *mr)
-> >               dma_resv_unlock(
-> >                       to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv=
-);
-> >       }
-> > +     if (!ret)
-> > +             mlx5_ib_mr_put_dmabuf_st(mr);
-> >       return ret;
-> >  }
-> >
-> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c b/drivers=
-/net/ethernet/mellanox/mlx5/core/lib/st.c
-> > index 997be91f0a13..8929c17c88bc 100644
-> > --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-> > @@ -29,7 +29,7 @@ struct mlx5_st *mlx5_st_create(struct mlx5_core_dev *=
-dev)
-> >       u8 direct_mode =3D 0;
-> >       u16 num_entries;
-> >       u32 tbl_loc;
-> > -     int ret;
-> > +     int ret =3D 0;
 >
-> Unnecessary change.
+> The Sashiko comment on previous version of this series was wrong about
+> the concept of FRMR pools and its reuse of mkeys.
+>
+> Please move the st put operation outside the mkey cleanup flow.
 >
 
-ack, will check and revert.
-
-> >
-> >       if (!MLX5_CAP_GEN(dev, mkey_pcie_tph))
-> >               return NULL;
-> > @@ -92,23 +92,18 @@ void mlx5_st_destroy(struct mlx5_core_dev *dev)
-> >       kfree(st);
-> >  }
-> >
-> > -int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type m=
-em_type,
-> > -                     unsigned int cpu_uid, u16 *st_index)
-> > +int mlx5_st_alloc_index_by_tag(struct mlx5_core_dev *dev, u16 tag,
-> > +                            u16 *st_index)
-> >  {
-> >       struct mlx5_st_idx_data *idx_data;
-> >       struct mlx5_st *st =3D dev->st;
-> >       unsigned long index;
-> >       u32 xa_id;
-> > -     u16 tag;
-> > -     int ret;
-> > +     int ret =3D 0;
-> >
-> >       if (!st)
-> >               return -EOPNOTSUPP;
-> >
-> > -     ret =3D pcie_tph_get_cpu_st(dev->pdev, mem_type, cpu_uid, &tag);
-> > -     if (ret)
-> > -             return ret;
-> > -
-> >       if (st->direct_mode) {
-> >               *st_index =3D tag;
-> >               return 0;
-> > @@ -152,6 +147,20 @@ int mlx5_st_alloc_index(struct mlx5_core_dev *dev,=
- enum tph_mem_type mem_type,
-> >       mutex_unlock(&st->lock);
-> >       return ret;
-> >  }
-> > +EXPORT_SYMBOL_GPL(mlx5_st_alloc_index_by_tag);
-> > +
-> > +int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type m=
-em_type,
-> > +                     unsigned int cpu_uid, u16 *st_index)
-> > +{
-> > +     u16 tag;
-> > +     int ret;
-> > +
-> > +     ret =3D pcie_tph_get_cpu_st(dev->pdev, mem_type, cpu_uid, &tag);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     return mlx5_st_alloc_index_by_tag(dev, tag, st_index);
-> > +}
-> >  EXPORT_SYMBOL_GPL(mlx5_st_alloc_index);
-> >
-> >  int mlx5_st_dealloc_index(struct mlx5_core_dev *dev, u16 st_index)
-> > @@ -175,6 +184,7 @@ int mlx5_st_dealloc_index(struct mlx5_core_dev *dev=
-, u16 st_index)
-> >
-> >       if (refcount_dec_and_test(&idx_data->usecount)) {
-> >               xa_erase(&st->idx_xa, st_index);
-> > +             kfree(idx_data);
-> >               /* We leave PCI config space as was before, no mkey will =
-refer to it */
-> >       }
->
-> Should this be pulled out as a fix separate from the feature added
-> here?  Thanks,
->
-> Alex
->
-
-Yes, will split it out as its own patch.
+will do.
 
 Thanks,
 Zhiping
