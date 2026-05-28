@@ -1,114 +1,92 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E872F8E8E
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 02:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A912F3C18
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 02:25:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779934285; cv=none; b=jEzq0U03LTEdvigF4ABCXkd7mHA7jb5pN6zfy1v8hk+nYpaJTtaxt7hTXyRa51cna0qIJICqeiN9qxKhnA510PsQ+dW3eyZz9kOyXSma2AKpJu4S7MXzQlDkuqQkWOMZcTN2iLSiairt8nIi/NcS+plvffAxm/TLCv6115f0Dfk=
+	t=1779935133; cv=none; b=OcxSQbKKSq568EkyOJZ4v6m3uQ8S6/tRrtXiJlef0nevV+83ZLXf+cjdctlflkF8c6ALQU5gIL5uyml+3BdGtTtONj/wF4dtPfo1/OW0uLiYLVz9Gfji24rljbSVc1nWKBJ0sg/5VYif3R8h0poVYU8eAFCGywMEoWXwaBGLwww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779934285; c=relaxed/simple;
-	bh=/GCiy/tm/G4ZkgCJka9bR/R4dNIgVXEFKdxC7V9ENoM=;
+	s=arc-20240116; t=1779935133; c=relaxed/simple;
+	bh=RtoCWqOrG874W5Zl+3ahOMFu8XhwOJUoMHM8lStfWK0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=k+6DRPFeTtEtc5Df3EuP7vXAgRzgKtpsMXL8xsuC9QPhkKKW5JchhyQspUYuGFemFo/m5qLsKKOaCT+mNj++i4Hhp2A/mOaIPkMtPQ/SId3lykW+Jt9k82qATpi7xuspiHhJEjbc9sPqsU9UdUccugOHm/U6THeL/ehQfvJcC9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pGgLJfK/; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=In6XdM53hGB0bM+IMdNKT45LCrM2fzSlPwMZOEnw4kVtWr1ewoXZB1vBUQbwEXCPgDExNQOiYGnJhXHCKgKQnPC5SSOfy9WX3DPuWlxqLiZ+bGSFmMSOEADEMFgrT8pz131H+FRtYdrJi2TJgQIPhp5SwJy3qyRXWGV4skKRISM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q/3HSqTJ; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pGgLJfK/"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b7c55406bso314326a91.2
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 19:11:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q/3HSqTJ"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-365d4d2fa04so11447471a91.3
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 19:25:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779934283; x=1780539083; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779935132; x=1780539932; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=ESmq56Dk7+y1RBHyu7MRGF2Md3GxO/5V3RO0BbZs0wM=;
-        b=pGgLJfK/P/uv1/pdjQdwQUcEEYbqakVIP4IontBSlsSxgA4wuHUk2YOpuDPAF6I0XR
-         aPuIMWZEoTKnisSNjqIDa2vBWrxWlnFmieSvkoqq7Y8kQzw76ZdPEsi1tO1bgYL70rcI
-         2BHJJTNXXhXXO3YaN45Zqek8HTvE8hKsyG5aod8vfdqEMZzm7Ithtoz+dpo/cP+h4qBw
-         KvWx9RzsX/qS+AkX+2Ge0KgSJzNn7rXhms6GDN528h2upCRObVcIMAZBJ3eE5bA7PFuj
-         XUkOkEIb7JVEl6DnY3iVpxCYzRweNuCsqoJkcO7d2B+btU/8B5h/8Od5k5yZSQGJdmTI
-         5PwQ==
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=j+6hXAGsinkLM4tFpg7kCHTNUeNBAxzveih1+rVtcWQ=;
+        b=Q/3HSqTJ8afUIlfcz5QM8SRDBneZqSyXhKdksUg6SuFElZB+Nt0VuAz7YiRcAyzHjr
+         LzoUCDoxYCpB8EY4rnwWBMgRX0dz72o6RRK3ful9+RHYR9mS/qIOOYHjsg/Xpr2+CfxN
+         b04LdhkUMP/KaFUpkg6KUuzZQ0434M0REBfgSiUkMlBV4HwwroH/bDDsEs8/lMlggFCb
+         YOpZH4YEsD0oL7gD6YAgtbWliYjBg6lXYnNPFGWhTjb3OxJzdCv7Ck+UzN0Q+2ASzt+K
+         bX/A6ZZnHkToLuRbIuqqNa3njSo2weS08mgQMIZFSZ08qU1Ttt9vWOiIh8310rPA1khf
+         29qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779934283; x=1780539083;
+        d=1e100.net; s=20251104; t=1779935132; x=1780539932;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ESmq56Dk7+y1RBHyu7MRGF2Md3GxO/5V3RO0BbZs0wM=;
-        b=H61pKr4gkmvwilNd3AAYvBvepsGAggQ7dEvDEvJ0031sRPmT8Z4IKDx/1LUAIAamjC
-         tizt0rWF0Sy7GLxNqwNLuS0Zkvkm4QTcZoE5woh9C3NB+njquIXuQELQx2BRz5L87AZO
-         LDyHkcr6/fJlmFOdXVGMX0ULg2qEzlbO0GS51/JWznh+gCKyz0ChfOftWc6ZCPNesGW2
-         a6zbmbKY9nVNEqKMnNXu8OKOWBOXHHVQHYPFkQ7sGRdNbXXMyM0fKFoTwVGJrnjxa7B5
-         TpOmCZZ84bZJF/8cFvQxRzqsWpYnYZKLiHsHKm/kCLQxsdDm+lavPBo3BpmPQCuGR3D/
-         D4Wg==
-X-Gm-Message-State: AOJu0YwMr/XxsrHHBv/c14WHcYGpw2P6hERpppaKma1keaR00gTxywXM
-	tQrl7tzY+c0tTMIvbF+q1FEQ9ZRRQzUHgKkzTNaTzhTRSb/kMEToPxo1siTfEL+i/8JDjYfaGRF
-	z6ix2qQ==
-X-Received: from pjbiq3.prod.google.com ([2002:a17:90a:fb43:b0:369:1c01:7065])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3747:b0:36a:d419:9940
- with SMTP id 98e67ed59e1d1-36ad419e5f9mr9826485a91.27.1779934283194; Wed, 27
- May 2026 19:11:23 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 27 May 2026 19:11:17 -0700
-In-Reply-To: <20260528021117.107984-1-seanjc@google.com>
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=j+6hXAGsinkLM4tFpg7kCHTNUeNBAxzveih1+rVtcWQ=;
+        b=UV6mhyNwYpM9193ynTmWUOH1r8G8U1H/tl70nAGhu0jCyQiCA5mQV3vJyle1Eol365
+         381ynPJac+z1t+/6PvFqmSERKbtUUTn1w43+sEIdkVflPu14DAhL9rz2PJ83PQS/DU9U
+         brd1PTi17VtmA72uirfzRs8IfKLwn5ncyiILp3W4EFmymLAoWFpipSuHKOZY4gSmS0un
+         GTdQD0pxIi9/XZY0BaXn+/iXplHOgev+0d7w7loVfOhhqsGXOLCVzQKlVsUyvEYuvYmG
+         CzGY9WoZAyx12M+J87VylvQhjp5RRTrMMhyBKYGgyXAIYdVlLhhWNOM+ziS9nz6ecZYH
+         649w==
+X-Forwarded-Encrypted: i=1; AFNElJ+HVVa0ZsFvJjqIE5KlBYrvB8pfLvrS6Cuw0ENc6qnx2nSRNmw6nonWzdnRN3bT2baPLX4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzxP5mbS7ggbL0KVGl31vUUpd5m3vKEImQ7jc9Ei5WtcOZYJh3
+	Uko0E+zwvN+QjILPcp0Mqfw2PUmX/V8bfYYebRZIEL73XUI3u1ZwMPPAWFI97awSysJvA1INQq5
+	vTtcxQA==
+X-Received: from pjbgz20.prod.google.com ([2002:a17:90b:ed4:b0:36b:8abb:86c4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:380b:b0:35d:a3b4:2f0d
+ with SMTP id 98e67ed59e1d1-36a6773cb46mr23074897a91.6.1779935131309; Wed, 27
+ May 2026 19:25:31 -0700 (PDT)
+Date: Wed, 27 May 2026 19:25:30 -0700
+In-Reply-To: <20260527234711.4175166-18-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260528021117.107984-1-seanjc@google.com>
-X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <20260528021117.107984-4-seanjc@google.com>
-Subject: [PATCH v3 3/3] KVM: selftests: Add guest_memfd regression test signed
- offset+size bug
+References: <20260527234711.4175166-1-yosry@kernel.org> <20260527234711.4175166-18-yosry@kernel.org>
+Message-ID: <ahenmnACHMNKO3WC@google.com>
+Subject: Re: [PATCH v7 17/17] KVM: selftests: Add svm_pmu_host_guest_test for
+ Host-Only/Guest-Only bits
 From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ackerley Tng <ackerleytng@google.com>, Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Sandipan Das <sandipan.das@amd.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Add a regression (and proof-of-bug) testcase to ensure KVM rejects an
-offset+size that would result in a negative value when computed as a signed
-64-bit value.  KVM had a flaw where it would allow binding a memslot to a
-guest_memfd instance even with a wildly out-of-range offset, if the offset
-and size were both positive values, but the combined offset+size was
-negative.
+On Wed, May 27, 2026, Yosry Ahmed wrote:
+> +int main(int argc, char *argv[])
+> +{
+> +	struct kvm_pmu_event_filter *filter;
+> +	struct kvm_vcpu *vcpu;
+> +	struct kvm_vm *vm;
+> +	struct ucall uc;
+> +	gva_t svm_gva;
+> +
+> +	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
+> +	TEST_REQUIRE(kvm_is_pmu_enabled());
+> +	TEST_REQUIRE(get_kvm_amd_param_bool("enable_mediated_pmu"));
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- tools/testing/selftests/kvm/guest_memfd_test.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+This can and should be handled in a helper, using either host_cpu_is_intel or
+host_cpu_is_amd_compatible to choose while vendor to query.
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 246bb408ecc0..95a6ddfd8023 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -345,6 +345,16 @@ static void test_invalid_punch_hole(int fd, size_t total_size)
- 	}
- }
- 
-+static void test_invalid_binding(struct kvm_vm *vm, int fd, size_t size)
-+{
-+	int r;
-+
-+	r = __vm_set_user_memory_region2(vm, 0, KVM_MEM_GUEST_MEMFD, 0, size, 0,
-+					 fd, 0x7ffffffffffff000ull);
-+	TEST_ASSERT(r && errno == EINVAL,
-+		    "Memslot with out-of-range offset+size should fail");
-+}
-+
- static void test_create_guest_memfd_invalid_sizes(struct kvm_vm *vm,
- 						  u64 guest_memfd_flags)
- {
-@@ -456,6 +466,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, u64 flags)
- 	gmem_test(file_size, vm, flags);
- 	gmem_test(fallocate, vm, flags);
- 	gmem_test(invalid_punch_hole, vm, flags);
-+	gmem_test_vm(invalid_binding, vm, flags);
- }
- 
- static void test_guest_memfd(unsigned long vm_type)
--- 
-2.54.0.794.g4f17f83d09-goog
+> +	TEST_REQUIRE(host_cpu_is_amd && kvm_cpu_family() >= 0x17);
 
+Why the family check?  Actually, why check host_cpu_is_amd at all?
