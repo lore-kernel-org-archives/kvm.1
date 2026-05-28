@@ -1,262 +1,156 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BA33ED5C3
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 13:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AB5282F3B;
+	Thu, 28 May 2026 13:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779975425; cv=none; b=cDUAHVwSSb1o+u+rfWgXJWdWLsnIVz1f6OjjqalX9skRJ3hAR2/cMNrNUATHY3XF1rrflc7UuTZ4v346vJH/89HjiOKW6uWwWhmcBihfxmgJvbGxDQoMywPta79MbnNzv+ib+DXk1mHKht3cPEKrdIG83zTcv//5GC/TGo7Qbfw=
+	t=1779976369; cv=none; b=BG5zfIpdh39D9/VgFxN9w4c4ZF2O0viHAI7I2jAnUrbHXvJDkjexxmIBvrl2rZD6ct0D+bBh4ytqo3BP680OeaGbrRO4zkt8DjgXdZ6b2jRivm2eds9AkFaD8LHR64NdgFdAChLsB2BiCokcmPRqxe5DY2JNW0Bj4AlzZjl7iSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779975425; c=relaxed/simple;
-	bh=AZYGmRKzOUm0eXLgc3hOYg+Gc2USUTHNHWyCoCyxf9A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lb/W7T3Sh+aQ53MZUuZlEeprdY5fns1gJvusgSnK/Gnf98jyb0F1AaAr33f+EYyd/k6vbRTwdm+ileWYqY45kt3YRpC2Vsy8MksH1E7Ag8rQNMlDsd/Pzehr6ZyJPWWTaJAY5bOCr92pv8OTKDuemqQYkoRUe44jGiEr6d8J4KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 491392425a9a11f1aa26b74ffac11d73-20260528
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
-	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:377e6b29-9891-4d2e-ba27-f2d5eedc268a,IP:10,
-	URL:0,TC:0,Content:-5,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACT
-	ION:release,TS:-15
-X-CID-INFO: VERSION:1.3.12,REQID:377e6b29-9891-4d2e-ba27-f2d5eedc268a,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:EDM_GE969F26,ACTI
-	ON:release,TS:-15
-X-CID-META: VersionHash:e7bac3a,CLOUDID:ee1cf4f5d6931a845c6fac6e4e269084,BulkI
-	D:2605282136589FI0BS91,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
-	2|127|865|898,TC:nil,Content:0|15|50,EDM:1|19,IP:-2,URL:0,File:nil,RT:nil,
-	Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BR
-	R:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_AEC,TF_CID_SPAM_FAS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 491392425a9a11f1aa26b74ffac11d73-20260528
-X-User: cuitao@kylinos.cn
-Received: from ctao-book.. [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <cuitao@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1982756928; Thu, 28 May 2026 21:36:52 +0800
-From: Tao Cui <cuitao@kylinos.cn>
-To: maobibo@loongson.cn,
-	zhaotianrui@loongson.cn,
-	chenhuacai@kernel.org,
-	loongarch@lists.linux.dev
-Cc: kernel@xen0n.name,
-	kvm@vger.kernel.org,
-	Tao Cui <cuitao@kylinos.cn>
-Subject: [PATCH v2 4/4] KVM: selftests: loongarch: Add PV TLB flush performance test
-Date: Thu, 28 May 2026 21:35:58 +0800
-Message-ID: <20260528133558.2196416-5-cuitao@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260528133558.2196416-1-cuitao@kylinos.cn>
-References: <20260528133558.2196416-1-cuitao@kylinos.cn>
+	s=arc-20240116; t=1779976369; c=relaxed/simple;
+	bh=zhvSnNGUh2IRJp5nVbZsmG1LkcO75ndEjlUvsA3/908=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=RLPzyjnSkTWr58akh6YsgECEmCqYruWODw8S7/CSye/FhMgfmU+8OC47XbkjL1aP5f1lW6mffTTgrKofz3zSDxN8LJdXwUUkeqN4/14/m1IWVh1tMvEQRyBv3YuY8cVjFFyzxqGmLj3HWfp2+rf6t4/bQVZguodCqhGELjP4DE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WvUmbyju; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WvUmbyju"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SD1oZR3427017;
+	Thu, 28 May 2026 13:52:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=5/jjn+
+	SPcc4N10kKApuI8lm+1OeKOU74VHx3XKWgGyE=; b=WvUmbyju20Q3NUpCPZ20Yn
+	r2jFzJztRpuIVJWr37qlujmyTSkVFV+cshDeI5eTQu34QlorOHh2MZ/lBU152teV
+	9n4/RfaLqeU9/9VljfSkp82ASyeFMku90Hnjedl0PRCguAgyJ78ppMNEix6m7BNj
+	JW17yw7Rhgma/Tma00q76WgrJZIZdcQa+6WaAadoiTjtakbxBC4NBSqyOG8WcQxp
+	MTaGAhYd+IrkhMEL9Xg6AIDEh+KzHJ5PirTikTsucUIXH0ZnVa0q5U54WitDc0fh
+	C9hW+eHpe8YuEcVS1szw7jIbVgmAYLq0S++SbgsVvvlCTYMm5huW+vjKUJbyYS0A
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee884kaqn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 May 2026 13:52:45 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64SDgfCQ006541;
+	Thu, 28 May 2026 13:52:44 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4edjrc0amj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 May 2026 13:52:44 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64SDqhQ835979894
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 May 2026 13:52:43 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 63F515805B;
+	Thu, 28 May 2026 13:52:43 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3603058058;
+	Thu, 28 May 2026 13:52:42 +0000 (GMT)
+Received: from [9.61.144.185] (unknown [9.61.144.185])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 28 May 2026 13:52:42 +0000 (GMT)
+Message-ID: <7891b20d-0eef-49f7-8d3c-bf7bb16b49e4@linux.ibm.com>
+Date: Thu, 28 May 2026 09:52:41 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/3] KVM: s390: Add map/unmap ioctl and clean mappings
+ post-guest
+To: Douglas Freimuth <freimuth@linux.ibm.com>, borntraeger@linux.ibm.com,
+        imbrenda@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260526015323.207343-1-freimuth@linux.ibm.com>
+ <20260526015323.207343-2-freimuth@linux.ibm.com>
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20260526015323.207343-2-freimuth@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=L4MtheT8 c=1 sm=1 tr=0 ts=6a1848ad cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=07d9gI8wAAAA:8
+ a=VnNF1IyMAAAA:8 a=BwH0bPgzfbDwzWKgTFEA:9 a=QEXdDO2ut3YA:10
+ a=e2CUPOnPG4QKp8I52DXD:22
+X-Proofpoint-ORIG-GUID: wbenrYLiUpfIk6BnbK6lkXduy98xAEAC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI4MDEzOCBTYWx0ZWRfXyjKz7ao86MHt
+ k834g/ufWyH4QgW0PUcGxXHnjiVqnGYb/qMtHjWPZqpyU3Zv8JCky8CXmFNyhIuvyodd09RODFs
+ vYgVfICwKY2vLG81bcPlY7wUfhim4p2VGyYWf3Ub7Vt/OyI5c7SDV1/t6IJf4xKOQj1/IvCKP9e
+ ait6PGL5foAOFTxGas3blNbWk5toRyuRlrCqmtHD+R+GaOeygWwDOtX7VrUbMVrXVFZB10WjdWA
+ C84X5mdmxVZhidmwypkYmjGmqvYWbjvXDgfy3BK7lEA475Ff1QrwgPYIBK+kbJzJRiIsBGFrhe9
+ abXgEMjMgBTQ3s5h5HztnogfoDrS7ukER9LUfx4RpoMP94kAaYnPAAwcIfYIebktaXLSasFYedV
+ ql9XEFzrQ2mswtVAdHBLoHWnbbz3zH4YQCGm3/cnzwQGMhM/k4FSJ/kV6rYMk8wN6KLZHKIYHjz
+ V7SGGqEYjy9s9d04Adw==
+X-Proofpoint-GUID: wbenrYLiUpfIk6BnbK6lkXduy98xAEAC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-28_03,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ bulkscore=0 impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605280138
 
-Add a multi-threaded benchmark to measure PV TLB flush performance
-inside LoongArch KVM guests.
+On 5/25/26 9:53 PM, Douglas Freimuth wrote:
+> s390 needs map/unmap ioctls, which map the adapter set
+> indicator pages, so the pages can be accessed when interrupts are
+> disabled. The mappings are cleaned up when the guest is removed.
+> pin_user_pages_remote is used for both the ioctl as well
+> as the pin-on-demand logic in adapter_indicators_set().
+> 
+> Map/Unmap ioctls are fenced in order to avoid the longterm pinning
+> in Secure Execution environments. In Secure Execution
+> environments the path of execution available before this patch is followed.
+> 
+> Statistical counters to count map/unmap functions for adapter indicator
+> pages are added. The counters can be used to analyze
+> map/unmap functions in non-Secure Execution environments and similarly
+> can be used to analyze Secure Execution environments where the counters
+> will not be incremented as the adapter indicator pages are not mapped.
+> 
+> Signed-off-by: Douglas Freimuth <freimuth@linux.ibm.com>
 
-The test spawns flusher threads that repeatedly mmap/munmap to trigger
-TLB shootdown IPIs, alongside idle threads that either sleep or
-busy-spin. With PV TLB flush enabled, IPIs to preempted vCPUs are
-replaced by deferred flags in the steal-time shared page.
+I gave you a reviewed-by tag on v7 with the caveat that you move the kvm
+lock earlier in register_io_adapter (which you did) so that review tag
+should have been included with this patch.  Please include it in next version
+or it will get lost.
 
-Usage (inside guest):
-  ./pv_tlb_flush_test <flushers> <idle> <iterations> <busy_idle>
-  busy_idle=0: idle threads sleep (PV can skip IPIs to preempted vCPUs)
-  busy_idle=1: idle threads spin (all vCPUs active, PV cannot optimize)
 
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
----
- .../kvm/loongarch/pv_tlb_flush_test.c         | 164 ++++++++++++++++++
- 1 file changed, 164 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/loongarch/pv_tlb_flush_test.c
 
-diff --git a/tools/testing/selftests/kvm/loongarch/pv_tlb_flush_test.c b/tools/testing/selftests/kvm/loongarch/pv_tlb_flush_test.c
-new file mode 100644
-index 000000000000..b799dc487393
---- /dev/null
-+++ b/tools/testing/selftests/kvm/loongarch/pv_tlb_flush_test.c
-@@ -0,0 +1,164 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * LoongArch PV TLB Flush Performance Test
-+ *
-+ * Measure the overhead of remote TLB flushes in a KVM guest by spawning
-+ * flusher threads that repeatedly mmap/munmap (triggering TLB shootdown
-+ * IPIs) alongside idle threads that either sleep or busy-spin.
-+ *
-+ * With PV TLB flush enabled, IPIs to preempted vCPUs are replaced by
-+ * deferred flags in the steal-time shared page, reducing flush latency.
-+ *
-+ * Usage:
-+ *   Compile on LoongArch guest:
-+ *     gcc -O2 -static -pthread -o pv_tlb_flush_test pv_tlb_flush_test.c
-+ *   Run (inside KVM guest):
-+ *     ./pv_tlb_flush_test <flushers> <idle> <iterations> <busy_idle>
-+ *   Examples:
-+ *     ./pv_tlb_flush_test 1 31 50000 0   # 1 flusher, 31 sleep, PV helps
-+ *     ./pv_tlb_flush_test 1 31 50000 1   # 1 flusher, 31 busy-spin, no PV
-+ *
-+ *   busy_idle=0: idle threads sleep, vCPUs get preempted, PV TLB flush
-+ *                can skip IPIs to them
-+ *   busy_idle=1: idle threads spin, all vCPUs stay active, PV TLB flush
-+ *                cannot optimize (baseline for comparison)
-+ */
-+#define _GNU_SOURCE
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <sys/mman.h>
-+#include <string.h>
-+#include <time.h>
-+#include <unistd.h>
-+#include <sched.h>
-+#include <pthread.h>
-+
-+#define MEM_SIZE (2*1024*1024)
-+#define DEFAULT_ITERS 50000
-+
-+static int nr_iters = DEFAULT_ITERS;
-+static volatile int start_barrier;
-+static volatile int stop_flag;
-+static int busy_idle = 0;
-+
-+struct thread_args {
-+	int cpu;
-+	unsigned long *result;
-+	int *completed;
-+};
-+
-+static inline unsigned long clock_ns(void) {
-+    struct timespec ts;
-+    clock_gettime(CLOCK_MONOTONIC, &ts);
-+    return (unsigned long)ts.tv_sec * 1000000000UL + ts.tv_nsec;
-+}
-+
-+static void pin_cpu(int cpu) {
-+    cpu_set_t set;
-+    CPU_ZERO(&set);
-+    CPU_SET(cpu, &set);
-+    sched_setaffinity(0, sizeof(set), &set);
-+}
-+
-+static void *idle_thread(void *arg) {
-+    struct thread_args *ta = arg;
-+    pin_cpu(ta->cpu);
-+    while (!__atomic_load_n(&start_barrier, __ATOMIC_ACQUIRE));
-+    if (busy_idle) {
-+        volatile long sink = 0;
-+        while (!__atomic_load_n(&stop_flag, __ATOMIC_ACQUIRE))
-+            sink++;
-+    } else {
-+        while (!__atomic_load_n(&stop_flag, __ATOMIC_ACQUIRE))
-+            usleep(1000);
-+    }
-+    return NULL;
-+}
-+
-+static void *flush_thread(void *arg) {
-+    struct thread_args *ta = arg;
-+    unsigned long start, end;
-+    int i;
-+    size_t mem_size = MEM_SIZE;
-+    pin_cpu(ta->cpu);
-+    while (!__atomic_load_n(&start_barrier, __ATOMIC_ACQUIRE));
-+    start = clock_ns();
-+    for (i = 0; i < nr_iters && !__atomic_load_n(&stop_flag, __ATOMIC_ACQUIRE); i++) {
-+        void *p = mmap(NULL, mem_size, PROT_READ|PROT_WRITE,
-+                       MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
-+        if (p == MAP_FAILED) break;
-+        for (size_t off = 0; off < mem_size; off += 65536)
-+            ((volatile char*)p)[off] = 0;
-+        munmap(p, mem_size);
-+    }
-+    end = clock_ns();
-+    *ta->result = end - start;
-+    *ta->completed = i;
-+    return NULL;
-+}
-+
-+int main(int argc, char **argv) {
-+    int nr_flush = 1, nr_idle = 3, i, run;
-+    int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+    if (argc > 1) nr_flush = atoi(argv[1]);
-+    if (argc > 2) nr_idle = atoi(argv[2]);
-+    if (argc > 3) nr_iters = atoi(argv[3]);
-+    if (argc > 4) busy_idle = atoi(argv[4]);
-+
-+    printf("=== TLB Flush Benchmark ===\n");
-+    printf("CPUs: %d  Flushers: %d  Idle: %d  Iters: %d  Mode: %s\n",
-+           ncpus, nr_flush, nr_idle, nr_iters,
-+           busy_idle ? "busy-spin" : "sleep");
-+
-+    for (run = 0; run < 3; run++) {
-+        int total = nr_flush + nr_idle;
-+        int do_pin = (total <= ncpus);
-+        pthread_t threads[64];
-+        unsigned long results[64];
-+        int completed[64];
-+        struct thread_args args[64];
-+        start_barrier = 0; stop_flag = 0;
-+
-+        for (i = 0; i < nr_idle; i++) {
-+            args[i].cpu = do_pin ? nr_flush + i : -1;
-+            args[i].result = NULL;
-+            args[i].completed = NULL;
-+            pthread_create(&threads[i], NULL, idle_thread, &args[i]);
-+        }
-+        for (i = 0; i < nr_flush; i++) {
-+            int idx = nr_idle + i;
-+            results[idx] = 0;
-+            completed[idx] = 0;
-+            args[idx].cpu = do_pin ? i : -1;
-+            args[idx].result = &results[idx];
-+            args[idx].completed = &completed[idx];
-+            pthread_create(&threads[idx], NULL, flush_thread, &args[idx]);
-+        }
-+
-+        usleep(10000);
-+        __atomic_store_n(&start_barrier, 1, __ATOMIC_RELEASE);
-+        for (i = 0; i < nr_flush; i++)
-+            pthread_join(threads[nr_idle + i], NULL);
-+        __atomic_store_n(&stop_flag, 1, __ATOMIC_RELEASE);
-+        for (i = 0; i < nr_idle; i++)
-+            pthread_join(threads[i], NULL);
-+
-+        unsigned long total_ns = 0;
-+        unsigned long total_done = 0;
-+        for (i = 0; i < nr_flush; i++) {
-+            int idx = nr_idle + i;
-+            unsigned long done = completed[idx];
-+            if (done == 0) {
-+                printf("  Run %d flusher %d: no iterations completed\n", run, i);
-+                continue;
-+            }
-+            printf("  Run %d flusher %d: %lu ns/flush (%lu iters)\n",
-+                   run, i, results[idx] / done, done);
-+            total_ns += results[idx];
-+            total_done += done;
-+        }
-+        if (total_done > 0)
-+            printf("  Run %d Avg: %lu ns/flush\n", run, total_ns / total_done);
-+    }
-+    return 0;
-+}
--- 
-2.43.0
+> @@ -2412,6 +2412,7 @@ static int register_io_adapter(struct kvm_device *dev,
+>  	struct s390_io_adapter *adapter;
+>  	struct kvm_s390_io_adapter adapter_info;
+>  
+> +	mutex_lock(&dev->kvm->lock);
+>  	if (copy_from_user(&adapter_info,
+>  			   (void __user *)attr->addr, sizeof(adapter_info)))
+>  		return -EFAULT;
+That said...  
+Please also handle the sashiko comment for this patch, you moved the kvm lock
+earlier like I requested but that means now all of the nonzero return paths
+have to drop it before returning, the above is just one example.  
 
+Sounds like a case for either using guard(mutex) [1] or something like
+
+int rc = 0;
+if (bad_things_happen) {
+  rc = -WHATEVER;
+  goto out;
+}
+[...]
+out:
+   mutex_unlock(&dev->kvm->lock);
+   return rc;
+
+[1]: https://lwn.net/Articles/934679/
