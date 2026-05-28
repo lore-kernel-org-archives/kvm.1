@@ -1,47 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13931221540;
-	Thu, 28 May 2026 08:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DA53815C5;
+	Thu, 28 May 2026 08:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779958151; cv=none; b=L7XjOveu27C8S52k+4MhPaM0UHIyuKf9VGdcgg1F4VkycGHRCg0mTioaTrCgp9ydUJFNgq2stQzbfdnPG8wFB5dY+BF3+P/efoGwqxLj4i3/sUudMQsCPf420bUxXbvlgb1LoDjrvZkHit61ksmO20mEb3klbdr1OCGHjs7YqxA=
+	t=1779958239; cv=none; b=CBAfA9quJQLUQ1RbKyus1dj3FT1x/FHbJuliNV7dh6/O41Umhm1ikl2+rrcgS96yryo3RmmoJv5TkcIjwnjlmGHM8Oc5FE1D7fkXN/jNDmmAzr9ohXvlOzPm4MIePyMJOlMHQpU4m42tDK+mgC7pECGg5kVfe02sBt6aKoKG7zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779958151; c=relaxed/simple;
-	bh=I5HHXqYxL8g0RMNE7nIvpFG6ZgWBI9yw3Un6ylZQxaI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ljJ15gVOlMc3Y68e/Cm0D2Wry8wpFNa8X3cW3GfyvcwfbT/Qaei0s1KLBr6zMqydVYeR0kybQzu9gL8D1z2rm+D1JKLGZ9heh0Lwm/8ui4bc3zXXh2fykAoac8kp2a8G87v5LOwlpqPtImBJoZRjaHntFanFqdMXoR6HdAovFCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iws0zAhU; arc=none smtp.client-ip=192.198.163.14
+	s=arc-20240116; t=1779958239; c=relaxed/simple;
+	bh=QBjT4H/o5E0+CDJoBDAHY3pH9otmbxSdU9SWWy32WA0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OKKi7nC0PThQ2pm/41G6IQLCG7Ey/P/8d+DxDwIGzBpbmxfllsBJEqySPk6I37otfKfyFOj/4RIQDbNZRj5xmfE/m8b0Kw6jbsMV982R9WDavZeBbDEk2mffb5UY4oEHG6LRVsh4W/pXN0GnoMYX9serEm7q/FwtxzRxcQrCKI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nxhO+rfl; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iws0zAhU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nxhO+rfl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779958149; x=1811494149;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=I5HHXqYxL8g0RMNE7nIvpFG6ZgWBI9yw3Un6ylZQxaI=;
-  b=iws0zAhU0hGQBjgKgOup49vEIg0QEKMM3nP5uXvMPBHgaxAwRtVDihEi
-   ocK75Jrp7dWZEdss+Z/9kUzzGukvH/prgPC11Xl6NOfSOdf7eNAeOtxF+
-   WEOeBr7T9GlyniP+KksBHrCpZFrjDD6VSgcfryIaOpGf0G+tR6ytYLboL
-   xU8YhMaZD3IRMy/lfQmTZEIwE97NUBhL2DouNR6nW6IDhQxSJVH3eIHuu
-   lH0Zgy/K1fA//aXc8l2CTv6WurqBvYGghRZTTYX71zKBT+Y2aZViV/hmz
-   v+gsf1OEw36xUJCEkSOTln83jp2torMi2rPUg1KHBZY5EoETrkq73uTY0
+  t=1779958238; x=1811494238;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=QBjT4H/o5E0+CDJoBDAHY3pH9otmbxSdU9SWWy32WA0=;
+  b=nxhO+rflvYjfd1tbsN4zpmrA1+SssOl+2icRpns7Ld8c20XVF6K4JGyq
+   taQW8Yh0hq+9Tz3RPxyL8Zki3B0ociqBdSzSPxCNcUCXK2yhbwTWhDmLE
+   kJ9Up0QKv3EWwPEwcl5YFxBjJnPFYDdmIiMbu1hxZj1w0aP4EXW1kYBsN
+   5vg8sptvv5AI7vjo363YbhbmL4Li/XhPMDOzWA7stQaCY+6rqSi1n88Z3
+   s58fVfh9TsA37TlPyvcxJe5xDHTq4nvCio46CstgOL3XpqRFH7lplUB4i
+   PmmJLjR/+creVititGeGd0/aTQnrPvRwR3owm1PWt7Q+LCKiRAShSwwxq
    g==;
-X-CSE-ConnectionGUID: a3nBR8LESoa3PF6BGEHu6w==
-X-CSE-MsgGUID: 05gN+lm2TM+sKM5GEutgKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80824857"
+X-CSE-ConnectionGUID: 80W8dtutSeCPSBHcyRDsmw==
+X-CSE-MsgGUID: 1v25EvxCSayNUswQPBkcJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="91105722"
 X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
-   d="scan'208";a="80824857"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 01:49:08 -0700
-X-CSE-ConnectionGUID: mPa3xFwsRPuGu6RESKOD2g==
-X-CSE-MsgGUID: DSh5Mtv8RGKp7mjrO6l9Uw==
+   d="scan'208";a="91105722"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 01:50:37 -0700
+X-CSE-ConnectionGUID: px5UrW9nRSKjLS5CYlSVsA==
+X-CSE-MsgGUID: +bqs9Xs6TwS4PCVwEeKlEg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
-   d="scan'208";a="242650428"
+   d="scan'208";a="241460893"
 Received: from yzhao56-desk.sh.intel.com ([10.239.47.19])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 01:49:05 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 01:50:34 -0700
 From: Yan Zhao <yan.y.zhao@intel.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -55,10 +56,12 @@ Cc: linux-kernel@vger.kernel.org,
 	binbin.wu@linux.intel.com,
 	xiaoyao.li@intel.com,
 	yan.y.zhao@intel.com
-Subject: [PATCH v3 00/15] TDX MMU refactors
-Date: Thu, 28 May 2026 16:08:55 +0800
-Message-ID: <20260528080856.10141-1-yan.y.zhao@intel.com>
+Subject: [PATCH v3 01/15] KVM: TDX: Drop kvm_x86_ops.link_external_spt()
+Date: Thu, 28 May 2026 16:10:29 +0800
+Message-ID: <20260528081029.10220-1-yan.y.zhao@intel.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20260528080856.10141-1-yan.y.zhao@intel.com>
+References: <20260528080856.10141-1-yan.y.zhao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,117 +70,229 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is v3 of the TDX MMU refactor series, a simple rebase of v2 [2] to
-kvm-x86-next-2026.05.26 plus addressing a trace issue reported by Sashiko
-[7].
+From: Sean Christopherson <seanjc@google.com>
 
-The code is also available at [3]. (Note: due to the instability of
-v7.1.0-rc2, I also applied series [4] and [5] in [3] to pass CI.)
+Drop the dedicated .link_external_spt() for linking S-EPT pages, and
+instead funnel everything through .set_external_spte() for mapping S-EPT
+entries. Using separate hooks doesn't help prevent TDP MMU details from
+bleeding into TDX, and vice versa; to the contrary, dedicated callbacks
+will result in _more_ pollution when hugepage support is added, e.g. will
+require the TDP MMU to know details about the splitting rules for TDX that
+aren't all that relevant to the TDP MMU.
 
-As in v2, patches 9 and 15 still have the "Not-yet-Signed-off-by" tag.
+Ideally, KVM would provide a single pair of hooks to set S-EPT entries,
+one hook for setting SPTEs under write-lock and another for setting SPTEs
+under read-lock (e.g. to ensure the entire operation is "atomic", to allow
+for failure, etc.).  Sadly, TDX's requirement that all child S-EPT entries
+are removed before the parent makes that impractical: the TDP MMU
+deliberately prunes non-leaf SPTEs and _then_ processes its children, thus
+making it quite important for the TDP MMU to differentiate between zapping
+leaf and non-leaf S-EPT entries.
 
-Patches layout
---------------
-Part 1: Patches 1-9 (for to-present and atomic-zap-leaf-SPTE changes).
+However, that's the _only_ case that's truly special, and even that case
+could be shoehorned into a single hook; it just wouldn't be a net positive.
 
-        Patches 1-4 are preparation for patch 5. So when patch 5 drops
-        KVM_BUG_ON()s on zappings in __tdp_mmu_set_spte_atomic(), both
-        to-present changes and atomic-zap-leaf-SPTE changes are propagated
-	via the set_external_spte() op and TDX code can trigger
-	KVM_BUG_ON()s on the atomic zap scenario.
-
-        Patches 5-6 move asserts and KVM_BUG_ON()s from TDP MMU to TDX
-        code.
-
-        Patches 7-9: centralize external PTE propagation triggered by
-        tdp_mmu_set_spte_atomic() (for to-present and atomic-zap-leaf-SPTE
-	changes) to __handle_changed_spte().
-
-Part 2: Patches 10-13 (for zapping of leaf SPTEs).
-        Drop remove_external_spte() op and have __handle_changed_spte()
-        centralize propagation of leaf SPTE zapping in all scenarios.
-
-Part 3: Patches 14-15 (for zapping of non-leaf SPTEs).
-        Cleanup of the free_external_spt() op.
-
-Changelogs
-----------
-v2 [2] --> v3:
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[Rick: add in trivial feedback]
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+---
+MMU_refactors v3:
 - Rebased to kvm-x86-next-2026.05.26.
-- Fixed a missing trace issue reported by Sashiko [7]. 
 
-v1 [1] --> v2:
-- Dropped 4 cleanup patches that will be pulled separately into the base.
-- Rebased onto v7.1.0-rc2 and the v2 struct page to PFN conversion series.
-- Fixed typos, code comments, updated commit messages, and removed unused
-  parameters.
-- Patch reordering and added back patch 8.
-- Renamed TDX functions to indicate map/remove leaf/non-leaf status.
-- Addressed the sashiko comment [6] of how atomic zaps are handled before
-  all changes (except for reclaiming non-leaf pages) are propagated via the
-  set_external_spte() op in __handle_changed_spte().
-- Added expected lock and valid scenarios in function comments of
-  tdx_sept_set_private_spte() and tdx_sept_free_private_spt(). 
-- Explained why kvm_tdp_mmu_age_spte() does not warn about installing
-  FROZEN_SPTE as a long-term value and explained why it warns on mirror
-  roots.
+MMU_refactors v2:
+- Moved this patch to the very beginning of the series so that when
+  warnings like "KVM_BUG_ON(!is_shadow_present_pte(new_spte), kvm)" are
+  removed from __tdp_mmu_set_spte_atomic() in TDP MMU in a later patch, the
+  atomic zap change can be propagated via the .set_external_spte() op.
+  (Yan).
 
-Sean's DPAMT/Huge page combined series [0] --> v1:
-- Went back to free_external_spt() name. Since free_external_sp() was
-  dropped from the changes, there was no similarly named function to
-  confuse.
-- Suggestions around dropping or moving KVM_BUG_ON/WARNs were turned into
-  patches.
+MMU_refactors v1:
+ - rename external_spt->sept_pt (Rick, Yan)
+---
+ arch/x86/include/asm/kvm-x86-ops.h |  1 -
+ arch/x86/include/asm/kvm_host.h    |  3 --
+ arch/x86/kvm/mmu/tdp_mmu.c         | 29 +-------------
+ arch/x86/kvm/vmx/tdx.c             | 63 ++++++++++++++++++++----------
+ 4 files changed, 44 insertions(+), 52 deletions(-)
 
-
-Thanks
-Yan
-
-[0] https://lore.kernel.org/kvm/20260129011517.3545883-1-seanjc@google.com
-[1] https://lore.kernel.org/all/20260327201421.2824383-1-rick.p.edgecombe@intel.com
-[2] https://lore.kernel.org/kvm/20260509075201.4077-1-yan.y.zhao@intel.com
-[3] https://github.com/intel-staging/tdx/tree/tdx_mmu_refactors_v3 
-[4] https://lore.kernel.org/all/20260423155611.216805954@infradead.org
-[5] https://lore.kernel.org/all/20260428024746.1040531-1-binbin.wu@linux.intel.com
-[6] https://lore.kernel.org/lkml/aczYjEVkva3zOpwz@yzhao56-desk.sh.intel.com
-[7] https://lore.kernel.org/kvm/agu+UsizlbUYsjp6@yzhao56-desk.sh.intel.com
-
-Rick Edgecombe (4):
-  KVM: TDX: Move KVM_BUG_ON()s in __tdp_mmu_set_spte_atomic() to TDX
-    code
-  KVM: TDX: Move lockdep assert in __tdp_mmu_set_spte_atomic() to TDX
-    code
-  KVM: x86/tdp_mmu: Morph !is_frozen_spte() check into a
-    KVM_MMU_WARN_ON()
-  KVM: x86/mmu: Drop KVM_BUG_ON() on shared lock to zap child external
-    PTEs
-
-Sean Christopherson (10):
-  KVM: TDX: Drop kvm_x86_ops.link_external_spt()
-  KVM: TDX: Wrap mapping of leaf and non-leaf S-EPT entries into helpers
-  KVM: x86/mmu: Fold set_external_spte_present() into its sole caller
-  KVM: x86/mmu: Plumb param "old_spte" into
-    kvm_x86_ops.set_external_spte()
-  KVM: x86/mmu: Plumb "sp" _pointer_ into the TDP MMU's
-    handle_changed_spte()
-  KVM: x86/tdp_mmu: Centrally propagate to-present/atomic zap updates to
-    external PTEs
-  KVM: TDX: Hoist tdx_sept_remove_private_spte() above
-    set_private_spte()
-  KVM: TDX: Drop kvm_x86_ops.remove_external_spte()
-  KVM: x86: Move error handling inside free_external_spt()
-  KVM: TDX: Move external page table freeing to TDX code
-
-Yan Zhao (1):
-  KVM: TDX: Rename tdx_sept_remove_private_spte() to show it's for leaf
-    SPTEs
-
- arch/x86/include/asm/kvm-x86-ops.h |   4 +-
- arch/x86/include/asm/kvm_host.h    |  13 +-
- arch/x86/kvm/mmu/tdp_mmu.c         | 275 ++++++++++++-----------------
- arch/x86/kvm/vmx/tdx.c             | 172 ++++++++++++------
- 4 files changed, 235 insertions(+), 229 deletions(-)
-
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index b0269325646c..2cb393000ee9 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -96,7 +96,6 @@ KVM_X86_OP_OPTIONAL_RET0(set_identity_map_addr)
+ KVM_X86_OP_OPTIONAL_RET0(get_mt_mask)
+ KVM_X86_OP_OPTIONAL_RET0(tdp_has_smep)
+ KVM_X86_OP(load_mmu_pgd)
+-KVM_X86_OP_OPTIONAL_RET0(link_external_spt)
+ KVM_X86_OP_OPTIONAL_RET0(set_external_spte)
+ KVM_X86_OP_OPTIONAL_RET0(free_external_spt)
+ KVM_X86_OP_OPTIONAL(remove_external_spte)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index d72051150bac..55ec998cc861 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1914,9 +1914,6 @@ struct kvm_x86_ops {
+ 	void (*load_mmu_pgd)(struct kvm_vcpu *vcpu, hpa_t root_hpa,
+ 			     int root_level);
+ 
+-	/* Update external mapping with page table link. */
+-	int (*link_external_spt)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+-				void *external_spt);
+ 	/* Update the external page table from spte getting set. */
+ 	int (*set_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+ 				 u64 mirror_spte);
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index f98afc3422ce..0dc1b0597f8a 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -495,27 +495,12 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
+ 	call_rcu(&sp->rcu_head, tdp_mmu_free_sp_rcu_callback);
+ }
+ 
+-static void *get_external_spt(gfn_t gfn, u64 new_spte, int level)
+-{
+-	if (is_shadow_present_pte(new_spte) && !is_last_spte(new_spte, level)) {
+-		struct kvm_mmu_page *sp = spte_to_child_sp(new_spte);
+-
+-		WARN_ON_ONCE(sp->role.level + 1 != level);
+-		WARN_ON_ONCE(sp->gfn != gfn);
+-		return sp->external_spt;
+-	}
+-
+-	return NULL;
+-}
+-
+ static int __must_check set_external_spte_present(struct kvm *kvm, tdp_ptep_t sptep,
+ 						 gfn_t gfn, u64 *old_spte,
+ 						 u64 new_spte, int level)
+ {
+ 	bool was_present = is_shadow_present_pte(*old_spte);
+-	bool is_present = is_shadow_present_pte(new_spte);
+-	bool is_leaf = is_present && is_last_spte(new_spte, level);
+-	int ret = 0;
++	int ret;
+ 
+ 	KVM_BUG_ON(was_present, kvm);
+ 
+@@ -528,18 +513,8 @@ static int __must_check set_external_spte_present(struct kvm *kvm, tdp_ptep_t sp
+ 	if (!try_cmpxchg64(rcu_dereference(sptep), old_spte, FROZEN_SPTE))
+ 		return -EBUSY;
+ 
+-	/*
+-	 * Use different call to either set up middle level
+-	 * external page table, or leaf.
+-	 */
+-	if (is_leaf) {
+-		ret = kvm_x86_call(set_external_spte)(kvm, gfn, level, new_spte);
+-	} else {
+-		void *external_spt = get_external_spt(gfn, new_spte, level);
++	ret = kvm_x86_call(set_external_spte)(kvm, gfn, level, new_spte);
+ 
+-		KVM_BUG_ON(!external_spt, kvm);
+-		ret = kvm_x86_call(link_external_spt)(kvm, gfn, level, external_spt);
+-	}
+ 	if (ret)
+ 		__kvm_tdp_mmu_write_spte(sptep, *old_spte);
+ 	else
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index d43948a3bb11..34e7e4833871 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1659,18 +1659,58 @@ static int tdx_mem_page_aug(struct kvm *kvm, gfn_t gfn,
+ 	return 0;
+ }
+ 
++static struct page *tdx_spte_to_sept_pt(struct kvm *kvm, gfn_t gfn,
++					u64 new_spte, enum pg_level level)
++{
++	struct kvm_mmu_page *sp = spte_to_child_sp(new_spte);
++
++	if (KVM_BUG_ON(!sp->external_spt, kvm) ||
++	    KVM_BUG_ON(sp->role.level + 1 != level, kvm) ||
++	    KVM_BUG_ON(sp->gfn != gfn, kvm))
++		return NULL;
++
++	return virt_to_page(sp->external_spt);
++}
++
++static int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn,
++				     enum pg_level level, u64 mirror_spte)
++{
++	gpa_t gpa = gfn_to_gpa(gfn);
++	u64 err, entry, level_state;
++	struct page *sept_pt;
++
++	sept_pt = tdx_spte_to_sept_pt(kvm, gfn, mirror_spte, level);
++	if (!sept_pt)
++		return -EIO;
++
++	err = tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, level, sept_pt,
++			       &entry, &level_state);
++	if (unlikely(tdx_operand_busy(err)))
++		return -EBUSY;
++
++	if (TDX_BUG_ON_2(err, TDH_MEM_SEPT_ADD, entry, level_state, kvm))
++		return -EIO;
++
++	return 0;
++}
++
+ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+ 				     enum pg_level level, u64 mirror_spte)
+ {
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+ 	kvm_pfn_t pfn = spte_to_pfn(mirror_spte);
+ 
++	if (KVM_BUG_ON(!is_shadow_present_pte(mirror_spte), kvm))
++		return -EIO;
++
++	if (!is_last_spte(mirror_spte, level))
++		return tdx_sept_link_private_spt(kvm, gfn, level, mirror_spte);
++
+ 	/* TODO: handle large pages. */
+ 	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
+ 		return -EIO;
+ 
+-	WARN_ON_ONCE(!is_shadow_present_pte(mirror_spte) ||
+-		     (mirror_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
++	WARN_ON_ONCE((mirror_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
+ 
+ 	/*
+ 	 * Ensure pre_fault_allowed is read by kvm_arch_vcpu_pre_fault_memory()
+@@ -1690,24 +1730,6 @@ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+ 	return tdx_mem_page_aug(kvm, gfn, level, pfn);
+ }
+ 
+-static int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn,
+-				     enum pg_level level, void *private_spt)
+-{
+-	gpa_t gpa = gfn_to_gpa(gfn);
+-	struct page *page = virt_to_page(private_spt);
+-	u64 err, entry, level_state;
+-
+-	err = tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, level, page, &entry,
+-			       &level_state);
+-	if (unlikely(tdx_operand_busy(err)))
+-		return -EBUSY;
+-
+-	if (TDX_BUG_ON_2(err, TDH_MEM_SEPT_ADD, entry, level_state, kvm))
+-		return -EIO;
+-
+-	return 0;
+-}
+-
+ /*
+  * Ensure shared and private EPTs to be flushed on all vCPUs.
+  * tdh_mem_track() is the only caller that increases TD epoch. An increase in
+@@ -3424,7 +3446,6 @@ int __init tdx_hardware_setup(void)
+ 
+ 	vt_x86_ops.vm_size = max_t(unsigned int, vt_x86_ops.vm_size, sizeof(struct kvm_tdx));
+ 
+-	vt_x86_ops.link_external_spt = tdx_sept_link_private_spt;
+ 	vt_x86_ops.set_external_spte = tdx_sept_set_private_spte;
+ 	vt_x86_ops.free_external_spt = tdx_sept_free_private_spt;
+ 	vt_x86_ops.remove_external_spte = tdx_sept_remove_private_spte;
 -- 
 2.43.2
 
