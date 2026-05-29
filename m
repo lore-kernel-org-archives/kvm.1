@@ -1,483 +1,227 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010044.outbound.protection.outlook.com [40.93.198.44])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0357C3AA517
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 06:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793E233D4F2
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 06:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780036768; cv=fail; b=RBHtnHCvDEC9U7SKEwJv3C1WOp2Qawtx06OEqhtppjFZNVwL01o+UxCzdjf7yg4b7CN//+wLyhhfAcrtkBtgDsN2FB+HGl2n8Avmm8CT7Kh6l0CwwCqubYYkZzX5dzAFVJWeknj9fq1CXvVDqInnngh4UZL96osMsC9dhxJxknQ=
+	t=1780036914; cv=fail; b=qUyoT/Bk+S7osWcBu9SeWw9k5G7f7npU6ScdLp1b0lPKdS94SJ2f9R6Hlthp2TMensNnOvsa5KgTrLWjpT6DDII01M/ddcj80gwNqUqsXzb+LaVOPxvIPZ4m1dpy29rnwLMGwXWywiDWYIM2uLikT7djLW+zXDMuy3CAWq2Yvy8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780036768; c=relaxed/simple;
-	bh=746t7aQ8chDSbboMOT8funvPALPFzYG22Oh8Bg11Z/k=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EUtdVyMGNTs31jMQQRbALIkwXqACp0Ju5M5FDGGYcQpkqNsjiTmYbFfcHwYYH7lNbuMgczm98QEqOb6hRDjcnD++VtLUO/9FAatCt43jUiWYcJUVDGBvp2dM9SoqVFoxc12MhqEp8hy9kmOoxcKk9mOPHMKqsPPr93EIzlqw880=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fQzRkm9P; arc=fail smtp.client-ip=40.93.198.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1780036914; c=relaxed/simple;
+	bh=RUFhAdhfxdt+409Lo5x+VBLswnLbP635ULre/4vDtdY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZQ2ior7upk2GhQvHNMnqC0IF7laleK0TxnCFhMXPx/1ErN+pVYxG+ESqB1FhBMYOnTKGnaxeRpXjFcG1V8yuTBm1qYl0b8dU9CCAvCvyq2yrMPlvoNAGfFseZjvgEKzvg4c5IazPfr9S6f3/N2Ltddd47+DW7+dZDpCj5eSf9tg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=myui/KH8; arc=fail smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fQzRkm9P"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VMWK3rd7ea1waCYQSKjqj5rAI6tguNuej+bfkefZjpOuQT4Gqep2jz1+T9cshy0ULlzgSQmAOUdSKJQCXxDXvt+61NDEA0jtcs5GNb1F/Tcaztrt4w0dJM5JtAR1B3JBBUkPBJuTfz0Tu8fIbGPIOetvwsbDq/EfVzTXrG6lQY1NLSKO/kSsDGGTEF+ITJWyfZazy3KWT/4LxI4pYAm4upFAapgH2iTD+ctcHzxf31wZKkDyhe8sujPHQBUEucYiVWi1zcRybiLIfROEKGSF1UV21/Og4SXjD2lI0ntD/lU9Kd4cJo16IwvLERF/CIjYp7sgaqeaOMNavCl6+MNzbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hmMv6zFlKB5mpHSd0ZqpGXx+wHyS0gv8b81cihYkaoc=;
- b=AUPnBSLdWJbgGhUEt8//HlngXzMirX43bUWwRgPCLdHxk7zJPivhLSLVVKnPb40h9h6VxUan+krEOiJ9swgwbuess9PKo36/aiDUIJ/N60VoAKB3KnWAA4itSARvZc7rUj8bVfenUyK6PJ0AAvpxRhN8yKUylMJ0zFQxjK4DTQ3BFspFMGfXFBBLwuczkb0M+/0HLZLlMSks4M9uJwhBR2G536tTPFW8vst8eqjWdrkZZ8l+SOdZC8Qo5cPOrG2SgvKI5XmeHuJ2JE4Dv7QI6aXCT/A2R8LTpDBvqK+9n9FIPwWOB6Bf6rmT/Q49S6BgvfOaOhNl5sWW0S97OP6vBw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hmMv6zFlKB5mpHSd0ZqpGXx+wHyS0gv8b81cihYkaoc=;
- b=fQzRkm9P57q1+U1xFqrK9HKlo67lL2SXw9zPlUsZp0E8pT1XTNxvBRwgnd9Cblem/Q1XZJoQKYXRFltZeHyXSwv0bHPbL6qNQD/xNLo2hmrwG/bFv+sNgxK7AjGw5BCz9Z6P89k4xbZKR1zYN/9pQh+08h7W3t7iNUBld1/akNk=
-Received: from MN2PR16CA0057.namprd16.prod.outlook.com (2603:10b6:208:234::26)
- by MW4PR12MB6780.namprd12.prod.outlook.com (2603:10b6:303:20e::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Fri, 29 May
- 2026 06:39:19 +0000
-Received: from BL02EPF0001A0FD.namprd03.prod.outlook.com
- (2603:10b6:208:234:cafe::af) by MN2PR16CA0057.outlook.office365.com
- (2603:10b6:208:234::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.13 via Frontend Transport; Fri, 29
- May 2026 06:39:19 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0001A0FD.mail.protection.outlook.com (10.167.242.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Fri, 29 May 2026 06:39:19 +0000
-Received: from gomati.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 29 May
- 2026 01:39:16 -0500
-From: Nikunj A Dadhania <nikunj@amd.com>
-To: <nikunj@amd.com>, <pbonzini@redhat.com>, <seanjc@google.com>
-CC: <bp@alien8.de>, <joao.m.martins@oracle.com>, <kai.huang@intel.com>,
-	<kvm@vger.kernel.org>, <thomas.lendacky@amd.com>, <yosry@kernel.org>
-Subject: [PATCH v7.1] KVM: SVM: Add Page modification logging support
-Date: Fri, 29 May 2026 06:38:33 +0000
-Message-ID: <20260529063833.1660791-1-nikunj@amd.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <77f1f310-d789-427e-8c10-bd6ac4836add@amd.com>
-References: <77f1f310-d789-427e-8c10-bd6ac4836add@amd.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="myui/KH8"
+Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64T1NUuG2026330
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:41:51 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=wjl2lJMhu3x6YF6VZMdTDkNQcozAcKqTdHEY7+axmxo=; b=myui/KH8juDb
+	9VFRxDDFEIimNoAd5XwHhraUO/L1qE4ZtZnO5K+/nzprny+oPTbRJWHwUl7Iab/B
+	cMLPIr8HMpKYeWusLbb/K+iwCBNNEvNQ4TbH/N8JWoEGZzYAl66wAE0qc8sarvKy
+	NYv2JsEurivQoqaAHfEmVHaXwieB82fQ7S1h7lyRTkK45xQ7kvSunBJhbh5mhqcS
+	R4u4gH7+DhvThFUOuSUwR7HsCG5Cx58JsKiG3AGPcpDd3+2CHCL50PZkKvpuBsSW
+	56zV2uZKI0BOQNtMOtj246H6KVeuu5CBuNc+Twlud+11KyL2joGJMeL7vJmJjcwU
+	nf9M3D97/Q==
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ee7x1j4py-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:41:51 -0700 (PDT)
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4856a701421so7698732b6e.1
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:41:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780036911; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LlPxHZLHpkYirinCuMdkmdMV6sDETE231CUQnA6R/rcdStECLox/HGY3z6XAGu8rGY
+         Ch75ePrGiAp5py5IeT9vEfgMPOBEH8FaAvZwlQY3OZN8tzgtulzzENCmETfWaOYLqDrs
+         rmfetpN5DpeadLabeRwV6Xccjcqd4J3d/77Cf4gL3/H5q67aCMt4cejrUpO5sd2HIXmk
+         RuLNMehCv/YGUS6wD4bnO8aYtvUZkkZ1dP57I4f8nDcZj4t6rj6A3VjONGzTWARqb7bB
+         Shzh5riPWNn7hKC7ZLYeeu4qbF95o853K5z5od3s5KARomiznk3i+9/XmIFBOg0s7xTi
+         /zSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=5hKWaaPr0jpqnvHMhDmJMKNnaKkhbQEW5A8xM9/5BHs=;
+        fh=EeuiGo3NKWxDQHp2TKIlG/Cqr/ijZ7dx288mOQ4ves0=;
+        b=Fieq67MOAJa0J81Woq5TXW5ZzjUX+9zxaK58unPRDcF/5VgFG6FvRCPMQ/oBK+uMdx
+         JnPxpuCBqP90nRH7Nqbpcj1ry3bzUrfP576HUYi8VNBO0NE1WJ71j+elxOCMBdfNRvXp
+         tzTClxoUsom59qCw8fJ2Wyo9PXMUd0rj0Wrw6qO+e491oeDjI+O7an7kwoAJwRndFr0L
+         CznsPa7Eb8uU4S+SSMkb2SK7cOf0ECkYef+NxyptmB7Ftdht7Ml0HUUHYOX7rlI3d3Oe
+         F+N+xa0CziR72ypUymh8ZptfoMU6A79VMjfhm/SQNtATqWSs/epy/8VuPl7Krc/97MVR
+         aamw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780036911; x=1780641711;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5hKWaaPr0jpqnvHMhDmJMKNnaKkhbQEW5A8xM9/5BHs=;
+        b=RWdaQVRzcHTM4nRZTUU3xnuE9nxnfLeNXvlqtMrhhGstQAiTkxBejK05G9rQUBbpBB
+         dWswQlJNuHaunH5IcNoDOgToDuey6/hf1afNTDenSQRrA5YYGwfN5uXisp9WsuFHH2E1
+         JPGT/G22ewZ3j1D3xME2YkdnwBnqwue8dC47QFFjGaBf288tU4c5wrMuWNOJ84EAqbxX
+         jzfX/1mnUAC/Olj9s/zhwlTNava4KlwUh/I1UVUReKMPGCypWb4YaSHK3ipPIJH3PN8I
+         t36yIkHVts9VHQRvKURtcgllSUFWIV9wKs3qArpaVyaC7jhdcTirVML9AMTd7SIAVdx0
+         Ujag==
+X-Forwarded-Encrypted: i=1; AFNElJ/axfWYMaserhuC+zSgbHeeUE8CMI4swEnEExFi1mdzDZxGJ7hMn640CjHcPA/8ZE/79mM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxduXVHZ2uo2bQUC7GnUlG7627jq8ILiyqDJ3La5SlByhwKKF7
+	egXUjDklMQsnHPxcySi/9bcyx31FTDCPLV1hFRmNSrpMyWZ73qnZ29fZZh6e5KkjCCwoWhQXOzi
+	ggp4CnI2yshy+7fYYZ+NA1+nUHtAAbug7v+ICj8tHlL+Edh8dWtcj92UOOerpmlbSKPWBNGbu80
+	+MRa+7BbfR1tc2Z/JM8Jz6NDBwhfA=
+X-Gm-Gg: Acq92OExVie0MBvQf6M0f+K+8S6HHfYO0Iv7Iirj5s9GrDOBXP+imnHjRu1f4dqz/n9
+	oZ43dH6hDKREM5DMv2j/B7VopWRWZnOJPi7tHdXxfXawl7dwCogEYUJuGByBw4VbaKfjpliE/gS
+	J8TeWO+9/n8xksrLvRWVWeliZvhbbP3C/GcFS+t9gCUxYSxaALBKJsgNZenHIiYr2gIyFZhLULh
+	yvok193tREbtdjUydjFDnFhZvF2cRO02Jen7mlR6DIKfWVDBoQ=
+X-Received: by 2002:a05:6808:1c07:b0:467:1212:46eb with SMTP id 5614622812f47-485e6dc0223mr972294b6e.35.1780036910692;
+        Thu, 28 May 2026 23:41:50 -0700 (PDT)
+X-Received: by 2002:a05:6808:1c07:b0:467:1212:46eb with SMTP id
+ 5614622812f47-485e6dc0223mr972266b6e.35.1780036910218; Thu, 28 May 2026
+ 23:41:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FD:EE_|MW4PR12MB6780:EE_
-X-MS-Office365-Filtering-Correlation-Id: 93d31386-7628-4871-6380-08debd4d02f8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700016|56012099006|5023799004|11063799006|22082099003|18002099003|6133799003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	rnkKy7Dqjdy349+NmPke5h9ebPExfTIUdo+p7eCJY3bPJkO0JmCe/gTAs003CMq9GkohGfEb/YsUJ+maosbP8rVMd+TPao6LZticdgByuj8CH3bQ67iS8SltjyLPwxm3kwlBRFgvL5I1JrjONmRF7jzKvUFcubRnU4bIeomgumRW2dKz6bHCSsy1KIwCGKl0ODtaD6NSOWkHUf7s3yVp41tbch68llXnE6G6pwLq2Wl847arjRewd8YqDxGlz8mhx0FHjBJeUsNzCCLl/7LDVHvOcGDOGb02fKRwx6npe9m+grOAU3UhChUpTn+M5ivmhFH1KjmCj7Auwj4ANH+Hdzkr8NDBwpTgAIdQrJHnOCJsmF0lnuC6BAx+P+COr9y5K3rQtxjA7rBOt7rWyBNEncgNmDq/z3T/6K8BFc8UjrMXv42UBmctUujxiqrbeHC/N8YD4X7z7hgJ+VNU7mN0u4Uf+/BrUmg6b3rnKDnk6YOgDWPJmKwP0gMOQpYZwUPYMGAnFdksYeksdW/zLFkReWGq5oDjf4YPJ3taNZtflzJ0a9C6lNHv1Z1OYBjbD4YhGJfZPpYdrVFfoLalviIavB9lGfUtw/6p341VwqpiCiZZoN6fFBlVjG2SycVq6s2Oq6YoFBORSCWP372vleb+kV4a7vx3FSDVo5vZQWcukwkmpDubrFVXqwWnKLi1kbpY2SaMMstZ0+wPcfndahvbOIMBhkYZyCeekQ7OpCZ30p4=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700016)(56012099006)(5023799004)(11063799006)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ctYc808x7/yUc/x3PDwrIcUWoieLo11n2CEE4DL966rK9nHlT2iF2oDWZ2cQGjrSpcCdDcgE2BwvWAq9uPh32GFiWef8ZYC8mDT210H6n2znzLSp/FiA1j8af39JB6i3236YUbTsFP0mrfLXLO7KFILcD6FLsvei//BE8RAvKhUs4jFugyruDy7rxtVwEsAF3FAM/t/dvDlzZo1iH6b7K0ZSLcU43/ILJ0snRl+Ml9jVBUdh5+YDGkxqrmxZYLjnCuXMXhX3Jmha9ticQWHkdFHmcW9MzQiFBaSuXkPTMJSuLiFgiti9d3laXF6eWCXQY/29o88cbkWBrGiuR0Yctdn/Xh9H4B4l42l+HxLryHD0hApa44ulgE6o831KzIu4nn/v5kdUQbuxI16WKT0jviUBmVpC9iT/X5pnNeHTSov3fzKCs/Bi3lN4Ot6tgGwe
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 06:39:19.2791
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93d31386-7628-4871-6380-08debd4d02f8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A0FD.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6780
+References: <20260526144401.1485788-1-zhipingz@meta.com> <20260526144401.1485788-2-zhipingz@meta.com>
+ <20260527145332.30412ea4@shazbot.org> <CAH3zFs3Yv2G0rQNE7x8DjBWPE+3sFC_3X6ZtF4x-mPp==h0BQA@mail.gmail.com>
+ <65b3d63a-271a-4aa8-ba8c-fc2b186349dc@huawei.com>
+In-Reply-To: <65b3d63a-271a-4aa8-ba8c-fc2b186349dc@huawei.com>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Thu, 28 May 2026 23:41:39 -0700
+X-Gm-Features: AVHnY4JOme_X08lKUfayqc49fxg4J4ab3o3Y14UzTjVjHMNZxrhWL7QV4gYwqO4
+Message-ID: <CAH3zFs3eddZUtb08oNpjEg5b2=DJtRCuEcjsxuPyRA-zB2idag@mail.gmail.com>
+Subject: Re: [PATCH v5 1/4] PCI/TPH: expose the enabled TPH requester type
+To: fengchengwen <fengchengwen@huawei.com>
+Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian Konig <christian.koenig@amd.com>,
+        Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+        Yishai Hadas <yishaih@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: w0Zr50r4KqZP3l5TcQmNcmgui0uuysJ2
+X-Authority-Analysis: v=2.4 cv=Yu8/gYYX c=1 sm=1 tr=0 ts=6a19352f cx=c_pps
+ a=4ztaESFFfuz8Af0l9swBwA==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=xtH7KyWI9dI7BmFOsl-x:22
+ a=i0EeH86SAAAA:8 a=r1p2_3pzAAAA:8 a=VabnemYjAAAA:8 a=zzBG9ipUb6nLY-ocZWUA:9
+ a=QEXdDO2ut3YA:10 a=TPnrazJqx2CeVZ-ItzZ-:22 a=r_pkcD-q9-ctt7trBg_g:22
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDA2MiBTYWx0ZWRfX3SEV6D+NPhog
+ yCrK4HC49jeK/11IO8vsWsVzdkM0hTMSVJLhFio17q/zL0sYBbdtAVEWxoH6PLKXdW/OH8/5fmk
+ SBsgucXrZ+ZpfW5LVtEVzSk4xKCezZhydbpDIw2ghEY262TKZlW17jxIBXEqNPj9rfjKQvwMj+L
+ 8MPMa/qPxPBxvfwRG0/4kJ2/7/nMdViN2jrZrvwmGw7nNU9dNw5ToNo0/r/1oAc/TWUkWzyKkAn
+ ZyPuY0KfExfS3ti+EWrm51VNthnfAMTSbTdp/A1eZg27raWjDZjXJcUM/1MLwSnM+ICtS7O+YQ9
+ 69oZsGvY45GYbke9nZe8dbkpXmvBnnRPgSjmUuyhKDXxz3fbLDSTZAcgOL4zyiqp+/FKDWnluDy
+ vNnhuHe3Lv9FzPHbZOKT77nsCqm4v6GBwrJG2xPwk/E/JBfvTbO/f37WseYSFL11099kRB4EDtE
+ WoXV+Z00SdGJ8A/7eBw==
+X-Proofpoint-ORIG-GUID: w0Zr50r4KqZP3l5TcQmNcmgui0uuysJ2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-29_02,2026-05-28_03,2025-10-01_01
 
-Currently, dirty logging relies on write protecting guest memory and
-marking dirty GFNs during subsequent write faults. This method works but
-incurs overhead due to additional write faults for each dirty GFN.
+On Thu, May 28, 2026 at 1:04=E2=80=AFAM fengchengwen <fengchengwen@huawei.c=
+om> wrote:
+>
+> >
+> On 5/28/2026 1:35 PM, Zhiping Zhang wrote:
+> > On Wed, May 27, 2026 at 1:53=E2=80=AFPM Alex Williamson <alex@shazbot.o=
+rg> wrote:
+> >>
+> >>>
+> >> On Tue, 26 May 2026 07:43:53 -0700
+> >> Zhiping Zhang <zhipingz@meta.com> wrote:
+> >>
+> >>> Add pcie_tph_enabled_req_type() so drivers can query the enabled TPH
+> >>> requester mode without reaching into pci_dev internals.
+> >>>
+> >>> This keeps pci_dev::tph_req_type inside the PCI/TPH code and provides=
+ a
+> >>> !CONFIG_PCIE_TPH stub for callers.
+> >>>
+> >>> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> >>> ---
+> >>>  drivers/pci/tph.c       | 12 ++++++++++++
+> >>>  include/linux/pci-tph.h |  2 ++
+> >>>  2 files changed, 14 insertions(+)
+> >>>
+> >>> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+> >>> index 91145e8d9d95..6c4492075ae9 100644
+> >>> --- a/drivers/pci/tph.c
+> >>> +++ b/drivers/pci/tph.c
+> >>> @@ -174,6 +174,18 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pd=
+ev)
+> >>>  }
+> >>>  EXPORT_SYMBOL(pcie_tph_get_st_table_loc);
+> >>>
+> >>> +/**
+> >>> + * pcie_tph_enabled_req_type - Return the device's enabled TPH reque=
+ster type
+> >>> + * @pdev: PCI device to query
+> >>> + *
+> >>> + * Return: PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY or PCI_TPH_REQ_=
+EXT_TPH.
+> >>> + */
+> >>> +u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
+> >>> +{
+> >>> +     return pdev->tph_req_type;
+> >>> +}
+> >>> +EXPORT_SYMBOL(pcie_tph_enabled_req_type);
+> >>> +
+> >>>  /*
+> >>>   * Return the size of ST table. If ST table is not in TPH Requester =
+Extended
+> >>>   * Capability space, return 0. Otherwise return the ST Table Size + =
+1.
+> >>> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+> >>> index be68cd17f2f8..fe572737b409 100644
+> >>> --- a/include/linux/pci-tph.h
+> >>> +++ b/include/linux/pci-tph.h
+> >>> @@ -30,6 +30,7 @@ void pcie_disable_tph(struct pci_dev *pdev);
+> >>>  int pcie_enable_tph(struct pci_dev *pdev, int mode);
+> >>>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
+> >>>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
+> >>> +u8 pcie_tph_enabled_req_type(struct pci_dev *pdev);
+> >>>  #else
+> >>>  static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
+> >>>                                       unsigned int index, u16 tag)
+> >>> @@ -41,6 +42,7 @@ static inline int pcie_tph_get_cpu_st(struct pci_de=
+v *dev,
+> >>>  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
+> >>>  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
+> >>>  { return -EINVAL; }
+> >>> +static inline u8 pcie_tph_enabled_req_type(struct pci_dev *pdev) { r=
+eturn 0; }
+> >>
+> >> nit, s/0/PCI_TPH_REQ_DISABLE/ for consistency.  Thanks,
+>
+> It need add #include <linux/pci.h> at beginning too, else it will counter=
+ compile error like this:
+>
+>    In file included from drivers/vdpa/mlx5/core/mr.c:8:
+>    In file included from include/linux/mlx5/qp.h:36:
+>    In file included from include/linux/mlx5/device.h:37:
+>    In file included from include/rdma/ib_verbs.h:46:
+> >> include/linux/pci-tph.h:48:10: error: use of undeclared identifier 'PC=
+I_TPH_LOC_NONE'
+>       48 | { return PCI_TPH_LOC_NONE; }
+>          |          ^
+>    1 error generated.
+>
 
-Implement support for the Page Modification Logging (PML) feature, a
-hardware-assisted method for efficient dirty logging. PML automatically
-logs dirty GPA[51:12] to a 4K buffer when the CPU sets NPT D-bits. Two new
-VMCB fields are utilized: PML_ADDR and PML_INDEX. The PML_INDEX is
-initialized to 511 (8 bytes per GPA entry), and the CPU decreases the
-PML_INDEX after logging each GPA. When the PML buffer is full, a
-VMEXIT(PML_FULL) with exit code 0x407 is generated.
+Great catch =E2=80=94 thanks for testing.  I will add
+#include <linux/pci_regs.h> to pci-tph.h so the TPH macros
+(PCI_TPH_REQ_*, PCI_TPH_LOC_*) are in scope wherever the header is
+included.
 
-Since PML_INDEX in the VMCB control area remains valid after an intercepted
-SHUTDOWN, only initialize it on reset and leave it unchanged on INIT to
-avoid discarding already-logged entries that haven't been flushed.
-
-PML operates on guest physical addresses at the NPT level, tracking D-bit
-updates in page tables rather than memory content. This allows it to work
-identically for normal and confidential computing guests
-(SEV/SEV-ES/SEV-SNP), enabling cpu_dirty_log_size to be set uniformly for
-all AMD VMs without special-casing encrypted guests.
-
-Use vmcb01 directly when updating PML controls to ensure L1's state
-remains correct, as svm->vmcb points to vmcb02 when L2 is active.
-
-PML is not enabled in hardware for nested guests; treat PML_FULL as
-unexpected exits.
-
-Add a new module parameter to enable/disable PML, and enable it by default
-when supported.
-
-Acked-by: Kai Huang <kai.huang@intel.com>
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
----
-
-Sending updated 7/7 patch here, rather than reposting the full series.
-
-Sean, any remaining comments? Happy to send v8 if needed.
-
-v7 -> v7.1:
-* Drop redundant pml_addr=0 in nested_vmcb02_prepare_control() (Yosry)
-* Fix misleading comment, pml_index=-1 is hardening not stale-data cleanup (Yosry, Sean)
-* Route nested SVM_EXIT_PML_FULL to KVM and treat it as unexpected exit (Sean)
-
----
- arch/x86/include/asm/svm.h      |   6 +-
- arch/x86/include/uapi/asm/svm.h |   2 +
- arch/x86/kvm/svm/nested.c       |  14 ++++
- arch/x86/kvm/svm/sev.c          |   2 +-
- arch/x86/kvm/svm/svm.c          | 115 +++++++++++++++++++++++++++++++-
- arch/x86/kvm/svm/svm.h          |   3 +
- 6 files changed, 138 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index f199c52709df8..e0a7549a7c727 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -165,7 +165,10 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
- 	u8 reserved_9[22];
- 	u64 allowed_sev_features;	/* Offset 0x138 */
- 	u64 guest_sev_features;		/* Offset 0x140 */
--	u8 reserved_10[664];
-+	u8 reserved_10[128];
-+	u64 pml_addr;			/* Offset 0x1c8 */
-+	u16 pml_index;			/* Offset 0x1d0 */
-+	u8 reserved_11[526];
- 	/*
- 	 * Offset 0x3e0, 32 bytes reserved
- 	 * for use by hypervisor/software.
-@@ -244,6 +247,7 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
- #define SVM_MISC_ENABLE_SEV		BIT_ULL(1)
- #define SVM_MISC_ENABLE_SEV_ES		BIT_ULL(2)
- #define SVM_MISC_ENABLE_GMET		BIT_ULL(3)
-+#define SVM_MISC_ENABLE_PML		BIT_ULL(11)
- 
- #define SVM_MISC2_ENABLE_V_LBR	BIT_ULL(0)
- #define SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE	BIT_ULL(1)
-diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
-index 010a45c9f6147..e806761850921 100644
---- a/arch/x86/include/uapi/asm/svm.h
-+++ b/arch/x86/include/uapi/asm/svm.h
-@@ -101,6 +101,7 @@
- #define SVM_EXIT_AVIC_INCOMPLETE_IPI		0x401
- #define SVM_EXIT_AVIC_UNACCELERATED_ACCESS	0x402
- #define SVM_EXIT_VMGEXIT       0x403
-+#define SVM_EXIT_PML_FULL	0x407
- 
- /* SEV-ES software-defined VMGEXIT events */
- #define SVM_VMGEXIT_MMIO_READ			0x80000001ull
-@@ -236,6 +237,7 @@
- 	{ SVM_EXIT_AVIC_INCOMPLETE_IPI,		"avic_incomplete_ipi" }, \
- 	{ SVM_EXIT_AVIC_UNACCELERATED_ACCESS,   "avic_unaccelerated_access" }, \
- 	{ SVM_EXIT_VMGEXIT,		"vmgexit" }, \
-+	{ SVM_EXIT_PML_FULL,		"pml_full" }, \
- 	{ SVM_VMGEXIT_MMIO_READ,	"vmgexit_mmio_read" }, \
- 	{ SVM_VMGEXIT_MMIO_WRITE,	"vmgexit_mmio_write" }, \
- 	{ SVM_VMGEXIT_NMI_COMPLETE,	"vmgexit_nmi_complete" }, \
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 4ef9bc6a553f3..8533a7610a5fa 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -882,6 +882,13 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
- 	vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
- 	vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
- 
-+	/*
-+	 * PML is never enabled in hardware for L2.  Make sure that an
-+	 * unexpected PML write would trigger a PML_FULL VM-Exit.
-+	 */
-+	if (pml)
-+		vmcb02->control.pml_index = -1;
-+
- 	/*
- 	 * Stash vmcb02's counter if the guest hasn't moved past the guilty
- 	 * instruction; otherwise, reset the counter to '0'.
-@@ -1782,6 +1789,13 @@ int nested_svm_exit_special(struct vcpu_svm *svm)
- 		if (nested_svm_is_l2_tlb_flush_hcall(vcpu))
- 			return NESTED_EXIT_HOST;
- 		break;
-+	case SVM_EXIT_PML_FULL:
-+		/*
-+		 * All PML full exits are handled by KVM.  KVM emulates PML in
-+		 * software for L1, but never enables PML in hardware on behalf
-+		 * of L1.
-+		 */
-+		return NESTED_EXIT_HOST;
- 	default:
- 		break;
- 	}
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 37d4cfa5d980b..893145a691191 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4861,7 +4861,7 @@ struct page *snp_safe_alloc_page_node(int node, gfp_t gfp)
- 	 * Allocate an SNP-safe page to workaround the SNP erratum where
- 	 * the CPU will incorrectly signal an RMP violation #PF if a
- 	 * hugepage (2MB or 1GB) collides with the RMP entry of a
--	 * 2MB-aligned VMCB, VMSA, or AVIC backing page.
-+	 * 2MB-aligned VMCB, VMSA, PML or AVIC backing page.
- 	 *
- 	 * Allocate one extra page, choose a page which is not
- 	 * 2MB-aligned, and free the other.
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index e74fcde6155ec..bde900311191b 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -179,6 +179,9 @@ module_param(vnmi, bool, 0444);
- 
- module_param(enable_mediated_pmu, bool, 0444);
- 
-+bool __ro_after_init pml = true;
-+module_param(pml, bool, 0444);
-+
- static bool __ro_after_init svm_gp_erratum_intercept = true;
- 
- static u8 rsm_ins_bytes[] = "\x0f\xaa";
-@@ -1260,6 +1263,24 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool init_event)
- 	if (vcpu->kvm->arch.bus_lock_detection_enabled)
- 		svm_set_intercept(svm, INTERCEPT_BUSLOCK);
- 
-+	if (pml) {
-+		/*
-+		 * Populate the page address and index here, PML is enabled
-+		 * when dirty logging is enabled on the memslot through
-+		 * svm_update_cpu_dirty_logging()
-+		 */
-+		control->pml_addr = (u64)__sme_set(page_to_phys(vcpu->arch.pml_page));
-+
-+		/*
-+		 * PML index in the VMCB control area remains valid after an
-+		 * intercepted SHUTDOWN, so only initialize PML index on reset
-+		 * to avoid discarding already-logged entries that haven't been
-+		 * flushed.
-+		 */
-+		if (!init_event)
-+			control->pml_index = PML_HEAD_INDEX;
-+	}
-+
- 	if (is_sev_guest(vcpu))
- 		sev_init_vmcb(svm, init_event);
- 
-@@ -1324,9 +1345,15 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
- 	if (!vmcb01_page)
- 		goto out;
- 
-+	if (pml) {
-+		vcpu->arch.pml_page = snp_safe_alloc_page();
-+		if (!vcpu->arch.pml_page)
-+			goto error_free_vmcb_page;
-+	}
-+
- 	err = sev_vcpu_create(vcpu);
- 	if (err)
--		goto error_free_vmcb_page;
-+		goto error_free_pml_page;
- 
- 	err = avic_init_vcpu(svm);
- 	if (err)
-@@ -1351,6 +1378,9 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
- 
- error_free_sev:
- 	sev_free_vcpu(vcpu);
-+error_free_pml_page:
-+	if (vcpu->arch.pml_page)
-+		__free_page(vcpu->arch.pml_page);
- error_free_vmcb_page:
- 	__free_page(vmcb01_page);
- out:
-@@ -1368,6 +1398,9 @@ static void svm_vcpu_free(struct kvm_vcpu *vcpu)
- 
- 	sev_free_vcpu(vcpu);
- 
-+	if (pml && vcpu->arch.pml_page)
-+		__free_page(vcpu->arch.pml_page);
-+
- 	__free_page(__sme_pa_to_page(svm->vmcb01.pa));
- 	svm_vcpu_free_msrpm(svm->msrpm);
- }
-@@ -3331,6 +3364,53 @@ static int vmmcall_interception(struct kvm_vcpu *vcpu)
- 	return kvm_emulate_hypercall(vcpu);
- }
- 
-+void svm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu)
-+{
-+	struct vcpu_svm *svm = to_svm(vcpu);
-+	struct vmcb *vmcb01 = svm->vmcb01.ptr;
-+
-+	if (WARN_ON_ONCE(!vcpu->kvm->arch.cpu_dirty_log_size))
-+		return;
-+
-+	/*
-+	 * Note, nr_memslots_dirty_logging can be changed concurrent with this
-+	 * code, but in that case another update request will be made and so
-+	 * the guest will never run with a stale PML value.
-+	 */
-+	if (atomic_read(&vcpu->kvm->nr_memslots_dirty_logging))
-+		vmcb01->control.misc_ctl |= SVM_MISC_ENABLE_PML;
-+	else
-+		vmcb01->control.misc_ctl &= ~SVM_MISC_ENABLE_PML;
-+
-+	vmcb_mark_dirty(vmcb01, VMCB_NPT);
-+}
-+
-+static void svm_flush_pml_buffer(struct kvm_vcpu *vcpu)
-+{
-+	struct vcpu_svm *svm = to_svm(vcpu);
-+	struct vmcb_control_area *control = &svm->vmcb->control;
-+
-+	/* Do nothing if PML buffer is empty */
-+	if (control->pml_index == PML_HEAD_INDEX)
-+		return;
-+
-+	kvm_flush_pml_buffer(vcpu, control->pml_index);
-+
-+	/* Reset the PML index */
-+	control->pml_index = PML_HEAD_INDEX;
-+}
-+
-+static int pml_full_interception(struct kvm_vcpu *vcpu)
-+{
-+	trace_kvm_pml_full(vcpu->vcpu_id);
-+
-+	/*
-+	 * PML buffer is already flushed at the beginning of svm_handle_exit().
-+	 * Nothing to do here.
-+	 */
-+	return 1;
-+}
-+
- static int (*const svm_exit_handlers[])(struct kvm_vcpu *vcpu) = {
- 	[SVM_EXIT_READ_CR0]			= cr_interception,
- 	[SVM_EXIT_READ_CR3]			= cr_interception,
-@@ -3407,6 +3487,7 @@ static int (*const svm_exit_handlers[])(struct kvm_vcpu *vcpu) = {
- #ifdef CONFIG_KVM_AMD_SEV
- 	[SVM_EXIT_VMGEXIT]			= sev_handle_vmgexit,
- #endif
-+	[SVM_EXIT_PML_FULL]			= pml_full_interception,
- };
- 
- static void dump_vmcb(struct kvm_vcpu *vcpu)
-@@ -3456,8 +3537,14 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
- 	pr_err("%-20s%016llx\n", "exit_info2:", control->exit_info_2);
- 	pr_err("%-20s%08x\n", "exit_int_info:", control->exit_int_info);
- 	pr_err("%-20s%08x\n", "exit_int_info_err:", control->exit_int_info_err);
--	pr_err("%-20s%lld\n", "misc_ctl:", control->misc_ctl);
-+	pr_err("%-20s%llx\n", "misc_ctl:", control->misc_ctl);
- 	pr_err("%-20s%016llx\n", "nested_cr3:", control->nested_cr3);
-+
-+	if (pml) {
-+		pr_err("%-20s%016llx\n", "pml_addr:", control->pml_addr);
-+		pr_err("%-20s%04x\n", "pml_index:", control->pml_index);
-+	}
-+
- 	pr_err("%-20s%016llx\n", "avic_vapic_bar:", control->avic_vapic_bar);
- 	pr_err("%-20s%016llx\n", "ghcb:", control->ghcb_gpa);
- 	pr_err("%-20s%08x\n", "event_inj:", control->event_inj);
-@@ -3635,6 +3722,13 @@ int svm_invoke_exit_handler(struct kvm_vcpu *vcpu, u64 __exit_code)
- 	    (u64)exit_code != __exit_code)
- 		goto unexpected_vmexit;
- 
-+	/*
-+	 * PML is never enabled when running L2, bail immediately if a PML full
-+	 * exit occurs as something is horribly wrong.
-+	 */
-+	if (unlikely(is_guest_mode(vcpu) && exit_code == SVM_EXIT_PML_FULL))
-+		goto unexpected_vmexit;
-+
- #ifdef CONFIG_MITIGATION_RETPOLINE
- 	if (exit_code == SVM_EXIT_MSR)
- 		return msr_interception(vcpu);
-@@ -3703,6 +3797,14 @@ static int svm_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct kvm_run *kvm_run = vcpu->run;
- 
-+	/*
-+	 * Opportunistically flush the PML buffer on VM exit. This keeps the
-+	 * dirty bitmap current by processing logged GPAs rather than waiting for
-+	 * PML_FULL exit.
-+	 */
-+	if (vcpu->kvm->arch.cpu_dirty_log_size && !is_guest_mode(vcpu))
-+		svm_flush_pml_buffer(vcpu);
-+
- 	if (unlikely(exit_fastpath == EXIT_FASTPATH_EXIT_USERSPACE))
- 		return 0;
- 
-@@ -5310,6 +5412,9 @@ static int svm_vm_init(struct kvm *kvm)
- 			return ret;
- 	}
- 
-+	if (pml)
-+		kvm->arch.cpu_dirty_log_size = PML_LOG_NR_ENTRIES;
-+
- 	svm_srso_vm_init();
- 	return 0;
- }
-@@ -5465,6 +5570,8 @@ struct kvm_x86_ops svm_x86_ops __initdata = {
- 	.gmem_prepare = sev_gmem_prepare,
- 	.gmem_invalidate = sev_gmem_invalidate,
- 	.gmem_max_mapping_level = sev_gmem_max_mapping_level,
-+
-+	.update_cpu_dirty_logging = svm_update_cpu_dirty_logging,
- };
- 
- /*
-@@ -5690,6 +5797,10 @@ static __init int svm_hardware_setup(void)
- 
- 	nrips = nrips && boot_cpu_has(X86_FEATURE_NRIPS);
- 
-+	pml = pml && npt_enabled && cpu_feature_enabled(X86_FEATURE_PML);
-+	if (pml)
-+		pr_info("Page modification logging supported\n");
-+
- 	if (lbrv) {
- 		if (!boot_cpu_has(X86_FEATURE_LBRV))
- 			lbrv = false;
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 2b6733dffd76f..7cd8207359d7c 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -52,6 +52,7 @@ extern int vgif;
- extern bool intercept_smi;
- extern bool vnmi;
- extern int lbrv;
-+extern bool pml;
- 
- extern int tsc_aux_uret_slot __ro_after_init;
- 
-@@ -832,6 +833,8 @@ static inline void svm_enable_intercept_for_msr(struct kvm_vcpu *vcpu,
- 	svm_set_intercept_for_msr(vcpu, msr, type, true);
- }
- 
-+void svm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
-+
- /* nested.c */
- 
- #define NESTED_EXIT_HOST	0	/* Exit handled on host level */
--- 
-2.48.1
-
+Thanks,
+Zhiping
