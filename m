@@ -1,114 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA19A29430
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 16:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3393F6606
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 16:51:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780073348; cv=none; b=QS6eq249W6ibEdjrm2P3A055enO3H/qN2Yu8XrpEjdqjG6eEmM/Afs88xIZQBc2+rIqLe5OgUF4f8o81txEY+78EsYxmusK33aYWkUFadRRSt4P2orxv1faIbosTv09SaWJtRI8vMQqk7tQ8iTH4yOc+G32AROitgRxh778kqQM=
+	t=1780073487; cv=none; b=GxWXgboysVMirR058MjxNCX9XevLSCg3yetAbpwnRnXHBw3Ga0Mw2YmI1A0paFT71s7hJrNlTBow3sTDn17IojW/EzXkfPpEsvjjYcsQZZsDPkb8LsgnhXlZR0Brj1Pv970kF/ytoq3uETNWoV71FnrX9WiCDq4rlOSesXu4kis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780073348; c=relaxed/simple;
-	bh=+bIJ+/rEO9U60bcxSsx3G27wsT9POSoVwsVOI+/jnRo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=c57yPvXZA5Ho4WTXUvoXxb8qmiNb57cUMzNpbaydmpXgevBI4cuajAd6qO/O2Fj9gQKSnKcI3jI+r1XyHbXUiXoorQADAWoaxRfE/0B9h9ge4VpmXhYUZq0mq6FljG30Iywt3/JUWtEtnc8F5ybWwQu9SBKIpjnVXZDrQ0zNgas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iCkrcBR0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780073487; c=relaxed/simple;
+	bh=AtFcM1p+z+1rc1/6nsVz6rfLlrNX/X9yq7IlKrkY4UA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JPcXYpthgRaaAuC3PJKfGSsq6mVvPpizQVABE/4imkCI6wFp4LusCFa35b1z85kpfDoEyMsJWBF9pZK+nqvlbtXNhqYPFPJ+1urXiUm6tTQysJkbB+9VtHUIzdElEMfykjfomjp3esG9h/A9+c3Byo1PvW1OinEU5MoMEgkRF9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bOKrkjBr; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iCkrcBR0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73ACF1F00893;
-	Fri, 29 May 2026 16:49:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780073346;
-	bh=62bKI3b+EhrHtQndI8BORpaxaYHABoyhq+J1p1kin6o=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iCkrcBR0jyi3TJWi33BzApuLoclgkyIDVcl+OCCe4OZtHYwo2SzI0YXRlxTj0KeNK
-	 GgKtW4hGFTpjFOsuGJtbdyk1rxHpiKWeDJfB2JnqKcflnixoDw+zGG5T6OK1W/dley
-	 inHpKMxfeF/wSPHj74M9hWGBbQ6vIRZKM1vif5TJyuHbFg0+ToV8oz1+eXZ1HGb+wt
-	 b/gmM+zFzAEhPs1ToAFv145K1IJevFELwwyYZQiOi5luUDmkTBiq5UWFYN3BXnQkCP
-	 idubyLXzW0zxyXM17Hg0HP+40LpIPNB4Xy0SAcRGWo+7VudjwdLWD7JwEy2mV+5368
-	 jdHG8m0IZpDkQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 01/27] VFIO: take reference to the KVM module
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529155050.2902245-2-seiden@linux.ibm.com>
-References: <20260529155050.2902245-2-seiden@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 16:49:05 +0000
-Message-Id: <20260529164906.73ACF1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bOKrkjBr"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bc7f9b2213so105256825ad.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 09:51:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780073483; x=1780678283; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LP4TINOhpVn9QUNu/ZQVDz5Zdr6DbJ7KZw0moPwk5rY=;
+        b=bOKrkjBrY6vgzl+mINhgriSFNoxlebvRHhGmO78xTwsNWNbR9NFC2e4dVn1gIFk6dB
+         JgncFxaGul/MP4iJA5ZC+HCIowkE7b6JPAZ7s/plTP9mMFkNWL0gU9aeyBbd4JEJxPaP
+         VrNz+8iJGFAMxohkY3hkH+GM+ASgIo5hGQr+VB+rAjRF0zOaSBlay71fxExuBsrlV5xG
+         7ndg0mHLukwwtaq438KBcfAIvkyvy7w4d00zat6Z854EiqZBtu7Jm6ylAe7jNMAKLdcg
+         wtkwqTM1wsPCyCn9Zd/fyp2zwKiw9irJXANrUr72/fD1Rvqf64DR9zBHFJ+NC8rkn4sg
+         hYCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780073483; x=1780678283;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LP4TINOhpVn9QUNu/ZQVDz5Zdr6DbJ7KZw0moPwk5rY=;
+        b=FFDM6SEH/HzwB9ge8sE8OV5xo4fQD0vXfr0RhjHEcJWNMhPECmYCeNIPtQnIuP7KNn
+         Jn1DzU7uMWqozogmBR35/XIhauZJjiXkE6CBymIuv4/VKqK13492FipzMrmLZE0hDRHP
+         En2eHIJ7gGqBMR0Q+M2UA+UqFIZMMkEhvRAsqZParBKgF6uXXCBaaPa/0QlxjHjvOvTX
+         ygWgknD2ELoY3xBxLe5eIYT3olk1+WK7/lAvUfCynKeElDIuQuoJg3HNwH+VEbDWWKtz
+         CMlYQg7du40CrzG+yzNRoXXU+qVclryvcyqvLIJJ2HJcigmZUI7dt6doBwdfJX4uhrsT
+         VlXA==
+X-Forwarded-Encrypted: i=1; AFNElJ+udIbu1VHGsCV/q1Os5X1yZhRzeseCvciX728RU6ilhayevuhc/9l6eTfwxpiz6LWkDoc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN6V56854RkadYBqv3/wVlqTLR7jqN65jmbxnhDw3kAXLzYao7
+	2x+VDEw4xBhuX+WiSFe00eBtNGDA3lvgm9BK5TRnkp3lmwtQpvFRezWpj7IxiKICNJmTRwCx9qA
+	7QmuGOw==
+X-Received: from plxj16.prod.google.com ([2002:a17:902:da90:b0:2bf:2cd5:1d4a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5c2:b0:2ba:bfb5:9cc
+ with SMTP id d9443c01a7336-2bf36845817mr6959535ad.26.1780073482782; Fri, 29
+ May 2026 09:51:22 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 29 May 2026 09:50:54 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
+Message-ID: <20260529165114.748639-1-seanjc@google.com>
+Subject: [PATCH v2 00/20] KVM: x86/xen: Fix Xen/GP/PREEMPT_RT issues with rwlock_t
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>
+Cc: Waiman Long <longman@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Woodhouse <dwmw@amazon.co.uk>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, 
+	Carsten Stollmaier <stollmc@amazon.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+This series fixes sleeping-in-hardirq bugs in KVM's Xen emulation on
+PREEMPT_RT, cleans up the now-unnecessary IRQ disabling in GPC lock usage
+throughout KVM, and then adds CLASS()-based APIs for utilizing GPCs mappings
+to dedup code and (hopefully) make it easier to use GPCs in other places.
+  
+The core issue is that kvm_xen_set_evtchn_fast() and the Xen timer
+callback are called from hardirq/atomic context, but on PREEMPT_RT the
+GPC rwlock_t is a sleeping lock.
 
-Pre-existing issues:
-- [High] Unconditional KVM reference overwrite and subsequent premature rel=
-ease in the VFIO cdev bind error path.
---
+Assuming I can get an Ack on patch 1, I'm planning on grabbing at least these
 
-commit 0e9c12cfda2c8eedbfdfe11e2a9a3b8ef09209f4
-Author: Paolo Bonzini <pbonzini@redhat.com>
+  KVM: Move {g,p}fn <=> {g,h}pa conversion helpers to kvm_types.h
+  KVM: x86/xen: Don't dirty track "vCPU info" page
+  KVM: x86/xen: Explicitly tag "shared info" page as never being dirty tracked
+  KVM: x86/xen: Extract delivery of event to vCPU into a separate helper
+  KVM: x86/xen: Use guard() to grab kvm->srcu around gpc critical sections
+  KVM: Remove unnecessary IRQ disabling from GPC lock in pfncache.c
+  KVM: x86: Remove unnecessary irqsave from kvm_setup_guest_pvclock()
+  KVM: x86/xen: Remove unnecessary irqsave from GPC lock usage in xen.c
+  KVM: x86/xen: Use read_trylock() for GPC locks in hardirq/atomic paths
+  locking/rt: Use raw_spin_lock_irqsave() in __rwbase_read_unlock()
 
-VFIO: take reference to the KVM module
+for 7.2.  If people like the CLASS() stuff, I'll also probably grab these:
 
-VFIO implicitly took a reference to the KVM module via symbol_get and
-symbol_put. In preparation for removing these, this patch stores a pointer
-to the KVM module and uses module_get()/module_put() to keep KVM alive.
+  KVM: Add "extended" gpc CLASS() APIs for sometimes-atomic cases
+  KVM: x86/xen: Convert event injection to gpc's CLASS() APIs
+  KVM: x86/xen: Drop local "kick_vcpu" from __kvm_xen_set_evtchn_fast()
+  KVM: x86/xen: Convert xen_get_guest_pvclock() to gpc's CLASS() APIs
+  KVM: x86/xen: Convert kvm_xen_set_evtchn_fast() to gpc's CLASS() APIs
+  KVM: x86/xen: Convert wait_pending_event() to gpc's CLASS() APIs
+  KVM: x86/xen: Don't bother waiting on gpc->lock in SCHEDOP_poll
+  KVM: x86/xen: Convert kvm_xen_shared_info_init() to gpc's CLASS() APIs
+  KVM: Add CLASS() constructs to automagically handle lock+check of gpc
 
-> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-> index 6222376ab6ab5..78b9cad348b19 100644
-> --- a/drivers/vfio/vfio_main.c
-> +++ b/drivers/vfio/vfio_main.c
-[ ... ]
-> @@ -490,6 +496,8 @@ void vfio_device_put_kvm(struct vfio_device *device)
-> =20
->  clear:
->  	device->kvm =3D NULL;
-> +	module_put(device->kvm_module);
-> +	device->kvm_module =3D NULL;
->  }
->  #endif
+I do NOT plan on grabbing the record_steal_time change for 7.2 no matter
+what, even though I do like the end result, as I still have concerns over the
+lack of range-based invalidation for GPCs.  I 100% agree that such problems
+are really only due to flawed VMMs and/or setups, but unfortunately history
+has shown that there are a suprising number of deployments running what I
+would consider flawed setups, e.g. run with NUMA autobalancing and KSM.
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does this change exacerbate
-a bug in the cdev bind error path by adding a module_put() underflow?
+I realize I'm being somewhat paranoid, as KVM already uses a GPC for PV
+clocks.  But for modern setups, KVM_REQ_CLOCK_UPDATE is a rare event, whereas
+KVM will update steal time (when enabled) on every vCPU load.  So I want a
+high level of confidence that KVM won't regress "imperfect" setups before
+switching to a GPC for steal time (though again, I definitely like the end
+result and want to do so).
 
-In vfio_df_ioctl_bind_iommufd(), if a second bind attempt is made on an
-already-open device via a new file descriptor, the code unconditionally
-calls vfio_df_get_kvm_safe() before checking device->open_count:
+[*] https://lore.kernel.org/all/20240821202814.711673-2-dwmw2@infradead.org
 
-	vfio_df_get_kvm_safe(df);
+v2:
+ - Add the CLASS() APIs.
+ - Move the steal time change to the very end.
+ - "Fix" a dirty logging inconsistency with the Xen vCPU info page.
 
-	ret =3D vfio_df_open(df);
-	if (ret)
-		goto out_put_kvm;
+v1: https://lore.kernel.org/all/20260508181717.3230988-1-dwmw2@infradead.org
 
-If the new descriptor's kvm is populated, vfio_device_get_kvm_safe() blindly
-overwrites device->kvm and device->kvm_module, leaking the prior references
-held by the first valid bind.
+Carsten Stollmaier (1):
+  KVM: x86: Use gfn_to_pfn_cache for record_steal_time
 
-If the new descriptor's kvm is NULL, vfio_device_get_kvm_safe() returns ear=
-ly,
-leaving device->kvm still pointing to the first descriptor's KVM.
+David Woodhouse (5):
+  locking/rt: Use raw_spin_lock_irqsave() in __rwbase_read_unlock()
+  KVM: x86/xen: Use read_trylock() for GPC locks in hardirq/atomic paths
+  KVM: x86/xen: Remove unnecessary irqsave from GPC lock usage in xen.c
+  KVM: x86: Remove unnecessary irqsave from kvm_setup_guest_pvclock()
+  KVM: Remove unnecessary IRQ disabling from GPC lock in pfncache.c
 
-Then vfio_df_open() predictably fails with -EINVAL because
-device->open_count !=3D 0, and the error path jumps to out_put_kvm:
+Sean Christopherson (14):
+  KVM: x86/xen: Use guard() to grab kvm->srcu around gpc critical
+    sections
+  KVM: x86/xen: Extract delivery of event to vCPU into a separate helper
+  KVM: x86/xen: Explicitly tag "shared info" page as never being dirty
+    tracked
+  KVM: x86/xen: Don't dirty track "vCPU info" page
+  KVM: Move {g,p}fn <=> {g,h}pa conversion helpers to kvm_types.h
+  KVM: Add CLASS() constructs to automagically handle lock+check of gpc
+  KVM: x86/xen: Convert kvm_xen_shared_info_init() to gpc's CLASS() APIs
+  KVM: x86/xen: Don't bother waiting on gpc->lock in SCHEDOP_poll
+  KVM: x86/xen: Convert wait_pending_event() to gpc's CLASS() APIs
+  KVM: x86/xen: Convert kvm_xen_set_evtchn_fast() to gpc's CLASS() APIs
+  KVM: x86/xen: Convert xen_get_guest_pvclock() to gpc's CLASS() APIs
+  KVM: x86/xen: Drop local "kick_vcpu" from __kvm_xen_set_evtchn_fast()
+  KVM: x86/xen: Convert event injection to gpc's CLASS() APIs
+  KVM: Add "extended" gpc CLASS() APIs for sometimes-atomic cases
 
-out_put_kvm:
-	vfio_device_put_kvm(device);
+ arch/x86/include/asm/kvm_host.h |   2 +-
+ arch/x86/kvm/x86.c              | 140 +++++++---------
+ arch/x86/kvm/xen.c              | 288 +++++++++++++-------------------
+ include/linux/kvm_host.h        |  84 +++++++---
+ include/linux/kvm_types.h       |  17 ++
+ kernel/locking/rwbase_rt.c      |   5 +-
+ virt/kvm/pfncache.c             |  68 ++++++--
+ 7 files changed, 304 insertions(+), 300 deletions(-)
 
-This drops the KVM references and clears device->kvm to NULL. This destroys
-the KVM association for the initially bound, actively running process, and
-could lead to a use-after-free of KVM structures.
 
-By adding module_put(device->kvm_module) to vfio_device_put_kvm(), does this
-also cause a module reference underflow for the actively running process?
+base-commit: d1568b1332b6b3b36b222c2868fc102727c12a34
+-- 
+2.54.0.823.g6e5bcc1fc9-goog
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
-245-1-seiden@linux.ibm.com?part=3D1
