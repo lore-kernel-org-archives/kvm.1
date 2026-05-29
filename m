@@ -1,94 +1,155 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8422931F9B3
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 13:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150C9320A00;
+	Fri, 29 May 2026 13:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780061249; cv=none; b=JWULrq8ff1DUM20/UO4388v82MKj27GKpuPyWeCfnQSAG87IcUlbnBYd8il/u52VkVVV3egL5FA5pWiIeg9oMKl+Yi9fUUxXXXe7Ygzlw39KyVsXNDBDirvpNnnjDVPX0o3BHdUT0DAALihlaFJLP4shi0KGJnC+oobmV2WOvfo=
+	t=1780061947; cv=none; b=lMK96LEvctf9wdP0VSydAlETAf+MDX6DCyLKd5Vyw9LVr1iP0LIaM7aP/HvUBBZr6qNdMbWpFCuGpe9Qj3k9rKIyhhWjg+6KQwupBmlNnex/iIWnnZ3OYP7iq1j/guusFh8TT2rqxH9BozFt1KUEVGu5e3kjAHpzhpGJ66cj82A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780061249; c=relaxed/simple;
-	bh=C0e/Ez6uh7FiLV34JDhA/vXiu6NfONlDk6b6EKC/S5M=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=m1BusGwG4KxNrLhBMJZ8CHW449tWA4MXIXs7E3ivWrHIVmt5zPCygZpnifVIiB7RZG3GLrmF/V1qtvPKviXLQmTWv0mZL9n7cO+5XoWUw6HqthtCnkUcqcICR7t11fzuJF8RsW+b3/Y7c/fwwOhyIEqltdQ8n3EfsgU2ip2LpbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qUhbsYgy; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780061947; c=relaxed/simple;
+	bh=7cmIIs9xR7uMqTm+Z6aD9663vI48NGNNoR+rAVutfCA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KIaMkXYv0lqF+40iEkmuHZNwwyOJLKNfLOSon+dyIp3qqEJZsqbxozKu96PNr8EjruzRDKmGV22Xdts84AhZu2U6BeHzjcJKtVXLTEM2Hi2YMLZ+A8uhBEdgZwM+qIQn77bPiaFM6bHMdVBSO8F0fZjR2J4k58TOgU+tOeSkv3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ZwbvlGL/; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qUhbsYgy"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f756ebd0dso8286621b3a.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 06:27:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780061248; x=1780666048; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tQ9BShFIIZUp6olE5smFD4V12PZweAZYt2KEUAipHLA=;
-        b=qUhbsYgybio9sjtiQERYbUYEwPR01sDeDb+R6syzsrEeflVQCCvA3fssO74vmrDnd6
-         vRaRDPvaaVnSXApMWeZeLMAYuTuCj1iX+5scB9pAErMUqNv1GyNCCu9eeohNHt2pu9BQ
-         2+ySlS/JPNmqxSGmltivb8aR+q/3ap9URkGNVsTsV7i/emYv3Z+vo4t50+7+dJMCxXRP
-         AuXsG07JFn2pd42g0IbgCjuiCaSVR7Hka/k9GJNnChIP6LsXJUpWloAnCjeQINNdb5ti
-         KJCcIPDhbLA529qr/CwNWfvu0kFLuZceu8OYREPZX/8ofYFAOQG7N7BjRyEbppTUyRBl
-         cQyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780061248; x=1780666048;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tQ9BShFIIZUp6olE5smFD4V12PZweAZYt2KEUAipHLA=;
-        b=lrUW662bch/5Ws9wK5wE2nAGTKQqFw6/NNGnQiAS2S0hvZdHUsn5/fsspSPfmtV5BS
-         o/M/NGRxAA2LFLpeg0pc4zTIyquFtjBjBhTsffp+ooGMpZj80tLhzrRS8NB+zVo7tL98
-         Vandh10iR3C5R0L3sUy83HbSGBxwcX6teGU98FsVd+0TMMu88CEYbLCzBBFFpDOUQZyf
-         CuJ3tDAqZJ/LQQevSClwYiM7yICRz2km7M9lcyPTxfvJXmOI6x/abzLgSEfi8TPwwnCN
-         z3KRfr7A+Do4KJigsvHdDWAUvfDJdjYw/jKNlAwFBYHUabxsOVf0IRWmeRthwA4Rpuqb
-         dGGA==
-X-Forwarded-Encrypted: i=1; AFNElJ+VxZirgP20URBWmH5GigL/ISrGKsqPOr5Ijo8C19hpAd/jlMezWhlu/jdKeCkNUrgxjP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoFIkRYDCZNlbUIOYiJ7ChspzdjsrY4UGnpWiKwY+MyaLXmEPD
-	LCsmsw8n7ba/uq9GZzzaizguO0+n71rHsGThhjGjOO9UVgB65kpM58THeIfcXAfonmw+5hjF0UN
-	L+1N+zQ==
-X-Received: from pgsb25.prod.google.com ([2002:a65:67d9:0:b0:c7f:ca3d:442c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3208:b0:3a0:bc61:62e6
- with SMTP id adf61e73a8af0-3b411c00dd3mr2946625637.8.1780061247623; Fri, 29
- May 2026 06:27:27 -0700 (PDT)
-Date: Fri, 29 May 2026 06:27:26 -0700
-In-Reply-To: <CAO9r8zPA7RTwAD+_-knnTJvFbLJgXzsHYa7a_N2j0JdPAoSoUw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ZwbvlGL/"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 73C9B2247;
+	Fri, 29 May 2026 06:39:00 -0700 (PDT)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F3D7F3F905;
+	Fri, 29 May 2026 06:39:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780061945; bh=7cmIIs9xR7uMqTm+Z6aD9663vI48NGNNoR+rAVutfCA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZwbvlGL/hw4kBlp8VXC/2kqCg+mD3sjTb8MNl4B2Mmd580f1ntfEzvd3wiaQ1GZma
+	 pYPyZ4BhPO8swphi0VYXozIPeakgqpXWh+EoOPe6y3keeqDqsf7bZAYzoUSTxY/tRD
+	 CH2Xfcsp92lhz6kO+eCyS+TXMplYbiCu6zkDsy34=
+Date: Fri, 29 May 2026 14:38:53 +0100
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Oliver Upton <oupton@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Subject: Re: [PATCH v3 0/9] KVM: arm64: selftests: Basic nested guest support
+Message-ID: <ioz7qsirq2v665bqbjin5ekwss46pfg2sfmndkvail2athbo75@cgt7zikhtx6r>
+References: <20260516183003.799058-1-weilin.chang@arm.com>
+ <agzWnS2gzzhEHEG6@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260528231052.404737-1-seanjc@google.com> <CAO9r8zPA7RTwAD+_-knnTJvFbLJgXzsHYa7a_N2j0JdPAoSoUw@mail.gmail.com>
-Message-ID: <ahmUPsB2nOPFCRrW@google.com>
-Subject: Re: [PATCH v4] KVM: selftests: Add a test for gPAT handling in L2
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agzWnS2gzzhEHEG6@kernel.org>
 
-On Thu, May 28, 2026, Yosry Ahmed wrote:
-> > +int main(int argc, char *argv[])
-> > +{
-> > +       TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
-> > +       TEST_REQUIRE(kvm_has_cap(KVM_CAP_NESTED_STATE));
-> > +       TEST_REQUIRE(kvm_check_cap(KVM_CAP_DISABLE_QUIRKS2) &
-> > +                    KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT);
-> > +
-> > +       if (!kvm_cpu_has(X86_FEATURE_NPT))
-> > +               goto skip_npt;
-> > +
-> > +       gpat_test("Invalid gPAT", l1_guest_code_invalid_gpat, npt_enabled = true);
-> > +       gpat_test("Nested NPT enabled", l1_guest_code, npt_enabled = true);
-> > +skip_npt:
-> > +       gpat_test("Nested NPT disabled", l1_guest_code, npt_enabled = false);
-> > +       return 0;
-> > +}
-> 
-> The goto is really unnecessary here:
-> 
-> if (kvm_cpu_has(X86_FEATURE_NPT)) {
->        gpat_test("Invalid gPAT", l1_guest_code_invalid_gpat,
-> npt_enabled = true);
->        gpat_test("Nested NPT enabled", l1_guest_code, npt_enabled = true);
-> }
-> gpat_test("Nested NPT disabled", l1_guest_code, npt_enabled = false);
+Hi Oliver,
 
-Well, it's necessary to avoid the indentation.
+On Tue, May 19, 2026 at 02:31:09PM -0700, Oliver Upton wrote:
+> Hi Wei-Lin,
+> 
+> Thank you very much for the series.
+> 
+> I haven't had time to read through much of this yet, but I noticed
+> Itaru's comment about leaving stage-1 translation disabled for the L2.
+> 
+> Since selftests expects things like atomics to work we will definitely
+> need the stage-1 MMU to be enabled w/ Normal mappings (this was broken
+> in the past [*]). I wonder if we can (ab)use the pre-existing stage-1
+> tables that the selftests library creates on behalf of the L1. After all,
+> L1 and L2 are both effectively in the same virtual address space.
+> 
+> [*] https://lore.kernel.org/kvmarm/20250405001042.1470552-1-rananta@google.com/
+
+Thanks for the pointer, I see, only inner/outer shareable, write-back
+normal memory guarantees atomics to work. Interestingly, treating the
+atomic instruction as a NOP is one of the permitted outcomes if other
+memory attributes are used...
+
+However, the L2s in this series aren't using atomic instructions, and
+right now for the current organization of this series, the L1 guest
+hypervisor infrastructure is in lib/ for future NV selftests to share L2
+creation code, but L2 code are entirely per selftest. This means other
+selftest L2s can reuse the L1 stage-1 tables themselves if the implicit
+memory attributes that comes from MMU being off is not desired.
+
+Sorry if that sounded defensive, I am not opposed to always reusing the
+L1 stage-1 tables in L2, just wanted to make sure the point gets across.
+
+Always reusing L1 stage-1 tables in L2 allows L2 access to lib/ (which
+should be helpful for testing recursive NV), and L1-L2 code sharing
+intra-selftest. OTOH things are a bit simpler with MMU off in this case
+with testing the shadow stage2.
+
+What do you think?
+
+Thanks,
+Wei-Lin Chang
+
+> 
+> Thanks,
+> Oliver
+> 
+> On Sat, May 16, 2026 at 07:29:54PM +0100, Wei-Lin Chang wrote:
+> > Hi,
+> > 
+> > This is v3 of adding basic support for running nested guests (L2) in
+> > kselftest. This time a framework for enabling stage-2 in the guest is
+> > added, including the s2_mmu struct, s2 translation control setup, and
+> > a stage-2 page table generator. Similar to L2 vCPU management, all
+> > stage-2 work is done in the guest instead of userspace.
+> > 
+> > An additional shadow_stage2 test is added which leverages the framework
+> > to run L2 with stage-2 enabled.
+> > 
+> > * Changes from v2 [1]:
+> > 
+> >   - Update vm_paddr_t to gpa_t, vm_vaddr_t to gva_t.
+> > 
+> >   - Added framework for enabling stage-2 in the guest.
+> > 
+> >   - Added shadow_stage2 test.
+> > 
+> > Thanks!
+> > 
+> > [1]: https://lore.kernel.org/kvmarm/20260412142216.3806482-1-weilin.chang@arm.com/
+> > 
+> > Wei-Lin Chang (9):
+> >   KVM: arm64: selftests: Add GPR save/restore functions for NV
+> >   KVM: arm64: selftests: Add helpers for guest hypervisors
+> >   KVM: arm64: selftests: Add hello_nested basic NV selftest
+> >   KVM: arm64: selftests: Enhance hello_nested test
+> >   KVM: arm64: selftests: Add shadow_stage2 test
+> >   KVM: arm64: selftests: shadow_stage2: Allocate L2 stack from dedicated
+> >     pool
+> >   KVM: arm64: selftests: shadow_stage2: Check supported stage-2 granule
+> >     size
+> >   KVM: arm64: selftests: Add infrastructure for using stage-2 in guest
+> >   KVM: arm64: selftests: shadow_stage2: Turn on stage-2 translation for
+> >     the nested guest
+> > 
+> >  tools/testing/selftests/kvm/Makefile.kvm      |   5 +
+> >  .../selftests/kvm/arm64/hello_nested.c        | 134 +++++++++
+> >  .../selftests/kvm/arm64/shadow_stage2.c       | 165 +++++++++++
+> >  .../selftests/kvm/include/arm64/nested.h      |  85 ++++++
+> >  tools/testing/selftests/kvm/lib/arm64/entry.S | 137 +++++++++
+> >  .../selftests/kvm/lib/arm64/hyp-entry.S       |  77 +++++
+> >  .../testing/selftests/kvm/lib/arm64/nested.c  | 264 ++++++++++++++++++
+> >  7 files changed, 867 insertions(+)
+> >  create mode 100644 tools/testing/selftests/kvm/arm64/hello_nested.c
+> >  create mode 100644 tools/testing/selftests/kvm/arm64/shadow_stage2.c
+> >  create mode 100644 tools/testing/selftests/kvm/include/arm64/nested.h
+> >  create mode 100644 tools/testing/selftests/kvm/lib/arm64/entry.S
+> >  create mode 100644 tools/testing/selftests/kvm/lib/arm64/hyp-entry.S
+> >  create mode 100644 tools/testing/selftests/kvm/lib/arm64/nested.c
+> > 
+> > -- 
+> > 2.43.0
+> > 
+> > 
