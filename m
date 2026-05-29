@@ -1,131 +1,115 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA10343D8A
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 20:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC617348C42;
+	Fri, 29 May 2026 20:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780085494; cv=none; b=Xtanok+pKQJxF84Xnk+T2FGjDKkIyYOqWsoki3zrp/LxM8aPZI3ocE9h3O1RrJktkoAXPZtvem1OrCFUQd3y9keUF7q3D3Nk0DD9Af30SNSjIMLlq9TDCZYzT09bOZqDam/BPGu1inA1rS8GiNkLWVosHKyd2FRJPAl4sA7Hjhg=
+	t=1780085622; cv=none; b=m6n+4WJME5pIxG3n3D2s/tF9utkU/WzPSQx8MD94o3MK+xi+kP90sXfXtAQQvecSJo9a+/qUDH55SpOTebMCdeHtwiZDBhH9lYfcqcdBlFg2vh3gazd3DA4x8fTKNI1GL099moANr+Wo/10DGsMc+01kU3iLe9GA+5RM+IEwgyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780085494; c=relaxed/simple;
-	bh=yIjjEsSzcNVlj5Jerb5VL9COIWs3RWb5zUy94AhWr9c=;
+	s=arc-20240116; t=1780085622; c=relaxed/simple;
+	bh=uwAiG/MLAsLU7jvfNcgX8VIOAFNkzQTd5sSwbpoj0Zg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pS/TxtNSB3wdShL4/oV5OHQDYsSY4alSgZt7TFJHTWzy5W0n4Z0StymmTr9LQi3YaW2RQhJl79BFjuvTCGoU8k6wH+eRaH1nNsVCfyT8fgAN7AbmfOXYA04rWF/BdjPullgueZxt+bSs2BJqC4aQNb6NHeeJd5tvEVb8kMzNfSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=W6mucJMI; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=E5GoNmQLXmN6k3+f4oXkIx2UW4O9mKI/eQVf0v77Yi3N4yYgWFvPCn1wtnJzFLoHrbUls6WSe7GPrmJjwchTK5+HAAORk0BZwiyhhWoPO0FVxnwCUVupHD7THsZiQY9Os9Odv6oQGOkwNfWCRogkId62yxbM77QS8Eq0e9QmeUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kuHibrll; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="W6mucJMI"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-914c5898245so566363285a.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 13:11:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780085492; x=1780690292; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=x50nMfXuC2+erTFJFRG2pVEkXmZORi5k9T8WBzn0C8s=;
-        b=W6mucJMILm76P1OvgIkeoQrHk1o7XL8eEki7XJZS1XS2OjCf+Mt31OyMtZjR2qaphh
-         JYplHQ+jawZn32wdHnTUZ7/BfzMzKsTBm8Fig6rF907+pur3pR03NcbXI3r1E4jPnjWi
-         Pj4l7r9Cd2P7VD6P6PcOKOr4ri/urmF4R+FIVF9YA78pTdvWQQSYvF7Z7feosxpyprw7
-         +tFE69MQ32W/Mxl0Hefoqfx48geK4OASrV2q31UfG3eYxFQEg3WoFwURPR8t8K7LU6Z6
-         3WzIrlfGGwk+6WgLZUiy5+fga84k7c35MG0crSnEaA2c5absa3at7TeFsmJ2pdiwI3bK
-         qt4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780085492; x=1780690292;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x50nMfXuC2+erTFJFRG2pVEkXmZORi5k9T8WBzn0C8s=;
-        b=OKzvWcAmBVkExL+U+jV4W/1OQE6sogX1VUi3nZS1+GuOKZtb27/9A1hMERYjp8ULjv
-         Jwqwy5vzrxJw5ddqi7SwYInMw0T9kP6ALHMa9La83icnY45NId8puEeoqAuc8Ew+USbd
-         RjwXro42h5aY3h8n0kIy+xrG1zQvojRFUmE8rofyRonFco2jKuejDqf6F0e6HDWAO7mL
-         Z+gBhA3zt9sjer2YIbTzgcylwgYzYVlz7d9zfA5xhIbM0D9xa2vnI+khKaoxk20nL59d
-         30ef7uxJPWkJ8b5r//cCe4CvioYzkP7aKz3j5+X72NVnSHeYA/i+LNOKO0lw/G+Fp1KP
-         JiSg==
-X-Forwarded-Encrypted: i=1; AFNElJ8PLMcU1RlsAMiw1q4drPG76dn1ULZuQVJqe+DNQN4oSmf3dJ/O3GFdtbAODpTARC1kQKE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGgYZ+IWqzhEi8fHRFbq68plEWSfgb6Npw9qrgw5CI8CTzP+lb
-	EilUBxwEJAWjAhe6mmsKp5Qh9LEXnP/+6Cv0Mx/GDVenCg/GfBy4CJk2rJpOAGYHpmo=
-X-Gm-Gg: Acq92OEN/rcllyxDgUffzMhtAZp0ELJpGwK/zXVRHuiSSnNwVBp/0fkWN9TvUY3s2aw
-	Ic7Fk+2/0raw1bFM8+XjHTLvlU5kcafdG8bH3hL0/ALT58figpTe+Qah/t0CfCHRS+GVuw8vp/r
-	JVU8WI2hvh7IqGf/BYzF4tBcizSYGK1WEt/pXRAOoww9/zU4GMmdWmj/Q4wBiOMgeaM/NU/kGXd
-	v0qCAl31DjN/GMREGcGLCb0K64R5zsSNE1dquFucjPpswDcDHkyNRu93cv4lwPL7xZ890P1Rf8F
-	DdNjn4EPWk9PmrcEfs0kAQ7pQMMFmmYl6aA+2ZJYULn9ONFCyN2prBbGMbWdcDeRiX0ygvcLJ7e
-	Dw1dZtU6Qg26n78BBhvt2O9CBUYHcpUw2wHRLDwDLsJUgEJ5oTYLvFmOg3Xl8Jggh2UUOJOJiN2
-	98m9Zx62sHgiSFZG7hNDN+xEjzBLcfbJa8hoQo1nAfF77a/W6qVtfEFushrcG1Uk5qi4hfDyGe/
-	5dzGyHzh71l5QkO
-X-Received: by 2002:a05:620a:649c:b0:912:671b:d090 with SMTP id af79cd13be357-9153d999728mr194543785a.24.1780085492316;
-        Fri, 29 May 2026 13:11:32 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9153244de53sm312617585a.8.2026.05.29.13.11.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 13:11:31 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wT3YI-00000000q8h-45Mx;
-	Fri, 29 May 2026 17:11:30 -0300
-Date: Fri, 29 May 2026 17:11:30 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
-Cc: Zhiping Zhang <zhipingz@meta.com>, Alex Williamson <alex@shazbot.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>
-Subject: Re: [PATCH v5 0/4] vfio/dma-buf: add TPH support for peer-to-peer
- access
-Message-ID: <20260529201130.GU2487554@ziepe.ca>
-References: <20260526144401.1485788-1-zhipingz@meta.com>
- <a8cd01ab-d7aa-465d-bfa3-431f78f33ee1@amd.com>
- <20260527121438.GJ2487554@ziepe.ca>
- <ff247643-73e7-44e2-b3d5-8ac0a8efb871@amd.com>
- <20260527123634.GK2487554@ziepe.ca>
- <a5ff1930-e9fb-43f5-82ab-9875d7a28421@amd.com>
- <CAH3zFs2KALuHXReLZG_uoqvBBWvBzU6rHKakmt6HBV7PZEsD=w@mail.gmail.com>
- <71302a7a-6b9f-40da-af81-b1862dbd637a@amd.com>
- <CAH3zFs036sr93duQKx613pCyOYw4t0_x_TdSza1xBCaEmqijyA@mail.gmail.com>
- <8d9bb0b7-182d-4930-b683-d5d24da6b2ab@amd.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kuHibrll"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Y4wBT7I/iH2K67xH5207nlbk+NWE1Q6HFc49/bBEZzU=; b=kuHibrll3UtKrcw18wM8R3ryHp
+	QjcfwVB9dskKnpgkuN1MUxcrXdei7DB/opHxf2BloBmtlrDz8gpR9D+DL00IQVIT2zlv3P/CXIkVz
+	keXfRGGPoxP3Pr1eRUABypoojSY679755LG1p8l5hUMp6L/LTAKHC1SMPlhjEGDbst09mCuQFHDc1
+	wow16ZwtqccohVhoDC+bYcEF8pg1v1x3K5qjOA+4r7eXdTZmk1RWa9nJRqYqenz261fmgwRmi6Brm
+	Kq6T1tepOf6nkmmAr5XApqlkEvuLPQEPxtl4PTde3RKVglbn+e3xHk7GWfcTv8AQVmWOfFn2LB5sk
+	9tvJCmLg==;
+Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wT3aK-00000006jGz-1qie;
+	Fri, 29 May 2026 20:13:36 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id F1D61300324; Fri, 29 May 2026 22:13:35 +0200 (CEST)
+Date: Fri, 29 May 2026 22:13:35 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
+	Carsten Stollmaier <stollmc@amazon.com>
+Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
+ __rwbase_read_unlock()
+Message-ID: <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
+References: <20260529165114.748639-1-seanjc@google.com>
+ <20260529165114.748639-2-seanjc@google.com>
+ <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
+ <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
+ <ahnxfACTGeVFbJMk@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8d9bb0b7-182d-4930-b683-d5d24da6b2ab@amd.com>
+In-Reply-To: <ahnxfACTGeVFbJMk@google.com>
 
-On Fri, May 29, 2026 at 09:36:00AM +0200, Christian König wrote:
-> On 5/29/26 08:34, Zhiping Zhang wrote:
-> ...
-> > There's no in-tree vendor PF driver
+On Fri, May 29, 2026 at 01:05:16PM -0700, Sean Christopherson wrote:
+> On Fri, May 29, 2026, Peter Zijlstra wrote:
+> > On Fri, May 29, 2026 at 09:32:14PM +0200, Peter Zijlstra wrote:
+> > > On Fri, May 29, 2026 at 09:50:55AM -0700, Sean Christopherson wrote:
+> > > > From: David Woodhouse <dwmw@amazon.co.uk>
+> > > > 
+> > > > __rwbase_read_unlock() uses raw_spin_lock_irq()/raw_spin_unlock_irq()
+> > > > which unconditionally disables and re-enables interrupts. When
+> > > > read_unlock() is called from hardirq context (e.g. after a successful
+> > > > read_trylock() in a timer callback), the raw_spin_unlock_irq()
+> > > > incorrectly re-enables interrupts within the hardirq handler.
+> > > > 
+> > > > This causes lockdep warnings ('hardirqs_on_prepare' from hardirq
+> > > > context) and can lead to IRQ state corruption.
+> > > > 
+> > > > Using read_trylock() in hardirq context on PREEMPT_RT is safe because
+> > > > it does not record the lock owner. The read_unlock() acquires the
+> > > > wait_lock which is hardirq safe. This change additionally allows
+> > > > rwlock_t during early boot.
+> > 
+> > Forgot to reply to this; it is safe with this implementation. If we were
+> > to ever do reader owner tracking this goes sideways real fast.
+> > 
+> > I really think this is a very bad approach.
+> > 
+> > > > Switch to raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore() to
+> > > > preserve the caller's IRQ state.
+> > > > 
+> > > > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> > > > Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> > > > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > > 
+> > > We have very specifically not supported the: trylock+unlock from hardirq
+> > > (although typically this comes up for mutex). Specifically with PI this
+> > > can lead to trying to boost the idle thread.
+> > > 
+> > > Consider doing this from an interrupt that hits idle, then idle becomes
+> > > the 'owner' of a successful acquisition. This is absolutely broken.
 > 
-> Well I have to admit it's a bit on the edge but this sentence is a
-> show stopper.
+> I assume the only alternative is to implement raw versions of rwlock?  Or do I
+> understand all of this even less than I thought? :-)
 
-I think he means the device is not SRIOV. vfio-pci is the in-kernel PF
-driver.
+Well, the code needs to do something when trylock fails, can't you
+pretend it fails unconditionally?
 
-> DMA-buf is an in kernel interface for buffer sharing between drivers
-> and any change to it needs an in kernel driver as justification for
-> the added complexity.
+It is somewhat possible to do an RT aware read-write spinlock thing, but
+it is definitely non-trivial and this would be the only user.
 
-vfio is the in-kernel driver, this series fully shows the in-kernel
-API using vfio as the exporter and mlx5 as the importer. It certainly
-meets the standard required to show in-tree users.
+Also, why does it have to be a rwlock? Can't this be RCU-ified in some
+way?
 
-> When you have a complete open source driver stack which utilizes
-> VFIO passthrough as the interface to communicate with the kernel
-> drivers then we can eventually talk about that.
-
-That decision is not up to dmabuf - what VFIO subsystem requires to
-accept a new UAPI is up to the VFIO maintainers.
-
-DRM and VFIO have very different views on what is required to merge a
-new uAPI.
-
-Jason
