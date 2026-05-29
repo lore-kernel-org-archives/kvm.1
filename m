@@ -1,121 +1,143 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A70F3F7869
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 16:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14E53F9A1A
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 16:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780073720; cv=none; b=mrYM6mn1WkuWULK5Ia9tQ39A5JfvLbnMrFPuxI8bjt3qdub77fei/VnMr3W5sVjoZXwetv1llxrHxLNG37M3NwPI3U/Ty6jERNfmCHH5FV2IcSvMvsc/xEDKKG8Ff+yXeYa6/qBzgIhEKoG+YVw21W+y4osfA1rHb9f9e+QvfXQ=
+	t=1780073979; cv=none; b=i/d5VVrPTApNVGOGcgSP5yM6V/IYtApxEyflFpyoP0k6sN96wItozIJMc3yTbmofAwBSslE3KIiekUiUtlpNVKMgF92X4CQwQ187bga8v1PZlRj2Bdf+rrWUrd99jx+Sf2SiScwpxNYyCmppTRK+kX0xkCF5mPbl9Sex+q3024U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780073720; c=relaxed/simple;
-	bh=llW4OxFvtKWFyEC9eRxy9VUDdqj1IBqiGVZmNBrPlP8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e+zE4mnRGN4MUTceEVgv28WzPHEGanx+4n1dNumUngi6ytsXicK58+r3fFIUi6AvPCKslB/1aMPwOdkkYlwOqqgPFsdqZt+EIZfHvT19EYs3tdahcUQKgdxpj5f9GlSlUDSu0CZRH27SlIod4H2rQmdRUuf/D1Eyn1H3+N1tS+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aiTUy1Op; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780073979; c=relaxed/simple;
+	bh=QxzH5176QV1Z3ehduHKIGQu/MHoL+J9s1KmhHLaMQYY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=GfUaPGKG9joBFNnJDE9BT0a1Itv4CtaygJicN8PU7NHHRrRpMfSdQtJqOmbZP+qomQ7v8+v+Yd67fxJ1f28w7trVjwHW9+W9sdGcFyt90ZN1dloD55Mc6+FayWwWSy5F3WQw/f4bBup5vCkTd4WzHAnzyukTn+kenRfQgsd1XYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VgiUGXrj; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aiTUy1Op"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-459bf19e87bso8572195f8f.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 09:55:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VgiUGXrj"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-368b15eeb3bso24949894a91.2
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 09:59:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780073718; x=1780678518; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kg88DDtH/8BXfFFdiCpH0Ax+iqDzN9Cpw3OqPjVLSd0=;
-        b=aiTUy1Op+lYKoApuLxe7JXrRYO2t/I3uULvMmUsOHz0HkpZGDgZ1iZf97sCp1yHLvu
-         0cFlLa4hBdMNEMS4IppVax/VaoCcuiXYFrV6iUupCMRo/7pxUNM/J+AkB9L6yFWBIlvx
-         4kJUlQ2ZaPeZXfAqqoyHLvTfRguwpAhCKAPNdV3UtuA8HC7FicRQQM5lUwxOop3dvql8
-         loAh1Y6Sto5lfxtAQjA2G+L48fYNc6emeJoUO+JT8W2pvC7jgZA4AzH9qC14GWoU8kgq
-         b2VFTb5VW3ECBBPZv2CpkIPqkoZ66dzgC+dQvzLlYbqnAl6H0GQv/2LAdQnXvp7M36bY
-         Kepw==
+        d=google.com; s=20251104; t=1780073977; x=1780678777; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EIfZI+15eXnt1VS1ntObygvWhZxyllpwUaeyj935Nek=;
+        b=VgiUGXrj0kd28rwfhj/jVylcMGnXjPfEfylZt/hA39rn478ou6knrVrt9+G1CcG2wi
+         Z1xmQSMlMziHsQjtrthewzgojDF6zTRCIt7HoqbduDWNOlX05oYqnYchpHDHCXscYs26
+         UzzXbT2YLco6l34+wacQU5tbfnCen22Oq+pbXKITzmvEAWX4+baJY7sY9j5uNcOTt9Fj
+         n4PMhfGLlFJjZwNu7tXT0LT6SXBcx5lJC9ScHfh8I9Gz8LKWS85sldtvMuzO5eij9Iqr
+         uG6x6W+aeP/hZdySoAYRXe2QQtiBJ2/uSnZz2jkR7R0r/pGmtBJmh4qXb4yBSUjNbmvB
+         gdiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780073718; x=1780678518;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kg88DDtH/8BXfFFdiCpH0Ax+iqDzN9Cpw3OqPjVLSd0=;
-        b=cor2r7Sa6DrWoj1hZbEEAfLtemzhVxV2L2W+RxJ4DrFBg4fr81hDn6G6gc8q4o/AUk
-         8JvP5d06IcoqrA3l/xktiOKIPbgjo9BxbGV4uYbus2qiwnkInJLOiZiAkYVHbE63UUXe
-         S1UyoHYpTo6VkxAaNdhJVqTFyB7UEpm2bUMUo6Jm8Pz6C7LOOX577Bkvg9HOEwZygW7+
-         +0rU/vOimHmi8cWy8tbcIoaZ16S/yZEU8XJn5Z2o38lBoubDdqzmY6wZDaId0QtBSnnp
-         GRc1qop8Ti/6fBQ/JovxuFe00B8bDeKCWZ2jQw9IxBpwIsVsTY4PfLI0eQ1YPkWqv3y1
-         mdrA==
-X-Forwarded-Encrypted: i=1; AFNElJ+VlCPVfR7zSG1rAn27PUI2RJ6Upw5npfGlEl4D8nmAziOlz70Xa0hHKilNImhp0xFYk2c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyV6MaQrkEBo/7venrfWlStrjTRXuzjwf1ZMuk48TDtKiVK17Yq
-	fd2tX06BXQ6+8zGbX92cgiKTKnPJUtQfOF26+iKTEiToy67RDBjpDxMf
-X-Gm-Gg: Acq92OEr+mb9yksry3Qb/Q7X+yTA6vBJK+31082SI7OjSs/VSNEohT482W77d80fUjo
-	aOqicfT+5WmH0BL/zh3GKgBbs/F8htGWIbHrx0dJJJMVdudO2ugXYgejI21xIqx45guD7AO+K9R
-	RvE6FLzQ41qn5Ew2O2sxW1wUDOX5o+ML5yne+50nFz78cjp8ftCuM4/3o/MJBVUhkKo/0zMJ2RC
-	KiZWtOG1lPEoYQNBSxFBaq2Sz6OOpeQ+u68FWXzwegQT6AU38VxZUTRdaQ0eX9irzmZ7DQtCl5Y
-	3e9Xs8kmLc6IRPcGni+3RVOlkywHi2Hiv+wSChPUQVDhO0eAPFCUSBpd54LXnxVZEe9EwlmWAwJ
-	XfVGzqfBNqOZ09BANyDCm/PyOmso8FGcMikYx+EXMWTAA3uLCZriqRTdE/CFTOHHID7sbiB8c3J
-	L0/pViV5m21PjyFa3RoKTYN5K0X0N+HavWllxeexTTZ1EmT8Z0qgHaILCB9sz73hkXjsBqrJw=
-X-Received: by 2002:a7b:c3c3:0:b0:490:5191:6e26 with SMTP id 5b1f17b1804b1-490a2941d7emr4738915e9.18.1780073717867;
-        Fri, 29 May 2026 09:55:17 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909d6a0a89sm68444645e9.7.2026.05.29.09.55.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 09:55:17 -0700 (PDT)
-Date: Fri, 29 May 2026 17:55:16 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
- kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
- linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org, Mark Bloch
- <mbloch@nvidia.com>, netdev@vger.kernel.org, Saeed Mahameed
- <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>, Tariq Toukan
- <tariqt@nvidia.com>, patches@lists.linux.dev
-Subject: Re: [PATCH v2 06/11] selftests: Fix arm64 IO barriers to match
- kernel
-Message-ID: <20260529175516.06d5788f@pumpkin>
-In-Reply-To: <20260529134947.GA128816@nvidia.com>
-References: <0-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
-	<6-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
-	<ahiFxtmspbETiqWw@google.com>
-	<20260529134947.GA128816@nvidia.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20251104; t=1780073977; x=1780678777;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EIfZI+15eXnt1VS1ntObygvWhZxyllpwUaeyj935Nek=;
+        b=SFr+zbLeYZKvXv/LuJ63eJ7AJtQj8WaV0JKSi3JHCv031zhM3QdR0UTzqPE8Wv60nz
+         mHIS68iR94QdqC67c7gW+5JM3gJesGlCLHQ67Qcm8eNXf0fUguz7i82n3qKHOOIRWvmY
+         J/cMtK3JOFoxmJhrnDgZ05OI/rwsbZcFGS486JDTDb0WxgLC83I1WzmwQK+yGnoP/LR7
+         j1CqwESDJ9dD/Pb60LDkD6DneAakORVspZ5FCYVf42+iYM95EKxkWqyLI7JRVEVhacsk
+         +ZiwVEstw65MhLftIsKjSmH1c/dqmT13n4rQ3RW/Le8Y4NH5LQH30y3rDUReDVWpJbeG
+         ydNA==
+X-Forwarded-Encrypted: i=1; AFNElJ8LgVIKUWOqqiSyAIRKkScheQ8lyo1HVIGA+J6vpXQcTbNeVHu0sTu4ARMHv2gfRUcvuKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1REJjKbEjdDNSAczwaCj/nQgX+1vNfXoyj13PMD8iaKGMeydy
+	7Yx2XScJNEa2KL5XLAsT0Rm4bzftfQ7ccEPKO/aaj+fRc2bMdDcCpmfVQJGPZfGY3fcDMiXGLXm
+	5XwhWQA==
+X-Received: from plry22.prod.google.com ([2002:a17:902:b496:b0:2bd:9e64:2df1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e78e:b0:2b4:5cea:f61c
+ with SMTP id d9443c01a7336-2bf3679355bmr9901385ad.4.1780073976883; Fri, 29
+ May 2026 09:59:36 -0700 (PDT)
+Date: Fri, 29 May 2026 09:59:36 -0700
+In-Reply-To: <20260529162111.990441F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260529144435.704127-8-seanjc@google.com> <20260529162111.990441F00893@smtp.kernel.org>
+Message-ID: <ahnF-FehodVd474X@google.com>
+Subject: Re: [PATCH v4 07/47] x86/tdx: Force TSC frequency with CPUID-based
+ info provided by the TDX-Module
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-hyperv@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, 29 May 2026 10:49:47 -0300
-Jason Gunthorpe <jgg@nvidia.com> wrote:
-
-> On Thu, May 28, 2026 at 06:13:26PM +0000, David Matlack wrote:
+On Fri, May 29, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+> > index 2b8f94c3fcc7f..2603f136e29bd 100644
+> > --- a/arch/x86/kernel/tsc.c
+> > +++ b/arch/x86/kernel/tsc.c
 > 
-> > Let's put these in tools/arch/arm64/include/asm/io.h so that the tools
-> > headers are more aligned with the kernel headers, and so that the arm64
-> > io.h overrides are done in the same way as the x86 overrides in
-> > tools/arch/x86/include/asm/io.h.
-> > 
-> > Something like this (untested):  
+> [ ... ]
 > 
-> Okay, the disassembly says it works:
+> > @@ -1550,6 +1551,8 @@ void __init tsc_early_init(void)
+> >  		known_tsc_khz = tsc_early_khz;
+> >  	else if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
+> >  		known_tsc_khz = snp_secure_tsc_init();
+> > +	else if (boot_cpu_has(X86_FEATURE_TDX_GUEST))
+> > +		known_tsc_khz = tdx_tsc_init();
 > 
->     1db8:       ca080108        eor     x8, x8, x8
->     1dbc:       b5000008        cbnz    x8, 1dbc <readl+0x58>
->     1dc0:       f9000fe8        str     x8, [sp, #24]
-
-That looks strange, I suspect the C didn't match any usual pattern.
-Normally 'tmp' would get thrown away and 'v' would get kept.
-But you seem to have discarded 'v' and written 'tmp' to stack.
-
-I'm probably being stupid again, but how does that work?
-The cpu can speculate straight through the control dependency into
-the following instructions.
-An 'eor x1, x8, x8' may not even have a data-dependency on x8.
-(Most x86 cpus just generate a zero for the equivalent instruction.)
-
--- David
-
+> [Severity: Medium]
+> Does this structure accidentally bypass the TDX APIC timer and TSC capability
+> initializations if the user provides the tsc_early_khz boot parameter?
 > 
-> Jason
-> 
+> Previously, setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE) was executed
+> unconditionally in tdx_early_init() for TDX guests. With this change, 
+> tdx_tsc_init() is skipped entirely when tsc_early_khz is provided due to
+> the if/else if chain.
 
+Drat.  But this isn't benign.  I don't see a better option than biting the bullet
+and ignoring tsc_early_khz for Coco guests, e.g. in the SNP patch do:
+
+	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
+		known_tsc_khz = snp_secure_tsc_init();
+
+	if (!known_tsc_khz)
+		known_tsc_khz = tsc_early_khz;
+	else if (tsc_early_khz)
+		pr_err("Ignoring 'tsc_early_khz' in favor of trusted firmware\n");
+
+and then this becomes:
+
+	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
+		known_tsc_khz = snp_secure_tsc_init();
+	else if (boot_cpu_has(X86_FEATURE_TDX_GUEST))
+		known_tsc_khz = tdx_tsc_init();
+
+	if (!known_tsc_khz)
+		known_tsc_khz = tsc_early_khz;
+	else if (tsc_early_khz)
+		pr_err("Ignoring 'tsc_early_khz' in favor of trusted firmware\n");
+
+At that point, I think it makes sense to double down and ignore tsc_early_khz if
+the hypervisor provides the frequency.  It'll yield cleaner code overall, and
+will be easy enough to document, e.g. to end up with:
+
+	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
+		known_tsc_khz = snp_secure_tsc_init();
+	else if (boot_cpu_has(X86_FEATURE_TDX_GUEST))
+		known_tsc_khz = tdx_tsc_init();
+
+	/*
+	 * If the TSC frequency wasn't provided by trusted firmware, try to get
+	 * it from the hypervisor (which is untrusted when running as a CoCo guest).
+	 */
+	if (!known_tsc_khz && x86_init.hyper.get_tsc_khz)
+		known_tsc_khz = x86_init.hyper.get_tsc_khz();
+
+	/*
+	 * Mark the TSC frequency as known if it was obtained from a hypervisor
+	 * or trusted firmware.  Don't mark the frequency as known if the user
+	 * specified the frequency, as the user-provided frequency is intended
+	 * as a "starting point", not a known, guaranteed frequency.
+	 */
+	if (known_tsc_khz)
+		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+
+	if (!known_tsc_khz)
+		known_tsc_khz = tsc_early_khz;
+	else if (tsc_early_khz)
+		pr_err("Ignoring 'tsc_early_khz' in favor of trusted firmware or hypervisor\n");
