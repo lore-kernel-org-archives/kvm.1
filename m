@@ -1,56 +1,56 @@
 Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F803F8882
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649453F6C4A
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780065909; cv=none; b=Vp8npdlHm+8jfPdleomHSv65nAk40FZdLu9ujnMmorJzl/y0lU6UI02klLh8GSpK0hg94yR1RAItktQUctje5snnPcKuivsw1ayTPIV/llgw3jUXqTiwmMbT60mv5mQ1/acNFlSv1xHAvLMn4U+GisNFdqJatu5e0Kb12y8eltM=
+	t=1780065910; cv=none; b=WuAYsBT6fOdqkoiX2cPctzbTYxHODKiyv1O2ehQLcgurNIC7bpTo9kW9gpLAEZ2jFG9m9TDj6VMGjWVi5TW59jK91UMa27AbGG7XphfEwmArhFPpJ1E012rG+zlowHWe6SqxGZIkepa2rY4JPhm7G1mGAqzofULw0K4FF/ORdLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780065909; c=relaxed/simple;
-	bh=WHi2AWvhDQvTEIPut9U48s/z4C+6DTwQMXjBVRNgv1M=;
+	s=arc-20240116; t=1780065910; c=relaxed/simple;
+	bh=QsGKR47k87jDmABsbb6wIJ/Oo6leqTzO1mrFX7LbN8Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=e6clWo/BTGUbl5CkUonFkuSuxVXN6Ne8jYTWHJIFTpYj5MLoIBgDnAPMrGulES0C7cqxEqUf5xhyMAETQkqQmNNtBfB1yaEs3QkVDUFh2sWcgiiTIEeSdFrRAKTByCUaOm6bI3XJ/XKEreZ0C/AY1Cvqi3OC1fQQr+cppgmEy9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TZflyEy1; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=q9WmsklUXjMwmFaa9Ht72lsT0c0GPIeF82A4YUNYIj+XcX3vQVE7LjFO9g4Thr/DXGN+PLWORDZvO2oS6IjQ5yHTkqaXO+sTVFMMd0EVbn0GJC0UdNGjOfMP+LCHTg1x+zzX1yH09hNfqOpkp6JM0kWE8IXRmCtsCkQrItxHhm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pKCQwTpi; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TZflyEy1"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bd04e4fe3dso112501035ad.3
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:45:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pKCQwTpi"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2babbeff9e4so156457535ad.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:45:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780065907; x=1780670707; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780065906; x=1780670706; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=gZ7qyLV4Qg2/G7AZdfT7QLEMZtHiHfovzBdDbSmwy9M=;
-        b=TZflyEy1vXcPT+mMlxETjxGB442PHHrQ3KtbjHbPVPy67lAEDR3oUASgqwmYjMqlQd
-         e0oE7WW+J3P2Ij9tYaA/XRQg2ZXOimU1UtF0Mn9RUIbjwO/oVv8EacuAa4yOVcX+Fk/t
-         AfIrkWcTVG59xXMhS+s32WW9ccnOsWBeKNgJvl/jQEiSRI3PA/W55xqCexy3t1YLy9ED
-         Qk2mYc+dW9WPNxp8h65XQCoNWDPeiNO0cETnSiBcqiXy2gt3ua360gKb2lF88XjB81uG
-         J+/eVcv2OiKN3kji2t+B6lCi82EjhvZOL6nUl1Iwto2afOKWCON90BZwBr/80UP5lffv
-         j+7g==
+        bh=Ep5voyn6wy8bCsLD4fpqMEGPbCHcjvgsIyxbB5uxkeU=;
+        b=pKCQwTpizj1qUYd60Xj+63HosG5aEgFa00/oSzODrzD5VXcTzkD1lVn8TVu7LlBH9r
+         FZ8TJebytJF2vp7ictkpBxtYqkw9AetgYd4zV84xKr33FlGp/wA3cCJlWnQFQwC2epMV
+         MAlSyCHyJ2ua7wKHzCHZhg/jjH6DM3QybPukdKYVMrWz2GVLv61+GqKJi3F8/CbzE0b6
+         xtTxkqgyit9E8cxUA/8b3qOM3ByF86cu1+/yrUon1nyvGonTCsYgnCTdB/zg0LXIDzBz
+         bcvz3MQxaOcsKKwxzqz1vK19hWBe+Kf8NOrBt/SKnfEPALdUAVWF5EH56wWEy/4IQUhm
+         qVNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780065907; x=1780670707;
+        d=1e100.net; s=20251104; t=1780065906; x=1780670706;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gZ7qyLV4Qg2/G7AZdfT7QLEMZtHiHfovzBdDbSmwy9M=;
-        b=Z+jLs5g47PjEFHPELOhe7DWFLvQYUUs6P/X8X9/6mNnrDKGeDmfXdiN/TBW3F39NA2
-         dO/fxDT7Y2/nmvpkoTWSgvvUX2de5BGWWsKI/Nc4OEU8fMxloJbgStD7DU/t7igW95eR
-         op6mJaNujk3b83NlVods7oHfWC9Mg1OHsJKMFh94lCut7AOCBvNb0cbuGi6lMF5Yhm6R
-         TSMfNaaGMw9OJ7LcRNcOGCYcB/cNVlBmDKusvQ0NED+342rHZ+/RseOYkdOGd5RwSAAN
-         yJGTPtVeKbJHXD4VjhGwTm7pAHz0+0J41cuKALKx3nS3tS7wpSZ3UJ7I9KmhJYeNjlz7
-         DBVQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+3s0uJO4Wn+9Xwnf/UxnKRWx0FdQ1fYMuq44pGbsrQwjx0lBH9t06ysqX1CuGRwqYAo/8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCnXUV8SmTDrsmKsIOzfFi5+eCAKfD4tyK94BYfeDKfG7hAnLI
-	/aTim2P6JJAf7sDEkfGMRHbdJcXO1OPeeUZAksaRa+GVkI+jSTN5YL6cJoSGjK/3NnrNRA2ejGh
-	KUM1DRg==
-X-Received: from plblk13.prod.google.com ([2002:a17:903:8cd:b0:2bf:1cdf:9e4b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f785:b0:2bf:b17:ae3c
- with SMTP id d9443c01a7336-2bf3684e2c2mr1144355ad.25.1780065906739; Fri, 29
- May 2026 07:45:06 -0700 (PDT)
+        bh=Ep5voyn6wy8bCsLD4fpqMEGPbCHcjvgsIyxbB5uxkeU=;
+        b=Z1mTEINZzyquJ4hYmFpxWSbCt8fTWw9c603mDJzCRCdbuixmjLxI7ZZ+e2+5swniDA
+         PCFKjxJZ2NGDy7MkisjjbjfT7mMUw5sGMaIKq5tWFImMJZ7gZK4gD3jinAVm2KX4FPm4
+         tjmFSlUe1kvVfAAK691Ew7kzAMTjFewRonsBhNEZxTxZbJR1RohND17EiuO2/b+Vgxy/
+         NMtbOtvrpEYE+zJDqBZQEiSCiz2U49CbR3k5VnkZUPMGfPn6ng2J4GgVovsL6EWkWs+O
+         EgfvkyFfZpRxwoCfTifYURy2rzeLygzKD1QJ3RjXtv0sXN+AByZV5VG+gurk/cqLbENX
+         EBmA==
+X-Forwarded-Encrypted: i=1; AFNElJ/V7d+PD6FPqG49ke7Nqpv2Y+vI+sQrf0vcxPlUcsiUMvFvnjNB8QkF5zZyJaUzXDOaE3U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxa89K/So7p8v8ROsg2K2dw166lUmxAoJNJu08Ax4RewuQQqiJ8
+	Rtc3wFKGeN9atQ3DfT6dGlkFH/wBehIpPns+D7hOnvbeWnu2EINXxGrXKdzGREAVd2VV5OAITTq
+	AnhGtKQ==
+X-Received: from plbv2.prod.google.com ([2002:a17:903:44c2:b0:2bf:2808:7225])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:144b:b0:2bc:dca9:f0ed
+ with SMTP id d9443c01a7336-2bf20dbeeb3mr34014545ad.15.1780065905419; Fri, 29
+ May 2026 07:45:05 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 07:44:00 -0700
+Date: Fri, 29 May 2026 07:43:59 -0700
 In-Reply-To: <20260529144435.704127-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529144435.704127-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529144435.704127-14-seanjc@google.com>
-Subject: [PATCH v4 13/47] x86/tsc: Fold native_calibrate_cpu() into recalibrate_cpu_khz()
+Message-ID: <20260529144435.704127-13-seanjc@google.com>
+Subject: [PATCH v4 12/47] x86/tsc: Rename pit_hpet_ptimer_calibrate_cpu() => native_calibrate_cpu_late()
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
 	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -84,56 +84,47 @@ Cc: "H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com
 	Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Fold the guts of native_calibrate_cpu() into its sole remaining caller,
-recalibrate_cpu_khz() to eliminate the extra SMP=n #ifdef, and so that it's
-more obvious that directly invoking the early vs. late calibration routines
-in determine_cpu_tsc_frequencies() is intentional.
+Rename the late CPU calibration routine so that its relationship to the
+early routine is more obvious and intuitive.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kernel/tsc.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ arch/x86/kernel/tsc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index 534462c81c78..3e911f0f7364 100644
+index 5b4b6e43c94c..534462c81c78 100644
 --- a/arch/x86/kernel/tsc.c
 +++ b/arch/x86/kernel/tsc.c
-@@ -945,21 +945,6 @@ static unsigned long native_calibrate_cpu_early(void)
- 	return fast_calibrate;
- }
- 
--#ifndef CONFIG_SMP
--/**
-- * native_calibrate_cpu - calibrate the cpu
-- */
--static unsigned long native_calibrate_cpu(void)
--{
--	unsigned long tsc_freq = native_calibrate_cpu_early();
--
--	if (!tsc_freq)
--		tsc_freq = native_calibrate_cpu_late();
--
--	return tsc_freq;
--}
--#endif
--
- void recalibrate_cpu_khz(void)
+@@ -779,7 +779,7 @@ static unsigned long cpu_khz_from_cpuid(void)
+  * calibrate cpu using pit, hpet, and ptimer methods. They are available
+  * later in boot after acpi is initialized.
+  */
+-static unsigned long pit_hpet_ptimer_calibrate_cpu(void)
++static unsigned long native_calibrate_cpu_late(void)
  {
- #ifndef CONFIG_SMP
-@@ -968,7 +953,10 @@ void recalibrate_cpu_khz(void)
- 	if (!boot_cpu_has(X86_FEATURE_TSC))
- 		return;
+ 	u64 tsc1, tsc2, delta, ref1, ref2;
+ 	unsigned long tsc_pit_min = ULONG_MAX, tsc_ref_min = ULONG_MAX;
+@@ -954,7 +954,7 @@ static unsigned long native_calibrate_cpu(void)
+ 	unsigned long tsc_freq = native_calibrate_cpu_early();
  
--	cpu_khz = native_calibrate_cpu();
-+	cpu_khz = native_calibrate_cpu_early();
-+	if (!cpu_khz)
+ 	if (!tsc_freq)
+-		tsc_freq = pit_hpet_ptimer_calibrate_cpu();
++		tsc_freq = native_calibrate_cpu_late();
+ 
+ 	return tsc_freq;
+ }
+@@ -1497,7 +1497,7 @@ static bool __init determine_cpu_tsc_frequencies(bool early,
+ 		else
+ 			tsc_khz = native_calibrate_tsc();
+ 	} else {
+-		cpu_khz = pit_hpet_ptimer_calibrate_cpu();
 +		cpu_khz = native_calibrate_cpu_late();
-+
- 	if (!boot_cpu_has(X86_FEATURE_TSC_KNOWN_FREQ))
- 		tsc_khz = native_calibrate_tsc();
- 	if (tsc_khz == 0)
+ 	}
+ 
+ 	/*
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
