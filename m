@@ -1,117 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B8F37E31E
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:22:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D75C3803C5;
+	Fri, 29 May 2026 17:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780075379; cv=none; b=YuL48vOz5aomt9rAmsvWZunqsVhhqbGCP2DWrCWosFf1l/+SWkyIwwFhGFFT5BZYaxlsN6tSkCEAfLMTDlbbNcfbFEP0YwQ0b0VopFt27re/nSD7+PL3fxOvvxdJ9ed2od35OjLGQk0Mps3zQBqyhSTGErFN4zF/yix/OgkPGmA=
+	t=1780075425; cv=none; b=AxblnkE5KsZHKbJNRpjVc/eYnTrIN4POv4fBY732je8wY8TGYkyJ2HHTD245yBPo+yNYozsZWbVV6ftGij2LQYkmSrKV2KjVbFR+3hafUtgJ2Zqhwke3eG16gvg0ybFBxE4GsTJbLW4E/2LBTKnyv5EXEMzk4DHxAcgv0YzzJhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780075379; c=relaxed/simple;
-	bh=r6lrI6HDkrZuYjaN5VU8rHj5jPC8UGo+3qBNkQ/Cud8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=EkLc5e06eYbDt8KqpD+enWBxvBKKHc8EgozCqx7VaGAl7kHY+dpztgXD0WoD/+P8Vg3DRg0YNBk3ANQk3gP5mU4Fb4bykMVExhg62B0guKOw+QO5mjg9KEiwzpPB0L025pFgkadneLkbNo0RS215Yuthqy9vBaEWcMn0I/HzXCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A9McPdHz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780075425; c=relaxed/simple;
+	bh=KQs35uPOA5phiqR06qwJF6YJyYn7SQLehtvTLXeqTn0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FiZVGVVtM72iFtxUm/MuY2QuSjJbhXCIQb+/DaxBpWO58IQrfVyHFGmBtBi6sWVOi8V2S9+ejgaL+ALQp/YVTPYOFTbOoaKjIGbXxzdmx+uhLEqW5vALdubHI0g9nlZarHCgWSP+pNxPBc9lSa/qXDjBwJQtDDjmDYi2ifg8XCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HVkND6ZR; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A9McPdHz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3671F00898;
-	Fri, 29 May 2026 17:22:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780075378;
-	bh=ScPmv/yoP+hrWeoAdXFzwRPzMPWJfsneMhCzDNuXCp8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=A9McPdHzUk6Dxa1c0YuBt4FFAf9wwBC1Iz3xxT7hfw6EAHAMZ6WQp8Q/PJb3htLOV
-	 VUWQ9NpDKWUhIqw5ZZ5djc0FFpg+PTbRCCRODBbVG7NclAtm7mrTI4o9yOlaFShKA8
-	 IoRbTtgyaoyDpdRy66dDPpMC1ffa6F6hT1Nwr1FP3vvX19XtubFAVNBC/fGbS+Nm98
-	 QaND4qnHBrbNLY0hRQgpn5a264aJRP7LCG0QrLAgBhDY5QCBnclrFfIdK3h9ssn4jC
-	 vL7WtJIL7TpVPrfvGOS8P9mAUdNRLb7Vww6Dhkd12tP/Dhw0JfX3tso/6mHqVgpUds
-	 B7kAgLarCJWpg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 03/27] KVM, vfio: remove symbol_get(kvm_put_kvm) from
- vfio
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529155050.2902245-4-seiden@linux.ibm.com>
-References: <20260529155050.2902245-4-seiden@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 17:22:58 +0000
-Message-Id: <20260529172258.8C3671F00898@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HVkND6ZR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780075424; x=1811611424;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KQs35uPOA5phiqR06qwJF6YJyYn7SQLehtvTLXeqTn0=;
+  b=HVkND6ZRFS75q6+GD1+H9S3eSSPoi5QDdIlH36jRsTpD3hJbj19DkvJ6
+   iwdD0LDKrwu5rnG9hQNOGnZXt8WhSdSLOwruqAYbfY8VCpqRAb3FC4uVR
+   TnGVmcow5bxBvqLDxTuRu9EbZIpOouZbVNBxc8td/7XsXUDOMtJCXxs5l
+   bxULDXJsG5kUJqWZjxnEDWs0ZC2lobWdGF0F8KpciZMPoKn88KbH2EKkV
+   SO7Pjw8hkbRRyiPYC3EktK56ylmSeJRV3KbArkyCFboPPnh1vWrEhnI25
+   i3tzcS0pRab/x2wEg1+kbi8cb3jYLZxln7T4ju038y4VDVppZSFMwuobQ
+   g==;
+X-CSE-ConnectionGUID: gcdiKzsDQ6mTMbnL6ndK5g==
+X-CSE-MsgGUID: q5Veps2fRj6S4HND+btMPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11801"; a="92405682"
+X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
+   d="scan'208";a="92405682"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 10:23:38 -0700
+X-CSE-ConnectionGUID: YuW2+6n1TbK8t9cQpEE5mQ==
+X-CSE-MsgGUID: fTvvJfaBTAK0SYAMJ3cKww==
+X-ExtLoop1: 1
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa003.fm.intel.com with ESMTP; 29 May 2026 10:23:35 -0700
+Date: Sat, 30 May 2026 00:59:33 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "Fang, Peter" <peter.fang@intel.com>, "kas@kernel.org" <kas@kernel.org>,
+	"djbw@kernel.org" <djbw@kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
+ Extensions
+Message-ID: <ahnF9Zwj7IgG9s6d@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-2-yilun.xu@linux.intel.com>
+ <fd3f9e1f70babe97f98852f2a705341b86ed1132.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fd3f9e1f70babe97f98852f2a705341b86ed1132.camel@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Thu, May 28, 2026 at 09:00:12PM +0000, Edgecombe, Rick P wrote:
+> On Fri, 2026-05-22 at 11:41 +0800, Xu Yilun wrote:
+> > +struct tdx_sys_info_ext {
+> > +	u16 memory_pool_required_pages;
+> 
+> > +	u8 ext_required;
+> 
+> The docs say this is a bool.
 
-Pre-existing issues:
-- [Critical] Unlocking `kvm->lock` after calling `kvm_put_kvm()` results in=
- a Use-After-Free if it was the last reference.
---
+mm.. OK.  We don't have to follow the auto-generated format now, so bool
+is good to me.
 
-commit 79e5304c707c4ed618be6e55a950250edf9a7337
-Author: Paolo Bonzini <pbonzini@redhat.com>
-
-KVM, vfio: remove symbol_get(kvm_put_kvm) from vfio
-
-This patch replaces the symbol_get() approach for KVM/VFIO interaction
-by storing the address of kvm_destroy_vm in "struct kvm" to handle
-kvm_put_kvm calls. This allows removing the cross-module dependencies
-and directs kvm_put_kvm to the correct architecture implementation.
-
-[ ... ]
-
-> diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
-> index 4cb68c71a13cd..8a9be07cb8dd6 100644
-> --- a/include/linux/kvm_types.h
-> +++ b/include/linux/kvm_types.h
-
-[ ... ]
-
-> @@ -162,6 +163,13 @@ static inline bool kvm_get_kvm_safe(struct kvm *kvm)
->  	return refcount_inc_not_zero(&rc->users_count);
->  }
-> =20
-> +static inline void kvm_put_kvm(struct kvm *kvm)
-> +{
-> +	struct kvm_refcount *rc =3D (struct kvm_refcount *)kvm;
-> +	if (refcount_dec_and_test(&rc->users_count))
-> +		rc->destroy(kvm);
-> +}
-
-[Severity: Critical]
-This is a pre-existing issue, but can calling kvm_put_kvm() here lead to a
-use-after-free in vfio_ap_mdev_unset_kvm()?
-
-Looking at vfio_ap_mdev_unset_kvm() in drivers/s390/crypto/vfio_ap_ops.c, it
-calls get_update_locks_for_kvm(kvm) which acquires mutex_lock(&kvm->lock).
-
-It then calls kvm_put_kvm(kvm) which decrements the reference count and
-can trigger kvm_destroy_vm(), completely freeing the kvm struct memory:
-
-drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_unset_kvm() {
-    ...
-		get_update_locks_for_kvm(kvm);
-
-		kvm_arch_crypto_clear_masks(kvm);
-		vfio_ap_mdev_reset_queues(matrix_mdev);
-		kvm_put_kvm(kvm);
-		matrix_mdev->kvm =3D NULL;
-
-		release_update_locks_for_kvm(kvm);
-    ...
-}
-
-If the KVM file descriptor has already been closed by userspace, this could=
- be
-the final reference to the KVM object. When release_update_locks_for_kvm(kv=
-m)
-is subsequently called, it will attempt to execute mutex_unlock(&kvm->lock)
-on the freed kvm pointer.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
-245-1-seiden@linux.ibm.com?part=3D3
+> 
+> > +};
+> > +
+> 
