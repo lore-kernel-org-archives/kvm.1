@@ -1,161 +1,159 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC6C449ED7
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3E2441022
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780079794; cv=none; b=icodWJ1VxEtffYWtjNiByo/pDl+1VBQV61jA2VV3tHusjU17tUuj2mMsykZFjpeT9VfrWMNU+PXDl61w/BaG8DpZkgKGTnM8GLIaYw+YKe9siQTEp0GnPOFMMcZ1Jbpwl6XuasTsJfRcoXt+T0K9Znxo8ibfQ+BWWpGqHrxruIU=
+	t=1780079796; cv=none; b=YbBUEH1cefZWt7DqfPKzgL+iHYIqajS0rtpzDhydiWQYDYCyRqj0o9keVK+5yjd/pHPNOu68H7hAR+f67wXbXA7WYTIyGiEOULBjWHpNKSqlR2+5QmRI5lFMazl0ZolN8pzMsJ60oSG2gpZ5ffXdPZCaH4I1qORYTRmKLEy08XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780079794; c=relaxed/simple;
-	bh=DdpspGuUaDivdLuFD434PcjJty5Cogu/W4NmnbNVlEo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aNhmBnXH+0n4VdV6zQ83962jfRWcev2xZEa90d0CIC2i8uKS6wJw/+OxzG3RibjCD57fBW8BMbc4eVDetyx+Qucu9+PwOQ5EeeqcpFUvJZoZAeIOmWj2FRT1Sz8yl9raqtT8UPM0Q0vOq4cn+xlgMvZ9R0gGQKhc+z2hAMEaKv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fz/XNF6/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=BYrBoH8e; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1780079796; c=relaxed/simple;
+	bh=ulXu0NlgwaVVwx3zWk7XuRF/3f9bu/79QRsDBDGWEjo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JZ0C+COyBPFLC+eGccxE9pX9LXvxbjdP++h+oWhTYJ/pL+El2g+KcHF+mYudH4OTKVxyEzys8R4d8MW6FkChrBlYV9Emla6V89N/iFTlfDcdS11dA01aO0woKMpnr6L7G+zyaaTHAcgvRPLxlWp/cNKcDubrhIDL2uzk5SZbmYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hpMYdvI1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XT41YxNM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fz/XNF6/";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="BYrBoH8e"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64TI2QOr313034
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	jwetY48q6jZKjFlfIkES0/E/aJ1gDs1xBquYmzI+n/I=; b=fz/XNF6/GfXjQFNX
-	0UfcuCtloIVagGtD2+GvOtQGw8+Qf7lrJtaNYE5Ixumx2tn12ObRsAyZEVbu0S2N
-	F/9QInpSsmfg/5zHR04qy+juDSw/qCvhDvgkZnKTXXkvqduFaUOBn8u3wPeLiSPo
-	uthc5JZEmuTo+Ab1x0L2ZTnPWeOdqgeyd6tKbwF/dqfP7rctsFD5/YKEG1XChL6d
-	pfVErFptt7TYD9Jbt2yc6xxxWFcX8Lm8JZf0rjl9F6cctSM3MHXFQlIMGtGQyT8p
-	ltL+Ow1mQxjGnJtsQxQFWyZ55W7s2U6UY9HQ6H9Mor5LKNJzUx/XrYkcQvSQNDXF
-	QiNkkA==
-Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eex6m56js-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:29 +0000 (GMT)
-Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-1353bfdbf99so4542017c88.0
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 11:36:29 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hpMYdvI1";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XT41YxNM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780079790;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+/A1VY1s6jcVoa3c05BPgiOhjQWKntgd+9grtxQ/UaE=;
+	b=hpMYdvI1rd1LAhmvjOV0+PMxQukzbBtd1AYuQ1fu+C9k4vjLsX8tZcMSKSAHTKqIwX6xJl
+	Z9uEa1WrNKJZ6lvpTEiSL1F2SkyaxJ/FgJfouR+dlhAZ2zX3ozRc4PAalh2sIRW/UQ0ugc
+	vR7x/vkrUyuI6epBqrCPwIaSvkwSyIA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-508-ScUjCUT-MMimkO0pzrVX_g-1; Fri, 29 May 2026 14:36:29 -0400
+X-MC-Unique: ScUjCUT-MMimkO0pzrVX_g-1
+X-Mimecast-MFC-AGG-ID: ScUjCUT-MMimkO0pzrVX_g_1780079788
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-45ef6b407b4so115820f8f.1
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 11:36:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1780079788; x=1780684588; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jwetY48q6jZKjFlfIkES0/E/aJ1gDs1xBquYmzI+n/I=;
-        b=BYrBoH8e4M2CqYmPq41ALjpfSKmsFXWsKNzmk11BW2CvhmDDj+RGLrRxzX3do5Rhyp
-         Bvn6/8Mh35C/4d0+zFPbvqZwz1ArR0LbdJ4KA/XHhSymfMeCUhUJT7+rPuab8TTcUOkg
-         TZF4dnhafiO7zJzAhK3Hs6DqJtAc9bdaHwCh6EzyUVJc7o4L3pyzEZm7rYmkYpn9Ab8O
-         VIlJMFT7inyV1+3NtbcwZSbNzzJ6yC2zC/1GyVAZZV5U8dvq0R05b/bUWvnvXuLIW1Qa
-         rVsTiQhYHpGPiIVHrfDsqewF3Rlfo/V/M7OEyP8lGTumBLbd8cOAy+ucXxDOcBYPitfu
-         twhQ==
+        d=redhat.com; s=google; t=1780079788; x=1780684588; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+/A1VY1s6jcVoa3c05BPgiOhjQWKntgd+9grtxQ/UaE=;
+        b=XT41YxNMUCIAu7hgtAXY7IT66gfTWDAbjEbeSqaIADMqFcV08Awt5YUyfl8apmCNZA
+         wRcGK6jQiAWeGH9XC3bGYwgDzWaHumTivIvjASA/C9X8ebEWBlaErnszrHGn3Ukp0vSu
+         qMEEA3tTVnJ3+fWnRr4gTg4ysDVUl3bu2OdsuLCkefIYUZj6q95mkTLqK+0FfX2UoDMX
+         YS7vkR8Pt/O0jbJ0K9bNTkE+hKn9Siel7/ggsrvnrdSh6tn1bEEUxAf7M+Lx6eNQqHGz
+         nxRI0Y6ZwPXIhAcJYV/G9uH0cBQ1byEttzdw1AG1DQbVxBWEB99kmo+1UkOX+8ALxM5T
+         m5OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1780079788; x=1780684588;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jwetY48q6jZKjFlfIkES0/E/aJ1gDs1xBquYmzI+n/I=;
-        b=MtNAJIWTOwqupyTdb8DqsMCi37TB+n4070RGA47LlGamqt4l0zENMBMu8n9mSeX8ci
-         yt9IY/T3t1DkVWcUZEPBayM0t+dwsDLmwBQ/KccwNYyzOQxYKlkQo+6AytXTGNo4GnPL
-         WSGICSvP/AFSMvFvl6xCaoaMFIZvDgjDcHrP7Nyh9vHXNtovJYQvd+UdsSAtq2fv6D0y
-         eptjtCpveizZw2y9njG4/x1P2iC5FReaLS3VVmTynjBErmKUJ5iAXUxMsuIJcScqfVf4
-         9BxkrFGvewzkDibDMhLNOb1BjDOQENjOOWOZpQg/jtntzXSxEI8g0AkNpPhalWVjgDCy
-         fesw==
-X-Forwarded-Encrypted: i=1; AFNElJ8Uf6ZajqfBfbjJi4k8IBcBKk1uFrQvPliDs/pYxCD4vS/3yfDZvqoiaJf4yzJqLw3hppQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEAfaHlEKOPVP+tU8pbs2/GmFZP8tAslw1kpS26ba+5BFWkDkA
-	TYjiNg0mht0cy1BmSTe0jnexZhDlOb9onlqO9Unfn5fgg0Wwe5Z6df/37CF7j7l9KnKGq00IoDZ
-	C7Xq9qbgCAifq7qDPxn56DBFzEMFwLiAQNd4QTOSk5HCNrKmyViP+nvc=
-X-Gm-Gg: Acq92OGrVjlCh7DE2tmySWRxwM7V64yfdu3r7wIVriuFautyku9Fz4lUslPz/MCNXHO
-	2M3qg4jG3lS78bX2kVF9T4ab88++6mKytUltvtSoNsQPpBAyeTVWoV6x7G9rkxMhPR9lACmW5/N
-	JDJ8b4I/7mh1x6kQanfQaAHcrR1wKDVOfwITwAqa/t2Iz6ORMR04G5iCTufvyFl5FvuDFVIZqFS
-	Iyrx+DG1JeqZLK2aC2x36Re/P2IE5A7wmtp1n7KikRdyYoERTLr1xRqa2gCP0/KjA1ctrJKA4mb
-	hhMVD/aGG0/hHu3+b0EMz41DjireS3mkMHymhqWIGWXY5DuEXVOrJPe2CKSvTYnWP/qajjACawg
-	MEpf4GmPjrkFO7TRi9980kD48eZGQBy3Dk9PdaFtP/Eibji0hVOj+Y+BSyDrfI2z6I4srDtvuiw
-	8YAA50blxmlWm+GNqsCdmBgybe
-X-Received: by 2002:a05:7022:503:b0:136:4a60:43ce with SMTP id a92af1059eb24-137d3e11dccmr448183c88.11.1780079788540;
-        Fri, 29 May 2026 11:36:28 -0700 (PDT)
-X-Received: by 2002:a05:7022:503:b0:136:4a60:43ce with SMTP id a92af1059eb24-137d3e11dccmr448155c88.11.1780079788022;
-        Fri, 29 May 2026 11:36:28 -0700 (PDT)
-Received: from [192.168.1.170] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-137b36af6edsm1682252c88.5.2026.05.29.11.36.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+/A1VY1s6jcVoa3c05BPgiOhjQWKntgd+9grtxQ/UaE=;
+        b=SRqTtF69qyEVe3Yo4MmZrDI8TlbESxofDn3RNpxvM0kL/GFnkwyFJy676NJQcWrF0y
+         ia4uUF5D91JMF3oqwklLl6EWLwH5kOEsI2Jo2zVThiTOmKRdZjGuAV4tQfePt7Mdbmfu
+         rlHBTiQbu6lb/QDBLfYBCEKCRJ7pG19sjRi5Lcmmi15srcs4qPGwZFLE+5rV0HlJIW5k
+         sqJALFq0wXJd6X2jFsdH09bqB1xrutlf6vOwflck9wo5DFG7B/iKAFWcmGrxXbq2aiKe
+         FC0DBwGgabSq6ZdZr8AXsaHRed6K91m32QUCQQryiF5wDkI669JGSAY70OQIq+fbsW2h
+         Tikw==
+X-Forwarded-Encrypted: i=1; AFNElJ+wm1plUzoerVU1o9GlI2QgJ/ak+jSldF+tc44y2ZJaRotu03WgnuN4LUzwvjPrQyMV4cM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvU3Hy49tUENesc7LU8Y9LbptwbRarOqoQQCCc6EEJROsyi5cy
+	hKFX/Uln4KiEOw37SbX6kbwfe45yNsdNyger1wzuKo+9y4PeAdc126Uu4PMnwYGACx4iD2y5fY8
+	Blw+7i3Wi0BIKArSmYMUNQ730ZPF6GIIelvxeZ4p9w2UhX7HNLpRWZA==
+X-Gm-Gg: Acq92OEkUCaH9wRa1BoRSScDdwpjkB4K2qbIlSMfzX0lidnfpsFb2sdvnAU7urBrede
+	7mVsDjof867S+sUH9tOTjnklEcQoMvdipadSktvrwEpvv1QavCvLBbjpvtS3ElezrFC45cq5Zzq
+	XAcA3luHxjVpvJXhBQ2Oy8yueTAsNF8mRSA+vFKYfmfdHkC3EQ5KyJEPwldV8jGBOO9xkJC69q8
+	xeTBE+QWqsFBubKmKDaDXAytAmKsfNLoz6WHMSJw1di68Ezos6lmP1f7yLEJRNLpiq1fdfge4/Y
+	XQZ4ljjLU2ERNhKHFVbdDgR27vkaq8z27D2ziG2bs1w7FyqvXC1z/jNUHPit26StDsA1mUgQEqT
+	rmi7D/GdNsvP6oSWDQhaCieOieoeXrevRnz5b20iPtmBC2Li+lCHYS3+TV6cxOPfEPXC9nTqqVQ
+	ZLeHQGi6H4pYoRiIxEuWNQKUFkVCCxxbGAZWeNCw==
+X-Received: by 2002:a05:6000:1376:b0:45e:f52b:f4b7 with SMTP id ffacd0b85a97d-45ef6b20038mr1460685f8f.17.1780079787897;
         Fri, 29 May 2026 11:36:27 -0700 (PDT)
-Message-ID: <7f3da38a-96d0-496c-8c8e-e8a51624fdaf@oss.qualcomm.com>
-Date: Fri, 29 May 2026 11:36:25 -0700
+X-Received: by 2002:a05:6000:1376:b0:45e:f52b:f4b7 with SMTP id ffacd0b85a97d-45ef6b20038mr1460639f8f.17.1780079787478;
+        Fri, 29 May 2026 11:36:27 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.251.208])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef356b129sm6889251f8f.32.2026.05.29.11.36.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 11:36:26 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 14/24] KVM: Don't WARN if memory is dirtied without a vCPU when the VM is dying
+Date: Fri, 29 May 2026 20:35:39 +0200
+Message-ID: <20260529183549.1104619-15-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260529183549.1104619-1-pbonzini@redhat.com>
+References: <20260529183549.1104619-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/17] accel/nvmm: Convert AccelCPUClass ->
- AccelOpsClass::cpu_instance_init
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        qemu-devel@nongnu.org
-Cc: Reinoud Zandijk <reinoud@netbsd.org>,
-        Pedro Barbuda <pbarbuda@microsoft.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Glenn Miles <milesg@linux.ibm.com>, Alexander Graf <agraf@csgraf.de>,
-        Peter Maydell <peter.maydell@linaro.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>, qemu-arm@nongnu.org,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Roman Bolshakov <rbolshakov@ddn.com>, Anton Johansson <anjo@rev.ng>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Song Gao <gaosong@loongson.cn>,
-        qemu-riscv@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-        Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Phil Dennis-Jordan <phil@philjordan.eu>,
-        Alistair Francis <alistair.francis@wdc.com>, qemu-ppc@nongnu.org,
-        Weiwei Li <liwei1518@gmail.com>, Chao Liu <chao.liu.zevorn@gmail.com>,
-        kvm@vger.kernel.org, Claudio Fontana <cfontana@suse.de>,
-        Chinmay Rath <rathc@linux.ibm.com>,
-        Mohamed Mediouni <mohamed@unpredictable.fr>
-References: <20260529142434.87880-1-philmd@linaro.org>
- <20260529142434.87880-9-philmd@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260529142434.87880-9-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDE4NiBTYWx0ZWRfX2rdvhM1GoLWf
- /+vQYRRpbiiuxvtU+eIPd5pjJ4oCEbFEGEjc5vwpGdxNXSs1W563kcwtKsCtDGhUcDLNDUytrbZ
- 3Ih5pOji+qsCaq05YM+xSg63EC3wS3T7xUkS98oixWS98aLs4zXw85gLpWLKVoFZmldvh5bxTHH
- Jx+zkw9DBdnmYvOfHSQgIsv7IoT5G0+HskE9wCehosXFQ5zeqnUkoqx10S4wvErGYk0Fcz0JmGO
- IDspfKqYM8ZfSDQePmxgcsMRQY8/ZRE6YfR6raSsloWYcimbTU3GZFfuYVwc6KAPVzU/E226hE0
- eKJI0oqpOvTA2Z2N/u5FNwbkUg7mUNWYLjVNDjF972DMOWqJfjz1f1QBvSKGHEfYB9f3S0fkJ9P
- Vzycfu3zyCW0+MOlHPEY+rfHsRhD53vbrnDVUj7F6hbHYAyzf2JP4noZ41iIvp58RaX95i6yk+0
- Tl3/CYQyR698rzn0Vug==
-X-Authority-Analysis: v=2.4 cv=frnsol4f c=1 sm=1 tr=0 ts=6a19dcad cx=c_pps
- a=kVLUcbK0zfr7ocalXnG1qA==:117 a=iLqgmErQAxjCjdq5jj1Aqg==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=Kyjw8ylCigwU-0_J9SUA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=vr4QvYf-bLy2KjpDp97w:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: OT0w0rgJxE6prkx66UvYgSfyNoHOosTH
-X-Proofpoint-ORIG-GUID: OT0w0rgJxE6prkx66UvYgSfyNoHOosTH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-29_05,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605290186
 
-On 5/29/2026 7:24 AM, Philippe Mathieu-Daudé wrote:
-> Register the new AccelOpsClass::cpu_instance_init hook.
-> 
-> ACCEL_CPU_NAME("nvmm") TypeInfo is now empty, remove it.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  target/i386/nvmm/nvmm-accel-ops.h |  2 ++
->  target/i386/nvmm/nvmm-accel-ops.c |  2 ++
->  target/i386/nvmm/nvmm-all.c       | 19 +------------------
->  3 files changed, 5 insertions(+), 18 deletions(-)
-> 
+From: Sean Christopherson <seanjc@google.com>
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>
+When marking a page dirty, complain about not having a running/loaded vCPU
+if and only if the VM is still alive, i.e. its refcount is non-zero.  This
+will allow fixing a memory leak for x86 SEV-ES guests without hitting what
+is effectively a false positive on the WARN.
+
+For some SEV-ES VM-Exits, KVM keeps a writable mapping of a guest page
+across an exit to userspace, and typically unmaps the page on the next
+KVM_RUN.  But if userspace never calls KVM_RUN after such an exit, then KVM
+needs to unmap the page when the vCPU is destroyed, which in turn triggers
+the WARN about not having a running vCPU.
+
+Alternatively, SEV-ES could temporarily load the vCPU to suppress the WARN,
+as is done in nested_vmx_free_vcpu() (but for completely unrelated reasons;
+suppressing WARN from nested_put_vmcs12_pages() is pure happenstance).  But
+loading a vCPU during destruction is gross (ideally nVMX code would be
+cleaned up), risks complicating the SEV-ES code (KVM would need to ensure
+the temporarily load()+put() only runs when the vCPU isn't already loaded),
+and is ultimately pointless.
+
+The motivation for the WARN is to guard against KVM dirtying guest memory
+without pushing the corresponding GFN to the active vCPU's dirty ring, e.g.
+to ensure userspace doesn't miss a dirty page.  But for the VM's refcount
+to reach zero, there can't be _any_ userspace mappings to the dirty ring,
+as mapping the dirty ring requires doing mmap() on the vCPU FD.  I.e. if
+userspace had a valid mapping for the dirty ring, then the vCPU file and
+thus the owning VM would still be alive.  And so since userspace can't
+possibly reach the dirty ring, whether or not KVM technically "misses" a
+push to the dirty ring is irrelevant.
+
+Reported-by: Michael Roth <michael.roth@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-15-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ virt/kvm/kvm_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 89489996fbc1..881f92d7a469 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3520,7 +3520,8 @@ void mark_page_dirty_in_slot(struct kvm *kvm,
+ 	if (WARN_ON_ONCE(vcpu && vcpu->kvm != kvm))
+ 		return;
+ 
+-	WARN_ON_ONCE(!vcpu && !kvm_arch_allow_write_without_running_vcpu(kvm));
++	WARN_ON_ONCE(!vcpu && refcount_read(&kvm->users_count) &&
++		     !kvm_arch_allow_write_without_running_vcpu(kvm));
+ #endif
+ 
+ 	if (memslot && kvm_slot_dirty_track_enabled(memslot)) {
+-- 
+2.54.0
+
