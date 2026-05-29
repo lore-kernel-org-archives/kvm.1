@@ -1,227 +1,305 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793E233D4F2
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 06:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780036914; cv=fail; b=qUyoT/Bk+S7osWcBu9SeWw9k5G7f7npU6ScdLp1b0lPKdS94SJ2f9R6Hlthp2TMensNnOvsa5KgTrLWjpT6DDII01M/ddcj80gwNqUqsXzb+LaVOPxvIPZ4m1dpy29rnwLMGwXWywiDWYIM2uLikT7djLW+zXDMuy3CAWq2Yvy8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780036914; c=relaxed/simple;
-	bh=RUFhAdhfxdt+409Lo5x+VBLswnLbP635ULre/4vDtdY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZQ2ior7upk2GhQvHNMnqC0IF7laleK0TxnCFhMXPx/1ErN+pVYxG+ESqB1FhBMYOnTKGnaxeRpXjFcG1V8yuTBm1qYl0b8dU9CCAvCvyq2yrMPlvoNAGfFseZjvgEKzvg4c5IazPfr9S6f3/N2Ltddd47+DW7+dZDpCj5eSf9tg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=myui/KH8; arc=fail smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0752E7366;
+	Fri, 29 May 2026 07:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780038594; cv=none; b=YjrP3n6G1AGfPKVY/tBKBy9+T6pcx9qcGtJCPhik7tL3leWpR6v+1kykZ0yoznfIPFJkVgFxvmI4xK6iUjoRbZatJW8t0viX0UVUcFv+EylJ0R5mlPTLnnhslUDgjGfcatDppHReMWOP+J94iMPZ2fxpmpEW/whRuSwcHQ6iPbs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780038594; c=relaxed/simple;
+	bh=mcDPQ10OhT5h2kEYG1dHSv6QYaJYoPvImMxULNHllTY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=TVZEcEI9T6eMPZ5rFxqzjnPN8F0uLXVGjFQ2MXBq/XMP73GILGBZTp1Fu8fhPcs33HylklhJVfg+Zfs3QJVq0pIy8qAF0K7W6o06UVX9BZ83LRVDwyIjCX8gjiIS5/uSBT0wTmh7RGFMtmB91oU2Q2wivHE7g9zOHZsLQquspIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ko+7Sr7Y; arc=none smtp.client-ip=115.124.30.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="myui/KH8"
-Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64T1NUuG2026330
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:41:51 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=wjl2lJMhu3x6YF6VZMdTDkNQcozAcKqTdHEY7+axmxo=; b=myui/KH8juDb
-	9VFRxDDFEIimNoAd5XwHhraUO/L1qE4ZtZnO5K+/nzprny+oPTbRJWHwUl7Iab/B
-	cMLPIr8HMpKYeWusLbb/K+iwCBNNEvNQ4TbH/N8JWoEGZzYAl66wAE0qc8sarvKy
-	NYv2JsEurivQoqaAHfEmVHaXwieB82fQ7S1h7lyRTkK45xQ7kvSunBJhbh5mhqcS
-	R4u4gH7+DhvThFUOuSUwR7HsCG5Cx58JsKiG3AGPcpDd3+2CHCL50PZkKvpuBsSW
-	56zV2uZKI0BOQNtMOtj246H6KVeuu5CBuNc+Twlud+11KyL2joGJMeL7vJmJjcwU
-	nf9M3D97/Q==
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ee7x1j4py-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:41:51 -0700 (PDT)
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4856a701421so7698732b6e.1
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:41:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780036911; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LlPxHZLHpkYirinCuMdkmdMV6sDETE231CUQnA6R/rcdStECLox/HGY3z6XAGu8rGY
-         Ch75ePrGiAp5py5IeT9vEfgMPOBEH8FaAvZwlQY3OZN8tzgtulzzENCmETfWaOYLqDrs
-         rmfetpN5DpeadLabeRwV6Xccjcqd4J3d/77Cf4gL3/H5q67aCMt4cejrUpO5sd2HIXmk
-         RuLNMehCv/YGUS6wD4bnO8aYtvUZkkZ1dP57I4f8nDcZj4t6rj6A3VjONGzTWARqb7bB
-         Shzh5riPWNn7hKC7ZLYeeu4qbF95o853K5z5od3s5KARomiznk3i+9/XmIFBOg0s7xTi
-         /zSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=5hKWaaPr0jpqnvHMhDmJMKNnaKkhbQEW5A8xM9/5BHs=;
-        fh=EeuiGo3NKWxDQHp2TKIlG/Cqr/ijZ7dx288mOQ4ves0=;
-        b=Fieq67MOAJa0J81Woq5TXW5ZzjUX+9zxaK58unPRDcF/5VgFG6FvRCPMQ/oBK+uMdx
-         JnPxpuCBqP90nRH7Nqbpcj1ry3bzUrfP576HUYi8VNBO0NE1WJ71j+elxOCMBdfNRvXp
-         tzTClxoUsom59qCw8fJ2Wyo9PXMUd0rj0Wrw6qO+e491oeDjI+O7an7kwoAJwRndFr0L
-         CznsPa7Eb8uU4S+SSMkb2SK7cOf0ECkYef+NxyptmB7Ftdht7Ml0HUUHYOX7rlI3d3Oe
-         F+N+xa0CziR72ypUymh8ZptfoMU6A79VMjfhm/SQNtATqWSs/epy/8VuPl7Krc/97MVR
-         aamw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780036911; x=1780641711;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5hKWaaPr0jpqnvHMhDmJMKNnaKkhbQEW5A8xM9/5BHs=;
-        b=RWdaQVRzcHTM4nRZTUU3xnuE9nxnfLeNXvlqtMrhhGstQAiTkxBejK05G9rQUBbpBB
-         dWswQlJNuHaunH5IcNoDOgToDuey6/hf1afNTDenSQRrA5YYGwfN5uXisp9WsuFHH2E1
-         JPGT/G22ewZ3j1D3xME2YkdnwBnqwue8dC47QFFjGaBf288tU4c5wrMuWNOJ84EAqbxX
-         jzfX/1mnUAC/Olj9s/zhwlTNava4KlwUh/I1UVUReKMPGCypWb4YaSHK3ipPIJH3PN8I
-         t36yIkHVts9VHQRvKURtcgllSUFWIV9wKs3qArpaVyaC7jhdcTirVML9AMTd7SIAVdx0
-         Ujag==
-X-Forwarded-Encrypted: i=1; AFNElJ/axfWYMaserhuC+zSgbHeeUE8CMI4swEnEExFi1mdzDZxGJ7hMn640CjHcPA/8ZE/79mM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxduXVHZ2uo2bQUC7GnUlG7627jq8ILiyqDJ3La5SlByhwKKF7
-	egXUjDklMQsnHPxcySi/9bcyx31FTDCPLV1hFRmNSrpMyWZ73qnZ29fZZh6e5KkjCCwoWhQXOzi
-	ggp4CnI2yshy+7fYYZ+NA1+nUHtAAbug7v+ICj8tHlL+Edh8dWtcj92UOOerpmlbSKPWBNGbu80
-	+MRa+7BbfR1tc2Z/JM8Jz6NDBwhfA=
-X-Gm-Gg: Acq92OExVie0MBvQf6M0f+K+8S6HHfYO0Iv7Iirj5s9GrDOBXP+imnHjRu1f4dqz/n9
-	oZ43dH6hDKREM5DMv2j/B7VopWRWZnOJPi7tHdXxfXawl7dwCogEYUJuGByBw4VbaKfjpliE/gS
-	J8TeWO+9/n8xksrLvRWVWeliZvhbbP3C/GcFS+t9gCUxYSxaALBKJsgNZenHIiYr2gIyFZhLULh
-	yvok193tREbtdjUydjFDnFhZvF2cRO02Jen7mlR6DIKfWVDBoQ=
-X-Received: by 2002:a05:6808:1c07:b0:467:1212:46eb with SMTP id 5614622812f47-485e6dc0223mr972294b6e.35.1780036910692;
-        Thu, 28 May 2026 23:41:50 -0700 (PDT)
-X-Received: by 2002:a05:6808:1c07:b0:467:1212:46eb with SMTP id
- 5614622812f47-485e6dc0223mr972266b6e.35.1780036910218; Thu, 28 May 2026
- 23:41:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ko+7Sr7Y"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1780038584; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=AfOoAZRsoTHl03d+h7HBqGhrZdH7nmpYogtqIGY7Tdc=;
+	b=ko+7Sr7Y0oZ8BxrLSUgZbS5RAvNzV+OjjrYk++mIbagPy0rAV0muz6mT8ByArZQNB+MoDVLyASlnS1J0mVGRsJGApqEOmUyf6aD7tZCFekrUbaBUTKJRpFF07uVlF0kqJUjNMCJZT35bUa4+Rvl42wOq0Zplxn1LuDQDj8DZaMg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R991e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X3oeHbx_1780038572;
+Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X3oeHbx_1780038572 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 29 May 2026 15:09:42 +0800
+From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+To: joro@8bytes.org,
+	suravee.suthikulpanit@amd.com,
+	will@kernel.org,
+	robin.murphy@arm.com,
+	dwmw2@infradead.org,
+	baolu.lu@linux.intel.com,
+	alex@shazbot.org,
+	jgg@ziepe.ca,
+	kevin.tian@intel.com,
+	skhawaja@google.com,
+	iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: [RFC PATCH] Optimize VFIO and IOMMU mapping traversal
+Date: Fri, 29 May 2026 15:09:32 +0800
+Message-ID: <20260529070932.2632907-1-guanghuifeng@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260526144401.1485788-1-zhipingz@meta.com> <20260526144401.1485788-2-zhipingz@meta.com>
- <20260527145332.30412ea4@shazbot.org> <CAH3zFs3Yv2G0rQNE7x8DjBWPE+3sFC_3X6ZtF4x-mPp==h0BQA@mail.gmail.com>
- <65b3d63a-271a-4aa8-ba8c-fc2b186349dc@huawei.com>
-In-Reply-To: <65b3d63a-271a-4aa8-ba8c-fc2b186349dc@huawei.com>
-From: Zhiping Zhang <zhipingz@meta.com>
-Date: Thu, 28 May 2026 23:41:39 -0700
-X-Gm-Features: AVHnY4JOme_X08lKUfayqc49fxg4J4ab3o3Y14UzTjVjHMNZxrhWL7QV4gYwqO4
-Message-ID: <CAH3zFs3eddZUtb08oNpjEg5b2=DJtRCuEcjsxuPyRA-zB2idag@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] PCI/TPH: expose the enabled TPH requester type
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian Konig <christian.koenig@amd.com>,
-        Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-        Yishai Hadas <yishaih@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: w0Zr50r4KqZP3l5TcQmNcmgui0uuysJ2
-X-Authority-Analysis: v=2.4 cv=Yu8/gYYX c=1 sm=1 tr=0 ts=6a19352f cx=c_pps
- a=4ztaESFFfuz8Af0l9swBwA==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=xtH7KyWI9dI7BmFOsl-x:22
- a=i0EeH86SAAAA:8 a=r1p2_3pzAAAA:8 a=VabnemYjAAAA:8 a=zzBG9ipUb6nLY-ocZWUA:9
- a=QEXdDO2ut3YA:10 a=TPnrazJqx2CeVZ-ItzZ-:22 a=r_pkcD-q9-ctt7trBg_g:22
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDA2MiBTYWx0ZWRfX3SEV6D+NPhog
- yCrK4HC49jeK/11IO8vsWsVzdkM0hTMSVJLhFio17q/zL0sYBbdtAVEWxoH6PLKXdW/OH8/5fmk
- SBsgucXrZ+ZpfW5LVtEVzSk4xKCezZhydbpDIw2ghEY262TKZlW17jxIBXEqNPj9rfjKQvwMj+L
- 8MPMa/qPxPBxvfwRG0/4kJ2/7/nMdViN2jrZrvwmGw7nNU9dNw5ToNo0/r/1oAc/TWUkWzyKkAn
- ZyPuY0KfExfS3ti+EWrm51VNthnfAMTSbTdp/A1eZg27raWjDZjXJcUM/1MLwSnM+ICtS7O+YQ9
- 69oZsGvY45GYbke9nZe8dbkpXmvBnnRPgSjmUuyhKDXxz3fbLDSTZAcgOL4zyiqp+/FKDWnluDy
- vNnhuHe3Lv9FzPHbZOKT77nsCqm4v6GBwrJG2xPwk/E/JBfvTbO/f37WseYSFL11099kRB4EDtE
- WoXV+Z00SdGJ8A/7eBw==
-X-Proofpoint-ORIG-GUID: w0Zr50r4KqZP3l5TcQmNcmgui0uuysJ2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-29_02,2026-05-28_03,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 28, 2026 at 1:04=E2=80=AFAM fengchengwen <fengchengwen@huawei.c=
-om> wrote:
->
-> >
-> On 5/28/2026 1:35 PM, Zhiping Zhang wrote:
-> > On Wed, May 27, 2026 at 1:53=E2=80=AFPM Alex Williamson <alex@shazbot.o=
-rg> wrote:
-> >>
-> >>>
-> >> On Tue, 26 May 2026 07:43:53 -0700
-> >> Zhiping Zhang <zhipingz@meta.com> wrote:
-> >>
-> >>> Add pcie_tph_enabled_req_type() so drivers can query the enabled TPH
-> >>> requester mode without reaching into pci_dev internals.
-> >>>
-> >>> This keeps pci_dev::tph_req_type inside the PCI/TPH code and provides=
- a
-> >>> !CONFIG_PCIE_TPH stub for callers.
-> >>>
-> >>> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> >>> ---
-> >>>  drivers/pci/tph.c       | 12 ++++++++++++
-> >>>  include/linux/pci-tph.h |  2 ++
-> >>>  2 files changed, 14 insertions(+)
-> >>>
-> >>> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
-> >>> index 91145e8d9d95..6c4492075ae9 100644
-> >>> --- a/drivers/pci/tph.c
-> >>> +++ b/drivers/pci/tph.c
-> >>> @@ -174,6 +174,18 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pd=
-ev)
-> >>>  }
-> >>>  EXPORT_SYMBOL(pcie_tph_get_st_table_loc);
-> >>>
-> >>> +/**
-> >>> + * pcie_tph_enabled_req_type - Return the device's enabled TPH reque=
-ster type
-> >>> + * @pdev: PCI device to query
-> >>> + *
-> >>> + * Return: PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY or PCI_TPH_REQ_=
-EXT_TPH.
-> >>> + */
-> >>> +u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
-> >>> +{
-> >>> +     return pdev->tph_req_type;
-> >>> +}
-> >>> +EXPORT_SYMBOL(pcie_tph_enabled_req_type);
-> >>> +
-> >>>  /*
-> >>>   * Return the size of ST table. If ST table is not in TPH Requester =
-Extended
-> >>>   * Capability space, return 0. Otherwise return the ST Table Size + =
-1.
-> >>> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
-> >>> index be68cd17f2f8..fe572737b409 100644
-> >>> --- a/include/linux/pci-tph.h
-> >>> +++ b/include/linux/pci-tph.h
-> >>> @@ -30,6 +30,7 @@ void pcie_disable_tph(struct pci_dev *pdev);
-> >>>  int pcie_enable_tph(struct pci_dev *pdev, int mode);
-> >>>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
-> >>>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
-> >>> +u8 pcie_tph_enabled_req_type(struct pci_dev *pdev);
-> >>>  #else
-> >>>  static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
-> >>>                                       unsigned int index, u16 tag)
-> >>> @@ -41,6 +42,7 @@ static inline int pcie_tph_get_cpu_st(struct pci_de=
-v *dev,
-> >>>  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
-> >>>  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
-> >>>  { return -EINVAL; }
-> >>> +static inline u8 pcie_tph_enabled_req_type(struct pci_dev *pdev) { r=
-eturn 0; }
-> >>
-> >> nit, s/0/PCI_TPH_REQ_DISABLE/ for consistency.  Thanks,
->
-> It need add #include <linux/pci.h> at beginning too, else it will counter=
- compile error like this:
->
->    In file included from drivers/vdpa/mlx5/core/mr.c:8:
->    In file included from include/linux/mlx5/qp.h:36:
->    In file included from include/linux/mlx5/device.h:37:
->    In file included from include/rdma/ib_verbs.h:46:
-> >> include/linux/pci-tph.h:48:10: error: use of undeclared identifier 'PC=
-I_TPH_LOC_NONE'
->       48 | { return PCI_TPH_LOC_NONE; }
->          |          ^
->    1 error generated.
->
+In VFIO, vfio_unmap_unpin requires performing iommu unmap and mm
+unpin on the address space. However, VFIO doesn't record the PHY
+address corresponding to iova, but instead obtains the iova-PHY
+mapping through iommu_iommu_iova_to_phys.
 
-Great catch =E2=80=94 thanks for testing.  I will add
-#include <linux/pci_regs.h> to pci-tph.h so the TPH macros
-(PCI_TPH_REQ_*, PCI_TPH_LOC_*) are in scope wherever the header is
-included.
+In IOMMU, under conditions such as address alignment, it prioritizes
+mapping iova-PHY based on bigpages. Therefore, during the
+vfio_unmap_unpin process, traversal can be performed at the
+granularity of the IOMMU map, reducing the number of
+iommu_iova_to_phys queries and significantly improving conversion
+efficiency.
 
-Thanks,
-Zhiping
+Therefore, an iommu_iova_to_pgsize implementation is added to the
+IOMMU driver to return the pagesize used for the iova mapping.
+
+Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Signed-off-by: Shiqiang Zhang <shiyu.zsq@linux.alibaba.com>
+Signed-off-by: Simon Guo <wei.guo.simon@linux.alibaba.com>
+---
+ drivers/iommu/amd/iommu.c           |  2 ++
+ drivers/iommu/generic_pt/iommu_pt.h | 53 +++++++++++++++++++++++++++++
+ drivers/iommu/intel/iommu.c         |  2 ++
+ drivers/iommu/iommu.c               | 25 ++++++++++++++
+ drivers/vfio/vfio_iommu_type1.c     | 17 +++++++--
+ include/linux/generic_pt/iommu.h    |  4 +++
+ include/linux/iommu.h               |  3 ++
+ 7 files changed, 104 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 57dc8fabc7d9..36ffeb96c454 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2662,6 +2662,7 @@ static const struct pt_iommu_driver_ops amd_hw_driver_ops_v1 = {
+ 
+ static const struct iommu_domain_ops amdv1_ops = {
+ 	IOMMU_PT_DOMAIN_OPS(amdv1),
++	IOMMU_PT_PGSIZE_OPS(amdv1),
+ 	.iotlb_sync_map = amd_iommu_iotlb_sync_map,
+ 	.flush_iotlb_all = amd_iommu_flush_iotlb_all,
+ 	.iotlb_sync = amd_iommu_iotlb_sync,
+@@ -2740,6 +2741,7 @@ static struct iommu_domain *amd_iommu_domain_alloc_paging_v1(struct device *dev,
+ 
+ static const struct iommu_domain_ops amdv2_ops = {
+ 	IOMMU_PT_DOMAIN_OPS(x86_64),
++	IOMMU_PT_PGSIZE_OPS(x86_64),
+ 	.iotlb_sync_map = amd_iommu_iotlb_sync_map,
+ 	.flush_iotlb_all = amd_iommu_flush_iotlb_all,
+ 	.iotlb_sync = amd_iommu_iotlb_sync,
+diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
+index dc91fb4e2f61..de861d8b6ce2 100644
+--- a/drivers/iommu/generic_pt/iommu_pt.h
++++ b/drivers/iommu/generic_pt/iommu_pt.h
+@@ -199,6 +199,59 @@ phys_addr_t DOMAIN_NS(iova_to_phys)(struct iommu_domain *domain,
+ }
+ EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(iova_to_phys), "GENERIC_PT_IOMMU");
+ 
++static __always_inline int __do_iova_to_pgsize(struct pt_range *range,
++					       void *arg, unsigned int level,
++					       struct pt_table_p *table,
++					       pt_level_fn_t descend_fn)
++{
++	struct pt_state pts = pt_init(range, level, table);
++	size_t *pgsize = arg;
++
++	switch (pt_load_single_entry(&pts)) {
++	case PT_ENTRY_EMPTY:
++		return -ENOENT;
++	case PT_ENTRY_TABLE:
++		return pt_descend(&pts, arg, descend_fn);
++	case PT_ENTRY_OA:
++		*pgsize = BIT(pt_entry_oa_lg2sz(&pts));
++		return 0;
++	}
++	return -ENOENT;
++}
++PT_MAKE_LEVELS(__iova_to_pgsize, __do_iova_to_pgsize);
++
++/**
++ * iova_to_pgsize() - Return the page size of the mapping at the given IOVA
++ * @domain: Table to query
++ * @iova: IO virtual address to query
++ *
++ * Walk the IOMMU page table to determine the actual page size of the PTE
++ * entry that maps the given IOVA.
++ *
++ * Context: The caller must hold a read range lock that includes @iova.
++ *
++ * Return: The page size in bytes, or 0 if there is no translation.
++ */
++size_t DOMAIN_NS(iova_to_pgsize)(struct iommu_domain *domain,
++				 dma_addr_t iova)
++{
++	struct pt_iommu *iommu_table =
++		container_of(domain, struct pt_iommu, domain);
++	struct pt_range range;
++	size_t pgsize;
++	int ret;
++
++	ret = make_range(common_from_iommu(iommu_table), &range, iova, 1);
++	if (ret)
++		return 0;
++
++	ret = pt_walk_range(&range, __iova_to_pgsize, &pgsize);
++	if (ret)
++		return 0;
++	return pgsize;
++}
++EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(iova_to_pgsize), "GENERIC_PT_IOMMU");
++
+ struct pt_iommu_dirty_args {
+ 	struct iommu_dirty_bitmap *dirty;
+ 	unsigned int flags;
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 4d0e65bc131d..f992162cfa67 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -3890,6 +3890,7 @@ static struct iommu_domain identity_domain = {
+ 
+ const struct iommu_domain_ops intel_fs_paging_domain_ops = {
+ 	IOMMU_PT_DOMAIN_OPS(x86_64),
++	IOMMU_PT_PGSIZE_OPS(x86_64),
+ 	.attach_dev = intel_iommu_attach_device,
+ 	.set_dev_pasid = intel_iommu_set_dev_pasid,
+ 	.iotlb_sync_map = intel_iommu_iotlb_sync_map,
+@@ -3901,6 +3902,7 @@ const struct iommu_domain_ops intel_fs_paging_domain_ops = {
+ 
+ const struct iommu_domain_ops intel_ss_paging_domain_ops = {
+ 	IOMMU_PT_DOMAIN_OPS(vtdss),
++	IOMMU_PT_PGSIZE_OPS(vtdss),
+ 	.attach_dev = intel_iommu_attach_device,
+ 	.set_dev_pasid = intel_iommu_set_dev_pasid,
+ 	.iotlb_sync_map = intel_iommu_iotlb_sync_map,
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index d1a9e713d3a0..e27f26bc1851 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -2557,6 +2557,31 @@ phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t iova)
+ }
+ EXPORT_SYMBOL_GPL(iommu_iova_to_phys);
+ 
++/**
++ * iommu_iova_to_pgsize - Get the page size of the mapping at a given IOVA
++ * @domain: IOMMU domain to query
++ * @iova: IO virtual address to query
++ *
++ * Walk the IOMMU page table to determine the actual page size of the PTE
++ * entry that maps the given IOVA. This reflects the real mapping granularity,
++ * not an inferred value from alignment.
++ *
++ * Returns the page size in bytes, or 0 if the mapping doesn't exist or the
++ * domain doesn't support this query.
++ */
++size_t iommu_iova_to_pgsize(struct iommu_domain *domain, dma_addr_t iova)
++{
++	if (domain->type == IOMMU_DOMAIN_IDENTITY ||
++	    domain->type == IOMMU_DOMAIN_BLOCKED)
++		return 0;
++
++	if (!domain->ops->iova_to_pgsize)
++		return 0;
++
++	return domain->ops->iova_to_pgsize(domain, iova);
++}
++EXPORT_SYMBOL_GPL(iommu_iova_to_pgsize);
++
+ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
+ 			   phys_addr_t paddr, size_t size, size_t *count)
+ {
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index c8151ba54de3..bf918a93a159 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -1177,7 +1177,7 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
+ 
+ 	iommu_iotlb_gather_init(&iotlb_gather);
+ 	while (pos < dma->size) {
+-		size_t unmapped, len;
++		size_t unmapped, len, pgsize;
+ 		phys_addr_t phys, next;
+ 		dma_addr_t iova = dma->iova + pos;
+ 
+@@ -1191,11 +1191,24 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
+ 		 * To optimize for fewer iommu_unmap() calls, each of which
+ 		 * may require hardware cache flushing, try to find the
+ 		 * largest contiguous physical memory chunk to unmap.
++		 *
++		 * Query the actual IOMMU PTE mapping granularity at this IOVA
++		 * to determine the guaranteed contiguous range. Use only the
++		 * remaining portion within the current PTE from our position,
++		 * in case we start from the middle of a large page mapping.
+ 		 */
+-		for (len = PAGE_SIZE; pos + len < dma->size; len += PAGE_SIZE) {
++		pgsize = iommu_iova_to_pgsize(domain->domain, iova);
++		if (!pgsize)
++			pgsize = PAGE_SIZE;
++		len = pgsize - (iova & (pgsize - 1));
++		for (; pos + len < dma->size; len += pgsize) {
+ 			next = iommu_iova_to_phys(domain->domain, iova + len);
+ 			if (next != phys + len)
+ 				break;
++			pgsize = iommu_iova_to_pgsize(domain->domain,
++						      iova + len);
++			if (!pgsize)
++				pgsize = PAGE_SIZE;
+ 		}
+ 
+ 		/*
+diff --git a/include/linux/generic_pt/iommu.h b/include/linux/generic_pt/iommu.h
+index dd0edd02a48a..2f30ae73a9eb 100644
+--- a/include/linux/generic_pt/iommu.h
++++ b/include/linux/generic_pt/iommu.h
+@@ -251,6 +251,8 @@ struct pt_iommu_cfg {
+ #define IOMMU_PROTOTYPES(fmt)                                                  \
+ 	phys_addr_t pt_iommu_##fmt##_iova_to_phys(struct iommu_domain *domain, \
+ 						  dma_addr_t iova);            \
++	size_t pt_iommu_##fmt##_iova_to_pgsize(struct iommu_domain *domain,    \
++					       dma_addr_t iova);               \
+ 	int pt_iommu_##fmt##_read_and_clear_dirty(                             \
+ 		struct iommu_domain *domain, unsigned long iova, size_t size,  \
+ 		unsigned long flags, struct iommu_dirty_bitmap *dirty);        \
+@@ -272,6 +274,8 @@ struct pt_iommu_cfg {
+  */
+ #define IOMMU_PT_DOMAIN_OPS(fmt)                        \
+ 	.iova_to_phys = &pt_iommu_##fmt##_iova_to_phys
++#define IOMMU_PT_PGSIZE_OPS(fmt)                        \
++	.iova_to_pgsize = &pt_iommu_##fmt##_iova_to_pgsize
+ #define IOMMU_PT_DIRTY_OPS(fmt) \
+ 	.read_and_clear_dirty = &pt_iommu_##fmt##_read_and_clear_dirty
+ 
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index e587d4ac4d33..d04dc7dcfb1e 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -776,6 +776,8 @@ struct iommu_domain_ops {
+ 
+ 	phys_addr_t (*iova_to_phys)(struct iommu_domain *domain,
+ 				    dma_addr_t iova);
++	size_t (*iova_to_pgsize)(struct iommu_domain *domain,
++				 dma_addr_t iova);
+ 
+ 	bool (*enforce_cache_coherency)(struct iommu_domain *domain);
+ 	int (*set_pgtable_quirks)(struct iommu_domain *domain,
+@@ -930,6 +932,7 @@ extern ssize_t iommu_map_sg(struct iommu_domain *domain, unsigned long iova,
+ 			    struct scatterlist *sg, unsigned int nents,
+ 			    int prot, gfp_t gfp);
+ extern phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t iova);
++extern size_t iommu_iova_to_pgsize(struct iommu_domain *domain, dma_addr_t iova);
+ extern void iommu_set_fault_handler(struct iommu_domain *domain,
+ 			iommu_fault_handler_t handler, void *token);
+ 
+-- 
+2.43.7
+
