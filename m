@@ -1,56 +1,56 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0B13F6C22
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 16:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E558B3FAE11
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 16:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780073497; cv=none; b=jH4s5AYDxAwVsBK/4RSsDhziHMNUWeJhd47689rmYLTFBZ0WPktDsI2yEtjXRuHiGsrjhhC9M1Y5Jfd6O8Z6bHT4RUc6GP+k9D4v1U04JOh63N14Je3JOGsDalPkjJLbzzuXx0KqYIbwfiT/hXsLC0k8MUEtMTCI/KYVrVDNtbY=
+	t=1780073497; cv=none; b=FigUVq2gVB8DrdYZy0nrHzjvPn9gvZx+HpnSv0rumMLz7mzXgqLT9jdRowxJA/7JUZxyZjHTN+TWMUVoz4tgzUin4cZbRcaaa+E648ZiKe2xVgFWRIivgWtbs9YsED7hPfTwBzCw/rVTfGDMZd/FRlqFApzyU/9V5BRgLzba/fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780073497; c=relaxed/simple;
-	bh=GoET2JKvJg3a0x9eCSCU+59BfoX2Vx7yF+LJx8bxDqM=;
+	bh=0lsKgKDWAG6ilUiGyVqdXWwZKr2qSgHhst802vkoXjo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VwkkesFBlzS4GAJBNM7WlU7N/L0nLqwCBQXm/RkeinfR9cgsedBUVEIc5C92Mxoi8GI52abFv8/IsGZKcTAsEXZt/LlbeL9wYVju+lZBZoIFAzuWkyfBFoOO5rKiPawpNaED33lWRdzjLIYw4gQxTFInrU7eSkhrES+aID5ysGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UDZvnhQ6; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=R3WLeB2h9pDjYCmSRGQg4pOmMSqrWl5huTw/5mtYiDrwP+IKsyrt63291hPKevKu8FYFP81QH+NOMtc3dKOfJw/389mtvwKtvbi/GTWwEPsf86qFmvbrflHvcNsrcLaKLWvce5EaNUbbdFud5JvEO3XwbSBMRkWCLXjiFCBklSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R6Mq6zu6; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UDZvnhQ6"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2babbeff9e4so157634155ad.0
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 09:51:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R6Mq6zu6"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36bc02d28b6so823597a91.3
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 09:51:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780073491; x=1780678291; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780073492; x=1780678292; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=i2QifqEk3Wa+x9NPrIkPMLqkVE5h8yODSs0wPMQc5rE=;
-        b=UDZvnhQ6llmTpTa1CF4WrChHFnnJlK/WNVguJPoFr7b7Y1duOtI5JOxar9GkMgMEVo
-         1cImU24BB45yJjX+YsgJ24gHGS87MlpYcJtI/7Njxsf3DoNQD9QUm9amIL+lQ6CPiRCp
-         SoOfZ5+SpZ9tf4m+BzucY5APA2LrV4OYFaCaC9IUueRWvo+R8upd12YfGMUbNWaZYqOP
-         RQZPWIRGbRpFEeqxWLd6EjjpUGz0wlJ46t/nGmibJ/Npa9T0nEm3oyVgUUYpIENNjZBB
-         QFSJQ5Fm7Coo/2W/OJXPFtz3ubvW8AAzveEe028xtYz2VGb5A0e5gNXiDrU0+zeC2xpn
-         8P6w==
+        bh=yJlZ0p8w2Zt6JF+kmSoduaX7LUoYSExgSIwQfbW32Qc=;
+        b=R6Mq6zu6p5QqeYVkcrUTTo+km9ImVC9ITKBZehmt7a52jmcR2dp3+ZJgPgYoca6uwp
+         pPuTS1nKeBb3wZlzUogFBEPow5FjCJuO2QICnSv4aWhXWe+8pQBjpKLc9UlemKjmvrZR
+         +R0Th4IHko+qlzkzhPrcoegVll7VFtNTUKEPMDnMCppqFg8Tdx5HqO/Bz6qYIM91I6TK
+         w58OWYiKGscm7o3RHECSJqYQNbSt3GqSUET097XItDFTAlx7ronc9tqFXWZgJGnIX2bb
+         Aw9ZUpgwQ4xaCzcLZqGEx/eepb1DCHYH+Ag7w4UZRe4aHlcUUwR0ejaw+Xyugjl4kkJd
+         A9HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780073491; x=1780678291;
+        d=1e100.net; s=20251104; t=1780073492; x=1780678292;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=i2QifqEk3Wa+x9NPrIkPMLqkVE5h8yODSs0wPMQc5rE=;
-        b=fdBz4QkVDwJYIIRCB2xCu17wPhmicJ4X4rc9tlo8w3l7N+n2K/SNwrcs48siWYMKUe
-         1lXgKDUNb1TBQKolID8meZVl39PCo4dZH3dQjrhBotZD7awqYaPAbYg9ZNOUdBazqT5X
-         hjP6Ssq+Wnzb5Rr+AOWyLKAJAJfSbZqAPWRrqWsO4qU9nGRCRVTJ9wr+VwsLSqdz6znP
-         QS5CEV92Hxto17o7zD+vaYO6ELU9N7A+J9VVF5nD3V8g8+bokpMq3mdVhSaYRYg8Xgyv
-         HeQjh5k+sI8q1Ri3XauNvk6U3q4jSPdVzufiAveVYMmn69k80NaRL2nTIutfYeJ8IF7o
-         dfZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/UefIj6P2/f6FLRM0jN9QDLLzz8T0B1+aVwBpiCtskPZX5jIFXdXpeyHbVDfc/Edg/ZKQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdPIZgxoSdPTM1OnZPcS2IlndMeObRAWDjY4FGf8vFidvcrr/g
-	1YmplrBQkvv/sNR7l26pittOC+Xygu8En9T3pBRmHxyb2okKYwIyqX0javLDTm0r1esoYAwLsp1
-	mnjeTJw==
-X-Received: from play17.prod.google.com ([2002:a17:902:e191:b0:2bd:16cc:1966])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:94e:b0:2bd:73f4:8e4f
- with SMTP id d9443c01a7336-2bf372bcb77mr2964585ad.0.1780073490710; Fri, 29
- May 2026 09:51:30 -0700 (PDT)
+        bh=yJlZ0p8w2Zt6JF+kmSoduaX7LUoYSExgSIwQfbW32Qc=;
+        b=GAlPWx5AMR3BcpWXReBVoRqTzqiQJuQKKdRkQzZd67HMtUWWtisBerUOZPmPGFjG3t
+         F9hnhwRxLgISVPVxPzIXcSbafP4HwYvgWa0QgVLQbieMeRAwWtVBezlF3yrMPAoC6IQ1
+         Ctzc9CJCcX3DuiUxshOHt/T6Z4L8BEKtyrel+VVm0ZnDWqTvfhQKDbCEpvRbnhImkWyX
+         gDVop7rNr3FygSJCoqDnW6A89KkFaybtD00PCJEP2UGWVwnk743Q3fVm81uOoofll3z8
+         R3O3gcwxkxOk4mOkpoQpLoGODv1on8z3XM25IjiGO3AZtiygOIAuPMqJrnkLPixW150k
+         aZHQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+43Wd+j/zCHFt5zeEZIVRKx8Kzin7oYWKXaNYi+wgmvVDZT5clNoUPac3lRDoB1LjQkJk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLOaSQGpJpOHszom8Uzg3dpUVdwAY/rKm+2f2xO6q6cqU2wkQl
+	rAaFfCv7kjcrqR9sKXYL7/blOzTK7TVi9MyRV5SaYnpCguJlkXVoIAWLrWJDfDoI9Ot4zIIBs1x
+	nyYNRsg==
+X-Received: from pghk24.prod.google.com ([2002:a63:f018:0:b0:c82:3956:ab7c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:ce4a:b0:3aa:f9cb:d438
+ with SMTP id adf61e73a8af0-3b427ecf1bcmr72868637.21.1780073491805; Fri, 29
+ May 2026 09:51:31 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 09:51:01 -0700
+Date: Fri, 29 May 2026 09:51:02 -0700
 In-Reply-To: <20260529165114.748639-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529165114.748639-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529165114.748639-8-seanjc@google.com>
-Subject: [PATCH v2 07/20] KVM: x86/xen: Extract delivery of event to vCPU into
- a separate helper
+Message-ID: <20260529165114.748639-9-seanjc@google.com>
+Subject: [PATCH v2 08/20] KVM: x86/xen: Explicitly tag "shared info" page as
+ never being dirty tracked
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, 
@@ -74,146 +74,108 @@ Cc: Waiman Long <longman@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.ker
 	Carsten Stollmaier <stollmc@amazon.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Hoist the actual fastpath delivery of an event to a vCPU into a separate
-helper so that CLASS()-based gpc locking+checking can be used without
-needing to implement scoped versions.
+Explicitly mark the Xen shared info page as never being dirty tracked so
+that higher-level gpc APIs can be added to automatically take care of
+things like dirty tracking, without reintroducing the bug fixed by commit
+55749769fe60 ("KVM: x86: Fix wall clock writes in Xen shared_info not to
+mark page dirty").  And because the code _looks_ buggy.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/xen.c | 100 ++++++++++++++++++++++++---------------------
- 1 file changed, 54 insertions(+), 46 deletions(-)
+ arch/x86/kvm/xen.c        |  2 +-
+ include/linux/kvm_host.h  | 13 ++++++++++---
+ include/linux/kvm_types.h |  1 +
+ virt/kvm/pfncache.c       |  4 +++-
+ 4 files changed, 15 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 0c6b74b97408..020ef0ddab01 100644
+index 020ef0ddab01..ab8e95647406 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -1775,6 +1775,57 @@ static void kvm_xen_check_poller(struct kvm_vcpu *vcpu, int port)
- 	}
+@@ -2334,7 +2334,7 @@ void kvm_xen_init_vm(struct kvm *kvm)
+ {
+ 	mutex_init(&kvm->arch.xen.xen_lock);
+ 	idr_init(&kvm->arch.xen.evtchn_ports);
+-	kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm);
++	__kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm, true);
  }
  
-+static void __kvm_xen_set_evtchn_fast(struct kvm_vcpu *vcpu, int port_word_bit)
+ void kvm_xen_destroy_vm(struct kvm *kvm)
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 27498e990dff..0dc4eb78b6d9 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1427,16 +1427,23 @@ int kvm_vcpu_write_guest(struct kvm_vcpu *vcpu, gpa_t gpa, const void *data,
+ 			 unsigned long len);
+ 
+ /**
+- * kvm_gpc_init - initialize gfn_to_pfn_cache.
++ * __kvm_gpc_init - initialize gfn_to_pfn_cache.
+  *
+  * @gpc:	   struct gfn_to_pfn_cache object.
+  * @kvm:	   pointer to kvm instance.
++ * @never_dirty:   %true if the associated gfn should never be marked dirty
+  *
+  * This sets up a gfn_to_pfn_cache by initializing locks and assigning the
+  * immutable attributes.  Note, the cache must be zero-allocated (or zeroed by
+  * the caller before init).
+  */
+-void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm);
++void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
++		    bool never_dirty);
++
++static inline void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
 +{
-+	struct gfn_to_pfn_cache *gpc = &vcpu->arch.xen.vcpu_info_cache;
-+	bool kick_vcpu = false;
-+
-+	/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
-+	if (!read_trylock(&gpc->lock)) {
-+		/*
-+		 * Could not access the vcpu_info. Set the bit in-kernel and
-+		 * prod the vCPU to deliver it for itself.
-+		 */
-+		if (!test_and_set_bit(port_word_bit, &vcpu->arch.xen.evtchn_pending_sel))
-+			kick_vcpu = true;
-+		goto out_kick;
-+	}
-+	if (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
-+		if (!test_and_set_bit(port_word_bit, &vcpu->arch.xen.evtchn_pending_sel))
-+			kick_vcpu = true;
-+		goto out_unlock;
-+	}
-+
-+	if (IS_ENABLED(CONFIG_64BIT) && vcpu->kvm->arch.xen.long_mode) {
-+		struct vcpu_info *vcpu_info = gpc->khva;
-+		if (!test_and_set_bit(port_word_bit, &vcpu_info->evtchn_pending_sel)) {
-+			WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
-+			kick_vcpu = true;
-+		}
-+	} else {
-+		struct compat_vcpu_info *vcpu_info = gpc->khva;
-+		if (!test_and_set_bit(port_word_bit,
-+					(unsigned long *)&vcpu_info->evtchn_pending_sel)) {
-+			WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
-+			kick_vcpu = true;
-+		}
-+	}
-+
-+	/* For the per-vCPU lapic vector, deliver it as MSI. */
-+	if (kick_vcpu && vcpu->arch.xen.upcall_vector) {
-+		kvm_xen_inject_vcpu_vector(vcpu);
-+		kick_vcpu = false;
-+	}
-+
-+out_unlock:
-+	read_unlock(&gpc->lock);
-+out_kick:
-+	if (kick_vcpu) {
-+		kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
-+		kvm_vcpu_kick(vcpu);
-+	}
++	__kvm_gpc_init(gpc, kvm, false);
 +}
-+
- /*
-  * The return value from this function is propagated to kvm_set_irq() API,
-  * so it returns:
-@@ -1791,7 +1842,6 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 	struct kvm_vcpu *vcpu;
- 	unsigned long *pending_bits, *mask_bits;
- 	int port_word_bit;
--	bool kick_vcpu = false;
- 	int vcpu_idx, rc;
  
- 	vcpu_idx = READ_ONCE(xe->vcpu_idx);
-@@ -1843,55 +1893,13 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 		kvm_xen_check_poller(vcpu, xe->port);
- 	} else {
- 		rc = 1; /* Delivered to the bitmap in shared_info. */
--		/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
--		read_unlock(&gpc->lock);
--		gpc = &vcpu->arch.xen.vcpu_info_cache;
--
--		if (!read_trylock(&gpc->lock)) {
--			/*
--			 * Could not access the vcpu_info. Set the bit in-kernel
--			 * and prod the vCPU to deliver it for itself.
--			 */
--			if (!test_and_set_bit(port_word_bit, &vcpu->arch.xen.evtchn_pending_sel))
--				kick_vcpu = true;
--			goto out_kick;
--		}
--		if (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
--			if (!test_and_set_bit(port_word_bit, &vcpu->arch.xen.evtchn_pending_sel))
--				kick_vcpu = true;
--			goto out_unlock;
--		}
--
--		if (IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode) {
--			struct vcpu_info *vcpu_info = gpc->khva;
--			if (!test_and_set_bit(port_word_bit, &vcpu_info->evtchn_pending_sel)) {
--				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
--				kick_vcpu = true;
--			}
--		} else {
--			struct compat_vcpu_info *vcpu_info = gpc->khva;
--			if (!test_and_set_bit(port_word_bit,
--					      (unsigned long *)&vcpu_info->evtchn_pending_sel)) {
--				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
--				kick_vcpu = true;
--			}
--		}
--
--		/* For the per-vCPU lapic vector, deliver it as MSI. */
--		if (kick_vcpu && vcpu->arch.xen.upcall_vector) {
--			kvm_xen_inject_vcpu_vector(vcpu);
--			kick_vcpu = false;
--		}
- 	}
+ /**
+  * kvm_gpc_activate - prepare a cached kernel mapping and HPA for a given guest
+@@ -1942,7 +1949,7 @@ static inline void kvm_gpc_mark_dirty_in_slot(struct gfn_to_pfn_cache *gpc)
+ {
+ 	lockdep_assert_held(&gpc->lock);
  
-- out_unlock:
-+out_unlock:
- 	read_unlock(&gpc->lock);
-- out_kick:
--	if (kick_vcpu) {
--		kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
--		kvm_vcpu_kick(vcpu);
--	}
+-	if (!gpc->memslot)
++	if (!gpc->memslot || gpc->never_dirty)
+ 		return;
  
-+	if (rc == 1)
-+		__kvm_xen_set_evtchn_fast(vcpu, port_word_bit);
- 	return rc;
+ 	mark_page_dirty_in_slot(gpc->kvm, gpc->memslot, gpa_to_gfn(gpc->gpa));
+diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
+index a568d8e6f4e8..e850adc3f47e 100644
+--- a/include/linux/kvm_types.h
++++ b/include/linux/kvm_types.h
+@@ -94,6 +94,7 @@ struct gfn_to_pfn_cache {
+ 	kvm_pfn_t pfn;
+ 	bool active;
+ 	bool valid;
++	bool never_dirty;
+ };
+ 
+ #ifdef KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 70b102095173..9209f06c46b4 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -382,7 +382,8 @@ int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len)
+ 	return __kvm_gpc_refresh(gpc, gpc->gpa, uhva);
  }
  
+-void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
++void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
++		    bool never_dirty)
+ {
+ 	rwlock_init(&gpc->lock);
+ 	mutex_init(&gpc->refresh_lock);
+@@ -392,6 +393,7 @@ void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
+ 	gpc->gpa = INVALID_GPA;
+ 	gpc->uhva = KVM_HVA_ERR_BAD;
+ 	gpc->active = gpc->valid = false;
++	gpc->never_dirty = never_dirty;
+ }
+ 
+ static int __kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long uhva,
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
