@@ -1,55 +1,55 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01ADB46AF1E
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0DF4779B1
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093394; cv=none; b=WTB8ZjVmc4HKNJdUlMiqcKMK7huhjh4EDPXFnK9PgZpobEw4gSuhocNf8uCIs77UIe/zCL5HUPBpP18il5Mh7uqMJfdJRyf/cgloV5nMd8/H2ae29wqh2KuHePtzcoVsml/JOQwAJzjbRG6E9QsNBaJVj/pu3G+uuA7IUuPZVT0=
+	t=1780093398; cv=none; b=HPU4TuwaKpviRXDzJWyOmaqtApAwPDRV4f3xJyqhZBt0Hr8z7I9y1l1h2WWP51Q1Cr0rRkkyyIHSRdbl5TRpbslAwvsuHGR+zvpreZLRI0Y3QBhi4jXNk9Y0q1e3tDA3SDa7O9HaYGlZBJQuxnmrRNZKwquGeSWY6/KfniymsdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780093394; c=relaxed/simple;
-	bh=Uir6IDB0pwquVmxdNK5xocb4DeiDBsUvz1nObKQsLvE=;
+	s=arc-20240116; t=1780093398; c=relaxed/simple;
+	bh=67zW30Fghsqm2bbgoRDmbDTWcpgL4geOGG0pkoZa+DQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=safgllN6Qy0uH99rhslsKSShLN9hpS7FEurIKzx1ZuZQIE69+bEGjw0Wrck+BqIrStLmTVYpesJqOy40EGNLEvPlzKQzdAJ+EGZJ5Wkxp9BzcKW+shf4AZrcZv+jW1cpaZMwMhnu0Dqe9yYatYrvvYCKF3ci3vRvN340niHpxOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B+/FjJFz; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=DpOTq+HhvJJGnHXZLvCR3Zo6uymZw0EB/nRwVTD/DZ1keXjeCYmxK31te2zLLkng/WO/xuNUFx+6Pc3wx2WzVGyO+x8VckpUCGp7BJyBP2XtMVR1RSBVmnXScaRb8mhcjyqYZSH2agE5WPZJJjPDPlDaVHG9sFv8Qf8X6vAxTBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UDRA/qcI; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B+/FjJFz"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bf30576aa3so4715495ad.3
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UDRA/qcI"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8292e18166so7212883a12.3
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093392; x=1780698192; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780093396; x=1780698196; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=hdC/WRkAouMWi8Y4ZlrI0Bkm4osriIlBw4YhEZJnKi4=;
-        b=B+/FjJFz+2oFdjMJGPkG02uJxCLImDyLZuBFPK/Ft86vq7P8+IBg4pPZgiMSD7gSlV
-         ZpXwBie7f36Q65UOUe+5Vkh00pXt1Jh3v29kfkfY0y4VmXgGEJOB4EBzsazZsMWXaMCn
-         MPb6V4IIthMHTZ+Om/WBtnX38Q+jnTbZ66hbKgJ8Gd/ASJp4CsTM/9HiXFRfSIMqddPb
-         foibd96nKu+erv96s41lPWTWLUna+irkfYTHdHcEniJPXCZyEDVZRAQd4VIy7WBLh3Ra
-         DJmNpP1Cfiqpl/EDpZI/6Mpe9hyr/+c0oX5l3a5gXAIJ5DjDBZ5qR34cewZ+shfEZf/t
-         lRYw==
+        bh=4YZDFZBCarOdxlxdCzemgJxyqnyDXT5M/adWibMWDkM=;
+        b=UDRA/qcICcOiNfGR0SUbiJJsc437nlYOUgUzjpxZulD9/NkhKgFNeABpfvVvLDvTy7
+         JhvWDp/mxgGPnXgQ5BlvOyFnf241skP06E4Je2VZr1hY9bHOtA2i+QCLP5BUWMuOozSK
+         1wakd7SKzc50yWuXSm7vByAjfFOeL7Bv5z31KU0H0xfyWVKyHEjtpCrxCDYAwdxTHpX5
+         2nIrvqggvoRoDAwL7z/ORr1nmuTglOXjqD3K9Q0WdEskCaOG+RMfaS+t5ygtrzon0EC4
+         IZmjy91NZDoc8IJPSVQSczDHuXEY8bmHjBr4MBTC1G7oisvXUH1PiT9N8dTqCDy2oYsO
+         q34w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093392; x=1780698192;
+        d=1e100.net; s=20251104; t=1780093396; x=1780698196;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hdC/WRkAouMWi8Y4ZlrI0Bkm4osriIlBw4YhEZJnKi4=;
-        b=H35N2LlBLZ0NTWJF3+flfPAJ6iiKzJCVolHWmPGYgdE9C/vZbYfYweFfWmobYZulIs
-         JJl/QY2NXlENUtiivczT1vBFlsQLI0JyEiZEvPLAwGBMG4EEoG8480frYnEocjuHvY9H
-         MQcsq2W/mymTTxH+5FjejzrHQvQU2X02LbWDzc8A9rPbhghqfAVQKNGKi9GzLYbgzWM1
-         4VUPQ4f/P3kGnjo9gQJSmKhkz5824SQkjSRK+yvf/w3PD7BZ4cYgz5kxYBTB+JBoMb0B
-         p7L4ld1VDZv+YNdf7TYqcWuvnjBGzy9/7sHrx3bKsccwkxdPkrXPdP8eOOWaEe8N9+cN
-         krbg==
-X-Gm-Message-State: AOJu0YxCJu5atpUroKsAXHSbAoArmlPBPX0Ez1lFIMVtU/D7OgMyfrgR
-	8y13xODQ15BC/yDeb3DYyP5PpNf54Dcd875jyRvF8ZyL5IyKBOAu4S/giRxL6gJvqbIyYVBgyRm
-	ZSMGkeg==
-X-Received: from pldt15.prod.google.com ([2002:a17:903:40cf:b0:2be:b2c1:9921])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2283:b0:2bf:372a:830c
- with SMTP id d9443c01a7336-2bf372a8484mr16584755ad.11.1780093392030; Fri, 29
- May 2026 15:23:12 -0700 (PDT)
+        bh=4YZDFZBCarOdxlxdCzemgJxyqnyDXT5M/adWibMWDkM=;
+        b=Ih14nThHVOX2n4fYoUlMDkq5ruVyfeviHONSiNu5yGeR5hfuqF1UbCTL/E9kdiA2QW
+         yKYFXKllzovj7H+XCmLWIpNpMRYcaa+hMnqifdDLvcu8hfGTw4FF74Q6+h02WcXS3XeS
+         ZvMGz8TgH3peF2lPYo3Kl91e5nGfqqS4gyIbtzMyhpTSr3OKy4dt6YHzBATJFctSJsKN
+         GhgF9SZ5jRI2ThBYkYfUwcZaB2v5KKj0q7YfNqASQOL7jkvovayJjjZfHycYX+B0Tobh
+         VurIDTFIBgNVp/3PPsjONgzYM8gEeui3Ve0/UqlbuZtwRxiasPFdV+YHDInFpAizYYPO
+         4hwA==
+X-Gm-Message-State: AOJu0YyQPIneSRIxTO3/NSJZMDaKzSyCTeOOio/m9v4LDk5b5TQ+4dKt
+	fr5Lmiof8JzDSDj/ZfUEIhy0cSNw4zs+/Idsdi8hvWJp3brRtmAf8v5T5YUEBoSkCn9qbLUMDQs
+	Ldkm2BA==
+X-Received: from pgig5.prod.google.com ([2002:a63:f405:0:b0:c80:2399:151])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:189:b0:39b:89e0:2e37
+ with SMTP id adf61e73a8af0-3b427c23375mr1271417637.14.1780093395678; Fri, 29
+ May 2026 15:23:15 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 15:22:08 -0700
+Date: Fri, 29 May 2026 15:22:10 -0700
 In-Reply-To: <20260529222223.870923-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529222223.870923-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529222223.870923-26-seanjc@google.com>
-Subject: [PATCH v3 25/40] KVM: x86: Expose several TSC helpers via x86.h for
- use by MSR code
+Message-ID: <20260529222223.870923-28-seanjc@google.com>
+Subject: [PATCH v3 27/40] KVM: x86: Move register helper declarations from
+ kvm_host.h => regs.h
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -70,106 +70,101 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Begrudgingly move adjust_tsc_offset_{guest,host}() to x86.h as inlines,
-and expose several other TSC helpers in anticipation of moving KVM's MSR
-code to a dedicated msrs.c.  Unfortunately for KVM, several MSRs that KVM
-emulates can affect TSC state.
-
-Opportunistically drop a superfluous local "tsc_offset" variable, whose
-existence causes checkpatch to complain about lack of a blank line.
+Relocate declarations of Control/Debug Register, EFLAGS and RIP helpers
+from x86's kvm_host.h to regs.h, to continue trimming down kvm_host.h.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 22 +++-------------------
- arch/x86/kvm/x86.h | 19 +++++++++++++++++++
- 2 files changed, 22 insertions(+), 19 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 17 -----------------
+ arch/x86/kvm/regs.h             | 17 +++++++++++++++++
+ 2 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 64c3680d889b..bf15c122f837 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2225,7 +2225,7 @@ u64 kvm_scale_tsc(u64 tsc, u64 ratio)
- 	return _tsc;
- }
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 19091d89d3cc..0f4b16b26a27 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2186,8 +2186,6 @@ void kvm_mmu_invalidate_mmio_sptes(struct kvm *kvm, u64 gen);
+ void kvm_mmu_change_mmu_pages(struct kvm *kvm, unsigned long kvm_nr_mmu_pages);
+ void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end);
  
--static u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc)
-+u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc)
- {
- 	u64 tsc;
- 
-@@ -2266,7 +2266,7 @@ u64 kvm_calc_nested_tsc_multiplier(u64 l1_multiplier, u64 l2_multiplier)
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_calc_nested_tsc_multiplier);
- 
--static void kvm_vcpu_write_tsc_offset(struct kvm_vcpu *vcpu, u64 l1_offset)
-+void kvm_vcpu_write_tsc_offset(struct kvm_vcpu *vcpu, u64 l1_offset)
- {
- 	if (vcpu->arch.guest_tsc_protected)
- 		return;
-@@ -2380,7 +2380,7 @@ static void __kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 offset, u64 tsc,
- 	kvm_track_tsc_matching(vcpu, !matched);
- }
- 
--static void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
-+void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- {
- 	u64 data = user_value ? *user_value : 0;
- 	struct kvm *kvm = vcpu->kvm;
-@@ -2448,22 +2448,6 @@ static void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- 	raw_spin_unlock_irqrestore(&kvm->arch.tsc_write_lock, flags);
- }
- 
--static inline void adjust_tsc_offset_guest(struct kvm_vcpu *vcpu,
--					   s64 adjustment)
--{
--	u64 tsc_offset = vcpu->arch.l1_tsc_offset;
--	kvm_vcpu_write_tsc_offset(vcpu, tsc_offset + adjustment);
--}
+-int load_pdptrs(struct kvm_vcpu *vcpu, unsigned long cr3);
 -
--static inline void adjust_tsc_offset_host(struct kvm_vcpu *vcpu, s64 adjustment)
--{
--	if (vcpu->arch.l1_tsc_scaling_ratio != kvm_caps.default_tsc_scaling_ratio)
--		WARN_ON(adjustment < 0);
--	adjustment = kvm_scale_tsc((u64) adjustment,
--				   vcpu->arch.l1_tsc_scaling_ratio);
--	adjust_tsc_offset_guest(vcpu, adjustment);
--}
+ /*
+  * EMULTYPE_NO_DECODE - Set when re-emulating an instruction (after completing
+  *			userspace I/O) to indicate that the emulation context
+@@ -2313,24 +2311,12 @@ void kvm_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector);
+ int kvm_task_switch(struct kvm_vcpu *vcpu, u16 tss_selector, int idt_index,
+ 		    int reason, bool has_error_code, u32 error_code);
+ 
+-void kvm_post_set_cr0(struct kvm_vcpu *vcpu, unsigned long old_cr0, unsigned long cr0);
+-void kvm_post_set_cr4(struct kvm_vcpu *vcpu, unsigned long old_cr4, unsigned long cr4);
+-int kvm_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0);
+-int kvm_set_cr3(struct kvm_vcpu *vcpu, unsigned long cr3);
+-int kvm_set_cr4(struct kvm_vcpu *vcpu, unsigned long cr4);
+-int kvm_set_cr8(struct kvm_vcpu *vcpu, unsigned long cr8);
+-int kvm_set_dr(struct kvm_vcpu *vcpu, int dr, unsigned long val);
+-unsigned long kvm_get_dr(struct kvm_vcpu *vcpu, int dr);
+-unsigned long kvm_get_cr8(struct kvm_vcpu *vcpu);
+-void kvm_lmsw(struct kvm_vcpu *vcpu, unsigned long msw);
+ int __kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr);
+ int kvm_emulate_xsetbv(struct kvm_vcpu *vcpu);
+ 
+ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr);
+ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr);
+ 
+-unsigned long kvm_get_rflags(struct kvm_vcpu *vcpu);
+-void kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags);
+ int kvm_emulate_rdpmc(struct kvm_vcpu *vcpu);
+ 
+ void kvm_queue_exception(struct kvm_vcpu *vcpu, unsigned nr);
+@@ -2520,9 +2506,6 @@ u64 kvm_read_l1_tsc(struct kvm_vcpu *vcpu, u64 host_tsc);
+ u64 kvm_calc_nested_tsc_offset(u64 l1_offset, u64 l2_offset, u64 l2_multiplier);
+ u64 kvm_calc_nested_tsc_multiplier(u64 l1_multiplier, u64 l2_multiplier);
+ 
+-unsigned long kvm_get_linear_rip(struct kvm_vcpu *vcpu);
+-bool kvm_is_linear_rip(struct kvm_vcpu *vcpu, unsigned long linear_rip);
 -
+ void kvm_make_scan_ioapic_request(struct kvm *kvm);
+ void kvm_make_scan_ioapic_request_mask(struct kvm *kvm,
+ 				       unsigned long *vcpu_bitmap);
+diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+index c224874bbdde..30ef08d60a74 100644
+--- a/arch/x86/kvm/regs.h
++++ b/arch/x86/kvm/regs.h
+@@ -16,6 +16,18 @@
+ 
+ static_assert(!(KVM_POSSIBLE_CR0_GUEST_BITS & X86_CR0_PDPTR_BITS));
+ 
++void kvm_post_set_cr0(struct kvm_vcpu *vcpu, unsigned long old_cr0, unsigned long cr0);
++void kvm_post_set_cr4(struct kvm_vcpu *vcpu, unsigned long old_cr4, unsigned long cr4);
++int kvm_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0);
++int kvm_set_cr3(struct kvm_vcpu *vcpu, unsigned long cr3);
++int kvm_set_cr4(struct kvm_vcpu *vcpu, unsigned long cr4);
++int kvm_set_cr8(struct kvm_vcpu *vcpu, unsigned long cr8);
++int kvm_set_dr(struct kvm_vcpu *vcpu, int dr, unsigned long val);
++unsigned long kvm_get_dr(struct kvm_vcpu *vcpu, int dr);
++unsigned long kvm_get_cr8(struct kvm_vcpu *vcpu);
++void kvm_lmsw(struct kvm_vcpu *vcpu, unsigned long msw);
++int load_pdptrs(struct kvm_vcpu *vcpu, unsigned long cr3);
++
+ static inline bool is_long_mode(struct kvm_vcpu *vcpu)
+ {
  #ifdef CONFIG_X86_64
+@@ -425,7 +437,12 @@ static inline unsigned long kvm_get_segment_base(struct kvm_vcpu *vcpu, int seg)
+ 	return kvm_x86_call(get_segment_base)(vcpu, seg);
+ }
  
- static u64 read_tsc(void)
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 635a21bfa681..31e67b060148 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -345,6 +345,25 @@ uint64_t kvm_get_wall_clock_epoch(struct kvm *kvm);
- bool kvm_get_monotonic_and_clockread(s64 *kernel_ns, u64 *tsc_timestamp);
- int kvm_guest_time_update(struct kvm_vcpu *v);
++unsigned long kvm_get_linear_rip(struct kvm_vcpu *vcpu);
++bool kvm_is_linear_rip(struct kvm_vcpu *vcpu, unsigned long linear_rip);
++
++unsigned long kvm_get_rflags(struct kvm_vcpu *vcpu);
+ void __kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags);
++void kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags);
  
-+void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value);
-+u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc);
-+void kvm_vcpu_write_tsc_offset(struct kvm_vcpu *vcpu, u64 l1_offset);
-+
-+static inline void adjust_tsc_offset_guest(struct kvm_vcpu *vcpu,
-+					   s64 adjustment)
-+{
-+	kvm_vcpu_write_tsc_offset(vcpu, vcpu->arch.l1_tsc_offset + adjustment);
-+}
-+
-+static inline void adjust_tsc_offset_host(struct kvm_vcpu *vcpu, s64 adjustment)
-+{
-+	if (vcpu->arch.l1_tsc_scaling_ratio != kvm_caps.default_tsc_scaling_ratio)
-+		WARN_ON(adjustment < 0);
-+	adjustment = kvm_scale_tsc((u64) adjustment,
-+				   vcpu->arch.l1_tsc_scaling_ratio);
-+	adjust_tsc_offset_guest(vcpu, adjustment);
-+}
-+
- int kvm_read_guest_virt(struct kvm_vcpu *vcpu,
- 	gva_t addr, void *val, unsigned int bytes,
- 	struct x86_exception *exception);
+ void kvm_x86_vcpu_ioctl_get_sregs2(struct kvm_vcpu *vcpu,
+ 				   struct kvm_sregs2 *sregs2);
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
