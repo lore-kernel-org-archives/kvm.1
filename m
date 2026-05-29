@@ -1,105 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AD838F92F
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9ACB38F624;
+	Fri, 29 May 2026 17:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780076509; cv=none; b=CcUawZW7OAse5OrJCSCZxg9NvyaEuFOXZOAQ1tir4nzKXeKhGOIc/5nkTOcMz+z/W8n09gAnMMPpR1dzKUQKWwBNhXICPrixhTAk3YZZYyRUnQYQT02gBKIyqh/OqPfafikjD5Iq1J13NktQT4dvCDiO4vIntsdz0JngSOYtWcU=
+	t=1780076651; cv=none; b=gr1NH5V96gosWd4tkYRnLR8LsX4EtYYEvTlabenkEIlW3k0zIJg50igUCIQ88/zhdAg5+LDc+3Jna0pny+jMWIJmwA2kL9CsySgTLEWR3vdiccxv1rAiojUfbZBtznDZmCzrJQiuw8If9G1WvWNBXx6y55lPVRc3tg1qpjmN5lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780076509; c=relaxed/simple;
-	bh=mpNuZvfS6S5qC9jt15cBS6BfX7k3zm4eszBeQCT+nvk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PqAJ4nTYit7hjdcdomeTVfOCuW5NUlSZ7GUom0sCCoKcYqklL8F+VlIc5cgSM9PgcCkPUbmZTO4y2YMkPgtPWi6yiIPDCmhW3eCVQ+BwfYg+IlYscHBpEBDl5mQexUPow0Yo/B58ADCSeFdPAL5htXLecjRdz1kzwmUqDVKF/fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XtND94ts; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780076651; c=relaxed/simple;
+	bh=FKc+svRO19HrATmI3eqJ+7EYqXRQ0rpZ18W/mWBDKXI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SLFnS+NszYcLdgZsJ3RuD+ePvJB+JvBs7Ae9EYedbn9jWz53Mei8u21zUujVn3T2BRLhUWHmE+GNkWUluuL7abE+ScW4BnFzYNm1yJZ/brE0oturWjY/A5vh76C938iSPJM4KCSt4OzLVR7MJ+AnyFSHv8T2iRmUsb8Gx1bYqEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VIVSFkA+; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XtND94ts"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD1D1F00893;
-	Fri, 29 May 2026 17:41:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780076508;
-	bh=ZM9i15isEEixYbdphKPig7Vk1Qaw9w1iARtrognsMaY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XtND94ts833TVKpzPGZFetVjtsj56y6FdBBQxu1dJf8As4VM3e8nhRmlPE7iVhHBg
-	 ZrJvXnJ6VTYqNgDB7MaOKlFww29dl76+kzNfaU4j50N4TpIJrgxFrvn2TUcYlm06sQ
-	 FwUNsdxKNr40+egLSQm/epDCO26E7SHf+6S9L5uumfOsmgs+BWt4TqcGPZTv/aBZWL
-	 DPBD34iXP8jbAbIYXtjfmuKBOdJAgGuIZA3hBNIXa9RmcQc7JyyW3kKcmsOHVDTesE
-	 YwbZUPLXrFsGa3tQVhtqBbcPtCFy7yka5Mig4rpmTNeCVajOBg4NTk7XA4v0R6ctyK
-	 UMcsaVdFKgpjA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 06/27] arm64: Provide arm64 API for non-native
- architectures
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529155050.2902245-7-seiden@linux.ibm.com>
-References: <20260529155050.2902245-7-seiden@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 17:41:47 +0000
-Message-Id: <20260529174148.0AD1D1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VIVSFkA+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780076650; x=1811612650;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FKc+svRO19HrATmI3eqJ+7EYqXRQ0rpZ18W/mWBDKXI=;
+  b=VIVSFkA+9WV2O6X1vK+JngwQ3N+FwGBHKL1bdVZ2PR0RWy4wqxsdkUOh
+   7wMVNThAABr/l/sqnbcyw5Q0ikq2RWNLjWyWaLtG1QLAixwgVFAeaEIi9
+   HgH9LHRLJjdwSL7VD4EQClILWdfZErW0YhdDdLHrH2mhIiJGLJ951Jnjf
+   oClDf/MzW3TQED4CeyXHuKwaXvL3Cr75CVZAgVKkXsyCYZ4p6HIalnr5h
+   Xdz6ctksj6yJsDa3/af8Xn4iFFhRTB20+Y7P5jP2vHSIM+h5VxMd1/IsZ
+   MPilbGabBF79ElXoSx9Rrdy7aeU0PQbI+m9XuCF7p06DfL2d9zpqaof9X
+   w==;
+X-CSE-ConnectionGUID: dtsGZSbFQpevl0aB01CgEw==
+X-CSE-MsgGUID: Ei8F4BCcQX68ZqPLnax6mA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11801"; a="91506904"
+X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
+   d="scan'208";a="91506904"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 10:44:04 -0700
+X-CSE-ConnectionGUID: GgOjd1jETSOrwO5g/k5bAg==
+X-CSE-MsgGUID: grdO315CT0CshYA8goA0cw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
+   d="scan'208";a="246917066"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa003.jf.intel.com with ESMTP; 29 May 2026 10:44:01 -0700
+Date: Sat, 30 May 2026 01:19:57 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "Fang, Peter" <peter.fang@intel.com>, "kas@kernel.org" <kas@kernel.org>,
+	"djbw@kernel.org" <djbw@kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH 04/15] x86/virt/tdx: Enable the Extensions right after
+ basic TDX Module init
+Message-ID: <ahnKvbKoLH9Dp8xG@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-5-yilun.xu@linux.intel.com>
+ <280fdea480922ad843e738b14f0b32cd977734a3.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <280fdea480922ad843e738b14f0b32cd977734a3.camel@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Moving the large `esr_get_class_string` function to a `static inlin=
-e` definition in a widely included header causes unnecessary kernel text bl=
-oat.
---
+On Thu, May 28, 2026 at 09:32:08PM +0000, Edgecombe, Rick P wrote:
+> On Fri, 2026-05-22 at 11:41 +0800, Xu Yilun wrote:
+> > The detailed initialization flow for TDX Module Extensions has been
+> > fully implemented.
+> > 
+> 
+> I'm not sure what this means exactly. Why "detailed". Is that important?
 
-commit f19382b1cbd1896b8ea8e1b5b65a1f8581246812
-Author: Steffen Eiden <seiden@linux.ibm.com>
+It's not important. I should re-phrase, The entire initialization flow...
 
-arm64: Provide arm64 API for non-native architectures
+> 
+> >  Enable the flow after basic TDX Module
+> > initialization.
+> > 
+> > Theoretically, the Extensions doesn't need to be enabled right after
+> > basic TDX initialization. It could be enabled right before the first
+> > Extension SEAMCALL is issued. That would save or postpone memory usage.
+> > But it isn't worth the complexity, the needs for the Extensions are vast
+> > but the savings are little for a typical TDX capable system (about
+> > 0.001% of memory). So the Linux decision is to just enable it along with
+> > the basic TDX.
+> 
+> The Linux decision is whatever this patch turns out to be after community
+> review. So for the patch log we just need to justify why it's a good idea, not
+> not make an argument to defer to authority.
 
-This commit introduces a new directory include/arch/arm64/asm to store
-architecture-agnostic headers for arm64 implementors. As part of this
-change, the esr_get_class_string() function and its associated string
-mappings are moved from traps.c to a static inline function in esr.h.
+Understood. I'll re-phrase this paragraph according to all the comments,
+especially the last sentence.
 
-> diff --git a/arch/arm64/include/asm/esr.h b/include/arch/arm64/asm/esr.h
-> similarity index 88%
-> rename from arch/arm64/include/asm/esr.h
-> rename to include/arch/arm64/asm/esr.h
-> index 7e86d400864e0..a7421cc966f98 100644
-> --- a/arch/arm64/include/asm/esr.h
-> +++ b/include/arch/arm64/asm/esr.h
-[ ... ]
-> @@ -541,7 +542,56 @@ static inline bool esr_iss_is_eretab(unsigned long e=
-sr)
->  	return esr & ESR_ELx_ERET_ISS_ERETA;
->  }
-> =20
-> -const char *esr_get_class_string(unsigned long esr);
-> +static inline const char *esr_get_class_string(unsigned long esr)
-> +{
-> +	switch (ESR_ELx_EC(esr)) {
-> +	case ESR_ELx_EC_UNKNOWN:	return "Unknown/Uncategorized";
-> +	case ESR_ELx_EC_WFx:		return "WFI/WFE";
+> 
+> > 
+> > Note that the Extensions initialization flow will still not start if no
+> > add-on features require Extensions. The enabling of add-on features will
+> > be in later patches. Until then, the system hasn't consumed extra memory.
+> 
+> Hmm, this patch reads like we are finally doing the initialization up until this
+> point. Then it turns out we don't actually light up the new code yet... 
+> 
+> A lot of this diff is adding __init to the function added in the earlier
+> patches. Do we need to do this? Why not add them as __init in the original
+> patches?
+> 
+> 
+> I think we maybe want to say instead that we are setting up to enable extensions
+> at TDX module init time, and do the explanation of why. Then without the __init
+> stuff, the patch is just about the init time decision. Which seems about right
+> sized.
 
-[Severity: Low]
-Does moving this 45-case switch statement to a static inline function in a
-widely included header cause unnecessary kernel text bloat?
-
-Previously, this was implemented as a simple string array in a single
-compilation unit (traps.c). By making it a static inline function, the
-compiled switch statement and any compiler-generated jump tables or .rodata
-string mappings might be unnecessarily duplicated in every compilation unit
-that calls it.
-
-While the performance impact is likely negligible since it is primarily cal=
-led
-in slow-path error handling locations, it might be better to keep the
-implementation out of the header.
-
-> +	case ESR_ELx_EC_CP15_32:	return "CP15 MCR/MRC";
-> +	case ESR_ELx_EC_CP15_64:	return "CP15 MCRR/MRRC";
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
-245-1-seiden@linux.ibm.com?part=3D6
+Yes. Since the patch doesn't actually light up anything new, I think it
+could just be the first patch of Extensions so add __init at the first
+place.
