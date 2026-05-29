@@ -1,92 +1,92 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3ED946AF1A
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E270477998
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780079823; cv=none; b=Io0x7rQy6s05S7paGrbkggjErUrvwC8w/j1+sbzPA/ObXPCxjjOoLkHsa9dto/FhmQ6+OgtilQAtg549lulREiE1lhw595vtSq8/sTseLukr3bFfugBofbbsv/9RXTd34idwfhoyiv/MTCMr5QpL7T6CZ8evB/tayP8EnJRQOdU=
+	t=1780079826; cv=none; b=f1ssYT7j4rGbG1ZwyXJP+SiUbU6EEsaLd0V/+iIn8spgTT44lNhluHBL2aaKxzcaMFD8nPWlL5YwDDpdkCpAmJtL+GzlBUtQoa/N6u1LFAe12xf9Z/QM4iRoCSAiDL23j3VGW1pdaaOMFCmTeWMogT9pjB8U7VLJrkjrgnXpwms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780079823; c=relaxed/simple;
-	bh=tjfpEUwp7NjqnZssVekMLaSUU2OL7s9j2o+WE02R+2c=;
+	s=arc-20240116; t=1780079826; c=relaxed/simple;
+	bh=XMgSUVd06jABBSWfczQttemRZ67nF8LRt692DiWCkcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blG4khFwFLTkrLzMH9X6htgjJESLV73be0sZPTUr6uNqTT4RLUi+ERCnlc5oEZSR6eED0cJrj/V1x39PEpEohB30Vail03S0WAfDSDX0N9vvpVUJOmNTrHSb8C3RvkjqZAA/O2qEhNBGUm0Sqlmoc3YBZ6nal+0NT1assa4NWto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DHu2YDWi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=iwUm9wQq; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=TVEt/WERfOBPZVcHrKHd7WnAgEmaW02tN7I/4pbVnzpQnMPS1TOMmxgDJmM9D1NL8EezjNmFKA6FxsDOMbq/eTpoApcrZ2yBHmUXLB01UpHGlLBwi2y2GdDNcvzyg6/mD7zDciyJQOi9EZkNOFI5t9StgMJnpHKdGl5VARynSqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XNDmTPUv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dLjg5opP; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DHu2YDWi";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="iwUm9wQq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XNDmTPUv";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dLjg5opP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780079819;
+	s=mimecast20190719; t=1780079823;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iVKpEBiTR4taCtQY2hcoVT0Go0ezbWRb/8iyh1YmSZw=;
-	b=DHu2YDWifWHoh1ClTWDYQX+cXAeY0JnkAthhEwMsegFItQvmthokR/DjSXGZiiXiXmx32d
-	YdhPiPGHQyL9Hbd4W6sogMgmKkml/YEIgytWk3uhdw9DodJx5EeCeg3h56kivPRdwKlBqu
-	wodLsMZtnWoqK5ptv+G4K5H9CJ7BeSI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=T9sAUXk/eVKAgtInIqwXX6aN0giUoEB/mKNSTu4u0gM=;
+	b=XNDmTPUvxoJ00M3dug2g/frF4JSrujcbq04LaLEPFKcEpIydrkE/a5IYUuFai7gP49xB55
+	OfxZYa9xoLPUkpCizDkq8UReo0G36nNpeSElI46UkyVZGZjJA9IPS1mRTz9HbY/Gng48Yr
+	SWUzf8ofinWHaprw3v+bTmXg8Bwp4IQ=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-358-5edltK2IPoOvIhanJ37wng-1; Fri, 29 May 2026 14:36:58 -0400
-X-MC-Unique: 5edltK2IPoOvIhanJ37wng-1
-X-Mimecast-MFC-AGG-ID: 5edltK2IPoOvIhanJ37wng_1780079817
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4903dcb32f8so71076085e9.0
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 11:36:57 -0700 (PDT)
+ us-mta-365-hL2d1qPEOQegJCPsTEEaDg-1; Fri, 29 May 2026 14:36:59 -0400
+X-MC-Unique: hL2d1qPEOQegJCPsTEEaDg-1
+X-Mimecast-MFC-AGG-ID: hL2d1qPEOQegJCPsTEEaDg_1780079819
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-45eebc943bfso1030408f8f.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 11:36:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780079817; x=1780684617; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1780079818; x=1780684618; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iVKpEBiTR4taCtQY2hcoVT0Go0ezbWRb/8iyh1YmSZw=;
-        b=iwUm9wQqWrNE+0Ouc1xGrguToDSAA5/i7R+DDf1BceM8t4yxmjV7nFWGwz9JOtnpNx
-         Lxufw6v5oDF8Qmweb2bEiKKlco4EVLvk3SqHckGcIgu0PQbpf7YXIicHQg8bp/bKCCS8
-         /VHgvRgA/asrzuVef4e9Tn1dIAmNx93CTQhVeu2eE1zd8OiQquPMqTW4e65o4RXJi+Q3
-         r6AWYTsCxkciUgDcxmikKwpC2HhBd7F9+Rnh7AEJrYXU8DcTEMcCCayouEtVDl1qzg4i
-         LFc3DKpGeKHV7OzTcAEuCxFGlG9U6sw/bljlV2TCcuM/XOzijs80Lvaj5WTeAYlRKBLm
-         eUNQ==
+        bh=T9sAUXk/eVKAgtInIqwXX6aN0giUoEB/mKNSTu4u0gM=;
+        b=dLjg5opPVKE8UyiUqY3wk54jr0Aa/rdzIQSw/8YFZwL1x6lkZ00tarYSVREvOcvI+e
+         SVl3mkE4J9PbsuxNjs4xLeS9C99oPLEk+lx76fMiKqYEP2ubYr9UCp85GL7OfbsR0oH9
+         q7YsOeCA3eObighCmv3PQ7Uyxspg8KuQtilB5eE6PsNP+ePXN3rOU2cDHODdsDLK6Hr8
+         lZKr7Qc9zK8pYYIePH9SGYgaA0Czxkzaviuk32TYqpVId3Ae9ZMWlm0vKeQulJVJ4HF1
+         ce9N31nr/ufqCHy6tqqHEEwxpi3gPvEFKYfur/awhyTirZ0VHy4ZWaPAf/t3khxXBImw
+         QJbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780079817; x=1780684617;
+        d=1e100.net; s=20251104; t=1780079818; x=1780684618;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iVKpEBiTR4taCtQY2hcoVT0Go0ezbWRb/8iyh1YmSZw=;
-        b=gJvjVOoZ1NdnUyYfYwJ09HjZffx/saGHAsnAPyBh6UgWP6bNAfbdBh4DoEoWcMCN6K
-         CrnGMt+DExlPWBXM4mI3xIR+oRBCIOwm8MkS0wiqRcylmtYxVfif9dEK0AiULV43OxlG
-         alusiivbasFpGwiFZ3jg3lCCqd1AGLNWaxymhe5EXlUDJ4DCHQ3Yo8TqcnGpxOR5q8jb
-         BP74FIC/aDdrx3vCTzQb/h+KrZ5j85GJ9iB2oxzAIIsvdQi2YbeDoRioO5XBB8YMjbEu
-         6QmO0GDGxHS6NRD1DCNGW4fslBrd2b/Zefr0LRCGUCl0YmioPHwVBLUmUNAspvgCSv2+
-         aKHA==
-X-Forwarded-Encrypted: i=1; AFNElJ/hzrq64jomsHOg3LL53TYnPN1b+RUeACzuWCshYbJLTCIC64rF+6iKmSE9MGxH0rcNjxY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUcgFmwnI/Qog0rU8w2syp5GK4hJaPwdLtZwtUCcukD1GYROg7
-	tqbvfiITwqhCSzKC3tPuX8KUfhPSRe1/nUqwGpgjsmXpPqi4kdOi7tsD7kPFBGvoZH/1LoxobXC
-	76KEcCY9JJuCI0+VpNBpd3bRv7phKL79fWhCOFkPUTiOZRolh+k4M+w==
-X-Gm-Gg: Acq92OF4JnIoCTMtSDlSlzS4/lTtoSOC8tv2hESVbiUssG0jhj9aW+Xtl3kDVjCfm/m
-	LKlgtPzbWETSRvn5lQZZ+Ju9GPXE81dDaZvDJtsfm+imnarztdTGWmcIFLNZhW5+PRSNgeTMtap
-	+/N3PIZtvS1u+yON55GhK5xdZNr/RVeerGpEBq5D2OwF+MPOlHR/m4DiOaBx/3gVOIiNPGC7iKU
-	HLGs40K0lbwTd5ur+zjQnKFHdmoe7ktO64dP5IEjKUj4rvqXPAhG19N57yNt5fxant1NPO1X+si
-	IO8vJFD0Ikfh7G0THfmFTW0KUhSL/LUUkNRC5LEcEn41kxrXSomZYJ+cGMsAixfS35iPxhToe5q
-	5xnxgGY82iu67g6Uj3fXeJ6PQ0FX/kU56nZvF4qW+FYJlf+RItzG3jEmMo+pDddbf5zBTOh+biB
-	PxZ/tqvnFdgwDyub2JIB4HpmPoFxI+jFFvOevPKA==
-X-Received: by 2002:a05:600c:6287:b0:490:9d1b:f068 with SMTP id 5b1f17b1804b1-490a295d9c6mr13787355e9.29.1780079816759;
-        Fri, 29 May 2026 11:36:56 -0700 (PDT)
-X-Received: by 2002:a05:600c:6287:b0:490:9d1b:f068 with SMTP id 5b1f17b1804b1-490a295d9c6mr13786835e9.29.1780079816338;
-        Fri, 29 May 2026 11:36:56 -0700 (PDT)
+        bh=T9sAUXk/eVKAgtInIqwXX6aN0giUoEB/mKNSTu4u0gM=;
+        b=efPc2rtv7R2uCzjJhcDh2psILTYiYX7y9f0AiMmLijs34Cs/COyjdG42kBDQlI+2Do
+         Rh9E40fhUq2gYgh3sZtG57MFDd/2VQ849k7jmfhiomE+MJqsEmdNWTlq7W78I5ypzDbM
+         y6tLwwnGIEIIAqy3BIGH0HcjFWRqjf4dUu5bUb2WV+35kyC8YKWEfZBJHg6QcO3cSOkk
+         XzY6yS7Xdg26QIjTjamn+yFIFRlBbcMGXruhO7EH2ynPpWC2Gc47q6otQyoVlPLPjIn4
+         bMtTqF9qVwt6tIua7gUiUwoNlO1Dxs65yRI/2AuvAu2JiW+5Qj9DPF7h71v+ZYu7sl9Z
+         gayQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9OLKuJyKoMdFJuInjCoTn84c4iMDeusHITjEHuVUM2X3lZPV11brjkeAf7ktig6kvOUPA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx51tP88Er1B+/AujWpByHONobp8vS7LvWMkc+gsKKx+hwW9z09
+	AthfO18ZGVOmkphS7MSS/JgaGZZQKk0beYimxCsCsehfYRZTP1X/CG2bxtAVndLLAgMmIXahGlG
+	DTaqF5AB7dMewun+Gbl3LomeWYlO7i6HKDt7SL18HRL83AAIUkGAaxA==
+X-Gm-Gg: Acq92OEkJRBTo/gx1X6SHh5LB7ZplhqZ4NAbCHh6X+PXCp+UBNK8c1EvTTfL14spY2l
+	WLewjC5kzqOUfu4mTubYoRkRGzJZSKrsl7vAdxGp5lJCPp5Kb+Rt3Ga2Bd0l8grslD1jtyL19n/
+	ncUu0POCPpuk989+84q9Onk1CVnGHVTZDpsgYGIjfsNjcINQbCGQBx6PDO6Qk2UUXCefC/BTUnE
+	ZKJHzYI2mOIo3FU/lRyK8uNb9eU4ORbPuPUv2e+s1NpZSL3fRXL1q45WP+RZeeovqmdBHyUnkAO
+	TYoS95TvovUHkv49Q1nX11HteNMkM73AQGxmtacFuHmLjV2rd5R7MUVnctEc7TvqcMi/M7Qgusw
+	XnxBgUKuHYP8PEvT5rU7saLrhN2NjsRCDlXiMgrL+D0JmgnvoNk6F52gOMTr4XRL/ch38Jbmooc
+	4IZf23HWnZ42GUqecWO55FloUlu5fMzI5KORYKJg==
+X-Received: by 2002:a05:600c:c168:b0:490:5000:917 with SMTP id 5b1f17b1804b1-490a2a02ad9mr8878345e9.1.1780079818473;
+        Fri, 29 May 2026 11:36:58 -0700 (PDT)
+X-Received: by 2002:a05:600c:c168:b0:490:5000:917 with SMTP id 5b1f17b1804b1-490a2a02ad9mr8878065e9.1.1780079818030;
+        Fri, 29 May 2026 11:36:58 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.251.208])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef354cf0dsm5290792f8f.17.2026.05.29.11.36.52
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909dff2a80sm61952865e9.3.2026.05.29.11.36.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 11:36:52 -0700 (PDT)
+        Fri, 29 May 2026 11:36:57 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Michael Roth <michael.roth@amd.com>
-Subject: [PATCH 23/24] KVM: SEV: Turn sev_es_validate_vmgexit() into a dedicated predicate
-Date: Fri, 29 May 2026 20:35:48 +0200
-Message-ID: <20260529183549.1104619-24-pbonzini@redhat.com>
+Subject: [PATCH 24/24] KVM: SEV: Remove sometimes-used function-scoped "ret" from #VMGEXIT handler
+Date: Fri, 29 May 2026 20:35:49 +0200
+Message-ID: <20260529183549.1104619-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260529183549.1104619-1-pbonzini@redhat.com>
 References: <20260529183549.1104619-1-pbonzini@redhat.com>
@@ -100,184 +100,171 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Christopherson <seanjc@google.com>
 
-Now that sev_es_validate_vmgexit() is only responsible for checking that
-all required GHCB fields are marked valid, turn it into a predicate whose
-name reflects exactly that.
+Now that only two case-statements actually need a local "ret" variable,
+refactor sev_handle_vmgexit() to have all flows return directly when
+possible, and bury "ret" as "r" in the two paths that need to propagate a
+return value from a helper.
 
 No functional change intended.
 
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-24-seanjc@google.com>
+Message-ID: <20260501202250.2115252-25-seanjc@google.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/svm/sev.c | 112 +++++++++++++++--------------------------
- 1 file changed, 41 insertions(+), 71 deletions(-)
+ arch/x86/kvm/svm/sev.c | 74 ++++++++++++++++++------------------------
+ 1 file changed, 31 insertions(+), 43 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 864d6aea544b..bb70df2bf1a4 100644
+index bb70df2bf1a4..bc9dd39778a1 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -3410,7 +3410,7 @@ static void sev_es_sync_from_ghcb(struct vcpu_svm *svm)
- 	memset(ghcb->save.valid_bitmap, 0, sizeof(ghcb->save.valid_bitmap));
- }
- 
--static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
-+static bool sev_es_are_required_ghcb_fields_valid(struct vcpu_svm *svm)
- {
+@@ -4418,7 +4418,6 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 	struct vcpu_svm *svm = to_svm(vcpu);
  	struct vmcb_control_area *control = &svm->vmcb->control;
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
-@@ -3418,92 +3418,53 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
- 	if (!kvm_ghcb_sw_exit_code_is_valid(svm) ||
- 	    !kvm_ghcb_sw_exit_info_1_is_valid(svm) ||
- 	    !kvm_ghcb_sw_exit_info_2_is_valid(svm))
--		goto vmgexit_err;
-+		return false;
+ 	u64 ghcb_gpa;
+-	int ret;
  
- 	switch (control->exit_code) {
- 	case SVM_EXIT_WRITE_DR7:
--		if (!kvm_ghcb_rax_is_valid(svm))
--			goto vmgexit_err;
--		break;
-+		return kvm_ghcb_rax_is_valid(svm);
- 	case SVM_EXIT_RDPMC:
--		if (!kvm_ghcb_rcx_is_valid(svm))
--			goto vmgexit_err;
--		break;
-+		return kvm_ghcb_rcx_is_valid(svm);
- 	case SVM_EXIT_CPUID:
- 		if (!kvm_ghcb_rax_is_valid(svm) ||
- 		    !kvm_ghcb_rcx_is_valid(svm))
--			goto vmgexit_err;
--		if (vcpu->arch.regs[VCPU_REGS_RAX] == 0xd)
--			if (!kvm_ghcb_xcr0_is_valid(svm))
--				goto vmgexit_err;
--		break;
-+			return false;
-+
-+		return vcpu->arch.regs[VCPU_REGS_RAX] != 0xd ||
-+		       kvm_ghcb_xcr0_is_valid(svm);
- 	case SVM_EXIT_IOIO:
--		if (control->exit_info_1 & SVM_IOIO_STR_MASK) {
--			if (!kvm_ghcb_sw_scratch_is_valid(svm))
--				goto vmgexit_err;
--		} else {
--			if (!(control->exit_info_1 & SVM_IOIO_TYPE_MASK))
--				if (!kvm_ghcb_rax_is_valid(svm))
--					goto vmgexit_err;
--		}
--		break;
-+		if (control->exit_info_1 & SVM_IOIO_STR_MASK)
-+			return kvm_ghcb_sw_scratch_is_valid(svm);
-+
-+		if (!(control->exit_info_1 & SVM_IOIO_TYPE_MASK))
-+			return kvm_ghcb_rax_is_valid(svm);
-+
-+		return true;
- 	case SVM_EXIT_MSR:
- 		if (!kvm_ghcb_rcx_is_valid(svm))
--			goto vmgexit_err;
--		if (control->exit_info_1) {
--			if (!kvm_ghcb_rax_is_valid(svm) ||
--			    !kvm_ghcb_rdx_is_valid(svm))
--				goto vmgexit_err;
--		}
--		break;
-+			return false;
-+
-+		return !control->exit_info_1 ||
-+		       (kvm_ghcb_rax_is_valid(svm) && kvm_ghcb_rdx_is_valid(svm));
- 	case SVM_EXIT_VMMCALL:
--		if (!kvm_ghcb_rax_is_valid(svm) ||
--		    !kvm_ghcb_cpl_is_valid(svm))
--			goto vmgexit_err;
--		break;
-+		return kvm_ghcb_rax_is_valid(svm) && kvm_ghcb_cpl_is_valid(svm);
+ 	/* Validate the GHCB */
+ 	ghcb_gpa = control->ghcb_gpa;
+@@ -4503,12 +4502,12 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 	case SVM_EXIT_WBINVD:
  	case SVM_EXIT_MONITOR:
--		if (!kvm_ghcb_rax_is_valid(svm) ||
--		    !kvm_ghcb_rcx_is_valid(svm) ||
--		    !kvm_ghcb_rdx_is_valid(svm))
--			goto vmgexit_err;
--		break;
-+		return kvm_ghcb_rax_is_valid(svm) &&
-+		       kvm_ghcb_rcx_is_valid(svm) &&
-+		       kvm_ghcb_rdx_is_valid(svm);
  	case SVM_EXIT_MWAIT:
--		if (!kvm_ghcb_rax_is_valid(svm) ||
--		    !kvm_ghcb_rcx_is_valid(svm))
--			goto vmgexit_err;
-+		return kvm_ghcb_rax_is_valid(svm) && kvm_ghcb_rcx_is_valid(svm);
-+	case SVM_VMGEXIT_AP_CREATION:
-+		return kvm_ghcb_rax_is_valid(svm) ||
-+		       lower_32_bits(control->exit_info_1) == SVM_VMGEXIT_AP_DESTROY;
- 		break;
+-		ret = svm_invoke_exit_handler(vcpu, control->exit_code);
+-		break;
++		return svm_invoke_exit_handler(vcpu, control->exit_code);
  	case SVM_VMGEXIT_MMIO_READ:
- 	case SVM_VMGEXIT_MMIO_WRITE:
--		if (!kvm_ghcb_sw_scratch_is_valid(svm))
--			goto vmgexit_err;
--		break;
--	case SVM_VMGEXIT_AP_CREATION:
--		if (lower_32_bits(control->exit_info_1) != SVM_VMGEXIT_AP_DESTROY)
--			if (!kvm_ghcb_rax_is_valid(svm))
--				goto vmgexit_err;
--		break;
- 	case SVM_VMGEXIT_PSC:
--		if (!kvm_ghcb_sw_scratch_is_valid(svm))
--			goto vmgexit_err;
--		break;
-+		return kvm_ghcb_sw_scratch_is_valid(svm);
- 	default:
--		break;
-+		return true;
- 	}
--
--	return 0;
--
--vmgexit_err:
--	/*
--	 * Print the exit code even though it may not be marked valid as it
--	 * could help with debugging.
--	 */
--	vcpu_unimpl(vcpu, "vmgexit: exit code %#llx input is not valid\n",
--		    control->exit_code);
--	dump_ghcb(svm);
--	svm_vmgexit_bad_input(svm, GHCB_ERR_MISSING_INPUT);
--
--	/* Resume the guest to "return" the error code. */
--	return 1;
- }
+ 	case SVM_VMGEXIT_MMIO_WRITE: {
+ 		bool is_write = control->exit_code == SVM_VMGEXIT_MMIO_WRITE;
+ 		u64 len = control->exit_info_2;
++		int r;
  
- static void __sev_es_unmap_ghcb(struct vcpu_svm *svm)
-@@ -4510,9 +4471,17 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 		return 1;
- 	}
+ 		if (!len)
+ 			return 1;
+@@ -4518,24 +4517,21 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 			return 1;
+ 		}
  
--	ret = sev_es_validate_vmgexit(svm);
--	if (ret)
--		return ret;
-+	if (!sev_es_are_required_ghcb_fields_valid(svm)) {
-+		/*
-+		 * Print the exit code even though it may not be marked valid
-+		 * as it could help with debugging.
-+		 */
-+		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx input is not valid\n",
-+			    control->exit_code);
-+		dump_ghcb(svm);
-+		svm_vmgexit_bad_input(svm, GHCB_ERR_MISSING_INPUT);
+-		ret = setup_vmgexit_scratch(svm, !is_write, len);
+-		if (ret)
+-			break;
++		r = setup_vmgexit_scratch(svm, !is_write, len);
++		if (r)
++			return r;
+ 
+-		ret = kvm_sev_es_mmio(vcpu, is_write, control->exit_info_1, len,
+-				      svm->sev_es.ghcb_sa);
+-		break;
++		return kvm_sev_es_mmio(vcpu, is_write, control->exit_info_1, len,
++				       svm->sev_es.ghcb_sa);
+ 	}
+ 	case SVM_VMGEXIT_NMI_COMPLETE:
+ 		++vcpu->stat.nmi_window_exits;
+ 		svm->nmi_masked = false;
+ 		kvm_make_request(KVM_REQ_EVENT, vcpu);
+-		ret = 1;
+-		break;
 +		return 1;
-+	}
+ 	case SVM_VMGEXIT_AP_HLT_LOOP:
+ 		svm->sev_es.ap_reset_hold_type = AP_RESET_HOLD_NAE_EVENT;
+-		ret = kvm_emulate_ap_reset_hold(vcpu);
+-		break;
++		return kvm_emulate_ap_reset_hold(vcpu);
+ 	case SVM_VMGEXIT_AP_JUMP_TABLE: {
+ 		struct kvm_sev_info *sev = to_kvm_sev_info(vcpu->kvm);
  
- 	svm_vmgexit_success(svm, 0);
- 
-@@ -4599,6 +4568,7 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+@@ -4553,14 +4549,11 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 			       control->exit_info_1);
+ 			svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
+ 		}
+-
+-		ret = 1;
+-		break;
++		return 1;
+ 	}
+ 	case SVM_VMGEXIT_HV_FEATURES:
+ 		svm_vmgexit_success(svm, GHCB_HV_FT_SUPPORTED);
+-		ret = 1;
+-		break;
++		return 1;
+ 	case SVM_VMGEXIT_TERM_REQUEST:
+ 		pr_info("SEV-ES guest requested termination: reason %#llx info %#llx\n",
+ 			control->exit_info_1, control->exit_info_2);
+@@ -4568,23 +4561,20 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
  		vcpu->run->system_event.type = KVM_SYSTEM_EVENT_SEV_TERM;
  		vcpu->run->system_event.ndata = 1;
  		vcpu->run->system_event.data[0] = control->ghcb_gpa;
-+		ret = 0;
- 		break;
- 	case SVM_VMGEXIT_PSC:
- 		ret = setup_vmgexit_scratch(svm, true, sizeof(struct psc_hdr));
+-		ret = 0;
+-		break;
+-	case SVM_VMGEXIT_PSC:
+-		ret = setup_vmgexit_scratch(svm, true, sizeof(struct psc_hdr));
+-		if (ret)
+-			break;
++		return 0;
++	case SVM_VMGEXIT_PSC: {
++		int r;
+ 
+-		ret = snp_begin_psc(svm);
+-		break;
++		r = setup_vmgexit_scratch(svm, true, sizeof(struct psc_hdr));
++		if (r)
++			return r;
++
++		return snp_begin_psc(svm);
++	}
+ 	case SVM_VMGEXIT_AP_CREATION:
+-		ret = sev_snp_ap_creation(svm);
+-		if (ret) {
++		if (sev_snp_ap_creation(svm))
+ 			svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
+-		}
+-
+-		ret = 1;
+-		break;
++		return 1;
+ 	case SVM_VMGEXIT_GUEST_REQUEST:
+ 	case SVM_VMGEXIT_EXT_GUEST_REQUEST:
+ 		if (!PAGE_ALIGNED(control->exit_info_1) ||
+@@ -4595,12 +4585,11 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 		}
+ 
+ 		if (control->exit_code == SVM_VMGEXIT_GUEST_REQUEST)
+-			ret = snp_handle_guest_req(svm, control->exit_info_1,
+-						   control->exit_info_2);
+-		else
+-			ret = snp_handle_ext_guest_req(svm, control->exit_info_1,
+-						       control->exit_info_2);
+-		break;
++			return snp_handle_guest_req(svm, control->exit_info_1,
++						    control->exit_info_2);
++
++		return snp_handle_ext_guest_req(svm, control->exit_info_1,
++						control->exit_info_2);
+ 	case SVM_VMGEXIT_UNSUPPORTED_EVENT:
+ 		/*
+ 		 * Note, the _guest_ is reporting an unsupported #VC, i.e. this
+@@ -4609,17 +4598,16 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 		vcpu_unimpl(vcpu,
+ 			    "vmgexit: unsupported event - exit_info_1=%#llx, exit_info_2=%#llx\n",
+ 			    control->exit_info_1, control->exit_info_2);
+-		ret = -EINVAL;
+-		break;
++		return -EINVAL;
+ 	default:
+ 		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx is not valid\n",
+ 			    control->exit_code);
+ 		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_EVENT);
+-		ret = 1;
+-		break;
++		return 1;
+ 	}
+ 
+-	return ret;
++	KVM_BUG_ON(1, vcpu->kvm);
++	return -EIO;
+ }
+ 
+ int sev_es_string_io(struct vcpu_svm *svm, int size, unsigned int port, int in)
 -- 
 2.54.0
 
