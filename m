@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0D4403E98;
-	Fri, 29 May 2026 18:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBA637FF41
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780078340; cv=none; b=RdB2RjgcjTHb5tLmZnh6Efh35v9xPk9MUDBILUWcmSE5/v9mCiW6SHpp2+TqtGYSKHQ0dhPkPbzrAZCmXXmHyWH0V5oWtNuY2ne/1lA97ebaqeoOMzUPQnFXPk07YdOlzK1JyHiBsbnn7Ykc47fpB02yjo7LnRNyPUoL3zc26xM=
+	t=1780078435; cv=none; b=NjyUk8dGQPumkRN1t0ff098WwitEIYjPxAIo9j5wAYBKT3GD5SHTgwQkxWb9nmOzOJRWcOM1+oUBADifKCUWZGS5loPMTQCJfujOQAJqiz/ml4OVbjItLPLuo/WeRoN2KJLkU/gDFQBUd0WpPcyWTgpGj97EevFNHjk9ipFqVXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780078340; c=relaxed/simple;
-	bh=hK6lw5UAT5mzv8lMWPBDobbfFuwuBGr+z1+baJMCbDs=;
+	s=arc-20240116; t=1780078435; c=relaxed/simple;
+	bh=CKh8v8Tm28cz2zpF2BWK0N+Fy0zmyPy6wEtdZkpyCf8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HFCc94E+EX+Xafvgl3R6IBLftdSOrOk5NvmNwRz13b6cTa3WuUfC6Kpv9xhnk2l2olhuVasruWG+9MbnkOvYwNL8SuFcE33BfEEiOOsTLFG/XJhdDAyGKxo8kKE9VIdF4KhL47Mm2itIgXOZvLplBwXSwedREYvFwwLNT/IXSlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OMe890/O; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=sSUlibOsXV5sj7+35b0PKNR4K8pAbOJATTCsyKvknqGA3l/kO6ol5B7vDOUgbFjp1uzAC1da9E/vzZZOltltFZdN6xeUfnLWmaROAkYVHorwWo8hrcKR2/AuI1kbpf8Yx/lB34OTy3DWw8/C8L8gUNT6wII/BT5JpiYMOAGGqxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PL9RbHAS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OMe890/O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B27A1F00893;
-	Fri, 29 May 2026 18:12:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PL9RbHAS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6BD1F00893;
+	Fri, 29 May 2026 18:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780078333;
-	bh=xzlrJJg+SnnBXhWnpXCJUaW5D4BxDu7YNoLnzeoreL8=;
+	s=k20260515; t=1780078434;
+	bh=CKh8v8Tm28cz2zpF2BWK0N+Fy0zmyPy6wEtdZkpyCf8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OMe890/Oh/ZabX0s4IV0zve70F8f8KL+o9g6NJBTbRRLlIb9kKRM0EhD0QQcWUItV
-	 XXAManvvn+x9w7Rvnck6c2aRquB8lJJTP2QR6KqeBIiG52MZvxYdtUTtaOV4oNvuEH
-	 RNm0Hv5JQU2xf4h3NOPBpSxtE+/mnc75++eWeiDa6CKvQPSs6T/JcmylAJ9EtOV4z0
-	 naPM84NCsjiRDOP5biz03/ufDIil8VR13ic4jX2831kHY7L8fb6YI5z0rCMWqk7GMY
-	 +uffwozisY1+WQsEkSy6npUNbIO7Y7YkO8jotfCuh8H3FvaeFDfUmzpBcMDHq2RQmB
-	 XAWvvL2pJ7DjA==
+	b=PL9RbHASJ66iUASGxEO3968bC576crfoMnSNJ3YbdNyiNsbNO7+HdviPt0dLmRJTe
+	 Dn38iDbXRFlcJMl+sIR9GnCdoKYd2EWpH0RQNNGGTnYRMI1Q8XWHCt2Wn3D6wh27Gy
+	 XmC6ZHKCmump5vN4PNsMzZLkMWO9vIoAQ8eVuV4JBCgX6KMa0c9EBI5ZrQQ9fl6u/f
+	 ubIr5RSHNrrpXJcq1+qvMlRCdOV519uc71M8jMvl0Gz0SxdKTKMA8sPlYhyZKou9aw
+	 Jhx8Al8cMahwfdXZQ5jg1v+50QfCbSK6cCGgrdQt7MrwrZJeUt9C4LGIR8fQhq2uVY
+	 9CSJJHvriB/Sw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 17/47] x86/kvm: Mark TSC as reliable when it's
- constant and nonstop
+Subject: Re: [PATCH v3 09/27] KVM: arm64: Share kvm_emulate definitions
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: linux-hyperv@vger.kernel.org, kvm@vger.kernel.org
-In-Reply-To: <20260529144435.704127-18-seanjc@google.com>
-References: <20260529144435.704127-18-seanjc@google.com>
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260529155050.2902245-10-seiden@linux.ibm.com>
+References: <20260529155050.2902245-10-seiden@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 18:12:12 +0000
-Message-Id: <20260529181213.0B27A1F00893@smtp.kernel.org>
+Date: Fri, 29 May 2026 18:13:53 +0000
+Message-Id: <20260529181354.2A6BD1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,66 +45,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The command line parameter `tsc=3Dunstable` is ignored because `ch=
-eck_tsc_unstable()` is evaluated before the parameter is parsed, incorrectl=
-y forcing `X86_FEATURE_TSC_RELIABLE`.
+- [Low] The forward declaration of `kvm_vcpu_get_esr` in the shared header =
+is missing the `inline` keyword.
 --
 
-commit c9259f3d89899a7c421eb7c7311cc995cd768eb4
-Author: Sean Christopherson <seanjc@google.com>
+commit cd45780d22b912a0d1f22d6af7c40c20667b35da
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-x86/kvm: Mark TSC as reliable when it's constant and nonstop
+KVM: arm64: Share kvm_emulate definitions
 
-This commit marks the TSC as reliable if KVM enumerates it as constant and
-nonstop, and if the administrator hasn't explicitly marked it unstable. It
-prioritizes the TSC over kvmclock to avoid the overhead of emulated watchdog
-clocksources.
+This commit moves functions and definitions useful for emulating arm64
+instructions from arch/arm64 to include/kvm/arm64 so they can be shared.
 
-> diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-> index 909d3e5e5bcd5..4fe9c69bf40b3 100644
-> --- a/arch/x86/kernel/kvm.c
-> +++ b/arch/x86/kernel/kvm.c
-[ ... ]
-> @@ -1040,7 +1041,20 @@ static void __init kvm_init_platform(void)
-[ ... ]
-> -	kvmclock_init();
-> +        /*
-> +         * If the TSC counts at a constant frequency across P/T states, =
-counts
-> +         * in deep C-states, and the TSC hasn't been marked unstable, tr=
-eat the
-> +         * TSC reliable, as guaranteed by KVM.  Note, the TSC unstable c=
-heck
-> +         * exists purely to honor the TSC being marked unstable via comm=
-and
-> +         * line, any runtime detection of an unstable will happen after =
-this.
-> +         */
-> +	tsc_is_reliable =3D boot_cpu_has(X86_FEATURE_CONSTANT_TSC) &&
-> +			  boot_cpu_has(X86_FEATURE_NONSTOP_TSC) &&
-> +			  !check_tsc_unstable();
-
-[Severity: High]
-Does this evaluate check_tsc_unstable() too early to catch the command line
-parameter?
-
-It looks like kvm_init_platform() is called from setup_arch(), but the
-tsc=3Dunstable kernel parameter is parsed via __setup() later during
-parse_args() in start_kernel().
-
-If check_tsc_unstable() evaluates to 0 here because the parameter hasn't
-been parsed yet, wouldn't it incorrectly force X86_FEATURE_TSC_RELIABLE
-and set prefer_tsc to true?
-
-This could cause the system to use an unstable TSC for sched_clock(),
-which might lead to scheduling anomalies if the TSC jumps backwards.
-
-> +	if (tsc_is_reliable)
-> +		setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
+> diff --git a/include/kvm/arm64/kvm_emulate.h b/include/kvm/arm64/kvm_emul=
+ate.h
+> new file mode 100644
+> index 0000000000000..25322b95af21b
+> --- /dev/null
+> +++ b/include/kvm/arm64/kvm_emulate.h
+> @@ -0,0 +1,268 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef KVM_ARM64_KVM_EMULATE_H
+> +#define KVM_ARM64_KVM_EMULATE_H
 > +
-> +	kvmclock_init(tsc_is_reliable);
->  	x86_platform.apic_post_init =3D kvm_apic_init;
+> +#include <asm/esr.h>
+> +#include <asm/pstate.h>
+> +#include <asm/sysreg-defs.h>
+> +
+> +static inline bool kvm_vcpu_is_be(struct kvm_vcpu *vcpu);
+> +static __always_inline unsigned long *vcpu_pc(const struct kvm_vcpu *vcp=
+u);
+> +static __always_inline unsigned long *vcpu_cpsr(const struct kvm_vcpu *v=
+cpu);
+> +static inline bool kvm_vcpu_trap_is_permission_fault(const struct kvm_vc=
+pu *vcpu);
+> +static u64 kvm_vcpu_get_esr(const struct kvm_vcpu *vcpu);
+
+[Severity: Low]
+This isn't a bug, but should this forward declaration include the "inline"
+keyword? The surrounding forward declarations use "static inline" or
+"static __always_inline" to match their definitions, but this one is just
+"static u64" which creates a slight stylistic inconsistency.
+
+> +static __always_inline bool vcpu_mode_is_32bit(const struct kvm_vcpu *vc=
+pu);
+
+[ ... ]
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529144435.7041=
-27-1-seanjc@google.com?part=3D17
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
+245-1-seiden@linux.ibm.com?part=3D9
