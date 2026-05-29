@@ -1,120 +1,125 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414FB367F58;
-	Fri, 29 May 2026 03:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9352B36D9EE
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 04:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780026087; cv=none; b=O06719//HLY0zwlGPOFCc5/NwBcYDUGDu7Sll2kn4HO+awjYaxFbh20iD+WSEG585AHEHgsgybJr6NDtrT6IixtUBR3ThqnQk5CeJNrU5FD2c9HVetVj/6OshGdo5hkPpK/OrYzMQsONG5PcopZpO61L8dBInKfJZBh70Ohf7DI=
+	t=1780028522; cv=none; b=YFlBmuSxEoVVbmPd8QA8FIQ/JFtRbIKpSLTzY+zB3GJqVw0kct0VciLtwK7kL/ITx3DDrpWtdLA/E79rPGEC5Bu/WAmYvb3fhiTltxUFeEyCPc8f7F1mFrREVUj56aov6JdTT3Sta0DssmHpGSS8odCI/poU17T2KZSH4BCZhLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780026087; c=relaxed/simple;
-	bh=OsS1e+Qw/QnKrZzlo/+MNIKnYxQSH/Bs/+Zy/VsCM9k=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=O7q+8n6hZMbh0buYVBuq1XRxmdUJeFxayglxqgW+Mgpa3KXIEkz3zFrNEuj8759za16/zTL5tntmgsAoMCCOaTAvLLefWwOlt0BYb7bDNsru+wLQdiQ1KnUM37BAXJ+eAKrDmaPLqHune/pe0b5MADi/FtPe3b/KLtTLWaYh/34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Ou2aIZQT; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1780028522; c=relaxed/simple;
+	bh=xzW5x9iAB6Eb/h1LY4YMe654q9jJ4E6QneGu6cWFWss=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=eui0dn/yAV+JTtsJ0AQ/13UKuS7/R6BFiLSE8eU+JDilUziKHJqresloeBPt7CHlfYrUGTsRystRrPMsbC+QYoUK/F5Vi8WYXu5DRZJadWa23ny+eSdoMOKZs2MtRNdCb22+v/Y34QclWBafMl5dGlRB4Ix4bt4+vng1MuuStRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HN5BQ7Nh; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Ou2aIZQT"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=uwFcWOwJkeegfR4BbQvBChM0ATs2whx7uh0xno0g6bQ=;
-	b=Ou2aIZQTUFpHcWM+GeEoYlPUKFbytDZomcHoIvdgX1B/fp6vmhzUnHBLV6dN1fgZWhRAvfO00
-	yyrmQqLpqo5kVx1iIuJMLmbbI7BFCRtFoxGVY+meJQsjXzhnrE9tpFozx8Yl/KY+cL5W/0poiWo
-	ZeMftN5tD1TtYSkCuGzTk0g=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4gRTTY4FLKz12Lgj;
-	Fri, 29 May 2026 11:33:21 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5496D40561;
-	Fri, 29 May 2026 11:41:20 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 29 May 2026 11:41:20 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 29 May 2026 11:41:18 +0800
-Subject: Re: [PATCH RFC v2 6/7] KVM: selftests: Add memory failure tests in
- guest_memfd_test
-To: Lisa Wang <wyihan@google.com>
-CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
-	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
-	<tabba@google.com>, <dave.hansen@linux.intel.com>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins
-	<hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "David
- Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
- <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-6-92c596402a7a@google.com>
- <149c954e-dfe1-6bdd-295c-792642a9d915@huawei.com>
- <ahjw6l7uznZ2bYfz@google.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <fceb92c3-3648-418f-6a07-0148d8690bd6@huawei.com>
-Date: Fri, 29 May 2026 11:41:18 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HN5BQ7Nh"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8353c9f24d2so6902455b3a.3
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 21:22:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780028521; x=1780633321; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=RhdO/AEgSTmHjiBbCMxjzej2oiy/N5MjAHVUgamYaBs=;
+        b=HN5BQ7NhP1CN0VJEp28hwT4ngfYASDZcMQSRQGnKWvQOnai9hCs0i5CbbEajaNXYq1
+         fToN0d8fl53aJP4GrErBJay7A2pLbsJNz6fQdOiQ3czlsBbmQaSqmZ7S9YrqLRJY4hJe
+         qWgcCFo8RJ7i1uYkFPUzIeMfK5LCXJcybwZxpAZRZ26DFJeAbGlZ7foUSXcag6xZAh8n
+         IffU9AbdpLjOhhiUWgVlacANx4H0nEAE0j9AwXwV3f62K1LQAXvpSsF1husXEeK7vDnz
+         R7SnJ3vYOmN5W2kwKQ7Coc9feue0ZbPeYiI5WehuceP95mFPk5EdGWiaYO+F36FfLTXF
+         6IsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780028521; x=1780633321;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RhdO/AEgSTmHjiBbCMxjzej2oiy/N5MjAHVUgamYaBs=;
+        b=iuP+hWj27dt/GVN/WRBOJwchpjGsiYBGc1/r5sevMpWfMe2ugKw5IZSfgBBt+sMzUE
+         NX0bGn+hlyEHX0k2He12rRasH8VWm/F7VKiz7foRV3obwfZXucHxVX7CXemj7QYrXdUq
+         tT62urGny9SOnyhTLKMDlFQRW4u4lACc7MTPbbX+LjJXdRPh2VVknKkCrIu5Pg7OjFCh
+         yD3gdBl8hKTXXgkEaEFajCtAiYh5ZqJfXQuUOmqSZBiQ5Lb8mM1z/97NBoouSp61t1Nu
+         yxMLFGserRFuWc8pBAKvPmEqELzi9A9pEyV4dBApmbnaQu9s5vDcaw6cNxgPDodgEVQy
+         OXxg==
+X-Gm-Message-State: AOJu0Yy1mPbIRdfxeMQ0cpY/2jq6Br93VLQiOg2/iLnG3NyHbjGAvOi0
+	n71XqZP4GDibUNQwuvRE5VgF4CzLTIz+lkDUGiohhwH8Ytx2oBypWhzD2TLhfQ==
+X-Gm-Gg: Acq92OGis8hASNM0gAQmydN8cN3q4OjPXBoVJSOvniPWZLtO69560BxOQQrtUlUvabI
+	zohbsr77PYka/3y77WalHlroQ3hGeWlYkTc3WaFWR0OanDQBFFhulOfL4IoROZ7dLUnEauvIqX+
+	JRfPqwEOQGECBKWP518nWCORMVaUPK2dHfmKXC6yHIUhzd1wikGY0aMdHSNxvPFQGQO8rtocJkc
+	WdAm1w2skFpbq+pqoenRi7LJ4LKal0JoVMIAjEK3p0mNM0cQ8BBaXGnitekixCWq3uMVgGiFnjo
+	zyxDBHpS1Mw+djtGQtFfCIAtsjQH4c6LurMt9/EKH5Sg7xQCGOQLITDEvnN9wOMM5ZZW3r7MO33
+	oaTgSni9T3yxwiDcnyUIKc8KzaQuCsrAeuj0LJn9oo+O1Vj5PbVVSwN3phApCK8PXPVx9Q7cw60
+	SHan7CCeODi+K9Qgny5kT+uixMvBr/Eufr
+X-Received: by 2002:a05:6a00:bd82:b0:837:e9cc:d470 with SMTP id d2e1a72fcca58-84212c5b1a6mr1241630b3a.20.1780028520687;
+        Thu, 28 May 2026 21:22:00 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214cc35a2sm352288b3a.46.2026.05.28.21.21.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 21:21:59 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Subject: Re: [RFC v3 03/10] KVM: PPC: selftests: add support for powerpc
+In-Reply-To: <20260527133246.26D501F000E9@smtp.kernel.org>
+Date: Fri, 29 May 2026 09:42:28 +0530
+Message-ID: <eciux39v.ritesh.list@gmail.com>
+References: <99818a9e1c8954ba74e1861dfa2bd5eee19f4f86.1779885589.git.ritesh.list@gmail.com> <20260527133246.26D501F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <ahjw6l7uznZ2bYfz@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq500010.china.huawei.com (7.202.194.235)
 
-On 2026/5/29 9:50, Lisa Wang wrote:
-> On Mon, Mar 30, 2026 at 03:20:15PM +0800, Miaohe Lin wrote:
->> On 2026/3/20 7:30, Lisa Wang wrote:
->>> After modifying truncate_error_folio(), we expect memory_failure() will
->>> return 0 instead of MF_FAILED. Also, we want to make sure memory_failure()
->>> signaling function is same.
->>>
->>> Test that memory_failure() returns 0 for guest_memfd, where
->>> .error_remove_folio() is handled by not actually truncating, and returning
->>> MF_DELAYED.
->>>
->>> In addition, test that SIGBUS signaling behavior is not changed before
->>> and after this modification.
->>>
->>> There are two kinds of guest memory failure injections - madvise or
->>> debugfs. When memory failure is injected using madvise, the
->>> MF_ACTION_REQUIRED flag is set, and the page is mapped and dirty, the
->>> process should get a SIGBUS. When memory is failure is injected using
->>> debugfs, the KILL_EARLY machine check memory corruption kill policy is
->>> set, and the page is mapped and dirty, the process should get a SIGBUS.
->>>
->>> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
->>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
->>> Signed-off-by: Lisa Wang <wyihan@google.com>
->>
->> Should we add a testcase for hugetlbfs? It seems hugetlbfs_error_remove_folio() behaves same as shmem.
-> 
-> I agree that it would be more consistent to modify
-> hugetlbfs_error_remove_folio() to return MF_DELAYED and update
-> me_huge_page() to align with me_pagecache_clean().
-> 
-> However, I prefer to let this patch series focus on the
-> me_pagecache_clean() path (affecting shmem, guest_memfd and generic
-> pagecache), because the hugepage memory failure test is not working now
-> (hugetlb-read-hwpoison.c). Commit 66802526298e changed madvise()
-> behavior to always force-deliver a SIGBUS to the calling process if it
-> has the poisoned dirty page mapped. Aligning HugeTLB would require us to
-> fix this part together.
-> 
-> To keep this series focused, I would like to handle the HugeTLB
-> alignment in the follow-up series. Would you be okay with this approach?
+sashiko-bot@kernel.org writes:
 
-Sure, this will be better. Thanks for your work. It's really helpful. :)
 
+> commit 4362b48fc35809ad7a74045c726f7ffae0c70ccd
+> Author: Nicholas Piggin <npiggin@gmail.com>
+>
+> KVM: PPC: selftests: add support for powerpc
+>
+> This commit implements KVM selftests support for powerpc (Book3S-64),
+> including ucalls and virtual memory for the radix MMU.
+>
+>> diff --git a/tools/testing/selftests/kvm/lib/powerpc/processor.c b/tools/testing/selftests/kvm/lib/powerpc/processor.c
+>> new file mode 100644
+>> index 0000000000000..9846ec26a32aa
+>> --- /dev/null
+>> +++ b/tools/testing/selftests/kvm/lib/powerpc/processor.c
+>
+> [ ... ]
+>
+>> +struct handler {
+>> +	void (*fn)(struct ex_regs *regs);
+>> +	int trap;
+>> +};
+>> +
+>> +#define NR_HANDLERS	10
+>> +static struct handler handlers[NR_HANDLERS];
+>
+> [Severity: Medium]
+> Could this static global array cause state leakage across VMs or race
+> conditions in multi-threaded tests?
+>
+> Since this is defined as a static global on the host rather than a per-VM
+> allocation, a new VM will start with a zeroed guest handlers array (from ELF
+> loading), but the host's handlers array will retain entries from previous VMs.
+>
+> This appears to limit the total number of unique handlers that can be installed
+> sequentially across all VMs in the entire test process to 10, which would
+> eventually result in the "Out of exception handlers" failure below.
+>
+> Additionally, if multiple threads concurrently create VMs and install exception
+> handlers, would they race on this shared host array and sync corrupted state to
+> their respective guests?
+>
+
+As of now there are no multi-VM tests which creates VMs in parallel.
+Also the powerpc exception handler is not used today. It is deferred for
+later use when more powerpc specific tests will get added.
+
+If there's ever a need for parallel multi-VM creation, then we can clean
+this up.  Even otherwise, I think making it consistent with the other
+architectures makes sense (once PowerPC-specific tests get added), so
+that too can be deferred until after this base PowerPC KVM selftests
+infrastructure lands.
+
+-ritesh
