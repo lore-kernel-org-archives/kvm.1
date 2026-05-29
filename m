@@ -1,176 +1,94 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E46B32ED55
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 13:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8422931F9B3
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 13:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780061073; cv=none; b=uNDP9mxB/PvBFjHDe97pISjeem94i89k12BVIoTblkXvF5eC3TuNIKZua+TsdP325hw+9U+zIlBktx9/HUM4fJKp3tcakUwqtMGkQSQ4cRFN2rQkYP+lC6vR4/WABqKp7TIODirqhgEBYy+l2nqcJ2VV0sbiciZNS+iiNVOKLRY=
+	t=1780061249; cv=none; b=JWULrq8ff1DUM20/UO4388v82MKj27GKpuPyWeCfnQSAG87IcUlbnBYd8il/u52VkVVV3egL5FA5pWiIeg9oMKl+Yi9fUUxXXXe7Ygzlw39KyVsXNDBDirvpNnnjDVPX0o3BHdUT0DAALihlaFJLP4shi0KGJnC+oobmV2WOvfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780061073; c=relaxed/simple;
-	bh=2ibxLK2d2nHMil68CLe+zIQaT9mcEauOlK1p68CnYdk=;
+	s=arc-20240116; t=1780061249; c=relaxed/simple;
+	bh=C0e/Ez6uh7FiLV34JDhA/vXiu6NfONlDk6b6EKC/S5M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KYn4yCIPPNrkbvMutbiDa8HYmEjmWvuLBbmx9YGdj8K+lmwxORastjAJAC0lDU/NtfomqqRXmSNin//BZB+XyMWMNWlkGYnI1et94Xzj7M+lTV9HKgasF5m6cmotIuo3SbO3w2swDA1EzB6dosWIW7QOYxsJL2qjeGmjFPdWrJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mCgKHquV; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=m1BusGwG4KxNrLhBMJZ8CHW449tWA4MXIXs7E3ivWrHIVmt5zPCygZpnifVIiB7RZG3GLrmF/V1qtvPKviXLQmTWv0mZL9n7cO+5XoWUw6HqthtCnkUcqcICR7t11fzuJF8RsW+b3/Y7c/fwwOhyIEqltdQ8n3EfsgU2ip2LpbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qUhbsYgy; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mCgKHquV"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ba3245a43dso158880725ad.0
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 06:24:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qUhbsYgy"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f756ebd0dso8286621b3a.1
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 06:27:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780061071; x=1780665871; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pmBmVT1K0qRRQvsSc3WIbJk2+VawOhHvfWgErZcdak4=;
-        b=mCgKHquV1CICUwb8PGhoHbtfFfy0szgYVIzBB+0nPdYw/Vy6EldpH2sE2rwqE2Jr6A
-         xJuJ8JDkz4HWh8keigYJ5EwuASQepw6wJte+3AYNE/2W5QjGvnerFZfuQC6q5kc6g4cV
-         /3Ne4RfZewaL55l3AtFBQYzAH+n8y8bMGQhs7yPMLyRN9eiAL5wMmGf8XGr5rAT4XHhT
-         ReLIM5h9OBtIefmC+P/wDzwlmUbnBmWX52xXCtgqEVUdIWek5QyHWitnTBlxWXh0vl4t
-         24daxq0SsXIOuXoLlMUSWrYW0EkvRl0hxSi/sP0LfjDiVqb1caQRQxQzR/TMi+2TLCFW
-         pwVQ==
+        d=google.com; s=20251104; t=1780061248; x=1780666048; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tQ9BShFIIZUp6olE5smFD4V12PZweAZYt2KEUAipHLA=;
+        b=qUhbsYgybio9sjtiQERYbUYEwPR01sDeDb+R6syzsrEeflVQCCvA3fssO74vmrDnd6
+         vRaRDPvaaVnSXApMWeZeLMAYuTuCj1iX+5scB9pAErMUqNv1GyNCCu9eeohNHt2pu9BQ
+         2+ySlS/JPNmqxSGmltivb8aR+q/3ap9URkGNVsTsV7i/emYv3Z+vo4t50+7+dJMCxXRP
+         AuXsG07JFn2pd42g0IbgCjuiCaSVR7Hka/k9GJNnChIP6LsXJUpWloAnCjeQINNdb5ti
+         KJCcIPDhbLA529qr/CwNWfvu0kFLuZceu8OYREPZX/8ofYFAOQG7N7BjRyEbppTUyRBl
+         cQyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780061071; x=1780665871;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pmBmVT1K0qRRQvsSc3WIbJk2+VawOhHvfWgErZcdak4=;
-        b=bb1kxjgldlKTpPwUdzbbyB3AKVYFaJ4sOJAvXUDL4N2sIaGVPAmoi9Z/dk3U2e57Rl
-         fLQugpTUH8Fvpyqxses7OaiePIyXjq6Jq93NEsbj1LDaKiMRUUUbEsugZXJ42AxQaLXG
-         ZGxjmiHIuuMI5rIBFOfMiapOhkFSDXeaUMUH4QmVw/5AUYIevn8tKNXx41y1waX/qeMh
-         sFPl3vmCLWoMdeXXp59XjAKW0wh5GsJbbJMUPPX+YZE2ekZVC6euhtA9+5T2uVKHyy4o
-         tmkVsD3bKoAeD2YVlJ38WC7leFf8RbmcKMb073giXM3cLv5dhhrYtuw1s37LXh9/lyZk
-         UfcQ==
-X-Gm-Message-State: AOJu0YyUgen4Pc48oMLFVfPmqlAjfzu7oHJYxYYdnxoNC+NQ/55/iZ9p
-	9xintwz3mFX4Azo2PlUiWFHKeMP3TWY19O9NV0tkXYWB9WsZ2TBlk0m3HS67tdf9/4Hq7082q18
-	xJCykSw==
-X-Received: from plbkk16.prod.google.com ([2002:a17:903:710:b0:2bf:222e:c947])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e84d:b0:2bf:af8:7de8
- with SMTP id d9443c01a7336-2bf20bb94b3mr38276425ad.30.1780061070656; Fri, 29
- May 2026 06:24:30 -0700 (PDT)
-Date: Fri, 29 May 2026 06:24:30 -0700
-In-Reply-To: <20260529091714.287963-2-clopez@suse.de>
+        d=1e100.net; s=20251104; t=1780061248; x=1780666048;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tQ9BShFIIZUp6olE5smFD4V12PZweAZYt2KEUAipHLA=;
+        b=lrUW662bch/5Ws9wK5wE2nAGTKQqFw6/NNGnQiAS2S0hvZdHUsn5/fsspSPfmtV5BS
+         o/M/NGRxAA2LFLpeg0pc4zTIyquFtjBjBhTsffp+ooGMpZj80tLhzrRS8NB+zVo7tL98
+         Vandh10iR3C5R0L3sUy83HbSGBxwcX6teGU98FsVd+0TMMu88CEYbLCzBBFFpDOUQZyf
+         CuJ3tDAqZJ/LQQevSClwYiM7yICRz2km7M9lcyPTxfvJXmOI6x/abzLgSEfi8TPwwnCN
+         z3KRfr7A+Do4KJigsvHdDWAUvfDJdjYw/jKNlAwFBYHUabxsOVf0IRWmeRthwA4Rpuqb
+         dGGA==
+X-Forwarded-Encrypted: i=1; AFNElJ+VxZirgP20URBWmH5GigL/ISrGKsqPOr5Ijo8C19hpAd/jlMezWhlu/jdKeCkNUrgxjP8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoFIkRYDCZNlbUIOYiJ7ChspzdjsrY4UGnpWiKwY+MyaLXmEPD
+	LCsmsw8n7ba/uq9GZzzaizguO0+n71rHsGThhjGjOO9UVgB65kpM58THeIfcXAfonmw+5hjF0UN
+	L+1N+zQ==
+X-Received: from pgsb25.prod.google.com ([2002:a65:67d9:0:b0:c7f:ca3d:442c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3208:b0:3a0:bc61:62e6
+ with SMTP id adf61e73a8af0-3b411c00dd3mr2946625637.8.1780061247623; Fri, 29
+ May 2026 06:27:27 -0700 (PDT)
+Date: Fri, 29 May 2026 06:27:26 -0700
+In-Reply-To: <CAO9r8zPA7RTwAD+_-knnTJvFbLJgXzsHYa7a_N2j0JdPAoSoUw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260529091714.287963-2-clopez@suse.de>
-Message-ID: <ahmTjp-95M5IjGxu@google.com>
-Subject: Re: [PATCH] KVM: x86: Take PIC lock on KVM_GET_IRQCHIP path
+References: <20260528231052.404737-1-seanjc@google.com> <CAO9r8zPA7RTwAD+_-knnTJvFbLJgXzsHYa7a_N2j0JdPAoSoUw@mail.gmail.com>
+Message-ID: <ahmUPsB2nOPFCRrW@google.com>
+Subject: Re: [PATCH v4] KVM: selftests: Add a test for gPAT handling in L2
 From: Sean Christopherson <seanjc@google.com>
-To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, stable@vger.kernel.org, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Avi Kivity <avi@qumranet.com>, 
-	Qing He <qing.he@intel.com>, "Yaozu (Eddie) Dong" <eddie.dong@intel.com>, 
-	Marcelo Tosatti <mtosatti@redhat.com>, 
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, May 29, 2026, Carlos L=C3=B3pez wrote:
-> When userspace issues the KVM_SET_IRQCHIP ioctl to set the state of
-> the PIC, kvm_vm_ioctl_set_irqchip() grabs @kvm->arch.vpic->lock before
-> updating the state. However, the KVM_GET_IRQCHIP ioctl to retrieve the
-> same PIC state does not grab such lock, potentially causing torn reads
-> for userspace.
+On Thu, May 28, 2026, Yosry Ahmed wrote:
+> > +int main(int argc, char *argv[])
+> > +{
+> > +       TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
+> > +       TEST_REQUIRE(kvm_has_cap(KVM_CAP_NESTED_STATE));
+> > +       TEST_REQUIRE(kvm_check_cap(KVM_CAP_DISABLE_QUIRKS2) &
+> > +                    KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT);
+> > +
+> > +       if (!kvm_cpu_has(X86_FEATURE_NPT))
+> > +               goto skip_npt;
+> > +
+> > +       gpat_test("Invalid gPAT", l1_guest_code_invalid_gpat, npt_enabled = true);
+> > +       gpat_test("Nested NPT enabled", l1_guest_code, npt_enabled = true);
+> > +skip_npt:
+> > +       gpat_test("Nested NPT disabled", l1_guest_code, npt_enabled = false);
+> > +       return 0;
+> > +}
+> 
+> The goto is really unnecessary here:
+> 
+> if (kvm_cpu_has(X86_FEATURE_NPT)) {
+>        gpat_test("Invalid gPAT", l1_guest_code_invalid_gpat,
+> npt_enabled = true);
+>        gpat_test("Nested NPT enabled", l1_guest_code, npt_enabled = true);
+> }
+> gpat_test("Nested NPT disabled", l1_guest_code, npt_enabled = false);
 
-Meh, if userspace hasn't fully paused the VM, save/restore is going to fail
-anyways.  Heck, torn reads is probably _better_ than the alternative, becau=
-se
-at least that might cause visible failure during the restore.  If there are
-concurrent modifications in-flight, then KVM_GET_IRQCHIP is going to return
-stale data (assuming userspace doesn't redo KVM_GET_IRQCHIP), i.e. save/res=
-tore
-will effectively corrupt the guest.
-
-> Fix this by grabbing the lock on the read path.
->=20
-> This issue goes all the way back. The bug was introduced with the
-> addition of PIC ioctl code itself in 6ceb9d791eee ("KVM: Add get/
-> set irqchip ioctls for in-kernel PIC live migration support"). Later,
-> 894a9c5543ab ("KVM: x86: missing locking in PIT/IRQCHIP/SET_BSP_CPU
-> ioctl paths") added the locking for kvm_vm_ioctl_set_irqchip(), but
-> missed kvm_vm_ioctl_get_irqchip().
->=20
-> Fixes: 6ceb9d791eee ("KVM: Add get/set irqchip ioctls for in-kernel PIC l=
-ive migration support")
-> Fixes: 894a9c5543ab ("KVM: x86: missing locking in PIT/IRQCHIP/SET_BSP_CP=
-U ioctl paths")
-> Cc: stable@vger.kernel.org
-
-This isn't stable material.  There's basically zero chance this actively
-problematic for any VMM.
-
-Honestly, it's tempting to I'm tempted to do the opposite, and yank out the
-locking for the KVM_SET_IRQCHIP path, because userspace really can't be rel=
-ying
-on kernel locking for correctness across save/restore.  I don't _actually_ =
-think
-we should do that, but it certainly is tempting.
-
-Ah, actually, maybe SET has locking because it's also used to reset PIC sta=
-te,
-i.e. isn't limited to just save/restore?  Doesn't really matter.
-
-> Reported-by: Claude Code:claude-opus-4.6
-> Signed-off-by: Carlos L=C3=B3pez <clopez@suse.de>
-> ---
->  arch/x86/kvm/irq.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/x86/kvm/irq.c b/arch/x86/kvm/irq.c
-> index 9519fec09ee6..251df563427b 100644
-> --- a/arch/x86/kvm/irq.c
-> +++ b/arch/x86/kvm/irq.c
-> @@ -584,14 +584,18 @@ int kvm_vm_ioctl_get_irqchip(struct kvm *kvm, struc=
-t kvm_irqchip *chip)
-> =20
->  	r =3D 0;
->  	switch (chip->chip_id) {
-> -	case KVM_IRQCHIP_PIC_MASTER:
-> +	case KVM_IRQCHIP_PIC_MASTER: {
-> +		guard(spinlock)(&pic->lock);
-
-I'd much rather use "manual" spin_(un)lock() instead of guard().  Or scoped=
-_guard()
-to avoid the curly braces, but even then, I find this:
-
-		scoped_guard(spinlock, &pic->lock)
-			memcpy(&chip->chip.pic, &pic->pics[0],
-			       sizeof(struct kvm_pic_state));
-
-to be much harder to read than:
-
-		spin_lock(&pic->lock);
-		memcpy(&chip->chip.pic, &pic->pics[0],
-			sizeof(struct kvm_pic_state));
-		spin_unlock(&pic->lock);
-
-And no one can reasonably argue that guard() or scoped_guard() makes the th=
-is
-particular code more robust.
-
->  		memcpy(&chip->chip.pic, &pic->pics[0],
->  			sizeof(struct kvm_pic_state));
->  		break;
-> -	case KVM_IRQCHIP_PIC_SLAVE:
-> +	}
-> +	case KVM_IRQCHIP_PIC_SLAVE: {
-> +		guard(spinlock)(&pic->lock);
->  		memcpy(&chip->chip.pic, &pic->pics[1],
->  			sizeof(struct kvm_pic_state));
->  		break;
-> +	}
->  	case KVM_IRQCHIP_IOAPIC:
->  		kvm_get_ioapic(kvm, &chip->chip.ioapic);
->  		break;
->=20
-> base-commit: d1568b1332b6b3b36b222c2868fc102727c12a34
-> --=20
-> 2.51.0
->=20
+Well, it's necessary to avoid the indentation.
