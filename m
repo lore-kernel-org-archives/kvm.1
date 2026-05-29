@@ -1,56 +1,56 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16151406278
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 16:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFB13FF8B3
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 16:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780073508; cv=none; b=fdP4Fxw7PGX85oV1/n+GROMoEjG/1gDDCsC4RjbLGoVQ8YQQZYRjCYuN9u7RBdzJ5PUInzn2artcHxCJv61ErqsdlSZAdxaf5pz+OUzhP98E6GDsbQAimoKxQSc7kK1iuKx4KOS/U/7EmTthIr+n4o8sA2w585frHIPn5JfDgx0=
+	t=1780073507; cv=none; b=A6aCUlBDu9gW85MC+tw6+B8vwYuhkF2MR8JC6F/QIvK3aSX1P7IBEnmkh9uMuTYlLWDv6obe/PaK2kDWdnlzpz7qoF1jOaMhkwXX6Yn5YtZaEZSVd4slHzsgfMMClDSGl2tfFXCxcQvwjDqXqI90R7lzFbNBESNLRZFWmTN7a+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780073508; c=relaxed/simple;
-	bh=mox19TzrslAZs1BtaxxWeJ01fL8LSqdy5s10jatghS4=;
+	s=arc-20240116; t=1780073507; c=relaxed/simple;
+	bh=0HhtByV5rsxXuTBsxvldTKAWnLNz94TzjlFuF8ru/xU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EYVHCB4eQmpApCcvaVpX0/0gOw/6M+dcpI8Gd6cL7ANMK/Wh/60G7trqseZMUoBp8Wvvt+c4i8hFr4s8pTy03GvHWASWbBppiHVdbB2nywuzpC6zYhE9PlIywvPLFLabC7oN/0j7J059ev60Rxq6KDZok1rmY7jCz7hANVXizEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PF/2jcjN; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=PLOqbI+BFd5WD0nI2gR5c9ApJOFz+U5Prj6BIFhZetyIdtwC1ZX7XWpzS30fF/dfINioP9ZhJXWVJ54IAXissyURePLVRra9wbuAW+Ei4UkbbMC3KLgLGfUgED7mjKOnBl+37K+bg/Aks8mztgMtvieyy3HQu01qOOBttp6pZ2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YeyDWed9; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PF/2jcjN"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-367fd7b8825so14158360a91.0
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 09:51:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YeyDWed9"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82c4772950so7580193a12.1
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 09:51:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780073504; x=1780678304; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780073502; x=1780678302; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=TD4h/NKvbeZX0uke90rA2Hq9F8m/UJMqfSOKDUlllno=;
-        b=PF/2jcjNX6j2qfawaxYVMArg3OSt+0gMUMLyiOwZygm62z+pC83U5DeP/OS0YL6Nq9
-         h8lGXLiM+MmylwD8mQQV/o3dMwS9k4fzpy70R3J8IvD8ximrksLN1Gk6j/fLhauIDAgR
-         8Oueoy+yENSFEHEmf0Zrl0Y81LFBQX+dl+F4sETXGlaQyWf6qHpsyouY6doJHF13rQ58
-         Dg99MyEc9fK4J3kzY82LxryWX/rXef8zfHULJ/Ti4mx4ecfpNKb9vuDJAyfCuSfwI6B2
-         Wre621aB1Ed2pJtMkryu2v3S2fSjSWd8fs6mzcOSNDnYK0JCp0UaKInudrVBuXGrN03t
-         Jrxg==
+        bh=ewXhP3520EhD386XfwBnuZGOAW/5b7EnRAjGjx/ciMY=;
+        b=YeyDWed9Wuze4XVAE7zex6WcKqMWyW4rYNB+l6jzQMi/LvzoH7NjZ3P943KiVcY36Y
+         ZCJosSaNlHmboDWryzvkD1d/jKVh7Uuyxmpf1F+klYe2V0AHWDQ4pQ1oL5/D9sGeSTYG
+         aKiik4Zua5/4MHREiwqKThnRnAka2KNWDGUOx5Blh2pfE+6xcXcn8VTPRt0IfEEHzX9S
+         V7NpX59+Mnd7wcQhisetOskN08CeABeQaeuBjCXkh/eamck71BqHjWjOuQwUI+lBc0O5
+         AZ2+O9NoFpxNUoj+a6TrjX0+zJLQnnG282ryNmu8fMdpbWMu0PAd2QyRzk7trLu4Up8A
+         OMsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780073504; x=1780678304;
+        d=1e100.net; s=20251104; t=1780073502; x=1780678302;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TD4h/NKvbeZX0uke90rA2Hq9F8m/UJMqfSOKDUlllno=;
-        b=Gs5Yorpv4EPuCkcjHqFB4v9aKpu6/cjnmexHrsBYjbPvIICKqdkwy9TthHQ7Lj3Lz+
-         NXHMiTLgv69QH5bjO7TP73irFjwoJgEJAo9zN6qCpOQXaykZVAiFK2Ez+kyVVxjHE2jx
-         0ySmznEyY6MHlcycTg+7koiOMs00SiA+2JPDGqg6S+bTZDb7wMs9Yw8eYO3UPmuNkOqP
-         iSjiT0CmM1ZZ5tgVn/WQ+x8TyT1IqNHteB5Umwq6xIdRRXr4wvT8zit+ImoCtokiouet
-         Af89Pnj9e1OC4BBnPcdOgaiQE+/sg9Qh2QlalVApsqe7W/2fszfDYU24oYQ6h5aEe2jo
-         TYcw==
-X-Forwarded-Encrypted: i=1; AFNElJ9jB8bxZRVbsX3zIiwXdXpNxdVb2DTxqIG0a3bAQJdgOPK5RN+alLaMC4SoyBXfb1vykwI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4K48miwelDncGDwLr6SUzd/E0TvspUioHrTZPV+tKl9s57QE1
-	/JJYCwUb5jsGYriUnNVxry6qCfEX7BpbDG35q7yNu6JVX9M62b1fRn6nmCPMUZbSxizZmACtfn7
-	xTuKmZw==
-X-Received: from pgjn13.prod.google.com ([2002:a63:e04d:0:b0:c85:1092:c503])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:35c2:b0:368:78da:803
- with SMTP id 98e67ed59e1d1-36bbcaf76f7mr4327305a91.12.1780073503994; Fri, 29
- May 2026 09:51:43 -0700 (PDT)
+        bh=ewXhP3520EhD386XfwBnuZGOAW/5b7EnRAjGjx/ciMY=;
+        b=AekTmc2sxVjVwZerVdPQqEYS6Z8jRVWin0f7f3b7UR4xDnuBOQOolOk2mSn765TzMd
+         XQ8RDJPdfy24BE/S/QWTLJMq6hphA67n6DMcwdboFUlvvuyzEJQh4HAQcRzx4cc4l1KG
+         h4rnUC7oTX1vYr0K2YiJUN+fgTRyqX31SdMRAKCICR/W7RVohq7HIN35lSVdrrH0T35M
+         F+OmyOWsW/8Sy4IlCog7cvVfi0FEIYlPbKRo1pY+61ZBPKxJqMlZZayFOSXE6Z8PxTIU
+         hGQef+xPB8Pvtf4tMJMfNkO7D4jnt6IC17S/M6DbFjA2sp4PxqKInVbLrXbBFRKZ0Lve
+         lpMA==
+X-Forwarded-Encrypted: i=1; AFNElJ9pTAXc1qJ+MvuyraiEAL5V+g0BQjczZ+S0Q2tlp8qYVZVHNn1XgnrkFyH2zrLM3JQpjNo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPSyT/28VcO7oURNUiSq2yIojySbxNMScgO4M6Xbum3kjxTW+D
+	vG+FOroMnRksRzAMxPmWtLW5/7aq3fU6jQ6i/N7AgDi+duNXcIxfCwPX//pAUqfHMhFZ4XVu9QK
+	SICULww==
+X-Received: from pgka18.prod.google.com ([2002:a63:e852:0:b0:c85:7fac:dcbd])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6492:b0:3ab:30d:c7a0
+ with SMTP id adf61e73a8af0-3b40fd781abmr3906703637.32.1780073501523; Fri, 29
+ May 2026 09:51:41 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 09:51:12 -0700
+Date: Fri, 29 May 2026 09:51:10 -0700
 In-Reply-To: <20260529165114.748639-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529165114.748639-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529165114.748639-19-seanjc@google.com>
-Subject: [PATCH v2 18/20] KVM: x86/xen: Convert event injection to gpc's
- CLASS() APIs
+Message-ID: <20260529165114.748639-17-seanjc@google.com>
+Subject: [PATCH v2 16/20] KVM: x86/xen: Convert xen_get_guest_pvclock() to
+ gpc's CLASS() APIs
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, 
@@ -74,66 +74,46 @@ Cc: Waiman Long <longman@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.ker
 	Carsten Stollmaier <stollmc@amazon.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Convert Xen event injection to the "map local" CLASS() APIs.
+Convert the Xen pvclock reads to the "map local" CLASS() APIs, using a
+read-only variants as KVM simply copying data from the pvclock.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/xen.c | 24 +++++-------------------
- 1 file changed, 5 insertions(+), 19 deletions(-)
+ arch/x86/kvm/xen.c | 18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 2c776e475a4f..3ebde7ba5558 100644
+index 47750316f132..89daad3fe712 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -628,24 +628,12 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
- 	if (!evtchn_pending_sel)
- 		return;
+@@ -153,21 +153,11 @@ static int xen_get_guest_pvclock(struct kvm_vcpu *vcpu,
+ 				 struct gfn_to_pfn_cache *gpc,
+ 				 unsigned int offset)
+ {
+-	int r;
++	CLASS(gpc_map_local_ro, pvclock_map)(gpc, offset + sizeof(*hv_clock));
++	if (IS_ERR(pvclock_map))
++		return PTR_ERR(pvclock_map);
  
--	/*
--	 * Yes, this is an open-coded loop. But that's just what put_user()
--	 * does anyway. Page it in and retry the instruction. We're just a
--	 * little more honest about it.
--	 */
 -	read_lock(&gpc->lock);
--	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+-	while (!kvm_gpc_check(gpc, offset + sizeof(*hv_clock))) {
 -		read_unlock(&gpc->lock);
-+	CLASS(gpc_map_local, vcpu_info_map)(gpc, sizeof(struct vcpu_info));
-+	if (IS_ERR(vcpu_info_map))
-+		return;
- 
--		if (kvm_gpc_refresh(gpc, sizeof(struct vcpu_info)))
--			return;
+-
+-		r = kvm_gpc_refresh(gpc, offset + sizeof(*hv_clock));
+-		if (r)
+-			return r;
 -
 -		read_lock(&gpc->lock);
 -	}
 -
--	/* Now gpc->khva is a valid kernel address for the vcpu_info */
- 	if (IS_ENABLED(CONFIG_64BIT) && v->kvm->arch.xen.long_mode) {
--		struct vcpu_info *vi = gpc->khva;
-+		struct vcpu_info *vi = *vcpu_info_map;
- 
- 		asm volatile(LOCK_PREFIX "orq %0, %1\n"
- 			     "notq %0\n"
-@@ -657,7 +645,7 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
- 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
- 	} else {
- 		u32 evtchn_pending_sel32 = evtchn_pending_sel;
--		struct compat_vcpu_info *vi = gpc->khva;
-+		struct compat_vcpu_info *vi = *vcpu_info_map;
- 
- 		asm volatile(LOCK_PREFIX "orl %0, %1\n"
- 			     "notl %0\n"
-@@ -669,8 +657,6 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
- 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
- 	}
- 
+-	memcpy(hv_clock, gpc->khva + offset, sizeof(*hv_clock));
 -	read_unlock(&gpc->lock);
--
- 	/* For the per-vCPU lapic vector, deliver it as MSI. */
- 	if (v->arch.xen.upcall_vector)
- 		kvm_xen_inject_vcpu_vector(v);
++	memcpy(hv_clock, *pvclock_map + offset, sizeof(*hv_clock));
+ 
+ 	/*
+ 	 * Sanity check TSC shift+multiplier to verify the guest's view of time
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
