@@ -1,233 +1,209 @@
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCA53A874F
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 06:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780036137; cv=none; b=dmVeTR7KssgAiSjyQMneGlbOP8dWEw7zHvfvMdLUyJjTgh8ww1F8V74E+sxApOwU2XWz0nftNOphm2vmtTEyIl04gV4xMPcBmqQFNgQznHgTbVxIJ0RYHo9yDHlHdFkKzfNmvGaqEOuNoNDtCyX1TpanYxv8D51Gps/NODCVB7A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780036137; c=relaxed/simple;
-	bh=gufrfTZMS1eYNpCVXosGyGtRLMto/FMoEgCvhEzoK+g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QQVjQ7HRn5C+TfvcNexffJ09DpBLnNecD9MCIs8BkMMxoasnQAgPAAnsAcnKSaCurAD50S7SViya5xRuHvf6ynZuPG5QzuuPF9k8kpTig5KBL6zHF6/soI5OP5QNugA86N5ztsGzIuDOVHNLXoOevldDImi6gWCS+wnFXF9P63U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=eIuW1e1E; arc=none smtp.client-ip=74.125.82.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296D018C008
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 06:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780036493; cv=fail; b=M/7YVbD1MGo41ePQH8fy1ONuw9fmuTr6n4RANCKgv+03L3eG0QIC1Z1S85Dn9g884XRSGalKRWEuuh9sOX4e19uDuwRo/1+QByFbu9uR+agalpOkCawNDURHuG6cRyrmQYKPwWdy/dYi/L+IYq7J2pzS2J/XLT4JeMvxDyHGv64=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780036493; c=relaxed/simple;
+	bh=ZiT8x+cfHgSyrwMnA66rNUoxHkXDnwIwkwrIcOdA0Bc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HuBic7kaIy62AS8xr/2mLCmK/uGgUWk8MQ6T2rQsicOIPxSGL4eUKkEUKWjJrdDKEAbzBROmniwgnHmpTfpWO6SJQn0rgaDXeIIHGMBFiMy5tkC2CR7WaVHVDqR8xm3Dz+YIH/E0TzU11cBC1rfBU413wc5pJhvuaunGum/hs6s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=tE2F1C3+; arc=fail smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="eIuW1e1E"
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-304f0039c02so137633eec.1
-        for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:28:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1780036124; x=1780640924; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NB+TMW9/jFeVQq09mC6JlH7aNglQQ/HmhdkvMfkdL10=;
-        b=eIuW1e1EwFv3xQxnEYpEwVcmQP95EU/pP2Bq30khrAvnXiycNtUXZMGC/H7+tmPW5f
-         kICyxEiXJAWCHxSW/Yf2sGaXASHK+mmwE4ZPPu4QjgSKSLYXT1F61QcbIDFRMEG7C6cy
-         z8YMEjeG1F7usNeuoshMjHlpIEboEGo4UJtWJHEROl0ibr4bDnxysT5XgLk0Dx5mCTtZ
-         KTGM3r2NpDk8gLgug/aqtYhsR/02LQNs48M6E+DEqC553teQ3XUIEcnam/Hzt7ANua33
-         6ZahTehafIwTBRsH6QJ6Gp8yrt3grHdAwpcMT+4sGQE8YQjkshPVcoam8mA8azbNuMkZ
-         M6FA==
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="tE2F1C3+"
+Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SNwMP32772630
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:34:51 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=ZiT8x+cfHgSyrwMnA66rNUoxHkXDnwIwkwrIcOdA0Bc=; b=tE2F1C3+IWIc
+	hD6uPAo9NgDmLx3SiAIqN6xdU/vi1BTlNSH50fpgV8+w2z56TbYNWRvwyATimLcQ
+	6gBB7u+bSsBhHZxDEcSgqK3/4LhMs0I3XhEpCctNiBQjacxzZ64Ht3GAKINKXsRe
+	2a4b6ZZDgp7DFIXB6NZzeM/x8uiRnSviRZdPNOFY+C+No5faqHXGRxg3ix2FcSdL
+	ETSBtsgPPA9Za6p83WxjzQ6xcL+i2YajrLWFKyrDiNGr07q5cwUoyo4ikTdnEkY3
+	yiwI4qfRPsWTAFXgnVqxw2XBZSbFpE5+g2k/neK+34pAldo7nom/u4tzd6ac5WIM
+	FzG4O2F7ag==
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ee7x8t4wa-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:34:51 -0700 (PDT)
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7e61d8d99dfso9961754a34.2
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:34:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780036490; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fBcTND51DkjntNO7Lo/1Exuj6IsO5De0olz39utfrX29tw/cRu8mAh57w64LdIkfaq
+         wWVttsP8XtRSxtZ8eQMV8wwwjxDtQ1APeNN7h3jxvBVZJcafQEfmiSXijFSbFCAZsz59
+         ZnSvGuBqcpS3Dy6DiLBTL1XEkYMbZwuJd4cXtAVPsYsw/KGvdMNM8+twe9kx9RK8X0RO
+         GlhTLUkY4jFJZYSkQjR+EbOkRW890aXANOdSlUw3HtZtJReHDcRzNtUZiKVejYGW69Sg
+         Uc08s+v/pLgyXIbYLbOUIolGzJePg6QAgkvCx+iTQ/qZHEPQNMl6uEYMA2CjPBeDIPCN
+         XSSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=sjBZwiGe18mw6X67+Um2SWVYDlncy8HfxAJKV10muTE=;
+        fh=SFdi7vRGmpEjTb+V8Ai//6JfcaJ46uSKFwzy1M+op64=;
+        b=J+rbp7GtqcdyC+m3PXK5SvNq4pyL2qtVCOfoDhjboFpnWIFY42V59jtHG6w1/ahEn9
+         Y1BPsm2r//e4APDIzgqqfuUJfgmF0absYpxiyYAm8yIcpx4taF/6KPcqHJqNGfU+jjnf
+         HRcvt6DWx+/ATFdqKabZe0DlVNmbzr/eypVILnRjkGWXOqCmWTE/J5cXhUMp52F8Pwre
+         cxo0RxxXqnauh8NP+cZp2HUH1zwGOJHSdbqB82J3aoNPpJX87UIX13DMJZUP9+qXAHui
+         maq19Y4EwmbWg1UbYdltxIQSxqYokiQ/omkE/hHQDr8lGXLYTKXGVALdWohnBzNJrP6v
+         myEg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780036124; x=1780640924;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=NB+TMW9/jFeVQq09mC6JlH7aNglQQ/HmhdkvMfkdL10=;
-        b=ZdhtMeSIekq2k1qeHJpAZS5gGF7/L6jm9MkehcU+43Q5P+vo0LWb29vzJtBL6zwsAB
-         xR0xXLBSvjdxtBb37A8OwqotfLPRPtnszYtCB+IXNeZWnBwQGb/GzMijloj339H+v6hQ
-         q8/U9PwDZ8GD5o4VpN+IA6g5vQWQSRFwGfA6MZzwHtxZbKArQG7pay9ukr34Xq28qDY0
-         HXCajINOka8LEIY4te6bxvgd6tY3iM1qS8xYodmTH7+xEgOzDibY+yyVLsRufLINzm+C
-         ppo8zTHa3QJRlVjuy/Ca6i8TD7imoxqMUdZStIrBgUKxSpq74Zu+akpkzGMs2xwTMwsB
-         zHiA==
-X-Forwarded-Encrypted: i=1; AFNElJ+LYWZMcFppOA52Dq5kjOvEzNqQUAllecYMRUXdryGBqB5gSNa+U4IVjzaBWTp9rhHPhGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ7+wzBwJqaYe0vNiCIq703jT6IRNHnLg3WXs7QpyH6zvW20I+
-	CTx+heyZhrO8j2RSiZaPL2uHLv+LCjvYW2zsb35KO7MntaQLCz95R7cmrE6pb/KI634=
-X-Gm-Gg: Acq92OEZtWddo8tFd1vmDzMCD7nt0Ud8YU/iZEZ1oYRKJNn9Xq+PAZrzqBBbB5Fc7a0
-	6eKqXO2VBgipQSYYaQJkx6QOvYQz/uOQqp59n5NUU7KYHYi5yRa8gZesT0GYVY7i+NawQNmXeHG
-	thzqk0uf75biKIxxJ2lcXqzdQOlLOOfbmyK3ymdLjj2ckJgV/adrd7JITpoeeei+TFdmAx1CQIj
-	54b4IZiB4tnmV4+ZaO7SW/L78cGAHjjyk5v3CTX8UIffVz3oEhLtrtHlm9ukPe5r9KuxS12DSV6
-	QM1CtTQ0ybsfqhq0eExO4hxXMzBEZKg/AJOnuLm3UKtVbkQhFUUnF0hdmOeFQQNyoMI+VJRueMx
-	LI8dY6/HMRmvW2srbGPGpb88fH6SC2+5MwYBTX3/NtrOORO3BxWUp/0ratneiJCaZMhxX7YwGRy
-	/3/4jUKy7FptSRPgrHg+tPlZ1wRD/xFTRCaqlqSXXgCfK1R5VtC35ddA==
-X-Received: by 2002:a05:7301:3e18:b0:2e7:c701:aa85 with SMTP id 5a478bee46e88-304eb1fbfeemr788995eec.17.1780036124198;
-        Thu, 28 May 2026 23:28:44 -0700 (PDT)
-Received: from sw07.internal.sifive.com ([4.53.31.132])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed3358b1sm694607eec.13.2026.05.28.23.28.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 23:28:43 -0700 (PDT)
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Date: Thu, 28 May 2026 23:28:27 -0700
-Subject: [PATCH v3 1/3] KVM: RISC-V: SBI FWFT: Fix stale feature exposure
- after runtime extension changes
+        d=1e100.net; s=20251104; t=1780036490; x=1780641290;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sjBZwiGe18mw6X67+Um2SWVYDlncy8HfxAJKV10muTE=;
+        b=kSmMQNjZsmihMOGu10oHdPNgEZ4673Jix5PwAHL6hfvzNHWhDxo6AFaMYf/seYPQgR
+         /B9bW6hxYtEVWcKv/gM7ijnWn47FYrUalDGbfk5EGD8Tc3L06ZAROoAIqEHfYLXwsTzE
+         Zi5nXw/rpDBmbCMaQmbviXcVH8NyLS4QeCq654WeT4EndvWQeqVPHYaTa4lp0IkcNHvd
+         73quf1h+hgFkDWOKQ7sN+kkrXmJD3xGwLJRJs4uQdcne/hbwcIOrk7/nWlgjLJWccjQt
+         BFiC6JZJNuHCFhc2uzcQAXROZMrU0roMQmAEepJaOGTneSjo1vdjg0LOD19I2BZlB5U+
+         poVQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+1aQtrG9tf3jkwWEv/c9V0VdTCTY9NXrIgZDybpPVOMTLhaSJyvVO+HDqGJ6iMVv8VyXA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfBEKEI/cIlXedIi2ruYcU+RKQcw9eVghRiubyDGwEbjZQYkXi
+	2BHvfcHNM0J7w4Z8gQQtN3RaFhlBGx/L2HRQ9Kj+djWi06P0+Hug+2BaG+b3HXDCzFkTUDrwgOk
+	vhHKtgl0C/2lfwDiY7IeA6SPG4opa+D0k9gTmIA7DhTf2EuoqXMha7d/zXxI6euaWo14jfDIHnN
+	fY2K01lwoU66u4noTxr0TjsRWQx3o=
+X-Gm-Gg: Acq92OGLHsVPrr5f/dnPxEz9q3RVnJapXgOVjh2JFdkG2oNwgbmtC3/+mbMgPcsF+I3
+	YRrJNyLkVw/pmo4kKKchFXialIo7pDZsXC9MCFRdo35VkswLUcnR3iTd7Ll9Bc7O1jVYAzY3G3e
+	eKXfChN7m4Ak9WiyPYNmkPOrsXMx8NdM1tc4d7naSurdH4qBq69Vp5F6k9VmpIcLNoDH+bHbSm8
+	pUPeCqudbrl58RYBk0M5jF/y0T0NmQ53+ODl0f7L3h/Zl0cFdI=
+X-Received: by 2002:a05:6830:8285:b0:7d9:d2b6:1568 with SMTP id 46e09a7af769-7e694dc2b7cmr1101940a34.17.1780036490374;
+        Thu, 28 May 2026 23:34:50 -0700 (PDT)
+X-Received: by 2002:a05:6830:8285:b0:7d9:d2b6:1568 with SMTP id
+ 46e09a7af769-7e694dc2b7cmr1101924a34.17.1780036489896; Thu, 28 May 2026
+ 23:34:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260528-kvm-get_reg_list-v2-v3-1-170969a8599f@sifive.com>
-References: <20260528-kvm-get_reg_list-v2-v3-0-170969a8599f@sifive.com>
-In-Reply-To: <20260528-kvm-get_reg_list-v2-v3-0-170969a8599f@sifive.com>
-To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
- =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <cleger@rivosinc.com>, 
- Andrew Jones <ajones@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Yong-Xuan Wang <yongxuan.wang@sifive.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780036122; l=5665;
- i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
- bh=gufrfTZMS1eYNpCVXosGyGtRLMto/FMoEgCvhEzoK+g=;
- b=WWBCwq4jwkp6SRoxOcz1Jqdq+qxsnLAk5+EHEMyZpoZoggSowU9LIrRhG1Qp2dAA/kMgX6pIr
- cPdeKvX0qchBNiYTAP5ttS8UXUQdcjMuvfybLhSsR98eOz9wk6ya0ST
-X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
- pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
+References: <20260526144401.1485788-1-zhipingz@meta.com> <a8cd01ab-d7aa-465d-bfa3-431f78f33ee1@amd.com>
+ <20260527121438.GJ2487554@ziepe.ca> <ff247643-73e7-44e2-b3d5-8ac0a8efb871@amd.com>
+ <20260527123634.GK2487554@ziepe.ca> <a5ff1930-e9fb-43f5-82ab-9875d7a28421@amd.com>
+ <CAH3zFs2KALuHXReLZG_uoqvBBWvBzU6rHKakmt6HBV7PZEsD=w@mail.gmail.com> <71302a7a-6b9f-40da-af81-b1862dbd637a@amd.com>
+In-Reply-To: <71302a7a-6b9f-40da-af81-b1862dbd637a@amd.com>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Thu, 28 May 2026 23:34:39 -0700
+X-Gm-Features: AVHnY4LezOs9bV0UClJoUOHcNCdwbl4qfviQEKqNUnQx0j2Atcq5JV3HHpZqmfs
+Message-ID: <CAH3zFs036sr93duQKx613pCyOYw4t0_x_TdSza1xBCaEmqijyA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/4] vfio/dma-buf: add TPH support for peer-to-peer access
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Alex Williamson <alex@shazbot.org>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+        Yishai Hadas <yishaih@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: jTEwZkP0Wt34ZuKcdLRX3UGoJWeRHq_5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDA2MSBTYWx0ZWRfXw4Ois8Ch1VYM
+ 7lHhBeGLfwi1jn122MYR5bhzpUmL1t66sqkoU+ClpKECniYo4tqhtjf7FDadjPCUrRBzTW8wPyB
+ ABaflyoyzf26AKVgrg5wW0WsutXh7irncxOAlfpMARokR2oJRB/JOrTvfzoEkEoqMKb9ntlMA1o
+ oerUhBngS5Lxj9gdhYYcaAJsXGybF/8NZMwDPajewENiUbiELDU9mhToWKqD8IqaQxt/YyL6Zny
+ yPiiBCCljtibSEWj2GmC7qdDilj+jVS9mlLyM3oNSTIsGaWuy1Aeo50eCSdyGnVdcvbo9rjaMPM
+ Gxxnh6+6Ce5Mtu6pufgestwuoZ/k9awfUDGqzoaferoCZ0VMOvlWxOWnmtlhBD+OvP4IDBk5IFL
+ m5mW886Q/8T4kVET7GL7hB/yplhmLNdI2tqZcZEJ3QVhK1mSTcjcTPaVpu+K5d6PeQ4Ecw3XDdN
+ jZjnHessYTt1zcTEj5Q==
+X-Proofpoint-ORIG-GUID: jTEwZkP0Wt34ZuKcdLRX3UGoJWeRHq_5
+X-Authority-Analysis: v=2.4 cv=PomjqQM3 c=1 sm=1 tr=0 ts=6a19338b cx=c_pps
+ a=OI0sxtj7PyCX9F1bxD/puw==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=kkcUborcUVj0H7zxAXTl:22
+ a=zd2uoN0lAAAA:8 a=f7uq7ceqOUF8L-MFIRoA:9 a=QEXdDO2ut3YA:10
+ a=Z1Yy7GAxqfX1iEi80vsk:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-29_01,2026-05-28_03,2025-10-01_01
 
-Fix a bug where FWFT features could be incorrectly exposed to guests
-after userspace disables their dependent ISA extensions at runtime.
+On Thu, May 28, 2026 at 12:46=E2=80=AFAM Christian K=C3=B6nig
+<christian.koenig@amd.com> wrote:
+>
+> >
+> On 5/28/26 06:55, Zhiping Zhang wrote:
+> > On Wed, May 27, 2026 at 5:53=E2=80=AFAM Christian K=C3=B6nig
+> > <christian.koenig@amd.com> wrote:
+> >>
+> >>>
+> >> On 5/27/26 14:36, Jason Gunthorpe wrote:
+> >>> On Wed, May 27, 2026 at 02:23:46PM +0200, Christian K=C3=B6nig wrote:
+> >>>
+> >>>> Yeah that's a good point, I should probably rephrase the question.
+> >>>>
+> >>>> I'm aware of how TPH works by adding the extra ST to the TLP.
+> >>>>
+> >>>> But my question is how is that useful to a PCIe endpoint? What is th=
+e effect of the ST here?
+> >>>
+> >>> TBH I've never heard Meta explain what their device is doing with
+> >>> it. At least it seems to be super important to their device..
+> >>
+> >> Yeah I think at least a brief description of what is going on here wou=
+ld be necessary for the review.
+> >>
+> >> Otherwise we have only the info that the exporter wants to give an opa=
+que ST for the importer to use and no technical description what that is go=
+od for, how to test it etc...
+> >>
+> >> Regards,
+> >> Christian.
+> >>
+> >>>
+> >>> Jason
+> >>
+> >
+> > Fair point =E2=80=94 I'll add a couple of paragraphs to the v6 cover le=
+tter and the
+> > patch's changelog as well.
+> >
+> > The short version: in this series the vfio-pci device is the completer
+> > of the P2P
+> > writes and mlx5 is the requester. As Jason noted, ST semantics on the c=
+ompleter
+> > are implementation-defined, so only the driver that owns the completer =
+(here,
+> > vfio-pci on behalf of its userspace owner) can hand out a meaningful ST=
+; the
+> > importer treats it as opaque and just places it on the TLP.
+>
+> Yeah but that is not really sufficient to justify a driver 2 driver inter=
+face.
+>
+> Which PF driver is backing the vfio-pci and what effect does sending TLPs=
+ with ST to it compared to TLPs without an ST?
+>
+> Regards,
+> Christian.
+>
 
-The 'supported' field in kvm_sbi_fwft_config was set once during vCPU
-initialization based on the initial hardware/extension availability.
-However, when userspace subsequently disables ISA extensions via the KVM
-ONE_REG interface, the 'supported' field was not updated. This caused
-the following issues:
-1. FWFT features would remain visible and accessible to guests even
-   after their prerequisite ISA extensions were disabled
-2. Guests could configure FWFT features that depend on disabled
-   extensions, leading to undefined behavior
-3. The static 'supported' flag and the dynamic supported() callback
-   could disagree about feature availability
 
-The fix introduces a two-layer checking mechanism:
-1. Add an optional init() callback to the kvm_sbi_fwft_feature structure
-   for features that require hardware probing during initialization. This
-   separates the one-time hardware detection logic from the runtime
-   availability check.
-2. Add runtime checks in all FWFT-related functions that call
-   feature->supported(vcpu) if the callback exists. This ensures feature
-   availability is re-evaluated based on the current ISA extension state.
+There's no in-tree vendor PF driver =E2=80=94 the device is a Meta MTIA
+accelerator managed entirely from userspace via VFIO passthrough.
+That's why the ST has to flow through a uAPI: userspace owns the
+device and its ST table, so it's the only entity that can publish a
+meaningful value for a given dma-buf.
 
-This approach maintains the cached 'supported' field for initialization-
-time decisions while ensuring runtime availability is always determined
-by the current vCPU configuration, not initialization-time snapshots.
+On the effect: the endpoint's PCIe ingress block uses the 8-bit ST as
+an in-band instruction for the incoming P2P TLP =E2=80=94 selecting a target
+cache partition and, on writes, an in-flight operation on the data
+before it lands. The dma-buf callback keeps this opaque to the
+framework =E2=80=94 only the producer (userspace owner of the VFIO device) =
+and
+the consumer (endpoint block) need to interpret the value.
 
-Fixes: 6b72fd170592 ("RISC-V: KVM: add support for FWFT SBI extension")
+will include these words into v6's cover letter.
 
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
----
- arch/riscv/kvm/vcpu_sbi_fwft.c | 32 +++++++++++++++++++++++++++++---
- 1 file changed, 29 insertions(+), 3 deletions(-)
-
-diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwft.c
-index 2eab15339694..dde6e39aab5e 100644
---- a/arch/riscv/kvm/vcpu_sbi_fwft.c
-+++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
-@@ -35,6 +35,16 @@ struct kvm_sbi_fwft_feature {
- 	 */
- 	bool (*supported)(struct kvm_vcpu *vcpu);
- 
-+	/**
-+	 * @init: Probe and initialize the feature on the vcpu
-+	 *
-+	 * This callback is optional. If provided, it will be called during
-+	 * vcpu initialization to probe the feature availability and perform
-+	 * any necessary initialization. Returns true if the feature is supported
-+	 * and initialized successfully, false otherwise.
-+	 */
-+	bool (*init)(struct kvm_vcpu *vcpu);
-+
- 	/**
- 	 * @reset: Reset the feature value irrespective whether feature is supported or not
- 	 *
-@@ -137,10 +147,12 @@ static bool try_to_set_pmm(unsigned long value)
- 
- static bool kvm_sbi_fwft_pointer_masking_pmlen_supported(struct kvm_vcpu *vcpu)
- {
--	struct kvm_sbi_fwft *fwft = vcpu_to_fwft(vcpu);
-+	return riscv_isa_extension_available(vcpu->arch.isa, SMNPM);
-+}
- 
--	if (!riscv_isa_extension_available(vcpu->arch.isa, SMNPM))
--		return false;
-+static bool kvm_sbi_fwft_pointer_masking_pmlen_init(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm_sbi_fwft *fwft = vcpu_to_fwft(vcpu);
- 
- 	fwft->have_vs_pmlen_7 = try_to_set_pmm(ENVCFG_PMM_PMLEN_7);
- 	fwft->have_vs_pmlen_16 = try_to_set_pmm(ENVCFG_PMM_PMLEN_16);
-@@ -231,6 +243,7 @@ static const struct kvm_sbi_fwft_feature features[] = {
- 		.first_reg_num = offsetof(struct kvm_riscv_sbi_fwft, pointer_masking.enable) /
- 				 sizeof(unsigned long),
- 		.supported = kvm_sbi_fwft_pointer_masking_pmlen_supported,
-+		.init = kvm_sbi_fwft_pointer_masking_pmlen_init,
- 		.reset = kvm_sbi_fwft_reset_pointer_masking_pmlen,
- 		.set = kvm_sbi_fwft_set_pointer_masking_pmlen,
- 		.get = kvm_sbi_fwft_get_pointer_masking_pmlen,
-@@ -281,6 +294,8 @@ static int kvm_fwft_get_feature(struct kvm_vcpu *vcpu, u32 feature,
- 
- 	if (!tconf->supported || !tconf->enabled)
- 		return SBI_ERR_NOT_SUPPORTED;
-+	else if (tconf->feature->supported && !tconf->feature->supported(vcpu))
-+		return SBI_ERR_NOT_SUPPORTED;
- 
- 	*conf = tconf;
- 
-@@ -365,6 +380,9 @@ static int kvm_sbi_ext_fwft_init(struct kvm_vcpu *vcpu)
- 		else
- 			conf->supported = true;
- 
-+		if (conf->supported && feature->init)
-+			conf->supported = feature->init(vcpu);
-+
- 		conf->enabled = conf->supported;
- 		conf->feature = feature;
- 	}
-@@ -408,6 +426,8 @@ static unsigned long kvm_sbi_ext_fwft_get_reg_count(struct kvm_vcpu *vcpu)
- 		conf = kvm_sbi_fwft_get_config(vcpu, feature->id);
- 		if (!conf || !conf->supported)
- 			continue;
-+		else if (conf->feature->supported && !conf->feature->supported(vcpu))
-+			continue;
- 
- 		ret++;
- 	}
-@@ -430,6 +450,8 @@ static int kvm_sbi_ext_fwft_get_reg_id(struct kvm_vcpu *vcpu, int index, u64 *re
- 		conf = kvm_sbi_fwft_get_config(vcpu, feature->id);
- 		if (!conf || !conf->supported)
- 			continue;
-+		else if (conf->feature->supported && !conf->feature->supported(vcpu))
-+			continue;
- 
- 		if (index == idx) {
- 			*reg_id = KVM_REG_RISCV |
-@@ -465,6 +487,8 @@ static int kvm_sbi_ext_fwft_get_reg(struct kvm_vcpu *vcpu, unsigned long reg_num
- 	conf = kvm_sbi_fwft_get_config(vcpu, feature->id);
- 	if (!conf || !conf->supported)
- 		return -ENOENT;
-+	else if (conf->feature->supported && !conf->feature->supported(vcpu))
-+		return -ENOENT;
- 
- 	switch (reg_num - feature->first_reg_num) {
- 	case 0:
-@@ -502,6 +526,8 @@ static int kvm_sbi_ext_fwft_set_reg(struct kvm_vcpu *vcpu, unsigned long reg_num
- 	conf = kvm_sbi_fwft_get_config(vcpu, feature->id);
- 	if (!conf || !conf->supported)
- 		return -ENOENT;
-+	else if (conf->feature->supported && !conf->feature->supported(vcpu))
-+		return -ENOENT;
- 
- 	switch (reg_num - feature->first_reg_num) {
- 	case 0:
-
--- 
-2.43.7
-
+Thanks,
+Zhiping
