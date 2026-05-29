@@ -1,55 +1,55 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D76466B5C
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01ADB46AF1E
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093393; cv=none; b=tSoNtw/kO844ulQGq0C2EgWTW8nIA8k+/wBkjjyUfR1uwRKBc0tGkLWYbbBXHKWZlGCoBROzDmSaDTvDgJzN5yGd6p03QroJl93MABHalP7mCYnYjrjMS0bTwF5MtHPqFheJJeIVCqn2+nEDZMQVpJVm8jjiTBzwOiERl09PCyg=
+	t=1780093394; cv=none; b=WTB8ZjVmc4HKNJdUlMiqcKMK7huhjh4EDPXFnK9PgZpobEw4gSuhocNf8uCIs77UIe/zCL5HUPBpP18il5Mh7uqMJfdJRyf/cgloV5nMd8/H2ae29wqh2KuHePtzcoVsml/JOQwAJzjbRG6E9QsNBaJVj/pu3G+uuA7IUuPZVT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780093393; c=relaxed/simple;
-	bh=U16q5I4nJv94rNXxPlbWDmKybiGw1J1K0KEk+xMy+jo=;
+	s=arc-20240116; t=1780093394; c=relaxed/simple;
+	bh=Uir6IDB0pwquVmxdNK5xocb4DeiDBsUvz1nObKQsLvE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=koFcqQ3icvX20Ex/vvc7n08FzqO1SrDcYl2B12X1SIb8JK2Nb2rPiVj2+vpYnyRpMuDCkC/eE1Xa0OKVD5F6lKaIF3lCeVKXkpGeXfbX2BMeYQnNrStrwATKORQmQ6PqKvqBY5i0WjuUNjV5BT4ID5k7VqFatnrQz5WydOPZxQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jrCH4fgx; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=safgllN6Qy0uH99rhslsKSShLN9hpS7FEurIKzx1ZuZQIE69+bEGjw0Wrck+BqIrStLmTVYpesJqOy40EGNLEvPlzKQzdAJ+EGZJ5Wkxp9BzcKW+shf4AZrcZv+jW1cpaZMwMhnu0Dqe9yYatYrvvYCKF3ci3vRvN340niHpxOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B+/FjJFz; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jrCH4fgx"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b9106b0fbso1632488a91.0
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B+/FjJFz"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bf30576aa3so4715495ad.3
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093391; x=1780698191; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780093392; x=1780698192; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=g41Ygn6Uf+1kQN9znuZTAZ86kg1U3hWntwdYhg6VgHo=;
-        b=jrCH4fgxpAOldu3iKMoydnGt5gEkDhHaphzg7y1EsF8GvAQ1+OAoycVlPudH64FI1c
-         tISjjglPLx7yVoBb+PwIBna3a7mHj2tkjev6G9bosur1mozYPaLblKox0YB2DszbI6RR
-         shUK6T+FSJKrNgkDyRcwjpD7vswL/LkvvPU3asdMAT8R/mKG58Nm1PcpJyO4+6mSaEFk
-         bJJnOj/OCVVImm3RqRhwARNsNxf1GOKFX7233nhaSE7snNIn4CBfBSupTMWAcnLSpC/N
-         D8ZE6J3ZSbhjuLOChiloHKxIv+OGQx10ODWpcsVI5im9GEc98Auz38bAQrf6LZzaVO5R
-         YUWg==
+        bh=hdC/WRkAouMWi8Y4ZlrI0Bkm4osriIlBw4YhEZJnKi4=;
+        b=B+/FjJFz+2oFdjMJGPkG02uJxCLImDyLZuBFPK/Ft86vq7P8+IBg4pPZgiMSD7gSlV
+         ZpXwBie7f36Q65UOUe+5Vkh00pXt1Jh3v29kfkfY0y4VmXgGEJOB4EBzsazZsMWXaMCn
+         MPb6V4IIthMHTZ+Om/WBtnX38Q+jnTbZ66hbKgJ8Gd/ASJp4CsTM/9HiXFRfSIMqddPb
+         foibd96nKu+erv96s41lPWTWLUna+irkfYTHdHcEniJPXCZyEDVZRAQd4VIy7WBLh3Ra
+         DJmNpP1Cfiqpl/EDpZI/6Mpe9hyr/+c0oX5l3a5gXAIJ5DjDBZ5qR34cewZ+shfEZf/t
+         lRYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093391; x=1780698191;
+        d=1e100.net; s=20251104; t=1780093392; x=1780698192;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=g41Ygn6Uf+1kQN9znuZTAZ86kg1U3hWntwdYhg6VgHo=;
-        b=ZVpjUAIYQa61Jcqz3MbWmFJebxkC7NZD34A+kRhZRIi2REQLuZzEnF/vqB5ud0NV2Q
-         W2n2F7KrVFmgnXeD/1ve9gEKxC/MrEi3KhEZfX+fWKm6T08bBzCY6N7z6jRBwf5s77Ob
-         +7HbLqJOsZh/2mWfziO5c9MPyk4L/6jRx+mt2ryhPP2PXyWUMeaniPbnAMVY3W9bm1uw
-         NPGz98iKzPxbzLuv/4Ix1YrF/zvQf4oNrNL5C2aGAqxSSMP6v/eTDke02PJiaDIl7AuH
-         gehVyBujj3G0o/RQ51t1lMKDYGx20CT1YupLN1HUyERPjG4u9CoVVvAGUZkjPpmCZhWB
-         /nvA==
-X-Gm-Message-State: AOJu0YwTHvtX2OsWXxnduE8vUwmrpxdnyTJBQ5IzPf2HskOh0CoaIwz7
-	rnKYEWZKwetjhx/4qagtgCCP1LWjGmHI3LpMZ6+EpAk0OJ6DF4Wj4kirJ0ZaHlU1hxVC67iV+ky
-	raq/awg==
-X-Received: from pfbfx13.prod.google.com ([2002:a05:6a00:820d:b0:82c:90c5:5e0d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:439f:b0:3a2:c7e1:ff89
- with SMTP id adf61e73a8af0-3b4267562bamr1285241637.7.1780093390874; Fri, 29
- May 2026 15:23:10 -0700 (PDT)
+        bh=hdC/WRkAouMWi8Y4ZlrI0Bkm4osriIlBw4YhEZJnKi4=;
+        b=H35N2LlBLZ0NTWJF3+flfPAJ6iiKzJCVolHWmPGYgdE9C/vZbYfYweFfWmobYZulIs
+         JJl/QY2NXlENUtiivczT1vBFlsQLI0JyEiZEvPLAwGBMG4EEoG8480frYnEocjuHvY9H
+         MQcsq2W/mymTTxH+5FjejzrHQvQU2X02LbWDzc8A9rPbhghqfAVQKNGKi9GzLYbgzWM1
+         4VUPQ4f/P3kGnjo9gQJSmKhkz5824SQkjSRK+yvf/w3PD7BZ4cYgz5kxYBTB+JBoMb0B
+         p7L4ld1VDZv+YNdf7TYqcWuvnjBGzy9/7sHrx3bKsccwkxdPkrXPdP8eOOWaEe8N9+cN
+         krbg==
+X-Gm-Message-State: AOJu0YxCJu5atpUroKsAXHSbAoArmlPBPX0Ez1lFIMVtU/D7OgMyfrgR
+	8y13xODQ15BC/yDeb3DYyP5PpNf54Dcd875jyRvF8ZyL5IyKBOAu4S/giRxL6gJvqbIyYVBgyRm
+	ZSMGkeg==
+X-Received: from pldt15.prod.google.com ([2002:a17:903:40cf:b0:2be:b2c1:9921])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2283:b0:2bf:372a:830c
+ with SMTP id d9443c01a7336-2bf372a8484mr16584755ad.11.1780093392030; Fri, 29
+ May 2026 15:23:12 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 15:22:07 -0700
+Date: Fri, 29 May 2026 15:22:08 -0700
 In-Reply-To: <20260529222223.870923-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529222223.870923-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529222223.870923-25-seanjc@google.com>
-Subject: [PATCH v3 24/40] KVM: x86: Extract get/set MSR (list) ioctl logic to helpers
+Message-ID: <20260529222223.870923-26-seanjc@google.com>
+Subject: [PATCH v3 25/40] KVM: x86: Expose several TSC helpers via x86.h for
+ use by MSR code
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -69,195 +70,106 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Extract the code for getting/setting MSRs and MSR lists to dedicated
-helpers in anticipation of moving the MSR code to a new msrs.c.
+Begrudgingly move adjust_tsc_offset_{guest,host}() to x86.h as inlines,
+and expose several other TSC helpers in anticipation of moving KVM's MSR
+code to a dedicated msrs.c.  Unfortunately for KVM, several MSRs that KVM
+emulates can affect TSC state.
+
+Opportunistically drop a superfluous local "tsc_offset" variable, whose
+existence causes checkpatch to complain about lack of a blank line.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 135 ++++++++++++++++++++++++++-------------------
- 1 file changed, 78 insertions(+), 57 deletions(-)
+ arch/x86/kvm/x86.c | 22 +++-------------------
+ arch/x86/kvm/x86.h | 19 +++++++++++++++++++
+ 2 files changed, 22 insertions(+), 19 deletions(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 56ccb6b77abb..64c3680d889b 100644
+index 64c3680d889b..bf15c122f837 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -4602,6 +4602,61 @@ static int kvm_x86_dev_has_attr(struct kvm_device_attr *attr)
- 	return __kvm_x86_dev_get_attr(attr, &val);
+@@ -2225,7 +2225,7 @@ u64 kvm_scale_tsc(u64 tsc, u64 ratio)
+ 	return _tsc;
  }
  
-+static int kvm_get_msr_index_list(struct kvm_msr_list __user *user_msr_list)
-+{
-+	struct kvm_msr_list msr_list;
-+	unsigned int n;
-+
-+	if (copy_from_user(&msr_list, user_msr_list, sizeof(msr_list)))
-+		return -EFAULT;
-+
-+	n = msr_list.nmsrs;
-+	msr_list.nmsrs = num_msrs_to_save + num_emulated_msrs;
-+	if (copy_to_user(user_msr_list, &msr_list, sizeof(msr_list)))
-+		return -EFAULT;
-+
-+	if (n < msr_list.nmsrs)
-+		return -E2BIG;
-+
-+	if (copy_to_user(user_msr_list->indices, &msrs_to_save,
-+				num_msrs_to_save * sizeof(u32)))
-+		return -EFAULT;
-+
-+	if (copy_to_user(user_msr_list->indices + num_msrs_to_save,
-+			 &emulated_msrs, num_emulated_msrs * sizeof(u32)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static int kvm_get_feature_msr_index_list(struct kvm_msr_list __user *user_msr_list)
-+{
-+	struct kvm_msr_list msr_list;
-+	unsigned int n;
-+
-+	if (copy_from_user(&msr_list, user_msr_list, sizeof(msr_list)))
-+		return -EFAULT;
-+
-+	n = msr_list.nmsrs;
-+	msr_list.nmsrs = num_msr_based_features;
-+	if (copy_to_user(user_msr_list, &msr_list, sizeof(msr_list)))
-+		return -EFAULT;
-+
-+	if (n < msr_list.nmsrs)
-+		return -E2BIG;
-+
-+	if (copy_to_user(user_msr_list->indices, &msr_based_features,
-+				num_msr_based_features * sizeof(u32)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static int kvm_get_feature_msrs(struct kvm_msrs __user *user_msrs)
-+{
-+	return msr_io(NULL, user_msrs, do_get_feature_msr, 1);
-+}
-+
- long kvm_arch_dev_ioctl(struct file *filp,
- 			unsigned int ioctl, unsigned long arg)
+-static u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc)
++u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc)
  {
-@@ -4609,32 +4664,9 @@ long kvm_arch_dev_ioctl(struct file *filp,
- 	long r;
+ 	u64 tsc;
  
- 	switch (ioctl) {
--	case KVM_GET_MSR_INDEX_LIST: {
--		struct kvm_msr_list __user *user_msr_list = argp;
--		struct kvm_msr_list msr_list;
--		unsigned n;
--
--		r = -EFAULT;
--		if (copy_from_user(&msr_list, user_msr_list, sizeof(msr_list)))
--			goto out;
--		n = msr_list.nmsrs;
--		msr_list.nmsrs = num_msrs_to_save + num_emulated_msrs;
--		if (copy_to_user(user_msr_list, &msr_list, sizeof(msr_list)))
--			goto out;
--		r = -E2BIG;
--		if (n < msr_list.nmsrs)
--			goto out;
--		r = -EFAULT;
--		if (copy_to_user(user_msr_list->indices, &msrs_to_save,
--				 num_msrs_to_save * sizeof(u32)))
--			goto out;
--		if (copy_to_user(user_msr_list->indices + num_msrs_to_save,
--				 &emulated_msrs,
--				 num_emulated_msrs * sizeof(u32)))
--			goto out;
--		r = 0;
-+	case KVM_GET_MSR_INDEX_LIST:
-+		r = kvm_get_msr_index_list(argp);
- 		break;
--	}
- 	case KVM_GET_SUPPORTED_CPUID:
- 	case KVM_GET_EMULATED_CPUID: {
- 		struct kvm_cpuid2 __user *cpuid_arg = argp;
-@@ -4662,30 +4694,11 @@ long kvm_arch_dev_ioctl(struct file *filp,
- 			goto out;
- 		r = 0;
- 		break;
--	case KVM_GET_MSR_FEATURE_INDEX_LIST: {
--		struct kvm_msr_list __user *user_msr_list = argp;
--		struct kvm_msr_list msr_list;
--		unsigned int n;
--
--		r = -EFAULT;
--		if (copy_from_user(&msr_list, user_msr_list, sizeof(msr_list)))
--			goto out;
--		n = msr_list.nmsrs;
--		msr_list.nmsrs = num_msr_based_features;
--		if (copy_to_user(user_msr_list, &msr_list, sizeof(msr_list)))
--			goto out;
--		r = -E2BIG;
--		if (n < msr_list.nmsrs)
--			goto out;
--		r = -EFAULT;
--		if (copy_to_user(user_msr_list->indices, &msr_based_features,
--				 num_msr_based_features * sizeof(u32)))
--			goto out;
--		r = 0;
-+	case KVM_GET_MSR_FEATURE_INDEX_LIST:
-+		r = kvm_get_feature_msr_index_list(argp);
- 		break;
--	}
- 	case KVM_GET_MSRS:
--		r = msr_io(NULL, argp, do_get_feature_msr, 1);
-+		r = kvm_get_feature_msrs(argp);
- 		break;
- #ifdef CONFIG_KVM_HYPERV
- 	case KVM_GET_SUPPORTED_HV_CPUID:
-@@ -5719,6 +5732,20 @@ static int kvm_get_reg_list(struct kvm_vcpu *vcpu,
- 	return 0;
+@@ -2266,7 +2266,7 @@ u64 kvm_calc_nested_tsc_multiplier(u64 l1_multiplier, u64 l2_multiplier)
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_calc_nested_tsc_multiplier);
+ 
+-static void kvm_vcpu_write_tsc_offset(struct kvm_vcpu *vcpu, u64 l1_offset)
++void kvm_vcpu_write_tsc_offset(struct kvm_vcpu *vcpu, u64 l1_offset)
+ {
+ 	if (vcpu->arch.guest_tsc_protected)
+ 		return;
+@@ -2380,7 +2380,7 @@ static void __kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 offset, u64 tsc,
+ 	kvm_track_tsc_matching(vcpu, !matched);
  }
  
-+static int kvm_get_msrs(struct kvm_vcpu *vcpu, struct kvm_msrs __user *user_msrs)
-+{
-+	guard(srcu)(&vcpu->kvm->srcu);
-+
-+	return msr_io(vcpu, user_msrs, do_get_msr, 1);
-+}
-+
-+static int kvm_set_msrs(struct kvm_vcpu *vcpu, struct kvm_msrs __user *user_msrs)
-+{
-+	guard(srcu)(&vcpu->kvm->srcu);
-+
-+	return msr_io(vcpu, user_msrs, do_set_msr, 0);
-+}
-+
- long kvm_arch_vcpu_ioctl(struct file *filp,
- 			 unsigned int ioctl, unsigned long arg)
+-static void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
++void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
  {
-@@ -5823,18 +5850,12 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
- 		r = 0;
- 		break;
- 	}
--	case KVM_GET_MSRS: {
--		int idx = srcu_read_lock(&vcpu->kvm->srcu);
--		r = msr_io(vcpu, argp, do_get_msr, 1);
--		srcu_read_unlock(&vcpu->kvm->srcu, idx);
-+	case KVM_GET_MSRS:
-+		r = kvm_get_msrs(vcpu, argp);
- 		break;
--	}
--	case KVM_SET_MSRS: {
--		int idx = srcu_read_lock(&vcpu->kvm->srcu);
--		r = msr_io(vcpu, argp, do_set_msr, 0);
--		srcu_read_unlock(&vcpu->kvm->srcu, idx);
-+	case KVM_SET_MSRS:
-+		r = kvm_set_msrs(vcpu, argp);
- 		break;
--	}
- 	case KVM_GET_ONE_REG:
- 	case KVM_SET_ONE_REG:
- 		r = kvm_get_set_one_reg(vcpu, ioctl, argp);
+ 	u64 data = user_value ? *user_value : 0;
+ 	struct kvm *kvm = vcpu->kvm;
+@@ -2448,22 +2448,6 @@ static void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
+ 	raw_spin_unlock_irqrestore(&kvm->arch.tsc_write_lock, flags);
+ }
+ 
+-static inline void adjust_tsc_offset_guest(struct kvm_vcpu *vcpu,
+-					   s64 adjustment)
+-{
+-	u64 tsc_offset = vcpu->arch.l1_tsc_offset;
+-	kvm_vcpu_write_tsc_offset(vcpu, tsc_offset + adjustment);
+-}
+-
+-static inline void adjust_tsc_offset_host(struct kvm_vcpu *vcpu, s64 adjustment)
+-{
+-	if (vcpu->arch.l1_tsc_scaling_ratio != kvm_caps.default_tsc_scaling_ratio)
+-		WARN_ON(adjustment < 0);
+-	adjustment = kvm_scale_tsc((u64) adjustment,
+-				   vcpu->arch.l1_tsc_scaling_ratio);
+-	adjust_tsc_offset_guest(vcpu, adjustment);
+-}
+-
+ #ifdef CONFIG_X86_64
+ 
+ static u64 read_tsc(void)
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 635a21bfa681..31e67b060148 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -345,6 +345,25 @@ uint64_t kvm_get_wall_clock_epoch(struct kvm *kvm);
+ bool kvm_get_monotonic_and_clockread(s64 *kernel_ns, u64 *tsc_timestamp);
+ int kvm_guest_time_update(struct kvm_vcpu *v);
+ 
++void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value);
++u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc);
++void kvm_vcpu_write_tsc_offset(struct kvm_vcpu *vcpu, u64 l1_offset);
++
++static inline void adjust_tsc_offset_guest(struct kvm_vcpu *vcpu,
++					   s64 adjustment)
++{
++	kvm_vcpu_write_tsc_offset(vcpu, vcpu->arch.l1_tsc_offset + adjustment);
++}
++
++static inline void adjust_tsc_offset_host(struct kvm_vcpu *vcpu, s64 adjustment)
++{
++	if (vcpu->arch.l1_tsc_scaling_ratio != kvm_caps.default_tsc_scaling_ratio)
++		WARN_ON(adjustment < 0);
++	adjustment = kvm_scale_tsc((u64) adjustment,
++				   vcpu->arch.l1_tsc_scaling_ratio);
++	adjust_tsc_offset_guest(vcpu, adjustment);
++}
++
+ int kvm_read_guest_virt(struct kvm_vcpu *vcpu,
+ 	gva_t addr, void *val, unsigned int bytes,
+ 	struct x86_exception *exception);
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
