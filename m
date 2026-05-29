@@ -1,55 +1,55 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5011A44A725
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BC54418EE
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093387; cv=none; b=hU4ZoHMxQu13AgxE22T2ybqTfH1tXbcTOzvrkP1SG0B1KBRxy7yzKCSK06ZTZ0kyHExdiar4DiePlUPBcrFdj1Wh016oc2oE+k9eQB2zMEvSa3bXX5wJBa4RvBjH8CC0fcAC6z4oQGxHEdxDmCxXJFaGPUdd4bw/wC2w4V4PuXk=
+	t=1780093388; cv=none; b=jy0N1Rs2LQ+wvOAdE4UoC3jib/gM6CyEt+J2gaVZcnWwO/mWWGGFgTWLBwn+hcaIw8Wu6tPlQ24oC7VI51UV9H6wymrASfOkfNyivXqO5lluzIOzbMy9/oBpdf61TWiii3hue3WaXYVtB5S0OlwW1USwxugotoXwZvjHqLiwEiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780093387; c=relaxed/simple;
-	bh=tnvCBMKREAgQlP+QG6F27Ubo/7PoA8ieAPgptJnds2A=;
+	s=arc-20240116; t=1780093388; c=relaxed/simple;
+	bh=P2zXCRLo2YdTzgguBobD3cMk4Ntf0Zw0zqR0CFK6aS4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gGsXuL/sWSFERVOPDaxdsNeibn0JfBi9JnCUEj4FyFRrWg1RXEM8uO+xJc5J/+lfzSni6zTtAFgx7y9Zbe/cHEaP4efMqxC4xmS0Jr7Op/xRYU5yUrLPcfGKkFD6e2j7ricLddRcP1jmVz8sRfzHYPFEHJ8JgTSusNCdywADcp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TM/QxvlL; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=h7MPv6ABhGN2viM5WgtbM9bS6bWgT15+8CVJwloGpoNmI2Vs31GsWEasgHa4M5skVNtGiGTpEds3lSV+FAK3d2y+jGfPJBaX6Egl/7ECxl6nryishXPW7auEKr1IAmwJOsukE85g+oiw3KPysaxMdGZVVEjiQcrhXjaj/Vxc3Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PT3o+d/n; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TM/QxvlL"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c827bda3052so18866166a12.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PT3o+d/n"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bc6899bfb1so155862915ad.2
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093385; x=1780698185; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780093384; x=1780698184; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=mEqYYKIFBUgeehbwG3cS85rQVU90faoGahhTIj84wEA=;
-        b=TM/QxvlLQImd25S4ZiLijX0gb1tFjSsk7j0Y07V0FJuKKe2vzvEusWLzKiQw9v5G3c
-         6TACzJ50lUEB4etQIbLrEQ7S16PZRliDTn2NhdQLs+xqkDu12EdmugPZKCjMex6y1xi0
-         46jwSdrglXS/wxEqFB3O3bTulQ90sOaWcv6Lmte6sKqc8PAwfYjChiR0Ap5fjGIKYAdS
-         h2InRsGHvJ8PJCq6PgOPQ2VWo9wfX4sL9eS8MIaB5XWHVk/Nq0I39nP9Z+RZKfUDrNAg
-         gqyiZRyfC5Ko+F4ckY9g3QaSLE2ZcYLSyujFBh88PDlyQ8tbgjOd+vEvKwxdX251yxYM
-         TsnQ==
+        bh=SUKUT1cLL25O6B1OgJD5A10iK66u2vgLhkpt4cYUGcI=;
+        b=PT3o+d/nrzA5J4WK9HDNgdrtIpQEIxRiYGaRxWpDsbI9GtQ2Qh6o3xwWM0/q0SAekb
+         OguV4EhMZiYKPTCBNJwX0fOP+bf64dHP475nseF+Rhv3ZhozhkbH0/EV1GE9V2OgI5zy
+         iKvYx1X/On+FCFSaM0fM2paZH0/AGA5CuZ/1GOWCdJA6TZqmtxpH1gxgW5DZk1dbfr58
+         6MvD2nMkFoMfunidHmLJnCMJnoFc59jsuqHsr3YgCIDuDLn/44L4PUldxJTXuuwgMcV7
+         2OqxTTeD47I5ZMNND0KG+1KajR0d/ywBWgRJ6hsE0CHQBWEfE5hli1mi+YYKp4NTkORZ
+         fX5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093385; x=1780698185;
+        d=1e100.net; s=20251104; t=1780093384; x=1780698184;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mEqYYKIFBUgeehbwG3cS85rQVU90faoGahhTIj84wEA=;
-        b=XvNz7/N5vaxu6AYwAtJIkQsXyZtM373AFbPyCgJYZNBMnpxH/6DKYEMRmNQyndcPjt
-         ECFqO7VPkh3END0Nmva1Wj3mGD3h3Ux73m5iqwNzb2ZHSsSNebkhUC1EBZREneEn4cbD
-         Th7HSsxFdY+g1IdPEG1U27w/qSabmuSQ0LdIgy2N4E7GUbEMG0TkM5i1goHu1hbmmJPv
-         uq6PSCWbBVCA7gkgZjkhqlo42rthnERIptfHspGSxoEU1+3DHiz1SK7rbNdbhiHwO91V
-         dViLd0p9AkO4yMmNAyStDM0OZK2nXophtV/u8elGL9azf/WaK1UjdCjGTUl32N952HV8
-         C69w==
-X-Gm-Message-State: AOJu0Yy17KuRiIT4avgZIrkXKC6d8bSOXH27zT7v8m9stln8vHq/9iAl
-	RvnzHvZzwvxvcIKWvNlpBlnpTaUWIDBGRE09Pf+5qcSdoTrtOPjMrNEU45QFNUyUrCaMGkwvt4s
-	NCV3fwA==
-X-Received: from pgh1.prod.google.com ([2002:a05:6a02:4e01:b0:c79:8102:80bb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:b94:b0:3b3:bf95:f7e3
- with SMTP id adf61e73a8af0-3b427f81b40mr1274332637.43.1780093385457; Fri, 29
- May 2026 15:23:05 -0700 (PDT)
+        bh=SUKUT1cLL25O6B1OgJD5A10iK66u2vgLhkpt4cYUGcI=;
+        b=GmvOPU9x3PdR2gMMmwwg/nLo3Vu0EGOzWis20Xq3hGpyul0uW1gmzb6b0RPlPKY1aS
+         GOL+MiaFxCsfHkYeTVA3oJRgYknAwyzDYoPPavqd3lhSYjxtet0ibMoz0O6NZlgAJpCi
+         S4pGllN1GUxoit+qvE9yJk/LTq6uy4aA46FFgQcrWGvN3AkTxnZwB/x7cJiWx02HkveQ
+         1i5dMa8eFjsUp15Jm+zi7yN/zt91ocZsV23gxGZP1DeJnGaC7VNKV8oY3ZZr4vjU3zbO
+         GnmOSckD2pbiKyZAqF7UUzpCsemHAAy0zVLYVeAkypEDVlcnRS8OVnWI0ZP48Y6D19UZ
+         X2DQ==
+X-Gm-Message-State: AOJu0YzSzlufDtmXHH8Ll+JM71pSWvPeAhyasp7QrqAGYVNi7+5XSQce
+	X17pb/+3nkdttE7OecLdd5rZ7cZo+DYGSh025Y0F1ip+Rc32/w+QtzF++GGCi67h4E8zd1oSyyB
+	Ol4Sj2A==
+X-Received: from plblc11.prod.google.com ([2002:a17:902:fa8b:b0:2b0:6cdd:87e2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fc8e:b0:2ba:839e:15cb
+ with SMTP id d9443c01a7336-2bf368463e6mr21255845ad.27.1780093384365; Fri, 29
+ May 2026 15:23:04 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 15:22:02 -0700
+Date: Fri, 29 May 2026 15:22:01 -0700
 In-Reply-To: <20260529222223.870923-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529222223.870923-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529222223.870923-20-seanjc@google.com>
-Subject: [PATCH v3 19/40] KVM: x86: Swap the include order between x86.h and mmu.h
+Message-ID: <20260529222223.870923-19-seanjc@google.com>
+Subject: [PATCH v3 18/40] KVM: x86: Move kvm_caps and kvm_host_values to asm/kvm_host.h
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -69,65 +69,161 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Invert the include ordering between x86.h and mmu.h, so that x86.h is the
-"top-level" include for KVM x86.
+Relocate the kvm_caps and kvm_host_values struct definitions and their
+associated global variable declarations to asm/kvm_host.h to allow for a
+variety of cleanups in x86.h and mmu.h, and to establish a (hopefully)
+maintainable rule that asm/kvm_host.h's role is to define common
+structures (and declare any associated globals), and anything needed by
+arch-neutral KVM.
 
-No functional change intended.
+While it would be lovely to trim kvm_host.h down to the point where it
+*only* holds things needed by arch-neutral and/or non-KVM code, multiple
+attempts to do just that have failed miserably.  Trying to "hide" code
+from arch-neutral KVM is too restrictive (and ultimately pointless), and
+KVM x86 itself also needs a place to define common structures and their
+globals, e.g. to avoid inconsistent header include chains and/or misplaced
+helpers.
 
+E.g. as pointed out by Kai, it's weird that x86.h, which is a kitchen sink
+of sorts, includes regs.h, but not mmu.h.  Literally the only reason that
+x86.h doesn't include mmu.h is that mmu.h references struct kvm_host, which
+is currently defined in x86.h.  As a result of odd include ordering, the
+very clearly MMU-specific helper mmu_is_nested() lives in x86.h, not mmu.h
+
+"Fix" the kvm_host dependency so that x86.h can be the "central" include
+everyone expects it to be, and set KVM x86 on the path to having somewhat
+sensible "rules" for what goes where:
+
+  - asm/kvm_host.h holds "common" structure definitions and associated key
+    global  variables, and things that are referenced by arch-neutral KVM.
+  - <thing>.{c,h} holds relevant declarations and definitions.
+  - x86.{c,h} is the kitchen sink for everything else.
+
+Cc: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu.h | 6 +++++-
- arch/x86/kvm/x86.h | 6 +-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 44 ++++++++++++++++++++++++++++++++
+ arch/x86/kvm/x86.h              | 45 ---------------------------------
+ 2 files changed, 44 insertions(+), 45 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index e1bb663ebbd5..28fca48dcf64 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -4,7 +4,6 @@
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 2e535027dd5c..f7130eb98473 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -315,6 +315,50 @@ enum x86_intercept_stage;
+ struct kvm_kernel_irqfd;
+ struct kvm_kernel_irq_routing_entry;
  
- #include <linux/kvm_host.h>
- #include "regs.h"
--#include "x86.h"
- #include "cpuid.h"
- 
- extern bool __read_mostly enable_mmio_caching;
-@@ -300,6 +299,11 @@ static inline void kvm_update_page_stats(struct kvm *kvm, int level, int count)
- 	atomic64_add(count, &kvm->stat.pages[level - 1]);
- }
- 
-+static inline bool mmu_is_nested(struct kvm_vcpu *vcpu)
-+{
-+	return vcpu->arch.walk_mmu == &vcpu->arch.nested_mmu;
-+}
++struct kvm_caps {
++	/* control of guest tsc rate supported? */
++	bool has_tsc_control;
++	/* maximum supported tsc_khz for guests */
++	u32  max_guest_tsc_khz;
++	/* number of bits of the fractional part of the TSC scaling ratio */
++	u8   tsc_scaling_ratio_frac_bits;
++	/* maximum allowed value of TSC scaling ratio */
++	u64  max_tsc_scaling_ratio;
++	/* 1ull << kvm_caps.tsc_scaling_ratio_frac_bits */
++	u64  default_tsc_scaling_ratio;
++	/* bus lock detection supported? */
++	bool has_bus_lock_exit;
++	/* notify VM exit supported? */
++	bool has_notify_vmexit;
++	/* bit mask of VM types */
++	u32 supported_vm_types;
 +
- static inline gpa_t kvm_translate_gpa(struct kvm_vcpu *vcpu,
- 				      struct kvm_mmu *mmu,
- 				      gpa_t gpa, u64 access,
++	u64 supported_mce_cap;
++	u64 supported_xcr0;
++	u64 supported_xss;
++	u64 supported_perf_cap;
++
++	u64 supported_quirks;
++	u64 inapplicable_quirks;
++};
++extern struct kvm_caps kvm_caps;
++
++struct kvm_host_values {
++	/*
++	 * The host's raw MAXPHYADDR, i.e. the number of non-reserved physical
++	 * address bits irrespective of features that repurpose legal bits,
++	 * e.g. MKTME.
++	 */
++	u8 maxphyaddr;
++
++	u64 efer;
++	u64 xcr0;
++	u64 xss;
++	u64 s_cet;
++	u64 arch_capabilities;
++};
++extern struct kvm_host_values kvm_host;
++
+ /*
+  * kvm_mmu_page_role tracks the properties of a shadow page (where shadow page
+  * also includes TDP pages) to determine whether or not a page can be used in
 diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index b7d3b54cde15..a0e68eaf1f80 100644
+index 80ed36d5d62a..b7d3b54cde15 100644
 --- a/arch/x86/kvm/x86.h
 +++ b/arch/x86/kvm/x86.h
-@@ -6,6 +6,7 @@
- #include <asm/fpu/xstate.h>
- #include <asm/mce.h>
- #include <asm/pvclock.h>
-+#include "mmu.h"
- #include "regs.h"
- #include "kvm_emulate.h"
- #include "cpuid.h"
-@@ -210,11 +211,6 @@ static inline bool x86_exception_has_error_code(unsigned int vector)
- 	return (1U << vector) & exception_has_error_code;
- }
+@@ -12,48 +12,6 @@
  
--static inline bool mmu_is_nested(struct kvm_vcpu *vcpu)
--{
--	return vcpu->arch.walk_mmu == &vcpu->arch.nested_mmu;
--}
+ #define KVM_MAX_MCE_BANKS 32
+ 
+-struct kvm_caps {
+-	/* control of guest tsc rate supported? */
+-	bool has_tsc_control;
+-	/* maximum supported tsc_khz for guests */
+-	u32  max_guest_tsc_khz;
+-	/* number of bits of the fractional part of the TSC scaling ratio */
+-	u8   tsc_scaling_ratio_frac_bits;
+-	/* maximum allowed value of TSC scaling ratio */
+-	u64  max_tsc_scaling_ratio;
+-	/* 1ull << kvm_caps.tsc_scaling_ratio_frac_bits */
+-	u64  default_tsc_scaling_ratio;
+-	/* bus lock detection supported? */
+-	bool has_bus_lock_exit;
+-	/* notify VM exit supported? */
+-	bool has_notify_vmexit;
+-	/* bit mask of VM types */
+-	u32 supported_vm_types;
 -
- static inline u8 vcpu_virt_addr_bits(struct kvm_vcpu *vcpu)
- {
- 	return kvm_is_cr4_bit_set(vcpu, X86_CR4_LA57) ? 57 : 48;
+-	u64 supported_mce_cap;
+-	u64 supported_xcr0;
+-	u64 supported_xss;
+-	u64 supported_perf_cap;
+-
+-	u64 supported_quirks;
+-	u64 inapplicable_quirks;
+-};
+-
+-struct kvm_host_values {
+-	/*
+-	 * The host's raw MAXPHYADDR, i.e. the number of non-reserved physical
+-	 * address bits irrespective of features that repurpose legal bits,
+-	 * e.g. MKTME.
+-	 */
+-	u8 maxphyaddr;
+-
+-	u64 efer;
+-	u64 xcr0;
+-	u64 xss;
+-	u64 s_cet;
+-	u64 arch_capabilities;
+-};
+-
+ void kvm_spurious_fault(void);
+ 
+ #define SIZE_OF_MEMSLOTS_HASHTABLE \
+@@ -417,9 +375,6 @@ fastpath_t handle_fastpath_wrmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
+ fastpath_t handle_fastpath_hlt(struct kvm_vcpu *vcpu);
+ fastpath_t handle_fastpath_invd(struct kvm_vcpu *vcpu);
+ 
+-extern struct kvm_caps kvm_caps;
+-extern struct kvm_host_values kvm_host;
+-
+ void kvm_setup_xss_caps(void);
+ 
+ /*
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
