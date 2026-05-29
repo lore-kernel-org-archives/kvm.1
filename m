@@ -1,55 +1,55 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EED47B43B
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3899247CC9A
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093404; cv=none; b=G16WEpNHkpvBhS5Fo1f8YZpPBNkXgCi/UUpPq3Rbx4QAEd5W5S0jyZXrEMKxZH3rQPbJTh6EPcNNgZv4IyQVH/5BIi4RsD7NF1AHs0UTItOpQVACr0tXq7Zlpf/vairmsQrvi3RPQMjdDXtZTc5/cTQU8AgYC59pPsZ7XGnfcd8=
+	t=1780093405; cv=none; b=pnnCWzxdrTKydlguM0BO5OqfRXPJvXdmzMPD24X0qqdWwTZPJ2RKPAwTM7YhMDmyvjEu/rc3z6sdAmH8M+qiEUse9rHNDX5t/1TuHcZ4xqLgNHp47rudSiEcvN/UFtTV5XqH7RoBvcy+QdD1M4xUSjC5bTc9L/T9BMFnknMOEjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780093404; c=relaxed/simple;
-	bh=L4ZZHusyWBmw7VMjY6K30cfDZe1TEcBzTRn7gHmkge4=;
+	s=arc-20240116; t=1780093405; c=relaxed/simple;
+	bh=sM71/V/NEGLDRFoPFaHWGc/4+j5RVrXjbHZgs3jZqHk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PHdII20Z/PDaecqmjINCOPjSKlIUZMfN48AIxwwGmVflvgJSyCYqc3+3iu00UDK6HVI52G+liHhVPwxJN6JTrncqu4PvCiSGMqlnMvJ996IrcVFVhENANo9pRyTymEcqYei13Y+e82PuZDbRQSAf9rvm/Ln9/z6q02wjlFicfGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lwCeJQvv; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=khOJpSAxStGfI54MngOZM0RZ7zPlnKAT8N0SuIdXa90hiExb6p+28djPTxrSyeMwsP+Bc/WTfC0gqXNmbGZCostEBsPmSVHKWjpHCGsy04jq2mxGf9gsMLzWPheccqSmqsXyzi4/w2zBg9qebnGYJ0tScGr4HSRWMK+A2K3YYGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mm2TpSyA; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lwCeJQvv"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36603ad6709so12066997a91.2
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mm2TpSyA"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c857befe561so361851a12.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093402; x=1780698202; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780093404; x=1780698204; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=GWLlWBc07Hx2by9RWraHiTLfxGizbsphDkdU8UthhCA=;
-        b=lwCeJQvvk7Kzv+Llr+nCf2aWR3+21bPa84GDmpzXDkXbhImD+YFxJuInBX6uO+fGEn
-         pHWWPthrzCiKDYZ/5EVbgsfn4cHgLKQEEnw5EA3+DfMSUxdMZgKS7D5NwWJRRiMEoP6p
-         fdHkKyjuQ3c05JPkjjnztRCoyDft9altCjAXsXG2RZCDhPwlUtJp4AFfSDyYiTxUn0+K
-         Pi66BeDTVp5rbf+F3ppymi4/HBDINYbuk1Nr2bphOBLDAxcER9Wae66wPVzcQR3b4iAz
-         hPZ8NqfRaV+u7gymA/aXmrO/DKdIslycaKvvvZkz5aazGtA5B1FuVoD6hxfwVMh/qHSB
-         l8NA==
+        bh=OYRO9/6QUt8JjFWwLPnwN9Nibat8wZa6YMCn9yp2By4=;
+        b=Mm2TpSyAV6ifqbgo541o0ek7tkcGOSKhnrFq9XTuUcj8QE9/RLDMD/ey/Kx0ZCN+K/
+         zHviDw8UVZGJ7/KWHL+wdmsFWFxFYnISdb7BclsdXSMV30fGh68wZUDiaeoRCiQdJfuM
+         wTrdjj30XbNHUbNquAbYM+L22vAkPT5XqOlQl3Z4iCXvzsgoHawadvsAh8qsFiZfUVgJ
+         2JVp3Jm4hiUgNuSmvyVd2aYlh7Jtp4Gpylm5/npwexuCqhPBFobHEb95s5N0bwLzPDhR
+         jMfiXIItSHsDVRR61525sbZBpy5ieCdV3LouiIWtEZCPFIvhUF0p5af3i2dPVCNlcwNK
+         I9xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093402; x=1780698202;
+        d=1e100.net; s=20251104; t=1780093404; x=1780698204;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GWLlWBc07Hx2by9RWraHiTLfxGizbsphDkdU8UthhCA=;
-        b=ROwlp+Tl19MEwXd4iIGcY9AoDvmZuH5td23WOnIKQdGQi3rOAfwx16CQ6G01SosDNQ
-         2bcdSiZzeGauMppPHolH90NftJq5NeCHMzHqQZCceUlKJbBbRX6X98+mxwn2Tkh7dQ72
-         lXJBzglNXGnJ8epu8Igdn4vx/rbaru3ZLBn7wsZ42MTukSL7ymNh7VRhHd8XC0AFnv3q
-         S6K1cDJ+LgHqcRt3GKpOKYb9iYGx1TcIHMm5tASEn2v28e69EQBLyVBweYatmFmr4k27
-         tmXJ9N6anZ/BYqu04xjwnkQHODTS4tW+lzLtqco0fVZqLl/1OF/awYPzduiRmLi+QBXB
-         uAeA==
-X-Gm-Message-State: AOJu0YzOmp1Dl8V4ZuCDDA07JqAoKmlp8EjRrJ8BVaJ0nxlKHjPyDCzA
-	6Bc7+iJEs7/P6f88gf0TI8MRtlYjNUaBk8uMYBjil5KfQnG9hcdepxYdm4WxFlG4wB2f4JpTjnk
-	fYraDpQ==
-X-Received: from pgvt11.prod.google.com ([2002:a65:64cb:0:b0:c82:743c:ea8f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2f0f:b0:36a:95c:7613
- with SMTP id 98e67ed59e1d1-36c4ff61422mr1094560a91.10.1780093401711; Fri, 29
- May 2026 15:23:21 -0700 (PDT)
+        bh=OYRO9/6QUt8JjFWwLPnwN9Nibat8wZa6YMCn9yp2By4=;
+        b=cSR+Do32wxhwZTiMjFyM9+HhmIGyedi4wSW7rXh6Dg+DuDNg1DcRe/AjWoqenf8MNn
+         1eev8T2W6T7N3oDtL5Kmuuk7PC6pAGB1ikLMRzWOBagARUfLBfLA8eBinLTmHWcwMrzH
+         PmHKV5LB35M/G2zx35KMtRojESbtu66q2XZFgfWG3SEqVK4wi8u2LBAKcVK4jlmrLbG6
+         FQXrzM7x2p4FOih7gb6EQtQaIPbSK1jk+yIuX2smAGPqCLd8jtQP3bXQJr1rWaaMLDHI
+         VHKVKFxS5qT7Gbla4lRqAR+0ZKTdWB2lisq5JVL+o1uuWnc7zSzfeI80m7ggc5RHp4B1
+         SFxA==
+X-Gm-Message-State: AOJu0YxfWYoY6qEG2zrXA/WRRyXDpeFUjHTE+87bkfTk3H0BoZ3/WPml
+	kE4XAVty7A02xmfgcdtecqsgeaU4pzKAuR+CdClr9xR9KXWP/DWFBcx/anBmqGL4aLIBI+bODqG
+	HdrJwZQ==
+X-Received: from pgbs189.prod.google.com ([2002:a63:5ec6:0:b0:c79:89d2:43e8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9f17:b0:399:12d:41f
+ with SMTP id adf61e73a8af0-3b427be7b60mr1372617637.7.1780093403446; Fri, 29
+ May 2026 15:23:23 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 15:22:15 -0700
+Date: Fri, 29 May 2026 15:22:16 -0700
 In-Reply-To: <20260529222223.870923-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529222223.870923-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529222223.870923-33-seanjc@google.com>
-Subject: [PATCH v3 32/40] KVM: x86: Move LLDT assembly wrappers into VMX
+Message-ID: <20260529222223.870923-34-seanjc@google.com>
+Subject: [PATCH v3 33/40] KVM: x86: Move kvm_cpu_get_apicid() from kvm_host.h
+ => avic.c
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -69,63 +70,55 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Move kvm_{load,read}_ldt() into vmx.c, as they are exclusively used by VMX
-to save/restore host state, and have no business being globally visible.
+Opportunistically drop the CONFIG_X86_LOCAL_APIC=n stub, as KVM hard
+depends on CONFIG_X86_LOCAL_APIC=y (the stub was there purely to deal
+with kvm_host.h being included by non-KVM code).
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h | 12 ------------
- arch/x86/kvm/vmx/vmx.c          | 12 ++++++++++++
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 10 ----------
+ arch/x86/kvm/svm/avic.c         |  5 +++++
+ 2 files changed, 5 insertions(+), 10 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index f217403e18fc..3e0884a862d7 100644
+index 3e0884a862d7..989294c7501b 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -2334,18 +2334,6 @@ static inline void kvm_dec_apicv_irq_window_req(struct kvm *kvm)
- 
- #define kvm_arch_has_readonly_mem(kvm) (!(kvm)->arch.has_protected_state)
- 
--static inline u16 kvm_read_ldt(void)
--{
--	u16 ldt;
--	asm("sldt %0" : "=g"(ldt));
--	return ldt;
--}
--
--static inline void kvm_load_ldt(u16 sel)
--{
--	asm("lldt %0" : : "rm"(sel));
--}
--
- #ifdef CONFIG_X86_64
- static inline unsigned long read_msr(unsigned long msr)
- {
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index bb19f6df921b..c8ff787d330d 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1186,6 +1186,18 @@ static void vmx_remove_autostore_msr(struct vcpu_vmx *vmx, u32 msr)
- 	vmx_remove_auto_msr(&vmx->msr_autostore, msr, VM_EXIT_MSR_STORE_COUNT);
+@@ -2427,16 +2427,6 @@ static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu)
+ 	kvm_x86_call(vcpu_unblocking)(vcpu);
  }
  
-+static u16 kvm_read_ldt(void)
+-static inline int kvm_cpu_get_apicid(int mps_cpu)
+-{
+-#ifdef CONFIG_X86_LOCAL_APIC
+-	return default_cpu_present_to_apicid(mps_cpu);
+-#else
+-	WARN_ON_ONCE(1);
+-	return BAD_APICID;
+-#endif
+-}
+-
+ int memslot_rmap_alloc(struct kvm_memory_slot *slot, unsigned long npages);
+ 
+ #define KVM_CLOCK_VALID_FLAGS						\
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index b7083cd692ad..9264c8ef1fa1 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -146,6 +146,11 @@ static void avic_set_x2apic_msr_interception(struct vcpu_svm *svm,
+ 	svm->x2avic_msrs_intercepted = intercept;
+ }
+ 
++static int kvm_cpu_get_apicid(int mps_cpu)
 +{
-+	u16 ldt;
-+	asm("sldt %0" : "=g"(ldt));
-+	return ldt;
++	return default_cpu_present_to_apicid(mps_cpu);
 +}
 +
-+static void kvm_load_ldt(u16 sel)
-+{
-+	asm("lldt %0" : : "rm"(sel));
-+}
-+
- #ifdef CONFIG_X86_32
- /*
-  * On 32-bit kernels, VM exits still load the FS and GS bases from the
+ static u32 __avic_get_max_physical_id(struct kvm *kvm, struct kvm_vcpu *vcpu)
+ {
+ 	u32 arch_max;
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
