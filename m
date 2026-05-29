@@ -1,205 +1,114 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195A834B662
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 13:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7A525B099
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 13:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780063036; cv=none; b=mVZCGyfsE22j4U7sbaqox1uddUoGCdmWIu0gEHd5CH6yDvjsEeYv6o9wLM8x9WexpyOlK6qLCoW4Q+J95lNN/SIyCFHqOaqztnshHIR2P5DB8+vZtYYwH8oVxB+A9mHwCaI1w+l2kSkbjtYbMhDjwdlzdyNT6TU6FUTpZWd6rF8=
+	t=1780063064; cv=none; b=sTuiXk02+/SEaLdkLfbhkOoU0M+Nht1teNWI9JOQMAFTZ8dP+ZGkBcazYHUYr3IO9ZGArBkGNzL3mT0WqyZ6zqIXqItlJt0px8LGQxwgR10ICxct91vwcxC2QWLU8CUE9dxniD6UzmhXYoW4pizQfrDkyXYypU82k6ewUfbaTfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780063036; c=relaxed/simple;
-	bh=6QpY26GkcFxuw85jvgp0WSu/YGhR0058kc0DMxRj8CA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eKMw2vu/UQUkmse/CqWjL9PG8d9CxOwMnQm41LslwCd+kzeYQNXyEK5l2hObcMjQktkuyqmWuUyuLVM4kTG6j/9NZfN5Aqm1WuFhnARpTzBUrWzYJQ0DWaFCKmsbxYt3hK38DW5CZy9rxb9DDIyXe7o+rGggQNGP7IIX6BWdRgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=H5xh2tiN; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=W7gin8J/; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=A6n4eWd8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=onoMqQdM; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1780063064; c=relaxed/simple;
+	bh=5r7hAYNnwpIZ4xzhnNtWnoBK5uuHAAboWtkxjCjNLKg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=krgjTLF8DGGUcO/II04iLWuPToeeIALpVTqkdfkMbPJ76dRD7bVrcA5V6sskuBJXz/thw20RneRDKMbv76XR7JA7Od39AbVaBodFxnHjuV+P29P5xzngkFocnYs3hAdNv1vXdorWW4/m1TJKTu0w9BWGEEHolaURVi4PPrVbqz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cujidW4N; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="H5xh2tiN";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="W7gin8J/";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="A6n4eWd8";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="onoMqQdM"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F059F66E3A;
-	Fri, 29 May 2026 13:57:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780063030; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eOmM9f7syCZ9oJNRkWLqR2+sZGzcBzO9HkWKUtKZfpE=;
-	b=H5xh2tiN537quDhGlDOV9BzNfMq/4HZrD6+YhSOAew98w1eYHSjWIBBEPNxF5tUqqqvZnm
-	xhPStexj9jwKaq3TA1mg2gxVgtjeF2DElpsPz6vYFbY8qwd/9hP476tEZHIDuplf8cgJJO
-	pxrQz7h7q2lhImgfnUXlKTGCslRZqTA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780063030;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eOmM9f7syCZ9oJNRkWLqR2+sZGzcBzO9HkWKUtKZfpE=;
-	b=W7gin8J/d8gabDJTYwd+oBsUD4s+t0q7fIc9AFj8NIcKG673McJtz/oPvNnydX4NZJDG8I
-	XQLSuEDpufPjhZBA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780063029; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eOmM9f7syCZ9oJNRkWLqR2+sZGzcBzO9HkWKUtKZfpE=;
-	b=A6n4eWd8xPWD9qGTCLSAIHU3xmm/BugxeInd8vzwEm8whNe2PsalhSoJsD3IGroJFY4/hP
-	e7UTl8WQL/wEjuLz48Rwtp8M+fEk2s8F0O8AD447RZj+fapCdFEUpJ71ffXyrwfEp7S8Yv
-	9YtNyUGhhnlh7VFfIpMlUFmX1jSKGxU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780063029;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eOmM9f7syCZ9oJNRkWLqR2+sZGzcBzO9HkWKUtKZfpE=;
-	b=onoMqQdM/G89VnIUT00vpuhQrtTjsHNn4vBQnZyjhj5XJ8isP7tvzsgVs7e3qyPFgZAwbr
-	Q8UbvepaNHgqPXCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 23519779A7;
-	Fri, 29 May 2026 13:57:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9m+wBTWbGWpPYQAAD6G6ig
-	(envelope-from <clopez@suse.de>); Fri, 29 May 2026 13:57:09 +0000
-Message-ID: <99613b74-44db-4233-9480-26cc04bc0c7b@suse.de>
-Date: Fri, 29 May 2026 15:57:08 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cujidW4N"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8531d89e59so4728071a12.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 06:57:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780063063; x=1780667863; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=x7V3EuRCYlsfPg0omB2BiXVnJ9x4bOVCssFd+7Pw8f4=;
+        b=cujidW4NT2B/UJuaouuVMsv1yTO7Q+iLn9Wxk1l4cED9zrgsxGJyaAEHTFMBiLaPoV
+         j+n896mOeExGkEjbhyS7qQgyraWpSO2HqF900hhQrgBw1FV2Iz/QrJPa1Dhi5azNpDo1
+         hnY1CkGbozm3uqTehIPeBF29lUMy3MkmUqirj0t7NT64CjqKqqv6fJIl18zuwmqShfV3
+         bYi8NR1PLpp43o1SH4ogK5aoZTWg+BSKaR+7iRJDhom9ERLuS5wFnmSaNZNbtO8BvUtw
+         2VnrSNeg7rY8nRFa+0ANAGpV049wiT9ax5c94mdpbp9avAqfIXbHhBX3JALUn7nVSW/E
+         sjng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780063063; x=1780667863;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x7V3EuRCYlsfPg0omB2BiXVnJ9x4bOVCssFd+7Pw8f4=;
+        b=eIGj6xmlcVXggDLe6yfOhijuo2CJAI46ah+W/YqiAmvwNkhfVz7MaZB7gRVGBt6JeO
+         L24A/EJKYm34Q5ltM/viklk9LZYafDDnZ7YIZxx6MHyZaPz2XtanMTrziqCII1XW9Zvw
+         zVfJ+tHwKHpu0V93lC+gVw9+8feMzPqDUIWR+KXnHm628H0nKMhQiWimUbLm4VrZGUxj
+         mgn1LCAat4bJfsvWqMnYfwekO3CKNVM44QpJ9yQ1CkTgFS2b9I2OLp7xxN85vD7Mx9Uu
+         n2S4De9Leis+HeXB16EfnBhNNNe3pW8VkuX5uPY4BWma8AGezTAUNTj+pDvweXfITop7
+         cyEA==
+X-Forwarded-Encrypted: i=1; AFNElJ9KRWrFdEIZ7aAImGsGBzxElZHVfbJ70uNXwdMsrdRBfcSgphJx68T9PeZqHJxq/nFaTfo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWrw/don5C+wQ6S4pOM09Ge6EV5eoI5et2SGUHZDWXVShqDqq6
+	xcAu6ak6ClREdymWDClA3eGR8AfoTvVZTL88ZdaDfZldvgDM8HPGEyMpx+JrClup9/vBxiL9BJo
+	b9JJjog==
+X-Received: from pgc20.prod.google.com ([2002:a05:6a02:2f94:b0:c82:2d72:ac91])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9186:b0:39f:3559:750d
+ with SMTP id adf61e73a8af0-3b40fd77806mr3582072637.31.1780063062497; Fri, 29
+ May 2026 06:57:42 -0700 (PDT)
+Date: Fri, 29 May 2026 06:57:41 -0700
+In-Reply-To: <9huzwlwnbgdd.fsf@tarunix.c.googlers.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: x86: Take PIC lock on KVM_GET_IRQCHIP path
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, stable@vger.kernel.org,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Avi Kivity <avi@qumranet.com>,
- Qing He <qing.he@intel.com>, "Yaozu (Eddie) Dong" <eddie.dong@intel.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
- <linux-kernel@vger.kernel.org>
-References: <20260529091714.287963-2-clopez@suse.de>
- <ahmTjp-95M5IjGxu@google.com>
-From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
-Content-Language: en-US
-In-Reply-To: <ahmTjp-95M5IjGxu@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.996];
-	MIME_GOOD(-0.10)[text/plain];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+Mime-Version: 1.0
+References: <cover.1779080766.git.tarunsahu@google.com> <9huzwlwnbgdd.fsf@tarunix.c.googlers.com>
+Message-ID: <ahmbVaCUcBrYK8qO@google.com>
+Subject: Re: [RFC PATCH v1 0/8] liveupdate: kvm: Guest_memfd preservation
+From: Sean Christopherson <seanjc@google.com>
+To: tarunsahu@google.com
+Cc: axelrasmussen@google.com, mark.rutland@arm.com, skhawaja@google.com, 
+	Mike Rapoport <rppt@kernel.org>, sagis@google.com, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Shuah Khan <shuah@kernel.org>, ackerleytng@google.com, corbet@lwn.net, 
+	dmatlack@google.com, Paolo Bonzini <pbonzini@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, vannapurve@google.com, 
+	Pratyush Yadav <pratyush@kernel.org>, david@redhat.com, aneesh.kumar@kernel.org, 
+	vipinsh@google.com, Alexander Graf <graf@amazon.com>, David Hildenbrand <david@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, kexec@lists.infradead.org, 
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 5/29/26 3:24 PM, Sean Christopherson wrote:
-> On Fri, May 29, 2026, Carlos López wrote:
->> When userspace issues the KVM_SET_IRQCHIP ioctl to set the state of
->> the PIC, kvm_vm_ioctl_set_irqchip() grabs @kvm->arch.vpic->lock before
->> updating the state. However, the KVM_GET_IRQCHIP ioctl to retrieve the
->> same PIC state does not grab such lock, potentially causing torn reads
->> for userspace.
+On Thu, May 28, 2026, tarunsahu@google.com wrote:
+> 3. No need to preserve kvm->mem_attr_array, as this is on deprecating
+>    path and For this series, where only fully shared guest_memfd is
+>    supported for liveupdate, preservation of these attributes not
+>    required.
 > 
-> Meh, if userspace hasn't fully paused the VM, save/restore is going to fail
-> anyways.  Heck, torn reads is probably _better_ than the alternative, because
-> at least that might cause visible failure during the restore.  If there are
-> concurrent modifications in-flight, then KVM_GET_IRQCHIP is going to return
-> stale data (assuming userspace doesn't redo KVM_GET_IRQCHIP), i.e. save/restore
-> will effectively corrupt the guest.
+> Due to time constraints:
+> we have one open Question left:
+> 1. How to check guest_memfd is fully shared. Currently that is being
+>    done by INIT_SHARED flag. But with in-place it is going to change
+>    its meaning and it will mean only durng the creation of guest_memfd
+>    it is shared whose folios can be converted to private.
+>    So for this series, I am looking for suggestion, what is the best way
+>    to find the sharedness of guest_memfd which will be compatible with
+>    in-place series. OR we can go like this (my personnel recommendation):
+> 
+>    if (guest_memfd_is_fully_shared())
+>       return true; // support the preservation
+> 
+>    // This series
+>    int guest_memfd_is_fully_shared(void) {
+>        if (guest_memfd->flags & GUEST_MEMFD_FLAG_INIT_SHARED)
+>           return true;
+>          return false;
+>    }
+> 
+>    TO::
+>    // Once in-place conversion series lands.
+>    int guest_memfd_is_fully_shared(void) {
+>        if (No Private flags in (guest_memfd->attributes))
+>           return true;
+>          return false;
+>    }
 
-Right, do you want a v2 to at least prevent userspace from reading a
-torn state? It seems wrong to have this asymmetry with KVM_SET_IRQCHIP
-and other save/restore ioctls (e.g. KVM_{G,S}ET_PIT).
+Given that lack of support isn't going to be limited to _just_ guest_memfd,
+simply disallow preservation if the VM supports private memory:
 
->> Fix this by grabbing the lock on the read path.
->>
->> This issue goes all the way back. The bug was introduced with the
->> addition of PIC ioctl code itself in 6ceb9d791eee ("KVM: Add get/
->> set irqchip ioctls for in-kernel PIC live migration support"). Later,
->> 894a9c5543ab ("KVM: x86: missing locking in PIT/IRQCHIP/SET_BSP_CPU
->> ioctl paths") added the locking for kvm_vm_ioctl_set_irqchip(), but
->> missed kvm_vm_ioctl_get_irqchip().
->>
->> Fixes: 6ceb9d791eee ("KVM: Add get/set irqchip ioctls for in-kernel PIC live migration support")
->> Fixes: 894a9c5543ab ("KVM: x86: missing locking in PIT/IRQCHIP/SET_BSP_CPU ioctl paths")
->> Cc: stable@vger.kernel.org
-> 
-> This isn't stable material.  There's basically zero chance this actively
-> problematic for any VMM.
-> 
-> Honestly, it's tempting to I'm tempted to do the opposite, and yank out the
-> locking for the KVM_SET_IRQCHIP path, because userspace really can't be relying
-> on kernel locking for correctness across save/restore.  I don't _actually_ think
-> we should do that, but it certainly is tempting.
-> 
-> Ah, actually, maybe SET has locking because it's also used to reset PIC state,
-> i.e. isn't limited to just save/restore?  Doesn't really matter.
-> 
->> Reported-by: Claude Code:claude-opus-4.6
->> Signed-off-by: Carlos López <clopez@suse.de>
->> ---
->>  arch/x86/kvm/irq.c | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/x86/kvm/irq.c b/arch/x86/kvm/irq.c
->> index 9519fec09ee6..251df563427b 100644
->> --- a/arch/x86/kvm/irq.c
->> +++ b/arch/x86/kvm/irq.c
->> @@ -584,14 +584,18 @@ int kvm_vm_ioctl_get_irqchip(struct kvm *kvm, struct kvm_irqchip *chip)
->>  
->>  	r = 0;
->>  	switch (chip->chip_id) {
->> -	case KVM_IRQCHIP_PIC_MASTER:
->> +	case KVM_IRQCHIP_PIC_MASTER: {
->> +		guard(spinlock)(&pic->lock);
-> 
-> I'd much rather use "manual" spin_(un)lock() instead of guard().  Or scoped_guard()
-> to avoid the curly braces, but even then, I find this:
-> 
-> 		scoped_guard(spinlock, &pic->lock)
-> 			memcpy(&chip->chip.pic, &pic->pics[0],
-> 			       sizeof(struct kvm_pic_state));
-> 
-> to be much harder to read than:
-> 
-> 		spin_lock(&pic->lock);
-> 		memcpy(&chip->chip.pic, &pic->pics[0],
-> 			sizeof(struct kvm_pic_state));
-> 		spin_unlock(&pic->lock);
-> 
-> And no one can reasonably argue that guard() or scoped_guard() makes the this
-> particular code more robust.
-
-Oh well, the guard seemed more readable to me but I don't have a strong
-opinion either way, I can add this to v2 (if you want it).
+	if (kvm_arch_has_private_mem(kvm))
+		return -EOPNOTSUPP;
