@@ -1,55 +1,55 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778D844CAE0
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963A7450909
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093389; cv=none; b=N3q4/Mq9Ai/5UuFEIYB2jD539ttig+/padVY6Wd+nrwz0MZ8G35ddBktYDTTCAJnpVMe5GyfoMPRzv4JP5fcq4A5F1+nW1REgNXlXaKzS2nIscHmMv3nPIJDm2kv0rZ0wafDzSzbHYwpHVMdLb+hnXKSVgiMiTazShn00XlcwHs=
+	t=1780093390; cv=none; b=nalr08HzgfhqlT5AIKIV3fwMzmSOMlPBwvP51SIFx2VeoipAApY29sPkYsPN+PTgvA2Ve8pusq0c7+VQTllR/rgQpjIc+88fMiEBWIE8qJ0hNnei/HLmhNsVfPGR87nC2lvUBCP7qF0pzkZHCfLAgskJ5unp4CxEZd67iYsyih4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780093389; c=relaxed/simple;
-	bh=3bWgCpS2MbNhs++wve21pEQGVhhVlqSYucSuMxg7WfU=;
+	s=arc-20240116; t=1780093390; c=relaxed/simple;
+	bh=2QUq4Zntx/cN1Mlgi5UbFZ2Zk6wGbdYV96fOq/ek52U=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VjHmqMa8kwCioP0F/D61Imik+UZ/M2bJwcKZPGZ8zuNYId4V22fbxelCu77sr65ZtxiHW/68XVN++QaqS1crjdNp8RzfHbnQmLQQKmHyWGwGkUvsYeHizip07tXOOxJbZ/pP4whvP62HUWFuOTwrTSZ7bHrjykiLDOrswneXd+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DnMzeHGD; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=sOLT0oPHlNnM05HUqIH3cxC1gaHdOFWBrXc2t7Qnmia8g+gtKX5HPYR84KrucgP2HDDiMdowqLmUzUkAm59AD21D+4B2tb1NqzgSqlofJZtTl724HFGP6KH12qnBfxNt7HcOPzgMN/83Z7KxvqXFSz0qTqD5C1CBtFd5AqB+hnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pLVI+PNc; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DnMzeHGD"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c827bda3052so18866181a12.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pLVI+PNc"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8422ca754d8so25623b3a.1
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093387; x=1780698187; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780093389; x=1780698189; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=z4vKYiOMnnjQ6reYOu2qF0Gs5UxLrj65gv1yx1wc+84=;
-        b=DnMzeHGDitw8KxuzKkhnriPV5vF7Ij/+PuXXEgP6t5sprmpIokgLBPirv9Wm237O6P
-         TmeSHAJlI5lQzoAAWo0JCSRuJ72q1o5x7I9AMCjAk7jsMrLTSy1OBcpvo8Vo4gK5DYWo
-         VGHS02HxOMUSHCKNPACB1iQbvjlqi2U695bt0vFSLecpyyIiWzr9CoB0RAwc0YtETlRQ
-         KZ9H2QIlp9yV27xQC7aBanrXKZls+ZFTpRwfpaqI04uFt2jHBgTxLPIWGPpye2gq9rsE
-         6Hjv/Jy9hWL8ozacCfDxLZhdViaUqk98pKfnYL+zsy3RzMC4ib3G3Ifa9LnGVXiTsfqk
-         qKJg==
+        bh=cOprH2r2W4OfoUuNhxoH+2jlBeBKL8+G7nnMuVk5ujk=;
+        b=pLVI+PNcj+/oJ1AC7B9DHSlHIxRdpuLve2yQoBHKCqB31uXrbJWek7nm0dvEplNdoF
+         DuspBxB/ecUfmVPXAua1r8e20riG0ptA7upprXGzcrxrY2GGQx6BVCKcbYKRYWp8SZfl
+         Z0M7RkzIzg9dEEhFUut1xEEOlGX5llOASJbBCcAMEIShdaiasURvPv/7MJ4IPLm8cnJc
+         2pvkUf7yVlhtWp0ZCANRwTfiCCjLGSjTfNWltB+AVKgWFIwoFl3LDvEvC80NS4OtJ1T2
+         dBkUeRPjdTXUMeuAO1kGjs8+NTeRCsRRFeuecGNqSApfUWI5kM4neZWiM6MTveLThiMM
+         8AqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093387; x=1780698187;
+        d=1e100.net; s=20251104; t=1780093389; x=1780698189;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=z4vKYiOMnnjQ6reYOu2qF0Gs5UxLrj65gv1yx1wc+84=;
-        b=p+GGiRB13scQjEs5nTG3f6MrlDg1H8o1VCiceYv7aK/p6PXk3IQBNNa9pKcCOZlPrS
-         BbGR/ImyQ/XlcLoss3aTOcyvoUUjzqvaLF5WdEwq97YC5YZhLVPnh8UCPwUtjmGITama
-         GJGQEQ/yDupWAvzpcY1iEUEZpEwxDM7crMc9QiVGCGSd4sEsi58ZK4crm222GmNznnQk
-         MaQHqkkt/q26cpm/kFsGvPDmmSC8Z+zcaMGgVuvOhsFQI9RHehTtU28MqwyG5iCVnjgN
-         gweoT4HLAcnWAtW/WM+ay2+i6+YLxl4Zzc5lMuuL7QWzibSqVN7eFxSMB2fD02nnwoCG
-         4XHg==
-X-Gm-Message-State: AOJu0YyfvTMLbYtyOC6zjpoPhei2U8jOJvNgnmmnv5GuHN/k4S6Gu27f
-	deoUQjupujVNp1FBvJquHETCCU1MemZvOfmgB0BNQKs5PgdJLUA4J6GmvKYfR05R6qcvS88gcrx
-	/ZlEnkQ==
-X-Received: from pgcq19.prod.google.com ([2002:a63:7513:0:b0:c76:3f60:53ff])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6017:b0:39f:a42:9251
- with SMTP id adf61e73a8af0-3b427f2af2cmr1232182637.22.1780093386530; Fri, 29
- May 2026 15:23:06 -0700 (PDT)
+        bh=cOprH2r2W4OfoUuNhxoH+2jlBeBKL8+G7nnMuVk5ujk=;
+        b=s3XbM6fgLaK0J8z2QsH7RWtZrGEyPul6RnBtLUJ3tgiven9BOyqi8HN2mJlkXOUypt
+         6AUG+BpfAT24TJxZa6On+R+bCrkR04jmzEmpDSKVVGHDDGHp/Akd1XsEdKDcCe1E9FCk
+         y7QPOBBA9oja0q2j7a77cZU25zHfFb0JqKktKSfFKgwGCzSeFIExw1lKH2G9oXrXzwtN
+         a++ZPoXhZiYnVY7kTeILJ4VfxgPagk5IpSWWb0kTYIC8PMKLzSfGhq9wpt3Y2bcJ4HKN
+         cORq74P3u0TEm5yBaXr7dnYUEERBvI1AdYn1kJRWixC2nsyqQTEJVcnAboKLtUQtcRFF
+         J9cg==
+X-Gm-Message-State: AOJu0Yx7wZ8ATl+IWrfT8DOCzKEmOCIJhKN1ngMo2OfD10bU3c6UHZC5
+	3U4hsjtbn8Lj4ebvmdKH7XWQUNlX0IIPaTOMeVPKdfN7h6kZmh5VzUnO88mbo6uCFxtIGgOlado
+	W8xOTFw==
+X-Received: from pfbjs21.prod.google.com ([2002:a05:6a00:9195:b0:82f:96ee:b9ad])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4291:b0:835:4291:6975
+ with SMTP id d2e1a72fcca58-842255c48camr1437165b3a.39.1780093388651; Fri, 29
+ May 2026 15:23:08 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 15:22:03 -0700
+Date: Fri, 29 May 2026 15:22:05 -0700
 In-Reply-To: <20260529222223.870923-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529222223.870923-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529222223.870923-21-seanjc@google.com>
-Subject: [PATCH v3 20/40] KVM: x86: Move tdp_enabled from kvm_host.h to mmu.h
+Message-ID: <20260529222223.870923-23-seanjc@google.com>
+Subject: [PATCH v3 22/40] KVM: x86/hyperv: Eliminate an unnecessary include of
+ x86.h in hyperv.h
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -69,60 +70,47 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Relocated the declaration of tdp_enabled into mmu.h, and opportunistically
-hoist tdp_mmu_enabled up to the top so that the two are co-located.
+Drop an mostly unused include of x86.h from hyperv.h, and instead pull in
+regs.h, which is need for at least is_guest_mode().  This eliminates the
+last include of x86.h from a common x86 header, i.e. solidifies that x86.h
+is the top of the pyramid.
+
+Add a missing x86.h include in cpuid.c to avoid build breakage.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h |  2 --
- arch/x86/kvm/mmu.h              | 12 ++++++------
- 2 files changed, 6 insertions(+), 8 deletions(-)
+ arch/x86/kvm/cpuid.c  | 1 +
+ arch/x86/kvm/hyperv.h | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index f7130eb98473..19091d89d3cc 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2188,8 +2188,6 @@ void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end);
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index fd3b02575cd0..db8be9173bd0 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -28,6 +28,7 @@
+ #include "trace.h"
+ #include "pmu.h"
+ #include "xen.h"
++#include "x86.h"
  
- int load_pdptrs(struct kvm_vcpu *vcpu, unsigned long cr3);
- 
--extern bool tdp_enabled;
--
  /*
-  * EMULTYPE_NO_DECODE - Set when re-emulating an instruction (after completing
-  *			userspace I/O) to indicate that the emulation context
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index 28fca48dcf64..0eaea2d4fac9 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -6,6 +6,12 @@
- #include "regs.h"
- #include "cpuid.h"
+  * Unlike "struct cpuinfo_x86.x86_capability", kvm_cpu_caps doesn't need to be
+diff --git a/arch/x86/kvm/hyperv.h b/arch/x86/kvm/hyperv.h
+index 65e89ed65349..1c8f7aaab063 100644
+--- a/arch/x86/kvm/hyperv.h
++++ b/arch/x86/kvm/hyperv.h
+@@ -22,7 +22,8 @@
+ #define __ARCH_X86_KVM_HYPERV_H__
  
-+extern bool tdp_enabled;
-+#ifdef CONFIG_X86_64
-+extern bool tdp_mmu_enabled;
-+#else
-+#define tdp_mmu_enabled false
-+#endif
- extern bool __read_mostly enable_mmio_caching;
+ #include <linux/kvm_host.h>
+-#include "x86.h"
++
++#include "regs.h"
  
- #define PT_WRITABLE_SHIFT 1
-@@ -260,12 +266,6 @@ static inline bool kvm_shadow_root_allocated(struct kvm *kvm)
- 	return smp_load_acquire(&kvm->arch.shadow_root_allocated);
- }
+ #ifdef CONFIG_KVM_HYPERV
  
--#ifdef CONFIG_X86_64
--extern bool tdp_mmu_enabled;
--#else
--#define tdp_mmu_enabled false
--#endif
--
- int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn);
- 
- static inline bool kvm_memslots_have_rmaps(struct kvm *kvm)
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
