@@ -1,63 +1,63 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D319B2472AF
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1625A33D505
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780064801; cv=none; b=r1rTrjCWhDDnx9sh/cEJ69Hv+VWNE6BzeIU8NtS9R/EJ9Crd2Wk570Gbw/62mgbIRAXSAe0oy9sHEzK1n2AZRLhOQ00It2gLH1/yOUBqbmLMwWbpRSBaMlsJxAra5aKMrPEDKSgPTBTKb8Nrh3g9BewYk0NVvmHpam7VdKzISXk=
+	t=1780064809; cv=none; b=dYQUdG8JRM6Y8GCRh5FnvnEv6GhegZOTyXyOcimedRPgNLNkSboG0p3TqR5+L7Kp5RH8wY2UZNKVnlphyO3voDGDjH9nX1vzO8wxIT79EF2bpCZpLh/JYr+3MqM9Y23R6A9ZJDuBbqfF3fBbIcotE/LNog6FDTRaYWRY3jbkVpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780064801; c=relaxed/simple;
-	bh=zYeCvYim9wyQa6VV7TU1ZmBatrYPS1EuSWivUEVuijI=;
+	s=arc-20240116; t=1780064809; c=relaxed/simple;
+	bh=Ocs19irIjfDOR1vovaKMr0waJ5dwqy2kicJAQ3uxDgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EcpHYGR+IJG9vc96K850dveSTEMureXkTQ4G9nr2bpOLRPgUM1YApx8NA3IPVGzqnZowlj+YL3nsRs3Wr27ViQf7GYRw34pHZ1oAyFd7p3xh/GxWhydn0pahOo9P2u2m3ZEf7g5w/Si77tbp4A4pMrCptAYiYqeId3VQza/8WSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hSqdmplz; arc=none smtp.client-ip=209.85.221.43
+	 MIME-Version:Content-Type; b=XafuyTry4C6Qx/mZSQRcoSvRukvQDJN6rcRMA04XDArrq8QHl712aN6UDQjvyQ/8WT+zg7JvALMTOZ5CxqdQdw4Y3IzgecjIvjL+TWTxRkb0r6tUs0tWO2Rd41TfrvEk35PEF9vy4v+mDzO1ZJ3wO9si3qZ/470hC9rAmtqribg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=w0+eVpbD; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hSqdmplz"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-45e8a834cc2so8692160f8f.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:26:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="w0+eVpbD"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490388fd0dbso83301705e9.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:26:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780064798; x=1780669598; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1780064806; x=1780669606; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GbRLYretApx2XFNweDx4MjqL1BkYigncE9vMgvnIk44=;
-        b=hSqdmplzPlBWfNO7DlQ2cBe5G1t6Yy8WIoky2Tcm2bpWTLKvdaLsRMGYj/OyGE9QiS
-         xtJCZ/HejuC6qtLN8UHJFf9sik4Y+YYRky3F38lMy3rmpHO0Tz/GMYMScvXHjwvfeg1G
-         vYzd8DTQAQD4MovJeRYNIrnXO8rGghABFQuYl4hExWlSXFB3uhPzUeHAzKpHlbiGmLAI
-         y9kPUY4YmR6foql+GJKynlTNnxwaBnHK12Z6fsWTiYwahD29ZZKtWKoeeSqcsQ8/mgil
-         2vKaXAz9M52hvXDBpEyFLexahW99vhj4NbJJUb2hMeTsPKZ1dX9lSjAGtO7QLXam279p
-         Bn2g==
+        bh=Z5ag1C+2SG1c3WsflC/6w87NYFOhc1Xx+nqXj9RTveg=;
+        b=w0+eVpbDiUh68Q2ZepZaGl7fvupuRq6Bq7mg5IkiqInyTYCDx9o2d3jEf7+DwpHeGL
+         e4ms48jSdVGfiuGglFsUsFn1aB8sPYDcFc4auoipH+Z1QLk8RryBA5eWuLouFjydMw81
+         vjhY2AtUMtIl71aJsJQ8YsFpmf0DD1ue8McJhKyc3CQ7BNV4C+gt+RVH1hl0eDLmIlDu
+         ERQA5i7VsWkPQgaOtXzLI6KuKm1YSd3gSZliqkS4iz5rl0CBqNQMxESgu3ZrJFaKe+Lr
+         nCNW1ualtfk8QKlskoLjg7gGd/Ttj2wPPcEQiMpvL3j0oUht8fOIXrgyCG/FRlg9Jd43
+         9LEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780064798; x=1780669598;
+        d=1e100.net; s=20251104; t=1780064806; x=1780669606;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=GbRLYretApx2XFNweDx4MjqL1BkYigncE9vMgvnIk44=;
-        b=j4rJWunBdtvTp8cQVc6vLhmOYy5nZba5cdJfnlqTMkvwFP6Qxi1LfYPBUfheE36dEr
-         F2sPUPalSuDqNgD41wJBuz/WSZSHrGLKEOVIJ10gpwf26TPZ9e8QpnlbTNH+3k4tWWNa
-         snzS3GgKd80Hx/mzaxIZoZ+S65e/CDtMhiLPK1nuqc2MCxgKx1yQukWZdwJbhK1HuP+B
-         mXds6Jl2MThYyk1WfMhI2NxCZRL+kM6EJgETsLtKGleRlZcYEz6dXiz6Rc/isVr22LK+
-         M6tpNMastp7WSBEMvcjTP0wQyFlTiSqBZTqwvfL0RDeeBfQon6i1qFGtDm9s2yMSAwaN
-         l9Bw==
-X-Forwarded-Encrypted: i=1; AFNElJ8zE0Yh2FFCq9LJMoUycEIGH8MQy1S1DpPhbqmK+l5e6oJVie1/oP6gSO/iEVykBZuq538=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVeJtAGGy9e+7T0YvK3xUPqvY5cLZuNsKzUsURuJjyB8Fv1UhM
-	cg30Hk/4QvzHC6NDECmlMhSXOlhbAoUzbJLab1NaRWW1wjor3J7fITWjc8GIibmCwa8=
-X-Gm-Gg: Acq92OFRIDj2xVDH3SO77A34+BclaAdI9mzFlrMVB6zkLWQfUneFZwLF+RKJPKo99b0
-	l+lEZAfUYdk6qhjJxYjpYmeWZPlVaCSe91EiPBjbezuexuXbdIiiNuch1Y3uY419R8VX4B9Et+G
-	n3pGxpbiitUKkjDyHhWhJWkHzh3nF2B5Vs2/QXk7JO3el/MQZfyp7p87S1X2+Qo9zR46BxDwUwT
-	okIKWcJH14DHn1NnedhKnFIc7myfRoGnKHQr5QtuAGUpvZNBsq86VdVhKkl+j+YNTozR3nR6Q7p
-	N4SLlPKppF5czI+3UmiGH4OFSfGeR98G5Qjjhc7dcUBw7AUTiu7ydTJK3n2pQyMJ+UB3Q9xGnfB
-	9pIERadymXk2s7TZzODMJMQxLf8xDyXLYwFweXPUoCAYY48IRcKvdgWx5ADNxbVTtziGMLUrrMT
-	dYmrkSriHn1Q2NpE7E6LyYBc/miOpWEjgp5TJeQvTstbDZIcFFOoDZFEXMWV56AMq/UQ==
-X-Received: by 2002:adf:e7cc:0:b0:45d:b14b:23fb with SMTP id ffacd0b85a97d-45ef6b24f8dmr59899f8f.11.1780064798213;
-        Fri, 29 May 2026 07:26:38 -0700 (PDT)
+        bh=Z5ag1C+2SG1c3WsflC/6w87NYFOhc1Xx+nqXj9RTveg=;
+        b=Epzx61Vn010Y/46/EwvvCG7feO9Pxkk+QvNQDEyImVFTFKwzwzx7R305Dte3V28uKm
+         pdU8C20WCXxd+2KSdVHB5dQt8bENvCfY6u3N+yzP8z/s904JhFyQcWjdzcppf8TQfx93
+         I0JdlDphv/EZdlcmqQX4jhDA/n8UtNGqj3WvpfG7ApR/hE3RiJtTV9L03uNfP/L2BO9T
+         GJAp5YrxIVpkZQd7nk90s7805dKGcZjVSuMcwA00I3rOmT1uP6gm76dq7oAiJfgaPBiT
+         zFQcm94miANTk1GmDYkzg7MYjpghP/6omhXFbHPRHjBqji/Qfc/eR+yuyKUhdxC1u0Rw
+         c9jA==
+X-Forwarded-Encrypted: i=1; AFNElJ82gemHtIKei7BGr1jqwS3sjBbiF21dXGTym5s+2pkaJw3T/YJmMZtkrH44obkuFYfbkG0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8vRXuxs4lyXranugKAARdsMW7FS2ZWXEhZv3QIuoMSz7k50+A
+	aJA2b2jvLiTI6zoNyVAgNE8G17MM/hJYMvVoCdgL9oA9IAmjqvdgTaaGpyrlnE6Zs1I=
+X-Gm-Gg: Acq92OEX47OzgUdIuXhd8ePTuPOsusBdXqqduClvwlCq3AZHxL3OPNhzHm3D7q5+WeB
+	lF22Nji/7CcztpqjB5f/QnssDiyNBwmGvrbIF4HxDszqqMe3h8S1zy45LLXnNpdrFXUe74gNiki
+	1jBp91va9uaThkNM9LfOldlmC83QyMsmMTRHTu4Ft//pKCUNEmTLjJzht6GLKYsByGuGpThLzI0
+	4x2wsou74UDGbM+oIsyEZiF9B5FHMztAeCpmuktd+nGSQlaHCirMNr/WQRwxxgBk+xkXWoHwk5H
+	CEh9H1IuHvuf14IITj0liLF2KdQuDWFd5IfgQutMwNWQQfC9ThUklVqXafDD+wj9aBiz5/IA5ds
+	sOkNb2kZoHquPYQFFjLEeknAM5eXW04SL4R1288+xlJkHDlK/YQFPkPhp/zLiH6WbqRfO4zOfcM
+	59I5uBkbLPlnJ80h2O1jqZe4sDgGRVNc2U0MbDbeLL/ELjfWM3eTYdQvoCyz1L/fV7fw==
+X-Received: by 2002:a05:600c:a105:b0:490:6e12:542c with SMTP id 5b1f17b1804b1-4909c0e4476mr45336475e9.23.1780064806113;
+        Fri, 29 May 2026 07:26:46 -0700 (PDT)
 Received: from m15.home (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef3556f51sm3823250f8f.25.2026.05.29.07.26.36
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c103b98sm14989405e9.19.2026.05.29.07.26.44
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 29 May 2026 07:26:37 -0700 (PDT)
+        Fri, 29 May 2026 07:26:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>,
@@ -90,9 +90,9 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
 	Chinmay Rath <rathc@linux.ibm.com>,
 	Mohamed Mediouni <mohamed@unpredictable.fr>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 15/17] accel/tcg: Convert RISCV AccelCPUClass -> TCGCPUOps::cpu_realize
-Date: Fri, 29 May 2026 16:24:31 +0200
-Message-ID: <20260529142434.87880-16-philmd@linaro.org>
+Subject: [PATCH 16/17] accel: Remove AccelCPUClass::cpu_target_realize()
+Date: Fri, 29 May 2026 16:24:32 +0200
+Message-ID: <20260529142434.87880-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260529142434.87880-1-philmd@linaro.org>
 References: <20260529142434.87880-1-philmd@linaro.org>
@@ -105,68 +105,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Register AccelCPUClass::cpu_target_realize as
-riscv_tcg_ops::cpu_realize. RISCV's ACCEL_CPU_NAME("tcg")
-TypeInfo is now empty, remove it.
+We removed all implementations of AccelCPUClass::cpu_target_realize,
+remove the calls in accel_cpu_common_realize().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/tcg/tcg-cpu.c | 24 ++----------------------
- 1 file changed, 2 insertions(+), 22 deletions(-)
+ include/accel/accel-cpu.h | 2 --
+ accel/accel-common.c      | 7 -------
+ 2 files changed, 9 deletions(-)
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 703c2d9bd0a..c885af6c03f 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -30,7 +30,6 @@
- #include "qemu/accel.h"
- #include "qemu/error-report.h"
- #include "qemu/log.h"
--#include "accel/accel-cpu-target.h"
- #include "accel/tcg/cpu-ops.h"
- #include "tcg/tcg.h"
- #ifndef CONFIG_USER_ONLY
-@@ -269,6 +268,7 @@ static vaddr riscv_pointer_wrap(CPUState *cs, int mmu_idx,
- #endif
+diff --git a/include/accel/accel-cpu.h b/include/accel/accel-cpu.h
+index c42221f96cf..d7ea45ada2e 100644
+--- a/include/accel/accel-cpu.h
++++ b/include/accel/accel-cpu.h
+@@ -14,8 +14,6 @@
  
- static void riscv_tcg_cpu_instance_init(CPUState *cs);
-+static bool riscv_tcg_cpu_realize(CPUState *cs, Error **errp);
+ typedef struct AccelCPUClass {
+     ObjectClass parent_class;
+-
+-    bool (*cpu_target_realize)(CPUState *cpu, Error **errp);
+ } AccelCPUClass;
  
- const TCGCPUOps riscv_tcg_ops = {
-     .mttcg_supported = true,
-@@ -276,6 +276,7 @@ const TCGCPUOps riscv_tcg_ops = {
+ #endif /* ACCEL_CPU_H */
+diff --git a/accel/accel-common.c b/accel/accel-common.c
+index 04482b6b57e..d8ee6d62667 100644
+--- a/accel/accel-common.c
++++ b/accel/accel-common.c
+@@ -52,13 +52,6 @@ bool accel_cpu_common_realize(CPUState *cpu, Error **errp)
+     AccelState *accel = current_accel();
+     AccelClass *acc = ACCEL_GET_CLASS(accel);
  
-     .initialize = riscv_translate_init,
-     .cpu_instance_init = riscv_tcg_cpu_instance_init,
-+    .cpu_realize = riscv_tcg_cpu_realize,
-     .translate_code = riscv_translate_code,
-     .get_tb_cpu_state = riscv_get_tb_cpu_state,
-     .synchronize_from_tb = riscv_cpu_synchronize_from_tb,
-@@ -1676,24 +1677,3 @@ static void riscv_tcg_cpu_instance_init(CPUState *cs)
-         riscv_init_max_cpu_extensions(obj);
-     }
- }
+-    /* target specific realization */
+-    if (cpu->cc->accel_cpu
+-        && cpu->cc->accel_cpu->cpu_target_realize
+-        && !cpu->cc->accel_cpu->cpu_target_realize(cpu, errp)) {
+-        return false;
+-    }
 -
--static void riscv_tcg_cpu_accel_class_init(ObjectClass *oc, const void *data)
--{
--    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
--
--    acc->cpu_target_realize = riscv_tcg_cpu_realize;
--}
--
--static const TypeInfo riscv_tcg_cpu_accel_type_info = {
--    .name = ACCEL_CPU_NAME("tcg"),
--
--    .parent = TYPE_ACCEL_CPU,
--    .class_init = riscv_tcg_cpu_accel_class_init,
--    .abstract = true,
--};
--
--static void riscv_tcg_cpu_accel_register_types(void)
--{
--    type_register_static(&riscv_tcg_cpu_accel_type_info);
--}
--type_init(riscv_tcg_cpu_accel_register_types);
+     /* generic realization */
+     if (acc->cpu_common_realize && !acc->cpu_common_realize(cpu, errp)) {
+         return false;
 -- 
 2.53.0
 
