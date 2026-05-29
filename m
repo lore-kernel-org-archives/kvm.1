@@ -1,61 +1,62 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010007.outbound.protection.outlook.com [52.101.46.7])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010048.outbound.protection.outlook.com [40.93.198.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4205F337B97
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 20:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FFC409601
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 20:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780086292; cv=fail; b=kBrFryUFJ/BqzZaZ3Xu89ux8QFyC+KkxayJENejevLxdI5nZmPBH6cNfmRhUVQi6l3o/em2FCj7nsEmEH/0y2dycOrZIRBJ/H9IHovhSNA273iqijuDOInirkhCMRJ6NncHXWD0f2NXPxm4XafRQfQPN0NbPXJKBw8N4K+5pFrw=
+	t=1780086298; cv=fail; b=PBAwZhzpbew6bKuSYOjAN0FtoO3VyQ6cgBCEq1iDzKT85J4wHkICJ9I3xDLZafmeLYcPVJsS1Q2JeHoeMzUT4PfPtkCgU2QactjSl6CmAZqm5ZPyy4s+P0KyynvWGX1uAQe12EBBUtMYEX/Ac9H92m8nBXrJfrHr1htvHY6i7k8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780086292; c=relaxed/simple;
-	bh=HHkRelxwGynDo/vkmuNz3AGNmIN0XI0hcwOAyxoq/cM=;
+	s=arc-20240116; t=1780086298; c=relaxed/simple;
+	bh=YgaMuimutYrfK8kTce2mAOvfpE6lc8tr/F9uszVwV8c=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KbXk8TIXGgLv5VDQy7sxug4O3RyjjdPlcrEhNg6AjdLPWO0KOB1SIbs6KYwoy+Lu13bTQXS5v+J6aEh964snHW/OM7IeIjug5p4YnpOKLWTcBFXDYAbejmjk8jwxvciMHw3Zk26BYjwARM4XpfReh5YfcyPgvM+wnYAyUNi/VwU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ShPnN4Sh; arc=fail smtp.client-ip=52.101.46.7
+	 Content-Type:MIME-Version; b=WvTnVqtXqNrE3w+jf3Ky0HoYaGyaF9X1/7XMoOW2IE8ktFPA1p/RgtMWzaQnMp+1FbRXJK1QTdhTVz21nJIpqlVIXweWnDXHTu3PF7nWKDKXXmqDIMdCP42tYMeRzH92aDIGEbh9XkQ7ys4JWFxOcSi+VYger+LR9bUHHnrS6Bk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EUN4b4W+; arc=fail smtp.client-ip=40.93.198.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ShPnN4Sh"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EUN4b4W+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WmmH//G6Xb7ulVKSwZGdIWJVgpUdBC8bWyVaGf5Z75RlrXZblROGEW3agFKhUnun8ifm6iaS24ma0FxTOTjxUdhnsyK+FEpojYrLLCqsqnGOIxh1eE0kuLWpbAj6nJ/NgmYJ5Ca5N9Tuugcz9Porkanz01FcHD6sxmqxLyCiO+AoeZms8BzRYP1Eq+E7vwU01PMHItr6o5o1zIA9zu8c0yd4ZLhStOV3NvYz0yNy6h4an3bRCsJ5eBsCvUeZy8mP+GXoGLeDyC6OuVdk8D6HBuXf482s3dpL9XIxRzXo/NhwP0csFk3UADLRnEy9+bLzL/ACpg8golwboF6bJfTQMg==
+ b=iDzqvmWMYJaWAgx/Hl5rsGQ2R4gQO1J5z/V6D0z2/2qelXiUuMaafdHIrMt/8ZTYepyzxeX+drdSKciEDcqfPvQ3u9gKNdpcLsJeFuxOY5fQehpD24r5LScinMH8qsL9lnuZA6+EZLhJ9L1VepWZi8BgNoebKqhuF7xyZUOtGu7+Hm5PDD8LeeVK5O6g/0XugPLeNVfPG5Rtl9+ma74GwjQ/FoNo13ud8l9Ig8uDWpjPB1acq7BjnWL6/pmUUj3zcZdVVGSjnogme1zpMXtUEuhOquojjOSDT8nu6pgyBb94x5eQykvD+kBQuB/yXuFkGyj0M+85vTMdoj6jPn7AYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MTMUnmp5SKRWcf36HMxpU926Y2kHQImPNQoz+BPdizc=;
- b=XoC/JFlsMsXNrL/Je54SN/HLTG3NO/tRAkNheIiM1YDwGi9+k4j7K4cu+UEZvqjqFsOc+cW7TKR9AvvYkd2XLKyk6TxV5pUlOePywECBHYTQnlqlj7AMahbO0kUOL5xdo6/a8Gk8WilIwQoJ9m+a8NloWHoLBJMZlXC37WqfrlF3PhMbgyDEpQD6/26b8QaKg/FafoDywatbuC3RXsYVQ+MIKZItWoNUOHHK9Jj94bB8DJtOtWH4b8QD1i6Ylys8PwDkLoGWzaJnSjgdHZkDr3nGVujeJGhHPysDXinsGH89pkxSHOANTs9I3o2qyoavBqic9MmKPBasvWP+Og5nGA==
+ bh=pmrm8pDEP64a4GqOJvPm/5//6wuHRDKUA10MiGzbsE4=;
+ b=u3wfRYu1xPOf0syxZxHSUnhI/nIXBNSYtBZ7peMrdbtYoO6mzcesYCSqdaBJeS4FOUXPxtU6qNFhfpI+jPewiWynQ9um4yQRShw96aNnEeH2HEHKNyio8Uzr7gYgTHNwpWB4+Z8bsHTyUTirNqojB9VAOHfwPnjCcXdRK9adLOmO/dT+1gPUCbRUeRy0FEQ+XUIe0P8XRHAwTXxVnGKPZ4jxRgmhiqmugc1kWNuQioTrYvCEWJRs5Ez7vmD6W0vtmPJgs1GmjF1u/Cj30Tlqzn2MLvNYUy6MnVw5s2S9w9jzWmITBB5tsAyQ5+uh+W8qMmWDNxi3s0dCj2oKR81GeA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MTMUnmp5SKRWcf36HMxpU926Y2kHQImPNQoz+BPdizc=;
- b=ShPnN4Sh5c3tZT4C01U1kZHV8LU6h5BVDE9BrfR5cnIdtUNRBc8vWg7UBs/VGw5iSN+bB1w2oQPca9ux2VIXuPLB1Az5SaBKxlHaEolqbdlT3ghLi54AoaIs1ndJ8Og370wHs7WKhxJB9p6G2ypG9MC/VwpfEmOpCysfKp/rHh9JrNcOtllxpn4brLDNLZuXCtBjSvIi6uughig9qlLvdPZIOtO7ANYdwmy5RzvKF8zzJamQ/4eiP5yvHf2Ve5TqrzWVw86jLrCt9wzrsS98zU8flhQ8zmpUAy5TdGpu9jAlm9At99tXIjn49r1St3CvE6++J2w3tUHNoQHRVKneRg==
+ bh=pmrm8pDEP64a4GqOJvPm/5//6wuHRDKUA10MiGzbsE4=;
+ b=EUN4b4W+OS7IDuEufeGZQFV834xHsu1QofdEwCmS2EG95jQGpoFT+WCY/b6a/SlrNcztPKteKkPqKdSUyv7LwZHgC5DPO7oMtzrbLsJk3hkwQsKrZo852nxbKdQnjozMqy8BiVlIMIaYcOuEDw5vvjseLZ2863lJUgym4GQPuSOk3K1VJWS/xBQRHU+Km71TIay8ExyjG9MJfNnuZwP1EJeX5hb4oYYHQkLEo1wr/ebxd1vOpD3XoKralwal+8DijcoyzqCAvE6aZpz8fAHxqdo2uKVrwFfRSQ5ZpNpPCxz0OQmveYQvWdbERfb8gYR3LOeqkisR5IdO24yu4RZ5YQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
- by DS7PR12MB8323.namprd12.prod.outlook.com (2603:10b6:8:da::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.71.15; Fri, 29 May 2026 20:24:42 +0000
+ by SA1PR12MB7102.namprd12.prod.outlook.com (2603:10b6:806:29f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Fri, 29 May
+ 2026 20:24:51 +0000
 Received: from LV3PR12MB9411.namprd12.prod.outlook.com
  ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
  ([fe80::98b7:86de:b69:2a15%6]) with mapi id 15.21.0071.011; Fri, 29 May 2026
- 20:24:42 +0000
-Date: Fri, 29 May 2026 14:24:39 -0600
+ 20:24:51 +0000
+Date: Fri, 29 May 2026 14:24:49 -0600
 From: Alex Williamson <alex.williamson@nvidia.com>
 To: sashiko-bot@kernel.org
 Cc: sashiko-reviews@lists.linux.dev, "Josh Hilke" <jrhilke@google.com>,
  kvm@vger.kernel.org
-Subject: Re: [PATCH v2 03/10] selftests/vfio: igb: Use advanced TX and RX
- descriptors
-Message-ID: <20260529142439.5bd03e5f@nvidia.com>
-In-Reply-To: <20260527001444.69A771F000E9@smtp.kernel.org>
-References: <20260526235417.2058313-4-jrhilke@google.com>
-	<20260527001444.69A771F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=US-ASCII
+Subject: Re: [PATCH v2 04/10] selftests/vfio: igb: Program MSI-X interrupt
+ routing
+Message-ID: <20260529142449.36fb00e8@nvidia.com>
+In-Reply-To: <20260527001909.C0B6F1F000E9@smtp.kernel.org>
+References: <20260526235417.2058313-5-jrhilke@google.com>
+	<20260527001909.C0B6F1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: CY5PR15CA0177.namprd15.prod.outlook.com
- (2603:10b6:930:81::23) To LV3PR12MB9411.namprd12.prod.outlook.com
+X-ClientProxiedBy: SA0PR11CA0027.namprd11.prod.outlook.com
+ (2603:10b6:806:d3::32) To LV3PR12MB9411.namprd12.prod.outlook.com
  (2603:10b6:408:215::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -64,157 +65,214 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|DS7PR12MB8323:EE_
-X-MS-Office365-Filtering-Correlation-Id: 92ef42fc-74f6-479b-b3d3-08debdc0508d
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|SA1PR12MB7102:EE_
+X-MS-Office365-Filtering-Correlation-Id: edfa6f5d-e604-4a03-5202-08debdc05666
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|6133799003|22082099003|18002099003|56012099006|4143699003|11063799006;
+	BCL:0;ARA:13230040|1800799024|366016|376014|6133799003|56012099006|4143699003|11063799006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	g7KdXbUO1G2jWu8cLA4ydw0aZxvFzbtpVOVHcPLOEZ4nM3aBPd+RXXHmnqa8ZRdWi7fZb0HDyjgldS7g6dKeLxrxbCAKrRGLRQ0JWdKA/H9MtwXkgmzrG4gdcvrHwYj4H5HbfpGFj8EVOqcY6RapT03exEXT7xb/Vx37EqeksNcQuv3uVI9cOWPYRynWzmxWKB7a6lu42XKPPa5b24uAmtqd2+HI0kMTGSFToeXy3uaEMnTcPggerV9C3V7UWXogJPLQOe6T9CAPBKlCYo9SYnIPVivsM94VUziadCkzku/HR4xfns50MS51mTXEc2bHHYw0Uu4H2Mez8i7icOor1wFasBuNTZidt81tYi90VU8Gqc9GUigk533qWd5ccsHLT7PoGbjPUFCPVEM0L/xLc56LuF0WH1InP2dTmzbX+Yb2HEXEjmzmmkcYHzyzhTzFKQARmmkmogmK0j2/X1xMiwWZK9fyJ6y0UtU4loNUKS85pYqwpZ+OuUeBU82nvkmc1WK9vxz3peWIVqulPyrHbDV6dfYI2B/BpZ56taxoVseTYA3rT4sK6aCYZ2n6h3p6WqKeyOw4MJk9IQ9WYPIFFQ4/lBCepelejHAfFjvbC9a4pwSvtSER5fo98wd/SJ/EpZpAeS4x97bCshpKUa3CADL4PBywtN56eaNNNi8qrCoXKjA3vcpUPn1NdK0RaBwP
+	iUISCOBWK9ak6YAbtWbuFWAZ1gb/wPC6wAWd6kVCCB+Cbq/NYmScSl3dvPiObUuBoGcHulwZOkf1wd+FsADkkxeaRe4FzSozHwoUH6nwVLjAlp+4hIkzKc4LcOf0K6T8Yiva4LqIVZSehQuqoJCt6s55dViMCiIS/MI3dZtIoGiPZbqFL0L0ezuyqwM8s/lS7IMgk8ZshipfaQnMYKMfbB4ManKa42eTyGO1TFutYFMLi8oWkQEyMAdWEt2KJzzSNR05dzq/2TQC/HXClRFM3KyeMwDwPrdmo4VI0oBTcKSiEh3SIXcFygawNlVJo+8Il5nzZEp4xIXaiUJ6Tbi+zEgI1l8NhVQWeqlgoeRtLiJN+sxkEmdz9zo2g8F4NjrG+mZIEGez5Gd/IW3uYQ3S73XN6k87mGogc+dsjBVfajwoXD0hShZGTKGQgneBM1vDFfZqGGGXXhJE1lty9vJTws4feh+GtMV3OoSomwOayiRaEaBCp0GxZIKODMZpdZFPX9VlhIQYABXYXmXUMhZfjIpe8OjrztYggMGf+zaFGirVOccCMaTZ0sYCZGg6Smy1Z4ICELjSt1yZHxxJsFUOzPZbdjq/mHsgT5LgNiefqpelghLqhoFMmOVGyzISBuO6LisIpCtan5c26JjjhM7xH0oORyU1Tzs00isQAyiJI7mK+5MtcXO2pjXBI+mMDYTS
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(6133799003)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(6133799003)(56012099006)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mYg5MAqbtqAUtQMWKz4QnA6RcbCxG9K4PZojIP9+o8SDqug0xC8xR1iOVLRe?=
- =?us-ascii?Q?LSpTujcOJ1IHuHd9QWrscAtseLVpTMro77pwKeyYq0j09/vUCfyL1yIqR422?=
- =?us-ascii?Q?/HSdAn1EIeeUpmPW41wEc/4NRtx/J0kJbCGVjqvWdvvnryhkOFaNoiViks/1?=
- =?us-ascii?Q?kQ5F3zWQRPBeWhHXzdy4FuVErGS6aoroqpJm5Dx18LYOTRuto3om2WE4m1vR?=
- =?us-ascii?Q?3AL59b5bLSlS74ws6dQixbhtXokdm0LQ1u5LMSsd9QZGSaVpRC3tNvzRgy4R?=
- =?us-ascii?Q?R1vu3AAvPNOkpepDKrd0sEgfYVdVmol2zlLvxF7l4FwOe8zs/bOqxtRDNHOW?=
- =?us-ascii?Q?EFt1wZCR3/my7guqWy/Ft0Jc+7vgwvNlLQD0O9874dgN7yavG3R0LAXgZl6k?=
- =?us-ascii?Q?2bV7Q7hz4dbuqPzuBQ0PB9BYp1JkIan7XIxvSfNP7Pa+X43X45XGZv0dWTcB?=
- =?us-ascii?Q?fRPMXBT5SbZE5Ow2PohxQYZ2PcsulEvuj2efu7zt8XpopS9ynEzVjsaobkWn?=
- =?us-ascii?Q?wqTdLu34yctQ7DQtQuiFOpePLYIQXIzm8FbfGQ/oiGk1KKbxXiOEGe/cJnmT?=
- =?us-ascii?Q?4pseVad+oPgsSZifnnmvwGLe8Wx74jLqqgC+F+ANKu3OjUktro0bPZzE5vZ7?=
- =?us-ascii?Q?EvpDCLUaJF4CWw3xgPFulmUt/2bRJDjCYKiz1lPTZv1LshZ4ajpKpShK+ZL/?=
- =?us-ascii?Q?ZHFA6sbfYXgAEXc++m+5T2Z+P2AiJ4OJ7CgPmI9f3edZl5tswbHaZ5tY1yHJ?=
- =?us-ascii?Q?rMFKpF1mx1VzGEcfYJuoS2E+2PyHbafHCHNb7Ww8fKUO03bMK21qJZWq5bcy?=
- =?us-ascii?Q?zmdEbzPs5c4iZZDKjw3fq7vBgddwrkBptuM2SE6vq+j07/SmWapB5zD2Zn+J?=
- =?us-ascii?Q?PrVrNrhKcSPId/IgP5etWvEp4kNHCO2OuyIr5wheMKb2Oj7jRoDPITkJB+UX?=
- =?us-ascii?Q?weexs1QwRZhEcKbmgqXK2SPKVLWdnnv8Rb5jjoqAz+zMjNn9RSJdgA8BbH//?=
- =?us-ascii?Q?K/nay2GDVqKkOCUmk/rwFjdWS6vLGYErwmH02/CL4aeealTSMp2srWfUTPDX?=
- =?us-ascii?Q?wUoXdUhCTOjJKy4WVtxUIng8P/I24R3HmG6G8OlR73E5bN0AEBNZkNhCZYCQ?=
- =?us-ascii?Q?hEshVhe1fUDvzXzyg94MSKWbrAytfC6I0GO5dSX+is9lVm/N1J1YrlRk8pk3?=
- =?us-ascii?Q?ef0tDWEOae27VapWZpCKmwmmE8BEWsKS9CZn6wvU0JHfiZY2lhkR8lG/YpRC?=
- =?us-ascii?Q?9tQYB99nWUXdTW8m9aiRw6Xkz0PTXO30LG0Eyfe8xNgo6y9PwL5b0ruA61og?=
- =?us-ascii?Q?vty8uoVOgSvhL9rNeM1u4gawkJ+jCtNMgV/7w629xEMIBem4NHZB0NWBw9bo?=
- =?us-ascii?Q?rL1wZv2862oqWELxgK1vMosCELKvnymIltphnDbSBVGw32Bu9XS0JtR/lJ4g?=
- =?us-ascii?Q?pNlGwtljX7C8OgV/HIuxDjzYeSXpONy9vBL1LCMNBc2mHSh1rOkxnxALnqwg?=
- =?us-ascii?Q?VSrPHr22CAvlxz8eFLETmeR4eK0RqIM5eHTOxxgdFqnqNOXbHGhZdh+Uv8x1?=
- =?us-ascii?Q?yDeqKBvVSamxDjV9f8mxkBU1XqZaSCRHVrlCN0FRsAUeydC5VxtGkY+RbWmF?=
- =?us-ascii?Q?GQrPG50zC+exkZQ0Tbz+qcYlRwide/ioQmTQvZxTDVYNTsnrgFX6VbNjzl2z?=
- =?us-ascii?Q?D6kBMbbTyKxZpj3I19gGYt0jEvyIwHycKtPbHBjB23oIHQiFMEREJxdaxrlV?=
- =?us-ascii?Q?taApSUxZZQ=3D=3D?=
+	=?utf-8?B?K3BnUlUzeWkycmNraTYrRitPSTZGU25uR1VKVVR0d1RLZnlVUncrYVJTTXdr?=
+ =?utf-8?B?N3lMTFVRZzVLN0xVNStmTThOMVRDR01yUHpTNzh0ejZPdCtPcmJ5RWJHN3JL?=
+ =?utf-8?B?TTFQakR1TEMrMmhYSFFxQis0YWxIcU1RMFlWYnU2R0kzaTNRVjZYUDNYdHdl?=
+ =?utf-8?B?Vkdad1ZlQkJtbjBxUkVmU1FLbWoxeEkxK253bllHTHp5UHB3Yzh4WXdBQTRI?=
+ =?utf-8?B?dHM1eUM2MGNNYWI0akVkd21HOXczMnozTTF3TDhicDBqTDFkK2ZlOGp4QWFu?=
+ =?utf-8?B?T0VqSEVXa05sVjd0RmU5S3ZDeWRCS3pUMUZoK2pMMU9MVlNJa0lvczNTTUtr?=
+ =?utf-8?B?TzdJbUZYUFJLY3A5d3FrQzJqdHdsUnpvdmxSc0FoN0dVU2RRNlZsM2FmTGsw?=
+ =?utf-8?B?UkxFY3YvSitZZWZiYlg1VE4wRFNWSHVSek05R29sMTA1SFV4UkYzeVF5M1RB?=
+ =?utf-8?B?ZERYUlpyODhkMEJDWVo2QzNJOFZkS2dzek4vT3JVRys2ZUNOZ1QrbW5jRitK?=
+ =?utf-8?B?Z3RQZzVWSWk5MkN2Q0tWN2ZRSDBVK2UzMWkwL1lUd2ZMWVorMmdCUUx5OVpR?=
+ =?utf-8?B?S0t6Z3dvbzYrVlF3MVg5MUR4SEFadkdZQlgrMnpQaW04ZnFvSDlCVytWdmRw?=
+ =?utf-8?B?V0J5WmlGSHl3ZEt1VjJmclR4c0xxM0E5bjZLZnh5aHVrWk96cW0wcGV4NUR4?=
+ =?utf-8?B?YzM3UUh1S09CMGF0WHByK2NNSG4wc0VCTnUvK2xKd0w2QzBHSUt2QnI5RUQr?=
+ =?utf-8?B?QnJEK005QUkrUS84OTVsMXEzSVhiYTNuT3B4Qk9nZnFvWk5lbnVvN3Q5THFj?=
+ =?utf-8?B?M3JpZkdiSkUyc3JTTXEveVFjTm41bkdKWG9KNW41MFp3QVFhR0pDMGtiVTJl?=
+ =?utf-8?B?akVCek9BZjZDR0hRL0pmNU01YmRTdFFtT05yTVI2bSs1Qm1Wc0hGdUVQV3dJ?=
+ =?utf-8?B?UnZRRGpXMHBMVnVyZHlMSGZBdGIxZkw4bjlXeFN2QUR0b1lxcGlPdTY5QTE5?=
+ =?utf-8?B?aHNadmd4ZnlOcmd3K01hd3ppakYxZzMwSE1DbFdMK3hybEZIbnZIR0N3MUtB?=
+ =?utf-8?B?dHU4dXNkVWswLzhYaFY5dStFZDRYb1RCMDVvTlZuQjE3R1k4OWhCVExJakFz?=
+ =?utf-8?B?SnhtNndiRVcvNUZpZnUzQVhIOXRGK3RSbU5tLzZNZjdMbklOQU11Y09BZlVq?=
+ =?utf-8?B?M0QvcVlFWjJWeHg0SjlLVVpWdUxkZm9tVGhhcHRTYkZ0M0ZId3RsaVJVRTlm?=
+ =?utf-8?B?MWs4NVRHdjF4blhEN1lmQkFKd2N4Y3FMSC9IZlhvZVpwdCtsUjNWUGwrT2lI?=
+ =?utf-8?B?T2RRS0o4eVhPdTVTNi9CL09jSW5tUEM2SlpKU3lzTDc2TldNRzQ2OG5Rbnl4?=
+ =?utf-8?B?NzVCcHZsTTJIVGJyQ3dQYnppTzBmeUxIeFM0V2o4WTFrZmMrcjVQdnlvRnQ0?=
+ =?utf-8?B?YXkxZXpyQUNJdC80MmJLOVBFYjNyanlOKy9DOGt2TWJvM2JJd3I4MDF6d1dk?=
+ =?utf-8?B?cXJsUmpScHc2NHJ3Um5XaGgyUUZTTks5YlhqNjdpSEZzTXpEbmI3dkU1Mkda?=
+ =?utf-8?B?OW9kQlVxOHYwN0ZZZytudG5paDRBcjBWK3BDSXE4NEdoTWlsRlhndDJ4SVRi?=
+ =?utf-8?B?ZlN6QW1QQTJFYkl1STBLNEZDYlBEbHYvUHZyT0tOZ2xPVTNwOGJtUFBRV0Fr?=
+ =?utf-8?B?ME0xbm91c1Z6WHI5V1hCc1h5bDE5dEttS0wyVFRTQ0IyVHZscFY1cVorUERq?=
+ =?utf-8?B?Q0g5MXFVbENSdExPM2w1cTBMbm1Ia0czcU5LOVErMW5EZzhZRC80QlJSazlS?=
+ =?utf-8?B?V0tDWDFoR3F1Y0ZFcWhnRGw1eFNWQ2NNSjdRK3BRczMzSnNIbDE3N0NSWENF?=
+ =?utf-8?B?RXlOMkFlOUluVUhEbTRodlh3RlpzUFliNTdBL2xHR2hrUE1jUFBhMHV3aE1j?=
+ =?utf-8?B?ZVh5ZExnR0plU0VJWi93djE5M0pOMVd5TnZ2YVFpMkZUSm9qT29HMmk2YWM3?=
+ =?utf-8?B?V0lhU3Rkb3grcUxzTXRtL0U5aE93L1ExU0dTNWx5dFJUanBQVGdBWHVSYXZv?=
+ =?utf-8?B?Ni9sTUZkUGFwNXRRR0NESXBjcHJ6VjhFWEZjTnRaVmhUNU5heGlRc1lybTBZ?=
+ =?utf-8?B?Rko1b3I1VGkrWUJjalZCcmhrMmw5WXhyOU54WnhrZ1FoY1YveC9NQzNGdE1h?=
+ =?utf-8?B?VXdEQWlBTWY4Mkd4VmlWQzFubUZQUlpiZ3M1SjIvZzhrODExNjZsQ0VPV3Rn?=
+ =?utf-8?B?WWRNTUZUdEZpRWlXWjdVbTc5cURIalZiREJFdGNUMGhMRitQZDlOZzVBK3dR?=
+ =?utf-8?B?Y2Nnc2trdzZWTklCbExBT3V0RjBEK3dkWEwyT2RRNlgrZGlhTGZzUT09?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 92ef42fc-74f6-479b-b3d3-08debdc0508d
+X-MS-Exchange-CrossTenant-Network-Message-Id: edfa6f5d-e604-4a03-5202-08debdc05666
 X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 20:24:41.7996
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 20:24:51.5563
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LZ5c74gt/dPdPdrVh98widjYugs3Mp5Ewsd2jg5U0Be0uCHeZ2TfXl/oKtpltVdHNkMAsIE2mbjb4zPe+qtlDw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8323
+X-MS-Exchange-CrossTenant-UserPrincipalName: EU2dxop+4encaxUUcDU/mnvjy/LScGXu5iGFYhPBnmxzx3HgxOIKc1eIKuRhB9ilKFbi/Xuh7fH4TAVSCIiQog==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7102
 
-On Wed, 27 May 2026 00:14:44 +0000
+On Wed, 27 May 2026 00:19:08 +0000
 sashiko-bot@kernel.org wrote:
 
 > Thank you for your contribution! Sashiko AI review found 1 potential issu=
 e(s) to consider:
-> - [Medium] Overwriting IGB_SRRCTL0 clears the BSIZEPACKET field, setting =
-the receive buffer size to 0 bytes and violating the hardware specification=
-.
+> - [Medium] igb_send_msi() was overlooked by the patch, causing a state re=
+gression due to auto-masking and leaving a magic number unreplaced.
 > --
 >=20
-> commit dc2cc67e8a6e2c641907cee5129b78515c56abca
+> commit 059a9f7e058b59c775b2202ffd0af3e078efbd8a
 > Author: Alex Williamson <alex.williamson@nvidia.com>
 >=20
-> selftests/vfio: igb: Use advanced TX and RX descriptors
+> selftests/vfio: igb: Program MSI-X interrupt routing
 >=20
-> This commit updates the igb selftests driver to use advanced descriptors =
-for
-> transmit and receive. It configures SRRCTL.DESCTYPE to the advanced
-> one-buffer layout for receive and sets up advanced data descriptor fields
-> in igb_memcpy_start() for transmit. Legacy CMD macros are removed.
+> This commit programs the full MSI-X routing sequence for the igb driver i=
+n the
+> vfio selftests. It enables auto-clear and auto-mask for vector 0 and repl=
+aces
+> magic numbers with appropriate macros to match hardware behavior.
 >=20
 > > diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools=
 /testing/selftests/vfio/lib/drivers/igb/igb.c
-> > index 5bbc6fca75189..c0f9cefb23e59 100644
+> > index c0f9cefb23e59..a8f2072b68200 100644
 > > --- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
 > > +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-> > @@ -226,6 +226,17 @@ static void igb_init(struct vfio_pci_device *devic=
-e)
-> >  	igb_write32(igb, IGB_RDLEN0, RING_SIZE * sizeof(struct igb_rx_desc));
-> >  	igb_write32(igb, IGB_RDH0, 0);
-> >  	igb_write32(igb, IGB_RDT0, 0);
-> > +
+> > @@ -271,11 +271,32 @@ static void igb_init(struct vfio_pci_device *devi=
+ce)
+> >  	/* Enable MSI-X with 1 vector for the test */
+> >  	vfio_pci_msix_enable(device, MSIX_VECTOR, 1);
+> > =20
+> > -	/* Enable auto-masking of interrupts to avoid storms without a real I=
+SR */
+> > -	igb_write32(igb, IGB_GPIE, IGB_GPIE_EIAME);
 > > +	/*
-> > +	 * Select the advanced one-buffer descriptor format.  Per 82576
-> > +	 * datasheet section 7.1.5.2: "SRRCTL[n].DESCTYPE must be set to a
-> > +	 * value other than 000b for the 82576 to write back the special
-> > +	 * descriptors."  struct igb_rx_desc matches the advanced one-buffer
-> > +	 * writeback layout (section 7.1.5.2), so polling rx.wb.status_error
-> > +	 * requires this format.  Section 8.10.2 specifies DESCTYPE[27:25].
+> > +	 * Program MSI-X interrupt routing per 82576 datasheet:
+> > +	 *
+> > +	 * GPIE (section 7.3.2.11, Table 7-47): set Multiple_MSIX (bit 4) to
+> > +	 * route interrupt causes through IVAR mapping, and EIAME (bit 30)
+> > +	 * to apply EIAM on MSI-X assertion (without EIAME, EIAM only
+> > +	 * applies on EICR read/write).
+> > +	 *
+> > +	 * EIAC (section 8.8.5): enable auto-clear of EICR for vector 0.
+> > +	 * Without auto-clear the cause stays set after delivery and the
+> > +	 * test can see spurious interrupts on the next memcpy batch.
+> > +	 *
+> > +	 * EIAM (section 8.8.6): enable auto-mask of EIMS for vector 0 on
+> > +	 * MSI-X assertion (effective because EIAME is set), so a single
+> > +	 * interrupt is delivered per memcpy batch even if the cause
+> > +	 * re-asserts before software re-enables the mask.
+> > +	 *
+> > +	 * IVAR (section 7.3.1.2, register definition in 8.8.13): map RX
+> > +	 * cause 0 to MSI-X vector 0 and mark the entry valid.
 > > +	 */
-> > +	igb_write32(igb, IGB_SRRCTL0, IGB_SRRCTL_DESCTYPE_ADV_ONEBUF); =20
+> > +	igb_write32(igb, IGB_GPIE, IGB_GPIE_MULTIPLE_MSIX | IGB_GPIE_EIAME);
+> > +	igb_write32(igb, IGB_EIAC, IGB_EICR_VEC0);
+> > +	igb_write32(igb, IGB_EIAM, IGB_EICR_VEC0); =20
 >=20
 > [Severity: Medium]
-> Does writing directly to IGB_SRRCTL0 unintentionally clear the BSIZEPACKE=
-T
-> field?
+> Will this auto-masking configuration break software interrupt generation =
+in
+> igb_send_msi()?
 >=20
-> Because this is a direct write rather than a read-modify-write, all other=
- bits
-> in the register are cleared to 0, including BSIZEPACKET (bits 6:0).
+> When igb_send_msi() writes to IGB_EICS to generate a software interrupt,
+> the hardware asserts the MSI-X message and auto-masks IGB_EIMS based on
+> this EIAM configuration.
 >=20
-> The Intel 82576 datasheet dictates that BSIZEPACKET sets the receive buff=
-er
-> size in 1 KB increments and explicitly forbids setting it to 0. A 0 value
-> leaves the hardware with no space configured for DMA, causing it to drop
-> incoming packets.
+> Because igb_send_msi() does not explicitly unmask the interrupt before
+> triggering it, will consecutive calls to igb_send_msi() silently fail to
+> deliver the interrupt if there is no intervening unmask?
+
+7.3.2.10  Extended Interrupt Auto Mask Enable Register (EIAM)
+
+  Each bit set in this register enables clearing of the corresponding
+  bit in the extended mask register following read or write-to-clear to
+  EICR. It also enables setting of the corresponding bit in the
+  extended mask register following a write-to-set to EICS.
+
+Table 7-47
+
+  EIAME: When set, upon firing of an MSI-X message, mask bits set in
+  EIAM associated with this message are cleared. Otherwise, EIAM is
+  used only upon read or write of EICR/EICS registers.
+
+7.3.2.7  Extended Interrupt Cause Set Register (EICS)
+
+  This registers allows to set the bits of EICR by software, by writing
+  a 1b in the corresponding bits in EICS. Used usually to rearm
+  interrupts the software didn't have time to handle in the current
+  interrupt routine.
+
+With EIAM[VEC0]=3D1 and EIMS[VEC0]=3D1 (set at init):
+
+ 1. igb_send_msi() writes EICS[VEC0]=3D1 =E2=86=92 sets EICR[VEC0]
+
+ 2. Per 7.3.2.10, the write-to-set to EICS makes EIAM set EIMS[VEC0]m
+    so the mask is armed by the very same operation, regardless of its
+    prior state.
+
+ 3. EICR[VEC0]=3D1 && EIMS[VEC0]=3D1 =E2=86=92 MSI-X message fires (per 7.3=
+.2.8:
+   "Interrupts appear on PCIe only if the interrupt cause bit is a one
+   and the corresponding interrupt mask bit is a one").
+
+ 4. On assertion, with GPIE.EIAME=3D1, EIAM clears EIMS[VEC0] (one-shot thr=
+ottle) and
+   EIAC clears EICR[VEC0].
+
+ 5. Next igb_send_msi() =E2=86=92 step 2 re-sets EIMS[VEC0] again. Self-arm=
+ing.
+    No external unmask required.
+
+The auto-clear (step 4) that the sashiko focused on is exactly undone by
+the auto-set on the next EICS write (step 2). The two halves of EIAM
+are what make the software-MSI path self-contained.
+
+Verified on hardware with back-to-back send_msi().  False positive.
+
+> tools/testing/selftests/vfio/lib/drivers/igb/igb.c:igb_send_msi() {
+> ...
+> 	igb_write32(igb, IGB_EICS, 1);
+> ...
+> }
 >=20
-> This behavior remains present in subsequent patches in the series, where
-> the macro is updated to E1000_SRRCTL(0) but the BSIZEPACKET field remains
-> unpopulated.
->=20
+> Also, does the hardcoded '1' in igb_send_msi() need to be replaced
+>   with IGB_EICR_VEC0 to match the other magic number replacements in
+>   this commit?
 
-From the spec...
+Yes, this should have included:
 
-7.1.3.1 Host Buffers
+diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/tes=
+ting/selftests/vfio/lib/drivers/igb/igb.c
+index a8f2072b6820..b4f75965e18d 100644
+--- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
++++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+@@ -424,7 +424,7 @@ static void igb_send_msi(struct vfio_pci_device *device=
+)
+ {
+ 	struct igb *igb =3D to_igb_state(device);
+=20
+-	igb_write32(igb, IGB_EICS, 1);
++	igb_write32(igb, IGB_EICS, IGB_EICR_VEC0);
+ }
+=20
+ const struct vfio_pci_driver_ops igb_ops =3D {
 
-  ...
-
-  The size of the buffer can be set using either the generic RCTL.BSIZE
-  field, or the per queue SRRCTL[n].BSIZEPACKET field.
-
-  The receive buffer size is selected by bit settings in the Receive
-  Control (RCTL.BSIZE). The register supports buffer sizes of 256, 512,
-  1024, and 2048 bytes. See section 12.7.1 for details.
-
-  If SRRCTL[n].BSIZEPACKET is set to zero for any queue, the buffer
-  size defined by RCTL.BSIZE is used. Otherwise, the buffer size
-  defined by SRRCTL[n].BSIZEPACKET is used.
-
-8.10.1 Receive Control Register - RCTL (0x00100; R/W)
-
-  Field   Bit(s)  Initial Value  Description ->
-
-  BSIZE   17:16       00b
-
-  Receive Buffer Size.
-  BSIZE controls the size of the receive buffers and permits
-  software to trade-off descriptor performance versus required
-  storage space. Buffers that are 2048 bytes require only one
-  descriptor per receive packet maximizing descriptor
-  efficiency.
-
-  00b =3D 2048 Bytes.
-  01b =3D 1024 Bytes.
-  10b =3D 512 Bytes.
-  11b =3D 256 Bytes.
-
-False positive.  Thanks,
+This should be added on commit or respin.  Thanks,
 
 Alex
