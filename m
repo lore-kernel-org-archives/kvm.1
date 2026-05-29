@@ -1,55 +1,55 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8211247DFA6
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB4547ECD3
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093409; cv=none; b=Sy1Uql93BsqPeSW+upiY98UjPn2+AN5RD3pa/F0Hm0/WoRl2UpJo09HiICJe12lf2RLgcTaxSgkiEtfRtZ7rSS/78+tDNe+tJFDDZrAS3Amp+mC6JblYszb4KKTFE9BoTQTqw0g3piaDu5ZZBThIYQpcHV/czhLYENyQC2yup+8=
+	t=1780093411; cv=none; b=q1uWdormuEIMf1BfCYnKT+wNAAUMYAqzsTKi5jeFz0Qz6zt0vhbKQ/0YpPjHyPDJEbQs6awkckfawfZxHMsNAY8W0F2zJhk1wOiqknYxUOj2i39ctlJD3nXLGsR50VsQq1vdTFpB81qkI16W19oBC4piXldXGlCCZSaXmlpn5gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780093409; c=relaxed/simple;
-	bh=KgmvYQ4aIIIwB/uuTF147khWhwDE3Ci/RNN+FkKz8y8=;
+	s=arc-20240116; t=1780093411; c=relaxed/simple;
+	bh=6wkYDhTrv2mLr2QDxNjAG/d6sB8lrG23VG9S3UDHwwU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gyO8Dpo1A7fa79exEjeWL+TExf4t4O6wERLKVO0LZ8KYUChoFVF5kE1WjkO2zkkO9QOAWViEunPDQHLhEG0Z4sklK1ejUpBZAQZE8OaIQULkjpRObSiAtG0GVEfkUJO9KEzQ5PoQ4Uh7+tk4T2xXM9sF6zWksl0tXwRY20UdjfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=snUDUwwX; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=NTwBPkjYmkfr8I3ySfPFp3dmV+Co6cQCJL9UTI5D8Eo1lR0LNtT1XYXmugdmu/lwV1SX69XnKgh+yWG9Uxx6dLm/6LZ6Qv2EgC2UUfC8muTP9UJmX5uHA5RLccVpQl7jcVkPuYJ+P81N2kpySn5Dj9+xQXTFbUfTQfB9bwJpgO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ReEWxTh/; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="snUDUwwX"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf32259e0eso6853345ad.0
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ReEWxTh/"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c829366cf25so18244984a12.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093408; x=1780698208; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780093409; x=1780698209; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=EwR+3vho0VQrVi1Nz9jliESbfPqmEObd/3RZBDK6xpg=;
-        b=snUDUwwXznHNttAIbiAeWb+yf6cniqSjcvHOAVyj6x/7yDXzoOPiSPIM2AX+4A8/Jo
-         iml2L7+8VB9qwZlkhGGio+gTGkCYZSOTxut4FF+kcakCCkC9QSTwbTEeQZ/xhu66y2vz
-         mY/5VXUfZNMEn7Gpk3ikTns3BoxI4gjqTkLg61r/ezA9pgGs6875jHYfGcvf9s+1jkpz
-         syRONXE4ZvHNX3qaxnrS3/0TYA30PLcF7taOoOnodgCbSEw/7Vwbw5dt4M1z0QnKbxrF
-         pslffISHGmflhP9fu0/Eawbt5WRayiv4WjPrO988cgK/loEYZiWRtm6sEoOEmGL141gz
-         UiEA==
+        bh=C5xIBF4dxThLK3TpNNRniIv9BT/2RVg6EsLkvI68oaI=;
+        b=ReEWxTh/V2OZt66YIMn9VfbsVJOjO5Z6ON4u/k2KVfd81QdJ0Zx2QfyacdQGr6TfDY
+         Z9yZPBFWOeMBBAXJ/hyFNC4rmQ1CSEt5kOoTnXgCDiehO47k1mKWEAHmHLDydnqt7gdU
+         F/aEjeRyYfujegKoUppMpHIK1KkYbBxLHRUlwZ2AhJ1MAL6M/xOvHdPmw7ILZxy4HL+5
+         CQ9fKY7pX9GIOVqezIUIlYFrwZoedNakGwLXoUowXYw96A7zQV5a6kqYYRxL3KLJR9K5
+         EquF+hZnl+qm1h05YsfOwrGzzYD1qVROJmEdLsZ4gCidMK041A2K56e8g4nAS6+cV5Hw
+         KbsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093408; x=1780698208;
+        d=1e100.net; s=20251104; t=1780093409; x=1780698209;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EwR+3vho0VQrVi1Nz9jliESbfPqmEObd/3RZBDK6xpg=;
-        b=Hckigt8bcl2iN9a9Q1Vgkbq/6FpLJCkjMxvuDaF8qZJY2iU0FMXpL5mEHQZXthfIcB
-         Nza/3RZai0keZXu/LzbJmiy1Xr1t+eRgDMvX6qMFPMLpP1RxTH6Ar7mCAVYhFzvmoH7k
-         uBeAP7g++swr3WHMn74/nDgjegZnNSmNIkovm7K0IyhtSNmZjASBLyijlb1RWE0sWSNa
-         Mk1h1UcC6b2RJT4XtEdMin8UjHsBn4wZ6dLgclEDuYo1WQvi4guHPpUFWmJvbIjSabV3
-         j8lbK8DeCiFd2CeTpx9EvZE1z/Os1IMF7IDvOL9mvYQ23nkC6uZF3QgS+x7YqlZaFaXH
-         +lOg==
-X-Gm-Message-State: AOJu0YzEfti9XDOnpLHMqzLeoK9NVA4UoT/U+mLnRoOn2GOIazpiO/7i
-	ApZdqNTBB90d6qLBvYv2NtFAIX8vEcIKzdR6ZQv4AiD8rfuG5O2EzgR7DytS+Qg/kKUEZS8Ylx+
-	ScUaHTQ==
-X-Received: from plxj8.prod.google.com ([2002:a17:902:da88:b0:2bf:10b7:41d7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ccc8:b0:2b4:5aff:de60
- with SMTP id d9443c01a7336-2bf36833fefmr19350705ad.22.1780093407781; Fri, 29
- May 2026 15:23:27 -0700 (PDT)
+        bh=C5xIBF4dxThLK3TpNNRniIv9BT/2RVg6EsLkvI68oaI=;
+        b=RRZvImlgSeEmJPcqulpz10svanXFQsTIZM2kNo2+BHBbUi+XKT6iHL8UmoC8QjTm6b
+         7bIwQS1IW7bEdiK0sDmj4B3W7sRqfLWj4mYtJxb4lRjIrk+Ns07rtz3lG8NwsD1/x4IV
+         ZaPJty/Y8uKd+auctgy2AR2lqsIr9GpBGmJ5mQhOH9yWxItybeem9FQwOChL2PrzsQHW
+         BDpSvSpFn72u16oedyM5aWmqP3tr1JX/Bz7CpUV/Lb3awesFM0pU+FvHKwv9Eun3vcCv
+         KuGabXc/oAyPeicrLLfI03tIhyshVMQoKv7VtvpdNP13uQ4sdRzV+R6bgN/+iYOhjvig
+         iPXw==
+X-Gm-Message-State: AOJu0Yzgippl8PbD6qOX/dTZMlydnJTp2ZjunziJSejbFdNEC39snRcR
+	OqS7CS0KWYbdOEdc2zZkPUYJHiBjRWuCjYQpb1B3oeGn6NAqSvXxuFxYZeQ4nKby7nxLiPybKt9
+	UhzaQSg==
+X-Received: from pgum19.prod.google.com ([2002:a65:6a13:0:b0:c79:61dd:3232])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7105:b0:3a8:9dd:75d5
+ with SMTP id adf61e73a8af0-3b4281d6c58mr1272726637.24.1780093408888; Fri, 29
+ May 2026 15:23:28 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 15:22:20 -0700
+Date: Fri, 29 May 2026 15:22:21 -0700
 In-Reply-To: <20260529222223.870923-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529222223.870923-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529222223.870923-38-seanjc@google.com>
-Subject: [PATCH v3 37/40] KVM: x86: Move kvm_pv_send_ipi() declaration from
- kvm_host.h => lapic.h
+Message-ID: <20260529222223.870923-39-seanjc@google.com>
+Subject: [PATCH v3 38/40] KVM: x86/mmu: Move kvm_arch_async_page_ready() below kvm_tdp_page_fault()
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -70,48 +69,97 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Move the declaration of kvm_pv_send_ipi() into lapic.h, as its
-implementation is provided by lapic.c (sending PV IPIs relies on the
-optimized APIC map provided by the in-kernel local APIC), and it's only
-used by KVM x86 code.
+Move the implementation of kvm_arch_async_page_ready() "down" in mmu.c so
+that it lives below kvm_tdp_page_fault().  This will allow moving
+kvm_mmu_do_page_fault() into mmu.c without needing a forward declaration.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h | 4 ----
- arch/x86/kvm/lapic.h            | 3 +++
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 62 +++++++++++++++++++++---------------------
+ 1 file changed, 31 insertions(+), 31 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 38de6c0dc743..a3c1ff784e5c 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2363,10 +2363,6 @@ enum {
- int kvm_arch_interrupt_allowed(struct kvm_vcpu *vcpu);
- void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event);
- 
--int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
--		    unsigned long ipi_bitmap_high, u32 min,
--		    unsigned long icr, int op_64_bit);
--
- u64 kvm_scale_tsc(u64 tsc, u64 ratio);
- u64 kvm_read_l1_tsc(struct kvm_vcpu *vcpu, u64 host_tsc);
- u64 kvm_calc_nested_tsc_offset(u64 l1_offset, u64 l2_offset, u64 l2_multiplier);
-diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
-index 32f09b25884a..58dbb94f980d 100644
---- a/arch/x86/kvm/lapic.h
-+++ b/arch/x86/kvm/lapic.h
-@@ -131,6 +131,9 @@ static inline int kvm_irq_delivery_to_apic(struct kvm *kvm,
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index e4d971d42f0e..f217e71c3af0 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4571,37 +4571,6 @@ static bool kvm_arch_setup_async_pf(struct kvm_vcpu *vcpu,
+ 				  kvm_vcpu_gfn_to_hva(vcpu, fault->gfn), &arch);
  }
  
- void kvm_apic_send_ipi(struct kvm_lapic *apic, u32 icr_low, u32 icr_high);
-+int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
-+		    unsigned long ipi_bitmap_high, u32 min,
-+		    unsigned long icr, int op_64_bit);
+-void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
+-{
+-	int r;
+-
+-	if (WARN_ON_ONCE(work->arch.error_code & PFERR_PRIVATE_ACCESS))
+-		return;
+-
+-	if ((vcpu->arch.mmu->root_role.direct != work->arch.direct_map) ||
+-	      work->wakeup_all)
+-		return;
+-
+-	r = kvm_mmu_reload(vcpu);
+-	if (unlikely(r))
+-		return;
+-
+-	if (!vcpu->arch.mmu->root_role.direct &&
+-	      work->arch.cr3 != kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu))
+-		return;
+-
+-	r = kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, work->arch.error_code,
+-				  true, NULL, NULL);
+-
+-	/*
+-	 * Account fixed page faults, otherwise they'll never be counted, but
+-	 * ignore stats for all other return times.  Page-ready "faults" aren't
+-	 * truly spurious and never trigger emulation
+-	 */
+-	if (r == RET_PF_FIXED)
+-		vcpu->stat.pf_fixed++;
+-}
+-
+ static void kvm_mmu_finish_page_fault(struct kvm_vcpu *vcpu,
+ 				      struct kvm_page_fault *fault, int r)
+ {
+@@ -5058,6 +5027,37 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+ 	return min(range->size, end - range->gpa);
+ }
  
- int kvm_apic_set_base(struct kvm_vcpu *vcpu, u64 value, bool host_initiated);
- int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
++void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
++{
++	int r;
++
++	if (WARN_ON_ONCE(work->arch.error_code & PFERR_PRIVATE_ACCESS))
++		return;
++
++	if ((vcpu->arch.mmu->root_role.direct != work->arch.direct_map) ||
++	      work->wakeup_all)
++		return;
++
++	r = kvm_mmu_reload(vcpu);
++	if (unlikely(r))
++		return;
++
++	if (!vcpu->arch.mmu->root_role.direct &&
++	      work->arch.cr3 != kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu))
++		return;
++
++	r = kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, work->arch.error_code,
++				  true, NULL, NULL);
++
++	/*
++	 * Account fixed page faults, otherwise they'll never be counted, but
++	 * ignore stats for all other return times.  Page-ready "faults" aren't
++	 * truly spurious and never trigger emulation
++	 */
++	if (r == RET_PF_FIXED)
++		vcpu->stat.pf_fixed++;
++}
++
+ #ifdef CONFIG_KVM_GUEST_MEMFD
+ static void kvm_assert_gmem_invalidate_lock_held(struct kvm_memory_slot *slot)
+ {
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
