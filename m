@@ -1,289 +1,263 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010046.outbound.protection.outlook.com [52.101.69.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B61139EF01
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.46
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780065760; cv=fail; b=nmvp/R6tr/ZSc/2fT5zCM+VKY5IsqGXHLHSXp6fdjrWiboZBx+RV4Cb5ALp2xoobIjgEni99s0PR8FDiVeI7hbKpQZZb63T+Sjn2iXX23y77blz5hwv5KlJAuCzisX/gU77bTpEQnSQJcqcpBGBvC/dt3ptKTahI3NRUR3DewkE=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780065760; c=relaxed/simple;
-	bh=L2Dl3zPr8ZGG+17fJfQ7ZtJ5CrL8dan9EoNDpH7Nbfs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NI6tYprVmxPGfeF/RaM5OxahtiIlU+8Ur0jVBAa51uOo7gzR3m0f9laI4vQlo4oIuvw1axJsDcO+WPlWfbchxZFMHqEmWYOxuCfyZ5WhRBg7hRCyLB5UOTOBzipB6Us433x7YobimYQqs3tx3MuTQA2qUainSxxmoQThPAx+XKA=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=QcCjJgeR; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=QcCjJgeR; arc=fail smtp.client-ip=52.101.69.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299B53EAC84
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780065894; cv=none; b=qRGam91zrBnUH4xJQRYc4kg8QFmde8J55j2AhmEbCFisoYUIVjQG7Io5zHesApKiv9apKiVcMq02EmrSKpNMbHmbxxHo5NAPwlBzhRyETM59OYhU7EOSZ2RTCbgnHUHMeMkOn/DuUCbx5fiqzhcCWrwUQS4fmw0PB0kZeuN2+cY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780065894; c=relaxed/simple;
+	bh=3cpMbzFFqk1fqsz2bupF/ffg3SDdqCGa7/msOxpC62s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=N/0Ojw9UVVDlGjqHXo5+HvNoA3LPUZ7IgxfShQYJ6GFS1sGiSOKVQH610KcQXmMxd99y8EFaOm3HS+VyJ2g/vCOjteh5TnZdCheVEK0EWGBzXB8XqxTA+nRT87+Kzk9Pg17kEET5bx/5v9mVK8XHlw1Js901tAuJacIK0I6YSew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MpTJri8U; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="QcCjJgeR";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="QcCjJgeR"
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=Obfd6m37ZhIt2vplw+ARWEt9LkLdGAz0mORHg4QcDrjUgWEESffVw4am77/4arjQT9vwL4gLz42rVcsM7S7cyHIQahF2YtN7xhkpawBrgiIuPdmCrvGFahpKuAM3FZKD5qOOGjY1CGNqotwQa14QR6pzYnMaXZK4hHqWgUX4o6zflqPXjO6hwTeNUy4L8D2ooSstM6UB0xzegJgAyFWZkrc89LoGAXkKpqbmgDEOBUtCKrFaNEMCd6gQ3Ohtp8n1PTSNshz0oSW/QlO4+LZWVfXeXsFVnV5Slnfyaj35dywbXOkmBPyp/taimVI6Xia/mWfq/DB47pbhyXGFGgxzWw==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L2Dl3zPr8ZGG+17fJfQ7ZtJ5CrL8dan9EoNDpH7Nbfs=;
- b=roiEGLjvxrVewTr24XeRoLfHU4o9ygFNDkTaZiqYb1JtrMB6TROo+Nfk/N4TGagV4zMgyQ9pn/U948A5Gf1klx24gHXHOhCLLkpOHTXk6vaswKYL7pItEyfnYRzPRsp+RSSl5cmKYdI4nVHvqutxpNRpHSdw4KFYWHy13hj/i50ugRr9jo6KXeg9CRMJ7lG2OrbXgO0f/3bQhRz3tWEekG9QwKdxrgCvazYpeeGow/qKRehkth4LnWFaEIW2hQjEnmozbwM0YLRJkth+fQxl7d8eqCcsWOtuvda/sgRdBvAh9OuLmxWpCR3c+sedmbNeI86nDz5bzWyTdcQQ3e3+gA==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L2Dl3zPr8ZGG+17fJfQ7ZtJ5CrL8dan9EoNDpH7Nbfs=;
- b=QcCjJgeRFZroHVJYxIj6428Rr6+kErCVl/n9vugvSYQ0gFWbMi4dIgUMv1cDFYlqeIyMuzyv0BI+bzDV9ujQAa6KkDEmlXCjUgdK0QF4LIs5zRIRmuXuOzmGFtfL7B7DOgCmx8tQly2ANYXr9zNFch8lOVgqjuTWDSQlmi7R3uo=
-Received: from AS4P195CA0023.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:5d6::14)
- by AM9PR08MB5921.eurprd08.prod.outlook.com (2603:10a6:20b:2d4::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Fri, 29 May
- 2026 14:42:31 +0000
-Received: from AM3PEPF0000A797.eurprd04.prod.outlook.com
- (2603:10a6:20b:5d6:cafe::64) by AS4P195CA0023.outlook.office365.com
- (2603:10a6:20b:5d6::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.14 via Frontend Transport; Fri, 29
- May 2026 14:42:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AM3PEPF0000A797.mail.protection.outlook.com (10.167.16.102) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.5 via
- Frontend Transport; Fri, 29 May 2026 14:42:30 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q3QsggBYpGBrKz3MAOLOLLkc6c696GMugfrvNs1qO/aUxn+pLapqvehQ4M2TM7jED6HvY/XYsEC85Kg9Oktck4a0e57yhe4aER/U3tum/jZuPJ70xQKfRXCs5iI7GQHal0265BXoPJQyGS15TxYudQMDS0ZYyjy/GQyy5VWCUla9StzkLdeQSMBzeF+AEqyLLHbLxLWc85s1xEtDQWt11OUAyIix3Sr1c222S8eya8Oh2bN/DoRjvrV2/8Wn4rufhDPsBHbuC/xJJOiVvC61G3ciXzFc7kDNzpWulP0C/PFr+mWkTH9QqqTVdmqUY72mW4kEEH+Ldol5sy1voMqS6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L2Dl3zPr8ZGG+17fJfQ7ZtJ5CrL8dan9EoNDpH7Nbfs=;
- b=uCB8BRajE12XucGCyuorA1zEm8OL/5HDx0CBjMv0c9XtpDSuAFEjED69qZnwacGhcNJXovpjoS5mOCZScWTfUnWHLC1OcCeMLb+eeslaaubF8Pk7Tpmje44rjn7wZeSwuvG6M1W3wpJx82V74uXyKxPLns+8kNvNuv9hdPrgNg+E+D1FyJOpQV2TfbLOTcFGK6F3xs01eByTDOMxOLVvpud6fiYaQ/f8BC9SS02723uW+98PkJKWnU7KXdMoppd079fJ+PDx2AcUEZPA6OUObDHEX5UGtsxJjokuMgc0WJ/serxmr4XXLgBxImz838eDtGrO0/ktyqaj8MoiczgOqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L2Dl3zPr8ZGG+17fJfQ7ZtJ5CrL8dan9EoNDpH7Nbfs=;
- b=QcCjJgeRFZroHVJYxIj6428Rr6+kErCVl/n9vugvSYQ0gFWbMi4dIgUMv1cDFYlqeIyMuzyv0BI+bzDV9ujQAa6KkDEmlXCjUgdK0QF4LIs5zRIRmuXuOzmGFtfL7B7DOgCmx8tQly2ANYXr9zNFch8lOVgqjuTWDSQlmi7R3uo=
-Received: from GV1PR08MB7315.eurprd08.prod.outlook.com (2603:10a6:150:1e::15)
- by PAWPR08MB10134.eurprd08.prod.outlook.com (2603:10a6:102:35d::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Fri, 29 May
- 2026 14:41:27 +0000
-Received: from GV1PR08MB7315.eurprd08.prod.outlook.com
- ([fe80::c249:1aed:a4c2:4193]) by GV1PR08MB7315.eurprd08.prod.outlook.com
- ([fe80::c249:1aed:a4c2:4193%3]) with mapi id 15.21.0071.014; Fri, 29 May 2026
- 14:41:27 +0000
-From: Sascha Bischoff <Sascha.Bischoff@arm.com>
-To: "lpieralisi@kernel.org" <lpieralisi@kernel.org>
-CC: "yuzenghui@huawei.com" <yuzenghui@huawei.com>, Timothy Hayes
-	<Timothy.Hayes@arm.com>, Suzuki Poulose <Suzuki.Poulose@arm.com>, nd
-	<nd@arm.com>, "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, Joey Gouly <Joey.Gouly@arm.com>, "maz@kernel.org"
-	<maz@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>
-Subject: Re: [PATCH v2 03/39] irqchip/gic-v5: Setup gic_kvm_info on ACPI hosts
-Thread-Topic: [PATCH v2 03/39] irqchip/gic-v5: Setup gic_kvm_info on ACPI
- hosts
-Thread-Index: AQHc6TEe+iYHG8M0IEiAkiOjZsvaubYjEPMAgAIPHwA=
-Date: Fri, 29 May 2026 14:41:27 +0000
-Message-ID: <67629d5c9c9b32b50ede997e77dbbe4665473d51.camel@arm.com>
-References: <20260521144846.1899475-1-sascha.bischoff@arm.com>
-	 <20260521144846.1899475-4-sascha.bischoff@arm.com>
-	 <ahfraE2vVsZL2xcs@lpieralisi>
-In-Reply-To: <ahfraE2vVsZL2xcs@lpieralisi>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1.1 
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-x-ms-traffictypediagnostic:
-	GV1PR08MB7315:EE_|PAWPR08MB10134:EE_|AM3PEPF0000A797:EE_|AM9PR08MB5921:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd0d9e33-268f-4385-4802-08debd908359
-x-checkrecipientrouted: true
-nodisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|1800799024|366016|376014|38070700021|22082099003|18002099003|56012099006|3023799007|5023799004|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info-Original:
- xJskoLpPD8bs+iQIJk4la4jrDTfFx1G9szcl3Kr9Pn8tF3yvMXKl6LXkcmbgS6zWciltJ3VNlIno2+8zw8AEfB8LsbW0yG29rwOm2R2AhW4F2flyENwL5tg1XsQCWf9bI0pz0TBCpxtuGBm4Ra/jZ670tbbx25FJ0t4AomDeRTzsyFRNnQK+mXOEhrpzZcmVbwGH+vqNfRAeCQtsCIpGSnsDQhp3h+wIg+Ke7q+t4Rmtwr+d8TElSRfwkll+CGMaUBzVfn78+1xZ1KRWUz1ojIXd4rSUjdA2HYfB+BLXgU7a0Un34lGRGiZTIG5buvujHa2Ix2KSe5DFSxN259EVvxC0r1kDVuOOZMSbN0tmdRG0mUhkVX37FrfmSfr+KU3w3RfAehcgk8Or4aVDB/WFa48IhGsWfXln4F9ExRcqo6jQv3etpxPcr/8O9Pu3yLP9l0/Fkh3PWGv5kSJYEtjdG6iaB+8r/sn+NHuc/X3Lv7OKT2zXK3sfH6V52VJnpIMi9qSOyR5SYsSb1tGUzHKDqxvazyJZK6qnE156sQQGClXF/YbU/ZUWkwI7+OpNedL1Z6UYCMpfnciElxM69VaNFrwTITtz9HT7JpHvAwKlqmULjXgZiwo+LjlZHs0vBacjUbJpeqWGj3/4+u5GzrxuegsJSxVF3xXyT86/YbTb//jEWZOpBFICN/ErrIpynxyHjszGOQp4tVuuV1qrOpW3fmFruBO0K+FS6z9pBXiGGwm8FAN9NT7RZT8vGpR+YSqb
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB7315.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700021)(22082099003)(18002099003)(56012099006)(3023799007)(5023799004)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A04D6A4EF6DA6744989CA51D1E206544@eurprd08.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MpTJri8U"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-842208d5b0eso117269b3a.3
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:44:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780065891; x=1780670691; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4ZSmySQjJHcnKIUXjsIIs83nT6d2RU++b42lJ4OxIH4=;
+        b=MpTJri8U3UySK4F4MHJBGmiiMCjnVeBa7VlyDZcxwFbBl7WyhGogFAKAZ3IZZVK6qS
+         3pioov7sC+Q2iwfI5XWfOClBf67nFHWktoDMM9z7RkMRKsCm9LOdVBsqIVAgv/e3njKV
+         NHYsTEl4mXCqcZeZ0D/np5uImPvbWiw7OWmJSCuZ2Bh2Y0ctqO+xHKdZ4CW4B0AlG6RW
+         Er8twC1x4J3+SwSM9dAOIzSn+CPnYWlFUul0qgLyYvQ8s2fVUnSjS70gZP3IXtHyZxdv
+         ePhRcyxJ0hrEArlVlPQ9ePP3LYS0nTj2HPm+MDTT60sillwir+jzzop5DbkkB9QfczyT
+         1Lrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780065891; x=1780670691;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4ZSmySQjJHcnKIUXjsIIs83nT6d2RU++b42lJ4OxIH4=;
+        b=A4VNTyxhRs1wBbwXQvbk/g6lJh+pR8CpbzDFh6gE3ZoijkeRXxSZxBES8yY1psdUCe
+         brHQ6gtfJ7z5Qkkh/QRZ49NDsZS35LsZk4gyHdJtUa67TPAnaaVLZt/s84ChtraQKfq1
+         oR2wztdQE306rMlJSfmnHAex7fN9FqfmsvWHg3VHu03O0KH76deT9PPD0zxqHDElUkAQ
+         Xf3+x4vMSLqvYPAb/Lmro0Oin/gS52RFUdzmtTQohGZK/Xsan9wJ2tofQGhagKqkMI0U
+         kN/Iuv0XXyGPdvI2yItExTP40doh8WIf1GOKqgUU8E7vPSlzR5Lyscrbcg4AyeboVf8w
+         Q70w==
+X-Forwarded-Encrypted: i=1; AFNElJ8uNGzYD0R/ePRJlWaUfNFEvXldDfRNaM1bjjowHuDQPAKeu2o530peZOTJ8anpkbtoYos=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywk67/TsLuosHv/M96nrcAo1+YSFuEvHPeXe54U+ofEeNDr5OlK
+	JUC/505flx3yZaUxhYxsmkoCeK+PwDiuv2cSdVlwUdHD7PPEIy283fYZWaRvlbXPkqOpER2aGGq
+	iswcjqA==
+X-Received: from pfbgg3.prod.google.com ([2002:a05:6a00:6303:b0:838:ec6d:449c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:140f:b0:83e:ccd6:2dc8
+ with SMTP id d2e1a72fcca58-84212ce3e9emr3273017b3a.27.1780065890910; Fri, 29
+ May 2026 07:44:50 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 29 May 2026 07:43:47 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
- dUC01cx0rLSYAmeoVaaOVeVDvoFRuYkfdSlRVJt3cctwaLblcz+1b1AKSRoCAO7gTgMZcIZzaVlY7CvVrtKcyFCvFblHeSL2ykTx7lDmwHvS9mWk2YCDZGknb2nthbTUOhBii7UNi4cyHnlNIOPMGDb9jJbBcUWgYmmkGcKuqdSMA6yVheyoVDMZtWa3KcgXHmu3n6SXspOMjg50934di+O1XrjfjuFIXv/W9pmUU22NX5TFxVBWKfffcroQlaRYg8rFoPYU3Mx6f2CV116k40FhuO0Y3987SkSde2oHpnk39bT8NNrjkRbW7FMGR5NTttNwnqQ8g8SYAopEvNVt5Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB10134
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AM3PEPF0000A797.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	36584b8b-137a-4114-3dfa-08debd905d73
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|35042699022|14060799003|376014|82310400026|1800799024|36860700016|4143699003|56012099006|3023799007|5023799004|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Cv3rMMr//7rQQhG61c7zimwqQ42N1WOkYYV37t/TJoQW2zAj73SqhwFdIOPbWfG9K1NI66bKT1C7DvqQj8Qd/xTXUqjsp7zjaw840P2qVQFP+MVTT/U0hLaj5+mB/UT5B8yu/y6qIjsu5bETFx+lzgoKqIl2rC+FRJrecNLlhcBG3WJUZEegcbqCIvrJRa1VnPIhFQNFHMiIu1lQGAQjA9SxKHmfu2o7jIH4gcMCJEMMAZwj0cR1yoBKXsTqplkHaG5kXbBbc46VJOR2t4AThmeBr38rS9vGGtPc0atAH9wNEVeT9HXLoh44wlwDo2OfoqNjKCIjEJxmX3aNBi0rDYlAetp9mcNi+E/9EDPIHj+nF3iUKX3uubB0EjOIv95waYXm3ddnDYdrnDrL/RKUX4XL3QkEvU2cOnIpOMvF9VLy0lkFYCw8AOFcbesruN88A+I14JvSQa/5tSzR2Mq6aND7yrL7ruSNkU9opPYONLq6vhEEbuy8DAQGHSU3kvUau8H/EW58cLoXawplpOe1tXhjhirx4DruwYsyFG3+Rt46SAxJJ0yjmG+1pbOQqiKhURMKLkycEBJrt0LZqUzgnErzFjZp8pMyS0T7phwtIiH1AosNheBTFtH2jBSB4U9wFO45/uJEBvZjCs2xqJxO4wrtVPWnnxsNQy9yntLl1Y6VLrNv1ggAigdUBSAHULzyLQDbkIfwDjADVvjJSsmM8Y1vYe3sE+v9OGe9NxZahEc=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(14060799003)(376014)(82310400026)(1800799024)(36860700016)(4143699003)(56012099006)(3023799007)(5023799004)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	xP0lCBPGjctI+RzGOkXeWeCoHQI0SNZK8nNkJBzw3JnajgmiYTYwtvLbmpvykmNFaYL4GgrfGM1OGgDTtdWw5tbPR1KYbRuCcpc2M3zEveSX8eTUdVCaIb7UY3BoI2Psvr7tuOEDdeX7KvcAjGRazPs9pFYT9iuqEWSS1w3+Uj1ozzDNN8lOM7mrQS6I0ISuipvvMqSrVEmBSi2HzLJFbOjIyiO71S1vaj66zk3VPdGVFD4wbwRrZcQwBa2NzBmXvRP8FLh6IjeCLjMrWYxz5IgX2PGqsiFgvgOaK2puB1PBCgOVlLfu2AmQzlx0eYUY06Glv2R+vfFWRC9OAtQt+PnlGkpn0gaajEug01r2FDcYQttQMkc64pa1xaU7NmTkUjqsHukxMxKQ8i2esm9LwcIliydQKEkGC7rYQkWRG0U5BEFmZibTJ6OEu3r+MpT+
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 14:42:30.8731
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd0d9e33-268f-4385-4802-08debd908359
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM3PEPF0000A797.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR08MB5921
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
+Message-ID: <20260529144435.704127-1-seanjc@google.com>
+Subject: [PATCH v4 00/47] x86: Try to wrangle PV clocks vs. TSC
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
+	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Michael Kelley <mhklinux@outlook.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 
-T24gVGh1LCAyMDI2LTA1LTI4IGF0IDA5OjE0ICswMjAwLCBMb3JlbnpvIFBpZXJhbGlzaSB3cm90
-ZToNCj4gT24gVGh1LCBNYXkgMjEsIDIwMjYgYXQgMDI6NTA6MDlQTSArMDAwMCwgU2FzY2hhIEJp
-c2Nob2ZmIHdyb3RlOg0KPiA+IERldmljZS10cmVlIGJhc2VkIEdJQ3Y1IHByb2JpbmcgYWxyZWFk
-eSBwYXNzZXMgdGhlIElSUyBkZXRhaWxzIGFuZA0KPiA+IG1haW50ZW5hbmNlIGludGVycnVwdCB0
-byBLVk0sIGJ1dCB0aGUgQUNQSSBwYXRoIG9ubHkgaW5pdGlhbGlzZXMNCj4gPiB0aGUNCj4gPiBp
-cnFjaGlwIGFuZCBpbnN0YWxscyB0aGUgQUNQSSBJUlEgbW9kZWwuIEFzIGEgcmVzdWx0LCBLVk0g
-bmV2ZXINCj4gPiBzZWVzDQo+ID4gdGhlIEdJQ3Y1IGhvc3QgaW5mb3JtYXRpb24gcmVxdWlyZWQg
-dG8gcHJvYmUgdGhlIHZHSUMgb24gQUNQSQ0KPiA+IHN5c3RlbXMuDQo+ID4gDQo+ID4gQWRkIHRo
-ZSBBQ1BJIGVxdWl2YWxlbnQgb2YgdGhlIERUIEtWTSBzZXR1cC4gUGFyc2UgdGhlIE1BRFQgR0lD
-Qw0KPiA+IGVudHJpZXMgZm9yIHRoZSBtYWludGVuYW5jZSBpbnRlcnJ1cHQsIHJlcXVpcmUgYWxs
-IHJlbGV2YW50IGVudHJpZXMNCj4gPiB0bw0KPiA+IGFncmVlLCByZWdpc3RlciB0aGUgaW50ZXJy
-dXB0IGFzIGEgR0lDdjUgUFBJLWVuY29kZWQgR1NJLCBhbmQgcGFzcw0KPiA+IHRoZQ0KPiA+IHJl
-c3VsdGluZyBJUlEgdG9nZXRoZXIgd2l0aCB0aGUgSVJTIGJhc2UgYW5kIGNvaGVyZW5jeSBpbmZv
-cm1hdGlvbg0KPiA+IHRvDQo+ID4gS1ZNLiBOYXRpdmUgR0lDdjUgZG9lcyBub3QgcmVxdWlyZSBh
-IG1haW50ZW5hbmNlIGludGVycnVwdCB1bmxlc3MNCj4gPiB0aGUNCj4gPiBsZWdhY3kgR0lDdjMt
-Y29tcGF0aWJsZSBDUFUgaW50ZXJmYWNlIGlzIHByZXNlbnQsIHNvIHByZXNlcnZlIHRoZQ0KPiA+
-IGV4aXN0aW5nIG5vLW1haW50ZW5hbmNlLUlSUSBoYW5kbGluZyBmb3IgdGhhdCBjYXNlLg0KPiA+
-IA0KPiA+IFNpZ25lZC1vZmYtYnk6IFNhc2NoYSBCaXNjaG9mZiA8c2FzY2hhLmJpc2Nob2ZmQGFy
-bS5jb20+DQo+ID4gLS0tDQo+ID4gwqBkcml2ZXJzL2lycWNoaXAvaXJxLWdpYy12NS5jIHwgMTAz
-DQo+ID4gKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0NCj4gPiDCoDEgZmlsZSBj
-aGFuZ2VkLCA5OCBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+IGRpZmYg
-LS1naXQgYS9kcml2ZXJzL2lycWNoaXAvaXJxLWdpYy12NS5jIGIvZHJpdmVycy9pcnFjaGlwL2ly
-cS0NCj4gPiBnaWMtdjUuYw0KPiA+IGluZGV4IDcwN2RlYWJiZjJmNjMuLmNjZDFlYzY5YTZhYjIg
-MTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9pcnFjaGlwL2lycS1naWMtdjUuYw0KPiA+ICsrKyBi
-L2RyaXZlcnMvaXJxY2hpcC9pcnEtZ2ljLXY1LmMNCj4gPiBAQCAtMTEyNiw3ICsxMTI2LDcgQEAg
-c3RhdGljIHZvaWQgZ2ljdjVfc2V0X2NwdWlmX2lkYml0cyh2b2lkKQ0KPiA+IMKgI2lmZGVmIENP
-TkZJR19LVk0NCj4gPiDCoHN0YXRpYyBzdHJ1Y3QgZ2ljX2t2bV9pbmZvIGdpY192NV9rdm1faW5m
-byBfX2luaXRkYXRhOw0KPiA+IMKgDQo+ID4gLXN0YXRpYyB2b2lkIF9faW5pdCBnaWNfb2Zfc2V0
-dXBfa3ZtX2luZm8oc3RydWN0IGRldmljZV9ub2RlICpub2RlKQ0KPiA+ICtzdGF0aWMgdm9pZCBf
-X2luaXQgZ2ljX3NldHVwX2t2bV9pbmZvKHVuc2lnbmVkIGludCBtYWludF9pcnEpDQo+ID4gwqB7
-DQo+ID4gwqAJc3RydWN0IGdpY3Y1X2lyc19jaGlwX2RhdGEgKmlyc19kYXRhID0NCj4gPiBnaWN2
-NV9pcnNfZ2V0X2NoaXBfZGF0YSgpOw0KPiA+IMKgDQo+ID4gQEAgLTExNDAsMTMgKzExNDAsMTQg
-QEAgc3RhdGljIHZvaWQgX19pbml0DQo+ID4gZ2ljX29mX3NldHVwX2t2bV9pbmZvKHN0cnVjdCBk
-ZXZpY2Vfbm9kZSAqbm9kZSkNCj4gPiDCoAkJcmV0dXJuOw0KPiA+IMKgCX0NCj4gPiDCoA0KPiA+
-IC0JZ2ljX3Y1X2t2bV9pbmZvLnR5cGUgPSBHSUNfVjU7DQo+ID4gKwlpZiAoV0FSTl9PTighaXJz
-X2RhdGEpKQ0KPiA+ICsJCXJldHVybjsNCj4gPiDCoA0KPiA+ICsJZ2ljX3Y1X2t2bV9pbmZvLnR5
-cGUgPSBHSUNfVjU7DQo+ID4gwqAJZ2ljX3Y1X2t2bV9pbmZvLmdpY3Y1X2lycy5iYXNlID0gaXJz
-X2RhdGEtPmlyc19iYXNlOw0KPiA+IMKgCWdpY192NV9rdm1faW5mby5naWN2NV9pcnMubm9uX2Nv
-aGVyZW50ID0gISEoaXJzX2RhdGEtDQo+ID4gPmZsYWdzICYgSVJTX0ZMQUdTX05PTl9DT0hFUkVO
-VCk7DQo+ID4gLQ0KPiA+IC0JLyogR0lDIFZpcnR1YWwgQ1BVIGludGVyZmFjZSBtYWludGVuYW5j
-ZSBpbnRlcnJ1cHQgKi8NCj4gPiAtCWdpY192NV9rdm1faW5mby5tYWludF9pcnEgPSBpcnFfb2Zf
-cGFyc2VfYW5kX21hcChub2RlLCAwKTsNCj4gPiArCWdpY192NV9rdm1faW5mby5tYWludF9pcnEg
-PSBtYWludF9pcnE7DQo+ID4gKwlnaWNfdjVfa3ZtX2luZm8ubm9fbWFpbnRfaXJxX21hc2sgPSBm
-YWxzZTsNCj4gPiDCoA0KPiA+IMKgCS8qDQo+ID4gwqAJICogV2UgcmVxdWlyZSBhbiBNSSBpZiB3
-ZSBoYXZlIGxlZ2FjeSBzdXBwb3J0LCBidXQgZG9uJ3QsDQo+ID4gb3RoZXJ3aXNlLg0KPiA+IEBA
-IC0xMTYyLDEwICsxMTYzLDEwMSBAQCBzdGF0aWMgdm9pZCBfX2luaXQNCj4gPiBnaWNfb2Zfc2V0
-dXBfa3ZtX2luZm8oc3RydWN0IGRldmljZV9ub2RlICpub2RlKQ0KPiA+IMKgDQo+ID4gwqAJdmdp
-Y19zZXRfa3ZtX2luZm8oJmdpY192NV9rdm1faW5mbyk7DQo+ID4gwqB9DQo+ID4gKw0KPiA+ICtz
-dGF0aWMgdm9pZCBfX2luaXQgZ2ljX29mX3NldHVwX2t2bV9pbmZvKHN0cnVjdCBkZXZpY2Vfbm9k
-ZSAqbm9kZSkNCj4gPiArew0KPiA+ICsJLyogR0lDIFZpcnR1YWwgQ1BVIGludGVyZmFjZSBtYWlu
-dGVuYW5jZSBpbnRlcnJ1cHQgKi8NCj4gPiArCWdpY19zZXR1cF9rdm1faW5mbyhpcnFfb2ZfcGFy
-c2VfYW5kX21hcChub2RlLCAwKSk7DQo+ID4gK30NCj4gPiArDQo+ID4gKyNpZmRlZiBDT05GSUdf
-QUNQSQ0KPiA+ICtzdHJ1Y3QgZ2ljdjVfYWNwaV9rdm1faW5mbyB7DQo+ID4gKwl1MzIgbWFpbnRf
-aXJxOw0KPiA+ICsJaW50IG1haW50X2lycV9tb2RlOw0KPiA+ICt9Ow0KPiA+ICsNCj4gPiArc3Rh
-dGljIHN0cnVjdCBnaWN2NV9hY3BpX2t2bV9pbmZvIGFjcGlfdjVfa3ZtX2luZm8gX19pbml0ZGF0
-YTsNCj4gPiArDQo+ID4gK3N0YXRpYyBpbnQgX19pbml0IGdpY19hY3BpX3BhcnNlX3ZpcnRfbWFk
-dF9naWNjKHVuaW9uDQo+ID4gYWNwaV9zdWJ0YWJsZV9oZWFkZXJzICpoZWFkZXIsDQo+ID4gKwkJ
-CQkJCWNvbnN0IHVuc2lnbmVkDQo+ID4gbG9uZyBlbmQpDQo+ID4gK3sNCj4gPiArCXN0cnVjdCBh
-Y3BpX21hZHRfZ2VuZXJpY19pbnRlcnJ1cHQgKmdpY2MgPQ0KPiA+ICsJCShzdHJ1Y3QgYWNwaV9t
-YWR0X2dlbmVyaWNfaW50ZXJydXB0ICopaGVhZGVyOw0KPiA+ICsJc3RhdGljIGludCBmaXJzdF9t
-YWR0ID0gdHJ1ZTsNCj4gPiArCWludCBtYWludF9pcnFfbW9kZTsNCj4gPiArDQo+ID4gKwlpZiAo
-IShnaWNjLT5mbGFncyAmDQo+ID4gKwnCoMKgwqDCoMKgIChBQ1BJX01BRFRfRU5BQkxFRCB8DQo+
-ID4gQUNQSV9NQURUX0dJQ0NfT05MSU5FX0NBUEFCTEUpKSkNCj4gPiArCQlyZXR1cm4gMDsNCj4g
-PiArDQo+ID4gKwltYWludF9pcnFfbW9kZSA9IChnaWNjLT5mbGFncyAmIEFDUElfTUFEVF9WR0lD
-X0lSUV9NT0RFKSA/DQo+ID4gKwkJCSBBQ1BJX0VER0VfU0VOU0lUSVZFIDoNCj4gPiBBQ1BJX0xF
-VkVMX1NFTlNJVElWRTsNCj4gPiArDQo+ID4gKwlpZiAoZmlyc3RfbWFkdCkgew0KPiA+ICsJCWZp
-cnN0X21hZHQgPSBmYWxzZTsNCj4gPiArDQo+ID4gKwkJYWNwaV92NV9rdm1faW5mby5tYWludF9p
-cnEgPSBnaWNjLT52Z2ljX2ludGVycnVwdDsNCj4gPiArCQlhY3BpX3Y1X2t2bV9pbmZvLm1haW50
-X2lycV9tb2RlID0gbWFpbnRfaXJxX21vZGU7DQo+ID4gKwkJcmV0dXJuIDA7DQo+ID4gKwl9DQo+
-ID4gKw0KPiA+ICsJLyogVGhlIG1haW50ZW5hbmNlIGludGVycnVwdCBtdXN0IGJlIHRoZSBzYW1l
-IGZvciBldmVyeQ0KPiA+IEdJQ0MgZW50cnkuICovDQo+ID4gKwlpZiAoYWNwaV92NV9rdm1faW5m
-by5tYWludF9pcnEgIT0gZ2ljYy0+dmdpY19pbnRlcnJ1cHQgfHwNCj4gPiArCcKgwqDCoCBhY3Bp
-X3Y1X2t2bV9pbmZvLm1haW50X2lycV9tb2RlICE9IG1haW50X2lycV9tb2RlKQ0KPiA+ICsJCXJl
-dHVybiAtRUlOVkFMOw0KPiA+ICsNCj4gPiArCXJldHVybiAwOw0KPiA+ICt9DQo+ID4gKw0KPiA+
-ICtzdGF0aWMgYm9vbCBfX2luaXQgZ2ljX2FjcGlfY29sbGVjdF92aXJ0X2luZm8odm9pZCkNCj4g
-PiArew0KPiA+ICsJaW50IGNvdW50Ow0KPiA+ICsNCj4gPiArCWFjcGlfdjVfa3ZtX2luZm8ubWFp
-bnRfaXJxID0gMDsNCj4gPiArCWFjcGlfdjVfa3ZtX2luZm8ubWFpbnRfaXJxX21vZGUgPSAwOw0K
-PiANCj4gTml0OiB0aGVyZSBpcyBubyBuZWVkIHRvIHplcm8gdGhlbS4NCg0KSGF2ZSBkcm9wcGVk
-IHRoaXMuDQoNCj4gDQo+ID4gKw0KPiA+ICsJY291bnQgPQ0KPiA+IGFjcGlfdGFibGVfcGFyc2Vf
-bWFkdChBQ1BJX01BRFRfVFlQRV9HRU5FUklDX0lOVEVSUlVQVCwNCj4gPiArCQkJCcKgwqDCoMKg
-wqANCj4gPiBnaWNfYWNwaV9wYXJzZV92aXJ0X21hZHRfZ2ljYywgMCk7DQo+ID4gKw0KPiA+ICsJ
-cmV0dXJuIGNvdW50ID4gMDsNCj4gPiArfQ0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgX19pbml0
-IGdpY19hY3BpX3NldHVwX2t2bV9pbmZvKHZvaWQpDQo+ID4gK3sNCj4gPiArCXVuc2lnbmVkIGlu
-dCBtYWludF9pcnEgPSAwOw0KPiA+ICsJaW50IGlycTsNCj4gPiArDQo+ID4gKwlpZiAoIWdpY19h
-Y3BpX2NvbGxlY3RfdmlydF9pbmZvKCkpIHsNCj4gPiArCQlwcl93YXJuKCJVbmFibGUgdG8gZ2V0
-IGhhcmR3YXJlIGluZm9ybWF0aW9uIHVzZWQNCj4gPiBmb3IgdmlydHVhbGl6YXRpb25cbiIpOw0K
-PiA+ICsJCXJldHVybjsNCj4gPiArCX0NCj4gPiArDQo+ID4gKwlpZiAoYWNwaV92NV9rdm1faW5m
-by5tYWludF9pcnEpIHsNCj4gPiArCQl1MzIgZ3NpID0gRklFTERfUFJFUChHSUNWNV9IV0lSUV9U
-WVBFLA0KPiA+IEdJQ1Y1X0hXSVJRX1RZUEVfUFBJKSB8DQo+ID4gKwkJCcKgIEZJRUxEX1BSRVAo
-R0lDVjVfSFdJUlFfSUQsDQo+ID4gYWNwaV92NV9rdm1faW5mby5tYWludF9pcnEpOw0KPiANCj4g
-V2hhdCB5b3UgZ2V0IGZyb20gdGhlIE1BRFQgdGFibGUgaXMgdGhlIEdTSSBhbHJlYWR5IGVuY29k
-ZWQuDQoNCkFoLCB5ZXMuIFRoYXQgbWFrZXMgc2Vuc2UuIEFsdGhvdWdoIHdoYXQgSSBoYXZlIGhl
-cmUgaXNuJ3Qgc3RyaWN0bHkNCmhhcm1mdWwsIGl0IGlzIHBvaW50bGVzcy4gSSd2ZSBkcm9wcGVk
-IHRoaXMgYW5kIGRpcmVjdGx5IHVzZSB3aGF0IHdlDQpnZXQgZnJvbSB0aGUgTUFEVC4NCg0KPiAN
-Cj4gPiArDQo+ID4gKwkJaXJxID0gYWNwaV9yZWdpc3Rlcl9nc2koTlVMTCwgZ3NpLA0KPiA+ICsJ
-CQkJCWFjcGlfdjVfa3ZtX2luZm8ubWFpbnRfaXJxDQo+ID4gX21vZGUsDQo+ID4gKwkJCQkJQUNQ
-SV9BQ1RJVkVfSElHSCk7DQo+ID4gKwkJaWYgKGlycSA8PSAwKQ0KPiA+ICsJCQlyZXR1cm47DQo+
-IA0KPiBBcyB3ZSBkaXNjdXNzZWQgb2ZmbGluZSwgd2UgYXJlIHJlc29sdmluZyB0aGUgSVJRIGJl
-Zm9yZSBrbm93aW5nDQo+IHdoZXRoZXINCj4gRkVBVF9HQ0lFX0xFR0FDWSBpcyBzdXBwb3J0ZWQu
-IEkgZG9uJ3QgdGhpbmsgaXQgaXMgc3BlY2lmaWVkIHdoYXQNCj4gdGhhdA0KPiBHU0kgdmFsdWUg
-aW4gdGhlIEdJQ0Mgc2hvdWxkIGJlIHdoZW4gIUZFQVRfR0NJRV9MRUdBQ1ksIEkgd2lsbCBhc2sN
-Cj4gZm9yDQo+IGEgc3BlYyB1cGRhdGUgb24gdGhlIG1hdHRlci4NCg0KSXQgd291bGQgYmUgZ29v
-ZCBpZiBpdCB3YXMgb2J2aW91c2x5IG1hcmtlZCBhcyBzb21ldGhpbmcgZWFzaWx5DQppZGVudGlm
-aWFibGUgYXMgYSBub24tdmFsaWQgdmFsdWUgaW4gdGhhdCBjYXNlLg0KDQpQbGVhc2UgZG8gbGV0
-IG1lIGtub3cgaWYgeW91IHRoaW5rIHRoYXQgSSBzaG91bGQgcHVsbCB0aGUNCkZFQVRfR0NJRV9M
-RUdBQ1kgY2hlY2sgaW4gaGVyZSB0byBza2lwIHRoZSB3aG9sZSBNSSBleHRyYWN0aW9uIGluIHRo
-ZQ0KZmlyc3QgcGxhY2UgaWYgd2UgZGVmaW5pdGVseSBkb24ndCBuZWVkIGl0LiBJIHdhcyB0cnlp
-bmcgdG8gYXZvaWQNCmR1cGxpY2F0aW5nIGl0LCBidXQgbWF5YmUgaXQgaXMgYmVzdCB0aGF0IHdl
-IGV4cGxpY2l0bHkgY2hlY2sgZWFybHkNCndpdGggQUNQSSB0byBhdm9pZCB0aGlzIGV4YWN0IHNp
-dHVhdGlvbi4NCg0KPiANCj4gPiArDQo+ID4gKwkJbWFpbnRfaXJxID0gaXJxOw0KPiA+ICsJfQ0K
-PiA+ICsNCj4gPiArCWdpY19zZXR1cF9rdm1faW5mbyhtYWludF9pcnEpOw0KPiA+ICt9DQo+ID4g
-KyNlbmRpZg0KPiA+IMKgI2Vsc2UNCj4gPiDCoHN0YXRpYyBpbmxpbmUgdm9pZCBfX2luaXQgZ2lj
-X29mX3NldHVwX2t2bV9pbmZvKHN0cnVjdCBkZXZpY2Vfbm9kZQ0KPiA+ICpub2RlKQ0KPiA+IMKg
-ew0KPiA+IMKgfQ0KPiA+ICsNCj4gPiArI2lmZGVmIENPTkZJR19BQ1BJDQo+ID4gK3N0YXRpYyBp
-bmxpbmUgdm9pZCBfX2luaXQgZ2ljX2FjcGlfc2V0dXBfa3ZtX2luZm8odm9pZCkNCj4gPiArew0K
-PiA+ICt9DQo+ID4gKyNlbmRpZg0KPiA+IMKgI2VuZGlmIC8vIENPTkZJR19LVk0NCj4gDQo+IEFs
-bCBvZiB0aGUgYWJvdmUgaXMgYWxtb3N0IGlkZW50aWNhbCB0byBHSUN2MyBjb2RlIHJldHJpZXZp
-bmcgdGhlDQo+IG1haW50ZW5hbmNlDQo+IElSUSwgd2hpY2ggaXMgbm90IHN1cnByaXNpbmcgdGhl
-IG9ubHkgZGlmZmVyZW5jZSBpcyB3aGVyZSB5b3Ugc3RvcmUNCj4gaXQuDQo+IA0KPiBJIHRoaW5r
-IGl0IGlzIGZpbmUgdG8gbGVhdmUgdGhpcyBhcyBpcywgd3JpdGluZyBhIGhlbHBlciB0aGF0IHdl
-IGNhbg0KPiByZXVzZQ0KPiBpbiB2MyBhbmQgdjUgZHJpdmVycyBzZWVtcyBvdmVya2lsbCBhdCBw
-cmVzZW50Lg0KDQpGb3IgcmlnaHQgbm93IEknbGwgbGVhdmUgdGhpcyBhcyBpcywgYnV0IHdpbGwg
-bm90ZSB0aGUgZnV0dXJlIGNsZWFuLXVwDQpvcHBvcnR1bml0eS4NCg0KPiANCj4gVGhhbmtzLA0K
-PiBMb3JlbnpvDQoNClRoYW5rcyBhIGxvdCwNClNhc2NoYQ0KDQo+IA0KPiA+IMKgc3RhdGljIGlu
-dCBfX2luaXQgZ2ljdjVfaW5pdF9jb21tb24oc3RydWN0IGZ3bm9kZV9oYW5kbGUNCj4gPiAqcGFy
-ZW50X2RvbWFpbikNCj4gPiBAQCAtMTI2NCw2ICsxMzU2LDcgQEAgc3RhdGljIGludCBfX2luaXQg
-Z2ljX2FjcGlfaW5pdCh1bmlvbg0KPiA+IGFjcGlfc3VidGFibGVfaGVhZGVycyAqaGVhZGVyLCBj
-b25zdCB1bnNpZw0KPiA+IMKgCQlnb3RvIG91dF9pcnM7DQo+ID4gwqANCj4gPiDCoAlhY3BpX3Nl
-dF9pcnFfbW9kZWwoQUNQSV9JUlFfTU9ERUxfR0lDX1Y1LA0KPiA+IGdpY192NV9nZXRfZ3NpX2Rv
-bWFpbl9pZCk7DQo+ID4gKwlnaWNfYWNwaV9zZXR1cF9rdm1faW5mbygpOw0KPiA+IMKgDQo+ID4g
-wqAJcmV0dXJuIDA7DQo+ID4gwqANCj4gPiAtLSANCj4gPiAyLjM0LjENCg0K
+Well, the number of patches in the series is going in the wrong direction,
+but I'm much happier with this version, which eschews the x86_platform
+overrides entirely in favor of a fixed sequence for selecting the TSC/CPU
+frequency "routine".
+
+Given that previous versions had fatal NULL pointer deref bugs that affected
+VMware and Xen, this series needs testing and acks from those maintainers.
+
+The primary goal of this series to fix flaws with SNP and TDX guests where a
+PV clock provided by the untrusted hypervisor is used instead of the secure
+TSC that is controlled by trusted firmware.
+
+The secondary goal is modernize running under KVM.  Currently, KVM guests will
+use TSC for clocksource, but not sched_clock.  And Linux-as-a-KVM-guest doesn't
+support paravirt enumeration of the TSC/APIC frequencies, even though QEMU
+provides that information by default.
+
+The tertiary goal is to clean up the PV clock code to deduplicate logic across
+hypervisors, and to hopefully make it all easier to maintain going forward.
+
+v4 also adds a quaternary goal of cleaning up the TSC calibration code, which
+was made stupidly hard to follow by hypervisor code mixing in with the native
+calibration routines, instead of being implemented as a pure alternative.
+
+Lots more background on the SNP/TDX motiviation:
+https://lore.kernel.org/all/20250106124633.1418972-13-nikunj@amd.com
+
+As before, I deliberately omitted jailhouse-dev@googlegroups.com from the To/Cc,
+as those emails bounced on v1, AFAICT nothing has changed.
+
+Note, I deliberately didn't collect a few reviews as the patches changed quite
+a bit from what was reviewed in v3.
+
+v4:
+ - Use x86_init_noop() to skip save/restore on VMware and Xen instead of
+   nullifying x86_platform.{save,restore}_sched_clock_state. [Sashiko]
+ - Use '0' to indicate "failure" when getting the CPU frequency from CPUID, to
+   avoid using an out-param and thus make it all but impossible to
+   unintentionally clobber the global cpu_khz (which v3 did). [Sashiko]
+ - Rename cpuid_get_cpu_freq() => __cpu_khz_from_cpuid() to capture its
+   relationship with cpu_khz_from_cpuid().
+ - Compute lapic_timer_period in units of ticks, not Khz. [Sashiko]
+ - Kill off x86_platform_ops.calibrate_{cpu,tsc}(), and instead use dedicated
+   hooks for hypervisor code, and direct calls for TDX and SNP. [David, loosely]
+ - Drop SNP's secure TSC override of _CPU_ calibration, as there's zero
+   evidence it's justified or a net positive.
+ - Collect reviews/acks. [David, Wei]
+ - Decouple getting TSC/APIC frequencies from KVM PV CPUID from kvmclock. [David]
+ - Fix an amusing number of Opportunistically misspellings. [David]
+ - Set kvm_sched_clock_offset _before_ registering kvmclock as sched_clock,
+   and add a comment to guard against future goofs. [Sashiko]
+ - Keep "setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE)" in Hyper-V's handling
+   of HV_ACCESS_TSC_INVARIANT, as it's technically possible to have a VM
+   with HV_ACCESS_TSC_INVARIANT but not HV_ACCESS_FREQUENCY_MSRS.  Though as
+   a _very_ nice side effect of using dedicated sequencing for selecting the
+   TSC frequency source, this would have naturally happened anyways. [Sashiko]
+
+v3:
+ - https://lore.kernel.org/all/20260515191942.1892718-1-seanjc@google.com
+ - Collect reviews. [Michael, Thomas]
+ - Use Hyper-V reference counter / refcounter instead of Hyper-V timer. [Michael]
+ - Use the paravirt CPUID interface first proposed by VMware for KVM's
+   "official" mechanism for communicating frequency to KVM-aware guests,
+   instead of abusing Intel's CPUID leafs. [David]
+ - Deal with paravirt code being moved into asm/timers.h and
+   arch/x86/kernel/tsc.c.
+
+v2:
+ - https://lore.kernel.org/all/Z8YWttWDtvkyCtdJ@google.com
+ - Add struct to hold the TSC CPUID output. [Boris]
+ - Don't pointlessly inline the TSC CPUID helpers. [Boris]
+ - Fix a variable goof in a helper, hopefully for real this time. [Dan]
+ - Collect reviews. [Nikunj]
+ - Override the sched_clock save/restore hooks if and only if a PV clock
+   is successfully registered.
+ - During resome, restore clocksources before reading persistent time.
+ - Clean up more warts created by kvmclock.
+ - Fix more bugs in kvmclock's suspend/resume handling.
+ - Try to harden kvmclock against future bugs.
+
+v1: https://lore.kernel.org/all/20250201021718.699411-1-seanjc@google.com
+
+David Woodhouse (3):
+  KVM: x86: Officially define CPUID 0x40000010 as PV Timing Info (TSC
+    and Bus)
+  x86/kvm: Obtain TSC frequency from PV CPUID if present
+  x86/xen: Obtain TSC frequency from CPUID if present
+
+Sean Christopherson (44):
+  x86/tsc: Never re-calibrate TSC frequency if its exact timing is known
+  x86/tsc: Add a standalone helpers for getting TSC info from CPUID.0x15
+  x86/sev: Mark TSC as reliable when configuring Secure TSC
+  x86/sev: Don't override CPU frequency calibration for SNP's Secure TSC
+  x86/sev: Move check for SNP Secure TSC support to tsc_early_init()
+  x86/sev: Shove SNP's secure/trusted TSC frequency directly into
+    "calibration"
+  x86/tdx: Force TSC frequency with CPUID-based info provided by the
+    TDX-Module
+  x86/tsc: Add dedicated hypervisor hooks for getting known TSC/CPU
+    frequencies
+  x86/acrn: Mark TSC frequency as known when using ACRN for calibration
+  x86/tsc: Consolidate forcing of X86_FEATURE_TSC_KNOWN_FREQ for PV code
+  x86/tsc: Kill off x86_platform_ops.calibrate_{cpu,tsc}() hooks
+  x86/tsc: Rename pit_hpet_ptimer_calibrate_cpu() =>
+    native_calibrate_cpu_late()
+  x86/tsc: Fold native_calibrate_cpu() into recalibrate_cpu_khz()
+  x86/kvmclock: Rename kvm_get_tsc_khz() to kvmclock_get_tsc_khz()
+  x86/kvm: Mark TSC as reliable when it's constant and nonstop
+  x86/kvm: Get local APIC bus frequency from PV CPUID Timing Info
+  x86/tsc: Add standalone helper for getting CPU frequency from CPUID
+  x86/kvm: Get CPU base frequency from CPUID when it's available
+  clocksource: hyper-v: Register sched_clock save/restore iff it's
+    necessary
+  clocksource: hyper-v: Drop wrappers to sched_clock save/restore
+    helpers
+  clocksource: hyper-v: Don't save/restore TSC offset when using HV
+    sched_clock
+  x86/kvmclock: Setup kvmclock for secondary CPUs iff CONFIG_SMP=y
+  x86/kvm: Don't disable kvmclock on BSP in syscore_suspend()
+  x86/paravirt: Remove unnecessary PARAVIRT=n stub for
+    paravirt_set_sched_clock()
+  x86/paravirt: Move handling of unstable PV clocks into
+    paravirt_set_sched_clock()
+  x86/kvmclock: Move sched_clock save/restore helpers up in kvmclock.c
+  x86/xen/time: NOP-ify x86_platform's sched_clock save/restore hooks
+  x86/vmware: NOP-ify save/restore hooks when using VMware's sched_clock
+  x86/tsc: WARN if TSC sched_clock save/restore used with PV sched_clock
+  x86/paravirt: Pass sched_clock save/restore helpers during
+    registration
+  x86/kvmclock: Move kvm_sched_clock_init() down in kvmclock.c
+  x86/xen/time: Mark xen_setup_vsyscall_time_info() as __init
+  x86/pvclock: Mark setup helpers and related various as
+    __init/__ro_after_init
+  x86/pvclock: WARN if pvclock's valid_flags are overwritten
+  x86/kvmclock: Refactor handling of PVCLOCK_TSC_STABLE_BIT during
+    kvmclock_init()
+  timekeeping: Resume clocksources before reading persistent clock
+  x86/kvmclock: Hook clocksource.suspend/resume when kvmclock isn't
+    sched_clock
+  x86/kvmclock: WARN if wall clock is read while kvmclock is suspended
+  x86/paravirt: Mark __paravirt_set_sched_clock() as __init
+  x86/paravirt: Plumb a return code into __paravirt_set_sched_clock()
+  x86/paravirt: Don't use a PV sched_clock in CoCo guests with trusted
+    TSC
+  x86/kvmclock: Use TSC for sched_clock if it's constant and non-stop
+  x86/kvmclock: Plumb in AP-online and BSP-resume to kvmlock, for
+    documentation
+  x86/paravirt: Move using_native_sched_clock() stub into timer.h
+
+ Documentation/virt/kvm/x86/cpuid.rst |  12 ++
+ arch/x86/coco/sev/core.c             |  21 +--
+ arch/x86/coco/tdx/tdx.c              |  19 ++-
+ arch/x86/include/asm/acrn.h          |   5 -
+ arch/x86/include/asm/kvm_para.h      |  12 +-
+ arch/x86/include/asm/sev.h           |   4 +-
+ arch/x86/include/asm/tdx.h           |   2 +
+ arch/x86/include/asm/timer.h         |  15 +-
+ arch/x86/include/asm/tsc.h           |  11 +-
+ arch/x86/include/asm/x86_init.h      |   8 +-
+ arch/x86/include/uapi/asm/kvm_para.h |  11 ++
+ arch/x86/kernel/cpu/acrn.c           |  10 +-
+ arch/x86/kernel/cpu/mshyperv.c       |  65 +-------
+ arch/x86/kernel/cpu/vmware.c         |  13 +-
+ arch/x86/kernel/jailhouse.c          |   7 +-
+ arch/x86/kernel/kvm.c                | 108 +++++++++++--
+ arch/x86/kernel/kvmclock.c           | 208 ++++++++++++++++---------
+ arch/x86/kernel/pvclock.c            |   9 +-
+ arch/x86/kernel/tsc.c                | 218 +++++++++++++++++----------
+ arch/x86/kernel/x86_init.c           |   2 -
+ arch/x86/mm/mem_encrypt_amd.c        |   3 -
+ arch/x86/xen/time.c                  |  25 ++-
+ drivers/clocksource/hyperv_timer.c   |  38 +++--
+ include/clocksource/hyperv_timer.h   |   2 -
+ kernel/time/timekeeping.c            |   9 +-
+ 25 files changed, 533 insertions(+), 304 deletions(-)
+
+
+base-commit: 4678d11f294de0fd295a265e02955b5d1a4a2684
+-- 
+2.54.0.823.g6e5bcc1fc9-goog
+
