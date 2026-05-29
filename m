@@ -1,172 +1,286 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A4A37883C
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F3F376A1C
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780074215; cv=none; b=jiXY82jAmlxpKVDstoaavHffzauQMP3Ld9SvzEeRCwj5Y19zZEZaloRf5w1QxfdTIHxplb0dXN4GnrzvAUzMZlRB4x7i+JcAlpVaEo3QDkgX90sD0EWcXkGR39zBBQxeqFILPjW/hN0fjp9n8vznTvlQg1iBKimKWFmsViZ3AS0=
+	t=1780074622; cv=none; b=kjhXyxoujcWUCEMj1mM5HKNd3nsmLg1wE1CM4NnH8b5OKdMXP+fPua2rdsScwOBmRc01jCaCKIWhq/3d6iBxBPSyLi4LZyFzvLcsZ6Mu2XCMo+0u+WidBx2rHG0I2gwijDLC/SFYYw+by00W1h6XKM+C9/cZMC6Hge0j+yh8vFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780074215; c=relaxed/simple;
-	bh=uYdO0Zb0EMGnJnig6FT1XOpGRq5xI3F+BHn+7Ktj+UE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hlc1/8yPrd0mJDPX2hGCXrWOjlCOVNHqI9nMVs0W3yg72HllzMkWmGgFhvzzx3mTkgYu0/2FQcV5w7rHKUs/fsfJ7pYxTQ6Q2jYfY0DrUJoWav4zoRx4uCtPhgpueqTBFHTrb+MUp5EXG0BGrFcLsemM+z0wrSXyHHwHRC5LnkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bbfxgCb4; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1780074622; c=relaxed/simple;
+	bh=wMIRWPVm+r0VN0D0usddVdKct2ivn3U71T2fYilRABY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=YEznPGa3WlltNDcy4hLvfXBqir+cJzdLqeki+QBWH+b06uvqjrVSbc6yEhjgvefMfoGjbN8VF6UTApSgsvScNHUUH1MiVgQndmq/MNCxFI2/Z3OaOHSk7/FvbuPnRJrKjXsKnMA6GS9BSGRu54eLiRJ5rxGaH/S8AqN8LsJRoec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnBO9Sxb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bbfxgCb4"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2bf2d865383so1655ad.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 10:03:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780074213; x=1780679013; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IvcYM9yAFt1S3eUjneK8l3ddApYMEHlD7c1/gPxFFF8=;
-        b=bbfxgCb4syHnfSlErVKpjuTZJFRDGn9xRhcE6hUv9NRUuI9/V4LG+4ySnHRB5/7YTv
-         IkCy7mqkVrZQAdSHzg8IqmDpDJ/v0+utz4tb2meOfqQmNPvsUhQ9Sgl9bXZ0F7PrwXzr
-         4FIzqChv2AeWoapIu5zJzmYTSkuRDsgCJKOPeYsWgDilJuHzG1bZWCjlO9a3CYuIxcGO
-         FAEpJGnb0xGoYedz8QEiAr6UqjFYfYj/RkEwgC911o/20m6G1Es38jc+3NArsWdMOfLG
-         JOX2P82A23p2YstHHfaU41xECxIynKkiOdJd3R7jhKu2WfUqLfRPcIdAEIC/6uiG7Jp2
-         Mkbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780074213; x=1780679013;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IvcYM9yAFt1S3eUjneK8l3ddApYMEHlD7c1/gPxFFF8=;
-        b=kHLWvY8eDN4xT5nzD0F5D1nWkxFx/+Lvj8fQcEOdSfY7LuCj4Iigm0lqNNnOFiDFpH
-         oSGdKu5omCKb1WcpU187Fo56MhvApbDVyShZKteCNBT2c7r7+xqB5S6a3j5tyJ9jaaqs
-         tCItNsTuIKEEVnakngmSnQ5eHWorCRcsjq29tUL6NjrN9N7A/RSiez9hd/GV25KqU1X2
-         9N2e49AfGRMx8RsNrZ9eXopKc7H1j3oWcifXDZFZsSrUaUjOsUvyCCenzBdd4ByXg6rk
-         9RztfGFqOyaameokK0yvZaZtTEUHIjhCDngmsZTg39Vem0RDg9NYUJ/rBrPOlkXvesgS
-         0nxg==
-X-Forwarded-Encrypted: i=1; AFNElJ/dOshgeCUv0Wy3P9VT9Jsz5kDhDsRPSXTCkvkG8sQWAufnb1HlB5Ws9BRLeku22xR68Hk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9de8ZiP7WuPZmSeKjs01tyTPFNGPfAQXFijjgquZWikBNuOrH
-	YVYDn47RRBjV2b482qSvRBulGSu3PB/piSz3w22KXW0C53vE67ufE4CKSJWL+xJmWg==
-X-Gm-Gg: Acq92OHUsnk65XIrJT1/xaFrPOQ1AcCdR4LVU2H+aFQQ0uT8LtW6qlGqCLpTqVxHCbu
-	uYvrcO/ohhgytWYcqq8QJ1vhww5zZjielx70plHF5JcLjDin+TgL7J2FcSaKIuEA4THQX5FZr+m
-	Yd6OnaIigGB17rvJUU9uce5XJbjlKq/d5meAJuK11+/AeZj679Fzzz2BaCTVNb+ubVpuMHPlOEj
-	xXm9y4NYF/DuEM4y4EdmVEIP3osQifI+/B59tNotKtHblRgucxpxd9VVPjOD8UE9zTVC0cteZj3
-	IQqBEtjvP/UKAGfl0KEFlG+vwvfqRQ+CC6zKqMQHa11i+C8buYQGwrsqAqHRlONtTI+awC05Ksc
-	mzVJkf1XVR2ek728QYFO83av6TFWclcQWPZjUocD6ypYmlXfVSPxyspeLBzAhEdLDuw9LW1gAvV
-	bgr8eMVXaMszeleAliUkOLC9h0sIztGNi7C0Lwip7z8yl0hgLoGwcMtVtxjje4RtfIDR1Fiw==
-X-Received: by 2002:a17:902:e889:b0:2ba:4749:c9a2 with SMTP id d9443c01a7336-2bf97507257mr30445ad.2.1780074212695;
-        Fri, 29 May 2026 10:03:32 -0700 (PDT)
-Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf23a10165sm24198555ad.31.2026.05.29.10.03.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 10:03:32 -0700 (PDT)
-Date: Fri, 29 May 2026 17:03:28 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Ankit Soni <Ankit.Soni@amd.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>, YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH v2 10/16] iommu: Restore and reattach preserved domains
- to devices
-Message-ID: <ahnGsfuKSwgt3b_T@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-11-skhawaja@google.com>
- <zgdfgca45ealra5cckvsgeugfkuwdv6kima5f7hbun4m6lnjjo@bqxhvyoeovyz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnBO9Sxb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD1E1F00893;
+	Fri, 29 May 2026 17:10:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780074620;
+	bh=y3ACOIOX3BkDm0bQj9w46HyKP8mV3HZRUT80B8l6PpI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=BnBO9SxbSzORuN0otOD+eSBekf9+OuEVo24Mj/YYnQM1STl6W4FGGvPg42SIknzGN
+	 ZNOp0QmqVLDk7D+7VFABEe7dRYM+XL3RobCMwFko6p+1teguK18HJ/FG7AOheeivSs
+	 4Pq8xq1k9kEPlYS6sb0uHGZxFMB/ywtCnI8QQO/SoCtUOc2C6SNTV967nGhpWV2Byz
+	 IXgXdx++mTWpYsUTk007qjcFA8Y9TZNv3Mjq9ukCai05NTKjcb0uS65ssKIZBls6PC
+	 9RAb6AJRDQRMZPoaevbK1vErho7gWfrzKb912L63RJDt1gEVTKLoXx5rSw/RNe8FbY
+	 +M6rPdJLmXY/Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 04/27] uapi: KVM: Provide arm64 UAPI for other host
+ architectures
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260529155050.2902245-5-seiden@linux.ibm.com>
+References: <20260529155050.2902245-5-seiden@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 29 May 2026 17:10:19 +0000
+Message-Id: <20260529171020.0FD1E1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <zgdfgca45ealra5cckvsgeugfkuwdv6kima5f7hbun4m6lnjjo@bqxhvyoeovyz>
 
-On Fri, May 29, 2026 at 04:43:42PM +0000, Ankit Soni wrote:
->On Mon, Apr 27, 2026 at 05:56:27PM +0000, Samiullah Khawaja wrote:
->> Restore the preserved domains by restoring the page tables using restore
->> IOMMU domain op. Reattach the preserved domain to the device during
->> default domain setup. While attaching, reuse the domain ID that was used
->> in the previous kernel. The context entry setup is not needed as that is
->> preserved during liveupdate.
->>
->> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->> ---
->>  drivers/iommu/intel/iommu.c      | 49 ++++++++++++++------
->>  drivers/iommu/intel/iommu.h      |  3 +-
->>  drivers/iommu/intel/nested.c     |  2 +-
->>  drivers/iommu/iommu.c            | 61 ++++++++++++++++++++++++-
->>  drivers/iommu/liveupdate.c       | 78 ++++++++++++++++++++++++++++++++
->>  include/linux/iommu-liveupdate.h | 50 ++++++++++++++++++++
->>  6 files changed, 224 insertions(+), 19 deletions(-)
->>
->> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
->> index 4118a0861f38..b90757164cd8 100644
->> --- a/drivers/iommu/intel/iommu.c
->> +++ b/drivers/iommu/intel/iommu.c
->> @@ -1031,7 +1031,8 @@ static bool first_level_by_default(struct intel_iommu *iommu)
->>  	return true;
->>  }
->>
->> -int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu)
->> +int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu,
->> +			int restore_did)
->>  {
->>  	struct iommu_domain_info *info, *curr;
->>  	int num, ret = -ENOSPC;
->> @@ -1051,8 +1052,11 @@ int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu)
->>  		return 0;
->>  	}
->>
->> -	num = ida_alloc_range(&iommu->domain_ida, IDA_START_DID,
->> -			      cap_ndoms(iommu->cap) - 1, GFP_KERNEL);
->> +	if (restore_did >= IDA_START_DID)
->> +		num = restore_did;
->> +	else
->> +		num = ida_alloc_range(&iommu->domain_ida, IDA_START_DID,
->> +				      cap_ndoms(iommu->cap) - 1, GFP_KERNEL);
->>  	if (num < 0) {
->>  		pr_err("%s: No free domain ids\n", iommu->name);
->>  		goto err_unlock;
->> @@ -1320,10 +1324,14 @@ static int dmar_domain_attach_device(struct dmar_domain *domain,
->>  {
->>  	struct device_domain_info *info = dev_iommu_priv_get(dev);
->>  	struct intel_iommu *iommu = info->iommu;
->> +	struct device_ser *device_ser = NULL;
->
->Typo here? iommu_device_ser.
->compiles because dev_iommu_restored_state() returns void * and the
->variable is only null-checked, never dereferenced.
+Thank you for your contribution! Sashiko AI review found 10 potential issue=
+(s) to consider:
+- [Critical] Including both the host and guest architecture KVM headers in =
+the same file results in fatal compiler errors due to redefinition of stand=
+ard structures.
+- [Critical] `struct kvm_run` memory layout is corrupted for arm64 translat=
+ion units running on s390 due to the absence of the `__KVM_S390` macro.
+- [High] The newly introduced `include/uapi/arch/arm64/linux/kvm.h` and the=
+ existing generic `include/uapi/linux/kvm.h` use the identical include guar=
+d `__LINUX_KVM_H`.
+- [High] Unconditional use of the `__uint128_t` compiler extension in the f=
+allback definition of `user_fpsimd_state_arm64` breaks compilation for 32-b=
+it targets.
+- [High] Kbuild logic restricts cross-architecture header exports exclusive=
+ly to the s390 architecture, breaking unified cross-platform compilation.
+- [Medium] The patch exports headers into a new top-level `arch/` directory=
+ within the standard system include path.
+- [Medium] Missing vital architectural constants due to the exclusion of `<=
+asm/ptrace.h>` on non-aarch64 hosts.
+- [Medium] Missing `$(srctree)/` prefix in Makefile pattern rule prerequisi=
+te can break out-of-tree builds.
+- [Low] Unnecessary addition of the raw generated include directory to the =
+global LINUXINCLUDE path.
+- [Low] Mismatched header guard name in comment.
+--
 
-Agreed. Will update this.
->
->Ankit
->
->>  	unsigned long flags;
->>  	int ret;
->>
->> -	ret = domain_attach_iommu(domain, iommu);
->> +	device_ser = dev_iommu_restored_state(dev);
->> +
->> +	ret = domain_attach_iommu(domain, iommu,
->> +				  dev_iommu_restore_did(dev, &domain->domain));
->>  	if (ret)
->>  		return ret;
->>
+commit ca2d355250085514c5eaba71ad083aa58746bc53
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-[snip]
->>  static inline struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
->>  {
->>  	return NULL;
->> --
->> 2.54.0.545.g6539524ca2-goog
->>
+uapi: KVM: Provide arm64 UAPI for other host architectures
 
-Thanks,
-Sami
+Enable the ARM64 userspace API to be used on non-arm64 host
+architectures, with initial support for s390. This introduces
+conditional aliases to achieve architecture independence and updates
+the build system to export arm64 architecture headers for s390.
+
+> diff --git a/Makefile b/Makefile
+> index f056c921ea9cd..c34f823a9db05 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -588,6 +588,7 @@ LINUXINCLUDE    :=3D \
+>  		-I$(objtree)/arch/$(SRCARCH)/include/generated \
+>  		-I$(srctree)/include \
+>  		-I$(objtree)/include \
+> +		-I$(objtree)/include/generated \
+
+[Severity: Low]
+Is this addition necessary? The kernel's USERINCLUDE variable already
+includes -I$(objtree)/include/generated/uapi, which is where the arm64
+generic headers are correctly generated. Adding the parent directory might
+improperly expose internal generated headers to the global search path.
+
+> diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/=
+asm/kvm.h
+> index 1c13bfa2d38aa..75cf5aff940e1 100644
+> --- a/arch/arm64/include/uapi/asm/kvm.h
+> +++ b/arch/arm64/include/uapi/asm/kvm.h
+[ ... ]
+> +#ifdef __aarch64__
+>  #include <asm/ptrace.h>
+> -typedef struct user_pt_regs user_pt_regs_arm64;
+> -typedef struct user_fpsimd_state user_fpsimd_state_arm64;
+> +#else
+
+[Severity: Medium]
+By excluding <asm/ptrace.h> on non-aarch64 hosts, are we missing vital
+architectural constants (such as PSR_MODE_EL1h) needed to correctly initial=
+ize
+the pstate variable in user_pt_regs_arm64? It looks like applications might=
+ be
+forced to manually redefine these core arm64 architectural constants.
+
+> +typedef struct {
+> +	__u64		regs[31];
+> +	__u64		sp;
+> +	__u64		pc;
+> +	__u64		pstate;
+> +} user_pt_regs_arm64;
+> +typedef struct {
+> +	__uint128_t	vregs[32];
+
+[Severity: High]
+Does using the __uint128_t compiler extension here break compilation for
+32-bit userspace targets? Since this type is not universally supported on
+32-bit compilers (like 32-bit x86 or 32-bit s390 compat environments), would
+it be safer to use a standard integer type like a __u64 array to guarantee
+ABI compatibility?
+
+> +	__u32		fpsr;
+> +	__u32		fpcr;
+> +	__u32		__reserved[2];
+> +} __attribute__((aligned(16))) user_fpsimd_state_arm64;
+> +#endif /* __aarch64__ */
+
+[ ... ]
+>  struct kvm_regs {
+> -	struct user_pt_regs regs;	/* sp =3D sp_el0 */
+> +	user_pt_regs_arm64 regs;	/* sp =3D sp_el0 */
+> =20
+>  	__u64	sp_el1;
+>  	__u64	elr_el1;
+> =20
+>  	__u64	spsr[KVM_NR_SPSR];
+> =20
+> -	struct user_fpsimd_state fp_regs;
+> +	user_fpsimd_state_arm64 fp_regs;
+>  };
+
+[Severity: Critical]
+If an application includes both the host's <asm/kvm.h> (e.g., s390) and the
+guest's <arch/arm64/asm/kvm.h> to interact with both architectures, will th=
+is
+result in compilation errors? Both files unconditionally define standard
+architectural KVM structures like struct kvm_regs, struct kvm_sregs, and
+struct kvm_fpu.
+
+> diff --git a/include/uapi/Kbuild b/include/uapi/Kbuild
+> index 61ee6e59c930b..452bf9d5c9c0f 100644
+> --- a/include/uapi/Kbuild
+> +++ b/include/uapi/Kbuild
+> @@ -12,3 +12,7 @@ ifeq ($(wildcard $(objtree)/arch/$(SRCARCH)/include/gen=
+erated/uapi/asm/kvm_para.
+>  no-export-headers +=3D linux/kvm_para.h
+>  endif
+>  endif
+> +
+> +ifneq ($(ARCH),s390)
+> +no-export-headers +=3D arch/%
+> +endif
+
+[Severity: High]
+Does this logic restrict cross-architecture header exports exclusively to t=
+he
+s390 architecture? It appears this will prevent include/uapi/arch/arm64/lin=
+ux/kvm.h
+from being exported during make headers_install on native arm64 systems,
+meaning userspace applications cannot unconditionally include
+<arch/arm64/linux/kvm.h> when targeting arm64 VMs.
+
+> diff --git a/include/uapi/arch/arm64/linux/kvm.h b/include/uapi/arch/arm6=
+4/linux/kvm.h
+> new file mode 100644
+> index 0000000000000..21528a146b4d9
+> --- /dev/null
+> +++ b/include/uapi/arch/arm64/linux/kvm.h
+> @@ -0,0 +1,8 @@
+> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+> +#ifndef __LINUX_KVM_H
+> +#define __LINUX_KVM_H
+
+[Severity: High]
+Is it safe to use __LINUX_KVM_H as the include guard here? The existing
+generic include/uapi/linux/kvm.h uses the exact same guard. If the generic =
+or
+host KVM header is included first, the ARM64-specific definitions from this
+file will be skipped, preventing userspace applications from simultaneously
+accessing host and guest KVM ioctls and types.
+
+[Severity: Medium]
+Does exporting headers into a new top-level arch/ directory violate Linux
+UAPI conventions? By placing headers in include/uapi/arch/arm64/,
+make headers_install will create an arch/ directory in the global system
+include directory (e.g., /usr/include/arch/). Standard convention dictates
+that exported headers belong in linux/, asm/, or asm-generic/.
+
+> +
+> +#include <arch/arm64/asm/kvm.h>
+> +#include <linux/kvm-generic.h>
+> +
+> +#endif /*__LINUX_KVM_H */
+
+> diff --git a/include/uapi/linux/kvm-generic.h b/include/uapi/linux/kvm-ge=
+neric.h
+> new file mode 100644
+> index 0000000000000..a9c757029808b
+> --- /dev/null
+> +++ b/include/uapi/linux/kvm-generic.h
+[ ... ]
+> +struct kvm_run {
+> +	/* in */
+> +	__u8 request_interrupt_window;
+[ ... ]
+> +	__u64 cr8;
+> +	__u64 apic_base;
+> +
+> +#ifdef __KVM_S390
+> +	/* the processor status word for s390 */
+> +	__u64 psw_mask; /* psw upper half */
+> +	__u64 psw_addr; /* psw lower half */
+> +#endif
+
+[Severity: Critical]
+Could this cause memory layout corruption for arm64 translation units runni=
+ng
+on s390? If a developer uses a separate translation unit for arm64 logic and
+includes only <arch/arm64/linux/kvm.h>, the host's <asm/kvm.h> is not inclu=
+ded
+and __KVM_S390 remains undefined.=20
+
+This removes 16 bytes from the struct, shifting the offsets of all subseque=
+nt
+union fields and causing a silent ABI mismatch with the host kernel.
+
+[ ... ]
+> +struct kvm_pre_fault_memory {
+> +	__u64 gpa;
+> +	__u64 size;
+> +	__u64 flags;
+> +	__u64 padding[5];
+> +};
+> +
+> +#endif /* __LINUX_KVM_GENERIC_H */
+
+[Severity: Low]
+This isn't a bug, but there is a typo here. The #endif comment refers to
+__LINUX_KVM_GENERIC_H, while the actual header guard defined at the top of
+the file is __LINUX_GENERIC_KVM_H.
+
+> diff --git a/scripts/Makefile.asm-headers b/scripts/Makefile.asm-headers
+> index 8a4856e741803..86d4d7173fcdf 100644
+> --- a/scripts/Makefile.asm-headers
+> +++ b/scripts/Makefile.asm-headers
+[ ... ]
+> +# Let architectures define architecture specific headers that are shared=
+ with
+> +# other architectures to enable single-system cross architecture communi=
+cation
+> +$(shared-uapi-y): $(obj)/%.h: $(shared-uapi-src)/%.h FORCE
+> +	$(call if_changed,share_hdr)
+
+[Severity: Medium]
+Can omitting the $(srctree)/ prefix in this pattern rule prerequisite break
+out-of-tree builds? Unlike other rules that properly use $(srctree)/, relyi=
+ng
+entirely on VPATH resolution violates Kbuild best practices and can lead to
+missing prerequisites during out-of-tree (O=3D...) builds.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
+245-1-seiden@linux.ibm.com?part=3D4
