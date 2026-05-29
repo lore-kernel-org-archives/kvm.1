@@ -1,151 +1,128 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010050.outbound.protection.outlook.com [52.101.56.50])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8188733E344;
-	Fri, 29 May 2026 23:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780095960; cv=fail; b=IGQ8pUKluTByXfzU/HGxfxnX6lTB6boog30ZoBq40kCO6z2rMqFOMNI6lctPyik9MYpsxNuf52i4nuSFyYt5/CcDAtHsmREP9fMjKGFKpPX2SUJDE7rVmd2YdfjJ0uEOflF8BeVWlNrtr/ybdf0+S0ponAbCF0jNSwotqrfMquk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780095960; c=relaxed/simple;
-	bh=RziyMbkKHyUWUWzlPjEEyWD4Nc+3G0IVUGLNP8JX+Gk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=QkedAxkPykUP3mJ0ysLonUbTAiWPZcpk0nMdI488qpXroEnTolxJOxzfRmjafTG7UtQaARPcCLhV2yLbbMoWKCkN9l7WyISK2KV9w0Va906bBS8qQVsm7BHPL9tgeUmXA9YcchcJdlihdJXdMw/S+7LoiY5bU5LnCrJSiHweYZs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=l3Ng2q8e; arc=fail smtp.client-ip=52.101.56.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25D6327C18
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 23:21:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780096876; cv=none; b=tTNHAHWO9lUJBVoPgxD7mFHA/02nFbj1mYNEgawl09+vWvhWm19m3pGdhvs2MTJ90g/K/dcDVuhUeq9i5PHB5X0Vd9O581Dqsnui9TIjFD1EgGs/isMZF9v0YfIHZbU5u93s2NiPcWWixz1+N6Dpe4pxeV4Z+hBmvmkSgJAtXDk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780096876; c=relaxed/simple;
+	bh=QG7cznZ0AjZjBno/rgpRPnZxy/zYLa4V/UispCvCWyQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=AcvyWnm4Sltw1VpP98S2btVnCBfTT3uhddwWd1hpw6wW4/BbOQDzNkbbuVa/2qs+b7OP42/bQi8YeFr8PEq7C/hGUjP+jY/fiUwUg2jph7L74qXw6Y9GhVqszx2LCJezvpxXOPWh/Sz4xJ9UBVp3XX4QeWlpwT+ApVRYu7c/rjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ayDsuljd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="l3Ng2q8e"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=edksMy7JlPiv04a+YjUJLi5EIvKFqGZRo21iibTGTA2GB7odUiflr+nKlzunmQPeCM+RQ+HrMqhL24Wh6vseWzE0Rb7sQFcBszhrEYqlKU6nJ7jVPi4WFbHaiXq9Hbt6gqFNpuDih2D46fM9NOIFDqUdgXG+FMc0iIYzg+gMhC23cZ+4luRXkBXbRZpTkFASb7m3C2WpcIy8Y6Xj8uYEn4xkv/gibVP9cwNFKU7DYgBeCq7VedRRsl/8zvrlUrVvBbeSJjcKYhd5A2tVvwQYCw4d2BDt3RvZKp496fPlFWpdhQYXhPhIPemgLdabL9QFULTQVTprmTHsc/ZOat9tug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rrXUordAcCsxjK8J1Ixlzg2ge5OitCdOBt3xcZXadRc=;
- b=OX9NFVk0pPs2ctLZPjM9tj0pD5ankv/SUeW8ByY8cUsyMeWZwPAfsRrwbBttc4DNmtAyIE6ShUJ1L9Tn6rBicsd7SZC3z+DgfowKLIT/ydN+FvVTqJktokefSHDzLiHQtly5S0HTQdaucxWZhgRT3F+rSlGD1yqZFMl89jAyhjPyOo2yHbnfUXmKdih1q9EmpJVFHCeNbUdt5uEW4LIfvGS8zKit6Qx4Cel+ZehST6NIycwIxSa3bHMOvBVLBmRtxSF+sMDbDCwTD9ZrNys2bNrHdn3No2qooERcdCuycIb+N+AzOH/3wrnVly2PfWqg366Td6qO31swC3lli/LwpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rrXUordAcCsxjK8J1Ixlzg2ge5OitCdOBt3xcZXadRc=;
- b=l3Ng2q8eiCy90t2eKUjF2Q7UCDAiw4jgPWeSW3Rqps8Nyrb2pVtUeRW4YKpYroqjJwbrmWOSh/i8o6JKPr5s/ZQSXJ/kanjpZojKlyNHWe41+lbZVQ6362JvAKkKUvrqYCFLu/xfai5RNSW7ukA7Kvc+rpUQUd/roDgITBRiXhzFoCULltvQgdNsk8YcvT8epAxyO10HbSGSLdgNEJsNbDOSvk/jOO391k/tinn/7MF0RydbdXuStiF18HqlSkAnoJsopJ5YU2Fs6RXMrM0sltAjV7+fW4n4RDmuHUT+9z+rwcosGTjLL4KeqJ1WilMg0ZyQ0a+azC4yg0MLLJ1XFA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by SN7PR12MB8435.namprd12.prod.outlook.com (2603:10b6:806:2e2::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Fri, 29 May
- 2026 23:05:54 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0071.011; Fri, 29 May 2026
- 23:05:54 +0000
-Date: Fri, 29 May 2026 20:05:53 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alex Williamson <alex.williamson@nvidia.com>
-Cc: Matt Evans <mattev@meta.com>, Leon Romanovsky <leon@kernel.org>,
-	Alex Mastro <amastro@fb.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 1/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
-Message-ID: <20260529230553.GE3195266@nvidia.com>
-References: <20260527102319.100128-1-mattev@meta.com>
- <20260527102319.100128-2-mattev@meta.com>
- <20260527150946.312b3042@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260527150946.312b3042@nvidia.com>
-X-ClientProxiedBy: YT4PR01CA0457.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:d6::27) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ayDsuljd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D7A1F00893;
+	Fri, 29 May 2026 23:21:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780096875;
+	bh=LvykK717vNRykOTvnIlgBuDMoCLenZtCWZfG5KeysxI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ayDsuljdLhpz4QFQ7ze54+GXY0CYBdazdIq37JTdWy961inuI5jQG6G5bQDRNbYyW
+	 ZIJgElEiK0YMGzf9yVKttaASqSBogwXLpFxKPBWXkv+0NfC4Rupjg8GPUjLyDA6rlw
+	 mtfLNXX+QT0dHSz/SqFjbMTCykyBnVUL2JO846Kee5qUEl9+0S0wTglvoOEfZF2TBe
+	 1PLV/twbhHd7z8DcePxSoLJECRc+0seYkUOspFGR1i2T8hXtw9tNytVrOEiFlvZvpL
+	 3hrNMgSbWW/r6LULd0wAwfuFbb06DEe1pWKaz0l1F436C1/KJ/JNMT9hr29K05aCt5
+	 tmlc82YbahLHw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 11/24] KVM: SEV: Make it more obvious when KVM is
+ writing back the current PSC index
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260529183549.1104619-12-pbonzini@redhat.com>
+References: <20260529183549.1104619-12-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 29 May 2026 23:21:14 +0000
+Message-Id: <20260529232114.F1D7A1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SN7PR12MB8435:EE_
-X-MS-Office365-Filtering-Correlation-Id: bc427a06-c47d-4e54-d782-08debdd6d5ef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|56012099006|4143699003|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	cpd79Yy5ZDbF6crmEWoV7Mzf8DOjw3RJTqfABohrxnhcgGN2mRhk3KabnSeSgJYslBHYtMM1V2wZ4D9og1Jjxc8cyPEG4WshdIQpYyG9Ek3dDl+qnS7j1FcbOpIKVH7NbkqCIFDyBZRjQ8VREKVTaVtWc04PugNjaG3sPKPgzbt4R6iGj0aWct06+ymNxSJT0hWbyNBcQgDySUNJjpqsDPvaxX64YWHpwWspfZ/PIBaqV8pQk3qDmLFlLbpeCE3ni8stO4vUux6IBusa1NHtyI8XSz1Gglr+0AoqlS5Ykdx050a8ajY6n1b5Xk3t2rEbed7TrUGfwYw/NGqulfuDf4G52kZbEhk63HHyuE3ILFWArud63JNzP7Y6Pl03GxJ0guCx5yngQPa2rxfA1JcHUbBFijrqVvvv+uIvtImR95xEGaHrCLsy2Josq4DdappNLWNgMMHBw5UBvSq3JTHhR5PQVvnuGNgpgUUokiFY7iDlgXDzbeRI1dBgmPtigZJLzXQeJibqoj+TFRgLDuluxTzaOGbz6oPhfX5tQNizFyBkrVcyVoGR4Bf69IkLmBjH1aIwKVOjYteTSjbKbmujOi7oCPTJvU9F8NCSWc+E9GZHlakSML5058qzGMfpXrl1bvMC9IVfx3w9rw8ZQeZsERBQFenSoJC8a3N58DYtcDLCc2NjZqmKaXRT9fRgaBcCC5s6MSLHrYM3pc8Xf6za6g==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DZEQ1eDRFRojqt+doPd/0pTuE6O2oaRyVQ6FLIN9qt9v79+T0ZZ8S9CG/Ydq?=
- =?us-ascii?Q?LliZleAC8hvS+isX3n3E/1yEp4Tcrz6zFoq/m735N1kUQ8GLV2nzUrbZpA7F?=
- =?us-ascii?Q?vgg4ILL30q0aDVrVrAsn04JhFWle60psvqVec+DxYAIVvQ14qxgIBl0lQkv4?=
- =?us-ascii?Q?xNcYMsqiAyIXv8FUATxXMtTuo2/A7WDltVPkmIfQ6cY21r/8odl5qa1IQdnE?=
- =?us-ascii?Q?iA99MVh4gPSCuRSHWkE7PV6RKmE0g3Vu0NRVfLvpRGUGLTNURAaX6hvzLKRN?=
- =?us-ascii?Q?uSQqCEJWBeajBV2g3/gZhBJLTmvt/a8h+/mC3aFx5zKh6ceQiblcOmnIZSBW?=
- =?us-ascii?Q?1yJzkzw9OJkZ/0YCIn93ONBCuporgb8NrmMLCWT0p6eAZDZ8GHMUuT0gO/Lr?=
- =?us-ascii?Q?VivQ+tkPMxxrX2OpRi5D+JGG5wLG/eU+YYgNgpNgz27JoqggTtFSALOBaXKu?=
- =?us-ascii?Q?IOXcdZI0yrXAipheXTve75iIxpQbIYEWhSqYYdQeB3LrXN4ybW7VNYPW2HMA?=
- =?us-ascii?Q?ElT8bzKNbE2sbHEpsOB9OVCLgr9YoiAPo6C3uSUJ4Av19bgJ+qknwQQh5ZFS?=
- =?us-ascii?Q?qDgnFBO6xq8Mt1WZQPoK6NX8XfCHyZl15pZCaYz6HH7tXUu4VK0cgX9Wenkf?=
- =?us-ascii?Q?10ud7ol6Njb8OLfhOyViseKRkJ9gTNfD+4bJ2y/VHYc+L7qtzAyfyRYKxlqq?=
- =?us-ascii?Q?xYwOBo65f6swiuttOje3h/sR4s0ssIZ7472Go010xyb4p9NwbKrKJtOImgPc?=
- =?us-ascii?Q?gmE+pTKjd9PoVNVL7+xpqgK1xWWnIQthoEd2XgmfI/UQznZwt973hLtB/QkI?=
- =?us-ascii?Q?epl8e14Vh7ryDTdneGP75ycrDKEP5CgN1riNLCl3sOi4aYW9N2kM0AoMqpKt?=
- =?us-ascii?Q?QL4M2FgQH00c5fAyTP72goZVfBIp8gzALa0x5a2t2t+OnV+oiFEMUdeTYLDb?=
- =?us-ascii?Q?LVkBSftvhc5f6yWilqXO5mUMRMdoKCw8cOhUEBPo5JB5Um6gKzKY7YqSsQp2?=
- =?us-ascii?Q?7CldeAyT9waql1j5RWK0oOHJ8SnTROPkAP8frRqAyapITcYOJe3KLsluLgmK?=
- =?us-ascii?Q?1WddKwYn7K0hvNQypc2iOhTvhDdAvq2Pvb63DzE0VyUEeubjmWQTbRjte14V?=
- =?us-ascii?Q?kZBIGDKIPUk/IQB2zTGXMxw6aCsJgpnhfVxAg4Duqrnd6OQ7dff3WcQev4wj?=
- =?us-ascii?Q?aG4yBhWoNrnAciClMOVkTNtljqwbaAqWwpF5l5+CtNSDmvchukQkEBtNFXID?=
- =?us-ascii?Q?2Jl2eDaMp9c4lj310YnpRG6Wn2LFY6GAnhvA9jv5nfxQaCWDdqRMZA1vuj4u?=
- =?us-ascii?Q?zkQLB+N2xCDIXGWipYPR8JC2EsJf6qMKmJSOdlMA445lKio2xBO12X5pv1LO?=
- =?us-ascii?Q?zWPmHywV9Ie/NWVHWF09vPRcV2xZGoePLFKWTTqpeSP0JtlK+m4uwLSLM2Eb?=
- =?us-ascii?Q?U0lcHroftbph71bmeb7D97CP7KcB0DcwOejrfB6cXubECDeEfv0nSy2imGo9?=
- =?us-ascii?Q?UWpptL9950swfcuC1DfotnCJ5cC6Oc49wJlyfej/YyeGgkc2ysZX9lmdDiZE?=
- =?us-ascii?Q?megKbrq/aNFejHOq1kMkjiwgYAxWU4fOpR3xMQr9/S3IbwMvFELaKcVSQNpc?=
- =?us-ascii?Q?wgeHjzoGuI67YmYB/oeYQ0zzhosgINE7iHQh8X+zUbKq0YQBYoKEVbR7kTAu?=
- =?us-ascii?Q?fExY3qbaKUTbJhsMrPZ1FHQ5/HSaTn9+3Z8t5zfMCuh4vqiF?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc427a06-c47d-4e54-d782-08debdd6d5ef
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 23:05:54.7174
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aIvvPZIb23L0qqHVpuqpDjMpH+6znoaEauLJnjSF9CFJui3drdFrodH69AlFLg3H
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8435
 
-On Wed, May 27, 2026 at 03:09:46PM -0600, Alex Williamson wrote:
-> This deserves a /* CONFIG_PCI_P2PDMA */ reference like the previous
-> long span, though potentially a better solution would be to split the
-> core code out to a separate file with shared header.  I asked opus to
-> see what this would look like and it generated the patch below
-> (unverified, compile tested only).  Bigger diff, harder to follow
-> blame, but the shape of the core is much more apparent.  You're welcome
-> to take or leave it.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-I think it is a good idea, it will make it easier to add more stuff to
-these different aspects.
+Pre-existing issues:
+- [High] A malicious guest can cause an infinite kernel loop and a soft loc=
+kup by concurrently modifying the GHCB scratch area during unsupported PSC =
+operations.
+--
 
-Really they are now two different things with one layered on top of
-the other.
+commit 7f37f8948c706d884d14a7c69279c900524daced
+Author: Sean Christopherson <seanjc@google.com>
 
-Jason
+KVM: SEV: Make it more obvious when KVM is writing back the current PSC ind=
+ex
+
+This commit moves the guest-visible "cur_entry" index increment outside the
+inner for-loop. It also adds a comment to clarify which code modifies trust=
+ed
+versus guest-accessible data.
+
+Message-ID: <20260501202250.2115252-12-seanjc@google.com>
+
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3947,7 +3947,7 @@ static int snp_begin_psc(struct vcpu_svm *svm)
+>  	}
+> =20
+>  	/* Find the start of the next range which needs processing. */
+> -	for (idx =3D idx_start; idx <=3D idx_end; idx++, hdr->cur_entry++) {
+> +	for (idx =3D idx_start; idx <=3D idx_end; idx++) {
+>  		entry_start =3D READ_ONCE(entries[idx]);
+> =20
+[ ... ]
+> @@ -3974,6 +3974,14 @@ static int snp_begin_psc(struct vcpu_svm *svm)
+> =20
+>  		if (npages)
+>  			break;
+> +
+> +		/*
+> +		 * Increment the guest-visible index to communicate the current
+> +		 * entry back to the guest, e.g. in case of failure.  No need
+> +		 * for READ_ONCE() as KVM doesn't consume the field, i.e. a
+> +		 * misbehaving guest can only break itself.
+> +		 */
+> +		hdr->cur_entry++;
+>  	}
+> =20
+>  	if (idx > idx_end) {
+
+[Severity: High]
+This is a pre-existing issue, but since we're examining how a misbehaving=20
+guest affects the PSC processing loop, is it possible for a guest to trigge=
+r=20
+a soft lockup here?
+
+Looking at snp_begin_psc(), if the guest submits an unsupported PSC operati=
+on,
+we hit the default case and loop back:
+
+next_range:
+    idx_start =3D READ_ONCE(hdr->cur_entry);
+    ...
+    switch (entry_start.operation) {
+    ...
+    default:
+        __snp_complete_one_psc(svm);
+        goto next_range;
+    }
+
+If a malicious guest concurrently resets hdr->cur_entry back to 0 in the
+GHCB shared memory, could the host get trapped continuously reading an
+index of 0 and re-processing the same unsupported entry?=20
+
+Since there is no yield or exit to userspace in this default case, it seems=
+=20
+this might trap the host thread in the kernel while holding vcpu->mutex,
+leading to a persistent soft lockup.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529183549.1104=
+619-1-pbonzini@redhat.com?part=3D11
