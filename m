@@ -1,56 +1,56 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D25239E7E
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 16:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336BB3ED3BA
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 16:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780073488; cv=none; b=WUTKLWKvWMZ31zQ3NdhoBH707Nlu41OKuJKrvwcrzPPpQZyDOiLqUGEN4pcPVW/TU4bX50QIJQPCKHoSXfbPvikoj9PqRwVN1UYS6u0yZr1eIS944QKCAXceFrczas9hYOMl9QxBkOz3ZAl3X9oQpHfTcxw9Thq8IpP/c3JMi74=
+	t=1780073490; cv=none; b=JRRV4D8qyr3ox3vqIolBG/csFblu/47iNWn6usSknWZRsw3xz/AZOvFOvVPVnyz1FRIO+r48u07BQLCztWY1MdaMKR/8nuEHpYvrlQ1F7em0dVB/t7EUTDL7Lt3PGpY/YY8iGtrg7bnqmizDq8z6wkXaOm+hKfW8nHyBaLeFmfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780073488; c=relaxed/simple;
-	bh=PbZYMZRYLczdjt2P7xyS0U+UYKMH1FVH6F9kfPQzfB4=;
+	s=arc-20240116; t=1780073490; c=relaxed/simple;
+	bh=0WKDTNo/N6mctTV85KTNp1xGVOCXUy7AHtFJOVuefGA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cP/rMV0y0Vlu/jmY3TzzGPaqC/aX/YlExJPZ0HDl69EjJ+M7p9Gr7riwwEqyCZ3JiFDZrPt7cMcyTVWOJ9NPfcYX5oyOWxUByW4YqcDD6nGkTnaE8h3TtO6bYnY4OdSn1HDp5GNEzzDImLmCRUNZrBOVjeFdjfIhobmTFWhDJ/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h0hO+NlS; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=IpbCFCyVZMTc+kYq8F746XxNZ2j3z6x1Jo7H9x1Pvyg604wjeMcJDvRRPZMBAJU+nW9t73mnQKMNKeeEhylUCHE3GRdcqt+AoUs6JlqRG+DEZ3AMJqJJ+rzEN7I1Yr6A2VrweBcjusxNoLxXnlAVz+bugOUiD9mrAX+Ft0MG+pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XwMLMWoi; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h0hO+NlS"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-368b15eeb3bso24942982a91.2
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 09:51:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XwMLMWoi"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf08c2a24bso23687125ad.2
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 09:51:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780073484; x=1780678284; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780073486; x=1780678286; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=6zDAoeEn8PGfgusvzyR+7E54OCJzqQJJs9HK0Wh5WQw=;
-        b=h0hO+NlSgGq4KgqmSJCjndfLsaogBKwFMvXhwrd2mTGH7ljDWhhWho1QTnFqVezNsA
-         H0nxr8pDvQPwZRkaFfayt8IT4f8uwCdUZoZLdelpah9uuINqaZY+1CBJVMOMvrLmSNMu
-         x6pumHutNyRV9ESNlTcKlM+PFWMDkSKo0/chudi2OXnCGA0ShKyswO13UdsaxrBc0Hbr
-         mmd1Jj50HAbnpD09oL+6DT6JimnDE5MhBjycWxnJ5KJctEAlUq7F7cha3ltjllJRHdxt
-         8cTGgRH7Xjal1QZ0mX8Oe2yWVUr96qQlgyJ5G4xRyhgxTts65mrEjAiTD5ZtyDqD8oXO
-         Vt7Q==
+        bh=6fy61ks8ZEC4lUkYGSB1laEeqHhcHSahxf6RJbhPdvs=;
+        b=XwMLMWoiy2pz/ZG+UgPifv0hwJwDcLhxIDmUZOGr4RxMYQO8x1S58xFYHThkU2bdtQ
+         XdY0WrgV/KxZS8XustlepVoZIE10KAKPxI65KRSF2/cRPlTMPBj4qxxP/Eew0VyEqmy1
+         D1phYooPxnd8w4fRBZCRjMrtm76AGzgxvhKQRG9R6SPavpIvyJ2K7CAl80V2KDktF726
+         ECOE5DioMnpL7vw1IFwQtK4LOlBGFCMB5g0TQONedJiR6Oq+i4+pRBtYHSXeTyyHlloQ
+         xVUxRTtkIOltv7eyrSYdZBnJoqiAvZcSwvkeHULTSstYoWeeiusNjR+tKQ7ULeTbgh4o
+         gTBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780073484; x=1780678284;
+        d=1e100.net; s=20251104; t=1780073486; x=1780678286;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=6zDAoeEn8PGfgusvzyR+7E54OCJzqQJJs9HK0Wh5WQw=;
-        b=MoT2kVYqSCPdqo2YaNokjI1GopVWlWc77JPUX9Yqotd7QeRL7jf1H2cZtr2Uwq1nfF
-         v0OSAHqAU29Il6MgRjF1jkGBDaBcj4HpP4vLlngBvX6ExYrBjo9AUhJ2r6mfrvVFdxKa
-         rvHEq/lUM6kg69/gS/GZEan2LWGiREIxK/0ulVsNXnWYQyS3WGT4YNkXnpnb7iBVOtfU
-         9fX1kpHRsWx5xOEGyR97g4Y2Jn/QLVcfaH3CloD41dFYjRqON2qF0fJQhPhBjW/K3Asc
-         N5oQiJ3os7kHM5ojo42arawO3HwZvG3AybVUOOfmTyDdUOlPRw/sEYz6qCOrQgdLaLlB
-         b+Qw==
-X-Forwarded-Encrypted: i=1; AFNElJ8FOQrUOVROAUnMZMVJcoiqziQ+mkvvahRWRvb2f/ST8+XgghW1LD+Nrc4B0o36HQU9j34=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydSSfBpegTyyn0rfh7DOTohRK27MOeFpW3Iwq9qf+BV78oJmC1
-	sBnF7G2FnLFVMF1QkO1RZKJ11Kkg8YBFE6KBS+REPMe7anT56/HEtL43uP+0e6S75bKLqXqqO2/
-	NpDVBeA==
-X-Received: from pgbeh15.prod.google.com ([2002:a05:6a02:256f:b0:c80:15fa:8bd5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6f0e:b0:39f:a42:9247
- with SMTP id adf61e73a8af0-3b4281db00bmr6956637.37.1780073483920; Fri, 29 May
- 2026 09:51:23 -0700 (PDT)
+        bh=6fy61ks8ZEC4lUkYGSB1laEeqHhcHSahxf6RJbhPdvs=;
+        b=YCxnSjSEs5tZ0Y4N8xwNvVn8cI+CIYsgDRm/hnYcD8BKTsIv0n4UkveiREAu/CHLoA
+         1XrtaEvjqmBK8GlD3LgANuXtXXvBG12E76eju7t4OV5qG+weMtG2X6cVAiPubBDo7Hwm
+         5EOUGZqVNV/KuwQumGDPmfzt8UmT7TC3OaKOmQAIYYWJVbGYlUOTorW9/Dt5wqTvtMbU
+         TJL3pmaQ4en2bENmNJjsfFcD/TyCbUdpNwyjZ1QN75cHARVV14mjAP52o2ROyXvSkscv
+         uel3bFDyYKsV2lL2h3KF6oW08dgiJlNUYBChswIsY/h1O0hc+COreBHSkLEdCtxx6gpH
+         QhsA==
+X-Forwarded-Encrypted: i=1; AFNElJ/eToVHHQ9nopn3sfmFZRa70yDpnX3K2wwEZtwyuDNU/HRGPseRZysybzeL4vsV/eL2P7I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEKO2uoRNSMCFWlZ6VqVlf7X/PSIYDKJhxNAj3gW/w3Ox/Fu7i
+	ce85LWx5Bm7n/sdglVw2H08Yfe+xGdTOGpZVzCSsFQYQMoiIlibzSGP53hrai0E2vsePUrZkTAD
+	Tgzqxqw==
+X-Received: from pllc4.prod.google.com ([2002:a17:902:7244:b0:2bd:4f83:e3df])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1207:b0:2bd:3bfd:7512
+ with SMTP id d9443c01a7336-2bf368468ddmr7071335ad.29.1780073486132; Fri, 29
+ May 2026 09:51:26 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 09:50:55 -0700
+Date: Fri, 29 May 2026 09:50:57 -0700
 In-Reply-To: <20260529165114.748639-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529165114.748639-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529165114.748639-2-seanjc@google.com>
-Subject: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in __rwbase_read_unlock()
+Message-ID: <20260529165114.748639-4-seanjc@google.com>
+Subject: [PATCH v2 03/20] KVM: x86/xen: Remove unnecessary irqsave from GPC
+ lock usage in xen.c
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, 
@@ -75,54 +76,249 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-__rwbase_read_unlock() uses raw_spin_lock_irq()/raw_spin_unlock_irq()
-which unconditionally disables and re-enables interrupts. When
-read_unlock() is called from hardirq context (e.g. after a successful
-read_trylock() in a timer callback), the raw_spin_unlock_irq()
-incorrectly re-enables interrupts within the hardirq handler.
+Now that the hardirq path (xen_timer_callback and set_evtchn_fast) uses
+read_trylock() instead of read_lock_irqsave(), the remaining GPC lock
+users in xen.c are only called from process context (vcpu_run, ioctls).
+There is no need to disable interrupts to prevent concurrent access from
+a hardirq user, since the hardirq path no longer takes the lock.
 
-This causes lockdep warnings ('hardirqs_on_prepare' from hardirq
-context) and can lead to IRQ state corruption.
-
-Using read_trylock() in hardirq context on PREEMPT_RT is safe because
-it does not record the lock owner. The read_unlock() acquires the
-wait_lock which is hardirq safe. This change additionally allows
-rwlock_t during early boot.
-
-Switch to raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore() to
-preserve the caller's IRQ state.
+Convert read_lock_irqsave()/read_unlock_irqrestore() to plain
+read_lock()/read_unlock() in:
+ - kvm_xen_update_runstate_guest()
+ - kvm_xen_shared_info_init()
+ - xen_get_guest_pvclock()
+ - kvm_xen_inject_pending_events()
+ - __kvm_xen_has_interrupt()
+ - wait_pending_event()
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- kernel/locking/rwbase_rt.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/kvm/xen.c | 60 +++++++++++++++++++---------------------------
+ 1 file changed, 25 insertions(+), 35 deletions(-)
 
-diff --git a/kernel/locking/rwbase_rt.c b/kernel/locking/rwbase_rt.c
-index 82e078c0665a..25744862d627 100644
---- a/kernel/locking/rwbase_rt.c
-+++ b/kernel/locking/rwbase_rt.c
-@@ -153,8 +153,9 @@ static void __sched __rwbase_read_unlock(struct rwbase_rt *rwb,
- 	struct rt_mutex_base *rtm = &rwb->rtmutex;
- 	struct task_struct *owner;
- 	DEFINE_RT_WAKE_Q(wqh);
-+	unsigned long flags;
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 9bdb8e3cad58..b1fae42bf295 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -45,15 +45,15 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
+ 	int ret = 0;
+ 	int idx = srcu_read_lock(&kvm->srcu);
  
--	raw_spin_lock_irq(&rtm->wait_lock);
-+	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
+-	read_lock_irq(&gpc->lock);
++	read_lock(&gpc->lock);
+ 	while (!kvm_gpc_check(gpc, PAGE_SIZE)) {
+-		read_unlock_irq(&gpc->lock);
++		read_unlock(&gpc->lock);
+ 
+ 		ret = kvm_gpc_refresh(gpc, PAGE_SIZE);
+ 		if (ret)
+ 			goto out;
+ 
+-		read_lock_irq(&gpc->lock);
++		read_lock(&gpc->lock);
+ 	}
+ 
  	/*
- 	 * Wake the writer, i.e. the rtmutex owner. It might release the
- 	 * rtmutex concurrently in the fast path (due to a signal), but to
-@@ -167,7 +168,7 @@ static void __sched __rwbase_read_unlock(struct rwbase_rt *rwb,
+@@ -96,7 +96,7 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
+ 	smp_wmb();
  
- 	/* Pairs with the preempt_enable in rt_mutex_wake_up_q() */
- 	preempt_disable();
--	raw_spin_unlock_irq(&rtm->wait_lock);
-+	raw_spin_unlock_irqrestore(&rtm->wait_lock, flags);
- 	rt_mutex_wake_up_q(&wqh);
+ 	wc->version = wc_version + 1;
+-	read_unlock_irq(&gpc->lock);
++	read_unlock(&gpc->lock);
+ 
+ 	kvm_make_all_cpus_request(kvm, KVM_REQ_MASTERCLOCK_UPDATE);
+ 
+@@ -155,22 +155,21 @@ static int xen_get_guest_pvclock(struct kvm_vcpu *vcpu,
+ 				 struct gfn_to_pfn_cache *gpc,
+ 				 unsigned int offset)
+ {
+-	unsigned long flags;
+ 	int r;
+ 
+-	read_lock_irqsave(&gpc->lock, flags);
++	read_lock(&gpc->lock);
+ 	while (!kvm_gpc_check(gpc, offset + sizeof(*hv_clock))) {
+-		read_unlock_irqrestore(&gpc->lock, flags);
++		read_unlock(&gpc->lock);
+ 
+ 		r = kvm_gpc_refresh(gpc, offset + sizeof(*hv_clock));
+ 		if (r)
+ 			return r;
+ 
+-		read_lock_irqsave(&gpc->lock, flags);
++		read_lock(&gpc->lock);
+ 	}
+ 
+ 	memcpy(hv_clock, gpc->khva + offset, sizeof(*hv_clock));
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	read_unlock(&gpc->lock);
+ 
+ 	/*
+ 	 * Sanity check TSC shift+multiplier to verify the guest's view of time
+@@ -325,7 +324,6 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 	struct gfn_to_pfn_cache *gpc2 = &vx->runstate2_cache;
+ 	size_t user_len, user_len1, user_len2;
+ 	struct vcpu_runstate_info rs;
+-	unsigned long flags;
+ 	size_t times_ofs;
+ 	uint8_t *update_bit = NULL;
+ 	uint64_t entry_time;
+@@ -421,16 +419,14 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 	 * gfn_to_pfn caches that cover the region.
+ 	 */
+ 	if (atomic) {
+-		local_irq_save(flags);
+ 		if (!read_trylock(&gpc1->lock)) {
+-			local_irq_restore(flags);
+ 			return;
+ 		}
+ 	} else {
+-		read_lock_irqsave(&gpc1->lock, flags);
++		read_lock(&gpc1->lock);
+ 	}
+ 	while (!kvm_gpc_check(gpc1, user_len1)) {
+-		read_unlock_irqrestore(&gpc1->lock, flags);
++		read_unlock(&gpc1->lock);
+ 
+ 		/* When invoked from kvm_sched_out() we cannot sleep */
+ 		if (atomic)
+@@ -439,7 +435,7 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 		if (kvm_gpc_refresh(gpc1, user_len1))
+ 			return;
+ 
+-		read_lock_irqsave(&gpc1->lock, flags);
++		read_lock(&gpc1->lock);
+ 	}
+ 
+ 	if (likely(!user_len2)) {
+@@ -467,7 +463,7 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 		lock_set_subclass(&gpc1->lock.dep_map, 1, _THIS_IP_);
+ 		if (atomic) {
+ 			if (!read_trylock(&gpc2->lock)) {
+-				read_unlock_irqrestore(&gpc1->lock, flags);
++				read_unlock(&gpc1->lock);
+ 				return;
+ 			}
+ 		} else {
+@@ -476,7 +472,7 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 
+ 		if (!kvm_gpc_check(gpc2, user_len2)) {
+ 			read_unlock(&gpc2->lock);
+-			read_unlock_irqrestore(&gpc1->lock, flags);
++			read_unlock(&gpc1->lock);
+ 
+ 			/* When invoked from kvm_sched_out() we cannot sleep */
+ 			if (atomic)
+@@ -581,7 +577,7 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 	}
+ 
+ 	kvm_gpc_mark_dirty_in_slot(gpc1);
+-	read_unlock_irqrestore(&gpc1->lock, flags);
++	read_unlock(&gpc1->lock);
  }
  
+ void kvm_xen_update_runstate(struct kvm_vcpu *v, int state)
+@@ -640,7 +636,6 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ {
+ 	unsigned long evtchn_pending_sel = READ_ONCE(v->arch.xen.evtchn_pending_sel);
+ 	struct gfn_to_pfn_cache *gpc = &v->arch.xen.vcpu_info_cache;
+-	unsigned long flags;
+ 
+ 	if (!evtchn_pending_sel)
+ 		return;
+@@ -650,14 +645,14 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 	 * does anyway. Page it in and retry the instruction. We're just a
+ 	 * little more honest about it.
+ 	 */
+-	read_lock_irqsave(&gpc->lock, flags);
++	read_lock(&gpc->lock);
+ 	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+-		read_unlock_irqrestore(&gpc->lock, flags);
++		read_unlock(&gpc->lock);
+ 
+ 		if (kvm_gpc_refresh(gpc, sizeof(struct vcpu_info)))
+ 			return;
+ 
+-		read_lock_irqsave(&gpc->lock, flags);
++		read_lock(&gpc->lock);
+ 	}
+ 
+ 	/* Now gpc->khva is a valid kernel address for the vcpu_info */
+@@ -687,7 +682,7 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 	}
+ 
+ 	kvm_gpc_mark_dirty_in_slot(gpc);
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	read_unlock(&gpc->lock);
+ 
+ 	/* For the per-vCPU lapic vector, deliver it as MSI. */
+ 	if (v->arch.xen.upcall_vector)
+@@ -698,7 +693,6 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
+ {
+ 	struct gfn_to_pfn_cache *gpc = &v->arch.xen.vcpu_info_cache;
+ 	bool atomic = in_atomic() || !task_is_running(current);
+-	unsigned long flags;
+ 	u8 rc = 0;
+ 
+ 	/*
+@@ -715,16 +709,13 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
+ 		     sizeof_field(struct compat_vcpu_info, evtchn_upcall_pending));
+ 
+ 	if (atomic) {
+-		local_irq_save(flags);
+-		if (!read_trylock(&gpc->lock)) {
+-			local_irq_restore(flags);
++		if (!read_trylock(&gpc->lock))
+ 			return 1;
+-		}
+ 	} else {
+-		read_lock_irqsave(&gpc->lock, flags);
++		read_lock(&gpc->lock);
+ 	}
+ 	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+-		read_unlock_irqrestore(&gpc->lock, flags);
++		read_unlock(&gpc->lock);
+ 
+ 		/*
+ 		 * This function gets called from kvm_vcpu_block() after setting the
+@@ -744,11 +735,11 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
+ 			 */
+ 			return 0;
+ 		}
+-		read_lock_irqsave(&gpc->lock, flags);
++		read_lock(&gpc->lock);
+ 	}
+ 
+ 	rc = ((struct vcpu_info *)gpc->khva)->evtchn_upcall_pending;
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	read_unlock(&gpc->lock);
+ 	return rc;
+ }
+ 
+@@ -1445,12 +1436,11 @@ static bool wait_pending_event(struct kvm_vcpu *vcpu, int nr_ports,
+ 	struct kvm *kvm = vcpu->kvm;
+ 	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
+ 	unsigned long *pending_bits;
+-	unsigned long flags;
+ 	bool ret = true;
+ 	int idx, i;
+ 
+ 	idx = srcu_read_lock(&kvm->srcu);
+-	read_lock_irqsave(&gpc->lock, flags);
++	read_lock(&gpc->lock);
+ 	if (!kvm_gpc_check(gpc, PAGE_SIZE))
+ 		goto out_rcu;
+ 
+@@ -1471,7 +1461,7 @@ static bool wait_pending_event(struct kvm_vcpu *vcpu, int nr_ports,
+ 	}
+ 
+  out_rcu:
+-	read_unlock_irqrestore(&gpc->lock, flags);
++	read_unlock(&gpc->lock);
+ 	srcu_read_unlock(&kvm->srcu, idx);
+ 
+ 	return ret;
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
