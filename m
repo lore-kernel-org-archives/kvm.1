@@ -1,123 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3573333262F
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 08:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848AD3ACEFE
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 08:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780042225; cv=none; b=qjXhF1IH8odNl2/oiYrHyI9TpzS1MYGR69e4/cOGRSRji8vgRb0AglPR8sES3KpmT2uiC/jc0dOf+kUNQCmFcM9fzSX2PQUFqPpjwJUvCR6vPYG1hOoFBcM6hp7j69PVqW5zq3gH0JKWn3oiLHGPfHrkaku7jRD5eXsF9ScQ/kA=
+	t=1780043392; cv=none; b=ITESCXg1YLqkereM/cjLs1HFHmfwtKRN0r5pWOMD7x7gH3wycGMR/YL46I/KePHrFtx07BGgvW5ujINFn16lWOwaAAXP6WoJ/Bee8gaJ6b4oytAQKK9Lopfik/V/KPIFYzafvWJjfL+NBGFVsT1j0N+E/vfNpB/Jwq55VEn2cWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780042225; c=relaxed/simple;
-	bh=0NZc8Z0vgQ5+jxTY1JF1zxuDoGXNv6Adx4bTCoMCk18=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hGnX6KLn8sLY8JPegZM4hThUpvnqdVHa/ivPzLEfnfbj6J2EvTuHw/h0BcUs9vRnUcWqKwB7ZUrHdMgU70GNQ1vCXViavNdI90Is25KuFu1jQtiMzUNsxMyH7fcXcRrthjTXcpo8hDI/fYGvtHahuivPmwYq/bWPTvYLPJPa0fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRQhRbkS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780043392; c=relaxed/simple;
+	bh=iL7OXich64mCmH03B4eH61kC7h+p/BbFxbbao6K+HMo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=b4rp0+Pu+4bg6BmyZR7P90/5VO18i4bXzYhHeDPrq6O2cpst7Hav24Fg+vagXxa3Pf3RpN126UC8I1/5SojSabxGynRFqEfnpOeY+LB5gtWrYPGM1MiLU7NnE3OUMSkBIsjeuYNua0S7QM2q+CjPZQyOLN29ftnPTqi+cs6ZHpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=W6H4MgbN; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRQhRbkS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE75B1F00893;
-	Fri, 29 May 2026 08:10:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780042223;
-	bh=GqBrqoooknXqKQxjIW4SWAopcbunBPYM8ewDz32mFrY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=YRQhRbkSetNlnKs82hd3moPm5QI8csFAJSDXMFHb5RqVn1wGYqOFSGR9gd1JVUDmQ
-	 oq/ySkudbY+MfTgvDXHLUaLDVz8TL++FiX2de+jJKwRxRUnAXf8MbAK5FvIQIDS+XG
-	 Sr9bGK5ESW8ywPun5iRTX25+56rO+0JLfcGoJbAT1xfDZdTYAU0EJ0dxYWDfLOEdPK
-	 aHf2FxlMO1kgBFFC79cSTiQXuQD+OSxz5+I4hdkZmcsDw6MhtIeXdmNETbRVa59IOT
-	 IthXsZIoCGPfKDmPd/y7xRfZWon+oXhElJIl+hkVzVrYLFUdf8WxQ39KVScYHhAQAv
-	 pjrM505yWWcVw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/3] KVM: riscv: selftests: Split SBI FWFT into
- separate feature-specific sublists
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yong-Xuan Wang" <yongxuan.wang@sifive.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260528-kvm-get_reg_list-v2-v3-3-170969a8599f@sifive.com>
-References: <20260528-kvm-get_reg_list-v2-v3-3-170969a8599f@sifive.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 08:10:22 +0000
-Message-Id: <20260529081023.AE75B1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="W6H4MgbN"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45e8a834cc2so8379461f8f.1
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 01:29:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1780043390; x=1780648190; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+G/zHWkR0QCdbSyAQf68yG2AhF714TiDMy1VuhRq9nA=;
+        b=W6H4MgbNJ5TRSDvlLpEdgsKl1lrKzKNu2QzCugkiH/PtUNyD+WAsEYOWN+zpNY7ZCh
+         0a5w965Z0WeCeI584qiy0x2k4BEwpodgBHaARbOnUeDdkmueTFTQ8Jf6tuP8Ap7lhWFX
+         /bLM3e2zobC5r+0D5/3A5PeHJZfISxNJ4EizfsN2kxQFO00dQNHCUuyDfOUwt+2yJe/n
+         se7g/gWMzrvCWuNDFETq9R3wY1Y7g5Za3iYrSrlKo5j5vMawpg9sYpjn7XgQLiY8hKyX
+         6cxK41plJm/AnPwedSzgIboUyqmIkVjM9p0ckxuDJ4q06gSUtkfarViuhhJhrYFfl3Ue
+         VROQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780043390; x=1780648190;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+G/zHWkR0QCdbSyAQf68yG2AhF714TiDMy1VuhRq9nA=;
+        b=R/JCEf6EcMoJKYUpYoRnvs+Uy7DNTho73Y1Qe+UNqUzhXmfzdjNjJlwsdJNU3nkbnj
+         9X4zwp+J07V3P/rp670ntv4wTGxxYUGsVHPMZMX1OTjdpAKx6tnYrmY0Gr3euVAyDm/C
+         GFQSm8psWqvYUywQxlcsK5fDuwPNvxrBk5mgszRX1olkyBZO239dJsqiIgQOPQkSKNO1
+         WdBS+w2aKxEQMZz9jDL9inFM7OkQCz06NXlbXLz8J4UR284jXUYm9cCmNUdonQ4rr3/Y
+         2UgMHVoCBSY0lpL2A6llWR/kODtEB4lZ1/BpBgcPPFqOHGflSBYVY0+D1oAbqWIjnpEA
+         nNLw==
+X-Forwarded-Encrypted: i=1; AFNElJ/U776EaPh7+cw3h2k2eZL/Aqh9YTUDp5Aw51hrZuUIqPX6ASujWvj70E1XwgC47yHpe9Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyO0EvmeNqImrmoQjpPvse07VV93xt/a5P3TzyI8UdQ2BkPlkws
+	8HmBtWbD2y9k+gHkBi5wdK2LF2bDaJtwqPr6d68u8e64b2u6+Il4J/UEpArYRbRSsE4=
+X-Gm-Gg: Acq92OEOPF3C1SWQomC0dGimOK5MPQOrdB4HKVXo1LP57ql6iCNgAcdoN0v1kXf0tWe
+	/MY3Zlobs92AUUd4viTgyBdsSnNGUIcUVNDzFrqiEiJMwyL32K7C6jld3ou/H6T1yIksY3x0T3t
+	PkDlZ6aDPb1XAzwiVirB6sznu6j6hTzGwW1lBEJPLb3vWTHBVCARpD+PlMyzx7Vy8cU1XSIVJgd
+	AKuWOafskzJA3hHHBsrqFQV7gmKQdeIsdwDO9Gy5ghfPfXkLjVWpxf9fuVEpOwg/chWB7GjNYoj
+	Gkuem5a046kwJ9J++Mn7UPiB7gXD1L+um3Rpow9wMtGvSmuNL6nqJvfqo1r5eCOmopBBWlFq1ee
+	RAu4obxB7S9t0sKHPcZMyyOZ+mqBIPkhkA3fH3w04s3SHBZrMDf1hLeHiWEmimALzyE5D11f2IN
+	EO4oRpiW0qwT+EgEvFD1AYksRkvQ/ZM77jd9SqsfRcfwjG
+X-Received: by 2002:adf:e612:0:b0:45e:edcc:f6dc with SMTP id ffacd0b85a97d-45ef14053e3mr2409052f8f.6.1780043389791;
+        Fri, 29 May 2026 01:29:49 -0700 (PDT)
+Received: from draig.lan ([185.124.0.195])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34a0403sm1967087f8f.6.2026.05.29.01.29.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 01:29:49 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id 386435FA5C;
+	Fri, 29 May 2026 09:29:48 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Alexander Graf <agraf@csgraf.de>,
+	Mohamed Mediouni <mohamed@unpredictable.fr>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Pedro Barbuda <pbarbuda@microsoft.com>,
+	qemu-arm@nongnu.org,
+	kvm@vger.kernel.org,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v7 1/8] target/arm: fix WFET typo in syndrome
+Date: Fri, 29 May 2026 09:29:40 +0100
+Message-ID: <20260529082948.363931-2-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260529082948.363931-1-alex.bennee@linaro.org>
+References: <20260529082948.363931-1-alex.bennee@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] FWFT pointer masking registers are incorrectly handled in check_=
-supported_reg() instead of filter_reg(), leading to dead code and potential=
- false positive test failures.
---
+A stray x slipped in and we didn't notice! Fortunately we haven't
+implemented WFET yet so nothing is affected. But we are about to so
+lets fix it.
 
-commit c0f0519ecd25fb69f07c9b166dfd4ccf59ef2905
-Author: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Fixes: 4575da5ecb7 (target/arm: report register in WFIT syndromes)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-KVM: riscv: selftests: Split SBI FWFT into separate feature-specific sublis=
-ts
+---
+v7
+  - mention how we got away with it
+---
+ target/arm/syndrome.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This commit divides the monolithic SBI FWFT register list into separate
-sublists to test features independently. It adds check_supported_reg() and
-check_fwft_feature() to validate register and feature availability at
-runtime. This prevents tests from failing when only a subset of FWFT
-features or their dependent ISA extensions are available on a given
-platform.
+diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
+index 4d1f1c529e2..0eb54c15ce7 100644
+--- a/target/arm/syndrome.h
++++ b/target/arm/syndrome.h
+@@ -674,7 +674,7 @@ typedef enum {
+     WFI = 0b00,
+     WFE = 0b01,
+     WFIT = 0b10,
+-    WFET = 0xb11
++    WFET = 0b11
+ } wfx_ti;
+ 
+ static inline uint32_t syn_wfx(int cv, int cond, int rn, bool rv, wfx_ti ti, bool is_16bit)
+-- 
+2.47.3
 
-> diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/tes=
-ting/selftests/kvm/riscv/get-reg-list.c
-> index 5033c09201ef1..7ae55fbad29aa 100644
-> --- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
-> +++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-> @@ -27,6 +27,23 @@ enum {
->  };
-> =20
->  static bool isa_ext_cant_disable[KVM_RISCV_ISA_EXT_MAX];
-> +static bool isa_ext_enabled[KVM_RISCV_ISA_EXT_MAX];
-> +static bool sbi_ext_enabled[KVM_RISCV_SBI_EXT_MAX];
-> +
-> +bool check_supported_reg(struct kvm_vcpu *vcpu, __u64 reg)
-> +{
-> +	switch (reg & ~REG_MASK) {
-> +	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_S=
-BI_FWFT_REG(pointer_masking.enable):
-> +	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_S=
-BI_FWFT_REG(pointer_masking.flags):
-> +	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_S=
-BI_FWFT_REG(pointer_masking.value):
-> +		return sbi_ext_enabled[KVM_RISCV_SBI_EXT_FWFT] &&
-> +		       isa_ext_enabled[KVM_RISCV_ISA_EXT_SMNPM];
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return true;
-> +}
-
-[Severity: Medium]
-Should these pointer masking registers be handled in filter_reg() instead of
-here?
-
-When testing the config_sbi_fwft_pointer_masking sublist,
-check_fwft_feature() iterates over the expected registers and invokes
-__TEST_REQUIRE(!rc, ...) which skips the test if any are missing. This
-means the test exits early, and the core loop that calls
-check_supported_reg() for missing registers is never reached.
-
-Moving this logic to filter_reg() also seems necessary to avoid false
-positive test failures. If a user runs the config_sbi_fwft_misaligned_deleg
-configuration on a host where the SMNPM ISA extension cannot be disabled
-(isa_ext_cant_disable[SMNPM] =3D=3D true), both FWFT and SMNPM extensions w=
-ill
-be active. KVM will naturally expose the pointer_masking registers in this
-state.
-
-Because they are not in the misaligned_deleg sublist and are omitted from
-filter_reg(), will the test incorrectly flag them as unexpected new
-registers and fail?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528-kvm-get_re=
-g_list-v2-v3-0-170969a8599f@sifive.com?part=3D3
