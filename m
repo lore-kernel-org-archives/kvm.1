@@ -1,113 +1,131 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278BF3A8737
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 20:05:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA10343D8A
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 20:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780085119; cv=none; b=hX0xOeTKfsYbU1expQgNKwmsFy2Ohlt3dGpjimc8CLvg62Th7VHyPk1KO3/ZpLB1Jp3r0H9Og/XOz3BaXaQ2wUlH3axwnmalpLfSiUTWWXwF5ahRdJM6yLXfRQQlSE8T8TLIINtzYbjqxztO9vAnJ0DGwXOwXt10Y0dqxTv+r/U=
+	t=1780085494; cv=none; b=Xtanok+pKQJxF84Xnk+T2FGjDKkIyYOqWsoki3zrp/LxM8aPZI3ocE9h3O1RrJktkoAXPZtvem1OrCFUQd3y9keUF7q3D3Nk0DD9Af30SNSjIMLlq9TDCZYzT09bOZqDam/BPGu1inA1rS8GiNkLWVosHKyd2FRJPAl4sA7Hjhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780085119; c=relaxed/simple;
-	bh=YRvOHpXsmCrEMm+kSTF+j6/D+gOxA+mUv89utwi3aT4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oh8VSQzcemqrl6bXnIBmpg4zjmhtcVL9ZJxm/7xP3D2vG8+H5kcBbqsI+Inejl7TRKkzT2bSu3DtbwKHovbYTIRZbqm8N5YmOZ3Q935ZMa33T18kyBOEAlCscaw5oaboB+/tw3vOVBUg4KjDD2rB/mKGmjF2AwM6s4OqrLFtudY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XypSRmsX; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780085494; c=relaxed/simple;
+	bh=yIjjEsSzcNVlj5Jerb5VL9COIWs3RWb5zUy94AhWr9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pS/TxtNSB3wdShL4/oV5OHQDYsSY4alSgZt7TFJHTWzy5W0n4Z0StymmTr9LQi3YaW2RQhJl79BFjuvTCGoU8k6wH+eRaH1nNsVCfyT8fgAN7AbmfOXYA04rWF/BdjPullgueZxt+bSs2BJqC4aQNb6NHeeJd5tvEVb8kMzNfSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=W6mucJMI; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XypSRmsX"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-841f09a96ecso1625543b3a.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 13:05:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="W6mucJMI"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-914c5898245so566363285a.1
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 13:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780085117; x=1780689917; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dTSbW6FvUqvuaNYx1PVBd1vrsjDa/4Yb+rd2TVAoZBA=;
-        b=XypSRmsXbYaTshz5l8L4YhasbMAefd/zN+yNgHt2Vori7N/t6/6lnKa32syVgmn7gl
-         hS3oQKFfGpnbcK0/CgVbLAeagGfncNWvYv9lhQew0bwmibJbE13lV0d+cf2Xevo1uFg7
-         R/k/OBTzH39sVfG0KpiL1hogBxGkTu/L1SoMvTQatJcN5umhLcHVypOkZ0DJydMOrXRT
-         Po0sCi4KalMuwJjFy6bcwIb6dcJywjfl0EGJe9wLM+c6hq6XrEhXMG/Qdu30J5To6RJQ
-         GmqmtyuxSQPozyiOLnK8uG3+h3iRywQD1cFPgJgYtNv7hnDwHunDj3bCFj3Fp++Ii935
-         +0XQ==
+        d=ziepe.ca; s=google; t=1780085492; x=1780690292; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=x50nMfXuC2+erTFJFRG2pVEkXmZORi5k9T8WBzn0C8s=;
+        b=W6mucJMILm76P1OvgIkeoQrHk1o7XL8eEki7XJZS1XS2OjCf+Mt31OyMtZjR2qaphh
+         JYplHQ+jawZn32wdHnTUZ7/BfzMzKsTBm8Fig6rF907+pur3pR03NcbXI3r1E4jPnjWi
+         Pj4l7r9Cd2P7VD6P6PcOKOr4ri/urmF4R+FIVF9YA78pTdvWQQSYvF7Z7feosxpyprw7
+         +tFE69MQ32W/Mxl0Hefoqfx48geK4OASrV2q31UfG3eYxFQEg3WoFwURPR8t8K7LU6Z6
+         3WzIrlfGGwk+6WgLZUiy5+fga84k7c35MG0crSnEaA2c5absa3at7TeFsmJ2pdiwI3bK
+         qt4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780085117; x=1780689917;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dTSbW6FvUqvuaNYx1PVBd1vrsjDa/4Yb+rd2TVAoZBA=;
-        b=KVHmifgp0pyJypleRSA7ikyx60QnZtmGmxAr1JHBw7/jhak2Iz0cKdQZKS5xISJJlZ
-         7OLFi48hRjVJld/udo2OeKy5wK10tpBTNUQmFvscjet2fdrRNL7kVXNmUgVdb88obJdB
-         Ewrq5UL1iGxtqfCidpCj9DqSeblmf2fHoi/SgQB5db750cnx6biq3OZZ+gwcHzvLE1Kw
-         pvGh7JejYFrNwgTNJxMn1a+tJT8mKOllB+690+6xN2tkerMbxE8OgVpIU5+lsKECNUie
-         M2ms7h8DHVjU3I6BZwQ63hX8vRe7vj87VjJYabjOVU3p/5QJIY3gbzFO92HRzr7U1wa6
-         KssQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9wx8d2iSonpiHmjKXEX5zBQivmPvZhhvXbapbaXqFUKls5RfsO3X3eHsLLwH+gxS/u0wY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOlm8NvDLhCeM6qc/s3f+Qt2oSoDm5ISYxKeBCjX3SJ9ZUpSe5
-	WojQ/TIypF6io9PJrFsgm/O1HXYJuLrJJY7kXpcAa1+WsF6j/5yuWOOonaEJSKr6LTB460Qp3ZJ
-	c13TC8Q==
-X-Received: from pfwy7.prod.google.com ([2002:a05:6a00:1c87:b0:842:bb5:c63a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2886:b0:841:edb9:4ea2
- with SMTP id d2e1a72fcca58-84225446416mr893870b3a.32.1780085117162; Fri, 29
- May 2026 13:05:17 -0700 (PDT)
-Date: Fri, 29 May 2026 13:05:16 -0700
-In-Reply-To: <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
+        d=1e100.net; s=20251104; t=1780085492; x=1780690292;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x50nMfXuC2+erTFJFRG2pVEkXmZORi5k9T8WBzn0C8s=;
+        b=OKzvWcAmBVkExL+U+jV4W/1OQE6sogX1VUi3nZS1+GuOKZtb27/9A1hMERYjp8ULjv
+         Jwqwy5vzrxJw5ddqi7SwYInMw0T9kP6ALHMa9La83icnY45NId8puEeoqAuc8Ew+USbd
+         RjwXro42h5aY3h8n0kIy+xrG1zQvojRFUmE8rofyRonFco2jKuejDqf6F0e6HDWAO7mL
+         Z+gBhA3zt9sjer2YIbTzgcylwgYzYVlz7d9zfA5xhIbM0D9xa2vnI+khKaoxk20nL59d
+         30ef7uxJPWkJ8b5r//cCe4CvioYzkP7aKz3j5+X72NVnSHeYA/i+LNOKO0lw/G+Fp1KP
+         JiSg==
+X-Forwarded-Encrypted: i=1; AFNElJ8PLMcU1RlsAMiw1q4drPG76dn1ULZuQVJqe+DNQN4oSmf3dJ/O3GFdtbAODpTARC1kQKE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGgYZ+IWqzhEi8fHRFbq68plEWSfgb6Npw9qrgw5CI8CTzP+lb
+	EilUBxwEJAWjAhe6mmsKp5Qh9LEXnP/+6Cv0Mx/GDVenCg/GfBy4CJk2rJpOAGYHpmo=
+X-Gm-Gg: Acq92OEN/rcllyxDgUffzMhtAZp0ELJpGwK/zXVRHuiSSnNwVBp/0fkWN9TvUY3s2aw
+	Ic7Fk+2/0raw1bFM8+XjHTLvlU5kcafdG8bH3hL0/ALT58figpTe+Qah/t0CfCHRS+GVuw8vp/r
+	JVU8WI2hvh7IqGf/BYzF4tBcizSYGK1WEt/pXRAOoww9/zU4GMmdWmj/Q4wBiOMgeaM/NU/kGXd
+	v0qCAl31DjN/GMREGcGLCb0K64R5zsSNE1dquFucjPpswDcDHkyNRu93cv4lwPL7xZ890P1Rf8F
+	DdNjn4EPWk9PmrcEfs0kAQ7pQMMFmmYl6aA+2ZJYULn9ONFCyN2prBbGMbWdcDeRiX0ygvcLJ7e
+	Dw1dZtU6Qg26n78BBhvt2O9CBUYHcpUw2wHRLDwDLsJUgEJ5oTYLvFmOg3Xl8Jggh2UUOJOJiN2
+	98m9Zx62sHgiSFZG7hNDN+xEjzBLcfbJa8hoQo1nAfF77a/W6qVtfEFushrcG1Uk5qi4hfDyGe/
+	5dzGyHzh71l5QkO
+X-Received: by 2002:a05:620a:649c:b0:912:671b:d090 with SMTP id af79cd13be357-9153d999728mr194543785a.24.1780085492316;
+        Fri, 29 May 2026 13:11:32 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9153244de53sm312617585a.8.2026.05.29.13.11.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 13:11:31 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wT3YI-00000000q8h-45Mx;
+	Fri, 29 May 2026 17:11:30 -0300
+Date: Fri, 29 May 2026 17:11:30 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: Zhiping Zhang <zhipingz@meta.com>, Alex Williamson <alex@shazbot.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Linus Torvalds <torvalds@linuxfoundation.org>
+Subject: Re: [PATCH v5 0/4] vfio/dma-buf: add TPH support for peer-to-peer
+ access
+Message-ID: <20260529201130.GU2487554@ziepe.ca>
+References: <20260526144401.1485788-1-zhipingz@meta.com>
+ <a8cd01ab-d7aa-465d-bfa3-431f78f33ee1@amd.com>
+ <20260527121438.GJ2487554@ziepe.ca>
+ <ff247643-73e7-44e2-b3d5-8ac0a8efb871@amd.com>
+ <20260527123634.GK2487554@ziepe.ca>
+ <a5ff1930-e9fb-43f5-82ab-9875d7a28421@amd.com>
+ <CAH3zFs2KALuHXReLZG_uoqvBBWvBzU6rHKakmt6HBV7PZEsD=w@mail.gmail.com>
+ <71302a7a-6b9f-40da-af81-b1862dbd637a@amd.com>
+ <CAH3zFs036sr93duQKx613pCyOYw4t0_x_TdSza1xBCaEmqijyA@mail.gmail.com>
+ <8d9bb0b7-182d-4930-b683-d5d24da6b2ab@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529165114.748639-1-seanjc@google.com> <20260529165114.748639-2-seanjc@google.com>
- <20260529193214.GN3493090@noisy.programming.kicks-ass.net> <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
-Message-ID: <ahnxfACTGeVFbJMk@google.com>
-Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in __rwbase_read_unlock()
-From: Sean Christopherson <seanjc@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Paul Durrant <paul@xen.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, David Woodhouse <dwmw@amazon.co.uk>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, 
-	Carsten Stollmaier <stollmc@amazon.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8d9bb0b7-182d-4930-b683-d5d24da6b2ab@amd.com>
 
-On Fri, May 29, 2026, Peter Zijlstra wrote:
-> On Fri, May 29, 2026 at 09:32:14PM +0200, Peter Zijlstra wrote:
-> > On Fri, May 29, 2026 at 09:50:55AM -0700, Sean Christopherson wrote:
-> > > From: David Woodhouse <dwmw@amazon.co.uk>
-> > > 
-> > > __rwbase_read_unlock() uses raw_spin_lock_irq()/raw_spin_unlock_irq()
-> > > which unconditionally disables and re-enables interrupts. When
-> > > read_unlock() is called from hardirq context (e.g. after a successful
-> > > read_trylock() in a timer callback), the raw_spin_unlock_irq()
-> > > incorrectly re-enables interrupts within the hardirq handler.
-> > > 
-> > > This causes lockdep warnings ('hardirqs_on_prepare' from hardirq
-> > > context) and can lead to IRQ state corruption.
-> > > 
-> > > Using read_trylock() in hardirq context on PREEMPT_RT is safe because
-> > > it does not record the lock owner. The read_unlock() acquires the
-> > > wait_lock which is hardirq safe. This change additionally allows
-> > > rwlock_t during early boot.
+On Fri, May 29, 2026 at 09:36:00AM +0200, Christian König wrote:
+> On 5/29/26 08:34, Zhiping Zhang wrote:
+> ...
+> > There's no in-tree vendor PF driver
 > 
-> Forgot to reply to this; it is safe with this implementation. If we were
-> to ever do reader owner tracking this goes sideways real fast.
-> 
-> I really think this is a very bad approach.
-> 
-> > > Switch to raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore() to
-> > > preserve the caller's IRQ state.
-> > > 
-> > > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> > > Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> > > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > 
-> > We have very specifically not supported the: trylock+unlock from hardirq
-> > (although typically this comes up for mutex). Specifically with PI this
-> > can lead to trying to boost the idle thread.
-> > 
-> > Consider doing this from an interrupt that hits idle, then idle becomes
-> > the 'owner' of a successful acquisition. This is absolutely broken.
+> Well I have to admit it's a bit on the edge but this sentence is a
+> show stopper.
 
-I assume the only alternative is to implement raw versions of rwlock?  Or do I
-understand all of this even less than I thought? :-)
+I think he means the device is not SRIOV. vfio-pci is the in-kernel PF
+driver.
+
+> DMA-buf is an in kernel interface for buffer sharing between drivers
+> and any change to it needs an in kernel driver as justification for
+> the added complexity.
+
+vfio is the in-kernel driver, this series fully shows the in-kernel
+API using vfio as the exporter and mlx5 as the importer. It certainly
+meets the standard required to show in-tree users.
+
+> When you have a complete open source driver stack which utilizes
+> VFIO passthrough as the interface to communicate with the kernel
+> drivers then we can eventually talk about that.
+
+That decision is not up to dmabuf - what VFIO subsystem requires to
+accept a new UAPI is up to the VFIO maintainers.
+
+DRM and VFIO have very different views on what is required to merge a
+new uAPI.
+
+Jason
