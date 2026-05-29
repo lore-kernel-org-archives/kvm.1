@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F763876A4;
-	Fri, 29 May 2026 17:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1E4388893;
+	Fri, 29 May 2026 17:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780075679; cv=none; b=HfzE8pA9qx1Pb3T3SYNYuPPAo7MvjVDAphN7NHBD5opITUrqPTLCNSUM0B8E4fWKA+DlfQzkk2BWc65wZ7gZwNUpKKrjlQmfRrAYnkJyHAaUk3wUHGErmFiYyeMnSJ56hXjgi7mp6gmJLk/nb49ffy6gKzo1EjDJVQCmQW5u/64=
+	t=1780075682; cv=none; b=hnaxfbwvDxb0PuRY65lABTAtfxSWTUNFcEqDLxkIwt7yEozXHl+aaX967Re050gMwg03rdtfxAx1q/AN2A9unZLDboC9GhaZ0Flg8Q8UKd2aNIOMkmtqhdAL7+zuhTX4EikNAI9/G1jVC8VkKmXaLA5VUm9PMEhcxOnfHA2EyJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780075679; c=relaxed/simple;
-	bh=wgQBjdRmhL1PmCnIwL5OxLFWTdzgn0xgdLKxbSOeQuQ=;
+	s=arc-20240116; t=1780075682; c=relaxed/simple;
+	bh=pweU6E6V5UxZMVhZ2AP8UStKS+cHPSOB9FOU44WKrf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOa1Qo6g63gCMopUrX2oeVR1zrY/z4h2ll497pDIT65/hAQTovi3lVedx61EUAfhKvbaOeVd6DoW1cGUAOmQVJY+ipAJF0maH279VCxI4Dkc6nzceZIQ/ZdGJnK78ObwonNHbKCUllipLd3tfBH0b6ClcG689TNMsvMZNxf/onY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iTsoKonQ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=eZXhpRXMugHDSo+kByWZI4AjCM86N20lbC54roo99mmhO8trdALu3tdBqBC5RBZ3gSp8n6zCMvupqWGfHYx/CiovlZ0SGlj51QLmI1fQDsRHod9ZRKUfn5aUJbO6kFUyrZsESsGlhbHf4lNFqNb5FKqs77u3Bt4PWksK7LrHgZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nec8atXG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iTsoKonQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5A61F0089D;
-	Fri, 29 May 2026 17:27:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nec8atXG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4AC1F0089B;
+	Fri, 29 May 2026 17:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780075675;
-	bh=1kPL22rrzi+QauahU6y1XS1epMwqoNAKDudDgPyn9b8=;
+	s=k20260515; t=1780075673;
+	bh=SQ1nDTsRLGDl2EAMFRNs5j0bNOh8Bj7CANx4ag7x/sY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iTsoKonQtoRNhZIcdFYNnxsjobIzbTuBsaMI8AKLqnDUFuRAEFCXAaDZzLQ4uluvf
-	 2BoK36uLWtVdWMuAW7C+wFPPZXavkJ9jyq0cH/U+Q6lXKQ9+xj0KY7JgqPNDrCJdUD
-	 I7O8aH/AmTfAAimqbuAFCmBueKzIN+ShY10Qk5MvYv/65QDSKfwkH978L3WXIi9zed
-	 SAVssbyDIXfzgK3NLUWN7lGPsvypUD+ZFkQm/6pjmygyb4cSUSQJML/ThttwzkcXI6
-	 +Makwar22WjuR+EFxNY6zf3IR21Vshut+rOIM7C9O11WnU4BcRuGBHCbtbC19Fr9G0
-	 W80B9jkmbwbHw==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id AD56DF4006F;
-	Fri, 29 May 2026 13:27:53 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 29 May 2026 13:27:53 -0400
-X-ME-Sender: <xms:mcwZapsP1rjBUxdRudPhbXu0el0Itgp12My4nnx2PNh71h3upoEHNQ>
-    <xme:mcwZauUmyxrDshwSrQ4bXRXvWs0XLPtkXUR9J2-d0bPWWA8ZakSI9hfZIJXBnLqcz
-    PJD_JPQdA_iBISwnxODrqDUq8KuXfAXdfoRXPeCu8DIloCXLPB1xJ8>
-X-ME-Received: <xmr:mcwZalleadARnOe6kg1i_fzdEMvlClALkHrRPKcBjdrWoTOnTSQowzRL2p_xsA>
-X-ME-Proxy-Cause: dmFkZTGahW8s3xjZ3arjCZYsPeROx1tHGGIOxZ4ZTborx5JIY1xfx8o+3Ks6DBHpwKdcBc
-    M0LV7UYzyw5BBW/MLyCvRpPXH4b3j/O36w1UIutGmjGoZPWXllz5NGLuWKcGXqDNqja7AN
-    LjyibA8JUH8LlxNww+LolPBmmXeffckfCMyZ3ofUE4q+w091KUDN+vWzLN57aJjrFHnLmA
-    DJhoBTsevLB+L7lFnUlwKPgFqlT5AUPgwhCfp483ir0podeZjRFOwVO5acGk8d/hTIZjyE
-    iTtkTrHlenKgPfeJb7TkHTrSkVle7vVdqqUtJoKJ+Cofq6CG9ZD2U9nUSpGxcnBPWB+GWq
-    gPC1wTp7fcejRHI3Q1FCzTHBKt9o4RKI/fN91edtIJi4rsYCqiSgf9/MN9PyG3oVtWwq2S
-    OAwDPArj+xnGVYvnZdoZqf1pexBbR5njpxL6C3GTR+3jo1NY5djFNqneHNCwf2Hpsm15in
-    1XS1KK767JDo+yUy4ycjs5w9OSpF8yQaWZzTrerso3eInllVcoT5QdI3MWYQVZqkXjPL8b
-    mUzD5UgIUZGuGJCF4hd21JivANc+J6m3AGnfZkPWlppdwuBGA0vWQZoNjowrfQO8m/0BEo
-    x4qJqm4lDkVPvQiPUZnEnO5I6L9exiwUbCXRwfxeGYYJEZi7J5Q+cK1EffWA
-X-ME-Proxy: <xmx:mcwZapB0dV7ynLPC4kuCuq-LeMRJyazZ-0Vlyqg5N_hxtfWgZwYFDg>
-    <xmx:mcwZai8TxRKhhXzB8qMSDXime-HdkiIyWM2_La-llYlVlUGP0G7Jaw>
-    <xmx:mcwZajSLas5OsbCvJc7s-jx1X723a79QKbCr37I7QmcnpGL9Sm8tuQ>
-    <xmx:mcwZag4sAGE3SUNn3sAzimtbaBg5oj_1rSyzfR72Z-0t-JsmoSs75A>
-    <xmx:mcwZakqi2V0EMqjbRF5snmqiQFNaskBrgRWxSnk8hFNlc2prGBI9gRA3>
+	b=nec8atXGkJujJy7W2x4RHeh46PyG43lwX17Al4yfDKD2PJi9hzW+FGqt0/jfwtaxv
+	 8Iz8IXxQt2kesi3AVnRMvmM7gQtKPiuw/755WryrO0nCG5ESZ42N4YTj0TTgANSpH5
+	 Dn8STpqqEFEj93dlVLHoCOacVswN4P8LSw6nwdZOvjM768/1s3adgceTMnkqn0f8v2
+	 mkX0T0NjgYuWFQiHh1R7QLORYC/4HxgqrNOhcZuR23mgXBXK5aIB9Wqj7A2fHTiMuX
+	 MhxhXkrLCzfBEkjGKrj1NuGymRZkdd4wiErdmHAjdQfWxf7y8Z9Ya72AnUnfFRmPk0
+	 iLz9Sda5XClWg==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 13B7DF40070;
+	Fri, 29 May 2026 13:27:52 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Fri, 29 May 2026 13:27:52 -0400
+X-ME-Sender: <xms:mMwZataQBwkAuGSzsJdlgqbFu4hB7fOQSLqO9IHHZZqKkX8BpoZfVA>
+    <xme:mMwZaoU2y4sOdXm4hc57giUEm2IYFv2CZ9Lvi6vSutUbz4qplttYbsjeTt8VusIxH
+    k7PAJ5o7mPv-XOQmBjJgCHI8zxS_LSLBKoOw5Cppss1H4TDTyEl3s0>
+X-ME-Received: <xmr:mMwZaof02vmZPAh9NSuJoRC5idaSuS5pyUWuqWG4HoPkbGU7N6GVluko3zZefw>
+X-ME-Proxy-Cause: dmFkZTEUyOwNbDmHa1KNnZhhp0sknwyB5iYBikO499ls5PXcb2OBGZ+LtCI75nkUeooCiF
+    UzrXo04XJ8+Ua/uZDk13qfrbBwlZ5p9xJmobKJQlMbnj7l7Wa1HVN1RPiFo+pMeAxt22yi
+    61vTsKtOSGFbPiuQJwzf8kDMk7i9oYKVPojpqHuO0mt23+5gFs2X9nq4e5eFTuainOibKw
+    /PjyCpBsVGYk6ilHJDmI324wGNqP1tQqUfnSbHSEKXH/CNKWAMLzoIWnryvyvz0mzyGoSH
+    2C2M5+XUQ3GxwG6CgDLP16c5lhscyjq12y5muGouPR8MZ3kTeYPrBARrvcwg6KATek/ZWq
+    +dP0D1rsZmQ1VFiNA+xyuNFvJNCjaMNMPCLtlNpIj6q9b06VrZoOfLYh6a5mPwNib0hkRL
+    c+ZWzy8ciJA0v6d/VtEpjxVHWwAipQCSTrc9sxdVPlecEW53mOgLz+tV1zJ7JLvKwfawMO
+    qVXArPzUPOoTGowwQnDvJrO7egZwJGKJkwMQDaQbsj+yUcxyiVKnn/amGJ9qd5HJ9Sp4sO
+    7gte4/4huMO65wclA1C+VepBODWBRI0A5r+98PASSCy+d7rtf8X9OJnFiQibhGontdXFK3
+    qWaGg4A2UenLkAl7DzOZU688UcpGeTPHuTKZu/nwkn6RY9O7b2wuki171pbQ
+X-ME-Proxy: <xmx:mMwZalN4OwoS9J1r7c6qSZ2cRpNcVkaIEM_T5vYZyWev-4WYa2I77g>
+    <xmx:mMwZagIguX5ExgrFreFQuALWRzdHd8OdnqhslN_tEma2KIBe4wHRgQ>
+    <xmx:mMwZarl-tYRoGhZPOhI6mAG3iKJZNU0I2B5ZHliu1Z4BUWkICTB23A>
+    <xmx:mMwZavZQniFpJBej5AJGO1IDL2mZtuovV2zk9fCECmydqdLvle9Odw>
+    <xmx:mMwZaqirj9zWG3hh1xGvkPz3mckosWYd0VlCrqCCYal2WJeHbzvM3_qP>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 29 May 2026 13:27:53 -0400 (EDT)
+ 29 May 2026 13:27:51 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: akpm@linux-foundation.org,
 	rppt@kernel.org,
@@ -78,9 +78,9 @@ Cc: ljs@kernel.org,
 	kvm@vger.kernel.org,
 	kernel-team@meta.com,
 	kas@kernel.org
-Subject: [PATCH v6 05/15] mm: add VM_UFFD_RWP VMA flag
-Date: Fri, 29 May 2026 18:26:34 +0100
-Message-ID: <20260529172716.357179-6-kas@kernel.org>
+Subject: [PATCH v6 04/15] userfaultfd: test uffd VMA flags through the vma_flags_t API
+Date: Fri, 29 May 2026 18:26:33 +0100
+Message-ID: <20260529172716.357179-5-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260529172716.357179-1-kas@kernel.org>
 References: <20260529172716.357179-1-kas@kernel.org>
@@ -92,237 +92,75 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Preparatory patch for userfaultfd read-write protection (RWP). RWP
-extends userfaultfd protection from plain write-protection (WP) to
-full read-write protection: accesses to an RWP-protected range --
-reads as well as writes -- trap through userfaultfd.
+The uffd VMA-flag helpers read vma->vm_flags directly. Now that
+config-gated per-mode masks exist, switch them to the vma_flags_t
+accessor vma_test_any_mask(), which is the going-forward API and keeps a
+single place (the VMA_UFFD_* masks) that knows which modes are available
+on the current build.
 
-Reserve VM_UFFD_RWP, add the userfaultfd_rwp() and
-userfaultfd_protected() helpers, and wire up the smaps "ur" entry and
-the trace-flag table the rest of the series will use. The flag is
-gated on CONFIG_USERFAULTFD_RWP, which is introduced together with the
-UAPI in a later patch; until then VM_UFFD_RWP aliases VM_NONE and
-every downstream check folds to dead code.
+No functional change: vma_flags_t is in union with vm_flags, so the same
+bits are read, and the masks fold to the same code the open-coded
+vm_flags tests produced -- verified identical on gcc and clang, 32- and
+64-bit.
 
-Nothing sets or queries the flag yet.
-
+Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-opus-4-6
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Assisted-by: Claude:claude-opus-4-8
 ---
- Documentation/filesystems/proc.rst |  1 +
- fs/proc/task_mmu.c                 |  3 +++
- include/linux/mm.h                 | 41 ++++++++++++++++++++----------
- include/linux/userfaultfd_k.h      | 32 +++++++++++++++++++----
- include/trace/events/mmflags.h     |  7 +++++
- 5 files changed, 65 insertions(+), 19 deletions(-)
+ include/linux/userfaultfd_k.h | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
-index db6167befb7b..db28207c5290 100644
---- a/Documentation/filesystems/proc.rst
-+++ b/Documentation/filesystems/proc.rst
-@@ -607,6 +607,7 @@ encoded manner. The codes are the following:
-     um    userfaultfd missing tracking
-     uw    userfaultfd wr-protect tracking
-     ui    userfaultfd minor fault
-+    ur    userfaultfd read-write-protect tracking
-     ss    shadow/guarded control stack page
-     sl    sealed
-     lf    lock on fault pages
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 939657aa334a..ca0f69b347e8 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1237,6 +1237,9 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
- 		[ilog2(VM_UFFD_MINOR)]	= "ui",
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_MINOR */
-+#ifdef CONFIG_USERFAULTFD_RWP
-+		[ilog2(VM_UFFD_RWP)]	= "ur",
-+#endif
- #ifdef CONFIG_ARCH_HAS_USER_SHADOW_STACK
- 		[ilog2(VM_SHADOW_STACK)] = "ss",
- #endif
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 485df9c2dbdd..5ac31fbadeef 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -353,6 +353,7 @@ enum {
- #endif
- 	DECLARE_VMA_BIT(UFFD_MINOR, 41),
- 	DECLARE_VMA_BIT(SEALED, 42),
-+	DECLARE_VMA_BIT(UFFD_RWP, 43),
- 	/* Flags that reuse flags above. */
- 	DECLARE_VMA_BIT_ALIAS(PKEY_BIT0, HIGH_ARCH_0),
- 	DECLARE_VMA_BIT_ALIAS(PKEY_BIT1, HIGH_ARCH_1),
-@@ -496,12 +497,17 @@ enum {
- #else
- #define VM_UFFD_MINOR	VM_NONE
- #endif
-+#ifdef CONFIG_USERFAULTFD_RWP
-+#define VM_UFFD_RWP		INIT_VM_FLAG(UFFD_RWP)
-+#else
-+#define VM_UFFD_RWP		VM_NONE
-+#endif
- 
- /*
-- * vma_flags_t masks for the userfaultfd VMA flags. VMA_UFFD_MINOR is gated on
-- * the same config as VM_UFFD_MINOR -- which implies 64BIT, where the bit fits
-- * -- so an out-of-range bit is never fed to mk_vma_flags() on a build whose
-- * bitmap cannot hold it.
-+ * vma_flags_t masks for the userfaultfd VMA flags. The two high-bit modes are
-+ * gated on the same configs as their VM_* flags above -- both of which imply
-+ * 64BIT -- so an out-of-range bit is never fed to mk_vma_flags() on a build
-+ * whose bitmap cannot hold it.
-  */
- #define VMA_UFFD_MISSING	mk_vma_flags(VMA_UFFD_MISSING_BIT)
- #define VMA_UFFD_WP		mk_vma_flags(VMA_UFFD_WP_BIT)
-@@ -510,6 +516,11 @@ enum {
- #else
- #define VMA_UFFD_MINOR		EMPTY_VMA_FLAGS
- #endif
-+#ifdef CONFIG_USERFAULTFD_RWP
-+#define VMA_UFFD_RWP		mk_vma_flags(VMA_UFFD_RWP_BIT)
-+#else
-+#define VMA_UFFD_RWP		EMPTY_VMA_FLAGS
-+#endif
- 
- #ifdef CONFIG_64BIT
- #define VM_ALLOW_ANY_UNCACHED	INIT_VM_FLAG(ALLOW_ANY_UNCACHED)
-@@ -648,22 +659,24 @@ enum {
-  * reconsistuted upon page fault, so necessitate page table copying upon fork.
-  *
-  * Note that these flags should be compared with the DESTINATION VMA not the
-- * source, as VM_UFFD_WP may not be propagated to destination, while all other
-- * flags will be.
-+ * source: VM_UFFD_WP and VM_UFFD_RWP may be cleared on the destination
-+ * (dup_userfaultfd() -> userfaultfd_reset_ctx() when the parent context did
-+ * not negotiate UFFD_FEATURE_EVENT_FORK), while all other flags propagate.
-  *
-  * VM_PFNMAP / VM_MIXEDMAP - These contain kernel-mapped data which cannot be
-  *                           reasonably reconstructed on page fault.
-  *
-  *              VM_UFFD_WP - Encodes metadata about an installed uffd
-- *                           write protect handler, which cannot be
-- *                           reconstructed on page fault.
-+ *              VM_UFFD_RWP  write- or read-write-protect handler, which
-+ *                           cannot be reconstructed on page fault.
-  *
-- *                           We always copy pgtables when dst_vma has uffd-wp
-- *                           enabled even if it's file-backed
-- *                           (e.g. shmem). Because when uffd-wp is enabled,
-- *                           pgtable contains uffd-wp protection information,
-- *                           that's something we can't retrieve from page cache,
-- *                           and skip copying will lose those info.
-+ *                           We always copy pgtables when dst_vma has the
-+ *                           uffd PTE bit in use even if it's file-backed
-+ *                           (e.g. shmem). Because when the uffd bit is
-+ *                           in use, the pgtable contains the protection
-+ *                           information, that's something we can't
-+ *                           retrieve from page cache, and skip copying
-+ *                           will lose those info.
-  *
-  *          VM_MAYBE_GUARD - Could contain page guard region markers which
-  *                           by design are a property of the page tables
 diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index c4f2cc6dfcf0..f3b2db27989b 100644
+index 658740df2978..c4f2cc6dfcf0 100644
 --- a/include/linux/userfaultfd_k.h
 +++ b/include/linux/userfaultfd_k.h
-@@ -21,10 +21,11 @@
- #include <linux/hugetlb_inline.h>
- 
- /* The set of all possible UFFD-related VM flags. */
--#define __VM_UFFD_FLAGS (VM_UFFD_MISSING | VM_UFFD_WP | VM_UFFD_MINOR)
-+#define __VM_UFFD_FLAGS (VM_UFFD_MISSING | VM_UFFD_MINOR | \
-+			 VM_UFFD_WP | VM_UFFD_RWP)
- 
- #define __VMA_UFFD_FLAGS mk_vma_flags_from_masks(VMA_UFFD_MISSING, VMA_UFFD_WP, \
--						 VMA_UFFD_MINOR)
-+						 VMA_UFFD_MINOR, VMA_UFFD_RWP)
- 
- /*
-  * CAREFUL: Check include/uapi/asm-generic/fcntl.h when defining
-@@ -179,7 +180,8 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+@@ -178,7 +178,8 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+  */
  static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
  {
- 	return vma_test_any_mask(vma,
--		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
-+		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR,
-+					VMA_UFFD_RWP));
+-	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
++	return vma_test_any_mask(vma,
++		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
  }
  
  /*
-@@ -210,6 +212,16 @@ static inline bool userfaultfd_minor(struct vm_area_struct *vma)
- 	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
- }
- 
-+static inline bool userfaultfd_rwp(struct vm_area_struct *vma)
-+{
-+	return vma_test_any_mask(vma, VMA_UFFD_RWP);
-+}
-+
-+static inline bool userfaultfd_protected(struct vm_area_struct *vma)
-+{
-+	return userfaultfd_wp(vma) || userfaultfd_rwp(vma);
-+}
-+
- static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
- 				      pte_t pte)
- {
-@@ -330,6 +342,16 @@ static inline bool userfaultfd_minor(struct vm_area_struct *vma)
- 	return false;
- }
- 
-+static inline bool userfaultfd_rwp(struct vm_area_struct *vma)
-+{
-+	return false;
-+}
-+
-+static inline bool userfaultfd_protected(struct vm_area_struct *vma)
-+{
-+	return false;
-+}
-+
- static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
- 				      pte_t pte)
- {
-@@ -423,8 +445,8 @@ static inline bool userfaultfd_wp_use_markers(struct vm_area_struct *vma)
- }
- 
- /*
-- * Returns true if this is a swap pte and was uffd-wp wr-protected in either
-- * forms (pte marker or a normal swap pte), false otherwise.
-+ * Returns true if this swap pte carries uffd-tracked state in either
-+ * form (pte marker or a normal swap pte), false otherwise.
+@@ -190,22 +191,23 @@ static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
   */
- static inline bool pte_swp_uffd_any(pte_t pte)
+ static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
  {
-diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
-index a6e5a44c9b42..bfface3d0203 100644
---- a/include/trace/events/mmflags.h
-+++ b/include/trace/events/mmflags.h
-@@ -194,6 +194,12 @@ IF_HAVE_PG_ARCH_3(arch_3)
- # define IF_HAVE_UFFD_MINOR(flag, name)
- #endif
+-	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
++	return vma_test_any_mask(vma,
++		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
+ }
  
-+#ifdef CONFIG_USERFAULTFD_RWP
-+# define IF_HAVE_UFFD_RWP(flag, name) {flag, name},
-+#else
-+# define IF_HAVE_UFFD_RWP(flag, name)
-+#endif
-+
- #if defined(CONFIG_64BIT) || defined(CONFIG_PPC32)
- # define IF_HAVE_VM_DROPPABLE(flag, name) {flag, name},
- #else
-@@ -215,6 +221,7 @@ IF_HAVE_UFFD_MINOR(VM_UFFD_MINOR,	"uffd_minor"	)		\
- 	{VM_PFNMAP,			"pfnmap"	},		\
- 	{VM_MAYBE_GUARD,		"maybe_guard"	},		\
- 	{VM_UFFD_WP,			"uffd_wp"	},		\
-+IF_HAVE_UFFD_RWP(VM_UFFD_RWP,		"uffd_rwp"	)		\
- 	{VM_LOCKED,			"locked"	},		\
- 	{VM_IO,				"io"		},		\
- 	{VM_SEQ_READ,			"seqread"	},		\
+ static inline bool userfaultfd_missing(struct vm_area_struct *vma)
+ {
+-	return vma->vm_flags & VM_UFFD_MISSING;
++	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
+ }
+ 
+ static inline bool userfaultfd_wp(struct vm_area_struct *vma)
+ {
+-	return vma->vm_flags & VM_UFFD_WP;
++	return vma_test_any_mask(vma, VMA_UFFD_WP);
+ }
+ 
+ static inline bool userfaultfd_minor(struct vm_area_struct *vma)
+ {
+-	return vma->vm_flags & VM_UFFD_MINOR;
++	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
+ }
+ 
+ static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
+@@ -222,7 +224,7 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
+ 
+ static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+ {
+-	return vma->vm_flags & __VM_UFFD_FLAGS;
++	return vma_test_any_mask(vma, __VMA_UFFD_FLAGS);
+ }
+ 
+ static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
 -- 
 2.54.0
 
