@@ -1,126 +1,202 @@
-Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010049.outbound.protection.outlook.com [40.93.198.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C892E7378;
-	Fri, 29 May 2026 16:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780071003; cv=none; b=BEy/tu7kcWlrjoE8D0TS8MncgKP/JhA2iiesYiOb2Hyq+V+geEWholu7Fn+E2zyOhaNozH5tyMWNhbcjQ30p2wFMEOPuO0Wz8t3CYxOoobEGgEFZXpe5LsgR6neaDLmY3gTNn9rMEl11SLF1PMNtNPptz5nuDya7ixFZL0NobAU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780071003; c=relaxed/simple;
-	bh=ueMbKYDnjG/pPkozcvq1hNvLbgzbX4F0xs9sWbgMRyY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KeymAD8vU/EqAqGdBQH5y+FjwEJf9tVEbSsQmaltwoUGp0aWFjgzLq09Iib70xWXst6IsT8/Ey0Z5r3oGob+KE8YcVcI83KYHxLQOPM/14Jd8HZGGZQ7IEzL7CerARXUxNARZn9nsodxD05kuyn7GNVjheavAHQ+wG7M+d3t+Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=dx790+gm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XzjWYWA2; arc=none smtp.client-ip=202.12.124.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110D83BA24F;
+	Fri, 29 May 2026 16:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780071168; cv=fail; b=FYuHkI/q61q15grWW+743YhgEGgUoJrg+BbaE7h81tU/D8ieQIk6qRzrY4YEhN9sv5yPmAWkIYPA73SNgWS3fOU1iAEU5RGzBKlMqG7dyJRZtrkBbgRMlYklnVgLqHaCpV1j/tYCpFkM7YvkMKibTd/iJAlaFcnxpwwQwGESdFE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780071168; c=relaxed/simple;
+	bh=90mz1qrsmdG4ctCsrItepfMSGxdBkh1Hb0ApSpTY0Bo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ogftIt6cui92lzG5reHxqlNUVP2vfcYya2TRhxDkUR9cYWgbVyc2YTf5PMSwMhN8BzJwacrM85jg9W3hxj467KnWMGfgNjVwlHIBljKZnAW9nteR7+LkU4pelTWJp74QwesGEYKCyhJdDuH2cJSv++nBuVtTlbqBArVrs3uBlHU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=miOIzRe/; arc=fail smtp.client-ip=40.93.198.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="dx790+gm";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XzjWYWA2"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.stl.internal (Postfix) with ESMTP id 8E219130017C;
-	Fri, 29 May 2026 12:09:59 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 29 May 2026 12:10:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1780070999; x=
-	1780078199; bh=yCQGxE2VwZ7TPyH1GENnw64ogNKLMsypG7SdY7O7HyY=; b=d
-	x790+gmFOOG9v4AuVJP4ne6bRgdnfCQusA6mDuRfxN+aMBZm0kvt3wnU/pQeM+CN
-	39g8UHT39sT3ktgE8mrVsSybi6u7Suk6K3GB9lcXIBDLJEys60v8ontI4U+s9zlp
-	T4iYlyY8kt4aEBJQjexUP35BvIns5SAO8obRtFrCE9Gxj+axX+y3ZKofNhMxwCjV
-	DIagvUTLnSYY0OxSfoJGdFu1qmeFAf4jHNxhwKyCENto6+BWUOIm0CsMglsEg7G9
-	oTXff5K8+JWKdrVUY2sO0CS7nleoceCZNXqN3QeXpV06teB7zZMxM9+th1ladti8
-	Q7hVeSIefKnCrOg2vr4cw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1780070999; x=1780078199; bh=yCQGxE2VwZ7TPyH1GENnw64ogNKLMsypG7S
-	dY7O7HyY=; b=XzjWYWA2FQxK/sdjf3Ns4xQt2XwlqavTtO/b0i7jHjVEqQs6IZs
-	Xk7OtncmEJccbLGx1TCq3HrtmigP24BtojTYLnv8lx2ZD2SmxuE3jZKVeNQmp7Zr
-	C/w+DA7rWDavQvu0xbUGqKJs7XFerdMLnhYma25urvVM6Y1mzGupa9PK9QJ/Xiql
-	6xGhGQzdieRgB/BM+rx3CJPad6rotOF2nD0+5orpWJ1GCqyu2oVJ360Q3h4gD6Dh
-	xmtcR6868TTK1n/hVvQLHe6/UaMCM8eTf4jPydMZNjwGMcznykbrVKtDHefoLeHF
-	Vk2zvjzlgy08XXRhJg2F/Sf3LrFpWqjSStA==
-X-ME-Sender: <xms:VroZaiYsZ3s217W5f-7Yot472V3xNeypxcJfdq-lZPZ2zBxLt6w_Yg>
-    <xme:VroZatx4_egnkCHb_9gr2HO1f1PndNcIn_8GDr8p4vAyTGCHbKghHY3ERldVpZfOv
-    KxKvvjO7gaUh52NcFGbq_XFEVREFwQT87gUuoJBQ1_V3teLy8I3QlM>
-X-ME-Received: <xmr:VroZanNjicJKD2ueeW2Q6rlSuSxp5Lu2S-vvGEQzskUPdPuR_-EbQULwg9JeVA>
-X-ME-Proxy-Cause: dmFkZTF5GxdEr1yCvZ6kyFvOzvHVs6SwkJfUGREcVnkg1W8F4OQC1NfE6tZFRjuAEYN7CY
-    oaeGvqirqC7MgUTCKRTPqriH20k/xhHdv+L9upsVMvX2G0Ehd95vRdHta+K3je4rJQBnCS
-    qAV7t2idhxq2AHeyEs7ThD8S9VwoF45Rgg20qllo34+oUy3TVn6bXp7RhbnqeiMkplmiE/
-    vGDHTQ4fr6VkZ3xwGpfyV8Fpf0aTgcR3ui/oOuiF8Lrc3gIpmXEAc8KbPGQDXs4ubh5AVO
-    aEDwiSBAL68wmfFNOohGfrv5tNlzCqN22kr28c1/AEq5T/PDAjboCyvAd+YtMlbSzDrvOg
-    5ffwJyVINgO0G/FnM7vN04WA3yPEDhlzsEEWsbxItMdALnS7Req6yihD4HKG27eTCIUWsi
-    3K35QliMA7OJhexc3hMbSlu15zDC0Ubi56fAUo9qu3dhOy/zSAoOCX78c6uLEoWiaYn6Qm
-    1Vtru0/IdBDvXgaSzsTuIQKqN61p4z/8JVhFETigfRfSgLIn2zrqhBrKyvPS+j/OE7l0uK
-    zt0o7mgm8lOF+uurUs+vz7W5PONJEoIfYm8ADY7juvGiZRjRVsGCwxWLRRQQD+H2Gpi5Am
-    znL2bTp4ZHh2vuBrcQHiY+cq5PFRj9a9Ihe7Ee/0ulN4xQH1W5I8EGaE6ZmA
-X-ME-Proxy: <xmx:VroZapOzu8MWwtCKHQeztbejLKFN4MQi2TnVxrs6R92pa5qus8PKtw>
-    <xmx:VroZaq8GzdXftzn4ApgZ8sKdAvtx8eSwHlqhZpMMapGCXvpVmYH_LQ>
-    <xmx:VroZaoby_NAFtPQhj2dWHtxsDxUZOjCaUjcleAVcgLGn3bFEAKibdw>
-    <xmx:VroZaoGOrnNd-hzG95vFOmevM9g64xdpwHnB_WIsMegvtQ8ub5XU7Q>
-    <xmx:V7oZav4VZ1ZfLoykJzfe7aSwIPEi_N--zGIiXJ_TCAdDHftwfbCVW3x8>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 29 May 2026 12:09:57 -0400 (EDT)
-Date: Fri, 29 May 2026 17:09:56 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
-	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
-	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
-	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
-Message-ID: <ahmoH9v6_DA2i_zn@thinkstation>
-References: <20260526130509.2748441-1-kirill@shutemov.name>
- <20260526130509.2748441-5-kirill@shutemov.name>
- <ahmQvfNk7S4F0LBj@lucifer>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="miOIzRe/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=O/qLpy7GBMUcGhI6bSYZ9S20HHFVaJcIKz0uhkd4zFLxmdBEo6xMRRJj9oJZ7DvxY0Vh5XiRCtJqt+zmF3gJBmrLdvSGOTO9eV9UYAlFqrv7dpIvCSKzbddW/mNnlS4jXpCJgj46wiPTtve4O1d5J5dZC6t+m/oMLsOJqkaDq4J9deAEDFyomtsJJ7gDk1Jhed89N3stoXGLr8LKwOL9W3lLO9M+Gc9sPyKmAmt4jTa7G8M0YxgLuy5a87dbpdg32g86zjF2CF/Rxr8CtYBXa+LQ/0ZrBzQP+njatOEwSjKORw+CqMZo97HfjJgea4L+iQHDpQt9vO+V6wlzgmmfVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W4QOSUXEXkkbuEETHONAYf8ldVIUNmlawAFy+gl9rcU=;
+ b=i365MJCfdHhpTqD2bOHYaprmyXkU3/ZLNY8Qtn7D6PU57ms21ZeMXEA36HQj4ZzgsTTDaWK05F0KpjkHUypeSNoZvq0OEPGZ4UIGze72rSChmmc+666c7GM15v2/0Aaik3gTmiAUeGsLivYCAz2TlHD5/c28R++uexGHqFN/BRRWavBoOqjup7UitItzPIM/S6riZnDz06EOgalsc7X2ThcAh5Qv+dhans0qmCDGwV9CgVCilAjSyqBK021POWn26Xh9ITylt+L/yFBt/MAPBt67T1eUojtkWJEOrdf2eD0PwC/UNhfJKPppWDCZlPK4rRSSdngdIfZdMx24D7VEhg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W4QOSUXEXkkbuEETHONAYf8ldVIUNmlawAFy+gl9rcU=;
+ b=miOIzRe/ySCSq4M2y08azhySU1TpGZlYuZwqB/ldNtwOjhKYAYZZisg/ymdybw4q8NhEJoj1OLu16vazhh74tyTOXyA675oNbVsEDczaVNLVzKetNgL13h3p3KpuyEi5FthxCZBVyDZ4Z0aJ+1TeXFAzUaRWNQHhsxO6mI6ILSE=
+Received: from BY3PR03CA0020.namprd03.prod.outlook.com (2603:10b6:a03:39a::25)
+ by DS4PR12MB9681.namprd12.prod.outlook.com (2603:10b6:8:281::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 29 May
+ 2026 16:12:41 +0000
+Received: from SJ5PEPF000001F0.namprd05.prod.outlook.com
+ (2603:10b6:a03:39a:cafe::9a) by BY3PR03CA0020.outlook.office365.com
+ (2603:10b6:a03:39a::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.13 via Frontend Transport; Fri, 29
+ May 2026 16:12:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001F0.mail.protection.outlook.com (10.167.242.68) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.71.7 via Frontend Transport; Fri, 29 May 2026 16:12:38 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 29 May
+ 2026 11:12:38 -0500
+Received: from amd.com (10.180.168.240) by satlexmb07.amd.com (10.181.42.216)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41 via Frontend
+ Transport; Fri, 29 May 2026 11:12:31 -0500
+Date: Fri, 29 May 2026 16:12:20 +0000
+From: Ankit Soni <Ankit.Soni@amd.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+CC: Pranjal Shrivastava <praan@google.com>, David Woodhouse
+	<dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel
+	<joro@8bytes.org>, Will Deacon <will@kernel.org>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Pasha Tatashin <pasha.tatashin@soleen.com>, Robin Murphy
+	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
+	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Saeed Mahameed
+	<saeedm@nvidia.com>, Adithya Jayachandran <ajayachandra@nvidia.com>, Parav
+ Pandit <parav@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, William Tu
+	<witu@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>, David Matlack
+	<dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, Chris Li
+	<chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, YiFei Zhu
+	<zhuyifei@google.com>
+Subject: Re: [PATCH v2 01/16] liveupdate: luo_file: Add internal APIs for
+ file preservation
+Message-ID: <qlvj2ljrlj6vlbto6dyqkdofrklhb7erjex7xg7ei5jils5mx5@7hqisoqevqfi>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-2-skhawaja@google.com>
+ <agr6yoyYYq2QFxjL@google.com>
+ <agth8vZh96TfEYl_@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <ahmQvfNk7S4F0LBj@lucifer>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <agth8vZh96TfEYl_@google.com>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F0:EE_|DS4PR12MB9681:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd344fae-9bbf-49ca-9907-08debd9d1acd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|7416014|82310400026|376014|1800799024|6133799003|11063799006|5023799004|4143699003|13003099007|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	w2NEyKVyauZKOFH4F11r6mb9gzAMMYNxfIVb/WZyTzlnVt+eXNWG8cypkDsrfAZKRrBGhE+NhT3d5fKd5ITYzYlB2LS4QYKO4s1HWv/aoiLFCacdaMA8cSNlvEEB1x/jK+mkX0SHEqKUeNyjtvrbWq684bzOfJmwRTon9M1eXmBFGOXYuRI3WFOcxFeKtq9k2BiwvNDDcilJbRbQgClaurHu6BTSVEIghFgJr9/L1/UnzfFaRJrUj/SQExbkwFv76deVCcNuP0d5ZeFOzSpK2PEHD6fgvVM5kMFUyEkrPgAiAle5bAY2swe5QDzB2urpUur9383Fiy6JcFHX//AHcdh8LUFBxe0d6iVSAf1v8lhlEUS1soRpSYcZyaV0s6jwJp84CUvtjBYp3EbxW8MVZKfcKJdnLzagGyx0YjKLawC+3anWM9FcUDHyHdgbPvNFGo5QAasAV93Gsk3avfpipl6lrf6ZGyX+50OnGC/0/7OfGHWlBl4k+w7fQy9QKmR8Zo/uV5tod9qea4Vm3Qxmt3neJJ/Uwyazgy0+9xYJBemIP3qPFbS4TeBePqq3JtEjFc/SjE07eTXzQ2YL96IoYhiUne3KMVbl5tFUVp4PyPI/cSNdw/yC7QR7KMnVuLrNZFtxQuEtFHkjgJGGZiZQ5eVtYq0/noAblU0i3tp2DhaUxC0ifZQR1JTQcHlMzyKQ
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(82310400026)(376014)(1800799024)(6133799003)(11063799006)(5023799004)(4143699003)(13003099007)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	buOK+IumbNhmaaoiXMWzuOQeLeto+GPWacJoS8ltRVDYaz1rTWZN3mty6OTbLEa/jEorWVPp4zpHvRv5eQ+CtYa3CJC+m8HJLGwscJfH5F7HdYGkKO8QWknDSAKo30qd8te4nvoYq3quJfzCP2XiwFcafFh5aEjiKB7N6M2v3kjhAAKTyCOqA+b7kSlRrntQWnxETWSxSr1FZtHBTqDMb7eZt1xs8DC/ekxHjKLk4fC/6SVHru1/UHfKcQDzR/4sJaNIJeQycS3VK0n++6bGcwOH7+oThd7YQ1D+xM36lAEzFjAymgTGb64QvCkMDA6BEukdXE93FIPXMY9zIJ+kdlZMZyRh/0Gfy3BarBpuTkB3S+3O7aiykz87WvinSOKtQtKVt715Aln4oQfi/r8hAxSbZ59ffIOmq43CVbvUetBocGEvtnQ/577yP+6tSi22
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 16:12:38.9627
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd344fae-9bbf-49ca-9907-08debd9d1acd
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001F0.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9681
 
-On Fri, May 29, 2026 at 03:00:14PM +0100, Lorenzo Stoakes wrote:
-> > Add VMA_NO_BIT and have DECLARE_VMA_BIT() resolve any bitnum out
-> > of range to it. vma_flags_set_flag() drops negative bit values.
-> > The ternary collapses at compile time, the runtime check folds
-> > away when the bit is in range, and the common path is unchanged.
+On Mon, May 18, 2026 at 07:08:01PM +0000, Samiullah Khawaja wrote:
+> On Mon, May 18, 2026 at 11:40:58AM +0000, Pranjal Shrivastava wrote:
+> > On Mon, Apr 27, 2026 at 05:56:18PM +0000, Samiullah Khawaja wrote:
+> > > From: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > > 
+> > > The core liveupdate mechanism allows userspace to preserve file
+> > > descriptors. However, kernel subsystems often manage struct file
+> > > objects directly and need to participate in the preservation process
+> > > programmatically without relying solely on userspace interaction.
+> > > 
+> > > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> > 
+
+[..]
+
+> > > + *
+> > > + * Context: It must be called with session mutex acquired of a restored session.
+> > > + * Return: 0 on success. Returns -ENOENT if no file with the matching token is
+> > > + *         found, or any other negative errno on failure.
+> > > + */
+> > > +int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
+> > > +				 struct file **filep)
+> > > +{
+> > > +	return luo_retrieve_file(luo_file_set_from_session_locked(s),
+> > > +				 token, filep);
+> > > +}
+> > 
+> > Nit: Shouldn't we export both of these functions via EXPORT_SYMBOL_GPL?
+> > Since, these new APIs are intended for kernel subsystems to participate
+> > programmatically, there could be IOMMU drivers (or others) that can be
+> > compiled as loadable modules. Thus we should export these APIs via
+> > EXPORT_SYMBOL_GPL(). If they aren't exported, any loadable module
+> > attempting to use them will compile successfully (due to the header), but
+> > will fail to load at runtime with an Unknown symbol error.
+> > 
+> > IIUC, if a function isn't exported with EXPORT_SYMBOL, it remains hidden
+> > inside vmlinux, (i.e. it isn't in the kernel's global symbol table used
+> > during modprobe).
 > 
-> Hmm are you sure it does?
+> Agreed. Will Update this.
+> 
+> I think there are other LUO APIs that are not exported and can be used
+> by modules. Let me check those also.
 
-You were right - I measured it (gcc 15.2, clang 21.1.8, -O2). The
-DECLARE_VMA_BIT() ternary is fine, but the "if (bit < 0)" guard does not
-reliably fold: with it, clang stops folding __VMA_UFFD_FLAGS to a constant
-and gcc keeps a rolled loop; without it, both fold.
+Hi,
++1 to Pranjal's EXPORT_SYMBOL_GPL nit, and I'd like to extend it.
+With CONFIG_IOMMUFD=m && CONFIG_IOMMU_LIVEUPDATE=y
+the series fails at modpost, not at modprobe — kernel won't even build:
 
-So I've dropped VMA_NO_BIT and gone with your config-gated-mask approach
-instead: mk_vma_flags_from_masks() plus VMA_UFFD_{MISSING,WP,MINOR,RWP}
-masks that collapse to EMPTY_VMA_FLAGS when unavailable, so no out-of-range
-bit ever reaches mk_vma_flags(). __VMA_UFFD_FLAGS now folds to a single
-constant on both compilers, 32- and 64-bit. Added your Suggested-by.
+  ERROR: modpost: "memfd_get_seals" [iommufd.ko] undefined!
+  ERROR: modpost: "iommu_preserve_device" [iommufd.ko] undefined!
+  ERROR: modpost: "iommu_unpreserve_device" [iommufd.ko] undefined!
+  ERROR: modpost: "liveupdate_register_file_handler" [iommufd.ko] undefined!
+  ERROR: modpost: "liveupdate_get_token_outgoing" [iommufd.ko] undefined!
+  ERROR: modpost: "iommufd_liveupdate_register" [iommufd.ko] undefined!
+  ERROR: modpost: "iommufd_liveupdate_unregister" [iommufd.ko] undefined!
+  ERROR: modpost: "iommufd_hwpt_liveupdate_mark_preserve" [iommufd.ko] undefined!
 
-I also took your "use the new API" hint and added a prep patch converting
-the existing userfaultfd_*() helpers to vma_test_any_mask() (Suggested-by
-you as well). One deviation: vma_test(vma, VMA_UFFD_RWP_BIT) is itself an
-out-of-bounds *read* on 32-bit (test_bit(43, &one_long)), so the helpers
-use vma_test_any_mask() with the masks rather than the bit.
+Two issues:
+1) drivers/iommu/iommufd/Makefile (patch 12) builds liveupdate.o into vmlinux
+   instead of iommufd.ko — needs to be a composite member, not a top-level obj:
+     -obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
+     +iommufd-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
 
-> Either way, I think we should break out any fix like this from the series.
+   This fixes the iommufd_liveupdate_{register,unregister} and
+   iommufd_hwpt_liveupdate_mark_preserve errors above.
 
-Agreed - the OOB fix and the other pre-existing fixes will go as a separate
-series with the RWP work rebased on top.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2) Beyond the two LUO functions Pranjal mentioned, four more vmlinux symbols
+   need EXPORT_SYMBOL_GPL.
+
+Thanks,
+Ankit
+
+> > 
+> > Thanks,
+> > Praan
+> > 
+> > [1] https://elixir.bootlin.com/linux/v7.0-rc3/source/kernel/liveupdate/luo_file.c#L560
+> > 
