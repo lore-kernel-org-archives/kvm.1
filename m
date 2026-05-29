@@ -1,128 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F232FF15B
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 19:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46D7352C3C
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 19:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780082123; cv=none; b=r855gRBGGNf0/idHQbDPozmDRcIR1crZ36ApN7sauD5NNPhtlwVOPqQc3WYPmeCjoyapLO/jsZ6Xmo3eFpk7UOfMruustutTX1OFbsdues8+5evcjfOPsx3vXqVno5FGaN/dEoqM9Hd4oKP7xPuUEN0GLYVQGcR8cpot086GBl8=
+	t=1780082973; cv=none; b=PbtsYQ+W6D9nDnyERyvKX6L71ass5Diz/E7HGCXr77D9GWGxqW4Gwn+0Q70RfXv64EpDBAEwM7jFWREFAYF2E9eKTVaR4CpMcygWCUcXufB4M7fSZ4+liu3cysbqpa0ImTr+Lj5KnYgxDmOv6cpy03Lz5ft+7Y4Y3XdrKyIc0Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780082123; c=relaxed/simple;
-	bh=zx6b3u2afFpFhXVq8TyUzqDdH9h2l6+ItBxLaMZBkyA=;
+	s=arc-20240116; t=1780082973; c=relaxed/simple;
+	bh=k4EzTeX2HTrMQTCk/QD5CcNTQlguLVNPByqYh/oFNS8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ck3XGi+J8X9qWBelYUH11lCdKmW5RZ4WJg1EcfeQchlwvSjkt/qayfGXMl/UT1nDL0gJvLHLxKtrsp6ZJVWBtyyhKe+k7XMzfE3t5S/HIt1B6nS2sRHSsFTsh62UUzKvp8DKZ5VQ7m+XhAlE9mR4KgoBbiYK2QJ3nfA0WXNNWYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etWemmwf; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=JJqpU3HLk57KzoGkIr7YEMMUkWQ7cKxTXNpns5pQFlXkQ3I+ZP1j1Raju7LSloRODbpWOtbbW7R0QSHBZ3PzCan7AS5yrSI1K5UScsK8g40bOu1MAz86FGm2H1HCS5+EWBVbDL7XdwuSJ0/P0XlamSPadi0YM89aNBxdeC1PK3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h25QKQRw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etWemmwf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA1B1F00893;
-	Fri, 29 May 2026 19:15:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h25QKQRw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301811F00893;
+	Fri, 29 May 2026 19:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780082121;
-	bh=+LfuVk2q9qeFN5hiXVM7CGKgGyLnkDffWCWSRnZ7y1I=;
+	s=k20260515; t=1780082972;
+	bh=5NXNSy4UEgrSFhqO1zADE54xjkOz8ZbdGiRXvcXer+I=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=etWemmwfDpbSDCpR9MuejoPEFHd9fRMaY4GJGr0nJapkGhhZY1vqF7KuREPFgrZts
-	 LTOJgbv0U+GKa70hdVySLY2rPKnKGPUqYpakYuD4kdATL2vOsoskxegfHKK+xlPxAR
-	 qLD4bWAsh8DhK0CAm0YheH01HKmeN4OmRFrE5Qnbab3AG/j093JNi2cYkSnDGd4Eoh
-	 5vO9WXgX/y9sLJ8r9f43tIzSr1YbB+dsM8Yp0z+hTP40hCzLdwseNk4xIQppjkPOzp
-	 mxox1t27VJLv+s6tIedv8TvkCZNgsolZXpzyOUz4NxUE2MG/JgtI2tIJQR0B7GPXdQ
-	 ORCV3QFDPgbtQ==
+	b=h25QKQRwckGnf5OAap6jA4x4I1DPmL1Ctagsn/rtge4wAE5mkEiiMXTfNtiiI08FO
+	 il44dHqCTXI13q8oTYJfjWZe5hsi9XowNX+2Y5tFjZUa6j6ky4b4bY18smss3MifYq
+	 jcR8TyVrJhPBGc/csMryJfDste+qO+sFhYydrV0gCoWz7zjjnUqIRioN2pc0tlAxfS
+	 KXQhSf8wSOo6mJ+K7iitnUwJS0Bqr3d2xotyKjOfOI0b0hUPI524FSHQSoQ3z0A7oV
+	 oUrxtx1xdJjNh2xYSfklq8osTCT4QHdeFovXfVQMOD3uvAf9zkpkYnfFyeCpSB3zHT
+	 Mx1fTEoHxLUUg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 10/27] KVM: arm64: Make some arm64 KVM code shareable
+Subject: Re: [PATCH 02/24] KVM: SEV: Ignore MMIO requests of length '0'
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
+To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529155050.2902245-11-seiden@linux.ibm.com>
-References: <20260529155050.2902245-11-seiden@linux.ibm.com>
+In-Reply-To: <20260529183549.1104619-3-pbonzini@redhat.com>
+References: <20260529183549.1104619-3-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 19:15:20 +0000
-Message-Id: <20260529191521.5FA1B1F00893@smtp.kernel.org>
+Date: Fri, 29 May 2026 19:29:31 +0000
+Message-Id: <20260529192932.301811F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Missing `<linux/uaccess.h>` in `virt/kvm/arm64/guest.c` causes impl=
-icit declarations
-- [Low] The header `include/kvm/arm64/handle_exit.h` is not self-contained
+
+Pre-existing issues:
+- [High] A malicious SEV-ES guest can flood the host kernel log and cause a=
+ Denial of Service by repeatedly triggering un-ratelimited `pr_err()` print=
+s via invalid GHCB scratch configurations.
 --
 
-commit de2ec796cee358898f6d5a8336e76db1e095f6a8
-Author: Steffen Eiden <seiden@linux.ibm.com>
+commit 294af95cb303ec47ddd0734af250cb6201c6779d
+Author: Sean Christopherson <seanjc@google.com>
 
-KVM: arm64: Make some arm64 KVM code shareable
-   =20
-Support sharing architecture-agnostic KVM-arm64 code by introducing a new
-directory virt/kvm/arm64. This also modifies core_reg_addr to use functions
-instead of direct field accesses for better portability.
+KVM: SEV: Ignore MMIO requests of length '0'
 
-> diff --git a/include/kvm/arm64/handle_exit.h b/include/kvm/arm64/handle_e=
-xit.h
-> new file mode 100644
-> index 0000000000000..9f3f41eaf3ac6
-> --- /dev/null
-> +++ b/include/kvm/arm64/handle_exit.h
-> @@ -0,0 +1,14 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef KVM_ARM64_HANDLE_EXIT_H
-> +#define KVM_ARM64_HANDLE_EXIT_H
+This commit explicitly ignores MMIO requests of length 0. This prevents
+underflowing the length when setting up the software scratch area and
+allows for special casing 0 in the future.
+
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 23170b64f4a33..fb2174b6d1ba4 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -4497,13 +4497,17 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+>  	case SVM_VMGEXIT_MMIO_READ:
+>  	case SVM_VMGEXIT_MMIO_WRITE: {
+>  		bool is_write =3D control->exit_code =3D=3D SVM_VMGEXIT_MMIO_WRITE;
+> +		u64 len =3D control->exit_info_2;
+> =20
+> -		ret =3D setup_vmgexit_scratch(svm, !is_write, control->exit_info_2);
+> +		if (!len)
+> +			return 1;
 > +
-> +#include <linux/kvm_host.h>
-> +
-> +typedef int (*exit_handle_fn)(struct kvm_vcpu *);
-> +extern exit_handle_fn arm_exit_handlers[ESR_ELx_EC_MAX + 1];
+> +		ret =3D setup_vmgexit_scratch(svm, !is_write, len);
 
-[Severity: Low]
-This header uses ESR_ELx_EC_MAX, but doesn't include <asm/esr.h>.
-Will this cause build failures if a C file includes this header without
-previously including <asm/esr.h>?
+[Severity: High]
+This isn't a bug introduced by this patch, but could this lead to a host
+denial of service through printk flooding?
 
-> +
-> +int kvm_handle_unknown_ec(struct kvm_vcpu *vcpu);
-> +exit_handle_fn kvm_get_exit_handler(struct kvm_vcpu *vcpu);
-> +int handle_trap_exceptions(struct kvm_vcpu *vcpu);
-> +
-> +#endif /* KVM_ARM64_HANDLE_EXIT_H */
-> diff --git a/virt/kvm/arm64/guest.c b/virt/kvm/arm64/guest.c
-> new file mode 100644
-> index 0000000000000..83e33e0143b93
-> --- /dev/null
-> +++ b/virt/kvm/arm64/guest.c
-> @@ -0,0 +1,302 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#include <linux/kvm_host.h>
-> +#include <linux/kvm.h>
-> +#include <asm/pstate.h>
-> +#include <asm/kvm_emulate.h>
-> +#include <asm/kvm_nested.h>
-> +#include <asm/sigcontext.h>
-> +
-> +#include <kvm/arm64/guest.h>
+Looking at setup_vmgexit_scratch() in arch/x86/kvm/svm/sev.c, there are
+several validation checks on guest-controlled values that use pr_err()
+without ratelimiting:
 
-[ ... ]
+arch/x86/kvm/svm/sev.c:setup_vmgexit_scratch() {
+    ...
+	scratch_gpa_beg =3D svm->sev_es.sw_scratch;
+	if (!scratch_gpa_beg) {
+		pr_err("vmgexit: scratch gpa not provided\n");
+		goto e_scratch;
+	}
 
-> +int get_core_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
-> +{
+	scratch_gpa_end =3D scratch_gpa_beg + len;
+	if (scratch_gpa_end < scratch_gpa_beg) {
+		pr_err("vmgexit: scratch length (%#llx) not valid for scratch address (%#=
+llx)\n",
+		       len, scratch_gpa_beg);
+		goto e_scratch;
+	}
+    ...
+}
 
-[ ... ]
+Since these failure paths gracefully return to the guest with an error code
+rather than terminating the VM, an unprivileged guest can trigger these
+paths in a tight loop.
 
-> +	if (copy_to_user(uaddr, addr, KVM_REG_SIZE(reg->id)))
-> +		return -EFAULT;
+For instance, by repeatedly setting sw_scratch to 0 and issuing an MMIO
+write request, the guest can flood the host kernel log.
 
-[Severity: Low]
-This file uses copy_to_user() here, and also uses copy_from_user() and
-put_user() later on, but it does not include <linux/uaccess.h>.
-Since <linux/uaccess.h> isn't transitively included by the current headers,
-will this lead to implicit declaration build errors?
-
-> +
-> +	return 0;
-> +}
+Should these messages be converted to pr_err_ratelimited() or removed
+entirely to prevent guest-triggered spam?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
-245-1-seiden@linux.ibm.com?part=3D10
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529183549.1104=
+619-1-pbonzini@redhat.com?part=3D2
