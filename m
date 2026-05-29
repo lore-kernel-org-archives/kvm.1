@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1623909AC
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1994B392C4B
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780076832; cv=none; b=rAwWzrMxbPmfL0sGTgpPnygU9zdcCsJmY/zGAioTA7yzKKEBriIdQwUNfUh3puSigDXChGQfeC4URwjWGcrCd6Q514ebjZUFSG8nH7xqb1VMbJ0Wt58W5RYGFU6Owi0TMFxlK69l6swTFx8lf1yN7XoPW3xJG7IgKmRBpzXZae4=
+	t=1780077561; cv=none; b=cUNKFGCXd5ninlPm1Kb1PVTObS1zodAqrqHIiPt8LJ5MqUQUH5k6ioI3HyTHffT7FyTGc8AimRVgj/aGqgiYnYNp2i+g22zpeKRcHAaHYqINl6ZX0SvD1P6JDbAn+hHsvLmiIKKMSgyVmZPdxK7EFxT1nLNmkNeaCjFwGzk9leo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780076832; c=relaxed/simple;
-	bh=ELdnNERh6aDwhLvKWZa+Q6NznONvgxW7jZfgKUteqek=;
+	s=arc-20240116; t=1780077561; c=relaxed/simple;
+	bh=0UaXMordpbpDhhM/NOEcEnJf0klKFxxxB5KNLcgNOcE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NyZWmk+GRDYdVRnyjQtS91XEhWsImObZF3H8jkxdn7WXBTZmSYV2UKV7zqSo5Sa5DcyFPiLcyxXNSx3/CiB95o2TIN+enPDW2CYksWiTCp+dry7NXNYipx76gAQ2gAH9xJQ+lJPjA+j2enMy9K5jQ8BhpfMLnKI84eJhWMpG84k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdZvSEzm; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=XCcMGkp7oWTzUZFpFuCiUMjGu8WQJaeEkTDJZcrMhqbsk6b5Iz194Gt+f3rSwN/EMVrHZdVd3a6tY4gVrSNYrOmwj2bYfKBIkyjoxMW1QTKbvDkvV/b75i2s+iy34j+pFBCgzOpJzxqxx3k4nRQHJHscwIhSzYz/PfsxxbmxsIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YzS2mgS2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdZvSEzm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29CB31F00893;
-	Fri, 29 May 2026 17:47:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YzS2mgS2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331371F00893;
+	Fri, 29 May 2026 17:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780076830;
-	bh=pM9jcOr/lr0/BvCb3wUrSTN3BhpEm8XIPGeYyb11+2Q=;
+	s=k20260515; t=1780077558;
+	bh=s8eFqlkjYEk91v5fzGrFmIftnsmIBZ8RUqkME0H+iFU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kdZvSEzmV8XWudtARz8G9ER7Xn7zn0zsxNbLNElexJX0s7BAUDpAnVGO92iCS/Z1s
-	 g74lKKhjPbrxr2gDHhzg6q2nb8d8y2z1OLGiFZmL+KRkR+rxdWwpGYd31atSTvsnM4
-	 TunVcL2DeCMv9C7895c9+3GnR/6PajrF+a3g5wI0ZgSsle0WQu+JOdu5iK7F9jfMSO
-	 xeZtELukYmWpbcUV6WcGjmQOehLnuToilEyViiYWL0Gj2Eek+rOY+x+QU6jtnJBumP
-	 PmwRASHpMjlKOkw4K6MSGRFv/h81Aa/OTgh2j5C8cyqGq3nsOOB/nFjWyy6a96uE/k
-	 gRSJ219sWsOkg==
+	b=YzS2mgS2IbN+JeMxcrDxkH1nQ/5g3trVMkFT7GbRGN8A9scYeZVmud++qnjeGPsvY
+	 k6v+WesW0KGcYZthVCYtwGYmKiLE1ruB/uH+dnM/P3BX2p9nVc2IVJT9VcTEYLTFOf
+	 xnYNhigQmIXoLW8TtIxeleURMdddO8To0ff14zVLXveL09/3YTlGgddivGoqlnxoQb
+	 QN+YQRjRxBTKu9UExAYJfc0fbgPPLG2X6duGnTI/0ym1gn/NkSOFXdLdYFisRvZ8xM
+	 IklfQNWj1QFiiFD8uHAe7jlpnyvy47KbRyNrhfIGFTcxk94Xm+C01Ktcm7XI+4Rdoo
+	 XD4rYVr88kpsA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 07/20] KVM: x86/xen: Extract delivery of event to
- vCPU into a separate helper
+Subject: Re: [PATCH v2 11/20] KVM: Add CLASS() constructs to automagically
+ handle lock+check of gpc
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529165114.748639-8-seanjc@google.com>
-References: <20260529165114.748639-8-seanjc@google.com>
+In-Reply-To: <20260529165114.748639-12-seanjc@google.com>
+References: <20260529165114.748639-12-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 17:47:09 +0000
-Message-Id: <20260529174710.29CB31F00893@smtp.kernel.org>
+Date: Fri, 29 May 2026 17:59:17 +0000
+Message-Id: <20260529175918.331371F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,70 +46,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [Critical] Lockless reads of `kvm->arch.xen.long_mode` across multiple ch=
-ecks allow TOCTOU races, leading to out-of-bounds memory corruption in both=
- host kernel state and guest state.
+- [High] The cleanup wrapper defined by `DEFINE_GPC_CLASS` uses `if (!IS_ER=
+R(_T))` instead of `if (!IS_ERR_OR_NULL(_T))`, failing to guard against `NU=
+LL` pointers. This leads to a guaranteed kernel crash if ownership of the c=
+lass variable is ever transferred or if it is initialized to `NULL`.
 --
 
-commit f4fd761232e8e0f394f8395cfeec34caad9f061d
+commit 88a61c5d744692bfbffaf3ccd332184029a7ffee
 Author: Sean Christopherson <seanjc@google.com>
 
-KVM: x86/xen: Extract delivery of event to vCPU into a separate helper
-   =20
-This commit extracts the fastpath delivery of an event to a vCPU into a
-separate helper function to allow CLASS()-based gpc locking and checking.
+KVM: Add CLASS() constructs to automagically handle lock+check of gpc
 
-> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> index 0c6b74b974080..020ef0ddab013 100644
-> --- a/arch/x86/kvm/xen.c
-> +++ b/arch/x86/kvm/xen.c
+This commit adds CLASS() definitions for mapping a PFN given a gfn_to_pfn
+cache (gpc), deduplicating lock, check, and unlock loops. The pvclock code
+is converted as the first user of this new construct.
+
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+
 [ ... ]
-> @@ -1775,6 +1775,57 @@ static void kvm_xen_check_poller(struct kvm_vcpu *=
-vcpu, int port)
->  	}
->  }
-> =20
-> +static void __kvm_xen_set_evtchn_fast(struct kvm_vcpu *vcpu, int port_wo=
-rd_bit)
+
+> +static inline void gpc_map_local_unlock(void **khva)
 > +{
-> +	struct gfn_to_pfn_cache *gpc =3D &vcpu->arch.xen.vcpu_info_cache;
-> +	bool kick_vcpu =3D false;
+> +	struct gfn_to_pfn_cache *gpc =3D container_of(khva, struct gfn_to_pfn_c=
+ache, khva);
 > +
-> +	/* Now switch to the vCPU's vcpu_info to set the index and pending_sel =
-*/
-> +	if (!read_trylock(&gpc->lock)) {
-> +		/*
-> +		 * Could not access the vcpu_info. Set the bit in-kernel and
-> +		 * prod the vCPU to deliver it for itself.
-> +		 */
-> +		if (!test_and_set_bit(port_word_bit, &vcpu->arch.xen.evtchn_pending_se=
-l))
+> +	kvm_gpc_mark_dirty_in_slot(gpc);
+> +
+> +	read_unlock(&gpc->lock);
+> +}
+> +
+> +static inline void gpc_map_local_unlock_ro(void **khva)
+> +{
+> +	read_unlock(&container_of(khva, struct gfn_to_pfn_cache, khva)->lock);
+> +}
+> +
+> +#define DEFINE_GPC_CLASS(try, ro)						\
+> +DEFINE_CLASS(gpc##try##_map_local##ro, void **,					\
+> +	     if (!IS_ERR(_T)) gpc_map_local_unlock##ro(_T),			\
 
-[Severity: Critical]
-This is a pre-existing issue, but can the lockless evaluation of long_mode
-lead to out-of-bounds memory corruption here?
+[Severity: High]
+Does this guard expression properly handle NULL values, or could it lead to=
+ a
+regression?
 
-If userspace races KVM_XEN_HVM_SET_ATTR (setting long_mode =3D 0) with event
-channel delivery (e.g., via KVM_XEN_HVM_EVTCHN_SEND), could the initial
-max_evtchn_port() check observe long_mode =3D=3D 1, permitting xe->port up =
-to
-4095?
+Since IS_ERR(NULL) evaluates to false, !IS_ERR(NULL) evaluates to true. If a
+user of this class manually sets the variable to NULL or uses a primitive
+like no_free_ptr() to inhibit cleanup, the destructor will run and
+erroneously execute gpc_map_local_unlock(NULL).
 
-If the subsequent check inside kvm_xen_set_evtchn_fast() observes
-long_mode =3D=3D 0, it falls into the 32-bit compat block, computing
-port_word_bit =3D xe->port / 32, which could yield a bit index up to 127.
+Inside gpc_map_local_unlock(), container_of(NULL, ...) will produce a large
+negative pointer. The subsequent calls to kvm_gpc_mark_dirty_in_slot() and
+read_unlock() will dereference this invalid pointer and cause a regression.
 
-When this out-of-bounds port_word_bit is passed to test_and_set_bit(), it
-would write past the 8-byte evtchn_pending_sel field, potentially corrupting
-the adjacent vcpu_id and timer_virq fields in struct kvm_vcpu_xen.
+Would it be safer to use if (!IS_ERR_OR_NULL(_T)) instead?
 
-> +			kick_vcpu =3D true;
-> +		goto out_kick;
-> +	}
-[ ... ]
+> +	     gpc##try##_map_local_lock(gpc, len),				\
+> +	     struct gfn_to_pfn_cache *gpc, unsigned long len)			\
+> +
+> +DEFINE_GPC_CLASS(,);
+> +DEFINE_GPC_CLASS(_try,);
+> +DEFINE_GPC_CLASS(, _ro);
+> +DEFINE_GPC_CLASS(_try, _ro);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529165114.7486=
-39-1-seanjc@google.com?part=3D7
+39-1-seanjc@google.com?part=3D11
