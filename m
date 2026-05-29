@@ -1,93 +1,92 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CD245349A
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48A345BD6B
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780079806; cv=none; b=cSlAsgfwq0YjphUISy9JgsIhTK0UEvzHYZ3L1jn/8Z1r70s/fTUb9XuconxN/pKWjoeVSio3clvOtZOdDbzpW5r05v7FRmB91STAgwljR/m9jKd2sxJLB1+B3w3TWWGj3vT+RVyfcuRjXgdk/+Q9AWHUA9En2jJ/jfJhoeG04IA=
+	t=1780079812; cv=none; b=BYr34/+Hz7HxAHOlUMloJ2HiVO9kTw3JL3tLjIm8ySv1LdtqJrBwvxXwzxHDb3dr4RHALZte4bZOi31g9t+cggDW3QDulMVW7wkwa/EluXd4XyTtNzyYY+qUxJqngp3oKb3Sw6kwpKdZTf0eTVQJzZdKqmT5Esc6n4htZUIrrkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780079806; c=relaxed/simple;
-	bh=qhNRXPjJiLrNoLYnZFebbOWX1YrMRfkvrSsBcG3U8go=;
+	s=arc-20240116; t=1780079812; c=relaxed/simple;
+	bh=GPVgJwMV79jQCtFTmJHYFUk8lo/Ze/eyh7yu+TUXh1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6qHeABxB0tEq2atmak0e99Zpf+9RPJDDh7QaLcONt8wbBotB+onbFDS34H3Szg5qf9JfWJEJrL5xgq9TrV66HQNEZ44M7sNqxYTds07Leom5aulB+V730be6B0nj+sxLE6xFScmKO102WUVnVv3PauzCmLQXT7CSUVIBm/mKPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QUEE2exu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FXEG7KX/; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=oPhnCyZx0SzimvIRIoVkrEduDqyEXRHoBeNBdd6HzC0uPi+Tm/92rLhJZAdQT5c9U1deZkchXWGDTyBO0HcMRUYqLNuaX1HVQz+t6lgXyXa9Ir938YczvKK+s95K5jcrcnZfXLfLiKZ5sQOobEizVlSmHQrOOjCn+L2eMSXN3VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qx/E7gKJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XmrJ1qRt; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QUEE2exu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FXEG7KX/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qx/E7gKJ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XmrJ1qRt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780079802;
+	s=mimecast20190719; t=1780079807;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+1XJAuHtEwSrf2OyC4wSiD7WDpcF6b/VSFdi0YQ2gfw=;
-	b=QUEE2exuqbF/Rb5maPz9hGt6tCUrm4mrqeuC5JsuFCJeCqmmNuTDhqpWxTfu3llAn0aIN4
-	t9QJZV1MLhk74vrFfmPRu5Dxn+RR2h6EmxT7QCdPWOiF17HPLsg8KEakdgg/rakpTbn/HI
-	ehCV25m4n0uGK9cvkN5AReGrrbuXLtE=
+	bh=f+Twr8CVFouDlcQRM41p6WqaCoEvHfdFFepauY7rVzw=;
+	b=Qx/E7gKJoJbPC49ive18gqRQ+4h+4l6bhtZQeeyqeQvqRUH4S71N8Ofkb3K6huOSbCu9G6
+	SiTnaHd3Zmt4pfo+4DSR0iNvqUoDSaQcupypG4QR//HqM8zhveRG8s34k1B2TgMfdnRUkM
+	+iBAyYXJWyavbkSXDYKd1rH6fP7obgw=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-_RbBthGePo-Jueb6mFYFFA-1; Fri, 29 May 2026 14:36:41 -0400
-X-MC-Unique: _RbBthGePo-Jueb6mFYFFA-1
-X-Mimecast-MFC-AGG-ID: _RbBthGePo-Jueb6mFYFFA_1780079800
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4904ee02e72so62197325e9.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 11:36:40 -0700 (PDT)
+ us-mta-425-W7FUw9-lOPaw4cpWmdOEQw-1; Fri, 29 May 2026 14:36:46 -0400
+X-MC-Unique: W7FUw9-lOPaw4cpWmdOEQw-1
+X-Mimecast-MFC-AGG-ID: W7FUw9-lOPaw4cpWmdOEQw_1780079805
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4903dcb32f8so71074115e9.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 11:36:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780079800; x=1780684600; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1780079805; x=1780684605; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+1XJAuHtEwSrf2OyC4wSiD7WDpcF6b/VSFdi0YQ2gfw=;
-        b=FXEG7KX/dCeQdfM8fDrgMQMqAQTjx+aTJFMux/gQ193edRiRQEknx2gTeZsYUza353
-         MK0qoy4SeAUSK9PE9Fy2xXgSY4YOjmGU7Zx/TfyW4n+mU5r3lEO5hLa/Q3hmxNOcI/te
-         n49EMDbfPPfsJb9sdNDjttnWcSvL/ioefdBMGJKqvoqFZZvIvrAHjQGSVQpcspFlw4qq
-         LDBgOBl5LR7AB8K4fz0HzlJQPRKOjfjJ6QvtXDvX0KGUL4lfFF5apslua32OQRxf1SNg
-         IZR/MtHiLTDV2yTmkCHRTKS59xIkADpHXBQx9SkGk3NmgPNfYOg2dzI8teqDWAKGVsUR
-         iWRA==
+        bh=f+Twr8CVFouDlcQRM41p6WqaCoEvHfdFFepauY7rVzw=;
+        b=XmrJ1qRtclkBVtUdd0hjMUclYTFZQaohG39KCMCjZcdialsGQJaCtFt+SkKLCPhu95
+         vovHwXH+Oj1opglbZ7TS2lL1prDoKrtbPzfUQGiNIYPrNbzW4ouxS4KS9ZNtE4BEjq4/
+         1I+DE+ZI4wy56kq7wEoxzFns8cdMM3xcScOuX1qvGvgrHUBxcqJ4om3TZNvf++HrbYzy
+         cBiCIbOIhTHbAdE0/laFzgrUh9wExDe62nOCLaOXWS8asJ070CyX45/JzD3QU1C0bnpb
+         wOVDbA4MU1ZsB4bsSuFzqX3S6zdm6A0MtWzM5VixYUvk25f0B/+1a+ZJe68jVil19gBN
+         rnrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780079800; x=1780684600;
+        d=1e100.net; s=20251104; t=1780079805; x=1780684605;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=+1XJAuHtEwSrf2OyC4wSiD7WDpcF6b/VSFdi0YQ2gfw=;
-        b=IgfFijuU3M9K/38qjfBNfGA8ucMaYbII4kjF34/wTrfez5gAi8emlIk1xGOazzA7Pb
-         C72+XgKDukxdIOgm5DmdJLIlfB1m+KxvzDoxP+DboPtM8AhU/56jB2FaVUlT21RO4nIf
-         K71aRWY07gif1lyoae9wL8dvCB7jbqZAppdFF+oy8puR0wYOOiGpOzRxbpjb+4IpXGMi
-         FonUm5PqM9Wa/OM7Ja6Vxv5Q3Lw0hbVucAWGvWDm7YlJxuDhGu0PufZwpERmGKJjZlcy
-         Zg5U1ann8iWBdd2U+tUgzCv16/EYOUdrYBjWL43qbmADr5RAL+QlQKBO/aLd/cs1yCww
-         IUOA==
-X-Forwarded-Encrypted: i=1; AFNElJ8QFkGILEbASr2v61XnOrWmUDSRvjAZtccqpdsvyIUgW/Gbn0CoYWMDnXxScWu2KBtTrKs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiEl1E3LEqOJzWENYYwQXYKuuLseWbXjn/j3XEBsKg0CWGFjXZ
-	5Kg7tvHxP+35x44IeUCpkgERRmvS6r6kSqYIYA8kYgS1tcukCyRgOcOCTxLPrzNRkxwJ2X/2WrV
-	kiY5JSNQW/EVlvkr0MbEilFl1AkIVvpKf9gbiv+J4QKxHR7v3PlQ3LA==
-X-Gm-Gg: Acq92OGYCBr8y1AKqa1+lJghlf72AhdRird7du9X9QsTKLy4mb7C3bu6VB5SVdIeY0t
-	7TJe6jKdwIl+595WJhntOSqXmOHh8GxfIbzMcB1eVEvZNMqirwZAB2W+8369KbOMMA+4LLu+mLU
-	gi6iwu8ns9Snxd+b5E24nkZ/rdMMe9/cd5xhPY5XmkKIxqaEMQoBQ7vvw+cSbmqDo7JXFvSL6cU
-	AG/WB5j4KLUVi71VqtCkeyu2uJ6x+8KRvE8BPMqknU2kPK2m8JkV4fKSpejJo+q9RzpxsPoodbG
-	r1+SsBFeUUVCNZi5dlmlEq2Gg95iktTHceHksCQpc6IikMfRBdyb5I5yFCDHrQM8YoeLBdYJrmO
-	HbB1V7p2xB14cl0KND1xuPLPrpzNc/pfoVO79ynIezn1Gu47j5ar1Aj4qy4NuZ1qS3K6BA/qjw2
-	LQApo9F5tuXLLhKHcTdBoFoFmMkCjWvN9xXCPAjQ==
-X-Received: by 2002:a05:600d:8492:b0:490:51e2:d992 with SMTP id 5b1f17b1804b1-490a293fa59mr7911325e9.13.1780079799944;
-        Fri, 29 May 2026 11:36:39 -0700 (PDT)
-X-Received: by 2002:a05:600d:8492:b0:490:51e2:d992 with SMTP id 5b1f17b1804b1-490a293fa59mr7911005e9.13.1780079799550;
-        Fri, 29 May 2026 11:36:39 -0700 (PDT)
+        bh=f+Twr8CVFouDlcQRM41p6WqaCoEvHfdFFepauY7rVzw=;
+        b=YfHQqGb2eJnf2/hwKApRuG4NjUgwpjFgrD23FZ2x4+4+FqLxJLNllVRj6bTXBOne2f
+         3IvvD87AqazS6UcMDLXaeEWBSflNC8UhbL7G9Nz7XRy19Fx6sOAR2aKy3QoAwR+3X4e2
+         ULsFap923qtbjl7uTyI3IhG69gyk77KjNjGybvg4Mkhvd1rBBF+TQzbKTVgRpXmZsM/K
+         0myadi+HVTGHO+z0jd/w0X1cm7hNqq4doYgzqBi72i1Goul058v5+k9D0wqoz6k8vPmD
+         5XsXTDIFVloCrE+6yDqfr9t6t9WgKN4g4d8fd1fRoOfIkEp7+IFKF/7kv54MlZwOOtnb
+         lQUg==
+X-Forwarded-Encrypted: i=1; AFNElJ+YY72p93UAdjIdtmFYCW4eOd0BnGvk26cctE2p9wGHRKz9LLCYVasyxvR9skd8j+AsdDw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yya9Qs/pZ3ftaWLFHFkDmSvAWSKqBH4E2XVj7EINwYdoIn2V76Y
+	etK1iw4PjMHMfEiFIZl5eepYlMnvqWk8TGW6nY7gxB7LMmAwrzMMMv5eSg0XjGP7CLXAllTLHMn
+	ElbwnlgYfaTukMCpUiYLYWBwuAaAMGnH1pNWePUll4C1gbt7I8f81sg==
+X-Gm-Gg: Acq92OHVatnSsSoC/+YbQcj3S5x2aTdHsaJDSj+ReRBnkQKYEJy4woRIs9quW3t/GVY
+	y8P08dAmeQs2241WJ6EOjIyrjkLh9KguyG5IsdeVGZDIQOVF2KeC4ZV4UkRvpy46Fpv06ieF0tO
+	1b3v7/ps9fWbqtOBjKE31E1gcocWUuYdDbkI38EMZBITMLyUF2edRiPqjmnYoLm6qLQdONJBJ/y
+	FnPPayd/PhvqOoZVPCXWbgahgcy38haouDTmZr1iHVPzbSeRkf39D+Yfb2m+O64i667dwRhz/ti
+	YC4kDZ0ENkykOKybLCYEjd2XJz5VT5BKcQ+lFdx38URPDBAMD2ThTKQ5Xz8hY+BruF85PSLTA3y
+	ZEX9W1XpYEJCZbZbXOyV7rTagdxJnGAxXWBVwj53+TbifsZ8K907G4JURB7plV6NSpbBCdf4tfO
+	Dq06Ut3VKY+05Q7XFsIZVPBO4UZET7If9veCz/tg==
+X-Received: by 2002:a05:600c:400f:b0:48a:5821:5ff2 with SMTP id 5b1f17b1804b1-490a2919a2emr9350315e9.8.1780079805155;
+        Fri, 29 May 2026 11:36:45 -0700 (PDT)
+X-Received: by 2002:a05:600c:400f:b0:48a:5821:5ff2 with SMTP id 5b1f17b1804b1-490a2919a2emr9349965e9.8.1780079804757;
+        Fri, 29 May 2026 11:36:44 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.251.208])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef354b5bdsm4989755f8f.21.2026.05.29.11.36.38
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c121d63sm19041295e9.29.2026.05.29.11.36.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 11:36:38 -0700 (PDT)
+        Fri, 29 May 2026 11:36:40 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: seanjc@google.com,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 18/24] KVM: SEV: Don't terminate SNP VMs on #VMGEXIT without a registered GHCB
-Date: Fri, 29 May 2026 20:35:43 +0200
-Message-ID: <20260529183549.1104619-19-pbonzini@redhat.com>
+	Michael Roth <michael.roth@amd.com>
+Subject: [PATCH 19/24] KVM: SEV: Move GHCB "usage" check out of sev_es_validate_vmgexit()
+Date: Fri, 29 May 2026 20:35:44 +0200
+Message-ID: <20260529183549.1104619-20-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260529183549.1104619-1-pbonzini@redhat.com>
 References: <20260529183549.1104619-1-pbonzini@redhat.com>
@@ -101,43 +100,78 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Christopherson <seanjc@google.com>
 
-If the guest attempts a non-MSR #VMGEXIT without the registered GHCB,
-return a GHCB_HV_RESP_MALFORMED_INPUT+GHCB_ERR_NOT_REGISTERED error to the
-guest instead of exiting KVM_RUN with -EINVAL (and in likelihood killing
-the VM).  KVM has already mapped the requested GHCB, i.e. can cleanly
-report an error, and so exiting with -EINVAL is completely unjustified.
+Move the check to verify the guest's requested GHCB out of
+sev_es_validate_vmgexit() as the first step towards making said helper a
+predicate whose sole purpose is to verify the guest has marked required
+GHCB fields as valid.
 
-Fixes: 0c76b1d08280 ("KVM: SEV: Add support to handle GHCB GPA register VMGEXIT")
-Cc: stable@vger.kernel.org
+Using a single "validate" helper sounds good on paper, but in practice it's
+difficult to verify that KVM is performing the necessary sanity checks (the
+usage of state is far removed from the relevant checks), makes it difficult
+to understand that "legacy" exits are simply routed to KVM's existing exit
+handlers, and most importantly, has directly contributed to a number of
+bugs as adding case-statements to the validation subtly removes them from
+the default path that rejects unknown exit codes with INVALID_EVENT.
+
+Deliberately extract the usage code check first so as to preserve the order
+of KVM's checks, even though future code extraction will technically fix
+bugs.
+
+No functional change intended.
+
 Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 Reviewed-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-19-seanjc@google.com>
+Message-ID: <20260501202250.2115252-20-seanjc@google.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/svm/sev.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/x86/kvm/svm/sev.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 6c6a6d663e29..7c2ebc81306f 100644
+index 7c2ebc81306f..880a2acd77bf 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -4520,9 +4520,12 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 	sev_es_sync_from_ghcb(svm);
+@@ -3416,12 +3416,6 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
+ 	struct kvm_vcpu *vcpu = &svm->vcpu;
+ 	u64 reason;
  
- 	/* SEV-SNP guest requires that the GHCB GPA must be registered */
--	if (is_sev_snp_guest(vcpu) && !ghcb_gpa_is_registered(svm, ghcb_gpa)) {
--		vcpu_unimpl(&svm->vcpu, "vmgexit: GHCB GPA [%#llx] is not registered.\n", ghcb_gpa);
--		return -EINVAL;
-+	if (is_sev_snp_guest(vcpu) &&
-+	    !ghcb_gpa_is_registered(svm, control->ghcb_gpa)) {
-+		vcpu_unimpl(vcpu, "vmgexit: GHCB GPA [%#llx] is not registered.\n",
-+			    control->ghcb_gpa);
-+		svm_vmgexit_bad_input(svm, GHCB_ERR_NOT_REGISTERED);
-+		return 1;
+-	/* Only GHCB Usage code 0 is supported */
+-	if (svm->sev_es.ghcb->ghcb_usage) {
+-		reason = GHCB_ERR_INVALID_USAGE;
+-		goto vmgexit_err;
+-	}
+-
+ 	reason = GHCB_ERR_MISSING_INPUT;
+ 
+ 	if (!kvm_ghcb_sw_exit_code_is_valid(svm) ||
+@@ -3534,10 +3528,7 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
+ 	 * Print the exit code even though it may not be marked valid as it
+ 	 * could help with debugging.
+ 	 */
+-	if (reason == GHCB_ERR_INVALID_USAGE) {
+-		vcpu_unimpl(vcpu, "vmgexit: ghcb usage %#x is not valid\n",
+-			    svm->sev_es.ghcb->ghcb_usage);
+-	} else if (reason == GHCB_ERR_INVALID_EVENT) {
++	if (reason == GHCB_ERR_INVALID_EVENT) {
+ 		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx is not valid\n",
+ 			    control->exit_code);
+ 	} else {
+@@ -4528,6 +4519,14 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 		return 1;
  	}
  
++	/* Only GHCB Usage code 0 is supported */
++	if (svm->sev_es.ghcb->ghcb_usage) {
++		vcpu_unimpl(vcpu, "vmgexit: ghcb usage %#x is not valid\n",
++			    svm->sev_es.ghcb->ghcb_usage);
++		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_USAGE);
++		return 1;
++	}
++
  	ret = sev_es_validate_vmgexit(svm);
+ 	if (ret)
+ 		return ret;
 -- 
 2.54.0
 
