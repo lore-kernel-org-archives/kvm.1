@@ -1,180 +1,255 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE41A3A4F5F;
-	Fri, 29 May 2026 06:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780035321; cv=fail; b=WTsbM/A+eAzZcMCGSraeMVnfk4yA/qXw0v4B/uL39LYoyx9RIJjXEUeN3RtbDVIfsr3usl+wGrSG5B3/O9EWrmHyBy5G03e5xGvfbtGzKgOAJX7N37VuPKBXhXm7DdvGlPoRLN6dR2VcOZYdPN0JigGWLYRXf0eVmWsjcRYcp50=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780035321; c=relaxed/simple;
-	bh=bhVDttqYhzsKIt2nzXzOSSUbICaSWGPJEERCxgv3bP8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Byd9MyW2miCpsiygjw1ZWopkuCg5czkETlnbdc5MC1kS5yRAe8P0XOnb+QnulJO6But3AzAISNIrBwwOiMxE/suKwvQF5imfMFo78cn2OiQgLY3wL330xsDZ/SLQnsuuO+ocG7696YVMeJj0eQMNUbU1mhFtwqqWhozRbBqtaBQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FG2wyG9V; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA2D3A75A7
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 06:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780036129; cv=none; b=CdZx2oc7F6cxaqq4o1WFQgDcCN1FcvlyoprEpVPwrRMa0d4naXSza+JZgxQTZ2xVlyTWSEVNp7nRqhh5NvUZ8fXCYB4pkBt//VzhBIfG9Qs+3JGkZdyoh57PuTgk1HXXMNYozuPOCYhahVrJ0Zo8sDiuGALihIhKlfkeNVaEuYY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780036129; c=relaxed/simple;
+	bh=FNI4e0Y9g5FK2/4DBzvxjuh05HswRPQCPmugp/FnJwg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=bwy7I2Y4sNZ8TnpEifz1EEQuS0Yhw8JmATaS+fGz6vStNUHeheLsZuzkf+RolDKADZub+nl4b338JmC353nLjX1KUPj+Z1hnajTrU+F0ByWZTyjAR2UmL/Yi3kvl+/2Xa9Pc9TRoc54Mla22s+74IdKQFZw4ZjR0uCuM1lb6H5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=bbyHOMGm; arc=none smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FG2wyG9V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780035318; x=1811571318;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=bhVDttqYhzsKIt2nzXzOSSUbICaSWGPJEERCxgv3bP8=;
-  b=FG2wyG9V6gaU5znSgxz5cjAoAwwUD6BXGzPjmJDZzZuG8LpoJm70pEOD
-   0lXSsxNXsG/MSxmt3C0zDguuNqmR7v5I3lm8pTMOns8IeuFEd/csCB3BJ
-   IF1zPCl41c5a0numFZaqdPsr6X6uBUafhqT3GQslMJcPek2+xviH1YeJr
-   lnNJQ7kAAvN4r12m6UyJOpDO8lu99jWyqNzlzbm6MSdehKZLo5Dkf0s6Z
-   TUB+SgSFPMtKvuLNt1Tx9qHYl1RlnXNeaRizvkg0Ld3l/ot70sXyYteA7
-   EX2nidu3LNFpbliAWfOINXxUZxcC7ulaGLcSjDc4/NJwzJ5A8Slu2s1ua
-   Q==;
-X-CSE-ConnectionGUID: GAf2UTCPSde9/qcicaA4IQ==
-X-CSE-MsgGUID: scHM6el9RIyEO/3bpFB69w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="92359482"
-X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
-   d="scan'208";a="92359482"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 23:15:18 -0700
-X-CSE-ConnectionGUID: Ln6P93OZSVG6khiEH4N0fQ==
-X-CSE-MsgGUID: 3KN9dyiiRnqsE0SePYgzqg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
-   d="scan'208";a="241718612"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 23:15:18 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 28 May 2026 23:15:17 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 28 May 2026 23:15:17 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.0) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 28 May 2026 23:15:16 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VdxtH586xiPirXSdGcG49EMbtDlE0x2b9sBmcAeOigSLwzet0jmWU4cF08X80fDF/c5wIO+4CiiSL3+XPL2jrxd+To+o/lPjoa5UVuivUFWywfuDQWzv35XVmr9i1hrCdrS3PJTVQbU04CYG5aF5SMqGKZt7bK/Hu6vmO+LPenBau/vUVG+ewJWrBEZRh75K6g+XUhrKq4H+8lns2CBgRIJg21IZbsi38AZH4A5xtIUQ8gW5gIODiSS22JX5AScgwDd0eeoheWQmE5X4H9Ls3OGV2ntgm78xAGQGsEpyoxwhjaMdAob0bwYM9jLH9J30VC2y08oRWcvUy8569bv0uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w9M92h9P1TrcCAqAHK1JqUDJSxeqyQFkR/KPUJ1GsG4=;
- b=D3LlngoKcKl6exXHeM0BUbKm3oRseoBGO8T3HQGWu79L3RsjvQkUdnj6P+wYrPNN/1R1AJvjJSN/nwbDecbvX5Gv70DsWzVHEm9IUblgCmXPK6hQ7soFCw4Q+snIxo37XOulvK8HRLZ566MYAQZMXztBoeITj3J59d6kehMM+qgQYYKgH34bF5mcB8x1euAuDOAlGJCpZB5KTzdrlZU61S9HBJTCSYi7pZQ19UCEyEXNjKBPPI+8QDU6X1UwQotP4c4RPheCqHOLD3PzjctNHBAu2Xv6mOtRyyO7YWJQxSiRuS5szTfCAQORCMmRIJp8hgV04sAIPAuS3xfY03Z7eQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
- by MW3PR11MB4666.namprd11.prod.outlook.com (2603:10b6:303:56::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Fri, 29 May
- 2026 06:15:09 +0000
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0071.014; Fri, 29 May 2026
- 06:15:08 +0000
-Date: Fri, 29 May 2026 13:34:57 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
-	<rick.p.edgecombe@intel.com>, <kas@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>, <dave.hansen@intel.com>,
-	<kai.huang@intel.com>, <binbin.wu@linux.intel.com>, <xiaoyao.li@intel.com>
-Subject: Re: [PATCH v3 00/15] TDX MMU refactors
-Message-ID: <ahklgQgadOIUf7I0@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260528080856.10141-1-yan.y.zhao@intel.com>
- <ahg9L2F4bA_8lXFI@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ahg9L2F4bA_8lXFI@google.com>
-X-ClientProxiedBy: SI3PR01CA0013.apcprd01.prod.exchangelabs.com
- (2603:1096:4:296::12) To PH0PR11MB7472.namprd11.prod.outlook.com
- (2603:10b6:510:28c::12)
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="bbyHOMGm"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-304d8362a58so1000352eec.1
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 23:28:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1780036125; x=1780640925; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v45EvKOKpiUmWI/368ayn/Qc0smHoYJt4UbJf2J9agE=;
+        b=bbyHOMGmafaOJ54uzljC0W/8L9aiQPYLSkosZ5dYrdthnzRSOKjzefqz7n99cr0FdJ
+         gdxP6EJV6ejCYo7WgEUMGUokLyRR1976Wg+cA4UGwpqL2mTdl1PoS6K+Mj8Nx1mBDN5T
+         47aKlf0BosO5SZVlNy8xbQnUHnfLcgm1NoWMwel6chH3rJ95VsuGEi53h1bFkBryeEu/
+         1fHv6K3HSHczDUcMxP9L9Qev0OBi0pAJkMcKz3TJZX5vSvMSMzHtT/wZQN7S0OvJ9ryY
+         WdGtAxC0Y9kza/+W1Z7ZGkjrp1WdR6GPVBFRY+9VYIGB9wX3aRLmbuUOzIIdmXYlOyDl
+         gfwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780036125; x=1780640925;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=v45EvKOKpiUmWI/368ayn/Qc0smHoYJt4UbJf2J9agE=;
+        b=nBaEPZ9cOpC/lI57RaoNDn5t8Mth3nRTv/1+yBQ2pyMFOQPG/mv/5LQeJJvSLtXmAB
+         tIIafxoToo+xKq5WW2e116/IWaOWRjdxEu30SS6sR2bp9a6SpycfuFEKqsDVuObznLNn
+         8v9714QPTaZ3iTizsH8mkb3btbEjiJKSpQM8q0fXq4BYwFQGuzFHHuC0iMGV3FtpyXvs
+         dY9fiO4H8WFk7y27QF4gC11i5rTuw/wJs6r8jvHHeqc6kL1RTDe+/zGUfhePref5uy+l
+         a/I/HJ0iEN2RGq2Q+NWjcIkwDWc+AUFJf8UfpCXMWfhMzBeqHm/mbl1Vn6yv+BnnqaTU
+         hGdQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9GPwjr4s+AGoDb1foIWCi2toeFEFdDbKwjFrmCSsxCGy6r6qmDBgeFv727QZ7JoxiayeA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7qf3DwRM8oKgfv/+tJtEgQ2ULq2q3N1AgpHh7Mv9gycYV+w/C
+	7W80L7MtIfNpHiixtP9T+JaxnJsvvcAQpdSKjshY5fnpneVDQI/rO4kzKAaUIq7CLtI=
+X-Gm-Gg: Acq92OGVkqNXVDD5ikFOUH0zQTE9JabcZ1htibPPmyrRJxPzxe8Di9L/kUE3hOc7uw4
+	DgDau7gyOiv913CcnbSI1+IO7weVTyZtdCqijVF/ouj3NXrRRnOsGQvmAf1YhLp9ne8WOPg8jLN
+	d/Bm/aR+65vcWYSPQqEb70yq9MAQ8ftbxYASN3i67WR2DbJYlpDbxAmmDV3QzpkaMFshyEbuyRh
+	YIXQCR+6Ip/lG78x3TKGQDvXEjcRP/eIMXzPYyrjmcBX/XxOQ5aAIHIar4a56JWeIll6CiytKs6
+	KnqhP0TAu9sRVTRncvNmD2iBCg2SzKfeHdCD7wydYZ/V5pH0Vh4b9y4EqX5ZFzdUrGPdrYagEA5
+	A+6J7dv7NJ87vEK87yWoYChCL4lJpetw5Xjgk6N8WZV69aqbGUHCG1Lrg2CWv5IqRnQuGzAyyMI
+	gD7d6z+MYJPSiRQWdTULxSLIq79UJQYJWdfXQZq/J2Nj+kBf0YwEfydLROVyGYP89a
+X-Received: by 2002:a05:7300:5b9e:b0:2c6:67b6:3acc with SMTP id 5a478bee46e88-304eb1e9955mr723799eec.15.1780036125527;
+        Thu, 28 May 2026 23:28:45 -0700 (PDT)
+Received: from sw07.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed3358b1sm694607eec.13.2026.05.28.23.28.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 23:28:44 -0700 (PDT)
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Date: Thu, 28 May 2026 23:28:28 -0700
+Subject: [PATCH v3 2/3] KVM: riscv: selftests: Refactor ISA and SBI
+ extension sublist macros
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|MW3PR11MB4666:EE_
-X-MS-Office365-Filtering-Correlation-Id: a4fd2663-a711-47bd-2ed4-08debd49a25e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|5023799004|4143699003|11063799006|6133799003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: ozK3nMsUc7sA/N8pD75WBcy8DCMtSz/VTnL4Txp/a9U5u5wa8vbVysi0WJM74VlLxN3L1Ll4ZimfG1FVninyEwQG8r2EJFD7KccT7x7imBNpCFkq57WMQliHlZJyGBuwu/QwxAnId/ZNpoNfLPd9QciItfFfItIqUWnmKYCf4gAURxlyWJZW8xAytFChPqQ6UR8GZiQ29Yo5NAw7e/D1Y3oybjlZM3isQJduirHiazHThHl07vvA5E+XQ7iiOmkju05MlBKK9JfoR8x/QDIojRSNJBMGNenX2TnitiGwqWKlxLFq6IG5fsdfd6qrbRBCyibutzYoMFe+ueB6paXrD5uzoRg1dZTkuEyP9Jo2MXVZFGx2uxd9g6zUU7eIva5zRqk5vSRzSIkT6GgCpup4NCBqcC17f6bBfOjXy8A8jlN3bLynVJy9EWvg2UFYm8p5YQOkQRxw2vmMxPGFQXz3N8Zyn2F4A/FuavUD4Rw095ZV65O7GRGid8U8gRz7DlNFE1f6ostHN9q7v24YjmHTc0jpODD1uJ2pl93ME7WLAp1pqzxK60COFTRK1Y8RZke7WGiQRVegfqTgbphht+zLOmNlgMErk3UFEM3hqmFakNYeFDEuFVFfnnuVvMNvGeWu9fNPSKozd1mBiSCfue2SQvFluFsevHWsmtSIwGeBNjkdBwfHJpXCtUEGFfj+i9+vBtHBf/nFTUYaG8BNnbqLmQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(5023799004)(4143699003)(11063799006)(6133799003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?oePlM8VAtnxCmll+/j+GBHPayqM0ld70xa8Zj1gyPjalrsVSxjWuZQUy4G0I?=
- =?us-ascii?Q?wny3m3HiB+HKbSc4hsdmlYzu/MmPnEjFQBMQRTT31ii/HnTp7dS4jZxe1rky?=
- =?us-ascii?Q?HxWlV6Dye2HPrtiqZVEPj4Vxib3JxhHpnLfkUZcH4e+BX7xcBoC0zbWg99az?=
- =?us-ascii?Q?oum1aGdE0QjwtIpwM1S4b+XgbwWPPG0ywvXcXAh9PZ62mk18fBldneIV8Pmn?=
- =?us-ascii?Q?jxewLCSlvYrzYfm39dlRH6gQutfe8HioPqMNJrG02oDmq2uGL+Uq4xDVGrM2?=
- =?us-ascii?Q?PjDXdf/q0nkh2HC1/jYk+VyAtx1Ni0wjpsQh6VdAMHuZ/rkX6wvTieLd3lJW?=
- =?us-ascii?Q?Qk6KDjvVagg7P6Gnj7w5BmjFb10/BPpYbo04w9I+ZVy11s1i9rY52x4Yr4Ib?=
- =?us-ascii?Q?u7RYXwYw1eB3y0/gNW68bqVVuiEJCPKXjnyTmIWSW+qChVGdOZd29YUurl+H?=
- =?us-ascii?Q?PxphV+2g3+b+NTgLgyAapTIPHCVA/5+4SNH2fhVaPha5cu/YF4IdYPDu2nIL?=
- =?us-ascii?Q?992apWxHW7F34vrt09/IPnH9HolNT5fosAe0wLhNi1baPAAy3AlzqdcT1SVU?=
- =?us-ascii?Q?pWXTfgBpODc8HuNtsghzbUmaKyj85sqp0RiiMa0+Z5DFK5fPdNn13ch8CMux?=
- =?us-ascii?Q?D0ZyXCl/gpDVT1CkFrI2q2irBwJGQbxrFFOT9ZbBRq+fuW3DQIu7KBOP3tbr?=
- =?us-ascii?Q?c3bJ1zionmr57C8MbnMGdBM65szdTOVlBIEr3e+GrUHFKMVM3Jp5tn/Drvj7?=
- =?us-ascii?Q?VlYIao3dpy5pLUrMrHunayVxPCYu/nIvyIIpGweEHyx/E6+MBD/Bm05U5Yrg?=
- =?us-ascii?Q?qLZq0TukHNtuiv+JAEldBUEic/TVmcEJ4vJd3CRkgIaQB7w5OdPf38pUZrxd?=
- =?us-ascii?Q?yDtr2Sq5gYlNEqjb0doRk8uYTfOHTwXP0xW4fvlWs38FjYIXeKXSCFk3ehYL?=
- =?us-ascii?Q?EsMb3NFQrNIFucwWSPEQIpN9ODCnevI8eyCNwrPXBv00dhwhPIUChdL+IL5u?=
- =?us-ascii?Q?Opvcat6d8v5770rkWkLVj3o1fcM5Q5RnCtVAxxsJsgSV7f1iZjfb9hHeMROA?=
- =?us-ascii?Q?aTYal/yQmkhbd5kIeUTjCAoL4amgunU73zzgyGpqwqfY0NojO3r7gO+GHOan?=
- =?us-ascii?Q?lwFhjwvYWNw46wBm3/uSWX2lB5AVO1vONzOiMjHqO7DlVkJknynnL3auNBhQ?=
- =?us-ascii?Q?9wgdpjH/aYSGvQpxzcuwEo9NDODmPLEFBAlPjWyvpEUVfXAaBe1RsS3F79Xx?=
- =?us-ascii?Q?ixAcMq+Hx21ouDM57UVpmMYMr025yFRJxAHdg15Az2X8oq4zh9n6YuKgKcxt?=
- =?us-ascii?Q?Axm5fSTKMYujMKJgvsWTFhhnaWq0vPUl0ozJ3GF9ZbeLQJRA2Xcxya8mInzX?=
- =?us-ascii?Q?tXPMxiys8+WrwD8vXhYkwGzMKSZJsTt9oxxK4/+EjSofEEU5lIxhhjLApDx3?=
- =?us-ascii?Q?cB9Rhkwzq6coFeIrvNDBo/wCdKG0tRGiQrh+ySPBOnlvoPi14MrYAjQDRiyO?=
- =?us-ascii?Q?cC6j3Yt8jYDrQlmM9ocnsYsZd9wXhxExcbl8qYnnucEGbLUkRb4cloptYy+Y?=
- =?us-ascii?Q?8nBqaiZuczWBeaaOeyRDuR7FTn9r2e8C3K6McMGr3cxPlxvsVcxw1tY/tteM?=
- =?us-ascii?Q?TzLwtaJcMnROLO5YWqAC/YEa9GzhOUj7e3lsNiPTnR3wxwUVcszSGyV0XpLc?=
- =?us-ascii?Q?73kMOnFGX8twOVdUNTvhvkfnh2ZvZP3HZct+IT4L8+cfnXV/eMdxg+rCy3B9?=
- =?us-ascii?Q?Pf+a33Y2ig=3D=3D?=
-X-Exchange-RoutingPolicyChecked: ORW4OJwyzp4wBbXavACAve1Dm9ltAPJMXWsXiDab+BafGry7ZOuFYIvixX/Oys43AZ7KtWQkmyU11hoK5E+RbBdjThwff88kTGqo3D2nVqj6OLZ21cRVoo61KuKZB12jbnekrRTV6hH4Ui+zHZ7iiuOcCAN4L7At0FajrGONYtGxriNAqcv4jbzCKiwsuOCH/BqQeS/tAAiH8wSq3d9C9zElWGOBYkwEb6sBuhwYEvlW+hMJwFR9SqA4IDVDr3wHBMFBqxQiTug1ds3pdL8QDTQtX/D4S0nfZ2A5xT8ui7rVFYdpdvDMjYMf3/V/BPWyLyHHaEQu+5zlpUksbFvccA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4fd2663-a711-47bd-2ed4-08debd49a25e
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 06:15:08.8771
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nZQVGr59MV/pfCz+1N6UAzSZaGFx9Mxxrn73hzm1BFjyTc/qPnCSrn9IR562beduYS/T+mSsoQS19iDi4X2dQQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4666
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260528-kvm-get_reg_list-v2-v3-2-170969a8599f@sifive.com>
+References: <20260528-kvm-get_reg_list-v2-v3-0-170969a8599f@sifive.com>
+In-Reply-To: <20260528-kvm-get_reg_list-v2-v3-0-170969a8599f@sifive.com>
+To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <cleger@rivosinc.com>, 
+ Andrew Jones <ajones@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Yong-Xuan Wang <yongxuan.wang@sifive.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780036122; l=6365;
+ i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
+ bh=FNI4e0Y9g5FK2/4DBzvxjuh05HswRPQCPmugp/FnJwg=;
+ b=NKxY/K/jSMMPh4VOKPxki0ZAqPzHMvzBwMys9X+hufCVuPO2SlBYQdwbdx51iAE7NCNc4BsvI
+ erwQW5palAMAEvy5VzcG592+Krbg/C9IfU8jixjzXN+8FcTyaehY+ut
+X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
+ pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
 
-On Thu, May 28, 2026 at 06:03:43AM -0700, Sean Christopherson wrote:
-> On Thu, May 28, 2026, Yan Zhao wrote:
-> > This is v3 of the TDX MMU refactor series, a simple rebase of v2 [2] to
-> > kvm-x86-next-2026.05.26 plus addressing a trace issue reported by Sashiko
-> > [7].
-> > 
-> > The code is also available at [3]. (Note: due to the instability of
-> > v7.1.0-rc2, I also applied series [4] and [5] in [3] to pass CI.)
-> > 
-> > As in v2, patches 9 and 15 still have the "Not-yet-Signed-off-by" tag.
-> 
-> Gah, sorry, I told Rick I couldn't get v2 applied and needed a v3, then realized
-> it was largely a PEBKAC issue and got it all sorted out.  v2 is already in
-No problem. By posting v3, we can trigger sashiko review successfully.
+Refactor the get-reg-list test to use unified sublist macros for ISA
+and SBI extensions, eliminating code duplication and improving
+maintainability.
 
-The issues sashiko reported for v3 are repetitive ones as in v1 [1] that were
-regarded as benign/false positive.
+Previously, each extension had its own hand-coded sublist definition
+(e.g., SUBLIST_ZICBOM, SUBLIST_AIA, etc.) and the config structures
+repeated the same pattern. This made the code verbose and error-prone.
 
-BTW, in v3, I tweaked patch 9's commit msg slightly to explain the trace
-ordering. Feel free to pick it up or ignore it :) 
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+---
+ tools/testing/selftests/kvm/riscv/get-reg-list.c | 78 +++++++++---------------
+ 1 file changed, 28 insertions(+), 50 deletions(-)
 
-> kvm-x86/mmu, assuming no one and nothing complains in the next few hours, I'll
-> get "thanks" sent out later today.
-Ok.
+diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/testing/selftests/kvm/riscv/get-reg-list.c
+index 8d6fdb5d38b8..5033c09201ef 100644
+--- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
++++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
+@@ -1013,7 +1013,7 @@ static __u64 fp_d_regs[] = {
+ };
+ 
+ /* Define a default vector registers with length. This will be overwritten at runtime */
+-static __u64 vector_regs[] = {
++static __u64 v_regs[] = {
+ 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_VECTOR | KVM_REG_RISCV_VECTOR_CSR_REG(vstart),
+ 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_VECTOR | KVM_REG_RISCV_VECTOR_CSR_REG(vl),
+ 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_VECTOR | KVM_REG_RISCV_VECTOR_CSR_REG(vtype),
+@@ -1057,37 +1057,17 @@ static __u64 vector_regs[] = {
+ #define SUBLIST_BASE \
+ 	{"base", .regs = base_regs, .regs_n = ARRAY_SIZE(base_regs), \
+ 	 .skips_set = base_skips_set, .skips_set_n = ARRAY_SIZE(base_skips_set),}
+-#define SUBLIST_SBI_BASE \
+-	{"sbi-base", .feature_type = VCPU_FEATURE_SBI_EXT, .feature = KVM_RISCV_SBI_EXT_V01, \
+-	 .regs = sbi_base_regs, .regs_n = ARRAY_SIZE(sbi_base_regs),}
+-#define SUBLIST_SBI_STA \
+-	{"sbi-sta", .feature_type = VCPU_FEATURE_SBI_EXT, .feature = KVM_RISCV_SBI_EXT_STA, \
+-	 .regs = sbi_sta_regs, .regs_n = ARRAY_SIZE(sbi_sta_regs),}
+-#define SUBLIST_SBI_FWFT \
+-	{"sbi-fwft", .feature_type = VCPU_FEATURE_SBI_EXT, .feature = KVM_RISCV_SBI_EXT_FWFT, \
+-	 .regs = sbi_fwft_regs, .regs_n = ARRAY_SIZE(sbi_fwft_regs),}
+-#define SUBLIST_ZICBOM \
+-	{"zicbom", .feature = KVM_RISCV_ISA_EXT_ZICBOM, .regs = zicbom_regs, .regs_n = ARRAY_SIZE(zicbom_regs),}
+-#define SUBLIST_ZICBOP \
+-	{"zicbop", .feature = KVM_RISCV_ISA_EXT_ZICBOP, .regs = zicbop_regs, .regs_n = ARRAY_SIZE(zicbop_regs),}
+-#define SUBLIST_ZICBOZ \
+-	{"zicboz", .feature = KVM_RISCV_ISA_EXT_ZICBOZ, .regs = zicboz_regs, .regs_n = ARRAY_SIZE(zicboz_regs),}
+-#define SUBLIST_AIA \
+-	{"aia", .feature = KVM_RISCV_ISA_EXT_SSAIA, .regs = aia_regs, .regs_n = ARRAY_SIZE(aia_regs),}
+-#define SUBLIST_SMSTATEEN \
+-	{"smstateen", .feature = KVM_RISCV_ISA_EXT_SMSTATEEN, .regs = smstateen_regs, .regs_n = ARRAY_SIZE(smstateen_regs),}
+-#define SUBLIST_FP_F \
+-	{"fp_f", .feature = KVM_RISCV_ISA_EXT_F, .regs = fp_f_regs, \
+-		.regs_n = ARRAY_SIZE(fp_f_regs),}
+-#define SUBLIST_FP_D \
+-	{"fp_d", .feature = KVM_RISCV_ISA_EXT_D, .regs = fp_d_regs, \
+-		.regs_n = ARRAY_SIZE(fp_d_regs),}
+-
+-#define SUBLIST_V \
+-	{"v", .feature = KVM_RISCV_ISA_EXT_V, .regs = vector_regs, .regs_n = ARRAY_SIZE(vector_regs),}
++
++#define SUBLIST_ISA(ext, extu)				\
++	{						\
++		.name = #ext,				\
++		.feature = KVM_RISCV_ISA_EXT_##extu,	\
++		.regs = ext##_regs,			\
++		.regs_n = ARRAY_SIZE(ext##_regs),	\
++	}
+ 
+ #define KVM_ISA_EXT_SIMPLE_CONFIG(ext, extu)			\
+-static __u64 regs_##ext[] = {					\
++static __u64 ext##_regs[] = {					\
+ 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG |			\
+ 	KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE |	\
+ 	KVM_RISCV_ISA_EXT_##extu,				\
+@@ -1095,18 +1075,22 @@ static __u64 regs_##ext[] = {					\
+ static struct vcpu_reg_list config_##ext = {			\
+ 	.sublists = {						\
+ 		SUBLIST_BASE,					\
+-		{						\
+-			.name = #ext,				\
+-			.feature = KVM_RISCV_ISA_EXT_##extu,	\
+-			.regs = regs_##ext,			\
+-			.regs_n = ARRAY_SIZE(regs_##ext),	\
+-		},						\
++		SUBLIST_ISA(ext, extu),				\
+ 		{0},						\
+ 	},							\
+ }								\
+ 
++#define SUBLIST_SBI(ext, extu)					\
++	{							\
++		.name = "sbi-"#ext,				\
++		.feature_type = VCPU_FEATURE_SBI_EXT,		\
++		.feature = KVM_RISCV_SBI_EXT_##extu,		\
++		.regs = sbi_##ext##_regs,			\
++		.regs_n = ARRAY_SIZE(sbi_##ext##_regs),		\
++	}
++
+ #define KVM_SBI_EXT_SIMPLE_CONFIG(ext, extu)			\
+-static __u64 regs_sbi_##ext[] = {				\
++static __u64 sbi_##ext##_regs[] = {				\
+ 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG |			\
+ 	KVM_REG_RISCV_SBI_EXT | KVM_REG_RISCV_SBI_SINGLE |	\
+ 	KVM_RISCV_SBI_EXT_##extu,				\
+@@ -1114,13 +1098,7 @@ static __u64 regs_sbi_##ext[] = {				\
+ static struct vcpu_reg_list config_sbi_##ext = {		\
+ 	.sublists = {						\
+ 		SUBLIST_BASE,					\
+-		{						\
+-			.name = "sbi-"#ext,			\
+-			.feature_type = VCPU_FEATURE_SBI_EXT,	\
+-			.feature = KVM_RISCV_SBI_EXT_##extu,	\
+-			.regs = regs_sbi_##ext,			\
+-			.regs_n = ARRAY_SIZE(regs_sbi_##ext),	\
+-		},						\
++		SUBLIST_SBI(ext, extu),				\
+ 		{0},						\
+ 	},							\
+ }								\
+@@ -1129,7 +1107,7 @@ static struct vcpu_reg_list config_sbi_##ext = {		\
+ static struct vcpu_reg_list config_##ext = {			\
+ 	.sublists = {						\
+ 		SUBLIST_BASE,					\
+-		SUBLIST_##extu,					\
++		SUBLIST_ISA(ext, extu),				\
+ 		{0},						\
+ 	},							\
+ }								\
+@@ -1138,14 +1116,14 @@ static struct vcpu_reg_list config_##ext = {			\
+ static struct vcpu_reg_list config_sbi_##ext = {		\
+ 	.sublists = {						\
+ 		SUBLIST_BASE,					\
+-		SUBLIST_SBI_##extu,				\
++		SUBLIST_SBI(ext, extu),				\
+ 		{0},						\
+ 	},							\
+ }								\
+ 
+ /* Note: The below list is alphabetically sorted. */
+ 
+-KVM_SBI_EXT_SUBLIST_CONFIG(base, BASE);
++KVM_SBI_EXT_SUBLIST_CONFIG(base, V01);
+ KVM_SBI_EXT_SUBLIST_CONFIG(sta, STA);
+ KVM_SBI_EXT_SIMPLE_CONFIG(pmu, PMU);
+ KVM_SBI_EXT_SIMPLE_CONFIG(dbcn, DBCN);
+@@ -1153,9 +1131,9 @@ KVM_SBI_EXT_SIMPLE_CONFIG(susp, SUSP);
+ KVM_SBI_EXT_SIMPLE_CONFIG(mpxy, MPXY);
+ KVM_SBI_EXT_SUBLIST_CONFIG(fwft, FWFT);
+ 
+-KVM_ISA_EXT_SUBLIST_CONFIG(aia, AIA);
+-KVM_ISA_EXT_SUBLIST_CONFIG(fp_f, FP_F);
+-KVM_ISA_EXT_SUBLIST_CONFIG(fp_d, FP_D);
++KVM_ISA_EXT_SUBLIST_CONFIG(aia, SSAIA);
++KVM_ISA_EXT_SUBLIST_CONFIG(fp_f, F);
++KVM_ISA_EXT_SUBLIST_CONFIG(fp_d, D);
+ KVM_ISA_EXT_SUBLIST_CONFIG(v, V);
+ KVM_ISA_EXT_SIMPLE_CONFIG(h, H);
+ KVM_ISA_EXT_SIMPLE_CONFIG(smnpm, SMNPM);
 
-[1] https://lore.kernel.org/lkml/aczYjEVkva3zOpwz@yzhao56-desk.sh.intel.com/
+-- 
+2.43.7
+
