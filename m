@@ -1,144 +1,137 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033861C5D72
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 00:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A94235E943;
+	Fri, 29 May 2026 01:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780015881; cv=none; b=gUgc/dXzgJJbaaXKk/4JeMz1ozE7rZipYYTxmRc2EjP2b3EvJD7wdLQYRMmfmqtMob5SvMNF/hcKgJqKE1t6hTDSspODixN4Y7mvK2UfB+k3HYvHTa7E4mSH79GfD4Mg87Q3FWkDbe8HfNthKRQ1/DxmLLVc2CiPa1NpppWM6a0=
+	t=1780017585; cv=none; b=hnaV91vJHGg7qYQ1nhuwZpVD68CIEj1AmyagoIi/zgtBTHVkVOPVvcUBfw7XeJqJfsKQ5xuWZUj6D+ZsjiWHjTYMGZddIJvG3cLX5W8ylDYYAiGJyW+cn/sUVSH1DVgx017ut+uKe16V6XC3TEAI0TGTiYFvkO5athC3IyeE2DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780015881; c=relaxed/simple;
-	bh=yO0KuAq5x+PbnK2f5rNDaVKIqU6uZvQMHtUNgASqHl8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=n1mf2+NVXbu+8Gj2G6HTtFPQ37ALu1/qwTLJrV2lmQS9VQSk8AWB0A0tQ7aQUd/YWXFiMVa6nd+q2G+Mlenb3XIupbfFoJZ0z1kJMe+F0W0aHR/P3ivmDl7/B+8nIhvytzlFqJfAytdlXfgPSPRTVFdbm0zCIRKGa/aYkUGDcsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S39qNf5T; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780017585; c=relaxed/simple;
+	bh=QqZIPP1awhNi55+psmU3xmLHnRyV3K0pA9xXOZ+1hdQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PfInKvISplF6FUnLf9t7hRClsKi+mPMSEGV0uiEsvcERINMjzyFlwnOOe7IQl2dSurGcDuRGM0IrNu4dxbZRPg2mHilrWy6cscyazt9iMy8MGrV31+XdpSVMzbN2Cc+CX2us6lOB9X+MJ/M8YA5oOgNb79eH5tjqv4kJzfWmJ+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLzj7OCG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S39qNf5T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFF11F000E9;
-	Fri, 29 May 2026 00:51:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLzj7OCG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AE21F000E9;
+	Fri, 29 May 2026 01:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780015879;
-	bh=XduVUdS/Ktwl16RqgCgzitUaF4ClHLMtr5yK3XIVKU0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=S39qNf5TWgnYgDwcQxGKVOdmu04CNBmj2HlwNJeTAh9KVt2bA4K1QCVQYkDVBWXX9
-	 3dweEeH1AFUJyRHbYavk8pJpQR6E78Jh6ynMreaEcnIREI/0P0swrhupeu9ymC1XXy
-	 z880+Po8E9wvcCKBdah44aKqbwEeVn1Mdlj/TZbghsqpeF+zwNGoe0JIvAvPK2GHsL
-	 w/u6xf0l36AN7ER+wMabd/v0H1KZ8D+t0G9zXCJu0v8zZdHO/v2yU3+Ure8/d47fcE
-	 i0l1rz30JlbJm+VtiqXTIaDQV2UxTvp92hHIgWS87wNtQdGCACQ7S4AlueL4A8FVyl
-	 KAPT+vOt+1k7A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] crypto: ccp: Fix possible deadlock in SEV init
- failure path
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Atish Patra" <atish.patra@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260528-sev_snp_fixes-v1-2-d67a08151779@meta.com>
-References: <20260528-sev_snp_fixes-v1-2-d67a08151779@meta.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 00:51:18 +0000
-Message-Id: <20260529005119.8CFF11F000E9@smtp.kernel.org>
+	s=k20260515; t=1780017581;
+	bh=Ozq/Ru3FRyhUKHioj+TdgdTtFgDpQkgRBP9R3Cod/9Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=nLzj7OCGbAYQphViYclXtHITMmaEevm6G40K5z5oGF8OxchRHxEKKiPboc7ARFeiq
+	 E1aWmqls8XpEIW6+93ygxdQGIXL8Q3EjpR/7xVLB710yIvO6tcTx/KKn/wAc24xA/X
+	 aEq1Yv9XwNS5lbmC1lexYYQDitbtWDngkVPHuUYbjpsuscfMfP5YssJ60G/ZzVSFYv
+	 GMF4sAAQO96eKev9xxg6btXLcKm8b5oGv4CzFzICSsALDvTntxaScC/kNvmBua7NUz
+	 RJDFb4/OeQx7kYsv9aD/BiNTS9Ar5294YKFIq/uV+B7z4ijcE2KS6aRrt4W+WAIob2
+	 zz7a/yt8o2Xyw==
+From: SeongJae Park <sj@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	Liam.Howlett@oracle.com,
+	ziy@nvidia.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	jthoughton@google.com,
+	aarcange@redhat.com,
+	usama.arif@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kernel-team@meta.com,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: Re: [PATCH v5 09/18] mm: add MM_CP_UFFD_RWP change_protection() flag
+Date: Thu, 28 May 2026 18:19:34 -0700
+Message-ID: <20260529011935.8433-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260526130509.2748441-10-kirill@shutemov.name>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Tue, 26 May 2026 14:04:57 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-Pre-existing issues:
-- [Critical] Host kernel panics due to RMP violation when reading `sev_init=
-_ex_buffer` in `sev_write_init_ex_file()`.
-- [High] Memory allocated for `sev_init_ex_buffer` is leaked and leaves the=
- device in a broken state if initialization fails in `__sev_platform_init_h=
-andle_init_ex_path()`.
-- [High] Uninitialized kernel memory is allocated and provided to the SEV f=
-irmware and disk if the NV initialization file does not exist.
---
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> Preparatory patch. Add the change_protection() primitive that
+> userfaultfd RWP will use.
+> 
+> An RWP-protected PTE is PAGE_NONE with the uffd PTE bit set. The
+> PROT_NONE half makes the CPU fault on any access; the uffd bit
+> distinguishes an RWP fault from a plain mprotect(PROT_NONE) or NUMA
+> hinting fault. MM_CP_UFFD_WP and MM_CP_UFFD_RWP share the same PTE
+> bit, so the two cannot be used together on the same range.
+> 
+> Two new change_protection() flags:
+> 
+>   MM_CP_UFFD_RWP            install PAGE_NONE and set the uffd bit
+>   MM_CP_UFFD_RWP_RESOLVE    restore vma->vm_page_prot, clear the uffd bit
+> 
+> Both are wired through change_pte_range(), change_huge_pmd(), and
+> hugetlb_change_protection() so anon, shmem, THP, and hugetlb all
+> share the same semantics.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-6
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-commit 405e31473bcf0fe9d84a37db761b7cf915973108
-Author: Atish Patra <atishp@meta.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
-crypto: ccp: Fix possible deadlock in SEV init failure path
+> ---
+>  include/linux/mm.h            |  5 ++++
+>  include/linux/userfaultfd_k.h |  1 -
+>  mm/huge_memory.c              | 30 +++++++++++++----------
+>  mm/hugetlb.c                  | 25 ++++++++++++++-----
+>  mm/mprotect.c                 | 46 +++++++++++++++++++++++++++--------
+>  5 files changed, 77 insertions(+), 30 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 6499cfb61dc4..f79801816f32 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3297,6 +3297,11 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
+>  #define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
+>  #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
+>  					    MM_CP_UFFD_WP_RESOLVE)
+> +/* Whether this change is for uffd RWP */
+> +#define  MM_CP_UFFD_RWP                    (1UL << 4) /* do rwp */
+> +#define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* resolve rwp */
+> +#define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
+> +					    MM_CP_UFFD_RWP_RESOLVE)
+>  
+>  bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+>  			     pte_t pte);
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> index 0aef628514df..564eb2aac321 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -361,7 +361,6 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
+>  	return false;
+>  }
+>  
+> -
 
-This commit modifies __sev_platform_init_handle_init_ex_path() to pass
-locked=3Dtrue to rmp_mark_pages_firmware(). This prevents a potential
-deadlock on the sev_cmd_mutex when an rmpupdate fails and attempts to
-reclaim pages during cleanup.
+Nice cleanup.
 
-> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-> index d1e9e0ac63b60..3d4793e8e34b2 100644
-> --- a/drivers/crypto/ccp/sev-dev.c
-> +++ b/drivers/crypto/ccp/sev-dev.c
-> @@ -1557,7 +1557,7 @@ static int __sev_platform_init_handle_init_ex_path(=
-struct sev_device *sev)
->  		unsigned long npages;
-> =20
->  		npages =3D 1UL << get_order(NV_LENGTH);
 
-[Severity: High]
-This isn't a bug introduced by this patch, but is there a risk of leaking
-uninitialized kernel memory to the SEV firmware and disk?
+Thanks,
+SJ
 
-Earlier in this function, the NV buffer is allocated without zeroing the
-memory:
-
-	page =3D alloc_pages(GFP_KERNEL, get_order(NV_LENGTH));
-	...
-	sev_init_ex_buffer =3D page_address(page);
-	rc =3D sev_read_init_ex_file();
-
-If the NV initialization file does not exist, sev_read_init_ex_file()
-handles the -ENOENT error and returns 0 without reading any data, leaving
-the 32KB buffer filled with uninitialized kernel memory. This buffer is
-then provided to the SEV firmware.
-
-Later, when state changes occur, sev_write_init_ex_file() writes this memory
-back to the host filesystem.
-
-Should alloc_pages() be called with __GFP_ZERO to prevent this?
-
-> -		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, false)) {
-> +		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, true)) {
->  			dev_err(sev->dev, "SEV: INIT_EX NV memory page state change failed.\n=
-");
->  			return -ENOMEM;
-
-[Severity: High]
-This is a pre-existing issue, but is it possible this error path leaves the
-device in a broken state?
-
-If the page state transition fails, the function returns an error without
-freeing the buffer or resetting sev_init_ex_buffer to NULL. Because it is a
-static global, subsequent initialization attempts will return 0 immediately:
-
-	if (sev_init_ex_buffer)
-		return 0;
-
-This bypasses the file reading and the required firmware page state
-transition, passing an improperly initialized, host-owned buffer to the
-firmware during the INIT_EX command.
-
-Could this permanently break SEV initialization until the system reboots?
-
-[Severity: Critical]
-This is also a pre-existing issue, but will reading from sev_init_ex_buffer
-trigger a host kernel panic?
-
-Once the sev_init_ex_buffer pages are transitioned to a firmware-owned state
-(RMP private) by rmp_mark_pages_firmware(), they are no longer accessible to
-the host.
-
-Later, sev_write_init_ex_file() is called to save the NV memory back to disk
-and invokes kernel_write() using sev_init_ex_buffer as the buffer.
-
-Since there is no code to reclaim the pages back to a host-accessible state
-before this VFS write operation, won't the host CPU's attempt to read from
-sev_init_ex_buffer trigger a Page Fault with the RMP bit set?
-
->  		}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528-sev_snp_fi=
-xes-v1-0-d67a08151779@meta.com?part=3D2
+[...]
