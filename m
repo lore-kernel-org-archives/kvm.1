@@ -1,235 +1,130 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C79533A9EB;
-	Fri, 29 May 2026 10:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C7F255F2D;
+	Fri, 29 May 2026 10:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780050529; cv=none; b=BRLkhqCffQiTlGaNxeuylC0IMe1SNJb0x7u7s0t5Abos9V3swHeNpWW3XQbdoYP5QGLWWf7QVC6JY2Q+9b6K0s8BLFGfcMrMQHb0mum7LN6J0eWeSKHcXMK6oW/OJJe62BnF6e/bytA+PTx0lek50U7JXiNcpGVSDOhO3jy9I+8=
+	t=1780052051; cv=none; b=aowoguTT3mwzrpS/p6egFAw6uye2HdDX6AwQ8eL/7nYtoRK4wnfpwsfyoJVHmZZwx7UIEa0vqt4eriPQvGkzCYShliXQptlDfuicg5o2xx7DEzl0nS1+FRX289cqmxhfS39olJ9PwNZkK9WIIoUTGkCduS68z0JyC+EGxBKaGYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780050529; c=relaxed/simple;
-	bh=gWr7pGt6rVdhsV4+G2/yO2oxTWlkexbbWGNCFFcXZS0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r2hPkXSFqnGWklzLVuVhxRvfX/qWgMHXLcaFX9rwBeioI0vASM6DIUHTabkg0uz941AVq3r37+4s4JNg0GHQGTCyOUZZaSqqZvwGrdQgxyXsj+ArDWaUj3vMrbo3+v+tYFLFwO4LsotqN4XQGeCxqlNS/b5aWIPVa31JPZZ0EC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QWigdeIP; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780052051; c=relaxed/simple;
+	bh=17nmjc6CY7b3hu380nH6u+TlTeWp+NMARXHFMPLBdwI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NvZnRUr3+fmHO6Z/Kb1cVnzJCstuE6M0+PVNA4QdtOizTqMo/54awpoFlWt7F7HU7jPtAddSkvLD6doMXTnxjC4kNMqhyx/ekl3B57j3HBtQCiaR+9mzq59+ACi3swFqbScWQiBWbi/cL31yXZKukPm+NP4KpEQVP/7RWb15h/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1mQG6jh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QWigdeIP"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64SLlgFJ1467756;
-	Fri, 29 May 2026 10:28:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=73ijo5CtYGwj6cMTdH7VlrUWfPogso
-	7oUWOQmYA0u5s=; b=QWigdeIPcsPtv5E7NFvr7f8irUPJpH1pO2hka3QoCavVnT
-	UeybWBbybbAkDH7xnZ2cLvVmPBUo8/d8P8rnzPpRLuv0MqMlVLA++boaRGxhMgYB
-	Px0J2BROVvd/t/efxgCqYQKu3FPU3pnuN4I9fJZdkJV9YPyFXSzJvmvwoCJdO+FJ
-	sUB4oyn5ANN/tFAx+hVm+viQ2AIEmKEOMulcfmw3VIpqJWuJD8rhplTFGyUKmfBl
-	MV0L3K7IRmRCBlJ8iJIMQndxXV815fVkCsNV0JmBSWz41B2LSHcxhQvTv30rvqYf
-	lQX/+qVBLzJFC7hC8k/gzNyZ9FgjxrJRNyHWAYhQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee886g3k0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2026 10:28:27 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64TAO95L028519;
-	Fri, 29 May 2026 10:28:26 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4edjrbd3f7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2026 10:28:26 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64TASNxS52494676
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 May 2026 10:28:23 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C9C520043;
-	Fri, 29 May 2026 10:28:23 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5BD4C2004D;
-	Fri, 29 May 2026 10:28:20 +0000 (GMT)
-Received: from Amits-MacBook-Pro.local (unknown [9.123.0.51])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 29 May 2026 10:28:20 +0000 (GMT)
-Date: Fri, 29 May 2026 15:58:15 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, lkp@intel.com
-Subject: Re: [PATCH v3 1/5] KVM: PPC: Book3S HV: Validate arch_compat against
- host compatibility mode
-Message-ID: <20260529141530.fc225a67-e9-amachhiw@linux.ibm.com>
-Mail-Followup-To: Ritesh Harjani <ritesh.list@gmail.com>, 
-	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Vaibhav Jain <vaibhav@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, lkp@intel.com
-References: <20260522152744.55251-1-amachhiw@linux.ibm.com>
- <20260522152744.55251-2-amachhiw@linux.ibm.com>
- <pl2g6xbz.ritesh.list@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1mQG6jh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CAFD1F00893;
+	Fri, 29 May 2026 10:54:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780052050;
+	bh=KIHsSApk6kpDUVJxzRZqO9dpY8FfkxUF/l4px39fU+o=;
+	h=From:To:Cc:Subject:Date;
+	b=m1mQG6jhOXDhTzI4B8SmFplAzzrbvWY4M9n0NthbuUmH7BaBkkvIn3iMJEsssoavo
+	 o5JtyScp/w5Nf+eigpIDFF6aN/0/xb0/17NoLOffJMlakKNnisG6M9Su45Hl6uib/d
+	 z8kvST01etrOqrFX54/Ni4E0XtUZWsYKN8Yd4Kx5f/yxYonxlqr6Dmeew0oEOKWUuR
+	 JOVlczv9cX3wxZkKzCjNGMz3G6FfPZ5q4ZiyloHN1BA5qUvcVQkapMCUueRaOayYKQ
+	 ejlOS/U7og1/hsUYrZUcXSJ8N7Gm9QrgiT0TOeokBRjXFn2iWYf5VG9dUigWXegU9D
+	 4MDUT3FO80Q/A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wSuqu-00000007NGX-1CoU;
+	Fri, 29 May 2026 10:54:08 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	Qiang Ma <maqianga@uniontech.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Subject: [GIT PULL] KVM/arm64 fixes for 7.1, take #4
+Date: Fri, 29 May 2026 11:54:05 +0100
+Message-ID: <20260529105405.1839362-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <pl2g6xbz.ritesh.list@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: gVM7-xNLxCUksu8_mdoQ5tH8bxrKBAv_
-X-Authority-Analysis: v=2.4 cv=Z8Dc2nRA c=1 sm=1 tr=0 ts=6a196a4c cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=Y84buafM2nOP-rCehcwA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDEwMCBTYWx0ZWRfX0ryEmmrLboTs
- hZjaZ7bOY3SFtgcn/DMeM94MYunsSq36yorTBcD8RYXIRpOgTR38PntB3PLAdtqLUUtrAaTVo2U
- H34Qeoy9pfJCngb67+cD5Riywg/D8h1PKyQMl4+3MYrARUxZGtL9FsTA9GzIKluy274jKecZNtv
- kFVuc/BSeiTVeW0i0aJVs+0xjGvXn+GZLjDaWiDvgcI/U+PSZsYaiEjW2PxA7EfCcjSRafN7Mr1
- uYB9vHQeDCgLBZbk5aPnZEJCFCELfw2CpBfG4PYHFGRQvJS90w73WGiOaQG7Ct7CbB9vJaG6srh
- AF54gmYgZ20uUBEf0q67AKDIu+lhNa8hdZMwOYfFVMgJB8U+dTG/rbZu+lwYxaVaowLId4wquKJ
- jWymRF/aM3wIvRLlogHe/X4mLEYfTMnFGDz5aIl/Q3M8AN4+mLlmfe9PaN9ZJMFzwYh7mZK3tUX
- hjQoXGOX4nr670HJkXQ==
-X-Proofpoint-ORIG-GUID: fdffp1RQRWBy5kwV0EKgxVQzGLvO9Z7k
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-29_03,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 phishscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605290100
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: pbonzini@redhat.com, broonie@kernel.org, maqianga@uniontech.com, vdonnefort@google.com, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi Ritesh,
+Paolo,
 
-Thanks for taking a look at this patch. Please find my response inline
-below:
+This is hopefully the last round of fixes for 7.1 on the KVM/arm64
+front.
 
-On 2026/05/28 08:43 AM, Ritesh Harjani wrote:
-> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
-> 
-> > On IBM POWER systems, newer processor generations can operate in
-> > compatibility modes corresponding to earlier generations. This becomes
-> > relevant for nested virtualization, where nested KVM guests may need to
-> > run with a specific processor compatibility level.
-> >
-> > Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
-> > logical partition (L1) booted in Power10 compatibility mode, the guest
-> > fails to boot while setting 'arch_compat'. This happens because the CPU
-> > class is derived from the hardware PVR (via mfspr()), which reflects the
-> > physical processor generation (Power11), rather than the effective
-> > compatibility mode (Power10).
-> >
-> > As a result, userspace may request a Power11 arch_compat for the L2
-> > guest. However, the L1 partition, running in Power10 compatibility, has
-> > only negotiated support up to Power10 with the Power Hypervisor (L0).
-> > When H_SET_STATE is invoked with a Power11 Logical PVR, the hypervisor
-> 
-> s/H_SET_STATE/H_GUEST_SET_STATE 
+We have yet another batch of fixes for the newly introduced tracing
+code (memory leaks), a fix for a config symbol misspelled in the
+source code (therefore being permanently disabled), a fix for an
+embarrassing bug in the PMU emulation (write any value as long as it
+is zero), and an SVE sanitisation bug in nested virt resulting in a
+guest being able to access more than it really should.
 
-Good catch! I'll fix this in the next version.
+I've purposely refrained from adding another lot of fixes for more
+benign issues since His Majesty has announced he'd be picky about
+that. Fear not, they'll be in the 7.2 pull request.
 
-> 
-> > rejects the request, leading to a late guest boot failure:
-> >
-> >   KVM-NESTEDv2: couldn't set guest wide elements
-> >   [..KVM reg dump..]
-> >
-> 
-> I think irrespective of the other UAPI changes, we should still get this
-> fixed - so that we don't see a late KVM guest boot failure msgs.
-> 
-> So, in this review, I would like to mainly look at fixing this issue
-> first and would request if we can defer the UAPI changes as a separate
-> patch series please.
+Please pull,
 
-This patch only enables the guest boot to bail out early instead of going upto
-making an H_GUEST_SET_STATE hcall with a non supported compatibility mode. In
-addition to that, it does not fix the real problem where guest fails to boot on
-Power11 LPAR booted in a Power10 compatibility mode.
+	M.
 
-I understand your point and to make the segregation explicitly clear, I shall
-update the cover letter to mention that patch 1 only takes care of failing
-earlier as soon as an invalid compatibility mode is detected and Patch 2-5
-introduce a new uAPI for evaluating the right compatibility mode.
+The following changes since commit 1702da76e017ae0fbe1a92b07bc332972c293e89:
 
-The actual L2 guest boot fix with L1 booted in a compatibility mode is done via
-the next 4 patches which enables correct compatibility mode detection using the
-newly introduced uAPI. So, we would still want to prioritize the whole series
-instead of just this one patch.
+  KVM: arm64: Fix nVHE/pKVM hyp tracing error on invalid desc (2026-05-20 08:08:37 +0100)
 
-> 
-> 
-> > This situation should be detected earlier. Rejecting unsupported
-> > 'arch_compat' values in 'kvmppc_set_arch_compat()' avoids issuing an
-> > invalid H_SET_STATE hcall and provides a clearer failure mode.
-> 
-> s/H_SET_STATE/H_GUEST_SET_STATE
+are available in the Git repository at:
 
-Will rectify in the next version.
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kvmarm-fixes-7.1-4
 
-> 
-> >
-> > Add a check to reject Power11 'arch_compat' requests when the host is
-> > running in Power10 compatibility mode, returning -EINVAL early instead
-> > of deferring the failure to the hypervisor.
-> >
-> > Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> > Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
-> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> > ---
-> >  arch/powerpc/kvm/book3s_hv.c | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> >
-> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> > index 61dbeea317f3..249d1f2e4e2c 100644
-> > --- a/arch/powerpc/kvm/book3s_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_hv.c
-> > @@ -446,7 +446,19 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
-> >  			guest_pcr_bit = PCR_ARCH_300;
-> >  			break;
-> >  		case PVR_ARCH_31:
-> > +			guest_pcr_bit = PCR_ARCH_31;
-> > +			break;
-> >  		case PVR_ARCH_31_P11:
-> > +			/*
-> > +			 * Need to check this for ISA 3.1, as Power10 and
-> > +			 * Power11 share the same PCR. For any subsequent ISA
-> > +			 * versions, this will be taken care of by the guest vs
-> > +			 * host PCR comparison below.
-> > +			 */
-> > +			if ((PVR_ARCH_31 & cur_cpu_spec->pvr_mask) ==
-> > +				cur_cpu_spec->pvr_value) {
-> > +				return -EINVAL;
-> > +			}
-> 
-> Instead of the complicated check can we simply do this?
-> 			if (!cpu_has_feature(CPU_FTR_P11_PVR))
-> 				return -EINVAL;
+for you to fetch changes up to 83726330748981372bde86ed5411d7b306612991:
 
-Sure, I can base this check on CPU features.
+  KVM: arm64: Correctly cap ZCR_EL2 provided by a guest hypervisor (2026-05-29 10:04:00 +0100)
 
-Thanks,
-Amit
+----------------------------------------------------------------
+KVM/arm64 fixes for 7.1, take #4
 
-> 
-> which means that if the Qemu is trying to set the arch_compat with P11
-> PVR (arch_compat) and if the host cpu FTR doesn't support P11 PVR, then
-> simply return -EINVAL
-> 
-> -ritesh
-> 
+- Restore CONFIG_PKVM_DISABLE_STAGE2_ON_PANIC to its former glory by
+  making sure the config symbol is correctly spelled out in the code
+
+- Don't reset the AArch32 view of the PMU counters to zero when the
+  guest is writing to them
+
+- Fix an assorted collection of memory leaks in the newly added tracing
+  code
+
+- Fix the capping of ZCR_EL2 which could be used in an unsanitised way
+  by an L2 guest
+
+----------------------------------------------------------------
+Mark Brown (1):
+      KVM: arm64: Correctly cap ZCR_EL2 provided by a guest hypervisor
+
+Qiang Ma (1):
+      KVM: arm64: PMU: Preserve AArch32 counter low bits
+
+Vincent Donnefort (4):
+      KVM: arm64: Fix CONFIG_PKVM_DISABLE_STAGE2_ON_PANIC
+      KVM: arm64: Fix meta-page unsharing in pKVM hyp tracing
+      KVM: arm64: Fix rollback in hyp_trace_buffer_share_hyp()
+      KVM: arm64: Fix memory leak in hyp_trace_unload()
+
+ arch/arm64/include/asm/kvm_host.h       |  2 +-
+ arch/arm64/kvm/hyp/include/hyp/switch.h | 16 ++++++++++------
+ arch/arm64/kvm/hyp/nvhe/host.S          |  2 +-
+ arch/arm64/kvm/hyp_trace.c              |  9 ++++++---
+ arch/arm64/kvm/nested.c                 |  5 +++++
+ arch/arm64/kvm/pmu-emul.c               |  4 ++--
+ arch/arm64/kvm/sys_regs.c               | 11 +++--------
+ 7 files changed, 28 insertions(+), 21 deletions(-)
