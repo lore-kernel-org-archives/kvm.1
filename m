@@ -1,63 +1,63 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891BB3B3C1A
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA003B3C1A
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780064755; cv=none; b=smU7et6Zug2FdgQEApkt9e9pFOa/GdtE+6HovGWepHb8rummILcataJHR3hIhEU9/GJdA7ixcvOnuSxOqyIJUDTWgG/h4Y4SaOu4bewWnhT7Buf1weS/iK2Jy/9cPv5tGUPKgKXpXhvfT2lRppW+08eNRITcw6/Cpv8ShLUTLp0=
+	t=1780064761; cv=none; b=bvu3+DQyQru081k9KX0XboEMwy03N2bqzMTXOB3pR3kUTjXg81Mlk9arQivUpN2MjARveniaDDkOTcaVjvoilBIsYKWywE4YkSiG/XuWvNooVJGK6PWjV1oLlY7lKfzweY+sDjMm+cJwhKKqsTBm1j61Ykcr8e/CeB1WLqCNklk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780064755; c=relaxed/simple;
-	bh=NRFYtMZR0xP9G4xodvce9W7O1UMR+jBkjCHnKPUofZE=;
+	s=arc-20240116; t=1780064761; c=relaxed/simple;
+	bh=NpVoBgyDXo4kFiuSowigNDh/GPxlG6tecJ2l7rtPWYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ba2BLsndkD356c6rANGKOuL0tqaAePmFkNZwz+O12Zr/0o9ZDWg46GTB3k0MlpAP+aREHn6DiSz6rMZIiXqEJZ5+J4PtH+T7reXorv8PKznDGtOf1hCtGubB/rGIbylHW9CuckD58DVRAmgPmQxWrhqnqHbeUXXY2cYxfn76lyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qR/iCsMW; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version:Content-Type; b=EeiMwe9zKsFrl8V2M6Y0S2/GicsETbWM62KDmYeGk1WZpX2fGGep00jzLmXwTj5cJgD6zGytGpkwBQ2G9QPKukqJVdnIz3T50yfqA/El9qfj9tBirbLzi1sIpHymSIpE9VZ7ygx1ijjVXLreUcBYH+nLQssg2+ZJa8ooWiMFEoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=syEL5CJA; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qR/iCsMW"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4903d730b1fso71985195e9.2
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:25:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="syEL5CJA"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4891e5b9c1fso121483385e9.2
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:26:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780064751; x=1780669551; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1780064759; x=1780669559; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NWzkQMOFrGlqEcHz0n7zXBP32rozO6O28cZDds3tjf0=;
-        b=qR/iCsMW+XL9w4SIID8cdNqvbOYeSZmAGhJQLdropgmNnYBmDkXcvUHosHGe4CGAfJ
-         d7zRALxv6fDB7PrfZu2WxZoKB/9fuG78HtE32bTdeyDrk7PMw7ny8Vx9bLPW60Qaw0dw
-         JsFZHpVKjeCB9YVZRug5I/s43S+qg5Xrg9jb83z7Q9IWSVT8MIBCO0K/xNUdGuMN0goi
-         OVQsKqopj2anIANHQkgiwDJlOdyIX/48kYblql/tHTaatGCKRUkoKveoxUEFR4tPqj0a
-         NP2Mk/KWg/oPolqVooH5KZ+ddOmJM3TiYbJYf3AxzAzf07jwTVyBp16izg+u7ThsZc0H
-         jpWw==
+        bh=P59p3YW/AQDnYqwHW3EKNEj9nqZIetNGrubj5RXjTq8=;
+        b=syEL5CJAK8s3bVw/OafGkENZTFIAP9YqknXv+S78znUXOGZkuinqgT8Vm2ABqK9o1B
+         n93VmFz8EFRrZGiPyDw/1z0h131VLNj5r5fwtgfFLxKrmrleI389HRClF6AhtqDOkIKD
+         8VGMDVwzetYZOCpmglPyj6ZLI28sStSyNY0zrqMFMJu3D09vH5BYJp7gYn5ralDdnvZ6
+         s3wu6HauqzmDyydw5oJbEFq7BCVMTX+aJO5ycUequZWq3fI8nMNBwPT/5m5/Y9r7kK7s
+         UChiDjDv6zLdVal8Q1dpKPoJQfO787akbhi2wuYpgqI3hD3QZAo8+8OogEC2uP6UIEJe
+         Jz9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780064751; x=1780669551;
+        d=1e100.net; s=20251104; t=1780064759; x=1780669559;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=NWzkQMOFrGlqEcHz0n7zXBP32rozO6O28cZDds3tjf0=;
-        b=O00VXTT7DV4O0LSM8+JxGDtlOxIh8nBqINK28iWoFZb3XN62n4yR3Xur4Q9i+r4xpb
-         SUupekjxvP4AUok7JLHmeqSfEDN9HqO/KWz92UY0YXjKq+KIhR6g1CGphtUwrtFukumB
-         cidWWdlSLhzxixeYmX5RP11u3KVhZVVhMM3azPWxg0zLHGbWxb5Jvc09T4pR3pP3J4Uo
-         YXD3yNY2W60ggeQRNk8Svg9iqrdyTZZ7EVEzjfxK/jIYVMBK9mQJ2d2XgCrgSK+muW9q
-         05x3zrkrRdSiCIb2tTy4lg0oSblm819uMD/jgCHBSoUX77sCL9sqBCh6rSNR8BvYy8eA
-         lkdw==
-X-Forwarded-Encrypted: i=1; AFNElJ8Cq56Rebk3PVsLLZuCKoezE7DCeYlwWkHZtn7h69OV0ohKrdSTRxRyRJIGwOH9u7dklBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhG7zUdgHlDD9xb7lnyqloGY6t8H0NgG3bjNrSyyIuP8xFYqs7
-	x7wBDVv8lIG0ouqEc9Y7Xp/XLyRw7vJSiD5TIa3Rej3r91U6eznNwoSP6k2iUQjoBjo=
-X-Gm-Gg: Acq92OGmGyo+Pnt9jzO3Ai2+K3sPge+33zditaHgfrI77VDmEkXAghKHskqs/ddvmjy
-	DS7RkCeshKDLCVLk5A0yX3NK5HfOn+2tUoLv+y6GfriyJDY07qxky+DoG9jeD3ONg9J7C+eE0s9
-	XtOKsgdPZgeTNqhg0TChHGDjwtXzU1gd7LzK8PTDji9nIHl8nNwTq6AofgTJGeKQcHyDdrEENL7
-	Q1v8pTvAhyf+ezOCoblgYdhVYj0OkCDtTnT0qyf/WZiXxRwmb2FCAekxT74zxg/Pmtkl78ms1s4
-	K8tn9pW/lwKsttjhVa67PAb6HaAhYnBMDTifH60H3xfwMP7u5ukddXrUwh7yCL+OGC3xDtDzl3e
-	edmIVUwSSkpoAv/HLxkwruptT/krwUcqddx6eZYNn2adodw8bDxS3achmdmGz2yuni4l50MrRwj
-	UcV7wAJVWSYOte7oFLoT4noo/hxOUM2Fol6QWC3U09PrkZamsK7NGRRyNPErTPtiQBKw==
-X-Received: by 2002:a05:600c:6d8:b0:48a:7a10:4f17 with SMTP id 5b1f17b1804b1-4909c092cecmr33812615e9.6.1780064750811;
-        Fri, 29 May 2026 07:25:50 -0700 (PDT)
+        bh=P59p3YW/AQDnYqwHW3EKNEj9nqZIetNGrubj5RXjTq8=;
+        b=TCB9iiXLmBwLW1+FGsMdkxkiGNHbIRUeEXhtv12+fYhDcWrphvIRife8GVKP9mrNXI
+         +clv1pxH0N2hskteB5E7QWLVHtQ/BWDGjYDGG7g0e0NU8ebvWV9Un8UEQMLgBSRL0pJJ
+         GFTGPYDDHkMXP4H1lPaHqUVb2i3T9/S8uaZG1UspHGkTp3oADLqhaVPyKoP3wdq2FiAG
+         avYU/QhFM5AQ2DV2bN2BgFx2FY6U5/r558CCwaWt4j23S0v/EZeeIYnnge2o5CjPGcrv
+         ju5Wnv76LNCiPZV+FRqB94nOmGilTChbW7RvP1mm+SQ7ed7FWo4NgH28pEuNIgRkDK2q
+         4XPA==
+X-Forwarded-Encrypted: i=1; AFNElJ/kk8lnOUQP2T+Sk8fU6S7bPvYtCeYf0biA2rC31BqRwSCNOxXiNgLFhTfibvXCHCgxHFo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB/WbXdHxu8g4wxvyKOxVpPchG6bAZ81h8pFxzWyFrDdYSf9Pc
+	6xxK1gHBKYqcTAqSTyJDlmXOV7cZdWRye0lxt00fTrivDjxC1GC/GCVyhD5rGBEUJ4Q=
+X-Gm-Gg: Acq92OGr+YfS3Q1IBZ3WqhfvspCagcznkWA1xKnrKJaOZBl8SlF5eoVPi+xYotN4ZyO
+	o4USBx+kdswHhBBM2TRyxp04hs5eDDJRN7IVGIupugbc8N38pirBTholBvMGrTgXFkJnMM4AMLa
+	72abmTbOCdidHX69Rj42Xt3+R6dw706DinCKzsHVlDBxAyjaQ+adz+nXFLgc0gdQLUXvkQ/t3vb
+	O/iFJ9DdfXHXZY+RbdBehZp/urQYe5t270MYgd+BfVYY/hsjw/bVPOXx5enY/xpN0fnot8OxZlo
+	gSHHhO5yK40QsF1gVO0DYyzy87zJ5XSNlqjqu6p4UWRvZHDwjzZ3SSp1jcsBkorov3ZWQkcJdTw
+	pRx2Jlit0wfPUXovKpITlf+erSBbFSz0RIb7vbJvb0X6dUMUK9+W9WbrlCMzjvFdPa1zeV/Vbcj
+	lw5m9JpCiwjQ/Lwr3tUxlPngl8Qich/HuU6G4xEPCNwejxqEBpT04afSO6LnBmmIi3LA==
+X-Received: by 2002:a05:600c:c0d2:10b0:48e:7854:1608 with SMTP id 5b1f17b1804b1-4909c0b34e3mr43174675e9.25.1780064758692;
+        Fri, 29 May 2026 07:25:58 -0700 (PDT)
 Received: from m15.home (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c10376asm15283585e9.23.2026.05.29.07.25.48
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909d6eb4acsm42435095e9.9.2026.05.29.07.25.56
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 29 May 2026 07:25:49 -0700 (PDT)
+        Fri, 29 May 2026 07:25:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>,
@@ -90,9 +90,9 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
 	Chinmay Rath <rathc@linux.ibm.com>,
 	Mohamed Mediouni <mohamed@unpredictable.fr>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 09/17] accel/hvf: Convert AccelCPUClass -> AccelOpsClass::cpu_instance_init
-Date: Fri, 29 May 2026 16:24:25 +0200
-Message-ID: <20260529142434.87880-10-philmd@linaro.org>
+Subject: [PATCH 10/17] accel/kvm: Convert AccelCPUClass -> AccelOpsClass::cpu_instance_init
+Date: Fri, 29 May 2026 16:24:26 +0200
+Message-ID: <20260529142434.87880-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260529142434.87880-1-philmd@linaro.org>
 References: <20260529142434.87880-1-philmd@linaro.org>
@@ -105,106 +105,136 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-HVF cpu_instance_init() was only implemented for X86.
-Add a stub for ARM, allowing to register as generic
+Expose kvm_arch_cpu_instance_init() and register it as generic
 AccelOpsClass::cpu_instance_init hook.
 
-X86's ACCEL_CPU_NAME("hvf") TypeInfo is now empty, remove it.
+Both X86 / RISCV's ACCEL_CPU_NAME("kvm") TypeInfo are now empty,
+remove them.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/system/hvf_int.h  |  1 +
- accel/hvf/hvf-accel-ops.c |  1 +
- target/arm/hvf/hvf.c      |  4 ++++
- target/i386/hvf/hvf-cpu.c | 25 +------------------------
- 4 files changed, 7 insertions(+), 24 deletions(-)
+ include/system/kvm.h       |  1 +
+ accel/kvm/kvm-accel-ops.c  |  1 +
+ target/i386/kvm/kvm-cpu.c  | 22 +---------------------
+ target/riscv/kvm/kvm-cpu.c | 23 +----------------------
+ 4 files changed, 4 insertions(+), 43 deletions(-)
 
-diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
-index d5eaf26dda8..cb8abbc7cc9 100644
---- a/include/system/hvf_int.h
-+++ b/include/system/hvf_int.h
-@@ -109,6 +109,7 @@ int hvf_update_guest_debug(CPUState *cpu);
-  */
- bool hvf_arch_supports_guest_debug(void);
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index fd7175ea9f5..2c31fa6019e 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -364,6 +364,7 @@ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp);
+ int kvm_arch_init_vcpu(CPUState *cpu);
+ int kvm_arch_destroy_vcpu(CPUState *cpu);
  
-+void hvf_arch_cpu_instance_init(CPUState *cpu);
- bool hvf_arch_cpu_realize(CPUState *cpu, Error **errp);
- uint32_t hvf_arch_get_default_ipa_bit_size(void);
- uint32_t hvf_arch_get_max_ipa_bit_size(void);
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index 6edc2242ed9..a9c9d5d9a81 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -356,6 +356,7 @@ static void hvf_accel_ops_class_init(ObjectClass *oc, const void *data)
- {
++void kvm_arch_cpu_instance_init(CPUState *cpu);
+ bool kvm_arch_cpu_realize(CPUState *cpu, Error **errp);
+ 
+ #ifdef TARGET_KVM_HAVE_RESET_PARKED_VCPU
+diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
+index 4294c7a9514..113a23f2384 100644
+--- a/accel/kvm/kvm-accel-ops.c
++++ b/accel/kvm/kvm-accel-ops.c
+@@ -97,6 +97,7 @@ static void kvm_accel_ops_class_init(ObjectClass *oc, const void *data)
      AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
  
-+    ops->cpu_instance_init = hvf_arch_cpu_instance_init;
-     ops->cpu_realize = hvf_arch_cpu_realize;
+     ops->create_vcpu_thread = kvm_start_vcpu_thread;
++    ops->cpu_instance_init = kvm_arch_cpu_instance_init;
+     ops->cpu_target_realize = kvm_arch_cpu_realize;
+     ops->cpu_thread_is_idle = kvm_vcpu_thread_is_idle;
+     ops->cpus_are_resettable = kvm_cpus_are_resettable;
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index 36634ec8929..6d93b50248c 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -16,7 +16,6 @@
+ #include "hw/i386/x86.h"
  
-     ops->create_vcpu_thread = hvf_start_vcpu_thread;
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index d88cbe7c82a..b825a1ae6d4 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -1504,6 +1504,10 @@ int hvf_arch_init_vcpu(CPUState *cpu)
-     return 0;
- }
- 
-+void hvf_arch_cpu_instance_init(CPUState *cpu)
-+{
-+}
-+
- bool hvf_arch_cpu_realize(CPUState *cs, Error **errp)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
-diff --git a/target/i386/hvf/hvf-cpu.c b/target/i386/hvf/hvf-cpu.c
-index 35f6bddbc0e..5d74ca6fd56 100644
---- a/target/i386/hvf/hvf-cpu.c
-+++ b/target/i386/hvf/hvf-cpu.c
-@@ -14,7 +14,6 @@
- #include "system/system.h"
- #include "hw/core/boards.h"
- #include "system/hvf.h"
+ #include "kvm_i386.h"
 -#include "accel/accel-cpu-target.h"
- #include "hvf-i386.h"
  
- static void hvf_cpu_max_instance_init(X86CPU *cpu)
-@@ -56,7 +55,7 @@ static void hvf_cpu_xsave_init(void)
-     }
+ static void kvm_set_guest_phys_bits(CPUState *cs)
+ {
+@@ -207,7 +206,7 @@ static void x86_cpu_change_kvm_default(const char *prop, const char *value)
+     assert(pv->prop);
  }
  
--static void hvf_cpu_instance_init(CPUState *cs)
-+void hvf_arch_cpu_instance_init(CPUState *cpu)
+-static void kvm_cpu_instance_init(CPUState *cs)
++void kvm_arch_cpu_instance_init(CPUState *cs)
  {
      X86CPU *cpu = X86_CPU(cs);
      X86CPUClass *xcc = X86_CPU_GET_CLASS(cpu);
-@@ -77,25 +76,3 @@ bool hvf_arch_cpu_realize(CPUState *cs, Error **errp)
- {
-     return host_cpu_realizefn(cs, errp);
+@@ -232,22 +231,3 @@ static void kvm_cpu_instance_init(CPUState *cs)
+ 
+     kvm_cpu_xsave_init();
  }
 -
--static void hvf_cpu_accel_class_init(ObjectClass *oc, const void *data)
+-static void kvm_cpu_accel_class_init(ObjectClass *oc, const void *data)
 -{
 -    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
 -
--    acc->cpu_instance_init = hvf_cpu_instance_init;
+-    acc->cpu_instance_init = kvm_cpu_instance_init;
 -}
--
--static const TypeInfo hvf_cpu_accel_type_info = {
--    .name = ACCEL_CPU_NAME("hvf"),
+-static const TypeInfo kvm_cpu_accel_type_info = {
+-    .name = ACCEL_CPU_NAME("kvm"),
 -
 -    .parent = TYPE_ACCEL_CPU,
--    .class_init = hvf_cpu_accel_class_init,
+-    .class_init = kvm_cpu_accel_class_init,
 -    .abstract = true,
 -};
--
--static void hvf_cpu_accel_register_types(void)
+-static void kvm_cpu_accel_register_types(void)
 -{
--    type_register_static(&hvf_cpu_accel_type_info);
+-    type_register_static(&kvm_cpu_accel_type_info);
+-}
+-type_init(kvm_cpu_accel_register_types);
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 7c4440d0025..b8e08d810a8 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -32,7 +32,6 @@
+ #include "system/kvm_int.h"
+ #include "cpu.h"
+ #include "trace.h"
+-#include "accel/accel-cpu-target.h"
+ #include "hw/pci/pci.h"
+ #include "exec/memattrs.h"
+ #include "system/address-spaces.h"
+@@ -1981,7 +1980,7 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+     kvm_msi_via_irqfd_allowed = true;
+ }
+ 
+-static void kvm_cpu_instance_init(CPUState *cs)
++void kvm_arch_cpu_instance_init(CPUState *cs)
+ {
+     Object *obj = OBJECT(RISCV_CPU(cs));
+ 
+@@ -2108,26 +2107,6 @@ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+     kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
+ }
+ 
+-static void kvm_cpu_accel_class_init(ObjectClass *oc, const void *data)
+-{
+-    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
+-
+-    acc->cpu_instance_init = kvm_cpu_instance_init;
 -}
 -
--type_init(hvf_cpu_accel_register_types);
+-static const TypeInfo kvm_cpu_accel_type_info = {
+-    .name = ACCEL_CPU_NAME("kvm"),
+-
+-    .parent = TYPE_ACCEL_CPU,
+-    .class_init = kvm_cpu_accel_class_init,
+-    .abstract = true,
+-};
+-static void kvm_cpu_accel_register_types(void)
+-{
+-    type_register_static(&kvm_cpu_accel_type_info);
+-}
+-type_init(kvm_cpu_accel_register_types);
+-
+ static const TypeInfo riscv_kvm_cpu_type_infos[] = {
+     {
+         .name = TYPE_RISCV_CPU_HOST,
 -- 
 2.53.0
 
