@@ -1,125 +1,166 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9ACB38F624;
-	Fri, 29 May 2026 17:44:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2512E36212E
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780076651; cv=none; b=gr1NH5V96gosWd4tkYRnLR8LsX4EtYYEvTlabenkEIlW3k0zIJg50igUCIQ88/zhdAg5+LDc+3Jna0pny+jMWIJmwA2kL9CsySgTLEWR3vdiccxv1rAiojUfbZBtznDZmCzrJQiuw8If9G1WvWNBXx6y55lPVRc3tg1qpjmN5lo=
+	t=1780076735; cv=none; b=rCj5cvbaBOgAEFADNPX2UBWo7XUmO3PBb2/l+3C0Kb0ZnF64njIO4CSGOQ57UxrBCb6uUwgNZkUVdVaBC7vjXpHefl/s1eHNlKcZ2+Q65l9sGKm7M22ZawA6OLXjDeSYqYXC5nyzzLvMra04fzM3vct07KXTpzguI2MOdoxJbSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780076651; c=relaxed/simple;
-	bh=FKc+svRO19HrATmI3eqJ+7EYqXRQ0rpZ18W/mWBDKXI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SLFnS+NszYcLdgZsJ3RuD+ePvJB+JvBs7Ae9EYedbn9jWz53Mei8u21zUujVn3T2BRLhUWHmE+GNkWUluuL7abE+ScW4BnFzYNm1yJZ/brE0oturWjY/A5vh76C938iSPJM4KCSt4OzLVR7MJ+AnyFSHv8T2iRmUsb8Gx1bYqEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VIVSFkA+; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1780076735; c=relaxed/simple;
+	bh=sg1Wxh9pQQ50bSDk8WpnEbo4MAPMG99ATA7sj0CAGl4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=hEr3sOsOGN8Xlb5lg3H0Z/IXiePAbwi3N0UehroDOmpZn9zbq8JSv9+DAWhIkorFCVWLzZQl+FBNbv4z9ernQ3vydMuLTHaTEx32SLaCKy2yqvX6TY/jRU0B8CFudxoImTHxAWg5IvgmIlxpkQ6YOlnzNtQdRB+u+XrunbS+7TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EXIPVXAi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VIVSFkA+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780076650; x=1811612650;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FKc+svRO19HrATmI3eqJ+7EYqXRQ0rpZ18W/mWBDKXI=;
-  b=VIVSFkA+9WV2O6X1vK+JngwQ3N+FwGBHKL1bdVZ2PR0RWy4wqxsdkUOh
-   7wMVNThAABr/l/sqnbcyw5Q0ikq2RWNLjWyWaLtG1QLAixwgVFAeaEIi9
-   HgH9LHRLJjdwSL7VD4EQClILWdfZErW0YhdDdLHrH2mhIiJGLJ951Jnjf
-   oClDf/MzW3TQED4CeyXHuKwaXvL3Cr75CVZAgVKkXsyCYZ4p6HIalnr5h
-   Xdz6ctksj6yJsDa3/af8Xn4iFFhRTB20+Y7P5jP2vHSIM+h5VxMd1/IsZ
-   MPilbGabBF79ElXoSx9Rrdy7aeU0PQbI+m9XuCF7p06DfL2d9zpqaof9X
-   w==;
-X-CSE-ConnectionGUID: dtsGZSbFQpevl0aB01CgEw==
-X-CSE-MsgGUID: Ei8F4BCcQX68ZqPLnax6mA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11801"; a="91506904"
-X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="91506904"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 10:44:04 -0700
-X-CSE-ConnectionGUID: GgOjd1jETSOrwO5g/k5bAg==
-X-CSE-MsgGUID: grdO315CT0CshYA8goA0cw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,175,1774335600"; 
-   d="scan'208";a="246917066"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa003.jf.intel.com with ESMTP; 29 May 2026 10:44:01 -0700
-Date: Sat, 30 May 2026 01:19:57 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "Fang, Peter" <peter.fang@intel.com>, "kas@kernel.org" <kas@kernel.org>,
-	"djbw@kernel.org" <djbw@kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: Re: [PATCH 04/15] x86/virt/tdx: Enable the Extensions right after
- basic TDX Module init
-Message-ID: <ahnKvbKoLH9Dp8xG@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-5-yilun.xu@linux.intel.com>
- <280fdea480922ad843e738b14f0b32cd977734a3.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EXIPVXAi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EF91F0089A;
+	Fri, 29 May 2026 17:45:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780076733;
+	bh=H0LRuS6TDXECXe53S/EBBidUhK8yDh5luQOJm5KJ070=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=EXIPVXAiZLazT2a1VzWbTkM/f0IvWygw9Qqu5Ts1KrBIfiDItTQCJbh2vRdDYENPK
+	 bZHqbHdXV7QQrHPMtd7CtmDKkyQcT8lWJ0g/JH5MAImupzQpJYF7lqstn0CCdZ7H+4
+	 S55F3/m2flS05YOhbxX8Lndv+Gav0fDblDULpNdIFsbyDuJuoGKHfzLzwrdtMV2wSc
+	 DtwUwv0CkcRneStiLFbOPb36zuwHtilAXkl77vmEBU5QPHVd0NGoiK9SmBfhgYlNLQ
+	 ASwmmopp1RcLDoLlT6hIdIdU2TnkvK6Tckzz6o7LEk3tb+1/mJqVxNkf5tqPx4FumJ
+	 AQkdDcJt8YYFg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 07/27] KVM: arm64: Provide arm64 KVM API for
+ non-native architectures
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260529155050.2902245-8-seiden@linux.ibm.com>
+References: <20260529155050.2902245-8-seiden@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 29 May 2026 17:45:32 +0000
+Message-Id: <20260529174533.60EF91F0089A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <280fdea480922ad843e738b14f0b32cd977734a3.camel@intel.com>
 
-On Thu, May 28, 2026 at 09:32:08PM +0000, Edgecombe, Rick P wrote:
-> On Fri, 2026-05-22 at 11:41 +0800, Xu Yilun wrote:
-> > The detailed initialization flow for TDX Module Extensions has been
-> > fully implemented.
-> > 
-> 
-> I'm not sure what this means exactly. Why "detailed". Is that important?
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Medium] The refactoring of `kvm_arm.h` violates the design convention ex=
+plicitly stated in the commit message.
+- [Low] `system_supported_vcpu_features()` is made globally visible without=
+ a prototype declaration.
+- [Low] Newly extracted headers are not self-contained and lack necessary f=
+orward declarations and `#include` directives.
+--
 
-It's not important. I should re-phrase, The entire initialization flow...
+commit 106dc17001f0c5affae224d8814a51a51af0225e
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-> 
-> >  Enable the flow after basic TDX Module
-> > initialization.
-> > 
-> > Theoretically, the Extensions doesn't need to be enabled right after
-> > basic TDX initialization. It could be enabled right before the first
-> > Extension SEAMCALL is issued. That would save or postpone memory usage.
-> > But it isn't worth the complexity, the needs for the Extensions are vast
-> > but the savings are little for a typical TDX capable system (about
-> > 0.001% of memory). So the Linux decision is to just enable it along with
-> > the basic TDX.
-> 
-> The Linux decision is whatever this patch turns out to be after community
-> review. So for the patch log we just need to justify why it's a good idea, not
-> not make an argument to defer to authority.
+KVM: arm64: Provide arm64 KVM API for non-native architectures
 
-Understood. I'll re-phrase this paragraph according to all the comments,
-especially the last sentence.
+This patch moves KVM-related headers to include/kvm/arm64/ to decouple them
+from the arm64 architecture directory. This allows non-native hosts to cons=
+ume
+the arm64 KVM infrastructure without duplicating code.
 
-> 
-> > 
-> > Note that the Extensions initialization flow will still not start if no
-> > add-on features require Extensions. The enabling of add-on features will
-> > be in later patches. Until then, the system hasn't consumed extra memory.
-> 
-> Hmm, this patch reads like we are finally doing the initialization up until this
-> point. Then it turns out we don't actually light up the new code yet... 
-> 
-> A lot of this diff is adding __init to the function added in the earlier
-> patches. Do we need to do this? Why not add them as __init in the original
-> patches?
-> 
-> 
-> I think we maybe want to say instead that we are setting up to enable extensions
-> at TDX module init time, and do the explanation of why. Then without the __init
-> stuff, the patch is just about the init time decision. Which seems about right
-> sized.
+> The KVM-related headers are moved to include/kvm/arm64/, decoupling them =
+from
+> the arm64 architecture directory. The design convention is that
+> architecture-specific headers under <arch>/include/asm/ include from this
+> shared location, allowing non-native hosts to consume the arm64 KVM
+> infrastructure without duplicating code.
 
-Yes. Since the patch doesn't actually light up anything new, I think it
-could just be the first patch of Extensions so add __init at the first
-place.
+[Severity: Medium]
+The commit message states "architecture-specific headers under
+<arch>/include/asm/ include from this shared location". Does moving kvm_arm=
+.h
+entirely and updating all the source files to include <kvm/arm64/kvm_arm.h>
+directly bypass this convention?
+
+Would it be more consistent to leave a wrapper header in
+arch/arm64/include/asm/kvm_arm.h as was done for kvm_mmu.h and kvm_host.h?
+
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 9453321ef8c67..04a4ef1c7f062 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+
+[ ... ]
+
+> @@ -1541,7 +1543,7 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct k=
+vm_irq_level *irq_level,
+>  	return -EINVAL;
+>  }
+> =20
+> -static unsigned long system_supported_vcpu_features(void)
+> +unsigned long system_supported_vcpu_features(void)
+>  {
+>  	unsigned long features =3D KVM_VCPU_VALID_FEATURES;
+> =20
+
+[Severity: Low]
+The function system_supported_vcpu_features() is now globally visible. Shou=
+ld
+a prototype be added to a header file to avoid missing prototype compiler
+warnings?
+
+> diff --git a/include/kvm/arm64/guest.h b/include/kvm/arm64/guest.h
+> new file mode 100644
+> index 0000000000000..fa67d992e8fd2
+> --- /dev/null
+> +++ b/include/kvm/arm64/guest.h
+> @@ -0,0 +1,10 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +
+> +#ifndef __KVM_ARM64_GUEST_H__
+> +#define __KVM_ARM64_GUEST_H__
+> +
+> +/* Implemented by virt/kvm/arm64/guest.c */
+> +unsigned long kvm_arm_num_regs(struct kvm_vcpu *vcpu);
+> +int kvm_arm_copy_reg_indices(struct kvm_vcpu *vcpu, u64 __user *indices);
+> +
+> +#endif /* __KVM_ARM64_GUEST_H__ */
+
+[Severity: Low]
+This new header uses types like u64, __user, and struct kvm_vcpu. Should it
+include <linux/types.h>, <linux/compiler.h>, and forward-declare
+struct kvm_vcpu so it is fully self-contained?
+
+> diff --git a/include/kvm/arm64/kvm_mmu.h b/include/kvm/arm64/kvm_mmu.h
+> new file mode 100644
+> index 0000000000000..91607105eaf67
+> --- /dev/null
+> +++ b/include/kvm/arm64/kvm_mmu.h
+> @@ -0,0 +1,47 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +
+> +#ifndef KVM_ARM64_KVM_MMU_H__
+> +#define KVM_ARM64_KVM_MMU_H__
+> +
+> +/*
+> + * We currently support using a VM-specified IPA size. For backward
+> + * compatibility, the default IPA size is fixed to 40bits.
+> + */
+> +#define KVM_PHYS_SHIFT	(40)
+> +
+> +/*
+> + * We are not in the kvm->srcu critical section most of the time, so we =
+take
+> + * the SRCU read lock here. Since we copy the data from the user page, we
+> + * can immediately drop the lock again.
+> + */
+> +static inline int kvm_read_guest_lock(struct kvm *kvm,
+> +				      gpa_t gpa, void *data, unsigned long len)
+> +{
+
+[Severity: Low]
+This header uses gpa_t, phys_addr_t, size_t, bool, and srcu functions. Does=
+ it
+need to include <linux/types.h>, <linux/srcu.h>, and other relevant headers=
+ to
+ensure it compiles independently?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
+245-1-seiden@linux.ibm.com?part=3D7
