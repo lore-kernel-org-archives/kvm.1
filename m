@@ -1,120 +1,145 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D69F30AD10
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:48:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63E130AD10
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780094897; cv=none; b=JKrCLyv8J2wSt88yIVrza/KGYuC3Xk9ujQpdYpQvyHy7BCS7SbaXUEYuILMau0sFVmCLNIAvsfAIVGmjqvpSd7+z+E3KBOnFvN3fn6IJ0PD/jd9ch56FB/otiRf9RnHtbKCAi+beof6QnXaukjBpbpkALg9iRU041KHgH0YaXUk=
+	t=1780094901; cv=none; b=hkO0na6ny5923KDEqbzf6WEK/Cf6+JTGA2neQUC1q96Pwn3x/XCtx8/M3EpILHfTN62pdFgJorARlRhQrj+ZatVApmdrsr/wkVw/9SpuLpw5y1D4r4JBnKr8lweC0MgIDpyD5Z3jwrgELopmqzAQmtYa6JvY1jo3xbVbNO+gxGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780094897; c=relaxed/simple;
-	bh=l0uZ7PeP/Tm8L8cl0KMR+r2LBzQYlzDzvMdnuHMvMi0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kQX5N8Oz/D+9/iAyK8dz/St8GMMI3QZJnm9FQwI5Ff7RTJ723qEwHkQFctVmYd6oncuSoqnOZu9IuS1x/c9E96eKczjD7CZh5yIEo0VDzbYqxZCwuBw64WMg6qfW+KZopM/A9B+24zQLfoa3ha5+++8KwliwhugrU2THVm6PaKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E2BC5vXV; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780094901; c=relaxed/simple;
+	bh=2LDxysWe3RkYg1uQpR87v1OgCFW+XgvoavVCWHHeIAg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=HZ94PJPUaPX4L81tjR0wjUF31lEB60O8yGKZkWBFY0OOxxJM/CgbkuozybKq3ovRPb5x1sNWI/Q6zO9Sr9uZgmejsdCEx5ZX91wjVj8zPTdzka6hFjSZFt4pa0GNUXPI+acHdnW4vFZ/Shy/n+lZSuPDckfuKITKv8U4+8W9Wos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l4pOsX9c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E2BC5vXV"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b458add85aso159772365ad.2
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:48:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780094895; x=1780699695; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lBPwQbNkDcHNIOKv+ajv0sD13CI8gNAufbd+ZzaXhlM=;
-        b=E2BC5vXVvZ1Dtnd8I9nSXlL1lJz7IGBmZ7MPF5YbpqBwbrN+K8V9zRVIT9hQ1BObiM
-         0qSuqK2K/HQnV4GiOCMePQ/aXeNh0skWPxLKvIVOPSuvrgvr1E1Ir3Q1U9iKYI3TIBSY
-         X/QdUrzwuy3nk+l26G+KNoVMk4iDvfAGajq7EZvoLgXmw2KgvbhfVwCvI3xkkFl12Z/2
-         8zx6+dJFYHEN9ShAAlWRc1aUI0zTxMoCyJdChYYmpJ/jPmkSwHmT7SaURv3nyZBFsWgv
-         QZTKgHQPiE1hVpwLCALzePhLX5+X9u5+Uv+ZQqfIDWfX6b6COxFNV2mwH0E7saTHa7tl
-         TwUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780094895; x=1780699695;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lBPwQbNkDcHNIOKv+ajv0sD13CI8gNAufbd+ZzaXhlM=;
-        b=dfecBckvGYcBFN08barQvYHdvJhymGLM24fBm1EnZAyBqhV6DhiNKFduDOnM6QLE0g
-         aqFbvQkQm4arOpPAAjiK7Xv1VN2ak70IiSPzjrYs+6O2XxLKhPmwHpvPaCfVpJJ/ReaE
-         k4cxEXIE8LnJ8TFHARGggultmUytVxSBgBIpgG8vxnH68x4lMrYJPQzuOiRzmFfivwgm
-         tq4nQIDqfnLhqzp4QNMoSvm/YD2Emn11KlQo44lMMsNU+MIH5Cfbi6Tkb8YC4OB0bKYw
-         fCUiGUNLd+H7lgkk7x5Hy+fWZYk7z5bVLgt3jhkblVasOLHg4qhJQ+9XA9KVMqS065gc
-         hDLA==
-X-Forwarded-Encrypted: i=1; AFNElJ8e31mIlemmMPC3gumxlpaJKiyEP9iBp+Y9yHt843JXOdP71VbDI7PL+MJt8QK/w/+Tn7c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6cRh/g1EQgCpL/vYUxfxbjk0xD4mgWMjkv96Hjl5j+VRlc4ki
-	3NH4NbaJbAMUNkBpKf/UVTFUir0nSxfwogBSHiu6f10OQI2zb/JUUWOumDVFIoUYOmG/uGbzL83
-	vcDJN4g==
-X-Received: from plpp10.prod.google.com ([2002:a17:902:c70a:b0:2bd:56ce:d8ea])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d4c8:b0:2bf:1e5d:2b17
- with SMTP id d9443c01a7336-2bf3683bec2mr19652565ad.21.1780094895013; Fri, 29
- May 2026 15:48:15 -0700 (PDT)
-Date: Fri, 29 May 2026 15:47:50 -0700
-In-Reply-To: <20260509075201.4077-1-yan.y.zhao@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l4pOsX9c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6765F1F00893;
+	Fri, 29 May 2026 22:48:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780094900;
+	bh=OhI6vW4zsIKCgJqnqeUAru4QUK/w7akGbyIL5OAtvoo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=l4pOsX9cHN/fBxikNd4HAVgTK/j09BZSYnJPCutkBdoC95GSovtMTwzhjfP+8DmJc
+	 2STu/ltLpne563toiNWOCqMOl8fmVtvTtrZrpwrlOFQR3oX6Up3emRLFRkQC1N83xq
+	 XXDgYHOCsba2esOC2rj6u7OmqoxJ9l8pYx0tUw6VnRWE+ss8ujYiaJyWFO8leck3+J
+	 vhpnU46fcierAtI2Yj4JLVmayeju5EfigI0nEBzvAj/wvvYGxYLh3RGtzPnGETl469
+	 AGgeBei5rLnDSfs8uwviFfWbrzOSv3BdxUIeKkGvXibQ53BrAdnJoZyYjWLG0crpPr
+	 n32STvKcqzKpQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 04/40] KVM: VMX: Read 32-bit GPR values for ENCLS
+ instructions outside of 64-bit mode
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260529222223.870923-5-seanjc@google.com>
+References: <20260529222223.870923-5-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 29 May 2026 22:48:19 +0000
+Message-Id: <20260529224820.6765F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260509075201.4077-1-yan.y.zhao@intel.com>
-X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <178009463332.880339.13655251210288710814.b4-ty@google.com>
-Subject: Re: [PATCH v2 00/15] TDX MMU refactors
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, kvm@vger.kernel.org, 
-	rick.p.edgecombe@intel.com, kas@kernel.org, Yan Zhao <yan.y.zhao@intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, dave.hansen@intel.com, 
-	kai.huang@intel.com, binbin.wu@linux.intel.com, xiaoyao.li@intel.com
-Content-Type: text/plain; charset="utf-8"
 
-On Sat, 09 May 2026 15:52:01 +0800, Yan Zhao wrote:
-> This is v2 of the TDX MMU refactor series, based on Rick's v1 [1], which
-> was extracted from the discussion on Sean's DPAMT/Huge page combined series
-> [0].
-> 
-> v2 is rebased onto v7.1.0-rc2 and the v2 struct page to PFN conversion
-> series. v1's first 4 cleanup patches are dropped from v2 and kept in the
-> base (see "Base" section for details). The full stack is available at [6].
-> 
-> [...]
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Applied to kvm-x86 mmu, thanks!  I gave a Rick and Yan a few Co-developed-by
-attributions where they went waaaaay beyond just tweaking some of my patches
-(or diffs).
-
-Please take a look at the result.  Based on the lack of bot complaints, I think
-I got the important stuff right?
-
-[01/15] KVM: TDX: Drop kvm_x86_ops.link_external_spt()
-        https://github.com/kvm-x86/linux/commit/12d595795de7
-[02/15] KVM: TDX: Wrap mapping of leaf and non-leaf S-EPT entries into helpers
-        https://github.com/kvm-x86/linux/commit/176dcd88f4b4
-[03/15] KVM: x86/mmu: Fold set_external_spte_present() into its sole caller
-        https://github.com/kvm-x86/linux/commit/78d23e299bba
-[04/15] KVM: x86/mmu: Plumb param "old_spte" into kvm_x86_ops.set_external_spte()
-        https://github.com/kvm-x86/linux/commit/291bcb3a7583
-[05/15] KVM: TDX: Move KVM_BUG_ON()s in __tdp_mmu_set_spte_atomic() to TDX code
-        https://github.com/kvm-x86/linux/commit/6b1280a738f9
-[06/15] KVM: TDX: Move lockdep assert in __tdp_mmu_set_spte_atomic() to TDX code
-        https://github.com/kvm-x86/linux/commit/40342185fd2b
-[07/15] KVM: x86/tdp_mmu: Morph !is_frozen_spte() check into a KVM_MMU_WARN_ON()
-        https://github.com/kvm-x86/linux/commit/c1d3af136fbf
-[08/15] KVM: x86/mmu: Plumb "sp" _pointer_ into the TDP MMU's handle_changed_spte()
-        https://github.com/kvm-x86/linux/commit/c1ec7f368d85
-[09/15] KVM: x86/tdp_mmu: Centrally propagate to-present/atomic zap updates to external PTEs
-        https://github.com/kvm-x86/linux/commit/28c77a037804
-[10/15] KVM: x86/mmu: Drop KVM_BUG_ON() on shared lock to zap child external PTEs
-        https://github.com/kvm-x86/linux/commit/41367d77ee4e
-[11/15] KVM: TDX: Hoist tdx_sept_remove_private_spte() above set_private_spte()
-        https://github.com/kvm-x86/linux/commit/c74893aa56f4
-[12/15] KVM: TDX: Drop kvm_x86_ops.remove_external_spte()
-        https://github.com/kvm-x86/linux/commit/6eae9ce9461c
-[13/15] KVM: TDX: Rename tdx_sept_remove_private_spte() to show it's for leaf SPTEs
-        https://github.com/kvm-x86/linux/commit/0cef26b537ff
-[14/15] KVM: x86: Move error handling inside free_external_spt()
-        https://github.com/kvm-x86/linux/commit/b35bda696e44
-[15/15] KVM: TDX: Move external page table freeing to TDX code
-        https://github.com/kvm-x86/linux/commit/110d4d263450
-
+Pre-existing issues:
+- [High] Incorrect 32-bit mode segment check emulation in `sgx_get_encls_gv=
+a` violates architectural bounds, alignment, and type rules.
+- [High] KVM fails to enforce the architectural requirement that 64-bit poi=
+nter fields in memory-based ENCLS structures must have their upper 32 bits =
+set to zero when executing in 32-bit mode.
 --
-https://github.com/kvm-x86/linux/tree/next
+
+commit ca9673f76fcf276ab1d3acd4cb535b328a49e842
+Author: Sean Christopherson <seanjc@google.com>
+
+KVM: VMX: Read 32-bit GPR values for ENCLS instructions outside of 64-bit m=
+ode
+
+When getting register values for ENCLS emulation, use kvm_register_read()
+instead of kvm_<reg>_read() so that bits 63:32 of the register are dropped
+if the guest is in 32-bit mode.
+
+> diff --git a/arch/x86/kvm/vmx/sgx.c b/arch/x86/kvm/vmx/sgx.c
+> index df1d0cf769475..4c61fc33f7648 100644
+> --- a/arch/x86/kvm/vmx/sgx.c
+> +++ b/arch/x86/kvm/vmx/sgx.c
+> @@ -225,8 +225,8 @@ static int handle_encls_ecreate(struct kvm_vcpu *vcpu)
+>  	struct x86_exception ex;
+>  	int r;
+> =20
+> -	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 32, 32, &pageinfo_gva) =
+||
+> -	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva))
+> +	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 32,=
+ 32, &pageinfo_gva) ||
+> +	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 409=
+6, 4096, &secs_gva))
+>  		return 1;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but while reviewing the 32-bit m=
+ode
+fixes for ENCLS, does the existing 32-bit segment check emulation in
+sgx_get_encls_gva() violate architectural bounds, alignment, and type rules?
+
+In sgx_get_encls_gva():
+
+	} else {
+		*gva &=3D 0xffffffff;
+		fault =3D (s.unusable) ||
+			(s.type !=3D 2 && s.type !=3D 3) ||
+			(*gva > s.limit) ||
+			((s.base !=3D 0 || s.limit !=3D 0xffffffff) &&
+			(((u64)*gva + size - 1) > s.limit + 1));
+	}
+
+Is it correct that this calculates the linear address (*gva =3D offset + s.=
+base)
+and then evaluates the segment limit against it (*gva > s.limit), rather th=
+an
+checking against the effective address? A non-zero s.base could cause limits
+to be evaluated incorrectly.
+
+Also, does the check (((u64)*gva + size - 1) > s.limit + 1) allow an access
+to exceed the inclusive segment limit by 1 byte without faulting?
+
+Finally, by requiring s.type =3D=3D 2 || s.type =3D=3D 3 (Read/Write data s=
+egments),
+does this reject valid Read-Only data segments (types 0, 1), even though
+ENCLS structures being read (like PAGEINFO) only require read access?
+
+[Severity: High]
+This is a pre-existing issue, but does KVM fail to enforce the architectural
+requirement that 64-bit pointer fields in memory-based ENCLS structures must
+have their upper 32 bits set to zero when executing in 32-bit mode?
+
+According to the Intel SDM for ENCLS, "Any 64-bit pointer field within the
+data structures must have its upper 32 bits zero in 32-bit mode, or else
+#GP(0) is generated."
+
+Looking at handle_encls_ecreate(), KVM extracts 64-bit pointers from the
+guest PAGEINFO structure:
+
+	if (sgx_get_encls_gva(vcpu, pageinfo.metadata, 64, 64, &metadata_gva) ||
+	    sgx_get_encls_gva(vcpu, pageinfo.contents, 4096, 4096,
+			      &contents_gva))
+
+And passes them to sgx_get_encls_gva(). However, in 32-bit mode,
+sgx_get_encls_gva() just silently masks the upper 32 bits:
+
+	} else {
+		*gva &=3D 0xffffffff;
+
+Should this instead validate that the upper 32 bits are zero and inject a
+#GP(0) to prevent invalid guest structures from being successfully processe=
+d?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529222223.8709=
+23-1-seanjc@google.com?part=3D4
