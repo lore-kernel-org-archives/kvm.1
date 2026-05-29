@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F648387566;
-	Fri, 29 May 2026 17:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0177838F938
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780075692; cv=none; b=kUSHWWllmrEYkV6OcJkDBLW7ZuIeP5m4AwJKIYOXsxSMyIISIVQtq2GZI1j5+mSBur59ZfJ0JGfu4Eh0PnVEqi5fqh/3FB6uChNSM8c5g0Hs2nDRSyEK97RvpvkixiIf4PNBwHgW2DnJe3NhzxLDkb1dGBUXk9UuRuG9/3fahHc=
+	t=1780075695; cv=none; b=sLcJFsxKCOit+cyua4tlUBOnG70v8iDFSVGfdShcyfn+Vm+PeNjDI9k0Ky1qTw/X3OIZNrIT6F9cQGSv++nKyiufgvjU7mk40iVUKlQBPZ5+uRunVz4NqT/FYjCDaZE58mth6rxrKaj3qNVDFXl2MkMPr7LcX+HwcD7LzPYntxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780075692; c=relaxed/simple;
-	bh=YzBjPd63uEeu1EoXVayUwvySyhxW1q0luv/Xr7igBmg=;
+	s=arc-20240116; t=1780075695; c=relaxed/simple;
+	bh=hIC3IeKACkXKCsODTQIfZXNmF9Z+XmJa3bFgTJcueqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=szRRmJCzREClDV+pL2yFp6V2Z/tfa3jrTfLjJJLoD+LkUQLQ9gpljPFG450c8/VmmkYYFxwdXQrbpRfh8v5Fu1L5JyB8wXCIQg2xaKZY/4EStNZy6jWc0rCLy+awoHVqA0fLXIQKGOu6hQ9TCpUe4Tkz57RijrrYyI3rHWwERFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bI/lKOtb; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=oUpC2qnuHpYBMiuObcey3WBRbR/HQBslWSJOmYLXJ6MD4AZUfiIzSuncuR+hSrnEsCNCoTd8vY32QeMlajtphhuekZOHVp+6LOWwN8O+u64kBIYl6jKJ2mQGVlfTzyKFA43nc2lPEPIgK+Kg3Tt6P3dQL+K8bIrJV/Nq2lyFDsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QFPqhrbv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bI/lKOtb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BBF1F00899;
-	Fri, 29 May 2026 17:28:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QFPqhrbv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046121F0089E;
+	Fri, 29 May 2026 17:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780075686;
-	bh=7FwHn2bRKJaKHPfoXVMI3en/RPbsnRravWt/lCAWGZY=;
+	s=k20260515; t=1780075689;
+	bh=4cGOsnZk0xVIPLCyz6aanH/SA/ySZrmY+G3zdoIpae8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bI/lKOtbBymmQ86llSP14z3ZJ6gXciiIAG6G8GjkXgPzkLIJqTAYP8cNlP9+6MZ0P
-	 ZkyQfDVeY3DrE+z/cKP0FGn8kf48AIyVN2m2lThJD6z1p6VFzMOkAMR1M3t7VtTm9B
-	 d0t/sJv2dewu10X2PUi3VznO4X1LwICqTLdLPRwMxvt2DN5rH7ilpnYYG1wzfLZIun
-	 jUbEG12n7n8QodkbeQDL+f+Fh/VvtOWZesTOvjwlPiRmxodQ5sxA+Ufs3hcl28qH5l
-	 oof7pebojFrwp2WODovrfUMUwjsM3rKCZV57hte3xIzyaoDDoD4sFdAEqHORVvGhno
-	 JnKSbXI0G7d4A==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id F1CDEF4006F;
-	Fri, 29 May 2026 13:28:04 -0400 (EDT)
+	b=QFPqhrbv+oq5L1Y1rne8d5SyWmyjpMxI+dd7dJ4js+CF87JyscG9PMuO6mRNk7WUF
+	 jaYE94qgTEiMwV7DgMS1HfN/Jgi6wxr7xeubVwHbzytcHM55yZ3j771SFTnm/els+x
+	 2XrOXiB5uCkruPJgBCUycEpExvINWTJz0lgsf6LA+jEfULuhqzSHb5iyNLWusQIhX7
+	 v2RehCGHPOQznhE2cZNGWFMaJqMyeZw522xNTXD6R49ZZbzQiGoTcZ/yOSHz/K241L
+	 RP5xo23DcwD/KypdcFWwJtjHCqGRkBwvzQT423SkVkxG6b2jSa4h37KrcV05didUxc
+	 aVE5TI1E1FbYg==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 63321F4006F;
+	Fri, 29 May 2026 13:28:08 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 29 May 2026 13:28:05 -0400
-X-ME-Sender: <xms:pMwZaqkpXmWyhHhZwW3EYAA1kTVpHv9zl5yPYuLvB_ZTEuSuvBkVPA>
-    <xme:pMwZalzae4ZgK-3vUyFM3Toq-CGriJZPO8KeGnFrw9qijYF_XWpZoZjYmLGFbXKA8
-    aLI7S9zdLS7jAUyOeE63rlJb4joBUhNYi-U__AFgRh8RvXtMj_EA34>
-X-ME-Received: <xmr:pMwZahLhd-Z91TuhrI9nrRkE51DPtPGJYvHwhWVOhjSyGKxskjpYsx5SQpj6sA>
-X-ME-Proxy-Cause: dmFkZTEHS1Z+n1S80q4BaszFx9bNnHLQ6sgL6J9HpxOFXRfFtKsh6le5cKxaCZzZ/qH/SJ
-    zONNCxWzVoPiQhYsD9dliy9AdrB2UY/Bhb82egQk/l96x3r4UUhrX92dr53s7Ptki96Mx4
-    DvJi8H/xrcKSa4upwFZAuWyRsvkJtw5DUL41fEdJBQDb5TWXZV3TgknVzb3pm5Cw5eabt3
-    ZKinBz9XCIvsS/RAa3Cb6hoIPIA7Rb0ceUklQcqu2F89W2umMVSE8bbF5HocBMl20u4Nxk
-    92MelAoY5r8qDI90ESLS21z7KfMewjRnztTxCHQfAtq0f2Qz4D8wiVPs5MI39B39+ARIMl
-    7vGlI3BeSZ/LbcxUUUzqd0Q3MmJoqw42mfHQ4uJNv9dJLruJ2+FcaOcFYdA/PGYdncCvJm
-    NAsT0ivnUcG82UzbIQXKjCJBkce1l0gVAAL3WBrzEZ8nhtKDwdCfdUcNZW4ZX6rtTB1VpR
-    5wexrTcjiHB0QwWwIy7ckY06iH+3NrLTKNb6QSdAcP9seml2MROTMxQ1FoERhXV6sSIagC
-    Hu0CHhXEQWU/ffyogkgH6zX/A79BD9K7JUjoDHaM0Elmp+YgJaZmleljAD0ZEeaYoBnAj0
-    vqvWj4uQnpamauZkHm7n9ri5/TQlFF0RAQGr89u4giMyd04mwY3ytj59lYRA
-X-ME-Proxy: <xmx:pMwZaoIRtV9pQX3LgcMhDVZUMV1M9nxnu0l7Rv4bzr76CBB_9RTO6w>
-    <xmx:pMwZagWTcxwPh5fa2JaE8FbmevBzBiTBLJV89iXuekTPFX8bESJhfQ>
-    <xmx:pMwZagApMdGXVnnDh2crIbDHeAd2JJh_cxyDZjuaY1Is6NzUHISG2Q>
-    <xmx:pMwZajGbtVjVieagXbJUYC--8tlB4e9xrcKKoL_yk85k7a0S0imNpg>
-    <xmx:pMwZasdIj9ZkXlTLhPo-B8JLcWPm0fwNLcmX9DytJS7Zv2KeFJshLlsn>
+  by phl-compute-04.internal (MEProxy); Fri, 29 May 2026 13:28:08 -0400
+X-ME-Sender: <xms:qMwZav6W1dpqePiOPHJHabISuqI9HVIKJHnfIJolqGImB2ru4-ccuw>
+    <xme:qMwZao3F61ZQBhBiSvkZdnuzK7u3oPxjESkvzzTxLjH8rZdR4_iuUP0h9vhN7phpJ
+    Ald4x-2bof1biSiQi6sUiDXZWvhVtpJcYai3-jHZF8qHk8nsWiFap7G>
+X-ME-Received: <xmr:qMwZau8KmYIHqmBoDtXSTd81PtAi7gsmxV6mSQUo3KUGoIwBtlanfl6cmXokEw>
+X-ME-Proxy-Cause: dmFkZTGahW8s3xjZ3arjCZYsPeROx1tHGGIOxZ4ZTborx5JIY1xfx8o+3Ks6DBHpwKdcBc
+    M0LV7UYzyw5BBW/MLyCvRpPXH4b3j/O36w1UIutGmjGoZPWXllz5NGLuWKcGXqDNqja7AN
+    LjyibA8JUH8LlxNww+LolPBmmXeffckfCMyZ3ofUE4q+w091KUDN+vWzLN57aJjrFHnLmA
+    DJhoBTsevLB+L7lFnUlwKPgFqlT5AUPgwhCfp483ir0podeZjRFOwVO5acGk8d/hTIZjyE
+    iTtkTrHlenKgPfeJb7TkHTrSkVle7vVdqqUtJoKJ+Cofq6CG9ZD2U9nUSpGxcnBPWB+GRa
+    b0IO7F5OKS2OV+GbvbidsB1qtHMcNOoe+59ZDo6M7vz3L9A2FRVgvm4um+TJvo5fWSEW9U
+    gH3jd7S3OC6KsDFT1J56/dHqFJxINl48DrpXpU1bzj2a1g/HuERh8sgT2E1m1RHDST9jJi
+    s/mvHpvoIBhhOxkYWUGIRUGbh8jO6FM6EmptXydkJ15HpjpoP+vK1KttBgs0Q/TDXHgfrQ
+    0puVZknNbxLOQW+QuAqTV77dwReNjNWbo6afSkdM1Ku7s9UW3OMZq82w5fLoOMP6UZ8TO8
+    DV0fKnqtWOd9qz9StSvYRvO2tB8IknM5bHEO6dR9GIDcy2Cm4ocehQ6NrQWg
+X-ME-Proxy: <xmx:qMwZaptyLOMzTNHfFXRyyNnfk8WXgySTcz5cDwDi14xrQDFeNIjYZA>
+    <xmx:qMwZaqpgkIh5AIMl7k-MyF3Li48S0406cpg0_38ia91jUeOJzyMYaA>
+    <xmx:qMwZakH2UmSvYiOMOfbpRdxBvUqDuUiHVr46x8cx8e8c1H62jNxDVA>
+    <xmx:qMwZat5lbvLAI4RE3Ao2hzwTAciwxlJSPucu7y3R7IuYBEt9w3-dvA>
+    <xmx:qMwZanAC0S00gBpD7wzwdkQbnCf6C-yIBKQqdg9b63CzOvslWoO9lQBT>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 29 May 2026 13:28:04 -0400 (EDT)
+ 29 May 2026 13:28:07 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: akpm@linux-foundation.org,
 	rppt@kernel.org,
@@ -78,9 +78,9 @@ Cc: ljs@kernel.org,
 	kvm@vger.kernel.org,
 	kernel-team@meta.com,
 	kas@kernel.org
-Subject: [PATCH v6 11/15] mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
-Date: Fri, 29 May 2026 18:26:40 +0100
-Message-ID: <20260529172716.357179-12-kas@kernel.org>
+Subject: [PATCH v6 13/15] userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
+Date: Fri, 29 May 2026 18:26:42 +0100
+Message-ID: <20260529172716.357179-14-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260529172716.357179-1-kas@kernel.org>
 References: <20260529172716.357179-1-kas@kernel.org>
@@ -90,256 +90,292 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-PAGEMAP_SCAN already reports PAGE_IS_WRITTEN from the inverted uffd
-PTE bit, targeting the UFFDIO_WRITEPROTECT workflow. UFFDIO_RWPROTECT
-reuses the same PTE bit as a marker for read-write protection, but
-"has been written" and "has been accessed" are distinct semantic
-signals — they happen to share one PTE bit today only because the two
-implementations share infrastructure.
+Add an ioctl to toggle async mode at runtime without re-registering
+the userfaultfd. This allows a VMM to switch between sync and async
+RWP modes on-the-fly -- for example, starting in async mode for
+working set scanning, then switching to sync mode to intercept faults
+during page eviction.
 
-Give RWP its own pagemap category so the UAPI does not conflate them:
+UFFDIO_SET_MODE takes an enable/disable bitmask of UFFD_FEATURE_*
+flags. Only UFFD_FEATURE_RWP_ASYNC is toggleable today; the ioctl
+rejects any other bit with -EINVAL. Enabling RWP_ASYNC also requires
+RWP to have been negotiated at UFFDIO_API time, mirroring the
+UFFDIO_API invariant.
 
-  PAGE_IS_WRITTEN   reported on VM_UFFD_WP VMAs,  !pte_uffd(pte)
-  PAGE_IS_ACCESSED  reported on VM_UFFD_RWP VMAs, !pte_uffd(pte)
+Fault-path readers of ctx->features run under mmap_read_lock or a
+per-VMA lock; the RMW takes mmap_write_lock and calls
+vma_start_write() on every UFFD-armed VMA, so those readers are fully
+excluded. userfaultfd_show_fdinfo(), however, reads ctx->features
+without any lock, so the RMW is written as a single WRITE_ONCE and
+fdinfo reads it with READ_ONCE. That keeps the lockless observer from
+seeing a mid-RMW intermediate and removes the audit burden when new
+toggleable bits are added later.
 
-Both still read the same PTE bit today, but each is scoped to the VMA
-whose registered mode makes the bit meaningful. If a future
-implementation moves RWP to a separate PTE bit, only PAGE_IS_ACCESSED
-switches over.
+When switching to async, pending sync waiters are woken so they retry
+and auto-resolve under the new mode.
 
-This is a UAPI narrowing. Outside VM_UFFD_WP VMAs the uffd bit is
-always clear, so PAGEMAP_SCAN used to flag PAGE_IS_WRITTEN on every
-present PTE there — a meaningless duplicate of PAGE_IS_PRESENT. Now
-PAGE_IS_WRITTEN fires only inside VM_UFFD_WP VMAs.
-
-pagemap_hugetlb_category() now takes the vma like its PTE/PMD peers.
-
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Assisted-by: Claude:claude-opus-4-6
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- Documentation/admin-guide/mm/pagemap.rst | 13 +++--
- fs/proc/task_mmu.c                       | 63 +++++++++++++++++-------
- include/uapi/linux/fs.h                  |  1 +
- tools/include/uapi/linux/fs.h            |  1 +
- 4 files changed, 57 insertions(+), 21 deletions(-)
+ include/uapi/linux/userfaultfd.h |  14 +++
+ mm/userfaultfd.c                 | 150 +++++++++++++++++++++++++------
+ 2 files changed, 136 insertions(+), 28 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/pagemap.rst b/Documentation/admin-guide/mm/pagemap.rst
-index c57e61b5d8aa..ffa690a171c8 100644
---- a/Documentation/admin-guide/mm/pagemap.rst
-+++ b/Documentation/admin-guide/mm/pagemap.rst
-@@ -19,8 +19,11 @@ There are four components to pagemap:
-     * Bit  55    pte is soft-dirty (see
-       Documentation/admin-guide/mm/soft-dirty.rst)
-     * Bit  56    page exclusively mapped (since 4.2)
--    * Bit  57    pte is uffd-wp write-protected (since 5.13) (see
--      Documentation/admin-guide/mm/userfaultfd.rst)
-+    * Bit  57    pte is tracked by userfaultfd (since 5.13) — in a
-+      ``VM_UFFD_WP`` VMA this indicates a write-protected PTE; in a
-+      ``VM_UFFD_RWP`` VMA it indicates an RWP-protected PTE. WP and
-+      RWP are mutually exclusive per VMA, so the meaning is
-+      unambiguous. See Documentation/admin-guide/mm/userfaultfd.rst.
-     * Bit  58    pte is a guard region (since 6.15) (see madvise (2) man page)
-     * Bits 59-60 zero
-     * Bit  61    page is file-page or shared-anon (since 3.5)
-@@ -244,7 +247,8 @@ in this IOCTL:
- Following flags about pages are currently supported:
+diff --git a/include/uapi/linux/userfaultfd.h b/include/uapi/linux/userfaultfd.h
+index c10f08f8a618..cea11aad6b54 100644
+--- a/include/uapi/linux/userfaultfd.h
++++ b/include/uapi/linux/userfaultfd.h
+@@ -49,6 +49,7 @@
+ #define UFFD_API_IOCTLS				\
+ 	((__u64)1 << _UFFDIO_REGISTER |		\
+ 	 (__u64)1 << _UFFDIO_UNREGISTER |	\
++	 (__u64)1 << _UFFDIO_SET_MODE |		\
+ 	 (__u64)1 << _UFFDIO_API)
+ #define UFFD_API_RANGE_IOCTLS			\
+ 	((__u64)1 << _UFFDIO_WAKE |		\
+@@ -85,6 +86,7 @@
+ #define _UFFDIO_CONTINUE		(0x07)
+ #define _UFFDIO_POISON			(0x08)
+ #define _UFFDIO_RWPROTECT		(0x09)
++#define _UFFDIO_SET_MODE		(0x0A)
+ #define _UFFDIO_API			(0x3F)
  
- - ``PAGE_IS_WPALLOWED`` - Page has async-write-protection enabled
--- ``PAGE_IS_WRITTEN`` - Page has been written to from the time it was write protected
-+- ``PAGE_IS_WRITTEN`` - Page in a ``UFFDIO_REGISTER_MODE_WP`` VMA has been
-+  written to since it was write-protected. Only reported inside such VMAs.
- - ``PAGE_IS_FILE`` - Page is file backed
- - ``PAGE_IS_PRESENT`` - Page is present in the memory
- - ``PAGE_IS_SWAPPED`` - Page is in swapped
-@@ -252,6 +256,9 @@ Following flags about pages are currently supported:
- - ``PAGE_IS_HUGE`` - Page is PMD-mapped THP or Hugetlb backed
- - ``PAGE_IS_SOFT_DIRTY`` - Page is soft-dirty
- - ``PAGE_IS_GUARD`` - Page is a part of a guard region
-+- ``PAGE_IS_ACCESSED`` - Page in a ``UFFDIO_REGISTER_MODE_RWP`` VMA has been
-+  accessed since RWP was applied. Only reported inside such VMAs. See
-+  Documentation/admin-guide/mm/userfaultfd.rst for the RWP workflow.
+ /* userfaultfd ioctl ids */
+@@ -111,6 +113,8 @@
+ 				      struct uffdio_poison)
+ #define UFFDIO_RWPROTECT	_IOWR(UFFDIO, _UFFDIO_RWPROTECT,	\
+ 				      struct uffdio_rwprotect)
++#define UFFDIO_SET_MODE		_IOW(UFFDIO, _UFFDIO_SET_MODE,	\
++				     struct uffdio_set_mode)
  
- The ``struct pm_scan_arg`` is used as the argument of the IOCTL.
+ /* read() structure */
+ struct uffd_msg {
+@@ -406,6 +410,16 @@ struct uffdio_move {
+ 	__s64 move;
+ };
  
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index ca0f69b347e8..a1683d73b405 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -2284,7 +2284,7 @@ static const struct mm_walk_ops pagemap_ops = {
-  * Bits 5-54  swap offset if swapped
-  * Bit  55    pte is soft-dirty (see Documentation/admin-guide/mm/soft-dirty.rst)
-  * Bit  56    page exclusively mapped
-- * Bit  57    pte is uffd-wp write-protected
-+ * Bit  57    pte is tracked by userfaultfd (uffd-wp or RWP)
-  * Bit  58    pte is a guard region
-  * Bits 59-60 zero
-  * Bit  61    page is file-page or shared-anon
-@@ -2419,7 +2419,7 @@ static int pagemap_release(struct inode *inode, struct file *file)
- 				 PAGE_IS_FILE |	PAGE_IS_PRESENT |	\
- 				 PAGE_IS_SWAPPED | PAGE_IS_PFNZERO |	\
- 				 PAGE_IS_HUGE | PAGE_IS_SOFT_DIRTY |	\
--				 PAGE_IS_GUARD)
-+				 PAGE_IS_GUARD | PAGE_IS_ACCESSED)
- #define PM_SCAN_FLAGS		(PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC)
++struct uffdio_set_mode {
++	/*
++	 * Toggle async mode for features at runtime.
++	 * Supported: UFFD_FEATURE_RWP_ASYNC.
++	 * Setting a bit in both enable and disable is invalid.
++	 */
++	__u64 enable;
++	__u64 disable;
++};
++
+ /*
+  * Flags for the userfaultfd(2) system call itself.
+  */
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index f40bf473a6f6..f172ec14a6c8 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -2477,19 +2477,29 @@ struct userfaultfd_wake_range {
+ /* internal indication that UFFD_API ioctl was successfully executed */
+ #define UFFD_FEATURE_INITIALIZED		(1u << 31)
  
- struct pagemap_scan_private {
-@@ -2444,8 +2444,12 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
- 
- 		categories = PAGE_IS_PRESENT;
- 
--		if (!pte_uffd(pte))
--			categories |= PAGE_IS_WRITTEN;
-+		if (!pte_uffd(pte)) {
-+			if (userfaultfd_wp(vma))
-+				categories |= PAGE_IS_WRITTEN;
-+			if (userfaultfd_rwp(vma))
-+				categories |= PAGE_IS_ACCESSED;
-+		}
- 
- 		if (p->masks_of_interest & PAGE_IS_FILE) {
- 			page = vm_normal_page(vma, addr, pte);
-@@ -2462,8 +2466,12 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
- 
- 		categories = PAGE_IS_SWAPPED;
- 
--		if (!pte_swp_uffd_any(pte))
--			categories |= PAGE_IS_WRITTEN;
-+		if (!pte_swp_uffd_any(pte)) {
-+			if (userfaultfd_wp(vma))
-+				categories |= PAGE_IS_WRITTEN;
-+			if (userfaultfd_rwp(vma))
-+				categories |= PAGE_IS_ACCESSED;
-+		}
- 
- 		entry = softleaf_from_pte(pte);
- 		if (softleaf_is_guard_marker(entry))
-@@ -2512,8 +2520,12 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
- 		struct page *page;
- 
- 		categories |= PAGE_IS_PRESENT;
--		if (!pmd_uffd(pmd))
--			categories |= PAGE_IS_WRITTEN;
-+		if (!pmd_uffd(pmd)) {
-+			if (userfaultfd_wp(vma))
-+				categories |= PAGE_IS_WRITTEN;
-+			if (userfaultfd_rwp(vma))
-+				categories |= PAGE_IS_ACCESSED;
-+		}
- 
- 		if (p->masks_of_interest & PAGE_IS_FILE) {
- 			page = vm_normal_page_pmd(vma, addr, pmd);
-@@ -2527,8 +2539,12 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
- 			categories |= PAGE_IS_SOFT_DIRTY;
- 	} else {
- 		categories |= PAGE_IS_SWAPPED;
--		if (!pmd_swp_uffd(pmd))
--			categories |= PAGE_IS_WRITTEN;
-+		if (!pmd_swp_uffd(pmd)) {
-+			if (userfaultfd_wp(vma))
-+				categories |= PAGE_IS_WRITTEN;
-+			if (userfaultfd_rwp(vma))
-+				categories |= PAGE_IS_ACCESSED;
-+		}
- 		if (pmd_swp_soft_dirty(pmd))
- 			categories |= PAGE_IS_SOFT_DIRTY;
- 
-@@ -2561,7 +2577,8 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
- #ifdef CONFIG_HUGETLB_PAGE
--static unsigned long pagemap_hugetlb_category(pte_t pte)
-+static unsigned long pagemap_hugetlb_category(struct vm_area_struct *vma,
-+					      pte_t pte)
++/*
++ * UFFDIO_SET_MODE updates ctx->features under mmap_write_lock with
++ * WRITE_ONCE; readers that run outside mmap_read_lock or the per-VMA
++ * lock (poll/read_iter/ioctl, fdinfo) must pair with READ_ONCE.
++ */
++static unsigned int userfaultfd_features(struct userfaultfd_ctx *ctx)
++{
++	return READ_ONCE(ctx->features);
++}
++
+ static bool userfaultfd_is_initialized(struct userfaultfd_ctx *ctx)
  {
- 	unsigned long categories = PAGE_IS_HUGE;
+-	return ctx->features & UFFD_FEATURE_INITIALIZED;
++	return userfaultfd_features(ctx) & UFFD_FEATURE_INITIALIZED;
+ }
  
-@@ -2576,8 +2593,12 @@ static unsigned long pagemap_hugetlb_category(pte_t pte)
- 	if (pte_present(pte)) {
- 		categories |= PAGE_IS_PRESENT;
+ static bool userfaultfd_wp_async_ctx(struct userfaultfd_ctx *ctx)
+ {
+-	return ctx && (ctx->features & UFFD_FEATURE_WP_ASYNC);
++	return ctx && (userfaultfd_features(ctx) & UFFD_FEATURE_WP_ASYNC);
+ }
  
--		if (!huge_pte_uffd(pte))
--			categories |= PAGE_IS_WRITTEN;
-+		if (!huge_pte_uffd(pte)) {
-+			if (userfaultfd_wp(vma))
-+				categories |= PAGE_IS_WRITTEN;
-+			if (userfaultfd_rwp(vma))
-+				categories |= PAGE_IS_ACCESSED;
-+		}
- 		if (!PageAnon(pte_page(pte)))
- 			categories |= PAGE_IS_FILE;
- 		if (is_zero_pfn(pte_pfn(pte)))
-@@ -2587,8 +2608,12 @@ static unsigned long pagemap_hugetlb_category(pte_t pte)
- 	} else {
- 		categories |= PAGE_IS_SWAPPED;
- 
--		if (!pte_swp_uffd_any(pte))
--			categories |= PAGE_IS_WRITTEN;
-+		if (!pte_swp_uffd_any(pte)) {
-+			if (userfaultfd_wp(vma))
-+				categories |= PAGE_IS_WRITTEN;
-+			if (userfaultfd_rwp(vma))
-+				categories |= PAGE_IS_ACCESSED;
-+		}
- 		if (pte_swp_soft_dirty(pte))
- 			categories |= PAGE_IS_SOFT_DIRTY;
- 	}
-@@ -2864,7 +2889,8 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsigned long start,
- 		goto flush_and_return;
- 	}
- 
--	if (!p->arg.category_anyof_mask && !p->arg.category_inverted &&
-+	if (userfaultfd_wp(vma) && !p->arg.category_anyof_mask &&
-+	    !p->arg.category_inverted &&
- 	    p->arg.category_mask == PAGE_IS_WRITTEN &&
- 	    p->arg.return_mask == PAGE_IS_WRITTEN) {
- 		for (addr = start; addr < end; pte++, addr += PAGE_SIZE) {
-@@ -2939,7 +2965,8 @@ static int pagemap_scan_hugetlb_entry(pte_t *ptep, unsigned long hmask,
- 		/* Go the short route when not write-protecting pages. */
- 
- 		pte = huge_ptep_get(walk->mm, start, ptep);
--		categories = p->cur_vma_category | pagemap_hugetlb_category(pte);
-+		categories = p->cur_vma_category |
-+			     pagemap_hugetlb_category(vma, pte);
- 
- 		if (!pagemap_scan_is_interesting_page(categories, p))
- 			return 0;
-@@ -2951,7 +2978,7 @@ static int pagemap_scan_hugetlb_entry(pte_t *ptep, unsigned long hmask,
- 	ptl = huge_pte_lock(hstate_vma(vma), vma->vm_mm, ptep);
- 
- 	pte = huge_ptep_get(walk->mm, start, ptep);
--	categories = p->cur_vma_category | pagemap_hugetlb_category(pte);
-+	categories = p->cur_vma_category | pagemap_hugetlb_category(vma, pte);
- 
- 	if (!pagemap_scan_is_interesting_page(categories, p))
- 		goto out_unlock;
-diff --git a/include/uapi/linux/fs.h b/include/uapi/linux/fs.h
-index 13f71202845e..c4aeaa0c31c7 100644
---- a/include/uapi/linux/fs.h
-+++ b/include/uapi/linux/fs.h
-@@ -455,6 +455,7 @@ typedef int __bitwise __kernel_rwf_t;
- #define PAGE_IS_HUGE		(1 << 6)
- #define PAGE_IS_SOFT_DIRTY	(1 << 7)
- #define PAGE_IS_GUARD		(1 << 8)
-+#define PAGE_IS_ACCESSED	(1 << 9)
+ static bool userfaultfd_rwp_async_ctx(struct userfaultfd_ctx *ctx)
+ {
+-	return ctx && (ctx->features & UFFD_FEATURE_RWP_ASYNC);
++	return ctx && (userfaultfd_features(ctx) & UFFD_FEATURE_RWP_ASYNC);
+ }
  
  /*
-  * struct page_region - Page region with flags
-diff --git a/tools/include/uapi/linux/fs.h b/tools/include/uapi/linux/fs.h
-index 24ddf7bc4f25..f0a26309b6d5 100644
---- a/tools/include/uapi/linux/fs.h
-+++ b/tools/include/uapi/linux/fs.h
-@@ -364,6 +364,7 @@ typedef int __bitwise __kernel_rwf_t;
- #define PAGE_IS_HUGE		(1 << 6)
- #define PAGE_IS_SOFT_DIRTY	(1 << 7)
- #define PAGE_IS_GUARD		(1 << 8)
-+#define PAGE_IS_ACCESSED	(1 << 9)
+@@ -2504,7 +2514,7 @@ bool userfaultfd_wp_unpopulated(struct vm_area_struct *vma)
+ 	if (!ctx)
+ 		return false;
  
- /*
-  * struct page_region - Page region with flags
+-	return ctx->features & UFFD_FEATURE_WP_UNPOPULATED;
++	return userfaultfd_features(ctx) & UFFD_FEATURE_WP_UNPOPULATED;
+ }
+ 
+ static int userfaultfd_wake_function(wait_queue_entry_t *wq, unsigned mode,
+@@ -4290,6 +4300,109 @@ static int userfaultfd_rwprotect(struct userfaultfd_ctx *ctx,
+ 	return ret;
+ }
+ 
++/* Subset of UFFD_API_FEATURES actually supported by this kernel/arch */
++static __u64 uffd_api_available_features(void)
++{
++	__u64 f = UFFD_API_FEATURES;
++
++	if (!IS_ENABLED(CONFIG_HAVE_ARCH_USERFAULTFD_MINOR))
++		f &= ~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM);
++	if (!pgtable_supports_uffd())
++		f &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
++	if (!uffd_supports_wp_marker())
++		f &= ~(UFFD_FEATURE_WP_HUGETLBFS_SHMEM |
++		       UFFD_FEATURE_WP_UNPOPULATED |
++		       UFFD_FEATURE_WP_ASYNC);
++	/*
++	 * RWP needs both PROT_NONE support and the uffd PTE bit. The
++	 * VM_UFFD_RWP check covers compile-time unavailability; the
++	 * pgtable_supports_uffd() check covers runtime (e.g. riscv
++	 * without the SVRSW60T59B extension) where the PTE bit is declared
++	 * but not actually usable.
++	 */
++	if (VM_UFFD_RWP == VM_NONE || !pgtable_supports_uffd())
++		f &= ~(UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC);
++	return f;
++}
++
++/* Async features that can be toggled at runtime via UFFDIO_SET_MODE */
++#define UFFD_FEATURE_TOGGLEABLE	UFFD_FEATURE_RWP_ASYNC
++
++static int userfaultfd_set_mode(struct userfaultfd_ctx *ctx,
++				unsigned long arg)
++{
++	struct uffdio_set_mode mode;
++	struct mm_struct *mm = ctx->mm;
++
++	if (copy_from_user(&mode, (void __user *)arg, sizeof(mode)))
++		return -EFAULT;
++
++	/* enable and disable must not overlap */
++	if (mode.enable & mode.disable)
++		return -EINVAL;
++
++	/* only toggleable features that this kernel/arch actually supports */
++	if ((mode.enable | mode.disable) &
++	    ~(uffd_api_available_features() & UFFD_FEATURE_TOGGLEABLE))
++		return -EINVAL;
++
++	/* RWP_ASYNC can only be enabled on contexts that negotiated RWP */
++	if ((mode.enable & UFFD_FEATURE_RWP_ASYNC) &&
++	    !(userfaultfd_features(ctx) & UFFD_FEATURE_RWP))
++		return -EINVAL;
++
++	if (!mmget_not_zero(mm))
++		return -ESRCH;
++
++	/*
++	 * Drain in-flight faults before flipping features. mmap_write_lock()
++	 * blocks new mmap_read_lock() callers, but per-VMA locked faults
++	 * (lock_vma_under_rcu() + FAULT_FLAG_VMA_LOCK) that acquired before
++	 * this point keep running. Calling vma_start_write() on each UFFD-
++	 * armed VMA waits for those readers to drop, so no in-flight fault
++	 * can observe the old features after mmap_write_unlock().
++	 */
++	mmap_write_lock(mm);
++	{
++		struct vm_area_struct *vma;
++		VMA_ITERATOR(vmi, mm, 0);
++
++		for_each_vma(vmi, vma) {
++			if (vma->vm_userfaultfd_ctx.ctx == ctx)
++				vma_start_write(vma);
++		}
++	}
++	/*
++	 * Single WRITE_ONCE so lockless readers (fdinfo, poll/read_iter
++	 * via userfaultfd_is_initialized(), and the userfaultfd_features()
++	 * helper used elsewhere) can't observe a mid-RMW intermediate
++	 * value. Hot-path readers already serialise through the mmap lock
++	 * + vma_start_write() drain above, so their load doesn't need an
++	 * annotation.
++	 */
++	WRITE_ONCE(ctx->features,
++		   (ctx->features | mode.enable) & ~mode.disable);
++	mmap_write_unlock(mm);
++
++	/*
++	 * If switching to async, wake threads blocked in handle_userfault().
++	 * They will retry the fault and auto-resolve under the new mode.
++	 * len=0 means wake all pending faults on this context.
++	 */
++	if (mode.enable & UFFD_FEATURE_RWP_ASYNC) {
++		struct userfaultfd_wake_range range = { .len = 0 };
++
++		spin_lock_irq(&ctx->fault_pending_wqh.lock);
++		__wake_up_locked_key(&ctx->fault_pending_wqh, TASK_NORMAL,
++				     &range);
++		__wake_up(&ctx->fault_wqh, TASK_NORMAL, 1, &range);
++		spin_unlock_irq(&ctx->fault_pending_wqh.lock);
++	}
++
++	mmput(mm);
++	return 0;
++}
++
+ static int userfaultfd_continue(struct userfaultfd_ctx *ctx, unsigned long arg)
+ {
+ 	__s64 ret;
+@@ -4528,29 +4641,7 @@ static int userfaultfd_api(struct userfaultfd_ctx *ctx,
+ 		goto err_out;
+ 
+ 	/* report all available features and ioctls to userland */
+-	uffdio_api.features = UFFD_API_FEATURES;
+-#ifndef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
+-	uffdio_api.features &=
+-		~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM);
+-#endif
+-	if (!pgtable_supports_uffd())
+-		uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
+-
+-	if (!uffd_supports_wp_marker()) {
+-		uffdio_api.features &= ~UFFD_FEATURE_WP_HUGETLBFS_SHMEM;
+-		uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
+-		uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
+-	}
+-	/*
+-	 * RWP needs both PROT_NONE support and the uffd-wp PTE bit. The
+-	 * VM_UFFD_RWP check covers compile-time unavailability; the
+-	 * pgtable_supports_uffd() check covers runtime (e.g. riscv
+-	 * without the SVRSW60T59B extension) where the PTE bit is declared
+-	 * but not actually usable.
+-	 */
+-	if (VM_UFFD_RWP == VM_NONE || !pgtable_supports_uffd())
+-		uffdio_api.features &=
+-			~(UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC);
++	uffdio_api.features = uffd_api_available_features();
+ 
+ 	ret = -EINVAL;
+ 	if (features & ~uffdio_api.features)
+@@ -4620,6 +4711,9 @@ static long userfaultfd_ioctl(struct file *file, unsigned cmd,
+ 	case UFFDIO_RWPROTECT:
+ 		ret = userfaultfd_rwprotect(ctx, arg);
+ 		break;
++	case UFFDIO_SET_MODE:
++		ret = userfaultfd_set_mode(ctx, arg);
++		break;
+ 	}
+ 	return ret;
+ }
+@@ -4647,7 +4741,7 @@ static void userfaultfd_show_fdinfo(struct seq_file *m, struct file *f)
+ 	 *	protocols: aa:... bb:...
+ 	 */
+ 	seq_printf(m, "pending:\t%lu\ntotal:\t%lu\nAPI:\t%Lx:%x:%Lx\n",
+-		   pending, total, UFFD_API, ctx->features,
++		   pending, total, UFFD_API, userfaultfd_features(ctx),
+ 		   UFFD_API_IOCTLS|UFFD_API_RANGE_IOCTLS);
+ }
+ #endif
 -- 
 2.54.0
 
