@@ -1,129 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A5F3AFB13
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB323F5BEF
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093703; cv=none; b=jINR5gToqTUuI5TTuvldD1XP5PTiZH1vI9F53mdhqssXDR71S9LPOo13JHH2u7vsOV0r+CMgWU4jQIoOfJnAeeuZQuH26jCdJ+jyuvUP7CHWDd7iu2w1J8PJHRGKq4wy0KThO6M+257mwZ2g9KAnaX5m3SX1/Oa3MPq68ZxRNr0=
+	t=1780093717; cv=none; b=PsZuTsJllyNTFem2eB7P7WvDnCrSkbpujc2unUbsZw0yvLGRPgsWVhRxs6VqqTGy8Lqmvoz/2dc8cupBRsWhk/akFqBbK4xWMrFe4JBeWN62rjN/KTp2Y8vMUerCDPQF2HupUDEt4frPNZOptqt79IkF1creJSPvaGV6UZFcB/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780093703; c=relaxed/simple;
-	bh=nqcdS+sXtnc/gz7uqezCzT0YUAluusHFQVx7txiLCQk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=A6vTXDyu/QAx9G67HFL93kr2aw1VQFvw5U7zdlmZrGDbszN0kKyuCGgPIJL2tkduc5hy7YZCteqB6S1GLTr0fIomEpAaWRGV/93PBOMxadUEMEZKm2HHFoVP5SBdXfZItdP46g5wQwf/WCN8s7q3tFBQYr1MW+AJ3hI3jV63Dpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E89rYp5L; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780093717; c=relaxed/simple;
+	bh=VbnVXTEYv+JqDUa0Q19zWIbV7AepmZ6eJ3qhtJI8NKI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=K1mT7PkAO43wp38X/FKlsHzeAWVemUKcBBV6UGrIRqNkH2mEyPODJVCD+Hph+EmtvwE9Ix3bGANU8vVFOhuiKLYQqnMvFL+oVcS5S0XuI9FrHvyASaCYT7kS71vU+ZGlq1HFYChEZtz8qS7ihLzI20lcQyl5F1YnkkSXiJxYxD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iVL3nvCS; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E89rYp5L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8D71F00893;
-	Fri, 29 May 2026 22:28:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780093702;
-	bh=Z/EawK8MbqDv7GZqPjJmMR8TwPyQKDW8O5bg2XADX1Y=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=E89rYp5La3kpPcFJtclIuLald43nmZJXy7r67QKh4EJOSSAmkfAAIAQFO5+zzRg2h
-	 aCqNW5qqMbQgSKZaNE7x8ihqHMOuCHFQ1WVxojJbyE4o0k0jktr0KlgRKOm5+pmcrV
-	 ugW++0ak4p8tpX8bbJWhFtUL+hbGu/K+JOU1SMUCJaxoJ2cZnGIUno+S0fCYRV71e7
-	 E82SPTye81PeyrFddtmQYuMi9U7MfE1G09rdqXa7C7g4WGXzNXckxmFSYs53nxB3Li
-	 BctG5fzNuQ2l/i8r83wtk4TmWpC3zHgEppdlPsT/jIWamQyd5Q0ZcX3CqshzlOc4xh
-	 0XcOAOjQ+3W1g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 10/24] KVM: SEV: Use READ_ONCE() when reading
- entries/indices from PSC buffer
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529183549.1104619-11-pbonzini@redhat.com>
-References: <20260529183549.1104619-11-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 22:28:21 +0000
-Message-Id: <20260529222822.5D8D71F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iVL3nvCS"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bd04e4fe3dso118419555ad.3
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:28:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780093716; x=1780698516; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UyvYYju/kOsku7tj1RfdIRz11t6+0rPHfTSkECF0MAQ=;
+        b=iVL3nvCSEezUDisXbRMsZa2U2Y+uihQlbBILe4QnPrVvVOUekxD0WK8cCppc9Zabiv
+         ymltooy9VJv5OOoNdyBQS2E7ZmoDDwyFiTVPgtL2V17oljNj17kKWhSxgssEv2J13Z1h
+         qTJOn0tkKoXtXSAzjBEuHJhvTkKRzb/v7D1DIHJh1n2CEW9v8HT342K/tb40TjVkvLRB
+         lAAo3QhLP9XxTmRTo96Bx2ZA02Vn5QXOiKvl2d9Q1zxQ2Q0Au1V2azIVWV9PxlSDxQMl
+         pwzxVEVjLdcp9nHmfIphFZPJzLgeGikS0iRelsTcTVUB4yvgPWBzwllyNF5AKgCZWgul
+         i/og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780093716; x=1780698516;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UyvYYju/kOsku7tj1RfdIRz11t6+0rPHfTSkECF0MAQ=;
+        b=qDj5EEQ4cz35f1uCecztRfcH1ugS0fpIBOyWm8p524WB9ohEAzWTpL4TFKBe27Txkf
+         LUHXP2ygE6DAP3tquCbky5C/gZFrX0pywcpjQlTx7hXykHAoDBx+6pNtjV5Q4Lnv4FOu
+         AYYywrIrAanQIL828KeIMvhV8e+2WbSpVfAq7y0ALVXBnCeA/CRSc4G+Ahubs43AQTL2
+         S7qER3lhg7N1bVsOkGVaGFE7hcTG1CyOcA556ubhHshqmcqMbuvux6EORmj/W8YG9Mmq
+         AD4KIcFD7TSKe60C89hz/RR/32Yo/9zV0m4PfvHJVvCTw05j+QUSo534iToIOmyOTiIc
+         RKuA==
+X-Forwarded-Encrypted: i=1; AFNElJ/I7hC/7a0S6TRrNQWr5cU2hfhdxJS9nT/+SWV2QBlBBc0tDpuhuLSD6yjpQCG2QHz3WP0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfTvUyadN2zqwH2hiXceToMlkQnw8bfQ2AFKHlGzV2OJffQm4W
+	3b3lm+c/6ld2P7UcCH3DkgP9AdnCJ/8mFZecUXQsKLbyj8HMqoTDxmfG502cmtA1Wp+4KNjDCCc
+	dUOsmAA==
+X-Received: from plgo6.prod.google.com ([2002:a17:902:d4c6:b0:2bd:55dc:a132])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e54c:b0:2ba:4e84:966
+ with SMTP id d9443c01a7336-2bf368ad611mr19077965ad.36.1780093715569; Fri, 29
+ May 2026 15:28:35 -0700 (PDT)
+Date: Fri, 29 May 2026 15:28:34 -0700
+In-Reply-To: <709d9ca6-59bb-4f82-b48a-0aa67a4d6ba2@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260528-sev_snp_fixes-v1-1-d67a08151779@meta.com>
+ <20260528235151.9E59E1F000E9@smtp.kernel.org> <709d9ca6-59bb-4f82-b48a-0aa67a4d6ba2@linux.dev>
+Message-ID: <ahoTEgTSVcEmUMvM@google.com>
+Subject: Re: [PATCH 1/2] KVM: SEV: Do not allow SEV-SNP VMs from intra-host migration
+From: Sean Christopherson <seanjc@google.com>
+To: Atish Patra <atish.patra@linux.dev>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Fri, May 29, 2026, Atish Patra wrote:
+> > Because the mirror's vmsa_features is zero, KVM treats the mirror VM as a
+> > standard SEV-ES VM (since ____sev_snp_guest() will evaluate to false).
+> > 
+> > When vCPUs are created for the mirror VM, KVM allocates standard SEV-ES
+> > VMSAs and fails to perform SNP-specific initialization, such as registering
+> > the VMSA pages in the RMP via SEV_CMD_SNP_LAUNCH_UPDATE.
+> > 
+> > When KVM executes VMRUN for the mirror VM's vCPU, the hardware evaluates an
+> > ASID bound to SNP execution using an invalid, non-RMP-registered VMSA page.
+> > Will this trigger an RMP #NPF (Nested Page Fault) on the host hypervisor,
+> > leading to an unhandled hypervisor crash and denial of service?
+> 
+> Nice catch! I don't think it will lead to hypervisor crash though. As per my
+> understanding, the fault on VMSA page would be sent to user space and just a
+> VM instance will crash which is not that critical.
 
-Pre-existing issues:
-- [High] KVM passes KVM_MAP_GPA_RANGE_PAGE_SZ_2M to userspace for partially=
- completed 2M pages that are being forced to 4K handling.
---
+RMP #PFs on the VMSA will typically crash the host.  In this case, I would
+expect VMRUN to fault, which would trigger the BUG_ON() in kvm_spurious_fault().
+So assuming the "bad" VM can get far enough along to attempt VMRUN, this is
+likely fatal.
 
-commit d195b85e8b040d5bc29811a11645551c672d8a47
-Author: Sean Christopherson <seanjc@google.com>
-
-KVM: SEV: Use READ_ONCE() when reading entries/indices from PSC buffer
-
-This patch uses READ_ONCE() when accessing guest-accessible Page State Chan=
-ge
-buffer entries to protect against TOCTOU vulnerabilities. It skips these
-macros for code paths where KVM exclusively writes without consuming the
-results.
-
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-[ ... ]
-> @@ -3948,7 +3948,7 @@ static int snp_begin_psc(struct vcpu_svm *svm)
-> =20
->  	/* Find the start of the next range which needs processing. */
->  	for (idx =3D idx_start; idx <=3D idx_end; idx++, hdr->cur_entry++) {
-> -		entry_start =3D entries[idx];
-> +		entry_start =3D READ_ONCE(entries[idx]);
-> =20
->  		gfn =3D entry_start.gfn;
->  		huge =3D entry_start.pagesize;
->  		npages =3D huge ? 512 : 1;
-> =20
->  		if (entry_start.cur_page > npages || !IS_ALIGNED(gfn, npages)) {
->  			snp_complete_psc(svm, VMGEXIT_PSC_ERROR_INVALID_ENTRY);
->  			return 1;
->  		}
-> =20
->  		if (entry_start.cur_page) {
->  			/*
->  			 * If this is a partially-completed 2M range, force 4K handling
->  			 * for the remaining pages since they're effectively split at
->  			 * this point. Subsequent code should ensure this doesn't get
->  			 * combined with adjacent PSC entries where 2M handling is still
->  			 * possible.
->  			 */
->  			npages -=3D entry_start.cur_page;
->  			gfn +=3D entry_start.cur_page;
->  			huge =3D false;
->  		}
-
-[Severity: High]
-This is a pre-existing issue, but does this code violate the hypercall ABI =
-by
-using the original entry_start.pagesize when populating the hypercall
-arguments later in the function?
-
-When a 2M Page State Change request is partially completed, the code above
-correctly forces it to be handled as 4K pages by setting huge =3D false and
-adjusting npages and gfn.
-
-However, further down in snp_begin_psc(), the hypercall arguments are
-populated using the unmodified entry_start.pagesize:
-
-arch/x86/kvm/svm/sev.c:snp_begin_psc() {
-    ...
-    vcpu->run->hypercall.args[2] |=3D entry_start.pagesize
-                                    ? KVM_MAP_GPA_RANGE_PAGE_SZ_2M
-                                    : KVM_MAP_GPA_RANGE_PAGE_SZ_4K;
-    ...
-}
-
-Will this cause KVM to pass KVM_MAP_GPA_RANGE_PAGE_SZ_2M to userspace for a
-range that is no longer 2M-aligned and whose size is no longer a multiple of
-512 pages?
-
-Can a guest exploit this by passing a partially-completed 2M page request
-to force userspace into an error state?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529183549.1104=
-619-1-pbonzini@redhat.com?part=3D10
+> Having said that, we should close the gap for such mistakes from VMM side
+> though by rejecting mirroring of sev-snp VMs. I will add a patch and update
+> the migration kselftest as well for sanity checking.
+> 
+> > >   		ret = -EINVAL;
+> > >   		goto out_unlock;
+> > >   	}
