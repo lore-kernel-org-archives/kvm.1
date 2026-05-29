@@ -1,137 +1,148 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BD03F0A95
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:55:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A26E3F39F3;
+	Fri, 29 May 2026 15:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780070127; cv=none; b=qE8/d824kOMOeijFHZA4J6X+pX3vP98hNXgGLW9EbZ3vFxcXEyZRyU+9AZxaL0HrQUsh5sTll+PoGOoGAs1XH29rOz+AxEbrhb4s+SJ2fFImk8RJTiVuAN6LSK9JsGlynU+J1ynYykNrszwElNnWr0g2ZPabj/JjaYD4U6HVX2g=
+	t=1780070187; cv=none; b=uLorFzJsAIS2W9ANJzxIWMIaWnf/yJAt2kiruiBDsT1dYODRdTNyPOKsJx3FDq2q/UPnCeB/YP5SdHFAh+6aSPqWwxrVNZQxeCMFbRHizbuPk14UCpBt1v7f+0gtjmYJ8vZUaP//qRVIY3Ix9yxRlaOh43VwsRDHaOMfIpZnFmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780070127; c=relaxed/simple;
-	bh=MPekpOmVM9cy6pAQtPZmqQ+GI0F1bNOBDLZF9ynrjfQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nxfORqgZl9mGT40LhynX1q9HUt2ijgWOFPilgHIjX6r4sSGrpZcnbPlGnaAB4R3DRRG2CI9W3TxTDRkBeFgVEpwnTEUa/htrXKgqQ1jz+62eULhD2ZpGkCinsXfFdz/1kc5h2Yybk4ITnBig16w7NC1E0DGsZQc1qZlCMs6j7rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZMCY2JC7; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780070187; c=relaxed/simple;
+	bh=V9dDmcTZrFbO1AFx9bd9anPVnixWvwu/8ZEoTVMf4M8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=APydJZ07DiJzDAHKT0MpW5Z9Zfe07uTGcB75qkiSusfW64Fcqbm3muwArtfyrTu/M996yRkPsC8nXwEfpeFWBG201H2znZ9dVpGnU37lRc2ve2/jM6jFapDQ1fX6yHV8zhG3cKiu3W9g4L+aRtWhW9s4LSqPMx5/Yj4UM2PWacs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FHWP+mAI; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZMCY2JC7"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf11699875so19789665ad.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 08:55:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780070125; x=1780674925; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yjHgfxwvXMtVPpXnGJo4Cf3+yZWR0DtQaShqMdAKP/s=;
-        b=ZMCY2JC7WQBEDA7DfF8WN/yLX35ghqx/1NYrgydrF/EwKTKGYMgHwBE8jwr+9tkeL8
-         /P1kbY0iuer5Wt0lgEk4DN3YdDNHg6yudV6GjKSBXEOFNsQIdd9rvpy79Xtin5NYox/B
-         Y8t8ccm0S01HHNKP4FsmmP/1ZbnZ992z1C0hMWrUDCZOMlbhYpPrREbUbjz6CIh9S5s2
-         4P2F3tiTUqfEC7SCHsm1TT+sJl3wz5I/MXnots2wwtIXZF66PJZ2eVD+Lg3LhmTNEziH
-         EMz783WsAxUaybLiFc3YBd0fy7L76DMBTsq52iVmXpu8HuikFHi+PfpnB6nzGOwiP7O3
-         MwRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780070125; x=1780674925;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yjHgfxwvXMtVPpXnGJo4Cf3+yZWR0DtQaShqMdAKP/s=;
-        b=XbkIUsJo+6ThFlKZfKooJE0UBqS/SKxg4TAPUbRLflxWesIZaRPefGnM0+MzR3dity
-         ggjk6DSNdoBIludPb5HQ7XKl0F7YnLg7J8d8DqdJMRU8WQV4ygbjBd8TY3r9dED67NhV
-         8NZjeRyPNRoI7yIYjlYTe1sbcPgDOpFwx+Ich0UNKlIZfoA9VI7yDjkzkR09ZvgaaSbC
-         991zjpB/p7eVldCPpRK37LOhEE0NtWRY6R/LWGheY/aQ4lwGrcm9QCPVq1RdBZlVJPKC
-         OGSFdxwTOpuh8rpSbbDEx3u74JTsaadRXVfcmDd4J/joI3zwnhrLoyGOAYfe2rYHtw0l
-         xlEQ==
-X-Gm-Message-State: AOJu0Yyird2TLDNsM8KpbyBcT6sa4TUqJQGO5XMrf6EcBwl6wOM1gmya
-	YYLdYvchgXlI7utltMF5VjphSChPraEo4VXiMx6Lg98lNvZ+bjCdoUuz/DVA04hmysdKhsZpVsQ
-	tsTv6VA==
-X-Received: from plem12.prod.google.com ([2002:a17:902:e40c:b0:2bc:db94:6f34])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ecc5:b0:2bf:1aa9:6c8a
- with SMTP id d9443c01a7336-2bf204aa477mr37983225ad.12.1780070124770; Fri, 29
- May 2026 08:55:24 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 08:55:23 -0700
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FHWP+mAI"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64TFGVBL2418177;
+	Fri, 29 May 2026 15:51:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=r8qv0I8vvxpjvrNnb
+	+Rd4VaSRAFc/2VGBv0YYFUfb6Q=; b=FHWP+mAI+48JECvH3V5WAE/KTCF+w87d/
+	rRoWG7cFfMz5S9kdy/cECpUjzZefBDlnJzLwmSMiy4wuIsdzuOjes3fAhMLI4SP7
+	ledii2FrEBj0HNmiIY9r5tYbBYq8RFs6qP8jCl9bCrIrNR3o9WZMDmtbZRumtoZN
+	EyG+Cv0LMcz4wc4ky5hMtVmmNCropBKK3Y5oNeLQ+AWdNfyEq10tkJHiJF4RCuus
+	SdKi6/pCYKPXtzodw8uFg9DEv9l98AA/ZcyNsIZUUUsoxzrGYFRMu8JGwFHiObL3
+	tPWGC/x2s+xjMJvjMkTsfS85yJpSg5LSB5Kt1qyD4Zjye6nR6rR6w==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee884ve37-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 May 2026 15:51:04 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64TFd76Y024390;
+	Fri, 29 May 2026 15:51:03 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4edjrbgfsq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 May 2026 15:51:03 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64TFov3g48431392
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 29 May 2026 15:50:57 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 72FC82004F;
+	Fri, 29 May 2026 15:50:57 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2AC442004B;
+	Fri, 29 May 2026 15:50:57 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 29 May 2026 15:50:57 +0000 (GMT)
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Friedrich Welter <fritz@linux.ibm.com>,
+        Gautam Gala <ggala@linux.ibm.com>,
+        Hariharan Mari <hari55@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
+        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
+        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+        Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH v3 18/27] KVM: s390: Prepare kvm-s390 for a second kvm module
+Date: Fri, 29 May 2026 17:50:32 +0200
+Message-ID: <20260529155050.2902245-19-seiden@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260529155050.2902245-1-seiden@linux.ibm.com>
+References: <20260529155050.2902245-1-seiden@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529155523.729502-1-seanjc@google.com>
-Subject: [GIT PULL] KVM: x86: Fix for 7.1-rcN
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=L4MtheT8 c=1 sm=1 tr=0 ts=6a19b5e9 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=D2QCReHFeZxoMWIWDosA:9
+X-Proofpoint-ORIG-GUID: LXkxrC-Rn5pJk1pTcJtkgP9RCroIABMz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDE1NiBTYWx0ZWRfX3iV7Ki2qo8es
+ 8WxpfGchgtRgVSK20MRwvoVkbH3MJ/fdha+N8ezkfrbj6ezkPMpovuVFC1V/3f7jd26eBk3X+sZ
+ K6yFu/wf4zxic6zC9m1zwsfFy4EYXjt35wOQH0nzWTsMtce5HgFQgTpWEU1QHuYzsuzUHIGGO4y
+ DY4UbC20W+AF0a34S86h0ZWYkWo/pmYQsN6GGmvXM6gnGrrANjy7fDOQzdAWds90cDnFmCCI0k2
+ DvcBbq+ScLCvC8WawDxY490yCzzyrqR33fGQGbld7yD8WThI7W0Oxxm7NP/P2MdFHgOqNLhhcXD
+ yySVxafk4hVuFWwVdppfqu2HUplaUxWs8Jz+yc/w0b4xlOtw3swYNY7q6r8xx15VjG4CGaFh8Na
+ 7hAgWrl4E2LHo8GVmeW9kC/0qxvyE+nZKOASfG+npiWUdkDQXM5Fh77A80M5VMkNCTSo+qnqLOs
+ gMHOVNru/hyXNt7lESw==
+X-Proofpoint-GUID: LXkxrC-Rn5pJk1pTcJtkgP9RCroIABMz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-29_04,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ bulkscore=0 impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605290156
 
-Except for the execinfo.h non-glibc selftest change, all of these are fixes for
-bugs that were introduced in recent kernels (treating enabling x2AVIC by
-default as the "introduction" of the TLB bug).
+The second KVM module will have a different Kconfig set.
+When both modules are compiled the Kconfig sets get merged and
+the native s390 KVM needs to implement functionality required by
+the respective config options. Ensure that s390-KVM will still compile.
 
-The following changes since commit 2d5d3fc593c9b7e41bee86175d7b9e11f470072e:
+Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+---
+ arch/s390/kvm/s390/s390.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-  KVM: VMX: introduce module parameter to disable CET (2026-05-13 15:38:22 +0200)
+diff --git a/arch/s390/kvm/s390/s390.c b/arch/s390/kvm/s390/s390.c
+index c9dff21f823e..e9352864a492 100644
+--- a/arch/s390/kvm/s390/s390.c
++++ b/arch/s390/kvm/s390/s390.c
+@@ -5683,6 +5683,14 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+ 	return gmap_unmap_gfn_range(kvm->arch.gmap, range->slot, range->start, range->end);
+ }
+ 
++#ifdef CONFIG_HAVE_KVM_VCPU_RUN_PID_CHANGE
++/* Make s390 compile if arm64-on-s390 is selected */
++int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
++{
++	return 0;
++}
++#endif /* CONFIG_HAVE_KVM_VCPU_RUN_PID_CHANGE */
++
+ static inline unsigned long nonhyp_mask(int i)
+ {
+ 	unsigned int nonhyp_fai = (sclp.hmfai << i * 2) >> 30;
+-- 
+2.53.0
 
-are available in the Git repository at:
-
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-fixes-7.1-rc6
-
-for you to fetch changes up to a9e18aa3263f356edae305e29830e5fe63d8597a:
-
-  KVM: SVM: Flush the current TLB when transitioning from xAVIC => x2AVIC (2026-05-21 14:24:57 -0700)
-
-----------------------------------------------------------------
-KVM x86 fixes for 7.1-rcN
-
- - Include the kernel's linux/mman.h in KVM selftests to ensure MADV_COLLAPSE
-   is defined, as older libc versions may not provide it.
-
- - Include execinfo.h if and only if KVM selftests are building against glibc,
-   and provide a test_dump_stack() for non-glibc builds.
-
- - Fudge around an RCU splat in the emegerncy reboot code that is technically
-   a legitimate flaw, but in practice is a non-issue and fixing the flaw, e.g.
-   by adding locking, would incur meaningful risk, i.e. do more harm than good.
-
- - Rate-limit global clock updates once again (but without delayed work), as
-   KVM was subtly relying on the old rate-limiting for NPT correction to guard
-   against "update storms" when running without a master clock on systems with
-   overcommitted CPUs.
-
- - Fix a brown paper bag goof where KVM checked if ERAPS is "dirty" instead of
-   marking it dirty when emulating INVPCID.
-
- - Flush the TLB when transitioning from xAVIC => x2AVIC to ensure the CPU TLB
-   doesn't contain AVIC-tagged entries for the APIC base GPA.
-
-----------------------------------------------------------------
-Emily Ehlert (1):
-      KVM: x86: Fix ERAPS RAP clear on INVPCID single-context invalidation
-
-Hisam Mehboob (1):
-      KVM: selftests: Guard execinfo.h inclusion for non-glibc builds
-
-Lei Chen (1):
-      KVM: x86: Rate-limit global clock updates on vCPU load
-
-Mikhail Gavrilov (1):
-      x86/virt: Silence RCU lockdep splat in emergency virt callback path
-
-Sean Christopherson (2):
-      KVM: selftests: Include sys/mman.h *and* linux/mman.h, via kvm_syscalls.h
-      KVM: SVM: Flush the current TLB when transitioning from xAVIC => x2AVIC
-
- arch/x86/include/asm/kvm_host.h                    |  1 +
- arch/x86/kvm/svm/avic.c                            | 35 ++++++++++++++++++----
- arch/x86/kvm/x86.c                                 | 13 ++++++--
- arch/x86/virt/hw.c                                 | 15 +++++++++-
- .../selftests/kvm/access_tracking_perf_test.c      |  2 +-
- tools/testing/selftests/kvm/guest_memfd_test.c     |  2 +-
- tools/testing/selftests/kvm/include/kvm_syscalls.h | 10 +++++++
- tools/testing/selftests/kvm/include/test_util.h    |  2 +-
- tools/testing/selftests/kvm/lib/assert.c           |  8 ++++-
- tools/testing/selftests/kvm/lib/kvm_util.c         |  2 +-
- tools/testing/selftests/kvm/memslot_perf_test.c    |  2 +-
- .../selftests/kvm/s390/shared_zeropage_test.c      |  3 +-
- tools/testing/selftests/kvm/s390/tprot.c           |  2 +-
- .../testing/selftests/kvm/set_memory_region_test.c |  2 +-
- 14 files changed, 79 insertions(+), 20 deletions(-)
