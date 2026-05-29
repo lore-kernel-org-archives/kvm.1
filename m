@@ -1,83 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB06429825
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F942428464
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780079777; cv=none; b=m4deE1R8dk4eFi/xAE7ZJy/VsbB6tWTevDA23c2H5jXs7+OYnWhSSqYqBCo+izsdbZF5FTwhxhv27btC2fA0uTdvxYyrdhCiunVf4yZVH/nFdWEIyq8/45gNM5g6z8/VI16WcMoqnlKH1b+rDAh0gx0jBQNmEy125bFMkFojZbY=
+	t=1780079780; cv=none; b=IHdMNJFQ3UwJ7c4SKg8BQq1B7pwPNoOYX1gYuhFqdKs+l63YAKpsIdK0sGqqTDKIovVXGJAqKuTdbx2SB9sJqBaRGdBYCtjtCV9mxb356Yb/0XfHb3ogele8mrStsQgKCHpJU4MaOZi35LwLUPs4Xlgsg/Oty1rI+5ttk0XqYuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780079777; c=relaxed/simple;
-	bh=tQ9+tE+DbULo1I89vDeIy9JMoLMUcQfgtStrqd9V650=;
+	s=arc-20240116; t=1780079780; c=relaxed/simple;
+	bh=JLl8YjbHuCGzOk/HWi0SHb1/V1UT/hbE1I30zoZy6kU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=adpXf+4y5Qj6DsxsHNYHh+riVEEG5t1fIPpkflD4Una6HdbsYSphpZzIguSOLfJhYF9MG6e4nRXmQliw1+B4MrSjh9JwXAi2yFuMjlLnwb8s4M6bbrI67eJ5QG8/9MgLxQ1saYHRI34+dci7sAFLcsEjlzE5K29B8cNDG5sboRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Upz+3qUr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gI3FInmS; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=QspBqCohL9cNZWV1a2qNZWtyNx1dTCjk3O7GkAj0WSYW8zBFsMDHzVSA/EP4O/H34oBJR3cIF0plqwVD4vrWeDzofGJllgv2sL2CEYKxEKjfPS1PC6URYSEzaq34mU42ERod653yzKPp/757Ke7i8uUM/CTVyt5rAEenZE7vIZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NbUhqruY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=D1JckBS2; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Upz+3qUr";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gI3FInmS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NbUhqruY";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="D1JckBS2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780079773;
+	s=mimecast20190719; t=1780079768;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R0u/shZrwVj4PqbRgkkyXanK2+FAoAVtVPTTfQ581C8=;
-	b=Upz+3qUru6L6HTlgRck3piMjRoIw1Kn97ZuA/DXiqVHvqYi25HarQlBQegJNL1OKH0031M
-	pJWqmlGU/kXkGvRtJ+40Reb/yz/ZXnRigV9jfucPj62tFuKprh2Dof2B97nrs7Angi3/xR
-	2h1TSwMEQtuE6PIWzVqet9J+Zxv8OY0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=pyh3yBei2dvCuDBWuVl4/7h8CqM5bAYkcfDKwxMNYFY=;
+	b=NbUhqruYtpGvrNetuNQXdHfkL/pn4db9SPWe2Nix+Amgg4P56494TfaYkZyoXNR+Q0ZQw3
+	REBbXSpAD7lZQh+7rb3GfnSwNWttxfuNojyHNGMBAY2AEXz7EFBhwp+wF2b8ofwOxpeyhC
+	HhX21cDLLlJps6e2DuShzLKj2SFm3wE=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-_KTs_nNyOBCdCvgN0K0YAg-1; Fri, 29 May 2026 14:36:11 -0400
-X-MC-Unique: _KTs_nNyOBCdCvgN0K0YAg-1
-X-Mimecast-MFC-AGG-ID: _KTs_nNyOBCdCvgN0K0YAg_1780079771
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45ef5e38a18so287220f8f.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 11:36:11 -0700 (PDT)
+ us-mta-556-9oAcKWV_M82X0NOAd__hCg-1; Fri, 29 May 2026 14:36:04 -0400
+X-MC-Unique: 9oAcKWV_M82X0NOAd__hCg-1
+X-Mimecast-MFC-AGG-ID: 9oAcKWV_M82X0NOAd__hCg_1780079763
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48fe44ce385so106619385e9.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 11:36:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780079770; x=1780684570; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1780079763; x=1780684563; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=R0u/shZrwVj4PqbRgkkyXanK2+FAoAVtVPTTfQ581C8=;
-        b=gI3FInmSyyh0mZ5QbmzJOwcWEdDuLaNUuOpCUGVsiL4xWLx11BctQ0sHc4aFEDu1s8
-         KclzuBNatRgS/y3UnQOwGgWmjslMhI62eBrw0tl0XYQWOzCSGa8k9dsyvcYwN2yHN+GN
-         uNE2xfmeX39T2glce1gMUELLs0DbrDkinzFtfRq0KhWELDaUA5caVmqNBcHh9NE8jf0l
-         a+KfD0C8Ksxpfyf882jmXRH+7+cgdQyDud7XoMhnYgrRsRPjOd/nPWJALWIuykhBsfNh
-         Tx38lru3CssFg6RCNmqaPXeZB/1awxBcQB93zmFMEo4ZP/yar9Z7sylOi/JfRt5IPLFt
-         hg4w==
+        bh=pyh3yBei2dvCuDBWuVl4/7h8CqM5bAYkcfDKwxMNYFY=;
+        b=D1JckBS2XzRV+n15PHnq310NJ2gag4jWWhD9JkmsOOjMLSSt63lHDytzyBCH93LBCY
+         ol8oeq5CsraepLtFoKUV8fFGSSzkaleJUDCQJ+7jiLDE7+7KTyOmLSn9yrEC8n1dzK6+
+         G8yYC1YeemsL4RqkQdSfzsNarpFJUC8cTNM8tO6rKj8Qxkd1jXy+8wtadnIbCqq8K/SU
+         MqdBDg5oYdMAhFKgzPsEYSEVY30O4SDyB26vNQba4N+MAUDBZKLHslkA2L1mMVGINgbK
+         sjyPYVfWaUefePg30OeKADeJEut15bpu1to7dk0YHcZ40UNNvYLb0498/VCWtTUEz1tu
+         FLZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780079770; x=1780684570;
+        d=1e100.net; s=20251104; t=1780079763; x=1780684563;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=R0u/shZrwVj4PqbRgkkyXanK2+FAoAVtVPTTfQ581C8=;
-        b=T7eOGXoKimCxGRCxm5wedtBgPp52l7RnmHtnU/ps2ZDyjWZFFEclZvsu8n2rZ9DrlZ
-         6maMgdXWbe1mSP9mdGJ7eAiw3gWo3Y1RVfAC8QeWtNMFJEfjEteSdR3k/N5Hh/ssYYpc
-         cXflJXPUJSNFHZXJ1XekHxfE9iS9wMgvyVCCccv45AByhcOVoDjGwW1PuvnPJnCUwCGY
-         QD4cROKIXKlXCtmungl6mNYO975yv5hEssPtnKsFANyXT9ifKfVqMUAd9UNun/WilTZM
-         UdYPJP7TW+e7qzUoTUhqg/6dS15/h60EcvWv4HLf+bkdySXYTL7bF9m6BPyYdfIBjyYm
-         nJNQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9IU14v384EjIQBjGashmch/dd9BimOj9KMYobD4mKaDkfA2zys8bRL1upAjY9ml5SUq3A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3ovseY/hQprguIMFZbNv53wfXc0XN53pfkDup0AFmcuyBl8AX
-	8kLWDbUHOEB7xAf4O/WKIK0iIV49cny2n5lFI8dS+xtx5R7g/93tXm0NKDXLnrRpJ7FbFHaecUw
-	Tu2tSt4kZOgaxW0HmX8pO7XUOwvMqVaa3wfsGsu3ef0ttIhKExMOw5w==
-X-Gm-Gg: Acq92OGhHJmE84RQH875cVwvwpePR+jMfYCMQTpEd65yldh/uMF97qt8Rf1V25A8M24
-	dkZ4pv4wL/xi7dp9c/p3K/eAdl7mbzynT8SmRN81iS7D/ZVS409d6cUuuFHbvPW9K3664c0d2uy
-	1Fx2H6JhEJIzvOhk/i/e6oy5YAE7J/CzUPH7/SqksQFEZNd4zE+Cls/02yD7DQDuAp/KTV0Iqqm
-	T7d70Z5f5Z4wLcBm7xvLF/QtP6LHDwd0nClmQsv5WhOjnTsysxujLQ5BjDFK0qib384gIth56Ad
-	WnUrWFlAIKIMbfO2AWGf6BAe5GrFU2rbxNEog7jngHyoYFzNtLKkRNwpupCm7oOvWsy7IPm6sfF
-	L8pbx/wJgebmg099oVX/HSJw4ckf3ouhiP0Um6G2UAKadlfY8TrB9g7qgFeLIYBd3tSgMjEUucw
-	QI5UugGFgXMeLmFp2gA4b43sFSSYyZWsAPx6eQzg==
-X-Received: by 2002:a5d:698b:0:b0:441:1e1e:a050 with SMTP id ffacd0b85a97d-45ef6b3e21cmr1332775f8f.16.1780079770582;
-        Fri, 29 May 2026 11:36:10 -0700 (PDT)
-X-Received: by 2002:a5d:698b:0:b0:441:1e1e:a050 with SMTP id ffacd0b85a97d-45ef6b3e21cmr1332738f8f.16.1780079770148;
-        Fri, 29 May 2026 11:36:10 -0700 (PDT)
+        bh=pyh3yBei2dvCuDBWuVl4/7h8CqM5bAYkcfDKwxMNYFY=;
+        b=QHP+IF/ufcBa3np9JZkQ8skHv1NG5kVILbFcx9N0kC+Twxnu7LvE5dwIFCP+rwwQ6D
+         w1PRGw8acAagYWHS3AcHTVnxuKSMuQ2E+NbHTfqJtKZ3GLSatlgaWq4lT7zdmFNoJhOQ
+         aMqAFB0vjz7YChqmBj3RWG/GLgg8jKV6y+xU4+iSFBOhYhglaHJ5zjKk9UzuscnXiQds
+         Jy2U4BWRFZFwp/Ssyj4FbPzPnKdmsH6q3oMTCNrPz+hWujkGUuCcJXPCuQ69Hz6U2Jad
+         2M2gkm+Sv1l6u9Vh5PlYMrrx/hKa1kGduW0dsYTr6m9trWWlhWF52Kvwrsn8hjPUJrZB
+         NyoA==
+X-Forwarded-Encrypted: i=1; AFNElJ/0NtP9rD8rl7CBKCwcUpWZBB6kk8vZ7pJui22qhg6d1O0GMjhuxEbSvF4fhovdEyWbVUI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvqLl82T2WXlYPBpzxUp2wHbxUIyRZRQHPFOI3Xkmn0JIAO20Y
+	dP2Cjg36p5aJHzdQjPNEs9zOpbChshNLoG5biRZSw0ZG9DeHRpmXZfLykWdYw01WVWWXBq8UOAG
+	jd9+P+TrMxj/ymDyPArZIS8GOE4y6SB+5j8eaHsf/5AtncO4IyM/mZA==
+X-Gm-Gg: Acq92OFSokgGXU1mpDLZ+mxkV9jmztJD6FZ/cdhgkxLoazN5QNFTlKyyFcxcf0J/s3n
+	NkP60laNypz6rHleCA/7AUkl7i+ddd4AcyurMAIXpeBTsHTqcdbcil+r4dKsk1epZpHKeO9Ae2U
+	UGGefgicW0eq0eOMIsqEsVRoKY0Ra9mVTcIjR6VK9u3o57vZ2Uq9DQaA/51m+uT0beZhhj4sZCe
+	wcqqlYNl+bZMnPDIGQgt5Ahf+7S4tRi66YgyGQ43jU6McPjXByxUMpUFG8GUlsvTQzMGM7yQv+P
+	yn2Bj0eWAPXaGH3TNFxQKBj+egM3nTTqO9+8gLSi8QZRuSNvtvvqTxSrUQRqtyAZ8NuOfMiWp6k
+	71VhHKhh0w7bupWGQBj/wOdIaKN3JVRTlVyg4Crg5SwlSDC8oxq5GkIm2SDM39VyyAg9Jstr1Je
+	l0diCautgUzk/2QR9tWuOan4WJhqxvi5/pbJ8AoA==
+X-Received: by 2002:a05:600c:314e:b0:48f:e518:d110 with SMTP id 5b1f17b1804b1-490a2968857mr11860015e9.32.1780079763477;
+        Fri, 29 May 2026 11:36:03 -0700 (PDT)
+X-Received: by 2002:a05:600c:314e:b0:48f:e518:d110 with SMTP id 5b1f17b1804b1-490a2968857mr11859665e9.32.1780079763049;
+        Fri, 29 May 2026 11:36:03 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.251.208])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34bcc30sm5367936f8f.12.2026.05.29.11.36.08
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909d6f35f8sm49675745e9.13.2026.05.29.11.36.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 11:36:08 -0700 (PDT)
+        Fri, 29 May 2026 11:36:01 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -85,9 +85,9 @@ Cc: seanjc@google.com,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Michael Roth <michael.roth@amd.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 08/24] KVM: SEV: Don't explicitly pass PSC buffer to snp_begin_psc()
-Date: Fri, 29 May 2026 20:35:33 +0200
-Message-ID: <20260529183549.1104619-9-pbonzini@redhat.com>
+Subject: [PATCH 05/24] KVM: SEV: Use the size of the PSC header as the minimum size for PSC requests
+Date: Fri, 29 May 2026 20:35:30 +0200
+Message-ID: <20260529183549.1104619-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260529183549.1104619-1-pbonzini@redhat.com>
 References: <20260529183549.1104619-1-pbonzini@redhat.com>
@@ -101,68 +101,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Christopherson <seanjc@google.com>
 
-Stop explicitly passing the PSC buffer to snp_begin_psc(): it *must*
-be the scratch area.  This will allow fixing a variety of bugs without
-further complicating the code.
+When handling a Page State Change (PSC) #VMGEXIT use the size of the PSC
+header as the minimum size for the scratch area.  Per the GHCB spec, PSC
+requests do NOT provide the length, i.e. using control->exit_info_2 for the
+length is completely made up behavior.  The existing code "works", e.g.
+even though Linux-as-a-guest always passes '0', because KVM doesn't do
+anything with the length when the request is in the GHCB's shared buffer.
 
-No functional change intended.
+Use the header as the min length.  Once the header is retrieved, KVM can
+use the specified indices to compute the full size of the request.
 
+Fixes: 9b54e248d264 ("KVM: SEV: Add support to handle Page State Change VMGEXIT")
 Cc: stable@vger.kernel.org
 Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 Reviewed-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-9-seanjc@google.com>
+Message-ID: <20260501202250.2115252-6-seanjc@google.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/svm/sev.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/x86/kvm/svm/sev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index a3e85348ace9..8577451b82b2 100644
+index 52703c954856..cbb3040e0778 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -3841,7 +3841,7 @@ struct psc_buffer {
- 	struct psc_entry entries[];
- } __packed;
- 
--static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc);
-+static int snp_begin_psc(struct vcpu_svm *svm);
- 
- static void snp_complete_psc(struct vcpu_svm *svm, u64 psc_ret)
- {
-@@ -3883,7 +3883,6 @@ static void __snp_complete_one_psc(struct vcpu_svm *svm)
- static int snp_complete_one_psc(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
--	struct psc_buffer *psc = svm->sev_es.ghcb_sa;
- 
- 	if (vcpu->run->hypercall.ret) {
- 		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_GENERIC);
-@@ -3893,11 +3892,13 @@ static int snp_complete_one_psc(struct kvm_vcpu *vcpu)
- 	__snp_complete_one_psc(svm);
- 
- 	/* Handle the next range (if any). */
--	return snp_begin_psc(svm, psc);
-+	return snp_begin_psc(svm);
- }
- 
--static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc)
-+static int snp_begin_psc(struct vcpu_svm *svm)
- {
-+	struct vcpu_sev_es_state *sev_es = &svm->sev_es;
-+	struct psc_buffer *psc = sev_es->ghcb_sa;
- 	struct psc_entry *entries = psc->entries;
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
- 	struct psc_hdr *hdr = &psc->hdr;
-@@ -4567,7 +4568,7 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+@@ -4559,7 +4559,7 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 		vcpu->run->system_event.data[0] = control->ghcb_gpa;
+ 		break;
+ 	case SVM_VMGEXIT_PSC:
+-		ret = setup_vmgexit_scratch(svm, true, control->exit_info_2);
++		ret = setup_vmgexit_scratch(svm, true, sizeof(struct psc_hdr));
  		if (ret)
  			break;
  
--		ret = snp_begin_psc(svm, svm->sev_es.ghcb_sa);
-+		ret = snp_begin_psc(svm);
- 		break;
- 	case SVM_VMGEXIT_AP_CREATION:
- 		ret = sev_snp_ap_creation(svm);
 -- 
 2.54.0
 
