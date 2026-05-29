@@ -1,128 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail3-165.sinamail.sina.com.cn (mail3-165.sinamail.sina.com.cn [202.108.3.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25D6327C18
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 23:21:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2F829D26B
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 23:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780096876; cv=none; b=tTNHAHWO9lUJBVoPgxD7mFHA/02nFbj1mYNEgawl09+vWvhWm19m3pGdhvs2MTJ90g/K/dcDVuhUeq9i5PHB5X0Vd9O581Dqsnui9TIjFD1EgGs/isMZF9v0YfIHZbU5u93s2NiPcWWixz1+N6Dpe4pxeV4Z+hBmvmkSgJAtXDk=
+	t=1780097312; cv=none; b=NPGsrq2c0nOLLDsaAwowFsrLRwnjtlhFLPSlviCass6L2Ts9XDINIOiHoGlqVORtvXAx+owvEp1ZR/ZHTwV9qNARjwYZV1k5Bhz2e89lmwdALunggtl9IC2zFzsX+k/Az5Mx1FnwL0TLlx39jKLj4oALfvMUMoS9pOl8he5NoQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780096876; c=relaxed/simple;
-	bh=QG7cznZ0AjZjBno/rgpRPnZxy/zYLa4V/UispCvCWyQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=AcvyWnm4Sltw1VpP98S2btVnCBfTT3uhddwWd1hpw6wW4/BbOQDzNkbbuVa/2qs+b7OP42/bQi8YeFr8PEq7C/hGUjP+jY/fiUwUg2jph7L74qXw6Y9GhVqszx2LCJezvpxXOPWh/Sz4xJ9UBVp3XX4QeWlpwT+ApVRYu7c/rjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ayDsuljd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780097312; c=relaxed/simple;
+	bh=Rl+W9skjklZSKAy2nJnxKCrdbEChQn6otMV1lFgvbck=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EJ1ckhvyPjnIPPjGulw92vaw+7/kzDycuAcMPgiuH3x4C77jOTlGyv4J00GDRZ6N75o8ctvE+FAZIrNml0b1Cj01pWKDQDXDIxm07+eGjfHGY4Yz7LsVvuCv8xBkd0V3bWsHNN57QpQvfvedCJx4tHKo1phDBI8Gg/wA89+Kj/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=U2ismIyY; arc=none smtp.client-ip=202.108.3.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ayDsuljd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D7A1F00893;
-	Fri, 29 May 2026 23:21:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780096875;
-	bh=LvykK717vNRykOTvnIlgBuDMoCLenZtCWZfG5KeysxI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ayDsuljdLhpz4QFQ7ze54+GXY0CYBdazdIq37JTdWy961inuI5jQG6G5bQDRNbYyW
-	 ZIJgElEiK0YMGzf9yVKttaASqSBogwXLpFxKPBWXkv+0NfC4Rupjg8GPUjLyDA6rlw
-	 mtfLNXX+QT0dHSz/SqFjbMTCykyBnVUL2JO846Kee5qUEl9+0S0wTglvoOEfZF2TBe
-	 1PLV/twbhHd7z8DcePxSoLJECRc+0seYkUOspFGR1i2T8hXtw9tNytVrOEiFlvZvpL
-	 3hrNMgSbWW/r6LULd0wAwfuFbb06DEe1pWKaz0l1F436C1/KJ/JNMT9hr29K05aCt5
-	 tmlc82YbahLHw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 11/24] KVM: SEV: Make it more obvious when KVM is
- writing back the current PSC index
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529183549.1104619-12-pbonzini@redhat.com>
-References: <20260529183549.1104619-12-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 23:21:14 +0000
-Message-Id: <20260529232114.F1D7A1F00893@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="U2ismIyY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1780097309;
+	bh=n5sSodDIv/OV6YYRYNNj3koRSJ2lm8111tQ+HkU1Mo4=;
+	h=From:Subject:Date:Message-ID;
+	b=U2ismIyYzqhfC0n40BsN+57Tr5MTAvAybk0zVB7tlA4pBK6P24CjOW6oMif+Mrui/
+	 qeb6trfae022GIV8UPVaJbtA939PflNtcyuOTi3eM7wEYFNUjqenFeFRcXrx05Y8QI
+	 aykzXOG/2dznvhSymppjvbGZToUHbcE9R6KhH+1A=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.62.144])
+	by sina.com (10.54.253.33) with ESMTP
+	id 6A1A211500007336; Fri, 30 May 2026 07:28:23 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=hdanton@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=hdanton@sina.com
+X-SMAIL-MID: 8669136685212
+X-SMAIL-UIID: 6002447360684DBD866C4BDAC9C55CD2-20260530-072823-1
+From: Hillf Danton <hdanton@sina.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Waiman Long <longman@redhat.com>,
+	Boqun Feng <boqun@kernel.org>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
+	Carsten Stollmaier <stollmc@amazon.com>
+Subject: Re: [PATCH v2 02/20] KVM: x86/xen: Use read_trylock() for GPC locks in hardirq/atomic paths
+Date: Sat, 30 May 2026 07:28:06 +0800
+Message-ID: <20260529232812.1254-1-hdanton@sina.com>
+In-Reply-To: <20260529165114.748639-3-seanjc@google.com>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Fri, 29 May 2026 09:50:56 -0700 Sean Christopherson wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> kvm_xen_set_evtchn_fast() is called from hardirq context (timer
+> callback, kvm_arch_set_irq_inatomic()). On PREEMPT_RT, rwlock_t is a
+> sleeping lock, so read_lock_irqsave() cannot be used in this context.
+> 
+> Switch to read_trylock() and return -EWOULDBLOCK on contention, which is
+> the designed fallback — there is always a slow path for the case where
+> the GPC is invalid and needs to be refreshed.
+> 
+> Reported-by: syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=208f7f3e5f59c11aeb90
+> Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/kvm/xen.c | 32 +++++++++++++++++++++++---------
+>  1 file changed, 23 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> index 91fd3673c09a..9bdb8e3cad58 100644
+> --- a/arch/x86/kvm/xen.c
+> +++ b/arch/x86/kvm/xen.c
+> @@ -697,6 +697,7 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+>  int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
+>  {
+>  	struct gfn_to_pfn_cache *gpc = &v->arch.xen.vcpu_info_cache;
+> +	bool atomic = in_atomic() || !task_is_running(current);
+>  	unsigned long flags;
+>  	u8 rc = 0;
+>  
+> @@ -713,7 +714,15 @@ int __kvm_xen_has_interrupt(struct kvm_vcpu *v)
+>  	BUILD_BUG_ON(sizeof(rc) !=
+>  		     sizeof_field(struct compat_vcpu_info, evtchn_upcall_pending));
+>  
+> -	read_lock_irqsave(&gpc->lock, flags);
+> +	if (atomic) {
+> +		local_irq_save(flags);
+> +		if (!read_trylock(&gpc->lock)) {
+> +			local_irq_restore(flags);
+> +			return 1;
+> +		}
+> +	} else {
+> +		read_lock_irqsave(&gpc->lock, flags);
+> +	}
+>  	while (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
+>  		read_unlock_irqrestore(&gpc->lock, flags);
+>  
+I suspect this works given
 
-Pre-existing issues:
-- [High] A malicious guest can cause an infinite kernel loop and a soft loc=
-kup by concurrently modifying the GHCB scratch area during unsupported PSC =
-operations.
---
-
-commit 7f37f8948c706d884d14a7c69279c900524daced
-Author: Sean Christopherson <seanjc@google.com>
-
-KVM: SEV: Make it more obvious when KVM is writing back the current PSC ind=
-ex
-
-This commit moves the guest-visible "cur_entry" index increment outside the
-inner for-loop. It also adds a comment to clarify which code modifies trust=
-ed
-versus guest-accessible data.
-
-Message-ID: <20260501202250.2115252-12-seanjc@google.com>
-
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -3947,7 +3947,7 @@ static int snp_begin_psc(struct vcpu_svm *svm)
->  	}
-> =20
->  	/* Find the start of the next range which needs processing. */
-> -	for (idx =3D idx_start; idx <=3D idx_end; idx++, hdr->cur_entry++) {
-> +	for (idx =3D idx_start; idx <=3D idx_end; idx++) {
->  		entry_start =3D READ_ONCE(entries[idx]);
-> =20
-[ ... ]
-> @@ -3974,6 +3974,14 @@ static int snp_begin_psc(struct vcpu_svm *svm)
-> =20
->  		if (npages)
->  			break;
-> +
-> +		/*
-> +		 * Increment the guest-visible index to communicate the current
-> +		 * entry back to the guest, e.g. in case of failure.  No need
-> +		 * for READ_ONCE() as KVM doesn't consume the field, i.e. a
-> +		 * misbehaving guest can only break itself.
-> +		 */
-> +		hdr->cur_entry++;
->  	}
-> =20
->  	if (idx > idx_end) {
-
-[Severity: High]
-This is a pre-existing issue, but since we're examining how a misbehaving=20
-guest affects the PSC processing loop, is it possible for a guest to trigge=
-r=20
-a soft lockup here?
-
-Looking at snp_begin_psc(), if the guest submits an unsupported PSC operati=
-on,
-we hit the default case and loop back:
-
-next_range:
-    idx_start =3D READ_ONCE(hdr->cur_entry);
-    ...
-    switch (entry_start.operation) {
-    ...
-    default:
-        __snp_complete_one_psc(svm);
-        goto next_range;
-    }
-
-If a malicious guest concurrently resets hdr->cur_entry back to 0 in the
-GHCB shared memory, could the host get trapped continuously reading an
-index of 0 and re-processing the same unsupported entry?=20
-
-Since there is no yield or exit to userspace in this default case, it seems=
-=20
-this might trap the host thread in the kernel while holding vcpu->mutex,
-leading to a persistent soft lockup.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529183549.1104=
-619-1-pbonzini@redhat.com?part=3D11
+static __always_inline void read_unlock_irqrestore(rwlock_t *rwlock,
+						   unsigned long flags)
+	__releases_shared(rwlock)
+{
+	rt_read_unlock(rwlock);
+}
