@@ -1,63 +1,63 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA003B3C1A
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237112472AF
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780064761; cv=none; b=bvu3+DQyQru081k9KX0XboEMwy03N2bqzMTXOB3pR3kUTjXg81Mlk9arQivUpN2MjARveniaDDkOTcaVjvoilBIsYKWywE4YkSiG/XuWvNooVJGK6PWjV1oLlY7lKfzweY+sDjMm+cJwhKKqsTBm1j61Ykcr8e/CeB1WLqCNklk=
+	t=1780064769; cv=none; b=POhkBiUX5YvyKLV/cexQI5vGGC7eBFqnnE1fqw7Rha5LZHWuVxhtHzBz+Vi6YlZXsRodyn1O1fuqqI4qxh3A7lIrXQS9BOhmcAd+udV1W6N40lv8v9MZ9ftcSQ1DJGidtwLHyuaDOPciy1oXtj04bPaQ30lNV2+qfMuCQ/FWYXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780064761; c=relaxed/simple;
-	bh=NpVoBgyDXo4kFiuSowigNDh/GPxlG6tecJ2l7rtPWYE=;
+	s=arc-20240116; t=1780064769; c=relaxed/simple;
+	bh=84xzBU8lTHnmR6Bm3ca8fd6RpWiBNgkAgApLb3XWYH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EeiMwe9zKsFrl8V2M6Y0S2/GicsETbWM62KDmYeGk1WZpX2fGGep00jzLmXwTj5cJgD6zGytGpkwBQ2G9QPKukqJVdnIz3T50yfqA/El9qfj9tBirbLzi1sIpHymSIpE9VZ7ygx1ijjVXLreUcBYH+nLQssg2+ZJa8ooWiMFEoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=syEL5CJA; arc=none smtp.client-ip=209.85.128.41
+	 MIME-Version:Content-Type; b=eTvUkewpjDAyF0wXRLi1ATT8hEjcBXzXgucFCr3RypAc9hO275i00q/PYUrNeXnUCPMk28XlYRKnhki8gVhFMW3qgyAyhhDA6RdJUoKeptHJzeA9qwwlotC7JHWKo3ooem1wzP9rnsMxeU1hmW5qRGGfAqFZXKCP1+7ZyUSHG7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ej1tMQQZ; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="syEL5CJA"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4891e5b9c1fso121483385e9.2
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:26:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ej1tMQQZ"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45ef29c5561so402713f8f.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:26:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780064759; x=1780669559; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1780064767; x=1780669567; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=P59p3YW/AQDnYqwHW3EKNEj9nqZIetNGrubj5RXjTq8=;
-        b=syEL5CJAK8s3bVw/OafGkENZTFIAP9YqknXv+S78znUXOGZkuinqgT8Vm2ABqK9o1B
-         n93VmFz8EFRrZGiPyDw/1z0h131VLNj5r5fwtgfFLxKrmrleI389HRClF6AhtqDOkIKD
-         8VGMDVwzetYZOCpmglPyj6ZLI28sStSyNY0zrqMFMJu3D09vH5BYJp7gYn5ralDdnvZ6
-         s3wu6HauqzmDyydw5oJbEFq7BCVMTX+aJO5ycUequZWq3fI8nMNBwPT/5m5/Y9r7kK7s
-         UChiDjDv6zLdVal8Q1dpKPoJQfO787akbhi2wuYpgqI3hD3QZAo8+8OogEC2uP6UIEJe
-         Jz9g==
+        bh=lLjO9ILLNjldGaO/XRaKWcElj66Y6w+X8KhGj9XwuEI=;
+        b=Ej1tMQQZrCgd+nV/gPuBNuvu5fSUL1cCycMink73nY/6P4pr5IjMy47H0gUcpdI/n0
+         uEQeOEETH/5f/6YRaT/GF/pVCWqSaQpvN5xJHr1iSkCFDFHhXpc5QrhrDI+pkCQUpiQ7
+         n+MknW8xT7MMWm63WQDFWLbzgtE85CzmvMpX/g+QTmOOWiwVCXpOw9AsJtQ87yJFcMap
+         Z8xMAkcTad3mRpXdS6lBXC43meaNQcKZZXl/CHgB018xUP/6QabmUKdh70/J7OYxHney
+         KywN7W88ASgABOcOwbiQb7YaLoPVf7P+q0WxmUVOdFg0qDYomcNRUxS3hhy5It9QXcSu
+         z1cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780064759; x=1780669559;
+        d=1e100.net; s=20251104; t=1780064767; x=1780669567;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=P59p3YW/AQDnYqwHW3EKNEj9nqZIetNGrubj5RXjTq8=;
-        b=TCB9iiXLmBwLW1+FGsMdkxkiGNHbIRUeEXhtv12+fYhDcWrphvIRife8GVKP9mrNXI
-         +clv1pxH0N2hskteB5E7QWLVHtQ/BWDGjYDGG7g0e0NU8ebvWV9Un8UEQMLgBSRL0pJJ
-         GFTGPYDDHkMXP4H1lPaHqUVb2i3T9/S8uaZG1UspHGkTp3oADLqhaVPyKoP3wdq2FiAG
-         avYU/QhFM5AQ2DV2bN2BgFx2FY6U5/r558CCwaWt4j23S0v/EZeeIYnnge2o5CjPGcrv
-         ju5Wnv76LNCiPZV+FRqB94nOmGilTChbW7RvP1mm+SQ7ed7FWo4NgH28pEuNIgRkDK2q
-         4XPA==
-X-Forwarded-Encrypted: i=1; AFNElJ/kk8lnOUQP2T+Sk8fU6S7bPvYtCeYf0biA2rC31BqRwSCNOxXiNgLFhTfibvXCHCgxHFo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB/WbXdHxu8g4wxvyKOxVpPchG6bAZ81h8pFxzWyFrDdYSf9Pc
-	6xxK1gHBKYqcTAqSTyJDlmXOV7cZdWRye0lxt00fTrivDjxC1GC/GCVyhD5rGBEUJ4Q=
-X-Gm-Gg: Acq92OGr+YfS3Q1IBZ3WqhfvspCagcznkWA1xKnrKJaOZBl8SlF5eoVPi+xYotN4ZyO
-	o4USBx+kdswHhBBM2TRyxp04hs5eDDJRN7IVGIupugbc8N38pirBTholBvMGrTgXFkJnMM4AMLa
-	72abmTbOCdidHX69Rj42Xt3+R6dw706DinCKzsHVlDBxAyjaQ+adz+nXFLgc0gdQLUXvkQ/t3vb
-	O/iFJ9DdfXHXZY+RbdBehZp/urQYe5t270MYgd+BfVYY/hsjw/bVPOXx5enY/xpN0fnot8OxZlo
-	gSHHhO5yK40QsF1gVO0DYyzy87zJ5XSNlqjqu6p4UWRvZHDwjzZ3SSp1jcsBkorov3ZWQkcJdTw
-	pRx2Jlit0wfPUXovKpITlf+erSBbFSz0RIb7vbJvb0X6dUMUK9+W9WbrlCMzjvFdPa1zeV/Vbcj
-	lw5m9JpCiwjQ/Lwr3tUxlPngl8Qich/HuU6G4xEPCNwejxqEBpT04afSO6LnBmmIi3LA==
-X-Received: by 2002:a05:600c:c0d2:10b0:48e:7854:1608 with SMTP id 5b1f17b1804b1-4909c0b34e3mr43174675e9.25.1780064758692;
-        Fri, 29 May 2026 07:25:58 -0700 (PDT)
+        bh=lLjO9ILLNjldGaO/XRaKWcElj66Y6w+X8KhGj9XwuEI=;
+        b=LLMGJ+RIVu30T17V0uwip+BAtIj4mKAD6OGdzH3v44WQyoZDies7fJxZl/zi3AIPR+
+         o2WcUwyln+vkkUQ9wkSZy6qJE+T/W/Yk2oN24Y4dbpnfk8fvtTKIpQX6vUsyd/Rh/Ef2
+         BefNWfG4CA5EojstZbpf1yuaORmzbNY2YAGd/6dN9I8PNCevvb6DVwNfp7Qgrpl7F4rH
+         CFfOdqTYtMr3gzQwiz4RV2P8S/D8vXCftC0YejZ8zVPp5TNiUJ9adwU1Qy9q7a42lWvb
+         7AOqesSEB4E6H7eCP1OS9BqcWyS0JChkNyCbdfbNVZ3J5uw3DACzKQk3tOtk8y38oONb
+         eajg==
+X-Forwarded-Encrypted: i=1; AFNElJ9iINA1Rvqbz+8gBdN2lHqVox3bCTB+pqqN33OV3ciTLnbdVlt6NrgTnVdiahNfPreVrAE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxvsL4mhhfJBUBnd+UbdWcI/19xq8dWwF8uPiAMvG70LsaAk5s
+	2fFv47LCbcnAoa9de1x1jxMe3xD1ts7EkVJirtNLxkOI2tlYTPrfgUGHSjvXFkB94w4=
+X-Gm-Gg: Acq92OHO1a9Vk/1xuHSHOguiPMLoLxhUJnx46OZaKu8mMVgRx5GuXgfUa5sdtciBxm7
+	3hi5KHnRwRj2+xT1Ebwdcx8pYJrI1yHIj1do8Fxv3/NcqmAzJqpcoLemLOzSyRZ61fAZCeDy7uh
+	0KljLvJAj3D/q65aUMgPxHZPIa0U5X9aoZW+dmbMU5kPEJSndHpuXHeWn483Lh/Ik+6yJmmxjBw
+	AfHJER+xgQp+V8QTGuHWQMpDgTvyWX6A7ANhf+h08V4L4x3XcUcdfXq1VOu4OPlP2tk5LzSR/wn
+	KzPJLrUiNdWAnJuu9pg8h8/nUncrn2vTqlQNHm2DpqHJ154PSvILcYP+/sxXw+SfjfJhIZL/qRb
+	n5jz0KmA7d5GonuQ4goBfpegSfMct+KqWjv4UrRk4d3ZXbSOIlkemPdLOfExUVm9/iDoxiel2cT
+	9l9mBQ4Qh23zGZ1OQLjSR/YqWjN34PKPAFLXO5WIB9YIN5GWu5eh+Do5HdfrSCqpFCpw==
+X-Received: by 2002:adf:f2d1:0:b0:45e:f354:8603 with SMTP id ffacd0b85a97d-45ef6b6d51cmr4895f8f.22.1780064766603;
+        Fri, 29 May 2026 07:26:06 -0700 (PDT)
 Received: from m15.home (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909d6eb4acsm42435095e9.9.2026.05.29.07.25.56
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef3587072sm4066115f8f.34.2026.05.29.07.26.04
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 29 May 2026 07:25:58 -0700 (PDT)
+        Fri, 29 May 2026 07:26:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>,
@@ -90,9 +90,9 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
 	Chinmay Rath <rathc@linux.ibm.com>,
 	Mohamed Mediouni <mohamed@unpredictable.fr>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 10/17] accel/kvm: Convert AccelCPUClass -> AccelOpsClass::cpu_instance_init
-Date: Fri, 29 May 2026 16:24:26 +0200
-Message-ID: <20260529142434.87880-11-philmd@linaro.org>
+Subject: [PATCH 11/17] accel/tcg: Convert AccelCPUClass -> new TCGCPUOps::cpu_instance_init
+Date: Fri, 29 May 2026 16:24:27 +0200
+Message-ID: <20260529142434.87880-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260529142434.87880-1-philmd@linaro.org>
 References: <20260529142434.87880-1-philmd@linaro.org>
@@ -105,136 +105,137 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Expose kvm_arch_cpu_instance_init() and register it as generic
-AccelOpsClass::cpu_instance_init hook.
+Introduce a TCGCPUOps::cpu_instance_init hook and call it with
+tcg_cpu_instance_init(). Register tcg_cpu_instance_init() as
+AccelOpsClass::cpu_instance_init.
 
-Both X86 / RISCV's ACCEL_CPU_NAME("kvm") TypeInfo are now empty,
-remove them.
+At the same time, convert X86 and RISCV AccelCPUClass hooks,
+after forward-declaring each target method (to avoid moving
+code around).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/system/kvm.h       |  1 +
- accel/kvm/kvm-accel-ops.c  |  1 +
- target/i386/kvm/kvm-cpu.c  | 22 +---------------------
- target/riscv/kvm/kvm-cpu.c | 23 +----------------------
- 4 files changed, 4 insertions(+), 43 deletions(-)
+ accel/tcg/tcg-accel-ops.h   | 1 +
+ include/accel/tcg/cpu-ops.h | 1 +
+ accel/tcg/cpu-exec.c        | 9 +++++++++
+ accel/tcg/tcg-accel-ops.c   | 1 +
+ target/i386/tcg/tcg-cpu.c   | 5 +++--
+ target/riscv/tcg/tcg-cpu.c  | 4 +++-
+ 6 files changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index fd7175ea9f5..2c31fa6019e 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -364,6 +364,7 @@ int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp);
- int kvm_arch_init_vcpu(CPUState *cpu);
- int kvm_arch_destroy_vcpu(CPUState *cpu);
+diff --git a/accel/tcg/tcg-accel-ops.h b/accel/tcg/tcg-accel-ops.h
+index aecce605d7b..be712c02efd 100644
+--- a/accel/tcg/tcg-accel-ops.h
++++ b/accel/tcg/tcg-accel-ops.h
+@@ -14,6 +14,7 @@
  
-+void kvm_arch_cpu_instance_init(CPUState *cpu);
- bool kvm_arch_cpu_realize(CPUState *cpu, Error **errp);
+ #include "system/cpus.h"
  
- #ifdef TARGET_KVM_HAVE_RESET_PARKED_VCPU
-diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
-index 4294c7a9514..113a23f2384 100644
---- a/accel/kvm/kvm-accel-ops.c
-+++ b/accel/kvm/kvm-accel-ops.c
-@@ -97,6 +97,7 @@ static void kvm_accel_ops_class_init(ObjectClass *oc, const void *data)
-     AccelOpsClass *ops = ACCEL_OPS_CLASS(oc);
++void tcg_cpu_instance_init(CPUState *cpu);
+ void tcg_cpu_destroy(CPUState *cpu);
+ int tcg_cpu_exec(CPUState *cpu);
+ void tcg_handle_interrupt(CPUState *cpu, int mask);
+diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
+index 5950cdcaab1..d7d329e419d 100644
+--- a/include/accel/tcg/cpu-ops.h
++++ b/include/accel/tcg/cpu-ops.h
+@@ -48,6 +48,7 @@ struct TCGCPUOps {
+      * Called when the first CPU is realized.
+      */
+     void (*initialize)(void);
++    void (*cpu_instance_init)(CPUState *cpu);
+     /**
+      * @translate_code: Translate guest instructions to TCGOps
+      * @cpu: cpu context
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index ad94f96b252..ef44c12b601 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -1045,6 +1045,15 @@ int cpu_exec(CPUState *cpu)
+     return ret;
+ }
  
-     ops->create_vcpu_thread = kvm_start_vcpu_thread;
-+    ops->cpu_instance_init = kvm_arch_cpu_instance_init;
-     ops->cpu_target_realize = kvm_arch_cpu_realize;
-     ops->cpu_thread_is_idle = kvm_vcpu_thread_is_idle;
-     ops->cpus_are_resettable = kvm_cpus_are_resettable;
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index 36634ec8929..6d93b50248c 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -16,7 +16,6 @@
- #include "hw/i386/x86.h"
- 
- #include "kvm_i386.h"
--#include "accel/accel-cpu-target.h"
- 
- static void kvm_set_guest_phys_bits(CPUState *cs)
++void tcg_cpu_instance_init(CPUState *cpu)
++{
++    const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
++
++    if (tcg_ops->cpu_instance_init) {
++        tcg_ops->cpu_instance_init(cpu);
++    }
++}
++
+ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
  {
-@@ -207,7 +206,7 @@ static void x86_cpu_change_kvm_default(const char *prop, const char *value)
-     assert(pv->prop);
- }
+     static bool tcg_target_initialized;
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 3bd98005042..381f1614923 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -219,6 +219,7 @@ static void tcg_accel_ops_init(AccelClass *ac)
+         }
+     }
  
--static void kvm_cpu_instance_init(CPUState *cs)
-+void kvm_arch_cpu_instance_init(CPUState *cs)
++    ops->cpu_instance_init = tcg_cpu_instance_init;
+     ops->cpu_reset_hold = tcg_cpu_reset_hold;
+     ops->supports_guest_debug = tcg_supports_guest_debug;
+     ops->insert_breakpoint = tcg_insert_breakpoint;
+diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
+index 6f5dc06b3b9..04bb9787575 100644
+--- a/target/i386/tcg/tcg-cpu.c
++++ b/target/i386/tcg/tcg-cpu.c
+@@ -157,6 +157,8 @@ static vaddr x86_pointer_wrap(CPUState *cs, int mmu_idx,
+ }
+ #endif
+ 
++static void x86_tcg_cpu_instance_init(CPUState *cs);
++
+ const TCGCPUOps x86_tcg_ops = {
+     .mttcg_supported = true,
+     .precise_smc = true,
+@@ -165,6 +167,7 @@ const TCGCPUOps x86_tcg_ops = {
+      */
+     .guest_default_memory_order = TCG_MO_ALL & ~TCG_MO_ST_LD,
+     .initialize = tcg_x86_init,
++    .cpu_instance_init = x86_tcg_cpu_instance_init,
+     .translate_code = x86_translate_code,
+     .get_tb_cpu_state = x86_get_tb_cpu_state,
+     .synchronize_from_tb = x86_cpu_synchronize_from_tb,
+@@ -237,8 +240,6 @@ static void x86_tcg_cpu_accel_class_init(ObjectClass *oc, const void *data)
+ #ifndef CONFIG_USER_ONLY
+     acc->cpu_target_realize = tcg_cpu_realizefn;
+ #endif /* CONFIG_USER_ONLY */
+-
+-    acc->cpu_instance_init = x86_tcg_cpu_instance_init;
+ }
+ static const TypeInfo x86_tcg_cpu_accel_type_info = {
+     .name = ACCEL_CPU_NAME("tcg"),
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 3e22e7ed53d..703c2d9bd0a 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -268,11 +268,14 @@ static vaddr riscv_pointer_wrap(CPUState *cs, int mmu_idx,
+ }
+ #endif
+ 
++static void riscv_tcg_cpu_instance_init(CPUState *cs);
++
+ const TCGCPUOps riscv_tcg_ops = {
+     .mttcg_supported = true,
+     .guest_default_memory_order = 0,
+ 
+     .initialize = riscv_translate_init,
++    .cpu_instance_init = riscv_tcg_cpu_instance_init,
+     .translate_code = riscv_translate_code,
+     .get_tb_cpu_state = riscv_get_tb_cpu_state,
+     .synchronize_from_tb = riscv_cpu_synchronize_from_tb,
+@@ -1678,7 +1681,6 @@ static void riscv_tcg_cpu_accel_class_init(ObjectClass *oc, const void *data)
  {
-     X86CPU *cpu = X86_CPU(cs);
-     X86CPUClass *xcc = X86_CPU_GET_CLASS(cpu);
-@@ -232,22 +231,3 @@ static void kvm_cpu_instance_init(CPUState *cs)
+     AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
  
-     kvm_cpu_xsave_init();
- }
--
--static void kvm_cpu_accel_class_init(ObjectClass *oc, const void *data)
--{
--    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
--
--    acc->cpu_instance_init = kvm_cpu_instance_init;
--}
--static const TypeInfo kvm_cpu_accel_type_info = {
--    .name = ACCEL_CPU_NAME("kvm"),
--
--    .parent = TYPE_ACCEL_CPU,
--    .class_init = kvm_cpu_accel_class_init,
--    .abstract = true,
--};
--static void kvm_cpu_accel_register_types(void)
--{
--    type_register_static(&kvm_cpu_accel_type_info);
--}
--type_init(kvm_cpu_accel_register_types);
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 7c4440d0025..b8e08d810a8 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -32,7 +32,6 @@
- #include "system/kvm_int.h"
- #include "cpu.h"
- #include "trace.h"
--#include "accel/accel-cpu-target.h"
- #include "hw/pci/pci.h"
- #include "exec/memattrs.h"
- #include "system/address-spaces.h"
-@@ -1981,7 +1980,7 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
-     kvm_msi_via_irqfd_allowed = true;
+-    acc->cpu_instance_init = riscv_tcg_cpu_instance_init;
+     acc->cpu_target_realize = riscv_tcg_cpu_realize;
  }
  
--static void kvm_cpu_instance_init(CPUState *cs)
-+void kvm_arch_cpu_instance_init(CPUState *cs)
- {
-     Object *obj = OBJECT(RISCV_CPU(cs));
- 
-@@ -2108,26 +2107,6 @@ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
-     kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
- }
- 
--static void kvm_cpu_accel_class_init(ObjectClass *oc, const void *data)
--{
--    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
--
--    acc->cpu_instance_init = kvm_cpu_instance_init;
--}
--
--static const TypeInfo kvm_cpu_accel_type_info = {
--    .name = ACCEL_CPU_NAME("kvm"),
--
--    .parent = TYPE_ACCEL_CPU,
--    .class_init = kvm_cpu_accel_class_init,
--    .abstract = true,
--};
--static void kvm_cpu_accel_register_types(void)
--{
--    type_register_static(&kvm_cpu_accel_type_info);
--}
--type_init(kvm_cpu_accel_register_types);
--
- static const TypeInfo riscv_kvm_cpu_type_infos[] = {
-     {
-         .name = TYPE_RISCV_CPU_HOST,
 -- 
 2.53.0
 
