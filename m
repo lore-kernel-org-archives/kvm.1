@@ -1,186 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320B03E0C42;
-	Fri, 29 May 2026 14:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586072BE05F
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780063238; cv=none; b=siVu2C1bQc94Xs5sAhqTGSVww3c48q9ixdDZlfWDMxEyCUDQrcqW6YR7E1FPe8fWERblbCxpAB68/K0et7XC1Km21vMtvh8hFSa0HflcsuNdu5E2LG8nJ4zh7NTZ4zAJGVepW9sZLzhV0h49X5fMjWygWZjHF8Ov6dhSNCIngvw=
+	t=1780063390; cv=none; b=V0bExF9ctoGB5K4zDo4hyR+ABl5kW/B5Fxmxx4CvR9s4s8ggv4azt9wqqFaEThDgiPXrgslI2MWbWkbYhg1gfsxPt+8rYrq6Mr20QCkdYVJsE0mlFPHKeL/0WmKu/D5p76YvDjRlibyBw36bgSg6zZbUN8gz4Axek72Amz1XCGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780063238; c=relaxed/simple;
-	bh=35aOUUiajUr3730X7VPLCbJ3Dh+SamSQ3owDNCblHHo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qoRH5IoDQorXg4/HMKyUgTRo29IQ0L1LMjjJc1EAmARrasY/PVO4o91zbs36qTTJLvmogoV2WpNhXOXTYWj1FqcFfAwyPQMyw/KmoMh3ZnPVXlNdGvQGqWg1+sfdMixY/PGGgYY7JZe+fYXptYYAaY9T09uvI9fXMx5Ui0FjZSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENTBUfU9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780063390; c=relaxed/simple;
+	bh=gGn5PjjFPgCZcJzrpPsaEvs1RZTbgD70Ap223771QWE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=N0MqKxBzXmd8Mk4Yi/dX6d4Vna9dgkx+XIMYYM6gpbljO3RBla6Dtf+gcZ0M4CfY4oIICnqBPCLwth2EpxYH+wrdEd6+oSPeJ2AOQQ46pqfIyFEhK7fBBtyFlgxtRuzkJDhwn+dHCfEPryWwzOE9trcNdbtDc1HYr5jMEYuU5Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ckJ7ANPD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=21vSk4zR; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BU8nVRwM; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=kob/4WnR; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENTBUfU9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02E91F00893;
-	Fri, 29 May 2026 14:00:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780063236;
-	bh=OPcYymHmOJpRusLXuWmZNY6VFZDOtwyJMTAW5ccYu6k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ENTBUfU9LnD7fAI5xU/4xcee1oNGvdMfii+swBtlaOam7bQBWxeIDOcQ+dZCC37zt
-	 J4YgC4T2udD2L+XartNxejOiyD//y1noIpU3Y2VRbyqp9b+vTeOU8NNufBHz8d3x6G
-	 0KG6KFuEG/duwIK/5kbXC0tsVQ/UVxdIVqNLQc1dE6AL63h5zyAYhW6daDHS35wlPJ
-	 ZlC8eGvlxFfTIhfMgFktuFDMgy6JacSo6F+mMFk3V8tEN0KHkwdbeQ2mkoPkKOI9n9
-	 zPG1YyhGatWfCJ548U9tm9hFuEKAYLkn/Jhlr78Djv5nCWrYlvLKIUCDa1da7WpLDa
-	 GEZZm6tokEFTA==
-Date: Fri, 29 May 2026 15:00:28 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
-	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
-	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
-	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 08/18] mm: add VM_UFFD_RWP VMA flag
-Message-ID: <ahmQCwG2xCSwO29k@lucifer>
-References: <20260526130509.2748441-1-kirill@shutemov.name>
- <20260526130509.2748441-9-kirill@shutemov.name>
- <ahk60ViRq4q2g4uz@lucifer>
- <ahmM8LzrzX-qP_5s@thinkstation>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ckJ7ANPD";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="21vSk4zR";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BU8nVRwM";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kob/4WnR"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 38A7166E02;
+	Fri, 29 May 2026 14:02:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780063383; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vFmASEw7X5QxlDyGMNGJeKWnDPoZnIA+xWfbfA6yacI=;
+	b=ckJ7ANPD0wWospwJpW5wBbZ0BxXB6AGjmBUeNZG7N50N6+FGsgWqD7OZJfir8DQ4ceZNQX
+	kN156bib8CCshesgmtTJ6JDk+WUUXJbPG3tNN1yN2NTFJ+vZtpJcz7BuMWTP0RcwPFujAx
+	ulHkUrt7KspKHnctZTyyH6bjEGCxgXA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780063383;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vFmASEw7X5QxlDyGMNGJeKWnDPoZnIA+xWfbfA6yacI=;
+	b=21vSk4zRA+RjGfX0KIKWz6yApTXdd7GgUPbvW3z0DyZQaJeTxsGzkcP0ydN7cNeCo5h7xA
+	xroRE0u8Ps2YhhCQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780063379; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vFmASEw7X5QxlDyGMNGJeKWnDPoZnIA+xWfbfA6yacI=;
+	b=BU8nVRwMhr9yQ/uMFdJ71aD87SUfaqgkUlIcPNefYFugpf1OvsARtMu6whUC3VG9T7rGZX
+	8yJdOPqz80njXu+mY1wMcaSOpoCCi9u6kRTWMxHdps/O+nzbHP6eIPSfKm5qKSN4+SgrHM
+	W2/hLpEzXCh6Dcqg78txFfYJD3I73H8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780063379;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vFmASEw7X5QxlDyGMNGJeKWnDPoZnIA+xWfbfA6yacI=;
+	b=kob/4WnRQR9bZQc83a5ChMZPfvh7a9iJZ9Vh4SoZZPPDAFl1nHG3tCH8xXC5Raugs+HBIo
+	DCOA2X4OaFe/5HDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6D945779A8;
+	Fri, 29 May 2026 14:02:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Qr8fGJKcGWohZwAAD6G6ig
+	(envelope-from <clopez@suse.de>); Fri, 29 May 2026 14:02:58 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kvm@vger.kernel.org,
+	seanjc@google.com,
+	pbonzini@redhat.com
+Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"He, Qing" <qing.he@intel.com>,
+	"Yaozu (Eddie) Dong" <eddie.dong@intel.com>,
+	Avi Kivity <avi@qumranet.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))
+Subject: [PATCH v2] KVM: x86: Take PIC lock on KVM_GET_IRQCHIP path
+Date: Fri, 29 May 2026 16:00:14 +0200
+Message-ID: <20260529140013.14925-2-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahmM8LzrzX-qP_5s@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spam-Score: -3.29
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-3.29 / 50.00];
+	BAYES_HAM(-2.99)[99.95%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
 
-On Fri, May 29, 2026 at 02:07:16PM +0100, Kiryl Shutsemau wrote:
-> On Fri, May 29, 2026 at 08:24:55AM +0100, Lorenzo Stoakes wrote:
-> > On Tue, May 26, 2026 at 02:04:56PM +0100, Kiryl Shutsemau wrote:
-> > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > >
-> > > Preparatory patch for userfaultfd read-write protection (RWP). RWP
-> > > extends userfaultfd protection from plain write-protection (WP) to
-> > > full read-write protection: accesses to an RWP-protected range --
-> > > reads as well as writes -- trap through userfaultfd.
-> > >
-> > > Reserve VM_UFFD_RWP, add the userfaultfd_rwp() and
-> > > userfaultfd_protected() helpers, and wire up the smaps "ur" entry and
-> > > the trace-flag table the rest of the series will use. The flag is
-> > > gated on CONFIG_USERFAULTFD_RWP, which is introduced together with the
-> > > UAPI in a later patch; until then VM_UFFD_RWP aliases VM_NONE and
-> > > every downstream check folds to dead code.
-> > >
-> > > Nothing sets or queries the flag yet.
-> > >
-> > > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > > Assisted-by: Claude:claude-opus-4-6
-> >
-> > Hm, if you've just used claude to bounce ideas off, I'm really not sure if
-> > it's necessary to disclose, though I respect your thoroughness for doing so
-> > :)
->
-> I've elaborated on how I used Claude in reply to Andrew:
->
-> https://lore.kernel.org/all/af5eALk9yO8pPcHv@thinkstation
->
-> It is more than bouncing ideas.
+When userspace issues the KVM_SET_IRQCHIP ioctl to set the state of
+the PIC, kvm_vm_ioctl_set_irqchip() grabs @kvm->arch.vpic->lock before
+updating the state. However, the KVM_GET_IRQCHIP ioctl to retrieve the
+same PIC state does not grab such lock, potentially causing torn reads
+for userspace.
 
-Ah interesting! Fair enough then.
+Fix this by grabbing the lock on the read path.
 
->
-> > > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > > index 71b11945e4fc..6499cfb61dc4 100644
-> > > --- a/include/linux/mm.h
-> > > +++ b/include/linux/mm.h
-> > > @@ -362,6 +362,7 @@ enum {
-> > >  #endif
-> > >  	DECLARE_VMA_BIT(UFFD_MINOR, 41),
-> > >  	DECLARE_VMA_BIT(SEALED, 42),
-> > > +	DECLARE_VMA_BIT(UFFD_RWP, 43),
-> >
-> > I'm guessing CONFIG_USERFAULTFD_RWP is predicated on CONFIG_64BIT?
->
-> Yes:
-> 	depends on 64BIT && ARCH_HAS_PTE_PROTNONE && HAVE_ARCH_USERFAULTFD_WP
-> >
-> > It's a silly situation and once my VMA flags stuff is done it'll be
-> > eliminated but for now... :)
->
-> Yeah. I actually would appreciate your take on 04/18. It is related.
+This issue goes all the way back. The bug was introduced with the
+addition of PIC ioctl code itself in 6ceb9d791eee ("KVM: Add get/
+set irqchip ioctls for in-kernel PIC live migration support"). Later,
+894a9c5543ab ("KVM: x86: missing locking in PIT/IRQCHIP/SET_BSP_CPU
+ioctl paths") added the locking for kvm_vm_ioctl_set_irqchip(), but
+missed kvm_vm_ioctl_get_irqchip().
 
-I'll reply there.
+Fixes: 6ceb9d791eee ("KVM: Add get/set irqchip ioctls for in-kernel PIC live migration support")
+Fixes: 894a9c5543ab ("KVM: x86: missing locking in PIT/IRQCHIP/SET_BSP_CPU ioctl paths")
+Reported-by: Claude Code:claude-opus-4.6
+Signed-off-by: Carlos López <clopez@suse.de>
+---
+v2:
+  - Remove stable tag
+  - Use regular locking instead of guards
 
->
-> > > diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> > > index f4cf5763f92c..0aef628514df 100644
-> > > --- a/include/linux/userfaultfd_k.h
-> > > +++ b/include/linux/userfaultfd_k.h
-> > > @@ -21,10 +21,11 @@
-> > >  #include <linux/hugetlb_inline.h>
-> > >
-> > >  /* The set of all possible UFFD-related VM flags. */
-> > > -#define __VM_UFFD_FLAGS (VM_UFFD_MISSING | VM_UFFD_WP | VM_UFFD_MINOR)
-> > > +#define __VM_UFFD_FLAGS (VM_UFFD_MISSING | VM_UFFD_MINOR | \
-> > > +			 VM_UFFD_WP | VM_UFFD_RWP)
-> > >
-> > >  #define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT, \
-> > > -				      VMA_UFFD_MINOR_BIT)
-> > > +				      VMA_UFFD_MINOR_BIT, VMA_UFFD_RWP_BIT)
-> > >
-> > >  /*
-> > >   * CAREFUL: Check include/uapi/asm-generic/fcntl.h when defining
-> > > @@ -178,7 +179,7 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
-> > >   */
-> > >  static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
-> > >  {
-> > > -	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
-> > > +	return vma->vm_flags & (VM_UFFD_MINOR | VM_UFFD_WP | VM_UFFD_RWP);
-> >
-> > While we're here we might as well switch to using the new API?
-> >
-> > Can do:
-> >
-> > 	return vma_test_any_mask(vma, __VMA_UFFD_FLAGS);
-> >
-> > One unfortunate thing is using bit values means we can't do the VM_NONE
-> > trick, but if !CONFIG_USERFAULTFD_RWP then VMA_UFFD_RWP_BIT wouldn't be set
-> > anyway, same for minor so this should be fine?
->
-> I think we need to decide first if the 04/18 direction is right.
-> We can define VMA_UFFD_RWP_BIT to VMA_NO_BIT if !CONFIG_USERFAULTFD_RWP.
+ arch/x86/kvm/irq.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Yeah I don't think that approach is workable unfortunately (see my reply
-there).
+diff --git a/arch/x86/kvm/irq.c b/arch/x86/kvm/irq.c
+index 9519fec09ee6..8c62c6d4d5c1 100644
+--- a/arch/x86/kvm/irq.c
++++ b/arch/x86/kvm/irq.c
+@@ -585,12 +585,16 @@ int kvm_vm_ioctl_get_irqchip(struct kvm *kvm, struct kvm_irqchip *chip)
+ 	r = 0;
+ 	switch (chip->chip_id) {
+ 	case KVM_IRQCHIP_PIC_MASTER:
++		spin_lock(&pic->lock);
+ 		memcpy(&chip->chip.pic, &pic->pics[0],
+ 			sizeof(struct kvm_pic_state));
++		spin_unlock(&pic->lock);
+ 		break;
+ 	case KVM_IRQCHIP_PIC_SLAVE:
++		spin_lock(&pic->lock);
+ 		memcpy(&chip->chip.pic, &pic->pics[1],
+ 			sizeof(struct kvm_pic_state));
++		spin_unlock(&pic->lock);
+ 		break;
+ 	case KVM_IRQCHIP_IOAPIC:
+ 		kvm_get_ioapic(kvm, &chip->chip.ioapic);
 
-But I suggest some workarounds there with VMA_UFFD_RWP.
+base-commit: d1568b1332b6b3b36b222c2868fc102727c12a34
+-- 
+2.51.0
 
->
-> > >  }
-> > >
-> > >  /*
-> > > @@ -208,6 +209,16 @@ static inline bool userfaultfd_minor(struct vm_area_struct *vma)
-> > >  	return vma->vm_flags & VM_UFFD_MINOR;
-> > >  }
-> > >
-> > > +static inline bool userfaultfd_rwp(struct vm_area_struct *vma)
-> > > +{
-> > > +	return vma->vm_flags & VM_UFFD_RWP;
-> > > +}
-> >
-> > Can be:
-> >
-> > 	return vma_test(vma, VMA_UFFD_RWP_BIT);
->
-> Yep.
-
-With the approach suggested in 04/18 we could do this as:
-
-	return vma_test_any_mask(vma, VMA_UFFD_RWP);
-
-Which is a bit fugly but will work.
-
->
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
-
-Cheers, Lorenzo
