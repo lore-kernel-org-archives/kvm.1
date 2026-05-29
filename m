@@ -1,115 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1994B392C4B
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FAC3F4DC5
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780077561; cv=none; b=cUNKFGCXd5ninlPm1Kb1PVTObS1zodAqrqHIiPt8LJ5MqUQUH5k6ioI3HyTHffT7FyTGc8AimRVgj/aGqgiYnYNp2i+g22zpeKRcHAaHYqINl6ZX0SvD1P6JDbAn+hHsvLmiIKKMSgyVmZPdxK7EFxT1nLNmkNeaCjFwGzk9leo=
+	t=1780077881; cv=none; b=C5RfcpFrXTOgTpcKPQ7uDwt1pbZnzV8xQ6DPn8ZwbhtAHWV1YI7aQjq9aQCn0hjr+X5odf7vFfNM2fZ8YLAH+aH143Jx59VH1ICfialZEzytYsA2IQsKvRlo6p7IzxU60Nd+KB9v9u1m3F8DkMea0LX4qtE4EWFFFeDiI3MmIIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780077561; c=relaxed/simple;
-	bh=0UaXMordpbpDhhM/NOEcEnJf0klKFxxxB5KNLcgNOcE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XCcMGkp7oWTzUZFpFuCiUMjGu8WQJaeEkTDJZcrMhqbsk6b5Iz194Gt+f3rSwN/EMVrHZdVd3a6tY4gVrSNYrOmwj2bYfKBIkyjoxMW1QTKbvDkvV/b75i2s+iy34j+pFBCgzOpJzxqxx3k4nRQHJHscwIhSzYz/PfsxxbmxsIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YzS2mgS2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780077881; c=relaxed/simple;
+	bh=baefiB1t0iOsg8R0RFIXO6GnbNQRrkVh+LFUlTroyys=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=uhUCcyUcr1e67ST52/mX2ENDwwQCgnGv4MSVgYGMLOiMQWUhAD04Em4LvPIcx6uY7JfwUO6llUz+wx3wvjSDt1ViusE9OPkf1cwDEW+jlpqtjAJRCCmuTb3wqlOyHAGV/fLyXaomjwSNd2NXiK0/y5Cqx8Hswrn2XV/ZuPPOAKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rj3bWXuH; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YzS2mgS2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331371F00893;
-	Fri, 29 May 2026 17:59:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780077558;
-	bh=s8eFqlkjYEk91v5fzGrFmIftnsmIBZ8RUqkME0H+iFU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=YzS2mgS2IbN+JeMxcrDxkH1nQ/5g3trVMkFT7GbRGN8A9scYeZVmud++qnjeGPsvY
-	 k6v+WesW0KGcYZthVCYtwGYmKiLE1ruB/uH+dnM/P3BX2p9nVc2IVJT9VcTEYLTFOf
-	 xnYNhigQmIXoLW8TtIxeleURMdddO8To0ff14zVLXveL09/3YTlGgddivGoqlnxoQb
-	 QN+YQRjRxBTKu9UExAYJfc0fbgPPLG2X6duGnTI/0ym1gn/NkSOFXdLdYFisRvZ8xM
-	 IklfQNWj1QFiiFD8uHAe7jlpnyvy47KbRyNrhfIGFTcxk94Xm+C01Ktcm7XI+4Rdoo
-	 XD4rYVr88kpsA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 11/20] KVM: Add CLASS() constructs to automagically
- handle lock+check of gpc
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529165114.748639-12-seanjc@google.com>
-References: <20260529165114.748639-12-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 17:59:17 +0000
-Message-Id: <20260529175918.331371F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rj3bWXuH"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b4530a90fdso107885305ad.1
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 11:04:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780077878; x=1780682678; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gfMwsg0HM1yRvKSxiICFP8LN82ljVUFn8UMojuCSS3s=;
+        b=rj3bWXuHpWGGT0kmRHGMLMcoCOjt8A8UrtzZYugiObR8kXgfRd7gtmqh06Z20IFhT2
+         oj7xOdA1HF2/P4rIwXBPMOM6ULWfZvjp9B8F5QzhxmnZ7McIkVFP2xUTOORM7689ntXt
+         /Z2wFRFBA76YUdenPHsHSCTUCmXkGOgczeESWT80VDyWTodgL01IUUlBGvVqiJhxmVvL
+         vMorxaWLfLyjLbSN4PLtaUcJYByjw148/9aYp0Y9Tm6dNcQZThpOdWf8WRtdezDjbigm
+         IOhjAvdU8IB5mEk9VZxNHtkUfrOw0ZTRJLOFzGvAGOt3jS9vHnSu1GCgtoO+O1DShFmg
+         rOfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780077878; x=1780682678;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gfMwsg0HM1yRvKSxiICFP8LN82ljVUFn8UMojuCSS3s=;
+        b=nHB6Vr3Nv+ajupMcNSxcijjuW4LZi+iAxWT47T5V1TBr64i6DBYg55NBvmfPMMuVfQ
+         ZwbYvUOTaIYpCh8Jd5cNCEEpjflDRNmKrMXQkigPBtMyyI4FRj8TYYaaYf86Fr2pTtXL
+         AUTwQYpjKscp6mlZBVH4DHKdEUF7US/cJecmZ2T3DDIi329fDTnUlyvOQsCk1igZdRQA
+         vYzRTh/ILp5a50a2SS80XQDJ8KRO1BArBMnJE5Im4uG0mcxDoNGo0CFmg2CKT6nBwynB
+         Tt26Jw1KyWXFm8Oz8FIzubzHbKbGOIST2EGw8LF676v1gC2rLzapMXcMBEg7gjBodRmu
+         MUUg==
+X-Forwarded-Encrypted: i=1; AFNElJ9QUVa2+eym4F5AhXTPPuUpZLFApfbAOHofoR+Vr9zh1lOQdkdnp2EXZjCZK0m9cFfU+Cg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6j9M7J5BnZKsMJ03u4H7BD+nTOSd1TbDq1UI29btOg+Z+Qvsh
+	zUaNwIpBWwQNO9qcYdv6m/yvDVfQ8D+qf3DW1qCEyU3IaPJJH6tQqws/NvRLFBgH34woHAjuvTQ
+	RBzNpxAmQ
+X-Received: from pgbdr23.prod.google.com ([2002:a05:6a02:fd7:b0:c79:8315:4734])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b4d:b0:2bf:2015:5b93
+ with SMTP id d9443c01a7336-2bf367d9879mr12357865ad.11.1780077877896; Fri, 29
+ May 2026 11:04:37 -0700 (PDT)
+Date: Fri, 29 May 2026 18:04:25 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.929.g9b7fa37559-goog
+Message-ID: <20260529180425.4162392-1-jrhilke@google.com>
+Subject: [PATCH v4] vfio: selftests: Find devices that have VFIO selftest drivers
+From: Josh Hilke <jrhilke@google.com>
+To: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Josh Hilke <jrhilke@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The cleanup wrapper defined by `DEFINE_GPC_CLASS` uses `if (!IS_ER=
-R(_T))` instead of `if (!IS_ERR_OR_NULL(_T))`, failing to guard against `NU=
-LL` pointers. This leads to a guaranteed kernel crash if ownership of the c=
-lass variable is ever transferred or if it is initialized to `NULL`.
---
+Add a new script, list_devices.sh, which prints out the
+segment:bus:device.function (SBDF) numbers and names of devices on a
+machine that have a VFIO selftest driver. This makes it easier to
+determine if the system is capable of running VFIO selftests.
 
-commit 88a61c5d744692bfbffaf3ccd332184029a7ffee
-Author: Sean Christopherson <seanjc@google.com>
+Includes a -q (quiet) argument which prints just the SBDFs so that the
+output can be piped into tools/testing/selftests/vfio/script/setup.sh to
+bind the devices to VFIO to use in VFIO selftests.
 
-KVM: Add CLASS() constructs to automagically handle lock+check of gpc
+Examples:
 
-This commit adds CLASS() definitions for mapping a PFN given a gfn_to_pfn
-cache (gpc), deduplicating lock, check, and unlock loops. The pvclock code
-is converted as the first user of this new construct.
+$ ./list_devices.sh
+0000:6a:01.0 - Intel SPR DSA (8086:0b25)
+0000:6f:01.0 - Intel SPR DSA (8086:0b25)
+0000:74:01.0 - Intel SPR DSA (8086:0b25)
+0000:79:01.0 - Intel SPR DSA (8086:0b25)
+0000:e7:01.0 - Intel SPR DSA (8086:0b25)
+0000:ec:01.0 - Intel SPR DSA (8086:0b25)
+0000:f1:01.0 - Intel SPR DSA (8086:0b25)
+0000:f6:01.0 - Intel SPR DSA (8086:0b25)
 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
+$ ./list_devices.sh -q
+0000:6a:01.0
+0000:6f:01.0
+0000:74:01.0
+0000:79:01.0
+0000:e7:01.0
+0000:ec:01.0
+0000:f1:01.0
+0000:f6:01.0
 
-[ ... ]
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Josh Hilke <jrhilke@google.com>
+---
+Changelog
 
-> +static inline void gpc_map_local_unlock(void **khva)
-> +{
-> +	struct gfn_to_pfn_cache *gpc =3D container_of(khva, struct gfn_to_pfn_c=
-ache, khva);
-> +
-> +	kvm_gpc_mark_dirty_in_slot(gpc);
-> +
-> +	read_unlock(&gpc->lock);
-> +}
-> +
-> +static inline void gpc_map_local_unlock_ro(void **khva)
-> +{
-> +	read_unlock(&container_of(khva, struct gfn_to_pfn_cache, khva)->lock);
-> +}
-> +
-> +#define DEFINE_GPC_CLASS(try, ro)						\
-> +DEFINE_CLASS(gpc##try##_map_local##ro, void **,					\
-> +	     if (!IS_ERR(_T)) gpc_map_local_unlock##ro(_T),			\
+v3 -> v4:
+- Move argument parsing into main() (David)
+- Use empty string for false in quiet flag (David)
+- Simplify logic to print device names and IDs (David)
 
-[Severity: High]
-Does this guard expression properly handle NULL values, or could it lead to=
- a
-regression?
+ tools/testing/selftests/vfio/Makefile         |  1 +
+ .../selftests/vfio/scripts/list_devices.sh    | 43 +++++++++++++++++++
+ 2 files changed, 44 insertions(+)
+ create mode 100755 tools/testing/selftests/vfio/scripts/list_devices.sh
 
-Since IS_ERR(NULL) evaluates to false, !IS_ERR(NULL) evaluates to true. If a
-user of this class manually sets the variable to NULL or uses a primitive
-like no_free_ptr() to inhibit cleanup, the destructor will run and
-erroneously execute gpc_map_local_unlock(NULL).
+diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+index 0684932d91bf..777f91f09057 100644
+--- a/tools/testing/selftests/vfio/Makefile
++++ b/tools/testing/selftests/vfio/Makefile
+@@ -15,6 +15,7 @@ TEST_GEN_PROGS += vfio_pci_driver_test
+ 
+ TEST_FILES += scripts/cleanup.sh
+ TEST_FILES += scripts/lib.sh
++TEST_FILES += scripts/list_devices.sh
+ TEST_FILES += scripts/run.sh
+ TEST_FILES += scripts/setup.sh
+ 
+diff --git a/tools/testing/selftests/vfio/scripts/list_devices.sh b/tools/testing/selftests/vfio/scripts/list_devices.sh
+new file mode 100755
+index 000000000000..249532f15570
+--- /dev/null
++++ b/tools/testing/selftests/vfio/scripts/list_devices.sh
+@@ -0,0 +1,43 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++# List of devices which have a VFIO selftest driver
++readonly DEVICES=(
++	"8086:0b25,Intel SPR DSA"
++	"8086:11fb,Intel GNR-D DSA"
++	"8086:1212,Intel DR DSA"
++	"8086:0cf8,Intel CBDMA"
++)
++
++# Print the segment:bus:device.function numbers of PCI devices that can be used
++# to run VFIO selftests.
++function main() {
++	local id_name
++	local quiet=""
++	local name
++	local bdfs
++	local bdf
++	local id
++
++	while getopts "q" opt; do
++		case $opt in
++			q) quiet="true" ;;
++			\?) echo "Usage: $0 [-q]" >&2; exit 1 ;;
++		esac
++	done
++
++	for id_name in "${DEVICES[@]}"; do
++		IFS=',' read -r id name <<< "$id_name"
++		bdfs=$(lspci -D -d "${id}" | awk '{print $1}')
++
++		[[ -z $bdfs ]] && continue
++
++		if [ "$quiet" ]; then
++			echo "${bdfs}"
++		else
++			echo "${bdfs}" | sed "s|$| - ${name} (${id})|"
++		fi
++	done
++}
++
++main "$@"
+-- 
+2.54.0.929.g9b7fa37559-goog
 
-Inside gpc_map_local_unlock(), container_of(NULL, ...) will produce a large
-negative pointer. The subsequent calls to kvm_gpc_mark_dirty_in_slot() and
-read_unlock() will dereference this invalid pointer and cause a regression.
-
-Would it be safer to use if (!IS_ERR_OR_NULL(_T)) instead?
-
-> +	     gpc##try##_map_local_lock(gpc, len),				\
-> +	     struct gfn_to_pfn_cache *gpc, unsigned long len)			\
-> +
-> +DEFINE_GPC_CLASS(,);
-> +DEFINE_GPC_CLASS(_try,);
-> +DEFINE_GPC_CLASS(, _ro);
-> +DEFINE_GPC_CLASS(_try, _ro);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529165114.7486=
-39-1-seanjc@google.com?part=3D11
