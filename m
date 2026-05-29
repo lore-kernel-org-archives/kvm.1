@@ -1,65 +1,66 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4CD3AB5DA
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 08:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEB03B3894
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 08:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780043396; cv=none; b=MIf4zdg2MeZTyPNIeM0ILUjofUAVgwJgPoSjyjR4f0+4sw2dR4r8Y8VEYtD6ggSjpYEslY9NU4ayWFnDD+ZJ7OO0OrxYLpQiXxyDv0Ve5FTBkiXrNwfB0FqMJbtpII68l4EV9GjRJwOPshJknCGJu802612hdZvgUrWpUjpsbH4=
+	t=1780043396; cv=none; b=faccE3JhUK2pUbodO5R6LFIncIEAw9Wkre2BJwHOhprMoDfCbzt02CvlXNQP0D/yBkzdZ6A5MPLhVeFRvDtIjS2fBDu7dCdAQDaAX4FneLWaxCyoypQD9Qf/Pa6v7uHWbSuEYyS4E95fmd+2plsX4IdZycEU4CS0pMbcqqJRZ2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780043396; c=relaxed/simple;
-	bh=kr8V45dU/wbaYhuVzZJln4x5vTBbfXPqlixEGne7iqg=;
+	bh=lVL1F9hx4apqKk/DqO+AKMbOuaqLn5wvfXzXjJrIUWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i6w2y+459kBpDvQ3tAs/nfRiSOGA7ch7uud8LzgGhIJZAZ5HVsOogDOlBNy5Bmjq0Ns+2bR86L1X8tww+UqycgxqOBQ0ZRaZIu+ns4HH2R/zhRI6oORZPXZrmz+zR/ho3SdR60LbAbQD38egWXvajH/unmcWYfFf4/cyz8DO5mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Gx8UlJa6; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version:Content-Type; b=fNYV/SJlG1pl+xhJ25B/FP1BDZ31hXmSoqOyLTxcQ5lJjal4N8lZ4pw8ircH8Kj2LmzR+59MfuCk3vfLy82syiCqZdKPWwrA5rH8DVMzTJJgsL81uubqochUv17uPJxMEm1EXfgXBOYVTLZTPMZiBWBOY8vlwOpHR1C79xS5ai0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vTMGFFQP; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Gx8UlJa6"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4904127c32cso46406915e9.2
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vTMGFFQP"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4903997fcb5so79191005e9.2
         for <kvm@vger.kernel.org>; Fri, 29 May 2026 01:29:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780043393; x=1780648193; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1780043394; x=1780648194; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xM5kxa8UaLwO/IVN2pUPHL7tGeiJncGgEWLu3xGeqnI=;
-        b=Gx8UlJa6E0zZU6waX524mbqJr527f2qrcYwnS53UwQteNkA9eHOFEfWPIwb51vvTWU
-         TQ2V17NHzkIIpY4iadR591rAd86l4aXsvUho5Aze2RigaZbSiaQcneboY2RHLv1KAU6/
-         b8X5xC2fvfPEFF6nso7sC6veGjgOJ49G9KEgIxrvH73Y3heSGP2KABvAhtsR0kJefFRl
-         fb7bbQyrQ855BDYnq1kF2WvkE9znm1gv/nQdMryvfXjOjyxMjPBZ/pm2giMjFDWdljsP
-         Qyhk6Hnnz6aEvL0wy0UFjblCpouYAkNidl4ZsuCrG70jlBmBrSclRAe70UJt3scRlrQW
-         /SWA==
+        bh=dt2pVSNtYi5awIMi0tBurROv0xQ5d0//K+fOntt40rM=;
+        b=vTMGFFQPxMXfcAq39nFUBBDLOEEwnlfDapX++GqCqu+YzvUZxbfnkb8y9VeDdU1Rzo
+         r7zzmGw074ilQ50kjw/8LVyqkD+z8fZ64dla/ZU9N9lzYqShZcIa0PIsh29BpledSksJ
+         SGbiUw5TxoEaFb3C3UXW4DU2Mkz2egqEh2Jgbrcz8O5FNiHULRzm7chh8+SskwpSKG8J
+         uyEV2OfSdQEhCYNmSkjeSZz2H/zFB0dVgIA9/9We5a/xGttN/7v0wv8qDTBgwZESWSgD
+         b9gdGZysOSoN7FEKoBMG9F7d9lQPuwTQ0zDrSDvUdWQOuDXGDtgRgIEXq71SXS7er/N3
+         srgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780043393; x=1780648193;
+        d=1e100.net; s=20251104; t=1780043394; x=1780648194;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=xM5kxa8UaLwO/IVN2pUPHL7tGeiJncGgEWLu3xGeqnI=;
-        b=KwmZLuOr0murKi47KElD3q1jH5lI+UGH413egCSOe9Et6VM69T/lm9yOBcRCpMgbxz
-         S1062ONRq2fTQuCk9PSdKMaG5QZcyuWN6ZwlljYDjLKompmmyc484mdi7bhexbIW5m3X
-         1IiHJspWQICs045HIsHN99JAsT7uQoXFMPHrJChlGLtlZkZgKrTummTvitL/q0nzCc63
-         OnREnfCObFzerWfoF78sBexLPdwoiTL7N34RujfPjfAlAyG//HWp7MlcBo3VdtDSQT7o
-         DHhwClQqm+6zhUKpI5xpEXpZQ7Z1DpxPf7tGeXBN2NO605DuXyuGmrxHHnrBqqaxvqEK
-         CyoA==
-X-Forwarded-Encrypted: i=1; AFNElJ/vso1FGwZvoG2ChEHp1jttTLF4SgwUP/f1LyVg5itDWK8xmsbwGDF708bX//AdV4z5D2I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4BTTQRdXWgXha5OLov1mNSEj8dShDCRDxBkDM5sGnNlx9wscd
-	x+imdSxExEPE4QjyZD6WLnIc/N+T7l+AEqA4Hzupgjdy9eLGAaKXS8VuyfQvac1SiR4=
-X-Gm-Gg: Acq92OHB8jOZvxxTs5ihUdM1RjcA3vrDaaTGAOkHUdGtfMPYxYdTbLVkxhy1Oh2sn9M
-	cVYrC9QR6c5XlQg2KEkhdKo/uVXSdF6S9QYlyyju1PQXrRYmxR/2BRSxSKJMJ8EcnW8cogYiMSd
-	5A55NVoFnkvZxRi+B6Itj6DVOVigrkZf+pvbJCjxp/Zge5zxWJBxHW/txecdL0vBp8w24glDdIk
-	9ZQlZh8AhSZXkEEIMAEFiGzltl3GskXhXYIv29zewHkouMdr1eo2bDHKPkMBo/gB6S36mswnD1V
-	CnFZTZL45X73sWq0Hs93D6lExVBpBRYwUbclc49HkkKRINDOGnpNK/sOQP506HeEuo9L3F/s6sj
-	Fvvb6y9dcDSfp+tDv4j/woBZWX1JBEFWm3CGbrQ6kdqvzxTiw1N3hAmzZloXKebeqVNYxyhSheX
-	HMvV8o2L4x44BaGRoYfm82bPUyW4aSy2xVcRz+RhI9uxuM
-X-Received: by 2002:a05:600c:c8f:b0:490:9d1b:f05c with SMTP id 5b1f17b1804b1-4909d1bf0demr29165975e9.33.1780043392462;
-        Fri, 29 May 2026 01:29:52 -0700 (PDT)
+        bh=dt2pVSNtYi5awIMi0tBurROv0xQ5d0//K+fOntt40rM=;
+        b=iee9BAVLNYBhHUk0M0DNNsRQCWXESip05b7lmqa4pvApZF5UbRZ6dC1O5vQltCUGTk
+         5T9sSk4yfy++i2SdETvhQmaEuKjMMv2YnRaG3Tuv52z1yOaIl+SMqzhWSQKSKa/Q60Sh
+         TNdi2W+0rNuQ25mZ0s2hkg9BJKYSUfARfzGtx62qmlsf3J6NFsv5AHWbC/4zZdieIVYm
+         WFBR8qz9Jh1Av6PYXXShK18FobBHq/1+bj7stHqUod8I9LgnARhyugefVnKwvt+awtqT
+         44yBDfND6I+EjN+wCU9rg5GnKSEn5wVvFZnmzemIEy171oP526yeHK6eMKB+YvFhu3Ug
+         DNxg==
+X-Forwarded-Encrypted: i=1; AFNElJ8ycAvsqx1FLuFGhcYKlZys6FxAtczcHQvZD4IiziZuJzKfgNYr5UvMjtSWULaQH/oVxg0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsrcEu4RHZIyRhTVEYMXvM6G6hRKQftA9JfaWJei4PcHTsal55
+	Io6z9jwbs4aVWOpogFO/SmH0ZecLL2aee065shGhCOIisGc0UvsjVHfouMbTKQUrRFHIYPjmROL
+	jOw/a
+X-Gm-Gg: Acq92OG/156fNiBCdEc4A+L/YPs7C8x8xFFBNxK/QQ9r7URi5QV/0VgGfUpvd48qCbB
+	c3PS0iAQYVNhWMFJFd2Vqwj9L+xhf++N4Kl4jynd3pI532R1q9++bI7Y1eEn3sr5rAKvIJrJ9un
+	TePT7H3bCVKv9G9whVcPyC9J8zHCkuTAG32o2obCNU9qSqEYzv8BvATeheS7IdNquu5VatkDY0N
+	HudMODDyRei/9uGPjFpksPPw+STtcrLFYrZbTt8VmuhQLOzycUFq5D50fAeh91R1IEqJRXitXTW
+	chgrV1kmZq2K1NQv7WH/EmHPd8Z3F6sqGoRRW7iSWFPQNJGPMrn5YGTblvBpQxXMPiEzBy3qatT
+	joKdtrsD7L1dBOPuUb7Oc5CRYfpQj3Msg1MhDbS1N125pJqPcjdw2u3cHRc9Ykxzbc3kQK/EI1A
+	82OqfUNEWYF2iUqDIhI1YQl8/qlsZhFADCVA==
+X-Received: by 2002:a05:600c:4504:b0:490:51e2:d992 with SMTP id 5b1f17b1804b1-4909c0b3349mr32182745e9.13.1780043393357;
+        Fri, 29 May 2026 01:29:53 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909d6f35f8sm20354765e9.13.2026.05.29.01.29.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34a0374sm1669634f8f.2.2026.05.29.01.29.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 29 May 2026 01:29:51 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id C660F604BD;
+	by draig.lan (Postfix) with ESMTP id A9E146036E;
 	Fri, 29 May 2026 09:29:48 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,9 +73,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v7 6/8] target/arm: enable event stream on WFE instructions
-Date: Fri, 29 May 2026 09:29:45 +0100
-Message-ID: <20260529082948.363931-7-alex.bennee@linaro.org>
+Subject: [PATCH v7 5/8] target/arm: implements SEV/SEVL for all modes
+Date: Fri, 29 May 2026 09:29:44 +0100
+Message-ID: <20260529082948.363931-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260529082948.363931-1-alex.bennee@linaro.org>
 References: <20260529082948.363931-1-alex.bennee@linaro.org>
@@ -87,287 +88,195 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Two generic timers (K and H) are capable of generating timer event
-stream events. Provide a helper to calculate when the nearest one will
-happen.
-
-Now we can calculate when the next event stream event is we can re-use
-the wfxt_timer and configure it to fire as we enter a WFE that is
-going to sleep. Reverse the M-profile logic so we can enter a sleep
-state in both profiles.
-
-To avoid issues with QEMU's incomplete ldst exclusive handling causing
-potential deadlocks in common WFE enabled locking patterns we take
-advantage of the architectures flexibility and treat being in the
-exclusive region as a reason to exit.
+Remove the restrictions that make this a M-profile only operation and
+enable the instructions for all Arm profiles.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
 ---
 v2
-  - merged target/arm: add gt_calc_next_event_stream
-  - update to use halt_reason
-  - made arm_wfxt_timer_cb atomically consume halt_reason
-v4
-  - skip sleep if in the exclusive region
-  - update commit message
-  - remove the CF_PARALLEL guards so we work in smp
-v5
-  - use env_archcpu for ARMCPU rather then expensive QOM cast
-  - rely on cpu->wfxt_timer to guard event stream leg
-v6
-  - use atomic_xchg to consume event_register
-  - remove extraneous target_el calculation
+  - fix alignment in a32.decode
+  - set bool directly, defend with QEMU_BUILD_BUG_ON
+  - s/instructions/profiles/
+  - share get_event_reg between translate/translate-a64
 ---
- target/arm/cpu.c               |  13 +++
- target/arm/tcg/op_helper.c     | 142 ++++++++++++++++++++++++++++-----
- target/arm/tcg/translate-a64.c |  10 +--
- target/arm/tcg/translate.c     |  16 +---
- 4 files changed, 139 insertions(+), 42 deletions(-)
+ target/arm/tcg/translate.h     | 18 ++++++++++++++++++
+ target/arm/tcg/a32.decode      |  5 ++---
+ target/arm/tcg/a64.decode      |  5 ++---
+ target/arm/tcg/t16.decode      |  4 +---
+ target/arm/tcg/t32.decode      |  4 +---
+ target/arm/tcg/op_helper.c     |  4 +---
+ target/arm/tcg/translate-a64.c | 17 +++++++++++++++++
+ target/arm/tcg/translate.c     | 13 ++++++++-----
+ 8 files changed, 50 insertions(+), 20 deletions(-)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 8771b695d9d..d01b4cee5f0 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -879,10 +879,23 @@ bool arm_cpu_exec_halt(CPUState *cs)
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index d4bcc5bad4c..b71b1d5be66 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -856,6 +856,24 @@ static inline void gen_restore_rmode(TCGv_i32 old, TCGv_ptr fpst)
+     gen_helper_set_rmode(old, old, fpst);
  }
- #endif
  
 +/*
-+ * Unlike almost everything else that messes with the halt_reason and
-+ * event_register details the timer callbacks are not in the vCPU
-+ * context.
++ * Event Register signalling.
 + *
-+ * To prevent races we atomically consume a HALT_WFE and set the event
-+ * register. Either way we trigger the an exit event.
++ * A bunch of activities trigger events, we just need to latch on to
++ * true. The event eventually gets consumed by WFE/WFET.
++ *
++ * user-mode treats these as NOPs.
 + */
- static void arm_wfxt_timer_cb(void *opaque)
- {
-     ARMCPU *cpu = opaque;
-     CPUState *cs = CPU(cpu);
-+    CPUARMState *env = &cpu->env;
 +
-+    if (qatomic_cmpxchg(&env->halt_reason, HALT_WFE, NOT_HALTED)) {
-+        qatomic_set(&env->event_register, true);
-+    }
++static inline void gen_event_reg(void)
++{
++#ifndef CONFIG_USER_ONLY
++    TCGv_i32 set_event = tcg_constant_i32(1);
++    QEMU_BUILD_BUG_ON(sizeof_field(CPUARMState, event_register) != 1);
++    tcg_gen_st8_i32(set_event, tcg_env, offsetof(CPUARMState, event_register));
++#endif
++}
++
+ /*
+  * Helpers for implementing sets of trans_* functions.
+  * Defer the implementation of NAME to FUNC, with optional extra arguments.
+diff --git a/target/arm/tcg/a32.decode b/target/arm/tcg/a32.decode
+index f2ca4809495..547aa2b1490 100644
+--- a/target/arm/tcg/a32.decode
++++ b/target/arm/tcg/a32.decode
+@@ -192,9 +192,8 @@ SMULTT           .... 0001 0110 .... 0000 .... 1110 ....      @rd0mn
+       WFE        ---- 0011 0010 0000 1111 ---- 0000 0010
+       WFI        ---- 0011 0010 0000 1111 ---- 0000 0011
  
-     /*
-      * We expect the CPU to be halted; this will cause arm_cpu_is_work()
+-      # TODO: Implement SEV, SEVL; may help SMP performance.
+-      # SEV      ---- 0011 0010 0000 1111 ---- 0000 0100
+-      # SEVL     ---- 0011 0010 0000 1111 ---- 0000 0101
++      SEV        ---- 0011 0010 0000 1111 ---- 0000 0100
++      SEVL       ---- 0011 0010 0000 1111 ---- 0000 0101
+ 
+       ESB        ---- 0011 0010 0000 1111 ---- 0001 0000
+     ]
+diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
+index 02c7264cb99..7ea52ac23b9 100644
+--- a/target/arm/tcg/a64.decode
++++ b/target/arm/tcg/a64.decode
+@@ -237,9 +237,8 @@ ERETA           1101011 0100 11111 00001 m:1 11111 11111 &reta  # ERETAA, ERETAB
+     YIELD       1101 0101 0000 0011 0010 0000 001 11111
+     WFE         1101 0101 0000 0011 0010 0000 010 11111
+     WFI         1101 0101 0000 0011 0010 0000 011 11111
+-    # We implement WFE to never block, so our SEV/SEVL are NOPs
+-    # SEV       1101 0101 0000 0011 0010 0000 100 11111
+-    # SEVL      1101 0101 0000 0011 0010 0000 101 11111
++    SEV         1101 0101 0000 0011 0010 0000 100 11111
++    SEVL        1101 0101 0000 0011 0010 0000 101 11111
+     # Our DGL is a NOP because we don't merge memory accesses anyway.
+     # DGL       1101 0101 0000 0011 0010 0000 110 11111
+     XPACLRI     1101 0101 0000 0011 0010 0000 111 11111
+diff --git a/target/arm/tcg/t16.decode b/target/arm/tcg/t16.decode
+index 778fbf16275..9a8f89538ac 100644
+--- a/target/arm/tcg/t16.decode
++++ b/target/arm/tcg/t16.decode
+@@ -228,10 +228,8 @@ REVSH           1011 1010 11 ... ...            @rdm
+     WFE         1011 1111 0010 0000
+     WFI         1011 1111 0011 0000
+ 
+-    # M-profile SEV is implemented.
+-    # TODO: Implement SEV for other profiles, and SEVL for all profiles; may help SMP performance.
+     SEV         1011 1111 0100 0000
+-    # SEVL      1011 1111 0101 0000
++    SEVL        1011 1111 0101 0000
+ 
+     # The canonical nop has the second nibble as 0000, but the whole of the
+     # rest of the space is a reserved hint, behaves as nop.
+diff --git a/target/arm/tcg/t32.decode b/target/arm/tcg/t32.decode
+index 49b8d0037ec..8ae277fe112 100644
+--- a/target/arm/tcg/t32.decode
++++ b/target/arm/tcg/t32.decode
+@@ -369,10 +369,8 @@ CLZ              1111 1010 1011 ---- 1111 .... 1000 ....      @rdm
+         WFE      1111 0011 1010 1111 1000 0000 0000 0010
+         WFI      1111 0011 1010 1111 1000 0000 0000 0011
+ 
+-        # M-profile SEV is implemented.
+-        # TODO: Implement SEV for other profiles, and SEVL for all profiles; may help SMP performance.
+         SEV      1111 0011 1010 1111 1000 0000 0000 0100
+-        # SEVL   1111 0011 1010 1111 1000 0000 0000 0101
++        SEVL     1111 0011 1010 1111 1000 0000 0000 0101
+ 
+         ESB      1111 0011 1010 1111 1000 0000 0001 0000
+       ]
 diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index 2b1fb1e059d..b803c9bf162 100644
+index 504526153a6..2b1fb1e059d 100644
 --- a/target/arm/tcg/op_helper.c
 +++ b/target/arm/tcg/op_helper.c
-@@ -483,6 +483,97 @@ void HELPER(sev)(CPUARMState *env)
-     }
- }
- 
-+#ifndef CONFIG_USER_ONLY
-+/*
-+ * Event Stream events don't do anything apart from wake up sleeping
-+ * cores. These helpers calculate the next event stream event time so
-+ * the WFE helper can decide when its next wake up tick will be.
-+ */
-+static int64_t gt_recalc_one_evt(CPUARMState *env, uint32_t control, uint64_t offset)
-+{
-+    ARMCPU *cpu = env_archcpu(env);
-+    bool evnten = FIELD_EX32(control, CNTxCTL, EVNTEN);
-+
-+    if (evnten) {
-+        int evnti = FIELD_EX32(control, CNTxCTL, EVNTI);
-+        bool evntis = FIELD_EX32(control, CNTxCTL, EVNTIS);
-+        bool evntdir = FIELD_EX32(control, CNTxCTL, EVNTDIR);
-+        /*
-+         * To figure out when the next event timer should fire we need
-+         * to calculate which bit of the counter we want to flip and
-+         * which transition counts.
-+         *
-+         * So we calculate 1 << bit - current lower bits and then add
-+         * 1 << bit if the bit needs to flip twice to meet evntdir
-+         */
-+        int bit = evntis ? evnti + 8 : evnti;
-+        uint64_t count = gt_get_countervalue(env) - offset;
-+        uint64_t target_bit = BIT_ULL(bit);
-+        uint64_t lower_bits = MAKE_64BIT_MASK(0, bit - 1);
-+        uint64_t next_tick = target_bit - (count & lower_bits);
-+        uint64_t abstick;
-+
-+        /* do we need to bit flip twice? */
-+        if (((count & target_bit) != 0) ^ evntdir) {
-+            next_tick += target_bit;
-+        }
-+
-+        /*
-+         * Note that the desired next expiry time might be beyond the
-+         * signed-64-bit range of a QEMUTimer -- in this case we just
-+         * set the timer for as far in the future as possible. When the
-+         * timer expires we will reset the timer for any remaining period.
-+         */
-+        if (uadd64_overflow(next_tick, offset, &abstick)) {
-+            abstick = UINT64_MAX;
-+        }
-+        if (abstick > INT64_MAX / gt_cntfrq_period_ns(cpu)) {
-+            return INT64_MAX;
-+        } else {
-+            return abstick;
-+        }
-+    }
-+
-+    return -1;
-+}
-+
-+/*
-+ * Calculate the next event stream time and return it. Returns -1 if
-+ * no event streams are enabled. It is up to the WFE helpers to decide
-+ * on the next time.
-+ */
-+static int64_t gt_calc_next_event_stream(CPUARMState *env)
-+{
-+    ARMCPU *cpu = env_archcpu(env);
-+    uint64_t hcr = arm_hcr_el2_eff(env);
-+    int64_t next_time = -1;
-+    uint64_t offset;
-+
-+    /* Unless we are missing EL2 this can generate events */
-+    if (arm_feature(env, ARM_FEATURE_EL2)) {
-+        offset = gt_direct_access_timer_offset(env, GTIMER_PHYS);
-+        next_time = gt_recalc_one_evt(env, env->cp15.cnthctl_el2, offset);
-+    }
-+
-+    /* Event stream events from virtual counter enabled? */
-+    if (!cpu_isar_feature(aa64_vh, cpu) ||
-+        !((hcr & (HCR_E2H | HCR_TGE)) == (HCR_E2H | HCR_TGE))) {
-+        int64_t next_virt_time;
-+        offset = gt_direct_access_timer_offset(env, GTIMER_VIRT);
-+        next_virt_time = gt_recalc_one_evt(env, env->cp15.c14_cntkctl, offset);
-+
-+        /* is this earlier than the next physical event? */
-+        if (next_virt_time > 0) {
-+            if (next_time < 0 || next_virt_time < next_time) {
-+                next_time = next_virt_time;
-+            }
-+        }
-+    }
-+
-+    return next_time;
-+}
-+#endif
-+
- void HELPER(wfe)(CPUARMState *env)
- {
- #ifdef CONFIG_USER_ONLY
-@@ -495,32 +586,43 @@ void HELPER(wfe)(CPUARMState *env)
- #else
-     /*
-      * WFE (Wait For Event) is a hint instruction.
--     * For Cortex-M (M-profile), we implement the strict architectural behavior:
-+     *
-      * 1. Check the Event Register (set by SEV or SEVONPEND).
-      * 2. If set, clear it and continue (consume the event).
-      */
--    if (arm_feature(env, ARM_FEATURE_M)) {
--        CPUState *cs = env_cpu(env);
-+    CPUState *cs = env_cpu(env);
-+    ARMCPU *cpu = env_archcpu(env);
- 
--        if (env->event_register) {
--            env->event_register = false;
--            return;
+@@ -476,9 +476,7 @@ void HELPER(sev)(CPUARMState *env)
+     CPUState *cs = env_cpu(env);
+     CPU_FOREACH(cs) {
+         ARMCPU *target_cpu = ARM_CPU(cs);
+-        if (arm_feature(&target_cpu->env, ARM_FEATURE_M)) {
+-            target_cpu->env.event_register = true;
 -        }
-+    if (qatomic_xchg(&env->event_register, false)) {
-+        return;
-+    }
- 
--        env->halt_reason = HALT_WFE;
--        cs->exception_index = EXCP_HLT;
--        cs->halted = 1;
--        cpu_loop_exit(cs);
--    } else {
--        /*
--         * For A-profile and others, we rely on the existing "yield" behavior.
--         * Don't actually halt the CPU, just yield back to top
--         * level loop. This is not going into a "low power state"
--         * (ie halting until some event occurs), so we never take
--         * a configurable trap to a different exception level
--         */
--        HELPER(yield)(env);
-+    /*
-+     * If the CPU has entered the exclusive region we could sleep
-+     * until the global monitor moves from Exclusive to Open Access.
-+     * However it would be expensive for QEMU to fully model the
-+     * global monitor and not doing so would potentially trigger
-+     * deadlocks in WFE enabled locking code. However as WFE is a hint
-+     * instruction the architecture allows for the PE to leave
-+     * low-power state for any reason. QEMU chooses to treat being in
-+     * an exclusive region as such and return directly.
-+     */
-+    if (env->exclusive_addr != -1) {
-+        return;
-+    }
-+
-+    /* For A-profile we also can be woken by the event stream */
-+    if (cpu->wfxt_timer) {
-+        int64_t next_event = gt_calc_next_event_stream(env);
-+        if (next_event > 0) {
-+            timer_mod(cpu->wfxt_timer, next_event);
-+        }
-     }
-+
-+    env->halt_reason = HALT_WFE;
-+    cs->exception_index = EXCP_HLT;
-+    cs->halted = 1;
-+    cpu_loop_exit(cs);
- #endif
- }
- 
++        target_cpu->env.event_register = true;
+         if (!qemu_cpu_is_self(cs)) {
+             qemu_cpu_kick(cs);
+         }
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 4b978c8b958..ec03eaa3bbd 100644
+index c20269b1501..4b978c8b958 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -2052,15 +2052,7 @@ static bool trans_SEVL(DisasContext *s, arg_SEV *a)
+@@ -2033,6 +2033,23 @@ static bool trans_WFI(DisasContext *s, arg_WFI *a)
+     return true;
+ }
  
++static bool trans_SEV(DisasContext *s, arg_SEV *a)
++{
++    /*
++     * SEV is a NOP for user-mode emulation.
++     */
++#ifndef CONFIG_USER_ONLY
++    gen_helper_sev(tcg_env);
++#endif
++    return true;
++}
++
++static bool trans_SEVL(DisasContext *s, arg_SEV *a)
++{
++    gen_event_reg();
++    return true;
++}
++
  static bool trans_WFE(DisasContext *s, arg_WFI *a)
  {
--    /*
--     * When running in MTTCG we don't generate jumps to the yield and
--     * WFE helpers as it won't affect the scheduling of other vCPUs.
--     * If we wanted to more completely model WFE/SEV so we don't busy
--     * spin unnecessarily we would need to do something more involved.
--     */
--    if (!(tb_cflags(s->base.tb) & CF_PARALLEL)) {
--        s->base.is_jmp = DISAS_WFE;
--    }
-+    s->base.is_jmp = DISAS_WFE;
-     return true;
- }
- 
+     /*
 diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index e1e5539f571..c10cc382d15 100644
+index c744b163453..e1e5539f571 100644
 --- a/target/arm/tcg/translate.c
 +++ b/target/arm/tcg/translate.c
-@@ -3262,19 +3262,9 @@ static bool trans_SEVL(DisasContext *s, arg_SEV *a)
- 
- static bool trans_WFE(DisasContext *s, arg_WFE *a)
+@@ -3246,17 +3246,20 @@ static bool trans_YIELD(DisasContext *s, arg_YIELD *a)
+ static bool trans_SEV(DisasContext *s, arg_SEV *a)
  {
--    /*
--     * When running single-threaded TCG code, use the helper to ensure that
--     * the next round-robin scheduled vCPU gets a crack.
--     *
--     * For Cortex-M, we implement the architectural WFE behavior (sleeping
--     * until an event occurs or the Event Register is set).
--     * For other profiles, we currently treat this as a NOP or yield,
--     * to preserve existing performance characteristics.
--     */
--    if (!(tb_cflags(s->base.tb) & CF_PARALLEL)) {
--        gen_update_pc(s, curr_insn_len(s));
--        s->base.is_jmp = DISAS_WFE;
+     /*
+-     * Currently SEV is a NOP for non-M-profile and in user-mode emulation.
+-     * For system-mode M-profile, it sets the event register.
++     * SEV is a NOP for user-mode emulation.
+      */
+ #ifndef CONFIG_USER_ONLY
+-    if (arm_dc_feature(s, ARM_FEATURE_M)) {
+-        gen_helper_sev(tcg_env);
 -    }
-+    /* For WFE, halt the vCPU until an event. */
-+    gen_update_pc(s, curr_insn_len(s));
-+    s->base.is_jmp = DISAS_WFE;
++    gen_helper_sev(tcg_env);
+ #endif
      return true;
  }
  
++static bool trans_SEVL(DisasContext *s, arg_SEV *a)
++{
++    gen_event_reg();
++    return true;
++}
++
+ static bool trans_WFE(DisasContext *s, arg_WFE *a)
+ {
+     /*
 -- 
 2.47.3
 
