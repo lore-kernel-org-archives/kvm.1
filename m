@@ -1,55 +1,55 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22D93BD646
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6073C1406
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093375; cv=none; b=DYoLR0rAFNaGpxlKeUF1jpKj6weGRCTD+zZE0PnKy+AhTPwuxmpIVbluaMVdOaHMe3AG1OkJJPP4dfs2I/UJvPx2vMTKvkS7F2pZSXCO8uZEkoKV2zGKAtKQWa/LAAHICeEA6nMrA4qitUI2fhNY1YKOH8Z7AcCpS3GNWZSqx9g=
+	t=1780093376; cv=none; b=HBEjXQ3ULn8J9aVyzPHsymXYQycVetTtEipc1Gq6joB8pwmBBcrXFVo/HKYv6cOW8PWgrAbuqgbSARqAWteNt1vnj8mZxRBd0AyRhkXSfZKjj+aVtxbM3+GgyjjPSjD2oDRLBoyY6IZRokRFaYEP/oJ/+xK45xcV/CuRFhnDYvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780093375; c=relaxed/simple;
-	bh=rNEMOfQP0lISV4GXkkh7r4YHYgmX95gg+RO88qDWtLA=;
+	s=arc-20240116; t=1780093376; c=relaxed/simple;
+	bh=lwn3MA9KM8thDveYybS6qHk91YxwQNF6NdtAA1Sy97c=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FtcFdvc9F3XWbB3LFf4Ipv4tQp62f7NghZ/rBtsfyRCIQBk+RAuyxERkcBjkNbxmy+81hsVKtUtGz1PUTA+MkZY/B7z7wB43x7ZXtPIBNmLQfooouOqrUH8AG5Ay++Sj2UoZ0Q0BUcIsbgNSTAp5kzbMsjNmbmLLwk/glHWkR/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X9FoXxLR; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=if2QrO7SLzkwQzRAI5FV3lz2b2PTs/urTst4KvJuOtYxUXzDA68U0r3JqKiDXEQ7Kx2D0aJcHP7fg0bJfKkhz+uzIC5jLPZQj0d7MCnLrbrbmam71ZitBQNeZGIO4pC7Sp7OTbJYZtaO5NLsNrqxgjxh6a4pHFSZXetrQIDyBzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bULHbIyK; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X9FoXxLR"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8422ca754d8so25541b3a.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:22:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bULHbIyK"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bf32fb7cb2so4333135ad.2
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:22:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093368; x=1780698168; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780093369; x=1780698169; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=IFUIQ/grqF4H0Xyudg/Qm5uUCCNXYoJ9yfo9zM/sbkk=;
-        b=X9FoXxLRCfoRy11dmMlzJPQzdEcFkvbPH4ZyXOxHrh4rD0UqB7nI33XDYdQKetSF2+
-         Hn4oTGhlbu4I9Lb04v7ivE2rDtvUTJEK+cihxP17PmT8putSG5JOeS38AztDHoVwQUyw
-         Kle1YmsYH75pldbcqkacPJBMYze15F9YbdVh5wG4onY2CMhSWQHHEN/9Zv/SL6NTW/n6
-         bTB8GoMgZ3F4T9ImySSQPJXOvYgl2StdOOmGQnPYu8C74xZunZmM2EOFRJLEl0TajVex
-         poI7u9ofCxukYtw9qKhPfgWab8NXqE2IY8JhpHT661RcI0w36njfuXdzPojN0S8ZeqC0
-         TDgQ==
+        bh=oUZ7pkbs+pCLPe3p8XbPZerSxi7aaVAC0nyW5XYMnDo=;
+        b=bULHbIyK3h9GW/tzmxS3b/8SiDJa+O3vJo7ExMatUIj6icP4f+8KdmVfeJdu0saBqq
+         KohALdQZjiCCs5fteLJt7a/80QwqZSKrW/HKxjiQDfOVX1JidN7mh81cpafb58A2Hwhq
+         cy7qcWiUAbdfS5dxKxROzjvb2Jqc/qkcDU2lwBewBTVj5TOzJiHzCDQtE8ry3G8t7NZ0
+         wTn4IuGfcefqRf1l7PlF0WdG2WgjQ38Xoh/6HQIb/5rMTKFfQ8PUBVEPAaWsx2PvsUOx
+         wI/gF7yuP/P0h1gnJh5JMsBPE+gx06Yi2TirSYTJOoO9X0MNi78qjFcxaooc6OL6bLBP
+         L6YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093368; x=1780698168;
+        d=1e100.net; s=20251104; t=1780093369; x=1780698169;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=IFUIQ/grqF4H0Xyudg/Qm5uUCCNXYoJ9yfo9zM/sbkk=;
-        b=UU67YBEzEK74lznlveedtgQWcRPJIR+NGSi1unbUIdXqEPCCndA5TxqZfdfTLmVAMl
-         oNz2U5k1ev2J1sIDFVxPMS5kF7Y7MQhXZnPDLTg7gTgRPala0uO1FLIFMV0YLi5RNmdj
-         ukVDZOwlio4uIc7puFovxrK2TJqNimN7BjPivtYD7WaR9drw4MJpEyv9ZPUK+Rgbr4mz
-         EvMI2R/lhOB04+QZOXq1B9GwSsK0N2LTznMPCZ5vcL5KeyhCctmS2ghw4ByvvajP+fGL
-         TFFOWsrZKku9LW9iGDW6qswCnfFNAXlXgdC6eMjlN2pSLR8vc/QIWMRqUgIFhsCLaZQh
-         Li2g==
-X-Gm-Message-State: AOJu0YwNpvueSKsWkLY71vTopdmCg4JyQeHAmTP4565gCMDezrS7ZDxH
-	E3Fjo7re1ViSJByPdqP/NEot3I9xVoMtHt27vaNbNg3IAH4dvNpKdddRHnlbG6zsHCoK5aFUZ35
-	An9VZWg==
-X-Received: from pfbk22.prod.google.com ([2002:a05:6a00:b016:b0:842:1f96:2713])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:27a0:b0:833:2398:cde2
- with SMTP id d2e1a72fcca58-8422570a361mr1184893b3a.43.1780093367744; Fri, 29
- May 2026 15:22:47 -0700 (PDT)
+        bh=oUZ7pkbs+pCLPe3p8XbPZerSxi7aaVAC0nyW5XYMnDo=;
+        b=cJbuIsEY7ESsnL25ZEw6YlaRrmQ5rpB0aYOn+xPdzvbP2yvK5M+z4Z1yVpm9H01wny
+         RB3kl/thDLHntsCvxlbz0ENlwcf0QrJ6NGBX+GUG912Pfwv8nKSmTfTLNnruc7prnfyA
+         YucbOlkKB27QPa7qLNO43sT0dYuhjAd8W5nV2iw9kULqm3MfwXoZrgaBXw2Kp0OCn7I8
+         P/PvDpmYGbJJCcJfOF0XMbfqdtoxfVKafHS9X6Csd8s2rgaVCHnNfGS9Nn1TX5R2476W
+         ymkB4qZZjRBWjExcjTLuZrx5qtKto0Z1q40ZvtDM3zE6/1wLDFkZh8sFtmmq7fDEEZ23
+         JixA==
+X-Gm-Message-State: AOJu0YzTlxhzo0H9hfi3oRQkVgyg/lHK/jJVTQKlpVxV7SBefA33yqiL
+	xdcxxRxxpE6hOAgVRq93CSvqazcrb7GX93X8PPMpR9P+ECA2AzVlHo6AVl9bHhGwJ4SHx0Zs1az
+	SPPf78w==
+X-Received: from plbmn14.prod.google.com ([2002:a17:903:a4e:b0:2bf:b2c:fa1d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1cb:b0:2b0:6e6a:8504
+ with SMTP id d9443c01a7336-2bf36845c9amr19204545ad.27.1780093368939; Fri, 29
+ May 2026 15:22:48 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 15:21:47 -0700
+Date: Fri, 29 May 2026 15:21:48 -0700
 In-Reply-To: <20260529222223.870923-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529222223.870923-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529222223.870923-5-seanjc@google.com>
-Subject: [PATCH v3 04/40] KVM: VMX: Read 32-bit GPR values for ENCLS
- instructions outside of 64-bit mode
+Message-ID: <20260529222223.870923-6-seanjc@google.com>
+Subject: [PATCH v3 05/40] KVM: x86: Trace hypercall register *after*
+ truncating values for 32-bit
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -70,51 +70,41 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When getting register values for ENCLS emulation, use kvm_register_read()
-instead of kvm_<reg>_read() so that bits 63:32 of the register are dropped
-if the guest is in 32-bit mode.
+When tracing hypercalls, invoke the tracepoint *after* truncating the
+register values for 32-bit guests so as not to record unused garbage (in
+the extremely unlikely scenario that the guest left garbage in a register
+after transitioning from 64-bit mode to 32-bit mode).
 
-Note, the misleading/surprising behavior of kvm_<reg>_read() being "raw"
-variants under the hood will be addressed once all non-benign bugs are
-fixed.
-
-Fixes: 70210c044b4e ("KVM: VMX: Add SGX ENCLS[ECREATE] handler to enforce CPUID restrictions")
-Fixes: b6f084ca5538 ("KVM: VMX: Add ENCLS[EINIT] handler to support SGX Launch Control (LC)")
-Acked-by: Kai Huang <kai.huang@intel.com>
+Fixes: 229456fc34b1 ("KVM: convert custom marker based tracing to event traces")
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/sgx.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kvm/x86.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/sgx.c b/arch/x86/kvm/vmx/sgx.c
-index df1d0cf76947..4c61fc33f764 100644
---- a/arch/x86/kvm/vmx/sgx.c
-+++ b/arch/x86/kvm/vmx/sgx.c
-@@ -225,8 +225,8 @@ static int handle_encls_ecreate(struct kvm_vcpu *vcpu)
- 	struct x86_exception ex;
- 	int r;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index e6f1dd84f22d..634a6d0197f6 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10429,8 +10429,6 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
  
--	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 32, 32, &pageinfo_gva) ||
--	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva))
-+	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 32, 32, &pageinfo_gva) ||
-+	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva))
- 		return 1;
+ 	++vcpu->stat.hypercalls;
  
- 	/*
-@@ -302,9 +302,9 @@ static int handle_encls_einit(struct kvm_vcpu *vcpu)
- 	gpa_t sig_gpa, secs_gpa, token_gpa;
- 	int ret, trapnr;
+-	trace_kvm_hypercall(nr, a0, a1, a2, a3);
+-
+ 	if (!op_64_bit) {
+ 		nr &= 0xFFFFFFFF;
+ 		a0 &= 0xFFFFFFFF;
+@@ -10439,6 +10437,8 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
+ 		a3 &= 0xFFFFFFFF;
+ 	}
  
--	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 1808, 4096, &sig_gva) ||
--	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva) ||
--	    sgx_get_encls_gva(vcpu, kvm_rdx_read(vcpu), 304, 512, &token_gva))
-+	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 1808, 4096, &sig_gva) ||
-+	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva) ||
-+	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RDX), 304, 512, &token_gva))
- 		return 1;
- 
- 	/*
++	trace_kvm_hypercall(nr, a0, a1, a2, a3);
++
+ 	if (cpl) {
+ 		ret = -KVM_EPERM;
+ 		goto out;
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
