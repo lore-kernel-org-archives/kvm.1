@@ -1,96 +1,96 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB323F5BEF
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14523231827
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093717; cv=none; b=PsZuTsJllyNTFem2eB7P7WvDnCrSkbpujc2unUbsZw0yvLGRPgsWVhRxs6VqqTGy8Lqmvoz/2dc8cupBRsWhk/akFqBbK4xWMrFe4JBeWN62rjN/KTp2Y8vMUerCDPQF2HupUDEt4frPNZOptqt79IkF1creJSPvaGV6UZFcB/Y=
+	t=1780094876; cv=none; b=ple7OwjWmMTFKLsBo/bTC0mrwpB7fdfyrM676ZGomMjJigad7sPa4MshAAuNn/gICcnBrZS0qL1DCL+an16TA+06K2SrI2EPEf4cdIb26foUwJCWFwhBpxCC6auI+rLvW5O8qNw7s3fOQA8jofpR/UAPpPotypYfevgVjzXsvTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780093717; c=relaxed/simple;
-	bh=VbnVXTEYv+JqDUa0Q19zWIbV7AepmZ6eJ3qhtJI8NKI=;
+	s=arc-20240116; t=1780094876; c=relaxed/simple;
+	bh=EhXkRw0+3FPNY3jkfcQ8Ugbl3bFu9YVeGT9yETM4UQ8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=K1mT7PkAO43wp38X/FKlsHzeAWVemUKcBBV6UGrIRqNkH2mEyPODJVCD+Hph+EmtvwE9Ix3bGANU8vVFOhuiKLYQqnMvFL+oVcS5S0XuI9FrHvyASaCYT7kS71vU+ZGlq1HFYChEZtz8qS7ihLzI20lcQyl5F1YnkkSXiJxYxD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iVL3nvCS; arc=none smtp.client-ip=209.85.214.202
+	 To:Content-Type; b=JU+F5M+s0MWsBzzFwx0v71Ztd6ywp1tLhTSF5FnN+g+hJZT5zmA2lFsjnWcAygEW3d5o6LOcn/Hv0iZhdipFQCE+LhBYTJRxMlFhnX7hpfBtL54rmeZtrhu4Hcmx+UC0LsgZSSnTDaxw6/CeUcFAfC49QlU3d6gSZpXJiJrvz0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M4zk/1hm; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iVL3nvCS"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bd04e4fe3dso118419555ad.3
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:28:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M4zk/1hm"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c82ba4715b6so15307585a12.2
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:47:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093716; x=1780698516; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UyvYYju/kOsku7tj1RfdIRz11t6+0rPHfTSkECF0MAQ=;
-        b=iVL3nvCSEezUDisXbRMsZa2U2Y+uihQlbBILe4QnPrVvVOUekxD0WK8cCppc9Zabiv
-         ymltooy9VJv5OOoNdyBQS2E7ZmoDDwyFiTVPgtL2V17oljNj17kKWhSxgssEv2J13Z1h
-         qTJOn0tkKoXtXSAzjBEuHJhvTkKRzb/v7D1DIHJh1n2CEW9v8HT342K/tb40TjVkvLRB
-         lAAo3QhLP9XxTmRTo96Bx2ZA02Vn5QXOiKvl2d9Q1zxQ2Q0Au1V2azIVWV9PxlSDxQMl
-         pwzxVEVjLdcp9nHmfIphFZPJzLgeGikS0iRelsTcTVUB4yvgPWBzwllyNF5AKgCZWgul
-         i/og==
+        d=google.com; s=20251104; t=1780094874; x=1780699674; darn=vger.kernel.org;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LBoaHKw1uhDp/VWR8jKcQP5YxjdLIxlGKMU+QUhdwms=;
+        b=M4zk/1hm5PyXjrNnQd3SMH+0YaUzqWqUJkYbC3zEt45FDiTmne9Kp6/88OKj3dk4uw
+         Tjpi34spAUvSnkd0bMD2Ujv0S1Xk61gQU5jD7ixDfHe0H/izgIRgo5L/YdpglXu2rsnP
+         +JmQNCr6stxIM0Tez9l0muPPXL2M1MxmPyc3/s6MdEzw5czRQSj3nWRumMOnW11z4Xqo
+         mT1NRA9ATUH5jVWogfG6K4sBuE/aomh6/+Ozhg5APszHcpkWPZIdlObVmd+GLN4Sds+3
+         osE2eJ9tNSz2seg457UrOuyVcP/om6FifHyPhdM9jTofHn27soqDHKtiCYSvQUrS+B8w
+         nHDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093716; x=1780698516;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UyvYYju/kOsku7tj1RfdIRz11t6+0rPHfTSkECF0MAQ=;
-        b=qDj5EEQ4cz35f1uCecztRfcH1ugS0fpIBOyWm8p524WB9ohEAzWTpL4TFKBe27Txkf
-         LUHXP2ygE6DAP3tquCbky5C/gZFrX0pywcpjQlTx7hXykHAoDBx+6pNtjV5Q4Lnv4FOu
-         AYYywrIrAanQIL828KeIMvhV8e+2WbSpVfAq7y0ALVXBnCeA/CRSc4G+Ahubs43AQTL2
-         S7qER3lhg7N1bVsOkGVaGFE7hcTG1CyOcA556ubhHshqmcqMbuvux6EORmj/W8YG9Mmq
-         AD4KIcFD7TSKe60C89hz/RR/32Yo/9zV0m4PfvHJVvCTw05j+QUSo534iToIOmyOTiIc
-         RKuA==
-X-Forwarded-Encrypted: i=1; AFNElJ/I7hC/7a0S6TRrNQWr5cU2hfhdxJS9nT/+SWV2QBlBBc0tDpuhuLSD6yjpQCG2QHz3WP0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfTvUyadN2zqwH2hiXceToMlkQnw8bfQ2AFKHlGzV2OJffQm4W
-	3b3lm+c/6ld2P7UcCH3DkgP9AdnCJ/8mFZecUXQsKLbyj8HMqoTDxmfG502cmtA1Wp+4KNjDCCc
-	dUOsmAA==
-X-Received: from plgo6.prod.google.com ([2002:a17:902:d4c6:b0:2bd:55dc:a132])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e54c:b0:2ba:4e84:966
- with SMTP id d9443c01a7336-2bf368ad611mr19077965ad.36.1780093715569; Fri, 29
- May 2026 15:28:35 -0700 (PDT)
-Date: Fri, 29 May 2026 15:28:34 -0700
-In-Reply-To: <709d9ca6-59bb-4f82-b48a-0aa67a4d6ba2@linux.dev>
+        d=1e100.net; s=20251104; t=1780094874; x=1780699674;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LBoaHKw1uhDp/VWR8jKcQP5YxjdLIxlGKMU+QUhdwms=;
+        b=I1KpO/QsxttHV51a0r9vqvhmnMyH6aXF1ft/V5+GHPR6NT+wlAoxlpO4ryGmNd/0PH
+         EHcSGfz67JBVhD0GfgPR8yKvZeqaqBSOWSWF6hWSpCiQGHnlK/+8Zpe77eitloZQIaKz
+         A3U9fACQ41bRH7d/vcHB8ynDJT7D55z0EZxBwBMQT8Iy3hMwPlcVPB3w0TDVWCsn1r5l
+         ruUy78zHJFexgQNQ71TRz0nTKTVQ/uoArcZ8CAjaErRDB2fWy+qhgZ8+42ZOt83NTnVt
+         ukHF/b+uwGyFUI/C4+3EymTVAWpMNmGPja1QR60qzalJRSRrrh2sfcbDspZsORNDsP/a
+         pHPg==
+X-Forwarded-Encrypted: i=1; AFNElJ+E0S38DTE/6ifMVrOxSZzr8gVDtJv/yoyUY6weKF9CtPM1DeIsB5h1/JSySSoQPH06kpI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9ELHd6+RylQo41YEXyHaXAIfE5kxedOvLaqxCm3Hqd3JeUiRN
+	Tyhn4Lc3IEzRqvJJRNqJvpV75xFVLeJecKMUrWvZvc0L4PoQqC9jv8OuYjzlFNYwCXg0h5PMYj/
+	HptzcRg==
+X-Received: from pgbcr12.prod.google.com ([2002:a05:6a02:410c:b0:c85:812d:cbfd])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:8ccb:b0:38b:eadd:449a
+ with SMTP id adf61e73a8af0-3b428242975mr1406350637.38.1780094874162; Fri, 29
+ May 2026 15:47:54 -0700 (PDT)
+Date: Fri, 29 May 2026 15:47:46 -0700
+In-Reply-To: <20260527174347.2356165-1-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260528-sev_snp_fixes-v1-1-d67a08151779@meta.com>
- <20260528235151.9E59E1F000E9@smtp.kernel.org> <709d9ca6-59bb-4f82-b48a-0aa67a4d6ba2@linux.dev>
-Message-ID: <ahoTEgTSVcEmUMvM@google.com>
-Subject: Re: [PATCH 1/2] KVM: SEV: Do not allow SEV-SNP VMs from intra-host migration
+References: <20260527174347.2356165-1-jmattson@google.com>
+X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
+Message-ID: <178009472318.880870.7878635650921105255.b4-ty@google.com>
+Subject: Re: [PATCH v4 0/5] KVM: x86: Virtualize AMD's "disable CPUID in usermode"
 From: Sean Christopherson <seanjc@google.com>
-To: Atish Patra <atish.patra@linux.dev>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, tglx@kernel.org, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, shuah@kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	ctpence@google.com, David.Kaplan@amd.com, binbin.wu@linux.intel.com, 
+	Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, May 29, 2026, Atish Patra wrote:
-> > Because the mirror's vmsa_features is zero, KVM treats the mirror VM as a
-> > standard SEV-ES VM (since ____sev_snp_guest() will evaluate to false).
-> > 
-> > When vCPUs are created for the mirror VM, KVM allocates standard SEV-ES
-> > VMSAs and fails to perform SNP-specific initialization, such as registering
-> > the VMSA pages in the RMP via SEV_CMD_SNP_LAUNCH_UPDATE.
-> > 
-> > When KVM executes VMRUN for the mirror VM's vCPU, the hardware evaluates an
-> > ASID bound to SNP execution using an invalid, non-RMP-registered VMSA page.
-> > Will this trigger an RMP #NPF (Nested Page Fault) on the host hypervisor,
-> > leading to an unhandled hypervisor crash and denial of service?
+On Wed, 27 May 2026 10:43:42 -0700, Jim Mattson wrote:
+> AMD's "disable CPUID in usermode" feature is analogous to Intel's "CPUID
+> faulting" feature, but it is advertised and activated differently.  The AMD
+> feature is advertised via CPUID.80000021H:EAX.CpuidUserDis[bit 17] and
+> activated by setting HWCR.CpuidUserDis[bit 35].
 > 
-> Nice catch! I don't think it will lead to hypervisor crash though. As per my
-> understanding, the fault on VMSA page would be sent to user space and just a
-> VM instance will crash which is not that critical.
-
-RMP #PFs on the VMSA will typically crash the host.  In this case, I would
-expect VMRUN to fault, which would trigger the BUG_ON() in kvm_spurious_fault().
-So assuming the "bad" VM can get far enough along to attempt VMRUN, this is
-likely fatal.
-
-> Having said that, we should close the gap for such mistakes from VMM side
-> though by rejecting mirroring of sev-snp VMs. I will add a patch and update
-> the migration kselftest as well for sanity checking.
+> Add virtualization support for the AMD feature.
 > 
-> > >   		ret = -EINVAL;
-> > >   		goto out_unlock;
-> > >   	}
+> [...]
+
+Applied to kvm-x86 misc, thanks!
+
+[1/5] KVM: x86: Consolidate CPUID fault handling for emulator and interception logic
+      https://github.com/kvm-x86/linux/commit/cf7d65d1d6f5
+[2/5] KVM: x86: Prioritize CPUID faulting over CPUID VM-exits in nested VMX
+      https://github.com/kvm-x86/linux/commit/be7fd7c3e8bc
+[3/5] KVM: x86: Remove supports_cpuid_fault() helper
+      https://github.com/kvm-x86/linux/commit/d1bc99885a59
+[4/5] KVM: x86: Virtualize AMD CPUID faulting
+      https://github.com/kvm-x86/linux/commit/e93a93f11490
+[5/5] KVM: selftests: Update hwcr_msr_test for CPUID faulting bit
+      https://github.com/kvm-x86/linux/commit/b16c2aca369d
+
+--
+https://github.com/kvm-x86/linux/tree/next
