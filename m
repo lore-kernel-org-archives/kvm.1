@@ -1,215 +1,270 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174A92E03EA
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DB033B6DB
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780067790; cv=none; b=Cu5vX5asWgwIKQzYGfGNwjer7p8sJDNSFKatHF1Q6fBaeZH6PmfEKWBqg1I17XW5Am2QdVgkQNbqCYMX48I150vv2fZ4bo5VDJTkVYN8ea75EPyywVtyWKtBSPr3YxtXYye8h3SwjyI3MAv7Pcl4Jv2ueaBXDe0H6bygxCyDD90=
+	t=1780067833; cv=none; b=V4CXhbMXFgV3Hs0/2nefPo6pXbNm1ubypp68Bfk2eWTIZftEDcWQauuK4bRE7uGjwB/1npRXDDtAvPcT6hk+KEkbFZ1wE9/PQFjJ7/b8PmzbIgSZF8MlHBSyB6gcfiFzTBNCTDnQleAS/qqyEVfx0oDsY2FqwpbMZ+Rb7T+scbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780067790; c=relaxed/simple;
-	bh=dQOl++zTF+tc24552iJ1UnHlVOjvpBkcEeM8dxwaPuE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Xnde2ok0Ndj0PjhqobjV81IGmtcuO24RDIx8oLXO7qZUdGh0D/dJcVLDeIAYT69lyZxtWa5t2A/NzaMNPjlfK9QhJ4T9zuXfLVQPvY6ZSqlsKq0WGyTMUuuNz6pcPOoRZgNMIQ61MeXDGn6NqSFaYNpgsOTMBMNwb4ulQQ5tqts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YvjPJKcS; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780067833; c=relaxed/simple;
+	bh=zca8RK4iV1xX3dM4Yjj98YOB3oNPNgD2tTRLuNRRpno=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=BpLckzh3GTjP8RC6aj5JRDcdj8XxgG090qSoGm7A6mF54Pg8T6PPpXKsChAQgfIXQjFDF2GwO1Y7A2DlA/MHqH1ke7hap8o7FimfYf9Oeq+8GvIAxFEns66awvVknFhbTpeaHEVzxtzjeM4uozc4UMhtsA7XVL+9JMA5aSVTZ+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Bw2ENNU8; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YvjPJKcS"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b982ec27aso1407506a91.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 08:16:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Bw2ENNU8"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-68c19f1f3ceso1244957a12.2
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 08:17:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780067788; x=1780672588; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eILrTa3RoIWHJYJJPAtoxPDx92OXb4mREmR4GXvO69Q=;
-        b=YvjPJKcSgvXOn+1z+WtYVl63q3MY6qNVWfiNSIqp8LXWn9PBy8x4UC9RXSFKE4Vu6L
-         RNBanWC1Avm2ZvoXChlAa70+iaS/jUFoGsTv7Ynq/t5Uhh0txMWvrRoqNsreG46mfP9H
-         Wm58MYtnQdYSNEB7wefoajQQEiYbNe/xG45gmCY1JeLseogIduyyzn4tOh66ITn0LtE+
-         QGSR0oNN4FHnCDuVE/RCXhWJo40i16L6SFh3HffuRMS4WMd4o2RGKE/4vAYjlzOO+5dM
-         iRBM/LpixYq4JyKfV8FO3/zrS/0S1Q27wqYZQBzsA9BV+wFTmGfFK6v8sKyYRd+YvDKo
-         F+Tw==
+        d=suse.com; s=google; t=1780067830; x=1780672630; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:content-language:references:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zca8RK4iV1xX3dM4Yjj98YOB3oNPNgD2tTRLuNRRpno=;
+        b=Bw2ENNU8hetPdLqBGp2JpElvVmosFzxREgIk7wF2BHEmKuGloWm7jMXZzJa5jqkqCt
+         XgN8qOMJ2RGMFPgX5OYRb2KCmR+8KjHWh7bjkHBuMH1IkAV/X7AbmDxDSGWU8codWx4o
+         wVnZX2Bv/CRD7miuX+E7AdtW31ncQe3xqZb5WP37Vjz+Qk7jr1LhtIzdMUwFDVNPu1f/
+         qJ791vdaISlfTZk4vAJ06LexZGWXjAqcm7IcyErkLtjRprDgEf22np8I9GwbeilgmSQJ
+         QWYy4iezAwxC2YTW+xI32eU9IlXaZkKStMCktIvO8BDdFXgvY4jEfWnCRYAfTKgZ2LUt
+         yb7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780067788; x=1780672588;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eILrTa3RoIWHJYJJPAtoxPDx92OXb4mREmR4GXvO69Q=;
-        b=oHMngUFdSEFznqzIdmP5kJI3yUzU1Y8tq0s8CgrIbXyvkGOukFK1kcRDbXaSf+lOix
-         cr4Wzk015pBB6Kis3cLFJEbn4C3tfOsAvhEgc4dgW9m914kkftwg+iloG6W6h017zJB8
-         uaagy7Z9FyloD3b0EfGu7d0L+oNqRIbzkX2n6Pc9pYlFavyKIHsFbkXiwpT5BKmTHev5
-         nXnjr9OZOkK2OLuf+DgQIFzHRAqSbBS29ZTTizUgiTiuct4mVWwJ3jWBI7c5WDWz3LHn
-         z3HJqrNpB6twEQy7ht0aM7zcJ5eKtkfqBc0+zxtWQEpvjugaX0raGQTsEvTYwhFoZicC
-         Lfag==
-X-Forwarded-Encrypted: i=1; AFNElJ81cCN3MCIZ9SqIXwMcF2kQr2FLSKFSw33DcI1naW65AlTq1oK3YCEZdgeiSEoNIC57pBc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwflejeOfwuonA/6fCe2LRFpfS/R/UDTvw31voDxOHp6HxS5C4e
-	mOJlSoUdG9wq4ahiGoiSLQYdlPBHSYpGP94vcTD/qYP60on23MGOV9e05BFuy0urkAwOrff/+IQ
-	uiAndFg==
-X-Received: from pfbfp10.prod.google.com ([2002:a05:6a00:608a:b0:82f:c34b:9799])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1409:b0:3aa:ec27:e5f7
- with SMTP id adf61e73a8af0-3b41238088cmr4075196637.42.1780067788118; Fri, 29
- May 2026 08:16:28 -0700 (PDT)
-Date: Fri, 29 May 2026 08:16:24 -0700
-In-Reply-To: <20260512011502.53072-19-chang.seok.bae@intel.com>
+        d=1e100.net; s=20251104; t=1780067830; x=1780672630;
+        h=in-reply-to:autocrypt:from:content-language:references:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zca8RK4iV1xX3dM4Yjj98YOB3oNPNgD2tTRLuNRRpno=;
+        b=RUnF7u1pvA3SEbkgFvcgCPzXkApUo5QqOjUlQP7jULhPphFYCBY9gaW3O6qO4E0jYp
+         R5EW2j6c9hWAiKcPZCSe5dyaax8Nvv6ilVIWsjVY3l0E4upwIE6yFc83Hqwby80Pj8oK
+         IU6sOTgatp9E5WXP0D0CbNqs4L1SgoPGVbrjjfn9L86jrSX/7H5NnotmvOcXjNiiOtbI
+         Q5hFOWAU7zYA91YhctEGZScG3dEd8j2VB31B9zVn8a76PiMDKK+hP3aoaAcg+VkQok9g
+         d0DS5YhRVOFEI4pFxvkb2aK5UzGkVKZ5IxxtUY7dFXxB2XYvPoZWAwOmeejKC+7IGaXe
+         Fhxw==
+X-Forwarded-Encrypted: i=1; AFNElJ/L8Wx177+ouZc/V6KoleiRAgo0ncV3lJzk4OXHtdCAZdzux+ggFgXRX6BAZuCU+fLAncg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc05GuyGBEVxhtf1rsAMRRnS//DK6gfNp21mDf+mMkfD1WxQVU
+	FrX8NmeOnebNi45NP4SAdnOtBXTr0CBihvbKQQiyq6z5K2exfSVI8yhNsF4u79Cs5CY=
+X-Gm-Gg: Acq92OHHQAYLZhoZQX0rv9Dvbrr+RZkZX2NF4AiHX9wWlyqehQzWSLMAiwNvwf8YX9x
+	h7x9d/sQbgmiOpglOMS8foSTySgfFIAjF4F2cspTbj/uDTH4kWhugNDVCc8gUhLRN8bzK/YMn64
+	DlkylvAeP335oAzXgJdWoUulboDMjtf8k8KztxIDbX2CXZF6h0gj0fNiDa/BgL2viib0LJ/zV5T
+	3nxZBOXhUPFfFTCkKnRYbXC1zaiOxFhGP9LTcGR2ayhRAlAIWOai7hyIeycKMKUC3UjUe7iJLlv
+	HkbZc8X1z9WgWzH7aIYDGdnQMfsOJfDoEr57H1q90Wv7DgofU9thw9hOyLKO7flppYvMzNpw6JB
+	6/3vxAFOXqDSjXsnfiBYxHv4ywEF5pqxZSDU1pcwcZmOSPrTgQijiuN/NGNMLQBs9ZalQX9OIzd
+	eISNZCVKH+hY4iYwywDwLDAYdBXlC8xCiINSbtrmwar2BKkvf9F9IkkTbmetGc1/38DWXhR48ZY
+	3sJmTDCyCo5Dp/ttk7+QcVCU7TJrTE3Jvc3fRaDtXfEhRUJaGFpTwZjEkwJF2GMpjTE3QiEsWo=
+X-Received: by 2002:a05:6402:3219:b0:68b:ce88:9d3f with SMTP id 4fb4d7f45d1cf-68c8d5d8709mr41821a12.22.1780067829987;
+        Fri, 29 May 2026 08:17:09 -0700 (PDT)
+Received: from ?IPV6:2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112? (2a00-12d0-af5d-ad01-5d3f-14e6-9bcb-5112.ip.tng.de. [2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68c163071b8sm685922a12.26.2026.05.29.08.17.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 May 2026 08:17:09 -0700 (PDT)
+Message-ID: <a84e5899-8b1b-4330-b475-26932e9f5b5f@suse.com>
+Date: Fri, 29 May 2026 17:17:07 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260512011502.53072-1-chang.seok.bae@intel.com> <20260512011502.53072-19-chang.seok.bae@intel.com>
-Message-ID: <ahmtyMNsj2BCoEEo@google.com>
-Subject: Re: [PATCH v4 18/21] KVM: x86: Expose APX foundation feature to guests
-From: Sean Christopherson <seanjc@google.com>
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, chao.gao@intel.com, 
-	Peter Fang <peter.fang@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/47] x86: Try to wrangle PV clocks vs. TSC
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz
+ <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd
+ <sboyd@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-hyperv@vger.kernel.org,
+ virtualization@lists.linux.dev, xen-devel@lists.xenproject.org,
+ David Woodhouse <dwmw@amazon.co.uk>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, David Woodhouse <dwmw2@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>, Thomas Gleixner <tglx@linutronix.de>
+References: <20260529144435.704127-1-seanjc@google.com>
+ <ahmsZA8mHj9CPnd2@google.com>
+Content-Language: en-US
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <ahmsZA8mHj9CPnd2@google.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------aYuk5CIBTXJNjobrT9M3zkNr"
 
-On Tue, May 12, 2026, Chang S. Bae wrote:
-> @@ -1441,7 +1445,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
->  	switch (function) {
->  	case 0:
->  		/* Limited to the highest leaf implemented in KVM. */
-> -		entry->eax = min(entry->eax, 0x24U);
-> +		entry->eax = min(entry->eax, 0x29U);
->  		break;
->  	case 1:
->  		cpuid_entry_override(entry, CPUID_1_EDX);
-> @@ -1712,6 +1716,11 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
->  		}
->  		break;
->  	}
-> +	/* APX sub-features */
-> +	case 0x29: {
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------aYuk5CIBTXJNjobrT9M3zkNr
+Content-Type: multipart/mixed; boundary="------------vmiXLelkdEtqIjil5foIfm8r";
+ protected-headers="v1"
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz
+ <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd
+ <sboyd@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-hyperv@vger.kernel.org,
+ virtualization@lists.linux.dev, xen-devel@lists.xenproject.org,
+ David Woodhouse <dwmw@amazon.co.uk>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, David Woodhouse <dwmw2@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>, Thomas Gleixner <tglx@linutronix.de>
+Message-ID: <a84e5899-8b1b-4330-b475-26932e9f5b5f@suse.com>
+Subject: Re: [PATCH v4 00/47] x86: Try to wrangle PV clocks vs. TSC
+References: <20260529144435.704127-1-seanjc@google.com>
+ <ahmsZA8mHj9CPnd2@google.com>
+In-Reply-To: <ahmsZA8mHj9CPnd2@google.com>
 
-Curly braces are unnecessary, now and in the next patch.
+--------------vmiXLelkdEtqIjil5foIfm8r
+Content-Type: multipart/mixed; boundary="------------puKE5E0qrmVaohkfi4bPDSIF"
 
-> +		entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
-> +		break;
-> +	}
->  	case KVM_CPUID_SIGNATURE: {
->  		const u32 *sigptr = (const u32 *)KVM_SIGNATURE;
->  		entry->eax = KVM_CPUID_FEATURES;
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 85d4087ea927..84496bc0508d 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -5554,6 +5554,7 @@ static __init void svm_set_cpu_caps(void)
->  	 */
->  	kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
->  	kvm_cpu_cap_clear(X86_FEATURE_MSR_IMM);
-> +	kvm_cpu_cap_clear(X86_FEATURE_APX);
->  
->  	kvm_setup_xss_caps();
->  	kvm_finalize_cpu_caps();
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index f5f27e7b00b6..fc0924389398 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -219,10 +219,16 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_nr_uret_msrs);
->  static u32 __read_mostly kvm_uret_msrs_list[KVM_MAX_NR_USER_RETURN_MSRS];
->  static DEFINE_PER_CPU(struct kvm_user_return_msrs, user_return_msrs);
->  
-> +#ifndef CONFIG_KVM_APX
-> +#undef  XFEATURE_MASK_APX
-> +#define XFEATURE_MASK_APX 0
-> +#endif
+--------------puKE5E0qrmVaohkfi4bPDSIF
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Eww.
+T24gMjkuMDUuMjYgMTc6MTAsIFNlYW4gQ2hyaXN0b3BoZXJzb24gd3JvdGU6DQo+IE9uIEZy
+aSwgTWF5IDI5LCAyMDI2LCBTZWFuIENocmlzdG9waGVyc29uIHdyb3RlOg0KPj4gV2VsbCwg
+dGhlIG51bWJlciBvZiBwYXRjaGVzIGluIHRoZSBzZXJpZXMgaXMgZ29pbmcgaW4gdGhlIHdy
+b25nIGRpcmVjdGlvbiwNCj4+IGJ1dCBJJ20gbXVjaCBoYXBwaWVyIHdpdGggdGhpcyB2ZXJz
+aW9uLCB3aGljaCBlc2NoZXdzIHRoZSB4ODZfcGxhdGZvcm0NCj4+IG92ZXJyaWRlcyBlbnRp
+cmVseSBpbiBmYXZvciBvZiBhIGZpeGVkIHNlcXVlbmNlIGZvciBzZWxlY3RpbmcgdGhlIFRT
+Qy9DUFUNCj4+IGZyZXF1ZW5jeSAicm91dGluZSIuDQo+IA0KPiBGWUksIG91ciBpbnRlcm5h
+bCBtYWlsIHNlcnZlciBmbGFtZWQgb3V0IGFmdGVyIHNlbmRpbmcgcGF0Y2ggMjYgaW4gdGhl
+IGluaXRpYWwNCj4gZ28uICBJJ20gcHJldHR5IHN1cmUgSSBtYW5hZ2VkIHRvIGdldCB0aGUg
+cmVzdCBzZW50IHdpdGhvdXQgc2NyZXdpbmcgdXAgdGhlDQo+IHRocmVhZGluZy4gIEhvbGxl
+ciBpZiBzb21ldGhpbmcgaXMgd29ua3kgYW5kIEknbGwgUkVTRU5EIHRoZSB3aG9sZSBwaWxl
+IGlmIG5lY2Vzc2FyeS4NCg0KTG9va3MgZmluZSBvbiBteSBzaWRlLg0KDQoNCkp1ZXJnZW4N
+Cg==
+--------------puKE5E0qrmVaohkfi4bPDSIF
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
-> +
->  #define KVM_SUPPORTED_XCR0     (XFEATURE_MASK_FP | XFEATURE_MASK_SSE \
->  				| XFEATURE_MASK_YMM | XFEATURE_MASK_BNDREGS \
->  				| XFEATURE_MASK_BNDCSR | XFEATURE_MASK_AVX512 \
-> -				| XFEATURE_MASK_PKRU | XFEATURE_MASK_XTILE)
-> +				| XFEATURE_MASK_PKRU | XFEATURE_MASK_XTILE \
-> +				| XFEATURE_MASK_APX)
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-Rather than the funky #undef, I vote to move KVM_SUPPORTED_XCR0 into
-kvm_x86_vendor_init() as a "const u64".  That way kvm_x86_vendor_init() can
-further manipulate kvm_caps.supported_xcr0 based on CONFIG_KVM_APX without
-having to use iffdefery, and without having to worry about other KVM code
-treating KVM_SUPPORTED_XCR0 as 100% authoritative.
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
 
-E.g. slot this in as a prep patch:
+--------------puKE5E0qrmVaohkfi4bPDSIF--
 
----
-From: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 08:13:30 -0700
-Subject: [PATCH] KVM: x86: Move KVM_SUPPORTED_{XCRO,XSS} into
- kvm_x86_vendor_init()
+--------------vmiXLelkdEtqIjil5foIfm8r--
 
-Move KVM_SUPPORTED_{XCR0,XSS} into kvm_x86_vendor_init() as "const u64"
-values so that KVM's initialization code can further manipulate the set of
-support XCR0/XSS features without need ugly #ifdeffery and without risking
-other code treating KVM_SUPPORTED_{XCR0,XSS} as 100% authoritative.
+--------------aYuk5CIBTXJNjobrT9M3zkNr
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-No functional change intended.
+-----BEGIN PGP SIGNATURE-----
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/cpuid.c |  2 +-
- arch/x86/kvm/x86.c   | 25 +++++++++++++------------
- 2 files changed, 14 insertions(+), 13 deletions(-)
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmoZrfMFAwAAAAAACgkQsN6d1ii/Ey+/
+/gf/cTMfwxMSsyaONXXUw4+xZ50QMaKOi/uNkdrkdNlCp3/GO7aLZEpnVr2wgZT6WT3a4x/5Z5iI
+/ynF2igzSaImMlKFvwrMxUFI8tZQXkwVTyO/Mmj3xe6hqMN5Zkq1OuRXyj5dgSTf5sqNXsAcGm5X
+NKSfWdmdXwKE+mDA+ysfH545ZOYfQuWGS7xipiPBbgaz7mQ0yItWc3pNo9dSdcygj1IjeqJiyOoa
+NkhA0l1otsL3pcqflLwkvKIjV/KEdZTM5BbCN2i/f2sP6S2HPhauZCuUmpKvFf7ymkdQ/8nGwjQt
+Fvcmxlp+M5qj0+qF8DOgNdmRfKkm3eFdbWBZkSESjw==
+=sM5P
+-----END PGP SIGNATURE-----
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index e69156b54cff..ea1b9a2f9116 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -253,7 +253,7 @@ static u32 kvm_apply_cpuid_pv_features_quirk(struct kvm_vcpu *vcpu)
- 
- /*
-  * Calculate guest's supported XCR0 taking into account guest CPUID data and
-- * KVM's supported XCR0 (comprised of host's XCR0 and KVM_SUPPORTED_XCR0).
-+ * KVM's supported XCR0 (the host's actual XCR0 masked by what KVM supports).
-  */
- static u64 cpuid_get_supported_xcr0(struct kvm_vcpu *vcpu)
- {
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 48f259015ce4..cffbfe5ff116 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -219,19 +219,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_nr_uret_msrs);
- static u32 __read_mostly kvm_uret_msrs_list[KVM_MAX_NR_USER_RETURN_MSRS];
- static DEFINE_PER_CPU(struct kvm_user_return_msrs, user_return_msrs);
- 
--#define KVM_SUPPORTED_XCR0     (XFEATURE_MASK_FP | XFEATURE_MASK_SSE \
--				| XFEATURE_MASK_YMM | XFEATURE_MASK_BNDREGS \
--				| XFEATURE_MASK_BNDCSR | XFEATURE_MASK_AVX512 \
--				| XFEATURE_MASK_PKRU | XFEATURE_MASK_XTILE)
--
- #define XFEATURE_MASK_CET_ALL	(XFEATURE_MASK_CET_USER | XFEATURE_MASK_CET_KERNEL)
--/*
-- * Note, KVM supports exposing PT to the guest, but does not support context
-- * switching PT via XSTATE (KVM's PT virtualization relies on perf; swapping
-- * PT via guest XSTATE would clobber perf state), i.e. KVM doesn't support
-- * IA32_XSS[bit 8] (guests can/must use RDMSR/WRMSR to save/restore PT MSRs).
-- */
--#define KVM_SUPPORTED_XSS	(XFEATURE_MASK_CET_ALL)
- 
- bool __read_mostly allow_smaller_maxphyaddr = 0;
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(allow_smaller_maxphyaddr);
-@@ -10074,6 +10062,19 @@ static void kvm_x86_check_cpu_compat(void *ret)
- 
- int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
- {
-+	const u64 KVM_SUPPORTED_XCR0 = XFEATURE_MASK_FP | XFEATURE_MASK_SSE |
-+				       XFEATURE_MASK_YMM | XFEATURE_MASK_BNDREGS |
-+				       XFEATURE_MASK_BNDCSR | XFEATURE_MASK_AVX512 |
-+				       XFEATURE_MASK_PKRU | XFEATURE_MASK_XTILE;
-+       /*
-+	* Note, KVM supports exposing PT to the guest, but does not support
-+	* context switching PT via XSTATE (KVM's PT virtualization relies on
-+	* perf; swapping PT via guest XSTATE would clobber perf state), i.e.
-+	* KVM doesn't support IA32_XSS[bit 8] (guests can/must use RDMSR/WRMSR
-+	* to save/restore PT MSRs).
-+	*/
-+	const u64 KVM_SUPPORTED_XSS = XFEATURE_MASK_CET_ALL;
-+
- 	u64 host_pat;
- 	int r, cpu;
- 
-
-base-commit: b7fbe9a1bf9ee6c967ef77d366ca58c35fcf1887
---
+--------------aYuk5CIBTXJNjobrT9M3zkNr--
