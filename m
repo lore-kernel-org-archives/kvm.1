@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D573B2FCC
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3573333262F
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 08:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780041138; cv=none; b=AcwFASGoF1XaWRcRHqVU4jF7qp9PFT03UxllEScMP9sCYK8F1VsxzeZD73AocjIWly4tyLmIdxM2nsSHkbMH9BZZsl+oO4mc63N1MHRF8OmH8gloHkj2/7YNF9JhC1EstgEgGq21ftnufMcWJbd+JWwuU9wyK7Nt6jDw6g6xMuU=
+	t=1780042225; cv=none; b=qjXhF1IH8odNl2/oiYrHyI9TpzS1MYGR69e4/cOGRSRji8vgRb0AglPR8sES3KpmT2uiC/jc0dOf+kUNQCmFcM9fzSX2PQUFqPpjwJUvCR6vPYG1hOoFBcM6hp7j69PVqW5zq3gH0JKWn3oiLHGPfHrkaku7jRD5eXsF9ScQ/kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780041138; c=relaxed/simple;
-	bh=gwBzjIYJfd0RT/9ubQ/npjqeQV9ArGaXZ6NannRMHeM=;
+	s=arc-20240116; t=1780042225; c=relaxed/simple;
+	bh=0NZc8Z0vgQ5+jxTY1JF1zxuDoGXNv6Adx4bTCoMCk18=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Q82e/cG3wuzLyBIANnXgdT1/l7l6E9RD1V16yOzwdjBfVkbzP/GsJSIfQaI3287jam72RlGna3607+tJhyIYC2Sug0R6+Rfsuz1BDGDAiTTpGn6MA1VRFE/zQU23hgCd2HUJJP0VkDawHlgmqD9CVfOCKIlV3q3pQSkIdbJh/Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ru70M4fw; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hGnX6KLn8sLY8JPegZM4hThUpvnqdVHa/ivPzLEfnfbj6J2EvTuHw/h0BcUs9vRnUcWqKwB7ZUrHdMgU70GNQ1vCXViavNdI90Is25KuFu1jQtiMzUNsxMyH7fcXcRrthjTXcpo8hDI/fYGvtHahuivPmwYq/bWPTvYLPJPa0fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRQhRbkS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ru70M4fw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A411F00893;
-	Fri, 29 May 2026 07:52:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRQhRbkS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE75B1F00893;
+	Fri, 29 May 2026 08:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780041134;
-	bh=7u76wrfUK7eB5YeUf95cuhJTEdxMtfgbt78NFIE+G74=;
+	s=k20260515; t=1780042223;
+	bh=GqBrqoooknXqKQxjIW4SWAopcbunBPYM8ewDz32mFrY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ru70M4fwL5UbI8pZCT4J8+9SGLY9pl4H8Ja+3zleyjpkiWAUmaU5P9GC5mCFB8eFW
-	 JR3hqoF3xaw1imYX0AwbhC2sroAYuv+0lrHvDd3u8W+q/jljIAmoCaPSXq33z0pu/a
-	 PXAg7CNWMY8PaEs7rUta0YswEk88rKE1+9hHp3F3Sw+jTSzTMnL0SgvpoquZ2YOJUA
-	 X+vXBBbgD/iwV4LME29litFI0gHUtYO/jHDE+ASD/zHo+siJgwXWeorouiJrZ8lKZP
-	 dUXsmRqDuT5B1u4EmSM4QHsqCwJlf+pZT5CQ1rYqAtJgjflsgyJ+XWzIV/DyJXbE9V
-	 Ren1wPJoPv1ag==
+	b=YRQhRbkSetNlnKs82hd3moPm5QI8csFAJSDXMFHb5RqVn1wGYqOFSGR9gd1JVUDmQ
+	 oq/ySkudbY+MfTgvDXHLUaLDVz8TL++FiX2de+jJKwRxRUnAXf8MbAK5FvIQIDS+XG
+	 Sr9bGK5ESW8ywPun5iRTX25+56rO+0JLfcGoJbAT1xfDZdTYAU0EJ0dxYWDfLOEdPK
+	 aHf2FxlMO1kgBFFC79cSTiQXuQD+OSxz5+I4hdkZmcsDw6MhtIeXdmNETbRVa59IOT
+	 IthXsZIoCGPfKDmPd/y7xRfZWon+oXhElJIl+hkVzVrYLFUdf8WxQ39KVScYHhAQAv
+	 pjrM505yWWcVw==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH] Optimize VFIO and IOMMU mapping traversal
+Subject: Re: [PATCH v3 3/3] KVM: riscv: selftests: Split SBI FWFT into
+ separate feature-specific sublists
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
+To: "Yong-Xuan Wang" <yongxuan.wang@sifive.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529070932.2632907-1-guanghuifeng@linux.alibaba.com>
-References: <20260529070932.2632907-1-guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20260528-kvm-get_reg_list-v2-v3-3-170969a8599f@sifive.com>
+References: <20260528-kvm-get_reg_list-v2-v3-3-170969a8599f@sifive.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 May 2026 07:52:14 +0000
-Message-Id: <20260529075214.B3A411F00893@smtp.kernel.org>
+Date: Fri, 29 May 2026 08:10:22 +0000
+Message-Id: <20260529081023.AE75B1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,77 +46,78 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] The computed chunk size `len` in `vfio_unmap_unpin` is not cla=
-mped to the remaining size of the target DMA region (`dma->size - pos`). Th=
-is allows `len` to overshoot the DMA region boundary, causing out-of-bounds=
- unmapping and unpinning of adjacent memory.
+- [Medium] FWFT pointer masking registers are incorrectly handled in check_=
+supported_reg() instead of filter_reg(), leading to dead code and potential=
+ false positive test failures.
 --
 
-commit 0f5b376f7b38b02730cdbd93b618b39e5e93f1d0
-Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+commit c0f0519ecd25fb69f07c9b166dfd4ccf59ef2905
+Author: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-Optimize VFIO and IOMMU mapping traversal
+KVM: riscv: selftests: Split SBI FWFT into separate feature-specific sublis=
+ts
 
-This commit adds an iommu_iova_to_pgsize() implementation to query the
-hardware mapping page size. It uses this in VFIO to optimize
-vfio_unmap_unpin() by traversing the mappings at the IOMMU map granularity
-rather than PAGE_SIZE.
+This commit divides the monolithic SBI FWFT register list into separate
+sublists to test features independently. It adds check_supported_reg() and
+check_fwft_feature() to validate register and feature availability at
+runtime. This prevents tests from failing when only a subset of FWFT
+features or their dependent ISA extensions are available on a given
+platform.
 
-> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_ty=
-pe1.c
-> index c8151ba54de33..bf918a93a1591 100644
-> --- a/drivers/vfio/vfio_iommu_type1.c
-> +++ b/drivers/vfio/vfio_iommu_type1.c
+> diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/tes=
+ting/selftests/kvm/riscv/get-reg-list.c
+> index 5033c09201ef1..7ae55fbad29aa 100644
+> --- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
+> +++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
+> @@ -27,6 +27,23 @@ enum {
+>  };
+> =20
+>  static bool isa_ext_cant_disable[KVM_RISCV_ISA_EXT_MAX];
+> +static bool isa_ext_enabled[KVM_RISCV_ISA_EXT_MAX];
+> +static bool sbi_ext_enabled[KVM_RISCV_SBI_EXT_MAX];
+> +
+> +bool check_supported_reg(struct kvm_vcpu *vcpu, __u64 reg)
+> +{
+> +	switch (reg & ~REG_MASK) {
+> +	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_S=
+BI_FWFT_REG(pointer_masking.enable):
+> +	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_S=
+BI_FWFT_REG(pointer_masking.flags):
+> +	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_S=
+BI_FWFT_REG(pointer_masking.value):
+> +		return sbi_ext_enabled[KVM_RISCV_SBI_EXT_FWFT] &&
+> +		       isa_ext_enabled[KVM_RISCV_ISA_EXT_SMNPM];
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return true;
+> +}
+
+[Severity: Medium]
+Should these pointer masking registers be handled in filter_reg() instead of
+here?
+
+When testing the config_sbi_fwft_pointer_masking sublist,
+check_fwft_feature() iterates over the expected registers and invokes
+__TEST_REQUIRE(!rc, ...) which skips the test if any are missing. This
+means the test exits early, and the core loop that calls
+check_supported_reg() for missing registers is never reached.
+
+Moving this logic to filter_reg() also seems necessary to avoid false
+positive test failures. If a user runs the config_sbi_fwft_misaligned_deleg
+configuration on a host where the SMNPM ISA extension cannot be disabled
+(isa_ext_cant_disable[SMNPM] =3D=3D true), both FWFT and SMNPM extensions w=
+ill
+be active. KVM will naturally expose the pointer_masking registers in this
+state.
+
+Because they are not in the misaligned_deleg sublist and are omitted from
+filter_reg(), will the test incorrectly flag them as unexpected new
+registers and fail?
 
 [ ... ]
 
-> @@ -1191,11 +1191,24 @@ static long vfio_unmap_unpin(struct vfio_iommu *i=
-ommu, struct vfio_dma *dma,
->  		 * To optimize for fewer iommu_unmap() calls, each of which
->  		 * may require hardware cache flushing, try to find the
->  		 * largest contiguous physical memory chunk to unmap.
-> +		 *
-> +		 * Query the actual IOMMU PTE mapping granularity at this IOVA
-> +		 * to determine the guaranteed contiguous range. Use only the
-> +		 * remaining portion within the current PTE from our position,
-> +		 * in case we start from the middle of a large page mapping.
->  		 */
-> -		for (len =3D PAGE_SIZE; pos + len < dma->size; len +=3D PAGE_SIZE) {
-> +		pgsize =3D iommu_iova_to_pgsize(domain->domain, iova);
-> +		if (!pgsize)
-> +			pgsize =3D PAGE_SIZE;
-> +		len =3D pgsize - (iova & (pgsize - 1));
-> +		for (; pos + len < dma->size; len +=3D pgsize) {
-
-[Severity: Critical]
-Could this len calculation exceed the boundaries of the DMA region?
-
-If the hardware mapped a large page that extends beyond the target vfio_dma
-region, or if a partial unmap split the vfio_dma region but left the hardwa=
-re
-mapping intact, the calculated len can be larger than dma->size - pos.
-
-The loop condition pos + len < dma->size prevents further iterations but do=
-es
-not clamp the oversized len. Does this result in unmap_unpin_fast() being
-called with an out-of-bounds len, which would unmap and unpin pages belongi=
-ng
-to adjacent memory regions?
-
-Would it be better to clamp len to the remaining size before the unmap?
-len =3D min_t(size_t, len, dma->size - pos);
-
->  			next =3D iommu_iova_to_phys(domain->domain, iova + len);
->  			if (next !=3D phys + len)
->  				break;
-> +			pgsize =3D iommu_iova_to_pgsize(domain->domain,
-> +						      iova + len);
-> +			if (!pgsize)
-> +				pgsize =3D PAGE_SIZE;
->  		}
-> =20
->  		/*
-
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529070932.2632=
-907-1-guanghuifeng@linux.alibaba.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528-kvm-get_re=
+g_list-v2-v3-0-170969a8599f@sifive.com?part=3D3
