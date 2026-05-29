@@ -1,155 +1,140 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150C9320A00;
-	Fri, 29 May 2026 13:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780061947; cv=none; b=lMK96LEvctf9wdP0VSydAlETAf+MDX6DCyLKd5Vyw9LVr1iP0LIaM7aP/HvUBBZr6qNdMbWpFCuGpe9Qj3k9rKIyhhWjg+6KQwupBmlNnex/iIWnnZ3OYP7iq1j/guusFh8TT2rqxH9BozFt1KUEVGu5e3kjAHpzhpGJ66cj82A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780061947; c=relaxed/simple;
-	bh=7cmIIs9xR7uMqTm+Z6aD9663vI48NGNNoR+rAVutfCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KIaMkXYv0lqF+40iEkmuHZNwwyOJLKNfLOSon+dyIp3qqEJZsqbxozKu96PNr8EjruzRDKmGV22Xdts84AhZu2U6BeHzjcJKtVXLTEM2Hi2YMLZ+A8uhBEdgZwM+qIQn77bPiaFM6bHMdVBSO8F0fZjR2J4k58TOgU+tOeSkv3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ZwbvlGL/; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010043.outbound.protection.outlook.com [52.101.193.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CE42367DF;
+	Fri, 29 May 2026 13:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780062594; cv=fail; b=AU7hXTWIw51o/klHrFBUMFrcPOCc3ZbAHWZhoOoC+ZD1mBK3DJQ8yB/h26hncJSH/D9rLx2Y2SUyhGhecEGm36LzN/RS6tNEKtXe6uY/GcSNz/fwuM7e3jqsw8jbFuEvdQbARW723gp7V70iLn+TGymBgcXtzYZ4C6fdytlbWQQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780062594; c=relaxed/simple;
+	bh=hn/B1tAGCd+SdzSbVTlsOekCIk4G5eGP+f9jjRiUqO4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RjxIrhzxOUuLQBaBnZmuRYMSZO2I7KqtJnF6eKAv2njCtqxspbvHlMm2gZ1ekaNxBuNMgoFiiaMLAS25PJ9PzpnzT8JHurVQut3Je/bktTljqBBDT8fLBeRSiPSUDF+8ierOQOFSaPy8HIIXrEHpOJnNpP2i98ZdZkhYn73G7Fw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UfgTlf9W; arc=fail smtp.client-ip=52.101.193.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ZwbvlGL/"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 73C9B2247;
-	Fri, 29 May 2026 06:39:00 -0700 (PDT)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F3D7F3F905;
-	Fri, 29 May 2026 06:39:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780061945; bh=7cmIIs9xR7uMqTm+Z6aD9663vI48NGNNoR+rAVutfCA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZwbvlGL/hw4kBlp8VXC/2kqCg+mD3sjTb8MNl4B2Mmd580f1ntfEzvd3wiaQ1GZma
-	 pYPyZ4BhPO8swphi0VYXozIPeakgqpXWh+EoOPe6y3keeqDqsf7bZAYzoUSTxY/tRD
-	 CH2Xfcsp92lhz6kO+eCyS+TXMplYbiCu6zkDsy34=
-Date: Fri, 29 May 2026 14:38:53 +0100
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Oliver Upton <oupton@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Itaru Kitayama <itaru.kitayama@fujitsu.com>
-Subject: Re: [PATCH v3 0/9] KVM: arm64: selftests: Basic nested guest support
-Message-ID: <ioz7qsirq2v665bqbjin5ekwss46pfg2sfmndkvail2athbo75@cgt7zikhtx6r>
-References: <20260516183003.799058-1-weilin.chang@arm.com>
- <agzWnS2gzzhEHEG6@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UfgTlf9W"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MtMqvot8WK4+1w2VfEloLNmxu5OOetedt3LyOKZw/18fVeeJco+lU3qRTVU6eq9CG+J+2bZap+m/piti2yKwi1F9AacDnKaRwRkP98wnMZr5xfVMCoALBeUAaFttDyAv2KFuMTFigkAGuu5M/6BPK5oAsNyJaNLdgMS1jP85iyfG56iAb+8Q7E71YUpOxfTuebfgWhW74dbivfUsbnE47dq/85K2aVc8IudV/kdHsU1Jhoiqg1MdHIrE9XNTUExNNMNdF/rs9ooaWGCQ2Dy37o+nuv6FAXBGZNymEHjClkgHXrA3DLzPs1HsOouubFt7jpBd0o6YsZNzI9qz67HW+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aTbAhRe0T4vQ762jbL+UBp2+ZigdkdOiTNIYp9ESb9M=;
+ b=Lxg0asnhXx1NAJbzLxxlRI+dxV0yDWRNxhUQ4rtxqmp3b1vVbfOKcCi9Wq1q8+VUhvTvXys8uU/rOJDEM0KwWiEVYdHAcLO/gEus9s7+V7RmhmdAnItQBz202ziENZC7Z/sd4Rant6WuLNlwGlmEQjxjK4dId7Dxs2+0LwPjcDYhnh18BDFOrZ8pxiR1nw9oSCo3zD1N3fiN1U9Y/t7vZmronW2IzvvUTmLhGdDV2SMRX/Lufo+BROot35SsbTq+enG8aRZidLUXZYnNlGD9NC7g6wfB0bq8TA4Ps0R+QB8yqg/9CkinsqaJbbYN1sbqAXHqLultuV+ebiDuX9xwsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aTbAhRe0T4vQ762jbL+UBp2+ZigdkdOiTNIYp9ESb9M=;
+ b=UfgTlf9Ws6CimrnOLgV2PnUDffTHEyqs7239e+YF+fC+W1YV3p2RzBofCzAXrpJJI3V+GFH6H4UCPTnRzC5TaKL9Z7R0wXGmtYCxmsLSt5A3A9KCsVDdV43JoK/2/7ZuQJXNZ67PObMcKUvjavYO5AX2HpqiN1m89awCMmKkGwNpu5WAzMWhAmIwfrj16/DUgeeMQ7tVCEl7ueTPUI0je1XxXSuva2XAC77oFPGYBj6exOR8sFPmthNX8OBKZIqsgqvyzsvMtdF6eBHrh9Jr+gp4rQUbpN2EY5SqGCJGWGzT3YYR8CXfcArkbsTsDD8YbP7p5dfq3tCxa167DTug4g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by CH3PR12MB8212.namprd12.prod.outlook.com (2603:10b6:610:120::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Fri, 29 May
+ 2026 13:49:48 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0071.011; Fri, 29 May 2026
+ 13:49:48 +0000
+Date: Fri, 29 May 2026 10:49:47 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	patches@lists.linux.dev
+Subject: Re: [PATCH v2 06/11] selftests: Fix arm64 IO barriers to match kernel
+Message-ID: <20260529134947.GA128816@nvidia.com>
+References: <0-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
+ <6-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
+ <ahiFxtmspbETiqWw@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahiFxtmspbETiqWw@google.com>
+X-ClientProxiedBy: YT4PR01CA0181.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:110::8) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agzWnS2gzzhEHEG6@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CH3PR12MB8212:EE_
+X-MS-Office365-Filtering-Correlation-Id: 781a69c2-c2b7-40cb-176e-08debd892610
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|22082099003|3023799007|18002099003|6133799003|56012099006|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	hC/zActOEHxDuY5oj95u6P4WgEusQRmbo+0oaRuFTWOzpy8lTVKHSlmlCc/FrFK4aGHyxhDGSrXak5PZS0m8egIBt5rYqUAF3u8PpWCt0V+l++30eyYdfDvM/QUxNUqegRnCkWb+GfrCBedWODuL7KFQgOREjKhU4RE9vNlCsn9GkFMiAFcpvW/PB7ow3+mTEI9IVmyggkAA6eFU0O+WmGKNetnz5sf1N7hNHARGKob4e3RondhS9oyYa2z8hKdd4zEy1/bqGWNCuMGA983BCGhJ50fnlRKYYOxeaoEPWj8hmNSyFArr3ppzNPCHhg/4E9eJNgl7249EMXt5YHKQLcXqPGI4Rt1QmKfAQOjOD3cX4XOMQ5UWXGu94SAt1UTASadXXh9rMTbIP/s7wSezHaGogu86rxM2SoT7dVdSDo057COY6P1sTlETUtyDV+2K73eBZ+a+4hLA7I/4XtUiwlhDoTpVIRnSRCaGfZHh7E00OPMEF8XqS2BAgkAZeNgmoqlaN3xfKKJ0zwfXqpKTb4uTzaF0B12QF3Qj8AMJQLDsmOO1NUMzwGDBYnuvsEEmbjN7kJDHzxzFcAxcIi4tKTx1qMcmYZVxAI7CalxCDjdMraVH7WZaOYrzMjmrawpFfZ9/33fBhZc5H/ULayi8mh/ldlYwOhqkT242UNoVkGD6xmrr+LX2V1Daribhe8qT
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(22082099003)(3023799007)(18002099003)(6133799003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?DuIldhi9ne+1A5TfjU+9VsFAB3MgoFSFWggtnJtvxIJV6fHTEWt6WlGBCyp5?=
+ =?us-ascii?Q?EYeuQsC23H7qF9E2dmtPSr/asGURjkpQ67mdYFyWRGR2/78WRaRL/OtIvyIy?=
+ =?us-ascii?Q?wVSIRq4yE92tCRq+Gcv3XHfgWIp1mT5D5iwRd7mb34DhCuEbZZ/Bel8xXdTc?=
+ =?us-ascii?Q?LFj2cqU8+p47xKXak8VReKNX/xDGXeZkzRYQAgGGdqpeiweQVjiTN0ryE/1x?=
+ =?us-ascii?Q?l0kCA0RbrGjYFfBdZTi4hl3EhA5KqNgszCIjaAxItLP4o/Kkp/lMXpLsamNG?=
+ =?us-ascii?Q?DB13YuJbP1UWF4U8redrxUokj3LVyZdKZq2shRyTg9JBTIaw+dr/D6mq+eJ8?=
+ =?us-ascii?Q?Hp98ObU1b7zzG3c3x8qcvZ0J3nO1RwuvTTZ2MR7T4E7KIqY8bEa52wa9FiTP?=
+ =?us-ascii?Q?X16e9fDTpPs/V7nXmq1StpCz135bnOFcwEqLJ08GkUwvVsrjvY88aN246ygI?=
+ =?us-ascii?Q?jPeMnHpMXFicNr1ixf5t7ytmSoYf1YWbi/MabPG/jmclv0BiikiKostpqSu7?=
+ =?us-ascii?Q?jJn4bMqOq3DyO6SE9nifO7o3RVMZOypzQmGWT5BR/Q3+asFiB425N6Fqw5P2?=
+ =?us-ascii?Q?Faktn2Q/ntzpGouSTCu/DlxMZ4pqV7dTM0vm8NXDpk3ntWoaRL0CiOe/ZtxB?=
+ =?us-ascii?Q?8+JwQqkMgZHYrNtIVlEkyZd750ZfuWE/15Zx/+v7PEc6mdKJ8j885O4jvmks?=
+ =?us-ascii?Q?N5cxLT09ReeU7amKiEOkj1hrSKsrFh0utOvth3o1ds5lijlpx5KCTU6FIhjs?=
+ =?us-ascii?Q?K3kM/sfA2klr+JfeS62w7OypDTZcmtOILsBf00DwrQCxsW6hCQs9A+czxbd2?=
+ =?us-ascii?Q?IpMu0AXQ9iFWvd+Z1m+TmslEZGCTdFBCi6QVYelxVj6lHzo92RFT4Sd0bBT3?=
+ =?us-ascii?Q?R2kdAnfCE3wgnmk49BgHXdwihNLUWCplzl2gN4yfJRHWhlmqhIIqxiPRzwvz?=
+ =?us-ascii?Q?7UvO8HNG7BMBBP+P+SwMbpugMYgAfMkt/TffOdL/xzwnVKPlbqx5YWr01j4d?=
+ =?us-ascii?Q?cRcCxnGJfxEu542kD5o6QScRLFUeO71tlqmPUEjvzLaEUzp0cXqkjaMACJnI?=
+ =?us-ascii?Q?TAjeKlCCUzI2+KIcw/YVkGEKTsiq8TdYeFCdCsX1Sv3gruqjj/IspggB8Hb6?=
+ =?us-ascii?Q?7P9z3csiPicYvMM8Cn/HX3kcNPZB4xPR0fwRJL9BX03LRyP1sWUU4BTd6JbZ?=
+ =?us-ascii?Q?cmHpToeEv9RN8rijXM0PbnLTEAK5tqQMyYNrrtzkgmzVGpFmfI3EBgy7+fZw?=
+ =?us-ascii?Q?V9DaiIP7TII/ruxcCnL6rhDACsM1e0pExVx4nBgpCNFPGuzz9qTP15OT51s5?=
+ =?us-ascii?Q?Q94qHUaJHqf1Ip0/sXhU4WWHbxMKkzVeYI2+ze8hhVEtx+LqJpLDBPsSw7Y6?=
+ =?us-ascii?Q?p/5+RQ9HnZgEVIh09z17mHHWi76MtaGhWkr89gDYy6Ldk4BAC3e3xo/TR9o2?=
+ =?us-ascii?Q?NtW7wjm1YIYX9BPKg4nXj57h46rPX7ropHQv0PWjVxfCZZXCtLuazmOvsxKH?=
+ =?us-ascii?Q?Chi6ysrXoTfCfiE1GUGqCoG+vHEVrYb59ae2EOvUuy4k1M2ybeNvvoklofv/?=
+ =?us-ascii?Q?6YqYEjdfue/UTL8dbhCzk8zuWmt7RtSRe83hlhqLg0kXKWaTLOY6sN+2oriA?=
+ =?us-ascii?Q?k62p1TCoXAWHh4UD0rUEVlBYveW3blX6PuDGAAO84zt6wg1ez6wyCIh/5iKT?=
+ =?us-ascii?Q?HXyIikKV/gkBCKhEZmBDnbHdgEyfrtlNIyjmM/i9jjjiYHuJ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 781a69c2-c2b7-40cb-176e-08debd892610
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 13:49:48.1781
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i/FQh5mH5fDuf2SlXSDk8LqE37Jr4uKp+VQYXa+QubeXjPRb9NGffsk6C6CfyX/V
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8212
 
-Hi Oliver,
+On Thu, May 28, 2026 at 06:13:26PM +0000, David Matlack wrote:
 
-On Tue, May 19, 2026 at 02:31:09PM -0700, Oliver Upton wrote:
-> Hi Wei-Lin,
+> Let's put these in tools/arch/arm64/include/asm/io.h so that the tools
+> headers are more aligned with the kernel headers, and so that the arm64
+> io.h overrides are done in the same way as the x86 overrides in
+> tools/arch/x86/include/asm/io.h.
 > 
-> Thank you very much for the series.
-> 
-> I haven't had time to read through much of this yet, but I noticed
-> Itaru's comment about leaving stage-1 translation disabled for the L2.
-> 
-> Since selftests expects things like atomics to work we will definitely
-> need the stage-1 MMU to be enabled w/ Normal mappings (this was broken
-> in the past [*]). I wonder if we can (ab)use the pre-existing stage-1
-> tables that the selftests library creates on behalf of the L1. After all,
-> L1 and L2 are both effectively in the same virtual address space.
-> 
-> [*] https://lore.kernel.org/kvmarm/20250405001042.1470552-1-rananta@google.com/
+> Something like this (untested):
 
-Thanks for the pointer, I see, only inner/outer shareable, write-back
-normal memory guarantees atomics to work. Interestingly, treating the
-atomic instruction as a NOP is one of the permitted outcomes if other
-memory attributes are used...
+Okay, the disassembly says it works:
 
-However, the L2s in this series aren't using atomic instructions, and
-right now for the current organization of this series, the L1 guest
-hypervisor infrastructure is in lib/ for future NV selftests to share L2
-creation code, but L2 code are entirely per selftest. This means other
-selftest L2s can reuse the L1 stage-1 tables themselves if the implicit
-memory attributes that comes from MMU being off is not desired.
+    1db8:       ca080108        eor     x8, x8, x8
+    1dbc:       b5000008        cbnz    x8, 1dbc <readl+0x58>
+    1dc0:       f9000fe8        str     x8, [sp, #24]
 
-Sorry if that sounded defensive, I am not opposed to always reusing the
-L1 stage-1 tables in L2, just wanted to make sure the point gets across.
-
-Always reusing L1 stage-1 tables in L2 allows L2 access to lib/ (which
-should be helpful for testing recursive NV), and L1-L2 code sharing
-intra-selftest. OTOH things are a bit simpler with MMU off in this case
-with testing the shadow stage2.
-
-What do you think?
-
-Thanks,
-Wei-Lin Chang
-
-> 
-> Thanks,
-> Oliver
-> 
-> On Sat, May 16, 2026 at 07:29:54PM +0100, Wei-Lin Chang wrote:
-> > Hi,
-> > 
-> > This is v3 of adding basic support for running nested guests (L2) in
-> > kselftest. This time a framework for enabling stage-2 in the guest is
-> > added, including the s2_mmu struct, s2 translation control setup, and
-> > a stage-2 page table generator. Similar to L2 vCPU management, all
-> > stage-2 work is done in the guest instead of userspace.
-> > 
-> > An additional shadow_stage2 test is added which leverages the framework
-> > to run L2 with stage-2 enabled.
-> > 
-> > * Changes from v2 [1]:
-> > 
-> >   - Update vm_paddr_t to gpa_t, vm_vaddr_t to gva_t.
-> > 
-> >   - Added framework for enabling stage-2 in the guest.
-> > 
-> >   - Added shadow_stage2 test.
-> > 
-> > Thanks!
-> > 
-> > [1]: https://lore.kernel.org/kvmarm/20260412142216.3806482-1-weilin.chang@arm.com/
-> > 
-> > Wei-Lin Chang (9):
-> >   KVM: arm64: selftests: Add GPR save/restore functions for NV
-> >   KVM: arm64: selftests: Add helpers for guest hypervisors
-> >   KVM: arm64: selftests: Add hello_nested basic NV selftest
-> >   KVM: arm64: selftests: Enhance hello_nested test
-> >   KVM: arm64: selftests: Add shadow_stage2 test
-> >   KVM: arm64: selftests: shadow_stage2: Allocate L2 stack from dedicated
-> >     pool
-> >   KVM: arm64: selftests: shadow_stage2: Check supported stage-2 granule
-> >     size
-> >   KVM: arm64: selftests: Add infrastructure for using stage-2 in guest
-> >   KVM: arm64: selftests: shadow_stage2: Turn on stage-2 translation for
-> >     the nested guest
-> > 
-> >  tools/testing/selftests/kvm/Makefile.kvm      |   5 +
-> >  .../selftests/kvm/arm64/hello_nested.c        | 134 +++++++++
-> >  .../selftests/kvm/arm64/shadow_stage2.c       | 165 +++++++++++
-> >  .../selftests/kvm/include/arm64/nested.h      |  85 ++++++
-> >  tools/testing/selftests/kvm/lib/arm64/entry.S | 137 +++++++++
-> >  .../selftests/kvm/lib/arm64/hyp-entry.S       |  77 +++++
-> >  .../testing/selftests/kvm/lib/arm64/nested.c  | 264 ++++++++++++++++++
-> >  7 files changed, 867 insertions(+)
-> >  create mode 100644 tools/testing/selftests/kvm/arm64/hello_nested.c
-> >  create mode 100644 tools/testing/selftests/kvm/arm64/shadow_stage2.c
-> >  create mode 100644 tools/testing/selftests/kvm/include/arm64/nested.h
-> >  create mode 100644 tools/testing/selftests/kvm/lib/arm64/entry.S
-> >  create mode 100644 tools/testing/selftests/kvm/lib/arm64/hyp-entry.S
-> >  create mode 100644 tools/testing/selftests/kvm/lib/arm64/nested.c
-> > 
-> > -- 
-> > 2.43.0
-> > 
-> > 
+Jason
