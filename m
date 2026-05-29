@@ -1,55 +1,55 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B2C3BB671
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:22:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2613630A7
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093378; cv=none; b=Fxpq2wuh5CvnsmVYaxdKujj8l8XMyLfFGwMUfNFLUoh23LzKsfmqQgsaMwZ+dzBJzEuEURXJ/A23fZktEJM7znG7DBD7XgfE1W+JJIkDBbLVDdeVY4jeygQ1cdb96SdLnzD6HdRwvq18gGAcU76yw6S3YcdlutGbjb2xooREOew=
+	t=1780093378; cv=none; b=R8IKh4yzPmyIPStxO/BwFqMfPYtMpCUbr7P1OovGnfrKL6pkHIcxzaNoGB3PMXNj8CHmTIrNwPL9pvA5fSlQaPOnRXAf4XDBKWD21mGBmaTYO4boPmWJY6c3XMvyoc+55R3lUK678b/gI07W5VoV1JfOb3iy9USFBClPEskAzcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780093378; c=relaxed/simple;
-	bh=yAMlD+Ut9Mr5Vv3GBz5a6xiUa7kPP+TY0iPeK2IZP3s=;
+	bh=7mIOAYDO5oSpz1HswBSG6LYqEatOLHW5qOqOaTlM01Q=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cXbBU/rM8GoyTgwVxzrIUQ4Lgt1QiJv/fho77iiF0CGJhGcUU7sdjsGwaIIHWtuTTE0KZiVwGmq4oS+1+2zyBix90E6qZlIp+OBzXqL9UKlu9iBXjHf5HHMmZztoocoW7KcHA1M/y27ZEx+jrm2JqWKvtdwYI6z/vJasVBVNP/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qXci73IX; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=hOqDPGp7SzkJQTOFD6T3xQWAP9e548W/5/smYFxc6kwUiRRQ/o+ziR24dHXMTCS2Zr22Dbcj9SSZwAmAjSiUIJUMJhaSbTmk+vEeRoNyHvuEYEBkmLgZmYhgwoump0t9hL7xgVe+rWyFTFf3M3YzVth4Xm3G/odMCuz6rjeTjw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KQE68mFt; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qXci73IX"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8397b14a689so9148536b3a.2
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:22:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KQE68mFt"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-365fc4636bbso27725384a91.2
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:22:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093375; x=1780698175; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780093373; x=1780698173; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=TO/Qd/fwKscqv3OevgPA+uIhx1kFfn/8CSAsDvSeZD0=;
-        b=qXci73IX+54/z3/rLmqRUQeSmg/ZPdxhomI9rOPgHzmDl0B1/SWainOJPYYkhUJ5Zs
-         3qhv8sLCmI0G5yiiIW/PunEysWjG0/JarVyfkVgplxOhl9vP4+h4qhD5pxs8YwZYv8Kf
-         Fcbc73vnjASbwriUEkz45swcgql4bp4CB3MNI9hxPP96MrnCDLUPzjRgA0UsYMW8CQ+o
-         5DHZhtd8MUEow7KrI8c6dFJ7itOkgbavIWoKxNmG3bdqfct9TGsJS2n4FCIW318QpdsU
-         T2RzZyq6QQ0CGzMJhY0WNjufSE8RUCrbwmdgQdTuJdpTcbAyn096tDqlC9cNMKtL8NRL
-         8o0A==
+        bh=jKofG2Hvtgv/l66zJ72qbyioy0cgxVopkyT0Bv1ocwE=;
+        b=KQE68mFtJfvxiBmycb+hSiJsRsK8mD4hZH3AZZFQKxAerQrgXcSM946oMyN3HSCyYK
+         byYvUxeVVmezKDecLfbhxe5RfYcoiVwbXmUYs73v8mD4ifKtuQaXQlqo0DKhJ7743P48
+         V7/3khwfJ6jlGj7GpKUngvpnYyrgi3Kz24x+I+j8Re7r54ztKM8jY0Kh1o4aiQlAn/xY
+         u3FrLovgXSvKuxNqfbVPTmKW/VoTKsIJMBz+IgnWd5BH3w1N2tYxtYkaZMndWpBGahp4
+         d6FCT6qFJgwx1BuBIVh/HvAGy+f4NsE1BbeKCGLQju4j2peOV6f6VzWRoUVxQ2hE1cxd
+         vLWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093375; x=1780698175;
+        d=1e100.net; s=20251104; t=1780093373; x=1780698173;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TO/Qd/fwKscqv3OevgPA+uIhx1kFfn/8CSAsDvSeZD0=;
-        b=FLniDm4XfDYqyAkyMsyIXK6gtlDict3dtPgOkjLbuq2exB78OSP23n1dxcmrbcRgqH
-         /jIfcto9D5MN1MuwOqPg8JuaBrJEAWiEjW65dVCoPtqG5S0IEVEff/kFI3OEwRrxbyc7
-         49/n0Vb1jkiCE42F9HoRun+AEkYnzgYHfw52AhVbdQNpPdsUldFSoW0hX2/nFAvxQATt
-         VmTwRDzNqda2dTCGiUg3EE8ht/xV5SazlcNZxismfce7Rd8XlRgw9Hvv+lXrdb2tGMsQ
-         /1LxD9YQKhC0NkCZKEucCJSeIlvj0IgP+6Q2qVvZ/ZuN0dLBvmCiFqns50nvC7Hrmzou
-         +k8g==
-X-Gm-Message-State: AOJu0Yz8s8ZB/re36mBWwODYR5pIv+qpM0TS9Zk3YhIpN4txfhdUr8m6
-	8RNUy7DI8KH+y6QgF9QcwhoKYOU4Ky2GCSJH+Vip1T7znNWnflg/CfjwjpxdkRBgjnu3/rmB00M
-	Qj+x31A==
-X-Received: from pfbhu46.prod.google.com ([2002:a05:6a00:69ae:b0:82f:344e:386a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4196:b0:838:127d:a16e
- with SMTP id d2e1a72fcca58-84225394e9amr1230292b3a.17.1780093374509; Fri, 29
- May 2026 15:22:54 -0700 (PDT)
+        bh=jKofG2Hvtgv/l66zJ72qbyioy0cgxVopkyT0Bv1ocwE=;
+        b=jrpmUVTjwQyZxxAOONTZ7lmBNyZfTNR4xAvpeSg6Kmk4WY9+U096U8u3mPdFoPAPaS
+         jBjYWmjqb6uixlEGUPyy0V3yoGha8Be5RKIXnXoEdDMq311vJ/VoMjENTwgrXCNkPss1
+         DngE1sHXp4TkmXUKdqsBotoVaUJloyMdfG3SGO1zS3N0zVEgWSwq1jvNoR4/g8EjbX7m
+         5dAWIV0UPrMQpdXwS4OI7fRGqkNW8GD9OwgD5VZlB9iDvTNnkwjUeok32zqjw64CC2Yu
+         0Ir4WTMjXyG+vzEONHROW/qEzJ4TS+pVi9W2Fb+4w7LmC0oP0DWUItQHwwC45loGOn3I
+         iczQ==
+X-Gm-Message-State: AOJu0Yw3huRlJbs8ry4S8JINJ+rFyyPqxBjWZHJRuYevuNCKHqgNnxNn
+	NJmXqvABC1ikOuMvoIc9t/71u9Y+PngFaSudksQMEGUveV8PqqXL/HP6AhWdaQP6PD+D24QO5d/
+	Bjq0HeQ==
+X-Received: from pgig5.prod.google.com ([2002:a63:f405:0:b0:c80:2399:151])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6017:b0:39f:a42:9251
+ with SMTP id adf61e73a8af0-3b427f2af2cmr1231557637.22.1780093373357; Fri, 29
+ May 2026 15:22:53 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 15:21:53 -0700
+Date: Fri, 29 May 2026 15:21:52 -0700
 In-Reply-To: <20260529222223.870923-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529222223.870923-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529222223.870923-11-seanjc@google.com>
-Subject: [PATCH v3 10/40] KVM: nSVM: Use kvm_rax_read() now that it's mode-aware
+Message-ID: <20260529222223.870923-10-seanjc@google.com>
+Subject: [PATCH v3 09/40] KVM: x86: Drop non-raw kvm_<reg>_write() helpers
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -69,62 +69,42 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that kvm_rax_read() truncates the output value to 32 bits if the
-vCPU isn't in 64-bit mode, use it instead of the more verbose (and very
-technically slower) kvm_register_read().
+Drop the non-raw, mode-aware kvm_<reg>_write() helpers as there is no
+usage in KVM, and in all likelihood there will never be usage in KVM as
+use of hardcoded registers in instructions is uncommon, and *modifying*
+hardcoded registers is practically unheard of.  While there are a few
+instructions that modify registers in mode-aware ways, e.g. REP string
+and some ENCLS varieties, the odds of KVM needing to emulate such
+instructions (outside of the fully emulator) are vanishingly small.
 
-Note!  VMLOAD, VMSAVE, and VMRUN emulation are still technically buggy,
-as they can use EAX (versus RAX) in 64-bit mode via an operand size
-prefix.  Don't bother trying to handle that case, as it would require
-decoding the code stream, which would open an entirely different can of
-worms, and in practice no sane guest would shove garbage into RAX[63:32]
-and then execute VMLOAD/VMSAVE/VMRUN with just EAX.
+Drop kvm_<reg>_write() to prevent incorrect usage; _if_ a new instruction
+comes along that needs to modify a hardcoded register, this can be
+reverted.
 
 No functional change intended.
 
-Cc: Yosry Ahmed <yosry@kernel.org>
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/nested.c | 2 +-
- arch/x86/kvm/svm/svm.c    | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kvm/regs.h | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index d817dbb350d6..1ab8b95975a4 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1135,7 +1135,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 	if (WARN_ON_ONCE(!svm->nested.initialized))
- 		return -EINVAL;
- 
--	vmcb12_gpa = kvm_register_read(vcpu, VCPU_REGS_RAX);
-+	vmcb12_gpa = kvm_rax_read(vcpu);
- 	if (!page_address_valid(vcpu, vmcb12_gpa)) {
- 		kvm_inject_gp(vcpu, 0);
- 		return 1;
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 8402e94ac094..526e0fdcd16b 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2218,7 +2218,7 @@ static int intr_interception(struct kvm_vcpu *vcpu)
- 
- static int vmload_vmsave_interception(struct kvm_vcpu *vcpu, bool vmload)
- {
--	u64 vmcb12_gpa = kvm_register_read(vcpu, VCPU_REGS_RAX);
-+	u64 vmcb12_gpa = kvm_rax_read(vcpu);
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct vmcb *vmcb12;
- 	struct kvm_host_map map;
-@@ -2326,7 +2326,7 @@ static int gp_interception(struct kvm_vcpu *vcpu)
- 		if (nested_svm_check_permissions(vcpu))
- 			return 1;
- 
--		if (!page_address_valid(vcpu, kvm_register_read(vcpu, VCPU_REGS_RAX)))
-+		if (!page_address_valid(vcpu, kvm_rax_read(vcpu)))
- 			goto reinject;
- 
- 		/*
+diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+index 12db5039aace..f22b3a8cd483 100644
+--- a/arch/x86/kvm/regs.h
++++ b/arch/x86/kvm/regs.h
+@@ -61,11 +61,6 @@ static __always_inline unsigned long kvm_##lname##_read(struct kvm_vcpu *vcpu)
+ {											\
+ 	return vcpu->arch.regs[VCPU_REGS_##uname] & kvm_reg_mode_mask(vcpu);		\
+ }											\
+-static __always_inline void kvm_##lname##_write(struct kvm_vcpu *vcpu,			\
+-						unsigned long val)			\
+-{											\
+-	vcpu->arch.regs[VCPU_REGS_##uname] = val & kvm_reg_mode_mask(vcpu);		\
+-}											\
+ static __always_inline unsigned long kvm_##lname##_read_raw(struct kvm_vcpu *vcpu)	\
+ {											\
+ 	return vcpu->arch.regs[VCPU_REGS_##uname];					\
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
