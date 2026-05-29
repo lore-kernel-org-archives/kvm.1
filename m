@@ -1,55 +1,55 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B66047DD4C
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E50F47D947
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093407; cv=none; b=cfUsGgkhrZYJIJ/bobtlnnugh4DpzjcV8RESkZGt89iTf4XpKWPaO1ZoyE4wMJ5N7S+AhfXqXORiVyicylLkFZl4UVFWp5bavdwLZrPWJNTtChlfoUCwatLoOc673QyUxsokl/xRiKa14R2Yo4rwYFCdlrxHNQVrhssjbOnKSbA=
+	t=1780093407; cv=none; b=WECthPEfMQNCNtbGhk9k9ahHz40fL5V6RSs1eqvh2/EJk1fp4xH5VkFTI+Oz01Je/pXMdB8O3GZeimAMwmVSFSD1G/WLr/+qGKm8r4fWxRDET3GMt4gZrtQ9O/F578PQFxWpcom/acpikf0ExbKCHUcGGVIff6CfN1Z/HBiC+I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780093407; c=relaxed/simple;
-	bh=cAVTA4X118KjTxfXzG4OtoKCmSjIFhw3tbSFgguW9S4=;
+	bh=+s6xBOQ8qu6SI6nRP+HhTyt6JUEzgxZY18AyIiC69OM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dP1rojhXCupa+g2XUzNI+0iAfFFWaaVYVp8IlRe+5xLXOkVkPPD6OSf7wpu9opVsa1uUZ5Tu/l4fOJmiBwxNKTNfShNwrjyg7Ae6WrLV/WDf24F8HO/ilvLLgRVgXgJInvuXQ5NIxcojlUpwovg7RnjbaZ0FZLok4dmjmLZfu2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ryR36NoH; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=Ij0M7MAV1Qcx9ABXLYBVky4PKK094bqLGNNTYPhy1tOwawxLUmSUWNao4NDDd3G4X3ox5TnQqAWOzvg5NMNbjFP3aCbhr1QSiDuquNv7BEgNJgXat4dg60WkjHEhQ4H5WNks6Ghd/SxtB3OVF4+gd1VDUNIrquoYg/ErvxsmWEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z1nnn3Yw; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ryR36NoH"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36603ad6709so12067019a91.2
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z1nnn3Yw"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bc6899bfb1so155864475ad.2
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093406; x=1780698206; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780093405; x=1780698205; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=bZ/xu/SiWZyqJK5vauNXTcwVMA30rU7kWatOu0HtYnk=;
-        b=ryR36NoHtsbmncAApR7IgfQlDl6RwVUsZlBGjToHDhyHWdaH6j0/uWD6W0Etsgj7ry
-         wDdoJpd5Dx6i4yhV4IEZjBXguE3DJpYSikjTbiC2ANs2lTShPVHtkfen7dtw3kEFB3fE
-         +h4+KFxqfy7QUr1+T0YPcG469YfR4HW0ycfyItReo/jE3tv4oh0bXAGtD8mpWQWASGbw
-         lam8Vy9rgrA27P83oG/QfNPCbFkl8IrV/p8TBMOxDR/q65qmvz1wW747cxRgM+vpstPc
-         9psQ5xteP4bTXv25p6hSoYwzsIrJVzygnsk9XUDJkWOKBmDyV0WEeXW+dsoZL4NofkOo
-         e1zg==
+        bh=B45QF1eRSPwRPsQdGnQfeoTY9Ry5cop0GiLPIJpG3/U=;
+        b=Z1nnn3YwIxqdjHlSlrtrxVE0RUKvn9jiT2rrrXaNdGvCub/+GNPb9jAxnH4sumCO1W
+         wwYD1xcMECImyoTLkCpJmLYAM8BqPiNHKewUH74OWJtF+NAB8sQsrAIya/Z2KLPBX698
+         vsPVi14g3qVQMMVcgzOCsn1nkVnNO1zi7VtWwgAbxcLFs1p7ktorAkM+ZS2PacL1lJez
+         r9ngpvhXfij7zAxvxvfiJUnCZcY1RSQeZWf7WsqIgEBurOdzltb+Dc2hjg7NbhbuT81P
+         1CVqjMUq7PA/RdiLHdHGS80ZEAwdCmgAAX1Y+9ouS9uKASJXLnj2yzoojUq1sxcfJ5Po
+         2NkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093406; x=1780698206;
+        d=1e100.net; s=20251104; t=1780093405; x=1780698205;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bZ/xu/SiWZyqJK5vauNXTcwVMA30rU7kWatOu0HtYnk=;
-        b=HUuGDu6yHjWNkL/l+qrgQyiHWnJbPYy28IW3xykOJ6z1toTvL+3bxjArN1+saUe5V0
-         o+Ttd99dpS+AWXHXedximJJb9DWXJ78a3GSQD2nI/ezNom85DXAgXVocyUwafmHVFYB6
-         yIh9sE4D48LA8IvzjNlCz9vc0kNRtgwpVnGccamgXcsbTZNkoxtUX1oz4C2W9Erg5jDu
-         y6f4TZAWGfcCBidbXWLBvu/4ynTWcChROBT05OiFtGT79MMl6Xk9hX4tgPYnq1aA5KCx
-         fnv7Zl+2xxUC5tmUYM62M8lwdrJ2tq4QAAUUeCJBNLJeCeEOWH7L5zT1RQrvnzmHSvKZ
-         9tRQ==
-X-Gm-Message-State: AOJu0YxQNZ3dSMXDmR0En7U/yySxr0OluV9Z91zQic7pfH1EOMy1iqkM
-	TSIktZ1YAwu58TeSTGzampu9mPkeO7z3+cJlz42k2Yqct0300uwo81JyCUp6THWiPXZ7JW1NhC3
-	ebSH3Qw==
-X-Received: from plbmo16.prod.google.com ([2002:a17:903:a90:b0:2b2:5117:a3f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c949:b0:2be:1c3c:72bb
- with SMTP id d9443c01a7336-2bf36860a25mr21141965ad.33.1780093405558; Fri, 29
- May 2026 15:23:25 -0700 (PDT)
+        bh=B45QF1eRSPwRPsQdGnQfeoTY9Ry5cop0GiLPIJpG3/U=;
+        b=LII6gc5qwgsa7cCQFJ09NJNAk+D5hzwZOAU4iAAafkYLa1+9Be5iRP04r6G6dCYfZ+
+         KpaQ9gBbKms8475rHQn6rP4AY7CH96EytRHXcHs62Mn7vVWUrL4PCyr6SJKNrzKg8fcx
+         AtLtm9o9jL24VhYjUocBRb1UOFvaU0cgenp0Vu+QFH9fDmUP4x2+pWByhVaalFFC4a0a
+         lG7Zcpwt6Yb4TYvvxJmUqBT+dJkxzuk1Y8WKZPhIpYCkelkSV3U2XAjWfO7KRzKyGL+k
+         1mgUlhmmfQcSKJluerlvDhbtpneWd/lsXj5VmtZDRLxQUiXOFY2QWVadegLQOU0z7EnG
+         9Vmw==
+X-Gm-Message-State: AOJu0YyNbdN3eYJb22S81rc1HbCL9KQh7HlEsH/JyXpMCu2L85NYg72K
+	skmLbNyPTx2hZOy16QFkh4+78JEPm4/fVKulAwq90Brkyh5pO8Ku4a+RUtt8Se7wAGhNDwq9tB+
+	53ozttQ==
+X-Received: from plgv8.prod.google.com ([2002:a17:902:e8c8:b0:2bf:2f05:e721])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3884:b0:2bf:33a9:bf4a
+ with SMTP id d9443c01a7336-2bf368a3d92mr19960435ad.38.1780093404494; Fri, 29
+ May 2026 15:23:24 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 15:22:18 -0700
+Date: Fri, 29 May 2026 15:22:17 -0700
 In-Reply-To: <20260529222223.870923-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529222223.870923-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529222223.870923-36-seanjc@google.com>
-Subject: [PATCH v3 35/40] KVM: x86: Move __kvm_irq_line_state() from
- kvm_host.h => ioapic.h
+Message-ID: <20260529222223.870923-35-seanjc@google.com>
+Subject: [PATCH v3 34/40] KVM: x86: Move misc "VALID MASK" defines from
+ kvm_host.h => x86.c
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -70,63 +70,123 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Bury __kvm_irq_line_state() in CONFIG_KVM_IOAPIC=y code, as it's only used
-by PIC and I/O APIC code.
+Move a variety of "VALID MASK" defines, e.g. that capture which flags in
+a given ioctl are supported by KVM, from kvm_host.h to x86.c.  The set of
+valid flags/bits is very much a KVM-internal detail, as the hardcoded
+defines are often massaged at runtime, i.e. *directly* using the macros
+outside of KVM x86 would be actively dangerous.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h | 12 ------------
- arch/x86/kvm/ioapic.h           | 12 ++++++++++++
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 34 ---------------------------------
+ arch/x86/kvm/x86.c              | 33 ++++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 34 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 53994b8292fc..866d33abaee0 100644
+index 989294c7501b..53994b8292fc 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -2275,18 +2275,6 @@ static inline void kvm_inject_emulated_page_fault(struct kvm_vcpu *vcpu,
+@@ -78,12 +78,6 @@
+ #define KVM_DIRTY_LOG_MANUAL_CAPS   (KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE | \
+ 					KVM_DIRTY_LOG_INITIALLY_SET)
  
- bool kvm_require_dr(struct kvm_vcpu *vcpu, int dr);
- 
--static inline int __kvm_irq_line_state(unsigned long *irq_state,
--				       int irq_source_id, int level)
--{
--	/* Logical OR for level trig interrupt */
--	if (level)
--		__set_bit(irq_source_id, irq_state);
--	else
--		__clear_bit(irq_source_id, irq_state);
+-#define KVM_BUS_LOCK_DETECTION_VALID_MODE	(KVM_BUS_LOCK_DETECTION_OFF | \
+-						 KVM_BUS_LOCK_DETECTION_EXIT)
 -
--	return !!(*irq_state);
--}
+-#define KVM_X86_NOTIFY_VMEXIT_VALID_BITS	(KVM_X86_NOTIFY_VMEXIT_ENABLED | \
+-						 KVM_X86_NOTIFY_VMEXIT_USER)
 -
- void kvm_inject_nmi(struct kvm_vcpu *vcpu);
- int kvm_get_nr_pending_nmis(struct kvm_vcpu *vcpu);
+ /* x86-specific vcpu->requests bit members */
+ #define KVM_REQ_MIGRATE_TIMER		KVM_ARCH_REQ(0)
+ #define KVM_REQ_REPORT_TPR_ACCESS	KVM_ARCH_REQ(1)
+@@ -2429,34 +2423,6 @@ static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu)
  
-diff --git a/arch/x86/kvm/ioapic.h b/arch/x86/kvm/ioapic.h
-index 3dadae093690..81b576513116 100644
---- a/arch/x86/kvm/ioapic.h
-+++ b/arch/x86/kvm/ioapic.h
-@@ -113,6 +113,18 @@ void kvm_get_ioapic(struct kvm *kvm, struct kvm_ioapic_state *state);
- void kvm_set_ioapic(struct kvm *kvm, struct kvm_ioapic_state *state);
- void kvm_ioapic_scan_entry(struct kvm_vcpu *vcpu,
- 			   ulong *ioapic_handled_vectors);
-+
-+static inline int __kvm_irq_line_state(unsigned long *irq_state,
-+				       int irq_source_id, int level)
-+{
-+	/* Logical OR for level trig interrupt */
-+	if (level)
-+		__set_bit(irq_source_id, irq_state);
-+	else
-+		__clear_bit(irq_source_id, irq_state);
-+
-+	return !!(*irq_state);
-+}
- #endif /* CONFIG_KVM_IOAPIC */
+ int memslot_rmap_alloc(struct kvm_memory_slot *slot, unsigned long npages);
  
- static inline int ioapic_in_kernel(struct kvm *kvm)
+-#define KVM_CLOCK_VALID_FLAGS						\
+-	(KVM_CLOCK_TSC_STABLE | KVM_CLOCK_REALTIME | KVM_CLOCK_HOST_TSC)
+-
+-#define KVM_X86_VALID_QUIRKS			\
+-	(KVM_X86_QUIRK_LINT0_REENABLED |	\
+-	 KVM_X86_QUIRK_CD_NW_CLEARED |		\
+-	 KVM_X86_QUIRK_LAPIC_MMIO_HOLE |	\
+-	 KVM_X86_QUIRK_OUT_7E_INC_RIP |		\
+-	 KVM_X86_QUIRK_MISC_ENABLE_NO_MWAIT |	\
+-	 KVM_X86_QUIRK_FIX_HYPERCALL_INSN |	\
+-	 KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS |	\
+-	 KVM_X86_QUIRK_SLOT_ZAP_ALL |		\
+-	 KVM_X86_QUIRK_STUFF_FEATURE_MSRS |	\
+-	 KVM_X86_QUIRK_IGNORE_GUEST_PAT |	\
+-	 KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM |	\
+-	 KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT)
+-
+-#define KVM_X86_CONDITIONAL_QUIRKS		\
+-	(KVM_X86_QUIRK_CD_NW_CLEARED |		\
+-	 KVM_X86_QUIRK_IGNORE_GUEST_PAT)
+-
+-/*
+- * KVM previously used a u32 field in kvm_run to indicate the hypercall was
+- * initiated from long mode. KVM now sets bit 0 to indicate long mode, but the
+- * remaining 31 lower bits must be 0 to preserve ABI.
+- */
+-#define KVM_EXIT_HYPERCALL_MBZ		GENMASK_ULL(31, 1)
+-
+ static inline bool kvm_arch_has_irq_bypass(void)
+ {
+ 	return enable_device_posted_irqs;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 660ba27c76ec..a854b83e9881 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -105,6 +105,12 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_host);
+ #define emul_to_vcpu(ctxt) \
+ 	((struct kvm_vcpu *)(ctxt)->vcpu)
+ 
++/*
++ * KVM previously used a u32 field in kvm_run to indicate the hypercall was
++ * initiated from long mode. KVM now sets bit 0 to indicate long mode, but the
++ * remaining 31 lower bits must be 0 to preserve ABI.
++ */
++#define KVM_EXIT_HYPERCALL_MBZ		GENMASK_ULL(31, 1)
+ #define KVM_EXIT_HYPERCALL_VALID_MASK (1 << KVM_HC_MAP_GPA_RANGE)
+ 
+ #define KVM_CAP_PMU_VALID_MASK KVM_PMU_CAP_DISABLE
+@@ -114,6 +120,33 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_host);
+ 				    KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST	| \
+ 				    KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST)
+ 
++#define KVM_CLOCK_VALID_FLAGS						\
++	(KVM_CLOCK_TSC_STABLE | KVM_CLOCK_REALTIME | KVM_CLOCK_HOST_TSC)
++
++#define KVM_X86_VALID_QUIRKS			\
++	(KVM_X86_QUIRK_LINT0_REENABLED |	\
++	 KVM_X86_QUIRK_CD_NW_CLEARED |		\
++	 KVM_X86_QUIRK_LAPIC_MMIO_HOLE |	\
++	 KVM_X86_QUIRK_OUT_7E_INC_RIP |		\
++	 KVM_X86_QUIRK_MISC_ENABLE_NO_MWAIT |	\
++	 KVM_X86_QUIRK_FIX_HYPERCALL_INSN |	\
++	 KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS |	\
++	 KVM_X86_QUIRK_SLOT_ZAP_ALL |		\
++	 KVM_X86_QUIRK_STUFF_FEATURE_MSRS |	\
++	 KVM_X86_QUIRK_IGNORE_GUEST_PAT |	\
++	 KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM |	\
++	 KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT)
++
++#define KVM_X86_CONDITIONAL_QUIRKS		\
++	(KVM_X86_QUIRK_CD_NW_CLEARED |		\
++	 KVM_X86_QUIRK_IGNORE_GUEST_PAT)
++
++#define KVM_BUS_LOCK_DETECTION_VALID_MODE	(KVM_BUS_LOCK_DETECTION_OFF | \
++						 KVM_BUS_LOCK_DETECTION_EXIT)
++
++#define KVM_X86_NOTIFY_VMEXIT_VALID_BITS	(KVM_X86_NOTIFY_VMEXIT_ENABLED | \
++						 KVM_X86_NOTIFY_VMEXIT_USER)
++
+ static void process_nmi(struct kvm_vcpu *vcpu);
+ static void store_regs(struct kvm_vcpu *vcpu);
+ static int sync_regs(struct kvm_vcpu *vcpu);
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
