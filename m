@@ -1,55 +1,55 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E24545BD78
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D76466B5C
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093391; cv=none; b=JltGu3RJs3lra3LTGtxHsWF4z/sI/E9ivsr6zr2AUnsDpEnb/XDlYSqD8g6i5hz/NPaIVzHhVitUptSaLVLd/3I3+x0MBRayHBtHkzNGKaDi3BW/atTY8CQkIBKofXrpiBJ6qO/veqvGHuqp1jq6kfiKVuBdXYHjnzCFn9/YIGI=
+	t=1780093393; cv=none; b=tSoNtw/kO844ulQGq0C2EgWTW8nIA8k+/wBkjjyUfR1uwRKBc0tGkLWYbbBXHKWZlGCoBROzDmSaDTvDgJzN5yGd6p03QroJl93MABHalP7mCYnYjrjMS0bTwF5MtHPqFheJJeIVCqn2+nEDZMQVpJVm8jjiTBzwOiERl09PCyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780093391; c=relaxed/simple;
-	bh=EGPfyjJEkMRALBldQbQlTBqALJmI6WLTaQUvqWM0994=;
+	s=arc-20240116; t=1780093393; c=relaxed/simple;
+	bh=U16q5I4nJv94rNXxPlbWDmKybiGw1J1K0KEk+xMy+jo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=msOPDYDVtuVECsCO86yapOkgHnsepcqoIUxjJ8M9zLVdmcnR+eJGPKWOacQ9+ncdYPVlHY0q14jJ0qoEQUzUENClX9ADzzEdAOeDR5sVk7L1Il+RjVMBxYwkD19U43bCeMge38sixQXgIEB4QTbTIH/a922wcaAcxS9QP7sexjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bqw6aNHI; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=koFcqQ3icvX20Ex/vvc7n08FzqO1SrDcYl2B12X1SIb8JK2Nb2rPiVj2+vpYnyRpMuDCkC/eE1Xa0OKVD5F6lKaIF3lCeVKXkpGeXfbX2BMeYQnNrStrwATKORQmQ6PqKvqBY5i0WjuUNjV5BT4ID5k7VqFatnrQz5WydOPZxQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jrCH4fgx; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bqw6aNHI"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf08c2a24bso26328785ad.2
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jrCH4fgx"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b9106b0fbso1632488a91.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093390; x=1780698190; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780093391; x=1780698191; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=LNxa5lWov+tsCDMl+sF7sk9ofNMegwWDjQlcUaSncIw=;
-        b=Bqw6aNHIVVFRiQFr6DSnyKl3ZHU8Xxkk5DhGuvYZsjJ+WcQHbuWpuwh+usemDrdawF
-         z+XPC1WH4AfWyXFhPCWzr0j74mAl7lr8ePZwtLYDyiqkYF7WY0VlfA7DyxcmrKpT3lnN
-         j31Vyzr6YouK6LciKEZIy7pjzRJBfJiB1Ss+7heSzT+ETy0/84KNuCfFi67S2nqJYi9e
-         nYHZQe/7IA9tSW/foFFCVFmN6OQLxV9pUMRgeRzb2VZliV8wn3kWiwvZSWC/lzIy9T8E
-         NXBkdeRVD9kvwWI2KnWO8LUDSzyYotYvYSBpCBsKWJl1HXd0K/Awi3UBUD9q33kWMPZW
-         ItyQ==
+        bh=g41Ygn6Uf+1kQN9znuZTAZ86kg1U3hWntwdYhg6VgHo=;
+        b=jrCH4fgxpAOldu3iKMoydnGt5gEkDhHaphzg7y1EsF8GvAQ1+OAoycVlPudH64FI1c
+         tISjjglPLx7yVoBb+PwIBna3a7mHj2tkjev6G9bosur1mozYPaLblKox0YB2DszbI6RR
+         shUK6T+FSJKrNgkDyRcwjpD7vswL/LkvvPU3asdMAT8R/mKG58Nm1PcpJyO4+6mSaEFk
+         bJJnOj/OCVVImm3RqRhwARNsNxf1GOKFX7233nhaSE7snNIn4CBfBSupTMWAcnLSpC/N
+         D8ZE6J3ZSbhjuLOChiloHKxIv+OGQx10ODWpcsVI5im9GEc98Auz38bAQrf6LZzaVO5R
+         YUWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093390; x=1780698190;
+        d=1e100.net; s=20251104; t=1780093391; x=1780698191;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LNxa5lWov+tsCDMl+sF7sk9ofNMegwWDjQlcUaSncIw=;
-        b=M3qYsErZAIkFAhsCS4RQ7G6WYepUE0dlrA8P8EjVwiHxvuAhxRIg6olvaC/AmFQE61
-         xZ9NP6yEn3febRYcLuFUho+dBxeqOQu9curcWaiogQB47z03eSvT9vLmsDFZrKPjY0s5
-         WHYOoDQn7jjNu730XsrabCUtnomCt9tW4rr4K5TXLP9dVgobby+AqDKfBi4tW7slCkZb
-         Vr/QfQsc4mdLPLIfzDR9vtysIXptrNhX2+kg6x5BeuTa7OkLm0dWpxTyZxuyACDV3qiN
-         pbUPcRFZdpOKUCzdyUC/vfqqRUABQ4EEnN+p+MmuOFoqDHqT1nkivMiyImWtMqm2KZ4D
-         X+Fw==
-X-Gm-Message-State: AOJu0Yz/ReyLi0eMTyUYN+RIvR3KWsS67ItSpnJg9GxCDGts7oi18V+f
-	oD+0g3tFr4USLB1cO4lPIP29KL9f1ogcPdhJZo3wO1Fxl3jUfAsl3SVvbMJef+r9NdusHi9XVXI
-	Qz7sRIA==
-X-Received: from pllg1.prod.google.com ([2002:a17:902:7401:b0:2b4:5be2:f5a6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cf12:b0:2bc:cf06:6835
- with SMTP id d9443c01a7336-2bf36798747mr20427575ad.8.1780093389821; Fri, 29
- May 2026 15:23:09 -0700 (PDT)
+        bh=g41Ygn6Uf+1kQN9znuZTAZ86kg1U3hWntwdYhg6VgHo=;
+        b=ZVpjUAIYQa61Jcqz3MbWmFJebxkC7NZD34A+kRhZRIi2REQLuZzEnF/vqB5ud0NV2Q
+         W2n2F7KrVFmgnXeD/1ve9gEKxC/MrEi3KhEZfX+fWKm6T08bBzCY6N7z6jRBwf5s77Ob
+         +7HbLqJOsZh/2mWfziO5c9MPyk4L/6jRx+mt2ryhPP2PXyWUMeaniPbnAMVY3W9bm1uw
+         NPGz98iKzPxbzLuv/4Ix1YrF/zvQf4oNrNL5C2aGAqxSSMP6v/eTDke02PJiaDIl7AuH
+         gehVyBujj3G0o/RQ51t1lMKDYGx20CT1YupLN1HUyERPjG4u9CoVVvAGUZkjPpmCZhWB
+         /nvA==
+X-Gm-Message-State: AOJu0YwTHvtX2OsWXxnduE8vUwmrpxdnyTJBQ5IzPf2HskOh0CoaIwz7
+	rnKYEWZKwetjhx/4qagtgCCP1LWjGmHI3LpMZ6+EpAk0OJ6DF4Wj4kirJ0ZaHlU1hxVC67iV+ky
+	raq/awg==
+X-Received: from pfbfx13.prod.google.com ([2002:a05:6a00:820d:b0:82c:90c5:5e0d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:439f:b0:3a2:c7e1:ff89
+ with SMTP id adf61e73a8af0-3b4267562bamr1285241637.7.1780093390874; Fri, 29
+ May 2026 15:23:10 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 15:22:06 -0700
+Date: Fri, 29 May 2026 15:22:07 -0700
 In-Reply-To: <20260529222223.870923-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529222223.870923-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529222223.870923-24-seanjc@google.com>
-Subject: [PATCH v3 23/40] KVM: x86: Move kvm_{load,put}_guest_fpu() to fpu.h
+Message-ID: <20260529222223.870923-25-seanjc@google.com>
+Subject: [PATCH v3 24/40] KVM: x86: Extract get/set MSR (list) ioctl logic to helpers
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -69,98 +69,195 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Move the kvm_{load,put}_guest_fpu() helpers to fpu.h in anticipation of
-moving the bulk of KVM's register specific code out of x86.c.
+Extract the code for getting/setting MSRs and MSR lists to dedicated
+helpers in anticipation of moving the MSR code to a new msrs.c.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/fpu.h | 26 ++++++++++++++++++++++++++
- arch/x86/kvm/x86.c | 24 ------------------------
- 2 files changed, 26 insertions(+), 24 deletions(-)
+ arch/x86/kvm/x86.c | 135 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 78 insertions(+), 57 deletions(-)
 
-diff --git a/arch/x86/kvm/fpu.h b/arch/x86/kvm/fpu.h
-index f898781b6a06..6b7b628f530d 100644
---- a/arch/x86/kvm/fpu.h
-+++ b/arch/x86/kvm/fpu.h
-@@ -3,8 +3,34 @@
- #ifndef __KVM_FPU_H_
- #define __KVM_FPU_H_
- 
-+#include <linux/kvm_host.h>
-+
-+#include <trace/events/kvm.h>
-+
- #include <asm/fpu/api.h>
- 
-+/* Swap (qemu) user FPU context for the guest FPU context. */
-+static inline void kvm_load_guest_fpu(struct kvm_vcpu *vcpu)
-+{
-+	if (KVM_BUG_ON(vcpu->arch.guest_fpu.fpstate->in_use, vcpu->kvm))
-+		return;
-+
-+	/* Exclude PKRU, it's restored separately immediately after VM-Exit. */
-+	fpu_swap_kvm_fpstate(&vcpu->arch.guest_fpu, true);
-+	trace_kvm_fpu(1);
-+}
-+
-+/* When vcpu_run ends, restore user space FPU context. */
-+static inline void kvm_put_guest_fpu(struct kvm_vcpu *vcpu)
-+{
-+	if (KVM_BUG_ON(!vcpu->arch.guest_fpu.fpstate->in_use, vcpu->kvm))
-+		return;
-+
-+	fpu_swap_kvm_fpstate(&vcpu->arch.guest_fpu, false);
-+	++vcpu->stat.fpu_reload;
-+	trace_kvm_fpu(0);
-+}
-+
- typedef u32		__attribute__((vector_size(16))) sse128_t;
- #define __sse128_u	union { sse128_t vec; u64 as_u64[2]; u32 as_u32[4]; }
- #define sse128_lo(x)	({ __sse128_u t; t.vec = x; t.as_u64[0]; })
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index be421f467563..56ccb6b77abb 100644
+index 56ccb6b77abb..64c3680d889b 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -133,8 +133,6 @@ static void store_regs(struct kvm_vcpu *vcpu);
- static int sync_regs(struct kvm_vcpu *vcpu);
+@@ -4602,6 +4602,61 @@ static int kvm_x86_dev_has_attr(struct kvm_device_attr *attr)
+ 	return __kvm_x86_dev_get_attr(attr, &val);
+ }
  
- static DEFINE_MUTEX(vendor_module_lock);
--static void kvm_load_guest_fpu(struct kvm_vcpu *vcpu);
--static void kvm_put_guest_fpu(struct kvm_vcpu *vcpu);
++static int kvm_get_msr_index_list(struct kvm_msr_list __user *user_msr_list)
++{
++	struct kvm_msr_list msr_list;
++	unsigned int n;
++
++	if (copy_from_user(&msr_list, user_msr_list, sizeof(msr_list)))
++		return -EFAULT;
++
++	n = msr_list.nmsrs;
++	msr_list.nmsrs = num_msrs_to_save + num_emulated_msrs;
++	if (copy_to_user(user_msr_list, &msr_list, sizeof(msr_list)))
++		return -EFAULT;
++
++	if (n < msr_list.nmsrs)
++		return -E2BIG;
++
++	if (copy_to_user(user_msr_list->indices, &msrs_to_save,
++				num_msrs_to_save * sizeof(u32)))
++		return -EFAULT;
++
++	if (copy_to_user(user_msr_list->indices + num_msrs_to_save,
++			 &emulated_msrs, num_emulated_msrs * sizeof(u32)))
++		return -EFAULT;
++
++	return 0;
++}
++
++static int kvm_get_feature_msr_index_list(struct kvm_msr_list __user *user_msr_list)
++{
++	struct kvm_msr_list msr_list;
++	unsigned int n;
++
++	if (copy_from_user(&msr_list, user_msr_list, sizeof(msr_list)))
++		return -EFAULT;
++
++	n = msr_list.nmsrs;
++	msr_list.nmsrs = num_msr_based_features;
++	if (copy_to_user(user_msr_list, &msr_list, sizeof(msr_list)))
++		return -EFAULT;
++
++	if (n < msr_list.nmsrs)
++		return -E2BIG;
++
++	if (copy_to_user(user_msr_list->indices, &msr_based_features,
++				num_msr_based_features * sizeof(u32)))
++		return -EFAULT;
++
++	return 0;
++}
++
++static int kvm_get_feature_msrs(struct kvm_msrs __user *user_msrs)
++{
++	return msr_io(NULL, user_msrs, do_get_feature_msr, 1);
++}
++
+ long kvm_arch_dev_ioctl(struct file *filp,
+ 			unsigned int ioctl, unsigned long arg)
+ {
+@@ -4609,32 +4664,9 @@ long kvm_arch_dev_ioctl(struct file *filp,
+ 	long r;
  
- struct kvm_x86_ops kvm_x86_ops __read_mostly;
- 
-@@ -11432,28 +11430,6 @@ static int complete_emulated_mmio(struct kvm_vcpu *vcpu)
+ 	switch (ioctl) {
+-	case KVM_GET_MSR_INDEX_LIST: {
+-		struct kvm_msr_list __user *user_msr_list = argp;
+-		struct kvm_msr_list msr_list;
+-		unsigned n;
+-
+-		r = -EFAULT;
+-		if (copy_from_user(&msr_list, user_msr_list, sizeof(msr_list)))
+-			goto out;
+-		n = msr_list.nmsrs;
+-		msr_list.nmsrs = num_msrs_to_save + num_emulated_msrs;
+-		if (copy_to_user(user_msr_list, &msr_list, sizeof(msr_list)))
+-			goto out;
+-		r = -E2BIG;
+-		if (n < msr_list.nmsrs)
+-			goto out;
+-		r = -EFAULT;
+-		if (copy_to_user(user_msr_list->indices, &msrs_to_save,
+-				 num_msrs_to_save * sizeof(u32)))
+-			goto out;
+-		if (copy_to_user(user_msr_list->indices + num_msrs_to_save,
+-				 &emulated_msrs,
+-				 num_emulated_msrs * sizeof(u32)))
+-			goto out;
+-		r = 0;
++	case KVM_GET_MSR_INDEX_LIST:
++		r = kvm_get_msr_index_list(argp);
+ 		break;
+-	}
+ 	case KVM_GET_SUPPORTED_CPUID:
+ 	case KVM_GET_EMULATED_CPUID: {
+ 		struct kvm_cpuid2 __user *cpuid_arg = argp;
+@@ -4662,30 +4694,11 @@ long kvm_arch_dev_ioctl(struct file *filp,
+ 			goto out;
+ 		r = 0;
+ 		break;
+-	case KVM_GET_MSR_FEATURE_INDEX_LIST: {
+-		struct kvm_msr_list __user *user_msr_list = argp;
+-		struct kvm_msr_list msr_list;
+-		unsigned int n;
+-
+-		r = -EFAULT;
+-		if (copy_from_user(&msr_list, user_msr_list, sizeof(msr_list)))
+-			goto out;
+-		n = msr_list.nmsrs;
+-		msr_list.nmsrs = num_msr_based_features;
+-		if (copy_to_user(user_msr_list, &msr_list, sizeof(msr_list)))
+-			goto out;
+-		r = -E2BIG;
+-		if (n < msr_list.nmsrs)
+-			goto out;
+-		r = -EFAULT;
+-		if (copy_to_user(user_msr_list->indices, &msr_based_features,
+-				 num_msr_based_features * sizeof(u32)))
+-			goto out;
+-		r = 0;
++	case KVM_GET_MSR_FEATURE_INDEX_LIST:
++		r = kvm_get_feature_msr_index_list(argp);
+ 		break;
+-	}
+ 	case KVM_GET_MSRS:
+-		r = msr_io(NULL, argp, do_get_feature_msr, 1);
++		r = kvm_get_feature_msrs(argp);
+ 		break;
+ #ifdef CONFIG_KVM_HYPERV
+ 	case KVM_GET_SUPPORTED_HV_CPUID:
+@@ -5719,6 +5732,20 @@ static int kvm_get_reg_list(struct kvm_vcpu *vcpu,
  	return 0;
  }
  
--/* Swap (qemu) user FPU context for the guest FPU context. */
--static void kvm_load_guest_fpu(struct kvm_vcpu *vcpu)
--{
--	if (KVM_BUG_ON(vcpu->arch.guest_fpu.fpstate->in_use, vcpu->kvm))
--		return;
--
--	/* Exclude PKRU, it's restored separately immediately after VM-Exit. */
--	fpu_swap_kvm_fpstate(&vcpu->arch.guest_fpu, true);
--	trace_kvm_fpu(1);
--}
--
--/* When vcpu_run ends, restore user space FPU context. */
--static void kvm_put_guest_fpu(struct kvm_vcpu *vcpu)
--{
--	if (KVM_BUG_ON(!vcpu->arch.guest_fpu.fpstate->in_use, vcpu->kvm))
--		return;
--
--	fpu_swap_kvm_fpstate(&vcpu->arch.guest_fpu, false);
--	++vcpu->stat.fpu_reload;
--	trace_kvm_fpu(0);
--}
--
- static int kvm_x86_vcpu_pre_run(struct kvm_vcpu *vcpu)
++static int kvm_get_msrs(struct kvm_vcpu *vcpu, struct kvm_msrs __user *user_msrs)
++{
++	guard(srcu)(&vcpu->kvm->srcu);
++
++	return msr_io(vcpu, user_msrs, do_get_msr, 1);
++}
++
++static int kvm_set_msrs(struct kvm_vcpu *vcpu, struct kvm_msrs __user *user_msrs)
++{
++	guard(srcu)(&vcpu->kvm->srcu);
++
++	return msr_io(vcpu, user_msrs, do_set_msr, 0);
++}
++
+ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 			 unsigned int ioctl, unsigned long arg)
  {
- 	/*
+@@ -5823,18 +5850,12 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 		r = 0;
+ 		break;
+ 	}
+-	case KVM_GET_MSRS: {
+-		int idx = srcu_read_lock(&vcpu->kvm->srcu);
+-		r = msr_io(vcpu, argp, do_get_msr, 1);
+-		srcu_read_unlock(&vcpu->kvm->srcu, idx);
++	case KVM_GET_MSRS:
++		r = kvm_get_msrs(vcpu, argp);
+ 		break;
+-	}
+-	case KVM_SET_MSRS: {
+-		int idx = srcu_read_lock(&vcpu->kvm->srcu);
+-		r = msr_io(vcpu, argp, do_set_msr, 0);
+-		srcu_read_unlock(&vcpu->kvm->srcu, idx);
++	case KVM_SET_MSRS:
++		r = kvm_set_msrs(vcpu, argp);
+ 		break;
+-	}
+ 	case KVM_GET_ONE_REG:
+ 	case KVM_SET_ONE_REG:
+ 		r = kvm_get_set_one_reg(vcpu, ioctl, argp);
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
