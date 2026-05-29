@@ -1,162 +1,142 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CC2376A0F
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 20:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4DD348C46
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 20:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780087469; cv=none; b=Nc/yGQzq1wwodrNuUSCbcBwKQVI0gaQMwBGhdRsa2vSM6OtolM7t8jrNWyD+9jHQg3/LytKOaK+2amE/k3IOSdXs0tz+ArQjc9R7yZ5u2T9TbNYyHVPgCaS2e7mp0PJcfQEU/e5nbpFpy4Or9xBDqKaK291WbWrwRhcJ9Kc1DqU=
+	t=1780087793; cv=none; b=u8hT6feTPxs62+sRAukaOnFatHBHpgRdfCyrjDvdvLQwLvQxMDGlvpyjdMqwVHRC3et/69dfji+OxRTTc3HcTPwBwQJUaECFbCcMGNqmo03O6qQGFtx113RN9ERYHaIOK9ZBLYNkLgSb4knFRiLbaUPmPW5v671vtRP65pVFDx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780087469; c=relaxed/simple;
-	bh=X7ToM56irJtg2Jolki+zcIFTD4EePOgDnNseuPDjuBI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=taRGpDvEnaqyt+/u5tDsSPWD0vAQGxnjITYnUnlypIxqdekebaOni2eDx/5Si4SDBD0Nw3jRNvwkx0NOG21KRQixvZHxAml9Gxz8534UJzyM7L11YqQFghtIQBa4y0aHIY/fnBFz5/uACi8DP5Zbb2qJhMi4T75xDtkZRlAYdD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XCKzjw9x; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780087793; c=relaxed/simple;
+	bh=liJBUIVRHY8hU0t+EVOsm3ZF7Q/U1wd/I4p0mf1PnBo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=KKtLztDqNZmoHAPfEVpxBLGoPK/DAeIhlBRHVjebNdG9jHmBl9n/2D5Y3XDhaR4FIB5oj0GttBte2KtUcm3RfglIVDk8GiQoATxWOmzu4qacurewzF8UaXs15VC+/rriBf6ykENYyADOI27GMfsdpuQ+EzbYbpTyNj7LoAqGjrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G5xaJyGZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XCKzjw9x"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2baf7378ad0so155667715ad.0
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 13:44:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780087468; x=1780692268; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WQS7YMdO6nDpRo3dtOS7KCTUy9/WLmbNeezECkxyxIU=;
-        b=XCKzjw9xRrX9s06Z74IsAEK9zt+rIsa7v12sj3vpnelS4Rzm2GWfBdkeRs4dBQmv/6
-         la8oCX2mVqZp9JYYRLx3WVu31jRgcvBflikXxHKxoXum+2UompyyC24IUox1PF3Ho1Wb
-         ChEN0N6SEVZ0dQW63lufOkujOzEBuiytapuBzo5a79cn0qdZH3B7jh376xwv0beOzo9u
-         nQIhKzYNYlEPnmJVwORiGIoT2psNcYJyMb9UpOMjtOingzIcY8FVhjy/PeDQCKBpTpaK
-         fHvBlAPbmaMY/H+WMTZl3GUGEw99BQB6JIU+LGoNA5nP2cwpLHYfGuWNDA6m9ndseMBU
-         M7Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780087468; x=1780692268;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WQS7YMdO6nDpRo3dtOS7KCTUy9/WLmbNeezECkxyxIU=;
-        b=USSqGRwtkZnnBX+rMYG4QVYYxKmgKRWtargH6OZZVTgLuy/kV2aPr+HrXZRUTHzxup
-         /0NuRazMKT464o/WgjvusTyWQih8a/c7GgDNILuifqmWlOk/0jtbYhNx02CsaL2nHU0J
-         NKz2gVKC7QhHhah3EG3hpzOKdesfe+BDNR2+SP5ygItYdrB4D4cWkiXIhYmljFxKpo6h
-         1HUOwbM8W61i2z9AAgufOwLxDWHFlxxa46goec2tcfRag6FxL0MhonQw4YN6aP+QKnMI
-         wy2iqqoFpuz7BPVwmJ4R20Kd6kSvz0G7HPePeJ92+lP/oVvmncZVjYOxaqrRptsVsm+P
-         mTEg==
-X-Forwarded-Encrypted: i=1; AFNElJ/7qZMBSCSwbUni8/0+PoC3DWcGYWl/gZiqHKr+CVoENyaXdrID7xeovHCWiUqsKL5nua8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1ziwZ1kOZ5vwpZLvmau5jKZYkja4CdlN9eeeiDMh17Wbc3zUO
-	TzTjC4CYhgpPHU1192yXWU6VeTWZ2LHu6qSaFVsBuyXLiDL4JZolFOeDG9D8i1WtO139mKUPakw
-	DLx/icA==
-X-Received: from plbmv7.prod.google.com ([2002:a17:903:b87:b0:2be:f9c0:8cd4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:986:b0:2b0:608d:d8a8
- with SMTP id d9443c01a7336-2bf36795211mr16688475ad.1.1780087467675; Fri, 29
- May 2026 13:44:27 -0700 (PDT)
-Date: Fri, 29 May 2026 13:44:27 -0700
-In-Reply-To: <CAEvNRgH21BoKT1mOQzgmKHKpDi4xbwtbMuenGv5U1ZUSENrJmg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G5xaJyGZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51161F00893;
+	Fri, 29 May 2026 20:49:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780087792;
+	bh=73r4uK8zdiuhkhMDsdDz4xnv166r049b/thwpK7xxl0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=G5xaJyGZNmJ7fU+/8x52fkzfqRfVZ6tQCglYJFaegMo3kJntIy+hWKwZBO54LKduE
+	 94KwMqZbnPiFk/HSCt79smqGG7n7ficYAgIFiLRLuph/C44X9p1noZQMRSE/XEy9bu
+	 8Kq8Nlv/TbeQQrvlBEA9TYEa8rML6BiYOnRkV10DPL5bpRDnOwXEV2TXU3oBTBxEsq
+	 ovNhicPoYYqnaiiS7Ge2wB9PNGvWdbDO6KA4Bn+ECBN6yefeQqEhpslsHfr0/YaI9R
+	 HD0+fTAhlTy/ceDy1v9s6EnhZm3pTt761huE8yJTVPntmSWV1VU4PE+6phxs2pe3dU
+	 zQaNwdHlHoovQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 05/24] KVM: SEV: Use the size of the PSC header as the
+ minimum size for PSC requests
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260529183549.1104619-6-pbonzini@redhat.com>
+References: <20260529183549.1104619-6-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 29 May 2026 20:49:50 +0000
+Message-Id: <20260529204951.E51161F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260522-gmem-inplace-conversion-v7-16-2f0fae496530@google.com>
- <20260523010607.CCABC1F000E9@smtp.kernel.org> <CAEvNRgH21BoKT1mOQzgmKHKpDi4xbwtbMuenGv5U1ZUSENrJmg@mail.gmail.com>
-Message-ID: <ahn6qysOGfa74A2E@google.com>
-Subject: Re: [PATCH v7 16/42] KVM: guest_memfd: Determine invalidation filter
- from memory attributes
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: sashiko-reviews@lists.linux.dev, 
-	Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
 
-On Wed, May 27, 2026, Ackerley Tng wrote:
-> > In __kvm_gmem_invalidate_begin(), the code iterates over f->bindings using
-> > xa_for_each_range(). The retrieved slot pointers are protected by the kvm
-> > srcu, but the read lock doesn't appear to be held during the iteration:
-> >
-> > static void __kvm_gmem_invalidate_begin(...)
-> > {
-> > 	...
-> > 	xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
-> > 		pgoff_t pgoff = slot->gmem.pgoff;
-> > 	...
-> >
-> > When a memory slot is deleted, the code calls kvm_gmem_unbind() and
-> > kfree(slot) after synchronize_srcu(&kvm->srcu). If the read lock isn't held,
-> > could a concurrent memslot deletion free the slot while it is still being
-> > accessed in this loop?
-> >
-> 
-> The issue here is between __kvm_gmem_unbind() and
-> __kvm_gmem_invalidate_begin(). Since f->bindings is protected by
-> filemap_invalidate_lock(), I'm dividing the analysis into two cases
-> where accessing slot through f->bindings with and without holding
-> filemap_invalidate_lock().
-> 
-> ## Holding filemap_invalidate_lock()
-> 
-> If unbind happens before invalidate, we have
-> 
->     filemap_invalidate_lock()
->     __kvm_gmem_unbind(), would have removed slot from f->bindings.
->     filemap_invalidate_unlock()
-> 
->     After this, slot can be freed.
-> 
->     filemap_invalidate_lock()
->     __kvm_gmem_invalidate_begin(), which iterates f->bindings and doesn't
->        see bound slot.
->     filemap_invalidate_unlock()
-> 
-> ## Not holding filemap_invalidate_lock()
-> 
-> In kvm_gmem_unbind(), __kvm_gmem_unbind() can be called without taking
-> the filemap_invalidate_lock() if !file. The only places where NULL is
-> written to slot->gmem.file is kvm_gmem_release() and __kvm_gmem_unbind()
-> itself.
-> 
-> kvm_gmem_release() is prevented from racing with kvm_gmem_unbind() since
-> kvm_gmem_release() holds slots_lock, so since kvm_gmem_unbind() is
-> called while holding slots_lock, it should either see a guest_memfd
-> memslot with a file or no slot at all? Perhaps I'm missing something
-> about get_file_active().
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-The comments in the code pretty much say it all:
+Pre-existing issues:
+- [Critical] Insufficient bounds checking for Page State Change (PSC) reque=
+sts allows out-of-bounds host memory reads and writes past the mapped 4KB G=
+HCB page.
+- [High] The GHCB mapping pinned via kvm_vcpu_map() on #VMGEXIT is permanen=
+tly leaked if the vCPU is destroyed before the next VMRUN.
+--
 
-kvm_gmem_release():
+commit 2f8a93115345b3dcacdee9bdd3b3bd2f9154bfc6
+Author: Sean Christopherson <seanjc@google.com>
 
-	/*
-	 * Prevent concurrent attempts to *unbind* a memslot.  This is the last
-	 * reference to the file and thus no new bindings can be created, but
-	 * dereferencing the slot for existing bindings needs to be protected
-	 * against memslot updates, specifically so that unbind doesn't race
-	 * and free the memslot (kvm_gmem_get_file() will return NULL).
-	 *
-	 * Since .release is called only when the reference count is zero,
-	 * after which file_ref_get() and get_file_active() fail,
-	 * kvm_gmem_get_pfn() cannot be using the file concurrently.
-	 * file_ref_put() provides a full barrier, and get_file_active() the
-	 * matching acquire barrier.
-	 */
+KVM: SEV: Use the size of the PSC header as the minimum size for PSC reques=
+ts
 
-kvm_gmem_unbind():
+This commit updates the Page State Change VMGEXIT handler to use the size
+of the PSC header as the minimum length for the scratch area. It stops
+using exit_info_2 for the length, since the GHCB specification does not
+provide length for PSC requests.
 
-	/*
-	 * However, if the file is _being_ closed, then the bindings need to be
-	 * removed as kvm_gmem_release() might not run until after the memslot
-	 * is freed.  Note, modifying the bindings is safe even though the file
-	 * is dying as kvm_gmem_release() nullifies slot->gmem.file under
-	 * slots_lock, and only puts its reference to KVM after destroying all
-	 * bindings.  I.e. reaching this point means kvm_gmem_release() hasn't
-	 * yet destroyed the bindings or freed the gmem_file, and can't do so
-	 * until the caller drops slots_lock.
-	 */
+Cc: stable@vger.kernel.org
 
-On a related topic, I posted a patch a while back to clarify exactly why the
-release() code is safe.  I need to get back to that, but in the meantime, more
-eyeballs would be appreciated.
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 52703c9548568..cbb3040e07782 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -4559,7 +4559,7 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+>  		vcpu->run->system_event.data[0] =3D control->ghcb_gpa;
+>  		break;
+>  	case SVM_VMGEXIT_PSC:
+> -		ret =3D setup_vmgexit_scratch(svm, true, control->exit_info_2);
+> +		ret =3D setup_vmgexit_scratch(svm, true, sizeof(struct psc_hdr));
 
-https://lore.kernel.org/all/20251113232229.1698886-1-seanjc@google.com
+[Severity: Critical]
+This isn't a bug introduced by this patch, but by hardcoding the bounds che=
+ck
+to just the header size, does this allow out-of-bounds host memory reads and
+writes past the mapped GHCB page?
 
-> Would like Sean to check my understanding.
+If a malicious guest places the scratch area near the end of the GHCB shared
+buffer, it can satisfy the bounds check for the 8-byte header in
+setup_vmgexit_scratch():
 
-You're not missing anything, Sashiko struggles with scenarios where thing X
-makes thing Y impossible.
+setup_vmgexit_scratch() {
+        ...
+        scratch_gpa_end =3D scratch_gpa_beg + len;
+        ...
+        if (scratch_gpa_beg < ghcb_scratch_beg ||
+            scratch_gpa_end > ghcb_scratch_end) {
+            ...
+}
+
+However, later processing in snp_begin_psc() and __snp_complete_one_psc()
+iterates up to VMGEXIT_PSC_MAX_COUNT, directly accessing and writing to
+entries[idx]. Since the GHCB is a single page mapped via kvm_vcpu_map(),
+accessing entries beyond the validated 8 bytes could result in accessing
+host physical memory beyond the page boundary.
+
+I see this is fixed later in the series by commit
+89266ec65feabeba5d0f747da7115a19492fab4e and commit
+4dd1fe3ae23c326b447d893657435197aa346458, which compute and check the corre=
+ct
+max length of the scratch area.
+
+[Severity: High]
+This is a pre-existing issue, but could the GHCB mapping pinned via
+kvm_vcpu_map() earlier in sev_handle_vmgexit() be permanently leaked?
+
+sev_handle_vmgexit() pins the GHCB page:
+
+sev_handle_vmgexit() {
+        ...
+        if (kvm_vcpu_map(vcpu, ghcb_gpa >> PAGE_SHIFT, &svm->sev_es.ghcb_ma=
+p)) {
+        ...
+}
+
+Normally, this is unmapped on the next VMRUN in sev_es_unmap_ghcb(). Howeve=
+r,
+if the vCPU exits to userspace and the VM is subsequently destroyed without
+running the vCPU again, the VCPU teardown path in sev_free_vcpu() does not
+appear to unmap the GHCB. Would this result in a leaked pinned page and mem=
+ory
+mapping for every such destroyed vCPU?
+
+I note this is addressed later in the series by commit
+b2c42b3d82becdc801cc7f669caa3dbec0464c89.
+
+>  		if (ret)
+>  			break;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529183549.1104=
+619-1-pbonzini@redhat.com?part=3D5
