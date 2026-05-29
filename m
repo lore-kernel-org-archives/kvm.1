@@ -1,187 +1,96 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B5A3B38A2
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 08:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C6DDF59;
+	Fri, 29 May 2026 08:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780043397; cv=none; b=J423dFjpMVpp4xgZythwlMCdGXDJ7mb1YtVmNxNKyZMofLwFw7m6+2kg21cYkjXVk4xa/EQxVksQYC5B5pSrFAz8igeAF8vUX8IgPG/0TlCDjiWPrcSNYn347V6mOrjiMUO4d9yP5XWfGnGDqt5lRj6/ITGJdDaPYJjr7WjLbw4=
+	t=1780043908; cv=none; b=Bu63Qa9O9RazuLN51X3JH146oX7Lz7KhIqoljwkUUAkTgd2ksl8kUkMobuI4jy7tBJ7mqfIGK9r/agfEtPls4igaqSrOVPgW81Wyo1seh1Awuar49BKajpVSsVOlE9hxdlCiErG6zba39FB3DBmQC6PON0DAPnzWAycitMRlSds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780043397; c=relaxed/simple;
-	bh=27vIX+T16eCYMop7NvGUVs4MC1+HJ+e3lgOMMISKlfo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dytu6GRmGtCt82PbOrv+AmmwVxPz50yis6ehoD5nRJGbtZPi15TR1OXhV4FPy+eRSegAmDuVnt+I8ld1xAvPpq4RC/TKF/mJg8qhiGM4wiJSgcfdZk6PUblPoBtwVsqm7caCXbBYSM49Db0fCkIDyBYzJJ6KRJIIEqjdEvNLN2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=H6itEPH4; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1780043908; c=relaxed/simple;
+	bh=PP63Nxpfk1pg0J5X5ib1D46jVYgN+lrbAlGgTS/6zag=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=tAPJQnfA/adx7lOezWfrVxgbCi/Tp6o3r0lJoD82ARj8ETVZ3j8/3BBvyjPxynFos/MnoXxBMP2WebXMMxaG84YFUptXgw0wndc1IZmaBfS7Yt5xrXpgcUFMT7M5+pznRGU8YtunLCmxfPhgsWZrD9Z+/IU3+My2KrRhDM7lC04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=mPwWyoru; arc=none smtp.client-ip=52.34.181.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="H6itEPH4"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4891e5b9c1fso118463335e9.2
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 01:29:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="mPwWyoru"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780043395; x=1780648195; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=icgEPrF2PyrBaUqEkggw3Y3TmAdUSPZeT980MGVssa8=;
-        b=H6itEPH4lKA8II87serx4hcwY8C9YI3VLt8UNRwHn4Nc+WgnMgmGsAIlegeHbPDN3m
-         05eA9cHWwNPAJOlEV3z5/lYweLFrh4uSvoql2TIQb8wY61YaHYf3lgov5gVTwQu8bMMi
-         BkjS1SHMcO6rQAZ7NliaLEIq5EqmlTiEAtiwbjg6USweCRHhuM2+HkQ1kMS0GMtaIYFU
-         6BVql+sVAXv5qTzeClnE6w/URxIcwp3jHqVRsMtXwpgJFCCCQ1oNwMgKRAq4hUUMMzkU
-         x/INOGTHBE3KWRzt117LX+yNvJvELPQsSf9S1evNuZ2WseSGNpRX+0kEBWETsESH2mq0
-         QCBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780043395; x=1780648195;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=icgEPrF2PyrBaUqEkggw3Y3TmAdUSPZeT980MGVssa8=;
-        b=HyMI0EWhEofFv6sTZdsD47JpdNDimiEjb9EevO9CZnWOYGFFaC3CoYQpVo8o46KI+b
-         w10PKUVkWC1s1uCVYrRW8iJ3GafQoPQUcu3yohoZ8iO0ZzCNcojqa3hs92gC5tkc4cSg
-         ZDmZzHd5cK4l8yMvkpCjSle9Lge3JWWvWJ+vU8HfXTcHJCMPSVhCTuK0NcEdIU791sJr
-         dFRsudRooUPHVMg+0MUYYtlyGb6QpHSfoAfCFKgbrU2KB3ANJsi7oVLvRZtitG5E8XXz
-         TbqFTtYld0qFkqGshdq50yIeJI71TahMhlvxIi6SaC53oYyVZnBRXlkvdmWXHysahpS2
-         X/dw==
-X-Forwarded-Encrypted: i=1; AFNElJ9lmy9gI0QV9QpnfPNDw039UTdVmfNVDjAhtHUwWXbGmcaIklBE9Nexkyw8uYe8hYz2394=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhTRl8BPE7D6x8vD/re/RfxStM+/e23jNt6F0VrGuANZJd2Xrm
-	mDRf5OCOG1TqUMRvrhGSEDEREauNXYZ1Tj4ApuB9YtFcWzw6+o6mI8vAyG9iPkPMt7A=
-X-Gm-Gg: Acq92OFRSJ8ZdVlDYBaa2bK/PHwRrg3FeQ5z9abYK5knNATg0U31V1MZWFBS27qDoA/
-	AJa5ul5VoOQrgd5pTi33swawdZ4EFarjV4jVdihU0HeO94ppVpKmPXyamZ7n6vMOTbwzsLfpPXs
-	VWJIW0bYC4SaGpXPGo+EqEhf6za2tTG/gIDc50KAPmK6Xc+sYi0ZFf4VpQK647UMS5I7EDh//47
-	LTgcXlLXAF3cQe+D5GLJ9BYIOhdILb4zn71nhVn5pAlG69PaMeGaUAqKHl3k4WVxm7C8ESmaxuy
-	eSDfehw4hREK8E+sy+CtHevHPR0LNMFaZLYPfz4luCM5PxWTvT8Uyo15iUKXjmYF4LDfJbisgrw
-	dcLin4XRqGGzHkvxAq0gGD6tdsRmUn2CUBv1HVC8sNVQyWONtcw2D2LQ0cBFXQ0b2DdQk/zXMBH
-	gxSzTzI/SWPex2FzwPmPhqgolH3ijW9d7Ngg==
-X-Received: by 2002:a05:600c:644:b0:485:9a50:3370 with SMTP id 5b1f17b1804b1-4909c07b4c7mr20113755e9.8.1780043394760;
-        Fri, 29 May 2026 01:29:54 -0700 (PDT)
-Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c0498e0sm12827755e9.0.2026.05.29.01.29.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 01:29:52 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id E1C3160E17;
-	Fri, 29 May 2026 09:29:48 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Alexander Graf <agraf@csgraf.de>,
-	Mohamed Mediouni <mohamed@unpredictable.fr>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Pedro Barbuda <pbarbuda@microsoft.com>,
-	qemu-arm@nongnu.org,
-	kvm@vger.kernel.org,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v7 7/8] target/arm: handle the WFE trap case
-Date: Fri, 29 May 2026 09:29:46 +0100
-Message-ID: <20260529082948.363931-8-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260529082948.363931-1-alex.bennee@linaro.org>
-References: <20260529082948.363931-1-alex.bennee@linaro.org>
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1780043907; x=1811579907;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=PP63Nxpfk1pg0J5X5ib1D46jVYgN+lrbAlGgTS/6zag=;
+  b=mPwWyoruHCkXBKO29XKQDvBqrNgMI5VaAOAJ7+BbWzIHjW4UgqM4G5u8
+   60dTLYu3A8x6tq5DfmMRn4r8mwSOsNQu+TtOtWZRUDU+4MK6q17bbFyTO
+   AUUPFGywVw+NF+g51BilXffTQlGI83OYg5aeBIgxyPb9FNECZlWHuNG1A
+   rWx5S21+/VnbgPbZT+ZZVnZIprj05Fba2cqP8oYQyo6VThBXDp3AZIOAi
+   BZ6qCoLd7yH8SD8FrhpVKGeyiV1SVslTvNHnNeTmFbiPlNG6JgrueXIVh
+   ZJ+PgVD7AS8Z/lcLyFN9IVSKP/bYiXnkwlHuRgVdrl9XiSSsz4dpqKdVE
+   w==;
+X-CSE-ConnectionGUID: TmDwMfudR42EvBM/XquFOA==
+X-CSE-MsgGUID: 1hu4YY2cT8m/0v6pZTfXNw==
+X-IronPort-AV: E=Sophos;i="6.24,175,1774310400"; 
+   d="scan'208";a="20684257"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2026 08:38:23 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:28357]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.19.154:2525] with esmtp (Farcaster)
+ id 130eb445-6549-4bc9-ac7e-f69eb12094af; Fri, 29 May 2026 08:38:23 +0000 (UTC)
+X-Farcaster-Flow-ID: 130eb445-6549-4bc9-ac7e-f69eb12094af
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Fri, 29 May 2026 08:38:23 +0000
+Received: from dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com (10.169.119.5)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Fri, 29 May 2026 08:38:22 +0000
+From: Bjoern Doebel <doebel@amazon.de>
+To: Paolo Bonzini <pbonzini@redhat.com>
+CC: Bjoern Doebel <doebel@amazon.de>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, Sean Christopherson <seanjc@google.com>, "Alexander
+ Bulekov" <bkov@amazon.com>, Fred Griffoul <fgriffo@amazon.co.uk>,
+	<stable@vger.kernel.org>, <zcgao@amazon.com>
+Subject: Re: stable backports for "KVM: x86: Fix shadow paging use-after-free due to unexpected GFN"
+Date: Fri, 29 May 2026 08:37:44 +0000
+Message-ID: <ahlQQlD1ygfiQ3bG@dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <62bedd23-a9d8-4c05-bf39-662c2d37b793@redhat.com>
+References: <20260503201029.106481-1-pbonzini@redhat.com> <62bedd23-a9d8-4c05-bf39-662c2d37b793@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+X-ClientProxiedBy: EX19D031UWA004.ant.amazon.com (10.13.139.19) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Transfer-Encoding: 7bit
 
-Now WFE can actually suspend on A-profile we also need to handle when
-its trapped. To do this we need to pass the instruction size so we can
-deal with the is_16bit syndrome encoding.
+Hi Paolo,
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+On Tue, May 05, 2026 at 12:13:34PM +0200, Paolo Bonzini wrote:
+> I'll get to testing and sending them out, but it will take a while; if
+> anybody wants to help testing, I can provide my tentative patches.
 
----
-v6
-  - defer calculating target_el until after the early return
----
- target/arm/tcg/helper-defs.h   |  2 +-
- target/arm/tcg/op_helper.c     | 16 +++++++++++++++-
- target/arm/tcg/translate-a64.c |  2 +-
- target/arm/tcg/translate.c     |  2 +-
- 4 files changed, 18 insertions(+), 4 deletions(-)
+took us a while, but if you are still looking for help, my friend Nathan
+and I would volunteer to test these in the context of Amazon Linux.
 
-diff --git a/target/arm/tcg/helper-defs.h b/target/arm/tcg/helper-defs.h
-index a05f2258f29..ebdf09be38a 100644
---- a/target/arm/tcg/helper-defs.h
-+++ b/target/arm/tcg/helper-defs.h
-@@ -54,7 +54,7 @@ DEF_HELPER_2(exception_swstep, noreturn, env, i32)
- DEF_HELPER_2(exception_pc_alignment, noreturn, env, vaddr)
- DEF_HELPER_1(setend, void, env)
- DEF_HELPER_2(wfi, void, env, i32)
--DEF_HELPER_1(wfe, void, env)
-+DEF_HELPER_2(wfe, void, env, i32)
- DEF_HELPER_2(wfit, void, env, i32)
- DEF_HELPER_1(yield, void, env)
- DEF_HELPER_1(pre_hvc, void, env)
-diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index b803c9bf162..060b155d559 100644
---- a/target/arm/tcg/op_helper.c
-+++ b/target/arm/tcg/op_helper.c
-@@ -574,7 +574,7 @@ static int64_t gt_calc_next_event_stream(CPUARMState *env)
- }
- #endif
- 
--void HELPER(wfe)(CPUARMState *env)
-+void HELPER(wfe)(CPUARMState *env, uint32_t insn_len)
- {
- #ifdef CONFIG_USER_ONLY
-     /*
-@@ -592,11 +592,25 @@ void HELPER(wfe)(CPUARMState *env)
-      */
-     CPUState *cs = env_cpu(env);
-     ARMCPU *cpu = env_archcpu(env);
-+    uint32_t excp;
-+    int target_el;
- 
-     if (qatomic_xchg(&env->event_register, false)) {
-         return;
-     }
- 
-+    /* We might sleep, so now we check to see if we should trap */
-+    target_el = check_wfx_trap(env, true, &excp);
-+    if (target_el) {
-+        if (env->aarch64) {
-+            env->pc -= insn_len;
-+        } else {
-+            env->regs[15] -= insn_len;
-+        }
-+        raise_exception(env, excp, syn_wfx(1, 0xe, 0, false, WFE, insn_len == 2),
-+                        target_el);
-+    }
-+
-     /*
-      * If the CPU has entered the exclusive region we could sleep
-      * until the global monitor moves from Exclusive to Open Access.
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index ec03eaa3bbd..a4603e1a5c7 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -10961,7 +10961,7 @@ static void aarch64_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-          */
-         case DISAS_WFE:
-             gen_a64_update_pc(dc, 4);
--            gen_helper_wfe(tcg_env);
-+            gen_helper_wfe(tcg_env, tcg_constant_i32(4));
-             tcg_gen_exit_tb(NULL, 0);
-             break;
-         case DISAS_WFI:
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index c10cc382d15..1f554f6c271 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -6836,7 +6836,7 @@ static void arm_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-             tcg_gen_exit_tb(NULL, 0);
-             break;
-         case DISAS_WFE:
--            gen_helper_wfe(tcg_env);
-+            gen_helper_wfe(tcg_env, tcg_constant_i32(curr_insn_len(dc)));
-             /*
-              * The helper can return if the event register is set, so we
-              * must go back to the main loop to check for events.
--- 
-2.47.3
+Best,
+Bjoern
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
