@@ -1,63 +1,63 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2D42F8E8D
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 19:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298EB36AB44
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 19:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780084296; cv=none; b=N07qf/BE2bjHVbapLAKE154U6ouXGaEWzmyUylsJ5P99umO/haYYu4nkCKNU7WPq8jOCQ+nfwgEPbBBKv07zyHUPKSqWEsx5zxp/GyoFu4b77yv3A36qRELwEzeVThjKIlDvzWTrENq6IvDmhTfHp+uwhvQm6AA3cjZvmb9PUg8=
+	t=1780084304; cv=none; b=s1iPG2ENs5wr6vZ9QWgSCwBb76sorbYoBcfK1/VRrBsk3mQJVvcc0fkSzrqlQI3j5pQ2WQ9bD33iSrHFjkodNS3/JhVIZL4kcnBsc/qny9/925TKE7Dq1/NuwHywKTW7DVpCpS1tlNSv5/CZFxx8YQ85E98K/VwNRwsOVXFXZuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780084296; c=relaxed/simple;
-	bh=SLd/SEI+5T04898B2FPyIlIbj/QPfodYC225rfuFe6o=;
+	s=arc-20240116; t=1780084304; c=relaxed/simple;
+	bh=Hg2oUmfL9X5arE+vliSGeQXoKg1Ny/ooAhG4bti20s8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ufqRRxcBBya8P4ixF7YDKyC2rQmc/KhMSTT8dALbEjv4YhZdmtT6C7vNYytfeSlRRHLSrUQNDKX5FoEymUQr6ndDMtcCLTUavQGpHpcOag7eUKztg+LvD6Q6P/dWbU5vGmeFxNQMjiSALJYPjJpwAtwZ+0eK4UEf2wEMhdz/ZIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uq8JvbK6; arc=none smtp.client-ip=209.85.128.44
+	 MIME-Version:Content-Type; b=O72x8662ILlqynwxwxwsuJmp3uedvnc72fU09amt7V16dgdfT7XW5k70YiMx3hhO+x2fOv9DBNQZPdAsEOrT0PxIgkATADARptkC8LKBkS0iK1YM89Qy4aTfcrJ18jq8oJwCtL9vXK5rkQx+yPooGx0w+rqs5P1UQ3wcxwJZJ94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KP4+jJY+; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uq8JvbK6"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-49042aeeb75so97412905e9.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 12:51:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KP4+jJY+"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48d146705b4so150799945e9.3
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 12:51:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780084293; x=1780689093; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1780084301; x=1780689101; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=riKUeVRs9ub8yVsjePlaRkCop7k1tSoe41wdpPTuHRg=;
-        b=uq8JvbK6JXYw+l53KEgcv7sTBCwjYQg5W6wXbiYJuJuYMDqLHwHvgkbpLJIqXuUP0I
-         aAXHbET/3y73CcP+SLChUZtHdNj/lfOKiEbkfZmeMMyYPYDNQtANGqtjBU7q6ggJiP5P
-         /zdF/A5yJzRjrAIyjXSl42RNk1ed6T1OO7k7PWxRuK/AIcA//PKvZ2/Jgm0BwhkiSyRy
-         vk61/TXSS1zQdMRWJlJ1Lcbiz84w9g6+2f+zWlkEooHDqlSRDGFbBb0prYTGtKsrkShx
-         oAQ5eOktIx5oONBxyvl3vM73ZtvpV1GajNRQMltmaB87NloyaZZzQLE4I9IIGvUZWYQO
-         uwPA==
+        bh=WnMiDonv1YO14rMlbhW2kVzk+7R9nLq/lyljZBG8qv0=;
+        b=KP4+jJY+WTIa2oNirv1uvLB9asHB6hWTEbJbe+CdB15r91wzkXnSpfpSkdL+PATtTn
+         HtGzyscuPUVfMZP4wx4x8bzsDhG236GF7A92eAaYfqqke7rEKZaifpRHhFF82y6xxmzl
+         H8Yv5nVf47BiOboaZkwiNN6Edhx8MeoZ5126CAaUFLpYLLLyTdvT0g48l0k6Mmdi70+b
+         5owOkTMUyhjCziCIzhAapIHi44t6dj9mMPbf4AmRdbekdUobAc/jzLGvAoaxzh3l/r3U
+         jyXqZSlN0RZQ2C0/y2gaDW4kj7uBUYi+ac+wHlOSE22iKp43sRyKr6D9ZEZ+8LlHIC2r
+         8WIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780084293; x=1780689093;
+        d=1e100.net; s=20251104; t=1780084301; x=1780689101;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=riKUeVRs9ub8yVsjePlaRkCop7k1tSoe41wdpPTuHRg=;
-        b=qFUZEYln1n6bLrSEcGR09VvxWh/j4+rkfiRMl6gZZnFMIBAls0jxcFtvsvIkrp3KA3
-         GZJZ3w0uhqoedG6IskJKkKRELknp4iyYtKDapAmvqP5VdTq3QZNVQAKounrpUjTNAytq
-         hG6segYjrDtiJELFOs0lClxyI+HpmykNylRy+iAMhwQeh3WwR3HpnWwtQ/mrTVUCcy3A
-         1+jnzFou4nxNClSzgvPXWWV74VgBqETJ/Shp18/fs55AAn3RIjE31i7swEM8Ej+GpA2w
-         ySjMXkcoSDIFz0/cRRQ0FsIbS8oTNBEG3eT28sIzHfEOnL23PvqcMnpeqby57UN6umWM
-         QTGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/Ukv/QnESNyQD5FLJDrEbU+y1ySiorEruoanf7Ujg2FuAXeQcmKWvOgwzZfPkSZ5uH+yU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYiX+gTxmuJReJ9fA7Zn7rL22TkJSxxXXOYV6ixsYPy9AXa1qR
-	ULEU6aiRxAPT9qAnbkTsfrr/FJjsW59bxFk8cgD+P5Oh7CbwV2XoPendyFEK4EIw4CE=
-X-Gm-Gg: Acq92OHpkuN+S0J3UIKeUbrR1IkpnOUZpSKNqBwbOYYRp5C1myXHVe76BPCUXJID+SP
-	0LY/MfPn2rii/F+NoYtzr8YXHrnZcmiw7XSSeUbnnIU4nyPSUOFL7rlSzOuiYB8YUAM/cSUIoRu
-	MquNCuzDTyA6UQQ7JY9soh2RI8thW9zR15y5dBPStzu0YYwKyFdiYBWjnhhnzHcysFGoOhynnvf
-	y+uIf/GOmNKhygj/WGYHVEbVgw/pUw5F1xnWy+cUSYdEO1Dx9aj0fl6TrcKgbFLbPhhRv00y+qj
-	A1bQvAWqlPcwirxT599bCftUjustJ8LcCRDUNKmOGEim0ucE1mxhFiAhbjIWRsopy+oIgyXJqfA
-	+V3Y/BlO7siIVqsJPPvh+SSsTXnvz820yGolxJmYRhZH+VeX8+GWxrA7/xM7ZNHdYnm935Hx/K2
-	7Ylj4YMNxwu3F3F5YkFUGJ8ElVur/gFAnEAsVuSwvyyYvQWNshzC7cppuO3eM+foxqEg==
-X-Received: by 2002:a05:600c:4fc4:b0:490:6889:202 with SMTP id 5b1f17b1804b1-490a29639e6mr15945915e9.29.1780084293478;
-        Fri, 29 May 2026 12:51:33 -0700 (PDT)
+        bh=WnMiDonv1YO14rMlbhW2kVzk+7R9nLq/lyljZBG8qv0=;
+        b=cSLViruhyWcVN4wgirFCGidhKFAUC3Wf1y8L6b7MMq3AQffgEMDOPVBCWd+NdQnPos
+         iyAGillcZ8BSoZxYB7+j2DdyjaEMXYkr1I1GVCXZUhVwLtHFSFW/1mAIzDOCTV81Ltxh
+         fwhDMOeTlNDN1r/3zJrJE65OH12SsyT0AXfsNSW+KT5J6ya+ZVl5GkA5dnfbFTqTZduF
+         fUY1ar9mIuiEZQzuZEqyH+XiyTo6HCsXfOYy8hnE6q2uWFsZJiMW0TOB5u8TXrlpASek
+         /UxiBiIVluLJn+F8P/wRChm02JgFT5VTvdcdEKEQ/1HVJe+R2qrb/H4chQ9ttasDve84
+         kKJw==
+X-Forwarded-Encrypted: i=1; AFNElJ9pSQQwV0T23enucBgr8+eTkzL4OSkIBIBvwhNP3jLJcSnfEJcyJEoG/vzol9VjR+KwUW0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4PabTQwmUuJBUw9IAQfaCRAbAESy0NsllPlc0NQFgEY8dw8jZ
+	nObkLi/JhfIKeOzDFeNiit2Df8bxSIxATbd0JaQlR1+htomaJIRJ7BL5ZljIXQ6Vt4Y=
+X-Gm-Gg: Acq92OFGvDLQRBjGhWhuUCW6EUO0oK5pBHWewqqEGzQ0RD6ZOjuaDn7Jx5xZwXc8f1C
+	BD/jC6xHYmIfJ3RLliU/dTb6EzhjNyxqpJWmSQjq/sV0VTnJObIzQYppa/qVoy0yXHpD3JBR6Ld
+	uc+xaVDvJOCkq4d+iV3wL4Ud7H4/jbbdkV4YYsv/XhGjFsVBiUhZN1kI29HP5Z4H9OXfdXP0sgO
+	mDBB1+hlFnKuZsvcK1xWMe74azT1TWGy8QOYltMg2NYQOmr6U2O18iYdD2IFnDBlbze5aoIRM5G
+	J5s5gLxcq+86yKwpSI4W52zzPZMganK9V1dcyzt6rNMBP29AL01gCJgwPZ5G9BjSO4wXeHyLsFq
+	Ykj1mBzeX2ASah561SdyXGMpIx5Xqcn2osj1QmyjZ9WQ/HB4VPzdtfzHi3Dsfrt0rICK2V9Bnyq
+	bGttNi2xZ2KYnJQcyb50WmD5pAwslioUdDFSZEPhAqz3elW7cwwrLGBX6Eq/3tWx6h/w==
+X-Received: by 2002:a05:600d:848a:b0:490:58ef:cea7 with SMTP id 5b1f17b1804b1-490a293dcefmr12453125e9.22.1780084301545;
+        Fri, 29 May 2026 12:51:41 -0700 (PDT)
 Received: from m15.home (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34a065esm6076264f8f.5.2026.05.29.12.51.31
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c12359bsm25514985e9.4.2026.05.29.12.51.39
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 29 May 2026 12:51:32 -0700 (PDT)
+        Fri, 29 May 2026 12:51:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
@@ -98,9 +98,9 @@ Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
 	Reinoud Zandijk <reinoud@netbsd.org>,
 	Halil Pasic <pasic@linux.ibm.com>,
 	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 13/17] accel/tcg: Convert AccelCPUClass -> new TCGCPUOps::cpu_realize
-Date: Fri, 29 May 2026 21:49:35 +0200
-Message-ID: <20260529194940.97143-14-philmd@linaro.org>
+Subject: [PATCH v2 14/17] accel/tcg: Convert X86 AccelCPUClass -> TCGCPUOps::cpu_realize
+Date: Fri, 29 May 2026 21:49:36 +0200
+Message-ID: <20260529194940.97143-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260529194940.97143-1-philmd@linaro.org>
 References: <20260529194940.97143-1-philmd@linaro.org>
@@ -113,57 +113,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Introduce a TCGCPUOps::cpu_realize hook and call it at
-the end of tcg_exec_realizefn().
+Register AccelCPUClass::cpu_target_realize as x86_tcg_ops::cpu_realize.
+X86's ACCEL_CPU_NAME("tcg") TypeInfo is now empty, remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>
 ---
- include/accel/tcg/cpu-ops.h | 1 +
- accel/tcg/cpu-exec.c        | 6 +++++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ target/i386/tcg/tcg-cpu.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
-index d7d329e419d..5eba6949ba1 100644
---- a/include/accel/tcg/cpu-ops.h
-+++ b/include/accel/tcg/cpu-ops.h
-@@ -49,6 +49,7 @@ struct TCGCPUOps {
-      */
-     void (*initialize)(void);
-     void (*cpu_instance_init)(CPUState *cpu);
-+    bool (*cpu_realize)(CPUState *cpu, Error **errp);
-     /**
-      * @translate_code: Translate guest instructions to TCGOps
-      * @cpu: cpu context
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index ef44c12b601..1efa3bbe53d 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -1056,11 +1056,11 @@ void tcg_cpu_instance_init(CPUState *cpu)
+diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
+index 04bb9787575..2a61de7f610 100644
+--- a/target/i386/tcg/tcg-cpu.c
++++ b/target/i386/tcg/tcg-cpu.c
+@@ -21,7 +21,6 @@
+ #include "cpu.h"
+ #include "helper-tcg.h"
+ #include "qemu/accel.h"
+-#include "accel/accel-cpu-target.h"
+ #include "exec/translation-block.h"
+ #include "exec/target_page.h"
+ #include "accel/tcg/cpu-ops.h"
+@@ -180,6 +179,7 @@ const TCGCPUOps x86_tcg_ops = {
+     .record_sigsegv = x86_cpu_record_sigsegv,
+     .record_sigbus = x86_cpu_record_sigbus,
+ #else
++    .cpu_realize = tcg_cpu_realizefn,
+     .tlb_fill = x86_cpu_tlb_fill,
+     .pointer_wrap = x86_pointer_wrap,
+     .do_interrupt = x86_cpu_do_interrupt,
+@@ -232,24 +232,3 @@ static void x86_tcg_cpu_instance_init(CPUState *cs)
  
- bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
- {
-+    const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
-     static bool tcg_target_initialized;
- 
-     if (!tcg_target_initialized) {
-         /* Check mandatory TCGCPUOps handlers */
--        const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
- #ifndef CONFIG_USER_ONLY
-         assert(tcg_ops->cpu_exec_halt);
-         assert(tcg_ops->cpu_exec_interrupt);
-@@ -1081,6 +1081,10 @@ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
- #endif /* !CONFIG_USER_ONLY */
-     /* qemu_plugin_vcpu_init_hook delayed until cpu_index assigned. */
- 
-+    if (tcg_ops->cpu_realize && !tcg_ops->cpu_realize(cpu, errp)) {
-+        return false;
-+    }
-+
-     return true;
+     x86_tcg_cpu_xsave_init();
  }
- 
+-
+-static void x86_tcg_cpu_accel_class_init(ObjectClass *oc, const void *data)
+-{
+-    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
+-
+-#ifndef CONFIG_USER_ONLY
+-    acc->cpu_target_realize = tcg_cpu_realizefn;
+-#endif /* CONFIG_USER_ONLY */
+-}
+-static const TypeInfo x86_tcg_cpu_accel_type_info = {
+-    .name = ACCEL_CPU_NAME("tcg"),
+-
+-    .parent = TYPE_ACCEL_CPU,
+-    .class_init = x86_tcg_cpu_accel_class_init,
+-    .abstract = true,
+-};
+-static void x86_tcg_cpu_accel_register_types(void)
+-{
+-    type_register_static(&x86_tcg_cpu_accel_type_info);
+-}
+-type_init(x86_tcg_cpu_accel_register_types);
 -- 
 2.53.0
 
