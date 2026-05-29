@@ -1,403 +1,137 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B073112B2
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780063609; cv=none; b=AyvpzqXzq/30cyCcbKVmoIYnSFjD+3qorJO68tK9tA3vYNhfzpkz1R/ji4NER+mF+dhN5weJDvr/voXnOH+1vYn6VFHoqWtt3yHErCikWcMdTbeaJmyUR2dp4NHVM5a1B39Vob6MX4WXHsRzqOXmsdrzOSSRzwPRs6rRijTb1tM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780063609; c=relaxed/simple;
-	bh=vyMMD6WIxR6QuwodPwy5mbLRiIYEsAFbZ/CpedbVx5A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bczAfZVasbt8AQxe5gnXnrROJDS8znS9ATYxSNKZ9SjKr0YJOgOopg8ak+UNSXZVrqZfWxsZLbdKlCVsY9bcH3rVakXSOUMGNDD4lLUpIzBv9ubsUdkJEMbaB6VK8+oO4JT9diygzY7tLwnEvS7vSKI5E9VvUni0vhounrNFKkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=HG57P3D3; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BEA3E51E6
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 14:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780063852; cv=pass; b=VhfpBdk0OHB7+U1TlO7BjleCN40LGX4CUkKtOf2Ii6EdM3WtjWrrv29KnSqx/E18JzkFQ6EUVc+lMvWeUVRXFeoyo03ZQy582yAZVpXftdhWk8wTKO9nDkfMgFfDrmQxY6i+EuHEA0Inh9Cjw3r6ftf/1nJ7Gh5ZTczfFb43LCg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780063852; c=relaxed/simple;
+	bh=+cH4m6H+vLmmUmC4jPEYFeIBBvt0KRbPmUIK9xWmPUs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i4/OJB1T2J8ozDMBfhrmgxK7SgT84XfbCMZL7TaxwKZZqgFJ8D7GfL2P2TxF9r437ARDSDsRGvfVFGkpaBCiXLXsWjQ0pWUU2wGmuASTPVfQE4l11eEzR1hsE2WM6TcYCa6tW1FjlY+pU7E1IhksQ6KKsHMaR3NQYvYOacvxIcU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W+xproUE; arc=pass smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="HG57P3D3"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 36FF12C34;
-	Fri, 29 May 2026 07:06:41 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2BB913F905;
-	Fri, 29 May 2026 07:06:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780063606; bh=vyMMD6WIxR6QuwodPwy5mbLRiIYEsAFbZ/CpedbVx5A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HG57P3D3FxXyimlqk0m98IOAzAKs9M2YZTJYcq2keinTEwFdDwGmWoGhoTrS4iiLz
-	 7qVOYyWNiEi04J+LkQEoYSH8R7fSD8kzppX2bNbDqEssj9cbyBZkNwrlscCF/LoCZO
-	 HlVsIXEDusFc1BgDw9kSWjNCLQbR5TUGlWP13GNc=
-Date: Fri, 29 May 2026 15:06:42 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Andrew Jones <andrew.jones@linux.dev>,
-	Eric Auger <eric.auger@redhat.com>,
-	"open list:ARM" <kvmarm@lists.linux.dev>,
-	"open list:Default mailing list" <kvm@vger.kernel.org>
-Subject: Re: [kvm-unit-tests PATCH v2] arm: add wfx test case
-Message-ID: <ahmdci3dLMyaaZn8@raptor>
-References: <20260527111822.1563679-1-alex.bennee@linaro.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W+xproUE"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-67bf769704eso272a12.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:10:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780063845; cv=none;
+        d=google.com; s=arc-20240605;
+        b=T6QtIS/2AdSEe74a4Us7EyFuGwXIryx+Vp7o71/hga/U9Zwk+28xUhstk6UeOnesWB
+         ScJ5jAQEzU5Rhm58otIdoMIOP2bCWRtXevY80DEVv7Ish2NncAFOYbECWL77IgNn4zeM
+         IGZYum0hnKRAMxqjAppx33eI9EfbkM/K1ZhzlLDEg4d1JqdQFf8lwXA7AxKZMnj9RDJm
+         PgwxzQ6Lti7QG708By9bkro3III8b+DgG6BQ/IzaWP23Q1iLRBFnMyTqq0GjfvZ2rKnk
+         2HpdkGOoKepEkEPr1Xu+Kkd2P1sicMLeFmFnEv5ZM2pEVGCtyB+u1Xvhymc6XvkPeKoI
+         O+MQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LVqlXYgn9XYbyQhIBRqAaGMuFYQJj7MF5WCC0ENHb44=;
+        fh=zYvDmUq4vxt89JPZCzK+M7YNFJBQD4W8x29BXyD8998=;
+        b=JxPEh+yGMUvvMvm9tHO6s6wlLEt6UFGbFrVgFZnhBLhKaopxKQWnBkIkQ1eDwKFcfi
+         pcGx9mAbpI2KiNGwi3nGQ5lnB7RUdjkDvBwK/EnuR5bDLxFcGn5pBfriswhJSf60X95T
+         DLYR4q0MKZiskpEU0C9qrl0Jv+5D7GQXO6TAEHUsbUixgVlxvNEUUFUH9/1FUOx6rUej
+         levzhjg60Bo70kjLoLHIcq/UUrV+o9GRNmcjsdOf4r77wJcXKQlHXab52Kdd9DUcBAfs
+         w+ShmJMvFoG79n0UzAjQpYPMhLYiqYIDTLcgDiRK+3MCiQKYPE/Aswk9Kal0teh75MFG
+         JaMA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780063845; x=1780668645; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LVqlXYgn9XYbyQhIBRqAaGMuFYQJj7MF5WCC0ENHb44=;
+        b=W+xproUEQTrIVAAR9W0P7LEXW2+D/d+FWNZYiwpISskXSNH0QYINf8pRXP8aa86uKl
+         2p7obKuzXMmh/HLxMxMOW+IxB3z+nsI1DwsLU+v4snla5c6UAUKB2h/TnuaVVMk0utSa
+         q9wpqfpH3VfRyv+9dUq7AcYw3vogWxmK3RNsPnyO94/APsuRpd5MFcAomGoFEqatwPj8
+         1VgeAZhkC4flXnGMpLelTV5rrcjVI3PUf9GBtkSMT+ToTWv1WHjdoceJ1bkyrSA2amVI
+         yrkYlRGSsc49MZNEzEbd4YFn/wDV4eRzCTCW4ta6CVy0vLqRQCJzxTbkV2oEV0zacOJT
+         A88w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780063845; x=1780668645;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LVqlXYgn9XYbyQhIBRqAaGMuFYQJj7MF5WCC0ENHb44=;
+        b=jlUzy2w7iRMF3+uxAf2CrhbaUgBFGRh9RGs4GmHkfxlraqXq9rbXigu+Xm+TaJA9E/
+         sfxE/zULf5GqcegayyuFfVfnGlESEr9EVxOKUuMglYH4FNEmxf3OX4+aYiwjzZhYRGVN
+         2qf8jpZXcP9bcT7/xF9pGSL/gYDCqdmzEyL2n7HbQnD+b4dT9x4UzhOQ6UG5xGV5QrEV
+         pnorplqhGYJrJj+X82/t7tM/CMmAaAiNqIs2+QCPGSIKJcwk+YUWU+1tFESab4qqWws7
+         oBIxqjdEB/EucCydFKo94XC2stsJL0TKy49ZHbHEoc3L/i9mTZ1KQnLSGx2s40ihABJH
+         P+9A==
+X-Forwarded-Encrypted: i=1; AFNElJ+7x12fXx1TgGy/TjlJaMj9K0SR83imyZqyWCaemOryCRGczsvKKDEfbczJj3MvDaBHZM4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfoLm0nktluFc9+Zdn7NlXVWZfGWGv3cmiro8EaA8p89wOKyCQ
+	Qngkwdee+B+enrk6a+5MffE77BloWpxOS5YvCnH+a5MY4TP+9pzPne+9twwvWIby+qkPaUuxNT7
+	GyLoM43HmwGs0QESPhL1qvx+pyEDUii/ibeJK9Dhe
+X-Gm-Gg: Acq92OFx3Qp4sfs6PzQY5itrGGpHJUaixKJ0yAxMILhOXjFPWO2TTTeGJjPo6pqa4+W
+	lfLOOE0GSvSPlCIJW5cRwZXgXYOgJoo2dYF3CiX0sQRm3dP5cokd72+hY7gsiPc+W6SU5lsH2q4
+	EUE1BIzgtXkO4/Sf0Pa/JJ+3DJEIVnecdA+eij0+VIVcheE9pEPdKod4BoBiQizO/AFqEgLf20L
+	u3FRemeOqp5Z0WP4g3NAC/Er5CO2mprGMAdHgOcZ5zhjJw890+RGTd1d7uUb4Qln+vD8cid8eMe
+	pyQRqlv8A4GEtUvsJw==
+X-Received: by 2002:a05:6402:2270:b0:688:9c23:24aa with SMTP id
+ 4fb4d7f45d1cf-68c0a49bc86mr40478a12.10.1780063844941; Fri, 29 May 2026
+ 07:10:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260527111822.1563679-1-alex.bennee@linaro.org>
+References: <20260528231052.404737-1-seanjc@google.com> <CAO9r8zPA7RTwAD+_-knnTJvFbLJgXzsHYa7a_N2j0JdPAoSoUw@mail.gmail.com>
+ <ahmUPsB2nOPFCRrW@google.com>
+In-Reply-To: <ahmUPsB2nOPFCRrW@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Fri, 29 May 2026 07:10:31 -0700
+X-Gm-Features: AVHnY4IQqSvI2pqTfmvMt0vdawFBiU7Rfknr1YxCi3kDJAQ1SnYa5a7RI0FInQU
+Message-ID: <CALMp9eQ+XmKbpY8QePbjZMA9fNm4-77zbDBNX2M-ZOdumNGyxw@mail.gmail.com>
+Subject: Re: [PATCH v4] KVM: selftests: Add a test for gPAT handling in L2
+To: Sean Christopherson <seanjc@google.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Alex,
+On Fri, May 29, 2026 at 6:29=E2=80=AFAM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Thu, May 28, 2026, Yosry Ahmed wrote:
+> > > +int main(int argc, char *argv[])
+> > > +{
+> > > +       TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
+> > > +       TEST_REQUIRE(kvm_has_cap(KVM_CAP_NESTED_STATE));
+> > > +       TEST_REQUIRE(kvm_check_cap(KVM_CAP_DISABLE_QUIRKS2) &
+> > > +                    KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT);
+> > > +
+> > > +       if (!kvm_cpu_has(X86_FEATURE_NPT))
+> > > +               goto skip_npt;
+> > > +
+> > > +       gpat_test("Invalid gPAT", l1_guest_code_invalid_gpat, npt_ena=
+bled =3D true);
+> > > +       gpat_test("Nested NPT enabled", l1_guest_code, npt_enabled =
+=3D true);
+> > > +skip_npt:
+> > > +       gpat_test("Nested NPT disabled", l1_guest_code, npt_enabled =
+=3D false);
+> > > +       return 0;
+> > > +}
+> >
+> > The goto is really unnecessary here:
+> >
+> > if (kvm_cpu_has(X86_FEATURE_NPT)) {
+> >        gpat_test("Invalid gPAT", l1_guest_code_invalid_gpat,
+> > npt_enabled =3D true);
+> >        gpat_test("Nested NPT enabled", l1_guest_code, npt_enabled =3D t=
+rue);
+> > }
+> > gpat_test("Nested NPT disabled", l1_guest_code, npt_enabled =3D false);
+>
+> Well, it's necessary to avoid the indentation.
 
-When I tried to run the test this is what I got:
+Or refactor as:
 
-$ ./run_tests.sh wfx
-FAIL wfx (5 tests, 1 unexpected failures)
-$ cat logs/wfx.log
-timeout -k 1s --foreground 90s /usr/bin/qemu-system-aarch64 -nodefaults -machine virt -accel tcg -cpu max -device virtio-serial-device -device virtconsole,chardev=ctd -chardev testdev,id=ctd -device pci-testdev -display none -serial stdio -kernel arm/wfx.flat -smp 1 # -initrd /tmp/tmp.s0dfiRPbNO
-INFO: WFx: Testing WFI...
-PASS: WFx: WFI (10441943 ticks / 10441 ns)
-INFO: WFx: Testing WFE/SEV...
-PASS: WFx: WFE/SEV (8636 ticks / 8 ns)
-INFO: WFx: Testing WFE/SEVL...
-PASS: WFx: WFE/SEVL (5461 ticks / 5 ns)
-INFO: WFxT: Testing WFIT...
-PASS: WFxT: WFIT (10135025 ticks / 10135 ns)
-INFO: WFxT: Testing WFET...
-FAIL: WFxT: WFET (19391 ticks / 19 ns)
-INFO: WFxT: WFET woke too early
-SUMMARY: 5 tests, 1 unexpected failures
-
-EXIT: STATUS=3
-
-$ /usr/bin/qemu-system-aarch64 --version
-QEMU emulator version 11.0.0
-Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
-
-Any idea what I might be doing wrong?
-
-On Wed, May 27, 2026 at 12:18:21PM +0100, Alex Bennée wrote:
-> This is based on a similar test case I wrote for QEMU's tcg tests although
-> obviously able to take advantage of kvm-unit-tests additional plumbing for
-> dealing with the GIC and IRQs.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> 
-> ---
-> v2
->   - drop TIMEOUT in favour of computed 10ms timeout
->   - add comments for each test
->   - use sevl for local clearing
->   - set gic irc depending on CurrentEL
->   - EOI the GIC
->   - display elapsed ns (no float to do ms ;-)
->   - fix some style issues
->   - make test TCG only
-> ---
->  arm/Makefile.arm64        |   1 +
->  lib/arm64/asm/processor.h |   7 ++
->  lib/arm64/asm/sysreg.h    |   3 +
->  arm/wfx.c                 | 187 ++++++++++++++++++++++++++++++++++++++
->  arm/unittests.cfg         |   7 ++
->  5 files changed, 205 insertions(+)
->  create mode 100644 arm/wfx.c
-> 
-> diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
-> index a40c830d..52b3f35d 100644
-> --- a/arm/Makefile.arm64
-> +++ b/arm/Makefile.arm64
-> @@ -64,6 +64,7 @@ tests += $(TEST_DIR)/cache.$(exe)
->  tests += $(TEST_DIR)/debug.$(exe)
->  tests += $(TEST_DIR)/fpu.$(exe)
->  tests += $(TEST_DIR)/mte.$(exe)
-> +tests += $(TEST_DIR)/wfx.$(exe)
->  
->  include $(SRCDIR)/$(TEST_DIR)/Makefile.common
->  
-> diff --git a/lib/arm64/asm/processor.h b/lib/arm64/asm/processor.h
-> index 32ddc1b3..2104036d 100644
-> --- a/lib/arm64/asm/processor.h
-> +++ b/lib/arm64/asm/processor.h
-> @@ -173,5 +173,12 @@ static inline bool system_supports_rndr(void)
->  	return ((id_aa64isar0_el1 >> ID_AA64ISAR0_EL1_RNDR_SHIFT) & 0xf) != 0;
->  }
->  
-> +static inline bool system_supports_wfxt(void)
-> +{
-> +	u64 id_aa64isar2_el1 = read_sysreg_s(ID_AA64ISAR2_EL1);
-> +
-> +	return ((id_aa64isar2_el1 >> ID_AA64ISAR2_EL1_WFxT_SHIFT) & 0xf) != 0;
-> +}
-> +
->  #endif /* !__ASSEMBLER__ */
->  #endif /* _ASMARM64_PROCESSOR_H_ */
-> diff --git a/lib/arm64/asm/sysreg.h b/lib/arm64/asm/sysreg.h
-> index f2d05018..cb96a649 100644
-> --- a/lib/arm64/asm/sysreg.h
-> +++ b/lib/arm64/asm/sysreg.h
-> @@ -77,6 +77,9 @@ asm(
->  #define ID_AA64ISAR0_EL1_RNDR_SHIFT	60
->  #define ID_AA64PFR1_EL1_MTE_SHIFT	8
->  
-> +#define ID_AA64ISAR2_EL1		sys_reg(3, 0, 0, 6, 2)
-> +#define ID_AA64ISAR2_EL1_WFxT_SHIFT	0
-> +
->  #define ID_AA64MMFR0_EL1_FGT_SHIFT	56
->  #define ID_AA64MMFR0_EL1_FGT_FGT2	0x2
->  
-> diff --git a/arm/wfx.c b/arm/wfx.c
-> new file mode 100644
-> index 00000000..0825c5cb
-> --- /dev/null
-> +++ b/arm/wfx.c
-> @@ -0,0 +1,187 @@
-> +/*
-> + * WFX Instructions Test (WFI, WFE, WFIT, WFET)
-> + *
-> + * Copyright (c) 2026 Linaro Ltd
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include <libcflat.h>
-> +#include <asm/processor.h>
-> +#include <asm/gic.h>
-> +#include <asm/timer.h>
-> +#include <asm/io.h>
-> +
-> +#define sev() asm volatile("sev" : : : "memory")
-> +#define sevl() asm volatile("sevl" : : : "memory")
-> +#define wfi() asm volatile("wfi" : : : "memory")
-> +#define wfe() asm volatile("wfe" : : : "memory")
-> +
-> +#define wfit(reg) \
-> +	asm volatile(".arch armv8.7-a\n\twfit %0" : : "r" (reg) : "memory")
-> +#define wfet(reg) \
-> +	asm volatile(".arch armv8.7-a\n\twfet %0" : : "r" (reg) : "memory")
-> +
-> +uint64_t time_hz;
-> +uint64_t time_10ms;
-> +
-> +static void timer_handler(struct pt_regs *regs)
-> +{
-> +	u32 irqstat = gic_read_iar();
-> +	u32 irqnr = gic_iar_irqnr(irqstat);
-> +
-> +	/* Disable timer to stop IRQ from re-firing */
-> +	if (irqnr == TIMER_VTIMER_IRQ || irqnr == TIMER_HVTIMER_IRQ) {
-> +		write_sysreg(0, cntv_ctl_el0);
-> +		isb();
-> +	} else {
-> +		if (irqnr != GICC_INT_SPURIOUS)
-> +			gic_write_eoir(irqstat);
-> +		report_info("Unexpected interrupt: %d\n", irqnr);
-> +		return;
-> +	}
-> +
-> +	/* Also acknowledge EOI for the GIC */
-> +	gic_write_eoir(irqstat);
-> +}
-> +
-> +static bool check_elapsed(uint64_t start, uint64_t threshold, const char *test, bool more)
-> +{
-> +	uint64_t end = read_sysreg(cntvct_el0);
-> +	uint64_t elapsed = end - start;
-> +	bool pass = more ? elapsed >= threshold : elapsed <= threshold;
-> +
-> +	report(pass, "%s (%ld ticks / %ld ns)",
-> +	       test, elapsed, elapsed / (time_hz / 1000000));
-> +
-> +	if (!pass)
-> +		report_info("%s %s", test, more ? "woke too early" : "slept despite SEV");
-> +
-> +	return pass;
-> +}
-> +
-> +/*
-> + * Test WFI with timer interrupt
-> + *
-> + * WFI should wake up when the interrupt is pending. We unmask
-> + * interrupts here so they are taken and then check WFI actually
-> + * did sleep rather than return straight away.
-> + */
-> +static void test_wfi(void)
-> +{
-> +	uint64_t start;
-> +
-> +	report_info("Testing WFI...");
-> +
-> +	start = read_sysreg(cntvct_el0);
-> +	write_sysreg(time_10ms, cntv_tval_el0);
-> +	write_sysreg(1, cntv_ctl_el0); /* Enable timer, no mask */
-> +	isb();
-> +
-> +	local_irq_enable();
-
-There's nothing to guarantee that the CPU won't handle the interrupt between
-local_irq_enable() above and the wfi() below, thus guaranteeing that the WFI
-will never complete.
-
-The Arm ARM says that WFI will complete if there is a pending interrupt even if
-interrupts are **disabled** for the PE; this is also how Linux implements idle
-(it disables interrupt on the PE before doing WFI).
-
-> +	wfi();
-> +	local_irq_disable();
-
-So this code should probably be (untested):
-
-diff --git a/arm/wfx.c b/arm/wfx.c
-index 0825c5cbfcec..522edd36af38 100644
---- a/arm/wfx.c
-+++ b/arm/wfx.c
-@@ -78,8 +78,8 @@ static void test_wfi(void)
-        write_sysreg(1, cntv_ctl_el0); /* Enable timer, no mask */
-        isb();
-
--       local_irq_enable();
-        wfi();
-+       local_irq_enable();
-        local_irq_disable();
-
-        check_elapsed(start, time_10ms, "WFI", true);
-
-That is assuming that you want the timer interrupt handler to run, though it
-doesn't look to me like the interrupt handler is very useful from a testing
-perspective (i.e, the tests never check that the correct timer interrupt was
-asserted, or even that the timer interrupt fired at all).
-
-If you don't care about the timer interrupt handler running, you can skip
-enabling the interrupt altogether, like the wfit test does; you know better than
-me what would be better.
-
-> +
-> +	check_elapsed(start, time_10ms, "WFI", true);
-> +}
-> +
-> +/*
-> + * Test WFE and SEV[L]
-> + *
-> + * There are two SEV instructions, the normal one is a broadcast
-> + * from any PE on the system, the other is local only.
-> + * Functionally they have the same effect (setting the event
-> + * register) and should be immediately consumed by the WFE.
-> + *
-> + * As we want to detect an early exit the sense of the timeout
-> + * check is reversed.
-> + */
-> +static void test_wfe(void)
-> +{
-> +	uint64_t start;
-> +
-> +	report_info("Testing WFE/SEV...");
-> +	sev();
-> +	start = read_sysreg(cntvct_el0);
-> +	wfe();
-> +	check_elapsed(start, time_10ms, "WFE/SEV", false);
-> +
-> +	report_info("Testing WFE/SEVL...");
-> +	sevl();
-> +	start = read_sysreg(cntvct_el0);
-> +	wfe();
-> +	check_elapsed(start, time_10ms, "WFE/SEVL", false);
-> +}
-> +
-> +/*
-> + * Test WFIT
-> + *
-> + * With the timer disabled and no other IRQ sources firing the
-> + * WFIT instruction should timeout.
-> + */
-> +static void test_wfit(void)
-> +{
-> +	uint64_t start, timeout;
-> +
-> +	report_info("Testing WFIT...");
-> +	start = read_sysreg(cntvct_el0);
-> +	timeout = start + time_10ms;
-> +	wfit(timeout);
-> +	check_elapsed(start, time_10ms, "WFIT", true);
-> +}
-> +
-> +/*
-> + * Test WFET
-> + *
-> + * Much like WFIT there are no IRQs to wake us up. However the
-> + * event_register is a latch so we must first consume the event
-> + * register with a normal WFE before we do the timeout version.
-> + */
-> +static void test_wfet(void)
-> +{
-> +	uint64_t start, timeout;
-> +
-> +	report_info("Testing WFET...");
-> +	/* Ensure no pending events */
-> +	sevl();
-> +	wfe();
-> +
-> +	start = read_sysreg(cntvct_el0);
-> +	timeout = start + time_10ms;
-> +	wfet(timeout);
-> +	check_elapsed(start, time_10ms, "WFET", true);
-> +}
-> +
-> +int main(void)
-> +{
-> +	uint32_t irq = current_level() == CurrentEL_EL1 ? TIMER_VTIMER_IRQ : TIMER_HVTIMER_IRQ;
-> +
-> +	if (gic_init() < 0) {
-> +		report_abort("GIC init failed");
-> +		return 1;
-> +	}
-> +
-> +	/* Install timer handler for WFI wake-up */
-> +	install_irq_handler(EL1H_IRQ, timer_handler);
-> +	gic_enable_defaults();
-> +	time_hz = read_sysreg(cntfrq_el0);
-> +	time_10ms = time_hz / 100;
-> +
-> +	/* Enable Virtual Timer PPI */
-> +	gic_irq_set_clr_enable(irq, true);
-> +
-> +	report_prefix_push("WFx");
-> +	test_wfi();
-> +	test_wfe();
-> +	report_prefix_pop();
-> +
-> +	if (system_supports_wfxt()) {
-> +		report_prefix_push("WFxT");
-> +		test_wfit();
-> +		test_wfet();
-> +	} else {
-> +		report_skip("WFxT instructions not supported");
-> +	}
-
-I think I'm nitpicking here, and I didn't test it. If the system supports WFxT
-the SUMMARY line shows 4 tests, but if the system doesn't have WFxT, the SUMMARY
-line shows 2 tests, and 1 skipped test, in total 3 tests, not 4. Might be
-confusing to users.
-
-Thanks,
-Alex
-
-> +
-> +	return report_summary();
-> +}
-> diff --git a/arm/unittests.cfg b/arm/unittests.cfg
-> index 12fc4468..ae8b5534 100644
-> --- a/arm/unittests.cfg
-> +++ b/arm/unittests.cfg
-> @@ -339,3 +339,10 @@ groups = mte
->  test_args = asymm
->  qemu_params = -machine mte=on
->  arch = arm64
-> +
-> +[wfx]
-> +file = wfx.flat
-> +groups = wfx
-> +arch = arm64
-> +# This test exercise CPU emulation so limit to TCG to avoid confusion
-> +accel = tcg
-> -- 
-> 2.47.3
-> 
+if (kvm_cpu_has(X86_FEATURE_NPT))
+        run_npt_tests();
