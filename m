@@ -1,278 +1,102 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FEA3F7891;
-	Fri, 29 May 2026 16:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0C13FBB5E
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 16:03:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780070516; cv=none; b=LB+a4sgqIwxU4zUvaoByC7H3bVbpmGRwZgPE/bH4GSIaGVWPA7ldcjxXg2HOpX9w/AHkH7j+Of1sUHEUdFTT4kPuMLafq0NBOx8EYuqF3o7sitPTHA+2b3Ag0SDFWUOkJP11sGAcsXi0jBxK1z4NR100N5nmy1SWSuwNgoQvHfw=
+	t=1780070617; cv=none; b=UcwecMwKcjT+DuTCWMTWKzWBRZ9p99LqYYA69s8ULoNH2DKYuu4MR0GGbHRppF1fHMfyBy8vt812e8PCZ0EDJaa11q3dMkkHF85nO8TnUDNPBSi4fFJdiK0YQzP/oksyLhgDFOmQKfOadDrGGD7tJz7R5sPJTsFI3H8yAzGLW+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780070516; c=relaxed/simple;
-	bh=2DnL581tiMP0xz3bQis3dMPdfTPq2gIL8VpTvpHoZ7s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFoFwsXLcemLG6lWKYuOf6F0LzyufQoB1nenoz2SyU+oyprTPWCZ9eUWBamVTJWrSXWYmBCrsuRe8tZSlXgXnfa/5L11q8vuDZXjzDUjL7L5QZiqIo4E7vycWe5Y5ZBa0CC9AOjMVdDNZyHylTrT+bM0dFKjS+ixl8NIUE94In4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kL1F6keG; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780070617; c=relaxed/simple;
+	bh=6d5LulykDyLGlqdQh2sTZHxzedzP0VBXOfM+PvIRTCk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=APYJp/BS90CLcAEZiS6U3JO0GbmiTpb97/FoHrY7TNGJ9/Wo9y2M8S6gRhBWLuDptHyethSg3yoOPoIY6pxDkRxBRUMlkhK+A7gLe5IwJLT3t/wcmceEr3O/gbWCqH5oz9ACqH358vnA376zMcFfXZCV+H+JDrmqs5gObywXImM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TUZJo0mY; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kL1F6keG"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64TFDh9g1467773;
-	Fri, 29 May 2026 15:56:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=J4lB+fU5DdjjQ/QpM
-	hV9CNZD0t3w/aRQR+zfaUlpeSE=; b=kL1F6keG/qqmfuhVM3ACxkRQ6/oAiceJA
-	usauQSDAeEvlYyJPXNOB9tq83YKMRAepuwx45XfYOHesOqkaduurvCnQ68Rm6p/o
-	Pmh4XrNhIr7prw8pkUaStUIP+PszaRgGorGNaaKz/yOAmXf1tYM3IiDp/veCKoWx
-	NDrOQAjC40HYlNKcqnojiRrI8CLR3wxFJV5cbn+/9nr38jcc2IL2r3xuRV42uv7x
-	B7f/Ii9I63US33AwVqNGbmNxgA7hpJhqIQflO+97uKcXzKlB2d/8qEqvyg/U7YA9
-	/deYZAC6GjNjYXnnQiixx8X4ttPoUI/8BtO+lTCwRnPOgiu2CStqw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ee886mgg0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2026 15:56:13 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64TFs7To027773;
-	Fri, 29 May 2026 15:56:12 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4edjrc8jmd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2026 15:56:12 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64TFu6gp36700646
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 May 2026 15:56:06 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5DBF120040;
-	Fri, 29 May 2026 15:56:06 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 115E92004D;
-	Fri, 29 May 2026 15:56:06 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 29 May 2026 15:56:06 +0000 (GMT)
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH v1 11/26] KVM: arm64: Move definitions from sys_regs.c to sys_regs.h
-Date: Fri, 29 May 2026 17:55:44 +0200
-Message-ID: <20260529155601.2927240-12-seiden@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260529155601.2927240-1-seiden@linux.ibm.com>
-References: <20260529155601.2927240-1-seiden@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TUZJo0mY"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c828acf7c1dso18818773a12.3
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 09:03:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780070613; x=1780675413; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SRgj+NiWNA8j47mtoKyieH4MDPslA/seIovbV5Jv8Jg=;
+        b=TUZJo0mYHE45lm1bmc1+Y7sLJcvqiF3lCh1gAkQrt3LQvRr3LYa6MCro3SRj+ljrBk
+         pvq0+aSXMwIhpiuhqZOH89RICfBXZ/F/by7qQybvn8iF2PXvA1iySYsK6kf4sSUs3Td3
+         qV+VHb07lOqQyF26gqkcH8ZnWazatY0K5chAfmEWMJ2LzRuDZEPwQ2Hz1ev6MGaeqUyz
+         RE+vXAKuG2RcZI8UrHs7iSVpEX5xh11oKbgoBhuEjavaF8+lRVR/9NuNudQrJLMMLHiQ
+         31T6Q7fyW30KL+5Un75lWXGgSBWq56Akj+BWcoySIIiQWfLhEfd6j0mDu4JaJs/0jRMs
+         F3mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780070613; x=1780675413;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SRgj+NiWNA8j47mtoKyieH4MDPslA/seIovbV5Jv8Jg=;
+        b=izQXj4lT2m1/Dc/4NVfWCoBCyrdlKhZnpacUYNoTIk3yErU415pxVD1KAd0339Kcz+
+         Vyk//lOfZBQ1v8UhKiaFgmE325Q9BYXS1MlaoHtE421/Q71NE+ac1VW0aCyptEMzfD9X
+         QPKR1WLkqLNn654wFXMy+1/RkH10ktzwyGg1ZPK/e1weR/06B8qP2EH32vMBZvbJVO36
+         zSMXS+bVVP1/yP6X2Q26QExdWvpGNso8VHVFr5oV73ohXNqIjYfMYG8Ic2HaEnvQO0TT
+         Qc9tkseBM2OuPHacC1/6s8OjlKguaM0hl2gCOxR+B7iUXEToH6XzuCjxA4xq/Fx5bUXe
+         O81A==
+X-Forwarded-Encrypted: i=1; AFNElJ9MvWJ1aKVgGYdcWKRQ5+O7vknCFISwSpJD0dWeZYOXHf74yBs+lkS1CLYL6hX7ZFf9YD4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdHw/DkfEo2+LyCEFwy5Ka/PoOQq96p1XITIicaqeXk8Hzkz4d
+	OoKfdTVAhfo5NnJKYpQLwe8rPtyucI1IhlQJrR0ezAqOz8box+Rxff07Pb5HR7T/tCKR7/C7tvd
+	P5OCtXw==
+X-Received: from pghl22.prod.google.com ([2002:a63:f316:0:b0:c82:7df9:8c1d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:c793:b0:39c:126c:93b4
+ with SMTP id adf61e73a8af0-3b411c68bf8mr4412239637.9.1780070613299; Fri, 29
+ May 2026 09:03:33 -0700 (PDT)
+Date: Fri, 29 May 2026 09:03:32 -0700
+In-Reply-To: <7987e722-4ee3-4d6c-a4b7-369cfd272dac@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UC2v4yac9XJv9onHFWDc9OYBfj2NePhe
-X-Authority-Analysis: v=2.4 cv=Z8Dc2nRA c=1 sm=1 tr=0 ts=6a19b71d cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=zJUOOSkNxElFdCtx_FUA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDE1NiBTYWx0ZWRfX8/oZd7tugLX4
- VT1BjfXkRoZiX97FWd9xENgoBEOimXfjRSHnS4ASmTMGMpGduJ/02jpXxbpeEFwee07o2moF7s/
- 72lctKgbrzKFtic0CA7WNwrweU9zW+jO8B8kX8expd9rO6WoAANeefTVv67e9M7MnYTS3h0VRsQ
- RQE+HcfA1XHoInM25N7I4WEtz3MwMX8xnUzVF2AtdDSXE29RGOiob5glD3ByDwGAPwc9c/Ci5KK
- sJcJegVKO6vPsppxdRK6lzdVcZ0wcXLGleifHxJUS1DnRFMTiwQf/nIHxcmQbjrITwVrhNdEJLv
- XGu923W7/zKh6xVsNwn6dAt18w8VSyKWakOjgRUt8hAghGrzlHg4GftQiyb12Rf/l101U5ISOhi
- NxbmGF+asOiPRKI9ZTU8n9+ahODDZpICEDMKcEih6N212FCAm+z3qY9mPdRVyd3BrHY96fUEblZ
- jnObIFztGgWVZjFwmIw==
-X-Proofpoint-ORIG-GUID: UC2v4yac9XJv9onHFWDc9OYBfj2NePhe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-29_04,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 phishscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605290156
+Mime-Version: 1.0
+References: <20260528071712.1407929-1-xiaoyao.li@intel.com>
+ <ahg8i_Zv9TRk-UzE@google.com> <7987e722-4ee3-4d6c-a4b7-369cfd272dac@intel.com>
+Message-ID: <ahm41KHG7IdPjnGj@google.com>
+Subject: Re: [kvm-unit-tests PATCH] x86/run: Use separate "-accel" option to
+ configure the accelerator
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Make kvm_sanitised_host_ftr_reg() and kvm_read_sanitised_id_reg()
-available to enable code sharing with s390. Move some helper and ID
-register macro definitions to the header file. No functional changes.
+On Fri, May 29, 2026, Xiaoyao Li wrote:
+> On 5/28/2026 9:00 PM, Sean Christopherson wrote:
+> > On Thu, May 28, 2026, Xiaoyao Li wrote:
+> > > When configuring accelerator via machine's "accel" property, it cannot
+> > > pass additional ACCEL_PROPS. For example, it hits following error when
+> > > configuring KVM with "notify-vmexit":
+> > > 
+> > >    # ACCEL="kvm,notify-vmexit=internal-error" ./x86-run x86/apic.c
+> > >    #   qemu-system-x86_64: Property 'pc-i440fx-11.1-machine.notify-vmexit' not found
+> > > 
+> > > Switch to use separate "-accel" option to configure the accelerator.
+> > > 
+> > > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> > > ---
+> > >   x86/run | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/x86/run b/x86/run
+> > > index dd38f14c871f..a68d469dd1b8 100755
+> > > --- a/x86/run
+> > > +++ b/x86/run
+> > > @@ -43,7 +43,7 @@ fi
+> > >   pit="-global kvm-pit.lost_tick_policy=discard"
+> > >   command="${qemu} --no-reboot -nodefaults $pit $pc_testdev -display none -serial stdio $pci_testdev"
+> > > -command+=" -machine accel=$ACCEL$ACCEL_PROPS"
+> > > +command+=" -accel $ACCEL$ACCEL_PROPS"
+> > 
+> > This breaks my setup for specifying kernel_irqchip=split.
+> > 
+> >    qemu: -accel kvm,kernel_irqchip=split: Property 'kvm-accel.kernel_irqchip' not found
+> 
+> If you switch "kernel_irqchip" to "kernel-irqchip", it should work again.
 
-Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
----
- arch/arm64/kvm/sys_regs.c | 12 ++----
- arch/arm64/kvm/sys_regs.h | 87 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 90 insertions(+), 9 deletions(-)
-
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 6522f9302967..46b24529ec70 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -1852,7 +1852,7 @@ static u8 pmuver_to_perfmon(u8 pmuver)
- /*
-  * Sanitise based on the host implementation.
-  */
--static u64 kvm_sanitised_host_ftr_reg(u32 id)
-+u64 kvm_sanitised_host_ftr_reg(u32 id)
- {
- 	u64 val = read_sanitised_ftr_reg(id);
- 
-@@ -2039,8 +2039,8 @@ static u64 __kvm_read_sanitised_id_reg(const struct kvm_vcpu *vcpu,
- 	return val;
- }
- 
--static u64 kvm_read_sanitised_id_reg(struct kvm_vcpu *vcpu,
--				     const struct sys_reg_desc *r)
-+u64 kvm_read_sanitised_id_reg(struct kvm_vcpu *vcpu,
-+			      const struct sys_reg_desc *r)
- {
- 	return __kvm_read_sanitised_id_reg(vcpu, r);
- }
-@@ -2123,12 +2123,6 @@ static unsigned int aa32_id_visibility(const struct kvm_vcpu *vcpu,
- 	return id_visibility(vcpu, r);
- }
- 
--static unsigned int raz_visibility(const struct kvm_vcpu *vcpu,
--				   const struct sys_reg_desc *r)
--{
--	return REG_RAZ;
--}
--
- /* cpufeature ID register access trap handlers */
- 
- static bool access_id_reg(struct kvm_vcpu *vcpu,
-diff --git a/arch/arm64/kvm/sys_regs.h b/arch/arm64/kvm/sys_regs.h
-index 2a983664220c..75d581050b09 100644
---- a/arch/arm64/kvm/sys_regs.h
-+++ b/arch/arm64/kvm/sys_regs.h
-@@ -108,6 +108,12 @@ struct sys_reg_desc {
- #define REG_RAZ			(1 << 1) /* RAZ from userspace and guest */
- #define REG_USER_WI		(1 << 2) /* WI from userspace only */
- 
-+static inline unsigned int raz_visibility(const struct kvm_vcpu *vcpu,
-+				   const struct sys_reg_desc *r)
-+{
-+	return REG_RAZ;
-+}
-+
- static __printf(2, 3)
- inline void print_sys_reg_msg(const struct sys_reg_params *p,
- 				       char *fmt, ...)
-@@ -237,6 +243,12 @@ bool triage_sysreg_trap(struct kvm_vcpu *vcpu, int *sr_index);
- 
- int kvm_finalize_sys_regs(struct kvm_vcpu *vcpu);
- 
-+u64 kvm_read_sanitised_id_reg(struct kvm_vcpu *vcpu,
-+			      const struct sys_reg_desc *r);
-+
-+/* Implemented by each architecture */
-+u64 kvm_sanitised_host_ftr_reg(u32 id);
-+
- #define AA32(_x)	.aarch32_map = AA32_##_x
- #define Op0(_x) 	.Op0 = _x
- #define Op1(_x) 	.Op1 = _x
-@@ -257,6 +269,81 @@ int kvm_finalize_sys_regs(struct kvm_vcpu *vcpu);
- 	CRn(sys_reg_CRn(reg)), CRm(sys_reg_CRm(reg)),	\
- 	Op2(sys_reg_Op2(reg))
- 
-+/*
-+ * Since reset() callback and field val are not used for idregs, they will be
-+ * used for specific purposes for idregs.
-+ * The reset() would return KVM sanitised register value. The value would be the
-+ * same as the host kernel sanitised value if there is no KVM sanitisation.
-+ * The val would be used as a mask indicating writable fields for the idreg.
-+ * Only bits with 1 are writable from userspace. This mask might not be
-+ * necessary in the future whenever all ID registers are enabled as writable
-+ * from userspace.
-+ */
-+
-+#define ID_DESC_DEFAULT_CALLBACKS		\
-+	.access	= access_id_reg,		\
-+	.get_user = get_id_reg,			\
-+	.set_user = set_id_reg,			\
-+	.visibility = id_visibility,		\
-+	.reset = kvm_read_sanitised_id_reg
-+
-+#define ID_DESC(name)				\
-+	SYS_DESC(SYS_##name),			\
-+	ID_DESC_DEFAULT_CALLBACKS
-+
-+/* sys_reg_desc initialiser for known cpufeature ID registers */
-+#define ID_SANITISED(name) {			\
-+	ID_DESC(name),				\
-+	.val = 0,				\
-+}
-+
-+/* sys_reg_desc initialiser for writable ID registers */
-+#define ID_WRITABLE(name, mask) {		\
-+	ID_DESC(name),				\
-+	.val = mask,				\
-+}
-+
-+/*
-+ * 32bit ID regs are fully writable when the guest is 32bit
-+ * capable. Nothing in the KVM code should rely on 32bit features
-+ * anyway, only 64bit, so let the VMM do its worse.
-+ */
-+#define AA32_ID_WRITABLE(name) {		\
-+	ID_DESC(name),				\
-+	.visibility = aa32_id_visibility,	\
-+	.val = GENMASK(31, 0),			\
-+}
-+
-+/* sys_reg_desc initialiser for cpufeature ID registers that need filtering */
-+#define ID_FILTERED(sysreg, name, mask) {	\
-+	ID_DESC(sysreg),				\
-+	.set_user = set_##name,				\
-+	.val = (mask),					\
-+}
-+
-+/*
-+ * sys_reg_desc initialiser for architecturally unallocated cpufeature ID
-+ * register with encoding Op0=3, Op1=0, CRn=0, CRm=crm, Op2=op2
-+ * (1 <= crm < 8, 0 <= Op2 < 8).
-+ */
-+#define ID_UNALLOCATED(crm, op2) {			\
-+	.name = "S3_0_0_" #crm "_" #op2,		\
-+	Op0(3), Op1(0), CRn(0), CRm(crm), Op2(op2),	\
-+	ID_DESC_DEFAULT_CALLBACKS,			\
-+	.visibility = raz_visibility,			\
-+	.val = 0,					\
-+}
-+
-+/*
-+ * sys_reg_desc initialiser for known ID registers that we hide from guests.
-+ * For now, these are exposed just like unallocated ID regs: they appear
-+ * RAZ for the guest.
-+ */
-+#define ID_HIDDEN(name) {			\
-+	ID_DESC(name),				\
-+	.visibility = raz_visibility,		\
-+	.val = 0,				\
-+}
- #define ID_REG_LIMIT_FIELD_ENUM(val, reg, field, limit)			       \
- ({									       \
- 	u64 __f_val = FIELD_GET(reg##_##field##_MASK, val);		       \
--- 
-2.53.0
-
+Oh, nice.  Yep, that works for me.
