@@ -1,55 +1,55 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3347A47A0A2
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FEE47AF66
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 22:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780093401; cv=none; b=PQdun4j+XSMWLUq0b4szx2JB1r/wdF0Lau0S1fsXoGy7nZMd8yPK7DlcPUCKQFqRPFtcAXPvXucBXx/uJg1OYRs7FbcsiFwgDix6RcS0OR/6wODqPOIb0J5nKaw85kYmAZTjpeSv2r++cDJL3uT0a/RB7xtrG8WvPQR0neMoD9M=
+	t=1780093403; cv=none; b=SLhqKR39mHWhr0FNvCj/ZZnI8HfLztQPoolpihctoptq3yZgmBPnrMcGoe9S1wL/KVT58j+rlBnnYwsfJpOf+KM3f/RgKCtFlRVSK5bpBLk4T1WmHo9FWjbmU1qMV0vZWWAPyvli+fdGfZ1ltAw6iaGl4tWfvZnGWTyDTk0OrIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780093401; c=relaxed/simple;
-	bh=otrVM3e4Lurh14D9F8StjWN8v6dvvHUUGpICOjvEYWw=;
+	s=arc-20240116; t=1780093403; c=relaxed/simple;
+	bh=VRgMRhtjVBgYv8JI3E7pVGBY+7qN4gb9G0f1N7S5p40=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=P5Meavw18IqJyx8hPugtzWIZs1eLTvp4HH9zY+sdm/DQaJRAJjZS67Jl4JSYZ+O/pLuoOe2S8djwibYQXOzuvDHn2NMQYMHwrDx5+sE7QxAkmr5xaOGuLt9ovx/jVQi4+8aVtY8pZTOUhEGpHb3kYYeVxUefAhQKboCFm1Ij4S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EvcAoGIo; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=mfKzY2Z1/UoNdYCvf/MqMq81xA/n26lG0dEDcGNutR/cOZtXjvd+WGDc2juduGdj6c5L/Q9aP+C99QR/O2Ndu4rnm0xgfpdqISlEUrP2aY4ybGPncLAu1h7eTIvGafM10yV2qo4S5o5t9wkHrkyy1UpwXx1icUH4JGm5vJvrsNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GgJSYYSO; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EvcAoGIo"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bf0b7425bbso38893295ad.0
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GgJSYYSO"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c857befe561so361826a12.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 15:23:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780093399; x=1780698199; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780093401; x=1780698201; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=U06ajxKWCrZV2qZ8Tb0oiDb/K09cySTCLuYRf+Qkq+A=;
-        b=EvcAoGIoFlHuJMS3ugwl5wqfpaGIVpaVdmVOFsCorgSTxlv8tLKBE5Ar84UKhmSsTE
-         dj7QyPq4jT5TNDz8cOJKND05awSpLxVMWAfC3iJGAdplGfhxRg9MZnwjpO3uhxE14Xy8
-         lZT82aS10F212BcnKev/dTDFVw2sUlRbjxGu1CYCerWF7nhvYLaFYRB+sFO2Xzh0xp+N
-         i7iHfXg8eAH+PQVSR7xJ1YnK1DmWkgS+tkrD1qAiPnQpzJ9wU3lzXiAJGEjvO9J2ZWoq
-         gdbgWVFY9m2GpUw+qj2Db0+Ry/0y5OcXTuvVrNFcUur0fbdLPzEeB+2QHOu1embOCt5K
-         1+RA==
+        bh=I88SBvpclb3TmLRZLMUOgTRAM1nkrimTOG6pLdh+qCU=;
+        b=GgJSYYSOubVg4zFTvJ1NBy+h3cHgCqWM9FGd1jS1RogF/qE6TB2AqKFjEtu5y7vPrd
+         vRgaMw/MmhiILgx+lOESGCw07u/O8EhpvTfDMzMOb7hpWTvaHVRuV2y42l1jUm9VJI5s
+         L7I8XBqNRsyQPHa9m4StBv5fX17VGhZXac0T/Y7xTx2q6dfz23ot690xWm5UTwbV+Yu8
+         ZQRlFRBoS2m8iFevguzTt9b0JDqwhTLBzmLSGouoynufiFi9UoIO/73rA6Sg10NwFcpE
+         VUaMLGtAz9BwV4ognyKWRLpi5en35N3HKen+zef0GB6FYe85idYUEIfI35TR1YlEFLCy
+         kuxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780093399; x=1780698199;
+        d=1e100.net; s=20251104; t=1780093401; x=1780698201;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=U06ajxKWCrZV2qZ8Tb0oiDb/K09cySTCLuYRf+Qkq+A=;
-        b=bDrzyIIpsyjvgcCGd4Eg7JI7+FC2mQk7dzz9Va1/SoOxoKPUAkzRDs4DdcmCSds2k6
-         AAx+KRLM/MsEbd8RF79FBjHhulBxX32bPqeIl4pnWJuq0Kj1fY+eKfX0SnBtwmWkMQNe
-         4Q6fQLrRf1/SXrRZDq9OF4KprbsJYLsKhNtNPiGiWJ37xFwvIVbLLQXs5dEqkwxkCGfC
-         tDl3PhytxtGKrzkCl26DVD5r35OAU9GBuE6TtG5Xj0P/2XXGw9AkY92ysg9gBcpLs8Da
-         BSJtsq67aFRRl6jbS/QiSjesvUVQZg3pzxjqABZkSMHe3WTdiKVwAAehfw00HyObqVq0
-         G/yQ==
-X-Gm-Message-State: AOJu0Yx+hOlypkJX2kOfrogFAbVUvmVchzFJm/NaQmkUNvuXzf+fOyXg
-	8MFynDyTJKD5q9USeKV0+mMFhTDAYIIB4DnhJYi/NkuX2mG/QBMHgYZyrQyQj8U8r0oLYJUNBs3
-	fA9tq9A==
-X-Received: from plav13.prod.google.com ([2002:a17:902:f0cd:b0:2bf:25c4:45ec])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:138a:b0:2b4:5f69:715d
- with SMTP id d9443c01a7336-2bf36809d00mr21727735ad.25.1780093399437; Fri, 29
- May 2026 15:23:19 -0700 (PDT)
+        bh=I88SBvpclb3TmLRZLMUOgTRAM1nkrimTOG6pLdh+qCU=;
+        b=nvV7uyY2xmcNfLZtUf8939NQcV5FEiH1FuZdWdceH98uE52IdzMUAuocoC9ZnzwPdX
+         It3JKZ2mYFM/ufXi+s5ekUE1BYDtkxObqFZL6w2TRYjIbiOUelvaIPK2SnGP2+x8WLBj
+         O/dTgvwtEnX53Cs8VICKZes8bI69VHiKXx6opNL3hPfviBstwexxjMnck1bN2uxnGYMg
+         ARL1y97WOmUASTVrYJqoUghmMPVZN1SWqa6jpXaS3p8QgRKwNpVCElsv+sy3JRNrPAXT
+         xuJi7xMEcjxLiqW5FFl2hZTTn2rGY8lsrrDxLuAfauSYAFFuV0wfeWqzRQQOKDIvwOaR
+         SUTA==
+X-Gm-Message-State: AOJu0YzVICuW6wCQu6sz3rm2dN6i2FFdEq/ni7RXddnuQTty6l10cAAK
+	1AYprQHi8kq1JinhWB7EZpf0GNfd+cqaARmoANdEgui7J/zQY4uO70vE67fmaSfhN1LbxWcfZRN
+	VWHDLfQ==
+X-Received: from pgbds10.prod.google.com ([2002:a05:6a02:430a:b0:c81:5509:27fc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a107:b0:398:c0ba:9ceb
+ with SMTP id adf61e73a8af0-3b427c3f5b8mr1270452637.12.1780093400506; Fri, 29
+ May 2026 15:23:20 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 29 May 2026 15:22:13 -0700
+Date: Fri, 29 May 2026 15:22:14 -0700
 In-Reply-To: <20260529222223.870923-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260529222223.870923-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260529222223.870923-31-seanjc@google.com>
-Subject: [PATCH v3 30/40] KVM: x86: Move MSR helper declarations from
- kvm_host.h => msrs.h
+Message-ID: <20260529222223.870923-32-seanjc@google.com>
+Subject: [PATCH v3 31/40] KVM: x86: Move MMU helper declarations from
+ kvm_host.h => mmu.h
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -70,134 +70,223 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Relocate declarations of MSR helpers (and kvm_nr_uret_msrs) from x86's
-x86's kvm_host.h to msrs, to continue trimming down kvm_host.h.
-
-Deliberately leave the funky read_msr() where it is, as it will hopefully
-be removed entirely as part of a broader kernel-API cleanup.
+Move a pile of MMU helper declarations into mmu.h, as they are very much
+KVM x86 internal APIs and not intended to be exposed to arch-neutral KVM,
+and certainly not to the broader kernel.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h | 26 -------------------------
- arch/x86/kvm/msrs.h             | 34 ++++++++++++++++++++++++++++++---
- 2 files changed, 31 insertions(+), 29 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 70 --------------------------------
+ arch/x86/kvm/mmu.h              | 71 +++++++++++++++++++++++++++++++++
+ 2 files changed, 71 insertions(+), 70 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index a861c0d70be0..1143140592df 100644
+index 1143140592df..f217403e18fc 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -2094,7 +2094,6 @@ struct kvm_arch_async_pf {
- 	u64 error_code;
- };
+@@ -161,12 +161,6 @@
+ #define KVM_HPAGE_MASK(x)	(~(KVM_HPAGE_SIZE(x) - 1))
+ #define KVM_PAGES_PER_HPAGE(x)	(KVM_HPAGE_SIZE(x) / PAGE_SIZE)
  
--extern u32 __read_mostly kvm_nr_uret_msrs;
- extern bool __read_mostly allow_smaller_maxphyaddr;
- extern bool __read_mostly enable_apicv;
- extern bool __read_mostly enable_ipiv;
-@@ -2278,18 +2277,6 @@ void kvm_prepare_emulation_failure_exit(struct kvm_vcpu *vcpu);
- void kvm_prepare_event_vectoring_exit(struct kvm_vcpu *vcpu, gpa_t gpa);
- void kvm_prepare_unexpected_reason_exit(struct kvm_vcpu *vcpu, u64 exit_reason);
+-#define KVM_MEMSLOT_PAGES_TO_MMU_PAGES_RATIO 50
+-#define KVM_MIN_ALLOC_MMU_PAGES 64UL
+-#define KVM_MMU_HASH_SHIFT 12
+-#define KVM_NUM_MMU_PAGES (1 << KVM_MMU_HASH_SHIFT)
+-#define KVM_MIN_FREE_MMU_PAGES 5
+-#define KVM_REFILL_PAGES 25
+ #define KVM_MAX_CPUID_ENTRIES 256
+ #define KVM_NR_VAR_MTRR 8
  
--void kvm_enable_efer_bits(u64);
--bool kvm_valid_efer(struct kvm_vcpu *vcpu, u64 efer);
--int kvm_emulate_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
--int kvm_emulate_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
--int __kvm_emulate_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
--int __kvm_emulate_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
--int kvm_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
--int kvm_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
--int kvm_emulate_rdmsr(struct kvm_vcpu *vcpu);
--int kvm_emulate_rdmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
--int kvm_emulate_wrmsr(struct kvm_vcpu *vcpu);
--int kvm_emulate_wrmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
- int kvm_emulate_as_nop(struct kvm_vcpu *vcpu);
- int kvm_emulate_invd(struct kvm_vcpu *vcpu);
- int kvm_emulate_mwait(struct kvm_vcpu *vcpu);
-@@ -2311,9 +2298,6 @@ int kvm_task_switch(struct kvm_vcpu *vcpu, u16 tss_selector, int idt_index,
- int __kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr);
- int kvm_emulate_xsetbv(struct kvm_vcpu *vcpu);
+@@ -2153,38 +2147,6 @@ enum kvm_intr_type {
+ 	((vcpu) && (vcpu)->arch.handling_intr_from_guest && \
+ 	 (!!in_nmi() == ((vcpu)->arch.handling_intr_from_guest == KVM_HANDLING_NMI)))
  
--int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr);
--int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr);
+-void __init kvm_mmu_x86_module_init(void);
+-int kvm_mmu_vendor_module_init(void);
+-void kvm_mmu_vendor_module_exit(void);
 -
- int kvm_emulate_rdpmc(struct kvm_vcpu *vcpu);
- 
- void kvm_queue_exception(struct kvm_vcpu *vcpu, unsigned nr);
-@@ -2488,16 +2472,6 @@ int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
- 		    unsigned long ipi_bitmap_high, u32 min,
- 		    unsigned long icr, int op_64_bit);
- 
--int kvm_add_user_return_msr(u32 msr);
--int kvm_find_user_return_msr(u32 msr);
--int kvm_set_user_return_msr(unsigned index, u64 val, u64 mask);
--u64 kvm_get_user_return_msr(unsigned int slot);
+-void kvm_mmu_destroy(struct kvm_vcpu *vcpu);
+-int kvm_mmu_create(struct kvm_vcpu *vcpu);
+-int kvm_mmu_init_vm(struct kvm *kvm);
+-void kvm_mmu_uninit_vm(struct kvm *kvm);
 -
--static inline bool kvm_is_supported_user_return_msr(u32 msr)
+-void kvm_mmu_init_memslot_memory_attributes(struct kvm *kvm,
+-					    struct kvm_memory_slot *slot);
+-
+-void kvm_mmu_after_set_cpuid(struct kvm_vcpu *vcpu);
+-void kvm_mmu_reset_context(struct kvm_vcpu *vcpu);
+-void kvm_mmu_slot_remove_write_access(struct kvm *kvm,
+-				      const struct kvm_memory_slot *memslot,
+-				      int start_level);
+-void kvm_mmu_slot_try_split_huge_pages(struct kvm *kvm,
+-				       const struct kvm_memory_slot *memslot,
+-				       int target_level);
+-void kvm_mmu_try_split_huge_pages(struct kvm *kvm,
+-				  const struct kvm_memory_slot *memslot,
+-				  u64 start, u64 end,
+-				  int target_level);
+-void kvm_mmu_recover_huge_pages(struct kvm *kvm,
+-				const struct kvm_memory_slot *memslot);
+-void kvm_mmu_slot_leaf_clear_dirty(struct kvm *kvm,
+-				   const struct kvm_memory_slot *memslot);
+-void kvm_mmu_invalidate_mmio_sptes(struct kvm *kvm, u64 gen);
+-void kvm_mmu_change_mmu_pages(struct kvm *kvm, unsigned long kvm_nr_mmu_pages);
+-void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end);
+-
+ /*
+  * EMULTYPE_NO_DECODE - Set when re-emulating an instruction (after completing
+  *			userspace I/O) to indicate that the emulation context
+@@ -2334,25 +2296,6 @@ static inline int __kvm_irq_line_state(unsigned long *irq_state,
+ void kvm_inject_nmi(struct kvm_vcpu *vcpu);
+ int kvm_get_nr_pending_nmis(struct kvm_vcpu *vcpu);
+ 
+-bool __kvm_mmu_unprotect_gfn_and_retry(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+-				       bool always_retry);
+-
+-static inline bool kvm_mmu_unprotect_gfn_and_retry(struct kvm_vcpu *vcpu,
+-						   gpa_t cr2_or_gpa)
 -{
--	return kvm_find_user_return_msr(msr) >= 0;
+-	return __kvm_mmu_unprotect_gfn_and_retry(vcpu, cr2_or_gpa, false);
 -}
 -
- u64 kvm_scale_tsc(u64 tsc, u64 ratio);
- u64 kvm_read_l1_tsc(struct kvm_vcpu *vcpu, u64 host_tsc);
- u64 kvm_calc_nested_tsc_offset(u64 l1_offset, u64 l2_offset, u64 l2_multiplier);
-diff --git a/arch/x86/kvm/msrs.h b/arch/x86/kvm/msrs.h
-index c34f0411ced6..5c8362a8fd97 100644
---- a/arch/x86/kvm/msrs.h
-+++ b/arch/x86/kvm/msrs.h
-@@ -11,6 +11,8 @@
- extern bool report_ignored_msrs;
- extern bool ignore_msrs;
+-void kvm_mmu_free_roots(struct kvm *kvm, struct kvm_mmu *mmu,
+-			ulong roots_to_free);
+-void kvm_mmu_free_guest_mode_roots(struct kvm *kvm, struct kvm_mmu *mmu);
+-gpa_t kvm_mmu_gva_to_gpa_read(struct kvm_vcpu *vcpu, gva_t gva,
+-			      struct x86_exception *exception);
+-gpa_t kvm_mmu_gva_to_gpa_write(struct kvm_vcpu *vcpu, gva_t gva,
+-			       struct x86_exception *exception);
+-gpa_t kvm_mmu_gva_to_gpa_system(struct kvm_vcpu *vcpu, gva_t gva,
+-				struct x86_exception *exception);
+-
+ bool kvm_apicv_activated(struct kvm *kvm);
+ bool kvm_vcpu_apicv_activated(struct kvm_vcpu *vcpu);
+ void __kvm_vcpu_update_apicv(struct kvm_vcpu *vcpu);
+@@ -2385,19 +2328,6 @@ static inline void kvm_dec_apicv_irq_window_req(struct kvm *kvm)
+ 	kvm_inc_or_dec_irq_window_inhibit(kvm, false);
+ }
  
-+extern u32 __read_mostly kvm_nr_uret_msrs;
-+
- static inline void kvm_pr_unimpl_wrmsr(struct kvm_vcpu *vcpu, u32 msr, u64 data)
- {
- 	if (report_ignored_msrs)
-@@ -56,13 +58,39 @@ int kvm_get_set_one_reg(struct kvm_vcpu *vcpu, unsigned int ioctl,
- int kvm_get_reg_list(struct kvm_vcpu *vcpu,
- 		     struct kvm_reg_list __user *user_list);
+-int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
+-		       void *insn, int insn_len);
+-void kvm_mmu_print_sptes(struct kvm_vcpu *vcpu, gpa_t gpa, const char *msg);
+-void kvm_mmu_invlpg(struct kvm_vcpu *vcpu, gva_t gva);
+-void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+-			     u64 addr, unsigned long roots);
+-void kvm_mmu_invpcid_gva(struct kvm_vcpu *vcpu, gva_t gva, unsigned long pcid);
+-void kvm_mmu_new_pgd(struct kvm_vcpu *vcpu, gpa_t new_pgd);
+-
+-void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
+-		       int tdp_max_root_level, int tdp_huge_page_level);
+-
+-
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+ #endif
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index d30676935fff..a6b871253bd7 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -15,6 +15,13 @@ extern bool tdp_mmu_enabled;
+ extern bool __read_mostly enable_mmio_caching;
+ extern bool eager_page_split;
  
-+void kvm_enable_efer_bits(u64);
-+bool kvm_valid_efer(struct kvm_vcpu *vcpu, u64 efer);
-+int kvm_emulate_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
-+int kvm_emulate_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
-+int __kvm_emulate_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
-+int __kvm_emulate_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
-+int kvm_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
-+int kvm_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
-+int kvm_emulate_rdmsr(struct kvm_vcpu *vcpu);
-+int kvm_emulate_rdmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
-+int kvm_emulate_wrmsr(struct kvm_vcpu *vcpu);
-+int kvm_emulate_wrmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
++#define KVM_MEMSLOT_PAGES_TO_MMU_PAGES_RATIO 50
++#define KVM_MIN_ALLOC_MMU_PAGES 64UL
++#define KVM_MMU_HASH_SHIFT 12
++#define KVM_NUM_MMU_PAGES (1 << KVM_MMU_HASH_SHIFT)
++#define KVM_MIN_FREE_MMU_PAGES 5
++#define KVM_REFILL_PAGES 25
 +
-+fastpath_t handle_fastpath_wrmsr(struct kvm_vcpu *vcpu);
-+fastpath_t handle_fastpath_wrmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
+ #define PT_WRITABLE_SHIFT 1
+ #define PT_USER_SHIFT 2
+ 
+@@ -96,6 +103,38 @@ static inline bool mmu_has_mbec(struct kvm_mmu *mmu)
+ 
+ u8 kvm_mmu_get_max_tdp_level(void);
+ 
++void __init kvm_mmu_x86_module_init(void);
++int kvm_mmu_vendor_module_init(void);
++void kvm_mmu_vendor_module_exit(void);
 +
-+int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr);
-+int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr);
++void kvm_mmu_destroy(struct kvm_vcpu *vcpu);
++int kvm_mmu_create(struct kvm_vcpu *vcpu);
++int kvm_mmu_init_vm(struct kvm *kvm);
++void kvm_mmu_uninit_vm(struct kvm *kvm);
 +
-+int kvm_add_user_return_msr(u32 msr);
-+int kvm_find_user_return_msr(u32 msr);
-+int kvm_set_user_return_msr(unsigned index, u64 val, u64 mask);
-+u64 kvm_get_user_return_msr(unsigned int slot);
++void kvm_mmu_init_memslot_memory_attributes(struct kvm *kvm,
++					    struct kvm_memory_slot *slot);
 +
-+static inline bool kvm_is_supported_user_return_msr(u32 msr)
++void kvm_mmu_after_set_cpuid(struct kvm_vcpu *vcpu);
++void kvm_mmu_reset_context(struct kvm_vcpu *vcpu);
++void kvm_mmu_slot_remove_write_access(struct kvm *kvm,
++				      const struct kvm_memory_slot *memslot,
++				      int start_level);
++void kvm_mmu_slot_try_split_huge_pages(struct kvm *kvm,
++				       const struct kvm_memory_slot *memslot,
++				       int target_level);
++void kvm_mmu_try_split_huge_pages(struct kvm *kvm,
++				  const struct kvm_memory_slot *memslot,
++				  u64 start, u64 end,
++				  int target_level);
++void kvm_mmu_recover_huge_pages(struct kvm *kvm,
++				const struct kvm_memory_slot *memslot);
++void kvm_mmu_slot_leaf_clear_dirty(struct kvm *kvm,
++				   const struct kvm_memory_slot *memslot);
++void kvm_mmu_invalidate_mmio_sptes(struct kvm *kvm, u64 gen);
++void kvm_mmu_change_mmu_pages(struct kvm *kvm, unsigned long kvm_nr_mmu_pages);
++void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end);
++
+ void kvm_mmu_set_mmio_spte_mask(u64 mmio_value, u64 mmio_mask, u64 access_mask);
+ void kvm_mmu_set_mmio_spte_value(struct kvm *kvm, u64 mmio_value);
+ void kvm_mmu_set_me_spte_mask(u64 me_value, u64 me_mask);
+@@ -107,6 +146,19 @@ void kvm_init_shadow_npt_mmu(struct kvm_vcpu *vcpu, unsigned long cr4,
+ void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
+ 			     int huge_page_level, bool accessed_dirty,
+ 			     bool mbec, gpa_t new_eptp);
++
++int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
++		       void *insn, int insn_len);
++void kvm_mmu_print_sptes(struct kvm_vcpu *vcpu, gpa_t gpa, const char *msg);
++void kvm_mmu_invlpg(struct kvm_vcpu *vcpu, gva_t gva);
++void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
++			     u64 addr, unsigned long roots);
++void kvm_mmu_invpcid_gva(struct kvm_vcpu *vcpu, gva_t gva, unsigned long pcid);
++void kvm_mmu_new_pgd(struct kvm_vcpu *vcpu, gpa_t new_pgd);
++
++void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
++		       int tdp_max_root_level, int tdp_huge_page_level);
++
+ bool kvm_can_do_async_pf(struct kvm_vcpu *vcpu);
+ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
+ 				u64 fault_address, char *insn, int insn_len);
+@@ -121,6 +173,25 @@ void kvm_mmu_sync_prev_roots(struct kvm_vcpu *vcpu);
+ void kvm_mmu_track_write(struct kvm_vcpu *vcpu, gpa_t gpa, const u8 *new,
+ 			 int bytes);
+ 
++bool __kvm_mmu_unprotect_gfn_and_retry(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
++				       bool always_retry);
++
++static inline bool kvm_mmu_unprotect_gfn_and_retry(struct kvm_vcpu *vcpu,
++						   gpa_t cr2_or_gpa)
 +{
-+	return kvm_find_user_return_msr(msr) >= 0;
++	return __kvm_mmu_unprotect_gfn_and_retry(vcpu, cr2_or_gpa, false);
 +}
 +
- void kvm_user_return_msr_cpu_online(void);
- void drop_user_return_notifiers(void);
- void kvm_destroy_user_return_msrs(void);
- 
--fastpath_t handle_fastpath_wrmsr(struct kvm_vcpu *vcpu);
--fastpath_t handle_fastpath_wrmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
--
- int kvm_emulator_get_msr_with_filter(struct kvm_vcpu *vcpu, u32 msr_index,
- 				     u64 *pdata);
- int kvm_emulator_set_msr_with_filter(struct kvm_vcpu *vcpu, u32 msr_index,
++void kvm_mmu_free_roots(struct kvm *kvm, struct kvm_mmu *mmu,
++			ulong roots_to_free);
++void kvm_mmu_free_guest_mode_roots(struct kvm *kvm, struct kvm_mmu *mmu);
++gpa_t kvm_mmu_gva_to_gpa_read(struct kvm_vcpu *vcpu, gva_t gva,
++			      struct x86_exception *exception);
++gpa_t kvm_mmu_gva_to_gpa_write(struct kvm_vcpu *vcpu, gva_t gva,
++			       struct x86_exception *exception);
++gpa_t kvm_mmu_gva_to_gpa_system(struct kvm_vcpu *vcpu, gva_t gva,
++				struct x86_exception *exception);
++
+ static inline int kvm_mmu_reload(struct kvm_vcpu *vcpu)
+ {
+ 	if (kvm_check_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu))
 -- 
 2.54.0.823.g6e5bcc1fc9-goog
 
