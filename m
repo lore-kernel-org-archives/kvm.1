@@ -1,162 +1,168 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275F742EEAC
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB06429825
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780079776; cv=none; b=OGFEZhRpUZC2vyT7Fus1BaBexaHIg01YOL25RiATG4gh9O6+F7Y3+GW4Htbc22lQNHXRJaLMMbflyRZEAUWrexPhXZqkd/5DiyXnJe4+F+uIgxLNMfw8T1zzAPAKuhNHhhNEl3YII4qZ9zXwhzPySdGo026GxKuiirAUyTmx6bo=
+	t=1780079777; cv=none; b=m4deE1R8dk4eFi/xAE7ZJy/VsbB6tWTevDA23c2H5jXs7+OYnWhSSqYqBCo+izsdbZF5FTwhxhv27btC2fA0uTdvxYyrdhCiunVf4yZVH/nFdWEIyq8/45gNM5g6z8/VI16WcMoqnlKH1b+rDAh0gx0jBQNmEy125bFMkFojZbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780079776; c=relaxed/simple;
-	bh=chX+Z1DMlWh/pzlN2TRT1KqDSCC+ohBtMbGwSch2Rco=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rKCM1YIDpasb+p/zz+4Jvue/vxwNCKAvjk8DHe0XocIZrGQRzY29Cm5bK2awcQ+pKuJbgFvLqZkXBJH8pr1Sx0mYtwLR75vRWeEDS2AuwUpuNx6EEESMpBCQ453KBecJNHNIFlnaNvhHKZiGc21q4OzgRXVRr28K1U1LkK3uy/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CTxpL2d7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=FSLYQywj; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1780079777; c=relaxed/simple;
+	bh=tQ9+tE+DbULo1I89vDeIy9JMoLMUcQfgtStrqd9V650=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=adpXf+4y5Qj6DsxsHNYHh+riVEEG5t1fIPpkflD4Una6HdbsYSphpZzIguSOLfJhYF9MG6e4nRXmQliw1+B4MrSjh9JwXAi2yFuMjlLnwb8s4M6bbrI67eJ5QG8/9MgLxQ1saYHRI34+dci7sAFLcsEjlzE5K29B8cNDG5sboRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Upz+3qUr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gI3FInmS; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CTxpL2d7";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="FSLYQywj"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64TI2Qs1313038
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	8G1AA+C5l7p2QDuZF+PCm2sMqEcpPOuS/PaVjzqSEX8=; b=CTxpL2d7y6Ocz8mH
-	HQRbe8DMj+GapAuyHenAR7kh50OG5DZ9vwlP0gQ4x6jkyks843d3f9QVUcSe4r4j
-	qKWbdzXB8bNkEvKV6Yh92DNfQlA5+swlqBG5MVoEW/BMyVLKok4g+bKV2C5g7563
-	4HAyLgPoC4bEuxPVmy7evW5dReNLqxj8t6XlLFGgShd8UWtAUi4/1SEF+0isohG0
-	3adI42c3Jo7IMKRMa/Oh1rswXLE4I0DrDr6jqDi0aCHyMpX/BF8zNFx5151bLgq1
-	v/5TYosztN830/fGAN19I3tci1dFyw9X5T1I9lja/oKLPkQwGQS0FfSEeSGYi2WA
-	4hn7Vw==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eex6m56h6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 29 May 2026 18:36:10 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-304d2447962so1346073eec.0
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 11:36:10 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Upz+3qUr";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gI3FInmS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780079773;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=R0u/shZrwVj4PqbRgkkyXanK2+FAoAVtVPTTfQ581C8=;
+	b=Upz+3qUru6L6HTlgRck3piMjRoIw1Kn97ZuA/DXiqVHvqYi25HarQlBQegJNL1OKH0031M
+	pJWqmlGU/kXkGvRtJ+40Reb/yz/ZXnRigV9jfucPj62tFuKprh2Dof2B97nrs7Angi3/xR
+	2h1TSwMEQtuE6PIWzVqet9J+Zxv8OY0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-47-_KTs_nNyOBCdCvgN0K0YAg-1; Fri, 29 May 2026 14:36:11 -0400
+X-MC-Unique: _KTs_nNyOBCdCvgN0K0YAg-1
+X-Mimecast-MFC-AGG-ID: _KTs_nNyOBCdCvgN0K0YAg_1780079771
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45ef5e38a18so287220f8f.1
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 11:36:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1780079770; x=1780684570; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8G1AA+C5l7p2QDuZF+PCm2sMqEcpPOuS/PaVjzqSEX8=;
-        b=FSLYQywjnhKrdLNsdsgcPYhOukiWKdjfbnKVcEu3fGR3zYmAUOGAUcN/pHuHfk+cIT
-         mgl6Ry2EJ+dkHz4L9Khr671G+vMWJg6fJMbQ5ovCAariErwdyLQcRWob0T5Mn3sUY8Ss
-         dleftU6lCRIRYXUcPMUsYiQeHv0pyhh3/B9PWCDaKJDXeRhd5N/qUaTGR5133OLsc1T8
-         iqeg1b7IOaGrTIZzxNMHaf5Xw1PZoMT1Rksmsn6cvAV4Luw6A3e6X8SIdvnpMAb4mjek
-         cjDXtc89zQYLJO7/mb9dYBXf7Vj+Fy0cbTBHDldnZaTgkOc1QHyvHRUXf8A0CvZPiemg
-         w5cQ==
+        d=redhat.com; s=google; t=1780079770; x=1780684570; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R0u/shZrwVj4PqbRgkkyXanK2+FAoAVtVPTTfQ581C8=;
+        b=gI3FInmSyyh0mZ5QbmzJOwcWEdDuLaNUuOpCUGVsiL4xWLx11BctQ0sHc4aFEDu1s8
+         KclzuBNatRgS/y3UnQOwGgWmjslMhI62eBrw0tl0XYQWOzCSGa8k9dsyvcYwN2yHN+GN
+         uNE2xfmeX39T2glce1gMUELLs0DbrDkinzFtfRq0KhWELDaUA5caVmqNBcHh9NE8jf0l
+         a+KfD0C8Ksxpfyf882jmXRH+7+cgdQyDud7XoMhnYgrRsRPjOd/nPWJALWIuykhBsfNh
+         Tx38lru3CssFg6RCNmqaPXeZB/1awxBcQB93zmFMEo4ZP/yar9Z7sylOi/JfRt5IPLFt
+         hg4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1780079770; x=1780684570;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8G1AA+C5l7p2QDuZF+PCm2sMqEcpPOuS/PaVjzqSEX8=;
-        b=F6J692wUyH1rSRdRxd8R+chaqcAIL8y6/0DOboj+E6WBf2ENr2NqizxmbZI1EwHeXK
-         rTJbZ3nYROXZacrQMrjYA2Fs+urfIdvrtycmd+r0ey1g6twf6BthGSPbv2YxwGmu2ekC
-         8dXXRH6CjgS5cKYKLcTyapyqPDku8aA4Dq47D2GjEb9EIxhls/LQhzZ8xsvvyixPD6r1
-         Zr8XbaTnDsHM2TDlf9IJahmqFxjCSl5Cze/agiHPg/+w0VyPQDTj8bG9qBeiaWrIkYNx
-         5mlQXB6npiZXV/S3MpVMB2clIhj3nINjbD5wj7ZwXwLpukDoWqg8hCZpHVHvvJkqhmpl
-         90WQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8xW1elUQaocb+Sershi3HvSF8vb9zhT5JdUd9n5fMcUklqqNw2U8Pj+N88reRGNMs3v38=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGX1XOwsHlr1DfgAfkllFC00TMC/VcLQ6NEMPzt+Pl3H/R/6uC
-	fyszU9GaABNDQ2m/Hq+/PD4CvuVKXv11O6qPM5bBQTbljYwc6dyEKWhU15RLbb1Za1vbuuc34FH
-	MS/5EGmO3kPtkfoPKiHYWejX5j9whiyKvW69G9JQRcq+u4ldSYxl8vWo=
-X-Gm-Gg: Acq92OG8ZDcPfT7iqIiCCkipchiArL1sQIHP136D+QRLVGk1hXwZDusw0iw6xCr8GZG
-	PxzguCt3wQflkEVTAwcC5yU5lKE5n+oAWsdmSl87E2CCGYA3oY0xm+7dlVyTDx36FstqxNYDFO1
-	pwbklrlDDRIMiDK/TPgX+ndIPgrY57t20jqaOv4us3RLfyAYPXb66BBhhon2Z13z2yQ/s/bk1ru
-	egsJT44KePrDQawc+AkQ4/IQUtSE6YJjmy4LL/2kK45xbFuk34earBEvoIZW/a2TL3LTf6j2F/8
-	+3kwVcxQ45kgRfjil+oxwrlsGBLhU4HkCxvHRi8CSwZNLdeFTknKvFRe9kW0u9ATrJo9pQH1rHr
-	yWi7ushisBA4I+5WfH+eDiWvJGoQbmd7ftamFA6FWu+7RPuhU0pYASN9/Bd62XJTQ1zxo6dwoPc
-	WVUOTDV5AcRT6S43lbHk4fpVTx
-X-Received: by 2002:a05:7022:4384:b0:12c:aae:7b43 with SMTP id a92af1059eb24-137aeb9d821mr1740960c88.24.1780079769805;
-        Fri, 29 May 2026 11:36:09 -0700 (PDT)
-X-Received: by 2002:a05:7022:4384:b0:12c:aae:7b43 with SMTP id a92af1059eb24-137aeb9d821mr1740923c88.24.1780079769224;
-        Fri, 29 May 2026 11:36:09 -0700 (PDT)
-Received: from [192.168.1.170] (216-71-219-44.dyn.novuscom.net. [216.71.219.44])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed53f316sm2009480eec.19.2026.05.29.11.36.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=R0u/shZrwVj4PqbRgkkyXanK2+FAoAVtVPTTfQ581C8=;
+        b=T7eOGXoKimCxGRCxm5wedtBgPp52l7RnmHtnU/ps2ZDyjWZFFEclZvsu8n2rZ9DrlZ
+         6maMgdXWbe1mSP9mdGJ7eAiw3gWo3Y1RVfAC8QeWtNMFJEfjEteSdR3k/N5Hh/ssYYpc
+         cXflJXPUJSNFHZXJ1XekHxfE9iS9wMgvyVCCccv45AByhcOVoDjGwW1PuvnPJnCUwCGY
+         QD4cROKIXKlXCtmungl6mNYO975yv5hEssPtnKsFANyXT9ifKfVqMUAd9UNun/WilTZM
+         UdYPJP7TW+e7qzUoTUhqg/6dS15/h60EcvWv4HLf+bkdySXYTL7bF9m6BPyYdfIBjyYm
+         nJNQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9IU14v384EjIQBjGashmch/dd9BimOj9KMYobD4mKaDkfA2zys8bRL1upAjY9ml5SUq3A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3ovseY/hQprguIMFZbNv53wfXc0XN53pfkDup0AFmcuyBl8AX
+	8kLWDbUHOEB7xAf4O/WKIK0iIV49cny2n5lFI8dS+xtx5R7g/93tXm0NKDXLnrRpJ7FbFHaecUw
+	Tu2tSt4kZOgaxW0HmX8pO7XUOwvMqVaa3wfsGsu3ef0ttIhKExMOw5w==
+X-Gm-Gg: Acq92OGhHJmE84RQH875cVwvwpePR+jMfYCMQTpEd65yldh/uMF97qt8Rf1V25A8M24
+	dkZ4pv4wL/xi7dp9c/p3K/eAdl7mbzynT8SmRN81iS7D/ZVS409d6cUuuFHbvPW9K3664c0d2uy
+	1Fx2H6JhEJIzvOhk/i/e6oy5YAE7J/CzUPH7/SqksQFEZNd4zE+Cls/02yD7DQDuAp/KTV0Iqqm
+	T7d70Z5f5Z4wLcBm7xvLF/QtP6LHDwd0nClmQsv5WhOjnTsysxujLQ5BjDFK0qib384gIth56Ad
+	WnUrWFlAIKIMbfO2AWGf6BAe5GrFU2rbxNEog7jngHyoYFzNtLKkRNwpupCm7oOvWsy7IPm6sfF
+	L8pbx/wJgebmg099oVX/HSJw4ckf3ouhiP0Um6G2UAKadlfY8TrB9g7qgFeLIYBd3tSgMjEUucw
+	QI5UugGFgXMeLmFp2gA4b43sFSSYyZWsAPx6eQzg==
+X-Received: by 2002:a5d:698b:0:b0:441:1e1e:a050 with SMTP id ffacd0b85a97d-45ef6b3e21cmr1332775f8f.16.1780079770582;
+        Fri, 29 May 2026 11:36:10 -0700 (PDT)
+X-Received: by 2002:a5d:698b:0:b0:441:1e1e:a050 with SMTP id ffacd0b85a97d-45ef6b3e21cmr1332738f8f.16.1780079770148;
+        Fri, 29 May 2026 11:36:10 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.251.208])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34bcc30sm5367936f8f.12.2026.05.29.11.36.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 29 May 2026 11:36:08 -0700 (PDT)
-Message-ID: <5dd15866-c5d4-4a2a-b126-3f97700459d5@oss.qualcomm.com>
-Date: Fri, 29 May 2026 11:36:06 -0700
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 08/24] KVM: SEV: Don't explicitly pass PSC buffer to snp_begin_psc()
+Date: Fri, 29 May 2026 20:35:33 +0200
+Message-ID: <20260529183549.1104619-9-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260529183549.1104619-1-pbonzini@redhat.com>
+References: <20260529183549.1104619-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/17] accel/whpx: Convert AccelCPUClass ->
- AccelOpsClass::cpu_instance_init
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        qemu-devel@nongnu.org
-Cc: Reinoud Zandijk <reinoud@netbsd.org>,
-        Pedro Barbuda <pbarbuda@microsoft.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Glenn Miles <milesg@linux.ibm.com>, Alexander Graf <agraf@csgraf.de>,
-        Peter Maydell <peter.maydell@linaro.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>, qemu-arm@nongnu.org,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Roman Bolshakov <rbolshakov@ddn.com>, Anton Johansson <anjo@rev.ng>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Song Gao <gaosong@loongson.cn>,
-        qemu-riscv@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
-        Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Phil Dennis-Jordan <phil@philjordan.eu>,
-        Alistair Francis <alistair.francis@wdc.com>, qemu-ppc@nongnu.org,
-        Weiwei Li <liwei1518@gmail.com>, Chao Liu <chao.liu.zevorn@gmail.com>,
-        kvm@vger.kernel.org, Claudio Fontana <cfontana@suse.de>,
-        Chinmay Rath <rathc@linux.ibm.com>,
-        Mohamed Mediouni <mohamed@unpredictable.fr>
-References: <20260529142434.87880-1-philmd@linaro.org>
- <20260529142434.87880-8-philmd@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260529142434.87880-8-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI5MDE4NSBTYWx0ZWRfX2YHbyGw5m3DI
- eZTvYEtXtWuMqYjDcstxrRW/+YKs9aCh4GA5jpZsUfSb50xwbN0F7gG18X1sbvzhOfRvXn9D1GO
- 5+WIn4VIiEPIjF/+QkW7hBEqblbHhQnYqBDwtjebms2RQ3iETusflc4DJjZE26hJJ+ws/CnGLDD
- k0em+/+TBKvioAM8jvjS2iBqsKrODcQHJXbZH36FDFRopVP6Nrn3ZW97eFEp/Qz2xXo29cXBj6Z
- 0HWGIZHQyNYzbtIRQ89D3FRgQGcrZ+SWma1fVgFF24snBdqbaW/9GmujkhW7Th2L+yTMNNtEgRY
- Lg35wE/E7fFbOXBB6WTFVpGmjcvnTEFUrzYbXCmPZzJg2caQ9I5JtcKld32TOdXV3j6484vP+ZP
- BGfyjn5veONHxRiLO9qOcvqUP0dzZg8VYs6MzkE7TKMPqHqjnUVJdGItvvw60h5mHcknnr0X8Is
- u6wPQMIa1ubqo86potg==
-X-Authority-Analysis: v=2.4 cv=frnsol4f c=1 sm=1 tr=0 ts=6a19dc9a cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=iLqgmErQAxjCjdq5jj1Aqg==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=-KmILrV31RuDUJHzopoA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=6Ab_bkdmUrQuMsNx7PHu:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: dDolFlqcJhKK41OAh4ENMSj2XzuzMjU2
-X-Proofpoint-ORIG-GUID: dDolFlqcJhKK41OAh4ENMSj2XzuzMjU2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-29_05,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2605290185
 
-On 5/29/2026 7:24 AM, Philippe Mathieu-Daudé wrote:
-> Register the new AccelOpsClass::cpu_instance_init hook.
-> 
-> ACCEL_CPU_NAME("whpx") TypeInfo is now empty, remove it.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  accel/whpx/whpx-accel-ops.c |  2 ++
->  accel/whpx/whpx-common.c    | 17 -----------------
->  target/arm/whpx/whpx-all.c  |  1 -
->  target/i386/whpx/whpx-all.c |  1 -
->  4 files changed, 2 insertions(+), 19 deletions(-)
-> 
+From: Sean Christopherson <seanjc@google.com>
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>
+Stop explicitly passing the PSC buffer to snp_begin_psc(): it *must*
+be the scratch area.  This will allow fixing a variety of bugs without
+further complicating the code.
+
+No functional change intended.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-9-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/svm/sev.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index a3e85348ace9..8577451b82b2 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3841,7 +3841,7 @@ struct psc_buffer {
+ 	struct psc_entry entries[];
+ } __packed;
+ 
+-static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc);
++static int snp_begin_psc(struct vcpu_svm *svm);
+ 
+ static void snp_complete_psc(struct vcpu_svm *svm, u64 psc_ret)
+ {
+@@ -3883,7 +3883,6 @@ static void __snp_complete_one_psc(struct vcpu_svm *svm)
+ static int snp_complete_one_psc(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+-	struct psc_buffer *psc = svm->sev_es.ghcb_sa;
+ 
+ 	if (vcpu->run->hypercall.ret) {
+ 		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_GENERIC);
+@@ -3893,11 +3892,13 @@ static int snp_complete_one_psc(struct kvm_vcpu *vcpu)
+ 	__snp_complete_one_psc(svm);
+ 
+ 	/* Handle the next range (if any). */
+-	return snp_begin_psc(svm, psc);
++	return snp_begin_psc(svm);
+ }
+ 
+-static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc)
++static int snp_begin_psc(struct vcpu_svm *svm)
+ {
++	struct vcpu_sev_es_state *sev_es = &svm->sev_es;
++	struct psc_buffer *psc = sev_es->ghcb_sa;
+ 	struct psc_entry *entries = psc->entries;
+ 	struct kvm_vcpu *vcpu = &svm->vcpu;
+ 	struct psc_hdr *hdr = &psc->hdr;
+@@ -4567,7 +4568,7 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 		if (ret)
+ 			break;
+ 
+-		ret = snp_begin_psc(svm, svm->sev_es.ghcb_sa);
++		ret = snp_begin_psc(svm);
+ 		break;
+ 	case SVM_VMGEXIT_AP_CREATION:
+ 		ret = sev_snp_ap_creation(svm);
+-- 
+2.54.0
+
