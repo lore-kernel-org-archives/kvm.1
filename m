@@ -1,305 +1,120 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0752E7366;
-	Fri, 29 May 2026 07:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6315F39EF2E
+	for <kvm@vger.kernel.org>; Fri, 29 May 2026 07:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780038594; cv=none; b=YjrP3n6G1AGfPKVY/tBKBy9+T6pcx9qcGtJCPhik7tL3leWpR6v+1kykZ0yoznfIPFJkVgFxvmI4xK6iUjoRbZatJW8t0viX0UVUcFv+EylJ0R5mlPTLnnhslUDgjGfcatDppHReMWOP+J94iMPZ2fxpmpEW/whRuSwcHQ6iPbs=
+	t=1780039489; cv=none; b=S840S2wTKg8hVHOe5DVUnVElKci6ZTg/axCb4lC4RYzsnJQSuT8vkwzZ7kV4M8NESP0DEbxHEd2rzSdp/e9WU/8GJqjOfW1vtmEoBHx8VxG/ApmBtOepc2QpsqhYN/giThaJYKM8n02j/nLStkBGZw/NJiWUUWGK2Vms7c5BPPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780038594; c=relaxed/simple;
-	bh=mcDPQ10OhT5h2kEYG1dHSv6QYaJYoPvImMxULNHllTY=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=TVZEcEI9T6eMPZ5rFxqzjnPN8F0uLXVGjFQ2MXBq/XMP73GILGBZTp1Fu8fhPcs33HylklhJVfg+Zfs3QJVq0pIy8qAF0K7W6o06UVX9BZ83LRVDwyIjCX8gjiIS5/uSBT0wTmh7RGFMtmB91oU2Q2wivHE7g9zOHZsLQquspIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ko+7Sr7Y; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1780039489; c=relaxed/simple;
+	bh=1CXNIaFa5b8R76gVBrs+gftIR9XDhZ6PEsxzC5hne34=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=VdC/RQGKJu6dyQYTbuITxgsI27os7bMYJi3Sea6myH5qIroSHs/5KpbWfJagZ4MV+y0VulWnpv8e5XstuvV5I3AwCD5PW0R7uUC3h9F/gVvnkizUxbFsXZx9E+FWqR2Pd36k6oINmn8afDBdBFB1/In4AeTak/1ncauYj0IHRq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXgbi0Gs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ko+7Sr7Y"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1780038584; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=AfOoAZRsoTHl03d+h7HBqGhrZdH7nmpYogtqIGY7Tdc=;
-	b=ko+7Sr7Y0oZ8BxrLSUgZbS5RAvNzV+OjjrYk++mIbagPy0rAV0muz6mT8ByArZQNB+MoDVLyASlnS1J0mVGRsJGApqEOmUyf6aD7tZCFekrUbaBUTKJRpFF07uVlF0kqJUjNMCJZT35bUa4+Rvl42wOq0Zplxn1LuDQDj8DZaMg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R991e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X3oeHbx_1780038572;
-Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X3oeHbx_1780038572 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 29 May 2026 15:09:42 +0800
-From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-To: joro@8bytes.org,
-	suravee.suthikulpanit@amd.com,
-	will@kernel.org,
-	robin.murphy@arm.com,
-	dwmw2@infradead.org,
-	baolu.lu@linux.intel.com,
-	alex@shazbot.org,
-	jgg@ziepe.ca,
-	kevin.tian@intel.com,
-	skhawaja@google.com,
-	iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: [RFC PATCH] Optimize VFIO and IOMMU mapping traversal
-Date: Fri, 29 May 2026 15:09:32 +0800
-Message-ID: <20260529070932.2632907-1-guanghuifeng@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXgbi0Gs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A921F00893;
+	Fri, 29 May 2026 07:24:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780039488;
+	bh=oTM6FHzxYipnMgJq0xKNl6zVF7S+Y+3vmkGpDXPfaTg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ZXgbi0GsW8P3cs5dGKaMFEYmR0mt1v7DDBY6sllwCEL3+cgTlISfYAs3zBtyj6edh
+	 FhTUb3fEr9ePh8sqp4njj2Xn+QdT0S0lApzndTq2S+9JFfH7UuBXQ2dbMNVA/XHvRA
+	 zukK1yhhTF84G7QG0SiTMrL6A4LGtpUerxcibcB5VUkyYdoOUsGIFoKDBcJL5ROYo/
+	 zOQLJLjTJPVA4SrC5qk5gqrrc862pUjTLXHLnhOTpY6N+w6hxARFcgtD8xIA5B0m6H
+	 Uzq1BrmKRBzGhlqlqzm8niI68bj80/QReRaJnwXoylmZFHFXaYwcfHKzzP+MZZDNGM
+	 vCBacKC1p2jmQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 1/3] KVM: RISC-V: SBI FWFT: Fix stale feature
+ exposure after runtime extension changes
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yong-Xuan Wang" <yongxuan.wang@sifive.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260528-kvm-get_reg_list-v2-v3-1-170969a8599f@sifive.com>
+References: <20260528-kvm-get_reg_list-v2-v3-1-170969a8599f@sifive.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 29 May 2026 07:24:47 +0000
+Message-Id: <20260529072448.21A921F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-In VFIO, vfio_unmap_unpin requires performing iommu unmap and mm
-unpin on the address space. However, VFIO doesn't record the PHY
-address corresponding to iova, but instead obtains the iova-PHY
-mapping through iommu_iommu_iova_to_phys.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-In IOMMU, under conditions such as address alignment, it prioritizes
-mapping iova-PHY based on bigpages. Therefore, during the
-vfio_unmap_unpin process, traversal can be performed at the
-granularity of the IOMMU map, reducing the number of
-iommu_iova_to_phys queries and significantly improving conversion
-efficiency.
+Pre-existing issues:
+- [High] Spurious hardware probe failure due to unprotected CSR read-modify=
+-write sequence
+--
 
-Therefore, an iommu_iova_to_pgsize implementation is added to the
-IOMMU driver to return the pagesize used for the iova mapping.
+commit 1818d2355a5a82890474d03e62ad6819c760155a
+Author: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-Signed-off-by: Shiqiang Zhang <shiyu.zsq@linux.alibaba.com>
-Signed-off-by: Simon Guo <wei.guo.simon@linux.alibaba.com>
----
- drivers/iommu/amd/iommu.c           |  2 ++
- drivers/iommu/generic_pt/iommu_pt.h | 53 +++++++++++++++++++++++++++++
- drivers/iommu/intel/iommu.c         |  2 ++
- drivers/iommu/iommu.c               | 25 ++++++++++++++
- drivers/vfio/vfio_iommu_type1.c     | 17 +++++++--
- include/linux/generic_pt/iommu.h    |  4 +++
- include/linux/iommu.h               |  3 ++
- 7 files changed, 104 insertions(+), 2 deletions(-)
+KVM: RISC-V: SBI FWFT: Fix stale feature exposure after runtime extension c=
+hanges
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 57dc8fabc7d9..36ffeb96c454 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2662,6 +2662,7 @@ static const struct pt_iommu_driver_ops amd_hw_driver_ops_v1 = {
- 
- static const struct iommu_domain_ops amdv1_ops = {
- 	IOMMU_PT_DOMAIN_OPS(amdv1),
-+	IOMMU_PT_PGSIZE_OPS(amdv1),
- 	.iotlb_sync_map = amd_iommu_iotlb_sync_map,
- 	.flush_iotlb_all = amd_iommu_flush_iotlb_all,
- 	.iotlb_sync = amd_iommu_iotlb_sync,
-@@ -2740,6 +2741,7 @@ static struct iommu_domain *amd_iommu_domain_alloc_paging_v1(struct device *dev,
- 
- static const struct iommu_domain_ops amdv2_ops = {
- 	IOMMU_PT_DOMAIN_OPS(x86_64),
-+	IOMMU_PT_PGSIZE_OPS(x86_64),
- 	.iotlb_sync_map = amd_iommu_iotlb_sync_map,
- 	.flush_iotlb_all = amd_iommu_flush_iotlb_all,
- 	.iotlb_sync = amd_iommu_iotlb_sync,
-diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
-index dc91fb4e2f61..de861d8b6ce2 100644
---- a/drivers/iommu/generic_pt/iommu_pt.h
-+++ b/drivers/iommu/generic_pt/iommu_pt.h
-@@ -199,6 +199,59 @@ phys_addr_t DOMAIN_NS(iova_to_phys)(struct iommu_domain *domain,
- }
- EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(iova_to_phys), "GENERIC_PT_IOMMU");
- 
-+static __always_inline int __do_iova_to_pgsize(struct pt_range *range,
-+					       void *arg, unsigned int level,
-+					       struct pt_table_p *table,
-+					       pt_level_fn_t descend_fn)
-+{
-+	struct pt_state pts = pt_init(range, level, table);
-+	size_t *pgsize = arg;
-+
-+	switch (pt_load_single_entry(&pts)) {
-+	case PT_ENTRY_EMPTY:
-+		return -ENOENT;
-+	case PT_ENTRY_TABLE:
-+		return pt_descend(&pts, arg, descend_fn);
-+	case PT_ENTRY_OA:
-+		*pgsize = BIT(pt_entry_oa_lg2sz(&pts));
-+		return 0;
-+	}
-+	return -ENOENT;
-+}
-+PT_MAKE_LEVELS(__iova_to_pgsize, __do_iova_to_pgsize);
-+
-+/**
-+ * iova_to_pgsize() - Return the page size of the mapping at the given IOVA
-+ * @domain: Table to query
-+ * @iova: IO virtual address to query
-+ *
-+ * Walk the IOMMU page table to determine the actual page size of the PTE
-+ * entry that maps the given IOVA.
-+ *
-+ * Context: The caller must hold a read range lock that includes @iova.
-+ *
-+ * Return: The page size in bytes, or 0 if there is no translation.
-+ */
-+size_t DOMAIN_NS(iova_to_pgsize)(struct iommu_domain *domain,
-+				 dma_addr_t iova)
-+{
-+	struct pt_iommu *iommu_table =
-+		container_of(domain, struct pt_iommu, domain);
-+	struct pt_range range;
-+	size_t pgsize;
-+	int ret;
-+
-+	ret = make_range(common_from_iommu(iommu_table), &range, iova, 1);
-+	if (ret)
-+		return 0;
-+
-+	ret = pt_walk_range(&range, __iova_to_pgsize, &pgsize);
-+	if (ret)
-+		return 0;
-+	return pgsize;
-+}
-+EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(iova_to_pgsize), "GENERIC_PT_IOMMU");
-+
- struct pt_iommu_dirty_args {
- 	struct iommu_dirty_bitmap *dirty;
- 	unsigned int flags;
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 4d0e65bc131d..f992162cfa67 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -3890,6 +3890,7 @@ static struct iommu_domain identity_domain = {
- 
- const struct iommu_domain_ops intel_fs_paging_domain_ops = {
- 	IOMMU_PT_DOMAIN_OPS(x86_64),
-+	IOMMU_PT_PGSIZE_OPS(x86_64),
- 	.attach_dev = intel_iommu_attach_device,
- 	.set_dev_pasid = intel_iommu_set_dev_pasid,
- 	.iotlb_sync_map = intel_iommu_iotlb_sync_map,
-@@ -3901,6 +3902,7 @@ const struct iommu_domain_ops intel_fs_paging_domain_ops = {
- 
- const struct iommu_domain_ops intel_ss_paging_domain_ops = {
- 	IOMMU_PT_DOMAIN_OPS(vtdss),
-+	IOMMU_PT_PGSIZE_OPS(vtdss),
- 	.attach_dev = intel_iommu_attach_device,
- 	.set_dev_pasid = intel_iommu_set_dev_pasid,
- 	.iotlb_sync_map = intel_iommu_iotlb_sync_map,
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index d1a9e713d3a0..e27f26bc1851 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -2557,6 +2557,31 @@ phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t iova)
- }
- EXPORT_SYMBOL_GPL(iommu_iova_to_phys);
- 
-+/**
-+ * iommu_iova_to_pgsize - Get the page size of the mapping at a given IOVA
-+ * @domain: IOMMU domain to query
-+ * @iova: IO virtual address to query
-+ *
-+ * Walk the IOMMU page table to determine the actual page size of the PTE
-+ * entry that maps the given IOVA. This reflects the real mapping granularity,
-+ * not an inferred value from alignment.
-+ *
-+ * Returns the page size in bytes, or 0 if the mapping doesn't exist or the
-+ * domain doesn't support this query.
-+ */
-+size_t iommu_iova_to_pgsize(struct iommu_domain *domain, dma_addr_t iova)
-+{
-+	if (domain->type == IOMMU_DOMAIN_IDENTITY ||
-+	    domain->type == IOMMU_DOMAIN_BLOCKED)
-+		return 0;
-+
-+	if (!domain->ops->iova_to_pgsize)
-+		return 0;
-+
-+	return domain->ops->iova_to_pgsize(domain, iova);
-+}
-+EXPORT_SYMBOL_GPL(iommu_iova_to_pgsize);
-+
- static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
- 			   phys_addr_t paddr, size_t size, size_t *count)
- {
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index c8151ba54de3..bf918a93a159 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -1177,7 +1177,7 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
- 
- 	iommu_iotlb_gather_init(&iotlb_gather);
- 	while (pos < dma->size) {
--		size_t unmapped, len;
-+		size_t unmapped, len, pgsize;
- 		phys_addr_t phys, next;
- 		dma_addr_t iova = dma->iova + pos;
- 
-@@ -1191,11 +1191,24 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
- 		 * To optimize for fewer iommu_unmap() calls, each of which
- 		 * may require hardware cache flushing, try to find the
- 		 * largest contiguous physical memory chunk to unmap.
-+		 *
-+		 * Query the actual IOMMU PTE mapping granularity at this IOVA
-+		 * to determine the guaranteed contiguous range. Use only the
-+		 * remaining portion within the current PTE from our position,
-+		 * in case we start from the middle of a large page mapping.
- 		 */
--		for (len = PAGE_SIZE; pos + len < dma->size; len += PAGE_SIZE) {
-+		pgsize = iommu_iova_to_pgsize(domain->domain, iova);
-+		if (!pgsize)
-+			pgsize = PAGE_SIZE;
-+		len = pgsize - (iova & (pgsize - 1));
-+		for (; pos + len < dma->size; len += pgsize) {
- 			next = iommu_iova_to_phys(domain->domain, iova + len);
- 			if (next != phys + len)
- 				break;
-+			pgsize = iommu_iova_to_pgsize(domain->domain,
-+						      iova + len);
-+			if (!pgsize)
-+				pgsize = PAGE_SIZE;
- 		}
- 
- 		/*
-diff --git a/include/linux/generic_pt/iommu.h b/include/linux/generic_pt/iommu.h
-index dd0edd02a48a..2f30ae73a9eb 100644
---- a/include/linux/generic_pt/iommu.h
-+++ b/include/linux/generic_pt/iommu.h
-@@ -251,6 +251,8 @@ struct pt_iommu_cfg {
- #define IOMMU_PROTOTYPES(fmt)                                                  \
- 	phys_addr_t pt_iommu_##fmt##_iova_to_phys(struct iommu_domain *domain, \
- 						  dma_addr_t iova);            \
-+	size_t pt_iommu_##fmt##_iova_to_pgsize(struct iommu_domain *domain,    \
-+					       dma_addr_t iova);               \
- 	int pt_iommu_##fmt##_read_and_clear_dirty(                             \
- 		struct iommu_domain *domain, unsigned long iova, size_t size,  \
- 		unsigned long flags, struct iommu_dirty_bitmap *dirty);        \
-@@ -272,6 +274,8 @@ struct pt_iommu_cfg {
-  */
- #define IOMMU_PT_DOMAIN_OPS(fmt)                        \
- 	.iova_to_phys = &pt_iommu_##fmt##_iova_to_phys
-+#define IOMMU_PT_PGSIZE_OPS(fmt)                        \
-+	.iova_to_pgsize = &pt_iommu_##fmt##_iova_to_pgsize
- #define IOMMU_PT_DIRTY_OPS(fmt) \
- 	.read_and_clear_dirty = &pt_iommu_##fmt##_read_and_clear_dirty
- 
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index e587d4ac4d33..d04dc7dcfb1e 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -776,6 +776,8 @@ struct iommu_domain_ops {
- 
- 	phys_addr_t (*iova_to_phys)(struct iommu_domain *domain,
- 				    dma_addr_t iova);
-+	size_t (*iova_to_pgsize)(struct iommu_domain *domain,
-+				 dma_addr_t iova);
- 
- 	bool (*enforce_cache_coherency)(struct iommu_domain *domain);
- 	int (*set_pgtable_quirks)(struct iommu_domain *domain,
-@@ -930,6 +932,7 @@ extern ssize_t iommu_map_sg(struct iommu_domain *domain, unsigned long iova,
- 			    struct scatterlist *sg, unsigned int nents,
- 			    int prot, gfp_t gfp);
- extern phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t iova);
-+extern size_t iommu_iova_to_pgsize(struct iommu_domain *domain, dma_addr_t iova);
- extern void iommu_set_fault_handler(struct iommu_domain *domain,
- 			iommu_fault_handler_t handler, void *token);
- 
--- 
-2.43.7
+This commit fixes a bug where FWFT features could be incorrectly exposed
+to guests after userspace disables their dependent ISA extensions at runtim=
+e.
+It introduces an init callback for features requiring hardware probing and
+adds runtime checks to re-evaluate feature availability based on current ISA
+extension state.
 
+> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
+t.c
+> index 2eab15339694f..dde6e39aab5e9 100644
+> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
+> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
+
+[ ... ]
+
+> @@ -137,10 +147,12 @@ static bool try_to_set_pmm(unsigned long value)
+> =20
+>  static bool kvm_sbi_fwft_pointer_masking_pmlen_supported(struct kvm_vcpu=
+ *vcpu)
+>  {
+> -	struct kvm_sbi_fwft *fwft =3D vcpu_to_fwft(vcpu);
+> +	return riscv_isa_extension_available(vcpu->arch.isa, SMNPM);
+> +}
+> =20
+> -	if (!riscv_isa_extension_available(vcpu->arch.isa, SMNPM))
+> -		return false;
+> +static bool kvm_sbi_fwft_pointer_masking_pmlen_init(struct kvm_vcpu *vcp=
+u)
+> +{
+> +	struct kvm_sbi_fwft *fwft =3D vcpu_to_fwft(vcpu);
+> =20
+>  	fwft->have_vs_pmlen_7 =3D try_to_set_pmm(ENVCFG_PMM_PMLEN_7);
+
+[Severity: High]
+This is a pre-existing issue, but could this hardware probe sequence fail
+sporadically due to preemption?
+
+Looking at try_to_set_pmm(), it executes a sequence on the host CSR_HENVCFG:
+
+static bool try_to_set_pmm(unsigned long value)
+{
+        csr_set(CSR_HENVCFG, value);
+        return (csr_read_clear(CSR_HENVCFG, ENVCFG_PMM) & ENVCFG_PMM) =3D=
+=3D value;
+}
+
+Since this is called during vCPU initialization which runs in a preemptible
+process context, could the thread be preempted and migrated to a different
+physical CPU between the csr_set() and csr_read_clear() instructions?
+
+If a migration occurs, it seems the read might happen on the new CPU's
+unmodified CSR_HENVCFG, returning 0 and causing a spurious hardware probe
+failure.
+
+Would it be safer to explicitly disable preemption across this hardware CSR
+sequence to ensure the VCPU reliably exposes pointer masking capabilities?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528-kvm-get_re=
+g_list-v2-v3-0-170969a8599f@sifive.com?part=3D1
