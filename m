@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB6524BBFD;
-	Sat, 30 May 2026 00:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC45257851;
+	Sat, 30 May 2026 00:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780102020; cv=none; b=GRw/VQ5ydEnOw1WiTTy7X76DUNDe5X7J4SonBmv8k+/Da9Z3170Tu7Q/KmWUq9/IlYqb4w1RyZutOJTQuX2zj07+qsGaIo5vQgwj0zLz/DFeYW886LbTbEU/4+I3z4o2g6nqkodKxQWyED3U8xSGvX4iPH5VLPw3lUBmyrchxfg=
+	t=1780102124; cv=none; b=gId5XuxHRhu2X3m3EXKun11SoaSh2XvCLPtOzARSiPHEJG8rPR2Foa+WuDJYX9GwYKkg4CJiyFyc2IyWYvLlk1EnRCXoxubY3net9Mu3eTfhBqJTYHKwGKiseQvWBaTdIMqZXcLs2IMjytLgQdaLJ+g0LWxtqdWOxZWGhcmyQm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780102020; c=relaxed/simple;
-	bh=92R6sZe6Zb6+rhTrMOwzSE7wCQ/3IRA/JWmPZQ48H1Y=;
+	s=arc-20240116; t=1780102124; c=relaxed/simple;
+	bh=U1orjGYc9pA6oaGg92CtRpDHA8eocVLIWXwUhY3Ji7U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GJIZZAt8zOGysII/q941yzwWJ3FzK5FVevPRDSZIT1ypXV8YFC5RvLdF7/fnShCjTuMe72p+R8fle/pl7tFlGCDAkxWStJbxLsegBS8oogE8cS2Zc4Ox2L3nwrBQQR4TQ0WeTFHIVlKmmAqTlwW+w4vXMO84QzLuMLjJrPf9XT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+deIH4M; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=XUKfqpNwUts9lvj+RbPHuWigBMG+5i+nxrBRDuHWTmrH2AcBnMIoqXq12QyQN7q6ecU9XVYtw2DPK/a5y/4nbgsHZvNrFhGgsBsDLdc171kGx1BTBWcHzta7mcd6Or8bnGAnAkWaOa79q/BqJK0nhIB8zr9FseTClFRhHp3lhqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLw64kok; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+deIH4M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074651F00899;
-	Sat, 30 May 2026 00:46:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLw64kok"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC071F00893;
+	Sat, 30 May 2026 00:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780102019;
-	bh=aRAO9r1hsSw9YPO6204yWOBfZjoqOAFn2awzoMo6wMw=;
+	s=k20260515; t=1780102123;
+	bh=yT1Td505mybG5VOOd7MDPwpRizo42iwQ+aVtyW+ASm4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m+deIH4MP5akeZ8L2wo62TSG591G+2dv5ubRNV+H1w+Es4als4TmQHWKS6QR0aqN+
-	 FwpV3OMtoFCCcIIVDGFzEIVLZhPZl7L6hAceyCpBIY/a5J7UieDanl3n8OShC7vxjp
-	 yEuH84TUFb4MHymRNWmzE0NzTDbRU3djVci8q7beOF2rAAzM249i/sax0C2ZM+7Qaj
-	 KmRLUCI3l9P43fT+Wr1CO09VlSkAVRL3vuAhXR4EueoWjZvgUCkU8NA+1t6MYt2uPn
-	 I2ta+kBYqNbMsD00qIoSckbpeiN4QJDDCPK/0I1Ri2OK5MmdtWURpemqBPgpBjS4Nb
-	 DA7ssp/fcMjBA==
-Date: Sat, 30 May 2026 00:46:57 +0000
+	b=PLw64kok9R4XoV9Xb5C9ALDibAq8tNTHYE0/gXTf3cN0mQTL3TXpib+HsLaPPWpjN
+	 tAm/mjWaIYLwcYO+Pu6xcdw2x+4Xvv2uE6Jz3domDjLrH+w5B3S0uaMwwsSJ4NjN/N
+	 cdPSX2ZKUTILzy29XqCl4KWSZyB95huoioI+Mpn+n2fpKHlS2FeLeAHQ+OcVPqY/7W
+	 4C+l4q9168ycolvNxTjmRk9VRPE5u2jEx8Qtp3ZkvSrDiFjKPMQQ8WMPsXCHJGQsWv
+	 0SAXZUOFVKMorykndm7PBHic+a7OLVmSEeRMn2Fu5KHoBiky9Y3lQvao6brK9ryOYi
+	 DltFPZrvGQgMA==
+Date: Sat, 30 May 2026 00:48:42 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, 
@@ -34,11 +34,11 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Binbin Wu <binbin.wu@linux.intel.com>, David Woodhouse <dwmw@amazon.co.uk>, 
 	Kai Huang <kai.huang@intel.com>
-Subject: Re: [PATCH v3 18/40] KVM: x86: Move kvm_caps and kvm_host_values to
- asm/kvm_host.h
-Message-ID: <ahozfeMI2sj59Ltk@google.com>
+Subject: Re: [PATCH v3 19/40] KVM: x86: Swap the include order between x86.h
+ and mmu.h
+Message-ID: <ahozqrW-YUAOEZls@google.com>
 References: <20260529222223.870923-1-seanjc@google.com>
- <20260529222223.870923-19-seanjc@google.com>
+ <20260529222223.870923-20-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,40 +47,75 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260529222223.870923-19-seanjc@google.com>
+In-Reply-To: <20260529222223.870923-20-seanjc@google.com>
 
-On Fri, May 29, 2026 at 03:22:01PM -0700, Sean Christopherson wrote:
-> Relocate the kvm_caps and kvm_host_values struct definitions and their
-> associated global variable declarations to asm/kvm_host.h to allow for a
-> variety of cleanups in x86.h and mmu.h, and to establish a (hopefully)
-> maintainable rule that asm/kvm_host.h's role is to define common
-> structures (and declare any associated globals), and anything needed by
-> arch-neutral KVM.
+On Fri, May 29, 2026 at 03:22:02PM -0700, Sean Christopherson wrote:
+> Invert the include ordering between x86.h and mmu.h, so that x86.h is the
+> "top-level" include for KVM x86.
+
+You're also silently moving mmu_is_nested().
+
+Aside from that, I thought top-level include means that other headers
+will include it, and it will include fewer headers. Seems like this is
+doing the opposite?
+
 > 
-> While it would be lovely to trim kvm_host.h down to the point where it
-> *only* holds things needed by arch-neutral and/or non-KVM code, multiple
-> attempts to do just that have failed miserably.  Trying to "hide" code
-> from arch-neutral KVM is too restrictive (and ultimately pointless), and
-> KVM x86 itself also needs a place to define common structures and their
-> globals, e.g. to avoid inconsistent header include chains and/or misplaced
-> helpers.
+> No functional change intended.
 > 
-> E.g. as pointed out by Kai, it's weird that x86.h, which is a kitchen sink
-> of sorts, includes regs.h, but not mmu.h.  Literally the only reason that
-> x86.h doesn't include mmu.h is that mmu.h references struct kvm_host, which
-> is currently defined in x86.h.  As a result of odd include ordering, the
-> very clearly MMU-specific helper mmu_is_nested() lives in x86.h, not mmu.h
-> 
-> "Fix" the kvm_host dependency so that x86.h can be the "central" include
-> everyone expects it to be, and set KVM x86 on the path to having somewhat
-> sensible "rules" for what goes where:
-> 
->   - asm/kvm_host.h holds "common" structure definitions and associated key
->     global  variables, and things that are referenced by arch-neutral KVM.
->   - <thing>.{c,h} holds relevant declarations and definitions.
->   - x86.{c,h} is the kitchen sink for everything else.
-> 
-> Cc: Kai Huang <kai.huang@intel.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+> ---
+>  arch/x86/kvm/mmu.h | 6 +++++-
+>  arch/x86/kvm/x86.h | 6 +-----
+>  2 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+> index e1bb663ebbd5..28fca48dcf64 100644
+> --- a/arch/x86/kvm/mmu.h
+> +++ b/arch/x86/kvm/mmu.h
+> @@ -4,7 +4,6 @@
+>  
+>  #include <linux/kvm_host.h>
+>  #include "regs.h"
+> -#include "x86.h"
+>  #include "cpuid.h"
+>  
+>  extern bool __read_mostly enable_mmio_caching;
+> @@ -300,6 +299,11 @@ static inline void kvm_update_page_stats(struct kvm *kvm, int level, int count)
+>  	atomic64_add(count, &kvm->stat.pages[level - 1]);
+>  }
+>  
+> +static inline bool mmu_is_nested(struct kvm_vcpu *vcpu)
+> +{
+> +	return vcpu->arch.walk_mmu == &vcpu->arch.nested_mmu;
+> +}
+> +
+>  static inline gpa_t kvm_translate_gpa(struct kvm_vcpu *vcpu,
+>  				      struct kvm_mmu *mmu,
+>  				      gpa_t gpa, u64 access,
+> diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+> index b7d3b54cde15..a0e68eaf1f80 100644
+> --- a/arch/x86/kvm/x86.h
+> +++ b/arch/x86/kvm/x86.h
+> @@ -6,6 +6,7 @@
+>  #include <asm/fpu/xstate.h>
+>  #include <asm/mce.h>
+>  #include <asm/pvclock.h>
+> +#include "mmu.h"
+>  #include "regs.h"
+>  #include "kvm_emulate.h"
+>  #include "cpuid.h"
+> @@ -210,11 +211,6 @@ static inline bool x86_exception_has_error_code(unsigned int vector)
+>  	return (1U << vector) & exception_has_error_code;
+>  }
+>  
+> -static inline bool mmu_is_nested(struct kvm_vcpu *vcpu)
+> -{
+> -	return vcpu->arch.walk_mmu == &vcpu->arch.nested_mmu;
+> -}
+> -
+>  static inline u8 vcpu_virt_addr_bits(struct kvm_vcpu *vcpu)
+>  {
+>  	return kvm_is_cr4_bit_set(vcpu, X86_CR4_LA57) ? 57 : 48;
+> -- 
+> 2.54.0.823.g6e5bcc1fc9-goog
+> 
