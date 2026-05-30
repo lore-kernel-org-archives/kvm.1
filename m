@@ -1,129 +1,157 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC5A31E82F;
-	Sat, 30 May 2026 03:08:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D9F30EF77
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 06:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780110515; cv=none; b=WMt/TaWUpLZz3QkZr3fL14CZXzKhGKNfJovKGLZnqemUNRlIQ1RXM1rzgqZX39RWPwinh5qFCuNl2pwY9mJ5tEK6ick/xZYXn7gkzJ3e22Dt/8BpRt0XbUl6G+pRShc4ZDDIClqXHZnrC8k1ZodzS68n1KAltLmY+6DMgrLSt9w=
+	t=1780121974; cv=none; b=bI8SKJuQOMuhEV07Kx7Drwzi2e9i+q2rHSK5wm5+pf+izfW3LnAxJhw8J3eTkUwAR7huRwU4jMiVaHUvY9WlD/+Kg0UjTEJtuhEnznpTiOr+8RGrbrQxxH61JyR5haJjxbIUmPgGl6l+l7/h/aLb7JN47El2Dedq5RJu47VWARI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780110515; c=relaxed/simple;
-	bh=OeUvWYhtnIcVniNlaEAPf7t6L7no4/+FQ0TEbE0p0E4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eOshQN89YOoa+YGBy+wPEf3v8aIL1mRZA/3xwwE6/JzWjmCABec41k5u53KvD0F1GXUNYWrUJdaLmIZ7tvClSSAd/oNSmgL/mwEQuY8l5kTKaVvI7NRUs6CW4YVRyrUwqqjspDg//nePky852zL7NkR+ECV48fwZC/KyJ3XK998=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=RlZugvf2; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1780121974; c=relaxed/simple;
+	bh=n5g09V5SUqy+D8YFLmVHfLInzGYfYa26rwfutdSskTk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=QeWOmroJxvTxHR+6JzoujDdIEL3wjMWWpBau0mvP7L0M9UGRK5v82fI00KwEQqg55flaoTPImM8/P9EZF+T4n/k78FXzsluBR23O/a8rIINU2mWJFeHL2CBqaCG5x9iP/LgYItMOnHIK7gU3I12SlEWyjV00dj6m8Db85oamvzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEOGFNmY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="RlZugvf2"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A8F6540E015B;
-	Sat, 30 May 2026 03:08:30 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id PuzC0Ft-HHGf; Sat, 30 May 2026 03:08:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1780110500; bh=xvvniitijThI5M/vzeUngJ2o5o2bAFGL6v1h1J/weaM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RlZugvf28JewjKobWij+z7qIEzuJleC7UW1AkwP8rIPfgHvDVyKCrVyw/Qymrp83Z
-	 oMbgDR2FbH11di++QnPPImwLEX2QWfLIIXSP1ypHOZXuL8uzhRYviGTB6dzv+qnCeb
-	 Gpjy/sGySdR+2Du+p++dlzJkZH9f7yDl1Iu2Fre6FT/CcfHszYCqFtrvvnC9mv0qHc
-	 VeeoN4BaHXjs2/UWNE6zir9SYUOs75Xg4Of1T4uw5yhGpFM4a3E1cmNVNmJaKIUq6R
-	 yPy/Ir3fplxnFBnCyQR1Mih6ew0Q+bN5yquZw+MmRi4V8Lj+CiVHxa20Vu+5eKSmYk
-	 giEEXZB1RSLVAV6SsDTp793DrNhxj4wm0EvU2xn+GoJTqXtQ7jCQ/UV7q72yZwrhw6
-	 Hr/fzxFzU2n0bEEtOtOgL6M+OPmeiiF9CNlohP/WUUTGr0G7qVWyY3IBL6L60qHrmi
-	 G28aB2e/4cv56a+4WyUu0hncXyyo8wJb54Pd1OOsv3eUOm/6ojaoKm4aTJ7E2o38BY
-	 +wUXFuMdzDYShBipYVX8+o8FNNEGBfWyPWxpIXqjj6tOadHwHan4leJuqlNl1iFQ/z
-	 P8Ic44MZ/AWAUKuhucIKSKuYuKaxZPvVv03zf0laMmYz+Zwgn1PGjB2t4S2+q2afEM
-	 hP4TtO4p/8Y97d14SV7L5qrs=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00:b8a3:f58e:8829:9ca6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8255040E015A;
-	Sat, 30 May 2026 03:07:41 +0000 (UTC)
-Date: Fri, 29 May 2026 20:07:31 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juergen Gross <jgross@suse.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v4 01/47] x86/tsc: Never re-calibrate TSC frequency if
- its exact timing is known
-Message-ID: <20260530030731.GBahpUcwWXdKCf1lJO@fat_crate.local>
-References: <20260529144435.704127-1-seanjc@google.com>
- <20260529144435.704127-2-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEOGFNmY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7849D1F00893;
+	Sat, 30 May 2026 06:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780121972;
+	bh=+Cf+TDxOIwqCXGb1Tk7Dev9mDMCLt744ST/zGK+Ruhk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nEOGFNmYbrX3TZVmVkdlfYrhLPuPPu4Y1+RqnIrHqXEBPymXMkEAgZmk08mINfImT
+	 Pfw7ezOXZRrNLAiQjFHHGY5gjHZKV18FKvsAgrTC752IF0mbllTb7K4DmKahUlHGsM
+	 iACQi/lWOcH8wGM9T44zHTpr5CgLjBMfymXyeZh3KgbwRvWtd66af8gImQj61Wf+pw
+	 wc+J7DTrFmWEyUB3lwLPvtLZWXpFoTdgVmrU5i6RO6qkMIqyT59rSu09lK05T0yvX+
+	 FjZfsS6wHOSPIh48Wy87w5rX916OTBD9MaYQh1O+3tXaO166whbsb4n7chEK8f0Dvc
+	 G2WdojLf+S8AA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 20/20] KVM: x86: Use gfn_to_pfn_cache for
+ record_steal_time
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260529165114.748639-21-seanjc@google.com>
+References: <20260529165114.748639-21-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 30 May 2026 06:19:32 +0000
+Message-Id: <20260530061932.7849D1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260529144435.704127-2-seanjc@google.com>
 
-On Fri, May 29, 2026 at 07:43:48AM -0700, Sean Christopherson wrote:
-> Don't re-calibrate the TSC frequency if the TSC is known to run at a fixed
-> frequency.  In practice, this is likely one big nop, as re-calibration is
-> used only for SMP=n kernels, and only for hardware that is 20+ years old,
-> i.e. is extremely unlikely to collide with TSC_KNOWN_FREQ.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Calling sleepable operations while holding an rwlock (gpc->lock) i=
+n record_steal_time() causes 'scheduling while atomic' bugs.
+- [High] Calling read_unlock() on an RT rwlock from sched_out() triggers wa=
+ke_up_process() while rq->lock is held, causing an ABBA deadlock.
+--
 
-Why do we care?
+commit cb799f9970f13f02eaea4c9d6c87fa7537434bcf
+Author: Carsten Stollmaier <stollmc@amazon.com>
+KVM: x86: Use gfn_to_pfn_cache for record_steal_time
 
-So what if it recalibrates once on UP?
+This commit reverts to using the gfn_to_pfn_cache for guest steal time and
+preempted status updates to avoid mmap_lock contention with userfaultfd. It
+replaces unsafe_put_user accesses with plain C reads and writes. It also
+uses a read_trylock in the scheduler path to avoid sleeping under PREEMPT_R=
+T.
 
-Look where it is called - all old rust which no one uses anymore.
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -3746,42 +3744,20 @@ static void record_steal_time(struct kvm_vcpu *vc=
+pu)
+[ ... ]
+> +	CLASS(gpc_map_local, st_map)(gpc, sizeof(*st));
+> +	if (IS_ERR(st_map))
+> +		return;
+> =20
+> -	st =3D (struct kvm_steal_time __user *)ghc->hva;
+>  	/*
+>  	 * Doing a TLB flush here, on the guest's behalf, can avoid
+>  	 * expensive IPIs.
+>  	 */
+>  	if (guest_pv_has(vcpu, KVM_FEATURE_PV_TLB_FLUSH)) {
+[ ... ]
+> +		u8 st_preempted =3D xchg(&st->preempted, 0);
+> =20
+>  		vcpu->arch.st.preempted =3D 0;
+> =20
+> @@ -3789,39 +3765,30 @@ static void record_steal_time(struct kvm_vcpu *vc=
+pu)
+>  				       st_preempted & KVM_VCPU_FLUSH_TLB);
+>  		if (st_preempted & KVM_VCPU_FLUSH_TLB)
+>  			kvm_vcpu_flush_tlb_guest(vcpu);
 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kernel/tsc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-> index c5110eb554bc..08cf6625d484 100644
-> --- a/arch/x86/kernel/tsc.c
-> +++ b/arch/x86/kernel/tsc.c
-> @@ -946,7 +946,8 @@ void recalibrate_cpu_khz(void)
+[Severity: High]
+Does this introduce a scheduling while atomic bug on non-PREEMPT_RT kernels?
+
+The CLASS(gpc_map_local, st_map) macro acquires a read_lock on gpc->lock,
+which disables preemption. While this lock is held, if the guest supports
+PV TLB flush, the code calls kvm_vcpu_flush_tlb_guest().
+
+If TDP is disabled (shadow paging), kvm_vcpu_flush_tlb_guest() calls
+kvm_mmu_sync_roots() and eventually mmu_sync_children(). This path can yield
+via cond_resched_rwlock_write(). Yielding while preemption is disabled by
+the gpc read lock will trigger a BUG.
+
+The old code safely dropped the user access guard before executing the
+TLB flush, avoiding this issue.
+
+[ ... ]
+> @@ -5260,20 +5227,32 @@ static void kvm_steal_time_set_preempted(struct k=
+vm_vcpu *vcpu)
+[ ... ]
+> -	st =3D (struct kvm_steal_time __user *)ghc->hva;
+> -	BUILD_BUG_ON(sizeof(st->preempted) !=3D sizeof(preempted));
+> -
+> -	if (!copy_to_user_nofault(&st->preempted, &preempted, sizeof(preempted)=
+))
+> -		vcpu->arch.st.preempted =3D KVM_VCPU_PREEMPTED;
+> +	/*
+> +	 * Use a trylock as this is called from the scheduler path (via
+> +	 * kvm_sched_out), where rwlock_t is not safe on PREEMPT_RT (it
+> +	 * becomes sleepable).  Setting preempted is best-effort anyway;
+> +	 * the old HVA-based code used copy_to_user_nofault() which could
+> +	 * also silently fail.
+> +	 *
+> +	 * Since we only trylock and bail on failure, there is no risk of
+> +	 * deadlock with an interrupt handler, so no need to disable
+> +	 * interrupts.
+> +	 */
+> +	CLASS(gpc_try_map_local, st_map)(gpc, sizeof(st->preempted));
+> +	if (IS_ERR(st_map))
 >  		return;
->  
->  	cpu_khz = x86_platform.calibrate_cpu();
-> -	tsc_khz = x86_platform.calibrate_tsc();
-> +	if (!boot_cpu_has(X86_FEATURE_TSC_KNOWN_FREQ))
+> =20
+> -	mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
+> +	st =3D *st_map;
+> +	WRITE_ONCE(st->preempted, KVM_VCPU_PREEMPTED);
+> +	vcpu->arch.st.preempted =3D KVM_VCPU_PREEMPTED;
+> +}
 
-cpu_feature_enabled() everywhere please.
+[Severity: High]
+Can this cause an ABBA deadlock in the scheduler on PREEMPT_RT?
 
--- 
-Regards/Gruss,
-    Boris.
+kvm_steal_time_set_preempted() is called during a vCPU context switch
+via kvm_sched_out(), which is a preempt notifier hook. This runs with
+the local CPUs runqueue lock (rq->lock) held.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+While the code correctly uses a trylock to avoid sleeping when acquiring
+the lock, the CLASS macro destructor will implicitly call read_unlock()
+at the end of the function. On PREEMPT_RT kernels, unlocking an rt_rwlock
+can wake up a waiting writer, such as a concurrent kvm_gpc_refresh().
+
+If a writer is woken, rt_mutex_wake_up_q() calls wake_up_process(), which
+attempts to acquire the target tasks rq->lock via try_to_wake_up().
+Attempting to acquire a runqueue lock while the local CPUs rq->lock is
+already held violates scheduler lock ordering and leads to a deadlock.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529165114.7486=
+39-1-seanjc@google.com?part=3D20
