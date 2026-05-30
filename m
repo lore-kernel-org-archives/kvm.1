@@ -1,99 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6CF31E82F
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 08:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6562F32B13E
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 08:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780128479; cv=none; b=cOBg/31SApkJFhlDxQ58DLqYfTwVrDXowGbK4XW9UOHwX0fBoPIyGNSxGoBR5BXz+UbWkAxZAEv9KndoaAV0fKJX9Y48UC/ADcz9uIhvxZThwYgI3lKxjFn4W9ZIwBpCOvj76wwmSlsKUp2UqPJZ/uQB4N2AiLNVDXSuQ3B6CP4=
+	t=1780129415; cv=none; b=nveoN+eMUIqivjN8WQYUvHf71X27+NFZJQpxm4sO7wlk4nlVkyTnq3xaMQTg9D5zrQGTjKDQ/sKiBkcDzYxqM4Q/1Djwjd6/3jSTKHHxyjvnpkZAN4b+W4SGwAVja9My/HO30rqUq+MNsOEskue+E8pIvMMvAGV9IjMHDZbksIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780128479; c=relaxed/simple;
-	bh=Y63WGygLnDMDJDi04zLcJhv7H3VFBswDV/0HPB6kXww=;
+	s=arc-20240116; t=1780129415; c=relaxed/simple;
+	bh=zvCLNRQgPWN4L1yo0WqYU8JuB4A2NvOVY4429UDBb5w=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jVzA+ivgV/iThbcDesXwtSsJ0gx/K5AiY3AaSGy8eSjcLALx8LL6qpl5rF38BXyosXinJW/vhZt1KN9gTqfaQgmeLbWyqbKVgDtPGp/7kZQGOIo9ntqLYxpDoUiP6AP4C1y8g+tT4NwPBv2oPFj+naFEDlICUxpi5bFGO/AVD4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kivZfBKT; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=spuESwkoFzrvUcrDUTi8eSqveNIBI5LhcT9Dk5RfiNXXFUnjL3xlRvXkuo1/40aKz2O1DzHFnOauJVk5QhaJGxWECT4EcXsyBNCKhvvD6sxr97OIuoEW8uHMRVclrL3e7+CiHEYcL3qLR2vCFn2SSwspn1Rp2VHRh13XbQL0zQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJr2vDdz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kivZfBKT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EF81F00893;
-	Sat, 30 May 2026 08:07:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJr2vDdz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113461F00893;
+	Sat, 30 May 2026 08:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780128477;
-	bh=1m8mExdA4wu3S1hrcYF7NQJ0aK6azIG11hUfwHVWIs0=;
+	s=k20260515; t=1780129414;
+	bh=N2j4QiTA3xmJfu8xV4KNZIcgKU1kDkDwhYzJCxIlm7s=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kivZfBKTgLH3UyUvWRllN+g0+bJfijD13WPb4zV8Moce3Ca4V+7lQWTXdf8VIlAB3
-	 m/pD4t9Ympu3xB9uBnTatm99xTt6DpOoqEus2p/HgNdE+I9H8cqSGmt8WaGOsGikV3
-	 jaamwzvPNe79XMxpDrc4fvkDxjLiNTSiVD7YJbuk0pVbGbuhfRDX/W3YE6Pp/jpRHR
-	 q1CdELwmxl/y1SKo5bG5uPczVSOTT0N5mLDaAUnHIklSI1EAYRaG/LIJ1ZzR0hDOhl
-	 vfU3nwDlKtjdIHv5MJ1PQ3or7WpE04Tb5gh8S9ssLJm1yxYH7z1bNAGUDajNuXybfv
-	 Y/ZXjphY+7wlw==
+	b=HJr2vDdzkO64kLmfb96umK49rYoAvxX/oC+bvu/ASbX/2Bz1hpt5weZx7/alEmbXE
+	 lYVhksYerV78eEZeS2ACy+bKXfgTojHtQZBW+ExoE2InvDHIU0omDm0zSTM08QWW+B
+	 JZE3USJG9oQGuicXeAj9KUaYaXJXu9BloCdZ/PMmOC11k7Go1DYHREs13US4ordw/R
+	 YKoWmF0BuJQ434cjP8LympvWN94eLBxle3nrJR2ITRS2KSAycQJz/TFfU81YHldzKo
+	 6e9tvCvT+usUEPa4fMK2fDXFNjy+1mIAesIEh8Kd/RfnqsuSKUMiXm/YsBLLGWBLuh
+	 lwFsTiu6ffQ4g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 20/27] KVM: s390: arm64: Introduce host definitions
+Subject: Re: [PATCH v3 22/27] KVM: s390: Add basic arm64 kvm module
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Steffen Eiden" <seiden@linux.ibm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529155050.2902245-21-seiden@linux.ibm.com>
-References: <20260529155050.2902245-21-seiden@linux.ibm.com>
+In-Reply-To: <20260529155050.2902245-23-seiden@linux.ibm.com>
+References: <20260529155050.2902245-23-seiden@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 30 May 2026 08:07:57 +0000
-Message-Id: <20260530080757.B8EF81F00893@smtp.kernel.org>
+Date: Sat, 30 May 2026 08:23:33 +0000
+Message-Id: <20260530082334.113461F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Macro `__ctxt_sys_reg` returns NULL, breaking KVM_GET_ONE_REG/KVM_=
-SET_ONE_REG for ELR_EL1 and SPSR_EL1
+- [Critical] Calling `kvm_init_with_dev()` from a secondary/independent KVM=
+ architecture backend (`kvm-s390-arm64`) causes catastrophic double-initial=
+ization of the KVM core subsystem, leading to global state corruption and k=
+ernel panics.
+- [High] Integer underflow in `kvm_max_guest_address()` causes KVM to repor=
+t an invalid, massively incorrect maximum IPA size on host systems with lim=
+ited memory.
 --
 
-commit e22b4e249b651c1cc6aa77134aa91b1e8f9d4063
+commit cceba4a7a6d94b89a1513f32f00ede5f3c39fa4c
 Author: Steffen Eiden <seiden@linux.ibm.com>
-KVM: s390: arm64: Introduce host definitions
 
-This commit adds basic definitions the arm on s390 KVM host requires,
-including struct kvm*arch definitions, function prototypes, and various
-macros required to run arm64 guests.
+KVM: s390: Add basic arm64 kvm module
 
-> diff --git a/arch/s390/include/asm/kvm_host_arm64.h b/arch/s390/include/a=
-sm/kvm_host_arm64.h
+Add basic code for the new arm64 on s390 KVM implementation.
+Add kernel module boilerplate code and trivial functions.
+
+> diff --git a/arch/s390/kvm/arm64/arm.c b/arch/s390/kvm/arm64/arm.c
 > new file mode 100644
+> index 0000000000000..591e2e874891a
 > --- /dev/null
-> +++ b/arch/s390/include/asm/kvm_host_arm64.h
+> +++ b/arch/s390/kvm/arm64/arm.c
 [ ... ]
-> +/* Minimal (=3Dno) vgic definitions */
-> +#define KVM_IRQCHIP_NUM_PINS 1
-> +#define irqchip_in_kernel(_v) false;
+> +static u64 kvm_max_guest_address(void)
+> +{
+> +	u64 max_addr;
 > +
-> +#define __ctxt_sys_reg(ctx, reg) NULL
+> +	if (sclp.hamax =3D=3D U64_MAX)
+> +		max_addr =3D TASK_SIZE_MAX;
+> +	else
+> +		max_addr =3D min_t(u64, TASK_SIZE_MAX, sclp.hamax);
+> +	return ALIGN_DOWN(max_addr + 1, 1 << 30) - 1;
 
 [Severity: High]
-Does defining this macro to return NULL break KVM_GET_ONE_REG and
-KVM_SET_ONE_REG for ELR_EL1 and SPSR_EL1?
+If the host system has less than 1GB of addressable memory (i.e.,
+sclp.hamax < 1GB - 1), will ALIGN_DOWN() evaluate to 0 and cause the
+subsequent subtraction of 1 to underflow to U64_MAX?
 
-Shared code in virt/kvm/arm64/guest.c uses this macro to resolve the storage
-address of core registers ELR_EL1 and SPSR_EL1. Returning NULL causes
-core_reg_addr() to return NULL, resulting in the ioctls failing with -EINVA=
-L.
+> +}
+[ ... ]
+> +u32 get_kvm_ipa_limit(void)
+> +{
+> +	return fls64(kvm_max_guest_address() + 1) - 1;
 
-However, copy_core_reg_indices() includes these registers in the list retur=
-ned
-by KVM_GET_REG_LIST because core_reg_size_from_offset() returns a valid size
-for them.
+[Severity: High]
+Following the underflow in kvm_max_guest_address(), would this result in
+fls64(U64_MAX + 1) - 1?
 
-Advertising support for registers in KVM_GET_REG_LIST but failing to get or
-set them is an API contract violation that can cause userspace VMMs like
-QEMU to abort during vCPU initialization.
+Since U64_MAX + 1 is 0 and fls64(0) returns 0, this calculates to -1, which
+would be cast to 0xFFFFFFFF. Does this inadvertently return an invalid 32-b=
+it
+limit of 0xFFFFFFFF to userspace capability checks?
 
-> +struct kvm_cpu_context {
-> +	/*
-> +	 * These are just for 32 bit, which we don't have, making them RES0.
-> +	 * They are exposed to user space.
-> +	 */
-> +	u64	spsr_abt;
+> +}
+[ ... ]
+> +static int __init kvm_s390_arm64_init(void)
+> +{
+> +	if (!sclp.has_aef)
+> +		return -ENXIO;
+> +
+> +	return kvm_init_with_dev(sizeof(struct kvm_vcpu), 0, THIS_MODULE,
+> +				 KVM_DEV_NAME, MISC_DYNAMIC_MINOR);
+
+[Severity: Critical]
+Since kvm_init_with_dev() is a core KVM function that manipulates global
+state, does calling it from a secondary KVM architecture backend cause a
+double-initialization if the primary s390 KVM module is already active?
+
+Loading this module while kvm.ko is active appears to invoke
+INIT_LIST_HEAD() on a miscdevice already in the list, potentially corrupting
+the doubly linked list and causing a panic on traversal.
+
+Could it also allocate a duplicate kvm_vcpu_cache, overwriting the global
+pointer and leaking the original cache?
+
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
-245-1-seiden@linux.ibm.com?part=3D20
+245-1-seiden@linux.ibm.com?part=3D22
