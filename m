@@ -1,149 +1,104 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DDC2D12EE
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 00:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9622F6591
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 00:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780102405; cv=none; b=rKGtKt8XxRoWF8MKcfqnMvK1MZRb/kn+TmlgDeGXn3tZdfLZ5kNiYcQpaU5BRskVAvy6XbO8gO+wYWZIEG+4Mm41n7oOguQxjEHBKXnxE4P4lJcebEuBt80oc5zlVKO55gqaFzCPfc7M5n5j43JdKa4PkhL8fkA8x5LYIt7qBD4=
+	t=1780102455; cv=none; b=onOTqcyjfaogtV3RTKF6QvciJhKDZeyjk9pNFYLyph1Igxu6yTkhqWsOZxOH07/MCd2ng+4v7vdExf6Cm9XP2Sl1DMHjqzK3+S0j3b+kaTf9/YrthdcHd4365D1T5Y5Y9U8GivwLLZghHZ5xO/n77Z+zoL10GfArhj81LzjqCh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780102405; c=relaxed/simple;
-	bh=qpde8EHjaLv/rrT6XwfIhis8MXFJjrUJIfhEEQqpxC8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=im1V+3K1RoA+dRhv+EvP+9rkCVHRYFse4GgOCwnMmcavN9WgCDMe/Yboj0eWPtXPdfaQWSYMs3SAEIiiuVw8BhmWZrpZdPBt2YZrhZU7YuOr9TMhh/G8uYjsaDtKPvfkZHllB56TKsL6q791kJ9pEvP6f/IriFT/ChM3f5yvFJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vlg8FAcS; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1780102455; c=relaxed/simple;
+	bh=Uyf2v9i5Bgh3K6vN/tQBOUzmr7rOxXaZN1R07Nkp9KE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PJKc/lWgh4nvolZYEFc62ouVBNc2yfxfvhTCiKvnbmdzxndm/++TzITIowO3FASxxNgeKBi14nbcyKqUFKeElgENr4SWUhtrWWlrc4rlIuNFJSAexQ2eGMO2soAPz4vI4x6T4sqLDVSY9C2DTOKG+4CR/9gaitG4zMnYCP6Aqrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bbfTSDY7; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vlg8FAcS"
-Message-ID: <1dd5c998-ad2a-47dd-9875-c8fd5db6d374@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780102400;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+IR+x4vwXkJmNdcGjyBRl1DqKrigG6hgOWj1BEdMSvw=;
-	b=vlg8FAcScy8s5VPPdDW7TS5sfsORpUMlmY2PIWrTRFSMvqUaWqNk6AVSyDpy7ZN3OLn89c
-	WVhpD8Nqsyy+hXdgNd1bSc2y+t9J2ET7r7eozK+NBsn6s+mMFDZ1YHTM4lN9gyW+JJdRTK
-	HUCUBFsAWYaLNyVIhhot30n8kEOdsuA=
-Date: Fri, 29 May 2026 17:53:15 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bbfTSDY7"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf160f7191so10066335ad.3
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:54:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780102452; x=1780707252; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EimLeomyuHa/Isl8CJDHQMGSGuAmKMQVOAnH/aluLug=;
+        b=bbfTSDY77ZsqjV5p6yeqTVOcMsKMM4zAkPnYbXE4efH35y+48iZ1p61TQ9IadUFafa
+         89+PmQeN4DglVo1cEATRG2i78gzxRDs05czqJJyJY3LO9mCpep1VCdzZoazKenK+GV+F
+         bfk7UV6Ywy5h2R8DsLrjePNuUL/Ofw/ZWOI9VEPk90Fnn+T6t9SMo11GG8obAPq5k89Q
+         4iUNF2wecF98a1iMHJOJHaLALwev81XMSzVWigMsoi0v9J9mL8sgu/+6AgtOyDMBZHAq
+         HgzElFfAP5G1j+Hj26YpPDOxT16D+hc/85pBKPHN/nH1evflZgaI0G0tQlU03GDIfnjL
+         2hvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780102452; x=1780707252;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EimLeomyuHa/Isl8CJDHQMGSGuAmKMQVOAnH/aluLug=;
+        b=stYFAfIcNavKfxy5nvdjYjwomraD31cubhjnhkR9yrFguj1iqgsRKCqokuIl/tMpyA
+         +dsi28o5bXtQPv/ZgTzuagLhEoW2twtZdmjohUleVK6bnVbL23Vt9UuG7MFv/fWn2nXO
+         ELkbYGIV8n4LA8kVDODz1+vdsPZ01eEFz9qtOCARfCffwtte4eBYz3ifpoMeapt4obPJ
+         7nOUDCl9T6VSMYKT2ZCNrmcHnJzP6Ma2W0aRx3i2N+m4BZXBwtflbLLxEJRLHBxP82ua
+         o2GDMDBAdSQo+qYmpF2mDzqDreguz6DTLFLrFLkSPhlc8D4gFK6PzU9REj4/TJh0lTcL
+         lumQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/oy7C7WoEWNI644MSoZPBAqX39URghVCQB5jTsUk4RbVV8X21laQek1bwzOcs13gW2ibY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNiy5alWasll+WGvDlSFweBMr9S3Nt/P+ZMTTjtBct4s0IpfjU
+	pcjw75DK5EA+S0KdZV56GmHXARfNpBlpVmT2iucOm+B00xWnBbGHsahbXxGvExNh4aoS8iB8QZo
+	cW8BZNQ==
+X-Received: from ploo20.prod.google.com ([2002:a17:902:e014:b0:2ba:41dd:4a8e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f651:b0:2b2:5314:e96a
+ with SMTP id d9443c01a7336-2bf3688ab6dmr23721265ad.34.1780102452411; Fri, 29
+ May 2026 17:54:12 -0700 (PDT)
+Date: Fri, 29 May 2026 17:54:11 -0700
+In-Reply-To: <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH 2/2] crypto: ccp: Fix possible deadlock in SEV init
- failure path
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20260528-sev_snp_fixes-v1-2-d67a08151779@meta.com>
- <20260529005119.8CFF11F000E9@smtp.kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Atish Patra <atish.patra@linux.dev>
-In-Reply-To: <20260529005119.8CFF11F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+References: <20260529165114.748639-1-seanjc@google.com> <20260529165114.748639-2-seanjc@google.com>
+ <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
+ <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
+ <ahnxfACTGeVFbJMk@google.com> <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
+ <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
+Message-ID: <aho1M7fvK1Qzmiai@google.com>
+Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in __rwbase_read_unlock()
+From: Sean Christopherson <seanjc@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
+	Paul Durrant <paul@xen.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, David Woodhouse <dwmw@amazon.co.uk>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, 
+	Carsten Stollmaier <stollmc@amazon.com>
+Content-Type: text/plain; charset="us-ascii"
 
+On Fri, May 29, 2026, Peter Zijlstra wrote:
+> On Fri, May 29, 2026 at 10:13:35PM +0200, Peter Zijlstra wrote:
+> 
+> > It is somewhat possible to do an RT aware read-write spinlock thing, but
+> > it is definitely non-trivial and this would be the only user.
+> 
+> Furthermore, it is fundamentally one of the worst possible lock types.
+> 
+> It really isn't something you *want* to have -- arguably even for !RT.
+> 
+> They scale like ass; per them being a spinlock type, the critical
+> sections must be short, but this means there is nothing to amortize the
+> cost of bouncing the shared lock around -- which is the 'saving' grace
+> of the rwsem.
+> 
+> For short sections the cost of the shared access will dominate. I'm sure
+> Paul has a bunch of graphs to illustrate this point :-)
 
-On 5/28/26 5:51 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
->
-> Pre-existing issues:
-> - [Critical] Host kernel panics due to RMP violation when reading `sev_init_ex_buffer` in `sev_write_init_ex_file()`.
-> - [High] Memory allocated for `sev_init_ex_buffer` is leaked and leaves the device in a broken state if initialization fails in `__sev_platform_init_handle_init_ex_path()`.
-> - [High] Uninitialized kernel memory is allocated and provided to the SEV firmware and disk if the NV initialization file does not exist.
-> --
->
-> commit 405e31473bcf0fe9d84a37db761b7cf915973108
-> Author: Atish Patra <atishp@meta.com>
->
-> crypto: ccp: Fix possible deadlock in SEV init failure path
->
-> This commit modifies __sev_platform_init_handle_init_ex_path() to pass
-> locked=true to rmp_mark_pages_firmware(). This prevents a potential
-> deadlock on the sev_cmd_mutex when an rmpupdate fails and attempts to
-> reclaim pages during cleanup.
->
->> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
->> index d1e9e0ac63b60..3d4793e8e34b2 100644
->> --- a/drivers/crypto/ccp/sev-dev.c
->> +++ b/drivers/crypto/ccp/sev-dev.c
->> @@ -1557,7 +1557,7 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
->>   		unsigned long npages;
->>   
->>   		npages = 1UL << get_order(NV_LENGTH);
-> [Severity: High]
-> This isn't a bug introduced by this patch, but is there a risk of leaking
-> uninitialized kernel memory to the SEV firmware and disk?
->
-> Earlier in this function, the NV buffer is allocated without zeroing the
-> memory:
->
-> 	page = alloc_pages(GFP_KERNEL, get_order(NV_LENGTH));
-> 	...
-> 	sev_init_ex_buffer = page_address(page);
-> 	rc = sev_read_init_ex_file();
->
-> If the NV initialization file does not exist, sev_read_init_ex_file()
-> handles the -ENOENT error and returns 0 without reading any data, leaving
-> the 32KB buffer filled with uninitialized kernel memory. This buffer is
-> then provided to the SEV firmware.
->
-> Later, when state changes occur, sev_write_init_ex_file() writes this memory
-> back to the host filesystem.
->
-> Should alloc_pages() be called with __GFP_ZERO to prevent this?
+Hrm.  We might be able to do an SRCU-based implementation.  Full RCU would be
+too unpredictable on the update side.
 
-Valid findings. The sev_init_ex_buffer should be set to NULL and pages 
-should be freed in case of failure in sev_read_init_ex_file.
+The big hiccup is when KVM needs to reclaim memory in response to mmu_notifier
+events from the OOM killer, which don't allow sleeping.  I'll stare at this a
+bit next week.  I'm not exactly thrilled about the idea of ripping apart this
+code, but there's a known performance bottleneck with mmu_notifier events,
+maybe we can kill two birds with one stone.
 
-
->> -		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, false)) {
->> +		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, true)) {
->>   			dev_err(sev->dev, "SEV: INIT_EX NV memory page state change failed.\n");
->>   			return -ENOMEM;
-> [Severity: High]
-> This is a pre-existing issue, but is it possible this error path leaves the
-> device in a broken state?
->
-> If the page state transition fails, the function returns an error without
-> freeing the buffer or resetting sev_init_ex_buffer to NULL. Because it is a
-> static global, subsequent initialization attempts will return 0 immediately:
->
-> 	if (sev_init_ex_buffer)
-> 		return 0;
->
-> This bypasses the file reading and the required firmware page state
-> transition, passing an improperly initialized, host-owned buffer to the
-> firmware during the INIT_EX command.
->
-> Could this permanently break SEV initialization until the system reboots?
-
-I will add the fix as well for this along with the above one.
-
-
-> [Severity: Critical]
-> This is also a pre-existing issue, but will reading from sev_init_ex_buffer
-> trigger a host kernel panic?
->
-> Once the sev_init_ex_buffer pages are transitioned to a firmware-owned state
-> (RMP private) by rmp_mark_pages_firmware(), they are no longer accessible to
-> the host.
->
-> Later, sev_write_init_ex_file() is called to save the NV memory back to disk
-> and invokes kernel_write() using sev_init_ex_buffer as the buffer.
->
-> Since there is no code to reclaim the pages back to a host-accessible state
-> before this VFS write operation, won't the host CPU's attempt to read from
-> sev_init_ex_buffer trigger a Page Fault with the RMP bit set?
-
-As per my understanding that is not correct. A host cpu write to 
-firmware-owner state would result in RMP #PF but read would not raise a 
-fault. I confirmed that with loading ccp with init_ex_path and kvm_amd 
-as well.
-
->>   		}
+Thanks for the input!
