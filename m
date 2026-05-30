@@ -1,222 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3095C13A244
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 09:22:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B070E3976AD
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 09:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780132971; cv=none; b=h044nvlYcxBa09uLhxT8ww5yTNq4SVyeS9YCKsB3nUvRPa620Ug8WSD6Z/0PXCLrZDW0QxIQSpSdw4kHePK+v1TyukojVPVGdpJ78Xfbq9PENniL/Rn7MfjPTD0XUZlm2hH2/ZkFK/ORJV1LMDMa2tbSyCxAPObE8f7+yJUNnls=
+	t=1780133310; cv=none; b=KgBvV/Ru5G2ZBtpSlI4McH7yfjWuEExb5EdkTvUTY2D5mx1rQ/9PSMl4OXYZ5/KBSi6ynhgLGRL9eaAtDAiY1s1944tr7UCgu/WEawcj0wOh/iobESsNiJe/8N1yaygk+EZPJ3w76ek+ekFJfmXGRXrOqGUskyqxZNeCf3dt62k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780132971; c=relaxed/simple;
-	bh=zY0qnIRu1UmYghQw5aPvV0afPVfkKOXXFC2Wt/u4Yo4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=SElxXqqngUM99UM5ZIgXBHiuh/t7fzl7i0jO4ptdKGwUvLgT+RBVNEbCOBYER8/Z5t03GTvtct9opEE1bKTqU80fAJQX47TrAFuhy1JxgmXbRMZ76rvQTgYH29fWdJYII9GIRWHF2KXPBvCe0aFQKLTHa7wnlv9eD/1SJddFc/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MwX3gIIF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780133310; c=relaxed/simple;
+	bh=Axu2q9OiQlW7NrUR5/tN+MxVX+YXj5nOsIeGUL7II+w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tmVBL0F10IKiPY+ecvGQQ9IF9qeiFU2fR2dpcC2OWD3j9+77689EtUToarn9LymQILOhF4YnpjY4gc6X+fjcqXg2bbFJzumj5wcEbGHmhrS73nRSYM3+bUCqeH306IrjylwGt5fzhUuySM1aoiiJqO/kx6l6w5Zle7Yue7TDFxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aEiIiZ8g; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MwX3gIIF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C3E1F00893;
-	Sat, 30 May 2026 09:22:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780132969;
-	bh=7CDmyrcxlv7vwY5ZNdVFG6CxQXX9LbL/nh+ljOWEYIE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MwX3gIIFF9rjlt8EC56hz7hB0Vw3U6knLnCArGZQ6t40CEw6FteaPwGnXQK2WKP5P
-	 5BVNB7L7wb68BTxgkX7/HpuWii+ETfNJFRAHT+FdjPQYj2O8xwyHj09R9SPSql9eH0
-	 svo3kQERquj1IPDGmFAqWDQxhP7oK2jTWG4LBtIDf34rcchrUsX431NJkzj05MFLQa
-	 EngBtOUH7JeUxprlRyzxvP/MJm3sMnuqoEbTzin1o9fxP+woscTo9rpKEAWi+YDFcQ
-	 0RBqlzxG8SRhYqPkXyrJ25mZA0Cc3BXTKCkxtHso5dhUzTTollsocUSgQlWUrj9Vv6
-	 YfXqxmD7GFFpQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 26/27] KVM: s390: arm64: Implement basic page fault
- handler
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529155050.2902245-27-seiden@linux.ibm.com>
-References: <20260529155050.2902245-27-seiden@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 30 May 2026 09:22:48 +0000
-Message-Id: <20260530092249.A0C3E1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aEiIiZ8g"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4891c0620bcso94716885e9.1
+        for <kvm@vger.kernel.org>; Sat, 30 May 2026 02:28:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780133307; x=1780738107; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AVGWNyN/0YK3gFgYNwL3zKk91DjUbWVPzRQNZkauQoA=;
+        b=aEiIiZ8g0hy0yB/O+bDn7Qw4lOfN43CRMMIOFofGOKWKSLeutjNpsZecxl1PpF6dGq
+         XUr13spfzUEBtwv04kv+5AwqvczVql4/rFzglnoFDWJiGLSUG9LMAKcVLLAPgsa/kU9t
+         zluLvPFhdhGFedsiuZiYQhWDrDHb6RPbzb+RIt1hN1uaQ4DaUE4c2eOFaiBq+m6UXu62
+         vqjV0taBTZDPRazx4yOVz0wossMHj2fIJMBAmv/mXMjZ1WgM365BRb+3Zxn9aYNcpHXd
+         0Zcst7R72wcLfComJvvpx853k9BfRth+OczB8+jks6+1OILp1F2ltb7V2sIbLEMprH8k
+         Me6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780133307; x=1780738107;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AVGWNyN/0YK3gFgYNwL3zKk91DjUbWVPzRQNZkauQoA=;
+        b=GSKcdzWBkCLeYxazSHq6I4DAcfNRv5SJC9LcSRMnvtfb6Obnd7kLq0D5XVdrThUU4o
+         ZlWsTcNLtSy5fWP6I8/BA5vfbkEESAKg78JdDYbPhOYBLretfFwDP/QamKMjDIH1c/Ws
+         Wrkz5k9q+6bShKNIozLa0nP60z/PNYqiEikUPx0YQhVbIX5nSjyYno5Z2KJ8cUiQKhmH
+         gwaftQR7ZxJ/Fg29htqRKswPGGoc6ev+z/Wmpwv1u41skUWOl8xFKqJTwG/D6dQVYqOV
+         K1No/m6z9ZaGR9VVYMrdyYyBVfLlK7BM0HGFARwARkHemyg+qgRnKIYuH9fhcqiL+vXC
+         RUFg==
+X-Forwarded-Encrypted: i=1; AFNElJ/f5S8lGfixt15GCiPmXK8UD4DKcurJc+IdLV2c52UYpJp3on2Mv4RjkRxnpE6EHAlPpFM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlRcCuDzwfSrn9FbXPpGGiAZg72sers/pUyf3TCInWkhqTqy7i
+	N0q2EOU1Nl25/8LZ16X0PqJHAcyS+UnPjHWDNLyZF8xLry+H/+xLNSy3
+X-Gm-Gg: Acq92OEH7s9nqNO7zeyMhjslqGritJic5ZY12xODZjNxOCJorWt+fJ52UWBfa1QZ3pL
+	XG12Eu6Kp2Y1VnMlXYR+BmKJwQT7OdJyo+6Cw5mfQkAZ7wUGZ8hCNjxugbfMOEpVtiuIbgkPpKX
+	rLXTlIjScY4tjpIGFf7rWSSVbvQVn5F+8unGTHczWET4xO2E/djT01Y6kv3d5VLnMR/GItQc/u9
+	VhkCY1kV7QaaXnZrx380S950G4HyQR1OkipWbaEE/LdG4SUczkiTLtb4TjHdrE1y6psMIrF4hHp
+	eKFWqWYzaEOgp/HF657Y8zhhGK0ur/qgqt6IyNN1oDJar8gKWoPq0Q6n9KMCKIRoFMtzWDxdY2D
+	qY6ZTNlGYKJ5vlojsyYPzmIFrz/DdLGvvRizbCYsvPzIZ3HZmfv5uCPGDEaMXTJvvlqAmw+Ka+v
+	yNxYq74CLwNMPMd3kV4WnJQcdrYRfvX9hQbrEUF7oXlqPwS+oXD6l3XiNs0v9rNdcdpmBqHmg=
+X-Received: by 2002:a05:600c:3147:b0:48f:e230:80a3 with SMTP id 5b1f17b1804b1-490a297304bmr47960185e9.33.1780133306950;
+        Sat, 30 May 2026 02:28:26 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c09acd3sm30659185e9.4.2026.05.30.02.28.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 May 2026 02:28:26 -0700 (PDT)
+Date: Sat, 30 May 2026 10:28:24 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
+ kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+ linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org, Mark Bloch
+ <mbloch@nvidia.com>, netdev@vger.kernel.org, Saeed Mahameed
+ <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>, Tariq Toukan
+ <tariqt@nvidia.com>, patches@lists.linux.dev
+Subject: Re: [PATCH v2 06/11] selftests: Fix arm64 IO barriers to match
+ kernel
+Message-ID: <20260530102824.65ceb098@pumpkin>
+In-Reply-To: <20260529224442.11d7320d@pumpkin>
+References: <0-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
+	<6-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
+	<ahiFxtmspbETiqWw@google.com>
+	<20260529134947.GA128816@nvidia.com>
+	<20260529175516.06d5788f@pumpkin>
+	<20260529192933.GD3195266@nvidia.com>
+	<20260529224442.11d7320d@pumpkin>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+On Fri, 29 May 2026 22:44:42 +0100
+David Laight <david.laight.linux@gmail.com> wrote:
 
-New issues:
-- [High] Guest-reachable or hardware-driven edge cases trigger WARN_ON/BUG_=
-ON macros, creating a host Denial of Service vector.
-- [Low] Unused parameters `slot` and `hva` in `user_mem_abort()`.
+> On Fri, 29 May 2026 16:29:34 -0300
+> Jason Gunthorpe <jgg@nvidia.com> wrote:
+> 
+> > On Fri, May 29, 2026 at 05:55:16PM +0100, David Laight wrote:  
+...
+> > I can't say, this is copied from the kernel and Will made it:
+> > 
+> >     arm64: io: Ensure calls to delay routines are ordered against prior readX()
+> >     
+> >     A relatively standard idiom for ensuring that a pair of MMIO writes to a
+> >     device arrive at that device with a specified minimum delay between them
+> >     is as follows:
+> >     
+> >             writel_relaxed(42, dev_base + CTL1);
+> >             readl(dev_base + CTL1);
+> >             udelay(10);
+> >             writel_relaxed(42, dev_base + CTL2);
+> >     
+> >     the intention being that the read-back from the device will push the
+> >     prior write to CTL1, and the udelay will hold up the write to CTL1 until
+> >     at least 10us have elapsed.
+> >     
+> >     Unfortunately, on arm64 where the underlying delay loop is implemented
+> >     as a read of the architected counter, the CPU does not guarantee
+> >     ordering from the readl() to the delay loop and therefore the delay loop
+> >     could in theory be speculated and not provide the desired interval
+> >     between the two writes.
+> >     
+> >     Fix this in a similar manner to PowerPC by introducing a dummy control
+> >     dependency on the output of readX() which, combined with the ISB in the
+> >     read of the architected counter, guarantees that a subsequent delay loop
+> >     can not be executed until the readX() has returned its result.  
+> 
+> Hmmm...
+> 
+> Ok so there is some subtlety with the read of the counter that might
+> make it all work.
+> 
+> It is better to make the delay loop have a data dependency on the result
+> of the readl().
+> Something like:
+> 	u32 z = 0;
+> 	OPTIMIZER_HIDE_VAR(z);
+> 	writel_relaxed(42, dev_base + CTL1);
+> 	udelay(10 + (z & readl(dev_base + CTL1)));
+> 	writel_relaxed(42, dev_base + CTL2);
+> That avoids the potentially mispredicted branch and only adds instructions
+> when a delay follows.
+> That sequence is safe for all cpu and doesn't cost much for cpu (like x86)
+> where it (probably) isn't needed (maybe unless you patch the scale for udelay
+> into the code so there are no memory reads, just code).
+> 
+> Probably best refactored as udelay_depends(10, readl(dev_base + CTL1)).
+> Or maybe udelay_after().
 
-Pre-existing issues:
-- [Critical] Handling traps in-kernel causes an infinite loop because the g=
-uest PC is not advanced before re-entering the guest.
-- [High] The VCPU run loop unconditionally enters the guest, ignoring the r=
-eturn value of `check_vcpu_requests()`.
---
+Sleeping on it, all the code can be put in udelay().
+You just need a read memory barrier, followed by a memory read (of anywhere
+'hot') and then use a data dependency (as above) from the second read
+into the delay loop.
 
-commit 6963b72c83b66b00932e10f26e0df9e655610d27
-Author: Steffen Eiden <seiden@linux.ibm.com>
+-- David
 
-KVM: s390: arm64: Implement basic page fault handler
-
-Add host functionality to page in guest memory. If the guest does
-something unexpected or illegal exit to userspace which very likely has
-to stop guest execution. This behaviour will be changed to guest error
-injects once all sysregs are accessible for the host.
-
-> diff --git a/arch/s390/kvm/arm64/arm.c b/arch/s390/kvm/arm64/arm.c
-> index 18eca2261e0da..bf0866659421a 100644
-> --- a/arch/s390/kvm/arm64/arm.c
-> +++ b/arch/s390/kvm/arm64/arm.c
-> @@ -437,6 +437,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  				  vcpu->arch.sae_block.vir);
->  			ret =3D -EINVAL;
->  			break;
-> +		case SAE_ICPTR_HOST_ACCESS_EXCEPTION:
->  		case SAE_ICPTR_SYNCHRONOUS_EXCEPTION:
->  			ret =3D handle_trap_exceptions(vcpu);
->  			break;
-
-[Severity: High]
-This is a pre-existing issue, but since we are modifying the run loop handl=
-ing
-here, is there an issue with how check_vcpu_requests() return values are
-handled?
-
-Looking at kvm_arch_vcpu_ioctl_run(), check_vcpu_requests() is called and i=
-ts
-result is assigned to ret, but then arm_vcpu_run(vcpu) is called
-unconditionally immediately after. Does this bypass pending signals, IPIs, =
-and
-userspace exits if check_vcpu_requests() returns a value less than or equal=
- to
-0?
-
-[ ... ]
-
-> diff --git a/arch/s390/kvm/arm64/mmu.c b/arch/s390/kvm/arm64/mmu.c
-> new file mode 100644
-> --- /dev/null
-> +++ b/arch/s390/kvm/arm64/mmu.c
-
-[ ... ]
-
-> +static int user_mem_abort(struct kvm_vcpu *vcpu, gpa_t fault_ipa,
-> +			  struct kvm_memory_slot *slot, hva_t hva)
-> +{
-
-[Severity: Low]
-Do we need the slot and hva parameters in this function? It looks like they
-are unused since kvm_s390_faultin_gfn() handles the page translation itself.
-
-> +	struct guest_fault f =3D { };
-> +	int ret;
-
-[ ... ]
-
-> +static int kvm_handle_pic(struct kvm_vcpu *vcpu, bool *translation)
-> +{
-> +	switch (kvm_vcpu_fault_pic(vcpu)) {
-
-[ ... ]
-
-> +	/* unexpected cases: */
-> +	case 0:
-> +		KVM_BUG(1, vcpu->kvm, "On MMU fault path but no fault occurred");
-> +		return -EFAULT;
-> +	default:
-> +		KVM_BUG(1, vcpu->kvm, "Unexpected program interrupt 0x%x, TEID 0x%016l=
-x",
-> +			vcpu->arch.sae_block.hai.pic, vcpu->arch.sae_block.hai.teid.val);
-
-[Severity: High]
-Can this KVM_BUG be triggered by a guest action? If an unexpected program
-interrupt can be driven by guest behavior, it would hit this macro which
-expands to a WARN_ONCE, potentially creating a host denial of service vector
-via log spam.
-
-> +		send_sig(SIGSEGV, current, 0);
-> +		return -EFAULT;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
-> +{
-
-[ ... ]
-
-> +		/*
-> +		 * Check for a cache maintenance operation. Assume the guest is
-> +		 * cautious and skip instruction
-> +		 */
-> +		if (kvm_is_error_hva(hva) && kvm_vcpu_dabt_is_cm(vcpu)) {
-> +			kvm_incr_pc(vcpu);
-> +			ret =3D 1;
-> +			goto out_unlock;
-
-[Severity: Critical]
-This is a pre-existing issue, but does returning 1 here to resume the guest
-result in an infinite loop?=20
-
-When kvm_incr_pc() sets the INCREMENT_PC flag and ret is set to 1, the run =
-loop
-in kvm_arch_vcpu_ioctl_run() iterates without calling adjust_pc(), because
-adjust_pc() is located at the out label completely outside the do-while loo=
-p:
-
-arch/s390/kvm/arm64/arm.c:kvm_arch_vcpu_ioctl_run() {
-    ...
-    do {
-        ...
-        arm_vcpu_run(vcpu);
-        ...
-    } while (ret > 0);
-
-out:
-    if (unlikely(vcpu_get_flag(vcpu, INCREMENT_PC)))
-        adjust_pc(vcpu);
-}
-
-Would this cause arm_vcpu_run() to be re-executed with the exact same PC,
-hanging the host thread?
-
-[ ... ]
-
-> +	/* Userspace should not be able to register out-of-bounds IPAs */
-> +	VM_BUG_ON(fault_ipa >=3D kvm_phys_size(vcpu->kvm));
-> +	/*
-> +	 * Proper guest size faults have been injected.
-> +	 * In theory it's fine to have device memory higher than MSL,
-> +	 * even if not currently possible, but that would have been handled abo=
-ve.
-> +	 * So if we get here with a guest size intercept, we have a bug somewhe=
-re.
-> +	 */
-> +	VM_BUG_ON(guest_size_err);
-
-[Severity: High]
-Is it possible for a guest to trigger this assertion? If a guest triggers an
-address size fault where fault_ipa < kvm_phys_size(vcpu->kvm), the host ker=
-nel
-would hit this VM_BUG_ON. This could cause a panic when CONFIG_DEBUG_VM is
-enabled.
-
-> +
-> +	ret =3D user_mem_abort(vcpu, fault_ipa, memslot, hva);
-> +	if (!ret)
-> +		ret =3D 1;
-> +out_unlock:
-> +	srcu_read_unlock(&vcpu->kvm->srcu, idx);
-> +	return ret;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
-245-1-seiden@linux.ibm.com?part=3D26
