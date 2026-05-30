@@ -1,57 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7341E1D7E5C;
-	Sat, 30 May 2026 00:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC9929D27D;
+	Sat, 30 May 2026 00:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780101939; cv=none; b=pgiEEFTD3YNq74hWCqG6KoLPeBUmt5qNoxEYWCN3zVqLI2h4xCImDI6CZcJqzqFhN38ZOA1PUKrA083yoJKeFQsRhMjZtygQddH5CXTc+eji7bW1kkek5NORTPM5JPfU1IJFLaVSGI2eoOlY7WTv5FNEkP6irtiWXeaJRoBDfrA=
+	t=1780101961; cv=none; b=Da5I+r8KVfEJUHjj4U7BA0IbDcfbPaNn8faEbF3lVqlmrNmTydQxR2jypqHX8JsyD1iUYzk1regLfZeghjJT2+5u0rkEoo909SBmWpLchsdo7XyXGmHL6Ycw946jc4B62YHSWD4SSIHT02A9BmpzvQM7zUjTppZoPTh/uafFFzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780101939; c=relaxed/simple;
-	bh=q0PYgiYksQ6rU66hJDHbPkOrKmPzpWcJ2nP7nSyVWXM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SyJ3Z5xEMPG1VQg0l+6Czv+11zz0PpSPuNRFdp3WFD2wsqglr9ZXnk/1FPbnT1a+cBwj6N0VTpC+5qGL1sSzT2/zvGv9BzySoRs4aAaNABNGMEtAppI0apmJO0NL4p0rfhiroK73AKZ6OiA2Yx3V0gPjPIxmDRBqDERWOc6p2HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BXxdi9O9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780101961; c=relaxed/simple;
+	bh=ncJ2789ZxEManu0umNRfq8NgXuKtoilCWAr6G05xwaU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=AR9jXBsGXXOTCyJEf7DBQULmrBjmu/vLkdHnyWivEL4oQj4qwEuKTXyVtohzwNWpMX4QiMO/z9gvSB5zwMUF2w1PmweKoJQE/3ZiAfgOBG/hFZJcGyduOCviZ0MtaYzFGysHjuke/iE5B/7MB7skPoFsDiwkGomfxIdVPhCvxGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=leeoZkVj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BXxdi9O9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF80A1F0089A;
-	Sat, 30 May 2026 00:45:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="leeoZkVj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82371F00893;
+	Sat, 30 May 2026 00:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780101938;
-	bh=RmPJM9/1coWe6M9t8EajFJfZ9J0yMphFfmd5WhaihQg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BXxdi9O9jpYgyEtcYYSMFq05NaMNekdBlLG+/lxo/VEEfdle5KX8sHCHP3yjR7hRT
-	 i60QBOUnttvrczyGaT/9BC8BCq3hmjEeOgaj8eD9MpuL9ytF/QF5d40EJw/QJUx2Eb
-	 fVWfdaHUtoBc361SzZ64qtwSfIQpQC4R9MuFINRr7VqtxtgiSFfbNDRcpVETUoPVnw
-	 F9I5j9pOXEuicogIUA3dDQUHazkGTOFeC0ek5Bqz2PukxQ1LdPbDoBdmALX3Cg3C2E
-	 69ij+4piQrYXnCdyNyo6grz1lTUlJm5xlGGgiJJ3+5jY1nmadnMKsB2DzDtEjCrdi7
-	 Ao4Qz9q3I3w7A==
-Date: Sat, 30 May 2026 00:45:36 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Binbin Wu <binbin.wu@linux.intel.com>, David Woodhouse <dwmw@amazon.co.uk>, 
-	Kai Huang <kai.huang@intel.com>
-Subject: Re: [PATCH v3 17/40] KVM: x86: Drop defunct vcpu_tsc_khz()
- declaration
-Message-ID: <ahozJrtoKz7t9EoE@google.com>
-References: <20260529222223.870923-1-seanjc@google.com>
- <20260529222223.870923-18-seanjc@google.com>
+	s=k20260515; t=1780101959;
+	bh=2JOWVvGPu8d06NpwIW3hSQNiXstDCk/vkp0BSRFR6RY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=leeoZkVjkxCCKvr0U2PNFo0a+Dg6KKjN3LuN4AGfcS4aTIJ8nxk4ZLJ158d0xQRBT
+	 OxvkrKhjGZPl2XyZeXERlkS4opM7vR9Ytde/f2XaQOo3FLzTzjadbFc2cDxXZ0luAr
+	 0dT+NEDvATSmwVQZGWjYMeS6OYHrRYv1gAcut9QI41VfD526wxobn4tvQ379iqt8K/
+	 KtFT8PpNSMpyumRyOMZb8l5g0Nqr8y97MiBYjT3TLyBkH0bidOd/GNDPKE9fwfkcaO
+	 scIE2SfYKJoVEaqsqrDxmQchflM6MTIXBF09YjIAz4htPHFtqKCrkpiOGnLL5t/zge
+	 Usgyqzy3dSjUQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 06/11] moduleparam: Add seq_buf-based .get callback
+ alongside .get_str
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Kees Cook" <kees@kernel.org>
+Cc: vkoul@kernel.org, Frank.Li@kernel.org, dmaengine@vger.kernel.org, linux-media@vger.kernel.org, linux-modules@vger.kernel.org, linux-pci@vger.kernel.org, kvm@vger.kernel.org
+In-Reply-To: <20260521133326.2465264-6-kees@kernel.org>
+References: <20260521133326.2465264-6-kees@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 30 May 2026 00:45:58 +0000
+Message-Id: <20260530004558.A82371F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260529222223.870923-18-seanjc@google.com>
 
-On Fri, May 29, 2026 at 03:22:00PM -0700, Sean Christopherson wrote:
-> Remove a dead vcpu_tsc_khz() declaration.  No functional change intended.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Silent data truncation and spurious kernel warning when the sysf=
+s buffer is exactly filled.
+--
 
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+commit 6802395b5f9f236d2cc29365e6d39e6de2eae4ca
+Author: Kees Cook <kees@kernel.org>
+
+moduleparam: Add seq_buf-based .get callback alongside .get_str
+
+This commit adds a new seq_buf-based .get callback to struct kernel_param_o=
+ps=20
+to format parameter values safely. It updates param_attr_show() to prefer=20
+this new callback when available, using a page-sized buffer. The legacy=20
+.get_str callback is retained as a fallback.
+
+> diff --git a/kernel/params.c b/kernel/params.c
+> index 6852caea17854..4eda2d23ddf28 100644
+> --- a/kernel/params.c
+> +++ b/kernel/params.c
+[ ... ]
+> @@ -553,12 +553,34 @@ static ssize_t param_attr_show(const struct module_=
+attribute *mattr,
+[ ... ]
+>  	kernel_param_lock(mk->mod);
+> -	count =3D attribute->param->ops->get_str(buf, attribute->param);
+> +	if (ops->get) {
+> +		struct seq_buf s;
+> +
+> +		seq_buf_init(&s, buf, PAGE_SIZE);
+> +		count =3D ops->get(&s, attribute->param);
+> +		if (count >=3D 0) {
+> +			WARN_ON_ONCE(count > 0);
+> +			count =3D seq_buf_used(&s);
+> +			/* Make sure string is terminated. */
+> +			seq_buf_str(&s);
+> +			/*
+> +			 * If overflowed, reduce count by 1 for trailing
+> +			 * NUL byte.
+> +			 */
+> +			if (seq_buf_has_overflowed(&s))
+> +				count--;
+
+[Severity: Medium]
+Does this code silently truncate data and trigger a kernel warning when the
+buffer is exactly filled?
+
+If the .get() callback writes exactly PAGE_SIZE bytes without triggering an
+overflow, seq_buf_has_overflowed(&s) will evaluate to false because s.len
+exactly equals s.size. In this case, count remains PAGE_SIZE.
+
+However, seq_buf_str(&s) unconditionally writes a NUL byte at the end of the
+buffer, which will replace the last byte of valid data at PAGE_SIZE - 1.
+
+Furthermore, returning PAGE_SIZE causes the sysfs core to print a bad count
+warning to dmesg and truncate the count anyway. Should this code explicitly
+decrement count when count =3D=3D PAGE_SIZE to avoid overwriting data and c=
+ausing
+the warning?
+
+> +		}
+> +	} else {
+> +		count =3D ops->get_str(buf, attribute->param);
+> +	}
+>  	kernel_param_unlock(mk->mod);
+>  	return count;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260521133315.work=
+.845-kees@kernel.org?part=3D6
