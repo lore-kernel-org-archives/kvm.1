@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D211ABED9;
-	Sat, 30 May 2026 07:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA5138657D
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 07:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780124929; cv=none; b=p8nSmHcaX07WG9r1xE+6FQeTYchKOqcKn2EbxXGrBucvcJG1Oa7n3Jpt57WQom8VndWJ1QhdEyd4Lx9LK/S2XusXk3zSoTVS0iQtbS9UYwOdQQ79RRP6a7JKLAhKdYejmx+Fki6cSVtiXCsTL6L9hxSC6qSznJVWVvFlqmcgWXk=
+	t=1780125131; cv=none; b=aGh3KDOEn+XI8nq4EFZCOEcWTKKTUEk8KJ+xVY+ZvUxeM5cEe85ol7ZIMSzM8TxlEptoJ4cE2ucxQGSo34LzsKxJHUWcwh9N094ckwWHsZLN8ZIMLNkqPiGrRbB/HjMxSEwwDgDcz2fvIZbevPhIccbFRlTmgM9iqgaXVxr8TDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780124929; c=relaxed/simple;
-	bh=I68GCXOYT+kBemWQ+Q/y8hSCY/ISUAplZcpfblBZLPs=;
+	s=arc-20240116; t=1780125131; c=relaxed/simple;
+	bh=wjbtirUt74zy1Hwo+KO+zCUKv9OheD2CDcsdh50AXpc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=b0lydUmBHGFeVVne51BJatayk9SO/aUm+bs2c+P1AhNSCP7OvXZEEmP+RcZKaP3mB80Xr1haGMA63nfD0yZlJMX+ediR4z/V1cEl51GxHz6zbo1EMnleYPqc+MCYiZ7RXwWMfaExSRMWhYv0FjXR7wGOWFTplyK3n7XQelxofiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hqof6lFw; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=UwYKhNQeQY2wPgi4l+MbXmxyVPZkEJbgtDosSYE+xxpzl6jnclR6P82aEe7oftuIPusPHWK1mW+QtcZiDM4paQgDrjcv0vVwuUU1kYzOnW66E6yyd3yByMoWHKKHPtxq32l1YoW4p93K0qcxSwO9nkUynMdr/Qt/9UTKLVqNOeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzEEVeaM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hqof6lFw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158521F00893;
-	Sat, 30 May 2026 07:08:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzEEVeaM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766CD1F00893;
+	Sat, 30 May 2026 07:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780124928;
-	bh=dwHFy/b0JudLXpY4i3M/0W7fKXIXPymSPkcsf3JbQZg=;
+	s=k20260515; t=1780125129;
+	bh=5Lk8Xa5fx14cHTN/u3CNZunukLPgsPnnh+I/V5phSLU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Hqof6lFw0RFBU0JROqjz0cB6t7lXwr/UjqFUK0YEN7eudxge9qcDQlNvgRIdZnTJ+
-	 iG7iwwgITjNY9V/0PBAMiHdzD40aI1oxO7jVUIm3pf6YkS3xYrvRDEfe4WwqqpNCBU
-	 ojSu867mJeisfGFqCnFK7zhok1z/Qg3IJzs5TmHm7w9ViE/VFx2E3jKk8lTdnFU3yp
-	 BTKSM0bisIFpmx/geg8N80EBO0U41zMPg1uzKTm6ELrX1agyCwl745c4jMX/r+vaqs
-	 wnhXOkcM/0tuR3Mo9kxOnX3yY8XfIfxwfjMOAUV1C/7/MzWcarbIqxEdBDER2pZDq2
-	 Ug/gs+3cxa1kw==
+	b=mzEEVeaMf2ccHvLk1foAOgOg+ReWA73XYByphV9b196EK6za+39EmkrpWacLUhl9+
+	 oqcffhyL/66PNky9vIHl6mv75yjAgTf8tecsUkaRWHm6/0+0vB7kRx3lwCdzuc35Tg
+	 2fMoH2xBy9aGMu72fX/ZJUabjH0n2ztKgE7eSPPGe44Oko3MMwEoq7wJKe8FsC/Cuc
+	 43kK3+KtcBjZFJ0g4MOCHdKqK4GvkDQB5Bbl4xUD1TFsLDdp5+dZueNTGPL9B1HBHy
+	 nMGxMs7vQRfF1KoM/8IPTnTX64Di8IFWnRLT/QV1JgVW5zE8k8bFQRQtfMiybPOJe6
+	 /Dyx4P/vns5IA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 26/47] x86/kvm: Don't disable kvmclock on BSP in
- syscore_suspend()
+Subject: Re: [PATCH v3 16/27] KVM: Make device name configurable
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: linux-hyperv@vger.kernel.org, kvm@vger.kernel.org
-In-Reply-To: <20260529144435.704127-27-seanjc@google.com>
-References: <20260529144435.704127-27-seanjc@google.com>
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260529155050.2902245-17-seiden@linux.ibm.com>
+References: <20260529155050.2902245-17-seiden@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 30 May 2026 07:08:47 +0000
-Message-Id: <20260530070848.158521F00893@smtp.kernel.org>
+Date: Sat, 30 May 2026 07:12:09 +0000
+Message-Id: <20260530071209.766CD1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,60 +47,52 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] MSR_KVM_MIGRATION_CONTROL is disabled during CPU offline and syste=
-m suspend but is never re-enabled upon online/resume, permanently breaking =
-live migration.
+- [High] Leaked debugfs directory and Use-After-Free on module initializati=
+on failure.
 --
 
-commit 44d44f9fdfe9da0700b2023c4cf04e9f6f582d4c
-Author: Sean Christopherson <seanjc@google.com>
+commit 04c2f7cc9b71f864ca5d4b3147f1edb93f37b395
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-x86/kvm: Don't disable kvmclock on BSP in syscore_suspend()
+KVM: Make device name configurable
 
-This commit prevents KVM from disabling kvmclock on the BSP during
-syscore_suspend(). It introduces a kvm_guest_cpu_action enum to pass specif=
-ic
-actions down to the kvmclock CPU offline path, ensuring the clock is preser=
-ved
-across a suspend/resume cycle.
+This commit allows KVM implementations to configure the device name, which
+is particularly useful for architectures providing multiple implementations.
+It introduces kvm_init_with_dev() and updates kvm_init_debug() to accept a
+device name.
 
-> diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-> index c81a24d0efdf6..fd1c417b4f9b9 100644
-> --- a/arch/x86/kernel/kvm.c
-> +++ b/arch/x86/kernel/kvm.c
-> @@ -460,7 +460,7 @@ static void __init sev_map_percpu_data(void)
-
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
 [ ... ]
-
-> -static void kvm_guest_cpu_offline(bool shutdown)
-> +static void kvm_guest_cpu_offline(enum kvm_guest_cpu_action action)
->  {
->  	kvm_disable_steal_time();
->  	if (kvm_para_has_feature(KVM_FEATURE_PV_EOI))
-> @@ -468,9 +468,10 @@ static void kvm_guest_cpu_offline(bool shutdown)
->  	if (kvm_para_has_feature(KVM_FEATURE_MIGRATION_CONTROL))
->  		wrmsrq(MSR_KVM_MIGRATION_CONTROL, 0);
+> @@ -6505,7 +6512,7 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_alig=
+n, struct module *module)
+>  	kvm_preempt_ops.sched_in =3D kvm_sched_in;
+>  	kvm_preempt_ops.sched_out =3D kvm_sched_out;
+> =20
+> -	kvm_init_debug();
+> +	kvm_init_debug(kvm_dev.name);
 
 [Severity: High]
-This isn't a bug introduced by this patch, but I noticed that
-MSR_KVM_MIGRATION_CONTROL is cleared to 0 here during CPU offline and system
-suspend, but it does not appear to be re-enabled upon online/resume.
+This is a pre-existing issue, but does the error handling in
+kvm_init_with_dev() leak the debugfs directory on failure?
 
-Since this patch introduces the kvm_guest_cpu_action enum to solve an
-identical state-machine issue for kvmclock, should we also use this action
-enum to ensure the migration control MSR isn't incorrectly cleared on
-suspend? Otherwise, wouldn't a single CPU hotplug event or a suspend/resume
-cycle permanently disable live migration for the entire VM?
+kvm_init_debug() creates the debugfs directory and populates it with
+stats files. If any of the subsequent initializations fail (such as
+kvm_vfio_ops_init(), kvm_gmem_init(), or misc_register()), the rollback
+path jumps to error labels like err_vfio or err_register.
 
->  	kvm_pv_disable_apf();
-> -	if (!shutdown)
-> +	if (action !=3D KVM_GUEST_SHUTDOWN)
->  		apf_task_wake_all();
-> -	kvmclock_disable();
-> +
-> +	kvmclock_cpu_action(action);
->  }
+None of these error paths appear to call debugfs_remove_recursive() or
+an equivalent cleanup function for the debugfs directory. If KVM is
+compiled as a module and fails to initialize, the module memory is freed.
+Would this leave stale debugfs entries behind, potentially causing a
+use-after-free if a user accesses those files and triggers the fops
+pointing to the freed module memory?
+
+> =20
+>  	r =3D kvm_vfio_ops_init();
+>  	if (WARN_ON_ONCE(r))
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529144435.7041=
-27-1-seanjc@google.com?part=3D26
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
+245-1-seiden@linux.ibm.com?part=3D16
