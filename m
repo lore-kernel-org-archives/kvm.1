@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ABF288B8;
-	Sat, 30 May 2026 01:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793F21B4F1F;
+	Sat, 30 May 2026 01:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780103124; cv=none; b=t50cOoam8C9CJQU39zj7dMYFrjqTZTywJQbnVieH5JlG5Hu/7Qit+/C49QVyta5qx6Yr49JK/3W5I8Jqu7mkEdRZFoTfj2sq0qbbzC1Ch9ZFwWfdOU2WLp1looH/O4GQyBvnLm1Ue6KZxFnSVDBr3O5RwzGnvi8VqWEksPMciCA=
+	t=1780103168; cv=none; b=RYp5EVnLFgakZo9YB4iMeLh0pdnrjaYJJkxszshxhGVe3c2wQVqbrnASntbfM2V80evj23TZCfbSaCIo4ERgmchHW33UI45PshDgNRZKNtjMB3XrNFZTi2LsBRdufilQBW1dliKY9HYbwRhOQyCJ2uC7SmkwwPp9gOptuRsucZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780103124; c=relaxed/simple;
-	bh=Dlzr1rDE8L+z9TaFsIQRYj+TDt4DqD4S8TJDvSxH4tk=;
+	s=arc-20240116; t=1780103168; c=relaxed/simple;
+	bh=9k1einy4eaXQLJM3Mfvny1Fg219T7Pzj8KqKHwcwGpA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vBVKjjSF6kZgtB/vk8PEV26FypbMvVSlaVBTTNyDkdGXlxXmmfTYO9IEBoSO71PTPmxYpydKBbIrfPlOFTuYlN5Ij6bwSebgICQzVU4XcsNCohGSF6Y8f778zKCMtwZn7LqB1rBH+JwNXHWpSbuKk4UMQIzEN35jA/1cJNk3Te0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PpAfBTzq; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=J3FIJnbMmgsN2vzbGwtfZxtNP/ou2ZP1DULE19GigqSh3Lt0JI/wT8kl8a4EM1sbZ1fxIIs46kyxGFu8/PHT6PcQq+X+yxUviyFWNoNxJclh5H0S43sV3MqVd+x6euitB8+/Vbqg1zrN+XuRU+P2aqX9TVbcMnEvaOv9QMs6rbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0AcoMSk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PpAfBTzq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102891F00893;
-	Sat, 30 May 2026 01:05:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0AcoMSk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044D41F00893;
+	Sat, 30 May 2026 01:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780103123;
-	bh=4N6VtRa8W9OZQn0omYmbrU26uT3O9GudrCtnPZKPXvk=;
+	s=k20260515; t=1780103167;
+	bh=oGsJYfc3UzIyO8mFa9AyZZW6LFn0I9odK8gg3EUafBo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PpAfBTzqNGrZ/q+2SDvp5a+Rj31RGaxNLdxu81LScqWYxYgDqWmDtT/sQGx6xQc8I
-	 udd5hyisN1gMETRIEWb/bcOnbf+BNhxuTGHHgYSe3l666eZMKAvvFEy39kedSOTO+T
-	 9rkzNf0Pfk8ZyTb9ndaGNAVk3Qex57q3CKhVGPJfVm1yGOK8tG1R4w34yDsU7Jyhth
-	 fp1ptzhgTSQkGrwodldsfbfDpyA5mwiQsEmLBxE53yCZLnAWIouHqGFRzTivzrZWhc
-	 iDo3Y01jKvRRM3Mi1gKU++VMugu15RLyRlombsexAUVjQg3vZdhK5OzMcww/e79Nu4
-	 yqv5kvcT9l6uQ==
-Date: Sat, 30 May 2026 01:05:21 +0000
+	b=X0AcoMSkavxDiH7z71fRPEGO/JjO2Ms4CZfoKUBLo7VZvLAfCbzREQpAIekD+6xwb
+	 sE250m/ldKIicf8so++VxbucGMnUIMVaLoTwSG36lsdxVEnapKVe54Hj3XALkBp343
+	 HdXgkv9w7IP2s9ax215mwpNzuseOm4CGfLy40vpP+ZfQ+d0HudZvuJi/KS/y9il6cD
+	 cHBue/T4cyPOwR+x6lBH0xjlVj+RV+8oqbKVm3p8aOmArGk5kFkhs6W8It4AcGH4nH
+	 rXhyXiZvdQWbAjdj//n1slo2KqlDl0b8zg68LsVmVIh6u0RwcRgJ+xJ9DFRAEYup96
+	 bZpPj5WqwsSxA==
+Date: Sat, 30 May 2026 01:06:05 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, 
@@ -34,11 +34,11 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Binbin Wu <binbin.wu@linux.intel.com>, David Woodhouse <dwmw@amazon.co.uk>, 
 	Kai Huang <kai.huang@intel.com>
-Subject: Re: [PATCH v3 34/40] KVM: x86: Move misc "VALID MASK" defines from
- kvm_host.h => x86.c
-Message-ID: <aho3nf_m0bSwy1Ac@google.com>
+Subject: Re: [PATCH v3 35/40] KVM: x86: Move __kvm_irq_line_state() from
+ kvm_host.h => ioapic.h
+Message-ID: <aho3-bZD4S7MUGCh@google.com>
 References: <20260529222223.870923-1-seanjc@google.com>
- <20260529222223.870923-35-seanjc@google.com>
+ <20260529222223.870923-36-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,14 +47,11 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260529222223.870923-35-seanjc@google.com>
+In-Reply-To: <20260529222223.870923-36-seanjc@google.com>
 
-On Fri, May 29, 2026 at 03:22:17PM -0700, Sean Christopherson wrote:
-> Move a variety of "VALID MASK" defines, e.g. that capture which flags in
-> a given ioctl are supported by KVM, from kvm_host.h to x86.c.  The set of
-> valid flags/bits is very much a KVM-internal detail, as the hardcoded
-> defines are often massaged at runtime, i.e. *directly* using the macros
-> outside of KVM x86 would be actively dangerous.
+On Fri, May 29, 2026 at 03:22:18PM -0700, Sean Christopherson wrote:
+> Bury __kvm_irq_line_state() in CONFIG_KVM_IOAPIC=y code, as it's only used
+> by PIC and I/O APIC code.
 > 
 > No functional change intended.
 > 
