@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE7A17A586;
-	Sat, 30 May 2026 01:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8363009F6;
+	Sat, 30 May 2026 01:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780103523; cv=none; b=TLzKKmnogmOjM1SnW1AcNhOrVx46TGlstrG/LM062xRcMdLLCYVm78qjgkOoWj6nsc2rK9nlE+/7s0iALRKYLArIKrWBMvjG3AFdl6A0VnygMHy26Yf11A2sCb/LPyB0YzF5ClQWXCrM4HUG/fcJIyFrAuqFMM+fgHcpbIibJ/Q=
+	t=1780103640; cv=none; b=TFOUIpyvpxbfwtZjrLZyqJHuaIJRBi8z6WnXc0XOVwZxlDsLFx013ejJqAeaits4cFj8FEJSnOXFdDdWwd1HGohJoxH8r3wbgSxJfrd2D1IpaLYqw28ziu8XSM3JvYTJOf1b+a+MoDDGTKp6gTbz+5KPGqvcudrwt/A5xJi7uYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780103523; c=relaxed/simple;
-	bh=si1zJFMCrWDRjUGqH7GdPGPz9koAihoVS3BvkPXGOog=;
+	s=arc-20240116; t=1780103640; c=relaxed/simple;
+	bh=i4CE6Grdtke4vZk23r7Kbd32RlsXp9u3f6sUqZ3Uhog=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pp6rG2/xqzhgbwv8R//dV/JcGU40CJV+nTpB0jXsDsqAKVnyVqpVo7pe3RFagDd6zZVfaLvWIYIwLzJt2MZ5/b0hbzo+Tx5YafJkb7PNrt3ixJqCzPkgfCPANA9/Pxhtlj+USSPwTHhX3zHcfdifOq6obQEtmsfEeoLwpvspVNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONWBk+vo; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=nRq/PJvpM6WJpt9Om0pNc2LBoZHI3C4NJ24SbGEgHMphNR5VzaTXAPnu8Y7S4I6fKDCAeecxraqaqtEc6s8vt1Znx5WGJRieXVpu/GIXO8vm64kYi5t7Vt6qBs/1HJXOBpRuM3wiOWKMpYrzAagCu2/R9ORVW3KPbzw5gJUENbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=niegSwDO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONWBk+vo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983B21F00898;
-	Sat, 30 May 2026 01:12:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="niegSwDO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B031F00898;
+	Sat, 30 May 2026 01:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780103522;
-	bh=L18yVgd3A/H3IUuyEn01FIKzqX21KCgH3KyGaYSEbQ8=;
+	s=k20260515; t=1780103638;
+	bh=G811STGc+pZtGvytfcu867pbCemqUfncn32U69vG9xY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ONWBk+vowc+D43tV+zHyb/4zkyAjjVPRVi3JGPYVm2ZVTNHWigrD55Pn3McwGyWNQ
-	 mzgLxYZmxVqBXemUZ4RnvS70V9hBer+XHzROMgVB+K1sumjrKr4eGQg8dzo60/a954
-	 osw4XMNRnrS2w9oVQn1WbIeLEA4iSxuTXlI8X8ENEp8Pd35dNqmcHOh+CveGuza12B
-	 7ln/009odBvGzOma47urZH0HqZBlpv7v1fPwKqW+HZl6a7nTUOV1DTNCSFYC6DoUMY
-	 N9SagOfkxwoVoejc5RZwczEEuvLjyTuNUq7BqzVdWw/jOIP93agUTOnumZyQYa5BTx
-	 HIQOdXmpwfPOA==
-Date: Sat, 30 May 2026 01:12:00 +0000
+	b=niegSwDOSx6JUHJUmwWDby0ayimv4mny4SuWKPzV89bDLPXq0koEegx7SC3bKnXAV
+	 Ci0YiJMlSUWzOXDcZ/LXSIxEdhRtVpa9Gp0QCsV6jZZvV0DQdaWqTdQDskk7YdPu6C
+	 jHpMoPgiRJmTfOUTZDzyfxKa0AXkIitywpdqpD1ExEzFBNm1gB6EZWmF8OncnNP15C
+	 QH/rlGM1/huAKPMV2VzCpCr1nvBa/vj+Es2j6cGaBtLv4voiyOwk2xnuS1H0RU3eTP
+	 t1NG92NTkNPDpC3XfLwZnRc9wFj1GWAzBB+GmuzeERFx1PqdZq2kV57xkq3xUwdJgs
+	 WHjtIfcy69O0w==
+Date: Sat, 30 May 2026 01:13:56 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, 
@@ -34,11 +34,11 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Binbin Wu <binbin.wu@linux.intel.com>, David Woodhouse <dwmw@amazon.co.uk>, 
 	Kai Huang <kai.huang@intel.com>
-Subject: Re: [PATCH v3 38/40] KVM: x86/mmu: Move kvm_arch_async_page_ready()
- below kvm_tdp_page_fault()
-Message-ID: <aho5W-gefHUCQu36@google.com>
+Subject: Re: [PATCH v3 39/40] KVM: x86/mmu: Move kvm_mmu_do_page_fault() from
+ mmu_internal.h => mmu.c
+Message-ID: <aho5u4b5Sx26Uc_U@google.com>
 References: <20260529222223.870923-1-seanjc@google.com>
- <20260529222223.870923-39-seanjc@google.com>
+ <20260529222223.870923-40-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,15 +47,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260529222223.870923-39-seanjc@google.com>
+In-Reply-To: <20260529222223.870923-40-seanjc@google.com>
 
-On Fri, May 29, 2026 at 03:22:21PM -0700, Sean Christopherson wrote:
-> Move the implementation of kvm_arch_async_page_ready() "down" in mmu.c so
-> that it lives below kvm_tdp_page_fault().  This will allow moving
-> kvm_mmu_do_page_fault() into mmu.c without needing a forward declaration.
+On Fri, May 29, 2026 at 03:22:22PM -0700, Sean Christopherson wrote:
+> Move kvm_mmu_do_page_fault() into mmu.c, as there are no users outside of
+> mmu.c, and the function typically isn't inlined by the compiler anyways.
+> This will allow moving the EMULTYPE_xxx definitions into x86.h without
+> having to include x86.h in mmu_internal.h, i.e. will help preserve the
+> goal of making x86.h KVM x86's "top-level" include.
 > 
 > No functional change intended.
 > 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+
+[..]
+> +	/*
+> +	 * Not sure what's happening, but punt to userspace and hope that
+> +	 * they can fix it by changing memory to shared, or they can
+> +	 * provide a better error.
+> +	 */
+
+LOL
+
+> +	if (r == RET_PF_EMULATE && fault.is_private) {
+> +		pr_warn_ratelimited("kvm: unexpected emulation request on private memory\n");
+> +		kvm_mmu_prepare_memory_fault_exit(vcpu, &fault);
+> +		return -EFAULT;
+> +	}
+> +
+> +	if (fault.write_fault_to_shadow_pgtable && emulation_type)
+> +		*emulation_type |= EMULTYPE_WRITE_PF_TO_SP;
+> +	if (level)
+> +		*level = fault.goal_level;
+> +
+> +	return r;
+> +}
