@@ -1,53 +1,53 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A222625B0A3
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 00:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AE2284693
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 00:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780100601; cv=none; b=g+KQuHEmWfhYjXrnQ4zYDUL8/Os4In8aQwILRd+Eg94JlExol3WSydvmbtbalotVOaaCMliCHgM6Eix3xChL/r0O5TbBXN6DIaxg6+hjZZQghX7ePxHjYFk5hJ4zXmpur8S6o1SMbYeuNqhbfcQOHvP0h/omi44WczR8ndRILws=
+	t=1780100604; cv=none; b=WtZwrkIfSI2vAjj0MUzNb8qJHp7YvQ7Szb+HUZgncCIRJmTYyMPjYZ4V1ohQC4ySJ9rWThybMQUo12x2MCtv/0EcSr9JLCAFKc+9IKui/Iu89n7OymCR6xoNadEb43dxDMpA/uEWzAVO7PnCua2LLvxYzlSDdgAMVnAK4mx5xKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780100601; c=relaxed/simple;
-	bh=ab3K8FPCthYQkIyTJarkDDuRL7Mps2jwq7cT7gNX/SM=;
+	s=arc-20240116; t=1780100604; c=relaxed/simple;
+	bh=CzntHVhYNcZFHIR2nYlkFWCsxwV0/8XdJ0KvkXkba3k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LO+dvC9ZIdw+fgzTsT8srsduEHjb/gBHxOXYcFqbT+SGgm4yU4NcbGM0QFka8kHEDaJjk1HPAotNK8uDYgqB/p83VPxXkMQ9I1NWtUNQtFEo6wGEJv2k60WooFqmG2knGqpaiNrvQD/6AWwmNcpSgd5H6vAn93pmPmp0mQVp+sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cmtRaj4C; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=uQjl5/u3pCK5DGwfiUIYc4RqIv9EoP5bBWM6vaAd12obHxNSxLd7liuxS+hnH0j0kG1krNNvG/xDjxvCetpktHyJoNa+m3nzr7meshdY44xmkE4tgmsl9ODPxB5emy2uB6RcLP+gU7axLoUttE2OwnE7yjTfHFc9L6LeVYjY62s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RnntGQkL; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cmtRaj4C"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c857ebbb0easo434640a12.1
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:23:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RnntGQkL"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bd6aeb3637so320423175ad.2
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:23:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780100600; x=1780705400; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780100602; x=1780705402; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NMBxpjOSalzemU/ZQuYbqkgWo21WSyDLVg2ebWgM+bg=;
-        b=cmtRaj4CIyFM6pNZ4vkYrMKhGEAKRTpiyJZ3yb8rYBdvxbeZb/rPdn/DdfMd/KxJcd
-         NfnexYzZzLELvJO39WHFEHunP40OrPiSvD1VfRrgjlTbGhVxTriJTnxV3/p0Dotll8g/
-         cSGrie+PsFPFtUmdWxStW8rhp1Rtvng9ufd055Zf4WVYIfICqg2fy1SClSyUJLNH9x3K
-         nJZ2dj3ChPyljeJ6kDKU9H48BeTt+kEegaoZlJ6/7iqAta1M8MX2pQAuHPrWCtxwk1/q
-         3GGNPx1gvumay1I8D8jG9gNgMcRsNub6up4DVkw0nbpUrLzq6lmtjb9NK8H2AvZZo6pH
-         IEKQ==
+        bh=lUIxYrcL+WMnprn9yvfqEMt/1FqlOjkjwhMsyvVweJc=;
+        b=RnntGQkLq5eXQpz8IFXzAb6GbgkhenJ4j4cW4/oCnDPbucOXIhOFr+Dj3dQFEScq0M
+         mIYIcqrplQfs6n1i7zRiCPy35UecEnjTTN2VgIxPBBpCK5DaOQSZxdMWu/LQoAvaNXaw
+         pWV4kbnTtFnW54HZbJxRLhx0Gv8xOxycFXgrQyfI/Hp3+U3ZknU9it71OaWZFB3g/MCr
+         6gNu/xbCnowkKvx3w9Yn4sdmm5/GgDODcITavoS6kK58y33SaiUu8UD8atMUfeyeVmJ3
+         K6/BluOU6aSQfWpVBaJrDQw2acbS8kkJe00K2t04bJjg0g19EqqRDQUApdp2MbfYt+Te
+         Wt3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780100600; x=1780705400;
+        d=1e100.net; s=20251104; t=1780100602; x=1780705402;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NMBxpjOSalzemU/ZQuYbqkgWo21WSyDLVg2ebWgM+bg=;
-        b=ZyhNE2gC2CngVgQcfzwQNy1xtnYQxoZI9rsE+aNPvg7Ygh0zUNkihFF/Kyp/DqXiTo
-         Tdv+mUDnggaBYQL7/3fz8lhqDZbcDvJlXUsu2gYKY9pepQ7/Gc6q0OMHn7NghHdzzXol
-         XJDYLZB1Kdd0Dx0NHNrwAKTFrJnOvMQKunML29l4PtNcQY7Lny9zu+WWOTN71+inFO1A
-         l8geeAoO5VJ3jDHnpMW8NweYK+xQtktmhp5ltwJPEb/lvpN8miiexz7zBGd4/GhCZDx9
-         TjUgXgCRiGsmedi8NGoe5XzsZsNW2l/hXB6bjlUSiQ/TgYYQEL4Dq4FDpLNxY3gDWME7
-         MpZA==
-X-Gm-Message-State: AOJu0Yw5/GYrrnCWR4ongc2jRp9EUmUlXbnnA3+0DC9icPcXQ08JufHq
-	v3HIVY8xXpustBJKeE7OhREECPLpJgwb58Tlwg6RGJe/2eFE7SgE/21+82VceIyoLQKKQS2IxOU
-	URbilYK2X
-X-Received: from pln12.prod.google.com ([2002:a17:903:360c:b0:2bd:5ced:c1c0])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c402:b0:2b0:6068:4c5f
- with SMTP id d9443c01a7336-2bf2048b983mr57943065ad.8.1780100599778; Fri, 29
- May 2026 17:23:19 -0700 (PDT)
-Date: Sat, 30 May 2026 00:21:25 +0000
+        bh=lUIxYrcL+WMnprn9yvfqEMt/1FqlOjkjwhMsyvVweJc=;
+        b=Pb9tZgFr1RbrXDXkJfY7jtmREz7bHTlSXVyNh2fxwdNtxxJQGTzhxgiRWZnO2OXn/g
+         EsLsXGB8rDmvyKpeZ1D/qdPPL+O2kyEgRFtcB2Tfi/WcOmYJTz2jDnNlUmf9VWhC0+vM
+         PNGZywYZapTUyTuSpyH+0SLaIDoiHB3zk24LFf88DFt12qadeuFbANtm64dq2S42/7J0
+         Z10cot1s1QbIW08TBQfZX5u4IeRQdS/YqO78lCDsa416kmp+LiZ8t12L/ZS9c02jzFbR
+         CGMkW5wj2t/mQAx009JMT5cZB1y1c0MCr7fAxCRbin+Md4YHu+ZaQK7K5I5lQIp/jg4n
+         cYUQ==
+X-Gm-Message-State: AOJu0Yw8+Zc2TeLy/VVuLDjoA+VyRYgWFdKWwIxwTvNlgoVJNN5rh2lH
+	wmnQ79YVQ+dn0dsfbLVHAzdyx4lq1cdML+SpfoXMACB2wr727IaLg8kFfeYQE4ji58jEUWnxyfI
+	ObD1T1uJx
+X-Received: from plbks11.prod.google.com ([2002:a17:903:84b:b0:2bf:bf7:6205])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e543:b0:2bd:8395:fed8
+ with SMTP id d9443c01a7336-2bf36851283mr22803535ad.27.1780100601981; Fri, 29
+ May 2026 17:23:21 -0700 (PDT)
+Date: Sat, 30 May 2026 00:21:26 +0000
 In-Reply-To: <20260530002134.558837-1-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,9 +57,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260530002134.558837-1-jrhilke@google.com>
 X-Mailer: git-send-email 2.54.0.929.g9b7fa37559-goog
-Message-ID: <20260530002134.558837-11-jrhilke@google.com>
-Subject: [PATCH v4 10/19] KVM: selftests: Verify interrupts are received after
- modifying IRQ routes in IRQ test
+Message-ID: <20260530002134.558837-12-jrhilke@google.com>
+Subject: [PATCH v4 11/19] KVM: selftests: Make number of IRQs configurable in
+ IRQ test
 From: Josh Hilke <jrhilke@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -68,82 +68,55 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: David Matlack <dmatlack@google.com>
 
-Add the '-c' flag to tools/testing/selftests/kvm/irq_test.c to destroy
-and recreate KVM's GSI routing table between interrupts. This ensures
-that KVM correctly handles dynamic updates to the interrupt routing
-table while interrupts are actively being signaled by assigned devices.
+Add a '-i' flag to tools/testing/selftests/kvm/irq_test.c to allow users
+to specify the number of IRQs generated during a test run.
 
 Co-developed-by: Josh Hilke <jrhilke@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- tools/testing/selftests/kvm/irq_test.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/irq_test.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
-index 562b9ab187a4..72b9106216ed 100644
+index 72b9106216ed..e79b66c050ff 100644
 --- a/tools/testing/selftests/kvm/irq_test.c
 +++ b/tools/testing/selftests/kvm/irq_test.c
-@@ -114,13 +114,21 @@ static void kvm_route_msi(struct kvm_vm *vm, u32 gsi, struct kvm_vcpu *vcpu,
- 	vm_ioctl(vm, KVM_SET_GSI_ROUTING, routes);
- }
+@@ -123,13 +123,14 @@ static void kvm_clear_gsi_routes(struct kvm_vm *vm)
  
-+static void kvm_clear_gsi_routes(struct kvm_vm *vm)
-+{
-+	struct kvm_irq_routing routes = {};
-+
-+	vm_ioctl(vm, KVM_SET_GSI_ROUTING, &routes);
-+}
-+
  static void help(const char *name)
  {
--	printf("Usage: %s [-a] [-b] [-d <segment:bus:device.function>] [-h]\n", name);
-+	printf("Usage: %s [-a] [-b] [-c] [-d <segment:bus:device.function>] [-h]\n", name);
+-	printf("Usage: %s [-a] [-b] [-c] [-d <segment:bus:device.function>] [-h]\n", name);
++	printf("Usage: %s [-a] [-b] [-c] [-d <segment:bus:device.function>] [-h] [-i nr_irqs]\n", name);
  	printf("\n");
  	printf("Tests KVM IRQ injection via irqfd using an emulated eventfd.\n");
  	printf("-a	Randomly affinitize the device's host IRQ to different physical CPUs throughout the test\n");
  	printf("-b	Block vCPUs (e.g. HLT) instead of spinning in guest-mode\n");
-+	printf("-c	Destroy and recreate KVM's GSI routing table in between some interrupts\n");
+ 	printf("-c	Destroy and recreate KVM's GSI routing table in between some interrupts\n");
  	printf("-d	Use a VFIO device to send MSI-X interrupts instead of using an emulated eventfd\n");
++	printf("-i	The number of IRQs to generate during the test\n");
  	printf("\n");
  	exit(KSFT_FAIL);
-@@ -150,10 +158,11 @@ int main(int argc, char **argv)
- 	int nr_irqs = 1000, nr_vcpus = 1;
- 	const char *device_bdf = NULL;
- 	FILE *irq_affinity_fp = NULL;
-+	bool clear_routes = false;
+ }
+@@ -162,7 +163,7 @@ int main(int argc, char **argv)
  	struct iommu *iommu;
  	struct kvm_vm *vm;
  
--	while ((c = getopt(argc, argv, "abd:h")) != -1) {
-+	while ((c = getopt(argc, argv, "abcd:h")) != -1) {
+-	while ((c = getopt(argc, argv, "abcd:h")) != -1) {
++	while ((c = getopt(argc, argv, "abcd:hi:")) != -1) {
  		switch (c) {
  		case 'a':
  			irq_affinity = true;
-@@ -164,6 +173,9 @@ int main(int argc, char **argv)
- 		case 'd':
- 			device_bdf = optarg;
+@@ -176,6 +177,9 @@ int main(int argc, char **argv)
+ 		case 'c':
+ 			clear_routes = true;
  			break;
-+		case 'c':
-+			clear_routes = true;
++		case 'i':
++			nr_irqs = atoi_positive("Number of IRQs", optarg);
 +			break;
  		case 'h':
  		default:
  			help(argv[0]);
-@@ -210,9 +222,13 @@ int main(int argc, char **argv)
- 	}
- 
- 	for (i = 0; i < nr_irqs; i++) {
-+		const bool do_clear_routes = clear_routes && (i & BIT(3));
- 		struct kvm_vcpu *vcpu = vcpus[i % nr_vcpus];
- 		struct timespec start;
- 
-+		if (do_clear_routes)
-+			kvm_clear_gsi_routes(vm);
-+
- 		kvm_route_msi(vm, gsi, vcpu, vector);
- 
- 		if (irq_affinity && vcpu->id == 0) {
 -- 
 2.54.0.929.g9b7fa37559-goog
 
