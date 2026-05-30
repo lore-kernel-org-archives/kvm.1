@@ -1,185 +1,110 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D6D301468
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 00:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780100622; cv=none; b=UJexfyUayacXqInlEJKZPL86GkBeTBYAwerOxnK2f3y0/XMbx+8IelgmPbWy77u8Sj87lAwUIEOlTG0MfnFhe5Ra27dWNhxvxpYIEHltJJ5xhCV/aU3w5EMYbC8FBzykyno8dHRKwa2Qphjvd9ILMH+zxYVU3/ZrjNR9OdDZbDQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780100622; c=relaxed/simple;
-	bh=3yeVP6qjqV8GM2bvDNGyj/WO9RKz1xKmC/mcaxsDUX0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZDpd0lSRncYjyVPmpBH4pHmTISlGEuKKMCM3GFvofS4X+v0xPAGxQoUm2z6KUQPg3vOfKMX9qBymCXK1Qu51FKYmK8rJG9JtgTBfTqjsUmyNfoc0rUCj5YTC5cPSonLlbR1xAdb5mKJcOxIGqHP7PwBpWGRg29J/dODk1NhV2V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gtcmJBoD; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAAF19ABD8
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 00:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780100794; cv=pass; b=Dw8u48i5QkmN0ws7+jfr943XtFfNozOZ1WRPsarKvlDLCbDeehsf59tcWcw5cvndqBA9WVFldS5Ue/tf+CaelTGZaREBMpBRXU75RkHO64pYC5dgPyUyYlUi23AZDKuHkU5y9qelVdCPXCQUwauKZM0Jpobdrgoigr6W4ZYYcqM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780100794; c=relaxed/simple;
+	bh=MAGGGFIuDnkFh7k9k5P8dIqCTpSBhddTjqyfYaFpsD0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=euxheIkPVrKOLD23dSAKYPT8h/e6+iUnLqV+k2m2qzOC98mMOITU4ennHTstxWqDPg7U9F7BcnaIPwf4lI854FNuays7zAmRZodByihPfWdurELWHWsbU8TN9HOVwwCclCTUrlrmZcaprQTyPGzHOwk368sMRRjsjkXzsH06rj4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TmghB0Sv; arc=pass smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gtcmJBoD"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8281d4cef8so7042012a12.2
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:23:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TmghB0Sv"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-516d1ddcdf4so201cf.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:26:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780100792; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lv7jQ8wAxNmuehBqs2Z4pzCvEFZuZZRaMW4ktvLHhr5fa5OgzqBMBlZ4b/+3diu7lu
+         CEtuY44PFKlCe6yVGg9L9OkJvPpwQWQyx00qwXYeV/RuRWNTPXYsO8qBwCxhXrL+tGXz
+         QKE+hSlW5ST3bp4+SaZ8Rz128W8obI57sIBjnzl+hm+GG3idGqMv72/hKhNk0gYKNgjH
+         f3Qv0c7evwdRgs88UvyAM7ZuPg2adTH5+J6jiQP2EurXc8bs8N89B9g5VVYCbHlv7290
+         TtEYqpkwi9uY270AEOVX+qojnBQ2ndct45lUVrMs6dr8IZADzkGfDJtBKwIs3iRAdl7V
+         Vk4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7ZF8xHASj1ZuudEsWaY+2Cjy6TFnQ4oh0myO74PN9uE=;
+        fh=NY4Bg1ZnqEMIwkPqeBmpEN0OQl3JUrfdBFtd749aGe8=;
+        b=Q3hQWzoC4k+7aPnNFVuVhpDJmgawi6CikzAg+84VAXRae4k5ZZaVGQwcNOHh29Cleq
+         FI/t6I7Sk03ZdIAjc46umceygy8Igvx/hO6P/WLxOUFLcCp4bqWiOLtaQI0MpiaSAUSk
+         vooYquWxm3PYDy69Ik4prhkFsvm74EjXN1rS6+uv5gjPQUpTnRCeloQj99WZjIRmALEK
+         uPhaQZSKrUvjNpZ8/Cv6fV9S3sMWnQR/P7mhNXsZ3nRH87oMKZWhPWwuZJdPa7B4dvYP
+         CLrb60u1TWE120ZcDgYmYF83tZPhozrjH4cGx89CPOFKfIajjScADeMctjYYBwBcepfM
+         p7YQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780100621; x=1780705421; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dNSvW6+2aoUGl/zEwvlnmm46oR9NmJ5Z6dcbh7LJmwQ=;
-        b=gtcmJBoDn1d70iLDrnkld6+5I8r6c/mbFyfNk6zLm69/truUfLheU4KJTy9kPqzuyz
-         plEisHTduqxdRh9vNqs49WyvK/ilhY5tTNnNtmNVu7FFUvSB9OU9i0xWlm/Otn6PWGU1
-         5gSqqdDW7a7aMEbcWxRG9dZW+COj6kD2SD2kJJtLB53LerWHodJo4e/jtaH75XMXxHBc
-         RM703HvTBtxJ2KaFy4pEQ4ZA2SDBUrvTaKf9JM7uCRa/osyPIoOxOis4331buFj9Paex
-         5+fhHWnVZa77zHwWwXpNuX33Q1VgSAUsWUq8zANKePpbS6EbC8N+32qa9VbMJt+j9Rxi
-         tdDA==
+        d=google.com; s=20251104; t=1780100792; x=1780705592; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7ZF8xHASj1ZuudEsWaY+2Cjy6TFnQ4oh0myO74PN9uE=;
+        b=TmghB0Sv53zr5bG5SzvyXvb3mlF+j0o8r+jYWL8KHedRkjuHuX+95wUTN1ObrVOEp1
+         QyIA0NVAXeM6iMOZiCtzi1h/tUzRVVkq8JjDCu3ZOwBKp0daYl2Usmos+v/flAa/6Gvz
+         M7syncY7PRD23Ri5D6dlu5FQ8kWYlaP4fX7zGDepYZCse2LeqDD0NLApBJtjaROkqAgr
+         x1W0Htmpzk3MC1ElLN9eoJZBQUPFefpfUgPDala/abX0kEIjDinpiRs8dwZ868jV6hh8
+         DQ/nCupeYufYHoCsDVdncvEFuyAn9qA7MTqFJd/j+rduP8qXhQyv5HuY9W9HQ9VWcga+
+         28Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780100621; x=1780705421;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dNSvW6+2aoUGl/zEwvlnmm46oR9NmJ5Z6dcbh7LJmwQ=;
-        b=pjrmfGUdoQu4FqxpXElk2TaUshqQQImy1bn4WS5vB3NkXRf/ND9rvj6/UZncsxYcvN
-         R3/hSeIQokCNxXX64Pa14j+NOgIT/zT9Ima3d3qVRlmBW4xtdH7kwxJtLW/DUdj/6i0r
-         jXrsBlzwIjmyIlyuNRs1as8R8u1R+qYRS/KuM6hVC2e8JfklCsKFfvmTF5UXvRp8u6xv
-         1wPzipifxuRP8CwRu4ekTieQngm0IYoLUBBQRmbKAIrhP/v/kLcPhUxAr+AqNgVATwWP
-         tKceZ3E2WG0X2CHrw1gCuqVLmGnXQLqqFzjYv4p1juyGNzSU+Rjj3SNRtgE4Vs0DeWIJ
-         on+w==
-X-Gm-Message-State: AOJu0YwDtxUKpUSIqT3QZgxAhyeiGVnsZBl4P0Xq5AXV0NV4Zl/K8lBu
-	ifCARx1lpTwXu2sa+DfT8Es8cJ50hRd8GWDaoSEn1iDq8BYmpeEhPRF/ae1T+NB6hnEdp5MBq1s
-	dsQMxfQK/
-X-Received: from pglc6.prod.google.com ([2002:a63:d06:0:b0:c82:7498:e3b5])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:ce4e:b0:3a2:d79c:416c
- with SMTP id adf61e73a8af0-3b427f97563mr1614544637.32.1780100620429; Fri, 29
- May 2026 17:23:40 -0700 (PDT)
-Date: Sat, 30 May 2026 00:21:34 +0000
-In-Reply-To: <20260530002134.558837-1-jrhilke@google.com>
+        d=1e100.net; s=20251104; t=1780100792; x=1780705592;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7ZF8xHASj1ZuudEsWaY+2Cjy6TFnQ4oh0myO74PN9uE=;
+        b=qtz8tN0sBMP0wKGdxzwscqZG9TD/xj6lBIugZUYPmhp217lg6B6/kfEh8ifPLcTq1u
+         pdIl/6YoD5UQYmEHjoE7Cxm0COyGH/Qy0PDrAIPBW/OtSrC/Nv9OXNLkKXs7gqNJ5ZtJ
+         CWvZBymCeFvSd8ouDzHHA2JPojqssYV2bAolpY2ks/5s/7T0p8gOcB0mxbx59UkgCqCY
+         n6+cS3zIq3tKUJGUKZsVkztFv2i08nzHSjCjqn05IbwQt2PxphJaUASgiwhoE1oi6P+D
+         IOMWCLo3AiztRaeszj+sv7QNhxZh1WzjZyDziQTgt0aP+SygD1CKyn+eczy/qNm7vNzz
+         +HQw==
+X-Gm-Message-State: AOJu0YyBQuWzacZWhT3NpGD4q3ZBAxuT56HiQh7Kact5tI2GcbNblsqm
+	uXC8cxSTWmQA6YRMu9K3i6FOsV97l15AFxfHJzBo2PidLI97K/LfcMa4QXMlAnYqmbZoLpGzlAs
+	YzmR8/gPMip28WeicfGkS3+xPqIxybTWq4i740Cs=
+X-Gm-Gg: Acq92OF8jHsf3sPd6LC9mrXY9O73T8qNEcyhoH/+vCWOGOmNU8AHramkvh32wL2foPD
+	drJtdDCGyKt4xLskWkkLe9xlwaS5KkR/H0mivKs3bLEpYPhovpdWh/XoqkdGrJCKCUx6Qu+MtrX
+	AP2NI4XaU/n/l4loHjVjcved0YLrFcrvekBnA42Z0HQnTfPJKQKkwGqltfKANGoaT9XyjMLgmrY
+	pkQpl+7s4uknjE5WidDNI+SsPCJLbHVLidm8LLaY3kDmKGzvZDeWAdUb21tWP2a1a84SmaPZDKB
+	G6vjMzHiob5swPGp3YeYYaCcFXmyhf7gfFJphpl6MZ9cFGo=
+X-Received: by 2002:ac8:59c6:0:b0:4ff:cb75:2a22 with SMTP id
+ d75a77b69052e-5173c76bcb4mr2896901cf.3.1780100791678; Fri, 29 May 2026
+ 17:26:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20260530002134.558837-1-jrhilke@google.com>
-X-Mailer: git-send-email 2.54.0.929.g9b7fa37559-goog
-Message-ID: <20260530002134.558837-20-jrhilke@google.com>
-Subject: [PATCH v4 19/19] KVM: selftests: Add xAPIC support in IRQ test
+In-Reply-To: <20260530002134.558837-1-jrhilke@google.com>
 From: Josh Hilke <jrhilke@google.com>
+Date: Fri, 29 May 2026 17:26:20 -0700
+X-Gm-Features: AVHnY4IduYrmTLIS_wnoG76B5wWc3JkYNclq_cKRmHmkEAEjpdBF08mWNIz96-8
+Message-ID: <CAAdrzjuj9deA7VSgHmO51DYKh-iPSx9XqvO9Z21VnyY31fteHw@mail.gmail.com>
+Subject: Re: [PATCH v4 00/19] KVM: selftests: Link with VFIO selftests lib
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>, Josh Hilke <jrhilke@google.com>
+	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: David Matlack <dmatlack@google.com>
+On Fri, May 29, 2026 at 5:22=E2=80=AFPM Josh Hilke <jrhilke@google.com> wro=
+te:
+> ---
+> Changelog
+>
+> v3 -> v4
+> - Add context to short logs specifying if the change relates
+>   specifically to the IRQ test (Sean)
+> - Format code correctly (Sean)
+> - Fix compilation errors for gettid() wrapper (Sean)
+> - Add macros for GUEST_RECEIVED_NMI and GUEST_RECEIVED_IRQ (Sean)
+> - Split helper functions into separate patches (Sean)
 
-Add the '-x' flag to tools/testing/selftests/kvm/irq_test.c to configure
-the guest to use xAPIC mode instead of the default x2APIC mode. This
-expands test coverage to ensure that IRQ injection and routing work
-correctly when the guest uses the older xAPIC interface.
-
-Co-developed-by: Josh Hilke <jrhilke@google.com>
-Signed-off-by: Josh Hilke <jrhilke@google.com>
-Signed-off-by: David Matlack <dmatlack@google.com>
----
- tools/testing/selftests/kvm/irq_test.c | 28 +++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
-index 967083b8e2ff..29f54a435c8e 100644
---- a/tools/testing/selftests/kvm/irq_test.c
-+++ b/tools/testing/selftests/kvm/irq_test.c
-@@ -20,6 +20,7 @@ static bool guest_received_irq[KVM_MAX_VCPUS];
- static bool guest_received_nmi[KVM_MAX_VCPUS];
- static pid_t vcpu_tids[KVM_MAX_VCPUS];
- static bool migrate_vcpus;
-+static bool x2apic = true;
- static bool irq_affinity;
- static bool block_vcpus;
- static bool done;
-@@ -31,14 +32,20 @@ static bool done;
- 
- static u32 guest_get_vcpu_id(void)
- {
--	return x2apic_read_reg(APIC_ID);
-+	if (x2apic)
-+		return x2apic_read_reg(APIC_ID);
-+	else
-+		return xapic_read_reg(APIC_ID) >> 24;
- }
- 
- static void guest_irq_handler(struct ex_regs *regs)
- {
- 	WRITE_ONCE(guest_received_irq[guest_get_vcpu_id()], true);
- 
--	x2apic_write_reg(APIC_EOI, 0);
-+	if (x2apic)
-+		x2apic_write_reg(APIC_EOI, 0);
-+	else
-+		xapic_write_reg(APIC_EOI, 0);
- }
- 
- static void guest_nmi_handler(struct ex_regs *regs)
-@@ -48,7 +55,10 @@ static void guest_nmi_handler(struct ex_regs *regs)
- 
- static void guest_code(void)
- {
--	x2apic_enable();
-+	if (x2apic)
-+		x2apic_enable();
-+	else
-+		xapic_enable();
- 
- 	sti_nop();
- 
-@@ -144,7 +154,7 @@ static void kvm_clear_gsi_routes(struct kvm_vm *vm)
- 
- static void help(const char *name)
- {
--	printf("Usage: %s [-a] [-b] [-c] [-d <segment:bus:device.function>] [-h] [-i nr_irqs] [-m] [-n] [-v nr_vcpus]\n", name);
-+	printf("Usage: %s [-a] [-b] [-c] [-d <segment:bus:device.function>] [-h] [-i nr_irqs] [-m] [-n] [-v nr_vcpus] [-x]\n", name);
- 	printf("\n");
- 	printf("Tests KVM IRQ injection via irqfd using an emulated eventfd.\n");
- 	printf("-a	Randomly affinitize the device's host IRQ to different physical CPUs throughout the test\n");
-@@ -155,6 +165,7 @@ static void help(const char *name)
- 	printf("-m	Pin vCPU threads to random physical CPUs throughout the test\n");
- 	printf("-n	Deliver 50 percent of IRQs as non-maskable interrupts\n");
- 	printf("-v	Number of vCPUS to run\n");
-+	printf("-x	Use xAPIC mode instead of x2APIC mode in the guest\n");
- 	printf("\n");
- 	exit(KSFT_FAIL);
- }
-@@ -188,7 +199,7 @@ int main(int argc, char **argv)
- 	struct kvm_vm *vm;
- 	cpu_set_t available_cpus;
- 
--	while ((c = getopt(argc, argv, "abcd:hi:mnv:")) != -1) {
-+	while ((c = getopt(argc, argv, "abcd:hi:mnv:x")) != -1) {
- 		switch (c) {
- 		case 'a':
- 			irq_affinity = true;
-@@ -214,6 +225,9 @@ int main(int argc, char **argv)
- 		case 'v':
- 			nr_vcpus = atoi_positive("Number of vCPUS", optarg);
- 			break;
-+		case 'x':
-+			x2apic = false;
-+			break;
- 		case 'h':
- 		default:
- 			help(argv[0]);
-@@ -226,6 +240,9 @@ int main(int argc, char **argv)
- 	vm_install_exception_handler(vm, vector, guest_irq_handler);
- 	vm_install_exception_handler(vm, NMI_VECTOR, guest_nmi_handler);
- 
-+	if (!x2apic)
-+		virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);
-+
- 	if (device_bdf) {
- 		iommu = iommu_init(default_iommu_mode);
- 		device = vfio_pci_device_init(device_bdf, iommu);
-@@ -248,6 +265,7 @@ int main(int argc, char **argv)
- 
- 	kvm_assign_irqfd(vm, gsi, eventfd);
- 
-+	sync_global_to_guest(vm, x2apic);
- 	sync_global_to_guest(vm, block_vcpus);
- 
- 	for (i = 0; i < nr_vcpus; i++)
--- 
-2.54.0.929.g9b7fa37559-goog
-
+link to v3: https://lore.kernel.org/kvm/20260421231557.1254270-1-jrhilke@go=
+ogle.com/
