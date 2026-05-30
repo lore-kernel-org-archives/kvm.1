@@ -1,212 +1,222 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B540E19EED3
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 09:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3095C13A244
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 09:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780132175; cv=none; b=bu4Hk+BeTOb8eJ2Slg7JcfVJN12uNcG34SGnJQVgzvCa5yh/q71s/a3Hl7V186wtMM9gEPCK5kSLFgD+FnsursiJvKTZQGYGi0grlsBtGz1j4dBxYn7Qd9/5VHoYFT/fjJJtx6O3wU6UmjUJjW7ngTpohpVG0ui+lD2lnfmzDZc=
+	t=1780132971; cv=none; b=h044nvlYcxBa09uLhxT8ww5yTNq4SVyeS9YCKsB3nUvRPa620Ug8WSD6Z/0PXCLrZDW0QxIQSpSdw4kHePK+v1TyukojVPVGdpJ78Xfbq9PENniL/Rn7MfjPTD0XUZlm2hH2/ZkFK/ORJV1LMDMa2tbSyCxAPObE8f7+yJUNnls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780132175; c=relaxed/simple;
-	bh=9EBN7mY3l2dg5XIpOHZanqRd+x/KpBo/ujkfL1+OO5Q=;
+	s=arc-20240116; t=1780132971; c=relaxed/simple;
+	bh=zY0qnIRu1UmYghQw5aPvV0afPVfkKOXXFC2Wt/u4Yo4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=oZdNyCzdCQ0xraI2bxDZs8qJxMLhfg1zigt7l9osUgUdUAYQ1U51KVrjs0i9JRAnGHstBexU4xyWafbmER4wIcSvQglaOifeb8Bh6Cu/96oVTmh32MMYx/2BAIec0LvBMx2tS1jYmKjyV0TFCjRHvGEWTUSPpzC0zIzkApj3lT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KX3ic1L6; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=SElxXqqngUM99UM5ZIgXBHiuh/t7fzl7i0jO4ptdKGwUvLgT+RBVNEbCOBYER8/Z5t03GTvtct9opEE1bKTqU80fAJQX47TrAFuhy1JxgmXbRMZ76rvQTgYH29fWdJYII9GIRWHF2KXPBvCe0aFQKLTHa7wnlv9eD/1SJddFc/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MwX3gIIF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KX3ic1L6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532211F00893;
-	Sat, 30 May 2026 09:09:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MwX3gIIF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C3E1F00893;
+	Sat, 30 May 2026 09:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780132174;
-	bh=fWLOnk+SWvTO+lQDTShf703Sc2xeuXYBRJg+EwG8+mk=;
+	s=k20260515; t=1780132969;
+	bh=7CDmyrcxlv7vwY5ZNdVFG6CxQXX9LbL/nh+ljOWEYIE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KX3ic1L6iSV4jXCAHR3GF+g+mMhkj+lV913T3X9A8SgibrCZUhPNRn7IAm2GkZ3d5
-	 jdQH/b2DmJ8/WSuVX8AHMPWpGOp0XR3rTKitFiizlkm+sLH0JcYIVnUP7+ZpPWucMA
-	 rX+XG0C0oKezZ585dx7WNNaqIEKXaHtojFfKJ/JpoCVlC9qA7XtCYPO+zypOrHFPXi
-	 B7v12pbCECGPEPNJPfCn5MoedsFBXVD/yDQEcfpUcdfih2uBVdtYbIyJLcdNpGXqse
-	 VSBHcy/W55tqy001WjTXwXvKpGQxItYeHPcoURtigthiICe+HUF+f7p1vzPq16v6l0
-	 5xSb7mqUQcvkA==
+	b=MwX3gIIFF9rjlt8EC56hz7hB0Vw3U6knLnCArGZQ6t40CEw6FteaPwGnXQK2WKP5P
+	 5BVNB7L7wb68BTxgkX7/HpuWii+ETfNJFRAHT+FdjPQYj2O8xwyHj09R9SPSql9eH0
+	 svo3kQERquj1IPDGmFAqWDQxhP7oK2jTWG4LBtIDf34rcchrUsX431NJkzj05MFLQa
+	 EngBtOUH7JeUxprlRyzxvP/MJm3sMnuqoEbTzin1o9fxP+woscTo9rpKEAWi+YDFcQ
+	 0RBqlzxG8SRhYqPkXyrJ25mZA0Cc3BXTKCkxtHso5dhUzTTollsocUSgQlWUrj9Vv6
+	 YfXqxmD7GFFpQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 25/27] KVM: s390: arm64: Implement vCPU IOCTLs
+Subject: Re: [PATCH v3 26/27] KVM: s390: arm64: Implement basic page fault
+ handler
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Steffen Eiden" <seiden@linux.ibm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529155050.2902245-26-seiden@linux.ibm.com>
-References: <20260529155050.2902245-26-seiden@linux.ibm.com>
+In-Reply-To: <20260529155050.2902245-27-seiden@linux.ibm.com>
+References: <20260529155050.2902245-27-seiden@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 30 May 2026 09:09:33 +0000
-Message-Id: <20260530090934.532211F00893@smtp.kernel.org>
+Date: Sat, 30 May 2026 09:22:48 +0000
+Message-Id: <20260530092249.A0C3E1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] Userspace-reachable WARN_ONCE creates a host-side DoS vulnerabilit=
-y via hardware validity intercepts.
-- [High] Calling `local_irq_enable()` inside an RCU extended quiescent stat=
-e breaks context tracking and introduces a race condition.
-- [High] The vCPU run loop fails to set `vcpu->mode` to `IN_GUEST_MODE`, le=
-ading to silently dropped IPI kicks.
-- [High] Crucial KVM requests (such as KVM_REQ_VM_DEAD and KVM_REQ_SLEEP) a=
-re ignored, allowing execution in an invalid or fatal state.
-- [High] The vCPU run loop checks `need_resched()` and `signal_pending()` w=
-ith interrupts enabled, causing a TOCTOU race with host interrupts.
-- [Medium] `kvm_arm_vcpu_finalize` unconditionally returns success for unsu=
-pported features.
+
+New issues:
+- [High] Guest-reachable or hardware-driven edge cases trigger WARN_ON/BUG_=
+ON macros, creating a host Denial of Service vector.
+- [Low] Unused parameters `slot` and `hva` in `user_mem_abort()`.
+
+Pre-existing issues:
+- [Critical] Handling traps in-kernel causes an infinite loop because the g=
+uest PC is not advanced before re-entering the guest.
+- [High] The VCPU run loop unconditionally enters the guest, ignoring the r=
+eturn value of `check_vcpu_requests()`.
 --
 
-commit 9e53079e1aa1b7ab592dcb9275360b129725a075
+commit 6963b72c83b66b00932e10f26e0df9e655610d27
 Author: Steffen Eiden <seiden@linux.ibm.com>
-Subject: KVM: s390: arm64: Implement vCPU IOCTLs
 
-This patch implements the core vCPU ioctls for the s390 arm64 KVM port. It
-adds support for initializing and running the guest, as well as handling
-registers and handling exceptions through the SAE block.
+KVM: s390: arm64: Implement basic page fault handler
 
-diff --git a/arch/s390/kvm/arm64/arm.c b/arch/s390/kvm/arm64/arm.c
---- a/arch/s390/kvm/arm64/arm.c
-+++ b/arch/s390/kvm/arm64/arm.c
+Add host functionality to page in guest memory. If the guest does
+something unexpected or illegal exit to userspace which very likely has
+to stop guest execution. This behaviour will be changed to guest error
+injects once all sysregs are accessible for the host.
+
+> diff --git a/arch/s390/kvm/arm64/arm.c b/arch/s390/kvm/arm64/arm.c
+> index 18eca2261e0da..bf0866659421a 100644
+> --- a/arch/s390/kvm/arm64/arm.c
+> +++ b/arch/s390/kvm/arm64/arm.c
+> @@ -437,6 +437,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>  				  vcpu->arch.sae_block.vir);
+>  			ret =3D -EINVAL;
+>  			break;
+> +		case SAE_ICPTR_HOST_ACCESS_EXCEPTION:
+>  		case SAE_ICPTR_SYNCHRONOUS_EXCEPTION:
+>  			ret =3D handle_trap_exceptions(vcpu);
+>  			break;
+
+[Severity: High]
+This is a pre-existing issue, but since we are modifying the run loop handl=
+ing
+here, is there an issue with how check_vcpu_requests() return values are
+handled?
+
+Looking at kvm_arch_vcpu_ioctl_run(), check_vcpu_requests() is called and i=
+ts
+result is assigned to ret, but then arm_vcpu_run(vcpu) is called
+unconditionally immediately after. Does this bypass pending signals, IPIs, =
+and
+userspace exits if check_vcpu_requests() returns a value less than or equal=
+ to
+0?
+
 [ ... ]
-@@ -244,12 +268,12 @@
-> +static int check_vcpu_requests(struct kvm_vcpu *vcpu)
+
+> diff --git a/arch/s390/kvm/arm64/mmu.c b/arch/s390/kvm/arm64/mmu.c
+> new file mode 100644
+> --- /dev/null
+> +++ b/arch/s390/kvm/arm64/mmu.c
+
+[ ... ]
+
+> +static int user_mem_abort(struct kvm_vcpu *vcpu, gpa_t fault_ipa,
+> +			  struct kvm_memory_slot *slot, hva_t hva)
 > +{
-> +	if (kvm_request_pending(vcpu)) {
-> +		if (kvm_check_request(KVM_REQ_VCPU_RESET, vcpu))
-> +			kvm_reset_vcpu(vcpu);
-> +		/*
-> +		 * Clear IRQ_PENDING requests that were made to guarantee
-> +		 * that a VCPU sees new virtual interrupts.
-> +		 */
-> +		kvm_check_request(KVM_REQ_IRQ_PENDING, vcpu);
+
+[Severity: Low]
+Do we need the slot and hva parameters in this function? It looks like they
+are unused since kvm_s390_faultin_gfn() handles the page translation itself.
+
+> +	struct guest_fault f =3D { };
+> +	int ret;
+
+[ ... ]
+
+> +static int kvm_handle_pic(struct kvm_vcpu *vcpu, bool *translation)
+> +{
+> +	switch (kvm_vcpu_fault_pic(vcpu)) {
+
+[ ... ]
+
+> +	/* unexpected cases: */
+> +	case 0:
+> +		KVM_BUG(1, vcpu->kvm, "On MMU fault path but no fault occurred");
+> +		return -EFAULT;
+> +	default:
+> +		KVM_BUG(1, vcpu->kvm, "Unexpected program interrupt 0x%x, TEID 0x%016l=
+x",
+> +			vcpu->arch.sae_block.hai.pic, vcpu->arch.sae_block.hai.teid.val);
+
+[Severity: High]
+Can this KVM_BUG be triggered by a guest action? If an unexpected program
+interrupt can be driven by guest behavior, it would hit this macro which
+expands to a WARN_ONCE, potentially creating a host denial of service vector
+via log spam.
+
+> +		send_sig(SIGSEGV, current, 0);
+> +		return -EFAULT;
 > +	}
 > +
-> +	return 1;
-> +}
-
-[Severity: High]
-Does this code ignore crucial KVM requests like KVM_REQ_VM_DEAD or
-KVM_REQ_SLEEP? It looks like it only processes KVM_REQ_VCPU_RESET and
-KVM_REQ_IRQ_PENDING. If a fatal error occurs and KVM_REQ_VM_DEAD is pending,
-would returning 1 here cause the vCPU to immediately resume guest execution
-and override the KVM failsafe?
-
-[ ... ]
-@@ -348,15 +373,15 @@
-> +static void arm_vcpu_run(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm_sae_block *sae_block =3D &vcpu->arch.sae_block;
-> +
-> +	adjust_pc(vcpu);
-> +
-> +	local_irq_disable();
-> +	guest_enter_irqoff();
-> +	local_irq_enable();
-
-[Severity: High]
-Does calling local_irq_enable() immediately after guest_enter_irqoff() break
-context tracking? guest_enter_irqoff() signals to RCU that the CPU is enter=
-ing
-an extended quiescent state. If a host interrupt fires after local_irq_enab=
-le()
-but before the actual guest entry, would the interrupt handler execute while
-RCU considers the CPU quiescent, leading to lockdep/RCU splats or potential
-use-after-free bugs?
-
-> +
-> +	sae_block->icptr =3D 0;
-> +
-> +	sae64a(sae_block);
-> +
-> +	local_irq_disable();
-> +	guest_exit_irqoff();
-> +	local_irq_enable();
-> +}
-[ ... ]
-@@ -395,20 +420,20 @@
-> +	ret =3D 1;
-> +	do {
-> +		if (signal_pending(current)) {
-> +			kvm_run->exit_reason =3D KVM_EXIT_INTR;
-> +			ret =3D -EINTR;
-> +			continue;
-> +		}
-> +
-> +		if (need_resched())
-> +			schedule();
-
-[Severity: High]
-Can this sequence cause a time-of-check to time-of-use race with host
-interrupts? The checks for signal_pending() and need_resched() in
-kvm_arch_vcpu_ioctl_run() are performed with local interrupts enabled. If a
-host interrupt arrives immediately after these checks and sets a reschedule=
- or
-signal flag, would the vCPU blindly enter the guest via arm_vcpu_run() and
-ignore the pending request for a long time?
-
-> +
-> +		if (ret > 0)
-> +			ret =3D check_vcpu_requests(vcpu);
-> +
-> +		vcpu->arch.sae_block.icptr =3D 0;
-> +
-> +		arm_vcpu_run(vcpu);
-
-[Severity: High]
-Are we missing the transition of vcpu->mode to IN_GUEST_MODE before calling
-arm_vcpu_run()? KVM's generic kvm_vcpu_kick() mechanism relies on checking =
-if
-vcpu->mode =3D=3D IN_GUEST_MODE to send an IPI. If the state remains
-OUTSIDE_GUEST_MODE, would concurrent kicks for virtual interrupt injections=
- or
-halt requests silently drop the IPI and leave the vCPU trapped in guest
-execution?
-
-> +
-> +		icptr =3D vcpu->arch.sae_block.icptr;
-> +		switch (icptr) {
-> +		case SAE_ICPTR_SPURIOUS:
-> +			break;
-> +		case SAE_ICPTR_VALIDITY:
-> +			WARN_ONCE(true, "SAE: validity intercept. vir: 0x%04x",
-> +				  vcpu->arch.sae_block.vir);
-> +			ret =3D -EINVAL;
-> +			break;
-
-[Severity: High]
-Is it possible for malicious userspace to trigger this WARN_ONCE? If an
-unprivileged host userspace provides invalid vCPU register states via
-KVM_SET_ONE_REG prior to running the vCPU, it could force a validity interc=
-ept.
-KVM subsystem guidelines forbid guest- or host-userspace-reachable WARN_ON
-assertions since they can crash the host if panic_on_warn is enabled.
-
-> +		case SAE_ICPTR_SYNCHRONOUS_EXCEPTION:
-> +			ret =3D handle_trap_exceptions(vcpu);
-> +			break;
-[ ... ]
-diff --git a/arch/s390/kvm/arm64/reset.c b/arch/s390/kvm/arm64/reset.c
-new file mode 100644
---- /dev/null
-+++ b/arch/s390/kvm/arm64/reset.c
-[ ... ]
-@@ -48,10 +48,10 @@
-> +
-> +int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature)
-> +{
 > +	return 0;
 > +}
+> +
+> +int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+> +{
 
-[Severity: Medium]
-Should this function validate the requested feature instead of unconditiona=
-lly
-returning success? By ignoring the feature argument and returning 0, would
-userspace incorrectly believe an unsupported feature is successfully
-configured, leading to unpredictable failures later?
+[ ... ]
+
+> +		/*
+> +		 * Check for a cache maintenance operation. Assume the guest is
+> +		 * cautious and skip instruction
+> +		 */
+> +		if (kvm_is_error_hva(hva) && kvm_vcpu_dabt_is_cm(vcpu)) {
+> +			kvm_incr_pc(vcpu);
+> +			ret =3D 1;
+> +			goto out_unlock;
+
+[Severity: Critical]
+This is a pre-existing issue, but does returning 1 here to resume the guest
+result in an infinite loop?=20
+
+When kvm_incr_pc() sets the INCREMENT_PC flag and ret is set to 1, the run =
+loop
+in kvm_arch_vcpu_ioctl_run() iterates without calling adjust_pc(), because
+adjust_pc() is located at the out label completely outside the do-while loo=
+p:
+
+arch/s390/kvm/arm64/arm.c:kvm_arch_vcpu_ioctl_run() {
+    ...
+    do {
+        ...
+        arm_vcpu_run(vcpu);
+        ...
+    } while (ret > 0);
+
+out:
+    if (unlikely(vcpu_get_flag(vcpu, INCREMENT_PC)))
+        adjust_pc(vcpu);
+}
+
+Would this cause arm_vcpu_run() to be re-executed with the exact same PC,
+hanging the host thread?
+
+[ ... ]
+
+> +	/* Userspace should not be able to register out-of-bounds IPAs */
+> +	VM_BUG_ON(fault_ipa >=3D kvm_phys_size(vcpu->kvm));
+> +	/*
+> +	 * Proper guest size faults have been injected.
+> +	 * In theory it's fine to have device memory higher than MSL,
+> +	 * even if not currently possible, but that would have been handled abo=
+ve.
+> +	 * So if we get here with a guest size intercept, we have a bug somewhe=
+re.
+> +	 */
+> +	VM_BUG_ON(guest_size_err);
+
+[Severity: High]
+Is it possible for a guest to trigger this assertion? If a guest triggers an
+address size fault where fault_ipa < kvm_phys_size(vcpu->kvm), the host ker=
+nel
+would hit this VM_BUG_ON. This could cause a panic when CONFIG_DEBUG_VM is
+enabled.
+
+> +
+> +	ret =3D user_mem_abort(vcpu, fault_ipa, memslot, hva);
+> +	if (!ret)
+> +		ret =3D 1;
+> +out_unlock:
+> +	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+> +	return ret;
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
-245-1-seiden@linux.ibm.com?part=3D25
+245-1-seiden@linux.ibm.com?part=3D26
