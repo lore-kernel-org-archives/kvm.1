@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCAD2DF701;
-	Sat, 30 May 2026 01:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104A227B353;
+	Sat, 30 May 2026 01:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780103433; cv=none; b=DbNh9DNXhUP1uhsl7tSTXdE7JgABCiu6iIFlkUqVSUnGScbeJutEZL9lHV5rXettVyTlqNDhJuCse5AvF8y0zPxluAmdT6LBQtvPODA8hsX//7qt4dknaYMGt4IsCd8h13lVt4/fpC040s0kXBtcOkznOAx+lhFxRC5MkiGeQ0w=
+	t=1780103487; cv=none; b=V6yD69q+iienYJrYoVHGkQiNUHgrZ8dBXvHgQnmKzbQE1K+TN4n1G8WHm+9eFH/UVcOvEiOj1sekbO1SABBD2JPFPTXpPaQ5UH6IJp+BvfJ4y0by2739P6EBVnGSWJKEcSj9T5h8byYzcyHSvXrONMJGBD3A2k+RAaxZNMNDk3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780103433; c=relaxed/simple;
-	bh=M3bKVIX8RhzkH0JC9WwReExSUFPYtwEkbVtmsN3u4Vc=;
+	s=arc-20240116; t=1780103487; c=relaxed/simple;
+	bh=EHiStX81IyL3N0bVJwaE9mIX52w+VqheOwLqZhiYzbo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OKxI5pUhoAlA/m+Teeokb0xPhMZFdPFQGEt8KJ4nWtZ/BMOnBB2HsVIOeXORGZ/txPl6CBMaDTgtRZBov+nS5kTFLWdG6+zXmf1ARwiLIVg8zNSQ4zAcVC1txND51ouwxH6tvgMuITf3ZwtB9NSfrAWbZGWpWtJbrZAqxb9Zbsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OqtScVA4; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=JUYV7DwbVQDbssaswKhRUnmwYe+tPgBb0BZbC13l8Os4hHfXkl3M/ZP6ywjJ/ya/246/Ka1k/4GGaaC9vQnCZKkJcfZbJ+zBjKclufbWuGq/6wa0NPZ9XbFdBaKgSVy6OvTDEq/XjjktaodmU4seQgsAOiDua1nEdnIQyKgSx0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hp/B8kri; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OqtScVA4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D921F00893;
-	Sat, 30 May 2026 01:10:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hp/B8kri"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 517F91F00893;
+	Sat, 30 May 2026 01:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780103431;
-	bh=nGZhRpC/Gl0qz8zi9EA7DSdNePQn8NAzQT4NZeT5uek=;
+	s=k20260515; t=1780103486;
+	bh=HIXsYyS7uDVPYBauuS5J9K1uc+ZNQR2K0QbXpWbJMLA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OqtScVA4SA31/PLot5NFoEC8vjnfZOHBOdvuMkLwL0t6NzlYxdGqpMcaOq3I9rZaf
-	 ifmTr4PBtElhoU3776lhHiu03BRo2Mncywgny2BgZBihvJNbDJdlUW0oD9UzsrKD1+
-	 bBl8UtbaMaZ9u1PqOMq0Q+gS4oEIarTUF5wDb78v8YYUj5n++U4PmJlJruPwOK0/S7
-	 bucnw8mpI8eh6PjAsWf/sGN3OIzBtSKjOIU8CgtFLW7qrrOx48XCC1ojJI+3IduQkW
-	 2UoIXOAPUDll7oCo1ab+jDs8KOcTCNzJUEjmmUIMLa7tkCrR9kz18e/SKELVuqeYHN
-	 CojQVjkMDunlw==
-Date: Sat, 30 May 2026 01:10:30 +0000
+	b=hp/B8kri3nhwuH2z2TnPIVzPU0Jn0IIJlpBwFHJlqqal2D566YLMRAsAjJImbq1Lw
+	 B+cTgJGGVAqZRDyrcFHtfum04e4N92wvgDilzFpFx0gcR7x8KqWBtS1+kEvhfNkJ4X
+	 N0uGRZaKT3nPAq6q7BFOuiRwthu3CWxW335VfQvr41tPF7XjzZR41Wu0qPQ7BXM7bL
+	 hzDZVE6qAIP21sE1VEw3IggQPyOWQsbv7siIum4DdAkh7wi9UB1s0yPWsFawrLzeIU
+	 oqFC/Ik4VXuPywa8TJgsSP+Bc7TdnUZPSHFXUk/+X30tZYK5kB0BkwskZP/JkKV/+H
+	 Y/Lc2aI//ypXQ==
+Date: Sat, 30 May 2026 01:11:25 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, 
@@ -34,11 +34,11 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Binbin Wu <binbin.wu@linux.intel.com>, David Woodhouse <dwmw@amazon.co.uk>, 
 	Kai Huang <kai.huang@intel.com>
-Subject: Re: [PATCH v3 36/40] KVM: x86: Move IRQ-related helper declarations
- from kvm_host.h => irq.h
-Message-ID: <aho4YC1ufeX14HCE@google.com>
+Subject: Re: [PATCH v3 37/40] KVM: x86: Move kvm_pv_send_ipi() declaration
+ from kvm_host.h => lapic.h
+Message-ID: <aho5Oef00ldJ_3gS@google.com>
 References: <20260529222223.870923-1-seanjc@google.com>
- <20260529222223.870923-37-seanjc@google.com>
+ <20260529222223.870923-38-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,40 +47,16 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260529222223.870923-37-seanjc@google.com>
+In-Reply-To: <20260529222223.870923-38-seanjc@google.com>
 
-On Fri, May 29, 2026 at 03:22:19PM -0700, Sean Christopherson wrote:
-> Move the function declaration for APIs to get/query pending IRQs from
-> kvm_host.h to irq.h, as the APIs are only used by KVM x86 code.
+On Fri, May 29, 2026 at 03:22:20PM -0700, Sean Christopherson wrote:
+> Move the declaration of kvm_pv_send_ipi() into lapic.h, as its
+> implementation is provided by lapic.c (sending PV IPIs relies on the
+> optimized APIC map provided by the in-kernel local APIC), and it's only
+> used by KVM x86 code.
 > 
 > No functional change intended.
 > 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/include/asm/kvm_host.h | 5 -----
->  arch/x86/kvm/irq.h              | 6 ++++++
->  arch/x86/kvm/svm/nested.c       | 1 +
->  arch/x86/kvm/vmx/nested.c       | 1 +
->  4 files changed, 8 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 866d33abaee0..38de6c0dc743 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -2360,12 +2360,7 @@ enum {
->  # define kvm_memslots_for_spte_role(kvm, role) __kvm_memslots(kvm, 0)
->  #endif
->  
-> -int kvm_cpu_has_injectable_intr(struct kvm_vcpu *v);
-> -int kvm_cpu_has_interrupt(struct kvm_vcpu *vcpu);
-> -int kvm_cpu_has_extint(struct kvm_vcpu *v);
->  int kvm_arch_interrupt_allowed(struct kvm_vcpu *vcpu);
-
-kvm_arch_interrupt_allowed() is only used in x86.c. Probably it wasn't
-used outside of x86 code after a1b37100d9e29c1f8dc3e2f5490a205c80180e01.
-
-It should probably be renamed and moved, maybe separately.
-
-Anyway:
 
 Reviewed-by: Yosry Ahmed <yosry@kernel.org>
