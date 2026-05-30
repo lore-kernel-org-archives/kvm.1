@@ -1,282 +1,186 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCCA3A3E78
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 10:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69023A169E;
+	Sat, 30 May 2026 12:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780136803; cv=none; b=nsD4IsRnN2Zz0BeSuqCm3CST3NkRac57fgs9T5ro0nIUYsxp76qT4KFcq65e1Y1E45relcR/18sL99e09TVSInZLVV3AdPWcU9coCeigAA+kUurLp/qKMf+0hvwKSsn/2fnH56DdMqf9Wi8yLyn6k9ud7hIp3wy+tWiGgO+x4yw=
+	t=1780145316; cv=none; b=UjxN6Z1QZjWlKLsvRuva2FBOawANZfuzqVtoDanBtWuvS3h+4+0NpQO8hq55P1HyUHzv/x0AVTi18F0PtTpZxTlYJL4T9NtXMr8dIYJbPAQjj7oiMIFp4nJxVAx5z6NIPepBZpLRrFgW9aZLvncbX9KaK61woZTfHDi8Bsk6T28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780136803; c=relaxed/simple;
-	bh=N4THDbJpEV/8hnNekojx0O/f9LO2ZvArPZsbPr6kWAg=;
-	h=Content-Type:Message-ID:Date:MIME-Version:From:Subject:To:Cc:
-	 References:In-Reply-To; b=PS1zr3FiT3r8x2ZDoR4bzInD7DvHTufZm2Ha8RNLYnpFY40E3qx3ylnmz3vtOVeHkTcnPG9hWE5H31UbjTkmaXqE0Stl1gWpGCJ+3ul9QjE8iug/su0t+17MYBrtqV13PyNnFJfUw+knVwnDkXw1aybw8SIshMj9/IVhUebs8ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H3eBIENL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780145316; c=relaxed/simple;
+	bh=xTjm8c2QKTkT6UdEEOOEnRuXIlLj3c71PZbhYNwPR3Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=a/YTm+jIFps2wNk2XlP8GeqGTtYaorgauf7Xlqbad40Ps3Z7P4A8Lei3AlQ6aYLYojL18v8mAyPvsF4myoV396/agodO35BQQLeGSk3oNv9TqvNF8ljvoqtnlQVNTLxdhVi83Dm/pqeDYHM+sNdTR/460uWmQKmvSI9nPY9suEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=e2+fzuYq; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H3eBIENL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780136795;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=k+iWErnEbGUPPRzc4Is8Fwp8fdR7scNr8yplwhh9fEY=;
-	b=H3eBIENLYluz7/spxmJTkl0wKBpshaGCP2XKgNHKetQZxHJ6AQB99lJuImhKvjJJ6mpo9L
-	iMujPqWcm5XpdBSRWDQtcpAblUgHR9Aa6O+cX4WQHEMiDwE1aY8o4zdZbupeleb0F0tJZd
-	CSHO5c6xcHTal+4vM7wcwtQyZtNO0sI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-DjUJI_1UM1GXFK8KKwmt7A-1; Sat,
- 30 May 2026 06:26:29 -0400
-X-MC-Unique: DjUJI_1UM1GXFK8KKwmt7A-1
-X-Mimecast-MFC-AGG-ID: DjUJI_1UM1GXFK8KKwmt7A_1780136787
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A3C701956089;
-	Sat, 30 May 2026 10:26:26 +0000 (UTC)
-Received: from [10.44.32.11] (unknown [10.44.32.11])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E134D19560A3;
-	Sat, 30 May 2026 10:26:21 +0000 (UTC)
-Content-Type: multipart/mixed; boundary="------------Z3eQGNDYOG7MJacqJi7Ula9k"
-Message-ID: <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
-Date: Sat, 30 May 2026 12:26:20 +0200
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="e2+fzuYq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=xTjm8c2QKTkT6UdEEOOEnRuXIlLj3c71PZbhYNwPR3Q=; b=e2+fzuYq6rhEH74RDnDsbVvhcB
+	8yCwDjPe6dR9+Ari68RQHTJmEouwOBzV/+bb6GGnJYvs7qMBTXM8pEWyI59i7q2K6V9JDI51afxhW
+	ZsdEqJSe8mx0lwSBfTG2inKOGzvJEU22ztzUpyKCDePmgomupo04tXB+PYEQl9Ah5V0NaKgUeD/03
+	sBMhnz8bNWsSh4ySkfYAvvuWnpe80Od0ikBKGnyCAXz9GxpIfILGgGYFgkkRcevmegSnjFYMwzTam
+	mT9dYCaxrhhORMFylCAGRP+D9/PgBkzHbqEhbBn3CbUrJEzIkzS8bSFZl/Sl9GxK4YkRsKclu7F+F
+	LMwDJpLg==;
+Received: from [54.240.197.226] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wTJ72-00000007u5v-2Yf1;
+	Sat, 30 May 2026 12:48:26 +0000
+Message-ID: <58d17a623c1c5c9c09bd91baa30510aaf42f899b.camel@infradead.org>
+Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
+ __rwbase_read_unlock()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>,  Peter Zijlstra <peterz@infradead.org>
+Cc: Paul Durrant <paul@xen.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon
+ <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
+ <longman@redhat.com>,  kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, Carsten Stollmaier
+ <stollmc@amazon.com>
+Date: Sat, 30 May 2026 13:47:06 +0100
+In-Reply-To: <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
+References: <20260529165114.748639-1-seanjc@google.com>
+	 <20260529165114.748639-2-seanjc@google.com>
+	 <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
+	 <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
+	 <ahnxfACTGeVFbJMk@google.com>
+	 <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
+	 <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
+	 <aho1M7fvK1Qzmiai@google.com>
+	 <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-qEraJbJjZWeyw6UynSqM"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
- __rwbase_read_unlock()
-To: Sean Christopherson <seanjc@google.com>,
- Peter Zijlstra <peterz@infradead.org>
-Cc: David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
- Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- David Woodhouse <dwmw@amazon.co.uk>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
- Carsten Stollmaier <stollmc@amazon.com>
-References: <20260529165114.748639-1-seanjc@google.com>
- <20260529165114.748639-2-seanjc@google.com>
- <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
- <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
- <ahnxfACTGeVFbJMk@google.com>
- <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
- <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
- <aho1M7fvK1Qzmiai@google.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <aho1M7fvK1Qzmiai@google.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-This is a multi-part message in MIME format.
---------------Z3eQGNDYOG7MJacqJi7Ula9k
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 5/30/26 02:54, Sean Christopherson wrote:
-> On Fri, May 29, 2026, Peter Zijlstra wrote:
->> On Fri, May 29, 2026 at 10:13:35PM +0200, Peter Zijlstra wrote:
->>
->>> It is somewhat possible to do an RT aware read-write spinlock thing, but
->>> it is definitely non-trivial and this would be the only user.
->>
->> Furthermore, it is fundamentally one of the worst possible lock types.
->>
->> It really isn't something you *want* to have -- arguably even for !RT.
->>
->> They scale like ass; per them being a spinlock type, the critical
->> sections must be short, but this means there is nothing to amortize the
->> cost of bouncing the shared lock around -- which is the 'saving' grace
->> of the rwsem.
->>
->> For short sections the cost of the shared access will dominate. I'm sure
->> Paul has a bunch of graphs to illustrate this point :-)
-> 
-> Hrm.  We might be able to do an SRCU-based implementation.  Full RCU would be
-> too unpredictable on the update side.
+--=-qEraJbJjZWeyw6UynSqM
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Yeah, I think so.
+On Sat, 2026-05-30 at 12:26 +0200, Paolo Bonzini wrote:
+>=20
+> Yeah, I think so.
+>=20
+> The write side needs kvm->srcu so it would have to be yet another SRCU.=
+=20
+> I initially thought that sucks for the code that calls kvm_gpc_check(),=
+=20
+> but maybe not because it simply replaces read_lock/read_unlock.
+>=20
+> By using a seqcount for the data, SRCU only needs to be synchronized in=
+=20
+> gpc_unmap().=C2=A0 So, something like this:
 
-The write side needs kvm->srcu so it would have to be yet another SRCU. 
-I initially thought that sucks for the code that calls kvm_gpc_check(), 
-but maybe not because it simply replaces read_lock/read_unlock.
+It isn't just gpc_unmap() which does the invalidation. We also
+invalidate from the MMU notifier in gfn_to_pfn_cache_invalidate_start()
+which would also have to synchronize, wouldn't it?
 
-By using a seqcount for the data, SRCU only needs to be synchronized in 
-gpc_unmap().  So, something like this:
-
-struct kvm_cached_gva_map {
-	struct kvm_memory_slot *memslot;
-	void *khva;
-	unsigned long uhva;
-	unsigned long idx;
-};
-
-/* snapshot is the new check */
-bool kvm_gpc_snapshot(struct gfn_to_pfn_cache *gpc, unsigned long len,
-		      struct kvm_cached_gva_map *ret)
-{
-	struct kvm_memslots *slots = kvm_memslots(gpc->kvm);
-	unsigned seq;
-	u64 generation;
-	gpa_t gpa;
-
-	/* The data is protected by the seqcount, the khva by SRCU.  */
-	ret->idx = srcu_read_lock(&gpc->kvm->gpc_srcu);
-	/* A seqcount_spinlock_t, but see below - there's a bug!  */
-	if (!raw_seqcount_try_begin(&gpc->sc, seq))
-		goto out_fail;
-
-	if (!gpc->active || !gpc->valid)
-		goto out_fail;
-
-	ret->uhva = gpc->uhva;
-	ret->khva = gpc->khva;
-	ret->memslot = gpc->memslot;
-	gpa = gpc->gpa;
-	generation = gpc->generation;
-	if (read_seqcount_retry(&gpc->sc, seq))
-		goto out_fail;
-
-	/*
-	 * Now do all the validity checks on a stable copy.
-	 * If the page was cached from a memslot, make sure the
-	 * memslots have not been re-configured.
-	 */
-	if (!kvm_is_error_gpa(gpa) && generation != slots->generation)
-		goto out_fail;
-
-	if (kvm_is_error_hva(ret->uhva))
-		goto out_fail;
-
-	if (!kvm_gpc_is_valid_len(gpa, ret->uhva, len))
-		goto out_fail;
-
-  	return true;
-
-out_fail:
-	srcu_read_unlock(&gpc->kvm->gpc_srcu, ret->idx);
-	return false;
-}
-
-static inline
-void kvm_gpc_snapshot_release(struct gfn_to_pfn_cache *gpc,
-			      struct kvm_cached_gva_map *ret)
-{
-	srcu_read_unlock(&gpc->kvm->gpc_srcu, ret->idx);
-}
-
-Introducing snapshot as a replacement for check (while still leaving it 
-to the caller to take the rwlock) can even be a separate patch.
-
-There is a bug in raw_seqcount_try_begin() though.  It must not do the 
-lock/unlock dance or it won't be usable in atomic context.  See attached 
-patch.
-
-> The big hiccup is when KVM needs to reclaim memory in response to mmu_notifier
-> events from the OOM killer, which don't allow sleeping.  I'll stare at this a
-> bit next week.  I'm not exactly thrilled about the idea of ripping apart this
-> code, but there's a known performance bottleneck with mmu_notifier events,
-> maybe we can kill two birds with one stone.
-
-There was a pending patch to allow the MMU notifiers to disable 
-themselves while still in sleepable context.
-
-https://lore.kernel.org/kvm/20260429222548.25475-1-shaikhkamal2012@gmail.com/
-
-It really needs to be split in multiple parts, and the allocation needs 
-to be removed.  Looking at it.
-
-Otherwise, calling synchronize_srcu() from gpc_unmap(), which is within 
-the kvm->srcu read side, is also a bit unpredictable.  But the read 
-sides are super short so you can make it expedited.
-
-Or can you just skip the synchronize_srcu() from OOM via 
-check_stable_address_space()?  Maybe pretend I didn't suggest that.
-
-Paolo
---------------Z3eQGNDYOG7MJacqJi7Ula9k
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-seqcount-allow-raw_seqcount_try_begin-in-atomic-cont.patch"
-Content-Disposition: attachment;
- filename*0="0001-seqcount-allow-raw_seqcount_try_begin-in-atomic-cont.pa";
- filename*1="tch"
+--=-qEraJbJjZWeyw6UynSqM
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
 
-RnJvbSBmMmM2MDRhOTRjZGVhOWJiOTZiYjIxYzhhMjkyODhlYWU2Y2JhYzY3IE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBQYW9sbyBCb256aW5pIDxwYm9uemluaUByZWRoYXQu
-Y29tPgpEYXRlOiBTYXQsIDMwIE1heSAyMDI2IDEwOjU0OjM2ICswMjAwClN1YmplY3Q6IFtQ
-QVRDSF0gc2VxY291bnQ6IGFsbG93IHJhd19zZXFjb3VudF90cnlfYmVnaW4gaW4gYXRvbWlj
-IGNvbnRleHQKCldoZW4gcmF3X3NlcWNvdW50X3RyeV9iZWdpbigpIGlzIHVzZWQsIHRoZSB0
-eXBpY2FsIGFjdGlvbiB3aGVuCnRoZSBzZXFjb3VudCBpcyBidXN5IGlzIHRvIHRha2UgdGhl
-IHNhbWUgbG9jayB0aGF0IHRoZSB3cml0ZXIgdXNlcy4KQW5vdGhlciBwb3NzaWJpbGl0eSwg
-Zm91bmQgaW4ga2VybmVsL2V2ZW50cy91cHJvYmVzLmMsIGlzIHRvIGRlbGF5CnRoZSB3b3Jr
-IHRvIGEgc2FmZSBwb2ludCB1c2luZyBSQ1UuICBFaXRoZXIgd2F5IHRoZXJlIGlzIG5vIG5l
-ZWQKdG8gZ3VhcmFudGVlIHByb2dyZXNzIG9mIHRoZSB3cml0ZXIgdW5kZXIgQ09ORklHX1BS
-RUVNUFRfUlQsCmJlY2F1c2UgdGhlIGNhbGxlciBpcyBub3QgZ29pbmcgdG8gY2FsbCByYXdf
-c2VxY291bnRfdHJ5X2JlZ2luKCkgaW4gYSBsb29wLgoKSG93ZXZlciwgcmF3X3NlcWNvdW50
-X3RyeV9iZWdpbigpIGN1cnJlbnRseSB1c2VzIHNlcXByb3Bfc2VxdWVuY2UoKQp2aWEgcmF3
-X3JlYWRfc2VxY291bnQoKSwgYW5kIHRoZXJlZm9yZSBkb2VzIGEgbG9jay91bmxvY2sgb2Yg
-dGhlCndyaXRlLXNpZGUgbG9jayBvbiBQUkVFTVBUX1JUIGtlcm5lbC4gIFRoaXMgcHJldmVu
-dHMgaXQgZnJvbSBiZWluZwp1c2VkIGluIGF0b21pYyBjb250ZXh0LiAgVXNlIF9fc2VxcHJv
-cF9zZXF1ZW5jZSgpIGluc3RlYWQgb2YKcmF3X3JlYWRfc2VxY291bnQoKSB0byBhbGxvdyBp
-dC4KCkNjOiBQZXRlciBaaWpsc3RyYSA8cGV0ZXJ6QGluZnJhZGVhZC5vcmc+CkNjOiBTZWFu
-IENocmlzdG9waGVyc29uIDxzZWFuamNAZ29vZ2xlLmNvbT4KU2lnbmVkLW9mZi1ieTogUGFv
-bG8gQm9uemluaSA8cGJvbnppbmlAcmVkaGF0LmNvbT4KLS0tCiBpbmNsdWRlL2xpbnV4L3Nl
-cWxvY2suaCB8IDUgKysrKy0KIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDEg
-ZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L3NlcWxvY2suaCBiL2lu
-Y2x1ZGUvbGludXgvc2VxbG9jay5oCmluZGV4IDVhNDAyNTJiODMzNC4uOWFkYmY1ZDk2Njdj
-IDEwMDY0NAotLS0gYS9pbmNsdWRlL2xpbnV4L3NlcWxvY2suaAorKysgYi9pbmNsdWRlL2xp
-bnV4L3NlcWxvY2suaApAQCAtMzM4LDcgKzMzOCwxMCBAQCBTRVFDT1VOVF9MT0NLTkFNRSht
-dXRleCwgICAgICAgIHN0cnVjdCBtdXRleCwgICAgdHJ1ZSwgICAgIG11dGV4KQogICovCiAj
-ZGVmaW5lIHJhd19zZXFjb3VudF90cnlfYmVnaW4ocywgc3RhcnQpCQkJCVwKICh7CQkJCQkJ
-CQkJXAotCXN0YXJ0ID0gcmF3X3JlYWRfc2VxY291bnQocyk7CQkJCQlcCisJc3RhcnQgPSBf
-X3NlcXByb3Bfc2VxdWVuY2Uocyk7CQkJCQlcCisJCQkJCQkJCQlcCisJaWYgKCEoc3RhcnQg
-JiAxKSkJCQkJCQlcCisJCWtjc2FuX2F0b21pY19uZXh0KEtDU0FOX1NFUUxPQ0tfUkVHSU9O
-X01BWCk7CQlcCiAJIShzdGFydCAmIDEpOwkJCQkJCQlcCiB9KQogCi0tIAoyLjU0LjAKCg==
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+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
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUzMDEyNDcw
+NlowLwYJKoZIhvcNAQkEMSIEIB80l6Zz0yuTX6gc/1cLnV8XBuGaNDtXv2KCbnZDGJIOMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAzIOPQe5tF2cM
+bXML7cKg+owVhFpQQMmE/CsDNrM8JAnqrqGW7TxuHuErSDjXaAcwQ+4Ubl/y1GvGsg4FqJz6AbGR
+ZnPiULj8nOQt0KH4k3jHE/DRKRZaKizamu4NfKokRK+2fPwk746rsDNEiA4mdM1NTZ0qsi7wFbEN
+I4/cy8lXv+Inw5VK0aaDYhLz1EdEB4wb3ycbynrrvUIjvNfqM62VF4ZpT86phbqhzdiFCBTClRpt
+N0lYpk671H2jXSamgNJ+zCQWn7Mon/vpxuZUSGPoHUP33nNNWxkWrONR92vIwCKXJC9aL+u0qBfT
+RmWK9h4Hv9VvEJT3XmsI8e8p4flk44hlVUQ3z+mB6lFxevEQHwvur3ZY2T4/jz7I3PN3kT6bdRln
+5iVKhgi/wbxORr28foEbCb9OOpYPLyOLoP4ieGSDrlx5Cl399QYdL5N1/ifJ61TaxziYSyI1NVEF
+IVdqCTxYx34PmROPkjRLykifQABdFxVojF7CHT8sKPPV1tjKTzqari4l4fy3SkwfTvJdXs4f0+UJ
+6n5CIgMgTr2VDfdPyPOZ1+9kBAEj8z05nh36SspfBui3pE+y3t7NOCY0ZL2ff2/x3CP5yNLXZUiX
+beVpMdMf0JbOaEL7BF3v06vbGfp9P6hNomt6zNK+RNK7oIk2DI86CFpXJ2+X3hkAAAAAAAA=
 
 
---------------Z3eQGNDYOG7MJacqJi7Ula9k--
-
+--=-qEraJbJjZWeyw6UynSqM--
