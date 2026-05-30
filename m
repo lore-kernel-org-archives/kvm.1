@@ -1,53 +1,53 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAE21DE8BF
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 00:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21203C2D
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 00:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780100581; cv=none; b=id27P0IFB7I3ugemR0ZCZzxabZs2n+KqYsIv81JuciINa4uizpc+oNmIwj6352ZvzMhnsuPi5dtT/kAVG9fGnC0MYmztgiD9Rgvlvt3DMwpgOkcPS3jEw5ZuMltdq0ouk9zeWghbIWMnmwPcR7HXZjXhFWInG8Rf0mNLlSroT8k=
+	t=1780100584; cv=none; b=hQYhnVEoK5JGw82V5VyF/+FuL446/KJepkdWb6/8QTxzOnpMkSmJyI63sL4QqaSlpj+mUxQIqUrRq9JxLsIONXJEivojb7MSMu24K+Unersx9hcAwl9sGQ2ZYDv7prDz7LK35nWm0DkfXx02wsxjbrV0d0iSYG/tMAQiOXLBKhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780100581; c=relaxed/simple;
-	bh=s2MYJQNj8LYRIAfQocfHgBxQGwQ3ttG+Ot8ZEKdurmw=;
+	s=arc-20240116; t=1780100584; c=relaxed/simple;
+	bh=Za+s+OgPLfvUhN+QI3n1p7epUkpLwBru3OqG8CCuomI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CIIgJaDYAASc9jRtdZ2bNA68A2KTN0FXyWUKsXzn923wh4Gs1nUwwIa0K8OkZyZwQqub01eGMcustnVMR7cZ8WPAKelJZTGqRNZ2Ii4dSH17saqzyZQzr7NelQp4FDyIgY48rH/gS43LOr10KUf2kcJ8cfV6aOqxF2Sm2If9xBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fZrriQdB; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=aTDYDzGegLnzGZnIOBWwIlulE9LFaI96T4KBM3w25ziUldUWfB8/NlNlck2POrErdgUip4e0n2CEk6w6dH5xLdX9YkIkKhS1NjmYgUdi+IVr68LrvAUFcWBEKRX7bWPDwSOdVqPDZlzBThj8Uk/tontvkCBFz0MuNkdgpO3IKOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fr7F20Rf; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fZrriQdB"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b7c55406bso1982710a91.2
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:23:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fr7F20Rf"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8421fa54cf9so409932b3a.0
+        for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:23:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780100580; x=1780705380; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780100583; x=1780705383; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9v7UfovR9K9VTf6qWxX2XmbiOmSXdhYyM9BXuDZay90=;
-        b=fZrriQdBCohJVkOtSWvQ0tNxyERpQhv7pH+SjvscGFzU83hBcxh3Hu71okDjhh22sO
-         05p1SJ8VU5OjmIlcGag6QMTKc5PNysczTsXQ049vgKFMj2h/KmC6ZzKj0XnAzi1bqyPt
-         bJyFtnqXrOPgeM3Nw5iCFSPUpAPnBtld92w5XZA5dqGpL3NerKKX5CJ3tY4pF+aP9N6x
-         9BNCkWbLO2z2rp5Vpxa4qfkXUlFUG5aW/UvsxNHk74Xfb3DLqWJvSzSOadva227IlPGm
-         UAXjYouWnozcg/L9Rhj6tnvLIvYDYSNb5Iqt/UAuywnQ6lImh/CIt7OsjX/tNgwzHOkB
-         mGkg==
+        bh=9DXbh05mf0SUiaS4tAY6E1/7NEkibUbeq5dHsgLItpk=;
+        b=Fr7F20RfTLfpxAZz8vsawslSD+rCVnmKqyOItVpR6NGQk0qzM5Odw5lnqr3Q2hXAiL
+         5+ImmS/aG495T4uT5XK1DO7yiyPmlI8cbOaKXU74NXPTKxAz6gXpVFPA+dr4GTpcSl7I
+         o48VsTi1dX9ONpHnt3fRQefJas4tZFiXfcR6DlvM115rjyfctjQAhb/s/cYZeiCWIsI5
+         IllD7YOwr3OK7J0RG3oBl5PSt8bJ9AjqEIB0xp/nkE7XRzs9+Djh42X5xxRUi9cJ4F50
+         Bq0aIh9qaC/IcRATXEGx4ULMraZIkVY0bp4S9asZtT6729/ebyV5VcsYXm6YHfhNwTJ1
+         XXSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780100580; x=1780705380;
+        d=1e100.net; s=20251104; t=1780100583; x=1780705383;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9v7UfovR9K9VTf6qWxX2XmbiOmSXdhYyM9BXuDZay90=;
-        b=sbrp3YU7tmjZTzfzPV8x0rRsrkh/T7JnHYB9xxtYMx+e6Uslz1BTtZOWvNv92+vs8u
-         tjV+PgSkzElr2k8wNOvgiVO+FMN/QisoTFT9cPVmDckZ/T+5Jpw74DQEm9NER/kKTiuZ
-         qZn4ip9y9Zjro4DZmdoLFvnoM/VLK2JvtJJqEbO1GVZdMZ2Xrxxar3Gcs2n61/2gFzVk
-         pR2Ehito+gVCJ/vVAGSrtMUq0EQpCh//fGZl1uqGjh3p0ysCVD5oPEGbdX7ia8ZInHbV
-         RQ7vniRJ8/1jM7v7aiOQDkaxEBmoj6n0sOv714qK9AZxjr4UJRCSxci3NpC8u2drXK20
-         NXKA==
-X-Gm-Message-State: AOJu0Yw3SAFcqCfPRDWlMPvdFMkUYYUx5VTlBoprm/DIUh0g8niTdme2
-	ReIatj+nAT/N/FBcSEaIIEBB+qWW/47h/1ITgPFyYXbg1iofYCDLIGv9NYkvlJLsWm6tS1+DSG3
-	xbZvbtIjD
-X-Received: from pjboh6.prod.google.com ([2002:a17:90b:3a46:b0:36a:fcf5:b57f])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:574e:b0:369:7421:b376
- with SMTP id 98e67ed59e1d1-36c501dd387mr1274602a91.19.1780100579735; Fri, 29
- May 2026 17:22:59 -0700 (PDT)
-Date: Sat, 30 May 2026 00:21:16 +0000
+        bh=9DXbh05mf0SUiaS4tAY6E1/7NEkibUbeq5dHsgLItpk=;
+        b=f9iV14OUjVYbJyZzNecB281wndtW7oKXc1J56LAsqKnV3QOacSIbJZMMTv5EhxpwQq
+         gk51jTn1AwT8FhHMpbh43rz2NcsBblSdjqg0YOOETlKmmLklJBJjEgtdOOjqdDs/L6id
+         gZ6PTvXyi7jCPAQnfbMXH8dybMDFX87MMKENQSWUHzh8z9ZXLTR6bl+yutlxIyw6uooc
+         yyv3b+yjwpZ9tD3/EBJUwAxOtRAokrWFkgZnCU11EHliZcxvVeNsktL1KVBWaGAWOhnM
+         g+4fCD3CBaX+kmLqK/KxLu4SKgSLoyQrN1UJbwwHLCm9ImdE9iLGM71bb01D6PAUwqrA
+         QgEg==
+X-Gm-Message-State: AOJu0Yycc6V8EGSCRhDskSEzT0QN5a6h4eWxHhHN3MO1nWMm5S2rp/cx
+	iKGw25n7ZW3q4e/HCbBDAWYlZmh5rfusp3LsJOzdqehemQ0zfw+snlckUX9U6xQwYzNtjr5eXsn
+	3kYtr7tys
+X-Received: from pfbky35.prod.google.com ([2002:a05:6a00:6f63:b0:82f:473b:a2d5])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3a25:b0:82f:9985:d4a1
+ with SMTP id d2e1a72fcca58-842255cf8edmr1642023b3a.24.1780100582679; Fri, 29
+ May 2026 17:23:02 -0700 (PDT)
+Date: Sat, 30 May 2026 00:21:17 +0000
 In-Reply-To: <20260530002134.558837-1-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,9 +57,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260530002134.558837-1-jrhilke@google.com>
 X-Mailer: git-send-email 2.54.0.929.g9b7fa37559-goog
-Message-ID: <20260530002134.558837-2-jrhilke@google.com>
-Subject: [PATCH v4 01/19] KVM: selftests: Build and link selftests/vfio/lib
- into KVM selftests
+Message-ID: <20260530002134.558837-3-jrhilke@google.com>
+Subject: [PATCH v4 02/19] KVM: selftests: Add /proc/interrupts parsing helpers
+ for IRQ test
 From: Josh Hilke <jrhilke@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -68,46 +68,101 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: David Matlack <dmatlack@google.com>
 
-Include libvfio.mk into the KVM selftests Makefile and link it into all
-KVM selftests by adding it to LIBKVM_OBJS.
+Introduce utility functions to parse /proc/interrupts and extract the
+host IRQ number for a given VFIO device and MSI vector.
 
-This lays the groundwork for future changes to utilize VFIO devices to
-verify IRQ bypass in KVM selftests.
+These helpers lay the groundwork for subsequent patches that will creat
+a KVM IRQ test and use real VFIO devices to trigger hardware interrupts.
+Specifically, they are needed to allow the test to log the exact IRQ
+number being used for better debugging.
 
-Note that KVM selftests build their own copy of sefltests/vfio/lib and
-the resulting object files are placed in $(OUTPUT)/lib. This allows the
-KVM and VFIO selftests to apply different CFLAGS when building without
-conflicting with each other.
-
-Signed-off-by: David Matlack <dmatlack@google.com>
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Co-developed-by: Josh Hilke <jrhilke@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- tools/testing/selftests/kvm/Makefile.kvm | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/Makefile.kvm      |  1 +
+ .../testing/selftests/kvm/include/proc_util.h |  9 ++++
+ tools/testing/selftests/kvm/lib/proc_util.c   | 42 +++++++++++++++++++
+ 3 files changed, 52 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/include/proc_util.h
+ create mode 100644 tools/testing/selftests/kvm/lib/proc_util.c
 
 diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 6471fa214a9f..b3e223f45575 100644
+index b3e223f45575..d944b81cad7d 100644
 --- a/tools/testing/selftests/kvm/Makefile.kvm
 +++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -252,6 +252,7 @@ OVERRIDE_TARGETS = 1
- # which causes the environment variable to override the makefile).
- include ../lib.mk
- include ../cgroup/lib/libcgroup.mk
-+include ../vfio/lib/libvfio.mk
- 
- INSTALL_HDR_PATH = $(top_srcdir)/usr
- LINUX_HDR_PATH = $(INSTALL_HDR_PATH)/include/
-@@ -306,7 +307,9 @@ LIBKVM_S := $(filter %.S,$(LIBKVM))
- LIBKVM_C_OBJ := $(patsubst %.c, $(OUTPUT)/%.o, $(LIBKVM_C))
- LIBKVM_S_OBJ := $(patsubst %.S, $(OUTPUT)/%.o, $(LIBKVM_S))
- LIBKVM_STRING_OBJ := $(patsubst %.c, $(OUTPUT)/%.o, $(LIBKVM_STRING))
--LIBKVM_OBJS = $(LIBKVM_C_OBJ) $(LIBKVM_S_OBJ) $(LIBKVM_STRING_OBJ) $(LIBCGROUP_O)
-+LIBKVM_OBJS = $(LIBKVM_C_OBJ) $(LIBKVM_S_OBJ) $(LIBKVM_STRING_OBJ)
-+LIBKVM_OBJS += $(LIBCGROUP_O)
-+LIBKVM_OBJS += $(LIBVFIO_O)
- SPLIT_TEST_GEN_PROGS := $(patsubst %, $(OUTPUT)/%, $(SPLIT_TESTS))
- SPLIT_TEST_GEN_OBJ := $(patsubst %, $(OUTPUT)/$(ARCH)/%.o, $(SPLIT_TESTS))
- 
+@@ -11,6 +11,7 @@ LIBKVM += lib/kvm_util.c
+ LIBKVM += lib/lru_gen_util.c
+ LIBKVM += lib/memstress.c
+ LIBKVM += lib/guest_sprintf.c
++LIBKVM += lib/proc_util.c
+ LIBKVM += lib/rbtree.c
+ LIBKVM += lib/sparsebit.c
+ LIBKVM += lib/test_util.c
+diff --git a/tools/testing/selftests/kvm/include/proc_util.h b/tools/testing/selftests/kvm/include/proc_util.h
+new file mode 100644
+index 000000000000..7c465e8584e2
+--- /dev/null
++++ b/tools/testing/selftests/kvm/include/proc_util.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef SELFTEST_KVM_PROC_UTIL_H
++#define SELFTEST_KVM_PROC_UTIL_H
++
++#include <stdint.h>
++
++int get_proc_vfio_irq_number(const char *vfio_device_bdf, int msi);
++
++#endif /* SELFTEST_KVM_PROC_UTIL_H */
+diff --git a/tools/testing/selftests/kvm/lib/proc_util.c b/tools/testing/selftests/kvm/lib/proc_util.c
+new file mode 100644
+index 000000000000..ad1c54a81869
+--- /dev/null
++++ b/tools/testing/selftests/kvm/lib/proc_util.c
+@@ -0,0 +1,42 @@
++// SPDX-License-Identifier: GPL-2.0
++#include "kvm_util.h"
++#include "test_util.h"
++#include "proc_util.h"
++
++#include <ctype.h>
++
++static FILE *open_proc_interrupts(void)
++{
++	FILE *fp;
++
++	fp = fopen("/proc/interrupts", "r");
++	TEST_ASSERT(fp, "fopen(/proc/interrupts) failed");
++
++	return fp;
++}
++
++int get_proc_vfio_irq_number(const char *device_bdf, int msi)
++{
++	char search_string[64];
++	char line[4096];
++	int irq = -1;
++	FILE *fp;
++
++	fp = open_proc_interrupts();
++
++	snprintf(search_string, sizeof(search_string), "vfio-msix[%d]", msi);
++
++	while (fgets(line, sizeof(line), fp)) {
++		if (strstr(line, device_bdf) && strstr(line, search_string)) {
++			TEST_ASSERT_EQ(1, sscanf(line, "%d:", &irq));
++			break;
++		}
++	}
++
++	fclose(fp);
++
++	TEST_ASSERT(irq != -1, "Failed to locate IRQ for %s %s", device_bdf,
++		    search_string);
++	return irq;
++}
++
 -- 
 2.54.0.929.g9b7fa37559-goog
 
