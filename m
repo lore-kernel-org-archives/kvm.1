@@ -1,155 +1,99 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B070E3976AD
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 09:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216CE317153
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 09:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780133310; cv=none; b=KgBvV/Ru5G2ZBtpSlI4McH7yfjWuEExb5EdkTvUTY2D5mx1rQ/9PSMl4OXYZ5/KBSi6ynhgLGRL9eaAtDAiY1s1944tr7UCgu/WEawcj0wOh/iobESsNiJe/8N1yaygk+EZPJ3w76ek+ekFJfmXGRXrOqGUskyqxZNeCf3dt62k=
+	t=1780133389; cv=none; b=m6ecW7pKOWTt/rX+s2RgJ/JMNqvOqZT5WwmW/zQigNrMzPnGaCi9Z94vb9dMSDos3IX5u92cdYXACs88ZkuvzlYnOlEOwSEQnUukxINwpzzeb+ZOi/vJmR7NLMSPcXwwkkjfhE0pVfurWRCS4GFhpTYGg2FZyXAqlgIzJ6aP7VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780133310; c=relaxed/simple;
-	bh=Axu2q9OiQlW7NrUR5/tN+MxVX+YXj5nOsIeGUL7II+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tmVBL0F10IKiPY+ecvGQQ9IF9qeiFU2fR2dpcC2OWD3j9+77689EtUToarn9LymQILOhF4YnpjY4gc6X+fjcqXg2bbFJzumj5wcEbGHmhrS73nRSYM3+bUCqeH306IrjylwGt5fzhUuySM1aoiiJqO/kx6l6w5Zle7Yue7TDFxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aEiIiZ8g; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780133389; c=relaxed/simple;
+	bh=NsjuvnWhKKSr+gx6ACjnSrlRRyFBBWpjFXVqooGfyJw=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=bk9SbkhSZV7uLGvyHtDvEkrGIbG5I1UZ5SahC4RtXfsCY7O7e4ehH66wSi0yrKM5O0x+Mm0iCmVZE8tc4loizS8dWK81pCCaceG4UnjV2qoDBHNjLhUvoq8Va2KP6gZT9zkJKz7ztN+UHTpInvSZhQUEbal3BTYGVAMyZD1dEvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+lpPARz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aEiIiZ8g"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4891c0620bcso94716885e9.1
-        for <kvm@vger.kernel.org>; Sat, 30 May 2026 02:28:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780133307; x=1780738107; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AVGWNyN/0YK3gFgYNwL3zKk91DjUbWVPzRQNZkauQoA=;
-        b=aEiIiZ8g0hy0yB/O+bDn7Qw4lOfN43CRMMIOFofGOKWKSLeutjNpsZecxl1PpF6dGq
-         XUr13spfzUEBtwv04kv+5AwqvczVql4/rFzglnoFDWJiGLSUG9LMAKcVLLAPgsa/kU9t
-         zluLvPFhdhGFedsiuZiYQhWDrDHb6RPbzb+RIt1hN1uaQ4DaUE4c2eOFaiBq+m6UXu62
-         vqjV0taBTZDPRazx4yOVz0wossMHj2fIJMBAmv/mXMjZ1WgM365BRb+3Zxn9aYNcpHXd
-         0Zcst7R72wcLfComJvvpx853k9BfRth+OczB8+jks6+1OILp1F2ltb7V2sIbLEMprH8k
-         Me6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780133307; x=1780738107;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AVGWNyN/0YK3gFgYNwL3zKk91DjUbWVPzRQNZkauQoA=;
-        b=GSKcdzWBkCLeYxazSHq6I4DAcfNRv5SJC9LcSRMnvtfb6Obnd7kLq0D5XVdrThUU4o
-         ZlWsTcNLtSy5fWP6I8/BA5vfbkEESAKg78JdDYbPhOYBLretfFwDP/QamKMjDIH1c/Ws
-         Wrkz5k9q+6bShKNIozLa0nP60z/PNYqiEikUPx0YQhVbIX5nSjyYno5Z2KJ8cUiQKhmH
-         gwaftQR7ZxJ/Fg29htqRKswPGGoc6ev+z/Wmpwv1u41skUWOl8xFKqJTwG/D6dQVYqOV
-         K1No/m6z9ZaGR9VVYMrdyYyBVfLlK7BM0HGFARwARkHemyg+qgRnKIYuH9fhcqiL+vXC
-         RUFg==
-X-Forwarded-Encrypted: i=1; AFNElJ/f5S8lGfixt15GCiPmXK8UD4DKcurJc+IdLV2c52UYpJp3on2Mv4RjkRxnpE6EHAlPpFM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlRcCuDzwfSrn9FbXPpGGiAZg72sers/pUyf3TCInWkhqTqy7i
-	N0q2EOU1Nl25/8LZ16X0PqJHAcyS+UnPjHWDNLyZF8xLry+H/+xLNSy3
-X-Gm-Gg: Acq92OEH7s9nqNO7zeyMhjslqGritJic5ZY12xODZjNxOCJorWt+fJ52UWBfa1QZ3pL
-	XG12Eu6Kp2Y1VnMlXYR+BmKJwQT7OdJyo+6Cw5mfQkAZ7wUGZ8hCNjxugbfMOEpVtiuIbgkPpKX
-	rLXTlIjScY4tjpIGFf7rWSSVbvQVn5F+8unGTHczWET4xO2E/djT01Y6kv3d5VLnMR/GItQc/u9
-	VhkCY1kV7QaaXnZrx380S950G4HyQR1OkipWbaEE/LdG4SUczkiTLtb4TjHdrE1y6psMIrF4hHp
-	eKFWqWYzaEOgp/HF657Y8zhhGK0ur/qgqt6IyNN1oDJar8gKWoPq0Q6n9KMCKIRoFMtzWDxdY2D
-	qY6ZTNlGYKJ5vlojsyYPzmIFrz/DdLGvvRizbCYsvPzIZ3HZmfv5uCPGDEaMXTJvvlqAmw+Ka+v
-	yNxYq74CLwNMPMd3kV4WnJQcdrYRfvX9hQbrEUF7oXlqPwS+oXD6l3XiNs0v9rNdcdpmBqHmg=
-X-Received: by 2002:a05:600c:3147:b0:48f:e230:80a3 with SMTP id 5b1f17b1804b1-490a297304bmr47960185e9.33.1780133306950;
-        Sat, 30 May 2026 02:28:26 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c09acd3sm30659185e9.4.2026.05.30.02.28.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 May 2026 02:28:26 -0700 (PDT)
-Date: Sat, 30 May 2026 10:28:24 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
- kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
- linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org, Mark Bloch
- <mbloch@nvidia.com>, netdev@vger.kernel.org, Saeed Mahameed
- <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>, Tariq Toukan
- <tariqt@nvidia.com>, patches@lists.linux.dev
-Subject: Re: [PATCH v2 06/11] selftests: Fix arm64 IO barriers to match
- kernel
-Message-ID: <20260530102824.65ceb098@pumpkin>
-In-Reply-To: <20260529224442.11d7320d@pumpkin>
-References: <0-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
-	<6-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
-	<ahiFxtmspbETiqWw@google.com>
-	<20260529134947.GA128816@nvidia.com>
-	<20260529175516.06d5788f@pumpkin>
-	<20260529192933.GD3195266@nvidia.com>
-	<20260529224442.11d7320d@pumpkin>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+lpPARz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490971F00893;
+	Sat, 30 May 2026 09:29:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780133387;
+	bh=CGqECqkSBdLTWiYgYvDwHn0srLWhgTPf5G+v2b+CmMU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=X+lpPARzp2LxFFJewhD7fZybecjiC/AVhV8I6VSTdiAUEm2RcrxCSpbef4OmiyANc
+	 joxsgB2zf7MZipZvlIQ2BLXZLmgxFo0mvF46WrPdI+OhVipjj8dLZcxHEzn2/MYwJ9
+	 tqxDguVnQ/t1h6d50fGBcvyAkCgZg3polMdL8wxpshBseJb4XmdFYYZpjydijNMRbY
+	 /Tb/Ib8TYLgTmSpVipzpS9hItQL1fncPhFMd4Aml3xq8rYNAMPAtGTlwkh5qLYx4K0
+	 YthfZ7Iv9aAct4Z3kJXpVSttvANjdcOgnsUInhjkCnMsPNBHk5ldgDp+qHUIVYJd1+
+	 ZPjeCdFwh7/+Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 20/24] KVM: SEV: Return INVALID_EVENT for SNP-only
+ #VMGEXIT from non-SNP guest
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260529183549.1104619-21-pbonzini@redhat.com>
+References: <20260529183549.1104619-21-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 30 May 2026 09:29:46 +0000
+Message-Id: <20260530092947.490971F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Fri, 29 May 2026 22:44:42 +0100
-David Laight <david.laight.linux@gmail.com> wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] KVM consumes the GHCB `sw_exit_code` field before verifying that th=
+e guest marked it as valid.
+--
 
-> On Fri, 29 May 2026 16:29:34 -0300
-> Jason Gunthorpe <jgg@nvidia.com> wrote:
-> 
-> > On Fri, May 29, 2026 at 05:55:16PM +0100, David Laight wrote:  
-...
-> > I can't say, this is copied from the kernel and Will made it:
-> > 
-> >     arm64: io: Ensure calls to delay routines are ordered against prior readX()
-> >     
-> >     A relatively standard idiom for ensuring that a pair of MMIO writes to a
-> >     device arrive at that device with a specified minimum delay between them
-> >     is as follows:
-> >     
-> >             writel_relaxed(42, dev_base + CTL1);
-> >             readl(dev_base + CTL1);
-> >             udelay(10);
-> >             writel_relaxed(42, dev_base + CTL2);
-> >     
-> >     the intention being that the read-back from the device will push the
-> >     prior write to CTL1, and the udelay will hold up the write to CTL1 until
-> >     at least 10us have elapsed.
-> >     
-> >     Unfortunately, on arm64 where the underlying delay loop is implemented
-> >     as a read of the architected counter, the CPU does not guarantee
-> >     ordering from the readl() to the delay loop and therefore the delay loop
-> >     could in theory be speculated and not provide the desired interval
-> >     between the two writes.
-> >     
-> >     Fix this in a similar manner to PowerPC by introducing a dummy control
-> >     dependency on the output of readX() which, combined with the ISB in the
-> >     read of the architected counter, guarantees that a subsequent delay loop
-> >     can not be executed until the readX() has returned its result.  
-> 
-> Hmmm...
-> 
-> Ok so there is some subtlety with the read of the counter that might
-> make it all work.
-> 
-> It is better to make the delay loop have a data dependency on the result
-> of the readl().
-> Something like:
-> 	u32 z = 0;
-> 	OPTIMIZER_HIDE_VAR(z);
-> 	writel_relaxed(42, dev_base + CTL1);
-> 	udelay(10 + (z & readl(dev_base + CTL1)));
-> 	writel_relaxed(42, dev_base + CTL2);
-> That avoids the potentially mispredicted branch and only adds instructions
-> when a delay follows.
-> That sequence is safe for all cpu and doesn't cost much for cpu (like x86)
-> where it (probably) isn't needed (maybe unless you patch the scale for udelay
-> into the code so there are no memory reads, just code).
-> 
-> Probably best refactored as udelay_depends(10, readl(dev_base + CTL1)).
-> Or maybe udelay_after().
+commit 96be1ee0d4433ce7c711162daac605e0cd3278ae
+Author: Sean Christopherson <seanjc@google.com>
 
-Sleeping on it, all the code can be put in udelay().
-You just need a read memory barrier, followed by a memory read (of anywhere
-'hot') and then use a data dependency (as above) from the second read
-into the delay loop.
+KVM: SEV: Return INVALID_EVENT for SNP-only #VMGEXIT from non-SNP guest
 
--- David
+This commit updates the error signaled when a non-SNP guest attempts to
+invoke an SNP-only #VMGEXIT to INVALID_EVENT instead of MISSING_INPUT.
+It also moves the SNP checks out of sev_es_validate_vmgexit() to make it
+solely a predicate for verifying GHCB fields.
 
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 880a2acd77bff..b59adddfdbccb 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+[ ... ]
+> @@ -4527,6 +4537,13 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+>  		return 1;
+>  	}
+> =20
+> +	if (is_snp_only_vmgexit(control->exit_code) && !is_sev_snp_guest(vcpu))=
+ {
+> +		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx is SNP-only\n",
+> +			    control->exit_code);
+> +		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_EVENT);
+> +		return 1;
+> +	}
+> +
+>  	ret =3D sev_es_validate_vmgexit(svm);
+>  	if (ret)
+>  		return ret;
+
+[Severity: Low]
+Does this consume the GHCB sw_exit_code field before verifying that the
+guest actually marked it as valid?
+
+By moving the is_snp_only_vmgexit(control->exit_code) check before the
+call to sev_es_validate_vmgexit(), KVM evaluates the exit code before
+kvm_ghcb_sw_exit_code_is_valid() is checked.
+
+If a non-SNP guest provides a GHCB without setting the valid bit for the
+exit code, but the uninitialized memory coincidentally matches an SNP-only
+exit code, will KVM incorrectly return GHCB_ERR_INVALID_EVENT instead of
+the required GHCB_ERR_MISSING_INPUT?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529183549.1104=
+619-1-pbonzini@redhat.com?part=3D20
