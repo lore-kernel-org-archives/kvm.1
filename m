@@ -1,127 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6562F32B13E
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 08:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAE02147E5
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 08:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780129415; cv=none; b=nveoN+eMUIqivjN8WQYUvHf71X27+NFZJQpxm4sO7wlk4nlVkyTnq3xaMQTg9D5zrQGTjKDQ/sKiBkcDzYxqM4Q/1Djwjd6/3jSTKHHxyjvnpkZAN4b+W4SGwAVja9My/HO30rqUq+MNsOEskue+E8pIvMMvAGV9IjMHDZbksIM=
+	t=1780130217; cv=none; b=Liyufy3VJ/hVeuxQVRmUHxfHXYKoTCZP/WKju/BgRMJeSn025XoLGStffpdJzsLBqhrimxT8jNLriFIjhVmiY7BHqGBfcC0cSKr+W5+RLR1RdI2PgsbxEDVjSmnpz/4VYssDXfY6vKgIzsLkeexNE5FQRAfydrIuf7l8Ty4GYWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780129415; c=relaxed/simple;
-	bh=zvCLNRQgPWN4L1yo0WqYU8JuB4A2NvOVY4429UDBb5w=;
+	s=arc-20240116; t=1780130217; c=relaxed/simple;
+	bh=pyUmlU5jAhHTPHH7O3E+Q9za5JAjdiapqlHQWrD4feg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=spuESwkoFzrvUcrDUTi8eSqveNIBI5LhcT9Dk5RfiNXXFUnjL3xlRvXkuo1/40aKz2O1DzHFnOauJVk5QhaJGxWECT4EcXsyBNCKhvvD6sxr97OIuoEW8uHMRVclrL3e7+CiHEYcL3qLR2vCFn2SSwspn1Rp2VHRh13XbQL0zQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJr2vDdz; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=EtFiQ0kgsXTlSO/J9RW9aIqIlmVeEMlCihRaCA3njbJk4g0lt4RB5MCG1S4vZygZlUIQkEvqJmOONvPzlE5ROu3aMwpqCrkKCZT7P/zuszb/hWrlS047Br61dz7Hfcs9Qk8y3g2eCkffBBwUa4wcJZ+vTk8dBD7jzOCx6nuWn64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mi5EI26K; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJr2vDdz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113461F00893;
-	Sat, 30 May 2026 08:23:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mi5EI26K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3260E1F00893;
+	Sat, 30 May 2026 08:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780129414;
-	bh=N2j4QiTA3xmJfu8xV4KNZIcgKU1kDkDwhYzJCxIlm7s=;
+	s=k20260515; t=1780130216;
+	bh=jgj/UD57IYfMgxx7BT2dlVdu+j/rSM2ACzj8fj8fD34=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HJr2vDdzkO64kLmfb96umK49rYoAvxX/oC+bvu/ASbX/2Bz1hpt5weZx7/alEmbXE
-	 lYVhksYerV78eEZeS2ACy+bKXfgTojHtQZBW+ExoE2InvDHIU0omDm0zSTM08QWW+B
-	 JZE3USJG9oQGuicXeAj9KUaYaXJXu9BloCdZ/PMmOC11k7Go1DYHREs13US4ordw/R
-	 YKoWmF0BuJQ434cjP8LympvWN94eLBxle3nrJR2ITRS2KSAycQJz/TFfU81YHldzKo
-	 6e9tvCvT+usUEPa4fMK2fDXFNjy+1mIAesIEh8Kd/RfnqsuSKUMiXm/YsBLLGWBLuh
-	 lwFsTiu6ffQ4g==
+	b=mi5EI26Kv6+yOcfP+jUV/NxdmdVJOsukDS/ACh5KWsDJJzb7sCM4N60Ke05gPnWr+
+	 Mgw2R71gaF9yAcMd5eSh253uGLYqmtElTPWkkPO1y2cMRk3eUllaCnKTYuiARtC9XU
+	 FdC9X0ES3SqiXNSD9DoQf1tpKOuKe5xM/WV8DYjNCAoqxDZ8Ob9WszVhb665tjEy0M
+	 N96yw0bsq/ZcR6nq0dVbNItSoWVsPFxf0dSKNJ+9RO1v4G8KcPsjNQTzzoiPee9pnl
+	 G122HoI6q12L2ONHf0ox9OxVabRJHGyL7tOC9Svbma49m4b6oiMBV/sjDkFEosOdyP
+	 dgUTvOktfWJMQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 22/27] KVM: s390: Add basic arm64 kvm module
+Subject: Re: [PATCH 15/24] KVM: SEV: Move sev_free_vcpu() down below
+ sev_es_unmap_ghcb()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
+To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529155050.2902245-23-seiden@linux.ibm.com>
-References: <20260529155050.2902245-23-seiden@linux.ibm.com>
+In-Reply-To: <20260529183549.1104619-16-pbonzini@redhat.com>
+References: <20260529183549.1104619-16-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 30 May 2026 08:23:33 +0000
-Message-Id: <20260530082334.113461F00893@smtp.kernel.org>
+Date: Sat, 30 May 2026 08:36:55 +0000
+Message-Id: <20260530083656.3260E1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] Calling `kvm_init_with_dev()` from a secondary/independent KVM=
- architecture backend (`kvm-s390-arm64`) causes catastrophic double-initial=
-ization of the KVM core subsystem, leading to global state corruption and k=
-ernel panics.
-- [High] Integer underflow in `kvm_max_guest_address()` causes KVM to repor=
-t an invalid, massively incorrect maximum IPA size on host systems with lim=
-ited memory.
+
+Pre-existing issues:
+- [Critical] `sev_es_unmap_ghcb` executes a sleepable operation (`kvm_write=
+_guest`) while preemption is disabled, causing a sleeping-while-atomic viol=
+ation.
 --
 
-commit cceba4a7a6d94b89a1513f32f00ede5f3c39fa4c
-Author: Steffen Eiden <seiden@linux.ibm.com>
+commit ed02a1ac42db279c6f38774405471c3163d2450b
+Author: Sean Christopherson <seanjc@google.com>
 
-KVM: s390: Add basic arm64 kvm module
+KVM: SEV: Move sev_free_vcpu() down below sev_es_unmap_ghcb()
 
-Add basic code for the new arm64 on s390 KVM implementation.
-Add kernel module boilerplate code and trivial functions.
+Relocate sev_free_vcpu() down in sev.c so that it's definition comes after
+sev_es_unmap_ghcb().  This will allow sharing unmap functionality between
+the two functions without needing a forward declaration (or weird placement
+of the common code).
 
-> diff --git a/arch/s390/kvm/arm64/arm.c b/arch/s390/kvm/arm64/arm.c
-> new file mode 100644
-> index 0000000000000..591e2e874891a
-> --- /dev/null
-> +++ b/arch/s390/kvm/arm64/arm.c
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 4ebe0d4497898..437282f0ea943 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
 [ ... ]
-> +static u64 kvm_max_guest_address(void)
-> +{
-> +	u64 max_addr;
-> +
-> +	if (sclp.hamax =3D=3D U64_MAX)
-> +		max_addr =3D TASK_SIZE_MAX;
-> +	else
-> +		max_addr =3D min_t(u64, TASK_SIZE_MAX, sclp.hamax);
-> +	return ALIGN_DOWN(max_addr + 1, 1 << 30) - 1;
-
-[Severity: High]
-If the host system has less than 1GB of addressable memory (i.e.,
-sclp.hamax < 1GB - 1), will ALIGN_DOWN() evaluate to 0 and cause the
-subsequent subtraction of 1 to underflow to U64_MAX?
-
-> +}
-[ ... ]
-> +u32 get_kvm_ipa_limit(void)
-> +{
-> +	return fls64(kvm_max_guest_address() + 1) - 1;
-
-[Severity: High]
-Following the underflow in kvm_max_guest_address(), would this result in
-fls64(U64_MAX + 1) - 1?
-
-Since U64_MAX + 1 is 0 and fls64(0) returns 0, this calculates to -1, which
-would be cast to 0xFFFFFFFF. Does this inadvertently return an invalid 32-b=
-it
-limit of 0xFFFFFFFF to userspace capability checks?
-
-> +}
-[ ... ]
-> +static int __init kvm_s390_arm64_init(void)
-> +{
-> +	if (!sclp.has_aef)
-> +		return -ENXIO;
-> +
-> +	return kvm_init_with_dev(sizeof(struct kvm_vcpu), 0, THIS_MODULE,
-> +				 KVM_DEV_NAME, MISC_DYNAMIC_MINOR);
+> @@ -3618,6 +3587,37 @@ void sev_es_unmap_ghcb(struct vcpu_svm *svm)
+>  	svm->sev_es.ghcb =3D NULL;
+>  }
 
 [Severity: Critical]
-Since kvm_init_with_dev() is a core KVM function that manipulates global
-state, does calling it from a secondary KVM architecture backend cause a
-double-initialization if the primary s390 KVM module is already active?
+This is a pre-existing issue, but since we are looking at sev_es_unmap_ghcb=
+(),
+does this unmap routine execute a sleepable operation while preemption is
+disabled?
 
-Loading this module while kvm.ko is active appears to invoke
-INIT_LIST_HEAD() on a miscdevice already in the list, potentially corrupting
-the doubly linked list and causing a panic on traversal.
+When handling a guest exit where the SEV-ES scratch area is outside the GHC=
+B,
+ghcb_sa_sync can be set to true. If the IO requires exiting to userspace,
+sev_es_unmap_ghcb() is delayed until the next vcpu_enter_guest() execution.
 
-Could it also allocate a duplicate kvm_vcpu_cache, overwriting the global
-pointer and leaking the original cache?
+During guest reentry, vcpu_enter_guest() disables preemption before calling
+the architecture hook:
 
-> +}
+arch/x86/kvm/x86.c:vcpu_enter_guest() {
+    ...
+	preempt_disable();
+
+	kvm_x86_call(prepare_switch_to_guest)(vcpu);
+    ...
+}
+
+For SVM, this hook resolves to svm_prepare_switch_to_guest(), which calls
+sev_es_unmap_ghcb() while preemption is still disabled:
+
+arch/x86/kvm/svm/svm.c:svm_prepare_switch_to_guest() {
+    ...
+	if (is_sev_es_guest(vcpu))
+		sev_es_unmap_ghcb(svm);
+    ...
+}
+
+Inside sev_es_unmap_ghcb(), if ghcb_sa_sync is true, it calls kvm_write_gue=
+st()
+which is a sleepable operation:
+
+arch/x86/kvm/svm/sev.c:sev_es_unmap_ghcb() {
+    ...
+		if (svm->sev_es.ghcb_sa_sync) {
+			kvm_write_guest(svm->vcpu.kvm,
+					svm->sev_es.sw_scratch,
+					svm->sev_es.ghcb_sa,
+					svm->sev_es.ghcb_sa_len);
+    ...
+}
+
+Calling a sleepable function with preemption disabled leads to a "sleeping
+function called from invalid context" bug. If the host virtual address
+corresponding to the scratch area is not resident in memory, the kernel will
+attempt to sleep on the page fault, leading to a "scheduling while atomic"
+panic.
+
+Could this be triggered by an unprivileged guest providing an out-of-bounds
+scratch area, leading to a host denial of service?
+
+> +void sev_free_vcpu(struct kvm_vcpu *vcpu)
+> +{
+> +	struct vcpu_svm *svm;
+> +
+> +	if (!is_sev_es_guest(vcpu))
+> +		return;
+[ ... ]
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529155050.2902=
-245-1-seiden@linux.ibm.com?part=3D22
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529183549.1104=
+619-1-pbonzini@redhat.com?part=3D15
