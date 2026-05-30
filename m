@@ -1,184 +1,114 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A58E2DA775
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 23:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDB2348452
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 23:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780183045; cv=pass; b=fpX2hR0FyGm9KYSnGqzY7vjWGB2o8sPaR6dDIBXHibY+5DDcNeb3hXa0VZ5GDqwoLHYJxXizh7tYETRKpKCU1FTHtZqR7Iob+bL9TmdGrm2EvSvnm6Zrzw8UqFQ5+QybjtOza5b3+bBgxhyJj90D7Bm1hURCirY6JH7mZy/6Ph0=
+	t=1780183096; cv=pass; b=Gh2kDIz3Yy5XpjSv23VEyZaoOWiniK/EMWl9TMlAjYw2v3TUq2s3M59hEAMKwMMRkra/xyAUaWhRFR4x4VD0XMqzs4YeJZx2UHKOh0NuzfVvEEoh//794Bw2+e1uyFzw5DEhNhZKAWXJTM7QuMnawAJeNzxNjk3UeAda6vMLlXA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780183045; c=relaxed/simple;
-	bh=QQSU1zzQnCL9cfy4Cb0A8NBU07sr7eZqMeoXplLn91s=;
+	s=arc-20240116; t=1780183096; c=relaxed/simple;
+	bh=pOCooJF2G0ufGgtFaI1SVT0I2BOsEPBhROLlgIk+x3g=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P4NaOPbgvXRQg8NXy9SFvaK/13EWovR1yFo7evWjzGaf+F6LfqUlSNSREOcns0u0jZACpleKV0Q5LFq2l4gOi9tJmRaRS2Fo9ZuJtWbBwydb6wOIEPusJWtqgR8C0KHLBBuhxNarvLpsp7iqURTdJVgmNuXQzGKVdM4yQE4rpWk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vRF9kWgt; arc=pass smtp.client-ip=74.125.82.46
+	 To:Cc:Content-Type; b=ZiQKLsxZxWNUAa9GZUqX0QdY/1fm0qqqiUR6k9hCLy9ZjckL/y5o+IIJInMfgmy8BjiC2czbJ++E4Zkcw1zyvP/3zSTvcn6l6qDH8+zuvcNZM5Yb0bAek2nnCOjXxyzz7T3GW6VOuGPNCAONnXYl93v6r+aZAMXAH7adeuEixck=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MaYN+GrF; arc=pass smtp.client-ip=74.125.82.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vRF9kWgt"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-13621cca8f5so5721716c88.0
-        for <kvm@vger.kernel.org>; Sat, 30 May 2026 16:17:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780183043; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MaYN+GrF"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-137d452574cso380115c88.0
+        for <kvm@vger.kernel.org>; Sat, 30 May 2026 16:18:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780183094; cv=none;
         d=google.com; s=arc-20240605;
-        b=Ad8IC181up9VdEybiQgRD5UA9N3L1d3KRdxGbib/WZNSZKlIo9JnPn89SeLMGZm7bE
-         EI8K0g6Fu/vCuJG6TNT5njKXnmZJJzHUxhEx3nDSM4YT55T4jYnq3Eq/vYoqaI8xQYHv
-         6ZMb+gQTgXv5rWNm79RganNHkaGL/8whq2NOqW7o0iWExZuGkPILH1BsFcvKS6gIvqUO
-         MLUPJVPczh67Ah07ylz4h8qajvFZrQLEaV9CFA4AnH8ls2hhPJfBLkF3MU29bh9K90Q6
-         KdmfiLxqLjkcBioMLkSoDpJXU98RsnVIZNvlGvtpuszA5nNGulDZCmcDSAdUpibWCr28
-         6sug==
+        b=YLJr8q6g6QUeDfBrf4TZ/y5UkJt9IpGZ+CsIKQcx1KTVkNSnPXrXK8yRFO9gtXIacn
+         3DtdBJ5sHhaSOAzXVwn8xdgUIwfLdgU6ZZGyIgxuqevr2eH8dPuayTTzatQI8luqTI2Q
+         7tA3JgeC8EvX4n7MpmiMcdIU1WBqSn9OURZ5eXBL8Cmd550i9lDoEpFU/hRlkJbhDCSv
+         5861el/gQS7Q4jVEpEhKy3U/LkYnJzfwshgtVV552EaGUVWgIP4IJ3Ejh0vddLExT7Ah
+         1GjsY7/1QoIwrH7WAlddBGB1QqB//RLXokkjG3OwMPpMhz4I3ZpQthbOVEIRJuKEGyJs
+         mB6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=viCVJzQbV7r4+toyEfLLyYDk6SbXvXgwv3+sGjmcLbU=;
-        fh=n/xVjRsPLSx48DK0mlLV8S98n4Bay9rv1xBpMnS6M6Y=;
-        b=dhl/JZ/C//3/P1vOYZUy3KZKFKYpDGxMPwWBt75jXsQ7Z+b61tKqvGkcM+iB3VPapZ
-         VaQBiFWkhIFl4XHJ92JuReuCD8ENQ7W+QaE8nIUQcHv/ZU6vBT9e+kLx0+iJOXICGqwU
-         hPCgKfS9ZMIoXDfvO2DtQex8CPnun1dZ+PfzKNDbtHX6B7DB8xsC0gbhrCoTOeEZ7pYi
-         crNuii//fSuf06YeNIrJ00DYGHVVq0lDVQXTOo0AtSYrxLwaXFjHv9gZaADnfhke6E3H
-         zmLE0PxQzhr/nonMtF1dLlxtVvnGM5gz3bOmcU84BBZXaiaNsDjHKVhKYQ/R2mhLTZjt
-         2yTw==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=pOCooJF2G0ufGgtFaI1SVT0I2BOsEPBhROLlgIk+x3g=;
+        fh=a/B0iV5LWklS7QUR0cRnqbJdAtXzyhd2Xbve3+VFDMU=;
+        b=NenMinwPegb3ONg797YXl784PWrlSEEhklMMzpDOVzCarSaEi/2ho9mJkmtz26U4h8
+         aLfIUpNTgQXnYkoq2yc94F45r2hloyWpFLq05meLuXfDgbkYRfgxX6BpGD+n7ct/GmxT
+         hzpHIx+rFwK6ohJhlvS/Z33RgK/Mdk/bccElR4dmzMXUjBihtbjvRQKsoC21EFufBaft
+         DLqPm0i87WZKXmcTNfp9BSIHkQdGElnOU03LP9jS210EsBRvRC4NZNZAP0egjgWY9fkf
+         aC6jbOTjJEVf4OWw7NdFq5nm0ip5ae/gvpAKjJ0OYmOrlnNrwQvktbE4Q1uN39OLG+qU
+         b/bA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780183043; x=1780787843; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=viCVJzQbV7r4+toyEfLLyYDk6SbXvXgwv3+sGjmcLbU=;
-        b=vRF9kWgthKNVGUhNQj89lNu9q+TBMpyDT9TukZj1VwWPd6V59CU6Y90f6TzBCb4oFY
-         Oc7WMgJy9TdAL8trNU+ZArT9ypsq7hyk+SVdSe5IJcTqk2bZNJu5OSXKdxl4jedCRlYC
-         CMKKSVipgLMaGXLFHV8DvrzP7BN/uaw907pLUrc1JOKeCVFPGXtJYnnHuerUTBDOygQl
-         LYiBBrDuekeY5B1JRW1iHvQCpgIyfks6vGeyvwlxJsq/mFOODeQDd95NodnOCxyOomsP
-         bQXK12NrzCTQmMKUU74/OEa5uZpIaCbnZhTZJOyNUT7LLvhxcgSoQqGmnPhYjYQj+9aS
-         jU7g==
+        d=google.com; s=20251104; t=1780183094; x=1780787894; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pOCooJF2G0ufGgtFaI1SVT0I2BOsEPBhROLlgIk+x3g=;
+        b=MaYN+GrFPYdzVnMeG4+P/wSLiLRnbaHL7qM+vvyl82liV0GJV9DH5vjumZ4CkYBcbd
+         lvJhuGGFWL5k+Hxcx66siSKiQIHWtgfU9SWhr2K9+SsupPp3p9Gzt4rJONsCo+Enikkr
+         AouWF7m6mLQoQIx35+zJ9ZYcioTCqFpLGaZyOWKNJ61n4nTaJTFqmwdBAQkJwEQ1o3mi
+         266jy1G0tsT8bSZNdjDyKqgZbwt3/0qyBM0NApScZwE8JZ+28sn9PM4BJp8p0FcGEnFG
+         BQEsLZ3qr3JuWEZiyX50uuteB5My9c+Q0ljOgSZkDoxFyXufj7BhEasMzAXqLQOiwVlj
+         LhEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780183043; x=1780787843;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=viCVJzQbV7r4+toyEfLLyYDk6SbXvXgwv3+sGjmcLbU=;
-        b=dfx6XSueva3hGR1DXOc03L5IJ+g9sTbcN4weV1p+t4s4vAPM9yKRHUiJsKOI2Zrfub
-         skF4eok4P8ePfoS0qi9hTqc2qqWsDs2DlpxBBOFZxGFgo2fXlioBsCbYxaquj9uNt2Ft
-         mHpH4tZF/W4bgLJidn206FvdFO/P/fiOQ7TM8JIzStGqN8m9LVwXoow7BxWPvabpP+Or
-         bLcu6h0Hk2AZE9gMtysF/7mSGxu6XyctHKki2HdoXHTvTvtkOVvN4nVtSe5OQbTTw8eS
-         QzfOLDqPfbKXK0hJHB3UoLNR1TPBfKsJpqVBSzYG5lnww/6DBOIiD4M4AyGYlYcdMJUO
-         raNg==
-X-Gm-Message-State: AOJu0YwFm6HFeRo9ysARxdap+SmnR7DvYqA1g2oEpSO+m3W5Ir0kLz7p
-	zdzdg71lG+26UHb3vZS/tgqES54d5b6PFDV/AS28vj8XsWwhJrEKQJdzAvhqTvUvGyVitADZHvh
-	YaLe2PsnJH29496U3H+lBuPw/BB1+Z0qkB0bao2Z3
-X-Gm-Gg: Acq92OHtrxcM2N99TBx9/fmgwFUF/v78gbiHvrUlg+gLMsW2idQ8cI1opi1EumbJ7IO
-	UL78kAazd19WU3od16++hXySng60vzpoUTJxoXN5eyg8thKVM5CrVsOkcm/CVTlZONEtKSuPkrQ
-	9KE+mM4rfbwF+L1L9waTsr2uJmtUmyP+qxwOyi/gkOZH4S50HrpQYd0We7L/heYPTqQ4qqnjSaF
-	hhUAJffr6VGsktZFmza55pXFXyyjU2EmulHoHdqyDqBrQdFUm3e8oM4vCuh14F+cZ1CI5s5YbCM
-	uLYhAjBfOvRaUWxpU74A7mLtCC3pBuiV0qhsifqegAJ8FTn56xICBYvPmyN7NEMOlqIdK4eh67E
-	s1AhBBw5N
-X-Received: by 2002:a05:7022:60a3:b0:135:d749:574f with SMTP id
- a92af1059eb24-137d3f0f885mr2381955c88.13.1780183042448; Sat, 30 May 2026
- 16:17:22 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780183094; x=1780787894;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pOCooJF2G0ufGgtFaI1SVT0I2BOsEPBhROLlgIk+x3g=;
+        b=sjnDeBsbD42Z9Ml5jENkBCcvUnSUPZYIyrXWXOy1r3cRM1fHB827oaGzB3lCNA5LkO
+         rwuB/RfemVKsd3NdAVI9Az9XphelnadSZ9qAgOOz/3dd9G4dme7nu0AYZJi4TdAdzsf+
+         t0BZ2Q/cHvz7kV+skMDAwVBLoMbf6qhh72ifxByDXEcxtmvSnzUeBlL62ZBFpClUBofV
+         bIhN0Zj7MPEmW2wJwxxhZgWGnrTVoQ1O6PgAbSVsSfBScdq/518WbK8yYUH722bHmnP5
+         AX+TNjY1DvkRt+H7OhyGB6Ojz/dkdZk6BVRqZa2WYA17uzzw1dbHaIEUixNR7SPGhPof
+         siUQ==
+X-Gm-Message-State: AOJu0YxJSWwcjeh3vEmlNud16zSmdzkFa4jfyFUZvemXjbvXo5gkHdKX
+	tf4ICYHjEw7pznJr/GLyKtQYStPMLW8bipzyPAXtUlN4BnNSpzmk07w9k6TAAJn25J2weyqc0U7
+	BZzld3NiMwMLe0BLnzhdC3fMnthg+J5gZ+eitkL9k
+X-Gm-Gg: Acq92OEEgD5/AaVVgwf+o98ed8gVspdVAQKhYeMd4sgIKNjXwCAi/zUOZRxUuq2lhqW
+	RXJNILzi4N/5A36SwFgCBt6Q+CTmTP8o7XpPukxTrhAXtmwP07+4tBlH/JrA0nk/Ok3GQYzORT8
+	pQjvN3nGcIISGaEicPMb4CyoKJ6ZyyITQI2EQ809fsZRvWAu3B3JKcwxhH98XiD0BGzFIjTaAjw
+	5RD4QbTNkOfCutNi2ZPYaD8fmoY03zBJrXY0VeX/FvQW0Iw3Axc2ezJfFdDTVM6mAJJP7cyeaSB
+	5l9ft0SpX/FbmdyKlG2k37MqBXK+jqXRMcEGYJyJvsJFs27Lk1+T0POD99itzo7x53h9OvW62o5
+	7qiZcaojZ
+X-Received: by 2002:a05:7022:61b:b0:12d:b7e5:a691 with SMTP id
+ a92af1059eb24-137d4026bcamr2334754c88.7.1780183092876; Sat, 30 May 2026
+ 16:18:12 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 30 May 2026 16:17:21 -0700
+ HTTPREST; Sat, 30 May 2026 16:18:11 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 30 May 2026 16:17:21 -0700
+ HTTPREST; Sat, 30 May 2026 16:18:11 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260528032925.BBCCB1F000E9@smtp.kernel.org>
-References: <20260528021117.107984-4-seanjc@google.com> <20260528032925.BBCCB1F000E9@smtp.kernel.org>
+In-Reply-To: <20260528021117.107984-3-seanjc@google.com>
+References: <20260528021117.107984-1-seanjc@google.com> <20260528021117.107984-3-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sat, 30 May 2026 16:17:21 -0700
-X-Gm-Features: AVHnY4J6QLRyCAUyZTY8SWiq9slHpWnhSD2XzBkrXjg8MYB91Ph4QMnrSosk5AY
-Message-ID: <CAEvNRgECjs5UqJsBjsgMc2JF8rRirCPAtB02dKxSgsTY0LAe6w@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] KVM: selftests: Add guest_memfd regression test
- signed offset+size bug
-To: sashiko-reviews@lists.linux.dev, Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org
+Date: Sat, 30 May 2026 16:18:11 -0700
+X-Gm-Features: AVHnY4JFi4yFUmEM5YzAWCInUCEqepgJpEBx7hqMxEmKYQDMIUL_zLuvPh3PhJI
+Message-ID: <CAEvNRgGc2nASNKhUevRY5yNH=drNTh0eX6CPcjPGJicBNA3vnw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] KVM: selftests: Expand the guest_memfd test macros
+ to allow passing the VM
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-sashiko-bot@kernel.org writes:
+Sean Christopherson <seanjc@google.com> writes:
 
+> Expand the gmem test macros to allow passing the VM to testcases, without
+> needing to plumb the VM into _every_ testcase, as the vast majority of
+> testcases only need the fd and size.
+>
+> No functional change intended.
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
 >
 > [...snip...]
 >
->> @@ -345,6 +345,16 @@ static void test_invalid_punch_hole(int fd, size_t =
-total_size)
->>  	}
->>  }
->>
->> +static void test_invalid_binding(struct kvm_vm *vm, int fd, size_t size=
-)
->> +{
->> +	int r;
->> +
->> +	r =3D __vm_set_user_memory_region2(vm, 0, KVM_MEM_GUEST_MEMFD, 0, size=
-, 0,
->> +					 fd, 0x7ffffffffffff000ull);
->
-> [Severity: Medium]
-> Is this hardcoded offset value correct?
->
-> The literal 0x7ffffffffffff000ull contains 17 hex digits (68 bits), which
-> will be truncated to 64 bits (0xfffffffffffff000ull) by the compiler. Bec=
-ause
-> this truncated value is very close to the maximum 64-bit unsigned integer=
-,
-> adding the size to it will wrap around zero.
->
-
-Sashiko miscounted the number of hex digits, it's actually 16.  That
-said, humans also have to count to understand what the test is
-doing... How about this, which I think highlights the signed overflow
-requirement on the selected offset?
-
- static void test_invalid_binding(struct kvm_vm *vm, int fd, size_t size)
- {
-+       const u64 large_offset =3D align_down(INT64_MAX, getpagesize());
-        int r;
-
-+       TEST_ASSERT(__builtin_add_overflow((s64)large_offset, (s64)size, &r=
-),
-+                   "large_offset+size must overflow when interpreted
-as signed.");
-+
-        r =3D __vm_set_user_memory_region2(vm, 0, KVM_MEM_GUEST_MEMFD, 0, s=
-ize, 0,
--                                        fd, 0x7ffffffffffff000ull);
-+                                        fd, large_offset);
-        TEST_ASSERT(r && errno =3D=3D EINVAL,
-                    "Memslot with out-of-range offset+size should fail");
- }
-
-> Will this trigger KVM's existing unsigned overflow check instead of the s=
-igned
-> offset plus size bug this test is meant to verify, causing the test to pa=
-ss
-> for the wrong reason?
->
-> Also, since the trailing 000 makes the offset strictly 4KB-aligned, will
-> this fail immediately during the page alignment check on architectures wi=
-th
-> larger page sizes (like 64KB on ARM64)?
->
-
-This is probably true too.
-
-> Should the offset be dynamically calculated at runtime based on the page =
-size
-> to ensure proper alignment and accurately test the signed boundary?
->
-
-The diff builds large_offset dynamically.
 
 Reviewed-by: Ackerley Tng <ackerleytng@google.com>
 Tested-by: Ackerley Tng <ackerleytng@google.com>
-
->> +	TEST_ASSERT(r && errno =3D=3D EINVAL,
->> +		    "Memslot with out-of-range offset+size should fail");
->> +}
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528021117.10=
-7984-1-seanjc@google.com?part=3D3
