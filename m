@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C9D165F1A
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 07:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BD431E82F
+	for <kvm@vger.kernel.org>; Sat, 30 May 2026 08:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780127970; cv=none; b=QPlbFmqdiyxOOB9oqW5yuHmxqiOz4ZtM/2eTIQ+KclMAxcnxFf6CTm/6G3FE/JNKBg6Nc5dT9Qi1B0p0yotgogomiWMS9jVFlrDhsTeMOOvQHm975nRzRob+tlKZ02qY4u6Jkc44lBWQ3Ow7ywofu9+Hx8GFF34bprctbwDzK3A=
+	t=1780128463; cv=none; b=XOkdtDmeCuqGoe7m/o1/GR+9j1iefaz56sk8Wx9sboXjzI5PDubrG5q+ZgiDkEIi1cYZB8ZRSthFqinWd1dotNhRvz+AZ1LDufGwXoQb/BhjFb0k6xcPIOe5BeyJAXuZXxO1ernBRClck5tCFqojNIp1ZeGq97VakTrB6tsvm80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780127970; c=relaxed/simple;
-	bh=wv6YhLu68MwUc8u8vX0M8tSGoJaqfUWS91ME9q0Q4Z0=;
+	s=arc-20240116; t=1780128463; c=relaxed/simple;
+	bh=xHUfe+D5+PDuXj1OkOf1YsYMYg1gquROx/UKfhpQxoE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=aPRIPpcE63E3eAMTmc0Vp8/uka0KtrbqaBzFIslOUXfC5CjDo+gGVxsgSoiM07GR+1b3MTrVOCilFVQYJMRAjSyLj9eQRs6ZBxIwjbg7i+F6kBmAFrT21+kUTNB7RWgIzZum5oCPAgkggwZ0RK3tHIZuweo97iE3yju2qatVeqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oSp09m/C; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hciBQKj17l8aUpv1tjOzejW6EarUiPTSivhFrRrg1uDEogX0rrc5oVrJ7girClzfq1noDBUEtqZx6d/bl4EzzQ3VTgSq6AQlegNknuUUmIv5oZGuZi4f48+Dq32fsCYTipS6LDt0yL5qnn8dglksE3jeqvm9C5jzxGKdCd30uwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AF347d10; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oSp09m/C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888B61F00893;
-	Sat, 30 May 2026 07:59:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AF347d10"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173DB1F00893;
+	Sat, 30 May 2026 08:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780127968;
-	bh=HqU6T32Jf/evLFIWYILQVGGx+pM4gOjDMMpAIhKlg70=;
+	s=k20260515; t=1780128462;
+	bh=WG73XLiif+O/rOB5lOsz5vQQMmHYKuJUxNCbsOYR2js=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oSp09m/CBK14cnpW9g7C50TmBVPsQ++IX/w+3lvU/a1OJwIj16hZ0qmiPplexsOKE
-	 2FAfKlp+VJwfpQ/4Uq95oC0bf68d4uJMCadpeBoilYze97qPVYU+P65ugpqjnyHU8r
-	 0BlbMjQIa0iiXL9dvZxMZ1ifJt6SVRPtmodeU0+ewziGFSlW+mO2Db6Ksl0qkJo4vI
-	 IxxKAMLI6Ou/BSynwFYJocOQyWN2Fv7Q3MPJMS/28WY6ikOm6+MMX7gIo5ta5ArR//
-	 p4V4EzwriqGGTS68fQkN2vhmatE670vJxtlcN0GruIQWYg+seU7CzeTTF+CDe1q5Qc
-	 KpA8BwumIcTcg==
+	b=AF347d10pEmom/1pmUwuJ+h0QX/Bg7RAGVRmUCr6/TrKMJPZbXKeNdyAr55u2HTCV
+	 OUSEg1TSPWLuwtAluFNGsc3C+/XknBkMhO7s/OJwFpUN7KmRJbokGDX4UaWzOIoEiT
+	 kCKLyg4nwpzbrhx1g5qpjeTBIE0w/4FF8RWs5JzRndRrfe85p5l34Ydy4CZeV7kWaD
+	 AUEJFr1psuO/NUHzPomCReyr4U9opX37XNOSiEIfGI4tifNFZvtuS6v/8pGoT9lN1n
+	 cfEct4XQ19Xn+d7V4B2J42G3SpES+UayJTG+LfP9k3kMQua4S/Bj5XOngaPdungwjf
+	 hotS2gCICMf4g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 40/40] KVM: x86: Move a pile of stuff from kvm_host.h
- => x86.h
+Subject: Re: [PATCH 12/24] KVM: SEV: Add an anonymous "psc" struct to track
+ current PSC metadata
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
+To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260529222223.870923-41-seanjc@google.com>
-References: <20260529222223.870923-41-seanjc@google.com>
+In-Reply-To: <20260529183549.1104619-13-pbonzini@redhat.com>
+References: <20260529183549.1104619-13-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 30 May 2026 07:59:28 +0000
-Message-Id: <20260530075928.888B61F00893@smtp.kernel.org>
+Date: Sat, 30 May 2026 08:07:41 +0000
+Message-Id: <20260530080742.173DB1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,76 +46,81 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Several x86 KVM-internal declarations and definitions were unint=
-entionally left in `kvm_host.h` despite the commit's goal to move them to `=
-x86.h`.
+
+Pre-existing issues:
+- [High] KVM incorrectly passes the 2M page size flag to userspace for part=
+ially completed 2M PSC entries, despite forcing 4K handling.
 --
 
-commit 6fbb37590b9a07586090f255933e9452d592518d
+commit c91cb923b18a5adb2ee4beca4e478b8c40f1fbc2
 Author: Sean Christopherson <seanjc@google.com>
 
-KVM: x86: Move a pile of stuff from kvm_host.h =3D> x86.h
+KVM: SEV: Add an anonymous "psc" struct to track current PSC metadata
 
-Move the majority of remaining KVM-internal declarations and defines in
-kvm_host.h to x86.h, so that kvm_host.h only holds structure and function
-definitions that need to be visible to arch-neutral KVM.
+This commit groups Page State Change fields into an anonymous psc struct=20
+within vcpu_sev_es_state to improve code readability. It also renames=20
+several local variables to clarify that they point to guest-accessible data.
+Lastly, it clarifies that inflight represents the batch size of pages.
 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
-ost.h
-> index a3c1ff784e5c0..4efad65e53e24 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
+Message-ID: <20260501202250.2115252-13-seanjc@google.com>
 
-[ ... ]
-
-> @@ -2326,11 +2154,6 @@ static inline unsigned long read_msr(unsigned long=
- msr)
->  }
->  #endif
-> =20
-> -static inline void kvm_inject_gp(struct kvm_vcpu *vcpu, u32 error_code)
-> -{
-> -	kvm_queue_exception_e(vcpu, GP_VECTOR, error_code);
-> -}
-> -
->  #define TSS_IOPB_BASE_OFFSET 0x66
->  #define TSS_BASE_SIZE 0x68
->  #define TSS_IOPB_SIZE (65536 / 8)
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-[Severity: Medium]
-The commit message notes that any "misses" are likely unintentional. Should
-TSS_IOPB_BASE_OFFSET and related constants also be moved to x86.h?
-
-There are a few other x86-specific definitions still left in this file that
-might have been missed, such as struct kvm_host_values (earlier in the file=
-).
-
-> @@ -2361,16 +2184,6 @@ enum {
->  #endif
-> =20
->  int kvm_arch_interrupt_allowed(struct kvm_vcpu *vcpu);
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-[Severity: Medium]
-Similarly, should kvm_arch_interrupt_allowed() and the preceding enum
-containing TASK_SWITCH_CALL also be moved to x86.h?
-
-> -void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event);
-> -
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 1982d13e71d9e..9f6543cebedf5 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
 
 [ ... ]
 
-> @@ -2382,14 +2195,6 @@ void kvm_arch_async_page_present_queued(struct kvm=
-_vcpu *vcpu);
->  bool kvm_arch_can_dequeue_async_page_present(struct kvm_vcpu *vcpu);
->  extern bool kvm_find_async_pf_gfn(struct kvm_vcpu *vcpu, gfn_t gfn);
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> @@ -4000,14 +3995,14 @@ static int snp_begin_psc(struct vcpu_svm *svm)
+>  	 * KVM_HC_MAP_GPA_RANGE exit.
+>  	 */
+>  	while (++idx <=3D idx_end) {
+> -		struct psc_entry entry =3D READ_ONCE(entries[idx]);
+> +		struct psc_entry entry =3D READ_ONCE(guest_psc->entries[idx]);
+> =20
+>  		if (entry.operation !=3D entry_start.operation ||
+>  		    entry.gfn !=3D entry_start.gfn + npages ||
+>  		    entry.cur_page || !!entry.pagesize !=3D huge)
+>  			break;
+> =20
+> -		svm->sev_es.psc_inflight++;
+> +		sev_es->psc.batch_size++;
+>  		npages +=3D huge ? 512 : 1;
+>  	}
 
-[Severity: Medium]
-Are kvm_find_async_pf_gfn() and the other async page fault prototypes missed
-here as well?
+[Severity: High]
+This isn't a bug introduced by this patch, but while reviewing the Page Sta=
+te
+Change updates in arch/x86/kvm/svm/sev.c:snp_begin_psc(), I noticed a
+potential problem when handling partially completed 2M requests.
+
+When a 2M request is interrupted, the guest resubmits it with
+entry_start.pagesize set to true and entry_start.cur_page > 0. KVM handles
+this by forcing 4K handling for the remaining pages, setting huge =3D false,
+adjusting npages, and advancing the gfn.
+
+However, when KVM forwards this request to userspace via the
+KVM_HC_MAP_GPA_RANGE hypercall right below this loop, it populates the page
+size argument using the original guest request:
+
+switch (entry_start.operation) {
+case VMGEXIT_PSC_OP_PRIVATE:
+case VMGEXIT_PSC_OP_SHARED:
+    ...
+    vcpu->run->hypercall.args[2] |=3D entry_start.pagesize
+                                    ? KVM_MAP_GPA_RANGE_PAGE_SZ_2M
+                                    : KVM_MAP_GPA_RANGE_PAGE_SZ_4K;
+
+Could this result in passing KVM_MAP_GPA_RANGE_PAGE_SZ_2M along with a
+4K-aligned (but not 2M-aligned) GPA and a non-512-multiple page count?
+
+If host userspace performs alignment checks on the mapping request, would
+this cause it to reject the malformed hypercall and fatally terminate the V=
+M?
+
+Would it be safer to use the adjusted huge boolean instead of
+entry_start.pagesize when populating these arguments?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529222223.8709=
-23-1-seanjc@google.com?part=3D40
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260529183549.1104=
+619-1-pbonzini@redhat.com?part=3D12
