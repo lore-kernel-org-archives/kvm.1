@@ -1,104 +1,63 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9622F6591
-	for <kvm@vger.kernel.org>; Sat, 30 May 2026 00:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B8129B78B;
+	Sat, 30 May 2026 00:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780102455; cv=none; b=onOTqcyjfaogtV3RTKF6QvciJhKDZeyjk9pNFYLyph1Igxu6yTkhqWsOZxOH07/MCd2ng+4v7vdExf6Cm9XP2Sl1DMHjqzK3+S0j3b+kaTf9/YrthdcHd4365D1T5Y5Y9U8GivwLLZghHZ5xO/n77Z+zoL10GfArhj81LzjqCh4=
+	t=1780102547; cv=none; b=WK16XiXVkFER3Z+imhiH0vNcYnXDEkB/jNdvhPBHRoRYVgftInE8Vyc91lDXQCrrFMWjPao6qn4XSZRbkqP6FVbR+cApVuh+xzkpuCahvx3fgrbXxyQUpkLK7BZcHPh8rCluZjQ79GJpCT8VdDOxQ6zQVigdm+bbmxW34EhmcPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780102455; c=relaxed/simple;
-	bh=Uyf2v9i5Bgh3K6vN/tQBOUzmr7rOxXaZN1R07Nkp9KE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PJKc/lWgh4nvolZYEFc62ouVBNc2yfxfvhTCiKvnbmdzxndm/++TzITIowO3FASxxNgeKBi14nbcyKqUFKeElgENr4SWUhtrWWlrc4rlIuNFJSAexQ2eGMO2soAPz4vI4x6T4sqLDVSY9C2DTOKG+4CR/9gaitG4zMnYCP6Aqrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bbfTSDY7; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780102547; c=relaxed/simple;
+	bh=7wpWA4uIRiJ9v6iKnnL6nXwGfRItZEbWFMFe/KMV9/8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NgJrElFV8z5w1H1d8yrREoCD7uUuSYcJrvlqNx5kKaUv4mPxWf/56A6G9uSQ8JPtcN/bgJNxNufkAR/KlL5uwzP8hGLBPW52ovxPsJZS2ZMHGKx6uL3IsjBGrir7nBLF/B4Lh4ukKd5estHiQmOPhSaT11j7L1ZkRwwRtMWrTSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNbGrpbs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bbfTSDY7"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf160f7191so10066335ad.3
-        for <kvm@vger.kernel.org>; Fri, 29 May 2026 17:54:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780102452; x=1780707252; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EimLeomyuHa/Isl8CJDHQMGSGuAmKMQVOAnH/aluLug=;
-        b=bbfTSDY77ZsqjV5p6yeqTVOcMsKMM4zAkPnYbXE4efH35y+48iZ1p61TQ9IadUFafa
-         89+PmQeN4DglVo1cEATRG2i78gzxRDs05czqJJyJY3LO9mCpep1VCdzZoazKenK+GV+F
-         bfk7UV6Ywy5h2R8DsLrjePNuUL/Ofw/ZWOI9VEPk90Fnn+T6t9SMo11GG8obAPq5k89Q
-         4iUNF2wecF98a1iMHJOJHaLALwev81XMSzVWigMsoi0v9J9mL8sgu/+6AgtOyDMBZHAq
-         HgzElFfAP5G1j+Hj26YpPDOxT16D+hc/85pBKPHN/nH1evflZgaI0G0tQlU03GDIfnjL
-         2hvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780102452; x=1780707252;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EimLeomyuHa/Isl8CJDHQMGSGuAmKMQVOAnH/aluLug=;
-        b=stYFAfIcNavKfxy5nvdjYjwomraD31cubhjnhkR9yrFguj1iqgsRKCqokuIl/tMpyA
-         +dsi28o5bXtQPv/ZgTzuagLhEoW2twtZdmjohUleVK6bnVbL23Vt9UuG7MFv/fWn2nXO
-         ELkbYGIV8n4LA8kVDODz1+vdsPZ01eEFz9qtOCARfCffwtte4eBYz3ifpoMeapt4obPJ
-         7nOUDCl9T6VSMYKT2ZCNrmcHnJzP6Ma2W0aRx3i2N+m4BZXBwtflbLLxEJRLHBxP82ua
-         o2GDMDBAdSQo+qYmpF2mDzqDreguz6DTLFLrFLkSPhlc8D4gFK6PzU9REj4/TJh0lTcL
-         lumQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/oy7C7WoEWNI644MSoZPBAqX39URghVCQB5jTsUk4RbVV8X21laQek1bwzOcs13gW2ibY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNiy5alWasll+WGvDlSFweBMr9S3Nt/P+ZMTTjtBct4s0IpfjU
-	pcjw75DK5EA+S0KdZV56GmHXARfNpBlpVmT2iucOm+B00xWnBbGHsahbXxGvExNh4aoS8iB8QZo
-	cW8BZNQ==
-X-Received: from ploo20.prod.google.com ([2002:a17:902:e014:b0:2ba:41dd:4a8e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f651:b0:2b2:5314:e96a
- with SMTP id d9443c01a7336-2bf3688ab6dmr23721265ad.34.1780102452411; Fri, 29
- May 2026 17:54:12 -0700 (PDT)
-Date: Fri, 29 May 2026 17:54:11 -0700
-In-Reply-To: <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNbGrpbs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 808CB1F00893;
+	Sat, 30 May 2026 00:55:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780102546;
+	bh=xVX6XObK4mCJuP4g1LTQtbRDfzi+wCd1Nsq3IJtXu1I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dNbGrpbsS7D/WBqE2lJwojA/wWH1A6/sYvngfE6wAwmNSuf+TUXgIsZlREoTMmtSi
+	 XHDYG0tY60I9uRcmYKL1RL6y7BsOTHytyp9miCS904M0x3e8BPfxXauvIPPZa6PCf5
+	 5nEPVgfjQpXzjvMBIx/K/8wyH/wzmT8cMcaFWMV55SMDmPTP3JpVlh/uGgTt3EXzOE
+	 6aMk03Wa3a2E3p/1OPkns9jsFObemADfO7ytyr2y1cePZ85Q+yRQUfmE//hbwXZu1G
+	 9t4qhyWfo4oqzroV3ACTB2/e+Qr4ppzxGbbjoZqzeRoV+cFbURlyeT7Z+vHZrS8Yig
+	 3Q4vLpkztfTCA==
+Date: Sat, 30 May 2026 00:55:45 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
+	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Binbin Wu <binbin.wu@linux.intel.com>, David Woodhouse <dwmw@amazon.co.uk>, 
+	Kai Huang <kai.huang@intel.com>
+Subject: Re: [PATCH v3 24/40] KVM: x86: Extract get/set MSR (list) ioctl
+ logic to helpers
+Message-ID: <aho1bopJWVy1QL5n@google.com>
+References: <20260529222223.870923-1-seanjc@google.com>
+ <20260529222223.870923-25-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529165114.748639-1-seanjc@google.com> <20260529165114.748639-2-seanjc@google.com>
- <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
- <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
- <ahnxfACTGeVFbJMk@google.com> <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
- <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
-Message-ID: <aho1M7fvK1Qzmiai@google.com>
-Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in __rwbase_read_unlock()
-From: Sean Christopherson <seanjc@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Paul Durrant <paul@xen.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, David Woodhouse <dwmw@amazon.co.uk>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, 
-	Carsten Stollmaier <stollmc@amazon.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260529222223.870923-25-seanjc@google.com>
 
-On Fri, May 29, 2026, Peter Zijlstra wrote:
-> On Fri, May 29, 2026 at 10:13:35PM +0200, Peter Zijlstra wrote:
+On Fri, May 29, 2026 at 03:22:07PM -0700, Sean Christopherson wrote:
+> Extract the code for getting/setting MSRs and MSR lists to dedicated
+> helpers in anticipation of moving the MSR code to a new msrs.c.
 > 
-> > It is somewhat possible to do an RT aware read-write spinlock thing, but
-> > it is definitely non-trivial and this would be the only user.
+> No functional change intended.
 > 
-> Furthermore, it is fundamentally one of the worst possible lock types.
-> 
-> It really isn't something you *want* to have -- arguably even for !RT.
-> 
-> They scale like ass; per them being a spinlock type, the critical
-> sections must be short, but this means there is nothing to amortize the
-> cost of bouncing the shared lock around -- which is the 'saving' grace
-> of the rwsem.
-> 
-> For short sections the cost of the shared access will dominate. I'm sure
-> Paul has a bunch of graphs to illustrate this point :-)
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Hrm.  We might be able to do an SRCU-based implementation.  Full RCU would be
-too unpredictable on the update side.
+This is nice. Aside from the spring cleaning, it makes parsing the
+return values easier for KVM_GET_MSR_INDEX_LIST and KVM_GET_MSRS.
 
-The big hiccup is when KVM needs to reclaim memory in response to mmu_notifier
-events from the OOM killer, which don't allow sleeping.  I'll stare at this a
-bit next week.  I'm not exactly thrilled about the idea of ripping apart this
-code, but there's a known performance bottleneck with mmu_notifier events,
-maybe we can kill two birds with one stone.
-
-Thanks for the input!
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
