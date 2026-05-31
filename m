@@ -1,100 +1,108 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF021F12E0
-	for <kvm@vger.kernel.org>; Sun, 31 May 2026 14:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2586314A6F
+	for <kvm@vger.kernel.org>; Sun, 31 May 2026 14:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780236148; cv=none; b=P4qa5xi+IS6m3P9PvZOrwtvVkRpO0ZZvV/rwYf6wqqMrIcf0GifBJ14Kjn7FVBB9HmNOcZDwWvR7ydeRa/bXR3GU7G8GOmdmkmEjZtSPA9Xfy+lpLfyKot1C/Y59FYY8jVU0F0btnWuQTlkanuH8VsTRTw8BHjJu81YVsHRrIy4=
+	t=1780236562; cv=none; b=vB3c2kZCAFVOVVpg1kgWZ3PZeHmqn3Tph9ic6DgBo23qdKoPf5xNpmnkWqhqHU/oipezkfEaA71shMBwBL+Zj3UvvdYDU8ZVa8/HXYuLAdPpmF3kjA5lOlmIUqO0GVA5kdnTv2UZnywPzXku8IS2F/jGnOYVWjLC9lOx/7Dt8OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780236148; c=relaxed/simple;
-	bh=C7u8j+8ZuEu/hvPVjioug/5U81fzqILw0tnmGXAPFok=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qcGmEyFjKxbdJCwEJJlxC8xTUJSfOG6Jyw+jc9+IG9T/jFwplTwztpx8LNhZ48x/nKrvcEeG3LRyuze0sILcF8kCqy3El82sw31yssLPVMWmOS3MvDlIZ5xvtKqO+PnVjyem0sEq3Byd+j7y2iUZlydDdeF9aAGLroZKyNOP1XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q32nrISy; arc=none smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780236562; c=relaxed/simple;
+	bh=fGnWYL7NUHR0zP37Z2pO5HR9OVaMqsofqMj77pNcocU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=shRRdMgW1IQ3aD5KCyZhX2cHhGjj2tcx5EyOPVpooDUDP5sYeva++z4i/XWXKPcFtiYIWqDBROHKHPRWHdsgXKP8n5LKgoxgSJs9ZAxCyVjSt19IJXR4lc/Ry/g8fOKPLCvoNqIpPThEyi2MNXjBdgZT/iG5pORkniudEAUCqa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L2R147vm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q32nrISy"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-304d7f31215so3160301eec.1
-        for <kvm@vger.kernel.org>; Sun, 31 May 2026 07:02:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780236146; x=1780840946; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AgnkOucJ4lynEbyGWzUWoBKHmcQTYyOypcyzzzs1xrc=;
-        b=q32nrISyCT5+jj6je2F2oKKGlrxZ3aQNWKhPT57SC9lZu4/VdS6TBZoJoScJmlvDcV
-         2dwXBeCTKs98hfX1PQMqwxeLQqtlr4gILjte/dfXXWd4zYCtwmXh4zXtZgYqqJVHivgJ
-         cDMW36fp8GvI2v5DqPbINlG/gRteYhzMFc3UIXGCypqpr7CJs3wMXhda/hx00kJXJHOX
-         ZhwqzitMXA9EyIcl/G/B+5vQYrEZ1aJoonv1pQxrYfFg8cKM2WIXKbdBXHYpHxgtHwll
-         /U14sYzDdsNv7Ildm0UmIZRG0vtSWa6MJ+xhPOsi/v4pgzmcNSkQRYz0tgOy7mnEZ2EC
-         zmEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780236146; x=1780840946;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AgnkOucJ4lynEbyGWzUWoBKHmcQTYyOypcyzzzs1xrc=;
-        b=aDuqmUuKE8Vjg//HzXpBQ5J46/hKdf0LzID0XJYoC3Nrg51Af2KSuDUjyLRUY7BG8B
-         2juBErdTcVMc+ki6Q0GIz5OlTC+v2FiMwfZ3Ih0zmY9524sHKb99G2DL8QdHW4A/kple
-         j5a0K773tH0duwds4yI1aO/Hl9EVZRGwGWPqqyoEmr/lwa1qnxVAcxG4vDevjW4/p4Ax
-         01AxTveRkuPwDC1SJRgZeSc1os6c2N4ECyi+bswGMQ7HTupS3kJDzTC7nZmocH8655X5
-         CTOUJ6xr6jKkJ8h4akhL0nn/Awi7nVvpt8P9qDguTXn+1T45FCoY9Jcg+8GiqbqMzmwW
-         ZUsA==
-X-Forwarded-Encrypted: i=1; AFNElJ9cX198marVglDVocqPWwnNQo9Jx/kgTMsRLq6GpWErRdby9Y7H03N2F/gWHEjFYsQyuNI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzf8dSAW2L7pHO/dlNp8y5KvL2A9GTGWoFvouzhEx6lNYxxJPX9
-	YNbu2B8wm2/T0o9zzKLuYM8ajpsOHgKZd8sMxkGCzibpv2TyGNgj258f
-X-Gm-Gg: Acq92OEKToNNJMV8Ejnz2p2EsCA0jTWq+5NIYlg34AZg1URkqybtNJ40Vj4yl+4UCZm
-	1rHjhc+anH0FrWeymga9RuzfguSvsTg9y23B86ScnOS2yU0hUHH1m8vwcve0OP9qV8qsTT/TU1m
-	AkKybnGMxYTLM8NwrA8sEav42wJfs9B3YF5KyCnv9UawqFy2yAWgQ4CB+RjasPeW5v7SeWBFkxs
-	IHC0O3FonmU7yTZyoJLiidCwQ87fs/NaVLbH5CMCg5Cyd0syEmkQaXfIxwlP044J5AEHSYjnNJV
-	LrKvBMDayLgw1NPWifLp5pTGYUhQuH+QZCAcg6MkT4DsSpPYyElTt82/bfgn+VnAWtNz9migvCZ
-	LjrXmAhVx2TmDvLBpyRUO1pzZtRf/FP6kk0lsRi+Dg04QWXN3DpMzoz5OYfHJJzEgICc1WpHcfQ
-	IsfZ0tG5Gnd+J8po/qE8Yoy5/m6+VP3ikjohPurlJbD+dnHehYkG4eW2UUyw==
-X-Received: by 2002:a05:7300:3246:b0:304:6448:dfd7 with SMTP id 5a478bee46e88-304fa5e85demr3452313eec.18.1780236146056;
-        Sun, 31 May 2026 07:02:26 -0700 (PDT)
-Received: from [10.4.72.5] ([139.177.225.241])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed53d14fsm6449412eec.17.2026.05.31.07.02.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 31 May 2026 07:02:25 -0700 (PDT)
-Message-ID: <10054db1-413b-42f7-b38f-f562b8de432f@gmail.com>
-Date: Sun, 31 May 2026 22:02:19 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L2R147vm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1181F00893;
+	Sun, 31 May 2026 14:09:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780236561;
+	bh=3ipWzw30AKnGYj9fKZiV7EEIoEQ1jOSo1lrwCpcNYzI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=L2R147vmYhdAB5NeJDZB8jjJU1LShUWbMY1lxSp7xqiU5opYLYyKodu85tIfNREI3
+	 GYSMdFciNvcMII9Idpfsa5o7/R5IOAYSol5bIaG/t1l1vInaxv9hrdPybHq5cwvl3W
+	 Kyot0AS0qu42wk0bO2ghvZ35bEuFqAtnQj/YoDnIJ6jan4m5XDEP1FbifbV6kSZGSQ
+	 mS0CCVhYHdovNaRlftb+ZLngoOBU3EA65LZH2a6gLmVzELpNcC28NSGAgUkXCTg8rR
+	 +uof3sqU2C+5pxQnB049ypX6NcxM9NzllRGfmPupV3+2xuapEB5B3GNSe7Jkrd8FhD
+	 VaZVeWYgqJnXQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [v2 1/2] KVM: LoongArch: Validate irqchip index in irqfd
+ routing
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yanfei Xu" <yanfei.xu@bytedance.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260531135326.2238555-2-yanfei.xu@bytedance.com>
+References: <20260531135326.2238555-2-yanfei.xu@bytedance.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 31 May 2026 14:09:20 +0000
+Message-Id: <20260531140921.1B1181F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: Validate irqchip index for LoongArch and PowerPC
-To: Sean Christopherson <seanjc@google.com>,
- Yanfei Xu <yanfei.xu@bytedance.com>
-Cc: zhaotianrui@loongson.cn, maobibo@loongson.cn, chenhuacai@kernel.org,
- maddy@linux.ibm.com, npiggin@gmail.com, sashiko-reviews@lists.linux.dev,
- pbonzini@redhat.com, kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, caixiangfeng@bytedance.com,
- fangying.tommy@bytedance.com, Sashiko <sashiko-bot@kernel.org>
-References: <20260525070154.495455-1-yanfei.xu@bytedance.com>
- <ahoYdrs9dVzp6Ps6@google.com>
-From: Yanfei Xu <isyanfei.xu@gmail.com>
-In-Reply-To: <ahoYdrs9dVzp6Ps6@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-On 2026/5/30 06:51, Sean Christopherson wrote:
-> Can you split this into two patches, and send a v2?  I suspect the reason no one
-> has picked this up is because it straddles two completely different (sub)subsystems.
+Pre-existing issues:
+- [Critical] Missing bounds check on the `e->msi.data` value before using i=
+t as an `irq` index in `eiointc_set_irq()` leads to an out-of-bounds memory=
+ read and write.
+--
 
-That makes sense. Done :)
+commit 217e342828fa29f1b763464cad52ec8a004759a7
+Author: Yanfei Xu <yanfei.xu@bytedance.com>
 
-Thanks,
-Yanfei
+KVM: LoongArch: Validate irqchip index in irqfd routing
 
->
-> That would also make it easier to get the fixes backported to stable trees.  PPC
-> has been around a lot longer than LoongArch, so I assume the PPC fix will need to
-> go further back in time.
->
-> Thanks!
+This commit adds validation for the irqchip index and pin in the LoongArch
+KVM irqfd routing setup to prevent out-of-bounds array access.
+
+Closes: https://lore.kernel.org/kvm/20260525051714.485D51F000E9@smtp.kernel=
+.org/
+
+> diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
+> index f4f953b224192..40ed1081c4b62 100644
+> --- a/arch/loongarch/kvm/irqfd.c
+> +++ b/arch/loongarch/kvm/irqfd.c
+> @@ -51,7 +51,8 @@ int kvm_set_routing_entry(struct kvm *kvm,
+>  		e->irqchip.irqchip =3D ue->u.irqchip.irqchip;
+>  		e->irqchip.pin =3D ue->u.irqchip.pin;
+> =20
+> -		if (e->irqchip.pin >=3D KVM_IRQCHIP_NUM_PINS)
+> +		if (e->irqchip.pin >=3D KVM_IRQCHIP_NUM_PINS ||
+> +		    e->irqchip.irqchip >=3D KVM_NR_IRQCHIPS)
+>  			return -EINVAL;
+> =20
+>  		return 0;
+
+[Severity: Critical]
+This is a pre-existing issue, but does this code also need bounds checking
+for the MSI routing case?
+
+When handling KVM_IRQ_ROUTING_MSI in kvm_set_routing_entry(), we copy the
+user-controlled ue->u.msi.data into e->msi.data without any validation:
+
+    e->msi.data =3D ue->u.msi.data;
+
+During MSI injection, kvm_set_msi() passes this value down to
+pch_msi_set_irq(), which directly uses it as the irq parameter:
+
+    eiointc_set_irq(kvm->arch.eiointc, e->msi.data, level);
+
+Inside eiointc_set_irq(), this untrusted value is used as an index in
+bitwise operations against s->isr and passed to eiointc_update_irq():
+
+    level ? __set_bit(irq, isr) : __clear_bit(irq, isr);
+    ...
+    cpu =3D s->sw_coremap[irq];
+
+Could this allow a malicious guest or unprivileged host userspace to perform
+an out-of-bounds memory read and write against the eiointc allocation?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260531135326.2238=
+555-1-yanfei.xu@bytedance.com?part=3D1
