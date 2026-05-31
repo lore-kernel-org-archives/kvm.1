@@ -1,69 +1,68 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98FF3546D1
-	for <kvm@vger.kernel.org>; Sun, 31 May 2026 23:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9F635B63C
+	for <kvm@vger.kernel.org>; Sun, 31 May 2026 23:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780271665; cv=none; b=tXbnQT6SI8ie2c77ZBLf9X8wJui0YhStfz4VC70g/LF70nY8wfyQvcI1EPpt0eTxedZTZzD5EGfrMFrdGr4Z44rcx4HAixITZcUGQcQwaQsYuM1eWbvt2j+dDlPeoGLyLzgA9hs6/nfpTJW1kTJPAUlVAROZkMfH3T7mnCDKDcE=
+	t=1780271919; cv=none; b=qVS5zbg/LxisnPsJPptLO2UtcDEBHfGtcux81+xIcJtCBIzKJAr7KCJ5LrN3jWav1pVAfi7rI4iAOX5OAFWFKQFO6La8HN50cByUnZ03qo8Uw1K4tLxcxW+0oMoJqckSRWTwx7PwXzM1Iw5eC31maKwzQm7Jye27Dwiqqq9P21w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780271665; c=relaxed/simple;
-	bh=d3684paRcTf2C8glk0t9ndn+IMrj1dN6riKCd56Zblg=;
+	s=arc-20240116; t=1780271919; c=relaxed/simple;
+	bh=ooYjiyJ6bESeHmXTkdx8VEEz9XJkeLo2Rh6zUaPq15U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eY94CcQliu8iZXnafeMwZvYO+sTgXYAsKkk+jBJguC+jxSyfpQqmy0LLgQ0nN6yfX049ZvTF/FINvO79XHcZrCSgC59d+owKEV7VzQUUtuPJqGetnxS6owGjKwqJdYJFPIcecFvSj8owJ13RSmyMTHtQav0F9KqnJi4VTIBeVYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Q+4bsvQH; arc=none smtp.client-ip=209.85.160.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=j26Sxuq+UM+FJXzkC6hTV9BSNRtjz982VyN1kOpLJjy5RNRaWhSK25+3/8GiDdQQL6yMvZ4YlIaG1+yZahi83d4bhTUjLceEVtNSx8XLrJ55ldob7L8ZMlCgPw38KLOeW+5e69HxL68cnMAco4+9ZKFQTq+85PmDBvLs2sVT0rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=dbSa7QpQ; arc=none smtp.client-ip=209.85.222.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Q+4bsvQH"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-516d61baff3so105916211cf.0
-        for <kvm@vger.kernel.org>; Sun, 31 May 2026 16:54:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="dbSa7QpQ"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-91550eceb4cso81477785a.1
+        for <kvm@vger.kernel.org>; Sun, 31 May 2026 16:58:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780271663; x=1780876463; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1780271917; x=1780876717; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IrKWJ1NykkXFbiCeCeA4esCrNiqvK/wMlJLwP88BqrM=;
-        b=Q+4bsvQHdmm2ecjorVxj+UpuLz6gFEl5p520qSyb+htAM433kS8kOK2YVJrePskJsM
-         XW1cIeJLkXOnmRewhK7L1oEsra64U1wyLn6cxN0jwN10jub732QrVxcaLAc6y12Zu30y
-         gRRy/eG0r11h1lvX162n/5mNFgzzhoZnpdd2aWVT5Ft5UdbovxRkXNpaVUPW4HepOnYZ
-         n7vsLYA48ABSKdIQLxVbMwvbpOaeC0A5/NPIYId0c0sW484kJS+91ACtlf+UjunFQiZ6
-         bqTbxJI9rj7HIbsbsOfpGH9m0+Cr+CVCYaNFPdhtvefXkEAL9Lx/M8T3QH+NAjNX/Fs2
-         LS5Q==
+        bh=hTfGHM2qB3g/FLyvX8FCIrm9+eNCgSr89Naia4gruos=;
+        b=dbSa7QpQSCIRaTEyv4Dl2wlQd7AOtrnoXzin92ac5CGCF7lAz6V1rkhE6RuyqFX86b
+         fWE2C6sey4Ar5iljgqC2iYHETLz05MxQlg3bjCHBb0xT6pieYwbckyMtAgqbD3SD43EB
+         PpSqMva/IdyvHKQnT6rOmXd0dgl+KIFVgL5YkkAPCGeY7i8LJ/Rl2hy2vj/LGHQtV9bz
+         82ai3qc0CMwNi9y6mcoomoJ/Ai1UhsdI/tck3KDVnTWRxN+4olAEoOgnN0oiXH3ZBU68
+         PkHOgv1blrEalsYRWq2ysvKCIBr0u+15tgFRWg5jXNrZjvXacFXUh1WCjbnRFbLn1N/U
+         4ekg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780271663; x=1780876463;
+        d=1e100.net; s=20251104; t=1780271917; x=1780876717;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IrKWJ1NykkXFbiCeCeA4esCrNiqvK/wMlJLwP88BqrM=;
-        b=nPbNWrwgAQiWCvft6HImBwSdXpni5sqfIL7VcAAKrg4Ynexxwrx276mS6uYdsu+cd+
-         tjhYpcYWlrnOkp4MmOotKDBIaXyi88WXwzbV/cx175+P64P5YAAsZVO4f3i86Gl5xW6l
-         4e8OTJF7D2q/tQ4vwMtOBgT2tb2jFDxbsAEcKnJliQbOTPnICFKcfiCVHnPNcMh6ylEb
-         ttqfShvwT6SUaEkj9P1SFSuSm1mViuTLERb7M3TTyedU16ctRqMlq3LtAnTcH3E7Kq7Y
-         Y1F9JXhEcd/pgKXJIxGnuxNmCKn4gYFuWaXMZyAOG5Hy/AZoEXRio6MMFkjw/52vUiAo
-         qgSw==
-X-Forwarded-Encrypted: i=1; AFNElJ8tYl1wZ3EP0yTQshm5ADwbLWHyVK7Yap32Cwp1H/YMXI+M7IahZJyURPdtTjX012B5A54=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgZ0hCQehza1/2ifrxhC5mUsWzvmzLh65HRIXbFDTKL6pzTuex
-	/tUV/rcaOTeHOh8ax3oNBdzknocdgfE8TeSa6w2MqUXLEwmbM/oHHEscTfdYYT2i+jiipNc7FHI
-	xF9eY
-X-Gm-Gg: Acq92OHO4AnZU/MAQDCPWaeCDy9GFiqZCWLfeMxctQXVY9m3HsXL8qaMlzCrPj4DY0A
-	makpmjtp/6mTYH1q/vYwac6ue1hDuNmRwJBm2niSfjgZ1kAY0bfHIRmWfrNGIZ8/fiPT5TevoST
-	11u7aJ+SFTExXMwToDk4ahmLbYGQAgjZMutHQR/qocFtVXXquu/F+yKBPE0yRSIR7XFVVkNIp1g
-	jw/alBmjs4Zt29vmSIQbrnUqAlXq6VL/Mh5WXowVLFPcBVTDG6tfQD0sj/ZZ5EpO1OcE2eCbIEU
-	La/DvgjoTVXnqqXmUEU2vDx33zFQHzrVz7A0/0/5SUOtmrfdx984yxTAXAzJb4x0q2lzzI/c2z+
-	AQZg7MAd+be2RBX9VgEaTuC98R+ou5cafeQPH3JiqEL8JXB1urln/2iPVYKvdS7MYosSVIfutRm
-	cGaVdH8edtsTNTzkKq76fM/8PQAemytaD6XvMRrMjnKNGbhRDnfoWNZT6/ax43/8sxKTtqa9b5g
-	PSgP4jBcHtlfeRSSq3vGtNQwKU=
-X-Received: by 2002:a05:622a:646:b0:516:d943:175e with SMTP id d75a77b69052e-5173a77ad04mr129763061cf.25.1780271663054;
-        Sun, 31 May 2026 16:54:23 -0700 (PDT)
+        bh=hTfGHM2qB3g/FLyvX8FCIrm9+eNCgSr89Naia4gruos=;
+        b=jwCGI2tAjCpOVLTd73gfYq7h/j2bwOSL//8imJpfwRvJ8VhqI4KvnrEbiN4wuONVWp
+         z6SRBRqkZmnxC5K/eI8YQJeiAdZEAJ+i0fIhmSsU5EjOR+Xf3eBnoojWHDUDXcjH2l2G
+         XK/H6XL8HS6PiXLSFjqmqQK5rWR6Q6lAgV3nldII6EvSdJQwQa2s4bg/ZUXx6Dg9pigk
+         tH8VCxRhx+WGkH7Ka+zKV/xIulAsJYMLoXWKgXcn+53AMAxXisWH2JhKGQRI4CiDvi4m
+         xkTst0pNC1pBOjpERulucktwifctK/wqDWTbH0HVkAcP+blr7qmukTgwNaLcrH1zyPLz
+         ca/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9gdGO+frecmtmC+1AOYRiwTslrtMA6OQNDnHpIaaLv9Ky4ffWnEZqGYwGq66bJ1OOTc4w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVbOsApTfIeW99MajsSwH96WuWjfS1iOpxRpA6XW/AQgF3PbHk
+	eHGM9Hlu0NRmcRqmlDjVJIMIbhmL9QBlpFtRCb0i77dVa10sN0l5RKYY4t3I4oHHoVY=
+X-Gm-Gg: Acq92OHGKaaXR7crgDbzXrU1YImXFhTuF8Fu7lX5aNahbESs2nZYSNAaquVH9NwfGoS
+	bS3zqTB8Zr4tvPqjhSsOtfdYm6aOAgYZiLzu4rmI2zsf1/4XhpzlkENMGN0D3IukRYBO0D6xotb
+	iaQzKiWmK24VkKJwC6HVNRAyz0JPch7NSdNPfIzj4Udw49IX0YRd4asMx78fWtoPcvish6KVn+q
+	e29G9SGfGJNKViVtPEwYdcoAsdndM5jsOdg4itPbOnZFgtwY76M5+24qhhijSqE2md18RrXQNTJ
+	oG/MCUOChUhRyB4llFbu8i/xg4y/O++rUHY/SSK7nuF+ssJYGyR8zHCxGnWCjiAKJnVw+PykNa7
+	8rs48D0S+2lWtGJRYKty2kDpjERBTVJpF3OZAcvWOtktXdgoOHgG2EE9c3g2zOFuv0JwpaIfVw2
+	KqgswCnjkXo/FlyHUZ0uTSHJ9bWPebNFUWhqM947CnJWc7mVI6Yl4wcL5Vxrwx6ptnAgn9xFKJJ
+	rhzcKx7ztK68l6Z
+X-Received: by 2002:a05:620a:bc8:b0:8cd:97de:bb52 with SMTP id af79cd13be357-9153d9703b8mr1495082185a.22.1780271916895;
+        Sun, 31 May 2026 16:58:36 -0700 (PDT)
 Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ccea1ca972sm78588116d6.30.2026.05.31.16.54.22
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9153262e2a6sm837284285a.40.2026.05.31.16.58.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 May 2026 16:54:22 -0700 (PDT)
+        Sun, 31 May 2026 16:58:36 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wTpz3-00000001Lqf-3yz5;
-	Sun, 31 May 2026 20:54:21 -0300
-Date: Sun, 31 May 2026 20:54:21 -0300
+	id 1wTq39-00000001Lt5-3GHA;
+	Sun, 31 May 2026 20:58:35 -0300
+Date: Sun, 31 May 2026 20:58:35 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 Cc: boris.brezillon@collabora.com, robh@kernel.org, steven.price@arm.com,
@@ -78,11 +77,12 @@ Cc: boris.brezillon@collabora.com, robh@kernel.org, steven.price@arm.com,
 	dwmw2@infradead.org, xlpang@linux.alibaba.com,
 	oliver.yang@linux.alibaba.com, shiyu.zsq@linux.alibaba.com,
 	wei.guo.simon@linux.alibaba.com
-Subject: Re: [PATCH 3/9] iommu/generic_pt: implement iova_to_phys_length
-Message-ID: <20260531235421.GW2487554@ziepe.ca>
+Subject: Re: [PATCH 7/9] vfio/iommufd: use iova_to_phys_length for efficient
+ unmap
+Message-ID: <20260531235835.GX2487554@ziepe.ca>
 References: <20260529115116.GR2487554@ziepe.ca>
  <20260531093637.3893199-1-guanghuifeng@linux.alibaba.com>
- <20260531093637.3893199-4-guanghuifeng@linux.alibaba.com>
+ <20260531093637.3893199-8-guanghuifeng@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -91,23 +91,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260531093637.3893199-4-guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20260531093637.3893199-8-guanghuifeng@linux.alibaba.com>
 
-On Sun, May 31, 2026 at 05:36:31PM +0800, Guanghui Feng wrote:
-> @@ -159,45 +164,51 @@ static __always_inline int __do_iova_to_phys(struct pt_range *range, void *arg,
->  	case PT_ENTRY_TABLE:
->  		return pt_descend(&pts, arg, descend_fn);
->  	case PT_ENTRY_OA:
-> -		*res = pt_entry_oa_exact(&pts);
-> +		data->phys = pt_entry_oa_exact(&pts);
-> +		data->length = BIT(pt_entry_oa_lg2sz(&pts));
+On Sun, May 31, 2026 at 05:36:35PM +0800, Guanghui Feng wrote:
+>  		/*
+> -		 * This is pretty slow, it would be nice to get the page size
+> -		 * back from the driver, or have the driver directly fill the
+> -		 * batch.
+> +		 * Use iova_to_phys_length to get both the physical address
+> +		 * and the PTE page size in a single page table walk, allowing
+> +		 * us to skip ahead by the contiguous region size instead of
+> +		 * walking the page tables for every PAGE_SIZE step.
+>  		 */
+> -		phys = iommu_iova_to_phys(domain, iova) - page_offset;
+> -		if (!batch_add_pfn(batch, PHYS_PFN(phys)))
+> -			return;
+> -		iova += PAGE_SIZE - page_offset;
+> +		phys = iommu_iova_to_phys_length(domain, iova, &pgsize) -
+> +		       page_offset;
+> +		if (!pgsize || pgsize < PAGE_SIZE)
+> +			pgsize = PAGE_SIZE;
 
-BIT is the wrong function, it uses the wrong type. log2_to_int() is
-type'd properly
+It is actually a bug if it returns something < PAGE_SIZE, it should
+WARN_ON and try to continue.
 
-This also needs to keep walking and accumulating length for
-consecutive PTEs until it reaches a non-contiguity.
+> @@ -1177,25 +1177,41 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
+>  
+>  	iommu_iotlb_gather_init(&iotlb_gather);
+>  	while (pos < dma->size) {
+> -		size_t unmapped, len;
+> +		size_t unmapped, len, pgsize;
+>  		phys_addr_t phys, next;
+>  		dma_addr_t iova = dma->iova + pos;
+>  
+> -		phys = iommu_iova_to_phys(domain->domain, iova);
+> +		/* Single page table walk returns both phys and PTE size */
+> +		phys = iommu_iova_to_phys_length(domain->domain, iova,
+> +						  &pgsize);
+>  		if (WARN_ON(!phys)) {
+>  			pos += PAGE_SIZE;
+>  			continue;
+>  		}
+> +		if (!pgsize || pgsize < PAGE_SIZE)
+> +			pgsize = PAGE_SIZE;
+>  
+>  		/*
+>  		 * To optimize for fewer iommu_unmap() calls, each of which
+>  		 * may require hardware cache flushing, try to find the
+>  		 * largest contiguous physical memory chunk to unmap.
+> +		 *
+> +		 * Calculate remaining contiguous bytes within this PTE from
+> +		 * our position, then try to join following physically
+> +		 * contiguous PTEs.
+>  		 */
+> -		for (len = PAGE_SIZE; pos + len < dma->size; len += PAGE_SIZE) {
+> -			next = iommu_iova_to_phys(domain->domain, iova + len);
+> +		len = pgsize - (iova & (pgsize - 1));
+> +		for (; pos + len < dma->size; ) {
+> +			size_t next_pgsize;
 
-The other drivers don't need to have that complexity.
+Things should be arranged so the iommu_iova_to_phys_length() always
+returns the best length, either because it called into iommupt to get
+it or because it accumulated internally on an old driver.
+
+Probably to make this work well the API should include the last
+address to reach so it can stop iterating at the right point.
 
 Jason
