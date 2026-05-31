@@ -1,206 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0885D2F3C07
-	for <kvm@vger.kernel.org>; Sun, 31 May 2026 19:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977622E7377
+	for <kvm@vger.kernel.org>; Sun, 31 May 2026 22:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780256723; cv=none; b=PFMpbBiDqz8mFg+DbFaQUNfhiPqtqyQ8zEIloyoPy75EO6BtsNaedt5Ayt5fVZeQw6gJJc0bAhvKw58EGPkTVJtogJCNs6vGK8F6uMMJ2xKujWETpsb4a3e8qPf0zqNSe/3m5nysApBOBh9uIiz632t6PgFVJU5ZLiz4hvlKnak=
+	t=1780265576; cv=none; b=IwXxrQOl8roNhMhtT8oltZkRITXzON+XGnbYDCWZRuKyeFBfjAZLEh5kWik/PGMbJYaRVfRrO0onvkba8lHxrbMpFkSvbMpQruEFCd1zgFqzRBQA0+e6FbYY+1abXG09ga/ExnKVbF2mJV3ISnS8Vs6UTTk6FJ+eyEi1VdtIJRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780256723; c=relaxed/simple;
-	bh=f3PeY+7CEBRUeBiTTPrz8JWS1R1kqVsX2B3U3zqytP0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qFcg6LkDyuSRVii4WGr9AlIxv61pLDXVERQR8Bqin7jkMkAQMsDV4e+YLyBkCWtO2uP5cvv7+NcxXrImX8I9Elno7J+0x5d0t1IvKTIHnP4cz1mbLZvg97+irFg49NfFlnzBY+HR7wT6MhoK3tNa6Rv9eKsEeAUAMh6Se++BA00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFynYPa1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780265576; c=relaxed/simple;
+	bh=CCLdSYDcbA4vAViSDI7JcS1ilcApUa3TCZJ63QiM7o8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N1P8XGPxNoOyZtE5j5LiImT7crvU8lsyOU7+2eOs/DQQJUdTysFZaoyWz/qeeTIyPZpcjLJ/Terx8ApsBaw4MYbSzXsBdCtCFb3qaBpThYnfm3mBEsbN7ZulaZuGKslxcajgBduCMVndS0/494TAN9ROgqM0aQZlUVR94emDb10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BtstCuK5; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFynYPa1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC971F00893;
-	Sun, 31 May 2026 19:45:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780256721;
-	bh=W8xoUoaM2nYGxo771N637ptlxdsZLID5iUx9XHAZe8Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bFynYPa15KBW6dCU+t/QVqiENx3+ICQUXEPImR+W8OpsFeMeT/vQbFSBx5lQIEN3H
-	 6sc8w9cNy9CHy+yQqrmUpdNZCUKXgxhJdCLVW3UmI0JqPcRykwbSMDWrmmda7O9UXk
-	 R5VzI0RjXwTrKDk12ihEr6KeU/oD2Brf2n8YNhnn0AnTvPb5RG7au9yG6RTCekKBii
-	 uxMavvmrjDXsD8VxxJBSIIztKlZZ2aPESPhO9esUOJFtxwDTtchBrKl2ILYfWlCCXk
-	 zjVDyZCKoPxUWL3ZKYQUhsHBooIdXOk2OHS5RrYHWr0+B0tYApt1UnqTRRf4lh2MqK
-	 aZmnTJXeqcDyQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 3/3] KVM: s390: Introducing kvm_arch_set_irq_inatomic
- fast inject
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Douglas Freimuth" <freimuth@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260531190353.204317-4-freimuth@linux.ibm.com>
-References: <20260531190353.204317-4-freimuth@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 31 May 2026 19:45:21 +0000
-Message-Id: <20260531194521.8DC971F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BtstCuK5"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490a7627033so5870675e9.0
+        for <kvm@vger.kernel.org>; Sun, 31 May 2026 15:12:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1780265573; x=1780870373; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oWF6tyr2CYayU1PYtFJKATyY4aqFNfuk6d6waCisXn8=;
+        b=BtstCuK5eXAwutS1y40aUEhbxECtURrEe9tn9HEXIItnsoN28V8FiIrt6kOamQksdc
+         BDNv+M6KJ/QCeK/Y4s/B8b+CcGR0YjtaandYhiv25XNP8gDXsQg9P51m9FD6QpblmiMQ
+         vSyMfcXuXcJgESCQytVryV6UUpxrhio2A+ur1v4enKunGIyBgpAmDKUG/azqnHeaRuq4
+         2Rque+iIV/8yQnMCxSCciaLqajnvt7u7qvwHZuf2av94uuw4oc/9eEu7geU7w/kVzXKH
+         2/zp8rVv4QJzZM8+sjAqKysZ4nQbS9H01BqYSDhcNvBVfMmQnM3wWhqQWmPF5ZfYQmp5
+         BMEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780265573; x=1780870373;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oWF6tyr2CYayU1PYtFJKATyY4aqFNfuk6d6waCisXn8=;
+        b=nNoIYY63Dl96rXAvxIdkzWtzp5WEa9ZAoXnLjzrQm2pFKJrjDO4lHgrltlBbh6L4UB
+         56hYh11yZGu7UuOACVp5QhYecsyaT+b+8c5kb0VmMqIgUct8brxIbfTl+WSDAwwcFCkS
+         gcTXDIL/pPYe4lb2SBgbUxpFcbSTLLv/KagVQn9PZdAky3meyNrkPRlYN1TwMjKBNF5b
+         v1Bu4q7B2HFoAylKgaj+o81UNn6FqUtKyP7PNjg+GSMxFE6eYu+Bd+tp9GkWZOrrNYPn
+         6f0/brRfqGE0LefPZj8MMDpvLi7pn7RaqDP4QWiiGD7zf36c0TPMnq7vt7InH400gh65
+         wbkg==
+X-Forwarded-Encrypted: i=1; AFNElJ+mf+LTt+h6F+5N1a6rwo972+MlHPjwlDRCoeHi/BTC+zdStj06MUAJNWNRumNi9ZLMa6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnUoYUt3aIzEukC1xrRvC0iSXm2+hWY8BJup4ZpB++5eb0gqV+
+	48c5y5Uv2LfU5IykURSmYDOONC/8X0/IDO4XvbRDVtMSSWS1V6q6HJ3YNYfwTPoh/vQ=
+X-Gm-Gg: Acq92OGTJGl2auXzHTgO2ZhG8N0k2RK8ba+rc/uNUP60WUGncdWotXCaUZa3LfG4hEY
+	V4RdsjX4Ax/cMAG1UXjH7Y+zthihDdlG60xCeJ1WAagt4rwCxichH+zqee1YmoGIsaFfzPEqblL
+	WlzJFQ7kp4hZLWPgY2qovYubnUrLM0/tx2wkMJoa7HkQQk6TU+MsXVdiodbqbX8Fsd3C5ki8IwR
+	QWjkQuRHq9R2uijbk1pQOVuUUcasif1Nvpxore94rzVUdfl7WZDKP0KR18SyztJo+6HutjkVtxL
+	eQc8dWrDMsLfWgaMuEjH7zc/Pqs1jdU2C1L4YMy2Lm7Kn7Hp3GvrY50IrqmocGhmNrI1oGlVLod
+	KUraB0FVk8AmKuCTDmu216irQ5cwLaKR8ACyNVmmKgiNnTlhHcCmwcxtS9pqpHSwL/oLeSS+XHR
+	lYaQyIR3+8bLbWPgG0FJIz2UgqcIc19jyMYPFZqgplWPInCFiXuHKofJsQ9GiauqV47uMiet9de
+	5qo
+X-Received: by 2002:a05:600c:6d2:b0:490:5368:743 with SMTP id 5b1f17b1804b1-490a2946a23mr100294545e9.32.1780265572879;
+        Sun, 31 May 2026 15:12:52 -0700 (PDT)
+Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c123406sm82118745e9.5.2026.05.31.15.12.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 31 May 2026 15:12:52 -0700 (PDT)
+Message-ID: <b8f40cca-2646-4912-8aa6-43442eab4f31@linaro.org>
+Date: Mon, 1 Jun 2026 00:12:50 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/17] accel/whpx: Convert AccelCPUClass ->
+ AccelOpsClass::cpu_instance_init
+Content-Language: en-US
+To: Mohamed Mediouni <mohamed@unpredictable.fr>
+Cc: qemu-devel@nongnu.org, Reinoud Zandijk <reinoud@netbsd.org>,
+ Pedro Barbuda <pbarbuda@microsoft.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Glenn Miles <milesg@linux.ibm.com>, Alexander Graf <agraf@csgraf.de>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-arm@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Anton Johansson <anjo@rev.ng>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Song Gao <gaosong@loongson.cn>,
+ qemu-riscv@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Alistair Francis <alistair.francis@wdc.com>, qemu-ppc@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, Chao Liu <chao.liu.zevorn@gmail.com>,
+ kvm@vger.kernel.org, Claudio Fontana <cfontana@suse.de>,
+ Chinmay Rath <rathc@linux.ibm.com>
+References: <20260529142434.87880-1-philmd@linaro.org>
+ <20260529142434.87880-8-philmd@linaro.org>
+ <8889E557-72CA-4DED-B06E-4D82135CF923@unpredictable.fr>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <8889E557-72CA-4DED-B06E-4D82135CF923@unpredictable.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+On 29/5/26 21:03, Mohamed Mediouni wrote:
+> 
+> 
+>> On 29. May 2026, at 16:24, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> Register the new AccelOpsClass::cpu_instance_init hook.
+>>
+>> ACCEL_CPU_NAME("whpx") TypeInfo is now empty, remove it.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> accel/whpx/whpx-accel-ops.c |  2 ++
+>> accel/whpx/whpx-common.c    | 17 -----------------
+>> target/arm/whpx/whpx-all.c  |  1 -
+>> target/i386/whpx/whpx-all.c |  1 -
+>> 4 files changed, 2 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/accel/whpx/whpx-accel-ops.c b/accel/whpx/whpx-accel-ops.c
+>> index b8f41544cbe..099e8ef6da3 100644
+>> --- a/accel/whpx/whpx-accel-ops.c
+>> +++ b/accel/whpx/whpx-accel-ops.c
+>> @@ -98,6 +98,8 @@ static void whpx_accel_ops_class_init(ObjectClass *oc, const void *data)
+>>      ops->handle_interrupt = generic_handle_interrupt;
+>>      ops->supports_guest_debug = whpx_supports_guest_debug;
+>>
+>> +    ops->cpu_instance_init = whpx_cpu_instance_init;
+>> +
+> Hi,
+> 
+> No whpx_cpu_instance_init implementation present in the commit
+> as far as I can tell.
 
-New issues:
-- [High] The rollback path in `adapter_indicators_set_fast` early-exits if =
-`ind_info` is missing, failing to clear the summary bit and permanently coa=
-lescing future interrupts.
-- [High] Adversary-reachable memory allocation failure triggers `WARN_ON_ON=
-CE`.
-- [High] Use of GFP_ATOMIC in a preemption-disabled context (kvm_arch_set_i=
-rq_inatomic) includes __GFP_KSWAPD_RECLAIM, which risks lock recursion and =
-deadlocks.
+You exposed it in commit 4610fee3242 ("whpx: reshuffle common code") :)
 
-Pre-existing issues:
-- [High] Uninitialized stack variable `inti.parm` is passed to `trace_kvm_s=
-390_inject_vm`, leaking kernel stack memory to the trace buffer.
---
-
-commit db19d981b8f8dcf62bd14e1ad3e06ee6ac4f4929
-Author: Douglas Freimuth <freimuth@linux.ibm.com>
-
-KVM: s390: Introducing kvm_arch_set_irq_inatomic fast inject
-
-This commit introduces a fast path for irq injection=20
-(kvm_arch_set_irq_inatomic) instead of placing all interrupts on the global
-work queue. It adds map/unmap functions for adapter indicators, switches fr=
-om
-mutexes and semaphores to spinlocks for shared resources, and implements
-memory allocations on the fast path using GFP_ATOMIC.
-
-> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> index a7cff4289f4ad..5cfa781e349a0 100644
-> --- a/arch/s390/kvm/interrupt.c
-> +++ b/arch/s390/kvm/interrupt.c
-[ ... ]
-> @@ -2972,6 +3001,44 @@ static int adapter_indicators_set(struct kvm *kvm,
->  	return summary_set ? 0 : 1;
->  }
-> =20
-> +static int adapter_indicators_set_fast(struct kvm *kvm,
-> +				       struct s390_io_adapter *adapter,
-> +				       struct kvm_s390_adapter_int *adapter_int,
-> +				       int setbit)
-> +{
-> +	unsigned long bit;
-> +	int summary_set;
-> +	struct s390_map_info *ind_info, *summary_info;
-> +	void *map;
-> +
-> +	spin_lock(&adapter->maps_lock);
-> +	ind_info =3D get_map_info(adapter, adapter_int->ind_addr);
-> +	if (!ind_info) {
-> +		spin_unlock(&adapter->maps_lock);
-> +		return -EWOULDBLOCK;
-> +	}
-
-[Severity: High]
-When an allocation or injection fails in kvm_arch_set_irq_inatomic(), it
-calls adapter_indicators_set_fast() with setbit=3D0 to roll back the summary
-bit. If the indicator page was unmapped concurrently, get_map_info() returns
-NULL and we early-return -EWOULDBLOCK.
-
-Does this early return skip clearing the summary bit? If the summary bit
-remains stuck, could this cause all future interrupts for any indicator
-sharing that summary page to be silently dropped?
-
-> +	map =3D page_address(ind_info->page);
-> +	bit =3D get_ind_bit(ind_info->addr, adapter_int->ind_offset, adapter->s=
-wap);
-[ ... ]
-> +	ret =3D adapter_indicators_set_fast(kvm, adapter, &e->adapter, setbit);
-> +	if (ret < 0)
-> +		return -EWOULDBLOCK;
-> +	if (!ret || adapter->masked) {
-> +		kvm->stat.io_390_inatomic_no_inject++;
-> +		return 0;
-> +	}
-> +
-> +	inti =3D kzalloc_obj(*inti, GFP_ATOMIC);
-
-[Severity: High]
-Does this GFP_ATOMIC allocation risk lock recursion?
-
-kvm_arch_set_irq_inatomic() is invoked as a fast-path for irqfd injection,
-executing from the eventfd wait queue callback with the waitqueue spinlock
-held (preemption disabled).
-
-GFP_ATOMIC inherently includes __GFP_KSWAPD_RECLAIM, which triggers
-wakeup_kswapd() and re-enters the scheduler machinery via try_to_wake_up().
-
-Should we strip the __GFP_KSWAPD_RECLAIM bit or use a bare flag like
-__GFP_NOWARN instead?
-
-> +	if (!inti) {
-> +		setbit =3D 0;
-> +		adapter_indicators_set_fast(kvm, adapter, &e->adapter, setbit);
-> +		return -EWOULDBLOCK;
-> +	}
-[ ... ]
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 0d39c1375de21..98e7d807d6204 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-[ ... ]
-> @@ -4379,19 +4389,28 @@ int kvm_s390_try_set_tod_clock(struct kvm *kvm, c=
-onst struct kvm_s390_vm_tod_clo
->  }
-> =20
->  static void __kvm_inject_pfault_token(struct kvm_vcpu *vcpu, bool start_=
-token,
-> -				      unsigned long token)
-> +				     unsigned long token)
->  {
->  	struct kvm_s390_interrupt inti;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the stack variable inti is
-declared without initialization. While inti.type and inti.parm64 are
-subsequently populated, inti.parm remains uninitialized.
-
-When inti is passed into kvm_s390_inject_vm(), trace_kvm_s390_inject_vm()
-unconditionally logs s390int->parm. Could this leak 32 bits of uninitialized
-kernel stack memory to userspace via the trace ring buffer?
-
->  	struct kvm_s390_irq irq;
-> +	struct kvm_s390_interrupt_info *inti_mem =3D NULL;
-> +	int ret =3D 0;
-> =20
->  	if (start_token) {
->  		irq.u.ext.ext_params2 =3D token;
->  		irq.type =3D KVM_S390_INT_PFAULT_INIT;
->  		WARN_ON_ONCE(kvm_s390_inject_vcpu(vcpu, &irq));
->  	} else {
-> +		inti_mem =3D kzalloc_obj(*inti_mem, GFP_KERNEL_ACCOUNT);
-> +		if (WARN_ON_ONCE(!inti_mem))
-> +			return;
-
-[Severity: High]
-Is it safe to use WARN_ON_ONCE() for this memory allocation failure?
-
-Since this path is reachable by a guest triggering async page faults, a
-malicious guest could spray memory to induce host memory pressure, hit this
-allocation failure, and trigger a host panic if panic_on_warn is set.
-
-Could we handle this failure gracefully or return an error without the WARN?
-
-> +
->  		inti.type =3D KVM_S390_INT_PFAULT_DONE;
->  		inti.parm64 =3D token;
-> -		WARN_ON_ONCE(kvm_s390_inject_vm(vcpu->kvm, &inti));
-> +		ret =3D kvm_s390_inject_vm(vcpu->kvm, &inti, inti_mem);
-> +		if (ret)
-> +			kfree(inti_mem);
-> +		WARN_ON_ONCE(ret);
->  	}
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260531190353.2043=
-17-1-freimuth@linux.ibm.com?part=3D3
+> 
+> Did you miss it? Other than that things look fine and a stub implementation
+> should be okay.
+> 
+>>      ops->synchronize_post_reset = whpx_cpu_synchronize_post_reset;
+>>      ops->synchronize_post_init = whpx_cpu_synchronize_post_init;
+>>      ops->synchronize_state = whpx_cpu_synchronize_state;
