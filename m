@@ -1,163 +1,166 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084B4256C6D
-	for <kvm@vger.kernel.org>; Sun, 31 May 2026 09:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5CA29BD95
+	for <kvm@vger.kernel.org>; Sun, 31 May 2026 10:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780221285; cv=none; b=Cu5ES8NE+o4FfE4pQaswm21CXrEEQpWEcxerVPpwibMkT9iKdI6lIsWbsqSlwog8xEa0eJi0BlPP1t4hGKI72SrWKJE06TkHu2qc0nrTlOUIVF+I1+d9CSoJYY1Heg+8RpatPOS/pn+ualyTIbgdLd76omltzmxDBvl9K1tOSBQ=
+	t=1780221809; cv=none; b=e1SNpGGrdrxaWEpx7hPRbL1X/GchxegQOcjkZ9FKqmt5g+VRq1MVEQExECYyAFXH1dKVjMV483ai7pAzW72laHlP5bmjdF7YVWPo+C/mDzLGAL94qsKvH8nOYOyPuIC90kf/oqbG8IaGEg0XdvlSMUFhEV++ZWjEZ7EAVhycz58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780221285; c=relaxed/simple;
-	bh=YlYsCmmfRDudLxk3hRa6XH2v3oxD7aWPH6YRz0jjIww=;
+	s=arc-20240116; t=1780221809; c=relaxed/simple;
+	bh=SxYLG9AyO9gIolGqT8VyD2vSIew2DxI+Za3KHvPbaKk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ao5A5UTIoVcN6a4VQ+NMivEsXK/Jwq7iyl73f+pLijKeJf5Ml1Uesc7Oial6KKtaUsQNvek/WXuRIdGr5BWmV2cqWmcq5vb8LQh4fcG7qz2quOVdyGPHM7t7xc6E6wDV45T3p9BcXoM0zHpBTVxC4TRnkmsYn1iUN3CEdY49PHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NE438uie; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=MTJ1HPKixsGynlKtRNk4n7ElFtY4vLHx2LxsLt0BJx9dFZdGQfrf4XiLUtyKByfvfGeemQ62JbyvvpFWjDGgwxvXt8yVF5a7s1iPfuqp8di6qXy33dite51P/WnL1o0mCZRmr6sGLuv9J+GKOaBS7M7a5NEJ1VnrPcMOAagtnRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oBJbdkpQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NE438uie"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881C31F00893;
-	Sun, 31 May 2026 09:54:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oBJbdkpQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643091F00893;
+	Sun, 31 May 2026 10:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780221283;
-	bh=tYbPN9GjrEtZ7SQhBKQJSW70vswm0VPEYF+giBEOpR8=;
+	s=k20260515; t=1780221807;
+	bh=UaxytKz0fQa6RwRWjpZMEWEkNTci59USifutx3xas1Q=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NE438uieN91Rg9u4e/FdmK4xlxiiW8b+U/QqbPRAnbvewLJuilmYzabySeqg5HTeU
-	 47Bz5/XkYmEKpaADUV7TZ/hT0Hdarkhzyjp+BHsqrJQrP5lx/pzPSk/d4oYKx3wmDy
-	 Rr88EI1DbLuLpahLlbT4LmEp9e5iLEBToM1ntr/G1oE/eQZkS9BPzEWhvwqTIyr7rJ
-	 5C55C2q8JOrwFzY/i9EnWq3w3HOblCvIm8YnEOvXYec8+dhNkOeyJ4Dvb6WAqxPiWx
-	 VUA3JzwUtYLOpRRfaOjIFM9ZY02BEee4tB9WVR05b1ZPE86DhHCnth/fP/IONKauxC
-	 4XP3do2j1zkWQ==
+	b=oBJbdkpQZaNZyQ6MTGFn9szDbF0T0R8YvXGmA230p6rTrIxqAC7jWCNuWgW9OHsNK
+	 1pCvNMEofzxn82fl6L3SSHbETrf18qmjm1totIxXxxIzCAF1RCQN0icSsdP8j+AsIz
+	 Ey4Rv9jQWe3jTY2qk+9420MyEczIC7Sn5omkz+xHSYn8eG7Sh0qTEl82Adl02lP2b+
+	 sauNiA/+9dyqPA256q3TFzauwfLA6r7cBsZt3t8cTiD5d+lC+GrJtJWzG4ZtNOPCTN
+	 6AfnKnVX1AVUiR01bLduLmyaBq5FClZIqOO+GjS4tqZt+fUSN7MNHI1nzirPYyeVwb
+	 3MfsgTycSsPdg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/9] iommu: introduce iova_to_phys_length in
- iommu_domain_ops
+Subject: Re: [PATCH 2/9] iommu/io-pgtable: introduce iova_to_phys_length in
+ io_pgtable_ops
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260531093637.3893199-2-guanghuifeng@linux.alibaba.com>
-References: <20260531093637.3893199-2-guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20260531093637.3893199-3-guanghuifeng@linux.alibaba.com>
+References: <20260531093637.3893199-3-guanghuifeng@linux.alibaba.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 31 May 2026 09:54:43 +0000
-Message-Id: <20260531095443.881C31F00893@smtp.kernel.org>
+Date: Sun, 31 May 2026 10:03:26 +0000
+Message-Id: <20260531100327.643091F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Critical] Out-of-bounds physical memory access in IOMMUFD due to non-pow=
-er-of-2 mapping size returned by virtio-iommu.
-- [Medium] Missing static inline stub for iommu_iova_to_phys_length when CO=
-NFIG_IOMMU_API is disabled.
+
+New issues:
+- [Critical] The `iova_to_phys_length` implementations return the total blo=
+ck/page size instead of the remaining mapped length, violating the API cont=
+ract and risking out-of-bounds traversal.
+
+Pre-existing issues:
+- [High] Uninitialized stack variable usage in `arm_lpae_iova_to_phys_lengt=
+h` when `iova` is `ULONG_MAX`.
+- [High] Data race and TOCTOU vulnerability due to unprotected double-readi=
+ng of the PTE in the page table walk callback.
 --
 
-commit 1d85ac7114cff28b195e3c83a6653359f5181460
+commit 3219288135ef40cd65a3a4a3c01d71fbe03eb398
 Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Subject: iommu/io-pgtable: introduce iova_to_phys_length in io_pgtable_ops
 
-iommu: introduce iova_to_phys_length in iommu_domain_ops
+This patch adds iova_to_phys_length to struct io_pgtable_ops. The new
+callback returns the mapped length from iova to the end of the mapping
+entry through the mapped_length parameter, and is implemented for the
+ARM LPAE, ARM v7s, and DART backends.
 
-Add iova_to_phys_length callback to struct iommu_domain_ops alongside
-the existing iova_to_phys. The new callback returns both the physical
-address and the PTE mapping page size in a single page table walk.
+> diff --git a/drivers/iommu/io-pgtable-arm-v7s.c b/drivers/iommu/io-pgtabl=
+e-arm-v7s.c
+> --- a/drivers/iommu/io-pgtable-arm-v7s.c
+> +++ b/drivers/iommu/io-pgtable-arm-v7s.c
 
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index d1a9e713d3a05..43323229a1df3 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
 [ ... ]
-> @@ -2545,15 +2545,45 @@ void iommu_detach_group(struct iommu_domain *doma=
-in, struct iommu_group *group)
->  }
->  EXPORT_SYMBOL_GPL(iommu_detach_group);
-> =20
-> -phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t i=
-ova)
-> +/**
-> + * iommu_iova_to_phys_length - Translate IOVA and return mapping page si=
-ze
-> + * @domain: IOMMU domain to query
-> + * @iova: IO virtual address to translate
-> + * @mapped_length: Output parameter for the PTE page size (e.g. 4KB/2MB/=
-1GB)
-> + *
-> + * Like iommu_iova_to_phys() but additionally returns the page size of t=
-he
-> + * PTE mapping at @iova through @mapped_length.
-> + *
-> + * Return: The physical address for the given IOVA, or 0 if no translati=
-on.
-> + */
-> +phys_addr_t iommu_iova_to_phys_length(struct iommu_domain *domain,
-> +				       dma_addr_t iova,
-> +				       size_t *mapped_length)
+
+> @@ -661,6 +673,11 @@ static phys_addr_t arm_v7s_iova_to_phys(struct io_pg=
+table_ops *ops,
+>  	mask =3D ARM_V7S_LVL_MASK(lvl);
+>  	if (arm_v7s_pte_is_cont(pte, lvl))
+>  		mask *=3D ARM_V7S_CONT_PAGES;
+> +
+> +	blk_size =3D ~mask + 1U;
+> +	if (mapped_length)
+> +		*mapped_length =3D blk_size;
 
 [Severity: Critical]
-Is it possible for the underlying domain implementation to return a
-non-power-of-2 length here?
+Does this return the total block size instead of the remaining mapped lengt=
+h?
 
-If a driver like virtio-iommu implements iova_to_phys_length by returning
-the size of the user mapping region stored in its interval tree
-(e.g., mapping->iova.last - mapping->iova.start + 1), it can return an
-unaligned or non-power-of-2 value (like 12KB).
+The io_pgtable_ops documentation requires returning the remaining mapped le=
+ngth
+from the iova to the end of the mapping entry. However, this seems to return
+the full block size without subtracting the intra-block offset.
 
-Callers like IOMMUFD use bitwise math assuming the length is a power-of-2:
+If a caller passes an unaligned iova and uses mapped_length to advance its
+traversal iterator, could this cause it to overshoot the current block and
+skip subsequent page table regions?
 
-drivers/iommu/iommufd/pages.c:batch_from_domain() {
-    ...
-    npages =3D (pgsize - (iova & (pgsize - 1)) + page_offset) / PAGE_SIZE;
-    for (i =3D 0; i < npages; i++) {
-        if (!batch_add_pfn(batch, PHYS_PFN(phys) + i))
-            return;
-    }
-    ...
-}
+This same pattern appears to be used in the ARM LPAE and DART implementatio=
+ns
+added in this patch as well.
 
-VFIO does the same:
-
-drivers/vfio/vfio_iommu_type1.c:vfio_unmap_unpin() {
-    ...
-    len =3D pgsize - (iova & (pgsize - 1));
-    ...
-}
-
-When an unaligned or non-power-of-2 length is returned, pgsize - 1 is not
-a valid bitmask, which can cause the formula to overestimate the remaining
-contiguous length. This exposes unmapped physical memory, and could allow
-an out-of-bounds physical memory access or unmapping lengths that exceed
-the actual mapping.
-
-Could this be documented to strictly require power-of-2 PTE page sizes,
-or could the callers be updated to handle non-power-of-2 region lengths?
+> diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-ar=
+m.c
+> --- a/drivers/iommu/io-pgtable-arm.c
+> +++ b/drivers/iommu/io-pgtable-arm.c
 
 [ ... ]
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index bf8a77a164e4d..29c7c042d400d 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
+
+>  static int visit_iova_to_phys(struct io_pgtable_walk_data *walk_data, in=
+t lvl,
+>  			      arm_lpae_iopte *ptep, size_t size)
+>  {
+>  	struct iova_to_phys_data *data =3D walk_data->data;
+>  	data->pte =3D *ptep;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but could this unprotected read
+of *ptep lead to a torn read or a Time-of-Check to Time-of-Use issue?
+
+The caller io_pgtable_visit() safely reads the PTE into a local variable
+using READ_ONCE() to validate it, but passes the raw ptep pointer to this
+callback.
+
+If the PTE is modified concurrently between the READ_ONCE() in the caller
+and the direct dereference here, could we end up with torn reads on 32-bit
+ARM systems or return a garbage physical address translation?
+
+>  	data->lvl =3D lvl;
+>  	return 0;
+>  }
+
 [ ... ]
-> @@ -958,6 +964,9 @@ extern ssize_t iommu_map_sg(struct iommu_domain *doma=
-in, unsigned long iova,
->  			    struct scatterlist *sg, unsigned int nents,
->  			    int prot, gfp_t gfp);
->  extern phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_a=
-ddr_t iova);
-> +extern phys_addr_t iommu_iova_to_phys_length(struct iommu_domain *domain,
-> +					      dma_addr_t iova,
-> +					      size_t *mapped_length);
 
-[Severity: Medium]
-Will this cause build failures for configurations without CONFIG_IOMMU_API?
+> +static phys_addr_t arm_lpae_iova_to_phys_length(struct io_pgtable_ops *o=
+ps,
+> +						 unsigned long iova,
+> +						 size_t *mapped_length)
+>  {
+>  	struct arm_lpae_io_pgtable *data =3D io_pgtable_ops_to_data(ops);
+>  	struct iova_to_phys_data d;
+>  	struct io_pgtable_walk_data walk_data =3D {
+>  		.data =3D &d,
+>  		.visit =3D visit_iova_to_phys,
+>  		.addr =3D iova,
+>  		.end =3D iova + 1,
+>  	};
 
-It appears that the static inline stub for iommu_iova_to_phys_length() is
-missing in the #else block for CONFIG_IOMMU_API in this header. Generic
-drivers that use this API might encounter compilation and linkage failures
-when IOMMU_API is disabled.
+[Severity: High]
+This is a pre-existing issue, but can walk_data.end overflow if iova is
+ULONG_MAX?
 
->  extern void iommu_set_fault_handler(struct iommu_domain *domain,
->  			iommu_fault_handler_t handler, void *token);
->
+If iova is ULONG_MAX, iova + 1 would wrap around to 0. During the walk in
+__arm_lpae_iopte_walk(), the loop condition checks walk_data->addr <
+walk_data->end. With end being 0, wouldn't this condition be immediately fa=
+lse?
+
+If the walk returns 0 (success) without calling the visit callback, could we
+end up using the uninitialized d.lvl and d.pte fields to compute block_size
+and the physical address?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260531093637.3893=
-199-1-guanghuifeng@linux.alibaba.com?part=3D1
+199-1-guanghuifeng@linux.alibaba.com?part=3D2
