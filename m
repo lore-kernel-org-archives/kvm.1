@@ -1,110 +1,163 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8951A35675D
-	for <kvm@vger.kernel.org>; Sun, 31 May 2026 10:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70137348883
+	for <kvm@vger.kernel.org>; Sun, 31 May 2026 10:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780222362; cv=none; b=DRY3SEvGLL5dYiXcOk1FmCS62XxFwNh+ww2eHOLnqKwCiQFbhfNcoSRJa+/EHCUkqEGKlfKQLjaM0+ohweOYxNB83muxOkhSoINHEwq5u84A21Yyw31jm9Rfz+gkRToPhVS2x/O6rsa10rrX6H72ummG1dq0qjTjB0JCY3dyvBg=
+	t=1780222961; cv=none; b=osxmzHeqhY+lacjlVu4uKCn/RxCXYaBzV0jd52HQUyPZqFI3RFHDINjmx24YU3DQIOJgBNATtr23sII9iRP6zJ8QaPH6FPSeoElgWjGl60e6cT7hRg9GUttX0HoYceyKucQ8+uYlv/p16DVbCOvCP4LMCDYTZl9Gl7NoFvq/KZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780222362; c=relaxed/simple;
-	bh=K/NFNyHG6s3MI6iPrDktwhpoSgx16iCrMr+9GdStMJg=;
+	s=arc-20240116; t=1780222961; c=relaxed/simple;
+	bh=8G3MU/rqFtlUIxoAIz8aW6U61nE8zRxP4jbVfQtvv+4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Sb4uk4JIJ7lgO5+dUhmLmqImxYkhKe+KnfiFoyNoqIY1teFgUcgRiYBw7eR4rAflOcuQNXo+uMiiLK1s4LeRyRBdqsgwJtrVb2/3TEnUcETMPFcIeDuu6nrWVxgZK5xlMbdXW5EFYnTvhXdMjOoXiGLwjwGwChP6weBwhPiP82g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G3loHZ+A; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=eM8Fvrxmfv2v9xMbSKCRsmFxmwSWRvkc3LZ3XS840ycAVakcPTQRLNASxN13IkpMDMDkaak3XemYni2bwng5jdipq0/eUQdjUBmeBap1s2VaaKIZgwsN58GFFJQebnIAkI3YWJ3Un8PvJMAetrUgWuzgkBz0EGuoJ3xOjv/OEno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTexwjpS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G3loHZ+A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156381F00893;
-	Sun, 31 May 2026 10:12:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTexwjpS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A801F00893;
+	Sun, 31 May 2026 10:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780222361;
-	bh=lQCHJc5jwwLznhZC0J9EELkq1E9q/IyhnFxhj8/KKCI=;
+	s=k20260515; t=1780222960;
+	bh=dgo/5LiNlXpRNaE2EyXWXs2gTKWyMBLkVxokzA6hZz4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=G3loHZ+ArH4ci4aVnjja9Q+uCICT41bTGpeRVWedef3VfDkck/HVJ74KxsK9Gt6Nm
-	 sdPdmCLtkNxlb1UiJfyN2nxejUG472AUnTiHcK97351VZYNyMGfFtreZ+5uYSPb5qa
-	 MioiNJSGJF9qvMzBtTMNE3pdKHHeVf3a+212ThBROmt7uyF/Kja4Q0cbkfJ7z6cmLO
-	 WVHsuA81dgltP+k04WYyIrssrn8rI1iPr6xcHamHS9k9DuzU/y1ea28BzGqGZPcAqX
-	 rTDJqrbDB525X8YSs0SFndbPeyDGVP+2tARBBw9W4ufny9NE5k3JRbAcQGyJDP1qcH
-	 SsOVscI4uEpPA==
+	b=QTexwjpSC88dL05Q6OPCDRAfwSvZuCfbqR+LhSSE5uPpSVRTagxgDMFq7xISLFgkq
+	 HuGp+qaP8D0//lQa5ivJX/q/u2CrjORDsHYKbtJtPIDKD5p57bL61Dfusu4zBOboCj
+	 5Wqzx+lhJ3LkQiKy5viSOXyaB3bT3KGvykDya10j/I8ah9r18yaE0kO7WvssnQHVJI
+	 qhwn2KXvf76MFcwzrTbkjwv/v5d1lS1X0JKFQnMOxp8gU4fO6D/vBs33dziHV8XWm+
+	 85oYvcHl1hnT+F2+5a6lHAECI9sKJjc7RFBCBLmqVOguVoTP2dJkmQh/ca6e43MdTw
+	 awakr4tkCEs3Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/9] iommu/generic_pt: implement iova_to_phys_length
+Subject: Re: [PATCH 4/9] iommu/arm-smmu: implement iova_to_phys_length
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260531093637.3893199-4-guanghuifeng@linux.alibaba.com>
-References: <20260531093637.3893199-4-guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20260531093637.3893199-5-guanghuifeng@linux.alibaba.com>
+References: <20260531093637.3893199-5-guanghuifeng@linux.alibaba.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 31 May 2026 10:12:40 +0000
-Message-Id: <20260531101241.156381F00893@smtp.kernel.org>
+Date: Sun, 31 May 2026 10:22:39 +0000
+Message-Id: <20260531102240.12A801F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Direct calls to `ops->iova_to_phys` in the iommufd selftests will =
-cause a NULL pointer dereference because `IOMMU_PT_DOMAIN_OPS` no longer in=
-itializes this function pointer.
+
+New issues:
+- [High] `arm_smmu_iova_to_phys_length` fails to populate `mapped_length` w=
+hen using the hardware translation path, silently defeating the page table =
+walk optimization.
+
+Pre-existing issues:
+- [High] The `qcom_smmu_context_fault` interrupt handler can dereference a =
+NULL `pgtbl_ops` pointer if a context fault interrupt fires before domain i=
+nitialization completes.
 --
 
-commit 3d28cd1b26aa1da26180cde7d750a84030c72a61
+commit 3fdd57d4dce5ad5d48f3b578b79029642d87bc3e
 Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-iommu/generic_pt: implement iova_to_phys_length
+iommu/arm-smmu: implement iova_to_phys_length
 
-Extend the Generic Page Table framework to implement iova_to_phys_length
-by determining the PTE block size during the page table walk. This also
-updates the IOMMU_PT_DOMAIN_OPS macro to configure the new function.
+Migrate ARM SMMU drivers to implement iova_to_phys_length, calling
+ops->iova_to_phys_length on the io-pgtable layer to get both phys
+and PTE page size.
 
-> diff --git a/include/linux/generic_pt/iommu.h b/include/linux/generic_pt/=
-iommu.h
-> index dd0edd02a48a2..859b853e9dc7e 100644
-> --- a/include/linux/generic_pt/iommu.h
-> +++ b/include/linux/generic_pt/iommu.h
-[ ... ]
-> @@ -267,11 +268,11 @@ struct pt_iommu_cfg {
->  	IOMMU_PROTOTYPES(fmt)
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c b/drivers/i=
+ommu/arm/arm-smmu/arm-smmu-qcom-debug.c
+> index 65e0ef6539fe7..4fd01341157f3 100644
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
+> @@ -415,7 +415,7 @@ irqreturn_t qcom_smmu_context_fault(int irq, void *de=
+v)
+>  		return IRQ_HANDLED;
+>  	}
 > =20
->  /*
-> - * A driver uses IOMMU_PT_DOMAIN_OPS to populate the iommu_domain_ops fo=
-r the
-> - * iommu_pt
-> + * A driver uses IOMMU_PT_DOMAIN_OPS to populate the iommu_domain_ops for
-> + * the iommu_pt
->   */
-> -#define IOMMU_PT_DOMAIN_OPS(fmt)                        \
-> -	.iova_to_phys =3D &pt_iommu_##fmt##_iova_to_phys
-> +#define IOMMU_PT_DOMAIN_OPS(fmt)					\
-> +	.iova_to_phys_length =3D &pt_iommu_##fmt##_iova_to_phys_length
+> -	phys_soft =3D ops->iova_to_phys(ops, cfi.iova);
+> +	phys_soft =3D ops->iova_to_phys_length(ops, cfi.iova, NULL);
 
 [Severity: High]
-Will removing .iova_to_phys here cause a NULL pointer dereference in the
-iommufd selftests?
+This is a pre-existing issue, but is it possible for ops to be NULL here?
 
-The amdv1_mock_ops in drivers/iommu/iommufd/selftest.c uses this macro,
-so its .iova_to_phys field will now be implicitly NULL.
+If a context fault interrupt fires early during domain initialization, befo=
+re
+pgtbl_ops is safely published in arm_smmu_init_domain_context():
 
-However, the selftest directly dereferences this function pointer without
-checking:
-
-drivers/iommu/iommufd/selftest.c:iommufd_test_md_check_pa() {
+    ret =3D devm_request_irq(smmu->dev, irq, context_fault, ...);
     ...
-    io_phys =3D mock->domain.ops->iova_to_phys(&mock->domain, iova);
-    ...
-}
+    mutex_unlock(&smmu_domain->init_mutex);
+    smmu_domain->pgtbl_ops =3D pgtbl_ops;
 
-While I understand this is addressed later in the patch series when the
-code properly switches to using the iommu_iova_to_phys() wrapper, will
-this intermediate state break git bisect by crashing the kernel during
-testing?
+Could an unhandled fault on a reused context bank cause an immediate
+interrupt, leading to a NULL pointer dereference when
+ops->iova_to_phys_length() is called?
 
->  #define IOMMU_PT_DIRTY_OPS(fmt) \
->  	.read_and_clear_dirty =3D &pt_iommu_##fmt##_read_and_clear_dirty
->
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/ar=
+m-smmu/arm-smmu.c
+> index 0bd21d206eb3e..e29e0ea12f24a 100644
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> @@ -1366,7 +1366,7 @@ static phys_addr_t arm_smmu_iova_to_phys_hard(struc=
+t iommu_domain *domain,
+>  			"iova to phys timed out on %pad. Falling back to software table walk.=
+\n",
+>  			&iova);
+>  		arm_smmu_rpm_put(smmu);
+> -		return ops->iova_to_phys(ops, iova);
+> +		return ops->iova_to_phys_length(ops, iova, NULL);
+
+[Severity: High]
+Does this hardware translation fallback path fail to populate mapped_length?
+
+Since mapped_length is passed as NULL, callers like VFIO attempting to unmap
+large regions might receive a length of 0. This could force them to fall ba=
+ck
+to PAGE_SIZE iterations, which would trigger hundreds of slow ATOS MMIO
+operations and severely impact performance.
+
+[ ... ]
+
+> @@ -1384,12 +1384,15 @@ static phys_addr_t arm_smmu_iova_to_phys_hard(str=
+uct iommu_domain *domain,
+>  	return addr;
+>  }
+> =20
+> -static phys_addr_t arm_smmu_iova_to_phys(struct iommu_domain *domain,
+> -					dma_addr_t iova)
+> +static phys_addr_t arm_smmu_iova_to_phys_length(struct iommu_domain *dom=
+ain,
+> +					dma_addr_t iova, size_t *mapped_length)
+>  {
+>  	struct arm_smmu_domain *smmu_domain =3D to_smmu_domain(domain);
+>  	struct io_pgtable_ops *ops =3D smmu_domain->pgtbl_ops;
+> =20
+> +	if (mapped_length)
+> +		*mapped_length =3D 0;
+> +
+>  	if (!ops)
+>  		return 0;
+> =20
+> @@ -1397,7 +1400,7 @@ static phys_addr_t arm_smmu_iova_to_phys(struct iom=
+mu_domain *domain,
+>  			smmu_domain->stage =3D=3D ARM_SMMU_DOMAIN_S1)
+>  		return arm_smmu_iova_to_phys_hard(domain, iova);
+
+[Severity: High]
+Does the hardware translation path here also defeat the page table walk
+optimization by failing to populate mapped_length?
+
+When arm_smmu_iova_to_phys_hard() is called, mapped_length is left as 0 sin=
+ce
+the function doesn't accept or update it. Will this result in callers
+receiving a length of 0 and performing inefficient PAGE_SIZE iterations?
+
+> -	return ops->iova_to_phys(ops, iova);
+> +	return ops->iova_to_phys_length(ops, iova, mapped_length);
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260531093637.3893=
-199-1-guanghuifeng@linux.alibaba.com?part=3D3
+199-1-guanghuifeng@linux.alibaba.com?part=3D4
