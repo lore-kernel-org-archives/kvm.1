@@ -1,129 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE3C3264D8
-	for <kvm@vger.kernel.org>; Sun, 31 May 2026 11:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA44311C36
+	for <kvm@vger.kernel.org>; Sun, 31 May 2026 13:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780226248; cv=none; b=Lht6KVpA4yBiNhpvB6pNDUzL6BwE46zfaU0U9N0EHfYdRkEWOe5bED3xyLuBy/uUSC+eczHrmDyiv1TInHbvOM6K+b/amnwiHBfjQruei+ejcl6e45AvSNnHYktOfGle8PHsvDeGg26R8CE4RCGXiFgLV1jgh0yO5Vmi0/Uqmm4=
+	t=1780235634; cv=none; b=IkqgnnORbduadK1EubjNQgncDZrOry1UpvSLX/Y5GS13/EadwobbyZN8vJ0L3lWRq4XCkqc2FOrHRf9QFWYeZhTmeIhzQYIpTIm3i2T2HhyvINMXclgDgxZog4HQNPmO829lGz/t6Vp+B6Hm0SWbv2zdGLSQ//25zjTiklDuKYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780226248; c=relaxed/simple;
-	bh=M27N3J0Tb6hQCKcapWpsYijhH69uFvaXUxP8Fu6/uTg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=e6Z1ugUg3487pp5/o4ZCoJqU0ghG4PDx5mEDrg6lYIhKX4nRMMR0PcbH9C6GE7SnF+UslXf8QIua8s8Q+32lyIDQiYW0oQL5FbZvchU7GzupyJxWE5dCPeXNjoSA7XxC78PiPZbE/UobPkL1dRLoms6kWzlwjSsqBsqdDARerNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVa6AjQR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780235634; c=relaxed/simple;
+	bh=xVnaM/+1aBYmJ4YaorBuWTpKG8CYCZzXpaGVH9DiuqA=;
+	h=From:Mime-Version:Subject:Date:Content-Type:To:Cc:Message-Id; b=U6neFqxNxMBEPblWfBbCarVXsZxWIJoZNGTI2YnJa1b4bjvALUdiYdMJ9Ig76RXhaIGLVxlXLuV/RQDEx+lIY95iHJrxzllY3lsg9S5nhp4Pkno/W7eA1+rikE26JLSXMnBSQZsSAv0ZUKh+2a2py5wfFx0Pkfopvb759q/itgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ALj5KvTN; arc=none smtp.client-ip=209.127.230.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVa6AjQR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CAA61F00898;
-	Sun, 31 May 2026 11:17:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780226246;
-	bh=vz8wX/FJNIRW4UIBuz+oi5kjUoFlq3alDaDBHExL1ho=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bVa6AjQR8NeXl8f38/Ina5ruLhS2mSd+cQy8m4vFDauLj5q+oTJJZFIZC2KdREPjb
-	 Rv9b6H8SZt88fRng/iIx3wtt/eEGxJ/i9XJO+plsALxxIy7mv3KON3OhfhU/vMYKJF
-	 e4dBjYrpTp8Lgjz+DmbiS3ZNxP4g2GzSrkoVSPs20m/NnS5ltuplWfkiqhdhyg+ftP
-	 /3f9sqV6re3OcHLzUotvSu3sCGSIfeRi6ntKe9A5qp3CqLiDgVLx6cUquT77085I/P
-	 WE/+18Qj15HGfgD10eF0IOqVV60Y+Qad8ETZvsjKbZJEfzMJ4ZyF0VBFOqdP4PJKYT
-	 gAamjuN6lHq/g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 9/9] iommu: remove deprecated iova_to_phys from
- domain_ops and io_pgtable_ops
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260531093637.3893199-10-guanghuifeng@linux.alibaba.com>
-References: <20260531093637.3893199-10-guanghuifeng@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 31 May 2026 11:17:26 +0000
-Message-Id: <20260531111726.7CAA61F00898@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ALj5KvTN"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1780235626; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=iQj5TnujvPDGBG8oYjt78Ys5Do8XcI+QaD2jG2aisX0=;
+ b=ALj5KvTNr1sjr2+hfosteAP5Oq/rMhhEPrnDAohSVRG9zbkL4BTKP2x4MWQpBTQ4gP1PKT
+ aou0cy/p2Ep7P6KTDtQ4pjpo1Al2cR7eUsABi3kK4IDBO1wnuvQ6do/UVexRBUQbEiAJfp
+ +YWSbofaJ95tKYweVt3LbFvfvb4JuMgvZ/t2LqSMNIi6RSNTDkZ88yleClpd+r9ZT2JDmr
+ 4PK2KMy9ieeDEey3R2ilmE2JZVWJLuIVxYT/vSNqNPjXXRblSSgDHeZcrMgDAMz3j+iZw2
+ f6dyAGahyQmaiT/Bsa0trW33f0FapTTVKMbPIIvyj58FxG7yoKF6mN5G8Q2USA==
+From: "Yanfei Xu" <yanfei.xu@bytedance.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Subject: [v2 0/2] KVM: Validate irqchip index in routing entries
+Date: Sun, 31 May 2026 21:53:24 +0800
+X-Mailer: git-send-email 2.20.1
+Content-Transfer-Encoding: 7bit
+X-Lms-Return-Path: <lba+26a1c3d68+ed588b+vger.kernel.org+yanfei.xu@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+To: <harshpb@linux.ibm.com>, <zhaotianrui@loongson.cn>, 
+	<maobibo@loongson.cn>, <chenhuacai@kernel.org>, <maddy@linux.ibm.com>, 
+	<npiggin@gmail.com>, <sashiko-reviews@lists.linux.dev>, 
+	<seanjc@google.com>, <pbonzini@redhat.com>
+Cc: <kvm@vger.kernel.org>, <stable@vger.kernel.org>, 
+	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>, 
+	<caixiangfeng@bytedance.com>, <fangying.tommy@bytedance.com>, 
+	<yanfei.xu@bytedance.com>, <isyanfei.xu@gmail.com>
+Message-Id: <20260531135326.2238555-1-yanfei.xu@bytedance.com>
+X-Original-From: Yanfei Xu <yanfei.xu@bytedance.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Validate irqchip indexes for LoongArch and PowerPC irq routing entries
+to reject out-of-range values before indexing the irqchip array.
 
-New issues:
-- [High] Unmigrated driver vsi-iommu.c causes a compilation error because `=
-.iova_to_phys` was removed from `struct iommu_domain_ops`.
+v1->v2:
+- Split the patch into two by architecture (Sean)
+- Pick up Reviewed-by
 
-Pre-existing issues:
-- [High] The hardirq handler `vsi_iommu_irq` calls `pm_runtime_resume_and_g=
-et()`, which sleeps waiting for the device to resume, causing a kernel pani=
-c.
---
+Yanfei Xu (2):
+  KVM: LoongArch: Validate irqchip index in irqfd routing
+  KVM: PPC: Validate irqchip index in MPIC routing
 
-commit 6b44c3a91e8a25d542a9e22178e54c5a5807b633
-Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+ arch/loongarch/kvm/irqfd.c | 3 ++-
+ arch/powerpc/kvm/mpic.c    | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-iommu: remove deprecated iova_to_phys from domain_ops and io_pgtable_ops
-
-This commit removes the deprecated iova_to_phys interface from both
-struct iommu_domain_ops and struct io_pgtable_ops. It cleans up the fallback
-logic in iommu_iova_to_phys_length() and removes wrapper functions across
-various io-pgtable implementations.
-
-[ ... ]
-
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index 29c7c042d400d..e95b7491b5aac 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
-> @@ -805,8 +804,6 @@ struct iommu_domain_ops {
->  	int (*cache_invalidate_user)(struct iommu_domain *domain,
->  				     struct iommu_user_data_array *array);
-> =20
-> -	phys_addr_t (*iova_to_phys)(struct iommu_domain *domain,
-> -				    dma_addr_t iova);
-
-[Severity: High]
-The commit message states that all drivers implement iova_to_phys_length and
-have migrated, but was drivers/iommu/vsi-iommu.c missed?
-
-It looks like this driver still initializes this member:
-
-drivers/iommu/vsi-iommu.c:vsi_iommu_ops {
-    .iova_to_phys =3D vsi_iommu_iova_to_phys,
-}
-
-Will removing this member cause a build failure for that driver?
-
-
-[Severity: High]
-This is a pre-existing issue, but while looking at drivers/iommu/vsi-iommu.=
-c,
-can the hardirq handler sleep?
-
-The interrupt is registered as a shared hardirq:
-
-drivers/iommu/vsi-iommu.c:vsi_iommu_probe() {
-    ...
-    err =3D devm_request_irq(iommu->dev, iommu->irq, vsi_iommu_irq,
-                           IRQF_SHARED, dev_name(dev), iommu);
-    ...
-}
-
-But the handler calls a sleeping function:
-
-drivers/iommu/vsi-iommu.c:vsi_iommu_irq() {
-    ...
-    if (pm_runtime_resume_and_get(iommu->dev) < 0)
-        return IRQ_NONE;
-    ...
-}
-
-Since pm_runtime_resume_and_get() can block waiting for the device to
-resume, will this trigger a system panic or might_sleep() warning when
-another device sharing the IRQ line fires?
-
->  	phys_addr_t (*iova_to_phys_length)(struct iommu_domain *domain,
->  					    dma_addr_t iova,
->  					    size_t *mapped_length);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260531093637.3893=
-199-1-guanghuifeng@linux.alibaba.com?part=3D9
+-- 
+2.20.1
