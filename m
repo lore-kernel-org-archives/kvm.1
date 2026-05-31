@@ -1,84 +1,100 @@
-Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9BD3126BF
-	for <kvm@vger.kernel.org>; Sun, 31 May 2026 13:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF021F12E0
+	for <kvm@vger.kernel.org>; Sun, 31 May 2026 14:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780235705; cv=none; b=eZazL93oxbQ3iX9bX0pcUcJuXPbXfuICTKD43OwOoDm08X0sLnjZLMajSAXz3h5ei5Lu+JU1QpquJnOWMivS0dBuE+BvBOfRi/G7M4XmGCOfTMuAcEzNpf8Xqo9UYQdoAn0SkXPat470YqGn0ugwirQNpNXr55sxuLh6lSZzpbU=
+	t=1780236148; cv=none; b=P4qa5xi+IS6m3P9PvZOrwtvVkRpO0ZZvV/rwYf6wqqMrIcf0GifBJ14Kjn7FVBB9HmNOcZDwWvR7ydeRa/bXR3GU7G8GOmdmkmEjZtSPA9Xfy+lpLfyKot1C/Y59FYY8jVU0F0btnWuQTlkanuH8VsTRTw8BHjJu81YVsHRrIy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780235705; c=relaxed/simple;
-	bh=IojkXEcJz24+YV46lTxMNSdcw1Ho81dQc8X790L5DqQ=;
-	h=Content-Type:To:Subject:Date:In-Reply-To:Message-Id:Mime-Version:
-	 Cc:From:References; b=Qc8OtQy6WL0i7njp/AI2PoDlInRXUbS5oBi5p2zlrVzs6M+VnAn3vd9pCbO89G9019Muz3K0qMG7fXcft67P8WZH4jmp0PCbKVewUBSQ+NZACeCxqJBxKJrHLwOBoGLAFK4Z6jyKQvHACpRx9EqgvUNKb4ZixSfNIcyTmb591Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=cW8a3g25; arc=none smtp.client-ip=209.127.230.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	s=arc-20240116; t=1780236148; c=relaxed/simple;
+	bh=C7u8j+8ZuEu/hvPVjioug/5U81fzqILw0tnmGXAPFok=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qcGmEyFjKxbdJCwEJJlxC8xTUJSfOG6Jyw+jc9+IG9T/jFwplTwztpx8LNhZ48x/nKrvcEeG3LRyuze0sILcF8kCqy3El82sw31yssLPVMWmOS3MvDlIZ5xvtKqO+PnVjyem0sEq3Byd+j7y2iUZlydDdeF9aAGLroZKyNOP1XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q32nrISy; arc=none smtp.client-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="cW8a3g25"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1780235699; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=nR73VRGDGmpbNBrOPjjPEurTnZdfsMAaZGX1i2lVKd4=;
- b=cW8a3g25Ft9+kIauW9voF9Ods4xXgf7wRMSo/vFXmu9Wj23ci4eH7lufpp/3g9eouhpexy
- /NiGxz55nYB7enf0RUzHwzEYq/vR7sEE/tOvfUVqneQXCZkOuYG/3XtwjhSSiLBx3UyGBd
- BQE8AKqcOI2IEZbN7Bx+oKExJtJjAaFbunFvnRRmCsayVQf7MXxI1/srZ/SQUb7UOb7gr1
- 6ekQQ99c90o6rgR8Xtbm8N5CugOy4wJodbM+AKjCKesS2j1jdoXX3AM6MtVMZYq1SmXexn
- erxUJP6z3GtOxexxV8bcl7BGDo93l6BTMCNcQFs/5/BEAHGLcU52EWpj+y3fng==
-Content-Type: text/plain; charset=UTF-8
-To: <harshpb@linux.ibm.com>, <zhaotianrui@loongson.cn>, 
-	<maobibo@loongson.cn>, <chenhuacai@kernel.org>, <maddy@linux.ibm.com>, 
-	<npiggin@gmail.com>, <sashiko-reviews@lists.linux.dev>, 
-	<seanjc@google.com>, <pbonzini@redhat.com>
-Subject: [v2 2/2] KVM: PPC: Validate irqchip index in MPIC routing
-Date: Sun, 31 May 2026 21:53:26 +0800
-In-Reply-To: <20260531135326.2238555-1-yanfei.xu@bytedance.com>
-X-Original-From: Yanfei Xu <yanfei.xu@bytedance.com>
-Message-Id: <20260531135326.2238555-3-yanfei.xu@bytedance.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q32nrISy"
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-304d7f31215so3160301eec.1
+        for <kvm@vger.kernel.org>; Sun, 31 May 2026 07:02:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780236146; x=1780840946; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AgnkOucJ4lynEbyGWzUWoBKHmcQTYyOypcyzzzs1xrc=;
+        b=q32nrISyCT5+jj6je2F2oKKGlrxZ3aQNWKhPT57SC9lZu4/VdS6TBZoJoScJmlvDcV
+         2dwXBeCTKs98hfX1PQMqwxeLQqtlr4gILjte/dfXXWd4zYCtwmXh4zXtZgYqqJVHivgJ
+         cDMW36fp8GvI2v5DqPbINlG/gRteYhzMFc3UIXGCypqpr7CJs3wMXhda/hx00kJXJHOX
+         ZhwqzitMXA9EyIcl/G/B+5vQYrEZ1aJoonv1pQxrYfFg8cKM2WIXKbdBXHYpHxgtHwll
+         /U14sYzDdsNv7Ildm0UmIZRG0vtSWa6MJ+xhPOsi/v4pgzmcNSkQRYz0tgOy7mnEZ2EC
+         zmEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780236146; x=1780840946;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AgnkOucJ4lynEbyGWzUWoBKHmcQTYyOypcyzzzs1xrc=;
+        b=aDuqmUuKE8Vjg//HzXpBQ5J46/hKdf0LzID0XJYoC3Nrg51Af2KSuDUjyLRUY7BG8B
+         2juBErdTcVMc+ki6Q0GIz5OlTC+v2FiMwfZ3Ih0zmY9524sHKb99G2DL8QdHW4A/kple
+         j5a0K773tH0duwds4yI1aO/Hl9EVZRGwGWPqqyoEmr/lwa1qnxVAcxG4vDevjW4/p4Ax
+         01AxTveRkuPwDC1SJRgZeSc1os6c2N4ECyi+bswGMQ7HTupS3kJDzTC7nZmocH8655X5
+         CTOUJ6xr6jKkJ8h4akhL0nn/Awi7nVvpt8P9qDguTXn+1T45FCoY9Jcg+8GiqbqMzmwW
+         ZUsA==
+X-Forwarded-Encrypted: i=1; AFNElJ9cX198marVglDVocqPWwnNQo9Jx/kgTMsRLq6GpWErRdby9Y7H03N2F/gWHEjFYsQyuNI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzf8dSAW2L7pHO/dlNp8y5KvL2A9GTGWoFvouzhEx6lNYxxJPX9
+	YNbu2B8wm2/T0o9zzKLuYM8ajpsOHgKZd8sMxkGCzibpv2TyGNgj258f
+X-Gm-Gg: Acq92OEKToNNJMV8Ejnz2p2EsCA0jTWq+5NIYlg34AZg1URkqybtNJ40Vj4yl+4UCZm
+	1rHjhc+anH0FrWeymga9RuzfguSvsTg9y23B86ScnOS2yU0hUHH1m8vwcve0OP9qV8qsTT/TU1m
+	AkKybnGMxYTLM8NwrA8sEav42wJfs9B3YF5KyCnv9UawqFy2yAWgQ4CB+RjasPeW5v7SeWBFkxs
+	IHC0O3FonmU7yTZyoJLiidCwQ87fs/NaVLbH5CMCg5Cyd0syEmkQaXfIxwlP044J5AEHSYjnNJV
+	LrKvBMDayLgw1NPWifLp5pTGYUhQuH+QZCAcg6MkT4DsSpPYyElTt82/bfgn+VnAWtNz9migvCZ
+	LjrXmAhVx2TmDvLBpyRUO1pzZtRf/FP6kk0lsRi+Dg04QWXN3DpMzoz5OYfHJJzEgICc1WpHcfQ
+	IsfZ0tG5Gnd+J8po/qE8Yoy5/m6+VP3ikjohPurlJbD+dnHehYkG4eW2UUyw==
+X-Received: by 2002:a05:7300:3246:b0:304:6448:dfd7 with SMTP id 5a478bee46e88-304fa5e85demr3452313eec.18.1780236146056;
+        Sun, 31 May 2026 07:02:26 -0700 (PDT)
+Received: from [10.4.72.5] ([139.177.225.241])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed53d14fsm6449412eec.17.2026.05.31.07.02.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 31 May 2026 07:02:25 -0700 (PDT)
+Message-ID: <10054db1-413b-42f7-b38f-f562b8de432f@gmail.com>
+Date: Sun, 31 May 2026 22:02:19 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Cc: <kvm@vger.kernel.org>, <stable@vger.kernel.org>, 
-	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>, 
-	<caixiangfeng@bytedance.com>, <fangying.tommy@bytedance.com>, 
-	<yanfei.xu@bytedance.com>, <isyanfei.xu@gmail.com>, 
-	"Sashiko" <sashiko-bot@kernel.org>
-From: "Yanfei Xu" <yanfei.xu@bytedance.com>
-X-Lms-Return-Path: <lba+26a1c3db2+11c273+vger.kernel.org+yanfei.xu@bytedance.com>
-References: <20260531135326.2238555-1-yanfei.xu@bytedance.com>
-X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: Validate irqchip index for LoongArch and PowerPC
+To: Sean Christopherson <seanjc@google.com>,
+ Yanfei Xu <yanfei.xu@bytedance.com>
+Cc: zhaotianrui@loongson.cn, maobibo@loongson.cn, chenhuacai@kernel.org,
+ maddy@linux.ibm.com, npiggin@gmail.com, sashiko-reviews@lists.linux.dev,
+ pbonzini@redhat.com, kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, caixiangfeng@bytedance.com,
+ fangying.tommy@bytedance.com, Sashiko <sashiko-bot@kernel.org>
+References: <20260525070154.495455-1-yanfei.xu@bytedance.com>
+ <ahoYdrs9dVzp6Ps6@google.com>
+From: Yanfei Xu <isyanfei.xu@gmail.com>
+In-Reply-To: <ahoYdrs9dVzp6Ps6@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Sashiko reported that the irqchip index is not validated for PowerPC.
-Add validation and reject out-of-range irqchip indexes to avoid indexing
-past the routing table's chip array.
 
-Fixes: de9ba2f36368 ("KVM: PPC: Support irq routing and irqfd for in-kernel MPIC")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/kvm/20260525051714.485D51F000E9@smtp.kernel.org/
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Signed-off-by: Yanfei Xu <yanfei.xu@bytedance.com>
----
- arch/powerpc/kvm/mpic.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+On 2026/5/30 06:51, Sean Christopherson wrote:
+> Can you split this into two patches, and send a v2?  I suspect the reason no one
+> has picked this up is because it straddles two completely different (sub)subsystems.
 
-diff --git a/arch/powerpc/kvm/mpic.c b/arch/powerpc/kvm/mpic.c
-index 3070f36d9fb8..fb5f9e65e02e 100644
---- a/arch/powerpc/kvm/mpic.c
-+++ b/arch/powerpc/kvm/mpic.c
-@@ -1833,7 +1833,8 @@ int kvm_set_routing_entry(struct kvm *kvm,
- 		e->set = mpic_set_irq;
- 		e->irqchip.irqchip = ue->u.irqchip.irqchip;
- 		e->irqchip.pin = ue->u.irqchip.pin;
--		if (e->irqchip.pin >= KVM_IRQCHIP_NUM_PINS)
-+		if (e->irqchip.pin >= KVM_IRQCHIP_NUM_PINS ||
-+		    e->irqchip.irqchip >= KVM_NR_IRQCHIPS)
- 			goto out;
- 		break;
- 	case KVM_IRQ_ROUTING_MSI:
--- 
-2.20.1
+That makes sense. Done :)
+
+Thanks,
+Yanfei
+
+>
+> That would also make it easier to get the fixes backported to stable trees.  PPC
+> has been around a lot longer than LoongArch, so I assume the PPC fix will need to
+> go further back in time.
+>
+> Thanks!
