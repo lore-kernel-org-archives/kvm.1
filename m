@@ -1,143 +1,183 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977622E7377
-	for <kvm@vger.kernel.org>; Sun, 31 May 2026 22:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E411F35B63C
+	for <kvm@vger.kernel.org>; Sun, 31 May 2026 23:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780265576; cv=none; b=IwXxrQOl8roNhMhtT8oltZkRITXzON+XGnbYDCWZRuKyeFBfjAZLEh5kWik/PGMbJYaRVfRrO0onvkba8lHxrbMpFkSvbMpQruEFCd1zgFqzRBQA0+e6FbYY+1abXG09ga/ExnKVbF2mJV3ISnS8Vs6UTTk6FJ+eyEi1VdtIJRg=
+	t=1780271514; cv=none; b=ITCaiXI7WEVRHaGAR1PomSQJA4UdHJMj8VGNR3LtVl0iakd1LZsEZeb6zX3WHwh7DJDq4i2PCkelRbbFDlHezZqRKVVcg+xVM32srCCaC8f31r5Jx53toXEIjv/+Zvp4Cyp6l4qyQMtEXH2AR5n/J2BYpbCe2KHowHZYzcj+9Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780265576; c=relaxed/simple;
-	bh=CCLdSYDcbA4vAViSDI7JcS1ilcApUa3TCZJ63QiM7o8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N1P8XGPxNoOyZtE5j5LiImT7crvU8lsyOU7+2eOs/DQQJUdTysFZaoyWz/qeeTIyPZpcjLJ/Terx8ApsBaw4MYbSzXsBdCtCFb3qaBpThYnfm3mBEsbN7ZulaZuGKslxcajgBduCMVndS0/494TAN9ROgqM0aQZlUVR94emDb10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BtstCuK5; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1780271514; c=relaxed/simple;
+	bh=vZPmrTp86MbPzKorp7nUexYwkpoU7a/NNFPpiXKZRk4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pt7R952tdwaO3hmyoCsnqPksEQsg2rYNgDXFI5/L7xiEW7s63Ys+Zk/XewY3DiAr5ZQDfUkUWs6n6G+C3O/K0KIejv6nhS2jxZ7hceNapYyftBNpwhfs6CraHX8gw8vVmiHix0KMw1y/3IFMLD6KJmkdKL5J0hpVY6dIYnH9Hh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Fnlf4ZCm; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BtstCuK5"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490a7627033so5870675e9.0
-        for <kvm@vger.kernel.org>; Sun, 31 May 2026 15:12:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Fnlf4ZCm"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-914b03e42b2so1200900785a.0
+        for <kvm@vger.kernel.org>; Sun, 31 May 2026 16:51:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780265573; x=1780870373; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oWF6tyr2CYayU1PYtFJKATyY4aqFNfuk6d6waCisXn8=;
-        b=BtstCuK5eXAwutS1y40aUEhbxECtURrEe9tn9HEXIItnsoN28V8FiIrt6kOamQksdc
-         BDNv+M6KJ/QCeK/Y4s/B8b+CcGR0YjtaandYhiv25XNP8gDXsQg9P51m9FD6QpblmiMQ
-         vSyMfcXuXcJgESCQytVryV6UUpxrhio2A+ur1v4enKunGIyBgpAmDKUG/azqnHeaRuq4
-         2Rque+iIV/8yQnMCxSCciaLqajnvt7u7qvwHZuf2av94uuw4oc/9eEu7geU7w/kVzXKH
-         2/zp8rVv4QJzZM8+sjAqKysZ4nQbS9H01BqYSDhcNvBVfMmQnM3wWhqQWmPF5ZfYQmp5
-         BMEw==
+        d=ziepe.ca; s=google; t=1780271511; x=1780876311; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jT2+faPEqgvyyrZj7GkiI+MQEalHKPFUv4mZyF5by/U=;
+        b=Fnlf4ZCm2UukdbJ7WNpGo0A0yW7Npk87rwKL0VGMpBGnIApxYLtL8QqqV4hNVSzyCW
+         M9y42dI/gD2bUo+FQhbzHCpxNqHlL8fSQZI97xIpRT4/fmD1bUeAE5PGr5bA7Olw9+d7
+         9eStj3xrew4cMILG3e+1elSjtAN3GUDfpY/PfrEY4YcmAutANUps1iDCV6DFMpQB4RHZ
+         1eknFPeAr1J5ATNAAnavOjIY4QtS9KGy5lc+lxPHKEkQMNdNeo7S5A306pp99h+aOOMz
+         FvyuG60UNBT1oMJWsvbhQeUs06Qb046zmq63p3UxexU3480Q6+Xs4/TlL1AYwv4HHALH
+         ACsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780265573; x=1780870373;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oWF6tyr2CYayU1PYtFJKATyY4aqFNfuk6d6waCisXn8=;
-        b=nNoIYY63Dl96rXAvxIdkzWtzp5WEa9ZAoXnLjzrQm2pFKJrjDO4lHgrltlBbh6L4UB
-         56hYh11yZGu7UuOACVp5QhYecsyaT+b+8c5kb0VmMqIgUct8brxIbfTl+WSDAwwcFCkS
-         gcTXDIL/pPYe4lb2SBgbUxpFcbSTLLv/KagVQn9PZdAky3meyNrkPRlYN1TwMjKBNF5b
-         v1Bu4q7B2HFoAylKgaj+o81UNn6FqUtKyP7PNjg+GSMxFE6eYu+Bd+tp9GkWZOrrNYPn
-         6f0/brRfqGE0LefPZj8MMDpvLi7pn7RaqDP4QWiiGD7zf36c0TPMnq7vt7InH400gh65
-         wbkg==
-X-Forwarded-Encrypted: i=1; AFNElJ+mf+LTt+h6F+5N1a6rwo972+MlHPjwlDRCoeHi/BTC+zdStj06MUAJNWNRumNi9ZLMa6w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnUoYUt3aIzEukC1xrRvC0iSXm2+hWY8BJup4ZpB++5eb0gqV+
-	48c5y5Uv2LfU5IykURSmYDOONC/8X0/IDO4XvbRDVtMSSWS1V6q6HJ3YNYfwTPoh/vQ=
-X-Gm-Gg: Acq92OGTJGl2auXzHTgO2ZhG8N0k2RK8ba+rc/uNUP60WUGncdWotXCaUZa3LfG4hEY
-	V4RdsjX4Ax/cMAG1UXjH7Y+zthihDdlG60xCeJ1WAagt4rwCxichH+zqee1YmoGIsaFfzPEqblL
-	WlzJFQ7kp4hZLWPgY2qovYubnUrLM0/tx2wkMJoa7HkQQk6TU+MsXVdiodbqbX8Fsd3C5ki8IwR
-	QWjkQuRHq9R2uijbk1pQOVuUUcasif1Nvpxore94rzVUdfl7WZDKP0KR18SyztJo+6HutjkVtxL
-	eQc8dWrDMsLfWgaMuEjH7zc/Pqs1jdU2C1L4YMy2Lm7Kn7Hp3GvrY50IrqmocGhmNrI1oGlVLod
-	KUraB0FVk8AmKuCTDmu216irQ5cwLaKR8ACyNVmmKgiNnTlhHcCmwcxtS9pqpHSwL/oLeSS+XHR
-	lYaQyIR3+8bLbWPgG0FJIz2UgqcIc19jyMYPFZqgplWPInCFiXuHKofJsQ9GiauqV47uMiet9de
-	5qo
-X-Received: by 2002:a05:600c:6d2:b0:490:5368:743 with SMTP id 5b1f17b1804b1-490a2946a23mr100294545e9.32.1780265572879;
-        Sun, 31 May 2026 15:12:52 -0700 (PDT)
-Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c123406sm82118745e9.5.2026.05.31.15.12.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 31 May 2026 15:12:52 -0700 (PDT)
-Message-ID: <b8f40cca-2646-4912-8aa6-43442eab4f31@linaro.org>
-Date: Mon, 1 Jun 2026 00:12:50 +0200
+        d=1e100.net; s=20251104; t=1780271511; x=1780876311;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jT2+faPEqgvyyrZj7GkiI+MQEalHKPFUv4mZyF5by/U=;
+        b=MbdS9Tfv+Va4DVyqNW3a84tkR7p52iU6ZAQDG9YlvrZyVBSf57lJPW+QuztLO6IfVt
+         50HrX4Z8ESYlKCWJFOtO9Bv2VYtR4QUQrnvwy7kJwarFXyHel+xoc0oODyrXXMfyyWbw
+         yS257nNiTWmu8WH4TRB6l5fyw5hGaulLOLJyOmjlaiRCuoi6G1AoTmuuebGHxbwijo1v
+         x9zYO7BVG4JA8pmMNQVJ0aVJLmc3QKu9iF78v1wdcZWrYyh0IiGt7lA/yS9NaSxwbsoR
+         3aT8dEpFikwcYmuRvPGJ8NtmvGpGPz5nXnyRbzyUbqXvESGTfECP/34YrIXqoJT/Q5R+
+         qdGQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+XBub8majCTJIkKRN1dOHZzQ0FG0nvb0SFbejBk+6fPVKBafG860ioWWKXZ3L0fLw8TzQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMkfnMaxihIgkInzXxoVDd6rzBIB5zx1If1EPkHQZxelNt0jEK
+	KDbHH9A7JMR5WYMxM8gCRpNSz4pD2Xf/JWSSrYU3RblmOpPPApe9vmJb1Ao3VRrWEjc=
+X-Gm-Gg: Acq92OETjlZ2SLbybptSxvs2jBi23iUJTF74DBe1GaPsh5adG6wLeDcalC7jAJYlqKa
+	EatBOeAD6KxkQ2lr5aRXKDIW5ECFux9M7Z5Odj7CN0eRveMFg7dDt+Hjy+98GsHiRN/rbgxY6Qx
+	k0hvuMHcZgHDoBp7acnH2dO0Jt5CW6gQjRgMMMqXLx9TPMLxrmp8YQUO4ayTyg2RS+JIbQep2fc
+	MHWdPM8hmqVtvbVDgRtzV6Y4StAiVGfJi7k7rcmkzFG5Dgkn7E7lClxTSVBwt8LrzbsWlnUsIaV
+	+VSO8r3d7ONEV1ne4IKfHiTGUaU70yGCD00jn8DriuFNx+AoL+EGW6n7JgraNpU4Tff+K4W/JpE
+	70zNtGAEz1E61I/ANQJIaWVRWuaoqrTtcyrrQbO/YnADDkYee/OZ6VQ3xujqczsdUKXPI2DUIEy
+	oUkvGjB1zDtQGbDW1R0McjJ8FGDjDgzvT1u9GTzGJoMcdsLgc6ZH7BFgpGNmr7MwEnqEgNeplf5
+	ZsPbUjT3aXggKsF
+X-Received: by 2002:a05:620a:439b:b0:913:7bc8:79b9 with SMTP id af79cd13be357-9153d9b617bmr1323643185a.22.1780271510817;
+        Sun, 31 May 2026 16:51:50 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-91532473bb9sm854276585a.11.2026.05.31.16.51.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 May 2026 16:51:50 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wTpwa-00000001LoH-3dmS;
+	Sun, 31 May 2026 20:51:48 -0300
+Date: Sun, 31 May 2026 20:51:48 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Cc: boris.brezillon@collabora.com, robh@kernel.org, steven.price@arm.com,
+	adrian.larumbe@collabora.com, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	liviu.dudau@arm.com, joro@8bytes.org, will@kernel.org,
+	robin.murphy@arm.com, alex@shazbot.org,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kevin.tian@intel.com,
+	baolu.lu@linux.intel.com, suravee.suthikulpanit@amd.com,
+	dwmw2@infradead.org, xlpang@linux.alibaba.com,
+	oliver.yang@linux.alibaba.com, shiyu.zsq@linux.alibaba.com,
+	wei.guo.simon@linux.alibaba.com
+Subject: Re: [PATCH 1/9] iommu: introduce iova_to_phys_length in
+ iommu_domain_ops
+Message-ID: <20260531235148.GV2487554@ziepe.ca>
+References: <20260529115116.GR2487554@ziepe.ca>
+ <20260531093637.3893199-1-guanghuifeng@linux.alibaba.com>
+ <20260531093637.3893199-2-guanghuifeng@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/17] accel/whpx: Convert AccelCPUClass ->
- AccelOpsClass::cpu_instance_init
-Content-Language: en-US
-To: Mohamed Mediouni <mohamed@unpredictable.fr>
-Cc: qemu-devel@nongnu.org, Reinoud Zandijk <reinoud@netbsd.org>,
- Pedro Barbuda <pbarbuda@microsoft.com>, Nicholas Piggin <npiggin@gmail.com>,
- Glenn Miles <milesg@linux.ibm.com>, Alexander Graf <agraf@csgraf.de>,
- Peter Maydell <peter.maydell@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>, Anton Johansson <anjo@rev.ng>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Song Gao <gaosong@loongson.cn>,
- qemu-riscv@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Alistair Francis <alistair.francis@wdc.com>, qemu-ppc@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, Chao Liu <chao.liu.zevorn@gmail.com>,
- kvm@vger.kernel.org, Claudio Fontana <cfontana@suse.de>,
- Chinmay Rath <rathc@linux.ibm.com>
-References: <20260529142434.87880-1-philmd@linaro.org>
- <20260529142434.87880-8-philmd@linaro.org>
- <8889E557-72CA-4DED-B06E-4D82135CF923@unpredictable.fr>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <8889E557-72CA-4DED-B06E-4D82135CF923@unpredictable.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260531093637.3893199-2-guanghuifeng@linux.alibaba.com>
 
-On 29/5/26 21:03, Mohamed Mediouni wrote:
+On Sun, May 31, 2026 at 05:36:29PM +0800, Guanghui Feng wrote:
+> Add iova_to_phys_length callback to struct iommu_domain_ops alongside
+> the existing iova_to_phys. The new callback returns both the physical
+> address and the PTE mapping page size in a single page table walk.
 > 
+> Add iommu_iova_to_phys_length() core function that:
+> - Checks ops->iova_to_phys_length first (preferred path)
+> - Falls back to ops->iova_to_phys for unmigrated drivers
 > 
->> On 29. May 2026, at 16:24, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Register the new AccelOpsClass::cpu_instance_init hook.
->>
->> ACCEL_CPU_NAME("whpx") TypeInfo is now empty, remove it.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->> accel/whpx/whpx-accel-ops.c |  2 ++
->> accel/whpx/whpx-common.c    | 17 -----------------
->> target/arm/whpx/whpx-all.c  |  1 -
->> target/i386/whpx/whpx-all.c |  1 -
->> 4 files changed, 2 insertions(+), 19 deletions(-)
->>
->> diff --git a/accel/whpx/whpx-accel-ops.c b/accel/whpx/whpx-accel-ops.c
->> index b8f41544cbe..099e8ef6da3 100644
->> --- a/accel/whpx/whpx-accel-ops.c
->> +++ b/accel/whpx/whpx-accel-ops.c
->> @@ -98,6 +98,8 @@ static void whpx_accel_ops_class_init(ObjectClass *oc, const void *data)
->>      ops->handle_interrupt = generic_handle_interrupt;
->>      ops->supports_guest_debug = whpx_supports_guest_debug;
->>
->> +    ops->cpu_instance_init = whpx_cpu_instance_init;
->> +
-> Hi,
+> This enables callers like VFIO to efficiently traverse IOVA space
+> by actual mapping granularity instead of fixed PAGE_SIZE steps.
 > 
-> No whpx_cpu_instance_init implementation present in the commit
-> as far as I can tell.
+> Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+> Acked-by: Shiqiang Zhang <shiyu.zsq@linux.alibaba.com>
+> Acked-by: Simon Guo <wei.guo.simon@linux.alibaba.com>
+> ---
+>  drivers/iommu/iommu.c | 34 ++++++++++++++++++++++++++++++++--
+>  include/linux/iommu.h |  9 +++++++++
+>  2 files changed, 41 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> index d1a9e713d3a0..43323229a1df 100644
+> --- a/drivers/iommu/iommu.c
+> +++ b/drivers/iommu/iommu.c
+> @@ -2545,15 +2545,45 @@ void iommu_detach_group(struct iommu_domain *domain, struct iommu_group *group)
+>  }
+>  EXPORT_SYMBOL_GPL(iommu_detach_group);
+>  
+> -phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t iova)
+> +/**
+> + * iommu_iova_to_phys_length - Translate IOVA and return mapping page size
+> + * @domain: IOMMU domain to query
+> + * @iova: IO virtual address to translate
+> + * @mapped_length: Output parameter for the PTE page size (e.g. 4KB/2MB/1GB)
+> + *
+> + * Like iommu_iova_to_phys() but additionally returns the page size of the
+> + * PTE mapping at @iova through @mapped_length.
+> + *
+> + * Return: The physical address for the given IOVA, or 0 if no translation.
+> + */
 
-You exposed it in commit 4610fee3242 ("whpx: reshuffle common code") :)
+When introducing the new function I would like to fix this 0 error as
+well, it should return PHYS_MAX for error
 
-> 
-> Did you miss it? Other than that things look fine and a stub implementation
-> should be okay.
-> 
->>      ops->synchronize_post_reset = whpx_cpu_synchronize_post_reset;
->>      ops->synchronize_post_init = whpx_cpu_synchronize_post_init;
->>      ops->synchronize_state = whpx_cpu_synchronize_state;
+> +phys_addr_t iommu_iova_to_phys_length(struct iommu_domain *domain,
+> +				       dma_addr_t iova,
+> +				       size_t *mapped_length)
+>  {
+> +	if (mapped_length)
+> +		*mapped_length = 0;
+> +
+>  	if (domain->type == IOMMU_DOMAIN_IDENTITY)
+>  		return iova;
+>  
+>  	if (domain->type == IOMMU_DOMAIN_BLOCKED)
+>  		return 0;
+
+Any domain that doesn't have an op should fail, blocked is one example
+
+>  
+> -	return domain->ops->iova_to_phys(domain, iova);
+> +	if (domain->ops->iova_to_phys_length)
+> +		return domain->ops->iova_to_phys_length(domain, iova,
+> +							mapped_length);
+> +
+> +	/* Fallback to legacy iova_to_phys without length info */
+> +	if (domain->ops->iova_to_phys)
+> +		return domain->ops->iova_to_phys(domain, iova);
+
+If it falls back it should return something sensible for the length.
+
+I suggest you approach the patch plan a little differently, the first
+patches should implement the new function and an iommput
+implementation
+
+Arrange things so the normal iova_to_phys calls the new function if it
+is available and discards the length.
+
+Then convert callers that can take advantage of it. Have the fallback
+path also compute the length by iterating internally.
+
+Finally one patch per driver implementing the new op, this could even
+be a second series.
+
+Don't remove iova_to_phys(), it is fine for things that don't need the
+length.
+
+Jason
