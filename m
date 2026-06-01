@@ -1,163 +1,214 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741DD29CE1
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 17:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEB63DE430
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 17:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780334808; cv=none; b=Ui4ginWHca47fjpi+kSvv8GqpbzC0gp0bbTgO/aO/X5MQDwy/cM4FKH4rsol/Pj4hQI2JeFRElIEVLgAhgU6+megefBlhgTOW5YmIN/thJnMltYbKk+ND8OAr9BrMoBeV8q19/6bE2h914VSUr7qHShrw8EQw1GyGcM8/avLYfc=
+	t=1780335438; cv=none; b=nbPw9s7teGWINw3FnJPx7xHdcoOJ76bLgNNAYYTpwvLBqYkquiJ7x1n50xn4GvOJqCz5NabqMpFBdcd6Yn8jXzZaajLhCyX7+sodwT2ZpY6fxBp3F7A4K++X1e1k1Q4qFegtER5YQruyk+CuLjTGbCp2VPebLYnwmD+Hvx9yh9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780334808; c=relaxed/simple;
-	bh=MCJZFEX/2OkBfOTPKuLBZXK++uyiQhnCsGSLg4b0H3A=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NiVmCIv9GzvS1eegvHoOuGG09TQrahYYqnaCQVLkKBYTmAiLUdpA5ZrTi73iGaKmIkqYMCKL86WeQt1SlNkgqTUb7kcjq/vPp2ledJO9SQWys0tf1fJFVEl5WzaEko0mrxdt0gvSLDM0XCK6aJWB1V4mp0Zjng9cckdTj9AH91k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cZ1GEv8c; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780335438; c=relaxed/simple;
+	bh=0xurPIo/alkKI0riEvqay5gLBgm0wt9AgRSyEg/9K8Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GbIW/14fuoay/QxTWceT5Rsg8Pj4VFFiggRUQ+dlZx9v9ZoKZ+twtAZU6aalVlY4GPrhWI5SbrE1MA9WuEVGgqXsvD/nYMTNiKlZ7gqbUiPh5y2BIMEqff4VXanLcdP+f4Af3We+2GLMUJK8cv8otyn5qSMFl4h9QzpatiUbcCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tos/ESRw; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cZ1GEv8c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC09E1F00893;
-	Mon,  1 Jun 2026 17:26:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780334807;
-	bh=AfEvNTHG/mWf903etYK6Nfla8DxbPv7BIpcmIXha4y4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cZ1GEv8cIdTwkdJzrDkqj8lGmSKvRD70nm4TS7DQWzMlb4l4JteqHQKsYEQLUH5ru
-	 mG2AgJ3KaLXgj8nG/tBGNBa2gE8W0GyLbRYFUF2YarGQcT3YopneT1UFEAf6vEYEVD
-	 4Jm86JL1x/8sZt3YKhTvFbQsmQahN+aLmsnAm3TRwBTLnarm1WTJcq963AEcaIzCrW
-	 i6X5vZZwbFrpyEsTmWgegzuROTruB+DzZDjVNpWHGtfENHGJ3jDrIzYts8JQJbponY
-	 +5ffiJgtTSUBYeWNFcf3H7szQqeFjuPAfTFL+j39EvtUSUMEjivodgKKXLGVcFbaov
-	 TqGuKVvNRjfvw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 8/8] KVM: s390: Prevent memslots outside the ASCE
- range
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260601152951.196859-9-imbrenda@linux.ibm.com>
-References: <20260601152951.196859-9-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 01 Jun 2026 17:26:46 +0000
-Message-Id: <20260601172646.EC09E1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tos/ESRw"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2bf2911f93cso2195ad.1
+        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 10:37:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780335436; x=1780940236; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QqySxUeQPPoGSTVfHQ/saO0tBfCLkU/uPgklhMQc/zE=;
+        b=tos/ESRw9dy1ZxENTEqG9v3QTwnaMeX91nf5fIN7uaGLBzDIZPa8ArLx5/WHIE/5IS
+         Pvlt3KdDINZU45ZE+7d8toGdSn86ZwMZSERId/MbB+/aV9qn1B686geI442/Dx8czEzN
+         pde8lTHdYUbzXYGKWcp/DBO/m72J5wqZsrrSl6zfED+Qn4gydjd+S3k3O+esodas/+Ny
+         m4f+7Yu0cP0W8RKlKJJVcFr/w3kdeTv5KZ9h//Z3/heHBAxcmIyhr8y/YBag3dwNUUpl
+         Mup8UOE2/9WnENIuBCcApquHJgV1VUar/EWc+vZCQ3iVI9ik71gRHiJ9Y/extBb0NQuc
+         oNag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780335436; x=1780940236;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QqySxUeQPPoGSTVfHQ/saO0tBfCLkU/uPgklhMQc/zE=;
+        b=C0I3PQxyuYbnmM9qx39MQ3zPkaQr1gFhMZxE/efW2NzWEWQK1At+VV8KrKTFX2TOnr
+         7zZa0P6h5OKUBMLc88YA2fdQbFL/vKNtFIwsNXNbuG+ZG9mWUtJnUa6Mpk7PkuCxy/RA
+         g2Uq/AGl/08v8IWiBXPN2L7RBn4foT7yFk7K+tb57o/VLjUK93BK6+mGUZmB30R6dOh5
+         YOoN4bdEr0MryNRjoUc12w0jR0Eazp1wiy/s+GonkjMuZp7GBdOtXqNxJ5GNRCcphgql
+         4CITcmcbTGahFmiKouIzTzSfbu88SJHZgeaD+87x+lCgQ4BSSxciaEWN2+ReCulBCIxq
+         E92g==
+X-Forwarded-Encrypted: i=1; AFNElJ8cnwSEABLm/xJ18fj8up9qcZxw7IimrH1DAeDal7NMut9aVdNQCHayskHKxpEnCGqcAro=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywn9ge29DSpwwZ2NlAgqdkFWIujJvtVGajfhHd0S1SocqcX7zGD
+	9pp1YvHyLw3XkVNRIOKLg3HlAnV92CqQ0zJam1Des4islnyfep3GPgl7KWOZ1G6A9g==
+X-Gm-Gg: Acq92OGt/4iSHIW2firSxDSvEOZdlSlaswJFx9wv39z44KcDXpkYPQSwKxzdym4thGJ
+	taBWrvh6e1qm6CIe/y1iryMkjEO1THOwLRtvmXEaM5Ztw/IPVd5IP0E0JRjNpURBftCjhbeREtI
+	KSNTLVG6GE4lS6lspEhEm+OTdyizsf0rcjiQCXu+cwochfe6KA4P/AeO9qua2F6vw7rMitSamXi
+	grp11GrAwIqRpW1OIry6qQFfd8uFaaFlqAoK+5gXGWq3j39cikC5FoQ41uuiKoQOyNo5TT6UKmf
+	XjWQz8gqWzSqnglxChkv4NZa9OmMw0tz7nKh1LIIkezc0eMrmogOYJp1gwIk1FpT12hgHAsMT3K
+	Q4pURlU7r5XDoDbGFGC7w9Mhb5xL3YuOVfCBOvSIy3GS5Ul0bHauR+kC7WgdB+e6zyJQyVu9h6D
+	7BdO1ylSWYEna6YmBiqA2sGoy35en/5QePn1EvaOSTUdUV85WNy7JhF5jQ9GVg2WHxBtT+5pR3P
+	Pmfmyo=
+X-Received: by 2002:a17:903:8c3:b0:2b4:58ad:e987 with SMTP id d9443c01a7336-2c10ec37892mr78735ad.17.1780335435226;
+        Mon, 01 Jun 2026 10:37:15 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf23a0fea7sm106944965ad.29.2026.06.01.10.37.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 10:37:14 -0700 (PDT)
+Date: Mon, 1 Jun 2026 10:37:09 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, 
+	David Matlack <dmatlack@google.com>, Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] vfio: selftests: Find devices that have VFIO selftest
+ drivers
+Message-ID: <20260601165745.GB2026478.vipinsh@google.com>
+References: <20260529180425.4162392-1-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260529180425.4162392-1-jrhilke@google.com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Fri, May 29, 2026 at 06:04:25PM +0000, Josh Hilke wrote:
+> Add a new script, list_devices.sh, which prints out the
+> segment:bus:device.function (SBDF) numbers and names of devices on a
+> machine that have a VFIO selftest driver. This makes it easier to
+> determine if the system is capable of running VFIO selftests.
+> 
+> Includes a -q (quiet) argument which prints just the SBDFs so that the
+> output can be piped into tools/testing/selftests/vfio/script/setup.sh to
+> bind the devices to VFIO to use in VFIO selftests.
+> 
+> Examples:
+> 
+> $ ./list_devices.sh
+> 0000:6a:01.0 - Intel SPR DSA (8086:0b25)
+> 0000:6f:01.0 - Intel SPR DSA (8086:0b25)
+> 0000:74:01.0 - Intel SPR DSA (8086:0b25)
+> 0000:79:01.0 - Intel SPR DSA (8086:0b25)
+> 0000:e7:01.0 - Intel SPR DSA (8086:0b25)
+> 0000:ec:01.0 - Intel SPR DSA (8086:0b25)
+> 0000:f1:01.0 - Intel SPR DSA (8086:0b25)
+> 0000:f6:01.0 - Intel SPR DSA (8086:0b25)
+> 
+> $ ./list_devices.sh -q
+> 0000:6a:01.0
+> 0000:6f:01.0
+> 0000:74:01.0
+> 0000:79:01.0
+> 0000:e7:01.0
+> 0000:ec:01.0
+> 0000:f1:01.0
+> 0000:f6:01.0
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Josh Hilke <jrhilke@google.com>
+> ---
+> Changelog
+> 
+> v3 -> v4:
+> - Move argument parsing into main() (David)
+> - Use empty string for false in quiet flag (David)
+> - Simplify logic to print device names and IDs (David)
+> 
+>  tools/testing/selftests/vfio/Makefile         |  1 +
+>  .../selftests/vfio/scripts/list_devices.sh    | 43 +++++++++++++++++++
+>  2 files changed, 44 insertions(+)
+>  create mode 100755 tools/testing/selftests/vfio/scripts/list_devices.sh
+> 
+> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+> index 0684932d91bf..777f91f09057 100644
+> --- a/tools/testing/selftests/vfio/Makefile
+> +++ b/tools/testing/selftests/vfio/Makefile
+> @@ -15,6 +15,7 @@ TEST_GEN_PROGS += vfio_pci_driver_test
+>  
+>  TEST_FILES += scripts/cleanup.sh
+>  TEST_FILES += scripts/lib.sh
+> +TEST_FILES += scripts/list_devices.sh
 
-New issues:
-- [High] Dropping `kvm->slots_lock` before updating the ASCE limit creates =
-a TOCTOU race and data race condition that allows memslots to bypass the ne=
-w limit and risk reading torn values.
-- [High] The exact user-provided memory limit is discarded and new memslots=
- are checked against a coarse, rounded-up hardware ASCE boundary, allowing =
-userspace to bypass the exact limit.
+Nit: Should this file be renamed to supported_devices.sh?
 
-Pre-existing issues:
-- [High] Setting a sub-page limit (e.g., 4095 bytes) silently removes the m=
-emory limit by expanding the VM address space to the maximum 16 Exabytes.
---
+list_devices.sh sounds to me it will list all of the devices. Just a
+suggestion.
 
-commit afeca87ebcc558baee29b01c63a93364ae7ae27f
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
-
-KVM: s390: Prevent memslots outside the ASCE range
-
-With KVM_S390_VM_MEM_LIMIT_SIZE, userspace can set the highest address
-allowed for the VM. This patch prevents creation of memslots over the
-maximum address, and prevents the maximum address from being reduced
-below the end of existing memslots.
-
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index e09960c2e6ed1..1796a7c645a9d 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -1014,12 +1019,27 @@ static int kvm_s390_set_mem_control(struct kvm *k=
-vm, struct kvm_device_attr *att
->  		if (!new_limit)
->  			return -EINVAL;
-
-[Severity: High]
-This is a pre-existing issue, but does this check fail to reject sub-page
-size limits that truncate to 0 GFNs?
-
-If a sub-page limit (e.g., 4095) is passed, it passes this zero check but
-truncates to 0 when converted via gpa_to_gfn(new_limit) later in the functi=
-on.
-
-When gmap_set_limit() is called with a 0 limit, gmap_limit_to_type(0)
-returns TABLE_TYPE_REGION1, granting the maximum 16 EB limit. Could this
-allow an extremely restricted address limit to silently grant the maximum
-possible address space?
-
-> -		ret =3D -EBUSY;
-> -		if (!kvm->created_vcpus)
-> +		if (kvm->created_vcpus)
-> +			return -EBUSY;
+>  TEST_FILES += scripts/run.sh
+>  TEST_FILES += scripts/setup.sh
+>  
+> diff --git a/tools/testing/selftests/vfio/scripts/list_devices.sh b/tools/testing/selftests/vfio/scripts/list_devices.sh
+> new file mode 100755
+> index 000000000000..249532f15570
+> --- /dev/null
+> +++ b/tools/testing/selftests/vfio/scripts/list_devices.sh
+> @@ -0,0 +1,43 @@
+> +#!/bin/bash
+> +# SPDX-License-Identifier: GPL-2.0-or-later
 > +
-> +		ret =3D 0;
-> +		scoped_guard(mutex, &kvm->slots_lock) {
-> +			slots =3D kvm_memslots(kvm);
-> +			if (slots && !kvm_memslots_empty(slots)) {
-> +				kvm_for_each_memslot(ms, bkt, slots) {
-> +					if (gpa_to_gfn(new_limit) < ms->base_gfn + ms->npages) {
-> +						ret =3D -EBUSY;
-> +						break;
-> +					}
-> +				}
-> +			}
-> +		}
-> +		if (!ret)
->  			ret =3D gmap_set_limit(kvm->arch.gmap, gpa_to_gfn(new_limit));
+> +# List of devices which have a VFIO selftest driver
+> +readonly DEVICES=(
+> +	"8086:0b25,Intel SPR DSA"
+> +	"8086:11fb,Intel GNR-D DSA"
+> +	"8086:1212,Intel DR DSA"
 
-[Severity: High]
-Is there a Time-of-Check to Time-of-Use (TOCTOU) race here by dropping
-kvm->slots_lock before updating the ASCE limit?
+Nit: I think this should be DMR instead of DR.
 
-By dropping slots_lock before calling gmap_set_limit(), the 64-bit
-gmap->asce value is modified non-atomically under mmu_lock.
+> +	"8086:0cf8,Intel CBDMA"
 
-Concurrently, KVM_SET_USER_MEMORY_REGION can take slots_lock and call
-kvm_arch_prepare_memory_region(), which reads gmap->asce locklessly:
+Where is this device in selftests/vfio/lib/drivers/*? I am not able to
+find it.
 
-kvm_arch_prepare_memory_region() {
-    ...
-    if (!asce_contains_gfn(kvm->arch.gmap->asce, ...))
-        return -EINVAL;
-}
+Also, selftests/vfio/lib/drivers/ioat/ioat.c has PCI_DEVICE_ID_INTEL_IOAT_SKX
+(0x2021) device. Should that be added here?
 
-Could this allow kvm_arch_prepare_memory_region() to read the old, larger
-ASCE limit and validate a memslot that violates the newly requested limit?
-Additionally, is there a risk of reading a torn gmap->asce struct value
-during the non-atomic modification?
+I think we should write the comment above that DEVICES list is populated
+from the IDs in lib/drivers/* files.
 
-[ ... ]
+> +)
+> +
+> +# Print the segment:bus:device.function numbers of PCI devices that can be used
+> +# to run VFIO selftests.
+> +function main() {
+> +	local id_name
+> +	local quiet=""
+> +	local name
+> +	local bdfs
+> +	local bdf
+> +	local id
+> +
+> +	while getopts "q" opt; do
+> +		case $opt in
+> +			q) quiet="true" ;;
+> +			\?) echo "Usage: $0 [-q]" >&2; exit 1 ;;
+> +		esac
+> +	done
+> +
+> +	for id_name in "${DEVICES[@]}"; do
+> +		IFS=',' read -r id name <<< "$id_name"
+> +		bdfs=$(lspci -D -d "${id}" | awk '{print $1}')
+> +
+> +		[[ -z $bdfs ]] && continue
+> +
+> +		if [ "$quiet" ]; then
+> +			echo "${bdfs}"
+> +		else
+> +			echo "${bdfs}" | sed "s|$| - ${name} (${id})|"
 
-> @@ -5672,6 +5692,8 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
->  			return -EINVAL;
->  		if ((new->base_gfn + new->npages) * PAGE_SIZE > kvm->arch.mem_limit)
->  			return -EINVAL;
-> +		if (!asce_contains_gfn(kvm->arch.gmap->asce, new->base_gfn + new->npag=
-es - 1))
-> +			return -EINVAL;
+Nit: lspci prints vendor and device id in [], and use () for revision.
+Should this script also use []?
 
-[Severity: High]
-Does this allow userspace to bypass the exact requested memory limit?
-
-Earlier in kvm_s390_set_mem_control(), the exact new_limit (e.g., 1 GB)
-is verified against existing memslots, but it is discarded and never stored
-in kvm->arch.mem_limit.
-
-gmap_set_limit() then converts the exact limit to a coarse ASCE boundary,
-rounding it up to the next hardware limit (e.g., 2 GB).
-
-Because this new check in kvm_arch_prepare_memory_region() only evaluates
-against the coarse ASCE boundary via asce_contains_gfn(), could userspace
-request a strict limit but silently allocate memslots up to the next
-hardware boundary?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260601152951.1968=
-59-1-imbrenda@linux.ibm.com?part=3D8
+> +		fi
+> +	done
+> +}
+> +
+> +main "$@"
+> -- 
+> 2.54.0.929.g9b7fa37559-goog
+> 
