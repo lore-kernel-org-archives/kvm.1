@@ -1,130 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261AE298CAB
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 16:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C82392C2C;
+	Mon,  1 Jun 2026 16:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780332729; cv=none; b=g4HTakqqfVJYwg4Iac3cUgjddcKeNvDNDFS169WprE+O+3MFigoTi1Y/zkxYL81fzbSJtldKY37HVwTEMxqg9DRvg0nOS0fdGVp1Cmx1nQVzscK/PlGWnGU5uzqSSYwXuOa0gbES3ofUHS64AmhmEBOm4IvfbPIwajTjhw07ZEI=
+	t=1780333180; cv=none; b=FotwF84TvXJwQ9VOlzayI/01Yq5bQMmVVolAnkuhB6wRvzXPivsvTRCCkEfjYz9zLR/jqdv/FEpxBSJwrI+8jGhc49dKk6dhK3AnxsifzMOseLZN8sMFenk6l5T8cKZ0zk05fHOuPkzxD1EiZIA+DxHeg1ZNsC7S+xtK0GEzBlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780332729; c=relaxed/simple;
-	bh=qmt5jDN7ZlK+ZD/wHTWltfWANIlcwBrVQqrIQDZaH08=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kisC9I9uuduYACFiLclB2M4qyyY9rACy4XcxOdGsSEYi1CmIymwS1x4dvaUiwvHlz9c5E8zyy1X0JOecFoRkV96C/8YMQFUBK/+nMc8oT56QpSuVXYzJpikutbb96zw7aKIbLeC+RU3mgW4epmJTqj/pd1x/vETSJgeQ5WTb/rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VBC/949+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780333180; c=relaxed/simple;
+	bh=7+W7A/iCUFdV7o/RwZl5GjCiYYvn3t+ukiQndMRFjbo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=rUaG/EwXlrXf16xJ6wCykloFSYPucyPXT4QicsBKn83g236orcLSFQNPt88QLP5kJM+S1g20Q8cHaXJ90BJ1Zq5pWU368SVvfko29K5LA69VP1abez5PRrGFZ8q3/VBfGj2xkkPDTzLrmmIgVt8bE2FDMv50Ngr7aQVOqwSnx9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1P5OvuE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VBC/949+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A1E1F00893;
-	Mon,  1 Jun 2026 16:52:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1P5OvuE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6B01F00893;
+	Mon,  1 Jun 2026 16:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780332727;
-	bh=txxU4tJVp5/cjZLMvoeAO5qYWxaobeTzhrs8uEBcRgw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VBC/949+Tup04zKLZ16qSQqO3NQ4eh4n0B8UFlnTTF2zi7c8vstbS8ycOSOpl4m7g
-	 45R4Vn9sAQ4+2pW9qlydkpJ/h+119NcqL8EaGoGW6C+SygU+scVlngj9kGs0o432bX
-	 gEI8fuoudcyhZUNIef83FXZLNPPR96mEobHXis/IjUB20sdV8oQsW8zVh+g3YVCt4J
-	 ZhCd8Zvy3/8SF720vNkDD5AtNxTPwW21UPyWj1ChPSfbwJx4uieyc4sOR1ECNVVrp5
-	 NiLq1LljkI/R/R0uCwOVbXnEs4oMFNJqDEQxvAGLM+Ecvkif6okUzprQKpivohxuu0
-	 F4TRJl/y9qzeg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 6/8] KVM: s390: Fix fault-in code
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260601152951.196859-7-imbrenda@linux.ibm.com>
-References: <20260601152951.196859-7-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 01 Jun 2026 16:52:06 +0000
-Message-Id: <20260601165207.61A1E1F00893@smtp.kernel.org>
+	s=k20260515; t=1780333179;
+	bh=Dl//ADrhGnwbvKZKpYGzjN2yfPuCsGneKL+WlC5Dojc=;
+	h=Date:From:To:Cc:Subject;
+	b=U1P5OvuELPnqBY8nADqS8U+HGQDY+wkmlekWeLLOBt13b2IECGpqTrziIlhou1nxE
+	 wWFhlCPXgWkrwyTXWQQvB59qqXuWNXA1OhVU7QYP8qPV8jinHKLLuXxaZRCHXo9kmd
+	 X3k8CtHxAN6rcItURHO5fviPY4BlJwKUz4yPGMHHrQJGXBED1etE2vzY22zPIO0Lhd
+	 NGdAjyxphoCxG4DKXvovhBi1juSofqoztz9i4pqjOHoGg5znaKxtFI7lDmAR/lzYKu
+	 81Lh5/XEF8TQqUwaxOn5hXTNzaOx6DfveNryrNkYBs1fNrUmJJk0lOomDeEU5CwQlU
+	 fJB/soODol5UA==
+Date: Mon, 1 Jun 2026 17:59:35 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, KVM <kvm@vger.kernel.org>
+Cc: Emily Ehlert <ehemily@amazon.de>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: linux-next: manual merge of the kvm tree with the origin tree
+Message-ID: <ah26dyqFIP006NTt@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5W2flVS5uYSL/Dn+"
+Content-Disposition: inline
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
 
-Pre-existing issues:
-- [High] Memory leak of the pinned host page reference when `kvm_s390_new_m=
-mu_cache()` allocation fails.
---
+--5W2flVS5uYSL/Dn+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-commit 132617ab1e43f506af43740ee664fcdba7a95ff5
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Hi all,
 
-KVM: s390: Fix fault-in code
+Today's linux-next merge of the kvm tree got a conflict in:
 
-This commit fixes the fault-in code so that it does not return success if
-a concurrent unmap event invalidated the fault-in process. It ensures the
-code retries properly instead of returning success without actually
-faulting in the requested page.
+  arch/x86/kvm/x86.c
 
-> diff --git a/arch/s390/kvm/faultin.c b/arch/s390/kvm/faultin.c
-> index ddf0ca71f3741..cf542b0a7e8e3 100644
-> --- a/arch/s390/kvm/faultin.c
-> +++ b/arch/s390/kvm/faultin.c
+between commit:
 
-[ ... ]
+  b60621c5121c9 ("KVM: x86: Fix ERAPS RAP clear on INVPCID single-context i=
+nvalidation")
 
-> @@ -110,20 +111,19 @@ int kvm_s390_faultin_gfn(struct kvm_vcpu *vcpu, str=
-uct kvm *kvm, struct guest_fa
->  			if (!mmu_invalidate_retry_gfn(kvm, inv_seq, f->gfn)) {
->  				f->valid =3D true;
->  				rc =3D gmap_link(mc, kvm->arch.gmap, f, slot);
-> -				kvm_release_faultin_page(kvm, f->page, !!rc, f->write_attempt);
-> -				f->page =3D NULL;
->  			}
-> +			kvm_release_faultin_page(kvm, f->page, !!rc, f->write_attempt);
->  		}
+=66rom the origin tree and commit:
 
-[Severity: High]
-This isn't a bug introduced by this patch, but I have a question about how
-f->page is handled when kvm_s390_new_mmu_cache() fails earlier in this loop.
+  e31de5791093d ("KVM: x86: Drop the "EX" part of "EXREG" to avoid collisio=
+n with APX")
 
-Earlier in kvm_s390_faultin_gfn() in arch/s390/kvm/faultin.c,
-__kvm_faultin_pfn() resolves the PFN and pins the host page, storing it
-in f->page.
+=66rom the kvm tree.
 
-Then, if mc is NULL, the code attempts to allocate a new cache:
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
 
-    if (!mc) {
-        local_mc =3D kvm_s390_new_mmu_cache();
-        if (!local_mc)
-            return -ENOMEM;
-        mc =3D local_mc;
-    }
+diff --cc arch/x86/kvm/x86.c
+index 0550359ed798f,48f259015ce44..0000000000000
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@@ -14330,7 -14309,7 +14316,7 @@@ int kvm_handle_invpcid(struct kvm_vcpu=
+=20
+  		 * the RAP (Return Address Predicator).
+  		 */
+  		if (guest_cpu_cap_has(vcpu, X86_FEATURE_ERAPS))
+- 			kvm_register_mark_dirty(vcpu, VCPU_EXREG_ERAPS);
+ -			kvm_register_is_dirty(vcpu, VCPU_REG_ERAPS);
+++			kvm_register_mark_dirty(vcpu, VCPU_REG_ERAPS);
+ =20
+  		kvm_invalidate_pcid(vcpu, operand.pcid);
+  		return kvm_skip_emulated_instruction(vcpu);
 
-When kvm_s390_new_mmu_cache() fails and returns -ENOMEM, it looks like the
-function returns directly without calling kvm_release_faultin_page() to drop
-the previously acquired reference in f->page.=20
+--5W2flVS5uYSL/Dn+
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Callers like kvm_s390_faultin_gfn_simple() and access_guest_page_with_key_g=
-pa()
-declare struct guest_fault f locally on the stack and propagate the -ENOMEM
-error without inspecting or cleaning up f.page.
+-----BEGIN PGP SIGNATURE-----
 
-Can this permanently leak the pinned host page? Under memory pressure, could
-an unprivileged guest repeatedly trigger page faults to accumulate leaked p=
-age
-references and exhaust host memory?
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmodunYACgkQJNaLcl1U
+h9BiEgf/XhErtfezKjqknMO641rzYqBNWABH0iRPIUd1+w/uxoL+DKjNk6fcAPq8
+szNwm8pWFBF0Tvin0AEW+j1BhKsKc8PkwA0IxYrIqKV8JRJp8nTo+EkAiZmmaGp2
+/DRob8ZMxwghKaFYpft0FDk/PEh812BQb9vvA1ymJOIAJZ8niwWn9rfHaoODnz6m
+2bKk06rO4Kw7AAzUoaU4nqRlqvOcXlSYcOr2XTBIyYAkHKXIb61j5PIJYpqvX5WO
+Ux4wc2Kzz3SbtF7OFHCzAfTfaRgYpure9ytPLcU5wxUkTHrRh9nhtLIKfz/5cJEw
+QKg6hdC/nxNtmujsj0+VeVyCuB0Fog==
+=Glwc
+-----END PGP SIGNATURE-----
 
-> -		kvm_release_faultin_page(kvm, f->page, true, false);
-> =20
->  		if (rc =3D=3D -ENOMEM) {
->  			rc =3D kvm_s390_mmu_cache_topup(mc);
->  			if (rc)
->  				return rc;
-> -		} else if (rc !=3D -EAGAIN) {
-> -			return rc;
-> +			rc =3D -EAGAIN;
->  		}
->  	}
-> +
-> +	return rc;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260601152951.1968=
-59-1-imbrenda@linux.ibm.com?part=3D6
+--5W2flVS5uYSL/Dn+--
