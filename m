@@ -1,151 +1,256 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D035E3ADBAF;
-	Mon,  1 Jun 2026 19:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCD7345CAA
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 20:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780343993; cv=none; b=d/14E24sRTgRlzKDWGaFYz0V+XwfPEEaJwl5JrCtVY2iNwg69bHOkp5icX6CPL93fSDtqtgTfv+O0le9Lk2Tu2ljUt8f6gnPbx3GPBMa+ExV5kR2QiK15egkD5xDsLg+3NLRow5HNOTcQ/oGtpZJbT7wCLyxJ7sgryM1yTQCJEo=
+	t=1780344164; cv=none; b=p9Zqew/nuPkL+hOo+R5VqJjG5svMA1KmDNWjZEiJyNTysg5I8ySdXER6vbLuZyDyXMB8Yl1bTr2IaKCp1FyihgPuYmBv6LnkI1yU/IdvCWiFe+RtOjiqCfg0jgAizoSpclL/LyRx0vmg1ZtPtWvFy0ZHsw7sUpHWtiK0Y9Eq4IA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780343993; c=relaxed/simple;
-	bh=mqezQcqx9istaPeCmmXZaMwR719orDM1w23ry+SfsJU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XhtjzjjnZCvHpCBSexyKH1ukDjjZx+ob50B13ShpY/D5MJad40tq/6eMrxGF/3zDBprT/rTURA2QSZD9uQUvOTuGvJwC57gwawuTZuuAYsdCa3e9mMUCSNvdPKQhh1GFxwomn2ucfeJrw86MECp49KuOcRvKBd0ZbxrwGHbmsiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jPPf1HSE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780344164; c=relaxed/simple;
+	bh=C1uCNZIP1HQRli7PoBH8kDgdXlNWae0bh0TuHDr6UFY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=lp8GHjZZP6JM5Scrl/KBEfUwAad7774allzZiA0JY5fWpcvyr0FwpapE3y9bN5UGqvg0/CDQKlGKXmmtVidfaB4yfwzXaSUtV89hueIhJrxd7w7CkbvZlb2PxoSI5deARnMBt2uuIR8E5bIG5Lo3sCaVzjDDQuGuZSKx6KbNvlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XZCVRySE; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jPPf1HSE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6831F00893;
-	Mon,  1 Jun 2026 19:59:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780343990;
-	bh=XNCn/hiuq2TSQD0/7268qMBjDGPldqx55TcTTgULBQo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jPPf1HSEtTmrOkKgXG7yZ4L4yWlXriv9f4UInH3EUjfr7uRqEixqsswHEVJD66e/i
-	 UYMnZm3AwHRFYgRV2ih8KtH9UMVsaXegF2blXd/AV6FabDLb+h4l5NmMOw9ZVrD++N
-	 KcX2jHWXOHM02LWFJzDj4MfNwHTR6omd404TzjNZvpI6ZIAf59Yvhv/clTseKbIOtO
-	 ETM1funcq4ukCXv67pvcGJzgYBqL/gNfgi123wCjIaYqeaTkJBGmaBAvvqiI5vVIDR
-	 F9G7b/Sg9jjyGT7K98XQKfJ06MeRLxen4rImVcQChLpFwv+lALs23w52eL46/a7lq6
-	 WVHwgppy+tSkw==
-Date: Mon, 1 Jun 2026 12:59:49 -0700
-From: Kees Cook <kees@kernel.org>
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>,
-	Gabriel Somlo <somlo@cmu.edu>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	John Johansen <john.johansen@canonical.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-	linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net, qemu-devel@nongnu.org,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net,
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org, netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 00/11] Convert moduleparams to seq_buf
-Message-ID: <202606011259.CE6E74CE@keescook>
-References: <20260521133315.work.845-kees@kernel.org>
- <88c5ca1d-eeda-4023-bc7a-397b92780db9@suse.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XZCVRySE"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c85a2c0b56fso1861272a12.0
+        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 13:02:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780344162; x=1780948962; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ACWAV5pEQNZNHB+r5tUvjzX0G30bImUmGGS6ry50Smw=;
+        b=XZCVRySE2BWPX/1COd8eJM//2qIgSCVPzhYBOUeJCUrmxPMdF1e/zm/JO5Jh4Adydd
+         w6GjjojSHPIE5bvTmf82jIKRf5pu806XNJ6lSaBewig/z0skZpJvmzDrST6GkPlztUHF
+         oSmPZOklP4Mtukty8k2R6OOqWl+M70yW0peVj+7N8WgVyH4CvzOyNzSKiLrqa9nKLLY1
+         Xb6fmCbOtlrY5D4+kKo10jsGRt/2UTxifjSzXvGuR4NDxI+k8ZKcNwAqYxsXyRULDVsF
+         XPcdVz/3M4pDQxzSCgv/6FiF0z2ZyPm3RujL3MWN4zUFMfEmwzkLmgpYOoilqJwmYjz7
+         oQaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780344162; x=1780948962;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ACWAV5pEQNZNHB+r5tUvjzX0G30bImUmGGS6ry50Smw=;
+        b=WjEcex9m3x8TqVuTUx6aGUrGOq0ewMVvo77KisoMbQtfB0SqLDgjGHYqpAXvs9Gl3j
+         NovzbnEi92bCXvOAKszbhd2V0CWcXu9tHGpdkib6P+qJ1s4MRi0+ymjsZrQ++TU6gp13
+         6x8NkB8tib86RmzS47SKO8wX/DXPaUfDV6dRjWHHhtXcWkXc57hduCIFdEwitMKK7/sD
+         OtGak2Lh5GtRi9Mk5bNPLB9WHZ+bQ7Cn5jBQ2lp/S2aXcsdXdkhNgdU4OHgPeSKQ383T
+         dSJEIy3IWQNKy/KkSA5piACG8ntVPGyFU6M6a4H7uOmpCiJZoum8Z91OU29HoaiLRkIN
+         e6Xw==
+X-Forwarded-Encrypted: i=1; AFNElJ89W5MLwZyAKFlS6BBG7se0zm6PtQX+1wuvik2KBqcDR1p/yVWneaIiyhCc0eLe38ncucs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPQ6qZ5vBXcJHrdCkPFlIh+WzfoK/vPduBKFrR/E4wLjWyJ25F
+	kVQZB/Sa5stJ85zsEXckQgaOYxoW2MPIAG4YvSfA0nmFIA/+49hll/MPstbe8YP8XmOdvvz2ciY
+	KC8zo+w==
+X-Received: from pgbcp1.prod.google.com ([2002:a05:6a02:4001:b0:c82:7c27:98a8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:492:b0:3b4:7758:e397
+ with SMTP id adf61e73a8af0-3b477590e85mr1077789637.16.1780344162217; Mon, 01
+ Jun 2026 13:02:42 -0700 (PDT)
+Date: Mon, 1 Jun 2026 13:02:41 -0700
+In-Reply-To: <20260530002134.558837-9-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <88c5ca1d-eeda-4023-bc7a-397b92780db9@suse.com>
+Mime-Version: 1.0
+References: <20260530002134.558837-1-jrhilke@google.com> <20260530002134.558837-9-jrhilke@google.com>
+Message-ID: <ah3lYRgwU5QebVt1@google.com>
+Subject: Re: [PATCH v4 08/19] KVM: selftests: Verify interrupts are received
+ when IRQ affinity changes in IRQ test
+From: Sean Christopherson <seanjc@google.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 26, 2026 at 08:53:06AM +0200, Petr Pavlu wrote:
-> On 5/21/26 3:33 PM, Kees Cook wrote:
-> > Hi,
-> > 
-> > I tried to trim the CC list here, but it's still pretty huge...
-> > 
-> > We've had a long-standing issue with "write to a string pointer" callbacks
-> > that don't bounds check the destination (and for which the bounds is
-> > also not part of the callback prototype, even if it is "known" to be
-> > PAGE_SIZE, which sysfs_emit() depends on). Both moduleparams and sysfs
-> > use this pattern. As a first step, and to test the migration method,
-> > migrate moduleparams first.
-> > 
-> > There are 2 "mechanical" treewide patches that are handled by Coccinelle:
-> > - treewide: Convert struct kernel_param_ops initializers to DEFINE_KERNEL_PARAM_OPS
-> > - treewide: Convert custom kernel_param_ops .get callbacks to seq_buf via cocci
-> > 
-> > The last treewide patch is manual, and may need to be broken up into
-> > per-subsystem patches, though I'd prefer to avoid this, as it would
-> > extend the migration from 1 relase to at least 2 releases. (1 to
-> > release the migration infrastructure, then 1 release to collect all the
-> > subsystem changes, and possibly 1 more release to remove the migration
-> > infrastructure.)
-> > 
-> > Thoughts, questions?
-> 
-> This looks reasonable to me. I added a few minor comments on the patches
-> but they already look solid.
+On Sat, May 30, 2026, Josh Hilke wrote:
+> @@ -134,17 +137,21 @@ int main(int argc, char **argv)
+>  	u32 gsi =3D kvm_random_u64_in_range(&kvm_rng, 24, KVM_MAX_IRQ_ROUTES - =
+1);
+>  	u8 vector =3D kvm_random_u64_in_range(&kvm_rng, 32, UINT8_MAX);
+> =20
+> +	int i, j, c, msi, irq, eventfd, irq_cpu;
 
-Thanks for the review! I'll get a v2 prepared with your notes addressed. :)
+This fails to build with -Werror:
 
--Kees
+irq_test.c: In function =E2=80=98main=E2=80=99:
+irq_test.c:183:35: error: =E2=80=98irq=E2=80=99 may be used uninitialized [=
+-Werror=3Dmaybe-uninitialized]
+  183 |                 irq_affinity_fp =3D open_proc_irq_affinity(irq);
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+irq_test.c:140:27: note: =E2=80=98irq=E2=80=99 was declared here
+  140 |         int i, j, c, msi, irq, eventfd, irq_cpu;
+      |                           ^~~
+irq_test.c:228:41: error: =E2=80=98irq_cpu=E2=80=99 may be used uninitializ=
+ed [-Werror=3Dmaybe-uninitialized]
+  228 |                                         printf("  irq_cpu: %d\n", i=
+rq_cpu);
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~
+irq_test.c:140:41: note: =E2=80=98irq_cpu=E2=80=99 was declared here
+  140 |         int i, j, c, msi, irq, eventfd, irq_cpu;
+      |                                         ^~~~~~~
 
--- 
-Kees Cook
+The first one (of three distinct uses) is easy enough to solve:
+
+diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftes=
+ts/kvm/irq_test.c
+index 29f54a435c8e..23c82ddee6b9 100644
+--- a/tools/testing/selftests/kvm/irq_test.c
++++ b/tools/testing/selftests/kvm/irq_test.c
+@@ -251,15 +251,16 @@ int main(int argc, char **argv)
+                eventfd =3D device->msi_eventfds[msi];
+                printf("Using device %s MSI-X[%d] (IRQ-%d)\n", device_bdf, =
+msi,
+                       irq);
++
++               if (irq_affinity)
++                       irq_affinity_fp =3D open_proc_irq_affinity(irq);
+        } else {
++               TEST_ASSERT(!irq_affinity,
++                           "Setting IRQ affinity (-a) requires a backing d=
+evice (-d)");
++
+                eventfd =3D kvm_new_eventfd();
+        }
+=20
+-       if (irq_affinity) {
+-               TEST_ASSERT(device_bdf, "-a requires -d");
+-               irq_affinity_fp =3D open_proc_irq_affinity(irq);
+-       }
+-
+        printf("Injecting interrupts for GSI %d (Vector 0x%x) %d times\n",
+               gsi, vector, nr_irqs);
+=20
+
+And the second can be addressed by checking irq_affinity_fp instead of irq_=
+affinity:
+
+@@ -298,7 +299,7 @@ int main(int argc, char **argv)
+=20
+                kvm_route_msi(vm, gsi, vcpu, vector, do_use_nmi);
+=20
+-               if (irq_affinity && vcpu->id =3D=3D 0) {
++               if (irq_affinity_fp && vcpu->id =3D=3D 0) {
+                        irq_cpu =3D kvm_random_u64(&kvm_rng) % get_nprocs()=
+;
+                        write_proc_irq_affinity(irq_affinity_fp, irq, irq_c=
+pu);
+                }
+
+but I don't think that's quite correct.  Keying off vCPU0 for task migratio=
+n
+makes sense, because the test round-robins IRQs to each vCPU, so it's logic=
+al to
+redo task/vCPU affinity after every round.
+
+But IRQs are being spread over _all_ host CPUs, and there is no round-robin
+behavior, it's completely random.  So rather than rate-limit based on numbe=
+r of
+vCPUs, I think it makes more sense to hardcode the changes in affinity, e.g=
+.
+
+		if (irq_affinity_fp && !(i % 10)) {
+			irq_cpu =3D kvm_random_u64(&kvm_rng) % get_nprocs();
+			write_proc_irq_affinity(irq_affinity_fp, irq, irq_cpu);
+		}
+
+
+Sadly, even that doesn't address the third "used uninitialized" issue:
+
+irq_test.c:334:41: error: =E2=80=98irq_cpu=E2=80=99 may be used uninitializ=
+ed [-Werror=3Dmaybe-uninitialized]
+  334 |                                         printf("  irq_cpu: %d\n", i=
+rq_cpu);
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~
+
+
+because apparently gcc isn't smart enough to understand that "!(i % 10)" (o=
+r
+even "!i" is guaranteed to run on the first iteration.  However, that's fal=
+se
+positive probably a blessing in disguise, because it highlights that printi=
+ng
+only what userspace has _requested_ could be very misleading, given that th=
+e
+whole point of the offending printf() is to spit out information when the I=
+RQ
+got lost.
+
+Writing smp_affinity_list (or smp_affinity) does NOT guarantee the new affi=
+nity
+is realized in hardware.  E.g. the kernel typically "lazily" migrates IRQs,=
+ and
+only actually changes the affinity when an IRQ actually arrives.  To see wh=
+at
+CPU an IRQ is actually wired up to, you need to read /proc/<irq>/effective_=
+affinity{,list}.
+
+As it pertains to the "used uninitialized" flaw, I think the test should sp=
+it
+out three things:
+
+ 1. irq_cpu, i.e. what the test thought it set the affinity to
+ 2. /proc/<irq>/smp_affinity, i.e. what the kernel has for the allowed list
+ 3. /proc/<irq>/effective_affinity, i.e. what the actual, current affinity =
+is
+
+And then _if_ you want to ratelimit changes in affinity, fix the "used unin=
+itialized"
+issue by explicitly initializing irq_cpu, with a comment calling out that t=
+he
+compiler is being stupid.
+
+@@ -287,6 +288,12 @@ int main(int argc, char **argv)
+                }
+        }
+=20
++       /*
++        * Suppress a false positive maybe-uninitialized compiler warning d=
+ue
++        * to ratelimiting changes in IRQ affinity.
++        */
++       irq_cpu =3D -1;
++
+        for (i =3D 0; i < nr_irqs; i++) {
+                const bool do_clear_routes =3D clear_routes && (i & BIT(3))=
+;
+                const bool do_use_nmi =3D use_nmi && (i & BIT(2));
+@@ -298,7 +305,7 @@ int main(int argc, char **argv)
+=20
+                kvm_route_msi(vm, gsi, vcpu, vector, do_use_nmi);
+=20
+-               if (irq_affinity && vcpu->id =3D=3D 0) {
++               if (irq_affinity_fp && !(i % 10)) {
+                        irq_cpu =3D kvm_random_u64(&kvm_rng) % get_nprocs()=
+;
+                        write_proc_irq_affinity(irq_affinity_fp, irq, irq_c=
+pu);
+                }
+@@ -329,7 +336,7 @@ int main(int argc, char **argv)
+                                printf("Timeout waiting for interrupt!\n");
+                                printf("  vCPU: %d\n", vcpu->id);
+                                printf("  is interrupt NMI: %s\n", do_use_n=
+mi ? "true" : "false");
+-                               if (irq_affinity)
++                               if (irq_affinity_fp)
+                                        printf("  irq_cpu: %d\n", irq_cpu);
+                                if (migrate_vcpus)
+                                        kvm_print_vcpu_affinity(vcpu, vcpu_=
+tids[vcpu->id]);
+
+But honestly, unless it impacts the runtime, I don't see much value in rate=
+limiting
+changes in IRQ affinity.  Putting that much stress on the IRQ subsystem is =
+actually
+probably interesting.
+
+And no matter what, /proc/<irq>/effective_affinity needs to be printed on f=
+ailure.
