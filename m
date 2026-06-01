@@ -1,140 +1,100 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF562BE033
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 16:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088FC2DA775
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 16:09:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780329780; cv=none; b=ctf8Sac8sJBQXS/tHB7syY8FWf+IVIrzUtpcuM3jBiURsq3xaja6nn4OxIPwTFSVPDCWUXRNhtOwm9FCeShUQ0kRhKYjqYFeF4RbahxOF6kl0ak6Lu4JM9+YwyS/czn7wK25sTsRttxZ/jaJN0/El2WwrB84DhjTpX7A6datuq8=
+	t=1780330161; cv=none; b=SM96smGCpm3hQ6J9emzaA/0F9Tto4L4ScaQL7mFKe5eG8uM3yPKG9xkuOgjIlLJFJ309xDvV1efZ686SNW97nSMoFnbN5lLZ87yTBe9CUuQoCG3F8OXtfQf0czM6mcHX67LTKQkxVodoBlyiz/K3iPqJEyRQjaNxdOhlJZN5M+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780329780; c=relaxed/simple;
-	bh=r21VC/QO+Cm/jEoZLF9kBRN/xDqJx1mIkwsADo9V/kc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gfIK3i0TwTSOs1obyzdC1qHTJy0bRL1smqQKrr9Dl6WbGeJaFcIRxTr6V9utr6rVGDqKD94JUG4X9FtiSNq1bU2DIWRmR4xPSWlbBrPZEx6aPaHoj6579z33Qc6LY75sHD3S+O5gcLwTtrvbi3EFVXDqbP9pX15fb4ukwtgdj0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PTli3D7E; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780330161; c=relaxed/simple;
+	bh=BKh0LYa3+KixITxqd5d5kuREXIKGV1eZGe4VGdAvnNk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=srqo3eZlsF38KBLIVtexWzt1CF0wcCoZsP0fyAjZPUliNOrSq8itI9O4xXyF5M2tmOEgyPoMxSFWq0KAG9wOVaFBNQH4O79t0SXRh7oNRbIGBCrSCoSoWSLGaAJBIPgMX5YFwUgmeW46mV/mPBrUUlavg2vMZL74J+V8Rk729f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LUQjiiuI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PTli3D7E"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bf004bf8beso57306075ad.3
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 09:02:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780329778; x=1780934578; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=U7UFbuJuGr2mJB706k3sMJIDSg8zK0y7ivtbLm8CNu8=;
-        b=PTli3D7EXVy+Gt18MkBmoDhPK0ICO5cNWehJZJhzFXGrYEIuiMcTKose8brxbhi0+m
-         4RxGUW46gNtiWQo1+bN4kS7RgxDnmPunE2/VG+px004K2OjUMSKgumHNHghrw7nk+Luq
-         CFGv1LR/eKWBPHvfy7WjRdndI88uZDuQpISTT0EyP1y/Ghuo4RB16qpZgM/5qszYTDc9
-         dGZJqcRPSMK2hJeJ7V7rbdRRyzyS46SR/YZd0PXwbLupscDSL+icc1BbW+awpG5CwHek
-         b3AFt7MylgY8O6vcIwpkOngeJy5tZmiH1uVFBtojqqIvfvWxP+OIMWbPW0oNtRIqbZHX
-         Rdog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780329778; x=1780934578;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U7UFbuJuGr2mJB706k3sMJIDSg8zK0y7ivtbLm8CNu8=;
-        b=eBGU37OrldGoAnxb6ereRYC1tsz3HNive9lK6WMGC/JqKqfvUmr7GxQk8vCIF3JYaD
-         e4eN9w/xw+RMSkpw7v+5gG9l5HH7l8C5NMqWC5QS8NMOAVu8uIRRZkHV7jNne/UrMG16
-         zD/K2/AzZB6PFLBwdySbI0KJ/2qfcMRv1V1tuonOw01dUV3pU4p4mB8Z8TDxXRD7gG8R
-         EJ37OeghOxj7b98MeEVzYaqloti07ccXgkmXwuPZmonllaPEKkAJGO+XLGx+hMAKl7/Y
-         ie713eIwVAnQW9sUxgJl/7iqWMBoFlLN9DNv9CMKQan2RQwJd+Re/EF3pa8uxC3w4fyS
-         yqHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+Iq+PgYGKmCqoc4IvopAfzZEJc2fMz0APw/BdT37Y/J0p/3kyTsmWmCl+Foul6dLyRl3U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1Ybc9A911KsQ/8iVQDuKBxB+o7q0iq6tfDvcOHckz2broH/qH
-	hho326alzPUa2UvWQejDJXYbGxzVTb4BvZgok3bHBEGLV1zfx/7jrJ8dL3v0V6+LYw8kfIZmVIa
-	n0+ygRg==
-X-Received: from plho10.prod.google.com ([2002:a17:903:23ca:b0:2be:3026:1d0f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fc44:b0:2c0:a711:534
- with SMTP id d9443c01a7336-2c0a71111b4mr106190555ad.13.1780329777919; Mon, 01
- Jun 2026 09:02:57 -0700 (PDT)
-Date: Mon, 1 Jun 2026 09:02:57 -0700
-In-Reply-To: <20260530085043.927231F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LUQjiiuI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2281F00893;
+	Mon,  1 Jun 2026 16:09:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780330158;
+	bh=yrp1UWw+1W6UytVKc9OKuST2BhvFH7o4OQ1pyBIE2b4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=LUQjiiuI04NsmnSwPeekyMbkvZfnAs9qs3SLQrwHn4dFz4C1uyGxiPCSNJiuMWWO4
+	 wweaLnKU31118u84h4zh8I7pxo71zgp7CnxmZyAgul/Zwd0Jf4W5ts8Q9ZXZOEuHMO
+	 2Q4xzhl6GEKb/iGi4zLC82bqjql+D9WVhtxntMtPuDSRlcAr+oHhLt3L/PPVMUpibb
+	 7dDoeiq9ho5LwoglfMt32qZxS5V82/L6rB6oJbVgyCwCCG26bbmL0YbLxNCAGM9oWI
+	 KQPS3FxY92DciIkrgCrLDVknh+M6LtDTAweSn+f7zLbSBSqXxPTmpM/Y8FaVJr0epf
+	 bLsedhq64GSYA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 3/8] KVM: s390: Avoid potentially sleeping while
+ atomic when zapping pages
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260601152951.196859-4-imbrenda@linux.ibm.com>
+References: <20260601152951.196859-4-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 01 Jun 2026 16:09:18 +0000
+Message-Id: <20260601160918.9F2281F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529183549.1104619-17-pbonzini@redhat.com> <20260530085043.927231F00893@smtp.kernel.org>
-Message-ID: <ah2tMbMLPNUQyXrE@google.com>
-Subject: Re: [PATCH 16/24] KVM: SEV: Decouple the need to sync the GHCB SA
- from the need to free the SA
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
 
-On Sat, May 30, 2026, sashiko-bot@kernel.org wrote:
-> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > index 437282f0ea943..11d46600cbdc0 100644
-> > --- a/arch/x86/kvm/svm/sev.c
-> > +++ b/arch/x86/kvm/svm/sev.c
-> > @@ -3560,20 +3560,17 @@ void sev_es_unmap_ghcb(struct vcpu_svm *svm)
-> >  	if (!svm->sev_es.ghcb)
-> >  		return;
-> >  
-> > -	if (svm->sev_es.ghcb_sa_free) {
-> > -		/*
-> > -		 * The scratch area lives outside the GHCB, so there is a
-> > -		 * buffer that, depending on the operation performed, may
-> > -		 * need to be synced, then freed.
-> > -		 */
-> > -		if (svm->sev_es.ghcb_sa_sync) {
-> > -			kvm_write_guest(svm->vcpu.kvm,
-> > -					svm->sev_es.sw_scratch,
-> > -					svm->sev_es.ghcb_sa,
-> > -					svm->sev_es.ghcb_sa_len);
-> > -			svm->sev_es.ghcb_sa_sync = false;
-> > -		}
-> > +	/*
-> > +	 * If the scratch area lives outside the GHCB, there's a buffer that,
-> > +	 * depending on the operation performed, may need to be synced.
-> > +	 */
-> > +	if (svm->sev_es.ghcb_sa_sync) {
-> > +		kvm_write_guest(svm->vcpu.kvm, svm->sev_es.sw_scratch,
-> > +				svm->sev_es.ghcb_sa, svm->sev_es.ghcb_sa_len);
-> > +		svm->sev_es.ghcb_sa_sync = false;
-> > +	}
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but can this call to
-> kvm_write_guest() trigger a warning
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Yes.
+Pre-existing issues:
+- [High] ptep_zap_softleaf_entry unconditionally calls swap_put_entries_dir=
+ect on non-present PTEs, which triggers warnings and fails when processing =
+migration entries.
+--
 
-> or cause silent guest memory corruption?
+commit 98730d8ed19b62efe3e43850095ef240bb137294
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-I suppose in theory, yes?
+KVM: s390: Avoid potentially sleeping while atomic when zapping pages
 
-> In arch/x86/kvm/x86.c:vcpu_enter_guest(), KVM disables preemption before
-> calling prepare_switch_to_guest():
-> 
-> 	preempt_disable();
-> 
-> 	kvm_x86_call(prepare_switch_to_guest)(vcpu);
-> 
-> For SEV-ES guests, this invokes svm_prepare_switch_to_guest() ->
-> sev_es_unmap_ghcb(). Within sev_es_unmap_ghcb(), if svm->sev_es.ghcb_sa_sync is
-> true, KVM calls kvm_write_guest().
-> 
-> Since kvm_write_guest() is a sleepable function and preemption is disabled,
-> this could trigger a warning in might_fault(), potentially leading to a host
-> denial of service if panic_on_warn is set.
+This commit factors out try_get_locked_pte(), which performs a spin_trylock=
+()
+instead of blocking and avoids allocating missing page tables. This new
+function is used to prevent sleeping while atomic when zapping pages.
 
-LOL, yes, for all of those production environments that run with panic_on_warn=1,
-CONFIG_DEBUG_ATOMIC_SLEEP=y, and a preemptible kernel model.
+> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+> index f8789ffcc05ca..396207163ca6c 100644
+> --- a/arch/s390/mm/gmap_helpers.c
+> +++ b/arch/s390/mm/gmap_helpers.c
+> @@ -34,6 +34,70 @@ static void ptep_zap_softleaf_entry(struct mm_struct *=
+mm, softleaf_t entry)
+>  	swap_put_entries_direct(entry, 1);
 
-We (Google) have an internal patch that we've been carrying for a while, but it's
-a hack.  It's basically:
+[Severity: High]
+This isn't a bug introduced by this patch, but does ptep_zap_softleaf_entry=
+()
+incorrectly pass non-swap softleaf entries to generic swap reclaim code?
 
-	kvm_x86_call(prepare_switch_to_guest_early)(vcpu);
+The function acts as a dispatch for non-present PTEs, handling both swap and
+migration entries, but unconditionally passes the entry to
+swap_put_entries_direct().
 
-	preempt_disable();
+Migration entries use swap types greater than MAX_SWAPFILES. When
+swap_put_entries_direct() passes this to get_swap_device(), it will fail,
+printing a 'Bad swap file entry' error to the kernel log and hitting a
+WARN_ON_ONCE(!si).
 
-	kvm_x86_call(prepare_switch_to_guest)(vcpu);
+Because this path is reachable by a guest issuing ESSA instructions on memo=
+ry
+regions undergoing host-side migration, could a malicious guest intentional=
+ly
+trigger this path to spam the host's dmesg logs on every migrated page,
+creating a host-side denial of service?
 
-Given that the external scratch area is deprecated in v2, i.e. now that we know
-it's not going to be a super common operation, I think the proper way to fix this
-would be to have kvm_sev_es_mmio() and kvm_sev_es_{ins,outs}() sync and free the
-buffer.
+>  }
+>
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260601152951.1968=
+59-1-imbrenda@linux.ibm.com?part=3D3
