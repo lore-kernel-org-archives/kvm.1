@@ -1,130 +1,170 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010025.outbound.protection.outlook.com [40.93.198.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB8430C34A
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 17:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780336207; cv=none; b=RCrxTjAN3sNaVY1qJTb6sUJ3YiaF6JE8wvNvmYY+5Y6ghlH+Oe8xlOuzPNGMzOoYu0DDPxPnS9Fi+QnlzHK7SennQPADnslqFylS2jfxNmhKtJgkVRV7eMdXQw8vbYgZgxsLfOh5yOWyuMw0o+MX2cvdjdNXF/3l6LRXoegxWUI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780336207; c=relaxed/simple;
-	bh=F2YxxOkKlKZBIWFURMEVCr5gD32ZZSGaaonobu2u2vU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fn4sFxkN3Ro5anPcmGRqY2rNWpmevnrYQ6SmiAro+teVXIJcYBWvHFxjSvHDFZkOJfji5eLxXCvE+AkAJwOuhB6JKFt2qPFq6bhbSgHpfq8l+SAi2ZYvBRNRBR2iLjp9utSkp/OzREQ7yxdDAc2aTbRCCdtlqs5sVfRlEZ67Sfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=E1NRdFXs; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7273E1CFF;
+	Mon,  1 Jun 2026 18:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780336999; cv=fail; b=rNuwM4nwksQzpcP9ju6C5WJeXvss4QYVNautvBpGC6Q0CEWpxh1MmY5hnyF1xjgV+lW2JYz23kYGYlFsv+4SGPWXoD1DbGuoNpZyEYvtuXesJYSXh7m6I2CKEgOELLjuqsk9x4EmDFmEzY2T2o/hT4//EQ0KUHfwYmaheSQyAl0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780336999; c=relaxed/simple;
+	bh=+bnjMvM1WM3z1Kh/AwPKVh32w/l0vtqgzn4Bwa4shnE=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=eXqcjGOGnWyz4vMynpe9AMwnLc+Yyzc5BCeeNTizIoekBPMoIOKiDj0rruY/zLOboNpyvMv9EsabtshJk9u4+NTts9t0gHX7JNZK95lP77HHvtli7V1XjAxS96DWWT9+eT+NW0TXaZUTniKvpq2nQxbm+n48E9dR+EVtXMxmWec=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GFts2m17; arc=fail smtp.client-ip=40.93.198.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="E1NRdFXs"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-5174a133bc3so19324941cf.1
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 10:50:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780336205; x=1780941005; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=GKY9bYORGkGGjohi6puGGa+RVGmQ7HsclerYSswNqXE=;
-        b=E1NRdFXsS+4pI/8us9aiFTiuOZ3sFgLkvWFF8gYQjhL9p10cYcKjMOBYXvv4sxqA7f
-         ydRtf4GiDXCaBMupES4/hXlcFnSXwn8RQxh0I1mEjN0nGV14FOysSjd4SISi6gWIaxtN
-         TPiNcOLVHcu6hSOjseVGwH42K7itWDC/CeqG2srydRM7E74Q3FspiyCsOsY/RzvtwJr4
-         crdmag48U2+0A5DGllHS29LIV/q7CJ6xbHawWxDVfCKDQWLVWaPQWep+8UPgcIqSBznG
-         Nq+dy69bBB05kU1MaW3d7GeDAAZH4ZYYNg9aC+8L9UN9EcB2lhR8tQKFgR+mOIGE3nyV
-         UQKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780336205; x=1780941005;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GKY9bYORGkGGjohi6puGGa+RVGmQ7HsclerYSswNqXE=;
-        b=tYaUMD4YCKCDNkFUf9HW0DJV5vHhW61sCOqTwCUtdSX98hxc1H/KN01ZZ4bD+KRMM4
-         8kG1uOQdVTkpVzrHciZGaTALsufVmKDVtYjf1+xV3qtPtSzvheiMbZmhUUf5Ih4dvwRy
-         WwpNfFgRmv9EtRR/IyrQJGsNv4eqG+en/W15YoHiPZCDQ9Ylpr+DL64El0tWxij5hRdQ
-         fVKWaG6Bv7A22ks7lshmMETrtuINSpAQQNA8xDnBbAZ9haxMXfUya+cTBv20OfI4qN5z
-         /BEn7QQB4sFoxUZBuRDQltC9+lulIaiRnEzp6M7CWH5AHeX4FycthH5s6LVDbLxgbc2f
-         9LMQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/L7E9jwG1tr9tRGpEP7xPKji/bGOjnLNtER3h8Jqgt5MEyRybQtagrR2WK651kN4b/Uxo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkGKM6lPCa1+Dzg3I0s0CtT1DzhTWNon+WNezyfSeSHn+MKnl2
-	npmf7R9edA7+ex0vwpmn8+Io8zebyky9+s4p1c5t4nbze45QbWOv8mKYZyGjihJfc1I=
-X-Gm-Gg: Acq92OGDg3lzm86aaL3QCXabyTEB6GiZU8PkP+gnzUrXa/5jvcTjO+LTIVSYNi5biky
-	JN95QHbgZRx/hMmEAv7oj5jtrzULRI9OmmlvlqzMnhkdJrwws4TwgXb6IUhe7bQrRb2kN5ulxy8
-	7dCn0hvCdiJ5J/4uOuoAHpFkxe9d6PyJtMBH8FJoOn5f2hQJcB6Io7Dc/kLRW55Db/0m/c0Es0L
-	EMu1RaOiOA7r895xaYQzsn3GmH/1cTPW+sBW5c2b3uRP0roIXIIXzpyEPbOb740DsWiii6NmW4p
-	sWqFzfo1FTQ5ttv92JAB166i/V7PkXHqAzvD0MSygfxyrcOMsf9EUhoXLhPrJtQ4AuVGNmtuufA
-	/duke2XoxEWleti7itf0/3IrNS0pfFujzs1YzrMbKFrmgMIjFoIQIuQmJvmlwWXrmH73qV08IPz
-	81j6I7v/t/eFAlbloslGmBaXqdc69lOWC91Y7U5jSeNh6o35QMa//HTpvE6ARRSpaAAxZzyz8Vm
-	Nzu2ELQ7ETl77ia
-X-Received: by 2002:a05:622a:1148:b0:50d:d1ea:65dd with SMTP id d75a77b69052e-5173a722af3mr169052191cf.14.1780336205151;
-        Mon, 01 Jun 2026 10:50:05 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51741d6a240sm60989871cf.18.2026.06.01.10.50.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 10:50:04 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wU6m4-000000027Uh-034u;
-	Mon, 01 Jun 2026 14:50:04 -0300
-Date: Mon, 1 Jun 2026 14:50:03 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Keith Busch <kbusch@kernel.org>
-Cc: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Zhiping Zhang <zhipingz@meta.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Yochai Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>
-Subject: Re: [PATCH v5 0/4] vfio/dma-buf: add TPH support for peer-to-peer
- access
-Message-ID: <20260601175003.GC2487554@ziepe.ca>
-References: <a8cd01ab-d7aa-465d-bfa3-431f78f33ee1@amd.com>
- <20260527121438.GJ2487554@ziepe.ca>
- <ff247643-73e7-44e2-b3d5-8ac0a8efb871@amd.com>
- <20260527123634.GK2487554@ziepe.ca>
- <a5ff1930-e9fb-43f5-82ab-9875d7a28421@amd.com>
- <CAH3zFs2KALuHXReLZG_uoqvBBWvBzU6rHKakmt6HBV7PZEsD=w@mail.gmail.com>
- <71302a7a-6b9f-40da-af81-b1862dbd637a@amd.com>
- <CAH3zFs036sr93duQKx613pCyOYw4t0_x_TdSza1xBCaEmqijyA@mail.gmail.com>
- <8d9bb0b7-182d-4930-b683-d5d24da6b2ab@amd.com>
- <ahn3ovmkEq-Y-LKt@kbusch-mbp>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GFts2m17"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jlmTMNNe8eEDUHMs11bts5fxxXReA+4UL8dt0TYFuLEQByDGqoUA8lyq0hTyaPcQXxptLtU6FkjFE4bCuO/icr2ni18Oxq8IlJpBsAaF9cd8DBTb2VSjsdney4/25g0UMX6fpXN0gMbpblS8vF9DrIVOEBsirvNEqSTXmpVLBGYXZVi5nANZ5e+UMzWjr/cWG+kj/X2Zdh9fWuUAJ95k+22jI50H6NInL+isE65obHT4gOxfCIBdm+cbbG7SsHyvoma6xL5IjIJppvHpmFWtCiVFODHu/dqxNSaTuCG66qyA67pq5Ib5fHkgBsBd/W6xR1CiYwV/NGVfaMQCpKxuMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xn36oogcTKrYeiVIdnmc/zehzbtdM03wJij0Rym00cQ=;
+ b=nOIsJXY2+iG8baUICTqnOM6rnDCIVwycbwBKWkPd5a7nhnT79MNkIc9dghocL5ok43+0qMLM5JIScNrnkYn2+IcsqvErKJkEbOzwIsebnHVGblRLafXQSFT9i64zVRBvSA2lJiVEAo4fIixsQqh+qXSK9vNo/0290zgdzryieVUgjPXq/io0ZI21OuxOXPfQPx28zagjDsl0IOtZRyDkmR+AR3r/O+yyBgG4E5GCDUfJCe4MUtXsz4w6I8O7z1b/q3WcTlp8iJftHGiBQc7xETCXJst2zMvVN0wpKvDK5fZ+WOcMGsLUzRsoRDeOEarmJBuhIssyBJ8EGTcqxcqjxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xn36oogcTKrYeiVIdnmc/zehzbtdM03wJij0Rym00cQ=;
+ b=GFts2m17WQ7yarGy6F3/TitbusJOsDAM14J4B45n0o6hgnFpIv2ESymXCwlShekwaqiM4wxC2/JpL93t4KsPVsfAXgu9N7YWS6u7ipDfM3fJcdK52KejUqUJtPtrpjJZ0PPg9/7iZYk0JpQNK4IMyfxi3aaS4Qc/YxQgC3OBeaw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
+ by PH7PR12MB7308.namprd12.prod.outlook.com (2603:10b6:510:20c::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
+ 18:03:14 +0000
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad%6]) with mapi id 15.21.0071.015; Mon, 1 Jun 2026
+ 18:03:14 +0000
+Message-ID: <af2d0e4a-b721-4273-9a2e-328d61421900@amd.com>
+Date: Mon, 1 Jun 2026 13:03:10 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/7] x86/sev: Add support to perform RMP optimizations
+ asynchronously
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+To: Ackerley Tng <ackerleytng@google.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+ herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ jackyli@google.com, pgonda@google.com, rientjes@google.com,
+ jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+ babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
+ darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1779133590.git.ashish.kalra@amd.com>
+ <6f1ec3d8ebcf3aaceccc099c07d0deb545dd4ab9.1779133590.git.ashish.kalra@amd.com>
+ <CAEvNRgGfyb7zvZ1u1j7YLomD+JdAxnVW36gtvNG9gxgZ80vMyQ@mail.gmail.com>
+ <8b7f6c93-ad5a-45e1-aa70-945518d29ddc@amd.com>
+Content-Language: en-US
+In-Reply-To: <8b7f6c93-ad5a-45e1-aa70-945518d29ddc@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH2PR18CA0004.namprd18.prod.outlook.com
+ (2603:10b6:610:4f::14) To BL3PR12MB9049.namprd12.prod.outlook.com
+ (2603:10b6:208:3b8::21)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ahn3ovmkEq-Y-LKt@kbusch-mbp>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|PH7PR12MB7308:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1b148a83-8f98-4138-107d-08dec0080ce3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|921020|18002099003|22082099003|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	dKv5dUAFA68BXHT2n8DrFcb8AMvwIyqjvVKfsTkDdpWAHF5MSj6Xdcr+BEmfTdCtD6Gk69QexmkkVDZDYbrMMEQrmdQl+5KYJhYQdwOj/eizwmhIWlZaIu4TlBwskZC4ppAn/9xNZo4pYDa/YeInmN9uY5YnVtU+MjEs2IiBKU6xhiy+/TY/8sWfBkNEjmCy74aEJvkoPM4johRD7rYHEv+Rd5bXClGxtR53HPWkg/wKZuAeLGFaO5+BGfDDu41EpxxGbTS+GphpQGX5rcDIXe3SiFd8Aefs807+Ba0oHrDDD7IODZIj6UQzOcE1sHf6QRpIog9vLfWqcpwzY4BdkResGKatJumyw8RVNUu94LLFCMJQwRYTRQDO7MPtNNZ7B8ZvmjJ+PZF9ZzEprNfqeWQQYETTvKXeWfzst60rbfv6LOZhFsd04DB7Mxl4Psx6knWeG2VEiTQVgSI/s4QmuPf2ZZIDB3KvSgRrXjKhq/3TzvggVIumR41e8YmdXTGC0iuoZm78Bcn1Co6XYyQR7N5XBUZkbpoWI+8XMG9ufF2OmiB5eLhZXOLosL2mvrsJ/yCMEW9qkxSpsUoZTHBMko6JOyFSpQu0TPLb9dX3+pd7qPfUQXY1speobpvXZRDLNgJIl83kax+bjoYa8NMsZgSRgl9w6B2YNWYgUTzhNdQXfN93EhS+vCS5HmN6k/W6JTiVVB62Cg2KaSCL7TG9KPdUzH3ZWFtCtrtt+z3B5T8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(921020)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UUw4NnNSbGRDQUwrR2JJb0JEMzFhSUppN3NvSjB4NzJnckpSTUVPOGZ5a3lL?=
+ =?utf-8?B?R3h0R3dsMTV0RVE0c2pVV1lCRkhwNi9lckozdERoZlZTNDFXK3Z5MzYzK2Mx?=
+ =?utf-8?B?cjJwUVRwRGdlWm92Vk1FdDdqSTdYcTRBNi94RUNZdVZERWxJTVFzc3h2RDJU?=
+ =?utf-8?B?QTFFaDU2SHY2MmJrMnphRU9wSHM0dmJHbHBNSGdvS1VTdEFRM2xPNEhoTkVp?=
+ =?utf-8?B?UEh2VUFORG5uVWk2Q3BsYVZJUVBLWkZIajEzOFJ1bzZqN2V2UC9xM0ZQZGxj?=
+ =?utf-8?B?TzRwUk10cmtUMk45aVMzMWkyTFVJTWRMOEhKZ053YmVLMjdUOEFUNklZUkdH?=
+ =?utf-8?B?WVV3YWR3cWJCZjVmbk5BZnM1cGtZVGg1V1pUQXI3Z2I1Vlh0QUV5MHErSlRp?=
+ =?utf-8?B?c2tETmxRcWNMYm5WMDZCSXc3c3d6ZVNNU0hXdTMzOVJ1RXU5YXhMM3EwWjB5?=
+ =?utf-8?B?bTlGaWVoTGwrTXdhSmZ5cEF4NWlpdzk2ODBkb3ZtdmtlRGc3MjM0QXF6VHZ6?=
+ =?utf-8?B?OHAzRW5RaldqNVFlSFZ2TE9GNktvRXU2T2Y2WDBwMm5vYzRESXhvamVGYTJB?=
+ =?utf-8?B?VVdjZ2kza0t2cXp2Si8zN1RxUzlUSFpFaUJVVUMwTnJoUk9oVy94d0RXMDJY?=
+ =?utf-8?B?UUp3bGFyeUU1Q1hVWEFQYXBGNG1RUzlKRFo4QnloZXF2TTNXSzV2VEhQbVNh?=
+ =?utf-8?B?d0RDTVdnTndOa1BxOEFhOFoxenFZM2d0SHpaeURJM3F2WVI3M1lXOFZkdlRO?=
+ =?utf-8?B?dGI3N2djYndmYS9sM0hDZnZjZ25nYThPVnRqS2J0Y2JKVCtDOXNPYXZ3Wnh4?=
+ =?utf-8?B?TVNDaGNUVElMVEdHd0tZS2R3T25SRm14aENhcGdDOW5FVXNIbzhCeitWalUy?=
+ =?utf-8?B?ZWx6b3p4WEx4UHVBd0Z6NGp5VytJMXBRY1Fub1o4TzR5WHk0b1d3SmRLbEs4?=
+ =?utf-8?B?RDUrWXZHVDNaQk5OTW03Tk05Nk0rRGhhM2lEZzY0MURVbGRlNTVXVVBjSmNE?=
+ =?utf-8?B?VTFvcmZBNWd3MU5hUUlZNWZMMWdVNFNSbklXRG5iZkxDM214aDN5dWJ6ZHNt?=
+ =?utf-8?B?aTFEcGprNVFXZWUzUW0zZ2pPdU93cS83NzBwaDlmdG5oVXNJOW16T2p0WXRD?=
+ =?utf-8?B?VDVyMklNTTR5Q2Z3a051cTV4cUxGbXVjU3JIcXJaU3grVURtTy9yNDA2RkZW?=
+ =?utf-8?B?L0FpZUxxQTVUMmsvYW5Ud2ZWTC9IZDlud3FQdFBxSGx2MmtYSkJBT0NIK2NT?=
+ =?utf-8?B?cno0akZZYlpKUlk0Z1lwUVpPczh0TmlPdS9kS09tTFJwYlA3ZWNwSTJiU25S?=
+ =?utf-8?B?TGErRm4xSnZHWVRYNFdkN00wcEFtenNhL29DVUcxYkVjcVlTMDVEU2ZFbGJm?=
+ =?utf-8?B?MWdvUUM4QXlwU2tpVndKVzlTekZzS1FveXJ2dWNqaDZ2MU9ZNk8rbEhLYUVU?=
+ =?utf-8?B?SlhjZldDeWpjZW12VjRERlFrSjVsTnUrTVlacTI2ZGhjODRYeG9iQTlIRy9J?=
+ =?utf-8?B?Wlh4RkEzZGdUbTNpVVJDUHJsWlU3UXlPZDlOZTNPRzdUc3VFdVZ0NmtQWnNB?=
+ =?utf-8?B?ajFrSnExTm1YeXRQL3ppK0lRYnA5d3N6Z1M4QWJocDBLYituUlFTRTVuNHM1?=
+ =?utf-8?B?WkpKRm1GNTdUcDZWaE43czAyYzFtd3lkQzFkbTJxRGpuZFE2SzNrelFlMGpa?=
+ =?utf-8?B?MU5IaDFJRW83bWdzc2U5dVZydk4xcDdKcUJOais2Ky9lSkJ2ajlsWERwNlJ5?=
+ =?utf-8?B?SFpUMEJRQXA5Unl3OUZDdlBtRXdqNU8vcVR0WXZhZnZLMm5Nb25QREh5Mkht?=
+ =?utf-8?B?U3FEYXl1WFQ2THU5MHZtQzZsMElobks2NFA2UVBhZEROY1FiN3AycXUySHov?=
+ =?utf-8?B?czA5c20zQVl4bjVIdFhZcnhBL1h2QVVoS0JFQUJ0Y3dEZGZ3akV0YnVTblly?=
+ =?utf-8?B?VjBrWWFzZHV1WGRocXE4UnZWTlFoMG1TeUN3TElYV2JuOFRoVi9LbHE0YkRr?=
+ =?utf-8?B?UTBQU240cnc0UThwUmh0a2VyRlFLNmtic1JpZnZYeFFEbVgyTFhBMTQxZWpB?=
+ =?utf-8?B?S0ZmZkZlMmFCUnN0cFpWSGN5OXFiUzk0aW9pWHRxMVY0OGFoOWp4bmw1ZWht?=
+ =?utf-8?B?dk1IZHF5aUZOVzlDdmtUT082VzBjVTUzbkhtU25idkxCcjBsN2xLUGFWMkkr?=
+ =?utf-8?B?VTMxTG1rUk82aHVRS3VPMTR0VDhValFyRGY2eUUyM1VPVklRM2FoTE9DSklw?=
+ =?utf-8?B?WFl5OG45TEdhL2RacncvRENYRUdoSUUrWFVBcm1ET1hDZnloalFRdEViS09w?=
+ =?utf-8?Q?FxuaLvFjWO3puU1iyz?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b148a83-8f98-4138-107d-08dec0080ce3
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 18:03:14.4290
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qCOYaF2NnaoP1/22vNy487M3y3aSV06JxtEceaCVHTqyinDg2+x/AOFIuNdY1+AOQtPlaoWmu4PF5giF65QyNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7308
 
-On Fri, May 29, 2026 at 02:31:30PM -0600, Keith Busch wrote:
-> On Fri, May 29, 2026 at 09:36:00AM +0200, Christian König wrote:
-> > On 5/29/26 08:34, Zhiping Zhang wrote:
-> > ...
-> > > There's no in-tree vendor PF driver
-> > 
-> > Well I have to admit it's a bit on the edge but this sentence is a show stopper.
-> > 
-> > DMA-buf is an in kernel interface for buffer sharing between drivers and any change to it needs an in kernel driver as justification for the added complexity.
-> > 
-> > > - the device is a Meta MTIA
-> > > accelerator managed entirely from userspace via VFIO passthrough.
-> > 
-> > When you have a complete open source driver stack which utilizes VFIO passthrough as the interface to communicate with the kernel drivers then we can eventually talk about that.
-> > 
-> > But as far as I can see without upstreaming or at least open sourcing the full stack to utilize this functionality it's a clear NAK to upstreaming this.
+
+On 5/28/2026 6:52 PM, Kalra, Ashish wrote:
+> Hello Ackerley,
+
+>>> +	/*
+>>> +	 * RMPOPT scans the RMP table, stores the result of the scan in the
+>>> +	 * reserved processor memory. The RMP scan is the most expensive
+>>> +	 * part. If a second RMPOPT occurs, it can skip the expensive scan
+>>> +	 * if they can see a cached result in the reserved processor memory.
+>>> +	 *
+>>> +	 * Do RMPOPT on one CPU alone. Then, follow that up with RMPOPT
+>>> +	 * on every other primary thread. This potentially allows the
+>>
+>> I like the leader and follower comments below, thanks! With this
+>> leader/follower setup, will the followers definitely see the cached scan
+>> results, or might the followers still potentially not benefit from the
+>> caching? If it's still only "potentially", why?
 > 
-> But the existing dmabuf for vfio-pci was accepted upstream without these
-> requirements. I see you had concerns about even that, but still Acked
-> under the same model that's propsed in this series:
+> I am verifying with the H/W architects if this is always going to be true or not,
+> will the followers always benefit from the scan results cached by the leader (first CPU)
+> or there is a possibility that the followers cannot see/access/get the cached results
+> and instead do full RMP scanning ?
 > 
->   https://lore.kernel.org/linux-pci/57b8876f-1399-4e4d-a44b-1177787aa17d@amd.com/
 
-To be fair that is quite different there isn't a proprietary userspace
-issue for that series, and there should be more users of the API when
-the GPU drivers migrate..
+Following up on this, i have checked with the H/W architects, and the feedback is that
+the: followers are "designed to" skip the scan if they see a cached result.
 
-Jason
+Thanks,
+Ashish
