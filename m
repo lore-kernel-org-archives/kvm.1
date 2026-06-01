@@ -1,187 +1,135 @@
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1068C2DF3DA
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 07:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780299665; cv=pass; b=dbGaACipkud3N5MIQ+gYUmPiA+3GJZ1onXN4GM8QZERVafdplqeqXfRU4jcSqA6TahOvYylUPwHXruPrAOzkNEV+x7GdHk5ECZrXyodBydIahHRZT1hoRXlU55AYcVeh4ENRw9SumAXe2IQtgb3vFY+v9TlnX6LNlyB7N7dgSYs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780299665; c=relaxed/simple;
-	bh=uldws4YYrDuKQMGKGb313TUyZ0lHqaMjeH0b+jr1WNk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=siNuzZLmg0dhJypus46aSpPlQHAT/W+wlyeuk+QqouvDkKfZKSyO3RHaXERB8+SA9EajzVgquaEBrEob1Eu1/keToDXcD383AWCYr2+1R+Zu1eE3HBBUPgRF0SgIAxO0td/TWZ5oRhGvK5Es6tC2VUh1SLkZjITRVuqI2C1sn5s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=jdXeoymD; arc=pass smtp.client-ip=209.85.221.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A91E341AC7;
+	Mon,  1 Jun 2026 07:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780299778; cv=none; b=jhjk0OWkuVVf9xZGYKOeFSb9JWrkVaefyIkjTi9PkgdxBURT2YqDM3pVRtuVHAzzy2ZROeCwaIhcQNOs8O+Z3yLdAVpCncZE29+W/kPPaNQF/8Y1+4O9WeEoIFzGbeHIbzFPAs3oXLoNsKIEyRliMgyvc5p7S7mDy9ghw5yoHCg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780299778; c=relaxed/simple;
+	bh=LBRASCQNybdy4by4isiOs6IW4BLbct2fZE2vZspbdHw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IzgNpXg4SzHqkEV3jy6DD1xs65JuT0TnZa9qYD3NlCqFhUOktQYQKvtFGQMkj2KGi4kzMXQPusDRA6QA+aPnSSbTtjee6efqBxpDnT9d14dyKHlr7cpDJc3XKIbfLlVZjvmMFGTqRVtYsxhg6xJH9yS5umG8Lg6NEAWbgeysW0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJ1pWFC1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="jdXeoymD"
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-59d6e44e5c8so931661e0c.2
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 00:41:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780299663; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZuuvV2sj8gQpLXaE1tQVTBp/yJ2gnhdN2Lypc3YaaZ7MQCQ0lSeHXTBFFOnQbGLu8q
-         otRWVMiwqB21St+X1yLRbECJam+VtVzuQDJO7/Egj/OjxMlhdtcgQ7fJCRMtxVsOHg6J
-         ARoibHAkFaM9icLr5RPgN4zwivMsj3L4DW56dT7Uy9gyI3ABT+YyY6gncAE8Gqqh4uSN
-         mp0d2IbPIB3MR1CFpFAsO5ZLrQzka+6VH8C+Q+IHkwRmtZqUp5JMKHLkJSfOMRkFMcTx
-         mCLCNuJb3Yf/gUQPZPOIzcMZS+Gu3t13T3SOM/u/yaIRoS5o8D4dYDfgrAVtkg8ZxftB
-         1xtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XnpovSeu5LTyBOUlAh1dxONh9WzZ8VZmHp/ieSTt+w0=;
-        fh=fItrUtV5UsY1KSNx1ZNnzv3miYMbODbRRQWQ18AP5Zc=;
-        b=QXTnEwz38Ob7WqucvunWyH09DHtcBvg5YAp/erJ2FEpfDPhdRsHGh4s/YEpqyydtN8
-         goKM6f5o2rdgIu3j7OMYxs5GVlmKOsyHKsf5ftyW+8mNPtK1SftftNFGIwKSB/SNDb2r
-         ehEApyKJkRKTONH4kkvRscii4U+ma/TCBodP/YcZxTSI0otGgsMX7zAZDk5btvHesZYU
-         JEC6bbz5jgAoU3KM333WKVK+qM0aopqG0ZZCwvQ6C5f/9hjNS3b0Ca+QlS2zHZKKQDmL
-         gAkIrP3FoV8hhZE0MkscqLHnsNRV7vs/onqXzhd3HeT6YZwA3tMlmbiEGelYq1A/n2Ub
-         HtwQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1780299663; x=1780904463; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XnpovSeu5LTyBOUlAh1dxONh9WzZ8VZmHp/ieSTt+w0=;
-        b=jdXeoymDMC5TAhBxaXY+HKv+QegAndudLUIU+stmJBwTZfprCYynmG7zfHLas3UWYc
-         R+sSSFRe58bwFnBCZqEhw3rSHLwc+Rl3TKh9g7B8ISh6fLnFkvJVVpoIbuF4WHgv/Jn7
-         p5Up8lHPLZfImZLg9cu3sNblhME0SgMs/dmXzmUJh+/Vz55n+0n20aIWnTpzCXwUK9Oo
-         xYN3n/RNfTKv+W8WayuNxR9PmHZ6htDCPHADlBC6txDcuXH4Nr3SNBhKpKo1JPIunjpO
-         wA9Zyxe02yLaKoR35uIFDJ9gLufOQ1lVIkF8Ry8IcQ0FbwO3IoveeTqY+6ulkf5fBnss
-         Pu3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780299663; x=1780904463;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XnpovSeu5LTyBOUlAh1dxONh9WzZ8VZmHp/ieSTt+w0=;
-        b=KMFgFNEpFJuiThBzRWRpLNiaBKl3UsquCqIvz+k4cWuDHi40emZpw9SXWA+dF5I7Lt
-         02BlJBhc9hqxLewvp5Al+zDEh/Ncc0HGLGf+ui/PMpksNOS3b675zAxrhyXo2pwLMjq6
-         1yo9v9ebvfnlScMgwUzJx0zLN63FPHwR8K35R3UBLOvlSinmMs9cl2fJvWfD0mYl5Xnm
-         VpMH4fILM755hRRxdPIBnhj2x+6xAYGbyGEAMmKGoiLEJeU1y4BJh40yywvK9fO/gjMz
-         kRf9NczLRQWICOHGAsVQn8yYq3xM/w4TBhw4A33icFhxlDNXhqNbMxVIuZZsciG8POFG
-         L8Lg==
-X-Gm-Message-State: AOJu0Yw5ZNZfPUGb3xJ9IwbqB+RpKErFbwAO3h9PZ9KPzruDlvsaI6WT
-	2Mi9ZeO13ZqfMQ/0Oss0fTj93XSdJ319Iy4DuZXFG7i97zgvoPi5zqRO980jKOh8aHbL7kJuTQC
-	vsq5KAIHtHcAxyY31eVvSKsId+HXNxXP9W3eGOe9fIBWG/438IuBLRts=
-X-Gm-Gg: Acq92OEpI6lEQLknZlZMq9FAXNrcisU6HsFQBHSKlenjgXJ+aAJNFMiBkAcC0sm2RCC
-	GTv+rIMO6+ovFT1VO9FS3ZHkZPvPkxImwXN/IISiBGvWldgo2d6YY/ewKJiadovkw/vqRQbEpJq
-	DEheBIoc9Gjhq/pFYS+YSMhni8C06lLnpSxr+JPV+wC1rViiUZ0EmfyGo7e9FLXYF2+9ti2umgM
-	p5jedn1S2Vm+8K8XfX8ReBHSj5gAMSmyaz8oOuFAJ8F2Sky8sY4Ifq4AfJdNGui3FPb8SAVxnvm
-	PEKyuMaR7hrtl4EE/gdW
-X-Received: by 2002:a05:6122:4f9e:b0:55b:d85:5073 with SMTP id
- 71dfb90a1353d-59bf1653ac0mr3993732e0c.4.1780299663078; Mon, 01 Jun 2026
- 00:41:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJ1pWFC1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342CD1F00893;
+	Mon,  1 Jun 2026 07:42:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780299777;
+	bh=G6E/427vKjNMrNFnfzJ5w/oioAQsHShjLOWHUrX6Zb8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RJ1pWFC19TPXp/omPArHxv5x2qOq16KOXdKlqOHHweNUSE0B0kXCuHNmYIa29VeAv
+	 x1xukkrYT0vEFqTjKybI9CMv+G5k3YQfnYB7JlHdtGpKnzVF72J3cklM5PUgBuWYPT
+	 Zb85JfREbCwhnT+mX5TVtU5r6x789OLRNYsvMsTkvBSMq9BEmXMyFMwfSMfWkTM+YD
+	 zJfWmnK/xP4OSww3ENvvdeuDgg8mYVJjxGxRuRKS8rHEcyubNuUc6uwlcM8SfIhTRP
+	 fN0lzfo7D0m4HnqdibY2CcGk5s9ocXceGp/B64TNx44+GE5hErGZbYDwEUb79kCi5M
+	 xO2iV1myeeJyw==
+Date: Mon, 1 Jun 2026 08:42:48 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org, 
+	peterx@redhat.com, david@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, kernel-team@meta.com, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
+Message-ID: <ah03yn_FLO_ca6eE@lucifer>
+References: <20260526130509.2748441-1-kirill@shutemov.name>
+ <20260526130509.2748441-5-kirill@shutemov.name>
+ <ahmQvfNk7S4F0LBj@lucifer>
+ <ahsVyQZ5UXhJLct2@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260528-kvm-get_reg_list-v2-v3-3-170969a8599f@sifive.com> <20260529081023.AE75B1F00893@smtp.kernel.org>
-In-Reply-To: <20260529081023.AE75B1F00893@smtp.kernel.org>
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Date: Mon, 1 Jun 2026 15:40:51 +0800
-X-Gm-Features: AVHnY4LUldgfv3tioL_N-gmyL6cy_L6milyQSwqu74UtlVs6iKLMpqgiXSjgX20
-Message-ID: <CAMWQL2iGu4VPBsJ5dFJp2O8hjzxxOvuLTzP76_B=7vAGnyyoJg@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] KVM: riscv: selftests: Split SBI FWFT into
- separate feature-specific sublists
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahsVyQZ5UXhJLct2@kernel.org>
 
-On Fri, May 29, 2026 at 4:10=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Medium] FWFT pointer masking registers are incorrectly handled in chec=
-k_supported_reg() instead of filter_reg(), leading to dead code and potenti=
-al false positive test failures.
-> --
->
-> commit c0f0519ecd25fb69f07c9b166dfd4ccf59ef2905
-> Author: Yong-Xuan Wang <yongxuan.wang@sifive.com>
->
-> KVM: riscv: selftests: Split SBI FWFT into separate feature-specific subl=
-ists
->
-> This commit divides the monolithic SBI FWFT register list into separate
-> sublists to test features independently. It adds check_supported_reg() an=
-d
-> check_fwft_feature() to validate register and feature availability at
-> runtime. This prevents tests from failing when only a subset of FWFT
-> features or their dependent ISA extensions are available on a given
-> platform.
->
-> > diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/t=
-esting/selftests/kvm/riscv/get-reg-list.c
-> > index 5033c09201ef1..7ae55fbad29aa 100644
-> > --- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
-> > +++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-> > @@ -27,6 +27,23 @@ enum {
-> >  };
+On Sat, May 30, 2026 at 07:52:25PM +0300, Mike Rapoport wrote:
+> On Fri, May 29, 2026 at 03:00:14PM +0100, Lorenzo Stoakes wrote:
+> > On Tue, May 26, 2026 at 02:04:52PM +0100, Kiryl Shutsemau wrote:
+> > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > >
+> > > vma_flags_t is one unsigned long on 32-bit -- NUM_VMA_FLAG_BITS ==
+> > > BITS_PER_LONG by design, so VM_xxx-declared bits sit in the first
+> > > word and hit the single-long fast path. But the bit enum declares
+> > > some bits unconditionally above BITS_PER_LONG (VMA_UFFD_MINOR_BIT
+> > > == 41 today, with VM_UFFD_MINOR == VM_NONE on 32-bit so no VMA
+> > > actually carries the bit).
 > >
-> >  static bool isa_ext_cant_disable[KVM_RISCV_ISA_EXT_MAX];
-> > +static bool isa_ext_enabled[KVM_RISCV_ISA_EXT_MAX];
-> > +static bool sbi_ext_enabled[KVM_RISCV_SBI_EXT_MAX];
-> > +
-> > +bool check_supported_reg(struct kvm_vcpu *vcpu, __u64 reg)
-> > +{
-> > +     switch (reg & ~REG_MASK) {
-> > +     case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_R=
-ISCV_SBI_FWFT_REG(pointer_masking.enable):
-> > +     case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_R=
-ISCV_SBI_FWFT_REG(pointer_masking.flags):
-> > +     case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_R=
-ISCV_SBI_FWFT_REG(pointer_masking.value):
-> > +             return sbi_ext_enabled[KVM_RISCV_SBI_EXT_FWFT] &&
-> > +                    isa_ext_enabled[KVM_RISCV_ISA_EXT_SMNPM];
-> > +     default:
-> > +             break;
-> > +     }
-> > +
-> > +     return true;
-> > +}
+> > Yeah ugh.
+> >
+> > > Passing such a bit to mk_vma_flags() goes through __set_bit(41,
+> > > &one_long) and writes one word past the end. The compiler folds
+> > > the OOB store with wraparound (1UL << (41 % 32) == bit 9) into
+> > > the first word. Bit 9 is already in __VMA_UFFD_FLAGS so the mask
+> > > happens to come out right today, but any high-numbered bit whose
+> >
+> > That is... helpful :) but not great that this is the situation, an
+> > oversight, clearly! How I hate 32-bit kernels :)
+> >
+> > > mod-BITS_PER_LONG position is otherwise unused would silently OR
+> > > an extra bit into the mask.
+> > >
+> > > Add VMA_NO_BIT and have DECLARE_VMA_BIT() resolve any bitnum out
+> > > of range to it. vma_flags_set_flag() drops negative bit values.
+> > > The ternary collapses at compile time, the runtime check folds
+> > > away when the bit is in range, and the common path is unchanged.
+> >
+> > Hmm are you sure it does?
+> >
+> > A key design goal was that mk_vma_flags() generates compile-time constants
+> > the same as if the bitmap were constructed independently.
+> >
+> > This surely must generate code? Or at least runs a significant risk of it?
 >
-> [Severity: Medium]
-> Should these pointer masking registers be handled in filter_reg() instead=
- of
-> here?
+> ...
 >
-> When testing the config_sbi_fwft_pointer_masking sublist,
-> check_fwft_feature() iterates over the expected registers and invokes
-> __TEST_REQUIRE(!rc, ...) which skips the test if any are missing. This
-> means the test exits early, and the core loop that calls
-> check_supported_reg() for missing registers is never reached.
+> > A simple solution that doesn't require change to the core is to just uglify
+> > userfaultfd_k.h a bit with:
+> >
+> > #ifdef HAVE_ARCH_USERFAULTFD_MINOR
+> > #define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT, \
+> > 				      VMA_UFFD_MINOR_BIT)
+> > #else
+> > #define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT)
+> > #endif
+> >
+> > But of course that becomes much more horrible with your changes...
+> >
+> > Another alternative, which I used for VMA_DROPPABLE is to add something
+> > like this in mm.h:
+> >
+> > #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
+> > #define VM_UFFD_MINOR	INIT_VM_FLAG(UFFD_MINOR)
+> > +define VMA_UFFD_MINOR	mk_vma_flags(VMA_UFFD_MINOR_BIT)
+> > #else
+> > #define VM_UFFD_MINOR	VM_NONE
+> > +define VMA_UFFD_MINOR	EMPTY_VMA_FLAGS
+> > #endif
+>
+> I have a PoC of yet another alternative:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=uffd/vm-flags
+>
+> The idea there is to keep a single VMA flag, VMA_UFFD_BIT/VM_UFFD and move
+> all the rest into what's now struct vm_userfaultfd_ctx.
 
-Oh yes the check_supported_reg() can be removed now.
+*Gives Mike a big kiss*
 
->
-> Moving this logic to filter_reg() also seems necessary to avoid false
-> positive test failures. If a user runs the config_sbi_fwft_misaligned_del=
-eg
-> configuration on a host where the SMNPM ISA extension cannot be disabled
-> (isa_ext_cant_disable[SMNPM] =3D=3D true), both FWFT and SMNPM extensions=
- will
-> be active. KVM will naturally expose the pointer_masking registers in thi=
-s
-> state.
->
-> Because they are not in the misaligned_deleg sublist and are omitted from
-> filter_reg(), will the test incorrectly flag them as unexpected new
-> registers and fail?
+YES PLEASE!
 
-The SMNPM ISA extension can be disabled for a VM, so the
-isa_ext_cant_disable[SMNPM] won't be true. Both FWFT and SMNPM
-extensions will be active only when testing the new
-config_sbi_fwft_pointer_masking sublist.
-
->
-> [ ... ]
 >
 > --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528-kvm-get_=
-reg_list-v2-v3-0-170969a8599f@sifive.com?part=3D3
+> Sincerely yours,
+> Mike.
+
+Thanks, Lorenzo
