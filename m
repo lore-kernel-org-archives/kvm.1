@@ -1,224 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011006.outbound.protection.outlook.com [52.101.62.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDF53A1CD
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 10:30:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780309861; cv=none; b=Eqw4wn95mUZthrqyTJN6u7OmdjcFh/uO36Dt31Umxs+HZqu3qY8DyKHQnYc3P1UMCwNwtTa1HoJhTm8n7oA44hP/K4DCFvf8oFkDiyGfW+TwRWtCbTkIUMqO33lyRL703xyYagkE6E0C2MwOQFJ7NMsRT8QBvGQFZS2YdNh6WKE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780309861; c=relaxed/simple;
-	bh=0umK9uFLu6dq3bQOTT9fr2Uc6mrpgWJpIHDI1apPumo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=utpJtU2XsWJ+dlKf5YlbOQVOYkT3VEiLF6A4gogW3IUYceotMCK+ZO0n4ZXxWxQKNNGuXLZWbLUZZ6y+bDyDfW9ludG0B8zvM4iOtS6dNj0Q6iMhC+IuK34jBsZGAT5nlpQcAXDTdS8VM9BPXD3wurwPWqpg0w8wyREwxKMsooA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j4gfSNUI; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15932392823;
+	Mon,  1 Jun 2026 10:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780310470; cv=fail; b=OAxpOSxJuKcVySywuceIQ/xVDiQp9iGT2OafkQUkUIjq3SwtYtbEsFrN4dUUnYM/XjBXMUGBL5ij+q4aW1rBa9ykZOZkBDKEolEtiCO43Mmi69wgREF/2WEciGAUWBYiyrTAGmNAV1Itvg/lvnu0/YX/mV/68Bangb5VrxACVo0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780310470; c=relaxed/simple;
+	bh=gcqMrjxS/37Jcf+m7U97YpNT3/C3gjJgKdoFLfPCTAw=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NF/5kSNZnrVr+2PkvmySuG9/kGsc7AdROaI7pFvtQdc0XNYQ3DOZbXzC6TpR/Pc3LoktFkciCZ3eVqdTo4NCboeCJI1kK+KYsWQ4T2PKnpPiXiibPZWoUbk4hjcyNccbG+ImK9ByQJlJiOf/SWFsxFE920BglbRXt1LdKcNyneE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PMbaULee; arc=fail smtp.client-ip=52.101.62.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j4gfSNUI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60FCF1F00893;
-	Mon,  1 Jun 2026 10:30:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780309859;
-	bh=VEKauowzjjB93y/JmGAoaDVAbRF9GbLv2mPDhd7aDZQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j4gfSNUI7Y0k+AJxUtyIfcEwUuIQZSrlRSfZ6BB+Jr8a4tDGpYYfM2dD7YyxBRrog
-	 cq5RLIz3OX/q4HIrqD0QYTCMlsPWc2UrhvWg/MRdRg3UxSqrkn+kgHMbHlD3ETEzRA
-	 pC/25Ojd73xizDGnqq6l35IZAvZgDyxV47P9kd2vogGedLssra6cG6DH9vqJna3Xp3
-	 52oRfmTJ7x6xrMNPfFwE1rNFdzAEfcj+Me8Mw/VKo4+siFRid8GRxzchRiVq5ZBZJu
-	 fx+OhaqylIKrH06t1Rav6Id04c2nWlz63SUb9ZKCEhGGZAmFAV6hcUOwFGFwBO3VWw
-	 vJlgWLOpKMTaQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 6/7] RISC-V: KVM: Add support for control-flow
- integrity FWFT features
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Inochi Amaoto" <inochiama@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260601084336.2601675-7-inochiama@gmail.com>
-References: <20260601084336.2601675-7-inochiama@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 01 Jun 2026 10:30:58 +0000
-Message-Id: <20260601103059.60FCF1F00893@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PMbaULee"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=seliv3gXzHqtcJ2yj7FKvggMxCZsBcFBqj2Kf+JApCckp2Qd3jED3B5DmApBpiOJ743d5DscR29o76Jf3RFiHcVBmHBgOcHJjxo5h0yxO15hFTXOIk38jMjbUqRxi9Ff4qqX3hfSCceIOnTLqtGqebrki6vSP/EQ0aTO80jmCu50Rnts4kpYefTa/l0XgGre7JvJTMmBaBJXed515uEBLXOvVvQ12e1bcA7mMq2sB88dIz+ckKSxBmp4BU9zpKPPNC0Md3cl9QZURCgBYaQDA5xtrwVEJb6USp0Kxb2e+IGy9gaxqzL6h0MH6RHKIsprKUbc+/uH54GdwUNKmGs4+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=el4RK+7qcGwTehOhzw7cH04JaMQx27gX1w20bw5pWPw=;
+ b=rhr8LtpFCwlF78J3Z2eheRNcmG2XpytYVvYoH2dwpALhjfyiufpvA3CJjjM0cGinxkEoeKdoWBQ5XE6MYs23VthLJqc75m5fs0Ojc36ek+fPg/2Vjek5zi8QwoJCMILuI7EoMjiSaiGYMe6aqfS+guNbM84UVGjyc0Q+OuU+qR0+0UIA7wiHPBd1sbsjEc0C+0lEHlOOMrK2LykihqIb4zo4cOCB6YvMMr/Wjg7oFSfbi2mYhZZKlIAZcAQxBXQeAmbvDCzK7h078fEFcJsrr5/vypdrUrFm9nOvgk/H8yIZ4vqkjWlMt488buusNLCJLqxQiabK/2SoWcdgOa9sQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=infradead.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=el4RK+7qcGwTehOhzw7cH04JaMQx27gX1w20bw5pWPw=;
+ b=PMbaULeeBtXP1P53XIKAJwXezvyxtOL9wWStzdm7xh8wvEuoKJAEOjYzkEZ9K1kNsXkgIWlRVryprvUvN6CJn932SDBPSxqELAdvcFlbAg3pWzBHpgqzKmV1rqsIMQSpfQLigU9RiBswOR7+FMd2r6rJgPt2GSFdAZFC21Nqb5Q=
+Received: from BL1PR13CA0285.namprd13.prod.outlook.com (2603:10b6:208:2bc::20)
+ by MW6PR12MB8952.namprd12.prod.outlook.com (2603:10b6:303:246::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Mon, 1 Jun 2026
+ 10:41:01 +0000
+Received: from BL6PEPF0001AB72.namprd02.prod.outlook.com
+ (2603:10b6:208:2bc:cafe::64) by BL1PR13CA0285.outlook.office365.com
+ (2603:10b6:208:2bc::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.6 via Frontend Transport; Mon, 1
+ Jun 2026 10:41:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF0001AB72.mail.protection.outlook.com (10.167.242.165) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.92.5 via Frontend Transport; Mon, 1 Jun 2026 10:41:00 +0000
+Received: from BLR-L1-NDADHANI (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 1 Jun
+ 2026 05:40:55 -0500
+From: Nikunj A Dadhania <nikunj@amd.com>
+To: Sean Christopherson <seanjc@google.com>, Andrew Cooper
+	<andrew.cooper3@citrix.com>
+CC: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>, "Saenz
+ Julienne, Nicolas" <nsaenz@amazon.es>, Maciej Wieczor-Retman
+	<maciej.wieczor-retman@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+	Shivansh Dhiman <shivansh.dhiman@amd.com>, Neeraj Upadhyay
+	<Neeraj.Upadhyay@amd.com>
+Subject: Re: [PATCH] KVM: SVM: Always intercept ICEBP, add INT1 selftests
+In-Reply-To: <afy2h3RxiKSBh_Ym@google.com>
+References: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
+ <afycwi4KT6xrQhMX@google.com>
+ <beff5bd9-ae7c-4f2e-a718-7c8e92e78e4e@citrix.com>
+ <afysu56g2dTFla6-@google.com> <afy2h3RxiKSBh_Ym@google.com>
+Date: Mon, 1 Jun 2026 10:40:52 +0000
+Message-ID: <85o6hu4k7f.fsf@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB72:EE_|MW6PR12MB8952:EE_
+X-MS-Office365-Filtering-Correlation-Id: 82a28917-381d-4cba-6ee0-08debfca45d4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|376014|7416014|82310400026|22082099003|18002099003|11063799006|4143699003|3023799007|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	KWrDt6GNCJC46AmP7RviVq89pq9V9VYZE/ynOoXXydEnm4rlcxVsMG7F0AWFwS6vsTYFzKs0bXOQFL28rY1I3IEp8Z9aoHgHp9C1coGslVZobtyaTUS86fWTjQPjCeLw4614uIXbhywGIEdRL55DHh2xnyJh/LBbuwoxzJgQcHLC5H+sM5aKEyDU3jB1HbHBc/gImDuiUgqvHuZlYfGHAUmLVZf6+pe+FiIpHqgJWvXgk2kpyoPDoLr0LjQhrMeXzqddmrzYcyplCk0mv2+2FH97IAIQN1GtobIH9wljqG1mrNgn9vTFkvDDS7ozqNpsmubiTBYqfYVml+kb68R1yeOc/28QRcOcwI+tlb6qeCg95PEAENHiktO2ahT6+Vfomy1lRdYDmJQ7sCNZlB0T+uLv0k49Vqk63TMPttd0LkM3SXCSvnWCHp76vUZXkC6UJkF4nIpUXzQY1IDoGI99TkYKOag+Xy0E+liXSm2dflDi1z48nTz55pfK3btNngSYHWuywxxAuwetVd/w6AzexhCICchPK/zrjaQtZK2+TzdD53pTSXBdrwbVKxCogqpxdRabWdFW61j1JJOw8d23hcoajjMnU+x595JQqYtpsaMGIVVBC32+JsedRIXM2EOynKB3YywpSD3N3FBNoewcykxqCDpJN3gVpp1ffdtGyQvpHNWlNlxRwpsfMWOUw9yDAiXUH0HTKVMYVQ1tx0g+UFm5KWyAMUfzVKazVVio2vc=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(7416014)(82310400026)(22082099003)(18002099003)(11063799006)(4143699003)(3023799007)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	sChymLikBxSrDxGuCIHnd8JoJisZSfTergaHGzldq6TCf8ptyMnvUb+DcypV+2kCG6ZGWJjpwnMOmeklTDYRt8i1y+D+3EJEeU0QKJR773hqNdNcd4IUk+SFOGMCyFN5dWyq6KjTMjaVgtqW28AsIEqS2+r1t6NdXPjrso/Kb98BmKf/NUfNpE9tLxZ3CxEgGQkMQQyrUdjfEAQINONFVrEhcY5cvaxmiBiXBxPM/JrTaW1bSOyGmTKgbwHj3gCi+ISypFmaepEair4/FYDNkAaJrmjJvUcJZimxbsGxPWKuPHdRCNstDBSM8VbopeCNy1LSkpJUTtTWsQXeXXZsw6AuRpEuY89Sz4DKciZDNZYE3lGh5dErQK9OsIK3XqTnaQKLB+hr5+stHrSl7AMo7fHZufkFc6g2wkTm/zHcjxpQVnMLISRlDauBmO0dnT/a
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 10:41:00.8591
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82a28917-381d-4cba-6ee0-08debfca45d4
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB72.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8952
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
-- [High] KVM fails to context-switch the shadow stack pointer (CSR_SSP) whe=
-n exposing ZICFISS to the guest.
-- [High] Direct write to `CSR_HENVCFG` bypasses nested acceleration (NaCl) =
-shared memory synchronization.
-- [High] The `unsigned long flag` argument in `henvcfg` helpers zero-extend=
-s and corrupts the upper 32 bits on RV32, and silently truncates 64-bit fla=
-gs.
-- [High] Guest can bypass VMM ISA restrictions to enable FWFT features due =
-to caching at vCPU creation.
-- [High] Modifying FWFT features via KVM_SET_ONE_REG updates `vcpu->arch.cf=
-g.henvcfg` but fails to mark the CSR as dirty, leading to stale hardware st=
-ate execution.
-- [Medium] SBI FWFT flags are committed even if the feature value set opera=
-tion fails.
---
+Sean Christopherson <seanjc@google.com> writes:
 
-commit c2d9c5584a3fada7da09588693c511ec3fdbbcf1
-Author: Inochi Amaoto <inochiama@gmail.com>
-Subject: RISC-V: KVM: Add support for control-flow integrity FWFT features
+> +AMD folks
+>
+> On Thu, May 07, 2026, Sean Christopherson wrote:
+>> On Thu, May 07, 2026, Andrew Cooper wrote:
+>> > On 07/05/2026 3:08 pm, Sean Christopherson wrote:
+>> > > On Thu, May 07, 2026, David Woodhouse wrote:
+>> > >> From: David Woodhouse <dwmw@amazon.co.uk>
+>> > >>
+>> > >> ICEBP (INT1, opcode 0xF1) generates a #DB that is architecturally a
+>> > >> trap, but on SVM it was not always intercepted. Unconditionally
+>> > >> intercept ICEBP on SVM to match VMX behaviour and ensure correct
+>> > >> event delivery semantics.
+>> > >>
+>> > >> Add two selftests exercising ICEBP:
+>> > >>
+>> > >>  - int1_ept_test: verifies that ICEBP works correctly when the
+>> > >>    exception stack page is not present (EPT/NPT fault during #DB
+>> > >>    delivery). The IST stack is evicted via MADV_DONTNEED before
+>> > >>    executing INT1.
+>> > >>
+>> > >>  - int1_task_gate_test: verifies ICEBP delivery through a 32-bit
+>> > >>    task gate, exercising the legacy task-switch path for #DB.
+>> > >>
+>> > >> Tested on Intel Sapphire Rapids and AMD Genoa. Without the SVM fix,
+>> > >> int1_task_gate_test fails on AMD with EIP pointing at ICEBP instead
+>> > >> of after it. With the fix, both tests pass on both platforms.
+>> > > Hmm, but KVM unconditionally intercepts task switches.  Is this effe=
+ctively working
+>> > > around a bug in task_switch_interception()?
+>> >=20
+>> > Not really.=C2=A0 It's a bug/misfeature in AMD CPUs.
+>> >=20
+>> > When you get TASK_SWITCH (which always has fault semantics), you look =
+at
+>> > the vectoring event type to decide whether it was logically caused by a
+>> > trap, and therefore whether to move %rip forwards before entering the
+>> > new task.
+>> >=20
+>> > AMD CPUs don't distinguish instruction-induced #DBs (i.e. ICEBP) from
+>> > exception-induced #DBs (all others), and also don't report an
+>> > instruction length for an ICEBP-induced TASK_SWITCH.
+>>=20
+>> Heh, that explains why I couldn't find an equivalent of INTR_TYPE_PRIV_S=
+W_EXCEPTION
+>> in the SVM code.
+>
+> Dragging in a comment/concern Andrew raised offlist.  If AMD doesn't prov=
+ide or
+> *allow* the equivalent of INTR_TYPE_PRIV_SW_EXCEPTION, i.e. type 5, then =
+what
+> happens when KVM needs to inject an INT1 #DB with FRED enabled?
 
-This commit exposes the Zicfilp and Zicfiss control-flow integrity features
-to guests through the SBI FWFT interface. It also allows the VMM to block
-access to these features by disabling the corresponding ISA extensions.
+I'm checking internally to get clarification on this. Will follow up
+once I have more details.
 
-> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
-t.c
-> index 375269e43c13b..278eb95b97de4 100644
-> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
-> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
-> @@ -163,6 +163,58 @@ static long kvm_sbi_fwft_get_misaligned_delegation(s=
-truct kvm_vcpu *vcpu,
-[ ... ]
-> +static bool kvm_sbi_fwft_landing_pad_supported(struct kvm_vcpu *vcpu)
-> +{
-> +	return riscv_isa_extension_available(vcpu->arch.isa, ZICFILP);
-> +}
+Regards,
+Nikunj
 
-[Severity: High]
-Does checking the ISA extension at vCPU creation allow the guest to bypass =
-VMM
-restrictions?
-
-The FWFT framework caches feature availability during kvm_sbi_ext_fwft_init=
-()
-which executes at vCPU creation. At that time, vcpu->arch.isa typically
-contains all default host-supported extensions.
-
-If the VMM later configures the VM by disabling unsupported extensions via
-KVM_SET_ONE_REG, the guest can still successfully enable the hardware featu=
-res
-because the FWFT layer permanently cached conf->supported as true.
-
-[ ... ]
-> +static long kvm_sbi_fwft_set_landing_pad(struct kvm_vcpu *vcpu,
-> +					 struct kvm_sbi_fwft_config *conf,
-> +					 bool one_reg_access, unsigned long value)
-> +{
-> +	return kvm_sbi_fwft_env_flag_set_helper(vcpu, conf, one_reg_access,
-> +						value, ENVCFG_LPE);
-> +}
-
-[Severity: High]
-Can passing ENVCFG_LPE to this helper cause truncation or zero-extension
-issues?
-
-Looking at kvm_sbi_fwft_env_flag_set_helper(), the flag parameter is typed =
-as
-unsigned long. On RV32, unsigned long is 32 bits, which would truncate 64-b=
-it
-flags.
-
-Furthermore, when clearing a flag via cfg->henvcfg &=3D ~flag, if flag is 0,
-~flag evaluates to the 32-bit 0xFFFFFFFF. Because cfg->henvcfg is a u64,
-the 32-bit mask is zero-extended to 0x00000000FFFFFFFFULL.
-
-This zero-extension permanently wipes the entire upper 32 bits of henvcfg a=
-nd
-corrupts hardware states like Svpbmt and Zicbom on 32-bit KVM hosts.
-
-[Severity: High]
-Does modifying FWFT features via KVM_SET_ONE_REG lead to stale hardware sta=
-te?
-
-When userspace modifies an FWFT feature via KVM_SET_ONE_REG, one_reg_access=
- is
-true. In kvm_sbi_fwft_env_flag_set_helper():
-
-    if (!one_reg_access)
-        csr_write(CSR_HENVCFG, vcpu->arch.cfg.henvcfg);
-
-This updates the in-memory vcpu->arch.cfg.henvcfg but skips the immediate C=
-SR
-write. However, it fails to set vcpu->arch.csr_dirty =3D true.
-
-When vcpu_load() later executes, it evaluates !vcpu->arch.csr_dirty and ski=
-ps
-kvm_riscv_vcpu_config_load(), causing the guest to run with stale hardware
-configurations.
-
-[Severity: High]
-Does writing directly to CSR_HENVCFG bypass nested acceleration?
-
-When one_reg_access is false, kvm_sbi_fwft_env_flag_set_helper() directly
-writes the hardware CSR using csr_write(CSR_HENVCFG, ...).
-
-When KVM runs as an L1 nested hypervisor with RISC-V nested acceleration
-enabled, hardware CSRs must be synchronized with the L0 hypervisor via a
-shared memory region.
-
-Bypassing the ncsr_write() wrapper fails to set the dirty bit in the shared
-memory bitmap, meaning the L0 hypervisor remains unaware of the change and
-will overwrite the hardware CSR with a stale value on the next nested VM en=
-try.
-
-[ ... ]
-> +static bool kvm_sbi_fwft_shadow_stack_supported(struct kvm_vcpu *vcpu)
-> +{
-> +	return riscv_isa_extension_available(vcpu->arch.isa, ZICFISS);
-> +}
-
-[Severity: High]
-Does exposing ZICFISS without context-switching CSR_SSP leak guest state in=
-to
-the host?
-
-When a guest enables and uses the shadow stack, it writes to the shadow sta=
-ck
-pointer CSR_SSP. KVM does not currently save or restore CSR_SSP during VCPU
-context switches.
-
-Since U-mode CSRs are not automatically banked by the RISC-V hardware betwe=
-en
-host and guest execution modes, the guest's shadow stack pointer remains ac=
-tive
-when returning to the host.
-
-When the host's userspace resumes execution, it does so with a corrupted sh=
-adow
-stack pointer, leading to shadow stack violations and a denial-of-service
-crash.
-
-[ ... ]
-> @@ -288,6 +340,24 @@ static const struct kvm_sbi_fwft_feature features[] =
-=3D {
->  		.set =3D kvm_sbi_fwft_set_misaligned_delegation,
->  		.get =3D kvm_sbi_fwft_get_misaligned_delegation,
->  	},
-> +	{
-> +		.id =3D SBI_FWFT_LANDING_PAD,
-> +		.first_reg_num =3D offsetof(struct kvm_riscv_sbi_fwft, landing_pad.ena=
-ble) /
-> +				 sizeof(unsigned long),
-> +		.supported =3D kvm_sbi_fwft_landing_pad_supported,
-> +		.reset =3D kvm_sbi_fwft_reset_landing_pad,
-> +		.set =3D kvm_sbi_fwft_set_landing_pad,
-> +		.get =3D kvm_sbi_fwft_get_landing_pad,
-> +	},
-
-[Severity: Medium]
-Are SBI FWFT flags committed even if the set operation fails?
-
-Looking at kvm_sbi_fwft_set(), the flags are assigned before the
-feature-specific set callback is executed:
-
-    conf->flags =3D flags;
-    return conf->feature->set(vcpu, conf, false, value);
-
-If the set callback fails and returns an error like SBI_ERR_INVALID_PARAM,
-the flags are not rolled back.
-
-If the guest request included SBI_FWFT_SET_FLAG_LOCK, the feature becomes
-permanently locked into a stale state, preventing subsequent corrections.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260601084336.2601=
-675-1-inochiama@gmail.com?part=3D6
