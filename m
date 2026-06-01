@@ -1,231 +1,193 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE85348C51;
-	Mon,  1 Jun 2026 08:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C533237713
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 09:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780304334; cv=none; b=EBPRAwFP0DWhIrq/90ESeVDLV+txtCQrJSmZymoFP+ddrWitc2GNlLKQgV7Uea28+omaLgwU/vZt6IbVn1gYIoTzXPFz3++7sdgD+aGVP/lb/sWjCez/DFDPbjlkn//cU4jx0w2Th3X3Yx7JrxyVE/zbEFWFbk9dQS1jUcjOr94=
+	t=1780304682; cv=none; b=hhKZoqfCMEfZuf5KI/irTNNgUw8mjOZH99i5I0oHw8qL5fueX19wikXnAsnIvf2JpbLd3knfGDFP9O+tk5ZvAmzULr9Nb9+Akc6502gqGY9W76Xa2dDYtC0YObsUcZ3k9PbsAorB16fPnqZP2iYm72Jvk8alqqii4Gg+b3J4Dyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780304334; c=relaxed/simple;
-	bh=e+t+mSDC6vv3f53R8SJC+vopipZq0n2eqkaarLqR9s0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RsuCgxWkDIHr6rsj5ZxD3spnviWVO4R9aDPR42Y6LA0/N1klr4mJadk3sYZdJJTqaFy4aAAb9pRyxtWQ4gNRwjnCRWgSHoQYE7p3iBsgfw0MBwgsJvWlHxBBdvMeqHkeCxHsEIJmuIt6Ret8wc7bGzynpj628HLFtEnkJY3SAMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XVPNXXAH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780304682; c=relaxed/simple;
+	bh=fUMBwvlZjIo26KyBrr1wzwXbB5TVKHoXVzexco580wA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=FrNIzcMRC98ZOLVNVITPdeRekalwrUEPHjYmch3VNY7gdin6Cm6PP2pb6n6HyrGCAyWRb0tN3fumX9ctFaTQOLlAwnU9FKeSlbr+aSKsHnVbCBTizrmMR+IkGEht9qp0XGMtQOWnx4RyMZ40OOIQbhQ5pDCgArsfaubi7+5fqTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZS8ZnaV9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XVPNXXAH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393B31F00893;
-	Mon,  1 Jun 2026 08:58:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZS8ZnaV9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034771F00893;
+	Mon,  1 Jun 2026 09:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780304333;
-	bh=xra6mQWqXCsVf4c8tbH8WKrL3dgsr6GJMrhvvtsvEsE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=XVPNXXAHjn6v1kFuX0uFalR/tJQcBjcbUwzftVX5kR/SRafza64knp513ByJJYsGx
-	 Bg4CzjUH/S5vFR3Kq44FkD0wgXIKplTCmPAAntc9SDhCpp5zdDer87iFF9A3M0H1Ng
-	 6b2YPqP8BjckxNalyDzH5IwG/9GDgnsXAiylfMiHQs2bxfCcgy0Z8VE4uLE0R6Ko9u
-	 Dgp4RVt4LgCFplNSL4OILuiJd3IPBZWtAGafHxkVJifquLfpD/ewGJ1BgX4j+wN8Z1
-	 FZAsiZ3EzduwkLZORh3NzJqdPok5ZIRQ+dMvu13RMpmhmLLrnxDDY5lDDullwViSvQ
-	 Aj0MK2TY9UsLQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wTyTy-000000087FY-3HQP;
-	Mon, 01 Jun 2026 08:58:50 +0000
-Date: Mon, 01 Jun 2026 09:58:49 +0100
-Message-ID: <864ijmvdpy.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Inochi Amaoto <inochiama@gmail.com>
-Cc: Tian Zheng <zhengtian10@huawei.com>,
-	oupton@kernel.org,
-	catalin.marinas@arm.com,
-	corbet@lwn.net,
-	pbonzini@redhat.com,
-	will@kernel.org,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	liuyonglong@huawei.com,
-	Jonathan.Cameron@huawei.com,
-	yezhenyu2@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	suzuki.poulose@arm.com,
-	leo.bras@arm.com
-Subject: Re: [PATCH v3 3/5] KVM: arm64: Add support for FEAT_HDBSS
-In-Reply-To: <ahzUUDAMoHtDFJD3@inochi.infowork>
-References: <20260225040421.2683931-1-zhengtian10@huawei.com>
-	<20260225040421.2683931-4-zhengtian10@huawei.com>
-	<ahzUUDAMoHtDFJD3@inochi.infowork>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1780304681;
+	bh=xTn4rQjGqiyB6HXUn2OszUQx4q9vHhfHyrR1/kFkcxs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ZS8ZnaV9UB0ymPKDbGB9ta5OeNLYFsCWu8d2ZzwxI0h6qkHKrs67+StE7uK4RqPIk
+	 dlGLatrVSIzAwbOusB0E+iwpDzKOKk/jdEKksCAFQbKF9tAlV0HdL2dSt/8HQ9n880
+	 ehZTjJwN08vAn0/6CspcRzRBHIEg5iI+NYdPNmdkwGuxa4KMDRlcOFSHxtU+IvJMYR
+	 t7vri6gLNiwAIu4hPWGSvx4ubrBMbboAOoHschV9RjD7ib1V+YbKgGigNxeh8xFCLt
+	 JvfDtI8QEPCy80/sJkzEMhrGehzauR5oAd9G/nrH9Mi52pOycwO4W09tAPLv3Edn3Z
+	 2AqE0WNaWgU4g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/7] RISC-V: KVM: Add support for Svadu FWFT features
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Inochi Amaoto" <inochiama@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260601084336.2601675-2-inochiama@gmail.com>
+References: <20260601084336.2601675-2-inochiama@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 01 Jun 2026 09:04:40 +0000
+Message-Id: <20260601090441.034771F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: inochiama@gmail.com, zhengtian10@huawei.com, oupton@kernel.org, catalin.marinas@arm.com, corbet@lwn.net, pbonzini@redhat.com, will@kernel.org, yuzenghui@huawei.com, wangzhou1@hisilicon.com, liuyonglong@huawei.com, Jonathan.Cameron@huawei.com, yezhenyu2@huawei.com, linuxarm@huawei.com, joey.gouly@arm.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, skhan@linuxfoundation.org, suzuki.poulose@arm.com, leo.bras@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, 01 Jun 2026 01:50:22 +0100,
-Inochi Amaoto <inochiama@gmail.com> wrote:
-> 
-> On Wed, Feb 25, 2026 at 12:04:19PM +0800, Tian Zheng wrote:
-> > From: eillon <yezhenyu2@huawei.com>
-> > 
-> > Armv9.5 introduces the Hardware Dirty Bit State Structure (HDBSS) feature,
-> > indicated by ID_AA64MMFR1_EL1.HAFDBS == 0b0100. A CPU capability is added
-> > to notify the user of the feature.
-> > 
-> > Add KVM_CAP_ARM_HW_DIRTY_STATE_TRACK ioctl and basic framework for
-> > ARM64 HDBSS support. Since the HDBSS buffer size is configurable and
-> > cannot be determined at KVM initialization, an IOCTL interface is
-> > required.
-> > 
-> > Actually exposing the new capability to user space happens in a later
-> > patch.
-> > 
-> > Signed-off-by: eillon <yezhenyu2@huawei.com>
-> > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
-> > ---
-> >  arch/arm64/include/asm/cpufeature.h |  5 +++++
-> >  arch/arm64/kernel/cpufeature.c      | 12 ++++++++++++
-> >  arch/arm64/tools/cpucaps            |  1 +
-> >  include/uapi/linux/kvm.h            |  1 +
-> >  tools/include/uapi/linux/kvm.h      |  1 +
-> >  5 files changed, 20 insertions(+)
-> > 
-> > diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-> > index 4de51f8d92cb..dcc2e2cad5ad 100644
-> > --- a/arch/arm64/include/asm/cpufeature.h
-> > +++ b/arch/arm64/include/asm/cpufeature.h
-> > @@ -856,6 +856,11 @@ static inline bool system_supports_haft(void)
-> >  	return cpus_have_final_cap(ARM64_HAFT);
-> >  }
-> > 
-> > +static inline bool system_supports_hdbss(void)
-> > +{
-> > +	return cpus_have_final_cap(ARM64_HAS_HDBSS);
-> > +}
-> > +
-> >  static __always_inline bool system_supports_mpam(void)
-> >  {
-> >  	return alternative_has_cap_unlikely(ARM64_MPAM);
-> > diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> > index c31f8e17732a..348b0afffc3e 100644
-> > --- a/arch/arm64/kernel/cpufeature.c
-> > +++ b/arch/arm64/kernel/cpufeature.c
-> > @@ -2124,6 +2124,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
-> >  	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
-> >  }
-> > 
-> > +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int cope)
-> > +{
-> > +	return is_kernel_in_hyp_mode() && has_cpuid_feature(entry, cope);
-> > +}
-> > +
-> >  bool cpu_supports_bbml2_noabort(void)
-> >  {
-> >  	/*
-> > @@ -2759,6 +2764,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
-> >  		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HAFT)
-> >  	},
-> >  #endif
-> > +	{
-> > +		.desc = "Hardware Dirty state tracking structure (HDBSS)",
-> > +		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
-> > +		.capability = ARM64_HAS_HDBSS,
-> > +		.matches = has_vhe_hdbss,
-> > +		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HDBSS)
-> > +	},
-> >  	{
-> >  		.desc = "CRC32 instructions",
-> >  		.capability = ARM64_HAS_CRC32,
-> > diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
-> > index 7261553b644b..f6ece5b85532 100644
-> > --- a/arch/arm64/tools/cpucaps
-> > +++ b/arch/arm64/tools/cpucaps
-> > @@ -68,6 +68,7 @@ HAS_VA52
-> >  HAS_VIRT_HOST_EXTN
-> >  HAS_WFXT
-> >  HAS_XNX
-> > +HAS_HDBSS
-> >  HAFT
-> >  HW_DBM
-> >  KVM_HVHE
-> 
-> 
-> > diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> > index 65500f5db379..15ee42cdbd51 100644
-> > --- a/include/uapi/linux/kvm.h
-> > +++ b/include/uapi/linux/kvm.h
-> > @@ -985,6 +985,7 @@ struct kvm_enable_cap {
-> >  #define KVM_CAP_ARM_SEA_TO_USER 245
-> >  #define KVM_CAP_S390_USER_OPEREXEC 246
-> >  #define KVM_CAP_S390_KEYOP 247
-> > +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
-> > 
-> >  struct kvm_irq_routing_irqchip {
-> >  	__u32 irqchip;
-> > diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
-> > index dddb781b0507..93e0a1e14dc7 100644
-> > --- a/tools/include/uapi/linux/kvm.h
-> > +++ b/tools/include/uapi/linux/kvm.h
-> > @@ -974,6 +974,7 @@ struct kvm_enable_cap {
-> >  #define KVM_CAP_GUEST_MEMFD_FLAGS 244
-> >  #define KVM_CAP_ARM_SEA_TO_USER 245
-> >  #define KVM_CAP_S390_USER_OPEREXEC 246
-> > +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
-> > 
-> >  struct kvm_irq_routing_irqchip {
-> >  	__u32 irqchip;
-> > --
-> > 2.33.0
-> > 
-> 
-> Instead of having these architecture specific capability, I wonder if
-> we can add a generic capability like "KVM_CAP_HW_DIRTY_STATE", so
-> other architecture supports similar things can reuse this capability,
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
+- [High] KVM_SET_ONE_REG for FWFT state registers modifies VCPU configurati=
+on in memory but fails to set `vcpu->arch.csr_dirty =3D true`, leading to s=
+tale hardware CSRs.
+- [High] The FWFT support check `kvm_sbi_fwft_pte_ad_hw_updating_supported(=
+)` incorrectly disables the toggle when both SVADU and SVADE are present, a=
+nd dangerously enables it when only SVADU is present.
+- [High] The 'flag' parameter in henvcfg helper functions is 'unsigned long=
+', causing truncation of 64-bit flags like ENVCFG_ADUE on 32-bit systems an=
+d permanently corrupting guest `henvcfg` state during vCPU reset.
+- [High] Dynamically setting the Svadu FWFT feature on RV32 fails to update=
+ the physical CPU's `CSR_HENVCFGH` register, leaving the hardware state sta=
+le.
+- [High] Direct modification of `CSR_HENVCFG` bypasses Nested Acceleration =
+(NACL) shared memory, leading to state desynchronization in nested virtuali=
+zation.
+--
 
-What of the existing stuff doing the same thing? x86's PML, to start
-with?
+commit df2a6571e0257cf7e8c4ca0758aefd4d6f6c3a32
+Author: Inochi Amaoto <inochiama@gmail.com>
 
-> For this generic thing I suggest, the getter returns the max support 
-> entry count (or the buffer size) it supports like the dirty ring
-> capability. And the setter just let the architecture set the parameters
-> based on the user request.
+RISC-V: KVM: Add support for Svadu FWFT features
 
-This looks wrong on a number of levels.
+This patch adds support for exposing the Svadu extension to guests via the
+SBI FWFT interface. It introduces helpers to get, set, and reset henvcfg
+flags, specifically for the ADUE bit which controls hardware updating of
+PTE A/D bits.
 
-- If you want something generic, there is the existing dirty
-  log/bitmap. How this stuff is populated is none of the user's
-  business (trapping write accesses, dirty bit collection from the
-  PTs, or HW-generated log), and we don't need an extra feature for
-  it. Performance will obviously suck, but that's what you pay for
-  something abstracted and cross-architecture.
+> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
+t.c
+> index 2eab15339694f..375269e43c13b 100644
+> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
+> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
 
-- If you want something architecture specific, then it can't be
-  generic, by definition. You get the raw speed and compatibility with
-  other arch-specific extensions.
+[ ... ]
 
-> This should do no harm to this implement, as everything still depends
-> on the architecture behavior, and leave room for other architecture
-> to reuse this.
+> @@ -84,6 +84,42 @@ static bool kvm_fwft_is_defined_feature(enum sbi_fwft_=
+feature_t feature)
+>  	return false;
+>  }
+> =20
+> +static void kvm_sbi_fwft_env_flag_reset_helper(struct kvm_vcpu *vcpu,
+> +					       unsigned long flag)
+> +{
+> +	vcpu->arch.cfg.henvcfg &=3D ~flag;
+> +}
 
-Again, the generic framework exists, you just have to implement the
-backend you want.
+[Severity: High]
+Does using unsigned long for the flag parameter truncate 64-bit flags
+like ENVCFG_ADUE on 32-bit systems?
 
-	M.
+Since ENVCFG_ADUE is in the upper 32 bits, passing it as unsigned long on
+CONFIG_32BIT systems would silently truncate it to 0.=20
 
--- 
-Without deviation from the norm, progress is not possible.
+When vcpu->arch.cfg.henvcfg &=3D ~flag evaluates with flag as 0, it results
+in henvcfg &=3D ~0UL. Because ~0UL is 0xFFFFFFFF, it zero-extends to u64,
+resulting in henvcfg &=3D 0x00000000FFFFFFFFULL.
+
+Will this unconditionally wipe out all upper 32-bit extensions like
+ENVCFG_STCE and ENVCFG_PBMTE for the guest during vCPU reset?
+
+> +
+> +static long kvm_sbi_fwft_env_flag_set_helper(struct kvm_vcpu *vcpu,
+> +					     struct kvm_sbi_fwft_config *conf,
+> +					     bool one_reg_access,
+> +					     unsigned long value, unsigned long flag)
+> +{
+
+[Severity: High]
+Is this helper also affected by the same unsigned long truncation issue
+for the flag parameter?
+
+> +	struct kvm_vcpu_config *cfg =3D &vcpu->arch.cfg;
+> +
+> +	if (value =3D=3D 0)
+> +		cfg->henvcfg &=3D ~flag;
+> +	else if (value =3D=3D 1)
+> +		cfg->henvcfg |=3D flag;
+> +	else
+> +		return SBI_ERR_INVALID_PARAM;
+> +
+
+[Severity: High]
+When one_reg_access is true, does this omit setting vcpu->arch.csr_dirty
+to true?
+
+If the VCPU is later scheduled on the same physical CPU, vcpu_load() might
+skip calling kvm_riscv_vcpu_config_load() due to the fast-path condition
+checking the csr_dirty flag.
+
+Could this cause the guest to run with a stale hardware configuration since
+the updated henvcfg is never flushed to the hardware CSR_HENVCFG?
+
+> +	if (!one_reg_access)
+> +		csr_write(CSR_HENVCFG, vcpu->arch.cfg.henvcfg);
+
+[Severity: High]
+On 32-bit RISC-V systems, does csr_write(CSR_HENVCFG, ...) only write the
+lower 32 bits?
+
+Since ENVCFG_ADUE resides in the upper 32 bits, shouldn't there be an
+explicit write to CSR_HENVCFGH as well? Without it, the physical CPU's
+configuration might not be properly synchronized for upper 32-bit flags.
+
+[Severity: High]
+Does directly modifying CSR_HENVCFG bypass Nested Acceleration (NACL)?
+
+When KVM runs as an L1 hypervisor with NACL enabled, it must synchronize
+hypervisor CSRs via the shared memory region (nsh) rather than directly
+writing to the physical CSRs.
+
+If ncsr_write() is not used here, could the L0 hypervisor miss the update
+and overwrite the CSR with a stale value from nsh on subsequent VM entries?
+
+> +
+> +	return SBI_SUCCESS;
+> +}
+
+[ ... ]
+
+> +static bool kvm_sbi_fwft_pte_ad_hw_updating_supported(struct kvm_vcpu *v=
+cpu)
+> +{
+> +	return riscv_isa_extension_available(vcpu->arch.isa, SVADU) &&
+> +		!riscv_isa_extension_available(vcpu->arch.isa, SVADE);
+> +}
+
+[Severity: High]
+Does this condition behave backward with respect to the SBI FWFT specificat=
+ion?
+
+The specification requires that if a VM supports only Svadu, ADUE must be
+hardwired to 1. If it supports both Svadu and Svade, the guest can toggle
+the feature.
+
+By returning true only when Svadu is present and Svade is absent, does this
+disable the toggle for fully capable VMs, and incorrectly allow Svadu-only =
+VMs
+to set ADUE=3D0?=20
+
+If a Svadu-only VM sets ADUE=3D0, could it silently corrupt its memory sinc=
+e the
+Svade software fallback is unavailable?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260601084336.2601=
+675-1-inochiama@gmail.com?part=3D1
