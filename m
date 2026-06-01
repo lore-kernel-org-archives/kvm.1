@@ -1,207 +1,193 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726BD3ADB9B;
-	Mon,  1 Jun 2026 13:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BA13AD531
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 13:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780322001; cv=none; b=nc0Vgya5DH+ky8NBXUwfWQJvulnDgZKn1Ql2aYgi4OEtoBikIxO70AQgn8QvlA7y6ss1oW+0xkja4yLsveb/TSkx97gpBYLKScbUsjEIGoCEVbZ9R25YX41F3OkEhOoftSTCUGWzwJ9FRwgxzNZIrHMOHA3HlznLbU8j+HuxKL4=
+	t=1780322009; cv=none; b=TLZEBJmqNkIHXprSSdzbBqCMRvNUHjN5fj5eg7JRMHLdkMM3+xMcW9BJkjITVG6QdbrKpm332zBTCQ8I5ZHFL5h0X+CsZv94aHD+kLSY+mPOZ/jb2tzg+MRjgs1btP6Bbs0UaWRlyBigCk4X8ddDzocoW8HULy7QbW0zZJQYPgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780322001; c=relaxed/simple;
-	bh=nyTmIdbFmdNAuTD6ScLmXiZzIfl2mZL3i2rgB9xlcvc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HTNwtZGzU9FkbxpRQ+l8JDz0fX31TZvn8PB2N0WXZjbTP0MQj69GQ2IgikNpeLM9O3zO17mO9RerUuQjVuT2A+pK1y9BsqIwGNmfqAygcTxBs+tzwmpjuOGkqOAeJXRdEjRlFYgkX167iopOqeloPrOv8gNgMKshJj9FS+dqYKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=NNVmvy/d; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1780322009; c=relaxed/simple;
+	bh=qP8lKzZrsylXy05K6FjCDs2G6l+OQ1PcKYCx6rKU3Yc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J4qQRaTI8/MAuib2KJeYKMHSnMBeg61I2RGOTrK9//fYKHe1VLHl4kSfzrif9BHUSj7r+nyGmLVREbJpXgbgqbO2Mq6t3DG0qoUgQU218POIiqolBAU6XwUcUxLPhQrLOQmncvj7VmeYfa5hD61QDJPvSOv1RePxbJ2BiquDPdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OH3QE8AL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NNVmvy/d"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nyTmIdbFmdNAuTD6ScLmXiZzIfl2mZL3i2rgB9xlcvc=; b=NNVmvy/dFLh5cANmMQPHtfkki6
-	aJUDjRin3xRts2Z+AaliNYPMGcKSYNgbDER49d+OsChA6s70o5B53Iw9ubK4/AVct6bZEafTe52sB
-	4pYY4pahGJxUCOllRixvPdmAYvdyZ3gityS8tZTlEFKzm5+jlvhZRXtwMfM2Ijr/d/AL5oyAzpyRN
-	Fp+MOYe4cRLNH8KOJsuBgRp1Kuv9TTqrisFhwArkTvz0JLLwv75O1KPPLevUu6GlSIDp+jKMWTi2O
-	0mQRAxhAezW4OhA5yK9UnWqnwck8xO+PFKtZAZWK2egr4FZfiLBLPz5XBe8AJcTDsOVb7B7UVJn+q
-	uQXsuqgw==;
-Received: from [2001:8b0:10b:5:a9ac:3853:5e3b:fafd] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wU34s-00000000Bhk-2WH9;
-	Mon, 01 Jun 2026 13:53:15 +0000
-Message-ID: <a9867c036a1f6b6d29c0838b8e6884d814dfde66.camel@infradead.org>
-Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
- __rwbase_read_unlock()
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>,  Peter Zijlstra <peterz@infradead.org>, Paul Durrant
- <paul@xen.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon
- <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
- <longman@redhat.com>,  kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, Carsten Stollmaier
- <stollmc@amazon.com>
-Date: Mon, 01 Jun 2026 14:53:14 +0100
-In-Reply-To: <20260601134008.rllwJtn-@linutronix.de>
-References: <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
-	 <ahnxfACTGeVFbJMk@google.com>
-	 <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
-	 <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
-	 <aho1M7fvK1Qzmiai@google.com>
-	 <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
-	 <58d17a623c1c5c9c09bd91baa30510aaf42f899b.camel@infradead.org>
-	 <CABgObfYJsacrCDHRouLDsEz_QF0EBQd8pu3g-V_gta6Eac2e+w@mail.gmail.com>
-	 <14442dbf1e6d758fdd4756f2ed5c8cb2738582fb.camel@infradead.org>
-	 <787aa26cf62dfd361eea8ed19f384fc517892501.camel@infradead.org>
-	 <20260601134008.rllwJtn-@linutronix.de>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-DbD7t/hxFtpJpjaDH3W0"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OH3QE8AL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FF51F00899
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 13:53:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780322008;
+	bh=Xyq8NTa698xN/xj2FFcrxgT6n2ZyDlpM2h15b5ZLE4s=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=OH3QE8ALoU6zCH4VNyNzyZwWl58aYBHkn8t5BjpHvETQtWSDGYNt81eNCf0mADHRQ
+	 Z+JrgXpaChtnq2LEVOKgrMwozJvlhz+HvhiWZCPDSeozQjcxCHPBpQouetad9UDVL8
+	 DMq40hYRrZdpc4V9Fp2i8A1pmzOqqrNIEY4bxSQ7jUKbL6pOFq0zeDVDI+d+ZzZpX/
+	 JElaoGkBxpc59SOUeh+lUYNTXhRrXR4Hzg4iOQeyVQnxkEW8kmQw7YayaM71yWerbt
+	 6CoPf4We0KEEg4xdervH8R5UO3c9K6BLHNAuKcRFKwQb6mlNDU0Abi2BydtFrTAGyj
+	 wGN/j6Vqs+Vyw==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-bebb72b845aso248870466b.3
+        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 06:53:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8igsEw9D/Hzmxwq4zwW+v031HxE+qaC/IfCGjPRZAm05mXmHNwng+q0tU1bNZCsu2yoE4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFnQOXG/NrNBzB6fOllJO0SkvnizE/UP0n6vb2oHncfo5xe98Z
+	HbRHNe/7L+Zc8lr4Ddd1vFZoQamcgWZDJjQwon7FZWPwDwj4rb9l1P409CU8hMHt7e7ksnGHB2X
+	i+QnTkLJu4SqxBD1WfdvJLasyI9tvURY=
+X-Received: by 2002:a17:907:b05:b0:bee:aed6:9d50 with SMTP id
+ a640c23a62f3a-beeaed6a140mr33022366b.48.1780322006736; Mon, 01 Jun 2026
+ 06:53:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-DbD7t/hxFtpJpjaDH3W0
+References: <20260330035832.2204720-1-maobibo@loongson.cn> <CAAhV-H4Ws3Y89XfSXdGpm3BL5Pr5kTzC0NPdkDm17uy3ZEZJmA@mail.gmail.com>
+ <CAAhV-H7UP5TZh5zaqtkAboUt226-vGUBddksYXxafdKOioVngQ@mail.gmail.com>
+ <61d0efa7-a15a-be48-3bca-5be5efd99acf@loongson.cn> <CAAhV-H4+A0bs07v4B8BTCqbNsG5SLSjjx8sh5Lz23i+R37RAKw@mail.gmail.com>
+ <74e8fa9e-90f6-175e-fb98-2e4504d5f15d@loongson.cn>
+In-Reply-To: <74e8fa9e-90f6-175e-fb98-2e4504d5f15d@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Mon, 1 Jun 2026 21:52:54 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7WnvO80sQoQLpgnomobkB7Zu5F4rgXxsj5ErymukQ+9A@mail.gmail.com>
+X-Gm-Features: AVHnY4KoQON_TBQI0hp_0s1fZ6GYByMH8-GyvNX2pquyO_ikcj-9QX50vC5iiT0
+Message-ID: <CAAhV-H7WnvO80sQoQLpgnomobkB7Zu5F4rgXxsj5ErymukQ+9A@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] LoongArch: KVM: Set max VM supported FPU type with
+ FPU exception
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2026-06-01 at 15:40 +0200, Sebastian Andrzej Siewior wrote:
->=20
-> Okay. This complains about non_block:
->=20
-> =E2=80=A6
-> > [=C2=A0 429.927260] KVM: non-blockable invalidate_range_start, non_bloc=
-k_count=3D1
->=20
-> and commit 312364f3534cc ("kernel.h: Add non_block_start/end()") says
->=20
-> > =C2=A0=C2=A0=C2=A0 Peter also asked whether we want to catch spinlocks =
-on top, but Michal
-> > =C2=A0=C2=A0=C2=A0 said those are less of a problem because spinlocks c=
-an't have an indirect
-> > =C2=A0=C2=A0=C2=A0 dependency upon the page allocator and hence close t=
-he loop with the oom
-> > =C2=A0=C2=A0=C2=A0 reaper.
->=20
-> so a lock which becomes sleep-able on RT vs !RT shouldn't be a problem,
-> right? We also don't complain about about scheduling within a
-> rcu_read_lock() section if it is part of spin_lock().
-
-Right. This is just a false positive in the debugging check, AFAICT.
-
-It's actually *fine* to take a spinlock or rwlock in the OOM reaper
-path, *even* if RT makes them in sleepable locks. And I think even the
-KVM_REQUEST_WAIT IPI is fine.
-
-But to fix the false positive warning, *either*:
-
- =E2=80=A2 non_block_start() shouldn't complain about "sleepable only in RT=
-" locks,
-
-OR=20
-
- =E2=80=A2 The OOM reaper path shouldn't use non_block_start() under RT.
-
---=-DbD7t/hxFtpJpjaDH3W0
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwMTEzNTMx
-NFowLwYJKoZIhvcNAQkEMSIEIC0sRRXt23Hx7nDmzFFev7YvRDYbcWX+M0LZvd8DImhpMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAOGulqXNR9hjT
-2pgR5wPgS1CaODCDbzqs+2R01Yv/J+5Oh50R7SIvEBhyO4ce0eCPIzB9rC0kbihabM6D0cljhxE5
-nJQULCxJWM57/ryHUOIscduNPqehWwYrh3r90NtgPL2W2nZ2WxAyiM0i18mc0srV2Xj2471ZNjLC
-gTAj/dShVYhLo43AtjEk5WOZyxh31C2aagDIfJQlMj+hrhq8m6/Vy9Ft9zMplRsBfjIqvRyl9hJ0
-u+kpB9KDw/XfTQUj30vx5aWQ/pV0B2UmJp9NUP/gPg21dHMEdDpoFVHRbZ5IPwriUh6CPlqOEYJ+
-SjnWw6au2K3IL6FwSXVhCDNYEsj2zRkjgLpUPYvQiXPfINKsw5+v+CjjEcTkGPZE+CaAcRtXWCsp
-4XAyYJaZcJtUml5N1AkVZriTBMYOgAiVf4Swvo+HTtwwdhcLPv2LO+LriIuVvA67ciwNSS6ZU0x2
-nVxmW0MWXgyWWkClCrilaxZ22inUTyawUhylF53k3bs9k5XrxZHjgL2hPIC+qm3tCB/x6u6+PLc7
-aCiiuqLsTbm+3T40noL02Xll2KimwIBe69a53d+NR6ayoyT6c4aSvb63Np8h6hV/hRXmsmKfsOtJ
-Vcsb0CgvTTOqtjC58afMhkyJS/ghG93wULEgBjdPXhnhFUhkumRMY/wg3FSzWP0AAAAAAAA=
+On Thu, Apr 9, 2026 at 8:14=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrote=
+:
+>
+>
+>
+> On 2026/4/8 =E4=B8=8B=E5=8D=883:47, Huacai Chen wrote:
+> > On Wed, Apr 8, 2026 at 9:04=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> w=
+rote:
+> >>
+> >>
+> >>
+> >> On 2026/4/7 =E4=B8=8B=E5=8D=888:41, Huacai Chen wrote:
+> >>> On Mon, Mar 30, 2026 at 6:00=E2=80=AFPM Huacai Chen <chenhuacai@kerne=
+l.org> wrote:
+> >>>>
+> >>>> Hi, Bibo,
+> >>>>
+> >>>>
+> >>>> On Mon, Mar 30, 2026 at 11:58=E2=80=AFAM Bibo Mao <maobibo@loongson.=
+cn> wrote:
+> >>>>>
+> >>>>> With FPU save and restore flow, the cost is the same with different
+> >>>>> FPU width 8/16/32 bytes, whatever from CPU cycle and cache line imp=
+action.
+> >>>>>
+> >>>>> Here is to enable FPU with max VM supported type, for example if
+> >>>>> VM supports LASX instrction, enable FPU with LASX type even with FP=
+U
+> >>>>> exeception. So it can avoid possible LSX/LASX exception in future.
+> >>>>>
+> >>>>> With context switch microbench which may touch FPU and LASX, there =
+is 9%
+> >>>>> improvement when halt_poll_ns is disabled. The command is
+> >>>>> "./context --test=3Dpipe" and source code located at:
+> >>>>>     https://github.com/bibo-mao/context_switch/blob/main/context.c
+> >>>>>
+> >>>>> Original     Wih patch      improvement
+> >>>>> 75232        82440          9%
+> >>>>>
+> >>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> >>>>> ---
+> >>>>> v1 ... v2:
+> >>>>>     1. Enable FPU with max VM supported FPU type, rather than max u=
+sed type.
+> >>>>>     2. Add new request bit KVM_REQ_LBT_LOAD for LBT restore
+> >>>>>     3. Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
+> >>>>>     3. Remove aux_ldtype and KVM_LARCH_LSX/KVM_LARCH_LSX
+> >>>>>     4. Remove middle FPU state handling in kvm_own_lsx() and kvm_ow=
+n_lasx(),
+> >>>>>        directly enable LSX or LASX from FPU none state.
+> >>>>> ---
+> >>>>> Bibo Mao (6):
+> >>>>>     LoongArch: KVM: Add separate KVM_REQ_LBT_LOAD request bit
+> >>>>>     LoongArch: KVM: Enable FPU with max VM supported FPU type
+> >>>>>     LoongArch: KVM: Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
+> >>>> Patch-1 add KVM_REQ_LBT_LOAD, then KVM_REQ_AUX_LOAD is only for FPU,
+> >>>> so I think Patch-3 should be squashed into Patch-1.
+> >>>>
+> >>>>>     LoongArch: KVM: Remove some middle FPU states
+> >>>>>     LoongArch: KVM: Use vm_guest_has_fpu API in kvm_lose_fpu()
+> >>>>>     LoongArch: KVM: Remove KVM_LARCH_LASX and KVM_LARCH_LSX
+> >>>> Patch-5 remove the consumer side of KVM_LARCH_LASX / KVM_LARCH_LSX a=
+nd
+> >>>> Patch-6 remove the provider side of KVM_LARCH_LASX / KVM_LARCH_LSX, =
+so
+> >>>> I think Patch-6 should be squashed into Patch-5, too.
+> >>> And could you please test the power consumption where there are many
+> >>> VMs that only use FPU rather than LSX/LASX? As far as I know, the
+> >> Hi Huacai,
+> >>
+> >> Thanks for reviewing this patch
+> >> Could you help me to test the power consumption with this patch?
+> >>> power consumption of LASX is significantly more than FPU, which is a
+> >> Could the describe the detail scenery wheree LASX instruction is
+> >> frequently used by application or LASX  EUEN enabled?
+> > The purpose is to evaluate power consumption before and after this seri=
+es.
+> >
+> > So we can run 10 VMs (suppose there are 4 cores), and there is a
+> > workload run in every VM, the workload only uses FPU, no LSX and LASX.
+> > Before this series, KVM only save/restore FPU context; after this
+> > series, KVM will save/restore LASX context.
+> In theory there should be such test, only that it requires special Power
+> Management team and testbed. Even if there is such team, maybe they care
+> power consumption about DDR and screen, do not want do such experiments
+> for this patch.
+>
+> If someone is volunteer to do this, I do not object, also I want to get
+> the result. Just from my guess, there should be no much difference since
+> FPU context switch is much smaller than the whole workload, else the
+> workload is just FPU context switch.
+Any updates?
 
 
---=-DbD7t/hxFtpJpjaDH3W0--
+Huacai
+>
+> Regards
+> Bibo Mao
+>
+> >
+> > If the power consumptions are similar, then this series is perfect.
+> >
+> > Huacai
+> >
+> >>
+> >> Regards
+> >> Bibo Mao
+> >>> little similar to AVX512 (Linus said it is a power virus).
+> >>>
+> >>> Huacai
+> >>>
+> >>>>
+> >>>>
+> >>>> Huacai
+> >>>>
+> >>>>>
+> >>>>>    arch/loongarch/include/asm/kvm_host.h |  6 +--
+> >>>>>    arch/loongarch/kvm/exit.c             | 21 +++-----
+> >>>>>    arch/loongarch/kvm/vcpu.c             | 78 ++++++++-------------=
+------
+> >>>>>    3 files changed, 30 insertions(+), 75 deletions(-)
+> >>>>>
+> >>>>>
+> >>>>> base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+> >>>>> --
+> >>>>> 2.39.3
+> >>>>>
+> >>>>>
+> >>
+> >>
+>
+>
