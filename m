@@ -1,36 +1,34 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9936136B05C
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 23:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D0A35E1CE
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 23:04:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780355103; cv=none; b=blQxHtel3DMPAdV0DwnkOGtjYEectqrcbpLDjyX5kR9vo0yHrPFseKGRFB2pW9knFW25qnLcwUm1b5xJuIGDXBwBnXdWJi9qSpJjT5L1fYlMEJdq/zOLtdq7t6rXmdw8fdXGsoDnyQJNZi87isehyhMaFxwhIt+EW43t6zh0Lhk=
+	t=1780355106; cv=none; b=MbFMFJnAdsAb69K+2i0xCY3lClmpiZUPIsvPKg/mHGVwsH3bnkMPFaZ5LDUheWowTdqp+wZZ0A/nQ1v6g+quYCnAQzbGlyHU2+KFYh+wbpjTDv6V04cQmp7OKQYNkDkzFtrh8mfOZ4R1kB5FjPDkr8BtpDc5vdmmsAOe75JdENo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780355103; c=relaxed/simple;
-	bh=bVPsmHC32xMRnbCUQzo2sQikrGCF693UprcC5PbkroU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ApkO0y28rf369e1WI0BivtEXztthThyTIP99PARtVWRR3ujQpbEweczjNgtNmOWDS/Ot4fl1LQrMSA0QJdYk356cjdl6f3f/jWckT1b1xZ+PT2T2XixhfmcEW06RIiXJCLW7BNHkv8HqtV3VNJ/LZ5k9BkPs8amMY/bPwrStPcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Pxo7gb14; arc=none smtp.client-ip=91.218.175.177
+	s=arc-20240116; t=1780355106; c=relaxed/simple;
+	bh=LlFLtsINCgccXSPn4jWjE8uZpKLYLfsXdGiD4JrYBSw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BUItX9d6bacWsadqjMef4za8D7O3wejy3xuy1Wvoc1F+EE2vkG0I9iVS+JZ/4/u0ZpMi7ZLcSLu9TqIkXHzUjgP30P8Is3yXC3ZMm7uERd5zKZex6KIPi/zcnfvgziEBxn8ev8tNz0ChaeZXXBv7ArL1WpolAHUORGZ+RGNx3UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JTbu5ChD; arc=none smtp.client-ip=95.215.58.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Pxo7gb14"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JTbu5ChD"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780355099;
+	t=1780355084;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ee5LGH1mkBrJOdssFnEtVdpG6R6AtAmt3hnR2uiZ+kU=;
-	b=Pxo7gb14u7uOLz1Y0FCkQxiXki+1pmMfjLXzJszg5UslRDvTodrpHNNb2+Lw/HjDlVEz+D
-	5N3t8cHdP1cd6hsNaMZFgtImsNbE1Gon8qjLDx8Fa7CdUSl/u15ETsrasdHxS2LjfdSAd9
-	1tAZyJtU8BfQ1BykPjDnyhNVRhyvISo=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fdOT1ubVljYo/8E3or6+JlpXdVVi9C39SjL7RbBhzUU=;
+	b=JTbu5ChDEHc1Ha+ecWVBaCQpQlPo6d0ncrPhDvDiiXrtr5NBgcqPOaEBsW4ou+bVDM/o81
+	bOhieV2T8oBQKGrIbyLFN9v4junbavukpB7NAUr6aMw6FDzTpqRWoQFrBRum9QT9uRCov6
+	BC0B4tUGzrszlpR/aequhJjE5YNFbpM=
 From: Atish Patra <atish.patra@linux.dev>
-Date: Mon, 01 Jun 2026 16:04:37 -0700
-Subject: [PATCH v2 3/4] crypto: ccp: Fix possible deadlock in SEV init
- failure path
+Subject: [PATCH v2 0/4] KVM: Miscellaneous SEV/SNP related fixes
+Date: Mon, 01 Jun 2026 16:04:34 -0700
+Message-Id: <20260601-sev_snp_fixes-v2-0-611891b28a86@meta.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -39,9 +37,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260601-sev_snp_fixes-v2-3-611891b28a86@meta.com>
-References: <20260601-sev_snp_fixes-v2-0-611891b28a86@meta.com>
-In-Reply-To: <20260601-sev_snp_fixes-v2-0-611891b28a86@meta.com>
+X-B4-Tracking: v=1; b=H4sIAAMQHmoC/12MwQ7CIBAFf6XZsxjAUMBT/8M0DdLVciht2IZoG
+ v5dbOLF47yXmR0IU0CCa7NDwhwoLLGCPDXgJxefyMJYGSSXLVdSMcI8UFyHR3ghMX7XF22sF84
+ KqM6a8DiqcusrT4G2Jb2PfBbf9Vcyf6UsGGdjqx03QgmtbTfj5s5+maEvpXwAwCvtyakAAAA=
 To: Sean Christopherson <seanjc@google.com>, 
  Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>, 
  Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -52,43 +50,56 @@ To: Sean Christopherson <seanjc@google.com>,
  Herbert Xu <herbert@gondor.apana.org.au>
 Cc: clm@meta.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-crypto@vger.kernel.org, stable@vger.kernel.org, 
- Atish Patra <atishp@meta.com>
+ Atish Patra <atishp@meta.com>, Sashiko <sashiko-bot@kernel.org>
 X-Migadu-Flow: FLOW_OUT
 
-From: Atish Patra <atishp@meta.com>
+This series addresses a few issues found during code audit of the
+KVM SEV/SNP and CCP driver code. The fixes include a incorrect lock state
+and incomplete state handling during intra-host migration for SNP VMs.
 
-__sev_platform_init_handle_init_ex_path() called
-rmp_mark_pages_firmware() with locked=false but while the parent
-function of init_ex_path already acquired the sev_cmd_mutex.
-In case of a rmpupdate failure for any page after the first, the cleanup
-path would invoke reclaim pages which would result in a deadlock in
-sev_do_cmd.
+To: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+To: Borislav Petkov <bp@alien8.de>
+To: Dave Hansen <dave.hansen@linux.intel.com>
+To: x86@kernel.org
+To: H. Peter Anvin <hpa@zytor.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+To: Peter Gonda <pgonda@google.com>
+To: Brijesh Singh <brijesh.singh@amd.com>
+To: Youngjae Lee <youngjaelee@meta.com>
+To: Ashish Kalra <ashish.kalra@amd.com>
+To: Michael Roth <michael.roth@amd.com>
+To: John Allen <john.allen@amd.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: clm@meta.com
+Cc: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org
+Cc: stable@vger.kernel.org
 
-Pass locked=true to honor the lock status of the parent function.
-
-Fixes: 7364a6fbca45 ("crypto: ccp: Handle non-volatile INIT_EX data when SNP is enabled")
-
-Reported-by: Chris Mason <clm@meta.com>
-Assisted-by: Claude:claude-opus-4-6
 Signed-off-by: Atish Patra <atishp@meta.com>
 ---
- drivers/crypto/ccp/sev-dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+- Added fixes based on the reports by Sashiko. 
+- Added a kselftest for validating SNP VM mirroring/migration rejection. 
+- Link to v1: https://lore.kernel.org/r/20260528-sev_snp_fixes-v1-0-d67a08151779@meta.com
 
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index d1e9e0ac63b6..3d4793e8e34b 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -1557,7 +1557,7 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
- 		unsigned long npages;
- 
- 		npages = 1UL << get_order(NV_LENGTH);
--		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, false)) {
-+		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, true)) {
- 			dev_err(sev->dev, "SEV: INIT_EX NV memory page state change failed.\n");
- 			return -ENOMEM;
- 		}
+---
+Atish Patra (4):
+      KVM: SEV: Do not allow intra-host migration/mirroring of SNP VMs
+      KVM: selftests: Verify SNP VMs are rejected from migration and mirroring
+      crypto: ccp: Fix possible deadlock in SEV init failure path
+      crypto: ccp: Fix memory leak in SEV INIT_EX path
 
+ arch/x86/kvm/svm/sev.c                             |  4 +-
+ drivers/crypto/ccp/sev-dev.c                       | 18 +++++++--
+ .../testing/selftests/kvm/x86/sev_migrate_tests.c  | 47 ++++++++++++++++++++++
+ 3 files changed, 65 insertions(+), 4 deletions(-)
+---
+base-commit: e7ae89a0c97ce2b68b0983cd01eda67cf373517d
+change-id: 20260525-sev_snp_fixes-0b73789c1a91
+
+Best regards,
 -- 
-2.53.0-Meta
+Atish Patra <atishp@meta.com>
 
