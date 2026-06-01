@@ -1,116 +1,141 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E6239A4DC;
-	Mon,  1 Jun 2026 11:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B413F36F91C
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 11:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780312275; cv=none; b=CZ4Nrd0yBbHIcr+TH+5gRBLhMPgR1jZrXXRKOgBMI/YVh1liefqMDfoGDFL808NwXfN5dxN/It8VrJTsKUWeLBylQLjUNYKI1vWore+kNdypbwCO8NbdrPDvDqqjowP2IhpR2ASi2RWKqXbT5ljfvrr5wWU1TDat1QTqi+Mp1VQ=
+	t=1780312579; cv=none; b=dDXKbrcDqcRn/cSIn6wvQLvs0Kt2AnnzGysC9zIAEiFoZZ5fEIxeCen8ciDcY6ltMcbcNsQNR2ltTfT/XWyd0vbuLPyK+n6fu8FfzM3D5tPg4h2LMx1mlo7iCCDlzAf0oeg9ZOOYXiiGp1793F5FqyFNEiTE8Mw27J0SsYew8bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780312275; c=relaxed/simple;
-	bh=8RegA0ORWRMpT31K6TAjP6HdePr2oU9f6gvAI++Jr8s=;
+	s=arc-20240116; t=1780312579; c=relaxed/simple;
+	bh=uVVMvctNoZmupUqjH/B5Q429l87c6cnAPIW0ZPhBL98=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c3lTIs7/RzSdr114Xlq137qb2rGNmIPFjTr3emPYKuC+E1okG9MoqIBKh4CSAtYs/YdXZPONNFJPzBP0DIFkSgtsH967Hpq0cZyDkUXmeDNHeyN2F1Iu+E13gDLrQfSKo495llhz4JchbtjQqqXqHSduky+9iYk4t7V1cUmZ2Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=t2klfAE8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MJS/7a6z; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=dsD9IJ2PJQRSRB/5U9Zheejc+W8psSu5HpBtbnMPXPhysfyCHzjQo15/MdSnpSzxS48EHP7Ud8YTWOJ5SB1jV1Nd1XYoc0CPAMKKmY0W6R1idK73cfk+Du1ftr4IcjRmhEjeM5n+SAVHHIxLiwigv6F4XCcBrLTRu30zBQfX+ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r0IwpU8S; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="t2klfAE8";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MJS/7a6z"
-Date: Mon, 1 Jun 2026 13:11:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1780312270;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rVpJIfOPv5KXeQrzOSS5lnp8tIaa/QwzSa+6HvKG2JQ=;
-	b=t2klfAE8eM3L7YnVUv0B1TCHcd7AgIcI7/upEM6CxrZfLDnpna/z77Z1AJrARaWvb0Zq+Q
-	GPjOTGLoue6jqvnS2j6KW6Z2zMN+RXaXkj+nqg+76kvZNjFCztvlL9GsO1j++mPGayDzv6
-	lKub7zbue19ETOxJ3n3PzSMf3D69CecK5G8R4vT+MnBNmzPU64S/k9Uv6wxlpDYkR1hzrD
-	9vhlj/43POOIQMgcBO1NfFPgmVGRWpQncgD/Dgfkp1Y+v04n5R61B2TA0/Z+nn6PxbFDz1
-	RagMVJVU/d5idco6xznhVBc6Wos58q1fdaintXpoRj9HoBOiCSgE2rkqAYVY0g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1780312270;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rVpJIfOPv5KXeQrzOSS5lnp8tIaa/QwzSa+6HvKG2JQ=;
-	b=MJS/7a6z38ZuCy9iy++6fxHP9JEeAm737miC6mBpKpq3dXPIspVsrwMnOAoFP5rqacFAix
-	M0+VX8g2+b1Nn5Cg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
-	Carsten Stollmaier <stollmc@amazon.com>
-Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
- __rwbase_read_unlock()
-Message-ID: <20260601111109.r5gExfB1@linutronix.de>
-References: <20260529165114.748639-1-seanjc@google.com>
- <20260529165114.748639-2-seanjc@google.com>
- <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
- <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
- <ahnxfACTGeVFbJMk@google.com>
- <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
- <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
- <aho1M7fvK1Qzmiai@google.com>
- <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
- <20260601084045.GL3102624@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r0IwpU8S"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-36b95eb4bb4so1748537a91.3
+        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 04:16:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780312577; x=1780917377; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=A0RvTxX98K/pUu8wDZcU84mvng4xT6uAwNgRwaMuMuo=;
+        b=r0IwpU8SCWTKy7mr72sJB3cqRqn4L6L77hI4C8xPQ2Tmht3taf6GHjZdDg4a0dQHQT
+         wQCNhcmAzupmnpCnz/gvekTYE4UtnG7FBsWVHW/YzmZiW4Tc+IXhSMSIzPoNrrYb0S+U
+         yhl4zvuW46YfEPI3VEBLJvH2eKTXUTbmQQ8/SAdy0L8PyvSIgUwwCUZez4Y/ots2g2or
+         DYO8zVIJOSn68PcGELDOcjyhSCptHjc7MWCEu4OUatxbT24XQotH3kAm7dx8fXO1gCQw
+         o75ZbnIOOigeRuqw454EzTuvWnbNo3jaCtpsbAT32cRV36K/QnL+DfkWpaFoA6aGZpqv
+         GxJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780312577; x=1780917377;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A0RvTxX98K/pUu8wDZcU84mvng4xT6uAwNgRwaMuMuo=;
+        b=bmco6zEWiQz3vFt8UnEtlWBwl/UWdPdIwfJA+vakg05Jpgr+6XDzU7DvmlCjGi7RK5
+         krdWKGGGVHa23JCGV1olp2YfhTFUTOMV52ULWmlEj93VZRXtiT21rtg2L+2vAB2HkaQD
+         PIHG4Yt2TytTLMiyRoAnGYcgqy0vvcLX+UivKypuqVl1KPO8LJh67UrYvokw1TtTGMEc
+         Voibtb0YE96HjHKkBrto7icFwb3XhaENfhgz/a9SnSY0ZdXcAAMmjvB52dB3g3Cmr1fL
+         A79RZX14YESsXWseeNwj7sxaJJRkpIM6yqGIodJkEpHRWIOsGoeDnjw+NyQcrr8xcab1
+         Eijg==
+X-Forwarded-Encrypted: i=1; AFNElJ9zcOsHtbrJc77bfRUZHXBxfloB/Bb2F1LB+P40PLOWqUujPpu4wqXXwO533ajd5tP/tqY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVeW4fiehCzLvYIWAbXQYPfL9hSH/lOHsRlfwxeozMjy2PbHWs
+	kDy87wqGNkdKqX4zH6O84nVB+bOAN/SYdQlXocJLfBv6CIXnE91686fi
+X-Gm-Gg: Acq92OEAmBB2/VN/TwUD4LKtGOB46mwzFJdOc8U6JUTeQrfmviz88r1fYJj6Cfw69sl
+	B05z9Q02xPXN0bXi4SHhmrZfMrwOlArrr2nDzophxc3tqFtswQlTDw1l+sPqPyi3+iJPs+uLIc1
+	UdpyWgeBKlonYz/2DhKMQ7k1i1+PcHqby6sXknKchWN5YKjV/aHPCSn+25Qr1WzpaxABmdaV2K9
+	ZhU8+sLtRtGWItzRzHuNf1yL5btjVsGKBz4YcaQUQQ6ey02w/m0jz6Tx6varVtJTcL5yE8ZyaI3
+	/hwIt2RaSwTZ0hfkv3kFgR2ernzS8oQJtLgdAuQ+ScQj5+kE6scDj98nw4abW2QgBdlUeg5VzrV
+	PteUcEAzRdsRru7moAoSjDTSB3Z3Utu2eTd7lLr+D+v42zrf6x9TvJn+O0Tx1uO4XyFzJ29vFT5
+	i1nsko4meN1OLm6FFzYE3+Ku7Yg7V+a8av4Q==
+X-Received: by 2002:a17:90a:d403:b0:36d:649a:39f7 with SMTP id 98e67ed59e1d1-36d649a3a91mr8902054a91.22.1780312576930;
+        Mon, 01 Jun 2026 04:16:16 -0700 (PDT)
+Received: from localhost ([2001:19f0:8001:1b2d:5400:5ff:fefa:a95d])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36bc660da67sm10402142a91.6.2026.06.01.04.16.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 04:16:16 -0700 (PDT)
+Date: Mon, 1 Jun 2026 19:16:00 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Deepak Gupta <debug@rivosinc.com>, 
+	Thomas Huth <thuth@redhat.com>, Charlie Jenkins <charlie@rivosinc.com>, 
+	Sergey Matyukevich <geomatsi@gmail.com>, Inochi Amaoto <inochiama@gmail.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org, 
+	Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>, 
+	Quan Zhou <zhouquan@iscas.ac.cn>
+Subject: Re: [PATCH v2 4/7] RISC-V: KVM: Allow Zicfiss/Zicfilp extensions for
+ Guest/VM
+Message-ID: <ah1pgb4S-UoSWhC_@inochi.infowork>
+References: <20260601084336.2601675-1-inochiama@gmail.com>
+ <20260601084336.2601675-5-inochiama@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260601084045.GL3102624@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260601084336.2601675-5-inochiama@gmail.com>
 
-On 2026-06-01 10:40:45 [+0200], Peter Zijlstra wrote:
-> > When raw_seqcount_try_begin() is used, the typical action when
-> > the seqcount is busy is to take the same lock that the writer uses.
-> > Another possibility, found in kernel/events/uprobes.c, is to delay
-> > the work to a safe point using RCU.  Either way there is no need
-> > to guarantee progress of the writer under CONFIG_PREEMPT_RT,
-> > because the caller is not going to call raw_seqcount_try_begin() in a loop.
-
-This does not happen. It only happens if the associated lock is
-preemptible. This is not the case for uprobes.c so there is no lock/
-unlock.
-
-> > However, raw_seqcount_try_begin() currently uses seqprop_sequence()
-> > via raw_read_seqcount(), and therefore does a lock/unlock of the
-> > write-side lock on PREEMPT_RT kernel.  This prevents it from being
-> > used in atomic context.  Use __seqprop_sequence() instead of
-> > raw_read_seqcount() to allow it.
-
-So it would work if there is no lock associated or it is something like
-raw_spinlock_t.
-
-> > --- a/include/linux/seqlock.h
-> > +++ b/include/linux/seqlock.h
-> > @@ -338,7 +338,10 @@ SEQCOUNT_LOCKNAME(mutex,        struct mutex,    true,     mutex)
-> >   */
-> >  #define raw_seqcount_try_begin(s, start)				\
-> >  ({									\
-> > -	start = raw_read_seqcount(s);					\
-> > +	start = __seqprop_sequence(s);					\
-> > +									\
-> > +	if (!(start & 1))						\
-> > +		kcsan_atomic_next(KCSAN_SEQLOCK_REGION_MAX);		\
-> >  	!(start & 1);							\
-> >  })
+On Mon, Jun 01, 2026 at 04:43:32PM +0800, Inochi Amaoto wrote:
+> Extend the KVM ISA extension array to allow KVM userspace to
+> detect and enable Zicfiss/Zicfilp extensions for Guest/VM.
 > 
-> Yeah, I think this makes sense. Thanks!
+> Assisted-by: YuanSheng:claude-4.7-opus
+> Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> ---
+>  arch/riscv/include/uapi/asm/kvm.h | 2 ++
+>  arch/riscv/kvm/isa.c              | 2 ++
+>  2 files changed, 4 insertions(+)
+> 
 
-Do I make sense or do I miss something obvious? On the other it would
-make sense to have this even for spinlock_t assuming the try_begin
-version does not try spin and expect to make progress (which it does not
-for the current users).
+I have forgot to add CSR_SSP to the context, will add in the next
+version. But I have a small question for it: could I reuse the 
+generic subtype or use a new CSR subtype?
 
-Sebastian
+Regards,
+Inochi
+
+> diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
+> index 501e4fc60dd2..9f9c5ababd1e 100644
+> --- a/arch/riscv/include/uapi/asm/kvm.h
+> +++ b/arch/riscv/include/uapi/asm/kvm.h
+> @@ -199,6 +199,8 @@ enum KVM_RISCV_ISA_EXT_ID {
+>  	KVM_RISCV_ISA_EXT_ZCLSD,
+>  	KVM_RISCV_ISA_EXT_ZILSD,
+>  	KVM_RISCV_ISA_EXT_ZALASR,
+> +	KVM_RISCV_ISA_EXT_ZICFILP,
+> +	KVM_RISCV_ISA_EXT_ZICFISS,
+>  	KVM_RISCV_ISA_EXT_MAX,
+>  };
+>  
+> diff --git a/arch/riscv/kvm/isa.c b/arch/riscv/kvm/isa.c
+> index 1132d909cc25..9852a91fdecc 100644
+> --- a/arch/riscv/kvm/isa.c
+> +++ b/arch/riscv/kvm/isa.c
+> @@ -65,6 +65,8 @@ static const unsigned long kvm_isa_ext_arr[] = {
+>  	KVM_ISA_EXT_ARR(ZICBOP),
+>  	KVM_ISA_EXT_ARR(ZICBOZ),
+>  	KVM_ISA_EXT_ARR(ZICCRSE),
+> +	KVM_ISA_EXT_ARR(ZICFILP),
+> +	KVM_ISA_EXT_ARR(ZICFISS),
+>  	KVM_ISA_EXT_ARR(ZICNTR),
+>  	KVM_ISA_EXT_ARR(ZICOND),
+>  	KVM_ISA_EXT_ARR(ZICSR),
+> -- 
+> 2.54.0
+> 
+> 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
