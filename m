@@ -1,175 +1,185 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E832D364EA5
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 19:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780340871; cv=none; b=RZ4n83COTLGXNIMOZquLSON3uEPENoCDik3ktVBjvgf9qEXtSjZIexr25YDVuJTUSjCPAWowKVCogtmog6PgGzA5kZ5HP96YEa6XpN07QTvugPuZcpWygFhurhSTH0efq6lnlrMnR7JGDWPHZ/Ma1+u7Sl1JUjobKsR2eIbGdks=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780340871; c=relaxed/simple;
-	bh=Kelxc5oYGGF7Vhx4zYusKsP/GB4VVycmuA5b5+8D3Wg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jTgvtquPFnPzcFd/WvjbrgoZIKVkk+NZMvBRH8OAWqzyCydJ+T7pcBCy0oS3I7gZW4MJNjAImUT1/oNL/pTC+Kn78W6u+/Q+aWZIBZSEg0v3Mud4cHlU66y1X5xGygFm+Ru1A5onfZuFT0MNXHVvNItnoIlccKQ1CAaHqHCknss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MqgQzG1f; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C05364024
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 19:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780341254; cv=pass; b=ZimhCQFuK603odJ/eTaXjF3bvIDWC08JYnQPf5X6J87EcLvAcZkMv9BU69oUsxqLf6eND7AxLeGuxQfExPFY7ZSzjb0yjIR61wyRhwRKdaNsl1LNfXpYWqSH2rm0TXLYb/J1ajSLzlO37bY8KsBNWUvjYZJE02NLV+3e//4o+4E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780341254; c=relaxed/simple;
+	bh=UNKcK2enDt3jC65DDXUqCzLzvisBRwbhO3vlWFeN/uo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WMlf44x7ke5sZbbdQlN3l5zEWg28AcgAePW6v6N62NvDOSly+OAYIDmAGc520v8eHfPrBBSYS6FFoQe7pn7GmXbciQk4JLbXMstnpvvDJ0WIdZjV+HWEXIu40rYNZVIqsMWNq6PClilDUT5HexLtiVmszUraWa9FtgE9mbD+jZU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O3TDAM+E; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SGQ+6Age; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MqgQzG1f"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d99333358so1590446a91.3
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 12:07:48 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O3TDAM+E";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SGQ+6Age"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780341252;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fEKNvAsba0SJLtrb9a8gYF0KmbXHuHrgrDPG3w5Eya8=;
+	b=O3TDAM+EqClM1/cs//RgDrECcjq0btyeGU7winw6yZy1dAP2Uu5g/bNGyE1JzwkwvW9mK7
+	7VmTdEFmHkyBfaTa6RJUa2hjDHmOlee9qiZzsAmnFBKy6PZqAGRNtYK9jBCodQZCaErL4w
+	cCA8H0Tbb/jBAe/l4MW84M83QXgpjXA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-507-0UPiyB2BOU6UmgXA809Zog-1; Mon, 01 Jun 2026 15:14:10 -0400
+X-MC-Unique: 0UPiyB2BOU6UmgXA809Zog-1
+X-Mimecast-MFC-AGG-ID: 0UPiyB2BOU6UmgXA809Zog_1780341249
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-45efa7755faso1067557f8f.1
+        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 12:14:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780341249; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eni5R2/CWSynNRE2virpuoofi69wOWHelxJ6repE9OCY5AftKbtEb/sSsGuPXukXEh
+         RaESvBdxZgHcgBkjgEjwUj0iIZasFbtBwqfEMhPNhK2JGsp7mjicNy9sfFOfIzNVZe8o
+         ID2phtTEAM/6H6wjt11n3UAR6dGUswDjz7G0Tyq9Ybk2b6kGA076G9hhsX7IMBCtwDR7
+         stw5aqCv7RHN3yDbtkBXunOoLAZdsJn5O11tJ6KKt8w3VEmvUY4O1VprV7OhHsQCqFHO
+         M/H3lzWuK2s4cc675cbfvOvQearNse+ME6QQF4Q2jJYhw5frgTWkog5ZAWvCdfquz90W
+         3vqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=fEKNvAsba0SJLtrb9a8gYF0KmbXHuHrgrDPG3w5Eya8=;
+        fh=kvvzu4IoFYKGzhWf4WN4rhrFiQ6wR7YyytogOZLWPpM=;
+        b=evlGMKpJWD7lwFiem1D2mydxxLv1OhtP7v1To9mY1gf17F9J39Sb+GdOt8jWbP0qjJ
+         TCLiUh5yk23PVgcxXErk9x7Ica5v+tYqMSKratW0RBXXeRS2zyT/QNEGWC3y/mqZ22wt
+         VX9cWfkhXCzLGpHNb9uPb7Z72Xx19E0V+tvTqMCU98yNMgiy938+ko/1QPNdtm4Wnbkq
+         rymS6PfgfTUDPX+wAEX78OxeQeK0taS0y5TN1KJo3THNw0ZxznjTYQKS90VtRcBAn5Lf
+         i+JYhsAcdPOf/6wqkYidxgRq4ZD/smkB9BNnGC1AkOP6iaEtK7qAoW6OmW1r1dZz1YEw
+         0OpQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780340868; x=1780945668; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=f9b3YM661qDhfKWEa4RmgtMK/vAOZvsXbfWzmrgUEpA=;
-        b=MqgQzG1fQqW46ttMXZTxcbiM5uEpXhpRal42XPk3o4ZZICTVTYPTN3+JqO0K8Soxwv
-         /8vbkAp/jl2gF2rBHAs+m3V2Ck+Oh/gUSe0NwEVSdjU+NVkm675QlTUcF1O51MRXuPRE
-         Krt+xUOGjZodTFHa3xuFbGUj8TudB0WPtLbdt9hTD4ZlfsTfCWZHNU4koJ3lSoOYdaMc
-         iSxie7FcDYXmlXFGFGxdK95vaCjZLESKN/4iCq9fVxC2iFuJ0p3UGrXbT4JbXsjk9fuh
-         Eh0RnJGtog9X3cdO02GkPK8UATZATxCKnMZhFQVyEPN0NpEG4VqVNkSG2+tMB38wYJET
-         23yA==
+        d=redhat.com; s=google; t=1780341249; x=1780946049; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fEKNvAsba0SJLtrb9a8gYF0KmbXHuHrgrDPG3w5Eya8=;
+        b=SGQ+6Age1/PI6bFSkFMYwM8py6xxMsIIxWWZYpxCIp/8P/b2a/RQtIsjxK4Ln6nQiP
+         jM+QpxOu3WnLgDGpMzrn1PoTMUEphZF4P9fL0QK5XmvqgYKCjz+OrhCg0bvgOA/7sx4x
+         BGQfyZfcgk+dBUcaLTT4Gn40NEbK7aNXBTuzxocbJriPE47Zf82tZfqa2Ca7KNXFJiaq
+         0HdZyAGw9l0Z2Dxd5DI8taYI3gnzTKVphTFEHpjRWImYEHNqXkB5clLcM9iw1OiX26FT
+         IltHhEBmRymtsaVSXr0c3cVrrGCKx3evOTk/nFRB4JOj5cWluBJdjzJ2Yhnd/m4+R1Hz
+         OJKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780340868; x=1780945668;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f9b3YM661qDhfKWEa4RmgtMK/vAOZvsXbfWzmrgUEpA=;
-        b=FXcaOXRDjFdln9LRXHTpvDOokvLDIFHqV1TdpU7oAngH9QfYPTED1Wsq5tUOypacNZ
-         TdUXrQoi5pRsG78+U4RhjrcqGXOWgNrppq1oAsRhahU4jDSohJIxB3JQ/PvF8/yPMFhi
-         jfOpo8z/KPhbJdnEbdopvpcnew+OeJpWVWiLN//IrEVGkRQYij2PXSmNPt22oP7TLbNW
-         5vXDO/CD3u9icidDpSLh+syevPvv7mbDNC9XcRCDQE712t4eIH7dxb91DTbeNfJ/3Rc7
-         C+zdYbWI8SQVzdfJWfj7xJlKsSsKVaQrTXVAk/XAr0ABrfSmLtaykcWKxZzsYIomEybd
-         dgYw==
-X-Forwarded-Encrypted: i=1; AFNElJ86/GQb3knaYoIazA/tsgHgH6nuEfo39R/VGiATyYqhUK95ftmGJZ87jB6FQ36l6BgTefI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyapkxiwDE7LRNsSngCluqd2UOEuk9nKZlTYcWv3JpKL6rgY1/a
-	RAEL3QPCR838dELQta48hmx9Akzx4uwF7YZWvG1+L/ZCkcSgyFtsNXHCqs+8eOojfB2EbG+mmPZ
-	ygkIMNQ==
-X-Received: from pjyt18.prod.google.com ([2002:a17:90a:e512:b0:36a:8554:a396])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:270d:b0:368:3d3e:efa6
- with SMTP id 98e67ed59e1d1-36c502165c6mr12161413a91.20.1780340868025; Mon, 01
- Jun 2026 12:07:48 -0700 (PDT)
-Date: Mon, 1 Jun 2026 12:07:47 -0700
-In-Reply-To: <20260530002134.558837-1-jrhilke@google.com>
+        d=1e100.net; s=20251104; t=1780341249; x=1780946049;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fEKNvAsba0SJLtrb9a8gYF0KmbXHuHrgrDPG3w5Eya8=;
+        b=YnlJL9M/ZIAONRA1JYfD84FkbkRuyCXJOhAAGR2NtbD6YGz6QeD7nrhpUjtXj5FniZ
+         EryagGjcRfTMDezLkLhKGEwiT+ZUVlUwmOlgbNYal2BhzbzbUfqvsE5UcSyiAyRL9QKy
+         QNWRyEpr4Ykpo88NBF1ySobJ7hsdgPoq0EZkpd8E8cKg1xmFSkh+w0SSot04ARrNfR09
+         SnD9tZwSuwqyRQ8YB5jDQAFMfXAZa8B5/jvLnPRt44ckdWAv+92jQMY3LhXM1CNe2AQM
+         ZOw2lkaEjM+pk/BM4vQtA2FpiJ2bRyYSXG9A90emqIT/HbavvNtoff8Zr0haN1IM4WNY
+         oaIw==
+X-Forwarded-Encrypted: i=1; AFNElJ/vrSA1UTDqgnujZrWHWAvie3nmdpkrjb055abxA1vMUwoyBOpbYnbdEzK42lTKFCpEV/I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyyy1SBrueavoDfYTc6sBlEmdalAfL5fJ/4m6hi1fUmyvGXOmfZ
+	nzg9VNA/gf+frwER5UGmlvuLRdf903878Zw7OoAjlEmhwwGRGPIDdCfJEf2C53i/OBdH6YNYIVG
+	zln2bltFBpI67SmV5PInBT3ImCzywJuSOZd75fr6GEXLInTABbdEGnlh/pn02eSxsDczNd6HEDK
+	PfZInihZKJPT9lfIsBOMQBGVTtOniK
+X-Gm-Gg: Acq92OFkavIdxakCt/R7TbXvZIRlHjHEreyMCg61NJ8kNGRMomelqYiKtkHKFkrj5eD
+	ltCm9vnqcpRJImBRC4E6aFPdp7xCn0EUA4tmzYXZk3SW50dKc5DDV/Eyc9g59hIQfgXKn2/+bIB
+	s/lGsAWGd/897UhexKHQjUi1+vZFFQbaJOEqREXUkREkATRUbYKjgQRrnzKKrvR66ui7qs9tkC7
+	3a3hvT2LJ6GT7xO1FExGKXwe5qY/TrAiT0msV1NSYuaVJyv+pII6hLe1s0DvDqHWiENumRhlOU+
+	22jU31POocyF5e81Fg==
+X-Received: by 2002:a5d:624e:0:b0:45d:3aa3:7f76 with SMTP id ffacd0b85a97d-45ef6b836a9mr18687188f8f.33.1780341249351;
+        Mon, 01 Jun 2026 12:14:09 -0700 (PDT)
+X-Received: by 2002:a5d:624e:0:b0:45d:3aa3:7f76 with SMTP id
+ ffacd0b85a97d-45ef6b836a9mr18687146f8f.33.1780341248979; Mon, 01 Jun 2026
+ 12:14:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260530002134.558837-1-jrhilke@google.com>
-Message-ID: <ah3Yg8SJZrpdQ8e1@google.com>
-Subject: Re: [PATCH v4 00/19] KVM: selftests: Link with VFIO selftests lib
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20260529165114.748639-1-seanjc@google.com> <20260529165114.748639-2-seanjc@google.com>
+ <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
+ <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
+ <ahnxfACTGeVFbJMk@google.com> <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
+ <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
+ <aho1M7fvK1Qzmiai@google.com> <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
+ <20260601084045.GL3102624@noisy.programming.kicks-ass.net> <20260601111109.r5gExfB1@linutronix.de>
+In-Reply-To: <20260601111109.r5gExfB1@linutronix.de>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 1 Jun 2026 21:13:56 +0200
+X-Gm-Features: AVHnY4JzM-S8NeQWY13Kkb4jUkr8kZy4SoNBK-bPIujgrxYd175jxRAMyQ9Zxuo
+Message-ID: <CABgObfY8_J4D5C8CHMSuoa7c4-PnVxY6CCVgGO+yq9E_5NYtxg@mail.gmail.com>
+Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in __rwbase_read_unlock()
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>, Sean Christopherson <seanjc@google.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, Ingo Molnar <mingo@redhat.com>, 
+	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>, 
+	kvm <kvm@vger.kernel.org>, 
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, David Woodhouse <dwmw@amazon.co.uk>, 
+	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, 
+	Carsten Stollmaier <stollmc@amazon.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, May 30, 2026, Josh Hilke wrote:
-> David Matlack (12):
->   KVM: selftests: Build and link selftests/vfio/lib into KVM selftests
->   KVM: selftests: Add /proc/interrupts parsing helpers for IRQ test
->   KVM: selftests: Add guest read/write macros
->   KVM: selftests: Add IRQ injection test
->   KVM: selftests: Verify IRQ bypass works in IRQ test
->   KVM: selftests: Verify interrupts are received when IRQ affinity
->     changes in IRQ test
->   KVM: selftests: Verify IRQs wake up halted vCPUs in IRQ test
->   KVM: selftests: Verify interrupts are received after modifying IRQ
->     routes in IRQ test
->   KVM: selftests: Make number of IRQs configurable in IRQ test
->   KVM: selftests: Verify non-postable IRQ remapping in IRQ test
->   KVM: selftests: Make number of vCPUs configurable in IRQ test
->   KVM: selftests: Add xAPIC support in IRQ test
-> 
-> Josh Hilke (7):
->   KVM: selftests: Rename guest_rng to kvm_rng
->   KVM: selftests: Add helper to generate random u64 in range [min,max]
->   KVM: selftests: Add kvm_gettid() wrapper and convert users
->   KVM: selftests: Add kvm_sched_getaffinity() wrapper and convert users
->   KVM: selftests: Add pin_task_to_random_cpu() helper function
->   KVM: selftests: Verify vCPU migration during IRQ delivery in IRQ test
->   KVM: selftests: Print vCPU affinity on timeout during IRQ test
-> 
->  tools/testing/selftests/kvm/Makefile.kvm      |   8 +-
->  tools/testing/selftests/kvm/arch_timer.c      |   2 +-
->  .../kvm/arm64/arch_timer_edge_cases.c         |   2 +-
->  .../selftests/kvm/demand_paging_test.c        |   2 +-
->  .../selftests/kvm/dirty_log_perf_test.c       |   4 +-
->  tools/testing/selftests/kvm/dirty_log_test.c  |   8 +-
->  .../selftests/kvm/include/kvm_syscalls.h      |   6 +
->  .../testing/selftests/kvm/include/kvm_util.h  |  13 +
->  .../testing/selftests/kvm/include/proc_util.h |  28 ++
->  .../testing/selftests/kvm/include/test_util.h |  25 +-
->  .../selftests/kvm/include/x86/kvm_util_arch.h |   4 +-
->  tools/testing/selftests/kvm/irq_test.c        | 370 ++++++++++++++++++
->  tools/testing/selftests/kvm/lib/assert.c      |   8 +-
->  tools/testing/selftests/kvm/lib/kvm_util.c    |  95 ++++-
->  tools/testing/selftests/kvm/lib/memstress.c   |   8 +-
->  tools/testing/selftests/kvm/lib/proc_util.c   |  62 +++
->  tools/testing/selftests/kvm/lib/test_util.c   |  27 +-
->  tools/testing/selftests/kvm/mmu_stress_test.c |  15 +-
->  tools/testing/selftests/kvm/rseq_test.c       |   6 +-
->  tools/testing/selftests/kvm/steal_time.c      |  22 +-
->  20 files changed, 635 insertions(+), 80 deletions(-)
->  create mode 100644 tools/testing/selftests/kvm/include/proc_util.h
->  create mode 100644 tools/testing/selftests/kvm/irq_test.c
->  create mode 100644 tools/testing/selftests/kvm/lib/proc_util.c
-> 
-> -- 
+Il lun 1 giu 2026, 13:11 Sebastian Andrzej Siewior
+<bigeasy@linutronix.de> ha scritto:
+> On 2026-06-01 10:40:45 [+0200], Peter Zijlstra wrote:
+> > > When raw_seqcount_try_begin() is used, the typical action when
+> > > the seqcount is busy is to take the same lock that the writer uses.
+> > > Another possibility, found in kernel/events/uprobes.c, is to delay
+> > > the work to a safe point using RCU.  Either way there is no need
+> > > to guarantee progress of the writer under CONFIG_PREEMPT_RT,
+> > > because the caller is not going to call raw_seqcount_try_begin() in a loop.
+>
+> This does not happen. It only happens if the associated lock is
+> preemptible. This is not the case for uprobes.c so there is no lock/
+> unlock.
 
-Please read through Documentation/process/maintainer-kvm-x86.rst.  This isn't
-strictly scoped to KVM x86, but at the same time it's pretty obvious who is going
-to be applying this series.
+The uprobes reference is just an example of a different try_begin
+pattern, that does not involve taking a lock but also doesn't need to
+guarantee progress of the writer. uprobes uses it without a lock but
+that doesn't have to be the case. I thought the commit message was
+reasonably clear but perhaps I was wrong?
 
-Specifically:
+> > > However, raw_seqcount_try_begin() currently uses seqprop_sequence()
+> > > via raw_read_seqcount(), and therefore does a lock/unlock of the
+> > > write-side lock on PREEMPT_RT kernel.  This prevents it from being
+> > > used in atomic context.  Use __seqprop_sequence() instead of
+> > > raw_read_seqcount() to allow it.
+>
+> So it would work if there is no lock associated or it is something like
+> raw_spinlock_t.
 
-  Git Base
-  ~~~~~~~~
-  If you are using git version 2.9.0 or later (Googlers, this is all of you!),
-  use ``git format-patch`` with the ``--base`` flag to automatically include the
-  base tree information in the generated patches.
-  
-  Note, ``--base=auto`` works as expected if and only if a branch's upstream is
-  set to the base topic branch, e.g. it will do the wrong thing if your upstream
-  is set to your personal repository for backup purposes.  An alternative "auto"
-  solution is to derive the names of your development branches based on their
-  KVM x86 topic, and feed that into ``--base``.  E.g. ``x86/pmu/my_branch_name``,
-  and then write a small wrapper to extract ``pmu`` from the current branch name
-  to yield ``--base=x/pmu``, where ``x`` is whatever name your repository uses to
-  track the KVM x86 remote.
+Yes, in which case the patch is a no-op. But in the KVM case that we
+are thinking about in this thread, raw spinlocks are not needed
+because the atomic-context read side would just punt if try_begin()
+fails; and unlike the uprobes case, there would be a lock involved.
+Since it'd be possible to use a regular spinlock, this patch would
+help.
 
-and to a lesser extent:
+> > Yeah, I think this makes sense. Thanks!
+>
+> Do I make sense or do I miss something obvious? On the other it would
+> make sense to have this even for spinlock_t assuming the try_begin
+> version does not try spin and expect to make progress (which it does not
+> for the current users).
 
-  Base Tree/Branch
-  ~~~~~~~~~~~~~~~~
-  Fixes that target the current release, a.k.a. mainline, should be based on
-  ``git://git.kernel.org/pub/scm/virt/kvm/kvm.git master``.  Note, fixes do not
-  automatically warrant inclusion in the current release.  There is no singular
-  rule, but typically only fixes for bugs that are urgent, critical, and/or were
-  introduced in the current release should target the current release.
-  
-  Everything else should be based on ``kvm-x86/next``, i.e. there is no need to
-  select a specific topic branch as the base.  If there are conflicts and/or
-  dependencies across topic branches, it is the maintainer's job to sort them
-  out.
-  
-  The only exception to using ``kvm-x86/next`` as the base is if a patch/series
-  is a multi-arch series, i.e. has non-trivial modifications to common KVM code
-  and/or has more than superficial changes to other architectures' code.  Multi-
-  arch patch/series should instead be based on a common, stable point in KVM's
-  history, e.g. the release candidate upon which ``kvm-x86 next`` is based.  If
-  you're unsure whether a patch/series is truly multi-arch, err on the side of
-  caution and treat it as multi-arch, i.e. use a common base.
+That was my point. The lock/unlock is not causing any current bug in
+the kernel, other than maybe some minor inefficiencies, but it makes
+try_begin() subtly different for PREEMPT_RT kernels and the "obviously
+correct" way to do it isn't the right one. Having to use &s->seqcount
+is yucky.
 
-Through random guessing, I discovered that this appears to be based on 7.0. 
-(a) I shouldn't have to guess.  (b) that's simply too old of a base, e.g. this
-doesn't even apply clean only 7.1-rc1.
+The docs for try_begin() don't say it super explicitly, but still they
+heavily imply you're not meant to spin on it. At that point it's not a
+"try" anymore.
 
-While there's room for interpretation in the "Base Tree/Branch" section, IMO
-using any base older than 7.1-rc2 is blatantly wrong.  Any of 7.1-rc2+, kvm/next,
-or kvm-x86/next would be acceptable (though fairly literal reading of the docs
-would say "don't use kvm-x86/next").
+Thanks,
 
-> 2.54.0.929.g9b7fa37559-goog
-> 
+Paolo
+
+>
+> Sebastian
+>
+
