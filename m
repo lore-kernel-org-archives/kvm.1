@@ -1,120 +1,116 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCC92E11A6
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 16:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682212DF13A
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 16:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780330837; cv=none; b=lnzH7NHOtiuz8btJIDCaelK2icmnhoa9L+kBYkb6ANsRtkaYwpW/DOVIxfbxR/LCvONoIBrgi1kpufehf+hvEa0rKpJ5VffSyv48baUf4x82r3h2C4GsM0a+XCe/5mwfThW6Z5LGyfP+boahdM7vJi0wW6GuYWr5SIVDIbrOGmU=
+	t=1780331151; cv=none; b=Xv9r8NSrh5az4KfaQwGFrPwWLuFlifk0l5XbqDjuyBcevW3gqDEg1f7wUtHCPsNm8k7a36LOn7+ZgU32jIETW6P459/A/jzGfotD2CgPILA1R4IBUgzL1Zw7r+VwQ0irK6XAuW6ENR/IjB0OzfWSRbGR2oryRkD9Bgo3/TVH1n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780330837; c=relaxed/simple;
-	bh=+6fDoFCLgMnhc6zDBiLDHez2SDYFtd6gXfTre2bo5bs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=b4+0kaLfq8BaQk0QrQAfCo/oxMJ/0SFTok26o98F3Gkd/y4EfFrH4cIo/Y55i1LbNT9PsqSIYlibc1evg2rCU7IbBGcvO8qrQ5zjc+IsiAWot7ynE9ceKo0vzxGy2vKzCrDpoNqLjYP8ILmA/BEdjP9kn7pG6NjVzc7ThWoNNMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jY6rGpKf; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780331151; c=relaxed/simple;
+	bh=f28RqbbERckEWmTU5LV+8Yab65R+8OFamOu0E4xp3bo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=VWGlPiIXfunNLWKlqop8iNRIelOXDcQTO720BPQmVr1GmMvUTEarHHfaPfB8rPvq6OP1HhhphXkeSc+G1lRJ9n5OEw3qovpy/+DcsCXqD3uWqONkNSNKKcPOv7ptwjqkCoGIlQabDaEXa67HB/vXdoA917ETSch1DnKj3IZRxFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0jrbEUc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jY6rGpKf"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8581f7723aso1525281a12.0
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 09:20:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780330834; x=1780935634; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hj0JbjSpVQ8PMU19bEVL9jVWMkxuYStreByX7gzfW/k=;
-        b=jY6rGpKf+MENMaNdwW50esF2Vlbmz8kkymFQvfqkytuhCSX1yJ4SCPCbAQ60Cu1MWs
-         Uql0kKJn8me0ewxvYPmdWCZo7PQZ1q2nvj2MpPGihfmtpCwKmLGq6UDwdXS+2Uz3TJV5
-         n5yeDOBHx37Vh4M3O8MC2fBSBaDzfxlZTMMUCQfiP/y81qfXS8nq7T6cBFYjq3uGBUqN
-         i5ljBB56fmVWnPvbcvVTsKU1FWmQkIWEZ6VoTtV7husUZ+xzhRB6tWm4FfjI1TmFcIon
-         PqpGiir08P2kJAFE4Bw1nJ/dLjeGX+zGG4Mek29JLN8bu9LbqKhI9jnlGgksOzJUCccP
-         zFTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780330834; x=1780935634;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hj0JbjSpVQ8PMU19bEVL9jVWMkxuYStreByX7gzfW/k=;
-        b=EEBY7u1aIEzoisRyRPU2ybzp+q/vhZxnA4qelxK/nky74axrG4Y5D9jWDKH6GV9e5q
-         ywZi/4vTRpL2X8xKMNZdFPBLgW9FWickPdOwP6Z0V2aIa/MF3xXv30iLjhO9dQi4vWsr
-         +rkx2Du9B82tmd5tUAFsgWkDQ7sznhNRNmXoEHTn4Gd7Ks8YPHcKiW28f95GbtPGgqhS
-         3HY5NVq+HOCdtJ5y5OX5yEX3eSIA7VfUpJzzYVpZ09BWvqhwffZkX1Jd1jBwN1OSTa23
-         tRwe/JbXllpmzm83bGBBJtsyAr3yTwXw23pl7Z9e2Hksp02ZFJS8caNIIm7SlEwfC9HR
-         a9KQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8/UPr66XSUOAmTG94QL2BtNcxVDJEOzbS5/Suzva1P7zxUiVdm2Vn3w8ekKeNtKfz/e5I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv3h2Wx1Q7RvqNLCi0XFunWZC1dEeaoYbU67igwl0nAOnU4tWP
-	9ieiAWhKQ3aku4NagwOptY+ZsWxzl8CS2mvS7O+UnkrrknSdzJomwjO8/WPSGF9TliXk2BoJrC2
-	FDlhDBA==
-X-Received: from plth11.prod.google.com ([2002:a17:902:704b:b0:2b6:417:db8d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d4ce:b0:2bd:606d:b339
- with SMTP id d9443c01a7336-2bf3682c1afmr144415775ad.21.1780330833751; Mon, 01
- Jun 2026 09:20:33 -0700 (PDT)
-Date: Mon, 1 Jun 2026 09:20:33 -0700
-In-Reply-To: <20260529232114.F1D7A1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0jrbEUc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2893F1F00893;
+	Mon,  1 Jun 2026 16:25:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780331150;
+	bh=U2e8U0khiRkOamnvg+Xkkff/lLuvXCB6lm5f6UpDFAY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=C0jrbEUcgpwy//KUKc11t7Y1yOPCTd2/2cbs+SkBIBmVOYJDqv/QAFAj/Vi/brpgE
+	 lJq9KRT/ddAx3p5dMpcFRRuOq7dNHWxOSeRjsh0eBeCDgs7TYaGi51Fl+6eS1W/lsj
+	 z54oiwWx55YjhOmXivvhsOE03t7mH7sNY2Prh0tRcwF8WnFvtX3BJYyXrCFTvIsOGT
+	 lTui16eaoiQJjCZhYaFSWNWWVmMSUE4yRtrxhz68oqg/J1m+5IE20CuKeKJhATLnKv
+	 BBkzlet56AquKrhkZyTmQo9A6QOWf47e1P/fffSqF41k6nq8lcnH41Z49iV6uWKZ1W
+	 OFrabQOuwnx1w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 4/8] KVM: s390: Fix guest / virtual address confusion
+ in _essa_clear_cbrl()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260601152951.196859-5-imbrenda@linux.ibm.com>
+References: <20260601152951.196859-5-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 01 Jun 2026 16:25:49 +0000
+Message-Id: <20260601162550.2893F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529183549.1104619-12-pbonzini@redhat.com> <20260529232114.F1D7A1F00893@smtp.kernel.org>
-Message-ID: <ah2xUUtva9bYaYyG@google.com>
-Subject: Re: [PATCH 11/24] KVM: SEV: Make it more obvious when KVM is writing
- back the current PSC index
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
 
-On Fri, May 29, 2026, sashiko-bot@kernel.org wrote:
-> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > --- a/arch/x86/kvm/svm/sev.c
-> > +++ b/arch/x86/kvm/svm/sev.c
-> > @@ -3947,7 +3947,7 @@ static int snp_begin_psc(struct vcpu_svm *svm)
-> >  	}
-> >  
-> >  	/* Find the start of the next range which needs processing. */
-> > -	for (idx = idx_start; idx <= idx_end; idx++, hdr->cur_entry++) {
-> > +	for (idx = idx_start; idx <= idx_end; idx++) {
-> >  		entry_start = READ_ONCE(entries[idx]);
-> >  
-> [ ... ]
-> > @@ -3974,6 +3974,14 @@ static int snp_begin_psc(struct vcpu_svm *svm)
-> >  
-> >  		if (npages)
-> >  			break;
-> > +
-> > +		/*
-> > +		 * Increment the guest-visible index to communicate the current
-> > +		 * entry back to the guest, e.g. in case of failure.  No need
-> > +		 * for READ_ONCE() as KVM doesn't consume the field, i.e. a
-> > +		 * misbehaving guest can only break itself.
-> > +		 */
-> > +		hdr->cur_entry++;
-> >  	}
-> >  
-> >  	if (idx > idx_end) {
-> 
-> [Severity: High]
-> This is a pre-existing issue, but since we're examining how a misbehaving 
-> guest affects the PSC processing loop, is it possible for a guest to trigger 
-> a soft lockup here?
-> 
-> Looking at snp_begin_psc(), if the guest submits an unsupported PSC operation,
-> we hit the default case and loop back:
-> 
-> next_range:
->     idx_start = READ_ONCE(hdr->cur_entry);
->     ...
->     switch (entry_start.operation) {
->     ...
->     default:
->         __snp_complete_one_psc(svm);
->         goto next_range;
->     }
-> 
-> If a malicious guest concurrently resets hdr->cur_entry back to 0 in the
-> GHCB shared memory, could the host get trapped continuously reading an
-> index of 0 and re-processing the same unsupported entry? 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Already fixed in patch 16, "KVM: SEV: Read start/end indices of PSC requests
-exactly once per #VMGEXIT".
+Pre-existing issues:
+- [High] ptep_zap_softleaf_entry unconditionally calls swap_put_entries_dir=
+ect for all non-present PTEs, including migration and device private entrie=
+s, leading to WARN_ON_ONCE and potential reference leaks.
+--
+
+commit 9ec1cdb739d15e125c9d1bb7c4db08fb59c07068
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+
+KVM: s390: Fix guest / virtual address confusion in _essa_clear_cbrl()
+
+This patch fixes a bug where gmap_helper_zap_one_page was being called with=
+ a
+guest absolute address instead of the expected host virtual address. It
+resolves the issue by converting the address to a host virtual address befo=
+re
+performing the zap.
+
+> diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
+> index cc0553da14cbb..447ec7ed423dc 100644
+> --- a/arch/s390/kvm/priv.c
+> +++ b/arch/s390/kvm/priv.c
+[ ... ]
+> @@ -1199,8 +1200,11 @@ static void _essa_clear_cbrl(struct kvm_vcpu *vcpu=
+, unsigned long *cbrl, int len
+>  		if (!ptep || ptep->s.pr)
+>  			continue;
+>  		pgste =3D pgste_get_lock(ptep);
+> -		if (pgste.usage =3D=3D PGSTE_GPS_USAGE_UNUSED || pgste.zero)
+> -			gmap_helper_zap_one_page(vcpu->kvm->mm, cbrl[i]);
+> +		if (pgste.usage =3D=3D PGSTE_GPS_USAGE_UNUSED || pgste.zero) {
+> +			hva =3D gpa_to_hva(vcpu->kvm, cbrl[i]);
+> +			if (!kvm_is_error_hva(hva))
+> +				gmap_helper_zap_one_page(vcpu->kvm->mm, hva);
+                                ^^^^^^^^^^^^^^^^^^^^^^^^
+[Severity: High]
+This is a pre-existing issue, but does fixing the address passed to
+gmap_helper_zap_one_page expose a bug when encountering non-present PTEs?
+
+Looking at gmap_helper_zap_one_page in arch/s390/mm/gmap_helpers.c, it
+dispatches all pte_swap entries to ptep_zap_softleaf_entry:
+
+    if (pte_swap(*ptep)) {
+        ptep_zap_softleaf_entry(mm, softleaf_from_pte(*ptep));
+        pte_clear(mm, vmaddr, ptep);
+    }
+
+In ptep_zap_softleaf_entry, swap_put_entries_direct is called
+unconditionally. For non-genuine swap entries like migration or device
+private entries, get_swap_device returns NULL, which causes
+swap_put_entries_direct to hit a WARN_ON_ONCE and return early.
+
+Furthermore, for device private entries, the required folio teardown sequen=
+ce
+(normally performed by zap_nonpresent_ptes) is completely skipped. Since
+pte_clear is then called, could this lead to a permanent folio reference le=
+ak
+in addition to triggering a kernel warning?
+
+> +		}
+>  		pgste_set_unlock(ptep, pgste);
+>  	}
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260601152951.1968=
+59-1-imbrenda@linux.ibm.com?part=3D4
