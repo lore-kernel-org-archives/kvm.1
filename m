@@ -1,65 +1,65 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863172F8E8A
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 19:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C41E37F724
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 19:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780341562; cv=none; b=KtSkT4hxHrz3L9GnQSOemOWVkyYpVcaXgvnZhaytjFzeEyee5wZ6awQdECDlzLGelaI867JQCoswNS8GMQhbcnbudoyie47hBu4KCet5wNuTnAmpdlP5GvBGyyA2uKs0MbmA9kphB+IuZXTK3Cj6yiyhJxqXWvI19hP3SE1avfE=
+	t=1780342063; cv=none; b=li9wvfdX8TAYM93TrCQAh1jaiogKfx4S7yBFd0+whs91eebAIVdL6CX8yA6axR6MwQRmYrX4Zg0FMH+9dLVW4BvSoZjwHTM+X2iYnyiT3k9goj16hZUmlsf/FGG8Va0hHIlc1/NxRxd5GvaW7TS53iQ5sEpe6daprB5DGJeO1Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780341562; c=relaxed/simple;
-	bh=zEfIVR2+wL4qd2lKvL0S/1//r+Ri4UYei4VxKDi0rks=;
+	s=arc-20240116; t=1780342063; c=relaxed/simple;
+	bh=0MN/Y67ymESe/boWcO1lDk0G+fGsBBsqQv3a1jAjItY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dFt/1COee+mFF/Ks7bQq8JmZZGKVAs0j0IjkHxbAmr0ddHX8Jj3fFy+DMkz/M3n5WMoEmhD4K5yZzvfZuAIP5UCzbLeT20Yfstu+5L91+ABUGgqya5Jcl6hxh/P8ox8NdN6Nu8qsspnN3U0hABpirFYyaIRrSyYbuvIu6Wz0sXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jCIsZauq; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=Vkt2yCuN7/7mXiXnm59rVjA4sOct4vX1klOjthvCzA38IN+etfiBxkH0YTucgfcswbO43N4ztf5uFau0W6zhc58dGLdnfphVrD/zS9a78QVyyDH/2Cb98Zbkldc+Dv6n7YHcTegXoERvWUQT3eGSyVHTlMTH6xVEAY0+gwXV5F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e1WmmolL; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jCIsZauq"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8531d89e59so6484590a12.0
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 12:19:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e1WmmolL"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36bbcd40642so2641068a91.0
+        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 12:27:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780341561; x=1780946361; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780342060; x=1780946860; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QSXKKPWPQigwDqxR7LXaP/zXZRziHbHIgw2WNqNefEo=;
-        b=jCIsZauqbSgEAdxctf2WJ9zA3raZTvMAiwfFvmZ7Uvbz0QYAAn70moZk9gLDDb8E/U
-         waVGqYTQISzBJ7sQp1alOTB8rrXD4WbKFcV3hbzUepSDnj9jbjmeGPiPoHgAnbZESw3Q
-         U0SDtei0pqjmlAxZgjOZWXo6//Esy9/znErfWZRIf5mo3ChpIXvLLOZynYqzfml3uh2s
-         ORHbOzJYqgzbQcAJ1PsAY5LeZ6yf1zpXspJraStcENHekfRAMSFlmUk+3BzatzHHL7iO
-         3yVc24Am/JitwRp0gl/qdYiXs18gZzog7p5R7PBa5sXoFyMp6+MfRrgrTe/BQv5zvE4W
-         ukwA==
+        bh=PvbHZeJB95QM6qzIRNF0c6K2AYOJG5A+P32Gm5deDX8=;
+        b=e1WmmolL7JJeflic+hjzVh7vdjGZLy3u//36E7G5KUI0EtSMwkUSSrlmHgl9j+hGJz
+         UJfZueuGf7d2ZiHEZDZQ5kG+UiTNODt4wT2Q0CdXKIgPvZP73pMIP0Fx/Fu9Ni0fD9/M
+         Cr8Z2scFHJ1wPkGH9jiIfWrGLluWILn7QVM/VNiQ5JNt4iZju8tTrzlZrU7OS6BAWUvm
+         YaiybU6kxTb1Ap4hq4DSOjUYwHeuuH+Y3W9tAf8KtSxVINkMJnlY/dFqXGlQ+AayQsyl
+         iQQQvY8sW2TKuLgYNL6t3GrmIh0JbW8Xgc0COXa4lrKpouB6bvS/sOLVgKMDdtsiIYJ9
+         YXvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780341561; x=1780946361;
+        d=1e100.net; s=20251104; t=1780342060; x=1780946860;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QSXKKPWPQigwDqxR7LXaP/zXZRziHbHIgw2WNqNefEo=;
-        b=hq68t/1NeRjQFBFTLHyk0xYfLkSdcH4pOJA4JimUpbRI77FqTVqFW+W4Tw1TzXGxVf
-         3DN3XPK3nzxc0gQZDbvxYrMQAtOYERnssP2wa3Y5xyj+uyz56ZaG38WDZVIEQGWkY2Dx
-         9jPbuZ7a8c7Np4Ff0lZ7pWnTiYNfGcC3jF53Ym0Oiu3fQI3f33tRVlNF5xlSa6hupWq0
-         QLJo0BEdlWb7NZctBh/DirLOWYHWNwns0mhNfDFPv2CcNCSuhmmeuLGiaF4lVSt0v6jk
-         2vIu/CTTTsRlr7gJvbhU8fPt5rbGMXnc+AABuDifl30K8RMZpWaA2mKQDSYn3KLwXWZr
-         VM2g==
-X-Forwarded-Encrypted: i=1; AFNElJ/fP6pRjPF6itbcgcwH+khUtqq9KvB5N9GZG5zPUklUqMNHn3DXOb4E3m2hD1R8ErJoCCM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgAbMPX/aNWXgXyq/3PyJT4lYPilQSwj1aKK5KY1JjnGhRIaPF
-	DEjSZ7nl07UQhRwyieo+LDB730zMe7TeO2vZ16A4cLeL1Dx/hNXlVQFoj1fsUyw8ysXwZcLZ5DO
-	K+rEudw==
-X-Received: from pfbcz12.prod.google.com ([2002:aa7:930c:0:b0:83e:c835:edc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a257:b0:842:5bc8:ccf7
- with SMTP id d2e1a72fcca58-8426a97fe80mr579633b3a.34.1780341560531; Mon, 01
- Jun 2026 12:19:20 -0700 (PDT)
-Date: Mon, 1 Jun 2026 12:19:19 -0700
-In-Reply-To: <20260530002134.558837-3-jrhilke@google.com>
+        bh=PvbHZeJB95QM6qzIRNF0c6K2AYOJG5A+P32Gm5deDX8=;
+        b=tOKsNOYyim5OZD9HM/Pdn7ErgQsvcVsWTzVC3AMxlEjh0sZcWMcXRradKIlXQs+wii
+         hAO6aj73x1jvbFdtUSt/M++QaJIlji5YxktFTvQhbdfmM9zMwHYcUBDlMmHt3aQXEqec
+         xJZvVlTqqh2JesB8vfesd0zxIVWgQ6kL+ebE2L32aUf0TtLSmeOlYNcbDF9/fpBfeIwJ
+         2lDhKU3/lrL4Dvf/RHPR74b907pLw/8tcKxZPzAVv//4mTmukg3Zg0HfdbfbPVv3QJMB
+         L1qkYnsgtl/NwzPiJwGOHy+1YvD365/5bfz2WSKYuXwV6VUlrAAPgruvMjqraIdeoXRU
+         fZ9A==
+X-Forwarded-Encrypted: i=1; AFNElJ9PC34QNMQeSpneoWKUcOSA7WkCOXZLBQE2nxOgR+klMT+R+wW/O4T1ViSSYKduLFWkfLg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPKcXfjOpHVcqfbFSH0/f6/s+UqGzmbDCRPzgV4wIZupJU8dBu
+	ETYuC5DyLNNwcfZcEmD99jDXWrimhbTIf+iuDw6K+LfQgsMuKODuO3R8l72RSqwMX6j909wnmf7
+	XWMuSFw==
+X-Received: from pgam4.prod.google.com ([2002:a05:6a02:2b44:b0:c85:85c9:de8c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5868:b0:36d:b818:f848
+ with SMTP id 98e67ed59e1d1-36db818f91cmr5904376a91.5.1780342060307; Mon, 01
+ Jun 2026 12:27:40 -0700 (PDT)
+Date: Mon, 1 Jun 2026 12:27:39 -0700
+In-Reply-To: <20260530002134.558837-15-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260530002134.558837-1-jrhilke@google.com> <20260530002134.558837-3-jrhilke@google.com>
-Message-ID: <ah3bN2G7fsaI4zN1@google.com>
-Subject: Re: [PATCH v4 02/19] KVM: selftests: Add /proc/interrupts parsing
- helpers for IRQ test
+References: <20260530002134.558837-1-jrhilke@google.com> <20260530002134.558837-15-jrhilke@google.com>
+Message-ID: <ah3dK6QK_xN6TvL4@google.com>
+Subject: Re: [PATCH v4 14/19] KVM: selftests: Add kvm_sched_getaffinity()
+ wrapper and convert users
 From: Sean Christopherson <seanjc@google.com>
 To: Josh Hilke <jrhilke@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -67,46 +67,28 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.
 Content-Type: text/plain; charset="us-ascii"
 
 On Sat, May 30, 2026, Josh Hilke wrote:
-> index 000000000000..7c465e8584e2
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/include/proc_util.h
-> @@ -0,0 +1,9 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef SELFTEST_KVM_PROC_UTIL_H
-> +#define SELFTEST_KVM_PROC_UTIL_H
-> +
-> +#include <stdint.h>
-> +
-> +int get_proc_vfio_irq_number(const char *vfio_device_bdf, int msi);
+> diff --git a/tools/testing/selftests/kvm/include/kvm_syscalls.h b/tools/testing/selftests/kvm/include/kvm_syscalls.h
+> index 522ffff0462c..2e362fda50af 100644
+> --- a/tools/testing/selftests/kvm/include/kvm_syscalls.h
+> +++ b/tools/testing/selftests/kvm/include/kvm_syscalls.h
+> @@ -82,5 +82,6 @@ __KVM_SYSCALL_DEFINE(munmap, 2, void *, mem, size_t, size);
+>  __KVM_SYSCALL_DEFINE(close, 1, int, fd);
+>  __KVM_SYSCALL_DEFINE(fallocate, 4, int, fd, int, mode, loff_t, offset, loff_t, len);
+>  __KVM_SYSCALL_DEFINE(ftruncate, 2, unsigned int, fd, off_t, length);
+> +__KVM_SYSCALL_DEFINE(sched_getaffinity, 3, pid_t, pid, size_t, cpusetsize, cpu_set_t *, mask);
 
-I feel like the "proc" is confusing and unintesting.  How the utility gets the
-information is an implementation detail that I don't think the caller particular
-cares about.
+This doesn't compile, needs:
 
-"irq_number" is also vague.  There are myriad IRQ "numbers" in play.  "virtual
-IRQ", as they're sometimes described by the IRQ subsystem, is unfortunately
-terrible terminology for KVM+VFIO.  host_irq and linux_irq are the two names I
-can think of that are fairly specific without too much potential for confusion.
-I'd probably vote for host_irq?
-
-I also think the function needs to have msix in the name, because within VFIO,
-there are multiple flavors of interrupts that can be wired up, and this _only_
-works for MSI-X.  And The param should be @msix.
-
-I also think it might make sense to return an "unsigned int", to communicate that
-it guarantees a valid IRQ was found, but I don't care terribly either way.
-
-Maybe something like this?
-
-  unsigned int vfio_msix_to_host_irq(const char *vfio_device_bdf, int msix)
-
-or
-
-  unsigned int vfio_get_msix_host_irq(const char *vfio_device_bdf, int msix)
-
-or
-
-  unsigned int vfio_get_host_irq_for_msix(const char *vfio_device_bdf, int msix)
-
-I'd probably vote for the first one, vfio_msix_to_host_irq(), as it's more
-obviously "just" a translation helper, e.g. isn't allocating an IRQ or anything.
+diff --git tools/testing/selftests/kvm/include/kvm_syscalls.h tools/testing/selftests/kvm/include/kvm_syscalls.h
+index 3e4cc91d5f87..d796a7228d9d 100644
+--- tools/testing/selftests/kvm/include/kvm_syscalls.h
++++ tools/testing/selftests/kvm/include/kvm_syscalls.h
+@@ -2,6 +2,8 @@
+ #ifndef SELFTEST_KVM_SYSCALLS_H
+ #define SELFTEST_KVM_SYSCALLS_H
+ 
++#include <sched.h>
++
+ #include <sys/syscall.h>
+ 
+ #define MAP_ARGS0(m,...)
