@@ -1,186 +1,175 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0474434F48A
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 18:48:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E832D364EA5
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 19:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780339722; cv=none; b=hCYqOpknQppjmlwMBXdQrxcxHaE+iLf6N3Lj3Bgg0uTRaMifZ1o58DOwPaUH2pEve8GOsF5EyVeRGhgYj95vmkxHLALip6hdJorj9aIFy6tgOmJaj9DATkiPPyN2PEwzhCRGZp3QzHlRctoUUM1+dO1tcxHD3j1manH56KmsWeE=
+	t=1780340871; cv=none; b=RZ4n83COTLGXNIMOZquLSON3uEPENoCDik3ktVBjvgf9qEXtSjZIexr25YDVuJTUSjCPAWowKVCogtmog6PgGzA5kZ5HP96YEa6XpN07QTvugPuZcpWygFhurhSTH0efq6lnlrMnR7JGDWPHZ/Ma1+u7Sl1JUjobKsR2eIbGdks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780339722; c=relaxed/simple;
-	bh=dpwh9EurGC8PWJHM2nwOEMbtuDAWOKFskADoJMJikXc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NV5ftDgEc6QZcmQ6BD62OMyn+MU8n6qf87YvY9ipabAzrtfz4PGmBIhKrxW8L5ducBoK19ZGwJOM7t/+FefDFbuOl+GLfTmzd3WsDJsaWTrrz7UmOFrsPuvDcau8I28UF6H1UPqBjtf4yoS0aQFkxdHE22pf43wL4wdSC9696rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=g8VwfbQ6; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1780340871; c=relaxed/simple;
+	bh=Kelxc5oYGGF7Vhx4zYusKsP/GB4VVycmuA5b5+8D3Wg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jTgvtquPFnPzcFd/WvjbrgoZIKVkk+NZMvBRH8OAWqzyCydJ+T7pcBCy0oS3I7gZW4MJNjAImUT1/oNL/pTC+Kn78W6u+/Q+aWZIBZSEg0v3Mud4cHlU66y1X5xGygFm+Ru1A5onfZuFT0MNXHVvNItnoIlccKQ1CAaHqHCknss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MqgQzG1f; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="g8VwfbQ6"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-91563382bcfso126840185a.0
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 11:48:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MqgQzG1f"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d99333358so1590446a91.3
+        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 12:07:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780339720; x=1780944520; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZOVGBJ+B1pIGsdNReY7mg4M6+73TAYZ+OPVziP9NXJE=;
-        b=g8VwfbQ6/OQdI+ssi72qB/rPbqUxNqrG0AwhNoH/u/48EizSI2O4Hxjc9PC9FiFhle
-         gYaxDuKwklcxwE0R62QrehCjGP4mXnCKCN3rnL5qe1NSzg4geZWep8jezMiDHrUBngID
-         v5bwNcXovAurH+sb4zbeyZbeIN6hQMN6OJb1xp3qn1Xt+16aIU+bvuVU+gCMvpn6NOuT
-         daXS6fCOsUo8SdGhK16F/tUJ3UvyLJQ7r2MpXAZNEhd+kqVZDJgIaKZOwqTHJHHhWYcl
-         /x/yIWCza/NV861UVCqG0H3T1y/6cI/tCPloRGkfJ3irllFEcNi9N+OAxS8MV4Xcxpsa
-         dnoQ==
+        d=google.com; s=20251104; t=1780340868; x=1780945668; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=f9b3YM661qDhfKWEa4RmgtMK/vAOZvsXbfWzmrgUEpA=;
+        b=MqgQzG1fQqW46ttMXZTxcbiM5uEpXhpRal42XPk3o4ZZICTVTYPTN3+JqO0K8Soxwv
+         /8vbkAp/jl2gF2rBHAs+m3V2Ck+Oh/gUSe0NwEVSdjU+NVkm675QlTUcF1O51MRXuPRE
+         Krt+xUOGjZodTFHa3xuFbGUj8TudB0WPtLbdt9hTD4ZlfsTfCWZHNU4koJ3lSoOYdaMc
+         iSxie7FcDYXmlXFGFGxdK95vaCjZLESKN/4iCq9fVxC2iFuJ0p3UGrXbT4JbXsjk9fuh
+         Eh0RnJGtog9X3cdO02GkPK8UATZATxCKnMZhFQVyEPN0NpEG4VqVNkSG2+tMB38wYJET
+         23yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780339720; x=1780944520;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZOVGBJ+B1pIGsdNReY7mg4M6+73TAYZ+OPVziP9NXJE=;
-        b=mDsJw/eCC/wS9RaxkGn4djxwPdjiP0LLnzfbybcT6ksaJZhGIq7dJg9XeP/zMaz26C
-         XvvnxL9XvDOQNlsLqu6GULB0SwQ28QBM953mRy1QUrk1Jtun8lF+xKZl81jO54CGE93x
-         vYgmgwf+h1OfCEZixzCZrUb5nAG358L588J8WW0BEGJsr0Z0MCPq7Xa0N2LuTGa3ZTAG
-         D5E3quQZv96rGnpy7mb/GI9NZQu+aDKiEQj4REedwaD9awbarq9170/OzqlQec+V4Qnc
-         JGL4iPOURldkxxZLTP/HyxG3IzsTJxFdGz4VzTlIbu3zjGqMgI5d3a9YktQ1hHXAPOYb
-         SePg==
-X-Forwarded-Encrypted: i=1; AFNElJ/dHOb8VRKCvJKZgoDO3Z9Ow7FsWnKn87EfJgSf4lul889qRBKHDBS6CQJoKbOCsetOZPc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQIi6JSeWac8ta6nuqsJ6qswCltoqD3yO7yXGchUlU7+Xvi/b5
-	Rwk20AiBjzC3w3TCpBZEiXf3fUIiEOVWNO+Wqy53tbySQ/U9yuKW+3QRi3EHSeD+bMI=
-X-Gm-Gg: Acq92OHY2HHi2sOFA41Ci3uMnJejelLIWRx02cf4fTDmPt6IImL8kv9Gv8jCm9rg5oW
-	Sujvhwzr8YiTSuhajU+nckmFak2LEnZv3azOCDELRrVledJX10k3eZOClWADGN9jNhHn7kAMNof
-	nAdGXX2EXo8XWXTTZOBkMEcCgyaiyaakx7J8L9yY6eikXehXhGf7ESSPlScMi3RANYPHOKs0wH2
-	End6r72733WTFgIDHy2c3b6q777FuQPgj3Z6hT4IULgFZ1XtLIwQ5vGhweZmwb9JvJIuUpn2eKe
-	BmFz51GbglLn/IrkQ/71ab6ezU8J4a71CqLjh2s09pZETjXvCFy0nwlO+YL2Kzr+eaRZOsB/xvx
-	wtlOv3vCOEfZOQHXr5hELjJiNLPZXq24GyQGO8bC9mng5Obrc0MQU5QoSW67fFzUztFSGH3c0A9
-	UZZv5upZUqjQrosNwwtOmxRGJmYjbedY3sLocODWmS/qvF3ihq7wyZQg2jC4waozPJwNddTUSNL
-	Y6DAg5OG1EVETPN
-X-Received: by 2002:a05:620a:630f:20b0:912:1206:ddd1 with SMTP id af79cd13be357-9153d93b157mr1356674885a.1.1780339720004;
-        Mon, 01 Jun 2026 11:48:40 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9153262f45dsm1098180085a.41.2026.06.01.11.48.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 11:48:39 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wU7gk-00000002GHG-3uxy;
-	Mon, 01 Jun 2026 15:48:38 -0300
-Date: Mon, 1 Jun 2026 15:48:38 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
-Cc: Zhiping Zhang <zhipingz@meta.com>, Alex Williamson <alex@shazbot.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>
-Subject: Re: [PATCH v5 0/4] vfio/dma-buf: add TPH support for peer-to-peer
- access
-Message-ID: <20260601184838.GE2487554@ziepe.ca>
-References: <20260527123634.GK2487554@ziepe.ca>
- <a5ff1930-e9fb-43f5-82ab-9875d7a28421@amd.com>
- <CAH3zFs2KALuHXReLZG_uoqvBBWvBzU6rHKakmt6HBV7PZEsD=w@mail.gmail.com>
- <71302a7a-6b9f-40da-af81-b1862dbd637a@amd.com>
- <CAH3zFs036sr93duQKx613pCyOYw4t0_x_TdSza1xBCaEmqijyA@mail.gmail.com>
- <8d9bb0b7-182d-4930-b683-d5d24da6b2ab@amd.com>
- <20260529201130.GU2487554@ziepe.ca>
- <190a1eeb-bd70-4b7b-93a4-60e14f0d6c7e@amd.com>
- <20260601174734.GB2487554@ziepe.ca>
- <dedd8e8f-118c-4ee5-9552-cd2220dbdd23@amd.com>
+        d=1e100.net; s=20251104; t=1780340868; x=1780945668;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f9b3YM661qDhfKWEa4RmgtMK/vAOZvsXbfWzmrgUEpA=;
+        b=FXcaOXRDjFdln9LRXHTpvDOokvLDIFHqV1TdpU7oAngH9QfYPTED1Wsq5tUOypacNZ
+         TdUXrQoi5pRsG78+U4RhjrcqGXOWgNrppq1oAsRhahU4jDSohJIxB3JQ/PvF8/yPMFhi
+         jfOpo8z/KPhbJdnEbdopvpcnew+OeJpWVWiLN//IrEVGkRQYij2PXSmNPt22oP7TLbNW
+         5vXDO/CD3u9icidDpSLh+syevPvv7mbDNC9XcRCDQE712t4eIH7dxb91DTbeNfJ/3Rc7
+         C+zdYbWI8SQVzdfJWfj7xJlKsSsKVaQrTXVAk/XAr0ABrfSmLtaykcWKxZzsYIomEybd
+         dgYw==
+X-Forwarded-Encrypted: i=1; AFNElJ86/GQb3knaYoIazA/tsgHgH6nuEfo39R/VGiATyYqhUK95ftmGJZ87jB6FQ36l6BgTefI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyapkxiwDE7LRNsSngCluqd2UOEuk9nKZlTYcWv3JpKL6rgY1/a
+	RAEL3QPCR838dELQta48hmx9Akzx4uwF7YZWvG1+L/ZCkcSgyFtsNXHCqs+8eOojfB2EbG+mmPZ
+	ygkIMNQ==
+X-Received: from pjyt18.prod.google.com ([2002:a17:90a:e512:b0:36a:8554:a396])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:270d:b0:368:3d3e:efa6
+ with SMTP id 98e67ed59e1d1-36c502165c6mr12161413a91.20.1780340868025; Mon, 01
+ Jun 2026 12:07:48 -0700 (PDT)
+Date: Mon, 1 Jun 2026 12:07:47 -0700
+In-Reply-To: <20260530002134.558837-1-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dedd8e8f-118c-4ee5-9552-cd2220dbdd23@amd.com>
+Mime-Version: 1.0
+References: <20260530002134.558837-1-jrhilke@google.com>
+Message-ID: <ah3Yg8SJZrpdQ8e1@google.com>
+Subject: Re: [PATCH v4 00/19] KVM: selftests: Link with VFIO selftests lib
+From: Sean Christopherson <seanjc@google.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Jun 01, 2026 at 08:17:15PM +0200, Christian König wrote:
-> On 6/1/26 19:47, Jason Gunthorpe wrote:
-> > On Mon, Jun 01, 2026 at 11:59:55AM +0200, Christian König wrote:
-> >>>> When you have a complete open source driver stack which utilizes
-> >>>> VFIO passthrough as the interface to communicate with the kernel
-> >>>> drivers then we can eventually talk about that.
-> >>>
-> >>> That decision is not up to dmabuf
-> >>
-> >> Yes it is. This is the DMA-buf API which is added here.
-> > 
-> > It is a DMA-buf kernel API that is added, I think it is overreaching
-> > to try to veto a VFIO uAPI that calls it..
+On Sat, May 30, 2026, Josh Hilke wrote:
+> David Matlack (12):
+>   KVM: selftests: Build and link selftests/vfio/lib into KVM selftests
+>   KVM: selftests: Add /proc/interrupts parsing helpers for IRQ test
+>   KVM: selftests: Add guest read/write macros
+>   KVM: selftests: Add IRQ injection test
+>   KVM: selftests: Verify IRQ bypass works in IRQ test
+>   KVM: selftests: Verify interrupts are received when IRQ affinity
+>     changes in IRQ test
+>   KVM: selftests: Verify IRQs wake up halted vCPUs in IRQ test
+>   KVM: selftests: Verify interrupts are received after modifying IRQ
+>     routes in IRQ test
+>   KVM: selftests: Make number of IRQs configurable in IRQ test
+>   KVM: selftests: Verify non-postable IRQ remapping in IRQ test
+>   KVM: selftests: Make number of vCPUs configurable in IRQ test
+>   KVM: selftests: Add xAPIC support in IRQ test
 > 
-> Well as long as that is a private interface between VFIO and mlx5 I
-> have no objection at all.
-
-Well, as you know, we are using dmabuf to mediate many of these
-connections now.
-
-I don't mind a "private" interface as a starting point, but it does
-need to discoverable and negotiated without weird module dependencies
-or symbol_gets.
-
-> But when it starts to affect DMA-buf I need to make sure that it
-> works for everybody. And without even being able to test it that
-> becomes really tricky.
-
-They should have an argument how it can be used for CPU backed memory,
-IMHO.
-
-> > This exposes a PCI SIG defined TPH capability in a reasonable simple
-> > VFIO uAPI that can be re-used by any other device that happens to
-> > support TPH on inbound MMIO. The uAPI has sensible general semantics
-> > based around the PCI spec.
+> Josh Hilke (7):
+>   KVM: selftests: Rename guest_rng to kvm_rng
+>   KVM: selftests: Add helper to generate random u64 in range [min,max]
+>   KVM: selftests: Add kvm_gettid() wrapper and convert users
+>   KVM: selftests: Add kvm_sched_getaffinity() wrapper and convert users
+>   KVM: selftests: Add pin_task_to_random_cpu() helper function
+>   KVM: selftests: Verify vCPU migration during IRQ delivery in IRQ test
+>   KVM: selftests: Print vCPU affinity on timeout during IRQ test
 > 
-> That it's implementing an official PCI spec is a good argument.
+>  tools/testing/selftests/kvm/Makefile.kvm      |   8 +-
+>  tools/testing/selftests/kvm/arch_timer.c      |   2 +-
+>  .../kvm/arm64/arch_timer_edge_cases.c         |   2 +-
+>  .../selftests/kvm/demand_paging_test.c        |   2 +-
+>  .../selftests/kvm/dirty_log_perf_test.c       |   4 +-
+>  tools/testing/selftests/kvm/dirty_log_test.c  |   8 +-
+>  .../selftests/kvm/include/kvm_syscalls.h      |   6 +
+>  .../testing/selftests/kvm/include/kvm_util.h  |  13 +
+>  .../testing/selftests/kvm/include/proc_util.h |  28 ++
+>  .../testing/selftests/kvm/include/test_util.h |  25 +-
+>  .../selftests/kvm/include/x86/kvm_util_arch.h |   4 +-
+>  tools/testing/selftests/kvm/irq_test.c        | 370 ++++++++++++++++++
+>  tools/testing/selftests/kvm/lib/assert.c      |   8 +-
+>  tools/testing/selftests/kvm/lib/kvm_util.c    |  95 ++++-
+>  tools/testing/selftests/kvm/lib/memstress.c   |   8 +-
+>  tools/testing/selftests/kvm/lib/proc_util.c   |  62 +++
+>  tools/testing/selftests/kvm/lib/test_util.c   |  27 +-
+>  tools/testing/selftests/kvm/mmu_stress_test.c |  15 +-
+>  tools/testing/selftests/kvm/rseq_test.c       |   6 +-
+>  tools/testing/selftests/kvm/steal_time.c      |  22 +-
+>  20 files changed, 635 insertions(+), 80 deletions(-)
+>  create mode 100644 tools/testing/selftests/kvm/include/proc_util.h
+>  create mode 100644 tools/testing/selftests/kvm/irq_test.c
+>  create mode 100644 tools/testing/selftests/kvm/lib/proc_util.c
 > 
-> But on the other hand looking at the spec it's not really specifying
-> much since everything is architecture specific.
+> -- 
 
-Yeah, spec doesn't say what TPH does when it is received. It is
-intended as an opaque channel between the source and target.
+Please read through Documentation/process/maintainer-kvm-x86.rst.  This isn't
+strictly scoped to KVM x86, but at the same time it's pretty obvious who is going
+to be applying this series.
 
-Even on the CPU DRAM side we make an opaque call into ACPI and the
-BIOS returns back the right value to use for the CPU. The whole thing
-is agressively opaque as to what the values mean to any particular
-device.
+Specifically:
 
-So I don't have an issue with VFIO supplying a value for MMIO it
-owns, it fits the general architecture.
+  Git Base
+  ~~~~~~~~
+  If you are using git version 2.9.0 or later (Googlers, this is all of you!),
+  use ``git format-patch`` with the ``--base`` flag to automatically include the
+  base tree information in the generated patches.
+  
+  Note, ``--base=auto`` works as expected if and only if a branch's upstream is
+  set to the base topic branch, e.g. it will do the wrong thing if your upstream
+  is set to your personal repository for backup purposes.  An alternative "auto"
+  solution is to derive the names of your development branches based on their
+  KVM x86 topic, and feed that into ``--base``.  E.g. ``x86/pmu/my_branch_name``,
+  and then write a small wrapper to extract ``pmu`` from the current branch name
+  to yield ``--base=x/pmu``, where ``x`` is whatever name your repository uses to
+  track the KVM x86 remote.
 
-> > Anyone can repeat the demonstration Meta outlined in their cover
-> > letter: Use this new VFIO uAPI, import the DMABUF to mlx5, use a PCI
-> > analyzer and you will see the PCI SIG defined TPH bits set the way the
-> > VFIO uAPI says they should be set.
-> > 
-> > There is nothing uniquely tied to Meta's device here, or unusable by
-> > someone else's devices. Arguably this is actually a mlx5 feature to
-> > allow VFIO to control its TPH generation HW.
+and to a lesser extent:
+
+  Base Tree/Branch
+  ~~~~~~~~~~~~~~~~
+  Fixes that target the current release, a.k.a. mainline, should be based on
+  ``git://git.kernel.org/pub/scm/virt/kvm/kvm.git master``.  Note, fixes do not
+  automatically warrant inclusion in the current release.  There is no singular
+  rule, but typically only fixes for bugs that are urgent, critical, and/or were
+  introduced in the current release should target the current release.
+  
+  Everything else should be based on ``kvm-x86/next``, i.e. there is no need to
+  select a specific topic branch as the base.  If there are conflicts and/or
+  dependencies across topic branches, it is the maintainer's job to sort them
+  out.
+  
+  The only exception to using ``kvm-x86/next`` as the base is if a patch/series
+  is a multi-arch series, i.e. has non-trivial modifications to common KVM code
+  and/or has more than superficial changes to other architectures' code.  Multi-
+  arch patch/series should instead be based on a common, stable point in KVM's
+  history, e.g. the release candidate upon which ``kvm-x86 next`` is based.  If
+  you're unsure whether a patch/series is truly multi-arch, err on the side of
+  caution and treat it as multi-arch, i.e. use a common base.
+
+Through random guessing, I discovered that this appears to be based on 7.0. 
+(a) I shouldn't have to guess.  (b) that's simply too old of a base, e.g. this
+doesn't even apply clean only 7.1-rc1.
+
+While there's room for interpretation in the "Base Tree/Branch" section, IMO
+using any base older than 7.1-rc2 is blatantly wrong.  Any of 7.1-rc2+, kvm/next,
+or kvm-x86/next would be acceptable (though fairly literal reading of the docs
+would say "don't use kvm-x86/next").
+
+> 2.54.0.929.g9b7fa37559-goog
 > 
-> Would it be possible to demonstrate the functionality with some FPGA
-> implementing an PCIe endpoint?
-
-Sure, you don't even need a special endpoint, any endpoint that
-doesn't explode when it receives a TPH is fine to illustrate that mlx5
-is emitting it correctly.
-
-A fpga reference board with an out of the box PCIe IP demo is likely
-entirely sufficient, and you can use a FPGA logic analyzer to inspect
-the packets.
-
-Though keep in mind mlx5 is formally supporting TPH in a growing
-number of kernel contexts, so we do test and verify our device is
-working properly as an initiator. So I wouldn't advocate anyone
-actually use their time on FPGA :)
-
-> Doesn't needs to be anything funky, just the ability to exercise
-> this for basically everybody who can spend a few $ on the HW.
-
-Topologically you also probably need a PCIe switch as the CPU P2P
-likely discards the header.
-
-Jason
-
