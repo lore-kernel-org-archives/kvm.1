@@ -1,174 +1,231 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0776367B8D
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 08:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE85348C51;
+	Mon,  1 Jun 2026 08:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780304203; cv=none; b=EuGntWFeJTp4sGMb6fRW/61yNW/7ElYT6EvqiRxrllgPUpdYMJsAdqbYSbKCA4czG8P8BHThWLNpv5MGPiA8I+mCKbNxq4j+/An3dhjZAJ6Z3ZB1YRow1+5jP+tDoeIZLJW8vJJKVBtrO1PucpZhLPbG72fp6zB9cMlKsXTkrD0=
+	t=1780304334; cv=none; b=EBPRAwFP0DWhIrq/90ESeVDLV+txtCQrJSmZymoFP+ddrWitc2GNlLKQgV7Uea28+omaLgwU/vZt6IbVn1gYIoTzXPFz3++7sdgD+aGVP/lb/sWjCez/DFDPbjlkn//cU4jx0w2Th3X3Yx7JrxyVE/zbEFWFbk9dQS1jUcjOr94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780304203; c=relaxed/simple;
-	bh=YpZXjVM7pQiqFlv64/Z4sOIz6rIxCWi8HxNUGGOmNkg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=oQ0hNgv1tNC8l1nwh3Vx521RX+0FYet19bzuhcwDxqoLa2HSqPQGvvnAnf7wDIEtAEo1rNLv4bULbvvdjpn7GufYVNBl940ywG4faLryR8PMqujK556lgSf1o7k8+HFMgAtlg3z05e4/r+mZMv6Uffe06/r4m7ObCEATFBFYofY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VX52tI73; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780304334; c=relaxed/simple;
+	bh=e+t+mSDC6vv3f53R8SJC+vopipZq0n2eqkaarLqR9s0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RsuCgxWkDIHr6rsj5ZxD3spnviWVO4R9aDPR42Y6LA0/N1klr4mJadk3sYZdJJTqaFy4aAAb9pRyxtWQ4gNRwjnCRWgSHoQYE7p3iBsgfw0MBwgsJvWlHxBBdvMeqHkeCxHsEIJmuIt6Ret8wc7bGzynpj628HLFtEnkJY3SAMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XVPNXXAH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VX52tI73"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD651F00893;
-	Mon,  1 Jun 2026 08:56:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XVPNXXAH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393B31F00893;
+	Mon,  1 Jun 2026 08:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780304200;
-	bh=KiOEXeV9WlqvDTZfopxJAwQK8d5z2g93sfJyxcA7E8U=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VX52tI73f0zCYSmHRK2KF8fvkMMcAdfYORulNLBZEC65FCDT54Qm/OjvcG1fX0Xk8
-	 n34mK6Vfbh0r9OiWqlyCt1nAGDXjeFf/BC2DshdqqsSqo1M3oeAWgL+3zI4pIqRTAU
-	 xFXsIQBSZ6mymGJFy+y9KoYrSiMGNrTXwREdzgn/pmIh6NNUvdGls73+dyy5+dZRcl
-	 P2YiQnAEAPlvWafD0HB3MHXE5jBwE25UW96zT4aA0kPgopmidJOxoh/kGCsIBE7/X3
-	 TVeuhryQ31mgzXkTU6QiMZYYhx8E8aO9DC4SKN8mmW4KUn4ZpYR3SYoiGwiS4szZUB
-	 aexLliWApaeqQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/3] KVM: RISC-V: SBI FWFT: Fix stale feature
- exposure after runtime extension changes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yong-Xuan Wang" <yongxuan.wang@sifive.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260601-kvm-get_reg_list-v2-v4-1-c88abc81ebda@sifive.com>
-References: <20260601-kvm-get_reg_list-v2-v4-1-c88abc81ebda@sifive.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 01 Jun 2026 08:56:39 +0000
-Message-Id: <20260601085640.3CD651F00893@smtp.kernel.org>
+	s=k20260515; t=1780304333;
+	bh=xra6mQWqXCsVf4c8tbH8WKrL3dgsr6GJMrhvvtsvEsE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XVPNXXAHjn6v1kFuX0uFalR/tJQcBjcbUwzftVX5kR/SRafza64knp513ByJJYsGx
+	 Bg4CzjUH/S5vFR3Kq44FkD0wgXIKplTCmPAAntc9SDhCpp5zdDer87iFF9A3M0H1Ng
+	 6b2YPqP8BjckxNalyDzH5IwG/9GDgnsXAiylfMiHQs2bxfCcgy0Z8VE4uLE0R6Ko9u
+	 Dgp4RVt4LgCFplNSL4OILuiJd3IPBZWtAGafHxkVJifquLfpD/ewGJ1BgX4j+wN8Z1
+	 FZAsiZ3EzduwkLZORh3NzJqdPok5ZIRQ+dMvu13RMpmhmLLrnxDDY5lDDullwViSvQ
+	 Aj0MK2TY9UsLQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wTyTy-000000087FY-3HQP;
+	Mon, 01 Jun 2026 08:58:50 +0000
+Date: Mon, 01 Jun 2026 09:58:49 +0100
+Message-ID: <864ijmvdpy.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: Tian Zheng <zhengtian10@huawei.com>,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	will@kernel.org,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	liuyonglong@huawei.com,
+	Jonathan.Cameron@huawei.com,
+	yezhenyu2@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	suzuki.poulose@arm.com,
+	leo.bras@arm.com
+Subject: Re: [PATCH v3 3/5] KVM: arm64: Add support for FEAT_HDBSS
+In-Reply-To: <ahzUUDAMoHtDFJD3@inochi.infowork>
+References: <20260225040421.2683931-1-zhengtian10@huawei.com>
+	<20260225040421.2683931-4-zhengtian10@huawei.com>
+	<ahzUUDAMoHtDFJD3@inochi.infowork>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: inochiama@gmail.com, zhengtian10@huawei.com, oupton@kernel.org, catalin.marinas@arm.com, corbet@lwn.net, pbonzini@redhat.com, will@kernel.org, yuzenghui@huawei.com, wangzhou1@hisilicon.com, liuyonglong@huawei.com, Jonathan.Cameron@huawei.com, yezhenyu2@huawei.com, linuxarm@huawei.com, joey.gouly@arm.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, skhan@linuxfoundation.org, suzuki.poulose@arm.com, leo.bras@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Mon, 01 Jun 2026 01:50:22 +0100,
+Inochi Amaoto <inochiama@gmail.com> wrote:
+> 
+> On Wed, Feb 25, 2026 at 12:04:19PM +0800, Tian Zheng wrote:
+> > From: eillon <yezhenyu2@huawei.com>
+> > 
+> > Armv9.5 introduces the Hardware Dirty Bit State Structure (HDBSS) feature,
+> > indicated by ID_AA64MMFR1_EL1.HAFDBS == 0b0100. A CPU capability is added
+> > to notify the user of the feature.
+> > 
+> > Add KVM_CAP_ARM_HW_DIRTY_STATE_TRACK ioctl and basic framework for
+> > ARM64 HDBSS support. Since the HDBSS buffer size is configurable and
+> > cannot be determined at KVM initialization, an IOCTL interface is
+> > required.
+> > 
+> > Actually exposing the new capability to user space happens in a later
+> > patch.
+> > 
+> > Signed-off-by: eillon <yezhenyu2@huawei.com>
+> > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+> > ---
+> >  arch/arm64/include/asm/cpufeature.h |  5 +++++
+> >  arch/arm64/kernel/cpufeature.c      | 12 ++++++++++++
+> >  arch/arm64/tools/cpucaps            |  1 +
+> >  include/uapi/linux/kvm.h            |  1 +
+> >  tools/include/uapi/linux/kvm.h      |  1 +
+> >  5 files changed, 20 insertions(+)
+> > 
+> > diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+> > index 4de51f8d92cb..dcc2e2cad5ad 100644
+> > --- a/arch/arm64/include/asm/cpufeature.h
+> > +++ b/arch/arm64/include/asm/cpufeature.h
+> > @@ -856,6 +856,11 @@ static inline bool system_supports_haft(void)
+> >  	return cpus_have_final_cap(ARM64_HAFT);
+> >  }
+> > 
+> > +static inline bool system_supports_hdbss(void)
+> > +{
+> > +	return cpus_have_final_cap(ARM64_HAS_HDBSS);
+> > +}
+> > +
+> >  static __always_inline bool system_supports_mpam(void)
+> >  {
+> >  	return alternative_has_cap_unlikely(ARM64_MPAM);
+> > diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> > index c31f8e17732a..348b0afffc3e 100644
+> > --- a/arch/arm64/kernel/cpufeature.c
+> > +++ b/arch/arm64/kernel/cpufeature.c
+> > @@ -2124,6 +2124,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
+> >  	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
+> >  }
+> > 
+> > +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int cope)
+> > +{
+> > +	return is_kernel_in_hyp_mode() && has_cpuid_feature(entry, cope);
+> > +}
+> > +
+> >  bool cpu_supports_bbml2_noabort(void)
+> >  {
+> >  	/*
+> > @@ -2759,6 +2764,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+> >  		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HAFT)
+> >  	},
+> >  #endif
+> > +	{
+> > +		.desc = "Hardware Dirty state tracking structure (HDBSS)",
+> > +		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
+> > +		.capability = ARM64_HAS_HDBSS,
+> > +		.matches = has_vhe_hdbss,
+> > +		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HDBSS)
+> > +	},
+> >  	{
+> >  		.desc = "CRC32 instructions",
+> >  		.capability = ARM64_HAS_CRC32,
+> > diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
+> > index 7261553b644b..f6ece5b85532 100644
+> > --- a/arch/arm64/tools/cpucaps
+> > +++ b/arch/arm64/tools/cpucaps
+> > @@ -68,6 +68,7 @@ HAS_VA52
+> >  HAS_VIRT_HOST_EXTN
+> >  HAS_WFXT
+> >  HAS_XNX
+> > +HAS_HDBSS
+> >  HAFT
+> >  HW_DBM
+> >  KVM_HVHE
+> 
+> 
+> > diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> > index 65500f5db379..15ee42cdbd51 100644
+> > --- a/include/uapi/linux/kvm.h
+> > +++ b/include/uapi/linux/kvm.h
+> > @@ -985,6 +985,7 @@ struct kvm_enable_cap {
+> >  #define KVM_CAP_ARM_SEA_TO_USER 245
+> >  #define KVM_CAP_S390_USER_OPEREXEC 246
+> >  #define KVM_CAP_S390_KEYOP 247
+> > +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
+> > 
+> >  struct kvm_irq_routing_irqchip {
+> >  	__u32 irqchip;
+> > diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
+> > index dddb781b0507..93e0a1e14dc7 100644
+> > --- a/tools/include/uapi/linux/kvm.h
+> > +++ b/tools/include/uapi/linux/kvm.h
+> > @@ -974,6 +974,7 @@ struct kvm_enable_cap {
+> >  #define KVM_CAP_GUEST_MEMFD_FLAGS 244
+> >  #define KVM_CAP_ARM_SEA_TO_USER 245
+> >  #define KVM_CAP_S390_USER_OPEREXEC 246
+> > +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
+> > 
+> >  struct kvm_irq_routing_irqchip {
+> >  	__u32 irqchip;
+> > --
+> > 2.33.0
+> > 
+> 
+> Instead of having these architecture specific capability, I wonder if
+> we can add a generic capability like "KVM_CAP_HW_DIRTY_STATE", so
+> other architecture supports similar things can reuse this capability,
 
-Pre-existing issues:
-- [High] Modifying the host CPU's CSR_HENVCFG register during vCPU initiali=
-zation without a `vcpu_load()` context corrupts KVM's lazy CSR restore prot=
-ocol, silently breaking the hardware state of previously preempted vCPUs.
-- [High] The runtime hardware probe for PMLEN availability in `try_to_set_p=
-mm()` fails to clear the `PMM` bits in `CSR_HENVCFG` before probing, leadin=
-g to incorrect capability detection due to stale hardware state.
-- [High] FWFT set callbacks for `KVM_SET_ONE_REG` modify configuration CSR =
-values without marking the vCPU's CSRs as dirty, causing the fast-path vCPU=
- load to bypass syncing the updated configuration to hardware.
---
+What of the existing stuff doing the same thing? x86's PML, to start
+with?
 
-commit d959405261fa6c3dcd522a13db8a39c36f4243be
-Author: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+> For this generic thing I suggest, the getter returns the max support 
+> entry count (or the buffer size) it supports like the dirty ring
+> capability. And the setter just let the architecture set the parameters
+> based on the user request.
 
-KVM: RISC-V: SBI FWFT: Fix stale feature exposure after runtime extension c=
-hanges
+This looks wrong on a number of levels.
 
-This commit fixes a bug where FWFT features could be incorrectly exposed
-to guests after userspace disables their dependent ISA extensions at runtim=
-e.
-It introduces an optional init() callback to separate one-time hardware
-detection logic from the runtime availability checks.
+- If you want something generic, there is the existing dirty
+  log/bitmap. How this stuff is populated is none of the user's
+  business (trapping write accesses, dirty bit collection from the
+  PTs, or HW-generated log), and we don't need an extra feature for
+  it. Performance will obviously suck, but that's what you pay for
+  something abstracted and cross-architecture.
 
-> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
-t.c
-> index 2eab15339694f..2ad269a210214 100644
-> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
-> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
+- If you want something architecture specific, then it can't be
+  generic, by definition. You get the raw speed and compatibility with
+  other arch-specific extensions.
 
-[ ... ]
+> This should do no harm to this implement, as everything still depends
+> on the architecture behavior, and leave room for other architecture
+> to reuse this.
 
-> @@ -137,13 +147,17 @@ static bool try_to_set_pmm(unsigned long value)
-> =20
+Again, the generic framework exists, you just have to implement the
+backend you want.
 
-[Severity: High]
-This is a pre-existing issue, but does the runtime hardware probe for PMLEN
-availability in try_to_set_pmm() fail to clear the PMM bits in CSR_HENVCFG
-before probing?
+	M.
 
-KVM uses csr_set(CSR_HENVCFG, value) to probe PMM bits, which performs a
-bitwise OR. If the physical CPU retains leftover bits, setting PMLEN_7 resu=
-lts
-in a combined value. The subsequent csr_read_clear() check then fails, fals=
-ely
-marking supported hardware features as unavailable.
-
-Is a preceding csr_clear(CSR_HENVCFG, ENVCFG_PMM) required before csr_set()=
- to
-ensure correct capability detection?
-
->  static bool kvm_sbi_fwft_pointer_masking_pmlen_supported(struct kvm_vcpu=
- *vcpu)
->  {
-> -	struct kvm_sbi_fwft *fwft =3D vcpu_to_fwft(vcpu);
-> +	return riscv_isa_extension_available(vcpu->arch.isa, SMNPM);
-> +}
-> =20
-> -	if (!riscv_isa_extension_available(vcpu->arch.isa, SMNPM))
-> -		return false;
-> +static bool kvm_sbi_fwft_pointer_masking_pmlen_init(struct kvm_vcpu *vcp=
-u)
-> +{
-> +	struct kvm_sbi_fwft *fwft =3D vcpu_to_fwft(vcpu);
-> =20
-> +	preempt_disable();
->  	fwft->have_vs_pmlen_7 =3D try_to_set_pmm(ENVCFG_PMM_PMLEN_7);
->  	fwft->have_vs_pmlen_16 =3D try_to_set_pmm(ENVCFG_PMM_PMLEN_16);
-
-[Severity: High]
-This is a pre-existing issue, but does modifying the host CPU's CSR_HENVCFG
-register during vCPU initialization without a vcpu_load() context corrupt
-KVM's lazy CSR restore protocol?
-
-When try_to_set_pmm() clears ENVCFG_PMM bits, it clobbers the lazily-preser=
-ved
-CSR_HENVCFG state of whichever vCPU most recently ran on that physical CPU.
-When that vCPU resumes, KVM skips reloading the CSR (if !vcpu->arch.csr_dir=
-ty),
-causing the vCPU to run with corrupted pointer masking state.
-
-Should this hardware mutation be executed within a vcpu_load() / vcpu_put()
-boundary to avoid silently breaking the hardware state of previously preemp=
-ted
-vCPUs?
-
-> +	preempt_enable();
-> =20
->  	return fwft->have_vs_pmlen_7 || fwft->have_vs_pmlen_16;
->  }
-
-[ ... ]
-
-> @@ -502,6 +528,8 @@ static int kvm_sbi_ext_fwft_set_reg(struct kvm_vcpu *=
-vcpu, unsigned long reg_num
->  	conf =3D kvm_sbi_fwft_get_config(vcpu, feature->id);
->  	if (!conf || !conf->supported)
->  		return -ENOENT;
-> +	else if (conf->feature->supported && !conf->feature->supported(vcpu))
-> +		return -ENOENT;
-> =20
->  	switch (reg_num - feature->first_reg_num) {
->  	case 0:
-
-[Severity: High]
-This is a pre-existing issue, but do the FWFT set callbacks for
-KVM_SET_ONE_REG modify configuration CSR values without marking the vCPU's =
-CSRs
-as dirty?
-
-When userspace modifies FWFT state via kvm_sbi_ext_fwft_set_reg(), the .set
-callbacks update vcpu->arch.cfg.henvcfg or vcpu->arch.cfg.hedeleg in memory
-but fail to set vcpu->arch.csr_dirty =3D true.
-
-If the vCPU resumes on the same physical CPU it ran on previously,
-kvm_arch_vcpu_load() evaluates !vcpu->arch.csr_dirty as true, triggering the
-fast-path skip of kvm_riscv_vcpu_config_load().
-
-Could this cause the guest to execute with stale CSR configurations, breaki=
-ng
-functionality?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260601-kvm-get_re=
-g_list-v2-v4-0-c88abc81ebda@sifive.com?part=3D1
+-- 
+Without deviation from the norm, progress is not possible.
