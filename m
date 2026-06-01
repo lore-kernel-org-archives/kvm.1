@@ -1,126 +1,162 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D310C3955C7
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 09:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EE53ACA7C
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 09:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780307157; cv=none; b=EN4zIE1m9V1bYW4EaWJVcwmeeamhKesoK0Jdvs5tTsuwGZ4ks0gQ7P2VBBHxmjvFB4cRJXmx85brxx0vWZO+T2dQ5XhdWGsq+xXRydAaouTn7z7sfa5yh3FWtmZZ1GawiSr7BoPH/69hLfdu2VijjIOgq5LFVCdKz8VT6diJYes=
+	t=1780307910; cv=none; b=jEzuGUyOpI//zFmpFwLdUhxeGp2FQBpTXUJp20IWcEVQogmJ6+veTC6R+2f685vprg4O1U05WmlIX3mcC8mqPbiJYcBUS/aer+HMZMeaSPn8JqKP7eSWGQGf1FGNTOuH9zGTqa+TjoQHF0/5E6XDuqoOZodnDqeIV9IrOSBsams=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780307157; c=relaxed/simple;
-	bh=gKxsvf627xbqNFMQ2TSRvAsaW9tQbESmz3FxHoicc1E=;
+	s=arc-20240116; t=1780307910; c=relaxed/simple;
+	bh=p9GbXbyeUZ6Hga2c6m4Z2W6lvANVadmWWij95pgm3RA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=T9/GZAHGLRTjY+Ve2PwGDkuGmhgL3I641ZV8i33EGlhy6igYFOnnF5gV/ScquvBv9YFW7C17uPklpuJZCQREyu+Sw0fQLgyBHQ3M5Hr9LDZ+maqGXB2PkP+g4VcFgZvi8UTaIg2Xfe5ezq4CUFu02YIEjFOntC9tZ7pZNUY3I3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDWVoUE0; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=biowxe1aOGw3ogd37yH+O3t/XFoS9eKXE0M1YJMB3HHBj0exC6Y1KvwCcSk1G/R2EmoKVCBn/gdWKTqqZqlHNl0fupTcO2IGo66TlErXIuxJr0V6llbVlG/5TUcb1I9Wc267aAJ47rdMdDwv4/5lkhYzzQwa2nEJBhQz8d/Xw0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dB82l5OP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDWVoUE0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8CA1F00893;
-	Mon,  1 Jun 2026 09:45:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dB82l5OP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B2C1F00893;
+	Mon,  1 Jun 2026 09:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780307151;
-	bh=mVyC34Ui1g+SbpOJ1I8tJtvlLyv79b4hPD/8rD4r1Fg=;
+	s=k20260515; t=1780307900;
+	bh=+ePpH6dnXLQhA5XgBaNlXyfUIYbMj9tvu9WbEEgdQQY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cDWVoUE0esVK0OgebWlDM+k5cgCUYPV5k6/5kFiAzUanviolczKi1xbeKZSdjryAI
-	 FfD7b5no+unDtT8TteZChwKRpOfMHJqqTUERgNpjkXJfFDggwRmeo+tusv4CZ+ZAbN
-	 hAAwKEe3jGwtrLOcfC9fvCsd2vZ8bu4dyV3ntMe7sj9tx/PzLpon4qhFfiZhhyUjqQ
-	 CsjL/IJmvXLhDLMZI20jRjuWqiW3s34d0VyPpZPnRmcPAdZJyx8mYlT+Sk/zySKTgJ
-	 5+DljyGhSrwG//5MaZ3x49aLMvDqNHhGYczlF+QsJw/XQdleYJO1njBzaVfKKSvEwb
-	 msXlucPS1Q8hw==
+	b=dB82l5OPZGXQpFI5BEsoWV+Bn4CqzOm7hqBI8H+CAUC2xliJXbpVPimkprF3wkmmZ
+	 wNcTjLehN1i4rlntGkyA7MyhnmZaqqWMVhsMLMuV/cyNb/03HTHHmaTMhslrJp9Tx/
+	 nDfjQKHgsO3ut3yyR7APwpGuj7333GQHFC4HwAW+Cise2nyVEerBnYocuKTdZT35HB
+	 dUUe0YSVTksxyY3sUJezrX+i4FRjXojCrWY0PKz7nl1M62+x/N3a/74MkWEDch+2Qi
+	 Dp3Eb1l3yS+mWL49NHGJ87f5EV5rACflP1mZjHrUpTIls7PuCqY121sBK2fPoUx6ur
+	 dEQPXdUbcs93A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/7] RISC-V: KVM: Allow Zicfiss/Zicfilp extensions
- for Guest/VM
+Subject: Re: [PATCH v2 5/7] RISC-V: KVM: Handle software-check exits for
+ VCPU
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Inochi Amaoto" <inochiama@gmail.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260601084336.2601675-5-inochiama@gmail.com>
-References: <20260601084336.2601675-5-inochiama@gmail.com>
+In-Reply-To: <20260601084336.2601675-6-inochiama@gmail.com>
+References: <20260601084336.2601675-6-inochiama@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 01 Jun 2026 09:45:50 +0000
-Message-Id: <20260601094551.1A8CA1F00893@smtp.kernel.org>
+Date: Mon, 01 Jun 2026 09:58:19 +0000
+Message-Id: <20260601095820.62B2C1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Critical] Missing context switch and API support for the Zicfiss shadow =
-stack pointer (`CSR_SSP`).
-- [High] Zicfilp and Zicfiss extensions are enabled by default, violating K=
-VM subsystem guidelines.
+- [High] KVM fails to context-switch the Shadow Stack Pointer (CSR_SSP), le=
+ading to cross-VCPU leaks and guest shadow stack corruption.
+- [High] KVM fails to propagate the SPELP (Supervisor Previous Expected Lan=
+ding Pad) bit when redirecting traps to the guest, breaking guest CFI track=
+ing.
+- [Medium] KVM unconditionally redirects EXC_SOFTWARE_CHECK to the guest up=
+on VM exit, which will inject an un-enumerated exception into guests that h=
+ave not negotiated the Zicfilp/Zicfiss extensions.
 --
 
-commit a0c518ab3b8be233eb4530a1f65b1f7970a43692
+commit bea0e82f22f5523f333dc995d01ccbe77f69b200
 Author: Inochi Amaoto <inochiama@gmail.com>
 
-RISC-V: KVM: Allow Zicfiss/Zicfilp extensions for Guest/VM
+RISC-V: KVM: Handle software-check exits for VCPU
 
-Extend the KVM ISA extension array to allow KVM userspace to
-detect and enable Zicfiss/Zicfilp extensions for Guest/VM.
+This commit enables the software-check exception for RISC-V KVM, delegating
+it to VS mode so CFI violations (Zicfiss/Zicfilp) can be reported to the
+guest.
 
-> diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/=
-asm/kvm.h
-> index 501e4fc60dd24..9f9c5ababd1e3 100644
-> --- a/arch/riscv/include/uapi/asm/kvm.h
-> +++ b/arch/riscv/include/uapi/asm/kvm.h
-> @@ -199,6 +199,8 @@ enum KVM_RISCV_ISA_EXT_ID {
->  	KVM_RISCV_ISA_EXT_ZCLSD,
->  	KVM_RISCV_ISA_EXT_ZILSD,
->  	KVM_RISCV_ISA_EXT_ZALASR,
-> +	KVM_RISCV_ISA_EXT_ZICFILP,
-> +	KVM_RISCV_ISA_EXT_ZICFISS,
+> diff --git a/arch/riscv/kvm/vcpu_config.c b/arch/riscv/kvm/vcpu_config.c
+> index b2a1028106d5d..dbe4167ac4f16 100644
+> --- a/arch/riscv/kvm/vcpu_config.c
+> +++ b/arch/riscv/kvm/vcpu_config.c
 
-[Severity: Critical]
-Does this patch miss the context switch and API support for the Zicfiss
-shadow stack pointer (CSR_SSP)?
+[ ... ]
 
-Since the Zicfiss extension is exposed to the guest here, shouldn't the
-unbanked ssp CSR (0x011) be saved for the host and restored for the guest
-in arch/riscv/kvm/vcpu_switch.S:__kvm_riscv_switch_to()?
-
-Without this, if the host userspace uses shadow stacks, returning from the
-guest might leave the guest's ssp active, potentially pointing into guest
-memory.
-
-Additionally, ssp appears to be missing from struct kvm_riscv_csr in
-arch/riscv/include/uapi/asm/kvm.h and struct kvm_vcpu_csr in
-arch/riscv/include/asm/kvm_host.h. Does this prevent saving or restoring
-the register during live migration?
-
->  	KVM_RISCV_ISA_EXT_MAX,
->  };
+> @@ -65,6 +65,10 @@ void kvm_riscv_vcpu_config_ran_once(struct kvm_vcpu *v=
+cpu)
 > =20
-> diff --git a/arch/riscv/kvm/isa.c b/arch/riscv/kvm/isa.c
-> index 1132d909cc25c..9852a91fdecc9 100644
-> --- a/arch/riscv/kvm/isa.c
-> +++ b/arch/riscv/kvm/isa.c
-> @@ -65,6 +65,8 @@ static const unsigned long kvm_isa_ext_arr[] =3D {
->  	KVM_ISA_EXT_ARR(ZICBOP),
->  	KVM_ISA_EXT_ARR(ZICBOZ),
->  	KVM_ISA_EXT_ARR(ZICCRSE),
-> +	KVM_ISA_EXT_ARR(ZICFILP),
-> +	KVM_ISA_EXT_ARR(ZICFISS),
+>  	if (vcpu->guest_debug)
+>  		cfg->hedeleg &=3D ~BIT(EXC_BREAKPOINT);
+> +
+> +	if (riscv_isa_extension_available(isa, ZICFILP) ||
+> +	    riscv_isa_extension_available(isa, ZICFISS))
+> +		cfg->hedeleg |=3D BIT(EXC_SOFTWARE_CHECK);
 
 [Severity: High]
-Are these extensions being enabled by default?
+The Zicfiss extension introduces the CSR_SSP (Shadow Stack Pointer) registe=
+r,
+which is a user-mode CSR and isn't automatically saved or restored by the
+hardware on VM exits.
 
-Adding KVM_RISCV_ISA_EXT_ZICFILP and KVM_RISCV_ISA_EXT_ZICFISS here
-advertises them to the KVM capabilities, but they don't appear to be added
-to the exclusion list in kvm_riscv_isa_enable_allowed() in the same file.
+If KVM does not manually context-switch this register in=20
+arch/riscv/kvm/vcpu.c:kvm_riscv_vcpu_context_switch() or during VCPU load/p=
+ut
+paths, could a new VCPU inherit the previous VCPU's CSR_SSP and leak state
+across VMs?
 
-Would this cause them to fall through to the default return true, and
-subsequently be enabled automatically for all new VMs if the host supports
-them?
+Additionally, when returning to host userspace, won't the host kernel's
+exception return code overwrite CSR_SSP with the host process's shadow stack
+pointer, leading to an immediate crash upon re-entry to the guest?
 
-If so, this might silently alter guest hardware discovery and affect
-backwards compatibility for live migration to older hosts.
+>  }
 
->  	KVM_ISA_EXT_ARR(ZICNTR),
->  	KVM_ISA_EXT_ARR(ZICOND),
->  	KVM_ISA_EXT_ARR(ZICSR),
+> diff --git a/arch/riscv/kvm/vcpu_exit.c b/arch/riscv/kvm/vcpu_exit.c
+> index 0bb0c51e3c890..5ab8e87ed248b 100644
+> --- a/arch/riscv/kvm/vcpu_exit.c
+> +++ b/arch/riscv/kvm/vcpu_exit.c
+
+[ ... ]
+
+> @@ -243,6 +243,9 @@ int kvm_riscv_vcpu_exit(struct kvm_vcpu *vcpu, struct=
+ kvm_run *run,
+>  		run->exit_reason =3D KVM_EXIT_DEBUG;
+>  		ret =3D 0;
+>  		break;
+> +	case EXC_SOFTWARE_CHECK:
+> +		ret =3D vcpu_redirect(vcpu, trap);
+
+[Severity: Medium]
+This unconditionally redirects EXC_SOFTWARE_CHECK back to the guest.
+
+If a guest has not negotiated the Zicfilp/Zicfiss extensions, KVM won't
+delegate EXC_SOFTWARE_CHECK via hedeleg.
+
+If an unexpected CPU state or hardware issue triggers this exception in
+VS-mode and traps to HS-mode, this redirect will inject an un-enumerated
+exception into the guest.
+
+Does this code need to verify riscv_isa_extension_available() before
+redirecting the trap?
+
+[Severity: High]
+When a trap occurs in VS/VU-mode and is taken to HS-mode, the hardware
+records the previous Zicfilp ELP state in the host sstatus.SPELP bit, which
+KVM subsequently saves into vcpu->arch.guest_context.sstatus.
+
+When vcpu_redirect() is called here, it eventually invokes
+kvm_riscv_vcpu_trap_redirect(), which updates the guest's VSSTATUS register:
+
+arch/riscv/kvm/vcpu_exit.c:kvm_riscv_vcpu_trap_redirect() {
+    ...
+    unsigned long vsstatus =3D ncsr_read(CSR_VSSTATUS);
+
+    vsstatus &=3D ~SR_SPP;
+    if (vcpu->arch.guest_context.sstatus & SR_SPP)
+        vsstatus |=3D SR_SPP;
+   =20
+    ncsr_write(CSR_VSSTATUS, vsstatus);
+    ...
+}
+
+Since kvm_riscv_vcpu_trap_redirect() explicitly copies SPP, SPIE, and SIE
+but does not copy the SPELP bit (SR_SPELP), does this cause the guest OS to
+lose its Zicfilp CFI tracking state across KVM-injected traps?
+
+> +		break;
+>  	default:
+>  		break;
+>  	}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260601084336.2601=
-675-1-inochiama@gmail.com?part=3D4
+675-1-inochiama@gmail.com?part=3D5
