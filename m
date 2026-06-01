@@ -1,88 +1,75 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9F635B63C
-	for <kvm@vger.kernel.org>; Sun, 31 May 2026 23:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE4D145355
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 00:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780271919; cv=none; b=qVS5zbg/LxisnPsJPptLO2UtcDEBHfGtcux81+xIcJtCBIzKJAr7KCJ5LrN3jWav1pVAfi7rI4iAOX5OAFWFKQFO6La8HN50cByUnZ03qo8Uw1K4tLxcxW+0oMoJqckSRWTwx7PwXzM1Iw5eC31maKwzQm7Jye27Dwiqqq9P21w=
+	t=1780275041; cv=none; b=qP7TdlIymo14E34ZU73NqckSjiwiqDXX2MVvxt24KVthcG1Hyg9PdalWsllYhcKef8K76SA1k6VXr1F9P2hSWcN3n2Cj+GqHKnq6cJMeF33i6K83XA5sz81+qvX5lQKglKaCCkR9nDkyVI0hF4WnC3MOo5YQyH7MctWyxUlkTbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780271919; c=relaxed/simple;
-	bh=ooYjiyJ6bESeHmXTkdx8VEEz9XJkeLo2Rh6zUaPq15U=;
+	s=arc-20240116; t=1780275041; c=relaxed/simple;
+	bh=NkgDjfStwAVwsufE6vFbU/T9ELXHoUZnhbLlqe0wf2o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j26Sxuq+UM+FJXzkC6hTV9BSNRtjz982VyN1kOpLJjy5RNRaWhSK25+3/8GiDdQQL6yMvZ4YlIaG1+yZahi83d4bhTUjLceEVtNSx8XLrJ55ldob7L8ZMlCgPw38KLOeW+5e69HxL68cnMAco4+9ZKFQTq+85PmDBvLs2sVT0rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=dbSa7QpQ; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=ijn/MqkKWumN+aWozJ3QWoAU1dCpuuUC0JmK+SiOqrq8GBQg0MkJyGxCxR1I3+71mhRd6ox06/6KOe8hxsGG+tqesn3wbh0Iu2wyL+0FKXj7l16vv7hImYVzjqcoNisVT0loqsfJGqt8TBMg9NjLPpxUwdlfp9uqZj1SgH8t9JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EPNpUlRw; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="dbSa7QpQ"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-91550eceb4cso81477785a.1
-        for <kvm@vger.kernel.org>; Sun, 31 May 2026 16:58:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EPNpUlRw"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-36d8b644473so860457a91.3
+        for <kvm@vger.kernel.org>; Sun, 31 May 2026 17:50:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780271917; x=1780876717; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780275038; x=1780879838; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hTfGHM2qB3g/FLyvX8FCIrm9+eNCgSr89Naia4gruos=;
-        b=dbSa7QpQSCIRaTEyv4Dl2wlQd7AOtrnoXzin92ac5CGCF7lAz6V1rkhE6RuyqFX86b
-         fWE2C6sey4Ar5iljgqC2iYHETLz05MxQlg3bjCHBb0xT6pieYwbckyMtAgqbD3SD43EB
-         PpSqMva/IdyvHKQnT6rOmXd0dgl+KIFVgL5YkkAPCGeY7i8LJ/Rl2hy2vj/LGHQtV9bz
-         82ai3qc0CMwNi9y6mcoomoJ/Ai1UhsdI/tck3KDVnTWRxN+4olAEoOgnN0oiXH3ZBU68
-         PkHOgv1blrEalsYRWq2ysvKCIBr0u+15tgFRWg5jXNrZjvXacFXUh1WCjbnRFbLn1N/U
-         4ekg==
+        bh=cg6Y3xqfBKjzaemeU2L9Q5dBdOV9FXfEg49CMyYPN/s=;
+        b=EPNpUlRwObo2qWJaaHM096jS+AW2VgYAQ5MCftvnUuPY7ekKVRd26P3IOqORaoH3hg
+         fYUnEdcoRwdOC6b9aLHJJ0sRFewIpWu92/pbxlzHEqv3Q3RswR4P0zXvJpc5Onoej1Pm
+         DAH47Y9Ft1foyWyZVu87btM3dD3xGfuJw5D7apR3hzCYYt/v3IsM6CRWLXgYSykfHy1Q
+         kLzUlZdNOJ04U1Nx3i0L9oE3aj3g1iNAMPD/iHQNDtNjOBV6NwPUb8oIYEM7S4ehJQen
+         2Rq96h65anKTA6PVyFLOAhNg5EHqF3/mIZ5qRs/ZWIDHx0c1DbTImTP9xJrY/ymGyGm6
+         j7VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780271917; x=1780876717;
+        d=1e100.net; s=20251104; t=1780275038; x=1780879838;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hTfGHM2qB3g/FLyvX8FCIrm9+eNCgSr89Naia4gruos=;
-        b=jwCGI2tAjCpOVLTd73gfYq7h/j2bwOSL//8imJpfwRvJ8VhqI4KvnrEbiN4wuONVWp
-         z6SRBRqkZmnxC5K/eI8YQJeiAdZEAJ+i0fIhmSsU5EjOR+Xf3eBnoojWHDUDXcjH2l2G
-         XK/H6XL8HS6PiXLSFjqmqQK5rWR6Q6lAgV3nldII6EvSdJQwQa2s4bg/ZUXx6Dg9pigk
-         tH8VCxRhx+WGkH7Ka+zKV/xIulAsJYMLoXWKgXcn+53AMAxXisWH2JhKGQRI4CiDvi4m
-         xkTst0pNC1pBOjpERulucktwifctK/wqDWTbH0HVkAcP+blr7qmukTgwNaLcrH1zyPLz
-         ca/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9gdGO+frecmtmC+1AOYRiwTslrtMA6OQNDnHpIaaLv9Ky4ffWnEZqGYwGq66bJ1OOTc4w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVbOsApTfIeW99MajsSwH96WuWjfS1iOpxRpA6XW/AQgF3PbHk
-	eHGM9Hlu0NRmcRqmlDjVJIMIbhmL9QBlpFtRCb0i77dVa10sN0l5RKYY4t3I4oHHoVY=
-X-Gm-Gg: Acq92OHGKaaXR7crgDbzXrU1YImXFhTuF8Fu7lX5aNahbESs2nZYSNAaquVH9NwfGoS
-	bS3zqTB8Zr4tvPqjhSsOtfdYm6aOAgYZiLzu4rmI2zsf1/4XhpzlkENMGN0D3IukRYBO0D6xotb
-	iaQzKiWmK24VkKJwC6HVNRAyz0JPch7NSdNPfIzj4Udw49IX0YRd4asMx78fWtoPcvish6KVn+q
-	e29G9SGfGJNKViVtPEwYdcoAsdndM5jsOdg4itPbOnZFgtwY76M5+24qhhijSqE2md18RrXQNTJ
-	oG/MCUOChUhRyB4llFbu8i/xg4y/O++rUHY/SSK7nuF+ssJYGyR8zHCxGnWCjiAKJnVw+PykNa7
-	8rs48D0S+2lWtGJRYKty2kDpjERBTVJpF3OZAcvWOtktXdgoOHgG2EE9c3g2zOFuv0JwpaIfVw2
-	KqgswCnjkXo/FlyHUZ0uTSHJ9bWPebNFUWhqM947CnJWc7mVI6Yl4wcL5Vxrwx6ptnAgn9xFKJJ
-	rhzcKx7ztK68l6Z
-X-Received: by 2002:a05:620a:bc8:b0:8cd:97de:bb52 with SMTP id af79cd13be357-9153d9703b8mr1495082185a.22.1780271916895;
-        Sun, 31 May 2026 16:58:36 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9153262e2a6sm837284285a.40.2026.05.31.16.58.36
+        bh=cg6Y3xqfBKjzaemeU2L9Q5dBdOV9FXfEg49CMyYPN/s=;
+        b=RLQ7rD9u5gebho58KEtV2e5YwgtjVdLrfNRjJZu+zFncq8/1CJS0kIUBihh6m+gCNW
+         xH/TFjD2MzGIgCAe/TJt5wsMbQE83yhNY9/GBYwVszo/zmiUF8nH4Td2BR6ZMBy7j8rj
+         /KjivLOD6SyCAiNpRuOwJQn6BSpJugrMbP/rv3XaCoGMfxUQmr2/9t3dFvbtuGGbC0p1
+         8lOAP5a0GR8byXoOxki9WoJwrHX42CMONnHuS1K6rl8KvlqjomjwW04v31I1OqGaRMt+
+         Stbqpr5UXetRzhSpMf1P8Wg5HYsC/BZUxl4U4fr66Ki8HzyQTHRefQL1O46umcQm3DXR
+         nSgQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8C4fYUIB8pmWZ3nGpJynvaywVDx0E80umtyzK3P3iUsXYqNP4LS/GdmvxTXOV7uabA+F4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzo9uqIJBYwcZp789jme39fQcqefimrQyPp8ilO3LcjxWJDoQao
+	p+zu8K+E5bg3oOiNFDlUsw5GGyhUfEArfKn49SfgEVjKa3252OiLn+hD
+X-Gm-Gg: Acq92OGQEb06+wfPQoW0w51RqHOFYG8m4qdF14hExnsti6QP83z4l+e1gkRTFkKmhbX
+	D0ITXc4q2hHtpFMBBGVHOhGRemZTVV8CtyXyfAHOHb4rpSy2n3cofbIDgpMgNWTyMoGuWMs1QYY
+	yfx83JLCuHkSW4q5d2SaUFHxupkaOQb4kvZNeuKz1OhyvdN42iwgN5ladcr7q0x2CRWTkuiL8ew
+	E+tiNVdRg/Ljpdcptv+Z5z2F2ne9vE6eH7SFThxPGfZ2Vkcl/baouobIFQlf6r9iuESRaOsIYBC
+	kITI4h21v3+hIjSSNQWwZ/LCh0APQOfrlpSnHUeDU9MvKSjocl0moKoMK0oUHCG2QFKXV4jjcak
+	twGjJdBS+UNCD2mIB6mlcrxVY2Tk699uQn34YH1xNfl5cJc/OcirwPlP1Q+6SToUnSKFl4uY1ro
+	ehdi4bSOU+DGXOucJaNilcw13qO61QNVo6LA==
+X-Received: by 2002:a17:90b:2586:b0:36d:b424:4f17 with SMTP id 98e67ed59e1d1-36db4245eb0mr1990613a91.1.1780275038259;
+        Sun, 31 May 2026 17:50:38 -0700 (PDT)
+Received: from localhost ([2001:19f0:8001:1b2d:5400:5ff:fefa:a95d])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36bbdb5c91bsm5313469a91.1.2026.05.31.17.50.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 May 2026 16:58:36 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wTq39-00000001Lt5-3GHA;
-	Sun, 31 May 2026 20:58:35 -0300
-Date: Sun, 31 May 2026 20:58:35 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-Cc: boris.brezillon@collabora.com, robh@kernel.org, steven.price@arm.com,
-	adrian.larumbe@collabora.com, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	liviu.dudau@arm.com, joro@8bytes.org, will@kernel.org,
-	robin.murphy@arm.com, alex@shazbot.org,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kevin.tian@intel.com,
-	baolu.lu@linux.intel.com, suravee.suthikulpanit@amd.com,
-	dwmw2@infradead.org, xlpang@linux.alibaba.com,
-	oliver.yang@linux.alibaba.com, shiyu.zsq@linux.alibaba.com,
-	wei.guo.simon@linux.alibaba.com
-Subject: Re: [PATCH 7/9] vfio/iommufd: use iova_to_phys_length for efficient
- unmap
-Message-ID: <20260531235835.GX2487554@ziepe.ca>
-References: <20260529115116.GR2487554@ziepe.ca>
- <20260531093637.3893199-1-guanghuifeng@linux.alibaba.com>
- <20260531093637.3893199-8-guanghuifeng@linux.alibaba.com>
+        Sun, 31 May 2026 17:50:37 -0700 (PDT)
+Date: Mon, 1 Jun 2026 08:50:22 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Tian Zheng <zhengtian10@huawei.com>, maz@kernel.org, oupton@kernel.org, 
+	catalin.marinas@arm.com, corbet@lwn.net, pbonzini@redhat.com, will@kernel.org
+Cc: yuzenghui@huawei.com, wangzhou1@hisilicon.com, liuyonglong@huawei.com, 
+	Jonathan.Cameron@huawei.com, yezhenyu2@huawei.com, linuxarm@huawei.com, joey.gouly@arm.com, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, skhan@linuxfoundation.org, 
+	suzuki.poulose@arm.com, leo.bras@arm.com, Inochi Amaoto <inochiama@gmail.com>
+Subject: Re: [PATCH v3 3/5] KVM: arm64: Add support for FEAT_HDBSS
+Message-ID: <ahzUUDAMoHtDFJD3@inochi.infowork>
+References: <20260225040421.2683931-1-zhengtian10@huawei.com>
+ <20260225040421.2683931-4-zhengtian10@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -91,70 +78,133 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260531093637.3893199-8-guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20260225040421.2683931-4-zhengtian10@huawei.com>
 
-On Sun, May 31, 2026 at 05:36:35PM +0800, Guanghui Feng wrote:
->  		/*
-> -		 * This is pretty slow, it would be nice to get the page size
-> -		 * back from the driver, or have the driver directly fill the
-> -		 * batch.
-> +		 * Use iova_to_phys_length to get both the physical address
-> +		 * and the PTE page size in a single page table walk, allowing
-> +		 * us to skip ahead by the contiguous region size instead of
-> +		 * walking the page tables for every PAGE_SIZE step.
->  		 */
-> -		phys = iommu_iova_to_phys(domain, iova) - page_offset;
-> -		if (!batch_add_pfn(batch, PHYS_PFN(phys)))
-> -			return;
-> -		iova += PAGE_SIZE - page_offset;
-> +		phys = iommu_iova_to_phys_length(domain, iova, &pgsize) -
-> +		       page_offset;
-> +		if (!pgsize || pgsize < PAGE_SIZE)
-> +			pgsize = PAGE_SIZE;
+On Wed, Feb 25, 2026 at 12:04:19PM +0800, Tian Zheng wrote:
+> From: eillon <yezhenyu2@huawei.com>
+> 
+> Armv9.5 introduces the Hardware Dirty Bit State Structure (HDBSS) feature,
+> indicated by ID_AA64MMFR1_EL1.HAFDBS == 0b0100. A CPU capability is added
+> to notify the user of the feature.
+> 
+> Add KVM_CAP_ARM_HW_DIRTY_STATE_TRACK ioctl and basic framework for
+> ARM64 HDBSS support. Since the HDBSS buffer size is configurable and
+> cannot be determined at KVM initialization, an IOCTL interface is
+> required.
+> 
+> Actually exposing the new capability to user space happens in a later
+> patch.
+> 
+> Signed-off-by: eillon <yezhenyu2@huawei.com>
+> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+> ---
+>  arch/arm64/include/asm/cpufeature.h |  5 +++++
+>  arch/arm64/kernel/cpufeature.c      | 12 ++++++++++++
+>  arch/arm64/tools/cpucaps            |  1 +
+>  include/uapi/linux/kvm.h            |  1 +
+>  tools/include/uapi/linux/kvm.h      |  1 +
+>  5 files changed, 20 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+> index 4de51f8d92cb..dcc2e2cad5ad 100644
+> --- a/arch/arm64/include/asm/cpufeature.h
+> +++ b/arch/arm64/include/asm/cpufeature.h
+> @@ -856,6 +856,11 @@ static inline bool system_supports_haft(void)
+>  	return cpus_have_final_cap(ARM64_HAFT);
+>  }
+> 
+> +static inline bool system_supports_hdbss(void)
+> +{
+> +	return cpus_have_final_cap(ARM64_HAS_HDBSS);
+> +}
+> +
+>  static __always_inline bool system_supports_mpam(void)
+>  {
+>  	return alternative_has_cap_unlikely(ARM64_MPAM);
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> index c31f8e17732a..348b0afffc3e 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -2124,6 +2124,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
+>  	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
+>  }
+> 
+> +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int cope)
+> +{
+> +	return is_kernel_in_hyp_mode() && has_cpuid_feature(entry, cope);
+> +}
+> +
+>  bool cpu_supports_bbml2_noabort(void)
+>  {
+>  	/*
+> @@ -2759,6 +2764,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+>  		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HAFT)
+>  	},
+>  #endif
+> +	{
+> +		.desc = "Hardware Dirty state tracking structure (HDBSS)",
+> +		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
+> +		.capability = ARM64_HAS_HDBSS,
+> +		.matches = has_vhe_hdbss,
+> +		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HDBSS)
+> +	},
+>  	{
+>  		.desc = "CRC32 instructions",
+>  		.capability = ARM64_HAS_CRC32,
+> diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
+> index 7261553b644b..f6ece5b85532 100644
+> --- a/arch/arm64/tools/cpucaps
+> +++ b/arch/arm64/tools/cpucaps
+> @@ -68,6 +68,7 @@ HAS_VA52
+>  HAS_VIRT_HOST_EXTN
+>  HAS_WFXT
+>  HAS_XNX
+> +HAS_HDBSS
+>  HAFT
+>  HW_DBM
+>  KVM_HVHE
 
-It is actually a bug if it returns something < PAGE_SIZE, it should
-WARN_ON and try to continue.
 
-> @@ -1177,25 +1177,41 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
->  
->  	iommu_iotlb_gather_init(&iotlb_gather);
->  	while (pos < dma->size) {
-> -		size_t unmapped, len;
-> +		size_t unmapped, len, pgsize;
->  		phys_addr_t phys, next;
->  		dma_addr_t iova = dma->iova + pos;
->  
-> -		phys = iommu_iova_to_phys(domain->domain, iova);
-> +		/* Single page table walk returns both phys and PTE size */
-> +		phys = iommu_iova_to_phys_length(domain->domain, iova,
-> +						  &pgsize);
->  		if (WARN_ON(!phys)) {
->  			pos += PAGE_SIZE;
->  			continue;
->  		}
-> +		if (!pgsize || pgsize < PAGE_SIZE)
-> +			pgsize = PAGE_SIZE;
->  
->  		/*
->  		 * To optimize for fewer iommu_unmap() calls, each of which
->  		 * may require hardware cache flushing, try to find the
->  		 * largest contiguous physical memory chunk to unmap.
-> +		 *
-> +		 * Calculate remaining contiguous bytes within this PTE from
-> +		 * our position, then try to join following physically
-> +		 * contiguous PTEs.
->  		 */
-> -		for (len = PAGE_SIZE; pos + len < dma->size; len += PAGE_SIZE) {
-> -			next = iommu_iova_to_phys(domain->domain, iova + len);
-> +		len = pgsize - (iova & (pgsize - 1));
-> +		for (; pos + len < dma->size; ) {
-> +			size_t next_pgsize;
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 65500f5db379..15ee42cdbd51 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -985,6 +985,7 @@ struct kvm_enable_cap {
+>  #define KVM_CAP_ARM_SEA_TO_USER 245
+>  #define KVM_CAP_S390_USER_OPEREXEC 246
+>  #define KVM_CAP_S390_KEYOP 247
+> +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
+> 
+>  struct kvm_irq_routing_irqchip {
+>  	__u32 irqchip;
+> diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
+> index dddb781b0507..93e0a1e14dc7 100644
+> --- a/tools/include/uapi/linux/kvm.h
+> +++ b/tools/include/uapi/linux/kvm.h
+> @@ -974,6 +974,7 @@ struct kvm_enable_cap {
+>  #define KVM_CAP_GUEST_MEMFD_FLAGS 244
+>  #define KVM_CAP_ARM_SEA_TO_USER 245
+>  #define KVM_CAP_S390_USER_OPEREXEC 246
+> +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
+> 
+>  struct kvm_irq_routing_irqchip {
+>  	__u32 irqchip;
+> --
+> 2.33.0
+> 
 
-Things should be arranged so the iommu_iova_to_phys_length() always
-returns the best length, either because it called into iommupt to get
-it or because it accumulated internally on an old driver.
+Instead of having these architecture specific capability, I wonder if
+we can add a generic capability like "KVM_CAP_HW_DIRTY_STATE", so
+other architecture supports similar things can reuse this capability,
 
-Probably to make this work well the API should include the last
-address to reach so it can stop iterating at the right point.
+For this generic thing I suggest, the getter returns the max support 
+entry count (or the buffer size) it supports like the dirty ring
+capability. And the setter just let the architecture set the parameters
+based on the user request. 
 
-Jason
+This should do no harm to this implement, as everything still depends
+on the architecture behavior, and leave room for other architecture
+to reuse this.
+
+Regards,
+Inochi
