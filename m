@@ -1,186 +1,120 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4633729BDB5
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 16:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCC92E11A6
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 16:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780330695; cv=none; b=QHswKZLGoeMeLmlcKWRsdUprlPuBLCx5AQrgiaqN68OgTWA3Kh+fgg23uyF6lW0loBIL/bDneZHca5RFSQWb3B8EPISkfHo+Yd+QMyVc+VYqrsbPFjwgzc7JTBYgSsgVlKv1Glnkkb+iVMlGDiOTQ7NAw7L7bEUDxkA/h/t8Bsw=
+	t=1780330837; cv=none; b=lnzH7NHOtiuz8btJIDCaelK2icmnhoa9L+kBYkb6ANsRtkaYwpW/DOVIxfbxR/LCvONoIBrgi1kpufehf+hvEa0rKpJ5VffSyv48baUf4x82r3h2C4GsM0a+XCe/5mwfThW6Z5LGyfP+boahdM7vJi0wW6GuYWr5SIVDIbrOGmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780330695; c=relaxed/simple;
-	bh=66rLSXQZ6sV2ExoP3kIQsj8deF5TsolFkL0qsgSbVe0=;
+	s=arc-20240116; t=1780330837; c=relaxed/simple;
+	bh=+6fDoFCLgMnhc6zDBiLDHez2SDYFtd6gXfTre2bo5bs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Nv7i22a4z5Rrr0eBNcArsCv2yB44w6sGJMOgNdflBk9bUw6HGxPQLuTSXHwZ5EjqRwSrdC+TN/I7wcnTiNrss18GHCLcV1CZCpssReCAShLcte64k35VFrOm1d+ka3Y+yBFbyeTxSgqjgxKwxgJo3HOl/kGfe0ijpEbbVVhVkKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r8dV6Cb7; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=b4+0kaLfq8BaQk0QrQAfCo/oxMJ/0SFTok26o98F3Gkd/y4EfFrH4cIo/Y55i1LbNT9PsqSIYlibc1evg2rCU7IbBGcvO8qrQ5zjc+IsiAWot7ynE9ceKo0vzxGy2vKzCrDpoNqLjYP8ILmA/BEdjP9kn7pG6NjVzc7ThWoNNMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jY6rGpKf; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r8dV6Cb7"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0c1e08848so21331335ad.0
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 09:18:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jY6rGpKf"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8581f7723aso1525281a12.0
+        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 09:20:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780330693; x=1780935493; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780330834; x=1780935634; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NnCGGbI4RQKFz/qkCw166U8lw1qB/t/53dFCr4FY9AM=;
-        b=r8dV6Cb73VMErsFC3k1NgEeeZF1h1bJEDRKUNj8ukAnJOZp2RhZtYpAqzHAAi6EZ3A
-         ePpHHVvcmrcKAB6dxeFUX3Dg0LXXgeoYzuHgxoAhCobbDgabbm3JPikkzUpNt3tv0XA0
-         5YmJn5bseOncydONXXrMzkaDDQ6u+tIP+HZNmVm8nWAk8rHVGsUuiXJOrvpavHL7C89m
-         kArxvj+N/vn354OMsF+Pd8L/PCSxmuC1J47ztrgdimPoeSbo2vu49oBA9DsphboKxMu5
-         tMGx9rhUO6CqQPVIaZMmPFUphwrBBnjClFdgZ10K0Sz0o75w6wXTzm0ebb2IJn+qev18
-         ns5g==
+        bh=Hj0JbjSpVQ8PMU19bEVL9jVWMkxuYStreByX7gzfW/k=;
+        b=jY6rGpKf+MENMaNdwW50esF2Vlbmz8kkymFQvfqkytuhCSX1yJ4SCPCbAQ60Cu1MWs
+         Uql0kKJn8me0ewxvYPmdWCZo7PQZ1q2nvj2MpPGihfmtpCwKmLGq6UDwdXS+2Uz3TJV5
+         n5yeDOBHx37Vh4M3O8MC2fBSBaDzfxlZTMMUCQfiP/y81qfXS8nq7T6cBFYjq3uGBUqN
+         i5ljBB56fmVWnPvbcvVTsKU1FWmQkIWEZ6VoTtV7husUZ+xzhRB6tWm4FfjI1TmFcIon
+         PqpGiir08P2kJAFE4Bw1nJ/dLjeGX+zGG4Mek29JLN8bu9LbqKhI9jnlGgksOzJUCccP
+         zFTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780330693; x=1780935493;
+        d=1e100.net; s=20251104; t=1780330834; x=1780935634;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NnCGGbI4RQKFz/qkCw166U8lw1qB/t/53dFCr4FY9AM=;
-        b=FOtbl/Rp2EbtF0eog0jQK9Jjv6c0VAnDR1zf/xAjvVI1ABNlzEQ6SLGgrqM0/79WoB
-         ZBzb1/qBePZxRy0Q46Vyx74OIEpTgVNNjUf/eXiNoJwmWAJxjVzzhc7wsbJrpPWMwh1h
-         JmzdtGen8PVeMs4Ak/l9RKT94sUSTlA4aultPZ8SsHipbBvyNsdBmqAVqPkTuHD5LbDZ
-         SdMPrLbi3wyfjRmA2YA+HvbMsFKN5STCLEOm7U+U6Wu1X/WIAYF+aNIlrXcn+r9l/IIx
-         r7JeBg8Z3GjI8unKtadK8OwNC0NXxYtHIl38JNtcGge+B/IO2pHVCA/0L1cPwP81M5X4
-         tozg==
-X-Forwarded-Encrypted: i=1; AFNElJ/q4DidUx6jNukjrM2x7Gy7mzImZqYTC/pnJYSFZ2wzFWloVau6Fkzv+KI/0VItkvi4Pw0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yymg0BT9Wq6+V3P7p+s4XaXgaNFnU6BZMje9wJL5mQuD3WC4ekv
-	12PIFEBracPzKakzyxKckA8Fa8O9wXD1byxqtQ/3R9voGMmBnY89JVRMBBbS099ArtQsx0h6kfO
-	A3JGt8Q==
-X-Received: from pgbcs9.prod.google.com ([2002:a05:6a02:4189:b0:c79:3224:837d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4765:b0:2bf:23c3:34ba
- with SMTP id d9443c01a7336-2bf368463d8mr150005845ad.28.1780330693361; Mon, 01
- Jun 2026 09:18:13 -0700 (PDT)
-Date: Mon, 1 Jun 2026 09:18:12 -0700
-In-Reply-To: <20260530092947.490971F00893@smtp.kernel.org>
+        bh=Hj0JbjSpVQ8PMU19bEVL9jVWMkxuYStreByX7gzfW/k=;
+        b=EEBY7u1aIEzoisRyRPU2ybzp+q/vhZxnA4qelxK/nky74axrG4Y5D9jWDKH6GV9e5q
+         ywZi/4vTRpL2X8xKMNZdFPBLgW9FWickPdOwP6Z0V2aIa/MF3xXv30iLjhO9dQi4vWsr
+         +rkx2Du9B82tmd5tUAFsgWkDQ7sznhNRNmXoEHTn4Gd7Ks8YPHcKiW28f95GbtPGgqhS
+         3HY5NVq+HOCdtJ5y5OX5yEX3eSIA7VfUpJzzYVpZ09BWvqhwffZkX1Jd1jBwN1OSTa23
+         tRwe/JbXllpmzm83bGBBJtsyAr3yTwXw23pl7Z9e2Hksp02ZFJS8caNIIm7SlEwfC9HR
+         a9KQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8/UPr66XSUOAmTG94QL2BtNcxVDJEOzbS5/Suzva1P7zxUiVdm2Vn3w8ekKeNtKfz/e5I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyv3h2Wx1Q7RvqNLCi0XFunWZC1dEeaoYbU67igwl0nAOnU4tWP
+	9ieiAWhKQ3aku4NagwOptY+ZsWxzl8CS2mvS7O+UnkrrknSdzJomwjO8/WPSGF9TliXk2BoJrC2
+	FDlhDBA==
+X-Received: from plth11.prod.google.com ([2002:a17:902:704b:b0:2b6:417:db8d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d4ce:b0:2bd:606d:b339
+ with SMTP id d9443c01a7336-2bf3682c1afmr144415775ad.21.1780330833751; Mon, 01
+ Jun 2026 09:20:33 -0700 (PDT)
+Date: Mon, 1 Jun 2026 09:20:33 -0700
+In-Reply-To: <20260529232114.F1D7A1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260529183549.1104619-21-pbonzini@redhat.com> <20260530092947.490971F00893@smtp.kernel.org>
-Message-ID: <ah2wxOMC1lqyJ5UD@google.com>
-Subject: Re: [PATCH 20/24] KVM: SEV: Return INVALID_EVENT for SNP-only
- #VMGEXIT from non-SNP guest
+References: <20260529183549.1104619-12-pbonzini@redhat.com> <20260529232114.F1D7A1F00893@smtp.kernel.org>
+Message-ID: <ah2xUUtva9bYaYyG@google.com>
+Subject: Re: [PATCH 11/24] KVM: SEV: Make it more obvious when KVM is writing
+ back the current PSC index
 From: Sean Christopherson <seanjc@google.com>
 To: sashiko-reviews@lists.linux.dev
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Sat, May 30, 2026, sashiko-bot@kernel.org wrote:
+On Fri, May 29, 2026, sashiko-bot@kernel.org wrote:
 > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > index 880a2acd77bff..b59adddfdbccb 100644
 > > --- a/arch/x86/kvm/svm/sev.c
 > > +++ b/arch/x86/kvm/svm/sev.c
-> [ ... ]
-> > @@ -4527,6 +4537,13 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
-> >  		return 1;
+> > @@ -3947,7 +3947,7 @@ static int snp_begin_psc(struct vcpu_svm *svm)
 > >  	}
 > >  
-> > +	if (is_snp_only_vmgexit(control->exit_code) && !is_sev_snp_guest(vcpu)) {
-> > +		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx is SNP-only\n",
-> > +			    control->exit_code);
-> > +		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_EVENT);
-> > +		return 1;
-> > +	}
+> >  	/* Find the start of the next range which needs processing. */
+> > -	for (idx = idx_start; idx <= idx_end; idx++, hdr->cur_entry++) {
+> > +	for (idx = idx_start; idx <= idx_end; idx++) {
+> >  		entry_start = READ_ONCE(entries[idx]);
+> >  
+> [ ... ]
+> > @@ -3974,6 +3974,14 @@ static int snp_begin_psc(struct vcpu_svm *svm)
+> >  
+> >  		if (npages)
+> >  			break;
 > > +
-> >  	ret = sev_es_validate_vmgexit(svm);
-> >  	if (ret)
-> >  		return ret;
+> > +		/*
+> > +		 * Increment the guest-visible index to communicate the current
+> > +		 * entry back to the guest, e.g. in case of failure.  No need
+> > +		 * for READ_ONCE() as KVM doesn't consume the field, i.e. a
+> > +		 * misbehaving guest can only break itself.
+> > +		 */
+> > +		hdr->cur_entry++;
+> >  	}
+> >  
+> >  	if (idx > idx_end) {
 > 
-> [Severity: Low]
-> Does this consume the GHCB sw_exit_code field before verifying that the
-> guest actually marked it as valid?
+> [Severity: High]
+> This is a pre-existing issue, but since we're examining how a misbehaving 
+> guest affects the PSC processing loop, is it possible for a guest to trigger 
+> a soft lockup here?
 > 
-> By moving the is_snp_only_vmgexit(control->exit_code) check before the
-> call to sev_es_validate_vmgexit(), KVM evaluates the exit code before
-> kvm_ghcb_sw_exit_code_is_valid() is checked.
+> Looking at snp_begin_psc(), if the guest submits an unsupported PSC operation,
+> we hit the default case and loop back:
 > 
-> If a non-SNP guest provides a GHCB without setting the valid bit for the
-> exit code, but the uninitialized memory coincidentally matches an SNP-only
-> exit code, will KVM incorrectly return GHCB_ERR_INVALID_EVENT instead of
-> the required GHCB_ERR_MISSING_INPUT?
+> next_range:
+>     idx_start = READ_ONCE(hdr->cur_entry);
+>     ...
+>     switch (entry_start.operation) {
+>     ...
+>     default:
+>         __snp_complete_one_psc(svm);
+>         goto next_range;
+>     }
+> 
+> If a malicious guest concurrently resets hdr->cur_entry back to 0 in the
+> GHCB shared memory, could the host get trapped continuously reading an
+> index of 0 and re-processing the same unsupported entry? 
 
-Super duper technically, yes.  We can't simply swap the order, because exits
-like SVM_VMGEXIT_PSC shouldn't exist for non-SNP guests.  But I guess it would
-be easy and safe enough to do:
-
-	if (kvm_ghcb_sw_exit_code_is_valid(svm) &&
-	    is_snp_only_vmgexit(control->exit_code) && !is_sev_snp_guest(vcpu)) {
-		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx is SNP-only\n",
-			    control->exit_code);
-		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_EVENT);
-		return 1;
-	}
-
-Hmm, I guess the other option would be to split out the "always mandatory" checks
-
-
-	if (!kvm_ghcb_sw_exit_code_is_valid(svm) ||
-	    !kvm_ghcb_sw_exit_info_1_is_valid(svm) ||
-	    !kvm_ghcb_sw_exit_info_2_is_valid(svm))
-		return false;
-
-e.g. end up with:
-
-	if (!kvm_ghcb_sw_exit_code_is_valid(svm) ||
-	    !kvm_ghcb_sw_exit_info_1_is_valid(svm) ||
-	    !kvm_ghcb_sw_exit_info_2_is_valid(svm)) {
-		/*
-		 * Print the exit code even though it may not be marked valid
-		 * as it could help with debugging.
-		 */
-		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx input is not valid\n",
-			    control->exit_code);
-		dump_ghcb(svm);
-		svm_vmgexit_bad_input(svm, GHCB_ERR_MISSING_INPUT);
-		return 1;
-	}
-
-	if (is_snp_only_vmgexit(control->exit_code) && !is_sev_snp_guest(vcpu)) {
-		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx is SNP-only\n",
-			    control->exit_code);
-		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_EVENT);
-		return 1;
-	}
-
-	if (!sev_es_are_required_ghcb_fields_valid(svm)) {
-		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx input is not valid\n",
-			    control->exit_code);
-		dump_ghcb(svm);
-		svm_vmgexit_bad_input(svm, GHCB_ERR_MISSING_INPUT);
-		return 1;
-	}
-
-Hmm, and if we go with the second option, maybe rename sev_es_are_required_ghcb_fields_valid()
-to sev_es_are_ancillary_ghcb_fields_valid()?
-
-I don't particularly love either option, but I think I have a slight (very slight)
-preference for this?
-
-	if (!kvm_ghcb_sw_exit_code_is_valid(svm) ||
-	    !kvm_ghcb_sw_exit_info_1_is_valid(svm) ||
-	    !kvm_ghcb_sw_exit_info_2_is_valid(svm)) {
-		/*
-		 * Print the exit code even though it may not be marked valid
-		 * as it could help with debugging.
-		 */
-		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx input is not valid\n",
-			    control->exit_code);
-		dump_ghcb(svm);
-		svm_vmgexit_bad_input(svm, GHCB_ERR_MISSING_INPUT);
-		return 1;
-	}
-
-	if (is_snp_only_vmgexit(control->exit_code) && !is_sev_snp_guest(vcpu)) {
-		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx is SNP-only\n",
-			    control->exit_code);
-		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_EVENT);
-		return 1;
-	}
-
-	if (!sev_es_are_ancillary_ghcb_fields_valid(svm)) {
-		vcpu_unimpl(vcpu, "vmgexit: exit code %#llx input is not valid\n",
-			    control->exit_code);
-		dump_ghcb(svm);
-		svm_vmgexit_bad_input(svm, GHCB_ERR_MISSING_INPUT);
-		return 1;
-	}
+Already fixed in patch 16, "KVM: SEV: Read start/end indices of PSC requests
+exactly once per #VMGEXIT".
