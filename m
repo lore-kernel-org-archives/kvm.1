@@ -1,94 +1,151 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C41E37F724
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 19:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D035E3ADBAF;
+	Mon,  1 Jun 2026 19:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780342063; cv=none; b=li9wvfdX8TAYM93TrCQAh1jaiogKfx4S7yBFd0+whs91eebAIVdL6CX8yA6axR6MwQRmYrX4Zg0FMH+9dLVW4BvSoZjwHTM+X2iYnyiT3k9goj16hZUmlsf/FGG8Va0hHIlc1/NxRxd5GvaW7TS53iQ5sEpe6daprB5DGJeO1Jg=
+	t=1780343993; cv=none; b=d/14E24sRTgRlzKDWGaFYz0V+XwfPEEaJwl5JrCtVY2iNwg69bHOkp5icX6CPL93fSDtqtgTfv+O0le9Lk2Tu2ljUt8f6gnPbx3GPBMa+ExV5kR2QiK15egkD5xDsLg+3NLRow5HNOTcQ/oGtpZJbT7wCLyxJ7sgryM1yTQCJEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780342063; c=relaxed/simple;
-	bh=0MN/Y67ymESe/boWcO1lDk0G+fGsBBsqQv3a1jAjItY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Vkt2yCuN7/7mXiXnm59rVjA4sOct4vX1klOjthvCzA38IN+etfiBxkH0YTucgfcswbO43N4ztf5uFau0W6zhc58dGLdnfphVrD/zS9a78QVyyDH/2Cb98Zbkldc+Dv6n7YHcTegXoERvWUQT3eGSyVHTlMTH6xVEAY0+gwXV5F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e1WmmolL; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780343993; c=relaxed/simple;
+	bh=mqezQcqx9istaPeCmmXZaMwR719orDM1w23ry+SfsJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XhtjzjjnZCvHpCBSexyKH1ukDjjZx+ob50B13ShpY/D5MJad40tq/6eMrxGF/3zDBprT/rTURA2QSZD9uQUvOTuGvJwC57gwawuTZuuAYsdCa3e9mMUCSNvdPKQhh1GFxwomn2ucfeJrw86MECp49KuOcRvKBd0ZbxrwGHbmsiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jPPf1HSE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e1WmmolL"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36bbcd40642so2641068a91.0
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 12:27:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780342060; x=1780946860; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PvbHZeJB95QM6qzIRNF0c6K2AYOJG5A+P32Gm5deDX8=;
-        b=e1WmmolL7JJeflic+hjzVh7vdjGZLy3u//36E7G5KUI0EtSMwkUSSrlmHgl9j+hGJz
-         UJfZueuGf7d2ZiHEZDZQ5kG+UiTNODt4wT2Q0CdXKIgPvZP73pMIP0Fx/Fu9Ni0fD9/M
-         Cr8Z2scFHJ1wPkGH9jiIfWrGLluWILn7QVM/VNiQ5JNt4iZju8tTrzlZrU7OS6BAWUvm
-         YaiybU6kxTb1Ap4hq4DSOjUYwHeuuH+Y3W9tAf8KtSxVINkMJnlY/dFqXGlQ+AayQsyl
-         iQQQvY8sW2TKuLgYNL6t3GrmIh0JbW8Xgc0COXa4lrKpouB6bvS/sOLVgKMDdtsiIYJ9
-         YXvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780342060; x=1780946860;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PvbHZeJB95QM6qzIRNF0c6K2AYOJG5A+P32Gm5deDX8=;
-        b=tOKsNOYyim5OZD9HM/Pdn7ErgQsvcVsWTzVC3AMxlEjh0sZcWMcXRradKIlXQs+wii
-         hAO6aj73x1jvbFdtUSt/M++QaJIlji5YxktFTvQhbdfmM9zMwHYcUBDlMmHt3aQXEqec
-         xJZvVlTqqh2JesB8vfesd0zxIVWgQ6kL+ebE2L32aUf0TtLSmeOlYNcbDF9/fpBfeIwJ
-         2lDhKU3/lrL4Dvf/RHPR74b907pLw/8tcKxZPzAVv//4mTmukg3Zg0HfdbfbPVv3QJMB
-         L1qkYnsgtl/NwzPiJwGOHy+1YvD365/5bfz2WSKYuXwV6VUlrAAPgruvMjqraIdeoXRU
-         fZ9A==
-X-Forwarded-Encrypted: i=1; AFNElJ9PC34QNMQeSpneoWKUcOSA7WkCOXZLBQE2nxOgR+klMT+R+wW/O4T1ViSSYKduLFWkfLg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPKcXfjOpHVcqfbFSH0/f6/s+UqGzmbDCRPzgV4wIZupJU8dBu
-	ETYuC5DyLNNwcfZcEmD99jDXWrimhbTIf+iuDw6K+LfQgsMuKODuO3R8l72RSqwMX6j909wnmf7
-	XWMuSFw==
-X-Received: from pgam4.prod.google.com ([2002:a05:6a02:2b44:b0:c85:85c9:de8c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5868:b0:36d:b818:f848
- with SMTP id 98e67ed59e1d1-36db818f91cmr5904376a91.5.1780342060307; Mon, 01
- Jun 2026 12:27:40 -0700 (PDT)
-Date: Mon, 1 Jun 2026 12:27:39 -0700
-In-Reply-To: <20260530002134.558837-15-jrhilke@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jPPf1HSE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6831F00893;
+	Mon,  1 Jun 2026 19:59:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780343990;
+	bh=XNCn/hiuq2TSQD0/7268qMBjDGPldqx55TcTTgULBQo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jPPf1HSEtTmrOkKgXG7yZ4L4yWlXriv9f4UInH3EUjfr7uRqEixqsswHEVJD66e/i
+	 UYMnZm3AwHRFYgRV2ih8KtH9UMVsaXegF2blXd/AV6FabDLb+h4l5NmMOw9ZVrD++N
+	 KcX2jHWXOHM02LWFJzDj4MfNwHTR6omd404TzjNZvpI6ZIAf59Yvhv/clTseKbIOtO
+	 ETM1funcq4ukCXv67pvcGJzgYBqL/gNfgi123wCjIaYqeaTkJBGmaBAvvqiI5vVIDR
+	 F9G7b/Sg9jjyGT7K98XQKfJ06MeRLxen4rImVcQChLpFwv+lALs23w52eL46/a7lq6
+	 WVHwgppy+tSkw==
+Date: Mon, 1 Jun 2026 12:59:49 -0700
+From: Kees Cook <kees@kernel.org>
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>,
+	Gabriel Somlo <somlo@cmu.edu>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"David E. Box" <david.e.box@linux.intel.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>,
+	Frank Li <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	John Johansen <john.johansen@canonical.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+	linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
+	openipmi-developer@lists.sourceforge.net, qemu-devel@nongnu.org,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+	usb-storage@lists.one-eyed-alien.net,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, netdev@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 00/11] Convert moduleparams to seq_buf
+Message-ID: <202606011259.CE6E74CE@keescook>
+References: <20260521133315.work.845-kees@kernel.org>
+ <88c5ca1d-eeda-4023-bc7a-397b92780db9@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260530002134.558837-1-jrhilke@google.com> <20260530002134.558837-15-jrhilke@google.com>
-Message-ID: <ah3dK6QK_xN6TvL4@google.com>
-Subject: Re: [PATCH v4 14/19] KVM: selftests: Add kvm_sched_getaffinity()
- wrapper and convert users
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <88c5ca1d-eeda-4023-bc7a-397b92780db9@suse.com>
 
-On Sat, May 30, 2026, Josh Hilke wrote:
-> diff --git a/tools/testing/selftests/kvm/include/kvm_syscalls.h b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-> index 522ffff0462c..2e362fda50af 100644
-> --- a/tools/testing/selftests/kvm/include/kvm_syscalls.h
-> +++ b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-> @@ -82,5 +82,6 @@ __KVM_SYSCALL_DEFINE(munmap, 2, void *, mem, size_t, size);
->  __KVM_SYSCALL_DEFINE(close, 1, int, fd);
->  __KVM_SYSCALL_DEFINE(fallocate, 4, int, fd, int, mode, loff_t, offset, loff_t, len);
->  __KVM_SYSCALL_DEFINE(ftruncate, 2, unsigned int, fd, off_t, length);
-> +__KVM_SYSCALL_DEFINE(sched_getaffinity, 3, pid_t, pid, size_t, cpusetsize, cpu_set_t *, mask);
+On Tue, May 26, 2026 at 08:53:06AM +0200, Petr Pavlu wrote:
+> On 5/21/26 3:33 PM, Kees Cook wrote:
+> > Hi,
+> > 
+> > I tried to trim the CC list here, but it's still pretty huge...
+> > 
+> > We've had a long-standing issue with "write to a string pointer" callbacks
+> > that don't bounds check the destination (and for which the bounds is
+> > also not part of the callback prototype, even if it is "known" to be
+> > PAGE_SIZE, which sysfs_emit() depends on). Both moduleparams and sysfs
+> > use this pattern. As a first step, and to test the migration method,
+> > migrate moduleparams first.
+> > 
+> > There are 2 "mechanical" treewide patches that are handled by Coccinelle:
+> > - treewide: Convert struct kernel_param_ops initializers to DEFINE_KERNEL_PARAM_OPS
+> > - treewide: Convert custom kernel_param_ops .get callbacks to seq_buf via cocci
+> > 
+> > The last treewide patch is manual, and may need to be broken up into
+> > per-subsystem patches, though I'd prefer to avoid this, as it would
+> > extend the migration from 1 relase to at least 2 releases. (1 to
+> > release the migration infrastructure, then 1 release to collect all the
+> > subsystem changes, and possibly 1 more release to remove the migration
+> > infrastructure.)
+> > 
+> > Thoughts, questions?
+> 
+> This looks reasonable to me. I added a few minor comments on the patches
+> but they already look solid.
 
-This doesn't compile, needs:
+Thanks for the review! I'll get a v2 prepared with your notes addressed. :)
 
-diff --git tools/testing/selftests/kvm/include/kvm_syscalls.h tools/testing/selftests/kvm/include/kvm_syscalls.h
-index 3e4cc91d5f87..d796a7228d9d 100644
---- tools/testing/selftests/kvm/include/kvm_syscalls.h
-+++ tools/testing/selftests/kvm/include/kvm_syscalls.h
-@@ -2,6 +2,8 @@
- #ifndef SELFTEST_KVM_SYSCALLS_H
- #define SELFTEST_KVM_SYSCALLS_H
- 
-+#include <sched.h>
-+
- #include <sys/syscall.h>
- 
- #define MAP_ARGS0(m,...)
+-Kees
+
+-- 
+Kees Cook
