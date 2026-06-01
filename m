@@ -1,214 +1,162 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEB63DE430
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 17:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0B43DF003
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 17:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780335438; cv=none; b=nbPw9s7teGWINw3FnJPx7xHdcoOJ76bLgNNAYYTpwvLBqYkquiJ7x1n50xn4GvOJqCz5NabqMpFBdcd6Yn8jXzZaajLhCyX7+sodwT2ZpY6fxBp3F7A4K++X1e1k1Q4qFegtER5YQruyk+CuLjTGbCp2VPebLYnwmD+Hvx9yh9I=
+	t=1780336058; cv=none; b=uRqE7LSAQ/QetsRNPUUqnwyJ8LYq2OIBikhHmt9R37aH+ITbudabA1u5kK1+tGA4VecrrRxVD7B7COP5Qveua4ZqA1bVMYNaNs8jGFHyYKBHOSnUyCVtRQlSyED/DTAoh50OEeaZ42OQjOx2irqFwn552ERDL9pwE5f2dLuwV3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780335438; c=relaxed/simple;
-	bh=0xurPIo/alkKI0riEvqay5gLBgm0wt9AgRSyEg/9K8Y=;
+	s=arc-20240116; t=1780336058; c=relaxed/simple;
+	bh=eDqBBuInzy1c9i8vrcrIJaFNBUagTiKlEOwIxuahu44=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GbIW/14fuoay/QxTWceT5Rsg8Pj4VFFiggRUQ+dlZx9v9ZoKZ+twtAZU6aalVlY4GPrhWI5SbrE1MA9WuEVGgqXsvD/nYMTNiKlZ7gqbUiPh5y2BIMEqff4VXanLcdP+f4Af3We+2GLMUJK8cv8otyn5qSMFl4h9QzpatiUbcCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tos/ESRw; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=H1Yv0dA+8ukbnCjTLrMECRI79umZGfSXaoYsoxSqnSk/sqggYs1uu5lz9PV9cFA/scP9zXApteTZOVo8i5rUvX7kV8VnNuLO9B0Ck7MzFXfY6zkIBYPXo/NFUYhRx/ULiBrMIl7NJd/0ebJxuyW85ZqvljTriU4pZEic0cxykrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=JBYhAqZc; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tos/ESRw"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2bf2911f93cso2195ad.1
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 10:37:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="JBYhAqZc"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8ccf0fa0aacso42664186d6.2
+        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 10:47:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780335436; x=1780940236; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QqySxUeQPPoGSTVfHQ/saO0tBfCLkU/uPgklhMQc/zE=;
-        b=tos/ESRw9dy1ZxENTEqG9v3QTwnaMeX91nf5fIN7uaGLBzDIZPa8ArLx5/WHIE/5IS
-         Pvlt3KdDINZU45ZE+7d8toGdSn86ZwMZSERId/MbB+/aV9qn1B686geI442/Dx8czEzN
-         pde8lTHdYUbzXYGKWcp/DBO/m72J5wqZsrrSl6zfED+Qn4gydjd+S3k3O+esodas/+Ny
-         m4f+7Yu0cP0W8RKlKJJVcFr/w3kdeTv5KZ9h//Z3/heHBAxcmIyhr8y/YBag3dwNUUpl
-         Mup8UOE2/9WnENIuBCcApquHJgV1VUar/EWc+vZCQ3iVI9ik71gRHiJ9Y/extBb0NQuc
-         oNag==
+        d=ziepe.ca; s=google; t=1780336056; x=1780940856; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=yZ9wJintER1aMQNJJDa24+/EucywMy/j2tmrZTRhl8o=;
+        b=JBYhAqZcrdFABjH5HkSQ6NJsusDEPyaNx3vvmooevzrPf3fMyIsolj2AUHjspXjR4J
+         F+nNZpzC3j3+xoAlPApfQdRSYv+RnG6xCEZkXzj+zLkyaUM6f07ZA1bK029II7sRJZQ1
+         8mb6mCs7R9a54RwfAQBulmx1bryRUrJlOdCYoJLLDXvqsVZl63EOjr6deLshJ19RTTaX
+         QGzMfSIm+4yCJd6s95DC0nEXdjkww26ZXt8SONmsbMRO20uIg2ozGQXqZWMzQv56i6Vc
+         I3XxWperKVcR5Nh+gvyaYcp/1GBDI9Pz6SOhcKd4W1FuS1+KYCw/MA9B8XunvL20LNGF
+         MGFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780335436; x=1780940236;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QqySxUeQPPoGSTVfHQ/saO0tBfCLkU/uPgklhMQc/zE=;
-        b=C0I3PQxyuYbnmM9qx39MQ3zPkaQr1gFhMZxE/efW2NzWEWQK1At+VV8KrKTFX2TOnr
-         7zZa0P6h5OKUBMLc88YA2fdQbFL/vKNtFIwsNXNbuG+ZG9mWUtJnUa6Mpk7PkuCxy/RA
-         g2Uq/AGl/08v8IWiBXPN2L7RBn4foT7yFk7K+tb57o/VLjUK93BK6+mGUZmB30R6dOh5
-         YOoN4bdEr0MryNRjoUc12w0jR0Eazp1wiy/s+GonkjMuZp7GBdOtXqNxJ5GNRCcphgql
-         4CITcmcbTGahFmiKouIzTzSfbu88SJHZgeaD+87x+lCgQ4BSSxciaEWN2+ReCulBCIxq
-         E92g==
-X-Forwarded-Encrypted: i=1; AFNElJ8cnwSEABLm/xJ18fj8up9qcZxw7IimrH1DAeDal7NMut9aVdNQCHayskHKxpEnCGqcAro=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywn9ge29DSpwwZ2NlAgqdkFWIujJvtVGajfhHd0S1SocqcX7zGD
-	9pp1YvHyLw3XkVNRIOKLg3HlAnV92CqQ0zJam1Des4islnyfep3GPgl7KWOZ1G6A9g==
-X-Gm-Gg: Acq92OGt/4iSHIW2firSxDSvEOZdlSlaswJFx9wv39z44KcDXpkYPQSwKxzdym4thGJ
-	taBWrvh6e1qm6CIe/y1iryMkjEO1THOwLRtvmXEaM5Ztw/IPVd5IP0E0JRjNpURBftCjhbeREtI
-	KSNTLVG6GE4lS6lspEhEm+OTdyizsf0rcjiQCXu+cwochfe6KA4P/AeO9qua2F6vw7rMitSamXi
-	grp11GrAwIqRpW1OIry6qQFfd8uFaaFlqAoK+5gXGWq3j39cikC5FoQ41uuiKoQOyNo5TT6UKmf
-	XjWQz8gqWzSqnglxChkv4NZa9OmMw0tz7nKh1LIIkezc0eMrmogOYJp1gwIk1FpT12hgHAsMT3K
-	Q4pURlU7r5XDoDbGFGC7w9Mhb5xL3YuOVfCBOvSIy3GS5Ul0bHauR+kC7WgdB+e6zyJQyVu9h6D
-	7BdO1ylSWYEna6YmBiqA2sGoy35en/5QePn1EvaOSTUdUV85WNy7JhF5jQ9GVg2WHxBtT+5pR3P
-	Pmfmyo=
-X-Received: by 2002:a17:903:8c3:b0:2b4:58ad:e987 with SMTP id d9443c01a7336-2c10ec37892mr78735ad.17.1780335435226;
-        Mon, 01 Jun 2026 10:37:15 -0700 (PDT)
-Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf23a0fea7sm106944965ad.29.2026.06.01.10.37.14
+        d=1e100.net; s=20251104; t=1780336056; x=1780940856;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yZ9wJintER1aMQNJJDa24+/EucywMy/j2tmrZTRhl8o=;
+        b=QZv4JnfoJ9S10x9WOFYU/Ricc3pdWHrYQS7q+k11XszuliObgP3oGvHBmop3Cu/vli
+         2XKEamWsducvV+g0vL5AsvdL9iF/TPwnA4QXO7vFlKXw4Oqrr2tVLDzWPcgh0VVQnfze
+         hN/vUvKvWnYjTFwi8qyXgARWStZB3LVmTmprMeXaAlPIM4VGROksu7vpUp5G2xglRS9E
+         0+OsMlnGoyz54t4BRBPrapX4yqhaizXwxt9rSRGtWLxGHk20bC10o0qAmot0bBzNzQuP
+         fV6NjSf6dX6sh+Ez70noFWrH78/75BH5kEI8w2ehXKRNUhiZQvx/9wvQNz9gX2rFhtMh
+         rwDA==
+X-Forwarded-Encrypted: i=1; AFNElJ9ehkfnFPqwqdObclSKHW4bmfzqAMOMvRyOvF0dO7WdhKV94o5X/Gsdt7gj9CsRxSGTdKk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRunBPQNtaAK2qv3sPczcYbkV2synJAT2uncD9qWj/KES6BTcn
+	0jKHvuohYRTZknF5EJtolKHi5/S/4xP4fOgIrsU6SmA1pVK6FuKDuOr+2dkV6O1j8n4=
+X-Gm-Gg: Acq92OE+nyBgDhT03bkkw1otOtCEqaNIGiwUDQ3nGamcWLo0ujV9gKsawVwWDcBVYc7
+	Fh9G++tjrhKvKc0mvyBgpNbw/I/sTQ+L+88e5NadMIWL0lo4GQ8nBu+4uXK2w5c9nxXHxB0fivg
+	UM/VZLvzq/k45MxWpNymFOXvc6A432QHQ8s2rvfJ++YlIRuWL01W7M07788+TbHVlJG/yjObt37
+	MAnxV518fDrQoZwQ+RDKW3lOp4oROmHcu/CfbvuZjS9bju7ylDHA5nBY5qve/WtgD9PEs+kA8AM
+	3XBHg6asc6ZyyAUEmDcBjxbmi9qZ2KG1ij3S4NuAa4OZ7hQys6jXUymkSx6sk5qH/gwdqe4/fUc
+	2ncQGrPFztZVF5yPesOs7oduoxiiOAL/SkjmfZfqAQ0q0LMzOk0eeX7yJKu+VU5Y8aOZluD+XKs
+	Hvop70r8LQ+LqAKsjjko/Wcf6QoBhlX7VL7kwvOBSkiLz3uPbf4aoLLfjiulOu39UTi6xKYns0z
+	kW63/YXCtOtX5tr
+X-Received: by 2002:ad4:4eec:0:b0:8ac:b258:71d1 with SMTP id 6a1803df08f44-8ccefb29374mr211892386d6.3.1780336055817;
+        Mon, 01 Jun 2026 10:47:35 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ccea25f64bsm96664256d6.47.2026.06.01.10.47.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 10:37:14 -0700 (PDT)
-Date: Mon, 1 Jun 2026 10:37:09 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, 
-	David Matlack <dmatlack@google.com>, Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] vfio: selftests: Find devices that have VFIO selftest
- drivers
-Message-ID: <20260601165745.GB2026478.vipinsh@google.com>
-References: <20260529180425.4162392-1-jrhilke@google.com>
+        Mon, 01 Jun 2026 10:47:35 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wU6je-000000027Jd-2qcE;
+	Mon, 01 Jun 2026 14:47:34 -0300
+Date: Mon, 1 Jun 2026 14:47:34 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: Zhiping Zhang <zhipingz@meta.com>, Alex Williamson <alex@shazbot.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Linus Torvalds <torvalds@linuxfoundation.org>
+Subject: Re: [PATCH v5 0/4] vfio/dma-buf: add TPH support for peer-to-peer
+ access
+Message-ID: <20260601174734.GB2487554@ziepe.ca>
+References: <20260527121438.GJ2487554@ziepe.ca>
+ <ff247643-73e7-44e2-b3d5-8ac0a8efb871@amd.com>
+ <20260527123634.GK2487554@ziepe.ca>
+ <a5ff1930-e9fb-43f5-82ab-9875d7a28421@amd.com>
+ <CAH3zFs2KALuHXReLZG_uoqvBBWvBzU6rHKakmt6HBV7PZEsD=w@mail.gmail.com>
+ <71302a7a-6b9f-40da-af81-b1862dbd637a@amd.com>
+ <CAH3zFs036sr93duQKx613pCyOYw4t0_x_TdSza1xBCaEmqijyA@mail.gmail.com>
+ <8d9bb0b7-182d-4930-b683-d5d24da6b2ab@amd.com>
+ <20260529201130.GU2487554@ziepe.ca>
+ <190a1eeb-bd70-4b7b-93a4-60e14f0d6c7e@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260529180425.4162392-1-jrhilke@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <190a1eeb-bd70-4b7b-93a4-60e14f0d6c7e@amd.com>
 
-On Fri, May 29, 2026 at 06:04:25PM +0000, Josh Hilke wrote:
-> Add a new script, list_devices.sh, which prints out the
-> segment:bus:device.function (SBDF) numbers and names of devices on a
-> machine that have a VFIO selftest driver. This makes it easier to
-> determine if the system is capable of running VFIO selftests.
+On Mon, Jun 01, 2026 at 11:59:55AM +0200, Christian König wrote:
+> >> When you have a complete open source driver stack which utilizes
+> >> VFIO passthrough as the interface to communicate with the kernel
+> >> drivers then we can eventually talk about that.
+> > 
+> > That decision is not up to dmabuf
 > 
-> Includes a -q (quiet) argument which prints just the SBDFs so that the
-> output can be piped into tools/testing/selftests/vfio/script/setup.sh to
-> bind the devices to VFIO to use in VFIO selftests.
+> Yes it is. This is the DMA-buf API which is added here.
+
+It is a DMA-buf kernel API that is added, I think it is overreaching
+to try to veto a VFIO uAPI that calls it..
+
+> > - what VFIO subsystem requires to
+> > accept a new UAPI is up to the VFIO maintainers.
 > 
-> Examples:
-> 
-> $ ./list_devices.sh
-> 0000:6a:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:6f:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:74:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:79:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:e7:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:ec:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:f1:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:f6:01.0 - Intel SPR DSA (8086:0b25)
-> 
-> $ ./list_devices.sh -q
-> 0000:6a:01.0
-> 0000:6f:01.0
-> 0000:74:01.0
-> 0000:79:01.0
-> 0000:e7:01.0
-> 0000:ec:01.0
-> 0000:f1:01.0
-> 0000:f6:01.0
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Josh Hilke <jrhilke@google.com>
-> ---
-> Changelog
-> 
-> v3 -> v4:
-> - Move argument parsing into main() (David)
-> - Use empty string for false in quiet flag (David)
-> - Simplify logic to print device names and IDs (David)
-> 
->  tools/testing/selftests/vfio/Makefile         |  1 +
->  .../selftests/vfio/scripts/list_devices.sh    | 43 +++++++++++++++++++
->  2 files changed, 44 insertions(+)
->  create mode 100755 tools/testing/selftests/vfio/scripts/list_devices.sh
-> 
-> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-> index 0684932d91bf..777f91f09057 100644
-> --- a/tools/testing/selftests/vfio/Makefile
-> +++ b/tools/testing/selftests/vfio/Makefile
-> @@ -15,6 +15,7 @@ TEST_GEN_PROGS += vfio_pci_driver_test
->  
->  TEST_FILES += scripts/cleanup.sh
->  TEST_FILES += scripts/lib.sh
-> +TEST_FILES += scripts/list_devices.sh
+> As far as I can see vfio-pci is used as a stub driver to avoid
+> opening up the real driver.
 
-Nit: Should this file be renamed to supported_devices.sh?
+Yeah, that's probably true.
 
-list_devices.sh sounds to me it will list all of the devices. Just a
-suggestion.
+Frankly, I'd rather they use VFIO like this than to upstream another
+driver for proprietary custom built HW which nobody except Meta even
+has, let alone can use.
 
->  TEST_FILES += scripts/run.sh
->  TEST_FILES += scripts/setup.sh
->  
-> diff --git a/tools/testing/selftests/vfio/scripts/list_devices.sh b/tools/testing/selftests/vfio/scripts/list_devices.sh
-> new file mode 100755
-> index 000000000000..249532f15570
-> --- /dev/null
-> +++ b/tools/testing/selftests/vfio/scripts/list_devices.sh
-> @@ -0,0 +1,43 @@
-> +#!/bin/bash
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +# List of devices which have a VFIO selftest driver
-> +readonly DEVICES=(
-> +	"8086:0b25,Intel SPR DSA"
-> +	"8086:11fb,Intel GNR-D DSA"
-> +	"8086:1212,Intel DR DSA"
+> Upstreaming an API changes only makes sense if others can use it and
+> this here is something completely special to this particular use
+> case, without all components involved nobody else can use it.
 
-Nit: I think this should be DMR instead of DR.
+It is not 'nobody else can use it', if it was true VFIO wouldn't be
+leaning toward the uAPI being OK.
 
-> +	"8086:0cf8,Intel CBDMA"
+This exposes a PCI SIG defined TPH capability in a reasonable simple
+VFIO uAPI that can be re-used by any other device that happens to
+support TPH on inbound MMIO. The uAPI has sensible general semantics
+based around the PCI spec.
 
-Where is this device in selftests/vfio/lib/drivers/*? I am not able to
-find it.
+Anyone can repeat the demonstration Meta outlined in their cover
+letter: Use this new VFIO uAPI, import the DMABUF to mlx5, use a PCI
+analyzer and you will see the PCI SIG defined TPH bits set the way the
+VFIO uAPI says they should be set.
 
-Also, selftests/vfio/lib/drivers/ioat/ioat.c has PCI_DEVICE_ID_INTEL_IOAT_SKX
-(0x2021) device. Should that be added here?
+There is nothing uniquely tied to Meta's device here, or unusable by
+someone else's devices. Arguably this is actually a mlx5 feature to
+allow VFIO to control its TPH generation HW.
 
-I think we should write the comment above that DEVICES list is populated
-from the IDs in lib/drivers/* files.
+For a long time the general kernel has had a philosophy that as long
+as these niche features are generally implemented and *in theory*
+usable by anyone who wants it is OK. Every knows the initial userspace
+implementations of *alot* of stuff starts locked up in proprietary
+software owned by database, and now cloud, companies. Yes, some
+subystems are stricter, that's OK too.
 
-> +)
-> +
-> +# Print the segment:bus:device.function numbers of PCI devices that can be used
-> +# to run VFIO selftests.
-> +function main() {
-> +	local id_name
-> +	local quiet=""
-> +	local name
-> +	local bdfs
-> +	local bdf
-> +	local id
-> +
-> +	while getopts "q" opt; do
-> +		case $opt in
-> +			q) quiet="true" ;;
-> +			\?) echo "Usage: $0 [-q]" >&2; exit 1 ;;
-> +		esac
-> +	done
-> +
-> +	for id_name in "${DEVICES[@]}"; do
-> +		IFS=',' read -r id name <<< "$id_name"
-> +		bdfs=$(lspci -D -d "${id}" | awk '{print $1}')
-> +
-> +		[[ -z $bdfs ]] && continue
-> +
-> +		if [ "$quiet" ]; then
-> +			echo "${bdfs}"
-> +		else
-> +			echo "${bdfs}" | sed "s|$| - ${name} (${id})|"
+> So as far as I can see that here is a no-go. But at the end of the
+> day it's Linus who needs to say if that's ok or not, that's why I
+> put him on CC.
 
-Nit: lspci prints vendor and device id in [], and use () for revision.
-Should this script also use []?
+Well, based on what I heard when I argued for fwctl, and the
+discussion with sched_ext, I don't think implementing functionality a
+standards body defined in a logical way is going to raise concerns..
 
-> +		fi
-> +	done
-> +}
-> +
-> +main "$@"
-> -- 
-> 2.54.0.929.g9b7fa37559-goog
-> 
+Jason
