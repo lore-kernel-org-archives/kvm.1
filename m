@@ -1,308 +1,278 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730871E9B37;
-	Mon,  1 Jun 2026 13:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B41372063;
+	Mon,  1 Jun 2026 13:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780318877; cv=none; b=e0ZJrST3g66Z5VqRwM0HanUli5Mk/UJ/ddzsuweXMDlWqLoSOG+tNg/xQnTTlekZN2SgCxbwyQFDJMEj2DYjmFWMj4pGC9DgksM3yQ6fQdG/nwkJW0i3Z5YlExd9rOFgfygdH9HI3H1av9bVgksPQfEe8QwGh6jsRd0/JWKmaXo=
+	t=1780319671; cv=none; b=HYYmEnEWCRQg/uZQFXSwhqCYjA6CwBfCG0M4MjGiTsn0Q2GtLS83athm2OrGdd0hdycG7b96vQdblsyl5My6IMc7sUKI4ywKhc/+G1idCtsh91hTfI0zUcKORw37e2g0fRhN50cGiw9VGfpIAPHLzO3O3bXzxpFXhZEDUe+QQTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780318877; c=relaxed/simple;
-	bh=AcKiDVD4bTN0xepZrItphep7Rpogq2FTSSY/kW1qRFM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DP1sk7O+U9OpKQFfq8pxCR8l1NjK3XEjIZfA1fpoV3gO9aFRFWSnC3qkugYGuNB1BPz+ne5kbhfTVrKD3QoGyz1mASUg7iax+RNOKPgGNyct2/w1xKFQWT1v1AM3t4AzlwQGKPx7Hfkh1kfkvmtwpj26XIFC28modyWp09kyfAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=KL1WaaIV; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1780319671; c=relaxed/simple;
+	bh=U7Wx4pQPbo7chs4LM7tpL/xVub5ZPnkHOqdEkYr3qo0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UJyyWjkluJ5l3pV5IUyBCZkgF4oK23RaCakR+uVNC9HD1+CTeEPYyJ4CZ78PWHDBFXeobJA/bmoxtwMpDlJ0FT5s3ujEFUC15FPBYeA/T1Vlbpi6LbrP/0s9xgGRl2KtyV0ibKklUTaaRUZtMGmiF7REsm71WzJOQF/dKOS6ljE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WlgPX0IM; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KL1WaaIV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=gq7gF3p4N0XQ84FQ1mKRgxYnjS8GWPR/CoL+bEvcYIE=; b=KL1WaaIVW9qrzeGkWlsDZBUkK2
-	B79RE0nysPyrbCdZJNw49Nirl+UJPr9qm29NlQzNgeMa13/3LJSBclV6FEHuwbzAaabdh8YyJT8kP
-	W8gyTHFGa02mbHIm3vUmz5wC4FhlqcVDQSifoKVfRR+3N7ZPucJP/R3DtKH/m3mD5MEzNMAL+42dD
-	3tniydrZy4WjHPzYKFDzgJMblQkjcbbsiOgHvlgpApPhhyZQJN1x+u5/ldgwgE5EpD13vdwtRKSAG
-	njl5+CiC7doB7CFJAEuOWMQOdOCV9StWr71LU4IEXL2HPHUuypqD4wBtkbqVKotgfq4adCsEEevgD
-	+aqf7wMg==;
-Received: from [2001:8b0:10b:5:a9ac:3853:5e3b:fafd] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wU2GR-000000007Sq-3SoO;
-	Mon, 01 Jun 2026 13:01:08 +0000
-Message-ID: <787aa26cf62dfd361eea8ed19f384fc517892501.camel@infradead.org>
-Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
- __rwbase_read_unlock()
-From: David Woodhouse <dwmw2@infradead.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>, Peter Zijlstra
- <peterz@infradead.org>, Paul Durrant <paul@xen.org>, Ingo Molnar
- <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng
- <boqun@kernel.org>,  Waiman Long <longman@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>,
- syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,  Carsten Stollmaier
- <stollmc@amazon.com>
-Date: Mon, 01 Jun 2026 14:01:07 +0100
-In-Reply-To: <14442dbf1e6d758fdd4756f2ed5c8cb2738582fb.camel@infradead.org>
-References: <20260529165114.748639-1-seanjc@google.com>
-	 <20260529165114.748639-2-seanjc@google.com>
-	 <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
-	 <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
-	 <ahnxfACTGeVFbJMk@google.com>
-	 <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
-	 <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
-	 <aho1M7fvK1Qzmiai@google.com>
-	 <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
-	 <58d17a623c1c5c9c09bd91baa30510aaf42f899b.camel@infradead.org>
-	 <CABgObfYJsacrCDHRouLDsEz_QF0EBQd8pu3g-V_gta6Eac2e+w@mail.gmail.com>
-	 <14442dbf1e6d758fdd4756f2ed5c8cb2738582fb.camel@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-RXuF3ky5ixZVwvv5N2ee"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WlgPX0IM"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65154H7u1890877;
+	Mon, 1 Jun 2026 13:14:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=v05JSl
+	b4xU/ALd2h/9eXI3cU4UOSIQLXPpT3llYipjU=; b=WlgPX0IMxKPNQ4j3dIvnt3
+	WdNDwb+nsgZsagVpShUqdG1GtkIqyIRU9eDKTqmMgMfd0qg6g5RJ6x2A4F7LaEU+
+	bBE58HC1p3gC9+UrQXF1orH+8iJFKbTG4OaOKSMi5HQHfIs9IJOho3d9vt81hTJR
+	Dc9mYqHdi6sKaGp5JXub9qb//2joGM2PkU0sqq494ton1rR4lqV0rvTDknOWFu75
+	s/Z0WKeI/1iHwKfuStbZveZhmHWNSaPOtMUJAP2p/jzHpPLundyr0Z+qX5Cpy7WL
+	5ynEOqrDQUczfUowHp7uV64AAtjqKt0tk65SRGsYU68q1/1Kl0++hElhrPu0Yzfg
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqd40v3t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Jun 2026 13:14:23 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 651D9AYe006147;
+	Mon, 1 Jun 2026 13:14:22 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egb7jx8jm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Jun 2026 13:14:21 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 651DEIho45482476
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 1 Jun 2026 13:14:18 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 13D512004E;
+	Mon,  1 Jun 2026 13:14:18 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8778C20040;
+	Mon,  1 Jun 2026 13:14:17 +0000 (GMT)
+Received: from [9.87.135.205] (unknown [9.87.135.205])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  1 Jun 2026 13:14:17 +0000 (GMT)
+Message-ID: <0b750cc2-ec15-43b3-a891-8499a7ed3a8d@linux.ibm.com>
+Date: Mon, 1 Jun 2026 15:14:17 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 1/3] KVM: s390: Add map/unmap ioctl and clean mappings
+ post-guest
+To: Douglas Freimuth <freimuth@linux.ibm.com>, borntraeger@linux.ibm.com,
+        imbrenda@linux.ibm.com, david@kernel.org, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com,
+        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: mjrosato@linux.ibm.com
+References: <20260531190353.204317-1-freimuth@linux.ibm.com>
+ <20260531190353.204317-2-freimuth@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260531190353.204317-2-freimuth@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAxMDEzMSBTYWx0ZWRfX9XvYbnvHVS94
+ qYDMB6B+yPA8q4LjG8bLC1CGZLrik97E7HyoCWIB/sq1JrFlQgvC3BEH2g6KOnbVknLMwWsn9ld
+ 9mnIzkBg5LtYmtJifYl0/H6NSRejIfxhiFq/njTq1zyigKlXJ3fa6K1K8dc9K2cVtHEXd05chpB
+ yHsAkSjYeQXGgprdwUYn5j4siz9hzJkwThJh3sDQO0iqrKKJCxk40RwWkU4kV1Sp8DZmuPf7F9s
+ sObxAz6uLh1QMmQXkxXgTw8ic1djcIsYJ7jHNvV7jN6BNYGGCW41b4Q/8svgao7wooG9BG3N3yC
+ 1MxBxbWC3u7zxUA78M2E4j+ImhDE306WFPJVTRDI5e8orrjAunAUft03C3ibt3S4klGkvhXonMa
+ ZfO/TljnJXT2H+92I7p6n5uqrBeIY3ZXfFVoXEFvTzoZwFSssmeq2K/WHnp4BIq7dWMHZflnFID
+ 7VuBME1+wHzU65lsRKQ==
+X-Proofpoint-GUID: tz-FROh_OgJ_-1UYBTQCeZxkzPzvT6mi
+X-Proofpoint-ORIG-GUID: tz-FROh_OgJ_-1UYBTQCeZxkzPzvT6mi
+X-Authority-Analysis: v=2.4 cv=DZknbPtW c=1 sm=1 tr=0 ts=6a1d85af cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=YGDvbCiNrxpiZYwF9RsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-01_03,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ phishscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606010131
 
+On 5/31/26 21:03, Douglas Freimuth wrote:
+> s390 needs map/unmap ioctls, which map the adapter set
+> indicator pages, so the pages can be accessed when interrupts are
+> disabled. The mappings are cleaned up when the guest is removed.
+> pin_user_pages_remote is used for both the ioctl as well
+> as the pin-on-demand logic in adapter_indicators_set().
+> 
+> Map/Unmap ioctls are fenced in order to avoid the longterm pinning
+> in Secure Execution environments. In Secure Execution
+> environments the path of execution available before this patch is followed.
+> 
+> Statistical counters to count map/unmap functions for adapter indicator
+> pages are added. The counters can be used to analyze
+> map/unmap functions in non-Secure Execution environments and similarly
+> can be used to analyze Secure Execution environments where the counters
+> will not be incremented as the adapter indicator pages are not mapped.
+> 
+> Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+> Signed-off-by: Douglas Freimuth <freimuth@linux.ibm.com>
+> ---
+>   arch/s390/include/asm/kvm_host.h |   5 +
+>   arch/s390/kvm/interrupt.c        | 226 +++++++++++++++++++++++++------
+>   arch/s390/kvm/kvm-s390.c         |   3 +
+>   arch/s390/kvm/kvm-s390.h         |   2 +
+>   4 files changed, 195 insertions(+), 41 deletions(-)
+> 
+> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
+> index 8a4f4a39f7a2..0056cc9414a0 100644
+> --- a/arch/s390/include/asm/kvm_host.h
+> +++ b/arch/s390/include/asm/kvm_host.h
+> @@ -448,6 +448,8 @@ struct kvm_vcpu_arch {
+>   struct kvm_vm_stat {
+>   	struct kvm_vm_stat_generic generic;
+>   	u64 inject_io;
+> +	u64 io_390_adapter_map;
+> +	u64 io_390_adapter_unmap;
+>   	u64 inject_float_mchk;
+>   	u64 inject_pfault_done;
+>   	u64 inject_service_signal;
+> @@ -479,6 +481,9 @@ struct s390_io_adapter {
+>   	bool masked;
+>   	bool swap;
+>   	bool suppressible;
+> +	spinlock_t maps_lock;
+> +	struct list_head maps;
+> +	unsigned int nr_maps;
+>   };
+>   
+>   #define MAX_S390_IO_ADAPTERS ((MAX_ISC + 1) * 8)
+> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+> index 3bcdbbbb6891..5ad0b29c8c1b 100644
+> --- a/arch/s390/kvm/interrupt.c
+> +++ b/arch/s390/kvm/interrupt.c
+> @@ -2411,24 +2411,34 @@ static int register_io_adapter(struct kvm_device *dev,
+>   {
+>   	struct s390_io_adapter *adapter;
+>   	struct kvm_s390_io_adapter adapter_info;
+> +	int rc = 0;
 
---=-RXuF3ky5ixZVwvv5N2ee
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Why do you even set it to 0 if you return 0 on the success case instead 
+of return rc?
 
-On Mon, 2026-06-01 at 11:52 +0100, David Woodhouse wrote:
-> On Sat, 2026-05-30 at 16:40 +0200, Paolo Bonzini wrote:
-> > On Sat, May 30, 2026 at 3:04=E2=80=AFPM David Woodhouse <dwmw2@infradea=
-d.org> wrote:
-> > >=20
-> > > On Sat, 2026-05-30 at 12:26 +0200, Paolo Bonzini wrote:
-> > > >=20
-> > > > Yeah, I think so.
-> > > >=20
-> > > > The write side needs kvm->srcu so it would have to be yet another S=
-RCU.
-> > > > I initially thought that sucks for the code that calls kvm_gpc_chec=
-k(),
-> > > > but maybe not because it simply replaces read_lock/read_unlock.
-> > > >=20
-> > > > By using a seqcount for the data, SRCU only needs to be synchronize=
-d in
-> > > > gpc_unmap().=C2=A0 So, something like this:
-> > >=20
-> > > It isn't just gpc_unmap() which does the invalidation. We also
-> > > invalidate from the MMU notifier in gfn_to_pfn_cache_invalidate_start=
-()
-> > > which would also have to synchronize, wouldn't it?
-> >=20
-> > You're right, the write_lock_irq() there drains the readers and that
-> > is needed because khva is not pinned, only kmap()-ed.
-> >=20
-> > That is already broken for the OOM case under PREEMPT_RT, where
-> > rwlock_t becomes sleepable. But using SRCU would break it on
-> > !PREEMPT_RT as well.
->=20
-> I don't think 'sleepable' is the problem per se, is it? *Why* does the
-> OOM killer use mmu_notifier_invalidate_range_start_nonblock()?
->=20
-> Commit 93065ac753e4 ("mm, oom: distinguish blockable mode for mmu
-> notifiers") did say:
->=20
-> =C2=A0=C2=A0=C2=A0 There are several blockable mmu notifiers which might =
-sleep in
-> =C2=A0=C2=A0=C2=A0 mmu_notifier_invalidate_range_start and that is a prob=
-lem for the
-> =C2=A0=C2=A0=C2=A0 oom_reaper because it needs to guarantee a forward pro=
-gress so it cannot
-> =C2=A0=C2=A0=C2=A0 depend on any sleepable locks.
->=20
-> But that was in 2018, when mmap_lock was an rw_semaphore.
->=20
-> Is "sleepable" still a problem even when PREEMPT_RT where almost
-> *everything* is now strictly sleepable? Wouldn't that mean drivers
-> aren't even allowed to take their own spinlocks?
+>   
+> +	mutex_lock(&dev->kvm->lock);
+>   	if (copy_from_user(&adapter_info,
+> -			   (void __user *)attr->addr, sizeof(adapter_info)))
+> -		return -EFAULT;
+> -
+> -	if (adapter_info.id >= MAX_S390_IO_ADAPTERS)
+> -		return -EINVAL;
+> -
+> +			   (void __user *)attr->addr, sizeof(adapter_info))) {
+> +		rc = -EFAULT;
+> +		goto out;
+> +	}
+> +	if (adapter_info.id >= MAX_S390_IO_ADAPTERS) {
+> +		rc = -EINVAL;
+> +		goto out;
+> +	}
+>   	adapter_info.id = array_index_nospec(adapter_info.id,
+>   					     MAX_S390_IO_ADAPTERS);
+>   
+> -	if (dev->kvm->arch.adapters[adapter_info.id] != NULL)
+> -		return -EINVAL;
+> -
+> +	if (dev->kvm->arch.adapters[adapter_info.id] != NULL) {
+> +		rc = -EINVAL;
 
-Yeah, this is *already* hosed by PREEMPT_RT's "haha let's make things
-sleepable that nobody ever expected to be" approach.
+You could move the rc assignment outside of the braces and have one less 
+assignment. But if you like it more this way then keep it, I'm still 
+able to read it :)
 
-It's hard to trigger as not only do you have to get the KVM process to
-OOM, it also has to be *slow* to die. I ended up doing this:
+> +		goto out;
+> +	}
+>   	adapter = kzalloc_obj(*adapter, GFP_KERNEL_ACCOUNT);
+> -	if (!adapter)
+> -		return -ENOMEM;
+> +	if (!adapter) {
+> +		rc = -ENOMEM;
+> +		goto out;
+> +	}
+>   
+> +	INIT_LIST_HEAD(&adapter->maps);
+> +	spin_lock_init(&adapter->maps_lock);
+> +	adapter->nr_maps = 0;
+>   	adapter->id = adapter_info.id;
+>   	adapter->isc = adapter_info.isc;
+>   	adapter->maskable = adapter_info.maskable;
+> @@ -2437,8 +2447,13 @@ static int register_io_adapter(struct kvm_device *dev,
+>   	adapter->suppressible = (adapter_info.flags) &
 
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1278,6 +1278,10 @@ void exit_mmap(struct mm_struct *mm)
-        VMA_ITERATOR(vmi, mm, 0);
-        struct unmap_desc unmap;
-=20
-+       if (!strcmp(current->comm, "kvm_oom_test")) {
-+               pr_info("exit_mmap: delaying before mmu_notifier_release fo=
-r kvm_oom_test\n");
-+               schedule_timeout_uninterruptible(3*HZ);
-+       }
-        /* mm's last user has gone, and its about to be pulled down */
-        mmu_notifier_release(mm);
-=20
-And then we see it even when taking kvm->mn_invalidate_lock:
+Why the braces?
 
-kvm_mmu_notifier_invalidate_range_start+0xac
-0xffffffff8132732c is in kvm_mmu_notifier_invalidate_range_start (arch/x86/=
-kvm/../../../virt/kvm/kvm_main.c:745).
-740		 * adjustments will be imbalanced.
-741		 *
-742		 * Pairs with the decrement in range_end().
-743		 */
-744		spin_lock(&kvm->mn_invalidate_lock);
-745		kvm->mn_active_invalidate_count++;
-746		if (!mmu_notifier_range_blockable(range))
-747			pr_info("KVM: non-blockable invalidate_range_start, non_block_count=
-=3D%d\n", current->non_block_count);
-748		spin_unlock(&kvm->mn_invalidate_lock);
-749=09
+>   				KVM_S390_ADAPTER_SUPPRESSIBLE;
+>   	dev->kvm->arch.adapters[adapter->id] = adapter;
+> +	mutex_unlock(&dev->kvm->lock);
+>   
+>   	return 0;
+> +
+> +out:
+> +	mutex_unlock(&dev->kvm->lock);
+> +	return rc;
 
+If you set rc to 0 you can actually have one return for all cases.
 
-[  427.919969] mmap: exit_mmap: delaying before mmu_notifier_release for kv=
-m_oom_test
-[  429.926972] BUG: sleeping function called from invalid context at kernel=
-/locking/spinlock_rt.c:48
-[  429.926978] in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 280, =
-name: oom_reaper
-[  429.926982] preempt_count: 0, expected: 0
-[  429.926984] RCU nest depth: 0, expected: 0
-[  429.926986] 4 locks held by oom_reaper/280:
-[  429.926989]  #0: ffff8a61da779cb0 (&mm->mmap_lock){....}-{3:3}, at: oom_=
-reaper+0x150/0x520
-[  429.927006]  #1: ffffffffa0934f20 (mmu_notifier_invalidate_range_start){=
-....}-{0:0}, at: zap_vma_for_reaping+0xb7/0x1d0
-[  429.927019]  #2: ffffffffa0934f78 (srcu){....}-{0:0}, at: __mmu_notifier=
-_invalidate_range_start+0xae/0x340
-[  429.927029]  #3: ffff8a6240295360 (&kvm->mn_invalidate_lock){....}-{2:2}=
-, at: kvm_mmu_notifier_invalidate_range_start+0xac/0x4b0
-[  429.927044] CPU: 26 UID: 0 PID: 280 Comm: oom_reaper Tainted: G S       =
- I         7.1.0-rc2+ #2460 PREEMPT_{RT,(lazy)}=20
-[  429.927051] Tainted: [S]=3DCPU_OUT_OF_SPEC, [I]=3DFIRMWARE_WORKAROUND
-[  429.927053] Hardware name: Intel Corporation S2600CW/S2600CW, BIOS SE5C6=
-10.86B.01.01.0008.021120151325 02/11/2015
-[  429.927055] Call Trace:
-[  429.927058]  <TASK>
-[  429.927062]  dump_stack_lvl+0x6e/0xa0
-[  429.927074]  __might_resched.cold+0xeb/0x100
-[  429.927084]  rt_spin_lock+0x6c/0x1a0
-[  429.927092]  ? kvm_mmu_notifier_invalidate_range_start+0xac/0x4b0
-[  429.927102]  kvm_mmu_notifier_invalidate_range_start+0xac/0x4b0
-[  429.927110]  ? sched_update_numa+0xa0/0x270
-[  429.927129]  __mmu_notifier_invalidate_range_start+0x129/0x340
-[  429.927138]  ? __pfx_oom_reaper+0x10/0x10
-[  429.927144]  zap_vma_for_reaping+0x186/0x1d0
-[  429.927150]  ? zap_vma_for_reaping+0xb7/0x1d0
-[  429.927155]  ? zap_vma_for_reaping+0xb7/0x1d0
-[  429.927176]  __oom_reap_task_mm+0xbf/0x100
-[  429.927191]  oom_reaper+0xeb/0x520
-[  429.927199]  ? __pfx_autoremove_wake_function+0x10/0x10
-[  429.927212]  kthread+0xf5/0x130
-[  429.927217]  ? __pfx_kthread+0x10/0x10
-[  429.927224]  ret_from_fork+0x286/0x310
-[  429.927232]  ? __pfx_kthread+0x10/0x10
-[  429.927236]  ret_from_fork_asm+0x1a/0x30
-[  429.927257]  </TASK>
-[  429.927260] KVM: non-blockable invalidate_range_start, non_block_count=
-=3D1
-
---=-RXuF3ky5ixZVwvv5N2ee
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwMTEzMDEw
-N1owLwYJKoZIhvcNAQkEMSIEILXkFRFsXPmvVa5qH9KRheyS2mv2y4irPiK1CK0Mza1SMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAYe+p+c6MGuxR
-Zyq3zPTBSMBZOQORYygeDIbVYeAiI9rGgoFtwecfhMhmv1wGOvpk6mIFlNC8jpYvPSxImFB3gVpX
-4gg6PW4bRtCsKq8a8dUINFZ/dR6eO6ilf+OcfyvqPZO1riFeHbuDj1Q9SQ7AwkoWWFOKjpE9Z26G
-xgtSm8SrIyw+9I9VHCfLw1wDjQ9SvjwXZKOsMda5Zjcru0w4j1l+4f9VBj/LyfnmJJU479loKg1i
-5PqrWyupeltkJBMPhqwmVE//OC8NO02wk7guOMCKg1NEW2AW3lm0dQA3o/1RObqLPXvEtOYVhPSH
-YhGaX697b9rHXiQ9RFMPCTad08WUlnShea8x5dxfdFN/zxznwlRdtmRWs89U2M6gNFHTIGwSouDJ
-PiN3zlEPNs/mE+LIiSZGAe6dCOn9wyNNF5+YT1cIxmKenjzzBFVLHerG6OMIeEYLnQELqMAirdEq
-ok6fDxBo+a3tYOgPKZxsM2h5OnsXD/MvmyAACab1lWJfYLpXFrbpvjRu0/Sn/p9L8Gzy2fXwoPHY
-6Fd6JIeKCGdPaD+lC7TnlbBLNfmW5WXZ98wlUtjR+mTOPmwQkb1b4x4BFU/8Ep+q7Zr3GdVr7UaI
-yZ6eO1ANafnGrkSiyB1+vmTcQB/ygo6LlHtnklDxHeUsDL+UdmPTG5htL+apPM8AAAAAAAA=
-
-
---=-RXuF3ky5ixZVwvv5N2ee--
+>   }
+>   
+>   int kvm_s390_mask_adapter(struct kvm *kvm, unsigned int id, bool masked)
+> @@ -2453,12 +2468,151 @@ int kvm_s390_mask_adapter(struct kvm *kvm, unsigned int id, bool masked)
+>   	return ret;
+>   }
+>   
