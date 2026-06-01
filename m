@@ -1,109 +1,124 @@
-Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F6F37CD48;
-	Mon,  1 Jun 2026 14:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1253B38B9;
+	Mon,  1 Jun 2026 14:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780322912; cv=none; b=ZTvZ1p4tdqE+xEwjo+NdubfFKTWEkZNECi2nSpnz+Y1p9aCcHQMSiu+fn48/C2CHr3doQ46Hh2uy8xgyjCNwWueyIDkVtLplmm3cw1qr9ZS9aw8xR0ja6vT82lEjGdbU0ozEEcY+XkH7RE0P7kGu4AM0B5NK3Df1U4jsN/J3Y1g=
+	t=1780323292; cv=none; b=Uv6l2rs3+ggdWE3IjzZl/oJkYxPGrJLhCrFMR1UE3l6t3Xh3VAI+CGgEpWfQQMAivRObQw+YCloXOD+dJLA4dx/cj4Kub2cGTUOTvOQIIM3Tn5fbqhh7RUuX3JKtCM8zohE96gSZdzMEhnPGsi7XFRnMoFcmzO+qbEHUYMtXzoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780322912; c=relaxed/simple;
-	bh=Xl/eV74IjmxzM3L5aW6MZQxtWRbZLRcwLO77fn/EMQA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V9Y1lovZGclLEuFHmcazV+ojvegqf0IDFgalhwP75MGlBl1jEmWg7sXuAKs0PmvNQlGXDN8NvasQFb1nM7eCNrxbv6knplOcGz+7dYLqVYsJ4tS+Jar3qUArd5PFafCmd2zIuPo5ovXuszgwK1ub77wwIdqhntr/RLdjtdMfdIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=f50Wdhmn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CvRImn96; arc=none smtp.client-ip=103.168.172.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	s=arc-20240116; t=1780323292; c=relaxed/simple;
+	bh=/1ZtqHER3vbu6n4+CBsHmVJw3XlnFa8DelfKN9zsoDw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oj0G/5/4zaAFSYVxAT5xsW/c3hq1MyK0tYCcjtAwUkNxc9qOJd+sdALoU9pwl49Urb6bONFXSEd4i0tZSSUmSHUu4kPJ+3VCqaf64QzyLFeBJhooSKnU8UfVqqdBVEEjt3vvQs/6dvEsvZWu2uDsnSXKEXyYt/7+c+NismwhvIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=gwLIqaFb; arc=none smtp.client-ip=115.124.30.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="f50Wdhmn";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CvRImn96"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.phl.internal (Postfix) with ESMTP id 6159D138036F;
-	Mon,  1 Jun 2026 10:08:29 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Mon, 01 Jun 2026 10:08:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1780322909; x=
-	1780330109; bh=6HDDCmBpB46gXJk6VrxDM/1W+kwWfioTlj1zjppZnik=; b=f
-	50WdhmnpWrbof2mJ2n/2UVxDplIY7apqkAwaX3Q51n+2ecxAgDySUL5IDRrXlOJ+
-	XbRK6eVw0o6T8SoGqO55t61lq8X0rJ8yqMg0Oj0/YTe4zDAhaRY0YTcDGO3gHmFh
-	czlzNLS8l8aezOYXLkChuAzc9LgIqSoe9726YTGhhj9ITtx0nr0SXGb1w8039vFd
-	KnkhoHTbarirYSdeTwHsKVo/wPbXA1z6sVEAyiP5d7lOwt9pzekFWAxtWY+euBqW
-	/NpmyrU8tvyZ7Z1ezTjAcQUfL7mQN/DsKgAwVgHE5uXB18aP584jg1vXhYMv9ml+
-	mO/orrjuFL5JKZP0sg+/w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1780322909; x=1780330109; bh=6HDDCmBpB46gXJk6VrxDM/1W+kwWfioTlj1
-	zjppZnik=; b=CvRImn96/UrYQ85ylvZ+0YQu1dYcYhQrJ/EWqM44Rh9tjjq5Fwt
-	gzbD9Tb5uAfRfjNQgH/bl9tUdCMF1C9CMXBoxgGtlWFCoGNwFS0kHTHpc20Xkg89
-	UvzAp1IZCK33naObZ3XBHlRiIKw4gwE0dcYOa/rb+b7g2Tb8qoL3JHTEB5GT5J+z
-	qNe3zHcvfBQ+CEs3UTNzCp0OtIu+PSY8iGaIMCl5OeQ3q3YphRddj5dh8Snop3Df
-	76p14boGljDfykuPIiIkGYOQU88+iTlDSudW6zwA6Mzqj5Qj6UOT6O+yiMMCAfXj
-	eGIFbPZsfPnfC4KyqVS6qYPKCRdUbhy24Pg==
-X-ME-Sender: <xms:XJIdau2xNcew9NuQylE1EIgpeCCBoXgEIiNeyCvfv3YVoQsMtPd0Kw>
-    <xme:XJIdapc4kaGaDMTxpX3X_zoIxOSPfYSVC60hylGhnwS-lA32IZI0ScXXKwz4yKcut
-    i_8brCswi5BjvknID5IOPoUTtUYbILWoLsXXpyCTec49HVfMYGCxg>
-X-ME-Received: <xmr:XJIdahIIGAJBaKj_iMiMWKvfNDVSRON2K1MTGdr5WQkvP7b7PX2fIIsvKSIvKg>
-X-ME-Proxy-Cause: dmFkZTGG+BPfjueacM86TULJZov8aM9JltReYywddMsHkqeW/iXnPY1AlEvzFqfAb+8UuU
-    kNZHKVUMC+w9mwOzblnHRrtqxDaCmrUv/w7iNRp49/rvhBpC6pp2Swn/kZehABqD2cas8k
-    c7UzhEknhBUQfFoiS8CgQAYkLul89H8iAHdZwrIlcSNrtueukIU4xMTcEr3noYPBWYPZ8z
-    FCDhZwW33wsmILwqnP7FOfhpiydyfG9hXHD9CoZmhGqLrO/ZbcH2ceeBPWg6GWHjlZNaqR
-    8anKZkuTcuSdvA3dV3YHI+bnCc3KKaMj5+rUrICdWNQjrGH5IxkwUmhQSTbe1ETCoSh9k7
-    4ZswLeUvtjDvkt6SjVF9kYNeKgo8aFf6uELdJS1viU1f0BPI4tnaINv0np9GS7PRcPA5G9
-    bUkGBC0T3ZTuE4a6BfYMiEwk2LaO2YDWmnRqoePtX60Swro9wEwSIPr/b8cZF6zA5i/vrv
-    lrwPbjGWbwr5itaeEWnKSSXSrUtpMEtegzzTZkEEkPw6OqaW0oLCTgZqfpBPi3HnoRo1kX
-    JbKctXg5jHu40wteAc43cnOuKAeNDk8JoIlk6NJptZmMCCWlBrv8shWoiPjVfLEENw/5G0
-    OPU/Ws4E79PtJv3m0XGXAB1jkEkO2lr3PBmZrz3LPLjCRRe+xEWl36bYb3rg
-X-ME-Proxy: <xmx:XJIdakal8p8R3wKv36P5NSisGj24SHLqTswt3mM6zbz94vDWNziDJw>
-    <xmx:XZIdaubBXAFmCZRBzTWPlVl0h_jFWbBAuv-VeiR3TSqUfPoqAcnROQ>
-    <xmx:XZIdavESF8h6R9fgi4zd8woXO5T7hTOwp3PBvHm7IL3ja1NE16Nhnw>
-    <xmx:XZIdahB-ks8xcu_DK9fRzojzqK_O165xdaQHcEtMz6sZVebn1u_Ucg>
-    <xmx:XZIdaiiQqxWjmz2-jomWktoe-Ad9M2KvZNTEjuPzcrurOEvoP6zwpDcI>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 1 Jun 2026 10:08:27 -0400 (EDT)
-Date: Mon, 1 Jun 2026 15:08:19 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, akpm@linux-foundation.org, 
-	peterx@redhat.com, david@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
-	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kvm@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
-Message-ID: <ah2SL2c0nMj0KBtP@thinkstation>
-References: <20260526130509.2748441-1-kirill@shutemov.name>
- <20260526130509.2748441-5-kirill@shutemov.name>
- <ahmQvfNk7S4F0LBj@lucifer>
- <ahsVyQZ5UXhJLct2@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="gwLIqaFb"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1780323279; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Jba/OcUQqUC+iKtXDpfu65FCyEQVy/d/ssT/VTffXaE=;
+	b=gwLIqaFbzGkhrl7tQDxlibCGbR4BUbOkctp/0bV6SpGrvW7gA1/jhOPjpmks4Aaw45KLabKgDJRMzrDtGjlMBlBQDXo6FT0mhv8HSTqS6YkrXUgOcxZkxrm3LanNKtNAXlwAQoHVCVVtvW1NhzIhI2enTrj93GBFZWP6Uva/d68=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R681e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X40RrRa_1780323268;
+Received: from 30.221.133.117(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X40RrRa_1780323268 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 01 Jun 2026 22:14:37 +0800
+Message-ID: <ff2a4364-8463-42cb-9a2b-fae1ef64c423@linux.alibaba.com>
+Date: Mon, 1 Jun 2026 22:14:27 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahsVyQZ5UXhJLct2@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] iommu: introduce iova_to_phys_length in
+ iommu_domain_ops
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: boris.brezillon@collabora.com, robh@kernel.org, steven.price@arm.com,
+ adrian.larumbe@collabora.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+ liviu.dudau@arm.com, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
+ alex@shazbot.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux.dev, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kevin.tian@intel.com,
+ baolu.lu@linux.intel.com, suravee.suthikulpanit@amd.com,
+ dwmw2@infradead.org, xlpang@linux.alibaba.com,
+ oliver.yang@linux.alibaba.com, shiyu.zsq@linux.alibaba.com,
+ wei.guo.simon@linux.alibaba.com,
+ alikernel-developer <alikernel-developer@linux.alibaba.com>
+References: <20260529115116.GR2487554@ziepe.ca>
+ <20260531093637.3893199-1-guanghuifeng@linux.alibaba.com>
+ <20260531093637.3893199-2-guanghuifeng@linux.alibaba.com>
+ <20260531235148.GV2487554@ziepe.ca>
+ <a0875d9f-4aed-4164-861c-6fbbdfe04080@linux.alibaba.com>
+ <20260601134322.GY2487554@ziepe.ca>
+From: "guanghuifeng@linux.alibaba.com" <guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20260601134322.GY2487554@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, May 30, 2026 at 07:52:25PM +0300, Mike Rapoport wrote:
-> I have a PoC of yet another alternative:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=uffd/vm-flags
-> 
-> The idea there is to keep a single VMA flag, VMA_UFFD_BIT/VM_UFFD and move
-> all the rest into what's now struct vm_userfaultfd_ctx.
 
-Nice!
+在 2026/6/1 21:43, Jason Gunthorpe 写道:
+> On Mon, Jun 01, 2026 at 04:41:48PM +0800, guanghuifeng@linux.alibaba.com wrote:
+>>>> +/**
+>>>> + * iommu_iova_to_phys_length - Translate IOVA and return mapping page size
+>>>> + * @domain: IOMMU domain to query
+>>>> + * @iova: IO virtual address to translate
+>>>> + * @mapped_length: Output parameter for the PTE page size (e.g. 4KB/2MB/1GB)
+>>>> + *
+>>>> + * Like iommu_iova_to_phys() but additionally returns the page size of the
+>>>> + * PTE mapping at @iova through @mapped_length.
+>>>> + *
+>>>> + * Return: The physical address for the given IOVA, or 0 if no translation.
+>>>> + */
+>>> When introducing the new function I would like to fix this 0 error as
+>>> well, it should return PHYS_MAX for error
+>> Implementations such as arm_smmu_iova_to_phys/DOMAIN_NS(iova_to_phys)
+>> all use a return value of 0 as an invalid state, so 0 is used as the
+>> representation of an invalid state to maintain compatibility.
+> I know, but this bad choice has already caused bugs so if we are
+> changing everything I would prefer we fix it.
 
-I assume it can go on top what I did, right?
+OK, there are a lot of changes in the current commit. This issue will be 
+fixed in a subsequent series patch.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+>>>> +phys_addr_t iommu_iova_to_phys_length(struct iommu_domain *domain,
+>>>> +				       dma_addr_t iova,
+>>>> +				       size_t *mapped_length)
+>>>>    {
+>>>> +	if (mapped_length)
+>>>> +		*mapped_length = 0;
+>>>> +
+>>>>    	if (domain->type == IOMMU_DOMAIN_IDENTITY)
+>>>>    		return iova;
+>>>>    	if (domain->type == IOMMU_DOMAIN_BLOCKED)
+>>>>    		return 0;
+>>> Any domain that doesn't have an op should fail, blocked is one example
+>> In accordance with the implementation of iommu_iova_to_phys, it returns a
+>> phy value of 0 in invalid states.
+> Detect the invalid states by looking at ops not domain->type
+>
+>>> I suggest you approach the patch plan a little differently, the first
+>>> patches should implement the new function and an iommput
+>>> implementation
+>>>
+>>> Arrange things so the normal iova_to_phys calls the new function if it
+>>> is available and discards the length.
+>>>
+>>> Then convert callers that can take advantage of it. Have the fallback
+>>> path also compute the length by iterating internally.
+>>>
+>>> Finally one patch per driver implementing the new op, this could even
+>>> be a second series.
+>>>
+>>> Don't remove iova_to_phys(), it is fine for things that don't need the
+>>> length.
+>> Does this mean retaining the iommu_iova_to_phys implementation but
+>> implementing it through domain->ops->iova_to_phys_length (mapped_length is
+>> NULL)?
+> Yes
+>
+> Jason
