@@ -1,265 +1,181 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0774939A076;
-	Mon,  1 Jun 2026 10:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D802C390CB9
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 10:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780308272; cv=none; b=FHLcr6NHv9d1kqxkpTPxv15ILqSmImURqtEZ+oSssfbVtYmGP8JErmrsiPH4THlQ7aw+WjcNuTxXZi8tOyEluAUsj9L59NkNNGzNW3b60/C9jAarvZxkrfGNBghO8ngSSG+1Wz+zQlZ8bqMhKVe8/4xPdWUg8Fz9bLoZjYRBd80=
+	t=1780309596; cv=none; b=uLI1HNDBkoDVvjRVN+/DLteIr+2Zhna7TG6E/JVK220XDMFTKi3+Ch6d0rH/CHC62k4OQhUZP5nwjaJGeB5tUV0XPXiPoB+n5mhV3P1hiuA8jCFEWFqNBseaeniCwqt3nGwtG2KZzM7+fm+0bqpuuiGvh0iU4aRQY3qe0M0kZ4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780308272; c=relaxed/simple;
-	bh=zFZVIKNuTtpeloxuk+/OmlmYLH1tV+ScCzdfYuYKaUM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Vv7M5AF+kF7heDdKEbBMyh052KV2GCIn8M9JwpUh5SQv9I9460IIPOpW8K3cB+fxGfdAHtBZUZMIirbkTcbLJZXYvEFVbMxJVORvid6ZOul9MBnT+LGvvDItL5ceLe5RH4H/3LywI7b+g3J40Pg3brd0U8nJ45NGW8/0rFzDGJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZwW53yAZ; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1780309596; c=relaxed/simple;
+	bh=i22xps6LCObUD2kqUTEDbNF8C3JLN3ZsednxQoPzcsw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jEvFgqB9kdy6frSGN0COiQAyjeh54K0GNTOJSojAieTRscuShKu1rAPvb08ewfFZ6RCOzuhLAf5UAOSNaVeuYTJ737eHacjjGFzFI44DWyXU1XXLbBgLbR7ADdCQ02FhMmyGbfYBedHiXSgNDAp8zNRc5sSoDVYdpWiuapMsr/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=NupZPTNE; arc=none smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZwW53yAZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zFZVIKNuTtpeloxuk+/OmlmYLH1tV+ScCzdfYuYKaUM=; b=ZwW53yAZ7+XS3bEHMZyY8OZ5bA
-	UXNxfiGgJSGOUCQWN2uUch4UpZPX6LxIkXo8tlX+fsPIFfQD8iGTqYndh59A/7Aney0UuUzGrViV4
-	jJ/T/l/JUDP5WIhyq9McWJENg3PJog69Ti/wplGIuCwPOX0QQtQj9Z7ytUdetWH9BQY3wnyctfMB+
-	VziRzGQA2fqKKtQNzAAXKFb+ypV8BOVXEqqWt4ZVKMmtmX/L6rN0IdVwbTldL5z4uUDNz5bgdru3d
-	LXi2qj3eAJoPamKy0FpomQaxT2/ZT785I82qujv1TpzKlLbSk9/DdaVe41zsssdaqfZa4rmebv/Hn
-	fwjBtj+A==;
-Received: from [2001:8b0:10b:5:a9ac:3853:5e3b:fafd] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wTzVL-0000000B28f-1whk;
-	Mon, 01 Jun 2026 10:04:19 +0000
-Message-ID: <e9c30d5c0b746295643262c117eaf49b367aa94e.camel@infradead.org>
-Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
- __rwbase_read_unlock()
-From: David Woodhouse <dwmw2@infradead.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>,  Paul Durrant <paul@xen.org>, Ingo Molnar
- <mingo@redhat.com>, Will Deacon <will@kernel.org>,  Boqun Feng
- <boqun@kernel.org>, Waiman Long <longman@redhat.com>, kvm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>, 
- syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, Carsten Stollmaier
- <stollmc@amazon.com>
-Date: Mon, 01 Jun 2026 11:04:17 +0100
-In-Reply-To: <20260601094017.GM3102624@noisy.programming.kicks-ass.net>
-References: <20260529165114.748639-1-seanjc@google.com>
-	 <20260529165114.748639-2-seanjc@google.com>
-	 <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
-	 <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
-	 <ahnxfACTGeVFbJMk@google.com>
-	 <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
-	 <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
-	 <aho1M7fvK1Qzmiai@google.com>
-	 <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
-	 <58d17a623c1c5c9c09bd91baa30510aaf42f899b.camel@infradead.org>
-	 <20260601094017.GM3102624@noisy.programming.kicks-ass.net>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-MpOg5I86Xrt4LtoDqUcp"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="NupZPTNE"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-304e58292d3so6285155eec.0
+        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 03:26:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1780309594; x=1780914394; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=w+2YxV+6v8HxHah8ejk5xIUKcFmR0bUuiOdbEsVMnZo=;
+        b=NupZPTNEnACt2rPmSZ2tHUbxyiGQFcr03S1flHmh13BV8at80fPm6AGwt+g+fi6zu1
+         woIos6B/kUeV/G22aQGxp8fH8DdYF2Nk6Fzu6iISDVNGUkdbGm2QgitY0GukuAfcuggj
+         4wXm1fRb5kz7f9pd1SeKHRixULxiAxEYAYDrDrbE/+LFRPc6OYcDRN/nQd4PMsVjh7GA
+         ui7IGJRZzOQjl/8TfuffThxNe9zLJVtCQsQusHoLsARHCM701K6v+qqWG3zR51iAZZXj
+         CyuxkojrElwIgbp8oYxfvxowls9B+BYp3b5xOuz310nWnenziMsTzpMl8qJgxmz4mkcF
+         VcpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780309594; x=1780914394;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w+2YxV+6v8HxHah8ejk5xIUKcFmR0bUuiOdbEsVMnZo=;
+        b=DjbxbvULgZcE9aKZ7JPDhqDkf7G7y5RmuTqEVbbpB7+8pbP5QXRYKf0yOna/lf94ut
+         abEb5MAsbVaYueJyoTwLLUyzX5CUke78FZKshh2cM5XNBCNGznxDU0mhAlGWn1Y7M2yG
+         KVVjfNGpLNBKlEuUNqsn8JnJchIamB5OC1b1mx3g0DM0V3PHS30vkBluaqoznBuCZxLz
+         EyGKfAn9klCeaqclWmK9f82HQNpe06yqtAPkNbSPiChn0HN2uMC0Q0tqb4ojkvAkgX+N
+         bNaPvhyOgtwhPqMjxR55/1bmIVgsRDnponXDP2VvBnood2+b7kaP5KRGMrjqYpTCSWiW
+         ijPw==
+X-Forwarded-Encrypted: i=1; AFNElJ/k8/FBik2X8tx/XTrYnfmnbezyryOUCxZAc2FKJ+tNmbO1fkL2MbOW+XrSD0RM24M0KBE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBhoB5NRAtN9ggTup1eX40emSR5A0R/5UtJ+rVjKOKZtox8fP8
+	a3kHDFJU8Zpewq3S+woivxGLwzKJa/tj350PumBegdoGDv1abj6O1Q0X5y6iSt4OrOI=
+X-Gm-Gg: Acq92OFmOT5VoccMWeYy8M2J8AQRkQFMPVuaBj3oXDJUhWi3xWe2LC1knwa4wub7FSv
+	RZkxomw4bn4S0nLpDZq6RY45nJ3eeGYZnq0pZgP9OW1fOs2DVAPydJviLQpLyL5XoKLwwYx5+ik
+	KTnBFOHxV3T6gmPx7H+PLfAbbS/xD3cGU2d5mOBQ1+Lab3fIZZe5WA5YjLFUWXogjEO7A5coqpV
+	ULeJR06rmdaVQcDS/ysHB4tx/zP8nmC34e8bTNIzCDiDOPys8DzGWRiGAQIqx4lsHxGl5qbzERS
+	FvhTCTettL2BhJeqY2XafWXTDTvtJMycBHMY25jqO7WchAxcYfXsqDIGrsEmLLXlYBhLG9B+blT
+	D6mwBr0PsA6d7/Z8KKIaJN7ADkWhC2FNx1Ao254Xkq2/sVOZWaHZwei4MFUdBczZL5anOfe+Cie
+	V7GCuQdMHRivc+cpff9iFze6URBrlsJY/2UeQ+y7dHCx6010L4WsVg/w==
+X-Received: by 2002:a05:7300:6d21:b0:304:188d:d0be with SMTP id 5a478bee46e88-304fa674743mr5259150eec.16.1780309593836;
+        Mon, 01 Jun 2026 03:26:33 -0700 (PDT)
+Received: from sw07.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed5b9be7sm8176001eec.27.2026.06.01.03.26.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 03:26:33 -0700 (PDT)
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Subject: [PATCH v5 0/5] KVM: riscv: Fix stale FWFT feature exposure and
+ enhance selftests
+Date: Mon, 01 Jun 2026 03:26:21 -0700
+Message-Id: <20260601-kvm-get_reg_list-v2-v5-0-415d08a2813b@sifive.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAE1eHWoC/33OTQ7CIBAF4Ks0rMUApQiuvIcxDaVDi381UImm6
+ d2ldaFGYzKbl8x8bwYUwDsIaJ0NyEN0wXXnFIpFhkyrzw1gV6eMGGGCFEzgQzzhBvrSQ1MeXeh
+ xZNgqmwslqDbCoHR58WDdbVa3u2cO12oPpp+oaaNNl52/z7WRTXv/G9IQvFKcaE4oL7jeBGddh
+ KXpTmiqiPk7In8jeULoiiihtCyUsl8IfyGC0N8IT4iRUldGUqjqz0/GcXwA5nx8slMBAAA=
+X-Change-ID: 20260526-kvm-get_reg_list-v2-f9f36961ac6c
+To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <cleger@rivosinc.com>, 
+ Andrew Jones <ajones@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, inochiama@gmail.com, 
+ Yong-Xuan Wang <yongxuan.wang@sifive.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780309592; l=3974;
+ i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
+ bh=i22xps6LCObUD2kqUTEDbNF8C3JLN3ZsednxQoPzcsw=;
+ b=wdJr7Ln1xzni8KnSJ57h+PPvQD5PuXrTrrX5ZA4mQYHmh+QPZPvxnYPYi+lb2+zyAgaCjKJRl
+ lN/F+1MpxnlB2jG6KWSp0moShK6wfjKHRsHXLH+It30jxPYAzrEpTN0
+X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
+ pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
 
+This series fixes three bugs in the SBI FWFT (Firmware Features) extension
+and improves the related selftest infrastructure.
+The bugs are:
+1. Missing CSR dirty marking: When userspace sets FWFT feature values via
+   KVM_SET_ONE_REG, modified CSRs (e.g., henvcfg.PMM for pointer masking)
+   are not marked dirty, leading to stale state after vCPU scheduling or
+   migration.
+2. Hardware probing side effects: The try_to_set_pmm() function modifies
+   HENVCFG.PMM during hardware capability detection but fails to restore
+   the original value, leaving the CSR in an altered state that affects
+   subsequent operations.
+3. Stale feature exposure: FWFT feature support is cached at vCPU
+   initialization time. When userspace subsequently disables ISA extensions
+   via KVM_SET_ONE_REG, the cached support status is not updated, allowing
+   guests to access features that depend on disabled extensions.
+Patches 1-3 fix these bugs separately.
 
---=-MpOg5I86Xrt4LtoDqUcp
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The selftest improvements (patches 4-5) enhance the get-reg-list test by
+refactoring the extension sublist infrastructure and splitting FWFT
+feature testing into separate, properly-gated sublists.
 
-On Mon, 2026-06-01 at 11:40 +0200, Peter Zijlstra wrote:
-> On Sat, May 30, 2026 at 01:47:06PM +0100, David Woodhouse wrote:
-> > On Sat, 2026-05-30 at 12:26 +0200, Paolo Bonzini wrote:
-> > >=20
-> > > Yeah, I think so.
-> > >=20
-> > > The write side needs kvm->srcu so it would have to be yet another SRC=
-U.=20
-> > > I initially thought that sucks for the code that calls kvm_gpc_check(=
-),=20
-> > > but maybe not because it simply replaces read_lock/read_unlock.
-> > >=20
-> > > By using a seqcount for the data, SRCU only needs to be synchronized =
-in=20
-> > > gpc_unmap().=C2=A0 So, something like this:
-> >=20
-> > It isn't just gpc_unmap() which does the invalidation. We also
-> > invalidate from the MMU notifier in gfn_to_pfn_cache_invalidate_start()
-> > which would also have to synchronize, wouldn't it?
->=20
-> Ok, so I had a look at what this code actually does, and it appears to
-> be a guest frame number to page frame number cache, managed by
-> mmu_notifiers.
->=20
-> IOW, its some software TLB thing (pre HVM Xen support?)
+---
+Changes in v5:
+- Add CSR dirty marking fix (new patch 1/5) (sashiko-bot)
+- Split original FWFT bug fix into two focused patches
+  - Add init() callback with try_to_set_pmm() restoration fix (new patch
+    2/5) (sashiko-bot)
+  - Keep runtime supported() checks as separate patch (patch 3/5)
+- Link to v4: https://patch.msgid.link/20260601-kvm-get_reg_list-v2-v4-0-c88abc81ebda@sifive.com
 
-No, it's for any fast path access to KVM guest memory.
+Changes in v4:
+- Rename the title of cover letter
+- Disable preemption when running try_to_set_pmm() (sashiko-bot)
+- Remove check_supported_reg() (sashiko-bot)
+- Link to v3: https://patch.msgid.link/20260528-kvm-get_reg_list-v2-v3-0-170969a8599f@sifive.com
 
-KVM guest physical addresses are translated through two stages.
+Changes in v3:
+- Restore 'supported' field with init() callback for initialization probing
+  (sashiko-bot)
+- Add NULL checks before calling feature->supported() in all functions
+- Fix isa_ext_enabled tracking logic and restore isa_ext_cant_disable array
+- Add sbi_ext_enabled tracking and enhance dependency checking (sashiko-bot)
+- Refine code organization and variable naming consistency (sashiko-bot)
+- Link to v2: https://patch.msgid.link/20260526-kvm-get_reg_list-v2-v2-0-7940a401454a@sifive.com
 
-First through the memslots which convert the GPA to a userspace virtual
-address (in the VMM process).
+Changes in v2:
+- Fix FWFT stale feature exposure by removing static 'supported' field
+- Refactor get-reg-list test to use unified extension sublist macros
+- Split FWFT testing into per-feature sublists with runtime checks
+  (Andrew)
 
-Then through the normal process mm into a host physical address.
+To: Anup Patel <anup@brainfault.org>
+To: Atish Patra <atish.patra@linux.dev>
+To: Paul Walmsley <pjw@kernel.org>
+To: Palmer Dabbelt <palmer@dabbelt.com>
+To: Albert Ou <aou@eecs.berkeley.edu>
+To: Alexandre Ghiti <alex@ghiti.fr>
+To: Clément Léger <cleger@rivosinc.com>
+To: Andrew Jones <ajones@ventanamicro.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+To: Shuah Khan <shuah@kernel.org>
+Cc: greentime.hu@sifive.com
+Cc: vincent.chen@sifive.com
+Cc: zong.li@sifive.com
+Cc: kvm@vger.kernel.org
+Cc: kvm-riscv@lists.infradead.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
 
-The GPC is indeed a software TLB thing used to cache the result of that
-two-stage translation, hence being invalidated when *either* the
-memslots change (easy), *or* the page is invlidated it the process mm
-(more fun).
+---
+Yong-Xuan Wang (5):
+      KVM: RISC-V: SBI FWFT: Mark vCPU CSRs dirty after setting feature value
+      KVM: RISC-V: SBI FWFT: Add optional init() callback for hardware probing
+      KVM: RISC-V: SBI FWFT: Fix stale feature exposure after runtime extension changes
+      KVM: riscv: selftests: Refactor ISA and SBI extension sublist macros
+      KVM: riscv: selftests: Split SBI FWFT into separate feature-specific sublists
 
-KVM used to *pin* the latter, which was sad for memory hotunplug and
-other reasons, and then *still* managed to screw up the caching. (I
-think it would just keep using the old page even if userspace mmap'd
-something else over it).
+ arch/riscv/kvm/vcpu_sbi_fwft.c                   |  44 +++++++-
+ tools/testing/selftests/kvm/riscv/get-reg-list.c | 138 ++++++++++++++---------
+ 2 files changed, 125 insertions(+), 57 deletions(-)
+---
+base-commit: c7832534a8160276cccb9a8cc8cafb5614c579d0
+change-id: 20260526-kvm-get_reg_list-v2-f9f36961ac6c
 
-I ripped all that out and replaced it with the gfn-to-pfn-cache we have
-now.
-
-It's used to allow a fast path where the *common* case is that the GPC
-is already valid. Like interrupt delivery to Xen (HVM) guests which
-needs to go into the shared-info page. There's always a slow path
-fallback which will revalidate the cache (which might involve bringing
-the page back in from swap, etc.). For things like steal time /
-runstate information, an invalid cache might lead to it not being
-updated when the process is scheduled out, but it'll be refreshed when
-scheduled back in again before re-entering the guest.
-
-The GPC also has (well, *had*, but we're looking at reintroducing it=C2=B9)
-a mode where the underlying physical address is actually present in the
-VMCS and used directly by the CPU, for guest mode. In that mode,
-invalidation requires kicking the vCPU *out* of guest mode. That one
-requires sleeping and needs handling even for !PREEMPT_RT:
-
-=C2=B9 https://lore.kernel.org/all/20251121111113.456628-3-griffoul@gmail.c=
-om/
-
-> Now, mmu_notifier_invalidate_range_start() has a rather explicit
-> might_sleep() in, and while there is an
-> mmu_notifier_invalidate_range_start_noblock(), that has an error return,
-> and it is clearly specified that if that thing returns non-zero, PTEs
-> must not be changed.
->=20
-> With all that, I don't see why we can't block for srcu_synchronize() in
-> gfn_to_pfn_cache_invalidate_start().
->=20
-> Now, I've never much looked at mmu_notifiers, but for native, TLBI might
-> require sending IPIs to all CPUs, and as such cannot happen in atomic
-> sections. I would expect this same to extend to mmu_notifiers. It must
-> be possible to sleep in them.
->=20
-> What am I missing?
-
-I think it's the OOM path which invokes it in a non-sleepable context?
-Hence the may_block argument, and the 'all vCPUs should have been
-stopped already, so perform the request without KVM_REQUEST_WAIT and be
-sad' comment in the patch I linked above.
-
-The code in virt/kvm/kvm_main.c already tracks 'may_block' for each
-call path that gets here; Fred's patch is just passing it in to the GPC
-invalidation.
-
-These caches are *mostly* per-vCPU so we don't suffer too much from the
-cache contention on the readlocks.=20
-
---=-MpOg5I86Xrt4LtoDqUcp
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwMTEwMDQx
-N1owLwYJKoZIhvcNAQkEMSIEIKu02M+PERiSuuHMggNjOX77SnSSsGey2Gxlrd6y4WnIMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIARJ/aM4S5GkP6
-JcNdQUiJFcXrwi5kl9Nxv5dBwWrYZhCO7bvMLALU9lyiZQT8L7DrTJBP84Y2/x1Y+AoHFygxZm19
-fx1vlDU5T8ckfAK9yWMopEgg+LodKi84mpdfyUp53Nh9+ywNMdHlZJ61K/X9MlLjRf2S2drp87uP
-CU0avO+urjMdMpyhFjiYmAw8FnjKHSqzWddY6DTRZzi0YiiSEFkSTVxj6JxjUaFiDrA6lccIpwc7
-9xQeaif8u/Xrr7g6i7kI2atKIkvrLjUZCN3lQu93VFF1MBFArzA/uMQBvW+WnMjvinggO5/twL8T
-4nuULemV+IP/GWvDXsCTan/9hPwVOmS5h7xR7tweKUuTIUyDR20VVmVpjor7gtGF1/ZxkmtgSmgW
-z/aFa1I5fABCpDP9IfEfo/XTvpaTbirIfoN9/QTXDCWA2XHUV56srr7iFiv8k3WWsBS42YKVQsLJ
-zoTqeqy/cFNhURr8b1NgZbvJU7G2H9HlClr7Hvq/q9g9vXZLb1CAWUgXGrEQPCcXpR6H+JfPoO2C
-Xw+xKLNUO979isYysKCu6U2doBwfqbJrYOhwOf+qz2rAjzaj4QUypRo669MAd2HhBkIE0sROI77p
-yYGvNanjQKV+z+E5hfeFr2ho62CHT+xpDL2x7YdnaNagaRD3ATZdjBQNGd9wMNkAAAAAAAA=
-
-
---=-MpOg5I86Xrt4LtoDqUcp--
