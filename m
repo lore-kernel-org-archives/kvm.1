@@ -1,112 +1,165 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE249391850;
-	Mon,  1 Jun 2026 08:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1696334846A;
+	Mon,  1 Jun 2026 08:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780303254; cv=none; b=YdTyos64zP1L5Kk+BDl0gfKshCnwskkAJl1SxZ9Fdy3/3P36srEV/+tvwN5DWR4nyIvLBzJlOkeQAGrO6jyUPazMCoyLbzLqtidFK7eDG//4CkV/mEKRpWy8TxRa8Wsz1VHJtc2UxuWoCzzotvIrXfQwrFX6Z+qYrUtqZld3uIU=
+	t=1780303327; cv=none; b=lvKwT7CpPffx05W02zp7e7GqH9YZq6kiveNqC8Fk/fX7HwsgpMl5dWw7kMjNaHl7UP/QIGnTbcfVpw2tTIDGF+5C69vgEIj2ftAVhYYQyFz6+XLDWe6LoqTQh6yyDHas8rJoNBXv0AqX2qKu8hxMOWPWaiOGeWZkGu3LKxukakA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780303254; c=relaxed/simple;
-	bh=Wdw3L6mWkmDIyF326gFtICmdPeTeOWGp9Uuhgf16Aj0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FnF0fcFCwn2jbtJKGrOvZJRlC6Eh4lRysfc/XSwrVFlxd1YIPh6XKiQjr9xyhiXzgf7teT55G9bFGMDmCKXf6wGmzchaX1Q+GNOfo/Nc3DWGKdUz8MAZSLJ3jpxWFhbimhkuAU+eynauYOJ19S62sPV8yvl8PgjKt038HmP6DqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mCm1NwsF; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1780303327; c=relaxed/simple;
+	bh=87UhcpT4ALaMLm33WeuvGbVnab+p7ZlH+/OIyT4u91g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c5iLvUok/MOxhuvFmuZvIDd8vZRPaSdAUbuMgWpjtkoIQS95mIYgoXVRHSKU7P53eVeZvGtj7pwZSyHJRRjYYT/twHVOe4C9fpxmWrkgwIOuyycx8dZG7+kV6TzlJkbOczNOEAOm7pfoOD524GN2ET06ZoCIM9ppysWvXMFt3OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=NchrHrVA; arc=none smtp.client-ip=115.124.30.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mCm1NwsF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=OVgy/3SEwwpQRJhKmU+vMLYbIXm/mUcVt2kvDFtXzdk=; b=mCm1NwsFpu2m0ZHZgNbTKbU6vf
-	pCh2wCi7OSxx1n50b7pH0mfJKJUNCxc93OzNREEXnoTfMcNzFtc5LKfJjd6KTZWEKMt/+VMiUE1fQ
-	TZPyrm2mAwc42TQhsUvIB4Kg3DRhHcj5SHDBQ3zUw5tfwcThQmRvgSqAghrLQWbzIOa0CTR3oCYAx
-	ZAd7snNa+V+8RsGn/ugsNi8uTp2mQ0z5ABHwYjYfJeDu+hdPs61J7Q5oy0IhUWexTI7QZ8QHopGww
-	vguSUv2FpY1lzsZlDaa7ejbCURkaXnfOvA9GQLKRXe8XR3pdjwz8xi30FmW2D62BXbMOlgef7YJCz
-	O8PHI/ug==;
-Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wTyCU-0000000662l-2aZ2;
-	Mon, 01 Jun 2026 08:40:47 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A271C300454; Mon, 01 Jun 2026 10:40:45 +0200 (CEST)
-Date: Mon, 1 Jun 2026 10:40:45 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
-	Carsten Stollmaier <stollmc@amazon.com>
-Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
- __rwbase_read_unlock()
-Message-ID: <20260601084045.GL3102624@noisy.programming.kicks-ass.net>
-References: <20260529165114.748639-1-seanjc@google.com>
- <20260529165114.748639-2-seanjc@google.com>
- <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
- <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
- <ahnxfACTGeVFbJMk@google.com>
- <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
- <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
- <aho1M7fvK1Qzmiai@google.com>
- <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="NchrHrVA"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1780303323; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=klc98YH+ItkJ3emUHfiBibK7AzKrV+4NC80O7N82uMI=;
+	b=NchrHrVAOlNkQqxS9xpjEbJzuGfLZzbfuWcEsvXyuIq/uMsFeV0QMdJXliR2h0XjNdK48Z90MR4bR5qPwEsTcGmKbQSJa4ps60ktaI9OtWhwzdjfWm/AiNzhwuw32jBt754wvkXjyx7Yde8x8kdH4HxDiPqCUXl+j95WPh6BMdg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R841e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X3zThL._1780303309;
+Received: from 30.221.133.117(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X3zThL._1780303309 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 01 Jun 2026 16:42:00 +0800
+Message-ID: <a0875d9f-4aed-4164-861c-6fbbdfe04080@linux.alibaba.com>
+Date: Mon, 1 Jun 2026 16:41:48 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] iommu: introduce iova_to_phys_length in
+ iommu_domain_ops
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: boris.brezillon@collabora.com, robh@kernel.org, steven.price@arm.com,
+ adrian.larumbe@collabora.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+ liviu.dudau@arm.com, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
+ alex@shazbot.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux.dev, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kevin.tian@intel.com,
+ baolu.lu@linux.intel.com, suravee.suthikulpanit@amd.com,
+ dwmw2@infradead.org, xlpang@linux.alibaba.com,
+ oliver.yang@linux.alibaba.com, shiyu.zsq@linux.alibaba.com,
+ wei.guo.simon@linux.alibaba.com,
+ alikernel-developer <alikernel-developer@linux.alibaba.com>
+References: <20260529115116.GR2487554@ziepe.ca>
+ <20260531093637.3893199-1-guanghuifeng@linux.alibaba.com>
+ <20260531093637.3893199-2-guanghuifeng@linux.alibaba.com>
+ <20260531235148.GV2487554@ziepe.ca>
+From: "guanghuifeng@linux.alibaba.com" <guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20260531235148.GV2487554@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, May 30, 2026 at 12:26:20PM +0200, Paolo Bonzini wrote:
 
-> From f2c604a94cdea9bb96bb21c8a29288eae6cbac67 Mon Sep 17 00:00:00 2001
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Date: Sat, 30 May 2026 10:54:36 +0200
-> Subject: [PATCH] seqcount: allow raw_seqcount_try_begin in atomic context
-> 
-> When raw_seqcount_try_begin() is used, the typical action when
-> the seqcount is busy is to take the same lock that the writer uses.
-> Another possibility, found in kernel/events/uprobes.c, is to delay
-> the work to a safe point using RCU.  Either way there is no need
-> to guarantee progress of the writer under CONFIG_PREEMPT_RT,
-> because the caller is not going to call raw_seqcount_try_begin() in a loop.
-> 
-> However, raw_seqcount_try_begin() currently uses seqprop_sequence()
-> via raw_read_seqcount(), and therefore does a lock/unlock of the
-> write-side lock on PREEMPT_RT kernel.  This prevents it from being
-> used in atomic context.  Use __seqprop_sequence() instead of
-> raw_read_seqcount() to allow it.
-> 
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  include/linux/seqlock.h | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-> index 5a40252b8334..9adbf5d9667c 100644
-> --- a/include/linux/seqlock.h
-> +++ b/include/linux/seqlock.h
-> @@ -338,7 +338,10 @@ SEQCOUNT_LOCKNAME(mutex,        struct mutex,    true,     mutex)
->   */
->  #define raw_seqcount_try_begin(s, start)				\
->  ({									\
-> -	start = raw_read_seqcount(s);					\
-> +	start = __seqprop_sequence(s);					\
-> +									\
-> +	if (!(start & 1))						\
-> +		kcsan_atomic_next(KCSAN_SEQLOCK_REGION_MAX);		\
->  	!(start & 1);							\
->  })
+在 2026/6/1 7:51, Jason Gunthorpe 写道:
+> On Sun, May 31, 2026 at 05:36:29PM +0800, Guanghui Feng wrote:
+>> Add iova_to_phys_length callback to struct iommu_domain_ops alongside
+>> the existing iova_to_phys. The new callback returns both the physical
+>> address and the PTE mapping page size in a single page table walk.
+>>
+>> Add iommu_iova_to_phys_length() core function that:
+>> - Checks ops->iova_to_phys_length first (preferred path)
+>> - Falls back to ops->iova_to_phys for unmigrated drivers
+>>
+>> This enables callers like VFIO to efficiently traverse IOVA space
+>> by actual mapping granularity instead of fixed PAGE_SIZE steps.
+>>
+>> Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+>> Acked-by: Shiqiang Zhang <shiyu.zsq@linux.alibaba.com>
+>> Acked-by: Simon Guo <wei.guo.simon@linux.alibaba.com>
+>> ---
+>>   drivers/iommu/iommu.c | 34 ++++++++++++++++++++++++++++++++--
+>>   include/linux/iommu.h |  9 +++++++++
+>>   2 files changed, 41 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+>> index d1a9e713d3a0..43323229a1df 100644
+>> --- a/drivers/iommu/iommu.c
+>> +++ b/drivers/iommu/iommu.c
+>> @@ -2545,15 +2545,45 @@ void iommu_detach_group(struct iommu_domain *domain, struct iommu_group *group)
+>>   }
+>>   EXPORT_SYMBOL_GPL(iommu_detach_group);
+>>   
+>> -phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t iova)
+>> +/**
+>> + * iommu_iova_to_phys_length - Translate IOVA and return mapping page size
+>> + * @domain: IOMMU domain to query
+>> + * @iova: IO virtual address to translate
+>> + * @mapped_length: Output parameter for the PTE page size (e.g. 4KB/2MB/1GB)
+>> + *
+>> + * Like iommu_iova_to_phys() but additionally returns the page size of the
+>> + * PTE mapping at @iova through @mapped_length.
+>> + *
+>> + * Return: The physical address for the given IOVA, or 0 if no translation.
+>> + */
+> When introducing the new function I would like to fix this 0 error as
+> well, it should return PHYS_MAX for error
 
-Yeah, I think this makes sense. Thanks!
+Implementations such as arm_smmu_iova_to_phys/DOMAIN_NS(iova_to_phys)
+
+all use a return value of 0 as an invalid state, so 0 is used as the 
+representation
+
+of an invalid state to maintain compatibility.
+
+>
+>> +phys_addr_t iommu_iova_to_phys_length(struct iommu_domain *domain,
+>> +				       dma_addr_t iova,
+>> +				       size_t *mapped_length)
+>>   {
+>> +	if (mapped_length)
+>> +		*mapped_length = 0;
+>> +
+>>   	if (domain->type == IOMMU_DOMAIN_IDENTITY)
+>>   		return iova;
+>>   
+>>   	if (domain->type == IOMMU_DOMAIN_BLOCKED)
+>>   		return 0;
+> Any domain that doesn't have an op should fail, blocked is one example
+
+In accordance with the implementation of iommu_iova_to_phys, it returns 
+a phy value of 0 in invalid states.
+
+>
+>>   
+>> -	return domain->ops->iova_to_phys(domain, iova);
+>> +	if (domain->ops->iova_to_phys_length)
+>> +		return domain->ops->iova_to_phys_length(domain, iova,
+>> +							mapped_length);
+>> +
+>> +	/* Fallback to legacy iova_to_phys without length info */
+>> +	if (domain->ops->iova_to_phys)
+>> +		return domain->ops->iova_to_phys(domain, iova);
+> If it falls back it should return something sensible for the length.
+>
+> I suggest you approach the patch plan a little differently, the first
+> patches should implement the new function and an iommput
+> implementation
+>
+> Arrange things so the normal iova_to_phys calls the new function if it
+> is available and discards the length.
+>
+> Then convert callers that can take advantage of it. Have the fallback
+> path also compute the length by iterating internally.
+>
+> Finally one patch per driver implementing the new op, this could even
+> be a second series.
+>
+> Don't remove iova_to_phys(), it is fine for things that don't need the
+> length.
+
+Does this mean retaining the iommu_iova_to_phys implementation but
+
+implementing it through domain->ops->iova_to_phys_length (mapped_length 
+is NULL)?
+
+>
+> Jason
