@@ -1,48 +1,62 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FAE3D966A;
-	Mon,  1 Jun 2026 15:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA793D9DA3;
+	Mon,  1 Jun 2026 15:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780326602; cv=none; b=sFgw71A6lm24tlqTQZG15eDoAmBvOameGHeNIYsFTi7mqALKUF4cLTQcQf6t054PpFU19eHIk8NZw7YKLgqqT+PejLQDFiA2go7GfGNtjdU5lN8gWSsch9WYT9/DGVE90aXIemF8wvwHZODfwDMMvIxRA3zEOpzcuQVKwAo2epM=
+	t=1780326723; cv=none; b=MQGauEhXgllh8Fc3qnxL6UJbHXuQ7CbIwVlw/XtQz9yL0dLZPUt+f7Hr4NVeClVu1l1CEXvbOMgtevaNIC8SbyqF3imE00u1RIjuQlJdQRBwwRR9jdmrxGmDkr4PSysAgnRlxte1+peXQSIDyKyo71PiWXmzt+W7ZsyZQHHNmaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780326602; c=relaxed/simple;
-	bh=1xe2XB1aiVg3WnXjfhccmRKptV3sx0yTxrb2pAmdnyU=;
+	s=arc-20240116; t=1780326723; c=relaxed/simple;
+	bh=fMftG3NJd81P7I06BN+8vTqGyWsFeCGiCV6oS/EA8t8=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cL8bQK4EXOusHN/TcaK7CA9WRlBDVXtxSDtv35laQbsA8Vdxoa6AMfRO9c6kbMR8UcWB9j+A29x/znVQA+806uKK+PkHo+1hiGQEgmVUEZ/da88HddBDUYr7cnudU+g75HPXkBIayINT6dVpm1Tg0KFd3gMMOsy5G04xP0Jr8Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=oIfFAG5I; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=t6t2VZfquRtetIyIecT9yvAI5sV8J1j8QYs+bUB+WAE0u6KAzbZE2DaQbBWSBOrUGbxpuIeaAK4bpACRl/HhRlo/1yNjFnAonofXmtg4iMWB4up3dNNy/UPyeRdFlnRJ1Z3RBhRq4SfGzgngMxgMyjUfLxP2xjoOBkonBw378eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=gKkHuHgD; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="oIfFAG5I"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="gKkHuHgD"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=yjMRZyUtPo6XgV2ZCka/gbb69OT/nISTIIEx6s0hAP0=; b=oIfFAG5I3x1FC/btrmRdtA45Bi
-	9xg0sAEXRYVPXErrMI46ed1+mPPf+j3mUd9RDbt3RVHoAKNx4Vs74RjgegKGDSTtJUGuMu2aJFTF+
-	GuDvmxDHFV1SLMNTD/hDRddp70CqzCSqWwlaHp4JGnIljLjWqSsZ3zsRiuC0fzJZRy7ePIHHpC2mi
-	HyxRjwHSd8rnqNcgQ/mxi4o9gHx6M8hU+m3ByPKer/VuU00HTEzbpBkeif8K9x/dTycr6qw342jx4
-	HaXkDo+gq6Lec2pDBCqsCyCdBM/3KMX36552M0Cs6peGmni+Agagr8em6t1YSiMDtpXQJpWciulHz
-	BOu/if+g==;
+	bh=fMftG3NJd81P7I06BN+8vTqGyWsFeCGiCV6oS/EA8t8=; b=gKkHuHgDwvWDTuzoq2nMpSibd8
+	WdasK9JNcn3g/2xtoZjttV0QRD3OUfrHSS8yXKJJGp67D8N45XHrTrl7meWVKfrOv0WvSE1hMRqAo
+	1hboJ4Xb92AiK8+tBYQDVACMACxg/AZJjhXv3g5TDdZ7h8utbQ9N1vSav8xbSEBYl3P0gus3/UD9i
+	Ic8185scV5Cr6X1dfHq3fHnWWriidV7/CKL86PKoSHytMnhp9jeq1pOBLrSub7E1xZTFtlhKUHBep
+	qZzeKc68MGrLVzPvBiuBgjR2paBtbdRvKsC2E2RrJf0kbvufHiCYiMDIexFhs8n5tCeO1PTB7dagt
+	fvhbfiGg==;
 Received: from [2001:8b0:10b:5:5b40:b57d:669c:36f4] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wU4H5-00000000IHN-3t8d;
-	Mon, 01 Jun 2026 15:09:56 +0000
-Message-ID: <7428996952122d5943715c8682c6ad1c353566f9.camel@infradead.org>
-Subject: Re: [PATCH v4 02/10] KVM: pfncache: Restore guest-uses-pfn support
+	id 1wU4J0-00000000IVs-0AIJ;
+	Mon, 01 Jun 2026 15:11:54 +0000
+Message-ID: <17bef051da24e7f219076eafafbe883c141613c2.camel@infradead.org>
+Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
+ __rwbase_read_unlock()
 From: David Woodhouse <dwmw2@infradead.org>
-To: Fred Griffoul <griffoul@gmail.com>, kvm@vger.kernel.org
-Cc: seanjc@google.com, pbonzini@redhat.com, vkuznets@redhat.com,
- shuah@kernel.org,  linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Fred Griffoul <fgriffo@amazon.co.uk>
-Date: Mon, 01 Jun 2026 16:09:55 +0100
-In-Reply-To: <20260102142429.896101-3-griffoul@gmail.com>
-References: <20260102142429.896101-1-griffoul@gmail.com>
-	 <20260102142429.896101-3-griffoul@gmail.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>,  Peter Zijlstra <peterz@infradead.org>, Paul Durrant
+ <paul@xen.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon
+ <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
+ <longman@redhat.com>,  kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, Carsten Stollmaier
+ <stollmc@amazon.com>
+Date: Mon, 01 Jun 2026 16:11:53 +0100
+In-Reply-To: <20260601144724.ARQR8tYh@linutronix.de>
+References: <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
+	 <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
+	 <aho1M7fvK1Qzmiai@google.com>
+	 <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
+	 <58d17a623c1c5c9c09bd91baa30510aaf42f899b.camel@infradead.org>
+	 <CABgObfYJsacrCDHRouLDsEz_QF0EBQd8pu3g-V_gta6Eac2e+w@mail.gmail.com>
+	 <14442dbf1e6d758fdd4756f2ed5c8cb2738582fb.camel@infradead.org>
+	 <787aa26cf62dfd361eea8ed19f384fc517892501.camel@infradead.org>
+	 <20260601134008.rllwJtn-@linutronix.de>
+	 <a9867c036a1f6b6d29c0838b8e6884d814dfde66.camel@infradead.org>
+	 <20260601144724.ARQR8tYh@linutronix.de>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-GyYwuxs6CjMDc2cLYSDY"
+	boundary="=-DR9lJXNTWWaJRD2gDl70"
 User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -53,62 +67,64 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-GyYwuxs6CjMDc2cLYSDY
+--=-DR9lJXNTWWaJRD2gDl70
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2026-01-02 at 14:24 +0000, Fred Griffoul wrote:
+On Mon, 2026-06-01 at 16:47 +0200, Sebastian Andrzej Siewior wrote:
+> On 2026-06-01 14:53:14 [+0100], David Woodhouse wrote:
+> > On Mon, 2026-06-01 at 15:40 +0200, Sebastian Andrzej Siewior wrote:
+> > >=20
+> > > Okay. This complains about non_block:
+> > >=20
+> > > =E2=80=A6
+> > > > [=C2=A0 429.927260] KVM: non-blockable invalidate_range_start, non_=
+block_count=3D1
+> > >=20
+> > > and commit 312364f3534cc ("kernel.h: Add non_block_start/end()") says
+> > >=20
+> > > > =C2=A0=C2=A0=C2=A0 Peter also asked whether we want to catch spinlo=
+cks on top, but Michal
+> > > > =C2=A0=C2=A0=C2=A0 said those are less of a problem because spinloc=
+ks can't have an indirect
+> > > > =C2=A0=C2=A0=C2=A0 dependency upon the page allocator and hence clo=
+se the loop with the oom
+> > > > =C2=A0=C2=A0=C2=A0 reaper.
+> > >=20
+> > > so a lock which becomes sleep-able on RT vs !RT shouldn't be a proble=
+m,
+> > > right? We also don't complain about about scheduling within a
+> > > rcu_read_lock() section if it is part of spin_lock().
+> >=20
+> > Right. This is just a false positive in the debugging check, AFAICT.
+> >=20
+> > It's actually *fine* to take a spinlock or rwlock in the OOM reaper
+> > path, *even* if RT makes them in sleepable locks. And I think even the
+> > KVM_REQUEST_WAIT IPI is fine.
+> >=20
+> > But to fix the false positive warning, *either*:
+> >=20
+> > =C2=A0=E2=80=A2 non_block_start() shouldn't complain about "sleepable o=
+nly in RT" locks,
+> >=20
+> > OR=20
+> >=20
+> > =C2=A0=E2=80=A2 The OOM reaper path shouldn't use non_block_start() und=
+er RT.
 >=20
-> @@ -55,6 +70,27 @@ void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm=
-, unsigned long start,
-> =C2=A0		read_unlock_irq(&gpc->lock);
-> =C2=A0	}
-> =C2=A0	spin_unlock(&kvm->gpc_lock);
-> +
-> +	if (evict_vcpus) {
-> +		/*
-> +		 * KVM needs to ensure the vCPU is fully out of guest context
-> +		 * before allowing the invalidation to continue.
-> +		 */
-> +		unsigned int req =3D KVM_REQ_OUTSIDE_GUEST_MODE;
-> +		bool called;
-> +
-> +		/*
-> +		 * If the OOM reaper is active, then all vCPUs should have
-> +		 * been stopped already, so perform the request without
-> +		 * KVM_REQUEST_WAIT and be sad if any needed to be IPI'd.
-> +		 */
+> Looking at the list of users it was probably introduced for the mm
+> folks. Let me add this to my list of things to look at=E2=80=A6
 
-I am unconvinced of the veracity of that claim. We get here via
-__oom_reap_task_mm() which has explicit comments about 'might start
-racing with the dying task'.
+Thanks. For the purpose of KVM we shall ignore the issue and assume
+it's going away. It is safe to take both spinlocks *and* rwlocks in the
+"!may_block" invalidation path.
 
-I think it's actually fine to use KVM_REQUEST_WAIT in theory... but
-then again, the task has already been ignoring SIGKILL for two seconds
-or the oom_reaper wouldn't even have been invoked AIUI, so maybe we
-should err on the side of caution by still doing this:
+And probably OK to IPI a vCPU to GTFO too, but we'll discuss that under
+separate cover:=C2=A0
+https://lore.kernel.org/all/7428996952122d5943715c8682c6ad1c353566f9.camel@=
+infradead.org
 
-> +		if (!may_block)
-> +			req &=3D ~KVM_REQUEST_WAIT;
-> +
-> +		called =3D kvm_make_vcpus_request_mask(kvm, req, vcpu_bitmap);
-> +
-> +		WARN_ON_ONCE(called && !may_block);
-
-... but instead of warning, it should return -EINVAL in this case? The
-OOM reaper should call it to try again in 100ms. I guess we shouldn't
-clear the valid flag in that case? Because it does need to check the
-vCPUs again on the retry, not just skip on the basis that the
-invalidation already happened.
-
-(Yes, this is a void function. It would need not to be, and the return
-would need to be propagated back through=20
-kvm_mmu_notifier_invalidate_range_start())
-
-
-cf. https://lore.kernel.org/all/20260601144724.ARQR8tYh@linutronix.de/
-
---=-GyYwuxs6CjMDc2cLYSDY
+--=-DR9lJXNTWWaJRD2gDl70
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -187,21 +203,21 @@ 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
-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
+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
-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
+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
 
 
---=-GyYwuxs6CjMDc2cLYSDY--
+--=-DR9lJXNTWWaJRD2gDl70--
