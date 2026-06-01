@@ -1,158 +1,240 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazolkn19012052.outbound.protection.outlook.com [52.103.43.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BC8387374
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 08:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780303465; cv=none; b=moOei9nS53vXnbFDXs9ZkJg3F+HT1KAxJbdL88uLPozRmUKw/OFcNuL/QfDSGJLjAqci3PLWLESaX89AeMfhTHJzsaTPC5f/a+sn1vVD8zdv1ulBnlFqIfBJQuVyuL+ZvHLAF6R7ZxalGIx3UJ0SVGOcwGK8GVtWqhg+L55GuPQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780303465; c=relaxed/simple;
-	bh=h8lwCwpBvsZAK2xSMui6cpZp1xkNbU+SVH73g8ceUx0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zb7ipwQq6FCrZXNC4Qvc4mOUhe2JcamkimwkmP+szEbYaIBS2l0v3hCau9NVfhtvuHWR3cHp9nohgoimY8pfxxUCp6BmNRJwQ9MhMyWl7UfIHGHQtlOoe5UvKBz3nl3Y4Oms40WYjAngKwOJ97lGBumThonk4wr4tr5+EYt85jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bjbXNHuA; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4EC32ABCA;
+	Mon,  1 Jun 2026 08:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780304001; cv=fail; b=QKQj1IhF5AxKgqLPy3Ez3pQBQQetN+3tP6alkSmlCZCn7d9xiPb8HuurRdTa6EAuhPS0VkBX28j27OqJy+Y5zubRSxxg2Hvvq0lFtMk2kukrOv48ppcbZtC0JGMMqNo1luNWLDvWWG6gZcILNM6612EutQJXl8E6uB55H1K5kII=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780304001; c=relaxed/simple;
+	bh=f8q39IHeNr0i78vFWj6WVuwVmTt6QFNkM+pavdK+Jm0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=XjjREQf86YKncT17wBp8XRNVQHbupPi/4gkgTcq/jnfr7EldAK69ZHCh1/Vciu2rkfTogcqXigguXV3KS5yQ9CYGZxMDXAjtB759dLRkRAM2D4ObuUBTG97esBxOtV8kPtQINlTcgXVqzHP7IjCX8uU1EospJ/3+K7KBGoO08ts=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=DoDRCMJW; arc=fail smtp.client-ip=52.103.43.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bjbXNHuA"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2bf30d530bdso24808275ad.3
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 01:44:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780303458; x=1780908258; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fS2CUg/Sh/44DwNmonmJi8mUsAkNkldRmQVB8GPLmro=;
-        b=bjbXNHuAP7LFkvBLGc5IqNXM2HTlbnHM8i1/WRKOpr5xEK3TPZ01Ul+H3NAUgR9LcM
-         CHTYlzm6JOF8ACaPJNn+4/oAJFw5JwctRF4rOaO/54Nz1rqcwuyBbmyB49JPITpLrOq4
-         NmDW6seldzadDFbVBXJUb/b/jOzodsDCN9l7D3wa5h4nY2sUcfi+0+DWXRSnTxGOsaZt
-         xKzodV0nBgLqFkzDGc+1Mp6NLHvE+N2wa/ZEhzUosGf7Gt5WWCJpSa7aoAHQwzqsDyoO
-         nYchj1BZlCZKe8reTOkb95FWqbgOTyq9JGXZaYQ6FAt+J/UK0isyazxgSMRWu9vfK0zG
-         TXgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780303458; x=1780908258;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fS2CUg/Sh/44DwNmonmJi8mUsAkNkldRmQVB8GPLmro=;
-        b=JZcqbpwu0t3ibkDZjdZsao8kwXpSyulkFrKUOmRF+jkY98d3SruCCGmlc1QVV/Uqnq
-         LFGc+aJWl9QSyx8Rd5j1ao90hU4RmM9UWyFVmtElNqZKNavtJ+BmD8vrPplv90DwEenN
-         8DcltyaFY3pixZtDjCg+y4a9MvBWyC4LYbdRYKs6IC9shiZ137JA5CDyJwxdv1nO9tQK
-         e2h+dzh3nvYukSoT+WozkQcsBKyXofOzf7W6j5gt9QB5nLK3nsExFh3X/XELGdDYZn7Y
-         MKYvPE21cyVe3yQFrx39DCOXq/O4PV6l8e8EAefb03/2GizkvsNvf/DOMP2xiYSm4yJ1
-         pfxA==
-X-Forwarded-Encrypted: i=1; AFNElJ+QgT2fv4qPPxHh5AbkNeQsqdolG5IIlX1yicEf40b1/lKqyQaT0J/Pog22Sp+V6mheZtg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3K9mmc4zLvWJ1749GrGI8fVxZgIgd/GzhcDfAJNKgFUFBOjG6
-	Y2iqbR87aee+nxp5bQha7SYFg68i/GTMwCoA60j526rAnJTG64exOEtH
-X-Gm-Gg: Acq92OGPAtOzOimZdyjNXqf4EbASXFe45NVmfu2qw6AZV3Hg3/mg0ECSNjEMvpMeLAj
-	+Jq0/A2HF//UJDO+1/65XjmIHqmoHaCCaPqOBkDMHid5U6Huev2UgHqfeuidlswpDkLh1+t82er
-	TkqsbfTQiVBY/h/gJNfPjemYJLNK6OzVfkTKEF2RSyKWFJKTM9gZ3ocasMlLmkJWoTVsag9jWV3
-	t/31CvLCGhBmITbEIfNkeosvWpc4/va1xR+pmL22qlmO08R6+LqAsV6UTkTjpk0tHMhuqZFeyj+
-	AQfqQSTgwT5y2TCdQkq/xFjSFIGVKXrlDdQkDhdmln4XkEzGf4u8S7+9q/gB2tIwlBEGoK18HAG
-	edlOj/V604qfd/H51hW3AAX1lumt5AxOMN6MyGRNUEt9Hm7Wnce8Bd1MkXdPtSYk62PA4joqNOe
-	zHuR+KKmRFWA4ZBDonjkMBo9dKwege/IQAGA==
-X-Received: by 2002:a17:902:f70d:b0:2bf:379b:53d2 with SMTP id d9443c01a7336-2bf379b561cmr100522325ad.15.1780303458099;
-        Mon, 01 Jun 2026 01:44:18 -0700 (PDT)
-Received: from localhost ([2001:19f0:8001:1b2d:5400:5ff:fefa:a95d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf23c3eb31sm92807725ad.75.2026.06.01.01.44.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 01:44:17 -0700 (PDT)
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Deepak Gupta <debug@rivosinc.com>,
-	Thomas Huth <thuth@redhat.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Sergey Matyukevich <geomatsi@gmail.com>,
-	Inochi Amaoto <inochiama@gmail.com>
-Cc: linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-kselftest@vger.kernel.org,
-	Yixun Lan <dlan@gentoo.org>,
-	Longbin Li <looong.bin@gmail.com>,
-	Quan Zhou <zhouquan@iscas.ac.cn>
-Subject: [PATCH v2 7/7] KVM: riscv: selftests: add Zicfiss/Zicfilp extension to get-reg-list test
-Date: Mon,  1 Jun 2026 16:43:35 +0800
-Message-ID: <20260601084336.2601675-8-inochiama@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260601084336.2601675-1-inochiama@gmail.com>
-References: <20260601084336.2601675-1-inochiama@gmail.com>
+	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="DoDRCMJW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zDD5PQrLYc0CoGLuylMjJV00fm5RAidI5x7p2BCp38wONXnp2oVEB3h9RnqXDOxhWtx/oHtfNjXeelE/umzWeuiqG4IwDFqjecwX+N1m5625xKKVCgC9pukCUykrxdB/6Cjpm78o/AICOvOtu9Co53zG6miJWYKZQ/2wwPZfFMJM6oS00TU4Wbe126Miw7pmkCULpx6L/WsDI8Y37ZUc/rsS7W7bSkgS/FnOwbSfU+xkLfIPOOeJ1Ms1X29wCl5bznjw9y6ohj9LdPeoBivtQPXHJmIU+0oiT6YPqSF7v4CjYspsWQnyyL1Wl5D5nY6hvC5JnS+06GfnhZvVhnyQ8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zaM7+xC0c/FTJQaT1ilLi8aONmJ9jAUmX5vLGajUwpU=;
+ b=i2qIlFOcpbjlxRNVUTYkKCUUNn4QJpEsv05CWcsj5gN8ZB+YaM3kea81l6r5g0JSUM3ETEHsykqMrJGSqlI6aXsGxpWl0pER/VPfCGAlT4IiKsbl4wKDv4STUUWDYmKErJEb+L0AeBqEXHrQXAqitJcUh4H9nmHJKmX6naET3FuPeyNsAhO5ky81GkZvgJSzcI2yVdvp/Bp3sOndWn4cp798xHMNHo2I2R4O8uE/55XhDxtYp6MUirPhuXVqGgb8NU4XrPr3MBFxCxm2pEeLCRWbPxf9Y+EjKsM1ZKJ8Vdb8ToFVsZmceo86FE5JbkwhThG5VKdMYEB/fiYlOhP2dg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zaM7+xC0c/FTJQaT1ilLi8aONmJ9jAUmX5vLGajUwpU=;
+ b=DoDRCMJW09fZ4k5LIjf6+hMoKRwgDvXmg7BSct6rDPg3XZCOybUHBtcYqSPCQiKJeIWfgQBEqsuXy0co6iZ55qYZ3akT5vpCSSZiwTmWlRUP53apz5mu6ClkgYXj97lFaup27+5fTYxGn4BIOerZN2YphigC2Ii5iUKX41LR4fkbNtfTpfwOQe6u+S4NJPZP1QxX6uBOYShDjl90iyQItxRBR3BeNNb9TcMGvH3K+o+mJKivXLksGFOVX/NHNOYmYuAV3hvwRlG4ABU5dOqNQQoISnWN8nW59r6eGs1bYf0l69E6oF0LlRhTDSk14cLuKnppIHEes3BFnW+nFOcLmA==
+Received: from SE3PR04MB8922.apcprd04.prod.outlook.com (2603:1096:101:2e9::7)
+ by KL1PR0401MB6306.apcprd04.prod.outlook.com (2603:1096:820:b7::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Mon, 1 Jun 2026
+ 08:53:11 +0000
+Received: from SE3PR04MB8922.apcprd04.prod.outlook.com
+ ([fe80::3450:f139:5238:8f58]) by SE3PR04MB8922.apcprd04.prod.outlook.com
+ ([fe80::3450:f139:5238:8f58%6]) with mapi id 15.21.0071.015; Mon, 1 Jun 2026
+ 08:53:11 +0000
+Message-ID:
+ <SE3PR04MB8922FD6348F0F4426A3E2F46F3152@SE3PR04MB8922.apcprd04.prod.outlook.com>
+Date: Mon, 1 Jun 2026 16:53:02 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] KVM: riscv: Pass the target size to huge G-stage
+ checks
+To: Jinyu Tang <tjytimi@163.com>, Anup Patel <apatel@ventanamicro.com>,
+ Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: kvm <kvm@vger.kernel.org>, kvm-riscv <kvm-riscv@lists.infradead.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?=
+ <radim.krcmar@oss.qualcomm.com>, Andrew Jones
+ <andrew.jones@oss.qualcomm.com>, Conor Dooley <conor.dooley@microchip.com>,
+ Yong-Xuan Wang <yongxuan.wang@sifive.com>
+References: <20260520152148.131272-1-tjytimi@163.com>
+ <20260520152148.131272-2-tjytimi@163.com>
+Content-Language: en-US
+From: "Nutty.Liu" <nutty.liu@hotmail.com>
+In-Reply-To: <20260520152148.131272-2-tjytimi@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SGAP274CA0015.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::27)
+ To SE3PR04MB8922.apcprd04.prod.outlook.com (2603:1096:101:2e9::7)
+X-Microsoft-Original-Message-ID:
+ <68a890c8-73ac-4b33-bdd8-05708c2f6637@hotmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SE3PR04MB8922:EE_|KL1PR0401MB6306:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3720c93f-d029-4add-cb53-08debfbb355d
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|51005399006|6090799003|45011099003|41001999006|12121999013|23021999003|5072599009|15080799012|19110799012|8060799015|19061999003|40105399003|3412199025|440099028;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RDcwVHpSWHgvWWhlQ2E3akxUaHFweUZobllzZ1NJZThqMmRxRVhYN2dwMzJ2?=
+ =?utf-8?B?MHlhTm5aTE96UExMTlhYdUFTblpoankwcC9lUGFmK3FlSEV0YXBVcHFOeVhu?=
+ =?utf-8?B?dE0rSExqTGl1ZzRpb1lmd245alFPUUFxVFM5TFVUNXZvb240cmozb2ZRZ1d3?=
+ =?utf-8?B?NWZHZWptY1RqQTBjMkltZUVWNmVoRURHeXBaOTVXNnVwVDhrWW5xRVlBY0lp?=
+ =?utf-8?B?T0JrL1RraU4xNjY5czJ4VmIyYktSamZGekJGaHhhQWYraThZeDFpSDVSNnBz?=
+ =?utf-8?B?S2lEZEd1SXgxUEQ3aUtjak16Rk12Mm5kMTFxNXo4ekVRdmV1eUVlOENwc3BS?=
+ =?utf-8?B?bXgwb1NSbnRyR3p3ZXc4TkhyZXhSSDRXWlJTbjlVbUR4RC85a2Z6cmNtWkpw?=
+ =?utf-8?B?ejZtVzcyd1drakRkOEN2RnVFdnN2TFZzLzk1cXhNSmxkZzdZQ1BaVlk4MWdm?=
+ =?utf-8?B?WnhEdklpbWJ5RkVoV001T3JjRjhuNmlucGNlRWZaTFRxT2xpTnJiUUs5UG4w?=
+ =?utf-8?B?UC9hYzk1WU1zbXc1N2xJTy8rWit4a1puMTB1NkRjemhZdHltYi9hajkyVGNz?=
+ =?utf-8?B?ZXYvRFRIU21aZFJ3UjlvYS9VQ1FuVnVTRU5yU1R4NlY4UjIvNm1XUEsvdEVp?=
+ =?utf-8?B?N01VUmZWT3RMUzFBZytvL0wwTGVYTnBCU3o1dDZLWnRNekhRRkg3VVNPWmdk?=
+ =?utf-8?B?RVJjRk9oWUYrL3hQUDBmRXZpWE9VdDNXQWJ6THM0ZloyTGhDMlJFSnBTMnFE?=
+ =?utf-8?B?cWtmNWtLcmpZNFUzM0xmTjdONHprTW9COWM5L1VlVUNPYmFoRDA5NGYyY1I4?=
+ =?utf-8?B?Y1NFL3JjUlhmOXU1cVZKVDdoNzRCQm1VamYzeUxPK3RTUkwxMWFLMGRzemow?=
+ =?utf-8?B?TWw3OWlaRHJvSzVDWU5FOGlOak1nZ3BVODIxaWhjMzJ2Y29HQTlMNEs4eWhr?=
+ =?utf-8?B?RnYzb2hEZGdNaE1YWXdMWERUWE9pS3lPWTR3eEFWRFZWaGZTOEI3VkV5SzZL?=
+ =?utf-8?B?T3NSWHhTclI1RDYvV2M1dGN4VVVoRFh0Rk1DMTd6bW5JUkJxdHlIQVp0NGdh?=
+ =?utf-8?B?bFlsTjZRM3dxVHQ3cGdlaU9RaHhBU1psaXlVTytEbXlGUFJhYmw0NXRaN21Q?=
+ =?utf-8?B?blhLSEZ2YTNVcjRrYng3RFAxUE9ZRmswU3VVQlhyMndnWmFRTFBIOTBJRy85?=
+ =?utf-8?B?YS8zWXJiUjR2cHRJQ2lMYVVLc1NBVFdLVHhPQVhMOFVoWHhEYTRVa1VRdUFs?=
+ =?utf-8?B?cHZhVURnby96V05iZWxkbEUxQnluNi80UUdxWTVIaHJLb0F2MnoyWkxSVTl0?=
+ =?utf-8?B?akdmQXRXK1dSeHpyc25vbldrdEFWZTZRNm41MGRiZ3BJWFZtSFBIN2wzZ29H?=
+ =?utf-8?B?UkxkZmNPMHg3VHNUdzVHTkxONWhGbk41amdndERSemVsQkVtSnN0NTZxRlpk?=
+ =?utf-8?Q?65W1aehA?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WG1rZ0tPWE5FZU9FWkkyNXVIM3Y3VE1MWjJJNXlISmtpcGhBYjgzb0N6UmJV?=
+ =?utf-8?B?OVBGMU5aL2VhK3VuSE1vdGhGVkxrMUQ3UjVBdFJEN3hZT2NtRmFNWVFRUjFW?=
+ =?utf-8?B?UGRWMTN0UWdDcmd0bnI5T1ZxU0RndnNiclFpTGRHNWp3MkdXY2Q4RFROVnhj?=
+ =?utf-8?B?c3k3QUdtajlNQ1BTa3N5TEg1azNvdFJJV0tyb3pJeXZGVmFGdUpqQm54b1RS?=
+ =?utf-8?B?NnAxVm0wSkJmbmJNWW9OQlJEWFZnelJCQmpQckhTS29nU1BjR211Z01GWWFB?=
+ =?utf-8?B?czNVcFV5Z1FqckZ6NzdRWmhPeXdvUVlVbmU2cklyV0V4amZzNUZOOHJvZHRa?=
+ =?utf-8?B?V0k3clo5dEliZjBXQ01XOXZORTlUaVhRM2c2V2VmczZ4TFJJOVNUWm9wcHNt?=
+ =?utf-8?B?dE1KNXZ0eHFQUThTWSt1MCtQd240U1BzU0NXeXRZWHNsUWVlRFh3V1UzcFVp?=
+ =?utf-8?B?dGY5SWp4Y0JkWHJyVWhXNDVyT05nVHBoR212eWtIZDhtckt6ZjJXNENKc2lr?=
+ =?utf-8?B?UFdCTXZzYXgzWmh0ZmpmOXZkOEplUnQ1SGRGa1dhajhBTWhQcTRpazl1aDZL?=
+ =?utf-8?B?K1hZVE5xTEZOUGZ3eUdzbUxzSkZkM2V3Z0VKZFdNdjZybkxlZkt3Q1pRc0J5?=
+ =?utf-8?B?WkVGSG9IOUhmL0x6MEovc2w3SzkyYWsvNmgxT1lSQjEwUXQ0SjZnOEd2Tzky?=
+ =?utf-8?B?QVFFL3ptRnczUFZaMmdadHlJM09HOTk3QXdndGpWaVJibFN1Tjk3azB2bWZZ?=
+ =?utf-8?B?dFEyNXBhK0t4ODI5Mnc2bW5MbUxmY2ZSV1JPWEZWVU8rK0RxK1lsVmUxZGpC?=
+ =?utf-8?B?dXp3NmJGMzBSYTdHWkw4d3BhbW80YXpFcGR2K294MENuUXk4NE1wamE5TWIz?=
+ =?utf-8?B?bEpBeVY5ZGYwT3pXbVEraVMxTGlGWlFkZkd6ekc5S1NvMVdCYTNETFppMzdC?=
+ =?utf-8?B?bmJSS3FLUTRiT2ZLKzlMTnZjS3NEN3pIWWdOcHJNUU5rSlNCeDFDMkVDYTFD?=
+ =?utf-8?B?RTN5OUplbFh1VklLeXZrdlhQZE1tcy8xZmowdnNpSHJOSEZRSW5ZbjJzckVs?=
+ =?utf-8?B?OEp6WUFLNDhMa3BvWTV3MXJmVGNBaHFad3JhVXp5dEdKaUEvZis0WU80Y0Z0?=
+ =?utf-8?B?OU1Dbnp4SWlQbWNaM3pMS0FpQWdLY0wzVlVDYktuU0w3WW5zbExpWWNWNnhn?=
+ =?utf-8?B?SWhFalVtQmJybFlpWW5MUlQvTzFIM1JkS3RpQXJwQmxCTXpPTStOMExhOUZE?=
+ =?utf-8?B?bUlyRjRNV0JybGxFSitUeG1HankwMkdGMXdyb3B0VTlIbzcvOVpqcWJhY29L?=
+ =?utf-8?B?R1lWL0cybWppRk9MSFV0RndDUGkrL2tOMWFMQkRFMFA3VDRqaHlhY1ZZOW1F?=
+ =?utf-8?B?UGpMSTQ1YURpV2VhazRKUFJOWEo1bmx6dWVlbTBWVW5IbnhMcUcvM0U5akxP?=
+ =?utf-8?B?ZnpRY1VKY2FGK1I2MWRYSlRlUndoU0d1VGVoYUl4eWlsZUVYOW1iOEJLdkhu?=
+ =?utf-8?B?ajFiaFFvM0g2akVISGdmTVVDTGNIMTFGMjJLVFpxTndVN1NWdmY4MjdMdEFS?=
+ =?utf-8?B?WHFnZXgyQTNQbUFxc1NZY1I3Y1ArY3Nxc2FQc0VkWFdRTGN1TG9wNUxHdHov?=
+ =?utf-8?B?cEJnWHhPelJackUxaG1NaUhZalNDVzRBbUVaam5XTkhjY3laZTNkYzZmRjVw?=
+ =?utf-8?B?U0RNbkd5NytOeWw4V3FYYmRpbjI2SDVrMU9JaThZV20xV3ZRbVAxOEtMYzlt?=
+ =?utf-8?B?QjlFTVJNQzZGeWNXeC8wbTE4TXdTQnUydGx0WmltSEhHNitFeXFnSkZDK2Jn?=
+ =?utf-8?B?V0w1dHk4UmdyN2thakJHOVdLNUpsZXlzbGQxd0RWNU9TN0xwU3RwaDRwYVA0?=
+ =?utf-8?Q?RY3nYea7Fz9ey?=
+X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-c3e7a.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3720c93f-d029-4add-cb53-08debfbb355d
+X-MS-Exchange-CrossTenant-AuthSource: SE3PR04MB8922.apcprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 08:53:11.3014
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR0401MB6306
 
-The KVM RISC-V allows Zicfiss/Zicfilp extensions for Guest/VM so
-add these extensions to get-reg-list test.
 
-Assisted-by: YuanSheng:claude-4.7-opus
-Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
----
- tools/testing/selftests/kvm/riscv/get-reg-list.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+On 5/20/2026 11:21 PM, Jinyu Tang wrote:
+> fault_supports_gstage_huge_mapping() already contains the two checks
+> needed before installing a G-stage block mapping: the userspace address
+> and GPA must have matching offsets within the block, and the whole block
+> must be contained within the memslot.
+>
+> The helper currently hard-codes PMD_SIZE because its only caller is the
+> transparent hugepage path. The hugetlb path needs the same checks, but
+> the target block size can be either PMD_SIZE or PUD_SIZE depending on the
+> hugetlb VMA.
+>
+> So pass the target mapping size into the helper and use it for the
+> alignment and bounds checks. This keeps the existing THP PMD behavior
+> unchanged and prepares the helper to be reused for the following hugetlb
+> fix.
+>
+> Signed-off-by: Jinyu Tang <tjytimi@163.com>
+> ---
+>   arch/riscv/kvm/mmu.c | 14 ++++++++------
+>   1 file changed, 8 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 2d3def024..10be8f683 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -286,7 +286,8 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+>   }
+>   
+>   static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
+> -					       unsigned long hva)
+> +					       unsigned long hva,
+> +					       unsigned long map_size)
+>   {
+>   	hva_t uaddr_start, uaddr_end;
+>   	gpa_t gpa_start;
+> @@ -300,8 +301,8 @@ static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
+>   
+>   	/*
+>   	 * Pages belonging to memslots that don't have the same alignment
+> -	 * within a PMD for userspace and GPA cannot be mapped with g-stage
+> -	 * PMD entries, because we'll end up mapping the wrong pages.
+> +	 * within a huge page for userspace and GPA cannot be mapped with
+> +	 * g-stage block entries, because we'll end up mapping the wrong pages.
+>   	 *
+>   	 * Consider a layout like the following:
+>   	 *
+> @@ -321,7 +322,7 @@ static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
+>   	 *   e -> g
+>   	 *   f -> h
+>   	 */
+> -	if ((gpa_start & (PMD_SIZE - 1)) != (uaddr_start & (PMD_SIZE - 1)))
+> +	if ((gpa_start & (map_size - 1)) != (uaddr_start & (map_size - 1)))
+>   		return false;
+>   
+>   	/*
+> @@ -336,7 +337,8 @@ static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
+>   	 * userspace_addr or the base_gfn, as both are equally aligned (per
+>   	 * the check above) and equally sized.
+>   	 */
+> -	return (hva >= ALIGN(uaddr_start, PMD_SIZE)) && (hva < ALIGN_DOWN(uaddr_end, PMD_SIZE));
+> +	return (hva & ~(map_size - 1)) >= uaddr_start &&
+> +	       (hva & ~(map_size - 1)) + map_size <= uaddr_end;
+Seems they are not exactly the same.
+Should be like this ?
 
-diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-index d88edef77ccf..4fab3d2d0b43 100644
---- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
-+++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-@@ -89,6 +89,8 @@ bool filter_reg(__u64 reg)
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOP:
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOZ:
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICCRSE:
-+	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICFILP:
-+	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICFISS:
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICNTR:
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICOND:
- 	case KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICSR:
-@@ -552,6 +554,8 @@ static const char *isa_ext_single_id_to_str(__u64 reg_off)
- 		KVM_ISA_EXT_ARR(ZICBOP),
- 		KVM_ISA_EXT_ARR(ZICBOZ),
- 		KVM_ISA_EXT_ARR(ZICCRSE),
-+		KVM_ISA_EXT_ARR(ZICFILP),
-+		KVM_ISA_EXT_ARR(ZICFISS),
- 		KVM_ISA_EXT_ARR(ZICNTR),
- 		KVM_ISA_EXT_ARR(ZICOND),
- 		KVM_ISA_EXT_ARR(ZICSR),
-@@ -715,6 +719,12 @@ static const char *sbi_fwft_id_to_str(__u64 reg_off)
- 	case 6: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.enable)";
- 	case 7: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.flags)";
- 	case 8: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.value)";
-+	case 9: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.enable)";
-+	case 10: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.flags)";
-+	case 11: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.value)";
-+	case 12: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.enable)";
-+	case 13: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.flags)";
-+	case 14: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.value)";
- 	}
- 	return strdup_printf("KVM_REG_RISCV_SBI_FWFT | %lld /* UNKNOWN */", reg_off);
- }
-@@ -911,6 +921,12 @@ static __u64 sbi_fwft_regs[] = {
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.enable),
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.flags),
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.value),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.enable),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.flags),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(landing_pad.value),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.enable),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.flags),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(shadow_stack.value),
- };
- 
- static __u64 zicbom_regs[] = {
--- 
-2.54.0
++	return (hva >= ALIGN(uaddr_start, map_size)) && (hva < ALIGN_DOWN(uaddr_end, map_size));
 
+Otherwise,
+Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
+
+Thanks,
+Nutty
+>   }
+>   
+>   static int get_hva_mapping_size(struct kvm *kvm,
+> @@ -404,7 +406,7 @@ static unsigned long transparent_hugepage_adjust(struct kvm *kvm,
+>   	 * sure that the HVA and GPA are sufficiently aligned and that the
+>   	 * block map is contained within the memslot.
+>   	 */
+> -	if (fault_supports_gstage_huge_mapping(memslot, hva)) {
+> +	if (fault_supports_gstage_huge_mapping(memslot, hva, PMD_SIZE)) {
+>   		int sz;
+>   
+>   		sz = get_hva_mapping_size(kvm, hva);
