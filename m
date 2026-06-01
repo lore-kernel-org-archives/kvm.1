@@ -1,92 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36287285417;
-	Mon,  1 Jun 2026 09:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C1330F548;
+	Mon,  1 Jun 2026 09:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780306659; cv=none; b=E2wUD7FsNR39966H1/7DgMifBl+I8EsnVEWhcInBjqlvBQDU3de8hLzsdpZVHnfNNcRgDAzrXFadBX4JJf8yUBzjMWQ1aXRH8Bkt4o0Eq/DhqpWhs00qQ9G6upoqu7CGlbeFV+kMl4GXkWDgvQroZYDETt0VvdYSAfDIbN9LV1A=
+	t=1780306830; cv=none; b=T3JKhcdq+7XQ5wZVPCsQhg3xgzPiITyWBt37YhQas1DKyPRoxGW2wY84QzfLhEvxxoUdoLo5BbKrLE4jB5+mznVe4DOXQb9FJbboTnQ+5/+1+IKfvG22zqnu0+CrFqapLXFey1MMuRz2wKNVzeM6RofXgzYoVLgKaud3tEEAXOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780306659; c=relaxed/simple;
-	bh=9eE/88fQSqXK3PWBhQXJt59pjMmydVz4iFC/+YtdLa8=;
+	s=arc-20240116; t=1780306830; c=relaxed/simple;
+	bh=23DTnbP2lnYl3ZjEDf3TJBmPZV+NNa3n3j46ggDfhfs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B23/PMkmUcpc7yUOdCxQ5E7PJ74Lz7u55rBP41mrYdQqLIP18xfvQgu0seABKRjEvU75ZTrZDjT7PFRMx6YK699jKckpP35AuzvrvRw06d7oyW35mR4M7ZybehvyLdXvL7s/fpbSteOy4q3EBgYE1YUf2YxAJqj/4+hVMA1wI4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c1PJZNWT; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=eB+XrS0qzoMoBaDpvUYzrGuGxt9KEQkoZbEg9RzDAJ/ZGxLrdRh6dKVLY3OKxQ8mT8IpYosNncEYg6XnIAb3rqjQhtoxqTDuOjpgUgL54Zo9vNrGOsdiAC20raj6/tSWEsQ40ClkKoTIKc88t6cDKQOvD5jD2ZpsQhP8ugKqAao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=n8uRNnQw; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c1PJZNWT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2F01F00893;
-	Mon,  1 Jun 2026 09:37:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780306658;
-	bh=AzbXwY67i7orrJSYLIcDP2MIfpMzq9fPfuSJU14oS7I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=c1PJZNWT6Jhrtsti0/iLRUjmX2p41TJJfRVGF/3HNXBQB7PyKa2x9bRmyaeFYhkph
-	 S/XYHC6xhKx56Ya51Xak5ZkdEYl7w6jJ5CHtlZipgiVBNEdAMNHH/iRIH0rE/rdUWu
-	 0NcYKv9W6ljVMkX338Av9+n5cEDMlkvl9EyHcrfG4IQCWXZKImq9ht9DNl8Bv5zvtM
-	 ATehWylJaNN+9d/XXQwwW29cYaUrS+pOaBG4dYswLQ5k9wG0aOJ57MhEFaYf6nU2l8
-	 SGi6xk/XJwSfllo85W6VmcGnxePA0rHGqKLm46uy+j9fAJrU+3ZTv7yeI+eHKuE7At
-	 N4eY0MFKY1p+w==
-Date: Mon, 1 Jun 2026 10:37:30 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
-	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
-	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
-	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH v5 04/18] mm: skip out-of-range bits in mk_vma_flags()
-Message-ID: <ah1Sxn5VHLF6jlcU@lucifer>
-References: <20260526130509.2748441-1-kirill@shutemov.name>
- <20260526130509.2748441-5-kirill@shutemov.name>
- <ahmQvfNk7S4F0LBj@lucifer>
- <ahmoH9v6_DA2i_zn@thinkstation>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="n8uRNnQw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=23DTnbP2lnYl3ZjEDf3TJBmPZV+NNa3n3j46ggDfhfs=; b=n8uRNnQwWReNVaE4x1SuQkhLFR
+	yWfLFoAHRtjpbIpbkFavxot1bM55KFWvE0UvCqPQDACDKsCLsdLlzCMmjjU7jjfQXE9hy6v5GmJ3S
+	tKA4lNoaLlnd5HCIIUAhrv0I8gzJVFN4OXj3PA7NjKYpUm4NDELpMVZh8+Mh1rqAA7fM1Wv3iPSPx
+	fZDjr83oA/5MvQKtxQxD1WuAnLKRXfRWZSwGfbsVgU3J4DRpAfcp1okfDXyCKi0YHzYaKJK9h/Vpf
+	LHkozlKMYbETVeDrLhtn+i/58770FcuOhXMlr9I2rW+SOtgsC2CeGi0ux2MwZWPQ5wbUI0fv3ibpC
+	liDuxb+g==;
+Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wTz86-00000006GKY-1ReC;
+	Mon, 01 Jun 2026 09:40:18 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 94D2D300454; Mon, 01 Jun 2026 11:40:17 +0200 (CEST)
+Date: Mon, 1 Jun 2026 11:40:17 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paul Durrant <paul@xen.org>, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Waiman Long <longman@redhat.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
+	Carsten Stollmaier <stollmc@amazon.com>
+Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
+ __rwbase_read_unlock()
+Message-ID: <20260601094017.GM3102624@noisy.programming.kicks-ass.net>
+References: <20260529165114.748639-1-seanjc@google.com>
+ <20260529165114.748639-2-seanjc@google.com>
+ <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
+ <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
+ <ahnxfACTGeVFbJMk@google.com>
+ <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
+ <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
+ <aho1M7fvK1Qzmiai@google.com>
+ <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
+ <58d17a623c1c5c9c09bd91baa30510aaf42f899b.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ahmoH9v6_DA2i_zn@thinkstation>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <58d17a623c1c5c9c09bd91baa30510aaf42f899b.camel@infradead.org>
 
-On Fri, May 29, 2026 at 05:09:56PM +0100, Kiryl Shutsemau wrote:
-> On Fri, May 29, 2026 at 03:00:14PM +0100, Lorenzo Stoakes wrote:
-> > > Add VMA_NO_BIT and have DECLARE_VMA_BIT() resolve any bitnum out
-> > > of range to it. vma_flags_set_flag() drops negative bit values.
-> > > The ternary collapses at compile time, the runtime check folds
-> > > away when the bit is in range, and the common path is unchanged.
-> >
-> > Hmm are you sure it does?
->
-> You were right - I measured it (gcc 15.2, clang 21.1.8, -O2). The
-> DECLARE_VMA_BIT() ternary is fine, but the "if (bit < 0)" guard does not
-> reliably fold: with it, clang stops folding __VMA_UFFD_FLAGS to a constant
-> and gcc keeps a rolled loop; without it, both fold.
->
-> So I've dropped VMA_NO_BIT and gone with your config-gated-mask approach
-> instead: mk_vma_flags_from_masks() plus VMA_UFFD_{MISSING,WP,MINOR,RWP}
-> masks that collapse to EMPTY_VMA_FLAGS when unavailable, so no out-of-range
-> bit ever reaches mk_vma_flags(). __VMA_UFFD_FLAGS now folds to a single
-> constant on both compilers, 32- and 64-bit. Added your Suggested-by.
->
-> I also took your "use the new API" hint and added a prep patch converting
-> the existing userfaultfd_*() helpers to vma_test_any_mask() (Suggested-by
-> you as well). One deviation: vma_test(vma, VMA_UFFD_RWP_BIT) is itself an
-> out-of-bounds *read* on 32-bit (test_bit(43, &one_long)), so the helpers
-> use vma_test_any_mask() with the masks rather than the bit.
->
-> > Either way, I think we should break out any fix like this from the series.
->
-> Agreed - the OOB fix and the other pre-existing fixes will go as a separate
-> series with the RWP work rebased on top.
+On Sat, May 30, 2026 at 01:47:06PM +0100, David Woodhouse wrote:
+> On Sat, 2026-05-30 at 12:26 +0200, Paolo Bonzini wrote:
+> >=20
+> > Yeah, I think so.
+> >=20
+> > The write side needs kvm->srcu so it would have to be yet another SRCU.=
+=20
+> > I initially thought that sucks for the code that calls kvm_gpc_check(),=
+=20
+> > but maybe not because it simply replaces read_lock/read_unlock.
+> >=20
+> > By using a seqcount for the data, SRCU only needs to be synchronized in=
+=20
+> > gpc_unmap().=A0 So, something like this:
+>=20
+> It isn't just gpc_unmap() which does the invalidation. We also
+> invalidate from the MMU notifier in gfn_to_pfn_cache_invalidate_start()
+> which would also have to synchronize, wouldn't it?
 
-Ack on all and thanks! :)
+Ok, so I had a look at what this code actually does, and it appears to
+be a guest frame number to page frame number cache, managed by
+mmu_notifiers.
 
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
+IOW, its some software TLB thing (pre HVM Xen support?)
 
-Cheers, Lorenzo
+Now, mmu_notifier_invalidate_range_start() has a rather explicit
+might_sleep() in, and while there is an
+mmu_notifier_invalidate_range_start_noblock(), that has an error return,
+and it is clearly specified that if that thing returns non-zero, PTEs
+must not be changed.
+
+With all that, I don't see why we can't block for srcu_synchronize() in
+gfn_to_pfn_cache_invalidate_start().
+
+Now, I've never much looked at mmu_notifiers, but for native, TLBI might
+require sending IPIs to all CPUs, and as such cannot happen in atomic
+sections. I would expect this same to extend to mmu_notifiers. It must
+be possible to sleep in them.
+
+What am I missing?
