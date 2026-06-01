@@ -1,102 +1,179 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5023644C1
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 21:19:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528D962809;
+	Mon,  1 Jun 2026 21:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780348777; cv=none; b=WJHLlPgLLsEZ1PQdhJ4kic6O654FayIQPbsHpKbMik2gczi0BK3HF+DsjBpEDti0gEUTVYuIVb1DqJb/9P4RjoD5caPmu5nyWp01ErwPnf27hzAVlMk/qUoUnQXBD6DUOJxB081r32/9q1DInBgqa0EixOZMKqrTrTU4xbGMKRs=
+	t=1780350392; cv=none; b=gMZYaEy56+Uxo0zcI3PrqzUq4J7pFlGm2v5zfjZON5t8XB2pyTEZg8iTQi1wlPbo5OfzYFBrLkHBCu4tV3u/4fkOqAXbR/MsVm3G24Mk+/zkTRWhfGEcvk46G45AMsvESCbX5Dw+Q79iOOufBAporUJrCAqK96eLeGRtNojHGqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780348777; c=relaxed/simple;
-	bh=5APlCdtcJZb/rE7v+wyM2ncadlp41SgLUmZsZoQeoJ4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=o/y7DX5kLSZ+DTvx33thyLVahxikKJKIFTuf3R03K1YnpMAL2z/sW7n+6/hnmwo9EF/O9d8IiRgcr+Jr0sfgOjhfIsugmjZay3hA682d8lOFuedDT3/Q2nnSCfrHFPHOiLEo8fExr3MXm066jscBQtUSYVwstWYt9ckJ3emWkVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uxilk/8O; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780350392; c=relaxed/simple;
+	bh=IocL/yQuT0mpLakK666oOv5cfd0uhAvP748OJUXktXw=;
+	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
+	 MIME-Version; b=mwAP38dW40lr4iPoSouStRp3ECltZOjdmNwAq9Esd/XFb8kt9JpY2290vGWVEh29rcA+pi7AEsl8F7W4i7GYV2J2z1vel9MnQkW9IZHPF+wKcj35+vuK4vHMn7CqPzVi7cMNa9xj1FGvpZq8k6TqTcNsoRjFKCIEASja13CyRI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=K6uIHNyx; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uxilk/8O"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c85c530ddebso429329a12.1
-        for <kvm@vger.kernel.org>; Mon, 01 Jun 2026 14:19:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780348774; x=1780953574; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EQoTn87Se07PYu57Sswj/cdy04dc5s9UilXz/c5El3U=;
-        b=uxilk/8OS4l07WnAFuTW7qGB3PQ/oPGAXsruM77OWJf0wD2M75EVLtq881mOd/KUQS
-         QZWZqb6EOb9u4iUlkc7mYQBUX1KiyUPOaLh08DjZzLem7qGew2Ve+k1dpz43OdQHs80v
-         7nRt911u0em/8qdjcguoB9d9K31NPNcEgBP991cTuSe3jZJB+h7r+GJRxxXAM0jGDXnC
-         rIMSZj8WBOXd7scBen1b4f6Zw2vbXQNM10PYy8lImJvFsS4HDCsTEn9PhH4Nz3N761kk
-         VcyHU1okLgxVnWLLzdbD6wFe7z2+eFBRwJpq7gfdNYU6bVc7qA/f5GzxGqsFbeiveRf6
-         XZkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780348774; x=1780953574;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EQoTn87Se07PYu57Sswj/cdy04dc5s9UilXz/c5El3U=;
-        b=ruLMhfKAqoR+zYc4kWb2vy4TUancU5Otgv706RJG+N8Q0haa9e0/twVnUV2dwkfzSj
-         p9PL/GvP9EwbCDZEOBRXjyQzwUmJZFs1NQTRBLdvhoZPcdc4xlX/KP7D0mG7yWW1sh1k
-         7UYibdcg0F/IzuovIU7kLrdQWDcKmwLP03skmvj77u2o7J8IczyjbqAS8dYwRTVGJtIG
-         Mi1s6+WsLADP2i3YCCKSc1v3cHIqDDiYvSarwg8XIMV0D+tFAFVcOC4AeNVm8spSLlbg
-         7dCI1UxQw3PZTC1NkmwcpHvz88HFXeVwT1bsFvmJp0b7g0fj7x7Guue3YmIZgf88DLYN
-         0kkA==
-X-Forwarded-Encrypted: i=1; AFNElJ/cJWgO0nXKOvyAwNpWevkXek523JOyua0FWjvT/r7wySUqZ5UNtFiN9SwbX/2EV4Cipl8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1VeKdIl8Z8gsKi4JlZy55gFB6VhHdZgWYLt8DBYToWWeFuEj2
-	sLXHnMMNSMu3tLuXi94742mcwWhQm0LpkssJRoZlxXChU/xH1ZPuyOQsU3Xg3j4nUVdgG5TcX86
-	Dw3xWQg==
-X-Received: from pgbcm4.prod.google.com ([2002:a05:6a02:a04:b0:c79:22b6:a344])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7018:b0:3a2:7ef4:81df
- with SMTP id adf61e73a8af0-3b427f7b98amr14533049637.26.1780348774215; Mon, 01
- Jun 2026 14:19:34 -0700 (PDT)
-Date: Mon, 1 Jun 2026 14:19:33 -0700
-In-Reply-To: <ah3q7ftEUTRmrBSf@google.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="K6uIHNyx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=FoLB+yULmJuTpb/f09beCcmk3uZrMb1CC+n10gGBfgg=; b=K6uIHNyxjiHFwPgdIJv9Yfyb+x
+	0UQeIxUStvlI+MDaVA0QUdgGmY1bVKQ7wR0hWqxEFyHvdxmA0Y4K2cXFas3qSPsDg1EgqO65lNvtk
+	886haCDEEvJPaysJ2H/tEyCE7Hccok2+nOdOhBCFr3IC6s8ljg8p1OvsEv7yeA7+tne9uKEV8Dc8J
+	FK1c/mWGETrcghaoeZ/XciYt9I0lUcwn47K0OaMWpT2SOn4DZqhwXXnOURTQ1hJZa49/fYkJiTfg7
+	LBx9pxu7ooKt3KFbnRUUQZsfjL+FzK+BSTDiMrxTLl7acGM/m1OeYZsp+jDBuAM3NBJUbQTtNP+ry
+	tzGKsQEg==;
+Received: from [2001:8b0:10b:5:5b40:b57d:669c:36f4] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wUASa-00000000osw-00s5;
+	Mon, 01 Jun 2026 21:46:12 +0000
+Message-ID: <c99195a246c4d40f375f6834c9e11b2561c975c6.camel@infradead.org>
+Subject: Re: [PATCH v4 1/47] x86/tsc: Never re-calibrate TSC frequency if
+ its exact timing is known
+From: David Woodhouse <dwmw2@infradead.org>
+To: seanjc@google.com
+Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+ dave.hansen@linux.intel.com, x86@kernel.org, kas@kernel.org,
+ kys@microsoft.com,  haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com,  longli@microsoft.com, ajay.kaher@broadcom.com,
+ alexey.makhalov@broadcom.com,  jan.kiszka@siemens.com, luto@kernel.org,
+ peterz@infradead.org, jgross@suse.com,  daniel.lezcano@kernel.org,
+ jstultz@google.com, hpa@zytor.com,  rick.p.edgecombe@intel.com,
+ vkuznets@redhat.com,  bcm-kernel-feedback-list@broadcom.com,
+ boris.ostrovsky@oracle.com,  sboyd@kernel.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-coco@lists.linux.dev,
+ linux-hyperv@vger.kernel.org,  virtualization@lists.linux.dev,
+ xen-devel@lists.xenproject.org,  dwmw@amazon.co.uk,
+ thomas.lendacky@amd.com, nikunj@amd.com, dwmw2@infradead.org, 
+ mhklinux@outlook.com, tglx@linutronix.de
+Date: Mon, 01 Jun 2026 22:46:09 +0100
+in-reply-to: <20260529144435.704127-2-seanjc@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-WD78uzY0w9rVU0d8PR0T"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529222223.870923-1-seanjc@google.com> <20260529222223.870923-20-seanjc@google.com>
- <ahozqrW-YUAOEZls@google.com> <ah2dYFrhUc-v3tLR@google.com> <ah3q7ftEUTRmrBSf@google.com>
-Message-ID: <ah33ZXE06C7WDjOA@google.com>
-Subject: Re: [PATCH v3 19/40] KVM: x86: Swap the include order between x86.h
- and mmu.h
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Binbin Wu <binbin.wu@linux.intel.com>, 
-	David Woodhouse <dwmw@amazon.co.uk>, Kai Huang <kai.huang@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Mon, Jun 01, 2026, Yosry Ahmed wrote:
-> On Mon, Jun 01, 2026 at 07:55:28AM -0700, Sean Christopherson wrote:
-> > On Sat, May 30, 2026, Yosry Ahmed wrote:
-> > > On Fri, May 29, 2026 at 03:22:02PM -0700, Sean Christopherson wrote:
-> > > > Invert the include ordering between x86.h and mmu.h, so that x86.h is the
-> > > > "top-level" include for KVM x86.
-> > > 
-> > > You're also silently moving mmu_is_nested().
-> > 
-> > I'll explicitly call that out.
-> > 
-> > > Aside from that, I thought top-level include means that other headers
-> > > will include it, and it will include fewer headers. Seems like this is
-> > > doing the opposite?
-> > 
-> > Yeah, I'm probably using confusing terminology.  I could quite figure out how
-> > to concisely describe this.  I like my pyramid visualation, so about:
-> > 
-> >   Invert the include ordering between x86.h and mmu.h, and move
-> >   mmu_is_nested() to mmu.h where it belongs (mmu_is_nested()'s placement in
-> >   x86.h was solely responsible for the existing ordering), so that x86.h is
-> >   the top of KVM x86's "include pyramid".
-> 
-> Not to be pedantic, but I still can't quite figure out this
-> analogy/visualization.
-> 
-> How about just spelling it out:
-> 
->   so that x86.h is not included by most headers (but includes them).
 
-Works for me.
+--=-WD78uzY0w9rVU0d8PR0T
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, 29 May 2026 07:43:48 -0700, Sean Christopherson wrote:
+> Don't re-calibrate the TSC frequency if the TSC is known to run at a fixe=
+d
+> frequency.  In practice, this is likely one big nop, as re-calibration is
+> used only for SMP=3Dn kernels, and only for hardware that is 20+ years ol=
+d,
+> i.e. is extremely unlikely to collide with TSC_KNOWN_FREQ.
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+
+
+--=-WD78uzY0w9rVU0d8PR0T
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwMTIxNDYw
+OVowLwYJKoZIhvcNAQkEMSIEIKMO2la5awG+n0lZK5AuXT7GJvPnVZIt78VoLISUVNyGMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAka57ZoIUPlTo
+KZ4Ex/lVHE8wFwqR5kcqyFora5IUVaIaLyGNFE51UIMaO4mvCc95HG9yF4+jVPDHsP/VRXUVYwGK
++wuyQ1gShaKwcZEPZTxPJW++XAThgrMnAhDY97JMR+2zGIHvo2+8ylacvU6KILWkkKSDHXLngVSP
+ivUiWLyuPy8mfxiyKChDOiV8qChdDV/wpF83CgTPoWRa5A8ATOB8aWhoSbl5dT8QJLpIcSrlquMP
+KfidmhY8rWZFvKzk238D5SRp8jUCr+ds6eF2JMyNwMpzaAIGkLgMqBtnLWWxiHWXGH9+bqppXvyF
+RUS7ZjqJoizrB1vr0UJk+tXAyQIvGiGXdy3rcaJugR3LwZvp1ihlcXy5c3AQHsduCD+K8Wg5rCk/
+GWiBkNfAc8MfnEdOAlRyZ7t9btXbjbSrVq5l8K4jex8GZNAErCH5ey7zgNzDhi/G5WlABBLQefi8
+CTRpkCwrJzkSuUMNJCVjaSex31XcNwDZ9a9EB1+E+tWVr03HO9hzXPNxOA96TeqY4a+Znlbm+mvF
+PZ2shSeCYBsi7JmDz6FcdNNyxB4wA8hy2QmeljomJy9G23NJKrsLXCb4y4R+7YjYUqjyMT2fX8Zi
+uYTAt0zfvQsoigQHguN140Dse4QEZy/BR8CVfHPwW7hxa+nNVcdtt9xW2hNuo3IAAAAAAAA=
+
+
+--=-WD78uzY0w9rVU0d8PR0T--
