@@ -1,98 +1,85 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E78A3DA7C0;
-	Mon,  1 Jun 2026 15:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226CD3DB627;
+	Mon,  1 Jun 2026 15:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780329198; cv=none; b=LK9IGDBzEO4BLrYLIbUQiaqsn0b4k7zLXURWGxEuMdFTwY0YAKYCTYzf1PSBf587HyzimpwcOoVF9HhVPM8utKVlsIxYE6LkKOY2PHF1sne2abCN1MRKU9k5YkHTLkkDXw63Ea1NmCpdC6ME2ZQvL7qjifOwihZIH/YaTCe9kuA=
+	t=1780329528; cv=none; b=tn7gfeyBjDByC1dk8oU4QDX9SMV05WTCDkKqvUasRF8CFvj1omkKbP+b3uuRe1BRmJXkyIAtlOo9QHgFaainwt8+F04sb6IRBR/20wDmYZXEw/JI9T0vta8+59lvzmbZVN4xc7znxVmjWe0QKtg8+81zMpnRB1arQaJ+SlG63P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780329198; c=relaxed/simple;
-	bh=PnrEukf67GhLri5Qc1JZEk8YVv8PQv4ljqbQ7x5ghUs=;
+	s=arc-20240116; t=1780329528; c=relaxed/simple;
+	bh=AyJcanJoqDuO2I7ZRmVmk7YcJUmnUEflBuKeGuX5hlc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oS2OsWKynH/cGGZBAdb0/d/JoPbExxpZwjcUZGk0Ks0Hec/xhFRymzGdpX+n+qCIyVRtfDYWmRqTDijZHugVhfPrtihOqq3JA2heEOcBeWGNPGf8yRcAQPTgBLffB2UGfzPNd9LJNEqNoYKAwU9hLFtG/xRnVWCyhJGiEWOTP7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LsZhcbkV; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 MIME-Version:Content-Type; b=P4IPFT5k/cuhK4diUHmANkyyHI3+nZPWFicDjTzjrhel+ZMmq4gl7KKOjgDix+b1CkrKh2BJgXhBXlisK/9mMvcOX1cj2Vo/MNZ1/ZBSycdVLDBmlS6k9o23QRyLh48Czx+pBYs73sEk0YtICusrWKA9VmgMCYBzu0i4hw2nyYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=NMmSgc0Z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dlYVpjWA; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LsZhcbkV"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 651AVopZ3662646;
-	Mon, 1 Jun 2026 15:52:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=5scKa2
-	WGTHxsFXk5ycvWXVQT9CIueGUglRkScoT7Bx4=; b=LsZhcbkV9NIxM6H0cNiHSz
-	MLcUg2ihXKrnU6KzNQZ9mXyffyjzd35xaxqPfIhhr9Yy/lAg3GJzEAUvVTgv3OMq
-	q7mFZw4WgTkAf6P/y50e3uH9777bZ06A7xG0LczmvHMkl6aKm0p1m2bVP7zFq4gq
-	hEZLMm5eJVBuye5kFwi0gmWkAqFAC/CB9ucOtCcZr3mmirzFdvosaRkdH8u7J6K5
-	AotCq3tEZ398bmzuxG3jrPujikuMmycZdWgUP0QLbIw7n1XVRc5c81JPOKyNkV2+
-	9msqRAYlglUw2oSubpXQyDxImOMrWtFczn7Ug/RTs6HA3Jcl51531GjvslV1Q/9Q
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqjq1jp6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jun 2026 15:52:27 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 651Fd5OZ030190;
-	Mon, 1 Jun 2026 15:52:26 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4egcwy6jjg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jun 2026 15:52:26 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 651FqJd223724500
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 1 Jun 2026 15:52:19 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3CF9820040;
-	Mon,  1 Jun 2026 15:52:19 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD0EA2004E;
-	Mon,  1 Jun 2026 15:52:18 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.52.223.175])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon,  1 Jun 2026 15:52:18 +0000 (GMT)
-Date: Mon, 1 Jun 2026 17:52:16 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger
- <borntraeger@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich
- <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Joey Gouly
- <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
-        Nico Boehr
- <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch
- <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo
- Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand
- <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon
- <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v1 00/26] KVM: arm64 on s390 System Register Handling
-Message-ID: <20260601175216.03c25584@p-imbrenda>
-In-Reply-To: <20260529155601.2927240-1-seiden@linux.ibm.com>
-References: <20260529155601.2927240-1-seiden@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="NMmSgc0Z";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dlYVpjWA"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id 39428EC0119;
+	Mon,  1 Jun 2026 11:58:45 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Mon, 01 Jun 2026 11:58:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1780329525;
+	 x=1780415925; bh=ZeyprTgB5QV8vWoWhx3BhUMu40zhcIw6vb2piHMWiMg=; b=
+	NMmSgc0Zp55FDRlUCG359zoCmiI9Z4k9wT4JyuH7tLu5ApSS+w5DfCtRTq9NaAZv
+	nPx/8FQbeaiLh07dQLe3bifIhDqWrwrEoUSR3R0iy2uyU0dkrVNCLWIMKf8MtNNu
+	vQ6bFhX/UidtE4aMwYT37G9riT1vAoCxa+ChjN3mbf3kr+HE3hYi668nSd73umtU
+	7Z9Vcp5+4Vs6vDd/oWUvOFFMR0hzuPikls3Bv7TI3W6tIDlkVcYqYkc/uZl4ZoHQ
+	m3VSScSS8MOUduykKnmdrEwJ4E/Mfi50ymkVmToiYVQbX3i0mHcy/0CkQY65vawS
+	6CTf6nKVubNl+TMck2g+zg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780329525; x=
+	1780415925; bh=ZeyprTgB5QV8vWoWhx3BhUMu40zhcIw6vb2piHMWiMg=; b=d
+	lYVpjWAXtRWme9Noz5qTVLRuKQZd7CV2wrO8mwAaWYjGN3GUK/GkHYiejQf59q16
+	H7EGsf8qC81p73YlJfVGgNAp4dVcZf2rnG5n7Ij6HRu4IfQZH1cyd5V6uhVod8cT
+	xQEIRDO7xK1zcWfBcl80ZpY88fzQeocoo1Nvj52v/J3sc2cWRRQt5n5ekRZvqMwT
+	5F1JzcBXbdw/jVehYW6SWFbEGM+XboOyy/EO4Bz2g124LsJCNtJgnG+IcMqSU57J
+	97GAX2K4M/2ZBgH7LvXDLaSlUrX0i+sjXWf8EBUbXEx6o/PXgZosddOiNC3xPCz1
+	51C0BZnqhQvMVb0RtGi1w==
+X-ME-Sender: <xms:NKwdau1z_OM8zAy5m5l0oerfc0AsuW2ZVKJOygC42yXQvDmOFEU4Cw>
+    <xme:NKwdaiqHznnF4fkPjDxMLgsK2JdAkvSO1JCzyHQ4SuHW5b23jCsEnEfNqvSyEXixv
+    ptJyHd98xjm-kEeBSojRfVncbnOgJqNNeD_Uzbwkzv002tjks9U>
+X-ME-Received: <xmr:NKwdamLfobemrtOZ5oCARPFlVu7M_vZo8z23LmAJKuO7jVLDdtzuh8o5_CU>
+X-ME-Proxy-Cause: dmFkZTEoVJObxv8HEoN6LjJwjXfFCMxRVB+hL2YojZODug4fsYFDsMrXoh+qc52R4Iax2E
+    ODaQgCtLIKNRvevefnLxbCi2/Vwj+Vz34brHnFuFOaqJXrkZkSIyWRj6dsSCiMU/v8yM1T
+    vIdnlnxwM4PiTr3Rkf+XEh1R8B927W/xqs+qPuq8X70HQ3O3M3TcnLfdAVBXzuRwqDnGnJ
+    DzlkoVEwB6ESr2bSByf99LfwQP9M2mnFvOKDqkAR2dXe0A0lVugKOIXT7gutcarwHC3HKZ
+    vgZ2hmMAb/EJJRYKyqKVBGsWQDXDiH0Ho/ocyW+wuZkMi4vydQkgjnPFr/YzfJii86MpqZ
+    fB3ufwSREeOhGF0cADw+r3Q33oGt32eXYy0+QIJQok7C/tzceaJxe3uCj+WRfZgVq4tifv
+    igChLrmzPJbluo2vxHh6+3bMnjoZrl84IxCnD0dZKfVds0aAnjDcUSJPmLHrlxMo/RbV2p
+    BKaVLRlMD99mJlihh9IMeHwihOq2J0usYAycaHx723m+mYzo3QixXUZE0hI8gDHKRd10g8
+    VHgNDgMGsSifdKyM8JW2+esJ3jczSX7hkXbYf2wA3JWqYfaphNszFFCkoBtOK/Sr1u1AQ8
+    yoUmxtiKNUA03OF08fQVOATxDOItA2cT4eGCkU/hSQ4ccJlK5nIp2GGTAxVg
+X-ME-Proxy: <xmx:NKwdamT69LORNEBSSgD12IsIlpo8of1OzO6Vd4g1m_sSioTZJnRLcw>
+    <xmx:NKwdamOCDQ6dYqGLQ33F6EdDGSvqFDkLnyyYP850QiSHZnHUNLRQ0Q>
+    <xmx:NKwdarX0k36glkziGZ3hC1vGTRZyN9OAlX0utXqQqg4t2uDTQKAV6w>
+    <xmx:NKwdapjwpdwuwmhpH0b6Dic4sys93lf78vnoXuWb6yriEbWNNZPMVA>
+    <xmx:NawdapYkNAjZE7q5kwLHhLBhcpjbXow9C-6QgoCZS-CqUldOQD1_18G_>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 1 Jun 2026 11:58:43 -0400 (EDT)
+Date: Mon, 1 Jun 2026 09:58:40 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Chengwen Feng <fengchengwen@huawei.com>
+Cc: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
+ <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+ <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v14 0/8] vfio/pci: Add PCIe TPH support
+Message-ID: <20260601095840.3aaaa508@shazbot.org>
+In-Reply-To: <20260528124649.14732-1-fengchengwen@huawei.com>
+References: <20260528124649.14732-1-fengchengwen@huawei.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -101,171 +88,99 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Mt557e1ApZpJ2gsg3pJz52vcklyZ3oOd
-X-Proofpoint-GUID: Mt557e1ApZpJ2gsg3pJz52vcklyZ3oOd
-X-Authority-Analysis: v=2.4 cv=bcVbluPB c=1 sm=1 tr=0 ts=6a1daabb cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=PyufuR3gDYvOWfpjaVYA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAxMDE1NiBTYWx0ZWRfX+pJQw3Vu4L1h
- E/IWILvNV/MNNfuiZeTXBKFb1YbzRli6FZFcm0FAN2/J2OBNiz25tirSiLC/VIuBtgiS8+VhNLQ
- P2GdBzyKjhQqVjy3mi8eYpSckwGR/2nTgDQE+gfbf0LvbcYGx2ZdO7UGndFwCiRykgIzncesEwL
- +Kap3bd7RWQvXNuoZuXkV3KGN3rXA0GhW04BzgawFV3PeQwLt8AoMA4t5KsPKnq2qxL1PVMIAsl
- gn7SWi7zmeoV2r4omDx9ad6rQm5ZTcIaCa+AZTEs08iInp4ZEfWMY3Yiyv2IDJuZU0D5K61TXt2
- dZSqBMXWbKKzdL0DTfoG89czlz75Cq6CWCIDuWG+ysc8gtPzu3jt+7+LFVIHtvHVJGYhq++Ph7q
- Jm8gBiBa28OOTGMcAXEzhHYLnirSR00n6yZvE+69CkAizI/C1Ou27Mwl19ft1xz7+SWtOin1oKq
- huiQK5uyyeSEXk24Tiw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-01_04,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1011 adultscore=0 priorityscore=1501 phishscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606010156
 
-On Fri, 29 May 2026 17:55:33 +0200
-Steffen Eiden <seiden@linux.ibm.com> wrote:
+On Thu, 28 May 2026 20:46:41 +0800
+Chengwen Feng <fengchengwen@huawei.com> wrote:
 
-> Add system register handling for KVM/arm64 on s390. Restructure and share
-> KVM/arm64 code, introduce ARM guest management functions for s390 hosts,
-> and implement host sysreg & exception handling.
+> This patchset enables userspace control over PCIe TPH steering tags,
+> motivated by the following considerations:
 > 
-> Changes in detail:
+> 1. Why userspace needs the capability to control steering tags:
+>    When PCIe devices are fully owned by userspace workloads such as DPDK
+>    and SPDK, only userspace has full knowledge of core binding policies
+>    and traffic distribution strategies. Without this series, userspace
+>    cannot enable TPH or configure steering tags, leaving built-in PCIe
+>    performance optimizations unused in high-throughput polling I/O
+>    scenarios.
 > 
-> arm64:
+> 2. Why this interface must be implemented in VFIO:
+>    VFIO is the standard, secure community solution for granting full
+>    PCIe device ownership to userspace. Existing kernel TPH interfaces
+>    are designed purely for in-kernel drivers. For user-owned devices,
+>    VFIO provides the only isolated and correct path to expose per-device
+>    TPH management.
 > 
-> Refactor arm64 feature detection and ID register handling to make it
-> generic and reusable across architectures.
+> TPH supports both IV and DS modes. Since both modes could introduces
+> cross-VM isolation risks such as untrusted guests programming arbitrary
+> steering tags to impact other domains:
+> 1. If ST location in MSI-X table, untrusted guests may program the
+>    MSI-X table.
+> 2. If ST don't locate in MSI-X or CAP, untrusted guests may program the
+>    device-specific register.
+> So a new module parameter `enable_unsafe_tph` is added. It defaults to
+> off, and blocks all unsafe TPH operations when disabled.
 > 
-> Restructure ID register storage and core register handling. Refactor core
-> registers to use functions instead of direct memory access.
+> Based on earlier RFC work by Wathsala Vithanage
 > 
-> Move arm64-specific definitions (CPU types, cache, KVM features, ID
-> registers, system registers) to shared locations for reuse by other
-> architectures.
-> 
-> s390:
-> 
-> Add s390 instruction support for ARM guest management: easr/sasr for
-> system register access, QAAF for feature queries, and ptff extensions
-> for guest time handling.
-> 
-> Implement complete sysreg handling for s390 including feature
-> sanitisation, register enumeration and access, exception injection,
-> and finalized page fault handling.
-> 
-> The series builds upon the foundation established in the first series and
-> requires the first series v3[1] as base.
+> ---
+> v14:
+> - Return PCI_TPH_LOC_NONE when !CONFIG_PCIE_TPH accord Alex's comment
+> - Fix Sashiko comments:
+>   - Clear ST shadow state across user session
+>   - Fix out-of-bounds byte masking in vfio_pci_tph_config_read
+> v13:
+> - Fix Alex's comments:
+>   - Add virtualize of TPH request type
+>   - Adopt two feature
 
-the series is now conveniently available on the  sae  branch on
-https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git
 
-> 
-> 	Steffen
-> 
-> [1] https://lore.kernel.org/lkml/20260529155050.2902245-1-seiden@linux.ibm.com/
-> 
-> Andreas Grapentin (1):
->   KVM: arm64: Fix set_oslsr_el1 to write to OSLAR_EL1
-> 
-> Steffen Eiden (25):
->   KVM: arm64: Extract some feature related changes to kvm_feature.h
->   KVM: arm64: Remove __expand_field_sign_(un)signed
->   KVM: arm64: Generalize get_idreg_field_*()
->   KVM: arm64: Generalize kvm_cmp_feat_*()
->   KVM: arm64: Generalize kvm_has_feat_*
->   KVM: arm64: Remove get_idreg_field_*() and kvm_cmp_feat_*()
->   KVM: arm64: Remove kvm_has_feat_range
->   KVM: arm64: Split up feature sysreg sanitisation
->   KVM: arm64: Refactor idreg caching into dedicated structure
->   KVM: arm64: Move definitions from sys_regs.c to sys_regs.h
->   KVM: arm64: Add PVM_ prefix to avoid name collisions
->   s390: Introduce read/write ARM sysreg instructions
->   s390: Introduce Query Available Arm features
->   s390: Add functions to query arm guest time
->   KVM: s390: arm64: Add sysreg related functions and definitions
->   arm64: Extract cputype definitions.
->   arm64: Extract cache definitions
->   KVM: arm64: Share KVM feature detection macros
->   KVM: arm64: Share ID reg handling
->   KVM: arm64: Share sys-reg handling
->   KVM: arm64: Refactor core reg handling
->   KVM: s390: arm64: Implement feature sanitisation
->   KVM: s390: arm64: Implement sysreg handling
->   KVM: s390: arm64: Implement exception injection
->   KVM: s390: arm64: Finalize page fault handling
-> 
->  arch/arm64/include/asm/cache.h                |   19 +-
->  arch/arm64/include/asm/cputype.h              |  246 +---
->  arch/arm64/include/asm/kvm_emulate.h          |    1 +
->  arch/arm64/include/asm/kvm_feature.h          |   27 +
->  arch/arm64/include/asm/kvm_host.h             |  137 +-
->  arch/arm64/include/asm/kvm_nested.h           |    1 +
->  arch/arm64/kvm/arm.c                          |    2 +-
->  arch/arm64/kvm/at.c                           |    1 +
->  arch/arm64/kvm/config.c                       |    3 +-
->  arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h    |    1 +
->  arch/arm64/kvm/hyp/nvhe/hyp-main.c            |    1 +
->  arch/arm64/kvm/hyp/nvhe/pkvm.c                |    7 +-
->  arch/arm64/kvm/hyp/nvhe/sys_regs.c            |   55 +-
->  arch/arm64/kvm/nested.c                       |    2 +-
->  arch/arm64/kvm/sys_regs.c                     | 1307 +----------------
->  arch/arm64/kvm/sys_regs.h                     |  276 ----
->  arch/arm64/kvm/trace_handle_exit.h            |   36 +-
->  arch/arm64/kvm/vgic-sys-reg-v3.c              |    2 +-
->  arch/arm64/kvm/vgic/vgic-init.c               |    1 +
->  arch/arm64/kvm/vgic/vgic.h                    |    1 +
->  arch/s390/include/asm/kvm_emulate.h           |   34 +
->  arch/s390/include/asm/kvm_feature.h           |  111 ++
->  arch/s390/include/asm/kvm_host_arm64.h        |  168 ++-
->  arch/s390/include/asm/kvm_host_arm64_types.h  |   97 ++
->  arch/s390/include/asm/kvm_nested.h            |    5 +
->  arch/s390/include/asm/sae-asm.h               |   48 +
->  arch/s390/include/asm/sae.h                   |   86 ++
->  arch/s390/include/asm/timex.h                 |   49 +
->  arch/s390/kernel/dis.c                        |    1 +
->  arch/s390/kernel/time.c                       |    1 +
->  arch/s390/kvm/arm64/Makefile                  |    3 +
->  arch/s390/kvm/arm64/arm.c                     |   44 +-
->  arch/s390/kvm/arm64/exception.c               |  105 ++
->  arch/s390/kvm/arm64/feature.c                 |  170 +++
->  arch/s390/kvm/arm64/guest.c                   |   20 +-
->  arch/s390/kvm/arm64/handle_exit.c             |    1 +
->  arch/s390/kvm/arm64/inject_fault.c            |   72 +-
->  arch/s390/kvm/arm64/mmu.c                     |   62 +-
->  arch/s390/kvm/arm64/reset.c                   |    5 +
->  arch/s390/kvm/arm64/sys_regs.c                |  769 ++++++++++
->  arch/s390/kvm/arm64/trace.h                   |   33 +
->  arch/s390/tools/opcodes.txt                   |    3 +
->  include/arch/arm64/asm/cache-defs.h           |   22 +
->  .../arch/arm64/asm/cputype-defs.h             |   92 +-
->  include/arch/arm64/asm/sysreg-defs.h          |    9 +
->  include/kvm/arm64/kvm_feature.h               |   68 +
->  include/kvm/arm64/kvm_host.h                  |   52 +
->  include/kvm/arm64/sys_regs.h                  |  548 +++++++
->  virt/kvm/arm64/Makefile.kvm                   |    1 +
->  virt/kvm/arm64/guest.c                        |  100 +-
->  virt/kvm/arm64/mmio.c                         |    1 +
->  virt/kvm/arm64/sys_regs.c                     | 1039 +++++++++++++
->  virt/kvm/arm64/trace.h                        |   34 +
->  53 files changed, 3838 insertions(+), 2141 deletions(-)
->  create mode 100644 arch/arm64/include/asm/kvm_feature.h
->  delete mode 100644 arch/arm64/kvm/sys_regs.h
->  create mode 100644 arch/s390/include/asm/kvm_feature.h
->  create mode 100644 arch/s390/include/asm/sae-asm.h
->  create mode 100644 arch/s390/kvm/arm64/exception.c
->  create mode 100644 arch/s390/kvm/arm64/feature.c
->  create mode 100644 arch/s390/kvm/arm64/sys_regs.c
->  create mode 100644 arch/s390/kvm/arm64/trace.h
->  create mode 100644 include/arch/arm64/asm/cache-defs.h
->  copy arch/arm64/include/asm/cputype.h => include/arch/arm64/asm/cputype-defs.h (85%)
->  create mode 100644 include/kvm/arm64/kvm_feature.h
->  create mode 100644 include/kvm/arm64/sys_regs.h
->  create mode 100644 virt/kvm/arm64/sys_regs.c
-> 
-> 
-> base-commit: 4095afb932d1a98a6fcb3f4f490964949d0de338
+ - Patch 2/ sets tph_cap to zero if TPH cannot be enabled, but this is
+   never propagated to vfio-pci to drop the TPH capability from the
+   capability chain.
 
+ - Patch 3/ exposing the enum to callers is a bit ugly, maybe we should
+   retain pci_enable_tph() as the "auto" wrapper, resulting in no
+   change to existing users, and add _ext and _std wrappers.
+
+ - Patch 4/ same, multiple wrappers keeps the "auto" api cleaner.  Also
+   note that auto is broken before TPH is enabled when tph_req_type is
+   zero.
+
+ - Patch 6/:
+   - mutex_init/destroy belong in vfio_pci_core_init_dev/release_dev()
+   - Re-order to avoid forward declarations.
+   - vfio_check_feature() does not require declaring PROBE as a
+     supported op.
+   - pcie_tph_set_st_entry() can write to MMIO space without testing
+     for or enabling device memory or power state.
+   - tph_init allocates shadow table regardless of opt-in for tph
+     support.
+   - Redundant tests for count/index in feature function.
+   - Duplicate memcpy/kfree in feature function.
+
+ - Patch 7/:
+   - Unclear why it's vfio-pci's responsibility to provide this
+     translation interface.
+   - PROBE is unnecessary for vfio_check_feature().
+   - Array size conversion is strange.
+
+ - Patch 8/:
+   - default config read handles emulated bits.  Clear the bit if
+     necessary in vconfig, use p_setd() to mark PCI_TPH_CAP_EXT_TPH
+     virtualized, read-only.
+   - Follow examples like vfio_pm_config_write, vfio_vpd_config_write,
+     vfio_exp_config_write, etc.  Set the virtualized and writable
+     bits, perform default config write, evaluate if anything was
+     enabled, effect the change in hardware via kernel APIs.
+   - pcie_disable_tph() happens after the restore state is recorded.
+   - TPH capability becomes read/write, an ABI change to the user, with
+     only a host-based opt-in.  Seems like the userspace driver also
+     needs to opt-in to the ABI change.
+   - Memory enable not assured for pcie_tph_set_st_entry().
+   - Sashiko notes there are existing hazards in the tph_enabled
+     storage unit relative to multiple bitfields that can be updated
+     concurrently.  The problem is worse with this exposed through
+     vfio-pci.
+
+Thanks,
+Alex
