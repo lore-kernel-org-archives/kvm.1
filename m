@@ -1,103 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166CE372B50
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 11:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67153750DC
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 12:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780314886; cv=none; b=Z125hHcsHnkUshSNFM+FZlJ2KSzJLnOt+Q6Fequclkz3fWgYfQs3LLeNCKfVyWP1Td1iIzVwGPRoirYzyFGsh+ynX0WC6ryz6g9cf1K7nj3fCDgUeLRtu1QVGc/VbnRDh6PC7DRIZfg4b26ds+OTnkV6YeGNI1W/WO7Lt5ErdtA=
+	t=1780316756; cv=none; b=fybm1CxK3W42Upwpo/EpQ+XTqECKemxsx41fepErV9V83LETVi+NAfIaugNZxbxT01RrF8UWpYSIr2ITD1JsTvZ0s2W0gB9iYHKXPPfK/FagwnmGJoQbK/DjzUpFzbBKyimd2RC61Jn+59hYhWkblcSmGPl+WAeRrs6c/w1PntM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780314886; c=relaxed/simple;
-	bh=TYMQ/MBrv0S/spCp1Vu8Oj17AqXw/ovHPENsTq2r2u8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tGNmvMZBJXM/pxuL4FVR5QVVKSduuGVzYvX3gigRLscPEHW7Cl+Jfy75+w9a/XqFB4c4f548Lkhsb4hOaSCx1aiSiz4j+oKmVWJIeXjnKrcPVWtnWX6lWB8/NVetPeDxbtqjXWrbgVCFgFFcPUywbQSHd8Rveu3Mw16sgYBlyHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hDhovk+G; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780316756; c=relaxed/simple;
+	bh=Cq6kgUnXTGUi0Hek+Dsa3gWSg8PBhUnAtCjQqpxEwjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nUsd6NsKGB3d/CeRPM5SZWV2rqXjP28zHHoB73mLvSHfphv2i7GD7pgTwDK7DcIny0WPKqZN3ANtmFtxnFIatvvvOuFXwJxLNdnQJBrcJELAqR/r3u9QmEWAJyhnM+rpwNOL3Nm1ip0tiKaa2qcgNzgt/OrWIw9YYTyiT70taQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Urp4eBIq; arc=none smtp.client-ip=115.124.30.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hDhovk+G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA2E1F0089A;
-	Mon,  1 Jun 2026 11:54:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780314884;
-	bh=vOeZ4f8t987Zk1A167WKCAeXKZzMrGTGgLw/2NtsoFo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hDhovk+G2UMfOpANf8DNx3W0D5tWnTu1tJckFce29yCU+zMxa/B1IMNDQab03hw2c
-	 ZTOJhgZbSvgUHqkg6lvL9jtr0s5zbbaRk9CIQWq2qbgzj7RCYo/M0+BxgslbONujm7
-	 D4ijydr73Llm3g82MPT35Zfx1ZP/d+JXl445jx+8z3SFAMRBS8nHagITkknl2h9dDy
-	 /ejhRtnlZB4R11Ikz6MRhUsQk3elFtH2tIiAvKGtLilgS/hHHyZ57i/GceYBcaJV0S
-	 SF6iJoPknojqtnwzlDi4OXIQsqfFF6Hj7EcibR2QJfF+ci/GCwiXqogAvHW7ReEsV6
-	 gYzqR8fF7c5bA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 5/5] KVM: riscv: selftests: Split SBI FWFT into
- separate feature-specific sublists
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yong-Xuan Wang" <yongxuan.wang@sifive.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260601-kvm-get_reg_list-v2-v5-5-415d08a2813b@sifive.com>
-References: <20260601-kvm-get_reg_list-v2-v5-5-415d08a2813b@sifive.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 01 Jun 2026 11:54:44 +0000
-Message-Id: <20260601115444.8FA2E1F0089A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Urp4eBIq"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1780316739; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=qSGHvqd0B1TgP1CA27o+2RTQh6utjEByxs+dfuoSXoI=;
+	b=Urp4eBIqPXBiDx7cmfxNNhwwq7Lsvp2eLOL6+tsDD/ks7aiQk/Epoe0P460IH//SlKz5naBL5B1c5baUQFduKRUS4ZMGKC5Kt6AUepb3Xn1JYpxto8kXZ99bTSeY5ENGYdtjvzSQogwMOopE24ptar9HicgGrLgE9ClOXW2GRFY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=yexun@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0X4.lMuQ_1780316738;
+Received: from U-KQJTCFK3-0011.local(mailfrom:yexun@linux.alibaba.com fp:SMTPD_---0X4.lMuQ_1780316738 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 01 Jun 2026 20:25:39 +0800
+Date: Mon, 1 Jun 2026 20:25:38 +0800
+From: yexun <yexun@linux.alibaba.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: kvm@vger.kernel.org, chao.gao@intel.com, seanjc@google.com, 
+	pbonzini@redhat.com
+Subject: Re: [kvm-unit-tests PATCH] x86/lam: Allocate test page from AREA_LOW
+ instead of AREA_NORMAL
+Message-ID: <ah13KeNB2jw0lUUw@U-KQJTCFK3-0011.local>
+References: <20260601035401.39303-1-yexun@linux.alibaba.com>
+ <8f155587-07b8-4315-9015-3d104ddfb34e@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <8f155587-07b8-4315-9015-3d104ddfb34e@linux.intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The `pointer_masking` FWFT registers are omitted from `filter_reg()=
-`, causing spurious "new registers" output when testing other FWFT configur=
-ations.
---
+On Mon, Jun 01, 2026 at 03:15:45 PM +0800, Binbin Wu wrote:
+>On 6/1/2026 11:54 AM, yexun wrote:
+>> diff --git a/x86/lam.c b/x86/lam.c
+>> index 87efc5dd..b2dcf7f8 100644
+>> --- a/x86/lam.c
+>> +++ b/x86/lam.c
+>> @@ -231,13 +231,13 @@ static void test_lam_user(void)
+>>  	bool has_lam = this_cpu_has(X86_FEATURE_LAM);
+>>
+>>  	/*
+>> -	 * The physical address of AREA_NORMAL is within 36 bits, so that using
+>> +	 * The physical address of AREA_LOW is within 36 bits, so that using
+>>  	 * identical mapping, the linear address will be considered as user mode
+>>  	 * address from the view of LAM, and the metadata bits are not used as
+>>  	 * address for both LAM48 and LAM57.
+>>  	 */
+>> -	vaddr = alloc_pages_flags(0, AREA_NORMAL);
+>> -	static_assert((AREA_NORMAL_PFN & GENMASK(63, 47)) == 0UL);
+>> +	vaddr = alloc_pages_flags(0, AREA_LOW);
+>> +	static_assert((AREA_LOW_PFN & GENMASK(63, 47)) == 0UL);
+>
+>Although the error exists in the original code, the GENMASK(63, 47) is an address
+>mask, it's not right to mask a PFN.
 
-commit aac064e5a6f0dbfa5efc45c4b208f71e477aa98e
-Author: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-
-KVM: riscv: selftests: Split SBI FWFT into separate feature-specific sublis=
-ts
-
-Divide the monolithic SBI FWFT register list into separate sublists, each
-testing a specific FWFT feature independently. This allows tests to run
-correctly on platforms where not all FWFT features are available.
-
-> diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/tes=
-ting/selftests/kvm/riscv/get-reg-list.c
-> index 5033c09201ef1..cb86cb6b36355 100644
-> --- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
-> +++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-[ ... ]
-> @@ -149,6 +150,14 @@ bool filter_reg(__u64 reg)
->  	case KVM_REG_RISCV_CSR | KVM_REG_RISCV_CSR_AIA | KVM_REG_RISCV_CSR_AIA_=
-REG(iprio1h):
->  	case KVM_REG_RISCV_CSR | KVM_REG_RISCV_CSR_AIA | KVM_REG_RISCV_CSR_AIA_=
-REG(iprio2h):
->  		return isa_ext_cant_disable[KVM_RISCV_ISA_EXT_SSAIA];
-> +	/*
-> +	 * FWFT misaligned delegation registers are always visible when the SBI=
- FWFT
-> +	 * extension is enable and the host supports the misaligned delegation.
-> +	 */
-> +	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_S=
-BI_FWFT_REG(misaligned_deleg.enable):
-> +	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_S=
-BI_FWFT_REG(misaligned_deleg.flags):
-> +	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_S=
-BI_FWFT_REG(misaligned_deleg.value):
-> +		return sbi_ext_enabled[KVM_RISCV_SBI_EXT_FWFT];
-
-[Severity: Low]
-Should the pointer_masking FWFT registers be included here as well?
-
-If config_sbi_fwft_misaligned_deleg is tested on a host where the SMNPM
-extension is available and cannot be disabled, KVM will expose the
-pointer_masking registers. Because they are omitted from filter_reg(), won't
-the test framework spuriously report them as new registers?
-
->  	default:
->  		break;
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260601-kvm-get_re=
-g_list-v2-v5-0-415d08a2813b@sifive.com?part=3D5
+Thanks for your review. What about asserting '(vaddr & GENMASK(63, 47)) == 0UL'?
