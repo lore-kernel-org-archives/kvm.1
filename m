@@ -1,162 +1,198 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D8B37BE63
-	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 13:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A06B86329;
+	Mon,  1 Jun 2026 13:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780320868; cv=none; b=ci1CtPGApt4NJmtXOuL6VJlHdq9yfs92D1wySnH2yKGbDBgOBgu1bcsNGF/lyl7irLMqPGOYE6byoZU6YH9bNZlyKNIldYNbai4cE8/uH5553YfjVu1HgPkDWwNesV4U3f4EImorTMJ+mQTWfNpugh48Jzs9AzzG02A87V9lKXA=
+	t=1780321213; cv=none; b=o98WipL0Z0wYR4GGfXqzA7OJTUdBqE7UrSJkgf7yjCMlTgHCnx8R1tV2zr3hxwn5pVdZ7sb6ZARexuA9EjIDnKFGsrF0RAP0L3M378BRbJPWX0J49ojbykdqgj0JC8U9WY2OuItG+3LDRl+E3RAsM4yj38xzuPt7yfHL/XME9J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780320868; c=relaxed/simple;
-	bh=YwRNdnVIKZ4XKjqk5/e8kdJdiJOXCwat5tQNgSc51i8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Y5+TaWzhtW1WTEZowk4B5IbdGxs7Mn7jzc5pEAsfeXlPDE5xMmq3k8/o7KVY4wT/pfWBYdbGHuEQZAhc4TPLsC32sIUhpNQUS3jbSb5mupG+Gqr9B9EvUhT6SFfafm/mEAR61B/TFr48Lr8nUzFj5CViYOJsV4sdBmlnXP3oVX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=K2QCwuJo; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WR9y94Dy; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=K2QCwuJo; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WR9y94Dy; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1780321213; c=relaxed/simple;
+	bh=kT6cFOzMQ9OQHXHcisMCXZgerCzB2m9jo2ExYn809FM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gcV/8xgS7lixpxTTLwV0Js9WAP8QlPI+5hLXzYLvnTVBDkHlVog9q5c6vrdMjWl/UbKjBhcVLx6VZhSsm7vcQJITtV0492L0S0X4CazxcMyjeR1HFWzlSgaIgIKgKB2DCNiT6bhWF9+ZNFzRn+l6sreL7rpc9lPEh9h3hsSMYdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mSzFQWD7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=R0gW3Q7J; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="K2QCwuJo";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WR9y94Dy";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="K2QCwuJo";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WR9y94Dy"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1AE15679FB;
-	Mon,  1 Jun 2026 13:34:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780320866; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UIN6KOcpG9Dt9K6CC2W8F/dOdi/K0Wh4lLwVNp2FS+o=;
-	b=K2QCwuJookviIKs2oeMb0sqJy4FsPsM2e0BD6e8e0lAP/v3hWxu9Xga1caxOdZdkIVmsov
-	AesGnRsA0jnBYWYTn775rYZsLK0mS5jbeQ2Vam7jU9hCb125wThiUt+PsNXWRbeAGC6KVD
-	KsYxaiHG610p4y8kCkJjheDG7itd1EQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780320866;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UIN6KOcpG9Dt9K6CC2W8F/dOdi/K0Wh4lLwVNp2FS+o=;
-	b=WR9y94Dy/XcrG4JwoviIbFQfNxOZo8I693bl2Nt9vsg3Z8vw1mJeJxd0pxyXBvqLSWgrD0
-	OPYAvkKdCEXKUmDg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780320866; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UIN6KOcpG9Dt9K6CC2W8F/dOdi/K0Wh4lLwVNp2FS+o=;
-	b=K2QCwuJookviIKs2oeMb0sqJy4FsPsM2e0BD6e8e0lAP/v3hWxu9Xga1caxOdZdkIVmsov
-	AesGnRsA0jnBYWYTn775rYZsLK0mS5jbeQ2Vam7jU9hCb125wThiUt+PsNXWRbeAGC6KVD
-	KsYxaiHG610p4y8kCkJjheDG7itd1EQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780320866;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UIN6KOcpG9Dt9K6CC2W8F/dOdi/K0Wh4lLwVNp2FS+o=;
-	b=WR9y94Dy/XcrG4JwoviIbFQfNxOZo8I693bl2Nt9vsg3Z8vw1mJeJxd0pxyXBvqLSWgrD0
-	OPYAvkKdCEXKUmDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 68C76779A7;
-	Mon,  1 Jun 2026 13:34:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id zDeiFmGKHWreSAAAD6G6ig
-	(envelope-from <clopez@suse.de>); Mon, 01 Jun 2026 13:34:25 +0000
-From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-To: kvm@vger.kernel.org,
-	seanjc@google.com,
-	pbonzini@redhat.com
-Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))
-Subject: [PATCH] KVM: x86: fix #GP check in em_dr_write()
-Date: Mon,  1 Jun 2026 15:33:21 +0200
-Message-ID: <20260601133320.91479-2-clopez@suse.de>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mSzFQWD7";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="R0gW3Q7J"
+Date: Mon, 1 Jun 2026 15:40:08 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1780321210;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bweo838MmOU9lUtZ9Hc8rA2psun9I3NyruLIHZ7qYPQ=;
+	b=mSzFQWD76J97r+hskBTzsK0hiq53pHddiBGwm/kVwjwNHHRNBibV1CHjB5Dl8urh3BbhiT
+	8kJXmj1Cg5PgudA7J7Mp255iINHanHPfQ0aSXtqivzuV9j0dSCifEin7v1bjh4T876cMYV
+	cjRRGDIkiN9b6+MYDLBaq5fxl3LSKLehkmvNI7Qr9p+eyyPUC2X1lOqsqMiHC95xMFOCqv
+	mybyoeXcH9iQLibGyQnsNy0EjzWsSNud88hrdUapp+hXFLL6+hdGljessMETVoqeVI4wrM
+	E3BYxZLfibQKfmXrTUo9WJ/ngGVmcfyQuLM7YTRkVq2C4bqABmNKMDrZQWocfw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1780321210;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bweo838MmOU9lUtZ9Hc8rA2psun9I3NyruLIHZ7qYPQ=;
+	b=R0gW3Q7JAOkzh1spwyMeCQym7LDzPwEuCus+oFbO/TYGEVvmNLZzHm1zPX42KiSGamHSa1
+	wASOInXcx1VnECCg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Peter Zijlstra <peterz@infradead.org>, Paul Durrant <paul@xen.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,
+	Carsten Stollmaier <stollmc@amazon.com>
+Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
+ __rwbase_read_unlock()
+Message-ID: <20260601134008.rllwJtn-@linutronix.de>
+References: <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
+ <ahnxfACTGeVFbJMk@google.com>
+ <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
+ <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
+ <aho1M7fvK1Qzmiai@google.com>
+ <1c3b224f-2780-4347-b72b-783586a9b0e1@redhat.com>
+ <58d17a623c1c5c9c09bd91baa30510aaf42f899b.camel@infradead.org>
+ <CABgObfYJsacrCDHRouLDsEz_QF0EBQd8pu3g-V_gta6Eac2e+w@mail.gmail.com>
+ <14442dbf1e6d758fdd4756f2ed5c8cb2738582fb.camel@infradead.org>
+ <787aa26cf62dfd361eea8ed19f384fc517892501.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.30
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid]
-X-Spam-Level: 
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <787aa26cf62dfd361eea8ed19f384fc517892501.camel@infradead.org>
 
-When emulating a MOV to a debug register, em_dr_write() calls
-@ctxt->ops->set_dr(), which is forwarded to emulator_set_dr() and
-then kvm_set_dr(). The latter checks that the written value is valid,
-otherwise returning an error, in which case the emulator is supposed to
-inject a #GP fault into the guest.
+On 2026-06-01 14:01:07 [+0100], David Woodhouse wrote:
+> On Mon, 2026-06-01 at 11:52 +0100, David Woodhouse wrote:
+> > On Sat, 2026-05-30 at 16:40 +0200, Paolo Bonzini wrote:
+> > > On Sat, May 30, 2026 at 3:04=E2=80=AFPM David Woodhouse <dwmw2@infrad=
+ead.org> wrote:
+> > > >=20
+> > > > On Sat, 2026-05-30 at 12:26 +0200, Paolo Bonzini wrote:
+> > > > >=20
+> > > > > Yeah, I think so.
+> > > > >=20
+> > > > > The write side needs kvm->srcu so it would have to be yet another=
+ SRCU.
+> > > > > I initially thought that sucks for the code that calls kvm_gpc_ch=
+eck(),
+> > > > > but maybe not because it simply replaces read_lock/read_unlock.
+> > > > >=20
+> > > > > By using a seqcount for the data, SRCU only needs to be synchroni=
+zed in
+> > > > > gpc_unmap().=C2=A0 So, something like this:
+> > > >=20
+> > > > It isn't just gpc_unmap() which does the invalidation. We also
+> > > > invalidate from the MMU notifier in gfn_to_pfn_cache_invalidate_sta=
+rt()
+> > > > which would also have to synchronize, wouldn't it?
+> > >=20
+> > > You're right, the write_lock_irq() there drains the readers and that
+> > > is needed because khva is not pinned, only kmap()-ed.
+> > >=20
+> > > That is already broken for the OOM case under PREEMPT_RT, where
+> > > rwlock_t becomes sleepable. But using SRCU would break it on
+> > > !PREEMPT_RT as well.
+> >=20
+> > I don't think 'sleepable' is the problem per se, is it? *Why* does the
+> > OOM killer use mmu_notifier_invalidate_range_start_nonblock()?
+> >=20
+> > Commit 93065ac753e4 ("mm, oom: distinguish blockable mode for mmu
+> > notifiers") did say:
+> >=20
+> > =C2=A0=C2=A0=C2=A0 There are several blockable mmu notifiers which migh=
+t sleep in
+> > =C2=A0=C2=A0=C2=A0 mmu_notifier_invalidate_range_start and that is a pr=
+oblem for the
+> > =C2=A0=C2=A0=C2=A0 oom_reaper because it needs to guarantee a forward p=
+rogress so it cannot
+> > =C2=A0=C2=A0=C2=A0 depend on any sleepable locks.
+> >=20
+> > But that was in 2018, when mmap_lock was an rw_semaphore.
+> >=20
+> > Is "sleepable" still a problem even when PREEMPT_RT where almost
+> > *everything* is now strictly sleepable? Wouldn't that mean drivers
+> > aren't even allowed to take their own spinlocks?
+=E2=80=A6
+ =20
+> And then we see it even when taking kvm->mn_invalidate_lock:
+>=20
+> kvm_mmu_notifier_invalidate_range_start+0xac
+> 0xffffffff8132732c is in kvm_mmu_notifier_invalidate_range_start (arch/x8=
+6/kvm/../../../virt/kvm/kvm_main.c:745).
+> 740		 * adjustments will be imbalanced.
+> 741		 *
+> 742		 * Pairs with the decrement in range_end().
+> 743		 */
+> 744		spin_lock(&kvm->mn_invalidate_lock);
+> 745		kvm->mn_active_invalidate_count++;
+> 746		if (!mmu_notifier_range_blockable(range))
+> 747			pr_info("KVM: non-blockable invalidate_range_start, non_block_count=
+=3D%d\n", current->non_block_count);
+> 748		spin_unlock(&kvm->mn_invalidate_lock);
+> 749=09
+>=20
+>=20
+> [  427.919969] mmap: exit_mmap: delaying before mmu_notifier_release for =
+kvm_oom_test
+> [  429.926972] BUG: sleeping function called from invalid context at kern=
+el/locking/spinlock_rt.c:48
+> [  429.926978] in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 280=
+, name: oom_reaper
+> [  429.926982] preempt_count: 0, expected: 0
+> [  429.926984] RCU nest depth: 0, expected: 0
+> [  429.926986] 4 locks held by oom_reaper/280:
+> [  429.926989]  #0: ffff8a61da779cb0 (&mm->mmap_lock){....}-{3:3}, at: oo=
+m_reaper+0x150/0x520
+> [  429.927006]  #1: ffffffffa0934f20 (mmu_notifier_invalidate_range_start=
+){....}-{0:0}, at: zap_vma_for_reaping+0xb7/0x1d0
+> [  429.927019]  #2: ffffffffa0934f78 (srcu){....}-{0:0}, at: __mmu_notifi=
+er_invalidate_range_start+0xae/0x340
+> [  429.927029]  #3: ffff8a6240295360 (&kvm->mn_invalidate_lock){....}-{2:=
+2}, at: kvm_mmu_notifier_invalidate_range_start+0xac/0x4b0
+> [  429.927044] CPU: 26 UID: 0 PID: 280 Comm: oom_reaper Tainted: G S     =
+   I         7.1.0-rc2+ #2460 PREEMPT_{RT,(lazy)}=20
+> [  429.927051] Tainted: [S]=3DCPU_OUT_OF_SPEC, [I]=3DFIRMWARE_WORKAROUND
+> [  429.927053] Hardware name: Intel Corporation S2600CW/S2600CW, BIOS SE5=
+C610.86B.01.01.0008.021120151325 02/11/2015
+> [  429.927055] Call Trace:
+> [  429.927058]  <TASK>
+> [  429.927062]  dump_stack_lvl+0x6e/0xa0
+> [  429.927074]  __might_resched.cold+0xeb/0x100
+> [  429.927084]  rt_spin_lock+0x6c/0x1a0
+> [  429.927092]  ? kvm_mmu_notifier_invalidate_range_start+0xac/0x4b0
+> [  429.927102]  kvm_mmu_notifier_invalidate_range_start+0xac/0x4b0
+> [  429.927110]  ? sched_update_numa+0xa0/0x270
+> [  429.927129]  __mmu_notifier_invalidate_range_start+0x129/0x340
 
-Commit 996ff5429e98 ("KVM: x86: move kvm_inject_gp up from kvm_set_dr
-to callers") changed the contract of kvm_set_dr() (and thus
-emulator_set_dr()), returning 1 as an error instead of -1, but the
-caller in em_dr_write() was never updated, checking only if the returned
-value is negative. The end result is that em_dr_write() does not detect
-the error, so an invalid write does not generate a #GP, but at the same
-time the register value is not updated.
+Okay. This complains about non_block:
 
-The practical impact is limited, as check_dr_write() already checks DR6
-and DR7 manually. However, it misses DR4/DR5, which alias DR6/DR7 when
-CR4.DE=0.
+=E2=80=A6
+> [  429.927260] KVM: non-blockable invalidate_range_start, non_block_count=
+=3D1
 
-Fix this by treating any non-zero return from set_dr() as a reason to
-inject #GP.
+and commit 312364f3534cc ("kernel.h: Add non_block_start/end()") says
 
-Fixes: 996ff5429e98 ("KVM: x86: move kvm_inject_gp up from kvm_set_dr to callers")
-Signed-off-by: Carlos López <clopez@suse.de>
----
- arch/x86/kvm/emulate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+|    Peter also asked whether we want to catch spinlocks on top, but Michal
+|    said those are less of a problem because spinlocks can't have an indir=
+ect
+|    dependency upon the page allocator and hence close the loop with the o=
+om
+|    reaper.
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 585a8ceab220..de138ef92dc6 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -3299,7 +3299,7 @@ static int em_dr_write(struct x86_emulate_ctxt *ctxt)
- 		val = ctxt->src.val & ~0U;
- 
- 	/* #UD condition is already handled. */
--	if (ctxt->ops->set_dr(ctxt, ctxt->modrm_reg, val) < 0)
-+	if (ctxt->ops->set_dr(ctxt, ctxt->modrm_reg, val) != 0)
- 		return emulate_gp(ctxt, 0);
- 
- 	/* Disable writeback. */
+so a lock which becomes sleep-able on RT vs !RT shouldn't be a problem,
+right? We also don't complain about about scheduling within a
+rcu_read_lock() section if it is part of spin_lock().
 
-base-commit: d1568b1332b6b3b36b222c2868fc102727c12a34
--- 
-2.51.0
-
+Sebastian
