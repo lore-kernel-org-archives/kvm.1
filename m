@@ -1,237 +1,255 @@
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E833538655E;
-	Mon,  1 Jun 2026 07:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A934387369
+	for <kvm@vger.kernel.org>; Mon,  1 Jun 2026 07:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780300258; cv=none; b=nAn28EOuPTTzBqq4gOsb5Oor4rE2rOvSef1enPRnQsmGcM33UQr3xmTIpjeLxmHT2xwmXmyqgi7DgMQcrH7RMCUj1WtnU25wZuw1VQ4TKJOnae0amDzchQNBolzSfeuPMxovqNd0XT9deZq7QrwNXk5WNquvl37hShKerQDDW04=
+	t=1780300556; cv=none; b=PlTC9rZ03vcSpWV8I5FSPUEcakxBxQsgE2QVH7RoPw0HG0dmSzKXec9U9dHUWvlg2QqNUyl+K5tldLHYxn7/uphslGIp4bT4AjrqtNKnHyEcCLtwehZIyYodAawJe1rasIfR8wAIXJOgZ8hH+Sb3LsYMQgXXeQJx/cjZMpme5yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780300258; c=relaxed/simple;
-	bh=rDdFHwWnO2TwFrMoqFq4Z4EPKlJsNLzIE/Otcr40dNY=;
-	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=Vu7cHaG9JrE2iXrDHAja/oq0FeKzkSVXj634/cK59CqykXFeuMbkEihsxdTx25LDJsgfPJMf9mmr/OFOG+m36TvykbqTdl9EXgN7R5sRvi6xCFvwuBhzE9BC5LkczEQ0OnbVgui/G2ytt5erOj19+9PJORmQuE0+Ii91SKVicXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gTR3G1L8Xz55y2M;
-	Mon, 01 Jun 2026 15:50:50 +0800 (CST)
-Received: from szxlzmapp02.zte.com.cn ([10.5.231.79])
-	by mse-fl2.zte.com.cn with SMTP id 6517oWPM054581;
-	Mon, 1 Jun 2026 15:50:32 +0800 (+08)
-	(envelope-from wang.yechao255@zte.com.cn)
-Received: from mapi (szxlzmapp02[null])
-	by mapi (Zmail) with MAPI id mid12;
-	Mon, 1 Jun 2026 15:50:34 +0800 (CST)
-X-Zmail-TransId: 2b046a1d39ca433-27457
-X-Mailer: Zmail v1.0
-Message-ID: <20260601155034636JGXXXIkBJCy5tetcmoevj@zte.com.cn>
-In-Reply-To: <CAAhSdy1LE+oTMgO_C9SBvpqF=SHLOdDLGms5_ajO8pqDm=fFuA@mail.gmail.com>
-References: 20260429173002565bdp1o7P0bvOs6yTz64yNx@zte.com.cn,20260429173539941luiwhNDDtflTHOClbNtk4@zte.com.cn,CAAhSdy1LE+oTMgO_C9SBvpqF=SHLOdDLGms5_ajO8pqDm=fFuA@mail.gmail.com
-Date: Mon, 1 Jun 2026 15:50:34 +0800 (CST)
+	s=arc-20240116; t=1780300556; c=relaxed/simple;
+	bh=+L+lLI7lffuFJH84m3musCjNh3ZJ3M6l9YRyx4AuObQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=odokZFhTHUtz58DWwPdoNn6PYNQPFiHosgaJ5tZVJB7MGgyKJSN/Dhh4Zy2BlslNi8xlbViotttZpLM50G2DoiiT6gOhkvf9HBXsRPIaPSKdcAy7KOTx94D5SalvtiRUKK/u5htzTHlLUeS81nCfahMH3SpW7T470IEIhP7wn9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KXcraysT; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KXcraysT"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6516loQJ2548014;
+	Mon, 1 Jun 2026 07:55:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=tIihLj
+	K/P9jxa16OO6bZuxhmsUAoFPmQnYeT0+yGMCI=; b=KXcraysT2BoEalv1QZmtbN
+	QL0I6nVgQLZF4DMC2gqZqUmDbtSH6Hine9dR84tT88i5Pb4JC+ysQsCZlSyKiyHi
+	99mbV8lkfLVDaTHQhRwrLTRBdEMxQe4VneUXQXd0teNRmtGLF8uxKwk3fVIvRGL5
+	5wDnCs2zq7MbXlQCXxFzErJ7sMAbp4c+YS3bljVPOxPUTJxChXvJAxNbq2qV5vvj
+	AWep4PXQFnE0Jz32fmrL9nwLxxUm+L/+m5eh3dQyf2BVuED/TRxYCIDQlcGmOxIF
+	R+fK2B1T71piKsncpbnZ1vmGBMh5Cbl0lW40seO/VqB/LiM5+HT5XPT3xFcKfBsQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efnahfhj2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Jun 2026 07:55:05 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6517sF0e015540;
+	Mon, 1 Jun 2026 07:55:04 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4egcegcuk5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Jun 2026 07:55:04 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6517t2i61573868
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 1 Jun 2026 07:55:02 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7191958053;
+	Mon,  1 Jun 2026 07:55:02 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 770C158043;
+	Mon,  1 Jun 2026 07:54:52 +0000 (GMT)
+Received: from [9.61.253.9] (unknown [9.61.253.9])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  1 Jun 2026 07:54:52 +0000 (GMT)
+Message-ID: <199da924-0621-4ffa-a9a0-126cfcccca4e@linux.ibm.com>
+Date: Mon, 1 Jun 2026 13:24:50 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <wang.yechao255@zte.com.cn>
-To: <anup@brainfault.org>
-Cc: <atish.patra@linux.dev>, <pjw@kernel.org>, <palmer@dabbelt.com>,
-        <aou@eecs.berkeley.edu>, <alex@ghiti.fr>, <kvm@vger.kernel.org>,
-        <kvm-riscv@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MiAzLzNdIFJJU0MtVjogS1ZNOiBSZWNvdmVyIGdzdGFnZSBodWdlIHBhZ2UgbWFwcGluZ3MgZHVyaW5nwqBkaXNhYmxlLWRpcnR5LWxvZw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 6517oWPM054581
-X-TLS: YES
-X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Mon, 01 Jun 2026 15:50:50 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A1D39DA.000/4gTR3G1L8Xz55y2M
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/17] accel: Remove need for AccelCPUClass
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        qemu-devel@nongnu.org
+Cc: Reinoud Zandijk <reinoud@netbsd.org>,
+        Pedro Barbuda <pbarbuda@microsoft.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Glenn Miles <milesg@linux.ibm.com>, Alexander Graf <agraf@csgraf.de>,
+        Peter Maydell <peter.maydell@linaro.org>,
+        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+        Marcelo Tosatti <mtosatti@redhat.com>, qemu-arm@nongnu.org,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Roman Bolshakov <rbolshakov@ddn.com>, Anton Johansson <anjo@rev.ng>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Song Gao <gaosong@loongson.cn>,
+        qemu-riscv@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+        Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Phil Dennis-Jordan <phil@philjordan.eu>,
+        Alistair Francis <alistair.francis@wdc.com>, qemu-ppc@nongnu.org,
+        Weiwei Li <liwei1518@gmail.com>, Chao Liu <chao.liu.zevorn@gmail.com>,
+        kvm@vger.kernel.org, Claudio Fontana <cfontana@suse.de>,
+        Chinmay Rath <rathc@linux.ibm.com>,
+        Mohamed Mediouni <mohamed@unpredictable.fr>
+References: <20260529142434.87880-1-philmd@linaro.org>
+Content-Language: en-US
+From: Anushree Mathur <anushree.mathur@linux.ibm.com>
+In-Reply-To: <20260529142434.87880-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAxMDA3NSBTYWx0ZWRfX+D55tEl1xiiA
+ TFEcOFVpZa3buuD+BIpFsaArV0ycU5s+GpDasVB0e+EFDlpA63s/J+YoAKh4gDHJRtie0a0mUHO
+ 3nFuRY+snpjASa3G+FNt1XwEpCIPdPF0ZOFoPJtVfOPSG3Q3zCsC4zw/ALA4Xl9w0sM7hfS9XrU
+ WnMWci/pAeVmBuMlB/CTVWMiqRzpyKkIcYl8R9ccdwycZffmSonFbaKL7g6WW9ja5wGLlaaBqXy
+ p7H82LmzJrMcI7WIHtFZQfwL7C/pxUUV2drekUBN4IbQ72f28elQfTWj65Nnje0Jceod5S/GXwJ
+ PB4JmtrSiVGkiAO2SM9aQNzuDfDyhlnRxGDj1hvWJygsM+Oyet9NiFflKGWu94/LwMYsBY2clWL
+ BNH2aOronGeQTMf9Q82yCTNj8exSY5lkilyqO7v0VDYpPP1jonMQ4fNg9g2RlZUJzZhHwSGbbj8
+ a7lK7OoXNoqPmCEalrw==
+X-Proofpoint-ORIG-GUID: stbE1dKQO2CIs2klcuivsEzaTA0EBb87
+X-Authority-Analysis: v=2.4 cv=cOzQdFeN c=1 sm=1 tr=0 ts=6a1d3ad9 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=M1uAcgqxGuUR1RF059AA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: yqXAUGPoAcBrwED1JsmjUFs4wkBDWkZD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-01_02,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 impostorscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
+ malwarescore=0 phishscore=0 suspectscore=0 priorityscore=1501 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606010075
 
-> > From: Wang Yechao <wang.yechao255@zte.com.cn>
-> >
-> > When dirty logging is enabled, the gstage mappings are split into
-> > 4K pages to track dirty pages. If the migration fails or is canceled,
-> > in order to keep the VM's performance consistent with that before
-> > dirty logging was enabled, the gstage huge page mappings are recoverd
-> > when dirty logging is disabled.
-> >
-> > With this patch, dirty_log_perf_test shows a decrease in the number of
-> > vCPU faults:
-> >
-> > $ perf stat -e kvm:kvm_page_fault \
-> > /dirty_log_perf_test -s anonymous_hugetlb_1gb -v 1 -e -b 1G
-> >
-> > Before: 524,819      kvm:kvm_page_fault
-> > After : 263,211      kvm:kvm_page_fault
-> >
-> > Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
-> > ---
-> >  arch/riscv/include/asm/kvm_gstage.h |  4 +++
-> >  arch/riscv/kvm/gstage.c             | 42 ++++++++++++++++++++++++++
-> >  arch/riscv/kvm/mmu.c                | 47 +++++++++++++++++++++++++++++
-> >  3 files changed, 93 insertions(+)
-> >
-> > diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
-> > index 9c908432bc17..a074493596d1 100644
-> > --- a/arch/riscv/include/asm/kvm_gstage.h
-> > +++ b/arch/riscv/include/asm/kvm_gstage.h
-> > @@ -64,6 +64,10 @@ int kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
-> >                                 struct kvm_mmu_memory_cache *pcache,
-> >                                 gpa_t addr, u32 target_level, bool flush);
-> >
-> > +void kvm_riscv_gstage_recover_huge(struct kvm_gstage *gstage, gpa_t addr,
-> > +                                  unsigned long taget_page_size,
-> > +                                  unsigned long *page_size);
-> > +
-> >  enum kvm_riscv_gstage_op {
-> >         GSTAGE_OP_NOP = 0,      /* Nothing */
-> >         GSTAGE_OP_CLEAR,        /* Clear/Unmap */
-> > diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-> > index d9fe8be2a151..e2c8cbac30d9 100644
-> > --- a/arch/riscv/kvm/gstage.c
-> > +++ b/arch/riscv/kvm/gstage.c
-> > @@ -337,6 +337,48 @@ int kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
-> >         return 0;
-> >  }
-> >
-> > +void kvm_riscv_gstage_recover_huge(struct kvm_gstage *gstage, gpa_t addr,
-> > +                                  unsigned long target_page_size,
-> > +                                  unsigned long *page_size)
-> > +{
-> > +       u32 current_level = gstage->pgd_levels - 1;
-> > +       pte_t *next_ptep = (pte_t *)gstage->pgd;
-> > +       u32 target_level, out_level;
-> > +       pte_t *ptep, *child_ptep;
-> > +       int ret;
-> > +
-> > +       out_level = 0;
-> > +       ret = gstage_page_size_to_level(gstage, target_page_size, &target_level);
-> > +       if (ret)
-> > +               goto out;
-> > +
-> > +       while (current_level >= target_level) {
-> > +               ptep = (pte_t *)&next_ptep[gstage_pte_index(gstage, addr, current_level)];
-> > +
-> > +               out_level = current_level;
-> > +               if (!pte_val(ptep_get(ptep)))
-> > +                       goto out;
-> > +
-> > +               /* The mapping is already a huge page mapping. */
-> > +               if (gstage_pte_leaf(ptep))
-> > +                       goto out;
-> > +
-> > +               next_ptep = (pte_t *)gstage_pte_page_vaddr(ptep_get(ptep));
-> > +               current_level--;
-> > +       }
-> > +
-> > +       /* Replace the huge PTE with the first PTE entry of the child.*/
-> > +       child_ptep = (pte_t *)&next_ptep[0];
-> > +       if (gstage_pte_leaf(child_ptep)) {
-> > +               set_pte(ptep, __pte(pte_val(ptep_get(child_ptep))));
-> > +               gstage_tlb_flush(gstage, target_level, addr);
-> > +               put_page(virt_to_page(next_ptep));
-> > +       }
-> > +
-> > +out:
-> > +       gstage_level_to_page_size(gstage, out_level, page_size);
-> > +}
-> > +
-> >  void kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
-> >                              pte_t *ptep, u32 ptep_level, enum kvm_riscv_gstage_op op)
-> >  {
-> > diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> > index dc6a8efde99e..789e3362144f 100644
-> > --- a/arch/riscv/kvm/mmu.c
-> > +++ b/arch/riscv/kvm/mmu.c
-> > @@ -16,6 +16,8 @@
-> >  #include <asm/kvm_mmu.h>
-> >  #include <asm/kvm_nacl.h>
-> >
-> > +static void kvm_mmu_recover_huge_pages(struct kvm *kvm, int slot);
-> > +
-> >  static void mmu_wp_memory_region(struct kvm *kvm, int slot)
-> >  {
-> >         struct kvm_memslots *slots = kvm_memslots(kvm);
-> > @@ -160,6 +162,17 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
-> >                 if (kvm_dirty_log_manual_protect_and_init_set(kvm))
-> >                         return;
-> >                 mmu_wp_memory_region(kvm, new->id);
-> > +       } else {
-> > +               /*
-> > +                * Recover huge page mappings in the slot now that dirty logging
-> > +                * is disabled, i.e. now that KVM does not have to track guest
-> > +                * writes at 4KiB granularity.
-> > +                *
-> > +                * Dirty logging might be disabled by userspace if an ongoing VM
-> > +                * live migration is cancelled and the VM must continue running
-> > +                * on the source.
-> > +                */
-> > +               kvm_mmu_recover_huge_pages(kvm, new->id);
-> >         }
-> >  }
-> >
-> > @@ -598,3 +611,37 @@ void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu)
-> >         if (!kvm_riscv_gstage_vmid_bits())
-> >                 kvm_riscv_local_hfence_gvma_all();
-> >  }
-> > +
-> > +static void kvm_mmu_recover_huge_pages(struct kvm *kvm, int slot)
-> > +{
-> > +       struct kvm_memslots *slots = kvm_memslots(kvm);
-> > +       struct kvm_memory_slot *memslot = id_to_memslot(slots, slot);
-> > +       unsigned long hva = gfn_to_hva(kvm, memslot->base_gfn);
-> > +       phys_addr_t start = memslot->base_gfn << PAGE_SHIFT;
-> > +       phys_addr_t end = (memslot->base_gfn + memslot->npages) << PAGE_SHIFT;
-> > +       phys_addr_t addr = start;
-> > +       struct kvm_gstage gstage;
-> > +       unsigned long page_size;
-> > +
-> > +       if (!fault_supports_gstage_huge_mapping(memslot, hva))
-> > +               return;
-> > +
-> > +       kvm_riscv_gstage_init(&gstage, kvm);
-> > +
-> > +       spin_lock(&kvm->mmu_lock);
-> > +
-> > +       while (addr < end) {
-> > +               if (get_hva_mapping_size(kvm, hva) < PMD_SIZE) {
-> 
-> This is hard-coded to work only for 2MB hugepages.
-> 
-This does not only apply to 2M hugepages; 1G hugepages can also work. 
-However, for 1G hugepages, they will only be recovered into 2M mappings, 
-rather than being restored to the original 1G mapping before splitting.
 
-In the next version, for 1G hugepages, I will consider recovering the gstage
-mapping into 1G mappings.
 
-Best regards,
-Yechao
+On 29/05/26 7:54 PM, Philippe Mathieu-Daudé wrote:
+> Move cpu_init/realize hooks from AccelCPUClass to
+> AccelOpsClass. Specialize them for TCG in TCGCPUOps.
+>
+> This drastically simplifies the need of per-binary QOM
+> types per accelerator per target (see also the nice
+> diff-stat).
+>
+> Based-on: tag single-binary-20260528
+>
+> Ignoring checkpatch.pl:
+>
+>    WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+>      accel/accel-target.c
+>      include/accel/accel-cpu-target.h
+>      include/accel/accel-cpu.h
+>
+> Philippe Mathieu-Daudé (17):
+>    target/loongarch: Remove unused 'accel/accel-cpu-target.h' header
+>    accel: Remove AccelCPUClass::cpu_class_init()
+>    accel: Rename AccelOpsClass::cpu_target_realize() -> cpu_realize()
+>    accel/hvf: Remove need for AccelCPUClass::cpu_target_realize
+>    accel/kvm: Remove need for AccelCPUClass::cpu_target_realize
+>    accel: Introduce AccelOpsClass::cpu_instance_init handler
+>    accel/whpx: Convert AccelCPUClass -> AccelOpsClass::cpu_instance_init
+>    accel/nvmm: Convert AccelCPUClass -> AccelOpsClass::cpu_instance_init
+>    accel/hvf: Convert AccelCPUClass -> AccelOpsClass::cpu_instance_init
+>    accel/kvm: Convert AccelCPUClass -> AccelOpsClass::cpu_instance_init
+>    accel/tcg: Convert AccelCPUClass -> new TCGCPUOps::cpu_instance_init
+>    accel: Remove AccelCPUClass::cpu_instance_init()
+>    accel/tcg: Convert AccelCPUClass -> new TCGCPUOps::cpu_realize
+>    accel/tcg: Convert X86 AccelCPUClass -> TCGCPUOps::cpu_realize
+>    accel/tcg: Convert RISCV AccelCPUClass -> TCGCPUOps::cpu_realize
+>    accel: Remove AccelCPUClass::cpu_target_realize()
+>    accel: Remove AccelCPUClass and 'accel/accel-cpu-target.h'
+>
+>   accel/tcg/tcg-accel-ops.h         |  1 +
+>   include/accel/accel-cpu-ops.h     |  3 +-
+>   include/accel/accel-cpu-target.h  | 31 --------------
+>   include/accel/accel-cpu.h         | 23 -----------
+>   include/accel/tcg/cpu-ops.h       |  2 +
+>   include/system/hvf_int.h          |  1 +
+>   include/system/kvm.h              |  3 ++
+>   target/i386/nvmm/nvmm-accel-ops.h |  2 +
+>   accel/accel-common.c              | 68 ++++---------------------------
+>   accel/hvf/hvf-accel-ops.c         |  3 +-
+>   accel/kvm/kvm-accel-ops.c         |  2 +
+>   accel/tcg/cpu-exec.c              | 15 ++++++-
+>   accel/tcg/tcg-accel-ops.c         |  1 +
+>   accel/whpx/whpx-accel-ops.c       |  2 +
+>   accel/whpx/whpx-common.c          | 17 --------
+>   target/arm/hvf/hvf.c              |  4 ++
+>   target/arm/whpx/whpx-all.c        |  1 -
+>   target/i386/hvf/hvf-cpu.c         | 25 ++----------
+>   target/i386/hvf/hvf.c             |  5 ---
+>   target/i386/kvm/kvm-cpu.c         | 25 +-----------
+>   target/i386/nvmm/nvmm-accel-ops.c |  2 +
+>   target/i386/nvmm/nvmm-all.c       | 19 +--------
+>   target/i386/tcg/tcg-cpu.c         | 28 ++-----------
+>   target/i386/whpx/whpx-all.c       |  1 -
+>   target/loongarch/tcg/tcg_cpu.c    |  1 -
+>   target/ppc/kvm.c                  | 23 +----------
+>   target/riscv/kvm/kvm-cpu.c        | 33 +--------------
+>   target/riscv/tcg/tcg-cpu.c        | 28 +++----------
+>   28 files changed, 64 insertions(+), 305 deletions(-)
+>   delete mode 100644 include/accel/accel-cpu-target.h
+>   delete mode 100644 include/accel/accel-cpu.h
+>
 
-> > +                       addr += PMD_SIZE;
-> > +                       hva  += PMD_SIZE;
-> > +                       continue;
-> > +               }
-> > +
-> > +               kvm_riscv_gstage_recover_huge(&gstage, addr, PMD_SIZE, &page_size);
-> > +
-> > +               addr += page_size;
-> > +               hva  += page_size;
-> > +               cond_resched_lock(&kvm->mmu_lock);
-> > +       }
-> > +       spin_unlock(&kvm->mmu_lock);
-> > +}
-> > --
-> > 2.43.5
-> 
-> Regards,
-> Anup
+Hi Philippe,
+I am seeing a compilation issue when I am building the qemu after 
+applying this series of patch. I have tested this for arch PPC.
+
+After applying the patch when I ran make command it failed with the 
+below error:
+
+[2418/2928] Compiling C object 
+libqemu-ppc64-softmmu.a.p/hw_intc_xics_pnv.c.o
+[2419/2928] Compiling C object 
+libqemu-ppc64-softmmu.a.p/hw_ppc_spapr_drc.c.o
+[2420/2928] Compiling C object 
+libqemu-ppc64-softmmu.a.p/libdecnumber_dpd_decimal32.c.o
+[2421/2928] Compiling C object 
+libqemu-ppc64-softmmu.a.p/target_ppc_mmu_helper.c.o
+[2422/2928] Compiling C object 
+libqemu-ppc64-softmmu.a.p/accel_kvm_kvm-accel-ops.c.o
+FAILED: [code=1] libqemu-ppc64-softmmu.a.p/accel_kvm_kvm-accel-ops.c.o
+cc -m64 -mlittle-endian -Ilibqemu-ppc64-softmmu.a.p -I. -I.. 
+-Itarget/ppc -I../target/ppc -Isubprojects/dtc/libfdt 
+-I../subprojects/dtc/libfdt -Isubprojects/libvduse 
+-I../subprojects/libvduse -Iqapi -Itrace -Iui -Iui/shader 
+-I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include 
+-I/usr/include/libmount -I/usr/include/blkid -I/usr/include/gio-unix-2.0 
+-fdiagnostics-color=auto -Wall -Winvalid-pch -Werror -std=gnu11 -O2 -g 
+-D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE 
+-fno-strict-aliasing -fno-common -fwrapv -ftrivial-auto-var-init=zero 
+-fzero-init-padding-bits=all -fzero-call-used-regs=used-gpr 
+-fstack-protector-strong -Wempty-body -Wendif-labels 
+-Wexpansion-to-defined -Wformat-overflow=2 -Wformat-security 
+-Wformat-y2k -Wignored-qualifiers -Wimplicit-fallthrough=2 -Winit-self 
+-Wmissing-format-attribute -Wmissing-prototypes -Wnested-externs 
+-Wold-style-declaration -Wold-style-definition -Wredundant-decls 
+-Wshadow=local -Wstrict-prototypes -Wtype-limits -Wundef -Wvla 
+-Wwrite-strings -Wno-missing-include-dirs -Wno-psabi 
+-Wno-shift-negative-value -isystem /home/Anu/qemu/linux-headers -isystem 
+linux-headers -iquote . -iquote /home/Anu/qemu -iquote 
+/home/Anu/qemu/include -iquote /home/Anu/qemu/host/include/ppc64 -iquote 
+/home/Anu/qemu/host/include/generic -iquote /home/Anu/qemu/tcg/ppc64 
+-pthread -fPIE -isystem../linux-headers -isystemlinux-headers 
+-DCOMPILING_PER_TARGET '-DCONFIG_TARGET="ppc64-softmmu-config-target.h"' 
+'-DCONFIG_DEVICES="ppc64-softmmu-config-devices.h"' -MD -MQ 
+libqemu-ppc64-softmmu.a.p/accel_kvm_kvm-accel-ops.c.o -MF 
+libqemu-ppc64-softmmu.a.p/accel_kvm_kvm-accel-ops.c.o.d -o 
+libqemu-ppc64-softmmu.a.p/accel_kvm_kvm-accel-ops.c.o -c 
+../accel/kvm/kvm-accel-ops.c
+../accel/kvm/kvm-accel-ops.c: In function ‘kvm_accel_ops_class_init’:
+../accel/kvm/kvm-accel-ops.c:101:8: error: ‘AccelOpsClass’ has no member 
+named ‘cpu_target_realize’
+   101 |     ops->cpu_target_realize = kvm_arch_cpu_realize;
+       |        ^~
+[2423/2928] Compiling C object 
+libqemu-ppc64-softmmu.a.p/hw_ppc_spapr_nested.c.o
+[2424/2928] Compiling C object 
+libqemu-ppc64-softmmu.a.p/hw_remote_memory.c.o
+[2425/2928] Compiling C object 
+libqemu-ppc64-softmmu.a.p/libdecnumber_decContext.c.o
+[2426/2928] Compiling C object 
+qga/qemu-ga.p/meson-generated_.._qga-qapi-emit-events.c.o
+[2427/2928] Compiling C object libqemu-ppc64-softmmu.a.p/hw_intc_ppc-uic.c.o
+
+
+Thank you,
+Anushree Mathur
