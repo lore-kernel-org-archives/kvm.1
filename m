@@ -1,373 +1,196 @@
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742E8381B1D
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 16:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0683A3F44D9;
+	Tue,  2 Jun 2026 17:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780419014; cv=none; b=hXVajcNoHmGzwiGDWL/WhddyijPYivTBC+OijN6EX6B0vR3An5zgStmLjYOTJS33o0PK+2C5EeCFsxOJTfzEG4tqyzs+D0+QpYXWOwgjE0gZ2H+IAkBxdW74w7VtPsDOZXwIOm3w/D5N8NrvklUfW2Va0x2uq+urAd1DUEH7ZcY=
+	t=1780419683; cv=none; b=QJgrSWesX4pAfA3AkHMWF1C/yq6OWxCFazweBwaPSxRvJ/zeu+999TT5hbcE89sS93EOFnEZ+EP/JJtuakldpXVOSHP065VWnXOJ1EMjsxDvPcytYTAb4BfDrhJ5VsPD809L5D8MODUdSI3Mo6a1uxx8KfK9QAhOVhy0jRTXKj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780419014; c=relaxed/simple;
-	bh=xJpWp35UujKn6aZ1uwABuJdgM/gDwYMqTXRsfQGf2rI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hhxkKckfNNsmybt1bn/cgOm/lRvxOfgQmg4xK7mUH3eqZrOpCy1q+T9B5jrJOENehI/kNHl9pmXtlqciABjSNDEvQGyofi378sCFWE5VZ5jmSOe08ONnQRlHw02uFc4V8VvqnUw2w/9Q3OftBRiQ0o5T4+CVtweGZq9CN8ONxY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=V2+ukKat; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1780419683; c=relaxed/simple;
+	bh=j04SSoU8pd6CJbQ86Dn/ekV6BBh/lLB9B0H5XZzOW64=;
+	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
+	 MIME-Version; b=UGU+GF64gy2gQMXE5TqUJk9LvPaxOucjh+wr6ncZ3o3q2hkP/4VRchsrEXG4JxNXnbFd5J/zjTLSBXR13q5BvzDDaKYd6iOolJNqGfpQh0sYuWRRtZMntv9KqFP6xJ37R1IPtF3dqY578/6PnsZ/wgA/eNeAOCJP5bF9+l41ku8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BsGy6123; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="V2+ukKat"
-Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
-	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 652EQsb71102090
-	for <kvm@vger.kernel.org>; Tue, 2 Jun 2026 09:50:11 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=Yehd4DhbieHxqdnPFx+C2OZiJ4/oV9ani65AADLGU2M=; b=V2+ukKatNizu
-	elNZjAgnTJky/aEUl851SsfasBCLobh+ZDQjIOfSlk7ulp81uEr2qiqIi8rDoBnt
-	PFCu9cCWfZiv5iVBCkHFwxzJYWXdPOCqvYZEJm6yxIEADifa8DEp9d6Zhh4Sc9l4
-	qNOdk8XUXOh/y6W4+mbWPkGWXzneORHc7Ej68i7Xa1Ada9Z0rzjxMRJSNbzTsVGK
-	GlH2FNXqkyjDSnbYFMKxFS1wKy5Imi6pQ/UkKMaq+ZL92H2ZwiHfIHKuvijOOzKp
-	A3yaXbnjvyXNruLNrhzDR73+Rzb+NbwSVBoPUexboFCeDpBM2JfqeTLcC4BHbnmF
-	q3CwwTF7eQ==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by m0001303.ppops.net (PPS) with ESMTPS id 4ej0xp11th-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 09:50:11 -0700 (PDT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-304f23c55b2so4189994eec.0
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 09:50:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780419010; x=1781023810;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Yehd4DhbieHxqdnPFx+C2OZiJ4/oV9ani65AADLGU2M=;
-        b=BGMAPPCtXs759uSlW4bzmas+t0fFMWC9JmmJrYdiHdPLMv1zlHnvQRuYIRdAwbUiHv
-         QJsiguThzfqROEihABNW5ophFiAsHUvCgKXIQE65CYBawtfUKIPwykYpxWW242w3NLhY
-         WErLID/DGAfZ6puzZNZF0TCnV8mm2t0Ngm2Bmrn9Gaf/DN1OF713RSPzuO2pakT9T09U
-         SpWWi62yZspDdaCuefBHHl3QR79MrDikpABxrzjLY7n/ZbkS2PNFvxbb3+CfTNFFbExg
-         L1SSRqdRN/FcmzgQQTedN1wNP7PBHchVGcl35KaaVe92u9iXB5ku/+yIlSpeokEaQpeD
-         oTSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8BgLtE0T1f67IN6NNjyrf2DPRXVjH2DLmohgg7ymPg7RfQSzTEwEOLq9z3HheWfUFPJ/4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuL789lHsld7In0UmYIG9tMMHoc/UJvQmVqBhH6vjnlZqDIjMh
-	WOYus2mCRk+5L1tzx7JWI+qfXpcvpICkMG1tcLoHwLQMTIb7Te9OCjFIcqhv1oOzp1pzWrOv8hM
-	KwsRP8ebuaBMQZnNUl9GiKcWiV7SqF/fVwrwn99cJIz8+Gnvqy9mYkDBZgx5w
-X-Gm-Gg: Acq92OFKDRB3Eifz+mHBM6lR2JJO+CKUeXnnUaTHw3oVUYECBSA6nLw+IlBlw8gDpAX
-	S6GZYZSs+Wt+Z6IkJua+C8X/ckTJ7Lbk/3b6LDXCc9niLFuvzHdWR39BWnQ/TitckxGbEILKmnN
-	BKtdRVySRF/WLkLs+m+QD9u/3A3mDAZCuwgx2rpJlE3WtXV0s+8dN9SE0T0ElbGvzPB8kLGnnbn
-	iWIK/0DCBdWzFBWI9CPQf6yX4i7z6fNvsWKkILUpAKWAcZq13BwQpszvMtL81E+6BaMrCNzjm3j
-	AvIFiT/IFmgb7z5+PXP4VKiDSij5xXIeICRTFh9MFvnNVac0uMJHhAHf/kV4/NNWgF9O1xbqChU
-	bdBJg2A3gTFPiLH7GwZD3Y2OtXQuJkVIVRQ/F+pNE
-X-Received: by 2002:a05:7301:60b:b0:304:d32e:65e7 with SMTP id 5a478bee46e88-304fa2fc9e6mr8158002eec.0.1780419009996;
-        Tue, 02 Jun 2026 09:50:09 -0700 (PDT)
-X-Received: by 2002:a05:7301:60b:b0:304:d32e:65e7 with SMTP id 5a478bee46e88-304fa2fc9e6mr8157955eec.0.1780419009260;
-        Tue, 02 Jun 2026 09:50:09 -0700 (PDT)
-Received: from [10.0.40.30] ([51.52.155.79])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ee0dd8e1sm16956690eec.21.2026.06.02.09.50.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jun 2026 09:50:08 -0700 (PDT)
-Message-ID: <8854824e-06c2-43b3-86c2-8c2c28f9ad63@meta.com>
-Date: Tue, 2 Jun 2026 17:50:04 +0100
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BsGy6123"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=txsFq69lsjUJDOhROz/LD5kUbWdffdCmz+DxdBFULCQ=; b=BsGy6123LjiobFJAtqpK1o1mbm
+	XH1IY4AiNV9RksbMss7K0+2Q1HoS3o4sPK2gkA+QBqOufVs1krDdNRpaGOYN/sx7zHCerdRSfm3rx
+	K9kegOEw7rBDZZMJHDaHjzKCbtNyqXLomZViTtj5Jzn8wqmf1T4L1aApGb/+XfzJfOB//uH5zWncR
+	ciUCy6zAAtzkC0C8RGUFeDQjI79fFFNvxjp320sv+XXtRY6n9RKS5KIOMNsOz3vRzbFN7y/utDl2z
+	4+epv+EZlWPIl87WqXepYyB0POgCWf40sA0CYTT5Apyea4lrQE29nf0nCZyjactmyCfMz/HbFufpW
+	yyQuByZw==;
+Received: from [2001:8b0:10b:5:c68:987:fac8:ab00] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wUSUJ-00000002JUW-2LTW;
+	Tue, 02 Jun 2026 17:01:12 +0000
+Message-ID: <4f958b17c040c005800b27d90a4bc5052b665a72.camel@infradead.org>
+Subject: Re: [PATCH] KVM: x86/xen: Add
+ KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE
+From: David Woodhouse <dwmw2@infradead.org>
+To: xadimgnik@gmail.com
+Cc: bp@alien8.de, corbet@lwn.net, dave.hansen@linux.intel.com, 
+ dwmw2@infradead.org, hpa@zytor.com, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, mingo@redhat.com,  pbonzini@redhat.com,
+ seanjc@google.com, skhan@linuxfoundation.org, tglx@kernel.org, 
+ x86@kernel.org
+Date: Tue, 02 Jun 2026 18:01:11 +0100
+in-reply-to: <d56d47ab-1306-4b33-9120-8849a7b33928@xen.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-FvKzkB+F7nlP6UyO/Ypi"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 9/9] vfio/pci: Add mmap() attributes to DMABUF feature
-Content-Language: en-GB
-To: Alex Williamson <alex@shazbot.org>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
-        Alex Mastro <amastro@fb.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-        Pranjal Shrivastava <praan@google.com>,
-        Alistair Popple
- <apopple@nvidia.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        kvm@vger.kernel.org, linux-pci@vger.kernel.org
-References: <20260527102319.100128-1-mattev@meta.com>
- <20260527102319.100128-10-mattev@meta.com>
- <20260528171432.771a1a30@shazbot.org>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260528171432.771a1a30@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=ZPHnX37b c=1 sm=1 tr=0 ts=6a1f09c3 cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=2UbFsIa4v//lIgRL4kGwwA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=_78whYxrdx1mplLwxq1U:22 a=VabnemYjAAAA:8
- a=xAQEHcCOs6QKEQvX3i8A:9 a=QEXdDO2ut3YA:10 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: 0GYmJuaSYLgFPZmkzr0s1Fwz-CAMf--2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDE2MyBTYWx0ZWRfX2UUHsPiVTE3F
- Lfsqi+9gftYkIQCXVw+gDwGug7d3IaAPzZtiOQruxT3dLZ+MEOdY47C9STmq/tcv3lCMeJvrsP0
- c+169gGE3Wp1BnK4rB0M2Zy8C6KVX2VJ5w834q+8VU91wsj2tyBkeTKwgSvUn+16zcB3RfQJMt2
- konomfvI6vbeCCSyBjSrUYzbCgjV1vQGY++TIuN4Z2e8yYCDtoRwjqvYKkJHHuAxSdRquiBxbw9
- GRUWGhrcHW7Rfh+7+AAIU6TJJV4WuDf48luo0E7mLQl3bqmjlv4YFIz2m6TaFOnDEzxrlpndsXv
- bFqk4RyOG8X4/rhp32mD7jmIi8rOhg/uwoOOhzagWO3p6yW+JqkSlsP/4BkAOkH2lYQEbXkA85s
- c3F7Hy/tzge+ZVfSLg/BA0rL5jKeq1gScuHTTYXktmR+2dB/X1kTlg34nIVzQYHak2o/nH53+m3
- 9GM/UIJc7XMRcG5/wpA==
-X-Proofpoint-ORIG-GUID: 0GYmJuaSYLgFPZmkzr0s1Fwz-CAMf--2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-02_02,2026-05-28_03,2025-10-01_01
-
-Hi Alex,
-
-On 29/05/2026 00:14, Alex Williamson wrote:
-> 
-> On Wed, 27 May 2026 03:23:12 -0700
-> Matt Evans <mattev@meta.com> wrote:
-> 
->> A new VFIO feature, VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR, is added to
->> set (and get) CPU-facing memory type attributes for a DMABUF exported
->> from vfio-pci.  These are used for subsequent mmap()s of the buffer.
->>
->> There are two attributes supported:
->>   - The default, VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_UC
->>   - VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC, which results in WC
->>     PTEs for the DMABUF's BAR region.
->>
->> Signed-off-by: Matt Evans <mattev@meta.com>
->> ---
->>   drivers/vfio/pci/vfio_pci_core.c   |  2 +
->>   drivers/vfio/pci/vfio_pci_dmabuf.c | 70 +++++++++++++++++++++++++++++-
->>   drivers/vfio/pci/vfio_pci_priv.h   | 12 +++++
->>   include/uapi/linux/vfio.h          | 27 ++++++++++++
->>   4 files changed, 110 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->> index 5184b3cac160..e256a925e7ce 100644
->> --- a/drivers/vfio/pci/vfio_pci_core.c
->> +++ b/drivers/vfio/pci/vfio_pci_core.c
->> @@ -1590,6 +1590,8 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
->>   		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
->>   	case VFIO_DEVICE_FEATURE_DMA_BUF:
->>   		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
->> +	case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR:
->> +		return vfio_pci_core_feature_dma_buf_memattr(vdev, flags, arg, argsz);
->>   	default:
->>   		return -ENOTTY;
->>   	}
->> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> index 3fa14760898f..db8b95ddbe18 100644
->> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
->> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> @@ -42,7 +42,10 @@ static int vfio_pci_dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *
->>   	 * contained within the DMABUF size before calling this.
->>   	 */
->>   
->> -	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
->> +	if (READ_ONCE(priv->memattr) == VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC)
->> +		vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
->> +	else
->> +		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
->>   	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
->>   
->>   	/* See comments in vfio_pci_core_mmap() re VM_ALLOW_ANY_UNCACHED. */
->> @@ -464,6 +467,7 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->>   	priv->vdev = vdev;
->>   	priv->nr_ranges = get_dma_buf.nr_ranges;
->>   	priv->size = length;
->> +	priv->memattr = VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC;
->>   	ret = vdev->pci_ops->get_dmabuf_phys(vdev, &priv->provider,
->>   					     get_dma_buf.region_index,
->>   					     priv->phys_vec, dma_ranges,
->> @@ -731,4 +735,68 @@ int vfio_pci_dma_buf_revoke(struct vfio_pci_core_device *vdev, int dmabuf_fd)
->>   
->>   	return ret;
->>   }
->> +
->> +int vfio_pci_core_feature_dma_buf_memattr(
->> +	struct vfio_pci_core_device *vdev, u32 flags,
->> +	struct vfio_device_feature_dma_buf_memattr __user *arg,
->> +	size_t argsz)
->> +{
->> +	struct vfio_device_feature_dma_buf_memattr db_attr;
->> +	struct vfio_pci_dma_buf *priv;
->> +	struct dma_buf *dmabuf;
->> +	int ret;
->> +
->> +	if (!vdev->pci_ops || !vdev->pci_ops->get_dmabuf_phys)
->> +		return -EOPNOTSUPP;
->> +
->> +	ret = vfio_check_feature(flags, argsz,
->> +				 VFIO_DEVICE_FEATURE_GET |
->> +				 VFIO_DEVICE_FEATURE_SET,
->> +				 sizeof(db_attr));
-> 
-> I don't see why this needs to support GET.  Are we solving a userspace
-> problem that doesn't exist?
-
-Possibly, I'm a bit twitchy about unobservable/write-only internal state 
-so added GET out of habit.  However, no worries, removed it and this 
-function is now much lighter.
-
->> +	if (ret != 1)
->> +		return ret;
->> +
->> +	if (copy_from_user(&db_attr, arg, sizeof(db_attr)))
->> +		return -EFAULT;
->> +
->> +	dmabuf = dma_buf_get(db_attr.dmabuf_fd);
->> +	if (IS_ERR(dmabuf))
->> +		return PTR_ERR(dmabuf);
->> +
->> +	/* Verify DMABUF: see comments in vfio_pci_dma_buf_revoke() */
->> +	priv = dmabuf->priv;
->> +	if (dmabuf->ops != &vfio_pci_dmabuf_ops || priv->vdev != vdev) {
->> +		ret = -ENODEV;
->> +		goto out_put_buf;
->> +	}
->> +
->> +	ret = 0;
->> +	scoped_guard(rwsem_write, &vdev->memory_lock) {
-> 
-> Why?  This doesn't serialize against mmap.  Just use a WRITE_ONCE() to
-> match the READ_ONCE() on mmap?
-
-Ooops, good point.  Fixed.
-
->> +		uint32_t old_attr = priv->memattr;
->> +
->> +		if (flags & VFIO_DEVICE_FEATURE_SET) {
->> +			switch(db_attr.memattr) {
->> +			case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC:
->> +			case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC:
->> +				priv->memattr = db_attr.memattr;
->> +				break;
->> +
->> +			default:
->> +				ret = -ENOTSUPP;
-> 
-> -EINVAL
-
-I'd like to push back on this one; ENOTSUPP distinguishes trying to use 
-a wild attribute value from all manner of other screwups such as
-trying to GET (with it no longer supported), passing an fd that isn't a 
-DMABUF, etc.
-
-I'm not wed to the value ENOTSUPP, just something distinctive versus the 
-other errors userspace might see, and that value seems appropriate.
-
->> +			}
->> +		}
->> +		db_attr.memattr = old_attr;
->> +	}
->> +
->> +	if (!ret && (flags & VFIO_DEVICE_FEATURE_GET)) {
->> +		if (copy_to_user(arg, &db_attr, sizeof(db_attr)))
->> +			ret = -EFAULT;
->> +	}
->> +
->> + out_put_buf:
->> +	dma_buf_put(dmabuf);
->> +
->> +	return ret;
->> +
->> +}
->>   #endif /* CONFIG_VFIO_PCI_DMABUF */
->> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
->> index a1e0f4fcb1dc..8067be45beb0 100644
->> --- a/drivers/vfio/pci/vfio_pci_priv.h
->> +++ b/drivers/vfio/pci/vfio_pci_priv.h
->> @@ -41,6 +41,7 @@ struct vfio_pci_dma_buf {
->>   	struct kref kref;
->>   	struct completion comp;
->>   	unsigned long vma_pgoff_adjust;
->> +	u32 memattr;
->>   	enum vfio_pci_dma_buf_status status;
->>   };
->>   
->> @@ -154,6 +155,10 @@ void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked);
->>   int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->>   				  struct vfio_device_feature_dma_buf __user *arg,
->>   				  size_t argsz);
->> +int vfio_pci_core_feature_dma_buf_memattr(
->> +	struct vfio_pci_core_device *vdev, u32 flags,
->> +	struct vfio_device_feature_dma_buf_memattr __user *arg,
->> +	size_t argsz);
->>   int vfio_pci_dma_buf_revoke(struct vfio_pci_core_device *vdev, int dmabuf_fd);
->>   #else
->>   static inline int
->> @@ -163,6 +168,13 @@ vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->>   {
->>   	return -ENOTTY;
->>   }
->> +static inline int vfio_pci_core_feature_dma_buf_memattr(
->> +	struct vfio_pci_core_device *vdev, u32 flags,
->> +	struct vfio_device_feature_dma_buf_memattr __user *arg,
->> +	size_t argsz)
->> +{
->> +	return -ENODEV;
-> 
-> -ENOTTY
-
-Gotcha, fixed.  Yes, that's quite conspicuous versus the chunk above, 
-unsure where I got that from.
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
-Thank you,
+--=-FvKzkB+F7nlP6UyO/Ypi
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, 29 Apr 2026 12:36:52 +0200, Paul Durrant wrote:
+> On 28/04/2026 21:12, David Woodhouse wrote:
+> > From: David Woodhouse <dwmw@amazon.co.uk>
+> >=20
+> > Commit 3617c0ee7decb ("KVM: x86/xen: Only write Xen hypercall page for
+> > guest writes to MSR") blocked host-initiated writes from triggering the
+> > Xen hypercall page setup, to fix an SRCU usage violation when the
+> > hypercall MSR index collides with a real MSR written during vCPU reset.
+> >=20
+> > However, some VMMs legitimately need to trigger hypercall page setup
+> > from host context. For example, a VMM may intercept the guest's MSR
+> > write to track an epoch (for kexec/crash recovery), and then replay the
+> > write as a host-initiated KVM_SET_MSRS to populate the hypercall page.
+> > The host_initiated check breaks this use case.
+> >=20
+> > Add KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE as a new vcpu attribute
+> > that explicitly invokes kvm_xen_write_hypercall_page() under proper
+> > locking. This gives userspace a safe interface to trigger hypercall pag=
+e
+> > setup without going through the MSR write path, preserving the
+> > host_initiated defence in depth while restoring the lost functionality.
+> >=20
+> > Fixes: 3617c0ee7dec ("KVM: x86/xen: Only write Xen hypercall page for g=
+uest writes to MSR")
+> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> > ---
+> >   Documentation/virt/kvm/api.rst                | 11 +++
+> >   arch/x86/include/uapi/asm/kvm.h               |  3 +
+> >   arch/x86/kvm/x86.c                            |  3 +-
+> >   arch/x86/kvm/xen.c                            |  7 ++
+> >   .../selftests/kvm/x86/xen_vmcall_test.c       | 96 ++++++++++++++++++=
++
+> >   5 files changed, 119 insertions(+), 1 deletion(-)
+>=20
+> Reviewed-by: Paul Durrant <paul@xen.org>
+
+Ping?=20
+
+--=-FvKzkB+F7nlP6UyO/Ypi
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwMjE3MDEx
+MVowLwYJKoZIhvcNAQkEMSIEIA/6yQWSi7/ATdvIahueBmIVstGmAZ2+feF4YHrWA/+SMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIA2VzvB/KXGsth
+ZimjsHsfOKU3QNa2t3mGpFb8jXBhSQ/qohaau/QWP7Njrh0CtceOWnaxoXUYiXmNaHl75Yj32Tby
+KvbWEJFm0AwRRRXinrvlOuGmRnCaZvJXBJAsb4IU//fVSm9TVoU51KFkOC/CwaKfBliTTSwnWtyA
+dSNJCxEMH2fSWwkzg5O3ubLoUFdY3HVxmW3QpGTDnjlukPXDZuqp3PxcoQpOwMQofYhbLVAYH91e
+FelimHlR5vqt7eEPzCAYfo3BClxHI/ySG6HITr5LkfXnohQtNcnuSpA2u7iv+abiFTr0oX01kDIO
+BuSwwAq1457JpZ4lFEgoX/vtFrosfkaG3V7XAnlGwJfveAL3Cu0tleO8+nI+mDmIo70JWs7dhqEL
+L/PyfZtVEOUOesK7brmNtTsYQ6rT0zGMc3iLjaUqor0JTy1qqhWGE9EPB3VoJLhMrAM7qppuOxaH
+DtnP74aqpE8150xUiNnnKhk+qmB/t/70GNJ957xPt4PrTKUKUdgLxo+rIwIGMBX4kE8yTgeOQFVA
+uOskJ+Hp2+fr2oXcytutGHKli1OlgVqstuWOv/8c778595r4XdLpJlSS/Nc4gj6s9BYJ7Ju6/bmF
+I+Xc0PhINlLSIplkCb6tu0JlgqRNKtmsSEdLHhViQpGXYQzOgGtXi+HWCnuKc0EAAAAAAAA=
 
 
-Matt
-
-
-> 
-> Thanks,
-> Alex
-> 
->> +}
->>   static inline int vfio_pci_dma_buf_revoke(struct vfio_pci_core_device *vdev,
->>   					  int dmabuf_fd)
->>   {
->> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
->> index 02366e9f8e16..9b0b68f8a1ef 100644
->> --- a/include/uapi/linux/vfio.h
->> +++ b/include/uapi/linux/vfio.h
->> @@ -1564,6 +1564,33 @@ struct vfio_device_feature_dma_buf {
->>    */
->>   #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
->>   
->> +/**
->> + * Given a dma_buf fd previously created by
->> + * VFIO_DEVICE_FEATURE_DMA_BUF, GET or SET the memory attribute that
->> + * will be used by future mmap()s of that fd.  SETting a new attribute
->> + * does not affect existing VMAs.
->> + *
->> + * The default, if no previous SET has been performed, is NC.
->> + *
->> + * Return: 0 on success, -1 and errno is set on failure:
->> + *
->> + *  ENOTSUPP: The given memattr is not supported.
->> + *  EBADF, EINVAL: dmabuf_fd is not a DMABUF fd.
->> + *  ENODEV: The dmabuf_fd does not match this VFIO device.
->> + */
->> +#define VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR 13
->> +
->> +/* Valid memory attributes for the memattr field */
->> +enum vfio_device_dma_buf_memattr {
->> +	VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC = 0, /* pgprot_noncached */
->> +	VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC = 1, /* pgprot_writecombine */
->> +};
->> +
->> +struct vfio_device_feature_dma_buf_memattr {
->> +	__s32	dmabuf_fd;
->> +	__u32	memattr;
->> +};
->> +
->>   /* -------- API for Type1 VFIO IOMMU -------- */
->>   
->>   /**
-> 
-
+--=-FvKzkB+F7nlP6UyO/Ypi--
