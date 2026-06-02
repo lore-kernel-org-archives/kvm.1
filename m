@@ -1,190 +1,209 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B7130148A;
-	Tue,  2 Jun 2026 12:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9E13E1717
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 13:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780403839; cv=none; b=aEUqO8VMIHlrJAlqXdpiC0PfUotlXT9i+3QG9LwzH/w3YI1ANSo/mNSiUHfiHQkgsLOxM+62ZERgCpvlRTyMyjY45mOfeCjMkIcqmVBkwlnzqr+vsv7aKqb47xOPc8VT48A0aDWDWrTonRNJsDQNOGCRxufDo1rlPFYGDa1J+uY=
+	t=1780405500; cv=none; b=OVfQgwKofBvcv9//xbXeQBNMg68VCiyemTCtbJcE4U/65ynZauPG7VSuGFgFC0V0El5SDZ7er3NESv+ft/x/VepwiMM7bJqrpn1+NL9w+ktFfsqvFQfI+5Q/2qpZJSAitLC8PzE2gh6Ob3vTlok0azlIQ0vxlFOHcLrUlf5/Jsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780403839; c=relaxed/simple;
-	bh=OCCLL5SwGu4xH+cgJtdC4qx2BKJXREzwT7+DWS3BLFU=;
-	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
-	 MIME-Version; b=GS0vLJ/YAHtDtlrd1c47Y8FTMlKW+9EgeDc0A7o0E/KcxsSYWNQynRGi2WXSYV7tpKIiIbKIGk701xiEoSc9/Yowb9Nd/Ui+1R0ySp8ngQ7o9qYTWndO1HPr/stUK2tRCMpmH82UuR7ifSTIq33raVKGgy0nzpN6d+A3KXjGXwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kl6CoK2i; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1780405500; c=relaxed/simple;
+	bh=Lv88enNvVjptEHx4RPDpSYkoiYl4NHCAht/k1YwYRy4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=esmECfRY21hpRgQl2shzZ27+VwBC+FgXmRb4qUy0OCS0E2EqsN6uVhbBNaV8Yxhr4V/kv35fyfjQz5Etwc1Na9LLKsB0FzptSM17F6ma+/3HEyU69iLHlD/8B2oUtoEcf2RBsyxTgXL1sai6husMeKSN2qgjYBylYVjd8YuDBpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oYCy8oWL; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kl6CoK2i"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=Rb5yfIwgrBRrR87AJg7XBlvLHfCDmy+gpwdr9xfXtVA=; b=kl6CoK2inRLDsF2+v5xJ4s/imP
-	211nfAkrvv6yzbQvGzTBOUPqIUlHS+BlLPJhwDz7PA14FzglYo0bkMPBUoBtmQbc7PiWF30UXV/hD
-	tVLeFBnMcAuqZdbIuHuXa5kFBpQCqplVjb3IcugmV9mV9tNJyvyJ5YyK/VSPy3nlgyaqHpVNHl1AP
-	2AL20Jsvkr93JLvO4WflzF07b9EhsVTBauPLJ/xSgFpz6YYZ0LACuT4LiewWTGfUYFOFgC6BzVnKw
-	ni0U6VgWny5yUkHFh9i+ZiW2fY0Ki4+se+RPfimfu9AnqBptC36xHiVRe/PGVvWn0amCA0Q6t9+8g
-	hbB8E7rQ==;
-Received: from [2001:8b0:10b:5:5b40:b57d:669c:36f4] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wUOMo-00000001wQi-3KfG;
-	Tue, 02 Jun 2026 12:37:11 +0000
-Message-ID: <c1f0dee379e282ffb35296da4b666d93025f1c95.camel@infradead.org>
-Subject: Re: [PATCH v2 15/20] KVM: x86/xen: Convert
- kvm_xen_set_evtchn_fast() to gpc's CLASS() APIs
-From: David Woodhouse <dwmw2@infradead.org>
-To: seanjc@google.com
-Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- kvm@vger.kernel.org,  linux-kernel@vger.kernel.org,
- sashiko-reviews@lists.linux.dev, dwmw@amazon.co.uk
-Date: Tue, 02 Jun 2026 13:37:10 +0100
-in-reply-to: <ahnk6cBLuuPIAwmA@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-J5W3Jn6TTVM29ghdH7g3"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oYCy8oWL"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4908b92904fso60989765e9.0
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 06:04:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780405496; x=1781010296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H/8nMdqnIqVIuE86ZCCEmz0EQ1iXOszPXfKX9VZoGH4=;
+        b=oYCy8oWLEOXs3ZZpnQ8VOQHoNFjKZT62/QUyW3df6kxvDecqCOK07UnU98cT9bih7d
+         QifFlcWIr+EJiA3Y4YekpYVbMWMA0XqQZb9m0aNzEy+n6CZ9KNJxUBct5gbgm0d6jBJX
+         4RYm7cSM4Fa+MgP775wpjzUTJB2NacljxFREy0lFq+bJunDJIYp2ZV4sTIDkO+Vc1xr7
+         FpcRQcE1R3qM6zq5aytz97WBpu5zXpd39pgEA0GnDnl2ujkjmEdAdRZhqHjKWr+k4Lc4
+         ry5o67NwkoWSsT9Lap7TwhGHQwNn20aUpkBNKTwaaKQ1kQ2Jb1T0oTaxOfTVux7BZHHQ
+         5nZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780405496; x=1781010296;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=H/8nMdqnIqVIuE86ZCCEmz0EQ1iXOszPXfKX9VZoGH4=;
+        b=JqGiDiToiLO2cNG0woXaFfywL46wuvtGStAYwQwlOdH5xO39T54h2ijF0nfcfZ7DUa
+         KFpTAv2V1SFfH9zkjquCk69Dx8N9fb9dRYb+XRn2xifnX5h7ycdvJJbSpa0UY4hotUD0
+         Ne0vVpagO6/1JsYJ2Ol8KGBMRnhtA1PSFsPie9SxsNG6toO5tV1UrwfJN0+zIO7BYqGm
+         vDWp0vUcgUp0+ddW6WvyNI0hbaEUdeeL/1WMl8RwV+yBa9ajksB1/73jxoGRLuAKtPeL
+         t10tI9GrCALQCkLUt9S4HTZE12SJm921Qp4ljzC9pbBrL0syaoPDkcqURZJijGpHJRa6
+         orNQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/rVP7qcATNUy0kjRHlo8Ff2gi7OywgtQ4lItWGo9H9DJPzyp2PEQmUtdYIAjAb+/beUM8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTqxTj6wHMrLsnwDSJtGYZrG++GCvL00BEc3/oEa3/T4/K87St
+	q1xp07SVzcAtdDbc7htfvNHQlWbQW1uSK4POk3N8u20MXHCuWxfoXhlA
+X-Gm-Gg: Acq92OG5+D0vn2vw517BnoB8Sw1Rxz+9SNc4ndJPSJE8vBqfogcV7NxsjyZ2WxbprXl
+	q80Cr88pJ0LLC0l//JnGvIS52d7NuhY/jmsRPiFomMeAbSF+qbfEV1chUJmmens7IAHb2KMmmG8
+	gvXf3OKWGe7LjNOVqdD/K7C0zAGRBC4VEtAx13yG8u8kd+iwSeOL40PFya/331PeJGrGFWSRTIz
+	Pn2BIExVNk2mxFQ4AK+9YL7I7z9mseYYqCkcZGvK18KoTbgTU8BSFMDLoUhZmbZLtxf/pbjDweJ
+	iRdjdafnSZW6fjgYVAPZVKKJOnJoT5SOr3M1RXiVhQGGjia5LVsMNzf1mJ44VqBbta+Ayun4pYg
+	SF0GM2rmpSd0YuXLbToRrEOmwI1RG8xwz4gLbIe65BGNl6eOYP2snrRE1JIndzBzPtoaDmLc6kj
+	bcdBnzBfwnOuPDQCVwGmhVy+jeJbwbs17zUzYD2nR03mw6dyTkqpn2yaUzeWnyWW2045MTqFREb
+	V84g8SnSw==
+X-Received: by 2002:a05:600c:8105:b0:490:b072:1be6 with SMTP id 5b1f17b1804b1-490b0721e0amr76565325e9.25.1780405495119;
+        Tue, 02 Jun 2026 06:04:55 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34b834esm33184301f8f.11.2026.06.02.06.04.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 06:04:54 -0700 (PDT)
+Date: Tue, 2 Jun 2026 14:04:51 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+ Pengpeng Hou <pengpeng@iscas.ac.cn>, stable@vger.kernel.org, Petr Pavlu
+ <petr.pavlu@suse.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Len
+ Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>, Gabriel Somlo
+ <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>, Jani Nikula
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Bart Van Assche <bvanassche@acm.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Laurent
+ Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
+ <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Bjorn
+ Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>, "James E.J.
+ Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
+ <jirislaby@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, Jason Wang
+ <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
+ =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Jason Baron
+ <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, Tiwei Bie
+ <tiwei.btw@antgroup.com>, Benjamin Berg <benjamin.berg@intel.com>, Ilpo
+ =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, "David E. Box"
+ <david.e.box@linux.intel.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Peter Zijlstra
+ <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
+ <gor@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>, Frank Li
+ <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
+ <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, Alexander
+ Potapenko <glider@google.com>, Marco Elver <elver@google.com>, Dmitry
+ Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ John Johansen <john.johansen@canonical.com>, Paul Moore
+ <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
+ <serge@hallyn.com>, Georgia Garcia <georgia.garcia@canonical.com>,
+ kvm@vger.kernel.org, dmaengine@vger.kernel.org,
+ linux-modules@vger.kernel.org, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, apparmor@lists.ubuntu.com,
+ linux-security-module@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-acpi@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+ qemu-devel@nongnu.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org,
+ linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
+ virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, netdev@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 01/11] params: bound array element output to the
+ caller's page buffer
+Message-ID: <20260602140451.2e3e6622@pumpkin>
+In-Reply-To: <ah699hwLxIIOZ0-7@ashevche-desk.local>
+References: <20260521133315.work.845-kees@kernel.org>
+	<20260521133326.2465264-1-kees@kernel.org>
+	<ah699hwLxIIOZ0-7@ashevche-desk.local>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Tue, 2 Jun 2026 14:26:46 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
---=-J5W3Jn6TTVM29ghdH7g3
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> On Thu, May 21, 2026 at 06:33:14AM -0700, Kees Cook wrote:
+> > 
+> > param_array_get() appends each element's string representation into the
+> > shared sysfs page buffer by passing buffer + off to the element getter.
+> > 
+> > That works for getters that only write a small bounded string, but
+> > param_get_charp() and similar helpers format against PAGE_SIZE from the
+> > pointer they receive. Once off is non-zero, an element getter can
+> > therefore write past the end of the original sysfs page buffer.
+> > 
+> > Collect each element into a temporary PAGE_SIZE buffer first and then
+> > copy only the remaining space into the caller's page buffer.  
+> 
+> ...
+> 
+> > +	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);  
+> 
+> get_free_page() (or how it is called)?
 
-On Fri, 29 May 2026 12:11:37 -0700, Sean Christopherson wrote:
-> On Fri, May 29, 2026, sashiko-bot@kernel.org wrote:
-> > [Severity: High]
-> > Does this unintentionally hold the gpc lock across the IPI kick?
->=20
-> No, it intentionally holds the gpc lock across _sending_ the IPI kick.
->=20
-> > [Severity: High]
-> > Does this now hold the VM-wide shinfo_cache lock while calling
-> > __kvm_xen_set_evtchn_fast() and kicking the vCPU?
-> >=20
-> > Since shinfo_map is a function-scoped CLASS() variable, its destructor
-> > won't release the lock until after __kvm_xen_set_evtchn_fast() returns.
-> > This creates a nested locking dependency and holds locks over expensive
-> > cross-vCPU operations, potentially serializing event channel deliveries
-> > across the entire VM on the fast path.
->=20
-> __kvm_vcpu_kick() is neither expensive nor cross-vCPU.  In the wait=3Dfal=
-se case,
-> which is the behavior of kvm_vcpu_kick(), it sends IPIs via smp_send_resc=
-hedule(),
-> i.e. it's more or less just __apic_send_IPI(cpu, RESCHEDULE_VECTOR), whic=
-h is a
-> single WRMSR on modern harware.
+The kmalloc() should be faster and I think has to be aligned.
+There is another patch set to replace get_free_pages() with kmalloc().
 
-Hm, if we really are going to use a raw rwlock then I suppose we should
-take care not to spend any extra cycles with the lock held unless we
-actually *need* to?
+Although all these 'show' functions should really head to using a safer
+interface.
+Although, at the moment, it is really difficult to find the ones that
+are guaranteed to be passed a page aligned buffer.
 
-In which case I wonder if we really need the scoped CLASS() thing (that
-encourages people to run to the end of the function under the lock), or
-if the helpers you add for that are sufficient on their own?
+-- David
 
+> 
+> > +	if (!elem_buf)
+> > +		return -ENOMEM;
+> > +
+> >  	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
+> > -		/* Replace \n with comma */
+> > -		if (i)
+> > -			buffer[off - 1] = ',';
+> >  		p.arg = arr->elem + arr->elemsize * i;
+> >  		check_kparam_locked(p.mod);
+> > -		ret = arr->ops->get(buffer + off, &p);
+> > +		ret = arr->ops->get(elem_buf, &p);
+> >  		if (ret < 0)
+> > -			return ret;
+> > +			goto out;
+> > +		ret = min(ret, (int)(PAGE_SIZE - 1 - off));  
+> 
+> It's usually discouraged to use castings in min/max/clamp. Can we make ret long
+> or do something different here?
+> 
+> > +		if (!ret)
+> > +			break;  
+> 
+> > +		/* Replace the previous element's trailing newline with a comma. */
+> > +		if (i)
+> > +			buffer[off - 1] = ',';  
+> 
+> Can't we do this after with help of strreplace()?
+> 
+> > +		memcpy(buffer + off, elem_buf, ret);
+> >  		off += ret;
+> > +		if (off == PAGE_SIZE - 1)
+> > +			break;
+> >  	}
+> >  	buffer[off] = '\0';
+> > -	return off;
+> > +	ret = off;
+> > +out:
+> > +	kfree(elem_buf);
+> > +	return ret;  
+> 
 
---=-J5W3Jn6TTVM29ghdH7g3
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwMjEyMzcx
-MFowLwYJKoZIhvcNAQkEMSIEII9RTlsDqib6UqH0CFhsYx+dYcfoTELqT+1n8Gb94ILGMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAXtkP2hIfBjGH
-bfTNt9vJ3LNguiOAHZUPNIQm1sARI1MxCwoc0YiZRaD+qVx+kJA2kd6grTSC514CU3683JZFc+8f
-E4979j2J0QPcH3B7CFw3RHDPaXZNSnEcY7kESXn6OyMeVucRvuOEeLTzGOJIKD4Ry5GnaXZC3Md9
-oHPgGA8o2Mf7keO+h+izoiNNYPTvN2CNdRf2QyTqr/srl1bnnwmSq4bMe+77/zO2CUmomMpj2NLg
-qDsG7+0XaCSm2jr+M73fU0TKfaJzISWss9wfktAANjewUndF+sVnZ1e/VuEoVV/3MEeBX/HyA4I3
-QSpvHd175KcJriL4Bt7LdorBcWQ6y+f+u4AdWnPzKPtZUj/W8OYRVMWYkX5beDTmIIj8qZ8Q6JRT
-2BEeWm4Rf/YI5DsEcXQdSJFW8H/atmhz7ZxqhAUIZShCTdJxku+bShW3v8Ao4CR526uFvHrOVKxg
-E6SanHZFchkgaVtLcDRB80edFRNlG9owaejbJC7u9XQyZ5mBH5FYEbZdx8Kdt41qdgrun0LYPSAt
-aWBke9vn8fBLv0qykJKqw6YrG2XzvR6qffQQRYVW7GK+ku3/BH7zESVSa9M5WdCUu1Q4q4KfVwQO
-/c0ZY2mTIno47l7uJUTMt+svU2dBc/GHtnJ/WhUW5xdnm3bvqu8zpVet7FKqQ4IAAAAAAAA=
-
-
---=-J5W3Jn6TTVM29ghdH7g3--
