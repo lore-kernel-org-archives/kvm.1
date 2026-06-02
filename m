@@ -1,136 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8EB84039
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 08:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE8C3C871E;
+	Tue,  2 Jun 2026 08:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780389782; cv=none; b=tOsFcpi743PPNzScoVK+iVT3m9F133VO++G+oa2kz3j9RMylxwnPQJHiTIc5+0u3SQjmeJgNcgMFeSn81b5q0sEj7sXJ0lo5nUUfkWzw7zNvIOpbgOyS7kZcEtKetd/M7gfFgmN55l15dPpMg9E3sV7TfH2dPywvQSg9faH98XI=
+	t=1780390506; cv=none; b=oB4CzvUajKYurDFiZxJDfUrWEXp6EK+63oAbg/M1IgkuWaIQF9YLmSBhxNZONC/HeUkxRNXTPC+rzlsCDvL2G6cl6JxyKOGPhsPhunlinzF2Rbk1edwqb6u0hNLFyiOQ4YZBgIQZbhKg5AecUmaFxxeOg19SF3W20Dw+q2FW3Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780389782; c=relaxed/simple;
-	bh=M6ybgq7AMAYdxyEkB6ts2UBfpdNDgV6oCDQtwAmA6k0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qA67ckfHNoeVPMog1c6Sz6RtwnRhfzRf3RjCfTTfsh61phfLlbEa+RaDwRMsIaDp/CtlbDYUJDOYqM/TiuroFbW2EhxB7uMsDM6hgYEFeDRlbvCrxFBsiwoLHIB7/Rx5E/ioNcm0v2kZoT5c/mvr3+D0xzw03em5mqPiZPszrek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B4Hw+XGX; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B4Hw+XGX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D216C1F00893;
-	Tue,  2 Jun 2026 08:43:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780389781;
-	bh=c8swZnlRMT715mTL7BNieLw6Nv67NxSLEBlb6g75v6w=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=B4Hw+XGXMWS3mTILwo1hFZRL1S57k26FJT1YKOf5UX7SS6nYDBSpg6lx19Gf0YC0b
-	 JKdWsomICN0oIDGpFUlDLoHN4o6HWiwn9EcOTET7nDqeRuo0PCTBGguVpi6+daAUco
-	 sF8zUynI7RPWiM45yRDYTR/XspOjGSR0rVp7OqyRgU3OFHziBiDlUUQaPWP96sdFxK
-	 Fu0ahxwH0r+58dEbJjzxAKRvXrgWpPbmnVS7ktNkICvqvqpkzLw+DwfZ2Qc8VFVwZu
-	 IPmPNS4exib8vW0CCCGtn4en70/9w3tSoG5LVXgbGKi0KRbTHYI/y+cWxcV1ccpG+/
-	 2MndZN/fa06vg==
-From: sashiko-bot@kernel.org
+	s=arc-20240116; t=1780390506; c=relaxed/simple;
+	bh=SgGEYYww2u/q8UGtG8LRIzibpWQxVJ0lJkjAO05IWF0=;
+	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=meSQSeYek3EdyRxp43NARsoVtTTifL8nZEfVLcN59X5KhysBS9Tgnfw55CuRakwNfz26PJ7ACmaC+sOlH7C4kdtfDeNAtoMkQQ80Wd94ohNwNKfAvG6I4eTRYlziE+0jticdJlnakPLDpNGqOK29NzSds0x7ET+nHkhveKQsxCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Bx+Hhjmh5qb6wPAA--.18938S3;
+	Tue, 02 Jun 2026 16:54:59 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxzsJimh5qjB6ZAA--.28139S3;
+	Tue, 02 Jun 2026 16:54:58 +0800 (CST)
 Subject: Re: [PATCH v3 4/4] LoongArch: KVM: Remove KVM_LARCH_LASX and
  KVM_LARCH_LSX
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Bibo Mao" <maobibo@loongson.cn>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260602074316.1647373-5-maobibo@loongson.cn>
-References: <20260602074316.1647373-5-maobibo@loongson.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 08:43:00 +0000
-Message-Id: <20260602084300.D216C1F00893@smtp.kernel.org>
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260602074316.1647373-1-maobibo@loongson.cn>
+ <20260602074316.1647373-5-maobibo@loongson.cn>
+Message-ID: <9ea14f0d-eb89-bff0-17b0-023da342cfe4@loongson.cn>
+Date: Tue, 2 Jun 2026 16:51:54 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+In-Reply-To: <20260602074316.1647373-5-maobibo@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxzsJimh5qjB6ZAA--.28139S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxGryfCw45Ar17Zr48AF4fJFc_yoW5KFWxpF
+	srur1Duw4rCFyS9wn7Gr1qqr1jvrZagry2gFyjga45Jrn0qry5ZF4vkrZ09FyDW3Z5Aa92
+	qFyF9w1Yka48JwbCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+	67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+	AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+	F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+	1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+	xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+	4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jn
+	UUUUUUUU=
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
 
-New issues:
-- [High] The early return in `kvm_lose_fpu()` skips `kvm_lose_lbt()`, causi=
-ng Loongson Binary Translation (LBT) state corruption, host `CSR_EUEN_LBTEN=
-` leaks, and an unresolvable infinite loop of `EXCCODE_BTDIS` exceptions.
 
-Pre-existing issues:
-- [High] The KVM_GET_FPU and KVM_SET_FPU ioctls only copy 4 bytes per FPU r=
-egister instead of the full 32 bytes (256 bits), breaking FPU state save/re=
-store.
---
-
-commit 15c9f849326e6c0a579e3f423cef163f4caaa1a2
-Author: Bibo Mao <maobibo@loongson.cn>
-
-LoongArch: KVM: Remove KVM_LARCH_LASX and KVM_LARCH_LSX
-
-This commit removes KVM_LARCH_LASX and KVM_LARCH_LSX from vcpu->arch.aux_in=
-use,
-relying instead on the existing kvm_guest_has_lasx() and kvm_guest_has_lsx()
-helpers. It simplifies the FPU state saving logic in kvm_lose_fpu().
-
+On 2026/6/2 下午3:43, Bibo Mao wrote:
+> In kvm_lose_fpu() FPU state will save in vcpu::arch::fpu, its FPU
+> state comes from vcpu->arch.aux_inuse. Instead existing API
+> vm_guest_has_xxx() can be used also, and bit KVM_LARCH_LASX and
+> KVM_LARCH_LSX in arch.aux_inuse are removed. It makes the logic
+> simpler than ever.
+> 
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>   arch/loongarch/include/asm/kvm_host.h |  2 --
+>   arch/loongarch/kvm/vcpu.c             | 17 +++++++++--------
+>   2 files changed, 9 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+> index bad16c5f963c..aa2000cfb58a 100644
+> --- a/arch/loongarch/include/asm/kvm_host.h
+> +++ b/arch/loongarch/include/asm/kvm_host.h
+> @@ -158,8 +158,6 @@ enum emulation_result {
+>   };
+>   
+>   #define KVM_LARCH_FPU		(0x1 << 0)
+> -#define KVM_LARCH_LSX		(0x1 << 1)
+> -#define KVM_LARCH_LASX		(0x1 << 2)
+>   #define KVM_LARCH_LBT		(0x1 << 3)
+>   #define KVM_LARCH_PMU		(0x1 << 4)
+>   #define KVM_LARCH_SWCSR_LATEST	(0x1 << 5)
 > diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index 53abf7aa61f86..523d4cf883439 100644
+> index 53abf7aa61f8..523d4cf88343 100644
 > --- a/arch/loongarch/kvm/vcpu.c
 > +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -1392,7 +1392,7 @@ int kvm_own_lsx(struct kvm_vcpu *vcpu)
+>   	kvm_restore_lsx(&vcpu->arch.fpu);
+>   
+>   	trace_kvm_aux(vcpu, KVM_TRACE_AUX_RESTORE, KVM_TRACE_AUX_LSX);
+> -	vcpu->arch.aux_inuse |= KVM_LARCH_LSX | KVM_LARCH_FPU;
+> +	vcpu->arch.aux_inuse |= KVM_LARCH_FPU;
+>   
+>   	return 0;
+>   }
+> @@ -1408,7 +1408,7 @@ int kvm_own_lasx(struct kvm_vcpu *vcpu)
+>   	kvm_restore_lasx(&vcpu->arch.fpu);
+>   
+>   	trace_kvm_aux(vcpu, KVM_TRACE_AUX_RESTORE, KVM_TRACE_AUX_LASX);
+> -	vcpu->arch.aux_inuse |= KVM_LARCH_LASX | KVM_LARCH_LSX | KVM_LARCH_FPU;
+> +	vcpu->arch.aux_inuse |= KVM_LARCH_FPU;
+>   
+>   	return 0;
+>   }
 > @@ -1417,31 +1417,32 @@ int kvm_own_lasx(struct kvm_vcpu *vcpu)
->  /* Save context and disable FPU */
->  void kvm_lose_fpu(struct kvm_vcpu *vcpu)
->  {
+>   /* Save context and disable FPU */
+>   void kvm_lose_fpu(struct kvm_vcpu *vcpu)
+>   {
 > +	if (!(vcpu->arch.aux_inuse & KVM_LARCH_FPU))
 > +		return;
+here is problem with AI review
+ 
+https://sashiko.dev/#/patchset/20260602074316.1647373-1-maobibo@loongson.cn?part=4
+
+kvm_lose_fpu() implies that kvm_lose_lbt(), there is problem returning 
+directly without calling kvm_lose_lbt().
+
+Regards
+Bibo Mao
 > +
+>   	preempt_disable();
+>   
+>   	kvm_check_fcsr_alive(vcpu);
+> -	if (vcpu->arch.aux_inuse & KVM_LARCH_LASX) {
+> +	if (kvm_guest_has_lasx(&vcpu->arch)) {
+>   		kvm_save_lasx(&vcpu->arch.fpu);
+> -		vcpu->arch.aux_inuse &= ~(KVM_LARCH_LSX | KVM_LARCH_FPU | KVM_LARCH_LASX);
+>   		trace_kvm_aux(vcpu, KVM_TRACE_AUX_SAVE, KVM_TRACE_AUX_LASX);
+>   
+>   		/* Disable LASX & LSX & FPU */
+>   		clear_csr_euen(CSR_EUEN_FPEN | CSR_EUEN_LSXEN | CSR_EUEN_LASXEN);
+> -	} else if (vcpu->arch.aux_inuse & KVM_LARCH_LSX) {
+> +	} else if (kvm_guest_has_lsx(&vcpu->arch)) {
+>   		kvm_save_lsx(&vcpu->arch.fpu);
+> -		vcpu->arch.aux_inuse &= ~(KVM_LARCH_LSX | KVM_LARCH_FPU);
+>   		trace_kvm_aux(vcpu, KVM_TRACE_AUX_SAVE, KVM_TRACE_AUX_LSX);
+>   
+>   		/* Disable LSX & FPU */
+>   		clear_csr_euen(CSR_EUEN_FPEN | CSR_EUEN_LSXEN);
+> -	} else if (vcpu->arch.aux_inuse & KVM_LARCH_FPU) {
+> +	} else {
+>   		kvm_save_fpu(&vcpu->arch.fpu);
+> -		vcpu->arch.aux_inuse &= ~KVM_LARCH_FPU;
+>   		trace_kvm_aux(vcpu, KVM_TRACE_AUX_SAVE, KVM_TRACE_AUX_FPU);
+>   
+>   		/* Disable FPU */
+>   		clear_csr_euen(CSR_EUEN_FPEN);
+>   	}
+> +	vcpu->arch.aux_inuse &= ~KVM_LARCH_FPU;
+>   	kvm_lose_lbt(vcpu);
+>   
+>   	preempt_enable();
+> 
 
-[Severity: High]
-If a guest executes an LBT instruction without using the FPU, KVM's kvm_own=
-_lbt()
-sets KVM_LARCH_LBT in aux_inuse but leaves KVM_LARCH_FPU unset.
-
-Will this early return bypass the kvm_lose_lbt() call at the end of the fun=
-ction?
-
-If kvm_lose_lbt() is skipped, does this leak the guest's LBT hardware state=
- to
-the host CPU and leave KVM_LARCH_LBT permanently set in aux_inuse?
-
-If the vCPU resumes on another physical CPU where LBTEN is disabled,
-kvm_own_lbt() would see KVM_LARCH_LBT already set and do nothing,
-potentially causing an unrecoverable infinite loop of EXCCODE_BTDIS excepti=
-ons.
-
->  	preempt_disable();
-> =20
->  	kvm_check_fcsr_alive(vcpu);
-
-[ ... ]
-
->  		/* Disable FPU */
->  		clear_csr_euen(CSR_EUEN_FPEN);
->  	}
-> +	vcpu->arch.aux_inuse &=3D ~KVM_LARCH_FPU;
->  	kvm_lose_lbt(vcpu);
-> =20
->  	preempt_enable();
->  }
-
-While reviewing this, I noticed a pre-existing issue in the same file:
-
-arch/loongarch/kvm/vcpu.c:kvm_arch_vcpu_ioctl_get_fpu() {
-    ...
-	for (i =3D 0; i < NUM_FPU_REGS; i++)
-		memcpy(&fpu->fpr[i], &vcpu->arch.fpu.fpr[i], FPU_REG_WIDTH / 64);
-    ...
-}
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the FPU_REG_WIDTH / 64 =
-size
-argument evaluate to 4 bytes instead of the full 256 bits (32 bytes)?
-
-Because FPU_REG_WIDTH is 256, it seems this memcpy only copies 32 bits per
-register. Will this cause a short read/write during KVM_GET_FPU and KVM_SET=
-_FPU,
-corrupting the guest's vector state during live migration?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602074316.1647=
-373-1-maobibo@loongson.cn?part=3D4
