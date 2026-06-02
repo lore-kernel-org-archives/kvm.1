@@ -1,118 +1,175 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CAF37F72E
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 22:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A673BA235;
+	Tue,  2 Jun 2026 22:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780438733; cv=none; b=Fr4qMJ/UC1D4awDvNzwWnPV0LWA/l4g7JKXYu4mhuajxpXARSxuJ87fEVC7jnrCq9u8y7qJSPHa8XPN1C5k35MwOtbcg28Cs9aOqeAHvSbs5H8hYWcJmqYeSIrs/i5+qFQZl2yCFrxfi3YPP4ktLgkDxlpIKF3VwDTFGExjNASk=
+	t=1780439056; cv=none; b=hYwocWouSQVRcGu5WaqHAtX7m93jYI2aOb/n/nZMOmeQSXP5WTWFyMaS7dgJMKQw2kyBpOcyEAJ7Sm6Q/n4Or3QK3GG1zbQ+aoGFN/WxFR7Jdpkwb9o2e/zoxFtCutQsXtKL30qeWuqNcbQFNhknXUvP9gF5iO+7SYBQ7YzP1f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780438733; c=relaxed/simple;
-	bh=mOj/mm+e8bp2/YJzCq6+9P0uMrb6LHZnBSavOSIt+Y4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plGUN7gp6cXXPtEnh6X54C2j7QLNaT6WuiQdSyFajetyu7pyp+Rud9k4HDkFeqcZCr+7b8/YT/jFx6RNOUVG/jh+5NbN4zAem84nseHgZpHXsLe3Z+Rs+OxIYRzZ/5q266+o3w5gu1/DOwgL87u0VkocGriedvleIKf4dPcaZOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bU2FwIqt; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780439056; c=relaxed/simple;
+	bh=qk2gjXI3NoBy2QULb52AKHE9XZvZDY+WdJfRMde0vZ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DZ+crQjIVum4JSBKfB8p9HtSyBSLufMBNwKfVrGFuHdZkLy80ox230SwRdce+tDRTr6fzJt4CF5Iy487fOkbyQVsiGzy+SF4+SBofFnnO6ds1qlqLjpB5SGL44xBVV6roO4CDm2p6V1KKttxkKFI1tPQDZHEjxLudNJUG3UuFQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=MWl5kgBc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DTq11pSR; arc=none smtp.client-ip=202.12.124.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bU2FwIqt"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490ace40f4bso29766265e9.3
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 15:18:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780438731; x=1781043531; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3cw0K4qIf6+fPTBj4/hLwQ9yPr+Jm8wfwQ5XwEakJxQ=;
-        b=bU2FwIqtI/ek7x6UMBn11WtrKx8FlTReBKhq5plCr1m3k/uobjxpoIlp7zMVMnTZBl
-         3thz7aX1ott5Fs5kVnV4SS4bd17PzNtd1MsTx055upcCO443IjiC7yXfbhxK82jAhcHY
-         3hAEDtli9C6Q/a+KOLuMuO0umM6ipNHKRDFLfxNUXfwlilC5eP6K6Tnyj5OvOMkj8fhX
-         igu9ETyJIFH8+xggG7gD2NH/MaTM0oznAvY8qJ6fh9iN/5427lHgQLPmMkOCj0o2PUgA
-         fC5Fg0mroCEwMR7zswX28q7RX2Ihu546eA03jRF4Z22hYRGjxu131dcXzN01P2SwicDD
-         hSGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780438731; x=1781043531;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3cw0K4qIf6+fPTBj4/hLwQ9yPr+Jm8wfwQ5XwEakJxQ=;
-        b=mkhR66rhiUN7ll6yOPmhuTZjyyIVBVevp5OM6RMXJJcsCgcZY7wQ2QR7L1x6ebqjbz
-         paor/ZjGovm4hblBc9ridVVANOBSD9BxY1o33lGF/suXzQpoeFklfHElFI3bsYchza1O
-         w2qowCzPREAkycMh3cTiRYpVZplIHQdHTw+QkQAxNJtf+B77JYB97hyMfA31VIPBUK6o
-         xPPCAdpwph5a5QS5rXQE/UXBHLHpvndyT+ekgBtr08ChPA/YETxBZvwYCvew9Rp0bKZ7
-         o9yjuTC8SkteqyN/L5aQjgpHiEm77J1kRkx4eXc7FdOjLLnFmiRYxThey2nTpSaH9AZj
-         SU2g==
-X-Forwarded-Encrypted: i=1; AFNElJ+FOgjwLxnUvzMS9mVvtCPu+hvvBNZThAMdrUQyU2d6qLMJM/6Fdtt1GtfnfoeTdKz0Blo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyB5jcpLZ4Xk/teuKs5FxRjVwoqG4QigJyfg5dMiRURV9d/DJlh
-	hykWrQrFX2h8t5/xznmR1mT8XrgYnf8YnhETir8zXYXqfwS1RMQQHiWe
-X-Gm-Gg: Acq92OHpOIUdx4qQlsuUScmCQtuDUcEkgvcY2hno0c6iOGb8GVUsgVUObODyR/pdvAv
-	WCNFb6grPlBAX53SUL6Q8H/LW9YEXRQ9u84DLHTsT6PTsl2W3hmjG2xa93kMtbZ3tZr1wc4EnQ3
-	k3m5ASU+7DhTrcumvOTpS8tgf+iOFkBpjhCHOtgVPRSFpwyn+BXMQDQzT72UlYL7PwqUC5ffGy7
-	Ppq+w+I09abpMusuE/p64wt+aKfxQnaEUoRLLfw6Muvo2Q5z4gC0XUeW9cChFZ4uTdUWXVuRcu6
-	ns3t95dMtGSICh1HEgnjTbhRenotKyXyXXLv1NfXRD2qjBcmmFpdscE2nJpVPmiWqZsUe5vjea/
-	m+eZbNWSf/KUG5NJHcldkosNnUOJi4nsvGRbLc33QF45rFGl4tblMkLHOykaaO+MfsqlKxA3SN0
-	WbKkTwYrNR5oB+k0s9LiYdHLA1qu0/35BEj2JEPx+8
-X-Received: by 2002:a05:600c:4fc8:b0:490:5057:f5f7 with SMTP id 5b1f17b1804b1-490b5e8cd0cmr10087195e9.11.1780438730762;
-        Tue, 02 Jun 2026 15:18:50 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4601f2dcae2sm2882120f8f.6.2026.06.02.15.18.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jun 2026 15:18:50 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: kas@kernel.org
-Cc: Liam.Howlett@oracle.com,
-	aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	david@kernel.org,
-	jthoughton@google.com,
-	kernel-team@meta.com,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	pbonzini@redhat.com,
-	peterx@redhat.com,
-	rppt@kernel.org,
-	seanjc@google.com,
-	sj@kernel.org,
-	skhan@linuxfoundation.org,
-	surenb@google.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	ziy@nvidia.com
-Subject: Re: [PATCH v6 14/15] selftests/mm: add userfaultfd RWP tests
-Date: Wed,  3 Jun 2026 01:18:31 +0300
-Message-ID: <20260602221831.77366-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260529172716.357179-15-kas@kernel.org>
-References: <20260529172716.357179-15-kas@kernel.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="MWl5kgBc";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DTq11pSR"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id 8C4FC1D000AF;
+	Tue,  2 Jun 2026 18:24:12 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Tue, 02 Jun 2026 18:24:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1780439052;
+	 x=1780525452; bh=HpsO3gd0wMcI3QhvrGbYU8+xypx9sZlOFSo6f6xcyiU=; b=
+	MWl5kgBcu9nqWnG9LdYhh8w2wmsD4XzW2NnEsrRs4NWPNP4eSYHzAFCya/nQPjRL
+	CQZ7/LwT5XwF9PpVU3PhZSao54VQ0NU7Sitdz2V7JyW8Z9K2aRVL+uoS8j763Hlz
+	3egGju3Gw81CR9te6uobe5LZe6TE+l36vcDlGu2+UXCREDI8DDoy6nkgWzAQVgM2
+	U2kD2qf2OCyE5Pll1anyLHBdIig0TtUD0i7JFxXM+Dx13Se7ZCSiwgwLEXzkEb8R
+	N23ZkXOQDIRxxUarMVcvCLcFZVnFief84Ua64U1iIldxLRXXjYiPhFMxYQS7ICjW
+	Gvb2D+gL034Yf/IFEPjbSg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780439052; x=
+	1780525452; bh=HpsO3gd0wMcI3QhvrGbYU8+xypx9sZlOFSo6f6xcyiU=; b=D
+	Tq11pSRGK554bUHipDyXwbbsfasPvZDFKQVDvD1oRPgCf8rO+NnC1ywW3QW8hJJR
+	4rfm0lagGPN2DJXlt+o7Q9cxLbz7e8094K9G2tnxUTKXlxub496jPY/+vpcReAWP
+	mV+2uIKpHSiymhm6fxkLh04zU3RlmaiETxCkWW+q7LKmgCSmVmkpcSrRSTwxg2Jt
+	uGmoQ2XCVKtxiuX2svHwfeL2e5xrKP8OwG75lJyFHQz+ypTt2TnpLEgITdFaxKvp
+	qS4TT6wXMwLnABPeMJs6uYsPwJXRQt7bnFSwkFhY9dghliAtRPqDtS5AUfte1p2h
+	iLMDiwo3B5+HnOrPYc5SQ==
+X-ME-Sender: <xms:C1gfaub6iouHFw11PGxty0R1GDNEER4BOBFoTafztilPRrcd3j3UFg>
+    <xme:C1gfaiwPummpVbhvC3SwX6IHrzrrh8Tl9j_C1R-AWE3de82QNmZHJSbRq2w4kTJGc
+    U0UHdFGvvjJqWevTZMvGSoAdXhzMtXUvVMMl2NoNHAfJ3Vn6vmwgA>
+X-ME-Received: <xmr:C1gfaiO9IO6qz4G1Jw3qZoQrh-zF9tX4Of-gUS5jQPYbvEXF5HEAlSagQKg>
+X-ME-Proxy-Cause: dmFkZTEzFQQjv+SjWR4wAB+CXIyzIejqvDcZZfMXru6LkBHWQi3phvq5Zs3hDvM3bL6qEV
+    ttan/L1BO4N6mQAlskzLR2o9PPltk0LTBwCwSVuqwxc76foIHu/voLDHnEu715nqiqayvA
+    r9Q8QRKvMQDUGiWq7J9HgTka9vUgPCvHbgHE6HbKYl6/a3L5yYDnF+Vz3nMr/ogVxBdw9v
+    Tnx3zf/zETaHEhR8r+GFu1KuF3e9zbFrAr/8LGrd+wQeDim1D0u0ZO4jQo7PfmB066UCkI
+    ZEwRIsQTKGsBighIMe6p50SUE54xAufKpFkWn1z+VdQ1+I4Mr5Pxv7CigTudPuRyW0N7H6
+    hLK5dnDv3YDCDjHa+/1Hd7IGehXObtJ2VWXEpm++9GvfF2d78M29bQfH/hIiffNr0Gs0Mb
+    GcO1dqz3e+nz6TtNU43IvN/IHVjYQSEqv82IDAIxef95C800bgtAbboBVKI4WwceH11yom
+    Jdm7Uh+EFDITlVZE9uB/7ddSKOxRH+s8qJqi291bJFfnh8u2bc6JhJqZyaqEz5yHTI6B9J
+    qhYhdBslfWu4rASE6ziI6SfCNKec419VnQIIJZdC0vNGS0efMA08eFBtpgfG3dVpE6a251
+    1HnYc8laMDGIZ/ZTGiR4E1rw1b/Wzso2jCFb/26FDtwRZO5KvOPsV5xLqGYQ
+X-ME-Proxy: <xmx:C1gfao6wGIjsr6eTfj9f9iahqZ5quCj-mjgB3pT5p4SHx3nKFVD9mQ>
+    <xmx:C1gfagfKsB3SFaYNdaAtgUuO0jZGLJxHMhkg2UMjkE_xYXU7qIyUJQ>
+    <xmx:C1gfapKsH9_SPvmCgAAMqVhMRtPh1c16Xa7YOuiOOngF2AB7yhElrQ>
+    <xmx:C1gfamn4Dtr7636PH4VuBKXPPN4FXNY2tPzlrmhctcena0AVdZqBcg>
+    <xmx:DFgfan5pZikWQl-vKU_nfaaCSbgeqpLEYGaVX1-zXb7u6o35bYYWAFaO>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 2 Jun 2026 18:24:10 -0400 (EDT)
+Date: Tue, 2 Jun 2026 16:24:09 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Omar Elghoul <oelghoul@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
+ farman@linux.ibm.com, gbayer@linux.ibm.com, alex@shazbot.org
+Subject: Re: [PATCH v2 2/3] vfio-pci/zdev: Add VFIO FMB device feature
+Message-ID: <20260602162409.1ca3c765@shazbot.org>
+In-Reply-To: <20260519224204.19154-3-oelghoul@linux.ibm.com>
+References: <20260519224204.19154-1-oelghoul@linux.ibm.com>
+	<20260519224204.19154-3-oelghoul@linux.ibm.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-"Kiryl Shutsemau (Meta)" <kas@kernel.org>:
-> +/*
-> + * Test that GUP resolves through protnone PTEs (async mode).
-> + * vmsplice() into a pipe pins user pages via get_user_pages_fast() --
-> + * unlike write(), which goes through copy_from_user() and ordinary
-> + * hardware page faults -- so it exercises gup_can_follow_protnone() on
-> + * the RW-protected PTE. In async mode the kernel auto-restores
-> + * permissions and GUP returns the page.
-> + */
+On Tue, 19 May 2026 18:42:03 -0400
+Omar Elghoul <oelghoul@linux.ibm.com> wrote:
+> diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci_zdev.c
+> index 0990fdb146b7..1e9efe2bee69 100644
+> --- a/drivers/vfio/pci/vfio_pci_zdev.c
+> +++ b/drivers/vfio/pci/vfio_pci_zdev.c
+> @@ -167,3 +167,80 @@ void vfio_pci_zdev_close_device(struct vfio_pci_core_device *vdev)
+>  	if (zpci_kvm_hook.kvm_unregister)
+>  		zpci_kvm_hook.kvm_unregister(zdev);
+>  }
+> +
+> +int vfio_pci_zdev_feature_fmb(struct vfio_pci_core_device *vdev, u32 flags,
+> +			      void __user *arg, size_t argsz)
+> +{
+> +	struct zpci_dev *zdev;
+> +	struct vfio_device_feature_zpci_fmb fmb = {0};
+> +	u32 ops = VFIO_DEVICE_FEATURE_GET | VFIO_DEVICE_FEATURE_SET;
 
-Note that I recently submitted a patch, which makes vmsplice equivalent to
-preadv2/pwritev2, and it was accepted to next.
+Somewhat gratuitous variable usage.
 
-For now it is just an experiment, it is possible it will be reverted.
+> +	int ret;
+> +
+> +	ret = vfio_check_feature(flags, argsz, ops, sizeof(fmb));
+> +	if (ret != 1)
+> +		return ret;
+> +
+> +	zdev = to_zpci(vdev->pdev);
+> +	if (!zdev)
+> +		return -ENODEV;
+> +
+> +	mutex_lock(&zdev->fmb_lock);
 
-https://lore.kernel.org/all/20260601-aufweichen-dissens-ausrechnen-0d9b84728113@brauner/
+Use a guard and avoid the release_lock gotos.
 
--- 
-Askar Safin
+> +	if (flags & VFIO_DEVICE_FEATURE_SET) {
+> +		if (copy_from_user(&fmb, arg, sizeof(fmb))) {
+> +			ret = -EFAULT;
+> +			goto release_lock;
+> +		}
+> +
+> +		if (fmb.flags & VFIO_DEVICE_FEATURE_ZPCI_FMB_FLAGS_ENABLED)
+> +			ret = zpci_fmb_reenable_device(zdev);
+> +		else
+> +			ret = zpci_fmb_disable_device(zdev);
+> +		goto release_lock;
+
+Remaining flag bits are not tested, breaks any future expanded use of
+flags.
+
+Why does the user need to be able to control these?
+
+Doesn't allowing the user to disable FMB remove guaranteed host-based
+monitoring?
+
+Since this is already provided via debugfs, why not make this a
+userspace problem to interact with the existing interface?
+
+Alternatively, couldn't the existing zpci mediation be extended to
+support the guest registering a fmb buffer to be written at regular
+intervals (the interface here seems to drop the reporting interval).
+
+> +	}
+> +
+> +	ret = 0;
+> +	if (zdev->fmb) {
+> +		fmb.flags |= VFIO_DEVICE_FEATURE_ZPCI_FMB_FLAGS_ENABLED;
+> +	} else {
+> +		fmb.flags &= ~VFIO_DEVICE_FEATURE_ZPCI_FMB_FLAGS_ENABLED;
+> +		goto release_lock;
+> +	}
+
+Flag bit is cleared, goto skips copy-to-user, returns success...
+
+Regardless of what's documented in the header, the buffer should be
+assumed to be userspace garbage.  Failing to set or clear the entire
+flags field precludes any future use.
+
+Why do we need to use flags to indicate the enable state?  Couldn't we
+just as easily have success indicate enabled and -ENOMSG indicate
+disabled?  Thanks,
+
+Alex
