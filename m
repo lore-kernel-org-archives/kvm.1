@@ -1,138 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413A9364EA4
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 02:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB521A01BE;
+	Tue,  2 Jun 2026 03:50:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780368758; cv=none; b=UJS3ELpVyL6/xj0o65JwxjL4bCujd6SjgRcdFrnLWMFaMGVdWhevZEYVopSeVqHi1OvlJ0mzPadNp03RGOvfyNxfp03Zb3viTkhL6ZjOmorcdk8Cgm9Hv/yZ7dj7XE7+6D+w5MMaupWCSXfujx3Ri1siLsyUw/xIMCtvMuehYcY=
+	t=1780372221; cv=none; b=myNaeHUEyHtWVivkAIPWH5jSapnNAkWha7plulu/IbJgdcVTUQctf3ycQlCKuaZYSqAc0A8+3WoiBGOspU7T2z0WmNZd/NbsurU7008bli0inGzxjUKLLSklDPp9CLfNQ8argUZ22CiuBIrwIeWeVUsXnQhPKlfAidB//L0fNh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780368758; c=relaxed/simple;
-	bh=cqbbgRmfcXn9lGk0h6YRMK+KxxzJoEthwgpHpBD1C74=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=oAIyXmmdVUyFkvW7onP2TLPH22HYTApgzodZFRfOhGokrvDB4hpP1WvdAKLSho7Z8sm3FExi3C+fOvyJV4HjAWsh/4d4Hf/5s2REbCmbab3Z35Zo94kaUHicDdWyuACf6JCZYfFBql8J9I9eq7DKmrMEhF8ZKIEFeQP/4uXoDI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UixOhkJw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780372221; c=relaxed/simple;
+	bh=9sr2irVxdUl8CzOcLwp+rJ3CtWHA2j/elSxxJH5GLqk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hgRvSgrzDeqTF0sPAXQI8RsxYt5RG6ZTREYDDs3wTOxKDjigdGazqAazoHd15hwPnp6uScTPCG4uDQ6fu5WX89YQ8+ONUbfB7e+WY8k4Mqs4KUqoWNNDj33cxtfPiMkAn0z3OOWWvVRr2SrX41HhZvR6EWDdsmHgg1Q+hOY73+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=BRMb1T+l; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UixOhkJw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D231F00893;
-	Tue,  2 Jun 2026 02:52:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780368756;
-	bh=HaXK0Vtim3naOoRvGhv7tnlvTmNef3j6AXKreGz1mdc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UixOhkJwtAFx50ob7cYyV+o15y0SDpwLyfqj3DSXSH0kurunFob18EjgUA6U8Zkry
-	 +y4Zgz4El0KqPsQZpAyrWdqpvb5Dg/ygWrsdAwF1LIfEQ2ysSBeiPaKlil85mFCYZK
-	 U/gocf/75aTttbM8Wv/e1zFJoOiL4O/NKnQy7hy3itH0PhplvPvWoCndkYRMJvmj55
-	 fHPw7gaCthk81GQpCVo2gPKDIp8w+tKyvrbL8NuQTqOQg9ZfXjuoiN0x7XtRioDvcA
-	 bM46p4Odr3/RypkXumvBc4cT9AQ3PB88m2Ckmhz4KL8dcCskvpyNqbNmbnTxUtRGL2
-	 HylugX1uUyiDw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 4/4] KVM: selftests: loongarch: Add PV TLB flush
- performance test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tao Cui" <cui.tao@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260602021819.2373404-5-cui.tao@linux.dev>
-References: <20260602021819.2373404-5-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 02:52:36 +0000
-Message-Id: <20260602025236.C4D231F00893@smtp.kernel.org>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="BRMb1T+l"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BDD1140E0140;
+	Tue,  2 Jun 2026 03:50:16 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id rZ_Ke2IbpmQx; Tue,  2 Jun 2026 03:50:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1780372206; bh=HH13uV+Z55mhxzoi6FErPEsztGrj9z0uUROqU3Stz7Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BRMb1T+l+1IEZY4TOjMQ4w9ReoLidSSyCALG5lXh6uQPdtJJQdXO/YpIwNlbAph4G
+	 l/Dh+tFMKmPgVvKipIF2u99KtO2EN4cAREtpsqdKPkOqerozWTYAFwi46Wybtw/fbe
+	 +vmegLk87Rbq8vbD1H6DVOK2BrOKVAvWoMdxIbDT51x5lCY8z551GuWp9FhHp5+car
+	 VfJLFeyoLUyJO6c15FDGEfyv+Rbc53q3q5OSovUcXOREzvcqEjbwoVe0Y7wIViYOYy
+	 dK617hXkXVl9eYOJXWLlMawnI/pzDgQLxVC0VmuhZxwuyaJg1r6HaVHRONeWchNvGu
+	 vuUBlnvH9mmhMammOcSRyPnYSNm/ouhxvpjBC/kkh+mImmroEj5FFwKdESFRHD587M
+	 WZc+lXnb/l4BjyEVAAGNP2cLctZRPQKFYevllLAVNJtLle0Ashf1Pb13YdcdHN1spM
+	 rkF/jhg93VsSnzNK3JT36gNuh51JJh4mRth91IoSXBMOPYx6eLMZftQjrevQIQewk4
+	 r73TYm4D6cnm0I9ePqYDRkUs1jK14EW1+rpqzoVUj1phZqDDalP0khp5WsBql7Ff4D
+	 DlzFTsjW4cZGQdPzsWOWFWXdC25leop27h508hIBBoyX6ymrK7PIpoEE1rrc0t6G1Y
+	 cqjQSDM1OdJJ7XcJilcWD9FQ=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::30])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id ADDBA40E01B5;
+	Tue,  2 Jun 2026 03:49:27 +0000 (UTC)
+Date: Mon, 1 Jun 2026 20:49:16 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juergen Gross <jgross@suse.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v4 02/47] x86/tsc: Add a standalone helpers for getting
+ TSC info from CPUID.0x15
+Message-ID: <20260602034916.GGah5SvARd77mkvxe3@fat_crate.local>
+References: <20260529144435.704127-1-seanjc@google.com>
+ <20260529144435.704127-3-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260529144435.704127-3-seanjc@google.com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Medium] Omission of new selftest file from the KVM selftests Makefile.
-- [Medium] The test bypasses the automated KVM selftests framework and requ=
-ires manual execution inside a guest OS.
-- [Medium] Integer overflow during argument parsing leads to stack buffer o=
-verflow.
---
-
-commit 3eef713b92a18797245bf05fb771c17910daf380
-Author: Tao Cui <cuitao@kylinos.cn>
-
-KVM: selftests: loongarch: Add PV TLB flush performance test
-   =20
-Add a multi-threaded benchmark to measure PV TLB flush performance
-inside LoongArch KVM guests.
-
-> diff --git a/tools/testing/selftests/kvm/loongarch/pv_tlb_flush_test.c b/=
-tools/testing/selftests/kvm/loongarch/pv_tlb_flush_test.c
-> new file mode 100644
-> index 0000000000000..63efaf9ef1cd0
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/loongarch/pv_tlb_flush_test.c
-
-[Severity: Medium]
-Is this test intentionally omitted from the build system Makefile?
-
-According to the KVM selftests subsystem guidelines, any newly created test
-file must be integrated into the test Makefile. Because this file is not
-added to TEST_PROGS, TEST_GEN_PROGS, or TEST_FILES, the automated build
-system completely ignores it and the test won't be compiled or installed
-when make or make install is run.
-
-> @@ -0,0 +1,194 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * LoongArch PV TLB Flush Performance Test
-> + *
-> + * Measure the overhead of remote TLB flushes in a KVM guest by spawning
-> + * flusher threads that repeatedly mmap/munmap (triggering TLB shootdown
-> + * IPIs) alongside idle threads that either sleep or busy-spin.
-> + *
-> + * With PV TLB flush enabled, IPIs to preempted vCPUs are replaced by
-> + * deferred flags in the steal-time shared page, reducing flush latency.
-> + *
-> + * Usage:
-> + *   Compile on LoongArch guest:
-> + *     gcc -O2 -static -pthread -o pv_tlb_flush_test pv_tlb_flush_test.c
-> + *   Run (inside KVM guest):
-> + *     ./pv_tlb_flush_test <flushers> <idle> <iterations> <busy_idle>
-
-[Severity: Medium]
-Does this bypass the automated KVM selftests framework by requiring manual
-execution inside a guest OS?
-
-KVM selftests in tools/testing/selftests/kvm/ are designed as host-side
-executables that programmatically create bare-metal micro-VMs to test KVM
-ioctls.=20
-
-This patch introduces a standalone POSIX user-space program (using pthreads
-and the standard C library) that is explicitly designed to be manually
-compiled and executed from within a full Linux guest OS. This fundamentally
-violates the architectural model of the KVM selftests framework.
-
-[ ... ]
-
-> +int main(int argc, char **argv) {
-> +    int nr_flush =3D 1, nr_idle =3D 3, i, run;
-> +    int ncpus =3D sysconf(_SC_NPROCESSORS_ONLN);
-> +    if (argc > 1) nr_flush =3D atoi(argv[1]);
-> +    if (argc > 2) nr_idle =3D atoi(argv[2]);
-> +    if (argc > 3) nr_iters =3D atoi(argv[3]);
-> +    if (argc > 4) busy_idle =3D atoi(argv[4]);
+On Fri, May 29, 2026 at 07:43:49AM -0700, Sean Christopherson wrote:
+> +static int cpuid_get_tsc_info(struct cpuid_tsc_info *info)
+> +{
+> +	unsigned int ecx_hz, edx;
 > +
-> +    if (nr_flush < 1 || nr_idle < 0 || nr_flush + nr_idle > MAX_THREADS)=
- {
+> +	memset(info, 0, sizeof(*info));
 
-[Severity: Medium]
-Can this bounds check suffer from integer overflow?
+Let's not clear this unnecessarily...
 
-If a user supplies large positive numbers for nr_flush and nr_idle (e.g.,
-2,000,000,000) parsed via atoi(), their sum could overflow into a negative
-32-bit signed integer. This would bypass the MAX_THREADS check.
+> +
+> +	if (boot_cpu_data.cpuid_level < CPUID_LEAF_TSC)
+> +		return -ENOENT;
 
-The subsequent for loops would then use the original large positive values
-to iterate millions of times, writing far out of bounds on the 64-element
-stack allocated arrays (threads, results, completed, args), corrupting
-the stack.
+... just to return here...
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602021819.2373=
-404-1-cui.tao@linux.dev?part=3D4
+> +
+> +	/* CPUID 15H TSC/Crystal ratio, plus optionally Crystal Hz */
+> +	cpuid(CPUID_LEAF_TSC, &info->denominator, &info->numerator, &ecx_hz, &edx);
+> +
+> +	if (!info->denominator || !info->numerator)
+> +		return -ENOENT;
+
+... or here.
+
+We wanna clear it here, when we'll return success.
+
+> +
+> +	/*
+> +	 * Note, some CPUs provide the multiplier information, but not the core
+
+	Note: some CPUs...
+
+> +	 * crystal frequency.  The multiplier information is still useful for
+> +	 * such CPUs, as the crystal frequency can be gleaned from CPUID.0x16.
+> +	 */
+> +	info->crystal_khz = ecx_hz / 1000;
+> +	return 0;
+> +}
+> +
+> +int __init cpuid_get_tsc_freq(struct cpuid_tsc_info *info)
+> +{
+> +	if (cpuid_get_tsc_info(info) || !info->crystal_khz)
+> +		return -ENOENT;
+> +
+> +	info->tsc_khz = info->crystal_khz * info->numerator / info->denominator;
+> +	return 0;
+> +}
+
+Unused here. Add it with its first user pls.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
