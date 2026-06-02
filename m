@@ -1,257 +1,160 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011066.outbound.protection.outlook.com [52.101.65.66])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0698A18DB1F;
-	Tue,  2 Jun 2026 08:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.66
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780390599; cv=fail; b=r2Zx9nDwPXkCGlOphk116eObLQ4eXzrbJ1xM3nFJUyMkRbajHDoS4Vj+JjMr9TFQg0Qd16bjJ0CgJAggJt2TJpEcf/ypAOJnpYFYEHMsRu0tyYC18ynZYOBD5ASsxEr7Q74RSvCDGv1y5MuL+SSYNADQJr0xEVJSoY1WbUvn/Zc=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780390599; c=relaxed/simple;
-	bh=SHTLCrQW7uv6/pSqLU0r16GEcNXj+oG/K9NW7p08ebA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=F9eYG6bhWN0p0NfeHLDm9OOecXfL7qUzDuAdZMAX5x/cRPGPqSoFiWpgKoR4ZC5gvrIqOeKe+VcfY1mT9qGuUOONj8x/gdSRwNLKi3rr1dsIkMN/FdxnjA5Y0/d8cxSqDjryMEcfKkGinOpq77Tr5TE2uiNUcx7M1oRa+xkFjb8=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=fCBP7/P9; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=fCBP7/P9; arc=fail smtp.client-ip=52.101.65.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263B725228C
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 09:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780390841; cv=none; b=qdOjAtlj6kIYPLcEHr7N+Eh4dc8E4sHSbdULOTpiNo3T1zLsFHHUDUhZnjOD2O4KO640ym0SwGPiVTgfDKwQv8T8beqdqMsd4NZxpQwA8dKpE4VjPsaEEE69IRIaBopjDX9uLUL+FMvrOe4eNtKKE4+nk1ILGkWwsZ3qhAttXMo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780390841; c=relaxed/simple;
+	bh=H5RPK4R7kmA8KL8UeiTfI7DQjjweVrVbVuh8QO/+S38=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=agGqs0J3s8MUorfQpvYh1q8JSkHjtCJsq/Ez2PMHxDNo3SFJRiGlYo1HHJgYQpqyAEiLfYJD98uQTmnV3zMsyuEk++fSHblrw4B0HeG/g1d8MBTuFQ0GeZyL02qST03XHQvos1hutRkchgFisAM1nepHseY09KwkOmbm/Z/fxH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c6LwaGR4; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="fCBP7/P9";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="fCBP7/P9"
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=xAY1cjlxKNFUJxDbBYC7Ag6z4XM3KgT9Ulyy/5Q+wN9Zz+vkrI6dzXb6Qkq/UgytYSFnfUSiIx5FjTqwT+Xd+yBf9XZQRaUCvkHVWfoncGrZsXCkhnDl+/Egw3loj6g7+UUO4OepsGuKHl2/dFeUvwstyGwx1l2pi9HxllTXmhb1X++AOyDUvoLwBls9QRIMz+xBz6tJPD9i2SzbH8ugOdT7i6Nmkx2fKZgQM8qFdpdDC21egjlv4Udsn2pCCt6Dc5SFIrprNbW6yARxyVVt/PuDTiUqq95Zx+czD0UQFwSXjZb5hr7ChS0MyqHruzlgUOF8vRws/zYrgXYQTx9J1A==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xVwClNW1C28VWmcLqOPYP3dNcsalNIEvmji0moK6wFQ=;
- b=GiTVWkUfvX88qheorEAiyAjuDE8d5krFD6BaBI8jFuqfk42DJ43l17d8DCFCosvVqzbr2WZuCObmEsV3ym6S6/Iog3Ae0p6kP4s/jOmJ8N8N3egP5pTrVvw6uvpVXfLHQa6/YTUoq0EEiY3/Fc/X8bWKac6CurgeEWErV2ck280G8fFoTweRG03bOe/6b+ZRV/1AZTmJUXRoeuvS04rJd2EaLk/vYiWDi2T6Qr0ezjAR8VDrCpalRvoA/sn3wRAmk2ymOwALCXRKswVFV6xTzgVYIsyuO85KzGag0rja5OLCRihgLX7TpAc86Foy4AqkACdx1fyCzco8vuNfGFy84w==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=google.com smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xVwClNW1C28VWmcLqOPYP3dNcsalNIEvmji0moK6wFQ=;
- b=fCBP7/P9JBiWxn2Ow0lMXElILKVU7P0OKTYpukXcozapDVUjVkBM3sefZ7MobdsfUHqiZ7RoOjrZZ4/YH/gZaRAnwFEzWEPrl8j+1tlar5jlMJOFp2+tGeYYp7Qqr+HspF4WikVizPYpFnLYUnQs05TplnoSSybRQGHXkyRF2cc=
-Received: from DB8PR04CA0014.eurprd04.prod.outlook.com (2603:10a6:10:110::24)
- by AS4PR08MB8021.eurprd08.prod.outlook.com (2603:10a6:20b:584::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Tue, 2 Jun 2026
- 08:56:30 +0000
-Received: from DB1PEPF000509E4.eurprd03.prod.outlook.com
- (2603:10a6:10:110:cafe::40) by DB8PR04CA0014.outlook.office365.com
- (2603:10a6:10:110::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.16 via Frontend Transport; Tue, 2
- Jun 2026 08:56:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB1PEPF000509E4.mail.protection.outlook.com (10.167.242.54) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.7 via
- Frontend Transport; Tue, 2 Jun 2026 08:56:30 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VQR5RYTqRu/iEVCDiLVM3CUoRVDfbz+xfTell7jAUqOb5QAhfhr2Oo6fbY0XunuQ1gZnPMTBK8/Vyt6E3B6ekE8dN57qcn9ExD4rGf+nGXNQTyIHHrSG+O6ESwqXBt3jIJG19Is2Vt9uP6+ZdxR+kQctizrljwKYiu2G3Lj+MOB4Y5gKKHtQVziiYnxaTI9HXtNxQCA5ZZhZm2ewsLfAPBXey7XFqXc2z3xL0ZXz0ZHcLgEj7n/EuJXI3QF4kOTF6oOzhgiPKR9gy/Ute4K4Hrq17nlb3DqWmfu14IFGaTc6kpM0G12YnR0ASrpDIj7xspBgrK+ZLkP4y99tA5utmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xVwClNW1C28VWmcLqOPYP3dNcsalNIEvmji0moK6wFQ=;
- b=DO84yBwzs1VE7D1qC9BMHqa8jVykTJoIc9SB7QfFtYl++7OSHLAdMTQ8gF9jrVqqZ+e0O7VmKx3GUuiqSAqbeBycEtrugjqTX7psiW2+z6t5GTGvaUlHShA7IYDSSYWMi6lXqekeA8NWrsnNEXCA1n9Go5zUkoX1VPAyKtb0XueHVA7xrJB6s6DlfhmVb66PVnNEKeo2RkgN6lbi9qBL81Q2GOJDlDi77WLxbWvuCbDEIZgahIy+qltGIvz4z3mR2eE8kU/hFLZu0HTj2E6aQ8aUU7Xk3feopGWDmCCxUgUVsI7Y24Vg7AoB43a7WkTumWx+Ia7hhmD0MXI+LGlfVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xVwClNW1C28VWmcLqOPYP3dNcsalNIEvmji0moK6wFQ=;
- b=fCBP7/P9JBiWxn2Ow0lMXElILKVU7P0OKTYpukXcozapDVUjVkBM3sefZ7MobdsfUHqiZ7RoOjrZZ4/YH/gZaRAnwFEzWEPrl8j+1tlar5jlMJOFp2+tGeYYp7Qqr+HspF4WikVizPYpFnLYUnQs05TplnoSSybRQGHXkyRF2cc=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from PAWPR08MB10975.eurprd08.prod.outlook.com (2603:10a6:102:46e::7)
- by MRWPR08MB11233.eurprd08.prod.outlook.com (2603:10a6:501:77::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Tue, 2 Jun 2026
- 08:55:23 +0000
-Received: from PAWPR08MB10975.eurprd08.prod.outlook.com
- ([fe80::3c7a:9a64:14bc:ce15]) by PAWPR08MB10975.eurprd08.prod.outlook.com
- ([fe80::3c7a:9a64:14bc:ce15%7]) with mapi id 15.21.0071.015; Tue, 2 Jun 2026
- 08:55:23 +0000
-Message-ID: <d01cf1ec-b85d-4af6-9810-8107c0e2a4ec@arm.com>
-Date: Tue, 2 Jun 2026 09:55:21 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 07/42] KVM: guest_memfd: Only prepare folios for
- private pages
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, ira.weiny@intel.com, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
- <20260522-gmem-inplace-conversion-v7-7-2f0fae496530@google.com>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260522-gmem-inplace-conversion-v7-7-2f0fae496530@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0068.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:153::19) To PAWPR08MB10975.eurprd08.prod.outlook.com
- (2603:10a6:102:46e::7)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c6LwaGR4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780390839;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+cRenZ/ZFT3XyadVf117pp4rudLKkztn8jGLitRCK9o=;
+	b=c6LwaGR4gdXwYoSARMuX98ASX4JT8PP0TypFvXkD6IXYEKxyg9ZUs+HtHp37TnDy91NmJ1
+	Z2U8Rqlv9wJhkgVRb05IxClCa+12ULubro4YxhMWTiYK6XYoAe/VxyICGgkd0NwurzN0St
+	X+t2SAxZX3jPn658mWspE7FZet+1JUs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-1-OYo42HWjPyS8Ya8Ze6VgiA-1; Tue,
+ 02 Jun 2026 05:00:35 -0400
+X-MC-Unique: OYo42HWjPyS8Ya8Ze6VgiA-1
+X-Mimecast-MFC-AGG-ID: OYo42HWjPyS8Ya8Ze6VgiA_1780390834
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F046195609F;
+	Tue,  2 Jun 2026 09:00:34 +0000 (UTC)
+Received: from [10.44.50.110] (unknown [10.44.50.110])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A10391800576;
+	Tue,  2 Jun 2026 09:00:32 +0000 (UTC)
+Message-ID: <8928c73d-4913-4c67-bf64-7e0c3fb8ff8f@redhat.com>
+Date: Tue, 2 Jun 2026 11:00:31 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	PAWPR08MB10975:EE_|MRWPR08MB11233:EE_|DB1PEPF000509E4:EE_|AS4PR08MB8021:EE_
-X-MS-Office365-Filtering-Correlation-Id: ae640d87-9e1b-4be2-184d-08dec084d6b9
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014|18002099003|22082099003|921020|6133799003|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info-Original:
- v6/0WQ1SY7DeVMI4I+EJffATgPHldttYpxXsN6mQw6I912HTijslXGnz3yupVZZAplfwNmFzRpUW8zn5E/SFETfbCXVAxPBjh35C9Ue1Saud3vKLwr4AdvfEWXSuE/8S8PBiSnmea78bX4/LmMhaAVonow7lFHI5ACiwRMbSfinIYVjV2u/lHbFRYKMn6ut6aydSXFSG0dGrK5XwmB8KUwgsybQ3hAjjp5psDEN5vVhNEN30wOzq4zZdZafJzXfMTqjfUtqcxaT6xVBcrGfAF/A4TvWHaTlGHuuxQZSkf3DX9ZQ9YWIDY+8RYFPzxHSZNVdoroPLjyaLMOfgMIpIYiPjVKk6x+YrqIeIp95t8u+6fe1t35U6WbhV+UsVg+p1406H59tbJVnVxKs/lIS72wLCV20+ei0JG3JngdSoR8+FtYQS06riFAV1FiHcF81exs+gcpeceFmq3ihIZGp2Cbqs/OnZN7jfyeaE+Lcbk9pqvkL3cEHMICMeSQT5eQ/7dTlKl8YaeF9SxxiHVwm+b0dC4lpN/y1mUZ81nfPr2UocNRkwj1GzabvhcpARWmTITqbX4iQek2ZRf/rdz6zRygP4U4xvhUMuo47z2LBAd/OQ7nSNfM+GKlxi1K1/WS1lygWWv60e7Qvht7UN+UBarHsg8CRIrlE+AUtFUiwq9+QfVJX0oWM/ugOZeqPKlj/gmuRJAsZUC0dwzC7M+e5usTlrne9T71IDMkFAIG2mPu4=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAWPR08MB10975.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(18002099003)(22082099003)(921020)(6133799003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- GByEX+eaNY4Q3Al2OokcgbQT1ysLTTzFdZ3NthqXj1eiKk6Jz2XpO3WF4LjNSy5zMVHso25AwRXJP0bK8mQo+ejItzJ044LmIV/IsNQ3T7EetDkRzDxYmBck8UVkOzSKcHcvOVgrnt4aYlxBiCRkCoJ/+ikqHgiyn4oafCY52e7D8dZwcO8czC8wNyN/flIzHkK8njaq9qTmi9tXQlJf5Q5FUNx4mTc2wsxuinAq/dWY+4JsibdwlWBmKWtjffDljLDA3rL8Y8RQYjkZlY228hP61QOMOjrLKf9kmJrEBt3sAy8p8I5i+R/3gKPqBFPJfH5qanBi8N2XUIiGXhQv7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR08MB11233
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB1PEPF000509E4.eurprd03.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	46102edf-a740-46f7-cd03-08dec084ae70
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|35042699022|82310400026|14060799003|36860700016|376014|7416014|921020|56012099006|11063799006|6133799003|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	is3iPnQSiv3YPPy/NmptZHalhF97CmufLyfcEjvV6ugXcx8dSMSy7y5jTgrT9I7Oso665E7ZrCljQ3vAP3WoAY/lVodKoWxVtrJeA+nr2sGU0cw240HHKBwIV2fwGxp57CzHqD9Px68DzoZxqpqAi8mBCQpwilYxd/rCPoSr7CUVG2HKTyp3vhk1QO3uw1he6Uq7WUT5J9wn2nRjsN7euvIhLN9LYQGekvw0wXrdvpLN4Ite6rTzdN++yiwuJ9Di+Tp0zP/xlVivul1qaB/H1hAOXTMdQbdUyWR4IAIjehcWfLMAQdi79BcPi2rthVUcfY7BIbX0O461T9pJrhf1pBySZUZPLeKpJADdTClLfg40hId+Wqf48bBdDp5m3B62SfuL+VKdk14qycLCqET1TI+aFCq0s++Hks+TpxEHMzwYXb5apWPrWmU+x3ZHUqrOmEV/rfYQct1qAjnk/PkU0p+eZ6MWqOhFPhfRsFbeVYK0rtqEczxs+PFgMbBVlVv2GRohnS7m5bVAUoDH0zBGeWtyokRrsjSTYwwR2WxitP1m59ac427n0vyqtGKhsJUcUBvRtYHWzEtm8FHNn7i1yfWVufv5DfPv9I9Q2sbpoZDQ2DAqwoA6+3DcI+EIKM55RbCaWPQVyidHegbGPSJW84GCA9cVH1EyqEdiwgqFGy93Dscxs1xNJfJymrMd0czb4sky3NrtUyaB11TodCP+5l1Xc4xJ6vn5GGEx7ptqke3bSB5IbyvRsijhSF7YYP83baZUJQ3qQsM/24AMd2FNwQ==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(35042699022)(82310400026)(14060799003)(36860700016)(376014)(7416014)(921020)(56012099006)(11063799006)(6133799003)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	hFWI8TShHuBCMEQHn/4o86gvet5mogDUwhd7JB83cPDczrB5/RIej2FIpxXLjm7eWR3tjniyDWWRjCIYQP/bgZOTKV4CRJJ1+fxHWTUiExQTGTvFFsIsrymn41MuV+cyIZQF+L8cgBXFxk4wgcHceOty2eIW31mTfh/IxFmB8kGf5ofkM6caIlFU5+RDGj2a4vUvtinCt48ED3wlZ/o8LmNjBxRF1QNQgiLAT7sOmLmdjEnbURCR6R+j+P8szQZWkh5XBw+kDLGqBBb1MZG6JDWQL4l0+uN17bBOWmRP9VvkGpHVdT4CMYUIDIaXItZtQZz0Q4VRhsnJLTtfXymZDL4So+rRgJNKE9ASo/tEWl0PT55MF4XT0gCfQspZpFMAHQn62oVpuXDj/fHr77wVHLP6J9FeGs84K4VKYANQ2twJ6u2nYCw16fMKL5dxyqCy
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 08:56:30.3169
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae640d87-9e1b-4be2-184d-08dec084d6b9
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509E4.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR08MB8021
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/1] target/i386: Add support for KVM APERF/MPERF
+ passthrough
+To: Anderson Nascimento <anderson@allelesecurity.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, zhao1.liu@intel.com, mtosatti@redhat.com
+References: <20260602022048.752453-1-anderson@allelesecurity.com>
+Content-Language: en-US
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20260602022048.752453-1-anderson@allelesecurity.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On 23/05/2026 01:17, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+On 6/2/26 04:20, Anderson Nascimento wrote:
+> Hello,
 > 
-> All-shared guest_memfd used to be only supported for non-CoCo VMs where
-> preparation doesn't apply. INIT_SHARED is about to be supported for
-> non-CoCo VMs in a later patch in this series.
+> I have implemented support for exposing and enabling APERF/MPERF
+> MSR passthrough for x86 QEMU guests when running on KVM.
+> 
+> As of last year, the Linux kernel supports providing a capability
+> to disable APERF/MPERF read intercepts [1]. However, there is
+> currently no native way in QEMU to instruct KVM to activate this
+> capability or expose the feature bit cleanly via CPUID.
+> 
+> My patch introduces the `aperfmperf` feature flag via `FEAT_6_ECX`
+> (CPUID.06H:ECX[bit 0]). It ties into the existing power management
+> framework, so when a user enables power management via
+> `-overcommit cpu-pm=on` and passes `+aperfmperf` to the CPU, QEMU
+> requests KVM to drop the MSR intercepts.
 
-nit: s/non-CoCo/CoCo ?
+Mostly looks good, but please mark it as unmigratable as well (similar 
+to INVTSC which, not coincidentially, you're also using below).
+
+Paolo
 
 > 
-> In addition, KVM_SET_MEMORY_ATTRIBUTES2 is about to be supported in
-> guest_memfd in a later patch in this series.
+> For testing, I passed the feature via Libvirt XML like so:
 > 
-> This means that the kvm fault handler may now call kvm_gmem_get_pfn() on a
-> shared folio for a CoCo VM where preparation applies.
+>      <qemu:arg value="-overcommit"/>
+>      <qemu:arg value="cpu-pm=on"/>
+>      <qemu:arg value="-cpu"/>
+>      <qemu:arg value="+aperfmperf,+invtsc"/>
 > 
-> Add a check to make sure that preparation is only performed for private
-> folios.
+> A FreeBSD 16 guest is successfully able to read the changing
+> values of the MSRs directly without exiting to the hypervisor:
 > 
-> Preparation will be undone on freeing (see kvm_gmem_free_folio()) and on
-> conversion to shared.
+> root@freebsd16development:/home/user # cpucontrol -i 6 /dev/cpuctl0
+> cpuid level 0x6: 0x00000004 0x00000000 0x00000001 0x00000000
+> root@freebsd16development:/home/user # cpucontrol -m 0xe7 /dev/cpuctl0
+> MSR 0xe7: 0x00007fdf 0x22480f90
+> root@freebsd16development:/home/user # cpucontrol -m 0xe7 /dev/cpuctl0
+> MSR 0xe7: 0x00007fdf 0x2b8b48b0
+> root@freebsd16development:/home/user # cpucontrol -m 0xe8 /dev/cpuctl0
+> MSR 0xe8: 0x000050de 0x49270831
+> root@freebsd16development:/home/user # cpucontrol -m 0xe8 /dev/cpuctl0
+> MSR 0xe8: 0x000050de 0x4ad66ae6
+> root@freebsd16development:/home/user #
 > 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-
-nit: Missing Co-Developed-by: ?
-
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->   virt/kvm/guest_memfd.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
+> I am looking for feedback on the approach, specifically if tying
+> this directly into `cpu-pm` makes the most sense to the
+> maintainers.
 > 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 78e5435967341..adf57a3a1f5dd 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -894,6 +894,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->   		     int *max_order)
->   {
->   	pgoff_t index = kvm_gmem_get_index(slot, gfn);
-> +	struct inode *inode;
->   	struct folio *folio;
->   	int r = 0;
->   
-> @@ -901,7 +902,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->   	if (!file)
->   		return -EFAULT;
->   
-> -	filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
-> +	inode = file_inode(file);
-> +	filemap_invalidate_lock_shared(inode->i_mapping);
->   
->   	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
->   	if (IS_ERR(folio)) {
-> @@ -914,7 +916,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->   		folio_mark_uptodate(folio);
->   	}
->   
-> -	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
-> +	if (kvm_gmem_is_private_mem(inode, index))
-
-Don't we need to make sure the entire folio is private ? Not just the 
-page at the index ?
-	if (kvm_gmem_range_is_private(, index, folio_nr_pages(folio)) ?
-
-Suzuki
-
-> +		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
->   
->   	folio_unlock(folio);
->   
-> @@ -924,7 +927,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->   		folio_put(folio);
->   
->   out:
-> -	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
-> +	filemap_invalidate_unlock_shared(inode->i_mapping);
->   	return r;
->   }
->   EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+> Based-on: QEMU v11.0.50 (commit 5611a9268d)
+> 
+> Anderson Nascimento (1):
+>    target/i386: Add support for KVM APERF/MPERF passthrough
+> 
+>   target/i386/cpu.c     | 17 ++++++++++++++++-
+>   target/i386/cpu.h     |  2 ++
+>   target/i386/kvm/kvm.c |  5 ++++-
+>   3 files changed, 22 insertions(+), 2 deletions(-)
 > 
 
