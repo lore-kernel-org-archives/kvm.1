@@ -1,121 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783B925B0A9
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 13:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B510227280A;
+	Tue,  2 Jun 2026 13:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780406532; cv=none; b=FsZh1w51NOxqexWR48bL8/bW02875Fht7wr4Ul/ThTjyHQQEeiUDZLlz7ju7Jkg/28EuPLhFkwYcli1ZNmSbrq/14NgiUKXZZVEL40JENm07fNkkAV1YNA7yown3yonfOnnvQsDHgc5pZuOEgeYMpvYatWBBzUuJPJJyyjvNaoQ=
+	t=1780406748; cv=none; b=N7JZTjOrw9DJfkaZBqTnD1QmhoDaqEsrTGgi0q3iZKwW8N5XEsqmlrlY77nQslin80OOmoIeAlc27ZJs9J7Nv4kCgPF1XaARNI7wMk0sX67GVXTl1EE/Tk4ru2dvyt/S/Ao5U3uqB9Uo6yNtE4YESzKf+IclH4zzXLoftzLe7AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780406532; c=relaxed/simple;
-	bh=or+P+cnNbSJfFu2mc/lNW6IMALG/S+0h8iZ6QcQ5CT8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jnpvC0W6lfH1dHgvQq+lglqfpimsyDAsLvlk6DCIUNMwdJAQAZ3zgc1gsoOrqHKN6HcU8tUoHJgfBQFpeH8OknIFzuc7Gk43c1Np0nPIJRwYmewjceMnrPPymoHKUgBtrh7Wx1jSFzr/AermjB6KOH0cuTeSd5dkN4v+MhvhqOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KgXhNoBX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780406748; c=relaxed/simple;
+	bh=20jx10Qu8sNXhZtuRF1brWTsMt8tcs1xwzSEzJdWcac=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KKkuTXQF8NqyL7V1OkHlfTGvCYO8TNwzFS4TCeIVaQmxmtSp6QfLYjW9VSyhkE7MS7cfXJUsyh+6T/aGwaJ98+4HoIRNEJadKLPMs8WR9sVf4c1uzjKCxxZSivoy5Fvf9w2igpfEeGI73qBoeB1RqjD4CzKqg1gTAOITR9Yu8H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=S4D4mFDr; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KgXhNoBX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6868E1F00893;
-	Tue,  2 Jun 2026 13:22:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780406531;
-	bh=+5Lb9sdzc7rIaDIO9oTyxKAwPmXFkEh+Sg27Fr7lEBU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KgXhNoBXbB2MgCGXCu9s64dwpmM13TrIurcPUPX8nuqaobXidF+5UgNU+B5Mvnr1M
-	 XyFYEMKM6XcfDYmQAlMGE+TL2Z7+MR9mMjL03IgaDyXYUfh9TIQp1xI3cEQqHglV5b
-	 qUEau1iHObFdlH21GcnufTPU9F7dldFi5WW/Idl3mGa980gl20O1OEkYy3fUPFS1sh
-	 0ZCR0v8NGBYaDp3zeTBNHJN1BefBuJdPaa8Y4mDaRzIZ+Pe1pOl15c3evuOHnfyXE1
-	 h9IDEXtWL4i7mPxtrF3yuh+sUwKMF/hHVPhDrOvUTdL4hL4jrd6Zn7DRownFbKyFeP
-	 b4ma8JBMo5jag==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 27/30] iommu/io-pgtable-arm: remove deprecated
- iova_to_phys wrapper
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260602104637.1219810-28-guanghuifeng@linux.alibaba.com>
-References: <20260602104637.1219810-28-guanghuifeng@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 13:22:09 +0000
-Message-Id: <20260602132210.6868E1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="S4D4mFDr"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6524Zqfd1259298;
+	Tue, 2 Jun 2026 13:25:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=w8qDpKjFWjzyE3Z+3P3AumxwDBnmuL
+	FClF4s6OPO1Lg=; b=S4D4mFDrJ+YVkouLu1QaOcwlr97q412sHaGk9z2BZTfz8n
+	xvnoRSGxAhVdlU4NlUXFvgMgr1mw3zyhNRb5hBZuA4qzc/vHHsFBDXCjaDL8PDwF
+	fMlhGZA+kdxjDvsey5KGycUVDIGwknrJKtyyECDo9N4PGyK+HEBu4WtCUtRKMQZA
+	Yz3TVvKxvNVPFnCLcCZ58aQrdsTBsNJrCw6Oi5RyfhhlPq5AdSO2CCtkFLt18HFj
+	o3/6ykLfJ7pxtiVTRedwPLsZ32Mze0EIv0IrOIJ+dDKuVbzSAyMdHp/kqgCwDUsY
+	1BOBoWKQ9qjk67c+eCkrQrGrqW7QzKTymHUJViSQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqd465b0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jun 2026 13:25:21 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 652DO9Yr012168;
+	Tue, 2 Jun 2026 13:25:20 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egbqhba68-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jun 2026 13:25:20 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 652DPEgt49742098
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 2 Jun 2026 13:25:14 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8693D2004E;
+	Tue,  2 Jun 2026 13:25:13 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 599EF20043;
+	Tue,  2 Jun 2026 13:25:13 +0000 (GMT)
+Received: from localhost (unknown [9.111.42.7])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  2 Jun 2026 13:25:13 +0000 (GMT)
+Date: Tue, 2 Jun 2026 15:25:13 +0200
+From: Andreas Grapentin <gra@linux.ibm.com>
+To: Oliver Upton <oupton@kernel.org>
+Cc: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org,
+        kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Friedrich Welter <fritz@linux.ibm.com>,
+        Gautam Gala <ggala@linux.ibm.com>,
+        Hariharan Mari <hari55@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
+        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
+        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+        Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v1 15/26] s390: Add functions to query arm guest time
+Message-ID: <ah7Ul7YwJOFuSMaD@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
+References: <20260529155601.2927240-1-seiden@linux.ibm.com>
+ <20260529155601.2927240-16-seiden@linux.ibm.com>
+ <ah4G847iT_pPRuQm@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ah4G847iT_pPRuQm@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDEyNiBTYWx0ZWRfX86Wu1ZkmOeKQ
+ hYG8JWBI1P8fvdZHvYX/pHQiKCz9rM3lqGdXGG9paghq44fCz7yUQhjVqfYolMHIDwf+g98FKQC
+ Aj3zl8tHOPDyDut2meXADMv9XEP8o0cHJV9sHqdlPN8V3e4+kniE0zovCBryZoE7+gfU+AuHBAZ
+ JUSthv+czWchKhL9Jt88DWUW/BIVzCzQg40h0yVLJqGsIYVFvXAQDo3YvD38EgbQabOHiTWV/J6
+ yVgiBQm0devrxebNiP+9lTedkSFR0o6kpVKp9GEzKtjkvV3fXu07ZOOdE3KHZERjeOAEAehGtr9
+ 8kqSFIzLnfopiio7+QlyWXlCKBciORGj0yJyFKyV7AIJW77/zRLy33V2JCyhPCl3TqFT0YDNiCi
+ xOMafpg3k3DxCiOnI47Ya2Gt/hTCEFH4IXSNZPjwubArahqtRcGIQrlGQzNFYz+bBNKXTSM9b3X
+ MDWYNtr6RC1RzihzigA==
+X-Proofpoint-GUID: RQpxdw-KhYBz1s8-_4mzf7xnJNeZoSB_
+X-Proofpoint-ORIG-GUID: RQpxdw-KhYBz1s8-_4mzf7xnJNeZoSB_
+X-Authority-Analysis: v=2.4 cv=DZknbPtW c=1 sm=1 tr=0 ts=6a1ed9c1 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=iZEGHWcCgkw3lVQR3mYA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-02_02,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ phishscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606020126
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] In `arm_smmu_iova_to_phys_hard`, a hardware translation failur=
-e returns `0` instead of `PHYS_ADDR_MAX`. This breaks callers of `iommu_iov=
-a_to_phys_length` which expect `PHYS_ADDR_MAX` to detect failures, causing =
-them to treat physical address `0` as a valid translation result.
---
+On Jun 01 26, Oliver Upton wrote:
+> > Add functions to convert between ARM guest time (LSB0) and s390 host
+> > time (MSB0) using new ptff function codes.
+> > 
+> > Co-developed-by: Nico Boehr <nrb@linux.ibm.com>
+> > Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+> > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+> > ---
+> >  arch/s390/include/asm/timex.h | 49 +++++++++++++++++++++++++++++++++++
+> >  arch/s390/kernel/time.c       |  1 +
+> >  arch/s390/kvm/arm64/arm.c     |  9 ++++++-
+> >  3 files changed, 58 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
+> > index 49447b40f038..9ec22a28bbda 100644
+> > --- a/arch/s390/include/asm/timex.h
+> > +++ b/arch/s390/include/asm/timex.h
+> > @@ -99,6 +99,8 @@ extern unsigned char ptff_function_mask[16];
+> >  #define PTFF_QSI	0x02	/* query steering information */
+> >  #define PTFF_QPT	0x03	/* query physical clock */
+> >  #define PTFF_QUI	0x04	/* query UTC information */
+> > +#define PTFF_QAGTO	0x10	/* query arm guest time offset */
+> > +#define PTFF_QAGPT	0x11	/* query arm guest physical time offset */
+> 
+> Are these analogous to CNTVOFF_EL2 and CNTPOFF_EL2?
 
-commit 17d24f53e1c566320f87a73674b736d336e36024
-Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+They are somewhat related -- we don't have the EL2 counter offset
+registers, but we still need to virtualize the guest counters, so
+instead we have to maintain the guest counter offset separately.
 
-iommu/io-pgtable-arm: remove deprecated iova_to_phys wrapper
+However, to determine the correct guest counter offset, we are using
+these new PTFF function codes to translate between the s390 and arm64
+architected counter domains.
 
-Remove the iova_to_phys wrapper function and .iova_to_phys assignment
-from ARM LPAE io-pgtable, as all callers now use iova_to_phys_length.
-
-> diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-ar=
-m.c
-> index 2b94e0563e214..ceea8da8d1fd7 100644
-> --- a/drivers/iommu/io-pgtable-arm.c
-> +++ b/drivers/iommu/io-pgtable-arm.c
-[ ... ]
-> @@ -999,7 +987,6 @@ arm_lpae_alloc_pgtable(struct io_pgtable_cfg *cfg)
->  	data->iop.ops =3D (struct io_pgtable_ops) {
->  		.map_pages	=3D arm_lpae_map_pages,
->  		.unmap_pages	=3D arm_lpae_unmap_pages,
-> -		.iova_to_phys	=3D arm_lpae_iova_to_phys,
->  		.iova_to_phys_length	=3D arm_lpae_iova_to_phys_length,
-
-[Severity: Critical]
-With the API migration to iova_to_phys_length now complete, does this intro=
-duce
-a regression in error handling for drivers like arm-smmu?
-
-The old iova_to_phys interface expected 0 on failure, but iova_to_phys_leng=
-th
-expects PHYS_ADDR_MAX. Looking at drivers/iommu/arm/arm-smmu/arm-smmu.c,
-arm_smmu_iova_to_phys_length() can call arm_smmu_iova_to_phys_hard() which
-still returns 0 instead of PHYS_ADDR_MAX on runtime PM get failure:
-
-	ret =3D arm_smmu_rpm_get(smmu);
-	if (ret < 0)
-		return 0;
-
-It also returns 0 on a hardware translation fault:
-
-	if (phys & ARM_SMMU_CB_PAR_F) {
-		dev_err(dev, "translation fault!\n");
-		dev_err(dev, "PAR =3D 0x%llx\n", phys);
-		goto out;
-	}
-
-	addr =3D (phys & GENMASK_ULL(39, 12)) | (iova & 0xfff);
-out:
-	arm_smmu_rpm_put(smmu);
-
-	return addr;
-
-Could callers like vfio_iommu_type1 now treat 0 as a valid physical address,
-bypassing the WARN_ON(phys =3D=3D PHYS_ADDR_MAX) check?
-
-If iommu_unmap() unmaps the region, would VFIO use this incorrect physical
-address 0 to unpin pages?
-
-This appears to lead to an arbitrary page reference count decrement on PFN =
-0,
-and could leak the reference count of the actual unmapped physical memory.
-
->  		.read_and_clear_dirty =3D arm_lpae_read_and_clear_dirty,
->  		.pgtable_walk	=3D arm_lpae_pgtable_walk,
->  	};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602104637.1219=
-810-1-guanghuifeng@linux.alibaba.com?part=3D27
+Best,
+Andreas
