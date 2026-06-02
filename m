@@ -1,132 +1,188 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6DC2F8E94
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 18:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54F432A3E5
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 18:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780423781; cv=none; b=lrc+YEi77z5mEze48+Ooi6qM/rhCVDG6auWKtVcjjGmOogf/fdfb4SBk2p455pfcYYQc/tOu7wdGDW94VAVmY4hLchV4gacCBBX/EO6yUbdD54VIf2FIJmhTxGxTDGtjz/eB/r5tSidhuVYV2ZYXZr5exozG1QkuNvMze4z7hVQ=
+	t=1780423924; cv=none; b=lgikrzGHwTJkqxJopgX4/ydWY1FkyuKQ00+xgM1N/JD5BfQBgQGky/URWLQpXVdZQdnZeA+ijKgiMlzzMIFnGfs5Jp29vz7QhMv1yE1QY+V+HlJH57wKO7r/0/LKuXJfpzE45AYmbs2ABK5XmPjIL7cWaA7BePZMhmxeAIe2yUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780423781; c=relaxed/simple;
-	bh=hHLTYTzTE0H7fWNyKOUUi09aA0sG1evmMzkjn3rxuGs=;
+	s=arc-20240116; t=1780423924; c=relaxed/simple;
+	bh=7miV3U1UkDCQw7la4UOXsdnmRvJ6cn4oXdPz70MtnKA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cIdiy1an+jYc5hlCppEHeGCXy7JGf6orwTHAzS6no46i8f+qeRjmnZ6mH41/ctGb5ik1BT+p/EuT/3Jrsvf1A3ARgBauAr6hXAutDIvB/uNFP9+61aEIYvBCYbLgQBZMdQOM063c1RwU+oJE1osalPuVY6uuXl6F6P1wJbgxt50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CnzWxyhV; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=pM4duHXdMN1FzNIQbqHogtKG14kyenIK9arSggi2T6XqZaxuAgZFW/Jz1boKxmMiFjI+jME/l8r6jfoRb8huagdpHK77CWMUF4W5WxrA8lBC7KukjAMZSTZBdbKFNV6WfrR0SitTqon5si2WqMfs3u2y9OVzEsrJtkVquRep80A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T2jzuEHS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CnzWxyhV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B61E1F00898;
-	Tue,  2 Jun 2026 18:09:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T2jzuEHS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A84A1F00893;
+	Tue,  2 Jun 2026 18:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780423780;
-	bh=duhkFP2DclUq+4IOGM5KQBeZRzR03RgWZK5rKfCt3+8=;
+	s=k20260515; t=1780423922;
+	bh=+oaV/X0empPmiWcMhG5fc+d1D6opoMo8pfQSCtfVNBQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CnzWxyhVe6NBAkYD5Lso1fgEZGt/n1mVo/GCA80POBJG1p+qBqGS9HMx8lOObRe5S
-	 uJBjKh0jiAYqCtAAD/l9hIOSq2Q12steAeLl8fK6cFsHrUK226KO6BHkBw280ERw21
-	 HhKTe2xoXlrGFBch9N7iyfAq9kZPH17QzS/G5W0wqaXWLdUXCzsAq5LFpDM9nR3Ngf
-	 30vWQ3KAIuop81+8MvnicoubbIV8w5elXS89782Vu5lSKntLOYgQIJTEFZDzR1yr+5
-	 w28K39JqKgrNEcENzISpb7Pgbpd8ZFx2QCzCg2+4zBYW2O9gtQVS8TBaENXz+IKVBO
-	 r1iQqKq5ZiTRA==
+	b=T2jzuEHSSiHAm/xwdkpvcBBbwYxAtLLdU/lIDeVhxu7hWw6i7tV2DcAoA/O52aqBp
+	 mfnksdTV27sHiw0QmYHBPJHrxALcackSCgCWNLYb76e4PyHYaspENoZs4ZRyBMi3xY
+	 EgORqjJ71a1z3WeW/2VF5slxyPhcrEsB157ALam1CRZMAypIhQPRcqPoLZni8rSMPk
+	 Mug9SU1BPwliEmnanGVOVtELvHjDhj/EdLvGq8ktiV6xLijd9mO/3l5s6XfBFplw69
+	 XIGAlbYY/9PHKTgBNDMKC26XzCmc9zepU7a4XNrChiJkAUHlvUc3gXhFQfCGy3o/00
+	 DT2drVDQ05xzg==
 From: sashiko-bot@kernel.org
-Subject: Re: [GIT PULL v1 03/10] KVM: s390: Avoid potentially sleeping while
- atomic when zapping pages
+Subject: Re: [GIT PULL v1 08/10] KVM: s390: Prevent memslots outside the
+ ASCE range
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260602174819.255785-4-imbrenda@linux.ibm.com>
-References: <20260602174819.255785-4-imbrenda@linux.ibm.com>
+In-Reply-To: <20260602174819.255785-9-imbrenda@linux.ibm.com>
+References: <20260602174819.255785-9-imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 18:09:39 +0000
-Message-Id: <20260602180940.6B61E1F00898@smtp.kernel.org>
+Date: Tue, 02 Jun 2026 18:12:01 +0000
+Message-Id: <20260602181202.6A84A1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Critical] The lockless page table walk in `try_get_locked_pte` is vulner=
-able to a Time-of-Check to Time-of-Use (TOCTOU) race when traversing page t=
-able directories, leading to wild pointer dereferences and kernel panics.
+
+New issues:
+- [Medium] The KVM_S390_VM_MEM_LIMIT_SIZE setter fails to store the request=
+ed limit, causing incorrect limit enforcement for new memslots and breaking=
+ the GET ioctl.
+
+Pre-existing issues:
+- [Critical] Modifying the ASCE limit via KVM_S390_VM_MEM_LIMIT_SIZE after =
+a VM is converted to protected mode (KVM_PV_ENABLE) causes a Use-After-Free=
+ in the Ultravisor.
+- [High] Decreasing the VM ASCE limit via KVM_S390_VM_MEM_LIMIT_SIZE perman=
+ently leaks intermediate page tables from deleted memslots.
 --
 
-commit 4a478ef198892a577c1dcca6c09a2986ca006e37
+commit c42cdbb0094295e8d486830cbb2f739b157e39b0
 Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-KVM: s390: Avoid potentially sleeping while atomic when zapping pages
+KVM: s390: Prevent memslots outside the ASCE range
 
-This commit factors out try_get_locked_pte(), which behaves similarly to
-get_locked_pte(), but does not attempt to allocate missing tables and
-performs a spin_trylock() instead of blocking.
+This patch adds validation to KVM_S390_VM_MEM_LIMIT_SIZE to prevent
+shrinking the VM maximum memory address below existing memslots. It also
+adds a check during memslot creation to prevent new memslots from being
+created beyond the ASCE limit.
 
-> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
-> index f8789ffcc05ca..396207163ca6c 100644
-> --- a/arch/s390/mm/gmap_helpers.c
-> +++ b/arch/s390/mm/gmap_helpers.c
-[ ... ]
-> @@ -34,6 +34,70 @@ static void ptep_zap_softleaf_entry(struct mm_struct *=
-mm, softleaf_t entry)
->  	swap_put_entries_direct(entry, 1);
->  }
-> =20
-> +/**
-> + * try_get_locked_pte() - like get_locked_pte(), but atomic and with try=
-lock
-[ ... ]
-> +pte_t *try_get_locked_pte(struct mm_struct *mm, unsigned long vmaddr, sp=
-inlock_t **ptl)
-> +{
-> +	pmd_t *pmdp, pmd, pmdval;
-> +	pud_t *pudp, pud;
-> +	p4d_t *p4dp, p4d;
-> +	pgd_t *pgdp, pgd;
-> +	pte_t *ptep;
-> +
-> +	pgdp =3D pgd_offset(mm, vmaddr);
-> +	pgd =3D pgdp_get(pgdp);
-> +	if (pgd_none(pgd) || !pgd_present(pgd))
-> +		return NULL;
-> +	p4dp =3D p4d_offset(pgdp, vmaddr);
-> +	p4d =3D p4dp_get(p4dp);
-> +	if (p4d_none(p4d) || !p4d_present(p4d))
-> +		return NULL;
-> +	pudp =3D pud_offset(p4dp, vmaddr);
-> +	pud =3D pudp_get(pudp);
-> +	if (pud_none(pud) || pud_leaf(pud) || !pud_present(pud))
-> +		return NULL;
-> +	pmdp =3D pmd_offset(pudp, vmaddr);
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index e09960c2e6ed1..ffb20a64d328f 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+> @@ -999,7 +999,10 @@ static int kvm_s390_set_mem_control(struct kvm *kvm,=
+ struct kvm_device_attr *att
+>  		break;
+>  	}
+>  	case KVM_S390_VM_MEM_LIMIT_SIZE: {
 
 [Severity: Critical]
-Does this code introduce a Time-of-Check to Time-of-Use (TOCTOU) race?
+This is a pre-existing issue, but does shrinking the ASCE limit after a VM
+is converted to protected mode cause a Use-After-Free in the Ultravisor?
 
-When executing try_get_locked_pte() under mmap_read_lock, concurrent page
-table zapping operations holding the VMA write lock (e.g., MADV_DONTNEED) c=
-an
-clear page table entries.
+If userspace calls KVM_PV_ENABLE before creating vCPUs, the VM's ASCE is
+registered with the Ultravisor. If KVM_S390_VM_MEM_LIMIT_SIZE is then
+called, it doesn't check kvm_s390_pv_is_protected() and proceeds to
+dat_set_asce_limit() which frees the old top-level ASCE page table.
 
-The standard offset macros (p4d_offset, pud_offset, pmd_offset) re-read the
-entry from memory. For instance, on s390, pmd_offset is defined as
-pmd_offset_lockless(pudp, *pudp, address), which dereferences pudp again.
+Since the Ultravisor is unaware, does it continue using the freed page
+table, potentially leading to host memory corruption when the kernel
+reuses the freed page?
 
-If a concurrent zap clears the PUD between pudp_get and pmd_offset, the
-re-read *pudp will be empty. The offset macro will extract the origin addre=
-ss
-from the empty entry (evaluating to 0), and return an address based on
-physical address 0.
+> +		struct kvm_memslots *slots;
+> +		struct kvm_memory_slot *ms;
+>  		unsigned long new_limit;
+> +		int bkt;
+> =20
+>  		if (kvm_is_ucontrol(kvm))
+>  			return -EINVAL;
+[ ... ]
+> @@ -1014,12 +1020,27 @@ static int kvm_s390_set_mem_control(struct kvm *k=
+vm, struct kvm_device_attr *att
+>  		if (!new_limit)
+>  			return -EINVAL;
+> =20
+> -		ret =3D -EBUSY;
+> -		if (!kvm->created_vcpus)
+> -			ret =3D gmap_set_limit(kvm->arch.gmap, gpa_to_gfn(new_limit));
+> +		if (kvm->created_vcpus)
+> +			return -EBUSY;
+> +
+> +		ret =3D 0;
+> +		scoped_guard(mutex, &kvm->slots_lock) {
+> +			slots =3D kvm_memslots(kvm);
+> +			if (slots && !kvm_memslots_empty(slots)) {
+> +				kvm_for_each_memslot(ms, bkt, slots) {
+> +					if (gpa_to_gfn(new_limit) < ms->base_gfn + ms->npages) {
+> +						ret =3D -EBUSY;
+> +						break;
+> +					}
+> +				}
+> +			}
+> +			if (!ret)
+> +				ret =3D gmap_set_limit(kvm->arch.gmap, gpa_to_gfn(new_limit));
 
-The subsequent pmdp_get_lockless(pmdp) reads garbage from the s390 lowcore.
-If this garbage resembles a valid PMD, it can lead to an out-of-bounds PFN
-extraction and a kernel panic during spin_trylock().
+[Severity: High]
+This is a pre-existing issue, but does shrinking the ASCE limit permanently
+leak intermediate page tables from deleted memslots?
 
-Should this lockless walk use the _lockless offset variants
-(e.g., pmd_offset_lockless(pudp, pud, vmaddr)) to pass the already-validated
-local values instead?
+When a memslot is deleted, dat_delete_slot() invalidates leaf entries but
+doesn't reap empty intermediate page tables. When gmap_set_limit() calls
+dat_set_asce_limit(), it assumes higher-address mappings are empty:
 
-> +	pmd =3D pmdp_get_lockless(pmdp);
-> +	if (pmd_none(pmd) || pmd_leaf(pmd) || !pmd_present(pmd))
-> +		return NULL;
+arch/s390/kvm/dat.c:dat_set_asce_limit() {
+    ...
+    while (asce->dt > newtype) {
+        table =3D dereference_asce(*asce);
+        crste =3D table->crstes[0];
+    ...
+}
+
+It only traverses table->crstes[0] and ignores any populated child page
+tables in table->crstes[1..2047]. Are these child tables leaked when the
+root table is freed, potentially allowing a malicious userspace to cause
+an OOM by repeatedly creating and deleting memslots at high addresses
+before shrinking the limit?
+
+
+[Severity: Medium]
+Also, does this code successfully record the new limit for future checks?
+
+The exact user limit is passed to the gmap here, but kvm->arch.mem_limit
+does not appear to be updated to match new_limit. Since the ASCE rounds
+up to the next architectural boundary, could this cause future queries to
+return the old hardware maximum limit instead of the user's configured
+limit?
+
+> +		}
+> +		if (ret)
+> +			break;
+>  		VM_EVENT(kvm, 3, "SET: max guest address: %lu", new_limit);
+[ ... ]
+> @@ -5672,6 +5693,8 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+>  			return -EINVAL;
+>  		if ((new->base_gfn + new->npages) * PAGE_SIZE > kvm->arch.mem_limit)
+>  			return -EINVAL;
+> +		if (!asce_contains_gfn(kvm->arch.gmap->asce, new->base_gfn + new->npag=
+es - 1))
+> +			return -EINVAL;
+
+[Severity: Medium]
+Does this correctly enforce the exact user-requested limit for new memslots?
+
+Because kvm->arch.mem_limit is not updated in kvm_s390_set_mem_control(),
+this check relies on asce_contains_gfn(), which evaluates against the
+rounded ASCE limit. Could this allow a user to create new memslots that
+exceed their originally requested exact byte limit?
+
+>  	}
+> =20
+>  	if (!kvm->arch.migration_mode)
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602174819.2557=
-85-1-imbrenda@linux.ibm.com?part=3D3
+85-1-imbrenda@linux.ibm.com?part=3D8
