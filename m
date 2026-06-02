@@ -1,60 +1,80 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003A5310651;
-	Tue,  2 Jun 2026 19:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7C331F9BB
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 19:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780428997; cv=none; b=YGYxIzd49n7R0iB90EkM+fzyNQYq2RW9fUe4BBjrwWs8TmpNhIwa7YFU2egbrnoBpQo7GNGcP4uNuUlC9Fj3uVCIfSOm0iHCR4S3Ake9+PbPmKS+DNqEQYnLOLQ2RwgdWYkURSZzbsVbdVzpze0xD8Dh17v6DkDJNEPrq5OU1QY=
+	t=1780430184; cv=none; b=I0AWRTQERypwCziXCOOaz7K+PYxfm/7QdH7y+D+b97VuiivSx7HFeFx6pVPXKL/lKLhN+i70sU6HLM9s6pBOmmsSDVuwXI4K07EaiSiNneBCCruhW1HbDY+C1+a9NspI0FNGcjBPrdVzvueEvtD9B/Jyj3ExUPxa66Qrr4G61Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780428997; c=relaxed/simple;
-	bh=Etb9LqmxcfSQA7XtpVFzX4KGMspDJ5lBTdsCMUsiqbc=;
+	s=arc-20240116; t=1780430184; c=relaxed/simple;
+	bh=SHRlHnFBb6RT2uduseTlAIQY7IM8h3BgQ8QNxXI74p8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DYalPPii+B673tAXtsSzjdMwtxswamDwnE539p9TRjG0l3wxdIeVoHgTFXwJcVJhYtzxb2qyThPw1GDO+o86m1yk77GZIhTq36Xp86CkI9IOiuIEWl4PD1o9Tg7EuBVfrpbEirh0t/vSQfkFzX9OYY3HJjjJDWttC8v3TdV99sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TyxJS5cT; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=fNmPVZtK4OaaVaT64ffgfJ9gvv+Pac3gS6/LxFxuDdKevtyOijaWoE/XPS5hwQG+ygpHLoiB5LGoy0bQB/U0ztp2Kz2SdNmHeQr45tc8Pwj0Vs+eVhlokcozsMprHPGKE55+91AMgZs23UJtspV+E6SIhzzudG/KHGKyw4htlQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=E3YbTB6N; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=130IaMDj; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=E3YbTB6N; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=130IaMDj; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TyxJS5cT"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 652HRGne1773281;
-	Tue, 2 Jun 2026 19:36:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=HhuSRH
-	qDSxIbcSvpRdQesxfGdtEyVztezjhKlfFXjXg=; b=TyxJS5cTPZmA2psMjZnjoy
-	g/hwbN6RPKkhpG/Fbu+HqiaVFhCqrhMpaWTS3PaJt1yKkiEwHZeqTHCuUcYEjeae
-	Xob9pGaxyJFF/9ENNmdny7zOlezMVsIYjLf9ho9ejA8WBQ0WAxxjtAweGyxnckeW
-	NLUsCl7GVOlvuqh1EtejaZXc0T7AOGLnFrRkxSHECfD+tpEM4B8Bp6/RtD6WQ6PT
-	78Y0ddq2rSZUa2WyS3jml3TIEiMWDe9m0inlUV5+bCug5Z/A4PREvh8GSmUI4Qwh
-	rFH68Qfygq5/2+D6L/J+FJL5yS3kP0rM9fmIURSFetTWEJWxrcvff4M9fZ1O3JXA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqd47ra4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 19:36:32 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 652JO7qI008242;
-	Tue, 2 Jun 2026 19:36:32 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4egcwycjnf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 19:36:32 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 652JaUPo30933674
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 2 Jun 2026 19:36:31 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D63355805C;
-	Tue,  2 Jun 2026 19:36:30 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A312658054;
-	Tue,  2 Jun 2026 19:36:29 +0000 (GMT)
-Received: from [9.12.78.81] (unknown [9.12.78.81])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  2 Jun 2026 19:36:29 +0000 (GMT)
-Message-ID: <bda40f9c-7187-4382-b421-334b04c05e1e@linux.ibm.com>
-Date: Tue, 2 Jun 2026 15:36:28 -0400
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="E3YbTB6N";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="130IaMDj";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="E3YbTB6N";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="130IaMDj"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6887466E66;
+	Tue,  2 Jun 2026 19:56:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780430181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/RMlsky+J/IILv/e9JcIsus1sOb/ywUIZw+tr9gxaYM=;
+	b=E3YbTB6N1ljcCvsMC8yPnT8G5ja35oTCyGYpehgvtdMsnAgqmpUlTIsp9j2D52Vx7q2uKY
+	tSdn1oDbIcaV1+sl2kSnw2HdLHhP4E13FhgW0sFtzXIHzQZtaI7BhgKq1N74sJHDMRjl00
+	1Bd8jywyKeK4+FlXNqzrKHnK64GmIqo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780430181;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/RMlsky+J/IILv/e9JcIsus1sOb/ywUIZw+tr9gxaYM=;
+	b=130IaMDj4MuEJ9j/pdKrcq4O/c7SmO+UrsdY0K3p8gipapRd6lH+RuOBBZQ9HwoGGroNce
+	bnIFbyIoQXJshZDA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780430181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/RMlsky+J/IILv/e9JcIsus1sOb/ywUIZw+tr9gxaYM=;
+	b=E3YbTB6N1ljcCvsMC8yPnT8G5ja35oTCyGYpehgvtdMsnAgqmpUlTIsp9j2D52Vx7q2uKY
+	tSdn1oDbIcaV1+sl2kSnw2HdLHhP4E13FhgW0sFtzXIHzQZtaI7BhgKq1N74sJHDMRjl00
+	1Bd8jywyKeK4+FlXNqzrKHnK64GmIqo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780430181;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/RMlsky+J/IILv/e9JcIsus1sOb/ywUIZw+tr9gxaYM=;
+	b=130IaMDj4MuEJ9j/pdKrcq4O/c7SmO+UrsdY0K3p8gipapRd6lH+RuOBBZQ9HwoGGroNce
+	bnIFbyIoQXJshZDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C513A779A7;
+	Tue,  2 Jun 2026 19:56:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ViRmLWQ1H2qyKwAAD6G6ig
+	(envelope-from <clopez@suse.de>); Tue, 02 Jun 2026 19:56:20 +0000
+Message-ID: <b43be54c-329c-4b75-bd53-29ac63c1dd37@suse.de>
+Date: Tue, 2 Jun 2026 21:56:20 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,103 +82,161 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] vfio-pci/zdev: Improved zPCI Function Measurement
- Support
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, schnelle@linux.ibm.com,
-        mjrosato@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
-        gbayer@linux.ibm.com, alex@shazbot.org
-References: <20260519224204.19154-1-oelghoul@linux.ibm.com>
+Subject: Re: [PATCH] KVM: x86: Fix array_index_nospec() protection in
+ kvm_vcpu_ioctl_x86_set_mce()
+To: Sean Christopherson <seanjc@google.com>, Tony Luck <tony.luck@intel.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Jue Wang <juew@google.com>,
+ "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
+ <linux-kernel@vger.kernel.org>
+References: <20260516163412.601908-1-clopez@suse.de>
+ <agsmQaqJ5ShSaV07@google.com> <agstY455kTIumJ5P@google.com>
+From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
 Content-Language: en-US
-From: Omar Elghoul <oelghoul@linux.ibm.com>
-In-Reply-To: <20260519224204.19154-1-oelghoul@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDE5MCBTYWx0ZWRfX2+C8tS0fflhT
- tOZWf2ohMdGEHnndeR16tkv06v0cr0YzDUcoKXmKwT35WY43UHw9doxrIZP/iJnWahoHi18KGo4
- /regxmOKbgXW+ShZqJLokEaq5m059Pc+FtzsIaiJXzZK3tO0L2E3W15a/z7d2JXYonSvVJsKv5R
- 9soSITecL7RmBc2pxctXvBYSESbziw2BwfCPHBnm1WZesPrYrCk63ziuLYhA6FOawXZEiz+C+fc
- j0Rlu6yFIC5O7hoynko0BhHQ1xzgcGZ5TpT+o7TYClHLM9yXAV3rRUuC6kkIw+hEq6Ufm4j8rd5
- NwhPEimOrBr2+K7U4jfFjZb/EvhJqZP+2Po1UVqfGf/zl4b68CB6LHNSGLbdtr7wMikN/IguVtv
- 7HlWtH5qHHanI02l+s3kafwSsn2i51+5/ZB7EeZgO44l5H97qpJCeHLHGLXnyi9RpzAHfGbQZ+G
- FXYckSlaaa2R5UWuVCQ==
-X-Proofpoint-GUID: jdP1_4RBYd-8uY4DNu9q659hls5k2pSE
-X-Proofpoint-ORIG-GUID: jdP1_4RBYd-8uY4DNu9q659hls5k2pSE
-X-Authority-Analysis: v=2.4 cv=DZknbPtW c=1 sm=1 tr=0 ts=6a1f30c0 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=J6ZS_3muYHgI6I3YJNIA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-02_03,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
- phishscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606020190
+In-Reply-To: <agstY455kTIumJ5P@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.990];
+	MIME_GOOD(-0.10)[text/plain];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
 
-Hi,
+On 5/18/26 5:16 PM, Sean Christopherson wrote:
+> +Tony (questions regarding IA32_MCG_CTL and IA32_MCi_CTL behavior)
+> 
+> On Mon, May 18, 2026, Sean Christopherson wrote:
+>> On Sat, May 16, 2026, Carlos López wrote:
+>>> Commit aebc3ca19063 ("KVM: x86: Enable CMCI capability by default and
+>>> handle injected UCNA errors") introduced kvm_vcpu_x86_set_ucna(), which
+>>> accesses @vcpu->arch.mci_ctl2_banks[] using @mce->bank as the index. The
+>>> @mce struct is user-controlled, provided via the KVM_X86_SET_MCE ioctl.
+>>>
+>>> The caller of this function, kvm_vcpu_ioctl_x86_set_mce(), bounds-checks
+>>> @mce->bank and applies array_index_nospec() to advance the @banks
+>>> pointer, but @mce->bank itself is passed through unclamped. On a
+>>> speculative path that bypasses the bounds check, the raw @mce->bank
+>>> value can index mci_ctl2_banks[] out-of-bounds.
+>>>
+>>> In practice this is a very weak gadget, and would at most allow leaking
+>>> a single bit in a 64-bit integer, but prevent potential future issues by
+>>> clamping @mce->bank in place with array_index_nospec(), before passing
+>>> the struct to kvm_vcpu_x86_set_ucna().
+>>>
+>>> Fixes: aebc3ca19063 ("KVM: x86: Enable CMCI capability by default and handle injected UCNA errors")
+>>> Signed-off-by: Carlos López <clopez@suse.de>
+>>> ---
+>>>  arch/x86/kvm/x86.c | 3 ++-
+>>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+>>> index 209eae67ab18..2d2415031267 100644
+>>> --- a/arch/x86/kvm/x86.c
+>>> +++ b/arch/x86/kvm/x86.c
+>>> @@ -5497,7 +5497,8 @@ static int kvm_vcpu_ioctl_x86_set_mce(struct kvm_vcpu *vcpu,
+>>>  	if (mce->bank >= bank_num || !(mce->status & MCI_STATUS_VAL))
+>>>  		return -EINVAL;
+>>>  
+>>> -	banks += array_index_nospec(4 * mce->bank, 4 * bank_num);
+>>> +	mce->bank = array_index_nospec(mce->bank, bank_num);
+>>> +	banks += 4 * mce->bank;
+>>>  
+>>>  	if (is_ucna(mce))
+>>>  		return kvm_vcpu_x86_set_ucna(vcpu, mce, banks);
+>>
+>> As a follow-up, I think we should fold kvm_vcpu_x86_set_ucna() into
+>> kvm_vcpu_ioctl_x86_set_mce().  Splitting it to a separately helper makes it
+>> unnecessarily difficult to see the usage of mce->bank.
+>>
+>> Hmm, and isn't the handling of UNCA errors misplaced?  Per the SDM, the only
+>> allowed values for IA32_MCG_CTL are -1ull and 0.
+>>
+>>   IA32_MCG_CTL controls the reporting of machine-check exceptions. If present,
+>>   writing 1s to this register enables machine-check features and writing all 0s
+>>   disables machine-check features. All other values are undefined and/or
+>>   implementation specific.
+>>
+>> I don't see anything the SDM that exempts UNCA from that logic.  Ditto for the
+>> similar IA32_MCi_CTL check.  So on top of your fix, over two patches, I think we
+>> should end up with this?
+> 
+> ...
+> 
+>> Unless I'm wrong, I'll send a v2 with your fix plus two more patches.
+> 
+> Heh, I was partially wrong.  I think.  The IA32_MCi_CTL MSRs control whether or
+> not a #MC is reported, but don't change error _logging_.
+> 
+>   Setting an EEj flag enables signaling #MC of the associated error and clearing
+>   it disables signaling of the error. Error logging happens regardless of the
+>   setting of these bits. The processor drops writes to bits that are not implemented.
+> 
+> Ah, I was definitely wrong.  Section 17.5 CORRECTED MACHINE CHECK ERROR INTERRUPT
+> explicitly says so:
+> 
+>   CMCI is not affected by the CR4.MCE bit, and it is not affected by the
+>   IA32_MCi_CTL MSRs.
 
-Gently pinging the series in case it has fallen out of your radars.
+Right, so the existing UCNA behavior is correct, since it always logs
+the error and delivery is gated on MCi_CTL2.
 
-Thanks.
+> Actually, that means the existing code is wrong, and has been since commit
+> 890ca9aefa78 ("KVM: Add MCE support").
+>
+> Hrm, and I'm not convinced KVM's handling of IA32_MCG_CTL is correct either.  The
+> SDM says it controls reporting of _exceptions_, it doesn't say anything about
+> disabling loggin of errors.
+> 
+>   IA32_MCG_CTL controls the reporting of machine-check exceptions.
+> 
+> 
+> Tony,
+> 
+> Does clearing IA32_MCG_CTL affect error logging *and* #MC generation, or just #MC
+> generation?  And if it impacts logging, does it also apply to UCNA errors?
 
-On 5/19/26 6:42 PM, Omar Elghoul wrote:
-> Hi,
->
-> This patch series improves support for function measurement for zPCI
-> passthrough devices on s390x.
->
-> Changelog
-> =========
-> v1 -> v2:
-> * Patch 1/3:
->    - Address a possible race condition in zpci_reenable_device() caused by
->      calling zpci_fmb_reenable_device() without holding fmb_lock
->    - Assert that fmb_lock is held within zpci_fmb_reenable_device()
->
-> * Patch 3/3:
->    - Address a possible race condition in pci_perf_seq_write() caused by
->      consuming zdev->kzdev without holding kzdev_lock
->
-> Motivation
-> ==========
-> The firmware on s390x machines allows for tracking a variety of statistics
-> relating to zPCI devices in a function measurement block (FMB). However,
-> the kernel currently lacks a structured mechanism of sharing this
-> information with userspace, beyond /sys/kernel/debug/pci/ID/statistics.
-> This can lead to shortcomings when running a guest on KVM with PCI
-> passthrough devices, as QEMU is unable to provide an accurate FMB snapshot
-> to the guest.
->
-> Proposal
-> ========
-> We propose adding a new VFIO device feature to zPCI passthrough devices,
-> allowing userspace programs to read the latest FMB snapshot as it is
-> written by the firmware. We ensure that function measurement enablement is
-> preserved across device resets on the host. Furthermore, we guard against
-> host tampering with the FMB via sysfs when the zPCI device is in
-> passthrough to protect the VM's state.
->
-> I'd appreciate some feedback on these patches.
->
-> Thanks in advance.
->
-> Omar Elghoul (3):
->    s390/pci: Preserve FMB state in device re-enablement
->    vfio-pci/zdev: Add VFIO FMB device feature
->    s390/pci: Fence FMB enable/disable via sysfs for passthrough devices
->
->   arch/s390/include/asm/pci.h      |  1 +
->   arch/s390/pci/pci.c              | 75 ++++++++++++++++++++++++-------
->   arch/s390/pci/pci_debug.c        | 11 ++++-
->   drivers/vfio/pci/vfio_pci_core.c |  2 +
->   drivers/vfio/pci/vfio_pci_priv.h |  9 ++++
->   drivers/vfio/pci/vfio_pci_zdev.c | 77 ++++++++++++++++++++++++++++++++
->   include/uapi/linux/vfio.h        | 43 ++++++++++++++++++
->   7 files changed, 202 insertions(+), 16 deletions(-)
->
+The AMD manual does not clarify much either (9.3.1.3 Machine-Check
+Global-Control Register):
+
+  MCG_CTL is used by software to enable or disable the logging and
+  reporting of machine-check errors from the implemented error-reporting
+  banks. Depending on the implementation, detected errors from some
+  error sources associated with a reporting bank that is disabled are
+  still logged.
+
+But my reading here is that MCG_CTL *does* control logging in the
+general case, with some implementation-specific exceptions.
+
+So if I get the picture correctly:
+
+* UCNA error logging in KVM is always happens (good), and delivery is
+  done via CMCI based on MCi_CTL2 (good). Nothing to fix here, unless
+  MCG_CTL does affect logging (although it would be a bit strange for
+  this to be true while CR4.MCE and MCi_CTL are explicitly mentioned to
+  *not* have this behavior for CMCI).
+* Non-UCNA error logging is broken, at least on the count that logging
+  is gated based on MCi_CTL, when it should not. The spec is ambiguous
+  on whether MCG_CTL controls logging for these. Current behavior in KVM
+  is to *do* the gating based on MCG_CTL; the spec suggests that this
+  may be correct at least on AMD (but it is not symmetric with MCi_CTL
+  behavior).
