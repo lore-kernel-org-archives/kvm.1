@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C0233B6E3
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 02:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBEA31ED8B
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 02:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780367879; cv=none; b=kV7vuNPlvBnr3/XbAoBGF6jKvWW5C+DhsE27lcbSmWFlWkOxgIov7BYrvBG7V1yYAfAgI6erHJVJh+UPWwOQ6F+yOQjjDTQAVYnh4GV4iPFV0nn7bX+1/JRxFrraTuVszQOivTIT1x1XLmQKC5N0add2efOkKkVoo+sA1Z4M+/4=
+	t=1780368365; cv=none; b=mXpIHEaAdxYnKrqgvl0IbQce4OhJNU9ZBDpK21oFABMxZ0kxub6baxnMtU1db1pN2glY6ep/gHbYNLLyoYrZOLcz4QY3/Ba+L3X9aN8Ijn79uKdi5EHlm/QyPKoLUqast0rEyYQJv5PDmJp7KLhBXDQ0EPyDfbX7VPl6lE81z/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780367879; c=relaxed/simple;
-	bh=VzYfQQk3Ajz1Y2HYxSAsojOldOqYaM8ZPPjo28zlYsg=;
+	s=arc-20240116; t=1780368365; c=relaxed/simple;
+	bh=U+UvGn1DBDyhvwMIIjPk8lIjjUVoVrn9E9mZIq7w55Y=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ReP8sFUKW8T+nDkJsV3IGiJ6DKuVtMg1/AoOh0p1uXx2FlgOQIU2Iuystq2O923mF30nuaU4zI+NHPBkkspCTe3KVRvhQg91fnY0XF6WYXydFbjWZJ2fY76wSR/zRN7e562A+wrrh+vzf+h/FPztEhp4xavJexD53A28ZatPBD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOHJW3mn; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=p3ectQSLCjHUGNpw1XRrq6UjYMb/yMfXHuo+z0Opp4A4thSSNQN3IUIXSuNklM7YZyDcb6TNjkc7IsQcP7H6xYxESFAth4r0PG25UcRP531tFh0gp+n2cQZ4yGXZnoxho5o+RD+WM2m3nFYtpzI0OUdsgq7eVrsYpfxJGtYyHak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8e5+vry; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOHJW3mn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8520A1F00893;
-	Tue,  2 Jun 2026 02:37:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8e5+vry"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F661F00893;
+	Tue,  2 Jun 2026 02:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780367877;
-	bh=xwBjStryVMTs+s1TbJRrvKUDdvsCYWcPA/GYJ6qBLts=;
+	s=k20260515; t=1780368364;
+	bh=BDzpnHWGHkRRfED2E7/SkrgBDlGKefHH7KyzVyjf7SM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HOHJW3mn1lLZlDPrgC3xTiRT1EJExroA6ahOcgN9RVCTtL7qks7z1Nt6L3ju5FlN4
-	 fMYlWuw4Xx5ARNFDEmAlF5i6prkWVTWRI8/YTV5C3cLqUSKk9qcZCLiR+FnCa/uxxH
-	 anBg5EE7TGmaaGHtPiMpACHC+3b/uuR17ZyXgdWxJWau7M1TflqZJi9Q0THmhCCQxp
-	 6mZaJVCP618B2dm8PB8OOoNKhy6nF+/l6h/L9fiYE0jw4730GaNiciDyAV23eyVADM
-	 ghZOc3oUHp0EraMGOVPYDF09UjEJh9jA82UTka3poDxB5D1dGIvtwFWFbiMTC3O3dS
-	 iuoJYSJnZjaAg==
+	b=A8e5+vryY79u6vXWIgFKgDCk/W11XOOKM624lMqlDq7Q2FiKjrvlgDJ0RcNk6UNpV
+	 Bd5xbBDDztH58LGijTyTBWXfQbYiCKHxjHGJVgZmMzEaPMRs4mc8M/h9ucKf51kFy5
+	 FTCrKDlhx9ZCvO/shVyX5QOL76tVkEEyeufMpYu1N8RwDuy0xAsh1WUTr79lVn1YW8
+	 DJTPA5FtocsaQiiMJkuWR9iZlxVt9Yy4QBsFqhl9LbAgD2HulTbQBHnLl927IEHZYt
+	 1eGnALD+Q1uc7ZWfmT6Dj8waDJmsKf8YOd4c9YQ7G+17/CBhO5Hfs4noqg673GHUA9
+	 tm1u1LOKB05QA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/4] LoongArch: KVM: Add PV TLB flush support via
- steal-time shared memory
+Subject: Re: [PATCH v3 3/4] LoongArch: KVM: Implement guest-side PV TLB
+ flush
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tao Cui" <cui.tao@linux.dev>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260602021819.2373404-3-cui.tao@linux.dev>
-References: <20260602021819.2373404-3-cui.tao@linux.dev>
+In-Reply-To: <20260602021819.2373404-4-cui.tao@linux.dev>
+References: <20260602021819.2373404-4-cui.tao@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 02:37:57 +0000
-Message-Id: <20260602023757.8520A1F00893@smtp.kernel.org>
+Date: Tue, 02 Jun 2026 02:46:03 +0000
+Message-Id: <20260602024603.E9F661F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,58 +46,76 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] The KVM_FEATURE_PV_TLB_FLUSH feature is forcefully enabled by =
-default via `pv_auto_features`, bypassing capability negotiation and breaki=
-ng backward live migration.
+- [High] kvm_flush_tlb_mask() accesses a per-CPU cpumask without disabling =
+preemption, creating a severe data race.
 --
 
-commit 36054232bc9801e8c8c49df0b88a0802cdab7a98
+commit d7f218c526b255a23f8247a1f67b9091d6410ff4
 Author: Tao Cui <cuitao@kylinos.cn>
 
-LoongArch: KVM: Add PV TLB flush support via steal-time shared memory
+LoongArch: KVM: Implement guest-side PV TLB flush
 
-This commit implements a paravirtualized TLB flush for LoongArch KVM guests
-using the steal-time shared memory page. It uses the preempted byte to allow
-guests to request a remote TLB flush without sending an IPI when the target
-vCPU is preempted.
+Add the guest-side implementation of PV TLB flush for LoongArch KVM
+guests, complementing the host-side support added in the previous commit.
 
-> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-> index 8af874e0b36b2..4be70e4f1279f 100644
-> --- a/arch/loongarch/kvm/vm.c
-> +++ b/arch/loongarch/kvm/vm.c
+> diff --git a/arch/loongarch/kernel/paravirt.c b/arch/loongarch/kernel/par=
+avirt.c
+> index 10821cce554c0..34e3ae2d25016 100644
+> --- a/arch/loongarch/kernel/paravirt.c
+> +++ b/arch/loongarch/kernel/paravirt.c
 [ ... ]
-> @@ -54,8 +54,10 @@ static void kvm_vm_init_features(struct kvm *kvm)
->  	if (kvm_pvtime_supported()) {
->  		kvm->arch.pv_features |=3D BIT(KVM_FEATURE_PREEMPT);
->  		kvm->arch.pv_features |=3D BIT(KVM_FEATURE_STEAL_TIME);
-> +		kvm->arch.pv_features |=3D BIT(KVM_FEATURE_PV_TLB_FLUSH);
->  		kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_FEAT_PV_PREEMPT);
->  		kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_FEAT_PV_STEALTIME);
-> +		kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_FEAT_PV_TLB_FLUSH);
->  	}
->  	kvm->arch.pv_auto_features =3D kvm->arch.pv_features;
+> @@ -208,6 +210,58 @@ int __init pv_ipi_init(void)
+>  	return 0;
+>  }
+> =20
+> +#ifdef CONFIG_SMP
+> +void kvm_flush_tlb_mask(const struct cpumask *cpumask,
+> +			       smp_call_func_t func, void *info)
+> +{
+> +	int cpu;
+> +	struct kvm_steal_time *src;
+> +	struct cpumask *flushmask =3D this_cpu_cpumask_var_ptr(__pv_cpu_mask);
+> +
+> +	cpumask_copy(flushmask, cpumask);
+
+[Severity: High]
+Does this per-CPU mask access require preemption to be disabled?
+
+Looking at callers like flush_tlb_all(), flush_tlb_kernel_range(), and
+flush_tlb_one(), it appears they call kvm_flush_tlb_mask() directly without
+first disabling preemption. The fallback on_each_cpu() macro disables
+preemption internally, but this new paravirt path does not.
+
+If the task is preempted and migrated to another CPU after fetching the
+local CPU's flushmask pointer, could it concurrently modify the original
+CPU's mask alongside another task scheduled on that CPU?
+
+Also, would this trigger a warning with CONFIG_DEBUG_PREEMPT since
+this_cpu_cpumask_var_ptr() uses this_cpu_ptr() under the hood?
+
+[ ... ]
+> diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
+> index 50922610758ba..bb3451b057ed2 100644
+> --- a/arch/loongarch/kernel/smp.c
+> +++ b/arch/loongarch/kernel/smp.c
+> @@ -727,7 +727,10 @@ static void flush_tlb_all_ipi(void *info)
+> =20
+>  void flush_tlb_all(void)
+>  {
+> -	on_each_cpu(flush_tlb_all_ipi, NULL, 1);
+> +	if (pv_tlb_flush_enabled())
+> +		kvm_flush_tlb_mask(cpu_online_mask, flush_tlb_all_ipi, NULL);
+> +	else
+> +		on_each_cpu(flush_tlb_all_ipi, NULL, 1);
 >  }
 
-[Severity: Critical]
-Does unconditionally adding KVM_FEATURE_PV_TLB_FLUSH to pv_features here
-force the feature on by default, breaking capability negotiation?
+[Severity: High]
+Are we missing a preempt_disable() around this call to kvm_flush_tlb_mask()?
 
-Because kvm_vm_init_features() assigns pv_features to pv_auto_features, the
-new PV TLB flush feature is included in the auto-enabled set. Looking at
-kvm_loongarch_cpucfg_set_attr() in arch/loongarch/kvm/vcpu.c, it forces
-auto-enabled features on:
-
-    val =3D (val | kvm->arch.pv_auto_features) & valid;
-
-Will this cause the source kernel to override userspace if the vmm explicit=
-ly
-requests the feature to be disabled to maintain live-migration compatibility
-with older hosts?
-
-If the guest discovers and uses the feature, but migrates to an older host
-that either ignores the requests or rejects the unknown feature flag, could
-this result in silent memory corruption or migration failure?
+Because kvm_flush_tlb_mask() accesses a per-CPU cpumask immediately upon
+entry, calling it with preemption enabled could cause data races if the
+task migrates to another CPU.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602021819.2373=
-404-1-cui.tao@linux.dev?part=3D2
+404-1-cui.tao@linux.dev?part=3D3
