@@ -1,124 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BD9175A68
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 14:40:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780411255; cv=none; b=EMLoOvjAMfB780fCZQ6qD7VxUtnOdHjGEeTLVaLR4KEHJe5r0Jbf2rrJ2P8aR6sQk/WacXZKf2n/lPCEqXaqn0pk0YJ5NWeaiCcz0+8dwvt1uWw9rlSWVYiKPF0iyWvpj8GigF0XNMoFE6MLV8p5y+3R29T3F9SHw8dIKqttvLU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780411255; c=relaxed/simple;
-	bh=eGPnWXp+GL8hUpKa2K1bhY+g8iszTicAX7oPuceWU0k=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jQtmNZFKr/AqbOgsQiaty2VgXGf0hs56skqSxPWFECca8T8ezAIsqaXFjgmfstvOB06ps08mKdAtyEcB+BqoL2FuFAssjuPm4nLsA0JMAWB5iVvJS1YLyN3HJrl0O+ztf4+TnZAo8dzdH/NnPxiupTsiekpaCCkQSyP2KUbAYfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3d3x801; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3d3x801"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C759A1F00893;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2CB3346A6;
 	Tue,  2 Jun 2026 14:40:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780411254;
-	bh=XONIAE1uAUXduMjv42WVeXjbvoFtwdDkWk8C9nOTdWQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=f3d3x801DxzZfGZ5ZzxbP4VVzEjtQy7VyCWBzLNdNgomlx6QcO93ZELOVYyNXfpoz
-	 92JBB/PKj6XumGZ/RBFK3zKRkx1VzIUY7fn2AsfxI9cNujBq+34jBdQ09Rt6npIR7T
-	 k5U+n+PC4a2O6v1aZ82hyg1vpH9A4orcMURTUjYhtsrm5U51hNiwcMCURy4jmNiA7m
-	 g1eVcRDgJvtM0sTUoghEVHU1BC2a+nD9B4A7Hd84jhIu5o71amQ7d8Zr+EocOCfbsd
-	 ce31ttirne8oDcCTdlVCtZVe5xTo12c+Df5KV8hwWWZhP8AcjFzORfdaOjMigcByrc
-	 /ACjfCqWSIR6g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 08/10] KVM: s390: Prevent memslots outside the ASCE
- range
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260602142356.169458-9-imbrenda@linux.ibm.com>
-References: <20260602142356.169458-9-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 14:40:53 +0000
-Message-Id: <20260602144053.C759A1F00893@smtp.kernel.org>
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780411256; cv=none; b=egpleFp28miWXkFk0b5UaFeIonICgNw8R24eEtqXguYSB4hcfS6E2bgHofa8jmWEKQmUvYFvpX5kWCX/Ao3wEXElNfTC2Qiv+fhfcCV38WyJjunhKfyP7VqQWZ9gAWNYgQiy5hjB+jnlq0uaqRv30Q4eYF+ZQ0Ic6483amDFarc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780411256; c=relaxed/simple;
+	bh=QBjYnhjsLOsS5U01z8H+mbXxPskW9sjz3If4JlLHWe8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TlOAUkbUxIf6RCj7pF32x0RZn9aaKpA/Mmxtia/iC8m4sgDgNYbEK7/737y6YIgaKdQGH+6oDgV3lfK4qjJGvlA3qqXpqc5XFAfOoD+IsYMElBVDP4ExvHpybnI9f0B3y5atTajC+6BOpPYrSistw+juWLAHAK0mzA/cEyEQzuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=cmoWmSq0; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="cmoWmSq0"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=alDxMPbT4q0uVJf73YCIDVm+R1WiOElmSFdLYZ0JDHg=;
+	b=cmoWmSq0UoO606EiSbX9HsuERBBG/sBQRtdKFNhm/G0YuZtinFJ96EjzNIQBQBn9QBdRumMR7
+	TyNrZEfJOPnJuOk+RtxVx3K36Y9Muo1ehf+LmmouCRol/siPXpKWdLv5BZD/QZTsaSkbBeFwNkp
+	6dd8p5ynVpPvMEwE1YHhOlk=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gVCx43WT4zpStl;
+	Tue,  2 Jun 2026 22:33:12 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8883540569;
+	Tue,  2 Jun 2026 22:40:49 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 2 Jun 2026 22:40:48 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: <alex@shazbot.org>, <jgg@ziepe.ca>
+CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>, <wei.huang2@amd.com>,
+	<zhipingz@meta.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: [PATCH v15 03/10] PCI/TPH: Fix tph_enabled concurrent update race by bitfield packing
+Date: Tue, 2 Jun 2026 22:40:16 +0800
+Message-ID: <20260602144023.25254-4-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260602144023.25254-1-fengchengwen@huawei.com>
+References: <20260602144023.25254-1-fengchengwen@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Asymmetric and Order-Dependent Limit Validation
---
+Split tph_enabled from shared pci_dev bitfield into spare bit of tph_cap's
+u16: tph_cap is immutable post-enumeration (15 bits for offset), remaining
+1 bit stores tph_enabled. Removes cross-bitfield concurrent write hazards
+highlighted by Sashiko after VFIO TPH exposure. No functional changes.
 
-commit 7a66168c52b7a30030450cbbdcd5db0e9145bbfe
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+---
+ include/linux/pci.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-KVM: s390: Prevent memslots outside the ASCE range
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 0f4361aca794..2a78935c0834 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -471,7 +471,6 @@ struct pci_dev {
+ 	unsigned int	ats_enabled:1;		/* Address Translation Svc */
+ 	unsigned int	pasid_enabled:1;	/* Process Address Space ID */
+ 	unsigned int	pri_enabled:1;		/* Page Request Interface */
+-	unsigned int	tph_enabled:1;		/* TLP Processing Hints */
+ 	unsigned int	fm_enabled:1;		/* Flit Mode (segment captured) */
+ 	unsigned int	is_managed:1;		/* Managed via devres */
+ 	unsigned int	is_msi_managed:1;	/* MSI release via devres installed */
+@@ -590,7 +589,8 @@ struct pci_dev {
+ 	u8 reset_methods[PCI_NUM_RESET_METHODS]; /* In priority order */
+ 
+ #ifdef CONFIG_PCIE_TPH
+-	u16		tph_cap;	/* TPH capability offset */
++	u16		tph_cap:15;	/* TPH capability offset */
++	u16		tph_enabled:1;	/* Whether TPH is enabled */
+ 	u8		tph_mode;	/* TPH mode */
+ 	u8		tph_req_type;	/* TPH requester type */
+ #endif
+-- 
+2.17.1
 
-This patch aims to prevent userspace from creating memslots above the
-maximum allowed VM address, and prevents reducing the maximum address
-below existing memslots.
-
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index e09960c2e6ed1..ffb20a64d328f 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -999,7 +999,10 @@ static int kvm_s390_set_mem_control(struct kvm *kvm,=
- struct kvm_device_attr *att
->  		break;
->  	}
->  	case KVM_S390_VM_MEM_LIMIT_SIZE: {
-> +		struct kvm_memslots *slots;
-> +		struct kvm_memory_slot *ms;
->  		unsigned long new_limit;
-> +		int bkt;
-
-[ ... ]
-
-> +		ret =3D 0;
-> +		scoped_guard(mutex, &kvm->slots_lock) {
-> +			slots =3D kvm_memslots(kvm);
-> +			if (slots && !kvm_memslots_empty(slots)) {
-> +				kvm_for_each_memslot(ms, bkt, slots) {
-> +					if (gpa_to_gfn(new_limit) < ms->base_gfn + ms->npages) {
-> +						ret =3D -EBUSY;
-> +						break;
-> +					}
-> +				}
-> +			}
-> +			if (!ret)
-> +				ret =3D gmap_set_limit(kvm->arch.gmap, gpa_to_gfn(new_limit));
-> +		}
-
-[ ... ]
-
-> @@ -5672,6 +5693,8 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
->  			return -EINVAL;
->  		if ((new->base_gfn + new->npages) * PAGE_SIZE > kvm->arch.mem_limit)
->  			return -EINVAL;
-> +		if (!asce_contains_gfn(kvm->arch.gmap->asce, new->base_gfn + new->npag=
-es - 1))
-> +			return -EINVAL;
->  	}
-
-[Severity: Medium]
-Is this creating an asymmetric and order-dependent limit validation?
-
-When KVM_S390_VM_MEM_LIMIT_SIZE is called, the exact new_limit is strictly
-checked against existing memslots (e.g., rejecting a 4GB limit if a 3TB
-memslot exists). However, new_limit is never saved back to
-kvm->arch.mem_limit.
-
-When a new memslot is added later, it is only validated against the old
-kvm->arch.mem_limit and the rounded-up ASCE capacity here in
-asce_contains_gfn().
-
-For example, setting a 4GB limit configures a TABLE_TYPE_REGION3 ASCE with
-a 4TB capacity. Because the exact 4GB limit was not saved, userspace can
-successfully add a 3TB memslot later since 3TB < 4TB.
-
-Should kvm->arch.mem_limit be updated during KVM_S390_VM_MEM_LIMIT_SIZE to
-enforce the exact limit symmetrically?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602142356.1694=
-58-1-imbrenda@linux.ibm.com?part=3D8
