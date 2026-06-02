@@ -1,162 +1,106 @@
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA503F44F7;
-	Tue,  2 Jun 2026 10:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C5C1C701F
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 11:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780397245; cv=none; b=ND2gEoRBe3wB0j+5IWzgUH0aVuc3hdfC4USOoNiLTzUe1ucPKsiwoR/MlHLpoSwb1qF+Oensk71n0nufhUEcc3+RDLSLLlLVHHQMQ1soJJ1sWTE4FNha1fPEDCWjv321HJwabyJr5MzliJ4kC/9ZmMqUevInWLqr4FO+G4Oeaj4=
+	t=1780398126; cv=none; b=aQV3dWql1kiFl7lnNfo397wjvmBPo+cEUcma8SP8xCNV4ISTHE2FM6hQ4jtiOGMd6cHqU6dYVkKLrmT5G1OvJYZNAdb6iwbVLD0eQPqI1lexbZ08CuAlM5qA0lZ/eeQ46eIHke1ucWONKoiFhC2oVeH9HZcnA5Ln6lFeqr/1PBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780397245; c=relaxed/simple;
-	bh=PagqwuURg6QVN0GrgNjlzYiRes/u+xXO+F6V0jHmYzs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IF+N/q5MBv4kafyaIPflk7AkKXgJNriWwItLnOkyZ/F/uHWoNDTEZsw6JuUaPxuB6FFyWG2Luy/WHLuE+CFqpG4pREnyTAr0S9BeU/AQ2M6g0txc9q9m4NQgHtZewdOsqUJA944kpX3MWUB1v8ZNV0qyTCvw1z4TVcsKTO9LiBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ihGLi8gI; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1780398126; c=relaxed/simple;
+	bh=kimg1COE9QpQzqYrjuagTca4qdGQWnkfbFpi7O9BDbo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=kv8ol3Ioit4ocEmi8lMslqvE2Ym+wvZqNubnv89fZD9/fKwBse4NZOkZUnCUR8FSbDDvXCixL94gkH1jxzZkeDFUyrhrOg0nmSQCjWb/ij1Pn/d22eRfPdI9D0XrqU5MCR3y0R8Z9KN91ylKvPoWcFQngtL7os4cI70K4j0QZHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZIFPB8P+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ihGLi8gI"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1780397242; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=C15FwabaXicb3m5vf4ClTn8uJ1VB2DMgTV11Lw9ohJo=;
-	b=ihGLi8gIiW1yBmCCnFiA546N2d5LHtMsAHblI3+5TirKzUHd3xcj/2ykZtkIMUvQe7qxD71xjiSh21s9+In9XPMJ1UxNkfsAhwMy2IilEMjzuSjPeFCQodoMFa/vF00lR2HIbIinPGc8k1xfD6UpPDWJZKNc7SbYxOMO/lVpmOw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X44E9AA_1780397237;
-Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X44E9AA_1780397237 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 02 Jun 2026 18:47:18 +0800
-From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-To: adrian.larumbe@collabora.com,
-	airlied@gmail.com,
-	alex@shazbot.org,
-	baolu.lu@linux.intel.com,
-	boris.brezillon@collabora.com,
-	dri-devel@lists.freedesktop.org,
-	dwmw2@infradead.org,
-	iommu@lists.linux.dev,
-	jgg@ziepe.ca,
-	joro@8bytes.org,
-	kevin.tian@intel.com,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	liviu.dudau@arm.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	oliver.yang@linux.alibaba.com,
-	robh@kernel.org,
-	robin.murphy@arm.com,
-	shiyu.zsq@linux.alibaba.com,
-	steven.price@arm.com,
-	suravee.suthikulpanit@amd.com,
-	tzimmermann@suse.de,
-	wei.guo.simon@linux.alibaba.com,
-	will@kernel.org,
-	xlpang@linux.alibaba.com
-Cc: alikernel-developer@linux.alibaba.com
-Subject: [PATCH v2 30/30] iommu: remove iova_to_phys from domain_ops and io_pgtable_ops
-Date: Tue,  2 Jun 2026 18:46:37 +0800
-Message-ID: <20260602104637.1219810-31-guanghuifeng@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260602104637.1219810-1-guanghuifeng@linux.alibaba.com>
-References: <20260531093637.3893199-1-guanghuifeng@linux.alibaba.com>
- <20260602104637.1219810-1-guanghuifeng@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZIFPB8P+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F0A1F00898;
+	Tue,  2 Jun 2026 11:02:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780398124;
+	bh=7FV60xh3khyUTP7luIt1WCAsY398QUC2OJ5BED/w/0c=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ZIFPB8P+TA/T3SRNWnJWxW6f/Hmzb44OkzpH2DiJzp81gxrZwk8iuMVQmFpuCOo+j
+	 05JgebKvhslgm14XN0n4piBFUDl6ivIWHsl/lNlNw1SSMAne0B15B0qtydhBOvVb4f
+	 UBGqvm+EKL1kTAEP46SGyudls2ehPf9hP/NvTsVqdp8cs3hw99AEMe64W59xSji0Ok
+	 wrDnW+Rs2+hjqYVnQ114a1hOMjABSe/+ZhIsChU/0l8IZB/k6xPnKg7eUaWQnV+aSS
+	 BrMeurLRKeIpIAJiyNLMlfFVaQuNdz+rRT7nZCTpBTWIzsg4JWu3lkOCyJp9OaYN1t
+	 XElFFh5nvYPjA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 03/30] iommu/io-pgtable-arm-v7s: introduce
+ iova_to_phys_length in io_pgtable_ops
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260602104637.1219810-4-guanghuifeng@linux.alibaba.com>
+References: <20260602104637.1219810-4-guanghuifeng@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 02 Jun 2026 11:02:04 +0000
+Message-Id: <20260602110204.C2F0A1F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Now that all drivers implement iova_to_phys_length and all callers
-have migrated, remove the deprecated interfaces:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Using PHYS_ADDR_MAX as an error sentinel breaks valid translations=
+ to high physical memory on 32-bit systems.
+--
 
-- Remove .iova_to_phys from struct iommu_domain_ops
-- Remove .iova_to_phys from struct io_pgtable_ops
-- Remove fallback path in iommu_iova_to_phys_length()
-- iommu_iova_to_phys() remains as a thin wrapper calling _length with NULL
+commit 8d5316c44c1d3b102a4d8d7b0ce51537aca692ab
+Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
----
- drivers/iommu/iommu.c      | 12 ++----------
- include/linux/io-pgtable.h |  3 ---
- include/linux/iommu.h      |  3 ---
- 3 files changed, 2 insertions(+), 16 deletions(-)
+iommu/io-pgtable-arm-v7s: introduce iova_to_phys_length in io_pgtable_ops
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 1b1aaa53dd16..84893d4c7c60 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -2554,7 +2554,7 @@ EXPORT_SYMBOL_GPL(iommu_detach_group);
-  * Like iommu_iova_to_phys() but additionally returns the page size of the
-  * PTE mapping at @iova through @mapped_length.
-  *
-- * Return: The physical address for the given IOVA, or PHYS_ADDR_MAX if no translation.
-+ * Return: The physical address for the given IOVA, or 0 if no translation.
-  */
- phys_addr_t iommu_iova_to_phys_length(struct iommu_domain *domain,
- 				       dma_addr_t iova,
-@@ -2566,16 +2566,8 @@ phys_addr_t iommu_iova_to_phys_length(struct iommu_domain *domain,
- 	if (domain->type == IOMMU_DOMAIN_IDENTITY)
- 		return iova;
- 
--	if (!domain->ops->iova_to_phys_length) {
--		/* Fallback to legacy iova_to_phys without length info */
--		if (domain->ops->iova_to_phys) {
--			phys_addr_t phys = domain->ops->iova_to_phys(domain, iova);
--			if (phys && mapped_length)
--				*mapped_length = PAGE_SIZE;
--			return phys ? phys : PHYS_ADDR_MAX;
--		}
-+	if (!domain->ops->iova_to_phys_length)
- 		return PHYS_ADDR_MAX;
--	}
- 
- 	return domain->ops->iova_to_phys_length(domain, iova, mapped_length);
- }
-diff --git a/include/linux/io-pgtable.h b/include/linux/io-pgtable.h
-index 42bcdd309b88..c595f5b51e61 100644
---- a/include/linux/io-pgtable.h
-+++ b/include/linux/io-pgtable.h
-@@ -202,7 +202,6 @@ struct arm_lpae_io_pgtable_walk_data {
-  *
-  * @map_pages:    Map a physically contiguous range of pages of the same size.
-  * @unmap_pages:  Unmap a range of virtually contiguous pages of the same size.
-- * @iova_to_phys: Translate iova to physical address.
-  * @iova_to_phys_length: Translate iova to physical address and return the
-  *			  remaining mapped length from iova to the end of the
-  *			  mapping entry via @mapped_length. If @mapped_length is
-@@ -222,8 +221,6 @@ struct io_pgtable_ops {
- 	size_t (*unmap_pages)(struct io_pgtable_ops *ops, unsigned long iova,
- 			      size_t pgsize, size_t pgcount,
- 			      struct iommu_iotlb_gather *gather);
--	phys_addr_t (*iova_to_phys)(struct io_pgtable_ops *ops,
--				    unsigned long iova);
- 	phys_addr_t (*iova_to_phys_length)(struct io_pgtable_ops *ops,
- 					   unsigned long iova,
- 					   size_t *mapped_length);
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index 19da84c2922c..ca585647180b 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -746,7 +746,6 @@ struct iommu_ops {
-  *                         array->entry_num to report the number of handled
-  *                         invalidation requests. The driver data structure
-  *                         must be defined in include/uapi/linux/iommufd.h
-- * @iova_to_phys: translate iova to physical address
-  * @iova_to_phys_length: translate iova to physical address and additionally
-  *                       return the page size of the PTE mapping at @iova
-  *                       through @mapped_length.
-@@ -777,8 +776,6 @@ struct iommu_domain_ops {
- 	int (*cache_invalidate_user)(struct iommu_domain *domain,
- 				     struct iommu_user_data_array *array);
- 
--	phys_addr_t (*iova_to_phys)(struct iommu_domain *domain,
--				    dma_addr_t iova);
- 	phys_addr_t (*iova_to_phys_length)(struct iommu_domain *domain,
- 					    dma_addr_t iova,
- 					    size_t *mapped_length);
--- 
-2.43.7
+Implement iova_to_phys_length in ARM v7s backend: returns block size
+derived from level mask. The old iova_to_phys is kept as a thin wrapper.
 
+> diff --git a/drivers/iommu/io-pgtable-arm-v7s.c b/drivers/iommu/io-pgtabl=
+e-arm-v7s.c
+> --- a/drivers/iommu/io-pgtable-arm-v7s.c
+> +++ b/drivers/iommu/io-pgtable-arm-v7s.c
+[ ... ]
+> +static phys_addr_t arm_v7s_iova_to_phys(struct io_pgtable_ops *ops,
+> +					unsigned long iova)
+> +{
+> +	phys_addr_t phys =3D arm_v7s_iova_to_phys_length(ops, iova, NULL);
+> +
+> +	return (phys =3D=3D PHYS_ADDR_MAX) ? 0 : phys;
+
+[Severity: High]
+Does this condition inadvertently catch valid translations on 32-bit system=
+s?
+
+If CONFIG_PHYS_ADDR_T_64BIT is disabled, phys_addr_t is 32-bit, making
+PHYS_ADDR_MAX exactly 0xFFFFFFFF. Since 0xFFFFFFFF can be a valid physical
+address (e.g., in MMIO space), a valid IOVA mapping that resolves to
+0xFFFFFFFF would perfectly match the error sentinel and incorrectly return =
+0.
+
+> +}
+> +
+> +static phys_addr_t arm_v7s_iova_to_phys_length(struct io_pgtable_ops *op=
+s,
+> +						unsigned long iova,
+> +						size_t *mapped_length)
+>  {
+[ ... ]
+>  	if (!ARM_V7S_PTE_IS_VALID(pte))
+> -		return 0;
+> +		return PHYS_ADDR_MAX;
+
+[Severity: High]
+Could this similarly cause direct callers of iova_to_phys_length() to
+misinterpret a legitimate translation to 0xFFFFFFFF as a failure?
+
+Since 0xFFFFFFFF is a valid physical address, using it as an error sentinel
+might make it impossible to correctly translate IOVAs pointing to the top b=
+yte
+of memory on 32-bit systems.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602104637.1219=
+810-1-guanghuifeng@linux.alibaba.com?part=3D3
