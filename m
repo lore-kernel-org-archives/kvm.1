@@ -1,176 +1,129 @@
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21692E0B5C
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 21:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1DD3B3BF4
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 21:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780437367; cv=none; b=imX6AQQI3SYmkVqhqj8rndMDbG3ucSi/Hw4jUhQO1aKxoKMVLGSBMmZZmfEH9PLop+IlKQDbyYPIzppVBEr6jJAT2wHy25IzPQZTMJS4yBJFI/vF3jJhJPhGHMvZvcBQc7uhmOfHqtiklfJiGsAKpRVtYyFpuADkHV+FETo3PBQ=
+	t=1780437369; cv=none; b=Vhhl0RSdPaf6PUmqZUZbffGRW4kSeS/ygCoi8a29MHtZOsCQJZIXby9Yn7yOvElPZ8GruZT92/qeDVMk94wf70jD1ohPVi9SXvYpj+gj71TWHxCi9DluRKQ9kfO5Jhd8tt3T3Z1APbk0ZiZhVHMkmjXVDiXAvTLt58zUdysXb1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780437367; c=relaxed/simple;
-	bh=AE9qpM7nYQbqHZLW8lJrUPKuoZQ14UINWbY79FTZpDk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y3aAuK0JIu6UueZKI1h3vU6Ah5pJ1Yvn8faVWFAk2ZibV7CQSlyyM4mcI2FTYOmopdlBzb3+q4h+KjaLid7D8pd23T4WQQUmTiEBWySUMe/yEUQRdy3ca+3IP2jQhESTA6MIl7N0VfoogsQxqGDgxCbKfclk1lj/yYquXccJkDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kbywP3C9; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1780437369; c=relaxed/simple;
+	bh=lKnN7DFJZ1CI7P/ecQkLCNO048bsr9CmYWTgdYN3YTE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=o0bpa8/PuMUogIuUKwT9hwemqkCNn3JG4QAbR4V56dhSKQG2vbU85hqECKqR1k9d3vh6PC5aNs8IT7Sp5ul4rgS1+GiC7/SBeQ3T5+nDzfEdes9HaY9q2AmGiIooMSZefE8JVDB8tWgLEd5KrjH84xgG7oNagVtv+iJJ0FmdXMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DvVWIgnx; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kbywP3C9"
-Message-ID: <33dccdf4-45f7-40b5-a0cf-3f99b26d46f1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780437362;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iMLhbJ4HXNg/dZXFD4JTH5x+MlzfsBAaNNL9l5upBNc=;
-	b=kbywP3C9EdS8FSB1w/ZrbwmmCr+Y5TMCGgaUX8cylueS8ubpQE6xN5au/xNZrSftPG/Ygq
-	Uo+ZOOUYF91u2+2BYXxHvtRLm/c6Q1vNi7r932YPBy+sG9q0RV2+707m1VXG4zA5Sr4xDX
-	Xx9lOP9nEuvdVEYuqYNNZ/uO0+7bS28=
-Date: Tue, 2 Jun 2026 14:55:49 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DvVWIgnx"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c85a2f19558so2038751a12.2
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 14:56:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780437368; x=1781042168; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rZN9q1aHIL9jEfZ2MGsblaqq1tdWrGmvs3WWbS54Ns4=;
+        b=DvVWIgnxsyNuzketKi/SgKDhpxcBt2BnRyiG4P836sdHvzEPQSRdOqE2rOur+ij+wP
+         ENoNtMivk8tmSIe7hUMc/M0gk7zCve1merDV9vd74wWwTOxN/SBe5NeMblrJGnYVL/gv
+         yCcBx2Y6S77F9oDqOCxAl8vMVnDXlzTFrNIEhA85bBj5KR6yYrY3VEgAdW1COaEwHyED
+         cE5a+BeoCbrzLda10q2g3pWQ8+ndCE2d/EtRwc3RRTbJZxeIYO65pTx28WNiyBZlZAOA
+         HRRm3Wlv3WZIh2RSK12IhkphJZfr3d6cGEugcXeAGxhrO4/Gr3W9TegBGBOSBVe7ME22
+         CvBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780437368; x=1781042168;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rZN9q1aHIL9jEfZ2MGsblaqq1tdWrGmvs3WWbS54Ns4=;
+        b=SwXYglkK081W8r7aapjZuhjEJo6rqlePpYgW6qC7yLVJBI9hHp7qPKVVM+8PBolHyp
+         6NRxGp5qLrIK+VGueCPypPf8brq2Vqt672zWQCh/0JBVogjxjKg3TRHw2DjZkQVwW7Sk
+         3uxF+Gr3FTZLEqG0LIjrevvs/beOJpj3rcbanpPE4ub5OU2uFBT1klBpaFGAJyI/lukQ
+         O8JZrrTVg+/Z3mRP1h8IjzI89nRQcTIs7rSVdp5ei5j6uUbYV8Ftw0j6OLnLlV+gQpop
+         U6H+RXSfji1QKxmIzybGs7cjhjRbTpS5JjU5Xs5CYbTTTH3BjHGYK7R5JW/H+Lj5Ty+l
+         A7Ag==
+X-Forwarded-Encrypted: i=1; AFNElJ+ff5CuXty2VikH6cQBPlnQBySkEAMQ4P6SUfafJw11YSspzshitW+/INSoXRqfu9FIf9Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIZuUeGYOWSNOUPdhjR/LMkhF6YRuL21HZ5OgPe0Xgn31hlW51
+	4HYPYy2KSCWA3NGgAkZn4NNgvVm3QsYqGr+i5NfoGr9tXkyOW/Ct3GNnq5trVXlqMTRTu3jwCwE
+	Vw/Sz5g==
+X-Received: from pgip16.prod.google.com ([2002:a63:c150:0:b0:c85:735b:ca4a])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:86:b0:3b3:241f:66c6
+ with SMTP id adf61e73a8af0-3b49798aa66mr679970637.26.1780437367409; Tue, 02
+ Jun 2026 14:56:07 -0700 (PDT)
+Date: Tue, 02 Jun 2026 21:55:43 +0000
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/4] KVM: SEV: Do not allow intra-host
- migration/mirroring of SNP VMs
-To: sashiko-reviews@lists.linux.dev, Tom Lendacky <thomas.lendacky@amd.com>
-Cc: kvm@vger.kernel.org
-References: <20260601-sev_snp_fixes-v2-1-611891b28a86@meta.com>
- <20260601231728.C67C51F00893@smtp.kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Atish Patra <atish.patra@linux.dev>
-In-Reply-To: <20260601231728.C67C51F00893@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
+X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780437363; l=1598;
+ i=wyihan@google.com; s=20260319; h=from:subject:message-id;
+ bh=lKnN7DFJZ1CI7P/ecQkLCNO048bsr9CmYWTgdYN3YTE=; b=rBFtlvQ/7oSruMlAmmH25URviunGUIx5ao2QShrhRD8hR/bXLQAXAsiiyW2j5GrH1cgJI/Yfg
+ qeemVXBKeqQAGqv0RcyXpSDAWZQbBi9Qjq/DWMSLzr8eBsxskS4WHVg
+X-Mailer: b4 0.14.3
+Message-ID: <20260602-memory-failure-mf-delayed-fix-v4-3-a5bc7db5a9b2@google.com>
+Subject: [PATCH v4 3/7] mm: shmem: Update shmem handler to the MF_DELAYED definition
+From: Lisa Wang <wyihan@google.com>
+To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com, 
+	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com, 
+	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>
+Content-Type: text/plain; charset="utf-8"
 
+To align with the definition of MF_DELAYED, update
+shmem_error_remove_folio() to return MF_DELAYED.
 
-On 6/1/26 4:17 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
->
-> Pre-existing issues:
-> - [High] Missing `kvm->arch.vm_type` validation in `sev_vm_copy_enc_context_from` allows creating structurally inconsistent mirror VMs.
-> - [High] Missing `vmsa_features` copy in `sev_vm_copy_enc_context_from` breaks SEV-ES mirror VMs that use features like `DEBUG_SWAP`.
-> - [High] Concurrent list modification of `owner_sev_info->mirror_vms` without holding the owner VM's lock during mirror VM migration.
-> --
->
-> commit 5adb8a893221b0569310f07fd9fc7abca8088651
-> Author: Atish Patra <atishp@meta.com>
->
-> KVM: SEV: Do not allow intra-host migration/mirroring of SNP VMs
->
-> This commit rejects SNP source VMs in migration/mirroring until proper SNP
-> state transfer is implemented.
->
->> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
->> --- a/arch/x86/kvm/svm/sev.c
->> +++ b/arch/x86/kvm/svm/sev.c
->> @@ -2142,7 +2142,8 @@ int sev_vm_move_enc_context_from(struct kvm *kvm, unsigned int source_fd)
->>   		return ret;
->>   
->>   	if (kvm->arch.vm_type != source_kvm->arch.vm_type ||
->> -	    sev_guest(kvm) || !sev_guest(source_kvm)) {
->> +	    sev_guest(kvm) || !sev_guest(source_kvm) ||
->> +	    sev_snp_guest(source_kvm)) {
-> [Severity: High]
-> This is a pre-existing issue, but I noticed a potential locking race when
-> an existing mirror VM is migrated via sev_vm_move_enc_context_from().
->
-> Locks are only acquired for the source mirror (source_kvm) and destination
-> VM (kvm):
->
-> arch/x86/kvm/svm/sev.c:sev_vm_move_enc_context_from() {
->      ...
->      ret = sev_lock_two_vms(kvm, source_kvm);
->      if (ret)
->          return ret;
->      ...
-> }
->
-> Later, in sev_migrate_from(), it updates its owner's list of mirrors:
->
-> arch/x86/kvm/svm/sev.c:sev_migrate_from() {
->      ...
->      if (is_mirroring_enc_context(dst_kvm)) {
->          struct kvm_sev_info *owner_sev_info =
->              to_kvm_sev_info(dst->enc_context_owner);
->
->          list_del(&src->mirror_entry);
->          list_add_tail(&dst->mirror_entry, &owner_sev_info->mirror_vms);
->      }
->      ...
-> }
->
-> Since the required lock for enc_context_owner is omitted entirely, could
-> this concurrently modify the owner_sev_info->mirror_vms linked list if
-> userspace creates a new mirror via sev_vm_copy_enc_context_from(), which
-> locks the owner VM? Would this result in kernel list corruption?
+shmem handles memory failures but defers the actual file truncation. The
+function's return value should therefore be MF_DELAYED to accurately
+reflect the state.
 
-It looks possible for SEV VMs looking at the code but I don't the know 
-code path
-or the mirroring/migration use case well enough to judge how likely this 
-scenario
-in real world.
+Currently, this logical error does not cause a bug, because:
 
->>   		ret = -EINVAL;
->>   		goto out_unlock;
->>   	}
->> @@ -2865,6 +2866,7 @@ int sev_vm_copy_enc_context_from(struct kvm *kvm, unsigned int source_fd)
->>   	 * created after SEV/SEV-ES initialization, e.g. to init intercepts.
->>   	 */
->>   	if (sev_guest(kvm) || !sev_guest(source_kvm) ||
->> +	    sev_snp_guest(source_kvm) ||
->>   	    is_mirroring_enc_context(source_kvm) || kvm->created_vcpus) {
-> [Severity: High]
-> This isn't a bug introduced by this patch, but this block seems to be
-> missing the kvm->arch.vm_type != source_kvm->arch.vm_type check that
-> exists in sev_vm_move_enc_context_from().
->
-> Does this omission allow creating structurally inconsistent mirror VMs?
-> Userspace could potentially create a destination VM as KVM_X86_SNP_VM and
-> mirror a source VM of type KVM_X86_SEV_VM into it. Since KVM's core MMU
-> would treat the new VM as an SNP VM (due to arch.vm_type), but the SEV
-> code treats it as a legacy SEV VM (because ____sev_snp_guest evaluates
-> to false), could this produce an inconsistent internal state and allow
-> attaching guest_memfd to standard SEV VMs?
-NA. They don't have to be same vm type as per my understanding from the 
-selftest code.
->>   		ret = -EINVAL;
->>   		goto e_unlock;
-> [Severity: High]
-> This is a pre-existing issue, but I noticed another detail in
-> sev_vm_copy_enc_context_from() just below this diff.
->
-> The initialization block for the mirror VM omits copying vmsa_features:
->
-> arch/x86/kvm/svm/sev.c:sev_vm_copy_enc_context_from() {
->      ...
->      mirror_sev->enc_context_owner = source_kvm;
->      mirror_sev->active = true;
->      mirror_sev->asid = source_sev->asid;
->      mirror_sev->fd = source_sev->fd;
->      mirror_sev->es_active = source_sev->es_active;
->      mirror_sev->need_init = false;
->      mirror_sev->handle = source_sev->handle;
->      ...
-> }
->
-> This omits mirror_sev->vmsa_features = source_sev->vmsa_features.
->
-> Since SEV-ES VMs use vmsa_features to track capabilities like
-> SVM_SEV_FEAT_DEBUG_SWAP, would a mirrored SEV-ES VM incorrectly
-> initialize its vmsa_features to 0? When vCPUs are instantiated,
-> sev_es_init_vmcb() checks sev_vcpu_has_debug_swap(), which would evaluate
-> to false, resulting in misconfigured VMCB intercepts. Could this silently
-> drop important execution features for SEV-ES mirrors?
+- For shmem folios, folio->private is not set.
+- As a result, filemap_release_folio() is a no-op and returns true.
+- This, in turn, causes truncate_error_folio() to incorrectly return
+  MF_RECOVERED.
+- The caller then treats MF_RECOVERED as a success condition, masking the
+  issue.
 
-As per my understanding, that is intentional as well.
-Is it common to mirror SEV VMs with SVM_SEV_FEAT_DEBUG_SWAP enabled ?
+The previous patch relays MF_DELAYED to the caller of
+truncate_error_folio() before any logging, so returning MF_DELAYED from
+shmem_error_remove_folio() will retain the original behavior of not
+adding any logs.
 
-@tom: Please let me know if any of the above statements are not true.
+The return value of truncate_error_folio() is consumed in action_result(),
+which treats MF_DELAYED the same way as MF_RECOVERED, hence action_result()
+also returns the same thing after this change.
 
+Signed-off-by: Lisa Wang <wyihan@google.com>
+---
+ mm/shmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b40f3cd48961..fd8f90540361 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -5207,7 +5207,7 @@ static void __init shmem_destroy_inodecache(void)
+ static int shmem_error_remove_folio(struct address_space *mapping,
+ 				   struct folio *folio)
+ {
+-	return 0;
++	return MF_DELAYED;
+ }
+ 
+ static const struct address_space_operations shmem_aops = {
+
+-- 
+2.54.0.1013.g208068f2d8-goog
 
