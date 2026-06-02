@@ -1,139 +1,141 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8154935DA78;
-	Tue,  2 Jun 2026 18:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F15539099C
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 18:17:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780424108; cv=none; b=sRT/pjk1My8EA2o7kGufTuO4KLAGggIDe38Ml2rt4TyI0s/tGJFYCEuplY6bi//C0dZgMAUooXAIGOlQV7ioV2HjYDxFwQ77WgqrnurZUjQUfuZIeIUqwj+comb6tuK7dGb9VTONmKrET8vRGMUDRjL41uA/BaGGFiyA387s/Dg=
+	t=1780424247; cv=none; b=c8B7uzPARWQ/VqLX80hiA1we48sGawD/obJDJHvvk0Qwsj+Xrj30cJU1JSoxnJgFdcjc0HKec9ZyC2MoJndt2DDgYzvP+xqDZ6diTdqhR1cnT3n/uBPt3tEaw8J0c/3cYKBl9CZfxkJ4xEBaMRbE+OJjkOyTL7GmQme3y8rl5NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780424108; c=relaxed/simple;
-	bh=z2WBzrcpkiiOuQYyIf2jC9WAE6sYs5+zd6bH1lL0eFY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ljQ96cP0Cx+0yb/6uor5+XtC6Jk+Bg4ZNC51MLycmGOJst0nY0XMMNUp1VvKhuVeGr9dHSpzNsunCqr7oYS8eM7cq1NdfXZscnEJ3TvYKdHegiMXjuZxG8nBuOkFbXSdn5CL1AEZBxozbNcs9qg74CKQKr3w4kBIbX+WbLImPUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=MGPO33aI; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780424247; c=relaxed/simple;
+	bh=lKrbErFL33y0hvZLmkIS71x1sxFvJ5v/SI1TpWYA9xA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i/eEFufLxbfoWVg3mpfWTGrLRYSiIlUITgZdY6toxl8uFkHv+dSk9FhxRMQLS8xHA1vdKT/gEWeOzsVXPifn2Fah4/p5mZsSn18IagoygYngqQxGhUAJy9ZzByxl8P39V42ipPKF2e0pbx9gBd856cAbxi0sHI1UAQxOxDahefA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BB8/dpvx; arc=none smtp.client-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="MGPO33aI"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 652HWGTS3708195;
-	Tue, 2 Jun 2026 18:15:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=R0MmQc
-	zvvz7SpzEDxqmXXN+3teeuzliyednKPp5NERY=; b=MGPO33aIYaQP6vgXktl/k/
-	Jq3iLkPpoSjAWc7R2C0AZxG/MabVI0QDmQJ0l+EOU5abhV0rmUaMBMotOp6s6qFp
-	7sgRLLfTD2Te9ZtGPbzDn+GR9ABupLvB0rSdH/poAV/C7r0yqAFput0TrLczYMSz
-	aU93PxHXAG/qbvoNReRuaVS6FhSCpfwJUpcIncGnpvsnpfSlCxTth6gmVW2L6AxD
-	OB9eIpvwEnQIC4t1L6thBbjkRjdTPHwKWOa+tTuUDQwRQMr213nRsTP7r6GlRci9
-	pmE0sEHNpHgPWSunyyt2oSBv/bNIL0kmM2RuU2Ur4QJeCxZ12txl6K8+cHIc/EDg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efpae6y4c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 18:15:03 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 652I9D49032019;
-	Tue, 2 Jun 2026 18:15:03 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egakvvnv1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 18:15:03 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 652IF1fb18612940
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 2 Jun 2026 18:15:01 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5B3F05804E;
-	Tue,  2 Jun 2026 18:15:01 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2AD1A5803F;
-	Tue,  2 Jun 2026 18:15:00 +0000 (GMT)
-Received: from [9.61.245.94] (unknown [9.61.245.94])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  2 Jun 2026 18:15:00 +0000 (GMT)
-Message-ID: <9c5f80d8-0a08-4cf2-8bbe-e071089e8531@linux.ibm.com>
-Date: Tue, 2 Jun 2026 14:14:59 -0400
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BB8/dpvx"
+Message-ID: <9f134eb4-1c64-47c4-8c4d-feb3c75072e6@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780424234;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KwNAHhnYjbAwxb3CujRs87uODn/mS6bwBRlR99Zbexw=;
+	b=BB8/dpvxkI7ABBOHbbeUMG9d/OHBj/j+bxj8pt9mKsrjGzrzANg73shTc6xoqaD/+aPP0Y
+	vjKYgCbcV3WOG7slgBbAE1+AzCYXkkR0MeM4lA+LI99GrQz1UM1pgr8frkxXrK2lpQb7mG
+	ZbKZwEmW1VvzZbsEBSBae6FKovSch1A=
+Date: Tue, 2 Jun 2026 11:17:06 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/3] KVM: s390: Introducing kvm_arch_set_irq_inatomic
- fast inject
-To: Matthew Rosato <mjrosato@linux.ibm.com>, borntraeger@linux.ibm.com,
-        imbrenda@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260531190353.204317-1-freimuth@linux.ibm.com>
- <20260531190353.204317-4-freimuth@linux.ibm.com>
- <c9797cc0-d661-4208-bd89-d96fff3b8a07@linux.ibm.com>
+Subject: Re: [PATCH v2 4/4] crypto: ccp: Fix memory leak in SEV INIT_EX path
+To: Tom Lendacky <thomas.lendacky@amd.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Peter Gonda <pgonda@google.com>,
+ Brijesh Singh <brijesh.singh@amd.com>, Youngjae Lee <youngjaelee@meta.com>,
+ Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>,
+ John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>
+Cc: clm@meta.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, stable@vger.kernel.org,
+ Atish Patra <atishp@meta.com>, Sashiko <sashiko-bot@kernel.org>
+References: <20260601-sev_snp_fixes-v2-0-611891b28a86@meta.com>
+ <20260601-sev_snp_fixes-v2-4-611891b28a86@meta.com>
+ <f57a427b-0fc8-41f6-bc3c-cd86e7812629@amd.com>
 Content-Language: en-US
-From: Douglas Freimuth <freimuth@linux.ibm.com>
-In-Reply-To: <c9797cc0-d661-4208-bd89-d96fff3b8a07@linux.ibm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Atish Patra <atish.patra@linux.dev>
+In-Reply-To: <f57a427b-0fc8-41f6-bc3c-cd86e7812629@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Zt3d7d7G c=1 sm=1 tr=0 ts=6a1f1da7 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=UiGWTbJDlg0Xrmk02SUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 8aJ0_19Ons9IiWmVGTPgNVxQ60U4bkQk
-X-Proofpoint-ORIG-GUID: 8aJ0_19Ons9IiWmVGTPgNVxQ60U4bkQk
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDE3NSBTYWx0ZWRfX44JpRYJwMhs0
- B+CKASZs54Gl8N9GeKbFxVkeu9HeZIlRQ5UzlKmEMx83G0tGNDM+fK3NpNkOz+guESn3NrNJjGG
- 7kOtPkBvWPmWkyvcv1csZX3C58Zwf3boay5Oi+afIr27fR1g0X2WdkVIVYz1mucwEd+RSzCDInT
- EMCJcKJxwn3QTV2wSgFT1ZWx7Gi+gIN0wVLc/a4H+LmAnVoeaJ0udsqayUlkjzPYAZVuT/m2hve
- 1YMIxVBRhudDPfvNKn7qE6hc6h6+Jz7Q6MfyxE1Xo9zvYE16PppYLRmZB47gHaPLwOhSukPiqgY
- GoWonyMiGZPd5QcgkNL/FFfIa1pobm8ZeBF6nLMf272ByBIRyS19ylccao+r9vuFKSeQdOeX1zm
- 2gLQkejAtSUPirVPppWAZwK0ho3n8tLiO2ZfppFtBT32I9ZqUcWC62fahRbzN7gIVXU4aqQPvU2
- GYZlGQIRFus4gumBtIA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-02_03,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- phishscore=0 spamscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606020175
+X-Migadu-Flow: FLOW_OUT
 
 
-
-On 6/2/26 1:30 PM, Matthew Rosato wrote:
-> On 5/31/26 3:03 PM, Douglas Freimuth wrote:
->> s390 needs a fast path for irq injection, and along those lines we
->> introduce kvm_arch_set_irq_inatomic. Instead of placing all interrupts on
->> the global work queue as it does today, this patch provides a fast path for
->> irq injection.
+On 6/2/26 7:54 AM, Tom Lendacky wrote:
+> On 6/1/26 18:04, Atish Patra wrote:
+>> From: Atish Patra <atishp@meta.com>
 >>
->> The inatomic fast path cannot lose control since it is running with
->> interrupts disabled. This meant making the following changes that exist on
->> the slow path today. First, the adapter_indicators page needs to be mapped
->> since it is accessed with interrupts disabled, so we added map/unmap
->> functions. Second, access to shared resources between the fast and slow
->> paths needed to be changed from mutex and semaphores to spin_lock's.
->> Finally, the memory allocation on the slow path utilizes GFP_KERNEL_ACCOUNT
->> but we had to implement the fast path with GFP_ATOMIC allocation. Each of
->> these enhancements were required to prevent blocking on the fast inject
->> path.
+>> allocated pages in _init_ext_path are never freed and sev_init_ex_buffer
+>> is left pointing at the leaked memory in case of any failures during the
+>> function..
 >>
->> Fencing of Fast Inject in Secure Execution environments is enabled in the
->> patch series by not mapping adapter indicator pages. In Secure Execution
->> environments the path of execution available before this patch is followed.
+>> Fix by adding an error path that frees the pages and clears
+>> sev_init_ex_buffer. Make sure we only free the memory if the failure
+>> happens before the conversion. Otherwise, we may end up trying to free
+>> up converted pages in case of reclaim failure. rmp_mark_pages_firmware
+>> failures should be rare enough to avoid more code complexity to track
+>> down which pages were reclaimed/leaked vs which are not.
 >>
->> Statistical counters have been added to enable analysis of irq injection on
->> the fast path and slow path including io_390_inatomic, io_flic_inject_airq,
->> io_set_adapter_int and io_390_inatomic_no_inject. The no inject counter
->> captures adapter masked, coalesced and suppressed interrupts.
+>> Fixes: 7364a6fbca45 ("crypto: ccp: Handle non-volatile INIT_EX data when SNP is enabled")
 >>
->> Signed-off-by: Douglas Freimuth <freimuth@linux.ibm.com>
-> 
-> Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Signed-off-by: Atish Patra <atishp@meta.com>
+> Not sure the goto's are the best, but they do the job - just a personal
+> preference for me here.
+>
+> The new comment below is a bit verbose, I would think it is sufficient to
+> just say something like "Pages can be in an inconsistent state, don't
+> release them back to the system" or such.
+Sure. I will update the comment.
+> It might be nice in the future if we can identify if the reclaim was
+> successful and use that for determining whether the pages are safe to
+> freed... but the failure chance should be practically zero, so I'm not
+> sure it is worth it.
 
-Matt, thank you for all of your inputs across the iterations.>
+Yes. I had started that path but was not sure if the code churn is worth it.
+I can send it as a separate patch and we can take a call if you are 
+think it's worth.
 
+>
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+>
+>> ---
+>>   drivers/crypto/ccp/sev-dev.c | 16 ++++++++++++++--
+>>   1 file changed, 14 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+>> index 3d4793e8e34b..8566f164430b 100644
+>> --- a/drivers/crypto/ccp/sev-dev.c
+>> +++ b/drivers/crypto/ccp/sev-dev.c
+>> @@ -1550,7 +1550,7 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
+>>   
+>>   	rc = sev_read_init_ex_file();
+>>   	if (rc)
+>> -		return rc;
+>> +		goto err_free;
+>>   
+>>   	/* If SEV-SNP is initialized, transition to firmware page. */
+>>   	if (sev->snp_initialized) {
+>> @@ -1559,11 +1559,23 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
+>>   		npages = 1UL << get_order(NV_LENGTH);
+>>   		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, true)) {
+>>   			dev_err(sev->dev, "SEV: INIT_EX NV memory page state change failed.\n");
+>> -			return -ENOMEM;
+>> +			rc = -ENOMEM;
+>> +			/*
+>> +			 * Don't free on conversion failure: the rollback may
+>> +			 * have left pages firmware-owned, and a high-order
+>> +			 * block can't be partially freed.
+>> +			 */
+>> +			goto err_reset;
+>>   		}
+>>   	}
+>>   
+>>   	return 0;
+>> +
+>> +err_free:
+>> +	__free_pages(page, get_order(NV_LENGTH));
+>> +err_reset:
+>> +	sev_init_ex_buffer = NULL;
+>> +	return rc;
+>>   }
+>>   
+>>   static int __sev_platform_init_locked(int *error)
+>>
