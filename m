@@ -1,160 +1,215 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from SY5PR01CU010.outbound.protection.outlook.com (mail-australiaeastazolkn19012068.outbound.protection.outlook.com [52.103.72.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263B725228C
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 09:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780390841; cv=none; b=qdOjAtlj6kIYPLcEHr7N+Eh4dc8E4sHSbdULOTpiNo3T1zLsFHHUDUhZnjOD2O4KO640ym0SwGPiVTgfDKwQv8T8beqdqMsd4NZxpQwA8dKpE4VjPsaEEE69IRIaBopjDX9uLUL+FMvrOe4eNtKKE4+nk1ILGkWwsZ3qhAttXMo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780390841; c=relaxed/simple;
-	bh=H5RPK4R7kmA8KL8UeiTfI7DQjjweVrVbVuh8QO/+S38=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=agGqs0J3s8MUorfQpvYh1q8JSkHjtCJsq/Ez2PMHxDNo3SFJRiGlYo1HHJgYQpqyAEiLfYJD98uQTmnV3zMsyuEk++fSHblrw4B0HeG/g1d8MBTuFQ0GeZyL02qST03XHQvos1hutRkchgFisAM1nepHseY09KwkOmbm/Z/fxH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c6LwaGR4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF5C25228C;
+	Tue,  2 Jun 2026 09:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780390896; cv=fail; b=cH+db9LeY3+0F/wIVqBmw4xTDehRXxI1AHXnk67DW18E4ujoXT4lkOoMULNuMWFLVtUMYzNnoXYIpqNDoyVeRoZ8F47HECjxjLgfMbGR7P4MxAhYNn1sRO9pi+fb3o3nTVp2pf3hvgeCwdPznJvz5xn4ECTOAn29NXDDxkzx06Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780390896; c=relaxed/simple;
+	bh=VCHGF1IFO9MoPz+4auknhwtdE90Kr+2jmk/reCeTMNE=;
+	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:MIME-Version; b=L8NF1/UL8qKC3d8BDZdBQn3pXymg9GLYTnVWwzE/NcbE1xai2taho6FP/R1kZCiHbSzSLvo2h/dIJDfcCYK+3QHkEAP9LfiGVevbvdRdH3Ib6teCjceUg/b7qreVxvLbrzCDS0NycKndxN1sjjOGdswjXQLBRONTsguSldiMAMA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=RTPdV7+P; arc=fail smtp.client-ip=52.103.72.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c6LwaGR4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780390839;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+cRenZ/ZFT3XyadVf117pp4rudLKkztn8jGLitRCK9o=;
-	b=c6LwaGR4gdXwYoSARMuX98ASX4JT8PP0TypFvXkD6IXYEKxyg9ZUs+HtHp37TnDy91NmJ1
-	Z2U8Rqlv9wJhkgVRb05IxClCa+12ULubro4YxhMWTiYK6XYoAe/VxyICGgkd0NwurzN0St
-	X+t2SAxZX3jPn658mWspE7FZet+1JUs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-1-OYo42HWjPyS8Ya8Ze6VgiA-1; Tue,
- 02 Jun 2026 05:00:35 -0400
-X-MC-Unique: OYo42HWjPyS8Ya8Ze6VgiA-1
-X-Mimecast-MFC-AGG-ID: OYo42HWjPyS8Ya8Ze6VgiA_1780390834
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F046195609F;
-	Tue,  2 Jun 2026 09:00:34 +0000 (UTC)
-Received: from [10.44.50.110] (unknown [10.44.50.110])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A10391800576;
-	Tue,  2 Jun 2026 09:00:32 +0000 (UTC)
-Message-ID: <8928c73d-4913-4c67-bf64-7e0c3fb8ff8f@redhat.com>
-Date: Tue, 2 Jun 2026 11:00:31 +0200
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="RTPdV7+P"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dkm4ejVzRdW+3D6CK8Em5MIXH5YcS0wmqUp0aJ2lYXs+02T3QbtEiyxI1QgkdS6AQljvipKgi5DJq7gbl9oAfG21h7bAOAKjVUxx/D8lWY/LCWD/BKslFMNv+27IAmEOYbQTgGclXqjWQ+cwXhmhc5O750ftUfVhCsCK7tpMopqz+OdRJvc3fCpFCzkBC+A56JE1UHmKElHvpxA1qrjaUDMLxIh+qxLg8VNh6QmRqwYyJgb8wsyV1F1+zoygm6UX0aZD1KoIfeYnuvTL0A7wN9FWPsMoJX3cPlsr1cV4nM/A9/A9SbrklpnQYF6AYylTqK1ctvKOcIIwXu23E6Zmdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=olCB7gkVJOI8cqUKCYTszALJYCdlMawq6m4wImbg4cc=;
+ b=zKGKjJbZKscL8xn63KPYmlEFY1Um1WWvryzgmYG0p1ZtLYQylOdgEyVWGEbPxWWAkzSbJVpmPJsn04xnQPsp9nKji1Z3I2VQ4pBYeJBocez/fnZSVo8wXBvcxajddNiw7gGLkFHOCSSKjepJQ5qmaTeuHWg+cF2NUxUVIl1NiLfGzfOLTDOdKSs06ImZw9c8t/i4EmuGKLd9HS5rxpYxfsKG0/Y5ZIpS0OXnge5BV0Oz1ZLLqkdL5thxWfjmxjRY7hsAoZ1FOf2sHNIjQZkYCZYLnC99x4DzMTz2Jn3zMZsItPoO7yUCDA0PcwQc8OteN0+rBxmQUBJLr90/ZxvhSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=olCB7gkVJOI8cqUKCYTszALJYCdlMawq6m4wImbg4cc=;
+ b=RTPdV7+PxmHMsee8fa9X7GvFjid/mVoFa93hZNQ8iqc4D0wZKqI14cH7R02TsKYIlt2U2GrAwZjs9HzNEYPNlDxMcMzrGwaz2J8STUK9x/AfhFDinloKCzSgGnxZV+8Q7p3OZVLz+xLvy1ZS3b8kebbYw6xpR1A0YNikOZR5wwI9KGFQagGHZ/Ute3JBu80sf97zrqk70vLqiHorXUqh4BfjtHsYcoQxEZyGwQ9231+PYtUbXurhL6iAbcxMhFbTV2gXDZtHpl9SI9fNKolmO6ZR1tcVwwDgg2hDjHoyU+lHVUnV/IW5IDFhqN/ITMRPvQnB0BjxRc490sHZbmV2uA==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by SY7PR01MB10304.ausprd01.prod.outlook.com (2603:10c6:10:2ec::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.17; Tue, 2 Jun 2026
+ 09:01:30 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%3]) with mapi id 15.21.0071.015; Tue, 2 Jun 2026
+ 09:01:30 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+Date: Tue, 02 Jun 2026 16:58:48 +0800
+Subject: [PATCH] vfio: prevent infinite loop in vfio_mig_get_next_state()
+ on blocked arc
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID:
+ <SYBPR01MB7881290BBDE79B61AE6A017FAF122@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-B4-Tracking: v=1; b=H4sIAEebHmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDMwMj3bTMitRi3TTTZLNEEwsLA1NLEyWg2oKiVLAEUGl0bG0tAD/3fAd
+ XAAAA
+X-Change-ID: 20260602-fixes-f5c6a4880594
+To: Alex Williamson <alex@shazbot.org>, 
+ Shameer Kolothum <skolothumtho@nvidia.com>, 
+ Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ Shay Drory <shayd@nvidia.com>, Kevin Tian <kevin.tian@intel.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org, 
+ Junrui Luo <moonafterrain@outlook.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2032;
+ i=moonafterrain@outlook.com; h=from:subject:message-id;
+ bh=VCHGF1IFO9MoPz+4auknhwtdE90Kr+2jmk/reCeTMNE=;
+ b=owJ4nJvAy8zAJVb4wiKgu++DA+NptSSGLLnZ7i6RVg2n5mvtkK3TEN656UKXjO4sqTUMaXkvf
+ s9N8hPOLO4oZWEQ42KQFVNkOV5w6ZuF7xbdLT5bkmHmsDKBDGHg4hSAiRyez8hwtk2l5cfkUNbn
+ 8lZvHZTDT1qbn58uns005dzEZQlGpcKPGRn6AthurNCQ/lm4SVFl0YSg2UK6BhfuP1Y1Pnb8hdS
+ qZhE2AN8lRZs=
+X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
+ fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
+X-ClientProxiedBy: TYCPR01CA0202.jpnprd01.prod.outlook.com
+ (2603:1096:405:7a::15) To SYBPR01MB7881.ausprd01.prod.outlook.com
+ (2603:10c6:10:1b0::5)
+X-Microsoft-Original-Message-ID:
+ <20260602-fixes-v1-1-89a12f97522c@outlook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/1] target/i386: Add support for KVM APERF/MPERF
- passthrough
-To: Anderson Nascimento <anderson@allelesecurity.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, zhao1.liu@intel.com, mtosatti@redhat.com
-References: <20260602022048.752453-1-anderson@allelesecurity.com>
-Content-Language: en-US
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260602022048.752453-1-anderson@allelesecurity.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|SY7PR01MB10304:EE_
+X-MS-Office365-Filtering-Correlation-Id: be87f03e-e1a9-4d0b-52c9-08dec085890f
+X-MS-Exchange-SLBlob-MailProps:
+	AZnQBsB9XmoFKg4HO/PmVaQxqEsmtKdHIkkvvOd+sdx+j/trefxUhZop+4Xhe479BlJflQqxWrlCS0GRIsNfEJm/jSqGIQ043+6tmxcpi0NSg2uemP/RLpFNEMzwoynHdkShHZO7EJ84Ctb98LoF4rFyxQuMpswyKZpd0Uh587KKe+ciInQAITIWSdcTcJkXMwLRmhLzikZJPlCpfBwYwnqR1Do1as0Aj2JkuTOPELd4oQdLbLske2Kx7digEDEJUh3bbjkVwBT7PGwHIVHbAOv3I6r+/wRAGfGwWM1ApQaH369aRxNeu2T7x5hyvEoUnR+uah8ztZZvVkR6MC8E4B0pKUykhq+UWUPlKY7Uf3PGbURr0mslp9QGFMqxhuoms8qlXrg5xw2Mn8SdoBJy5nlns48jdLhpbytytKSJZXwvFzTgNLwjs+9z6duHu2KEg0O/hFhm0BXB+CkrXN055xXDN8K6BLeNIFUT8DEhCgT2YCyp//dZDBEQRQ4pIznOGV2vm7lHuwe5GxzbuAzpOlvfPCGvONwC2DDAhPgoMVDS2cP1z3fZTRHgKFWZjoPfwUKMENNJWJepT+PTDJL5Ak+K702VQGTuYxOcz8kLINDMc5sTvvSZ0Fg4aCXFAKQmej6qOpof+lL8O+EbtjMbjwyukck8MSr9IAIqB2iL00fFvp0XqPSvwC1mz/K0sSU9XoOiiGs5aT577ac+ctfPbZgJOBRsLy1JLiJsT1N2EavwMF5+v5iDc1+kWYgfawVEQnChzfTT6Ow=
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|23021999003|8060799015|15080799012|19110799012|41001999006|12121999013|24071999003|39105399006|24021099003|55001999006|6090799003|5072599009|30051999003|22091999003|24121999003|20031999006|5062599005|440099028|3412199025|26121999007|35041999009|41105399003|40105399003|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?U2grVmU3UStKRDRFbDJIKzdycDJPcVRNVXZQYUx0YlhrZ1JHU0VwcWpXdWJV?=
+ =?utf-8?B?M1JjZ1J1UG14bWozTVJ0Y2dtK3J1ZjA0K1cwRWZseDlPME1ONGJCM0NsbnRy?=
+ =?utf-8?B?UmpXbkkrMTZtR2s5enR3V095c3kyRm9WVExyQjN4OUtaZzArTEwwaEdoMGRW?=
+ =?utf-8?B?aE1wVkRqMzdJRk5xZnM3dHRiMkw2R1ZKUmZvREdFZzJzNFRIOG84U3VXaUlZ?=
+ =?utf-8?B?dVhNdmRQSFpTZ0c0RkhuRjJDdlp6bEtJZUF1V080aXlCRiswWTFYYTVBUVVS?=
+ =?utf-8?B?QmVYUFR5TkkwN3g0OG1KVkpkcldFd3hIUFIzeWJUUWJaMGlmN0JqeWdLNU5L?=
+ =?utf-8?B?YjcwQ0hQV0Q2UE11bWxYZm9qdkhlLzlDTzN5TXRPWkdkNTdjQWtpUW85ekFS?=
+ =?utf-8?B?NHFZUlYyd3drZVJ4SmVBemNGNmJoTmEyZGVmcHVJM2lWblVzRC9XSHJFSldl?=
+ =?utf-8?B?WHR2cXRBckRlUGpBQ1M1OVU0eTNtdUkyRWNWc05Wall0NXlxa0xjUFNYYWps?=
+ =?utf-8?B?ZjkvV1RLbEsxU2xaaGFuUTdmSzFSZlVTVUNOZ1dwelBSaVJZL0NPWEh5Witw?=
+ =?utf-8?B?c0hFVVZRUUVrcG4vRGVoek9FUUFTeW5mRGxpS1AxOGY5b3pvUlNIWlpGZFNC?=
+ =?utf-8?B?U2hVMEk4S3phaFFRRzNLMXdsZVhqSTNSelpVbXlZdHk0dnBUSHorNmJYbUEz?=
+ =?utf-8?B?bUxjeXBvRFgzZlFSTFZLb3VrUklaMlEvd0g0dEFEZ0V2cjBEOWtDaWk5ejVM?=
+ =?utf-8?B?YXQ5N0RlR01ya2hRdjRvaDFxSkcrTEhvT2ZvWlZETmY2UWs1eG1BamxiWmpu?=
+ =?utf-8?B?TlY3aHh2ZGQvNUxTUFlBU1lTUkJPNnlsTDVCalBpYWJndVN3ajBlUmI2ak5t?=
+ =?utf-8?B?K01QYm83Zit4RVZjSGNXdG5vdFNyRWsrd1VNWk1taDNQa3RZVlRJdzJscjBj?=
+ =?utf-8?B?N3U4S0pBOHVzRGRhc3QvVzJQTi9IYTRGQXI0VDZzb2E1a0VtT1BBanRGMFIz?=
+ =?utf-8?B?eDRiNGcvL1lBWEtVdmFueXdkRkZ5Rzc4cC9PaTZVaHJKSXgxQ0FxN1BhNTFk?=
+ =?utf-8?B?UjFZclV6Q0U4TWxsT1YzY3ZqTk5FMThHUTdkRWM2YzRjMEk4UWhjME03UStE?=
+ =?utf-8?B?R0NNTjBWYkcvUnFuOXFVbTFaeWFmSlpGWVlaTlQ3QU90UWo4MFBMMmRyOXYy?=
+ =?utf-8?B?S2NONUR0U3h0M2tyL0JjZ1A1RjdwSHV2Wk9va1ZPMlBldWc5cGhxTzVvMTNC?=
+ =?utf-8?B?b25icmM3NHhRWFlrdTlJSEdobER2aVpOT3J6b3lPdS9qS3lnWWprd1ZyOTNt?=
+ =?utf-8?B?cFhUdXFVSlhvZmhCc05BenpHdndOZHdDN05rVWZCWVdhT0taOWhlaG5acHZq?=
+ =?utf-8?B?MU96enlMNzJyVmJ0L0toSG5nZ2Vwd09nakJyY1VhZXp4NzlGSkZIQUh2T0JD?=
+ =?utf-8?B?WXhjYU1nVXJiMExoRmx3VVVnZGN3RkpaN2ZDSjZvUkh0d2VBZ0Q5R2RPU3pS?=
+ =?utf-8?B?Vjd5c2I1VkdmMHNwMEFOaXcyUlFLQkEySzRQRDBZM3JEU0hYVWVydnI2eEp2?=
+ =?utf-8?B?ckljb0dVU2JLc3dOWEtjZEh4YkREemJlM2VwcXRGUmMzdnZmUTFMY1VWaysw?=
+ =?utf-8?B?bDg0MitIWTVSc0FmR2tDWUs0K1JEcHRkMzVFOEU2QWtRM2lzOHUwS09nZHl6?=
+ =?utf-8?B?WmJZUTBCaGdQQVhtWGxROUkwT1BhenpSK1FCMW5hK3VLRDNQc0o5clVMZ2pR?=
+ =?utf-8?B?RDJLRzBRVlB3RVNoVndQNVpQZVFzayt0TENKeE5Zd0N3cmpxR0ludDZ1OHFQ?=
+ =?utf-8?B?VFVNay8wVXZLY1NDc1VKTUkxQVR4dCtaVlJvMENtbDVyekhaZUJPbGJGQ1Qw?=
+ =?utf-8?Q?NtajJtKDWi/tY?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SjdPK3Y1eDVFRks1OUZsZnFFRnoxVU83eFR4RXpCMEJQNDNFRWFKMnRUdEZh?=
+ =?utf-8?B?QkZVaWlyRmZFb0lIcm5RMG9zVEtwVHVzaC9nZllIR0FzTkpTUGdBd1hHVVZM?=
+ =?utf-8?B?Q1lXQzVHSTYrbFBXVnRyOXZsMjFvUFdGME1uTFlvQUFtcVVqbCtKcnZQR2gy?=
+ =?utf-8?B?cGJvUllGbDlaVk5kZ21Vd1NWd0IzMEJBeHVWTndUdWp4bzJGYkpMQU5YbHBV?=
+ =?utf-8?B?RnhmZUJkRjFNOTZQRW1VYlE2dEFPT0tpa2J2NUdrUmJZYVloMDlyZmh5amsw?=
+ =?utf-8?B?bjZKcGMwQk1GanZybm9oaHlMRk5PUDFQa253dGV2Kzh1WGdlam9iN1g2Q284?=
+ =?utf-8?B?TXYzK0x2WlNpR0xYMzlleXJRUStLeCtKeTRNalhQdEg5N0Qrb1E2TmlURmZM?=
+ =?utf-8?B?VXhwcTFmRHo3QWRBUTNjdjNqVXRNaHNlWG9YREMwV3dVZ3hrNjA4cklhN1pC?=
+ =?utf-8?B?Z0E5THBzVDhFcUVpUHhqZDdWRE1yeGJmYlRJRmVXOE1uNU9PTXVFd0hMZ29Y?=
+ =?utf-8?B?aWZzVTRHaC9ITVREMldHQnkxQ1RMRnhLUi9kWmJYTUxDSU9GOWx5NGlpcGd0?=
+ =?utf-8?B?N3F0bENIZlZkcitiWTZLSjJRdFB5V0d4U2Y0bzR1L3d2elhDdDJJTlZuV25Z?=
+ =?utf-8?B?U1VJQ1hramFmYk1hVjJvTU1jUlErZmxzK2JkeTI1Y0Nqa2RPcC9oOTFHVDBD?=
+ =?utf-8?B?Q0Vvanl6UzB6eEtIYnBGQUF6YjNXNk84emthL3NNUDdYQzl4ZkJLcTNVZUdl?=
+ =?utf-8?B?Nkp4NVUyYVF6SG9HRllRRkJtQVhUVmtWb3hENzhkeGo1VS95ZjVTVVZCaFFq?=
+ =?utf-8?B?ZTBoRzNLTXVLdGFsdUk0QWdNZ2dPMXVkWldFMjZZaGk3M1JmQkM5NCtxM293?=
+ =?utf-8?B?TzlSWTBLK0FSTDVaV05IYmY1SkNhejlZL1o4ZC9HbmpHdmY2UVluSmUzR2ls?=
+ =?utf-8?B?Zm5XMUt3WGdwbWwzVDd5OWVhUFBmdlhkUjl5eU1vMkloZG5WR29LZWpCdUxj?=
+ =?utf-8?B?YjhXQ0Z2ZGdEWGtsdituVHo5NlFFQmthYXh4L2RURFRYN014cHFDNG1qdGwy?=
+ =?utf-8?B?ZGo4VFpVWDNvM3JnbzlUUjB4MGE4MHpSVk5meFM4QnNncnpLVWVCT25MWUl5?=
+ =?utf-8?B?cXJBZUk4VTZjN3pjbVlSSEk1SXVGZjIwVW53QWhET2RYWm1mRHkxZ09wZW9H?=
+ =?utf-8?B?Zzh1bVNaNmRpRVZjYUwzYjNGZjRxMGRzZy9qUFNBcVdvTEszOTRRaHZCZXlO?=
+ =?utf-8?B?YWl0L0pjRzUrUk1zeGVJL3lIeGsxT25qZFVnZDhPWDc2RndOMHlEaTRQQ1B4?=
+ =?utf-8?B?Qi8yK2E4ZUJqVkxRZGZ4dzNVdE9hSnVFK1Q1MEVlNlg1WXlNSVJ4aFcwQUcz?=
+ =?utf-8?B?KzhLUEJMdzlTTkE0NkxGL29mWjhtUlJlMnEvYVlXdGlnZVZFRGZLMURkVGNJ?=
+ =?utf-8?B?UEZTdXJaSzdmVkFhVWdYdXVZbWhoZ0hkek5FZ0gzdEd1WXl3M2VGWVUxK1do?=
+ =?utf-8?B?RHZqcU1vcUVTZEgydERKajdsLzF5cjMzMEFWeWhyeDQ3R3hOaTV3QlgzajJS?=
+ =?utf-8?B?WjhGaVZXVHBzbEJ6WkJZNkdaNDN3MkdWNXREQVlNWXpjZDRnVTUwajQ3YzNS?=
+ =?utf-8?B?RlczZzFJWlFmcGt6MFBoQ04xY3lXNzNFd0k0NE82ejhYNlM3NG5xS2tidTJJ?=
+ =?utf-8?B?Z0JMKzNGTm9VOXJNMTk4aXIzbWp5bUhKcTZ2WWdPMDZBYWVzbmJERGNsQXdw?=
+ =?utf-8?B?SVBSNkVDR1QwcHc2TDZ4OEZKUGxLczh2Rkx4NFJiV2hITCtIVWpaeWRqdCt1?=
+ =?utf-8?B?Yk5WNGNGdnU0TUlyUVF4UFVEQXl6VmNoTXNqK2dLcEJzMWxSbFVvU2RtTkpo?=
+ =?utf-8?B?SkJDQ3dWSGNVc3dNSUlaKzkwZGRuTjVvaGdhQzV5S3gvM0E9PQ==?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: be87f03e-e1a9-4d0b-52c9-08dec085890f
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 09:01:29.7771
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY7PR01MB10304
 
-On 6/2/26 04:20, Anderson Nascimento wrote:
-> Hello,
-> 
-> I have implemented support for exposing and enabling APERF/MPERF
-> MSR passthrough for x86 QEMU guests when running on KVM.
-> 
-> As of last year, the Linux kernel supports providing a capability
-> to disable APERF/MPERF read intercepts [1]. However, there is
-> currently no native way in QEMU to instruct KVM to activate this
-> capability or expose the feature bit cleanly via CPUID.
-> 
-> My patch introduces the `aperfmperf` feature flag via `FEAT_6_ECX`
-> (CPUID.06H:ECX[bit 0]). It ties into the existing power management
-> framework, so when a user enables power management via
-> `-overcommit cpu-pm=on` and passes `+aperfmperf` to the CPU, QEMU
-> requests KVM to drop the MSR intercepts.
+vfio_mig_get_next_state() walks vfio_from_fsm_table[] one step at a time,
+looping to skip optional states the device does not support until
+*next_fsm is supported. A blocked transition is encoded as
+VFIO_DEVICE_STATE_ERROR, which the trailing return reports as -EINVAL.
 
-Mostly looks good, but please mark it as unmigratable as well (similar 
-to INVTSC which, not coincidentially, you're also using below).
+The skip loop does not account for the ERROR sentinel.
+state_flags_table[ERROR] is ~0U and vfio_from_fsm_table[ERROR][*] is
+ERROR, so once *next_fsm becomes ERROR the loop condition stays true and
+*next_fsm never changes. The blocked arcs STOP_COPY -> PRE_COPY and
+STOP_COPY -> PRE_COPY_P2P map to ERROR yet pass the support check on a
+precopy-capable device, causing the loop to spin forever while holding
+the driver state mutex. This can result in a soft lockup, and a panic
+with softlockup_panic set.
 
-Paolo
+Terminate the skip loop on the ERROR sentinel so a blocked transition
+falls through to the existing return and reports -EINVAL.
 
-> 
-> For testing, I passed the feature via Libvirt XML like so:
-> 
->      <qemu:arg value="-overcommit"/>
->      <qemu:arg value="cpu-pm=on"/>
->      <qemu:arg value="-cpu"/>
->      <qemu:arg value="+aperfmperf,+invtsc"/>
-> 
-> A FreeBSD 16 guest is successfully able to read the changing
-> values of the MSRs directly without exiting to the hypervisor:
-> 
-> root@freebsd16development:/home/user # cpucontrol -i 6 /dev/cpuctl0
-> cpuid level 0x6: 0x00000004 0x00000000 0x00000001 0x00000000
-> root@freebsd16development:/home/user # cpucontrol -m 0xe7 /dev/cpuctl0
-> MSR 0xe7: 0x00007fdf 0x22480f90
-> root@freebsd16development:/home/user # cpucontrol -m 0xe7 /dev/cpuctl0
-> MSR 0xe7: 0x00007fdf 0x2b8b48b0
-> root@freebsd16development:/home/user # cpucontrol -m 0xe8 /dev/cpuctl0
-> MSR 0xe8: 0x000050de 0x49270831
-> root@freebsd16development:/home/user # cpucontrol -m 0xe8 /dev/cpuctl0
-> MSR 0xe8: 0x000050de 0x4ad66ae6
-> root@freebsd16development:/home/user #
-> 
-> I am looking for feedback on the approach, specifically if tying
-> this directly into `cpu-pm` makes the most sense to the
-> maintainers.
-> 
-> Based-on: QEMU v11.0.50 (commit 5611a9268d)
-> 
-> Anderson Nascimento (1):
->    target/i386: Add support for KVM APERF/MPERF passthrough
-> 
->   target/i386/cpu.c     | 17 ++++++++++++++++-
->   target/i386/cpu.h     |  2 ++
->   target/i386/kvm/kvm.c |  5 ++++-
->   3 files changed, 22 insertions(+), 2 deletions(-)
-> 
+Fixes: 4db52602a607 ("vfio: Extend the device migration protocol with PRE_COPY")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+---
+ drivers/vfio/vfio_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 6222376ab6ab..5e0422014523 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -858,7 +858,8 @@ int vfio_mig_get_next_state(struct vfio_device *device,
+ 	 * logical state, as per the above comment.
+ 	 */
+ 	*next_fsm = vfio_from_fsm_table[cur_fsm][new_fsm];
+-	while ((state_flags_table[*next_fsm] & device->migration_flags) !=
++	while (*next_fsm != VFIO_DEVICE_STATE_ERROR &&
++	       (state_flags_table[*next_fsm] & device->migration_flags) !=
+ 			state_flags_table[*next_fsm])
+ 		*next_fsm = vfio_from_fsm_table[*next_fsm][new_fsm];
+ 
+
+---
+base-commit: e43ffb69e0438cddd72aaa30898b4dc446f664f8
+change-id: 20260602-fixes-f5c6a4880594
+
+Best regards,
+-- 
+Junrui Luo <moonafterrain@outlook.com>
 
