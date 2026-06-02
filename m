@@ -1,203 +1,188 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011023.outbound.protection.outlook.com [52.101.52.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD409361DD2;
-	Tue,  2 Jun 2026 12:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780403379; cv=none; b=k++ojSdYqE34jSK9Md2HGuWUaRU7ehXJh+NpvtElGJdXv8b3YmmdmOocvwkxuocyHrfCIFMKCzbyqJQ5NoKKDp5hdG4GhNbkyyRFHIxknBsu9fuB2j3BShXaosTp6VAgVVi46dvVELXXrOsmIHX5jF5qomUENGnhyuMgCQ3OyRQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780403379; c=relaxed/simple;
-	bh=1HHEHedufZMWDrUxHmCBjsBK2hu0Ktlha7KvlmEjqeY=;
-	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
-	 MIME-Version; b=NaPeNobVoNs2u64DTkH13H/Oe1iU44UEeqq6JE0zinWrYXmDFF+KdebRRmsvUcAdN7ljVO0exogfqAXqzdtzZy7Pbg83mBRB7iPgW8lTIwrgjCZ4Os5wn8k7OsBVFsBjeYgLoqD8lCZ3BDQOfS1zv0n0zmw2eSB2ytat1wY23/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=eJbYmjIQ; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5C53E0240;
+	Tue,  2 Jun 2026 12:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780403383; cv=fail; b=HZYFho0fqyCq6jZN61HcHKzrBcAx7ep88oPd9FyF9dRrI01fz112dbkWhNx/Lbv/3WlGvYFsAG3QTyY9X+/iZiD4sacWhGiM0HEmUc4QXGPxwk45KgSLtzdKP/0bVkM1cw8pa4Y9BCfXr4F0LUUJCeM2iBsu+CdwtYtAsh31k7c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780403383; c=relaxed/simple;
+	bh=dv2hMuSTdJlDEkpoZi4V7unUWfqacIEu8kujrQgZQtg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=BJIS44ANH1WWphV7W91QkZ1dKcTbtPo4GUCWBLOJPKHuHMhZFzh5NBdl5019icHeRHUhw4C4qLK8twp7a2rveU0+vnbIlgFW8Fif+3nE9qz+wJaSbCUhqA3hvF5xYLAJKWNG8uy+yK4Sk+fZvTGH9eO/9y6pVAvu76WBuoor8PQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PlLtb5PN; arc=fail smtp.client-ip=52.101.52.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eJbYmjIQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=1HHEHedufZMWDrUxHmCBjsBK2hu0Ktlha7KvlmEjqeY=; b=eJbYmjIQoir/BCLfN3EdeKhqPh
-	qXFxdtOTynvUN8Ag52uOmom4WOa3W/5MK9FsQd22ZdPjV0UNkDrzKkfyIz33oAOIYxzGmSENv2Il8
-	GjH1MaZu7QypXR/1fBDP+AwTPg/w89eml7crENuWTEbj8JsZVNbQfpuv8cqHr6OdUDYMvoApykFy5
-	eyN6FddDemdZAP3vqqxZfTa1rx5IL3cB4L3huHtFIwbN7PFYq6nfsANvCMN2RtWfF69726BL4evtR
-	GR5KaMiYdN+D4ehYEVTp3u98zC5W6K6XRTgFWKXr6vjfR4Z9b2Ss/z/XXmgBlwwgDbS6lYAVOBkOZ
-	xiH/Ft+w==;
-Received: from [2001:8b0:10b:5:5b40:b57d:669c:36f4] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wUOFF-00000001vnZ-3o6U;
-	Tue, 02 Jun 2026 12:29:22 +0000
-Message-ID: <3291d47ea5fdd6ee2f284cadb518473130954cfc.camel@infradead.org>
-Subject: Re: [PATCH v2 20/20] KVM: x86: Use gfn_to_pfn_cache for
- record_steal_time
-From: David Woodhouse <dwmw2@infradead.org>
-To: sashiko-bot@kernel.org
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@kernel.org,
- mingo@redhat.com,  bp@alien8.de, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com,  kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org,  sashiko-reviews@lists.linux.dev,
- stollmc@amazon.com, dwmw@amazon.co.uk
-Date: Tue, 02 Jun 2026 13:29:21 +0100
-in-reply-to: <20260530061932.7849D1F00893@smtp.kernel.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-qviAXgzMU7nciQkLH7U+"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PlLtb5PN"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P5XoIo24pUSNpc0NJUlN+ICkGFIwYFSc/lvqLwnB3NgJdyJw2d38sgHfzyavkcYzKtz0AVd/lt4xpa0ekqHSg3H4aoY0B0gQrGAQ/khsC4UMGFM1XsdmZFLc57V7xpz2X3MaegUSUgwU9juxduYBwB3Ib2xaDQ0PJN2Uf4+O0rMKSoFoMQtlplLVhPLEtRGNpSQ5ALH++/gFMhi4zLTR6LpEsksDJEw1lKI5qrB/N4PYcf8M/Sew4+SKVPfuo54jXX3Y1kE6jEkkCvIGrUpfQ69/t2/5etvW5LcI4i+ckX8ZLo9BnKS1gdR4U26QYBmajZHxnzP8gW2lL0ITcdmU6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iN+XTpJkXntJSSywd1/M/e6tFwvJeJQXpUYwUBPhhcw=;
+ b=OaPRefjvSNEhXG/CSlLzJOwmKb3Ij5afsjw5tnytYQo/J+3sJk3MHOplSB6wjuxDL2VQM5R1FQDUx9KHf25+46hWUvVKIc6qtLdYKpS0927EWSz7VsRTS72F16y1um/xbcZfEctXRHpKOCfKg6um1EIJ6TFoSGWgZIIM1iG0Gsd4pLIKtfl5D5RD6BXtqw4fX+ucuMT/x3lfoV2E6rD+DOoSjvUXejlTdyeLY+a6IaXK++Bbih+3pfzyX17p505+sYcAOiHplHKtG0LmYxspl3xthWEzK5yHRFG/Ig/IXRojyy6byA4aTRxRLRi7DoWGOZMqwoJCJDXqj+MHAcgigA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iN+XTpJkXntJSSywd1/M/e6tFwvJeJQXpUYwUBPhhcw=;
+ b=PlLtb5PNLffCD0NiqML4DDLEfKSovJMwuTf6t65dS2SKCwjvUU2pGBKt7qbl+VREW2a7XDyH2us92f6WGyAno4Myb5+NEmQ00Wn8An3jCBt6JxWK79/ZmJFmdQLR811YqzBxjLTpz7wKtay4ROKVvmVygNFSNv/p1OQTKNWVyQ3ooEZkvAw+YK8DuJiWtveAhGP8ZBrRvrV5XkGEo3TB6BG0rbJrgP9OzBnc2dZjogdUwl3DJtyplVkAB/2mhioLUCN1eA4lbQGrcQTmKi4dWVz6EqfaAbkmE9uvPvKGf6wbBYj1rY/DLyY01JpHDQ7zFtD3ywdQPc2wTrextahe2A==
+Received: from SAVPR12MB999121.namprd12.prod.outlook.com
+ (2603:10b6:806:4e7::18) by CY8PR12MB9036.namprd12.prod.outlook.com
+ (2603:10b6:930:78::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Tue, 2 Jun 2026
+ 12:29:37 +0000
+Received: from SAVPR12MB999121.namprd12.prod.outlook.com
+ ([fe80::93ef:92fe:74d1:380f]) by SAVPR12MB999121.namprd12.prod.outlook.com
+ ([fe80::93ef:92fe:74d1:380f%6]) with mapi id 15.20.9913.009; Tue, 2 Jun 2026
+ 12:29:37 +0000
+From: Ankit Agrawal <ankita@nvidia.com>
+To: "alex@shazbot.org" <alex@shazbot.org>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>
+CC: "jgg@ziepe.ca" <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>, Shameer
+ Kolothum Thodi <skolothumtho@nvidia.com>, "kevin.tian@intel.com"
+	<kevin.tian@intel.com>, "bhelgaas@google.com" <bhelgaas@google.com>,
+	"clg@redhat.com" <clg@redhat.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v8 1/1] vfio/nvgrace-gpu: Add Blackwell-Next GPU readiness
+ check via CXL DVSEC
+Thread-Topic: [PATCH v8 1/1] vfio/nvgrace-gpu: Add Blackwell-Next GPU
+ readiness check via CXL DVSEC
+Thread-Index: AQHc8llUjn8y6mjsCU2e97g2INaIobYrLzkP
+Date: Tue, 2 Jun 2026 12:29:37 +0000
+Message-ID:
+ <SAVPR12MB99912160844F6B16D7AB2E570EB0122@SAVPR12MB999121.namprd12.prod.outlook.com>
+References: <20260602063015.3915-1-ankita@nvidia.com>
+In-Reply-To: <20260602063015.3915-1-ankita@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SAVPR12MB999121:EE_|CY8PR12MB9036:EE_
+x-ms-office365-filtering-correlation-id: 82c1bda7-1b30-4408-d60c-08dec0a29c47
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|38070700021|22082099003|18002099003|56012099006|11063799006;
+x-microsoft-antispam-message-info:
+ wLu1yUN0Tv3cz+p3sq0X7FTK8/yg6noWVBLEoGY/NFwJlO0rXWx68yTcJYIRkaA5DO2KZ1jhcmyjRNcFoXNF8EcyHA3Zj4AR2y2JVRY75fkZi9CoZ6hpQ99Bw0h3cfW2+BCGfvaLmAJZb2FVbX+qWhqSjypqggksor3/X3mAixbpSWPcWYxExdHOgGW5p5XcypCKjIrrSqkSISZII8zLOL2mqG1FuzISjMGXkPAuBbXZctHHl0jZkC+CK63o+SjBMmb0BvkIOuucghfh9YD+5yGCnOF8m2SDt3o+UMNPOQrYcxm0IYTORPgaxacUP/rEAnnSzbkm2v7Uq6EvfHNLKbqd+1yJ7f7K3TnnKqmvjZRXC1jjsSGbekhI4JzYpvXOYiV5kdRvoNXjy6g+WO6cNS1HIPKJ5QAGSYZIDWdoMOsw75Sie2IrcXkPSRkRx/D41DbOLI8GgWUnMCy4d7cMmiP8s9FFmJZxMeSX5L7fBF/vQvvH90tUlQpAfZ4hLtyYgNBIVuM5Aqo2Fki4SR5PsJg0bwVIcoPGwfMpROTFUGRq+nPcOOjwXjELUlBxWLD97NuyxY3u0smaLsPBW3oDSKsDAdu8IJwakkKfpZBZVqryo9H4ksD4sjRwXxg4EFh7RnMgVRUENeffdwMEbX7OBzM4npJu+UjE/AInnjwrmuTUyG7h43+N/pZrqaxlYok1DLxWIOOw1OjsVkVCjhP4lKT+qb6BfZs3xvb0NYLUEaVGUE8joQZ31pQxrrZbx63Q
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SAVPR12MB999121.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700021)(22082099003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?LVSxLxnE8UOINAWV0Q5gwC8ZEj126WftnpFbXnJnHtEfyTWP8DmAk1OY5B?=
+ =?iso-8859-1?Q?mR9oovvHiLMDv+CjWIMkT1eNr1K3OzGb1C5mUyJct4KiK99iw+1OP5H+C8?=
+ =?iso-8859-1?Q?Gu+8/90/RgoF8MF4CinC0+xOPuh4UXTDMpMtI1H5yyuIf0O2IDbNhInq2H?=
+ =?iso-8859-1?Q?jSLATRXBsumx6ALdTu0zTwWvTDjsIEOLiRgriIHYi7uNk302kLtPZ3rTIZ?=
+ =?iso-8859-1?Q?iiO/IDQ6oNc0AzVPy4UK29yuuvNwTBTyO3YgTRuc1HxcKJ7ntJ8SCRK0Wf?=
+ =?iso-8859-1?Q?iJ7+mXqgVcIA4Bsc+khCFNHyp8muj1jQds6tNDAPo2uhdnXbCI5A2iwIUd?=
+ =?iso-8859-1?Q?llhFpVjw94YdKqBA7vLllgAH7CngEJTNKUl2Rfhc6hkBRb2dMAioMsYTgg?=
+ =?iso-8859-1?Q?AYUfoJB0ov11ra4gyAAcnIev8kSAOpNxP7C26CSM48wD1v3F2wsJoRVHHJ?=
+ =?iso-8859-1?Q?Qmuu0RxDhecZkPDhXNK1tjYmUEmFFg6xbzxTAr+QMOJDMYXRFBoWrGU4u7?=
+ =?iso-8859-1?Q?vHsB9TWvpiFzx2RvgXpg/jnhR/1VTFVZR+ddm+780SR1lXVtMYMTJpHJHT?=
+ =?iso-8859-1?Q?Xti586R7hc4nRcHo2imVgwor6/fvzVOt0Kj5Nomx0wgRLrw3Sjs4kv+f4k?=
+ =?iso-8859-1?Q?eFnEgWArtB5ODTkmzs1GfQfP4M8fY8Lnuvhih2NQ+nOQNcK9acF80touGc?=
+ =?iso-8859-1?Q?rIMXUeEo9t3pqfoyuti0FkX4PLAHzAQa9XEzQOmBYmnP/14u1wdDUmHgXp?=
+ =?iso-8859-1?Q?6p5Mc9oYDLid9fpL08TEHGTlnyBrgvl+imZdSvskUO+JzkWvPLgOx/dAvK?=
+ =?iso-8859-1?Q?ebHpY/WziUrrUODHD17EPYOa+H/wvDBsDxtunY7vOKvGyOZHrnf9UAVheb?=
+ =?iso-8859-1?Q?C9J+AsqYd09W55eaIZDeesNMt0V7DcZDj6AJYkLPIoOLWDmLRENicEUOwH?=
+ =?iso-8859-1?Q?bhEbBTNJrEafBErk9Ab8ByygzoY0GnKSalYPvqd1TZWwhWxIIuzKSy6Y3q?=
+ =?iso-8859-1?Q?MOVcyEEZtfCndSF8BPy+3fCQo5rWNBaafyamSWFSkoS9D8Hqaov4y2xo/A?=
+ =?iso-8859-1?Q?qllSHrnjKDFK6qmozk7//cNjys6UElmEDBhIQpjMhzAEWysVSpXcNr+afp?=
+ =?iso-8859-1?Q?u535LACdWlUefF6E87rv6nw+ik+Af/TIRQwhWIGU6NxJ3HPY/30HDxyHc5?=
+ =?iso-8859-1?Q?iQgmHtZjaJ8DHup6HxXg35hZfT+eNDCU3f6pCFawU+vM8SUOsew0rmBfxZ?=
+ =?iso-8859-1?Q?3r8Y6vhR0StIEYvPa2K+d9O3pORBrQRmefpWu4VBu72zNOXW0oJ+UM3BUu?=
+ =?iso-8859-1?Q?+BaxAhErL9KlrSgiGDyFWbwDLjQcRM3OSIaZt8StB+Y2Rs53Frx3pHP2K0?=
+ =?iso-8859-1?Q?1TM20QtamL4laEmCWb5E8AKir4AbAFWZ807CA5vx2NIc6BKbg8c8atj6p4?=
+ =?iso-8859-1?Q?LT5BImDZlEiSnOlFOdxx90IVh31B671qWPDhaq5hdhW7kEqqZ1l5Dj3yhj?=
+ =?iso-8859-1?Q?MNTYvfYdx1DmmhTQRzcKEPO6KSc/tHeX3kZnASxPcBcQ0XkLY/G5uUFUA1?=
+ =?iso-8859-1?Q?N19llBQeYwUkojvqmhdjNYNBg2YDSIlk75FapszyevGhoUG0STfEhoDG2r?=
+ =?iso-8859-1?Q?V1HiCltmtvxwLQ4k9qAhrD2OW3sUhGbAAEUWKk5MHWQyd8kllz6xsI/nOw?=
+ =?iso-8859-1?Q?Dr/Nxiv3V8+Uovf/isYdKpj52T2++8ef+0sCsr1ghvMd/8dyh4BlxlszTQ?=
+ =?iso-8859-1?Q?Le63ypljAe2AVzpN48ZY3kswRQRe2M1NlrAxw7gxNqmuto?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SAVPR12MB999121.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82c1bda7-1b30-4408-d60c-08dec0a29c47
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2026 12:29:37.2144
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7cyOifxAhFlWCAOw/sgvfjlO2NnJb1YxCk9wc2RtrCTH+O6rsBWs7/4uqpgQ1Kb30hPzZzhlIBfobQTgogXNDg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB9036
 
-
---=-qviAXgzMU7nciQkLH7U+
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, 30 May 2026 06:19:32 +0000, sashiko-bot@kernel.org wrote:
-> [Severity: High]
-> Does this introduce a scheduling while atomic bug on non-PREEMPT_RT kerne=
-ls?
->
-> The CLASS(gpc_map_local, st_map) macro acquires a read_lock on gpc->lock,
-> which disables preemption. While this lock is held, if the guest supports
-> PV TLB flush, the code calls kvm_vcpu_flush_tlb_guest().
->
-> If TDP is disabled (shadow paging), kvm_vcpu_flush_tlb_guest() calls
-> kvm_mmu_sync_roots() and eventually mmu_sync_children(). This path can yi=
-eld
-> via cond_resched_rwlock_write(). Yielding while preemption is disabled by
-> the gpc read lock will trigger a BUG.
-
-Ah, that issue exists in the previous versions too, but it's simple
-enough to fix. There's no particular timing constraint for flushing the
-TLB; it just have to be done before this vCPU ever runs again. It can
-just be moved to the end of the function after the lock is dropped.
-
-That does mean record_steal_time() should use the explicit
-gpc_map_local_lock()/gpc_map_local_unlock() instead of the CLASS()
-macro, but that's easy enough.
-
-> [Severity: High]
-> Can this cause an ABBA deadlock in the scheduler on PREEMPT_RT?
->
-> kvm_steal_time_set_preempted() is called during a vCPU context switch
-> via kvm_sched_out(), which is a preempt notifier hook. This runs with
-> the local CPUs runqueue lock (rq->lock) held.
->
-> While the code correctly uses a trylock to avoid sleeping when acquiring
-> the lock, the CLASS macro destructor will implicitly call read_unlock()
-> at the end of the function. On PREEMPT_RT kernels, unlocking an rt_rwlock
-> can wake up a waiting writer, such as a concurrent kvm_gpc_refresh().
-
-This one is more fun, and the problem already exists on RT for the Xen
-runstate update so it's not even really new with this patch.
-
-I think the gpc lock needs to be a raw_rwlock_t, so that it remains a
-true spinning lock even on PREEMPT_RT. The writer side
-(kvm_gpc_refresh) only holds the lock briefly to swap in the new
-pfn/khva after doing the heavyweight work, so it should be fine as a
-raw lock.
-
-
---=-qviAXgzMU7nciQkLH7U+
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwMjEyMjky
-MVowLwYJKoZIhvcNAQkEMSIEII6S3Fh0pIK+0gUTj0BkgViVM4RjnaWDWLp1NmkG/eliMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAPDfo27eZ4Muk
-6vNU+g63gz1Noyu16uCWdVgtjxJ9PlUq+RsnxSBTKgYF/aMIPgN1ejgXX6xEQx+RKVkIgXSpiGyK
-86ScKwYExs24ep5uSCnjzIQnRM1bA3KevPDZDem6u78WhtFaCBPUEHIru23UNX1lVRqJkhLNkO0C
-dsoH4+7UCSTtefgu+Wl4jHtF3tIXL3VyBQxmgiZjJ6Cxgi43zTGu330quw3Pom6XQ3aZpjht21zw
-GmVN6ZiO8XWlj7h+IICwXWZr3LFWOf5jLlY6Xoha+xQN+nxwlOzdmsWVxKYg6oQpthvCihBiHw5W
-cgEIFnXezYu/33+DnXh/whTv6lcQXDxBByyVDMo5oLD5bOC2eeY4BDxLVeeuFOmQKLB2kePhO1jb
-j18D4ko7/a5ad1ckzgUzoX0JZEW1ZSoxxpZLDxsZ0ZAporTt9OnPnQOh8EL3OwWRxDkaUUKkUXdL
-5seEaNU/31SzotnUnIexdR0CeErjoYB9TOkFWsjhtw/sC8KtlxgC9FYoR8s7v6fh7up21YOr9Kdq
-AvJaOYrE2vUOcwhbqOvmwM8Tf4gLnbv1Ba+beZartuD5VNrWwB68c4L0b70QAE4M1bizCtowOoWM
-K6aLOOIlFX/MMSs0nnjhAFjiqL8PKFGPOaQx0trVmUe6Ddrq2D52V8blJnVpJfAAAAAAAAA=
-
-
---=-qviAXgzMU7nciQkLH7U+--
+Got the below review comments from Sashiko [1].=0A=
+=0A=
+> > @@ -712,6 +825,12 @@ nvgrace_gpu_read_mem(struct nvgrace_gpu_pci_core_d=
+evice *nvdev,=0A=
+> >   else=0A=
+> >           mem_count =3D min(count, memregion->memlength - (size_t)offse=
+t);=0A=
+> >=0A=
+> > + if (nvdev->cxl_dvsec && READ_ONCE(nvdev->reset_done)) {=0A=
+> > +         ret =3D nvgrace_gpu_wait_device_ready_cxl(nvdev);=0A=
+> > +         if (ret)=0A=
+> > +                 return ret;=0A=
+> > + }=0A=
+> > +=0A=
+> >   scoped_guard(rwsem_read, &vdev->memory_lock) {=0A=
+> >           ret =3D nvgrace_gpu_check_device_ready(nvdev);=0A=
+> >           if (ret)=0A=
+>=0A=
+> [Severity: High]=0A=
+> If a reset races between the lockless wait and the in-lock check, could t=
+his=0A=
+> code return -EAGAIN to userspace?=0A=
+> [...]=0A=
+> Should nvgrace_gpu_read_mem() include the same retry loop around the wait=
+=0A=
+> and lock acquisition as the fault handler?=0A=
+>=0A=
+> > @@ -846,6 +965,12 @@ nvgrace_gpu_write_mem(struct nvgrace_gpu_pci_core_=
+device *nvdev,=0A=
+> > + if (nvdev->cxl_dvsec && READ_ONCE(nvdev->reset_done)) {=0A=
+> > +         ret =3D nvgrace_gpu_wait_device_ready_cxl(nvdev);=0A=
+> > +         if (ret)=0A=
+> > +                 return ret;=0A=
+> > + }=0A=
+> > +=0A=
+> >   scoped_guard(rwsem_read, &vdev->memory_lock) {=0A=
+> >           ret =3D nvgrace_gpu_check_device_ready(nvdev);=0A=
+> >           if (ret)=0A=
+>=0A=
+> [Severity: High]=0A=
+> Does nvgrace_gpu_write_mem() have the same missing retry logic?=0A=
+>=0A=
+> Similar to the read path, a racing reset could cause this to return a=0A=
+> spurious -EAGAIN to userspace.=0A=
+=0A=
+This is the same point Alex addressed on v7 [2].=0A=
+=0A=
+"Note that the read/write paths also have this gap where we can wait for=0A=
+the device to be ready, but the check under memory_lock returns=0A=
+-EAGAIN.  The difference is that userspace will already automatically=0A=
+handle the -EAGAIN vs the SIGBUS could be fatal."=0A=
+=0A=
+So I'll skip this.=0A=
+=0A=
+[1] https://lore.kernel.org/all/20260528115613.63f1b178@shazbot.org/=0A=
+[2] https://lore.kernel.org/all/20260602065100.48B2D1F00893@smtp.kernel.org=
+/=0A=
