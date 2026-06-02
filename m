@@ -1,119 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1FB27A47F
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 10:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2142136F91F;
+	Tue,  2 Jun 2026 10:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780394445; cv=none; b=kziVuQQj+ZA7bEjtk80qmvqNgsSGA0+CJY51uIHU4ZTKE/WP/XDMwewYkIN+9kcw31P/t64iE2Qu4VEnsYpvqiTULVi9NGpXnPTg6UNI3D2oGy1f3l4A7/sNq5EPKI2SSS7wKq17/mojfcezCo+34wpaNTL32tpP8b8hGbEzkM0=
+	t=1780394854; cv=none; b=p3smZ7jpVCnbDNLYCG84hY34fNTcAKCFLHVVRw51142IYdCnswol4PQE9K1tbzmWFdIq6Wb1CmFqadkcwezfOY1MELHS9Va/R6lQ1DeQ3Uv9m7uuCOfTwLcZdXzOT+BaZS+aGvmnWCM2/oqu7uR+DEGXopKaQYo5fJXgOFq3aps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780394445; c=relaxed/simple;
-	bh=Atf0HQ/BkCAA1oatoUeBqRikd/u59S6s/D9FUGXHoKk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=pvPcFHV3haDLtVqxxR5wNohVeM4NPtCgj1Gyta9l3+rDe/KYHNVCkUR1CbjbX9IvrIZh6bw+2pkeIijTZBplVfNMdKXwhIQD3NKxUkDzw4v+eB3BUsNWoF9WVp/oeSf13HZBPUV29vA7sJkhdZ9kS+qYq8k6c9OEZN/zXzRILJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UmBZ9Iuk; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1780394854; c=relaxed/simple;
+	bh=DJ+YNfigE8pzfyVTIvkGTp3g8dr7vHyfhNo60hzahAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HLKkdwPBPzRP6l+m23g75lUY7x5T2+jF83lt+i1490CSOJR5pjFdfd3nGPauKfBkt1QyvUbDwCO9IIQm8pIAlqg1jWRPnwk6NdjouZPUTBbDmOcoEbRB+zZIm3vKOYIdIi9yV+lLWmY0OdfYYM6wVu5w/AR/vCVxykh2Z8nxf88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kv2fE0bp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UmBZ9Iuk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780394444; x=1811930444;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=Atf0HQ/BkCAA1oatoUeBqRikd/u59S6s/D9FUGXHoKk=;
-  b=UmBZ9IukY6UNnXvylRnS9eUajcXu8yywFLd3YjKN4SUpi0sS7Pt093xM
-   xTEcROuEML6AP/IvqkB41pWd46zCFIhesW9Yrk7xFxBVN4s1DLOMM8kzx
-   +WAUrKFHcrUAeWfHFNJPP6uz9OPnljQzY8kgclQhAHE7Axqny9qO/Lv1M
-   2n0dLRprnDzngcFrzJS+HcYXaczZwFn4tL6glL1PWCD0xmkwPaDNBQlGm
-   KnAv/CykzgeMcGXkEO/Z8GjHEzGuXkFeXaMx+i7S9jVDiYFd/LaqcOtDL
-   OXgRbyBgwvs0FTmq5muRALPbUQPTWWIJ9l8VXAP41uvhaZv1irZXuQFyK
-   Q==;
-X-CSE-ConnectionGUID: KWnRydXJRgKbU0Or23dExg==
-X-CSE-MsgGUID: 2XELJzALQ6a6qdViPn+zeA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="85062434"
-X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
-   d="scan'208";a="85062434"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 03:00:44 -0700
-X-CSE-ConnectionGUID: CVOZZD+TRle5FGq7Djbi4Q==
-X-CSE-MsgGUID: fpYDJbs7SlCg3QosuPMiKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
-   d="scan'208";a="243042744"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 03:00:42 -0700
-Message-ID: <fe9d441a-91b1-4084-8e1c-71813c3c8bb2@intel.com>
-Date: Tue, 2 Jun 2026 18:00:37 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kv2fE0bp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B312A1F00893;
+	Tue,  2 Jun 2026 10:07:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780394852;
+	bh=FArUgwzqGxSIYq6nsRbDRcCSW+jo1FsCY7Blcc7Vo5I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Kv2fE0bpyQXoK2UWojz99uTNM13VMJzQY8pttiWpI5b8+40hTJICG1z6mCK4HxzOt
+	 WGAj2y5SJlJoIl+N9iHLKqVRWu9OrrHnx+/tz3FlIfzs7MJKFsAGpGxzFWxuyG8cBM
+	 WrYnPscz8yfDI3CjGm3n7wUsfcglUz6lNDXUt3emdSCW12sVz1MKY0/BHu5mWG7lyI
+	 dN+nfzkHl4QQvZFfAGkcO2JVbFceEzmni/FhHhQ1tddV0QOElD5gWZUecDoh8qPAX+
+	 6wu9anSgJc0s666UALU4wXlDajOMwgfjPzHsI45oaFeSPwD+x8KBz2GcGUJ7aJGPII
+	 gOS5yhOmWv2XA==
+Date: Tue, 2 Jun 2026 13:07:24 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
+	ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com,
+	jthoughton@google.com, aarcange@redhat.com, sj@kernel.org,
+	usama.arif@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v6 04/15] userfaultfd: test uffd VMA flags through the
+ vma_flags_t API
+Message-ID: <ah6rXJEYUsGfzPgi@kernel.org>
+References: <20260529172716.357179-1-kas@kernel.org>
+ <20260529172716.357179-5-kas@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH] x86/run: Use separate "-accel" option to
- configure the accelerator
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-References: <20260528071712.1407929-1-xiaoyao.li@intel.com>
- <ahg8i_Zv9TRk-UzE@google.com>
- <7987e722-4ee3-4d6c-a4b7-369cfd272dac@intel.com>
-Content-Language: en-US
-In-Reply-To: <7987e722-4ee3-4d6c-a4b7-369cfd272dac@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260529172716.357179-5-kas@kernel.org>
 
-On 5/29/2026 8:09 AM, Xiaoyao Li wrote:
-> On 5/28/2026 9:00 PM, Sean Christopherson wrote:
->> On Thu, May 28, 2026, Xiaoyao Li wrote:
->>> When configuring accelerator via machine's "accel" property, it cannot
->>> pass additional ACCEL_PROPS. For example, it hits following error when
->>> configuring KVM with "notify-vmexit":
->>>
->>>    # ACCEL="kvm,notify-vmexit=internal-error" ./x86-run x86/apic.c
->>>    #   qemu-system-x86_64: Property 'pc-i440fx-11.1-machine.notify- 
->>> vmexit' not found
->>>
->>> Switch to use separate "-accel" option to configure the accelerator.
->>>
->>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>> ---
->>>   x86/run | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/x86/run b/x86/run
->>> index dd38f14c871f..a68d469dd1b8 100755
->>> --- a/x86/run
->>> +++ b/x86/run
->>> @@ -43,7 +43,7 @@ fi
->>>   pit="-global kvm-pit.lost_tick_policy=discard"
->>>   command="${qemu} --no-reboot -nodefaults $pit $pc_testdev -display 
->>> none -serial stdio $pci_testdev"
->>> -command+=" -machine accel=$ACCEL$ACCEL_PROPS"
->>> +command+=" -accel $ACCEL$ACCEL_PROPS"
->>
->> This breaks my setup for specifying kernel_irqchip=split.
->>
->>    qemu: -accel kvm,kernel_irqchip=split: Property 'kvm- 
->> accel.kernel_irqchip' not found
+On Fri, May 29, 2026 at 06:26:33PM +0100, Kiryl Shutsemau (Meta) wrote:
+> The uffd VMA-flag helpers read vma->vm_flags directly. Now that
+> config-gated per-mode masks exist, switch them to the vma_flags_t
+> accessor vma_test_any_mask(), which is the going-forward API and keeps a
+> single place (the VMA_UFFD_* masks) that knows which modes are available
+> on the current build.
 > 
-> If you switch "kernel_irqchip" to "kernel-irqchip", it should work again.
+> No functional change: vma_flags_t is in union with vm_flags, so the same
+> bits are read, and the masks fold to the same code the open-coded
+> vm_flags tests produced -- verified identical on gcc and clang, 32- and
+> 64-bit.
 > 
-> This needs to be fixed on QEMU side. I'll look at it.
+> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-8
 
-Well, I feel hard to justify a QEMU "fix" for it.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-"kernel_irqchip" was a property of "machine" in old QEMU, and QEMU 
-switched it to "kernel-irqchip" automatically.
+> ---
+>  include/linux/userfaultfd_k.h | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> index 658740df2978..c4f2cc6dfcf0 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -178,7 +178,8 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+>   */
+>  static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
+> +	return vma_test_any_mask(vma,
+> +		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
+>  }
+>  
+>  /*
+> @@ -190,22 +191,23 @@ static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
+>   */
+>  static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
+> +	return vma_test_any_mask(vma,
+> +		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
+>  }
+>  
+>  static inline bool userfaultfd_missing(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & VM_UFFD_MISSING;
+> +	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
+>  }
+>  
+>  static inline bool userfaultfd_wp(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & VM_UFFD_WP;
+> +	return vma_test_any_mask(vma, VMA_UFFD_WP);
+>  }
+>  
+>  static inline bool userfaultfd_minor(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & VM_UFFD_MINOR;
+> +	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
+>  }
+>  
+>  static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
+> @@ -222,7 +224,7 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
+>  
+>  static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_flags & __VM_UFFD_FLAGS;
+> +	return vma_test_any_mask(vma, __VMA_UFFD_FLAGS);
+>  }
+>  
+>  static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
+> -- 
+> 2.54.0
+> 
 
-Then QEMU moved it to be a property of "accel", while keeping the 
-compatibility when users configure it via "machine" that QEMU internally 
-setting it to accel's property in this case.
-
-However, "kernel_irqchip" is only valid on "machine", but not on "accel".
-
-For this KVM unit test issue, do we need to add workaround to keep your 
-(work-by-accident) usage working? or just kill it?
-
+-- 
+Sincerely yours,
+Mike.
