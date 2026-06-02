@@ -1,58 +1,60 @@
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A0330148A
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 14:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5E13E1D17
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 14:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780409092; cv=none; b=BoZ+ttePAKeSt/3QzZ9LtxJ92J1Sl08X6+QvJiaOJEtXswjiUBC4Sy+5IA/bjXTABJsTpz3i3kj1T0cih8pI8FNJL8SviDBICEm90wphsapKWX0G4bHiiB5ssmd9H7KPazAfQLBxxNj++P2H6IyOhzx5KeRKcMKnpgjxA7Tp2xY=
+	t=1780409103; cv=none; b=pwZTwbEbheB8q6FOZX5FC48GMXj6uNm5jG0k63rtUMMZpN2tzoOWABG7jD6vmbG5B8Be+QxLHeEugnBJtASwaYAzUoUlp2yRjbDlzoKZUHe0yjz8HNPDMH0FVp3xOsb+cAtrXkjuQHw/mH/epitD2w/ALQHeuKFmyaaErOmVVGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780409092; c=relaxed/simple;
-	bh=UDuowQtCwyTwvVntr60YB7kyStQLajvYuYLxBG1pkeU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X1lwmaaNW1qjBjfI4ACP4FBEBNUvlaZSoa1a5o5xwLIAGV2mrYHrXxVSgsB/Wtcyl1hJO+AuFxg7QDf94FTQNue0n/hgIkH2QOJn+FLEkfK6K+3hNxCF04vEgJgY6gV7sAcsRVqMHNvMjnRtsK3C/QgUB/R6uPXkqu6kiIjjdBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=allelesecurity.com; spf=pass smtp.mailfrom=allelesecurity.com; dkim=pass (1024-bit key) header.d=allelesecurity.com header.i=@allelesecurity.com header.b=MKryWRoQ; arc=none smtp.client-ip=209.85.217.42
+	s=arc-20240116; t=1780409103; c=relaxed/simple;
+	bh=oSQBC1wXHNLRU+Aw1J7HRYcdfDizv3RRc/9t993TbzI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=l8uZQ5B3Rrejm1CRfr3Lrfxy8VmdR44KyqRKUnZK8y586kAKSOrJqzta206S0wOtwiEv4zfXPI9Y7Dumoy+aSzWoytAN9QUrIDbpfj2cJdrYFQwZ7WJNQV43pps18CkDdiTjTJp2GY0CV5vf/pYpzINAzOW5vED6ti1wh9YNVwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=allelesecurity.com; spf=pass smtp.mailfrom=allelesecurity.com; dkim=pass (1024-bit key) header.d=allelesecurity.com header.i=@allelesecurity.com header.b=UvICAdJj; arc=none smtp.client-ip=209.85.222.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=allelesecurity.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=allelesecurity.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=allelesecurity.com header.i=@allelesecurity.com header.b="MKryWRoQ"
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-6c3099b11a9so1557799137.2
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 07:04:51 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=allelesecurity.com header.i=@allelesecurity.com header.b="UvICAdJj"
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-963ebce7076so383303241.3
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 07:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=allelesecurity.com; s=google; t=1780409090; x=1781013890; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ujK4eFBt2CiUF6UNRnobhV7dIbSUH85qOD9fCMSIzOE=;
-        b=MKryWRoQrPvejhRd+oVhYqM2ZaXiJ8BzHyuqh7N1YYl5UPsCr94ckhKD9ZdOEHtEg8
-         /sQjpRm1YRRbjtnITGl3yqqFRjT9Ia0wOMI3N441Tr8OfV5Ot+c4lqXgV9PsjXnBKYfE
-         3rdGOaqBVh2IEz6+lakaVsPplcn9i0CYBMStw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780409090; x=1781013890;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=allelesecurity.com; s=google; t=1780409101; x=1781013901; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ujK4eFBt2CiUF6UNRnobhV7dIbSUH85qOD9fCMSIzOE=;
-        b=AKwYe3p1mrrtiPOZZcGNIfmQA7Nx2r88N/HSJF8xDl6KErY9/IrlUNNZVpHTzQ4g/1
-         DrQ/qESUVKX03UmYZAI9AOzgqrcPSQl77RyKW3HMoc5SfoeQ5Pa3h8WPmzpC405NVTBI
-         /MMgEEV9XOLu/Yzd83gZespu+SltQPL10NTIwgvpM/6xJ1heHdmvrTLTCg2EfQqCaMXS
-         CYR2QQvciq+mcDYrxY++12YLYVTlqTAbqQVfKQXlElD/jDVowzeWeeC3Ppbb6obT7k3H
-         jx7A+YoNycfhtk+s7+D+HWzpc2fHSwdSJbTYklqP91g/fm6vnY8PuxOkt0F0LAgq7RwE
-         KZAw==
-X-Forwarded-Encrypted: i=1; AFNElJ8EgKifT8y4jaf8iRBJFVal/DpsLw7NPZt7xaFBNeAfAuEa3P6DhpSs866jS4HXc1VS0ag=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWjKdySscpqUaniBtK2q20o2upPInxWGHUJ6/B4BNNYDBhe6SC
-	EIgdq6ayuuRk2Lth0R5iIgJ5P5wjX3wDGb5ilWFzaqPbyuunMMeLH0Elzur0VTeH0M0=
-X-Gm-Gg: Acq92OGLZdcAU6Rt4F/bealJs7QUKPjoA8SJVim8cy4ifW9OoLisQ8FHf7P3thvIFwd
-	c0dVknHjfOiYd64BYda/PggR2k92yYxYST3kixxNV2BslnSlFGa7yUH3TyYSNRSSMzBmPXa8p+P
-	0v+kChyxxN7mB/IZ4FObmkeq5OOOfBqaK7OQ3JwSj4ci3UNOwtnw7UJf8s5rd9q+QLDJ+OHTOrs
-	wF60J5RVdfQIrNfASlIzAiiDLbKe+UJAXigPQ/m/8FWaPueNfc9oqr6kR4zEPAHEBTyezS+Cq7y
-	0hmdEFHEyuj2QNO5mmowKD7Y6Q3dCpqdFVEp6fc4zwJm9ZAzOmwB6UfWHas39hElQ7pn6iMlaQH
-	OI3DCY+U/fnt0o4cCzQCUkroPhJtY7poyS5M4GmCfa7IFkt7OOItaEnsrFzA34oXTWcxrglPhZy
-	CZyQMrKK3dVxj4LaOL1tlt2Ao54yjYSBgJe6wLJw==
-X-Received: by 2002:a05:6102:61d1:b0:634:420a:ab1b with SMTP id ada2fe7eead31-6c69b82c136mr3593702137.18.1780409090446;
-        Tue, 02 Jun 2026 07:04:50 -0700 (PDT)
+        bh=CmSaH4fUuZZEN3sgO5R99mha2OHiYvLyU1oJPcEKSh4=;
+        b=UvICAdJjnFnOoj8LWOkm0i06MK7DkfhSFBty2uUBxM8t4KFLGDCmcH6ksiAWkhsQf+
+         ZIpyVui3+m08rPPzM5eHRGtpNwBcqJ4cQDY9puy5CDqPHqiaIff7acXfyAZs4eUcHGha
+         a/agWir8Q9iuSXUvA9CgWeeaCmV8m8NaBRkts=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780409101; x=1781013901;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CmSaH4fUuZZEN3sgO5R99mha2OHiYvLyU1oJPcEKSh4=;
+        b=aYspxu6dv7NJSdNtqqL/v0eIVz2EWlST30riTS1vzbGVvIVhNQmoQxfFNn5Gt4XH3e
+         eNZs5tCLb6Avr2Mpa2FJm2rF+VEqKHrIr+RykgdkvZg/jQSsYFC78327AavT0zJBlP+M
+         b6weYPACUmBfLoGe7+dXIDz8jKOc9SmgVMR+Oc+yhwMyYGS48MGJyMlk0YAlM1Q5nvIg
+         Do7GL+tAhc2JJme/VInYNx6TAiolvjRKr0GKH/aOyBbAyTSJl1mAUPyvQHAic8Kfbaxo
+         x6KFAaMQ5C8XSAQumh7EdEenphtRVjoknua+liThvb7flQfhFPrRAic/J3Jtp1AxUshw
+         7ZgQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8dGGhu4UUS176BySKtTG5I7FTPCHQl0AUME2Mf7B+qzO/PIUsdWRknYGdH7dsgjCv/2Sw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrIp/6eq8r3bnu5H9fqbP5dhvOwpy3tEhFOAI3oRbrjCkdXFiQ
+	2T/nQm7DFRyOd0/HnnlYZCxhM2IAAATokcmYkK/f53iJZNeP3VjI/3j7jmyrjwxxVmo=
+X-Gm-Gg: Acq92OEe/BteZCWdZeWfhL5X43LE8gVzQh1HQPyQUDiPMDgvIgVgzZdfYiTLu5+1hR0
+	OaHk2IQpBr5SpKE7tQ9psuPLuQi5+Q4dV2SSceNbevsGlaw/5s7ygmCr/GVLw+7oY8R1i1yblCU
+	n8NNAqu9ZaQtj3hIYIjL9EJ5rN+/Pieedjx2od5SpHI2AI20A44HQXuG1csUHrz45mNu7R+C2hG
+	kC60EyB+YXO75QdjvWp0BSvH9lRr3CR0QObKnrCA1Xh1e21KjaQuja2W3R0up1v1TnzomHi277A
+	qHdW3f3GANe1PDMsYfRfKjeHr/tXoxWsJA+yH0Zh475DodkvK/9+42HA7WmeDQRnqFkkcUYhllN
+	VXPX6Jtk45MCxaBvg+cwQWGzpFM7jCIBIpcPd4GprGwWMWiIfGBsi4H0k4CPuVD75ztvw/uPIt6
+	IlIL64EAXmAR9fuMMWSvRZu/523ATKCasRcrDYqw==
+X-Received: by 2002:a05:6102:1526:b0:602:a9f3:74d8 with SMTP id ada2fe7eead31-6c69806f3bamr6319981137.25.1780409100964;
+        Tue, 02 Jun 2026 07:05:00 -0700 (PDT)
 Received: from tarski ([179.105.152.38])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-6d1ff3909b3sm6097602137.6.2026.06.02.07.04.47
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-6d1ff3909b3sm6097602137.6.2026.06.02.07.04.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 07:04:50 -0700 (PDT)
+        Tue, 02 Jun 2026 07:05:00 -0700 (PDT)
 From: Anderson Nascimento <anderson@allelesecurity.com>
 To: qemu-devel@nongnu.org,
 	kvm@vger.kernel.org,
@@ -60,10 +62,12 @@ To: qemu-devel@nongnu.org,
 	zhao1.liu@intel.com,
 	mtosatti@redhat.com
 Cc: Anderson Nascimento <anderson@allelesecurity.com>
-Subject: [PATCH v2 0/1] target/i386: Add support for KVM APERF/MPERF passthrough
-Date: Tue,  2 Jun 2026 11:03:46 -0300
-Message-ID: <20260602140348.774203-1-anderson@allelesecurity.com>
+Subject: [PATCH v2 1/1] target/i386: Add support for KVM APERF/MPERF passthrough
+Date: Tue,  2 Jun 2026 11:03:47 -0300
+Message-ID: <20260602140348.774203-2-anderson@allelesecurity.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260602140348.774203-1-anderson@allelesecurity.com>
+References: <20260602140348.774203-1-anderson@allelesecurity.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -72,57 +76,118 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello,
+Introduce support for exposing and enabling APERF/MPERF MSR passthrough
+for x86 QEMU guests when running under KVM.
 
-I have implemented support for exposing and enabling APERF/MPERF
-MSR passthrough for x86 QEMU guests when running on KVM.
+The Linux kernel supports a KVM capability allowing the hypervisor to
+disable read intercepts on the IA32_APERF and IA32_MPERF MSRs, enabling
+guests to track effective frequency directly without VM-exits. QEMU
+currently lacks a native way to request this capability or expose the
+corresponding feature bit to the guest.
 
-As of last year, the Linux kernel supports providing a capability
-to disable APERF/MPERF read intercepts [1]. However, there is
-currently no native way in QEMU to instruct KVM to activate this
-capability or expose the feature bit cleanly via CPUID.
+This patch adds the `aperfmperf` feature flag via `FEAT_6_ECX`
+(CPUID.06H:ECX[bit 0]). To ensure safe tracking across power states,
+the flag ties into QEMU's existing host power management framework.
+When host CPU power management is explicitly requested by the user
+(via `-overcommit cpu-pm=on`) and the `+aperfmperf` flag is provided
+to the CPU, QEMU will invoke the KVM ioctl to drop the APERF/MPERF
+MSR read intercepts.
 
-My patch introduces the `aperfmperf` feature flag via `FEAT_6_ECX`
-(CPUID.06H:ECX[bit 0]). It ties into the existing power management
-framework, so when a user enables power management via
-`-overcommit cpu-pm=on` and passes `+aperfmperf` to the CPU, QEMU
-requests KVM to drop the MSR intercepts.
+This implementation allows guest operating systems (such as FreeBSD
+or Linux) to dynamically calculate CPU utilization and turbo-boost
+metrics without incurring performance overhead from hypervisor trap-and-
+emulate loops.
 
-For testing, I passed the feature via Libvirt XML like so:
-
-    <qemu:arg value="-overcommit"/>
-    <qemu:arg value="cpu-pm=on"/>
-    <qemu:arg value="-cpu"/>
-    <qemu:arg value="host,+aperfmperf,+invtsc"/>
-
-A FreeBSD 16 guest is successfully able to read the changing
-values of the MSRs directly without exiting to the hypervisor:
-
-root@freebsd16development:/home/user # cpucontrol -i 6 /dev/cpuctl0
-cpuid level 0x6: 0x00000004 0x00000000 0x00000001 0x00000000
-root@freebsd16development:/home/user # cpucontrol -m 0xe7 /dev/cpuctl0
-MSR 0xe7: 0x00007fdf 0x22480f90
-root@freebsd16development:/home/user # cpucontrol -m 0xe7 /dev/cpuctl0
-MSR 0xe7: 0x00007fdf 0x2b8b48b0
-root@freebsd16development:/home/user # cpucontrol -m 0xe8 /dev/cpuctl0
-MSR 0xe8: 0x000050de 0x49270831
-root@freebsd16development:/home/user # cpucontrol -m 0xe8 /dev/cpuctl0
-MSR 0xe8: 0x000050de 0x4ad66ae6
-root@freebsd16development:/home/user #
-
-Based-on: QEMU v11.0.50 (commit 5611a9268d)
-
-v1 -> v2 changelog:
-  - Add migration flags
-
-Anderson Nascimento (1):
-  target/i386: Add support for KVM APERF/MPERF passthrough
+Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
+---
+Changes in v2
+- Added migration flags
+- Link to v1: https://lore.kernel.org/all/20260602022048.752453-1-anderson@allelesecurity.com/
 
  target/i386/cpu.c     | 18 +++++++++++++++++-
  target/i386/cpu.h     |  2 ++
  target/i386/kvm/kvm.c |  5 ++++-
  3 files changed, 23 insertions(+), 2 deletions(-)
 
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 8929a75c7c..544738d406 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1544,6 +1544,22 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         .cpuid = { .eax = 6, .reg = R_EAX, },
+         .tcg_features = TCG_6_EAX_FEATURES,
+     },
++    [FEAT_6_ECX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "aperfmperf", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = 6, .reg = R_ECX, },
++        .tcg_features = 0,
++        .unmigratable_flags = CPUID_6_ECX_APERFMPERF,
++    },
+     [FEAT_XSAVE_XCR0_LO] = {
+         .type = CPUID_FEATURE_WORD,
+         .cpuid = {
+@@ -8770,7 +8786,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         /* Thermal and Power Leaf */
+         *eax = env->features[FEAT_6_EAX];
+         *ebx = 0;
+-        *ecx = 0;
++        *ecx = env->features[FEAT_6_ECX];
+         *edx = 0;
+         break;
+     case 7:
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 67e2ecf325..87864969c7 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -700,6 +700,7 @@ typedef enum FeatureWord {
+     FEAT_SVM,           /* CPUID[8000_000A].EDX */
+     FEAT_XSAVE,         /* CPUID[EAX=0xd,ECX=1].EAX */
+     FEAT_6_EAX,         /* CPUID[6].EAX */
++    FEAT_6_ECX,         /* CPUID[6].ECX */
+     FEAT_XSAVE_XCR0_LO, /* CPUID[EAX=0xd,ECX=0].EAX */
+     FEAT_XSAVE_XCR0_HI, /* CPUID[EAX=0xd,ECX=0].EDX */
+     FEAT_ARCH_CAPABILITIES,
+@@ -1232,6 +1233,7 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
+ #define CPUID_XSAVE_XFD        (1U << 4)
+ 
+ #define CPUID_6_EAX_ARAT       (1U << 2)
++#define CPUID_6_ECX_APERFMPERF (1U << 0)
+ 
+ /* CPUID[0x80000007].EDX flags: */
+ #define CPUID_APM_INVTSC       (1U << 8)
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 9e352882c8..ca722ff9e9 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -498,6 +498,8 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
+         }
+     } else if (function == 6 && reg == R_EAX) {
+         ret |= CPUID_6_EAX_ARAT; /* safe to allow because of emulated APIC */
++    } else if (function == 6 && reg == R_ECX) {
++        ret |= CPUID_6_ECX_APERFMPERF;
+     } else if (function == 7 && index == 0 && reg == R_EBX) {
+         /* Not new instructions, just an optimization.  */
+         uint32_t ebx;
+@@ -3291,7 +3293,8 @@ static int kvm_vm_enable_disable_exits(KVMState *s)
+         disable_exits &= (KVM_X86_DISABLE_EXITS_MWAIT |
+                           KVM_X86_DISABLE_EXITS_HLT |
+                           KVM_X86_DISABLE_EXITS_PAUSE |
+-                          KVM_X86_DISABLE_EXITS_CSTATE);
++                          KVM_X86_DISABLE_EXITS_CSTATE |
++                          KVM_X86_DISABLE_EXITS_APERFMPERF);
+     }
+ 
+     return kvm_vm_enable_cap(s, KVM_CAP_X86_DISABLE_EXITS, 0,
 -- 
 2.54.0
 
