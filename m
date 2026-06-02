@@ -1,209 +1,121 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9E13E1717
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 13:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783B925B0A9
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 13:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780405500; cv=none; b=OVfQgwKofBvcv9//xbXeQBNMg68VCiyemTCtbJcE4U/65ynZauPG7VSuGFgFC0V0El5SDZ7er3NESv+ft/x/VepwiMM7bJqrpn1+NL9w+ktFfsqvFQfI+5Q/2qpZJSAitLC8PzE2gh6Ob3vTlok0azlIQ0vxlFOHcLrUlf5/Jsk=
+	t=1780406532; cv=none; b=FsZh1w51NOxqexWR48bL8/bW02875Fht7wr4Ul/ThTjyHQQEeiUDZLlz7ju7Jkg/28EuPLhFkwYcli1ZNmSbrq/14NgiUKXZZVEL40JENm07fNkkAV1YNA7yown3yonfOnnvQsDHgc5pZuOEgeYMpvYatWBBzUuJPJJyyjvNaoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780405500; c=relaxed/simple;
-	bh=Lv88enNvVjptEHx4RPDpSYkoiYl4NHCAht/k1YwYRy4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=esmECfRY21hpRgQl2shzZ27+VwBC+FgXmRb4qUy0OCS0E2EqsN6uVhbBNaV8Yxhr4V/kv35fyfjQz5Etwc1Na9LLKsB0FzptSM17F6ma+/3HEyU69iLHlD/8B2oUtoEcf2RBsyxTgXL1sai6husMeKSN2qgjYBylYVjd8YuDBpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oYCy8oWL; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780406532; c=relaxed/simple;
+	bh=or+P+cnNbSJfFu2mc/lNW6IMALG/S+0h8iZ6QcQ5CT8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=jnpvC0W6lfH1dHgvQq+lglqfpimsyDAsLvlk6DCIUNMwdJAQAZ3zgc1gsoOrqHKN6HcU8tUoHJgfBQFpeH8OknIFzuc7Gk43c1Np0nPIJRwYmewjceMnrPPymoHKUgBtrh7Wx1jSFzr/AermjB6KOH0cuTeSd5dkN4v+MhvhqOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KgXhNoBX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oYCy8oWL"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4908b92904fso60989765e9.0
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 06:04:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780405496; x=1781010296; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H/8nMdqnIqVIuE86ZCCEmz0EQ1iXOszPXfKX9VZoGH4=;
-        b=oYCy8oWLEOXs3ZZpnQ8VOQHoNFjKZT62/QUyW3df6kxvDecqCOK07UnU98cT9bih7d
-         QifFlcWIr+EJiA3Y4YekpYVbMWMA0XqQZb9m0aNzEy+n6CZ9KNJxUBct5gbgm0d6jBJX
-         4RYm7cSM4Fa+MgP775wpjzUTJB2NacljxFREy0lFq+bJunDJIYp2ZV4sTIDkO+Vc1xr7
-         FpcRQcE1R3qM6zq5aytz97WBpu5zXpd39pgEA0GnDnl2ujkjmEdAdRZhqHjKWr+k4Lc4
-         ry5o67NwkoWSsT9Lap7TwhGHQwNn20aUpkBNKTwaaKQ1kQ2Jb1T0oTaxOfTVux7BZHHQ
-         5nZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780405496; x=1781010296;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=H/8nMdqnIqVIuE86ZCCEmz0EQ1iXOszPXfKX9VZoGH4=;
-        b=JqGiDiToiLO2cNG0woXaFfywL46wuvtGStAYwQwlOdH5xO39T54h2ijF0nfcfZ7DUa
-         KFpTAv2V1SFfH9zkjquCk69Dx8N9fb9dRYb+XRn2xifnX5h7ycdvJJbSpa0UY4hotUD0
-         Ne0vVpagO6/1JsYJ2Ol8KGBMRnhtA1PSFsPie9SxsNG6toO5tV1UrwfJN0+zIO7BYqGm
-         vDWp0vUcgUp0+ddW6WvyNI0hbaEUdeeL/1WMl8RwV+yBa9ajksB1/73jxoGRLuAKtPeL
-         t10tI9GrCALQCkLUt9S4HTZE12SJm921Qp4ljzC9pbBrL0syaoPDkcqURZJijGpHJRa6
-         orNQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/rVP7qcATNUy0kjRHlo8Ff2gi7OywgtQ4lItWGo9H9DJPzyp2PEQmUtdYIAjAb+/beUM8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTqxTj6wHMrLsnwDSJtGYZrG++GCvL00BEc3/oEa3/T4/K87St
-	q1xp07SVzcAtdDbc7htfvNHQlWbQW1uSK4POk3N8u20MXHCuWxfoXhlA
-X-Gm-Gg: Acq92OG5+D0vn2vw517BnoB8Sw1Rxz+9SNc4ndJPSJE8vBqfogcV7NxsjyZ2WxbprXl
-	q80Cr88pJ0LLC0l//JnGvIS52d7NuhY/jmsRPiFomMeAbSF+qbfEV1chUJmmens7IAHb2KMmmG8
-	gvXf3OKWGe7LjNOVqdD/K7C0zAGRBC4VEtAx13yG8u8kd+iwSeOL40PFya/331PeJGrGFWSRTIz
-	Pn2BIExVNk2mxFQ4AK+9YL7I7z9mseYYqCkcZGvK18KoTbgTU8BSFMDLoUhZmbZLtxf/pbjDweJ
-	iRdjdafnSZW6fjgYVAPZVKKJOnJoT5SOr3M1RXiVhQGGjia5LVsMNzf1mJ44VqBbta+Ayun4pYg
-	SF0GM2rmpSd0YuXLbToRrEOmwI1RG8xwz4gLbIe65BGNl6eOYP2snrRE1JIndzBzPtoaDmLc6kj
-	bcdBnzBfwnOuPDQCVwGmhVy+jeJbwbs17zUzYD2nR03mw6dyTkqpn2yaUzeWnyWW2045MTqFREb
-	V84g8SnSw==
-X-Received: by 2002:a05:600c:8105:b0:490:b072:1be6 with SMTP id 5b1f17b1804b1-490b0721e0amr76565325e9.25.1780405495119;
-        Tue, 02 Jun 2026 06:04:55 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef34b834esm33184301f8f.11.2026.06.02.06.04.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 06:04:54 -0700 (PDT)
-Date: Tue, 2 Jun 2026 14:04:51 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
- Pengpeng Hou <pengpeng@iscas.ac.cn>, stable@vger.kernel.org, Petr Pavlu
- <petr.pavlu@suse.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>, Gabriel Somlo
- <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>, Jani Nikula
- <jani.nikula@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Bart Van Assche <bvanassche@acm.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
- <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Bjorn
- Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>, "James E.J.
- Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
- <jirislaby@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, Jason Wang
- <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Jason Baron
- <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, Tiwei Bie
- <tiwei.btw@antgroup.com>, Benjamin Berg <benjamin.berg@intel.com>, Ilpo
- =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, "David E. Box"
- <david.e.box@linux.intel.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Peter Zijlstra
- <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>, Frank Li
- <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
- <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, Alexander
- Potapenko <glider@google.com>, Marco Elver <elver@google.com>, Dmitry
- Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- John Johansen <john.johansen@canonical.com>, Paul Moore
- <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
- <serge@hallyn.com>, Georgia Garcia <georgia.garcia@canonical.com>,
- kvm@vger.kernel.org, dmaengine@vger.kernel.org,
- linux-modules@vger.kernel.org, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-um@lists.infradead.org,
- linux-acpi@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- qemu-devel@nongnu.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
- linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org,
- linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, netdev@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 01/11] params: bound array element output to the
- caller's page buffer
-Message-ID: <20260602140451.2e3e6622@pumpkin>
-In-Reply-To: <ah699hwLxIIOZ0-7@ashevche-desk.local>
-References: <20260521133315.work.845-kees@kernel.org>
-	<20260521133326.2465264-1-kees@kernel.org>
-	<ah699hwLxIIOZ0-7@ashevche-desk.local>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KgXhNoBX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6868E1F00893;
+	Tue,  2 Jun 2026 13:22:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780406531;
+	bh=+5Lb9sdzc7rIaDIO9oTyxKAwPmXFkEh+Sg27Fr7lEBU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KgXhNoBXbB2MgCGXCu9s64dwpmM13TrIurcPUPX8nuqaobXidF+5UgNU+B5Mvnr1M
+	 XyFYEMKM6XcfDYmQAlMGE+TL2Z7+MR9mMjL03IgaDyXYUfh9TIQp1xI3cEQqHglV5b
+	 qUEau1iHObFdlH21GcnufTPU9F7dldFi5WW/Idl3mGa980gl20O1OEkYy3fUPFS1sh
+	 0ZCR0v8NGBYaDp3zeTBNHJN1BefBuJdPaa8Y4mDaRzIZ+Pe1pOl15c3evuOHnfyXE1
+	 h9IDEXtWL4i7mPxtrF3yuh+sUwKMF/hHVPhDrOvUTdL4hL4jrd6Zn7DRownFbKyFeP
+	 b4ma8JBMo5jag==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 27/30] iommu/io-pgtable-arm: remove deprecated
+ iova_to_phys wrapper
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260602104637.1219810-28-guanghuifeng@linux.alibaba.com>
+References: <20260602104637.1219810-28-guanghuifeng@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 02 Jun 2026 13:22:09 +0000
+Message-Id: <20260602132210.6868E1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Tue, 2 Jun 2026 14:26:46 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Critical] In `arm_smmu_iova_to_phys_hard`, a hardware translation failur=
+e returns `0` instead of `PHYS_ADDR_MAX`. This breaks callers of `iommu_iov=
+a_to_phys_length` which expect `PHYS_ADDR_MAX` to detect failures, causing =
+them to treat physical address `0` as a valid translation result.
+--
 
-> On Thu, May 21, 2026 at 06:33:14AM -0700, Kees Cook wrote:
-> > 
-> > param_array_get() appends each element's string representation into the
-> > shared sysfs page buffer by passing buffer + off to the element getter.
-> > 
-> > That works for getters that only write a small bounded string, but
-> > param_get_charp() and similar helpers format against PAGE_SIZE from the
-> > pointer they receive. Once off is non-zero, an element getter can
-> > therefore write past the end of the original sysfs page buffer.
-> > 
-> > Collect each element into a temporary PAGE_SIZE buffer first and then
-> > copy only the remaining space into the caller's page buffer.  
-> 
-> ...
-> 
-> > +	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);  
-> 
-> get_free_page() (or how it is called)?
+commit 17d24f53e1c566320f87a73674b736d336e36024
+Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-The kmalloc() should be faster and I think has to be aligned.
-There is another patch set to replace get_free_pages() with kmalloc().
+iommu/io-pgtable-arm: remove deprecated iova_to_phys wrapper
 
-Although all these 'show' functions should really head to using a safer
-interface.
-Although, at the moment, it is really difficult to find the ones that
-are guaranteed to be passed a page aligned buffer.
+Remove the iova_to_phys wrapper function and .iova_to_phys assignment
+from ARM LPAE io-pgtable, as all callers now use iova_to_phys_length.
 
--- David
+> diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-ar=
+m.c
+> index 2b94e0563e214..ceea8da8d1fd7 100644
+> --- a/drivers/iommu/io-pgtable-arm.c
+> +++ b/drivers/iommu/io-pgtable-arm.c
+[ ... ]
+> @@ -999,7 +987,6 @@ arm_lpae_alloc_pgtable(struct io_pgtable_cfg *cfg)
+>  	data->iop.ops =3D (struct io_pgtable_ops) {
+>  		.map_pages	=3D arm_lpae_map_pages,
+>  		.unmap_pages	=3D arm_lpae_unmap_pages,
+> -		.iova_to_phys	=3D arm_lpae_iova_to_phys,
+>  		.iova_to_phys_length	=3D arm_lpae_iova_to_phys_length,
 
-> 
-> > +	if (!elem_buf)
-> > +		return -ENOMEM;
-> > +
-> >  	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
-> > -		/* Replace \n with comma */
-> > -		if (i)
-> > -			buffer[off - 1] = ',';
-> >  		p.arg = arr->elem + arr->elemsize * i;
-> >  		check_kparam_locked(p.mod);
-> > -		ret = arr->ops->get(buffer + off, &p);
-> > +		ret = arr->ops->get(elem_buf, &p);
-> >  		if (ret < 0)
-> > -			return ret;
-> > +			goto out;
-> > +		ret = min(ret, (int)(PAGE_SIZE - 1 - off));  
-> 
-> It's usually discouraged to use castings in min/max/clamp. Can we make ret long
-> or do something different here?
-> 
-> > +		if (!ret)
-> > +			break;  
-> 
-> > +		/* Replace the previous element's trailing newline with a comma. */
-> > +		if (i)
-> > +			buffer[off - 1] = ',';  
-> 
-> Can't we do this after with help of strreplace()?
-> 
-> > +		memcpy(buffer + off, elem_buf, ret);
-> >  		off += ret;
-> > +		if (off == PAGE_SIZE - 1)
-> > +			break;
-> >  	}
-> >  	buffer[off] = '\0';
-> > -	return off;
-> > +	ret = off;
-> > +out:
-> > +	kfree(elem_buf);
-> > +	return ret;  
-> 
+[Severity: Critical]
+With the API migration to iova_to_phys_length now complete, does this intro=
+duce
+a regression in error handling for drivers like arm-smmu?
 
+The old iova_to_phys interface expected 0 on failure, but iova_to_phys_leng=
+th
+expects PHYS_ADDR_MAX. Looking at drivers/iommu/arm/arm-smmu/arm-smmu.c,
+arm_smmu_iova_to_phys_length() can call arm_smmu_iova_to_phys_hard() which
+still returns 0 instead of PHYS_ADDR_MAX on runtime PM get failure:
+
+	ret =3D arm_smmu_rpm_get(smmu);
+	if (ret < 0)
+		return 0;
+
+It also returns 0 on a hardware translation fault:
+
+	if (phys & ARM_SMMU_CB_PAR_F) {
+		dev_err(dev, "translation fault!\n");
+		dev_err(dev, "PAR =3D 0x%llx\n", phys);
+		goto out;
+	}
+
+	addr =3D (phys & GENMASK_ULL(39, 12)) | (iova & 0xfff);
+out:
+	arm_smmu_rpm_put(smmu);
+
+	return addr;
+
+Could callers like vfio_iommu_type1 now treat 0 as a valid physical address,
+bypassing the WARN_ON(phys =3D=3D PHYS_ADDR_MAX) check?
+
+If iommu_unmap() unmaps the region, would VFIO use this incorrect physical
+address 0 to unpin pages?
+
+This appears to lead to an arbitrary page reference count decrement on PFN =
+0,
+and could leak the reference count of the actual unmapped physical memory.
+
+>  		.read_and_clear_dirty =3D arm_lpae_read_and_clear_dirty,
+>  		.pgtable_walk	=3D arm_lpae_pgtable_walk,
+>  	};
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602104637.1219=
+810-1-guanghuifeng@linux.alibaba.com?part=3D27
