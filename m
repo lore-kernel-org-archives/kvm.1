@@ -1,392 +1,137 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B16B371049
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 17:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632C636495F;
+	Tue,  2 Jun 2026 17:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780421737; cv=none; b=iq+dVmeWSMaSShHoqMfBzO/OMSIlcQx/UrrkkdBdPuNt9nXemp/gPP993v+lphPl6hAjUPmZFDOyLn4qdFrHuqUX6H+GMVCXPE5cAskTTkCWpOdPNS3wyMbRVg6J1q6hqV2M92EZLa5vyIvKwl02Tjv7q4hBF5ifWMMcmhNenC4=
+	t=1780422510; cv=none; b=XIFPopGh46zVkj59Y4BkZS7GNG6FsuYy7A9/7r3oShbLs/5QJJiBlwyFvvjbAXnxoMpYbyg8ISjQCKoTBb9ckpk2PzJ2AszHlNo3ETOqP2QxhtuCHLzHC8IiLbiLfE0FNrU7+mf3fur6ixuVxtt46zpgWOB2VBIYYwT1KFz8OaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780421737; c=relaxed/simple;
-	bh=Wg1cGEvf4eUUparaBKFdmSoP05uvZScjagMBX6sVw6c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VqyhGpw6zQ09phx73ZRRqvlD9sJPeD6K1dPFqaWEEPfjBNuHuGpAI7JtHQb+/ZetOjc1+iQLPzriIT/qCx75SJQ3ElvptBoWJMEH4PZ5zdoK/idmennYvQjMvg/qRKTEhR2FtP8MlcmYbLvX+CYSDIqV2G+J589nZoO/Z+a0aoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=bzK53O8X; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1780422510; c=relaxed/simple;
+	bh=1010rjQSqWgjhCXqcQBMzd4aMyNe7OMtlFdN9TKBmwI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=goisJj3KVnTGpNV2Uk/8KtMQFkiFuS1U8FKErsmVSkNTi6LR8zARsYD6UCVVQxD3k9N3UvzO2aUEqvlbjGvFAaEik2BZm7wJHsvU2I6tdcwpZANK9PBSR3MbIEOQZ+7oPBeWYAbkdPWSx4H7qvDH/F4xQK0wgTON/hmhdl3PZeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=MH0ku/b9; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="bzK53O8X"
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 652EOxPO1178699
-	for <kvm@vger.kernel.org>; Tue, 2 Jun 2026 10:35:34 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=VfBI5NycCM1cqMEOobD2RppGZmJi32soF0kYJH2gcuU=; b=bzK53O8XujCu
-	MBFdW29mz/kF0qikNM+USVwmd8ECo/ryDkIWpwB5MA41Qdkg5AxczQfUI/eKqhDS
-	iM+8YTVrGnM/C5ql3dTU9NmKo13jiYM2b0odvntyyQ2a0NGJlukR595Q8/wPsbe1
-	Th3DHAph810B/WXMYZfk+pBO3kTfJUA/7BcahWhiKtFh1nnG7f3kyyEmJDYKEFHG
-	iufu6oOYnitpV/tI3/xYW/yGc/E7J5P0tvE8WkvDVYo4cCPHoR64RSzGEh/7eIKv
-	aSG89ftmXERN5KAq0Irj0fX64YAk+9Fi8DHxol+HdmfUYUSI68fU1dQibfWDytp9
-	Y8ZyiDrw9Q==
-Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ej0wshd50-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 10:35:33 -0700 (PDT)
-Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-135fe34cb98so1561888c88.0
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 10:35:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780421733; x=1781026533;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VfBI5NycCM1cqMEOobD2RppGZmJi32soF0kYJH2gcuU=;
-        b=jkI6YLmGHllvXSK1Uj0l75cS0UNK+0RLO5Pj83KjCEJs/v4PDqMT2LPYx02PcAOEfi
-         5d7DxMbIxxsYoaWOUIWaz7l2zelz5mfEOcmec+Lq9UsprYOY7l1bi04zmRl5Ds+GPm8c
-         aUgQMJ3ZIpXrCw9Jq6HWTf5aSCWjjPPxf6xL79FUFhsW1W2cH3jQO6OXZ4e8qYEyOG4y
-         Niy8ezjAh+QeU5jJo8I3CuQmrSj3i/o97tPpDmlDRV635WkBbhjVuiJYa8l1oApUPfZq
-         eHRhpr2ys2P5ljevIzkfDwWbVbJSIoHulUr1VpClrG9aMLz0YDLBDtHw3XbPRggq1ldA
-         werg==
-X-Forwarded-Encrypted: i=1; AFNElJ9aIJ/P8L1KLfFFgF7YDGrnFp8ZklC3HlM+5/G3b8EeuvIty62ijBBiUgmOQ5wfPsHPZwQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYMZklUHeegpruAHEmEdloAsY3buiYfSpDNYFffjf65hupuIda
-	Yq3TUCcNea+r7VGhFqSrc5OUssop+A2JcEGJ+SpbM8eSErcHWph2jFftR5GxXG+JMKn/kjCeOMd
-	t8c7hAkD4R2dKe09jtBp6cR1tQGHDdIweWkB1W6VEd+L+2uvL7s2D
-X-Gm-Gg: Acq92OGeqJdoziF8Bw7TI9pGtXq1UHVjsz4W+OhBh0fSk8L4G9FPNBMXYapEIo9C56g
-	g62g8b/5kXFct/nEAY9pSWlpZdgMcZKQSmoLsWFvWCCFRQ6dzzRPBk0x5DhnVNjhVT42p2Npx17
-	D5e3DXfAIZ2g2ZKVsB35yA0zRxZTQb0g3U2St09rq6DiGbyA9lXqTfxhx9JtIZQRjmLmWMCtSo4
-	w3DffmNsuq2vvg8N0XA7AcbH9Zdnf6wxzJenMGFCEmExePREUuVkjYhrGn0k2wMiLxaAwZC6xrC
-	QfSTEDfV7Fq7OQMQw3DQgoIGSKAWfK6yUBbTVqJ9slgvL6i03i2Dpz8iZ75FR5Sdr1ZymN4+mIh
-	BRrkiknp8qLG+nu8aoXAatqKpOZy3MKNPOW23iLjC
-X-Received: by 2002:a05:7022:ea32:b0:135:578a:cde2 with SMTP id a92af1059eb24-137d425908fmr7340372c88.34.1780421732832;
-        Tue, 02 Jun 2026 10:35:32 -0700 (PDT)
-X-Received: by 2002:a05:7022:ea32:b0:135:578a:cde2 with SMTP id a92af1059eb24-137d425908fmr7340319c88.34.1780421731546;
-        Tue, 02 Jun 2026 10:35:31 -0700 (PDT)
-Received: from [10.0.40.30] ([51.52.155.79])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-137f54db05csm298934c88.8.2026.06.02.10.35.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jun 2026 10:35:31 -0700 (PDT)
-Message-ID: <49c3554f-8ba7-4a00-aa20-a311b173fc0f@meta.com>
-Date: Tue, 2 Jun 2026 18:35:25 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="MH0ku/b9"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 652DKODF219827;
+	Tue, 2 Jun 2026 17:48:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=t56cNz+Yl3RXQVmD1
+	RnmxJY+wN68i5knx/dyEg3KsY4=; b=MH0ku/b9pU1g2NWOGV7fDWRi18rYAcxqB
+	LAcuR8ZfJ10fa0uZeTb3jwODlxBYXm4vV9itpD6uqGgu1bAsC0BjJ8zqsdVmzSeE
+	u7mKwwrnkphXKBNzgw+I9r8p6PJHRnb6QWO6pzUSgygcxKZPLgcmfRh4cE+0EuvZ
+	QdMcC8UFpMbdLhsxSQc2lh9Ef/fWxrqzxl/IjklaHBCOqbDIFJrjMXHlhx55veFU
+	+E4G4fyZXKrAbqliJ8Z6449fxtKGJV2DYi4MUlZm813f5phCvekMezS0QU+YL3P9
+	wFJersMusXQE0w1p8z8phba4dmkAIVvwuKqbOzIw6bGAEm92g1EHQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efpae6ukc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jun 2026 17:48:26 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 652HdQvW000536;
+	Tue, 2 Jun 2026 17:48:25 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egbqhcatv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jun 2026 17:48:25 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 652HmJvK12452330
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 2 Jun 2026 17:48:19 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A3A2B2004B;
+	Tue,  2 Jun 2026 17:48:19 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 863C820049;
+	Tue,  2 Jun 2026 17:48:19 +0000 (GMT)
+Received: from p-imbrenda.aag-de.ibm.com (unknown [9.52.223.175])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  2 Jun 2026 17:48:19 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
+        borntraeger@de.ibm.com
+Subject: [GIT PULL v1 02/10] KVM: s390: Fix _gmap_crstep_xchg_atomic()
+Date: Tue,  2 Jun 2026 19:48:11 +0200
+Message-ID: <20260602174819.255785-3-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260602174819.255785-1-imbrenda@linux.ibm.com>
+References: <20260602174819.255785-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/9] vfio/pci: Support mmap() of a VFIO DMABUF
-Content-Language: en-GB
-To: Alex Williamson <alex@shazbot.org>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
-        Alex Mastro <amastro@fb.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-        Pranjal Shrivastava <praan@google.com>,
-        Alistair Popple
- <apopple@nvidia.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        kvm@vger.kernel.org, linux-pci@vger.kernel.org
-References: <20260527102319.100128-1-mattev@meta.com>
- <20260527102319.100128-8-mattev@meta.com>
- <20260528171527.46d0c21a@shazbot.org>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260528171527.46d0c21a@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=aJfAb79m c=1 sm=1 tr=0 ts=6a1f1465 cx=c_pps
- a=JYo30EpNSr/tUYqK9jHPoA==:117 a=2UbFsIa4v//lIgRL4kGwwA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=JnKecZnUtZousrUlYMGU:22 a=VabnemYjAAAA:8
- a=oquhCkXgnwb2tx7nsGQA:9 a=QEXdDO2ut3YA:10 a=Fk4IpSoW4aLDllm1B1p-:22
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: gu0RZSjzYX1V0B5fqYHaoktTuAi43MBf
-X-Proofpoint-ORIG-GUID: gu0RZSjzYX1V0B5fqYHaoktTuAi43MBf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDE3MCBTYWx0ZWRfX1j7zVXb8u4y6
- 5t7pO5b0MpeI+SfqxqgSFOp1vVh/RC01QEfzx3UD6ySJwLKyBBh0qUpxKnEfPR6ldfzxeIbolyC
- ylIO38EOqDq4oeNJayHF/gXUv0HNQDG79snftFVNtblGMUeYW6/oUeSEiBe3Ie3m2NNHckwle5K
- +ZtCZQpGecrLlCWhsb2gpAhRuUFBrrUGqBiXayyI/Bd4h7t6A5Ng9oeNDFr7rEpBECTFiJOd+nD
- 1+gdZ/DcR1bZbOeAfoLCNs8F+ee2kI1Gk1eA/bUpnMl+pGgume1Fmg/sUycQI9RPRtTofZrqSyh
- MGyf2LmuB0PwkZ6ZtHDR0yOx4n5+bPCbXwuf7ink25YC8BwMweRbxPOGRDq8uZHihsG2Nq66zVK
- QZcATCxgBSsdAZEJmCZLAa8+3+DNb/HGAo+KZgSLNi+1sC/d8bLfReAHO3CIGiUmwDE1PEeWZon
- R1QbetZvpaMtnQIBwZg==
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Zt3d7d7G c=1 sm=1 tr=0 ts=6a1f176a cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=SMUcQ3FjFaoWpPRfvsEA:9
+X-Proofpoint-GUID: wPT6hxpRbT8aRB6GUswpZBRi0dvOeW13
+X-Proofpoint-ORIG-GUID: wPT6hxpRbT8aRB6GUswpZBRi0dvOeW13
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDE3MCBTYWx0ZWRfX92OUYc6VrLxk
+ ZU4T6FMVTUNPtHP3LuHJiJ8I0re4Li7g8qpvY45Vgoiv0rUwkkfye3bU99LQkHVkzQAzTbRatk1
+ tnehYgLCUN4Ak3hKG2Zj/dLz+yJ+GXAmt+x6sH4VTZs/80dq36F6nflgpGntzJyZbg61/QycVIg
+ QpGXZeoFtwT4nndM1juIo7cdT/2n7ld+mDI2GGWU9UEUn7rp6AcGaEVX/X9XQFaBfPGLpJptOoA
+ rl19qsso5aH8fIa1xGsUJxp35o+bbgOOS2OWH9TYkBBlk/Hs11Og4WE7zDL+Zh+iT3nTgQ4R+/E
+ 6iofhQn77/0CtA4McerV0KkUE5gfnVSE5DeFGjIRaV7gLs+MZIFJcWlqTY8Y5Reu7OiYDhjSFiO
+ rfpL85LcDwNQMYn4VdzT+r4zGbNHzyqS1FKHs0B14wYerH3l7NYJZPWxC7kNHn3JvIrAzBjhlM9
+ K5VfUUTBk0r61qYFEpQ==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-02_03,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
+ phishscore=0 spamscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606020170
 
-Hi Alex,
+The previous incorrect behaviour cleared the vsie_notif bit without
+returning false, which allowed shadow crstes to be installed without
+the vsie_notif bit.
 
-On 29/05/2026 00:15, Alex Williamson wrote:
-> 
-> On Wed, 27 May 2026 03:23:10 -0700
-> Matt Evans <mattev@meta.com> wrote:
-> 
->> A VFIO DMABUF can export a subset of a BAR to userspace by fd; add
->> support for mmap() of this fd.  This provides another route for a
->> process to map BARs, except one where the process can only map a specific
->> subset of a BAR represented by the exported DMABUF.
->>
->> mmap() support enables userspace driver designs that safely delegate
->> access to BAR sub-ranges to other client processes by sharing a DMABUF
->> fd, without having to share the (omnipotent) VFIO device fd with them.
->>
->> Since the main VFIO BAR mmap() is now DMABUF-aware, this path reuses
->> the existing vm_ops.  But, since the lifecycle of an exported DMABUF
->> is still decoupled from that of the device fd it came from, the device
->> fd might now be closed concurrent with a VMA fault.
->>
->> Extra synchronisation is added to deal with the possibility of a fault
->> racing with the DMABUF cleanup path.  (Note that this differs to a
->> DMABUF implicitly created on the mmap() path, which holds ownership of
->> the device fd and so prevents close-during-fault scenarios in order to
->> maintain the same user-facing behaviour on close.)  It does this by
->> temporarily taking a VFIO device registration to ensure vdev remains
->> valid, then vdev->memory_lock can be taken.
-> 
-> Suggest some general rewording of the commit log here, quite confusing.
+Return false and do not perform the operation if an unshadow event has
+been triggered, but still attempt to clear the vsie_notif bit from the
+existing crste.
 
-OK!
+This will prevent the installation of shadow crstes without vsie_notif
+bit and will also prevent the caller from looping forever if it was
+not checking for the sg->invalidated flag.
 
->> Signed-off-by: Matt Evans <mattev@meta.com>
->> ---
->>   drivers/vfio/pci/vfio_pci_core.c   | 79 ++++++++++++++++++++++++++----
->>   drivers/vfio/pci/vfio_pci_dmabuf.c | 27 ++++++++++
->>   drivers/vfio/pci/vfio_pci_priv.h   |  2 +
->>   3 files changed, 99 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->> index cfea59806a4f..41e049fa9a8a 100644
->> --- a/drivers/vfio/pci/vfio_pci_core.c
->> +++ b/drivers/vfio/pci/vfio_pci_core.c
->> @@ -12,6 +12,8 @@
->>   
->>   #include <linux/aperture.h>
->>   #include <linux/device.h>
->> +#include <linux/dma-buf.h>
->> +#include <linux/dma-resv.h>
->>   #include <linux/eventfd.h>
->>   #include <linux/file.h>
->>   #include <linux/interrupt.h>
->> @@ -1742,19 +1744,77 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
->>   	vm_fault_t ret = VM_FAULT_SIGBUS;
->>   
->>   	/*
->> -	 * We can rely on the existence of both a DMABUF (priv) and
->> -	 * the VFIO device it was exported from (vdev).  This fault's
->> -	 * VMA was established using vfio_pci_core_mmap_prep_dmabuf()
->> -	 * which transfers ownership of the VFIO device fd to the
->> -	 * DMABUF, and so the VFIO device is held open because the
->> -	 * VMA's vm_file (DMABUF) is open.
->> +	 * The only thing this can rely on is that the DMABUF relating
->> +	 * to the VMA's vm_file exists (priv).
->>   	 *
->> -	 * Since vfio_pci_dma_buf_cleanup() cannot have happened,
->> -	 * vdev must be valid; we can take memory_lock.
->> +	 * A DMABUF for a VFIO device fd mmap() holds a reference to
->> +	 * the original VFIO device fd, but an explicitly-exported
->> +	 * DMABUF does not.  The original fd might have closed,
->> +	 * meaning this fault can race with
->> +	 * vfio_pci_dma_buf_cleanup(), meaning priv->vdev might be
->> +	 * NULL, and the VFIO device registration might have been
->> +	 * dropped.
->> +	 *
->> +	 * With the goal of taking vdev->memory_lock in a world where
->> +	 * vdev might not still exist:
->> +	 *
->> +	 * 1. Take the resv lock on the DMABUF:
->> +	 *  - If racing cleanup got in first, the buffer is revoked;
->> +	 *    stop/exit if so.
->> +	 *  - If we got in first, the buffer is not revoked so vdev is
->> +	 *    non-NULL, accessible, and cleanup _has not yet put the
->> +	 *    VFIO device registration_.  So, the device refcount must
->> +	 *    be >0.
->> +	 *
->> +	 * 2. Take vfio_device registration (refcount guaranteed >0
->> +	 *    hereafter).
->> +	 *
->> +	 * 3. Unlock the DMABUF's resv lock:
->> +	 *  - A racing cleanup can now complete.
->> +	 *  - But, the device refcount >0, meaning the vfio_device
->> +	 *    (and vfio_pcie_core device vdev) have not yet been
->> +	 *    freed.  vdev is accessible, even if the DMABUF has been
->> +	 *    revoked or cleanup has happened, because
->> +	 *    vfio_unregister_group_dev() can't complete.
->> +	 *
->> +	 * 4. Take the vdev->memory_lock
->> +	 *  - Either the DMABUF is usable, or has been cleaned up.
->> +	 *    Whichever, it can no longer change under us.
->> +	 *  - Test the DMABUF revocation status again: if it was
->> +	 *    revoked between 1 and 4 return a SIGBUS. Otherwise,
->> +	 *    return a PFN.
->> +	 *  - It's not necessary to also take the resv lock, because
->> +	 *    the status/vdev can't change while memory_lock is held.
->> +	 *
->> +	 * 5. Unlock, done.
->>   	 */
->> +
->> +	dma_resv_lock(priv->dmabuf->resv, NULL);
->>   	vdev = READ_ONCE(priv->vdev);
-> 
-> I think you've again avoided the need for the READ_ONCE() by getting it
-> under dma_resv_lock(), so it's still unnecessary.
+Fixes: b827ef02f409 ("KVM: s390: Remove non-atomic dat_crstep_xchg()")
+Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Message-ID: <20260602142356.169458-3-imbrenda@linux.ibm.com>
+---
+ arch/s390/kvm/gmap.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Reviewed, you're right ofc.  This originally went in when I was using a 
-different approach to resolve the race.  I've tweaked the comment and 
-actually it can be further simplified as this !vdev test can be removed:
-
->> +	if (priv->revoked || !vdev) {
->> +		pr_debug_ratelimited("%s VA 0x%lx, pgoff 0x%lx: DMABUF revoked/cleaned up\n",
->> +				     __func__, vmf->address, vma->vm_pgoff);
->> +		dma_resv_unlock(priv->dmabuf->resv);
->> +		return VM_FAULT_SIGBUS;
->> +	}
->> +	/* vdev is usable */
-
-...and (plain) vdev read moved here.  If (holding the dma_resv_lock()) 
-it's not revoked then vdev is usable/valid.
-
->> +
->> +	if (!vfio_device_try_get_registration(&vdev->vdev)) {
->> +		/*
->> +		 * If vdev != NULL (above), the registration should
->> +		 * already be >0 and so this try_get should never
->> +		 * fail.
->> +		 */
->> +		dev_warn(&vdev->pdev->dev, "%s: Unexpected registration failure\n",
->> +			 __func__);
->> +		dma_resv_unlock(priv->dmabuf->resv);
->> +		return VM_FAULT_SIGBUS;
->> +	}
->> +	dma_resv_unlock(priv->dmabuf->resv);
->> +
->>   	scoped_guard(rwsem_read, &vdev->memory_lock) {
->> +		/* Revocation status must be re-read, under memory_lock */
->>   		if (!priv->revoked) {
->>   			int pres = vfio_pci_dma_buf_find_pfn(priv, vma,
->>   							     vmf->address,
->> @@ -1773,6 +1833,7 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
->>   				    vma->vm_pgoff, (unsigned int)ret);
->>   	}
->>   
->> +	vfio_device_put_registration(&vdev->vdev);
->>   	return ret;
->>   }
->>   
->> @@ -1781,7 +1842,7 @@ static vm_fault_t vfio_pci_mmap_page_fault(struct vm_fault *vmf)
->>   	return vfio_pci_mmap_huge_fault(vmf, 0);
->>   }
->>   
->> -static const struct vm_operations_struct vfio_pci_mmap_ops = {
->> +const struct vm_operations_struct vfio_pci_mmap_ops = {
->>   	.fault = vfio_pci_mmap_page_fault,
->>   #ifdef CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP
->>   	.huge_fault = vfio_pci_mmap_huge_fault,
->> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> index 733607371082..4b3b15655f1d 100644
->> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
->> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> @@ -27,6 +27,32 @@ static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
->>   
->>   	return 0;
->>   }
->> +
->> +static int vfio_pci_dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
->> +{
->> +	struct vfio_pci_dma_buf *priv = dmabuf->priv;
->> +
->> +	if (priv->revoked)
->> +		return -ENODEV;
-> 
-> Questionable validity to testing revoked without a lock, but doesn't
-> this also fail to follow the "map regardless, sort it out on fault"
-> paradigm used elsewhere in vfio-pci?  Thanks,
-
-Kind of, though this was intentional.  (I had removed a crappy comment 
-here from the RFC, but should re-add something better...)
-
-You're right that, if we don't test this here, the fault handler ensures 
-safety.
-
-In the revoke ioctl^Wfeature header UAPI comment I'd suggested a 
-revocation prevents a new map (in addition to prevents access to an 
-existing map) with the intention of making userspace easier to debug:
-
-  - I'd rather trace an mmap() failure than a SIGBUS (eg. if another
-    process has revoked my DMABUF and I didn't get the memo).  For a
-    prior revoke this is a reliable & useful test.
-
-  - Even if there's an active race such as userspace doing an
-    ioctl(RESET) at the same time as an mmap() (!) then obviously this
-    check won't always catch it, but when it does then that's useful.
-
-I'd prefer to keep this belt-and-braces check to early-fail (with 
-comment), if you don't mind much.  It _is_ testing revoked outside of 
-any synchronisation as anything we can lock against here doesn't have a 
-useful effect AFAICT.  (Taking the example of a concurrent ioctl(RESET), 
-a revoke still manifests "before" (caught here) or "after" (caught in 
-fault handler).)  Maybe READ_ONCE() wouldn't hurt, if only to indicate this.
-
-
-With thanks,
-
-
-Matt
-
-
-> 
-> Alex
-> 
->> +	if ((vma->vm_flags & VM_SHARED) == 0)
->> +		return -EINVAL;
->> +
->> +	/*
->> +	 * dma_buf_mmap_internal() has asserted that the VMA is
->> +	 * contained within the DMABUF size before calling this.
->> +	 */
->> +
->> +	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
->> +	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
->> +
->> +	/* See comments in vfio_pci_core_mmap() re VM_ALLOW_ANY_UNCACHED. */
->> +	vm_flags_set(vma, VM_ALLOW_ANY_UNCACHED | VM_IO | VM_PFNMAP |
->> +		     VM_DONTEXPAND | VM_DONTDUMP);
->> +	vma->vm_private_data = priv;
->> +	vma->vm_ops = &vfio_pci_mmap_ops;
->> +
->> +	return 0;
->> +}
->>   #endif /* CONFIG_VFIO_PCI_DMABUF */
->>   
->>   static void vfio_pci_dma_buf_done(struct kref *kref)
->> @@ -94,6 +120,7 @@ static void vfio_pci_dma_buf_release(struct dma_buf *dmabuf)
->>   static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
->>   #ifdef CONFIG_VFIO_PCI_DMABUF
->>   	.attach = vfio_pci_dma_buf_attach,
->> +	.mmap = vfio_pci_dma_buf_mmap,
->>   #endif
->>   	.map_dma_buf = vfio_pci_dma_buf_map,
->>   	.unmap_dma_buf = vfio_pci_dma_buf_unmap,
->> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
->> index 10833aabd7fb..db2e2aeae88f 100644
->> --- a/drivers/vfio/pci/vfio_pci_priv.h
->> +++ b/drivers/vfio/pci/vfio_pci_priv.h
->> @@ -38,6 +38,8 @@ struct vfio_pci_dma_buf {
->>   	u8 revoked : 1;
->>   };
->>   
->> +extern const struct vm_operations_struct vfio_pci_mmap_ops;
->> +
->>   bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
->>   void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev);
->>   
-> 
+diff --git a/arch/s390/kvm/gmap.h b/arch/s390/kvm/gmap.h
+index 742e42a31744..5374f21aaf8d 100644
+--- a/arch/s390/kvm/gmap.h
++++ b/arch/s390/kvm/gmap.h
+@@ -273,11 +273,14 @@ static inline bool __must_check _gmap_crstep_xchg_atomic(struct gmap *gmap, unio
+ 		gmap_unmap_prefix(gmap, gfn, gfn + align);
+ 	}
+ 	if (crste_leaf(oldcrste) && crste_needs_unshadow(oldcrste, newcrste)) {
++		newcrste = oldcrste;
+ 		newcrste.s.fc1.vsie_notif = 0;
+ 		if (needs_lock)
+ 			gmap_handle_vsie_unshadow_event(gmap, gfn);
+ 		else
+ 			_gmap_handle_vsie_unshadow_event(gmap, gfn);
++		dat_crstep_xchg_atomic(crstep, oldcrste, newcrste, gfn, gmap->asce);
++		return false;
+ 	}
+ 	if (!oldcrste.s.fc1.d && newcrste.s.fc1.d && !newcrste.s.fc1.s)
+ 		SetPageDirty(phys_to_page(crste_origin_large(newcrste)));
+-- 
+2.54.0
 
