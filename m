@@ -1,89 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09A93F1AD9;
-	Tue,  2 Jun 2026 15:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78A33F4110
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 15:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780415683; cv=none; b=FFMKJsiapW8DRnsTdyFEINZDYcTc9WFRoY97m7SN5FuXcm3jTWI2R34KX/pgYTHi0hg7wsdQJhxtHtNl6xWIrH4n6bCyLrnFuC/pnLKg8gEXhVwsp36wqnTgH3ZFwcps9axLfwJY4wWchDCOLBlI5PGDH5BOAhP/t3Ykps3NQKs=
+	t=1780415686; cv=none; b=EAyrjhINOQX4YB1mjvInfsuMGxy0xDN73ieH5U52Ni7b+bkcOIVKPhmAnax4hcGjzoNCvtStJZYf/O1+B5Kj4e9RL5nhk8qunJxP/3OK8cWHXehJrPWe83nCTIllEeQthRn1wu1FPVgqgVhvR7LoV8odCWE1sDQ83PengEvi4w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780415683; c=relaxed/simple;
-	bh=Hse4vyEKhmKwlzo9QKW2YumWtafAR4OKwvf/MHle4ro=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dfPf+BbjqSfpkTMO+6blJIfI0Vqyx2spTzes6LYIxRvRS7XLjUwD+bF2wbLqoWmjnMJqvXAvXXkJ/E3jzZ/7C6xQVvIyxTE8yW6+CHUdz2N3hxEKiClpwH05cZ0E7oRDf4SYApuhvBufs4zdp93L2tnHHx3ccc4NeFB3zETCk4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jq98lp5R; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780415686; c=relaxed/simple;
+	bh=ozM8AZ9eoQgjnPdvuzcKsMt8u6SHZRjDVsKbDJZjWcU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DszQZdwbBt511R8ygrorQCKcV3iZXAeswCVYdGhT/PTR/dfDQ3TCWFcwq514sBAJ5VBs6GBrghFe6C+qfZc4kSqEpUJca2Pep2ryenQrX+il6k12+bGlQQYGoWifvUPN4+hXAH5fGYt2qfrx07bNKVgnbKq/YzeOhVK3mLhTcqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Zc8ywOEH; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jq98lp5R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDE51F00898;
-	Tue,  2 Jun 2026 15:54:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780415681;
-	bh=g6F5AltN2PaZJFgZ1Qy/IqUyWkgsBB7MOGVwDpftwzA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jq98lp5R4Wne4GQFBsJlJ9/JUnApw+k8nJ5cFtNGtTsPRL5DdWkYymrDAAmKgzv63
-	 6Z3klmZvuNuNoJ3o3S1t49kslZJ6OaX7iL8rnZ1kxR2LZAEc6MtAJ6KuWwJ6THjnsY
-	 cVSEHvCnMFnyCciT8gUC+pVEtBF7gGVzkgWUD4+tMZfabg79fa5CIurvaTRBTDIJNP
-	 FWQPdbquM/GIReZwwmePZsJHW1zpkFHnyQrYTIk8D+qEy28h06XjmeRAur3kjHZpgl
-	 CCnrZFhNTDusRgdosMnvbMaVYqPgFAJmuLrCUznx7Rd8u1WHI7VNmQk2bAZd1hWRm+
-	 pH6rCPjOdMvhg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wURRw-00000008fVv-0EHR;
-	Tue, 02 Jun 2026 15:54:40 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Cc: Steffen Eiden <seiden@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 1/3] KVM: arm64: Key CPTR_EL2.E0POE propagation on FEAT_S1POE
-Date: Tue,  2 Jun 2026 16:54:27 +0100
-Message-ID: <20260602155430.2088142-2-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260602155430.2088142-1-maz@kernel.org>
-References: <20260602155430.2088142-1-maz@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Zc8ywOEH"
+Date: Tue, 2 Jun 2026 10:54:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780415682;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h7D3Hfi0Dpuf1GZg49Dj/JWwEeIPExhLmM7yWKRJcKE=;
+	b=Zc8ywOEHAOTHCeJMDiLqrbZHl+VQh6Fmd2t+5oknS5CMq6ehvHBrBX1ljRMtdGw+uVP3yd
+	7aaOJDWVYJinMXzjj3gLMefi+qtY7czMEU/vF3g0SNzHpaO3wibMxyrw3l24HFFN9OE14F
+	jxVv/V8PM1kj6h7BHoOyHMPYTQ7kDT4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Chinmay Rath <rathc@linux.ibm.com>
+Cc: thuth@redhat.com, npiggin@gmail.com, harshpb@linux.ibm.com, 
+	lvivier@redhat.com, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	sbhat@linux.ibm.com
+Subject: Re: [kvm-unit-tests RFC PATCH 2/6] configure: Make arch_libdir a
+ first-class entity
+Message-ID: <emxfxob3hs2kqjmdbtucwr65dlywqapsz76ow7ebnqhf5vmrtq@i2wodbzjs5cb>
+References: <20260602064806.3101025-1-rathc@linux.ibm.com>
+ <20260602064806.3101025-3-rathc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260602064806.3101025-3-rathc@linux.ibm.com>
+X-Migadu-Flow: FLOW_OUT
 
-We propagate CPTR_EL2.E0POE from a L1 into the L0 configuration, but
-we key this on the L1 guest supporting FEAT_S2POE. This is obviously
-wrong, as this bit is solely concerned with Stage-1 translation.
+On Tue, Jun 02, 2026 at 12:18:02PM +0530, Chinmay Rath wrote:
+> From: Nicholas Piggin <npiggin@gmail.com>
+> 
+> arch_libdir was brought in to improve the heuristic determination of
+> the lib/ directory based on arch and testdir names, but it did not
+> entirely clean that mess up.
+> 
+> Remove the arch_libdir->arch->testdir heuristic and just require
+> everybody sets arch_libdir correctly. Fail if the lib/arch or
+> lib/arch/asm directories can not be found.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
+> ---
+>  Makefile  |  2 +-
+>  configure | 20 ++++++++++++--------
+>  2 files changed, 13 insertions(+), 9 deletions(-)
+>
 
-Fix this by making the update depend on FEAT_S1POE.
-
-Fixes: cd931bd6093cb ("KVM: arm64: nv: Add additional trap setup for CPTR_EL2")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- arch/arm64/kvm/hyp/include/hyp/switch.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
-index bf0eb5e434274..161bb2a3e1d90 100644
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -141,7 +141,7 @@ static inline void __activate_cptr_traps_vhe(struct kvm_vcpu *vcpu)
- 	if (!(SYS_FIELD_GET(CPACR_EL1, ZEN, cptr) & BIT(0)))
- 		val &= ~CPACR_EL1_ZEN;
- 
--	if (kvm_has_feat(vcpu->kvm, ID_AA64MMFR3_EL1, S2POE, IMP))
-+	if (kvm_has_feat(vcpu->kvm, ID_AA64MMFR3_EL1, S1POE, IMP))
- 		val |= cptr & CPACR_EL1_E0POE;
- 
- 	val |= cptr & CPTR_EL2_TCPAC;
--- 
-2.47.3
-
+Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
