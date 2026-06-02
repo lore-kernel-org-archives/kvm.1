@@ -1,135 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2142136F91F;
-	Tue,  2 Jun 2026 10:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFC23D75A1
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 10:11:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780394854; cv=none; b=p3smZ7jpVCnbDNLYCG84hY34fNTcAKCFLHVVRw51142IYdCnswol4PQE9K1tbzmWFdIq6Wb1CmFqadkcwezfOY1MELHS9Va/R6lQ1DeQ3Uv9m7uuCOfTwLcZdXzOT+BaZS+aGvmnWCM2/oqu7uR+DEGXopKaQYo5fJXgOFq3aps=
+	t=1780395074; cv=none; b=d+n0S5DJMEBbgHRFR/fET638bZPedFzfH2B5PVqG0EycpFt/wJlYGA+qp8Rc4cjZ+3jql63/8IjF7Sog2zbBSWGc8cT7MA6COgwhU3NMMLmrUPSwH3J9b3kfnry+THxvDR6gCi1ftVWEPjZJINZcmdaRQ5dqyRY1635ZG7mhLws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780394854; c=relaxed/simple;
-	bh=DJ+YNfigE8pzfyVTIvkGTp3g8dr7vHyfhNo60hzahAQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HLKkdwPBPzRP6l+m23g75lUY7x5T2+jF83lt+i1490CSOJR5pjFdfd3nGPauKfBkt1QyvUbDwCO9IIQm8pIAlqg1jWRPnwk6NdjouZPUTBbDmOcoEbRB+zZIm3vKOYIdIi9yV+lLWmY0OdfYYM6wVu5w/AR/vCVxykh2Z8nxf88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kv2fE0bp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780395074; c=relaxed/simple;
+	bh=4HHmcNcFiFlZfxsZJ4yS1AIHeBQqoP6l/x/Fk6ajWso=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Kxw0w0QL3twrdmjmCJaF4PFirk447itJvBMd9qs18MFHGBVUsBSU1BobhUqgX20WqJ/j+QV+e7FG5/T0wzLKyw0Qux6cYrMcWwjIzJ9kaZpLo4fUXHQ+fkU5dUzbxhpZEgygM0yJA3nZP4fM1AxXFs8POu3C5OHFNfnIOW7zj2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CMi5k5jK; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kv2fE0bp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B312A1F00893;
-	Tue,  2 Jun 2026 10:07:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780394852;
-	bh=FArUgwzqGxSIYq6nsRbDRcCSW+jo1FsCY7Blcc7Vo5I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Kv2fE0bpyQXoK2UWojz99uTNM13VMJzQY8pttiWpI5b8+40hTJICG1z6mCK4HxzOt
-	 WGAj2y5SJlJoIl+N9iHLKqVRWu9OrrHnx+/tz3FlIfzs7MJKFsAGpGxzFWxuyG8cBM
-	 WrYnPscz8yfDI3CjGm3n7wUsfcglUz6lNDXUt3emdSCW12sVz1MKY0/BHu5mWG7lyI
-	 dN+nfzkHl4QQvZFfAGkcO2JVbFceEzmni/FhHhQ1tddV0QOElD5gWZUecDoh8qPAX+
-	 6wu9anSgJc0s666UALU4wXlDajOMwgfjPzHsI45oaFeSPwD+x8KBz2GcGUJ7aJGPII
-	 gOS5yhOmWv2XA==
-Date: Tue, 2 Jun 2026 13:07:24 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
-	ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com,
-	jthoughton@google.com, aarcange@redhat.com, sj@kernel.org,
-	usama.arif@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v6 04/15] userfaultfd: test uffd VMA flags through the
- vma_flags_t API
-Message-ID: <ah6rXJEYUsGfzPgi@kernel.org>
-References: <20260529172716.357179-1-kas@kernel.org>
- <20260529172716.357179-5-kas@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CMi5k5jK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780395074; x=1811931074;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=4HHmcNcFiFlZfxsZJ4yS1AIHeBQqoP6l/x/Fk6ajWso=;
+  b=CMi5k5jKyvNKmVD+dZF+5Pm5BYR2gVNypzSjaRdGIeeB13TcLUgqsjeg
+   s0esYetUEg3Cia0Ae77zeGIBXpNRtJOr5vUPEf3Zkm1ar/S4J94827zsn
+   795GZRtCsIEE1DsenU55lM4jdS68hNt4yAfrvfbZWbyFXNuWK/hyl8fCY
+   l7Dl3tzS1QiUHBMYjI+Xbc1RFmQdA+z0z8OMyiDiFUeBMvynJjLWmCFa+
+   IgfclN+iqvQjvc7syyNDNS3FNU3TBh9FPUMDCYw4g9BG138pnHYFO/9dY
+   Quhbz94sJvp1cWsdo37UUZ+SOiPWoDBxlX0QTWyKIoEYKnWeHGetlErA0
+   Q==;
+X-CSE-ConnectionGUID: fGPnwh/OQHWBTuoRHauf8A==
+X-CSE-MsgGUID: mIBNoJJYSFyWudnGSHywhA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="81076790"
+X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
+   d="scan'208";a="81076790"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 03:11:13 -0700
+X-CSE-ConnectionGUID: cT7ZUV4pTFG2fHINoQIefA==
+X-CSE-MsgGUID: UV2Pi1QmQymaAB8n3+1zHA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
+   d="scan'208";a="243701388"
+Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 03:11:11 -0700
+Message-ID: <e565f91e-e41d-458b-939b-c2efe22111db@linux.intel.com>
+Date: Tue, 2 Jun 2026 18:11:08 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260529172716.357179-5-kas@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH v2] x86/lam: Allocate test page from
+ AREA_LOW instead of AREA_NORMAL
+To: yexun <yexun@linux.alibaba.com>
+Cc: kvm@vger.kernel.org, chao.gao@intel.com, seanjc@google.com,
+ pbonzini@redhat.com
+References: <20260602060116.35206-1-yexun@linux.alibaba.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260602060116.35206-1-yexun@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 29, 2026 at 06:26:33PM +0100, Kiryl Shutsemau (Meta) wrote:
-> The uffd VMA-flag helpers read vma->vm_flags directly. Now that
-> config-gated per-mode masks exist, switch them to the vma_flags_t
-> accessor vma_test_any_mask(), which is the going-forward API and keeps a
-> single place (the VMA_UFFD_* masks) that knows which modes are available
-> on the current build.
-> 
-> No functional change: vma_flags_t is in union with vm_flags, so the same
-> bits are read, and the masks fold to the same code the open-coded
-> vm_flags tests produced -- verified identical on gcc and clang, 32- and
-> 64-bit.
-> 
-> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Assisted-by: Claude:claude-opus-4-8
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+On 6/2/2026 2:01 PM, yexun wrote:
+> The lam test does not set a guest memory size in x86/unittests.cfg, so
+> QEMU falls back to the default of 128 MiB. AREA_NORMAL starts at PFN
+> BIT(36-12), i.e. physical 64 GiB, which is never initialized in a
+> 128 MiB guest. As a result, alloc_pages_flags(0, AREA_NORMAL) returns
+> NULL and test_lam_user() ends up running its LAM checks against a NULL
+> pointer, which is semantically meaningless even if the metadata-bit
+> arithmetic happens to succeed.
+> 
+> Allocate from AREA_LOW instead. AREA_LOW_PFN is BIT(24-12) (16 MiB),
+> well within a 128 MiB guest, and bits 63..47 of the resulting linear
+> address are still zero, so the LAM48/LAM57 metadata-bit checks remain
+> valid. Update the adjacent comment accordingly.
+> 
+> Fixes: 0164d7595c85 ("x86: Add test cases for LAM_{U48,U57}")
+> Signed-off-by: yexun <yexun@linux.alibaba.com>
+
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
 > ---
->  include/linux/userfaultfd_k.h | 14 ++++++++------
->  1 file changed, 8 insertions(+), 6 deletions(-)
+> v2: assert vaddr instead of pfn
+> v1: https://lore.kernel.org/all/20260601035401.39303-1-yexun@linux.alibaba.com/
 > 
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> index 658740df2978..c4f2cc6dfcf0 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
-> @@ -178,7 +178,8 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
->   */
->  static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
->  {
-> -	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
-> +	return vma_test_any_mask(vma,
-> +		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
->  }
->  
->  /*
-> @@ -190,22 +191,23 @@ static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
->   */
->  static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
->  {
-> -	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
-> +	return vma_test_any_mask(vma,
-> +		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
->  }
->  
->  static inline bool userfaultfd_missing(struct vm_area_struct *vma)
->  {
-> -	return vma->vm_flags & VM_UFFD_MISSING;
-> +	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
->  }
->  
->  static inline bool userfaultfd_wp(struct vm_area_struct *vma)
->  {
-> -	return vma->vm_flags & VM_UFFD_WP;
-> +	return vma_test_any_mask(vma, VMA_UFFD_WP);
->  }
->  
->  static inline bool userfaultfd_minor(struct vm_area_struct *vma)
->  {
-> -	return vma->vm_flags & VM_UFFD_MINOR;
-> +	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
->  }
->  
->  static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
-> @@ -222,7 +224,7 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
->  
->  static inline bool userfaultfd_armed(struct vm_area_struct *vma)
->  {
-> -	return vma->vm_flags & __VM_UFFD_FLAGS;
-> +	return vma_test_any_mask(vma, __VMA_UFFD_FLAGS);
->  }
->  
->  static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
-> -- 
-> 2.54.0
+>  x86/lam.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
+> diff --git a/x86/lam.c b/x86/lam.c
+> index 87efc5dd..33772ecb 100644
+> --- a/x86/lam.c
+> +++ b/x86/lam.c
+> @@ -231,13 +231,13 @@ static void test_lam_user(void)
+>  	bool has_lam = this_cpu_has(X86_FEATURE_LAM);
+>  
+>  	/*
+> -	 * The physical address of AREA_NORMAL is within 36 bits, so that using
+> +	 * The physical address of AREA_LOW is within 36 bits, so that using
+>  	 * identical mapping, the linear address will be considered as user mode
+>  	 * address from the view of LAM, and the metadata bits are not used as
+>  	 * address for both LAM48 and LAM57.
+>  	 */
+> -	vaddr = alloc_pages_flags(0, AREA_NORMAL);
+> -	static_assert((AREA_NORMAL_PFN & GENMASK(63, 47)) == 0UL);
+> +	vaddr = alloc_pages_flags(0, AREA_LOW);
+> +	static_assert((vaddr & GENMASK(63, 47)) == 0UL);
+>  
+>  	/*
+>  	 * Note, LAM doesn't have a global control bit to turn on/off LAM
 
--- 
-Sincerely yours,
-Mike.
