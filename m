@@ -1,160 +1,139 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20212D780C;
-	Tue,  2 Jun 2026 01:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82772358384
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 02:18:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780364394; cv=none; b=O7WhOoysFg6fY2kB3CxctIZ5Ex8jEXTW/EWwMcF6Cr+KlsDBggzpEiHByXRj1gYiDQQtgIZkC12B0ikneh9qFZXoM4l9Sphffb/7Qh59ruUyp8s2hM5knSWx7yuHqtHQmuYaQzx5npFa0Zo4BEPKE5xB4QoHJ7Hw3mYtzA3SPyk=
+	t=1780366716; cv=none; b=jc7kgqyee9kNr3w5b2FyJflotGxOE3u7JTkuXUiyeQFr2edNfbcMX4YJgMuncJfGdNBjTKbyQTamC6arHtwR9Nj9HWjM/wbA2XGEmvk1fedTFPttlBj5bEnrsPH6LYKX4ZMUt461mvPT5M1NZYfOQAhR+2Joe1Z5Z8lS3t9R5DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780364394; c=relaxed/simple;
-	bh=VmcIYlZoYPFajcd/yR2kOvmYKBN3ND0KvsxZst/Gwxs=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=XdagSX5/grQ6NjbiPsTmkJ9X75HWz/H60OC2ZzuIuIwg15zHZtVb2yBAFGqLg9Jor/2TO6xAjEQ6KCGAV/iJhVfrHECeOxgDckjVX18tSqUiOGawWyYByGiapligHtj4gDfgl2/yi/7wIGJbUsLTN0eamLe9FBmfzmWVvWEj4Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8CxCHlkNB5qvZAPAA--.18858S3;
-	Tue, 02 Jun 2026 09:39:49 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJBxpsBiNB5qnsWYAA--.58591S3;
-	Tue, 02 Jun 2026 09:39:48 +0800 (CST)
-Subject: Re: [PATCH v5 3/6] LoongArch: KVM: Use existing macro about interrupt
- bit mask
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260526125256.2511876-1-maobibo@loongson.cn>
- <20260526125256.2511876-4-maobibo@loongson.cn>
- <CAAhV-H5Bkg1MrWr_8YcvCdHWAfX_-WLzdFGukJQVu330LoL5KA@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <d5722640-538c-4a97-7dff-bcec91a4c955@loongson.cn>
-Date: Tue, 2 Jun 2026 09:36:42 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1780366716; c=relaxed/simple;
+	bh=cHTXIvn9hGTXOzczouS657qykU6XYi2xouSLtg2OCmw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gNZqOZ+fYnig6eoXdzMzeuwzZOuc5tcKflbV68AMlvoAQklbETJBA1PkOZx2BE7JhvtitSHtrAHoncS9PGJ3VdJR+tYRT/qr+VkktAecPTlPPAlJ1f/PL1gw2GdauvtgxgswNBopj0/OUEC6vA85YHO1PByu6exyPIDp6NDDGTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=O4SGZXaT; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="O4SGZXaT"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780366712;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+C6CjJNiB4kYrTw4fbNAQHwHUkBCJ+hPXtiuZShvG/o=;
+	b=O4SGZXaTDtndmOIZICfbjUprclxUItVr/WCxTeMvg+d1/wUz69v59ahRokHqz7iqhYZxTp
+	4Vx1cYI6x6H5jNVGSGi2enrEHHG4RKk0XR5qDeWWuMwHjdEm2x+wuEHKRsjzKSLW4ylFt0
+	iAVJaKRFiPc7BinLgwjQD8UHE1mTvLw=
+From: Tao Cui <cui.tao@linux.dev>
+To: maobibo@loongson.cn,
+	zhaotianrui@loongson.cn,
+	chenhuacai@kernel.org,
+	loongarch@lists.linux.dev
+Cc: kernel@xen0n.name,
+	kvm@vger.kernel.org,
+	Tao Cui <cuitao@kylinos.cn>
+Subject: [PATCH v3 0/4] LoongArch: KVM: Add PV TLB flush support
+Date: Tue,  2 Jun 2026 10:18:15 +0800
+Message-ID: <20260602021819.2373404-1-cui.tao@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H5Bkg1MrWr_8YcvCdHWAfX_-WLzdFGukJQVu330LoL5KA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxpsBiNB5qnsWYAA--.58591S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxArWxZFyDWF1fGr4xuF18Xrc_yoW5KrW5pr
-	W8uas8XFW5XF42gw1Sk3Z8K3W7tr4kJr12g3sFgrs8JF9Fgw1Sv3WrKws8A34vq395G34I
-	gr98Z3WYqF9xKrbCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
-	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jjwZcUUUUU=
+X-Migadu-Flow: FLOW_OUT
 
+From: Tao Cui <cuitao@kylinos.cn>
 
+This series implements paravirtualized TLB flush for LoongArch KVM
+guests.
 
-On 2026/6/1 下午9:50, Huacai Chen wrote:
-> Hi, Bibo,
-> 
-> On Tue, May 26, 2026 at 8:53 PM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->> With interrupt post, register CSR_GINTC and CSR_ESTAT is used, and
->> CSR_ESTAT is used for percpu interrupt injection and CSR_GINTC is for
->> external hardware interrupt injection.
->>
->> Here use existing macro about interrupt bit of register CSR_GINTC and
->> CSR_ESTAT, rather than hard coded constant value.
->>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->>   arch/loongarch/include/asm/kvm_vcpu.h | 43 ++++++++++++++++++---------
->>   1 file changed, 29 insertions(+), 14 deletions(-)
->>
->> diff --git a/arch/loongarch/include/asm/kvm_vcpu.h b/arch/loongarch/include/asm/kvm_vcpu.h
->> index 3784ab4ccdb5..efe26b04b35f 100644
->> --- a/arch/loongarch/include/asm/kvm_vcpu.h
->> +++ b/arch/loongarch/include/asm/kvm_vcpu.h
->> @@ -10,22 +10,37 @@
->>   #include <asm/loongarch.h>
->>
->>   /* Controlled by 0x5 guest estat */
->> -#define CPU_SIP0                       (_ULCAST_(1))
->> -#define CPU_SIP1                       (_ULCAST_(1) << 1)
->> -#define CPU_PMU                                (_ULCAST_(1) << 10)
->> -#define CPU_TIMER                      (_ULCAST_(1) << 11)
->> -#define CPU_IPI                                (_ULCAST_(1) << 12)
->> -#define CPU_AVEC                        (_ULCAST_(1) << 14)
->> +#define CPU_SIP0                       BIT(INT_SWI0)
->> +#define CPU_SIP1                       BIT(INT_SWI1)
->> +#define CPU_HWI0                       BIT(INT_HWI0)
->> +#define CPU_HWI1                       BIT(INT_HWI1)
->> +#define CPU_HWI2                       BIT(INT_HWI2)
->> +#define CPU_HWI3                       BIT(INT_HWI3)
->> +#define CPU_HWI4                       BIT(INT_HWI4)
->> +#define CPU_HWI5                       BIT(INT_HWI5)
->> +#define CPU_HWI6                       BIT(INT_HWI6)
->> +#define CPU_HWI7                       BIT(INT_HWI7)
->> +#define CPU_PMU                                BIT(INT_PCOV)
->> +#define CPU_TIMER                      BIT(INT_TI)
->> +#define CPU_IPI                                BIT(INT_IPI)
->> +#define CPU_AVEC                       BIT(INT_AVEC)
->> +#define KVM_ESTAT_IRQ_MASK             (CPU_SIP0 | CPU_SIP1 | CPU_PMU | CPU_TIMER \
->> +                                               | CPU_IPI | CPU_AVEC)
->> +#define KVM_ESTAT_HWI_MASK             (CPU_HWI0 | CPU_HWI1 | CPU_HWI2 | CPU_HWI3 \
->> +                                               | CPU_HWI4 | CPU_HWI5 | CPU_HWI6 | CPU_HWI7)
->>
->>   /* Controlled by 0x52 guest exception VIP aligned to estat bit 5~12 */
->> -#define CPU_IP0                                (_ULCAST_(1))
->> -#define CPU_IP1                                (_ULCAST_(1) << 1)
->> -#define CPU_IP2                                (_ULCAST_(1) << 2)
->> -#define CPU_IP3                                (_ULCAST_(1) << 3)
->> -#define CPU_IP4                                (_ULCAST_(1) << 4)
->> -#define CPU_IP5                                (_ULCAST_(1) << 5)
->> -#define CPU_IP6                                (_ULCAST_(1) << 6)
->> -#define CPU_IP7                                (_ULCAST_(1) << 7)
->> +#define GINTC_VIP_DELTA                        (INT_HWI0 - CSR_GINTC_VIP_SHIFT)
-> Don't use too many wrappers, just use INT_HWI0 instead of
-> GINTC_VIP_DELTA in this series is perfect. In other places INT_SWI0 is
-> also used for shifts.
+In multi-vCPU KVM guests, remote TLB flushes broadcast IPIs to all
+target vCPUs, including those preempted by the host. Sending IPIs to
+preempted vCPUs causes unnecessary VM exits and grows with vCPU count,
+becoming severe in overcommitted deployments.
 
-The above macro definition is a little complicated, I do not know how to 
-optimize it. do you mean remove GINTC_VIP_DELTA just use 2 such as:
-#define CPU_IP0                       BIT(INT_HWI0 - 2)
+Reuse the existing steal-time shared memory page by adding a new
+KVM_VCPU_FLUSH_TLB flag to the preempted byte. On the guest side,
+skip IPIs to preempted vCPUs and set the flag via cmpxchg instead.
+On the host side, when re-entering a vCPU in kvm_update_stolen_time(),
+check and clear the flag; if set, drop the VPID to trigger a full TLB
+flush on the next VM entry. No new shared memory page, hypercall, or
+Kconfig option is needed.
 
-or something like this:
-#define CPU_IP0                       (CPU_HWI0 >> GINTC_VIP_DELTA)
+Testing: boot a 32-vCPU guest with the following QEMU command, then
+run the selftest benchmark inside the guest with sleep idle (PV helps)
+and busy-spin (PV cannot optimize) modes respectively:
 
-Regards
-Bibo Mao
-> 
-> 
-> Huacai
-> 
->> +#define CPU_IP0                                BIT(INT_HWI0 - GINTC_VIP_DELTA)
->> +#define CPU_IP1                                BIT(INT_HWI1 - GINTC_VIP_DELTA)
->> +#define CPU_IP2                                BIT(INT_HWI2 - GINTC_VIP_DELTA)
->> +#define CPU_IP3                                BIT(INT_HWI3 - GINTC_VIP_DELTA)
->> +#define CPU_IP4                                BIT(INT_HWI4 - GINTC_VIP_DELTA)
->> +#define CPU_IP5                                BIT(INT_HWI5 - GINTC_VIP_DELTA)
->> +#define CPU_IP6                                BIT(INT_HWI6 - GINTC_VIP_DELTA)
->> +#define CPU_IP7                                BIT(INT_HWI7 - GINTC_VIP_DELTA)
->> +#define KVM_GINTC_IRQ_MASK             (CPU_IP0 | CPU_IP1 | CPU_IP2 | CPU_IP3 \
->> +                                               | CPU_IP4 | CPU_IP5 | CPU_IP6 | CPU_IP7)
->>
->>   #define MNSEC_PER_SEC                  (NSEC_PER_SEC >> 20)
->>
->> --
->> 2.39.3
->>
->>
+  /root/qemu_branch_origin/build/qemu-system-loongarch64 \
+    -m 4G -smp 32 --cpu la464 --machine virt \
+    -bios /root/bios_loongarch64/QEMU_EFI.fd \
+    -kernel /boot/vmlinuz-7.1.0-rc5-next-20260529-pvtlb-v3-fix+ \
+    -initrd /tmp/ramdisk_test.gz \
+    -serial mon:stdio \
+    -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
+    -device virtio-net-pci,netdev=net0 \
+    -append "root=/dev/ram rdinit=/sbin/init console=ttyS0,115200" -nographic
+
+  # PV TLB flush enabled (idle threads sleep, vCPUs get preempted)
+  guest# ./tlb_bench 1 31 50000 0
+
+  # Baseline (idle threads busy-spin, all vCPUs stay active)
+  guest# ./tlb_bench 1 31 50000 1
+
+  With PV TLB flush (sleep idle):    ~152,285 ns/flush
+  Without PV TLB flush (busy-spin):  ~481,045 ns/flush
+
+  Improvement: 68.3% latency reduction (~3.2x throughput increase)
+
+Tao Cui (4):
+  LoongArch: KVM: Preserve auto-enabled PV features on userspace
+    override
+  LoongArch: KVM: Add PV TLB flush support via steal-time shared memory
+  LoongArch: KVM: Implement guest-side PV TLB flush
+  KVM: selftests: loongarch: Add PV TLB flush performance test
+
+ arch/loongarch/include/asm/kvm_host.h         |   3 +
+ arch/loongarch/include/asm/kvm_para.h         |   9 +
+ arch/loongarch/include/asm/paravirt.h         |  21 ++
+ arch/loongarch/include/uapi/asm/kvm.h         |   1 +
+ arch/loongarch/include/uapi/asm/kvm_para.h    |   1 +
+ arch/loongarch/kernel/paravirt.c              |  54 +++++
+ arch/loongarch/kernel/smp.c                   |  30 ++-
+ arch/loongarch/kvm/trace.h                    |  15 ++
+ arch/loongarch/kvm/vcpu.c                     |  50 ++++-
+ arch/loongarch/kvm/vm.c                       |   4 +
+ .../kvm/loongarch/pv_tlb_flush_test.c         | 194 ++++++++++++++++++
+ 11 files changed, 375 insertions(+), 7 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/loongarch/pv_tlb_flush_test.c
+
+---
+Changes in v3:
+- Host side: replace amswap_db.w with amand_db.w to atomically read
+  and clear only the preempted byte, preserving the pad bytes for
+  future UAPI use.  Issue a normal load (unsafe_get_user) before the
+  atomic amand_db.w to avoid operating on stale cache data.
+- Host side: move the pv_auto_features OR operation before the
+  compatibility check in kvm_loongarch_cpucfg_set_attr() so that
+  userspace does not need updating for pure kernel-internal PV
+  feature additions.
+- Selftest: add input validation, error checking on pthread_create,
+  and cleanup handling on failure.
+
+Changes in v2:
+- Host side: replace non-atomic unsafe_get_user + unsafe_put_user with
+  atomic amswap_db.w inline assembly. This fixes two issues:
+  1) unsafe_put_user failure could skip the TLB flush entirely
+  2) non-atomic read+write race with guest-side try_cmpxchg could
+     cause FLUSH_TLB requests to be lost
+- Guest side: consolidate two separate READ_ONCE calls into a single
+  READ_ONCE to eliminate a TOCTOU race where the host could clear
+  preempted between the two reads. Also switch from byte-sized
+  try_cmpxchg to 32-bit try_cmpxchg on the aligned word containing
+  preempted.
+
+-- 
+2.43.0
 
