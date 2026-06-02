@@ -1,128 +1,178 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319512441B8
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 12:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F8333711D
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 12:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780403552; cv=none; b=AlodJsDJp+E1Sm8lF5Gs3ujD6JpIwt0qEzzdJ7zUGjvN93Aq1eFfDbQ3J+CLIZMyXnoelFQVUyTyjGYRGPrLWGex6lja3LRRldHJxMB+TbC7VWqs/60mCqCPDqLGHbrC2CQh6s9fyoDh+6LmH7GC67ejTuVBpqyGpmbW8I0oU34=
+	t=1780403630; cv=none; b=GCWCgx4fqHvMne45UfakYS0Psqr4V+GUQZfTzDAfG/AjZFTgx401qcSYAMm/kWhbPcRwu1pMDz0AUmWoGtH8alLoT3/hablbtorGuGf98DQJgpS7rzDAaqSTxemnpmsbDdIvXQ98N4Vtnp8a9oIwhF1znPVmsJehrg8lv7+b/Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780403552; c=relaxed/simple;
-	bh=RGYqPBR/VpcBLc8w2RhIcs3a2GH1EopSFsJsqLkkWF4=;
+	s=arc-20240116; t=1780403630; c=relaxed/simple;
+	bh=Dt7ynl7RjMDm10IwkFbV7yaqQ3XCHkv1Jhl7dMLZbl4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eosBXkR6hs7Gdy5ExYRQaSWFcx8h7vTuQY7KdS32ra4g4WPpQ4vgX6k+BLKMxaozSVdn0+NpfTPJ0/QQsKlTPpS5ObN+MqGbLEPJHa7PurcGfIacoCX1vaeItUadgS6clRiIzSgqhrX4YjzlDYL+5win5xcUvuW+WaCZ9aZBcds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=nXpLd7Zz; arc=none smtp.client-ip=209.85.219.49
+	 Content-Type:Content-Disposition:In-Reply-To; b=BsDvI7GQYVSmfjdeJ+G5EGQiSeq/VJ7w0dPRiXjCTY0wRAcK4yFjKdZBceeKNXi+QVySDDhEWYxyoMFSJ/mHuSnx6AZGqEEef4W4QCQunh9xsoqPSui/6wwatxC+CNJ9/uFvyLKF/GmA+SYuVZhQs1oW5JrPnDDBpACXinSOtqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Mjg0KMTz; arc=none smtp.client-ip=209.85.160.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="nXpLd7Zz"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8ccedaf0b54so22892156d6.0
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 05:32:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Mjg0KMTz"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5176fc0cc72so3903001cf.1
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 05:33:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780403550; x=1781008350; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=c4LbN0qMsJPM0M7wr5pjCmaihB2Av83fU87UeNOOiAM=;
-        b=nXpLd7ZzB9GwCA+38Um2rpA9GNIGKYUV/LN++cH9n9gAaDGRDQHmjTooi+PchpzH3L
-         COU04Ma0+aaLVQbZNOjuvdR+lsK9m0Lce/rHeIwyMAZhhH8oxB4QkHDBkQ+AckrrmJTY
-         ZmO+rfeno0apdTpn5ov7VRHK7YbI3Ku9E4bNzWF1eQMdL+CtfMMczYgwc8/I/AbNDNMS
-         Bj0D9Zlonn2XgcJ3mmljlXuOvkou3KajbXQMMYEZXPuBPN7GnJnIdz6KZt3zq3inlVg3
-         iwA7AOv/EsCXnBLix//5Egug5Fqt+eb6ZWDEtaArCAsVdhR21WhSZDelO6sf/teVpaUV
-         ScbQ==
+        d=ziepe.ca; s=google; t=1780403626; x=1781008426; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3fuMy8ZTlB4sZmM4SRNfS45Rtpr0e2y/Uhs3uZMD108=;
+        b=Mjg0KMTzNzeCi7FV4Cglipctnd4qTRNJBs44FcFTysdYrVy+WlGmP/0GDFu0J+wJ7m
+         R/AuPEohevy1QNUE+WUDGubmJcDZZnffsV7i/Zze94JkqRPhbPdy15Qk6yh0s9q2hu1/
+         bI7dm1G26H7om23e5xJModDeVrIOi0meO3NUWse+J5lk5WegiPpkj76Qz79IXx4wghAH
+         J1I3OvFvwHvZLYWvaUMDTJFwu8CeiZpFpTAa6VbXuL1p2SxsoyL2H/fX/865+UB4pvvq
+         PhJR1KIiS2V1O2Xw5dcvwmRIXL5LbfWF9nRanp+5gjV4eMn6+GEiDs6cHaCPjs+09FpH
+         tsZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780403550; x=1781008350;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=c4LbN0qMsJPM0M7wr5pjCmaihB2Av83fU87UeNOOiAM=;
-        b=krkKDJJS0fjSIAdAKn74+xT7LBbwfBhoJEhjRea6AL6lb07RTqCF1ESypYNSQ6h4XT
-         Iu8h2PJwB1asaN3KPzpNV5yJI6o7uxxbCNUyJLnaU8tt7MeZ9j7bCW4OLTnDYPqOZPwv
-         u80nMVTrJweaIlpOn8o23KYiVmQZAk2McxjNqWqfGeaKki6rvpIsY7WCZStsc4c4Xu5E
-         bB0EGgic8XLKjq67wDUx7vBzUM0IS7CVjWUHxXsGeqrUWeAfMyxfpBMTGQHPjXxfQK0Y
-         uUDQruSL8j7r2Hju4RgYZ/ei1MrJVfDPnqwDxenI0qDwdMjUgJKSaJtiT6e2W4tyGPSt
-         enWw==
-X-Forwarded-Encrypted: i=1; AFNElJ+Jtunkd5tayXC67+CeeanglCUkbFX+iFmXcNijWfPLmII3D/MOK4GmMsmURqQm2AwveEM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHssOdGdhO7nSfxYc5BwYhY+N29sLUV5KS/HZBXNdHBx3jVdgs
-	M42BL6MtsHUzjMmxyxHUptC162D9BN0P53im1iNbPjfG8dKMXSrL3/CuMk8CrQ/3cQQ=
-X-Gm-Gg: Acq92OHxqZ/gKeOXEN6IJB1jlFpy00ogMCHnPYQ8FwXhg0w2DbW3U7ZMcYTMnz132Cv
-	Iax9P3ZYNx2fFsRNo7Ir32HGA6lxFVzfRHOVnvNKCSHImAjR6N6rCOB8Nk73Gz912Q2QzSin1KA
-	tS11FbDvzY/jJir89ggD43EEj6rb/FBn+i6UEPhe/gPoM+XpbgoHbSlLQF7A/+2hTWNYiGXMkK7
-	o4WUgdjfWEEVwUvggCWHpR7Rjg8UQpYh5wcqvpgeHIbdiZdv7JfcCjtmVm7rzjscw8Kff7Xfbgk
-	l1NNDrvLYfPNs5MeNkDwWpHittvTkVQ2iwHHZhKaTep2+dUlkL79fovrko+l3Zss1x8QwpLphXb
-	jDnU/UVv7xE1OuJHlBi1Bf/VHVNlwl3FJI9l1M15IjDJ+maI/N2Dkigcc3/tjA3sg1r6J/MFXFE
-	wWBeDwmfOF/AxbtxqX6gEAg3/NymP23PYg9bM/46nWFIvEKNEHHJGhXetoMo4G8LNRiU75WT7YL
-	eSGLvTkiUqbKuQ+InR1amBk7JE=
-X-Received: by 2002:a05:620a:2587:b0:915:5576:df09 with SMTP id af79cd13be357-9155576e1ebmr1554899685a.3.1780403550019;
-        Tue, 02 Jun 2026 05:32:30 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780403626; x=1781008426;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3fuMy8ZTlB4sZmM4SRNfS45Rtpr0e2y/Uhs3uZMD108=;
+        b=nVgXWZHEMZNmU/vh6YGd/2NEavAaTKvyr5I4dlVzKN+KZKl2Y59skvGMI0NJw4Rx+2
+         LDdYbug0uy6lcYW20ohJw+ClVIrXjl8LxF0dfQO4dKmn0JO3kuniL7Whepi6NHghkDa5
+         Awr7slnS5emSNeulX0EEej8/eA1XYeC8aOF/Jv+St1MVKRVxdIr1YO/1ReELngLmkkLd
+         lJYLe7vb6NqXh05aZKB5Ll/Ok10xgxGMA2qLDXDxwsAt+AmgJ90V92UcShgcPir3GLRT
+         6bhaU/n0xBT3vTdLmg1q48TBXZuUxphjDAiP/3vHE7swsfsmcXw+Y7bG87qoQmqTB/xO
+         vRPg==
+X-Forwarded-Encrypted: i=1; AFNElJ+pn3FWLnn63/OMYA5sj7k+it59wV80FpIH7sE7+mtfzokQ6APHlzH9Kk6RXMFhw1bv0vU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5/T01/UU2u5vXICFIXTkhGwbukT3uYP2yDq0VePRpokVq4edE
+	aV/pUEMqBzzOL35Ne3GAOyazv1lGJiEarxVCyNxCSqaQYyaUkJOsY8Tdpt+b/jRt+ps=
+X-Gm-Gg: Acq92OHwt84Ztdj1fEX9qPoepXrBmF2YQJXS47SJw8fGR8znlwqmNTECOz6Zws69/JZ
+	9BbvsgrxzBgcJNBmfyNBmUDCLFz7zU/aVIlV8VWjqIyeSyxBKuf8O+hlfOgIuoqsqAhASmqe2RD
+	U6bz12kxJiqhd6Gr3diTv5eDw3pJfOJdPq684PkhwoiG3g4yVoJEypxpo+WxTJQoXD4ISJapjrO
+	cIG4jRLajoKzQSbwp25hpzsg3Mkxs/78EiwW0Qx+49moYobIaHtTUWbP15rzihyPBdAs6WNPNLD
+	OAwzfQPwTx6lYTAsgtlrewyNCixrX/FGgc/kjlw5AOUEkG9PZUWeCjgDqS5bhYbYz3wT6VVVPJF
+	fpbIooDXn7P66gHCGJ+PhmjdJmzPP5wicL6MDPVWmryhzXCkJ/7aLioA7SXHJpgHuXVDrK5n+dt
+	lzN3OPANH3GnRKiTOt+poTnmgE8Gqon5bQMieL9XJFrlPFsSN8Myk40Ox8E+MmGTda7F/8kZRkH
+	skp9yLFd7xhdnjJ
+X-Received: by 2002:a05:622a:190a:b0:509:2527:d789 with SMTP id d75a77b69052e-5173a5c05ecmr228232631cf.6.1780403625864;
+        Tue, 02 Jun 2026 05:33:45 -0700 (PDT)
 Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-91532445a83sm1272224185a.10.2026.06.02.05.32.29
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51741d6a240sm78686221cf.18.2026.06.02.05.33.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 05:32:29 -0700 (PDT)
+        Tue, 02 Jun 2026 05:33:45 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wUOIG-00000003lvt-3BeT;
-	Tue, 02 Jun 2026 09:32:28 -0300
-Date: Tue, 2 Jun 2026 09:32:28 -0300
+	id 1wUOJU-00000003m5x-3DKO;
+	Tue, 02 Jun 2026 09:33:44 -0300
+Date: Tue, 2 Jun 2026 09:33:44 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "guanghuifeng@linux.alibaba.com" <guanghuifeng@linux.alibaba.com>
-Cc: boris.brezillon@collabora.com, robh@kernel.org, steven.price@arm.com,
-	adrian.larumbe@collabora.com, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	liviu.dudau@arm.com, joro@8bytes.org, will@kernel.org,
-	robin.murphy@arm.com, alex@shazbot.org,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kevin.tian@intel.com,
-	baolu.lu@linux.intel.com, suravee.suthikulpanit@amd.com,
-	dwmw2@infradead.org, xlpang@linux.alibaba.com,
-	oliver.yang@linux.alibaba.com, shiyu.zsq@linux.alibaba.com,
-	wei.guo.simon@linux.alibaba.com,
-	alikernel-developer <alikernel-developer@linux.alibaba.com>
-Subject: Re: [PATCH 3/9] iommu/generic_pt: implement iova_to_phys_length
-Message-ID: <20260602123228.GF2487554@ziepe.ca>
-References: <20260529115116.GR2487554@ziepe.ca>
- <20260531093637.3893199-1-guanghuifeng@linux.alibaba.com>
- <20260531093637.3893199-4-guanghuifeng@linux.alibaba.com>
- <20260531235421.GW2487554@ziepe.ca>
- <605cbc0f-dcfb-4edd-8756-1c376c9bb6ef@linux.alibaba.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>, stable@vger.kernel.org,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>,
+	Gabriel Somlo <somlo@cmu.edu>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	"David E. Box" <david.e.box@linux.intel.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>,
+	Frank Li <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	John Johansen <john.johansen@canonical.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+	linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
+	openipmi-developer@lists.sourceforge.net, qemu-devel@nongnu.org,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+	usb-storage@lists.one-eyed-alien.net,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, netdev@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 01/11] params: bound array element output to the caller's
+ page buffer
+Message-ID: <20260602123344.GG2487554@ziepe.ca>
+References: <20260521133315.work.845-kees@kernel.org>
+ <20260521133326.2465264-1-kees@kernel.org>
+ <ah699hwLxIIOZ0-7@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <605cbc0f-dcfb-4edd-8756-1c376c9bb6ef@linux.alibaba.com>
+In-Reply-To: <ah699hwLxIIOZ0-7@ashevche-desk.local>
 
-On Tue, Jun 02, 2026 at 03:20:05PM +0800, guanghuifeng@linux.alibaba.com wrote:
-> 
-> 在 2026/6/1 7:54, Jason Gunthorpe 写道:
-> > On Sun, May 31, 2026 at 05:36:31PM +0800, Guanghui Feng wrote:
-> > > @@ -159,45 +164,51 @@ static __always_inline int __do_iova_to_phys(struct pt_range *range, void *arg,
-> > >   	case PT_ENTRY_TABLE:
-> > >   		return pt_descend(&pts, arg, descend_fn);
-> > >   	case PT_ENTRY_OA:
-> > > -		*res = pt_entry_oa_exact(&pts);
-> > > +		data->phys = pt_entry_oa_exact(&pts);
-> > > +		data->length = BIT(pt_entry_oa_lg2sz(&pts));
-> > BIT is the wrong function, it uses the wrong type. log2_to_int() is
-> > type'd properly
+On Tue, Jun 02, 2026 at 02:26:46PM +0300, Andy Shevchenko wrote:
+> On Thu, May 21, 2026 at 06:33:14AM -0700, Kees Cook wrote:
 > > 
-> > This also needs to keep walking and accumulating length for
-> > consecutive PTEs until it reaches a non-contiguity.
+> > param_array_get() appends each element's string representation into the
+> > shared sysfs page buffer by passing buffer + off to the element getter.
 > > 
-> > The other drivers don't need to have that complexity.
+> > That works for getters that only write a small bounded string, but
+> > param_get_charp() and similar helpers format against PAGE_SIZE from the
+> > pointer they receive. Once off is non-zero, an element getter can
+> > therefore write past the end of the original sysfs page buffer.
 > > 
-> > Jason
+> > Collect each element into a temporary PAGE_SIZE buffer first and then
+> > copy only the remaining space into the caller's page buffer.
 > 
-> pt_entry_oa_lg2sz has already considered continuous PTEs.
+> ...
 > 
-> Does this mean that multiple PTEs need to be traversed additionally for
-> consecutive PA address mappings?
+> > +	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+> 
+> get_free_page() (or how it is called)?
 
-yes
+I thought modern mm guidance was to use kmalloc whenever possible and
+not use get_free_page() unless you intend to use the struct page bits?
 
 Jason
