@@ -1,147 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFB137BE9C
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 20:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780432588; cv=none; b=Ppx+C6ngUB7cMskvIFSdlfnIpkV5IPtBpoHT9qT+BD4vGPXLV5pR3X6W9+fyjunLbgRZVZZOFp3DYin8b1wm53px4DYriOtfzFU4q/kjLHkgKUW+OmVuzkYoAQbhPOZy4dtpKrPV9vyPGaPlktDswOH7t+INjNIv48qBBPqUy5w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780432588; c=relaxed/simple;
-	bh=dG22dI2EJpPcYY6LsWslcL/HwCdEcBAEv9Etuoiv/JM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VFW5Sbpw66vqsBsfzWguXc9fxlfjwhcEozkw6R/UlWlIrjAU6rrv6fi3rE1UJBhNiauQyG1DPKUKkmGmKuwl4BItR4aY5RZ4uGUKTgWBLHwt8sgoXX5YabB/P830S0R5yBOex5lfAQ5SsMaqHDyLkByy9Ll+a2PPtL+jtdPKdxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZsDwwp29; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A206A36728F
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 20:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780432899; cv=pass; b=s8hvtv/6HjD7wc2uM2w4gIm+zkXyCKgyFuN5fyaTj36w6i3Q90JQbV67lBIroFf98fm7LcHpNX+cN+x9inP3FVczESAqhE56pcJBfT5AO9nfmRXv6ksYm4bbEV5BDQeTHnXaKBzPPMpueWDq6amR+97C3lEqF2BBi3KyBagqGbU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780432899; c=relaxed/simple;
+	bh=nTYPsQanuHPOf3+YdCHnJYoAoqYTW65WA3kXZLPmJs8=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P4Sa4JOIHl4udW9rKJpscAFzSN42Okc6eRQupS9ysmfgf0oZBVwFrp3AtOUmO08uYNvz4xa1kQjg7iW2igmnXMJWvOJXtl6QZtXKV8DQ0YPYKSkp8bZF7K0pRLjfEkIk4rDkyYWNsLZ4zAtivLGxy1p+u9lLFr4nBDd2vklnQps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SeLpvLxs; arc=pass smtp.client-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZsDwwp29"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D0D1F00893;
-	Tue,  2 Jun 2026 20:36:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780432587;
-	bh=0auQYBdB7tzoEf0IV8nm6QqFbUkWk7ZjVFIb5G54Ixs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZsDwwp29nyon6R8DRCesTfXGFHlgwJ2HmCNG23nDnIdAGFYeuHUzrIZfPA4KkFMCH
-	 KqshsIL7u/FxlVncll/E1BqajBmfAiLHcco2Myh5GBbreXsB+mm5pmm2QedHTfZRpv
-	 6pursN1oqGg1/EkKMbq8PXZvIoWXpFdBP9z9RP/4xLCwPOSo+us2bQ91loJV2n7XyK
-	 3AEcMSX+RzuOYXCrOQnoVHEIIHIGdqXo6cJ2ovSPrknIdyXN/BKPK6Yuiybw4tU7Ir
-	 OCVtL4v2LeYl1A5QhOWZTOSh0aLb+83hTquPXsxh5T9zqWyXSmmElKQgnEts53B12e
-	 gj546u2QEYz0g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 2/6] x86/sev: Initialize RMPOPT configuration MSRs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ashish Kalra" <Ashish.Kalra@amd.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <87d473d05c26458773b7957fb96e9b2948641753.1780427587.git.ashish.kalra@amd.com>
-References: <87d473d05c26458773b7957fb96e9b2948641753.1780427587.git.ashish.kalra@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 20:36:26 +0000
-Message-Id: <20260602203627.37D0D1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SeLpvLxs"
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-137f3cb3f46so503510c88.0
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 13:41:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780432898; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZWuBiTcpaC99tVLhGcgJydylv3k26t+qJ+UrnN49unNZXOiN1Eghx4rrvuwqJVNyvk
+         Cbtsj+mQLS3IIUnnfHb3+6us1VuJl+m8v1i/Olo1DriGTF7oTdOiF/ApsalfJRtc+Irw
+         IHI3dyzt8RjfbK07rlv9aK9ZBtmg/G4GkOgztxvgnHks64y3pN5bGNanHo5aRRG8sqZi
+         PSmW1NMPAT6RAdZa7PSSw+tZyux5HP+9YVqjDKo+n6leZC65WJSmJNCYJWBDBhf90P6t
+         FV0HvxPItkWB1TLwYhke+US1GH0ZnM7SuApr79sV2SgLOxaiwYOC1OFfgGWFOTKA4wsh
+         cR7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date
+         :mime-version:references:in-reply-to:from:dkim-signature;
+        bh=Q9DfpYFNGzsB6sazPDXo4YOkWRxIbqoOx7DhukB8QIE=;
+        fh=KVy4+j+TE0qJlGnL1oxDtQvAs+ZlkPteDJwxhHS2piY=;
+        b=I/qGR5B3qD6alAJ6A6HaNmH7V40LVYtC+8j0tbgxFOLjXAkeR47c/OIPdbg2ijaFMi
+         DMMyFcsGY149i9mZ/43Lx1wilPpM35WcsM9DpOV4ToxYAV63wgv4Agzn6c8M+96dV/ED
+         TnVUm1lLb4qVwn8zEodMSYbkyJIjLJQfklTfRGK2oMyg8l7k/MhlSx9LS2UnHwkkhPmn
+         6sJf7gHB5CoMFtq6+1QEc0OcbkAL07yGEZ+HFlJAK2v2hEN0aTw7vDB7fsfEDKrR4bdi
+         iG5gCkGIUP/46Ja5dw6y1VgeEVZig/dNQnGilJGacjvXqwZ06ScH0w0NwgqOHlUDVeh0
+         p/YA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780432898; x=1781037698; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date
+         :mime-version:references:in-reply-to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q9DfpYFNGzsB6sazPDXo4YOkWRxIbqoOx7DhukB8QIE=;
+        b=SeLpvLxsk86H2IYyN1pxBQNFSD46FKGI4tyeF3tJVE3cmTU0VS1ooour1p/d7Ry5O9
+         DaE56dO1QC/SHP7yXfhWiRoEkeDLqxYl9aW1OiIi9l1veRmrw5RD52BSC8w8JvcC4lpU
+         NWHGynR+735fGymCbbBg9Ko33vAqWXIQDoXZd0q6R4bKnztqwUrbler1nZek+dEvIzlo
+         obf6uA5z0yp66C85n0eOpuajk6ntUWUrAlrW7E3V114iiLnicJnijlwFEohwqssyYoXF
+         fQA80s2eMFncnj+YvexvPePElYVi8tWW9zs4aDAar4QveWY2DBqQ6wUyhlSHGURQPeTt
+         bozw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780432898; x=1781037698;
+        h=content-transfer-encoding:cc:to:subject:message-id:date
+         :mime-version:references:in-reply-to:from:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q9DfpYFNGzsB6sazPDXo4YOkWRxIbqoOx7DhukB8QIE=;
+        b=PJTE8Hl3IrTtRlkadwoEtWqmVG6InkgoJ5tqDMVos1OGCY8E8QE0vFMZ3c1pmM6QWu
+         5dbIIzVlOhWcV88/lXTd23Y6aESe8m1Emvs8AcaGPs3Z792VV/fyhA/zZO5QYDeS6fVE
+         GDA8M4E/GXR5pwUGfFDeSAALqrcfYTNjLrAtjseil9ZIpw1WbSv0F1JihfVsLWsuAJq3
+         w7cTjuV8XraILDURruMGJRuCQJSdygHLjxJqCh/XRtqndILigR6SNimsoqtQXTOh6QhS
+         nIT9QXCgkfld+mfY53ipA1WBpEhC79JU3lbaoLoTdLZJfKuxjak3hWXHdEYDlWby1RH7
+         FSjQ==
+X-Gm-Message-State: AOJu0YzbTGMjQFIcFrOLKiUNsijOBPRKwL1DoOYFEuX1Fzesfo/LAlIx
+	bOi4OqNRc7HIvav/n1RU0xzEc92z6bRcKYn4nhSa0/j7n4ohrnsEeZM6BvXKgE8lnaaGMBT8MLP
+	ncq6XlhaMtfzTXhtWuwIJVT9Mmo9htI6vLcuYG3Ab
+X-Gm-Gg: Acq92OEtdVeqfGIVCWPFL+3AA7hWZ2xBXtqI2/7OjKmz79VRRzRSjLnmNth72I47W9o
+	FrgFLcprIR+8TV3Wn0+pvERO4jMA6Vklqmoav+0KT++xw/PFDNGxRVZNjb0H6hBDq35uuO5JsGJ
+	PIh6KSwgL59qvyqr5KmrKyyzFkrZuFeKjaFImDZgVQ8d0w/8ByUB5ZKXUn0W+j6tcLX1Z4Bj40y
+	R6PcfZLViWfJte4Cf/TiQoI18lslI4tguna0mBs6Q+51fssBVdDDJVv2iXIekaCjCDfC+df1W1k
+	10nzliAj4Lzf5knRA39bil7D3+7TGRCVXMJzfWFcUyzrvuS3P2IhR3MuDBYVQQkovlhsT6/VL+y
+	fAIqf
+X-Received: by 2002:a05:701b:2058:20b0:137:eb26:117 with SMTP id
+ a92af1059eb24-137f6b87c7fmr108819c88.13.1780432897006; Tue, 02 Jun 2026
+ 13:41:37 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 2 Jun 2026 13:41:36 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 2 Jun 2026 13:41:36 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260523005223.5B9651F000E9@smtp.kernel.org>
+References: <20260522-gmem-inplace-conversion-v7-7-2f0fae496530@google.com> <20260523005223.5B9651F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Date: Tue, 2 Jun 2026 13:41:36 -0700
+X-Gm-Features: AVHnY4I-p28f6R-pwlANnTjmbkkEzzn4cv_rflApgLZ-buk8YP2KDCX9f8QQ2KQ
+Message-ID: <CAEvNRgHn44ASMxyBpDWXYO0QiGi1PgREUWfopgdk_aQ7bFx_UQ@mail.gmail.com>
+Subject: Re: [PATCH v7 07/42] KVM: guest_memfd: Only prepare folios for
+ private pages
+To: sashiko-reviews@lists.linux.dev, 
+	Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Late clearing of X86_FEATURE_RMPOPT via setup_clear_cpu_cap() fail=
-s to un-patch CPU alternatives, causing snp_setup_rmpopt() to dangerously e=
-nable RMPOPT on unsupported Contiguous RMP configurations.
---
+sashiko-bot@kernel.org writes:
 
-commit 551ddbd8061d6e0326ab620a808e849941500d13
-Author: Ashish Kalra <ashish.kalra@amd.com>
+>
+> [...snip...]
+>
+>> @@ -908,7 +910,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_mem=
+ory_slot *slot,
+>>  		folio_mark_uptodate(folio);
+>>  	}
+>>
+>
+> [Severity: High]
+> This is a pre-existing issue, but does clear_highpage() fully initialize =
+the
+> folio if it is a large folio?
+>
+> Just above this diff context in kvm_gmem_get_pfn(), the code clears the
+> newly allocated folio:
+>
+> 	if (!folio_test_uptodate(folio)) {
+> 		clear_highpage(folio_page(folio, 0));
+> 		folio_mark_uptodate(folio);
+> 	}
+>
+> Since clear_highpage() only clears a single PAGE_SIZE page, won't this le=
+ak
+> uninitialized host memory in the tail pages if __kvm_gmem_get_pfn() retur=
+ns
+> a higher-order folio?
+>
 
-x86/sev: Initialize RMPOPT configuration MSRs
+guest_memfd only supports 4K folios now. I'll fix these when I get to
+huge pages.
 
-This commit introduces RMPOPT instruction support to manage per-CPU RMP
-optimization structures. It sets up the RMPOPT table base to enable
-optimizations for up to 2TB of system RAM once SNP is enabled. It also
-attempts to clear the RMPOPT CPU capability if Segmented RMP is disabled.
+> While comments in kvm_gmem_prepare_folio() state that the code is ready
+> for huge folios, silently leaving tail pages uninitialized could lead to =
+a
+> severe information leak once mapped into the guest.
+>
 
-> diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-> index 989ca9f72ba30..7fdef00ca8f22 100644
-> --- a/arch/x86/coco/core.c
-> +++ b/arch/x86/coco/core.c
-> @@ -172,6 +172,7 @@ static void amd_cc_platform_clear(enum cc_attr attr)
->  	switch (attr) {
->  	case CC_ATTR_HOST_SEV_SNP:
->  		cc_flags.host_sev_snp =3D 0;
-> +		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
->  		break;
->  	default:
->  		break;
+It's actually not quite ready, but I think this series is big enough as
+it is, I'd like to defer the hugepage stuff to other series.
 
-[ ... ]
-
-> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-> index 8bcdce98f6dce..089c9a14edc74 100644
-> --- a/arch/x86/virt/svm/sev.c
-> +++ b/arch/x86/virt/svm/sev.c
-
-[ ... ]
-
-> @@ -488,9 +491,13 @@ static bool __init setup_segmented_rmptable(void)
->  static bool __init setup_rmptable(void)
->  {
->  	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
-> -		if (!setup_segmented_rmptable())
-> +		if (!setup_segmented_rmptable()) {
-> +			setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
->  			return false;
-> +		}
->  	} else {
-> +		/* Note that Segmented RMP must be enabled to enable RMPOPT. */
-> +		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-
-[Severity: High]
-Will calling setup_clear_cpu_cap() this late in the boot sequence effective=
-ly
-disable the feature?
-
-Since setup_rmptable() and amd_cc_platform_clear() are invoked during late
-IOMMU initialization, this executes after check_bugs() has already permanen=
-tly
-patched the alternative instructions.
-
-While do_clear_cpu_cap() will trigger a kernel WARNING and update the
-in-memory boot_cpu_data array, it cannot undo the static code patching of
-static_cpu_has().
-
->  		if (!setup_contiguous_rmptable())
->  			return false;
->  	}
-
-[ ... ]
-
-> +void snp_setup_rmpopt(void)
-> +{
-> +	u64 rmpopt_base;
-> +	int cpu;
-> +
-> +	if (!cpu_feature_enabled(X86_FEATURE_RMPOPT))
-> +		return;
-
-[Severity: High]
-If setup_clear_cpu_cap() failed to un-patch the alternatives earlier, will
-cpu_feature_enabled() incorrectly return true here even when falling back to
-Contiguous RMP?
-
-Because cpu_feature_enabled() relies on static_cpu_has(), it seems it will
-execute the previously patched instruction and erroneously bypass this chec=
-k.
-
-Would this result in snp_setup_rmpopt() wrongly configuring
-MSR_AMD64_RMPOPT_BASE and dangerously enabling RMPOPT on unsupported
-configurations, risking CPU exceptions or memory corruption?
-
-Could a global boolean flag be used to track the RMPOPT state instead of
-dynamically mutating a CPU feature after alternatives are patched?
-
-> +
-> +	cpus_read_lock();
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780427587.gi=
-t.ashish.kalra@amd.com?part=3D2
+>> -	r =3D kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+>> +	if (kvm_gmem_is_private_mem(inode, index))
+>> +		r =3D kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+>>
+>>  	folio_unlock(folio);
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522-gmem-inp=
+lace-conversion-v7-0-2f0fae496530@google.com?part=3D7
