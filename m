@@ -1,134 +1,164 @@
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203953A6B73;
-	Tue,  2 Jun 2026 19:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003A5310651;
+	Tue,  2 Jun 2026 19:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780427663; cv=none; b=geSd4QuWhTri21YojL2Gv0VTLi9P+ihj+GB2xXs8dD1VVpAbt5pV0gG/4fcEU2+nJmGWaNe8exVwnqSy69tupDwKOtgOorF7QBvaDj4Zej1/C7zjuBsc6FcS37kNj8V9k9dlLxZXibNBAl51fz2CkrexoIZwDlXdyWS9DH6cZQU=
+	t=1780428997; cv=none; b=YGYxIzd49n7R0iB90EkM+fzyNQYq2RW9fUe4BBjrwWs8TmpNhIwa7YFU2egbrnoBpQo7GNGcP4uNuUlC9Fj3uVCIfSOm0iHCR4S3Ake9+PbPmKS+DNqEQYnLOLQ2RwgdWYkURSZzbsVbdVzpze0xD8Dh17v6DkDJNEPrq5OU1QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780427663; c=relaxed/simple;
-	bh=tAzkKETTuRf48VD4z0ecJB0e+JzCLTbr80+eKXBKgI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hgfwiOTQi0998oEraQioTn1lGEEn7DgVcnlbofItP+2CcLXaHAWrGN6teRgnzlcGiOAmw/1gJ31rnhYtqa5q++lzzw9Xraxa4qiocfy5Hi55fwT1k+eF3Mnxmcf10+fyR3rWyJ19J+uejFWYh5xPHhS6crpqxOqebO7qTLZTCtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=fYi8WswM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gHZnmppg; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1780428997; c=relaxed/simple;
+	bh=Etb9LqmxcfSQA7XtpVFzX4KGMspDJ5lBTdsCMUsiqbc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DYalPPii+B673tAXtsSzjdMwtxswamDwnE539p9TRjG0l3wxdIeVoHgTFXwJcVJhYtzxb2qyThPw1GDO+o86m1yk77GZIhTq36Xp86CkI9IOiuIEWl4PD1o9Tg7EuBVfrpbEirh0t/vSQfkFzX9OYY3HJjjJDWttC8v3TdV99sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TyxJS5cT; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="fYi8WswM";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gHZnmppg"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id DAE987A00A1;
-	Tue,  2 Jun 2026 15:14:20 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 02 Jun 2026 15:14:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1780427660;
-	 x=1780514060; bh=SpvDioedx7EBp7REkfmzqAAh1WhYtz7APHz8F+X6T5w=; b=
-	fYi8WswM+/hkbi1Bd3EOzRsKS9w1UWkyvLNnwfILgyvyDaBqcCjA1b8c6n4DxuHQ
-	Rufm0/3+n7fZ26/ntN0+xsHEmNNi3P8QbUAcLR8nsZUosIqvWis3u8AolZriPI5C
-	YuWzbB1x/a5RsQQ1T3bRDmQy07wOdEr+RnzVSVcyClofhmTc1p89+VepqJFS1A2s
-	boZQIsQD2T1hd72DAgKjy38GRJ3hZX/K0uCtHnvNzynsNlyEpmni5pyFIc3DvAA1
-	8mxM7s/xKW22LT3Tp2TeRal0XVGYLuqUPZFlA4P7fr3myk/3/p70msI7f0lMYXPR
-	xsnJ7JUaM1wXfRmR3tavOg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780427660; x=
-	1780514060; bh=SpvDioedx7EBp7REkfmzqAAh1WhYtz7APHz8F+X6T5w=; b=g
-	HZnmppgaNPwItEsd4IStTSIXHz/n3NR53RCJvTj0RmQJN0ZSzjnWudHLZVX8hvc0
-	yYJ/eY/QzBkPOiNbalDsZSWi42bWUKGCUmefFmVZ2IL1XHDBYKhAFOqHH37GSFd1
-	jC8iVrtGTTz/cfIOQnCTAmWEsJFY7EhljeRoSD+1k+zlg7G3Jf94qulTJTOesJv3
-	Hzhbzen7f4bxAYIByco1J7y33aGJDc/xd5c/co7lCx1KXDa6hc/gLo8Na6N+Pttt
-	0vW+LPbolONIOrIpL/GHLHus850xqwENSkNrZrJTbr1f6V9IdU4g0YuyK9cPKid4
-	lDWDW3cMun2To0zyPP+iQ==
-X-ME-Sender: <xms:jCsfatLxzGt4VmdphbTdirJSQA1MpXYAMU1AMk1ebq0AnJs_1Jeu1w>
-    <xme:jCsfak1ywB2nbz5-55Y0zhhPWofz1giRpo09yL9rwnimIX7i-assB9XOPGWFIRpr5
-    XJp7_E0K6tzBljN9p4UzOSfH8JF1N-pauhM5PzpmGWB3k6DpC3swnM>
-X-ME-Received: <xmr:jCsfagYy5lIUmzqcyr8sK6G-KvfKQkqy25ngGic9PvuAbbyU2Qgn8s0qYKA>
-X-ME-Proxy-Cause: dmFkZTEbaR6LWAxxEP7bF1oueZFOpQlufeO72chHj023mPTzizOII6z5ldTM+xHFULHcJd
-    KN0hIAhV7kszSpGu8UYILvRB9QwRkTWj6khZsy0V2rhu6mvc3076amoNLLnrXC8wle5U8k
-    e19xr29yQwkD+fyr3WNDGif+swnmavasRDpBG5bCnmixecj00gr5lXamekgkoOQ078cPts
-    CnXa3RTvGxPZyyfK6c2P8lMcR3Bqd7Dd7ndk2OxIQZ0W8xoZoK4MdeQC//3l03vQWShVsD
-    EnUUq+uNCd37UWLpguugGlt1xZl9XZO9lvsgn8Ktzy5+1OPCSQ/Hf4drjV01A/xmVAV8CJ
-    XpXvFZZpm977G6evGreJs5c5E24hbpdLz+gaYoOYEQSSTCNZea3/qiLwfKEbttRfEGlnH5
-    eUXReTuUjJSZw0Vjd1jXIAisrp6/6CqkroxMamWciT724xZYyeqP+Ou6NNohqsy1JhZxYY
-    wZWHdg+ejxcOFd2TKlDcMQsLQWZ5XnT4kPV9vb0StqKqW//5ig/43r+FnPSQFBBGWf3uvi
-    axl7yZ8MoHUEOb/wAdyn6SUir2uA6YCrKa/Q1QYRUeanFm58uZvdaCc2O2wVqV3rulFM8Y
-    Pa1Mrg8R7jNWd7YPWht2zrHTwn4TzEafYAgL7BMKCrlHQjzA7rkyTd0Ts6Zg
-X-ME-Proxy: <xmx:jCsfavX3pjxaVqCjv-vNEJkZoYem228vgb7Tlrw96X6YTaLmLZL0Dw>
-    <xmx:jCsfajfxdiqfCns1rdUltuUBKkUkVuHpMkhTRGUDqFdzzagH_55Szg>
-    <xmx:jCsfakMv7HPAAbuT9s2pnOQqBkP7VCw7ZvoO_vwFKLSo9goyHr3C9A>
-    <xmx:jCsfajKkkggVbUx4PVdT_hrwyyf95lGKwviIP2ZwvTE3uw23DIrUXw>
-    <xmx:jCsfarNoi6G6E-ic1DExI19pAuGQmsJuNEpE-Dvf8S4w2sXQo0GLhuNp>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 2 Jun 2026 15:14:18 -0400 (EDT)
-Date: Tue, 2 Jun 2026 13:14:17 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <mattev@meta.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Alex Mastro <amastro@fb.com>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, Logan
- Gunthorpe <logang@deltatee.com>, Mahmoud Adam <mngyadam@amazon.de>, David
- Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian
- <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Pranjal
- Shrivastava <praan@google.com>, Alistair Popple <apopple@nvidia.com>, Vivek
- Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v2 9/9] vfio/pci: Add mmap() attributes to DMABUF
- feature
-Message-ID: <20260602131417.41366391@shazbot.org>
-In-Reply-To: <8854824e-06c2-43b3-86c2-8c2c28f9ad63@meta.com>
-References: <20260527102319.100128-1-mattev@meta.com>
-	<20260527102319.100128-10-mattev@meta.com>
-	<20260528171432.771a1a30@shazbot.org>
-	<8854824e-06c2-43b3-86c2-8c2c28f9ad63@meta.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TyxJS5cT"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 652HRGne1773281;
+	Tue, 2 Jun 2026 19:36:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=HhuSRH
+	qDSxIbcSvpRdQesxfGdtEyVztezjhKlfFXjXg=; b=TyxJS5cTPZmA2psMjZnjoy
+	g/hwbN6RPKkhpG/Fbu+HqiaVFhCqrhMpaWTS3PaJt1yKkiEwHZeqTHCuUcYEjeae
+	Xob9pGaxyJFF/9ENNmdny7zOlezMVsIYjLf9ho9ejA8WBQ0WAxxjtAweGyxnckeW
+	NLUsCl7GVOlvuqh1EtejaZXc0T7AOGLnFrRkxSHECfD+tpEM4B8Bp6/RtD6WQ6PT
+	78Y0ddq2rSZUa2WyS3jml3TIEiMWDe9m0inlUV5+bCug5Z/A4PREvh8GSmUI4Qwh
+	rFH68Qfygq5/2+D6L/J+FJL5yS3kP0rM9fmIURSFetTWEJWxrcvff4M9fZ1O3JXA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqd47ra4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jun 2026 19:36:32 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 652JO7qI008242;
+	Tue, 2 Jun 2026 19:36:32 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4egcwycjnf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jun 2026 19:36:32 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 652JaUPo30933674
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 2 Jun 2026 19:36:31 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D63355805C;
+	Tue,  2 Jun 2026 19:36:30 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A312658054;
+	Tue,  2 Jun 2026 19:36:29 +0000 (GMT)
+Received: from [9.12.78.81] (unknown [9.12.78.81])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  2 Jun 2026 19:36:29 +0000 (GMT)
+Message-ID: <bda40f9c-7187-4382-b421-334b04c05e1e@linux.ibm.com>
+Date: Tue, 2 Jun 2026 15:36:28 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] vfio-pci/zdev: Improved zPCI Function Measurement
+ Support
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com, schnelle@linux.ibm.com,
+        mjrosato@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
+        gbayer@linux.ibm.com, alex@shazbot.org
+References: <20260519224204.19154-1-oelghoul@linux.ibm.com>
+Content-Language: en-US
+From: Omar Elghoul <oelghoul@linux.ibm.com>
+In-Reply-To: <20260519224204.19154-1-oelghoul@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDE5MCBTYWx0ZWRfX2+C8tS0fflhT
+ tOZWf2ohMdGEHnndeR16tkv06v0cr0YzDUcoKXmKwT35WY43UHw9doxrIZP/iJnWahoHi18KGo4
+ /regxmOKbgXW+ShZqJLokEaq5m059Pc+FtzsIaiJXzZK3tO0L2E3W15a/z7d2JXYonSvVJsKv5R
+ 9soSITecL7RmBc2pxctXvBYSESbziw2BwfCPHBnm1WZesPrYrCk63ziuLYhA6FOawXZEiz+C+fc
+ j0Rlu6yFIC5O7hoynko0BhHQ1xzgcGZ5TpT+o7TYClHLM9yXAV3rRUuC6kkIw+hEq6Ufm4j8rd5
+ NwhPEimOrBr2+K7U4jfFjZb/EvhJqZP+2Po1UVqfGf/zl4b68CB6LHNSGLbdtr7wMikN/IguVtv
+ 7HlWtH5qHHanI02l+s3kafwSsn2i51+5/ZB7EeZgO44l5H97qpJCeHLHGLXnyi9RpzAHfGbQZ+G
+ FXYckSlaaa2R5UWuVCQ==
+X-Proofpoint-GUID: jdP1_4RBYd-8uY4DNu9q659hls5k2pSE
+X-Proofpoint-ORIG-GUID: jdP1_4RBYd-8uY4DNu9q659hls5k2pSE
+X-Authority-Analysis: v=2.4 cv=DZknbPtW c=1 sm=1 tr=0 ts=6a1f30c0 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=J6ZS_3muYHgI6I3YJNIA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-02_03,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ phishscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606020190
 
-On Tue, 2 Jun 2026 17:50:04 +0100
-Matt Evans <mattev@meta.com> wrote:
-> On 29/05/2026 00:14, Alex Williamson wrote:
-> > On Wed, 27 May 2026 03:23:12 -0700
-> > Matt Evans <mattev@meta.com> wrote:
-> >> +		uint32_t old_attr = priv->memattr;
-> >> +
-> >> +		if (flags & VFIO_DEVICE_FEATURE_SET) {
-> >> +			switch(db_attr.memattr) {
-> >> +			case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC:
-> >> +			case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC:
-> >> +				priv->memattr = db_attr.memattr;
-> >> +				break;
-> >> +
-> >> +			default:
-> >> +				ret = -ENOTSUPP;  
-> > 
-> > -EINVAL  
-> 
-> I'd like to push back on this one; ENOTSUPP distinguishes trying to use 
-> a wild attribute value from all manner of other screwups such as
-> trying to GET (with it no longer supported), passing an fd that isn't a 
-> DMABUF, etc.
-> 
-> I'm not wed to the value ENOTSUPP, just something distinctive versus the 
-> other errors userspace might see, and that value seems appropriate.
+Hi,
 
-It needs to be a uAPI errno though, aiui ENOTSUPP is an internal NFS
-errno.  How about EOPNOTSUPP?  Thanks,
+Gently pinging the series in case it has fallen out of your radars.
 
-Alex
+Thanks.
+
+On 5/19/26 6:42 PM, Omar Elghoul wrote:
+> Hi,
+>
+> This patch series improves support for function measurement for zPCI
+> passthrough devices on s390x.
+>
+> Changelog
+> =========
+> v1 -> v2:
+> * Patch 1/3:
+>    - Address a possible race condition in zpci_reenable_device() caused by
+>      calling zpci_fmb_reenable_device() without holding fmb_lock
+>    - Assert that fmb_lock is held within zpci_fmb_reenable_device()
+>
+> * Patch 3/3:
+>    - Address a possible race condition in pci_perf_seq_write() caused by
+>      consuming zdev->kzdev without holding kzdev_lock
+>
+> Motivation
+> ==========
+> The firmware on s390x machines allows for tracking a variety of statistics
+> relating to zPCI devices in a function measurement block (FMB). However,
+> the kernel currently lacks a structured mechanism of sharing this
+> information with userspace, beyond /sys/kernel/debug/pci/ID/statistics.
+> This can lead to shortcomings when running a guest on KVM with PCI
+> passthrough devices, as QEMU is unable to provide an accurate FMB snapshot
+> to the guest.
+>
+> Proposal
+> ========
+> We propose adding a new VFIO device feature to zPCI passthrough devices,
+> allowing userspace programs to read the latest FMB snapshot as it is
+> written by the firmware. We ensure that function measurement enablement is
+> preserved across device resets on the host. Furthermore, we guard against
+> host tampering with the FMB via sysfs when the zPCI device is in
+> passthrough to protect the VM's state.
+>
+> I'd appreciate some feedback on these patches.
+>
+> Thanks in advance.
+>
+> Omar Elghoul (3):
+>    s390/pci: Preserve FMB state in device re-enablement
+>    vfio-pci/zdev: Add VFIO FMB device feature
+>    s390/pci: Fence FMB enable/disable via sysfs for passthrough devices
+>
+>   arch/s390/include/asm/pci.h      |  1 +
+>   arch/s390/pci/pci.c              | 75 ++++++++++++++++++++++++-------
+>   arch/s390/pci/pci_debug.c        | 11 ++++-
+>   drivers/vfio/pci/vfio_pci_core.c |  2 +
+>   drivers/vfio/pci/vfio_pci_priv.h |  9 ++++
+>   drivers/vfio/pci/vfio_pci_zdev.c | 77 ++++++++++++++++++++++++++++++++
+>   include/uapi/linux/vfio.h        | 43 ++++++++++++++++++
+>   7 files changed, 202 insertions(+), 16 deletions(-)
+>
