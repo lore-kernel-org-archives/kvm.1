@@ -1,98 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5039116A956
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 01:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20212D780C;
+	Tue,  2 Jun 2026 01:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780363584; cv=none; b=YpzV4P6xEgoRGx5X8Ms7TA7l/cnRptCeLVzWcuuu9iPro3EXndDEi7309vl3ezjeaOvo0TQ89X/98fLNRk/y28sw06r+CoX89ZWIFb+LrHxvdNgcJ7z7MZClHzHzRfyrz6kWCYU0BMSO1tGBbvq4cxlI7vUuVHT96/yu3lWHP10=
+	t=1780364394; cv=none; b=O7WhOoysFg6fY2kB3CxctIZ5Ex8jEXTW/EWwMcF6Cr+KlsDBggzpEiHByXRj1gYiDQQtgIZkC12B0ikneh9qFZXoM4l9Sphffb/7Qh59ruUyp8s2hM5knSWx7yuHqtHQmuYaQzx5npFa0Zo4BEPKE5xB4QoHJ7Hw3mYtzA3SPyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780363584; c=relaxed/simple;
-	bh=l0zoV8l3EipfPh9dInP5LKaSIPGVrjdjqMCa+8pcMZg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Moh2tg/Oa7IS+YLToELyHQhjra6+Te/MbnH/X00YQeaSjpTc2fNsrGg7xiP5Gzj9olN0I4jReD1Fpn0mApU7V6PO6SDgduoZwEOc1uOiXbJw4eNfn5wr96+GGIh+rFschedCLrk4oqZ1rn2ux+r1V+PA34z/4/V55ulNfJIYaJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QcqpYeiN; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QcqpYeiN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780363583; x=1811899583;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=l0zoV8l3EipfPh9dInP5LKaSIPGVrjdjqMCa+8pcMZg=;
-  b=QcqpYeiNmbmbTAMDFZ43A6zjOC9EdpO6fTDrTRV3FbVYxKO/fj6mUHNR
-   ybHLGlx/kSsruuira4+q9R5sXY+Ngd+MpP32Y7MAgTnG5LsqbOGV0f71T
-   bmkpFPF+iufxMcWdBGZlPQZRsIbJDJYeFF2jOOya9ctpfUNj1AYXik9Bn
-   PnoKubgTRbXXKR3UsYPRQ0op7nemctQJzo0kb1Ygb3+/sFa4JNrOpgXOL
-   HMv9WPx16cn4hhMbo1f2Pi54mUIbeLx1wm3ihC7RkDBWsjYp/V3e7IiJj
-   OQ7QVlqV6vZycg2BqQNdhPDhsSVo/UdFx3AaKI6QCKjNX+qrY0QDGbnv5
-   Q==;
-X-CSE-ConnectionGUID: 180UwEaVSW2hclBAJxxr3g==
-X-CSE-MsgGUID: o531OAKlTvaUUhG93gJQ4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="91820176"
-X-IronPort-AV: E=Sophos;i="6.24,182,1774335600"; 
-   d="scan'208";a="91820176"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 18:26:23 -0700
-X-CSE-ConnectionGUID: e3yx+bZfQByAAonP4lU1hg==
-X-CSE-MsgGUID: HhgyioKDSq+BIcgsNa1XCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,182,1774335600"; 
-   d="scan'208";a="274010898"
-Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 18:26:22 -0700
-Message-ID: <7cab17cf-58f3-463c-8350-879ab1443e49@linux.intel.com>
-Date: Tue, 2 Jun 2026 09:26:17 +0800
+	s=arc-20240116; t=1780364394; c=relaxed/simple;
+	bh=VmcIYlZoYPFajcd/yR2kOvmYKBN3ND0KvsxZst/Gwxs=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=XdagSX5/grQ6NjbiPsTmkJ9X75HWz/H60OC2ZzuIuIwg15zHZtVb2yBAFGqLg9Jor/2TO6xAjEQ6KCGAV/iJhVfrHECeOxgDckjVX18tSqUiOGawWyYByGiapligHtj4gDfgl2/yi/7wIGJbUsLTN0eamLe9FBmfzmWVvWEj4Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8CxCHlkNB5qvZAPAA--.18858S3;
+	Tue, 02 Jun 2026 09:39:49 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJBxpsBiNB5qnsWYAA--.58591S3;
+	Tue, 02 Jun 2026 09:39:48 +0800 (CST)
+Subject: Re: [PATCH v5 3/6] LoongArch: KVM: Use existing macro about interrupt
+ bit mask
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260526125256.2511876-1-maobibo@loongson.cn>
+ <20260526125256.2511876-4-maobibo@loongson.cn>
+ <CAAhV-H5Bkg1MrWr_8YcvCdHWAfX_-WLzdFGukJQVu330LoL5KA@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <d5722640-538c-4a97-7dff-bcec91a4c955@loongson.cn>
+Date: Tue, 2 Jun 2026 09:36:42 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH] x86/lam: Allocate test page from AREA_LOW
- instead of AREA_NORMAL
-To: yexun <yexun@linux.alibaba.com>
-Cc: kvm@vger.kernel.org, chao.gao@intel.com, seanjc@google.com,
- pbonzini@redhat.com
-References: <20260601035401.39303-1-yexun@linux.alibaba.com>
- <8f155587-07b8-4315-9015-3d104ddfb34e@linux.intel.com>
- <ah13KeNB2jw0lUUw@U-KQJTCFK3-0011.local>
+In-Reply-To: <CAAhV-H5Bkg1MrWr_8YcvCdHWAfX_-WLzdFGukJQVu330LoL5KA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <ah13KeNB2jw0lUUw@U-KQJTCFK3-0011.local>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxpsBiNB5qnsWYAA--.58591S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxArWxZFyDWF1fGr4xuF18Xrc_yoW5KrW5pr
+	W8uas8XFW5XF42gw1Sk3Z8K3W7tr4kJr12g3sFgrs8JF9Fgw1Sv3WrKws8A34vq395G34I
+	gr98Z3WYqF9xKrbCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
+	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jjwZcUUUUU=
 
 
 
-On 6/1/2026 8:25 PM, yexun wrote:
-> On Mon, Jun 01, 2026 at 03:15:45 PM +0800, Binbin Wu wrote:
->> On 6/1/2026 11:54 AM, yexun wrote:
->>> diff --git a/x86/lam.c b/x86/lam.c
->>> index 87efc5dd..b2dcf7f8 100644
->>> --- a/x86/lam.c
->>> +++ b/x86/lam.c
->>> @@ -231,13 +231,13 @@ static void test_lam_user(void)
->>>      bool has_lam = this_cpu_has(X86_FEATURE_LAM);
->>>
->>>      /*
->>> -     * The physical address of AREA_NORMAL is within 36 bits, so that using
->>> +     * The physical address of AREA_LOW is within 36 bits, so that using
->>>       * identical mapping, the linear address will be considered as user mode
->>>       * address from the view of LAM, and the metadata bits are not used as
->>>       * address for both LAM48 and LAM57.
->>>       */
->>> -    vaddr = alloc_pages_flags(0, AREA_NORMAL);
->>> -    static_assert((AREA_NORMAL_PFN & GENMASK(63, 47)) == 0UL);
->>> +    vaddr = alloc_pages_flags(0, AREA_LOW);
->>> +    static_assert((AREA_LOW_PFN & GENMASK(63, 47)) == 0UL);
->>
->> Although the error exists in the original code, the GENMASK(63, 47) is an address
->> mask, it's not right to mask a PFN.
+On 2026/6/1 下午9:50, Huacai Chen wrote:
+> Hi, Bibo,
 > 
-> Thanks for your review. What about asserting '(vaddr & GENMASK(63, 47)) == 0UL'?
+> On Tue, May 26, 2026 at 8:53 PM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>> With interrupt post, register CSR_GINTC and CSR_ESTAT is used, and
+>> CSR_ESTAT is used for percpu interrupt injection and CSR_GINTC is for
+>> external hardware interrupt injection.
+>>
+>> Here use existing macro about interrupt bit of register CSR_GINTC and
+>> CSR_ESTAT, rather than hard coded constant value.
+>>
+>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>> ---
+>>   arch/loongarch/include/asm/kvm_vcpu.h | 43 ++++++++++++++++++---------
+>>   1 file changed, 29 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/arch/loongarch/include/asm/kvm_vcpu.h b/arch/loongarch/include/asm/kvm_vcpu.h
+>> index 3784ab4ccdb5..efe26b04b35f 100644
+>> --- a/arch/loongarch/include/asm/kvm_vcpu.h
+>> +++ b/arch/loongarch/include/asm/kvm_vcpu.h
+>> @@ -10,22 +10,37 @@
+>>   #include <asm/loongarch.h>
+>>
+>>   /* Controlled by 0x5 guest estat */
+>> -#define CPU_SIP0                       (_ULCAST_(1))
+>> -#define CPU_SIP1                       (_ULCAST_(1) << 1)
+>> -#define CPU_PMU                                (_ULCAST_(1) << 10)
+>> -#define CPU_TIMER                      (_ULCAST_(1) << 11)
+>> -#define CPU_IPI                                (_ULCAST_(1) << 12)
+>> -#define CPU_AVEC                        (_ULCAST_(1) << 14)
+>> +#define CPU_SIP0                       BIT(INT_SWI0)
+>> +#define CPU_SIP1                       BIT(INT_SWI1)
+>> +#define CPU_HWI0                       BIT(INT_HWI0)
+>> +#define CPU_HWI1                       BIT(INT_HWI1)
+>> +#define CPU_HWI2                       BIT(INT_HWI2)
+>> +#define CPU_HWI3                       BIT(INT_HWI3)
+>> +#define CPU_HWI4                       BIT(INT_HWI4)
+>> +#define CPU_HWI5                       BIT(INT_HWI5)
+>> +#define CPU_HWI6                       BIT(INT_HWI6)
+>> +#define CPU_HWI7                       BIT(INT_HWI7)
+>> +#define CPU_PMU                                BIT(INT_PCOV)
+>> +#define CPU_TIMER                      BIT(INT_TI)
+>> +#define CPU_IPI                                BIT(INT_IPI)
+>> +#define CPU_AVEC                       BIT(INT_AVEC)
+>> +#define KVM_ESTAT_IRQ_MASK             (CPU_SIP0 | CPU_SIP1 | CPU_PMU | CPU_TIMER \
+>> +                                               | CPU_IPI | CPU_AVEC)
+>> +#define KVM_ESTAT_HWI_MASK             (CPU_HWI0 | CPU_HWI1 | CPU_HWI2 | CPU_HWI3 \
+>> +                                               | CPU_HWI4 | CPU_HWI5 | CPU_HWI6 | CPU_HWI7)
+>>
+>>   /* Controlled by 0x52 guest exception VIP aligned to estat bit 5~12 */
+>> -#define CPU_IP0                                (_ULCAST_(1))
+>> -#define CPU_IP1                                (_ULCAST_(1) << 1)
+>> -#define CPU_IP2                                (_ULCAST_(1) << 2)
+>> -#define CPU_IP3                                (_ULCAST_(1) << 3)
+>> -#define CPU_IP4                                (_ULCAST_(1) << 4)
+>> -#define CPU_IP5                                (_ULCAST_(1) << 5)
+>> -#define CPU_IP6                                (_ULCAST_(1) << 6)
+>> -#define CPU_IP7                                (_ULCAST_(1) << 7)
+>> +#define GINTC_VIP_DELTA                        (INT_HWI0 - CSR_GINTC_VIP_SHIFT)
+> Don't use too many wrappers, just use INT_HWI0 instead of
+> GINTC_VIP_DELTA in this series is perfect. In other places INT_SWI0 is
+> also used for shifts.
 
-LGTM.
+The above macro definition is a little complicated, I do not know how to 
+optimize it. do you mean remove GINTC_VIP_DELTA just use 2 such as:
+#define CPU_IP0                       BIT(INT_HWI0 - 2)
+
+or something like this:
+#define CPU_IP0                       (CPU_HWI0 >> GINTC_VIP_DELTA)
+
+Regards
+Bibo Mao
+> 
+> 
+> Huacai
+> 
+>> +#define CPU_IP0                                BIT(INT_HWI0 - GINTC_VIP_DELTA)
+>> +#define CPU_IP1                                BIT(INT_HWI1 - GINTC_VIP_DELTA)
+>> +#define CPU_IP2                                BIT(INT_HWI2 - GINTC_VIP_DELTA)
+>> +#define CPU_IP3                                BIT(INT_HWI3 - GINTC_VIP_DELTA)
+>> +#define CPU_IP4                                BIT(INT_HWI4 - GINTC_VIP_DELTA)
+>> +#define CPU_IP5                                BIT(INT_HWI5 - GINTC_VIP_DELTA)
+>> +#define CPU_IP6                                BIT(INT_HWI6 - GINTC_VIP_DELTA)
+>> +#define CPU_IP7                                BIT(INT_HWI7 - GINTC_VIP_DELTA)
+>> +#define KVM_GINTC_IRQ_MASK             (CPU_IP0 | CPU_IP1 | CPU_IP2 | CPU_IP3 \
+>> +                                               | CPU_IP4 | CPU_IP5 | CPU_IP6 | CPU_IP7)
+>>
+>>   #define MNSEC_PER_SEC                  (NSEC_PER_SEC >> 20)
+>>
+>> --
+>> 2.39.3
+>>
+>>
+
