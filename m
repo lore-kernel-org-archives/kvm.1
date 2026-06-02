@@ -1,108 +1,179 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6775620B80B
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 18:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB4B2DC334
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 18:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780425975; cv=none; b=c1dEhkTQ8J2gQA57SRIM1tBZkB+VwHqgAVMPiYMGM2dWclkiLxj+/NvylccpN4DB3GXU+z+Du5rbWbg1PovW3yOQZ/MVg4GPoyyan+3veVrXzw81wiIdEDvAhVXWn31G0m9uN5JvgCTI7LHMTkBRPIFWJCyfws+A+9t94HOGmwM=
+	t=1780426588; cv=none; b=BnxTJ5exB7oqQIT4GQDHgMZVFTvjxscCV0e0PwjH3X7ic2R++C5MW2nMm4GUCcJyAb13fc4Ox42aBukYL+VwC7/Q9FiAhT1mgi5NS/gYkO93/2zn2/DDUe/58DKTN6Iq3V/H7nZR8dR1s8OAPg+mJq7Xyzq23XWXyA5fAzyCjKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780425975; c=relaxed/simple;
-	bh=V6EBvgPkBCJj4gMf5RnwXrcs3ISikfnUiRSRzesNW3U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vxt7bSWA9Bk/zJu8x8l54UBRsCWQc8rSoYnSG4Yy78OPM0lh99zGT10CzCKpuOH+uyfYz07D8e/qbznmQSj57Dqz4PckSlUevaZo2kImksx5bFM6hfqKlzOSS9wGWIyo+pveONYpKO0WZJ1RBv/d0SdG21Oi3wb5nbnAmeysU7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kFA+XhGT; arc=none smtp.client-ip=91.218.175.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1780426588; c=relaxed/simple;
+	bh=E8w6Hz0xZamuR+smlCJOyD76fZd8G+FCNZET93Yp94I=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=VxRyuFn98yYlZ1m73O9HD+HEZhn+ZVi1K78hHWHv491NltTX8pnEHO0y2iLlZLLu/YBRLu7Q1TetgoFq2RtUcaGbOcRXmkCsfTUwqOVntPRbXr1hmfBmLOcfCz5eSjvOILgSWpr+oEj+yjhNVlEyTalwpwcMWmyP8FF+r5XgKdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ojPMf/Nn; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kFA+XhGT"
-Message-ID: <d62b1b27-7a70-4d06-9191-a8d95104c2b7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780425971;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FlAg+csNNDI+pLXHH0cpQXS1ilqz4znagmUSixnYiE4=;
-	b=kFA+XhGTjmkHMETtRBBpUqn5/Lu4VBsrgMGd6adUpbJ+LBW2rRCMQynI3Z/cIS76au2UCj
-	xoR+8y1AkY/2syut1/x1JQ5/egAn31QPd4HGgNRqQUryA9MG7kRoy+Iptc+j5+6FDnCM+y
-	8/VHwuwMet9JVb1/enPJLELVAAYDr+E=
-Date: Tue, 2 Jun 2026 11:46:03 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ojPMf/Nn"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c10cd7df22so22321755ad.2
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 11:56:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780426586; x=1781031386; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QzjpyP+aPhJKXse7RVA87aGxxV6wdLJmQoPrCJnMTkw=;
+        b=ojPMf/NnB4du6Gu+FDDmM7J/OM2aSB4H9MBxLUcm+UDpBUd0yEP9VGNTieGkb5IlCn
+         uScp3DGI7UbQstgFs8KGuHfeE6tHYd6lMiguf+4Lwguq8HF5THRRibwl5ek/atF7c0e+
+         kNPZDLdxrumwSFZL74T7BkYTI1mlORhJEGEqadEXOv/4WkkbUQS2wkvGayDupF5csaHv
+         baKFLBJ1QFzHoJkjBg4GkLGT+/81UDJAxSyEyxTxfh+bmus95G3YDdulcq/FzL/SktmR
+         lwmNGwkV+So+cSwWYbwF8euK4mOvJkuLC7F8XCAJ1ogMSukzzH5M/ESTXwhZeH7N+hwQ
+         e94A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780426586; x=1781031386;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QzjpyP+aPhJKXse7RVA87aGxxV6wdLJmQoPrCJnMTkw=;
+        b=Iw7UqBsdqu+kJyFee4oDtXU175ZgG13CD+yymfXWZ2F210x12wVP+7n/Od4j0gbWjW
+         aWtG+KYjTclRSpv+lHI3TnmEBEGrUCCckBCzqbf47HGv63wWB/OXiZP/5T5IxGxbN+Mg
+         pd1YzdB/VsLrG+3TzHFRdyM+Fgzvmx0BQKTM9mB2KzvIaTo26CsSlV6qOpH6nvbEBS/b
+         v2Ju5MgH3N/nD5Kk2QFB1NFh2DYH3gw5KN2GwUqUsZyr3fKfpMM7nR499Bmn3xlYTyj1
+         AGoJO1Eh4/1dZJjkQKkwSKjXLlsnPJIm+gmIW2/7Adl4GY7FP82lH7sp5LdtJNYpb4K+
+         UKrA==
+X-Forwarded-Encrypted: i=1; AFNElJ9JS2Yc51agFLTYyf3n28VN/xG1EMuAabBGaLSg1GSoKKKVwabfagAIzfhwK9mysbJge24=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsDcxZrrP5HWyPRo9zXQifZHL86ilC1qagsnZR5FeGhIzaAaB8
+	Y0g0o15U/lQhsrRfwTWTwzgekmiCSaBNXF+BVwiPfXpT8r1zXnB4k/OQVnpxffSGVRTG+75oiZQ
+	Xl+1aHJhC
+X-Received: from plqs2.prod.google.com ([2002:a17:902:a502:b0:2bf:17b5:30c9])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:38c3:b0:2bf:2188:a90f
+ with SMTP id d9443c01a7336-2c1644a02a1mr259875ad.32.1780426586321; Tue, 02
+ Jun 2026 11:56:26 -0700 (PDT)
+Date: Tue,  2 Jun 2026 18:56:15 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH v2 3/4] crypto: ccp: Fix possible deadlock in SEV init
- failure path
-To: Tom Lendacky <thomas.lendacky@amd.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Peter Gonda <pgonda@google.com>,
- Brijesh Singh <brijesh.singh@amd.com>, Youngjae Lee <youngjaelee@meta.com>,
- Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>,
- John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>
-Cc: clm@meta.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, stable@vger.kernel.org,
- Atish Patra <atishp@meta.com>
-References: <20260601-sev_snp_fixes-v2-0-611891b28a86@meta.com>
- <20260601-sev_snp_fixes-v2-3-611891b28a86@meta.com>
- <379e45d2-1765-4043-8ad0-ce013da8683f@amd.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Atish Patra <atish.patra@linux.dev>
-In-Reply-To: <379e45d2-1765-4043-8ad0-ce013da8683f@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1013.g208068f2d8-goog
+Message-ID: <20260602185615.3025904-1-jrhilke@google.com>
+Subject: [PATCH v5] vfio: selftests: Find devices that have VFIO selftest drivers
+From: Josh Hilke <jrhilke@google.com>
+To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
+Cc: Sean Christopherson <seanjc@google.com>, Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Josh Hilke <jrhilke@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
+Add a new script, list_devices.sh, which prints out the
+segment:bus:device.function (SBDF) numbers and names of devices on a
+machine that have a VFIO selftest driver. This makes it easier to
+determine if the system is capable of running VFIO selftests.
 
-On 6/2/26 7:43 AM, Tom Lendacky wrote:
-> On 6/1/26 18:04, Atish Patra wrote:
->> From: Atish Patra <atishp@meta.com>
->>
->> __sev_platform_init_handle_init_ex_path() called
-> s/called/calls/
->
->> rmp_mark_pages_firmware() with locked=false but while the parent
-> s/but//
->
->> function of init_ex_path already acquired the sev_cmd_mutex.
->> In case of a rmpupdate failure for any page after the first, the cleanup
-> s/In case/In the case/
-> s/a rmpupdate/an RMPUPDATE/
->
->> path would invoke reclaim pages which would result in a deadlock in
->> sev_do_cmd.
->>
->> Pass locked=true to honor the lock status of the parent function.
->>
->> Fixes: 7364a6fbca45 ("crypto: ccp: Handle non-volatile INIT_EX data when SNP is enabled")
->>
->> Reported-by: Chris Mason <clm@meta.com>
->> Assisted-by: Claude:claude-opus-4-6
->> Signed-off-by: Atish Patra <atishp@meta.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
->
-Thanks for the review. Fixed the typos in the commit text.
+Includes a -q (quiet) argument which prints just the SBDFs so that the
+output can be piped into tools/testing/selftests/vfio/script/setup.sh to
+bind the devices to VFIO to use in VFIO selftests.
 
->> ---
->>   drivers/crypto/ccp/sev-dev.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
->> index d1e9e0ac63b6..3d4793e8e34b 100644
->> --- a/drivers/crypto/ccp/sev-dev.c
->> +++ b/drivers/crypto/ccp/sev-dev.c
->> @@ -1557,7 +1557,7 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
->>   		unsigned long npages;
->>   
->>   		npages = 1UL << get_order(NV_LENGTH);
->> -		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, false)) {
->> +		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, true)) {
->>   			dev_err(sev->dev, "SEV: INIT_EX NV memory page state change failed.\n");
->>   			return -ENOMEM;
->>   		}
->>
+Examples:
+
+$ ./list_devices.sh
+0000:6a:01.0 - Intel SPR DSA (8086:0b25)
+0000:6f:01.0 - Intel SPR DSA (8086:0b25)
+0000:74:01.0 - Intel SPR DSA (8086:0b25)
+0000:79:01.0 - Intel SPR DSA (8086:0b25)
+0000:e7:01.0 - Intel SPR DSA (8086:0b25)
+0000:ec:01.0 - Intel SPR DSA (8086:0b25)
+0000:f1:01.0 - Intel SPR DSA (8086:0b25)
+0000:f6:01.0 - Intel SPR DSA (8086:0b25)
+
+$ ./list_devices.sh -q
+0000:6a:01.0
+0000:6f:01.0
+0000:74:01.0
+0000:79:01.0
+0000:e7:01.0
+0000:ec:01.0
+0000:f1:01.0
+0000:f6:01.0
+
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Josh Hilke <jrhilke@google.com>
+---
+Changelog
+
+v4 -> v5
+- Rename list_devices.sh to list_supported_devices.sh (Vipin)
+- Document the source of supported device names/IDs (Vipin)
+- Align the output format with `lspci` (Vipin) 
+- Fix errors in device names and IDs (Vipin)
+
+v4: https://lore.kernel.org/kvm/20260529180425.4162392-1-jrhilke@google.com/
+
+ tools/testing/selftests/vfio/Makefile         |  1 +
+ .../vfio/scripts/list_supported_devices.sh    | 44 +++++++++++++++++++
+ 2 files changed, 45 insertions(+)
+ create mode 100755 tools/testing/selftests/vfio/scripts/list_supported_devices.sh
+
+diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+index 0684932d91bf..127e70b996a9 100644
+--- a/tools/testing/selftests/vfio/Makefile
++++ b/tools/testing/selftests/vfio/Makefile
+@@ -15,6 +15,7 @@ TEST_GEN_PROGS += vfio_pci_driver_test
+ 
+ TEST_FILES += scripts/cleanup.sh
+ TEST_FILES += scripts/lib.sh
++TEST_FILES += scripts/list_supported_devices.sh
+ TEST_FILES += scripts/run.sh
+ TEST_FILES += scripts/setup.sh
+ 
+diff --git a/tools/testing/selftests/vfio/scripts/list_supported_devices.sh b/tools/testing/selftests/vfio/scripts/list_supported_devices.sh
+new file mode 100755
+index 000000000000..a123a965d358
+--- /dev/null
++++ b/tools/testing/selftests/vfio/scripts/list_supported_devices.sh
+@@ -0,0 +1,44 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++# List of devices which have a VFIO selftest driver. Device IDs are found in the
++# drivers in selftests/vfio/lib/drivers.
++readonly DEVICES=(
++	"8086:0b25,Intel DSA SPR"
++	"8086:11fb,Intel DSA GNR-D"
++	"8086:1212,Intel DSA DMR"
++	"8086:2021,Intel IOAT SKX"
++)
++
++# Print the segment:bus:device.function numbers of PCI devices that can be used
++# to run VFIO selftests.
++function main() {
++	local id_name
++	local quiet=""
++	local name
++	local bdfs
++	local bdf
++	local id
++
++	while getopts "q" opt; do
++		case $opt in
++			q) quiet="true" ;;
++			\?) echo "Usage: $0 [-q]" >&2; exit 1 ;;
++		esac
++	done
++
++	for id_name in "${DEVICES[@]}"; do
++		IFS=',' read -r id name <<< "$id_name"
++		bdfs=$(lspci -D -d "${id}" | awk '{print $1}')
++
++		[[ -z $bdfs ]] && continue
++
++		if [ "$quiet" ]; then
++			echo "${bdfs}"
++		else
++			echo "${bdfs}" | sed "s|$| - ${name} [${id}]|"
++		fi
++	done
++}
++
++main "$@"
+-- 
+2.54.0.1013.g208068f2d8-goog
+
