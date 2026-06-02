@@ -1,160 +1,129 @@
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B34D3A4512;
-	Tue,  2 Jun 2026 19:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60E03A3E79
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 19:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780427014; cv=none; b=A2MAa7xzIzgUOBJySSLZxWEOQ0ea/1rN+xNqcTBF+OrELCuO7z3o6uxDzcpat+ocKJDl3tJyeEZIy14X67xG+k/xX+M0JOK1tg8BxIKjs1qqkwMt6yG5ZDSLpX9Jue50a/2Pw+JaGCjrPoZmUvuFKOuqm2S1DriUJVb4P3YUrzs=
+	t=1780427319; cv=none; b=IvbUDiC97490/0ctq6i8bmpRfAgw6EPVeFiZmlcl9/UmL6qU7iYipeLrtrDMtzQxZjMweJbOJx+3u7puQbsNxkxFZ2KIP/GKeLwN1CJiMBbZfHIF0BFiGyWODxEDO25wPNjNaa5wnjrhIANwKdUW2Jq0f3F3wxWMCjgMci9c8/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780427014; c=relaxed/simple;
-	bh=dFLXJ2mTsebzTbG9hxzV8u9ehvJ1W/Ges/pAC/5JwYI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MloQvplRHITtseCzNcU0U9Z5NTg3pbiaGIs4kkJ2A7GHCvCy4D+zaaKkaNnom5rnfyI2v4CPl6JoRJ1mwu2a76Aj7xyFdOfuNTpEMhmvPyyy037O552/ceDdYym3djWsVsyj7n2kzGKolzt3oI6PtLL7o5DDit5jiCNGsAIJwUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=GPoOJMnn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=N+BDXpk0; arc=none smtp.client-ip=202.12.124.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1780427319; c=relaxed/simple;
+	bh=iWNJSn4uo8JSQotP+QmyWfX5z49t2zzsZf5KGuqaKsk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hmvOo9f8K46slu2X8iGRRncTEw2ME0CEp3R7zP2Kv2xFWgZPuwSM0WB47xmxnQ672FWRLE5/7Sly9t/wM2PW7pfbhCLkq+WgSuP6EvuPp6yaeWhuqTIrWP2l4ocNp8PFOWJ6vfjjDHz0xLNSycueqNpxOMnpJfp4a2aemw0ykWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CGlcTgjB; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="GPoOJMnn";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="N+BDXpk0"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 6F7371D000A8;
-	Tue,  2 Jun 2026 15:03:30 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 02 Jun 2026 15:03:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1780427010;
-	 x=1780513410; bh=cd0bId8TE8oR/ADKSdyMkH7b1BoNJ2xKm74dFlDDlhM=; b=
-	GPoOJMnnOoqJzBnPc48CZp1+tnFTZY9xKs84zcxcZoF5rM5HLE+pt8yw77j4Umcw
-	uVJsAg2BlremrnWMC72NSAjRdElS7yyxr4Ji+G6yvapuaeCaUPw7Z3Gi4tc3VkDL
-	H8KwVMMe/QpT0g0ZPC5L27tZGQseWzxIjzfPdrcsvfq+RYvuNY+eeJUTzv8AK0nA
-	KcH3bGlh7OLtefDYC/ZEqR1wAGHi/vT6tP3Cs7ycbe61ZDjdwKddAbrv2yx1mcvH
-	+4oJ3xgPhiktqvlLc674Kgdu+qGqNundjKmBU282Kxmyac4TW5ldd+XdznlDH0CY
-	GBP0/v5iN2iQ9UnnWvCZrw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780427010; x=
-	1780513410; bh=cd0bId8TE8oR/ADKSdyMkH7b1BoNJ2xKm74dFlDDlhM=; b=N
-	+BDXpk0A3iPxZ8RMaJvB979RSJrmmF2EwBvUXlPgE2yWScIhlJl8oJ8bEKAkM7Wg
-	L0H7jVeW3vb8oDzxTLp0EqvjoZR+R0+s919W1N0ti88+WUEHgek2bNXYwf56JAke
-	4yAE+klP3nXukI4EF+I84rW9BX8zv4lWCtCfZH0OfsebEnRso1hYMSDxXlIK6j3m
-	Mea68pKJlvIaUe2LrcZ0YDBE73F0pUWKEBgIsp5KfrX270bfEaj5wbi8gpjYRiFs
-	NSXJ/9J6hmeBNEtdyCV4PEdLtrdB9R/WzlEkb2/ajzPXQmz96RuqsyKYgOHifWmv
-	AjES5xisNIXSv0Pydwy5A==
-X-ME-Sender: <xms:ASkfaiWM-Czb1TYty-CbxJxRAp1W5c7QTPPkYmT2T5FS7w-vSGy00Q>
-    <xme:ASkfaqS5e8gt28jbwuRj0iOrYdmv_mOlLB0zK5H2oV6NlOhEoBX6P6a8j7cbm1kb0
-    tgc5DdDffJKyWhJ99HRAt_sLJT6q6In7SCR5ke3Q00nanXopPKtbw>
-X-ME-Received: <xmr:ASkfahG873z7UAjZb6Viz0phUbZdBpJsFBRvM-idqUMtJRNBGZi_zCsYUSg>
-X-ME-Proxy-Cause: dmFkZTEugpXXuty+LAuPDMg/HDjmtCKhMH9hR+UnSPrr64oSg7b6jTY5v1Iuk/1wnfVpGD
-    9wJzzqijOna9OQq6LuAouAbC+7+DZuCw56Bn6VvFxcbMCs87QVMK/aghDrBbnj5Om/0jLt
-    PQXYJGKpekTsZMATIWzUcIXRJ4KgIW7S34TMHc5kiSCfR8najzHgBso5FISyUm/MclajxG
-    P0Tbd0bQ/S3bG5V7iLr3WVaZPf274PuzRZq4mCr01PbcEa8bGEZxF4A1i2jL3xCGO+EeP+
-    QbG03vlrsNjOcN0QmGq3uY9V3zuTSY94Y2R8gV6ekOWz3wuRcnf7pIKCFcNQEwT6cRdiau
-    YlqnBwTqg0SMbskungw4/aAzVjlM65V/VneBtJbPKuMAb9X2E6M78tsnnMWuj8geAPVqYx
-    EHo12DHWUZMbUzY6qLPATk/yoIvoBRRYw6EYpAdRhaFK8ndFX5YRjdBX7CXm4oBfRnTzZo
-    SXgYN/IaHy01v6tfajpGgWV10nfK34SvtlDaqNve38kyzKLJc5V13fxwDzAQ0g/zA2T4Qc
-    6EgWfS0IgMOTo2rMVS2ghGL4pWsbjPpMzmWaSOPoWBC644XLQxt5cfvi5dUjp+nG6oYl3k
-    Mh30Lz4pVvIY8gQqPMtoPYN/VnEgjtZacOq/TU1+2IGQ7Ipy0pAqWq/ztdHg
-X-ME-Proxy: <xmx:ASkfaqSg4IDy1ROG6I3wocJQnL7NgtVLfiOCRusO5fdebsmyzT1DDQ>
-    <xmx:ASkfarr95EeFQG4l9iF62OtC3uC36de1qAjiz6_KTrDZg5swL3ib8Q>
-    <xmx:ASkfago1yf1MqfS2O0gyKXB4Up6Rn9W-cetWT3nKMDhmKLwxb6njTg>
-    <xmx:ASkfau3jUjQ6HCUzqSf2eiDC1zin-UMJ97FnJPsYJHfUR4lhqk6MiA>
-    <xmx:AikfapazUI7tA5D3d1uMWAUPkDzpMCqXNMaolXvbIBSNEM6gHcnB8WIi>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 2 Jun 2026 15:03:28 -0400 (EDT)
-Date: Tue, 2 Jun 2026 13:03:26 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <mattev@meta.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Alex Mastro <amastro@fb.com>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, Logan
- Gunthorpe <logang@deltatee.com>, Mahmoud Adam <mngyadam@amazon.de>, David
- Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian
- <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Pranjal
- Shrivastava <praan@google.com>, Alistair Popple <apopple@nvidia.com>, Vivek
- Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v2 7/9] vfio/pci: Support mmap() of a VFIO DMABUF
-Message-ID: <20260602130326.6b7a8d0c@shazbot.org>
-In-Reply-To: <49c3554f-8ba7-4a00-aa20-a311b173fc0f@meta.com>
-References: <20260527102319.100128-1-mattev@meta.com>
-	<20260527102319.100128-8-mattev@meta.com>
-	<20260528171527.46d0c21a@shazbot.org>
-	<49c3554f-8ba7-4a00-aa20-a311b173fc0f@meta.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CGlcTgjB"
+Message-ID: <f921a5e0-6a86-48ae-9ac2-d58f42519476@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780427304;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bkJRJHzsiHH/1/ryNQ7smNyOStVTjUbqlqi+pruClso=;
+	b=CGlcTgjBOVDRMQOBGLrIu1j+aOShnoFf8/oKphdQCd3VAZeoYkPvRoBU56Yk3KYkF5iRHV
+	2+aIhDsLeeiKpjjKEbVsT+spE8y9+l5Y5usXfIz6jaC19qRhfp0V5HUIUet7cywXMxEo1W
+	/ew08AWC1+AL9OIOMM+iFfD7ENy1bDY=
+Date: Tue, 2 Jun 2026 12:08:10 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Subject: Re: [PATCH v2 4/4] crypto: ccp: Fix memory leak in SEV INIT_EX path
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <20260601-sev_snp_fixes-v2-4-611891b28a86@meta.com>
+ <20260601235540.C089C1F00893@smtp.kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Atish Patra <atish.patra@linux.dev>
+In-Reply-To: <20260601235540.C089C1F00893@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, 2 Jun 2026 18:35:25 +0100
-Matt Evans <mattev@meta.com> wrote:
-> On 29/05/2026 00:15, Alex Williamson wrote:
-> > On Wed, 27 May 2026 03:23:10 -0700
-> > Matt Evans <mattev@meta.com> wrote:
-> >> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >> index 733607371082..4b3b15655f1d 100644
-> >> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >> @@ -27,6 +27,32 @@ static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-> >>   
-> >>   	return 0;
-> >>   }
-> >> +
-> >> +static int vfio_pci_dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
-> >> +{
-> >> +	struct vfio_pci_dma_buf *priv = dmabuf->priv;
-> >> +
-> >> +	if (priv->revoked)
-> >> +		return -ENODEV;  
-> > 
-> > Questionable validity to testing revoked without a lock, but doesn't
-> > this also fail to follow the "map regardless, sort it out on fault"
-> > paradigm used elsewhere in vfio-pci?  Thanks,  
-> 
-> Kind of, though this was intentional.  (I had removed a crappy comment 
-> here from the RFC, but should re-add something better...)
-> 
-> You're right that, if we don't test this here, the fault handler ensures 
-> safety.
-> 
-> In the revoke ioctl^Wfeature header UAPI comment I'd suggested a 
-> revocation prevents a new map (in addition to prevents access to an 
-> existing map) with the intention of making userspace easier to debug:
-> 
->   - I'd rather trace an mmap() failure than a SIGBUS (eg. if another
->     process has revoked my DMABUF and I didn't get the memo).  For a
->     prior revoke this is a reliable & useful test.
-> 
->   - Even if there's an active race such as userspace doing an
->     ioctl(RESET) at the same time as an mmap() (!) then obviously this
->     check won't always catch it, but when it does then that's useful.
-> 
-> I'd prefer to keep this belt-and-braces check to early-fail (with 
-> comment), if you don't mind much.  It _is_ testing revoked outside of 
-> any synchronisation as anything we can lock against here doesn't have a 
-> useful effect AFAICT.  (Taking the example of a concurrent ioctl(RESET), 
-> a revoke still manifests "before" (caught here) or "after" (caught in 
-> fault handler).)  Maybe READ_ONCE() wouldn't hurt, if only to indicate this.
 
-Hey Matt,
+On 6/1/26 4:55 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+>
+> Pre-existing issues:
+> - [Critical] When SEV-SNP is initialized, `sev_init_ex_buffer` is explicitly transitioned to a firmware-owned state via `rmp_mark_pages_firmware()`. However, the driver never reclaims this buffer back to a shared state before reading it. Immediately after the `INIT_EX` command completes, `__sev_do_cmd_locked()` unconditionally calls `sev_write_init_ex_file_if_required()`, which invokes `kernel_write()` to read from `sev_init_ex_buffer` and save it to disk. The host CPU's attempt to read firmware-owned pages inside `kernel_write()` will trigger an RMP violation (Machine Check Exception or #PF with RMP bit), causing a fatal host crash.
+> - [High] The `sev_init_ex_buffer` is allocated without the `__GFP_ZERO` flag. If the NV memory file does not exist (returning `-ENOENT`), or a short read occurs, `sev_read_init_ex_file()` returns 0 without fully initializing the 32KB buffer. This uninitialized kernel memory is passed to the SEV firmware via the `INIT_EX` command. Later, `sev_write_init_ex_file()` writes the entire 32KB buffer back to the host filesystem, resulting in an information leak of kernel heap data to disk.
+> --
+>
+> commit 9089d07a571c9b175950b197e846ef7b16492229
+> Author: Atish Patra <atishp@meta.com>
+>
+> crypto: ccp: Fix memory leak in SEV INIT_EX path
+>
+> This commit fixes a memory leak in the SEV INIT_EX path by freeing
+> allocated pages and clearing the buffer on failure. It avoids freeing
+> pages if they have already been converted to firmware-owned memory.
+>
+>> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+>> --- a/drivers/crypto/ccp/sev-dev.c
+>> +++ b/drivers/crypto/ccp/sev-dev.c
+>> @@ -1550,7 +1550,7 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
+>>   
+>>   	rc = sev_read_init_ex_file();
+>>   	if (rc)
+>> -		return rc;
+>> +		goto err_free;
+> [Severity: High]
+> This is a pre-existing issue, but does allocating sev_init_ex_buffer
+> without zeroing leak kernel memory?
+>
+> Earlier in __sev_platform_init_handle_init_ex_path(), the buffer is
+> allocated without the zeroing flag:
+>
+> page = alloc_pages(GFP_KERNEL, get_order(NV_LENGTH));
+>
+> If the NV memory file does not exist, sev_read_init_ex_file() sets
+> ret = 0 on -ENOENT and returns without initializing the buffer. Short
+> reads also leave the remainder of the buffer uninitialized.
+> Later, sev_write_init_ex_file() writes the entire 32KB buffer back to
+> the host filesystem via kernel_write(). Could this result in an
+> information leak of uninitialized kernel heap data to disk?
 
-I think only the permanently revoked semantics are up for
-interpretation here, mmap with memory disabled or across reset is
-currently allowed and better debug'ability is not sufficient to risk
-breaking compatibility.  Thanks,
+Fair point. I am not sure if the firmware implements writing to full 
+NV_LENTH
+so zeroing the buffer at allocation time is idea IMO.
 
-Alex
+>>   
+>>   	/* If SEV-SNP is initialized, transition to firmware page. */
+>>   	if (sev->snp_initialized) {
+>> @@ -1559,11 +1559,23 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
+>>   		npages = 1UL << get_order(NV_LENGTH);
+>>   		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, true)) {
+>>   			dev_err(sev->dev, "SEV: INIT_EX NV memory page state change failed.\n");
+>> -			return -ENOMEM;
+>> +			rc = -ENOMEM;
+> [Severity: Critical]
+> This is a pre-existing issue, but does reading a firmware-owned page
+> from the host CPU trigger an RMP violation?
+>
+> When the buffer is explicitly transitioned to a firmware-owned state
+> via rmp_mark_pages_firmware() here, the driver does not appear to
+> reclaim this buffer back to a shared state before reading it.
+>
+> Immediately after the command completes, __sev_do_cmd_locked()
+> unconditionally calls sev_write_init_ex_file_if_required(), which
+> invokes kernel_write() to read from sev_init_ex_buffer and save it
+> to disk.
+>
+> Will the host CPU's attempt to read firmware-owned pages inside
+> kernel_write() trigger a fatal page fault or Machine Check Exception,
+> crashing the host?
+
+NA. Already invalidated the theory in response to v1.
+
+https://lore.kernel.org/kvm/1dd5c998-ad2a-47dd-9875-c8fd5db6d374@linux.dev/
+
+>
+> [ ... ]
+>
