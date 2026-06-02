@@ -1,70 +1,131 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78A33F4110
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 15:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D681607A4
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 16:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780415686; cv=none; b=EAyrjhINOQX4YB1mjvInfsuMGxy0xDN73ieH5U52Ni7b+bkcOIVKPhmAnax4hcGjzoNCvtStJZYf/O1+B5Kj4e9RL5nhk8qunJxP/3OK8cWHXehJrPWe83nCTIllEeQthRn1wu1FPVgqgVhvR7LoV8odCWE1sDQ83PengEvi4w4=
+	t=1780416961; cv=none; b=aSs3cVW/kU+MKfmuEF7qtwMESRNqNZWUSl/NGlHsEPO3uAyKUgOrav7gBdd6xSZTp3Mkz5dQKl9lL07liI1H7pPWbL/KYBqHLXRaTc0Rw6Nr2Cjs7TnStl39LNx87FWAeg7g0dFgdsvA2qM9AkbGjLxA29VqBrpVAwieELsMCFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780415686; c=relaxed/simple;
-	bh=ozM8AZ9eoQgjnPdvuzcKsMt8u6SHZRjDVsKbDJZjWcU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DszQZdwbBt511R8ygrorQCKcV3iZXAeswCVYdGhT/PTR/dfDQ3TCWFcwq514sBAJ5VBs6GBrghFe6C+qfZc4kSqEpUJca2Pep2ryenQrX+il6k12+bGlQQYGoWifvUPN4+hXAH5fGYt2qfrx07bNKVgnbKq/YzeOhVK3mLhTcqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Zc8ywOEH; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1780416961; c=relaxed/simple;
+	bh=At83/cghfWi1VsBnlQ/4MIFkZPRUi+DWw7oy6UwRAgM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=j7Dhn7zxoGK3GgOAGtrcv3mryWNGFeFgo5MtykG3XUKNuGmkyS3FmM+i8LealvusmcZhleK9PJs6J7KWoctwyQE85ec5iOuT3pVpJP4fODb5r+bc4esaHQbVZFdKQuvmcBwM0Mzt/q4O/9Y2xRJqpP+R2S2p0zDa3n4ltvfAr14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ByTW3q0Y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Zc8ywOEH"
-Date: Tue, 2 Jun 2026 10:54:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780415682;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h7D3Hfi0Dpuf1GZg49Dj/JWwEeIPExhLmM7yWKRJcKE=;
-	b=Zc8ywOEHAOTHCeJMDiLqrbZHl+VQh6Fmd2t+5oknS5CMq6ehvHBrBX1ljRMtdGw+uVP3yd
-	7aaOJDWVYJinMXzjj3gLMefi+qtY7czMEU/vF3g0SNzHpaO3wibMxyrw3l24HFFN9OE14F
-	jxVv/V8PM1kj6h7BHoOyHMPYTQ7kDT4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Chinmay Rath <rathc@linux.ibm.com>
-Cc: thuth@redhat.com, npiggin@gmail.com, harshpb@linux.ibm.com, 
-	lvivier@redhat.com, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	sbhat@linux.ibm.com
-Subject: Re: [kvm-unit-tests RFC PATCH 2/6] configure: Make arch_libdir a
- first-class entity
-Message-ID: <emxfxob3hs2kqjmdbtucwr65dlywqapsz76ow7ebnqhf5vmrtq@i2wodbzjs5cb>
-References: <20260602064806.3101025-1-rathc@linux.ibm.com>
- <20260602064806.3101025-3-rathc@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ByTW3q0Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197FF1F00893;
+	Tue,  2 Jun 2026 16:15:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780416960;
+	bh=BqLOSPwuHREPOxzgRSPqOZOjBfWmOhGaPPxlV19oHdc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ByTW3q0YZmyaajvQK904nGu2JclbK7/J4LOJAv2pWHF6XFP50lrYxLzEpyflNYrCl
+	 elUohXWi2WgTCac+Z2r1xfBDAM155TJuW2fNZLcrJ8IITt+wKGd+gal093yPdS+vkL
+	 efaJHHFSdzMp4zjd+VkKIP8cqh72/gGwI/fvprpA1nO7tPk0cYslDMk7g4+1FosglT
+	 WezKJ9QdM6KjyRUqBUtPy4LvSstmyS7EowDUEHn/CZTxlZ4jpkzHY6wG8lg0oFQzHa
+	 0FS69ZQ9WRbrq8KHJr6DZfLflNv8GY0hLDEHzmUbpGT9+t6wOGYNRw7IPA48SFc1x9
+	 PIbj2m4Zdzopw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/3] KVM: arm64: Key CPTR_EL2.E0POE propagation on
+ FEAT_S1POE
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Marc Zyngier" <maz@kernel.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260602155430.2088142-2-maz@kernel.org>
+References: <20260602155430.2088142-2-maz@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 02 Jun 2026 16:15:59 +0000
+Message-Id: <20260602161600.197FF1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260602064806.3101025-3-rathc@linux.ibm.com>
-X-Migadu-Flow: FLOW_OUT
 
-On Tue, Jun 02, 2026 at 12:18:02PM +0530, Chinmay Rath wrote:
-> From: Nicholas Piggin <npiggin@gmail.com>
-> 
-> arch_libdir was brought in to improve the heuristic determination of
-> the lib/ directory based on arch and testdir names, but it did not
-> entirely clean that mess up.
-> 
-> Remove the arch_libdir->arch->testdir heuristic and just require
-> everybody sets arch_libdir correctly. Fail if the lib/arch or
-> lib/arch/asm directories can not be found.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
-> ---
->  Makefile  |  2 +-
->  configure | 20 ++++++++++++--------
->  2 files changed, 13 insertions(+), 9 deletions(-)
->
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
+Pre-existing issues:
+- [High] KVM fails to set CPACR_EL1_E0POE in hardware CPTR_EL2 for normal (=
+non-nested) guests, causing all guest EL0 accesses to POR_EL0 to unexpected=
+ly trap to KVM and result in injected UNDEF exceptions.
+- [High] KVM breaks host Permission Overlay Extension (POE) usage upon retu=
+rning from a VHE guest because __deactivate_cptr_traps_vhe() strips CPACR_E=
+L1_E0POE.
+--
+
+commit d1828ccf84b404181eed585a3aaf208b36c6b88e
+Author: Marc Zyngier <maz@kernel.org>
+
+KVM: arm64: Key CPTR_EL2.E0POE propagation on FEAT_S1POE
+
+We propagate CPTR_EL2.E0POE from a L1 into the L0 configuration, but
+we key this on the L1 guest supporting FEAT_S2POE. This is obviously
+wrong, as this bit is solely concerned with Stage-1 translation.
+
+Fix this by making the update depend on FEAT_S1POE.
+
+> diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp=
+/include/hyp/switch.h
+> index 98b2976837b11..4d814ae90613d 100644
+> --- a/arch/arm64/kvm/hyp/include/hyp/switch.h
+> +++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+> @@ -141,7 +141,7 @@ static inline void __activate_cptr_traps_vhe(struct k=
+vm_vcpu *vcpu)
+>  	if (!(SYS_FIELD_GET(CPACR_EL1, ZEN, cptr) & BIT(0)))
+>  		val &=3D ~CPACR_EL1_ZEN;
+> =20
+> -	if (kvm_has_feat(vcpu->kvm, ID_AA64MMFR3_EL1, S2POE, IMP))
+> +	if (kvm_has_feat(vcpu->kvm, ID_AA64MMFR3_EL1, S1POE, IMP))
+>  		val |=3D cptr & CPACR_EL1_E0POE;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does this logic apply to
+normal guests?
+
+Looking at __activate_cptr_traps_vhe(), normal (non-nested) guests bypass
+this nested trap propagation via:
+
+	if (!vcpu_has_nv(vcpu))
+		goto write;
+
+As a result, CPACR_EL1_E0POE is never added to the val written to cpacr_el1,
+so CPTR_EL2.E0POE is 0. Any guest EL0 access to POR_EL0 will then trap to
+EL2.=20
+
+Because SYS_POR_EL0 lacks an access callback in sys_reg_descs[] in
+arch/arm64/kvm/sys_regs.c, kvm_handle_sys_reg() injects an undefined
+instruction exception into the guest, crashing guest applications that rely
+on POE.
+
+[Severity: High]
+This is a pre-existing issue, but does host POE remain active after running
+a VHE guest?
+
+Looking at __deactivate_cptr_traps_vhe() in the same file, the host's
+cpacr_el1 is restored with a hardcoded bitmask (FPEN, ZEN, SMEN), and
+CPACR_EL1_E0POE is unconditionally stripped:
+
+	u64 val =3D CPACR_EL1_FPEN;
+=09
+	if (cpus_have_final_cap(ARM64_SVE))
+		val |=3D CPACR_EL1_ZEN;
+	if (cpus_have_final_cap(ARM64_SME))
+		val |=3D CPACR_EL1_SMEN;
+=09
+	write_sysreg(val, cpacr_el1);
+
+Since the E0POE bit enabled by the host kernel is overwritten, when the host
+returns to userspace, EL0 tasks executing POE instructions will trap to EL2.
+
+Because the host kernel has no hook for POR_EL0 in sys64_hooks, do_el0_sys()
+falls back to do_el0_undef(), sending SIGILL and crashing the userspace
+task.
+
+>  	val |=3D cptr & CPTR_EL2_TCPAC;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602155430.2088=
+142-1-maz@kernel.org?part=3D1
