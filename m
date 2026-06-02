@@ -1,306 +1,289 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1119C311C32
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 14:24:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79553DA7DC;
+	Tue,  2 Jun 2026 14:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780410247; cv=none; b=PpAOyXyD2IginMmLAb/4CKLe1vR/jGK7UloIebN9nOZIRLnGmxHILspHA0Sy2M00yPhHLWnqYuUsXgHwV+Ug4MNlLjB91AVLa8dPaXDakNPskKFOPKV8/r0tBJd8LJFpYnQZe1oK3f+iqsLxTsBj0xSybccjioVuS78Vj2mpmws=
+	t=1780410248; cv=none; b=Pe1xS4KwbiN0ReKFqVPzfJzOxVJtPwo7vxrlGCNBgx+dCBuyeZyqI8Y+UlUSaiLo9o9spY0DgGtunGuCooYuj0bFixRir0Jvc8Fs4acxCB3C2Z6+ua3ei/jcGQwqhy/Hvfb1TuS2FimRytww7HGiiID+JcaueLxpWzzUYhUDTA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780410247; c=relaxed/simple;
-	bh=7h4yvIaxpZfu97W6NaqLOnIqPmnLwPk4acmyquCgAEA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uwn3P0LNsh75clLxJ5iKYuqmRjki24j6CbktWF6QWt82tohLQ+tDRAMPxNzvn7VLpPG6jlb9lMLFmuStge7boMIbrG/5k6MJrnvdsXLO+6lD/ElUpSbAj8TvFGkkLHtuWqPFcoSO1Efewn7UiLTUD/3ZbrR75DM0WKiwHJWPP0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NmD47QWi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=en/Pjq+E; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780410248; c=relaxed/simple;
+	bh=MhMyYUX/dAPiS9ylnes7JBSojO9LvZkIyLpEvxV4vi8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=e1v6wyM8fFeuI9fYFMl4zvH6H4CCLPvcoAVwaJ08OV1LOEzrWiPuf/6y/kaCh3fBxhf6eVikOgqu3oBiZZrxksCLABt8hqhJOETPZyoNAuPh3FEsHR9sdhWkEVipo8zPuMUXplFuCthFvkyNX2/8Qmb4cE6aNKzE6vQh8QVSj5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=auvpuO5T; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NmD47QWi";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="en/Pjq+E"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780410244;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4IMuBtd9B7qFh8v4FQqCNaQDTtXidHmA4NK5U6dV2Ro=;
-	b=NmD47QWi2AJ/q4oT0c0WxjUoNeDeNZ1PpAdh91axiZu6vyDDqBoX/hxUAUNi4SRHtXwiDX
-	FfVvQ7EZzlMI6gjDoVkxqUrv1NV/62U9TXWUsqAhwJ3qvggdTOOYeMxDI46vTuKzGg/PhU
-	3umIBOKDvQLj22RVENe1kAF5MF4W6tE=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-MVfydG8kPsuNUqSfPXJUig-1; Tue, 02 Jun 2026 10:24:02 -0400
-X-MC-Unique: MVfydG8kPsuNUqSfPXJUig-1
-X-Mimecast-MFC-AGG-ID: MVfydG8kPsuNUqSfPXJUig_1780410242
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8cecac0e467so458366d6.0
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 07:24:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780410242; x=1781015042; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4IMuBtd9B7qFh8v4FQqCNaQDTtXidHmA4NK5U6dV2Ro=;
-        b=en/Pjq+EpG0ZgwfDnlf2JoXDOekfHY5OJYflFB05CdSAinHcPD5+NIFbXNSnPe1IFp
-         B3/9WeWb0EoYcUVJHnkRJzgMIVJi2vKYTK3K3XA7y28yO7ou2UUVz6fRCyTU9YRsIpPn
-         Q4wudlhvG4nHtpNdscctItyvUmvpBoaiwvARw4rB6seAYQdFZkyGhzhBNllEyAbWRBGS
-         TQCUj+BBh93Dc5vCKTQtFV3rSl0bO1gmN2qQgOBjZNs+Pr/ZfzHx1p1fMcjch26Ru47r
-         Yt0XvZB5G+soJyNMyUjr1aViA+DrtbjD6s7ox3QtOrcFpwWX9ZPrfKuvnRONMZ/abHsQ
-         4j0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780410242; x=1781015042;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4IMuBtd9B7qFh8v4FQqCNaQDTtXidHmA4NK5U6dV2Ro=;
-        b=AXLY16pgIk1UkudtDDJfQXtpFM17wDoPYpWzp7Kkj7mqAvgpA/83LR2MWbkZxq0pL3
-         +K9HeFXaIvxcrztKDVkzASBaq0zp8uOi8mtclYUJ1IUtpCg4cTW4IUUnYnt1Jm+KV/aM
-         xOgoYI3NTcHy4c7pW5w2uQPD1qpYY6ZNNWEFaEOCT8kHklCjuP+sRngmr0AA5AxY0FB7
-         uaZsQe7frBfS4hOGBWML/MjFZZVvI7Dhw32p14efChuvT9ahMAk/VnT3TOl238oyNmrJ
-         cT3kMsK44cl6ocAobWrHF+wBgDVDw/0utkdw0XOWrFU3qoIBlOCi4fafUt28gzfCbLe8
-         55KQ==
-X-Forwarded-Encrypted: i=1; AFNElJ87hwTmLvdWncObnTSTxXkHfjGAVUmG3OR1Lc88ULxvNVCfgsOcWmEGdMhkLJIgly9uB90=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8fCVhUTRFmwUyI20JF5+Oue1uxMYnV5K8ye0V6mS/lGxBHh45
-	JevnF0/iET3tlrW04BIjXS9JTivs+lIxG/A+gxJ0jyaGkS3fye9KWcnB70DELb8rIypKBrxoKjt
-	zKR+cMwxlmE3pe+eT1lI9I/wYRtuTEXSKoXdlwLmbalsF6Wu84E8d9Q==
-X-Gm-Gg: Acq92OHjtxLycU/e2qieF2ktgS0DGSWZ6msj0Dx/XsxjtQ2yVGVsBVJcSpQpdY8LcVR
-	l1vR43TQ8jCMTXcHz/YfTzYOSaFb0psNbpDujTYluiwDxlXEO4xVH2o62njqnIfOnLcGSU+8f7m
-	Qb9+laJHAMRV2BbyzgAaE+q42lGclhcCpYwo6DMXISLqs4ORS43QdhQsJZ2kIDUSL4iO7cNe2HY
-	TDlagBx6D/ZUpZsoRri1hqcpT/utdYpIrqzCkKFsgeoy9BzC8Xr1NJtApulPQtoavAgLtvbaKl9
-	nYip/2w2CVH0bCfldsG4fNwAvPPRuf3t/wlRFjP6ljFddGPd2Be94vEIT8BngEPfX3dmhUclHWQ
-	JqMEVF83IT5FK788Um1j6mTvncR+j9JExE6GEHEs=
-X-Received: by 2002:a05:6214:1255:b0:8ce:abea:4727 with SMTP id 6a1803df08f44-8ceabea4c1amr161480086d6.31.1780410242004;
-        Tue, 02 Jun 2026 07:24:02 -0700 (PDT)
-X-Received: by 2002:a05:6214:1255:b0:8ce:abea:4727 with SMTP id 6a1803df08f44-8ceabea4c1amr161479426d6.31.1780410241511;
-        Tue, 02 Jun 2026 07:24:01 -0700 (PDT)
-Received: from intellaptop.lan ([2607:fea8:fc01:88aa:f1de:f35:7935:804f])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ccea06d4casm117931816d6.16.2026.06.02.07.24.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 07:24:01 -0700 (PDT)
-Message-ID: <4945990d5ecf9a36c53fe0fdbef5f2da7e8ab0d4.camel@redhat.com>
-Subject: Re: [PATCH 11/28] KVM: x86/mmu: pass pte_access for final nGPA->GPA
- walk
-From: mlevitsk@redhat.com
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org
-Cc: d.riley@proxmox.com, jon@nutanix.com
-Date: Tue, 02 Jun 2026 10:24:00 -0400
-In-Reply-To: <20260505195226.563317-12-pbonzini@redhat.com>
-References: <20260505195226.563317-1-pbonzini@redhat.com>
-	 <20260505195226.563317-12-pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="auvpuO5T"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6523Sm011360394;
+	Tue, 2 Jun 2026 14:24:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=TKV6SSaQ4WCADJcuV
+	4DZvER+9KJ0fj1zCgEl0eKkIqM=; b=auvpuO5T5nHtUHqzwplGK1T15lJ+NgqKz
+	0trzsokGBQgx8VSYLNlmbupzvkwEK2VLgvXnyBzcl2RM/nuY2vAntc8ogw9pLc6d
+	3L8fNwRHJfm8eXkSkSuJljdyecqD/It4uBqeXLbXaLKNPawMvq6dYQwQV4RNi9FU
+	oIUg0/9AcTSJsN4KYC7AS1KPPwoP/gA3qLy0Y5NHidzyp/jDP3YOsgN4g/1HPDgk
+	hhUZ3exu1QX7cz9m9DCxiLiUqlE8YSwJuRdu1vK0B+iHfK2c9ks5wIRr7P0QEo1H
+	nSYKFkCGrZpUGWPzTY2ef/0NhZ7euqUM4wrAuC0YTr63tp0M6cqgQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqd46dr5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jun 2026 14:24:04 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 652E98Nm015583;
+	Tue, 2 Jun 2026 14:24:03 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4egcwybaah-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jun 2026 14:24:03 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 652ENvwb47776020
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 2 Jun 2026 14:23:57 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 779BB20040;
+	Tue,  2 Jun 2026 14:23:57 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4C9632004B;
+	Tue,  2 Jun 2026 14:23:57 +0000 (GMT)
+Received: from p-imbrenda.aag-de.ibm.com (unknown [9.52.223.175])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  2 Jun 2026 14:23:57 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
+Subject: [PATCH v3 03/10] KVM: s390: Avoid potentially sleeping while atomic when zapping pages
+Date: Tue,  2 Jun 2026 16:23:49 +0200
+Message-ID: <20260602142356.169458-4-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260602142356.169458-1-imbrenda@linux.ibm.com>
+References: <20260602142356.169458-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDEzNiBTYWx0ZWRfX2zDmwh9Ot7Jw
+ o088zebNAyDf07tCGreI/OiRdh3ubqg3mO+bL8nlGoukaNLQO77WLItFLzlHA2Rlqdh5ue6JKH8
+ 9GJaWN4X2P2cXkGQbUItzmvE4vV6sg8H4RXnF7Nzac0M+y4FqfaE8/yCML0Dep46/ElA4gHD3Nr
+ vQXTmh6aqqGxV6FrCq6rVBQwhnvVasMNASmhX4iC5ZTpfrXUp2u6o4oNUhlgX5ckVsOJBcXBBBZ
+ n+XzI69EVbt1F0pjHUWNKWN2nUtHXjuCktQHIJ5Jd8170bHy996LL/7ine6rKDSJtErfV4QehAg
+ BdIPDvSnGiLJEKmpa1ZwWy6TjDplVnTzP6T0VtUOZhakyz87g3/BpdnxJL/7GCnSm6F4ajrpiwk
+ KZnkSf5HQ7Qxujsb35jt1Sdz/0JNjbsi2dDCuTEw09NqenSqRulqcycTiSo6j7/bp9hqR1eBieL
+ 0HMblKdEhTgUQziWAjA==
+X-Proofpoint-GUID: otKyG6h1jSUA9hL4ll0bQPIaeapZjBwH
+X-Proofpoint-ORIG-GUID: otKyG6h1jSUA9hL4ll0bQPIaeapZjBwH
+X-Authority-Analysis: v=2.4 cv=DZknbPtW c=1 sm=1 tr=0 ts=6a1ee784 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=nBeMyYop4p2-dv3G0y8A:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-02_02,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ phishscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606020136
 
-On Tue, 2026-05-05 at 21:52 +0200, Paolo Bonzini wrote:
-> The XS/XU bit for EPT are only applied to final accesses, and use the
-> U bit from the page walk itself.=C2=A0 This is available in the page walk=
-er
-> as pte_access & ACC_USER_MASK but not available to translate_nested_gpa,
-> so pass it down.
->=20
-> Tested-by: David Riley <d.riley@proxmox.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
-> =C2=A0arch/x86/kvm/hyperv.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 |=C2=A0 2 +-
-> =C2=A0arch/x86/kvm/mmu.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 | 15 ++++++++++++---
-> =C2=A0arch/x86/kvm/mmu/mmu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 |=C2=A0 8 +++++++-
-> =C2=A0arch/x86/kvm/mmu/paging_tmpl.h |=C2=A0 4 ++--
-> =C2=A0arch/x86/kvm/mmu/spte.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0 6 ------
-> =C2=A0arch/x86/kvm/x86.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 5 +++--
-> =C2=A06 files changed, 25 insertions(+), 15 deletions(-)
->=20
-> diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-> index cf9dd565b894..53688f7b76eb 100644
-> --- a/arch/x86/kvm/hyperv.c
-> +++ b/arch/x86/kvm/hyperv.c
-> @@ -2042,7 +2042,7 @@ static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, =
-struct kvm_hv_hcall *hc)
-> =C2=A0 */
-> =C2=A0 if (!hc->fast && is_guest_mode(vcpu)) {
-> =C2=A0 hc->ingpa =3D translate_nested_gpa(vcpu, hc->ingpa,
-> - PFERR_GUEST_FINAL_MASK, NULL);
-> + PFERR_GUEST_FINAL_MASK, NULL, 0);
-> =C2=A0 if (unlikely(hc->ingpa =3D=3D INVALID_GPA))
-> =C2=A0 return HV_STATUS_INVALID_HYPERCALL_INPUT;
-> =C2=A0 }
-> diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-> index 23f37535c0ce..635c2e5d8513 100644
-> --- a/arch/x86/kvm/mmu.h
-> +++ b/arch/x86/kvm/mmu.h
-> @@ -37,6 +37,12 @@ extern bool __read_mostly enable_mmio_caching;
-> =C2=A0#define PT32_ROOT_LEVEL 2
-> =C2=A0#define PT32E_ROOT_LEVEL 3
-> =C2=A0
-> +#define ACC_READ_MASK=C2=A0=C2=A0=C2=A0 PT_PRESENT_MASK
-> +#define ACC_WRITE_MASK=C2=A0=C2=A0 PT_WRITABLE_MASK
-> +#define ACC_USER_MASK=C2=A0=C2=A0=C2=A0 PT_USER_MASK
-> +#define ACC_EXEC_MASK=C2=A0=C2=A0=C2=A0 8
-> +#define ACC_ALL=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (A=
-CC_EXEC_MASK | ACC_WRITE_MASK | ACC_USER_MASK | ACC_READ_MASK)
-> +
-> =C2=A0#define KVM_MMU_CR4_ROLE_BITS (X86_CR4_PSE | X86_CR4_PAE | X86_CR4_=
-LA57 | \
-> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 X86_CR4_SMEP | X86_CR4_SMAP |=
- X86_CR4_PKE)
-> =C2=A0
-> @@ -289,16 +295,19 @@ static inline void kvm_update_page_stats(struct kvm=
- *kvm, int level, int count)
-> =C2=A0}
-> =C2=A0
-> =C2=A0gpa_t translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa, u64 ac=
-cess,
-> - =C2=A0=C2=A0 struct x86_exception *exception);
-> + =C2=A0=C2=A0 struct x86_exception *exception,
-> + =C2=A0=C2=A0 u64 pte_access);
-> =C2=A0
-> =C2=A0static inline gpa_t kvm_translate_gpa(struct kvm_vcpu *vcpu,
-> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct kvm_mmu *mmu,
-> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpa_t gpa, u64 access,
-> - =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct x86_exception *exception)
-> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct x86_exception *exception,
-> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 pte_access)
+Factor out try_get_locked_pte(), which behaves similarly to
+get_locked_pte(), but does not attempt to allocate missing tables and
+performs a spin_trylock() instead of blocking.
 
-Hi,=20
+The new function is also exported, since it will be used in other
+patches.
 
-IMHO the fact that we have now both 'access' and 'pte_access' is confusing,
-and yet we have to do it in this way because this is how MBE works.
+If intermediate entries are missing, there can be no pte swap entry to
+free, so it's safe to ignore them.
 
-I think this needs a one large comment justifying the whole thing, includin=
-g
-explanation on what pte_access is and that it is only defined for access th=
-at
-translate the final guest memory access (it is 0 otherwise)
+This avoids potentially sleeping while atomic.
 
-Maybe, I would go even further and suggest to replace the pte_access
-with a boolean for the MBE only (bool mapped_as_user for example),=C2=A0
-hoping that MBE will be the only case that requires this, and
-have a comment explaining this. I am not sure about this,
-but I do think that a comment is warranted here.
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
+---
+ arch/s390/include/asm/gmap_helpers.h |   1 +
+ arch/s390/mm/gmap_helpers.c          | 117 ++++++++++++++++-----------
+ 2 files changed, 73 insertions(+), 45 deletions(-)
 
-
-Again, this is not our fault, but rather a result of MBE being defined like=
- that.
-
-Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
-Best regards,
-	Maxim Levitsky
-
-
-
-> =C2=A0{
-> =C2=A0 if (mmu !=3D &vcpu->arch.nested_mmu)
-> =C2=A0 return gpa;
-> - return translate_nested_gpa(vcpu, gpa, access, exception);
-> + return translate_nested_gpa(vcpu, gpa, access, exception,
-> + =C2=A0=C2=A0=C2=A0 pte_access);
-> =C2=A0}
-> =C2=A0
-> =C2=A0static inline bool kvm_has_mirrored_tdp(const struct kvm *kvm)
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 46412e4d207f..3dbac7ad044f 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -4348,8 +4348,14 @@ static gpa_t nonpaging_gva_to_gpa(struct kvm_vcpu =
-*vcpu, struct kvm_mmu *mmu,
-> =C2=A0{
-> =C2=A0 if (exception)
-> =C2=A0 exception->error_code =3D 0;
-> + /*
-> + * EPT MBEC uses the effective access bits from the PTE to distinguish
-> + * user and supervisor accesses, and treats every linear address as a
-> + * user-mode address if CR0.PG=3D0.=C2=A0 Therefore *include* ACC_USER_M=
-ASK in
-> + * the last argument to kvm_translate_gpa (which NPT does not use).
-> + */
-> =C2=A0 return kvm_translate_gpa(vcpu, mmu, vaddr, access | PFERR_GUEST_FI=
-NAL_MASK,
-> - exception);
-> + exception, ACC_ALL);
-> =C2=A0}
-> =C2=A0
-> =C2=A0static bool mmio_info_in_cache(struct kvm_vcpu *vcpu, u64 addr, boo=
-l direct)
-> diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmp=
-l.h
-> index 567f8b77ffe0..8dd9d510fc34 100644
-> --- a/arch/x86/kvm/mmu/paging_tmpl.h
-> +++ b/arch/x86/kvm/mmu/paging_tmpl.h
-> @@ -377,7 +377,7 @@ static int FNAME(walk_addr_generic)(struct guest_walk=
-er *walker,
-> =C2=A0
-> =C2=A0 real_gpa =3D kvm_translate_gpa(vcpu, mmu, gfn_to_gpa(table_gfn),
-> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 nested_access | PFERR_GUEST_PAGE_MASK,
-> - =C2=A0=C2=A0=C2=A0=C2=A0 &walker->fault);
-> + =C2=A0=C2=A0=C2=A0=C2=A0 &walker->fault, 0);
-> =C2=A0
-> =C2=A0 /*
-> =C2=A0 * FIXME: This can happen if emulation (for of an INS/OUTS
-> @@ -447,7 +447,7 @@ static int FNAME(walk_addr_generic)(struct guest_walk=
-er *walker,
-> =C2=A0
-> =C2=A0 real_gpa =3D kvm_translate_gpa(vcpu, mmu, gfn_to_gpa(gfn),
-> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 access | PFERR_GUEST_FINAL_MASK,
-> - =C2=A0=C2=A0=C2=A0=C2=A0 &walker->fault);
-> + =C2=A0=C2=A0=C2=A0=C2=A0 &walker->fault, walker->pte_access);
-> =C2=A0 if (real_gpa =3D=3D INVALID_GPA)
-> =C2=A0 return 0;
-> =C2=A0
-> diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-> index 121bfb2217e8..8a4c09c5cdbf 100644
-> --- a/arch/x86/kvm/mmu/spte.h
-> +++ b/arch/x86/kvm/mmu/spte.h
-> @@ -52,12 +52,6 @@ static_assert(SPTE_TDP_AD_ENABLED =3D=3D 0);
-> =C2=A0#define SPTE_BASE_ADDR_MASK (((1ULL << 52) - 1) & ~(u64)(PAGE_SIZE-=
-1))
-> =C2=A0#endif
-> =C2=A0
-> -#define ACC_READ_MASK=C2=A0=C2=A0=C2=A0 PT_PRESENT_MASK
-> -#define ACC_WRITE_MASK=C2=A0=C2=A0 PT_WRITABLE_MASK
-> -#define ACC_USER_MASK=C2=A0=C2=A0=C2=A0 PT_USER_MASK
-> -#define ACC_EXEC_MASK=C2=A0=C2=A0=C2=A0 8
-> -#define ACC_ALL=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (A=
-CC_EXEC_MASK | ACC_WRITE_MASK | ACC_USER_MASK | ACC_READ_MASK)
-> -
-> =C2=A0#define SPTE_LEVEL_BITS 9
-> =C2=A0#define SPTE_LEVEL_SHIFT(level) __PT_LEVEL_SHIFT(level, SPTE_LEVEL_=
-BITS)
-> =C2=A0#define SPTE_INDEX(address, level) __PT_INDEX(address, level, SPTE_=
-LEVEL_BITS)
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index ef1e3ae13887..67979b7de5d6 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -1073,7 +1073,7 @@ int load_pdptrs(struct kvm_vcpu *vcpu, unsigned lon=
-g cr3)
-> =C2=A0 */
-> =C2=A0 real_gpa =3D kvm_translate_gpa(vcpu, mmu, gfn_to_gpa(pdpt_gfn),
-> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 PFERR_USER_MASK | PFERR_WRITE_MASK |
-> - =C2=A0=C2=A0=C2=A0=C2=A0 PFERR_GUEST_PAGE_MASK, NULL);
-> + =C2=A0=C2=A0=C2=A0=C2=A0 PFERR_GUEST_PAGE_MASK, NULL, 0);
-> =C2=A0 if (real_gpa =3D=3D INVALID_GPA)
-> =C2=A0 return 0;
-> =C2=A0
-> @@ -7849,7 +7849,8 @@ void kvm_get_segment(struct kvm_vcpu *vcpu,
-> =C2=A0}
-> =C2=A0
-> =C2=A0gpa_t translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa, u64 ac=
-cess,
-> - =C2=A0=C2=A0 struct x86_exception *exception)
-> + =C2=A0=C2=A0 struct x86_exception *exception,
-> + =C2=A0=C2=A0 u64 pte_access)
-> =C2=A0{
-> =C2=A0 struct kvm_mmu *mmu =3D vcpu->arch.mmu;
-> =C2=A0 gpa_t t_gpa;
+diff --git a/arch/s390/include/asm/gmap_helpers.h b/arch/s390/include/asm/gmap_helpers.h
+index 2d3ae421077e..d2b616604a46 100644
+--- a/arch/s390/include/asm/gmap_helpers.h
++++ b/arch/s390/include/asm/gmap_helpers.h
+@@ -12,5 +12,6 @@ void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr);
+ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned long end);
+ int gmap_helper_disable_cow_sharing(void);
+ void gmap_helper_try_set_pte_unused(struct mm_struct *mm, unsigned long vmaddr);
++pte_t *try_get_locked_pte(struct mm_struct *mm, unsigned long addr, spinlock_t **ptl);
+ 
+ #endif /* _ASM_S390_GMAP_HELPERS_H */
+diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+index f8789ffcc05c..396207163ca6 100644
+--- a/arch/s390/mm/gmap_helpers.c
++++ b/arch/s390/mm/gmap_helpers.c
+@@ -34,6 +34,70 @@ static void ptep_zap_softleaf_entry(struct mm_struct *mm, softleaf_t entry)
+ 	swap_put_entries_direct(entry, 1);
+ }
+ 
++/**
++ * try_get_locked_pte() - like get_locked_pte(), but atomic and with trylock
++ * @mm: the mm
++ * @vmaddr: the userspace virtual address whose pte is to be found
++ * @ptl: will be set to the pointer to the lock used to lock the pte in case
++ *       of success.
++ *
++ * This function returns the pointer to the pte corresponding to @addr in @mm,
++ * similarly to get_locked_pte(). Unlike get_locked_pte(), no attempt is made
++ * to allocate missing page tables. If a missing or large entry is found, the
++ * function will return NULL. If the ptl lock is contended, %-EAGAIN is
++ * returned.
++ *
++ * In case of success, *@ptl will point to the locked pte lock for the returned
++ * pte, like get_locked_pte() does.
++ *
++ * Context: mmap_lock or vma lock for read or for write needs to be held.
++ * Return:
++ * * %NULL if the pte cannot be reached.
++ * * %-EAGAIN if the pte can be reached, but cannot be locked.
++ * * the pointer to the pte corresponding to @addr in @mm, if it can be reached
++ *   and locked.
++ */
++pte_t *try_get_locked_pte(struct mm_struct *mm, unsigned long vmaddr, spinlock_t **ptl)
++{
++	pmd_t *pmdp, pmd, pmdval;
++	pud_t *pudp, pud;
++	p4d_t *p4dp, p4d;
++	pgd_t *pgdp, pgd;
++	pte_t *ptep;
++
++	pgdp = pgd_offset(mm, vmaddr);
++	pgd = pgdp_get(pgdp);
++	if (pgd_none(pgd) || !pgd_present(pgd))
++		return NULL;
++	p4dp = p4d_offset(pgdp, vmaddr);
++	p4d = p4dp_get(p4dp);
++	if (p4d_none(p4d) || !p4d_present(p4d))
++		return NULL;
++	pudp = pud_offset(p4dp, vmaddr);
++	pud = pudp_get(pudp);
++	if (pud_none(pud) || pud_leaf(pud) || !pud_present(pud))
++		return NULL;
++	pmdp = pmd_offset(pudp, vmaddr);
++	pmd = pmdp_get_lockless(pmdp);
++	if (pmd_none(pmd) || pmd_leaf(pmd) || !pmd_present(pmd))
++		return NULL;
++	ptep = pte_offset_map_rw_nolock(mm, pmdp, vmaddr, &pmdval, ptl);
++	if (!ptep)
++		return NULL;
++
++	if (spin_trylock(*ptl)) {
++		if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pmdp)))) {
++			pte_unmap_unlock(ptep, *ptl);
++			return ERR_PTR(-EAGAIN);
++		}
++		return ptep;
++	}
++
++	pte_unmap(ptep);
++	return ERR_PTR(-EAGAIN);
++}
++EXPORT_SYMBOL_GPL(try_get_locked_pte);
++
+ /**
+  * gmap_helper_zap_one_page() - discard a page if it was swapped.
+  * @mm: the mm
+@@ -46,7 +110,7 @@ static void ptep_zap_softleaf_entry(struct mm_struct *mm, softleaf_t entry)
+ void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
+ {
+ 	struct vm_area_struct *vma;
+-	spinlock_t *ptl;
++	spinlock_t *ptl;	/* Lock for the host (userspace) page table */
+ 	pte_t *ptep;
+ 
+ 	mmap_assert_locked(mm);
+@@ -57,8 +121,8 @@ void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
+ 		return;
+ 
+ 	/* Get pointer to the page table entry */
+-	ptep = get_locked_pte(mm, vmaddr, &ptl);
+-	if (unlikely(!ptep))
++	ptep = try_get_locked_pte(mm, vmaddr, &ptl);
++	if (IS_ERR_OR_NULL(ptep))
+ 		return;
+ 	if (pte_swap(*ptep)) {
+ 		ptep_zap_softleaf_entry(mm, softleaf_from_pte(*ptep));
+@@ -113,37 +177,9 @@ EXPORT_SYMBOL_GPL(gmap_helper_discard);
+  */
+ void gmap_helper_try_set_pte_unused(struct mm_struct *mm, unsigned long vmaddr)
+ {
+-	pmd_t *pmdp, pmd, pmdval;
+-	pud_t *pudp, pud;
+-	p4d_t *p4dp, p4d;
+-	pgd_t *pgdp, pgd;
+ 	spinlock_t *ptl;	/* Lock for the host (userspace) page table */
+ 	pte_t *ptep;
+ 
+-	pgdp = pgd_offset(mm, vmaddr);
+-	pgd = pgdp_get(pgdp);
+-	if (pgd_none(pgd) || !pgd_present(pgd))
+-		return;
+-
+-	p4dp = p4d_offset(pgdp, vmaddr);
+-	p4d = p4dp_get(p4dp);
+-	if (p4d_none(p4d) || !p4d_present(p4d))
+-		return;
+-
+-	pudp = pud_offset(p4dp, vmaddr);
+-	pud = pudp_get(pudp);
+-	if (pud_none(pud) || pud_leaf(pud) || !pud_present(pud))
+-		return;
+-
+-	pmdp = pmd_offset(pudp, vmaddr);
+-	pmd = pmdp_get_lockless(pmdp);
+-	if (pmd_none(pmd) || pmd_leaf(pmd) || !pmd_present(pmd))
+-		return;
+-
+-	ptep = pte_offset_map_rw_nolock(mm, pmdp, vmaddr, &pmdval, &ptl);
+-	if (!ptep)
+-		return;
+-
+ 	/*
+ 	 * Several paths exists that takes the ptl lock and then call the
+ 	 * mmu_notifier, which takes the mmu_lock. The unmap path, instead,
+@@ -156,21 +192,12 @@ void gmap_helper_try_set_pte_unused(struct mm_struct *mm, unsigned long vmaddr)
+ 	 * If the lock is contended the bit is not set and the deadlock is
+ 	 * avoided.
+ 	 */
+-	if (spin_trylock(ptl)) {
+-		/*
+-		 * Make sure the pte we are touching is still the correct
+-		 * one. In theory this check should not be needed, but
+-		 * better safe than sorry.
+-		 * Disabling interrupts or holding the mmap lock is enough to
+-		 * guarantee that no concurrent updates to the page tables
+-		 * are possible.
+-		 */
+-		if (likely(pmd_same(pmdval, pmdp_get_lockless(pmdp))))
+-			__atomic64_or(_PAGE_UNUSED, (long *)ptep);
+-		spin_unlock(ptl);
+-	}
++	ptep = try_get_locked_pte(mm, vmaddr, &ptl);
++	if (IS_ERR_OR_NULL(ptep))
++		return;
+ 
+-	pte_unmap(ptep);
++	__atomic64_or(_PAGE_UNUSED, (long *)ptep);
++	pte_unmap_unlock(ptep, ptl);
+ }
+ EXPORT_SYMBOL_GPL(gmap_helper_try_set_pte_unused);
+ 
+-- 
+2.54.0
 
