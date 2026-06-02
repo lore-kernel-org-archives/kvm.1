@@ -1,184 +1,206 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C833B2D0B
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 21:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4FC37A4AB
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 21:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780437376; cv=none; b=nwLoXuUeZc79mtM64GQxRyzFkewoDXFCERX9gqU8RkKt71BLliRUlACoXexIjRG+Tf2tkWqLi8jHgEyc7zQTM6BtLPMbIWNtYtd/UI9QVhjxxiUxR+0cLoskCvz2ij9daPa298oe5jTA5HhRfOtIdnpRVi6maiooQIaEa/kRb2E=
+	t=1780437534; cv=none; b=cTS/a6TvjHDXAzpXftoTtRvijcUuyphYZs42kOgWvEZYocAJcfvXhq7ek14v919mPHAoThhvZGVAL+G0DhxEsk5s2HTyoNIBRRcwWNYDULXeqoDS9NTE6daWFtmEY4rxroZHliDXglLAD2EaFphFYblFMPLOZzPAvLhbMtcVLSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780437376; c=relaxed/simple;
-	bh=uanUhuG5chBI7iGRiYb/NQJAUXfg811Uv7P0B8yjofM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mo6aAproH/R9mHeOpvyb/Ry5Veh9GGg98+b/nr4AQElVRQC/1ZYJCyQLzLbMDudCTWAw/ddYPof+qPwsdxHnSzAcsaFxNS64tzKO9m1aVfRkBEu4tdDlj98A+E2as/OVvvOEvpI9Oq7rgZiPi9GWcPgT/2HI7LthGU6MJgauKQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ozXt2lBy; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
+	s=arc-20240116; t=1780437534; c=relaxed/simple;
+	bh=RBZUgb63t5P8qKXlNGcGwz87NI64X8PI0EJfAhtXEQg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t8Iu9OMlQTp/IrHJtg4Pcnox7GwmMaPIBtYCrJcA/HqRXfF7jE9U0XkUw5zNDPs5ff3ohDNHcrd0rfB9tVEfc6UxUSXzwnHYQwpGaGCiu5lxdm+HoaR7KIEwLMCYfcRx9JMsnJzEWNFK9YWMKNiRc0y0ffnUMTkTDvnyxrLyAnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Pw0JdRSv; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ozXt2lBy"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d98b76d12so2252331a91.2
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 14:56:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780437375; x=1781042175; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZQ6ZTIKmnZDIm2PqykNUkTYiLD4CQXsPT3VeVYf4kfY=;
-        b=ozXt2lByeR+meHbow4e7bzL96EQ/QocmGuwXo1LtKlHnxmUmw1PUz/jAaadzVrPXmx
-         AUjmudO2gfzLBTVdEM1w4M0BT4s8grRLlT+nLcsv0Wy1xHTCmNZbeY8CkMPxjUiMuXzE
-         1VT0kp/eiycwcWkbDFMI3EGZp7t77CNPRaNFMXuOwyRv2+6lJq+ILzHamQ0XaLIo5XxX
-         JvACUHKThZoeXKTOtN25JyQSyMW35VY/1h/g8sIr06BoFqAi5T0VLb7NUL6QYabRqXDX
-         Y9VunWtH0lhK3gDleHKxxLjIF4vHiMBReyb+6BatQLHi0fesct6GzaNRo/v/xLhPupDD
-         MUew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780437375; x=1781042175;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZQ6ZTIKmnZDIm2PqykNUkTYiLD4CQXsPT3VeVYf4kfY=;
-        b=GbgGGAvcF+HKHAQFgWmoni4kY6lucjdEj8kaMg2FBx4Q1jEfYZ6ZpNiJwheflHjSZ5
-         2aFASEJcH5nyGoLAo2cmA4IKpVLR8ZgdidQjcnp5TTF58B/gqUsQy5P89A9jocYjmtCm
-         xGbMuf/XQKO5qluZD/0R0lSrMJL7x9XD4/aGuvu5B4AY/+LXD96tetHhWF+lPsef7ShO
-         uALgNM+UBIuY/cCLMFJ344i21Tq+Leo5gC9pphypmaTstkzS4usJlcm96Ha8VvM6x4P1
-         k7LF3+PBa9Qf9yChYP2JA8Q+QiiQteKDjo2ngxfXRvNQSLx4pveuOzC9JaoutjFHVYxJ
-         i5JA==
-X-Forwarded-Encrypted: i=1; AFNElJ9k0kAfRIcGIDyKOJLQDFXQHq5CLXiYsJ3T5OixtNyRbkEBzOMty6owWfbUki0b2LoR4ac=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyynT96M1y/MasoYRAAhsDMJZdC4KaCI7AFKL6olSiQDjjN1Rtz
-	39wOwv7mJNOI6RV+bUDZz9BGz4T7hmY6zV4JK069DHUutgM5OV+eUDY1AP4CKOjUuDXB/tlMbXl
-	pKzaXzQ==
-X-Received: from pju15.prod.google.com ([2002:a17:90a:d4f:b0:36b:89e6:3ee5])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e4e:b0:35f:b647:d98a
- with SMTP id 98e67ed59e1d1-36e30552788mr686479a91.5.1780437372149; Tue, 02
- Jun 2026 14:56:12 -0700 (PDT)
-Date: Tue, 02 Jun 2026 21:55:47 +0000
-In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Pw0JdRSv"
+Message-ID: <947f8b24-b5de-4e40-8d27-0f85d1fd6547@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780437531;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WG/pFlpqjtidmPWmvsZ/O2ImctXvqcM8DPS3bnhtjfw=;
+	b=Pw0JdRSv+Zv+WhTmFBkzZRoiteMVy9ycBQvaRFmSs/YmCi+6NFKL7NrUR5+qvYzjj2Mdu4
+	1jW0Gswo3nFQ7qnj+k88c6CGeKDvAn1FVPiOqZmQTY92BMNvLKDsN6VJyOkU7zasmLTSTM
+	U0/dFtR1Wkt6l0QcjWzWDZJBExT5WgY=
+Date: Tue, 2 Jun 2026 14:58:45 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
-X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780437363; l=3092;
- i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=uanUhuG5chBI7iGRiYb/NQJAUXfg811Uv7P0B8yjofM=; b=onjoJh2jwfvgE5J9KsFufxaaM/BBUoZUbER0Iv4yiEZbnHtSt3LZi3VagZRC8gVSTIjS36l5y
- WirOgE+fH18CGioPV6fp/j5ijMuy/gRGi7+ecGc+dvu8oYZZXqd01R3
-X-Mailer: b4 0.14.3
-Message-ID: <20260602-memory-failure-mf-delayed-fix-v4-7-a5bc7db5a9b2@google.com>
-Subject: [PATCH v4 7/7] KVM: selftests: Test guest_memfd behavior with respect
- to stage 2 page tables
-From: Lisa Wang <wyihan@google.com>
-To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com, 
-	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com, 
-	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Subject: Re: [PATCH v2 3/4] crypto: ccp: Fix possible deadlock in SEV init
+ failure path
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <20260601-sev_snp_fixes-v2-3-611891b28a86@meta.com>
+ <20260601234159.0961C1F00898@smtp.kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Atish Patra <atish.patra@linux.dev>
+In-Reply-To: <20260601234159.0961C1F00898@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Test that
-+ memory failure handling results in unmapping of bad memory from stage
-  2 page tables, hence requiring faulting on next guest access
-+ when the guest tries to fault a poisoned page from guest_memfd, the
-  userspace VMM informed with EHWPOISON
 
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Lisa Wang <wyihan@google.com>
----
- .../kvm/guest_memfd_memory_failure_test.c          | 66 ++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
+On 6/1/26 4:41 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 5 potential issue(s) to consider:
+>
+> Pre-existing issues:
+> - [High] Failure in snp_prep_cmd_buf permanently leaks the command buffer active state in __sev_do_cmd_locked, deadlocking the SEV interface.
+> - [High] sev_init_ex_buffer is allocated without zeroing, leaking uninitialized kernel memory to the host filesystem.
+> - [High] Unhandled allocation failure for dev_data->output in spdm_ctrl_alloc leads to passing a null physical address to the PSP firmware.
+> - [High] Retrying SEV-TIO commands after buffer expansion uses stale, freed physical addresses, leading to RMP violations.
+> - [High] Bounce buffer memory is permanently leaked when firmware page transitions fail during legacy SEV command preparation.
+> --
+>
+> commit 1396d09c5ba264e4a091f5fa101bb062c384525c
+> Author: Atish Patra <atishp@meta.com>
+>
+> crypto: ccp: Fix possible deadlock in SEV init failure path
+>
+> __sev_platform_init_handle_init_ex_path() called
+> rmp_mark_pages_firmware() with locked=false but while the parent
+> function of init_ex_path already acquired the sev_cmd_mutex.
+> In case of a rmpupdate failure for any page after the first, the cleanup
+> path would invoke reclaim pages which would result in a deadlock in
+> sev_do_cmd.
+>
+> Pass locked=true to honor the lock status of the parent function.
+>
+> Fixes: 7364a6fbca45 ("crypto: ccp: Handle non-volatile INIT_EX data when SNP is enabled")
+> Reported-by: Chris Mason <clm@meta.com>
+> Assisted-by: Claude:claude-opus-4-6
+> Signed-off-by: Atish Patra <atishp@meta.com>
+>
+>> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+>> index d1e9e0ac63b60..3d4793e8e34b2 100644
+>> --- a/drivers/crypto/ccp/sev-dev.c
+>> +++ b/drivers/crypto/ccp/sev-dev.c
+>> @@ -1557,7 +1557,7 @@ static int __sev_platform_init_handle_init_ex_path(struct sev_device *sev)
+>>   		unsigned long npages;
+>>   
+>>   		npages = 1UL << get_order(NV_LENGTH);
+>> -		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, false)) {
+>> +		if (rmp_mark_pages_firmware(__pa(sev_init_ex_buffer), npages, true)) {
+>>   			dev_err(sev->dev, "SEV: INIT_EX NV memory page state change failed.\n");
+>>   			return -ENOMEM;
+>>   		}
+> [Severity: High]
+> This is a pre-existing issue, but does this allocation leak uninitialized
+> memory?
+>
+> Looking at __sev_platform_init_handle_init_ex_path() in the same file:
+>
+> drivers/crypto/ccp/sev-dev.c:__sev_platform_init_handle_init_ex_path() {
+>      ...
+>      page = alloc_pages(GFP_KERNEL, get_order(NV_LENGTH));
+>      ...
+> }
+>
+> If the NV file does not exist, sev_read_init_ex_file() returns 0 without
+> writing any data. This leaves the 32KB buffer filled with uninitialized
+> kernel memory before transitioning to firmware state. When
+> sev_write_init_ex_file() later writes this buffer to the host filesystem,
+> could this persist kernel heap contents to disk if the firmware did not
+> fully overwrite it?
+fixed in PATCH 4.
+> [Severity: High]
+> This is a pre-existing issue, but can this error path leave the command
+> buffer permanently active?
+>
+> drivers/crypto/ccp/sev-dev.c:__sev_do_cmd_locked() {
+>      ...
+>      ret = snp_prep_cmd_buf(cmd, cmd_buf, desc_list);
+>      if (ret) {
+>          dev_err(sev->dev, "SEV: failed to prepare buffer...");
+>          return ret;
+>      }
+>      ...
+> }
+>
+> Since sev->cmd_buf_active or sev->cmd_buf_backup_active were set to true
+> before this call, returning directly here bypasses resetting those flags.
+> Would this cause subsequent commands to fail with -EBUSY and lock up the
+> interface?
+>
+> [Severity: High]
+> This is a pre-existing issue, but does this error path leak the mapped
+> bounce buffers?
+>
+> drivers/crypto/ccp/sev-dev.c:snp_prep_cmd_buf() {
+>      ...
+>      if (sev_cmd_buf_writable(cmd)) {
+>          if (rmp_mark_pages_firmware(__pa(cmd_buf), 1, true))
+>              return -EFAULT;
+>      }
+>      ...
+> }
+>
+> If this fails, it returns -EFAULT without calling
+> snp_unmap_cmd_buf_desc_list(), which appears to leave the mapped command
+> descriptors unmapped.
+>
+> Similarly, in snp_map_cmd_buf_desc():
+>
+> drivers/crypto/ccp/sev-dev.c:snp_map_cmd_buf_desc() {
+>      ...
+>      if (rmp_mark_pages_firmware(*desc->paddr_ptr, npages, true)) {
+>          pr_warn("Error moving pages to firmware-owned state...");
+>          return -EFAULT;
+>      }
+>      ...
+> }
+>
+> If the firmware transition fails for an individual bounce buffer, the newly
+> allocated page isn't freed before returning -EFAULT. Could both of these
+> paths result in permanent memory leaks?
+>
+> [Severity: High]
+> This is a pre-existing issue, but does this validation correctly check the
+> output buffer?
+>
+> drivers/crypto/ccp/sev-dev-tio.c:spdm_ctrl_alloc() {
+>      ...
+>      dev_data->output = sla_alloc(dev_data->output_len, true);
+>
+>      if (IS_SLA_NULL(dev_data->req) || IS_SLA_NULL(dev_data->resp) ||
+>          IS_SLA_NULL(dev_data->scratch) || IS_SLA_NULL(dev_data->dev_ctx)) {
+>      ...
+> }
+>
+> The check examines dev_ctx instead of the newly allocated output. If the
+> output allocation fails, dev_data->output will be SLA_NULL (physical frame
+> number 0). Will returning success here cause the PSP firmware to use
+> physical page 0 as an output buffer and trigger an RMP violation?
+>
+> [Severity: High]
+> This is a pre-existing issue, but does retrying the command use stale
+> physical addresses?
+>
+> drivers/crypto/ccp/sev-dev-tio.c:sev_tio_do_cmd() {
+>      ...
+>      rc1 = sla_expand(&dev_data->output, &dev_data->output_len);
+>      ...
+>      rc = sev_do_cmd(cmd, data, psp_ret);
+>      ...
+> }
+>
+> When sla_expand() allocates a new buffer and frees the old one, dev_data
+> pointers are updated. However, the data pointer passed to sev_do_cmd()
+> comes from the caller and contains a by-value copy of the old spdm_ctrl
+> fields. Will retrying the command pass the old, freed physical addresses
+> to the PSP firmware?
+>
+Above issues require a bit detailed investigation to see if it is a 
+false positive.
+These are completely unrelated to this patch as well.
+Does these needs to be addressed before merging ?
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_memory_failure_test.c b/tools/testing/selftests/kvm/guest_memfd_memory_failure_test.c
-index 6c8032d390ae..e6f4c327bd5a 100644
---- a/tools/testing/selftests/kvm/guest_memfd_memory_failure_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_memory_failure_test.c
-@@ -24,6 +24,7 @@
- #include "kvm_util.h"
- #include "test_util.h"
- #include "kselftest_harness.h"
-+#include "ucall_common.h"
- 
- static size_t page_size, total_size;
- 
-@@ -313,6 +314,71 @@ TEST_F(guest_memfd_failure, test_memory_failure)
- 	}
- }
- 
-+static void __guest_code_read(uint64_t gpa)
-+{
-+	uint8_t *mem = (uint8_t *)gpa;
-+
-+	READ_ONCE(*mem);
-+	GUEST_SYNC(0);
-+	READ_ONCE(*mem);
-+	GUEST_DONE();
-+}
-+
-+static void guest_read(struct kvm_vcpu *vcpu, int expected_errno)
-+{
-+	if (expected_errno) {
-+		TEST_ASSERT_EQ(_vcpu_run(vcpu), -1);
-+		TEST_ASSERT_EQ(errno, expected_errno);
-+	} else {
-+		vcpu_run(vcpu);
-+		TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_SYNC);
-+	}
-+}
-+
-+TEST_F(guest_memfd_failure, test_memory_failure_guest)
-+{
-+	const uint64_t gpa = SZ_4G;
-+	const int slot = 1;
-+
-+	unsigned long memory_failure_pfn;
-+	struct kvm_vcpu *vcpu;
-+	uint8_t *mem;
-+
-+	/* Limit guest test execution to a single variant to avoid redundant runs. */
-+	if (variant->method != MF_INJECT_DEBUGFS ||
-+	    variant->kill_config != PR_MCE_KILL_EARLY ||
-+	    !variant->map_page || !variant->dirty_page)
-+		return;
-+
-+	self->vm = __vm_create_shape_with_one_vcpu(VM_SHAPE_DEFAULT, &vcpu, 1, __guest_code_read);
-+	vcpu_args_set(vcpu, 1, gpa);
-+
-+	self->fd = vm_create_guest_memfd(self->vm, self->vm->page_size,
-+					 GUEST_MEMFD_FLAG_MMAP |
-+					 GUEST_MEMFD_FLAG_INIT_SHARED);
-+	vm_set_user_memory_region2(self->vm, slot, KVM_MEM_GUEST_MEMFD, gpa,
-+				   self->vm->page_size, NULL, self->fd, 0);
-+
-+	mem = mmap(NULL, self->vm->page_size, PROT_READ | PROT_WRITE,
-+		   MAP_SHARED, self->fd, 0);
-+	TEST_ASSERT(mem != MAP_FAILED, "mmap() for guest_memfd should succeed.");
-+	virt_pg_map(self->vm, gpa, gpa);
-+
-+	/* Fault in page to read pfn, then unmap page for testing. */
-+	READ_ONCE(*mem);
-+
-+	memory_failure_pfn = addr_to_pfn(mem);
-+	munmap(mem, self->vm->page_size);
-+
-+	/* Fault page into stage2 page tables. */
-+	guest_read(vcpu, 0);
-+
-+	self->poisoned_pfn = memory_failure_pfn;
-+	mark_memory_failure(memory_failure_pfn, 0);
-+
-+	guest_read(vcpu, EHWPOISON);
-+}
-+
- static bool can_inject_memory_failure(void)
- {
- 	int fd;
-
--- 
-2.54.0.1013.g208068f2d8-goog
 
