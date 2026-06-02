@@ -1,148 +1,119 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFA738E8A4;
-	Tue,  2 Jun 2026 09:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1FB27A47F
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 10:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780392745; cv=none; b=YACxlfr8JGi8QvIKzu2//8r/zn5+HMG/Gdoj/EgSxImuGLOhxE1Ym3bg0715KYhHdEq6YxM8jRgaUkcrIR2ja0Aaug5tyOM5CUTP4rV51jZqOlir89Bk/0cUWikKHvAj34O/b4LmkzkGpPFxQOdDmjoKAp9xmZRXVOUTF8wHQMM=
+	t=1780394445; cv=none; b=kziVuQQj+ZA7bEjtk80qmvqNgsSGA0+CJY51uIHU4ZTKE/WP/XDMwewYkIN+9kcw31P/t64iE2Qu4VEnsYpvqiTULVi9NGpXnPTg6UNI3D2oGy1f3l4A7/sNq5EPKI2SSS7wKq17/mojfcezCo+34wpaNTL32tpP8b8hGbEzkM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780392745; c=relaxed/simple;
-	bh=TIXCMYnAz3nRbCiUwoctdyQBtytJ2XAwCJkfxKTlymA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VM+9WMt1JopqDjUi0B0Frdj6qaij459RQfe8iC5mHf2V6JvkhgYqbus3aogbFqPB4agqrLacwSeZhp90uEvRkd6nMgDQR17v9yY6F0D1rhtdZC5YEKirFtQ53pOgd61ia8q8oHGNhJklJXjFJHl5ygk/FbOJZ382QLloU2xg9BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=l+xomWIK; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780394445; c=relaxed/simple;
+	bh=Atf0HQ/BkCAA1oatoUeBqRikd/u59S6s/D9FUGXHoKk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=pvPcFHV3haDLtVqxxR5wNohVeM4NPtCgj1Gyta9l3+rDe/KYHNVCkUR1CbjbX9IvrIZh6bw+2pkeIijTZBplVfNMdKXwhIQD3NKxUkDzw4v+eB3BUsNWoF9WVp/oeSf13HZBPUV29vA7sJkhdZ9kS+qYq8k6c9OEZN/zXzRILJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UmBZ9Iuk; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="l+xomWIK"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6527V5c63295133;
-	Tue, 2 Jun 2026 09:31:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=WJm6ApGKzkKEwcgHKyf0jD9MBtlkYj
-	Ex4H0AHzDW9eE=; b=l+xomWIK0Wq/E3Qmh5M/Qa5Hg9vz3Dby5OZC/T+ea4kynl
-	gAbetBvgebQYozhB3j84HFl+y1JnIDw14XV39nhN+TQvXrdYDCFROXHwvSciRsy/
-	sEMEHUdG5ha4E52FiYkjg6XUb2dYUisuut/zO/cKNLkWvjRLufioCofWY6YwJc04
-	4naPjx7U2I5YP6q2v1iUPdskZBZnfV1HbQfd9AXJZQz1pUEdag0v8K5vk5lUPeuV
-	BgIcV51neP/HPcS9wOMmoL5U37wf+cpf6LL3K0VDpdGrBmJhk0WmAqxrxvm6VFb5
-	XGhnuTkpZZTVva4a7ni2k8KGKOvgtIyerx9RgACA==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efnahmyt8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 09:31:41 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6529O5pD006737;
-	Tue, 2 Jun 2026 09:31:40 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egb7k2j23-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 09:31:40 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6529VXP530933318
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 2 Jun 2026 09:31:33 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B2A872004B;
-	Tue,  2 Jun 2026 09:31:33 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 863C220043;
-	Tue,  2 Jun 2026 09:31:33 +0000 (GMT)
-Received: from localhost (unknown [9.111.42.7])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  2 Jun 2026 09:31:33 +0000 (GMT)
-Date: Tue, 2 Jun 2026 11:31:33 +0200
-From: Andreas Grapentin <gra@linux.ibm.com>
-To: Oliver Upton <oupton@kernel.org>
-Cc: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org,
-        kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v1 10/26] KVM: arm64: Fix set_oslsr_el1 to write to
- OSLAR_EL1
-Message-ID: <ah6fmaSnsM_o8NcR@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
-References: <20260529155601.2927240-1-seiden@linux.ibm.com>
- <20260529155601.2927240-11-seiden@linux.ibm.com>
- <ah4F7dAEA7LFz5fN@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UmBZ9Iuk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780394444; x=1811930444;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=Atf0HQ/BkCAA1oatoUeBqRikd/u59S6s/D9FUGXHoKk=;
+  b=UmBZ9IukY6UNnXvylRnS9eUajcXu8yywFLd3YjKN4SUpi0sS7Pt093xM
+   xTEcROuEML6AP/IvqkB41pWd46zCFIhesW9Yrk7xFxBVN4s1DLOMM8kzx
+   +WAUrKFHcrUAeWfHFNJPP6uz9OPnljQzY8kgclQhAHE7Axqny9qO/Lv1M
+   2n0dLRprnDzngcFrzJS+HcYXaczZwFn4tL6glL1PWCD0xmkwPaDNBQlGm
+   KnAv/CykzgeMcGXkEO/Z8GjHEzGuXkFeXaMx+i7S9jVDiYFd/LaqcOtDL
+   OXgRbyBgwvs0FTmq5muRALPbUQPTWWIJ9l8VXAP41uvhaZv1irZXuQFyK
+   Q==;
+X-CSE-ConnectionGUID: KWnRydXJRgKbU0Or23dExg==
+X-CSE-MsgGUID: 2XELJzALQ6a6qdViPn+zeA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="85062434"
+X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
+   d="scan'208";a="85062434"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 03:00:44 -0700
+X-CSE-ConnectionGUID: CVOZZD+TRle5FGq7Djbi4Q==
+X-CSE-MsgGUID: fpYDJbs7SlCg3QosuPMiKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
+   d="scan'208";a="243042744"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 03:00:42 -0700
+Message-ID: <fe9d441a-91b1-4084-8e1c-71813c3c8bb2@intel.com>
+Date: Tue, 2 Jun 2026 18:00:37 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah4F7dAEA7LFz5fN@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDA4NSBTYWx0ZWRfX181A+AGJbeaJ
- 8ee4QN6Pl/iBbMATYkWypcyDwv6rUrkLP5JzfF7elSisdcNiLdyb/GH/XLGmsEIojCMBlMmZl1W
- J5f0tMDzUXrw/APH/4C+ne3LmOeaPgyRU7G9Wr/QMZW1gyo6mXjXgH308urEAZDt8Ozc+ngigPJ
- wwKCBu88QTWK3bM2kyMRCWnLNHbxsjdIiNXAiYhxOghTJ9GKhKyoj55EdC0bd5PXpRZ4VGVMrrp
- 8yWeSy1L5jVDOSrPQxyUYnpiTYgEK3xbqUQSywWCN7bZz7Po0xmLBFFLaPeLP7s9H+DGf4UfNvC
- mSHoVMJTnRPUl5UGdOk2+pgPv+T7kMmUnfqYVab5j9f4BprRxQmEc8l1blBRvstLGNAW2XcAWrx
- ELKmit3Op2fgvb349mJAFb1CUe3kjfAZwLwJKq9r4nOF1dqb/0fnnVG5E+g+EVOhLMFqifarP02
- c1g4o1q97OFnAvS2ZlQ==
-X-Proofpoint-ORIG-GUID: UcBU39xqv_22mUun1G5fgwQbsPs36BwG
-X-Authority-Analysis: v=2.4 cv=cOzQdFeN c=1 sm=1 tr=0 ts=6a1ea2fd cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=EMFgzdqWpYFkXg4I9EcA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: UcBU39xqv_22mUun1G5fgwQbsPs36BwG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-01_07,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
- malwarescore=0 phishscore=0 suspectscore=0 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606020085
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH] x86/run: Use separate "-accel" option to
+ configure the accelerator
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+References: <20260528071712.1407929-1-xiaoyao.li@intel.com>
+ <ahg8i_Zv9TRk-UzE@google.com>
+ <7987e722-4ee3-4d6c-a4b7-369cfd272dac@intel.com>
+Content-Language: en-US
+In-Reply-To: <7987e722-4ee3-4d6c-a4b7-369cfd272dac@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Jun 01 26, Oliver Upton wrote:
-> The current behavior of KVM is correct. KVM treats OSLSR_EL1 as the
-> stateful representation of the OS lock and is RO from the guest POV.
+On 5/29/2026 8:09 AM, Xiaoyao Li wrote:
+> On 5/28/2026 9:00 PM, Sean Christopherson wrote:
+>> On Thu, May 28, 2026, Xiaoyao Li wrote:
+>>> When configuring accelerator via machine's "accel" property, it cannot
+>>> pass additional ACCEL_PROPS. For example, it hits following error when
+>>> configuring KVM with "notify-vmexit":
+>>>
+>>>    # ACCEL="kvm,notify-vmexit=internal-error" ./x86-run x86/apic.c
+>>>    #   qemu-system-x86_64: Property 'pc-i440fx-11.1-machine.notify- 
+>>> vmexit' not found
+>>>
+>>> Switch to use separate "-accel" option to configure the accelerator.
+>>>
+>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>> ---
+>>>   x86/run | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/x86/run b/x86/run
+>>> index dd38f14c871f..a68d469dd1b8 100755
+>>> --- a/x86/run
+>>> +++ b/x86/run
+>>> @@ -43,7 +43,7 @@ fi
+>>>   pit="-global kvm-pit.lost_tick_policy=discard"
+>>>   command="${qemu} --no-reboot -nodefaults $pit $pc_testdev -display 
+>>> none -serial stdio $pci_testdev"
+>>> -command+=" -machine accel=$ACCEL$ACCEL_PROPS"
+>>> +command+=" -accel $ACCEL$ACCEL_PROPS"
+>>
+>> This breaks my setup for specifying kernel_irqchip=split.
+>>
+>>    qemu: -accel kvm,kernel_irqchip=split: Property 'kvm- 
+>> accel.kernel_irqchip' not found
 > 
-> We keep the UAPI straightforward by making this register RW from
-> userspace, such that the VMM can directly write back the value returned
-> from KVM_GET_ONE_REG.
+> If you switch "kernel_irqchip" to "kernel-irqchip", it should work again.
 > 
-> Do you have another reason for using OSLAR_EL1 as the canonical
-> representation?
+> This needs to be fixed on QEMU side. I'll look at it.
 
-Ah, thanks for pointing that out!
+Well, I feel hard to justify a QEMU "fix" for it.
 
-this change must have bled into the shared KVM code by mistake, it was
-supposed to live in the s390 specific code because it deals with an s390
-specific quirk. It was not intended for this change to have any impact
-on the native arm64 KVM implementation.
+"kernel_irqchip" was a property of "machine" in old QEMU, and QEMU 
+switched it to "kernel-irqchip" automatically.
 
-on s390, we need to map the userspace writes of OSLSR_EL1 to OSLAR_EL1,
-because OSLSR_EL1 is write-only for the facilities that are available to
-us to write system registers. But that detail should be confined to an
-s390-specific implementation of set_oslsr_el1.
+Then QEMU moved it to be a property of "accel", while keeping the 
+compatibility when users configure it via "machine" that QEMU internally 
+setting it to accel's property in this case.
 
-We'll amend this for v2.
+However, "kernel_irqchip" is only valid on "machine", but not on "accel".
 
-Best,
-Andreas
+For this KVM unit test issue, do we need to add workaround to keep your 
+(work-by-accident) usage working? or just kill it?
+
