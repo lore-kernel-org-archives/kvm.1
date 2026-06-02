@@ -1,156 +1,128 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B510227280A;
-	Tue,  2 Jun 2026 13:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A0330148A
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 14:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780406748; cv=none; b=N7JZTjOrw9DJfkaZBqTnD1QmhoDaqEsrTGgi0q3iZKwW8N5XEsqmlrlY77nQslin80OOmoIeAlc27ZJs9J7Nv4kCgPF1XaARNI7wMk0sX67GVXTl1EE/Tk4ru2dvyt/S/Ao5U3uqB9Uo6yNtE4YESzKf+IclH4zzXLoftzLe7AM=
+	t=1780409092; cv=none; b=BoZ+ttePAKeSt/3QzZ9LtxJ92J1Sl08X6+QvJiaOJEtXswjiUBC4Sy+5IA/bjXTABJsTpz3i3kj1T0cih8pI8FNJL8SviDBICEm90wphsapKWX0G4bHiiB5ssmd9H7KPazAfQLBxxNj++P2H6IyOhzx5KeRKcMKnpgjxA7Tp2xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780406748; c=relaxed/simple;
-	bh=20jx10Qu8sNXhZtuRF1brWTsMt8tcs1xwzSEzJdWcac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KKkuTXQF8NqyL7V1OkHlfTGvCYO8TNwzFS4TCeIVaQmxmtSp6QfLYjW9VSyhkE7MS7cfXJUsyh+6T/aGwaJ98+4HoIRNEJadKLPMs8WR9sVf4c1uzjKCxxZSivoy5Fvf9w2igpfEeGI73qBoeB1RqjD4CzKqg1gTAOITR9Yu8H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=S4D4mFDr; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780409092; c=relaxed/simple;
+	bh=UDuowQtCwyTwvVntr60YB7kyStQLajvYuYLxBG1pkeU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X1lwmaaNW1qjBjfI4ACP4FBEBNUvlaZSoa1a5o5xwLIAGV2mrYHrXxVSgsB/Wtcyl1hJO+AuFxg7QDf94FTQNue0n/hgIkH2QOJn+FLEkfK6K+3hNxCF04vEgJgY6gV7sAcsRVqMHNvMjnRtsK3C/QgUB/R6uPXkqu6kiIjjdBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=allelesecurity.com; spf=pass smtp.mailfrom=allelesecurity.com; dkim=pass (1024-bit key) header.d=allelesecurity.com header.i=@allelesecurity.com header.b=MKryWRoQ; arc=none smtp.client-ip=209.85.217.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=allelesecurity.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=allelesecurity.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="S4D4mFDr"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6524Zqfd1259298;
-	Tue, 2 Jun 2026 13:25:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=w8qDpKjFWjzyE3Z+3P3AumxwDBnmuL
-	FClF4s6OPO1Lg=; b=S4D4mFDrJ+YVkouLu1QaOcwlr97q412sHaGk9z2BZTfz8n
-	xvnoRSGxAhVdlU4NlUXFvgMgr1mw3zyhNRb5hBZuA4qzc/vHHsFBDXCjaDL8PDwF
-	fMlhGZA+kdxjDvsey5KGycUVDIGwknrJKtyyECDo9N4PGyK+HEBu4WtCUtRKMQZA
-	Yz3TVvKxvNVPFnCLcCZ58aQrdsTBsNJrCw6Oi5RyfhhlPq5AdSO2CCtkFLt18HFj
-	o3/6ykLfJ7pxtiVTRedwPLsZ32Mze0EIv0IrOIJ+dDKuVbzSAyMdHp/kqgCwDUsY
-	1BOBoWKQ9qjk67c+eCkrQrGrqW7QzKTymHUJViSQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqd465b0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 13:25:21 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 652DO9Yr012168;
-	Tue, 2 Jun 2026 13:25:20 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egbqhba68-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 13:25:20 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 652DPEgt49742098
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 2 Jun 2026 13:25:14 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8693D2004E;
-	Tue,  2 Jun 2026 13:25:13 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 599EF20043;
-	Tue,  2 Jun 2026 13:25:13 +0000 (GMT)
-Received: from localhost (unknown [9.111.42.7])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  2 Jun 2026 13:25:13 +0000 (GMT)
-Date: Tue, 2 Jun 2026 15:25:13 +0200
-From: Andreas Grapentin <gra@linux.ibm.com>
-To: Oliver Upton <oupton@kernel.org>
-Cc: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org,
-        kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v1 15/26] s390: Add functions to query arm guest time
-Message-ID: <ah7Ul7YwJOFuSMaD@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
-References: <20260529155601.2927240-1-seiden@linux.ibm.com>
- <20260529155601.2927240-16-seiden@linux.ibm.com>
- <ah4G847iT_pPRuQm@kernel.org>
+	dkim=pass (1024-bit key) header.d=allelesecurity.com header.i=@allelesecurity.com header.b="MKryWRoQ"
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-6c3099b11a9so1557799137.2
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 07:04:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=allelesecurity.com; s=google; t=1780409090; x=1781013890; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ujK4eFBt2CiUF6UNRnobhV7dIbSUH85qOD9fCMSIzOE=;
+        b=MKryWRoQrPvejhRd+oVhYqM2ZaXiJ8BzHyuqh7N1YYl5UPsCr94ckhKD9ZdOEHtEg8
+         /sQjpRm1YRRbjtnITGl3yqqFRjT9Ia0wOMI3N441Tr8OfV5Ot+c4lqXgV9PsjXnBKYfE
+         3rdGOaqBVh2IEz6+lakaVsPplcn9i0CYBMStw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780409090; x=1781013890;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ujK4eFBt2CiUF6UNRnobhV7dIbSUH85qOD9fCMSIzOE=;
+        b=AKwYe3p1mrrtiPOZZcGNIfmQA7Nx2r88N/HSJF8xDl6KErY9/IrlUNNZVpHTzQ4g/1
+         DrQ/qESUVKX03UmYZAI9AOzgqrcPSQl77RyKW3HMoc5SfoeQ5Pa3h8WPmzpC405NVTBI
+         /MMgEEV9XOLu/Yzd83gZespu+SltQPL10NTIwgvpM/6xJ1heHdmvrTLTCg2EfQqCaMXS
+         CYR2QQvciq+mcDYrxY++12YLYVTlqTAbqQVfKQXlElD/jDVowzeWeeC3Ppbb6obT7k3H
+         jx7A+YoNycfhtk+s7+D+HWzpc2fHSwdSJbTYklqP91g/fm6vnY8PuxOkt0F0LAgq7RwE
+         KZAw==
+X-Forwarded-Encrypted: i=1; AFNElJ8EgKifT8y4jaf8iRBJFVal/DpsLw7NPZt7xaFBNeAfAuEa3P6DhpSs866jS4HXc1VS0ag=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWjKdySscpqUaniBtK2q20o2upPInxWGHUJ6/B4BNNYDBhe6SC
+	EIgdq6ayuuRk2Lth0R5iIgJ5P5wjX3wDGb5ilWFzaqPbyuunMMeLH0Elzur0VTeH0M0=
+X-Gm-Gg: Acq92OGLZdcAU6Rt4F/bealJs7QUKPjoA8SJVim8cy4ifW9OoLisQ8FHf7P3thvIFwd
+	c0dVknHjfOiYd64BYda/PggR2k92yYxYST3kixxNV2BslnSlFGa7yUH3TyYSNRSSMzBmPXa8p+P
+	0v+kChyxxN7mB/IZ4FObmkeq5OOOfBqaK7OQ3JwSj4ci3UNOwtnw7UJf8s5rd9q+QLDJ+OHTOrs
+	wF60J5RVdfQIrNfASlIzAiiDLbKe+UJAXigPQ/m/8FWaPueNfc9oqr6kR4zEPAHEBTyezS+Cq7y
+	0hmdEFHEyuj2QNO5mmowKD7Y6Q3dCpqdFVEp6fc4zwJm9ZAzOmwB6UfWHas39hElQ7pn6iMlaQH
+	OI3DCY+U/fnt0o4cCzQCUkroPhJtY7poyS5M4GmCfa7IFkt7OOItaEnsrFzA34oXTWcxrglPhZy
+	CZyQMrKK3dVxj4LaOL1tlt2Ao54yjYSBgJe6wLJw==
+X-Received: by 2002:a05:6102:61d1:b0:634:420a:ab1b with SMTP id ada2fe7eead31-6c69b82c136mr3593702137.18.1780409090446;
+        Tue, 02 Jun 2026 07:04:50 -0700 (PDT)
+Received: from tarski ([179.105.152.38])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-6d1ff3909b3sm6097602137.6.2026.06.02.07.04.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 07:04:50 -0700 (PDT)
+From: Anderson Nascimento <anderson@allelesecurity.com>
+To: qemu-devel@nongnu.org,
+	kvm@vger.kernel.org,
+	pbonzini@redhat.com,
+	zhao1.liu@intel.com,
+	mtosatti@redhat.com
+Cc: Anderson Nascimento <anderson@allelesecurity.com>
+Subject: [PATCH v2 0/1] target/i386: Add support for KVM APERF/MPERF passthrough
+Date: Tue,  2 Jun 2026 11:03:46 -0300
+Message-ID: <20260602140348.774203-1-anderson@allelesecurity.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah4G847iT_pPRuQm@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDEyNiBTYWx0ZWRfX86Wu1ZkmOeKQ
- hYG8JWBI1P8fvdZHvYX/pHQiKCz9rM3lqGdXGG9paghq44fCz7yUQhjVqfYolMHIDwf+g98FKQC
- Aj3zl8tHOPDyDut2meXADMv9XEP8o0cHJV9sHqdlPN8V3e4+kniE0zovCBryZoE7+gfU+AuHBAZ
- JUSthv+czWchKhL9Jt88DWUW/BIVzCzQg40h0yVLJqGsIYVFvXAQDo3YvD38EgbQabOHiTWV/J6
- yVgiBQm0devrxebNiP+9lTedkSFR0o6kpVKp9GEzKtjkvV3fXu07ZOOdE3KHZERjeOAEAehGtr9
- 8kqSFIzLnfopiio7+QlyWXlCKBciORGj0yJyFKyV7AIJW77/zRLy33V2JCyhPCl3TqFT0YDNiCi
- xOMafpg3k3DxCiOnI47Ya2Gt/hTCEFH4IXSNZPjwubArahqtRcGIQrlGQzNFYz+bBNKXTSM9b3X
- MDWYNtr6RC1RzihzigA==
-X-Proofpoint-GUID: RQpxdw-KhYBz1s8-_4mzf7xnJNeZoSB_
-X-Proofpoint-ORIG-GUID: RQpxdw-KhYBz1s8-_4mzf7xnJNeZoSB_
-X-Authority-Analysis: v=2.4 cv=DZknbPtW c=1 sm=1 tr=0 ts=6a1ed9c1 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=iZEGHWcCgkw3lVQR3mYA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-02_02,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
- phishscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606020126
+Content-Transfer-Encoding: 8bit
 
-On Jun 01 26, Oliver Upton wrote:
-> > Add functions to convert between ARM guest time (LSB0) and s390 host
-> > time (MSB0) using new ptff function codes.
-> > 
-> > Co-developed-by: Nico Boehr <nrb@linux.ibm.com>
-> > Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
-> > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> > ---
-> >  arch/s390/include/asm/timex.h | 49 +++++++++++++++++++++++++++++++++++
-> >  arch/s390/kernel/time.c       |  1 +
-> >  arch/s390/kvm/arm64/arm.c     |  9 ++++++-
-> >  3 files changed, 58 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
-> > index 49447b40f038..9ec22a28bbda 100644
-> > --- a/arch/s390/include/asm/timex.h
-> > +++ b/arch/s390/include/asm/timex.h
-> > @@ -99,6 +99,8 @@ extern unsigned char ptff_function_mask[16];
-> >  #define PTFF_QSI	0x02	/* query steering information */
-> >  #define PTFF_QPT	0x03	/* query physical clock */
-> >  #define PTFF_QUI	0x04	/* query UTC information */
-> > +#define PTFF_QAGTO	0x10	/* query arm guest time offset */
-> > +#define PTFF_QAGPT	0x11	/* query arm guest physical time offset */
-> 
-> Are these analogous to CNTVOFF_EL2 and CNTPOFF_EL2?
+Hello,
 
-They are somewhat related -- we don't have the EL2 counter offset
-registers, but we still need to virtualize the guest counters, so
-instead we have to maintain the guest counter offset separately.
+I have implemented support for exposing and enabling APERF/MPERF
+MSR passthrough for x86 QEMU guests when running on KVM.
 
-However, to determine the correct guest counter offset, we are using
-these new PTFF function codes to translate between the s390 and arm64
-architected counter domains.
+As of last year, the Linux kernel supports providing a capability
+to disable APERF/MPERF read intercepts [1]. However, there is
+currently no native way in QEMU to instruct KVM to activate this
+capability or expose the feature bit cleanly via CPUID.
 
-Best,
-Andreas
+My patch introduces the `aperfmperf` feature flag via `FEAT_6_ECX`
+(CPUID.06H:ECX[bit 0]). It ties into the existing power management
+framework, so when a user enables power management via
+`-overcommit cpu-pm=on` and passes `+aperfmperf` to the CPU, QEMU
+requests KVM to drop the MSR intercepts.
+
+For testing, I passed the feature via Libvirt XML like so:
+
+    <qemu:arg value="-overcommit"/>
+    <qemu:arg value="cpu-pm=on"/>
+    <qemu:arg value="-cpu"/>
+    <qemu:arg value="host,+aperfmperf,+invtsc"/>
+
+A FreeBSD 16 guest is successfully able to read the changing
+values of the MSRs directly without exiting to the hypervisor:
+
+root@freebsd16development:/home/user # cpucontrol -i 6 /dev/cpuctl0
+cpuid level 0x6: 0x00000004 0x00000000 0x00000001 0x00000000
+root@freebsd16development:/home/user # cpucontrol -m 0xe7 /dev/cpuctl0
+MSR 0xe7: 0x00007fdf 0x22480f90
+root@freebsd16development:/home/user # cpucontrol -m 0xe7 /dev/cpuctl0
+MSR 0xe7: 0x00007fdf 0x2b8b48b0
+root@freebsd16development:/home/user # cpucontrol -m 0xe8 /dev/cpuctl0
+MSR 0xe8: 0x000050de 0x49270831
+root@freebsd16development:/home/user # cpucontrol -m 0xe8 /dev/cpuctl0
+MSR 0xe8: 0x000050de 0x4ad66ae6
+root@freebsd16development:/home/user #
+
+Based-on: QEMU v11.0.50 (commit 5611a9268d)
+
+v1 -> v2 changelog:
+  - Add migration flags
+
+Anderson Nascimento (1):
+  target/i386: Add support for KVM APERF/MPERF passthrough
+
+ target/i386/cpu.c     | 18 +++++++++++++++++-
+ target/i386/cpu.h     |  2 ++
+ target/i386/kvm/kvm.c |  5 ++++-
+ 3 files changed, 23 insertions(+), 2 deletions(-)
+
+-- 
+2.54.0
+
