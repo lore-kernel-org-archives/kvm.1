@@ -1,132 +1,119 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBF92857EE
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 14:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FF32857EE;
+	Tue,  2 Jun 2026 14:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780412113; cv=none; b=BtTN2FaCYlsqyj5vxtDaauy13JK5snqWthweDXtJrqRIuCTAxpdqEyBmjPOsU61r3zN3l3/8NiYrP20L4GdQc3iizmhCc6u97R9CrK+IcvvnWFMIpA2TtO1kKcLa+MvW7s5haOJjPfV0goPsid1XtyhJgvWEW4vJ6JqqVhgMVQc=
+	t=1780412160; cv=none; b=cE790TacfowXWnWvsgKPavOP2hn1k6HQHZOnXlnmiMr7V/hoU7dOO3hVl8xLDsQ+sUfM+ZFTL4pE24DnUd7ILmKTzcUJIe0LUO84TjIP69+k4BZoXst8+b5O64ufahYJP9+pkTKw/4HnPqFil4CSjIHti748JEUlK9znKBMdZWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780412113; c=relaxed/simple;
-	bh=8y8AtoffgThN0z87ShPqpxaGYDEItR/KXxFv0jwcHSY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tjo00zQab3SnbqVTfBxwJ5odnsnUK+an2Vl3wNDotN+1OTqJRmys+3/2xb027yYUsa9n2bGY4QfXC1KC9kb1/phtY7UiCub9YVtLfwYHlROTfLet05jkvkkGnlr9JfhMHENIf4/LtyIY3sye2ALzP7hZfPH4qHtU1NMnhwMPo+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kKpYXFv1; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780412160; c=relaxed/simple;
+	bh=PkdI0JiAXPNJF4eyUWeov3jAZRa6U5yJjYhGBmqge80=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=XKgEfHH/yfoEhsnZyJ998MOMSFK8bpsqjrrVGa4mH4rPS2Cdu6uIIuI/9NJw6m9Lucc3MZZySMkEZPPASvNKHYdffVQ5HN/hUgpo0Y0iUcZKrekJ2GuVIZCcT4N9ijCwqQ0Jk4mKlTAZ9ec0xEgUAIxzRGCFOxK8NBx4QomjjjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IId0LfOE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kKpYXFv1"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d97415004so5556319a91.2
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 07:55:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780412111; x=1781016911; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nzFEGMqD74OctjtVvpex5EvDiYSxFnm/wYYcilIDAmU=;
-        b=kKpYXFv1Cv8ZMvIFP/DTCNVdEGBSK1rsrHIULEZDTqwRQLIBJfx5FgDKdkvyNJthRG
-         dWUMq/3ITRg6PUA6GfqCyKvYfzN2Xt8UWO7CHl2bijvXKgczyHkgH3yAgE7pcrlB86t5
-         JxKJSf9Gejx9qGeGxsAu3ynBU3BSvwECyXOtPjLIPqOXfq49jUupsXOuOfZMIoR0KF3S
-         Y7F4FAw/2Pb/eZqBeVHGlYuYZWU2oHIn8lp+PTrOPy0/AJic8vGeQ4F1/d4s1s50zooc
-         29TdEdI0TikQ00joZjh8EPn0/OMsiOHo2nUwfO0ImDGePWe2KwebZz8I2IqIgJ/8o+s8
-         SfNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780412111; x=1781016911;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nzFEGMqD74OctjtVvpex5EvDiYSxFnm/wYYcilIDAmU=;
-        b=Wc3oUzQF93JUZxdE8NC3LVKwCkqk+2NaZJ7d88Z/9BSv7wENOY25cor6rikwPAUFVC
-         jaF7/cM1QM04ahkdzObvUck4W+PZzG4wgS2koHCCpAtFLD9aQq+Oztin4XYAxj61dKRN
-         FHwM6+g2NQ3Ws9z44Xiu1CinQmzwJsqyyYuVtRqaGOB2GbipXxO5TdwCNy/1bNe9qPEg
-         5g7tiHKexX2gQSJe+1axqFjhokrpHwMqTocaGjJq791x4oEZI0WoW5wLrJ8kcveFbWR8
-         d8EApDqvLnZ554zg9Wt39mdl5o2gW2pdx/Y2XZC7V4JruVO/eqyH5nAxE+iBU/8tth1e
-         ICoA==
-X-Gm-Message-State: AOJu0YxQiYlV9uvTFrNTAaGS6eGYoSE0fIuhWtXJ/KIXrLwEHtPA+ggs
-	dHs9Mnr0/OmGQ1IQ4O7XufaDkKxfOKP9H6sE53MhYcXwyvYuQ+voMmrDGYmyyw8VAY3YQeeqZan
-	bFwIp7A==
-X-Received: from pgv31.prod.google.com ([2002:a63:155f:0:b0:c82:72ae:396b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2f46:b0:36b:bb66:fbc3
- with SMTP id 98e67ed59e1d1-36c4ff25303mr14722349a91.4.1780412111170; Tue, 02
- Jun 2026 07:55:11 -0700 (PDT)
-Date: Tue, 2 Jun 2026 07:55:10 -0700
-In-Reply-To: <20260601133320.91479-2-clopez@suse.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IId0LfOE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F8C1F00893;
+	Tue,  2 Jun 2026 14:55:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780412159;
+	bh=VDA+NRjyg2pOPkTfV5N0gM0u4CbGPJwGhs+OI9Q4mko=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=IId0LfOEUqCao4GZZDoMDDVe08+8AEgWSxJXXgvWvPR1sRGcDj6VjmbF2xO/10ZZR
+	 RMM/Oq0a0V4L7U+GnmtJqSiWlDCZQgd1HHCf4oaEq+Rb6aYflOw3k6Qxw+L3imu3Kf
+	 qSaEvOngu9cb8094ju4QlB/189TN0Ey3algC9xZv8rYS7U7tGPJuIM82s0eeuw4ALt
+	 hnzgUOIJ19V5I0+VYCPekK8MQfbqmEI+GsCuPU7Hhb1gdmK/kprI6dHmvuNA4Pl4VO
+	 I3w6h78Rs8SC8eupIEEUtWLn2MYeisxw0/M7b8O/jqZSziR3ohmJuLuzTzf9brHcDl
+	 AdEPrjucq1WsQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v15 04/10] PCI/TPH: Refactor pcie_enable_tph & add
+ explicit requester variant
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Chengwen Feng" <fengchengwen@huawei.com>
+Cc: linux-pci@vger.kernel.org, kvm@vger.kernel.org
+In-Reply-To: <20260602144023.25254-5-fengchengwen@huawei.com>
+References: <20260602144023.25254-5-fengchengwen@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 02 Jun 2026 14:55:58 +0000
+Message-Id: <20260602145558.F3F8C1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260601133320.91479-2-clopez@suse.de>
-Message-ID: <ah7uzuAHyQh2GI7T@google.com>
-Subject: Re: [PATCH] KVM: x86: fix #GP check in em_dr_write()
-From: Sean Christopherson <seanjc@google.com>
-To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 01, 2026, Carlos L=C3=B3pez wrote:
-> The practical impact is limited, as check_dr_write() already checks DR6
-> and DR7 manually. However, it misses DR4/DR5, which alias DR6/DR7 when
-> CR4.DE=3D0.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-*sigh* (not at your patch, at the existing code)
+Pre-existing issues:
+- [High] Lockless modifications and TOCTOU races on TPH state and hardware =
+registers.
+--
 
-Which, after digging into *why* check_dr_write() checks DR6/DR7, highlights=
- that
-this fix is incomplete.  em_dr_write() can't rely on ->set_dr() for #GP che=
-cks,
-because unfortunately for us, the #GP check has priority over DR intercepts=
- on
-SVM, and over DR7.GD (General Detect) #DBs.
+commit 9289dcc78e41909614fcdefa75658ec5d86a7bbb
+Author: Chengwen Feng <fengchengwen@huawei.com>
 
-Of course, KVM only gets the intercepts right for DR6/7, and doesn't get th=
-e
-DR7.GD priority right for anything.  Not to mention that emulating a MOV DR=
- for
-L2 (the only time the intercept priority matters) is all kinds of unlikely.
+PCI/TPH: Refactor pcie_enable_tph & add explicit requester variant
 
-FWIW, VMX is more sane and prioritizes the intercept over everything except=
- a
-completely bogus DR (i.e. DR > 7), i.e. it's purely because of SVM that KVM=
- needs
-to split the checks in weird ways :-/
+This commit extracts the core logic of pcie_enable_tph() into a static
+helper that accepts an explicit requester type. It retains the original
+function as an auto-selecting wrapper and adds pcie_enable_tph_explicit()
+for VFIO TPH support.
 
-I'll send a v2 (series of 6, double-*sigh*), as there are some additional c=
-leanups
-that can be made.
+> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+> index b4ecc510033ab..bb60f83885bca 100644
+> --- a/drivers/pci/tph.c
+> +++ b/drivers/pci/tph.c
 
-> Fix this by treating any non-zero return from set_dr() as a reason to
-> inject #GP.
->=20
-> Fixes: 996ff5429e98 ("KVM: x86: move kvm_inject_gp up from kvm_set_dr to =
-callers")
-> Signed-off-by: Carlos L=C3=B3pez <clopez@suse.de>
-> ---
->  arch/x86/kvm/emulate.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index 585a8ceab220..de138ef92dc6 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
-> @@ -3299,7 +3299,7 @@ static int em_dr_write(struct x86_emulate_ctxt *ctx=
-t)
->  		val =3D ctxt->src.val & ~0U;
+[ ... ]
+
+> @@ -401,10 +385,11 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>  	if (!((1 << mode) & dev_modes))
+>  		return -EINVAL;
 > =20
->  	/* #UD condition is already handled. */
-> -	if (ctxt->ops->set_dr(ctxt, ctxt->modrm_reg, val) < 0)
-> +	if (ctxt->ops->set_dr(ctxt, ctxt->modrm_reg, val) !=3D 0)
->  		return emulate_gp(ctxt, 0);
+> -	pdev->tph_mode =3D mode;
+> +	if (req_type =3D=3D PCI_TPH_REQ_EXT_TPH && !pdev->tph_ext_requester)
+> +		return -EINVAL;
 > =20
->  	/* Disable writeback. */
->=20
-> base-commit: d1568b1332b6b3b36b222c2868fc102727c12a34
-> --=20
-> 2.51.0
->=20
+> -	pdev->tph_req_type =3D pdev->tph_ext_requester ? PCI_TPH_REQ_EXT_TPH :
+> -						       PCI_TPH_REQ_TPH_ONLY;
+> +	pdev->tph_mode =3D mode;
+> +	pdev->tph_req_type =3D req_type;
+> =20
+>  	/* Write them into TPH control register */
+>  	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CTRL, &reg);
+> @@ -413,7 +398,7 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>  	reg |=3D FIELD_PREP(PCI_TPH_CTRL_MODE_SEL_MASK, pdev->tph_mode);
+> =20
+>  	reg &=3D ~PCI_TPH_CTRL_REQ_EN_MASK;
+> -	reg |=3D FIELD_PREP(PCI_TPH_CTRL_REQ_EN_MASK, pdev->tph_req_type);
+> +	reg |=3D FIELD_PREP(PCI_TPH_CTRL_REQ_EN_MASK, req_type);
+> =20
+>  	pci_write_config_dword(pdev, pdev->tph_cap + PCI_TPH_CTRL, reg);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does this read-modify-write
+sequence on the shared PCI_TPH_CTRL hardware register require mutual exclus=
+ion?
+
+The TPH configuration functions, such as enable_tph(), perform read-modify-=
+write
+sequences on the shared PCI_TPH_CTRL register without locking. I see that
+other functions like pcie_tph_set_st_entry() (which invokes
+set_ctrl_reg_req_en()) can be called from IRQ affinity notifiers that execu=
+te
+concurrently on different CPUs via workqueues for different interrupt vecto=
+rs.
+
+If these read-modify-write sequences are interleaved, could it cause hardwa=
+re
+state corruption where one thread's enabling of TPH overwrites another's
+disabling? This might violate the PCIe specification that TPH must be disab=
+led
+while updating the ST table.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602144023.2525=
+4-1-fengchengwen@huawei.com?part=3D4
