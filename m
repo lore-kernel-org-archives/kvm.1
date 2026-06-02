@@ -1,146 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1731031987D
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 18:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6DC2F8E94
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 18:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780423719; cv=none; b=Wsrgm1+bMvETLSv89SknZa99DfrsmxGe5WXnuxJ9ih1qKhn3/lVMaOE8e3O9+W3FheaPGx16gYB6AUO5wAJqb6S3srlZQah+UFTzWIBhu12syfhK93eQULQAm4UcHAxpo9bJZNmg8uWv9RqAenq/FPnGNJdOUQc4toSbpgbB48M=
+	t=1780423781; cv=none; b=lrc+YEi77z5mEze48+Ooi6qM/rhCVDG6auWKtVcjjGmOogf/fdfb4SBk2p455pfcYYQc/tOu7wdGDW94VAVmY4hLchV4gacCBBX/EO6yUbdD54VIf2FIJmhTxGxTDGtjz/eB/r5tSidhuVYV2ZYXZr5exozG1QkuNvMze4z7hVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780423719; c=relaxed/simple;
-	bh=VQy3UBT7Tf3Zw/cRpJ3DHU3/f7dRerS2WWRusrtgB1w=;
+	s=arc-20240116; t=1780423781; c=relaxed/simple;
+	bh=hHLTYTzTE0H7fWNyKOUUi09aA0sG1evmMzkjn3rxuGs=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=aH1iQxNFsjQz5oZMbQGWloVf2mpHxRoM1ryeVso5kbrGbVVNTwuwqBKcUXwllf3+ct+DFZ0rZBpAwl5k+DZkCpkSy1wkemzrDm7UBY+W/5BL+URw+XWwhpQFFq/5CU7kQFSE8cIW5aZUy23QB0d7ETS0WbFtGLYjq4XKIKUFkTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CwoEEBCG; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=cIdiy1an+jYc5hlCppEHeGCXy7JGf6orwTHAzS6no46i8f+qeRjmnZ6mH41/ctGb5ik1BT+p/EuT/3Jrsvf1A3ARgBauAr6hXAutDIvB/uNFP9+61aEIYvBCYbLgQBZMdQOM063c1RwU+oJE1osalPuVY6uuXl6F6P1wJbgxt50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CnzWxyhV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CwoEEBCG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE091F00893;
-	Tue,  2 Jun 2026 18:08:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CnzWxyhV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B61E1F00898;
+	Tue,  2 Jun 2026 18:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780423717;
-	bh=OH70ZDAihi6ZQs1FF7cJAiK8KEoz070UfUMo283+1Fo=;
+	s=k20260515; t=1780423780;
+	bh=duhkFP2DclUq+4IOGM5KQBeZRzR03RgWZK5rKfCt3+8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CwoEEBCG79XCJZEyQsimBDidOrYxP1X7jiIKASb8flrcDgrXNZVH861iz2v2Pnc8g
-	 Hb04bizqXNTiks0B0fjaL+631rsF2x6IFfLoJ1ceMtLo2REGv3mjGYhJc6AeszoyOx
-	 lFDr4IKF+TXhXrAXyid87OdMeJUpg+LnK6r9OTyWV1KtRPB4t+f8br5Jh30QPfNg7U
-	 rNdbaJCB3aMI+xOkq231lt+rgTUMmYn7EwxPrAzVBr5tdnX40JOPRPREFdzqgKtW5a
-	 81oBktaGTpnsRbqN7UjOxKwjoIHFMdTCNAAWMb7Mtsf+V/Yl0zNN2EPQcbWoIasTVP
-	 TJ1YXDqIZAU+A==
+	b=CnzWxyhVe6NBAkYD5Lso1fgEZGt/n1mVo/GCA80POBJG1p+qBqGS9HMx8lOObRe5S
+	 uJBjKh0jiAYqCtAAD/l9hIOSq2Q12steAeLl8fK6cFsHrUK226KO6BHkBw280ERw21
+	 HhKTe2xoXlrGFBch9N7iyfAq9kZPH17QzS/G5W0wqaXWLdUXCzsAq5LFpDM9nR3Ngf
+	 30vWQ3KAIuop81+8MvnicoubbIV8w5elXS89782Vu5lSKntLOYgQIJTEFZDzR1yr+5
+	 w28K39JqKgrNEcENzISpb7Pgbpd8ZFx2QCzCg2+4zBYW2O9gtQVS8TBaENXz+IKVBO
+	 r1iQqKq5ZiTRA==
 From: sashiko-bot@kernel.org
-Subject: Re: [GIT PULL v1 07/10] KVM: s390: Lock pte when making page secure
+Subject: Re: [GIT PULL v1 03/10] KVM: s390: Avoid potentially sleeping while
+ atomic when zapping pages
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260602174819.255785-8-imbrenda@linux.ibm.com>
-References: <20260602174819.255785-8-imbrenda@linux.ibm.com>
+In-Reply-To: <20260602174819.255785-4-imbrenda@linux.ibm.com>
+References: <20260602174819.255785-4-imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 18:08:37 +0000
-Message-Id: <20260602180837.8EE091F00893@smtp.kernel.org>
+Date: Tue, 02 Jun 2026 18:09:39 +0000
+Message-Id: <20260602180940.6B61E1F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-New issues:
-- [High] Acquiring and releasing `mmap_lock` (an rw_semaphore) while execut=
-ing in an atomic context (holding `kvm->mmu_lock`) violates lockdep wait-ty=
-pes and triggers splats.
-
-Pre-existing issues:
-- [Critical] `pfn_folio()` is called blindly on a potentially raw PFN from =
-VM_PFNMAP, leading to an out-of-bounds dereference and kernel panic.
+- [Critical] The lockless page table walk in `try_get_locked_pte` is vulner=
+able to a Time-of-Check to Time-of-Use (TOCTOU) race when traversing page t=
+able directories, leading to wild pointer dereferences and kernel panics.
 --
 
-commit 83c652464cb64cf12a4f9414062b55776fc795bf
+commit 4a478ef198892a577c1dcca6c09a2986ca006e37
 Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-KVM: s390: Lock pte when making page secure
+KVM: s390: Avoid potentially sleeping while atomic when zapping pages
 
-Make sure _kvm_s390_pv_make_secure() takes the pte lock for the given
-address when attempting to make the page secure, blocking gup functions.
+This commit factors out try_get_locked_pte(), which behaves similarly to
+get_locked_pte(), but does not attempt to allocate missing tables and
+performs a spin_trylock() instead of blocking.
 
-> diff --git a/arch/s390/kvm/pv.c b/arch/s390/kvm/pv.c
-> index c2dafd812a3b2..4b865e75351c1 100644
-> --- a/arch/s390/kvm/pv.c
-> +++ b/arch/s390/kvm/pv.c
-
+> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+> index f8789ffcc05ca..396207163ca6c 100644
+> --- a/arch/s390/mm/gmap_helpers.c
+> +++ b/arch/s390/mm/gmap_helpers.c
 [ ... ]
-
-> @@ -103,9 +105,21 @@ static void _kvm_s390_pv_make_secure(struct guest_fa=
-ult *f)
->  {
->  	struct pv_make_secure *priv =3D f->priv;
->  	struct folio *folio;
-> +	spinlock_t *ptl;	/* pte lock from try_get_locked_pte() */
-> +	pte_t *ptep;
+> @@ -34,6 +34,70 @@ static void ptep_zap_softleaf_entry(struct mm_struct *=
+mm, softleaf_t entry)
+>  	swap_put_entries_direct(entry, 1);
+>  }
 > =20
->  	folio =3D pfn_folio(f->pfn);
+> +/**
+> + * try_get_locked_pte() - like get_locked_pte(), but atomic and with try=
+lock
+[ ... ]
+> +pte_t *try_get_locked_pte(struct mm_struct *mm, unsigned long vmaddr, sp=
+inlock_t **ptl)
+> +{
+> +	pmd_t *pmdp, pmd, pmdval;
+> +	pud_t *pudp, pud;
+> +	p4d_t *p4dp, p4d;
+> +	pgd_t *pgdp, pgd;
+> +	pte_t *ptep;
+> +
+> +	pgdp =3D pgd_offset(mm, vmaddr);
+> +	pgd =3D pgdp_get(pgdp);
+> +	if (pgd_none(pgd) || !pgd_present(pgd))
+> +		return NULL;
+> +	p4dp =3D p4d_offset(pgdp, vmaddr);
+> +	p4d =3D p4dp_get(p4dp);
+> +	if (p4d_none(p4d) || !p4d_present(p4d))
+> +		return NULL;
+> +	pudp =3D pud_offset(p4dp, vmaddr);
+> +	pud =3D pudp_get(pudp);
+> +	if (pud_none(pud) || pud_leaf(pud) || !pud_present(pud))
+> +		return NULL;
+> +	pmdp =3D pmd_offset(pudp, vmaddr);
 
 [Severity: Critical]
-This isn't a bug introduced by this patch, but is it safe to call
-pfn_folio() here without checking if f->page is valid first?
+Does this code introduce a Time-of-Check to Time-of-Use (TOCTOU) race?
 
-If the guest targets a raw device PFN (like a VM_PFNMAP from a VFIO
-pass-through device), f->page will be NULL and the PFN won't have a
-backing struct page.
+When executing try_get_locked_pte() under mmap_read_lock, concurrent page
+table zapping operations holding the VMA write lock (e.g., MADV_DONTNEED) c=
+an
+clear page table entries.
 
-Could calling pfn_folio() on such a PFN result in an out-of-bounds pointer,
-which would then cause a host kernel panic when passed to folio_trylock()
-just below?
+The standard offset macros (p4d_offset, pud_offset, pmd_offset) re-read the
+entry from memory. For instance, on s390, pmd_offset is defined as
+pmd_offset_lockless(pudp, *pudp, address), which dereferences pudp again.
 
->  	priv->rc =3D -EAGAIN;
-> +
-> +	if (!mmap_read_trylock(priv->kvm->mm))
-> +		return;
-> +
-> +	ptep =3D try_get_locked_pte(priv->kvm->mm, gfn_to_hva(priv->kvm, f->gfn=
-), &ptl);
-> +	if (IS_ERR_VALUE(ptep)) {
-> +		priv->rc =3D PTR_ERR(ptep);
-> +		goto out;
-> +	}
-> +
->  	if (folio_trylock(folio)) {
->  		priv->rc =3D __kvm_s390_pv_make_secure(f, folio);
->  		if (priv->rc =3D=3D -E2BIG || priv->rc =3D=3D -EBUSY) {
-> @@ -114,6 +128,11 @@ static void _kvm_s390_pv_make_secure(struct guest_fa=
-ult *f)
->  		}
->  		folio_unlock(folio);
->  	}
-> +
-> +	if (ptep)
-> +		pte_unmap_unlock(ptep, ptl);
-> +out:
-> +	mmap_read_unlock(priv->kvm->mm);
+If a concurrent zap clears the PUD between pudp_get and pmd_offset, the
+re-read *pudp will be empty. The offset macro will extract the origin addre=
+ss
+from the empty entry (evaluating to 0), and return an address based on
+physical address 0.
 
-[Severity: High]
-Can mmap_read_unlock() safely be called in this context?
+The subsequent pmdp_get_lockless(pmdp) reads garbage from the s390 lowcore.
+If this garbage resembles a valid PMD, it can lead to an out-of-bounds PFN
+extraction and a kernel panic during spin_trylock().
 
-_kvm_s390_pv_make_secure() acts as a callback triggered by gmap_link().
-When called from kvm_s390_faultin_gfn(), kvm->mmu_lock (an rwlock_t) is
-held in read mode, which disables preemption:
+Should this lockless walk use the _lockless offset variants
+(e.g., pmd_offset_lockless(pudp, pud, vmaddr)) to pass the already-validated
+local values instead?
 
-arch/s390/kvm/faultin.c:kvm_s390_faultin_gfn() {
-    ...
-    scoped_guard(read_lock, &kvm->mmu_lock) {
-        ...
-        rc =3D gmap_link(mc, kvm->arch.gmap, f, slot);
-    }
-}
-
-Because mmap_read_unlock() operates on an rw_semaphore, it might attempt
-to wake up waiting writers, which can sleep. Does calling this from a
-preemption-disabled atomic context trigger lockdep wait-type violations
-and BUG splats?
-
->  }
+> +	pmd =3D pmdp_get_lockless(pmdp);
+> +	if (pmd_none(pmd) || pmd_leaf(pmd) || !pmd_present(pmd))
+> +		return NULL;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602174819.2557=
-85-1-imbrenda@linux.ibm.com?part=3D7
+85-1-imbrenda@linux.ibm.com?part=3D3
