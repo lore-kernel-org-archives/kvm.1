@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238DD14B08A
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 02:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C0233B6E3
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 02:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780367214; cv=none; b=ihFdJbwS6vfkVaUGd1HxeOA65/uqnSJlt2a2uv0JBodTL8J2J1ItxB/5gCklsW0iERshSKgrjc5hoUHVZRiCM1hJA7xM1YguIki4f5kmpMHY17UdndHRbS/ZF+hRfALTojgJrjik+BdjVpA8oxmRgyhCE4l2x7p5x2Ew0j6+Z1k=
+	t=1780367879; cv=none; b=kV7vuNPlvBnr3/XbAoBGF6jKvWW5C+DhsE27lcbSmWFlWkOxgIov7BYrvBG7V1yYAfAgI6erHJVJh+UPWwOQ6F+yOQjjDTQAVYnh4GV4iPFV0nn7bX+1/JRxFrraTuVszQOivTIT1x1XLmQKC5N0add2efOkKkVoo+sA1Z4M+/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780367214; c=relaxed/simple;
-	bh=cbaS8XGOxcWOC5J26p5mqsH3nd+/CLWTrWq511fi1YA=;
+	s=arc-20240116; t=1780367879; c=relaxed/simple;
+	bh=VzYfQQk3Ajz1Y2HYxSAsojOldOqYaM8ZPPjo28zlYsg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=eYX/PXAo71BXaqHpPMEqGL4ltx5ysiUZMY1tTZDl0rwlDWEp+LJ/N/sZVEpEBf22ApZjbBzPJFv6nr13cs8sJKkzDQY3FXj3xKr6GLQNJFiJeXMOek/iaeyqQZ8TDzkJ0A9mIYmebe0+kKLBgqfL85LFYEPlAtmViG4u2DniFT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGtYabC6; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ReP8sFUKW8T+nDkJsV3IGiJ6DKuVtMg1/AoOh0p1uXx2FlgOQIU2Iuystq2O923mF30nuaU4zI+NHPBkkspCTe3KVRvhQg91fnY0XF6WYXydFbjWZJ2fY76wSR/zRN7e562A+wrrh+vzf+h/FPztEhp4xavJexD53A28ZatPBD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOHJW3mn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGtYabC6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DBF1F00893;
-	Tue,  2 Jun 2026 02:26:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOHJW3mn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8520A1F00893;
+	Tue,  2 Jun 2026 02:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780367212;
-	bh=v2detW87c43lAX5u4lHEK53rrEXzUc03NTPSTGV1cyU=;
+	s=k20260515; t=1780367877;
+	bh=xwBjStryVMTs+s1TbJRrvKUDdvsCYWcPA/GYJ6qBLts=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UGtYabC6ymPylV1LvbjIpF0xQ5MCkyXJBDS533hs5fPilvWLjHLJxDZPZnaD03QKK
-	 cPDgeEMXQq/zRRw5whPn0BkO+629KRLris44cUAfevGQt/10Rx2KPkJLwJ+pygC7i9
-	 5gvHDQ4SnWOW8CcqFoiI2GVrQ52REEORUPrH8+uNI0ze5F2HxqDCvYnYUxsvlsmYu3
-	 t8td8LglixRd3/HFTi6hbgctnsi3qkbaTeIq8aJEVvkv3oacM3XQjhEjQfuPghb/ep
-	 jIwp2hBmndksqgnpCWAvBTM+g31Iv03hiJrFM8ZwQgF8auUHc/CU6H6FpuGCYdy+Ln
-	 U2gBTLxqwUV7A==
+	b=HOHJW3mn1lLZlDPrgC3xTiRT1EJExroA6ahOcgN9RVCTtL7qks7z1Nt6L3ju5FlN4
+	 fMYlWuw4Xx5ARNFDEmAlF5i6prkWVTWRI8/YTV5C3cLqUSKk9qcZCLiR+FnCa/uxxH
+	 anBg5EE7TGmaaGHtPiMpACHC+3b/uuR17ZyXgdWxJWau7M1TflqZJi9Q0THmhCCQxp
+	 6mZaJVCP618B2dm8PB8OOoNKhy6nF+/l6h/L9fiYE0jw4730GaNiciDyAV23eyVADM
+	 ghZOc3oUHp0EraMGOVPYDF09UjEJh9jA82UTka3poDxB5D1dGIvtwFWFbiMTC3O3dS
+	 iuoJYSJnZjaAg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/4] LoongArch: KVM: Preserve auto-enabled PV
- features on userspace override
+Subject: Re: [PATCH v3 2/4] LoongArch: KVM: Add PV TLB flush support via
+ steal-time shared memory
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tao Cui" <cui.tao@linux.dev>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260602021819.2373404-2-cui.tao@linux.dev>
-References: <20260602021819.2373404-2-cui.tao@linux.dev>
+In-Reply-To: <20260602021819.2373404-3-cui.tao@linux.dev>
+References: <20260602021819.2373404-3-cui.tao@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 02:26:52 +0000
-Message-Id: <20260602022652.B2DBF1F00893@smtp.kernel.org>
+Date: Tue, 02 Jun 2026 02:37:57 +0000
+Message-Id: <20260602023757.8520A1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,49 +46,58 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The patch unconditionally forces auto-enabled PV features ON, prev=
-enting userspace from disabling them, which breaks VM capability negotiatio=
-n and live migration.
+- [Critical] The KVM_FEATURE_PV_TLB_FLUSH feature is forcefully enabled by =
+default via `pv_auto_features`, bypassing capability negotiation and breaki=
+ng backward live migration.
 --
 
-commit 2e3dfd10f9606ff82713655e6b87be567a31ec59
+commit 36054232bc9801e8c8c49df0b88a0802cdab7a98
 Author: Tao Cui <cuitao@kylinos.cn>
 
-LoongArch: KVM: Preserve auto-enabled PV features on userspace override
+LoongArch: KVM: Add PV TLB flush support via steal-time shared memory
 
-This commit adds a pv_auto_features field to struct kvm_arch to save the
-kernel-default PV features. It then alters kvm_loongarch_cpucfg_set_attr()
-to automatically OR these saved features back into the user-provided feature
-mask during KVM_SET_DEVICE_ATTR.
+This commit implements a paravirtualized TLB flush for LoongArch KVM guests
+using the steal-time shared memory page. It uses the preempted byte to allow
+guests to request a remote TLB flush without sending an IPI when the target
+vCPU is preempted.
 
-> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index e28084c49e682..47a59ce9e5616 100644
-> --- a/arch/loongarch/kvm/vcpu.c
-> +++ b/arch/loongarch/kvm/vcpu.c
-> @@ -1165,6 +1165,13 @@ static int kvm_loongarch_cpucfg_set_attr(struct kv=
-m_vcpu *vcpu,
->  		if (val & ~valid)
->  			return -EINVAL;
-> =20
-> +		/*
-> +		 * Auto-enabled features (e.g. PV TLB flush) that userspace
-> +		 * is not aware of are preserved so that no QEMU changes are
-> +		 * needed for pure kernel-internal optimisations.
-> +		 */
-> +		val =3D (val | kvm->arch.pv_auto_features) & valid;
+> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
+> index 8af874e0b36b2..4be70e4f1279f 100644
+> --- a/arch/loongarch/kvm/vm.c
+> +++ b/arch/loongarch/kvm/vm.c
+[ ... ]
+> @@ -54,8 +54,10 @@ static void kvm_vm_init_features(struct kvm *kvm)
+>  	if (kvm_pvtime_supported()) {
+>  		kvm->arch.pv_features |=3D BIT(KVM_FEATURE_PREEMPT);
+>  		kvm->arch.pv_features |=3D BIT(KVM_FEATURE_STEAL_TIME);
+> +		kvm->arch.pv_features |=3D BIT(KVM_FEATURE_PV_TLB_FLUSH);
+>  		kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_FEAT_PV_PREEMPT);
+>  		kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_FEAT_PV_STEALTIME);
+> +		kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_FEAT_PV_TLB_FLUSH);
+>  	}
+>  	kvm->arch.pv_auto_features =3D kvm->arch.pv_features;
+>  }
 
-[Severity: High]
-Does unconditionally forcing auto-enabled PV features on prevent userspace
-from disabling them?
+[Severity: Critical]
+Does unconditionally adding KVM_FEATURE_PV_TLB_FLUSH to pv_features here
+force the feature on by default, breaking capability negotiation?
 
-If a VMM configures a VM for migration to an older host that lacks features
-like KVM_FEATURE_STEAL_TIME, it will clear the corresponding bits in the
-feature mask.
+Because kvm_vm_init_features() assigns pv_features to pv_auto_features, the
+new PV TLB flush feature is included in the auto-enabled set. Looking at
+kvm_loongarch_cpucfg_set_attr() in arch/loongarch/kvm/vcpu.c, it forces
+auto-enabled features on:
 
-By forcing these features back on even when userspace explicitly omitted
-them, could this cause the guest to observe a feature set unsupported on
-the migration destination, resulting in migration failures?
+    val =3D (val | kvm->arch.pv_auto_features) & valid;
+
+Will this cause the source kernel to override userspace if the vmm explicit=
+ly
+requests the feature to be disabled to maintain live-migration compatibility
+with older hosts?
+
+If the guest discovers and uses the feature, but migrates to an older host
+that either ignores the requests or rejects the unknown feature flag, could
+this result in silent memory corruption or migration failure?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602021819.2373=
-404-1-cui.tao@linux.dev?part=3D1
+404-1-cui.tao@linux.dev?part=3D2
