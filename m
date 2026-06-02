@@ -1,132 +1,180 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A9A3EDE59
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 14:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9381E32142B;
+	Tue,  2 Jun 2026 14:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780411448; cv=none; b=Z9NH4l0BylOINn4iL8yCctRqin43nnWVkv9alMv8jPUx30yL3RjKiwJUqZ3+mpOTb9B8ymGAOFI+ccrAkrLDaBBqtZxNL0qxA6DWwg9YhfjAgyxcqBxR5G2brbj5NVQmYparUpTUf2BI2BUVXbmXsrOueB36Evtdq7JI4i3m3Tw=
+	t=1780411578; cv=none; b=tRj/yeLp68wWWWsdiLiS3IjOPmNxQbDZ6AMJvKzvCzooCMiU/TJykIAi4PJZb6Q0seQSkocFc2WiSLMv3W10OzD+JRxfa9hnZNB77CC2yH3aJvVVLz9z8+J2vnLt5xa32Hre8ystj9JoveXiUxD588fywKKm2Z/PuTf6zLC4MNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780411448; c=relaxed/simple;
-	bh=f60BbpfOIzR1+OPJ/IDiTUmCk2Qvjg2fiiLflB20l6Q=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cFQ8aSPnohDsZNgOj112dsncZ5We8uW6kK6ZGrSDXRWtitSVfTk2I08NGNNi2kwJXAcY1vWJdYULGFt+wbRjgzELw+kDT4ExNimRzduV/ZIYwhYRRSTXEubRObtRlrvSGg8G+26kKcfmZ2CLfuzkitLx3fP6WfGvzMj07BYrJB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SpwKga3o; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780411578; c=relaxed/simple;
+	bh=yPuT24pTgM930tMGXEijNuqym7rFhbCeTahhG0J3W2w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=sE3+/n7I/olhCfAyj2EplBG5xOYmcar//aPV9kRtprQ0QJGeo3q+vBgk3HrC3ydVi2CHXpou18ocpx9g7E//s+4zJWC0C8G0MfqQG5GHwDzMAHLJ3Uo5iyZi3hO5F27Amm4QPJJSFaE3ieHqMQgiSGnAckUtQuvFl0Wt+by6OXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=lXD4NyzL; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SpwKga3o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0981F00893;
-	Tue,  2 Jun 2026 14:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780411447;
-	bh=/Q/BHeQKo50/HLyef9f9x5JAfftABw7ODmbS8+rnxpA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SpwKga3oihOlx5nVAtyOQaW3EItD7NBfrKR+76VZR/f29Sd3MSco1UB3xNFO4HmX1
-	 8DZMT3fJtxVGtmFpjD1SGPabQDW5i2pdrxdtqZxbDxDR1/5AOkZpTMq+GuTWKDd2YB
-	 lCBiXTsrbGHtsD0G5geLRrRZtLD9lVgPQ1S3Pb8Vrn/xfLWfOpyoaxFUHIvPJ/TaeO
-	 T6dfU6fv94MzkGycLrIIK6cxR2PJDK8vA0hq6rDrocHjFC8ZKclwLxC0N7FtibT9at
-	 CjL9n9u4fxh/5OFe+WMcCOREjlhw4E3VDL1liS2peLFkT2J4uvs89MWZgiB+MesB/b
-	 lL4E2APkZTJxQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 07/10] KVM: s390: Lock pte when making page secure
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260602142356.169458-8-imbrenda@linux.ibm.com>
-References: <20260602142356.169458-8-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 14:44:06 +0000
-Message-Id: <20260602144406.CD0981F00893@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="lXD4NyzL"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=MHGoKu5qPFdFfnQIPDL214r7TSVR6hhJbEEg2apeXzM=;
+	b=lXD4NyzLDFEsnNv8BqMFLxQA88zPfZoQqZQZG8FCDQ3eTbe66K6LzHXm/TxUzLZwLxPEqycl7
+	/zUipaKIK8MLjFdFHdyd0ZbbwRyS+OSXCEIuqVJpaLCuC4gThZgirRfMvW4cf26oOqH6jc5w/cx
+	0ppMtogARHzwfhuP4TEtPEA=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gVD333JtfzmV7c;
+	Tue,  2 Jun 2026 22:38:23 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2A2D040565;
+	Tue,  2 Jun 2026 22:46:14 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 2 Jun 2026 22:46:13 +0800
+Message-ID: <59c82855-59a7-4f0e-b534-d35535d04b93@huawei.com>
+Date: Tue, 2 Jun 2026 22:46:13 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 0/8] vfio/pci: Add PCIe TPH support
+To: Alex Williamson <alex@shazbot.org>
+CC: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
+	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>
+References: <20260528124649.14732-1-fengchengwen@huawei.com>
+ <20260601095840.3aaaa508@shazbot.org>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <20260601095840.3aaaa508@shazbot.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Hi Alex,
 
-New issues:
-- [High] If try_get_locked_pte returns NULL for a THP, the host PTE lock is=
- bypassed. A concurrent split of the THP allows freezing the folio without =
-the PTE lock, reintroducing the GUP race the patch intended to fix.
+On 6/1/2026 11:58 PM, Alex Williamson wrote:
+> On Thu, 28 May 2026 20:46:41 +0800
+> Chengwen Feng <fengchengwen@huawei.com> wrote:
+> 
+>> This patchset enables userspace control over PCIe TPH steering tags,
+>> motivated by the following considerations:
+>>
+>> 1. Why userspace needs the capability to control steering tags:
+>>    When PCIe devices are fully owned by userspace workloads such as DPDK
+>>    and SPDK, only userspace has full knowledge of core binding policies
+>>    and traffic distribution strategies. Without this series, userspace
+>>    cannot enable TPH or configure steering tags, leaving built-in PCIe
+>>    performance optimizations unused in high-throughput polling I/O
+>>    scenarios.
+>>
+>> 2. Why this interface must be implemented in VFIO:
+>>    VFIO is the standard, secure community solution for granting full
+>>    PCIe device ownership to userspace. Existing kernel TPH interfaces
+>>    are designed purely for in-kernel drivers. For user-owned devices,
+>>    VFIO provides the only isolated and correct path to expose per-device
+>>    TPH management.
+>>
+>> TPH supports both IV and DS modes. Since both modes could introduces
+>> cross-VM isolation risks such as untrusted guests programming arbitrary
+>> steering tags to impact other domains:
+>> 1. If ST location in MSI-X table, untrusted guests may program the
+>>    MSI-X table.
+>> 2. If ST don't locate in MSI-X or CAP, untrusted guests may program the
+>>    device-specific register.
+>> So a new module parameter `enable_unsafe_tph` is added. It defaults to
+>> off, and blocks all unsafe TPH operations when disabled.
+>>
+>> Based on earlier RFC work by Wathsala Vithanage
+>>
+>> ---
+>> v14:
+>> - Return PCI_TPH_LOC_NONE when !CONFIG_PCIE_TPH accord Alex's comment
+>> - Fix Sashiko comments:
+>>   - Clear ST shadow state across user session
+>>   - Fix out-of-bounds byte masking in vfio_pci_tph_config_read
+>> v13:
+>> - Fix Alex's comments:
+>>   - Add virtualize of TPH request type
+>>   - Adopt two feature
+> 
+> 
+>  - Patch 2/ sets tph_cap to zero if TPH cannot be enabled, but this is
+>    never propagated to vfio-pci to drop the TPH capability from the
+>    capability chain.
+> 
+>  - Patch 3/ exposing the enum to callers is a bit ugly, maybe we should
+>    retain pci_enable_tph() as the "auto" wrapper, resulting in no
+>    change to existing users, and add _ext and _std wrappers.
+> 
+>  - Patch 4/ same, multiple wrappers keeps the "auto" api cleaner.  Also
+>    note that auto is broken before TPH is enabled when tph_req_type is
+>    zero.
+> 
+>  - Patch 6/:
+>    - mutex_init/destroy belong in vfio_pci_core_init_dev/release_dev()
+>    - Re-order to avoid forward declarations.
+>    - vfio_check_feature() does not require declaring PROBE as a
+>      supported op.
+>    - pcie_tph_set_st_entry() can write to MMIO space without testing
+>      for or enabling device memory or power state.
+>    - tph_init allocates shadow table regardless of opt-in for tph
+>      support.
+>    - Redundant tests for count/index in feature function.
+>    - Duplicate memcpy/kfree in feature function.
+> 
+>  - Patch 7/:
+>    - Unclear why it's vfio-pci's responsibility to provide this
+>      translation interface.
+>    - PROBE is unnecessary for vfio_check_feature().
+>    - Array size conversion is strange.
+> 
+>  - Patch 8/:
+>    - default config read handles emulated bits.  Clear the bit if
+>      necessary in vconfig, use p_setd() to mark PCI_TPH_CAP_EXT_TPH
+>      virtualized, read-only.
+>    - Follow examples like vfio_pm_config_write, vfio_vpd_config_write,
+>      vfio_exp_config_write, etc.  Set the virtualized and writable
+>      bits, perform default config write, evaluate if anything was
+>      enabled, effect the change in hardware via kernel APIs.
+>    - pcie_disable_tph() happens after the restore state is recorded.
+>    - TPH capability becomes read/write, an ABI change to the user, with
+>      only a host-based opt-in.  Seems like the userspace driver also
+>      needs to opt-in to the ABI change.
+>    - Memory enable not assured for pcie_tph_set_st_entry().
+>    - Sashiko notes there are existing hazards in the tph_enabled
+>      storage unit relative to multiple bitfields that can be updated
+>      concurrently.  The problem is worse with this exposed through
+>      vfio-pci.
 
-Pre-existing issues:
-- [High] Host kernel panic when a PV guest attempts to secure memory backed=
- by raw PFNs (e.g., PFNMAP/VFIO without a struct page).
---
+Thanks for review, all your comments are resolved in v15:
 
-commit aa4d37eba4327b04312028eb0cda26ab49b2e88f
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+- Patch2: Hide TPH capability in vfio ext cap chain when TPH unsupported
+  via vfio_ext_cap_len returning zero.
+- Patch3/4: Preserve original pcie_enable_tph() auto API intact, add
+  _explicit helper for vfio; fix auto enable corner case with zero req_type.
+- Patch6: relocate tph init/destroy to core init/release dev, remove redundant
+  PROBE, range check, duplicate kfree; add power check for set_st_entry; shadow
+  allocated only with host opt-in + hw TPH present.
+- Patch7: drop redundant translation helper, unused PROBE, weird array size
+  conversion.
+- Patch8: emulate EXT_TPH bit via vconfig + p_setd readonly; follow standard
+  vfio config write flow(vconfig first then hw sync); reorder disable_tph after
+  save_state; new TPH ABI gated solely by host-side enable_unsafe_tph; add
+  pre-write device state check.
 
-KVM: s390: Lock pte when making page secure
+v15 posted for further review.
 
-This commit attempts to fix a race with GUP when freezing folios during the
-secure page import process by temporarily locking the PTE.
+Thanks
 
-> diff --git a/arch/s390/kvm/pv.c b/arch/s390/kvm/pv.c
-> index c2dafd812a3b2..4b865e75351c1 100644
-> --- a/arch/s390/kvm/pv.c
-> +++ b/arch/s390/kvm/pv.c
+> 
+> Thanks,
+> Alex
 
-[ ... ]
-
-> @@ -103,9 +105,21 @@ static void _kvm_s390_pv_make_secure(struct guest_fa=
-ult *f)
->  {
->  	struct pv_make_secure *priv =3D f->priv;
->  	struct folio *folio;
-> +	spinlock_t *ptl;	/* pte lock from try_get_locked_pte() */
-> +	pte_t *ptep;
-> =20
->  	folio =3D pfn_folio(f->pfn);
-
-[Severity: High]
-This is a pre-existing issue, but can this cause a host kernel panic if the
-guest attempts to secure memory backed by raw PFNs (e.g., PFNMAP/VFIO)
-that lack a struct page?
-
-If kvm_s390_faultin_gfn() resolves the GFN to a raw PFN but leaves
-f->page =3D NULL, blindly converting it via pfn_folio() accesses memory
-outside the bounds of the vmemmap array, returning a garbage pointer.
-
-Later in __kvm_s390_pv_make_secure(), the code does:
-
-    if (!f->page)
-        folio_get(folio);
-
-Would this try to increment the reference count of that garbage pointer?
-
->  	priv->rc =3D -EAGAIN;
-> +
-> +	if (!mmap_read_trylock(priv->kvm->mm))
-> +		return;
-> +
-> +	ptep =3D try_get_locked_pte(priv->kvm->mm, gfn_to_hva(priv->kvm, f->gfn=
-), &ptl);
-> +	if (IS_ERR_VALUE(ptep)) {
-
-[Severity: High]
-Since try_get_locked_pte() returns NULL for large PMDs (THPs) or unmapped
-entries, and IS_ERR_VALUE(NULL) evaluates to false, does this proceed
-with ptep =3D=3D NULL and no PTE lock?
-
-If the memory is a THP and a concurrent operation triggers a THP split
-immediately after try_get_locked_pte() returns NULL, the THP becomes
-order-0 folios. The KVM thread then successfully locks the newly-split
-order-0 folio and freezes it since it bypassed the PTE lock entirely.
-
-Could a concurrent slow GUP on the same address then acquire the PTE lock,
-read the PTE, and call try_grab_folio(), triggering a WARN_ON_ONCE because
-the folio refcount is 0?
-
-> +		priv->rc =3D PTR_ERR(ptep);
-> +		goto out;
-> +	}
-> +
->  	if (folio_trylock(folio)) {
->  		priv->rc =3D __kvm_s390_pv_make_secure(f, folio);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602142356.1694=
-58-1-imbrenda@linux.ibm.com?part=3D7
