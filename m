@@ -1,146 +1,318 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CD53ED3D8;
-	Tue,  2 Jun 2026 14:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4013EC2E1
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 14:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780410249; cv=none; b=OGUr2mTq6w9uEjnjhgVi8oGf44A1S7aIFAwgYKC+VqIQ2HUfAH2MCDCwl6wPnJ7qwUuklA8XBpV87ndsnt1nT+GWjcBvKMmlKF/vOiP+iaTRK3Ci/CbYSjjcmDC0wF0L17GO7gckNor9M5Cly6YeBce7Mbyjgj1ebksZZSgM8eY=
+	t=1780410271; cv=none; b=bPSyv/mosQ7noxHbyIigfBxPZDA7D0Mqr10FEWmXsmKHgSQjfSglSUSXFQbIVPCcltj6iMS1DpNelcQ1IDQbhBUqEiM9OAn74QLSNhVtqJCyIi70VwStVd2fJ37UBJ/GrCsXYQ7GjEndJgqXcxPD4NCmiS3nBpNZ+zWkIpYezH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780410249; c=relaxed/simple;
-	bh=eh8QShNn5lZ5kvXd+kW/b+EZYzJK91vldTMc69dJ9IU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJFnZ9rDwqL4M7DRgosDXgLrR1qMRIMVXvOfqnC6ypFVU/ix30v0PpKcyNkfw/toHJ4fWHTKGm85nrb+x5o/iGabVKeiCeZvOQoAo49ougqMICJ5ORXQxw2vxgXPS/dIw82yQL/sPiM/ABhaqbbA26467W9f/s3FGhzS4L8BsMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=doCG4nV9; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780410271; c=relaxed/simple;
+	bh=yHWawHcRNy+Mlf/3GbgmyH5P0mKzD9qwHAo72JxYNeY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GPExll0iOJBROoS4iDDT32nyTaekj+ElWol0FDkCYmoCClsdlyISqARf6qvEx9vY6HxipNLmcvyxovx8v/C5oJpSEgDenDRvpjdXzHUu5puMMt1q17MiWuPT4/Mmtlo5qovogWhIe74Cep+0tqnhBQ+fJ6R9KogT7AKNTg7uU1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YIJDNbCS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PFyl721d; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="doCG4nV9"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 652A4XjX510186;
-	Tue, 2 Jun 2026 14:24:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=cT/QDVl5i3sXiVxnn
-	EqfsOzk+Ou4rRD8/+N7jayV5wA=; b=doCG4nV9Fa8ClgCILW1zeIFOiTbHmdgKW
-	+OvsRVJ+kuay5NJXTcmxqWTggOWSTmsDRaqrOLJ5sLb5zOBwV+C/mENp1hTB5j7f
-	tLxAsStydELmkk1q2pUsOp2aIQ74JVDPs5vWYxTQ4/2hCJh06Z6m/Wp/R5jbjvUR
-	k0PN2ywKEH9IVZCfT00BbHl+4cdGJ26bw18iJQIe8NOmQpk7O88Wp57oqtzqDGdG
-	2Dy3ugAhYn1n/lTHtRM5FP/oGYCRLDWPuRkKqE6GAzqsqdKygNmjuoRewwJoCPrN
-	CFB9HJZ4sUQ8Oj2td9tCg9vS4YDPfcAQuCYAotg52KEZ2bydawQag==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efpae5yyd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 14:24:05 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 652DO8AL007309;
-	Tue, 2 Jun 2026 14:24:04 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egb7k3mq1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 14:24:04 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 652ENwIG36962790
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 2 Jun 2026 14:23:58 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9E59820040;
-	Tue,  2 Jun 2026 14:23:58 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 75EFF2004B;
-	Tue,  2 Jun 2026 14:23:58 +0000 (GMT)
-Received: from p-imbrenda.aag-de.ibm.com (unknown [9.52.223.175])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  2 Jun 2026 14:23:58 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
-Subject: [PATCH v3 09/10] KVM: s390: Fix possible reference leak in fault-in code
-Date: Tue,  2 Jun 2026 16:23:55 +0200
-Message-ID: <20260602142356.169458-10-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260602142356.169458-1-imbrenda@linux.ibm.com>
-References: <20260602142356.169458-1-imbrenda@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YIJDNbCS";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PFyl721d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780410269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K6qeqqoJSoBMzW4sniDDXZPSZAPEaf893MDZNg+z0GY=;
+	b=YIJDNbCS1YxcCNfyMIqlHIDY+2S8nRNaCVEtFJ+gO9TDU3wiYuWAv4h/qkGQ63w7AfVFea
+	Mu3jqbMQ+vbQXPVL8XUlnnB+QgmgtHb/cMNciRVWdEv5PRVhbO+GnO1qDEM4hj5aBZM/Pl
+	Ifk+3GDdlAMue6RBiw9KjPIMOBL3xiA=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-467-LxYZWs48OFi9b5OxWUx6MA-1; Tue, 02 Jun 2026 10:24:26 -0400
+X-MC-Unique: LxYZWs48OFi9b5OxWUx6MA-1
+X-Mimecast-MFC-AGG-ID: LxYZWs48OFi9b5OxWUx6MA_1780410266
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-517480bde1cso55214811cf.3
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 07:24:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1780410266; x=1781015066; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=K6qeqqoJSoBMzW4sniDDXZPSZAPEaf893MDZNg+z0GY=;
+        b=PFyl721d+XHUMKcyZIUPIQuMt0wJc/KqKSYz7tqUokp4a4J4HKN0Fs+oPd5YWf58V5
+         m7dq4Y/v0iEeL493/G3OAyBHrJ8brjMabHIAu/j0veurV/mxFvDMkxV7AjC2vpRpFZ9A
+         MP1FcwrLPM1nQ9JBwhK93DQd/G5B5mzE1CVG/o4CIKahcFc6xYu8Q5IjKfy830mJvM6n
+         gX/+Y25oWUawrlyFDRJYkCP4B9zWzMPW7LAvkGYCJixZ/Oyy4D9CrDM30by4NGDVGHt7
+         8gbltB77zb8ZlBNVwFCJyjm0f3T8w43ENVKh+u9nrQAe7fYG3ldO1ENDeEDdT7KT7HLY
+         ePwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780410266; x=1781015066;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K6qeqqoJSoBMzW4sniDDXZPSZAPEaf893MDZNg+z0GY=;
+        b=FHRkLfj7npA34A4yHo1mnB7EINTpqhpj6bpgpjEUh2U4TBfYjz/ksTiW6BTsElWFgW
+         0EiEJurzVK9TVTUFHTM0p3sDb0l4WO+5vM8B8uSw8jsLac4pRuToO0/dfATC8nnoGDGK
+         DMdp904L5zYFF/ofHX/EsITcOcA6QjkdbiRjITUvZeQVNrWvW5osccsRcO5Wj+HB5atP
+         WQArIhjWNbLNBSFfxryCje21G7S5MKtraytCvY70lq2nqQwg/wGX6NAjGEGj1Bi5nkyD
+         FC/+zw59YRXFafAnGP/V8wNLyMebiG/s2hjY/6abNkzWgp+Cex2SF1XGaM06AmTMZY+8
+         dIAw==
+X-Forwarded-Encrypted: i=1; AFNElJ8mZLIXGlFhuXc2CY4+AkihI0AnfJurT6hCaw+B+4AhAntWO/7sYC1HBX6UrNuHADvLMvk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywi2G9cn6AO3Fzg3hkPXdZc5itW5CXtPq5VGwSUWJ7Mw8ygaQhb
+	aG4ezu4nLGl3YGG0tl0N8sgpZXDsk2KWwhQt86bvOhPRkDiQ6FlF0h7peHSlDq1y6NyNvtFmcqO
+	KfEVD1/RXGoYxcjdny/Nzq4hKfojVR7toJ4aqOHW3HtoRhZeWJnx3Sg==
+X-Gm-Gg: Acq92OF6sqX63tb17zEffkCjXrjPuRuIYRN2pV+ppGNddHOza77atIYY67XELxYO1oP
+	b99BfwbovbmwNwmafhCvT4+JihekcwRZNCcu3QgIPSfytSup1/1GoOIZncBhNZEwZ2XlARF9723
+	dMgLsBSH04GLDv734jif2SSfhDGQhFZoWW7Ai5PwAYEPJ0tF2Hn/w0gOGknNEp5h9aVqv78ivn6
+	CZ0Wm4ODa7V2FGlY9UJ+Z3YR5fI+3mgp+f6uExq2oJLJSCiG+RSn1T5QWZZ1ZRuRh85z+mHEjxs
+	NDAfz5gw1ZNupnemdTeo1iWY4hqa+6VhH1/60Z4SQYknM96ZmNJLYTNSXJwpYVqqJ6DrSDp5Cuq
+	9s3Zvkw4lWi/2R1ozT6I0pGoJWYDwmsDC4J6lJyk=
+X-Received: by 2002:a05:622a:8d09:b0:516:d678:5337 with SMTP id d75a77b69052e-5173a821e2bmr199534211cf.28.1780410266031;
+        Tue, 02 Jun 2026 07:24:26 -0700 (PDT)
+X-Received: by 2002:a05:622a:8d09:b0:516:d678:5337 with SMTP id d75a77b69052e-5173a821e2bmr199533631cf.28.1780410265401;
+        Tue, 02 Jun 2026 07:24:25 -0700 (PDT)
+Received: from intellaptop.lan ([2607:fea8:fc01:88aa:f1de:f35:7935:804f])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51757c02ba9sm43829141cf.22.2026.06.02.07.24.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 07:24:24 -0700 (PDT)
+Message-ID: <9a2b9700a835798fdc090035936be3e8680f3566.camel@redhat.com>
+Subject: Re: [PATCH 12/28] KVM: x86: make translate_nested_gpa
+ vendor-specific
+From: mlevitsk@redhat.com
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org
+Cc: d.riley@proxmox.com, jon@nutanix.com
+Date: Tue, 02 Jun 2026 10:24:23 -0400
+In-Reply-To: <20260505195226.563317-13-pbonzini@redhat.com>
+References: <20260505195226.563317-1-pbonzini@redhat.com>
+	 <20260505195226.563317-13-pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Zt3d7d7G c=1 sm=1 tr=0 ts=6a1ee785 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=t-RmA2bz9KeGA92bHnoA:9
-X-Proofpoint-GUID: N7txxF8CPC1X1z7FEA9fyJv1SIlgK7bh
-X-Proofpoint-ORIG-GUID: N7txxF8CPC1X1z7FEA9fyJv1SIlgK7bh
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDEzNiBTYWx0ZWRfX8ZKYDwftVdJt
- l8IBlmBmC5mSbbrYisVLkKokBR6k60v+cYUOWhRy2mV7dlZMzv6Ul3uWmLTZYvhdX2ZbzZH4rX9
- qaQ3GHNZ/ofxhGFXsfTZKBW2Gdc84GZs22fx7mV7BMDf/GzReRXW9KNAGqZxCWckTR/txzWrGwc
- 4U3Gd1Cy86xRXpqJxzuKjc1dOP9DJEDYUMQ65Rjyd8Zi9rUZTQtrXp4pXjEtlP1R4ZWBYC+Uv8w
- QCZjAQYFGm0wZP4hGEdspvH5FRhHyPW9kiC2XLiI/Hw5vDIk0AxjqRFIjYNl9JiC+06SHW/SCkt
- uOArksmQpBd+gJL8zPDG5uj/5oDqI1idjJWMVSwf23vDFKzAiZ3uTF89e7u3ZEUPzsOw9r6/1bw
- iBvURYPuRFCnV2DI5p5JGdStPCUwJ3LqeIFRhPJj8c/Hk95zx4kFNjcG4owRP5/u3zsFu1JXMSU
- XC2n01KISQzDDrI2Mbw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-02_02,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- phishscore=0 spamscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606020136
 
-If kvm_s390_new_mmu_cache() fails, kvm_s390_faultin_gfn() returns
-without releasing the faulted page.
+On Tue, 2026-05-05 at 21:52 +0200, Paolo Bonzini wrote:
+> EPT and NPT have different rules for passing PFERR_USER_MASK to the
+> nested page table walk.=C2=A0 In particular, for final addresses EPT
+> uses the U bit of the guest (nGVA->nGPA) walk.
+>=20
+> While at it, remove PFERR_USER_MASK from the VMX version of the
+> function, since it is actually ignored by the tables that
+> update_permission_bitmask() generates for EPT.
 
-Fix this by moving the allocation of the memory cache outside of the
-loop. There is no reason to check at every iteration.
+Hi!
 
-Opportunistically fix a comment.
+Since this used to not to be the case, it means that in theory=C2=A0
+this patch series fixes a theoretical bug in which kvm_translate_gpa would =
+fail on nested EPT=C2=A0
+if requested to do exec-only access,=C2=A0because it used to ask incorrectl=
+y
+for PFERR_USER_MASK=C2=A0access which is used to be translated to a read ac=
+cess,=C2=A0
+and therefore=C2=A0 a guest PTE having only exec permission would fail the =
+check.
 
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
----
- arch/s390/kvm/faultin.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+I am not sure it is worth mentioning this, it is likely impossible to hit
+this, it is just something that came up my mind when reviewing later patche=
+s.
 
-diff --git a/arch/s390/kvm/faultin.c b/arch/s390/kvm/faultin.c
-index cf542b0a7e8e..fee80047bd94 100644
---- a/arch/s390/kvm/faultin.c
-+++ b/arch/s390/kvm/faultin.c
-@@ -54,6 +54,13 @@ int kvm_s390_faultin_gfn(struct kvm_vcpu *vcpu, struct kvm *kvm, struct guest_fa
- 			return 0;
- 	}
- 
-+	if (!mc) {
-+		local_mc = kvm_s390_new_mmu_cache();
-+		if (!local_mc)
-+			return -ENOMEM;
-+		mc = local_mc;
-+	}
-+
- 	while (rc == -EAGAIN) {
- 		f->valid = false;
- 		inv_seq = kvm->mmu_invalidate_seq;
-@@ -94,14 +101,7 @@ int kvm_s390_faultin_gfn(struct kvm_vcpu *vcpu, struct kvm *kvm, struct guest_fa
- 		if (is_error_pfn(f->pfn))
- 			return -EFAULT;
- 
--		if (!mc) {
--			local_mc = kvm_s390_new_mmu_cache();
--			if (!local_mc)
--				return -ENOMEM;
--			mc = local_mc;
--		}
--
--		/* Loop, will automatically release the faulted page. */
-+		/* Loop, release the faulted page. */
- 		if (mmu_invalidate_retry_gfn_unsafe(kvm, inv_seq, f->gfn)) {
- 			kvm_release_faultin_page(kvm, f->page, true, false);
- 			continue;
--- 
-2.54.0
+
+>=20
+> Tested-by: David Riley <d.riley@proxmox.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+> =C2=A0arch/x86/include/asm/kvm_host.h |=C2=A0 4 ++++
+> =C2=A0arch/x86/kvm/hyperv.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 |=C2=A0 3 ++-
+> =C2=A0arch/x86/kvm/mmu.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 9 +++------
+> =C2=A0arch/x86/kvm/svm/nested.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 15 =
++++++++++++++++
+> =C2=A0arch/x86/kvm/vmx/nested.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 12 =
+++++++++++++
+> =C2=A0arch/x86/kvm/x86.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 16 ----------------
+> =C2=A06 files changed, 36 insertions(+), 23 deletions(-)
+>=20
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index 8f2a1b915df9..62dc782b2dd3 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -2010,6 +2010,10 @@ struct kvm_x86_nested_ops {
+> =C2=A0 struct kvm_nested_state *kvm_state);
+> =C2=A0 bool (*get_nested_state_pages)(struct kvm_vcpu *vcpu);
+> =C2=A0 int (*write_log_dirty)(struct kvm_vcpu *vcpu, gpa_t l2_gpa);
+> + gpa_t (*translate_nested_gpa)(struct kvm_vcpu *vcpu, gpa_t gpa,
+> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 access,
+> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct x86_exception *exception,
+> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 pte_access);
+> =C2=A0
+> =C2=A0 int (*enable_evmcs)(struct kvm_vcpu *vcpu,
+> =C2=A0 =C2=A0=C2=A0=C2=A0 uint16_t *vmcs_version);
+> diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+> index 53688f7b76eb..f35fae3a7b3d 100644
+> --- a/arch/x86/kvm/hyperv.c
+> +++ b/arch/x86/kvm/hyperv.c
+> @@ -2041,7 +2041,8 @@ static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, =
+struct kvm_hv_hcall *hc)
+> =C2=A0 * read with kvm_read_guest().
+> =C2=A0 */
+> =C2=A0 if (!hc->fast && is_guest_mode(vcpu)) {
+> - hc->ingpa =3D translate_nested_gpa(vcpu, hc->ingpa,
+> + hc->ingpa =3D kvm_x86_ops.nested_ops->translate_nested_gpa(
+> + vcpu, hc->ingpa,
+> =C2=A0 PFERR_GUEST_FINAL_MASK, NULL, 0);
+> =C2=A0 if (unlikely(hc->ingpa =3D=3D INVALID_GPA))
+> =C2=A0 return HV_STATUS_INVALID_HYPERCALL_INPUT;
+> diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+> index 635c2e5d8513..63be5c5efed9 100644
+> --- a/arch/x86/kvm/mmu.h
+> +++ b/arch/x86/kvm/mmu.h
+> @@ -294,10 +294,6 @@ static inline void kvm_update_page_stats(struct kvm =
+*kvm, int level, int count)
+> =C2=A0 atomic64_add(count, &kvm->stat.pages[level - 1]);
+> =C2=A0}
+> =C2=A0
+> -gpa_t translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa, u64 access,
+> - =C2=A0=C2=A0 struct x86_exception *exception,
+> - =C2=A0=C2=A0 u64 pte_access);
+> -
+> =C2=A0static inline gpa_t kvm_translate_gpa(struct kvm_vcpu *vcpu,
+> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct kvm_mmu *mmu,
+> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpa_t gpa, u64 access,
+> @@ -306,8 +302,9 @@ static inline gpa_t kvm_translate_gpa(struct kvm_vcpu=
+ *vcpu,
+> =C2=A0{
+> =C2=A0 if (mmu !=3D &vcpu->arch.nested_mmu)
+> =C2=A0 return gpa;
+> - return translate_nested_gpa(vcpu, gpa, access, exception,
+> - =C2=A0=C2=A0=C2=A0 pte_access);
+> + return kvm_x86_ops.nested_ops->translate_nested_gpa(vcpu, gpa, access,
+> + =C2=A0=C2=A0=C2=A0 exception,
+> + =C2=A0=C2=A0=C2=A0 pte_access);
+> =C2=A0}
+> =C2=A0
+> =C2=A0static inline bool kvm_has_mirrored_tdp(const struct kvm *kvm)
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 961804df5f45..df232153eb24 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -2071,8 +2071,23 @@ static bool svm_get_nested_state_pages(struct kvm_=
+vcpu *vcpu)
+> =C2=A0 return true;
+> =C2=A0}
+> =C2=A0
+> +static gpa_t svm_translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa,
+> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 access,
+> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct x86_exception *exception,
+> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 pte_access)
+> +{
+> + struct kvm_mmu *mmu =3D vcpu->arch.mmu;
+> +
+> + BUG_ON(!mmu_is_nested(vcpu));
+> +
+> + /* NPT walks are always user-walks */
+
+
+Tiny nitpick: Maybe we can extend the comment above to explicitly mention t=
+hat
+even for the last, actual guest memory access, the CPU pretends to do a use=
+r access to the NPT?
+(NPT is really weird...)
+
+Something like that:
+
+/* NPT walks are always user-walks, even for the actual guest linear memory=
+ access,
+regardless of the actual guest access (user/supervisor) */
+
+
+Unrelated, If I understand it correctly, without GMET, NPT *does* check the=
+ U bit, but
+for all NPT walks, even for the last one, it requires the U bit to be set.
+
+And with GMET, U bit is only used for execute access which can happen only
+on the last level, and for reads/writes U bit is ignored.
+
+To be honest, I haven't found this mentioned in the APM.
+Is this mentioned somewhere in the APM?
+
+
+> + access |=3D PFERR_USER_MASK;
+> + return mmu->gva_to_gpa(vcpu, mmu, gpa, access, exception);
+> +}
+> +
+> =C2=A0struct kvm_x86_nested_ops svm_nested_ops =3D {
+> =C2=A0 .leave_nested =3D svm_leave_nested,
+> + .translate_nested_gpa =3D svm_translate_nested_gpa,
+> =C2=A0 .is_exception_vmexit =3D nested_svm_is_exception_vmexit,
+> =C2=A0 .check_events =3D svm_check_nested_events,
+> =C2=A0 .triple_fault =3D nested_svm_triple_fault,
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index 3fe88f29be7a..cd1924c6e075 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+> @@ -7438,8 +7438,20 @@ __init int nested_vmx_hardware_setup(int (*exit_ha=
+ndlers[])(struct kvm_vcpu *))
+> =C2=A0 return 0;
+> =C2=A0}
+> =C2=A0
+> +static gpa_t vmx_translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa,
+> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 access,
+> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct x86_exception *exception,
+> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 pte_access)
+> +{
+> + struct kvm_mmu *mmu =3D vcpu->arch.mmu;
+> +
+> + BUG_ON(!mmu_is_nested(vcpu));
+> + return mmu->gva_to_gpa(vcpu, mmu, gpa, access, exception);
+> +}
+> +
+> =C2=A0struct kvm_x86_nested_ops vmx_nested_ops =3D {
+> =C2=A0 .leave_nested =3D vmx_leave_nested,
+> + .translate_nested_gpa =3D vmx_translate_nested_gpa,
+> =C2=A0 .is_exception_vmexit =3D nested_vmx_is_exception_vmexit,
+> =C2=A0 .check_events =3D vmx_check_nested_events,
+> =C2=A0 .has_events =3D vmx_has_nested_events,
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 67979b7de5d6..7c6942afae81 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -7848,22 +7848,6 @@ void kvm_get_segment(struct kvm_vcpu *vcpu,
+> =C2=A0 kvm_x86_call(get_segment)(vcpu, var, seg);
+> =C2=A0}
+> =C2=A0
+> -gpa_t translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa, u64 access,
+> - =C2=A0=C2=A0 struct x86_exception *exception,
+> - =C2=A0=C2=A0 u64 pte_access)
+> -{
+> - struct kvm_mmu *mmu =3D vcpu->arch.mmu;
+> - gpa_t t_gpa;
+> -
+> - BUG_ON(!mmu_is_nested(vcpu));
+> -
+> - /* NPT walks are always user-walks */
+> - access |=3D PFERR_USER_MASK;
+> - t_gpa=C2=A0 =3D mmu->gva_to_gpa(vcpu, mmu, gpa, access, exception);
+> -
+> - return t_gpa;
+> -}
+> -
+> =C2=A0gpa_t kvm_mmu_gva_to_gpa_read(struct kvm_vcpu *vcpu, gva_t gva,
+> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct x86_exception *exception)
+> =C2=A0{
+
+
+Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
+
+Best regards,
+	Maxim Levitsky
 
