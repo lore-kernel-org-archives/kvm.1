@@ -1,93 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BE73F6614
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 14:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE7D40B6FB
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 14:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780410418; cv=none; b=IvO2IKEBshmwfaGjgd4bC/46imccStXtEtfBRJroQoxhA2jNMCosV8DOyeXYRJZDPd6sE4HLl5OkPRBnJUw1Adwmoma4xbgXNGYU1obxQkK46V3NUBL7mJ7a4btHpg7fvPRaCBKYQ1FZXpaB/+oP0CQ/dQp4x9+dJzS2vGa7bJ8=
+	t=1780410456; cv=none; b=DuqkSosjVKISfnBj2U3zNGls4OzPY41ohS7at/zlbeWe+Q1/1C7LXnXVpgw6KdywVRu1pYRTrxpIT8v52ule/3JXSQO+BspujU0mlJCranzyHVKqhM5jWbcShSoWQjsbjipyeqQNue+WsonguPTyFf2IJ4sjbOp6wichtE1JIs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780410418; c=relaxed/simple;
-	bh=qaxaZzitvIzJgajHAHhER2gHDhp8kJ8rJObvUQaPrGw=;
+	s=arc-20240116; t=1780410456; c=relaxed/simple;
+	bh=35IMlH4OzBqYLuw8iEp9io5JfWoCGDHcQ7v9cyibe0Q=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=s80PIcSw+qtVgC8TKV+8IuWYw7j5Fckl2n/2tzV0P0wB4+rHZlOhVG5jbT2BmvOKC8dkauF3COFtrXQ0ksS+blDV1hdY8g0AjHl1HeJNx99WubK/Q0vTLyiwWhqt4Fip+zwpD7cMvhTcTGB7W+h4NVrPkDKhzFjO+GFz6AlYhQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Nc0AQByC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NYJGzcQy; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:MIME-Version; b=JsTUgPm+uK8IgEccHoShVjAps21laim6sjnk8c6TCSKBobPw5J1AAspVhY0ND1nTgBZW/ZZzJ22gj2z+9iCvIO+ASKWc8jdnaT0UZ5TU8PJgjWrqgCs5OCO9kWGrTtqJ/0ZhStpRiNfoortSz9btJCFs+faRv5Bis3NXdPRVB98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hScIXXXH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qc+g4pS0; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Nc0AQByC";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NYJGzcQy"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hScIXXXH";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qc+g4pS0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780410415;
+	s=mimecast20190719; t=1780410453;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2Vm3vBj/gSGB95euxXlqG8MODm/vUUxMIN1zocpN6/k=;
-	b=Nc0AQByCDNVmMJIZo2kpRzkIsjXxobT03J65JVpGVbCJtQsxurfYkGvgSQXoL/VyQLJNaa
-	kjmdEBRCyCN4fYW96r4E8yqdbTDPvDYxU0ByLAl2RA540rIJlIcsF1RZioY/0TM+Dx8WVU
-	+ATVwMSLfPBZKKgratlUvww5wt4w81o=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=AjO1aJ0XV4DwgUuOwUUhINE4bMb6M06WtkPvEZxflRc=;
+	b=hScIXXXHN1qlRvq0oZtkMmBshwxAhs2OMkxzkd77hvyjjroFWRB7d09qwj+Zicw2/R3hwO
+	AAJRncsjOiMynSB/7k9orliyYb5q1gYFVEuJjoFo1UXfU2a6BvoydZElyrflxK8R1HIlAD
+	06p47pvkZge8UZKT0QIdPPQva19pDKI=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-108-gfJGc8sENQi_Vx4BZ_6zAw-1; Tue, 02 Jun 2026 10:26:53 -0400
-X-MC-Unique: gfJGc8sENQi_Vx4BZ_6zAw-1
-X-Mimecast-MFC-AGG-ID: gfJGc8sENQi_Vx4BZ_6zAw_1780410413
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-915767b341eso184531285a.3
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 07:26:53 -0700 (PDT)
+ us-mta-573-g6yPwzfdNLm1RZlgSN8Qxw-1; Tue, 02 Jun 2026 10:27:30 -0400
+X-MC-Unique: g6yPwzfdNLm1RZlgSN8Qxw-1
+X-Mimecast-MFC-AGG-ID: g6yPwzfdNLm1RZlgSN8Qxw_1780410450
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8ce9df49c6bso37078606d6.1
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 07:27:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780410413; x=1781015213; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1780410450; x=1781015250; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=2Vm3vBj/gSGB95euxXlqG8MODm/vUUxMIN1zocpN6/k=;
-        b=NYJGzcQyTSbIxA7nbcKiqVm/wJBkJEAVpX1IuU608tv3cpH3klwhKmwuILh5eTvU/7
-         rD9IkbKSy+GN8J0EvC8mT3WjafWqA9oj5/GAJeQepNCBT+SHKAku1f5SQ9dML3aUM9KT
-         FNSypzHzf3Fo2CxovIXMXp4lCHWIEbLJk61Vdmu1KthK7jQcrXNeQLD78xXcZK1EX+Yb
-         CCByVVE146ZpxMUdaGn2YXWihT+enk6W5oDURyD83vQZmpIsXFsjos5/5Yjc7u8hZ6+0
-         vFQwuLYjSj4PmbhWNiKrGQyf53ao2152/LFTB4CgiUPC0UAMUBLqK7Y8Hh8XsYe+wl+N
-         CwmQ==
+        bh=AjO1aJ0XV4DwgUuOwUUhINE4bMb6M06WtkPvEZxflRc=;
+        b=Qc+g4pS0mEU0f9IixvrcABW29qrXqoQKlF5d8WQtqwCruIUNfT6VoxNHOvWy1t+6wu
+         05pOJM2Rny7OGcq+tRPIyL23GVFVj8iC9BJXirI5cYZDs/eeAaciANhSbrLxIdvwpHh4
+         EQwfMEjKuKhyRgAknpb8z6Hs/wO7iO3/9P1Evm6KcHZrmSm4ZvV9ieyb0/fItplJxF1o
+         BCk/XsjFxEaBZLFw+hivPPY9KKQaBeI9ytNrrmNFKZhn0sUCh7fF3xh03GP7pwgycrqq
+         fWyPO50zy0KswIzWvfi4pQWVBIYaoKbq9rdI0q7c9ZjX9KtBbOhOkVIdWM1AotKgk9PX
+         7pJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780410413; x=1781015213;
+        d=1e100.net; s=20251104; t=1780410450; x=1781015250;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Vm3vBj/gSGB95euxXlqG8MODm/vUUxMIN1zocpN6/k=;
-        b=tMyftnjhkHUQBzYI8RZTyfuhMnjAXgeurkAVT7yUgQ3/IQd9GuID3zLyCKDE/EBO18
-         P5vBQzZynKPQib1Ggr0LLuBxsFhg5M0Z7i03npISb86G87AHFPEtTh8AdrFx2RKWCR/4
-         a2JzSCrQnY4/I1i4/uHRUSZOqRQhh9dTPDL9eA1AxTpQaPmHorSv6R7DmwDon/AZhYZr
-         MA91sthn2xmUrYRiupBHUk4FocYS7aGzPYkxUK2W8lyGDwnMbqRYhOVldcUV/QH66oHf
-         yYl9/nSKvJHuwO/emqOLh1VG5WoekYktqmaL1V07IqOiLWhIRvUCS6g9TNUy1ZUaSjd+
-         usIw==
-X-Forwarded-Encrypted: i=1; AFNElJ+Zwi6SThiUdYj8835bS1rEgR8MpwkflUenrry3aqEHSUzyeFhbKdA10whcN4x2ryqRqRk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymiAim37b/W3/wQQc4K+r4GtgS6J56o+hlNNDMvMKXJg1q3xDR
-	was2wG8ieJhVhbV4tCnDSUNjCzAWQOgMEWm1r/xfUZ0P2SDN9mqeVsrF7QU1GAC7d4N5mqgGBy0
-	OJxueHPoF6Um8lr9pXo0+qRoknxF0aIPG0DwnAeHQlXphFW5nsknQSw==
-X-Gm-Gg: Acq92OFDF2k/Rsn8wHsKYCP6f0fytC45eE8TAStDBpZFufwaFcWtQuRZJCKuCHVqOdX
-	2E6BfHYp7KN7PzswIrhYAJi4J8NrSfvmFivRRXAJuWAUCERlsKUsJEIU5p3vkfOq4/16GcIGq88
-	+oK7MBsnIBqJGNVBWWacKggD766XujQTjTVheJkIITVdjUpP8tEpX9vQJYeW34EJ9AMYmn1puut
-	n6+blHdlxyVGCqk4XsfbVMpa9gfAJFT1AXET6Ai+2Q7E8h2CW+LebPLMyyNQsZFHSUCUS9eu/DD
-	trhUd7v9Nfsrtufz4pjOhN08M/4jQjq9Bklv9zgG54jD3d2WkFbtldlBQ333qoWg0cyPrIcye4v
-	1fKXxhBOla7n1NdB+IasKmq/4OD6fFyXC0dcRIJo=
-X-Received: by 2002:a05:620a:1997:b0:914:b5f8:c2b3 with SMTP id af79cd13be357-9153d96a548mr2428361785a.18.1780410413226;
-        Tue, 02 Jun 2026 07:26:53 -0700 (PDT)
-X-Received: by 2002:a05:620a:1997:b0:914:b5f8:c2b3 with SMTP id af79cd13be357-9153d96a548mr2428354485a.18.1780410412507;
-        Tue, 02 Jun 2026 07:26:52 -0700 (PDT)
+        bh=AjO1aJ0XV4DwgUuOwUUhINE4bMb6M06WtkPvEZxflRc=;
+        b=Kl6SazNzOB8tl0zzqYMx+Lp9tJo61cn7L0S5GdRhyc4XxICxkC0ZcXSFHwlzf+yC7j
+         kA9j0jkwAA3Kg//fwC4yvImOvzIlMZV6CSXQunh6bH8ssvWFqodpBjYsbfxrRpSb7G4Q
+         P3IrLisnA0JuXDfawsdecT+sHY2LO+gh7GMQ//o1fVd+WBGvZs5fj6136h+Def/i4kRk
+         8k5se/adge5kplApMRJQ44qyz1EEjjhYs1IQrmVNiHIZVCLuvZfMrcMhgbjEuj4rJ9ip
+         6tx/l5+Z+9jB9YitSnuxLZmxV6nlUMcubBPkqbCKVVVfuKUoOgoYEpo3ctstAtmfUeKc
+         270Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9RUYjsfbFy1XBxWUtjBcfgRMkptR3ArX4JO0lcf44iGoztTSWqdG4S69TsBmiR1l+FT3I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwK8fZ9FNnSRLKYI+4P5cTjsUyuvifQtY7MXk2D0AC7i3sga/75
+	coeN+meD8QzHjh96Id5M8meUeyCTcFpNfapJDTUiuB9VMg0b0pMlAP0niofGRl0x7/6cL34VDf/
+	4gSp+hMq5IJ0wSSWYBiRoW4SG0OUGwCJcEeOlT8GD8KVlVEtGfZ+gzQ==
+X-Gm-Gg: Acq92OEtv1ZTunSxwSCy/IWn75ltbQXW4a8cNIDZ64vDEGt3N7Jgi2qLzx5q4pFI6PI
+	h5PiFCT5HNx+jLmY7iA0TSPjmOg8VKlm/ZPi2adkiRznFY6lv1arpufDyxguOlbSkd1Vgzu2s/F
+	cukOSM5d9z+TB5oLwoldWHAsQObu23RXAiWJsf8cAdPvPBxbWiGK02cXzqvhZq+dxQ24PNiqIjJ
+	TH1veX4Q5DzII9R5rdN/AhUOQIKWRqlF5zZFSdq8b7/78gftne3J0EgwaTjud7oQ0Lx14zCR+W5
+	o6HOFcduRNYFgRYn0U/zlCoQ1QzmgmHO+fbDbL6nULIUqdTdMjLpmn+JfhuHS1zPXqHIAWzI9n3
+	j4364ldoEAZKgUywX8eZ1Z5FlRDEx9U/0Ys8noEA=
+X-Received: by 2002:a05:6214:8082:b0:8cc:f7b7:bf8c with SMTP id 6a1803df08f44-8ccf7b7c3e8mr241014086d6.5.1780410449618;
+        Tue, 02 Jun 2026 07:27:29 -0700 (PDT)
+X-Received: by 2002:a05:6214:8082:b0:8cc:f7b7:bf8c with SMTP id 6a1803df08f44-8ccf7b7c3e8mr241013506d6.5.1780410449045;
+        Tue, 02 Jun 2026 07:27:29 -0700 (PDT)
 Received: from intellaptop.lan ([2607:fea8:fc01:88aa:f1de:f35:7935:804f])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9157f038322sm126685085a.45.2026.06.02.07.26.51
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ccea1cadd2sm123187286d6.24.2026.06.02.07.27.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 07:26:52 -0700 (PDT)
-Message-ID: <8e5accc667177fe1d1f955a01a1688fa1b9a9154.camel@redhat.com>
-Subject: Re: [PATCH 16/28] KVM: nVMX: pass advanced EPT violation vmexit
- info to guest
+        Tue, 02 Jun 2026 07:27:28 -0700 (PDT)
+Message-ID: <6cdfabf53b2faeb1a22b802feb66a0e3b882ebfc.camel@redhat.com>
+Subject: Re: [PATCH 17/28] KVM: nVMX: pass PFERR_USER_MASK to MMU on EPT
+ violations
 From: mlevitsk@redhat.com
 To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
 	kvm@vger.kernel.org
 Cc: d.riley@proxmox.com, jon@nutanix.com
-Date: Tue, 02 Jun 2026 10:26:51 -0400
-In-Reply-To: <20260505195226.563317-17-pbonzini@redhat.com>
+Date: Tue, 02 Jun 2026 10:27:27 -0400
+In-Reply-To: <20260505195226.563317-18-pbonzini@redhat.com>
 References: <20260505195226.563317-1-pbonzini@redhat.com>
-	 <20260505195226.563317-17-pbonzini@redhat.com>
+	 <20260505195226.563317-18-pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
@@ -99,105 +99,121 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Tue, 2026-05-05 at 21:52 +0200, Paolo Bonzini wrote:
-> KVM will use advanced vmexit information for EPT violations to
-> virtualize MBEC.=C2=A0 Pass it to the guest since it is easy and allows
-> testing nested nested.
+> For EPT, PFERR_USER_MASK refers not to the CPL of the guest,
+> but to the AND of the U bits encountered while walking guest
+> page tables; this is consistent with how MBEC differentiates
+> between XS and XU.=C2=A0 This is available through the
+> "advanced vmexit information for EPT violations" feature.
 >=20
 > Tested-by: David Riley <d.riley@proxmox.com>
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
-> =C2=A0arch/x86/include/asm/vmx.h=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 4 ++++
-> =C2=A0arch/x86/kvm/mmu/paging_tmpl.h |=C2=A0 2 +-
-> =C2=A0arch/x86/kvm/vmx/nested.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 13 ++++++=
-+++----
-> =C2=A03 files changed, 14 insertions(+), 5 deletions(-)
+> =C2=A0arch/x86/kvm/vmx/common.h | 12 +++++++++---
+> =C2=A0arch/x86/kvm/vmx/vmx.c=C2=A0=C2=A0=C2=A0 | 10 ++++++++++
+> =C2=A02 files changed, 19 insertions(+), 3 deletions(-)
 >=20
-> diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-> index 54aa5be50df9..ed2ded531e55 100644
-> --- a/arch/x86/include/asm/vmx.h
-> +++ b/arch/x86/include/asm/vmx.h
-> @@ -535,6 +535,7 @@ enum vmcs_field {
-> =C2=A0#define VMX_EPT_1GB_PAGE_BIT (1ull << 17)
-> =C2=A0#define VMX_EPT_INVEPT_BIT (1ull << 20)
-> =C2=A0#define VMX_EPT_AD_BIT =C2=A0=C2=A0=C2=A0 (1ull << 21)
-> +#define VMX_EPT_ADVANCED_VMEXIT_INFO_BIT (1ull << 22)
-> =C2=A0#define VMX_EPT_EXTENT_CONTEXT_BIT (1ull << 25)
-> =C2=A0#define VMX_EPT_EXTENT_GLOBAL_BIT (1ull << 26)
+> diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
+> index 40fa72f31fc7..08005676702c 100644
+> --- a/arch/x86/kvm/vmx/common.h
+> +++ b/arch/x86/kvm/vmx/common.h
+> @@ -100,9 +100,15 @@ static inline int __vmx_handle_ept_violation(struct =
+kvm_vcpu *vcpu, gpa_t gpa,
+> =C2=A0 error_code |=3D (exit_qualification & EPT_VIOLATION_PROT_USER_EXEC=
+)
+> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ? PFERR_PRESENT_MASK : 0;
 > =C2=A0
-> @@ -617,6 +618,9 @@ enum vm_entry_failure_code {
-> =C2=A0 EPT_VIOLATION_PROT_USER_EXEC)
-> =C2=A0#define EPT_VIOLATION_GVA_IS_VALID BIT(7)
-> =C2=A0#define EPT_VIOLATION_GVA_TRANSLATED BIT(8)
-> +#define EPT_VIOLATION_GVA_USER BIT(9)
-> +#define EPT_VIOLATION_GVA_WRITABLE BIT(10)
-> +#define EPT_VIOLATION_GVA_NX BIT(11)
+> - if (exit_qualification & EPT_VIOLATION_GVA_IS_VALID)
+> - error_code |=3D (exit_qualification & EPT_VIOLATION_GVA_TRANSLATED) ?
+> - =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 PFERR_GUEST_FINAL_MASK : PFERR_GUEST_PAG=
+E_MASK;
+> + if (exit_qualification & EPT_VIOLATION_GVA_IS_VALID) {
+> + if (exit_qualification & EPT_VIOLATION_GVA_TRANSLATED) {
+> + error_code |=3D PFERR_GUEST_FINAL_MASK;
+> + if (exit_qualification & EPT_VIOLATION_GVA_USER)
+> + error_code |=3D PFERR_USER_MASK;
+> + } else {
+> + error_code |=3D PFERR_GUEST_PAGE_MASK;
+> + }
+> + }
+
+Minor nitpick:
+Technically this code should check for VMX_EPT_ADVANCED_VMEXIT_INFO_BIT.
+Otherwise we might pass (in theory) the PFERR_USER_MASK when it's not there=
+.
+
+Yes, in practice, undefined bits are zero, and on top of that, as long as M=
+BEC is not supported, MMU core=C2=A0
+should just ignore the PFERR_USER_MASK, but still even if this is for docum=
+entation purposes,
+it might be worth it to check it here.
+What do you think?
+
 > =C2=A0
-> =C2=A0#define EPT_VIOLATION_RWX_TO_PROT(__epte) (((__epte) & VMX_EPT_RWX_=
-MASK) << 3)
-> =C2=A0#define EPT_VIOLATION_USER_EXEC_TO_PROT(__epte) (((__epte) & VMX_EP=
-T_USER_EXECUTABLE_MASK) >> 4)
-> diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmp=
-l.h
-> index 8dd9d510fc34..d4ce55195a7c 100644
-> --- a/arch/x86/kvm/mmu/paging_tmpl.h
-> +++ b/arch/x86/kvm/mmu/paging_tmpl.h
-> @@ -494,7 +494,7 @@ static int FNAME(walk_addr_generic)(struct guest_walk=
-er *walker,
-> =C2=A0 * [2:0] - Derive from the access bits. The exit_qualification migh=
-t be
-> =C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 out of date if i=
-t is serving an EPT misconfiguration.
-> =C2=A0 * [5:3] - Calculated by the page walk of the guest EPT page tables
-> - * [7:8] - Derived from [7:8] of real exit_qualification
-> + * [7:11] - Derived from [7:11] of real exit_qualification
-
-
-Something that confused me at first, so I am thinking,
-maybe it is worth mentioning that bits 7:11 are copied not here but in nest=
-ed_ept_inject_page_fault ?
-(this is a pre-exiting problem though)
-
-
-> =C2=A0 *
-> =C2=A0 * The other bits are set to 0.
-> =C2=A0 */
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index 299d4ca60fb3..46b65475765d 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -443,10 +443,14 @@ static void nested_ept_inject_page_fault(struct kvm=
-_vcpu *vcpu,
-> =C2=A0 vm_exit_reason =3D EXIT_REASON_EPT_MISCONFIG;
-> =C2=A0 exit_qualification =3D 0;
-> =C2=A0 } else {
-> + u64 mask =3D EPT_VIOLATION_GVA_IS_VALID |
-> + EPT_VIOLATION_GVA_TRANSLATED;
-> + if (vmx->nested.msrs.ept_caps & VMX_EPT_ADVANCED_VMEXIT_INFO_BIT)
-> + mask |=3D EPT_VIOLATION_GVA_USER |
-> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 EPT_VIOLATION_GVA_WRITABLE |
-> + =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 EPT_VIOLATION_GVA_NX;
-> =C2=A0 exit_qualification =3D fault->exit_qualification;
-> - exit_qualification |=3D vmx_get_exit_qual(vcpu) &
-> - =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (EPT_VIOLATION_GVA_IS_VALID |
-> - =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 EPT_VIOLATION_GVA_TRANSLATED);
-> + exit_qualification |=3D vmx_get_exit_qual(vcpu) & mask;
-> =C2=A0 vm_exit_reason =3D EXIT_REASON_EPT_VIOLATION;
+> =C2=A0 if (vt_is_tdx_private_gpa(vcpu->kvm, gpa))
+> =C2=A0 error_code |=3D PFERR_PRIVATE_ACCESS;
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index f1d616f928a1..9d5cd358ccc5 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -2790,6 +2790,16 @@ static int setup_vmcs_config(struct vmcs_config *v=
+mcs_conf,
+> =C2=A0 vmx_cap->vpid =3D 0;
 > =C2=A0 }
 > =C2=A0
-> @@ -7240,7 +7244,8 @@ static void nested_vmx_setup_secondary_ctls(u32 ept=
-_caps,
-> =C2=A0 VMX_EPT_PAGE_WALK_5_BIT |
-> =C2=A0 VMX_EPTP_WB_BIT |
-> =C2=A0 VMX_EPT_INVEPT_BIT |
-> - VMX_EPT_EXECUTE_ONLY_BIT;
-> + VMX_EPT_EXECUTE_ONLY_BIT |
-> + VMX_EPT_ADVANCED_VMEXIT_INFO_BIT;
-> =C2=A0
-> =C2=A0 msrs->ept_caps &=3D ept_caps;
-> =C2=A0 msrs->ept_caps |=3D VMX_EPT_EXTENT_GLOBAL_BIT |
+> + /*
+> + * Virtualizing MBEC requires advanced vmexit information in order to
+> + * distinguish supervisor and user accesses.=C2=A0 For simplicity and cl=
+arity
+> + * disable MBEC entirely if advanced vmexit information is not available=
+,
+
+This makes sense, however it feels to me a bit out of place in this patch,
+it seems better to belong to one of the former patches.
+
+When thinking about this, and last two patches, I started to think that may=
+be
+it is worth merging:
+
+  'KVM: VMX: enable use of MBEC',=C2=A0
+  'KVM: nVMX: pass advanced EPT violation vmexit info to guest'
+  'KVM: nVMX: pass PFERR_USER_MASK to MMU on EPT violations'
+
+into one patch 'KVM: VMX: enable use of MBEC', except the code that passes =
+advanced=20
+EPT violation to the nested guest (the 4nd hunk of the second patch).
+
+And then turn this hunk to a separate patch which can still be named
+as the second patch.
+
+This way it will be IMHO clearer when we honour the 'enable_mbec', and in t=
+heory
+there will not be a two patch window in which mbec could be enabled with un=
+supported
+configuration.
+
+Finally (assuming that what I am thinking is correct, I haven't verified it=
+),
+assuming that 'EPT advanced qualification' was specially added for MBEC,
+we can add a comment stating that it is unlikely that there are CPUs
+(outside of some weird nested configurations), which support either but not=
+ both features.
 
 
-Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
+> + * this way mbec=3D1 in the kvm_intel module parameters implies availabi=
+lity
+> + * to nested guests as well.
+
+
 Best regards,
 	Maxim Levitsky
+
+
+
+> + */
+> + if (!(vmx_cap->ept & VMX_EPT_ADVANCED_VMEXIT_INFO_BIT))
+> + _cpu_based_2nd_exec_control &=3D ~SECONDARY_EXEC_MODE_BASED_EPT_EXEC;
+> +
+> =C2=A0 if (!cpu_has_sgx())
+> =C2=A0 _cpu_based_2nd_exec_control &=3D ~SECONDARY_EXEC_ENCLS_EXITING;
+> =C2=A0
 
