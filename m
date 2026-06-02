@@ -1,115 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0469D175A79;
-	Tue,  2 Jun 2026 21:33:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EF13A6B6F
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 21:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780435991; cv=none; b=LS8Ekhtdu+0GiKSL1QmT5jY4Vf/jtaDc38OodEfdiIAHXna968Z+PgM3/q8oNQHnhTnSDlFYkWzw4jAJ4TulIFHvHjWYXRtNidPJ0B82/KNkOfmOAWEsBWfrnWaNIWzLmM65eFKpSWRt6urdtq/OBa9ZkjkE4YsUg7vermtrjLo=
+	t=1780437366; cv=none; b=pgt+ueYLhgYRI2UsZC+9QsQYRv5RsEvREmHk/rguMFptEJmt3K0u5CDBGF1lqNLaDjE6QLHMsQtpXD27R+3qGOlf2GCSJ41jIKwLZpjjd3p/yVCKP6LLd29Kqku1I37x14GOxdesu4AeBfEu6OLjlxHGmqPHUUwAW54YGNfDn9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780435991; c=relaxed/simple;
-	bh=rjmOVwjQeQBiLaQlxZ274XV9FIA1bzvyI9YY8XSJRLM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bjrldMzVZU4OerHEcfT2xenf8pkI+/YoERXTZlXB/FYAr4GjXUSvvmBX26gGfW2EpJSGzRQCObeJ8bj+LJswAwhQz40qmpwzHRUOdjdulc4q8j2WjnuGgJMDTDZrV5TcF+5wfJN/+4eZRTJent2mT5hkOs0pQI3EHF/nPmVBc2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9SFy076; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780437366; c=relaxed/simple;
+	bh=hNGRPXZPv9VsFGCFlzGsilsBaOfx9YAE5+5vnJAC+ps=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=FcSGlH5MPvqsaMbPYCu7z2AcvaYsZUTp9mOK20+vV2+Fit0TYd7ZqyMKiiOVs5wLWiisxyMM19IMSMxbSaToh75iawlP7BSGTreUV+OIlnhPe92xaHyTsEw+p1eTYwNOSM6877wcK9lu2Sz43vKTBTD0ojfYhelCRxDXGj9vSkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s7X6SGo2; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9SFy076"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EA21F00893;
-	Tue,  2 Jun 2026 21:33:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780435990;
-	bh=jdudOJL+raYR/P30MGb9StMfBGEfajIKmHJbLO4Ebr8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=V9SFy076bGKjitzQm68Krm+0Rj2oH6tD8ejVPMJ5I/uiNj2eELLvem5TBfWJhWS4Y
-	 TNxkpj0r0EocaKdfV56ca0uDZSuziD13GMeufrm1EkQYXl0dCfsFY9YyiesUFWhGHl
-	 UOin2nIqMxPo5V8Rma6DTTuqNFut73Fbsj1WZ4Fu1ANDORSyKssdikJ5woI/BNsu9l
-	 v2mM4MTf9qRrePcAHv2EQ+vCuYaejc3jfUE4bEVGTXMm0pKZaSeNx64p/NZBkyjPI+
-	 qEcYTk0FOzw47y+XX7bp2LjYzzjiZ7m6ac/+kx2hpwt6249m/LIFyHVdITnIiP7Fe8
-	 7BqzG0nolC9Cg==
-Date: Tue, 2 Jun 2026 14:33:08 -0700
-From: Oliver Upton <oupton@kernel.org>
-To: Andreas Grapentin <gra@linux.ibm.com>
-Cc: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v1 15/26] s390: Add functions to query arm guest time
-Message-ID: <ah9MFEq09ISAu9cb@kernel.org>
-References: <20260529155601.2927240-1-seiden@linux.ibm.com>
- <20260529155601.2927240-16-seiden@linux.ibm.com>
- <ah4G847iT_pPRuQm@kernel.org>
- <ah7Ul7YwJOFuSMaD@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s7X6SGo2"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0c32faa62so53873685ad.2
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 14:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780437364; x=1781042164; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=y7tMKLqZLoUguahKVkzXwJunwH2CC8Y+lNvapE/6WPM=;
+        b=s7X6SGo2eyAveVu+TUdTSMp8gBuV+ImpQGVebhJRxmab11A4TNO6Nndo3540M4AtwZ
+         UbnZ0AVnF5gL2K3nPb+moFKsNIbptYBsfbZ4GGiVtmcY4qnOJgHHujeKXX17V4YKTu0U
+         fZBsg6ZBhTpIjv8PowTdFBDvnI3nbREtKDTWqksFiCVH6YtModnKW3aeGhF1oyW+cYPS
+         iT9YDCULFyoxVaXGW2z26pURPRIHuTT76hu3nDSz5PTCHc9qjYcYNejdVUkwge/rXZMV
+         q/TdwEAB2QNZUTLSEuDiu6SmQGMgTq0R2OneZAwR1Rt00eoEnvEGo7gKgHxBDV4GgEsM
+         w4jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780437364; x=1781042164;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y7tMKLqZLoUguahKVkzXwJunwH2CC8Y+lNvapE/6WPM=;
+        b=J5F8366xIY9Lf/vgWh65aJvC+h0BKnhLcr0m5w1SXxn94/vENxuYTDZSUW8n6HALjG
+         dTaE8RidQPsuYWeO0R97Un7dXmzTgmzOMilK+TwdfRMBDdsKledL214W1Be8jD/cAKaz
+         KQE8raVHnIc5+mf/HkZHdEMfqZs4ZWifZUnxjuqvqa83c8V0h+LE1Tw/hQV2MxW1VfA0
+         XTHBPXBxtN9gZV5xizmdft5OLYTkKbAQnF7BD2R94TLC8lvH86LzGrYDFZGZ7uP+/K5G
+         HLLl0jcbZPrCjUEGgi4AcfOVLz2GbJ8a9oRuZrSyOUsxJ2iwNVucbnWBQzXhvD5nCqLX
+         s6+w==
+X-Forwarded-Encrypted: i=1; AFNElJ+GOLrCV7sd5w/+3SUT3vlLYhFC5YjztEI+TDYDLzByTddBS4yq78l6n+MyqGUR9/k6GrI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwFLhdLSN8YpCs2sXmQpGHQhwwLEy4MzJTFFWWh7RjdY+fKoCW
+	1VT72+zv5hGe/hwcGVi2taBGE7IR3p6YzZg6dItjC6KK0D+aQayqsGx67vVl7i7pOEZenyUrKFR
+	gAE2/Hw==
+X-Received: from plbbh1.prod.google.com ([2002:a17:902:a981:b0:2bd:bfca:529b])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c948:b0:2b2:4d36:7aa
+ with SMTP id d9443c01a7336-2c1644cab59mr5323895ad.35.1780437364217; Tue, 02
+ Jun 2026 14:56:04 -0700 (PDT)
+Date: Tue, 02 Jun 2026 21:55:40 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah7Ul7YwJOFuSMaD@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAFxRH2oC/x3MQQqDMBBG4avIrDsgQWvwKuJiav60A0ZlQqUi3
+ t3Q5fcW76QMU2Tqq5MMu2Zdl4LmUdH0keUN1lBMrnbPunUdJ6TVDo6i89fAKXLALAcCR/1xF1r xsREv/kXlsRlK/v+H8bpu5AUH/28AAAA=
+X-Change-Id: 20260527-memory-failure-mf-delayed-fix-7d5a8f4a8a8b
+X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780437363; l=2245;
+ i=wyihan@google.com; s=20260319; h=from:subject:message-id;
+ bh=fRnbbxlBDk4YfThNS9s3/pmtvrbRvFIdtObDaBTv/hU=; b=D5bk2bmUWWudEj1T7hfEsakTn+vs93FjxKXokW9ffFkWPkCyo4/U4PI0D+/WRcNzSfFoIDCq0
+ DrI7ZczMCBoD8NfOhTuMdcBZJb+mUexkYE+ixEiHfOjRm1AvyTZ5eaw
+X-Mailer: b4 0.14.3
+Message-ID: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
+Subject: [PATCH v4 0/7] mm: Fix MF_DELAYED handling on memory failure
+From: Lisa Wang <wyihan@google.com>
+To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com, 
+	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com, 
+	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andreas,
+Here's a fourth revision to fix MF_DELAYED handling on memory failure.
 
-On Tue, Jun 02, 2026 at 03:25:13PM +0200, Andreas Grapentin wrote:
-> On Jun 01 26, Oliver Upton wrote:
-> > > Add functions to convert between ARM guest time (LSB0) and s390 host
-> > > time (MSB0) using new ptff function codes.
-> > > 
-> > > Co-developed-by: Nico Boehr <nrb@linux.ibm.com>
-> > > Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
-> > > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> > > ---
-> > >  arch/s390/include/asm/timex.h | 49 +++++++++++++++++++++++++++++++++++
-> > >  arch/s390/kernel/time.c       |  1 +
-> > >  arch/s390/kvm/arm64/arm.c     |  9 ++++++-
-> > >  3 files changed, 58 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
-> > > index 49447b40f038..9ec22a28bbda 100644
-> > > --- a/arch/s390/include/asm/timex.h
-> > > +++ b/arch/s390/include/asm/timex.h
-> > > @@ -99,6 +99,8 @@ extern unsigned char ptff_function_mask[16];
-> > >  #define PTFF_QSI	0x02	/* query steering information */
-> > >  #define PTFF_QPT	0x03	/* query physical clock */
-> > >  #define PTFF_QUI	0x04	/* query UTC information */
-> > > +#define PTFF_QAGTO	0x10	/* query arm guest time offset */
-> > > +#define PTFF_QAGPT	0x11	/* query arm guest physical time offset */
-> > 
-> > Are these analogous to CNTVOFF_EL2 and CNTPOFF_EL2?
-> 
-> They are somewhat related -- we don't have the EL2 counter offset
-> registers, but we still need to virtualize the guest counters, so
-> instead we have to maintain the guest counter offset separately.
-> 
-> However, to determine the correct guest counter offset, we are using
-> these new PTFF function codes to translate between the s390 and arm64
-> architected counter domains.
+This patch series addresses an issue in the memory failure handling path
+where MF_DELAYED is incorrectly treated as an error. This issue was
+discovered while testing memory failure handling for guest_memfd.
 
-Thanks for clarifying, I was trying to figure out how these functions
-apply to the virtual and "physical" views of the counter inside the VM.
+The proposed solution involves -
+1. Clarifying the definition of MF_DELAYED to mean that memory failure
+   handling is only partially completed, and that the metadata for the
+   memory that failed (as in struct page/folio) is still referenced.
+2. Updating shmem=E2=80=99s handling to align with the clarified definition=
+.
+3. Updating how the result of .error_remove_folio() is interpreted.
 
---
-Best,
-Oliver
+Changes from v3:
++ Split an independent guest_memfd_memory_failure_test, as suggested by
+  Ackerley and Sean
++ Align error logging style in truncate_error_folio, as suggested by
+  Miaohe and David
++ Verify a clean shmem page can be read successfully after soft-offline
+  memory failure, as suggested by Miaohe
+Thanks!
+
++ RFC v3: https://lore.kernel.org/all/20260408-memory-failure-mf-delayed-fi=
+x-rfc-v3-v3-0-718f45eb7c75@google.com/
+
+Signed-off-by: Lisa Wang <wyihan@google.com>
+---
+Lisa Wang (7):
+      mm: memory_failure: Clarify the MF_DELAYED definition
+      mm: memory_failure: Allow truncate_error_folio to return MF_DELAYED
+      mm: shmem: Update shmem handler to the MF_DELAYED definition
+      mm: memory_failure: Generalize extra_pins handling to all MF_DELAYED =
+cases
+      mm: selftests: Add shmem into memory failure test
+      KVM: selftests: Add the guest_memfd memory failure test
+      KVM: selftests: Test guest_memfd behavior with respect to stage 2 pag=
+e tables
+
+ mm/memory-failure.c                                |  29 +-
+ mm/shmem.c                                         |   2 +-
+ tools/testing/selftests/kvm/Makefile.kvm           |   2 +
+ .../kvm/guest_memfd_memory_failure_test.c          | 402 +++++++++++++++++=
+++++
+ tools/testing/selftests/mm/memory-failure.c        | 111 +++++-
+ 5 files changed, 527 insertions(+), 19 deletions(-)
+---
+base-commit: 38741a8e3bc1b809d64f8c8885ab15c3e40700ff
+change-id: 20260527-memory-failure-mf-delayed-fix-7d5a8f4a8a8b
+
+Best regards,
+--=20
+Lisa Wang <wyihan@google.com>
+
