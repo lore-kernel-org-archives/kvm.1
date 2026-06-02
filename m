@@ -1,134 +1,117 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBD53B2FD1;
-	Tue,  2 Jun 2026 07:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780386214; cv=none; b=WKfaBsEERIdA81Joe4kasgN16fUAWlJvi+g0Bb7lS/6lbvxW6mp2F4Yia9T2qufr1aW/hlPul+9jqR+aL/pD2KwID4WA1me5RVUutb6xjzX4b4y76vJnubC1dyQdn55q8KqkO6MbnUbZPKrFwyprwok3HTphQBPaKdNezNiT2kc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780386214; c=relaxed/simple;
-	bh=oPpanwo20UBbX3AapN1SAoCmU776lNshxPMSSatKfJU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oG8V9NlJ8pMR1qaYricYdMMENdHMG91HgI9+o0EJp44lLACP89Hv/kTMpg9zzEmE0TBI0u6tF8FYd0ux5BYeaLXesYdKi3FCwmyuO076JiJPJQMLT8Sodvwwy/mA97oykcASPi53cT/cQr1IumUp8C0N5GW3SroAantpmVCJ8UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8DxLuqhiR5q76YPAA--.43318S3;
-	Tue, 02 Jun 2026 15:43:29 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJBxKMGhiR5qIxCZAA--.13937S2;
-	Tue, 02 Jun 2026 15:43:29 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: kernel@xen0n.name,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 4/4] LoongArch: KVM: Remove KVM_LARCH_LASX and KVM_LARCH_LSX
-Date: Tue,  2 Jun 2026 15:43:16 +0800
-Message-Id: <20260602074316.1647373-5-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260602074316.1647373-1-maobibo@loongson.cn>
-References: <20260602074316.1647373-1-maobibo@loongson.cn>
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EDA3A8FE8
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 07:50:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780386615; cv=pass; b=hRZ70gOW6ry1idTyjEbx49l+xbnjtt94mTw+Pd8A5Mvx0je8osjDoTkKmdHBVsPI2RKw/lJLwJyQ0JsRMh+A5cV58xdXb/SGrxYlgTA46pKbU1ktQEEriCE9TkvDeyxDBLzwc3A63PbvHqK4MyCS/NHTRNMfVBatQyE46m4bZjo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780386615; c=relaxed/simple;
+	bh=p4uY4fX/EVD/lV6uhrAIZGE/M1rSgl/cQnwDh4Uao0Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a+8FSM2qbl8yauLYETCJSc3LNXRm6Z0JN3WqZEqflRt+9Re8kQqk931zbVrH21EwB9845QxvaMUvzcwRxXb/BHS+RIT3BUBE0XAxPKRUZahCsQYHWGyRqn/JikvsWU6qgfwZP2Iwh92L5sbM3mfWCe/ljo7MezufIOlVSTeCHxo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kyfffu5E; arc=pass smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kyfffu5E"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8ccf0fa0aacso52139476d6.2
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 00:50:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780386613; cv=none;
+        d=google.com; s=arc-20240605;
+        b=j1rPbIPWGdbmIf4DtTWab0oClho2SzSU/1F+hpwQHyyAxYOfbT7+yjeID3u/sBwSSL
+         AzughL+SJxn2dsuIUu1KiTYwt+vpb3GodZvQOh3lHmRuaJiiAhRbAX9+meIub1LXd0tU
+         mZLaSq3xV4Zrjfb5l8vI2wPIOROu0fp2kvTxNNcWrlTzWErSZqib0e1yaJ6EZ8iqdV8j
+         lqtLgaYgBWNsrSLZA2qluv2JP08ujNcCgMK0mhynJCUKaw/69Y2QN+fBscbl7Hzf6wXX
+         kA+a4q4/eg5x+y969/y2P2DQucn8yh9JtiWgjqZBYftA8HwpU5/u9aU5b/CRlkDZWXjZ
+         B0Vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zgL8tDN0iNZzPqDQjLO1yFoZYbXlgUsx/BWRwqMBeRM=;
+        fh=skGGM1KscLIw5UW7rW+snO+ViGShI00S4TT/7BgiD6s=;
+        b=OrfFQE4QyS7IW0uG4Txnx99X1P1t/A3bAVDwypFKiHrF6T6ctBXfduJsXnfXVQfD4Q
+         2pwXPh67NQeFtZSrpyRqQnwgH2BguW/NvGYuO22twhtEguuyWGFaf8sVGSe/I3e7J6gV
+         YMcJg9Q0NFe91U0CjLJpasfDK2aBdLiGIgKd6PWXnTjyhFneHRZp7cbEddfSgahWzTyo
+         UBgGBKd4IXZOKW3ga2v8p5/nFsC0n3SRac27ckvqmcbFP+y48wQ0I2IWgRTBgecd5fKn
+         +RdMekPJtKZNlUMLMYC297mnsydVMvUF6FF0XugG3FajdTwyW9ljRLqhJaPI/kS7vWsP
+         lUoA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780386613; x=1780991413; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zgL8tDN0iNZzPqDQjLO1yFoZYbXlgUsx/BWRwqMBeRM=;
+        b=Kyfffu5EFSTBOsO+diSvdKZ2dSrZexeTAiS8/cygAv6/JCiVWlHSZd5FdxvrHQZhX6
+         O6M+MJVjHs8VtuzzVnKhR69ZaTgsUgPq0ARySut6uwbM84EWth+rZ5VpQVjKj1J06/dH
+         qXjRVBOGwWeRloYX3tq8fSfHq186YS7WjPu4vLzW1nvsO0IE7eCcEKK2qPs1d8YrV+mD
+         bieTSvIdZ6b73jhlpmmTQRjxLDTZ5Z71G7E+SPB27TIoBoXJRQ9Ks0BFeWLEY/4B+cl7
+         g0VdKzThoem8WhMb/GtAbbubziIVahJNk14V0t5FqSGq8UAAEMBsUjkStTEEXNHz9RaH
+         MZeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780386613; x=1780991413;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zgL8tDN0iNZzPqDQjLO1yFoZYbXlgUsx/BWRwqMBeRM=;
+        b=TvUMP3OsF5z9B10ebFOvmSIDWKvhExueQ9EuVXkedQNFleCUsQnwRWYZdhDp2mJMsD
+         QNISGI3ej+o7fILIaeHH/gUSNjb8FB8TKnGrOmc4tJCB2zzSC+o25rm8IiXf1H39s0Vw
+         cepW33VqAR8pDCjiS2xU9xisjU9Cf2APqekGQjxMXVGKGryc+uAF+5VLSW2i+u3C0TWo
+         Cl6v2aiO478WUY/mQ7bqYwEodBnYUwDyK8Fc08CD9TlEPHrMrQkgX/SCuBdKwSOnjsuJ
+         wqdoNiRAVEoBGXBtXwZpTqDXsoyNRlomC+oXmPLsRJMW5C4agcZYpd3nW+hgybOxrbHF
+         PDww==
+X-Forwarded-Encrypted: i=1; AFNElJ+y+bf+lz0Zc45r52oZX2+2uC9oMqce3HulkOhFs6DPSb0n1/YjQPaGDJUhkcgfQp6QVRU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOzfClwp1wOjMeHBjvwAewNjKQrjqkb1eb8XYbdPqDcdD3Mr3r
+	Q8J8tDjTljG/QeKaIAkUjz/oGjXHQL8WrsNMSUCUZbGbw3R++nwbZGIXYN2pIGGrLQgHsSP/BjQ
+	n9irctAQOrkT6iFcbimg/qE1pfhAxeLo=
+X-Gm-Gg: Acq92OG7Pt6fNX+PVrGQ/u226sSQSmVBivrB1w1enX8RxUiMxkiMzs4g5IEmg9DHhwk
+	mBqgYTWPwu3Z3PVj7S2cbk8/rAYiEInjfcbu49qwyP9Svl5iDBNc4fAA/DW+z+bNzEKO//4MLF1
+	CiuusmSa8R4ISHg3WZ4+agfstOzmO8R8buXJtU557pYFp00BGCOY8We3XXqjK8prScbfodDFvqS
+	9/Hxo2rzYfA0X4dnSHdxvVfvCTTN9UGKP7fCV2KejpgX+a2tJAv4ks1fFlpE5TlkwIbN5ofvlnx
+	I3HwIiaHQSF/m1LR9c0=
+X-Received: by 2002:a05:6214:5412:b0:8ac:7d13:d189 with SMTP id
+ 6a1803df08f44-8ccefddd3b5mr260805056d6.41.1780386612773; Tue, 02 Jun 2026
+ 00:50:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxKMGhiR5qIxCZAA--.13937S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+References: <20260528032234.1322565-1-ewandevelop@gmail.com>
+ <20260528032234.1322565-3-ewandevelop@gmail.com> <8890aa54-b119-4040-a508-e71706405ae2@linux.intel.com>
+In-Reply-To: <8890aa54-b119-4040-a508-e71706405ae2@linux.intel.com>
+From: Ewan Hai <ewandevelop@gmail.com>
+Date: Tue, 2 Jun 2026 15:49:40 +0800
+X-Gm-Features: AVHnY4JsC40RGyIXT-rVlTlz95bhtzeQIMB45M_Ws2q4offsbD1fDY9ERgEcCVM
+Message-ID: <CAG2uPc49SdVGYwHjxAbRRuk30k2hEfHG-D1wdJyFB-E+F69X5g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] KVM: x86: Expose Zhaoxin CCS (SM3 + SM4) CPUID feature
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, ewanhai@zhaoxin.com, 
+	cobechen@zhaoxin.com, tonywwang@zhaoxin.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In kvm_lose_fpu() FPU state will save in vcpu::arch::fpu, its FPU
-state comes from vcpu->arch.aux_inuse. Instead existing API
-vm_guest_has_xxx() can be used also, and bit KVM_LARCH_LASX and
-KVM_LARCH_LSX in arch.aux_inuse are removed. It makes the logic
-simpler than ever.
+On Tue, Jun 2, 2026 at 3:30=E2=80=AFPM Binbin Wu <binbin.wu@linux.intel.com=
+> wrote:
+>
+>
+>
+> On 5/28/2026 11:22 AM, Ewan Hai wrote:
+> > Advertise the Zhaoxin CCS (Chinese Cryptography Standard) feature to
+> > guests via CPUID 0xC0000001 EDX bits 4 (CCS) and 5 (CCS_EN). CCS groups
+> > two user-mode instructions for Chinese national cryptographic
+>          ^
+> Nit:
+> It's supposed to be replaced?
+>
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- arch/loongarch/include/asm/kvm_host.h |  2 --
- arch/loongarch/kvm/vcpu.c             | 17 +++++++++--------
- 2 files changed, 9 insertions(+), 10 deletions(-)
-
-diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
-index bad16c5f963c..aa2000cfb58a 100644
---- a/arch/loongarch/include/asm/kvm_host.h
-+++ b/arch/loongarch/include/asm/kvm_host.h
-@@ -158,8 +158,6 @@ enum emulation_result {
- };
- 
- #define KVM_LARCH_FPU		(0x1 << 0)
--#define KVM_LARCH_LSX		(0x1 << 1)
--#define KVM_LARCH_LASX		(0x1 << 2)
- #define KVM_LARCH_LBT		(0x1 << 3)
- #define KVM_LARCH_PMU		(0x1 << 4)
- #define KVM_LARCH_SWCSR_LATEST	(0x1 << 5)
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index 53abf7aa61f8..523d4cf88343 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -1392,7 +1392,7 @@ int kvm_own_lsx(struct kvm_vcpu *vcpu)
- 	kvm_restore_lsx(&vcpu->arch.fpu);
- 
- 	trace_kvm_aux(vcpu, KVM_TRACE_AUX_RESTORE, KVM_TRACE_AUX_LSX);
--	vcpu->arch.aux_inuse |= KVM_LARCH_LSX | KVM_LARCH_FPU;
-+	vcpu->arch.aux_inuse |= KVM_LARCH_FPU;
- 
- 	return 0;
- }
-@@ -1408,7 +1408,7 @@ int kvm_own_lasx(struct kvm_vcpu *vcpu)
- 	kvm_restore_lasx(&vcpu->arch.fpu);
- 
- 	trace_kvm_aux(vcpu, KVM_TRACE_AUX_RESTORE, KVM_TRACE_AUX_LASX);
--	vcpu->arch.aux_inuse |= KVM_LARCH_LASX | KVM_LARCH_LSX | KVM_LARCH_FPU;
-+	vcpu->arch.aux_inuse |= KVM_LARCH_FPU;
- 
- 	return 0;
- }
-@@ -1417,31 +1417,32 @@ int kvm_own_lasx(struct kvm_vcpu *vcpu)
- /* Save context and disable FPU */
- void kvm_lose_fpu(struct kvm_vcpu *vcpu)
- {
-+	if (!(vcpu->arch.aux_inuse & KVM_LARCH_FPU))
-+		return;
-+
- 	preempt_disable();
- 
- 	kvm_check_fcsr_alive(vcpu);
--	if (vcpu->arch.aux_inuse & KVM_LARCH_LASX) {
-+	if (kvm_guest_has_lasx(&vcpu->arch)) {
- 		kvm_save_lasx(&vcpu->arch.fpu);
--		vcpu->arch.aux_inuse &= ~(KVM_LARCH_LSX | KVM_LARCH_FPU | KVM_LARCH_LASX);
- 		trace_kvm_aux(vcpu, KVM_TRACE_AUX_SAVE, KVM_TRACE_AUX_LASX);
- 
- 		/* Disable LASX & LSX & FPU */
- 		clear_csr_euen(CSR_EUEN_FPEN | CSR_EUEN_LSXEN | CSR_EUEN_LASXEN);
--	} else if (vcpu->arch.aux_inuse & KVM_LARCH_LSX) {
-+	} else if (kvm_guest_has_lsx(&vcpu->arch)) {
- 		kvm_save_lsx(&vcpu->arch.fpu);
--		vcpu->arch.aux_inuse &= ~(KVM_LARCH_LSX | KVM_LARCH_FPU);
- 		trace_kvm_aux(vcpu, KVM_TRACE_AUX_SAVE, KVM_TRACE_AUX_LSX);
- 
- 		/* Disable LSX & FPU */
- 		clear_csr_euen(CSR_EUEN_FPEN | CSR_EUEN_LSXEN);
--	} else if (vcpu->arch.aux_inuse & KVM_LARCH_FPU) {
-+	} else {
- 		kvm_save_fpu(&vcpu->arch.fpu);
--		vcpu->arch.aux_inuse &= ~KVM_LARCH_FPU;
- 		trace_kvm_aux(vcpu, KVM_TRACE_AUX_SAVE, KVM_TRACE_AUX_FPU);
- 
- 		/* Disable FPU */
- 		clear_csr_euen(CSR_EUEN_FPEN);
- 	}
-+	vcpu->arch.aux_inuse &= ~KVM_LARCH_FPU;
- 	kvm_lose_lbt(vcpu);
- 
- 	preempt_enable();
--- 
-2.39.3
-
+Good catch, thanks. Sweeping the series I also found the same
+"user-mode" leftover in patch 5 (RSA) , "provides two user-mode
+instructions for modular arithmetic on big integers". Will tighten
+patch 2, 4, and 5 to "unprivileged" in v3.
