@@ -1,175 +1,166 @@
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A673BA235;
-	Tue,  2 Jun 2026 22:24:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F0D3C1418
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 22:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780439056; cv=none; b=hYwocWouSQVRcGu5WaqHAtX7m93jYI2aOb/n/nZMOmeQSXP5WTWFyMaS7dgJMKQw2kyBpOcyEAJ7Sm6Q/n4Or3QK3GG1zbQ+aoGFN/WxFR7Jdpkwb9o2e/zoxFtCutQsXtKL30qeWuqNcbQFNhknXUvP9gF5iO+7SYBQ7YzP1f8=
+	t=1780439390; cv=none; b=hFwmmUcg9/NmPNg7uWOh5Dkt0jmjXeghk2jeX7plYb86HYS8ohNKmLB8xoKQRcwfhd3T4nUJCnWy0rC1zvTrewuO2YHkOMM71N4lU9szvw/zc/fleyRrdKsV1Zq7J0TvA/pboYalnx0nxMrJmnzg2Gk9f23UsArX1lgcnXMVejM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780439056; c=relaxed/simple;
-	bh=qk2gjXI3NoBy2QULb52AKHE9XZvZDY+WdJfRMde0vZ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DZ+crQjIVum4JSBKfB8p9HtSyBSLufMBNwKfVrGFuHdZkLy80ox230SwRdce+tDRTr6fzJt4CF5Iy487fOkbyQVsiGzy+SF4+SBofFnnO6ds1qlqLjpB5SGL44xBVV6roO4CDm2p6V1KKttxkKFI1tPQDZHEjxLudNJUG3UuFQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=MWl5kgBc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DTq11pSR; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1780439390; c=relaxed/simple;
+	bh=dnRUvzknQfJJE+Bp2OxCb37758Fx4+OIKGtYTN6MmLo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=J60F5fnBdMUsp476Ga3Nw1Px0Fqqns+VB3beQD7TGDn8aVMJBKjsJq+14SWslypiupBSmkU3OIck4FnX4rFRXRKw7ZGSzx3KeIKt+/KDiKQJPmLQWQaaimpXZOPdCGohKXEhVEhjtFKfah+7aw65n0m3//IM08Ny4/LlO+JdskY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=szeLAsgb; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="MWl5kgBc";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DTq11pSR"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 8C4FC1D000AF;
-	Tue,  2 Jun 2026 18:24:12 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 02 Jun 2026 18:24:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1780439052;
-	 x=1780525452; bh=HpsO3gd0wMcI3QhvrGbYU8+xypx9sZlOFSo6f6xcyiU=; b=
-	MWl5kgBcu9nqWnG9LdYhh8w2wmsD4XzW2NnEsrRs4NWPNP4eSYHzAFCya/nQPjRL
-	CQZ7/LwT5XwF9PpVU3PhZSao54VQ0NU7Sitdz2V7JyW8Z9K2aRVL+uoS8j763Hlz
-	3egGju3Gw81CR9te6uobe5LZe6TE+l36vcDlGu2+UXCREDI8DDoy6nkgWzAQVgM2
-	U2kD2qf2OCyE5Pll1anyLHBdIig0TtUD0i7JFxXM+Dx13Se7ZCSiwgwLEXzkEb8R
-	N23ZkXOQDIRxxUarMVcvCLcFZVnFief84Ua64U1iIldxLRXXjYiPhFMxYQS7ICjW
-	Gvb2D+gL034Yf/IFEPjbSg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780439052; x=
-	1780525452; bh=HpsO3gd0wMcI3QhvrGbYU8+xypx9sZlOFSo6f6xcyiU=; b=D
-	Tq11pSRGK554bUHipDyXwbbsfasPvZDFKQVDvD1oRPgCf8rO+NnC1ywW3QW8hJJR
-	4rfm0lagGPN2DJXlt+o7Q9cxLbz7e8094K9G2tnxUTKXlxub496jPY/+vpcReAWP
-	mV+2uIKpHSiymhm6fxkLh04zU3RlmaiETxCkWW+q7LKmgCSmVmkpcSrRSTwxg2Jt
-	uGmoQ2XCVKtxiuX2svHwfeL2e5xrKP8OwG75lJyFHQz+ypTt2TnpLEgITdFaxKvp
-	qS4TT6wXMwLnABPeMJs6uYsPwJXRQt7bnFSwkFhY9dghliAtRPqDtS5AUfte1p2h
-	iLMDiwo3B5+HnOrPYc5SQ==
-X-ME-Sender: <xms:C1gfaub6iouHFw11PGxty0R1GDNEER4BOBFoTafztilPRrcd3j3UFg>
-    <xme:C1gfaiwPummpVbhvC3SwX6IHrzrrh8Tl9j_C1R-AWE3de82QNmZHJSbRq2w4kTJGc
-    U0UHdFGvvjJqWevTZMvGSoAdXhzMtXUvVMMl2NoNHAfJ3Vn6vmwgA>
-X-ME-Received: <xmr:C1gfaiO9IO6qz4G1Jw3qZoQrh-zF9tX4Of-gUS5jQPYbvEXF5HEAlSagQKg>
-X-ME-Proxy-Cause: dmFkZTEzFQQjv+SjWR4wAB+CXIyzIejqvDcZZfMXru6LkBHWQi3phvq5Zs3hDvM3bL6qEV
-    ttan/L1BO4N6mQAlskzLR2o9PPltk0LTBwCwSVuqwxc76foIHu/voLDHnEu715nqiqayvA
-    r9Q8QRKvMQDUGiWq7J9HgTka9vUgPCvHbgHE6HbKYl6/a3L5yYDnF+Vz3nMr/ogVxBdw9v
-    Tnx3zf/zETaHEhR8r+GFu1KuF3e9zbFrAr/8LGrd+wQeDim1D0u0ZO4jQo7PfmB066UCkI
-    ZEwRIsQTKGsBighIMe6p50SUE54xAufKpFkWn1z+VdQ1+I4Mr5Pxv7CigTudPuRyW0N7H6
-    hLK5dnDv3YDCDjHa+/1Hd7IGehXObtJ2VWXEpm++9GvfF2d78M29bQfH/hIiffNr0Gs0Mb
-    GcO1dqz3e+nz6TtNU43IvN/IHVjYQSEqv82IDAIxef95C800bgtAbboBVKI4WwceH11yom
-    Jdm7Uh+EFDITlVZE9uB/7ddSKOxRH+s8qJqi291bJFfnh8u2bc6JhJqZyaqEz5yHTI6B9J
-    qhYhdBslfWu4rASE6ziI6SfCNKec419VnQIIJZdC0vNGS0efMA08eFBtpgfG3dVpE6a251
-    1HnYc8laMDGIZ/ZTGiR4E1rw1b/Wzso2jCFb/26FDtwRZO5KvOPsV5xLqGYQ
-X-ME-Proxy: <xmx:C1gfao6wGIjsr6eTfj9f9iahqZ5quCj-mjgB3pT5p4SHx3nKFVD9mQ>
-    <xmx:C1gfagfKsB3SFaYNdaAtgUuO0jZGLJxHMhkg2UMjkE_xYXU7qIyUJQ>
-    <xmx:C1gfapKsH9_SPvmCgAAMqVhMRtPh1c16Xa7YOuiOOngF2AB7yhElrQ>
-    <xmx:C1gfamn4Dtr7636PH4VuBKXPPN4FXNY2tPzlrmhctcena0AVdZqBcg>
-    <xmx:DFgfan5pZikWQl-vKU_nfaaCSbgeqpLEYGaVX1-zXb7u6o35bYYWAFaO>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 2 Jun 2026 18:24:10 -0400 (EDT)
-Date: Tue, 2 Jun 2026 16:24:09 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Omar Elghoul <oelghoul@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
- agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
- schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
- farman@linux.ibm.com, gbayer@linux.ibm.com, alex@shazbot.org
-Subject: Re: [PATCH v2 2/3] vfio-pci/zdev: Add VFIO FMB device feature
-Message-ID: <20260602162409.1ca3c765@shazbot.org>
-In-Reply-To: <20260519224204.19154-3-oelghoul@linux.ibm.com>
-References: <20260519224204.19154-1-oelghoul@linux.ibm.com>
-	<20260519224204.19154-3-oelghoul@linux.ibm.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="szeLAsgb"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf32fb7cb2so30185855ad.2
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 15:29:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780439387; x=1781044187; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ckZAnXtzekfjja3TFHldWcVuWo0dT7v37hNoLYsawes=;
+        b=szeLAsgbao/t0ZAGzZu52+1fpVzzTi1qyGEXjO8xSl2Y+g8ZpaTpXxKqheCKyLu7Uj
+         du3ZAk2QWfoOz9Di48Z75ZNacHNyUAEvShU4UywEOGLn+aswKlEXxF7YE6vihhatj4Wz
+         BPxIhZGq1msc2u7nXOp7OnqcUEuKOQ5Nlh+B/N5tvsHn79z1LP9b2p2Lxaq5gFeDO/cm
+         0nPbNiJPyDWtAwWVGLgLBeARbyx5xd5KebjklSlp0Rb7Y0oZ1qOqWHP1ZHJSZ27IRHp+
+         kqYH8ZtPfDclbwSb111043iggh+ORZgjGj6wGRXGNkOakrJR5zXDYy7GStEl6+8t+hGB
+         kU0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780439387; x=1781044187;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ckZAnXtzekfjja3TFHldWcVuWo0dT7v37hNoLYsawes=;
+        b=nJwhz5/PPn8n6nK5Usp2CW1ctFACKJztLDjMoReAm7qjsA0uHWdtykHyzXOgB2H+6a
+         ppfl9KCHFbGBOSxKtiJklzOrqWUY8hV/wcENHwi0Q77vQFYeBMkA2Oq0faMOrcBUqM0T
+         2KUb7VVMQdWyJFbvMG+kweNInhaLN+NjUDAYBoNlT220xuHJAbYcKyWym0t1+MlnaB+Y
+         49Gg42ZpUbN/O4XG7sGmGkZmHFDMgs8mLCEER08Qul4K2tNJT2B/ouAIq21z/tDPtaL3
+         /WdriKgqrrPkP8uRlMTXlI+jUeV4jWqJNCOw1bEirJpa6oOpzK5Gw/bX8ybnJ16VuYjn
+         ytkQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+dqa5UP0cJA1SKHHtM3LBfhEcQWZPjVv6q/XwP5+E6vl9lcxMRivCbu/LDa5+GYYryq3E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyD8OxOPc7PWnz9lFf85qoin57BB0vn81WqV2RwAw0bJv96fECu
+	z1arZ8jEn4848rJPFNeKZ2O2Q/Bu1DujmmI1cqhGruvpf2U6pnH9sJVewyXhFqlDNmT18y0co8n
+	Rg2B0XoLt
+X-Received: from plgy12.prod.google.com ([2002:a17:903:22cc:b0:2ba:316c:2d88])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:17cd:b0:2c0:ce23:d525
+ with SMTP id d9443c01a7336-2c163d6dd3fmr5663195ad.14.1780439386816; Tue, 02
+ Jun 2026 15:29:46 -0700 (PDT)
+Date: Tue,  2 Jun 2026 22:29:41 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1013.g208068f2d8-goog
+Message-ID: <20260602222941.3133236-1-jrhilke@google.com>
+Subject: [PATCH v6] vfio: selftests: Find devices that have VFIO selftest drivers
+From: Josh Hilke <jrhilke@google.com>
+To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
+Cc: Sean Christopherson <seanjc@google.com>, Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Josh Hilke <jrhilke@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 19 May 2026 18:42:03 -0400
-Omar Elghoul <oelghoul@linux.ibm.com> wrote:
-> diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci_zdev.c
-> index 0990fdb146b7..1e9efe2bee69 100644
-> --- a/drivers/vfio/pci/vfio_pci_zdev.c
-> +++ b/drivers/vfio/pci/vfio_pci_zdev.c
-> @@ -167,3 +167,80 @@ void vfio_pci_zdev_close_device(struct vfio_pci_core_device *vdev)
->  	if (zpci_kvm_hook.kvm_unregister)
->  		zpci_kvm_hook.kvm_unregister(zdev);
->  }
-> +
-> +int vfio_pci_zdev_feature_fmb(struct vfio_pci_core_device *vdev, u32 flags,
-> +			      void __user *arg, size_t argsz)
-> +{
-> +	struct zpci_dev *zdev;
-> +	struct vfio_device_feature_zpci_fmb fmb = {0};
-> +	u32 ops = VFIO_DEVICE_FEATURE_GET | VFIO_DEVICE_FEATURE_SET;
+Add a new script, list_supported_devices.sh, which prints out the
+segment:bus:device.function (SBDF) numbers and names of devices on a
+machine that have a VFIO selftest driver. This makes it easier to
+determine if the system is capable of running VFIO selftests.
 
-Somewhat gratuitous variable usage.
+Includes a -q (quiet) argument which prints just the SBDFs so that the
+output can be passed to tools/testing/selftests/vfio/scripts/setup.sh
+(e.g. via xargs) to bind the devices to VFIO to use in VFIO selftests.
 
-> +	int ret;
-> +
-> +	ret = vfio_check_feature(flags, argsz, ops, sizeof(fmb));
-> +	if (ret != 1)
-> +		return ret;
-> +
-> +	zdev = to_zpci(vdev->pdev);
-> +	if (!zdev)
-> +		return -ENODEV;
-> +
-> +	mutex_lock(&zdev->fmb_lock);
+Examples:
 
-Use a guard and avoid the release_lock gotos.
+$ ./list_supported_devices.sh
+0000:6a:01.0 - Intel DSA SPR [8086:0b25]
+0000:6f:01.0 - Intel DSA SPR [8086:0b25]
+0000:74:01.0 - Intel DSA SPR [8086:0b25]
 
-> +	if (flags & VFIO_DEVICE_FEATURE_SET) {
-> +		if (copy_from_user(&fmb, arg, sizeof(fmb))) {
-> +			ret = -EFAULT;
-> +			goto release_lock;
-> +		}
-> +
-> +		if (fmb.flags & VFIO_DEVICE_FEATURE_ZPCI_FMB_FLAGS_ENABLED)
-> +			ret = zpci_fmb_reenable_device(zdev);
-> +		else
-> +			ret = zpci_fmb_disable_device(zdev);
-> +		goto release_lock;
+$ ./list_supported_devices.sh -q
+0000:6a:01.0
+0000:6f:01.0
+0000:74:01.0
 
-Remaining flag bits are not tested, breaks any future expanded use of
-flags.
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Josh Hilke <jrhilke@google.com>
+---
+Changelog
 
-Why does the user need to be able to control these?
+v5 -> v6
+- Fix typos in commit message (Sashiko)
+- Remove unused variable (Sashiko)
 
-Doesn't allowing the user to disable FMB remove guaranteed host-based
-monitoring?
+v5: https://lore.kernel.org/kvm/20260602185615.3025904-1-jrhilke@google.com/
 
-Since this is already provided via debugfs, why not make this a
-userspace problem to interact with the existing interface?
+ tools/testing/selftests/vfio/Makefile         |  1 +
+ .../vfio/scripts/list_supported_devices.sh    | 43 +++++++++++++++++++
+ 2 files changed, 44 insertions(+)
+ create mode 100755 tools/testing/selftests/vfio/scripts/list_supported_devices.sh
 
-Alternatively, couldn't the existing zpci mediation be extended to
-support the guest registering a fmb buffer to be written at regular
-intervals (the interface here seems to drop the reporting interval).
+diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+index 0684932d91bf..127e70b996a9 100644
+--- a/tools/testing/selftests/vfio/Makefile
++++ b/tools/testing/selftests/vfio/Makefile
+@@ -15,6 +15,7 @@ TEST_GEN_PROGS += vfio_pci_driver_test
+ 
+ TEST_FILES += scripts/cleanup.sh
+ TEST_FILES += scripts/lib.sh
++TEST_FILES += scripts/list_supported_devices.sh
+ TEST_FILES += scripts/run.sh
+ TEST_FILES += scripts/setup.sh
+ 
+diff --git a/tools/testing/selftests/vfio/scripts/list_supported_devices.sh b/tools/testing/selftests/vfio/scripts/list_supported_devices.sh
+new file mode 100755
+index 000000000000..4a4a2bc41901
+--- /dev/null
++++ b/tools/testing/selftests/vfio/scripts/list_supported_devices.sh
+@@ -0,0 +1,43 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++# List of devices which have a VFIO selftest driver. Device IDs are found in the
++# drivers in selftests/vfio/lib/drivers.
++readonly DEVICES=(
++	"8086:0b25,Intel DSA SPR"
++	"8086:11fb,Intel DSA GNR-D"
++	"8086:1212,Intel DSA DMR"
++	"8086:2021,Intel IOAT SKX"
++)
++
++# Print the segment:bus:device.function numbers of PCI devices that can be used
++# to run VFIO selftests.
++function main() {
++	local id_name
++	local quiet=""
++	local name
++	local bdfs
++	local id
++
++	while getopts "q" opt; do
++		case $opt in
++			q) quiet="true" ;;
++			\?) echo "Usage: $0 [-q]" >&2; exit 1 ;;
++		esac
++	done
++
++	for id_name in "${DEVICES[@]}"; do
++		IFS=',' read -r id name <<< "$id_name"
++		bdfs=$(lspci -D -d "${id}" | awk '{print $1}')
++
++		[[ -z $bdfs ]] && continue
++
++		if [ "$quiet" ]; then
++			echo "${bdfs}"
++		else
++			echo "${bdfs}" | sed "s|$| - ${name} [${id}]|"
++		fi
++	done
++}
++
++main "$@"
+-- 
+2.54.0.1013.g208068f2d8-goog
 
-> +	}
-> +
-> +	ret = 0;
-> +	if (zdev->fmb) {
-> +		fmb.flags |= VFIO_DEVICE_FEATURE_ZPCI_FMB_FLAGS_ENABLED;
-> +	} else {
-> +		fmb.flags &= ~VFIO_DEVICE_FEATURE_ZPCI_FMB_FLAGS_ENABLED;
-> +		goto release_lock;
-> +	}
-
-Flag bit is cleared, goto skips copy-to-user, returns success...
-
-Regardless of what's documented in the header, the buffer should be
-assumed to be userspace garbage.  Failing to set or clear the entire
-flags field precludes any future use.
-
-Why do we need to use flags to indicate the enable state?  Couldn't we
-just as easily have success indicate enabled and -ENOMSG indicate
-disabled?  Thanks,
-
-Alex
