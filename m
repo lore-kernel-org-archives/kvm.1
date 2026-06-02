@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A21306D3F
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 11:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4413D3CE5
+	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 11:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780398654; cv=none; b=M7xEETvch+KY+6cUCap91TV+yrUdBqAXjHQgmGTlSHkE8aP/f0MMXjQ2nEIFQQpFH8Yo5YWD2ut54A0/I8c9ailhsBFf3PO6eXM5jdn5BMyKKV0mGpPJGgT8qgsOncansXYJZKbe/HYvCPjfiaokfwiUM+mP3tS190kLO5fI1Lg=
+	t=1780398736; cv=none; b=t16q8PCyg/j4ZKKdfFAl4ONOvR3kbf3MJY9RHgAFh0qlZR/Bq/Cpxgr+pNmQzWdigF9J9yxKgQ4mv0kMsNDGuiXutd265ZhglRu91REsKRAJVJKTh1tcA7qSRaS3SEFdvU0zvO3YcIMY2do5mBivHXgg2eHXD0gtYnsYkmIg6Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780398654; c=relaxed/simple;
-	bh=DPET6dMkgnaYZG70hP9jstJ12Sb9FqMRV5cmVFf+3jw=;
+	s=arc-20240116; t=1780398736; c=relaxed/simple;
+	bh=4ZuTD/9R9tNxA+bYVRBCvs60Kl6yHPnV/yX0LF1vfWo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=u9Q3nqdARErKl3EU/HKBRI9BvDXtL9C+bD2K5HA6hxN308Cv310iE7uQWJs1Cfj4uKwkn/6sLzjSIA7mSK1+Fe615J60isDo2SfjXI7hAmJ4g8tIQyuAOYiVqscC4cyuDqNlWtwyXibg8j9wzfWOI3ulvutMCc3hQgFIMZ704d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KD6JnWCm; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=I6ZXaIiiVHwcP8VP1RPbT1FyqYRHiKy+V5AsJX2Fo4fO7ecB6qIZSRR5PH0+kC/7xAa2Reh9iQ1v8QLd5PRRgF1dSFD02tQjQZ/hTPVQ/LicfamSnuyxJ5bk6fp5oAH+Kk9QWdZEEI5yTe/1sqRESc9Fo+UhtKKoCYgsB1g+qJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eZplr/vK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KD6JnWCm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA271F00893;
-	Tue,  2 Jun 2026 11:10:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eZplr/vK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317C21F00893;
+	Tue,  2 Jun 2026 11:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780398651;
-	bh=+r7V0zXcEGAmwgRsGtRuYUEaRfWZbQBItGd+wEEQRpw=;
+	s=k20260515; t=1780398733;
+	bh=NgSrb9IasZ4CmQH/qNMktXkhIgCUTZecNltE4j6sKeQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KD6JnWCmzwvM6QEujj+fmCOusd1qjzxLCU3OXnn5Db3XgT3gnkWkPj4Dl5Pv91d4J
-	 xW9+zMCE/MP+O7iBpwEj/q94wzrgoigqGQgLARbs1ZtnZWnOOjD4CcAm+6LKrFbwoq
-	 5hyA4NUrbJ2FMkU7K2Jml9ODtA1ozPwLa65CZ2f4ZaJ8zlVEBQ8/6CPka8u88B9EJD
-	 wmIAI0tF6FBl8O75+2GhVur9hWQTz/wON1uBuR56pipPB2oKWnoWYGKDhmYSOCkW4N
-	 imoEJHkEPvlZ2u81Br95FIMd6UeF50PkaTX1tfTAVwhGccvJWzOELZ13bVo60cp1bd
-	 vBv22TXyNFSug==
+	b=eZplr/vKjnEyRk/joD2KkGn/nFwXndGGjkCriC2Bfde8RtH9BcZFa12v9jMCspP4s
+	 sdDcvZ013h0VR9SL2Mfelq4bVzBUkXOpBpsnzbZ8BWvRwg7KngwLeGSFeJo7mHMCVd
+	 E+oxDrI6w/BaxkiFAK9uvCPjKG32CVRJ7xcxOEEc9fUuXoTSja9+4TEHGOhrP4zYc7
+	 7KrLSYuld9zUq4eie2yRqXfixJnNsVVLGGTVbk7EEZLBcerLZGPuAH1GIZEqTqBZud
+	 pB2yRFchAEC4zH+c1G5lcIqRMMybBNT4sDJ53tQSAbxQuSiGjTrb1SdUGTLnlDu6ly
+	 aHukcDbwbDJVA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 21/30] iommu/tegra-smmu: implement
- iova_to_phys_length
+Subject: Re: [PATCH v2 15/30] iommu/mtk_v1: implement iova_to_phys_length
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260602104637.1219810-22-guanghuifeng@linux.alibaba.com>
-References: <20260602104637.1219810-22-guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20260602104637.1219810-16-guanghuifeng@linux.alibaba.com>
+References: <20260602104637.1219810-16-guanghuifeng@linux.alibaba.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 02 Jun 2026 11:10:50 +0000
-Message-Id: <20260602111051.0DA271F00893@smtp.kernel.org>
+Date: Tue, 02 Jun 2026 11:12:12 +0000
+Message-Id: <20260602111213.317C21F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,84 +45,61 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] Lockless traversal in `tegra_smmu_iova_to_phys_length` can cause a=
- use-after-free on page table memory and a TOCTOU race on the PTE value.
+- [High] Valid PTE mappings to physical address 0 are incorrectly treated a=
+s unmapped.
 --
 
-commit 681b9a6734c92cb4ecc9cde9011c68a58a0d83fd
+commit 8a65585ea3e0470504b1a4dc830dd977b11466cf
 Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-iommu/tegra-smmu: implement iova_to_phys_length
+iommu/mtk_v1: implement iova_to_phys_length
+   =20
+This commit implements the iova_to_phys_length callback for the MediaTek
+v1 IOMMU driver to return the actual PTE mapping size. It also fixes a
+bug by adding the page offset to the physical address.
 
-This commit implements iova_to_phys_length for the Tegra SMMU IOMMU driver,
-returning the actual PTE mapping size.
-
-> diff --git a/drivers/iommu/tegra-smmu.c b/drivers/iommu/tegra-smmu.c
-> --- a/drivers/iommu/tegra-smmu.c
-> +++ b/drivers/iommu/tegra-smmu.c
-
+> diff --git a/drivers/iommu/mtk_iommu_v1.c b/drivers/iommu/mtk_iommu_v1.c
+> --- a/drivers/iommu/mtk_iommu_v1.c
+> +++ b/drivers/iommu/mtk_iommu_v1.c
 [ ... ]
-
-> @@ -803,20 +803,26 @@ static size_t tegra_smmu_unmap(struct iommu_domain =
-*domain, unsigned long iova,
-> -static phys_addr_t tegra_smmu_iova_to_phys(struct iommu_domain *domain,
-> -					   dma_addr_t iova)
-> +static phys_addr_t tegra_smmu_iova_to_phys_length(struct iommu_domain *d=
-omain,
-> +					   dma_addr_t iova, size_t *mapped_length)
+> -static phys_addr_t mtk_iommu_v1_iova_to_phys(struct iommu_domain *domain=
+, dma_addr_t iova)
+> +static phys_addr_t mtk_iommu_v1_iova_to_phys_length(struct iommu_domain =
+*domain,
+> +						    dma_addr_t iova,
+> +						    size_t *mapped_length)
 >  {
->  	struct tegra_smmu_as *as =3D to_smmu_as(domain);
->  	unsigned long pfn;
->  	dma_addr_t pte_dma;
->  	u32 *pte;
+>  	struct mtk_iommu_v1_domain *dom =3D to_mtk_domain(domain);
+>  	unsigned long flags;
+>  	phys_addr_t pa;
 > =20
 > +	if (mapped_length)
 > +		*mapped_length =3D 0;
 > +
->  	pte =3D tegra_smmu_pte_lookup(as, iova, &pte_dma);
->  	if (!pte || !*pte)
-> -		return 0;
+>  	spin_lock_irqsave(&dom->pgtlock, flags);
+>  	pa =3D *(dom->pgt_va + (iova >> MT2701_IOMMU_PAGE_SHIFT));
+>  	pa =3D pa & (~(MT2701_IOMMU_PAGE_SIZE - 1));
+>  	spin_unlock_irqrestore(&dom->pgtlock, flags);
+> =20
+> +	if (!pa)
 > +		return PHYS_ADDR_MAX;
 
 [Severity: High]
-This is a pre-existing issue, but does this lockless traversal risk a
-use-after-free on the page table memory?
+Does this incorrectly treat a valid mapping at physical address 0 as
+unmapped?
 
-Unlike tegra_smmu_map() and tegra_smmu_unmap(), this function looks up the
-page table and reads the PTE locklessly. If a concurrent unmap operation
-removes the last IOVA in a page directory, tegra_smmu_pte_put_use() will
-synchronously free the page table:
+If the hardware PTE points to physical address 0x0, the raw PTE contains
+valid flags, but the masking operation isolates just the physical address:
 
-tegra_smmu_unmap()
-  __tegra_smmu_unmap()
-    tegra_smmu_set_pte()
-      tegra_smmu_pte_put_use() {
-        ...
-        iommu_free_pages(pt);
-        as->pts[pde] =3D NULL;
-      }
+    pa =3D pa & (~(MT2701_IOMMU_PAGE_SIZE - 1));
 
-If this runs concurrently on an unmapped IOVA within the same directory,
-could tegra_smmu_pte_lookup() return a pointer to freed memory, leading
-to a crash when evaluating !*pte?
+This results in pa evaluating to 0. The subsequent if (!pa) check will
+then evaluate to true, returning PHYS_ADDR_MAX and leaving mapped_length
+as 0.
 
-Additionally, is there a time-of-check to time-of-use race here? The pointer
-*pte is evaluated twice without READ_ONCE(). If an unmap happens between
-the check (!*pte) and the assignment:
-
->  	pfn =3D *pte & as->smmu->pfn_mask;
-
-Could *pte become 0 during the second read, causing the function to silently
-return a physical address of 0 instead of PHYS_ADDR_MAX?
-
-> +	if (mapped_length)
-> +		*mapped_length =3D SZ_4K;
-> +
->  	return SMMU_PFN_PHYS(pfn) + SMMU_OFFSET_IN_PAGE(iova);
->  }
+Should this code check the valid bit on the raw PTE before applying the
+physical address mask to determine if the page is mapped?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260602104637.1219=
-810-1-guanghuifeng@linux.alibaba.com?part=3D21
+810-1-guanghuifeng@linux.alibaba.com?part=3D15
