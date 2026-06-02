@@ -1,153 +1,115 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D62B39D6E8
-	for <kvm@vger.kernel.org>; Tue,  2 Jun 2026 21:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0469D175A79;
+	Tue,  2 Jun 2026 21:33:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780435604; cv=none; b=mCxp8CE/sCuHsv3hHgSPMo0HRFaEgdzlo5NecugQGZTjuvGaSQxh4WIM2dw73YOpgT0baudIA6YR4k6zCPu2GoxgHZcv3hRKYpfqwpJO2BnSQMgo4twHYpf65tR+2CgxYHOstdbNAsWQ93zdyUJiKdvZz0D2K87HX1QidOlYz4k=
+	t=1780435991; cv=none; b=LS8Ekhtdu+0GiKSL1QmT5jY4Vf/jtaDc38OodEfdiIAHXna968Z+PgM3/q8oNQHnhTnSDlFYkWzw4jAJ4TulIFHvHjWYXRtNidPJ0B82/KNkOfmOAWEsBWfrnWaNIWzLmM65eFKpSWRt6urdtq/OBa9ZkjkE4YsUg7vermtrjLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780435604; c=relaxed/simple;
-	bh=dXfphc9xwtT9J9Mx9nqk/TREcXFO8JL1ydyTeyM2RLA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISEgOeAg5Rf4jQdDfCgYWqrLEm559Hyi0uqXaUNKVYIEWVc9dj+vwPRF4O2l0r6fGFp5nW0hpaf5LlSJJEVkhGXRVylbE8QnDn9uflr/RfX5/vWN0gxBXTJtccotF1X5iSvv0QpPbiadiLfkovDNSaLSghRADIvPxOW2eHxImBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CgnzSV6e; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780435991; c=relaxed/simple;
+	bh=rjmOVwjQeQBiLaQlxZ274XV9FIA1bzvyI9YY8XSJRLM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bjrldMzVZU4OerHEcfT2xenf8pkI+/YoERXTZlXB/FYAr4GjXUSvvmBX26gGfW2EpJSGzRQCObeJ8bj+LJswAwhQz40qmpwzHRUOdjdulc4q8j2WjnuGgJMDTDZrV5TcF+5wfJN/+4eZRTJent2mT5hkOs0pQI3EHF/nPmVBc2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9SFy076; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CgnzSV6e"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490a76757e5so23830485e9.2
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 14:26:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780435601; x=1781040401; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7X+F9JE3lvSde2aXKa2nn0C2FzfJE3VdMHUXsv8Plio=;
-        b=CgnzSV6esF+1TCJsKAi+5U7iGvsASgdRpAR7RUZ0iAZWg6Ry8JXDzzhHDg4R43PrUP
-         4+PRNws27ToP9i6eKFlE0keA6Rl18gc6LqFlh1Jv+kOg+Z9JfdnT0KgKbtF9qaPcmv7C
-         XPjz1Ak3aVKiQiHXG+7Yew35qijmalM30gi1T8QSdVMbxlJFX8PJA4Cf7N2gPLDKM7yL
-         q7FpeX6gBV5F76UOf1YF4AO+8nbUYQauoE6ky0H5zqB761ek8tBDF//qLoQo3aqImhVc
-         2uhPM4plPECUokU0erjQXYaWI+HHyx/K9gKuvAP+VogI8EnLeoNjMXEKuV/pbSnv207G
-         FPAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780435601; x=1781040401;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7X+F9JE3lvSde2aXKa2nn0C2FzfJE3VdMHUXsv8Plio=;
-        b=dU+9q+08oGtEytT/eYtQ3BfK3d2qeuia3jdlPfatuY38L7qmXIM2yAX311+89Le/Q/
-         7eGxnBjm+PqaqbDosfTttG5uEpri+4Wlh4730RJNgLpKMSPNzwYp9Y2VoXgFAGqAJDUX
-         XMelDrFiBk/RV63YShMw0bS0FyXnTGbixgizC1Cl1k1n/Nmke+8ZW02aJOOBBoWfcPEF
-         0jCe5CEgqXY1iOhTOlqZJPZ4ul2GqFaOQyoHMVNIrwXDCafCzG1HMitQmw60DfRkwdTl
-         7ig58vwwdjpyArI+fIwJhgjhmAN8A2hEJAph5eDJCqizFCsQAceny87C9s/Kw+KD4dOP
-         2LUA==
-X-Forwarded-Encrypted: i=1; AFNElJ+My101b4lr/grvTA6P/u3l7GByKo4WJPeilvPDqlONp1fbPoJnng+daNuZM3drw0UjAQg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdoVjMg92uhn3FMFcupro2FUOXNkPwrDttQHKv0PTX1w/N5zBw
-	l3PlFWiccb3UUsbdh+uotiBGKvISq8GMBxEKRGUl/B6euO9g3B6e2iW/
-X-Gm-Gg: Acq92OHzdA3ll8GKdZBiTeP0yqvYlBAuZ7BHhla8O3co97b0e0N5Wsmuy1A5ZB34t3b
-	WjrZI9UHffq/txCk5976QNkxCBvOykO/ChfsiBekQopEWqJfJLhapTLXbE5oVtFFxP/C5i3t/2Q
-	E5oZdvDdU9BReweCxD+jIVHZmTzS3szKgzsZP4qnXU1n7OJWtwnHMY6j7vqWDKyGH3kuxYMfzjc
-	gss5NquL8/oW4uiwPjwBbprH7bphzqrOP9WpQIh/iV3tGqASB9k+m5ecECDOXOFPAnkRIkbmE61
-	VnQ7K3SJxpokpNiaOJex7UdT4Em4UrLPVxBjgOn5/DcRhi5Hlqhn4A76/RobNVlip1FDIRmhOIL
-	JV0rmKyQYyjVg2mo1J0bToi9nXhBPtsrmuc0nohMi+Blhaz8G7fkB/FNgFxs8v9a2dsV16kKpPb
-	sHPgQPCxpAaiFX6Lx+rRm1qin9FN1cTQ==
-X-Received: by 2002:a05:600c:c174:b0:490:b2a6:8c2b with SMTP id 5b1f17b1804b1-490b5eb82b2mr8862715e9.10.1780435601484;
-        Tue, 02 Jun 2026 14:26:41 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-490b614261bsm2203845e9.26.2026.06.02.14.26.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jun 2026 14:26:41 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: devnull+ackerleytng.google.com@kernel.org
-Cc: ackerleytng@google.com,
-	aik@amd.com,
-	akpm@linux-foundation.org,
-	andrew.jones@linux.dev,
-	aneesh.kumar@kernel.org,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	bhe@redhat.com,
-	binbin.wu@linux.intel.com,
-	bp@alien8.de,
-	brauner@kernel.org,
-	chao.p.peng@linux.intel.com,
-	chrisl@kernel.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	david@kernel.org,
-	forkloop@google.com,
-	hpa@zytor.com,
-	ira.weiny@intel.com,
-	jgg@ziepe.ca,
-	jmattson@google.com,
-	jthoughton@google.com,
-	kas@kernel.org,
-	kasong@tencent.com,
-	kvm@vger.kernel.org,
-	liam@infradead.org,
-	linux-coco@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	mathieu.desnoyers@efficios.com,
-	mhiramat@kernel.org,
-	michael.roth@amd.com,
-	mingo@redhat.com,
-	nphamcs@gmail.com,
-	oupton@kernel.org,
-	pankaj.gupta@amd.com,
-	pbonzini@redhat.com,
-	pratyush@kernel.org,
-	qi.zheng@linux.dev,
-	qperret@google.com,
-	rick.p.edgecombe@intel.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	seanjc@google.com,
-	shakeel.butt@linux.dev,
-	shikemeng@huaweicloud.com,
-	shivankg@amd.com,
-	shuah@kernel.org,
-	skhan@linuxfoundation.org,
-	steven.price@arm.com,
-	suzuki.poulose@arm.com,
-	tabba@google.com,
-	tglx@kernel.org,
-	vannapurve@google.com,
-	vbabka@kernel.org,
-	weixugc@google.com,
-	willy@infradead.org,
-	wyihan@google.com,
-	x86@kernel.org,
-	yan.y.zhao@intel.com,
-	youngjun.park@lge.com,
-	yuanchu@google.com
-Subject: Re: [PATCH v7 34/42] KVM: selftests: Test conversion with elevated page refcount
-Date: Wed,  3 Jun 2026 00:26:30 +0300
-Message-ID: <20260602212630.27012-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260522-gmem-inplace-conversion-v7-34-2f0fae496530@google.com>
-References: <20260522-gmem-inplace-conversion-v7-34-2f0fae496530@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9SFy076"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EA21F00893;
+	Tue,  2 Jun 2026 21:33:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780435990;
+	bh=jdudOJL+raYR/P30MGb9StMfBGEfajIKmHJbLO4Ebr8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=V9SFy076bGKjitzQm68Krm+0Rj2oH6tD8ejVPMJ5I/uiNj2eELLvem5TBfWJhWS4Y
+	 TNxkpj0r0EocaKdfV56ca0uDZSuziD13GMeufrm1EkQYXl0dCfsFY9YyiesUFWhGHl
+	 UOin2nIqMxPo5V8Rma6DTTuqNFut73Fbsj1WZ4Fu1ANDORSyKssdikJ5woI/BNsu9l
+	 v2mM4MTf9qRrePcAHv2EQ+vCuYaejc3jfUE4bEVGTXMm0pKZaSeNx64p/NZBkyjPI+
+	 qEcYTk0FOzw47y+XX7bp2LjYzzjiZ7m6ac/+kx2hpwt6249m/LIFyHVdITnIiP7Fe8
+	 7BqzG0nolC9Cg==
+Date: Tue, 2 Jun 2026 14:33:08 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Andreas Grapentin <gra@linux.ibm.com>
+Cc: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Friedrich Welter <fritz@linux.ibm.com>,
+	Gautam Gala <ggala@linux.ibm.com>,
+	Hariharan Mari <hari55@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v1 15/26] s390: Add functions to query arm guest time
+Message-ID: <ah9MFEq09ISAu9cb@kernel.org>
+References: <20260529155601.2927240-1-seiden@linux.ibm.com>
+ <20260529155601.2927240-16-seiden@linux.ibm.com>
+ <ah4G847iT_pPRuQm@kernel.org>
+ <ah7Ul7YwJOFuSMaD@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ah7Ul7YwJOFuSMaD@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
 
-Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>:
-> This test uses vmsplice to increment the refcount of a specific page
+Hi Andreas,
 
-I recently submitted a patch, which makes vmsplice equivalent to
-preadv2/pwritev2, and it was accepted to next.
+On Tue, Jun 02, 2026 at 03:25:13PM +0200, Andreas Grapentin wrote:
+> On Jun 01 26, Oliver Upton wrote:
+> > > Add functions to convert between ARM guest time (LSB0) and s390 host
+> > > time (MSB0) using new ptff function codes.
+> > > 
+> > > Co-developed-by: Nico Boehr <nrb@linux.ibm.com>
+> > > Signed-off-by: Nico Boehr <nrb@linux.ibm.com>
+> > > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+> > > ---
+> > >  arch/s390/include/asm/timex.h | 49 +++++++++++++++++++++++++++++++++++
+> > >  arch/s390/kernel/time.c       |  1 +
+> > >  arch/s390/kvm/arm64/arm.c     |  9 ++++++-
+> > >  3 files changed, 58 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
+> > > index 49447b40f038..9ec22a28bbda 100644
+> > > --- a/arch/s390/include/asm/timex.h
+> > > +++ b/arch/s390/include/asm/timex.h
+> > > @@ -99,6 +99,8 @@ extern unsigned char ptff_function_mask[16];
+> > >  #define PTFF_QSI	0x02	/* query steering information */
+> > >  #define PTFF_QPT	0x03	/* query physical clock */
+> > >  #define PTFF_QUI	0x04	/* query UTC information */
+> > > +#define PTFF_QAGTO	0x10	/* query arm guest time offset */
+> > > +#define PTFF_QAGPT	0x11	/* query arm guest physical time offset */
+> > 
+> > Are these analogous to CNTVOFF_EL2 and CNTPOFF_EL2?
+> 
+> They are somewhat related -- we don't have the EL2 counter offset
+> registers, but we still need to virtualize the guest counters, so
+> instead we have to maintain the guest counter offset separately.
+> 
+> However, to determine the correct guest counter offset, we are using
+> these new PTFF function codes to translate between the s390 and arm64
+> architected counter domains.
 
-For now it is just an experiment, it is possible it will be reverted.
+Thanks for clarifying, I was trying to figure out how these functions
+apply to the virtual and "physical" views of the counter inside the VM.
 
-https://lore.kernel.org/all/20260601-aufweichen-dissens-ausrechnen-0d9b84728113@brauner/
-
--- 
-Askar Safin
+--
+Best,
+Oliver
