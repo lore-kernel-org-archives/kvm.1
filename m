@@ -1,143 +1,138 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FFB31F984;
-	Wed,  3 Jun 2026 15:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE80B317155
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 15:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780501690; cv=none; b=l7veN5U/Z0Wrau6W0Fs35CyhS/rNAKwNqGzKGhyl/9bAhteNHczGR71ZnChcKeICnlrH0f9O5IGgjRZ+N7x0OefS7tigJjb1rk+U/h9U6Rmi2hMu8TVl2D4L89NIDKVw64UAPLrPWvYTi8K2YwcQyOprovBUv29ydNtLJmi+5bI=
+	t=1780501691; cv=none; b=TYU0NIm/umTE5wDT8fjjHSFwjoq4KsZ0wd0EoqverjiCK46MBmy/WRU4vrsP4iec0ABb8JPGtQh9+xMAETDQB4we9dTY1JIJW8oD6ipPZV2t7vc+QhPLB8OpaEjakgkXtXDGP+xUoqsx6CzOTnfQGl2gaThlfD52WDWVl40ukTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780501690; c=relaxed/simple;
-	bh=frB+SiLPLC2yAFk9xsb1e2zi0rXUJoOmpVmXtrUYtSE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Os612pu2928x8lhfrzbsZ8vqmOhX0hP4n9jg5LoPLAVWHpOjy7218cRdHMxRtbEhyqu6EegNEnJhVM0KsXiLJW+6Swna/YwuOjYQyFCTWlpMAgkClyl/AiYpRyMcFu0d4f+UfvY5zZFzYsOEvKXjTvB+nc5YR5dfQUBv4hEmVu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CaxI6Iep; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780501691; c=relaxed/simple;
+	bh=+rspAt4QRfb9aCvr/tf02JAfOMu5gaKGWf1kSHsNF34=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=GPPbnuSl4mgD4aq89ze7LVMPLkU1PPIno7wPxZ+5zGURFJcecBXDpK6tAsZ+ZpsX8AM44KxqGqrD6dgkOE71MRmetkcpGB08pdGS0kBUfqNt3Asx+1bOLOyjzn3dB4VwjjKy9xE7yHmpDiTozGeOfJTGgmwUhV7jwxPU7O5RvZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZAFtbmiN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CaxI6Iep"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 653BZXWh1276410;
-	Wed, 3 Jun 2026 15:48:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=gHrtBs6vMW/pTCjCj
-	WmA20zYNGE81NgoCaBAwMk+9XQ=; b=CaxI6IepwW1nlfh+VJ+gaJskr5hAf5mFZ
-	iwKFEj+KzQEGpMVgLOn+dZPiuEJh1rN3cuCjd/JR1xRnQhfsUr+/os3jvCBLgTL7
-	ucW/FVcwP+ZeTqmFrC484HPHvZDhdC5oqLLmTrb7pdIwuz5gKxQdL+AhkYvcADv4
-	Pgg40C2zxl0PQEpHA4kgviDEK3+iL7odgw0vhMNv6AL0DWxEdI7vdkQUHTV9mP/g
-	LT3P2imFq06ChVWXV3wR2y84BX1E9gRoB5mg/UgXtrKBVl6Oh6ZL4cuXk/i7z+Ya
-	+C+ExY2JDcGbfBtkgt19Xx8TGJyLPMrZhAsk0W0irv8AYaTQt9fuw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqm53qhk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jun 2026 15:48:06 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 653FdORT020826;
-	Wed, 3 Jun 2026 15:48:05 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4egcegrng2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jun 2026 15:48:05 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 653Flx5H51183904
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 3 Jun 2026 15:47:59 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7D8F020043;
-	Wed,  3 Jun 2026 15:47:59 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 56CF32004B;
-	Wed,  3 Jun 2026 15:47:59 +0000 (GMT)
-Received: from p-imbrenda.aag-de.ibm.com (unknown [9.52.223.175])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  3 Jun 2026 15:47:59 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
-Subject: [PATCH v1 3/3] KVM: s390: Allow for 2G hugepages
-Date: Wed,  3 Jun 2026 17:47:58 +0200
-Message-ID: <20260603154758.234768-4-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260603154758.234768-1-imbrenda@linux.ibm.com>
-References: <20260603154758.234768-1-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZAFtbmiN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616741F00893;
+	Wed,  3 Jun 2026 15:48:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780501689;
+	bh=I1WyU1DqUFPonbdXnJSkZaEYGNbVsQ+YLZrYqJkgvm8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ZAFtbmiN+xjhjUUXFMAcsBMhJli9qjo5lzBV6cV/0V28m7HTR0VSr8+NxjN9gkLaP
+	 52khbiZpI2vSIawtAoB4KecGHTb0OZGub9+ZV145G68xM39uXiTg0Sy8qQKcpZrlwX
+	 1iClXdacIPNlEk45TctXYosXbHykh/Fa3E2068Yb6iIwH9qAORLgIRxnz5N4eyjMX3
+	 o1j+zwj6znVsY8Ujg8boOFRJmHPbJXzeg3FQq1o9DUbMEANkaBsrq4Ex/QVLhc/v3z
+	 nvQyxqyXWOYCiHecsAkBEaO/Cg6sXudwzEdn+hrqGTSPu7tP9MNR7t6OXNu8dU9xM5
+	 /w+OY3JYGn+AA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 13/32] iommu/fsl_pamu: implement iova_to_phys_length
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260603151804.1963871-14-guanghuifeng@linux.alibaba.com>
+References: <20260603151804.1963871-14-guanghuifeng@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 03 Jun 2026 15:48:08 +0000
+Message-Id: <20260603154809.616741F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: k_9dtEkIPGUfiEignEMcpIcfk7K3JO9F
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDE1MSBTYWx0ZWRfXxD9Ta4trSKYf
- NkpuxrV22q/YQLtc69auXJ2QB0Dw9jl9RpG0avutY+0CqX5f2B2zPb8txDoT8sJEYE8bZI5TGcm
- /MENmtish+pi9loyoAxXThn/khtjX7ixt8Ammd5ymgdI+Qe6uwfW4kA6ALnxpukqfXR+tJNYjkq
- KS2o+iZ/xg718ypmai9FbSLw26PNFOvj8CVL5UyGTIZoE6jyQQsFdLk673fSdlOvyQyI/gT+Khp
- t/j1RgDNC1JYXm97ZVohPOlLF0l1xNqXa78PL6pTrM0fNeXLfSKCpfaAcaB5Jg91zTJjEY8sN9x
- 4SXsHU6QAE2WWggIOcxOUVf2KzIzT3w1fnShAJclHgbHTE40AYR3bt1N6R3BxdZT9w+TeEMRKwQ
- u8E0RNz+4BezBYfSVPP25+FnjduDf0BxBIhdZGfC5ZtrTnIBmOpJRgLNMqQEo4cjZjVNao+tb3A
- Wo8K8hCqCH2RXX8ttuA==
-X-Proofpoint-ORIG-GUID: k_9dtEkIPGUfiEignEMcpIcfk7K3JO9F
-X-Authority-Analysis: v=2.4 cv=Vf3H+lp9 c=1 sm=1 tr=0 ts=6a204cb6 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=jBZgYMDF7q3Z6fg6dRgA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-03_05,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 adultscore=0 bulkscore=0 impostorscore=0
- phishscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1015 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606030151
 
-Change gmap_2g_allowed() to perform the necessary checks to allow for
-2G hugepages to be used, instead of returning false. The
-GMAP_FLAG_ALLOW_HPAGE_2G gmap flag is now taken into account.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Critical] iommufd and vfio misinterpret mapped_length as the remaining c=
+ontiguous length, leading to out-of-bounds physical address batching.
+- [Critical] Assigning 64GB (`1ULL << 36`) to `size_t *mapped_length` silen=
+tly truncates to `0` on 32-bit kernels.
+--
 
-Also add appropriate kerneldoc comments.
+commit bd63c934fd433e9c7d21862a31a674fe50af2eae
+Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
----
- arch/s390/kvm/gmap.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+iommu/fsl_pamu: implement iova_to_phys_length
 
-diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
-index c9e348149ba1..c5a8132eaa22 100644
---- a/arch/s390/kvm/gmap.c
-+++ b/arch/s390/kvm/gmap.c
-@@ -635,10 +635,27 @@ int gmap_try_fixup_minor(struct gmap *gmap, struct guest_fault *fault)
- 	return rc;
- }
- 
-+/**
-+ * gmap_2g_allowed() - Check whether a 2G hugepage is allowed.
-+ * @gmap: The gmap of the guest.
-+ * @f: Describes the fault that is being resolved.
-+ * @slot: The memslot the faulting address belongs to.
-+ *
-+ * The function checks whether the GMAP_FLAG_ALLOW_HPAGE_2G flag is set for
-+ * @gmap, whether the offset of the address in the 2G virtual frame is the
-+ * same as the offset in the physical 2G frame, and finally whether the whole
-+ * 2G page would fit in the given memslot.
-+ *
-+ * Return: true if a 2G hugepage is allowed to back the faulting address, false
-+ *         otherwise.
-+ */
- static inline bool gmap_2g_allowed(struct gmap *gmap, struct guest_fault *f,
- 				   struct kvm_memory_slot *slot)
- {
--	return false;
-+	return test_bit(GMAP_FLAG_ALLOW_HPAGE_2G, &gmap->flags) &&
-+	       !((f->gfn ^ f->pfn) & ~_REGION3_FR_MASK) &&
-+	       slot->base_gfn <= ALIGN_DOWN(f->gfn, _PAGES_PER_REGION3) &&
-+	       slot->base_gfn + slot->npages >= ALIGN(f->gfn + 1, _PAGES_PER_REGION3);
- }
- 
- /**
--- 
-2.54.0
+This commit implements the iova_to_phys_length callback for the FSL PAMU
+IOMMU driver. It returns the actual PTE mapping size for a given IOVA.
 
+> diff --git a/drivers/iommu/fsl_pamu_domain.c b/drivers/iommu/fsl_pamu_dom=
+ain.c
+> index 9664ef9840d2c..60abd497dc639 100644
+> --- a/drivers/iommu/fsl_pamu_domain.c
+> +++ b/drivers/iommu/fsl_pamu_domain.c
+[ ... ]
+> @@ -169,12 +169,30 @@ static void attach_device(struct fsl_dma_domain *dm=
+a_domain, int liodn, struct d
+>  	spin_unlock_irqrestore(&device_domain_lock, flags);
+>  }
+> =20
+> -static phys_addr_t fsl_pamu_iova_to_phys(struct iommu_domain *domain,
+> -					 dma_addr_t iova)
+> +static phys_addr_t fsl_pamu_iova_to_phys_length(struct iommu_domain *dom=
+ain,
+> +						dma_addr_t iova,
+> +						size_t *mapped_length)
+>  {
+> +
+>  	if (iova < domain->geometry.aperture_start ||
+>  	    iova > domain->geometry.aperture_end)
+> -		return 0;
+> +		return PHYS_ADDR_MAX;
+> +
+> +	/*
+> +	 * PAMU configures exactly one Primary PAACE entry per LIODN with the
+> +	 * Multi-Window (MW) bit cleared and ATM =3D PAACE_ATM_WINDOW_XLATE,
+> +	 * WBAL/TWBAL =3D 0. That is, every LIODN is backed by a single hardware
+> +	 * mapping window of fixed size (1ULL << 36, i.e. 64GB, see
+> +	 * pamu_config_ppaace()) performing an identity translation. The driver
+> +	 * does not split this window into SPAACE sub-windows, so the entire
+> +	 * aperture is one PAACE "PTE" entry. Return that single entry's size
+> +	 * as mapped_length, matching the iova_to_phys_length contract that
+> +	 * mapped_length reports the full size of the mapping entry which
+> +	 * covers iova (not the remaining bytes from iova to its end).
+> +	 */
+> +	if (mapped_length)
+> +		*mapped_length =3D 1ULL << 36;
+
+[Severity: Critical]
+Does this assignment silently truncate to 0 on 32-bit kernels?
+
+Since mapped_length is a size_t pointer, assigning 1ULL << 36 (which is 64G=
+B)
+will truncate to 0 when size_t is 32-bit, potentially causing caller infini=
+te
+loops.
+
+[Severity: Critical]
+Could this implementation cause out-of-bounds physical address batching in
+callers?
+
+The comment mentions that mapped_length reports the full size of the mapping
+entry rather than the remaining bytes from iova to its end.
+
+However, callers appear to misinterpret mapped_length as the remaining
+contiguous length. For example, in drivers/iommu/iommufd/pages.c,
+batch_from_domain() fails to account for the IOVA offset within the PTE:
+
+	npages =3D pgsize / PAGE_SIZE;
+
+Similarly, in drivers/vfio/vfio_iommu_type1.c, vfio_unmap_unpin() directly
+uses pgsize without adjusting for the offset:
+
+	len =3D min_t(size_t, pgsize, dma->size - pos);
+
+By returning the full PTE size without adjusting for the offset within the =
+PTE,
+can this lead to memory corruption when callers over-batch physical pages?
+
+> +
+>  	return iova;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603151804.1963=
+871-1-guanghuifeng@linux.alibaba.com?part=3D13
