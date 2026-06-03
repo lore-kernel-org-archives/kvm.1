@@ -1,137 +1,108 @@
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE51400E08
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 22:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780525030; cv=pass; b=K23axKG5jEz1fjki84Nvin38LYdP/lQUj/yUfIA40LMxtpjrdyaGs1bpWSl2EHqS+1ZqnmDOiRQZuSSXVX72S2yBP0Oi2j8MJHWAjKptuRtUpuC4n8rGR1ijlLklyziUDdqgI5QQsPenJcEjkxFODiggSMGEs8F1grbLsP7v5mY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780525030; c=relaxed/simple;
-	bh=gx3Oklyhw4/29KJrqtyCgK2OIzmZLnxgN7Pih2TRWig=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QFjEi7N6h8dGidyq7FjT/gvlotWZbi428GGYNFOERhTDej/Y3ckV26XI+pjFdsARKCNDZZ8kq48sdDRbywr5kYpG66QTiG7ArhpBdq1rSruUG+UQJcexubQBq61SiqXio2qMB/xU4iIAQ+xPu1RE0RA3cIlT8ajx4t0l7xW1a+I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H4SYhr2u; arc=pass smtp.client-ip=74.125.82.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F0F4D8DA9
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 22:34:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780526065; cv=none; b=P4fys7KyzL6GlBmgVeMPW8odC3O12FcUYIrAj6loICLGkWLe87tN++vh6XzBPBHpYMq7mQ7IBokW7xEQgYti/FmOsk4K8jepEltcRmOSjWgUCI0rvblA2z5NAiDod+CbCOqn63FYsNkKYQQm9bhCCyLeWZUbsEI1wcm6pZXAbso=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780526065; c=relaxed/simple;
+	bh=UJMdaPk05/JurNRVA1+sx4rHnxgp8BaU2QW/eKkUZQI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=homd+hS0tzHAwezfK0BOK16CHh3WeyokhaEw6SNt6tUJED3JvE5lnzAZdp5IJ95kLD7/z9QFXxjKoNGSYXw9CUMQhmo2eO5K+fL2DZTtbwub8NT24upwIc1CQnGgF776jNvSRqXsYJF1x8cCdcZaVZyApUsMPSDfkfjYZoFfZw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=POvCDRNh; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H4SYhr2u"
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-13721dfd471so59611c88.1
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 15:17:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780525028; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PJ5F8PcwSmqkOymotKyith9kbBa0rL3/Gz7UVgr2LX0CCgfLUzec1MF/jHb+JFwsUY
-         sJ7PQxJelUbl886rLF9JtNcWl+xddZfjcP+uMgg9CxQnpV1meao5XEyjQk8ttYud3ctZ
-         +HcZUsE4vj6AJ3b5zN/SoqKIqqLAuQ+/MX10ize1Gg05V39V3jq8ZuVQ4b8MGf3i2Hqw
-         r8UAcL/apx2QdCvmFHgsedUWTY7AuMkmIyXuYoOMEWSfTzx3PAwMVVVdn2rBjqtes+Hz
-         dNfdODz0KXhMvhWjFO1/phz6hHuQabRBjAgW1outxphnNa4LItX37Y85YZm/Xq6jQynu
-         /y4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=V6pazkEL6DFXw7u78OwlQURha9CAXkBpjIcDT/R6oxE=;
-        fh=LzsSvsh6reHA5KK4UDWxRv5E6WxeUl+IzTynha2/sK0=;
-        b=MZC564mYDgVaxpZqGxezkK5BebSCD34yrKMYGUwLuM8frDEESwZISYrGd5yarDLaH2
-         UP7furty34t5DnaHjAz5iLR/6dt0aVpQVEJchYdYpiQ7PahKDWASFH28wq8ZdSXuHTPc
-         fJJS6zrw+g6y8T0JqNyBOHSGYBh3xzd1lMh1QCFSLUWjTXwt3raWT/4oAzYT1CH/uV+N
-         qfWhZseKzjjM5Qz+PfNRTt0HXCdr9KaiFueix4sNvnyQoQQepQ/Elpc9FJX1iGlaJjCo
-         xLCYsHfsk5mjGFtg+Fnza9NfoKmvuBAdT0nQgfLV4zAvivjPvYr+WHk1r8+I/GST3IR5
-         E7Dw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="POvCDRNh"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8584e80bfcso24965a12.3
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 15:34:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780525028; x=1781129828; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=V6pazkEL6DFXw7u78OwlQURha9CAXkBpjIcDT/R6oxE=;
-        b=H4SYhr2uRLDPzz6f83p5O1Fer8tULbvijZOnixRCgPM2XuQ0Qqm5bkxekfoA6O8pLU
-         LFu3tR/Bggkc21XKyBY+nkh/9nrbQPsTzbaDis9Q49I08+fHEMCyRwNOmUjhiA313Utc
-         NV6f9RLeJJ/LzV9JePM/H9ttJjHsB65yPV+wzNZuYk0u7XXxB50nbqrZgVCv1A7RcYWb
-         jA597R8xdbOAu5HX3aob4HCoogIXuiLckfzkbj70Z9O1fbigqRCZYEaYmEoGTo3Z2fZG
-         IAmxnjjpD8+NzCHCQvk0aUHc/aT3L3RMJP9IrzykbUn0h5t7A4DWdciV5l04/UKpB6ng
-         m23Q==
+        d=google.com; s=20251104; t=1780526061; x=1781130861; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=30kD1jPAUiuVtuobInSriK5ab2qtGGgy4byvobLmmHE=;
+        b=POvCDRNhWlJ/VTOf8b1hIstmdRdv0pmBk9QkiGGRsgOhST0fF8h8ovSLRBhoZ4bMSy
+         z1Ma6EK9Ph+a2EILNroEBFTqJFwsWzWn107/dAEp4yC7+E9rzohm1pf0N3TPuMVDiPjF
+         0D2WXQiuhfOVL5QkkiSG33wm3/GXA8eNOWBtsKIBem+zY9yhYBa/a3IvnnhcvNF3TmCo
+         iFmhQdSR7UKqQsLYpwmxpAQiUFVui5vfflQrcvFC9idQAdYssMwad3TkL0VKxbDaPuUu
+         jleWOqK1FMa2BO2QdAPv0+F81Jmd4jytQMqAl4/q7yXv44+XtJ4+2+BLJo8lgKugHQi7
+         NP2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780525028; x=1781129828;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=V6pazkEL6DFXw7u78OwlQURha9CAXkBpjIcDT/R6oxE=;
-        b=foCUQnwGqGfMJr9H12AseKiz00OVQAtk0JfToJQLEU0HkasnScwUechoowvshhrk0D
-         C+7gY4mwuBZ/KdIoN9EhK7j3a3+AcNuYLkElrVxik9PXcjA+Dw0S6ndUMh8rZBj+MkiI
-         B508m718/SZNl1igYY1axXx4skl6a2OcWbgrD3oc5Uxr2gZ1e6yxsZZunQATGwPXCDxS
-         gPtnyTaQ9S//HsquD98hbksQ3TQ7sb9OxTXFvZhUqAEbxbvPTxPAfgmDJMvD4DHi1u4r
-         x+mQXFoIdSN7RsgTxBeBNnzLiD1S4ORZXu48Cox/NdhWAFs3AUWzOCL4/aPe5qTscSqi
-         wG4Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8ilyYbaAVpIVVwZzOj3g1AhcE9nNfIgbLuFBkHm1okTrjV7DCc3O6WJVBnysoKxIbKevo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyksXwI5rGXMqT9GfXHXHEWyH7XBxDHKj7CJiHepkwfgjepqIhf
-	NtsLpAKhY8BLAXXL301vfaHnS5/l4dxbk6IeA4CeURYtCOp3ZzzUKMlhxsNHs6zv3cnYE5QPVcs
-	0dAaYbXA513bOOH1OYkYcM6wjAaX/gVuVBfLzIWkd
-X-Gm-Gg: Acq92OFhv237rM7uHbkF2MR0RsYzJNtPB9LrTRlIM/ZGxg5s0CldTBpGYg/7GUZg5V3
-	TC53vq2QPnWTttG+UY6daVgN3YmMsoTArCt9qA+KuBqpdmit+cffEABN5LyEa0tKD5N10lgyK9h
-	/obMsH4Ok5WJSE2J4/g3viw3JWjXAt+IZOCIDl8U46LBjU5jdyP+2upFn9958A77rSQJCYS2Z3w
-	aqy43mT35TYPgQ8mXRcVS6ra3Hs6Io1K01ZjMNlraw2CTgSGMWcOukUi4vbbtyO+Y/lSj0HKwiC
-	GMb/jyRM3j72ea4pd0rJHZR8OjNIbDD2/0jTZ5WwXNmrFE7v5N7T8+LlvgaMhj8bvChIYvGGkGj
-	6CHwY
-X-Received: by 2002:a05:7022:7f19:b0:137:ef27:e29d with SMTP id
- a92af1059eb24-137f6c126b1mr1478374c88.31.1780525027812; Wed, 03 Jun 2026
- 15:17:07 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 3 Jun 2026 15:17:06 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 3 Jun 2026 15:17:06 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ahmbVaCUcBrYK8qO@google.com>
-References: <cover.1779080766.git.tarunsahu@google.com> <9huzwlwnbgdd.fsf@tarunix.c.googlers.com>
- <ahmbVaCUcBrYK8qO@google.com>
+        d=1e100.net; s=20251104; t=1780526061; x=1781130861;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=30kD1jPAUiuVtuobInSriK5ab2qtGGgy4byvobLmmHE=;
+        b=DUYCnZg+L+ikMFZemxzMuLFi8T+CJArqwoLpeH1j75t4woEvvaelo5eWODlu8lHUwJ
+         ACbj3v32/Dyr6WoaWLlYoFxHHnj0PU43AR58OWEx82MKZSb6KxW7GnPsb+4O1fCUZ+GX
+         6Izt3skJwgkt62P2hNPFKtW3ytRK8wKaZLXGP8xZXIT//TpIG9Zd/dk9JFn2uYZCig6l
+         woy3CPL1+pdDslWLj/ah/W40B5w56jSJ19dF1dplxVylbXaM3TbUtmrnh8Lbey+2wLTW
+         IgOtlABCWmB6kYV4rYxmaxKY31uTz9QzkpWSwjP0wlvz2vYhxQyKdAOzJJxuAEkkS7Tk
+         FviQ==
+X-Gm-Message-State: AOJu0YyDvy4WY7HrWPUhSQBPXovY7CCW8TdEFyKrR6GPdpxbHJw0ynes
+	nIMPCfpxJBi6SfgcNUNhJQmcvHfZawEggdlaSRYjwpvfbgpgoITaK0ulUqTyQnUwH4Aj1RcwAAX
+	o1eah2g==
+X-Received: from pgvc19.prod.google.com ([2002:a65:6193:0:b0:c85:9c9a:ab5b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1fc5:b0:3b4:65ad:b417
+ with SMTP id adf61e73a8af0-3b4977c1efamr5848069637.45.1780526060695; Wed, 03
+ Jun 2026 15:34:20 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed,  3 Jun 2026 15:34:16 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Wed, 3 Jun 2026 15:17:06 -0700
-X-Gm-Features: AVHnY4KwIBznOQxPeeZp-k-7DNYvQD8SHlCWDjhKoWsxt_QvgGRs8hmrB0P3Bno
-Message-ID: <CAEvNRgHsJbGz8k8vgCn_HSxeeQ8agEm4oBYQQ0+b3gFb-aVokg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 0/8] liveupdate: kvm: Guest_memfd preservation
-To: Sean Christopherson <seanjc@google.com>, tarunsahu@google.com
-Cc: axelrasmussen@google.com, mark.rutland@arm.com, skhawaja@google.com, 
-	Mike Rapoport <rppt@kernel.org>, sagis@google.com, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Shuah Khan <shuah@kernel.org>, corbet@lwn.net, dmatlack@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, vannapurve@google.com, 
-	Pratyush Yadav <pratyush@kernel.org>, david@redhat.com, aneesh.kumar@kernel.org, 
-	vipinsh@google.com, Alexander Graf <graf@amazon.com>, David Hildenbrand <david@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kexec@lists.infradead.org, 
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
+Message-ID: <20260603223418.1720035-1-seanjc@google.com>
+Subject: [PATCH 0/2] KVM: nVMX: Fix ept=n bugs where KVM runs L2 with guest CR3
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Sean Christopherson <seanjc@google.com> writes:
+Fix two bugs where KVM can run L2 with a guest-controlled CR3.  The underlying
+flaw dates back to commit f087a02941fe ("KVM: nVMX: Stash L1's CR3 in
+vmcs01.GUEST_CR3 on nested entry w/o EPT").  Past me claimed:
 
->>
->> [...snip...]
->>
->> we have one open Question left:
->> 1. How to check guest_memfd is fully shared.
->>
->> [...snip...]
->>
->
-> Given that lack of support isn't going to be limited to _just_ guest_memfd,
-> simply disallow preservation if the VM supports private memory:
->
-> 	if (kvm_arch_has_private_mem(kvm))
-> 		return -EOPNOTSUPP;
+  Smashing vmcs01.GUEST_CR3 is safe because nested VM-Exits, and the unwind,
+  reset KVM's MMU, i.e. vmcs01.GUEST_CR3 is guaranteed to be overwritten with
+  a shadow CR3 prior to re-entering L1.
 
-Makes sense. Tarun this was the other option that I was suggesting when
-we discussed offline.
+which was and is true, _if_ a nested VM-Exit or the unwind is reached.  If KVM
+fails directly, vmcs01.GUEST_CR3 will be left pointing at L1's actual CR3, i.e.
+KVM will run with legacy shadow paging a guest-controlled CR3, which is... not
+good.
 
-I think (?) it is possible to create a fully-private guest_memfd for a
-non-Confidential VM, and even after conversion lands, for both
-vm_memory_attributes=true and vm_memory_attributes=false.
+Note, the vTPR fix will cause KVM-Unit-Test's TPR Threshold test to fail when
+run with warn_on_missed_cc=1:
 
-In that case, your preservation series can still preserve memory tracked
-as private by guest_memfd but not used as private, right?
+  FAIL: Use TPR shadow enabled: virtual-APIC address = 8000000: vmlaunch succeeds
+  FAIL: Use TPR shadow enabled: virtual-APIC address = 10000000: vmlaunch succeeds
+  ...
+  FAIL: Use TPR shadow enabled: virtual-APIC address = ffffffffff000: vmlaunch succeeds
 
-I don't think anyone will use this combination before guest_memfd
-write() support lands, we just need to make sure there's no kernel crash
-or corruption in this case.
+due to KVM actually accessing the virtual APIC page.  Given that I'm pretty
+sure I'm the only person that runs with warn_on_missed_cc=1, and that IMO this
+is firmly a test bug (e.g. on bare metal I'm pretty sure there's guarantee
+VMLAUNCH will succeed), I don't see any reason to try and make it "work" in
+KVM.  I might try to figure out a way to make the KUT testcase play nice, but
+for now I'll just ignore the failures in my test runs.
+
+Sean Christopherson (2):
+  KVM: nVMX: Move vTPR vs. TPR Threshold consistency check into "normal"
+    checks
+  KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot L1's CR3 when EPT is
+    disabled
+
+ arch/x86/kvm/vmx/nested.c | 86 ++++++++++++++++-----------------------
+ arch/x86/kvm/vmx/vmx.h    |  7 ++++
+ 2 files changed, 43 insertions(+), 50 deletions(-)
+
+
+base-commit: d4bfaa66fa171089b9b9fb2dc17af9245f2b9b34
+-- 
+2.54.0.1032.g2f8565e1d1-goog
+
