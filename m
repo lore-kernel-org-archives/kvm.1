@@ -1,129 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58C93D47D0;
-	Wed,  3 Jun 2026 22:55:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3BD3D47D0
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 22:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780527326; cv=none; b=XM0D/dwDc2UVBarK0aRa25OHpIcwqPHsWbjfYrJPxoTotiwyUf1M8WPA4AFJ0Kg9nXHGpbu4hBkZSqQWXo9NX99RjzZn7/fMihrJ4sEKB3AoU3xy+44L1W7NZs60q+nMKtq4QoSr2duK8+Xc91CPSWNVJgOfPh6QCnY9f+50hhc=
+	t=1780527435; cv=none; b=AxF8TRb7Fv+i8QqvbDlwMv1DewxrRUssP2OuSEGli8MDLO4I2SEet4+Hdtrnl6SKmrV6hbmrp1kIAHdiLt+d67wMrN3yWpXT0csOTQHvHVO7hvGpaL8jereqPdVAFga+8OioTats+IvQvsotgMWvKsrkqrUjyG7/NfJCrIxpmeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780527326; c=relaxed/simple;
-	bh=0i3HKfKAZEXkzt5Zxsa5pJ9oMm/FULATvfyLmZeRLbI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Q8JqNKtVojZoS1ReSuSo1xvjhbHIgQGI4EdKwnBvweDVpWSJNfL6An53560HhD1oJcbrGeLaqH0xiAO2qAjh7Wsqy2QOt214EUY1/2FQteUk7axs6TJBxBQznb+pgMBwm7piBMgyui1GZOzSIYGSc90ka610LTWpmTAG0WcirEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JUy9xq5a; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1780527435; c=relaxed/simple;
+	bh=FzQIgMSWbhyIokUzOxSXs5X+eFiWlOeFpIZ5377y9MM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TzszkR3NEDxtQGsaKlZxG2SRQzaf3LkJ7DclDpK2RZSQnTBIkmSNxbDgveS140sGRXN2c9rNL1MIAmXqJGTPidM90ma6FI7gecf/XPLl/UzBJFQDR/1mPDgOiVdd/bLn87bYICC5CdH3nde7yymqHDtaE6+rDhBHeSuNLUkXnz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b/Ixtu63; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JUy9xq5a"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8414AC2BCB0;
-	Wed,  3 Jun 2026 22:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1780527325;
-	bh=0i3HKfKAZEXkzt5Zxsa5pJ9oMm/FULATvfyLmZeRLbI=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=JUy9xq5aZdn/uyWq0bBhj/SqczMvCRjvTDqbS7z6HDAxEPapsKhZOBqZ6uUXdAtaV
-	 8MG5898fqziJf2FVqpNHODrGVl5kPc8hsneQ+K+0kMKO7PUdUTESSMNHaiWOqX5Qp+
-	 LfArQ2H8PClk/Up/Yhyiq7QMDmVB41GCPO4VwZSJ9+LykoRsxvhdnNv5KvCtW4L0ps
-	 KGRsOfKXLHh3gkcTyry00twTu/T1nfALFQvVZ7gPfGljwac4HX4N+CXh/Xwd87ZvI6
-	 3QUzKgyD8E7TJLt1uP9Ttpp2sdqskgT4IqsqI+wAAHmP7DTqCmjjbKmdIwVgSAnVYg
-	 6k6WY52KQ6d/g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 791F2CD6E6B;
-	Wed,  3 Jun 2026 22:55:25 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Wed, 03 Jun 2026 15:55:24 -0700
-Subject: [PATCH] KVM: selftests: Make guest_code_xsave more friendly
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b/Ixtu63"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c0c1e112dfso1085755ad.0
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 15:57:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780527434; x=1781132234; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r7fQ0iZNCgyRYhbqZYljEyuSeGi7dGwcSQsPSC7GyyU=;
+        b=b/Ixtu63vE7zJmTMtn/9SPRZ7sGhc2Od7AeWwnDGVmcRa8IDFjw2P7whU/q7sM3GHy
+         yDEdiunQa4aR1SWdyg2dXOiCZnGEsGJrZmHxYXkqdygFl06CFYAaL6A4MfiTABFpSOXn
+         d09GzFuL3dyssy0rFUGt4i3tI3NLdJArwgSSc/cRTYUiWLuOs7phT5MJhjC1yB3JfyD4
+         T4XGXZWURVOnN2EyDt0SjsDtsTd0wZoAeQCF0YfsUJAK/YvSuZkYgoNEudkBQlCd3SAG
+         R6KDoa9ngIhwoXCwT67i4T9/nNuRgq1lNj3MLOj1luxp1Q8ci5AU73aBpE2dHah9axgQ
+         bz5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780527434; x=1781132234;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r7fQ0iZNCgyRYhbqZYljEyuSeGi7dGwcSQsPSC7GyyU=;
+        b=TbvNT5wkpK39znnW/35HBYD4Kwb8W46MMqm+hylpomdc8FthY54780ZrE/bIKUBYfZ
+         zEWLI7NXL6qqwCH+Jm87oYDIXDYZKoxZphIU4Hc56VO12GeiOjia+Zr+bAcG2wOmKxSA
+         hVIWE798sK63auH4VY41sMk5hT1mtQcqRlrs+PCCagmAM1KuPXutDHjXWsDH9Akdjp3Y
+         12dAXvZ+UlZ0+k6pPZa2gJRXg03dQ6ibAb24oEAhWMLf2qCo7/2W+wMNKgoxC63uRnGQ
+         vmJFzsMmEsxVcsaDmVmIVY5DEafQdoIEOF7aMo7CJpCtKsmKZ99g14QAguxqlrOvcIun
+         22vw==
+X-Gm-Message-State: AOJu0YxCAI/kM1DzSG0Nc9WfnohGpVJOU+5g+hwKq7yyj/i/p3mDBXzv
+	1CYmpL3ALIvJssByZT/hdH8F1BRLgESd8KJQ2e0G/Z6DI3/vXtSTmb2DnZYnxiURXgM+rkbyoDj
+	ffHnfIg==
+X-Received: from plgm12.prod.google.com ([2002:a17:902:f64c:b0:2ba:34b1:ff5d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2ece:b0:2bd:4b8c:fd30
+ with SMTP id d9443c01a7336-2c1644dbdfbmr52249425ad.41.1780527433545; Wed, 03
+ Jun 2026 15:57:13 -0700 (PDT)
+Date: Wed, 3 Jun 2026 15:57:12 -0700
+In-Reply-To: <20260603225013.99E151F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260603-snp-selftest-cleanup-v1-1-73b29fe31ce6@google.com>
-X-B4-Tracking: v=1; b=H4sIANuwIGoC/x3MQQqAIBBA0avErBswC6OuEi3MxhoIE6ciiO6et
- HyL/x8QSkwCffFAoouF95BRlQW41YaFkOds0EobZVSNEiIKbf4gOdBtZMMZcfJd29aNM53SkNO
- YyPP9b4fxfT/B4FE7ZgAAAA==
-X-Change-ID: 20260603-snp-selftest-cleanup-bf97734c6902
-To: Sean Christopherson <seanjc@google.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, michael.roth@amd.com, jackyli@google.com, 
- liruxin@google.com, darwinguo@google.com, jacobhxu@google.com, 
- Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780527325; l=1941;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=/w5y02MR7E1dim1B0Oo2RpreZBil+9LNll44ViP3HBc=;
- b=5CKyYK19jWHUfGp2Y6HXQ0ZQcngpoxvT0Q+7ZVA0QMK5zsvF115Aszm5FtTOW7E/Cmo4FqtD6
- MFsYn64TSngAJhx6TLdgsAr6OVfBIhDMEatBKrRueS/YkG1H93xunlQ
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
+Mime-Version: 1.0
+References: <20260603223418.1720035-3-seanjc@google.com> <20260603225013.99E151F00893@smtp.kernel.org>
+Message-ID: <aiCxSL0rEkUFTW06@google.com>
+Subject: Re: [PATCH 2/2] KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot
+ L1's CR3 when EPT is disabled
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-From: Ackerley Tng <ackerleytng@google.com>
+On Wed, Jun 03, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> > --- a/arch/x86/kvm/vmx/nested.c
+> > +++ b/arch/x86/kvm/vmx/nested.c
+> > @@ -3651,19 +3651,14 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+> >  				    &vmx->nested.pre_vmenter_ssp_tbl);
+> >  
+> >  	/*
+> > -	 * Overwrite vmcs01.GUEST_CR3 with L1's CR3 if EPT is disabled.  In the
+> > -	 * event of a "late" VM-Fail, i.e. a VM-Fail detected by hardware but
+> > -	 * not KVM, KVM must unwind its software model to the pre-VM-Entry host
+> > -	 * state.  When EPT is disabled, GUEST_CR3 holds KVM's shadow CR3, not
+> > -	 * L1's "real" CR3, which causes nested_vmx_restore_host_state() to
+> > -	 * corrupt vcpu->arch.cr3.  Stuffing vmcs01.GUEST_CR3 results in the
+> > -	 * unwind naturally setting arch.cr3 to the correct value.  Smashing
+> > -	 * vmcs01.GUEST_CR3 is safe because nested VM-Exits, and the unwind,
+> > -	 * reset KVM's MMU, i.e. vmcs01.GUEST_CR3 is guaranteed to be
+> > -	 * overwritten with a shadow CR3 prior to re-entering L1.
+> > +	 * Stash L1's CR3, so that in the event of a "late" VM-Fail, i.e. a
+> > +	 * VM-Fail detected by hardware but not KVM, KVM can unwind its
+> > +	 * software model to the pre-VM-Entry host state.  When EPT is
+> > +	 * disabled, GUEST_CR3 holds KVM's shadow CR3, not L1's "real" CR3,
+> > +	 * and so simply restoring from vmcs01.GUEST_CR3 would corrupt
+> > +	 * vcpu->arch.cr3.
+> >  	 */
+> > -	if (!enable_ept)
+> > -		vmcs_writel(GUEST_CR3, vcpu->arch.cr3);
+> > +	vmx->nested.pre_vmenter_cr3 = vcpu->arch.cr3;
+> 
+> [Severity: High]
+> Does directly reading vcpu->arch.cr3 here capture a stale value when EPT is
+> enabled?
+> 
+> Because KVM does not intercept L1 CR3 writes when EPT is enabled, L1 can
+> update its CR3 without KVM immediately tracking it. On VM-Exit (such as for
+> VMLAUNCH), KVM invalidates the CR3 register cache by clearing the
+> VCPU_REG_CR3 availability bit.
+> 
+> If nested_vmx_enter_non_root_mode() directly assigns vmx->nested.pre_vmenter_cr3
+> from vcpu->arch.cr3 instead of using kvm_read_cr3(vcpu), it seems this would
+> bypass the cache refresh and stash a stale CR3 value.
 
-The original implementation of guest_code_xsave makes a jmp to
-guest_sev_es_code in inline assembly. When code that uses guest_sev_es_code
-is removed, guest_sev_es_code will be optimized out, leading to a linking
-error since guest_code_xsave still tries to jmp to guest_sev_es_code.
-
-Rewrite guest_code_xsave() to instead make a call, in C, to
-guest_sev_es_code(), so that usage of guest_sev_es_code() is made known to
-the compiler.
-
-This rewriting also gives a name to the xsave inline assembly, improving
-readability.
-
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- tools/testing/selftests/kvm/x86/sev_smoke_test.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-index 1a49ee3915864..8b859adf4cf6f 100644
---- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-+++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-@@ -80,13 +80,23 @@ static void guest_sev_code(void)
- 	GUEST_DONE();
- }
- 
--/* Stash state passed via VMSA before any compiled code runs.  */
--extern void guest_code_xsave(void);
--asm("guest_code_xsave:\n"
--    "mov $" __stringify(XFEATURE_MASK_X87_AVX) ", %eax\n"
--    "xor %edx, %edx\n"
--    "xsave (%rdi)\n"
--    "jmp guest_sev_es_code");
-+static void xsave_all_registers(void *addr)
-+{
-+	__asm__ __volatile__(
-+		"mov $" __stringify(XFEATURE_MASK_X87_AVX) ", %eax\n"
-+		"xor %edx, %edx\n"
-+		"xsave (%0)"
-+		:
-+		: "r"(addr)
-+		: "eax", "edx", "memory"
-+	 );
-+}
-+
-+static void guest_code_xsave(void *vmsa_gva)
-+{
-+	xsave_all_registers(vmsa_gva);
-+	guest_sev_es_code();
-+}
- 
- static void compare_xsave(u8 *from_host, u8 *from_guest)
- {
-
----
-base-commit: 0d9b37717aaa4a73362520af5ba4db7febf09123
-change-id: 20260603-snp-selftest-cleanup-bf97734c6902
-
-Best regards,
---
-Ackerley Tng <ackerleytng@google.com>
-
-
+Gah, yes.
