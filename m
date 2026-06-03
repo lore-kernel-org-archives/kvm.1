@@ -1,177 +1,172 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714522DA759;
-	Wed,  3 Jun 2026 14:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6103D1CA4
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 14:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780496175; cv=none; b=QmWj5QcRFwzoOhtPpRhS3TvrdyMbrTnQWQUysJkU/+Kogmj9XXR/hCqI9s7oHq09qmkWYHmtLJJSzbVzz7bQYCU6cnmkdR2fJpSAIIBujDRPOr5go9IoPHQyEuaM7VG3fxWhr9UsvLPDW+ZREX8gDy5SHZYpXtsqxhPd8XexI+E=
+	t=1780496551; cv=none; b=t44UppMkTdp7ogv8bafTwJalPWxyoYSP4FtSrOgyrCwLyV4UEWiOYNoJuvHa1uBFHdw+eF3G+0mfaeHRo3UK2angLY4hHlnwwzQLZHnBAkhcaxlAqnlKySXaNbeal1q+Jxz/5+VdXBn9L872+tYH82Fumsd73dtmWPM1WkgjPmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780496175; c=relaxed/simple;
-	bh=HlOo9yuJ7W1DgckPTdmqfNteUtA2KwlYM8ZEcapsuds=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u85+coJelmtfiG9kMAl8OEGxH0eKjvjFV829Eatt9g6VIJw/exhYmsQ4g/c06KqmbcLFdz2EJeqEp5CKiYJCmYRQ2m89UGkYTP2JB6By39Sx0e/cw1rDPB9hIdQg+bcO7D74dZs94KB26f6wSRioB4cVAzfel5AbyKYHCodhevg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OXpNl8Af; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780496551; c=relaxed/simple;
+	bh=obaUumRSEaiR1Wty6Xgu6N15cGNjCTMsp1x89kLIsEk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tLrFO9HxusZWEplpHpAOzlSRVXaExJzp0f9z0eU7KaYEm/5WfevS3TehwcuZ0CGY9mDlQk6Xx/dgZ/J1yle75azkkJxTp4b2dNLwsyVxFPyZgqKFzmr5tyXPzii18rkhxXHy0ojsqdMLrOc6NHm3TjtQVvTa0Kc2r1Vuo6HalhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=srLuqfx+; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OXpNl8Af"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6535a1lH3708001;
-	Wed, 3 Jun 2026 14:15:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=F1bCpJrGMayffkxKESwEy89wGfZqbjQXhYCNeMH4m
-	8o=; b=OXpNl8AfgIC3enEhRAken53IjjrZeTsl6nU3J8a51jqnZy5JMOYLvvvoW
-	RNebtLzciiPcllR5c5sJOFu5Leoamnnet3cvpYQMW5f2QPK7BnZqJ0o8ea9Z1qB8
-	t5ZXKCZvuSXnGGztEMtoNuAidE8Zim1688SFlp5a/zP/wcE7zSbZN8q9G16q4XoN
-	uuXn7RM0WabkTKWDK62pGNZbiTvoGaIr0P5dsnSDskHBzNgWKN0LsX2rfExDE7pX
-	l+a+L5QSG80nPKNwpm2HzPirHmgJox2mxuXjk8G4Jew0lRFmpadCFy3ujThHczYM
-	6Z98MUfcekfFhVUF+mymqAIEuBHuw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efpaeat3n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jun 2026 14:15:52 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 653E977k028270;
-	Wed, 3 Jun 2026 14:15:51 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egbqhge0y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jun 2026 14:15:51 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 653EFlsd31064404
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 3 Jun 2026 14:15:47 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C27C72004D;
-	Wed,  3 Jun 2026 14:15:47 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CD56B20040;
-	Wed,  3 Jun 2026 14:15:44 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.39.24.49])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  3 Jun 2026 14:15:44 +0000 (GMT)
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        kvm@vger.kernel.org, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
-Date: Wed,  3 Jun 2026 19:45:39 +0530
-Message-ID: <20260603141539.47620-1-amachhiw@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="srLuqfx+"
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 652MRxtY2239955
+	for <kvm@vger.kernel.org>; Wed, 3 Jun 2026 07:22:29 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=YNScBoT6fWRdM9NkrxjASUlxGuUaN5ox/szwoVCoD/M=; b=srLuqfx+FXuC
+	bzE9LkokrAimE5iY6tNN+9tUNfEUn2ef7Lf+87pai3WStxYfRanSdrRxchFrsRaa
+	hVp4NgdWnzJDmE0szjBwoM0UI8p/Oe1nmi8cfpFlZ72sJ6MKjrvWVKWCW7EgqGZU
+	WY5n4wx/L7mDEsXGDKTFRggrDyDhnviCYwZR1mFhx23XQN1Hossmfj02lNA97hnq
+	tldmWLaYSlQaubMvRXFHZmLKUM4/IZrzYGEXU+A7/okfjXt0q6FEFIPesfkDIXRX
+	kiDV5EiNC27PctqlfT0z16mTfJF9Zn8GQkNgtJFwMsBAzv/dJKpmMRbazdFqdpR2
+	coUlXhATAA==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by m0001303.ppops.net (PPS) with ESMTPS id 4ej0xp7fns-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 07:22:29 -0700 (PDT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-304e4636205so16045865eec.1
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 07:22:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780496548; x=1781101348;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YNScBoT6fWRdM9NkrxjASUlxGuUaN5ox/szwoVCoD/M=;
+        b=Nd/4gmo+MFkJqmK2j889PtS1hHmHKOgAvvd/ecosA+PSN38Yhb5ruRlsn+ZlHf8uOe
+         xdhXmZcaJ0PuMmcc7t8+KusFkIDwR6SVHl/JzFlWkh7oDinfF5MzEnZ5bcCDA8ne3qqR
+         mmfc2+qCwlqHB9gJrqncUKA9vFxZU+CGbLXkMeCRCUuEnYZ8l9L1u58Y0Le2bbxYQxQr
+         5KM7lLOk89kg1mT0eRCmxrFXxmp1xrq4nOa/P92hI0kckuNY0zmZiMwTG7BZ+3Q0FKWP
+         sZ7CgXe0Kv30VUXaT14GlLDDWd7RgY9i3rUmJsnthN0RZiGEDlIOggYQhoc9BKf+G6w3
+         LT/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8EWAGd9UbHfhrP3YoErpvx+vS+WlkTYbnJM7/sE31v3HmnGcZJcQyWSCska0GgjFtnPAw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZ51OuvFF4Z9QflNT7krYKDVpqDBmSZ8LWgbt8xqZLOcRWTHp5
+	Ikj/yclat0iUhgKYWJ7Br69e6GiOrhko33FhgfILtkID/LPi1NqQ18JRSTHtyrPvIqW1Vs7+c2M
+	eOCKaNnqr8k0/8Gvf0zzj/fBCuy51CF4fyHBWxMNiyQdl7rMRmRoh
+X-Gm-Gg: Acq92OHVBHYMhVdGBbL/y+h7INQUnr7oGHEeP1JPHbNljipLpw8ovvlEZBZi0YVLOjk
+	t3WUkX0kejxeY0fGTmWQKLh8jzA335cxijEoMaSGrceWXLfJdxvaTRqrbZqxrKXukQsBWwibPtr
+	5FwdUiP1PIUFX8f/6+nDGMDKluk58Qg0me8nrfr0fz37ThDYqipSHPu2MFxABR/1iRCb/h4X1D4
+	p66teLg/lJQokG/eWkQJ1v0eYpbub7JFBwvchNrzXqB+zLTA4jvktxzzuGhZgTqRFSG2yeGs4r5
+	GxzWhWmQ0GxLP7CS2mx9RUyzTRbea6BSXeYPjGgY35pmvA7TN68gplVE2E9wBXJwzsY4H/38P+m
+	PONBpajYtKHVxJa9RxquYmOObHYkfPMrluzI/80qK
+X-Received: by 2002:a05:7300:2142:b0:304:630d:e4c4 with SMTP id 5a478bee46e88-3074fab7663mr1925012eec.10.1780496548233;
+        Wed, 03 Jun 2026 07:22:28 -0700 (PDT)
+X-Received: by 2002:a05:7300:2142:b0:304:630d:e4c4 with SMTP id 5a478bee46e88-3074fab7663mr1924977eec.10.1780496547695;
+        Wed, 03 Jun 2026 07:22:27 -0700 (PDT)
+Received: from [10.0.40.30] ([51.52.155.79])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074dea8e8csm2504082eec.16.2026.06.03.07.22.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2026 07:22:27 -0700 (PDT)
+Message-ID: <b7635ebb-c746-48e6-bce3-a10bd288e0c7@meta.com>
+Date: Wed, 3 Jun 2026 15:22:22 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Zt3d7d7G c=1 sm=1 tr=0 ts=6a203718 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=9nGdcix9NZkGgJ1vRr8A:9
-X-Proofpoint-GUID: KByeJRv7OplG_laWcGHPeUMbQA1popcP
-X-Proofpoint-ORIG-GUID: 32BC2DOvRklg3hef9YvCfmhZHLxjtdYO
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDEzNiBTYWx0ZWRfX9/ReuZZWpXFM
- pRk589GcemCfXWOuYftpujfWFrw/PUy1ShP6BBfPoH7rLnW9Shzp6yZuzXR2Dmm8p6U9Iu5e3RO
- cQlhYB98XQgjnmBxHWcsaK1sY1RybOQmLyDHOiZCjnfia72EvPG0dHv9A/pFFj3N5bxNQsLCltS
- T8A6AlnTbg4EycAdSY5o2IWqswfBjUmVTAWywq9VTPoU2qTOsSwiV5hqCbp0ngazYyqWtObmDVg
- K8FnPLqbLnBEZHBXdsBbf4huht16pmdznyqXV6EbyyS0qozlg5INKmUNZERh4VqZPMQ3K6zUsD/
- UMvxxbnQN+4F0uP4RIy+8ekXx1kKkVev7DOLogMfRWGntqu7YYB4bnQ0W26YqXsmKbF5yhmPzt3
- WlNnQN1C++IsBcbMZr8yTNyovJ2jkKRno13uJLQMrqf0aR7tWetztr3NcqX8xJfSsiEZ+fWeucK
- DuA7vbMNXt7lwPqRrlA==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 9/9] vfio/pci: Add mmap() attributes to DMABUF feature
+Content-Language: en-GB
+To: Alex Williamson <alex@shazbot.org>
+Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+        Alex Mastro <amastro@fb.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+        Pranjal Shrivastava <praan@google.com>,
+        Alistair Popple
+ <apopple@nvidia.com>,
+        Vivek Kasireddy <vivek.kasireddy@intel.com>,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        kvm@vger.kernel.org, linux-pci@vger.kernel.org
+References: <20260527102319.100128-1-mattev@meta.com>
+ <20260527102319.100128-10-mattev@meta.com>
+ <20260528171432.771a1a30@shazbot.org>
+ <8854824e-06c2-43b3-86c2-8c2c28f9ad63@meta.com>
+ <20260602131417.41366391@shazbot.org>
+From: Matt Evans <mattev@meta.com>
+In-Reply-To: <20260602131417.41366391@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=ZPHnX37b c=1 sm=1 tr=0 ts=6a2038a5 cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=2UbFsIa4v//lIgRL4kGwwA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=_78whYxrdx1mplLwxq1U:22 a=VabnemYjAAAA:8
+ a=AWNa1KPf0UDjnrnzYgsA:9 a=QEXdDO2ut3YA:10 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: UZXJRNOE7uZUC2EAuiRiOLM7Y7e2PPRr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDEzOCBTYWx0ZWRfXx+C2SslEdt1d
+ IXzAFRSFJNfwI9iNCHNQvpcENs0UVFijHc+3lKdVrFo+JW3GM+yes1F2b12lDKdFFceQB3MEghn
+ /8fWrTyWjd2CKXPCBtUwkxI0KXmKlycFnD4G8Zo3nPUbOMId/dy1BSo7/gFkfLNcz4FLUmo4ggP
+ PCPv/FPvmh/zLlSYlA6XI3ANZmmqxUJQLgQzwz0GmeI3ylNPlwGPkr/BBRfeFIQPc8xTw+IecTD
+ enEC7D3HzJ9ZvL0iyAHNcbutSxRTgn7k6lZq+NeiFh8u3sk35/RMHEhSbaJvtqm/67XROnkPwBZ
+ gYEhr3R/BC1CdGjqELEgdGHzmX04BGpKB6y1x45UKKSlHFhv7Nq9VRk9oqO/5Jp0w/18vV3alpH
+ yOd6b8p1GMSXECDdlCbxL8c7HZcgTMiTqoEbboHjwnFQ/OWhEzhIZAA9R1eTT9IOBQVINx0IZMv
+ i+b06SIp9NjODhVgLJQ==
+X-Proofpoint-ORIG-GUID: UZXJRNOE7uZUC2EAuiRiOLM7Y7e2PPRr
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-03_04,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- phishscore=0 spamscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606030136
+ definitions=2026-06-03_05,2026-05-28_03,2025-10-01_01
 
-On IBM POWER systems, newer processor generations can operate in
-compatibility modes corresponding to earlier generations. This becomes
-relevant for nested virtualization, where nested KVM guests may need to
-run with a specific processor compatibility level.
+Hi Alex,
 
-Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
-logical partition (L1) booted in Power10 compatibility mode, the guest
-fails to boot while setting 'arch_compat'. This happens because the CPU
-class is derived from the hardware PVR (via mfspr()), which reflects the
-physical processor generation (Power11), rather than the effective
-compatibility mode (Power10).
+On 02/06/2026 20:14, Alex Williamson wrote:
+> 
+> On Tue, 2 Jun 2026 17:50:04 +0100
+> Matt Evans <mattev@meta.com> wrote:
+>> On 29/05/2026 00:14, Alex Williamson wrote:
+>>> On Wed, 27 May 2026 03:23:12 -0700
+>>> Matt Evans <mattev@meta.com> wrote:
+>>>> +		uint32_t old_attr = priv->memattr;
+>>>> +
+>>>> +		if (flags & VFIO_DEVICE_FEATURE_SET) {
+>>>> +			switch(db_attr.memattr) {
+>>>> +			case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC:
+>>>> +			case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC:
+>>>> +				priv->memattr = db_attr.memattr;
+>>>> +				break;
+>>>> +
+>>>> +			default:
+>>>> +				ret = -ENOTSUPP;
+>>>
+>>> -EINVAL
+>>
+>> I'd like to push back on this one; ENOTSUPP distinguishes trying to use
+>> a wild attribute value from all manner of other screwups such as
+>> trying to GET (with it no longer supported), passing an fd that isn't a
+>> DMABUF, etc.
+>>
+>> I'm not wed to the value ENOTSUPP, just something distinctive versus the
+>> other errors userspace might see, and that value seems appropriate.
+> 
+> It needs to be a uAPI errno though, aiui ENOTSUPP is an internal NFS
+> errno.  How about EOPNOTSUPP?  Thanks,
 
-As a result, userspace may request a Power11 arch_compat for the L2
-guest. However, the L1 partition, running in Power10 compatibility, has
-only negotiated support up to Power10 with the Power Hypervisor (L0).
-When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
-hypervisor rejects the request, leading to a late guest boot failure:
+Ew, right!  TIL, and it's caught by checkpatch too (which I fastidiously 
+run but still missed this somehow...) :(  "ENOTSUPP is not a standard 
+error code and should be avoided in new patches.  EOPNOTSUPP should be 
+used instead."
 
-  KVM-NESTEDv2: couldn't set guest wide elements
-  [..KVM reg dump..]
+Fixed.
 
-This situation should be detected earlier. Rejecting unsupported
-'arch_compat' values in 'kvmppc_set_arch_compat()' avoids issuing an
-invalid H_GUEST_SET_STATE hcall and provides a clearer failure mode.
+Thanks,
 
-Add a check to reject Power11 'arch_compat' requests when the host is
-running in Power10 compatibility mode, returning -EINVAL early instead
-of deferring the failure to the hypervisor.
 
-Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
-Cc: <stable@vger.kernel.org> # v6.13+
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
----
-Changelog:
-
-* Moved this patch out of the v3 series [1] as discussed here [2]
-* Addressed below review comments from Ritesh:
-  - Based the PVR validation on cpu features
-  - Fixed hcall name typo
-  - Stable backport
-
-[1] https://lore.kernel.org/all/20260522152744.55251-1-amachhiw@linux.ibm.com/
-[2] https://lore.kernel.org/all/20260522152744.55251-2-amachhiw@linux.ibm.com/
----
- arch/powerpc/kvm/book3s_hv.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 61dbeea317f3..e16dbb199366 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -446,7 +446,17 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
- 			guest_pcr_bit = PCR_ARCH_300;
- 			break;
- 		case PVR_ARCH_31:
-+			guest_pcr_bit = PCR_ARCH_31;
-+			break;
- 		case PVR_ARCH_31_P11:
-+			/*
-+			 * Need to check this for ISA 3.1, as Power10 and
-+			 * Power11 share the same PCR. For any subsequent ISA
-+			 * versions, this will be taken care of by the guest vs
-+			 * host PCR comparison below.
-+			 */
-+			if (!cpu_has_feature(CPU_FTR_P11_PVR))
-+				return -EINVAL;
- 			guest_pcr_bit = PCR_ARCH_31;
- 			break;
- 		default:
-
-base-commit: ba3e43a9e601636f5edb54e259a74f96ca3b8fd8
--- 
-2.50.1 (Apple Git-155)
+Matt
 
