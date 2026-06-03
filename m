@@ -1,171 +1,237 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010001.outbound.protection.outlook.com [52.101.56.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558AD413D82
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 13:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D7D350D74;
+	Wed,  3 Jun 2026 13:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780492364; cv=pass; b=I3C1fF/OVwckGnMiXiUjN36guOEbnQoHFzHIbhENtuov4Y+k2efucf0Drs9w1rBqkXVXFS5WGWkwM+wh6XXz+F2tflFk4GpC7/jC1lNyP8IQ5c2wWtZ9/xwlSnm1MeWd6YxskALU9CFHi7QeK4/lj5i2VE3FCpjlmZW9mbYCOTY=
+	t=1780494910; cv=fail; b=TnAerC/9i0Tiv2MsjXobqasyvoHOHs3GSywiW+qNI6Cc6dyl6FQm2xjvyBUKeYN7nty0ZpKlRsh+RC3FykBb3qXcVgYPCHwKVDKJ2RcF+Jw9zbG2lO5jj3xXx2m35xNY6yNCVZ8dvrd0aDXX79jHN6UNnmbx+4hukeko265g918=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780492364; c=relaxed/simple;
-	bh=G5PjkpGqTE4bfKxRdpR2dRA+pOtOM/3WbhBCbX4fXfw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=baV4ZD52R67CaQs/VYyTtIhrLON32Pxaqy8PJUZt1DaMu38ICkRDtcu7HJhDhVrvGpk4LJSatgpG3awEumFDvUbo1UGNCBuvjPOOMd3/Bl5brKalpDi/cdP/y8Ibzuv2Es7E+r7tn/mjVJcx2E5KTnvQ/P1BI2fVxIrDhpN5qVM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=qHb3U+XI; arc=pass smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	s=arc-20240116; t=1780494910; c=relaxed/simple;
+	bh=rfz8UVefd+bkoGK5TcAABYhKTolEHA1NISoK1xJPlqU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ats3vcaqmwndPNuo7zJjj/28n4xNx2YTVdpwMUkkk3cWirvoVbX2vlQVKfqXwRAMfmoxedgtw2M3UWEnYKjFU9X+hazNvbw8UJ31AgqcxDojhXV0hg8OX28ma78SH10oaO+cRYtgyyb6AZ2h/fukjIia7K8eoNA63YclhqxNtNA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=fail (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VmbUMxLj reason="signature verification failed"; arc=fail smtp.client-ip=52.101.56.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="qHb3U+XI"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5176fab2badso12201801cf.0
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 06:12:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780492362; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LKRaYGN3I7veQMQHszHF4n4roWR+ujWTwSHWL/KI+HZLxaKDlPB49C917t7SuthFOn
-         hwTkYNE4jkVLfjsX0Hl97URvoa+BW5aq+fHpgUS0ZvMtTLJsdLSriOkb/ndmk5VUQ21m
-         WUGUEBkFSY1LeKCAPP9r8ig57VgxAbIolWrCn6FvcyS7HGv6pQosNulpE7qXfKvINtCu
-         PHR2/Ymd/ks7WH9cVJQOOI3i5GwdnKrCd4CJN9EzxL4M5agoK+NTggCYQkanPSUBLziT
-         M5nUN3uyirlPzlq5pcYX/B0F6M1eK5hHEBkSxhleBWv7JaVM6Av/b75m/t2CGoegdekh
-         kohg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wPKsFlEiyLRyhzwx6niYPIzW14lmqUQ9SsuDRFLQ+5U=;
-        fh=jWEvecHi2xwqSI6TnN+MTRzMJ0Zaum6qhPovUCY1BP8=;
-        b=Zvtd8HL11SNUw8bW7em0wHZO3uwztPj8qAdlZi0tnoGMfb1g+S4Sceb9kG7Ww1cIbU
-         ogb8ayMdxrHJ3N+OeTAXmpPCuJu4Y0Nbz6dKusinQgqGs3rxU3i83Gx2vd4/W17H/sJG
-         rOz33Uy10b43d1/B6Bj4vHD9Gd30H1LwI4BepPwv5ZYLzqZxNdsNVAR7sku5WkwJp73f
-         E7ZbaLG/JEXZT8i/0Mz0T2as0Q196stcMKoY8lu+294lw1C8LBoVU9IslHMdAm5ZI+hb
-         a7eeT1j5lB4DSEMlFOwvoxpbTnpI/TSSVsSWUcMnwq02xmklIRCzAMJJvANmlhR914ut
-         SvEQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1780492362; x=1781097162; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wPKsFlEiyLRyhzwx6niYPIzW14lmqUQ9SsuDRFLQ+5U=;
-        b=qHb3U+XIhUiyc9u2ka+0GunW9U4U0+KBzhwdXkTwk793mZyPbpgMG4DWb2/3163JP9
-         tzwnXXQsm2+c7ejtw+H3O3C5UPcfTKp0HJjaVbdr0TAe0xI1hlOeIX1whlj/pG6/hApE
-         eRFxiOwBvS50Gqat5SxFt7MMWUMmRrg5nvsBGCYnC4g7AL2cX1Ap42YMrgjIBBdn952/
-         Nc2njFDJUaIz84lYelpOgYR7ohJFWashxc57q5F5UAwYc//SIn2xZZ8lLyhAv1o5P+tn
-         uoPPUshPCHYbUs1S6nPE7XF6NHr4+XUuHliCanpWnLrL3ughKbtPpFlsYA0KexVPedXj
-         S/iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780492362; x=1781097162;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wPKsFlEiyLRyhzwx6niYPIzW14lmqUQ9SsuDRFLQ+5U=;
-        b=RiQcpfLGUgZ8rcB/8OCBy4HrEdkDMBUw+ySqaYU4Q20TOJK9MYTfgmkZHHY6UyfMMq
-         yrC1WWTqvTsVkqGr7Ax+FJYg08VI7Z516J/XbdkPhPuSLJb/53a0O9zwn3f3I+vtiGZx
-         nc6kofCgRs7vZ/u9+bR7OY8KS/859E101gnt7ZgOyL52ArsBmG80ZGNAUAMUC4cN1a/4
-         OXanMABegmY+nDqqNfb1GT0uvEWHFbxL4EZHmK2xHaq9Qf/+rPlOoKvB7RSivLpYKeWw
-         GhCu5OTShs5Y+i2FejyDZfffOSwW9PN93IDfZrNLjk+Y8KpR/kyfKZxyaJfRQ4D/04Ks
-         GMRw==
-X-Forwarded-Encrypted: i=1; AFNElJ/qg9dT85TNUljY+DRNuQnv3r1lrCwvFMkMvRMlTI13LbsbQOzmFSB3I03Va9VGP43Zz4M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoI8bsx6g0bj7Tbbf0BrLi02Xlke1EbxKx/pZCPgNfK4QHvhGw
-	SCX7QSPsCEJ4XxVVmBZ0wD/WO+mUERFuzqugK8OEAA6sLBXeM8kcn/rVVZSH8gr/FX4ahqhkU7l
-	Yr86ByEHIz9d02F+9HPNEMhZZvSht0X8JgxM6w0GL+A==
-X-Gm-Gg: Acq92OEu0xAw9D0HbI/8wHmnKwILGSJ5/tDYTQx1giezKMNxLiu5/Mc8m53zPiGS9Tz
-	EJuu0nLvbmRKXWs3Hn100GSYNwQn8Jxb8pNNJ6czdML+wkiSm6BlMeDuLflRMFCewv9Lv47geHg
-	o+9CqpJky35NkIQjG9159BG7W19sFqiAOdDyMqv1CcNoQ33ZYlLWuIhT+/P3tw3Tz7SP/XAExZK
-	V115w5Lcpd1zzgvIXNPiqB79zN2b9xuT4bkava+mxcJ7DeD9lYdTE/cvockvsphfNXPIo3Cw+NX
-	ZqHMl9tzrMJhe6TMBhECNXSQwUu/7tth62fqRKjah45wl0pZk7MZugLbwrV7L5nZeunCQd42CD4
-	XueYRseBN3y/r1JJGngnqySWHo7Kby0ZCUA7ySQ==
-X-Received: by 2002:a05:622a:151:b0:517:75d8:b960 with SMTP id
- d75a77b69052e-51778738b2cmr47091471cf.43.1780492362178; Wed, 03 Jun 2026
- 06:12:42 -0700 (PDT)
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VmbUMxLj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qYmCoavDEMSKELSvlMkV7GBPB2EFPTFmjn9ddcZ/FPqvi1z/0kUp+a00PiNn3Jz+FTgvocPo28d+jYVqWiji9ziH8BjDh80m8szZv2bLFD14FGuYVts/NBMx8fd4NuMaA+auZdZbiTGlfXpmrDB6w889DqQsWvv9apzO4EDnTolGxuyMm5DbSPFl0ulujd5bFoB5T0rX37idK36zFBBaI6QkFDXcnXW6yZ9ZXwv1hOX5eQPmjMSwX5uTPsadYFc0tOEkxz29vTZqBehb+5dZc55jxJyKL45DffWpQ5EAjcY9WSke9Mh+KhOWvB64Wv/rNQUi1nPajz9d5UOHiPXbyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lWJJKq0XHaGHI5TnSD9auhv2n2Mb1lFzBdKs7NDxrRQ=;
+ b=vQDsd/0fKnzNv52Vata+2kLSVLbvYnPrptNbaoZJ89J3dUKL6+zdeRv++XFBFZkbDoRffPPqio0Q9SXAN+uyg7WVDC2Ob+1pS6JaZauIrutpExiu+h/OwjyJgtyAaONP5hZzWByYtd/vDQLKBws3BCw7YUTONb4CG5Cizqs3InWMQbFyQHQoN4/SwZn/odj8Kt1s+xu4+bzmvVnROOt4rduZvkgtKP5/8EcLlvyA6Yymx4f/ZPGsytq9yfNd137TP9LfyDxIPWXnCYeK9CrKj54HID+Nv/6+w3oBlPB7Sp9AjfHPf3M2s49XyOGPrkzgt9vU3cRXeo3uDrxoYvixXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=arm.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lWJJKq0XHaGHI5TnSD9auhv2n2Mb1lFzBdKs7NDxrRQ=;
+ b=VmbUMxLjBCW0HGGIOwvbxB72biW1VEdZ5YfIJNoTnTBDAcis1ucNw5bJHhF6aS3rLc0u2uxOjWmo8GqHd61QlbYTL1mrw4oLnZH6J1s3DhBnarEdjR1dz2PTNURP5NLWSfxxP8+AiF3OXtXDHIU+C4hjRyqjzxaVOW9QBPxtWkM=
+Received: from SJ2PR07CA0024.namprd07.prod.outlook.com (2603:10b6:a03:505::14)
+ by SA1PR12MB6797.namprd12.prod.outlook.com (2603:10b6:806:259::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
+ 13:54:55 +0000
+Received: from SJ1PEPF00002314.namprd03.prod.outlook.com
+ (2603:10b6:a03:505:cafe::52) by SJ2PR07CA0024.outlook.office365.com
+ (2603:10b6:a03:505::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.7 via Frontend Transport; Wed, 3
+ Jun 2026 13:54:55 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00002314.mail.protection.outlook.com (10.167.242.168) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.92.5 via Frontend Transport; Wed, 3 Jun 2026 13:54:54 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 3 Jun
+ 2026 08:54:54 -0500
+Date: Wed, 3 Jun 2026 08:51:53 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+CC: Ackerley Tng <ackerleytng@google.com>, <aik@amd.com>,
+	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
+	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <ira.weiny@intel.com>,
+	<jmattson@google.com>, <jthoughton@google.com>, <oupton@kernel.org>,
+	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
+	<rientjes@google.com>, <shivankg@amd.com>, <steven.price@arm.com>,
+	<tabba@google.com>, <willy@infradead.org>, <wyihan@google.com>,
+	<yan.y.zhao@intel.com>, <forkloop@google.com>, <pratyush@kernel.org>,
+	<aneesh.kumar@kernel.org>, <liam@infradead.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Thomas
+ Gleixner" <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Vishal
+ Annapurve" <vannapurve@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
+	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+	<nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
+	<baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Youngjun Park
+	<youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
+	<shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v7 07/42] KVM: guest_memfd: Only prepare folios for
+ private pages
+Message-ID: <mzbsmlljbqxv7epwh6bpjrlbsbc4yqdj456cb5hanxetco3thd@c7mdph3oi6o4>
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+ <20260522-gmem-inplace-conversion-v7-7-2f0fae496530@google.com>
+ <d01cf1ec-b85d-4af6-9810-8107c0e2a4ec@arm.com>
+ <144bbb9f-39a2-4c90-8903-51521e022da0@arm.com>
+ <CAEvNRgE1dCVAxJWd_hyFa8N=m9JLfn97ip9tAmvHxspWJ50oGg@mail.gmail.com>
+ <88cae738-18e9-4ed3-8414-506a1ad8fb18@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260517153427.94889-1-tjytimi@163.com>
-In-Reply-To: <20260517153427.94889-1-tjytimi@163.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Wed, 3 Jun 2026 18:42:30 +0530
-X-Gm-Features: AVHnY4KdS26v-u7MwMB2QczqM1orB0trjZ3Tze-rPeQYj-S64aX-ZARYgiMz9Fg
-Message-ID: <CAAhSdy3YV9Ny4YA+26SzY_yoFrAB0GWGZQBeg0X90H9Q_GSuHA@mail.gmail.com>
-Subject: Re: [PATCH 0/5] KVM: riscv: Speed up dirty logging write faults
-To: Jinyu Tang <tjytimi@163.com>
-Cc: Anup Patel <apatel@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	=?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <radim.krcmar@oss.qualcomm.com>, 
-	Andrew Jones <andrew.jones@oss.qualcomm.com>, Conor Dooley <conor.dooley@microchip.com>, 
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>, Nutty Liu <nutty.liu@hotmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <88cae738-18e9-4ed3-8414-506a1ad8fb18@arm.com>
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002314:EE_|SA1PR12MB6797:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01fdd232-0bde-4b91-a416-08dec177b10e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|7416014|82310400026|376014|6133799003|56012099006|11063799006|4143699003|18002099003|22082099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	wGsDUj1VqMffVhv6PLZsn/UDfBQso8yfRbErvW2EFHXdDhQGSV0Y30uImcLMGsLd90tiGc6NMD0PEqPfNJCqwEz8UGoy04GngQOx1RHfPD0/R16l9Kdms6yLIEzXXaOuhoq3bVkvisGJuVSeX1LljM4ccybWG0pXg9iOZ/zrVKmLcVzLPP5R5CiIG3Eu0IWRO0Sxn+viDdZWC2QXLERVmo25dSCP10BEQjIiEubNO0fu87tN3inskd4j6IGSjSdoPxs0zZs8ONhvN61umymciIO4/oZlKnkwaZwnikq00nABmXDA3vXkPqQN0f2iv631C/IE47Zf+226DobLjTMlog6ZCQ6F8Rqs9db4cdioJiedFHQCVoMesiSG1X9mzQfRcaVjprziye5zQP6PXnumUgbricOuAqbSRT0iAN3NrLF+lSRBmwNo096+AmvfhLycabrRJLwQgKyC5gcGjnfPD3oTzOXg6Dhqej0KOYYLySxq0byEcVcAHXmYfGp7L4H4ZbNEYqE4euf1tmDadw2R3NXZJuiy/5lcsLRtISYszygsQOA9a390/mW5SR9Hedru1X578Gb75t8FZmwWM8+jYb/StrTsocuoeOxGdQkj225YKFUr9nQ9e2IaClLoqk1GiqQ7ykCRhjWxvLiQfULCP4ZOknD2h+UbSv9/GAfwWOCPjhuT/no+UP34wue+xwyocaxWNclPS1F0NV4U+zRbAmJq3D0f43vnqqQ8eNkftUg=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(7416014)(82310400026)(376014)(6133799003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	vMtahuW4IGDeowK92ErtLxT3iBnRKNqnxnyEfRe2rBzCfsx8f9k9brqwDk0UoGKXy/xNp52GKAfBH1HrnsyL+4BH9BdA6u3dRhj2qSzFWN0AytLSHj8AGnle1tjA23biT4FB1vgvztZBouklQWWMXcjSlu6kIKoIkNqFJ1eYj6yJ/E+BUGH0X3eItSbmaUmO5M1vncUuxzBeMzVNv+zjNz1kv+7TMdS0wdLjgeghNdVxgv7LCK3HRND/Nt1ajee7DXYdPDXbDmx50CgRVJ5TljYSqR52LXnhfSOTm2ZtgmOxhtdb3o3/uye/M/KRHdziXv3C21opqNLIia5cu3cB2OkTFmA3IpZSkwkkKAOBYsJgFh++fAA6WxficmtlbpBkUsvBnQS06InLv9UWnpkaZ9yY8dN/uCCPiRpYkAgjS/jzP2294IM+JtxW+IJuSEyn
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 13:54:54.7713
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01fdd232-0bde-4b91-a416-08dec177b10e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002314.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6797
 
-On Sun, May 17, 2026 at 9:05=E2=80=AFPM Jinyu Tang <tjytimi@163.com> wrote:
->
-> This series speeds up the common dirty logging write fault path for
-> RISC-V KVM.
->
-> When dirty logging is enabled, guest writes to write-protected G-stage
-> 4K leaves currently go through the full fault path and take mmu_lock for
-> write.  That is expensive once the leaf already exists and
-> only needs its permission and dirty state updated.
->
-> The series first makes the existing MMU notifier locking contract
-> explicit, switches RISC-V KVM to KVM's rwlock form of mmu_lock, adds an
-> atomic G-stage PTE update helper, uses it for existing permission
-> updates, and finally handles dirty logging write faults under the read
-> side of mmu_lock when a 4K G-stage leaf is already present.
->
-> The locking and concurrency model follows existing KVM patterns from x86
-> and arm64: use an rwlock mmu_lock, keep structural page-table changes on
-> the write side, and use atomic PTE updates for permission-only changes
-> that may race with another vCPU.
->
-> The fast path marks the memslot page dirty before making the PTE writable
-> again.  It also sets the PTE dirty bit, so systems that trap when D is
-> clear do not fall back to the slow path for a writable-but-clean PTE.
->
-> Performance was measured with KVM selftests inside a QEMU RISC-V host.
->
->   dirty_log_perf_test -m 19 -v 4 -b 1G -i 3
->     base dirty memory avg, iterations 2-3: 53.262493s
->     patch 1-4 dirty memory avg, iterations 2-3: 52.735675s
->     patch 1-5 dirty memory avg, iterations 2-3: 26.422964s
->     patch 1-5 improvement over base: 50.4%
->
->   dirty_log_perf_test -m 19 -v 4 -b 64M -i 3
->     base dirty memory avg, iterations 2-3: 3.203170s
->     patch 1-5 dirty memory avg, iterations 2-3: 1.762452s
->     improvement: 45.0%
->
-> Patch 1-4 are prerequisites for the read-side fast path. The
-> main speedup comes from patch 5 avoiding the full fault path
-> for dirty logging write faults.
->
-> Jinyu Tang (5):
->   KVM: riscv: Rely on common MMU notifier locking
->   KVM: riscv: Use an rwlock for mmu_lock
->   KVM: riscv: Add a G-stage PTE cmpxchg helper
->   KVM: riscv: Update G-stage PTE permissions atomically
->   KVM: riscv: Fast-path dirty logging write faults
->
->  arch/riscv/include/asm/kvm_gstage.h |   4 ++
->  arch/riscv/include/asm/kvm_host.h   |   2 +
->  arch/riscv/kvm/gstage.c             |  35 +++++++---
->  arch/riscv/kvm/mmu.c                | 105 +++++++++++++++++++++++-----
->  4 files changed, 122 insertions(+), 24 deletions(-)
->
-> --
-> 2.43.0
->
+On Wed, Jun 03, 2026 at 09:58:45AM +0100, Suzuki K Poulose wrote:
+> On 02/06/2026 23:41, Ackerley Tng wrote:
+> > Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+> > 
+> > > 
+> > > [...snip...]
+> > > 
+> > > > > @@ -914,7 +916,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct
+> > > > > kvm_memory_slot *slot,
+> > > > >            folio_mark_uptodate(folio);
+> > > > >        }
+> > > > > -    r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> > > > > +    if (kvm_gmem_is_private_mem(inode, index))
+> > > > 
+> > > > Don't we need to make sure the entire folio is private ? Not just the
+> > > > page at the index ?
+> > > >       if (kvm_gmem_range_is_private(, index, folio_nr_pages(folio)) ?
+> > 
+> > I was thinking to fix this when I do huge pages, for now guest_memfd is
+> > always just PAGE_SIZE, so just looking up index is fine.
+> > 
+> > Is that okay?
+> 
+> Thats fine, but would be good to enforce that here, so that we don't miss
+> out when we add support for multi page folios.
 
-LGTM. I tried this at my end as well.
+We sort of already enforce that in kvm_gmem_get_folio():
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+        /*
+         * External interfaces like kvm_gmem_get_pfn() support dealing
+         * with hugepages to a degree, but internally, guest_memfd currently
+         * assumes that all folios are order-0 and handling would need
+         * to be updated for anything otherwise (e.g. page-clearing
+         * operations).
+         */
+        WARN_ON_ONCE(!IS_ERR(folio) && folio_order(folio));
 
-Queued this series for Linux-7.2
+which was done as part of:
 
-Thanks,
-Anup
+  commit 6538b6221cc2feda415ca1946e66a5ef02dc6a0a
+  Author: Michael Roth <michael.roth@amd.com>
+  Date:   Thu Jan 8 15:46:18 2026 -0600
+  
+      KVM: guest_memfd: Remove partial hugepage handling from kvm_gmem_populate()
+
+and that should trigger before you even reach the prepare path, so I think
+that's covered.
+
+In general, there some previous discussion where we decided we would stop wasting
+time guessing at what we'll need to do for hugepages and instead just strip out
+the partial support. Sean wanted the folio order kept at part of the internal API
+since we know MMU will need that one way or another, but elsewhere within
+guest_memfd we are okay to assume 4K. If we *know* certain points that will need
+to change then a comment mentioning it isn't a bad idea, but even those comments
+have tended to be wrong so far about exactly what changes are supposed to happen.
+
+I'm not sure where the original discussion happened but there's some aftermath
+discussion here[1] that I think summarizes current [non-]plans around
+prepare+hugepages.
+
+[1] https://lore.kernel.org/kvm/20250711163440.kwjebnzd7zeb4bxt@amd.com/
+
+> 
+> > 
+> > > 
+> > > Or rather, we should go through the individual pages and apply the
+> > > prepare for ones that are private ?
+> > > 
+> > > Suzuki
+> > > 
+> > 
+> > IIRC the plan was to make kvm_gmem_prepare_folio() idempotent, as in, if
+> > a page is already private, just skip. Currently sev_gmem_prepare() does
+> > a pr_debug(), which I guess is technically still idempotent.
+> > 
+> > I'm thinking that the information tha needs tracking to make
+> > .gmem_prepare() idempotent should be tracked by arch code.
+> > 
+> > Does this work for ARM CCA?
+> 
+> We don't hook into the prepare yet, but have plans to do that. We should
+> be able to handle the pages that are already private. (For CCA context,
+> RMI_GRANULE_DELEGATE_RANGE can skip over already REALM pages). So this
+> should be fine.
+> 
+> My point is, in a given folio, there may be pages that are shared.
+> Like you said, this could be dealt with when we support hugepages.
+
+Sounds good, that's also what SNP will do once hugepages come along.
+
+-Mike
+
+> 
+> Suzuki
+> 
+> 
+> > 
+> > > > 
+> > > > [...snip...]
+> > > > 
+> 
