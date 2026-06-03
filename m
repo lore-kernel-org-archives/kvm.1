@@ -1,202 +1,181 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010029.outbound.protection.outlook.com [52.101.46.29])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07811477E53;
-	Wed,  3 Jun 2026 18:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780512684; cv=fail; b=ayRNzQwrP1/K/XmtObVFthSmakRHZuK3HqyCWCESCHQEBU6wPOsDAUpeY+xbQ7oQ24a6xBHUEY7SVBlSTRid4wRTEaIKx9THGwVwQWsv9l2LoGKz7lx0M2do4WTJr5C6Yvpxp8kFTb719zp0DzjmG0NLyzGTic7MNMM/8SH/wEc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780512684; c=relaxed/simple;
-	bh=91oY3m11UFbY0EEwJ+6tpRe54r281e5lG0pe+lad5MM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=nCj/it8MrxHqn3kMRS0ZqF6wVH9Xwuj9iyQkHQyzUvFt4ZIaePsuS+JwvsJszpgoqOdIqQefnpvfmZDkrPzgHbfxZ5SouK8nwdkbubnib/PPXyPWrHq4cQiV4bJqIjAx3vOswNeDlRVeogib0B2UDy8xB10Mn/Xo6A4He4pLAq0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zHe6EFkL; arc=fail smtp.client-ip=52.101.46.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFA447DFA8;
+	Wed,  3 Jun 2026 18:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780512795; cv=none; b=Qr44e0LHSd472vYldoRssjKGMStqN7AkUoOUT2dmhnzrrAm2Kc0SOoNJviYbeiP+24aCC8rz+axdmFHDxsmdPJ/h865v9xH0zeFNYuItXVVVrcA5AYaEcRYOBOjDX8S7mk76fEraBCXORCkPpuhB3aLIci3NWJKww2S8T0QnClM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780512795; c=relaxed/simple;
+	bh=mVbT7k1/qN7xKmRbynqTvZJgdEnKvVf5p/xZL3wfePg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BCDo75xwiduUsqr4WzPoyvux1/pX0iI6+5hE1W++As07ntkq27KGT8gAYH3ja5rg/hsc/9hRCOovKiJQ+LVFpoUEaQ7WWNNkArP03rLmzipz6PAiWR+Hg01gjEOI1z7e4qSVRMCiPgaiFeLwsSP3AiGRY6iZXxBkqqDJfcWYHPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=A4YPeC+S; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YQdKCi/D; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zHe6EFkL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=erme1qjtzDFahg/coCS9qSDoRcKm28iYXQsxmiUv6+pcB5Qzw2N0VJzgBOf4C+BpW89my6BkzaKlIg8POc4bmTC640Iv1DsPqWtYBN4a3U9h5EWl4nf5/ULn/fudDf37b/4krobBFnimvm35lAU6P7GdfNoBOYFmKYYVGILV/goXK1iYyE/y4Lub88U5Kvfws9YJkz93QgltkX+dxGr223/zxMPsyIr8+I3SO18ej6AUXLRrcHjE68HNiUqWgKSf0M+Ipf8MhlQy7VMYRtmnGFFiQmFMQH5plDgEh8ctA+6/xCbRj6XflJ1G55a7u/MdIra3DvDy9+tlhZU019siPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jvkVuq7YpansZL5lU7VQFzhJ1nVhG5YxcrXzXtMg4OI=;
- b=fUR/f0gTyVpg5tqj3urte4s4otzOw17Q7dcWwuqgNxBh58g596McuGmwRYtltvlLbnAU7xI6RnEF/m8ZpDCYgCKFaE9zVhoGS9bDvBeG7+eH0BxXp/4i+s9CXu6UULiilQqfRQPItb33j+/G2V1+86JN3WonuWqWVShojnp7wXh1aYpNRyl13zrSc2GIapZGcMe7FlqSQyZL57yJopNF3FSZpNFsAukcGo0/SD4oaecGkJkCIOxkCNd/jHNIPylQWSlN+ohhrFbaWq13iKtAnRKIDFd8YN9HXuXu7JBEFz1GIHMn2WAdJRQeuV+IsWn0G2Gd1Iz/JFjrRKE1X9K5qA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jvkVuq7YpansZL5lU7VQFzhJ1nVhG5YxcrXzXtMg4OI=;
- b=zHe6EFkLBGPDd4kzTibgq1s4spd2zf8gweel/GibyaUXAQwvHbRT05tYiOXr8OyuSOb8PXmg9JY9yE3NSnub1zZasfqCz5/JDwy/dBcjjiEPCsS8GlrnkX4WzgYXv+ao/x13q+ghzvFU2c3ptwlTFyXwIAOGCio7EhCpWbbW+xA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
- by DS4PR12MB9793.namprd12.prod.outlook.com (2603:10b6:8:2a3::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 18:51:20 +0000
-Received: from BN9PR12MB5259.namprd12.prod.outlook.com
- ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
- ([fe80::122c:cca7:c2b3:90ed%4]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
- 18:51:20 +0000
-Message-ID: <916681a5-dd66-4773-a46f-2273a72c11cf@amd.com>
-Date: Thu, 4 Jun 2026 00:21:15 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: guest_memfd: fix NUMA interleave index
- double-counting
-To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org
-References: <0eff0a90667b900bee837d06b5db5025e1f304b5.1780501924.git.mst@redhat.com>
-Content-Language: en-US
-From: "Garg, Shivank" <shivankg@amd.com>
-In-Reply-To: <0eff0a90667b900bee837d06b5db5025e1f304b5.1780501924.git.mst@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BMXP287CA0015.INDP287.PROD.OUTLOOK.COM
- (2603:1096:b00:2c::32) To BN9PR12MB5259.namprd12.prod.outlook.com
- (2603:10b6:408:100::17)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="A4YPeC+S";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YQdKCi/D"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id AB4067A00A6;
+	Wed,  3 Jun 2026 14:53:11 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 03 Jun 2026 14:53:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1780512791;
+	 x=1780599191; bh=8wljJNHlry9YcAPBfCnl9IH179FU6WGGZsowDo9O5Pc=; b=
+	A4YPeC+SWfoOeY3rKq83ZtKgZA6GUSJcO/9aUqc+iwgGJ8ZJjhi3kr1wgSkZCn11
+	8Wy3qe9Tf7v0THZi93/F3hi8tRyWi9VqDLaE0WAtOiCWAp/k2OPBuUWbuaYGx0sw
+	p4yvjXbMAGFPIAuM9pydbNvaAwfJE6bF4CD17JaGNxn3+2ZAKX2Thfv57/NfFkMP
+	rwmTic5q7KTDBkUDiRgM/k93c4XdXi61n15sRgw14HkMnipb/Cd8MdrlPvOHD2JV
+	Dvj0MTGfwzhPTdPrfLdMtmGbqeE3aHdv1rcpj4xSf7ejLFHv9UlTSSGHKiGwAlT2
+	ZBKOaWqHTtsXjgGN/QCXkQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780512791; x=
+	1780599191; bh=8wljJNHlry9YcAPBfCnl9IH179FU6WGGZsowDo9O5Pc=; b=Y
+	QdKCi/Dffo2fFp9yReIthQAcLDa9zBNvUZ5M2wUnv4oGePY59lZGGbR86Tg9kktI
+	Yh0X2k/45GRBayXXZwF3yDXhYvwCIJIOVrShL4Z4tAa6PHJ5UgPA3yzLjbeEwg7Y
+	bcAfUtvjEfHgoc5zet228kYqcxyoPkvIGQ6HrKSg28tbU7HZ8kQWeTJDJVDedPIU
+	2Oadbu+b4Vwkc5LXXlpH42OtaR/jQzkp3teUJArxorMw6dJU/zEDDIMVdGRx0ZWw
+	7uwrDbUjGjYXaVWfLcM6oejgbbBj93qOJ3pJLOe9+MFBtzd/F38v2r5XaxG6Kg4p
+	z5F13mx33toaJX/yaWTzg==
+X-ME-Sender: <xms:FnggavdZCbc8MtVrAVd2_6MK7syrMoq533lxCeqRBA7j1h0RBJ996Q>
+    <xme:Fnggamx1MaozSPtu42bcY-y90tqAUqFImuuDGrg_bKAdlJxt8CkH_H9sBSKHJcGXb
+    uPvLs07eyOSSwJsRDY54TSl2MDJ0A3XKOiIq8QGEa4ktXpHdzKdNw>
+X-ME-Received: <xmr:FngganydqBSagYPmjC7cDwGyYEyBobPqE-UOfLH3j8TPsjFgijk6OGB1JUQ>
+X-ME-Proxy-Cause: dmFkZTEPRM+mrew0zIQlYb5sH5cnFfUHsRDNq1OawcvFPUkOp5kVhP9xYpb5UEpb+ZLl7H
+    6B2J8uthaOmhLi3ohaqRBHlU+4FhI+E2sUMy4bp6GePlo8ht02cycczIKpYZgABgQ4tFNz
+    lP+b9MeqqdxoTRWqMSltLqq1lm+XdI7xePMTGOU4h2ICBGOcswvG9YcxIKmmxpCejIPqfD
+    e9heJfwU5Qmzt/kdsDtjpVGAhma8IgrJ5rrENbVAju3m4b8UUqtP1TmfeWiSrsq0gDX835
+    UX/F6g/SNuUTjaef4SPfaNWlGfyLk8/LYKAPJ6QeT7AJcyQBZnJgik4ip2CKk3ypVWlDTf
+    Da4UaBZYuQChZti67v8PUBJ0prDL1Nb4Moh/1uO8e3lA8IL2m9cC9vpF8aB8UwnFmlWGtT
+    A8Rne11F4oJuGKInDp2jc4WUsQwGJsJeQjrVsd+7T2fefG8vnKRh1Wrw/rBYZZlZpRvyEt
+    YPY4hXsi7JLQ6hCnu745TIN0G5TJ23FSfgPLK5qsNVK2rhlPO91DrrvO38qJCWR7mrGW5H
+    63VbvFf3+TDLZizoW/aXzvaF3+2kmTAaEmHCTPNUp96fbBwW3mJ/AwuyKTPDt+JYmVozMr
+    ZCVxSQcjwKv6MmNLpz//vsnUqs0cXi4qn2xumtmEBRJUnXLcrX97MINhyu3A
+X-ME-Proxy: <xmx:FngganZHlyoDbbUQH8dYXi0t3q4FsURvYnZHy27uHSC9ecssGTTclA>
+    <xmx:Fnggag1__gpmiL7GAKBIMnYPxXI-QTjxGNUZvcVG3bgL0mVB7JA9Tw>
+    <xmx:FnggahdF6AzXNyHq31GATu2VzJiBdfD6BJ2NbXoVuDBo3XS66Pw-CA>
+    <xmx:FnggalI2HE3DRdSHWzNBVa38m6Za1Mfle7gAaU5dgpYXogTmm5Ao5g>
+    <xmx:F3ggavgKqy1LbMw_WzAuE_URsqYayBwV_i2mAZCi_pLTWhX-KiVq1Hec>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 3 Jun 2026 14:53:09 -0400 (EDT)
+Date: Wed, 3 Jun 2026 12:53:08 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: fengchengwen <fengchengwen@huawei.com>, wathsala.vithanage@arm.com,
+ helgaas@kernel.org, wei.huang2@amd.com, zhipingz@meta.com,
+ wangzhou1@hisilicon.com, wangyushan12@huawei.com, liuyonglong@huawei.com,
+ kvm@vger.kernel.org, linux-pci@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH v14 0/8] vfio/pci: Add PCIe TPH support
+Message-ID: <20260603125308.0116aa14@shazbot.org>
+In-Reply-To: <20260603004524.GL2487554@ziepe.ca>
+References: <20260528124649.14732-1-fengchengwen@huawei.com>
+	<20260601095840.3aaaa508@shazbot.org>
+	<59c82855-59a7-4f0e-b534-d35535d04b93@huawei.com>
+	<20260602170847.75bd159d@shazbot.org>
+	<3f8d1722-6749-4f3a-b630-c96303cec284@huawei.com>
+	<20260603004524.GL2487554@ziepe.ca>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5259:EE_|DS4PR12MB9793:EE_
-X-MS-Office365-Filtering-Correlation-Id: 72881aa2-d7ad-49ba-b439-08dec1a11a0a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|56012099006|18002099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	VfDPmh/OP1hyR4Vp+BrZvcdKDk6IoNmtfuIb3n1zkq7BgmoBXatEiOZVi2XGX3vZO3mN52um9Zyy7wyW5w4GTrQn7kviReQCc54vMHyltOLEzImi6HL/Yg3n1+JX3dS+KFhPrOVEKp71EgsWhBjIA5PmmR5PrHGB1ZQSpV6X3HvhwZbBWE/IW4U9xomrK1ZcF3R7eS+IU5nVPqruruBk3qcFSiDk5MobQCOTHRjVJRey7c4s6EcMTCTEqoBqSjn6U+82mlxLAU2R0iB06ylrSTXLHhOf92Mk4sfNfW/JOzVyzjITEWthKYAUIT5HpIlp2kq0Bzs/AcF273QTAaEBefetB94aAuU4qC3Hr5nI8dh6jAYsZ+2+qDbXfFuXT8y8fTZ3SvR7c1+eB1ce5L6IntHkSVlC2NMxLWG1KHmzuI3IcFECAb3ua9XGfv5GLVlURpOZGuzwn1cQtDrH0fF17cMnjn/ydNj8ZfhJ3GCXUosUXYBH7Agnzz245grz/RifPKKGsws1v9GWxpW6eR0HJLjZKKPVdfE3UT5NWv1btsB7DsiiskH51J5Kne2H+/7wNE3gBYy+H0DuIUZ9HmpHO3rBGIjUWORHNSQpgMJYgXXIe5DlyrdxBA2noxPm1Tf8z7hBbTFEilZgQS27LX0KQTEkiVSupDwwlUOo9GrqQhUbGcNQlvO/vchSmwVje0u9
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(56012099006)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Rlh4b1kxaGpLYSthSzl6bVRxRUxIUENqWWdibnY1Mkw1MU95WjFOYXJJenJK?=
- =?utf-8?B?N2x1cVR4NnFCYkJXeDYxazlmeEYweEx3bjR3dEplRi92VDRpNVpoTVFQQkR3?=
- =?utf-8?B?YWFRVi8rdmhqNkVOR0NGRFR0a2YwenM3ZmQ3TDNVK2ozWVlHUTEwMkp2TzNW?=
- =?utf-8?B?dC9BSGZacDhXRjU2NVEwZCtqNEYzTzF5T1VxK2xpMFg1Zk1FUnJzZ1pHNGFr?=
- =?utf-8?B?Vys5WUI5NEUzd2t6OGFOTGMxOXBqN0NLeDZBQjcyOXdWcEd6Z09HMXJTcHNz?=
- =?utf-8?B?TEJKc2J5MHMxSGd0UTl3dkUwdThVWWxxS0t3UlVhMDJJVW95TkVaRjVhWFg1?=
- =?utf-8?B?cFlaUGo5NWYzZG8zNmNFbWNlb2pycWk4L3phS2tKTWhKa2daK3V1SU13Lzl1?=
- =?utf-8?B?SW16VDlibkFZRm5rZEdGU1d6eTBxRlZlSWg5eUNjeXZuelQ0WnJnd3RkNnBi?=
- =?utf-8?B?b1hoYWlmZVlsa2ZzV0JvZmxsaHZRYU92cUl0Nm1TRG9EMVNnVjVhQXMyMGFP?=
- =?utf-8?B?N0d5M0FwWUFBQVZqb3VqSGxiSW94RnFGOFpSNFd2VVJqSEluam1JeG5NazhX?=
- =?utf-8?B?MVhPSWYvYklna05yVVliK29UMmp0c09RY3NPcGNsRzBTTm9zSW5PZHFzb1Rz?=
- =?utf-8?B?WExsUzdGMnd2c05xWTBEMG9qRm9GenhFckpvUVNFWkEzcEhDbDFMelFFV2t6?=
- =?utf-8?B?Uk4xNlN6L0RNbFVYQ0s4dzBYbTJXTDF0akxvVEZNTG5yRHR6bDVBVXBreDVs?=
- =?utf-8?B?MzZMU21zcTZ6a2pWQXJPY0ZsN0E1TzJTOUM2ME1jeXpSYVRXUityb0xwSEo1?=
- =?utf-8?B?ZGRxVmhmS2gwTnVCT2szTW1RQjlBT3kvVUxrSUZHVHMvUW1kaGd0cStEbW5j?=
- =?utf-8?B?OFV6ZkhlYkVLTGRQZGl4V1o0QWdReEtyaWNDNEx2Y2o2UEFMb2J4aElJUW0w?=
- =?utf-8?B?SGd2ZTVSd2JabWFvN2hXZlJhcDZ5djZ4dzRmZGRQdGNlbnJ6VC8xUHhUR0o0?=
- =?utf-8?B?dVg3T0hjMGZQVThUMnZDYm13ZmltS215MnJ2RVZXajhQVjRrRkZWYzBSR0hV?=
- =?utf-8?B?S2c4TXhRc2RLM2lwc1M0dWtCWGxQZGNRNCtBaURjYmEvVkNpSXQvcy83WU4v?=
- =?utf-8?B?T2J4UWVwSEx1U3ZKbSs3Vnl3dWdGVXd1RHVHc2NwMmRsbndEVkxVcVNEVDlR?=
- =?utf-8?B?RHlyc1Ezc29HMzVOVXNnS0U0L3Z0Wkl6ZWY4NG5HWHcvRFZHUlBQSXpaSWY2?=
- =?utf-8?B?OHZIMVpkcXRHaXJBL1Yrd2JqQmRzRjdmeXN6M2JIc096UVpWTmludU5mY0pY?=
- =?utf-8?B?TXVKa09KMDhPTVFlWS8rb3NiY1Q0dnJLV2VJWVBpMWVjWVpsZnpFbFp3dktn?=
- =?utf-8?B?WS9XM2F4MWVwSlNoTVppcmFLYktNZjBSVEEwMjByWVl4elRsRXZiRWxBKzB6?=
- =?utf-8?B?ZzVoS2x4cHoxS3NqTDZOK3FPakJia1VSN0lUVk8zbk1PQ3lDNmJJRjRLdmpE?=
- =?utf-8?B?QTN5aFMzRTg2VEx4a3Iya2ZFY2NlZ1ArRVQ0M2dpZUx0SFRJMjJBK3JhRmhL?=
- =?utf-8?B?Q21GNU5LVitSSUNiZk51VVlQV3dNazFhand3elZ5RDU1eitIMEVialVhaGda?=
- =?utf-8?B?U0NzWE5ZMitxVUJ1SmUwalZJUHVxRkZpSkk1dC9IQkJBN3R2dmFZVlhnSlFQ?=
- =?utf-8?B?ZTJ1L2tWRDZockI2TW9DWlFSZGpkL2hsbXA1OEplNjFSelpoWVZURFcwVW9D?=
- =?utf-8?B?L01tU2t5aVNDK2FLbXcxbUpNeVhndlFJWkdzS1Q0azJwVkxKQTZtMlZkWStO?=
- =?utf-8?B?Q1V0dHd5QzVpMGdzcmVaUjZDWDRKQklQRUY0VkxGaEl0djlDUU5TRlRvT1U4?=
- =?utf-8?B?YzAvK0YySVR1R0E0ekdYeDFUZVYrQXJPdEUwRkRuZVg0U3pTZmhtaEJYOC8x?=
- =?utf-8?B?bWlTU2VVMlhTZ0FjbTY5SURnT0lGeUdXRS9zck9mb3RtdW4vYXJPZXNjTzl2?=
- =?utf-8?B?c1ZtR005TG1vRWU5M2NGSVNsS05oQkphWk5NTXI4K2l6aGFpdmNEVFhOcDM2?=
- =?utf-8?B?emdRZ3J2Y2hlU3d5cEJwT0p0TGFjdjBjZmM3TFdKeGdpZFExSDhHVGh3UUU2?=
- =?utf-8?B?bEtQN2h1TVA0R2pHTkd1QzBKZk1qaUErWlJKYjhoQ2V3Wm5TWjFEeE5IN0tJ?=
- =?utf-8?B?SGFyNDM3RDcwalpMWnlVN0syaStDWFR3Ynp6Qk95Q1gzNk95ZVVpNGNYZDR4?=
- =?utf-8?B?amtaOGQ1QTl0U0lKQzZrdkhHUVVUL2pzWVc0MUVIeFRrYllxcFVJalBhZ3U1?=
- =?utf-8?B?ZW5LNmZRd3N5blBLbVo3TDMzL3VKeThKcVQ2MkxCZGlKU0tuVVcrQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72881aa2-d7ad-49ba-b439-08dec1a11a0a
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 18:51:20.7478
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D5+F6YOvGH7ZollzmLQAFrvnY5T8taQjVJ6R4Ec31JtMWWZxZYFzuO3vLQROh6pg5OaLA/EpHq6Byjq9e4CL+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9793
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Tue, 2 Jun 2026 21:45:24 -0300
+Jason Gunthorpe <jgg@ziepe.ca> wrote:
 
+> On Wed, Jun 03, 2026 at 08:34:53AM +0800, fengchengwen wrote:
+> 
+> > This translation helper is required to handle varied TPH configurations,
+> > including cases where ST entries live inside device private registers
+> > instead of MSI-X or TPH capability space.  
+> 
+> I thought we agreed vfio had to block that feature in config space due
+> to security concerns? That's what enable_unsafe_tph is about, right?
 
-On 6/3/2026 9:27 PM, Michael S. Tsirkin wrote:
-> kvm_gmem_get_policy() sets *ilx to the full page offset
-> (vm_pgoff + vma offset).  But get_vma_policy() adds the page
-> offset on top of *ilx, so the offset is counted twice.  This
-> causes NUMA interleaving to skip nodes: for order-0 pages the
-> effective index jumps by 2 for each consecutive page.
-> 
-> The get_policy vm_op should return only a per-file bias in *ilx
-> (like shmem_get_policy does with inode->i_ino), letting
-> get_vma_policy() add the page-offset component.
-> 
-> Fix by setting *ilx to inode->i_ino instead of the full page
-> offset.  The page offset is computed by get_vma_policy() in
-> mm/mempolicy.c. The full offset is still computed
-> in kvm_gmem_get_policy() for mpol_shared_policy_lookup().
-> shmem_get_policy() follows the same pattern.
-> 
-> Found by Sashiko (sashiko.dev) AI code review.
-> 
-> Fixes: ed1ffa810bd6 ("KVM: guest_memfd: Enforce NUMA mempolicy using shared policy")
-> Cc: Sean Christopherson <seanjc@google.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
->  virt/kvm/guest_memfd.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 69c9d6d546b2..0bcf6fc08e2d 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -438,11 +438,12 @@ static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpo
->  }
-> 
->  static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
-> -                                            unsigned long addr, pgoff_t *pgoff)
-> +                                            unsigned long addr, pgoff_t *ilx)
->  {
->         struct inode *inode = file_inode(vma->vm_file);
-> +       pgoff_t pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
-> 
-> -       *pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
-> +       *ilx = inode->i_ino;
-> 
->         /*
->          * Return the memory policy for this index, or NULL if none is set.
-> @@ -453,7 +454,7 @@ static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
->          * can then replace NULL with the default memory policy instead of the
->          * current task's memory policy.
->          */
-> -       return mpol_shared_policy_lookup(&GMEM_I(inode)->policy, *pgoff);
-> +       return mpol_shared_policy_lookup(&GMEM_I(inode)->policy, pgoff);
->  }
->  #endif /* CONFIG_NUMA */
-> 
-> --
-> MST
-> 
+Steering tags can effectively live in one of three places.  The
+architected locations are the TPH capability itself and the MSI-X
+table, where support is mutually exclusive.  However the device can
+support either of these and still enable DS mode, thus essentially
+a third location.
 
-Thanks for fixing this. LGTM!
+None of these are particularly more or less unsafe than another.  It's
+inadvisable for drivers to write to the MSI-X vector table, versus
+using the SET_IRQS uAPI, but it's not prevented anymore via mmap.  We
+don't provide direct write access to the TPH capability, but backdoors
+to config space are not uncommon.  So if we consider TPH itself to be
+unsafe, all forms of it present some degree of the same attack vector.
 
-Reviewed-by: Shivank Garg <shivankg@amd.com>
+I'm actually still wrestling with the question whether any of this is
+really unsafe beyond the scope of ownership of the device at all.
 
-Best regards,
-Shivank
+> > Prior discussion with Jason (
+> > ref: https://lore.kernel.org/all/20260414151125.GF2577880@ziepe.ca/)
+> > indicated VFIO-PCI is the correct component for per-device TPH
+> > implementation.  
+> 
+> > > The host-only opt-in issue above also doesn't appear to be addressed or
+> > > rebutted.  
+> > 
+> > enable_unsafe_tph host opt-in already fully gates all new TPH ABI:
+> > TPH cap + feature ioctl are completely hidden from userspace when off,
+> > no userspace opt-in needed.  
+> 
+> I agree in general that the presence of enable_unsafe_tph VFIO has to
+> report the per-device steering tags to userspace so it can program the
+> device specific registers, nothing else can do this.
 
+What's the scope of "nothing else" here?  The raw ST value for a CPU is
+derived from an ACPI _DSM associated to a root port.  So if the scope
+is that the kernel needs to provide that translation, I agree, but
+where in the kernel it's provided may still require some thought.
 
+> But I don't really get what is going on with all the new uAPI
+> proposed.
+> 
+> I don't understand what VFIO_DEVICE_FEATURE_TPH_ST_CONFIG is supposed
+> to be for, userspace should not be able to directly program registers
+> that are kernel controled. In this case it is 'safe' and it should be
+> only programmed by specifying abstract information like TPH_CPU_ST
+> does.
+> 
+> I'm also wondering why it needs a shadow entry, that doesn't seem
+> normal for config space tables..
 
+As above, the user owns the device and even in the ~safer~ storage
+locations we can't really guarantee that the user cannot overwrite
+MSI-X vector table entries or manipulate the device to insert values
+into config space.
+
+We also need to consider how this incorporates Zhiping's series, where
+TPH values can be associated to a dmabuf.  Would userspace get access
+to those raw TPH values to program the initiator?  It must for DS
+support.  Therefore the interface became one of the user handling raw
+ST values and the CPU ID to ST translation became this ill-fitting
+sidecar.
+
+The shadow table comes about because we don't know until the mode is
+selected whether we're using the DS (effective) location or one of the
+architected locations.  In fact, the internal kernel API doesn't even
+let us even set a TPH value without TPH enabled, which presumes a
+specific programming model that may not align with userspace.
+
+I had envisioned that a shadow would also provide symmetry in the
+interface for the DS implementation, but I was never really able to
+make that stick with this rapid succession, no pause for clarification
+or discussion, development style.  Thanks,
+
+Alex
