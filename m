@@ -1,53 +1,53 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD1D47277E
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 10:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BACD47279B
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 10:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780484312; cv=none; b=RYboPg1ZS4TIfKHQTO1yi9xAh/qRco7CB6SkQZqnxDGg9ISvBdAUta0f4dpzhm/RxLBkdLMOo5Zl6j1He0+m3Fh5AvuJC324BTmYRGtVftsZ+DWAs/OeoMjgMHFgJrrXsqB03Wt3S1xctgDhajdIkcDRCikRdZGUXMKuPUrqubI=
+	t=1780484313; cv=none; b=YK1i01/DewtbSI+mVd73dbAi4fLtPV/q+QLz1Pz0Rt9x/FDOXEAgLOTHxxRD4vT8yopG6SLJerukVVJ0hUcbpx9PygW162IG/qQEfzf4cFJ1Rel1k29JYBGgF9ETVZZFc0EfNSKRsfXFYhC+gDoh//IK5KJseSC2Pkv8ww61NRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780484312; c=relaxed/simple;
-	bh=oQ3uB9ag6TFntj2f7RaLgx9+Ljpmo52fpeiN7GgMR3o=;
+	s=arc-20240116; t=1780484313; c=relaxed/simple;
+	bh=WlNXvzW7ln7u94TbWINmk7Y7j3x+T4r4fb9Xw+m/9LI=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uY+BqEwmLtAfAWtCLS9OwKaF6ckcyf8f0ueDTt2pyUIVH+a8nWzx22qJ//DzolrjslXJ8bavacu0zsySCja8JfTtK99xznRMI/279KY5hRKzlJyDjPLxPOmb6ZRdZ+lgQi88Exy/KmQVos3aIVNzhLm0b6EwrDoo/7Zn3xOOjnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C2sWwI9d; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=oXvmr0TWQSbNTBQ+rV2/X7MjnixBoIVxCMXe5m3vA18szup5t7YMPeDcJ7QBCtojV7bhefj/MBHgEMh70ypAIcKelc0muFbbMjdBRa1LBSNi8VkQaA1YU84yt4UUpUJir4gwoIIkhsO0nO9nIoqCueVmSbmzpmfAM7FUMZvzrc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EIy1t7z5; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C2sWwI9d"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EIy1t7z5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1780484308;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/Zmh95JMXQZcNUosnCHawF8QUOQ1JiyKHvBrI6qzBKA=;
-	b=C2sWwI9deN7wSTzfuSSLnNk/zRRTkvhz5r6G4dTpi0Wku/y6PG7yMD55gA/lpwVLcCh56y
-	gloJt3RumoS9eESzuWZj878pSFwycclbr92KBZRWFhGbeH0wOnv7icIPIa0DRnAnRy+y/s
-	9GeaFM2eTRGZYQuh5Ua7OSXl3CB1QhA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=baPWCBWFLJklhmO9o/jKMPHzOjdlVdInltl8nPF7PCQ=;
+	b=EIy1t7z5ia17DXBm6CcXVpDCBnbw4zgUrWefueY+gNd++EQEUZaQYfzufgs4zP1B3NBKDI
+	vj371T0aIS65V91RMAm7F8JAIHh/T4eMG3kUgU70pBeSqxLJOeZNcjDSsQ2kARgxWgyCUQ
+	cq/RzuGzHFcVW3p1GvicbZSGKyBIlFI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-408-7YVSihvMP8SFu-cK9s4ERg-1; Wed,
- 03 Jun 2026 06:58:26 -0400
-X-MC-Unique: 7YVSihvMP8SFu-cK9s4ERg-1
-X-Mimecast-MFC-AGG-ID: 7YVSihvMP8SFu-cK9s4ERg_1780484305
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-98-pFe-Q0R6NbiAW8mmbVA_bQ-1; Wed,
+ 03 Jun 2026 06:58:27 -0400
+X-MC-Unique: pFe-Q0R6NbiAW8mmbVA_bQ-1
+X-Mimecast-MFC-AGG-ID: pFe-Q0R6NbiAW8mmbVA_bQ_1780484306
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D08F81956096;
-	Wed,  3 Jun 2026 10:58:25 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5C5F5180048E;
+	Wed,  3 Jun 2026 10:58:26 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5EC5030001A1;
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E03CD30001A1;
 	Wed,  3 Jun 2026 10:58:25 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Subject: [PATCH 18/24] KVM: x86/mmu: make gva_walk a value
-Date: Wed,  3 Jun 2026 06:58:08 -0400
-Message-ID: <20260603105814.10236-19-pbonzini@redhat.com>
+Subject: [PATCH 19/24] KVM: x86/mmu: pull struct kvm_pagewalk out of struct kvm_mmu
+Date: Wed,  3 Jun 2026 06:58:09 -0400
+Message-ID: <20260603105814.10236-20-pbonzini@redhat.com>
 In-Reply-To: <20260603105814.10236-1-pbonzini@redhat.com>
 References: <20260603105814.10236-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -60,404 +60,546 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Always use the same instance of kvm_pagewalk to do GVA->GPA translations,
-instead of flipping the gva_walk pointer back and forth.  After all the
-page walking does behave the same no matter if you are in guest mode or
-not; the difference lies in the behavior of kvm_translate_gpa and thus
-in vcpu->arch.mmu, not in the page walker itself.
+Now that root_mmu.w always has the same content as gva_walk, replace
+it with just a pointer to gva_walk.  For guest_mmu, introduce a second
+struct kvm_pagewalk and point to it.  It is now clear that non-MMU code
+does cares about page walks, but it funnels (almost) all interactions
+with the TLB to mmu.c.
 
-At this point, vcpu->arch.gva_walk and vcpu->arch.root_mmu.w contain
-the same information (at least when KVM is not running a nested guest,
-i.e. when root_mmu is actually in use); compare init_kvm_page_walk()
-on one side with init_kvm_softmmu() + shadow_mmu_init_context() on
-the other.  root_mmu.w is still used by shadow paging, via
-FNAME(walk_addr) and its callers.
-
-vcpu->arch.guest_mmu.w instead is used for both guest emulation
-(kvm_translate_gpa) and shadow paging.
+It is left as an exercise to the reader to split kvm_pagewalk to its own
+file...
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/include/asm/kvm_host.h | 12 +----
- arch/x86/kvm/hyperv.c           |  2 +-
- arch/x86/kvm/mmu.h              |  8 +--
- arch/x86/kvm/mmu/mmu.c          | 86 +++++++++++++++------------------
- arch/x86/kvm/mmu/paging_tmpl.h  |  4 +-
- arch/x86/kvm/svm/nested.c       |  2 -
- arch/x86/kvm/vmx/nested.c       |  3 --
- arch/x86/kvm/x86.c              | 20 ++++----
- 8 files changed, 58 insertions(+), 79 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  7 ++-
+ arch/x86/kvm/mmu.h              |  4 +-
+ arch/x86/kvm/mmu/mmu.c          | 97 +++++++++++++--------------------
+ arch/x86/kvm/mmu/paging_tmpl.h  | 14 ++---
+ arch/x86/kvm/svm/nested.c       |  9 ++-
+ arch/x86/kvm/vmx/nested.c       | 11 ++--
+ arch/x86/kvm/x86.c              |  2 +-
+ 7 files changed, 63 insertions(+), 81 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 1bebd98ce846..383bef0cf0f0 100644
+index 383bef0cf0f0..ce39230eaebb 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -869,20 +869,10 @@ struct kvm_vcpu_arch {
- 	/* L1 MMU when running nested */
- 	struct kvm_mmu guest_mmu;
+@@ -507,11 +507,11 @@ struct kvm_pagewalk {
+ };
  
--	/*
--	 * Paging state of an L2 guest (used for nested npt)
--	 *
--	 * This context will save all necessary information to walk page tables
--	 * of an L2 guest. This context is only initialized for page table
--	 * walking and not for faulting since we never handle l2 page faults on
--	 * the host.
--	 */
--	struct kvm_pagewalk ngva_walk;
+ struct kvm_mmu {
+-	struct kvm_pagewalk w;
 -
+ 	int (*page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault);
+ 	int (*sync_spte)(struct kvm_vcpu *vcpu,
+ 			 struct kvm_mmu_page *sp, int i);
++	struct kvm_pagewalk *w;
++
+ 	struct kvm_mmu_root_info root;
+ 	hpa_t mirror_root_hpa;
+ 	union kvm_mmu_page_role root_role;
+@@ -866,8 +866,9 @@ struct kvm_vcpu_arch {
+ 	/* Non-nested MMU for L1 */
+ 	struct kvm_mmu root_mmu;
+ 
+-	/* L1 MMU when running nested */
++	/* L1 TDP when running nested */
+ 	struct kvm_mmu guest_mmu;
++	struct kvm_pagewalk ngpa_walk;
+ 
  	/*
  	 * Pagewalk context used for gva_to_gpa translations.
- 	 */
--	struct kvm_pagewalk *gva_walk;
-+	struct kvm_pagewalk gva_walk;
- 
- 	u64 pdptrs[4]; /* pae */
- 
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 414dc57f1de3..5ccb76010a37 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2041,7 +2041,7 @@ static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 	 * read with kvm_read_guest().
- 	 */
- 	if (!hc->fast) {
--		hc->ingpa = kvm_translate_gpa(vcpu, vcpu->arch.gva_walk, hc->ingpa,
-+		hc->ingpa = kvm_translate_gpa(vcpu, &vcpu->arch.gva_walk, hc->ingpa,
- 					      PFERR_GUEST_FINAL_MASK, NULL, 0);
- 		if (unlikely(hc->ingpa == INVALID_GPA))
- 			return HV_STATUS_INVALID_HYPERCALL_INPUT;
 diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index debdaff7f710..b8dc88eb56a5 100644
+index b8dc88eb56a5..58eb98585a29 100644
 --- a/arch/x86/kvm/mmu.h
 +++ b/arch/x86/kvm/mmu.h
-@@ -176,9 +176,9 @@ static inline void kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
- 	 * @w's snapshot of CR0.WP and thus all related paging metadata may
- 	 * be stale.  Refresh CR0.WP and the metadata on-demand when checking
- 	 * for permission faults.  Exempt nested MMUs, i.e. MMUs for shadowing
--	 * nEPT and nNPT, as CR0.WP is ignored in both cases.  Note, KVM does
--	 * need to refresh ngva_walk, a.k.a. the walker used to translate L2
--	 * GVAs to GPAs, so as to honor L2's CR0.WP.
-+	 * nEPT and nNPT, as CR0.WP is ignored in both cases.  Note, KVM will
-+	 * still refresh gva_walk, so as to honor L2's CR0.WP when translating
-+	 * L2 GVAs to GPAs.
+@@ -180,7 +180,7 @@ static inline void kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
+ 	 * still refresh gva_walk, so as to honor L2's CR0.WP when translating
+ 	 * L2 GVAs to GPAs.
  	 */
- 	if (!tdp_enabled || w == &vcpu->arch.guest_mmu.w)
+-	if (!tdp_enabled || w == &vcpu->arch.guest_mmu.w)
++	if (!tdp_enabled || w == &vcpu->arch.ngpa_walk)
  		return;
+ 
+ 	__kvm_mmu_refresh_passthrough_bits(vcpu, w);
 @@ -306,7 +306,7 @@ static inline gpa_t kvm_translate_gpa(struct kvm_vcpu *vcpu,
  				      struct x86_exception *exception,
  				      u64 pte_access)
  {
--	if (w != &vcpu->arch.ngva_walk)
-+	if (!mmu_is_nested(vcpu) || w == &vcpu->arch.guest_mmu.w)
+-	if (!mmu_is_nested(vcpu) || w == &vcpu->arch.guest_mmu.w)
++	if (!mmu_is_nested(vcpu) || w == &vcpu->arch.ngpa_walk)
  		return gpa;
  	return kvm_x86_ops.nested_ops->translate_nested_gpa(vcpu, gpa, access,
  							    exception,
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 386fdbc34b02..2fe4d5359006 100644
+index 2fe4d5359006..bd307e9b3fd6 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5943,6 +5943,27 @@ static void kvm_init_shadow_mmu(struct kvm_vcpu *vcpu,
- 	shadow_mmu_init_context(vcpu, context, cpu_role, root_role);
- }
- 
-+static void init_kvm_page_walk(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
-+			       union kvm_cpu_role cpu_role)
-+{
-+	if (cpu_role.as_u64 == w->cpu_role.as_u64)
-+		return;
-+
-+	w->cpu_role.as_u64   = cpu_role.as_u64;
-+	w->inject_page_fault = kvm_inject_page_fault;
-+	w->get_pdptr         = kvm_pdptr_read;
-+	w->get_guest_pgd     = get_guest_cr3;
-+
-+	if (!is_cr0_pg(w))
-+		w->gva_to_gpa = nonpaging_gva_to_gpa;
-+	else if (is_cr4_pae(w))
-+		w->gva_to_gpa = paging64_gva_to_gpa;
-+	else
-+		w->gva_to_gpa = paging32_gva_to_gpa;
-+
-+	reset_guest_paging_metadata(vcpu, w);
-+}
-+
- void kvm_init_shadow_npt_mmu(struct kvm_vcpu *vcpu, unsigned long cr4,
- 			     u64 efer, gpa_t nested_cr3, u64 misc_ctl)
+@@ -2473,12 +2473,14 @@ static void shadow_walk_init_using_root(struct kvm_shadow_walk_iterator *iterato
+ 					struct kvm_vcpu *vcpu, hpa_t root,
+ 					u64 addr)
  {
-@@ -6037,50 +6058,19 @@ static void init_kvm_softmmu(struct kvm_vcpu *vcpu,
- 	context->w.get_guest_pgd     = get_guest_cr3;
- }
++	struct kvm_pagewalk *w = vcpu->arch.mmu->w;
++
+ 	iterator->addr = addr;
+ 	iterator->shadow_addr = root;
+ 	iterator->level = vcpu->arch.mmu->root_role.level;
  
--static void init_kvm_ngva_walk(struct kvm_vcpu *vcpu,
--				union kvm_cpu_role new_mode)
--{
--	struct kvm_pagewalk *g_context = &vcpu->arch.ngva_walk;
--
--	if (new_mode.as_u64 == g_context->cpu_role.as_u64)
--		return;
--
--	g_context->cpu_role.as_u64   = new_mode.as_u64;
--	g_context->inject_page_fault = kvm_inject_page_fault;
--	g_context->get_pdptr         = kvm_pdptr_read;
--	g_context->get_guest_pgd     = get_guest_cr3;
--
--	/*
--	 * Note that arch.mmu->gva_to_gpa translates l2_gpa to l1_gpa using
--	 * L1's nested page tables (e.g. EPT12). The nested translation
--	 * of l2_gva to l1_gpa is done by arch.ngva_walk.gva_to_gpa using
--	 * L2's page tables as the first level of translation and L1's
--	 * nested page tables as the second level of translation. Basically
--	 * the gva_to_gpa functions between mmu and ngva_walk are swapped.
--	 */
--	if (!is_paging(vcpu))
--		g_context->gva_to_gpa = nonpaging_gva_to_gpa;
--	else if (is_long_mode(vcpu))
--		g_context->gva_to_gpa = paging64_gva_to_gpa;
--	else if (is_pae(vcpu))
--		g_context->gva_to_gpa = paging64_gva_to_gpa;
--	else
--		g_context->gva_to_gpa = paging32_gva_to_gpa;
--
--	reset_guest_paging_metadata(vcpu, g_context);
--}
--
- void kvm_init_mmu(struct kvm_vcpu *vcpu)
+ 	if (iterator->level >= PT64_ROOT_4LEVEL &&
+-	    vcpu->arch.mmu->w.cpu_role.base.level < PT64_ROOT_4LEVEL &&
++	    w->cpu_role.base.level < PT64_ROOT_4LEVEL &&
+ 	    !vcpu->arch.mmu->root_role.direct)
+ 		iterator->level = PT32E_ROOT_LEVEL;
+ 
+@@ -4066,12 +4068,13 @@ static int mmu_first_shadow_root_alloc(struct kvm *kvm)
+ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
  {
- 	struct kvm_mmu_role_regs regs = vcpu_to_role_regs(vcpu);
- 	union kvm_cpu_role cpu_role = kvm_calc_cpu_role(vcpu, &regs);
+ 	struct kvm_mmu *mmu = vcpu->arch.mmu;
++	struct kvm_pagewalk *w = mmu->w;
+ 	u64 pdptrs[4], pm_mask;
+ 	gfn_t root_gfn, root_pgd;
+ 	int quadrant, i, r;
+ 	hpa_t root;
  
--	if (mmu_is_nested(vcpu))
--		init_kvm_ngva_walk(vcpu, cpu_role);
--	else if (tdp_enabled)
--		init_kvm_tdp_mmu(vcpu, cpu_role);
--	else
--		init_kvm_softmmu(vcpu, cpu_role);
-+	init_kvm_page_walk(vcpu, &vcpu->arch.gva_walk, cpu_role);
-+
-+	if (!mmu_is_nested(vcpu)) {
-+		if (tdp_enabled)
-+			init_kvm_tdp_mmu(vcpu, cpu_role);
-+		else
-+			init_kvm_softmmu(vcpu, cpu_role);
-+	}
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_init_mmu);
+-	root_pgd = kvm_mmu_get_guest_pgd(vcpu, &mmu->w);
++	root_pgd = kvm_mmu_get_guest_pgd(vcpu, mmu->w);
+ 	root_gfn = (root_pgd & __PT_BASE_ADDR_MASK) >> PAGE_SHIFT;
  
-@@ -6102,7 +6092,7 @@ void kvm_mmu_after_set_cpuid(struct kvm_vcpu *vcpu)
- 	vcpu->arch.guest_mmu.root_role.invalid = 1;
- 	vcpu->arch.root_mmu.w.cpu_role.ext.valid = 0;
- 	vcpu->arch.guest_mmu.w.cpu_role.ext.valid = 0;
--	vcpu->arch.ngva_walk.cpu_role.ext.valid = 0;
-+	vcpu->arch.gva_walk.cpu_role.ext.valid = 0;
- 	kvm_mmu_reset_context(vcpu);
+ 	if (!kvm_vcpu_is_visible_gfn(vcpu, root_gfn)) {
+@@ -4083,9 +4086,9 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 	 * On SVM, reading PDPTRs might access guest memory, which might fault
+ 	 * and thus might sleep.  Grab the PDPTRs before acquiring mmu_lock.
+ 	 */
+-	if (mmu->w.cpu_role.base.level == PT32E_ROOT_LEVEL) {
++	if (w->cpu_role.base.level == PT32E_ROOT_LEVEL) {
+ 		for (i = 0; i < 4; ++i) {
+-			pdptrs[i] = mmu->w.get_pdptr(vcpu, i);
++			pdptrs[i] = w->get_pdptr(vcpu, i);
+ 			if (!(pdptrs[i] & PT_PRESENT_MASK))
+ 				continue;
  
- 	KVM_BUG_ON(!kvm_can_set_cpuid_and_feature_msrs(vcpu), vcpu->kvm);
-@@ -6598,17 +6588,22 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
- 	WARN_ON_ONCE(roots & ~KVM_MMU_ROOTS_ALL);
+@@ -4107,7 +4110,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 	 * Do we shadow a long mode page table? If so we need to
+ 	 * write-protect the guests page table root.
+ 	 */
+-	if (mmu->w.cpu_role.base.level >= PT64_ROOT_4LEVEL) {
++	if (w->cpu_role.base.level >= PT64_ROOT_4LEVEL) {
+ 		root = mmu_alloc_root(vcpu, root_gfn, 0,
+ 				      mmu->root_role.level);
+ 		mmu->root.hpa = root;
+@@ -4146,7 +4149,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 	for (i = 0; i < 4; ++i) {
+ 		WARN_ON_ONCE(IS_VALID_PAE_ROOT(mmu->pae_root[i]));
  
- 	/* It's actually a GPA for vcpu->arch.guest_mmu.  */
--	if (w != &vcpu->arch.guest_mmu.w) {
-+	if (w == &vcpu->arch.gva_walk) {
- 		/* INVLPG on a non-canonical address is a NOP according to the SDM.  */
- 		if (is_noncanonical_invlpg_address(addr, vcpu))
- 			return;
+-		if (mmu->w.cpu_role.base.level == PT32E_ROOT_LEVEL) {
++		if (w->cpu_role.base.level == PT32E_ROOT_LEVEL) {
+ 			if (!(pdptrs[i] & PT_PRESENT_MASK)) {
+ 				mmu->pae_root[i] = INVALID_PAE_ROOT;
+ 				continue;
+@@ -4160,7 +4163,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 		 * directory. Othwerise each PAE page direct shadows one guest
+ 		 * PAE page directory so that quadrant should be 0.
+ 		 */
+-		quadrant = (mmu->w.cpu_role.base.level == PT32_ROOT_LEVEL) ? i : 0;
++		quadrant = (w->cpu_role.base.level == PT32_ROOT_LEVEL) ? i : 0;
  
- 		kvm_x86_call(flush_tlb_gva)(vcpu, addr);
--		if (w == &vcpu->arch.ngva_walk)
-+
-+		if (tdp_enabled)
- 			return;
-+
-+		mmu = &vcpu->arch.root_mmu;
-+	} else {
-+		mmu = &vcpu->arch.guest_mmu;
- 	}
+ 		root = mmu_alloc_root(vcpu, root_gfn, quadrant, PT32_ROOT_LEVEL);
+ 		mmu->pae_root[i] = root | pm_mask;
+@@ -4184,6 +4187,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ static int mmu_alloc_special_roots(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_mmu *mmu = vcpu->arch.mmu;
++	struct kvm_pagewalk *w = mmu->w;
+ 	bool need_pml5 = mmu->root_role.level > PT64_ROOT_4LEVEL;
+ 	u64 *pml5_root = NULL;
+ 	u64 *pml4_root = NULL;
+@@ -4196,7 +4200,7 @@ static int mmu_alloc_special_roots(struct kvm_vcpu *vcpu)
+ 	 * on demand, as running a 32-bit L1 VMM on 64-bit KVM is very rare.
+ 	 */
+ 	if (mmu->root_role.direct ||
+-	    mmu->w.cpu_role.base.level >= PT64_ROOT_4LEVEL ||
++	    w->cpu_role.base.level >= PT64_ROOT_4LEVEL ||
+ 	    mmu->root_role.level < PT64_ROOT_4LEVEL)
+ 		return 0;
  
--	mmu = container_of(w, struct kvm_mmu, w);
-+	/* Invalidate shadow pages, whether GPA->GVA or nGPA->GPA.  */
- 	if (!mmu->sync_spte)
+@@ -4301,7 +4305,7 @@ void kvm_mmu_sync_roots(struct kvm_vcpu *vcpu)
+ 
+ 	vcpu_clear_mmio_info(vcpu, MMIO_GVA_ANY);
+ 
+-	if (vcpu->arch.mmu->w.cpu_role.base.level >= PT64_ROOT_4LEVEL) {
++	if (vcpu->arch.mmu->w->cpu_role.base.level >= PT64_ROOT_4LEVEL) {
+ 		hpa_t root = vcpu->arch.mmu->root.hpa;
+ 
+ 		if (!is_unsync_root(root))
+@@ -4543,7 +4547,7 @@ static bool kvm_arch_setup_async_pf(struct kvm_vcpu *vcpu,
+ 	if (arch.direct_map)
+ 		arch.cr3 = (unsigned long)INVALID_GPA;
+ 	else
+-		arch.cr3 = kvm_mmu_get_guest_pgd(vcpu, &vcpu->arch.mmu->w);
++		arch.cr3 = kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu->w);
+ 
+ 	return kvm_setup_async_pf(vcpu, fault->addr,
+ 				  kvm_vcpu_gfn_to_hva(vcpu, fault->gfn), &arch);
+@@ -4565,7 +4569,7 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
  		return;
  
-@@ -6634,7 +6629,7 @@ void kvm_mmu_invlpg(struct kvm_vcpu *vcpu, gva_t gva)
- 	 * be synced when switching to that new cr3, so nothing needs to be
- 	 * done here for them.
- 	 */
--	kvm_mmu_invalidate_addr(vcpu, vcpu->arch.gva_walk, gva, KVM_MMU_ROOTS_ALL);
-+	kvm_mmu_invalidate_addr(vcpu, &vcpu->arch.gva_walk, gva, KVM_MMU_ROOTS_ALL);
- 	++vcpu->stat.invlpg;
+ 	if (!vcpu->arch.mmu->root_role.direct &&
+-	      work->arch.cr3 != kvm_mmu_get_guest_pgd(vcpu, &vcpu->arch.mmu->w))
++	      work->arch.cr3 != kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu->w))
+ 		return;
+ 
+ 	r = kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, work->arch.error_code,
+@@ -5119,7 +5123,6 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_tdp_mmu_map_private_pfn);
+ static void nonpaging_init_context(struct kvm_mmu *context)
+ {
+ 	context->page_fault = nonpaging_page_fault;
+-	context->w.gva_to_gpa = nonpaging_gva_to_gpa;
+ 	context->sync_spte = NULL;
  }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_mmu_invlpg);
-@@ -6656,7 +6651,7 @@ void kvm_mmu_invpcid_gva(struct kvm_vcpu *vcpu, gva_t gva, unsigned long pcid)
+ 
+@@ -5434,9 +5437,9 @@ static void __reset_rsvds_bits_mask_ept(struct rsvd_bits_validate *rsvd_check,
+ }
+ 
+ static void reset_rsvds_bits_mask_ept(struct kvm_vcpu *vcpu,
+-		struct kvm_mmu *context, bool execonly, int huge_page_level)
++		bool execonly, int huge_page_level)
+ {
+-	__reset_rsvds_bits_mask_ept(&context->w.guest_rsvd_check,
++	__reset_rsvds_bits_mask_ept(&vcpu->arch.ngpa_walk.guest_rsvd_check,
+ 				    vcpu->arch.reserved_gpa_bits, execonly,
+ 				    huge_page_level);
+ }
+@@ -5743,21 +5746,19 @@ static void reset_guest_paging_metadata(struct kvm_vcpu *vcpu,
+ 		return;
+ 
+ 	reset_guest_rsvds_bits_mask(vcpu, w);
+-	update_permission_bitmask(w, w == &vcpu->arch.guest_mmu.w, false);
++	update_permission_bitmask(w, w == &vcpu->arch.ngpa_walk, false);
+ 	update_pkru_bitmask(w);
+ }
+ 
+ static void paging64_init_context(struct kvm_mmu *context)
+ {
+ 	context->page_fault = paging64_page_fault;
+-	context->w.gva_to_gpa = paging64_gva_to_gpa;
+ 	context->sync_spte = paging64_sync_spte;
+ }
+ 
+ static void paging32_init_context(struct kvm_mmu *context)
+ {
+ 	context->page_fault = paging32_page_fault;
+-	context->w.gva_to_gpa = paging32_gva_to_gpa;
+ 	context->sync_spte = paging32_sync_spte;
+ }
+ 
+@@ -5872,49 +5873,31 @@ static void init_kvm_tdp_mmu(struct kvm_vcpu *vcpu,
+ 	struct kvm_mmu *context = &vcpu->arch.root_mmu;
+ 	union kvm_mmu_page_role root_role = kvm_calc_tdp_mmu_root_page_role(vcpu, cpu_role);
+ 
+-	if (cpu_role.as_u64 == context->w.cpu_role.as_u64 &&
+-	    root_role.word == context->root_role.word)
++	if (root_role.word == context->root_role.word)
+ 		return;
+ 
+-	context->w.cpu_role.as_u64 = cpu_role.as_u64;
+ 	context->root_role.word = root_role.word;
+ 	context->page_fault = kvm_tdp_page_fault;
+ 	context->sync_spte = NULL;
+ 
+-	context->w.inject_page_fault = kvm_inject_page_fault;
+-	context->w.get_pdptr = kvm_pdptr_read;
+-	context->w.get_guest_pgd = get_guest_cr3;
+-
+-	if (!is_cr0_pg(&context->w))
+-		context->w.gva_to_gpa = nonpaging_gva_to_gpa;
+-	else if (is_cr4_pae(&context->w))
+-		context->w.gva_to_gpa = paging64_gva_to_gpa;
+-	else
+-		context->w.gva_to_gpa = paging32_gva_to_gpa;
+-
+-	reset_guest_paging_metadata(vcpu, &context->w);
+ 	reset_tdp_shadow_zero_bits_mask(context);
+ }
+ 
+ static void shadow_mmu_init_context(struct kvm_vcpu *vcpu, struct kvm_mmu *context,
+-				    union kvm_cpu_role cpu_role,
+ 				    union kvm_mmu_page_role root_role)
+ {
+-	if (cpu_role.as_u64 == context->w.cpu_role.as_u64 &&
+-	    root_role.word == context->root_role.word)
++	if (root_role.word == context->root_role.word)
+ 		return;
+ 
+-	context->w.cpu_role.as_u64 = cpu_role.as_u64;
+ 	context->root_role.word = root_role.word;
+ 
+-	if (!is_cr0_pg(&context->w))
++	if (!is_cr0_pg(context->w))
+ 		nonpaging_init_context(context);
+-	else if (is_cr4_pae(&context->w))
++	else if (is_cr4_pae(context->w))
+ 		paging64_init_context(context);
+ 	else
+ 		paging32_init_context(context);
+ 
+-	reset_guest_paging_metadata(vcpu, &context->w);
+ 	reset_shadow_zero_bits_mask(vcpu, context);
+ }
+ 
+@@ -5940,7 +5923,7 @@ static void kvm_init_shadow_mmu(struct kvm_vcpu *vcpu,
+ 	 */
+ 	root_role.efer_nx = true;
+ 
+-	shadow_mmu_init_context(vcpu, context, cpu_role, root_role);
++	shadow_mmu_init_context(vcpu, context, root_role);
+ }
+ 
+ static void init_kvm_page_walk(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
+@@ -5980,13 +5963,15 @@ void kvm_init_shadow_npt_mmu(struct kvm_vcpu *vcpu, unsigned long cr4,
+ 	WARN_ON_ONCE(cpu_role.base.direct || !cpu_role.base.guest_mode);
+ 	cpu_role.base.cr4_smep = (misc_ctl & SVM_MISC_ENABLE_GMET) != 0;
+ 
++	init_kvm_page_walk(vcpu, &vcpu->arch.ngpa_walk, cpu_role);
++
+ 	root_role = cpu_role.base;
+ 	root_role.level = kvm_mmu_get_tdp_level(vcpu);
+ 	if (root_role.level == PT64_ROOT_5LEVEL &&
+ 	    cpu_role.base.level == PT64_ROOT_4LEVEL)
+ 		root_role.passthrough = 1;
+ 
+-	shadow_mmu_init_context(vcpu, context, cpu_role, root_role);
++	shadow_mmu_init_context(vcpu, context, root_role);
+ 	kvm_mmu_new_pgd(vcpu, nested_cr3);
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_init_shadow_npt_mmu);
+@@ -6027,18 +6012,20 @@ void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
+ 		kvm_calc_shadow_ept_root_page_role(vcpu, accessed_dirty,
+ 						   execonly, level, mbec);
+ 
+-	if (new_mode.as_u64 != context->w.cpu_role.as_u64) {
++	struct kvm_pagewalk *ngpa_walk = &vcpu->arch.ngpa_walk;
++
++	if (new_mode.as_u64 != ngpa_walk->cpu_role.as_u64) {
+ 		/* EPT, and thus nested EPT, does not consume CR0, CR4, nor EFER. */
+-		context->w.cpu_role.as_u64 = new_mode.as_u64;
++		ngpa_walk->cpu_role.as_u64 = new_mode.as_u64;
+ 		context->root_role.word = new_mode.base.word;
+ 
+ 		context->page_fault = ept_page_fault;
+-		context->w.gva_to_gpa = ept_gva_to_gpa;
++		ngpa_walk->gva_to_gpa = ept_gva_to_gpa;
+ 		context->sync_spte = ept_sync_spte;
+ 
+-		update_permission_bitmask(&context->w, true, true);
+-		context->w.pkru_mask = 0;
+-		reset_rsvds_bits_mask_ept(vcpu, context, execonly, huge_page_level);
++		update_permission_bitmask(ngpa_walk, true, true);
++		ngpa_walk->pkru_mask = 0;
++		reset_rsvds_bits_mask_ept(vcpu, execonly, huge_page_level);
+ 		reset_ept_shadow_zero_bits_mask(context, execonly);
  	}
  
- 	if (roots)
--		kvm_mmu_invalidate_addr(vcpu, &mmu->w, gva, roots);
-+		kvm_mmu_invalidate_addr(vcpu, &vcpu->arch.gva_walk, gva, roots);
- 	++vcpu->stat.invlpg;
+@@ -6049,13 +6036,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_init_shadow_ept_mmu);
+ static void init_kvm_softmmu(struct kvm_vcpu *vcpu,
+ 			     union kvm_cpu_role cpu_role)
+ {
+-	struct kvm_mmu *context = &vcpu->arch.root_mmu;
+-
+ 	kvm_init_shadow_mmu(vcpu, cpu_role);
+-
+-	context->w.inject_page_fault = kvm_inject_page_fault;
+-	context->w.get_pdptr         = kvm_pdptr_read;
+-	context->w.get_guest_pgd     = get_guest_cr3;
+ }
  
- 	/*
-@@ -6771,7 +6766,6 @@ int kvm_mmu_create(struct kvm_vcpu *vcpu)
- 		vcpu->arch.mmu_shadow_page_cache.gfp_zero = __GFP_ZERO;
+ void kvm_init_mmu(struct kvm_vcpu *vcpu)
+@@ -6090,8 +6071,7 @@ void kvm_mmu_after_set_cpuid(struct kvm_vcpu *vcpu)
+ 	 */
+ 	vcpu->arch.root_mmu.root_role.invalid = 1;
+ 	vcpu->arch.guest_mmu.root_role.invalid = 1;
+-	vcpu->arch.root_mmu.w.cpu_role.ext.valid = 0;
+-	vcpu->arch.guest_mmu.w.cpu_role.ext.valid = 0;
++	vcpu->arch.ngpa_walk.cpu_role.ext.valid = 0;
+ 	vcpu->arch.gva_walk.cpu_role.ext.valid = 0;
+ 	kvm_mmu_reset_context(vcpu);
+ 
+@@ -6696,11 +6676,12 @@ static void free_mmu_pages(struct kvm_mmu *mmu)
+ 	free_page((unsigned long)mmu->pml5_root);
+ }
+ 
+-static int __kvm_mmu_create(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu)
++static int __kvm_mmu_create(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu, struct kvm_pagewalk *w)
+ {
+ 	struct page *page;
+ 	int i;
+ 
++	mmu->w = w;
+ 	mmu->root.hpa = INVALID_PAGE;
+ 	mmu->root.pgd = 0;
+ 	mmu->mirror_root_hpa = INVALID_PAGE;
+@@ -6767,11 +6748,11 @@ int kvm_mmu_create(struct kvm_vcpu *vcpu)
  
  	vcpu->arch.mmu = &vcpu->arch.root_mmu;
--	vcpu->arch.gva_walk = &vcpu->arch.root_mmu.w;
  
- 	ret = __kvm_mmu_create(vcpu, &vcpu->arch.guest_mmu);
+-	ret = __kvm_mmu_create(vcpu, &vcpu->arch.guest_mmu);
++	ret = __kvm_mmu_create(vcpu, &vcpu->arch.guest_mmu, &vcpu->arch.ngpa_walk);
  	if (ret)
+ 		return ret;
+ 
+-	ret = __kvm_mmu_create(vcpu, &vcpu->arch.root_mmu);
++	ret = __kvm_mmu_create(vcpu, &vcpu->arch.root_mmu, &vcpu->arch.gva_walk);
+ 	if (ret)
+ 		goto fail_allocate_root;
+ 
 diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index 6b21778e8340..b12c6b5e4a2f 100644
+index b12c6b5e4a2f..088b86d228c3 100644
 --- a/arch/x86/kvm/mmu/paging_tmpl.h
 +++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -541,7 +541,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
+@@ -157,7 +157,7 @@ static bool FNAME(prefetch_invalid_gpte)(struct kvm_vcpu *vcpu,
+ 				  struct kvm_mmu_page *sp, u64 *spte,
+ 				  u64 gpte)
+ {
+-	struct kvm_pagewalk *w = &vcpu->arch.mmu->w;
++	struct kvm_pagewalk *w = vcpu->arch.mmu->w;
+ 
+ 	if (!FNAME(is_present_gpte)(w, gpte))
+ 		goto no_present;
+@@ -551,7 +551,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
+ static int FNAME(walk_addr)(struct guest_walker *walker,
+ 			    struct kvm_vcpu *vcpu, gpa_t addr, u64 access)
+ {
+-	return FNAME(walk_addr_generic)(walker, vcpu, &vcpu->arch.mmu->w, addr,
++	return FNAME(walk_addr_generic)(walker, vcpu, vcpu->arch.mmu->w, addr,
+ 					access);
+ }
+ 
+@@ -567,7 +567,7 @@ FNAME(prefetch_gpte)(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
+ 
+ 	gfn = gpte_to_gfn(gpte);
+ 	pte_access = sp->role.access & FNAME(gpte_access)(gpte);
+-	FNAME(protect_clean_gpte)(&vcpu->arch.mmu->w, &pte_access, gpte);
++	FNAME(protect_clean_gpte)(vcpu->arch.mmu->w, &pte_access, gpte);
+ 
+ 	return kvm_mmu_prefetch_sptes(vcpu, gfn, spte, 1, pte_access);
+ }
+@@ -650,7 +650,7 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
+ 	WARN_ON_ONCE(gw->gfn != base_gfn);
+ 	direct_access = gw->pte_access;
+ 
+-	top_level = vcpu->arch.mmu->w.cpu_role.base.level;
++	top_level = vcpu->arch.mmu->w->cpu_role.base.level;
+ 	if (top_level == PT32E_ROOT_LEVEL)
+ 		top_level = PT32_ROOT_LEVEL;
+ 	/*
+@@ -839,7 +839,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	 * otherwise KVM will cache incorrect access information in the SPTE.
+ 	 */
+ 	if (fault->write && !(walker.pte_access & ACC_WRITE_MASK) &&
+-	    !is_cr0_wp(&vcpu->arch.mmu->w) && !fault->user && fault->slot) {
++	    !is_cr0_wp(vcpu->arch.mmu->w) && !fault->user && fault->slot) {
+ 		walker.pte_access |= ACC_WRITE_MASK;
+ 		walker.pte_access &= ~ACC_USER_MASK;
+ 
+@@ -849,7 +849,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 		 * then we should prevent the kernel from executing it
+ 		 * if SMEP is enabled.
+ 		 */
+-		if (is_cr4_smep(&vcpu->arch.mmu->w))
++		if (is_cr4_smep(vcpu->arch.mmu->w))
+ 			walker.pte_access &= ~ACC_EXEC_MASK;
  	}
  #endif
- 	walker->fault.address = addr;
--	walker->fault.nested_page_fault = w != vcpu->arch.gva_walk;
-+	walker->fault.nested_page_fault = w != &vcpu->arch.gva_walk;
- 	walker->fault.async_page_fault = false;
+@@ -947,7 +947,7 @@ static int FNAME(sync_spte)(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp, int
+ 	gfn = gpte_to_gfn(gpte);
+ 	pte_access = sp->role.access;
+ 	pte_access &= FNAME(gpte_access)(gpte);
+-	FNAME(protect_clean_gpte)(&vcpu->arch.mmu->w, &pte_access, gpte);
++	FNAME(protect_clean_gpte)(vcpu->arch.mmu->w, &pte_access, gpte);
  
- 	trace_kvm_mmu_walker_error(walker->fault.error_code);
-@@ -894,7 +894,7 @@ static gpa_t FNAME(gva_to_gpa)(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
- 
- #ifndef CONFIG_X86_64
- 	/* A 64-bit GVA should be impossible on 32-bit KVM. */
--	WARN_ON_ONCE((addr >> 32) && w == vcpu->arch.gva_walk);
-+	WARN_ON_ONCE((addr >> 32) && w == &vcpu->arch.gva_walk);
- #endif
- 
- 	r = FNAME(walk_addr_generic)(&walker, vcpu, w, addr, access);
+ 	if (sync_mmio_spte(vcpu, &sp->spt[i], gfn, pte_access))
+ 		return 0;
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 20469fd83e8b..7853bd9ed6cc 100644
+index 7853bd9ed6cc..e93d2e9a9aa4 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -102,13 +102,11 @@ static void nested_svm_init_mmu_context(struct kvm_vcpu *vcpu)
- 	vcpu->arch.mmu->w.get_pdptr       = nested_svm_get_tdp_pdptr;
+@@ -98,10 +98,9 @@ static void nested_svm_init_mmu_context(struct kvm_vcpu *vcpu)
+ 				svm->nested.ctl.nested_cr3,
+ 				svm->nested.ctl.misc_ctl);
  
- 	vcpu->arch.mmu->w.inject_page_fault = nested_svm_inject_npf_exit;
--	vcpu->arch.gva_walk              = &vcpu->arch.ngva_walk;
+-	vcpu->arch.mmu->w.get_guest_pgd     = nested_svm_get_tdp_cr3;
+-	vcpu->arch.mmu->w.get_pdptr       = nested_svm_get_tdp_pdptr;
+-
+-	vcpu->arch.mmu->w.inject_page_fault = nested_svm_inject_npf_exit;
++	vcpu->arch.ngpa_walk.get_guest_pgd     = nested_svm_get_tdp_cr3;
++	vcpu->arch.ngpa_walk.get_pdptr         = nested_svm_get_tdp_pdptr;
++	vcpu->arch.ngpa_walk.inject_page_fault = nested_svm_inject_npf_exit;
  }
  
  static void nested_svm_uninit_mmu_context(struct kvm_vcpu *vcpu)
+@@ -2094,7 +2093,7 @@ static gpa_t svm_translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 				      u64 pte_access)
  {
- 	vcpu->arch.mmu = &vcpu->arch.root_mmu;
--	vcpu->arch.gva_walk = &vcpu->arch.root_mmu.w;
- }
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+-	struct kvm_pagewalk *w = &vcpu->arch.mmu->w;
++	struct kvm_pagewalk *w = &vcpu->arch.ngpa_walk;
  
- static bool nested_vmcb_needs_vls_intercept(struct vcpu_svm *svm)
+ 	BUG_ON(!mmu_is_nested(vcpu));
+ 
 diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 477c0e8a6e43..449efad7ea1f 100644
+index 449efad7ea1f..974116fff635 100644
 --- a/arch/x86/kvm/vmx/nested.c
 +++ b/arch/x86/kvm/vmx/nested.c
-@@ -498,14 +498,11 @@ static void nested_ept_init_mmu_context(struct kvm_vcpu *vcpu)
- 	vcpu->arch.mmu->w.get_pdptr       = kvm_pdptr_read;
+@@ -407,7 +407,7 @@ static void nested_ept_invalidate_addr(struct kvm_vcpu *vcpu, gpa_t eptp,
+ 			roots |= KVM_MMU_ROOT_PREVIOUS(i);
+ 	}
+ 	if (roots)
+-		kvm_mmu_invalidate_addr(vcpu, &vcpu->arch.guest_mmu.w, addr, roots);
++		kvm_mmu_invalidate_addr(vcpu, &vcpu->arch.ngpa_walk, addr, roots);
+ }
  
- 	vcpu->arch.mmu->w.inject_page_fault = nested_ept_inject_page_fault;
--
--	vcpu->arch.gva_walk              = &vcpu->arch.ngva_walk;
+ static void nested_ept_inject_page_fault(struct kvm_vcpu *vcpu,
+@@ -494,10 +494,10 @@ static void nested_ept_init_mmu_context(struct kvm_vcpu *vcpu)
+ 
+ 	vcpu->arch.mmu = &vcpu->arch.guest_mmu;
+ 	nested_ept_new_eptp(vcpu);
+-	vcpu->arch.mmu->w.get_guest_pgd     = nested_ept_get_eptp;
+-	vcpu->arch.mmu->w.get_pdptr       = kvm_pdptr_read;
++	vcpu->arch.ngpa_walk.get_guest_pgd     = nested_ept_get_eptp;
++	vcpu->arch.ngpa_walk.get_pdptr       = kvm_pdptr_read;
+ 
+-	vcpu->arch.mmu->w.inject_page_fault = nested_ept_inject_page_fault;
++	vcpu->arch.ngpa_walk.inject_page_fault = nested_ept_inject_page_fault;
  }
  
  static void nested_ept_uninit_mmu_context(struct kvm_vcpu *vcpu)
- {
- 	vcpu->arch.mmu = &vcpu->arch.root_mmu;
--	vcpu->arch.gva_walk = &vcpu->arch.root_mmu.w;
+@@ -7442,12 +7442,13 @@ __init int nested_vmx_hardware_setup(int (*exit_handlers[])(struct kvm_vcpu *))
+ 	return 0;
  }
  
- static bool nested_vmx_is_page_fault_vmexit(struct vmcs12 *vmcs12,
++
+ static gpa_t vmx_translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 				      u64 access,
+ 				      struct x86_exception *exception,
+ 				      u64 pte_access)
+ {
+-	struct kvm_pagewalk *w = &vcpu->arch.mmu->w;
++	struct kvm_pagewalk *w = &vcpu->arch.ngpa_walk;
+ 
+ 	BUG_ON(!mmu_is_nested(vcpu));
+ 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 147cef7b23b6..14af0f4d010e 100644
+index 14af0f4d010e..35094997e70a 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -995,7 +995,7 @@ void kvm_inject_emulated_page_fault(struct kvm_vcpu *vcpu,
+@@ -994,7 +994,7 @@ void kvm_inject_emulated_page_fault(struct kvm_vcpu *vcpu,
+ 
  	WARN_ON_ONCE(fault->vector != PF_VECTOR);
  
- 	fault_walk = fault->nested_page_fault ? &vcpu->arch.mmu->w :
--						vcpu->arch.gva_walk;
-+						&vcpu->arch.gva_walk;
+-	fault_walk = fault->nested_page_fault ? &vcpu->arch.mmu->w :
++	fault_walk = fault->nested_page_fault ? &vcpu->arch.ngpa_walk :
+ 						&vcpu->arch.gva_walk;
  
  	/*
- 	 * Invalidate the TLB entry for the faulting address, if it exists,
-@@ -1061,7 +1061,7 @@ static inline u64 pdptr_rsvd_bits(struct kvm_vcpu *vcpu)
-  */
- int load_pdptrs(struct kvm_vcpu *vcpu, unsigned long cr3)
- {
--	struct kvm_pagewalk *w = vcpu->arch.gva_walk;
-+	struct kvm_pagewalk *w = &vcpu->arch.gva_walk;
- 	gfn_t pdpt_gfn = cr3 >> PAGE_SHIFT;
- 	gpa_t real_gpa;
- 	int i;
-@@ -7853,7 +7853,7 @@ void kvm_get_segment(struct kvm_vcpu *vcpu,
- gpa_t kvm_mmu_gva_to_gpa_read(struct kvm_vcpu *vcpu, gva_t gva,
- 			      struct x86_exception *exception)
- {
--	struct kvm_pagewalk *gva_walk = vcpu->arch.gva_walk;
-+	struct kvm_pagewalk *gva_walk = &vcpu->arch.gva_walk;
- 
- 	u64 access = (kvm_x86_call(get_cpl)(vcpu) == 3) ? PFERR_USER_MASK : 0;
- 	return gva_walk->gva_to_gpa(vcpu, gva_walk, gva, access, exception);
-@@ -7863,7 +7863,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_mmu_gva_to_gpa_read);
- gpa_t kvm_mmu_gva_to_gpa_write(struct kvm_vcpu *vcpu, gva_t gva,
- 			       struct x86_exception *exception)
- {
--	struct kvm_pagewalk *gva_walk = vcpu->arch.gva_walk;
-+	struct kvm_pagewalk *gva_walk = &vcpu->arch.gva_walk;
- 
- 	u64 access = (kvm_x86_call(get_cpl)(vcpu) == 3) ? PFERR_USER_MASK : 0;
- 	access |= PFERR_WRITE_MASK;
-@@ -7875,7 +7875,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_mmu_gva_to_gpa_write);
- gpa_t kvm_mmu_gva_to_gpa_system(struct kvm_vcpu *vcpu, gva_t gva,
- 				struct x86_exception *exception)
- {
--	struct kvm_pagewalk *gva_walk = vcpu->arch.gva_walk;
-+	struct kvm_pagewalk *gva_walk = &vcpu->arch.gva_walk;
- 
- 	return gva_walk->gva_to_gpa(vcpu, gva_walk, gva, 0, exception);
- }
-@@ -7884,7 +7884,7 @@ static int kvm_read_guest_virt_helper(gva_t addr, void *val, unsigned int bytes,
- 				      struct kvm_vcpu *vcpu, u64 access,
- 				      struct x86_exception *exception)
- {
--	struct kvm_pagewalk *gva_walk = vcpu->arch.gva_walk;
-+	struct kvm_pagewalk *gva_walk = &vcpu->arch.gva_walk;
- 	void *data = val;
- 	int r = X86EMUL_CONTINUE;
- 
-@@ -7917,7 +7917,7 @@ static int kvm_fetch_guest_virt(struct x86_emulate_ctxt *ctxt,
- 				struct x86_exception *exception)
- {
- 	struct kvm_vcpu *vcpu = emul_to_vcpu(ctxt);
--	struct kvm_pagewalk *gva_walk = vcpu->arch.gva_walk;
-+	struct kvm_pagewalk *gva_walk = &vcpu->arch.gva_walk;
- 	u64 access = (kvm_x86_call(get_cpl)(vcpu) == 3) ? PFERR_USER_MASK : 0;
- 	unsigned offset;
- 	int ret;
-@@ -7976,7 +7976,7 @@ static int kvm_write_guest_virt_helper(gva_t addr, void *val, unsigned int bytes
- 				      struct kvm_vcpu *vcpu, u64 access,
- 				      struct x86_exception *exception)
- {
--	struct kvm_pagewalk *gva_walk = vcpu->arch.gva_walk;
-+	struct kvm_pagewalk *gva_walk = &vcpu->arch.gva_walk;
- 	void *data = val;
- 	int r = X86EMUL_CONTINUE;
- 
-@@ -8082,7 +8082,7 @@ static int vcpu_mmio_gva_to_gpa(struct kvm_vcpu *vcpu, unsigned long gva,
- 				gpa_t *gpa, struct x86_exception *exception,
- 				bool write)
- {
--	struct kvm_pagewalk *gva_walk = vcpu->arch.gva_walk;
-+	struct kvm_pagewalk *gva_walk = &vcpu->arch.gva_walk;
- 	u64 access = ((kvm_x86_call(get_cpl)(vcpu) == 3) ? PFERR_USER_MASK : 0)
- 		     | (write ? PFERR_WRITE_MASK : 0);
- 
-@@ -14213,7 +14213,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_spec_ctrl_test_value);
- 
- void kvm_fixup_and_inject_pf_error(struct kvm_vcpu *vcpu, gva_t gva, u16 error_code)
- {
--	struct kvm_pagewalk *gva_walk = vcpu->arch.gva_walk;
-+	struct kvm_pagewalk *gva_walk = &vcpu->arch.gva_walk;
- 	struct x86_exception fault;
- 	u64 access = error_code &
- 		(PFERR_WRITE_MASK | PFERR_FETCH_MASK | PFERR_USER_MASK);
 -- 
 2.52.0
 
