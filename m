@@ -1,153 +1,137 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE414A3418
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 22:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62AD4D98E4
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 22:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780526068; cv=none; b=pUEbYmfHIGJvgz3H4gwx6ZKQzLIpfyCZ9gkc7k2fpSJTB23PjmriwMLrI9Mzp/CPvWgbHeFyeCc4Y58QuN68mKzue/cBxaPL2z9AYJQK/TuJnsEC8JVgUpipFo8YsaFHYPA6x2rTqd5KUfqGjwbcXEDTv04jpxuz7HmvqldMPAg=
+	t=1780527021; cv=none; b=K3C/GYXjx8dstICVBREt/OKsYhw/DOFYwpoCD1Dx6yCBoEgaBay9xbSq5nScKV7VddzE4nBFXyist5BRb0uGF8YfC2LzUWyMcWjMAmW/Urp19EGBSMPsLTzgtJXmHHDaHOCVPWaL+s7cbuyJzQMJ+Wqwjd85MhGe6TzHM6QP4cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780526068; c=relaxed/simple;
-	bh=KtdlDyfbm3TdN3Bu5jvCzKeLtKQzA5ao31bl8Pxom84=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=S+hiAXfenwSS9LJHxFNLsGIYyLJkmJeHvaQ0w6X26OsYu6IRtixtfSKDattXVkhP4h0I84r66zhqXdWQyJD0cAuN6Ijn/fp2G/BV4Ts/SVF0taHntPWpWoQyUyjsUClhklNLmOUSxYN2ZugssCiqyqbjmlPYl9YwAi2s5rO87T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tyvlDC+Y; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780527021; c=relaxed/simple;
+	bh=nCqkpezqNrp4+g096TTDsHn3yks6anWaAxwLh9c9RrE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=eCZQT5o3CKp6c5ZvMon88EibaeOW/zqkCZqdVwXX98sg9AQOs9Dp453WZGiy2iIi/bdTLdQ1XnbzOlh7O7AfRIDm6+CyTztfnPJAMDpFNK1VfigXI0eoZ/24VhmSb/9V1+tgQ9JjcUEKqC/eP2JT4zBNVO+t9+WfV1QaqsV1T80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNZpcwG+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tyvlDC+Y"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8422f987f2eso60922b3a.3
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 15:34:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780526063; x=1781130863; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=YT22xFPe+uvBINsx4QHwFFDf4DhD63vVETjx/ZAWt2E=;
-        b=tyvlDC+Y99qjHpEnqftZV/RRwHqb8Q9tEauYZvCGXZzV17cGV7f0HOatReGEsRGUNm
-         gEZxmwcsxQyhnwKWsBgQRO1iBk4RkEV4KW/MpGu5Srolxl/5huAkzLkhgU7MNIIAgcXL
-         OCmzamR2LHvzmdxkwoErfXIT3IAgvSOzOdb0rGdncLiUIeju5/IVcbLue1022R7B3HnW
-         599Z5fsRgqr36q74aD0Vl6xq8JcmkWmfbjHFaUAVXBMx0vPo7HmWK/V67vi1g3mRn9j3
-         o5TybdGV9snAgIlQostN4TYsTPQhKBNvWrC7DUAAUyq2yfKSGHD5bSHk0Xa6m0fZxVTy
-         hvKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780526063; x=1781130863;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YT22xFPe+uvBINsx4QHwFFDf4DhD63vVETjx/ZAWt2E=;
-        b=OkFrgXpOoW+y/L4OD/QKL7Rjli/z9bF7OoDYX1rE58jHBjGCoi/cLJ3TfhwtRQHc2d
-         lYuM8ThEO+sw1wiwHJRaddHVyMdiv1tlQStKyYwQk8II+og/7362K9SHzvzqZEwSgoUF
-         ad8aT+hdBr4f8q4rXMwzliY9AHKClXUv4ZX+CyKnQxcsR2jRyMmhsSln55IUsEo+M2bq
-         jXUryRs1zo68OV0+2cgEpeON52Mf+uwEwnsSDu/QBd6IcnnDCquXH6hMi33PoxDu/Gxk
-         BLX2P7f7SD0xyYoiVVgYJd2Afnt6hUPKT1NTCt5Hi0xurVZBTrmDtw8WM/j0psnoqzlV
-         kqDA==
-X-Gm-Message-State: AOJu0YzTY9FjhJ1FBkF35YEgMJUWtJamYhJD4IxOwzPiTy1jNl5f6K+/
-	L1EC4Tg9RhoWcebaqCbDpZlLjz6T6W/zmDrLBWcbOdUk+JG8LvxwzT+GzFrHH01VaKjhFGtVL4/
-	4Im/y8A==
-X-Received: from pfm4.prod.google.com ([2002:a05:6a00:724:b0:842:2c74:b8ce])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:b483:b0:842:2ddb:e303
- with SMTP id d2e1a72fcca58-84284da5a08mr5238397b3a.12.1780526063099; Wed, 03
- Jun 2026 15:34:23 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed,  3 Jun 2026 15:34:18 -0700
-In-Reply-To: <20260603223418.1720035-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UNZpcwG+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E151F00893;
+	Wed,  3 Jun 2026 22:50:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780527013;
+	bh=fyWQobaGZ/GZc9BUFqWH0qjn3KQ7cpyaeUE7SWtI5V4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UNZpcwG+QIC1dCuHkXUqvDZW27LA0+V1rspU/4nzU+IMBNTIuuqaVo6krTdqfTG/z
+	 RLADlSaseW1dNC+6hA4bm8bFgOqJq1Xt+8nRh0a0UvVF2+XnohLLYVAkJOJ4mdap7Z
+	 HLb6rnmfyqHGXs9V74SI1nPw8frucHuChVLgdC/Scx4SfUp3o3b1VVHpUA3u2jiIow
+	 dFVxJ9IxFViZwi74aEw21GU4aXFiPG7E0VbAceJ5T8TI+vPi0FH97MQGB+DWhk0VHo
+	 UAUDYv9jYyNg4dEtI5MMEbhUu1cHqH24fX+2nilu2kInPMUPuatm7dB6HEao4MEO/m
+	 2NzLMpIXycO9w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot
+ L1's CR3 when EPT is disabled
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260603223418.1720035-3-seanjc@google.com>
+References: <20260603223418.1720035-3-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 03 Jun 2026 22:50:12 +0000
+Message-Id: <20260603225013.99E151F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260603223418.1720035-1-seanjc@google.com>
-X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-Message-ID: <20260603223418.1720035-3-seanjc@google.com>
-Subject: [PATCH 2/2] KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot L1's
- CR3 when EPT is disabled
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>
-Content-Type: text/plain; charset="UTF-8"
 
-Add a dedicated field in "struct nested_vmx" to track L1's pre-VM-Enter CR3
-instead of using vmcs01.GUEST_CR3, which isn't anywhere near as safe as the
-comment purports it to be.  E.g. in addition to the warn_on_missed_cc bug
-(that was fixed by relocating the consistency check), if getting vmcs12
-pages (during actual nested VM-Entry) fails and EPT is disabled (in KVM),
-KVM will return control to userspace with vmcs01.GUEST_CR3 holding a guest-
-controlled value.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Reading `vcpu->arch.cr3` directly captures a stale CR3 value when =
+EPT is enabled, corrupting L1's CR3 on late VM-Fail.
+--
 
-Alternatively, KVM could force a reload of vmcs01.GUEST_CR3 by resetting
-the MMU context in the error path, but as above, the safety of the vmcs01
-approach is extremely questionable, e.g. it took all of ~4 months for the
-code to break.
+commit bc5d55e01f501ccb793937fda67ddf44633f6fda
+Author: Sean Christopherson <seanjc@google.com>
 
-Fixes: 671ddc700fd0 ("KVM: nVMX: Don't leak L1 MMIO regions to L2")
-Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/vmx/nested.c | 21 ++++++++-------------
- arch/x86/kvm/vmx/vmx.h    |  7 +++++++
- 2 files changed, 15 insertions(+), 13 deletions(-)
+KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot L1's CR3 when EPT is disa=
+bled
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 039e234e7d2b..772b8090d06a 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3668,19 +3668,14 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
- 				    &vmx->nested.pre_vmenter_ssp_tbl);
- 
- 	/*
--	 * Overwrite vmcs01.GUEST_CR3 with L1's CR3 if EPT is disabled.  In the
--	 * event of a "late" VM-Fail, i.e. a VM-Fail detected by hardware but
--	 * not KVM, KVM must unwind its software model to the pre-VM-Entry host
--	 * state.  When EPT is disabled, GUEST_CR3 holds KVM's shadow CR3, not
--	 * L1's "real" CR3, which causes nested_vmx_restore_host_state() to
--	 * corrupt vcpu->arch.cr3.  Stuffing vmcs01.GUEST_CR3 results in the
--	 * unwind naturally setting arch.cr3 to the correct value.  Smashing
--	 * vmcs01.GUEST_CR3 is safe because nested VM-Exits, and the unwind,
--	 * reset KVM's MMU, i.e. vmcs01.GUEST_CR3 is guaranteed to be
--	 * overwritten with a shadow CR3 prior to re-entering L1.
-+	 * Stash L1's CR3, so that in the event of a "late" VM-Fail, i.e. a
-+	 * VM-Fail detected by hardware but not KVM, KVM can unwind its
-+	 * software model to the pre-VM-Entry host state.  When EPT is
-+	 * disabled, GUEST_CR3 holds KVM's shadow CR3, not L1's "real" CR3,
-+	 * and so simply restoring from vmcs01.GUEST_CR3 would corrupt
-+	 * vcpu->arch.cr3.
- 	 */
--	if (!enable_ept)
--		vmcs_writel(GUEST_CR3, vcpu->arch.cr3);
-+	vmx->nested.pre_vmenter_cr3 = vcpu->arch.cr3;
- 
- 	vmx_switch_vmcs(vcpu, &vmx->nested.vmcs02);
- 
-@@ -4992,7 +4987,7 @@ static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
- 	vmx_set_cr4(vcpu, vmcs_readl(CR4_READ_SHADOW));
- 
- 	nested_ept_uninit_mmu_context(vcpu);
--	vcpu->arch.cr3 = vmcs_readl(GUEST_CR3);
-+	vcpu->arch.cr3 = vmx->nested.pre_vmenter_cr3;
- 	kvm_register_mark_available(vcpu, VCPU_REG_CR3);
- 
- 	/*
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index de9de0d2016c..dc8517f15bc4 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -159,6 +159,13 @@ struct nested_vmx {
- 	bool has_preemption_timer_deadline;
- 	bool preemption_timer_expired;
- 
-+	/*
-+	 * Used to restore L1's CR3 if hardware detects a VM-Fail Consistency
-+	 * Check that KVM does not, in which case KVM needs to unwind CR3 back
-+	 * to its pre-VM-Enter state, NOT to vmcs01.HOST_CR3.
-+	 */
-+	unsigned long pre_vmenter_cr3;
-+
- 	/*
- 	 * Used to snapshot MSRs that are conditionally loaded on VM-Enter in
- 	 * order to propagate the guest's pre-VM-Enter value into vmcs02.  For
--- 
-2.54.0.1032.g2f8565e1d1-goog
+This commit adds a dedicated field in struct nested_vmx to track L1's
+pre-VM-Enter CR3, avoiding the use of vmcs01.GUEST_CR3. It also modifies
+nested_vmx_enter_non_root_mode() to save the CR3 value, and
+nested_vmx_restore_host_state() to restore it.
 
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+> @@ -3651,19 +3651,14 @@ enum nvmx_vmentry_status nested_vmx_enter_non_roo=
+t_mode(struct kvm_vcpu *vcpu,
+>  				    &vmx->nested.pre_vmenter_ssp_tbl);
+> =20
+>  	/*
+> -	 * Overwrite vmcs01.GUEST_CR3 with L1's CR3 if EPT is disabled.  In the
+> -	 * event of a "late" VM-Fail, i.e. a VM-Fail detected by hardware but
+> -	 * not KVM, KVM must unwind its software model to the pre-VM-Entry host
+> -	 * state.  When EPT is disabled, GUEST_CR3 holds KVM's shadow CR3, not
+> -	 * L1's "real" CR3, which causes nested_vmx_restore_host_state() to
+> -	 * corrupt vcpu->arch.cr3.  Stuffing vmcs01.GUEST_CR3 results in the
+> -	 * unwind naturally setting arch.cr3 to the correct value.  Smashing
+> -	 * vmcs01.GUEST_CR3 is safe because nested VM-Exits, and the unwind,
+> -	 * reset KVM's MMU, i.e. vmcs01.GUEST_CR3 is guaranteed to be
+> -	 * overwritten with a shadow CR3 prior to re-entering L1.
+> +	 * Stash L1's CR3, so that in the event of a "late" VM-Fail, i.e. a
+> +	 * VM-Fail detected by hardware but not KVM, KVM can unwind its
+> +	 * software model to the pre-VM-Entry host state.  When EPT is
+> +	 * disabled, GUEST_CR3 holds KVM's shadow CR3, not L1's "real" CR3,
+> +	 * and so simply restoring from vmcs01.GUEST_CR3 would corrupt
+> +	 * vcpu->arch.cr3.
+>  	 */
+> -	if (!enable_ept)
+> -		vmcs_writel(GUEST_CR3, vcpu->arch.cr3);
+> +	vmx->nested.pre_vmenter_cr3 =3D vcpu->arch.cr3;
+
+[Severity: High]
+Does directly reading vcpu->arch.cr3 here capture a stale value when EPT is
+enabled?
+
+Because KVM does not intercept L1 CR3 writes when EPT is enabled, L1 can
+update its CR3 without KVM immediately tracking it. On VM-Exit (such as for
+VMLAUNCH), KVM invalidates the CR3 register cache by clearing the
+VCPU_REG_CR3 availability bit.
+
+If nested_vmx_enter_non_root_mode() directly assigns vmx->nested.pre_vmente=
+r_cr3
+from vcpu->arch.cr3 instead of using kvm_read_cr3(vcpu), it seems this would
+bypass the cache refresh and stash a stale CR3 value.
+
+> =20
+>  	vmx_switch_vmcs(vcpu, &vmx->nested.vmcs02);
+> =20
+
+[ ... ]
+
+> @@ -4975,7 +4970,7 @@ static void nested_vmx_restore_host_state(struct kv=
+m_vcpu *vcpu)
+>  	vmx_set_cr4(vcpu, vmcs_readl(CR4_READ_SHADOW));
+> =20
+>  	nested_ept_uninit_mmu_context(vcpu);
+> -	vcpu->arch.cr3 =3D vmcs_readl(GUEST_CR3);
+> +	vcpu->arch.cr3 =3D vmx->nested.pre_vmenter_cr3;
+
+[Severity: High]
+If pre_vmenter_cr3 stashed a stale value, will restoring it here corrupt L1=
+'s
+CR3 on a late VM-Fail?
+
+If a late VM-Fail occurs (detected by hardware but not KVM), writing this
+potentially stale pre_vmenter_cr3 back into KVM's state (vcpu->arch.cr3) and
+marking it as available could cause L1 to resume with an outdated CR3, which
+might lead to guest memory corruption or a triple fault.
+
+>  	kvm_register_mark_available(vcpu, VCPU_REG_CR3);
+> =20
+>  	/*
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603223418.1720=
+035-1-seanjc@google.com?part=3D2
