@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD1036494B
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 10:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9473F2566E9
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 10:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780482059; cv=none; b=g3CROJZw5bixj1AkL5pIpqQoYvdrNNF5AK1f2OLK0gEofHJA2tS0SE5+oqxIbYDZuaO9pwTtCJXVWYP29Ts0Xeb53UmxkyGDtwu5n4cPik1iVN9chj4EPICXsK7G8Y3jZLYBXDecviZTn1wsNZfp4VSN6eSPTcqHFbmpE2kbiII=
+	t=1780482845; cv=none; b=pXgvDju7pMujrYoX7czAqsH8eaFnYfFwTm724L/KgAKnc6LblXt6NOM+pJ+ZJiTvhb9RUb/ViEH+7T9kK6Nm0sg9A0UXgIH3VTWskamD6y6tDXWgQorA9zgQ0qAGKpYFPDGg+GzJYMXRuIcnRvIiQur1LPHP6Oq0zgfdrYJ0XpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780482059; c=relaxed/simple;
-	bh=MwggFFBVDOxQtoK4ZBJgCL+2W2iJJDwtunpFOasqig0=;
+	s=arc-20240116; t=1780482845; c=relaxed/simple;
+	bh=HPtVTlUcJ6HedEmy3jR5YznQWUwa8WVWtqJxaDzITYg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iPWSgJvr4OMkcPW3AWHA7aJu0/SGJZsGLf67T48j1dafzwvCUMjerj85VFwtHFC9UUclhA2LPAI5cdthFJVQx/mur52xU6WfHGPZDJO12DFLWmcDA1Oov0WmbeEMuu0xGSW80IIr41lfAnjcAMKB/MVi/562HGM4UnuBkQBvCzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o15ZCR2a; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=JteKCLwYXdiCEUAwVLWO1XtzInmQzvEfuSOt4sq+9csaoUxKWYGHGjs35d4l02LiP+ePPU06EQd7HQking1jHCwpj5mG2FO6IfHBRdULTq/gH+DWNxdQ9HkmAMmwobHmbb2FkzpkgwbGGmvSfEO4v/E2+9qx1R4OQUc3TESbno8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8Cc5SKf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o15ZCR2a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFE61F00893;
-	Wed,  3 Jun 2026 10:20:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8Cc5SKf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265151F00893;
+	Wed,  3 Jun 2026 10:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780482057;
-	bh=fND6tOiAt5cQMV1Dq4qLEQtouvffQrg0Owhr4ApWs50=;
+	s=k20260515; t=1780482844;
+	bh=Ui5aW4JmiahRB0NxrnBeMwfkNu+vA54/z/J0QEEkQ9g=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=o15ZCR2as0rCxT0/DBQ5OtUL6tuAnovLVpZYtoDdy3D9Llao+LXNjEdR1wwgDmNc8
-	 DlvIRwqbcXWriz1j+IFngHIU2z1Vvz5FNMbT4XgAwOXw6eB/Xil3ugWD3G72vpMw9l
-	 AS9B1KEQjZ3UiAaynx/1/BNj5dpSDmLveR5hsq6oIE/RhAh3grIhlBLp8vXX1HNS0u
-	 E33uvpYaR7nZXBtbA7IrZV2s22MggMtmC0v0Sg49A1BJh40muq8DV0kqrEz2GsGPBC
-	 ZiSrQ4lJx4BGOo5mv+Wve/Oi4Rnt8/Ddr5Gq66KZBJtx/UMg+3+9uOZ5gtw84gHiem
-	 +qawNY5YrtTRg==
+	b=E8Cc5SKfjdg/6tPuZVKgt58fPLt3zxaYoLEag0j5IM+t+qMWBp46+zxzyZo4QCQAa
+	 ae5lonlmP4ocYA+twx7nGzbJ+3QIz82QuaZI5NWjLMwd0UbKDZ3FtQye8XzlI84wyl
+	 5QHIZJVJ5mrol069NHPkP5MtDBMHIIyvah39YOr3l2kjVXN4qpKl7x8KafPKQN8UY3
+	 Ye064k90o8Xz+JRbGRrK3lc3STeSEstd7A6dASfJb5EKL4iqjlpCHb5PcZW+RaXRfk
+	 36TTt+fSm46teHkepkm3Hb9BL8iMccl3xsklAq7Cfw8SJPewrZvyIZRpNcM7PsaC+J
+	 tGBcFLYLCq9KA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/4] RISC-V: KVM: Add the split page cache for ioctl
- context
+Subject: Re: [PATCH v2 2/4] RISC-V: KVM: Split huge pages when dirty logging
+ =?utf-8?b?aXPCoGVuYWJsZWQ=?=
 Reply-To: sashiko-reviews@lists.linux.dev
 To: wang.yechao255@zte.com.cn
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260603175439237VrPTLz6fG79fXRYAu-JFW@zte.com.cn>
-References: <20260603175439237VrPTLz6fG79fXRYAu-JFW@zte.com.cn>
+In-Reply-To: <202606031757028642jwiaL-QePBLGAhMW88zw@zte.com.cn>
+References: <202606031757028642jwiaL-QePBLGAhMW88zw@zte.com.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 10:20:57 +0000
-Message-Id: <20260603102057.AEFE61F00893@smtp.kernel.org>
+Date: Wed, 03 Jun 2026 10:34:01 +0000
+Message-Id: <20260603103403.265151F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,91 +47,102 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
+New issues:
+- [High] Dropping mmu_lock without flushing remote TLBs after modifying pag=
+e tables.
+
 Pre-existing issues:
-- [Critical] Destruction of stage-2 PGD during `mmu_notifier_release` allow=
-s vCPUs to execute with BARE mode stage-2 translation, granting guests full=
- access to host physical memory
-- [High] NULL pointer dereference when enabling dirty logging after MMU des=
-truction
+- [High] Missing memory barrier before publishing newly allocated stage-2 c=
+hild page tables.
 --
 
-commit 5935831ace6c3305e677dc574f5aeeda39b0da2a
+commit 0208ccce76fbb3c703dc5faa9c4873b1be06a0ce
 Author: Wang Yechao <wang.yechao255@zte.com.cn>
 
-RISC-V: KVM: Add the split page cache for ioctl context
+RISC-V: KVM: Split huge pages when dirty logging is enabled
 
-Add the split page cache for dirty logging enablement and the
-KVM_CLEAR_DIRTY_LOG ioctl.
-
-[ ... ]
+Split huge pages eagerly when enabling dirty logging. The goal is to
+avoid doing it while faulting on write-protected pages, which
+negatively impacts guest performance.
 
 > diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 2d3def024270c..0676937bd9a1c 100644
+> index 0676937bd9a1c..51bd1db74e1aa 100644
 > --- a/arch/riscv/kvm/mmu.c
 > +++ b/arch/riscv/kvm/mmu.c
-
+> @@ -90,6 +90,52 @@ void kvm_riscv_mmu_iounmap(struct kvm *kvm, gpa_t gpa,=
+ unsigned long size)
 [ ... ]
-
-> @@ -572,6 +573,8 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
-> =20
->  	if (pgd)
->  		free_pages((unsigned long)pgd, get_order(kvm_riscv_gstage_pgd_size));
+> +/* the caller must held mmu lock */
+> +static void mmu_split_huge_pages(struct kvm_gstage *gstage,
+> +				 phys_addr_t start, phys_addr_t end,
+> +				 bool flush)
+> +{
+> +	struct kvm *kvm =3D gstage->kvm;
+> +	struct kvm_mmu_memory_cache *pcache =3D &kvm->arch.pgd_split_page_cache;
+> +	int count =3D gstage->pgd_levels;
+> +	phys_addr_t addr =3D start;
+> +	int ret;
 > +
-> +	kvm_mmu_free_memory_cache(&kvm->arch.pgd_split_page_cache);
->  }
+> +	lockdep_assert_held(&kvm->mmu_lock);
+> +
+> +	while (addr < end) {
+> +		if (need_topup_split_caches_or_resched(pcache, count)) {
+> +			spin_unlock(&kvm->mmu_lock);
+> +			cond_resched();
 
 [Severity: High]
-This is a pre-existing issue, but can
-kvm_arch_mmu_enable_log_dirty_pt_masked() trigger a NULL pointer dereference
-after the PGD is freed here?
+Does this drop the MMU lock while there are unflushed page table
+modifications?
 
-When a process exits, mmu_notifier_release() invokes kvm_riscv_mmu_free_pgd=
-(),
-which frees the stage-2 PGD and sets kvm->arch.pgd =3D NULL and
-kvm->arch.pgd_levels =3D 0.
+Because mmu_split_huge_pages() passes flush =3D false to
+kvm_riscv_gstage_split_huge(), TLB flushes are deferred until
+mmu_split_memory_region() completes. If cache top-up or rescheduling
+is needed, the kvm->mmu_lock is dropped here without flushing the
+remote TLBs for the pages that were split in previous loop iterations.
 
-However, if the KVM VM file descriptor is still held open by another process
-or thread, a subsequent KVM_CLEAR_DIRTY_LOG ioctl would call
-kvm_arch_mmu_enable_log_dirty_pt_masked() in arch/riscv/kvm/mmu.c.
+Could this allow other vCPUs to observe inconsistent stage-2 page
+tables or execute with stale TLB mappings while the lock is dropped?
+Perhaps a remote TLB flush should be issued for the already-processed
+range before unlocking?
 
-This unconditionally initializes the gstage and accesses the PGD via
-kvm_riscv_gstage_get_leaf(). Since gstage->pgd_levels is 0, current_level
-wraps around to UINT_MAX, and it dereferences gstage->pgd (which is NULL)
-plus an out-of-bounds index.
+> +
+> +			ret =3D kvm_mmu_topup_memory_cache(pcache, count);
+> +			if (ret) {
+> +				kvm_err("Failed to toup split page cache\n");
+> +				spin_lock(&kvm->mmu_lock);
+> +				return;
+> +			}
+> +			spin_lock(&kvm->mmu_lock);
+> +		}
+> +
+> +		ret =3D kvm_riscv_gstage_split_huge(gstage, pcache, addr, 0, flush);
 
-> =20
->  void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu)
+[Severity: High]
+This is a pre-existing issue, but looking at kvm_riscv_gstage_split_huge()
+which is called here, it appears to lack a memory barrier before publishing
+the newly allocated stage-2 child page tables:
 
-[Severity: Critical]
-This is a pre-existing issue, but does freeing the stage-2 PGD during
-mmu_notifier_release allow vCPUs to execute with BARE mode stage-2
-translation?
+arch/riscv/kvm/gstage.c:kvm_riscv_gstage_split_huge() {
+...
+		for (i =3D 0; i < PTRS_PER_PTE; i++) {
+			child_pte =3D make_child_pte(huge_pte, i, child_page_size);
+			set_pte((pte_t *)&next_ptep[i], __pte(child_pte));
+		}
 
-If the VM file descriptor is kept open after kvm_riscv_mmu_free_pgd() sets
-kvm->arch.pgd_phys =3D 0 and kvm->arch.pgd_levels =3D 0, another process ca=
-n still
-invoke KVM_RUN.
-
-When the vCPU resumes, kvm_riscv_mmu_update_hgatp() in arch/riscv/kvm/mmu.c
-programs the hgatp CSR using kvm_riscv_gstage_mode(0), which evaluates to
-BARE mode:
-
-arch/riscv/kvm/mmu.c:kvm_riscv_mmu_update_hgatp() {
-	...
-	unsigned long hgatp =3D kvm_riscv_gstage_mode(ka->pgd_levels)
-			      << HGATP_MODE_SHIFT;
-
-	hgatp |=3D (READ_ONCE(ka->vmid.vmid) << HGATP_VMID_SHIFT) & HGATP_VMID;
-	hgatp |=3D (ka->pgd_phys >> PAGE_SHIFT) & HGATP_PPN;
-
-	ncsr_write(CSR_HGATP, hgatp);
-	...
+		set_pte(ptep, pfn_pte(PFN_DOWN(__pa(next_ptep)),
+				__pgprot(_PAGE_TABLE)));
+...
 }
 
-With BARE mode stage-2 translation, the hardware treats guest physical
-addresses as host physical addresses. Could this grant guests full access to
-host physical memory?
+Because RISC-V set_pte() translates to a simple WRITE_ONCE without an
+implicit memory barrier, could the stores initializing the child PTEs be
+reordered after the store that publishes the page table to ptep?
+
+If so, a concurrent hardware page table walker traversing the newly
+published ptep might read uninitialized or stale data from the child
+page table, resulting in spurious stage-2 page faults. Would it make
+sense to insert an smp_wmb() before publishing the new page table?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603175256408L0=
-jnqGs1cJGc0ijCdujci@zte.com.cn?part=3D1
+jnqGs1cJGc0ijCdujci@zte.com.cn?part=3D2
