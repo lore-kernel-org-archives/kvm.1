@@ -1,128 +1,107 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0EB3CF676
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 15:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05294348C69
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 15:35:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780500261; cv=none; b=bwSlENk8D15N+o+0avtX9D1dhtskO4jTpnfPiUDGP3Lbv18JtmgIgTd0betlqsUWj/vdvBiYqRfehRYbsh2k3w5gM9+oyNhuefrNtqXoZUTuIXpp+ArY56DTr+61z13iV6Kw0VA16MrXR3OE0JWHtym7YMw7IunfTIJvAmdLOE8=
+	t=1780500939; cv=none; b=mjdpvCNHgAIWLEqzt053+cAdq9Oh9tAb7b2unZysiLD/Mn4i0q2Ds7Yn86/PrW7z/wnVtR2DqV+73FlKgbNv+GWIQWNG7sM5z3DV5Oi5bJP4d9afyWFLaMsQnePXZSt1ViveU3ZF3jNrA6s1gkM+Z4d53ZX8lmmi4dquWAwiZoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780500261; c=relaxed/simple;
-	bh=y2MzPoG0MBmV9/S2CGOi17yiKJyXbHXPrURfp3Atgkc=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=jUpsUZV0USyU1/yFoU3zLlCiafNeYX38Dv9GyfZbeljzEr8WL77H40+zZt2QTbZ509P8nb5KHFrBnXEKRczSdQgw/eG/Mketwq7HQtTQuypopD5elu6wldgQiwD8Y3nK9pk8CYjAeNQG7fREQtQc+3jfFKDCuCpVe7U03uL1t5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n+ZSKX4Z; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780500939; c=relaxed/simple;
+	bh=lXHMK6OLnpaFuxHkUPCrzi+3QUx33UiOe16HEeR+ZbM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=FqOhrFohZLsa/IY0dsWN/KGwxhV0ZwE16kSKsiFK+JL18wVNNV9mgwLuvbdGfz1FYh/Vnq8rQVUHe8wH1tZ0shMra9fhY7g0xq/M9YxDfgL9xK/huUKDC7nQ3ZD5I/VMU+dqtYkM9+lupCR3tIg2ETHgd5R9uauYBRhUlhaAA9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6IQxDkP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n+ZSKX4Z"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c858d69bde9so1991469a12.1
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 08:24:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780500259; x=1781105059; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=acwBnprFgwqGQFKcy6Zu5y1vKCe+2/zpivoZrYetfHk=;
-        b=n+ZSKX4ZO6fXZWVJSLJCCrokYWO2iillfnIsrkhOqSFVlrdcKMjqoIe79+KCX+34bd
-         8CUXsh9ne1F7TyOtZ+mZocplQ+K+GEvo/N3CdkxOWe486ftFobP8i+ccQckIzlnpMmIM
-         mWO1IkO7n89CKudClVO1Uxackh7QON0sX3F3BhiYc5eJvXx4eXLI3xMkG8UMwUgFw6Oc
-         8sfX8vJ4WqiXyz//Cy5iy/K4i/Ocgz+SB1Uske50mTjWHcW5NL8W0ZRJDVXPkk2y2FvN
-         Y1gIfVWXa9MfHZnmWIbfHss0NFmIVo/TZpl4osk9azJhAjtlyAfdl38yJewkUI58rD2K
-         37uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780500259; x=1781105059;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=acwBnprFgwqGQFKcy6Zu5y1vKCe+2/zpivoZrYetfHk=;
-        b=Hr/f+yfI5f5xt8MzqL13kUxCJ5AAjlXfEPoUlBuQ47eJNy2BHRfYEToJQ9rmeyLazG
-         IbRt5i1NSNnN28U7RjlpkQfvUMspr2it0QDSPgtygHx8ED61lWQyHhhD3SDLXVoebzlI
-         34aJxsrtYtEfiB2b8u1BU/rsYtiBEP0p1+7yashoPU1UFTjwdczdBELVa2X327o6dKzd
-         pBkvHPOb/sU9tBI1NdyD7aPlaZ72q4dIN85FnfSz63MNADZLOdRvouzwiJ3vbpyK8p3p
-         vfkKnfOt2buYhwXn5znD2EH5zExBdL3t0ayeiTrB+iyWouA3tifk7OC8K5MdKNCP8GYe
-         8xtQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/jXZX5NFvXtLole9w7NUMXMjE2gM5OduKNjwzYlfCACbGOqaakR57YNdxF6OiObziUpyo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzExn0tmP2c5k27a8Zpv2uR4zvWD8qp87FTkVw4jMiuVNVxXH+B
-	X4b7W2O82b74SAW9N34sw83EUQm4xzGp3zmLG9CoHer0PnTMvtnK3yHJbqh7KUo8
-X-Gm-Gg: Acq92OEa/u8elGQxi25/cQt+DL2H6L663Dif2VlOW/bEDNNTwAKFXBhzfRHNh3M2jGB
-	0L2xzTFA0kLiJm1+vZdMw6tALLsfDQYyPW5HSApcebRsCOeSkNWq3S9jhVOnqFVMoUh/51PBGm3
-	nLF0DJfLmLWQy1R877Fc6rOOTcgt5Q38fBSgJNcaFNDle9uQiLrVy+7I0rf2dPWz7L7MXCTN3MC
-	dEnDOkKUIBWGZxotpt7slHDiRsgijb9bnWp7kgaZtr53BkLsGX5Hce1B6u36Naj9cPW6+RBb8Hy
-	psQfmlJiRg4GiXp8asaGgZt8eZCMdnQ69SpLrQZwdi8IFB1+9iSXuhqs7a/lIVOpqlqj55lQo5c
-	+yWg4/UAsNb5WsjwEu46Evx4PDf1TR1SxJpEGkC3Iru3d2ephYtGCXAqCQqR0SWFf304y9xmwlJ
-	c83oFDvePbzLorCeauoc4o0T0lYSeyv0EF
-X-Received: by 2002:a05:6a21:691:b0:3a2:d68d:9e78 with SMTP id adf61e73a8af0-3b49732971emr4778730637.4.1780500258903;
-        Wed, 03 Jun 2026 08:24:18 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df043ce0sm2671767a12.11.2026.06.03.08.24.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 08:24:18 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, kvm@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
-In-Reply-To: <20260603141539.47620-1-amachhiw@linux.ibm.com>
-Date: Wed, 03 Jun 2026 20:41:15 +0530
-Message-ID: <pl278xrg.ritesh.list@gmail.com>
-References: <20260603141539.47620-1-amachhiw@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6IQxDkP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9971F00893;
+	Wed,  3 Jun 2026 15:35:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780500938;
+	bh=kPZBsbdCmm36BRZUw3iS76jiQNOxOjTD1zye0IGFkLo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=a6IQxDkPxu9ygQzUYfgSmS3jC0jXjcS7n4CxpKX6bHtTVdIvnknVNJUqI4P8dXFN8
+	 5DK/ic7pcqvj180SK3plYKQHfU/pEYKmc3gcbD3jBi2wVj4EOKSFxOVzqvlj2HdZtM
+	 ZtSMqUkoG1WWJg1eFKSp/PFR61FmMHpau6s+XsW6iWB4hMsp5TRAAvkVjYHE337xDD
+	 Nv6TJvUAdg5W7ir8LFG7r/71Q7Y+w/A+nKb9g7qxrXUVZumwINGNLGmTrHtlydIXm9
+	 aTJJL/VCDWsvCAoXxtLpWptv+Ie0Euym22APCoOS4hVyo00SFC/kQliTyyqW1isxgq
+	 gv5yqoz8zpqRg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 02/32] iommu/io-pgtable-arm: introduce
+ iova_to_phys_length in io_pgtable_ops
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260603151804.1963871-3-guanghuifeng@linux.alibaba.com>
+References: <20260603151804.1963871-3-guanghuifeng@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 03 Jun 2026 15:35:38 +0000
+Message-Id: <20260603153538.7C9971F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Critical] arm_lpae_iova_to_phys_length unconditionally returns the full =
+block size instead of the remaining mapped length from the given IOVA.
+--
 
-> On IBM POWER systems, newer processor generations can operate in
-> compatibility modes corresponding to earlier generations. This becomes
-> relevant for nested virtualization, where nested KVM guests may need to
-> run with a specific processor compatibility level.
->
-> Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
-> logical partition (L1) booted in Power10 compatibility mode, the guest
-> fails to boot while setting 'arch_compat'. This happens because the CPU
-> class is derived from the hardware PVR (via mfspr()), which reflects the
-> physical processor generation (Power11), rather than the effective
-> compatibility mode (Power10).
->
-> As a result, userspace may request a Power11 arch_compat for the L2
-> guest. However, the L1 partition, running in Power10 compatibility, has
-> only negotiated support up to Power10 with the Power Hypervisor (L0).
-> When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
-> hypervisor rejects the request, leading to a late guest boot failure:
->
->   KVM-NESTEDv2: couldn't set guest wide elements
->   [..KVM reg dump..]
->
+commit c1536d0ff7a2be05195b8dfb8b49fd2e59d5c8f3
+Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-Thanks! It make sense to return a proper error code to the user (VMM)
-while the VM/VCPU are being initialized, rather then the guest failing
-to boot with a weird error like this, at the time when kernel makes this
-H_GUEST_SET_STATE hcall.
+iommu/io-pgtable-arm: introduce iova_to_phys_length in io_pgtable_ops
 
-> This situation should be detected earlier. Rejecting unsupported
-> 'arch_compat' values in 'kvmppc_set_arch_compat()' avoids issuing an
-> invalid H_GUEST_SET_STATE hcall and provides a clearer failure mode.
->
-> Add a check to reject Power11 'arch_compat' requests when the host is
-> running in Power10 compatibility mode, returning -EINVAL early instead
-> of deferring the failure to the hypervisor.
->
-> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
-> Cc: <stable@vger.kernel.org> # v6.13+
+This commit adds a new iova_to_phys_length callback to struct io_pgtable_ops
+and implements it for the ARM LPAE backend to return both the physical addr=
+ess
+and the length of the mapping. The existing iova_to_phys is updated to wrap
+the new callback.
 
-Sure, v6.13 sounds fair as you pointed out.
+> diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-ar=
+m.c
+> --- a/drivers/iommu/io-pgtable-arm.c
+> +++ b/drivers/iommu/io-pgtable-arm.c
+[ ... ]
+> @@ -776,13 +789,18 @@ static phys_addr_t arm_lpae_iova_to_phys(struct io_=
+pgtable_ops *ops,
+[ ... ]
+>  	ret =3D __arm_lpae_iopte_walk(data, &walk_data, data->pgd, data->start_=
+level);
+>  	if (ret)
+> -		return 0;
+> +		return PHYS_ADDR_MAX;
+> +
+> +	block_size =3D ARM_LPAE_BLOCK_SIZE(d.lvl, data);
+> +	if (mapped_length)
+> +		*mapped_length =3D block_size;
 
-> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> ---
-> Changelog:
->
-> * Moved this patch out of the v3 series [1] as discussed here [2]
-> * Addressed below review comments from Ritesh:
->   - Based the PVR validation on cpu features
->   - Fixed hcall name typo
->   - Stable backport
+[Severity: Critical]
+Does this code return the correct length if the iova is not perfectly align=
+ed
+to the block boundary?
 
-The changes looks good to me. Please feel free to add:
+If the provided iova has an offset within the block, unconditionally assign=
+ing
+the full block_size to *mapped_length might cause callers to overestimate t=
+he
+contiguous physical memory mapped starting from that specific iova.
 
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+The actual remaining contiguous memory in the block from the iova would be
+block_size - (iova & (block_size - 1)). Could returning the full block size
+cause callers to overrun into unmapped physical memory or memory belonging =
+to
+other processes?
 
+> =20
+> -	iova &=3D (ARM_LPAE_BLOCK_SIZE(d.lvl, data) - 1);
+> +	iova &=3D (block_size - 1);
+>  	return iopte_to_paddr(d.pte, data) | iova;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603151804.1963=
+871-1-guanghuifeng@linux.alibaba.com?part=3D2
