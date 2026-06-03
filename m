@@ -1,95 +1,94 @@
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CD240FDBE
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 08:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1103421A15
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 08:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780474735; cv=pass; b=Ko82ePAvjbdaDcVZ8oHB9+HRYH8HUP4igXwqYbHNlbUhbf2DQDUoNdaP+RpFZBdKWyjvef5NglwAkDgLFE+0e4F4GJdQA9rTonWzy6Z1iPR+wFenUrhJ3pc+QJPsd151niXdsIej5JNjwWXbrQA7m+qotn+1LoVvaz7J5ryqJjA=
+	t=1780474738; cv=pass; b=CCVIFiVwdXZhdEVNTO4x9UfhEddCX952KsjOpbQj1TqX7zfrXnnfcyB3UtwmCVgRuOSXoGZCzXQHe2jtcBKKVPZfBuATORMfVfm5z+bJiE18YtaazESRyVBuxpeg8YRaPxHNiLuKIPiaRLXQ7WXR2XNJeXfjN4m8lX+ejSciMsk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780474735; c=relaxed/simple;
-	bh=9LYE03si7jha94qNg639WpYfpbPeoION4b178yhnHSU=;
+	s=arc-20240116; t=1780474738; c=relaxed/simple;
+	bh=BxOKRvh36q4H5tlZ5r66oJwHpH4szsKxsvymTey7/TA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TfOYm7n+OcIr0ozOQ/N3gETKNUxy9vWI1JJBOGLAOzLDor6lWQm+Rpf+F0MGGM2clntVaZgtb9zd3SybbE+Qyl7WiSuL6oRSygehrgdRD12Srv1axcj013WwuEKCaVCjoZmEb5o79SZNBpb69j7Los9hQs4t1I/CDu2bUqPtkPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=sCrFSLM1; arc=pass smtp.client-ip=209.85.210.44
+	 To:Cc:Content-Type; b=Wg8eKd8aH9kk2N9Y7muLSnjkMOTNzAZI/K5rhnzs6qsjeOCx2sL7n7MmkuU4UehXiGBC7Xq35kaBrHz/tyG1+eGqaN8C+UkeSR/lyw0UW/p8fJVPTJqDdztukvwkVIdWFl47Sz8bX7KUUpTwoit99pRC/71YHxJkbs2I7sE+6bA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=rmZ6sAbH; arc=pass smtp.client-ip=209.85.161.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="sCrFSLM1"
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7e6b571750bso2690342a34.1
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 01:18:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780474733; cv=none;
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="rmZ6sAbH"
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-69e50fe0919so67415eaf.1
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 01:18:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780474736; cv=none;
         d=google.com; s=arc-20240605;
-        b=AeFNkyDEQFiwpmSoQgIFcvQ0XEcboROdVE6ewKCwCoZvUrbBYY6tBaiTb7L99iFssq
-         TU4ia554wga9itECDxZaXrN7jiDBjCX6z6FaR3oJ+Ak1UuA2lE0KnD0Xd/sd+rMfubHg
-         3Q3JVo1X9r+KpXEUtFsgpArlj+wBZu8UY/DJObXVVn7gtYaMTAndlM2EmJ0bN0RMR9vy
-         SAYPFe8dXeKSLUFgl+AQSmPACkL7acHr5AmDHwcB81EZsSl3PNpB/oZVuCNwViK7Qw1l
-         R730gn2a86moU+QyUgRnpQY6lKB7Zt70rpe+MMxhrVFaU59fLctZQ+TzupbxS046laBu
-         Ws7w==
+        b=iAm/4a+TmROupSwatytMHRzYqu691pWZMH0FOLhXz+21qeD8GXN3A1K+uqX2TKTNVI
+         eaGCP0LdvdaCaxcLGRlJXc5+rniBu1De3xGv2TMFduOHLrWqaBM7F55TiLcjF93mpwv9
+         dQbicoz8wmbNDYqbaRu74oAaD1MDP7mlkE/DyhRnirrkHMDSm4uJqTUz1thLXBBxg9Io
+         oi2hpNQJFzVnfXcdKqKXXpqRhT7Kdzmn0lfeI73pWzDrumKEW0ryrDIG5rAAVkqRzZ1R
+         IAYatQ+mTn7QRPA8hDV05vpifbrYAidbOjmKT6rAaeWuGhnXD4jQHhjIq/CfYNCDoKpJ
+         DTbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=kFeTv/Mtw5rUnQHNWc9zOtQG7POGqdE/BRFIOTGTTdw=;
-        fh=h/n418oKg1+Rp9sLuFUR53gt5lnlvyEQjLYV/qpoRjY=;
-        b=gTFgxcdNPsrH0zQsF/+habkMy7nsVSRLOTPsn7jY8gqr4n4y5LRM3snrmtpNKspGEY
-         mralT9CGE2y32inV15ksH+BQWJRm+ItSTweZSagxkk0DsAYL2Ybryf8mDpYDPCQcnIAi
-         djdy3RdkCIwcYRrj4f/uHW3ToD3rNjCjU0hDxFPTDKLf08ta2HW62oHBw2OA9a7+4QQy
-         IPWOvJmLKPhUdkH7ZHGFjA9vvFvWJZ2nPIdJN21pnDANNqZVUYhdnHkQSQ23SH0LYifp
-         sIsM+9vYjrkjp9lhTdfB1azTNiyZx4Crp/rmS2xtS/+jrQwH89FEicb2CKd8W8cNBfSd
-         wRMg==;
+        bh=7YXXRHTsYqYQHd5MbLWphJfk7peWK7x0kQufaDYO3B0=;
+        fh=g+beMBz/85qaDxvzoc2KF8xzIgIYuAeNCJfU4sCXlWo=;
+        b=V2nhQU6eYrYGypfa10tKKl0zYiJDRDx3cnFE8hyCJACZG9TXKtSsifqBfLnVkgEf1q
+         88P2l+S4X2P9MKN8TX018lip55lVsnZgV+xkcU3VclUAoHzta2gzscLFmIt2xbuK1IxU
+         vJlG2dgK7kjVagaoFlJ8vguMvvvoRtEdVHqwHsNhsLCTX2S7m3NoGGygHsE6r4LqHn9+
+         oJRnTends2plr70z8EJekZj0P4Uw7X67pGH4fcvgnFI/lJs+6WTh1BmLV2zSBKjOgrug
+         gmGkq8jy0q2eVCWUO4p4UCGO/K5QTZ6SuHopkxC+rCtZp84aEizKIpsrR8t6tc2queys
+         HZTg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1780474733; x=1781079533; darn=vger.kernel.org;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1780474736; x=1781079536; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kFeTv/Mtw5rUnQHNWc9zOtQG7POGqdE/BRFIOTGTTdw=;
-        b=sCrFSLM1gYIWUhaDACSrz/Rzm7RYSSIhFhO8VPuuYXpNMfL94c0IyeJX7nXQamzUxA
-         4bpzoYx70zYcxNi/h/6hVS/9CT7fv/miZk/hSaBC6ClW3kU1yPYLxlNnEPxHkl8fhIh6
-         OpHAGFJ3ugCMcXk1xf/VUzM9Lzj77JOFuRob4vpc8crDL6vxBxNgm+PxDpvcJb7oUGfG
-         Zu1a8BhtU4V5xYgtdgKBmaVthJK2QbcZgQ/tpT6iiKPVRiK0I/bY5U3DvwrvckEamVMg
-         0DPN3mIcZfdd3FslHQDP6OhjKvDU8NiWKKUhLWLwZL23GK4ygSiIHKRQNacudzmur22R
-         bjdg==
+        bh=7YXXRHTsYqYQHd5MbLWphJfk7peWK7x0kQufaDYO3B0=;
+        b=rmZ6sAbH88vKt2s5vlkFxjv7cQ+857XyxySYNW+fD/1Hwxa1S/Vl8j5X1d7ThRmrA5
+         eXaCInJEiZULHOaqHcZtRtoEdG95DoMKILwO51TtOyqq4OgulCAkgT7IPHZN3TwjoopM
+         Gn8y88xviOoN75yKwG5uNzb/Y9XMwSwaqVAgwexXdV5ZMeAncQb8SO56kZzDzdyX9E7w
+         XJY+gQcG6CKo76WSTjlzVN0ATPjclDP/SDAuqolSWm6vbrfdbAdqP3fhF80gFBt49rdi
+         8wbK44AgJdsPQwKk2/4UVd/4asweveueWg+is4S3woKxZ8eh9tEDXkzvXZ9Kwp1DPUrL
+         Wg/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780474733; x=1781079533;
+        d=1e100.net; s=20251104; t=1780474736; x=1781079536;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kFeTv/Mtw5rUnQHNWc9zOtQG7POGqdE/BRFIOTGTTdw=;
-        b=ldE1GhAhu3Ua1d46O67S65IozXJNLCH7lexsAgvjmgEOdhFfSSW5D5GlEY3xc3rhhx
-         RPNldC1v1+no6t4rxV1/G4ehfuMmKllTfoL1FJE3xY4WYJg0FtINq5vYIo3ycCov/pq4
-         PoajQAguvKa5OcDHdu5DyIkpfP2gApm9c5j5Io9Ir2iXQtogrsLLmVanK21YbA6KsNtW
-         gdZn/MUQBQOiMzLxzEzfPmjZXrv5Hp6WnAtgat+aZAc7v/W6tqPLcPdnXPa5xnQ0DvUy
-         AXBRmJwoFRtqdJDNtTtUc+TVw1zUexpyhqHzFEZAHMbaG8KH/47XQgzEbq/105SSFZ4c
-         R2GA==
-X-Forwarded-Encrypted: i=1; AFNElJ/5d87R+kQTMimQpkDCJJwPuo+Sra8XVHWcUcp3dzqV8TGrjvpuL+It0S+jzCSBC32tJjw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsHMe8q9g8eI0fWH40SmQlfk6vBARek3Io+Bf2NJ94JZ+6fTeA
-	0K6zBdfXIaOY4tr6Btbb/TD9+x0zWeGgHBNp6Q4B09BCeckot5f28w/1Ah3YAkBcotzJ0RQb0gU
-	juDldZcYQLKiJ+0CZdjWW1xjXA571wLmUBxutYJxY+Q==
-X-Gm-Gg: Acq92OEmZNJlNxk0HJ7yjy0eu0+orV9jgRG0SYJgSsB4zuoYWQjyVSSMroqjfrBXkJu
-	hHNQk0HQiGvzgx8fYw1QIg85FeuywPtY83tO9tfVhTjp8L6yJq6MDU7gp3UA2YGlqQRB1dpGUFp
-	YyP7bS1/WZa8aAn1dh3OJxEZ0kywqjdv8t7UbBbypQZs5rJbchV5aYg3aWrtArnKGJayscUON7i
-	ppYVe6zaPtpR2fBw7zw3H+VkMFyh5Ehp5KV9mBrzEZv+Lg/0D7LGoL5GIZXcN4Ra9NEmXqQEo2H
-	6lN0wjUjUClsIBFhneARxqBpzjZaSfI3CYbboc6ZLtirqKcLTRBng2GMsrvVucC6gMobwHizuA7
-	CTIqkj9HHFl2KZC7dQTzEZNAbFhI29KQqDhc/YQ==
-X-Received: by 2002:a4a:e053:0:b0:696:84a7:1c9e with SMTP id
- 006d021491bc7-69e480ca3afmr1083284eaf.54.1780474732678; Wed, 03 Jun 2026
- 01:18:52 -0700 (PDT)
+        bh=7YXXRHTsYqYQHd5MbLWphJfk7peWK7x0kQufaDYO3B0=;
+        b=mmeZEIslAguLtmbcqEgQ+EBIkwmqQLkK2hD7ne+m0FW6FHNrhZw3oxNC9kPiT7jKd9
+         pM++Eks/MJ4deHq9OUoRJGyyW8RcVRTLFiPVLEhRZipRwAkpN9DmvPwbTF5INyrg94V3
+         leUEYSmeKRfdACnq+NdHTCIuYsFOtXmzoJiMsOyx7wh7ocePdlVppPwM2tN8Ss4k+mPx
+         BU3IozlXOYuZKHN3Uke+oCyk+XI8tubdCxt1xl/pNUqe4pXC7LoRTggOQzs7CIXn5sT5
+         8cIpKZDEqi+aZEvkHs1TTMq8DieuNZzr4ddcEpBZcyhIfGJLHUaNmvM2f3LOgiKIlOMx
+         ch1A==
+X-Forwarded-Encrypted: i=1; AFNElJ9fS8opTeGhMbsgfACR4MS9+zvlT1y1+DCwn9EGoaCn2B2ZqBb2vrMpKFpoDJZgUf1b3Qo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjRId6ChmRTSMjzwklLJGIzEUV6QuaaaenAUUb2/snxWnZueHN
+	OUQfYZYClQ1NkTg8G5OGJXeiwBqt12/l5hY9+pM0sTXj95fiFjHElhvLasGCLmq2uK/289M3O+W
+	qwOfe2GXsiUVjLEw1tk9hil/MJEakQnjlqtZ+4ZaikQ==
+X-Gm-Gg: Acq92OFtSs3VluVEpfcuFhGuDfFGY7sQq1f1EeZYoiUG1VS+658tkS5LZ4ycs68cXkT
+	RKd7T1q1MUjoxLo2gWVG666vl5LHoSgMdh5/i3M1dCAqpdKMREjQ/jlwzfW299kCReyIHm7X0yA
+	XmL195sRsBjValxukii0c2r2SRxq4QZg7faavPWVdAO6AaWZxtecZmhLJvJYexMIlxDsqq1E0GY
+	x6C2/2RmBEM3rl96dZEOM98+pjh3UGOSv36RqXT7ZbObTtEu4HP/U5s5hmca6o1KT7I66Dn80Ho
+	tQNCrct0K+j/1vC7OxvoyVGr8kO04W16IQyTebXMElf75BKvDrGXjIU1n79AkUYjlfMzSV4HmN7
+	3bAx9lmLqmZ1HuM9uZ1qfhYOlQX35qeXlZrKceCYL8S8Q4O8Y
+X-Received: by 2002:a05:6820:4c89:b0:696:6e28:8c19 with SMTP id
+ 006d021491bc7-69e48c8b9ebmr865206eaf.20.1780474735890; Wed, 03 Jun 2026
+ 01:18:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260513153656847l3c4fI5hBsAyoIZi8aGIs@zte.com.cn> <20260513154125023xfKNqfea7TklqO9_RRrkt@zte.com.cn>
-In-Reply-To: <20260513154125023xfKNqfea7TklqO9_RRrkt@zte.com.cn>
+References: <20260513153656847l3c4fI5hBsAyoIZi8aGIs@zte.com.cn> <20260513154251861FBOlxl8ySih_oqyoJL1iA@zte.com.cn>
+In-Reply-To: <20260513154251861FBOlxl8ySih_oqyoJL1iA@zte.com.cn>
 From: Anup Patel <anup@brainfault.org>
-Date: Wed, 3 Jun 2026 13:48:41 +0530
-X-Gm-Features: AVHnY4KFDoPAklYlm9v6C3lajzcXBdS812tUFjYiyrvVraXpwSqHdXHXDDLKwNc
-Message-ID: <CAAhSdy28AR=Gs90nofSWPkh9z_gmwmmTjsae_PCyyL_5qXcGhQ@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH_2=2F4=5D_RISC=2DV=3A_KVM=3A_Split_huge_pages_when_d?=
-	=?UTF-8?Q?irty_logging_is=C2=A0enabled?=
+Date: Wed, 3 Jun 2026 13:48:44 +0530
+X-Gm-Features: AVHnY4KAwfGnPP2mIswxICBynzTnVouAFw9Yon74XWLX5xuvqnAhH_lb6zEINMc
+Message-ID: <CAAhSdy3vB+jes4WxQh4jN2GSmLYU6i_tySfKd3Y2xcZJQ6K0Yw@mail.gmail.com>
+Subject: Re: [PATCH 3/4] RISC-V: KVM: Split huge pages during KVM_CLEAR_DIRTY_LOG
 To: wang.yechao255@zte.com.cn
 Cc: atish.patra@linux.dev, pjw@kernel.org, palmer@dabbelt.com, 
 	aou@eecs.berkeley.edu, alex@ghiti.fr, kvm@vger.kernel.org, 
@@ -98,132 +97,43 @@ Cc: atish.patra@linux.dev, pjw@kernel.org, palmer@dabbelt.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 13, 2026 at 1:11=E2=80=AFPM <wang.yechao255@zte.com.cn> wrote:
+On Wed, May 13, 2026 at 1:13=E2=80=AFPM <wang.yechao255@zte.com.cn> wrote:
 >
 > From: Wang Yechao <wang.yechao255@zte.com.cn>
 >
-> Split huge pages eagerly when enabling dirty logging. The goal is to
-> avoid doing it while faulting on write-protected pages, which
-> negatively impacts guest performance.
->
-> The benefits of eager page splitting are the same as in x86 and arm64,
-> added with commit a3fe5dbda0a4 ("KVM: x86/mmu: Split huge pages mapped
-> by the TDP MMU when dirty logging is enabled") and commit e7bf7a490c68
-> ("KVM: arm64: Split huge pages when dirty logging is enabled")
+> Split huge pages on the range specified using KVM_CLEAR_DIRTY_LOG.
+> And do not split when enabling dirty logging if
+> KVM_DIRTY_LOG_INITIALLY_SET is set.
 >
 > Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
+
+LGTM.
+
+Reviewed-by: Anup Patel <anup@brainfault.org>
+
+Thanks,
+Anup
+
+
 > ---
->  arch/riscv/kvm/mmu.c | 62 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 62 insertions(+)
+>  arch/riscv/kvm/mmu.c | 3 +++
+>  1 file changed, 3 insertions(+)
 >
 > diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 85a3fb2622a4..14c558ee5f15 100644
+> index 14c558ee5f15..2cdea3e3ed4b 100644
 > --- a/arch/riscv/kvm/mmu.c
 > +++ b/arch/riscv/kvm/mmu.c
-> @@ -90,6 +90,50 @@ void kvm_riscv_mmu_iounmap(struct kvm *kvm, gpa_t gpa,=
- unsigned long size)
->         spin_unlock(&kvm->mmu_lock);
+> @@ -147,6 +147,9 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct k=
+vm *kvm,
+>         kvm_riscv_gstage_init(&gstage, kvm);
+>
+>         kvm_riscv_gstage_wp_range(&gstage, start, end);
+> +
+> +       if (kvm_dirty_log_manual_protect_and_init_set(kvm))
+> +               kvm_riscv_split_huge_pages(&gstage, start, end, true);
 >  }
 >
-> +static bool need_topup_split_caches_or_resched(struct kvm_mmu_memory_cac=
-he *cache,
-> +                                              int count)
-> +{
-> +       if (need_resched())
-> +               return true;
-> +
-> +       return kvm_mmu_memory_cache_nr_free_objects(cache) < count;
-> +}
-> +
-> +/* the caller must held mmu lock */
-> +static void kvm_riscv_split_huge_pages(struct kvm_gstage *gstage,
-> +                                      phys_addr_t start, phys_addr_t end=
-,
-> +                                      bool flush)
-
-s/kvm_riscv_split_huge_pages/mmu_split_huge_pages/
-
-> +{
-> +       struct kvm *kvm =3D gstage->kvm;
-> +       struct kvm_mmu_memory_cache *pcache =3D &kvm->arch.split_page_cac=
-he;
-> +       int count =3D gstage->pgd_levels;
-> +       phys_addr_t addr =3D start;
-> +       int ret;
-> +
-
-lockdep_assert_held ??
-
-> +       while (addr < end) {
-> +               if (need_topup_split_caches_or_resched(pcache, count)) {
-> +                       spin_unlock(&kvm->mmu_lock);
-> +                       cond_resched();
-> +
-> +                       ret =3D kvm_mmu_topup_memory_cache(pcache, count)=
-;
-> +                       if (ret) {
-> +                               kvm_err("Failed to toup split page cache\=
-n");
-> +                               spin_lock(&kvm->mmu_lock);
-> +                               return;
-> +                       }
-> +                       spin_lock(&kvm->mmu_lock);
-> +               }
-> +
-> +               ret =3D kvm_riscv_gstage_split_huge(gstage, pcache, addr,=
- 0, flush);
-> +               if (ret !=3D 0) {
-> +                       kvm_err("split huge page for addr(0x%llx) failed =
-%d\n", addr, ret);
-> +                       break;
-> +               }
-> +
-> +               addr +=3D PMD_SIZE;
-> +       }
-> +}
-> +
->  void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
->                                              struct kvm_memory_slot *slot=
-,
->                                              gfn_t gfn_offset,
-> @@ -136,6 +180,23 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
->         spin_unlock(&kvm->mmu_lock);
->  }
->
-> +static void kvm_riscv_split_memory_region(struct kvm *kvm, int slot)
-
-s/kvm_riscv_split_memory_region/mmu_split_memory_region/
-
-> +{
-> +       struct kvm_memslots *slots =3D kvm_memslots(kvm);
-> +       struct kvm_memory_slot *memslot =3D id_to_memslot(slots, slot);
-> +       phys_addr_t start =3D memslot->base_gfn << PAGE_SHIFT;
-> +       phys_addr_t end =3D (memslot->base_gfn + memslot->npages) << PAGE=
-_SHIFT;
-> +       struct kvm_gstage gstage;
-> +
-> +       kvm_riscv_gstage_init(&gstage, kvm);
-> +
-> +       spin_lock(&kvm->mmu_lock);
-> +       kvm_riscv_split_huge_pages(&gstage, start, end, false);
-> +       spin_unlock(&kvm->mmu_lock);
-> +
-> +       kvm_flush_remote_tlbs_memslot(kvm, memslot);
-> +}
-> +
->  void kvm_arch_commit_memory_region(struct kvm *kvm,
->                                 struct kvm_memory_slot *old,
->                                 const struct kvm_memory_slot *new,
-> @@ -150,6 +211,7 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
->                 if (kvm_dirty_log_manual_protect_and_init_set(kvm))
->                         return;
->                 mmu_wp_memory_region(kvm, new->id);
-> +               kvm_riscv_split_memory_region(kvm, new->id);
->         }
->  }
->
+>  void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *me=
+mslot)
 > --
 > 2.27.0
-
-Regards,
-Anup
