@@ -1,144 +1,150 @@
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289593242B8
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 19:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780513318; cv=pass; b=HC2WvE15L4+wad65ieEjMQb9qZA2yzLydQXiJP1e/alAf/CsaDDAU69/EPBhzCsh5vBY8rHdnW3Gi5PH9dYQtFZpSrEKdds9lG0j8gB1dCIe6dDIyjjDiYkpufZjV6ENAKymIEMH7682uKmoUy+slh4KX4PiBUUQCtUQdE8wtv0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780513318; c=relaxed/simple;
-	bh=Xc5kcfMakf+nJeCEsm2n26H/r2PF//roHh+fh1kcMqM=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CYRXB1C6Tq2Upolz9fDGS3Ur0rRHrPYpuqigodJx9ylhzOJjbxVpMmAuCgba1SGvuO8oKXLASE9XI9VDmra0z6ofRop8kFgEOb0sIYUO9Cfh9FIkhPkUSThtcTF05lzoJ9DnEFBpkzj2DmBYsFO+VXZmkovF5Q7BfpD7FUBVyPs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=umN6tYJ9; arc=pass smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA8148B373;
+	Wed,  3 Jun 2026 19:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780514666; cv=none; b=fOCBiYK3AGAZ/C7+RqvqBg7tAm2DNf7MAYMRawaydUUUk7ZFMrMzTyNDnkTP/o7QNbGrIBYnVSXuuBfc3BxoBi6MAZeSnjlyxTGuq1RjRGC8otwP23XB4JN26YFR69vjLSzzcXAI6RbsTLf5+b/2kbWs9rmKhhetXbebPMwDnNM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780514666; c=relaxed/simple;
+	bh=2c+mIhiF0BF1iEG8YF1CwO2l7bbG/E9FKbOISdl0o6Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L0PgfREVNqI2YLAtfH/VY92FSpqCGHhGLeaKjV22qnL3gFIoMiu2QkBwh4Rr5sqs0W44+ms9gWwBh3SVnDJEA0gtaR8NbRldJGRFoqHp1u7s/FIuRYzzZOssNNkbFOVKVd9BO0OljYfTR+5lEU6ZErhC7sl3bTYFmqO384z99w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=TV6Hs6aO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZXoN9O7J; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="umN6tYJ9"
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-137f0aa125bso4661185c88.0
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 12:01:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780513316; cv=none;
-        d=google.com; s=arc-20240605;
-        b=M4AKgo0p26sTeYo/oLhP6S30FFPyL/5EwdHQxhZLBV8bDO5cGGOFe7lck1PjJzZd/Z
-         NKw8F4Re0L5LF+dsjtg+Iafd+bEpZpRJGLpVuhoH9bAbx6dl5rFkL5CgKb0y2lX+MTeG
-         nFhkIGj+LlYNRdYNCYZqsBftn65JYwnMzUDRAXrmvl/CX2FICJj1LVpbafyYeNkeHObB
-         P9TAM5bvOz8MxcXyMJMCnCHaQalY4ukblrMBFEBNWfkEzC6ArPQteqBOZJmuzLMfXbLg
-         3UsGpYltXQR4bHb3N+1nWkfd83k8c+0ZrZTmkeKN4g3oHwrvyawx3J+rJn4UW1u8AlQ8
-         mffw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=FrdppwqBUMbQkQbLbGXJfGioEcfkU9p7vcumdWWrqwE=;
-        fh=KVy4+j+TE0qJlGnL1oxDtQvAs+ZlkPteDJwxhHS2piY=;
-        b=lqsb5okDvR59RdUKwDJGasZDnheH1Kkxp1DRSS5YPzi6U/barQMZShpLY9VgYnrQNv
-         ZTSnYuzjI/5M5JBQuyc1ucsBCqBmJIVpqSPSmK3Vop+rjaF8JpUhjPnZaC9FvdDPB1Qh
-         SF6k5LI0cmBLAvVuBDC92cvBOIHuoraEyh2P0KeI4SbZZMDOiKWjouJtGywYa948WXvP
-         vJpnzVCIjv7md5iJ4MH1xahPwq3ep12MqH+pb3z+ccRsKGKF4sreNKOTghdc3JvdYGYl
-         0c59+K87hVgtBCtUP0+TR+Osv5/58jd2xOdVrYuAcdwR/WsT9KQDumuQ1iSAun1ohZFY
-         ofgg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780513316; x=1781118116; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FrdppwqBUMbQkQbLbGXJfGioEcfkU9p7vcumdWWrqwE=;
-        b=umN6tYJ9aI9/seg/ge8Dx3B595TrK8bJ8Rgqj1AZvQRM/ptGBTdMZO0eWuwJNg192Y
-         Ah+OFNCn+R7/ojcBrB1flrdtsNcJ6GSgpyn6pR7SRbDotdwaNPmlGoh6yD04OCcJ7o0I
-         61Vs6v2VnntgY+OTcUCM2kfWgywxZFXWcyjNYR4bfPd34qahCKqUj6NHfIVs7jQIJSpr
-         dm5edZAK9awWDRWZVzhTweDnkDrlntyrP0Tbxpsdylhe8Jnqdl8rMP3bbVsGrxZum9bm
-         l6Vt69uomftvveCpAin54f4ZKDaU6cXdQSWgTMEZK10Rx0E5YCDOzgY7ANvEkam1noQ2
-         YSJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780513316; x=1781118116;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FrdppwqBUMbQkQbLbGXJfGioEcfkU9p7vcumdWWrqwE=;
-        b=G7Yr4Pa+lSSl2L7HKoDrxWButfjqrytqg+Wt+Qpn5P02bablsAAY7Hd69q3e0qWDOZ
-         He9wNEnlqEGuG1tjl6ZH1cBQ2gMixHgzLkAVmikOZ2wUMCcroc0CICj2fv+/wwH2vX5Q
-         83y+IiiKkFDePzBKQT5E0JsZrwXNgOZvcZOZNNlPBFE2O+fNuMCtQ0YI8hhdL3MR8v43
-         +sKkYLKel5SvMur/bpEGg5WMFb88ttWDUVOR0HhuzIde56uRZVXKSXIOnAkPETc9udrY
-         gDoZTQJxBAWVo1A3+vNFMzywL7+jzHFNgL0k3HXiegHeWFi6tjfxSXmR5yeQt2ysjs2t
-         WdCg==
-X-Gm-Message-State: AOJu0Yz8IwE4PHruu5v/K5EIDgiblEO5zQdJAjheqPCfAP9lscrfAOE6
-	7MLBcxV1KMJwMGjWS/VPFug6T3rOP9cPZrmKSJkt2CenajUOojApQtJPE5c1OJlCBmLtnZb/GzX
-	Jjdf66VMiowA3JloF8rEBlhIO/Sb0fj0ZX6s7R3vF
-X-Gm-Gg: Acq92OHslIzVGSQ//Iyfgi1xlUFdDORUJykDCjWnCQ8XEMa9BlEWrwFTzbHfDnUMWHL
-	DQauM2F0SJH0q6VudxnvKkqrNhmV5Wb46BOl2i5OemypvqSEFf4GpoCXMFd8DqxlGmb8UDUq62Y
-	l8zFVV/I606qd35ZvNtkjienruE4LL+vAePEaEMjTIRyDeVVMIdeob6eUmpHRfe4F5E5Q9np9p5
-	0dzE5OzqE5VpWDQMI1ZAvkgdLpOpnLU92vw4nSo2GPQdBnAecBqDNP0NejqNLkcHvqd8SfSnRgv
-	ayox1QYkmJKAp/mUySAgPv4QvkRPazQaxXxXKVrHvOcxCiEb5iU8hgoDNB3J69e6XXZCPt2iF9W
-	EYg==
-X-Received: by 2002:a05:7022:2390:b0:135:e312:47a4 with SMTP id
- a92af1059eb24-137f69382a9mr1895079c88.9.1780513313859; Wed, 03 Jun 2026
- 12:01:53 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 3 Jun 2026 12:01:52 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 3 Jun 2026 12:01:52 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260523013557.8DE1B1F000E9@smtp.kernel.org>
-References: <20260522-gmem-inplace-conversion-v7-37-2f0fae496530@google.com> <20260523013557.8DE1B1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="TV6Hs6aO";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZXoN9O7J"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id 77AF11D000EE;
+	Wed,  3 Jun 2026 15:24:18 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 03 Jun 2026 15:24:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1780514658;
+	 x=1780601058; bh=SMG9G4OqJ5Osq9kAINMvdjXo5kiIV2/lOU5H8n3lh6Q=; b=
+	TV6Hs6aO9MJK5k+nFRYIB5Ot8Ef0y93l/hu8vL4iSRlLtbQhslDoTnRcFSeYMMR+
+	ee8E7s2UiUa7ea35RRL3qvHspQRhzOz8PL33SSoItizOgCDF0RSG26HxDJayqWTF
+	DEJC+ZIJSQMErK+lmuT21tgQfeJHCyPxjs/4lfb19Ecjt2q+AgQMFXzRNYjBTXBH
+	GmVPeMRXNiVgx9tb7kIrysJhTorqDcTcp5uyowQAkMyn07/9bET/D4X5gqa+4uiY
+	vLA+tLlRl0X9lr/HEVDJWUY47lqajmJP9wEStacYUIA4XK3YZJjHCWlf433E4ngc
+	uluaXTZqM9w8vCqrSBR5OQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780514658; x=
+	1780601058; bh=SMG9G4OqJ5Osq9kAINMvdjXo5kiIV2/lOU5H8n3lh6Q=; b=Z
+	XoN9O7JfOz8w1eDNNkux11mpJ6Ul3WF2wZ0+mAl6vDM0eugMxPVt7Gh2/xcvF1Xs
+	m3slusTRwbMwYQl9MG+17MKdxanzng6UIFa6wnrTBea3/xPprOycNonyOPn0ts45
+	Ue4lm+1nOim6Y6xQosMRvxcN6NYNTGrxHn1LD2dl+3siQq1me9wJbTwucGRJjUvW
+	ugCdzBhJ4ne9zq3yiwphwJxNEMCjKZ4lTORclKSFjm3a50JfWuO9t8+BvqQg8k9I
+	FntHZT2oBDOGNIWHhdmzdNj/QPCc1yQGFIWsEsiaU0/LH0rA/eqkA4aNTD6uDuzD
+	hbzwSPaXOAZbHdxmhC/iw==
+X-ME-Sender: <xms:Yn8gaqLLWS-NbJdPYdIN206j5LGiMHQsp38QXv2s6zc6wiwQXq2ppQ>
+    <xme:Yn8gajjXoW20lpy94esPBZ3GGY5rBE80TENBMcxyDbvqZ3mCCYkGVK649Xitiibln
+    gCiKMQQ5wEnYCjEx6pSJw6CoGn3UBpHDI7_0-MQhyn98HwvjzWMsA>
+X-ME-Received: <xmr:Yn8gaj-ym6g9BotnbJ0TOlREXMutfxPBoISz-O9siTglKNdv6uH2oxynXhA>
+X-ME-Proxy-Cause: dmFkZTGotx2FL0pmZGBC7KWjxWg1WpUSD6gaxYQINCpdPFmdjHf6OhV/ccBD0X6I0KybaF
+    BdN9rGjFeVyRnz2S0S0Zbz4NvOfH1b/LmYQWfc54XFLVZUHPfnhy4j2/dSFXFapJ5/gsgP
+    MY+GzWaGPF73JTsAKKFIXbNESVyNsb8YmIX3eO2SyRwz5htGI6Jt2luewRWQrzdZO/o93k
+    h5IvWme7q3be3mYd6MZxn+XbzxmE26utAx8fkeoS0S4XMb+90XX++O04hAH+QfoLYQWiUj
+    BeGj6qpkIKBDAUj7wwvCRHagJmpQDjetX48utRkJCAIdKbuoaJYiFEQVWWxTzDM60ge9Ru
+    rFev/lF1c5AtewGSJ0r1QOXrMxBT5Gai4XFiTsHl9A5qJTZzVsVSjneuuFM8pKxXrmJeX2
+    VoMEcmDSfvRr4SdwUxCkVm/YWHnFTPAIhE28apRftDLsjzhmhvvYgVlluzVpWEV8eLaxDb
+    L3T/a3p/kCXCrr5dbCgEkgUuKVOrdtJn8aWrW2Jx6h0cBvftNtvX5mW7sI5Zixo5/dD6zF
+    z7wBjgbuk/FjQRWJtDpxghwGPztnRj8gg2FhqCKY01Vo6dieX01eoJMiyroom8d5DEmMej
+    +enW/SomPcobyJg8Qq4ioL4aj5yK/PwgwdkRwdz2Ie1GqHesCMzS5PqT8D6Q
+X-ME-Proxy: <xmx:Yn8gano1eqQfCgdjVW5l8n3JA7gMK_TIVqrLwCFLkmg9JaQ2mt6HaQ>
+    <xmx:Yn8gaoNqMgK_d6exS8eNwM_X2IeUPbV7UKvDwZxBFztot7YW9x2Ylg>
+    <xmx:Yn8gal5p0Borr60R1A7nZipQoO_cfSMibQa3_DnxN5NV8MDinuAYNw>
+    <xmx:Yn8gakWj_gGL6-NnLhz2IEIp2w8YkHH4ncXxD7fYxO-Zo2zyNL-JPg>
+    <xmx:Yn8gahrDcsF0yliN3vjui0ciTC-z5FY0ra92OEJ4pQslqoozUr7jwP63>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 3 Jun 2026 15:24:16 -0400 (EDT)
+Date: Wed, 3 Jun 2026 13:24:15 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Omar Elghoul <oelghoul@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
+ farman@linux.ibm.com, gbayer@linux.ibm.com, alex@shazbot.org
+Subject: Re: [PATCH v2 2/3] vfio-pci/zdev: Add VFIO FMB device feature
+Message-ID: <20260603132415.53e9a934@shazbot.org>
+In-Reply-To: <cc2cb880-2d53-419f-a813-539ce0f5311b@linux.ibm.com>
+References: <20260519224204.19154-1-oelghoul@linux.ibm.com>
+	<20260519224204.19154-3-oelghoul@linux.ibm.com>
+	<20260602162409.1ca3c765@shazbot.org>
+	<395b0d85-3057-4bd5-b8cc-10ceea2d978a@linux.ibm.com>
+	<20260603095538.65b07206@shazbot.org>
+	<cc2cb880-2d53-419f-a813-539ce0f5311b@linux.ibm.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 3 Jun 2026 12:01:52 -0700
-X-Gm-Features: AVHnY4KsbUCYkAg_J7QB9NZy7MzgdWA0kDAtfdN45OW6sA1mj4HkxgKzF-rW7mI
-Message-ID: <CAEvNRgFWBWPKCPWQYCQ_14Ec+Z80jtU28+-ojAAh7rtr9AFwPA@mail.gmail.com>
-Subject: Re: [PATCH v7 37/42] KVM: selftests: Provide common function to set
- memory attributes
-To: sashiko-reviews@lists.linux.dev, 
-	Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-sashiko-bot@kernel.org writes:
+On Wed, 3 Jun 2026 14:26:30 -0400
+Omar Elghoul <oelghoul@linux.ibm.com> wrote:
 
->
-> [...snip...]
->
->> +static inline void vm_mem_set_memory_attributes(struct kvm_vm *vm, gpa_t gpa,
->> +						size_t size, u64 attrs)
->> +{
->> +	if (kvm_has_gmem_attributes) {
->> +		gpa_t end = gpa + size;
->> +		off_t fd_offset;
->> +		gpa_t addr;
->> +		size_t len;
->> +		int fd;
->> +
->> +		for (addr = gpa; addr < end; addr += len) {
->> +			fd = kvm_gpa_to_guest_memfd(vm, addr, &fd_offset, &len);
->
-> [Severity: Medium]
-> Does this unconditionally assume the memslot uses guest_memfd if the host
-> supports KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES?
->
-> Since kvm_has_gmem_attributes is a global capability check, it doesn't
-> guarantee the specific memslot was created with the KVM_MEM_GUEST_MEMFD
-> flag. For example, test_private_access_memslot_not_private() in
-> private_mem_kvm_exits_test.c explicitly creates a memslot with flags = 0
-> and then calls vm_mem_set_private().
->
+> On 6/3/26 11:55 AM, Alex Williamson wrote:
+> > On Wed, 3 Jun 2026 08:35:43 -0400
+> > Omar Elghoul <oelghoul@linux.ibm.com> wrote:
+> >   
+> >> On 6/2/26 6:24 PM, Alex Williamson wrote:  
+> >>>
+> >>> Why does the user need to be able to control these?  
+> >> We want the user (e.g. QEMU) to be able to control these so that when a
+> >> guest enables or disables the FMB, this state gets cascaded to the host and
+> >> all the way to the firmware.  
+> >>>
+> >>> Doesn't allowing the user to disable FMB remove guaranteed host-based
+> >>> monitoring?  
+> >> Yes it does, but this one isn't an oversight and is intentional behavior
+> >> to achieve the functionality mentioned above. The host-based monitoring is
+> >> not necessarily guaranteed and is treated as a device-specific state, so it
+> >> makes sense in the case of passthrough to have that state reflect the state
+> >> of the guest that is actually using the device.  
+> > 
+> > If we really need a SET for enable/disable, I think it should be a
+> > separate feature.  It really makes no sense to pass a giant structure
+> > into a SET operation to look at the state of one flag bit.
+> > 
+> > [...]
+> > 
+> > Hmm, I also see fmb_length in VFIO_DEVICE_INFO_CAP_ZPCI_BASE.  If we
+> > have that, do we really need structured data in the GET feature?  Maybe
+> > GET just provides a user pointer and the raw fmb data is copied to it.  
+> 
+> If we did this and passed just flags, a user ptr, and possibly a buffer
+> length field, what would you think of leaving them in one feature? This
+> way, the SET case would have possibly 8 or 16 bytes of overhead rather
+> than the entire FMB structs, but would still keep the uAPI simple enough
+> by avoiding multiple VFIO features for the same firmware feature.
 
-I think calling vm_mem_set_memory_attributes on a address in a
-non-guest_memfd memslot is something that the test author should be
-alerted to ASAP, hence asserting and failing the test is the right thing
-to do.
+It doesn't seem the GET needs either flags or buffer length.  The data
+is opaque through vfio, so there's nothing to flag.  The buffer size is
+at best a sanity check, it has no actual bearing on the copy to user
+buffer.  We're not writing to a variable length ioctl buffer, we're
+writing out to the user pointer.  The feature only needs to be
+consistent that it copies no more than fmb_length.
 
-> Calling kvm_gpa_to_guest_memfd() here will trigger its internal TEST_ASSERT
-> verifying the region flags, which causes the test to crash and breaks
-> bisection.
->
-> (Note: I see this is fixed later in the patch series by updating the test
-> to skip when per-gmem attributes are active, but pointing this out since it
-> breaks intermediate bisection.)
->
->>
->> [...snip...]
->>
+The combined SET/GET that perform different actions especially stands
+out because of the structure, but I don't think making the structure
+size more manageable resolves that they do very different things.  I
+think the implementation is also much easier if GET simply dumps the
+FMB to the user pointer and SET takes only a scalar enable/disable
+value, ie. a fundamental type that's handled as a bool.  Thanks,
+
+Alex
