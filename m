@@ -1,331 +1,161 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E57B3E3C55;
-	Wed,  3 Jun 2026 15:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9549439A80E
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 15:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780501736; cv=none; b=XfnFIPjiOD+/iiQ4dTcTsz1FPCrk7QcGTw6jDcAkMJUGWAZ3Shie3p2fK2OUIA7pVAbnMtNB2jc5/ys0xdddxnCMWsI+6ycoFakPK5LqSZU9sxiGbC//6UOdiOjqtt77QG5fHR1od7RxP8L2XlNM8JFk1LK1AlIA5baTGPRt/XM=
+	t=1780501886; cv=none; b=S8Z1Mf8mcEQ/7mKVP5/BEkwgWayXQ4Wf+WSdStY7EP6I/9vP9nN7viHtT8QzXuiEQn9pqnwZPrPYfRLAW6cVY9SA5smIHnkgadIpThO9GJcxExWlmt1xxf+hfLTUCZBzAXid9XPcTFulFd2ZLBpAtPIfVr/EIuwmzwismKU4E8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780501736; c=relaxed/simple;
-	bh=PpYTAUv2Q8yQ4mjH5wA/7BzqV8xwkMc1OIxAcnNR5Us=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EuT15F0aN6324AjswjF5ktdn78TQ86qDhxljnW1r5tb4qCxRf1GpCRBe6WmDvKbNKI8jBIwJ1/qp0IDHLiBcV0i/tiiVRV45UMYrPV5KMf4VTFaKLp2leNrnLLdtKNVu6dAuwWfCvmA3O63aiGpiXYTA0JhT1FN1vycpasFJSmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cbQfhaNY; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1780501886; c=relaxed/simple;
+	bh=BOmuCTath4yyF680aCkvU1O+1qIPp9pIPl7hdvKf3Sc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=silWVYW0BkOgWt2wD7E1+Xx7Pt8rS2W7vRt5J9xnNkWzLJLgODcPPZZeJB9hSbJwu70Edr0SVSzJxlhC5zbnxk8dHpt79aYdVTsTkb971js6ZoMOjlhS3dAnL7VXR8j+rYWAW3FL48SSsKwOxqMR0BYBGMzxBp3laO14UaRu53U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ReC0I0ii; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cbQfhaNY"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD2B43565;
-	Wed,  3 Jun 2026 08:48:47 -0700 (PDT)
-Received: from [10.57.26.22] (unknown [10.57.26.22])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ABAB23F86F;
-	Wed,  3 Jun 2026 08:48:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780501732; bh=PpYTAUv2Q8yQ4mjH5wA/7BzqV8xwkMc1OIxAcnNR5Us=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cbQfhaNYFnv2Gfp7ZY7HewJV9FJI9CFZ4ZDLc8VCxJWF2iXCo2pXt8aFJWTBVmjR6
-	 sKVUN5Imv8qQybzHgLT39q0n3qYGEkrn1S1EGXhLg3QRLlivKQzt51fHivkodWRWUx
-	 lgLy/soFIGAyHjSXZe8ewJke5/KpKmBF8ocVqInQ=
-Message-ID: <043ff7ce-7543-407e-b879-6ed524df60e0@arm.com>
-Date: Wed, 3 Jun 2026 16:48:42 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ReC0I0ii"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378E41F00898;
+	Wed,  3 Jun 2026 15:51:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780501885;
+	bh=H3k11sPPqpiMCz51LEr+WSCWroAO+BVXqOlQ1+/AZNc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ReC0I0iiCP6NnwMvYx4Ki7kP+l9eGaLFxDka1Nowtj/z+NQvCLnwqZvLoowNxP4UI
+	 UZ91zMFJAL4Szf3TMF8RSJkKU36hsKGq+Br2SvpTLnynJk9P1d6vsHhncvH3Oj2d7d
+	 lVFA7EkNmaSkvFmOcCfAOw2c8tqkRlI1kHiesRnmTupRu8HRG7KUyAYEXIOABSY9Y4
+	 ODGyvahmmtkluHZwTrDHF+lbWSj9mOCQh9BDOXx45N3Lq7WQ/G/A8hVIADcIopy8i8
+	 FhJsi0yrosjrBKwBVOnCSmkhUbrljB8TGVcYr2YKZhpyCU7wG3hmCTKiRyL7B0hTL2
+	 Goi2KLoHLNLNQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 14/32] iommu/msm: implement iova_to_phys_length
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260603151804.1963871-15-guanghuifeng@linux.alibaba.com>
+References: <20260603151804.1963871-15-guanghuifeng@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 03 Jun 2026 15:51:24 +0000
+Message-Id: <20260603155125.378E41F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 08/44] arm64: RMI: Ensure that the RMM has GPT entries
- for memory
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-9-steven.price@arm.com> <868q9cx4ac.wl-maz@kernel.org>
- <e175cb7b-b4fa-4139-b46d-1986e2372d16@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <e175cb7b-b4fa-4139-b46d-1986e2372d16@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 21/05/2026 16:39, Suzuki K Poulose wrote:
-> On 21/05/2026 14:47, Marc Zyngier wrote:
->> On Wed, 13 May 2026 14:17:16 +0100,
->> Steven Price <steven.price@arm.com> wrote:
->>>
->>> The RMM maintains the state of all the granules in the system to make
->>> sure that the host is abiding by the rules. This state can be maintained
->>> at different granularity, per page (TRACKING_FINE) or per region
->>> (TRACKING_COARSE). The region size depends on the underlying
->>> "RMI_GRANULE_SIZE". For a "coarse" region all pages in the region must
->>> be of the same state, this implies we need to have "fine" tracking for
->>> DRAM, so that we can delegated individual pages.
->>>
->>> For now we only support a statically carved out memory for tracking
->>> granules for the "fine" regions. This can be extended in the future to
->>> allow modifying the tracking granularity and remove the need for a
->>> static allocation.
->>>
->>> Similarly, the firmware may create L0 GPT entries describing the total
->>> address space. But if we change the "PAS" (Physical Address Space) of a
->>> granule then the firmware may need to create L1 tables to track the PAS
->>> at a finer granularity.
->>>
->>> Note: support is currently missing for SROs which means that if the RMM
->>> needs memory donating this will fail (and render CCA unusable in Linux).
->>> This effectively means that the L1 GPT tables must be created before
->>> Linux starts.
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> ---
->>> Changes since v13:
->>>   * Moved out of KVM
->>> ---
->>>   arch/arm64/include/asm/rmi_cmds.h |   2 +
->>>   arch/arm64/kernel/rmi.c           | 103 ++++++++++++++++++++++++++++++
->>>   2 files changed, 105 insertions(+)
->>>
->>> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/
->>> asm/rmi_cmds.h
->>> index 9179934925c5..9078a2920a7c 100644
->>> --- a/arch/arm64/include/asm/rmi_cmds.h
->>> +++ b/arch/arm64/include/asm/rmi_cmds.h
->>> @@ -33,6 +33,8 @@ struct rmi_sro_state {
->>>   } while (RMI_RETURN_STATUS(res.a0) == RMI_BUSY ||            \
->>>        RMI_RETURN_STATUS(res.a0) == RMI_BLOCKED)
->>>   +bool rmi_is_available(void);
->>> +
->>>   unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp);
->>>   void rmi_sro_free(struct rmi_sro_state *sro);
->>>   diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
->>> index a14ead5dedda..52a415e99500 100644
->>> --- a/arch/arm64/kernel/rmi.c
->>> +++ b/arch/arm64/kernel/rmi.c
->>> @@ -7,6 +7,8 @@
->>>     #include <asm/rmi_cmds.h>
->>>   +static bool arm64_rmi_is_available;
->>> +
->>>   unsigned long rmm_feat_reg0;
->>>   unsigned long rmm_feat_reg1;
->>>   @@ -88,6 +90,102 @@ static int rmi_configure(void)
->>>       return 0;
->>>   }
->>>   +/*
->>> + * For now we set the tracking_region_size to 0 for
->>> RMI_RMM_CONFIG_SET().
->>> + * TODO: Support other tracking sizes (via Kconfig option).
->>> + */
->>> +#ifdef CONFIG_PAGE_SIZE_4KB
->>> +#define RMM_GRANULE_TRACKING_SIZE    SZ_1G
->>> +#elif defined(CONFIG_PAGE_SIZE_16KB)
->>> +#define RMM_GRANULE_TRACKING_SIZE    SZ_32M
->>> +#elif defined(CONFIG_PAGE_SIZE_64KB)
->>> +#define RMM_GRANULE_TRACKING_SIZE    SZ_512M
->>> +#endif
->>
->> Basically, a level 2 mapping. Which means this whole block really is:
->>
->> #define RMM_GRANULE_TRAKING_SIZE    (2 * PAGE_SHIFT - 3)
->>
->> (adjust for D128 as needed).
-> 
-> True,
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-As Gavin pointed out we actually don't need this anymore because of the
-move to a range based API.
+Pre-existing issues:
+- [High] When `__enable_clocks()` fails, its negative error code is incorre=
+ctly returned cast to `phys_addr_t` instead of `PHYS_ADDR_MAX`.
+- [High] Unsafe `list_first_entry()` on a potentially empty list leads to o=
+ut-of-bounds memory accesses.
+- [High] Concurrent traversal and modification of `priv->list_attached` wit=
+hout adequate common locking.
+--
 
-It's also not quite that simple because for 4K PAGE_SIZED the RMM
-doesn't support 2MB (which would be the level 2 size), instead jumping
-to 1GB. And if we add a Kconfig option in the future then this could
-change because of that.
+commit 48fb553fe9efe8fd4fc6286128070ec03e449c35
+Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-For now I'll just delete this block since it's unused.
+iommu/msm: implement iova_to_phys_length
 
->>
->>> +
->>> +/*
->>> + * Make sure the area is tracked by RMM at FINE granularity.
->>> + * We do not support changing the tracking yet.
->>> + */
->>> +static int rmi_verify_memory_tracking(phys_addr_t start, phys_addr_t
->>> end)
->>> +{
->>> +    while (start < end) {
->>> +        unsigned long ret, category, state, next;
->>> +
->>> +        ret = rmi_granule_tracking_get(start, end, &category,
->>> &state, &next);
->>> +        if (ret != RMI_SUCCESS ||
->>> +            state != RMI_TRACKING_FINE ||
->>> +            category != RMI_MEM_CATEGORY_CONVENTIONAL) {
->>> +            /* TODO: Set granule tracking in this case */
->>> +            pr_err("Granule tracking for region isn't fine/
->>> conventional: %llx",
->>> +                   start);
->>> +            return -ENODEV;
->>
->> How is this triggered? Do we really need to spam the console with
->> this? A PA doesn't mean much, and there is no context (stack trace).
+Implement iova_to_phys_length for MSM IOMMU driver, returning the actual
+PTE mapping size.
 
-I'm not sure 1 message really counts as 'spam' - it provides the
-information on why the RMI interface (and therefore realm guests) is
-unavailable. The PA might help track down whether this physical region
-was intended to be given to Linux.
+> diff --git a/drivers/iommu/msm_iommu.c b/drivers/iommu/msm_iommu.c
+> index 0ad5ff431d5b6..1038e8141223f 100644
+> --- a/drivers/iommu/msm_iommu.c
+> +++ b/drivers/iommu/msm_iommu.c
+> @@ -523,15 +523,16 @@ static size_t msm_iommu_unmap(struct iommu_domain *=
+domain, unsigned long iova,
+>  	return ret;
+>  }
+> =20
+> -static phys_addr_t msm_iommu_iova_to_phys(struct iommu_domain *domain,
+> -					  dma_addr_t va)
+> +static phys_addr_t msm_iommu_iova_to_phys_length(struct iommu_domain *do=
+main,
+> +						 dma_addr_t va,
+> +						 size_t *mapped_length)
+>  {
+>  	struct msm_priv *priv;
+>  	struct msm_iommu_dev *iommu;
+>  	struct msm_iommu_ctx_dev *master;
+>  	unsigned int par;
+>  	unsigned long flags;
+> -	phys_addr_t ret =3D 0;
+> +	phys_addr_t ret =3D PHYS_ADDR_MAX;
 
-> This could be triggered if the RMM doesn't have static carveout
-> for tracking the DRAM granules. (state != RMI_TRACKING_FINE).
-> This not worth WARN_ONCE(), we could simply not enable KVM.
-> We plan to add support for donating memory to the RMM in
-> the future. (Primarily we don't yet have an RMM implementation
-> that does dynamic management via SRO. This can be added later
-> as a separate series)
+[Severity: High]
+This isn't a bug introduced by this patch, but if
+msm_iommu_iova_to_phys_length() is called on an IOMMU domain before any
+devices are attached, priv->list_attached would be empty. In that case,
+does list_first_entry() calculate an invalid pointer?
 
-As Suzuki says - this case should be handled in the future - so it's a
-limitation in the current implementation. So a WARN_ONCE is a bit strong
-- it's not a "can never happen" situation - it's a "Linux doesn't
-support this (yet)".
+If so, would dereferencing this pointer in the subsequent
+list_empty(&iommu->ctx_list) and __enable_clocks(iommu) calls lead to
+out-of-bounds memory accesses?
 
->>
->> If that's not expected, turn this into a WARN_ONCE().
-> 
-> 
-> 
-> 
->>
->>> +        }
->>> +        start = next;
->>> +    }
->>> +
->>> +    return 0;
->>> +}
->>> +
->>> +static unsigned long rmi_l0gpt_size(void)
->>> +{
->>> +    return 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
->>> +                      rmm_feat_reg1));
->>> +}
->>> +
->>> +static int rmi_create_gpts(phys_addr_t start, phys_addr_t end)
->>> +{
->>> +    unsigned long l0gpt_sz = rmi_l0gpt_size();
->>> +
->>> +    start = ALIGN_DOWN(start, l0gpt_sz);
->>> +    end = ALIGN(end, l0gpt_sz);
->>> +
->>> +    while (start < end) {
->>> +        int ret = rmi_gpt_l1_create(start);
->>> +
->>> +        /*
->>> +         * Make sure the L1 GPT tables are created for the region.
->>> +         * RMI_ERROR_GPT indicates the L1 table already exists.
->>> +         */
->>> +        if (ret && ret != RMI_ERROR_GPT) {
->>> +            /*
->>> +             * FIXME: Handle SRO so that memory can be donated for
->>> +             * the tables.
->>> +             */
->>> +            pr_err("GPT Level1 table missing for %llx\n", start);
->>> +            return -ENOMEM;
->>
->> If any of this fails, where is the cleanup done? Is that part of the
->> missing SRO support that's indicated in the commit message?
->>
-> 
-> For now, there is no cleanup required. What we essentially do here is
-> making sure that the GPT tables have been created upto L1 (i.e.,
-> by checking ret == RMI_ERROR_GPT).
-> 
-> We do not donate any memory now, but only support RMMs with static
-> memory carved out for L1 GPT. Support for dynamic RMMs could be added as
-> a separate series, at which point, we could defer the table creation to
-> the actual use case (e.g, RMI_GRANULE_DELEGATE).
-> 
-> Clean up would be required when we donate memory to the RMM.
+[Severity: High]
+This is a pre-existing issue and was not introduced by the patch under
+review, but when __enable_clocks() fails, it returns a negative integer
+error code. Since ret is initialized to PHYS_ADDR_MAX but gets overwritten
+shortly after:
 
-The missing SRO support is why we're not donating memory - with that
-missing the clean up is unnecessary as Suzuki says.
+msm_iommu_iova_to_phys_length() {
+        ...
+        ret =3D __enable_clocks(iommu);
+        if (ret)
+                goto fail;
+        ...
 
->>> +        }
->>> +        start += l0gpt_sz;
->>> +    }
->>> +
->>> +    return 0;
->>> +}
->>> +
->>> +static int rmi_init_metadata(void)
->>> +{
->>> +    phys_addr_t start, end;
->>> +    const struct memblock_region *r;
->>> +
->>> +    for_each_mem_region(r) {
->>> +        int ret;
->>> +
->>> +        start = memblock_region_memory_base_pfn(r) << PAGE_SHIFT;
->>> +        end = memblock_region_memory_end_pfn(r) << PAGE_SHIFT;
->>> +        ret = rmi_verify_memory_tracking(start, end);
->>> +        if (ret)
->>> +            return ret;
->>> +        ret = rmi_create_gpts(start, end);
->>> +        if (ret)
->>> +            return ret;
->>> +    }
->>
->> How does this work with, say, memory hotplug?
-> 
-> Good point, we need a hook for hotpug to make sure this is taken care
-> of. As mentioned above, when we add support for RMM with support for
-> dynamic Tracking/GPT with SRO, this could be deferred to the actual
-> use (handling RMI return codes, RMI_ERROR_TRACKING/RMI_ERROR_GPT)
+Could this negative error code be incorrectly cast to phys_addr_t and
+returned on the failure path instead of PHYS_ADDR_MAX?
 
-Yep, that was an oversight - we definitely will need to handle hotplug.
+[Severity: High]
+This isn't a bug introduced by this patch, but is there a risk of
+concurrent modification and traversal of priv->list_attached?
 
-Thanks,
-Steve
+It looks like msm_iommu_attach_dev() modifies the list using list_add()
+while holding only the msm_iommu_lock spinlock. However,
+msm_iommu_sync_map() traverses this same list locklessly by calling
+__flush_iotlb_range() without taking any locks, and msm_iommu_unmap()
+traverses it holding only priv->pgtlock. Can this lack of synchronization
+lead to list corruption?
 
-> Suzuki
-> 
-> 
->>
->>> +
->>> +    return 0;
->>> +}
->>> +
->>> +bool rmi_is_available(void)
->>> +{
->>> +    return arm64_rmi_is_available;
->>> +}
->>> +
->>>   static int __init arm64_init_rmi(void)
->>>   {
->>>       /* Continue without realm support if we can't agree on a
->>> version */
->>> @@ -101,6 +199,11 @@ static int __init arm64_init_rmi(void)
->>>         if (rmi_configure())
->>>           return 0;
->>> +    if (rmi_init_metadata())
->>> +        return 0;
->>> +
->>> +    arm64_rmi_is_available = true;
->>> +    pr_info("RMI configured");
->>>         return 0;
->>>   }
->>
->> Thanks,
->>
->>     M.
->>
-> 
+>  	spin_lock_irqsave(&msm_iommu_lock, flags);
+> =20
 
+[ ... ]
+
+> @@ -558,13 +559,19 @@ static phys_addr_t msm_iommu_iova_to_phys(struct io=
+mmu_domain *domain,
+>  	par =3D GET_PAR(iommu->base, master->num);
+> =20
+>  	/* We are dealing with a supersection */
+> -	if (GET_NOFAULT_SS(iommu->base, master->num))
+> +	if (GET_NOFAULT_SS(iommu->base, master->num)) {
+>  		ret =3D (par & 0xFF000000) | (va & 0x00FFFFFF);
+> -	else	/* Upper 20 bits from PAR, lower 12 from VA */
+> +		if (mapped_length)
+> +			*mapped_length =3D SZ_16M;
+> +	} else {
+> +		/* Upper 20 bits from PAR, lower 12 from VA */
+>  		ret =3D (par & 0xFFFFF000) | (va & 0x00000FFF);
+> +		if (mapped_length)
+> +			*mapped_length =3D SZ_4K;
+> +	}
+> =20
+>  	if (GET_FAULT(iommu->base, master->num))
+> -		ret =3D 0;
+> +		ret =3D PHYS_ADDR_MAX;
+> =20
+>  	__disable_clocks(iommu);
+>  fail:
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603151804.1963=
+871-1-guanghuifeng@linux.alibaba.com?part=3D14
