@@ -1,212 +1,128 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308413A9611
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 16:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE2B3DA7CD
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 16:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780503307; cv=none; b=alOU/DrkNVDcoH792iquwuqzvniMZWC02dXO93o+CZybSS7CEeXorRJKyx2JSYUAEknCH0h7v9MkeaiyyKtTnJ3wGNfmszlZ8FZ9cZ8ZoFU/Kua7X0biAEb926pfIZFR2n17qj1PkS5WrEk4XT1EfZ3yWd8fwtFFd18l5cbLOtQ=
+	t=1780503327; cv=none; b=RrGt2h6Cu0ykv03pVHGZbZt46MQyca08JSORi2L8B+qKgegjXtjUDEy/TMOLHpyr/Sl2962sp5c9K1SDiKybnv+tjR+41gd2YYlFTkJySyzfAiTTa8FpsLIBHsYI5MA633Jz+uJE0wcM3x8ZUU5+BHsYvoV+bc0iQWRwpDMXpHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780503307; c=relaxed/simple;
-	bh=ISPN741uy2OffDlSVm9a0rtGzwNIeT7/T1pLIq86xd0=;
+	s=arc-20240116; t=1780503327; c=relaxed/simple;
+	bh=2P3yAFtnTNONqfWjY4HaKhz8RT8H4EMtVQxHZmMBwqs=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Zws/7cBq9pYSLaEMfekHBdlqvkYR39S47iL9/CVbA7a31N2J1Ws6j9WQ1pmU9MvVvmWsIVrdDNkvkDQSvwlEBjaC2odqB8YZuwnG+9Ua5ju0ytaQVtUy28fd4sD6MIgvU0Hf6DMJ7IZGcOSoPzW2+9eg2kmvuFCJgIOV8XTKmBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EkXC5atd; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=OXo4yyU1isTPVWX6NgU8QS1YBrPhmMher2il9Euk8w8+v6w8XKTbdxI1/9+8uFC0dvjSdt8h5z2s1xYO/BbLFnek8xC+Nr32tCqgaDXcA7YkWJScop3SnDGze1LAGVPCc3j6EkgAKvpwQKC92CR/QJRHwQHYOW3aeSX8+eCDbvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AZ4Rn568; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EkXC5atd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F88C1F00893;
-	Wed,  3 Jun 2026 16:14:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AZ4Rn568"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E241F00893;
+	Wed,  3 Jun 2026 16:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780503291;
-	bh=lSXqSwRkDXjVCrWFmvR7GKcVB/Ye+eQOxhuOlbDT/Bs=;
+	s=k20260515; t=1780503326;
+	bh=fOcEbb8rfuWzrwp3RYtCoZY3xPjqQ7b51fCuwpCH3PQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EkXC5atd4lPJEIMz6VQXjp0xzcjINi4BFu0i9YDzwcw2eN0CqBUdTNzxdGhTARFge
-	 lIgEo+qGu270Uehyl3V5c42wIliijyYvtZKMB6PlIX5lqGKClTWDJlDgbBT1weEzM1
-	 qcsPpohVjneBp65d7aOsWTNouBiWDRPjCZJBWLyRlYIwhBfAQ2Sbo+c8t/Cr8je82H
-	 QC+/gGe6HpJbXoS9kgt6k4vZGPhm/lMR4JBorTnvAw0P7AM48Y3JjKYL8rwUu4rm2G
-	 +jdkgbiEWpL467mO9qmJgAe8eyPL4pnJhZP0X6JXgzSdQFT1pntR834pvJy+1OqJua
-	 YV91rrSR+m5Lw==
+	b=AZ4Rn568P819810wfiQ/gzK8EzKv6DQ5iKSs8yHfL4ochEjOu5CHOZP0XGikYKr+N
+	 S+hnNS2EMcAeTOj2EwkRpWdYe3KSPSsgLIKKhFK8qaw5Jv0cTe9XGV1oZP1qS4sdEY
+	 OLUOe+mwMp4OaKRdNbi8LLcF/8m179dVB8gI09XyjkE2A7LKsiUjw0LPmZ4HBC/cdK
+	 JCfekuV8JCiCULuwsATjMF0Nof2Qz/h6cg624+iiOFeRSx609YXed1RQwpCrD/Uzn1
+	 0RSeTfrlpzStI//0Gmp7NNhE4WfP+HSTi6+3iK17mjgHVUqfQVS7Qh5xyZEit7fCbj
+	 cNt0aG7gjw1YA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 24/32] iommufd: use iova_to_phys_length for efficient
- unmap
+Subject: Re: [PATCH] KVM: guest_memfd: fix NUMA interleave index
+ double-counting
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260603151804.1963871-25-guanghuifeng@linux.alibaba.com>
-References: <20260603151804.1963871-25-guanghuifeng@linux.alibaba.com>
+In-Reply-To: <0eff0a90667b900bee837d06b5db5025e1f304b5.1780501924.git.mst@redhat.com>
+References: <0eff0a90667b900bee837d06b5db5025e1f304b5.1780501924.git.mst@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 16:14:51 +0000
-Message-Id: <20260603161451.9F88C1F00893@smtp.kernel.org>
+Date: Wed, 03 Jun 2026 16:15:25 +0000
+Message-Id: <20260603161525.D9E241F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] batch_from_domain and raw_pages_from_domain misinterpret the m=
-apped_length returned by iommu_iova_to_phys_length() as the remaining conti=
-guous length, resulting in out-of-bounds physical memory exposure and IOVA =
-loop corruption.
-- [High] Returning early from batch_from_domain when iommu_iova_to_phys_len=
-gth fails causes a hard infinite loop in iopt_area_unpin_domain.
-- [High] Silent failure when iommu_iova_to_phys_length() returns PHYS_ADDR_=
-MAX leads to an uninitialized array of page pointers being returned and use=
-d by callers.
+
+Pre-existing issues:
+- [High] guest_memfd memory allocation ignores page offset for NUMA interle=
+aving, falling back to the task's global interleave counter.
 --
 
-commit fbf04fecd109bf03fe5fc6f1c1c874977e8904ac
-Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+commit ce4f65d7ee89d8194749cc615f30619f101248db
+Author: Michael S. Tsirkin <mst@redhat.com>
 
-iommufd: use iova_to_phys_length for efficient unmap
+KVM: guest_memfd: fix NUMA interleave index double-counting
 
-This commit updates batch_from_domain and raw_pages_from_domain to use
-iommu_iova_to_phys_length to retrieve both the physical address and mapping
-contiguous length. This allows the unmap path to process actual mapping
-granularities instead of walking page tables for every PAGE_SIZE.
+This commit fixes a bug where the NUMA interleave index was being
+double-counted by setting *ilx to the inode number instead of the full page
+offset in kvm_gmem_get_policy(). This allows get_vma_policy() to correctly
+add the page offset without duplicating it.
 
-> diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
-> index 9bdb2945afe1e..40a2fe9adf9c9 100644
-> --- a/drivers/iommu/iommufd/pages.c
-> +++ b/drivers/iommu/iommufd/pages.c
-> @@ -417,17 +417,42 @@ static void batch_from_domain(struct pfn_batch *bat=
-ch,
->  	if (start_index =3D=3D iopt_area_index(area))
->  		page_offset =3D area->page_offset;
->  	while (start_index <=3D last_index) {
-> +		size_t pgsize;
-> +		unsigned long npages;
-> +		unsigned long i;
-> +
->  		/*
-> -		 * This is pretty slow, it would be nice to get the page size
-> -		 * back from the driver, or have the driver directly fill the
-> -		 * batch.
-> +		 * Use iova_to_phys_length to get both the physical address
-> +		 * and the contiguous mapped length in a single page table
-> +		 * walk, allowing us to skip ahead by the contiguous region
-> +		 * size instead of walking page tables for every PAGE_SIZE.
-> +		 * Query at page-aligned iova so pgsize covers from page start.
->  		 */
-> -		phys =3D iommu_iova_to_phys(domain, iova) - page_offset;
-> -		if (!batch_add_pfn(batch, PHYS_PFN(phys)))
-> -			return;
-> -		iova +=3D PAGE_SIZE - page_offset;
-> +		phys =3D iommu_iova_to_phys_length(domain, iova - page_offset,
-> +						  &pgsize);
-> +		if (WARN_ON(phys =3D=3D PHYS_ADDR_MAX))
-> +			break;
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index bf9659a7b0f6d..65daef23c8390 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -438,11 +438,12 @@ static int kvm_gmem_set_policy(struct vm_area_struc=
+t *vma, struct mempolicy *mpo
+>  }
+> =20
+>  static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+> -					     unsigned long addr, pgoff_t *pgoff)
+> +					     unsigned long addr, pgoff_t *ilx)
+>  {
+>  	struct inode *inode =3D file_inode(vma->vm_file);
+> +	pgoff_t pgoff =3D vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT=
+);
+> =20
+> -	*pgoff =3D vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +	*ilx =3D inode->i_ino;
+> =20
+>  	/*
+>  	 * Return the memory policy for this index, or NULL if none is set.
+> @@ -453,7 +454,7 @@ static struct mempolicy *kvm_gmem_get_policy(struct v=
+m_area_struct *vma,
+>  	 * can then replace NULL with the default memory policy instead of the
+>  	 * current task's memory policy.
+>  	 */
+> -	return mpol_shared_policy_lookup(&GMEM_I(inode)->policy, *pgoff);
+> +	return mpol_shared_policy_lookup(&GMEM_I(inode)->policy, pgoff);
+>  }
 
 [Severity: High]
-If iommu_iova_to_phys_length() returns PHYS_ADDR_MAX on the first iteration
-and triggers this break, the function returns with 0 PFNs added to the batc=
-h.
+This isn't a bug introduced by this patch, but does guest_memfd memory
+allocation ignore the page offset for NUMA interleaving and fall back to
+the task's global interleave counter instead?
 
-When the caller iopt_area_unpin_domain() processes this, it computes:
+While this patch fixes the index calculation for the policy lookup, it seems
+the index is completely dropped later during the actual memory allocation.
 
-batch_last_index =3D start_index + batch->total_pfns - 1;
-start_index =3D batch_last_index + 1;
+In virt/kvm/guest_memfd.c kvm_gmem_get_folio(), KVM calls into the generic
+filemap allocator:
 
-If total_pfns is 0, start_index does not advance. Could this cause an
-infinite loop in iopt_area_unpin_domain() while holding locks?
+folio =3D __filemap_get_folio_mpol(inode->i_mapping, index,
+                                 FGP_LOCK | FGP_CREAT,
+                                 mapping_gfp_mask(inode->i_mapping), policy=
+);
 
-> +		if (WARN_ON(!pgsize || pgsize < PAGE_SIZE))
-> +			pgsize =3D PAGE_SIZE;
-> +
-> +		/*
-> +		 * pgsize is the contiguous length from the page-aligned
-> +		 * iova, so npages is simply pgsize / PAGE_SIZE.
-> +		 */
-> +		npages =3D pgsize / PAGE_SIZE;
-> +		npages =3D min_t(unsigned long, npages,
-> +			       last_index - start_index + 1);
-> +		if (!npages)
-> +			npages =3D 1;
-> +
-> +		for (i =3D 0; i < npages; i++) {
-> +			if (!batch_add_pfn(batch, PHYS_PFN(phys) + i))
-> +				return;
-> +		}
+But the generic allocator hardcodes NO_INTERLEAVE_INDEX in mm/filemap.c
+filemap_alloc_folio_noprof():
 
-[Severity: Critical]
-Since iommu_iova_to_phys_length() returns the total size of the mapped block
-in pgsize, what happens if the iova being queried is unaligned within that
-block?
+if (policy)
+    return folio_alloc_mpol_noprof(gfp, order, policy,
+                                   NO_INTERLEAVE_INDEX, numa_node_id());
 
-For example, if the function is querying a 1MB offset into a 2MB huge page,
-phys will correctly be the offset physical address, but pgsize will still be
-2MB. The npages calculation would result in 512 pages. Adding the full 512
-pages starting from the offset physical address would overshoot the mapped
-block by 1MB.
+For policies like MPOL_INTERLEAVE, using NO_INTERLEAVE_INDEX causes the
+allocation to use the faulting task's global il_prev counter rather than the
+file index-based deterministic interleaving.
 
-Does this expose unmapped or unrelated physical memory to the batch, and
-cause iova to be advanced incorrectly, skipping valid IOVAs?
-
-[ ... ]
-
-> @@ -445,11 +470,36 @@ static struct page **raw_pages_from_domain(struct i=
-ommu_domain *domain,
->  	if (start_index =3D=3D iopt_area_index(area))
->  		page_offset =3D area->page_offset;
->  	while (start_index <=3D last_index) {
-> -		phys =3D iommu_iova_to_phys(domain, iova) - page_offset;
-> -		*(out_pages++) =3D pfn_to_page(PHYS_PFN(phys));
-> -		iova +=3D PAGE_SIZE - page_offset;
-> +		size_t pgsize;
-> +		unsigned long npages;
-> +		unsigned long i;
-> +
-> +		/*
-> +		 * Resolve the contiguous mapped length together with the
-> +		 * physical address so we can fill multiple struct page
-> +		 * pointers per page table walk when the IOMMU uses large
-> +		 * pages. Query at page-aligned iova so pgsize covers from
-> +		 * page start.
-> +		 */
-> +		phys =3D iommu_iova_to_phys_length(domain, iova - page_offset,
-> +						  &pgsize);
-> +		if (WARN_ON(phys =3D=3D PHYS_ADDR_MAX))
-> +			break;
-
-[Severity: High]
-If phys is PHYS_ADDR_MAX and triggers this early break,
-raw_pages_from_domain() returns the out_pages pointer without fully
-populating the requested array.
-
-Its caller iopt_pages_fill_from_domain() ignores the populated count and
-returns success. Because the underlying array in iopt_pages_fill_xarray()
-may be allocated without __GFP_ZERO, the unpopulated entries contain
-uninitialized heap data.
-
-When these pages are eventually stored in the xarray and unmapped, will
-unpin_user_page() be called on these uninitialized pointers and cause
-kernel memory corruption or panics?
-
-> +		if (WARN_ON(!pgsize || pgsize < PAGE_SIZE))
-> +			pgsize =3D PAGE_SIZE;
-> +
-> +		npages =3D pgsize / PAGE_SIZE;
-> +		npages =3D min_t(unsigned long, npages,
-> +			       last_index - start_index + 1);
-> +		if (!npages)
-> +			npages =3D 1;
-> +
-> +		for (i =3D 0; i < npages; i++)
-> +			*(out_pages++) =3D pfn_to_page(PHYS_PFN(phys) + i);
-
-[Severity: Critical]
-Similar to the issue in batch_from_domain(), if the queried iova is unalign=
-ed
-within a larger mapped block, pgsize will reflect the entire block's size.
-
-Calculating npages from the total pgsize instead of the remaining length in
-the block will cause this loop to extrapolate struct page pointers past the
-bounds of the mapped block.
-
-[ ... ]
+Doesn't this defeat the purpose of the shared policy, causing interleaving
+to be randomized by the chronological order of vCPU page faults rather than
+deterministically spread based on the guest physical address?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603151804.1963=
-871-1-guanghuifeng@linux.alibaba.com?part=3D24
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/0eff0a90667b900bee8=
+37d06b5db5025e1f304b5.1780501924.git.mst@redhat.com?part=3D1
