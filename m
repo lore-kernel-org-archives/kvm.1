@@ -1,125 +1,121 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439313D34B2
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 07:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C124028F5
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 08:02:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780473499; cv=none; b=WAWSuIt2mjQiQQWGfkLxbhUO1BN3sDIOKYKUzAhNPzF1zNgHAovkX1bgrkt4trGs49DetTHPNju6MNlJoatW0jiSr5kwkyKtOOg1rw2SGT3pyDRSp9efnVsgnBsaCsnXuRGaur9cyX9eUKb3DiKkQ+jurUUaL94xpW0k6UhlTUE=
+	t=1780473776; cv=none; b=UKuyKQRkKb2HiW98+twUN/sDw7LCmd+two56T2PMZUTGQFXYeXC4jcbdu8DsUXJsnYadoFai3xEG91V67y1VfzRZrSapxiVBVocdO7qTEY67K9YO6f3y3+WDiyTRp9XiNs4CApSh6JPoPPb+j6bglcudZcjby0f84NnCLPHW1qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780473499; c=relaxed/simple;
-	bh=GenkSbAAZbmgIYjnjatLIXyTvbIP6W+4AfKps7Ntb/4=;
+	s=arc-20240116; t=1780473776; c=relaxed/simple;
+	bh=CUdxL2GR7o7ESdxlvLNeuY25sGeQO0E/Cs7P2N2ze6I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C83yB+cwaqxbtXsRHfj9LA7TQl1AakJpwse+iSm02B+d6rfdZXvrZs8lgogYPEML/N12DfckxVDuPLHzclqeI8PUfCaVcfxzECznHua8jMoaYMmCs4q7qpsCesBd0egatIfQWvtQXlSdCHIltbXLfQdL6Zg3NKVlifBBkFFXQzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Zpr434TL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=R1yo8k9w; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=lI1Y8d9kWVer7H8mSRgeNC/4ryxJVRE8XjY04Iij4O4DIh8FGg8s0jPGBMnzLV7mDyxo/oAEKj0k+Cv0TbSir8xAuEJKLvhLOm3XcKSn849IA5Kc7MSWXKnuBmw9PLRri8DYvb/1FRrZvfJzJwUPN6w/T0MD+JRx1UHtUzB0yfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=redB96i4; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Zpr434TL";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="R1yo8k9w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780473497;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qbIaiV+usjyONBGbrHjC3CjCtYSdkcWUYeQVUIDYeQY=;
-	b=Zpr434TLrAsxrDrSBvc9TM0F4KkgRZ3dwFlGgPZE/Zs1pF87GhY6WoQnsHudu20bJ7uVii
-	Vi9YeK/ioYKdSJVj3qfXaS6kbUqHCwGftuhXfOm+lDCxwlSx9p0XW/fucpXM02ws0Pi+z2
-	olbFkWur1MClsOrLa2mma8JX4X55GKU=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-148-sRQD1uWlOUGbejYN7mHNzA-1; Wed, 03 Jun 2026 03:58:15 -0400
-X-MC-Unique: sRQD1uWlOUGbejYN7mHNzA-1
-X-Mimecast-MFC-AGG-ID: sRQD1uWlOUGbejYN7mHNzA_1780473494
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-490b61243easo5244485e9.2
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 00:58:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="redB96i4"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-36baeec21dcso3252697a91.3
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 01:02:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780473494; x=1781078294; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780473775; x=1781078575; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=qbIaiV+usjyONBGbrHjC3CjCtYSdkcWUYeQVUIDYeQY=;
-        b=R1yo8k9whROIrF74QY8b+SLYIECkDFb06QCwxh73vottvBAnNMT0/uJuNI1JnMlj1r
-         trvkI1dAkxsodG1PtMZIpX9LEhDwL9koTBBlhvDFFgPjOj8xy+ECBocA07hSmQuLEXV0
-         Y33zWYE0MbJ1vJZj1nGLYRsUOKgXPUOGsbvGXiEYTKQ1yxZv4wTrtjDwF+hp0P8vfKcp
-         HkuAuO2w2WbtiG7S/vUWXsh0qUh26X1soA0ZSFP/ZJrnRo8PPI1/cVdVkboJS/fPqa22
-         WhAvi4gCinb9XrVCHX9pGaipzzF2UaCQa064B4gPMuwNtBkoV1+ZyNipMG9DoUZY4u2f
-         lLlQ==
+        bh=9MuF+yWJKjzDQs0kKZtPPTCGk9WmA5u/lg0Mr9iL+po=;
+        b=redB96i4IoIWjKQkEou4hGT+62PH2deHP8oZe2sjYtkJBQ4DC7IKbnJehh1KE25Yje
+         iKxmeIXWqHoQzdxenTgktacq8nD4CEEwxrmF+OKAc081SADNd2hfK89k1dRgThWDqrFt
+         yRSzaYvoAcXR188CLUIDjEKKc0AkpKJV3AxB3f+PuAgTtC6ta4vfaFuLNeXd3wRhwhp+
+         k7Ow1fDsCYhsyzSa9fj9FpIXrPxta6iqWcez4jEBCFkfjpZJBB7NC+ZgdWIZu6s7li0o
+         AbnFFhUL5KjAbDjh22DgoeVEF1AThligVvNCdqd26c+qx+NkNRhu8bhacKvxyskMOS+q
+         pV1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780473494; x=1781078294;
+        d=1e100.net; s=20251104; t=1780473775; x=1781078575;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qbIaiV+usjyONBGbrHjC3CjCtYSdkcWUYeQVUIDYeQY=;
-        b=mqYMoKFgDFm1OCD9y6XuEGksKnXG1te4ZF+sKXg7zwwKA/nL2IG6sfe9NMTWWq3GGP
-         oJptFLXuG6qE8g6ZCYGxUf3LNn0RZdDifOmUxEFh/53axdly3na0RfgEd4oqV3OTkuXN
-         BlENikOILSEDmJhXJVLKq6VWf7q2KTbfgwQuWLPByYrAJwxjCJVqCqTsAC53i0NK5nr/
-         XoetWksUsFwQlq3E1e0y/7H42MhHIyv18uuPJO0Qo/9/pxHvUfufkfnTpaaJhUByEITU
-         GHBLAWyHc6wO3kFWJgTDPpFcr/HTRK1w3M6C55H0cQ0e+uakuFvl/dH8/z/ZBCA4S9Uk
-         6c7Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/PqQ4LvcK0Hy22QkqmyqB7pY2jngnxmDYaPzmPhCxljtkksIZEbnuO87h/n+D/tPi9X8Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpNN1ZXBcMfGaPGFEaMmWMj6vcCdiRCvXsixQh+PqywSUgAWRP
-	kWpNUbDLt/fLs04XDUmMW34grU18UqOe4T02KbaY4TGlHonRDpd3dogTjsVOxA52qUgpbgOwFjR
-	hI2bNrL5Siwh3Xw/qtLkshalQfXKIkJiYq6phdbz/W6uK6J9ZDiDL27d/GzqYKA==
-X-Gm-Gg: Acq92OGopNDEQaMXn6g4EqaJq9vXipKiWvSu2+uGCCF4z6TvCG8LH0DQsc5jo32vAoq
-	6aPSSiN1UuafCwfsJLxKSgfap5bJKGYq4c5AmJM3Nf/b2ZGk3tEtAsE/jceVkwv0VQv1sgEGyx+
-	Dgf1vumDCKnL5fRB9TobX/FTqog/9mB61F+6lL1a1ueGEeJ3mzHlisJLsryxAfeIbGg0NdprZli
-	TUuVjoGQjZ2hHu5h32y7HL5hR0Z+kFB8fcwHw+82K3yvF0eizmD3dpUgAs3XgBS04wgzf/WZvYa
-	YqVMvB9XIoJD/qrUwSjmFsUFg1v0WbU5AB4yZTWil9C2RbNIhkz9RmYCuAGRamFncPzYmNPa7cj
-	5C8412VnDVChDSWrHYXRL0KFhez2B2nqDGYqT92Mi5JvFaa2UlYG8mOffk3O4JBcqtMl1nQ==
-X-Received: by 2002:a05:600c:4e92:b0:490:59cc:998e with SMTP id 5b1f17b1804b1-490b5e644efmr36416185e9.3.1780473494410;
-        Wed, 03 Jun 2026 00:58:14 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e92:b0:490:59cc:998e with SMTP id 5b1f17b1804b1-490b5e644efmr36415805e9.3.1780473494030;
-        Wed, 03 Jun 2026 00:58:14 -0700 (PDT)
-Received: from leonardi-redhat ([176.206.19.176])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dc294sm8627235f8f.7.2026.06.03.00.58.13
+        bh=9MuF+yWJKjzDQs0kKZtPPTCGk9WmA5u/lg0Mr9iL+po=;
+        b=nYSFZMhl4kaHHlMz++L3WhHRMUGX4Js4QQHo/kqskvyO0eX8aWbdCEcbBUlRXvw12G
+         JWIlmDFBDnrlb71PCbxldWbmCfOjG6HC/9sfkNnVdmMNjH2xqHa7FIylra7HIdvAiT/6
+         4kghp9dGyYYZKQ18H8v2N1fui7cJ+78uDFcV8zFICEwRxliD0rdKCz9ohWMqFSgmeZNa
+         riGJ7ilcLyMS6DDTVkQO3mfPgZiHVffXRVUPUuAS5Ioc+34ZIgIGjcErQIuly1CnRog5
+         DdTcSkP2bgN4ahFtHNAYgcORf66Jh1I6Dkm2ZjYk+aEPkiN7oZU73M1ZyrPKRFyis+6u
+         MutA==
+X-Forwarded-Encrypted: i=1; AFNElJ9p2uvDPClNH10IOY0L6I3nlFQCUQVBpRRKpHPY02OSEVlRAibucSXx0wRD50bgyweXIQg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWB7iMjcJsxrZHcr0LfzvcaQs62umO8gr3wC6LlfPaby8JFapC
+	PeslNx9IRietJWilPqw4DNeXN1v4CBUrLh6Z6BWhy2jFnv3g5DWvBJf0
+X-Gm-Gg: Acq92OHcJdi3/ai96NkRCFfrfxs8B7oN+PxsIoeViZEKjqgTkavwknx2rdQp/MC4WKZ
+	R1DS2vg6x7xu9SZUbYiLwyEeAFfWE6pJM9Cet5kDo2P/k07cWoEBFuwF4nR0Vw50aSu6DKVneve
+	yyRCTssFIoxkatLX6yl/N6B9AidHd/o1TGXX06k1+jmCpKdpGtVYZx1oCv+mMSAemf1Wlu6SFO6
+	ZYhzAA5HwaS8qt9D/pQjwyAZk+Zc3Nb12vC/T+w29mt4Dgb9GhqFlE40djwEZNRU4ej+H4jjZcQ
+	v3S3YJfU2vrg7T5EccGRWB9YUs7w9HQUNx1FoggGImMVT6UtttlsDG72/XZBtnzEs3j/TBpblmN
+	B1O35ffRsCKYnyFYopxvrfEI1k+2abY7txmhBFdvTSOBNqDDVqN0opEMi97aWgV565I7EIlGe57
+	eLHtR614WALMZ0PHwCsbscV5oqytLSSeQFgg==
+X-Received: by 2002:a17:90b:5610:b0:36d:9e0b:3801 with SMTP id 98e67ed59e1d1-36e30d1c00fmr2269817a91.8.1780473774886;
+        Wed, 03 Jun 2026 01:02:54 -0700 (PDT)
+Received: from localhost ([2001:19f0:8001:1b2d:5400:5ff:fefa:a95d])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36dd98797fesm5144475a91.13.2026.06.03.01.02.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 00:58:13 -0700 (PDT)
-Date: Wed, 3 Jun 2026 09:58:11 +0200
-From: Luigi Leonardi <leonardi@redhat.com>
-To: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-Cc: coconut-svsm@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [RFT] KVM Planes on Linux 7.1 ready for testing
-Message-ID: <ah_c_5bKpmx3nOdA@leonardi-redhat>
-References: <ah6w0xGq1jtKNJen@8bytes.org>
+        Wed, 03 Jun 2026 01:02:54 -0700 (PDT)
+Date: Wed, 3 Jun 2026 16:02:35 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Anup Patel <anup@brainfault.org>, Inochi Amaoto <inochiama@gmail.com>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Atish Patra <atish.patra@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Deepak Gupta <debug@rivosinc.com>, 
+	Thomas Huth <thuth@redhat.com>, Charlie Jenkins <charlie@rivosinc.com>, 
+	Sergey Matyukevich <geomatsi@gmail.com>, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org, 
+	Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>, 
+	Quan Zhou <zhouquan@iscas.ac.cn>
+Subject: Re: [PATCH v2 4/7] RISC-V: KVM: Allow Zicfiss/Zicfilp extensions for
+ Guest/VM
+Message-ID: <ah_fkXOLpNHvnmNM@inochi.infowork>
+References: <20260601084336.2601675-1-inochiama@gmail.com>
+ <20260601084336.2601675-5-inochiama@gmail.com>
+ <ah1pgb4S-UoSWhC_@inochi.infowork>
+ <CAAhSdy0ZycwjYrKowzaydKhh=fcEDD9-C6TKmb838s0hq8a2hA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ah6w0xGq1jtKNJen@8bytes.org>
+In-Reply-To: <CAAhSdy0ZycwjYrKowzaydKhh=fcEDD9-C6TKmb838s0hq8a2hA@mail.gmail.com>
 
-Hi Joerg,
+On Wed, Jun 03, 2026 at 01:16:14PM +0530, Anup Patel wrote:
+> On Mon, Jun 1, 2026 at 4:46â€¯PM Inochi Amaoto <inochiama@gmail.com> wrote:
+> >
+> > On Mon, Jun 01, 2026 at 04:43:32PM +0800, Inochi Amaoto wrote:
+> > > Extend the KVM ISA extension array to allow KVM userspace to
+> > > detect and enable Zicfiss/Zicfilp extensions for Guest/VM.
+> > >
+> > > Assisted-by: YuanSheng:claude-4.7-opus
+> > > Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> > > Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> > > Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> > > ---
+> > >  arch/riscv/include/uapi/asm/kvm.h | 2 ++
+> > >  arch/riscv/kvm/isa.c              | 2 ++
+> > >  2 files changed, 4 insertions(+)
+> > >
+> >
+> > I have forgot to add CSR_SSP to the context, will add in the next
+> > version. But I have a small question for it: could I reuse the
+> > generic subtype or use a new CSR subtype?
+> >
+> 
+> Add another CSR subtype for Zicfiss.
+> 
+> Regards,
+> Anup
 
-On Tue, Jun 02, 2026 at 12:41:57PM +0200, Jörg Rödel wrote:
->Hi all,
->
->An updated version of the KVM Planes patches is now ready for wider testing.
->The branches are based on Linux v7.1-rc6 and QEMU 11.0.0. Before sending them
->out I'd love to get more people from the COCONUT community test the changes and
->report any problems or regressions agains the 6.11 version.
->
->The Linux branch is here:
->
->	https://github.com/joergroedel/linux/tree/kvm-planes-v7.1
->
->The QEMU branch is here:
->
->	https://github.com/joergroedel/qemu/tree/qemu-planes-linux-v7.1
->
+Thanks, I will do it.
 
-I think commit `ACPI: Rebuild ACPI tables on every read` can be dropped, IIRC
-this was necessary when SVSM consumed MADT from fw_cfg.
-
-In `qdev: Add plane property`, in function `device_initfn`, dev->plane
-should be set to `qdev_default_plane()`
-see https://github.com/coconut-svsm/qemu/pull/31/changes/8fa10020cb97ced3151f67b842ecba57ef76765e
-
-Luigi
-
+Regards,
+Inochi
