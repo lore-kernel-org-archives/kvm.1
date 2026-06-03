@@ -1,319 +1,171 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010007.outbound.protection.outlook.com [52.101.56.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E25B4611EE
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 13:08:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558AD413D82
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 13:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780492089; cv=fail; b=SBvH6Gw3fdYwkbbZ62nYs96xasT9IP7Y9VQ6C6ijQdwFdciY11TcmGJiFhf6IS5/8c58DU+Xe2QmDGJct0ZiFa+HOWSfJeMNtCaquNak092cek0xdHkYyrj9eEHZlyKeZcx5VuCox01ErkVPSonG3azTT1tDNaqjwa8G9XaLi5w=
+	t=1780492364; cv=pass; b=I3C1fF/OVwckGnMiXiUjN36guOEbnQoHFzHIbhENtuov4Y+k2efucf0Drs9w1rBqkXVXFS5WGWkwM+wh6XXz+F2tflFk4GpC7/jC1lNyP8IQ5c2wWtZ9/xwlSnm1MeWd6YxskALU9CFHi7QeK4/lj5i2VE3FCpjlmZW9mbYCOTY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780492089; c=relaxed/simple;
-	bh=gkfkxAoQPF4bocYSDm47D7Pv6rGDskGV7INEnBbhka4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=DXEeOR//HdDA+bhn/11lfCvvSSEgZ7t6kPWNnPLOWd5ZcOBwL5gzZ7prO7SXorCarVjwUjCGuomBV6Kotz293fCulQhKeccgEpqbalz9V/IKq9SOBRSgDz5qL1MybwSwg4H5IvPyzxINPraeIPEhZsDAJOk6pK4/AXtnEJhyH2E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SUVSzjE/; arc=fail smtp.client-ip=52.101.56.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1780492364; c=relaxed/simple;
+	bh=G5PjkpGqTE4bfKxRdpR2dRA+pOtOM/3WbhBCbX4fXfw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=baV4ZD52R67CaQs/VYyTtIhrLON32Pxaqy8PJUZt1DaMu38ICkRDtcu7HJhDhVrvGpk4LJSatgpG3awEumFDvUbo1UGNCBuvjPOOMd3/Bl5brKalpDi/cdP/y8Ibzuv2Es7E+r7tn/mjVJcx2E5KTnvQ/P1BI2fVxIrDhpN5qVM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=qHb3U+XI; arc=pass smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SUVSzjE/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=avVuuY8pM3T8/KVuR2+zs7Tu0B7RL1/N/WVDPeMRvbXXcnnkyxdSinhX6AGb8plbca4bexD3S6KDqQWWpjHCtGpnCHTfYyTsifNzaGEr3sxCil7600ikm5SmbXEByL4zezJEU2dCCsNK4BUU6k+zhqYjWclcLEtzNGNPGDWP+OkkMDUHGnw12xJGr+DHU6wJmHQVPvM87oGTcVoTly3Qsg1OWpCTDe2/HsDqn7jOcs6P5y3lRGs+zXGs3mfWJ0wDgXADhhLeSfDxji3uqgqyHPUfD+gwbKLVK77okpWp5fys/WLEJn0fD5tUUaeKBBPbGNzECj/O53+M/OQ66qF1Tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ak553t2KJ69OongPKvHQ8IShLlbhGJJ07MRtW7Wu3vM=;
- b=YD0DMLuVy75DipakOPsG2qVcTNVFmvQ8ylz8c7GWn8Qg8I7f5Wwx8Q8fRIfDssQe1BZFqMLAhtmZITSzXluo4QjMRJvuQMvDGrjSr9Y6MM9yH5YzuCJL99ofqa3Rm21yDe6B3LBHUc/TXG5kFlww0Yfvj/Fdg8msx6Hjag/klpyiSO4VCl3ZOY3phk1AXrGjXKapY0Pnt0ZVCjv/uFlakwR+VRwIv1ef2X49GI2tdkz9yjX2hGzrmIQ4s40wYcf6qVq9DX9WyK8WBhRXaaTyUYEbo0FMJorLSShDjSKz5ZYDv6hrBEyIPKuY+IuyI9T4dtsfr/lpA15O0m3e8jatMQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ak553t2KJ69OongPKvHQ8IShLlbhGJJ07MRtW7Wu3vM=;
- b=SUVSzjE/H0szKOBXS/l8yhZH+PiTtIW+YMSEYQdPXINXuCI3lGaHBXIBcI6ISHyiWLGhkMFweti4g/RvJpkH8GDbZdFaTy9vjSYcnP4/n3c0wxKf0DU/X60YY5qmYYa3OtpDKDynRhLqV52t+Vb/d8AKanqpb5lFrbI/Qbe6xGc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by DS0PR12MB8198.namprd12.prod.outlook.com (2603:10b6:8:f2::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 13:08:04 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::f3f2:852c:78d5:9353]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::f3f2:852c:78d5:9353%6]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
- 13:08:04 +0000
-Message-ID: <2ae6f15d-695e-44d7-b2ab-905f83e78a6f@amd.com>
-Date: Wed, 3 Jun 2026 08:08:02 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] KVM: SEV: Do not allow intra-host
- migration/mirroring of SNP VMs
-To: Atish Patra <atish.patra@linux.dev>, sashiko-reviews@lists.linux.dev,
- Peter Gonda <pgonda@google.com>
-Cc: kvm@vger.kernel.org
-References: <20260601-sev_snp_fixes-v2-1-611891b28a86@meta.com>
- <20260601231728.C67C51F00893@smtp.kernel.org>
- <33dccdf4-45f7-40b5-a0cf-3f99b26d46f1@linux.dev>
-Content-Language: en-US
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Autocrypt: addr=thomas.lendacky@amd.com; keydata=
- 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
- WiyqywZI5g==
-In-Reply-To: <33dccdf4-45f7-40b5-a0cf-3f99b26d46f1@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH0PR03CA0432.namprd03.prod.outlook.com
- (2603:10b6:610:10e::20) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="qHb3U+XI"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5176fab2badso12201801cf.0
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 06:12:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780492362; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LKRaYGN3I7veQMQHszHF4n4roWR+ujWTwSHWL/KI+HZLxaKDlPB49C917t7SuthFOn
+         hwTkYNE4jkVLfjsX0Hl97URvoa+BW5aq+fHpgUS0ZvMtTLJsdLSriOkb/ndmk5VUQ21m
+         WUGUEBkFSY1LeKCAPP9r8ig57VgxAbIolWrCn6FvcyS7HGv6pQosNulpE7qXfKvINtCu
+         PHR2/Ymd/ks7WH9cVJQOOI3i5GwdnKrCd4CJN9EzxL4M5agoK+NTggCYQkanPSUBLziT
+         M5nUN3uyirlPzlq5pcYX/B0F6M1eK5hHEBkSxhleBWv7JaVM6Av/b75m/t2CGoegdekh
+         kohg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wPKsFlEiyLRyhzwx6niYPIzW14lmqUQ9SsuDRFLQ+5U=;
+        fh=jWEvecHi2xwqSI6TnN+MTRzMJ0Zaum6qhPovUCY1BP8=;
+        b=Zvtd8HL11SNUw8bW7em0wHZO3uwztPj8qAdlZi0tnoGMfb1g+S4Sceb9kG7Ww1cIbU
+         ogb8ayMdxrHJ3N+OeTAXmpPCuJu4Y0Nbz6dKusinQgqGs3rxU3i83Gx2vd4/W17H/sJG
+         rOz33Uy10b43d1/B6Bj4vHD9Gd30H1LwI4BepPwv5ZYLzqZxNdsNVAR7sku5WkwJp73f
+         E7ZbaLG/JEXZT8i/0Mz0T2as0Q196stcMKoY8lu+294lw1C8LBoVU9IslHMdAm5ZI+hb
+         a7eeT1j5lB4DSEMlFOwvoxpbTnpI/TSSVsSWUcMnwq02xmklIRCzAMJJvANmlhR914ut
+         SvEQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1780492362; x=1781097162; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wPKsFlEiyLRyhzwx6niYPIzW14lmqUQ9SsuDRFLQ+5U=;
+        b=qHb3U+XIhUiyc9u2ka+0GunW9U4U0+KBzhwdXkTwk793mZyPbpgMG4DWb2/3163JP9
+         tzwnXXQsm2+c7ejtw+H3O3C5UPcfTKp0HJjaVbdr0TAe0xI1hlOeIX1whlj/pG6/hApE
+         eRFxiOwBvS50Gqat5SxFt7MMWUMmRrg5nvsBGCYnC4g7AL2cX1Ap42YMrgjIBBdn952/
+         Nc2njFDJUaIz84lYelpOgYR7ohJFWashxc57q5F5UAwYc//SIn2xZZ8lLyhAv1o5P+tn
+         uoPPUshPCHYbUs1S6nPE7XF6NHr4+XUuHliCanpWnLrL3ughKbtPpFlsYA0KexVPedXj
+         S/iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780492362; x=1781097162;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wPKsFlEiyLRyhzwx6niYPIzW14lmqUQ9SsuDRFLQ+5U=;
+        b=RiQcpfLGUgZ8rcB/8OCBy4HrEdkDMBUw+ySqaYU4Q20TOJK9MYTfgmkZHHY6UyfMMq
+         yrC1WWTqvTsVkqGr7Ax+FJYg08VI7Z516J/XbdkPhPuSLJb/53a0O9zwn3f3I+vtiGZx
+         nc6kofCgRs7vZ/u9+bR7OY8KS/859E101gnt7ZgOyL52ArsBmG80ZGNAUAMUC4cN1a/4
+         OXanMABegmY+nDqqNfb1GT0uvEWHFbxL4EZHmK2xHaq9Qf/+rPlOoKvB7RSivLpYKeWw
+         GhCu5OTShs5Y+i2FejyDZfffOSwW9PN93IDfZrNLjk+Y8KpR/kyfKZxyaJfRQ4D/04Ks
+         GMRw==
+X-Forwarded-Encrypted: i=1; AFNElJ/qg9dT85TNUljY+DRNuQnv3r1lrCwvFMkMvRMlTI13LbsbQOzmFSB3I03Va9VGP43Zz4M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoI8bsx6g0bj7Tbbf0BrLi02Xlke1EbxKx/pZCPgNfK4QHvhGw
+	SCX7QSPsCEJ4XxVVmBZ0wD/WO+mUERFuzqugK8OEAA6sLBXeM8kcn/rVVZSH8gr/FX4ahqhkU7l
+	Yr86ByEHIz9d02F+9HPNEMhZZvSht0X8JgxM6w0GL+A==
+X-Gm-Gg: Acq92OEu0xAw9D0HbI/8wHmnKwILGSJ5/tDYTQx1giezKMNxLiu5/Mc8m53zPiGS9Tz
+	EJuu0nLvbmRKXWs3Hn100GSYNwQn8Jxb8pNNJ6czdML+wkiSm6BlMeDuLflRMFCewv9Lv47geHg
+	o+9CqpJky35NkIQjG9159BG7W19sFqiAOdDyMqv1CcNoQ33ZYlLWuIhT+/P3tw3Tz7SP/XAExZK
+	V115w5Lcpd1zzgvIXNPiqB79zN2b9xuT4bkava+mxcJ7DeD9lYdTE/cvockvsphfNXPIo3Cw+NX
+	ZqHMl9tzrMJhe6TMBhECNXSQwUu/7tth62fqRKjah45wl0pZk7MZugLbwrV7L5nZeunCQd42CD4
+	XueYRseBN3y/r1JJGngnqySWHo7Kby0ZCUA7ySQ==
+X-Received: by 2002:a05:622a:151:b0:517:75d8:b960 with SMTP id
+ d75a77b69052e-51778738b2cmr47091471cf.43.1780492362178; Wed, 03 Jun 2026
+ 06:12:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|DS0PR12MB8198:EE_
-X-MS-Office365-Filtering-Correlation-Id: 112cbd60-fe36-42b9-3697-08dec1712599
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|6133799003|18002099003|22082099003|56012099006|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	ROfTAhT5MVkjGmMaq3AR0zfjW1VPj68qmNoQ5j1JEwIpQh5WIlHjpqtPxtKf4wgB18V3nkJMBRJI5srLPO/L35nDtrgPsCUCaJf4xvU9/2fTa62K+8XUaka1x+42gviVFCIJJAjYilMgICtg7p9VN1LAUtmcBrkzEqVywTBbJ8ZKC/YPNyBpEowgNVc5oaNvP6sTupyeEizziOmvBlqApAw46mcaL/NcpFk6RY3PVoG1a+qNtkhGQqZgWKyu80yfGU0PNDyQ6Cq99Y9cwciaIi9mWvyFWXjkTNy0cAr0fidj78yOj4H3tBIW8HAo+XsvlbyCGvS7dJlyucRZr0TLTOhxmYqdjbLIZYXlvm5mK23hiaQf8FoSI9UAwshNB4utNml5dO9juXM0hBuEIslDpqvenLGGmkutTXbEj1dptG8Hms0WnRST4h/7ULwIm2m8BftsDxvB2zox7on7eyLUQcsV9MiXbg9oWvSdyWZrA8R9x3S9ZOv7ch2xkVafU16Aczn5m/vm+Zidy5Pkm1hxiJs/uYVJjTwjYSaAbuuCAEFMQAJLs+ZKcSW1A2tfsRlFDMXvSrL139BXrPxrPu4YCCvZSYNPLLOLjRmve1JIO8b79q2AzRSzxLwXByolfEYW68CVfkqU2cVhCTpmsjoXgbUEgKOfmE+56dYgqAbjvToCoLNisbUrCOJ9ze69pJeT
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(6133799003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eFZwMTRhWmtJTm9KMW5MM2xlSG1RbkxqRFY5QTdDNDVwdER6YlNCcEUvd1ZC?=
- =?utf-8?B?cjlwaWNDUnl2RVovay95elU5TjZ1ODRHNkRvbmcvTUhpb2JyRkJzKy9UZmdy?=
- =?utf-8?B?QXF1REx1UUkxQ0gweThTY25Fc1BLT0taR2RwQTBjK2ZpRnlkek1nRFZPNDlU?=
- =?utf-8?B?emtRRlJUQUhmWTFsSGN6ZlVMYm5lK3JhKytGRUJodjNOL2lvSzJuWmRSYUox?=
- =?utf-8?B?d3o1T2xacFJMZ3ZVQUl3UFA4dEVubTNNZzl5T3ZMQ0kyUjZ2eDlLR3g4b3ps?=
- =?utf-8?B?U3Z1UCsrN2QwU29oLy9tNjNJM252VXdXU2dsQVJFSlFHUmlFdjdYNnArVWhk?=
- =?utf-8?B?aktYQnlGQ3JpTXVFS1BBdU0yZm1hZmFjOWJHN0JISHNmdXVjYTJEYTAxbVUr?=
- =?utf-8?B?OVJ6Z1BlSXBaL3RLTWxFbEFNVFR1MU9tblZpcHI3b1hBVnNUaEpQVGg1cmJD?=
- =?utf-8?B?WVU0QlRVZVVDL1MzS0VCZnNHcEhtckZZRzlOam55UlpyRUFYbVpzQlZpRldx?=
- =?utf-8?B?RkVOa053UzFFbExPKzg3TStFOExQbWJqOE54Vm5lT1dYeThEZzVFeVBKSFhQ?=
- =?utf-8?B?alZGY1RzSVViMlZjMEpTWk5RNmhXUDBHZXk1aHRuRENIWXp0TlFyY0JvZDRJ?=
- =?utf-8?B?STlnY0tJL3QwemFKZmlPYitkNmhkc3BkUXZpaGlnemEwS253eXpab3RZZnRX?=
- =?utf-8?B?cXRocGJxbUZmU1JMVEZNUVFwSmZtckFKeWRqcjRqUFJjaFlTMFlCUWJlRGtY?=
- =?utf-8?B?a2xINlRvcnVZaEpWVWQ3QjhvbnNnNWlrY3lBOVUwdkpZNjZwby9EenJEN1Q4?=
- =?utf-8?B?REYyUloyVXRhTUtkZ09NSDB1L21EVy91OUt1WGpVampzMzFCTmE5QVdnUW5R?=
- =?utf-8?B?NnZHeFJhVFN5Z3JORU95M21QSlJ0OHVLWTJCdTlNRHM3ZWozWXoxUDNGcEta?=
- =?utf-8?B?bmZlY21EdFZRQkovbFR5ZFRCeU8zd1JJNkV2TFFvdFVrYnBncFMyZCtPSFpN?=
- =?utf-8?B?Z0VEdVVWS0lWWnZGSnB3N3hQVmhQRjdQRHJMQTFnRlNodlJyZGhCZmJjdW4r?=
- =?utf-8?B?Qkwzd3VQY0kzSmhsd3B6SkxOUUZjanFrRS9ZcjRoZlRBTzF6N2V3WVJJWkY5?=
- =?utf-8?B?b09zTUZhbU05TjE5V2Uyb1pmNnlCUStPamlmajd1RDFBVkpRbU9tQVVYZ29X?=
- =?utf-8?B?NHpmQnB2RnlZRHdINzFDK05HbVd0MkRLSnBySVdnWHdxb1lpK0dMMllwMkVS?=
- =?utf-8?B?b2gwSDRaa1RhSWdtMnpHZFc0LzE1UEQ3L1h3L011NENlMXJ6ZVNCY21hL1FY?=
- =?utf-8?B?Tk5KK1NtQ2hlLzhXZVQvait0TnZDdjgxWFFiZWw0aENTbU1kSHhjOS9Cb3Bs?=
- =?utf-8?B?cGUyR2ljNENwSkdEMFZzZk1YTU1Ra0NPT1hlVkNPY0JPZWRqNExlbXNyekUy?=
- =?utf-8?B?ckxhQ2pnSTEvbzJkRGJwQzl5ckNXT2p2ZzlvaEV3Q1AyallxUDRsd1JBeDB3?=
- =?utf-8?B?b3FCU09kSTh3cG9jRnVmRnBwNUFheGEzKzlDNmE1WEdEUHhoMytwNlVJK1JZ?=
- =?utf-8?B?T2FUOTRkMHd1a1NzRHFKb2toNUZOYWhDRWN6M1R2Zmkzc3EzbzNWdmU5dmNk?=
- =?utf-8?B?K29HRGRPeW9ZenpCckphMXBEdmRuaDV0ZlRSb2V6d1dEeDl3dnoxUUNac1ls?=
- =?utf-8?B?Z25kU3hCZHZURm5lZ3ZqUEZ6WUE2YVRTTGQxb3ZqOHpSWVRxSmRDUEdqWG1a?=
- =?utf-8?B?UWVxZG9Rdkx3ZkNDVWQ5cmd2R2RrUGdaQ05oMUg2RWxGdE13aTZRSDJlMzAw?=
- =?utf-8?B?K2RJckN3RXg3b0RBV3NteGdNZ21Xb0dsbmxwa1laVjUwMHQ5Z1FOWSttUTNv?=
- =?utf-8?B?Z2w3VEF5Vk1LVXNNelJYWXR1OENuczhhWVowaVpDM3A1SmFMUzJqVTFaZVkz?=
- =?utf-8?B?WGROcmpzckV0bXE4ZzJqOGdtUkxIMEdVbFJFenNTN2ZCMmhtMmtnbndtMHVy?=
- =?utf-8?B?WVhTTEd2aUpsOCtENm1WaWxIckhmSkNOb3ZpdksrZi9xL2VTKzdXUy9ZVG1j?=
- =?utf-8?B?Q2J1U3ZESXZxZUQwOVBKS1BWT21LT0xOUW9WWGFmRVYrYmZRRUFlUld1aHdG?=
- =?utf-8?B?WmZQUXRxNFBpTjVDRk1LVUZUN1VHWjFFVENQQlhkMVRFSHpYQW9JZ24xY0tF?=
- =?utf-8?B?S0grK1JyQ1ZpM3ZBenBFQi96UWlNTU1uUDBNZGFydWcwSkZaVWhtWG5NRjls?=
- =?utf-8?B?M0tEYUsrSXB6cVZ0OEM3L3gvSy9hUjFNSGdvOEVjTVdBR0FxOVJMMlNaZ016?=
- =?utf-8?Q?95+N0xQKB1YRxU7oUU?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 112cbd60-fe36-42b9-3697-08dec1712599
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 13:08:04.1105
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SJWyS8llWu3BdtGftl6Luo8qr4L4JVL5YQLDYaWnl68fhJ2Y5U3Pgxy4bf93Q4tiQjNckMb1FUHcisBWRoUEBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8198
+References: <20260517153427.94889-1-tjytimi@163.com>
+In-Reply-To: <20260517153427.94889-1-tjytimi@163.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Wed, 3 Jun 2026 18:42:30 +0530
+X-Gm-Features: AVHnY4KdS26v-u7MwMB2QczqM1orB0trjZ3Tze-rPeQYj-S64aX-ZARYgiMz9Fg
+Message-ID: <CAAhSdy3YV9Ny4YA+26SzY_yoFrAB0GWGZQBeg0X90H9Q_GSuHA@mail.gmail.com>
+Subject: Re: [PATCH 0/5] KVM: riscv: Speed up dirty logging write faults
+To: Jinyu Tang <tjytimi@163.com>
+Cc: Anup Patel <apatel@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	=?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <radim.krcmar@oss.qualcomm.com>, 
+	Andrew Jones <andrew.jones@oss.qualcomm.com>, Conor Dooley <conor.dooley@microchip.com>, 
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>, Nutty Liu <nutty.liu@hotmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/2/26 16:55, Atish Patra wrote:
-> 
-> On 6/1/26 4:17 PM, sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 3 potential
->> issue(s) to consider:
+On Sun, May 17, 2026 at 9:05=E2=80=AFPM Jinyu Tang <tjytimi@163.com> wrote:
+>
+> This series speeds up the common dirty logging write fault path for
+> RISC-V KVM.
+>
+> When dirty logging is enabled, guest writes to write-protected G-stage
+> 4K leaves currently go through the full fault path and take mmu_lock for
+> write.  That is expensive once the leaf already exists and
+> only needs its permission and dirty state updated.
+>
+> The series first makes the existing MMU notifier locking contract
+> explicit, switches RISC-V KVM to KVM's rwlock form of mmu_lock, adds an
+> atomic G-stage PTE update helper, uses it for existing permission
+> updates, and finally handles dirty logging write faults under the read
+> side of mmu_lock when a 4K G-stage leaf is already present.
+>
+> The locking and concurrency model follows existing KVM patterns from x86
+> and arm64: use an rwlock mmu_lock, keep structural page-table changes on
+> the write side, and use atomic PTE updates for permission-only changes
+> that may race with another vCPU.
+>
+> The fast path marks the memslot page dirty before making the PTE writable
+> again.  It also sets the PTE dirty bit, so systems that trap when D is
+> clear do not fall back to the slow path for a writable-but-clean PTE.
+>
+> Performance was measured with KVM selftests inside a QEMU RISC-V host.
+>
+>   dirty_log_perf_test -m 19 -v 4 -b 1G -i 3
+>     base dirty memory avg, iterations 2-3: 53.262493s
+>     patch 1-4 dirty memory avg, iterations 2-3: 52.735675s
+>     patch 1-5 dirty memory avg, iterations 2-3: 26.422964s
+>     patch 1-5 improvement over base: 50.4%
+>
+>   dirty_log_perf_test -m 19 -v 4 -b 64M -i 3
+>     base dirty memory avg, iterations 2-3: 3.203170s
+>     patch 1-5 dirty memory avg, iterations 2-3: 1.762452s
+>     improvement: 45.0%
+>
+> Patch 1-4 are prerequisites for the read-side fast path. The
+> main speedup comes from patch 5 avoiding the full fault path
+> for dirty logging write faults.
+>
+> Jinyu Tang (5):
+>   KVM: riscv: Rely on common MMU notifier locking
+>   KVM: riscv: Use an rwlock for mmu_lock
+>   KVM: riscv: Add a G-stage PTE cmpxchg helper
+>   KVM: riscv: Update G-stage PTE permissions atomically
+>   KVM: riscv: Fast-path dirty logging write faults
+>
+>  arch/riscv/include/asm/kvm_gstage.h |   4 ++
+>  arch/riscv/include/asm/kvm_host.h   |   2 +
+>  arch/riscv/kvm/gstage.c             |  35 +++++++---
+>  arch/riscv/kvm/mmu.c                | 105 +++++++++++++++++++++++-----
+>  4 files changed, 122 insertions(+), 24 deletions(-)
+>
+> --
+> 2.43.0
+>
 
-Adding @Peter Gonda who knows this code better than I do!
+LGTM. I tried this at my end as well.
+
+Reviewed-by: Anup Patel <anup@brainfault.org>
+
+Queued this series for Linux-7.2
 
 Thanks,
-Tom
->>
->> Pre-existing issues:
->> - [High] Missing `kvm->arch.vm_type` validation in
->> `sev_vm_copy_enc_context_from` allows creating structurally
->> inconsistent mirror VMs.
->> - [High] Missing `vmsa_features` copy in
->> `sev_vm_copy_enc_context_from` breaks SEV-ES mirror VMs that use
->> features like `DEBUG_SWAP`.
->> - [High] Concurrent list modification of `owner_sev_info->mirror_vms`
->> without holding the owner VM's lock during mirror VM migration.
->> -- 
->>
->> commit 5adb8a893221b0569310f07fd9fc7abca8088651
->> Author: Atish Patra <atishp@meta.com>
->>
->> KVM: SEV: Do not allow intra-host migration/mirroring of SNP VMs
->>
->> This commit rejects SNP source VMs in migration/mirroring until proper
->> SNP
->> state transfer is implemented.
->>
->>> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
->>> --- a/arch/x86/kvm/svm/sev.c
->>> +++ b/arch/x86/kvm/svm/sev.c
->>> @@ -2142,7 +2142,8 @@ int sev_vm_move_enc_context_from(struct kvm
->>> *kvm, unsigned int source_fd)
->>>           return ret;
->>>         if (kvm->arch.vm_type != source_kvm->arch.vm_type ||
->>> -        sev_guest(kvm) || !sev_guest(source_kvm)) {
->>> +        sev_guest(kvm) || !sev_guest(source_kvm) ||
->>> +        sev_snp_guest(source_kvm)) {
->> [Severity: High]
->> This is a pre-existing issue, but I noticed a potential locking race when
->> an existing mirror VM is migrated via sev_vm_move_enc_context_from().
->>
->> Locks are only acquired for the source mirror (source_kvm) and
->> destination
->> VM (kvm):
->>
->> arch/x86/kvm/svm/sev.c:sev_vm_move_enc_context_from() {
->>      ...
->>      ret = sev_lock_two_vms(kvm, source_kvm);
->>      if (ret)
->>          return ret;
->>      ...
->> }
->>
->> Later, in sev_migrate_from(), it updates its owner's list of mirrors:
->>
->> arch/x86/kvm/svm/sev.c:sev_migrate_from() {
->>      ...
->>      if (is_mirroring_enc_context(dst_kvm)) {
->>          struct kvm_sev_info *owner_sev_info =
->>              to_kvm_sev_info(dst->enc_context_owner);
->>
->>          list_del(&src->mirror_entry);
->>          list_add_tail(&dst->mirror_entry, &owner_sev_info->mirror_vms);
->>      }
->>      ...
->> }
->>
->> Since the required lock for enc_context_owner is omitted entirely, could
->> this concurrently modify the owner_sev_info->mirror_vms linked list if
->> userspace creates a new mirror via sev_vm_copy_enc_context_from(), which
->> locks the owner VM? Would this result in kernel list corruption?
-> 
-> It looks possible for SEV VMs looking at the code but I don't the know
-> code path
-> or the mirroring/migration use case well enough to judge how likely this
-> scenario
-> in real world.
-> 
->>>           ret = -EINVAL;
->>>           goto out_unlock;
->>>       }
->>> @@ -2865,6 +2866,7 @@ int sev_vm_copy_enc_context_from(struct kvm
->>> *kvm, unsigned int source_fd)
->>>        * created after SEV/SEV-ES initialization, e.g. to init
->>> intercepts.
->>>        */
->>>       if (sev_guest(kvm) || !sev_guest(source_kvm) ||
->>> +        sev_snp_guest(source_kvm) ||
->>>           is_mirroring_enc_context(source_kvm) || kvm->created_vcpus) {
->> [Severity: High]
->> This isn't a bug introduced by this patch, but this block seems to be
->> missing the kvm->arch.vm_type != source_kvm->arch.vm_type check that
->> exists in sev_vm_move_enc_context_from().
->>
->> Does this omission allow creating structurally inconsistent mirror VMs?
->> Userspace could potentially create a destination VM as KVM_X86_SNP_VM and
->> mirror a source VM of type KVM_X86_SEV_VM into it. Since KVM's core MMU
->> would treat the new VM as an SNP VM (due to arch.vm_type), but the SEV
->> code treats it as a legacy SEV VM (because ____sev_snp_guest evaluates
->> to false), could this produce an inconsistent internal state and allow
->> attaching guest_memfd to standard SEV VMs?
-> NA. They don't have to be same vm type as per my understanding from the
-> selftest code.
->>>           ret = -EINVAL;
->>>           goto e_unlock;
->> [Severity: High]
->> This is a pre-existing issue, but I noticed another detail in
->> sev_vm_copy_enc_context_from() just below this diff.
->>
->> The initialization block for the mirror VM omits copying vmsa_features:
->>
->> arch/x86/kvm/svm/sev.c:sev_vm_copy_enc_context_from() {
->>      ...
->>      mirror_sev->enc_context_owner = source_kvm;
->>      mirror_sev->active = true;
->>      mirror_sev->asid = source_sev->asid;
->>      mirror_sev->fd = source_sev->fd;
->>      mirror_sev->es_active = source_sev->es_active;
->>      mirror_sev->need_init = false;
->>      mirror_sev->handle = source_sev->handle;
->>      ...
->> }
->>
->> This omits mirror_sev->vmsa_features = source_sev->vmsa_features.
->>
->> Since SEV-ES VMs use vmsa_features to track capabilities like
->> SVM_SEV_FEAT_DEBUG_SWAP, would a mirrored SEV-ES VM incorrectly
->> initialize its vmsa_features to 0? When vCPUs are instantiated,
->> sev_es_init_vmcb() checks sev_vcpu_has_debug_swap(), which would evaluate
->> to false, resulting in misconfigured VMCB intercepts. Could this silently
->> drop important execution features for SEV-ES mirrors?
-> 
-> As per my understanding, that is intentional as well.
-> Is it common to mirror SEV VMs with SVM_SEV_FEAT_DEBUG_SWAP enabled ?
-> 
-> @tom: Please let me know if any of the above statements are not true.
-> 
-> 
-
+Anup
