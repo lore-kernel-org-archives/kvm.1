@@ -1,234 +1,150 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EF93557F3;
-	Wed,  3 Jun 2026 17:58:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38793859EC;
+	Wed,  3 Jun 2026 18:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780509516; cv=none; b=CIKjayoUhL+YYIISJQhgl17ZhY7Jz/dnhLNWeR/Enh599nXxX+W50ILF6zVpWKJ7RXjUeN4zcJ1kr+/F9elOJAw88YdsPoATVsu41NsrUh17Qq3yBMh3au4w3P5/AsnY0gtM7b2XxscNRIniGLl8vmgKBlV7yFT1hlVz4UOUUzw=
+	t=1780511198; cv=none; b=YqyEj8LGVPjFYH4px6R7UCB+piyeDpjIpJ/AacUoBE7waL8pCaDx5EUWQilj2WHIIIIwMQxBwwIKOlj/oKz77KZXrJENpqc4W1Cm4E5Kge9E/t3YneCj8k8TDSeeFhmRGBVuHJIwojN7XBsRJzVwIV1j98Mt9Dv2Nbkpswelss4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780509516; c=relaxed/simple;
-	bh=XCZVfbUq+NtLi9h9dNX3wljSjcgEuqKEmriX0TqT1+o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tMclMYYkDlXwnWaskYWvp8crBchyA84BnCTzyiXHOcfIu7sH+tdXf4wDLp16imMR2/kbynCsgf5CeXlnpV2IkOGYXfxrz9A7e/y1HSXTZ2p5gFtY76p+NKxcCdvb+U5dkNxSmF/Y/lPQbmR8RCwk1InVDInzSL0p1NjI2wqty7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=TVBB/EWN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VzhTMtFI; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1780511198; c=relaxed/simple;
+	bh=ZUAJC8Zbe+xjYIriju/65UrSW/aNvrY63FyQTSuTN+w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p//c42Dqqv6rza5nk1Le8ErbLAx5Qmy5U23zP/22Gl2t0j7SbfoYjHmTEMhvqFQbyClpm5j2IqppAjljKvvUOf4yQ/U0rBX9Hfn1aWBOIiI2nrm5IVVuyII2pgHQELhoaD7vsKLDoF2Htj0usM0cxTtMTDcSXA4dsJGoBl0RfPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DlgT/Biy; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="TVBB/EWN";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VzhTMtFI"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id 9360C1D00168;
-	Wed,  3 Jun 2026 13:58:32 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Wed, 03 Jun 2026 13:58:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1780509512;
-	 x=1780595912; bh=/hyimqtR3dJ5OSnVN0tycpqCgAq8wZ0lo2UnF9x9zw4=; b=
-	TVBB/EWNtgL9Q9if4oobSp6uYZT7zRhR4fDLBvg0MZhNIHIh2RsN7VFfqJ+bOvmx
-	uEvcCdAH8y/U8r3OfsdeVL/u5VJokPMBveYEuPET+FIlo6MyTVzn2fTJ/lZCqwqd
-	W7GRdzOx1/6JhPArcVe66fwgOPkvfTjDqysmUj4QjComwBskSb2b+yKxFgVZghSo
-	+WMH8+HkFviW6uDwvMwTpMeDq2EhDVLZ7/ieIBI4Ca6nWeGg7Va3eFoGistnrDoF
-	ewUbwK8zX5wwMRUEaUxHOIFeUK7pdH8F10nWuGUK5bJSCWkk5DcISYpduYRBKo1X
-	YXqdLU2sdWKZEJTgerVypA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780509512; x=
-	1780595912; bh=/hyimqtR3dJ5OSnVN0tycpqCgAq8wZ0lo2UnF9x9zw4=; b=V
-	zhTMtFIQW2q/Lqigo+5Trpn61eg53OdxjThbxigG+AFFop0C/gQ/siIhzVALXwmR
-	kCYYcfAP9swK9ikYygKwde/tvEIF1vt33ZJ6Vk3xwuOLyZ7awMbqwwo1cG6vZOr6
-	BWTGyV1f2srCAmt+E1+Xb8R4oW+NzpmoLF319jwr2ft06WxSMll7WwsYMPwvyKoO
-	+rnaMWZXu2KZTwif2oohUIxWCDdOV1kqCZxLPsqTK8KntZtUiiuBCJXAOZam9Epp
-	9Pt10dP90w/mGWvvZVfgjTBOd2yeUfRdTGli5nzQcqmJu2ffSWweexPc2AZZ2LHl
-	v9YZnn7ihgJaLoQX4Ye6A==
-X-ME-Sender: <xms:R2sgakfTa0y8eAGD7TQuL7kdSH-S0uojubUjLRkW5RsVsWI7AQ-ANg>
-    <xme:R2sganz83PPOPENsX0TuNzhL5auMNRbe4_aMV69lzCsLiN5n7qnZ4Lzz6Ysw-ainB
-    402LkL_SRoIkI7OSzzfxgeRC7GKgV2EkY5J724IfRWtmMLdD3xIEBs>
-X-ME-Received: <xmr:R2sgakx_yfDVqZXyuzANs5gsbpNd1VZ_vjJQIF0kS1GqNjeO__7K_UYDqvg>
-X-ME-Proxy-Cause: dmFkZTEb3F3VfJcFBZ0xYpcN9Zp/SWYi8J6XsDYqlGHMDUQhXDkYx8wDBYnTnwwAxdMNoN
-    /ebJJ7G8AkyfCHPesErchj4FkJ7AdZ3CYGDTP41B5kV5QuSX5U+a0CtpAYQ8W87wtf6RvA
-    c4xrhupsru9ILIE54VpjvF8Hc0N9pVoNVTqZKNb4EUfq6ivopM0y/RUkLws80KQZ3yjzdH
-    SsnfFT/dPin/Ie5Np9h6n1h++eifHpgc9Q4Q1YWP6b12Gy/+SG1ephCl1NDqFKtFA1GZoz
-    pY/uXyfExlYixJ4YIFVWbejzzL8hKh1bByGI1t1EpS29NYK4nGQNhXuYDCyxRIVfxFclHZ
-    udI/LkHWyX3o+9pQacHM0ElwO7F5Yh5Vk3NDrscMVvkxcsAHFiI9W3Jwfswux+VIVWnLUq
-    2otrbDsHCzZ8vT2jIyCL3knQU5RJz/UqrlLOLlRLWCWWfReRgGGGGYplW9zm7e3yHjA268
-    Ppl0eneWwEPbwt027AlJl9nKlykR3p8rxX02xK1QJ7D2uriK1wPk4WdvB8NCtgGnhVp6BE
-    w0vavPi+AV0q8Umq3XsrrN+MQi+iY+m6ouVMRz2OE5t7auQTxW8IvPIXnwe10oa09ElOqJ
-    KOSdFC8FVLm5JKfKC/TqXYNc2Dyslvfc84se1i6rNH/5ewd4qNdlrxL1AExw
-X-ME-Proxy: <xmx:R2sgagZNOPsjr3haXeD1RE9mqzAjo_dm5o-6jbRR6QvY8UGb9UY4GA>
-    <xmx:R2sgal09TYuKOWttpxY8WgfAKsRggqsun9dqzOsuC9gYXMUC2i1d-w>
-    <xmx:R2sgaictKz8XxcSgiwcgRYVJKsak_f4NwAKkXIFduDcE58ws9vWaDA>
-    <xmx:R2sgaiJl157Kn8cOscq8Bu7UqlV48dM92FDvaJj3jhB4W97N4li1jQ>
-    <xmx:SGsgagQBBAaXj87kuRC9gEMZT7Yq8Khp6QCpTbyo5lrMeLSrGm6wG5ko>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Jun 2026 13:58:30 -0400 (EDT)
-Date: Wed, 3 Jun 2026 11:58:28 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
- <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
- <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH v14 0/8] vfio/pci: Add PCIe TPH support
-Message-ID: <20260603115828.21216c0f@shazbot.org>
-In-Reply-To: <3f8d1722-6749-4f3a-b630-c96303cec284@huawei.com>
-References: <20260528124649.14732-1-fengchengwen@huawei.com>
-	<20260601095840.3aaaa508@shazbot.org>
-	<59c82855-59a7-4f0e-b534-d35535d04b93@huawei.com>
-	<20260602170847.75bd159d@shazbot.org>
-	<3f8d1722-6749-4f3a-b630-c96303cec284@huawei.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DlgT/Biy"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 653Hn4BP3707938;
+	Wed, 3 Jun 2026 18:26:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=YKr+6y
+	hnyN2nRITViubajD62fc9aLu3O2r7mMdTHnSI=; b=DlgT/BiyWVmCaEk9r88xKr
+	29oliCk0eh86T05Ku/K5UPOI4YNutgbU5dMr6T1WBnsvDLQrZHQMd/VbcEBYwzZB
+	iAUUw3fxJkvAyzXoxBOPr4B2yCD8+YxLKz9o5HzpghvpOFwXB5ExWljyn6Z0ybD1
+	VU2NpAKtp+VlG4n3nXjMsCORB7s/34ia2hMIGNURwq22ANjlT36RlqQbk+yz8ExY
+	T3UcxTQd0oLW0W03rDEciD1el8for6sOZNVVWqbiOrNbIO93b5+P5k7e7AJTkpfk
+	1i9rBDiSmJeDNMdadlcY/BPaH15FCTLAWcjhylXoCeVo9EAn5HV9A4NmExHQhB7Q
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efpaebvk0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Jun 2026 18:26:34 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 653IO7cC007625;
+	Wed, 3 Jun 2026 18:26:33 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4egcwyh80e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Jun 2026 18:26:33 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 653IQV1520709992
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 3 Jun 2026 18:26:32 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9A9BB58056;
+	Wed,  3 Jun 2026 18:26:31 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E57DE5803F;
+	Wed,  3 Jun 2026 18:26:30 +0000 (GMT)
+Received: from [9.12.78.81] (unknown [9.12.78.81])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  3 Jun 2026 18:26:30 +0000 (GMT)
+Message-ID: <cc2cb880-2d53-419f-a813-539ce0f5311b@linux.ibm.com>
+Date: Wed, 3 Jun 2026 14:26:30 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] vfio-pci/zdev: Add VFIO FMB device feature
+To: Alex Williamson <alex@shazbot.org>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
+        farman@linux.ibm.com, gbayer@linux.ibm.com
+References: <20260519224204.19154-1-oelghoul@linux.ibm.com>
+ <20260519224204.19154-3-oelghoul@linux.ibm.com>
+ <20260602162409.1ca3c765@shazbot.org>
+ <395b0d85-3057-4bd5-b8cc-10ceea2d978a@linux.ibm.com>
+ <20260603095538.65b07206@shazbot.org>
+Content-Language: en-US
+From: Omar Elghoul <oelghoul@linux.ibm.com>
+In-Reply-To: <20260603095538.65b07206@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Zt3d7d7G c=1 sm=1 tr=0 ts=6a2071da cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=QGBQNg2pMCFovZr3b98A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: AkrNEytQc4rpXZG1RIGUgTd1hgOdrSqb
+X-Proofpoint-ORIG-GUID: AkrNEytQc4rpXZG1RIGUgTd1hgOdrSqb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDE3NSBTYWx0ZWRfX2JgLf3UAPO4J
+ jaAFdH5znwiVeB06Pe1fpZPQPjKHoGKp4v7rm4kw3Jq1PCxzyxZYHv6TTM3tryfSW4/YOAIoDDj
+ wmOmDXe/cTuBwjqzYWvakmZtyoCCtHnPeI9D20tQY2RkIV8O0ktREI2BOC3D+6s4xgaGZ87l8Tj
+ EjL6EC0aEyG0PT1JKiQCxu5rDWVz6h3x5Yz9da3CTv46G5gjuiq/zGYB8G9r3U/E1+LKazJ6wja
+ GTrkUtAYAq/+ysgnXVMkIVwulWpvNddst854QKkydZnpaw2XEOJfEnfCwsUsl9ftq2e7ZyvNkGB
+ j0PP8g0MIFzbvSShmL7Kwp5eDf+SsNwNWqapkqz4WqWceIhDcH0iYPK0MeKxtKkkrx9vsHkNJNG
+ p9saMlPohA7cZ9+9ykGpZtx7PQsiZnMFBvsh8BawFRZ6I7a8FbhWl2yIP7LcNFemTWPNUOFg37r
+ 2tfS6l0L0rs7COxFGqQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-03_05,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
+ phishscore=0 spamscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606030175
 
-On Wed, 3 Jun 2026 08:34:53 +0800
-fengchengwen <fengchengwen@huawei.com> wrote:
-
-> On 6/3/2026 7:08 AM, Alex Williamson wrote:
-> > On Tue, 2 Jun 2026 22:46:13 +0800
-> > fengchengwen <fengchengwen@huawei.com> wrote:  
-> >> On 6/1/2026 11:58 PM, Alex Williamson wrote:  
-> >>>
-> >>>
-> >>>  - Patch 2/ sets tph_cap to zero if TPH cannot be enabled, but this is
-> >>>    never propagated to vfio-pci to drop the TPH capability from the
-> >>>    capability chain.
-> >>>
-> >>>  - Patch 3/ exposing the enum to callers is a bit ugly, maybe we should
-> >>>    retain pci_enable_tph() as the "auto" wrapper, resulting in no
-> >>>    change to existing users, and add _ext and _std wrappers.
-> >>>
-> >>>  - Patch 4/ same, multiple wrappers keeps the "auto" api cleaner.  Also
-> >>>    note that auto is broken before TPH is enabled when tph_req_type is
-> >>>    zero.
-> >>>
-> >>>  - Patch 6/:
-> >>>    - mutex_init/destroy belong in vfio_pci_core_init_dev/release_dev()
-> >>>    - Re-order to avoid forward declarations.
-> >>>    - vfio_check_feature() does not require declaring PROBE as a
-> >>>      supported op.
-> >>>    - pcie_tph_set_st_entry() can write to MMIO space without testing
-> >>>      for or enabling device memory or power state.
-> >>>    - tph_init allocates shadow table regardless of opt-in for tph
-> >>>      support.
-> >>>    - Redundant tests for count/index in feature function.
-> >>>    - Duplicate memcpy/kfree in feature function.
-> >>>
-> >>>  - Patch 7/:
-> >>>    - Unclear why it's vfio-pci's responsibility to provide this
-> >>>      translation interface.
-> >>>    - PROBE is unnecessary for vfio_check_feature().
-> >>>    - Array size conversion is strange.
-> >>>
-> >>>  - Patch 8/:
-> >>>    - default config read handles emulated bits.  Clear the bit if
-> >>>      necessary in vconfig, use p_setd() to mark PCI_TPH_CAP_EXT_TPH
-> >>>      virtualized, read-only.
-> >>>    - Follow examples like vfio_pm_config_write, vfio_vpd_config_write,
-> >>>      vfio_exp_config_write, etc.  Set the virtualized and writable
-> >>>      bits, perform default config write, evaluate if anything was
-> >>>      enabled, effect the change in hardware via kernel APIs.
-> >>>    - pcie_disable_tph() happens after the restore state is recorded.
-> >>>    - TPH capability becomes read/write, an ABI change to the user, with
-> >>>      only a host-based opt-in.  Seems like the userspace driver also
-> >>>      needs to opt-in to the ABI change.
-> >>>    - Memory enable not assured for pcie_tph_set_st_entry().
-> >>>    - Sashiko notes there are existing hazards in the tph_enabled
-> >>>      storage unit relative to multiple bitfields that can be updated
-> >>>      concurrently.  The problem is worse with this exposed through
-> >>>      vfio-pci.    
-> >>
-> >> Thanks for review, all your comments are resolved in v15:  
-> > 
-> > Not everything.  At a glance I can see that v15 is still pushing for
-> > vfio-pci to provide the interface to translate CPU IDs to steering
-> > tags, despite my push back above that it doesn't seem within vfio-pci's
-> > scope to provide a CPU ID -> ST interface.  
+On 6/3/26 11:55 AM, Alex Williamson wrote:
+> On Wed, 3 Jun 2026 08:35:43 -0400
+> Omar Elghoul <oelghoul@linux.ibm.com> wrote:
 > 
-> This translation helper is required to handle varied TPH configurations,
-> including cases where ST entries live inside device private registers
-> instead of MSI-X or TPH capability space.
+>> On 6/2/26 6:24 PM, Alex Williamson wrote:
+>>>
+>>> Why does the user need to be able to control these?
+>> We want the user (e.g. QEMU) to be able to control these so that when a
+>> guest enables or disables the FMB, this state gets cascaded to the host and
+>> all the way to the firmware.
+>>>
+>>> Doesn't allowing the user to disable FMB remove guaranteed host-based
+>>> monitoring?
+>> Yes it does, but this one isn't an oversight and is intentional behavior
+>> to achieve the functionality mentioned above. The host-based monitoring is
+>> not necessarily guaranteed and is treated as a device-specific state, so it
+>> makes sense in the case of passthrough to have that state reflect the state
+>> of the guest that is actually using the device.
 > 
-> Prior discussion with Jason (
-> ref: https://lore.kernel.org/all/20260414151125.GF2577880@ziepe.ca/)
-> indicated VFIO-PCI is the correct component for per-device TPH
-> implementation.
+> If we really need a SET for enable/disable, I think it should be a
+> separate feature.  It really makes no sense to pass a giant structure
+> into a SET operation to look at the state of one flag bit.
 > 
-> Production high-speed NICs from multiple vendors rely on this CPU-to-ST
-> mapping logic for DPDK optimized polling I/O; removing this helper would
-> render the whole TPH userspace control feature unusable for existing
-> target workloads.
+> [...]
 > 
-> Therefore, I believe it is appropriate to support it.
+> Hmm, I also see fmb_length in VFIO_DEVICE_INFO_CAP_ZPCI_BASE.  If we
+> have that, do we really need structured data in the GET feature?  Maybe
+> GET just provides a user pointer and the raw fmb data is copied to it.
 
-The citation is only describing that vfio should provide a way to
-program the steering tags.  That's not the issue I'm raising.
+If we did this and passed just flags, a user ptr, and possibly a buffer
+length field, what would you think of leaving them in one feature? This
+way, the SET case would have possibly 8 or 16 bytes of overhead rather
+than the entire FMB structs, but would still keep the uAPI simple enough
+by avoiding multiple VFIO features for the same firmware feature.
 
-The proposed uAPI has morphed from one where the user provides CPU IDs,
-which are translated to STs and written to the device or returned to
-support device specific implementations, to one where raw STs are used.
+Thanks.
 
-I think this was a result of my question of how this interface
-integrates with the concurrently proposed interface where drivers can
-expose TPH values for a dmabuf.  Suddenly the user is managing raw TPH
-values and what used to be an integrated feature of performing CPU ID
-to ST value, with necessary ugliness of exposing that raw ST value for
-device specific support, becomes largely a standalone translation
-interface, which might be more generically implemented elsewhere in the
-kernel.  It largely loses any direct association to the vfio aspect of
-the device.
+(Apologies for the resend - the previous email was rejected for being 
+sent in HTML format.)
 
-The interface now looks more like one where raw STs are provided to
-vfio-pci through various sources.  It then becomes unclear why vfio-pci
-itself is necessarily one of those sources.
-
-> > The host-only opt-in issue above also doesn't appear to be addressed or
-> > rebutted.  
+> Thanks,
 > 
-> enable_unsafe_tph host opt-in already fully gates all new TPH ABI:
-> TPH cap + feature ioctl are completely hidden from userspace when off,
-> no userspace opt-in needed.
+> Alex
 
-I'd argue that opt-in on the host doesn't mean we should ignore the ABI
-change to userspace.  There's an entire virtualization stack that needs
-to be built on this change, intercepting writes to the TPH control
-register, MSI-X vectors, and capability ST entries.  The host opt-in is
-a global switch, it might enable your userspace driver, but it might
-also break QEMU, where writes to the TPH capability had been dropped
-previously.  A per instance opt-in, gated by the host opt-in, allows
-seamless integration of the new feature.
-
-> > Typically v15 would be an indication that a series is coming to
-> > maturity, but with the quick cadence and lack of discussion throughout
-> > this development, I'm not even sure we've arrived at a proper uAPI for
-> > this feature.  Thanks,  
-> 
-> Sorry for sending frequent quick updates without leaving adequate window
-> for list review.
-> 
-> This feature originates from an earlier ARM prototype posted last year for
-> DPDK TPH acceleration scenarios. Based on that foundational exploration,
-> this series has refined the interface through continuous upstream review
-> feedback.
-> 
-> All recent rapid iterations are code improvements and review fixes.
-
-The issue is that feedback like above is represented as if it's been
-addressed and changelogs are scant on details, requiring significant,
-repeated effort to understand the actual changes between iterations.
-The issues raised and interface design require discussion, not simply
-assertions that it's correct and addressed.  Thanks,
-
-Alex
