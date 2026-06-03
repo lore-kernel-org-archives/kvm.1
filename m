@@ -1,91 +1,163 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AF03ED3A9
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 16:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8449D3557F3
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 17:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780505152; cv=none; b=tQry5g9+daauEGfFJ6ILkH0wpaguLZxP9+AoalJJ6zhppWN4ArJ60uHXBctctDKIRlyXHgVWOcv0d6ZEFs2xgtqpdaQlG8VPHcsV8DFf/u0lM4ipDflviMRnRQzi95cyjx5hUjOw+Ng0PQ6MPPCjLMvH5gZEozf0p03OvlbpcAE=
+	t=1780509449; cv=none; b=INT+Bca5mbfXlknJbItOXBbhrZyh2zsiFzqaHVDso+TobLD3hJqD9YEvyORJgnTuMIlCb1HvTKugsoeR/v2jqo9FRwh68qx+kOGswosQymSRiiyD/gs332tK5qTgo1BZfqULZpQjydrMa7HnMZqj8K3BXb51QCa5ofj41i1yDwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780505152; c=relaxed/simple;
-	bh=pCptqsHzB54T4rm0Er4EFyVHuszS0WkY7ywKOYLCM5Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KOz+XVOJ3pJ7v8tD1tjTnEUEw0+YZApujHufOS7GoOg4MspQa/QYxIEmf6ids6HYoawEdQXnjm5xOqA6/VXtL9K6Wm+Vn6EUEt53HGB/+mWGBf2Qk6FrNnaCBU5GZ4KAQN6KggRvXcjI0YS4ZnXRXtOLkl5eIY/S+wSewkzZ6ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JBoZqlRy; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780509449; c=relaxed/simple;
+	bh=LXmSkD4Uex2xP1sWGXhNC88HTgaLFztSKcaRMJOzBLk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aOhHZ38LFUHl5Zubo/lArPTIDxObh+8rsm4anRm7xdxDMcYK9qoS5A2G9qGORjnvbKVl8WgHSklFP+HfwRIci3tCUOeaoia8vyHvCT41QhvXfbobMyJEmw8NLs42dIv+Bw7VKyNLs8RVHhkYrq5LfrGXkNg5bW4dtukpaTEB2+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VOUbhLsI; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JBoZqlRy"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c85a2ed88c8so4573748a12.3
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 09:45:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VOUbhLsI"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-36b9b15af73so6369780a91.0
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 10:57:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780505150; x=1781109950; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Yio5VBr229AwcfpuP70zgCX2ykYb87bx4MRDQdu02AI=;
-        b=JBoZqlRyB2sO3FENkP3QEdj3umkoWYB9aB3ckB3+GjiS1lRkoaLvQ+TRZyuM7WP/L4
-         wZLoU0mCZOqfFYCI2SVwCXuWZ9lknG8YrhgJNumy7et43T5kRgpEh9zuF5sWW+De9qJ4
-         w4oEeuaudLdQPpNdPG0dULicmXTNYHGYyyM0wNALc3RAnqLoSffpZMT1EypteNHR+qv5
-         GxQudOuWhLHeTMcPFxsOyvf+jeOPF6uH4lDF1+XDY0gZjxhgdvwEozlJ4kBdL3K6lF9k
-         hB1Gc/MfwdveTS62xfsYuClPiwc0En7lKBcMvSQ6Xr0g1p+MPEPYdbUtEcoacXSZQBmt
-         QY4Q==
+        d=gmail.com; s=20251104; t=1780509448; x=1781114248; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=y5NJyP02PKnej6VpVmEwU/XOAuXGRvDv3YzLJ6IcwRU=;
+        b=VOUbhLsI7fgQ5HghIlmosSHlchJ/Xt2PSR6WIm6IFSuzkX0UcuiAbEDI1YCy7WlxzD
+         j91a3pg5R2YiA62sd6Tegt7wa933Q2+H/o4CATwwDk/IZWOr0+VhOlvgdU9QAXFetYjm
+         ys24s9hXwUdyftPvCgqP79q8GgK+hYDPKLoXdvA5N2FbwNyQ6zdbSP+RG41lgBFw1po5
+         3OKL4Osg4CRylK6uZIe7Im9rdKgpasx6tDaTRdOBMsKsVgErG3QBjb7NpLQVKx+TnTxm
+         mxNvyhZVfYDP736XMXuS+PvaDLTHZWHUbgGiUGop/ybvVPxPFAfpeBA1uQrox+PvsatD
+         gwKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780505150; x=1781109950;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Yio5VBr229AwcfpuP70zgCX2ykYb87bx4MRDQdu02AI=;
-        b=Afv5ML9fYYHa8JZqcTmWm/v5B+hEzGyLHN7u5swfT1fTQz5I4etCkH5mr8sij52x2v
-         iB0dv6gSDM7LyYTSyMgm6oE1RhxoNu/htkBso/Y48Xekdk5URazAdzQk24pHjhiTrUMe
-         jk8ot8tsDXNG29/7ffj7j3NT4fLXe8cP/o8mVMThNLTOjozKPA60uw+UKbSt+FVGbXCG
-         8xXGc+X7iGvxrixBkKVgqzT2Sh546QutxCtGr5EAMje8W+2d1WUKC/vYibhsAUtX1gXi
-         WcxfIiNep4ow/rBtVNge4nqTYPRIxPF10Lcfv2KPFflOU55Jc/eXkDSOd9p58zjR+uzG
-         auqA==
-X-Gm-Message-State: AOJu0YxnDC2OXwgInLTOcZCCBga48/FguotsLHU63AIed2v8d2dpmboD
-	/KecjOooMVNXF+7x7HmKssp/DmMkJPEuvYoGGk7cyCQqgSwJoT52Q0MH985graKNExoqXCTUsxf
-	aHpem6Q==
-X-Received: from pgbbx2.prod.google.com ([2002:a05:6a02:502:b0:c85:dc1c:c8ea])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d708:b0:3a2:e26b:2940
- with SMTP id adf61e73a8af0-3b49722bd0cmr4886460637.0.1780505150285; Wed, 03
- Jun 2026 09:45:50 -0700 (PDT)
-Date: Wed, 3 Jun 2026 09:45:49 -0700
-In-Reply-To: <ah7uzuAHyQh2GI7T@google.com>
+        d=1e100.net; s=20251104; t=1780509448; x=1781114248;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y5NJyP02PKnej6VpVmEwU/XOAuXGRvDv3YzLJ6IcwRU=;
+        b=nuMYybR8k6lmGHCjE/l1+h83uiX+mL8dzNRKGCD2qR+MQ0H6Q/TwmM6re/Ggex66Ms
+         lDrlC54Wq65ttvBYZqk4R1jIh8ABSewG/zZTIxgE7clSgoMTsCNhg+A2xY8/EW0P7BFa
+         w6dOKh8K4VooEnVTYDjL+FTRuYqrcqmM9P0HrTFHiOzD3WiZDgnCpNSGymcZ3fc4Xgm2
+         +zmAv69kjbAKiWOmCUMC80rMQbz3vWZ083QTVv0f7aU78Iemx9vt8YSBZS4ZoFxbmIkl
+         5lNSnWpubj+XpnSfdXm5CB/F/UL82HpETEtmMG7Jg0410i7ocam6YQooaCKJ2FIq7Ww3
+         UqaA==
+X-Forwarded-Encrypted: i=1; AFNElJ/24DbRdqzp1OaIF95Gpp4jV1COUGxWCgoUCa8tYzNaVw9UVwELmha9tA2ZY2NgDUBaFis=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSarSA84e+s8tMJYDey6JmIJqMOPOjXCN03/DlYDUBLByZ9Gpe
+	YfVp5sx1ipH2gFEBAE1vvKnLLjFSziNxnPhm4xxiMlMh/zf4K8JjrXLXQa4WCLWE
+X-Gm-Gg: Acq92OFS704zJMINI8LP27acl6V2wbo3x10ONOOhRUMTKLMdvVjZLZFjvHKEyS58u7y
+	xe3KXa99DXVBCcATtL5/76R0DIBNCqMtQu2/q4xcXqXwW3lVW3o+wbtbDTPudQ4+yNIKKZcdHX1
+	4MJ+qSWud+RZydO7ELwVJWPkGG8//83qJQ7kgMkap6FaDX1Ebtqsnn39AcXuTRa2TZLQqvzZ0P1
+	g5qsX3nG8Zsvufp98rDxFMXAH6V/+Ffq8W0xJ3YCaFNzRDB0W2WEUGWfpo1zJ70i+DCW17qQ79v
+	n7y9BshoSqYV4zWwHhQb/lckEvlDgxkZ6IGKPOb9pXwGLex9WnNNpZPAeTQ/Tbw//18SCY+H468
+	H2XXGhr6WzxOCiIVv0hihOyVglyzbGFuIl0DbCic160R9bXLpGKNeE9lf2B+oHn4/wE8d/xyevW
+	Wtjdd0Vkhbu37phGd0pkg9XvBXpGk3he3k1PZke7JLcgLq8OV+zo+ecmy+CfW+AlwqFi8X1T+JI
+	lqZMzlBnw==
+X-Received: by 2002:a17:90b:2f86:b0:36a:8ce7:b879 with SMTP id 98e67ed59e1d1-36e3247616fmr4614626a91.5.1780509447706;
+        Wed, 03 Jun 2026 10:57:27 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.236])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6bf82841sm381273a91.2.2026.06.03.10.57.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 10:57:27 -0700 (PDT)
+Date: Wed, 3 Jun 2026 23:27:20 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, 
+	Harsh Prateek Bora <harshpb@linux.ibm.com>, Ritesh Harjani <ritesh.list@gmail.com>, 
+	Anushree Mathur <anushree.mathur@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	kvm@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Validate arch_compat against host
+ compatibility mode
+Message-ID: <aiBq0ACz3yW4OQQe@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260603141539.47620-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260601133320.91479-2-clopez@suse.de> <ah7uzuAHyQh2GI7T@google.com>
-Message-ID: <aiBaPdVL1R4z-xm_@google.com>
-Subject: Re: [PATCH] KVM: x86: fix #GP check in em_dr_write()
-From: Sean Christopherson <seanjc@google.com>
-To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260603141539.47620-1-amachhiw@linux.ibm.com>
 
-On Tue, Jun 02, 2026, Sean Christopherson wrote:
-> On Mon, Jun 01, 2026, Carlos L=C3=B3pez wrote:
-> > The practical impact is limited, as check_dr_write() already checks DR6
-> > and DR7 manually. However, it misses DR4/DR5, which alias DR6/DR7 when
-> > CR4.DE=3D0.
->=20
-> *sigh* (not at your patch, at the existing code)
->=20
-> Which, after digging into *why* check_dr_write() checks DR6/DR7, highligh=
-ts that
-> this fix is incomplete.  em_dr_write() can't rely on ->set_dr() for #GP c=
-hecks,
-> because unfortunately for us, the #GP check has priority over DR intercep=
-ts on
-> SVM, and over DR7.GD (General Detect) #DBs.
+On Wed, Jun 03, 2026 at 07:45:39PM +0530, Amit Machhiwal wrote:
+> On IBM POWER systems, newer processor generations can operate in
+> compatibility modes corresponding to earlier generations. This becomes
+> relevant for nested virtualization, where nested KVM guests may need to
+> run with a specific processor compatibility level.
+> 
+> Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
+> logical partition (L1) booted in Power10 compatibility mode, the guest
+> fails to boot while setting 'arch_compat'. This happens because the CPU
+> class is derived from the hardware PVR (via mfspr()), which reflects the
+> physical processor generation (Power11), rather than the effective
+> compatibility mode (Power10).
+> 
+> As a result, userspace may request a Power11 arch_compat for the L2
+> guest. However, the L1 partition, running in Power10 compatibility, has
+> only negotiated support up to Power10 with the Power Hypervisor (L0).
+> When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
+> hypervisor rejects the request, leading to a late guest boot failure:
+> 
+>   KVM-NESTEDv2: couldn't set guest wide elements
+>   [..KVM reg dump..]
+> 
+> This situation should be detected earlier. Rejecting unsupported
+> 'arch_compat' values in 'kvmppc_set_arch_compat()' avoids issuing an
+> invalid H_GUEST_SET_STATE hcall and provides a clearer failure mode.
+> 
+> Add a check to reject Power11 'arch_compat' requests when the host is
+> running in Power10 compatibility mode, returning -EINVAL early instead
+> of deferring the failure to the hypervisor.
+> 
+> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
+> Cc: <stable@vger.kernel.org> # v6.13+
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+> Changelog:
+> 
+> * Moved this patch out of the v3 series [1] as discussed here [2]
+> * Addressed below review comments from Ritesh:
+>   - Based the PVR validation on cpu features
+>   - Fixed hcall name typo
+>   - Stable backport
+> 
+> [1] https://lore.kernel.org/all/20260522152744.55251-1-amachhiw@linux.ibm.com/
+> [2] https://lore.kernel.org/all/20260522152744.55251-2-amachhiw@linux.ibm.com/
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 61dbeea317f3..e16dbb199366 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -446,7 +446,17 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+>  			guest_pcr_bit = PCR_ARCH_300;
+>  			break;
+>  		case PVR_ARCH_31:
+> +			guest_pcr_bit = PCR_ARCH_31;
+> +			break;
+>  		case PVR_ARCH_31_P11:
+> +			/*
+> +			 * Need to check this for ISA 3.1, as Power10 and
+> +			 * Power11 share the same PCR. For any subsequent ISA
+> +			 * versions, this will be taken care of by the guest vs
+> +			 * host PCR comparison below.
+> +			 */
+> +			if (!cpu_has_feature(CPU_FTR_P11_PVR))
+> +				return -EINVAL;
+>  			guest_pcr_bit = PCR_ARCH_31;
+>  			break;
+>  		default:
+> 
+> base-commit: ba3e43a9e601636f5edb54e259a74f96ca3b8fd8
+> -- 
+> 2.50.1 (Apple Git-155)
+> 
+yeah this makes sense to throw an error early.
+LGTM
 
-And testing fail.  The DR7.GD #DB has priority, I forgot that DR7.GD is cle=
-ared
-by the CPU on delivery of the #DB.
+Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
