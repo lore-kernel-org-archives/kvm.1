@@ -1,167 +1,108 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C2B2FD69D;
-	Wed,  3 Jun 2026 05:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07613F9F5D
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 06:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780463469; cv=none; b=GUmoo3NkTN3vHhOalY3bLJec2D/baARMF2tqzIYh6oK77mXnaVb5csoW67DNTFZrOJ96QFCzKyFfEyBGQgik3c8fU1LofJ0yK+1szSkrs6lCDM7nMUEPWHa/vj3/kBMJrIgQ2dd/35a1c1sBuOx8RLwKdFAkEI1f70n/RFUM8XU=
+	t=1780468035; cv=none; b=BUFqkPZy7IsteSL1d3pnMsoaXozH16vCXp2nX8yEzmJ2guo/2QTJ+uIY/bOru1Z5CFJg8Zsoy4XycHVxPtC0xDnGpN40ck0LSA25dRua/5bnoj6NeTxKJ6kk/KcjljGWBBdD/U5YBYpI0N/LJSGAqYy5+RrYyJjCjAeu7A0yVos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780463469; c=relaxed/simple;
-	bh=wkqXgH5nbybptCZqa479ySWoR1vvI6ikF94AUXLLV8Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=igM+AwDw90bCK9iWb3SYk1OQInIvspYCGpW8UJZntfViYE9ylt2fIwYizdkcjfW06dVhQIWBw/Wivdw4qOFUVFf/kh1EUMPo4+khoX7B3J6nAb5HOWS6CrScuh5FkHXxwuB4grPieg0QTVPWrbWMEmm+mTPlr6Cdt5AiRewgfcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KXgsalW6; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780468035; c=relaxed/simple;
+	bh=br4Q/5Zkdoxf1ZYbzi2zhNKQk/fuGIIMoDVDCqYOvec=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=BGYE+4HeBmTQQBzLM4l3mvN1LzR4wyLMz6LcLLF5EPYzzBoNpvEhOLsH4SkCev31HkuDPxtdohVUQ7BErtinTSyU8ZXREl1IREafun14gejDie4eRE3cml8Oio2EDeNEEB9NPfzJGPe16Sp4w+fNyHQHyjqwRHaeqRhyTDl3EoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G+TFFupz; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KXgsalW6"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 652H6F8E1080233;
-	Wed, 3 Jun 2026 05:10:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=txJdzT
-	Va3WrsmBfmyCZM1/ehE0f7ezCs5eXEJszECSY=; b=KXgsalW6Oic5SSkfRi7Gkw
-	F+YL02Zdh3canOnebUU4IExU0g0FvzyvBQ+12jVQQbNG0x4X0eSnvzqq3VovV1cR
-	BuXbYrq7GFgmC7myzRAopqokRIyptQK3+nZNAbUuUZiOHskdWf6hycnmIKS4qotb
-	gnMwW+lsunpolPJvygSpHu0YchrzVjU3eidZ6NWseNFAGr5VvohwDX4uGDWLF+JO
-	XaB+xM5W3OvRpuTJhZslVD+gAcU+9c+ReJfKZOtsGnt1vocNXh1BCyXxZ6l7ZGQY
-	UqS0gHZ9souXV2a3ZaBfhlg0O97U005Fz8c4sE3kDpEgGd9SBzl9kx8k+tBTg3Qw
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqht8ps6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jun 2026 05:10:49 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6535976Z006775;
-	Wed, 3 Jun 2026 05:10:49 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egb7k6n0k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jun 2026 05:10:49 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6535Al8f21365304
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 3 Jun 2026 05:10:47 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C40CA5803F;
-	Wed,  3 Jun 2026 05:10:47 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 043BD58056;
-	Wed,  3 Jun 2026 05:10:42 +0000 (GMT)
-Received: from [9.39.24.115] (unknown [9.39.24.115])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  3 Jun 2026 05:10:41 +0000 (GMT)
-Message-ID: <56c84e26-69ed-433b-baaf-7b53acc60391@linux.ibm.com>
-Date: Wed, 3 Jun 2026 10:40:39 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G+TFFupz"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2bf114b0cf9so35203575ad.2
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 23:27:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780468033; x=1781072833; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=FsWw+BRaEfTe2BSzSpq066D0ULR8rb3630HXbbNfz04=;
+        b=G+TFFupzCbNdF3i5DbDb6woQdwwrx11zHf//h3dwTPe8HiXAdLqI8L9P/BHw6OQRb+
+         hR3iha1fuQu8ZdJMa/s4PRCm6hh6r5Z1WRP2uoSjC+jSVNSJZq2K7hpcyxgqMouh8w3S
+         eM+6jFl1bYbeM2jcc1X2uyS5hj0Yl0bpPgOO/HLDy3q06PpdC32BzSuLGBYLTOzoxqfu
+         Rec4QVRaKx2mtf0Vx2tbbLzE8vC/iX3bev8xe/ass9k1wpwz5yT6ijX43jdnz8UO2eeN
+         fOubUiE5rUufkGGQIbd8IPBc+H4vHkghDpkXavVFZKfbwUthzno5bWnvepkF8OsjjUam
+         q0qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780468033; x=1781072833;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FsWw+BRaEfTe2BSzSpq066D0ULR8rb3630HXbbNfz04=;
+        b=Bc0kybvwYsnyJlVajgyB4ox3PduNXRnRehWA60KS4GJ/Tp/ijxv0nIFWHItHtEJwx9
+         M9ihncyUrN60tQk+o/3JnciyIK+dYsAP5MI4ogv30cvm1GH16CgayEhQr9tyALe601fT
+         XGPCHlvf9GZh8zR4ZYdgeiBy2AMW9gUN4wwkgemc8lMI8PdGlBGAzkrXFCwHIMCnOL0/
+         mg0PumvzDMAXo/8ALLYrlf7C3L8Hofz+hkTd906I2avF2d1lLGrwHoP+YnO7sMAHTRmi
+         edPP1D+5eCYMKU2HVOeTzQPQvTPNVqBwYYilQlWCRlDIqmol5Ce6r78bXatoIS2J5lyL
+         HpWg==
+X-Forwarded-Encrypted: i=1; AFNElJ9kHM1has+jxrUOSrV+wMFdVLdyO8pAunxmIV3SR2OR5YVYUb+2BJNjpv7NisEYIzC44Ug=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuUE2PWDBY8wys/R+5YANuWSUCueQ5sMM7ormk3NvcjrZB6ivU
+	HuWQ+5HeJUBKr56CYQsAEWgUSRvDeHBx1VP7SjkF1wf7SgdmuC2EnkkC
+X-Gm-Gg: Acq92OGMflsrPRZQVyy1gvfaHFdGwyAkDaHvKLxTlkDwAsGexZhTc58GBTX25D3/jr5
+	U77HRFG1txOCQIvsQeYJ3VDPYeyz6Bm9h7dmMSp1W8zsJA0dDJ9tG7L12xDr+MMv72Dgs5WMNtJ
+	nP4iTmP4+hPhJI0w2t1UzQ3m0MLvXJi0W70/nDcZWm9q2VY7CfQL9IVstCUlLGGTC0BAEXAGNaC
+	pZL1mzWQ9jzPlsw55D29YGDv4bxdpLI0lymLptrtjlXc5tvLTY0ihRWg5tk76Mzm+GwBuW5wCx9
+	woyy+/6W3+PA3piS8dw3dJTm4iu4hrww7lDNIB4oRzANwLr7tso6+ZLD5hhgqTQREOaZjbxOm16
+	lOCaZINMaMRVin728D3zQ0NXbL3/SiyUqSXsTjFkUsJIRO9Wsgfw6w0WNBucq1pOLFXvyDkMNCA
+	rXLomR0Fh8dhQZW3oe4azKbHlV0dOxh+jT
+X-Received: by 2002:a17:903:3c45:b0:2c0:bb2d:a30b with SMTP id d9443c01a7336-2c1644ae17fmr20198585ad.32.1780468033143;
+        Tue, 02 Jun 2026 23:27:13 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629cfb4sm12978885ad.59.2026.06.02.23.27.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 23:27:12 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Anushree Mathur <anushree.mathur@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, lkp@intel.com
+Subject: Re: [PATCH v3 1/5] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+In-Reply-To: <56c84e26-69ed-433b-baaf-7b53acc60391@linux.ibm.com>
+Date: Wed, 03 Jun 2026 11:35:55 +0530
+Message-ID: <bjdsw43g.ritesh.list@gmail.com>
+References: <20260522152744.55251-1-amachhiw@linux.ibm.com> <20260522152744.55251-2-amachhiw@linux.ibm.com> <pl2g6xbz.ritesh.list@gmail.com> <20260529141530.fc225a67-e9-amachhiw@linux.ibm.com> <cxyewhx8.ritesh.list@gmail.com> <87se74z4a6.fsf@vajain21.in.ibm.com> <72ef4cdb-8d9e-4319-9c94-b9a46a6f6194@linux.ibm.com> <56c84e26-69ed-433b-baaf-7b53acc60391@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] KVM: PPC: Book3S HV: Validate arch_compat against
- host compatibility mode
-Content-Language: en-GB
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Ritesh Harjani
- <ritesh.list@gmail.com>,
-        Amit Machhiwal <amachhiw@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, lkp@intel.com
-References: <20260522152744.55251-1-amachhiw@linux.ibm.com>
- <20260522152744.55251-2-amachhiw@linux.ibm.com>
- <pl2g6xbz.ritesh.list@gmail.com>
- <20260529141530.fc225a67-e9-amachhiw@linux.ibm.com>
- <cxyewhx8.ritesh.list@gmail.com> <87se74z4a6.fsf@vajain21.in.ibm.com>
- <72ef4cdb-8d9e-4319-9c94-b9a46a6f6194@linux.ibm.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <72ef4cdb-8d9e-4319-9c94-b9a46a6f6194@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: 7yQYkCC05MnmdFRCy-t2AeOhdZ4kCTJA
-X-Authority-Analysis: v=2.4 cv=fv/sol4f c=1 sm=1 tr=0 ts=6a1fb75a cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22
- a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=3RF-NR_pMFLnH7bzSxUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDA0NiBTYWx0ZWRfX82nAmqYef0tv
- 5uykKuLNcrKD9ygOY/mjusgC3rJo5IAI2JC0+hx9S1rhjOp9dGlfVgoJ97zO/lq6eMDx1f+RNOu
- H2HiCf9xS5QXpp6mFZdiosYTE0gsvbVt4dsTh2wVOxlcYJq+mlnCgVdT9BZi+PwfPQ6w5r1puvu
- 1TnmA31VJMCC9YI2MSuUZa0oHhy9psDp7oLEyCpjXvvzypdQxmrtU3H1RMZ1cDl72o4hxogCxIQ
- CY/3x0qYc3Tv/A1UWF6PXdx1oBviaMf9EH3uqcq7g873+seDNxyr/BKLvu0u1JTBc+nNxK2n96k
- t3GXR96wFrgVDTiAigyY74oMdigOLlMSP58DvK08BM6z6shzzBoh5EjupD1gOJlrXcBGBTXthTj
- cNA6CdAbbjrXdf87zEi0hmtn8yptvpk6bmLDbV6t+TL3uNBgc1cmS0D4tFjakIk0IptrGT7vSTB
- /HOGu6wH5cF6CiBRSIA==
-X-Proofpoint-ORIG-GUID: ISZfFh6dnZHLQDaPjT9vuZR-4lfUwLCm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-03_02,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 spamscore=0 phishscore=0 clxscore=1011
- impostorscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606030046
+
+Harsh Prateek Bora <harshpb@linux.ibm.com> writes:
+
+>> amit, can you just post this alone as a separate patch, so that we could
+>> pull it for 7.2 merge?
+>> 
+>
+> FWIW, b4 am -P1 <mbox> should fetch this patch alone (and not the entire 
+> series), See b4 am --help for more options to select a subset of patches.
+>
+
+I agree, however as an FYI in this case -
+I had few review comments on PATCH-1 here [1] - which along with the
+commit msg changes, also had a code change involved, so IMO, it's still
+a good idea if Amit can test and send an updated patch separately for this -
+to be pulled in for 7.2.
+
+[1]: https://lore.kernel.org/linuxppc-dev/pl2g6xbz.ritesh.list@gmail.com/
 
 
+Replying to Vaibhav comment here so that we can reach to the conclusion
+at one place.
 
-On 03/06/26 10:03 am, Madhavan Srinivasan wrote:
-> 
-> On 6/3/26 9:03 AM, Vaibhav Jain wrote:
->> Hi Ritesh, thanks for looking into this patch. My responses to your
->> review comments inline below.
->>
->> Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
->>
->>> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
->>>
->>>> So, we would still want to prioritize the whole series
->>>> instead of just this one patch.
->>>>
->>> Patch-1 could go as a bug fix even in 7.1-rc6 (or maybe with 7.2
->>> bug fixes). - Maddy?
->>>
->>> So, you may want to add a fixes tag and maybe even cc stable if you are
->>> seeing this issue from older kernels maybe when nestedv2 got introduced?
->> This isnt a 'bug fix' per-se but rather strengthening of compat mode
->> checks so that any non compatible PVR being used by the VMM can be
->> caught early. The hypervisor anyway ultimately prevents non-compatible
->> PVRs from being used by the VMM. So there isnt a bug thats being fixed
->> in this patch.
->>
->> The rest of the patch series builds on top of this patch to advertise
->> the available compatible PVRs to the VMM so that it can further
->> preemptively prevent users from forcibly using a non-compatible PVR.
->>
->> Hence IMHO, this patch can be marked for stable tree and potential
->> candidate for 7.2 merge window. But dont see applicability of a 'fixes'
->> tag to this patch
-> amit, can you just post this alone as a separate patch, so that we could
-> pull it for 7.2 merge?
-> 
+> Hence IMHO, this patch can be marked for stable tree and potential
+> candidate for 7.2 merge window. But dont see applicability of a 'fixes'
+> tag to this patch
 
-FWIW, b4 am -P1 <mbox> should fetch this patch alone (and not the entire 
-series), See b4 am --help for more options to select a subset of patches.
+I agree, we need not use a fixes tag then. So, we shall mark this
+with v6.10 tag then.
 
-regards,
-Harsh>
->>> However the new UAPI discussion might still require more discussion with
->>> the community and I don't think it is ready for 7.2 yet ;)
->> Somewhat agree with the above
->>
->>> -ritesh
->>>
-> 
+Cc: stable@vger.kernel.org # v6.10+
 
+(I calculated this based on when Power11 was added: 
+git tag --contains c2ed087ed35ca    | grep -E "^v" |head -1
+v6.10
+)
+
+-ritesh
