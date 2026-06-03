@@ -1,138 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE80B317155
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 15:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E0F3CFF71;
+	Wed,  3 Jun 2026 15:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780501691; cv=none; b=TYU0NIm/umTE5wDT8fjjHSFwjoq4KsZ0wd0EoqverjiCK46MBmy/WRU4vrsP4iec0ABb8JPGtQh9+xMAETDQB4we9dTY1JIJW8oD6ipPZV2t7vc+QhPLB8OpaEjakgkXtXDGP+xUoqsx6CzOTnfQGl2gaThlfD52WDWVl40ukTU=
+	t=1780501720; cv=none; b=mtXAKmcxCgjJ/seCwQNoIDwSf7bsVFh/X4vDGyZUpHD1/sHitxQrDvRdDTs932PxenEsQW8bRe0NhL8yjgLcm1Jbu+c3hTdNLkOahGPNv9Mupii0JAHAVdNjqD+vJnsBiCbArrahjtDrrVOdzPX8OoUd8aw4GmVvWG1qCErZgMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780501691; c=relaxed/simple;
-	bh=+rspAt4QRfb9aCvr/tf02JAfOMu5gaKGWf1kSHsNF34=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GPPbnuSl4mgD4aq89ze7LVMPLkU1PPIno7wPxZ+5zGURFJcecBXDpK6tAsZ+ZpsX8AM44KxqGqrD6dgkOE71MRmetkcpGB08pdGS0kBUfqNt3Asx+1bOLOyjzn3dB4VwjjKy9xE7yHmpDiTozGeOfJTGgmwUhV7jwxPU7O5RvZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZAFtbmiN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780501720; c=relaxed/simple;
+	bh=ouNCmZE7oxdLfG4i6FQgbNqLCetP2ysLUrVM+nxytVc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LshXRXMzOOViIGtCMEp7S9QM/0Bp1oFDQlYmcOSriX/O/suGTXTh+2jcGpwo82S0beVOEa4rDQyq9e4/lLG8z4OdpJ189Em83LYi+/RtKVhf0n0F2oehjBdtXZXLWbhPZc5rBQzLSQxnLi3PaDkBUPXTrY1jab8XhWEd5pHUsWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BZPVSxWC; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZAFtbmiN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616741F00893;
-	Wed,  3 Jun 2026 15:48:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780501689;
-	bh=I1WyU1DqUFPonbdXnJSkZaEYGNbVsQ+YLZrYqJkgvm8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZAFtbmiN+xjhjUUXFMAcsBMhJli9qjo5lzBV6cV/0V28m7HTR0VSr8+NxjN9gkLaP
-	 52khbiZpI2vSIawtAoB4KecGHTb0OZGub9+ZV145G68xM39uXiTg0Sy8qQKcpZrlwX
-	 1iClXdacIPNlEk45TctXYosXbHykh/Fa3E2068Yb6iIwH9qAORLgIRxnz5N4eyjMX3
-	 o1j+zwj6znVsY8Ujg8boOFRJmHPbJXzeg3FQq1o9DUbMEANkaBsrq4Ex/QVLhc/v3z
-	 nvQyxqyXWOYCiHecsAkBEaO/Cg6sXudwzEdn+hrqGTSPu7tP9MNR7t6OXNu8dU9xM5
-	 /w+OY3JYGn+AA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 13/32] iommu/fsl_pamu: implement iova_to_phys_length
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260603151804.1963871-14-guanghuifeng@linux.alibaba.com>
-References: <20260603151804.1963871-14-guanghuifeng@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 15:48:08 +0000
-Message-Id: <20260603154809.616741F00893@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BZPVSxWC"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D89B13329;
+	Wed,  3 Jun 2026 08:48:29 -0700 (PDT)
+Received: from [10.57.26.22] (unknown [10.57.26.22])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F3BF53F86F;
+	Wed,  3 Jun 2026 08:48:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780501714; bh=ouNCmZE7oxdLfG4i6FQgbNqLCetP2ysLUrVM+nxytVc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BZPVSxWChcvpFStmpjWtyNPJrIiDIdtMGaliCHESVQgxKks3WhIwVurwh2M0vbBHe
+	 c+oLB3bKYJLBZa25Gwo8Ti/3Xhg/aoZyl+vGG9BeO5d4ikeiVDAOzInvUPrXrCiAKz
+	 ptKYlqrdFMdTA99NiEIX2Etg1etKPu/Qzn6HR3qc=
+Message-ID: <9d29cec1-fc2c-4a99-9ec3-79f7574743e4@arm.com>
+Date: Wed, 3 Jun 2026 16:48:27 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 07/44] arm64: RMI: Configure the RMM with the host's
+ page size
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-8-steven.price@arm.com> <86a4tsx536.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <86a4tsx536.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] iommufd and vfio misinterpret mapped_length as the remaining c=
-ontiguous length, leading to out-of-bounds physical address batching.
-- [Critical] Assigning 64GB (`1ULL << 36`) to `size_t *mapped_length` silen=
-tly truncates to `0` on 32-bit kernels.
---
+On 21/05/2026 14:30, Marc Zyngier wrote:
+> On Wed, 13 May 2026 14:17:15 +0100,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> RMM v2.0 brings the ability to set the RMM's granule size. Check the
+>> feature registers and configure the RMM so that it matches the host's
+>> page size. This means that operations can be done with a granulatity
+>> equal to PAGE_SIZE.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes since v13:
+>>  * Moved out of KVM.
+>> ---
+>>  arch/arm64/kernel/rmi.c | 42 +++++++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 42 insertions(+)
+>>
+>> diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
+>> index 99c1ccc35c11..a14ead5dedda 100644
+>> --- a/arch/arm64/kernel/rmi.c
+>> +++ b/arch/arm64/kernel/rmi.c
+>> @@ -49,6 +49,45 @@ static int rmi_check_version(void)
+>>  	return 0;
+>>  }
+>>  
+>> +static int rmi_configure(void)
+>> +{
+>> +	struct rmm_config *config __free(free_page) = NULL;
+>> +	unsigned long ret;
+>> +
+>> +	config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
+>> +	if (!config)
+>> +		return -ENOMEM;
+> 
+> This is the sort of buggy construct that is highlighted in
+> include/linux/cleanup.h: initialising the object for cleanup with
+> NULL, and only later assigning the expected value.
+> 
+> It may not matter here, but it will catch you (or more probably me) in
+> the future.
 
-commit bd63c934fd433e9c7d21862a31a674fe50af2eae
-Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Good spot. I have to admit I'm still getting the hang of these cleanup
+handlers.
 
-iommu/fsl_pamu: implement iova_to_phys_length
+>> +
+>> +	switch (PAGE_SIZE) {
+>> +	case SZ_4K:
+>> +		config->rmi_granule_size = RMI_GRANULE_SIZE_4KB;
+>> +		break;
+>> +	case SZ_16K:
+>> +		config->rmi_granule_size = RMI_GRANULE_SIZE_16KB;
+>> +		break;
+>> +	case SZ_64K:
+>> +		config->rmi_granule_size = RMI_GRANULE_SIZE_64KB;
+>> +		break;
+>> +	default:
+>> +		pr_err("Unsupported PAGE_SIZE for RMM\n");
+> 
+> Do you really anticipate PAGE_SIZE being any other value? This is 100%
+> dead code. If you want to be extra cautious, have a BUILD_BUg_ON().
 
-This commit implements the iova_to_phys_length callback for the FSL PAMU
-IOMMU driver. It returns the actual PTE mapping size for a given IOVA.
+No, but falling through is clearly wrong (and likely to trigger AI
+review comments if nothing else) - BUILD_BUG() sounds like a good solution.
 
-> diff --git a/drivers/iommu/fsl_pamu_domain.c b/drivers/iommu/fsl_pamu_dom=
-ain.c
-> index 9664ef9840d2c..60abd497dc639 100644
-> --- a/drivers/iommu/fsl_pamu_domain.c
-> +++ b/drivers/iommu/fsl_pamu_domain.c
-[ ... ]
-> @@ -169,12 +169,30 @@ static void attach_device(struct fsl_dma_domain *dm=
-a_domain, int liodn, struct d
->  	spin_unlock_irqrestore(&device_domain_lock, flags);
->  }
-> =20
-> -static phys_addr_t fsl_pamu_iova_to_phys(struct iommu_domain *domain,
-> -					 dma_addr_t iova)
-> +static phys_addr_t fsl_pamu_iova_to_phys_length(struct iommu_domain *dom=
-ain,
-> +						dma_addr_t iova,
-> +						size_t *mapped_length)
->  {
-> +
->  	if (iova < domain->geometry.aperture_start ||
->  	    iova > domain->geometry.aperture_end)
-> -		return 0;
-> +		return PHYS_ADDR_MAX;
-> +
-> +	/*
-> +	 * PAMU configures exactly one Primary PAACE entry per LIODN with the
-> +	 * Multi-Window (MW) bit cleared and ATM =3D PAACE_ATM_WINDOW_XLATE,
-> +	 * WBAL/TWBAL =3D 0. That is, every LIODN is backed by a single hardware
-> +	 * mapping window of fixed size (1ULL << 36, i.e. 64GB, see
-> +	 * pamu_config_ppaace()) performing an identity translation. The driver
-> +	 * does not split this window into SPAACE sub-windows, so the entire
-> +	 * aperture is one PAACE "PTE" entry. Return that single entry's size
-> +	 * as mapped_length, matching the iova_to_phys_length contract that
-> +	 * mapped_length reports the full size of the mapping entry which
-> +	 * covers iova (not the remaining bytes from iova to its end).
-> +	 */
-> +	if (mapped_length)
-> +		*mapped_length =3D 1ULL << 36;
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	ret = rmi_rmm_config_set(virt_to_phys(config));
+>> +	if (ret) {
+>> +		pr_err("RMM config set failed\n");
+>> +		return -EINVAL;
+>> +	}
+> 
+> What is the live cycle of the page when the call succeeds? Is it
+> switched back to the NS PAS and allowed to be freed?
 
-[Severity: Critical]
-Does this assignment silently truncate to 0 on 32-bit kernels?
+Yes, as Suzuki answered - it never leaves the NS PAS. The RMM just reads it.
 
-Since mapped_length is a size_t pointer, assigning 1ULL << 36 (which is 64G=
-B)
-will truncate to 0 when size_t is 32-bit, potentially causing caller infini=
-te
-loops.
+Thanks,
+Steve
 
-[Severity: Critical]
-Could this implementation cause out-of-bounds physical address batching in
-callers?
+>> +
+>> +	ret = rmi_rmm_activate();
+>> +	if (ret) {
+>> +		pr_err("RMM activate failed\n");
+>> +		return -ENXIO;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>  static int __init arm64_init_rmi(void)
+>>  {
+>>  	/* Continue without realm support if we can't agree on a version */
+>> @@ -60,6 +99,9 @@ static int __init arm64_init_rmi(void)
+>>  	if (WARN_ON(rmi_features(1, &rmm_feat_reg1)))
+>>  		return 0;
+>>  
+>> +	if (rmi_configure())
+>> +		return 0;
+>> +
+>>  	return 0;
+>>  }
+>>  subsys_initcall(arm64_init_rmi);
+> 
+> Thanks,
+> 
+> 	M.
+> 
 
-The comment mentions that mapped_length reports the full size of the mapping
-entry rather than the remaining bytes from iova to its end.
-
-However, callers appear to misinterpret mapped_length as the remaining
-contiguous length. For example, in drivers/iommu/iommufd/pages.c,
-batch_from_domain() fails to account for the IOVA offset within the PTE:
-
-	npages =3D pgsize / PAGE_SIZE;
-
-Similarly, in drivers/vfio/vfio_iommu_type1.c, vfio_unmap_unpin() directly
-uses pgsize without adjusting for the offset:
-
-	len =3D min_t(size_t, pgsize, dma->size - pos);
-
-By returning the full PTE size without adjusting for the offset within the =
-PTE,
-can this lead to memory corruption when callers over-batch physical pages?
-
-> +
->  	return iova;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603151804.1963=
-871-1-guanghuifeng@linux.alibaba.com?part=3D13
