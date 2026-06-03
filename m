@@ -1,68 +1,68 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1282D2D7DD4
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 01:13:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DCE2B9A4
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 01:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780449215; cv=none; b=a5Smp0n7ppzQbht58NpfJeUiGcfO5PFdIROkT+aXZAbvFLk2S1YxqYh5ub3u0Q/L2oZY8mnFTlW6gYyvxFa+iiOt2TYkAi27gYQAvXcyUcuWHvq61SvvieuXDoC0m6sA6VZobTmhpjMPCZG0dNiCCorRUNBcPrX3wXEOeWyqBPg=
+	t=1780449427; cv=none; b=jV6zGZQRvHWAcAHPzJFKPmj+RZNcO5x0IdIatBWScoQVC8a77hdIik/Fe7GqHiXV9J1T3BDTdv9x7ntw8X7vrPcb/DD0R8WX3JZClqeSZU0+smX9FXeAr037cfo9BrvmKndisJ66iGigXrjxwu4KEZSAtbG+c6x7FWsjoYnWeH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780449215; c=relaxed/simple;
-	bh=fDpc5Rrx+kA7LyjzAvSZaX9/CYeYwurvx1OcubUNZ0o=;
+	s=arc-20240116; t=1780449427; c=relaxed/simple;
+	bh=AfeOHXoP4IMONW5uOULUF2nWpillreIFP9OwYK/o6Mg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UNInywjEHDO08UOACu8NCZfa7MucBn65u4nJULYS7IOv2tXNQ6k5Tdx58Caz6EcVAtTwF1N+XN7Lk4qrDcMdBKuT2N47VqiWOeCJgQdh7h2ybztpk9GVXmEnPxrJ8Jg6EZHGFUMfY1zTCyMfPqsOcX9VeamwwrisGN9UqpPhd1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=jAdvurlx; arc=none smtp.client-ip=209.85.160.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=L6DlSj1D1ZXbn5XdarsShfuWMmwX18qQ4A5XTZHs839MSitjXs19uHaPl4yYFa0HCWgIJ7klds3a8lkiHt5zIKv4vzRo8kGMhVP/Df7DXO4hMHw2TItuWU47Q7OYM3JcRQD1oymLMOBdQS7ojLCQ7CjPcTKzyqTmuLDJ2WyzLOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=K5fQAgl5; arc=none smtp.client-ip=209.85.222.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="jAdvurlx"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5176fc0cc72so11481471cf.1
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 18:13:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="K5fQAgl5"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-91550c6ea8eso465381785a.0
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 18:17:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780449212; x=1781054012; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1780449425; x=1781054225; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2cdnAPJ/txGMdC+542Rqoyln86KAovKwsF9QsCq4AEY=;
-        b=jAdvurlxdGkdnRc4tOHKimJlgXi45EIpqUQfn6c9klp04/kxN2LO3Ap82X7otroE1S
-         ntL9uIH3b7HF85Ux8nidq0XlTIFmjBPx6Kse/F6tSUN8dFZJ4QvIdS+D5UclDOUqlY5D
-         XQiZ089pZFXSLKnvbQwdKE+b4PYaVd/a1iNLLhlG7zUtdcqNuh2/zpeYpv7A9CAvjcE1
-         wM1Dg5RHpTZsvHDr3cYoo2GB1MXwmYxP0heeyFRcta5OsnXCP8xGrwhRpYmmKjfWmGMP
-         1KisWityTcwSMJTGG39FjAo0kVFI/OqyWkirYLnAUNPK2HNkkULP8PzBiP/dckcSuZAb
-         Egxg==
+        bh=+0q9jHEvyutbUqJNds5rNSupxxEZQmy/I4DCyfn2tFo=;
+        b=K5fQAgl5cBbKmPdQ6W4dsu1eUVIWDx2iw/+dSAcaYUlXAjCDlWSwRhlOqZkTPTMvyG
+         2ppyTINfnxBvqLqwiOLYCdd7Z70gGsvHhykeg2bA4YrTkqlwTd15iyWb1FavzYJvzV8e
+         uJfMt/vIZAdIwgPfrp758RqHaLrQVEJX2m9k1EfLHGy+gYKIUUm30JQx5TGEobSgDtlz
+         QCjPGkgCrnRIanxrdmjBNYDw5kkmlSkT4tjzU4Be7P96fjTtXnowQZz+Qw0xqu2jNPHY
+         QU082H+GyIe15HeJCWa6zhBub0Yvr0PlRl/3/oIxDHR+qsXxB8VZkFZIzQJt7Z0PhmQt
+         6OXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780449212; x=1781054012;
+        d=1e100.net; s=20251104; t=1780449425; x=1781054225;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2cdnAPJ/txGMdC+542Rqoyln86KAovKwsF9QsCq4AEY=;
-        b=X5OT24vk/w3BagZh9FVebQWu7T+KpTsl+5314cvtQikCxI5TWBqAsfgcV/0s5Eo4K0
-         jT+uwBSeKuaOf5DEB4XgMpUsJR594q6Z8MzW0foj2HDGPnWmxUlv0qTLj58ieqw/0sSY
-         TW6+34y8Qu0lflkcF7K4MjK4p4p7rCy4tmaiMcX/Ts7mtE+Pr8c3Yg7QednuU00J4GVd
-         ws5BbfS3pxHRKe+cFfv8vDUlfiAp3srb2q4FFjP7kM4YBPB/oNZEdpgqV7uXl7Bhynk+
-         QClTyAF22MCXRbAG5Y1RbUbBkr4G62iGTH7ybscCoT2rraE6G+QJB9I6rqryO7m24Hu+
-         XqHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9Nb325hump2ndnMalNZVOxnMEzvXoU7cJjAQAckjqcqQ7QZQjaO93Fn3E+azwN5YGMerU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygpNzrc7iWe3+Kb0D4/dfic5jBxfsdyzth3jt7wOwXeUO9fOO2
-	R1FWBnEIinP7pC5i+JmiAEZkULw2zJUz39r2srk7Y82jz0vRRVAfmFlUuCLpgpbrHbs=
-X-Gm-Gg: Acq92OFJ9p0gg/idhytFC2UsHszZLv+5uyKlCQCx2ZfZwHMDa9R3TjkJDI9Kcjfy8WF
-	na72rtM1cFhrHIbZ2AWRgDRYsy9YPB/TtHtpNBwg7/KTzf/qPJP+2tZTjMfXdus/ToLYHM/o9Z7
-	rDtxBzLs4s9zvVfXOM6qAuNo1g51A9d2PYU5Wk2uxKg56m6LDXDX+IVCWKlHWCp9l4jkO6jySfA
-	cNxlcTuX/cOZvVHB7jlFpvKRgPrBhvnzjXRSxBRiPBZp5hsdIYTIKDYBwJSfuZ+ig9nikyhe6xB
-	jKsMoSESCXYpTQNMRQAtZ8PTmwKBSI5/iIA9CSa293MMyc6nip+nFpU5dl9KTO8UErZrxzwiCuK
-	pIlDoKw4LFKGJuWMe1oiPcWeWADQ2/WAAdcwpu4uq2SibH/wODLt3SAN64hzKvbcBwjW22P8tG2
-	8xu6DJoVt0jNZkUYOFXwraViTO9jOy2dk2TQwfPaLzqNyvdD6J6+voSy5K3QRs3Vq1ZlgoS3UdS
-	9ljTO4/ikfmmAkB
-X-Received: by 2002:a05:622a:5b90:b0:517:7590:228e with SMTP id d75a77b69052e-517784827b9mr21839501cf.0.1780449212162;
-        Tue, 02 Jun 2026 18:13:32 -0700 (PDT)
+        bh=+0q9jHEvyutbUqJNds5rNSupxxEZQmy/I4DCyfn2tFo=;
+        b=B0RCy8AanhmXye9UwEKp2hrvBBEewniHcoy7UmMuepqDngpxRcOdn7Vrn3HjQW4UeO
+         dsQI7InDCZoyKvxZlKhUJQzUuHzLkVHX1CR1kNC3JVC6R1zD05Op46ekLTsK4k6GsjSJ
+         a2832ESFofICvHOxQc/fVI8oI87kNnGN1hLjEfvSayw4p7EF+0fSM7JDSLGHhEfHLyWB
+         iCkm4Go0GYqvQxSM+0+cf5PtYlLlQvEbtCTs8/mTpMjgxxmvBLqw/9oDX7vwU5dBj9hG
+         aYqt7NS2W4132qoymuvXySW7arHUj7Hn9MneFCtjJSa2PFc/pmwg5Dmhexm5Z8LFeNGC
+         zDVw==
+X-Forwarded-Encrypted: i=1; AFNElJ8mBi2776MdZzy0zwA2K1ZxDF6NIheQZzdaSGsb2Gu6h/xTfdwIoWHMgjCqLHXykhj+gVo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGsLCV39UbQYKhtXM2d3splmkPi7FziPac++T3rt3zYB0xF1uK
+	divD+kj62YqUJu58bGWArokylbcgsP6sXgnk4THTR83rRqLBvb/T7Z5yH30a5+3zEw8=
+X-Gm-Gg: Acq92OFzMk7t2E7jo69RXmcCL0fIV4VLKScmHv+MPT63al+WZq95e16kFjCxXBI8nSO
+	mky+SS4pOCHa1qwtCjKOaJeCuspA+j+so6lTX/LP/DvSthYkcDglw25UHiB4B1GAPyUuFhcv7rd
+	SbVsnTPnw3PwdSQT4e+yBPmWKVrStbuLS5blwK0xhdaaH+Rk4Lvo9eZSej9TR9IdpRc1KeZkaPi
+	CWDXpNS11jrtCvxaxrH7QE2D6dlkKzTLnZkisG+OUdXT4wR63uKMKYgYb+g9icGa7DgRacuM4dJ
+	k9l0PbmhzZ8RhHx53FLM7IyOURXYzKfsq5PfZKjE2u2mzVtMMcqCYSuCLGIzHphB1BNoosZQKcD
+	iKkj7hBB0m7+BQnDK7nC1/H9Us7ttk/NSMi2Z+L/a53hWLffCmyJ/UDeM1N1bCgUFEE+Lh/IYmw
+	p+kRdAR3l01WVVyz4VZx5Y6fIB55xa+gH0VU9n5GXea5bV/3ZW6bNCNkW7lyOACNFIVJUEpnYom
+	ZeBpGSuhOXV47mN
+X-Received: by 2002:a05:620a:4455:b0:914:c788:761a with SMTP id af79cd13be357-9158a84f289mr254481885a.58.1780449425306;
+        Tue, 02 Jun 2026 18:17:05 -0700 (PDT)
 Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775c54177sm13497781cf.12.2026.06.02.18.13.30
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a009fe7sm102378285a.8.2026.06.02.18.17.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 18:13:31 -0700 (PDT)
+        Tue, 02 Jun 2026 18:17:04 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wUaAk-00000004yZP-2Ic0;
-	Tue, 02 Jun 2026 22:13:30 -0300
-Date: Tue, 2 Jun 2026 22:13:30 -0300
+	id 1wUaEC-00000004yu4-0q6Q;
+	Tue, 02 Jun 2026 22:17:04 -0300
+Date: Tue, 2 Jun 2026 22:17:04 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 Cc: adrian.larumbe@collabora.com, airlied@gmail.com, alex@shazbot.org,
@@ -78,11 +78,11 @@ Cc: adrian.larumbe@collabora.com, airlied@gmail.com, alex@shazbot.org,
 	tzimmermann@suse.de, wei.guo.simon@linux.alibaba.com,
 	will@kernel.org, xlpang@linux.alibaba.com,
 	alikernel-developer@linux.alibaba.com
-Subject: Re: [PATCH v2 10/30] iommu/ipmmu-vmsa: implement iova_to_phys_length
-Message-ID: <20260603011330.GS2487554@ziepe.ca>
+Subject: Re: [PATCH v2 11/30] iommu/mtk_iommu: implement iova_to_phys_length
+Message-ID: <20260603011704.GT2487554@ziepe.ca>
 References: <20260531093637.3893199-1-guanghuifeng@linux.alibaba.com>
  <20260602104637.1219810-1-guanghuifeng@linux.alibaba.com>
- <20260602104637.1219810-11-guanghuifeng@linux.alibaba.com>
+ <20260602104637.1219810-12-guanghuifeng@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -91,35 +91,25 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260602104637.1219810-11-guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20260602104637.1219810-12-guanghuifeng@linux.alibaba.com>
 
-On Tue, Jun 02, 2026 at 06:46:17PM +0800, Guanghui Feng wrote:
-> Migrate IPMMU-VMSA to implement iova_to_phys_length, passing through
-> mapped_length from io-pgtable.
-> 
-> Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-> ---
->  drivers/iommu/ipmmu-vmsa.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iommu/ipmmu-vmsa.c b/drivers/iommu/ipmmu-vmsa.c
-> index 9386b752dea2..a1b659ddbdb5 100644
-> --- a/drivers/iommu/ipmmu-vmsa.c
-> +++ b/drivers/iommu/ipmmu-vmsa.c
-> @@ -699,14 +699,18 @@ static void ipmmu_iotlb_sync(struct iommu_domain *io_domain,
->  	ipmmu_flush_iotlb_all(io_domain);
->  }
->  
-> -static phys_addr_t ipmmu_iova_to_phys(struct iommu_domain *io_domain,
-> -				      dma_addr_t iova)
-> +static phys_addr_t ipmmu_iova_to_phys_length(struct iommu_domain *io_domain,
-> +				      dma_addr_t iova, size_t *mapped_length)
->  {
->  	struct ipmmu_vmsa_domain *domain = to_vmsa_domain(io_domain);
->  
+On Tue, Jun 02, 2026 at 06:46:18PM +0800, Guanghui Feng wrote:
+> -	pa = dom->iop->iova_to_phys(dom->iop, iova);
 > +	if (mapped_length)
 > +		*mapped_length = 0;
+> +
+> +	pa = dom->iop->iova_to_phys_length(dom->iop, iova, mapped_length);
+> +	if (pa == PHYS_ADDR_MAX)
+> +		return PHYS_ADDR_MAX;
 
-Why?
+???
+
+I guess lots of AI made this right? Please review the AI output for
+the little slop things left over..
+
+I saw enough unnecessary hunks, and goofy things like putting the
+mapped_len zero in every driver instead of in the core caller.
+
+That said it looks pretty close overall..
 
 Jason
