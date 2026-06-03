@@ -1,82 +1,80 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DC426C38C
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 00:45:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AF518872A
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 01:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780447529; cv=none; b=Lb6xaxLS1FBstaLD03Sv+O3SrsIfRzcDlHMK+mFU4psfxn0vS3Lji+CVb0FP54oXzGQUY9uTWTFF6w6nb6N3OuXd4sFAr5kiE8E2Y69i5bR27es9KjUws/gbeLxMeNMtjSoc92DzKU28ZEC9+aVVjortczc9QMisTfW5RTPnLc0=
+	t=1780448752; cv=none; b=sHpvNxpu81k0kT8+zak8o0Q/dete3wWyrXWTKhP6AUputLedyb/OBv8UmKW1IIbgtq6Tk8dAF1d287NhzZiq0/aejhjtVt2cys6d6v8o1ebvk7AgxW3SfnwZKd4qZcDI80NZhC3VmxM1+QMim5JX4DasFkhyOn6hG2hMAPcLSds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780447529; c=relaxed/simple;
-	bh=fYeJX8joKmObdhrh8tQtfCeBM4ISEnrgCnjg5ucGFT0=;
+	s=arc-20240116; t=1780448752; c=relaxed/simple;
+	bh=u4ZwvdtqyKkvqfZ4xOXnUQfX+M6r5bs1mqg9vWH4izY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rwgI1SSvCcTlJX4b9elnH5Vl0P52RG/BPcBxNKjUQ6MSrtD5K2jTGLFA5HI5GSEJTNeeFhu7K2V54+VyhXrsj5JOKD7oKkmNdv4CoGBT/Wiu6tBUVTfEQWpGhIILNh21Tb9yMpglx2YkDjvgTgonFgE3Wpacwf65EO2xXrQtok4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=DBp2IZn6; arc=none smtp.client-ip=209.85.222.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=ltF4wQI0g3ucEHAoITaeTsiSWxUjKVSf6pTLWnPzpFWh4+p+GXCo32ViM9CaQFaQgipa4LpbnjlqmG4VUCIpDnp7W8DmnC3xZU6vmYL3aEtewsTR7JkPdQ5vd17U7kjQGZI75QuEcWpaRvHIm5lvoawDnif2PhvCcnv9jUK2sgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Vb/IqGD9; arc=none smtp.client-ip=209.85.160.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="DBp2IZn6"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-91587626ae1so88010685a.3
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 17:45:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Vb/IqGD9"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-517654b8e28so14606541cf.3
+        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 18:05:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780447526; x=1781052326; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1780448750; x=1781053550; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3KDvAGi+1n2YXetnWM+OO8ay/rFVkZZd+3BY7j695Gc=;
-        b=DBp2IZn6OJXydpul5Shl7SAnVhkJ7EaDXGakzzRWZlhjWPbvDQqjUO8oDqRFRH6qrI
-         Ku7bKh1s9J78XTIu9iujQC0nE4qID9UejKWz31vPhpI39Xz/xnjeTdbUvZsi4m7RtYLc
-         qRzQ5sxmrEunz3BptU8jN91XuNFv6E3SxPZwT9J49+NC+gbrwzfpHKheg4NM5TA/mKkr
-         8Qyf1EQ0yCaC4y5dV8omoclZZvf+FJBVr9u6Or24tkpO3moazrvIKF7jsBCd5yxxux5l
-         zPZPQH6v/oSnpyLJZGws2HaRy6Je5IWOn4A9wi5O+gQWIETPJpItAyg0S+IcNEU9HfBp
-         tmrA==
+        bh=nF9EObNDEmryj31PflampZ0Pq/iKEgkudnP3BX3S/AU=;
+        b=Vb/IqGD9/62/BIaKGrIR97P2I/GXAC662Sggs9S78HDf0fobGJc2/vEkpLplHqBWoB
+         xCMzsdzLXXiBVsPblWOR5W/XfIElIfei8vaUSCFIsr90zkcd6jtLr1h70i5l4t2J7DAT
+         4O4xbWrrfMMfI1vU0fpwMLEzojfBK1DmxbFeoPvJQ/fa40QsQuYk4h9oaLj/G7Bn1/Fn
+         06XMVTzgL9VgtH37FyPgDXp223hu5PfyqJyVlZc7H3JTfQKt1oX2vRbADp1F7/ZJEQ9f
+         2SeskE4cOCA7RZ9toCEx8LE7BnROL8gXECEbv41grH/51KjrRrnYeaoy41DPHV1CcoZm
+         LZkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780447526; x=1781052326;
+        d=1e100.net; s=20251104; t=1780448750; x=1781053550;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3KDvAGi+1n2YXetnWM+OO8ay/rFVkZZd+3BY7j695Gc=;
-        b=CEAcZ8VoluRmSeFNOip8iARxc1gYyWF4BkrXU1vvcaw3fwkpI0lyEbMbnXfV/tY05J
-         JyHz+hq/UGZl9mPfSNWUhW51stCcc9ob5PlFfERx+qzzLMuqM6GgSmKMIUAYDSvUMgBG
-         G2BQHO9PvdApd1ssmLI5hIAXotG5Gw9F8I47PxLzHFV+YQ5D84Osk7gtsWCRFkmZNxAw
-         5aLiCyAXA8Wm+1ezEnoFxihTjHuHylY3SGItFAO9oRP+JekQKuKNk5VCd89BsDmOf5N9
-         aB3yW8tWz0bASgpCjejuhBx9n+vj9UUC0QBWqY9ROq7hYDOheYAi2J+A0YtbKSkmtq/f
-         luvw==
-X-Forwarded-Encrypted: i=1; AFNElJ8b19kDRBMjMqNzjslDKYXV8EHqJ2xo+Lq8T4zFE+teFD/EXzqynMYn2IYHvkizefk1+7w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwBGpcTYSbOaHMYyzKzqBd8IyI4naP/SihLBB8Q4/EsBOyvmnP
-	nQHeBfcXeEIbbLtGkDbSTKPulIOSWKRAOYBU187kSjeegiGrin8tbG8MTTA4c2ajsK8=
-X-Gm-Gg: Acq92OFfe+MyvJ/FPtuggBEZKj92acXaHcgbxLt19C6j1krnwcmOrm3op0LWhbCNBbh
-	34dgmIaoGMoER7DCtnPq2++jmtDrsfVOznluOkiM3AoHVZc/DuntcUN2gps9ZZODP2e5kyMFnNH
-	WSNTjDXTY1Gw+77PQh4yAk+ogjt2prqkZa3pviRmZ2fdncjnFV+M1qC3M/JO1ohSMekgOp4SzNT
-	dhqRbnpg6/BJyW9rfM9po55Wclp2UJrq6aVgUz9JnBjKz8pE8OBpBHXsNNIgp4lfsON/Ybb7gpg
-	EJzIPrw99W19Net8lkAdFi1oaLBVciatmJaDfYEylQTsDl/JG3+dXp8tAuyUYW6g0quw0BmEtMD
-	fWiQQ+Co/5sxCS53sWzANVyW0+gHizSje4M1q7ovaJVQkLi+eXolBxBaoKDYq/HMJ2VLnzAxZMR
-	6bg64MGiggjH7hwLCRY2b51H+iwyd0XPrHdJIhNBL/z/56RXcrHuO3PKqWEfrze8EaulW0ssYRz
-	rrA/96i8rgjsEKe
-X-Received: by 2002:a05:620a:488c:b0:915:8010:c2a9 with SMTP id af79cd13be357-9158a82bcb7mr247072785a.52.1780447525938;
-        Tue, 02 Jun 2026 17:45:25 -0700 (PDT)
+        bh=nF9EObNDEmryj31PflampZ0Pq/iKEgkudnP3BX3S/AU=;
+        b=ePqlT/F7re4DhrIniNY3811JHb/ioT4CTG975tygsx85lIrOo6vMCdkSnP3mWGIbZU
+         SqyT4Al1IwCE0DVMLY5YAlm2XhzIWVH5Kcqn/8R+HxlxCkqLl+LGlNFeGIJT0selWxEw
+         HbZtmC8ugCfzAP6zx7/7Mm4Ove+QyRmazSU2riAgfP1okJkQ7KbgVZMI8Lswr1k4m0zo
+         xkuw3361okRYsqRc1DfBkCTKseIlm/0UuKhA3CrTxgpbHWTpSRUVUm6SmwWneJGfbPrs
+         9B+0Pogp5H6W+9GHV2GpK3dIYexPad+k/vtU+yrfnQRB3aRSHx4ptfzKdHbTbZUmkDed
+         ld6A==
+X-Forwarded-Encrypted: i=1; AFNElJ9kcFONYe/zDk2saaYVdVxQ2S+VGw4C9rkgyO/osLPJiZK0E2fU9ynWqw/oYQFv4D5IMCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxrfz0ukij8uifh/b614RUApORrMBVxMbb+SLXvQUOe4zGOoDxo
+	eRmTUWpaY2bWXv0lpjMEXGQ5K+BKLW8HrO1ZcoA2+YDQH9CStOIP7srcgYjPBwa19Pg=
+X-Gm-Gg: Acq92OE1acKLpWNqCWPBbUqRqclRbdEshMtiah7ysvHw/R4QzB7+HilowjQMB0ItkWy
+	LA5fAJpsgclVJoh2+7JgNL93TVOYwpuhFBuOyt1DNawLOjfIR0/rtMB3SnRYcz1VtL0vVsqIfWB
+	hO3oUCRhmkWNYRggwO/z6//leREzx/9klB+qS4mZbGvR5yVsVEjsBoe8AOqxWt+ka/j7ldRyzTY
+	rmmBaOowP1LhfvV0TzSBdP9wVkUyLqIh03MJv5QCIRw2Ws+0l0aFHK5CvQqvlVkGgrkNzPzEWYS
+	J6+AVHKNJKH0ngYNYsG4YE28FcCAUmCfh5lzYhLKfbVxjacl2fFtzUxg270h/T4mZC9G/JP4yyV
+	d570f7AgRLG4kRjW7RodN+blaKVjr2x22yP+USPfioObHW9Fx/qewcKxaodiIqzw+tBMuCQkBHU
+	gg7AEajvmRILf2Gtwr+0WCB6FBw1G2FstBeFacAZ+yo997v/89n4U3sPtq+EJrub4YCDYAATrCB
+	qH2Q1s3zqZs934a5qAJM19pJy4=
+X-Received: by 2002:ac8:7dd6:0:b0:50f:b257:9301 with SMTP id d75a77b69052e-5177877c12cmr23156881cf.52.1780448749904;
+        Tue, 02 Jun 2026 18:05:49 -0700 (PDT)
 Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a00b104sm102180185a.4.2026.06.02.17.45.25
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775c297a8sm12256991cf.8.2026.06.02.18.05.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 17:45:25 -0700 (PDT)
+        Tue, 02 Jun 2026 18:05:49 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wUZjY-00000004wLd-2FXa;
-	Tue, 02 Jun 2026 21:45:24 -0300
-Date: Tue, 2 Jun 2026 21:45:24 -0300
+	id 1wUa3I-00000004y36-1UNk;
+	Tue, 02 Jun 2026 22:05:48 -0300
+Date: Tue, 2 Jun 2026 22:05:48 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: Alex Williamson <alex@shazbot.org>, wathsala.vithanage@arm.com,
-	helgaas@kernel.org, wei.huang2@amd.com, zhipingz@meta.com,
-	wangzhou1@hisilicon.com, wangyushan12@huawei.com,
-	liuyonglong@huawei.com, kvm@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v14 0/8] vfio/pci: Add PCIe TPH support
-Message-ID: <20260603004524.GL2487554@ziepe.ca>
-References: <20260528124649.14732-1-fengchengwen@huawei.com>
- <20260601095840.3aaaa508@shazbot.org>
- <59c82855-59a7-4f0e-b534-d35535d04b93@huawei.com>
- <20260602170847.75bd159d@shazbot.org>
- <3f8d1722-6749-4f3a-b630-c96303cec284@huawei.com>
+To: Junrui Luo <moonafterrain@outlook.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>, Shay Drory <shayd@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] vfio: prevent infinite loop in vfio_mig_get_next_state()
+ on blocked arc
+Message-ID: <20260603010548.GP2487554@ziepe.ca>
+References: <SYBPR01MB7881290BBDE79B61AE6A017FAF122@SYBPR01MB7881.ausprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -85,43 +83,34 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3f8d1722-6749-4f3a-b630-c96303cec284@huawei.com>
+In-Reply-To: <SYBPR01MB7881290BBDE79B61AE6A017FAF122@SYBPR01MB7881.ausprd01.prod.outlook.com>
 
-On Wed, Jun 03, 2026 at 08:34:53AM +0800, fengchengwen wrote:
-
-> This translation helper is required to handle varied TPH configurations,
-> including cases where ST entries live inside device private registers
-> instead of MSI-X or TPH capability space.
-
-I thought we agreed vfio had to block that feature in config space due
-to security concerns? That's what enable_unsafe_tph is about, right?
-
-> Prior discussion with Jason (
-> ref: https://lore.kernel.org/all/20260414151125.GF2577880@ziepe.ca/)
-> indicated VFIO-PCI is the correct component for per-device TPH
-> implementation.
-
-> > The host-only opt-in issue above also doesn't appear to be addressed or
-> > rebutted.
+On Tue, Jun 02, 2026 at 04:58:48PM +0800, Junrui Luo wrote:
+> vfio_mig_get_next_state() walks vfio_from_fsm_table[] one step at a time,
+> looping to skip optional states the device does not support until
+> *next_fsm is supported. A blocked transition is encoded as
+> VFIO_DEVICE_STATE_ERROR, which the trailing return reports as -EINVAL.
 > 
-> enable_unsafe_tph host opt-in already fully gates all new TPH ABI:
-> TPH cap + feature ioctl are completely hidden from userspace when off,
-> no userspace opt-in needed.
+> The skip loop does not account for the ERROR sentinel.
+> state_flags_table[ERROR] is ~0U and vfio_from_fsm_table[ERROR][*] is
+> ERROR, so once *next_fsm becomes ERROR the loop condition stays true and
+> *next_fsm never changes. The blocked arcs STOP_COPY -> PRE_COPY and
+> STOP_COPY -> PRE_COPY_P2P map to ERROR yet pass the support check on a
+> precopy-capable device, causing the loop to spin forever while holding
+> the driver state mutex. This can result in a soft lockup, and a panic
+> with softlockup_panic set.
+> 
+> Terminate the skip loop on the ERROR sentinel so a blocked transition
+> falls through to the existing return and reports -EINVAL.
+> 
+> Fixes: 4db52602a607 ("vfio: Extend the device migration protocol with PRE_COPY")
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+> ---
+>  drivers/vfio/vfio_main.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-I agree in general that the presence of enable_unsafe_tph VFIO has to
-report the per-device steering tags to userspace so it can program the
-device specific registers, nothing else can do this.
-
-But I don't really get what is going on with all the new uAPI
-proposed.
-
-I don't understand what VFIO_DEVICE_FEATURE_TPH_ST_CONFIG is supposed
-to be for, userspace should not be able to directly program registers
-that are kernel controled. In this case it is 'safe' and it should be
-only programmed by specifying abstract information like TPH_CPU_ST
-does.
-
-I'm also wondering why it needs a shadow entry, that doesn't seem
-normal for config space tables..
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
 Jason
