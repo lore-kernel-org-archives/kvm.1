@@ -1,165 +1,211 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE88F35DA5D
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 16:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9271135B636
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 16:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780504371; cv=none; b=tbDAq4N1/eBL9zjOSimjzzlppDDuyR2N43rqois89Y2+kVwEW+3zDoekbhhPJBRyi2cIFFLeoegLzOyyQGfm4ZfkoI1Y4NK1z/G5/r3ijlGuY93nQnUQEd2oHpfEo2wjulcMYLKWHyozX0pR/0f/CfwCXjD3qbBuFLLx6bWte+M=
+	t=1780504371; cv=none; b=uyRbBNHPK4dEF4J5X2Liam6mKhA2+dAolD6UNt2t19xi07FaGLh8Y/umIomxHPvmxqTp+L9L4ZF7h+2IwYOvxBxYArKW4Ad+1hov1FDV9iMbtPXqn+0kB4ae4AP4mpqhWjyYSvbA7sRjQY7r/1SWkWF5YVpS/7/zu9bWvwDHtls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780504371; c=relaxed/simple;
-	bh=f9nKkS4BLQkxr7pM86UjiUScruhOghvv0SIkJ2GuIJ0=;
+	bh=961XiAwkm07baSsdII83TzUH+FPJOeDf854xxnCEJhs=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZWx6hiPCfXLA3DdT7v6zEIIHoFoAuWO4BytCdc25mmZk1FoN2/Wq99WgcsfIsX+6iIg7Ao7J9GgVaXUs2o44N0q6xtQYgAxDmMZUjOBW6xO7leGJkSTuMz1h2TKf/RNOX4SveVMFGcOTl8Dho7j24/sBtiz3e625e637ImQP/fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QzexMSaT; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=qmiuCzZSu6N0jsH74voCmwql7381eFSVJYbZj89XtrLt6BAkzYnWjetOGjNSGLFXnNPont0HvpMph5c5WrY6A5QzMZqqJxVK7mxQxEIv93+M9g6xkQ575ROMqc55tTxvC7g6IDYhmZYvzY7Qx3E+U0p6oOax9EvkiBTnoXqqU/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mRk9KI+I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QzexMSaT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744341F00893;
-	Wed,  3 Jun 2026 16:32:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mRk9KI+I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A2A1F00898;
+	Wed,  3 Jun 2026 16:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780504369;
-	bh=ENPWNrwIfUzSApQaRRH02eHrg+sQXf7DNoBxsOvmCCg=;
+	s=k20260515; t=1780504370;
+	bh=ZKPGLUdtKovmRFmBlWLazXjnGCIv3ZdM0+fFpkA7Qu8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QzexMSaT52ABcr570CDR8X7s9XtuET1NOWJid0eyXQQQyWC3s+6n3yTS+lo0Cwx1K
-	 dPMeud8EHmLnPf5vocODGmWUVQT9+cNKBfVGpANjZ09qqFqrn400ZnKMCVFMiL6n37
-	 DyHGXDfjSpmLQOCy/emt/SU8opZ506XTwf5fghmYzu0HptDRWACB8sISD3Gxqx8t4G
-	 j3ibI2hLfSc4APiVfDMQaJGg7tY9fgOYW73UP8pbwLwvvvyVq1pZQGQtUGAOS1gOK7
-	 nokE8TAsvStjkuem3nPBgM2H17BkwhUn8fRlMISSDvk/eaniROblqZP4rf+0lhHtou
-	 v0eE6NQ0P1uKw==
+	b=mRk9KI+IxZaG+vzsWcTKnYhbVte/0E8ZYLA0/0kkBdviwA2iiJrY0bJNWiQfU/zZS
+	 Zd0Hd0HcgFWvHuCNEPTHxa5ELteJlJw6jxwDYUa0RwCeFrKz2ipmk6l6URPJixtCAH
+	 CtbwJ3whmP9Nvg5NxyjJLpCJH4+wxS0xmK+OhJ6eD6x/tbtHYBa14v1A5GpIarO/sd
+	 aosZIOOFYbNQEfJX3pRcld1/FAsUEGYIAKbQUepA5e0Wr/nMeYjExk3UFyCvFLnfjT
+	 MHmdkiezebwqsKjYFVGAdyN7dA/S/UBNegKeLQ1Y0jZ+TzXC0t4Fz7K3aM9rkqreIA
+	 iJ5y89jFdHQVQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 3/3] KVM: s390: Allow for 2G hugepages
+Subject: Re: [PATCH v3 29/32] iommu/io-pgtable-arm: remove deprecated
+ iova_to_phys wrapper
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260603154758.234768-4-imbrenda@linux.ibm.com>
-References: <20260603154758.234768-4-imbrenda@linux.ibm.com>
+In-Reply-To: <20260603151804.1963871-30-guanghuifeng@linux.alibaba.com>
+References: <20260603151804.1963871-30-guanghuifeng@linux.alibaba.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 16:32:48 +0000
-Message-Id: <20260603163249.744341F00893@smtp.kernel.org>
+Date: Wed, 03 Jun 2026 16:32:49 +0000
+Message-Id: <20260603163250.16A2A1F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-New issues:
-- [Critical] Enabling 2G hugepages exposes a hardcoded `_SEGMENT_MASK` in `=
-_crste_fc1`, injecting invalid entries into hardware page tables.
-
-Pre-existing issues:
-- [High] Concurrent page faults can insert 1M or 2G huge pages into a PV gu=
-est gmap while `KVM_PV_ENABLE` runs, because `gmap_split_huge_pages` and `g=
-map_link` both acquire `mmu_lock` in read mode without sufficient serializa=
-tion.
+- [Critical] The S1 fallback path in `arm_smmu_iova_to_phys_length()` fails=
+ to populate the `mapped_length` parameter, leading to uninitialized variab=
+le usage in caller loops (e.g., VFIO and iommufd) and massive page refcount=
+ corruption.
 --
 
-commit 8d8980fda5d60990dd59ce7e857350fb4c8cedbd
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+commit a0705b9a6f111fb1cda1da70c89bd7254ec4c5db
+Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-KVM: s390: Allow for 2G hugepages
+    iommu/io-pgtable-arm: remove deprecated iova_to_phys wrapper
 
-Change gmap_2g_allowed() to perform the necessary checks to allow for
-2G hugepages to be used, instead of unconditionally returning false. The
-GMAP_FLAG_ALLOW_HPAGE_2G flag is now taken into account when evaluating
-whether a 2G hugepage can back the faulting address.
+Remove the iova_to_phys wrapper function and .iova_to_phys assignment
+from ARM LPAE io-pgtable, as all callers now use iova_to_phys_length.
 
-> diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
-> index c9e348149ba12..c5a8132eaa22b 100644
-> --- a/arch/s390/kvm/gmap.c
-> +++ b/arch/s390/kvm/gmap.c
+While reviewing the caller migrations and the new iova_to_phys_length
+interface finalized by this patch, I noticed a critical issue introduced
+in the underlying driver implementations and their callers.
 
 [ ... ]
 
-> @@ -635,10 +635,27 @@ int gmap_try_fixup_minor(struct gmap *gmap, struct =
-guest_fault *fault)
->  	return rc;
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/ar=
+m-smmu/arm-smmu.c
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> @@ -1384,20 +1384,21 @@ static phys_addr_t arm_smmu_iova_to_phys_hard(str=
+uct iommu_domain *domain,
+>  	return addr;
 >  }
 > =20
-> +/**
-> + * gmap_2g_allowed() - Check whether a 2G hugepage is allowed.
-> + * @gmap: The gmap of the guest.
-> + * @f: Describes the fault that is being resolved.
-> + * @slot: The memslot the faulting address belongs to.
-> + *
-> + * The function checks whether the GMAP_FLAG_ALLOW_HPAGE_2G flag is set =
-for
-> + * @gmap, whether the offset of the address in the 2G virtual frame is t=
-he
-> + * same as the offset in the physical 2G frame, and finally whether the =
-whole
-> + * 2G page would fit in the given memslot.
-> + *
-> + * Return: true if a 2G hugepage is allowed to back the faulting address=
-, false
-> + *         otherwise.
-> + */
->  static inline bool gmap_2g_allowed(struct gmap *gmap, struct guest_fault=
- *f,
->  				   struct kvm_memory_slot *slot)
+> -static phys_addr_t arm_smmu_iova_to_phys(struct iommu_domain *domain,
+> -					dma_addr_t iova)
+> +static phys_addr_t arm_smmu_iova_to_phys_length(struct iommu_domain *dom=
+ain,
+> +					dma_addr_t iova, size_t *mapped_length)
 >  {
-> -	return false;
-> +	return test_bit(GMAP_FLAG_ALLOW_HPAGE_2G, &gmap->flags) &&
+>  	struct arm_smmu_domain *smmu_domain =3D to_smmu_domain(domain);
+>  	struct io_pgtable_ops *ops =3D smmu_domain->pgtbl_ops;
+> =20
+> +
+>  	if (!ops)
+> -		return 0;
+> +		return PHYS_ADDR_MAX;
+> =20
+>  	if (smmu_domain->smmu->features & ARM_SMMU_FEAT_TRANS_OPS &&
+>  			smmu_domain->stage =3D=3D ARM_SMMU_DOMAIN_S1)
+>  		return arm_smmu_iova_to_phys_hard(domain, iova);
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 [Severity: Critical]
-Enabling 2G hugepages here exposes a hardcoded _SEGMENT_MASK in _crste_fc1(=
-).
-When 2G hugepages proceed to _gmap_link(), it calls _crste_fc1() with an
-unaligned f->pfn and a Region-3 table type.
+Does this fallback path leave mapped_length uninitialized?
 
-arch/s390/kvm/dat.h:_crste_fc1() {
-    union crste res =3D { .val =3D PFN_PHYS(pfn) & _SEGMENT_MASK };
-    ...
-}
+If the SMMU domain has ARM_SMMU_FEAT_TRANS_OPS and uses stage 1 translation,
+we return directly from arm_smmu_iova_to_phys_hard() without populating the
+mapped_length parameter. This leaves the caller's stack variable completely
+uninitialized.
 
-The constructor hardcodes _SEGMENT_MASK, which fails to zero out bits 20-30
-for Region-3 hugepages. For a Region-3 large page entry, the hardware requi=
-res
-these bits to be strictly zero. Writing the unaligned 2MB-to-2GB offset into
-these reserved bits causes the hardware MMU to trigger a Translation
-Specification Exception when it walks the page table.
-
-Should _crste_fc1() be updated to use _REGION3_MASK for Region-3 entries to
-prevent guest crashes?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but adding 2G hugepages to this
-path exacerbates a preexisting race with PV initialization.
-
-Concurrent page faults can insert huge pages into a PV guest gmap while
-kvm_s390_pv_init_vm() runs. The initialization code clears the flags and ca=
-lls
-gmap_split_huge_pages():
-
-arch/s390/kvm/pv.c:kvm_s390_pv_init_vm() {
-    ...
-    clear_bit(GMAP_FLAG_ALLOW_HPAGE_1M, &kvm->arch.gmap->flags);
-    clear_bit(GMAP_FLAG_ALLOW_HPAGE_2G, &kvm->arch.gmap->flags);
-    gmap_split_huge_pages(kvm->arch.gmap);
-    ...
-}
-
-However, gmap_split_huge_pages() only takes a read lock on kvm->mmu_lock.
-If a vCPU thread evaluates test_bit() in gmap_2g_allowed() to true before
-the flag is cleared, and is then preempted, the splitting function can
-walk past the faulting GFN.
-
-When the vCPU thread resumes, it can atomically insert the 2G huge page
-into the gmap via _gmap_link(), as that also only holds mmu_lock in read
-mode.
-
-Does this race allow a PV guest to map a hugepage and break memory
-isolation invariants?
-
-> +	       !((f->gfn ^ f->pfn) & ~_REGION3_FR_MASK) &&
-> +	       slot->base_gfn <=3D ALIGN_DOWN(f->gfn, _PAGES_PER_REGION3) &&
-> +	       slot->base_gfn + slot->npages >=3D ALIGN(f->gfn + 1, _PAGES_PER_=
-REGION3);
+> =20
+> -	return ops->iova_to_phys(ops, iova);
+> +	return ops->iova_to_phys_length(ops, iova, mapped_length);
 >  }
 
+[ ... ]
+
+> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_ty=
+pe1.c
+> --- a/drivers/vfio/vfio_iommu_type1.c
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -1177,25 +1177,42 @@ static long vfio_unmap_unpin(struct vfio_iommu *i=
+ommu, struct vfio_dma *dma,
+> =20
+>  	iommu_iotlb_gather_init(&iotlb_gather);
+>  	while (pos < dma->size) {
+> -		size_t unmapped, len;
+> +		size_t unmapped, len, pgsize;
+>  		phys_addr_t phys, next;
+>  		dma_addr_t iova =3D dma->iova + pos;
+> =20
+> -		phys =3D iommu_iova_to_phys(domain->domain, iova);
+> -		if (WARN_ON(!phys)) {
+> +		/* Single page table walk returns both phys and PTE size */
+> +		phys =3D iommu_iova_to_phys_length(domain->domain, iova,
+> +						  &pgsize);
+> +		if (WARN_ON(phys =3D=3D PHYS_ADDR_MAX)) {
+>  			pos +=3D PAGE_SIZE;
+>  			continue;
+>  		}
+> +		if (WARN_ON(!pgsize || pgsize < PAGE_SIZE))
+> +			pgsize =3D PAGE_SIZE;
+> =20
+>  		/*
+>  		 * To optimize for fewer iommu_unmap() calls, each of which
+>  		 * may require hardware cache flushing, try to find the
+>  		 * largest contiguous physical memory chunk to unmap.
+> +		 *
+> +		 * mapped_length already accounts for contiguous entries
+> +		 * from iova, then try to join following physically
+> +		 * contiguous PTEs.
+>  		 */
+> -		for (len =3D PAGE_SIZE; pos + len < dma->size; len +=3D PAGE_SIZE) {
+> -			next =3D iommu_iova_to_phys(domain->domain, iova + len);
+> +		len =3D min_t(size_t, pgsize, dma->size - pos);
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[Severity: Critical]
+If mapped_length (returned here as pgsize) remains uninitialized from the
+SMMU S1 fallback, couldn't this cause massive page refcount corruption?
+
+If pgsize contains a large uninitialized value, the loop logic would assume=
+ a
+huge contiguous block of physical memory starting from the first translation
+result.
+
+When vfio_unpin_pages_remote() sequentially unpins this block, it could
+corrupt the page refcounts of random host memory pages that were never
+actually pinned or part of this DMA region, potentially leading to
+use-after-free or host kernel panics triggered simply by untrusted
+userspace.
+
+[ ... ]
+
+> diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
+> --- a/drivers/iommu/iommufd/pages.c
+> +++ b/drivers/iommu/iommufd/pages.c
+> @@ -445,11 +470,36 @@ static struct page **raw_pages_from_domain(struct i=
+ommu_domain *domain,
+>  	if (start_index =3D=3D iopt_area_index(area))
+>  		page_offset =3D area->page_offset;
+>  	while (start_index <=3D last_index) {
+> -		phys =3D iommu_iova_to_phys(domain, iova) - page_offset;
+> -		*(out_pages++) =3D pfn_to_page(PHYS_PFN(phys));
+> -		iova +=3D PAGE_SIZE - page_offset;
+> +		size_t pgsize;
+> +		unsigned long npages;
+> +		unsigned long i;
+> +
+> +		/*
+> +		 * Resolve the contiguous mapped length together with the
+> +		 * physical address so we can fill multiple struct page
+> +		 * pointers per page table walk when the IOMMU uses large
+> +		 * pages. Query at page-aligned iova so pgsize covers from
+> +		 * page start.
+> +		 */
+> +		phys =3D iommu_iova_to_phys_length(domain, iova - page_offset,
+> +						  &pgsize);
+> +		if (WARN_ON(phys =3D=3D PHYS_ADDR_MAX))
+> +			break;
+> +		if (WARN_ON(!pgsize || pgsize < PAGE_SIZE))
+> +			pgsize =3D PAGE_SIZE;
+> +
+> +		npages =3D pgsize / PAGE_SIZE;
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[Severity: Critical]
+Could this uninitialized pgsize value cause iommufd to expose arbitrary
+physical pages?
+
+Similar to the VFIO case, if pgsize is uninitialized, npages will be
+calculated incorrectly. This treats multiple potentially non-contiguous
+physical pages as contiguous and exposes them directly.
+
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603154758.2347=
-68-1-imbrenda@linux.ibm.com?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603151804.1963=
+871-1-guanghuifeng@linux.alibaba.com?part=3D29
