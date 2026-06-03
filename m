@@ -1,149 +1,112 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C952772D;
-	Wed,  3 Jun 2026 14:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D5F25CC74
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 15:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780496787; cv=none; b=NN2xSrYOD9cN4YMEd2hVQvYqeyMdIaqOTx8Yo8HaXg+yQcMUUmrFzj8sZfpbPhOiEeNY/kTb1X99Ru2yiMTeac43uw/yBoOc0Wy6EuKGols6Bc1kV6D9hSaHocTs1mwFPSyFr3HvkkXU+0TAchUWljyi5B8ach6Hz7JkCm9URII=
+	t=1780499228; cv=none; b=YYjJjW5jK20+aaGPv6UXhvW69iIR/QQCrvkdw6Q02cDtN9rkAf/1Q3BWN5simhYKonkfNkWtmKeQS111K9sCInR7DCz6nP+3j8vtz4L7SzpPOwEqBa1M27leIcP/ZhXsXh/SYEMPYlZSrfMY9/uts3lfvMs7pYmKWj3y1uUEfWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780496787; c=relaxed/simple;
-	bh=Jrbt4hY5vRaUmjbma8ooNEkZVi47v72zJgYBpCPy8Hk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lvzLy8SpVt14mLAISygjqpWsO+Wkvl5RTAWYaQKUU+3WmNF5B5kYAmIXNIlr2tHhfpNLSOcRrcPsJP8+VLlf6ZnW/AJvykt99HkytMdJ6kKXAbrqmwHHFqxkMQNrW4LP1t78P1XO3omV9yCmuLV397VqFYn3OWDLk/32jfhNsH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ouwwIeFA; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780499228; c=relaxed/simple;
+	bh=3SfQbtUR2jp94YmDNRD8t2S0TLmBukCC46XGJEisrWs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OsVUrsfyzKd993qJHsFPUKXbNLFQhopQayIPSFhKy5GuLMmXSShxVOb5e2zgR/lx5Hpo2foT/ByHRqqEwdK5hrHioiDLQTLg/OzLNB8CW3iMtq58+Ty0MjU4NWGY5i8KKFjGbrzuL1HK0+Yh1H6oUF4tT0R7PI4BT2F+RV8nvoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f+8AYEyv; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ouwwIeFA"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6538OBOc1640981;
-	Wed, 3 Jun 2026 14:26:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=D3c3qVzMqoLf/cC8c1yv2aX8V7QliP
-	T1+YNIojfmBbU=; b=ouwwIeFAXd+ijIDnWrcJNMyYcdSVa4q/v5UPwwfVzOcmmA
-	V/pj5lB9Z1EyTAUe6LSNdvrgE7Kpfqovjj31KHmiTPk+wpD5zmwsZOda5KxTF9xa
-	J+dF/KNx5FYzilBnFoUyQtMjr2VyiTDLgT4uDKQchcbY3QVH476VzpYlXkDKyWtO
-	XrnJeXW3Cgtn6zTd6p5Rmg/33ANs1ZspQ8nB4IEeOgO5SF9ERA+XO45fN0qxOBMJ
-	oyXGLBKENWA2EFElZMvfIdP1yytgFk4K7sQuvhqPMEWJmVIOZx5x84MPTCtdspFL
-	nst6KRrVNhrJCNPvESqz90cBHTiGCY1ffygFcRtg==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efnahtyrp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jun 2026 14:26:09 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 653EPECu010968;
-	Wed, 3 Jun 2026 14:26:08 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ega7qgr1f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jun 2026 14:26:08 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 653EQ5Lj51511648
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 3 Jun 2026 14:26:05 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18A7B2004B;
-	Wed,  3 Jun 2026 14:26:05 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3644F20040;
-	Wed,  3 Jun 2026 14:26:02 +0000 (GMT)
-Received: from fedora (unknown [9.5.7.39])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  3 Jun 2026 14:26:02 +0000 (GMT)
-Date: Wed, 3 Jun 2026 19:56:00 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Ritesh Harjani <ritesh.list@gmail.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, lkp@intel.com
-Subject: Re: [PATCH v3 1/5] KVM: PPC: Book3S HV: Validate arch_compat against
- host compatibility mode
-Message-ID: <20260603194919.ca2d31c0-17-amachhiw@linux.ibm.com>
-Mail-Followup-To: Ritesh Harjani <ritesh.list@gmail.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, 
-	Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, 
-	Anushree Mathur <anushree.mathur@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, lkp@intel.com
-References: <20260522152744.55251-1-amachhiw@linux.ibm.com>
- <20260522152744.55251-2-amachhiw@linux.ibm.com>
- <pl2g6xbz.ritesh.list@gmail.com>
- <20260529141530.fc225a67-e9-amachhiw@linux.ibm.com>
- <cxyewhx8.ritesh.list@gmail.com>
- <87se74z4a6.fsf@vajain21.in.ibm.com>
- <72ef4cdb-8d9e-4319-9c94-b9a46a6f6194@linux.ibm.com>
- <56c84e26-69ed-433b-baaf-7b53acc60391@linux.ibm.com>
- <bjdsw43g.ritesh.list@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f+8AYEyv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780499226;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=QDjyww/NGN1o6zD6h3kJZoZhElwfTyNGa6jGoRO1Mcg=;
+	b=f+8AYEyv9YNGIQ5mOt4hceZdoj8syTDo6rpNDyw56MoA82JPCQlGmmfYJY3F+HeYvaKkpV
+	1HChU/j5dlnXO7lPXwuL0ZoGpUZRRD2YaxQ1y2FxTLUXnot1H0m6KKbil+zbMYbU2kvxpP
+	9H6ObpC/HF+9l6RWHx8aLHO8n30fkjA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-1-_OdE-3EEOOGZE9MveUowzw-1; Wed,
+ 03 Jun 2026 11:07:02 -0400
+X-MC-Unique: _OdE-3EEOOGZE9MveUowzw-1
+X-Mimecast-MFC-AGG-ID: _OdE-3EEOOGZE9MveUowzw_1780499221
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7A04019560B7;
+	Wed,  3 Jun 2026 15:07:01 +0000 (UTC)
+Received: from [10.44.48.203] (unknown [10.44.48.203])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EF5001800347;
+	Wed,  3 Jun 2026 15:06:59 +0000 (UTC)
+Message-ID: <67b64e2d-2f62-4f0f-8532-86aff72c651f@redhat.com>
+Date: Wed, 3 Jun 2026 17:06:58 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bjdsw43g.ritesh.list@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDEzNiBTYWx0ZWRfX/QwTJz03YvEm
- tnycR05KaAFcuOcNHpoejZ6IIh+UigfTilSwx5QMy4TR/fb3T3nnsdjCkScPevJC7iq8kg7o/Ib
- BZOdVVIAQSEWsTLbm5JkibeEbyY76YvNycOZ1AbXrDCcXWoLRmyyNVeESjK1hwxv8iicqccho6q
- bw0M2elmleS2YzLqa+ooJEStZ1HERkg7kWJn9VQFC5xfpnmIxXKLA+zay9XlzSz4/1E7vSzr3uy
- rX4jTxMpp/ouvk2B4lAc6WYNDnjslQK+K8fvacktm78OV1NnZ97PzPE6lyEQPS/ynzJ6TSYuHZX
- UxU3oScsqwa/3xR1Gp3Sxy8dEjZq3M/Vd6eppK/2QAHRYkaoNkZNn7aLf2YtDK2Fi26PhIHAj0x
- cSKIE/Seck6pW5M+8det4XBtpkAumePRM6utxRT0J8Gw2uA4Y0kZEpWrK1txc42FAATyH2M7Zua
- iCAt4hj+s+3OIeGb8rw==
-X-Proofpoint-ORIG-GUID: tLYlDXtEPf68UXX27itDkXR-54AXc34Z
-X-Authority-Analysis: v=2.4 cv=cOzQdFeN c=1 sm=1 tr=0 ts=6a203982 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=tBi8NAT1RsUeDLHYQY8A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: GLiYH9xarfqBmBAlgsiXZLR5YM2sYABO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-03_04,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
- malwarescore=0 phishscore=0 suspectscore=0 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606030136
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/24] KVM: x86: fix various GHCB issues
+To: Sean Christopherson <seanjc@google.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>
+References: <20260529183549.1104619-1-pbonzini@redhat.com>
+ <CABgObfY8_vam2OfhPRrCx79ApK9er0SWVsToC0vLjHQNdmzQ_w@mail.gmail.com>
+ <aiAjd_VgR2Q0D82V@google.com>
+Content-Language: en-US
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <aiAjd_VgR2Q0D82V@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hi Maddy, Ritesh,
-
-I have made the suggested changes and posted the separate patch here:
-
- https://lore.kernel.org/all/20260603141539.47620-1-amachhiw@linux.ibm.com/
-
-<..snip..>
-
-> > Hence IMHO, this patch can be marked for stable tree and potential
-> > candidate for 7.2 merge window. But dont see applicability of a 'fixes'
-> > tag to this patch
+On 6/3/26 14:52, Sean Christopherson wrote:
+> On Sat, May 30, 2026, Paolo Bonzini wrote:
+>> I think patches 11-13 should also be included in 7.1.
 > 
-> I agree, we need not use a fixes tag then. So, we shall mark this
-> with v6.10 tag then.
-> 
-> Cc: stable@vger.kernel.org # v6.10+
+> +1.
 
-Please note that I have marked the patch for stable v6.13+ as the KVM
-support for Power11 was added via 96e266e3bcd6 ("KVM: PPC: Book3S HV:
-Add Power11 capability support for Nested PAPR guests"). Also, this
-commit had introduced CPU_FTR_P11_PVR on which the compat PVR check in
-the patch is based on.
+Thanks for confirming; pushed 11-17 to master and the whole series to next.
 
-Thanks,
-Amit
+Paolo
+
