@@ -1,137 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62AD4D98E4
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 22:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58C93D47D0;
+	Wed,  3 Jun 2026 22:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780527021; cv=none; b=K3C/GYXjx8dstICVBREt/OKsYhw/DOFYwpoCD1Dx6yCBoEgaBay9xbSq5nScKV7VddzE4nBFXyist5BRb0uGF8YfC2LzUWyMcWjMAmW/Urp19EGBSMPsLTzgtJXmHHDaHOCVPWaL+s7cbuyJzQMJ+Wqwjd85MhGe6TzHM6QP4cc=
+	t=1780527326; cv=none; b=XM0D/dwDc2UVBarK0aRa25OHpIcwqPHsWbjfYrJPxoTotiwyUf1M8WPA4AFJ0Kg9nXHGpbu4hBkZSqQWXo9NX99RjzZn7/fMihrJ4sEKB3AoU3xy+44L1W7NZs60q+nMKtq4QoSr2duK8+Xc91CPSWNVJgOfPh6QCnY9f+50hhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780527021; c=relaxed/simple;
-	bh=nCqkpezqNrp4+g096TTDsHn3yks6anWaAxwLh9c9RrE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=eCZQT5o3CKp6c5ZvMon88EibaeOW/zqkCZqdVwXX98sg9AQOs9Dp453WZGiy2iIi/bdTLdQ1XnbzOlh7O7AfRIDm6+CyTztfnPJAMDpFNK1VfigXI0eoZ/24VhmSb/9V1+tgQ9JjcUEKqC/eP2JT4zBNVO+t9+WfV1QaqsV1T80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNZpcwG+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780527326; c=relaxed/simple;
+	bh=0i3HKfKAZEXkzt5Zxsa5pJ9oMm/FULATvfyLmZeRLbI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Q8JqNKtVojZoS1ReSuSo1xvjhbHIgQGI4EdKwnBvweDVpWSJNfL6An53560HhD1oJcbrGeLaqH0xiAO2qAjh7Wsqy2QOt214EUY1/2FQteUk7axs6TJBxBQznb+pgMBwm7piBMgyui1GZOzSIYGSc90ka610LTWpmTAG0WcirEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JUy9xq5a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UNZpcwG+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E151F00893;
-	Wed,  3 Jun 2026 22:50:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780527013;
-	bh=fyWQobaGZ/GZc9BUFqWH0qjn3KQ7cpyaeUE7SWtI5V4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UNZpcwG+QIC1dCuHkXUqvDZW27LA0+V1rspU/4nzU+IMBNTIuuqaVo6krTdqfTG/z
-	 RLADlSaseW1dNC+6hA4bm8bFgOqJq1Xt+8nRh0a0UvVF2+XnohLLYVAkJOJ4mdap7Z
-	 HLb6rnmfyqHGXs9V74SI1nPw8frucHuChVLgdC/Scx4SfUp3o3b1VVHpUA3u2jiIow
-	 dFVxJ9IxFViZwi74aEw21GU4aXFiPG7E0VbAceJ5T8TI+vPi0FH97MQGB+DWhk0VHo
-	 UAUDYv9jYyNg4dEtI5MMEbhUu1cHqH24fX+2nilu2kInPMUPuatm7dB6HEao4MEO/m
-	 2NzLMpIXycO9w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot
- L1's CR3 when EPT is disabled
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260603223418.1720035-3-seanjc@google.com>
-References: <20260603223418.1720035-3-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 22:50:12 +0000
-Message-Id: <20260603225013.99E151F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JUy9xq5a"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8414AC2BCB0;
+	Wed,  3 Jun 2026 22:55:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1780527325;
+	bh=0i3HKfKAZEXkzt5Zxsa5pJ9oMm/FULATvfyLmZeRLbI=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=JUy9xq5aZdn/uyWq0bBhj/SqczMvCRjvTDqbS7z6HDAxEPapsKhZOBqZ6uUXdAtaV
+	 8MG5898fqziJf2FVqpNHODrGVl5kPc8hsneQ+K+0kMKO7PUdUTESSMNHaiWOqX5Qp+
+	 LfArQ2H8PClk/Up/Yhyiq7QMDmVB41GCPO4VwZSJ9+LykoRsxvhdnNv5KvCtW4L0ps
+	 KGRsOfKXLHh3gkcTyry00twTu/T1nfALFQvVZ7gPfGljwac4HX4N+CXh/Xwd87ZvI6
+	 3QUzKgyD8E7TJLt1uP9Ttpp2sdqskgT4IqsqI+wAAHmP7DTqCmjjbKmdIwVgSAnVYg
+	 6k6WY52KQ6d/g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 791F2CD6E6B;
+	Wed,  3 Jun 2026 22:55:25 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Wed, 03 Jun 2026 15:55:24 -0700
+Subject: [PATCH] KVM: selftests: Make guest_code_xsave more friendly
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260603-snp-selftest-cleanup-v1-1-73b29fe31ce6@google.com>
+X-B4-Tracking: v=1; b=H4sIANuwIGoC/x3MQQqAIBBA0avErBswC6OuEi3MxhoIE6ciiO6et
+ HyL/x8QSkwCffFAoouF95BRlQW41YaFkOds0EobZVSNEiIKbf4gOdBtZMMZcfJd29aNM53SkNO
+ YyPP9b4fxfT/B4FE7ZgAAAA==
+X-Change-ID: 20260603-snp-selftest-cleanup-bf97734c6902
+To: Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, michael.roth@amd.com, jackyli@google.com, 
+ liruxin@google.com, darwinguo@google.com, jacobhxu@google.com, 
+ Ackerley Tng <ackerleytng@google.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780527325; l=1941;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=/w5y02MR7E1dim1B0Oo2RpreZBil+9LNll44ViP3HBc=;
+ b=5CKyYK19jWHUfGp2Y6HXQ0ZQcngpoxvT0Q+7ZVA0QMK5zsvF115Aszm5FtTOW7E/Cmo4FqtD6
+ MFsYn64TSngAJhx6TLdgsAr6OVfBIhDMEatBKrRueS/YkG1H93xunlQ
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Reading `vcpu->arch.cr3` directly captures a stale CR3 value when =
-EPT is enabled, corrupting L1's CR3 on late VM-Fail.
+From: Ackerley Tng <ackerleytng@google.com>
+
+The original implementation of guest_code_xsave makes a jmp to
+guest_sev_es_code in inline assembly. When code that uses guest_sev_es_code
+is removed, guest_sev_es_code will be optimized out, leading to a linking
+error since guest_code_xsave still tries to jmp to guest_sev_es_code.
+
+Rewrite guest_code_xsave() to instead make a call, in C, to
+guest_sev_es_code(), so that usage of guest_sev_es_code() is made known to
+the compiler.
+
+This rewriting also gives a name to the xsave inline assembly, improving
+readability.
+
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+ tools/testing/selftests/kvm/x86/sev_smoke_test.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+index 1a49ee3915864..8b859adf4cf6f 100644
+--- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
++++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+@@ -80,13 +80,23 @@ static void guest_sev_code(void)
+ 	GUEST_DONE();
+ }
+ 
+-/* Stash state passed via VMSA before any compiled code runs.  */
+-extern void guest_code_xsave(void);
+-asm("guest_code_xsave:\n"
+-    "mov $" __stringify(XFEATURE_MASK_X87_AVX) ", %eax\n"
+-    "xor %edx, %edx\n"
+-    "xsave (%rdi)\n"
+-    "jmp guest_sev_es_code");
++static void xsave_all_registers(void *addr)
++{
++	__asm__ __volatile__(
++		"mov $" __stringify(XFEATURE_MASK_X87_AVX) ", %eax\n"
++		"xor %edx, %edx\n"
++		"xsave (%0)"
++		:
++		: "r"(addr)
++		: "eax", "edx", "memory"
++	 );
++}
++
++static void guest_code_xsave(void *vmsa_gva)
++{
++	xsave_all_registers(vmsa_gva);
++	guest_sev_es_code();
++}
+ 
+ static void compare_xsave(u8 *from_host, u8 *from_guest)
+ {
+
+---
+base-commit: 0d9b37717aaa4a73362520af5ba4db7febf09123
+change-id: 20260603-snp-selftest-cleanup-bf97734c6902
+
+Best regards,
 --
+Ackerley Tng <ackerleytng@google.com>
 
-commit bc5d55e01f501ccb793937fda67ddf44633f6fda
-Author: Sean Christopherson <seanjc@google.com>
 
-KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot L1's CR3 when EPT is disa=
-bled
-
-This commit adds a dedicated field in struct nested_vmx to track L1's
-pre-VM-Enter CR3, avoiding the use of vmcs01.GUEST_CR3. It also modifies
-nested_vmx_enter_non_root_mode() to save the CR3 value, and
-nested_vmx_restore_host_state() to restore it.
-
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -3651,19 +3651,14 @@ enum nvmx_vmentry_status nested_vmx_enter_non_roo=
-t_mode(struct kvm_vcpu *vcpu,
->  				    &vmx->nested.pre_vmenter_ssp_tbl);
-> =20
->  	/*
-> -	 * Overwrite vmcs01.GUEST_CR3 with L1's CR3 if EPT is disabled.  In the
-> -	 * event of a "late" VM-Fail, i.e. a VM-Fail detected by hardware but
-> -	 * not KVM, KVM must unwind its software model to the pre-VM-Entry host
-> -	 * state.  When EPT is disabled, GUEST_CR3 holds KVM's shadow CR3, not
-> -	 * L1's "real" CR3, which causes nested_vmx_restore_host_state() to
-> -	 * corrupt vcpu->arch.cr3.  Stuffing vmcs01.GUEST_CR3 results in the
-> -	 * unwind naturally setting arch.cr3 to the correct value.  Smashing
-> -	 * vmcs01.GUEST_CR3 is safe because nested VM-Exits, and the unwind,
-> -	 * reset KVM's MMU, i.e. vmcs01.GUEST_CR3 is guaranteed to be
-> -	 * overwritten with a shadow CR3 prior to re-entering L1.
-> +	 * Stash L1's CR3, so that in the event of a "late" VM-Fail, i.e. a
-> +	 * VM-Fail detected by hardware but not KVM, KVM can unwind its
-> +	 * software model to the pre-VM-Entry host state.  When EPT is
-> +	 * disabled, GUEST_CR3 holds KVM's shadow CR3, not L1's "real" CR3,
-> +	 * and so simply restoring from vmcs01.GUEST_CR3 would corrupt
-> +	 * vcpu->arch.cr3.
->  	 */
-> -	if (!enable_ept)
-> -		vmcs_writel(GUEST_CR3, vcpu->arch.cr3);
-> +	vmx->nested.pre_vmenter_cr3 =3D vcpu->arch.cr3;
-
-[Severity: High]
-Does directly reading vcpu->arch.cr3 here capture a stale value when EPT is
-enabled?
-
-Because KVM does not intercept L1 CR3 writes when EPT is enabled, L1 can
-update its CR3 without KVM immediately tracking it. On VM-Exit (such as for
-VMLAUNCH), KVM invalidates the CR3 register cache by clearing the
-VCPU_REG_CR3 availability bit.
-
-If nested_vmx_enter_non_root_mode() directly assigns vmx->nested.pre_vmente=
-r_cr3
-from vcpu->arch.cr3 instead of using kvm_read_cr3(vcpu), it seems this would
-bypass the cache refresh and stash a stale CR3 value.
-
-> =20
->  	vmx_switch_vmcs(vcpu, &vmx->nested.vmcs02);
-> =20
-
-[ ... ]
-
-> @@ -4975,7 +4970,7 @@ static void nested_vmx_restore_host_state(struct kv=
-m_vcpu *vcpu)
->  	vmx_set_cr4(vcpu, vmcs_readl(CR4_READ_SHADOW));
-> =20
->  	nested_ept_uninit_mmu_context(vcpu);
-> -	vcpu->arch.cr3 =3D vmcs_readl(GUEST_CR3);
-> +	vcpu->arch.cr3 =3D vmx->nested.pre_vmenter_cr3;
-
-[Severity: High]
-If pre_vmenter_cr3 stashed a stale value, will restoring it here corrupt L1=
-'s
-CR3 on a late VM-Fail?
-
-If a late VM-Fail occurs (detected by hardware but not KVM), writing this
-potentially stale pre_vmenter_cr3 back into KVM's state (vcpu->arch.cr3) and
-marking it as available could cause L1 to resume with an outdated CR3, which
-might lead to guest memory corruption or a triple fault.
-
->  	kvm_register_mark_available(vcpu, VCPU_REG_CR3);
-> =20
->  	/*
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603223418.1720=
-035-1-seanjc@google.com?part=3D2
