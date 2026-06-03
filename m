@@ -1,142 +1,144 @@
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF68744BCA8;
-	Wed,  3 Jun 2026 10:00:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBB633B6F8
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 10:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780480825; cv=none; b=p1UnrbtUmcJVo/9GaKFEJgO8LO01Fps+j0IUS6fxqal25YEfzW1ToJy8tuHS8WmxdBR/vb5kan0bjEi1zSwY90DwrQ0JMTNdvRI7GMg0fz/+pZDo7LPJ2oFeH2+qGgYtQGjDjQ0ma7CBmss47m6emG21oAAbggGJ0MPT7EDi598=
+	t=1780480951; cv=none; b=RhX9bLhzA8fz24YqGNwBEe06M0ZT5UCmlsyxKELwkoK8IJPyrL8b+SFq/cBCQlDpMISyWOuc00wbBybtkjUuQ7QqtcsiY5P0HMJW+NGrF+BRrJoVUxwEAWOgKQpeEOUAXdR24FwhKqjwtrDlcL6h/TXjtokB9sbwPQ5pddvOjMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780480825; c=relaxed/simple;
-	bh=l5KEx3N/ohq6xHCqDb9D6/azxbWBbRL1dzQfpdSvFho=;
-	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=qcKfw74X0AGrW+DVcGPHe4sYlbaMGITTH2rAQaDc5wV4ndzeGEtp96no/Gu7IF+ho1iseLDslydnCxSktNBxB6a/CERaFfMKktePXFZF4OR0tCeYlPnxezhjQgJOJoyA9h3WJ5qNV4eWS8yF9IjOgx3rMJMJ0UmbNUl8s6KMyt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gVjqj4Sq7z59ys5;
-	Wed, 03 Jun 2026 18:00:17 +0800 (CST)
-Received: from szxl2zmapp07.zte.com.cn ([10.1.32.52])
-	by mse-fl1.zte.com.cn with SMTP id 653A082J081933;
-	Wed, 3 Jun 2026 18:00:08 +0800 (+08)
-	(envelope-from wang.yechao255@zte.com.cn)
-Received: from mapi (szxl2zmapp06[null])
-	by mapi (Zmail) with MAPI id mid12;
-	Wed, 3 Jun 2026 18:00:11 +0800 (CST)
-X-Zmail-TransId: 2b086a1ffb2bbd8-e8550
-X-Mailer: Zmail v1.0
-Message-ID: <202606031800111580inoldUz6HzVPmAbLW2SX@zte.com.cn>
-In-Reply-To: <20260603175256408L0jnqGs1cJGc0ijCdujci@zte.com.cn>
-References: 20260603175256408L0jnqGs1cJGc0ijCdujci@zte.com.cn
-Date: Wed, 3 Jun 2026 18:00:11 +0800 (CST)
+	s=arc-20240116; t=1780480951; c=relaxed/simple;
+	bh=yXx+rqfeV3LVpiDnFV5kG5jvMFi7X+jyX4MxnENzlnM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KJUivPvlFFD2zgt0zSolWniTPgUtRPjNg3Zd7RmMNlPJ1R9sgh55PSWQGrQ0+wNzTIpBjPrqBNp/9MV2ajpmRzh3GUREKQ9RmqY3xJYknSmxQkFA/oMt1hn5BkJYYGrMnEj/Soqn49L72M2UYhIXs/Q4AWJdKB0PvryYhzit3tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=beFWDJ7B; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="beFWDJ7B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E701F00893;
+	Wed,  3 Jun 2026 10:02:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780480950;
+	bh=V8fVwdI7wxnksQVE14DY2HWli3Oy9+kR4dG/B9JF5Y8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=beFWDJ7B2Z8xQPvn9v3oqwDDTjYwjPDD45LX8Fy0GRXVmLBpMDP36jy5S40R1f28q
+	 +2gsQydDi3fwWtbnyLAkHZ5PPW0v7mM7WsjPx5NRYHlGtERz9nAPfYyqtDLGmr7dO0
+	 rTXWbiAYPOd+Cq/w2hk9zXWPbyVL+jvll3FT1tEi4Sj/8C5W8EKs/Vbb6WPWuslBZT
+	 BPuTsFmws1TTdsA501ufsflwFE0lG9INBbZGL7xT/82fDc4ezk41axPsGSR6hYx5Lw
+	 j4aTVtJYRRHyKNQX5jjw3kqWwXidASZjB1Lv/LyS5NLWnrWN4MRtQRh6tRNnBwwHIo
+	 TZVDaRVef7e5Q==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1B503F4007E;
+	Wed,  3 Jun 2026 06:02:28 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 03 Jun 2026 06:02:28 -0400
+X-ME-Sender: <xms:tPsfauhaxGVEUgsvlHEIwecFN-9ZEF71setn4TDGW-FCZRyQ0LUDyA>
+    <xme:tPsfamdy_fjRoYDOeR8cmy-cPfUgoaO8mBFumrmZMVa1jqXBPwZUvuLW59ggNGPh6
+    y6Fg25GDh1rZ4Nor5r3OQmW7R6jePR7YEy-XB3OaBYhUGAYnBP5RIw>
+X-ME-Received: <xmr:tPsfajmUqQ7cLJ253fvAZjjjhxIAhgwirNcqfwrQkow3MYEGcKhn-5N2p_izhw>
+X-ME-Proxy-Cause: dmFkZTGuwFznDiQhelvFQOBp2/9r9H4fxoNNaEmxB6iOaHyiMwffQUPfC1FAZMpbzqIqkk
+    CN9TCgwxMINXJSdtTnBkzIXOc6K717wq9QjeaoGXRWKTpKm0u+QpWfmKKW9HN3pL/A1+6p
+    92lcvawl98fM5nvrzMFAJ0zCHVpCTPUX+0fcWGBVn0sUJNaILiDyF6WAR5GTLaYBf9LtF9
+    HeIJf/jM6FJN5c4MVjb/Nm52s7djeDzHoqhhvyRfCScg4aR0UhUORBt/S3XR36+WsGhT7P
+    bVueHPke7HzKjPxs+Lmcr4uF/2Rif/nWiVWI2Sn/X2KEDbfEm3ZjS1qdm+5tHCszTtFFts
+    /VzzRZabQfVduEReAlUgkBJ79Z4LSt1cBS+rSnnFi9jDTiczC1H87ZS7qLCKADqoqzrmR4
+    mGIz8sa4eqINRsLod/oLKxieYbrnEsfQXN/59nPX9ObnVXbRESfnOCNA6fc+BZp0oeNprP
+    PvGGkzDmtovVRJkI3ywAfrhFpNJvUXD0fDzsSJPA0RLCqMYGu9iLwI5MlFSpJg7a/5udeS
+    lJZWm/zw2dGecCf6mp/nhd1OdYPK7oDQIXbomfj0Bb9MYjyFb44nJOTTHxAkkFlEu1IJB4
+    mvQH42vq4f+lwAhvj17/Vsi6xt4tXviwqxjQO+AmX3bH/ZlUDX8iOWPxS9lA
+X-ME-Proxy: <xmx:tPsfaixl8twHiScZRF0l3aPUkADDTTORVWaND_noCCfDud9HhsTR5Q>
+    <xmx:tPsfalcLZ32BWK_NdqC_-FR1DBldNJTO6IRNGnlVk2pTTVI454R5Rg>
+    <xmx:tPsfajhekMHXMQ6qYg0RgZ4pegrE87GtuiN4Aa5Q13qUrGdoLAXSdw>
+    <xmx:tPsfap-OinTX938zNS5LgCJfS2x6J85u1U-3v3h3dj98T7oCnvJ1vg>
+    <xmx:tPsfapa94FWneQTrYxrkNAOdSEUGyY-WiNNfJ2K6qxxwDuEUGbG_4uoT>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 3 Jun 2026 06:02:25 -0400 (EDT)
+Date: Wed, 3 Jun 2026 11:02:19 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ 	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, 	Long Li <longli@microsoft.com>,
+ Ajay Kaher <ajay.kaher@broadcom.com>,
+ 	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>, 	Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, 	Juergen Gross <jgross@suse.com>,
+ Daniel Lezcano <daniel.lezcano@kernel.org>,
+ 	John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>,
+ 	Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ 	Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-coco@lists.linux.dev,
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+ 	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
+ 	Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>,
+ 	David Woodhouse <dwmw2@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>,
+ 	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v4 07/47] x86/tdx: Force TSC frequency with CPUID-based
+ info provided by the TDX-Module
+Message-ID: <ah_7jEMnqs80gXLG@thinkstation>
+References: <20260529144435.704127-1-seanjc@google.com>
+ <20260529144435.704127-8-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <wang.yechao255@zte.com.cn>
-To: <anup@brainfault.org>, <atish.patra@linux.dev>, <pjw@kernel.org>,
-        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>,
-        <linux-doc@vger.kernel.org>
-Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
-        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <wang.yechao255@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIHYyIDQvNF0gUklTQy1WOiBLVk06IEFkZCB0aGUgZWFnZXJfcGFnZV9zcGxpdCBtb2R1bGUgcGFyYW1ldGVy?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 653A082J081933
-X-TLS: YES
-X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Wed, 03 Jun 2026 18:00:17 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A1FFB31.000/4gVjqj4Sq7z59ys5
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260529144435.704127-8-seanjc@google.com>
 
-From: Wang Yechao <wang.yechao255@zte.com.cn>
+On Fri, May 29, 2026 at 07:43:54AM -0700, Sean Christopherson wrote:
+> When running as a TDX guest, explicitly set the TSC frequency to a known
+> value, using CPUID-based information, instead of potentially relying on a
+> hypervisor-controlled PV routine.  For TDX guests, CPUID.0x15 is always
+> emulated by the TDX-Module, i.e. the information from CPUID is more
+> trustworthy than the information provided by the hypervisor.
 
-Add an eager_page_split module parameter for RISC-V KVM, following
-the same approach as on x86. This parameter controls whether eager
-page splitting is enabled. The default value is on.
+Right. EBX is configurable by TD_PARAMS.TSC_FREQUENCY at TD build. The
+rest is fixed.
 
-When eager page splitting is enabled, KVM proactively splits large
-pages (huge pages) into smaller pages when needed for dirty logging
-or other operations. Disabling it can be beneficial for VM workloads
-that rarely perform writes, or that only write to a small region of
-memory, as it allows huge pages to remain intact for read accesses.
+> To maintain backwards compatibility with TDX guest kernels that use native
+> calibration, and because it's the least awful option, retain
+> native_calibrate_tsc()'s stuffing of the local APIC bus period using the
+> core crystal frequency.  While it's entirely possible for the hypervisor
+> to emulate the APIC timer at a different frequency than the core crystal
+> frequency, the commonly accepted interpretation of Intel's SDM is that APIC
+> timer runs at the core crystal frequency when that latter is enumerated via
+> CPUID:
+> 
+>   The APIC timer frequency will be the processor’s bus clock or core
+>   crystal clock frequency (when TSC/core crystal clock ratio is enumerated
+>   in CPUID leaf 0x15).
+> 
+> If the hypervisor is malicious and deliberately runs the APIC timer at the
+> wrong frequency, nothing would stop the hypervisor from modifying the
+> frequency at any time, i.e. attempting to manually calibrate the frequency
+> out of paranoia would be futile.
 
-Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
----
- Documentation/admin-guide/kernel-parameters.txt |  7 +++++--
- arch/riscv/kvm/mmu.c                            | 13 ++++++++++---
- 2 files changed, 15 insertions(+), 5 deletions(-)
+Agreed.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 4d0f545fb3ec..d443b5313b79 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3059,7 +3059,7 @@ Kernel parameters
- 			Default is 0 (don't ignore, but inject #GP)
+> Deliberately leave CPU frequency calibration as is, since the TDX-Module
+> doesn't provide any guarantees with respect to CPUID.0x16.
 
- 	kvm.eager_page_split=
--			[KVM,X86] Controls whether or not KVM will try to
-+			[KVM,X86,RISCV] Controls whether or not KVM will try to
- 			proactively split all huge pages during dirty logging.
- 			Eager page splitting reduces interruptions to vCPU
- 			execution by eliminating the write-protection faults
-@@ -3079,7 +3079,10 @@ Kernel parameters
- 			the KVM_CLEAR_DIRTY ioctl, and only for the pages being
- 			cleared.
+It is fixed to zeros. Sounds like a guarantee to me :P
 
--			Eager page splitting is only supported when kvm.tdp_mmu=Y.
-+			On x86, eager page splitting is only supported when
-+			kvm.tdp_mmu=Y.
-+
-+			On RISCV, eager page splitting is supported by default.
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
- 			Default is Y (on).
+Looks sane to me. Including your reasoning about tsc_early_khz= in reply
+to Sashiko.
 
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index d04680687f4a..7a910c5a61fe 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -16,6 +16,9 @@
- #include <asm/kvm_mmu.h>
- #include <asm/kvm_nacl.h>
-
-+bool __read_mostly eager_page_split = true;
-+module_param(eager_page_split, bool, 0644);
-+
- static void mmu_wp_memory_region(struct kvm *kvm, int slot)
- {
- 	struct kvm_memslots *slots = kvm_memslots(kvm);
-@@ -150,8 +153,10 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
-
- 	kvm_riscv_gstage_wp_range(&gstage, start, end);
-
--	if (kvm_dirty_log_manual_protect_and_init_set(kvm))
--		mmu_split_huge_pages(&gstage, start, end, true);
-+	if (kvm_dirty_log_manual_protect_and_init_set(kvm)) {
-+		if (READ_ONCE(eager_page_split))
-+			mmu_split_huge_pages(&gstage, start, end, true);
-+	}
- }
-
- void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
-@@ -216,7 +221,9 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
- 		if (kvm_dirty_log_manual_protect_and_init_set(kvm))
- 			return;
- 		mmu_wp_memory_region(kvm, new->id);
--		mmu_split_memory_region(kvm, new->id);
-+
-+		if (READ_ONCE(eager_page_split))
-+			mmu_split_memory_region(kvm, new->id);
- 	}
- }
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 -- 
-2.43.5
+  Kiryl Shutsemau / Kirill A. Shutemov
