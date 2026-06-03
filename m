@@ -1,110 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026E63D6CDD
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 15:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCC433DEC2;
+	Wed,  3 Jun 2026 15:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780501585; cv=none; b=tJMM+iUf8xSW/83nEH5758AGPwwoKFOTyfvx3RZ7lcM+JTZTzn4UNpkksxzdJ48002nat2k+M3/K95oNeQ1u8lc/C1qd9Kj3gNkawYk7lss+pJ7nyA1xeCEGooMOaB6o0c3Vz3TBDUK5srrx6A+5M8FxD+qQLeDBrCBfo7B2BkE=
+	t=1780501689; cv=none; b=j9VptS93Xka1DvAOGoQLWL35ZLoQzDs6JwjK5KGxKN+2x9AG9hj6MS4UriM+LjuxyzHOE688A0Y3MQBac26T5tGeGusG6kP/rNBg1JUzjs3lowraENV3ICuxxgrI0JrDalm7O7x54Es1lCN7EHvBwxPfCfETqx5NdL6Djjg84FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780501585; c=relaxed/simple;
-	bh=Q5e3dzZ0ea+ebLxzqTDS1+SB4Fg0+RUiHG963NLQWyo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=g7ItGkGncfBBMXOg1a8Ls+zSU6lKmEq74ZUzbkxkk7NvjekyMfQW1hKt4tjpooWOqSqFjRqwSSm6+eSkuOmV+ZI4ixQsMGlTzKv/tl9im92RscaXeSwezsymijEBdabEZM3Hazzjz2dsp/bEwTZ3b3T+omK5Kv35dMuiOBdW/rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BzIfla0d; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780501689; c=relaxed/simple;
+	bh=VPvznYntSlTfUxnZqVhjwJU7MibGaN5jzHR1v555J/k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nJtro3HbTwjeVnsnaUEIM4ViVYXbAPlyYYmRKjaKmFD9226QsdR4Q8HyIZS2GPy16epIIjjdT6WpZtdXdjzOG/ByZs5tt2qwAUJL2vL/ZSB7RYHZy/0uQQ8Z3ToA0UTzmXBTPvJoby3OqHrBbGr8bIlNcoEL6BwFnWBvSKmPOJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dxEYmpQ0; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BzIfla0d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D271F00893;
-	Wed,  3 Jun 2026 15:46:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780501582;
-	bh=k3cOKyuaiTUET3xWbz8l2dk5/rBtKdDi29bKDYIlv5o=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BzIfla0d4rzA9RsmUPUyJ0j7PpzG8rjLnycJ+XUHPJm5SuGzYOE3aOIDbXQ5UBg5Q
-	 dUD3XbI8Zes+XhZoP3SjKf+NLrUm85UK6gF8T7JJxUqeR6vVHM241ppsb9quo+sdyM
-	 u49yrGCxk1d+miIKwxxJFHrty0M3GDVYuqSxKG0yRkHXV16ASmRT9OYvoj28qwRPSc
-	 NOnB3vboj75kGkSPrqkwU7RDhbeEz9uijV5Rf0LVeau06V4dmLvApR3mVdpYwKEI5d
-	 MsR/Bc8ht+AOdaQcG35nQYJhJL/uzp2ObGyAB82hPu8ORDOnb0ZD2bj4arVLWgNBPS
-	 2XMvJclyceevA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 12/32] iommu/exynos: implement iova_to_phys_length
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260603151804.1963871-13-guanghuifeng@linux.alibaba.com>
-References: <20260603151804.1963871-13-guanghuifeng@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 15:46:21 +0000
-Message-Id: <20260603154622.34D271F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dxEYmpQ0"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6538VeHO1773281;
+	Wed, 3 Jun 2026 15:48:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=Pb06BowVsUQpVME/K4zelxc4Syh5jED/o59CeqDN9
+	hM=; b=dxEYmpQ0txLf+gX6mmKsONK4eyzvRgum7BzXTfnNver4owNIk6KfZSzZ9
+	jECeVWMOyk5/z2lW8lWyw52BtcY8hNRdnrELLEqqokihrfAwUK10PZn1Fz4rOdgq
+	9d9AXEt0NZQk+AMtIGeKLF1xj9jSn4zCuftOh/D9nRaGjrpP51VyTRMsMLmHRtDE
+	9i33HdWZHybg9GBPhy7/5TW1HUtYoXN3zB4sqN18kWB2/9Erue+g7DtSgnTGGmQl
+	YukSx7yaPml42tH36KU0wpzT3n1xBXEWKc7bHT0bo/aF6aqYpWi+yM8QyJzJVBmO
+	ulYr4cawesonEUkSRCMoI/DGotKoA==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqd4btsf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Jun 2026 15:48:06 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 653FdLN6000873;
+	Wed, 3 Jun 2026 15:48:05 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egb7k8wxw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Jun 2026 15:48:05 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 653Flxem51183898
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 3 Jun 2026 15:47:59 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F338120043;
+	Wed,  3 Jun 2026 15:47:58 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C3EAB2004B;
+	Wed,  3 Jun 2026 15:47:58 +0000 (GMT)
+Received: from p-imbrenda.aag-de.ibm.com (unknown [9.52.223.175])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  3 Jun 2026 15:47:58 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
+Subject: [PATCH v1 0/3] KVM: s390: Add support for 2G hugepages
+Date: Wed,  3 Jun 2026 17:47:55 +0200
+Message-ID: <20260603154758.234768-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDE1MSBTYWx0ZWRfX5Qn+HaNafpux
+ XeT7HIoeCbbPCYW5jqkdWKnQkRb+cND0zWFBtzAFSbUjTAtbx8rVJDoGYVSPlEbVyAze8AsF9oK
+ QJnWGDizSrH7v6qaTleMkF7D+nbePm0AnmJ1S1VOtdLBTL7wu0QNIav+NB7Yzs66hi3Om28n+50
+ BHnCKPhW0qfvEKbvULScCJVqzgKCJH8ztdauQGm+ePy+a2JXf0YmXH6tU75nK7WXkPlKekY2GBG
+ d5bGYQUG+t36ufu3E1cXX0zEd+2DqY2IBnpAbw5plS5D5hHkbmAONjvPN9fJQossqQbGesV/ZRh
+ l6NBCxNrKkLEAktKFh0rrbnu7dXSFShQxaZGQsrZDTWhvP8prLpKvtDREsdbuupqs3WaN2t72HB
+ m7SvH5TpYfBJ9jXpbn6dSR+Lm/zPVfPcfzvxUP6AiUEPhsCTqdw/hTGohaO01GUvIJKjNZ3H2St
+ AflMGBRbFZLJ7ipwcjg==
+X-Proofpoint-GUID: ut3gaJ0C88VRGofHixu58h0LgKGKOjuO
+X-Proofpoint-ORIG-GUID: ut3gaJ0C88VRGofHixu58h0LgKGKOjuO
+X-Authority-Analysis: v=2.4 cv=DZknbPtW c=1 sm=1 tr=0 ts=6a204cb6 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=QnIkhjQrAr_Oq8dr9QoA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-03_05,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ phishscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606030151
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+Add support for 2G hugepages.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the driver acces=
-ses little-endian page table entries using native CPU endianness, leading t=
-o corruption and incorrect page table walks on big-endian systems. The func=
-tion `exynos_iommu_set_pte()` correctly writes entries as little-endian usi=
-ng `cpu_to_le32()`. However, macros like `lv1ent_section` and `lv1ent_page`=
- directly dereference the `sysmmu_pte_t *` pointer (e.g., `*(sent) & 3`), w=
-hich evaluates the native 32-bit value. On a big-endian system, this bitwis=
-e operation checks the most significant byte of the little-endian value in =
-memory, always failing the structure checks. Furthermore, some assignments =
-like `domain->pgtable[i] =3D ZERO_LV2LINK;` bypass endian conversion entire=
-ly, writing big-endian values that the little-endian hardware will misinter=
-pret.
---
+In theory, since kernel 7.0, userspace could already use 2G hugepages
+to back guest memory, but KVM would use 4k or 1M pages in gmap to
+actually map the guest.
 
-commit 097549f5c7fdecb9881aa9c7d6c8964f12985a19
-Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+This series allows KVM on s390 to actually use 2G hugepages in gmap to
+map guest memory that is backed by 2G hugepages in userspace.
 
-iommu/exynos: implement iova_to_phys_length
+Nested guests remain possible.
 
-This commit implements the iova_to_phys_length callback for the Exynos IOMMU
-driver. It traverses the page table to return both the physical address and
-the actual PTE mapping size for a given IOVA.
+Claudio Imbrenda (3):
+  KVM: s390: Add module parameter to fence 2G hugepages
+  KVM: s390: Add capability to support 2G hugepages
+  KVM: s390: Allow for 2G hugepages
 
-> diff --git a/drivers/iommu/exynos-iommu.c b/drivers/iommu/exynos-iommu.c
-> --- a/drivers/iommu/exynos-iommu.c
-> +++ b/drivers/iommu/exynos-iommu.c
-[ ... ]
-> @@ -1386,13 +1387,20 @@ static phys_addr_t exynos_iommu_iova_to_phys(stru=
-ct iommu_domain *iommu_domain,
-> =20
->  	if (lv1ent_section(entry)) {
->  		phys =3D section_phys(entry) + section_offs(iova);
+ arch/s390/kvm/gmap.c     | 24 +++++++++++++++++++++++-
+ arch/s390/kvm/kvm-s390.c | 38 +++++++++++++++++++++++++++++++++++++-
+ arch/s390/kvm/pv.c       |  1 +
+ include/uapi/linux/kvm.h |  1 +
+ 4 files changed, 62 insertions(+), 2 deletions(-)
 
-[Severity: High]
-This is a pre-existing issue, but does exynos_iommu_iova_to_phys_length()
-correctly handle endianness on big-endian systems?
+-- 
+2.54.0
 
-The macros like lv1ent_section() and lv1ent_page() directly dereference the
-sysmmu_pte_t pointer using native CPU endianness. For example, lv1ent_secti=
-on
-evaluates to (*(sent) & 3).
-
-Since the hardware uses little-endian page tables, a big-endian CPU
-evaluating this bitwise operation will check the most significant byte of
-the little-endian value in memory. This will cause the structure checks to
-fail, leading to incorrect page table walks and IOMMU translation faults.
-
-While exynos_iommu_set_pte() correctly writes entries using cpu_to_le32(),
-the read paths do not seem to do the reverse conversion. Would it be
-appropriate to convert the values using le32_to_cpu() when reading these
-page table entries to prevent corruption on big-endian architectures?
-
-> +		if (mapped_length)
-> +			*mapped_length =3D SECT_SIZE;
->  	} else if (lv1ent_page(entry)) {
->  		entry =3D page_entry(entry, iova);
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603151804.1963=
-871-1-guanghuifeng@linux.alibaba.com?part=3D12
