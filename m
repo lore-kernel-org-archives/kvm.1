@@ -1,113 +1,128 @@
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F034949E3;
-	Wed,  3 Jun 2026 15:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0EB3CF676
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 15:24:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780499961; cv=none; b=vFI/iVJPFnjvOYQbymdx5WFGDUoayWi3BRie7zTschwycr7Qv7BZh0za5Vigkz9fKJbDog2N/vzIIWpumBh63u7WIxK+UmPTAP8Xzlcxr2L7pkT7UlJsHHy8k7Z3GWQVB+GL4xm0MK7rWKTvMw44Frtg8Mlxda5CDrak0+Kl/vk=
+	t=1780500261; cv=none; b=bwSlENk8D15N+o+0avtX9D1dhtskO4jTpnfPiUDGP3Lbv18JtmgIgTd0betlqsUWj/vdvBiYqRfehRYbsh2k3w5gM9+oyNhuefrNtqXoZUTuIXpp+ArY56DTr+61z13iV6Kw0VA16MrXR3OE0JWHtym7YMw7IunfTIJvAmdLOE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780499961; c=relaxed/simple;
-	bh=oyPkwHzc20XrNGeKDu1/pxB3ak3GLuqmVhS1MOFDJSM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axbTtnAp5FEwMI+xscIzzISc0E8EMs3J57tnFJ/b8EptYlI6n+Bv2boyZ/ywJDjcyZGwNTsp02+LHm2SGDPAN8MuQQC4xAOzZMq5hFB957SadkzbB/6uTmBDaPAL+E5Jt7BYdcWXInDh0GT9m5O1tGM63fsHjWfXaUUq3zVCzBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=TsA8LpKi; arc=none smtp.client-ip=115.124.30.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1780500261; c=relaxed/simple;
+	bh=y2MzPoG0MBmV9/S2CGOi17yiKJyXbHXPrURfp3Atgkc=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=jUpsUZV0USyU1/yFoU3zLlCiafNeYX38Dv9GyfZbeljzEr8WL77H40+zZt2QTbZ509P8nb5KHFrBnXEKRczSdQgw/eG/Mketwq7HQtTQuypopD5elu6wldgQiwD8Y3nK9pk8CYjAeNQG7fREQtQc+3jfFKDCuCpVe7U03uL1t5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n+ZSKX4Z; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="TsA8LpKi"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1780499950; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=cII6ny8ml7CMYCax7iOr5Pt8lHtm5RFG7dKDlrestlY=;
-	b=TsA8LpKibZb/TSwbrTvQjGRKXM5oM+DD9b51NS57nHXjVcMHIrgpmmxak17/cXkfTH6X7I1YDrtiKvKGhn4rNbmbH7oY8H25srf3sTPg9N+y+rkG4SP9FHDMTZlC8C8WYvW8HhNgHvYJlNXwnt/QuyOljIUvWqfHCLd6o3Nxht0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X47fR87_1780499947;
-Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X47fR87_1780499947 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 03 Jun 2026 23:19:07 +0800
-From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-To: jgg@ziepe.ca
-Cc: adrian.larumbe@collabora.com,
-	airlied@gmail.com,
-	alex@shazbot.org,
-	alikernel-developer@linux.alibaba.com,
-	baolu.lu@linux.intel.com,
-	boris.brezillon@collabora.com,
-	dri-devel@lists.freedesktop.org,
-	dwmw2@infradead.org,
-	iommu@lists.linux.dev,
-	joro@8bytes.org,
-	kevin.tian@intel.com,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	liviu.dudau@arm.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	oliver.yang@linux.alibaba.com,
-	robh@kernel.org,
-	robin.murphy@arm.com,
-	shiyu.zsq@linux.alibaba.com,
-	steven.price@arm.com,
-	suravee.suthikulpanit@amd.com,
-	tzimmermann@suse.de,
-	wei.guo.simon@linux.alibaba.com,
-	will@kernel.org,
-	xlpang@linux.alibaba.com
-Subject: [PATCH v3 29/32] iommu/io-pgtable-arm: remove deprecated iova_to_phys wrapper
-Date: Wed,  3 Jun 2026 23:18:01 +0800
-Message-ID: <20260603151804.1963871-30-guanghuifeng@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260603151804.1963871-1-guanghuifeng@linux.alibaba.com>
-References: <20260602104637.1219810-1-guanghuifeng@linux.alibaba.com>
- <20260603151804.1963871-1-guanghuifeng@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n+ZSKX4Z"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c858d69bde9so1991469a12.1
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 08:24:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780500259; x=1781105059; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=acwBnprFgwqGQFKcy6Zu5y1vKCe+2/zpivoZrYetfHk=;
+        b=n+ZSKX4ZO6fXZWVJSLJCCrokYWO2iillfnIsrkhOqSFVlrdcKMjqoIe79+KCX+34bd
+         8CUXsh9ne1F7TyOtZ+mZocplQ+K+GEvo/N3CdkxOWe486ftFobP8i+ccQckIzlnpMmIM
+         mWO1IkO7n89CKudClVO1Uxackh7QON0sX3F3BhiYc5eJvXx4eXLI3xMkG8UMwUgFw6Oc
+         8sfX8vJ4WqiXyz//Cy5iy/K4i/Ocgz+SB1Uske50mTjWHcW5NL8W0ZRJDVXPkk2y2FvN
+         Y1gIfVWXa9MfHZnmWIbfHss0NFmIVo/TZpl4osk9azJhAjtlyAfdl38yJewkUI58rD2K
+         37uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780500259; x=1781105059;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=acwBnprFgwqGQFKcy6Zu5y1vKCe+2/zpivoZrYetfHk=;
+        b=Hr/f+yfI5f5xt8MzqL13kUxCJ5AAjlXfEPoUlBuQ47eJNy2BHRfYEToJQ9rmeyLazG
+         IbRt5i1NSNnN28U7RjlpkQfvUMspr2it0QDSPgtygHx8ED61lWQyHhhD3SDLXVoebzlI
+         34aJxsrtYtEfiB2b8u1BU/rsYtiBEP0p1+7yashoPU1UFTjwdczdBELVa2X327o6dKzd
+         pBkvHPOb/sU9tBI1NdyD7aPlaZ72q4dIN85FnfSz63MNADZLOdRvouzwiJ3vbpyK8p3p
+         vfkKnfOt2buYhwXn5znD2EH5zExBdL3t0ayeiTrB+iyWouA3tifk7OC8K5MdKNCP8GYe
+         8xtQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/jXZX5NFvXtLole9w7NUMXMjE2gM5OduKNjwzYlfCACbGOqaakR57YNdxF6OiObziUpyo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzExn0tmP2c5k27a8Zpv2uR4zvWD8qp87FTkVw4jMiuVNVxXH+B
+	X4b7W2O82b74SAW9N34sw83EUQm4xzGp3zmLG9CoHer0PnTMvtnK3yHJbqh7KUo8
+X-Gm-Gg: Acq92OEa/u8elGQxi25/cQt+DL2H6L663Dif2VlOW/bEDNNTwAKFXBhzfRHNh3M2jGB
+	0L2xzTFA0kLiJm1+vZdMw6tALLsfDQYyPW5HSApcebRsCOeSkNWq3S9jhVOnqFVMoUh/51PBGm3
+	nLF0DJfLmLWQy1R877Fc6rOOTcgt5Q38fBSgJNcaFNDle9uQiLrVy+7I0rf2dPWz7L7MXCTN3MC
+	dEnDOkKUIBWGZxotpt7slHDiRsgijb9bnWp7kgaZtr53BkLsGX5Hce1B6u36Naj9cPW6+RBb8Hy
+	psQfmlJiRg4GiXp8asaGgZt8eZCMdnQ69SpLrQZwdi8IFB1+9iSXuhqs7a/lIVOpqlqj55lQo5c
+	+yWg4/UAsNb5WsjwEu46Evx4PDf1TR1SxJpEGkC3Iru3d2ephYtGCXAqCQqR0SWFf304y9xmwlJ
+	c83oFDvePbzLorCeauoc4o0T0lYSeyv0EF
+X-Received: by 2002:a05:6a21:691:b0:3a2:d68d:9e78 with SMTP id adf61e73a8af0-3b49732971emr4778730637.4.1780500258903;
+        Wed, 03 Jun 2026 08:24:18 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df043ce0sm2671767a12.11.2026.06.03.08.24.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 08:24:18 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, kvm@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+In-Reply-To: <20260603141539.47620-1-amachhiw@linux.ibm.com>
+Date: Wed, 03 Jun 2026 20:41:15 +0530
+Message-ID: <pl278xrg.ritesh.list@gmail.com>
+References: <20260603141539.47620-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Remove the iova_to_phys wrapper function and .iova_to_phys assignment
-from ARM LPAE io-pgtable, as all callers now use iova_to_phys_length.
+Amit Machhiwal <amachhiw@linux.ibm.com> writes:
 
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
----
- drivers/iommu/io-pgtable-arm.c | 13 -------------
- 1 file changed, 13 deletions(-)
+> On IBM POWER systems, newer processor generations can operate in
+> compatibility modes corresponding to earlier generations. This becomes
+> relevant for nested virtualization, where nested KVM guests may need to
+> run with a specific processor compatibility level.
+>
+> Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
+> logical partition (L1) booted in Power10 compatibility mode, the guest
+> fails to boot while setting 'arch_compat'. This happens because the CPU
+> class is derived from the hardware PVR (via mfspr()), which reflects the
+> physical processor generation (Power11), rather than the effective
+> compatibility mode (Power10).
+>
+> As a result, userspace may request a Power11 arch_compat for the L2
+> guest. However, the L1 partition, running in Power10 compatibility, has
+> only negotiated support up to Power10 with the Power Hypervisor (L0).
+> When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
+> hypervisor rejects the request, leading to a late guest boot failure:
+>
+>   KVM-NESTEDv2: couldn't set guest wide elements
+>   [..KVM reg dump..]
+>
 
-diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-arm.c
-index f33a86fa0f6c..55a32346b586 100644
---- a/drivers/iommu/io-pgtable-arm.c
-+++ b/drivers/iommu/io-pgtable-arm.c
-@@ -731,18 +731,6 @@ static int visit_iova_to_phys(struct io_pgtable_walk_data *walk_data, int lvl,
- 	return 0;
- }
- 
--static phys_addr_t arm_lpae_iova_to_phys_length(struct io_pgtable_ops *ops,
--						 unsigned long iova,
--						 size_t *mapped_length);
--
--static phys_addr_t arm_lpae_iova_to_phys(struct io_pgtable_ops *ops,
--					 unsigned long iova)
--{
--	phys_addr_t phys = arm_lpae_iova_to_phys_length(ops, iova, NULL);
--
--	return (phys == PHYS_ADDR_MAX) ? 0 : phys;
--}
--
- static phys_addr_t arm_lpae_iova_to_phys_length(struct io_pgtable_ops *ops,
- 						 unsigned long iova,
- 						 size_t *mapped_length)
-@@ -965,7 +953,6 @@ arm_lpae_alloc_pgtable(struct io_pgtable_cfg *cfg)
- 	data->iop.ops = (struct io_pgtable_ops) {
- 		.map_pages	= arm_lpae_map_pages,
- 		.unmap_pages	= arm_lpae_unmap_pages,
--		.iova_to_phys	= arm_lpae_iova_to_phys,
- 		.iova_to_phys_length	= arm_lpae_iova_to_phys_length,
- 		.read_and_clear_dirty = arm_lpae_read_and_clear_dirty,
- 		.pgtable_walk	= arm_lpae_pgtable_walk,
--- 
-2.43.7
+Thanks! It make sense to return a proper error code to the user (VMM)
+while the VM/VCPU are being initialized, rather then the guest failing
+to boot with a weird error like this, at the time when kernel makes this
+H_GUEST_SET_STATE hcall.
+
+> This situation should be detected earlier. Rejecting unsupported
+> 'arch_compat' values in 'kvmppc_set_arch_compat()' avoids issuing an
+> invalid H_GUEST_SET_STATE hcall and provides a clearer failure mode.
+>
+> Add a check to reject Power11 'arch_compat' requests when the host is
+> running in Power10 compatibility mode, returning -EINVAL early instead
+> of deferring the failure to the hypervisor.
+>
+> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
+> Cc: <stable@vger.kernel.org> # v6.13+
+
+Sure, v6.13 sounds fair as you pointed out.
+
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+> Changelog:
+>
+> * Moved this patch out of the v3 series [1] as discussed here [2]
+> * Addressed below review comments from Ritesh:
+>   - Based the PVR validation on cpu features
+>   - Fixed hcall name typo
+>   - Stable backport
+
+The changes looks good to me. Please feel free to add:
+
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
