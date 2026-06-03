@@ -1,112 +1,260 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D5F25CC74
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 15:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780499228; cv=none; b=YYjJjW5jK20+aaGPv6UXhvW69iIR/QQCrvkdw6Q02cDtN9rkAf/1Q3BWN5simhYKonkfNkWtmKeQS111K9sCInR7DCz6nP+3j8vtz4L7SzpPOwEqBa1M27leIcP/ZhXsXh/SYEMPYlZSrfMY9/uts3lfvMs7pYmKWj3y1uUEfWc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780499228; c=relaxed/simple;
-	bh=3SfQbtUR2jp94YmDNRD8t2S0TLmBukCC46XGJEisrWs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OsVUrsfyzKd993qJHsFPUKXbNLFQhopQayIPSFhKy5GuLMmXSShxVOb5e2zgR/lx5Hpo2foT/ByHRqqEwdK5hrHioiDLQTLg/OzLNB8CW3iMtq58+Ty0MjU4NWGY5i8KKFjGbrzuL1HK0+Yh1H6oUF4tT0R7PI4BT2F+RV8nvoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f+8AYEyv; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E064C384CF7
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 15:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780499490; cv=pass; b=PWI4IFeWvBNE0ETcOFMAm86ESI9bliqx8ummPQDEAuqaAmiegkou/P+9c9dzBRz8nAJZJzNt96tcm4LHhEH71nQK4LPJeJffQLF5hyiAztQivwEhel7HdkR+eLNO8B/P03UU26hNBuHHYxQOse/qsXS6/vuM8vgncpY4OeQf4+s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780499490; c=relaxed/simple;
+	bh=A5/DR5/7Aqb950zyW+Q+1QnR65FBpmWLo26en9cyZgI=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IjTzv5iyc5EM5qZJ2mlGfEyHHP+8U4gY/kaPqsqSPPSzahFxuceClTtKnNV6n0kIQbpP8/Desi6GA+FoigCHv89XPMwGPfltwQhgSngEN0TBIVEGdsMddFXkiwKevz72Zh3y0X+Oi7XzCfP8jes6JztAL5jGOUmAN5dBouzlorw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uwzXhKgw; arc=pass smtp.client-ip=74.125.82.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f+8AYEyv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780499226;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QDjyww/NGN1o6zD6h3kJZoZhElwfTyNGa6jGoRO1Mcg=;
-	b=f+8AYEyv9YNGIQ5mOt4hceZdoj8syTDo6rpNDyw56MoA82JPCQlGmmfYJY3F+HeYvaKkpV
-	1HChU/j5dlnXO7lPXwuL0ZoGpUZRRD2YaxQ1y2FxTLUXnot1H0m6KKbil+zbMYbU2kvxpP
-	9H6ObpC/HF+9l6RWHx8aLHO8n30fkjA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-1-_OdE-3EEOOGZE9MveUowzw-1; Wed,
- 03 Jun 2026 11:07:02 -0400
-X-MC-Unique: _OdE-3EEOOGZE9MveUowzw-1
-X-Mimecast-MFC-AGG-ID: _OdE-3EEOOGZE9MveUowzw_1780499221
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7A04019560B7;
-	Wed,  3 Jun 2026 15:07:01 +0000 (UTC)
-Received: from [10.44.48.203] (unknown [10.44.48.203])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EF5001800347;
-	Wed,  3 Jun 2026 15:06:59 +0000 (UTC)
-Message-ID: <67b64e2d-2f62-4f0f-8532-86aff72c651f@redhat.com>
-Date: Wed, 3 Jun 2026 17:06:58 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uwzXhKgw"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1370417c01cso12916156c88.1
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 08:11:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780499488; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Sbgs1V5f64+AVInzlBRUES6H0akYtsCzgTtP3MA8VN/ZW7GFI5dKD8obIk3GuayrUv
+         StWAaat5khVSU2bKnAMEn+M5fIL/UPibtR+C9jmmLClh2xsjoG9KERLxjbi3tb1MWgWX
+         8/5I0jeJWotFK1Z4oMoRDTLfInpX4Zlj8d+dLry9boJgOVDi2MrBDocWuy4r7Y2St2gB
+         I0u6vAWaZCZbU56idkebkziI0QYO7L2N1iVurQlDm6kk5qFgZXkGw5yfVwvaQjsKvkC4
+         6+x1VgPNeL4HrMSArAL19JcjQf4c7LH+SBDedBwwkN+2AgUz7kJ4nxfVhaQ13jAqam+J
+         qpDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=eYo/RoO8Ab6uoruJUbfVcTXqfmLKCBjLy9NVhPXoQhc=;
+        fh=JmKNrRT8nM+tkV9xyciaff9VBazzJF3oElGJw8WBhu8=;
+        b=M9Col3eb/marEykNqGMycXwak2592Ma/nrJt1cpX9xhJwZ5TqT1YNnYTyPu0qYFLBO
+         7ECw2IKH96l/4mjXDx+ZOr++6bgUDoZNIx0AGWEKm1pkbX9TNcbtPy1Sg+nwBP63zR3Y
+         iBRq+MSBBNQ+WnTolVUEy4GK5amrnB3s7i+ut6QgZC3n6vfJutW2cRcZ8VyWs/5V564O
+         lTCsZBtSrrERi29qGsIGNs3Z1gavY6/8uqZCSVEv70nX349r7Ltl+cNRSjmQWo8UFJK9
+         ms9k381ew++S2rRFd9nA7Hn/NaDQTPt9I5kZDmVDW8kE8/Q44aHAxjpPFCmzLK8sPhE4
+         YOHg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780499488; x=1781104288; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eYo/RoO8Ab6uoruJUbfVcTXqfmLKCBjLy9NVhPXoQhc=;
+        b=uwzXhKgw4Q9cVGDu1BLLP1s6tyK3zDeCGJEESyXK/1kYpZM0g0xM6yZTHm/fLaUsAe
+         jJQ9mG4Y7C389Lzu5LswdltqzLdXCjmzhZ95yZ0/y/GS0Q7lPzzmV2ryINPPkmRp3i3u
+         RHn/DtBiaD8vgXwPhbH9Agg/PfAS9gv71xBHhLycaNkHWgduIGu77m178L2nsmYKhgSl
+         WcIulHEXsZC3a+uUVRU7iz7AekQN2MavMNQJ16sIN6gcqcE3Q30gtzRDxG6DGpoIQqhZ
+         PMmyFpvL/XL0wl8RXq5AR9lTtZbiEUoKxX98Iuwfh/q9wVj5LMFeP0WHPsox6ESL92NJ
+         ng+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780499488; x=1781104288;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eYo/RoO8Ab6uoruJUbfVcTXqfmLKCBjLy9NVhPXoQhc=;
+        b=Or8Be1Gsg57hCnU058RyR2wsC5IsJpX4XLq/b4UavTVPtG64p+W0kh+bkKMWejdWSf
+         EPji0EyLylxZzqDEHJJQScNiYDaw4nybzTVrjtzyeJaJyvYnXgBpRrrAlE8MwzYHCo8G
+         CJ1YuAZD87txDfhn/xXEWYYvjpyPd2ia2Qo4HmGidRgxhaYLW2ag5seqCECRAEXuwPRC
+         e2zEtWVeXbnU+cX/kqq1xIyipqUyBo8AwKfUeZbMecZEB+CzG2sJRfGn0twU7nMDS5o/
+         xa3s4jPs4fAIizO1VsDwXH5rBLUbJfFqZwYd2XZXE5bDLnOZFZwrCKN8vErGT4cZeTcd
+         gwvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9fyhRxLhzdzdahDM5SGKP/HScxZuuKIbc8R6XezlJJqavbovVmkdEqmjwBBl+zbc50FHo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2fm1HjP6PudGsj5H5PL3i/OnalkXS7OT4f0PkvULO1Jy0tSqM
+	hnrplxHNtcfTvRqaCNenzogAncEulgp7Df8xHK0ckDF1i2daM3Xf9rSBXQr/YT1NK2wLcGmNmx2
+	ZNcLoBGN2VHuFgRkAsGmc/NKGEDNoU/hYDDXea0wg
+X-Gm-Gg: Acq92OHccHgc92zZBgbH9qnKLTk8DFCHdfrOhEa8zOArTjtlqMHOZjx02HUoJ1CcMFi
+	5BxBHgjo8o4gj3L+9zv1iA40qRGH/IamlG/+eOndJBAKPXSPO+2+FLOO61pT32FAUEn5qCDVsgV
+	07hZe3xa75TjZgTJ6VFztCL1ymntA4jRtTOrWBDtaedp02vKCzw4hhEZz3H6YqFQfCavDH5Qelj
+	YbuDT5JPfN3s1mql/K0l05s+viA1AY20sUg6uf7zNJq4IFbtJtvFU596r78sVuPXNBsHCaD8hKl
+	fnCaMz1fRA09v0hcuFMZzCPzGCNREbZaOe/KOVz9cLN84Yv95Q==
+X-Received: by 2002:a05:701b:4245:10b0:137:f020:30e with SMTP id
+ a92af1059eb24-137f6b5dbf5mr1189909c88.17.1780499487370; Wed, 03 Jun 2026
+ 08:11:27 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 3 Jun 2026 08:11:26 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 3 Jun 2026 08:11:26 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aiATMXdOtg1T8o4D@yzhao56-desk.sh.intel.com>
+References: <aRsIstNXu0Bl0oID@yzhao56-desk.sh.intel.com> <CAEvNRgH6YGzp4OHF7hMQEtVodAe1pVg1F9UZWwLiu19-KNgJVQ@mail.gmail.com>
+ <aiATMXdOtg1T8o4D@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/24] KVM: x86: fix various GHCB issues
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>
-References: <20260529183549.1104619-1-pbonzini@redhat.com>
- <CABgObfY8_vam2OfhPRrCx79ApK9er0SWVsToC0vLjHQNdmzQ_w@mail.gmail.com>
- <aiAjd_VgR2Q0D82V@google.com>
-Content-Language: en-US
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <aiAjd_VgR2Q0D82V@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Date: Wed, 3 Jun 2026 08:11:26 -0700
+X-Gm-Features: AVHnY4IyYUIHeWudpu-mcfXc55H8YGR7XAK0t7Sp1IffJl64v4IejMlaT8XAJpg
+Message-ID: <CAEvNRgE8YG3L-SVJJmwkU8R37S-FoQrW_tdsEWhwZO+AJ0OUAQ@mail.gmail.com>
+Subject: Re: [PATCH] KVM: guest_memfd: Elaborate on how release() vs.
+ get_pfn() is safe against UAF
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, vannapurve@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/3/26 14:52, Sean Christopherson wrote:
-> On Sat, May 30, 2026, Paolo Bonzini wrote:
->> I think patches 11-13 should also be included in 7.1.
-> 
-> +1.
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-Thanks for confirming; pushed 11-17 to master and the whole series to next.
+> On Tue, Jun 02, 2026 at 05:40:00PM -0700, Ackerley Tng wrote:
+>> Yan Zhao <yan.y.zhao@intel.com> writes:
+>>
+>> Coming here from https://lore.kernel.org/all/ahn6qysOGfa74A2E@google.com/.
+>>
+>> > On Thu, Nov 13, 2025 at 03:22:29PM -0800, Sean Christopherson wrote:
+>> >> Add more context and information to the comment in kvm_gmem_release() that
+>> >> explains why there's no synchronization on RCU _or_ kvm->srcu.  Point (b)
+>> >> from commit 67b43038ce14 ("KVM: guest_memfd: Remove RCU-protected attribute
+>> >> from slot->gmem.file")
+>> >>
+>> >>       b) kvm->srcu ensures that kvm_gmem_unbind() and freeing of a memslot
+>> >>          occur after the memslot is no longer visible to kvm_gmem_get_pfn().
+>> >>
+>> >> is especially difficult to fully grok, particularly in light of commit
+>> >> ae431059e75d ("KVM: guest_memfd: Remove bindings on memslot deletion when
+>> >> gmem is dying"), which addressed a race between unbind() and release().
+>> > As mentioned in commit ae431059e75d ("KVM: guest_memfd: Remove bindings on
+>> > memslot deletion when gmem is dying"), unbind() and release() are mutually
+>> > exclusive, i.e., both protected by slots_lock, mentioning "race" here is
+>> > confusing. So, that commit addressed the mishandling in unbind() after
+>> > kvm_gmem_get_file() returning NULL?
+>> >
+>>
+>> I agree that the use of the word "race" here is odd since both unbind
+>> and release() are mutually exclusive and protected by slots_lock.
+>>
+>> Looking at ae431059e75d again, there are really 3 changes:
+>>
+>> 1. Refactoring out __kvm_gmem_unbind(), which is mostly about setting
+>>    bindings in the xarray to NULL and setting slot->gmem.file to NULL,
+>> 2. Checking that if slot->gmem.file is NULL, skip unbinding
+>> 3. Checking that if kvm_gmem_get_file() returns NULL, just unbind
+>>    without taking filemap_invalidate_lock().
+>>
+>> (2.) is explained in the comment
+>>
+>> 	/*
+>> 	 * Nothing to do if the underlying file was _already_ closed, as
+>> 	 * kvm_gmem_release() invalidates and nullifies all bindings.
+>> 	 */
+>>
+>> The real fix is in (3.), I think? Could you explain how
+>> kvm_gmem_get_file() works? Why would the file be dying with the
+>> slots_lock making the unbind and release mutually exclusive?
+> Below is my understanding:
+>
 
-Paolo
+Thanks for explaining!
 
+> kvm_gmem_unbind() is invoked under slots_lock.
+> kvm_gmem_release() holds slots_lock before it accesses any slot and sets
+> slot->gmem.file to NULL.
+>
+> When kvm_gmem_get_file() returns NULL, it could be
+> 1) kvm_gmem_release() is to be invoked soon.
+> 2) kvm_gmem_release() is being invoked, before holding slots_lock.
+> 3) kvm_gmem_release() is being invoked, holding slots_lock.
+> 4) kvm_gmem_release() is being invoked, after releasing slots_lock.
+> 5) kvm_gmem_release() has been invoked and completed.
+>
+> So, when kvm_gmem_unbind() finds slot->gmem.file != NULL while
+> kvm_gmem_get_file() returns NULL, it could only be 1) or 2). And at
+
+To clarify, 3, 4, 5 are not possible because kvm_gmem_unbind() is called
+with slots_lock held, right?
+
+> that point,
+> the remaining user of the slot->gmem.file should only be kvm_gmem_release().
+>
+> For both 1) and 2), kvm_gmem_unbind() and kvm_gmem_release() can't operate on
+> f->bindings simultaneously. kvm_gmem_unbind() needs to remove the slot from
+> slot->gmem.file's binding. Otherwise, after kvm_gmem_unbind() returns, the slot
+> will be deleted and kvm_gmem_release() will later hold slots_lock and cause
+> use-after-free.
+
+Thanks, this makes sense. The purpose of using kvm_gmem_get_file() is
+that if the file is _being_ closed, as stated in the comment in
+kvm_gmem_unbind(), kvm_gmem_get_file() would find the refcount to be 0
+and return NULL. (The missing part for me was that _being_ closed leads
+to kvm_gmem_get_file() finding a 0 refcount.)
+
+
+Annotating all of these:
+
+> void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+> {
+> 	/*
+> 	 * Nothing to do if the underlying file was _already_ closed, as
+> 	 * kvm_gmem_release() invalidates and nullifies all bindings.
+> 	 */
+>
+
+Above comment rephrased: !slot->gmem.file means kvm_gmem_release() had
+already taken slots_lock, iterated all bindings and set slot->gmem.file
+to NULL, and dropped slots_lock.
+
+>
+> 	if (!slot->gmem.file)
+> 		return;
+>
+
+If we get here, we know for sure that slot->gmem.file is valid (not
+freed) and can be dereferenced safely. We know this because
+kvm_gmem_release() is the place that frees slot->gmem.file, and if there
+was any chance of slot->gmem.file being freed, slot->gmem.file would
+have been NULL-ed first.
+
+Hence we can also safely proceed to do
+filemap_invalidate_lock(slot->gmem.file->f_mapping), but as described in
+ae431059e75d, file->f_mapping is not under KVM's purview. A future
+change could NULL out file->f_mapping before .release() is called, for
+example, and break the assumption that gmem.file->f_mapping is still
+valid. Hence, rely on taking a reference on gmem.file from slot instead,
+which is within KVM's control.
+
+> 	CLASS(gmem_get_file, file)(slot);
+>
+
+If we do get the reference, we're good and we can take
+filemap_invalidate_lock() and then unbind.
+
+> 	/*
+> 	 * However, if the file is _being_ closed, then the bindings need to be
+
+If we don't get the reference, then the file is _being_ closed, so the
+file's refcount is already 0, but kvm_gmem_release() hasn't yet been
+called.
+
+Later, when kvm_gmem_release() is called, it will iterate bindings and
+then dereference slot. Hence, kvm_gmem_release() must not see the slot -
+the slot must be removed from bindings. Hence we must unbind.
+
+Unbinding without taking filemap_invalidate_lock() is fine since if
+!file, we're sure there's only one last user of file -
+kvm_gmem_release(), and kvm_gmem_release() is locked out by slots_lock.
+
+> 	 * removed as kvm_gmem_release() might not run until after the memslot
+> 	 * is freed.  Note, modifying the bindings is safe even though the file
+> 	 * is dying as kvm_gmem_release() nullifies slot->gmem.file under
+> 	 * slots_lock, and only puts its reference to KVM after destroying all
+> 	 * bindings.  I.e. reaching this point means kvm_gmem_release() hasn't
+> 	 * yet destroyed the bindings or freed the gmem_file, and can't do so
+> 	 * until the caller drops slots_lock.
+> 	 */
+> 	if (!file) {
+> 		__kvm_gmem_unbind(slot, slot->gmem.file->private_data);
+> 		return;
+> 	}
+>
+
+If we did get the reference, this is the most straightforward case. Take
+the filemap_invalidate_lock(), unbind.
+
+> 	filemap_invalidate_lock(file->f_mapping);
+> 	__kvm_gmem_unbind(slot, file->private_data);
+> 	filemap_invalidate_unlock(file->f_mapping);
+> }
