@@ -1,144 +1,276 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBB633B6F8
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 10:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B1F37B030;
+	Wed,  3 Jun 2026 10:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780480951; cv=none; b=RhX9bLhzA8fz24YqGNwBEe06M0ZT5UCmlsyxKELwkoK8IJPyrL8b+SFq/cBCQlDpMISyWOuc00wbBybtkjUuQ7QqtcsiY5P0HMJW+NGrF+BRrJoVUxwEAWOgKQpeEOUAXdR24FwhKqjwtrDlcL6h/TXjtokB9sbwPQ5pddvOjMo=
+	t=1780481740; cv=none; b=q451SgEEGPzFn29V6P+BbPwHTTzTrozwREkUvTcGe5Wiy2CERoUVibWpb8U7AothhOvT+RgSESSqB1lA1y5zoAXCwT6n8cJ5Iyz5amAbfg4ZXM0QGLqY2YuLy8vrFNmZ5/JKWkGoTxPqI1aJz6OTvWpsrZovrczuQk2P3cvo6gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780480951; c=relaxed/simple;
-	bh=yXx+rqfeV3LVpiDnFV5kG5jvMFi7X+jyX4MxnENzlnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KJUivPvlFFD2zgt0zSolWniTPgUtRPjNg3Zd7RmMNlPJ1R9sgh55PSWQGrQ0+wNzTIpBjPrqBNp/9MV2ajpmRzh3GUREKQ9RmqY3xJYknSmxQkFA/oMt1hn5BkJYYGrMnEj/Soqn49L72M2UYhIXs/Q4AWJdKB0PvryYhzit3tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=beFWDJ7B; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780481740; c=relaxed/simple;
+	bh=5pJBsfHqtfuBBV3AHbQunZhY9vkYfgbc9VmYOhx6YXE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WfqkodGJM7csNEbqN8DZA+UGrU7Wv5Q69CkCIfRA3OuOG4UBbAhHvCzhkjaog48jEoPT7vMAHj9lNwO7JNgErQyG5AvuQZbu6NkvU6oSVWMIZ7MUPV/2zAv0V7pn7m19gTgOhNJDWJQYdsf7IM6XJQPNc8aJ5vJfGtUuCUkhGJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=a3tFk1kh; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="beFWDJ7B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E701F00893;
-	Wed,  3 Jun 2026 10:02:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780480950;
-	bh=V8fVwdI7wxnksQVE14DY2HWli3Oy9+kR4dG/B9JF5Y8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=beFWDJ7B2Z8xQPvn9v3oqwDDTjYwjPDD45LX8Fy0GRXVmLBpMDP36jy5S40R1f28q
-	 +2gsQydDi3fwWtbnyLAkHZ5PPW0v7mM7WsjPx5NRYHlGtERz9nAPfYyqtDLGmr7dO0
-	 rTXWbiAYPOd+Cq/w2hk9zXWPbyVL+jvll3FT1tEi4Sj/8C5W8EKs/Vbb6WPWuslBZT
-	 BPuTsFmws1TTdsA501ufsflwFE0lG9INBbZGL7xT/82fDc4ezk41axPsGSR6hYx5Lw
-	 j4aTVtJYRRHyKNQX5jjw3kqWwXidASZjB1Lv/LyS5NLWnrWN4MRtQRh6tRNnBwwHIo
-	 TZVDaRVef7e5Q==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1B503F4007E;
-	Wed,  3 Jun 2026 06:02:28 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Wed, 03 Jun 2026 06:02:28 -0400
-X-ME-Sender: <xms:tPsfauhaxGVEUgsvlHEIwecFN-9ZEF71setn4TDGW-FCZRyQ0LUDyA>
-    <xme:tPsfamdy_fjRoYDOeR8cmy-cPfUgoaO8mBFumrmZMVa1jqXBPwZUvuLW59ggNGPh6
-    y6Fg25GDh1rZ4Nor5r3OQmW7R6jePR7YEy-XB3OaBYhUGAYnBP5RIw>
-X-ME-Received: <xmr:tPsfajmUqQ7cLJ253fvAZjjjhxIAhgwirNcqfwrQkow3MYEGcKhn-5N2p_izhw>
-X-ME-Proxy-Cause: dmFkZTGuwFznDiQhelvFQOBp2/9r9H4fxoNNaEmxB6iOaHyiMwffQUPfC1FAZMpbzqIqkk
-    CN9TCgwxMINXJSdtTnBkzIXOc6K717wq9QjeaoGXRWKTpKm0u+QpWfmKKW9HN3pL/A1+6p
-    92lcvawl98fM5nvrzMFAJ0zCHVpCTPUX+0fcWGBVn0sUJNaILiDyF6WAR5GTLaYBf9LtF9
-    HeIJf/jM6FJN5c4MVjb/Nm52s7djeDzHoqhhvyRfCScg4aR0UhUORBt/S3XR36+WsGhT7P
-    bVueHPke7HzKjPxs+Lmcr4uF/2Rif/nWiVWI2Sn/X2KEDbfEm3ZjS1qdm+5tHCszTtFFts
-    /VzzRZabQfVduEReAlUgkBJ79Z4LSt1cBS+rSnnFi9jDTiczC1H87ZS7qLCKADqoqzrmR4
-    mGIz8sa4eqINRsLod/oLKxieYbrnEsfQXN/59nPX9ObnVXbRESfnOCNA6fc+BZp0oeNprP
-    PvGGkzDmtovVRJkI3ywAfrhFpNJvUXD0fDzsSJPA0RLCqMYGu9iLwI5MlFSpJg7a/5udeS
-    lJZWm/zw2dGecCf6mp/nhd1OdYPK7oDQIXbomfj0Bb9MYjyFb44nJOTTHxAkkFlEu1IJB4
-    mvQH42vq4f+lwAhvj17/Vsi6xt4tXviwqxjQO+AmX3bH/ZlUDX8iOWPxS9lA
-X-ME-Proxy: <xmx:tPsfaixl8twHiScZRF0l3aPUkADDTTORVWaND_noCCfDud9HhsTR5Q>
-    <xmx:tPsfalcLZ32BWK_NdqC_-FR1DBldNJTO6IRNGnlVk2pTTVI454R5Rg>
-    <xmx:tPsfajhekMHXMQ6qYg0RgZ4pegrE87GtuiN4Aa5Q13qUrGdoLAXSdw>
-    <xmx:tPsfap-OinTX938zNS5LgCJfS2x6J85u1U-3v3h3dj98T7oCnvJ1vg>
-    <xmx:tPsfapa94FWneQTrYxrkNAOdSEUGyY-WiNNfJ2K6qxxwDuEUGbG_4uoT>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Jun 2026 06:02:25 -0400 (EDT)
-Date: Wed, 3 Jun 2026 11:02:19 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- 	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, 	Long Li <longli@microsoft.com>,
- Ajay Kaher <ajay.kaher@broadcom.com>,
- 	Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Jan Kiszka <jan.kiszka@siemens.com>, 	Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, 	Juergen Gross <jgross@suse.com>,
- Daniel Lezcano <daniel.lezcano@kernel.org>,
- 	John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
- 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>,
- 	Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- 	Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-coco@lists.linux.dev,
- linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
- 	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
- 	Tom Lendacky <thomas.lendacky@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>,
- 	David Woodhouse <dwmw2@infradead.org>,
- Michael Kelley <mhklinux@outlook.com>,
- 	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v4 07/47] x86/tdx: Force TSC frequency with CPUID-based
- info provided by the TDX-Module
-Message-ID: <ah_7jEMnqs80gXLG@thinkstation>
-References: <20260529144435.704127-1-seanjc@google.com>
- <20260529144435.704127-8-seanjc@google.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="a3tFk1kh"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B683A49CF;
+	Wed,  3 Jun 2026 03:15:30 -0700 (PDT)
+Received: from [10.57.26.22] (unknown [10.57.26.22])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B2F2C3F632;
+	Wed,  3 Jun 2026 03:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780481735; bh=5pJBsfHqtfuBBV3AHbQunZhY9vkYfgbc9VmYOhx6YXE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=a3tFk1khemwD9g5LaC2t2teF0HtH4Dpwpf3xOUJR26p+g4ZJnnOWZmoD9h6frZHuj
+	 OmkCSVrsN/SUCQuC9+0HQKpN2/cHv+SxD5E1grWZpIdFgvPug2xo8ZVC6X3QNRNJFh
+	 yj9zU81YBoaetujXyTDSOjevEaNye32bXTzK++14=
+Message-ID: <c217a495-bd39-408c-9040-010c30bed1e6@arm.com>
+Date: Wed, 3 Jun 2026 11:15:28 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260529144435.704127-8-seanjc@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 04/44] arm64: RMI: Add SMC definitions for calling the
+ RMM
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-5-steven.price@arm.com> <86ecj5vsu4.wl-maz@kernel.org>
+ <3261b04f-1a0c-451d-8981-1e2bccc8a9ca@arm.com> <87jysvahpb.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <87jysvahpb.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 29, 2026 at 07:43:54AM -0700, Sean Christopherson wrote:
-> When running as a TDX guest, explicitly set the TSC frequency to a known
-> value, using CPUID-based information, instead of potentially relying on a
-> hypervisor-controlled PV routine.  For TDX guests, CPUID.0x15 is always
-> emulated by the TDX-Module, i.e. the information from CPUID is more
-> trustworthy than the information provided by the hypervisor.
-
-Right. EBX is configurable by TD_PARAMS.TSC_FREQUENCY at TD build. The
-rest is fixed.
-
-> To maintain backwards compatibility with TDX guest kernels that use native
-> calibration, and because it's the least awful option, retain
-> native_calibrate_tsc()'s stuffing of the local APIC bus period using the
-> core crystal frequency.  While it's entirely possible for the hypervisor
-> to emulate the APIC timer at a different frequency than the core crystal
-> frequency, the commonly accepted interpretation of Intel's SDM is that APIC
-> timer runs at the core crystal frequency when that latter is enumerated via
-> CPUID:
+On 22/05/2026 10:58, Marc Zyngier wrote:
+> On Thu, 21 May 2026 16:33:09 +0100,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> On 21/05/2026 13:40, Marc Zyngier wrote:
+>>> On Wed, 13 May 2026 14:17:12 +0100,
+>>> Steven Price <steven.price@arm.com> wrote:
+>>>>
+>>>> The RMM (Realm Management Monitor) provides functionality that can be
+>>>> accessed by SMC calls from the host.
+>>>>
+>>>> The SMC definitions are based on DEN0137[1] version 2.0-bet1
+>>>>
+>>>> [1] https://developer.arm.com/documentation/den0137/2-0bet1/
+>>>>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>> ---
+>>>> Changes since v13:
+>>>>  * Updated to RMM spec v2.0-bet1
+>>>> Changes since v12:
+>>>>  * Updated to RMM spec v2.0-bet0
+>>>> Changes since v9:
+>>>>  * Corrected size of 'ripas_value' in struct rec_exit. The spec states
+>>>>    this is an 8-bit type with padding afterwards (rather than a u64).
+>>>> Changes since v8:
+>>>>  * Added RMI_PERMITTED_GICV3_HCR_BITS to define which bits the RMM
+>>>>    permits to be modified.
+>>>> Changes since v6:
+>>>>  * Renamed REC_ENTER_xxx defines to include 'FLAG' to make it obvious
+>>>>    these are flag values.
+>>>> Changes since v5:
+>>>>  * Sorted the SMC #defines by value.
+>>>>  * Renamed SMI_RxI_CALL to SMI_RMI_CALL since the macro is only used for
+>>>>    RMI calls.
+>>>>  * Renamed REC_GIC_NUM_LRS to REC_MAX_GIC_NUM_LRS since the actual
+>>>>    number of available list registers could be lower.
+>>>>  * Provided a define for the reserved fields of FeatureRegister0.
+>>>>  * Fix inconsistent names for padding fields.
+>>>> Changes since v4:
+>>>>  * Update to point to final released RMM spec.
+>>>>  * Minor rearrangements.
+>>>> Changes since v3:
+>>>>  * Update to match RMM spec v1.0-rel0-rc1.
+>>>> Changes since v2:
+>>>>  * Fix specification link.
+>>>>  * Rename rec_entry->rec_enter to match spec.
+>>>>  * Fix size of pmu_ovf_status to match spec.
+>>>> ---
+>>>>  arch/arm64/include/asm/rmi_smc.h | 448 +++++++++++++++++++++++++++++++
+>>>>  1 file changed, 448 insertions(+)
+>>>>  create mode 100644 arch/arm64/include/asm/rmi_smc.h
+>>>>
+>>>> diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/rmi_smc.h
+>>>> new file mode 100644
+>>>> index 000000000000..a09b7a631fef
+>>>> --- /dev/null
+>>>> +++ b/arch/arm64/include/asm/rmi_smc.h
+>>>> @@ -0,0 +1,448 @@
+>>>> +/* SPDX-License-Identifier: GPL-2.0 */
+>>>> +/*
+>>>> + * Copyright (C) 2023-2026 ARM Ltd.
+>>>> + *
+>>>> + * The values and structures in this file are from the Realm Management Monitor
+>>>> + * specification (DEN0137) version 2.0-bet1:
+>>>> + * https://developer.arm.com/documentation/den0137/2-0bet1/
+>>>
+>>> How long is this spec going to be available on the ARM web site, which
+>>> has a tendency of being reorganised every other week? And there is
+>>> already a beta2.
+>>
+>> Obviously I can't predict the next reorganisation - but at least it's a
+>> link that could be fed into archive.org or similar.
 > 
->   The APIC timer frequency will be the processor’s bus clock or core
->   crystal clock frequency (when TSC/core crystal clock ratio is enumerated
->   in CPUID leaf 0x15).
+> I found that the PDF spec was less susceptible to creative nonsense,
+> and people can download it for future reference, whereas ARM has
+> happily *deleted* specs from the website over time (try to find PSCI
+> 0.1, for example...).
+
+Sadly the nearest I found to a link directly to the PDF is:
+
+https://documentation-service.arm.com/static/69cb945ac1586b7c59b1c00c
+
+But I have 0 confidence that that link will work for long (if indeed it
+even works for others now!). If you know of any way of getting a better
+link out of the Arm website that I'm all ears!
+
+> [...]
 > 
-> If the hypervisor is malicious and deliberately runs the APIC timer at the
-> wrong frequency, nothing would stop the hypervisor from modifying the
-> frequency at any time, i.e. attempting to manually calibrate the frequency
-> out of paranoia would be futile.
+>>>> +struct realm_params {
+>>>> +	union { /* 0x0 */
+>>>> +		struct {
+>>>> +			u64 flags;
+>>>> +			u64 s2sz;
+>>>> +			u64 sve_vl;
+>>>> +			u64 num_bps;
+>>>> +			u64 num_wps;
+>>>> +			u64 pmu_num_ctrs;
+>>>> +			u64 hash_algo;
+>>>> +			u64 num_aux_planes;
+>>>> +		};
+>>>> +		u8 padding0[0x400];
+>>>
+>>> SZ_1K? And similarly all over the shop?
+>>
+>> I'm a bit less sure that makes the code more readable - these structures
+>> are a bit of a pain because they are somewhat sparse. I've left a
+>> comment where the beginning of each union is, and personally I find it
+>> easier to see 0x0 + 0x400 == 0x400 rather than trying to work out what
+>> SZ_1K is in hex. This is particularly the case in terms of:
+>>
+>>> struct rec_params {
+>>> 	union { /* 0x0 */
+>>> 		u64 flags;
+>>> 		u8 padding0[0x100];
+>>> 	};
+>>> 	union { /* 0x100 */
+>>> 		u64 mpidr;
+>>> 		u8 padding1[0x100];
+>>> 	};
+>>> 	union { /* 0x200 */
+>>> 		u64 pc;
+>>> 		u8 padding2[0x100];
+>>> 	};
+>>> 	union { /* 0x300 */
+>>> 		u64 gprs[REC_CREATE_NR_GPRS];
+>>> 		u8 padding3[0xd00];
+>>> 	};
+>>> };
+>>
+>> Where 0xd00 doesn't even have a correspoding SZ_ define.
+> 
+> Indeed, but it is (SZ_4K - SZ_256 * 3).
 
-Agreed.
+Do you really think
 
-> Deliberately leave CPU frequency calibration as is, since the TDX-Module
-> doesn't provide any guarantees with respect to CPUID.0x16.
+ 		u8 padding3[SZ_4K - SZ_256 * 3];
 
-It is fixed to zeros. Sounds like a guarantee to me :P
+is better? I certainly don't. I'll give you (SZ_4K - 0x300) is tempting.
+Although it then makes the BUILD_BUG_ON idea below somewhat pointless.
 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> And a lot of these structures> seem to be designed to form a 4kB blob.
+I'm sure we can make use of
+> that information (BUILD_BUG_ON?).
 
-Looks sane to me. Including your reasoning about tsc_early_khz= in reply
-to Sashiko.
+BUILD_BUG_ON requires being in a function. But static_assert() can be
+used in the header by the struct definitions - I'll add that, thanks for
+the suggestion.
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+>>
+>> The RMM deals with this with macro magic:
+>>
+>>> struct rmi_rec_params {
+>>>         /* Flags */
+>>>         SET_MEMBER_RMI(unsigned long flags, 0, 0x100);  /* Offset 0 */
+>>>         /* MPIDR of the REC */
+>>>         SET_MEMBER_RMI(unsigned long mpidr, 0x100, 0x200);      /* 0x100 */
+>>>         /* Program counter */
+>>>         SET_MEMBER_RMI(unsigned long pc, 0x200, 0x300); /* 0x200 */
+>>>         /* General-purpose registers */
+>>>         SET_MEMBER_RMI(unsigned long gprs[REC_CREATE_NR_GPRS], 0x300, 0x1000); /* 0x300 */
+>>> };
+>>
+>> where the offsets are just directly encoded in the macro - but it's not
+>> an especially robust macro and I'm not convinced it's more readable.
+> 
+> I think this is just as horrible, but at least it seems to take the
+> boundaries of the structure into account.
+> 
+>>
+>> I'm happy to hear other suggestions on how to encode this neatly.
+> 
+> Honestly, I wouldn't mind having the structures described in a more
+> abstract way and then pre-processed to generate the include files. If
+> the architectural MRS wasn't so huge, I would have added it to the
+> kernel and used that directly for KVM.
+> 
+>>
+>>> I haven't checked the details of the encodings (life is too short),
+>>> but I wonder how much of this exists as an MRS and could be
+>>> automatically generated?
+>>
+>> Automatically generating this would be good - I'm not sure whether we
+>> have a (public) source available to generate from at the moment. I have
+>> tried to methodically work through the spec when updating this file, but
+>> as Gavin has already pointed out there was at least one mistake (in
+>> currently unused definitions) this time.
+> 
+> I'm slightly baffled that even the RMM is written this way. Given the
+> formalism used in the RMM spec, I was expecting that you'd have a
+> bunch of JSON at hand and able to generate any output from that. Doing
+> this stuff by hand is both incredibly dull work *and* extremely error
+> prone.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+I'll look into the possibility of generating the headers. While dull and
+error prone I have found it is sometimes useful for forcing a review of
+the spec itself. There have been a number of bugs I've found (and have
+been corrected) in the spec while writing the header files - it's very
+easy to skim read those parts of the document otherwise.
+
+Writing the structures out in a "more abstract way" might be a good
+idea, but I'm just a little wary of writing another tool which is only
+used in this one spot. The RMM structures are somewhat unusual in being
+so sparse.
+
+Thanks,
+Steve
+
+> Thanks,
+> 
+> 	M.
+> 
+
