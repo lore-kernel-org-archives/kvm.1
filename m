@@ -1,115 +1,129 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DCE2B9A4
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 01:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A631429D;
+	Wed,  3 Jun 2026 01:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780449427; cv=none; b=jV6zGZQRvHWAcAHPzJFKPmj+RZNcO5x0IdIatBWScoQVC8a77hdIik/Fe7GqHiXV9J1T3BDTdv9x7ntw8X7vrPcb/DD0R8WX3JZClqeSZU0+smX9FXeAr037cfo9BrvmKndisJ66iGigXrjxwu4KEZSAtbG+c6x7FWsjoYnWeH0=
+	t=1780449941; cv=none; b=mdsyfJFtEEN+44q/PyJ7Cl2BNEclPiOM8h5n9imVp0BJFOXJxZ9aYy0s60MoSZKjyEKlE1ZS70FYhYbDKGy7wcdu1/Wfxt+4jB2K+uG37WhqBltLwnDQImVAXx29+k391x6DuVhKm2ZQmJGneYpf/DHJtM3FXY+QnRbBYvwJS6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780449427; c=relaxed/simple;
-	bh=AfeOHXoP4IMONW5uOULUF2nWpillreIFP9OwYK/o6Mg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L6DlSj1D1ZXbn5XdarsShfuWMmwX18qQ4A5XTZHs839MSitjXs19uHaPl4yYFa0HCWgIJ7klds3a8lkiHt5zIKv4vzRo8kGMhVP/Df7DXO4hMHw2TItuWU47Q7OYM3JcRQD1oymLMOBdQS7ojLCQ7CjPcTKzyqTmuLDJ2WyzLOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=K5fQAgl5; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1780449941; c=relaxed/simple;
+	bh=AvEoZgT1O5goIrofI6SLhGiHhHOstW9nOOS+eVtRsxo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=bVsCPhQBWG+OU3GRzb6avg947P1vHssKgzXnfzD/IgxLFsgT3UZDwzPgGa+QznMjHDQ3KznWy1yGK4WCIIBtpFSa5lNS4spk1iMbLkAGCzqXSnZXO8rsJn5OEDRDilDVgrenti/Z2OQMGsxe23WGH34n8zdsw3xSxPlG2f9GHiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=r5qFW3V3; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="K5fQAgl5"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-91550c6ea8eso465381785a.0
-        for <kvm@vger.kernel.org>; Tue, 02 Jun 2026 18:17:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780449425; x=1781054225; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+0q9jHEvyutbUqJNds5rNSupxxEZQmy/I4DCyfn2tFo=;
-        b=K5fQAgl5cBbKmPdQ6W4dsu1eUVIWDx2iw/+dSAcaYUlXAjCDlWSwRhlOqZkTPTMvyG
-         2ppyTINfnxBvqLqwiOLYCdd7Z70gGsvHhykeg2bA4YrTkqlwTd15iyWb1FavzYJvzV8e
-         uJfMt/vIZAdIwgPfrp758RqHaLrQVEJX2m9k1EfLHGy+gYKIUUm30JQx5TGEobSgDtlz
-         QCjPGkgCrnRIanxrdmjBNYDw5kkmlSkT4tjzU4Be7P96fjTtXnowQZz+Qw0xqu2jNPHY
-         QU082H+GyIe15HeJCWa6zhBub0Yvr0PlRl/3/oIxDHR+qsXxB8VZkFZIzQJt7Z0PhmQt
-         6OXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780449425; x=1781054225;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+0q9jHEvyutbUqJNds5rNSupxxEZQmy/I4DCyfn2tFo=;
-        b=B0RCy8AanhmXye9UwEKp2hrvBBEewniHcoy7UmMuepqDngpxRcOdn7Vrn3HjQW4UeO
-         dsQI7InDCZoyKvxZlKhUJQzUuHzLkVHX1CR1kNC3JVC6R1zD05Op46ekLTsK4k6GsjSJ
-         a2832ESFofICvHOxQc/fVI8oI87kNnGN1hLjEfvSayw4p7EF+0fSM7JDSLGHhEfHLyWB
-         iCkm4Go0GYqvQxSM+0+cf5PtYlLlQvEbtCTs8/mTpMjgxxmvBLqw/9oDX7vwU5dBj9hG
-         aYqt7NS2W4132qoymuvXySW7arHUj7Hn9MneFCtjJSa2PFc/pmwg5Dmhexm5Z8LFeNGC
-         zDVw==
-X-Forwarded-Encrypted: i=1; AFNElJ8mBi2776MdZzy0zwA2K1ZxDF6NIheQZzdaSGsb2Gu6h/xTfdwIoWHMgjCqLHXykhj+gVo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGsLCV39UbQYKhtXM2d3splmkPi7FziPac++T3rt3zYB0xF1uK
-	divD+kj62YqUJu58bGWArokylbcgsP6sXgnk4THTR83rRqLBvb/T7Z5yH30a5+3zEw8=
-X-Gm-Gg: Acq92OFzMk7t2E7jo69RXmcCL0fIV4VLKScmHv+MPT63al+WZq95e16kFjCxXBI8nSO
-	mky+SS4pOCHa1qwtCjKOaJeCuspA+j+so6lTX/LP/DvSthYkcDglw25UHiB4B1GAPyUuFhcv7rd
-	SbVsnTPnw3PwdSQT4e+yBPmWKVrStbuLS5blwK0xhdaaH+Rk4Lvo9eZSej9TR9IdpRc1KeZkaPi
-	CWDXpNS11jrtCvxaxrH7QE2D6dlkKzTLnZkisG+OUdXT4wR63uKMKYgYb+g9icGa7DgRacuM4dJ
-	k9l0PbmhzZ8RhHx53FLM7IyOURXYzKfsq5PfZKjE2u2mzVtMMcqCYSuCLGIzHphB1BNoosZQKcD
-	iKkj7hBB0m7+BQnDK7nC1/H9Us7ttk/NSMi2Z+L/a53hWLffCmyJ/UDeM1N1bCgUFEE+Lh/IYmw
-	p+kRdAR3l01WVVyz4VZx5Y6fIB55xa+gH0VU9n5GXea5bV/3ZW6bNCNkW7lyOACNFIVJUEpnYom
-	ZeBpGSuhOXV47mN
-X-Received: by 2002:a05:620a:4455:b0:914:c788:761a with SMTP id af79cd13be357-9158a84f289mr254481885a.58.1780449425306;
-        Tue, 02 Jun 2026 18:17:05 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a009fe7sm102378285a.8.2026.06.02.18.17.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 18:17:04 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wUaEC-00000004yu4-0q6Q;
-	Tue, 02 Jun 2026 22:17:04 -0300
-Date: Tue, 2 Jun 2026 22:17:04 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-Cc: adrian.larumbe@collabora.com, airlied@gmail.com, alex@shazbot.org,
-	baolu.lu@linux.intel.com, boris.brezillon@collabora.com,
-	dri-devel@lists.freedesktop.org, dwmw2@infradead.org,
-	iommu@lists.linux.dev, joro@8bytes.org, kevin.tian@intel.com,
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, liviu.dudau@arm.com,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	oliver.yang@linux.alibaba.com, robh@kernel.org,
-	robin.murphy@arm.com, shiyu.zsq@linux.alibaba.com,
-	steven.price@arm.com, suravee.suthikulpanit@amd.com,
-	tzimmermann@suse.de, wei.guo.simon@linux.alibaba.com,
-	will@kernel.org, xlpang@linux.alibaba.com,
-	alikernel-developer@linux.alibaba.com
-Subject: Re: [PATCH v2 11/30] iommu/mtk_iommu: implement iova_to_phys_length
-Message-ID: <20260603011704.GT2487554@ziepe.ca>
-References: <20260531093637.3893199-1-guanghuifeng@linux.alibaba.com>
- <20260602104637.1219810-1-guanghuifeng@linux.alibaba.com>
- <20260602104637.1219810-12-guanghuifeng@linux.alibaba.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="r5qFW3V3"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=7/bDDg8HI1nW+jG2OBjTqnitI5mSSLNPDwEMCufdfPw=;
+	b=r5qFW3V37qy+wyY9yfcMOoMvyyrSHNxM5pyz/pdKeGlclyD2OlfH3FIYM57XMDUUxo/kPKXnl
+	b8v3caCA7d6BL5CUinSPckgjHjodKvJEhMlvXCIKr5skKOGnD4QQiI5dxFgQFyKwPuvIxGgy5UU
+	ugKBhBb/0IiJ177TclbOkrU=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gVVDj64WyzKm5F;
+	Wed,  3 Jun 2026 09:17:41 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 13C4D4055B;
+	Wed,  3 Jun 2026 09:25:34 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 3 Jun 2026 09:25:33 +0800
+Message-ID: <88302c97-894d-41f8-8e01-f4da6e812cbc@huawei.com>
+Date: Wed, 3 Jun 2026 09:25:33 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260602104637.1219810-12-guanghuifeng@linux.alibaba.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 0/8] vfio/pci: Add PCIe TPH support
+To: Jason Gunthorpe <jgg@ziepe.ca>
+CC: Alex Williamson <alex@shazbot.org>, <wathsala.vithanage@arm.com>,
+	<helgaas@kernel.org>, <wei.huang2@amd.com>, <zhipingz@meta.com>,
+	<wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+References: <20260528124649.14732-1-fengchengwen@huawei.com>
+ <20260601095840.3aaaa508@shazbot.org>
+ <59c82855-59a7-4f0e-b534-d35535d04b93@huawei.com>
+ <20260602170847.75bd159d@shazbot.org>
+ <3f8d1722-6749-4f3a-b630-c96303cec284@huawei.com>
+ <20260603004524.GL2487554@ziepe.ca>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <20260603004524.GL2487554@ziepe.ca>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-On Tue, Jun 02, 2026 at 06:46:18PM +0800, Guanghui Feng wrote:
-> -	pa = dom->iop->iova_to_phys(dom->iop, iova);
-> +	if (mapped_length)
-> +		*mapped_length = 0;
-> +
-> +	pa = dom->iop->iova_to_phys_length(dom->iop, iova, mapped_length);
-> +	if (pa == PHYS_ADDR_MAX)
-> +		return PHYS_ADDR_MAX;
+On 6/3/2026 8:45 AM, Jason Gunthorpe wrote:
+> On Wed, Jun 03, 2026 at 08:34:53AM +0800, fengchengwen wrote:
+> 
+>> This translation helper is required to handle varied TPH configurations,
+>> including cases where ST entries live inside device private registers
+>> instead of MSI-X or TPH capability space.
+> 
+> I thought we agreed vfio had to block that feature in config space due
+> to security concerns? That's what enable_unsafe_tph is about, right?
 
-???
+Exactly. All ST related uAPIs are fully hidden and blocked when
+enable_unsafe_tph is off, complying with our earlier security agreement.
 
-I guess lots of AI made this right? Please review the AI output for
-the little slop things left over..
+> 
+>> Prior discussion with Jason (
+>> ref: https://lore.kernel.org/all/20260414151125.GF2577880@ziepe.ca/)
+>> indicated VFIO-PCI is the correct component for per-device TPH
+>> implementation.
+> 
+>>> The host-only opt-in issue above also doesn't appear to be addressed or
+>>> rebutted.
+>>
+>> enable_unsafe_tph host opt-in already fully gates all new TPH ABI:
+>> TPH cap + feature ioctl are completely hidden from userspace when off,
+>> no userspace opt-in needed.
+> 
+> I agree in general that the presence of enable_unsafe_tph VFIO has to
+> report the per-device steering tags to userspace so it can program the
+> device specific registers, nothing else can do this.
+> 
+> But I don't really get what is going on with all the new uAPI
+> proposed.
+> 
+> I don't understand what VFIO_DEVICE_FEATURE_TPH_ST_CONFIG is supposed
+> to be for, userspace should not be able to directly program registers
+> that are kernel controled. In this case it is 'safe' and it should be
+> only programmed by specifying abstract information like TPH_CPU_ST
+> does.
 
-I saw enough unnecessary hunks, and goofy things like putting the
-mapped_len zero in every driver instead of in the core caller.
+Two separated feature ops are defined for clear layered programming model:
+- TPH_CPU_ST: Query corresponding ST index via given CPU ID;
+- TPH_ST_CONFIG: Write ST value, only valid for ST stored inside PCI
+  config space or MSI-X table.
 
-That said it looks pretty close overall..
+Userspace workflow: Fetch ST via TPH_CPU_ST first, then pick proper
+interface to set ST based on device ST storage location, lastly enable TPH.
+Since the full device is bound to VFIO without in-kernel driver control,
+letting userspace manage TPH/ST entirely is reasonable.
 
-Jason
+> 
+> I'm also wondering why it needs a shadow entry, that doesn't seem
+> normal for config space tables..
+
+Shadow table serves two key purposes:
+1. Align with core PCI TPH API constraint which requires TPH enabled
+   before any ST programming, enabling consistent userspace programming
+   sequence;
+2. Backup configured ST values to roll back hardware state during
+   device close for cross-session cleanup.
+
+Thanks
+
+> 
+> Jason
+
