@@ -1,30 +1,30 @@
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7494048C3EA;
-	Wed,  3 Jun 2026 15:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D483D3324;
+	Wed,  3 Jun 2026 15:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780499955; cv=none; b=ofR7bG0vmZ8vqH2yvXIPp7PiATP/1Zi23NQrou/rwd9+9YlvTxkFAwoUsxzFVqfEbxKKTITkSIYpvmN9K6QSURZpIiC/jfccigGeNu1T5jOyl6oQMyacvkZ6KCBPVrWFD/O16k+JfWrJyPXIqzqNgtoGJHt8R031pkdr+syaB/0=
+	t=1780499958; cv=none; b=H+c6yHLxVQfWklzBcTxhZGNZMlKsPI6UktIPFXLF2JKpi7IZQZ3xC7sSdUIEDYP89ziiDO5P+qr65RL3a7/wYKyapWR4mo1lVBf47J4ZXOzBMbcZtml5A2hpUZjHD3K19S62/27fzAnKHuZ+A939i/Mhb3KJJl2XIVXZlYmyG1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780499955; c=relaxed/simple;
-	bh=TjzGiXc62UrhhblH9SGvj2BUK3+XiOWBAWsAXpz4ajY=;
+	s=arc-20240116; t=1780499958; c=relaxed/simple;
+	bh=46L9LTzcQcvQkioanu40YoVpL2SL9Yf/P8f0rxz/3Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCcBLSkgX78Q9iC/wbf8b0hQDGJgW5CP+cefGhg5BPIB2LXYMYsMlxBXgvCL5YctG1uPSOTzMvBEecx0lNFsTVXfCWNJFoABfjQFHB0cvtaPw14PqIuqMRA28A8r4vDJRvqCc+0TSqntbx/EoQ0BcxAUrF75bn9THTE8UvULtmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=yj2XtTr8; arc=none smtp.client-ip=115.124.30.110
+	 MIME-Version; b=QQkYlc9GDdpfjNw31f5FCI0kazVGZycJtXBiWtsjbBb+UC/jzwvJTUwjPf5ciuU31ocDW9cEEEmzHs4BkUvla7lceiQQhKYHbRH6itoTeduJ1yyDxd0/Z2Bseq1KZ1lRA93enhg0BQkZPOoploYUyXwI7xn/L/AS5Swkhaipd9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Q/xHi9Vt; arc=none smtp.client-ip=115.124.30.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="yj2XtTr8"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Q/xHi9Vt"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1780499949; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=6wu4xt2SoksscXk0W48QmnDjXSJs3uObhzvzFgCeYOU=;
-	b=yj2XtTr8PywukJo0H4lymCukct14uf3SgFLw5+ShiF3VzIlg4bB2lEeCNA3wwfJhtj5Mc1AvsppsjIbhhcfuIJSVzXVLqFtHow8OeYbYzJZ32UuDTf+hxh9w99Wjf6nFt+zmZpwMClFLq1kuJ949LqPZdKOubEeuDen2RypDWf0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X47fR7p_1780499946;
-Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X47fR7p_1780499946 cluster:ay36)
+	t=1780499945; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=4BjT23R8uSreRxsom16Fm8xCEovN+6PRTMHyPqG167s=;
+	b=Q/xHi9VtpAOeWiQCNd6WUGDprjUaTGCg2YsjbgdYQCfc3x5kt8n2oK577LleGtZZ8e0FJff/MNx1yOF72o1WzTmbD1IelpK7Veqsa1T/U0AvKLOEAeiBAr3ZpC3EFx3qYmOdlrbuFe09VBUVDKEpylrFaVSFN6t0Cy38h+fBQFI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X47fR6t_1780499942;
+Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X47fR6t_1780499942 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 03 Jun 2026 23:19:06 +0800
+          Wed, 03 Jun 2026 23:19:02 +0800
 From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 To: jgg@ziepe.ca
 Cc: adrian.larumbe@collabora.com,
@@ -54,9 +54,9 @@ Cc: adrian.larumbe@collabora.com,
 	wei.guo.simon@linux.alibaba.com,
 	will@kernel.org,
 	xlpang@linux.alibaba.com
-Subject: [PATCH v3 28/32] iommu/io-pgtable: selftests switch to iova_to_phys_length
-Date: Wed,  3 Jun 2026 23:18:00 +0800
-Message-ID: <20260603151804.1963871-29-guanghuifeng@linux.alibaba.com>
+Subject: [PATCH v3 24/32] iommufd: use iova_to_phys_length for efficient unmap
+Date: Wed,  3 Jun 2026 23:17:56 +0800
+Message-ID: <20260603151804.1963871-25-guanghuifeng@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260603151804.1963871-1-guanghuifeng@linux.alibaba.com>
 References: <20260602104637.1219810-1-guanghuifeng@linux.alibaba.com>
@@ -69,62 +69,113 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Migrate io-pgtable ARM selftests to use ops->iova_to_phys_length
-instead of the deprecated ops->iova_to_phys.
+Use iommu_iova_to_phys_length() to get PTE page size in
+batch_from_domain and raw_pages_from_domain, allowing traversal
+by actual mapping granularity instead of PAGE_SIZE steps.
 
 Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Acked-by: Shiqiang Zhang <shiyu.zsq@linux.alibaba.com>
+Acked-by: Simon Guo <wei.guo.simon@linux.alibaba.com>
 ---
- drivers/iommu/io-pgtable-arm-selftests.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/iommu/iommufd/pages.c | 74 +++++++++++++++++++++++++++++------
+ 1 file changed, 62 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/iommu/io-pgtable-arm-selftests.c b/drivers/iommu/io-pgtable-arm-selftests.c
-index 334e70350924..78252344c3d0 100644
---- a/drivers/iommu/io-pgtable-arm-selftests.c
-+++ b/drivers/iommu/io-pgtable-arm-selftests.c
-@@ -72,13 +72,13 @@ static int arm_lpae_run_tests(struct kunit *test, struct io_pgtable_cfg *cfg)
- 		 * Initial sanity checks.
- 		 * Empty page tables shouldn't provide any translations.
- 		 */
--		if (ops->iova_to_phys(ops, 42))
-+		if (ops->iova_to_phys_length(ops, 42, NULL) != PHYS_ADDR_MAX)
- 			return __FAIL(test, i);
- 
--		if (ops->iova_to_phys(ops, SZ_1G + 42))
-+		if (ops->iova_to_phys_length(ops, SZ_1G + 42, NULL) != PHYS_ADDR_MAX)
- 			return __FAIL(test, i);
- 
--		if (ops->iova_to_phys(ops, SZ_2G + 42))
-+		if (ops->iova_to_phys_length(ops, SZ_2G + 42, NULL) != PHYS_ADDR_MAX)
- 			return __FAIL(test, i);
- 
+diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
+index 9bdb2945afe1..40a2fe9adf9c 100644
+--- a/drivers/iommu/iommufd/pages.c
++++ b/drivers/iommu/iommufd/pages.c
+@@ -417,17 +417,42 @@ static void batch_from_domain(struct pfn_batch *batch,
+ 	if (start_index == iopt_area_index(area))
+ 		page_offset = area->page_offset;
+ 	while (start_index <= last_index) {
++		size_t pgsize;
++		unsigned long npages;
++		unsigned long i;
++
  		/*
-@@ -100,7 +100,7 @@ static int arm_lpae_run_tests(struct kunit *test, struct io_pgtable_cfg *cfg)
- 					    GFP_KERNEL, &mapped))
- 				return __FAIL(test, i);
+-		 * This is pretty slow, it would be nice to get the page size
+-		 * back from the driver, or have the driver directly fill the
+-		 * batch.
++		 * Use iova_to_phys_length to get both the physical address
++		 * and the contiguous mapped length in a single page table
++		 * walk, allowing us to skip ahead by the contiguous region
++		 * size instead of walking page tables for every PAGE_SIZE.
++		 * Query at page-aligned iova so pgsize covers from page start.
+ 		 */
+-		phys = iommu_iova_to_phys(domain, iova) - page_offset;
+-		if (!batch_add_pfn(batch, PHYS_PFN(phys)))
+-			return;
+-		iova += PAGE_SIZE - page_offset;
++		phys = iommu_iova_to_phys_length(domain, iova - page_offset,
++						  &pgsize);
++		if (WARN_ON(phys == PHYS_ADDR_MAX))
++			break;
++		if (WARN_ON(!pgsize || pgsize < PAGE_SIZE))
++			pgsize = PAGE_SIZE;
++
++		/*
++		 * pgsize is the contiguous length from the page-aligned
++		 * iova, so npages is simply pgsize / PAGE_SIZE.
++		 */
++		npages = pgsize / PAGE_SIZE;
++		npages = min_t(unsigned long, npages,
++			       last_index - start_index + 1);
++		if (!npages)
++			npages = 1;
++
++		for (i = 0; i < npages; i++) {
++			if (!batch_add_pfn(batch, PHYS_PFN(phys) + i))
++				return;
++		}
++
++		iova += npages * PAGE_SIZE - page_offset;
+ 		page_offset = 0;
+-		start_index++;
++		start_index += npages;
+ 	}
+ }
  
--			if (ops->iova_to_phys(ops, iova + 42) != (iova + 42))
-+			if (ops->iova_to_phys_length(ops, iova + 42, NULL) != (iova + 42))
- 				return __FAIL(test, i);
- 
- 			iova += SZ_1G;
-@@ -114,7 +114,7 @@ static int arm_lpae_run_tests(struct kunit *test, struct io_pgtable_cfg *cfg)
- 			if (ops->unmap_pages(ops, iova, size, 1, NULL) != size)
- 				return __FAIL(test, i);
- 
--			if (ops->iova_to_phys(ops, iova + 42))
-+			if (ops->iova_to_phys_length(ops, iova + 42, NULL) != PHYS_ADDR_MAX)
- 				return __FAIL(test, i);
- 
- 			/* Remap full block */
-@@ -122,7 +122,7 @@ static int arm_lpae_run_tests(struct kunit *test, struct io_pgtable_cfg *cfg)
- 					   IOMMU_WRITE, GFP_KERNEL, &mapped))
- 				return __FAIL(test, i);
- 
--			if (ops->iova_to_phys(ops, iova + 42) != (iova + 42))
-+			if (ops->iova_to_phys_length(ops, iova + 42, NULL) != (iova + 42))
- 				return __FAIL(test, i);
- 
- 			iova += SZ_1G;
+@@ -445,11 +470,36 @@ static struct page **raw_pages_from_domain(struct iommu_domain *domain,
+ 	if (start_index == iopt_area_index(area))
+ 		page_offset = area->page_offset;
+ 	while (start_index <= last_index) {
+-		phys = iommu_iova_to_phys(domain, iova) - page_offset;
+-		*(out_pages++) = pfn_to_page(PHYS_PFN(phys));
+-		iova += PAGE_SIZE - page_offset;
++		size_t pgsize;
++		unsigned long npages;
++		unsigned long i;
++
++		/*
++		 * Resolve the contiguous mapped length together with the
++		 * physical address so we can fill multiple struct page
++		 * pointers per page table walk when the IOMMU uses large
++		 * pages. Query at page-aligned iova so pgsize covers from
++		 * page start.
++		 */
++		phys = iommu_iova_to_phys_length(domain, iova - page_offset,
++						  &pgsize);
++		if (WARN_ON(phys == PHYS_ADDR_MAX))
++			break;
++		if (WARN_ON(!pgsize || pgsize < PAGE_SIZE))
++			pgsize = PAGE_SIZE;
++
++		npages = pgsize / PAGE_SIZE;
++		npages = min_t(unsigned long, npages,
++			       last_index - start_index + 1);
++		if (!npages)
++			npages = 1;
++
++		for (i = 0; i < npages; i++)
++			*(out_pages++) = pfn_to_page(PHYS_PFN(phys) + i);
++
++		iova += npages * PAGE_SIZE - page_offset;
+ 		page_offset = 0;
+-		start_index++;
++		start_index += npages;
+ 	}
+ 	return out_pages;
+ }
 -- 
 2.43.7
 
