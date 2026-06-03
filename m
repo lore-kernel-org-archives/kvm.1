@@ -1,30 +1,30 @@
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA053C6611;
-	Wed,  3 Jun 2026 15:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EF548B38D;
+	Wed,  3 Jun 2026 15:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780499949; cv=none; b=MPK9i3sqUeYynozPRcPmLN28j8g7ZYwGxwvqN5TlcKuYDkOcpbZDMxFbxOEmFA746kLMheCdmoG07jhvb8XE2lcZ/qJeVxSaVhfWxwl36IVq69n3L8SAG9OsWV0+83cZ0P2au5/YyMn9t3qYTxnTFlTDbeNLeSH/fNWGgdgUONs=
+	t=1780499954; cv=none; b=ATARsYTBwApjn3ssbmia6GLMtqSYb7PNAi82dzWGQLOD1vE9548tJSP9paks0p0mXTbOULO3qi7bdM8a3d6uE6BPYqBrPBFB4sBv080f8zkUu8OZH9ID7Cih/qFXvEANhVv+DxmMJz/4W/0hadvxqJk/Zhbl8Gx82s+C4YP4cLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780499949; c=relaxed/simple;
-	bh=XruHxIlQUxCL+b+kSRtfQRTkfWHAloDI99W7wX6rYTE=;
+	s=arc-20240116; t=1780499954; c=relaxed/simple;
+	bh=oD1Wr05YIdEtoMugk3QiKxFriD3/ExsFEsiqdk+wNY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzGPQxTd3ygKKYb7AzMi0EA9kkgTOurSifGDt58ig7WHF4msNrbG68ocab7dNayPRXraEgASSIYQTyzcVgzdOMhxgYR+OQFpHIKy62R2fUfB6lzgItj3az95+TRNd+SOyTkVtRDZ1dGWNQqCoC6HF/dFmQy3l4cOzRIs61SNUj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=hV9Koh2c; arc=none smtp.client-ip=115.124.30.111
+	 MIME-Version; b=Oq5OUu19yVBWSLWtxseV9ETSxKpCL3epwJRpB5USWdcGckaUhNs5Nrb5ooo1KTVsQyzeoNW+/+TddRdDsvgm15WNHb5uf6TlsQWGdDcgTOyVDcJlspottGFV0UYJBnZ4PDj6vKBKcx5cIhDubKGwysfH8MVZKCaAuZjXE85wNv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=nuodHs74; arc=none smtp.client-ip=115.124.30.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="hV9Koh2c"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="nuodHs74"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1780499940; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=QjZ8f27cqLiBL9quajEXvEuD5izxdrCDst1w3hORFvo=;
-	b=hV9Koh2cxRoTfjnu9bgWdNIEROapxFIrFH7s2DA6Wf5GwVom6NfWlhUMgWczfQQpvgMpZgqXbYLbfEQrJVp3eZtJHPlkteFXfw3Jt8NqJ96sXRMgmPjQGRZn7LsLPcC3t4OE8LRXsw1luzi9R7wak5RZocgaNyzzbzoa+OtUJd8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R531e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X47fR5b_1780499938;
-Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X47fR5b_1780499938 cluster:ay36)
+	t=1780499939; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=B2CWGyb/jy+luBGe9CF0J2PFthBHN8proHGbNilHQH0=;
+	b=nuodHs74VmMSmlyJUELmAW1VRHGpAm0xsbdIw+ql14KfAuX1t4/mhGfDz9MtZxZqsxroQYBuSjzIU4R0qrLGR3OUz37RMYJqgsMa85x0MNMDX29orf8SbDBu3IMXnps75RrmkXC6Bwgu9Un/9kpg3Nmsw2L7yHf4l4pwzS3ZMY4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R921e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X47fR4e_1780499934;
+Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X47fR4e_1780499934 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 03 Jun 2026 23:18:58 +0800
+          Wed, 03 Jun 2026 23:18:54 +0800
 From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 To: jgg@ziepe.ca
 Cc: adrian.larumbe@collabora.com,
@@ -54,9 +54,9 @@ Cc: adrian.larumbe@collabora.com,
 	wei.guo.simon@linux.alibaba.com,
 	will@kernel.org,
 	xlpang@linux.alibaba.com
-Subject: [PATCH v3 20/32] iommu/sun50i: implement iova_to_phys_length
-Date: Wed,  3 Jun 2026 23:17:52 +0800
-Message-ID: <20260603151804.1963871-21-guanghuifeng@linux.alibaba.com>
+Subject: [PATCH v3 16/32] iommu/omap: implement iova_to_phys_length
+Date: Wed,  3 Jun 2026 23:17:48 +0800
+Message-ID: <20260603151804.1963871-17-guanghuifeng@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260603151804.1963871-1-guanghuifeng@linux.alibaba.com>
 References: <20260602104637.1219810-1-guanghuifeng@linux.alibaba.com>
@@ -69,58 +69,81 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement iova_to_phys_length for sun50i IOMMU driver,
+Implement iova_to_phys_length for OMAP IOMMU driver,
 returning the actual PTE mapping size.
 
 Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 ---
- drivers/iommu/sun50i-iommu.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/iommu/omap-iommu.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iommu/sun50i-iommu.c b/drivers/iommu/sun50i-iommu.c
-index be3f1ce696ba..9f39fe4a9d4f 100644
---- a/drivers/iommu/sun50i-iommu.c
-+++ b/drivers/iommu/sun50i-iommu.c
-@@ -659,8 +659,9 @@ static size_t sun50i_iommu_unmap(struct iommu_domain *domain, unsigned long iova
- 	return SZ_4K;
+diff --git a/drivers/iommu/omap-iommu.c b/drivers/iommu/omap-iommu.c
+index 8231d7d6bb6a..f4a416326f7c 100644
+--- a/drivers/iommu/omap-iommu.c
++++ b/drivers/iommu/omap-iommu.c
+@@ -1592,15 +1592,16 @@ static void omap_iommu_domain_free(struct iommu_domain *domain)
+ 	kfree(omap_domain);
  }
  
--static phys_addr_t sun50i_iommu_iova_to_phys(struct iommu_domain *domain,
--					     dma_addr_t iova)
-+static phys_addr_t sun50i_iommu_iova_to_phys_length(struct iommu_domain *domain,
-+						    dma_addr_t iova,
-+						    size_t *mapped_length)
+-static phys_addr_t omap_iommu_iova_to_phys(struct iommu_domain *domain,
+-					   dma_addr_t da)
++static phys_addr_t omap_iommu_iova_to_phys_length(struct iommu_domain *domain,
++						  dma_addr_t da,
++						  size_t *mapped_length)
  {
- 	struct sun50i_iommu_domain *sun50i_domain = to_sun50i_domain(domain);
- 	phys_addr_t pt_phys;
-@@ -669,13 +670,16 @@ static phys_addr_t sun50i_iommu_iova_to_phys(struct iommu_domain *domain,
+ 	struct omap_iommu_domain *omap_domain = to_omap_domain(domain);
+ 	struct omap_iommu_device *iommu = omap_domain->iommus;
+ 	struct omap_iommu *oiommu = iommu->iommu_dev;
+ 	struct device *dev = oiommu->dev;
+ 	u32 *pgd, *pte;
+-	phys_addr_t ret = 0;
++	phys_addr_t ret = PHYS_ADDR_MAX;
  
- 	dte = sun50i_domain->dt[sun50i_iova_get_dte_index(iova)];
- 	if (!sun50i_dte_is_pt_valid(dte))
--		return 0;
-+		return PHYS_ADDR_MAX;
+ 	/*
+ 	 * all the iommus within the domain will have identical programming,
+@@ -1609,19 +1610,27 @@ static phys_addr_t omap_iommu_iova_to_phys(struct iommu_domain *domain,
+ 	iopgtable_lookup_entry(oiommu, da, &pgd, &pte);
  
- 	pt_phys = sun50i_dte_get_pt_address(dte);
- 	page_table = (u32 *)phys_to_virt(pt_phys);
- 	pte = page_table[sun50i_iova_get_pte_index(iova)];
- 	if (!sun50i_pte_is_page_valid(pte))
--		return 0;
-+		return PHYS_ADDR_MAX;
-+
-+	if (mapped_length)
-+		*mapped_length = SZ_4K;
- 
- 	return sun50i_pte_get_page_address(pte) +
- 		sun50i_iova_get_page_offset(iova);
-@@ -857,7 +861,7 @@ static const struct iommu_ops sun50i_iommu_ops = {
- 		.flush_iotlb_all = sun50i_iommu_flush_iotlb_all,
- 		.iotlb_sync_map = sun50i_iommu_iotlb_sync_map,
- 		.iotlb_sync	= sun50i_iommu_iotlb_sync,
--		.iova_to_phys	= sun50i_iommu_iova_to_phys,
-+		.iova_to_phys_length	= sun50i_iommu_iova_to_phys_length,
- 		.map_pages	= sun50i_iommu_map,
- 		.unmap_pages	= sun50i_iommu_unmap,
- 		.free		= sun50i_iommu_domain_free,
+ 	if (pte) {
+-		if (iopte_is_small(*pte))
++		if (iopte_is_small(*pte)) {
+ 			ret = omap_iommu_translate(*pte, da, IOPTE_MASK);
+-		else if (iopte_is_large(*pte))
++			if (mapped_length)
++				*mapped_length = IOPTE_SIZE;
++		} else if (iopte_is_large(*pte)) {
+ 			ret = omap_iommu_translate(*pte, da, IOLARGE_MASK);
+-		else
++			if (mapped_length)
++				*mapped_length = IOLARGE_SIZE;
++		} else
+ 			dev_err(dev, "bogus pte 0x%x, da 0x%llx", *pte,
+ 				(unsigned long long)da);
+ 	} else {
+-		if (iopgd_is_section(*pgd))
++		if (iopgd_is_section(*pgd)) {
+ 			ret = omap_iommu_translate(*pgd, da, IOSECTION_MASK);
+-		else if (iopgd_is_super(*pgd))
++			if (mapped_length)
++				*mapped_length = IOSECTION_SIZE;
++		} else if (iopgd_is_super(*pgd)) {
+ 			ret = omap_iommu_translate(*pgd, da, IOSUPER_MASK);
+-		else
++			if (mapped_length)
++				*mapped_length = IOSUPER_SIZE;
++		} else
+ 			dev_err(dev, "bogus pgd 0x%x, da 0x%llx", *pgd,
+ 				(unsigned long long)da);
+ 	}
+@@ -1723,7 +1732,7 @@ static const struct iommu_ops omap_iommu_ops = {
+ 		.attach_dev	= omap_iommu_attach_dev,
+ 		.map_pages	= omap_iommu_map,
+ 		.unmap_pages	= omap_iommu_unmap,
+-		.iova_to_phys	= omap_iommu_iova_to_phys,
++		.iova_to_phys_length	= omap_iommu_iova_to_phys_length,
+ 		.free		= omap_iommu_domain_free,
+ 	}
+ };
 -- 
 2.43.7
 
