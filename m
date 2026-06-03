@@ -1,30 +1,30 @@
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C183D9053;
-	Wed,  3 Jun 2026 15:18:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8BA3D891E;
+	Wed,  3 Jun 2026 15:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780499931; cv=none; b=rwobL+lCmsKqkA9tkmq+4MXTIkAQ0A9d4UjIuvw2CC9aqryuCwFb6J+6F2zbb46TvoiCICzRT1jwpeTK0w0yKptzFrrp5dn+VB6lfjNos98whzackRSheNQfys6cpn9OEVBIyuvM3qjew3/VL0w/+kY6vj8amRoFGX5K+A5rQHI=
+	t=1780499931; cv=none; b=aBZ1CkcHav7iKRdIryqbERpDIUXicYZIx0q/XdVobDXmVPgnXcA6qIQKYG+NleiB7qUixeGCMvjzc4VfI3Q3HMkL0Um2CBwcmlkUCcZKa/xp8xoutl40Xicp3cNjwozWYqB/0aBmfGZahNQEVS0090U09ghHKJf2Ci1JP+K88+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780499931; c=relaxed/simple;
-	bh=R7D8ecn0FwFFQ4euyAaqeN3jiv3vEHfleIxvBEMaFxE=;
+	bh=cO5/nxaFUE+P/+5g3j7wh+h71dcUOTP+5CwPSYIDTJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KQH6pPFvqe2WSvCvOmiMd7NqEKCTtJO9Dx7BqLz60Ln6QFijG9Ta3Sne2mbkiWKzNJnCBWoCSIAGV2sU8//Y8ENGC7gjtIQ/F7ezhuMzvMU6i4VOOs767IIAaGRJBs0nkj22jNCSsU/2YeCDq/p76gGb6OjmjXvWI/W3ZCpOHQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=sZ0ZsR/Q; arc=none smtp.client-ip=115.124.30.101
+	 MIME-Version; b=FMBVIaUk5exfgFFcvlxQvGpxqJOX4KbcYgLHCm2L8jEPY/R3duCpTvhxwFhXsoKy6I7d8aGggmypFbA3BU0XbgC+orhKbiKN2LlPknc9hocWoXpNRCLjeLY/VVCp3wfAZZLsa8eawu+eFbn/RijtFs0kqs8BJk9W++9UvNbntIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=cIV9n+TO; arc=none smtp.client-ip=115.124.30.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="sZ0ZsR/Q"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="cIV9n+TO"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1780499927; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=HBewM6jbUcaBlyhsOXQ6v/pv4THYWRhxq86SYYNYvAU=;
-	b=sZ0ZsR/QQEXrIKLHQn8XatIOPzUQN6YRpK64beHZpWlM6iVexask1BLcIWdhF89orN5NJaHQdsT1YtamKhCEGPxNl/kYO05Tiux4rLr24afC/wOHB/1s9wbam9bgghTSnT6uubpausbpn2JWYsw2ciZzgSP4gMrCM7Uf61WgWaY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R571e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X47fR2R_1780499925;
-Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X47fR2R_1780499925 cluster:ay36)
+	t=1780499921; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=IJzhUSXQOrQUE0UGHOvEP1KaaarZmdkx5L7WKtuiYsw=;
+	b=cIV9n+TOGtU3xIc2PvCMR4Q5naYUK2zUPt7TCKG4LJRPBnpeC9/rpjr9krouAbLhjhU6T88tbltw6smC3IZijhZ3TExKHWgOf1aHJGEUXOLhkjZViHcsjURPWF8tM9keePnr7Z83Un9aczD7Ege8WXe2u+N69nSyncHt1McFq3Q=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R321e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X47fR0u_1780499919;
+Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0X47fR0u_1780499919 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 03 Jun 2026 23:18:45 +0800
+          Wed, 03 Jun 2026 23:18:39 +0800
 From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 To: jgg@ziepe.ca
 Cc: adrian.larumbe@collabora.com,
@@ -54,9 +54,9 @@ Cc: adrian.larumbe@collabora.com,
 	wei.guo.simon@linux.alibaba.com,
 	will@kernel.org,
 	xlpang@linux.alibaba.com
-Subject: [PATCH v3 07/32] iommu/arm-smmu: implement iova_to_phys_length
-Date: Wed,  3 Jun 2026 23:17:39 +0800
-Message-ID: <20260603151804.1963871-8-guanghuifeng@linux.alibaba.com>
+Subject: [PATCH v3 01/32] iommu: introduce iova_to_phys_length in iommu_domain_ops
+Date: Wed,  3 Jun 2026 23:17:33 +0800
+Message-ID: <20260603151804.1963871-2-guanghuifeng@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260603151804.1963871-1-guanghuifeng@linux.alibaba.com>
 References: <20260602104637.1219810-1-guanghuifeng@linux.alibaba.com>
@@ -69,77 +69,124 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Migrate ARM SMMU to implement iova_to_phys_length, calling
-ops->iova_to_phys_length on the io-pgtable layer. Update qcom-debug
-caller accordingly.
+Add iova_to_phys_length callback to struct iommu_domain_ops alongside
+the existing iova_to_phys. The new callback returns both the physical
+address and the PTE mapping page size in a single page table walk.
+
+Add iommu_iova_to_phys_length() core function that:
+- Checks ops->iova_to_phys_length first (preferred path)
+- Falls back to ops->iova_to_phys for unmigrated drivers
+
+This enables callers like VFIO to efficiently traverse IOVA space
+by actual mapping granularity instead of fixed PAGE_SIZE steps.
 
 Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Acked-by: Shiqiang Zhang <shiyu.zsq@linux.alibaba.com>
+Acked-by: Simon Guo <wei.guo.simon@linux.alibaba.com>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c |  2 +-
- drivers/iommu/arm/arm-smmu/arm-smmu.c            | 13 +++++++------
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/iommu/iommu.c | 50 ++++++++++++++++++++++++++++++++++++++-----
+ include/linux/iommu.h |  9 ++++++++
+ 2 files changed, 54 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
-index 65e0ef6539fe..4fd01341157f 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
-@@ -415,7 +415,7 @@ irqreturn_t qcom_smmu_context_fault(int irq, void *dev)
- 		return IRQ_HANDLED;
- 	}
- 
--	phys_soft = ops->iova_to_phys(ops, cfi.iova);
-+	phys_soft = ops->iova_to_phys_length(ops, cfi.iova, NULL);
- 
- 	tmp = report_iommu_fault(&smmu_domain->domain, NULL, cfi.iova,
- 				 cfi.fsynr & ARM_SMMU_CB_FSYNR0_WNR ? IOMMU_FAULT_WRITE : IOMMU_FAULT_READ);
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-index 0bd21d206eb3..5c9ec7c93763 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-@@ -1366,7 +1366,7 @@ static phys_addr_t arm_smmu_iova_to_phys_hard(struct iommu_domain *domain,
- 			"iova to phys timed out on %pad. Falling back to software table walk.\n",
- 			&iova);
- 		arm_smmu_rpm_put(smmu);
--		return ops->iova_to_phys(ops, iova);
-+		return ops->iova_to_phys_length(ops, iova, NULL);
- 	}
- 
- 	phys = arm_smmu_cb_readq(smmu, idx, ARM_SMMU_CB_PAR);
-@@ -1384,20 +1384,21 @@ static phys_addr_t arm_smmu_iova_to_phys_hard(struct iommu_domain *domain,
- 	return addr;
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index d1a9e713d3a0..320ea13488e7 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -2545,15 +2545,55 @@ void iommu_detach_group(struct iommu_domain *domain, struct iommu_group *group)
  }
+ EXPORT_SYMBOL_GPL(iommu_detach_group);
  
--static phys_addr_t arm_smmu_iova_to_phys(struct iommu_domain *domain,
--					dma_addr_t iova)
-+static phys_addr_t arm_smmu_iova_to_phys_length(struct iommu_domain *domain,
-+					dma_addr_t iova, size_t *mapped_length)
+-phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t iova)
++/**
++ * iommu_iova_to_phys_length - Translate IOVA and return mapping page size
++ * @domain: IOMMU domain to query
++ * @iova: IO virtual address to translate
++ * @mapped_length: Output parameter for the PTE page size (e.g. 4KB/2MB/1GB)
++ *
++ * Like iommu_iova_to_phys() but additionally returns the page size of the
++ * PTE mapping at @iova through @mapped_length.
++ *
++ * Return: The physical address for the given IOVA, or PHYS_ADDR_MAX if no
++ *         translation exists.
++ */
++phys_addr_t iommu_iova_to_phys_length(struct iommu_domain *domain,
++				       dma_addr_t iova,
++				       size_t *mapped_length)
  {
- 	struct arm_smmu_domain *smmu_domain = to_smmu_domain(domain);
- 	struct io_pgtable_ops *ops = smmu_domain->pgtbl_ops;
- 
+-	if (domain->type == IOMMU_DOMAIN_IDENTITY)
++	phys_addr_t phys;
 +
- 	if (!ops)
++	if (domain->type == IOMMU_DOMAIN_IDENTITY) {
++		if (mapped_length)
++			*mapped_length = PAGE_SIZE;
+ 		return iova;
++	}
+ 
+-	if (domain->type == IOMMU_DOMAIN_BLOCKED)
 -		return 0;
++	if (mapped_length)
++		*mapped_length = 0;
++
++	if (domain->ops->iova_to_phys_length)
++		return domain->ops->iova_to_phys_length(domain, iova, mapped_length);
++
++	/* Fallback to legacy iova_to_phys without length info */
++	if (!domain->ops->iova_to_phys)
 +		return PHYS_ADDR_MAX;
++
++	phys = domain->ops->iova_to_phys(domain, iova);
++	if (!phys)
++		return PHYS_ADDR_MAX;
++
++	if (mapped_length)
++		*mapped_length = PAGE_SIZE;
++	return phys;
++}
++EXPORT_SYMBOL_GPL(iommu_iova_to_phys_length);
++
++phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t iova)
++{
++	phys_addr_t phys = iommu_iova_to_phys_length(domain, iova, NULL);
  
- 	if (smmu_domain->smmu->features & ARM_SMMU_FEAT_TRANS_OPS &&
- 			smmu_domain->stage == ARM_SMMU_DOMAIN_S1)
- 		return arm_smmu_iova_to_phys_hard(domain, iova);
- 
--	return ops->iova_to_phys(ops, iova);
-+	return ops->iova_to_phys_length(ops, iova, mapped_length);
+-	return domain->ops->iova_to_phys(domain, iova);
++	return (phys == PHYS_ADDR_MAX) ? 0 : phys;
  }
+ EXPORT_SYMBOL_GPL(iommu_iova_to_phys);
  
- static bool arm_smmu_capable(struct device *dev, enum iommu_cap cap)
-@@ -1652,7 +1653,7 @@ static const struct iommu_ops arm_smmu_ops = {
- 		.unmap_pages		= arm_smmu_unmap_pages,
- 		.flush_iotlb_all	= arm_smmu_flush_iotlb_all,
- 		.iotlb_sync		= arm_smmu_iotlb_sync,
--		.iova_to_phys		= arm_smmu_iova_to_phys,
-+		.iova_to_phys_length	= arm_smmu_iova_to_phys_length,
- 		.set_pgtable_quirks	= arm_smmu_set_pgtable_quirks,
- 		.free			= arm_smmu_domain_free,
- 	}
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index e587d4ac4d33..19da84c2922c 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -747,6 +747,9 @@ struct iommu_ops {
+  *                         invalidation requests. The driver data structure
+  *                         must be defined in include/uapi/linux/iommufd.h
+  * @iova_to_phys: translate iova to physical address
++ * @iova_to_phys_length: translate iova to physical address and additionally
++ *                       return the page size of the PTE mapping at @iova
++ *                       through @mapped_length.
+  * @enforce_cache_coherency: Prevent any kind of DMA from bypassing IOMMU_CACHE,
+  *                           including no-snoop TLPs on PCIe or other platform
+  *                           specific mechanisms.
+@@ -776,6 +779,9 @@ struct iommu_domain_ops {
+ 
+ 	phys_addr_t (*iova_to_phys)(struct iommu_domain *domain,
+ 				    dma_addr_t iova);
++	phys_addr_t (*iova_to_phys_length)(struct iommu_domain *domain,
++					    dma_addr_t iova,
++					    size_t *mapped_length);
+ 
+ 	bool (*enforce_cache_coherency)(struct iommu_domain *domain);
+ 	int (*set_pgtable_quirks)(struct iommu_domain *domain,
+@@ -930,6 +936,9 @@ extern ssize_t iommu_map_sg(struct iommu_domain *domain, unsigned long iova,
+ 			    struct scatterlist *sg, unsigned int nents,
+ 			    int prot, gfp_t gfp);
+ extern phys_addr_t iommu_iova_to_phys(struct iommu_domain *domain, dma_addr_t iova);
++extern phys_addr_t iommu_iova_to_phys_length(struct iommu_domain *domain,
++					      dma_addr_t iova,
++					      size_t *mapped_length);
+ extern void iommu_set_fault_handler(struct iommu_domain *domain,
+ 			iommu_fault_handler_t handler, void *token);
+ 
 -- 
 2.43.7
 
