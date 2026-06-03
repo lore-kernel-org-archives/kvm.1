@@ -1,163 +1,234 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8449D3557F3
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 17:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EF93557F3;
+	Wed,  3 Jun 2026 17:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780509449; cv=none; b=INT+Bca5mbfXlknJbItOXBbhrZyh2zsiFzqaHVDso+TobLD3hJqD9YEvyORJgnTuMIlCb1HvTKugsoeR/v2jqo9FRwh68qx+kOGswosQymSRiiyD/gs332tK5qTgo1BZfqULZpQjydrMa7HnMZqj8K3BXb51QCa5ofj41i1yDwk=
+	t=1780509516; cv=none; b=CIKjayoUhL+YYIISJQhgl17ZhY7Jz/dnhLNWeR/Enh599nXxX+W50ILF6zVpWKJ7RXjUeN4zcJ1kr+/F9elOJAw88YdsPoATVsu41NsrUh17Qq3yBMh3au4w3P5/AsnY0gtM7b2XxscNRIniGLl8vmgKBlV7yFT1hlVz4UOUUzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780509449; c=relaxed/simple;
-	bh=LXmSkD4Uex2xP1sWGXhNC88HTgaLFztSKcaRMJOzBLk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aOhHZ38LFUHl5Zubo/lArPTIDxObh+8rsm4anRm7xdxDMcYK9qoS5A2G9qGORjnvbKVl8WgHSklFP+HfwRIci3tCUOeaoia8vyHvCT41QhvXfbobMyJEmw8NLs42dIv+Bw7VKyNLs8RVHhkYrq5LfrGXkNg5bW4dtukpaTEB2+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VOUbhLsI; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780509516; c=relaxed/simple;
+	bh=XCZVfbUq+NtLi9h9dNX3wljSjcgEuqKEmriX0TqT1+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tMclMYYkDlXwnWaskYWvp8crBchyA84BnCTzyiXHOcfIu7sH+tdXf4wDLp16imMR2/kbynCsgf5CeXlnpV2IkOGYXfxrz9A7e/y1HSXTZ2p5gFtY76p+NKxcCdvb+U5dkNxSmF/Y/lPQbmR8RCwk1InVDInzSL0p1NjI2wqty7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=TVBB/EWN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VzhTMtFI; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VOUbhLsI"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-36b9b15af73so6369780a91.0
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 10:57:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780509448; x=1781114248; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=y5NJyP02PKnej6VpVmEwU/XOAuXGRvDv3YzLJ6IcwRU=;
-        b=VOUbhLsI7fgQ5HghIlmosSHlchJ/Xt2PSR6WIm6IFSuzkX0UcuiAbEDI1YCy7WlxzD
-         j91a3pg5R2YiA62sd6Tegt7wa933Q2+H/o4CATwwDk/IZWOr0+VhOlvgdU9QAXFetYjm
-         ys24s9hXwUdyftPvCgqP79q8GgK+hYDPKLoXdvA5N2FbwNyQ6zdbSP+RG41lgBFw1po5
-         3OKL4Osg4CRylK6uZIe7Im9rdKgpasx6tDaTRdOBMsKsVgErG3QBjb7NpLQVKx+TnTxm
-         mxNvyhZVfYDP736XMXuS+PvaDLTHZWHUbgGiUGop/ybvVPxPFAfpeBA1uQrox+PvsatD
-         gwKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780509448; x=1781114248;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y5NJyP02PKnej6VpVmEwU/XOAuXGRvDv3YzLJ6IcwRU=;
-        b=nuMYybR8k6lmGHCjE/l1+h83uiX+mL8dzNRKGCD2qR+MQ0H6Q/TwmM6re/Ggex66Ms
-         lDrlC54Wq65ttvBYZqk4R1jIh8ABSewG/zZTIxgE7clSgoMTsCNhg+A2xY8/EW0P7BFa
-         w6dOKh8K4VooEnVTYDjL+FTRuYqrcqmM9P0HrTFHiOzD3WiZDgnCpNSGymcZ3fc4Xgm2
-         +zmAv69kjbAKiWOmCUMC80rMQbz3vWZ083QTVv0f7aU78Iemx9vt8YSBZS4ZoFxbmIkl
-         5lNSnWpubj+XpnSfdXm5CB/F/UL82HpETEtmMG7Jg0410i7ocam6YQooaCKJ2FIq7Ww3
-         UqaA==
-X-Forwarded-Encrypted: i=1; AFNElJ/24DbRdqzp1OaIF95Gpp4jV1COUGxWCgoUCa8tYzNaVw9UVwELmha9tA2ZY2NgDUBaFis=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSarSA84e+s8tMJYDey6JmIJqMOPOjXCN03/DlYDUBLByZ9Gpe
-	YfVp5sx1ipH2gFEBAE1vvKnLLjFSziNxnPhm4xxiMlMh/zf4K8JjrXLXQa4WCLWE
-X-Gm-Gg: Acq92OFS704zJMINI8LP27acl6V2wbo3x10ONOOhRUMTKLMdvVjZLZFjvHKEyS58u7y
-	xe3KXa99DXVBCcATtL5/76R0DIBNCqMtQu2/q4xcXqXwW3lVW3o+wbtbDTPudQ4+yNIKKZcdHX1
-	4MJ+qSWud+RZydO7ELwVJWPkGG8//83qJQ7kgMkap6FaDX1Ebtqsnn39AcXuTRa2TZLQqvzZ0P1
-	g5qsX3nG8Zsvufp98rDxFMXAH6V/+Ffq8W0xJ3YCaFNzRDB0W2WEUGWfpo1zJ70i+DCW17qQ79v
-	n7y9BshoSqYV4zWwHhQb/lckEvlDgxkZ6IGKPOb9pXwGLex9WnNNpZPAeTQ/Tbw//18SCY+H468
-	H2XXGhr6WzxOCiIVv0hihOyVglyzbGFuIl0DbCic160R9bXLpGKNeE9lf2B+oHn4/wE8d/xyevW
-	Wtjdd0Vkhbu37phGd0pkg9XvBXpGk3he3k1PZke7JLcgLq8OV+zo+ecmy+CfW+AlwqFi8X1T+JI
-	lqZMzlBnw==
-X-Received: by 2002:a17:90b:2f86:b0:36a:8ce7:b879 with SMTP id 98e67ed59e1d1-36e3247616fmr4614626a91.5.1780509447706;
-        Wed, 03 Jun 2026 10:57:27 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.236])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6bf82841sm381273a91.2.2026.06.03.10.57.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 10:57:27 -0700 (PDT)
-Date: Wed, 3 Jun 2026 23:27:20 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, 
-	Harsh Prateek Bora <harshpb@linux.ibm.com>, Ritesh Harjani <ritesh.list@gmail.com>, 
-	Anushree Mathur <anushree.mathur@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	kvm@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Validate arch_compat against host
- compatibility mode
-Message-ID: <aiBq0ACz3yW4OQQe@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260603141539.47620-1-amachhiw@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="TVBB/EWN";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VzhTMtFI"
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfout.stl.internal (Postfix) with ESMTP id 9360C1D00168;
+	Wed,  3 Jun 2026 13:58:32 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Wed, 03 Jun 2026 13:58:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1780509512;
+	 x=1780595912; bh=/hyimqtR3dJ5OSnVN0tycpqCgAq8wZ0lo2UnF9x9zw4=; b=
+	TVBB/EWNtgL9Q9if4oobSp6uYZT7zRhR4fDLBvg0MZhNIHIh2RsN7VFfqJ+bOvmx
+	uEvcCdAH8y/U8r3OfsdeVL/u5VJokPMBveYEuPET+FIlo6MyTVzn2fTJ/lZCqwqd
+	W7GRdzOx1/6JhPArcVe66fwgOPkvfTjDqysmUj4QjComwBskSb2b+yKxFgVZghSo
+	+WMH8+HkFviW6uDwvMwTpMeDq2EhDVLZ7/ieIBI4Ca6nWeGg7Va3eFoGistnrDoF
+	ewUbwK8zX5wwMRUEaUxHOIFeUK7pdH8F10nWuGUK5bJSCWkk5DcISYpduYRBKo1X
+	YXqdLU2sdWKZEJTgerVypA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780509512; x=
+	1780595912; bh=/hyimqtR3dJ5OSnVN0tycpqCgAq8wZ0lo2UnF9x9zw4=; b=V
+	zhTMtFIQW2q/Lqigo+5Trpn61eg53OdxjThbxigG+AFFop0C/gQ/siIhzVALXwmR
+	kCYYcfAP9swK9ikYygKwde/tvEIF1vt33ZJ6Vk3xwuOLyZ7awMbqwwo1cG6vZOr6
+	BWTGyV1f2srCAmt+E1+Xb8R4oW+NzpmoLF319jwr2ft06WxSMll7WwsYMPwvyKoO
+	+rnaMWZXu2KZTwif2oohUIxWCDdOV1kqCZxLPsqTK8KntZtUiiuBCJXAOZam9Epp
+	9Pt10dP90w/mGWvvZVfgjTBOd2yeUfRdTGli5nzQcqmJu2ffSWweexPc2AZZ2LHl
+	v9YZnn7ihgJaLoQX4Ye6A==
+X-ME-Sender: <xms:R2sgakfTa0y8eAGD7TQuL7kdSH-S0uojubUjLRkW5RsVsWI7AQ-ANg>
+    <xme:R2sganz83PPOPENsX0TuNzhL5auMNRbe4_aMV69lzCsLiN5n7qnZ4Lzz6Ysw-ainB
+    402LkL_SRoIkI7OSzzfxgeRC7GKgV2EkY5J724IfRWtmMLdD3xIEBs>
+X-ME-Received: <xmr:R2sgakx_yfDVqZXyuzANs5gsbpNd1VZ_vjJQIF0kS1GqNjeO__7K_UYDqvg>
+X-ME-Proxy-Cause: dmFkZTEb3F3VfJcFBZ0xYpcN9Zp/SWYi8J6XsDYqlGHMDUQhXDkYx8wDBYnTnwwAxdMNoN
+    /ebJJ7G8AkyfCHPesErchj4FkJ7AdZ3CYGDTP41B5kV5QuSX5U+a0CtpAYQ8W87wtf6RvA
+    c4xrhupsru9ILIE54VpjvF8Hc0N9pVoNVTqZKNb4EUfq6ivopM0y/RUkLws80KQZ3yjzdH
+    SsnfFT/dPin/Ie5Np9h6n1h++eifHpgc9Q4Q1YWP6b12Gy/+SG1ephCl1NDqFKtFA1GZoz
+    pY/uXyfExlYixJ4YIFVWbejzzL8hKh1bByGI1t1EpS29NYK4nGQNhXuYDCyxRIVfxFclHZ
+    udI/LkHWyX3o+9pQacHM0ElwO7F5Yh5Vk3NDrscMVvkxcsAHFiI9W3Jwfswux+VIVWnLUq
+    2otrbDsHCzZ8vT2jIyCL3knQU5RJz/UqrlLOLlRLWCWWfReRgGGGGYplW9zm7e3yHjA268
+    Ppl0eneWwEPbwt027AlJl9nKlykR3p8rxX02xK1QJ7D2uriK1wPk4WdvB8NCtgGnhVp6BE
+    w0vavPi+AV0q8Umq3XsrrN+MQi+iY+m6ouVMRz2OE5t7auQTxW8IvPIXnwe10oa09ElOqJ
+    KOSdFC8FVLm5JKfKC/TqXYNc2Dyslvfc84se1i6rNH/5ewd4qNdlrxL1AExw
+X-ME-Proxy: <xmx:R2sgagZNOPsjr3haXeD1RE9mqzAjo_dm5o-6jbRR6QvY8UGb9UY4GA>
+    <xmx:R2sgal09TYuKOWttpxY8WgfAKsRggqsun9dqzOsuC9gYXMUC2i1d-w>
+    <xmx:R2sgaictKz8XxcSgiwcgRYVJKsak_f4NwAKkXIFduDcE58ws9vWaDA>
+    <xmx:R2sgaiJl157Kn8cOscq8Bu7UqlV48dM92FDvaJj3jhB4W97N4li1jQ>
+    <xmx:SGsgagQBBAaXj87kuRC9gEMZT7Yq8Khp6QCpTbyo5lrMeLSrGm6wG5ko>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 3 Jun 2026 13:58:30 -0400 (EDT)
+Date: Wed, 3 Jun 2026 11:58:28 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: fengchengwen <fengchengwen@huawei.com>
+Cc: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
+ <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+ <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v14 0/8] vfio/pci: Add PCIe TPH support
+Message-ID: <20260603115828.21216c0f@shazbot.org>
+In-Reply-To: <3f8d1722-6749-4f3a-b630-c96303cec284@huawei.com>
+References: <20260528124649.14732-1-fengchengwen@huawei.com>
+	<20260601095840.3aaaa508@shazbot.org>
+	<59c82855-59a7-4f0e-b534-d35535d04b93@huawei.com>
+	<20260602170847.75bd159d@shazbot.org>
+	<3f8d1722-6749-4f3a-b630-c96303cec284@huawei.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260603141539.47620-1-amachhiw@linux.ibm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 03, 2026 at 07:45:39PM +0530, Amit Machhiwal wrote:
-> On IBM POWER systems, newer processor generations can operate in
-> compatibility modes corresponding to earlier generations. This becomes
-> relevant for nested virtualization, where nested KVM guests may need to
-> run with a specific processor compatibility level.
-> 
-> Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
-> logical partition (L1) booted in Power10 compatibility mode, the guest
-> fails to boot while setting 'arch_compat'. This happens because the CPU
-> class is derived from the hardware PVR (via mfspr()), which reflects the
-> physical processor generation (Power11), rather than the effective
-> compatibility mode (Power10).
-> 
-> As a result, userspace may request a Power11 arch_compat for the L2
-> guest. However, the L1 partition, running in Power10 compatibility, has
-> only negotiated support up to Power10 with the Power Hypervisor (L0).
-> When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
-> hypervisor rejects the request, leading to a late guest boot failure:
-> 
->   KVM-NESTEDv2: couldn't set guest wide elements
->   [..KVM reg dump..]
-> 
-> This situation should be detected earlier. Rejecting unsupported
-> 'arch_compat' values in 'kvmppc_set_arch_compat()' avoids issuing an
-> invalid H_GUEST_SET_STATE hcall and provides a clearer failure mode.
-> 
-> Add a check to reject Power11 'arch_compat' requests when the host is
-> running in Power10 compatibility mode, returning -EINVAL early instead
-> of deferring the failure to the hypervisor.
-> 
-> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
-> Cc: <stable@vger.kernel.org> # v6.13+
-> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> ---
-> Changelog:
-> 
-> * Moved this patch out of the v3 series [1] as discussed here [2]
-> * Addressed below review comments from Ritesh:
->   - Based the PVR validation on cpu features
->   - Fixed hcall name typo
->   - Stable backport
-> 
-> [1] https://lore.kernel.org/all/20260522152744.55251-1-amachhiw@linux.ibm.com/
-> [2] https://lore.kernel.org/all/20260522152744.55251-2-amachhiw@linux.ibm.com/
-> ---
->  arch/powerpc/kvm/book3s_hv.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3..e16dbb199366 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -446,7 +446,17 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
->  			guest_pcr_bit = PCR_ARCH_300;
->  			break;
->  		case PVR_ARCH_31:
-> +			guest_pcr_bit = PCR_ARCH_31;
-> +			break;
->  		case PVR_ARCH_31_P11:
-> +			/*
-> +			 * Need to check this for ISA 3.1, as Power10 and
-> +			 * Power11 share the same PCR. For any subsequent ISA
-> +			 * versions, this will be taken care of by the guest vs
-> +			 * host PCR comparison below.
-> +			 */
-> +			if (!cpu_has_feature(CPU_FTR_P11_PVR))
-> +				return -EINVAL;
->  			guest_pcr_bit = PCR_ARCH_31;
->  			break;
->  		default:
-> 
-> base-commit: ba3e43a9e601636f5edb54e259a74f96ca3b8fd8
-> -- 
-> 2.50.1 (Apple Git-155)
-> 
-yeah this makes sense to throw an error early.
-LGTM
+On Wed, 3 Jun 2026 08:34:53 +0800
+fengchengwen <fengchengwen@huawei.com> wrote:
 
-Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+> On 6/3/2026 7:08 AM, Alex Williamson wrote:
+> > On Tue, 2 Jun 2026 22:46:13 +0800
+> > fengchengwen <fengchengwen@huawei.com> wrote:  
+> >> On 6/1/2026 11:58 PM, Alex Williamson wrote:  
+> >>>
+> >>>
+> >>>  - Patch 2/ sets tph_cap to zero if TPH cannot be enabled, but this is
+> >>>    never propagated to vfio-pci to drop the TPH capability from the
+> >>>    capability chain.
+> >>>
+> >>>  - Patch 3/ exposing the enum to callers is a bit ugly, maybe we should
+> >>>    retain pci_enable_tph() as the "auto" wrapper, resulting in no
+> >>>    change to existing users, and add _ext and _std wrappers.
+> >>>
+> >>>  - Patch 4/ same, multiple wrappers keeps the "auto" api cleaner.  Also
+> >>>    note that auto is broken before TPH is enabled when tph_req_type is
+> >>>    zero.
+> >>>
+> >>>  - Patch 6/:
+> >>>    - mutex_init/destroy belong in vfio_pci_core_init_dev/release_dev()
+> >>>    - Re-order to avoid forward declarations.
+> >>>    - vfio_check_feature() does not require declaring PROBE as a
+> >>>      supported op.
+> >>>    - pcie_tph_set_st_entry() can write to MMIO space without testing
+> >>>      for or enabling device memory or power state.
+> >>>    - tph_init allocates shadow table regardless of opt-in for tph
+> >>>      support.
+> >>>    - Redundant tests for count/index in feature function.
+> >>>    - Duplicate memcpy/kfree in feature function.
+> >>>
+> >>>  - Patch 7/:
+> >>>    - Unclear why it's vfio-pci's responsibility to provide this
+> >>>      translation interface.
+> >>>    - PROBE is unnecessary for vfio_check_feature().
+> >>>    - Array size conversion is strange.
+> >>>
+> >>>  - Patch 8/:
+> >>>    - default config read handles emulated bits.  Clear the bit if
+> >>>      necessary in vconfig, use p_setd() to mark PCI_TPH_CAP_EXT_TPH
+> >>>      virtualized, read-only.
+> >>>    - Follow examples like vfio_pm_config_write, vfio_vpd_config_write,
+> >>>      vfio_exp_config_write, etc.  Set the virtualized and writable
+> >>>      bits, perform default config write, evaluate if anything was
+> >>>      enabled, effect the change in hardware via kernel APIs.
+> >>>    - pcie_disable_tph() happens after the restore state is recorded.
+> >>>    - TPH capability becomes read/write, an ABI change to the user, with
+> >>>      only a host-based opt-in.  Seems like the userspace driver also
+> >>>      needs to opt-in to the ABI change.
+> >>>    - Memory enable not assured for pcie_tph_set_st_entry().
+> >>>    - Sashiko notes there are existing hazards in the tph_enabled
+> >>>      storage unit relative to multiple bitfields that can be updated
+> >>>      concurrently.  The problem is worse with this exposed through
+> >>>      vfio-pci.    
+> >>
+> >> Thanks for review, all your comments are resolved in v15:  
+> > 
+> > Not everything.  At a glance I can see that v15 is still pushing for
+> > vfio-pci to provide the interface to translate CPU IDs to steering
+> > tags, despite my push back above that it doesn't seem within vfio-pci's
+> > scope to provide a CPU ID -> ST interface.  
+> 
+> This translation helper is required to handle varied TPH configurations,
+> including cases where ST entries live inside device private registers
+> instead of MSI-X or TPH capability space.
+> 
+> Prior discussion with Jason (
+> ref: https://lore.kernel.org/all/20260414151125.GF2577880@ziepe.ca/)
+> indicated VFIO-PCI is the correct component for per-device TPH
+> implementation.
+> 
+> Production high-speed NICs from multiple vendors rely on this CPU-to-ST
+> mapping logic for DPDK optimized polling I/O; removing this helper would
+> render the whole TPH userspace control feature unusable for existing
+> target workloads.
+> 
+> Therefore, I believe it is appropriate to support it.
+
+The citation is only describing that vfio should provide a way to
+program the steering tags.  That's not the issue I'm raising.
+
+The proposed uAPI has morphed from one where the user provides CPU IDs,
+which are translated to STs and written to the device or returned to
+support device specific implementations, to one where raw STs are used.
+
+I think this was a result of my question of how this interface
+integrates with the concurrently proposed interface where drivers can
+expose TPH values for a dmabuf.  Suddenly the user is managing raw TPH
+values and what used to be an integrated feature of performing CPU ID
+to ST value, with necessary ugliness of exposing that raw ST value for
+device specific support, becomes largely a standalone translation
+interface, which might be more generically implemented elsewhere in the
+kernel.  It largely loses any direct association to the vfio aspect of
+the device.
+
+The interface now looks more like one where raw STs are provided to
+vfio-pci through various sources.  It then becomes unclear why vfio-pci
+itself is necessarily one of those sources.
+
+> > The host-only opt-in issue above also doesn't appear to be addressed or
+> > rebutted.  
+> 
+> enable_unsafe_tph host opt-in already fully gates all new TPH ABI:
+> TPH cap + feature ioctl are completely hidden from userspace when off,
+> no userspace opt-in needed.
+
+I'd argue that opt-in on the host doesn't mean we should ignore the ABI
+change to userspace.  There's an entire virtualization stack that needs
+to be built on this change, intercepting writes to the TPH control
+register, MSI-X vectors, and capability ST entries.  The host opt-in is
+a global switch, it might enable your userspace driver, but it might
+also break QEMU, where writes to the TPH capability had been dropped
+previously.  A per instance opt-in, gated by the host opt-in, allows
+seamless integration of the new feature.
+
+> > Typically v15 would be an indication that a series is coming to
+> > maturity, but with the quick cadence and lack of discussion throughout
+> > this development, I'm not even sure we've arrived at a proper uAPI for
+> > this feature.  Thanks,  
+> 
+> Sorry for sending frequent quick updates without leaving adequate window
+> for list review.
+> 
+> This feature originates from an earlier ARM prototype posted last year for
+> DPDK TPH acceleration scenarios. Based on that foundational exploration,
+> this series has refined the interface through continuous upstream review
+> feedback.
+> 
+> All recent rapid iterations are code improvements and review fixes.
+
+The issue is that feedback like above is represented as if it's been
+addressed and changelogs are scant on details, requiring significant,
+repeated effort to understand the actual changes between iterations.
+The issues raised and interface design require discussion, not simply
+assertions that it's correct and addressed.  Thanks,
+
+Alex
