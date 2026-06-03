@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8D43E5EFD
-	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 16:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069E83D6CA9
+	for <kvm@vger.kernel.org>; Wed,  3 Jun 2026 16:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780503988; cv=none; b=iwUHsJOujXXk7Ot9hk/YpoX3d4HOK9RJgYazX1laDNXdc6bAAZvgr8efA6PkdHWRKLutpjq23Z1JO/EtkSyqXOaDqxJPenA+05BwOgtEBlOq56ecec7sRkF0vCrnYXvQ5vatpnLb+LCclZEldtbOpK98wsk5T6X0CGivcytlP6U=
+	t=1780504275; cv=none; b=DY85OqfYRPsowYR6wdxr9CQ6a/aZoxdUdN2nbr7o6e6hiCQaUZZbkYWWvxvVvkwPBBh9b7R/8ZpAI0wMQQOfDc/lOCj+oFx6SKA/J3+Vr97rNlq2F0bAA0L2YbeiZZ5ilkN7xKAIsbybtn/9Td9kqePXaJ31uGMEacgU1RgFqZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780503988; c=relaxed/simple;
-	bh=t9B2D9k6OqX+yFcpZm7G5mMnq3RMITHR+A8vYkbB53c=;
+	s=arc-20240116; t=1780504275; c=relaxed/simple;
+	bh=DJWTE6LFn/FwtziRLu35rzbUGYWKFLSBVuWW63zTWyM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=InZm/urjX6mPFOm9EInRLFH/tjorbI33mw1L7aSyCI9Qjsys0y4n+/JJRw1w9MORu0jJeOf8DyGCJppzql74cmGAsnhuf6DWOr1EIkhwDXGf7OOuKvkhMyqPjdRfhWgZ+ko0W8bd3Y4n3IboouyHHD40ulE3BSR3DRYYOJ32NeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=krOADTtd; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=lMreRJsijKlbZa7I9ebkV/1tRYTHquaUrnpC6aAFJ5QaovHmg7wLw0XFstnpIRaNH8wg4oChYipjKV3dSCmmae4RXC9ruCwafa+nnHnqNGZ+Jo83mPezLYJpN/Xf2h7rY/A4WBeSeDgOT8Jbmru39JdusFf6c6aH7lnyG7GBm1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lyfx2HdZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="krOADTtd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBD71F008A1;
-	Wed,  3 Jun 2026 16:26:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lyfx2HdZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E18B1F00893;
+	Wed,  3 Jun 2026 16:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780503987;
-	bh=ixxDGcSDffwx/ZUoUeCpmZMYvvcVYVlNQyYrEcyZrr4=;
+	s=k20260515; t=1780504273;
+	bh=JT+vGYtb12uWOvpeTnL1p++YnSgeDE0Alq4/hwR4iw4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=krOADTtd4+986eXJS4BcKgszfUzYc8DO+oYHkZkIjF5IcmtQAPwCuBXEM5YqJ/4XO
-	 D/rPDSNeKci03D7GF/hAhIH1tq2Jrb1HTZsY2ugtPi55i3teLX+tJfDFh3xSokH8d4
-	 GwD6Ad2wuHn5/wf/lEYN4uPnBywPXwrWTipOFNt1NYpF39d+lTfuzoy3g7vm5RY3iP
-	 GYCXXeGdGq6stk8Sp599G+djMTgUbahhNNoe0ViDBQL2cvFaiGy7YUp35eEaoBDgew
-	 q4MOAR6osZjLZhZPwpZ9ZVMA59ssaLZNfP4Jq11JjJM1tMmr5t3Q85rkgjbhxxsfK4
-	 kNDGTfZ8/annA==
+	b=Lyfx2HdZp/EUOxYkSPOQURxXiZji9bOsg2W+vKJxqhJodl4acI1c8XFxzqgzma3Ox
+	 J5sK3XDLgGzpGqQbAdc8aAVa3dlu91aEp8a5gTVRRFcy/dfrz67sri4N16ueGdXheZ
+	 MTPIUx18eKw/R5Mr4Q9tMho8NPneVg9NEDJcAsTsS2YzOvYH0QoEAQTwm8TXbCE+Pm
+	 SFvI4aWRtUimMH4oG18A4zJPsXe6RHu+v+Dq4qKUlAIVsRMkAIDl/ZJYMEwMG3N1zQ
+	 1pE9o6xgUgvxZSeNTHOZKiO5lCiUwQBR5KP7FlDraPt6QnHrd+lRUl1M0OyATQcJgn
+	 gAXOoB53kgAuA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 32/32] iommu: remove iova_to_phys from domain_ops and
- io_pgtable_ops
+Subject: Re: [PATCH v3 30/32] iommu/io-pgtable-arm-v7s: remove deprecated
+ iova_to_phys wrapper
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260603151804.1963871-33-guanghuifeng@linux.alibaba.com>
-References: <20260603151804.1963871-33-guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20260603151804.1963871-31-guanghuifeng@linux.alibaba.com>
+References: <20260603151804.1963871-31-guanghuifeng@linux.alibaba.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Jun 2026 16:26:26 +0000
-Message-Id: <20260603162626.ECBD71F008A1@smtp.kernel.org>
+Date: Wed, 03 Jun 2026 16:31:12 +0000
+Message-Id: <20260603163113.8E18B1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,73 +46,81 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The commit removes `.iova_to_phys` from `struct iommu_domain_ops` =
-but fails to update the VeriSilicon IOMMU driver (`drivers/iommu/vsi-iommu.=
-c`), causing a build failure and breaking IOVA translation.
+- [High] arm_smmu_iova_to_phys_hard() returns 0 on translation faults inste=
+ad of PHYS_ADDR_MAX, which is misinterpreted as a valid physical address.
 --
 
-commit 07242ed991899ab6da27ae54405dbc3801f90876
+commit 559ce0b481cdf56b10eb2174df50ab821772a973
 Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-iommu: remove iova_to_phys from domain_ops and io_pgtable_ops
+iommu/io-pgtable-arm-v7s: remove deprecated iova_to_phys wrapper
 
-This patch removes the deprecated .iova_to_phys interface from
-struct iommu_domain_ops and struct io_pgtable_ops. It also cleans up the
-fallback path in iommu_iova_to_phys_length() since all drivers are expected
-to have migrated to .iova_to_phys_length.
+Remove the iova_to_phys wrapper function and .iova_to_phys assignment
+from ARM v7s io-pgtable, as all callers now use iova_to_phys_length.
 
-> Now that all drivers implement iova_to_phys_length and all callers
-> have migrated, remove the deprecated interfaces:
-
-[Severity: High]
-Is it possible the VeriSilicon IOMMU driver was missed during this migratio=
-n?
-
-Looking at drivers/iommu/vsi-iommu.c, it does not implement
-.iova_to_phys_length and still assigns the removed field, which will cause
-a build failure:
-
-drivers/iommu/vsi-iommu.c:vsi_iommu_ops {
-    ...
-    .iova_to_phys       =3D vsi_iommu_iova_to_phys,
-    ...
-};
-
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index 320ea13488e7b..1ad4787925cd3 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
+> diff --git a/drivers/iommu/io-pgtable-arm-v7s.c b/drivers/iommu/io-pgtabl=
+e-arm-v7s.c
+> index 62198e31a3937..da065747e37c7 100644
+> --- a/drivers/iommu/io-pgtable-arm-v7s.c
+> +++ b/drivers/iommu/io-pgtable-arm-v7s.c
 [ ... ]
-> @@ -2572,20 +2570,10 @@ phys_addr_t iommu_iova_to_phys_length(struct iomm=
-u_domain *domain,
->  	if (mapped_length)
->  		*mapped_length =3D 0;
+> @@ -641,18 +641,6 @@ static size_t arm_v7s_unmap_pages(struct io_pgtable_=
+ops *ops, unsigned long iova
+>  	return unmapped;
+>  }
 > =20
-> -	if (domain->ops->iova_to_phys_length)
-> -		return domain->ops->iova_to_phys_length(domain, iova, mapped_length);
+> -static phys_addr_t arm_v7s_iova_to_phys_length(struct io_pgtable_ops *op=
+s,
+> -						unsigned long iova,
+> -						size_t *mapped_length);
 > -
-> -	/* Fallback to legacy iova_to_phys without length info */
-> -	if (!domain->ops->iova_to_phys)
-> +	if (!domain->ops->iova_to_phys_length)
->  		return PHYS_ADDR_MAX;
+> -static phys_addr_t arm_v7s_iova_to_phys(struct io_pgtable_ops *ops,
+> -					unsigned long iova)
+> -{
+> -	phys_addr_t phys =3D arm_v7s_iova_to_phys_length(ops, iova, NULL);
+> -
+> -	return (phys =3D=3D PHYS_ADDR_MAX) ? 0 : phys;
+> -}
+> -
 
 [Severity: High]
-Because vsi-iommu.c doesn't implement .iova_to_phys_length, won't this=20
-cause iommu_iova_to_phys_length() to unconditionally return PHYS_ADDR_MAX
-for that driver?  This would break its IOVA-to-physical translation once the
-build error is fixed.
+While this patch removes the wrapper that converted the error sentinel from
+PHYS_ADDR_MAX to 0, was arm_smmu_iova_to_phys_hard() in arm-smmu.c missed
+during the transition?
 
-> -	phys =3D domain->ops->iova_to_phys(domain, iova);
-> -	if (!phys)
-> -		return PHYS_ADDR_MAX;
-> -
-> -	if (mapped_length)
-> -		*mapped_length =3D PAGE_SIZE;
-> -	return phys;
-> +	return domain->ops->iova_to_phys_length(domain, iova, mapped_length);
->  }
->  EXPORT_SYMBOL_GPL(iommu_iova_to_phys_length);
+In drivers/iommu/arm/arm-smmu/arm-smmu.c:
+
+    phys_addr_t addr =3D 0;
+
+    ret =3D arm_smmu_rpm_get(smmu);
+    if (ret < 0)
+        return 0;
+    ...
+    if (phys & ARM_SMMU_CB_PAR_F) {
+        dev_err(dev, "translation fault!\n");
+        dev_err(dev, "PAR =3D 0x%llx\n", phys);
+        goto out;
+    }
+
+    addr =3D (phys & GENMASK_ULL(39, 12)) | (iova & 0xfff);
+out:
+    arm_smmu_rpm_put(smmu);
+
+    return addr;
+
+Since arm_smmu_iova_to_phys_length() directly returns the result of this ha=
+rdware
+translation path, it will still return 0 on RPM failures or translation fau=
+lts.
+
+Will this cause callers like iommufd and vfio, which now check for PHYS_ADD=
+R_MAX,
+to mistake the error for a valid physical address at 0?
+
+Also, since mapped_length is not set in this path, will it break the caller=
+'s
+mapping size calculations?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603151804.1963=
-871-1-guanghuifeng@linux.alibaba.com?part=3D32
+871-1-guanghuifeng@linux.alibaba.com?part=3D30
