@@ -1,122 +1,119 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1807368D74
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 19:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F86B3890FB
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 19:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780601731; cv=none; b=P7dNaHphOoANgT2CulEnL/Dc1tRISDXQvF4N5LCLVEBpJMhN89MvfFoC88XVNEC+tVueJpajYDEeSj29ZpKRcOsvE+Nrxm0+eG03Y7nWAYIoREcpfnDpwLwIfHDPU4HBu7Sn6EMVdhzaYtW1Dx3tajGOI3BnPYfkFK44bgsiMW8=
+	t=1780601755; cv=none; b=KUl0xG9IDCWMG8zlSSECT+Ec5z+/F4pUF79GgDmZXMyH6H4nO1ODtM/VbyaWayJlUV3sIUqJDfWB23+ErG5YAlaFqyPwTFubi2f4qAFq2SqwVVwCl+l1OQvFKFlcoizLm8byJMFd+TF/pVd++zDIfdtbMeOyEIF0F1/fH80uEPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780601731; c=relaxed/simple;
-	bh=1YofZpMtmmjQnKJt0AyFwdSGGDzL0tWdXXGyeCPJD5Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=S/JQrWV9bIr8628VYcApFoL9kIkeA2pZCtwjUJpPzcDHYrf6ovk/7xptek3slQAVzgWuMV5h4rI0cnp3ClmUXfhyxTrBabJiDo7XuED1ik+G2QMA8g1ga1/AZqI0iDqUsxy5BEiAwfp77r9gCxdTtaRXqDXD9Hg/kuJJlt762fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mTQ1DiI4; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780601755; c=relaxed/simple;
+	bh=GetBA3NQEL5DP/wshPU5F0qHruPz8KpujD7QmlXU6e4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=KUS2BEHV4+y68ExgDZz+8DSqWhaNBJhbHiu9CqzCTZMQO3hBzLwth+S/ZC6Xq+GeVSlOyRuSVCisPjvKRbRSWpBMtP2SnpVfEj5wM3YyZ21iBBc6VVI/UgNot5JcSWLZewKG0XukwbBrHd/ws3XW638ikLncY1R93UDGN148R00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YgNER3Ru; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mTQ1DiI4"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2befec3fd8fso7776145ad.3
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 12:35:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780601729; x=1781206529; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GNHuzQnVw7DPfnDwqoqnw8wQUPfIpTU62drof68ZIpc=;
-        b=mTQ1DiI4ydiJr/5kaIBGZmMlUoRIoiY6xvj04WNJGYaTApORLIYwkX87QftEvWRVkl
-         Rwca3oXQRd/vzqwzad0k6TT8ceas/ttYYjEuZMa2vODhZs5JUcnswDlBPIzU8QV/VInH
-         UCQaaL1BM6XfLxvbEvazuZTjK+/bKRkeS5YMDo9Zvjrjo4yD9n9sL3pQHMSoWtLML2Eu
-         HMPJu7NWzUyILs0AKrbAgpC8vBZ9tIHn3fT4tdIk0I2JIodILTMpbiLpmYXnDuXuJmlr
-         Qy56DbHSJ2LiTKje3Iyeqnf/uCmcMo7654c3Bch8bfk2/ERq4FVMynlOdDNZaCpmzvNb
-         UAYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780601729; x=1781206529;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GNHuzQnVw7DPfnDwqoqnw8wQUPfIpTU62drof68ZIpc=;
-        b=YCUCh66yFY0H5cpa1NuTKOkeXIUt766rn78gEukAsZXTIFUvHUKYl33tuA48Hg23yP
-         RY0IYQD+kpoNT4BTEQW4eeSniwL8UUN7bS+Gl3x9K3p5JBeA3wdqL9LmcoqYA4XvK6W+
-         wTG2y6pHAmg1bJLSznNQT/JpbXzDna5fX1lhZIhWwURXzonUSP5oUNSyvvpMIbn612FF
-         0Zr9mtt65j216kWRDF/xGdGqeGd43kGvBUGSMdezhkV44Jb/2yV2XQkS/3tSyUYNCkU8
-         Nmj20cTqBS8U3k2ejjsMZNC1p3ipvSGfIXkgcNvYGRJgmxKCUS7XD8lwltoDYW9Hrlij
-         5Xow==
-X-Forwarded-Encrypted: i=1; AFNElJ+je01iLCBPHJwaB9jjKwj1YdXzEMtboeIdimEf9xb0+7IguVSqNr01Fwoyo7H4OfVWTDE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMS7LwYk3QUTobqwvrw4xBqnbwlkyu83yEcxPDHFjfhzdPe/BZ
-	3RfSvdPPLc0+NRJXDrKg17zbvAz8I2RvqfIMck8OpzqFocZHy2W5Gz56Ckj1giU4WNpUWw12jMj
-	xBRoepg==
-X-Received: from plzv5.prod.google.com ([2002:a17:902:b7c5:b0:2bd:1ca5:b928])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ced1:b0:2c0:fa4e:91f6
- with SMTP id d9443c01a7336-2c1e7d41eabmr291435ad.13.1780601729026; Thu, 04
- Jun 2026 12:35:29 -0700 (PDT)
-Date: Thu, 4 Jun 2026 12:35:28 -0700
-In-Reply-To: <20260604020143.748245-9-jrhilke@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YgNER3Ru"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA311F00893;
+	Thu,  4 Jun 2026 19:35:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780601754;
+	bh=aKtdwRIZ1FVgQqSLiAojEk+dtgcHHqJ5Bz64OF+9+uQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YgNER3Ru5R/mzeVBrdIEC673EvEWxDzfyHNA1eGcBYK6kJx5gpoqgKGWTxU0AIjXM
+	 4wQ3utSVayZ6nwtkr2kJWO3gKQdDvvhsS1+6FZZoWnjnyv1qmMJeaR8xL+ZG1me9CJ
+	 eAgrwDSCSlIr+8vSGVHEMNvLodgK3zo44LAT90loC29LLWKFSyFLV8dWmHEdj89fYe
+	 x5a0BNoO3sGvt4OzLMD8RvzAG0+P/SeP7tWvmMflLGg0SnvhYjR25sSL0ZMujlesOm
+	 s3U+yspGQokhWmtV4bZXQsRWj0VbvdocSGz3fayK/YYVgGWxgQ4yGDak6/u0cEzTQ8
+	 mbcx4ryaULJgQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: x86/xen: Read long_mode only once in
+ kvm_xen_set_evtchn_fast()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Hyunwoo Kim" <imv4bel@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <aiHPPUk5DY7rH-zL@v4bel>
+References: <aiHPPUk5DY7rH-zL@v4bel>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 04 Jun 2026 19:35:53 +0000
+Message-Id: <20260604193554.1BA311F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260604020143.748245-1-jrhilke@google.com> <20260604020143.748245-9-jrhilke@google.com>
-Message-ID: <aiHTgDO5MekPQ9aT@google.com>
-Subject: Re: [PATCH v5 08/21] KVM: selftests: Add helpers to write proc IRQ
- affinity for IRQ test
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex.williamson@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jun 04, 2026, Josh Hilke wrote:
-> diff --git a/tools/testing/selftests/kvm/lib/proc_util.c b/tools/testing/selftests/kvm/lib/proc_util.c
-> index 84d30f055a0a..938c90d94f4d 100644
-> --- a/tools/testing/selftests/kvm/lib/proc_util.c
-> +++ b/tools/testing/selftests/kvm/lib/proc_util.c
-> @@ -38,3 +38,23 @@ unsigned int vfio_msix_to_host_irq(const char *device_bdf, int msix)
->  	return (unsigned int)irq;
->  }
->  
-> +FILE *open_proc_irq_smp_affinity_list(unsigned int irq)
-> +{
-> +	char path[PATH_MAX];
-> +	FILE *fp;
-> +
-> +	snprintf(path, sizeof(path), "/proc/irq/%u/smp_affinity_list", irq);
-> +	fp = fopen(path, "w");
-> +	TEST_ASSERT(fp, "fopen(%s) failed", path);
-> +
-> +	return fp;
-> +}
-> +
-> +void write_proc_irq_smp_affinity_list(FILE *fp, unsigned int irq, int irq_cpu)
-> +{
-> +	int ret;
-> +
-> +	ret = fprintf(fp, "%d\n", irq_cpu);
-> +	TEST_ASSERT(ret > 0, "Failed to affinitize IRQ-%u to CPU %d", irq, irq_cpu);
-> +	fflush(fp);
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-As Sashiko points out, this is prone to failing silently.  But rather than just
-"fix" that issue, this can be simplified to avoid the complexity of flushing
-buffers in the first place.
+Pre-existing issues:
+- [High] Guest can trigger a host split-lock panic by placing `vcpu_info` s=
+uch that `evtchn_pending_sel` crosses a cache line boundary.
+--
 
-That will also allow fixing another flaw: if the caller passes in the wrong,
-file, debugging the resulting failure will be annoying.  I see no reason to
-risk that, it's not like opening a single file is going to meaningfully impact
-overall runtime.
+commit a112a8243664e8390567ef2c91d59d503bd5858b
+Author: Hyunwoo Kim <imv4bel@gmail.com>
 
-All in all, just this?
+KVM: x86/xen: Read long_mode only once in kvm_xen_set_evtchn_fast()
 
-void proc_irq_set_smp_affinity(unsigned int irq, int cpu)
-{
-	char path[PATH_MAX];
-	int r, fd;
+This commit ensures long_mode is read exactly once in
+kvm_xen_set_evtchn_fast() to prevent a race condition where a guest might
+change long_mode between the port range check and bitmap layout selection.
+By latching the value, it guarantees both use the same layout.
 
-	snprintf(path, sizeof(path), "/proc/irq/%u/smp_affinity_list", irq);
-	fd = open(path, O_RDWR);
-	TEST_ASSERT(fd >= 0, "Failed to open %s", path);
+> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> index d6b2a665b499d..32af7731c59bd 100644
+> --- a/arch/x86/kvm/xen.c
+> +++ b/arch/x86/kvm/xen.c
 
-	r = dprintf(fd, "%d\n", cpu);
-	TEST_ASSERT(r > 0, "Failed to affinitize IRQ-%u to CPU %d", irq, cpu);
+[ ... ]
 
-	kvm_close(fd);
-}
+> @@ -1862,7 +1866,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *=
+xe, struct kvm *kvm)
+>  			goto out_rcu;
+>  		}
+> =20
+> -		if (IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode) {
+> +		if (long_mode) {
+>  			struct vcpu_info *vcpu_info =3D gpc->khva;
+>  			if (!test_and_set_bit(port_word_bit, &vcpu_info->evtchn_pending_sel))=
+ {
+
+[Severity: High]
+This is a pre-existing issue, but can this atomic operation trigger a host
+split-lock panic?
+
+If a malicious guest aligns the GPA of vcpu_info such that the 8-byte
+evtchn_pending_sel crosses a 64-byte cache line boundary, this
+test_and_set_bit() will execute an unaligned locked instruction. On hosts
+with split_lock_detect=3Dfatal enabled, could this result in a guest-to-host
+denial of service?
+
+>  				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
+>  				kick_vcpu =3D true;
+>  			}
+>  		} else {
+>  			struct compat_vcpu_info *vcpu_info =3D gpc->khva;
+>  			if (!test_and_set_bit(port_word_bit,
+> -					      (unsigned long *)&vcpu_info->evtchn_pending_sel)) {
+> +					      (unsigned long *)&vcpu_info->evtchn_pending_sel)) {
+
+[Severity: High]
+This is also a pre-existing issue, but does this cast in compat mode create
+the exact same split-lock vector?
+
+The compat_vcpu_info struct uses a 4-byte evtchn_pending_sel, but casting it
+to an unsigned long pointer and using test_and_set_bit() forces an 8-byte
+atomic access. If the guest strategically places this struct so the field
+crosses a cache line boundary, will this similarly crash a hypervisor enfor=
+cing
+strict split-lock detection?
+
+>  				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
+>  				kick_vcpu =3D true;
+>  			}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/aiHPPUk5DY7rH-zL@v4=
+bel?part=3D1
