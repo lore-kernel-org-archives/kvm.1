@@ -1,160 +1,158 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5719286425
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 06:23:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E723CF677
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 06:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780554237; cv=pass; b=shmijd8CAGlrNfJ17nsG7orPstghsvR6cKaH2GGVXO4VR15VPguEzq/RyXoyaUo3kjasB56ZmQTadgmh7DD9CaoWgtNcvXDzhFsmKzdcNeIOSrc5FUGKS8rD8KKFhyRU7E974i9biABLA9yIM26Xj89pZoidRtoX1G5xgcUN6LA=
+	t=1780555356; cv=pass; b=Qkz+QkJDT9cW0iYNcS3tVOblG4WZHZYWW2pYJIloEimgqHhp9pKZqDJ1iv5bDdXRVyqY4xW0PsdVdn2j41Ra1Y69FxFIbwZAEYC4SR9n8wFh/mdfDgFCws2A9VJhwg5RTVQYNJMd3WtMQuSmIOBkr/hyHCt/P5FBOhEOSSmpdZE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780554237; c=relaxed/simple;
-	bh=fyn8UE6P6du6IrW1SfSmKy7QHcHo1Gbox1Qxx3NbE50=;
+	s=arc-20240116; t=1780555356; c=relaxed/simple;
+	bh=H3rnulMfl3DeILYXkuBtcVo0HBpok14PmwBuns7JPa0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sYENPUmhO1CpHKqrnpQR8444LGnCl4kLMvpp0WoIJlP771u6wVq4bmWa9IJ85VK+l6ken0W8usx8mT5uqp8f/ZEL869l06vGLmQLmp/Ed0OUke99vXz0kUSUyCdQePmbXPbgGKyMNkT2dL7pnrTXcSL99N/3NVHzWZyQRxqmmkQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fHTr6n4p; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=NswTG6RlZCxK7B/FKIWE7+ZGy06z72Nd4VzYDZWuCPWnE2VUX0m2q2+ZhdXqpUvT3iTyJXT6O5Z9qLqFT1n/LzJernGfQjw1Bv5R4QHsYwiGv5mtYjizB0H4SXiq22p1i13WKol01Oi3gY/e15555QCBVtHvTDZ0GfLh/DsE+R4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eXlvLZ8u; arc=pass smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fHTr6n4p"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-68bd7ec2371so4109a12.1
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 23:23:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780554233; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eXlvLZ8u"
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7e6f586a0d5so116064a34.0
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 23:42:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780555354; cv=none;
         d=google.com; s=arc-20240605;
-        b=DZzx+g2Z/vkj/5t941YdA5pAzencvAY2SUckD1qB1ZIsXB9bjMvGIra8hV6A9jChjr
-         WKEW0A4QKPz3pw7mL/Kr6KFPPH52EUO4ydOE6BtaZvp37PKlqgWNyxtHEjLct2zKLxJk
-         uJgWxaOBGhyTsItuh1APtS58h7MDrKTUrm9SErzBrBzHeO9WrohJbw4QiI7lmu2257KO
-         UIHE6JbR3DhEfjjBZotkVbjx7CVoruQ0qZFM4OndTCjXpHq1IPHJbzXkM5ietN0b3UQy
-         8aP3n3A194Pv5876AAdRWF2cgbG9XiVJABIoT+OsVra65ME8um/g4IAfeUT2sdR/2Lxf
-         L90A==
+        b=IvxSkbEBe105Tn/u4X53X4au+6TWYv5GjxQjmNGWdaaBfyIZZTttu1uvX/Ok/tmy6R
+         K6EqNs+S3YIpJhdC+ODIXdAFzMJGaRFc50GU+n4Q5Gf9QufG8bwBdcOsanBLlBTvFnDn
+         ri6ffASe2eLfbOO+ClcpfqJk5Id2XfpwwOcClwfHyJLbxgA7VKY4nbzFarr3fCEQ9M8S
+         5oGKgY9wO1LMy9TJ638KhSH2A+i+MeVnU6gV0UTKGm4+5co54MdoPQ9FGP0zj1awo7aT
+         FJJjHZRWEaIsgVBs0ifp7Xj9nOKj/TvAH4eJDvFPAZO9QZXDAbfY10MUWAkqxrJr3wl+
+         8smw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ATmrybH7o+jqldU/+IaX8GCc7NIeB6X5yfOR7H2kJRQ=;
-        fh=OZbrVktd23qVBrLgLSKpCl06rHM6+0bFfv7TQsDbueY=;
-        b=J6oqazd8wgMnoqe6hWjjmMS7zZoHRJjnrBzybmRGe2gb2yp5UmcU9kjLzL7DIM6MrD
-         kPSnpJkcY+XZoSXRVFc6BOOzchMVqtuJ31Shhn45/4RtUO6ZRc7fzTqX/1skj3kS46V6
-         otfqLtx9CBsF/b2Ox4wiFjG9smIteWaKt+t9zxuicG7Y8tX/6pA4Mavtrm8C4Z0L7WOg
-         C5XWxz0Hlvha6/pnsy+WVrTAtV9ozBy50HRCN8mQt/aI1wnbhk3ZPYHOoglmo/Sh1++k
-         AUYLaC4vK3vFwVvrqVGccMZwwuRyOU0jObbGgL7mjxprCSIAwuXIedCbRHaH1kwnXkBm
-         n6mw==;
+        bh=6yfZQB52noCs/9R98yvRH4ThEmgKOXXjOByci/XdGgY=;
+        fh=QfcTh0wJfLHP1QZBMZRnZ/OybELer8XYHKfbofkyCNs=;
+        b=OklVEbnXsOTAZS91ZgaTIXPSSA95ZCmyqkBtNNHR4YD3Q+cmra+YSW5np/SHGqUpdj
+         CWAtBV8tZv82a6WGMLYfOmS3plBveemrjIFBSq9bTOhyXNrEEqVWVwDSZq5tS2nc3T97
+         Cr1p5FY4R0xUUtn79350Obrb7bPIICF7FT2q42/HmjIZzdLl5PsvWg3OIQ9QEnp6QunC
+         oAs8Sxfb3pHY+bOjtSfstR709yhUlvnqsFMoOf4P2OSMNjgG8ddrlQ5VDQ2U06huVufn
+         C2+D62QXpKtMfWpsKxHfRXGIALSHJxSYZjWGwM1tQAc+n5MUNJBHZyW0Jbpcxv03AoeR
+         bnPQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780554233; x=1781159033; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780555354; x=1781160154; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ATmrybH7o+jqldU/+IaX8GCc7NIeB6X5yfOR7H2kJRQ=;
-        b=fHTr6n4pGML8ZWHnV1YNeweFYrTWItuDq//V8MEDvX8OIhwtOWHZ6ZRblVuM/TQRgf
-         e2xcMQ1i+jPDCTfp+5hW5WVuW9L7j2M3FkZYmxa37PE3kQHecETGwrlvSdrmQWHIkdb/
-         mL5zNacOv6b1Ky9tzbEuoKuna6zTbAPxgUN6n9C9m2I8YjrIYXn6pqyFpALsPqBtbdTE
-         jUNxbFKtBe7VH5sVW/mFvtKpHrReL9GrsH/cZXt2kI4EC7TI9bLlhBd+jU5/mlvBqPP7
-         i1Y1+I29cDKUw/KmEPV5ObOOYgsbbqUYMOy8defpMKqQ43LpNVdfVHxuebs1HellZ0la
-         grqg==
+        bh=6yfZQB52noCs/9R98yvRH4ThEmgKOXXjOByci/XdGgY=;
+        b=eXlvLZ8ui7sSGYpCke06+8h1Qgai2sl90b2578fC5hDPB8AApIz1f28pGiRVKW8ve2
+         Y+hCzyp5fVkaTezhoLzu9+xSSbBSxQwRX2RpabmuTcidmDEV2lSnaL1u4BS0/18IMXuh
+         TUA/hMcpt4s3cua0N9JvqsB1I2v5M0+MjIYUPpzp86s0xln1PoDhZlzb6Ob2mFXekmjw
+         IrSStPc9FNfd2BZN5h2vVtWf49R/q4L8vREJCnEaqxeAlb/HBB1PI8yUxGt4oxBjCQG4
+         em5uwa2/smD+epUa6c+Donp0v3poyN32qDENyY+zOmrtT7FepGGOblH3C5l7FvNVfmjH
+         RP6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780554233; x=1781159033;
+        d=1e100.net; s=20251104; t=1780555354; x=1781160154;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ATmrybH7o+jqldU/+IaX8GCc7NIeB6X5yfOR7H2kJRQ=;
-        b=C0KwQWMG7E7WLMOxVUTKIideJrMQzQ4zs0P2wtFyzooN4dsUBRGtgl16XfRDViAtj9
-         qVFaLL+HGByfwU+u0RXJ0jE3AOSCRmAj/bfiTOta0GN/oIonGIIo5d9r8KzixaI50oCF
-         O2wvrvaogHkgIhBZt4tAHX9H6Q59uLjKZBLuP8/lDG57fz0FIgN4+SgjAdAf6fcB4UYI
-         O/Z7UkZbyjIr6QLaGjAjPQBkmzFOvyaX/yjZeQw3/bABPqUvic8cfYkvITShjNXL7Hk0
-         HJpAlY4hECzkqksgga5ztXH53sjNldum/lQgCoF/In3uT/FysNU92fYQWpvV/RtG6LAG
-         icQQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+20NXcssKV3r6G6XY7j8VdJnJbtDiku0Nj9vjVImxKjXxhykK5kEybYsPX5V7ct/zVOfU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRqUQRDdONeS1BgzlN9iKIXM9TJda7FlAhmw5wqjD7pGnO75bx
-	sMvCVrKg+jIgPr4rkQ4gg5VUS2lTvWjqjvlaGfvQaLBnVh2zZJrjEBlfiwNCoCBhUpj5oRWsMh2
-	PLidCO0v5qrZQ5KNOLGsxjm0x9ikxle+9dgWoj3lC
-X-Gm-Gg: Acq92OFUeTeKCRC8jjsyhnwwZGC08uw5oadEvuxzLGWHPk2IGThfq7Hjiramai9v7UY
-	KM7O5jj9e69hjkim+m9S1gYxs0+hOtf7a7pAE5/2QYmZ4wAXrmwUmCXo0wkK+OYvJuhLT+TkaaO
-	lxKofS1brCYltl5sRL1XgFZF1BdkoOerqQGpL+1hmXTNud3pRXUShBCDchgpdV3EOfhPZI6Z8+R
-	v1FdtuM2ZydhBDZ4odPUSoJs4rS19agq/7puk36T73Q/yumVSt8DIlrYZ06DNZQNM9G1o1jL0r8
-	Vax6iMRLaGbFzxVPXHBFuPSHkaGs
-X-Received: by 2002:a05:6402:a58c:20b0:672:117e:55d4 with SMTP id
- 4fb4d7f45d1cf-68f1167af2cmr64354a12.0.1780554232905; Wed, 03 Jun 2026
- 23:23:52 -0700 (PDT)
+        bh=6yfZQB52noCs/9R98yvRH4ThEmgKOXXjOByci/XdGgY=;
+        b=InKJhCgJhSCMhw9AKcJAuiwoelaZUeH0+37NwNp7ip/M/olW+09NNde8I6VRKWmOfv
+         fUJMwW8jNvz6PpzfoOJBvE8FI2DAoDXMkBfwCgSAjuPr/svnGZ0bz6f2WwhmhyuR/FK7
+         qOQHQIlusuZ4MUudHO6Wcku7ImH9jpb6SiqrIfLssvL6CxcXjMR8cq7xr2JY5FrrPu7l
+         C9cLEvxZ3UeTfIiNpIVxyMvsI43T+Voa4ygwRT9fuZN3bQLftkEys7ky8NnhgWdrAPmU
+         0LNszUtNupmsysONVTGyvz3DV8j8BD2+GKVA09VgU9UciZzxSoKN6GhcTbqj3ZBWNNXH
+         vUMA==
+X-Gm-Message-State: AOJu0Yxh7MydcL7kGrTUJTFbzItT4kLOvPBZIsdcBYEiJkvlLXxnli+Z
+	QThvZzaljlfU4jseJI4aW1TNw5Bz8vBDl6C7mBs/2nag+pw4k/iA+9nkcJjY6dcfRfign6ZZXrF
+	dxoz/qCP8XaEn9ThJBdWY9XW9dkBNfps=
+X-Gm-Gg: Acq92OGfJ2nHBh2dQTujL3Hk7JLLORHMcfkfwK7UfQxy3UL3gN9rCzcr8/M3RcqFB9O
+	wjvkz7jB39AuDZ/5diP7/XUeIvjcdzgYmYQhrPeuXKbTrlGBvML1Er5RzFCTvXG7HDN+A6mC6tW
+	Uw6LOgjhVjxu1xYKznycQZlGvMLZxT26D7jEAWFmDlzQPwrthwRVNre6KAHqYb/VbdcubbJayHW
+	XW5YzCTfbZf1XFtUAypLezQ5TzsSJ66BGOErEUMxsmxr33C3cZNFeCv3tBm2kzTSYDJjSWeSSxf
+	JBBRJgoQvzEzzyZX0/BvBSM=
+X-Received: by 2002:a05:6820:c3cb:20b0:69e:b8:ffe8 with SMTP id
+ 006d021491bc7-69e480cea9amr3162580eaf.52.1780555354372; Wed, 03 Jun 2026
+ 23:42:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260603223418.1720035-1-seanjc@google.com>
-In-Reply-To: <20260603223418.1720035-1-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 3 Jun 2026 23:23:41 -0700
-X-Gm-Features: AVHnY4JeGI7qmS9M9lkkb03_Ky7_F5xReUD-psNw1ArQMrhm0pdHLgel1z9dMIM
-Message-ID: <CALMp9eT2mBWgX9VntLJcRYDCeMdLzZwzmPbHrbcM6CRL2tYT0g@mail.gmail.com>
-Subject: Re: [PATCH 0/2] KVM: nVMX: Fix ept=n bugs where KVM runs L2 with
- guest CR3
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260603-rva23u64-hwprobe-v2-v3-8-5529a7b28384@gmail.com> <20260602232800.768311F00893@smtp.kernel.org>
+In-Reply-To: <20260602232800.768311F00893@smtp.kernel.org>
+From: Guodong Xu <docular.xu@gmail.com>
+Date: Thu, 4 Jun 2026 14:42:22 +0800
+X-Gm-Features: AVHnY4I8rB9-WPj3dLhf7Mcp5Ee0Ym_vIrvBsuBkaWpxQWp0kj0HO6TjI-qUSM0
+Message-ID: <CA+Ck9FbKRM0wjJMg1fQpdwmow8cf_zTfir7V6+T=CRxU+vomdg@mail.gmail.com>
+Subject: Re: [PATCH v3 08/15] riscv: Add Zic64b to cpufeature and hwprobe
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, devicetree@vger.kernel.org, robh@kernel.org, 
+	conor+dt@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 3, 2026 at 3:34=E2=80=AFPM Sean Christopherson <seanjc@google.c=
-om> wrote:
+On Wed, Jun 3, 2026 at 7:28=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
 >
-> Fix two bugs where KVM can run L2 with a guest-controlled CR3.  The under=
-lying
-> flaw dates back to commit f087a02941fe ("KVM: nVMX: Stash L1's CR3 in
-> vmcs01.GUEST_CR3 on nested entry w/o EPT").  Past me claimed:
+> > @@ -154,6 +154,23 @@ static int riscv_ext_zicbop_validate(const struct =
+riscv_isa_ext_data *data,
+> >       return 0;
+> >  }
+> >
+> > +static int riscv_ext_zic64b_validate(const struct riscv_isa_ext_data *=
+data,
+> > +                                  const unsigned long *isa_bitmap)
+> > +{
+> > +     /*
+> > +      * Zic64b mandates 64-byte naturally aligned cache blocks; cross-=
+check the
+> > +      * cbom/cbop/cboz block-size device-tree properties to avoid inco=
+nsistency.
+> > +      */
+> > +     if (riscv_cbom_block_size !=3D 64 ||
+> > +         riscv_cbop_block_size !=3D 64 ||
+> > +         riscv_cboz_block_size !=3D 64) {
 >
->   Smashing vmcs01.GUEST_CR3 is safe because nested VM-Exits, and the unwi=
-nd,
->   reset KVM's MMU, i.e. vmcs01.GUEST_CR3 is guaranteed to be overwritten =
-with
->   a shadow CR3 prior to re-entering L1.
->
-> which was and is true, _if_ a nested VM-Exit or the unwind is reached.  I=
-f KVM
-> fails directly, vmcs01.GUEST_CR3 will be left pointing at L1's actual CR3=
-, i.e.
-> KVM will run with legacy shadow paging a guest-controlled CR3, which is..=
-. not
-> good.
->
-> Note, the vTPR fix will cause KVM-Unit-Test's TPR Threshold test to fail =
-when
-> run with warn_on_missed_cc=3D1:
->
->   FAIL: Use TPR shadow enabled: virtual-APIC address =3D 8000000: vmlaunc=
-h succeeds
->   FAIL: Use TPR shadow enabled: virtual-APIC address =3D 10000000: vmlaun=
-ch succeeds
->   ...
->   FAIL: Use TPR shadow enabled: virtual-APIC address =3D ffffffffff000: v=
-mlaunch succeeds
->
-> due to KVM actually accessing the virtual APIC page.  Given that I'm pret=
-ty
-> sure I'm the only person that runs with warn_on_missed_cc=3D1, and that I=
-MO this
-> is firmly a test bug (e.g. on bare metal I'm pretty sure there's guarante=
-e
-> VMLAUNCH will succeed), I don't see any reason to try and make it "work" =
-in
-> KVM.  I might try to figure out a way to make the KUT testcase play nice,=
- but
-> for now I'll just ignore the failures in my test runs.
+> [Severity: Medium]
+> Will this check erroneously disable Zic64b if a platform does not impleme=
+nt
+> all three CBO extensions?
 
-IIRC, the tests in question are confirming PCI bus error semantics.
-Why would the VMLAUNCH not succeed on bare metal?
+Zic64b is mandatory in RVA22/RVA23, which also mandate Zicbom,
+Zicbop and Zicboz, so all three block sizes must be present on any Zic64b
+platform.
 
-> Sean Christopherson (2):
->   KVM: nVMX: Move vTPR vs. TPR Threshold consistency check into "normal"
->     checks
->   KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot L1's CR3 when EPT is
->     disabled
+And architecturally, all the block sizes are one quantity: under Zic64b
+that value is 64, so the three must all read 64.
+
+Anything else is a misconfigured DT, and the kernel should not trust
+the zic64b it claims.
+
+BR,
+Guodong
+
 >
->  arch/x86/kvm/vmx/nested.c | 86 ++++++++++++++++-----------------------
->  arch/x86/kvm/vmx/vmx.h    |  7 ++++
->  2 files changed, 43 insertions(+), 50 deletions(-)
+> If a hardware platform implements Zic64b but omits an optional extension
+> like Zicbop, the riscv,cbop-block-size property might be absent from the
+> device tree, leaving riscv_cbop_block_size initialized at 0.
 >
+> This unconditional check evaluates 0 !=3D 64 as true, which would spuriou=
+sly
+> trigger this error path and disable the valid Zic64b extension.
 >
-> base-commit: d4bfaa66fa171089b9b9fb2dc17af9245f2b9b34
+> Should this validation only enforce the 64-byte size if the corresponding
+> block size variable is non-zero, indicating the extension is actually pre=
+sent?
+>
+> > +             pr_err("Zic64b detected in ISA string, disabling as the c=
+ache block size is not 64 bytes\n");
+> > +             return -EINVAL;
+> > +     }
+> > +
+> > +     return 0;
+> > +}
+>
 > --
-> 2.54.0.1032.g2f8565e1d1-goog
->
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603-rva23u64=
+-hwprobe-v2-v3-0-5529a7b28384@gmail.com?part=3D8
