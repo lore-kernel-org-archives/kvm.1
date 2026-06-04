@@ -1,60 +1,51 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885FA33F8A1;
-	Thu,  4 Jun 2026 21:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132F63BBFD7
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 21:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780609719; cv=none; b=FjJdNAsnPViHBCgkmtXmdJLKGy+b/rB5yJ8uPihHqwHH6ngsyjLrnFmlIMB2Z+wSTRPZsIRM/tqViDr3xIYZ2okCY+BS/9KPm9ttbBFf+jr/Uxevo1GC2Zi0FsxbYMpLC5McZ4Jg9oyP+7voyjFbbUUJ4M4A1TQ8MbZLr423NTE=
+	t=1780610213; cv=none; b=jx7YygpD3ZHKbbgaqH5n5F8mNe7bqX2uFo8G2GKb+BtEEnFcjcLqVp9Nbos9n3JD0UC8yhmS1fs4r4m+pY/OXkO7j2Ka9VksfE/DGGnSn+zjHpf6YAH2v3izEFtkuJpweg75RfRtPjeu3miBS8ZSK+3lebHh44n/+/qHI+CY7Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780609719; c=relaxed/simple;
-	bh=R+ag7PVuy5fqa7DjwMvE1P9HB0bgGBts7jSIC/0bnUg=;
+	s=arc-20240116; t=1780610213; c=relaxed/simple;
+	bh=DjcRwaNvNZvjwwNXlBNivwc/9ebM+89HSSqWxTPmc98=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=crYvuVR+LMKwwB/Q97iOcC2dQ40axVzbbh3DCNrMGuCpornpOIAtimzMRpIz50iFUrWXLSVYiu/lwWjgHB4Yf4sO4EDXsBVBTJqsX7bs+ctg6HjA6CooNuNIxO6rBE84gvZ082x5KxQxuJrsVz6zgt8jxuiqHzyvBa+aOTmnX9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GQDtUTiN; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=W8atsRWjjheeva+J0FRQyUV4DSq+wgdP0/eZ8YlVr28aKeKjqzjssaSrHhGzQIg9LMKEXpdpLTaG/ReN8o1zhj5gjaOvs+WYZRCyuDPpl9oSX1xJugPM3ZW66Jpvld6m4BRgng6ja0yRKQ+h+Bop3gXqfKNkJIjASyej+V6afRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=niWTgsgm; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GQDtUTiN"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="niWTgsgm"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=R+ag7PVuy5fqa7DjwMvE1P9HB0bgGBts7jSIC/0bnUg=; b=GQDtUTiNbCualhYfcS+5Zxj8b9
-	6zk727Jqvuc3zYoId42VkCuu6CXAewletJhYYV8kuE4QFk0a76zxnUpopqCzfs+asFhkIA+Rz9ht1
-	an6GJ5NmyNkmH6tK59oU6fSYOG11wBgjshAtglOSKF1rYq7pJBolghWOoLhuC/ZeWpOIXyQFemps3
-	Hve5tbN1FWyGzeuSDaWi0vDhB1mOksxM8MT0PcwSiKFqTz9MfLuAAOlOesYgytWA2TmSr+gXhQgjc
-	+keZ5HLhuMeDhAKKqB67dSZYiS07YErUbHYYN3DhmhyzD2WMmTpB4PbEX9o9KwpWPnYWqkMsemRJ+
-	ySnQ2RYA==;
+	bh=+KbZLBzJg7GMa/4IxNp4Z+2mDG5ZhmPCPv6l8NFP/FQ=; b=niWTgsgmxA0zIHxBDsN/lTTq0Q
+	rWKZVQjCIl7yO1szR4Es/Yn8Jr+u1unoecb/8/w0Wd7X8Rih+4ZDwiG5ntTCEyu5q5qb23UBWsjoM
+	Cq+w029Sszxx/paGXr4Xx0MkSWv7piLDYhXvjPk88DbuGkIUY4QCXfyDpIwWlbhsgzvU/dwR2QUYT
+	WTbIcwhGUOpyhnz3y1+FJ2Bz5WXJJQfomleuGRgwLt1MK7F58YEDcrtzCLWkldQpCGrJYLAkCt6OC
+	tUPVY1wKJyC+A69X4ET50JXEUhLWh++eduLYoC7reaJT9PWqhZNwQXdIdDd7yvP0JQ6eo8KxNShUq
+	AayMif9A==;
 Received: from [2001:8b0:10b:5:2fb1:ec7c:80ac:932e] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wVFvQ-00000006oyn-2QE8;
-	Thu, 04 Jun 2026 21:48:29 +0000
-Message-ID: <3b2805603791b6397ab175663bccf50009b6ce1c.camel@infradead.org>
-Subject: Re: [PATCH v2 03/15] KVM: x86/xen: Don't truncate RAX when handling
- hypercall from protected guest
+	id 1wVG3H-00000006pfM-20vC;
+	Thu, 04 Jun 2026 21:56:45 +0000
+Message-ID: <24043b30cdbe70bc227b4203ece94e3e23010efc.camel@infradead.org>
+Subject: Re: [PATCH] KVM: x86/xen: Read long_mode only once in
+ kvm_xen_set_evtchn_fast()
 From: David Woodhouse <dwmw2@infradead.org>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>,  Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl
- Shutsemau <kas@kernel.org>, Paul Durrant <paul@xen.org>, Dave Hansen	
- <dave.hansen@linux.intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- 	kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>, Kai Huang	
- <kai.huang@intel.com>
-Date: Thu, 04 Jun 2026 22:48:27 +0100
-In-Reply-To: <dc62e58e-b6ee-41e1-84a5-0716822fefc8@linux.intel.com>
-References: <20260514215355.1648463-1-seanjc@google.com>
-	 <20260514215355.1648463-4-seanjc@google.com>
-	 <27ba35fd-5563-4bbd-8f95-2285b50efa7a@linux.intel.com>
-	 <agcXr2FP4C3I_jbQ@google.com>
-	 <52fdc61a-60e8-4547-8ff7-f249b4d667b9@linux.intel.com>
-	 <ad4934f4a663c448924aeabe6418e68ae3ef9813.camel@infradead.org>
-	 <868898e6-1c57-498d-848d-1df9cbeac23c@linux.intel.com>
-	 <d7af5a04a11432ea1878431e8b51061f19c16061.camel@infradead.org>
-	 <dc62e58e-b6ee-41e1-84a5-0716822fefc8@linux.intel.com>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: paul@xen.org, seanjc@google.com, pbonzini@redhat.com, tglx@kernel.org, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ x86@kernel.org, 	hpa@zytor.com, kvm@vger.kernel.org, Andrew Cooper
+ <andrew.cooper3@citrix.com>
+Date: Thu, 04 Jun 2026 22:56:35 +0100
+In-Reply-To: <aiHxOgVLGyQ2fa61@v4bel>
+References: <aiHPPUk5DY7rH-zL@v4bel>
+	 <c6fd97fa3e592c3c3734920e1a45f9af1a389a16.camel@infradead.org>
+	 <aiHxOgVLGyQ2fa61@v4bel>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-xas+zsEnK0YAClA9+bR5"
+	boundary="=-qlC2sHN2eJEyRwmyaSUS"
 User-Agent: Evolution 3.60.3 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -65,31 +56,97 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-xas+zsEnK0YAClA9+bR5
+--=-qlC2sHN2eJEyRwmyaSUS
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2026-05-18 at 17:55 +0800, Binbin Wu wrote:
-> =C2=A0
-> > I'm suggesting that you clean up longmode=E2=86=92is_64bit for the *hyp=
-ercalls*
-> > but leave 'long_mode' as is.
-> >=20
+On Fri, 2026-06-05 at 06:42 +0900, Hyunwoo Kim wrote:
+> Thanks for the review.
 >=20
-> Yes, will only do it for is_64_bit_hypercall().
+> On Thu, Jun 04, 2026 at 10:01:01PM +0100, David Woodhouse wrote:
+> > On Fri, 2026-06-05 at 04:17 +0900, Hyunwoo Kim wrote:
+> > > kvm_xen_set_evtchn_fast() assumes the port range check in max_evtchn_=
+port()
+> > > and the bitmap layout selection observe the same long_mode, but each =
+reads
+> > > kvm->arch.xen.long_mode separately. If the guest changes long_mode in
+> > > between, a port accepted by the 64-bit range check is handled with th=
+e
+> > > 32-bit layout, and port_word_bit falls outside evtchn_pending_sel.
+> > >=20
+> > > Read long_mode once on entry so the range check and both layout
+> > > computations use the same value. Since max_evtchn_port() reads long_m=
+ode
+> > > as well, compute the bound directly from the latched value.
+> > >=20
+> > > Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN an=
+d event channel delivery")
+> > > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> >=20
+> > Thanks. I think we have the same issue in kvm_xen_schedop_poll() too,
+> > don't we? Just slightly harder to see because the bitmap access is done
+> > in wait_pending_event().
+>=20
+> Yes, kvm_xen_schedop_poll() needs the same fix.
+>=20
+> >=20
+> > > @@ -1809,7 +1810,10 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evt=
+chn *xe, struct kvm *kvm)
+> > > =C2=A0		WRITE_ONCE(xe->vcpu_idx, vcpu->vcpu_idx);
+> > > =C2=A0	}
+> > > =C2=A0
+> > > -	if (xe->port >=3D max_evtchn_port(kvm))
+> > > +	long_mode =3D IS_ENABLED(CONFIG_64BIT) && READ_ONCE(kvm->arch.xen.l=
+ong_mode);
+> > > +
+> > > +	if (xe->port >=3D (long_mode ? EVTCHN_2L_NR_CHANNELS :
+> > > +				=C2=A0=C2=A0=C2=A0=C2=A0 COMPAT_EVTCHN_2L_NR_CHANNELS))
+> > > =C2=A0		return -EINVAL;
+> > > =C2=A0
+> > > =C2=A0	rc =3D -EWOULDBLOCK;
+> >=20
+> > Rather than open-coding that, I wonder if we should make
+> > max_evtchn_port() take "bool long_mode" as an argument instead of kvm?
+> > Those callers which only need a single instantaneous answer can just
+> > pass it kvm->arch.xen.long_mode instead?
+> >=20
+> > We'll want to pass a 'bool long_mode' down to wait_pending_events()
+> > too.
+>=20
+> Makes sense. Shall I send that as v2?
+>=20
 
-If you did this, I'm not sure I saw it?=20
+I'm working on it. WIP at
+https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Drefs/=
+heads/xen
 
-In response to https://lore.kernel.org/all/aiHPPUk5DY7rH-zL@v4bel/#r I
-now find myself with both 'longmode' (current vCPU mode, should be
-called is_64bit), and 'long_mode' (latched VM-wide mode) in the *same*
-function.
+David Woodhouse (4):
+      KVM: x86/xen: Rename 'longmode' to 'is_64bit' in hypercall handling
+      KVM: x86/xen: Introduce kvm_xen_is_long_mode() macro
+      KVM: x86/xen: Make max_evtchn_port() take a bool long_mode argument
+      KVM: x86/xen: Fix TOCTOU race in kvm_xen_schedop_poll()
 
-I cannot live with that; I'm going to do the longmode=E2=86=92is_64bit chan=
-ge
-locally.
+Hyunwoo Kim (1):
+      KVM: x86/xen: Read long_mode only once in kvm_xen_set_evtchn_fast()
 
---=-xas+zsEnK0YAClA9+bR5
+> >=20
+> > To be clear: these are not security issues because we'll only ever
+> > scribble *within* the vcpu_info or shared_info pages, even if the wrong
+> > places therein.
+> >=20
+> > I'm actually more concerned about what Sashiko saw. Xen does enforce
+> > alignment, so we should do so too. I'll take a look...
+>=20
+> In addition to what Sashiko flagged, kvm_xen_inject_pending_events()
+> looks worth checking too.
+
+Yeah, working on the alignment thing next and comparing with what Xen
+actually does.
+
+Thanks.
+
+
+--=-qlC2sHN2eJEyRwmyaSUS
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -168,21 +225,21 @@ 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
-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
+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
-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
+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
 
 
---=-xas+zsEnK0YAClA9+bR5--
+--=-qlC2sHN2eJEyRwmyaSUS--
