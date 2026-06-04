@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FF13DFC8F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA981494A1A;
 	Thu,  4 Jun 2026 20:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780605362; cv=none; b=CVFxd7JmeQHlbszx+9jrYMGKQmqDrNhbqd8zy8Ycn9AqbuK6UuvvWs0ucIIzvjg5iacunhE4rvAqpKZnwJ1nBbfiumOJ8z0K2X3C+zVAy8CcknH0pq71ZzS3q+D+hfxoC+uR3R0gNwLlXrJ0XAPbMe9c/XOXS5rF7Lvb+IXGz0I=
+	t=1780605363; cv=none; b=unDQR5QMUhM/B4UdGgYwGltJLakmRQ6MJ+gqlNgFabVtXR1lRa+9Cgcx+MfZCuAR+sfz/xoe3xs6K6FQM3Ms13x8cLFt4ZrQzkxrniAlqWEXVqAwNNZlE2vKelp6OM+9vRWkGimzwzlaVVTlvG+V0pB7wujPaoFAPQVa4Tecelk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780605362; c=relaxed/simple;
-	bh=5J8YWhpdP8Syhwa569HZmM4YNHLeAAV+rWpNb4p7wec=;
+	s=arc-20240116; t=1780605363; c=relaxed/simple;
+	bh=j7IfzI3voPCQYj2N+nIvNBdNRyvLg7aGNszigvogpdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cM7uAS0LuGRlSVypVfd+WBVd3bnftSmLQMBLmyxCLv+pLN4kijLQGka91A2r/CogtufgiGIFObXs1jP/fn8FPcVR/5DCPItRl76OLR2sD5t1diE0C89ykbAqbZPjTeQ050qL7PCHZ5Y6dfqHxtAikcgh8Jdi9GCt00EPPjuF5aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRAtkeO4; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=mA5Hxp55VvSSpQ67sk4FHivQOeLXbdzhjBNp608iEl+NJykyv+PcAznCwm23AnqVKzjV/KMUd7XDAuHgvbT1p08HozB767iB8pfd8LH+Svq66/ozS+Fo1bIkgoRHIFuBuz7SCfru3O4idzzAVG1IiMu9xUgc4CgP+dJa34oRF94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H+fxadKU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRAtkeO4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA291F0089C;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H+fxadKU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8148B1F00898;
 	Thu,  4 Jun 2026 20:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1780605361;
-	bh=AjoZr4mLwGK6n4XmzF+gC6Omz91QPnfrZ4XRKtO/Fo0=;
+	bh=ovrEBxl4FhwKwnx1ah7haB2DJeKCMEvjp5Fkgg7XjVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YRAtkeO4UzDWC3TPK1xK+YgEIZAzWnwos5y1bZOyQUTCX0uD34uZgEw3gj88xjQ/q
-	 LHgBoRNimeAW++KY+YLZSkjL1aP+JFcvmD/NTk7FjZ4Pm72v0Lpgt/oOMUCLUTxw8l
-	 pNVUo6jyMXtPeUcpgrZv+NypTPGUHCIW9yKIWaz2SCGlzqqYhAVPT87sNzwxVC7qyi
-	 RYy/I6WqBwxAjx5GBJKZAFDcgC1Z2LlO9NLwEQhq7yvgOiyoTQW0oDy46+I3VoN6qu
-	 fGJnZA2Wqz08eo4VQIo6ULizwV0Ns5jpv0z7pZXMurXMEhrBJH13zJJyOLRkaXmxfu
-	 RmctrcMbwYaUQ==
+	b=H+fxadKU6FYA7PhVsz9ZEGezp3EBvosGTYg7E8hmwvoYSj92a4iNO/SLDgY/TTxt5
+	 XfeTxhGWxKZsaKOtpbWbWJWj8GF8P694h9jwsNAyN8DJGnIUSUn9CRXJL27lVokFCZ
+	 GvZ2uG1bHX4ABjGKDIkHRq9iuhsB6gxQYFKtKg0OPaoAa43D6keAt3FR/v5XCDQfT/
+	 ebNDiZuviGIh4eDFDVT7sMyvK4KNKsR+OG9tJR3qibmUi43MVq66ugl6R9SzGXhzgs
+	 HC/BDEb+PNfe1FYF9mW+6s5QR03Ud7pWSpCr/waFVyidfsNOrMuW2JXnBIyXCtG0kF
+	 LhxOyzYsPLRTw==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v2 04/10] KVM: selftests: Move GPR load/save definitions outside of nSVM code
-Date: Thu,  4 Jun 2026 20:35:40 +0000
-Message-ID: <20260604203546.365658-5-yosry@kernel.org>
+Subject: [PATCH v2 05/10] KVM: selftests: Reuse GPR switching logic for nVMX
+Date: Thu,  4 Jun 2026 20:35:41 +0000
+Message-ID: <20260604203546.365658-6-yosry@kernel.org>
 X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
 In-Reply-To: <20260604203546.365658-1-yosry@kernel.org>
 References: <20260604203546.365658-1-yosry@kernel.org>
@@ -46,69 +46,126 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In preparation for reusing the code for nVMX tests, move the guest_regs
-array declaration as well as GPR switching macro to processor.h.
+Reuse the GPR switching logic for nVMX by defining VMX_SWITCH_GPRS_ASM,
+which is essentially the same as SVM_SWITCH_GPRS_ASM but also switches
+RAX, replacing the push/pop of a subset of the registers.
 
-No functional change intended.
+The long clobber list of registers is no longer needed as registers are
+saved and restored appropriately (and not clobbered by L2).
 
+Assisted-by: Gemini:gemini-3.1-pro
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- tools/testing/selftests/kvm/include/x86/processor.h | 5 +++++
- tools/testing/selftests/kvm/lib/x86/processor.c     | 2 ++
- tools/testing/selftests/kvm/lib/x86/svm.c           | 4 ----
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ tools/testing/selftests/kvm/include/x86/vmx.h | 63 +++++++++----------
+ 1 file changed, 29 insertions(+), 34 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index ff0b270bfe27f..57f81f0bcc42d 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -414,6 +414,11 @@ static inline unsigned int x86_model(unsigned int eax)
- #define GUEST_REGS_R15	15
- #define NR_GUEST_REGS	GUEST_REGS_R15
- 
-+extern u64 guest_regs[NR_GUEST_REGS];
-+
-+#define GUEST_SWITCH_GPR_ASM(reg, idx) \
-+	"xchg %%" #reg ", guest_regs + 8 *" XSTR(idx) "\n\t"
-+
- struct desc64 {
- 	u16 limit0;
- 	u16 base0;
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index 4ca48de7a926d..44a7233d69900 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -29,6 +29,8 @@ bool host_cpu_is_amd_compatible;
- bool is_forced_emulation_enabled;
- u64 guest_tsc_khz;
- 
-+u64 guest_regs[NR_GUEST_REGS];
-+
- const char *ex_str(int vector)
- {
- 	switch (vector) {
-diff --git a/tools/testing/selftests/kvm/lib/x86/svm.c b/tools/testing/selftests/kvm/lib/x86/svm.c
-index 1bd111e8bed26..6528a6416c178 100644
---- a/tools/testing/selftests/kvm/lib/x86/svm.c
-+++ b/tools/testing/selftests/kvm/lib/x86/svm.c
-@@ -13,7 +13,6 @@
- 
- #define SEV_DEV_PATH "/dev/sev"
- 
--u64 guest_regs[NR_GUEST_REGS];
- u64 rflags;
- 
- /* Allocate memory regions for nested SVM tests.
-@@ -131,9 +130,6 @@ void generic_svm_setup(struct svm_test_data *svm, void *guest_rip, void *guest_r
- 	}
+diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
+index 90fffaf915958..64996c310fe4c 100644
+--- a/tools/testing/selftests/kvm/include/x86/vmx.h
++++ b/tools/testing/selftests/kvm/include/x86/vmx.h
+@@ -363,9 +363,23 @@ static inline u64 vmptrstz(void)
+ 	return value;
  }
  
--#define GUEST_SWITCH_GPR_ASM(reg, idx) \
--	"xchg %%" #reg ", guest_regs + 8 *" XSTR(idx) "\n\t"
--
- /*
-  * save/restore 64-bit general registers except rax, rip, rsp
-  * which are directly handed through the VMCB guest processor state
+-/*
+- * No guest state (e.g. GPRs) is established by this vmlaunch.
+- */
++#define VMX_SWITCH_GPRS_ASM \
++	GUEST_SWITCH_GPR_ASM(rax, GUEST_REGS_RAX) \
++	GUEST_SWITCH_GPR_ASM(rbx, GUEST_REGS_RBX) \
++	GUEST_SWITCH_GPR_ASM(rcx, GUEST_REGS_RCX) \
++	GUEST_SWITCH_GPR_ASM(rdx, GUEST_REGS_RDX) \
++	GUEST_SWITCH_GPR_ASM(rbp, GUEST_REGS_RBP) \
++	GUEST_SWITCH_GPR_ASM(rsi, GUEST_REGS_RSI) \
++	GUEST_SWITCH_GPR_ASM(rdi, GUEST_REGS_RDI) \
++	GUEST_SWITCH_GPR_ASM(r8,  GUEST_REGS_R8)  \
++	GUEST_SWITCH_GPR_ASM(r9,  GUEST_REGS_R9)  \
++	GUEST_SWITCH_GPR_ASM(r10, GUEST_REGS_R10) \
++	GUEST_SWITCH_GPR_ASM(r11, GUEST_REGS_R11) \
++	GUEST_SWITCH_GPR_ASM(r12, GUEST_REGS_R12) \
++	GUEST_SWITCH_GPR_ASM(r13, GUEST_REGS_R13) \
++	GUEST_SWITCH_GPR_ASM(r14, GUEST_REGS_R14) \
++	GUEST_SWITCH_GPR_ASM(r15, GUEST_REGS_R15)
++
+ static inline int vmlaunch(void)
+ {
+ 	int ret;
+@@ -373,34 +387,23 @@ static inline int vmlaunch(void)
+ 	if (enable_evmcs)
+ 		return evmcs_vmlaunch();
+ 
+-	__asm__ __volatile__("push %%rbp;"
+-			     "push %%rcx;"
+-			     "push %%rdx;"
+-			     "push %%rsi;"
+-			     "push %%rdi;"
+-			     "push $0;"
++	__asm__ __volatile__("push $0;"
+ 			     "vmwrite %%rsp, %[host_rsp];"
+ 			     "lea 1f(%%rip), %%rax;"
+ 			     "vmwrite %%rax, %[host_rip];"
++			     VMX_SWITCH_GPRS_ASM
+ 			     "vmlaunch;"
+ 			     "incq (%%rsp);"
+-			     "1: pop %%rax;"
+-			     "pop %%rdi;"
+-			     "pop %%rsi;"
+-			     "pop %%rdx;"
+-			     "pop %%rcx;"
+-			     "pop %%rbp;"
++			     "1: ;"
++			     VMX_SWITCH_GPRS_ASM
++			     "pop %%rax;"
+ 			     : [ret]"=&a"(ret)
+ 			     : [host_rsp]"r"((u64)HOST_RSP),
+ 			       [host_rip]"r"((u64)HOST_RIP)
+-			     : "memory", "cc", "rbx", "r8", "r9", "r10",
+-			       "r11", "r12", "r13", "r14", "r15");
++			     : "memory", "cc");
+ 	return ret;
+ }
+ 
+-/*
+- * No guest state (e.g. GPRs) is established by this vmresume.
+- */
+ static inline int vmresume(void)
+ {
+ 	int ret;
+@@ -408,28 +411,20 @@ static inline int vmresume(void)
+ 	if (enable_evmcs)
+ 		return evmcs_vmresume();
+ 
+-	__asm__ __volatile__("push %%rbp;"
+-			     "push %%rcx;"
+-			     "push %%rdx;"
+-			     "push %%rsi;"
+-			     "push %%rdi;"
+-			     "push $0;"
++	__asm__ __volatile__("push $0;"
+ 			     "vmwrite %%rsp, %[host_rsp];"
+ 			     "lea 1f(%%rip), %%rax;"
+ 			     "vmwrite %%rax, %[host_rip];"
++			     VMX_SWITCH_GPRS_ASM
+ 			     "vmresume;"
+ 			     "incq (%%rsp);"
+-			     "1: pop %%rax;"
+-			     "pop %%rdi;"
+-			     "pop %%rsi;"
+-			     "pop %%rdx;"
+-			     "pop %%rcx;"
+-			     "pop %%rbp;"
++			     "1: ;"
++			     VMX_SWITCH_GPRS_ASM
++			     "pop %%rax;"
+ 			     : [ret]"=&a"(ret)
+ 			     : [host_rsp]"r"((u64)HOST_RSP),
+ 			       [host_rip]"r"((u64)HOST_RIP)
+-			     : "memory", "cc", "rbx", "r8", "r9", "r10",
+-			       "r11", "r12", "r13", "r14", "r15");
++			     : "memory", "cc");
+ 	return ret;
+ }
+ 
 -- 
 2.54.0.1032.g2f8565e1d1-goog
 
