@@ -1,267 +1,160 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE213D301F
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 05:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5719286425
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 06:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780552151; cv=pass; b=qSBnD0URWFuM2YRjh9hwNLMjKm3ISXXLHGi99qSYzP4Y7d5zUXqPyApKgFL3z0BXlV8NGgoUQGVPOV8BflxFy4YStb78F1Z1uUl1YR6I6OjU9odiFqHolL4twIBHoluOZhakKmaBbv3oBV6I2Y0sJFuh3JN2Ottt7kbpAFpTNZM=
+	t=1780554237; cv=pass; b=shmijd8CAGlrNfJ17nsG7orPstghsvR6cKaH2GGVXO4VR15VPguEzq/RyXoyaUo3kjasB56ZmQTadgmh7DD9CaoWgtNcvXDzhFsmKzdcNeIOSrc5FUGKS8rD8KKFhyRU7E974i9biABLA9yIM26Xj89pZoidRtoX1G5xgcUN6LA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780552151; c=relaxed/simple;
-	bh=ZOgnx+X7WI8kQhjeVpIpcvYh7MMBs5sOqtCLGS58iWo=;
+	s=arc-20240116; t=1780554237; c=relaxed/simple;
+	bh=fyn8UE6P6du6IrW1SfSmKy7QHcHo1Gbox1Qxx3NbE50=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UTckVgFc1tcWmLEFRvZdKW78R9EBhkc79uiKPFXPEh46GikSUasPVJbx+LNc55No364qR7SRHwADxNtgTg5oxQQsmMx3cR6K06b2n+6bbPqoXtFb+p7EvezgxubEU0QaYZNGNFlC/eKKBgaZM+ZamxsetnIuhvMA4PdQfEn/djU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=TDwKYPMF; arc=pass smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	 To:Cc:Content-Type; b=sYENPUmhO1CpHKqrnpQR8444LGnCl4kLMvpp0WoIJlP771u6wVq4bmWa9IJ85VK+l6ken0W8usx8mT5uqp8f/ZEL869l06vGLmQLmp/Ed0OUke99vXz0kUSUyCdQePmbXPbgGKyMNkT2dL7pnrTXcSL99N/3NVHzWZyQRxqmmkQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fHTr6n4p; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="TDwKYPMF"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5177b1a7441so5216731cf.3
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 22:49:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780552147; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fHTr6n4p"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-68bd7ec2371so4109a12.1
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 23:23:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780554233; cv=none;
         d=google.com; s=arc-20240605;
-        b=c1vfhJhc78vPOBPnOCzNGYnKCXnwc5mO9CEXAs8n+l9szmUqTrFjW5mo5fbM6SHkb+
-         xEsVW6+n8sBRZNfZ7N0fmrk6+pXqIY42HacQK8dO2TLErbs3Y9xvBmhT+62YlpWx87D8
-         /fEL5NqE8GwBYaPkHUpIBWR+eg8fdml0ucIpLS18SxhSQIjqint38HxmJM6ml0SqxTAo
-         xdFCInXnP/Z8sXwm7i0XbJ2TA0OGg6pXKVOmEOR/p6EJCpddBSb/Bjwk+2AW9nG6fuvH
-         nOUezM6sr7nLYLaHg59qNi2xIUSy+mgveduX8Eje7IvkQQI/guadC4W75gOMuMiqbsOQ
-         554A==
+        b=DZzx+g2Z/vkj/5t941YdA5pAzencvAY2SUckD1qB1ZIsXB9bjMvGIra8hV6A9jChjr
+         WKEW0A4QKPz3pw7mL/Kr6KFPPH52EUO4ydOE6BtaZvp37PKlqgWNyxtHEjLct2zKLxJk
+         uJgWxaOBGhyTsItuh1APtS58h7MDrKTUrm9SErzBrBzHeO9WrohJbw4QiI7lmu2257KO
+         UIHE6JbR3DhEfjjBZotkVbjx7CVoruQ0qZFM4OndTCjXpHq1IPHJbzXkM5ietN0b3UQy
+         8aP3n3A194Pv5876AAdRWF2cgbG9XiVJABIoT+OsVra65ME8um/g4IAfeUT2sdR/2Lxf
+         L90A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=PIUh8wR1+0AAFR8fB6HVLdYG12z8klZ1AKaxwRhBZSw=;
-        fh=sxXW/tPlvmOmxE0Dp5aDPFWeD9ewlIgK5idCf5oafL0=;
-        b=bdpoHZ3LCpNzoG1VXHrbftSo5NKjvYVaLF4/qb3dCgs/HAX9kYUzLX/rU4a1HRStCi
-         ndNGoKBdU7mfJt/gSJvqTAkyvjgWU6QmTTQf0MEn8Pz70q214xwv+oqJJtB5YPTECK5x
-         NPwPKnEnASm4Nu7aXh/tj25Ef2sRvjwPH8nSR8JvbyYYUMHqwLUebVXTKjQoD7b13I5V
-         ACYN/BTZmPoFTMDJQboeKPTGA9reagsJTfE+cb5FryaJWlH5TbZjYSdE3Eg6mcGNmH0B
-         RivRbHr3JOBMmAqXP9pZ9PUmHmHEWAe/DNtMByeBFeaypu+h68tXFgd3GUQA/Fz6uZOB
-         l9oA==;
+        bh=ATmrybH7o+jqldU/+IaX8GCc7NIeB6X5yfOR7H2kJRQ=;
+        fh=OZbrVktd23qVBrLgLSKpCl06rHM6+0bFfv7TQsDbueY=;
+        b=J6oqazd8wgMnoqe6hWjjmMS7zZoHRJjnrBzybmRGe2gb2yp5UmcU9kjLzL7DIM6MrD
+         kPSnpJkcY+XZoSXRVFc6BOOzchMVqtuJ31Shhn45/4RtUO6ZRc7fzTqX/1skj3kS46V6
+         otfqLtx9CBsF/b2Ox4wiFjG9smIteWaKt+t9zxuicG7Y8tX/6pA4Mavtrm8C4Z0L7WOg
+         C5XWxz0Hlvha6/pnsy+WVrTAtV9ozBy50HRCN8mQt/aI1wnbhk3ZPYHOoglmo/Sh1++k
+         AUYLaC4vK3vFwVvrqVGccMZwwuRyOU0jObbGgL7mjxprCSIAwuXIedCbRHaH1kwnXkBm
+         n6mw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1780552147; x=1781156947; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780554233; x=1781159033; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PIUh8wR1+0AAFR8fB6HVLdYG12z8klZ1AKaxwRhBZSw=;
-        b=TDwKYPMFVtPw9aenFcjQ6s0kpUlfjpU53TGzsaPUZaic4e/zb6uLlP6KlVHzr+a1BV
-         VPSQcK5s2yzQ2SgQ1U9fvp1Xk00cT8guoy4P6Ne83DPpDt4+Suk0c6O8YQ01kCLgffhM
-         RANMT5rsuRV4TAMKc4bCvkjXrvGk2v5uJRUEtOhDpzz05aId2IqYjKIVes2IDYFREvgP
-         wjfdLvkXW6oXBDm9TkE3LdNa7Nw5PXAgLwcrQdCSrH2hQEMIOD1nM0No5RgFvJJPFyPi
-         fzsEX0MenmcfjMBbnOcKzhHgaaGDY2/Ayc7iOKVV29hp7IMBchEm1Ox9HXzUR2TXswmw
-         wzbA==
+        bh=ATmrybH7o+jqldU/+IaX8GCc7NIeB6X5yfOR7H2kJRQ=;
+        b=fHTr6n4pGML8ZWHnV1YNeweFYrTWItuDq//V8MEDvX8OIhwtOWHZ6ZRblVuM/TQRgf
+         e2xcMQ1i+jPDCTfp+5hW5WVuW9L7j2M3FkZYmxa37PE3kQHecETGwrlvSdrmQWHIkdb/
+         mL5zNacOv6b1Ky9tzbEuoKuna6zTbAPxgUN6n9C9m2I8YjrIYXn6pqyFpALsPqBtbdTE
+         jUNxbFKtBe7VH5sVW/mFvtKpHrReL9GrsH/cZXt2kI4EC7TI9bLlhBd+jU5/mlvBqPP7
+         i1Y1+I29cDKUw/KmEPV5ObOOYgsbbqUYMOy8defpMKqQ43LpNVdfVHxuebs1HellZ0la
+         grqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780552147; x=1781156947;
+        d=1e100.net; s=20251104; t=1780554233; x=1781159033;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=PIUh8wR1+0AAFR8fB6HVLdYG12z8klZ1AKaxwRhBZSw=;
-        b=LbKUQaepC8LO2bJIE3J/61QcecDWiqPt/8EQoeyq9zABhnB6fJDikj3im7WxGIHp+F
-         +eoA//J1Cfzf9Jdrob34oDCWXxFoArIMn1QOO5BLPRgNzUCtvNrFgfHI3SZtDDl6oA9+
-         RCOauyTKZQ+56X/tWTZhowa3d0d+dVG1mvkja56Q5BrXNoARVzUc/N79/pY+90nIaa82
-         e08Yh2+9+R9e4LcbVIubqkcQxipQTRYFsMsgrKnX0Ma7GuG+0PnkH+IchyU4OWEfUDu9
-         YKtibT7zEP9006L+UmjVnxmTRZlfM5ryFxH9Owd5hULywtyWbGHNTrszPgOpVlppk7py
-         FBJw==
-X-Forwarded-Encrypted: i=1; AFNElJ8C+AVK66ce5etd4V3vOuvDMHdFhxIKzmDNHTyQp6Trs2n6kM5G5aj1PSTAaoj/0RooU6E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl0FPseyxEKe6QFA/ogxb4TSwMCLAjEf6iyVsVozMb66ypUqxf
-	3LEfH5vJOdDQPi5oFDdN8Wooa3PB9SchCPTq+vAqdCDkUQ/XQHk2ArNte83f5Yu7SaI4d/Kj2C0
-	5gOzQTtWTCZlaGfIgLzc3hv0zQwYPCfv1JL3UFeAJKQ==
-X-Gm-Gg: Acq92OHAuVc0wdfvv9ZbmjFQNhqXLnPgQJta4DzdfCG4uB1+IzuHbp67KdvTXy4Z8aP
-	p90XpSK50Ps/rn5NAsJSEUHy2CkJcjyFnoYlnn9wRhhkJ2UNUEeZNmO8jEZn0OVFWajwfn2VoNE
-	vjzaujMysw3WXZCqjr8uDJui8gN/oSYZ3tlezEPlWpVVkdHSaXDLYMXHQPtI4LODZKkcrEIXcXu
-	1R55gVNct8GjE3Ep4mOEuk0fwWs02tWcfKSYPi7yySaCgsvGSe8VgxlNReJ8tMs2OhfI1T4VCbh
-	4DLA0JDeaKJNE1An1E+tUbSW6DwH0eeykW4OVw+qwY+cs0/ogdyk3MqaRKEeN26i38vpjXJOnDD
-	vG4wOrJ3ZYyKO6xq6wLmOvQjfRzK9uiW+NI0Z
-X-Received: by 2002:a05:622a:6113:b0:516:df5b:4338 with SMTP id
- d75a77b69052e-517786fe3aamr94112741cf.28.1780552146620; Wed, 03 Jun 2026
- 22:49:06 -0700 (PDT)
+        bh=ATmrybH7o+jqldU/+IaX8GCc7NIeB6X5yfOR7H2kJRQ=;
+        b=C0KwQWMG7E7WLMOxVUTKIideJrMQzQ4zs0P2wtFyzooN4dsUBRGtgl16XfRDViAtj9
+         qVFaLL+HGByfwU+u0RXJ0jE3AOSCRmAj/bfiTOta0GN/oIonGIIo5d9r8KzixaI50oCF
+         O2wvrvaogHkgIhBZt4tAHX9H6Q59uLjKZBLuP8/lDG57fz0FIgN4+SgjAdAf6fcB4UYI
+         O/Z7UkZbyjIr6QLaGjAjPQBkmzFOvyaX/yjZeQw3/bABPqUvic8cfYkvITShjNXL7Hk0
+         HJpAlY4hECzkqksgga5ztXH53sjNldum/lQgCoF/In3uT/FysNU92fYQWpvV/RtG6LAG
+         icQQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+20NXcssKV3r6G6XY7j8VdJnJbtDiku0Nj9vjVImxKjXxhykK5kEybYsPX5V7ct/zVOfU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRqUQRDdONeS1BgzlN9iKIXM9TJda7FlAhmw5wqjD7pGnO75bx
+	sMvCVrKg+jIgPr4rkQ4gg5VUS2lTvWjqjvlaGfvQaLBnVh2zZJrjEBlfiwNCoCBhUpj5oRWsMh2
+	PLidCO0v5qrZQ5KNOLGsxjm0x9ikxle+9dgWoj3lC
+X-Gm-Gg: Acq92OFUeTeKCRC8jjsyhnwwZGC08uw5oadEvuxzLGWHPk2IGThfq7Hjiramai9v7UY
+	KM7O5jj9e69hjkim+m9S1gYxs0+hOtf7a7pAE5/2QYmZ4wAXrmwUmCXo0wkK+OYvJuhLT+TkaaO
+	lxKofS1brCYltl5sRL1XgFZF1BdkoOerqQGpL+1hmXTNud3pRXUShBCDchgpdV3EOfhPZI6Z8+R
+	v1FdtuM2ZydhBDZ4odPUSoJs4rS19agq/7puk36T73Q/yumVSt8DIlrYZ06DNZQNM9G1o1jL0r8
+	Vax6iMRLaGbFzxVPXHBFuPSHkaGs
+X-Received: by 2002:a05:6402:a58c:20b0:672:117e:55d4 with SMTP id
+ 4fb4d7f45d1cf-68f1167af2cmr64354a12.0.1780554232905; Wed, 03 Jun 2026
+ 23:23:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260526031517.1166025-1-xujiakai2025@iscas.ac.cn>
-In-Reply-To: <20260526031517.1166025-1-xujiakai2025@iscas.ac.cn>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 4 Jun 2026 11:18:53 +0530
-X-Gm-Features: AVHnY4LyQ7maifTN_o50bMgh-xrYsnwlJAwt9wlqVzVOlVBs2GIDYLsvccHKq1w
-Message-ID: <CAAhSdy0RxUMYP-fs5=drG+6iwVEmwiVvHRL2MRieEXP7YiERjg@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Fix NULL pointer dereference in AIA IMSIC functions
-To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Atish Patra <atish.patra@linux.dev>, Nutty Liu <liujingqi@lanxincomputing.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, Jiakai Xu <jiakaiPeanut@gmail.com>
+References: <20260603223418.1720035-1-seanjc@google.com>
+In-Reply-To: <20260603223418.1720035-1-seanjc@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 3 Jun 2026 23:23:41 -0700
+X-Gm-Features: AVHnY4JeGI7qmS9M9lkkb03_Ky7_F5xReUD-psNw1ArQMrhm0pdHLgel1z9dMIM
+Message-ID: <CALMp9eT2mBWgX9VntLJcRYDCeMdLzZwzmPbHrbcM6CRL2tYT0g@mail.gmail.com>
+Subject: Re: [PATCH 0/2] KVM: nVMX: Fix ept=n bugs where KVM runs L2 with
+ guest CR3
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 26, 2026 at 8:45=E2=80=AFAM Jiakai Xu <xujiakai2025@iscas.ac.cn=
-> wrote:
+On Wed, Jun 3, 2026 at 3:34=E2=80=AFPM Sean Christopherson <seanjc@google.c=
+om> wrote:
 >
-> Fuzzer reported a NULL pointer dereference in
-> kvm_riscv_vcpu_aia_imsic_put() when a VCPU's imsic_state was NULL while
-> kvm_riscv_aia_initialized() returned true.
+> Fix two bugs where KVM can run L2 with a guest-controlled CR3.  The under=
+lying
+> flaw dates back to commit f087a02941fe ("KVM: nVMX: Stash L1's CR3 in
+> vmcs01.GUEST_CR3 on nested entry w/o EPT").  Past me claimed:
 >
-> The global initialized flag is set per-VM in aia_init(), but imsic_state
-> is allocated per-VCPU in kvm_riscv_vcpu_aia_imsic_init(). If a VCPU is
-> created after aia_init() has already run, its imsic_state remains NULL
-> while the global flag is true. When this VCPU is preempted, kvm_sched_out=
-()
-> calls kvm_arch_vcpu_put() -> kvm_riscv_vcpu_aia_put() ->
-> kvm_riscv_vcpu_aia_imsic_put() which dereferences NULL.
+>   Smashing vmcs01.GUEST_CR3 is safe because nested VM-Exits, and the unwi=
+nd,
+>   reset KVM's MMU, i.e. vmcs01.GUEST_CR3 is guaranteed to be overwritten =
+with
+>   a shadow CR3 prior to re-entering L1.
 >
-> Add NULL pointer guards to kvm_riscv_vcpu_aia_imsic_put(), consistent wit=
-h
-> the NULL checks already present in all other functions in the same file.
+> which was and is true, _if_ a nested VM-Exit or the unwind is reached.  I=
+f KVM
+> fails directly, vmcs01.GUEST_CR3 will be left pointing at L1's actual CR3=
+, i.e.
+> KVM will run with legacy shadow paging a guest-controlled CR3, which is..=
+. not
+> good.
 >
-> Also add a NULL guard to kvm_riscv_vcpu_aia_imsic_release() and
-> kvm_riscv_vcpu_aia_imsic_has_interrupt() for the same reason.
+> Note, the vTPR fix will cause KVM-Unit-Test's TPR Threshold test to fail =
+when
+> run with warn_on_missed_cc=3D1:
 >
-> Fixes: 4cec89db80ba ("RISC-V: KVM: Move HGEI[E|P] CSR access to IMSIC vir=
-tualization")
-> Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
-> Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-> Assisted-by: YuanSheng:DeepSeek-V3.2
+>   FAIL: Use TPR shadow enabled: virtual-APIC address =3D 8000000: vmlaunc=
+h succeeds
+>   FAIL: Use TPR shadow enabled: virtual-APIC address =3D 10000000: vmlaun=
+ch succeeds
+>   ...
+>   FAIL: Use TPR shadow enabled: virtual-APIC address =3D ffffffffff000: v=
+mlaunch succeeds
+>
+> due to KVM actually accessing the virtual APIC page.  Given that I'm pret=
+ty
+> sure I'm the only person that runs with warn_on_missed_cc=3D1, and that I=
+MO this
+> is firmly a test bug (e.g. on bare metal I'm pretty sure there's guarante=
+e
+> VMLAUNCH will succeed), I don't see any reason to try and make it "work" =
+in
+> KVM.  I might try to figure out a way to make the KUT testcase play nice,=
+ but
+> for now I'll just ignore the failures in my test runs.
 
-LGTM.
+IIRC, the tests in question are confirming PCI bus error semantics.
+Why would the VMLAUNCH not succeed on bare metal?
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
-
-Queued this patch for Linux-7.2
-
-Thanks,
-Anup
-
-> ---
->  arch/riscv/kvm/aia_imsic.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+> Sean Christopherson (2):
+>   KVM: nVMX: Move vTPR vs. TPR Threshold consistency check into "normal"
+>     checks
+>   KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot L1's CR3 when EPT is
+>     disabled
 >
-> diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-> index 8786f52cf65a2..d38f5de0834c5 100644
-> --- a/arch/riscv/kvm/aia_imsic.c
-> +++ b/arch/riscv/kvm/aia_imsic.c
-> @@ -683,6 +683,9 @@ bool kvm_riscv_vcpu_aia_imsic_has_interrupt(struct kv=
-m_vcpu *vcpu)
->         unsigned long flags;
->         bool ret =3D false;
+>  arch/x86/kvm/vmx/nested.c | 86 ++++++++++++++++-----------------------
+>  arch/x86/kvm/vmx/vmx.h    |  7 ++++
+>  2 files changed, 43 insertions(+), 50 deletions(-)
 >
-> +       if (!imsic)
-> +               return false;
-> +
->         /*
->          * The IMSIC SW-file directly injects interrupt via hvip so
->          * only check for interrupt when IMSIC VS-file is being used.
-> @@ -722,6 +725,9 @@ void kvm_riscv_vcpu_aia_imsic_put(struct kvm_vcpu *vc=
-pu)
->         struct imsic *imsic =3D vcpu->arch.aia_context.imsic_state;
->         unsigned long flags;
 >
-> +       if (!imsic)
-> +               return;
-> +
->         if (!kvm_vcpu_is_blocking(vcpu))
->                 return;
->
-> @@ -738,6 +744,9 @@ void kvm_riscv_vcpu_aia_imsic_release(struct kvm_vcpu=
- *vcpu)
->         int old_vsfile_hgei, old_vsfile_cpu;
->         struct imsic *imsic =3D vcpu->arch.aia_context.imsic_state;
->
-> +       if (!imsic)
-> +               return;
-> +
->         /* Read and clear IMSIC VS-file details */
->         write_lock_irqsave(&imsic->vsfile_lock, flags);
->         old_vsfile_hgei =3D imsic->vsfile_hgei;
+> base-commit: d4bfaa66fa171089b9b9fb2dc17af9245f2b9b34
 > --
-> 2.34.1
->
-> Found by fuzzing. Here is the report:
->
-> Unable to handle kernel paging request at virtual address dfffffff0000000=
-6
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 26225 Comm: syz.9.1131 Tainted: G        W           7=
-.1.0-rc1-gb69bcb13ed70 #2 PREEMPT
-> Tainted: [W]=3DWARN
-> Hardware name: riscv-virtio,qemu (DT)
-> epc : kasan_byte_accessible+0x12/0x20 mm/kasan/generic.c:210
->  ra : __kasan_check_byte+0x16/0x46 mm/kasan/common.c:573
-> epc : ffffffff80beb626 ra : ffffffff80be9622 sp : ff200000016276a0
->  gp : ffffffff8a395320 tp : ff6000008f6f5040 t0 : ffffffff86a7e880
->  t1 : ffffffff8a4a4a00 t2 : 0000000000000000 s0 : ff200000016276b0
->  s1 : 0000000000000030 a0 : dfffffff00000006 a1 : ffffffff867223e4
->  a2 : 0000000000000000 a3 : 0000000000000007 a4 : 0000000000000003
->  a5 : dfffffff00000000 a6 : ffffffff8010e72c a7 : 0000000000000004
->  s2 : 0000000000000030 s3 : ffffffff867223e4 s4 : 0000000000000000
->  s5 : 0000000000000000 s6 : 0000000000000000 s7 : ffffffff8010e72c
->  s8 : ffffffff867223e4 s9 : ffffffff8a3da080 s10: 0000085c7b3d0060
->  s11: ff6000008f6f5040 t3 : ffffffff8a4a4a00 t4 : ffffffff8a4a5a80
->  t5 : 1ffffffff22ed7d1 t6 : ff600000ffa4d710 ssp : 0000000000000000
-> status: 0000000200000100 badaddr: dfffffff00000006 cause: 000000000000000=
-d
-> [<ffffffff80beb626>] kasan_mem_to_shadow include/linux/kasan.h:66 [inline=
-]
-> [<ffffffff80beb626>] kasan_byte_accessible+0x12/0x20 mm/kasan/generic.c:2=
-10
-> [<ffffffff80be9622>] __kasan_check_byte+0x16/0x46 mm/kasan/common.c:573
-> [<ffffffff802fe7ba>] kasan_check_byte include/linux/kasan.h:402 [inline]
-> [<ffffffff802fe7ba>] lock_acquire kernel/locking/lockdep.c:5842 [inline]
-> [<ffffffff802fe7ba>] lock_acquire+0x198/0x50e kernel/locking/lockdep.c:58=
-25
-> [<ffffffff867223e4>] __raw_read_lock_irqsave include/linux/rwlock_api_smp=
-.h:174 [inline]
-> [<ffffffff867223e4>] _raw_read_lock_irqsave+0x76/0x82 kernel/locking/spin=
-lock.c:240
-> [<ffffffff8010e72c>] kvm_riscv_vcpu_aia_imsic_put+0x72/0x17c arch/riscv/k=
-vm/aia_imsic.c:728
-> [<ffffffff80101bda>] kvm_riscv_vcpu_aia_put+0x288/0x324 arch/riscv/kvm/ai=
-a.c:155
-> [<ffffffff8011f210>] kvm_arch_vcpu_put+0x44/0x612 arch/riscv/kvm/vcpu.c:6=
-21
-> [<ffffffff800d50aa>] kvm_sched_out+0xdc/0x296 virt/kvm/kvm_main.c:6405
-> [<ffffffff86705faa>] __fire_sched_out_preempt_notifiers kernel/sched/core=
-.c:4923 [inline]
-> [<ffffffff86705faa>] fire_sched_out_preempt_notifiers kernel/sched/core.c=
-:4931 [inline]
-> [<ffffffff86705faa>] prepare_task_switch kernel/sched/core.c:5176 [inline=
-]
-> [<ffffffff86705faa>] context_switch kernel/sched/core.c:5332 [inline]
-> [<ffffffff86705faa>] __schedule+0x10c8/0x513c kernel/sched/core.c:7188
-> [<ffffffff8670a0e2>] __schedule_loop kernel/sched/core.c:7267 [inline]
-> [<ffffffff8670a0e2>] schedule+0xc4/0x35e kernel/sched/core.c:7282
-> [<ffffffff80121cc2>] kvm_riscv_check_vcpu_requests arch/riscv/kvm/vcpu.c:=
-670 [inline]
-> [<ffffffff80121cc2>] kvm_arch_vcpu_ioctl_run+0x1d16/0x3214 arch/riscv/kvm=
-/vcpu.c:885
-> [<ffffffff800da8ee>] kvm_vcpu_ioctl+0x532/0x13ce virt/kvm/kvm_main.c:4469
-> [<ffffffff80d45c90>] vfs_ioctl fs/ioctl.c:51 [inline]
-> [<ffffffff80d45c90>] __do_sys_ioctl fs/ioctl.c:597 [inline]
-> [<ffffffff80d45c90>] __se_sys_ioctl fs/ioctl.c:583 [inline]
-> [<ffffffff80d45c90>] __riscv_sys_ioctl+0x180/0x1e4 fs/ioctl.c:583
-> [<ffffffff80078fb2>] syscall_handler+0x94/0x118 arch/riscv/include/asm/sy=
-scall.h:112
-> [<ffffffff866fa94a>] do_trap_ecall_u+0x43e/0x5de arch/riscv/kernel/traps.=
-c:342
-> [<ffffffff86726756>] handle_exception+0x15e/0x16a arch/riscv/kernel/entry=
-.S:232
-> Code: 8082 07b7 e000 1141 17fd e422 810d 0800 1782 953e (4503) 0005
-> ---[ end trace 0000000000000000 ]---
-> ----------------
-> Code disassembly (best guess):
->    0:   8082                    ret
->    2:   e00007b7                lui     a5,0xe0000
->    6:   1141                    addi    sp,sp,-16
->    8:   17fd                    addi    a5,a5,-1 # 0xffffffffdfffffff
->    a:   e422                    fsw     fs0,8(sp)
->    c:   810d                    srli    a0,a0,0x3
->    e:   0800                    addi    s0,sp,16
->   10:   1782                    slli    a5,a5,0x20
->   12:   953e                    add     a0,a0,a5
-> * 14:   00054503                lbu     a0,0(a0) <-- trapping instruction
->
-> <<<<<<<<<<<<<<< tail report >>>>>>>>>>>>>>>
+> 2.54.0.1032.g2f8565e1d1-goog
 >
