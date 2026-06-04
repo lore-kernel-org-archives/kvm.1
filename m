@@ -1,125 +1,148 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D85F314D06
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 19:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92589314D06;
+	Thu,  4 Jun 2026 19:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780601125; cv=none; b=Pm2ggj9jiLr1q89N2iLIgg/ylDqanM50VdzPRvjDPUvFl88pOieyjQ73tBU7ylZtLD9WHgOfNjZaHNCCJyA+yXG8ZtaUaFsm2ld47vXUYcxepHwd8qW6z/gJ5Bnn/bjd6x7lTWAMyHdVkMuYzVZ/BaKH/60ZBuFwoK0+PQRWU5c=
+	t=1780601292; cv=none; b=gCdRXUXA0XxDswhOYxFvVlcW2BqbO9fDxSGuq+nbecr/FDg3/2qqlLIOiiDCWkiLuM3At6zWPDlaEJfAFmexX8JL/oJS7D/weT+1u8Kbzh5DQS+YwayyS7YbQ3swJnxTO7ep/7ax7BlYsRHXNC8xXYNGEUBlNee1scLwj3Rykhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780601125; c=relaxed/simple;
-	bh=L/qPSoCGOV61t2VOU6VVNzyHj3wvzTgu4C4avnokKvY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SVsibCaQVYBMQYej2yaaBzDY9uJG4d9xR7Jfcpb3skib4lDwAxP+faZcREcuhV6COur1WoV0/MK9gT6wKIWdc6Rt/R3JkyJyA94Bz1dUs8ZEenR9RHgeU5sqTPrNU3LJtNK3/0fpTkw0dpcQ6+Egr/o2PY7n8uYjZW7gVwUOjo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gyidbGqP; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780601292; c=relaxed/simple;
+	bh=O4iKPeNsTCDKVKQQIsfUBsm3fS/Y8Hytz4Yc4Dv6Xvw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eEvAMU1SOfcMOyRLtv/tqHHOScR/W5j3bPcDxm55EjoVr7B7Y5I0Pl7AHJTaUCQ6RgyvtRL7QLlmMdM6Ba/Hi+LoTJPHYGe53xnnUSEFEzUOvIaG/ttcgHzigneZLhpd5AGq9Ja3EcmpyilcY2EYNHakEeYTlYjBPRYJn8i6pHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gIOsnw3M; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gyidbGqP"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b982ec27aso845198a91.1
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 12:25:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780601124; x=1781205924; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ynr9RIwBP5Pl/8p+4aWx2v/BAwSvZs2jJzCTuS4p7H0=;
-        b=gyidbGqPRThYjcarB/tfGlHv2LASXCw21orrkBN70JOrU5lba+6smLTogFX2rWD7IX
-         RsANM1aL5E4fBBh/OI31CJOTXgCUbO4z3HGeW7BoFOPatTCUvB3cgNrKx6vysQHKFDGi
-         VrYsnuVDTKw5Nr0MQoUplkkZ72+WheR1E5Zn2p/D7sUKdr38xjoV03YN3MuWh+eO5Ew9
-         fVZgZzA/aVR/tFeO2jqEO0adGWioN3UcCRpFM6MBqFQgPOLtHASXII0pVlZO03EjfdqU
-         bONm4FtUvXzRWcqXYyzrE2e8iZSjFWbsrOFaQsROdOT+iLvaKeixGhfd8X2JeqBkTMTF
-         eQug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780601124; x=1781205924;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ynr9RIwBP5Pl/8p+4aWx2v/BAwSvZs2jJzCTuS4p7H0=;
-        b=E5flIhy2zvwyrjCxiNcuBinlZXSwx5cP8zxNFDAlgrgwPCTpPBkGNhzDcBx9HecUfW
-         b1aFxApmV00x3RcCJBbdG+pXjtJ3hXSf7AdKeuKpdUQfHTisgZ9cm/2s4y8l0HmuKC2z
-         niGZPj2+iytQNiC70PcIhRkSfFxLUawSP+2+cQ6xAQPFALz5Tb5cqIBzvAQ8dwRXVMN3
-         ybGCdVVxHta7Gm/Y/EoB+yFBfYZm0AXEOCzXnfTFEqxfQAWRQNlMBpM0IzvV1WAlfjbR
-         2gTHNhH4oxdX5WhKqhZ07L2LBFhjVjvota8YWkjYFf7LE610sYNV5GMRXCFVseg7hbc2
-         P49Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/IT4h5UU0RVcxFoMjkqT+Mb7tivWYC0z22EsILlSfAd6K0cgRAd0/aAneb3AXY8wxwlY0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj7q5VyrWGwOCbAJ7IOMw7OWSgIczPd30adcwOw7omy711FMhV
-	0lfRHwGu5qTH/+u3JG9jzyRYZHSrFUK06wU6e6NLLAThfVFWF/LehEObZQOvM5g2myarAs9ckfp
-	tkX22PA==
-X-Received: from pgnp18.prod.google.com ([2002:a63:7f52:0:b0:c85:1159:ffb2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a394:b0:3b4:87b3:913c
- with SMTP id adf61e73a8af0-3b4ccd782b0mr491614637.14.1780601123586; Thu, 04
- Jun 2026 12:25:23 -0700 (PDT)
-Date: Thu, 4 Jun 2026 12:25:22 -0700
-In-Reply-To: <aiG8Q31nF2L1gNwa@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gIOsnw3M"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654J8siX3013843;
+	Thu, 4 Jun 2026 19:28:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=yAHKaSPmaQvk+EJ/lOvSvusOYyKAIWDG2HyBfwsHQ
+	W8=; b=gIOsnw3MXBq24eSVXnBEps6ReP49Y4fpW8BLoIjBSivxej/MSCHYzPCbP
+	TtMNU3ov9iuFKeC/5lEFcyCKidBj5vynTdD4CiigZLyg1bHEPPFOfqfeCXdLLgsE
+	p2zhQrZxQYlVi1g1fV8n6xR4E2x7Q1JMVzHpquUXCy+pSbaVfGRphH1JSSLlTCiM
+	qPC1s6weF6OLQvk+SdlZF4WVhdPakY2dUcigzcVCFcS05QEOOirLrcd7OQvU4ch2
+	HW6CqBfE/OP2yGRQi1RZ+U0vDJ1FzREJ2lajXqH4OJS5Jy8SiCAw04k+OeCwri1b
+	pFy1DTVbvQeAJh5M8UXxEJJi61tLg==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqhtgrv5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Jun 2026 19:28:03 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 654JO7eh006385;
+	Thu, 4 Jun 2026 19:28:02 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4egcegxb7n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Jun 2026 19:28:02 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 654JS1YF19530336
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 4 Jun 2026 19:28:01 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BC03A58059;
+	Thu,  4 Jun 2026 19:28:01 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D21FE58043;
+	Thu,  4 Jun 2026 19:28:00 +0000 (GMT)
+Received: from 9.60.13.83 (unknown [9.60.13.83])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  4 Jun 2026 19:28:00 +0000 (GMT)
+From: Douglas Freimuth <freimuth@linux.ibm.com>
+To: borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, frankja@linux.ibm.com,
+        david@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, svens@linux.ibm.com, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: mjrosato@linux.ibm.com, freimuth@linux.ibm.com
+Subject: [PATCH v10 0/3] KVM: s390: Introducing kvm_arch_set_irq_inatomic Fast Inject
+Date: Thu,  4 Jun 2026 21:27:52 +0200
+Message-ID: <20260604192755.203143-1-freimuth@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260604020143.748245-1-jrhilke@google.com> <20260604020143.748245-8-jrhilke@google.com>
- <aiG8Q31nF2L1gNwa@google.com>
-Message-ID: <aiHRIhxgBCy1TVfQ@google.com>
-Subject: Re: [PATCH v5 07/21] KVM: selftests: Verify IRQ bypass works in IRQ test
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex.williamson@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: KsIOypyErfnPQWxkOYJcLYVpmbLVF_ZG
+X-Authority-Analysis: v=2.4 cv=fv/sol4f c=1 sm=1 tr=0 ts=6a21d1c3 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=84OqXecvdpAWjh0nY3QA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA0MDE4NyBTYWx0ZWRfX4lINvfgRa+La
+ 7HYs7Cql6MsfsWN2dI7xrnWWkAfSFf1f/4oqCh21Bau6jnhD5xtjXPOqfx6cem2gp7dSaroCySj
+ /yFxSNycOSu/pVlWSa2m7Z1foVxDIyqjux0PtcD4ruW9R608v5+Nmq1+euf4juvrNTnLtgVGIQq
+ 3lLREjQWddqUo8qLEinpnUdxSpUnVrcBFJkDM5kOwlRrOt1jl93wk8gkkXBLWRmLZQBJY3ytYY/
+ niAabmJVsDi4/HYVkTwYoc8NL7d7uht7fOTArFzPVT1XSCbnjLDYFs/FN1fX2olnqqx48CIVoRj
+ owJM9cmm6SxCupli66zy/Xqa7v1C93UWqaj12EHwPrsVkPPyx73JIsSxAof4saKvyeqxi/tRp+r
+ 61zo+DpJdTXcllVzDB6y6dRAZq/jSy/C2GZYiGTD3WBB5h4vAluGifsr7qfdm/Z4ONKWfIqlC4n
+ FR+jpHYmKV8lsWYAsbg==
+X-Proofpoint-ORIG-GUID: KsIOypyErfnPQWxkOYJcLYVpmbLVF_ZG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-04_05,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 spamscore=0 phishscore=0 clxscore=1015
+ impostorscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606040187
 
-On Thu, Jun 04, 2026, Sean Christopherson wrote:
-> The shortlog is at best misleading.  There are zero guarantees that IRQ bypass
-> is supported and enabled.
-> 
-> On Thu, Jun 04, 2026, Josh Hilke wrote:
-> > From: David Matlack <dmatlack@google.com>
-> > 
-> > Trigger interrupts from a VFIO device instead of emulating interrupts
-> 
-> It's not emulating, it's synthesizing.  Emulating implies there's a device of
-> some kind that the test is mimicking.
-> 
-> > using KVM eventfds. This verifies that guests receive interrupts via IRQ
-> > bypass.
-> 
-> No, it verifies that delivery of a VFIO MSI-X through VFIO=>KVM works, and *may*
-> verify IRQ bypass.  And all of that very much relies on the eventfds to be in
-> place.
-> 
-> > @@ -119,7 +160,17 @@ int main(int argc, char **argv)
-> >  	vm = vm_create_with_vcpus(nr_vcpus, guest_code, vcpus);
-> >  	vm_install_exception_handler(vm, vector, guest_irq_handler);
-> >  
-> > -	eventfd = kvm_new_eventfd();
-> > +	if (device_bdf) {
-> > +		iommu = iommu_init(default_iommu_mode);
-> 
-> This needs:
-> 
-> diff --git tools/testing/selftests/kvm/irq_test.c tools/testing/selftests/kvm/irq_test.c
-> index cf4568718cee..2e7e100d4815 100644
-> --- tools/testing/selftests/kvm/irq_test.c
-> +++ tools/testing/selftests/kvm/irq_test.c
-> @@ -235,6 +235,8 @@ int main(int argc, char **argv)
->         }
->  
->         if (device_bdf) {
-> +               __open_path_or_exit("/dev/iommu", O_RDONLY, "Is IOMMUFD available?");
-> +
->                 iommu = iommu_init(default_iommu_mode);
+s390 needs this series of three patches in order to enable a non-blocking
+path for irqfd injection on s390 via kvm_arch_set_irq_inatomic(). Before
+these changes, kvm_arch_set_irq_inatomic() would just return -EWOULDBLOCK
+and place all interrupts on the global work queue, which must subsequently
+be processed by a different thread. This series of patches implements an
+s390 version of inatomic and is relevant to virtio-blk and virtio-net and
+was tested against virtio-pci and virtio-ccw.
 
-*sigh* 
+The inatomic fast path cannot lose control since it is running with
+interrupts disabled. This meant making the following changes that exist on
+the slow path today. First, the adapter_indicators page needs to be mapped
+since it is accessed with interrupts disabled, so we added map/unmap
+functions. Second, access to shared resources between the fast and slow
+paths needed to be changed from mutex and semaphores to spin_lock's.
+Finally, the memory allocation on the slow path utilizes GFP_KERNEL_ACCOUNT
+but we had to implement the fast path with GFP_ATOMIC allocation. Each of
+these enhancements were required to prevent blocking on the fast inject
+path.
 
-<rant>
-This is beyond frustating.  I have A PERFECTLY FUNCTIONAL KERNEL, but this test
-VERY SUBTLY "defaults" to IOMMUFD.  ARGH!!!!!
+s390 doesn't support a PREEMPT_RT kernel and this patch doesn't either.
+Given this fact, we are not using raw_spin_lock instead we are using
+regular spin_lock.
 
-And to make matters worse, if I enable CONFIG_IOMMUFD, but don't enable
-CONFIG_VFIO_DEVICE_CDEV, then AFAICT, I can't do a damn thing with VFIO.  I dunno,
-I can't get IOMMUFD to work even with that.
+Statistical counters have been added to enable analysis of irq injection on
+the fast path and slow path including io_390_inatomic, io_flic_inject_airq,
+io_set_adapter_int and io_390_inatomic_no_inject. And
+counters have been added to analyze map/unmap of the adapter_indicator
+pages in non-Secure Execution environments and to track fencing of Fast
+Inject in Secure Execution environments. In order to take advantage of this
+kernel series with virtio-pci, a QEMU that includes the
+'s390x/pci: set kvm_msi_via_irqfd_allowed' fix is needed.  Additionally,
+the guest xml needs a thread pool and threads explicitly assigned per disk
+device using the common way of defining threads for disks.
 
-Worst of all, the changelog SAYS BLOODY NOTHING ABOUT THIS.
-</rant>
+Patch 1 enables map/unmap of adapter indicator pages but for Secure
+Execution environments it avoids the long term mapping.
 
-Please, for the love of all that is holy, when sending stuff upstream, think about
-how your code will impact people and environments outside the world of Google.
-And more importantly, *test* your code beyond Google's highly curated environment.
+v9->v10: Streamline logic in register_io_adapter()
+
+Douglas Freimuth (3):
+  KVM: s390: Add map/unmap ioctl and clean mappings post-guest
+  KVM: s390: Enable adapter_indicators_set to use mapped pages
+  KVM: s390: Introducing kvm_arch_set_irq_inatomic fast inject
+
+ arch/s390/include/asm/kvm_host.h |  11 +-
+ arch/s390/kvm/intercept.c        |   5 +-
+ arch/s390/kvm/interrupt.c        | 559 ++++++++++++++++++++++++-------
+ arch/s390/kvm/kvm-s390.c         |  30 +-
+ arch/s390/kvm/kvm-s390.h         |   5 +-
+ 5 files changed, 488 insertions(+), 122 deletions(-)
+
+-- 
+2.54.0
+
