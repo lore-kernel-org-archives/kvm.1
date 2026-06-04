@@ -1,134 +1,204 @@
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65513BF662
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 05:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EAC3BE141
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 05:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780550617; cv=pass; b=lGBftqv1+FprbcGhlcxNV7lIPMjeEZ3Xc9n0FNWfp2bryfJJrAGzu3Pzo8adLgYRNd8pG1TutZrSUNtq7J3jV6NJipr7mApCmY32mHzPLXj94+zPuM9cCwvyb8sxybjE35y/VMw+HVpabEp1tHkzNXXzunNrFK1miFNflPt3v1o=
+	t=1780550966; cv=pass; b=OxQqYmJPPjsp9F9Rru2wYSKw4N+dUx6fbszufUzVqWwzoyfa7Dp4BOZwTiUaSBp9fZFoGqg1Jb7jbsGr4w/rakUrAXSEHAJqMzdUNQkUVzblKIXXp3/vRm7BSSPhDXYv2EvBIfif3fxxS7y8YlYuAZRsRfUo+jPlak39HJTTaRY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780550617; c=relaxed/simple;
-	bh=4HC8s43tFJbSgyaqkLOVyH2ryMUhq+vDGxIzbU0F9vo=;
+	s=arc-20240116; t=1780550966; c=relaxed/simple;
+	bh=XFuSIYtqSD9TXvTkNY0qObnr9YDBMpJIGV63uJtVGlo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A2gVoWq9U4TbTGYUx4Kqs+0TSy2tLburpvXLLlyeTcYYrLNrKL52uFR8DrP2DTfgqQ52EzIIuMu+cjzfVRkeRsCIg/KxMmVRqqxdYjzj2qjpVofNdIWUB01CKmH4iCW1kZSklwvv7Eb3Oo6fC1g+RuJEu2TqRKPJJHo4VDzaRxA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=osQ1CtVh; arc=pass smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=HxMdcl6Scj6DIVihOb5VyYwDpudIs4PMuLj1bjNkdauve21WuotFNPT1ggzs6QVytyUA9Rz6foFAgaWZfvmicpZYqaBDIMKogPLp+1nReJYGQXUNGHum1M59uOeMFi1ZUcBWRalx4tR+BTy2w1HxV6i5+ZxCRpF7VmLGxJ0/4xo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=GNNaGIaW; arc=pass smtp.client-ip=209.85.161.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="osQ1CtVh"
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7e6deacafa8so866923a34.0
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 22:23:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780550615; cv=none;
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="GNNaGIaW"
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-69de4000a57so254002eaf.0
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 22:29:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780550963; cv=none;
         d=google.com; s=arc-20240605;
-        b=TY3aX1mRgTJ1gtZrvywSbd7pAn7zCTmfEAkY3OfrIZ5r4OL6mWWEljKVdE9wbXdQIR
-         O3Xwgj9Z+NuyNxSu3iEv7KIlc925UPcKSg3DJjPBd4duwtxbjLVOxrgn27PlB/CQL9EN
-         ANbffdYtN4ufOtEmV7gH7cpLRP1KasFhxpht9N9KiafSv19LxZPlGmCvJOpSrGcLvUtL
-         SrU4qtIZzMrSfU54J1pNHnPeOFUuRI75zSPeXp5vwJtVAxpuDxz2v85Ct5AebJEP0oNk
-         jHUoUmh+zIhjRFDWxAIo/6EXUbyja0zMjgJdmlMjOgebOv0pgiHzPv2KC4OTEkyvVWz5
-         W0Bg==
+        b=Zed/HOhpnd5BYtc7SEfi4NMgzvgq9+OUeH+3Vq3bQAb5Gsx5RTARw0zW6HpHHkktM1
+         GUxRv0JSD6tseA+r+NxwjOd7qvJAfWageSQepMpKTtEWWGD/7qoJk29+Zm0vK1gALN2x
+         PM9ryYVT9k8E0YEQx34KH/cxrJ0s4KbbH/XgX94iJpJtT9A+Ih7ZbraLd4TvezSlrdMv
+         RCTVf9/VoXg3LHrmD1gwl8YHBTCViNjazqM00rb6zKevfuPsrabhAX1dtto2jjvpJT++
+         b6MJ2o02Yq9HlbWYc12LPNSxb5IKQCaluIqTDHGKm/7jxALvXgpgtmRqNDLbWk210h+t
+         LebA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=4HC8s43tFJbSgyaqkLOVyH2ryMUhq+vDGxIzbU0F9vo=;
-        fh=+3+XuaFuBaapdlSlZktHDNUX6xYm/zBKL1Ec1wrMDrA=;
-        b=Vt294Wvi+G67PCBuWtT3J0SYkLglmBn8p4+ETKlMKiragD3XGy/SvB30rseqGRZOLX
-         GyCsmY/aEFEFL10tQKU6GvXiN5Fuw80m2k5ZKJak9arr4gfFVjN8+c5FB5j0DAnxlufz
-         S43dzlo6JqsR16c+8PcxgDinFCoR4UNxkEMtAdtXW3UBodXG/SzjORPBv4EOA9cz4OwK
-         QPe3kuYx2ns3H7GJTQ7BU6P1qRuD9kWRIQB7hcyeJ5r6E8RpHK6t1ICEGpV3mYg5sJ5/
-         bd4Gcyuu6ac7WvoB6xgsRs3He/eLCfYHuD0DFTk+hBJD483UNHK4GZqMXEmtzin6PrAv
-         4SOQ==;
+        bh=6eJLtMesZ3Q1hzBJwaPeyhA7+N/7eDzJFF12buX3frw=;
+        fh=WgK390XnyqlgnbZN0McuLA8IVEu38wz7IAJ/a/U/wkQ=;
+        b=Pi/VUIPW+EtOuY0hl131P/OuQ2wFtYPQjYbwK2dl/ZvX1m2C7jdiw8Oq2QeX3eIHDd
+         uPpZOVe1EvcFja07tri3oNHgmPtiGmvZkiBeuNYDJGzq7Ybq60sS9t+TTZCiionh0LdS
+         uHAB+9qDKpvkb6KibbpG3EvqHmrRcVYLSyvNbRt/TxkZsFCAlKoQgpqBcwIDsko1xl2T
+         CIhXUlgeJNHUWrHaiwye3B6CP8itrQiCvor+G0KkhUgSW0pCRUCB0X+Y0FAfofYQlcbX
+         Cokc5bkzVOMN3E6CCRPvM/Qewk67dC4ETYvCA3b56v5CzZ0uovc50iRGMSCv2Nu6oFt2
+         Hpow==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780550615; x=1781155415; darn=vger.kernel.org;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1780550963; x=1781155763; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4HC8s43tFJbSgyaqkLOVyH2ryMUhq+vDGxIzbU0F9vo=;
-        b=osQ1CtVhcrS1F5zIUEc+lDa6/mST78Xghsj/4zh53QhyxbiAuWbkTGYF8+jQfv4TKD
-         NW8ZUtTtntl6OzeWSJgjg4tUCGHi20I0BLP0lbmHwvO5l6yCNtAkNnUtrXBQ6UMhh5dc
-         wtCrUNbjHMYDRX/uBRLyUtFdBhgnxend/3dQxSeqj/vcW+EXZpdv3hLBqPu82L7crSmM
-         eFVsVR4AIucOyH5sQ0nnnOYR99GTWVZFO2zwP92NBr3pc4GOl23zxITF14XoJsVX8XCn
-         yz0+qkPhBaDPJBtUckFMOXp/e8VoAVPQJhfimw+j0v5tY15itPubgdZwcBCTcdubcmPA
-         70jQ==
+        bh=6eJLtMesZ3Q1hzBJwaPeyhA7+N/7eDzJFF12buX3frw=;
+        b=GNNaGIaWwyTX4Hx7RLknvjD8iqrclMPk3P3mc1AXjl1rOgH5ENMSiLZzIaOaWiUftZ
+         ad8wPZ2zkpiVZKjuWt6Sb4uXIAQApY0KxJD3WyBZgchyXGG3E6cVpAL1ednsdcB442M6
+         l904lpBb0iVyxgeOtyPRFEWMhqhX9xWeMQgUWmJ1ZZngZWY1wfTg1bSqoRhBGVoP5Qvb
+         +esIYpxd0EDRD6qaUwOKE6LPjgP0HjE3B5Uwr6vMSGlH7xVwzRdqNAvKiVPxiXHYlumw
+         r7O7K6l4nuuIdGaU8lfHwSYYiG76m3T1VYjhsCmx0znlQxH3O1Phc83DckPrL5XcJ9WR
+         pY4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780550615; x=1781155415;
+        d=1e100.net; s=20251104; t=1780550963; x=1781155763;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=4HC8s43tFJbSgyaqkLOVyH2ryMUhq+vDGxIzbU0F9vo=;
-        b=sWXKHhEWaSdGy1S8r168KywbGF22NGcVNSGOb9rPwfiIKFfrH2KT7r5SyT0geybUha
-         NF6Ihx6qEZAJXULvtE6qFePUm3lQHzlZWaLYscjFNjSvjwQwlr/ry7onfvP/bsxpC+hN
-         QZq6ZJAkng+TMVzPQW6X5kLnBUu4oa7qdjvikcD1T+ZMs/9r5cNUldSFEWSYYysd/j85
-         NUVA8rEcnr58EMXWyX6frVdrcbtNaLQ+N6DCrXMsVroljgEgpVefCDFsM+wlSsSE+ubf
-         sktUaJoewkZ+NGotaaDdAdHSOeOBTMUK3xdXHP0KCVIStDu8dUBvQal0Gd2KwMY923wG
-         acyA==
-X-Forwarded-Encrypted: i=1; AFNElJ8EeDnAlXY5JjkdFODuo6LqWWiBB/AJun28t0G3BOp130QKoiWFYUzq0ZXOtug4lNXORd0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyd4oxQfjsphd/TaafajRCUSTEzrOHlXEDNF6etTcZEt7OGLdxi
-	TglFyVyYK07tPFhs3o5C7d0iUGIgMeDXsZnoyvR1BxQTBtAGstQgUiAl97V/XxlSBmBdIaXQEBV
-	yeczpiYzoGulNU9m99ed6eAxQxibS0+s=
-X-Gm-Gg: Acq92OEw0iUp/bU87nUS2w8YaWcYYxVU3zyiJYsBOMT4Gih7atot3WqxOtFJKk8dFDj
-	6VXlqgM+eCM2sMf2Xjwq6lyTjzv9o9SHZh+GbWfimnQj/W9TLzclzbu96+9M0kmLPqpwZHZ4+WW
-	Ll6iYll4Q+MAbQUAI0tyfdiJIkkBmhOEyexvPa2WHvqKpBvAy7aGYgrEapvG7qkBBBANPInadxN
-	Re7AOEnQOLIm9MAFs30fZdhoOaxkQQC6WKGnWvSuR2nUmrIb1ryYrr9yP89Hb7VOm/BLwB3CwXu
-	RN1ltl8e3+lmanTqBtpuM4U=
-X-Received: by 2002:a05:6820:c2d0:10b0:69e:5e9b:a47d with SMTP id
- 006d021491bc7-69e5e9ba739mr125726eaf.5.1780550615598; Wed, 03 Jun 2026
- 22:23:35 -0700 (PDT)
+        bh=6eJLtMesZ3Q1hzBJwaPeyhA7+N/7eDzJFF12buX3frw=;
+        b=US9P8nwWpdOTwV8kfBQobLhIGmaD6EmRqh5Fu/BUfd2ALLvXej+LYXZIZ3rfLe7aQu
+         1VIZtyE99xMMXneaaUVDC8PN1TrJRa/trpz0lgsQ00KUz7KPz0ztikOngq8mRv0Ofq8+
+         a4JcyvxqWmPAtMJ/DVoIqyge8mCOBIPgw5ZkouS9GqXwncnMkm7FlVh22uS5zh71wLwk
+         oTYvVFbwF5RdJ12vAc9k8pnQGNN8KdxkHgCrVzIv28T8+eIGkeDW/NQqZ30yu6x3i6yo
+         T4qebfzyE5ylLQI7qiy7DJT24tda95S49qhgayl/YxVK+kahUCQQd2UWJjKyEN5nzXsu
+         +cRg==
+X-Forwarded-Encrypted: i=1; AFNElJ9BYSEezJ/t7wxXRWVyHJdElgTqLlBJ2caN3jmXsx6EpnIpG0kX6COmwXthxexlJYiPU0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrNB88a4rUzOdPxu3GhD3XfDAcUlaL1ZNxpBjzFw3ejBcQ/o+i
+	OdnkVFSpmqXlC7p8OPROyLH2TmTxIXHxVhlJOW344HAz+53r0yh0GyzX8XBG2qs3VA8bNjQ7rC8
+	GfjKBemhsNfnHofW3KL3LSm+vnLNkH0NhhJSGXsbdNyzCwsRmXud01xbcDAHq
+X-Gm-Gg: Acq92OHGJ57lhKJ+YL/f3GsuxA5IlUxm7P6wZfrtXXyWY4WodPd3Nwfc6jdNL+8OgWh
+	A7zwc1DKNg/RdVfMFdggzurZ84YE4+lZFnJGm1lshRXlV+Sa4aDW9FNtIQqH87wJuofuvDwr3kO
+	FIXugPy2i+K6Bzi18oWFS1+y+dLM/I9ColwYCYRcXcZPTAlJwsQdkvA0vF2zysLGV8dohL0GGbN
+	+fr6O+fi4VUlXQyBkk0Y0/iN9MsGqeXbbv65AFsU4+00nP7B+uKxKIIWh99DM2MNYDAjhi0djvj
+	oeJp5AMXdGGObtpV+QJVz77hc62ylQ/BKzMJ/ZQs7Cu595foCmIx+Preiw4Wt+j+8EF6rmBQnOt
+	I8jmlopD+XlRoyNDf6MVqc2lfLi7225GCYwwGhwCbDFpMz3M=
+X-Received: by 2002:a4a:edc5:0:b0:69e:37c2:ee40 with SMTP id
+ 006d021491bc7-69e590840f2mr1121677eaf.25.1780550963395; Wed, 03 Jun 2026
+ 22:29:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260603-rva23u64-hwprobe-v2-v3-7-5529a7b28384@gmail.com> <20260602232859.3494A1F00893@smtp.kernel.org>
-In-Reply-To: <20260602232859.3494A1F00893@smtp.kernel.org>
-From: Guodong Xu <docular.xu@gmail.com>
-Date: Thu, 4 Jun 2026 13:23:24 +0800
-X-Gm-Features: AVHnY4KMEU2WhD0nvjMwpU3NMXUXsI7Ox3Ri4eRsECUeb1hKlU4cqSpj1AHXzbM
-Message-ID: <CA+Ck9FYWCbHO6-BU48KLx_Lov7pJiSbAP8j3Te_uqFFq81rUjg@mail.gmail.com>
-Subject: Re: [PATCH v3 07/15] dt-bindings: riscv: Add Zic64b extension description
-To: robh@kernel.org, conor+dt@kernel.org
-Cc: devicetree@vger.kernel.org, kvm@vger.kernel.org, 
-	sashiko-reviews@lists.linux.dev
+References: <20260520152148.131272-1-tjytimi@163.com> <20260520152148.131272-2-tjytimi@163.com>
+In-Reply-To: <20260520152148.131272-2-tjytimi@163.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Thu, 4 Jun 2026 10:59:12 +0530
+X-Gm-Features: AVHnY4LhQpAd0LZlTlkonza5lJoQ6SqIXgKpTOBU1Ixa9QqtgjTNHVCis501JRA
+Message-ID: <CAAhSdy14_aMXR6ztaQySOxQqaUNTARfhuZd=pTS=52nXrTQrEw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] KVM: riscv: Pass the target size to huge G-stage checks
+To: Jinyu Tang <tjytimi@163.com>
+Cc: Anup Patel <apatel@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, kvm <kvm@vger.kernel.org>, 
+	kvm-riscv <kvm-riscv@lists.infradead.org>, 
+	linux-riscv <linux-riscv@lists.infradead.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, Atish Patra <atish.patra@linux.dev>, 
+	Paul Walmsley <pjw@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <radim.krcmar@oss.qualcomm.com>, 
+	Andrew Jones <andrew.jones@oss.qualcomm.com>, Conor Dooley <conor.dooley@microchip.com>, 
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>, Nutty Liu <nutty.liu@hotmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Rob, Conor,
-
-On Wed, Jun 3, 2026 at 7:29=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
+On Wed, May 20, 2026 at 8:52=E2=80=AFPM Jinyu Tang <tjytimi@163.com> wrote:
 >
-> The properties block requires multi-letter extensions to be sorted
-> alphanumerically. Because '6' comes before 'c', would it be more accurate=
- to
-> place zic64b before ziccamoa?
-
-On a double check, I found here Sashiko is flagging a real ordering issue.
-(Although it exists before my submission.)
-
-In current riscv/extensions.yaml, zic* entries are split into two groups:
-one (ziccamoa etc.) sits above the Zk* block, the other (zicbom, zimop,
-etc.) sits below it. This is wrong considering the rule says "# multi-lette=
-r
-extensions, sorted alphanumerically".
-
-Would you like a standalone patch that re-sorts the zi*/zk* ordering
-properly? It's purely cosmetic.
-
-If there are no objections I can send it as part of my v4.
-Let me know what you think.
-
-BR,
-Guodong
-
+> fault_supports_gstage_huge_mapping() already contains the two checks
+> needed before installing a G-stage block mapping: the userspace address
+> and GPA must have matching offsets within the block, and the whole block
+> must be contained within the memslot.
 >
-> Does it make sense to place zic64b in its strictly correct alphanumeric
-> position, rather than continuing the out-of-order grouping of the existin=
-g
-> cache-block extensions like zicbom?
+> The helper currently hard-codes PMD_SIZE because its only caller is the
+> transparent hugepage path. The hugetlb path needs the same checks, but
+> the target block size can be either PMD_SIZE or PUD_SIZE depending on the
+> hugetlb VMA.
 >
-> [ ... ]
+> So pass the target mapping size into the helper and use it for the
+> alignment and bounds checks. This keeps the existing THP PMD behavior
+> unchanged and prepares the helper to be reused for the following hugetlb
+> fix.
 >
+> Signed-off-by: Jinyu Tang <tjytimi@163.com>
+> ---
+>  arch/riscv/kvm/mmu.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 2d3def024..10be8f683 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -286,7 +286,8 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn=
+_range *range)
+>  }
+>
+>  static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *m=
+emslot,
+> -                                              unsigned long hva)
+> +                                              unsigned long hva,
+> +                                              unsigned long map_size)
+>  {
+>         hva_t uaddr_start, uaddr_end;
+>         gpa_t gpa_start;
+> @@ -300,8 +301,8 @@ static bool fault_supports_gstage_huge_mapping(struct=
+ kvm_memory_slot *memslot,
+>
+>         /*
+>          * Pages belonging to memslots that don't have the same alignment
+> -        * within a PMD for userspace and GPA cannot be mapped with g-sta=
+ge
+> -        * PMD entries, because we'll end up mapping the wrong pages.
+> +        * within a huge page for userspace and GPA cannot be mapped with
+> +        * g-stage block entries, because we'll end up mapping the wrong =
+pages.
+>          *
+>          * Consider a layout like the following:
+>          *
+> @@ -321,7 +322,7 @@ static bool fault_supports_gstage_huge_mapping(struct=
+ kvm_memory_slot *memslot,
+>          *   e -> g
+>          *   f -> h
+>          */
+> -       if ((gpa_start & (PMD_SIZE - 1)) !=3D (uaddr_start & (PMD_SIZE - =
+1)))
+> +       if ((gpa_start & (map_size - 1)) !=3D (uaddr_start & (map_size - =
+1)))
+>                 return false;
+>
+>         /*
+> @@ -336,7 +337,8 @@ static bool fault_supports_gstage_huge_mapping(struct=
+ kvm_memory_slot *memslot,
+>          * userspace_addr or the base_gfn, as both are equally aligned (p=
+er
+>          * the check above) and equally sized.
+>          */
+> -       return (hva >=3D ALIGN(uaddr_start, PMD_SIZE)) && (hva < ALIGN_DO=
+WN(uaddr_end, PMD_SIZE));
+> +       return (hva & ~(map_size - 1)) >=3D uaddr_start &&
+> +              (hva & ~(map_size - 1)) + map_size <=3D uaddr_end;
+
+This looks counter intuitive.
+Why not have "(hva >=3D ALIGN(uaddr_start, map_size)) && (hva <
+ALIGN_DOWN(uaddr_end, map_size))" ?
+
+>  }
+>
+>  static int get_hva_mapping_size(struct kvm *kvm,
+> @@ -404,7 +406,7 @@ static unsigned long transparent_hugepage_adjust(stru=
+ct kvm *kvm,
+>          * sure that the HVA and GPA are sufficiently aligned and that th=
+e
+>          * block map is contained within the memslot.
+>          */
+> -       if (fault_supports_gstage_huge_mapping(memslot, hva)) {
+> +       if (fault_supports_gstage_huge_mapping(memslot, hva, PMD_SIZE)) {
+>                 int sz;
+>
+>                 sz =3D get_hva_mapping_size(kvm, hva);
 > --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603-rva23u64=
--hwprobe-v2-v3-0-5529a7b28384@gmail.com?part=3D7
+> 2.43.0
+>
+
+Regards,
+Anup
