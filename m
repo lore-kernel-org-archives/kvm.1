@@ -1,117 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCF6409E07;
-	Thu,  4 Jun 2026 16:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1F047AF75
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 16:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780589662; cv=none; b=Bu3nRcJ3f/GzotIp5jiUlTQycyGfX1OhQtKpF2Zwh/RqVU8+9EEmYBj04HkDB4+s2//8oF0hYVQrp8hajm+diq2HxnHz/AxUaq4YzSUTP8XRF/OfSk0xygkFBBOWD+p7y2V89KcqktBgS4Uf7epGKuodSxQyOaVP7GEOmzWaRsU=
+	t=1780589964; cv=none; b=HgyE3OCHOIcXj/a/w6wumw13CIwMaE8ow/WjGIxfrVPDF+YxwYGyK0yDHIdiQc+yfHJtJN7yX+wAVRrqfUmJKx6CWhN+rEV5gHf1KKJ+CDm9JheaY/k3NiRC9x7UnC74RXWa0HxZjmLTHiaXTLhf6Z6pDSdbvsrHk5s4qbLa2gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780589662; c=relaxed/simple;
-	bh=PAnTwGzhU7hZQJBjO9YW2fVB7bTAGggEUp7o+9uA2PM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DC0yX8y/sYD/YHsVvOJfC8wj9qYZb4awCuC9V/L2HmrlkybM2gkcPspDf7kjSTqPkLO2MgmfnvLEo4O0ysDHAkCFk7LR/nnp6cZOGS+mRDm81gcz6QBk8m9uvXYUHn48oMw/cSmzq3G3heiA3hcQL6620IjhynVfFbzGp6+G9fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fGu6qSpc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780589964; c=relaxed/simple;
+	bh=mSAlB/ZJEHzJokY06lBmWHH2DUghgbJcmBUwqUTVEe8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=U4JHYffOKKNrEnOjvp+osyp5EuybxljZybrlvKQociNCQ8odeGR2l4G7lMtFwAnFFgOO+PXnuVfNi25lESzpjMo9FETcK2RiBIO3RRYTiqA10I0UhIbXIDwIAldYR/uVVzxY4sEXgOzjwv2o4nipJp55sLtdtzWcYKt89GJibw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B6K0GpwX; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fGu6qSpc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AA01F00899;
-	Thu,  4 Jun 2026 16:14:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780589659;
-	bh=PpMgxAcmqP0/HxSDQyuooMlOZ/9hDkPU2x1Wgc+yUA8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fGu6qSpcPJU7kXUfED0HTmjGhylwEox9gFldFxHQohlR+zhnG8jMaBlWKnoz0liZW
-	 EOjVW9ZLlEmnSWxCkKHKlgmrnxQ+P7SNpk9QjesXs8+2GKM+uxAoreENEi8Z0e7gak
-	 eAwHHLp3WuDRZZQzBKDNmmGvMsnYftj2waVmY7HYYuByi544VdolBUrSiuHGnURXk+
-	 CvGae2pFtxUvs2s80ZCIsZj+0KheDy816uDx0SjW8+t3wYAZE4gRc5wBknzz45jpIO
-	 cHakwZ2XjP5p/j0+wlJ5SR7vVxJZNCjrzy2I37mslpeSoNp++aTUPT8+vUokIX2Mlp
-	 Ny+ei8FdNrhhg==
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7E4D7F40076;
-	Thu,  4 Jun 2026 12:14:18 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Thu, 04 Jun 2026 12:14:18 -0400
-X-ME-Sender: <xms:WqQhamkdk1Y6jvyWyC8LH9ULV0ywiz9xz9YSe_41SIZuej7E1L_Xgg>
-    <xme:WqQhapgp38hR3XTiLct77z2TQcgEwq1RhYAbA0E4-DnUCg-Gd_S8CXZoh2kxLFtr7
-    bzmBSdh5EDjt2zerkPdm_TkPKQ7ZZY7rMKafEB3uO3AAxQ3qfikMrA>
-X-ME-Received: <xmr:WqQhaoTjvujKvwbj7wSCKiba7kDxsSPH_krjXI-Xw6x-8yZvvNqxQYA3qzK3eg>
-X-ME-Proxy-Cause: dmFkZTFGEzbEvp3rMXU4iRhENjqviIxNp7V0LUVnr+Fq6cSejAtx8FcqjjaURnh943PB5m
-    ACNmP1eVrpC4WKxEYFlGtsfl+sLKO/sIXhCA+l+8VyKxwjeCuqH9asWmc2xxn7AmvQ/nmS
-    JLcNtzbYuAPFWssmdGRx3PIY2B5Oj4NlPjetc7p2P2RvsOvn9uiwn+s+97/2wga6vp3Phg
-    qyACbjqJzuQpbEf/la0N8TltHAypJ5Terb6RIUUBdgEvR8j7GLzbUV2oBWGYM/En2oxjsU
-    xMb8khgoM+1JPXiuWXrvPiAb0xeb+IrPitlygBw8YtFGH++z/ZmC5dI/QMWr/NRv4gi7RK
-    yV9cXxNFhhlNF6aDjt30Z44QuXolA7Yd4qkf89w3cJioRLyZuk+1/gF7R1NfnIQtw0t69E
-    62fMkjo22E35jSDnOqreuzVpJBHxBTG+VUZ49omMPV9ygsc3HtwufIl/kdz61hj2mFwwDm
-    qawiqDTBbA6L0F8JUFwzOTs3oNZkLVRZWc/IYgH7PGSN6jLwY0mNQYTmF8fFw7AaTKrlL7
-    4BRLiI6jh83hqW87Ubpf9KqANLzx234YnvGOCXeNMVCaMcDWLAZA75WA+TlFxyzKfLbOU1
-    ACPT2g8UzLTTccfjEwnez4j3+yvF4WMcjAV7uR+3zgbxbGxLBvhYdi6ZDkUw
-X-ME-Proxy: <xmx:WqQhaq1FYbygoaciEetWj1LouU5Vp7CbRdBDOP8IclzhdZpIGzCE0w>
-    <xmx:WqQhai1epsazh011up9nQYHps2DaoGfTS9U0uBD98APiszB-Tfah9Q>
-    <xmx:WqQhapsoHVqy9O51rKBVvMNdmJJlal5ybc2revNTlYReZiTjJON8Hg>
-    <xmx:WqQhajAjWiUwnfBkiKCvjaGrdhKB0e0pDlRUX-BfBJODwSOwX5e4UQ>
-    <xmx:WqQhat8pG0cEfblocA4LNIImEc2AEn7PPipWFX0ivMWSaG-LblPomndH>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Jun 2026 12:14:17 -0400 (EDT)
-Date: Thu, 4 Jun 2026 17:14:11 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com, pbonzini@redhat.com, 
-	seanjc@google.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org, 
-	chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Binbin Wu <binbin.wu@linux.intel.com>
-Subject: Re: [PATCH v6 02/11] x86/virt/tdx: Allocate page bitmap for Dynamic
- PAMT
-Message-ID: <aiGi36_YpJBRechp@thinkstation>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-3-rick.p.edgecombe@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B6K0GpwX"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bd04e4fe3dso93925ad.3
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 09:19:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780589962; x=1781194762; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GEXZwERRVG++EEqLpkUS4X9sASjjX126u3AEsoy82KY=;
+        b=B6K0GpwXD3U0cHVnTmhxW/tFBoVoNq07c5HIRMV1hVZx3Pf2mYdDajChT9SLRSluUr
+         zlDPAnnRcPv9XsP7gzvc2mC4BerlMp9sxUp5bhctEUWFTp9pz8xlDyZ2PTUCDauYrsTn
+         IxpU5mLXlJz5WaCE9L7FgJg0Hi1h450ZJ+LV/KcaKZFgc5oNQqQ4Ko71wUwaWnIPRKkp
+         q4XVE/FwqKnqRK63uxJubwMvLov4pDHAZDAmpKcXn9Reqq0LuvxvsleZI1XN/0T+k2eH
+         Z510mFnO7PISIlRGzN+6vQOqjoONgzKX32GVYfTn427HjMMLOezpoW9H/BFAdT09SXCe
+         UHYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780589962; x=1781194762;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GEXZwERRVG++EEqLpkUS4X9sASjjX126u3AEsoy82KY=;
+        b=F03ekfQGM6iJXjGu94AE3wAR6RDVrVj3UdHD7yB480HcZPxt6YOOFScJsUpmN38Pp2
+         GDzg+JJUQ9M5+/m8jvGLRjr9YpQN1zbsfgATcqxNqeVoEAyHmmdpqjyG02IWLy4Mc/WU
+         tfY1ewZAHQmdYTKnCvI5WYCAyw3kI6r0If7OK/hkcpi3mz+iUx61uqXg/EEnRYSm6OS1
+         0MZKhCLIwjUyngwnKBDM6eMl8ldWUZpT7FZ8R1zf23FHYQwAyH0PtkzSUxfv/WUQlkYs
+         cXUCUQ5UnZ4FZFDrEVLf0yUmh3Um36dZX+68OIkAI2X5tDtiNA2/NngAIHrHEY0i5TNd
+         130A==
+X-Forwarded-Encrypted: i=1; AFNElJ+gc9s4XuvaRpVCVZ+BYQzvaE+odDWx6CPMsN+hAJrE6y0ILKlNX1fFSOUHz/TnivoGhfw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ7F8RQYeDkrpeJcfR025LkdwLgomXVAyhSyRQiE7RF+Loxk8g
+	XfQ326Nm+Sm1ynTaVSwqMbTxKp974lE9v10ele+dVvPNoq0TJqBMXIfST9Ynk4xygGDqdKXFLv7
+	bwUTDFg==
+X-Received: from pgsb24.prod.google.com ([2002:a65:67d8:0:b0:c85:7233:bedf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d92:b0:36d:b680:3041
+ with SMTP id 98e67ed59e1d1-36e2eee1147mr8520732a91.4.1780589961985; Thu, 04
+ Jun 2026 09:19:21 -0700 (PDT)
+Date: Thu, 4 Jun 2026 09:19:21 -0700
+In-Reply-To: <20260604020143.748245-6-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526023515.288829-3-rick.p.edgecombe@intel.com>
+Mime-Version: 1.0
+References: <20260604020143.748245-1-jrhilke@google.com> <20260604020143.748245-6-jrhilke@google.com>
+Message-ID: <aiGlib6tvRkyNCIA@google.com>
+Subject: Re: [PATCH v5 05/21] KVM: selftests: Add IRQ injection test
+From: Sean Christopherson <seanjc@google.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Alex Williamson <alex.williamson@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, May 25, 2026 at 07:35:06PM -0700, Rick Edgecombe wrote:
-> @@ -579,7 +591,12 @@ static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
->  	 * Calculate the PAMT size for each TDX supported page size
->  	 * and the total PAMT size.
->  	 */
-> -	tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K);
-> +	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
-> +		/* With Dynamic PAMT, PAMT_4K is replaced with a bitmap */
-> +		tdmr->pamt_4k_size = tdmr_get_pamt_bitmap_sz(tdmr);
-> +	} else {
-> +		tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K);
+On Thu, Jun 04, 2026, Josh Hilke wrote:
+> +static void kvm_route_msi(struct kvm_vm *vm, u32 gsi, struct kvm_vcpu *vcpu,
+> +			  u8 vector)
+> +{
+> +	struct {
+> +		struct kvm_irq_routing head;
+
+s/head/header, because I read this as "head entry", not "header of the struct".
+
+> +		struct kvm_irq_routing_entry entry;
+> +	} routing_data = {};
+> +
+> +	struct kvm_irq_routing *routes = &routing_data.head;
+> +
+> +	routes->nr = 1;
+> +	routes->entries[0].gsi = gsi;
+
+This is silly (and confusing), just initialize the information in the struct
+declaration:
+
+	struct {
+		struct kvm_irq_routing header;
+		struct kvm_irq_routing_entry entry;
+	} routing = {
+		.header.nr = 1,
+		.entry = {
+			.gsi = gsi,
+			.type = KVM_IRQ_ROUTING_MSI,
+			.u.msi.address_lo = 0xFEE00000 | (vcpu->id << 12),
+			.u.msi.data = use_nmi ? NMI_VECTOR | (4 << 8) : vector,
+		},
+	};
+
+	vm_ioctl(vm, KVM_SET_GSI_ROUTING, &routing.header);
+
+> +	routes->entries[0].type = KVM_IRQ_ROUTING_MSI;
+> +	routes->entries[0].u.msi.address_lo = 0xFEE00000 | (vcpu->id << 12);
+> +	routes->entries[0].u.msi.data = vector;
+> +
+> +	vm_ioctl(vm, KVM_SET_GSI_ROUTING, routes);
+> +}
+> +
+> +static void help(const char *name)
+> +{
+> +	printf("Usage: %s [-h]\n", name);
+> +	printf("\n");
+> +	printf("Tests KVM IRQ injection via irqfd using an emulated eventfd.\n");
+
+This is all kinds of misleading and wrong.  IRQ *injection* is not guaranteed.
+KVM will use CPU-to-CPU posted interrupts to deliver the interrupt, if supported.
+And it's not an "emulated eventfd"; the test isn't emulated anything.  It's
+manually *signaling* the eventfd but there's no emulation of any kind.  And that
+becomes stale when the test adds support for VFIO devices.
+
+	Tests KVM interrupt routing and delivery via irqfd.
+
+> +	for (i = 0; i < nr_irqs; i++) {
+> +		struct kvm_vcpu *vcpu = vcpus[i % nr_vcpus];
+> +		struct timespec start;
+> +
+> +		kvm_route_msi(vm, gsi, vcpu, vector);
+> +
+> +		for (j = 0; j < nr_vcpus; j++)
+> +			TEST_ASSERT(!GUEST_RECEIVED_IRQ(vcpus[j]),
+> +				    "IRQ flag for vCPU %d not clear prior to test",
+> +				    vcpus[j]->id);
+> +
+> +		/* Trigger interrupt */
+
+Meh, not helpful.  And it goes away in a few patches.
+
+> +		eventfd_write(eventfd, 1);
+> +
+> +		clock_gettime(CLOCK_MONOTONIC, &start);
+> +		for (;;) {
+> +			if (GUEST_RECEIVED_IRQ(vcpu))
+> +				break;
+
+This is a kludgy and confusing way of writing:
+
+		clock_gettime(CLOCK_MONOTONIC, &start);
+		while (GUEST_RECEIVED_INTERRUPT(vcpu, do_use_nmi) &&
+		       timespec_to_ns(timespec_elapsed(start)) <= timeout_ns)
+			cpu_relax();
+
+> +
+> +			if (timespec_to_ns(timespec_elapsed(start)) > timeout_ns)
+> +				TEST_FAIL("vCPU %d timed out waiting for IRQ from GSI %d (Vector 0x%x) !\n",
+> +					  vcpu->id, gsi, vector);
+
+Don't do an if-statement and then TEST_FAIL(), just TEST_ASSERT().  And with the
+above, hoist this out of the loop:
+
+		TEST_ASSERT(GUEST_RECEIVED_INTERRUPT(vcpu, do_use_nmi),
+			    "vCPU %d timed out waiting for %s (vector 0x%x) from GSI %d (via CPU %d)\n",
+			    vcpu->id, do_use_nmi ? "NMI" : "IRQ",
+			    do_use_nmi ? NMI_VECTOR : vector, gsi, irq_cpu);
+
+And as above, this should cpu_relax().
+
+> +		}
+> +
+> +		WRITE_AND_SYNC_TO_GUEST(vm, guest_received_irq[vcpu->id], false);
 > +	}
->  	tdmr->pamt_2m_size = tdmr_get_pamt_sz(tdmr, TDX_PS_2M);
->  	tdmr->pamt_1g_size = tdmr_get_pamt_sz(tdmr, TDX_PS_1G);
->  	tdmr_pamt_size = tdmr->pamt_4k_size + tdmr->pamt_2m_size + tdmr->pamt_1g_size;
+> +
+> +	WRITE_AND_SYNC_TO_GUEST(vm, done, true);
+> +
+> +	for (i = 0; i < nr_vcpus; i++)
+> +		pthread_join(vcpu_threads[i], NULL);
+> +
+> +	printf("Test passed!\n");
 
-Maybe it would more readable if we reverse the size order:
+This is redundant, the return code provides this information.
 
-	/*
-	 * Calculate the PAMT size for each TDX supported page size
-	 * and the total PAMT size.
-	 */
-  	tdmr->pamt_1g_size = tdmr_get_pamt_sz(tdmr, TDX_PS_1G);
-  	tdmr->pamt_2m_size = tdmr_get_pamt_sz(tdmr, TDX_PS_2M);
-
-	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
-		/* With Dynamic PAMT, PAMT_4K is replaced with a bitmap */
-		tdmr->pamt_4k_size = tdmr_get_pamt_bitmap_sz(tdmr);
-	} else {
-		tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K);
-	}
-
-  	tdmr_pamt_size = tdmr->pamt_1g_size + tdmr->pamt_2m_size + tdmr->pamt_4k_size;
-
-It allows split it into logical blocks while keeping the comment attached.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> +
+> +	return 0;
+> +}
+> -- 
+> 2.54.0.1032.g2f8565e1d1-goog
+> 
