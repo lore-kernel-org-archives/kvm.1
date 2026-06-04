@@ -1,147 +1,241 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5DB3C0A1C
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 05:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780551647; cv=none; b=d5KNFmkOYJRR9bPhZGS+uu+kTWMTxizGuXMIzKt9TzbVTppV3rr6cpZjOB1+NpwMp4XANpR31zkiP1d6Z+093Z1oEcm+sj5IVWcJVN8YhBsV3hXMJi1UVTjjsrWPVLvpjizMcDnDGIONZ4kGgaM1BeDOJGIcanViy3fFxD8HUb0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780551647; c=relaxed/simple;
-	bh=PcWtUR6/j3nhRCK+F8WtuYdCMUYxKu071SwSfcj6gDE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=nCKtsYMkK7vQ6Y7C9iYEt2xeJEzOXMDM973hLgmY377vWNV0p5YcD8vcEAzLgdWjfJ9uPwAOCCLahELZkDl5dlOaIhCAyWkrEClVOGVcTLY5KbInm/4hI4NeeuPlYJXCNR0e64Chs70FDJ0WpNdNK1fKPxbsl2hZcxIvFKTSxeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EoCTWN3V; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BC83C343B
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 05:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780551649; cv=pass; b=WhU32H8M8xNxQA86kq/eQqyt00AxJU217MDPtHt4hdqDroD4aKFxNLmywz+CWeEMXcQgEwuG6amUgdFKBjThnxbh5Jxca7525DoVXVutj23pJI7h8vj3B4qyav5gVHA0xqOW2LTJDDuNVGRQ+WVmb+ZUtIUPk7TbRzgS4ChKzfI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780551649; c=relaxed/simple;
+	bh=9GDRbWGSKEmbQKGvnLmi6IQXhSmCCrKRFTup1xhmosE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T/qnYuhFnB9woCXnoTM+a7RlKie6q0XcxD9jb4hqvs5GQUqkdwflhUwB8ZfwqBPxUPL6WHEvlo+4yivtdUgjSp899ThujnIVl/ZW9o9imoiFUP+aa0zZVU8lJlQQhWe54WRLuDOPrJxJxb1zdkd7yOdqLGEpkg+A/JaiolrWTSM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=KBZC7xmO; arc=pass smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EoCTWN3V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780551645; x=1812087645;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=PcWtUR6/j3nhRCK+F8WtuYdCMUYxKu071SwSfcj6gDE=;
-  b=EoCTWN3VlqCe5e7Orrg3zoKHlIfBzx0D7chpSd+CQaMs6E8hDsq1WZ0h
-   pdNjNJI+l9xLUx/Hre1uDoAyBCDT8cENgR+TNJ2iAkfjTE/wtWiTGgPk/
-   1sA+ODMFMvC5YmDqOahMYTi+UZSb5zNeIFU9pM8I+TXvP6lie3KoQ52ar
-   Wa9xslA0gugU761LNkDr15P5RNrgCyJFHPxZ+ArRM9Lw+sSi5Ml2RgTyh
-   aNnsTsZKWSo+6H8iz4A/JNBDredl8Z3AFrZEUWd37If8YT+WsFaIJ7fkV
-   ZnV6tPWgYdK/U+pVleqvelYSMFS8ugKRofZiijy3d1/Wj5nHr68hXnP27
-   A==;
-X-CSE-ConnectionGUID: 2ZoytULxRRGcKbTsv34/Zg==
-X-CSE-MsgGUID: zIXfGzArTc2OLFKFq7NaQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11806"; a="84995232"
-X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; 
-   d="scan'208";a="84995232"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 22:40:45 -0700
-X-CSE-ConnectionGUID: JYV40xaNQla/BLZO/CwiHw==
-X-CSE-MsgGUID: Ug42bbt8QmW26s0zXVNhaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; 
-   d="scan'208";a="240248405"
-Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 22:40:43 -0700
-Message-ID: <84ed35cd-9767-4fc3-916b-05c5db9f200e@linux.intel.com>
-Date: Thu, 4 Jun 2026 13:40:41 +0800
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="KBZC7xmO"
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7e6f27619e7so215680a34.2
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 22:40:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780551645; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FfwvUFRTNlCBzNwEoWPUW6eVdkfWJGisKn7NiDVupCIFB5Yy8U9oWfJcL2B/xxB9Q5
+         +wKoqBNfPiRkz/XbfKMc3QM3PbnixzjI4ZylUbup50IedtEmux0vWqTbdmSFPh0u8pfs
+         HTWEBWnUFG/BsMpAagsaSSQRl4T3udVJ3OXRUTBn203BvyQE1pL/mKoSTzgmR14nxsq2
+         rG9Wtz12pyPG7XMekky87NXwSJuNzNsw8pxkYxdQcqp+AZXhHk1h/z2GIAbvYFOO9O3L
+         O5euY3uRdZ/+GlYpNDGeeNNJWMf1pV1XwaJTUpoiYE6/JTVt0a+qLJzqO3EWAh1xTAuy
+         bAiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=usx7JIclZBP48czky2PIbdzhjqBH7d8Co30aVJaLTDs=;
+        fh=X4r6SuV8iow/GZ8hcrTRJpHEikBdOrXOFSVC3Khkw1U=;
+        b=bqvT8Pai/+KytlO3R9nHI+3RJROpkS8tOSSEGXsclUS0UPvCL6CCnPx/Pe+oUi3Vh1
+         Z1UeoOPH/P/ZooINY2cL05gnVO90EHoNjFTHpTuM76XsQhQFiYCIgpo0NwZD9CZznj3k
+         1dwHCg6W3q5SrR0IIy0qFWkwLjrWnu5seaZv9zMWuTVI96JfnJPY+hGa64gLuQ/aKi9E
+         57QyRSwiciL+su/Zu08+d4JuSiOit1MeqlZvl3pZnPyjmpc/pFY/WDWnUYZLIy27e5kE
+         s68qsMDHEs+xCmoL1MVzhyAfixMAl6PgZg5c5OT8nEya1crTdQQZ8YKKBibBl889/qHL
+         WTWQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1780551645; x=1781156445; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=usx7JIclZBP48czky2PIbdzhjqBH7d8Co30aVJaLTDs=;
+        b=KBZC7xmOKBbWzrAU2TPZJsDkltp1Ci4TVVG1m0q7WGVmZDzw3mPGVVIb+YYM8wOhHX
+         smwyWIgrHTCS+uMtSIsS24YVux9Ysg8xEQ5QLVwdHH+JOpjmxc/7O3Z0vCdFuZAl+RPM
+         zJ82qghVQoaYx06z3KfBf7xyBDtvCOwVpdjdRumkv9o/Fm5TOLcetRydW7J2cPDMrcdk
+         Nv4PUHPSQdnowjOCeRKPG97GAYgiETqTM/kyQ7cElKaIDzt/M6+pACPbTFGyqChF5DLx
+         d+c6z8gwWknxhNZkHBVChFNUaISYKdbib76nf4GxeUFkz9sMZOAQSTmw3TioB9X4TGya
+         xI4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780551645; x=1781156445;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=usx7JIclZBP48czky2PIbdzhjqBH7d8Co30aVJaLTDs=;
+        b=I9TFcoAvmBYSNMxOrAPt5v5/topTxgEdLKfd9WrYxQy2pDu2TQNHCpsgIjDdysvRgi
+         Yhtl63AJeDHlutkINJxIiW/71qIMu1XSk8NSOBfTAxtkwwc/wOCsF5HtQFGQbFGT/UcI
+         mEf+5tGKjVGesCjmXEQ+9rzcQuHTeH1991yrYY2I19moCueJ9lyyZcyTmc/iRgxOJdNZ
+         kWGXxEnIM93DKpFBCHkl0UhHchVH5xZ6/qWg4VMeMQSFeHXDPWnVGgtMMBTw8ywlhVlE
+         X03ChKqgtqlytgfbztyyNbMfWwWPASZ+6xNifLQFt+Ik6ysd73yo+wXH5lH5+PQ0ynIq
+         /+sQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8aBSSkpdzk4VqngogAUDImNGmVTAC4+/mgaM1qhOsqd0Re/2RJoQfRmAvt0i0f6Y6i9l4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhE01NDB//t+635LQiEFg1VN9wL4Lzwq+5LS21S4SjiJxU8TMw
+	33UQdXrTHEB6npeXYY6OC5bJbpjggKfKQpU+NC91/O/cK3pN0A/AoxtV1AbKaJR/+tSGsKEmyYO
+	3h8NXPmEYws320gpc4/Amja5tIbORDXeGzlBz9pnW5w==
+X-Gm-Gg: Acq92OFmquLycc/l5a2elOttYtIypt/YRALWky7De6hFSMhxZJCnVEr51XPSyCNwEIH
+	y+x6gEN+G/llkbZ+06LWod0k7DfjysulJdmHoNg4nB6muDOj/oCfs+oYPRcTEgdkRfUSwPEPuXR
+	gEKfC3VFReIkmEWkHXQlcj3EnrEaRuroDEc+c1v7KWG6GhekxZRJmXWmliBD/diYTVkNl0lK7SR
+	XgEKpcEIWNJqwD0MDbcKzqBLKytQmsk7dzrT35z3CPS+6ob/urx4KRkXxoLNRMzQ3s9JQoofBDx
+	E+DYjF/AxomD1UkL5uN4ysGsPRdu516ZyDB2W6IDygdFTQV7PqQUakjezKzCm6LuyRU7S8hiWwG
+	6tzorz1V+SnjwgxrFaVinS+L/UMQK1FvnsBjCSgCuxQNhG2A=
+X-Received: by 2002:a05:6820:f064:b0:69d:e4c8:86f6 with SMTP id
+ 006d021491bc7-69e47e92580mr2972770eaf.15.1780551644917; Wed, 03 Jun 2026
+ 22:40:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 4/4] KVM: x86: TDX: Report CORE_CAPABILITIES as
- supported
-From: Binbin Wu <binbin.wu@linux.intel.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>
-References: <20260604023314.3907511-5-binbin.wu@linux.intel.com>
- <20260604025142.200341F00893@smtp.kernel.org>
- <f33a2ef6-0f81-4417-89c4-ecf3d3e11e56@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <f33a2ef6-0f81-4417-89c4-ecf3d3e11e56@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260520152148.131272-1-tjytimi@163.com> <20260520152148.131272-3-tjytimi@163.com>
+In-Reply-To: <20260520152148.131272-3-tjytimi@163.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Thu, 4 Jun 2026 11:10:32 +0530
+X-Gm-Features: AVHnY4KLKxgI8rZ055_ZYdjTGmDv_9K6n7Qflz8bYHec2u1kZ7uWSMP1jn70no8
+Message-ID: <CAAhSdy2MhnN_6t2_Gpds-bVk+LzYCZsYTe+QXw-CMHdc58o2EA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] KVM: riscv: Check hugetlb block mappings against
+ memslot bounds
+To: Jinyu Tang <tjytimi@163.com>
+Cc: Anup Patel <apatel@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, kvm <kvm@vger.kernel.org>, 
+	kvm-riscv <kvm-riscv@lists.infradead.org>, 
+	linux-riscv <linux-riscv@lists.infradead.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, Atish Patra <atish.patra@linux.dev>, 
+	Paul Walmsley <pjw@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <radim.krcmar@oss.qualcomm.com>, 
+	Andrew Jones <andrew.jones@oss.qualcomm.com>, Conor Dooley <conor.dooley@microchip.com>, 
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>, Nutty Liu <nutty.liu@hotmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, May 20, 2026 at 8:52=E2=80=AFPM Jinyu Tang <tjytimi@163.com> wrote:
+>
+> RISC-V KVM has used the hugetlb VMA size directly as the G-stage
+> mapping size since stage-2 page table support was added. That is safe
+> only if the block covered by the fault is fully contained in the
+> memslot and the userspace address has the same offset as the GPA
+> within that block.
+>
+> The THP path already checks those constraints before installing a PMD
+> block mapping. The hugetlb path did not, so an unaligned memslot could
+> make KVM install a PMD or PUD sized G-stage block that covers memory
+> outside the slot or maps the wrong host pages.
+>
+> Select hugetlb mapping sizes through the same memslot-boundary check,
+> falling back from PUD to PMD to PAGE_SIZE. When a smaller hugetlb
+> mapping size is selected, fault the GFN aligned to that selected size
+> instead of the original VMA size.
+>
+> Also keep hugetlb mappings out of transparent_hugepage_adjust(). Once
+> the hugetlb path has chosen PAGE_SIZE, promoting it again through the
+> THP helper would miss the hugetlb fallback decision.
+>
+> Fixes: 9d05c1fee837 ("RISC-V: KVM: Implement stage2 page table programmin=
+g")
+> Signed-off-by: Jinyu Tang <tjytimi@163.com>
+> ---
+>  arch/riscv/kvm/mmu.c | 40 ++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 36 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 10be8f683..d2378bb1f 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -423,12 +423,33 @@ static unsigned long transparent_hugepage_adjust(st=
+ruct kvm *kvm,
+>         return PAGE_SIZE;
+>  }
+>
+> +static unsigned long hugetlb_mapping_size(struct kvm_memory_slot *memslo=
+t,
+> +                                         unsigned long hva,
+> +                                         unsigned long map_size)
+> +{
+> +       switch (map_size) {
+> +       case PUD_SIZE:
+> +               if (fault_supports_gstage_huge_mapping(memslot, hva, PUD_=
+SIZE))
 
+This patch is marked with a Fixes tag but does not include the changes
+adding map_size parameter to fault_supports_gstage_huge_mapping().
 
-On 6/4/2026 1:32 PM, Binbin Wu wrote:
-> 
-> 
-> On 6/4/2026 10:51 AM, sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
->> - [High] Missing handling of MSR_IA32_CORE_CAPS in tdx_set_msr() causes KVM_SET_MSRS to fail, breaking VM initialization and live migration.
->> --
->>
->> commit 217a78047d73d2be68ef27e206470a6c237db79a
->> Author: Binbin Wu <binbin.wu@linux.intel.com>
->>
->> KVM: x86: TDX: Report CORE_CAPABILITIES as supported
->>
->> This commit adds CORE_CAPABILITIES to the TDX configurable CPUID allowlist
->> to accommodate legacy TDX module behavior. It also modifies tdx_get_msr()
->> to return 0 for MSR_IA32_CORE_CAPS.
->>
->>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
->>> index 26a5ad59a5694..b7661ba98a8d4 100644
->>> --- a/arch/x86/kvm/vmx/tdx.c
->>> +++ b/arch/x86/kvm/vmx/tdx.c
->>
->> [ ... ]
->>
->>> @@ -2319,6 +2319,14 @@ int tdx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
->>>  			return 1;
->>>  		msr->data = vcpu->arch.mcg_ext_ctl;
->>>  		return 0;
->>> +	case MSR_IA32_CORE_CAPS:
->>> +		/*
->>> +		 * KVM doesn't support MSR_IA32_CORE_CAPS, however, in some old
->>> +		 * TDX modules, CPUID.0x7.0.EDX[30] is fixed-1. As a workaround,
->>> +		 * just return 0 for this MSR.
->>> +		 */
->>> +		msr->data = 0;
->>> +		return 0;
->>
->> [Severity: High]
->> Since MSR_IA32_CORE_CAPS is now exposed to userspace via tdx_get_msr(), does
-> MSR_IA32_CORE_CAPS is not exposed to userspace via KVM_GET_MSR_INDEX_LIST.
-> I suppose userspace should retrieve the supported MSRs via KVM_GET_MSR_INDEX_LIST
+I think it is better to sqash PATCH1 into this patch for completness of
+this patch as Fix.
 
-or KVM_GET_MSR_FEATURE_INDEX_LIST
+Regards,
+Anup
 
-> before KVM_GET_MSRS/KVM_SET_MSRS?
-> 
-> 
-> Had a second thought, this MSR code could be dropped.
-> In Linux kernel, MSR_IA32_CORE_CAPS is either read by the safe version or skipped
-> when it's running in virtualized environment. Also, there was no complain about
-> the access of this MSR in any guest so far.
-> 
-> We can just report CORE_CAPABILITIES as a TDX configurable CPUID bit to userspace.
-> Userspace can do some change to remove any bit that reported as configurable from
-> fixed1 bits. Since KVM doesn't support CORE_CAPABILITIES via KVM_GET_CPUID2,
-> userspace then should not enable CORE_CAPABILITIES bit for TDX guests.
-> 
-> 
->> tdx_set_msr() need a corresponding update to accept host-initiated writes?
->>
->> During VM migration or state restore, userspace typically reads MSRs on the
->> source and writes them to the destination. If tdx_set_msr() doesn't handle
->> MSR_IA32_CORE_CAPS, the KVM_SET_MSRS ioctl will fall through to the default
->> case.
->>
->> Because tdx_has_emulated_msr() does not include MSR_IA32_CORE_CAPS, won't
->> tdx_set_msr() return an error and immediately abort the migration?
->>
->>>  	default:
->>>  		if (!tdx_has_emulated_msr(msr->index))
->>>  			return 1;
->>
-> 
-> 
-> 
-> 
-> 
-
+> +                       return PUD_SIZE;
+> +               fallthrough;
+> +       case PMD_SIZE:
+> +               if (fault_supports_gstage_huge_mapping(memslot, hva, PMD_=
+SIZE))
+> +                       return PMD_SIZE;
+> +               fallthrough;
+> +       case PAGE_SIZE:
+> +               return PAGE_SIZE;
+> +       default:
+> +               return map_size;
+> +       }
+> +}
+> +
+>  int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *mem=
+slot,
+>                       gpa_t gpa, unsigned long hva, bool is_write,
+>                       struct kvm_gstage_mapping *out_map)
+>  {
+>         int ret;
+>         kvm_pfn_t hfn;
+> +       bool is_hugetlb;
+>         bool writable;
+>         short vma_pageshift;
+>         gfn_t gfn =3D gpa >> PAGE_SHIFT;
+> @@ -462,16 +483,23 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct=
+ kvm_memory_slot *memslot,
+>                 return -EFAULT;
+>         }
+>
+> -       if (is_vm_hugetlb_page(vma))
+> +       is_hugetlb =3D is_vm_hugetlb_page(vma);
+> +       if (is_hugetlb)
+>                 vma_pageshift =3D huge_page_shift(hstate_vma(vma));
+>         else
+>                 vma_pageshift =3D PAGE_SHIFT;
+>         vma_pagesize =3D 1ULL << vma_pageshift;
+>         if (logging || (vma->vm_flags & VM_PFNMAP))
+>                 vma_pagesize =3D PAGE_SIZE;
+> +       else if (is_hugetlb)
+> +               vma_pagesize =3D hugetlb_mapping_size(memslot, hva, vma_p=
+agesize);
+>
+> +       /*
+> +        * For hugetlb mappings, vma_pagesize might have been reduced fro=
+m the
+> +        * VMA size to a smaller safe mapping size.
+> +        */
+>         if (vma_pagesize =3D=3D PMD_SIZE || vma_pagesize =3D=3D PUD_SIZE)
+> -               gfn =3D (gpa & huge_page_mask(hstate_vma(vma))) >> PAGE_S=
+HIFT;
+> +               gfn =3D ALIGN_DOWN(gpa, vma_pagesize) >> PAGE_SHIFT;
+>
+>         /*
+>          * Read mmu_invalidate_seq so that KVM can detect if the results =
+of
+> @@ -513,8 +541,12 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct =
+kvm_memory_slot *memslot,
+>         if (mmu_invalidate_retry(kvm, mmu_seq))
+>                 goto out_unlock;
+>
+> -       /* Check if we are backed by a THP and thus use block mapping if =
+possible */
+> -       if (!logging && (vma_pagesize =3D=3D PAGE_SIZE))
+> +       /*
+> +        * Check if we are backed by a THP and thus use block mapping if
+> +        * possible. Hugetlb mappings already selected their target size =
+above,
+> +        * so do not promote them through the THP helper.
+> +        */
+> +       if (!logging && !is_hugetlb && vma_pagesize =3D=3D PAGE_SIZE)
+>                 vma_pagesize =3D transparent_hugepage_adjust(kvm, memslot=
+, hva, &hfn, &gpa);
+>
+>         if (writable) {
+> --
+> 2.43.0
+>
