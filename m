@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AF1223DE9
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 02:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734213A7F6B
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 02:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780541369; cv=none; b=EXaKdRW1t+cqZsl/y2U81UYDTsFJYvQPDOsMHbjRT4AN2+k/qbYHA/VUXOqRIkqIql7ZkxepLB89qv/36imATXIQ4i3vWeiaMxNuR80RH2EqVfTr3q6rZ26Lo+7a/pOitaaBZkNO4z0ACV0evv7D9E69gT2S7f6UotFSkQjjpgk=
+	t=1780541503; cv=none; b=CXpwiA733KsSMXZiWznaFuymlpFZoeykrqxGC8GA/25jM0vz8HxFK3BEy/DmPgHN1tUtT0wnxtcKSxcIqiYFcNiV1Om+KX1T4zkaZzandgOcleox57suRHhi1cCjNtinQa23/sF8/PinvbPS0bQ68wY5UsCl4g44oo1/TiGtXZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780541369; c=relaxed/simple;
-	bh=Zf0i2nPMF7IunkWz4SdAPakOiqU2OLaJ40Zu7u+Etfo=;
+	s=arc-20240116; t=1780541503; c=relaxed/simple;
+	bh=j5S8My6zmGxqWiOYcF/wn8xohOYDaVHG8KHqrawzCv4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=SGl8u5QQsOp/rZS/44B/VOXXQ65dyaFDRNPaPMSJOtYdIJQVziB4gYU8cAwbAZJIeQ2vdUnVi7Bo1F2v4VCTtpYu042dAXPRuHoy8KQBP6xfMil37p8C8N9OvgyABPx6ED8tt7PKI0cqvCtdz7EyWYZAOXORyK41ArkZRBVEpdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dazOcLjp; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Gj7YNBmFDextGCEyhRPe8CiOmCm6bMuLlS9dkXUX5W0wmNZncrya9ZHGi/LtNRnuKhXU8R15OCPhgMjKqxIZaO/rp+Eun/PjFw0M5ojD43F3+DGsLtHL0Mt2Tc7OZDHF3GWRDqW/MIbizr2csSYELYuYvQGuUQdg92/8Lx0v0hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i0ZSqFuT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dazOcLjp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E22311F00893;
-	Thu,  4 Jun 2026 02:49:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i0ZSqFuT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200341F00893;
+	Thu,  4 Jun 2026 02:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780541368;
-	bh=YpacrZrtrrN9WT0ffn8ebpvM7hEL+eL57fpr07LIP8M=;
+	s=k20260515; t=1780541502;
+	bh=OwSS2H01Kdoqs00Vah9H+9AaGjgsb8N0SXcxqT566vA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dazOcLjpHcSqw2XeToX2cgOvuNpnMWYMiG1Do3cA6kIIyiQMCn6OftL0U+jGoPuxQ
-	 kTGK/0dqyZFpEhd3I88tuB8c5xPrCFB6c/rhyelmfMecrvRmuGZd16Zc5pzhJVLQOo
-	 X19Wlar6ljQSXtRkbW6nZEkOYGr423Jt6skBIpUebG0c562pxWrwsOXieLlegmdfJc
-	 5qPjHricsRNpjnN5kOnr2gbglOT7GerGjkGTeYQCHClueVr/sly34iqwwosSAb3cdt
-	 B6oVp81+q52Emb8oZuGF88VuYDg+6kcld79GZFtPIesfLdVB72/fVEYCrViOEn0ymw
-	 NLbRFSmlZxlsw==
+	b=i0ZSqFuTvxkJlNSCK/0KI4NSnDss5awP/CUmIszrVgqJ2hqh8068uwelkItm/ZkCg
+	 7UD23YyQnhWQ1kkSkvg7mx1lrwHkMPBy23wNedTy2gFJkLIr7SYuCywxLFFTHYRB+3
+	 qj4Lh8L10r48Z/1rTNFYcZslM+BTWScGtwtAwi/oyeeuhAqnRYMtlNTF/k5lGsopHa
+	 wD6G4PLI8MyxJBeyFefMoRFB4nYuU4urDQzRXGOy366tk5SJRSiAnb36aU7FWZjUv2
+	 BpQi884kRipNsbc2y63RzmQ0FL6Fq5Knpd1NGtJzn+De+Kdh7Chlw+hlneS3dUdCUG
+	 IjLXBfDmI2WTQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 3/4] KVM: x86: TDX: Validate userspace CPUID
- input for KVM_TDX_INIT_VM
+Subject: Re: [RFC PATCH v2 4/4] KVM: x86: TDX: Report CORE_CAPABILITIES as
+ supported
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Binbin Wu" <binbin.wu@linux.intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604023314.3907511-4-binbin.wu@linux.intel.com>
-References: <20260604023314.3907511-4-binbin.wu@linux.intel.com>
+In-Reply-To: <20260604023314.3907511-5-binbin.wu@linux.intel.com>
+References: <20260604023314.3907511-5-binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 02:49:27 +0000
-Message-Id: <20260604024927.E22311F00893@smtp.kernel.org>
+Date: Thu, 04 Jun 2026 02:51:41 +0000
+Message-Id: <20260604025142.200341F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,55 +46,56 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] `tdx_unsupported_cpuid()` incorrectly uses the userspace-provided =
-CPUID index instead of the canonical TDX configurable index for validation,=
- allowing feature allowlist bypasses.
+- [High] Missing handling of MSR_IA32_CORE_CAPS in tdx_set_msr() causes KVM=
+_SET_MSRS to fail, breaking VM initialization and live migration.
 --
 
-commit c2adba56353483cd6dcf40b3fe14141409c0ce54
+commit 217a78047d73d2be68ef27e206470a6c237db79a
 Author: Binbin Wu <binbin.wu@linux.intel.com>
 
-KVM: x86: TDX: Validate userspace CPUID input for KVM_TDX_INIT_VM
+KVM: x86: TDX: Report CORE_CAPABILITIES as supported
 
-This commit replaces the hardcoded CPUID denylist with a validation mechani=
-sm
-that checks userspace input against KVM's supported allowlist. It aims to
-prevent userspace from enabling unsupported TDX features during VM init.
+This commit adds CORE_CAPABILITIES to the TDX configurable CPUID allowlist
+to accommodate legacy TDX module behavior. It also modifies tdx_get_msr()
+to return 0 for MSR_IA32_CORE_CAPS.
 
 > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 26a5ad59a5694..b7661ba98a8d4 100644
 > --- a/arch/x86/kvm/vmx/tdx.c
 > +++ b/arch/x86/kvm/vmx/tdx.c
+
 [ ... ]
-> +static bool tdx_unsupported_cpuid(const struct kvm_cpuid_entry2 *e,
-> +				  const struct kvm_cpuid_entry2 *mask)
-> +{
-> +	return ((e->eax & mask->eax & (~get_supported_cfg_cpuid(e->function, e-=
->index, CPUID_EAX))) ||
-> +		(e->ebx & mask->ebx & (~get_supported_cfg_cpuid(e->function, e->index,=
- CPUID_EBX))) ||
-> +		(e->ecx & mask->ecx & (~get_supported_cfg_cpuid(e->function, e->index,=
- CPUID_ECX))) ||
-> +		(e->edx & mask->edx & (~get_supported_cfg_cpuid(e->function, e->index,=
- CPUID_EDX))));
-> +}
+
+> @@ -2319,6 +2319,14 @@ int tdx_get_msr(struct kvm_vcpu *vcpu, struct msr_=
+data *msr)
+>  			return 1;
+>  		msr->data =3D vcpu->arch.mcg_ext_ctl;
+>  		return 0;
+> +	case MSR_IA32_CORE_CAPS:
+> +		/*
+> +		 * KVM doesn't support MSR_IA32_CORE_CAPS, however, in some old
+> +		 * TDX modules, CPUID.0x7.0.EDX[30] is fixed-1. As a workaround,
+> +		 * just return 0 for this MSR.
+> +		 */
+> +		msr->data =3D 0;
+> +		return 0;
 
 [Severity: High]
-Does this validation query the allowlist using the correct index?
+Since MSR_IA32_CORE_CAPS is now exposed to userspace via tdx_get_msr(), does
+tdx_set_msr() need a corresponding update to accept host-initiated writes?
 
-If userspace provides a CPUID entry with the KVM_CPUID_FLAG_SIGNIFCANT_INDEX
-flag cleared, kvm_find_cpuid_entry2() matches based solely on the function.
-This means the returned entry 'e' could contain an arbitrary, user-controll=
-ed
-index.
+During VM migration or state restore, userspace typically reads MSRs on the
+source and writes them to the destination. If tdx_set_msr() doesn't handle
+MSR_IA32_CORE_CAPS, the KVM_SET_MSRS ioctl will fall through to the default
+case.
 
-Because get_supported_cfg_cpuid() is queried using e->index instead of the
-canonical target subleaf mask->index, userspace could spoof e->index to
-point to a more permissive subleaf in KVM's allowlist. The TDX module would
-then blindly apply those validated bits to the original, narrower target
-subleaf, bypassing the intended feature restrictions.
+Because tdx_has_emulated_msr() does not include MSR_IA32_CORE_CAPS, won't
+tdx_set_msr() return an error and immediately abort the migration?
 
-Should this use mask->index instead of e->index when querying the allowlist?
+>  	default:
+>  		if (!tdx_has_emulated_msr(msr->index))
+>  			return 1;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604023314.3907=
-511-1-binbin.wu@linux.intel.com?part=3D3
+511-1-binbin.wu@linux.intel.com?part=3D4
