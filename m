@@ -1,154 +1,109 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D474C6F11
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 17:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD334C6F0E
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 17:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780594053; cv=none; b=uDCSUCTMyDCBhN5zjfqlFwHKO8M9XIS/3RrJO6Ip/CuMcpjNFbCeR7K15xeY0zQBwH8zbnZ3SxIel2RCT7mULSXzHiE1UHF/ESOBL9kVmAUFrUZ35zejVjc/XullCpV6mbFXOYJvvsk6uKZv847eoB8MWx8M5kLE6mkKCYWFnj8=
+	t=1780594083; cv=none; b=UNK6l8e3VbrZgX0S/WHcykbFpuRGcT2NdUKQVlbK3TJGOeH5x4BOKRgdT6WsnCcY0V8PCk5isz7X3t8s8hOFP+fHKIrnEU7FzT2meuc3FNHLAV0NWsue/5w8ota4z+fSNohQj92LQ+BDHrebogCifZ9gyMUWfRKSeF2jApwBMfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780594053; c=relaxed/simple;
-	bh=JwWV856tZhQRbvWwA5YTL5FY1rX+zrsPCS+w2CdpZRs=;
+	s=arc-20240116; t=1780594083; c=relaxed/simple;
+	bh=M2T5ZxLA1JyjKgcvQpdxw8SCcHYr1mJ0zHofsSl1ww8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XCvAYgbq7KVDID5FIA7L8IS27mQjJrKOnDznApMF6OFF8AtmhbxMf/FfUNurYwjxxy/MfWzG543eetymJmzww3LEfJdo1he/aqH184fsWylqz3/4geWD3QZRdOUPulrQfjWzhkihKiz23cRvl24ShbBAt3aUN/ydsi3qL2z9f0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rO6laRmP; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=IvpGh4TbYs6R9bNOK4NGePpPkhBnqEFdFYRGKVKv4L0ApWCJ0dJ/uwcOAYtqwVEM3HahMCev6qheUgKRmaQ6JXW2w5Hio6YQHudGRnEtaGqF4BbzOJD1UsAgcg+U9+tPAaW9oE1xziu6Nru2ZoXlfMkST+ymh1+kkbWRvpJ15Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rmF+GtC0; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rO6laRmP"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d982d932aso1281604a91.0
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 10:27:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rmF+GtC0"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8584e3fc96so569359a12.1
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 10:28:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780594051; x=1781198851; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780594082; x=1781198882; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AFq5d3x5ye3mknGU4YVD43umBtdzTEPmebuap4yJYfo=;
-        b=rO6laRmPEAswEJB9V+go3TLBJboevMaTMRxV/PkZeox+8GT4sJPROoKdjcxLOiwlbs
-         pPpWZ2t2KEaZ6WFEmBpebsT6Yo/5NVnVV1WfUP0mvE/P8R/G7GIoMrQ9cgp8qTw2tPoI
-         s3i3vaJ8pnQHuL2/ysCMt57pjTDesgCIlIvuS5rBI+ISSYf19oSPWUFUlZG3x/kGQyjV
-         gAF1QBM5Ru5uTHsl3Vqykk5oiINvxUcorivd4XMbPFQjnCia2PrvbfI1Dragj9V5Rdtl
-         bdVyD76VQHrOXcBYexjz1wV8VVgrAi+iDggesc2hR3ZMacuwabgy87WC7EVsMsd8LPR2
-         lkRQ==
+        bh=VYJiLzugjQMK/35RUx1gXPZXJK9kZ1zLL4JhlYRYAi8=;
+        b=rmF+GtC0xs6kaUmOC5Eym3tbKQcsK3OSjqWeSyIluc0m6SrxnQ4lVLbo7/2hQmfK1S
+         duwH+Z9/aDajdicUdX00bE++mCePC/GYJHpm5cAaaD9KjlFl6jlUOernClXx2J89UVa6
+         A8huGtVfCs8OSGDfKVTXbjSwb/gWZa/x8zaud4jjHJQHZu9LX0dh0TOFCDwTBeY748Eu
+         273FL53fpOWVv5Zh/qE4qEgk3s0uul9dQObm0kFFju2a8U0l5NkPOavJT8S73bGFI5oV
+         mW6zwZTYursNzVJsrOANWGR974TUHnLmfMqF+BN0tQg4oa/aZa6qaooKIW+Dz686/H/Q
+         bcKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780594051; x=1781198851;
+        d=1e100.net; s=20251104; t=1780594082; x=1781198882;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AFq5d3x5ye3mknGU4YVD43umBtdzTEPmebuap4yJYfo=;
-        b=Y3nsseYyptT+mrHLnPBDcRzwuptnqnSgV4YZUkN1I7T1WjEGBE1kamugHtRjkrL8pV
-         b5Qc3ubRkMYlH/vy+ay8h2ItddujdaWBE33pbJOdK/3eKTdtpyggvOR6pCgAtiRf3zDp
-         r1enpda8/17FRrIv2ghCTzMyHUlzwyI4Fv5SscBAQujVGGl2aiuqg9GPV5AKpxLoNaMF
-         VyfpN1SR+ic/ncfnLqtyfWa22vFlKG7jgQ30Dx3Hgv0Mr3Ib0QWmv/YYPCtjFTH0QMkF
-         9Vtbj7+jLY/GavKj8jRXUxTROH2qR6HUDIyMktP7Q6JvrePZA4OBwkYeLsOnj5TB0uAq
-         yRSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9wLw07TekByYnk7MsnSVsDfLu+ZSjIOyzzSVutZz7QawEokaS8lS8HfBixZsZC8CEbE/A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxL5qxcNHnQLxjCQYFXZ/1k9QF/HO2YnqZ8QELBVoI4nTa7YNnG
-	gaWAZhp5G93h7c4V+BXih3HFKOwSc0OMFUSbzQv67RPTHuxfrg74/4fSaQIWi7oCsA07gWJru/3
-	Uu6uoGQ==
-X-Received: from pjto20.prod.google.com ([2002:a17:90a:c714:b0:36b:dbd1:f512])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5628:b0:36b:2179:6d23
- with SMTP id 98e67ed59e1d1-36e3294e53dmr9915991a91.7.1780594049270; Thu, 04
- Jun 2026 10:27:29 -0700 (PDT)
-Date: Thu, 4 Jun 2026 10:27:28 -0700
-In-Reply-To: <20260604020143.748245-19-jrhilke@google.com>
+        bh=VYJiLzugjQMK/35RUx1gXPZXJK9kZ1zLL4JhlYRYAi8=;
+        b=ogN5T3onA1U+AvM1/PNBisRY6TME3D1d5k3EoSgtCQKD+Lcm/phM+9bht9wM0b7sGZ
+         7H05uQ9l/Qd/cwQckowBKywdCMzrSHKSSuuAyHawo0qDXMZiNLQ5sqZrvxOakJdtb9/s
+         a5VczLq4v9voIykuTavR12I6IT+iQ1pW/lcgHq1PSXth8CzTL+fakBO3zvAC6GL1qjbf
+         6OZGy47eMKeG1Y2cOQ87Wp+JNDy67YBeItlX2jcve47DDDQYyuqE8TwSZgiZKHCjdB8K
+         UMMucIxR8P+h2JuBZp1OSW971w3PBETWWlYIPTeMmCROfG6aMOP1kclt4Z3FB5feX6Ha
+         qiwg==
+X-Forwarded-Encrypted: i=1; AFNElJ+FklRaKBtqPaRF2CIhkaj9zxeNqrJFYt5VuKcFqpguJNU7ETA59lvmm7X6dRj9KYluP8s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySy0Y7SdhpjSy2MhZZC27tilw8M0yJUpP5CW+Bw8BmxPvfYksl
+	PkpWrQgKEzTtFwbGURHC99VwqaL1d2gavWIn3ueOiRiyu9WfT6CJL3TjG7HgqVslMfHmrJis/sl
+	aHhqnMw==
+X-Received: from pgww25.prod.google.com ([2002:a05:6a02:2c99:b0:c85:6d7c:2c15])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6113:b0:3b4:9168:d9e6
+ with SMTP id adf61e73a8af0-3b4cd04029emr53452637.37.1780594081546; Thu, 04
+ Jun 2026 10:28:01 -0700 (PDT)
+Date: Thu, 4 Jun 2026 10:28:00 -0700
+In-Reply-To: <20260604022125.A29011F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260604020143.748245-1-jrhilke@google.com> <20260604020143.748245-19-jrhilke@google.com>
-Message-ID: <aiG1gOO51IIREKlo@google.com>
-Subject: Re: [PATCH v5 18/21] KVM: selftests: Verify vCPU migration during IRQ
- delivery in IRQ test
+References: <20260604020143.748245-20-jrhilke@google.com> <20260604022125.A29011F00893@smtp.kernel.org>
+Message-ID: <aiG1oPLl6kD5ygJT@google.com>
+Subject: Re: [PATCH v5 19/21] KVM: selftests: Print vCPU affinity on timeout
+ during IRQ test
 From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex.williamson@redhat.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jun 04, 2026, Josh Hilke wrote:
-> From: David Matlack <dmatlack@google.com>
+On Thu, Jun 04, 2026, sashiko-bot@kernel.org wrote:
+> > +void kvm_print_vcpu_affinity(struct kvm_vcpu *vcpu, pid_t tid)
+> > +{
+> > +	int nprocs = get_nprocs();
+> > +	bool first_range = true;
+> > +	int i, start = -1;
+> > +	cpu_set_t cpus;
+> > +
+> > +	kvm_sched_getaffinity(tid, sizeof(cpus), &cpus);
+> > +
+> > +	/*
+> > +	 * Output format examples:
+> > +	 * - Single CPU:  "vCPU 0 (TID 1234) affined to pCPU(s): 2"
+> > +	 * - List:        "vCPU 0 (TID 1234) affined to pCPU(s): 0,2,4"
+> > +	 * - Range:       "vCPU 0 (TID 1234) affined to pCPU(s): 0-7"
+> > +	 * - Mixed:       "vCPU 0 (TID 1234) affined to pCPU(s): 0-3,8,10-12"
+> > +	 */
+> > +	printf("vCPU %u (TID %d) affined to pCPU(s): ", vcpu->id, tid);
+> > +
+> > +	for (i = 0; i <= nprocs; i++) {
+> > +		/*
+> > +		 * Iterate to nprocs (inclusive) to ensure that if the last pCPU
+> > +		 * is part of a range, the 'else' block triggers one final time
+> > +		 * to flush that range to stdout.
+> > +		 */
+> > +		if (i < nprocs && CPU_ISSET(i, &cpus)) {
 > 
-> Add the '-m' flag to tools/testing/selftests/kvm/irq_test.c to migrate
-> vCPU threads across random physical CPUs during the test. This validates
-> KVM's ability to handle vCPUs changing physical CPUs while interrupts
-> are actively being injected.
+> [Severity: Medium]
+> Does using get_nprocs() as the loop boundary risk silently truncating CPUs 
+> on sparse topologies?
 > 
-> Co-developed-by: Josh Hilke <jrhilke@google.com>
-> Signed-off-by: Josh Hilke <jrhilke@google.com>
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> ---
->  tools/testing/selftests/kvm/irq_test.c | 33 ++++++++++++++++++++++++--
->  1 file changed, 31 insertions(+), 2 deletions(-)
+> get_nprocs() returns the count of currently online CPUs, not the maximum 
+> CPU ID. If a system has 4 online CPUs but their IDs are 0, 1, 2, and 7, 
+> get_nprocs() will return 4.
 > 
-> diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
-> index ed48562318bf..5f7df76005ec 100644
-> --- a/tools/testing/selftests/kvm/irq_test.c
-> +++ b/tools/testing/selftests/kvm/irq_test.c
-> @@ -18,6 +18,8 @@ static u64 timeout_ns = 2ULL * 1000 * 1000 * 1000;
->  static bool guest_ready_for_irqs[KVM_MAX_VCPUS];
->  static bool guest_received_irq[KVM_MAX_VCPUS];
->  static bool guest_received_nmi[KVM_MAX_VCPUS];
-> +static pid_t vcpu_tids[KVM_MAX_VCPUS];
-
-This doesn't need to exist.
-
-> +static bool migrate_vcpus;
-
-This doesn't need to be globally visible.
-
->  static bool irq_affinity;
->  static bool block_vcpus;
->  static bool done;
-> @@ -67,12 +69,23 @@ static void *vcpu_thread_main(void *arg)
->  	struct kvm_vcpu *vcpu = arg;
->  	struct ucall uc;
->  
-> +	WRITE_ONCE(vcpu_tids[vcpu->id], kvm_gettid());
-
-...
-
-> @@ -246,6 +264,14 @@ int main(int argc, char **argv)
->  	 */
->  	irq_cpu = -1;
->  
-> +	if (migrate_vcpus) {
-> +		kvm_sched_getaffinity(vcpu_tids[0], sizeof(available_cpus), &available_cpus);
-
-This is silly, just use the affinity of the main task.  There's no reason to go
-look at a child task's affinity.
-
-> +
-> +		if (nr_vcpus > CPU_COUNT(&available_cpus)) {
-> +			printf("There are more vCPUs than pCPUs; refusing to migrate.\n");
-
-Why?  Overcommitting vCPUs:pCPUs is quite common, and arguably more interesting
-for this test.  And it's not like the test prevents overlap anyways (it is random
-after all).
-
-> +			migrate_vcpus = false;
-> +		}
-> +	}
->  	for (i = 0; i < nr_irqs; i++) {
->  		const bool do_clear_routes = clear_routes && (i & BIT(3));
->  		const bool do_use_nmi = use_nmi && (i & BIT(2));
-> @@ -262,6 +288,9 @@ int main(int argc, char **argv)
->  			write_proc_irq_smp_affinity_list(irq_affinity_fp, irq, irq_cpu);
->  		}
->  
-> +		if (migrate_vcpus && vcpu->id == 0)
-> +			migrate_vcpu_threads(nr_vcpus, vcpu_threads, &available_cpus);
-
-Meh, rather than shuffle everything in a batch, just change the affinity for the
-target vCPU.  That makes the code easier to read, and is arguably more interesting
-because there's at least some chance the task will be migrated while the interrupt
-is being delivered, whereas migrating everything up front means the migrations will
-have completed before the interrupt is sent the vast majority of the time.
-
-> +
->  		for (j = 0; j < nr_vcpus; j++) {
->  			TEST_ASSERT(!GUEST_RECEIVED_IRQ(vcpus[j]),
->  				    "IRQ flag for vCPU %d not clear prior to test",
-> -- 
-> 2.54.0.1032.g2f8565e1d1-goog
+> This would cause the loop to terminate prematurely, completely ignoring 
+> valid but higher-numbered CPU indices (like CPU 7) in the cpu_set_t mask.
 > 
+> Should this iterate up to CPU_SETSIZE instead to encompass the entire mask 
+> capacity, similar to other helper functions like pin_task_to_random_cpu()?
+
+I'm going to skip this one for now, too.
