@@ -1,165 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC13538F939
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 09:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAAC3AF64E;
+	Thu,  4 Jun 2026 09:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780566147; cv=none; b=RVvVv4UhKFBOkys6aCBJVEqdNNdTOvM+f56ZhhovqnYwPvWuiH3p15rqVfAXv5MmDbdzJa4o7YTsxD+KxcZMz510VlpJ6/w93gyu/3pmtiYMhCYgZtdVsJNRPln8d6duLZ9YsoX9qLqummnpkYCXaqHg256iBk8XTPcjG76sUgw=
+	t=1780567097; cv=none; b=sb/3VWK1SCU2Az4ydA2KvH1RT1TvHwLSop5lTTctvvarNB40HIbsZPqBlZoo6UbJVyzsWBKESiHg9qhJV5MqGB0l+0UBncLsL9hvGk4IPUolz4H/PGT4BxqSGhoBJkNeHyXnMFPYsx/kD/7SW2QeqlmT/QvFuiE9m2k3pd1ZnYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780566147; c=relaxed/simple;
-	bh=yh/3DfNhzvQDZNpY3sDjDm0Xmh9qRX6yecLs2KZ5r2c=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=u13T5XBflf902Goaj4xTY4Drk7ksDbyQyAc0yxr/4RpuWAv3SuxkJ9jxSfkqDVryNx7CSGUtusznV0msOKov8jp3DJ1Pwti9KVaKhjWe21mMDupX8M9q7LG1HN3SCuIhiT8TAY15t2vhRG+vmYZdHrrlTOonZdUNDlJJlvpbKsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RWU34HRL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780567097; c=relaxed/simple;
+	bh=HOpVztT8DOAo7KVM/MAVNPDfMWFbaLZEj1Jd1WUkhMo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=O4ICbtJ7RAfvp/LG8MMrNx1oiOrZFX+yZvgJxa2aidXLco90R5cmS6C7eUZPtthMHq5Kikt5WiOriYWBfXgHwWao6Z92cjMIXn3Evyl6zofcMFUzus4JayNJyzR1dJ3ayNFGASpNZfrRljs1jZgtLdD1s9U7QhFaYXoORvLvAYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=c3PNVjQt; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RWU34HRL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE201F00893;
-	Thu,  4 Jun 2026 09:42:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780566146;
-	bh=kjjqElfgCERY0RcqecH/D2b9wdh4IVtbUXWU5a0qmPI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RWU34HRLGExg7s+m1y8VM+fzOFaTv5j1DBysUaOytJUvW3mqqnP4z8qcbkpmEsJxS
-	 CIhfp8znYZqXIsAnMGXH6xJIXFW7cce7LM+79T3aZvBqSLKHQuHthFk1nFZaGuBB6S
-	 +A7ncIuAhnYVLObjjDRXu+IEm2Z5bJmWQlSfKr/0h0bt+iLcXe4k1prNQSpolGzmJ1
-	 D9udTV23zMMrC5GTdvZppMQeYKiE99z/6ZqVIxTxQqXrYnX/wdmtGVrAAKOD4obIoU
-	 rlXMTg4d+ujeP12X7NsGUWIC2C1rBIRcO5fS8hnqCD8YXrOgU7VX2u9TAxCkBuPa6c
-	 E+V2RtDiB/cKw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] kvm powerpc/book3s-apiv2: Add suite initialization to
- skip GSB tests without APIv2 support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Vaibhav Jain" <vaibhav@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604092931.344101-1-vaibhav@linux.ibm.com>
-References: <20260604092931.344101-1-vaibhav@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 09:42:25 +0000
-Message-Id: <20260604094226.3BE201F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="c3PNVjQt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=HAwxsEb++hynAZSBM/ZWsQB/kPejZeakWzLcrT4MuRE=; b=c3PNVjQt2UzKlsR7+/YYu1G/zu
+	tifba7YBIOWV2G70UsP9TIMKEwFYCzaOHtKrKQDFWnam17TKSzmfuaM0YbpXFVa/sH0CFYMTPCaI/
+	5Q3XHI+ogRdglNA1WlcQ3WQjAYDz7XwoFTmYoIXOs3kWFE+IoZxJzaTsTBXAyOxwt8+rznp75okRN
+	Y1iyr/f0ib6kePQ4i58xPshOjln+zJ4/eU71q0cJ/EooKaf/ES9qR7l5Ie9YUeR9FA6JNKTo8F3g2
+	x/F86PuxYc/5G38XWoahPBE/G0Q/GJdEUeDeeztAfDHBDc5AbPKfHgKsyKXg1+HQeFOopfM/Q3nha
+	3aeQZtJQ==;
+Received: from i7.infradead.org ([2001:8b0:10b:1:21e:67ff:fecb:7a92])
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wV4pr-0000000EAMb-0wS1;
+	Thu, 04 Jun 2026 09:57:59 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wV4pq-00000000H0r-32Aw;
+	Thu, 04 Jun 2026 10:57:58 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH v2 2/3] x86/kvmclock: Implement read_snapshot() for kvmclock clocksource
+Date: Thu,  4 Jun 2026 10:35:17 +0100
+Message-ID: <20260604095755.64849-3-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260604095755.64849-1-dwmw2@infradead.org>
+References: <20260604095755.64849-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] Unconditional hypercall execution in the test suite initialization=
- will cause a kernel panic on bare-metal (PowerNV) systems.
-- [Medium] The capability check yields a false positive when compiled witho=
-ut `CONFIG_PPC_PSERIES`.
-- [Medium] Skipping the entire test suite when APIv2 is unavailable disable=
-s purely memory-manipulation tests that do not depend on the hypervisor.
-- [Low] Directly modifying the private `status` field of `struct kunit_case=
-` violates the KUnit API.
---
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit 91f29321c74a3de9acc6e6b6af3b00cdee30f4f2
-Author: Vaibhav Jain <vaibhav@linux.ibm.com>
+Implement the read_snapshot() callback for the kvmclock clocksource.
+This returns the kvmclock nanosecond value (for timekeeping) while
+also providing the raw TSC value that was used to compute it.
 
-kvm powerpc/book3s-apiv2: Add suite initialization to skip GSB tests withou=
-t APIv2 support
+The TSC is read inside the pvclock seqlock-protected region, ensuring
+the raw TSC and derived kvmclock value are atomically paired.
 
-This commit adds a suite initialization callback to check for PAPR APIv2
-nested virtualization support. If APIv2 is not supported, it marks all test
-cases in the suite as KUNIT_SKIPPED to prevent test failures.
+This enables ktime_get_snapshot_id() to provide the raw TSC to consumers
+like the vmclock PTP driver, which currently has to do a separate call
+to get_cycles() to obtain a value at *approximately* the same time, to
+feed through the vmclock calculation.
 
-Link: https://lore.kernel.org/all/20260603064225.GC18149@sol
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: Kiro:claude-opus-4.6-1m
+---
+ arch/x86/kernel/kvmclock.c | 36 +++++++++++++++++++++++++++++-------
+ 1 file changed, 29 insertions(+), 7 deletions(-)
 
-> diff --git a/arch/powerpc/kvm/test-guest-state-buffer.c b/arch/powerpc/kv=
-m/test-guest-state-buffer.c
-> index 5ccca306997a8..f84b40fa55db6 100644
-> --- a/arch/powerpc/kvm/test-guest-state-buffer.c
-> +++ b/arch/powerpc/kvm/test-guest-state-buffer.c
+diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
+index b5991d53fc0e..cb3d0ca1fa22 100644
+--- a/arch/x86/kernel/kvmclock.c
++++ b/arch/x86/kernel/kvmclock.c
+@@ -87,6 +87,27 @@ static u64 kvm_clock_get_cycles(struct clocksource *cs)
+ 	return kvm_clock_read();
+ }
+ 
++static u64 kvm_clock_get_cycles_snapshot(struct clocksource *cs,
++					 struct clocksource_hw_snapshot *chs)
++{
++	struct pvclock_vcpu_time_info *src;
++	unsigned version;
++	u64 ret, tsc;
++
++	preempt_disable_notrace();
++	src = this_cpu_pvti();
++	do {
++		version = pvclock_read_begin(src);
++		tsc = rdtsc_ordered();
++		ret = __pvclock_read_cycles(src, tsc);
++	} while (pvclock_read_retry(src, version));
++	preempt_enable_notrace();
++
++	chs->hw_cycles = tsc;
++	chs->hw_csid = CSID_X86_TSC;
++	return ret;
++}
++
+ static noinstr u64 kvm_sched_clock_read(void)
+ {
+ 	return pvclock_clocksource_read_nowd(this_cpu_pvti()) - kvm_sched_clock_offset;
+@@ -156,13 +177,14 @@ static int kvm_cs_enable(struct clocksource *cs)
+ }
+ 
+ static struct clocksource kvm_clock = {
+-	.name	= "kvm-clock",
+-	.read	= kvm_clock_get_cycles,
+-	.rating	= 400,
+-	.mask	= CLOCKSOURCE_MASK(64),
+-	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
+-	.id     = CSID_X86_KVM_CLK,
+-	.enable	= kvm_cs_enable,
++	.name		= "kvm-clock",
++	.read		= kvm_clock_get_cycles,
++	.read_snapshot	= kvm_clock_get_cycles_snapshot,
++	.rating		= 400,
++	.mask		= CLOCKSOURCE_MASK(64),
++	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
++	.id		= CSID_X86_KVM_CLK,
++	.enable		= kvm_cs_enable,
+ };
+ 
+ static void kvm_register_clock(char *txt)
+-- 
+2.54.0
 
-[ ... ]
-
-> @@ -521,6 +521,24 @@ static void test_gs_hostwide_counters(struct kunit *=
-test)
->  	kvmppc_gsb_free(gsb);
->  }
-> =20
-> +static int init_gs_test_suite(struct kunit_suite *suite)
-> +{
-> +	long rc;
-> +	unsigned long host_capabilities;
-> +	struct kunit_case *test_case;
-> +
-> +	/* Enable test suite only if APIv2 is supported */
-> +	rc =3D plpar_guest_get_capabilities(0, &host_capabilities);
-
-[Severity: High]
-Could this unconditional hypercall execution cause a kernel oops on bare-me=
-tal
-(PowerNV) environments?
-
-plpar_guest_get_capabilities() internally invokes plpar_hcall(), which
-issues an "sc 1" instruction. On bare-metal systems without an underlying
-hypervisor, executing this will trigger an Emulation Assistance exception.
-
-Should this code verify that it is running as a guest by checking
-kvmhv_on_pseries() before issuing the hypercall, similar to how
-test_gs_hostwide_counters() is protected?
-
-[Severity: Medium]
-When the kernel is compiled without CONFIG_PPC_PSERIES, will this check
-yield a false positive?
-
-In arch/powerpc/include/asm/plpar_wrappers.h, plpar_guest_get_capabilities()
-is defined as a stub that returns 0 (H_SUCCESS):
-
-static inline long plpar_guest_get_capabilities(unsigned long flags,
-						unsigned long *capabilities)
-{
-	return 0;
-}
-
-Because it returns success, init_gs_test_suite() could incorrectly assume
-that PAPR APIv2 is supported and fail to skip the test suite on these build=
-s.
-
-> +
-> +	if (rc !=3D H_SUCCESS) {
-> +		/* Skip all testcases if no APIv2 support */
-> +		kunit_suite_for_each_test_case(suite, test_case)
-
-[Severity: Medium]
-Does skipping the entire test suite unnecessarily bypass memory-based tests
-that do not depend on the hypervisor?
-
-Out of the 7 tests in the suite, only test_gs_hostwide_counters() executes
-hypercalls. Tests such as test_creating_buffer(), test_adding_element(), and
-test_gs_parsing() are strictly memory-based unit tests.
-
-Could this lead to a loss of test coverage for valid test cases in non-APIv2
-environments?
-
-> +			WRITE_ONCE(test_case->status, KUNIT_SKIPPED);
-
-[Severity: Low]
-Is it appropriate to directly modify the private status field of the
-struct kunit_case here?
-
-In include/kunit/test.h, the status field is explicitly marked for
-internal use only:
-
-struct kunit_case {
-[ ... ]
-	/* private: internal use only. */
-	enum kunit_status status;
-[ ... ]
-};
-
-Direct manipulation of framework internals from within an architecture's
-test module appears to violate the KUnit API.
-
-> +	}
-> +
-> +	return 0;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604092931.3441=
-01-1-vaibhav@linux.ibm.com?part=3D1
