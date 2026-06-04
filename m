@@ -1,130 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4AF47B410
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 13:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72B14014A1
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 13:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780580281; cv=none; b=o8H/eO73zvevaLQuUtIcMJdTtul4FBAerJX3ohqL2iRBQQWg+RBqpRPFC0Sf5jLLYlwjr1L8mcLOLQcDUvAfseXMhhf3mEtyM5mXlnRMyXPLdiaCQiLOH3OkuzT9JstXWG+iyP/R/8vWqeiBWYdpFRG3u+mpwxr4MWe5C2vEDeA=
+	t=1780580404; cv=none; b=ekWjZqJE2CqIcRHQJJHc1bwHY6laP1aDk+b7Ys8ZK+XPtgqSxrQCCdk6kiY4e0tpLUypJBggF4EOYZpDxIOaBABb+GaXlBrLl0uef8uV6cMktmsC2Anq4qYTAyA9y1jOdPRF58WnKdDcHfv4sbXWG36npgP/wTsSi9MF76Q/KTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780580281; c=relaxed/simple;
-	bh=mnJL3ZByLkz0JPnx+woeGShzf8elEq33ZARt1AepbWQ=;
+	s=arc-20240116; t=1780580404; c=relaxed/simple;
+	bh=OM5Z4fQNeXwKpEMDODppIK4+LiMMqkdC6dibUUTFc+M=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZswBOnLK0BtfGbfXPMOdCKMWHmu/dRVojyS4dX8VoxnfR9i4k9VzS80llBX/Soc0D2tXT/8lci/6fZUKmo7IcZyd4ltmojgY4E9aSJs54ZT35Vhkt8Cda9QX2Te1hMSb+jMeisTlFdm1L5FeDs+7cYRC5gHCQxPVmruAQS+j0+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aghq9bee; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hVjwkMuH4sS6AFJuj2OserIT3x0OliH/+ZyErlq+PKpJlCWbfEpmaKmeRX0FVC9akjKRznjRcqNp/q43xqTN/aeu4w0pSIkfHwVsZk+UNJGw3n1oyCWojOc/3yEgOTYUHFbyDy1EpkzCJn6LUs2EtOeBHxIxXjpWMu2QxYIAISE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QSz2tMSp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aghq9bee"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3CC1F00893;
-	Thu,  4 Jun 2026 13:37:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QSz2tMSp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 984AC1F00893;
+	Thu,  4 Jun 2026 13:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780580279;
-	bh=mXVC/FXnYdaG2UhOQyBXEOMAzprx1EqJpkw7/m0tHCA=;
+	s=k20260515; t=1780580403;
+	bh=LVr55RISjXEnP2Z8MtFuSNmrfsv1VmtIEP7ZeMfbMWg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aghq9beeUqX2vWsakAEfcHW9bbVq4R3Q26OQc13R/rxt+U36S+QmWiX0CHetYRmFb
-	 MqkSHhS92x0u2+NuHTHluXfFkyVUBMWnCuoJRXNSZVTnDsddxXiheLxczVovjFaUNG
-	 bGfswd2gUHmzLbO3X/rDpAoIWFqBsgPSpWeKBDbA6WKsouZzwCvK+bysxjkrNFe9Xr
-	 U/pNixQYKwO76vmYSWmlwYcNhw3kO0qLnnzmTlNT8/0LW2Me53wsPEg3fpDuKePSSS
-	 5ZXaWUwSYF5u5ZLgnl6xZpV1mkBD68dA6Um0SVyc5CHDqIA7/KIWd12zbi4L/915DX
-	 v0M2ISuihR4bw==
+	b=QSz2tMSpAbIOvwAMpYCRgNAs2XzLwIj3+h80DX6N/fWrzxOfr8KWERESLng1mR3Pr
+	 lwDAm3t89vZ9lpS8yuhtubDRTyOKcAKZNFuYOsI2annQXhRFuuBuEuRs0lECTSk9XS
+	 FqU7ol/v/Ep/PjjWqgWNVNlWTwWGKx8GaFht7zug2IuJHbZ8vVUCjNxrMr0bkt9CmK
+	 t0xsHSvZrJakjvZs0sBKQhnRmMKUhktfnNqNVqpMwDXEOnji6bYKtiGI6fI9m+8Bfl
+	 NNmvvXon751ousf2lIuwOWeB3slqfuWg/wcBYe7G8qHZEinVJgz/458KBdPPPuTTVe
+	 O8HaaWXAVbXWQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/9] riscv: kexec: Bound FDT search by source buffer
- size, not destination
+Subject: Re: [PATCH v3 6/9] riscv: kexec: Switch to trampoline page table
+ before norelocate
 Reply-To: sashiko-reviews@lists.linux.dev
 To: fangyu.yu@linux.alibaba.com
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604132418.15725-3-fangyu.yu@linux.alibaba.com>
-References: <20260604132418.15725-3-fangyu.yu@linux.alibaba.com>
+In-Reply-To: <20260604132418.15725-7-fangyu.yu@linux.alibaba.com>
+References: <20260604132418.15725-7-fangyu.yu@linux.alibaba.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 13:37:59 +0000
-Message-Id: <20260604133759.AC3CC1F00893@smtp.kernel.org>
+Date: Thu, 04 Jun 2026 13:40:03 +0000
+Message-Id: <20260604134003.984AC1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [Critical] In `kexec_file_load`, an attacker can bypass Secure Boot restr=
-ictions by providing an initrd that starts with a forged FDT header, overwr=
-iting the kernel-constructed FDT.
-- [High] The check `if (!internal->fdt_addr)` falsely rejects a valid FDT i=
-f it is placed at physical address 0x0.
+- [Critical] Missing `sfence.vma` after clearing `CSR_SATP` causes a fatal =
+Instruction Page Fault on kexec.
 --
 
-commit 0ee8b0469cc5460085b86fc5826ddc9fa0522c40
+commit 4cdd8f4ea42becec74890b3443cd153befa568f3
 Author: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-riscv: kexec: Bound FDT search by source buffer size, not destination
+riscv: kexec: Switch to trampoline page table before norelocate
 
-This commit changes the FDT size check in machine_kexec_prepare() to use
-bufsz instead of memsz. This correctly bounds the read to the provided
-source buffer, preventing out-of-bounds reads and potential kernel faults
-when a segment is padded with zeros at its destination.
+This commit updates riscv_kexec_norelocate to act as a two-pass trampoline,
+allowing it to drop kernel page tables while still executing from a mapped
+address. It also replaces the previous stvec-based exception handoff with a
+direct jump to the target entry.
 
-> diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machin=
-e_kexec.c
-> index ea6794c9f4c2d..e6e179cffc447 100644
-> --- a/arch/riscv/kernel/machine_kexec.c
-> +++ b/arch/riscv/kernel/machine_kexec.c
-> @@ -38,21 +38,21 @@ machine_kexec_prepare(struct kimage *image)
+> diff --git a/arch/riscv/kernel/kexec_relocate.S b/arch/riscv/kernel/kexec=
+_relocate.S
+> index af6b99f5b0fd9..8cfdf6f4032a8 100644
+> --- a/arch/riscv/kernel/kexec_relocate.S
+> +++ b/arch/riscv/kernel/kexec_relocate.S
+[ ... ]
+> @@ -198,14 +220,8 @@ SYM_CODE_START(riscv_kexec_norelocate)
+>  	csrw	CSR_SCAUSE, zero
+>  	csrw	CSR_SSCRATCH, zero
 > =20
->  	/* Find the Flattened Device Tree and save its physical address */
->  	for (i =3D 0; i < image->nr_segments; i++) {
-> -		if (image->segment[i].memsz <=3D sizeof(fdt))
-> +		if (image->segment[i].bufsz < sizeof(fdt))
->  			continue;
+> -	/*
+> -	 * Switch to physical addressing
+> -	 * This will also trigger a jump to CSR_STVEC
+> -	 * which in this case is the address of the new
+> -	 * kernel.
+> -	 */
+> -	csrw	CSR_STVEC, a2
+>  	csrw	CSR_SATP, zero
+> +	jr	a2
 > =20
->  		if (image->file_mode)
->  			memcpy(&fdt, image->segment[i].buf, sizeof(fdt));
->  		else if (copy_from_user(&fdt, image->segment[i].buf, sizeof(fdt)))
->  			continue;
-> =20
->  		if (fdt_check_header(&fdt))
->  			continue;
-> =20
->  		internal->fdt_addr =3D (unsigned long) image->segment[i].mem;
->  		break;
+>  SYM_CODE_END(riscv_kexec_norelocate)
 
 [Severity: Critical]
-This is a pre-existing issue, but does this blind search loop in
-machine_kexec_prepare() allow a user-provided segment to spoof the FDT?
+Does this sequence require an sfence.vma instruction after clearing
+CSR_SATP?
 
-For kexec_file_load, architecture-specific loading adds the user-provided
-initrd segment before the kernel-constructed FDT segment. If a malicious
-initrd starts with FDT magic bytes, it seems this loop would accept it and
-break early.
+According to the RISC-V Privileged Architecture specification, writes to the
+satp register do not imply any synchronization. A subsequent instruction fe=
+tch
+may still use the old satp value unless explicitly synchronized with an
+sfence.vma instruction.
 
-Would this cause the next kernel to boot using an attacker-controlled FDT
-instead of the kernel-generated one? This could allow injection of arbitrary
-bootargs (like init=3D/bin/sh module.sig_enforce=3D0) and bypass Secure Boot
-restrictions.
+Without sfence.vma, the CPU pipeline is allowed to fetch the instruction at
+a2 (the start of the new kernel) using the old satp value. Because a2 is a
+physical address and is not identity-mapped in the trampoline page table,
+this fetch could trigger an instruction page fault.
 
->  	}
-> =20
->  	if (!internal->fdt_addr) {
+Since the stvec override was removed by this patch, the trap would attempt
+to vector to the old kernel's default trap handler. As that handler is also
+unmapped in the trampoline, this sequence appears to result in a double fau=
+lt
+and a system hang during kexec.
 
-[Severity: High]
-This is a pre-existing issue, but could the !internal->fdt_addr check in
-machine_kexec_prepare() incorrectly reject a valid FDT if it is placed at
-physical address 0x0?
-
-On RISC-V platforms where the physical memory base starts at 0x0 (such as
-the T-Head TH1520), the FDT segment can legitimately be loaded at physical
-address 0x0. The search loop will correctly set internal->fdt_addr =3D 0, b=
-ut
-this check would treat it as an error and return -EINVAL.
-
-Is there a risk that this false rejection breaks kexec functionality on
-platforms where memory starts at 0x0?
-
->  		pr_err("Device tree not included in the provided image\n");
->  		return -EINVAL;
->  	}
+If a similar pattern is introduced for riscv_kexec_relocate_entry later in
+this series, it might also need an sfence.vma to avoid a page fault when
+fetching the relocation code.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604132418.1572=
-5-1-fangyu.yu@linux.alibaba.com?part=3D2
+5-1-fangyu.yu@linux.alibaba.com?part=3D6
