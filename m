@@ -1,201 +1,141 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1853323A562
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 14:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB3E2FFDD6
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 14:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780584771; cv=none; b=tDgym9Gjww5SmKVmBopkCXI7HhEMmBxxPDKklOCKdaqChe672kmgJsCAStmw+7DyvzqpcJ+Kg3miXRFEcxlO10SuH7L3/hZB9IMN4z/lg7oxqm1/+teizINDbBwZ5ZMyfzWwfv2FeslqR49qSCwKGFM7nmphcDOSVXX3XanSBL0=
+	t=1780585121; cv=none; b=D+r1Tx1WJeWQuG5HWwNZrA2m6BveJapxgzsVdcF3DS3qyo50+bWNbeG/iu0eGwQg+eMxbKxjrH28Qi8EB5rsgvmbdXQp1E7rcS/tmLS+N/4KcjxXqElKmGT8NTG/lBrOI6fgQA3TDc8uwkerC1bsO70Ej4+/+CuPqVF9K5DU8B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780584771; c=relaxed/simple;
-	bh=p+01FXerTYAuHMsyxBXsuo3iLlNoew97g8w6nXY0iuo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JmO29nf0UC+OxvjhGrNyXsAq/yT3+Qrm3Fx0Wxm+AXHEdTi60JkvlkcPAGX6f1CWCAhj79nDuoY2Dwl2xhaf1Lp1h26tWJA6vXbHLsMeewU3je39dp+WlsEj4HHtGtRuT8lDWS3KugyUqb9x2J8fzVZJRUwKrPwNudxFurnZ4Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dbYj8SKp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780585121; c=relaxed/simple;
+	bh=FleHIvrhzp9RGYLxqJDj5T6FLNRKa2alasCqzuljG3Q=;
+	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ARWcif1fJTKpkVuIbEgv0gM3EtVCKhHO1SVVxJDNXQwfgveFdrJFvzJfQRSpXu4bSEbAnc9mMRmFYRXp8BCOrQmAvK07XCIFxndgC6YBbGhkyaa5WQxQZso6u5PTg85+KEg6hswX4foWcvXVurqQp0eyETSRWXQvaPSDPcniBlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZqhrvLV3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dbYj8SKp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EDC1F00893;
-	Thu,  4 Jun 2026 14:52:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZqhrvLV3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176681F00893
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 14:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780584769;
-	bh=0wKG1FUWP1/KOA2bZtZ4IZOVHO0hCNC4CwXEkzAZ2TM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dbYj8SKprmTtq7NknjYXuY7DlgHFRz9AZtSU7lSK9mEJ3ERMC8ZtjMFtNZP8mFWpE
-	 RzoAsR7gRGGGyAzmDd8iXmpFF2oZvBXohn4qfVLlEjC2vA0OrQ8lJhdg/CPB/znXFQ
-	 bR406uMIhF2YzEqciUHtpZBRhikBec75Uv6+5NhkEel67YF88phpAGDFIMcOi60aCH
-	 27IEKd/aCLVjfWoGfmqu9owfsZp+brbgOzJtWCRlo9hWOhnv9L4eLoBZyjtheB8RUE
-	 X+cj/Ez11T3iHRZUAlv9IX/yL61kUn1LsTa8IFCN7oT3aIVS/4MZRPp4itLu5u3PjL
-	 /z3Q45rByENUQ==
+	s=k20260515; t=1780585120;
+	bh=J5ne3Z/TMQR9ZG4Ecx4/R22FXVsKWu1v0ZfgltHZk+g=;
+	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
+	b=ZqhrvLV3R0uZMCeQFqsSTHBWKK1Ln0JN8zEYz/srPE/pjiWZ8+iVX8KTegOUnimlH
+	 gJxpzM895qGE0CHICtWaXWWcePzODSSlS0a+oPFiIKDQipT09VddItJ0+7AxfzKzjb
+	 E4Q2T1UgUlDpMb4+RiOau3Am0asv4/vfqrj9AdXv261f36SLlCVnZL35kzFr62nn7Z
+	 HbK6f96TloPWBR65hd/uxIA1ETE3zsWTm16FxOWc8qGR/7eQd9uKzujorRdEaFLtMj
+	 4XsivjJcwAMz5kJjFWgjlLftE4/N7vbrvJnHf+0JIDLhf0zDQrPhIxUsIBG3w9FKwy
+	 Jtmx4uG0IfZeg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] KVM: riscv: Check hugetlb block mappings against
- memslot bounds
+Subject: Re: [PATCH v4 2/3] x86/insn-eval: Add insn_assign_reg() helper
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jinyu Tang" <tjytimi@163.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604142602.3582602-2-tjytimi@163.com>
-References: <20260604142602.3582602-2-tjytimi@163.com>
+In-Reply-To: <daac026e677c10b68740b16ed8ad2556bd9583f8.1780584300.git.kas@kernel.org>
+References: <daac026e677c10b68740b16ed8ad2556bd9583f8.1780584300.git.kas@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 14:52:49 +0000
-Message-Id: <20260604145249.81EDC1F00893@smtp.kernel.org>
+Date: Thu, 04 Jun 2026 14:58:39 +0000
+Message-Id: <20260604145840.176681F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-New issues:
-- [Low] Duplicate case value in `hugetlb_mapping_size` switch statement bre=
-aks compilation on 32-bit RISC-V.
-
-Pre-existing issues:
-- [Critical] Missing dirty page tracking for writes to huge pages when KVM =
-dirty ring is enabled.
-- [High] Infinite page fault loop during THP stage-2 mapping update when a =
-4KB mapping already exists.
+- [High] Unaligned `unsigned long` pointer dereference leading to Undefined=
+ Behavior and adjacent memory overwrite during 8-bit high-byte register emu=
+lation.
 --
 
-commit 1677f7a5702904834be9a413dad018d5713ace8a
-Author: Jinyu Tang <tjytimi@163.com>
+commit a80417d075cbd125216356389da2d074bd0a780e
+Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-KVM: riscv: Check hugetlb block mappings against memslot bounds
+x86/insn-eval: Add insn_assign_reg() helper
 
-This commit fixes an issue where KVM on RISC-V could install hugetlb block
-mappings that exceed memslot boundaries or map the wrong host pages. It
-introduces a helper to check mapping alignments and sizes, falling back to
-smaller page sizes when necessary. It also prevents hugetlb mappings from
-being incorrectly promoted back to huge pages by the THP path.
+This commit lifts KVM's assign_register() into <asm/insn-eval.h> as
+insn_assign_reg() so it can be used by both KVM and the TDX guest #VE
+handler. It rewrites the helper to use arithmetic operations instead of
+pointer punning to avoid relying on specific aliasing or endianness.
 
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 2d3def024270c..0adf017a2fa4a 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
+> diff --git a/arch/x86/include/asm/insn-eval.h b/arch/x86/include/asm/insn=
+-eval.h
+> index 4733e9064ee55..85251e718a775 100644
+> --- a/arch/x86/include/asm/insn-eval.h
+> +++ b/arch/x86/include/asm/insn-eval.h
+
 [ ... ]
-> @@ -404,7 +406,7 @@ static unsigned long transparent_hugepage_adjust(stru=
-ct kvm *kvm,
->  	 * sure that the HVA and GPA are sufficiently aligned and that the
->  	 * block map is contained within the memslot.
->  	 */
-> -	if (fault_supports_gstage_huge_mapping(memslot, hva)) {
-> +	if (fault_supports_gstage_huge_mapping(memslot, hva, PMD_SIZE)) {
->  		int sz;
+
+> @@ -46,4 +47,28 @@ enum insn_mmio_type insn_decode_mmio(struct insn *insn=
+, int *bytes);
 > =20
->  		sz =3D get_hva_mapping_size(kvm, hva);
+>  bool insn_is_nop(struct insn *insn);
+> =20
+> +/*
+> + * Write @val into *@reg with x86 partial-register-write semantics: a 1-
+> + * or 2-byte write leaves the upper bits of the destination untouched; a
+> + * 4-byte write zero-extends to 64 bits (matching IN[BWL], MOV[BWL]
+> + * etc.); an 8-byte write overwrites the full register.
+> + */
+> +static inline void insn_assign_reg(unsigned long *reg, u64 val, int byte=
+s)
+> +{
+> +	switch (bytes) {
+> +	case 1:
+> +		*reg =3D (*reg & ~0xfful)   | (val & 0xff);
+> +		break;
 
 [Severity: High]
-This is a pre-existing issue, but does aligning the faulting gpa down to the
-PMD boundary cause an infinite page fault loop if a 4KB mapping already
-exists?
+Does this 64-bit read-modify-write cause an unaligned access and memory
+corruption when emulating high-byte registers?
 
-In transparent_hugepage_adjust(), the gpa is aligned down further along in
-this block:
-    *gpa &=3D PMD_MASK;
+In the KVM emulator, decode_register() generates a pointer offset by 1 byte
+for high-byte registers like AH, CH, DH, and BH:
 
-When this aligned gpa is passed to kvm_riscv_gstage_map_page(), the fast
-path matches the aligned address:
-
-arch/riscv/kvm/gstage.c:kvm_riscv_gstage_map_page() {
+arch/x86/kvm/emulate.c:decode_register() {
     ...
-    } else if (ALIGN_DOWN(PFN_PHYS(pte_pfn(ptep_get(ptep))), page_size)
-               =3D=3D hpa) {
-        kvm_riscv_gstage_update_pte_prot(gstage, ptep_level, gpa,
-                                         ptep, prot);
-        return 0;
-    }
-
-This updates the protection of the 0th 4KB PTE in the 2MB block instead of
-the actual faulting 4KB PTE at the unaligned offset. Does this leave the
-faulting PTE unmodified, causing the guest to infinitely retry and hang the
-vCPU?
-
-[ ... ]
-> @@ -421,12 +423,33 @@ static unsigned long transparent_hugepage_adjust(st=
-ruct kvm *kvm,
->  	return PAGE_SIZE;
->  }
-> =20
-> +static unsigned long hugetlb_mapping_size(struct kvm_memory_slot *memslo=
-t,
-> +					  unsigned long hva,
-> +					  unsigned long map_size)
-> +{
-> +	switch (map_size) {
-> +	case PUD_SIZE:
-> +		if (fault_supports_gstage_huge_mapping(memslot, hva, PUD_SIZE))
-> +			return PUD_SIZE;
-> +		fallthrough;
-> +	case PMD_SIZE:
-
-[Severity: Low]
-Will this switch statement break the build on 32-bit RISC-V?
-
-On 32-bit RISC-V, PMD is folded into PUD, which makes PUD_SIZE exactly equal
-to PMD_SIZE (both are 4MB). Since C requires all case values in a switch
-block to be unique constants, evaluating both macros without
-#ifndef __PAGETABLE_PMD_FOLDED guards will trigger a duplicate case value
-compiler error.
-
-> +		if (fault_supports_gstage_huge_mapping(memslot, hva, PMD_SIZE))
-> +			return PMD_SIZE;
-> +		fallthrough;
-> +	case PAGE_SIZE:
-> +		return PAGE_SIZE;
-> +	default:
-> +		return map_size;
-> +	}
-> +}
-[ ... ]
-> @@ -511,8 +541,12 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct =
-kvm_memory_slot *memslot,
->  	if (mmu_invalidate_retry(kvm, mmu_seq))
->  		goto out_unlock;
-> =20
-> -	/* Check if we are backed by a THP and thus use block mapping if possib=
-le */
-> -	if (!logging && (vma_pagesize =3D=3D PAGE_SIZE))
-> +	/*
-> +	 * Check if we are backed by a THP and thus use block mapping if
-> +	 * possible. Hugetlb mappings already selected their target size above,
-> +	 * so do not promote them through the THP helper.
-> +	 */
-> +	if (!logging && !is_hugetlb && vma_pagesize =3D=3D PAGE_SIZE)
->  		vma_pagesize =3D transparent_hugepage_adjust(kvm, memslot, hva, &hfn, =
-&gpa);
-> =20
->  	if (writable) {
-
-[Severity: Critical]
-This is a pre-existing issue, but does checking memslot->dirty_bitmap to
-determine logging status miss dirty pages when the KVM dirty ring is enable=
-d?
-
-In kvm_riscv_mmu_map(), the logging flag is set like this:
-    bool logging =3D (memslot->dirty_bitmap &&
-                    !(memslot->flags & KVM_MEM_READONLY)) ? true : false;
-
-If the dirty ring is used without a backup bitmap, memslot->dirty_bitmap
-is NULL, making logging false. This allows transparent_hugepage_adjust()
-to run and potentially install a writable huge page mapping.
-
-If a fault occurs on a huge page, KVM maps the entire block as writable but
-only logs the single faulting 4K gfn:
-
-arch/riscv/kvm/mmu.c:kvm_riscv_mmu_map() {
-    ...
-    if (writable) {
-        mark_page_dirty_in_slot(kvm, memslot, gfn);
-        ret =3D kvm_riscv_gstage_map_page(..., vma_pagesize, ...);
-    }
+    if (highbyte_regs && modrm_reg >=3D 4 && modrm_reg < 8)
+        p =3D (unsigned char *)reg_rmw(ctxt, modrm_reg & 3) + 1;
     ...
 }
 
-Would subsequent guest writes to any other pages in the 2MB block bypass the
-dirty ring entirely since the hardware stage-2 PTE is already writable,
-resulting in stale memory during live migration?
+When this unaligned pointer is passed to write_register_operand() and then
+to insn_assign_reg(), treating it as an unsigned long pointer and performing
+a 64-bit operation will result in an unaligned access.
+
+Additionally, since the 8-byte operation starts at a +1 byte offset from
+the base register in the _regs array, won't this overwrite the lowest
+byte of the adjacent register in the array?
+
+The previous implementation avoided this by casting to an 8-bit pointer
+before writing:
+
+> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+> index c8e292e9a24df..c80752e224ee0 100644
+> --- a/arch/x86/kvm/emulate.c
+> +++ b/arch/x86/kvm/emulate.c
+
+[ ... ]
+
+> @@ -439,25 +440,6 @@ static void assign_masked(ulong *dest, ulong src, ul=
+ong mask)
+>  	*dest =3D (*dest & ~mask) | (src & mask);
+>  }
+> =20
+> -static void assign_register(unsigned long *reg, u64 val, int bytes)
+> -{
+> -	/* The 4-byte case *is* correct: in 64-bit mode we zero-extend. */
+> -	switch (bytes) {
+> -	case 1:
+> -		*(u8 *)reg =3D (u8)val;
+> -		break;
+> -	case 2:
+> -		*(u16 *)reg =3D (u16)val;
+> -		break;
+
+[ ... ]
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604142602.3582=
-602-1-tjytimi@163.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780584300.gi=
+t.kas@kernel.org?part=3D2
