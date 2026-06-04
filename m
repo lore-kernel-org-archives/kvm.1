@@ -1,120 +1,132 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564AF4CA290
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 17:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093B8336896
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 18:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780595782; cv=none; b=UI7Kht9PSempbp9Xd8w+kwZhT8V/A3eflVNhEI/GdvNVS+Q1IdBjMkPGNqW50xQCgrg3AXXcTzYapFkhRQAmM5BFntL2iJPYc2O+AoflJjWVxW4iIyotf8sygAOyb5xzC3sL1fEi1D4Eo0DoNUfTZgXTl4JUrTOp4rTB0RrJ6CA=
+	t=1780597235; cv=none; b=FrXcCU/uIdDsRowQ3GaXOCGb0+JGjDZnd/cFypTNZxOjmxKmsNTh5p3LHTTH1Ve7+gVGtvg2FsxWqQ1zoSyt7lcRtteA3NLjKFEHHAIFQbpDPHhdrnCHvgkFAQDJzChT60I84rmy2YPjpx6+HI9CPgissDwCA1uuXuEWEtRTW5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780595782; c=relaxed/simple;
-	bh=BJKSJ0f1ghLKefz3RvJxRJoHhEprzQsxYPHdnQCwk0o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CbrMMaAT/vAUDOvTy0rV6FbtkxRVRVZC4HqyPf0OSlf90je01RfGyA1fKWTqzA5NK4uCg/D11vkr8GzW8BoN44oJJXDcP2wJG8f3NylDyvWIp0uRLuWNwnx0DMdoV8f6UrQAQPcsSEmM0AqjAT62DwAQfpH9VUgoN3PjXDcxwJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OREm1alv; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780597235; c=relaxed/simple;
+	bh=ouL5XvfeSLQ6GEaEsqJR0/FGgzHrau6qGhqQ/UmaVCg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hM2mrdLcw9SspWoTZuUPuM72utRbExIo0kSlwHZZVl/AhpyfO84AdYosDAs346FnVEH4IuDlkMA2qB5iIwu5XUKv9e+wOL0JHKcRfyBL8QFeBY+8LbOARkF2A361/LdF+bkLILKlKzhsEHyxtadQFxe0dxPXQ4WiyPrK3/JRtdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=bZJM9Ddc; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OREm1alv"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8428384f31fso744606b3a.3
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 10:56:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="bZJM9Ddc"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-91587626ae1so118827585a.3
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 11:20:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780595780; x=1781200580; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gT0auPM73vpy21EPQcsi9jdaJb4vCSUAPDWuR3ICNLE=;
-        b=OREm1alvflHAvccs15J9+KSUt9Kd2n87lT9D8LydQlI1E5exB1+yCGUckcaTQCe1uM
-         QCFnmZXZRTzcjlDK+omGCddSZi41zmCfCGNLGOp3zuMzAWHxDU0YzZjHzBp1eYKE1xj4
-         nYrmRDVnSB57n12CLoEw3Mg9FzMZmrEeo8pGwIdY/BWszbLoZxjsyVBXvZS3mZAjfZiz
-         jjxNy9Rr6KqIOscK+NAj1tEXg9KeOUXIf7P2eIU4P8rtbNw6H28KrAOfTfudPkgOaW4q
-         MwbLGQ227FxdvbxkenswA9dHgfumz7eI8joBwFrH4AZeJNVOySkJ9nsEe6sM05a28HSm
-         KnqA==
+        d=ziepe.ca; s=google; t=1780597233; x=1781202033; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cznawapF5vO4PWrDdsZF/fc6qNY58JTcnmMkw1TddjY=;
+        b=bZJM9Ddc41JZholXg+7Xw13JitkdVXhfvJNIwp+n21XOpUUmaTsj56rV12lxw1bACa
+         bymQmIsGk+gklIpxidxBCI7znUxxwGpMRQbMhTQnhzVUhy4a4DhwG+9fldnC/DIENL2x
+         uyHazBvUC8NYMS4CL7jeZldX2326HMV292vG7eDsYZptXRoYUa+0cmvE/Zr4vZPGRTo/
+         OO4mmsXFif3eGzAvDgoJoHZ6LUculXktoVTDGLHRvotMoqXWb7e4yXv+3b5vw0dQuq1t
+         eUbZCTx69hQK5MlkjNHbS+EdHvo8JeBKWNLiTKQHTUmN+hh5PJQSAremU83+Aky1zY+1
+         70QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780595780; x=1781200580;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gT0auPM73vpy21EPQcsi9jdaJb4vCSUAPDWuR3ICNLE=;
-        b=G8zbqJayiqJ7eyds/oluOiujG6P0uiM01dcJ7pbxpwzXYgl1JdcqTFg0hsyyUg5MaO
-         fLUYWRyPmgWcGlvaPkK77OauI3nyCrYMSSMIY2xnAaACWjLnt4WfpuQQ8mvR1ZVZhtFp
-         cjSM+eYC0BhihuRgJgWps+l5+KoMswvMO45pFVdqolxwkFyHSFnHn/Ps4ZatAK6ugJZw
-         BttTun/CVj57hd0vQZACgaXgZmphexODkU47haJbMmwt/pXqEuhkmuLgKgV0ua3lHCjV
-         fGNivnx7Ohul2S/2DbW20CMM/3j+7lddyVWARTt7gSm2z21ITelUi+C1SWEHL6mGwsu9
-         +rHg==
-X-Forwarded-Encrypted: i=1; AFNElJ+YRGS8TnXn2Tk66k5pd0Yn1UXI9cOuyK7MUj5lUh7sxILyBJ4YWJq5dDCuxcdCUv/jk38=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWlXgLtlJNxupW7O2FhiDHA6+3abVmQ5iaZY8tv116TKjniUzj
-	/ynONkL3WPCSpJ4yMWogpq2DvtiIwK3ZT8XCryInn+TT5bkfKCLG9LY50sY8nBGLvVExwWFiAk+
-	LFZhj8Q==
-X-Received: from pfbcz12.prod.google.com ([2002:aa7:930c:0:b0:83e:c835:edc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d20:b0:842:21f0:5113
- with SMTP id d2e1a72fcca58-84284f790c2mr8883901b3a.24.1780595780380; Thu, 04
- Jun 2026 10:56:20 -0700 (PDT)
-Date: Thu, 4 Jun 2026 10:56:19 -0700
-In-Reply-To: <20260604020143.748245-8-jrhilke@google.com>
+        d=1e100.net; s=20251104; t=1780597233; x=1781202033;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cznawapF5vO4PWrDdsZF/fc6qNY58JTcnmMkw1TddjY=;
+        b=AbUoGBl/PKzacCzQ0Va2BBaoVEUExscyZPuEsdmqQT2SvOtTRM7drtR5xOFFZeHFal
+         n4oCJTz5SAiq6wKthHYQqpnVOwVTP3FpnibH20JQEejy7+c077jipoVixuq1ncXLsgjv
+         VusVCGkxtzgwmZZUoo/or6wGoW0rUxsQyoXZOXjj/DKjLLM9PgXOr5tCB4/O8OHqNoH/
+         9ZtpYcI26OD29s1/sFYmXrluZOMzD7Ivr/Rc8W/bNkK0OpygNfdDf8RFEHKFgDGj/xu0
+         PxarPQ7GEfiYaMykDhY18QeyTpzxIgU7GFbiwlWbNImmfVeGvge6ycXUQdaZI77t7txH
+         KFxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8g9qYEpOTqyLie9IRxReyAjuhrk8Oum3Y82luJt41GaXgeDrOld0yDrkW0TqO3ylxSUSE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsoKB76Fyn3dKQTq+R4GujxZDs4R1mw0GBs4kLZ2fmkqMtPQos
+	BiZiQW3Erkv5B7Xdi4yBCT9tzJh/TgU53WhBASlQ8bCD8nTcoU4WGcZXxK0enEPwdxc=
+X-Gm-Gg: Acq92OGAM+UasfbGBhiW0ka6FO455UM9FSGJph4s9LJqcnj+eCnptNpzHn9T2aIWqYR
+	7sbZjcN9XU04sWoMl5TggqIAUKxEUxatJ1WL3kCUZlhwJDI76Wu0FTF6+yIDKFj9dqZk+S1s71E
+	Xgp54BTbEQT0ASCdiDS3rmdtuQKZDIHza9ynqGN4J31PqFAcp2q7yAIW6PFcPEFf23m/FL9vG3W
+	OO0ZDFq+YIpI/VrPIMxvx5gZownkv8JmmAtjB+GBQHwj5hva+2nnfV5kwrLE8SnFM07BH4pim2s
+	OlSfQFBSw9cF2d8D7EbiiB2jFZ7jgKWJd1h9Bnokq3Fw2K7BRPcdtctIafoTEdJ1KDaeD9LSUEC
+	m5mL1KyoHMYtfQhjUwT2StDuW1m/gq5oKyfRS/likKoLbv3ZgPRc+3Z6rVwVw7JlTVZiAi4g+wC
+	c7PSbxl8+dpaV+SsdI8mAfH1JYBXOVY7itXMeoWwOfiSHDRxfuYuW3Y0cPeH0svr/W9KAuiCIPW
+	uuerDoyAljeLXPr
+X-Received: by 2002:a05:620a:a414:20b0:914:afc1:c66d with SMTP id af79cd13be357-915a9c75c96mr40356185a.11.1780597232897;
+        Thu, 04 Jun 2026 11:20:32 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd051d61sm58430626d6.29.2026.06.04.11.20.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 11:20:32 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wVCgB-00000008erz-2jW4;
+	Thu, 04 Jun 2026 15:20:31 -0300
+Date: Thu, 4 Jun 2026 15:20:31 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Dimitri Daskalakis <daskald@meta.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	kvm@vger.kernel.org, xen-devel@lists.xenproject.org
+Subject: Re: [RFC 00/12] PCI: Add support for Scalable I/O Virtualization
+Message-ID: <20260604182031.GB2487554@ziepe.ca>
+References: <20260604150153.3619662-1-dimitri.daskalakis1@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260604020143.748245-1-jrhilke@google.com> <20260604020143.748245-8-jrhilke@google.com>
-Message-ID: <aiG8Q31nF2L1gNwa@google.com>
-Subject: Re: [PATCH v5 07/21] KVM: selftests: Verify IRQ bypass works in IRQ test
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex.williamson@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260604150153.3619662-1-dimitri.daskalakis1@gmail.com>
 
-The shortlog is at best misleading.  There are zero guarantees that IRQ bypass
-is supported and enabled.
+On Thu, Jun 04, 2026 at 08:01:41AM -0700, Dimitri Daskalakis wrote:
+> With this patchset core enumarates the SIOV capability and can identify
+> SIOV PFs. But there is no central mechanism to allocate/manage SIOV VFs.
+> To support device pass through, devices will need to add a vfio-mdev
+> driver with IOMMUFD support (or something similar).
 
-On Thu, Jun 04, 2026, Josh Hilke wrote:
-> From: David Matlack <dmatlack@google.com>
-> 
-> Trigger interrupts from a VFIO device instead of emulating interrupts
+There is an enormous amount of missing work to do something useful
+with the SIOVr2 stuff. IIRC there is even supposed to be BIOS
+components in this plan and there are some missing PCI SIG topics too
+IIRC.
 
-It's not emulating, it's synthesizing.  Emulating implies there's a device of
-some kind that the test is mimicking.
+So, I'm not sure how much value there is in merging just the cap
+discovery without a roadmap for the missing parts..
 
-> using KVM eventfds. This verifies that guests receive interrupts via IRQ
-> bypass.
+Also, I'm quite surprised to see this out of the blue, there is an OCP
+workstream that was building out a standard that outlines how all the
+different components have to act to successfully implement it.  What
+is in PCI SIG was just some minor foundational adjustments without any
+context on how to form them into a solution.
 
-No, it verifies that delivery of a VFIO MSI-X through VFIO=>KVM works, and *may*
-verify IRQ bypass.  And all of that very much relies on the eventfds to be in
-place.
+I think it is extremely premature to merge anything related to SIOV to
+the kernel. Join the OCP work stream if you are interested. I think
+the general feeling was there is not sufficient interest in the
+industry to do this and it has gone quiet.
 
-> @@ -119,7 +160,17 @@ int main(int argc, char **argv)
->  	vm = vm_create_with_vcpus(nr_vcpus, guest_code, vcpus);
->  	vm_install_exception_handler(vm, vector, guest_irq_handler);
->  
-> -	eventfd = kvm_new_eventfd();
-> +	if (device_bdf) {
-> +		iommu = iommu_init(default_iommu_mode);
-
-This needs:
-
-diff --git tools/testing/selftests/kvm/irq_test.c tools/testing/selftests/kvm/irq_test.c
-index cf4568718cee..2e7e100d4815 100644
---- tools/testing/selftests/kvm/irq_test.c
-+++ tools/testing/selftests/kvm/irq_test.c
-@@ -235,6 +235,8 @@ int main(int argc, char **argv)
-        }
- 
-        if (device_bdf) {
-+               __open_path_or_exit("/dev/iommu", O_RDONLY, "Is IOMMUFD available?");
-+
-                iommu = iommu_init(default_iommu_mode);
-                device = vfio_pci_device_init(device_bdf, iommu);
-                msix = vfio_setup_msi(device);
-
-So that the test skips instead of failing, and to provide a helpful message:
-
-  1..0 # SKIP - Cannot open '/dev/iommu': No such file or directory.  Is IOMMUFD available?
-
-Because bluntly, the assert from the VFIO infrastructure is awful:
-
-  tools/testing/selftests/vfio/lib/iommu.c:448: Assertion Failure
-
-  Expression: iommu->iommufd > 0
-  Observed: 0xffffffffffffffff > 0
-  [errno: 2 - No such file or directory]
+Jason
