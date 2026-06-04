@@ -1,118 +1,134 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903003BD228
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 05:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65513BF662
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 05:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780549808; cv=pass; b=GmqH6w886YNCuRVzgqK+epD44oVJrB3v0HuboMymWlLtixD+k3BQMJ9KLv8vUBMqzCYE/T+Z4FTJTWViDPUqRtii3YF51KMI+CVvQvIJyHoMC3+V4YCYGmMPLCTwecfa0ChkqqVOyvhOKOk3MX9fyzoHZu038WZ5VxawaDm7M+k=
+	t=1780550617; cv=pass; b=lGBftqv1+FprbcGhlcxNV7lIPMjeEZ3Xc9n0FNWfp2bryfJJrAGzu3Pzo8adLgYRNd8pG1TutZrSUNtq7J3jV6NJipr7mApCmY32mHzPLXj94+zPuM9cCwvyb8sxybjE35y/VMw+HVpabEp1tHkzNXXzunNrFK1miFNflPt3v1o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780549808; c=relaxed/simple;
-	bh=S35ZVWeDDxTN5GtsP7ClV3ArVsjsJx5Z96CKf1ahOUo=;
+	s=arc-20240116; t=1780550617; c=relaxed/simple;
+	bh=4HC8s43tFJbSgyaqkLOVyH2ryMUhq+vDGxIzbU0F9vo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y0Oo9vvFw+CQDu7UDlc8SkJM5PfzVUDY8sOGrXOs5YYYRpZzpjN0rum8gOGSrrWKleG48ZovxpCv8Zf/WvctulZGaBUnqF25iggaIU2/M2EJbhBfteEt1SqQGLu7MNvZKW6nddc3ip6uRW978KZX3v0xywxY4EoJs/tZGqphe2g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PGBewMit; arc=pass smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=A2gVoWq9U4TbTGYUx4Kqs+0TSy2tLburpvXLLlyeTcYYrLNrKL52uFR8DrP2DTfgqQ52EzIIuMu+cjzfVRkeRsCIg/KxMmVRqqxdYjzj2qjpVofNdIWUB01CKmH4iCW1kZSklwvv7Eb3Oo6fC1g+RuJEu2TqRKPJJHo4VDzaRxA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=osQ1CtVh; arc=pass smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PGBewMit"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-68ced08613aso6293a12.0
-        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 22:10:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780549806; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="osQ1CtVh"
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7e6deacafa8so866923a34.0
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 22:23:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780550615; cv=none;
         d=google.com; s=arc-20240605;
-        b=KAnLsbHpeQY2zcuB2mXvZYle951q1SpVciWFGNgp3kwZv9xA02wa58jsSKWsnEp9iU
-         0/s8hV3cLuAAT2F1rS1yccUGKd79p2r3zIwzLo9jEGkKEIAnfxStkUv7s5jXp6o4+17o
-         iGq5+t4FEM7k/a4rhnOK2tX4YKE1NIrziXgHYq4XlEwJr1NkxmfcxIfiqJf+nO/LgcPJ
-         HzHE2wOcoYKzKgoEs3dgzfQZ1Az+QdaWpXPxFxSiUeYCtBJzQiUG2XFmyWSxY2IskCWi
-         uFbztpWowmJmbkZ4SeliBvx4rtecapOfSjZQ+6H/onOlmqTcmKv2aOSiPxPoXxsNq4i7
-         cp9Q==
+        b=TY3aX1mRgTJ1gtZrvywSbd7pAn7zCTmfEAkY3OfrIZ5r4OL6mWWEljKVdE9wbXdQIR
+         O3Xwgj9Z+NuyNxSu3iEv7KIlc925UPcKSg3DJjPBd4duwtxbjLVOxrgn27PlB/CQL9EN
+         ANbffdYtN4ufOtEmV7gH7cpLRP1KasFhxpht9N9KiafSv19LxZPlGmCvJOpSrGcLvUtL
+         SrU4qtIZzMrSfU54J1pNHnPeOFUuRI75zSPeXp5vwJtVAxpuDxz2v85Ct5AebJEP0oNk
+         jHUoUmh+zIhjRFDWxAIo/6EXUbyja0zMjgJdmlMjOgebOv0pgiHzPv2KC4OTEkyvVWz5
+         W0Bg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=S35ZVWeDDxTN5GtsP7ClV3ArVsjsJx5Z96CKf1ahOUo=;
-        fh=7U6RgtWSRCBrU6hz55eMQwMORKfO+P5ilDqkBpleveM=;
-        b=Sgy4b/ujrJnKvOD+J4cw4XF6QdHaRo/Lxyey0kvVhtu9UW0rKJhjgKKsSbdUBlO6au
-         TNKCK/yTLtzUfGCkZSpG+whhfSThUCK0nTZ22OeqAcON19LBM0uwuDMUT7jtkwVbSSew
-         FKy+CsncU4PRw5xCN4L0F3bQ0q3XFiqfgEM5SQS9NYaQHBDWabKecVALxQlD47kwECNt
-         OCGizsGC6d84eZF5s1UsgpwfYLssulZqateBnPYrVfuyzousZVUFBw/kxowcRf3OKmzC
-         Tt1yMUePHeAHAf+Gzpb3AdJs8IOY+YZzBAELAoiQHRFzuKwVLt+uBltzNioTzsBBSq/C
-         zxRw==;
+        bh=4HC8s43tFJbSgyaqkLOVyH2ryMUhq+vDGxIzbU0F9vo=;
+        fh=+3+XuaFuBaapdlSlZktHDNUX6xYm/zBKL1Ec1wrMDrA=;
+        b=Vt294Wvi+G67PCBuWtT3J0SYkLglmBn8p4+ETKlMKiragD3XGy/SvB30rseqGRZOLX
+         GyCsmY/aEFEFL10tQKU6GvXiN5Fuw80m2k5ZKJak9arr4gfFVjN8+c5FB5j0DAnxlufz
+         S43dzlo6JqsR16c+8PcxgDinFCoR4UNxkEMtAdtXW3UBodXG/SzjORPBv4EOA9cz4OwK
+         QPe3kuYx2ns3H7GJTQ7BU6P1qRuD9kWRIQB7hcyeJ5r6E8RpHK6t1ICEGpV3mYg5sJ5/
+         bd4Gcyuu6ac7WvoB6xgsRs3He/eLCfYHuD0DFTk+hBJD483UNHK4GZqMXEmtzin6PrAv
+         4SOQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780549806; x=1781154606; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780550615; x=1781155415; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=S35ZVWeDDxTN5GtsP7ClV3ArVsjsJx5Z96CKf1ahOUo=;
-        b=PGBewMitRaFv3LGLrGik/RMHgEkGv6wH6hHKacvssnHQl3tmPJb3W4LuW/pDj9/1YK
-         8YeTIKDxChsWZM2Y/joHhMBfNRq6anaa67PATY8Tc53ldtSn5cGcq7OtuBR0tC+Z5xME
-         fR8XRlZ5GXOStkHbf4pFcgx8gXL8hF4vjtYXbcp51ITAGwHurSuzQt3dlS0+eFppcmeT
-         YZOfe6PEQ/+lF/qYAEsdqFwKg72SA8XJHUDXeS83uLPFFNtWLQSD2QzAOyLqaG2tDGaD
-         2gJT3G2cosU8g0AwZz8xTO+ko79z8Xo2Ohk7JUWyK7wmBh7Q4eT+7xktX3rpP2GIqUjy
-         LNCg==
+        bh=4HC8s43tFJbSgyaqkLOVyH2ryMUhq+vDGxIzbU0F9vo=;
+        b=osQ1CtVhcrS1F5zIUEc+lDa6/mST78Xghsj/4zh53QhyxbiAuWbkTGYF8+jQfv4TKD
+         NW8ZUtTtntl6OzeWSJgjg4tUCGHi20I0BLP0lbmHwvO5l6yCNtAkNnUtrXBQ6UMhh5dc
+         wtCrUNbjHMYDRX/uBRLyUtFdBhgnxend/3dQxSeqj/vcW+EXZpdv3hLBqPu82L7crSmM
+         eFVsVR4AIucOyH5sQ0nnnOYR99GTWVZFO2zwP92NBr3pc4GOl23zxITF14XoJsVX8XCn
+         yz0+qkPhBaDPJBtUckFMOXp/e8VoAVPQJhfimw+j0v5tY15itPubgdZwcBCTcdubcmPA
+         70jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780549806; x=1781154606;
+        d=1e100.net; s=20251104; t=1780550615; x=1781155415;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=S35ZVWeDDxTN5GtsP7ClV3ArVsjsJx5Z96CKf1ahOUo=;
-        b=BIGCxaodGn6sWBAGE53QlbjDZaoRTzbXQ7ue88g0pIKaeQFswMrRGBV4M93LpKpLg9
-         3Ndqr2byQdgTEUL4G6EMtfms3SxVYLxBf0QK6pAfqcifkVcvKQEJbGgW80EpsdmJQ192
-         ggpVcEkuJFrtVETycQwbsqbJsEecqx9CnRdYL55kLWlyq8nk2ZbGcMJLLAdZ1Dvn09Yq
-         IhLJtP2S+Y1iw1I6XLwZ8h2h7ZZL8nblLegHb9Yq1utpH89Y5JB21AeX3f4jOPd0MmD0
-         Kq53FSoq6FBbgGNMNdtBlE7dugVKBZchgD+d6JaoL5Qt8ytfYdJwgNNFQ1G5kxNHGZSH
-         a8yA==
-X-Forwarded-Encrypted: i=1; AFNElJ8b8Rcq25io2V31vCMK55XexyfNKL4IAvToxiz8aP2hXZoneYM5jR9KkG+XfMr3uNO/WDE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHxVbeYT4O+fWYF7ToTh7eh+nVWJEKAAfKcFVI/54HavxqVoPS
-	f9kWfhX4EvkBk+BGy1Tpg5T08+qPklNJbFr2W9OL/k+S6mMTjCen7GLhncEczyNIEod56Jj92FP
-	Rz3FKE5TtH+kOz3gdihmaLYEvwcdUIwjfBLhNXBIa
-X-Gm-Gg: Acq92OEEOMyYxoVM3+4XaWkxYtourXJD5ZNWwCrdibfNlSHP5Y0W1j0Bxy7ZODSeHrQ
-	nXbuUe5AJu7f6nRY0OE9Pr0KzMh7/hhF5wbI9c/iwp0OOdoJLMW4AgIEnzXZGMpzI26q21brDc8
-	1wmy2sZ0JnX7v+dobFmQ9PNWwwLsPzQgs+QNj8vGhT0qh22iIMDRZngwgoJEPLbUVquEg3UcxYn
-	MLU2a/FijwQNzGEfW5Qr/8/byMexSFpPXtXMpnmS76znjwqACRitIe+B9lfZLjM1HMYZ39J/1YH
-	AdJ/MwyOtWiFlq0aoQ==
-X-Received: by 2002:a05:6402:1a55:b0:68a:83c2:9c75 with SMTP id
- 4fb4d7f45d1cf-68f1158030cmr63817a12.0.1780549805644; Wed, 03 Jun 2026
- 22:10:05 -0700 (PDT)
+        bh=4HC8s43tFJbSgyaqkLOVyH2ryMUhq+vDGxIzbU0F9vo=;
+        b=sWXKHhEWaSdGy1S8r168KywbGF22NGcVNSGOb9rPwfiIKFfrH2KT7r5SyT0geybUha
+         NF6Ihx6qEZAJXULvtE6qFePUm3lQHzlZWaLYscjFNjSvjwQwlr/ry7onfvP/bsxpC+hN
+         QZq6ZJAkng+TMVzPQW6X5kLnBUu4oa7qdjvikcD1T+ZMs/9r5cNUldSFEWSYYysd/j85
+         NUVA8rEcnr58EMXWyX6frVdrcbtNaLQ+N6DCrXMsVroljgEgpVefCDFsM+wlSsSE+ubf
+         sktUaJoewkZ+NGotaaDdAdHSOeOBTMUK3xdXHP0KCVIStDu8dUBvQal0Gd2KwMY923wG
+         acyA==
+X-Forwarded-Encrypted: i=1; AFNElJ8EeDnAlXY5JjkdFODuo6LqWWiBB/AJun28t0G3BOp130QKoiWFYUzq0ZXOtug4lNXORd0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyd4oxQfjsphd/TaafajRCUSTEzrOHlXEDNF6etTcZEt7OGLdxi
+	TglFyVyYK07tPFhs3o5C7d0iUGIgMeDXsZnoyvR1BxQTBtAGstQgUiAl97V/XxlSBmBdIaXQEBV
+	yeczpiYzoGulNU9m99ed6eAxQxibS0+s=
+X-Gm-Gg: Acq92OEw0iUp/bU87nUS2w8YaWcYYxVU3zyiJYsBOMT4Gih7atot3WqxOtFJKk8dFDj
+	6VXlqgM+eCM2sMf2Xjwq6lyTjzv9o9SHZh+GbWfimnQj/W9TLzclzbu96+9M0kmLPqpwZHZ4+WW
+	Ll6iYll4Q+MAbQUAI0tyfdiJIkkBmhOEyexvPa2WHvqKpBvAy7aGYgrEapvG7qkBBBANPInadxN
+	Re7AOEnQOLIm9MAFs30fZdhoOaxkQQC6WKGnWvSuR2nUmrIb1ryYrr9yP89Hb7VOm/BLwB3CwXu
+	RN1ltl8e3+lmanTqBtpuM4U=
+X-Received: by 2002:a05:6820:c2d0:10b0:69e:5e9b:a47d with SMTP id
+ 006d021491bc7-69e5e9ba739mr125726eaf.5.1780550615598; Wed, 03 Jun 2026
+ 22:23:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1718214999.git.reinette.chatre@intel.com>
- <2fccf35715b5ba8aec5e5708d86ad7015b8d74e6.1718214999.git.reinette.chatre@intel.com>
- <Zn9X0yFxZi_Mrlnt@google.com> <agPUfzbMzTU1ebii@intel.com>
- <agY6JuEJRhwpwlRL@google.com> <aga+jCVUW0d4GufQ@intel.com>
-In-Reply-To: <aga+jCVUW0d4GufQ@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 3 Jun 2026 22:09:53 -0700
-X-Gm-Features: AVHnY4I35ycO2NgmjczPlvA_AnXBGCMSXh6LORUscksc-B6RlXqcRzaIQ4f2KCo
-Message-ID: <CALMp9eSqqsEzd5MSeO46EdC8aOwhyhU7e2bOW2LSdnDQGXEVpw@mail.gmail.com>
-Subject: Re: VMX Preemption Timer appears to be buggy on SKX, CLX, and ICX
-To: Chao Gao <chao.gao@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	isaku.yamahata@intel.com, pbonzini@redhat.com, erdemaktas@google.com, 
-	vkuznets@redhat.com, vannapurve@google.com, mlevitsk@redhat.com, 
-	xiaoyao.li@intel.com, rick.p.edgecombe@intel.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, chenyi.qiang@intel.com, 
-	Yosry Ahmed <yosry@kernel.org>
+References: <20260603-rva23u64-hwprobe-v2-v3-7-5529a7b28384@gmail.com> <20260602232859.3494A1F00893@smtp.kernel.org>
+In-Reply-To: <20260602232859.3494A1F00893@smtp.kernel.org>
+From: Guodong Xu <docular.xu@gmail.com>
+Date: Thu, 4 Jun 2026 13:23:24 +0800
+X-Gm-Features: AVHnY4KMEU2WhD0nvjMwpU3NMXUXsI7Ox3Ri4eRsECUeb1hKlU4cqSpj1AHXzbM
+Message-ID: <CA+Ck9FYWCbHO6-BU48KLx_Lov7pJiSbAP8j3Te_uqFFq81rUjg@mail.gmail.com>
+Subject: Re: [PATCH v3 07/15] dt-bindings: riscv: Add Zic64b extension description
+To: robh@kernel.org, conor+dt@kernel.org
+Cc: devicetree@vger.kernel.org, kvm@vger.kernel.org, 
+	sashiko-reviews@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 14, 2026 at 11:35=E2=80=AFPM Chao Gao <chao.gao@intel.com> wrot=
-e:
+Hi Rob, Conor,
+
+On Wed, Jun 3, 2026 at 7:29=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
 >
-> >> EMR158. VMX-Preemption Timer May Expire Earlier With Certain Large Tim=
-er Values
-> >
-> >I assume the same erratum applies to previous generations as well?
+> The properties block requires multi-letter extensions to be sorted
+> alphanumerically. Because '6' comes before 'c', would it be more accurate=
+ to
+> place zic64b before ziccamoa?
+
+On a double check, I found here Sashiko is flagging a real ordering issue.
+(Although it exists before my submission.)
+
+In current riscv/extensions.yaml, zic* entries are split into two groups:
+one (ziccamoa etc.) sits above the Zk* block, the other (zicbom, zimop,
+etc.) sits below it. This is wrong considering the rule says "# multi-lette=
+r
+extensions, sorted alphanumerically".
+
+Would you like a standalone patch that re-sorts the zi*/zk* ordering
+properly? It's purely cosmetic.
+
+If there are no objections I can send it as part of my v4.
+Let me know what you think.
+
+BR,
+Guodong
+
 >
-> Yes.
-
-This test still fails on our SKX, CLX, and ICX systems.
-
-Sean,
-
-Were you thinking of enforcing a cap on delta_tsc in vmx_set_hv_timer()?
+> Does it make sense to place zic64b in its strictly correct alphanumeric
+> position, rather than continuing the out-of-order grouping of the existin=
+g
+> cache-block extensions like zicbom?
+>
+> [ ... ]
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260603-rva23u64=
+-hwprobe-v2-v3-0-5529a7b28384@gmail.com?part=3D7
