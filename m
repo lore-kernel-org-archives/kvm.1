@@ -1,62 +1,63 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE048311C2C
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 15:01:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8B42F8EAC
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 15:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780585320; cv=none; b=Cjq8cuGziWMUuc+C8MXZDi7PmQB9pnjMAssaRYfsJ8SL9sLqgi/YrjJXsBU2NJpgQ5vIGtPEAOp1RXuSvhQX/8U3yky+TMrGEWxclJZA3yL9oqQevGmgxV3GjIPQN73iAOfXXgtR6mT90FAAt6PyZE+4oBUhV178tmUaPa8DOuc=
+	t=1780585323; cv=none; b=dTm2Dgn1i8CtcUf7KuJhCFhD5DYBtLDdndCRlubS2Uo44yIw0pvmY0ORVjf65nQPRrcGxpW+dm8UenzeSBfJQdLgcerpslMCoeGkXkirSbM/kAr30P8Il+awvUNV3O1ZCboFIKXW1tK2kc+rVuqhlRZlTigIGWpuhDBEuphnJrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780585320; c=relaxed/simple;
-	bh=0Ar2O/m1mFA/SWPDJctjhrIohphzRzaX8wNTqWjqxQk=;
+	s=arc-20240116; t=1780585323; c=relaxed/simple;
+	bh=lmjqe+wz2MLmpS3qsZR8wvfKLvk3gZM+AULrTz1+wsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMVnGljHF17ZQkJHGfQAliqyTBf8PQS0IzmHHq132W6Pobe1a43zb/GDunO3tBzNDHaWGuK+j/CiNuozkneDztGPhGRm/7zvckb2shtwGFu2s8Xv9MibBdvCB04igaI9zYT3ljtBEmatFuOXN5pq889xM/MoSKR8aqSutuumlIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DNMOXCox; arc=none smtp.client-ip=209.85.214.181
+	 MIME-Version; b=pHV5MDC+bBivrXwxVmeitvZmHlcDFeQ17ZJoQKTnLd35mezpnRFg9SrSZ82iHHtYDgs8F8G4rCz7edJgKk2/kYCDOUfmerUPO+jq+urmd0pkLX9T2MMW/ZwTJuaWmDuVgMVEf4PPZM3ti49ON257w4DO7Fi/02T4ID8UTJTyl9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XA4Ry5ci; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DNMOXCox"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2bea7176c72so5682625ad.0
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 08:01:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XA4Ry5ci"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-842264dde84so1014638b3a.0
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 08:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780585318; x=1781190118; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780585321; x=1781190121; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7P+ek6ocV5HFyMB6++Nc5HRt5X7Za6z5O1aRcqqwv/w=;
-        b=DNMOXCoxrUHiUOV4KEe9HqS8ipCvh3dYTlAiPLS0TekPI+rCak8Pue1H8BhflTSA7/
-         LPXm3odtJyEENJieWBtCKveJVQmrlGohe59qmtq1X90QUOJB/6mqrB/dWcT6dteFshut
-         lCoeTRfbHc4WXTbF6sHT4Y+5fyGPTRhD4hnkC/wpkGZE2JVTyK7BvteRTL9nhFb1se92
-         xadx5ELEjzq2gh5W8Ns7M6e5GR0SFPxQZbbvjZhnM3wehRK+RhiiLCXHK6vEJF5KYZmP
-         tRWKlbVabvgFKUUNzifhpsbCYin0jlY9xRG9/QU1B7zl6xBSXkbgs0zUqQsTi2tTiQJ5
-         UUug==
+        bh=xxHR67fZ2aTWHsPIWuXVLfBkGwXwQ/JLm/nLvvGQPDw=;
+        b=XA4Ry5ciTsxosLc4NggAo2/LVj83bLmwFT8IiJgILcLqY/MMpeQ5QT9BPLFzeJsdzr
+         KORDK7r1iMjwe3MF2c8S1TXip5PiWsQN7CpgOpOKkUiEeKLf4S9OzfyqqjJlsN0C4wiq
+         qL/AlH5yD1vUBHHCZJrf2wE3J4i0r6G6cUv16bR22y7xJmvmewOyJf3HWxQd6vX0NQoW
+         nv2cqM6RQgjKI/fUHAEC15Po1YtKzNff7rjHckN74xDVhVmITG2Mp8MGyE85zFHJUh9b
+         4h/Ced+ztJqMc8Qdp0y5TO28L5hTnzrLQc+VONN32yKEez2tQ+SHY/S4WB7JvcyRlAuy
+         DPRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780585318; x=1781190118;
+        d=1e100.net; s=20251104; t=1780585321; x=1781190121;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7P+ek6ocV5HFyMB6++Nc5HRt5X7Za6z5O1aRcqqwv/w=;
-        b=aeJQqqT+7RWERBtPwAIjsqR+9a6TgYGDQ2Al4bzK5oZq9GkdOvGe3vpK2FkjbSkA1Q
-         CI8dgnYuRmb9OkEcqjdJtzqHBqgblukaSSwMVQLSSslRvF0VV8MZWlcaIBy6qqw0NI7w
-         TLjTtU+VcBplMc7w/mPwegP6o61h/lZnK2PbapqJku6F18br48WEHX9rrcHDx2gPa8bo
-         jGJgixCVJsyq1zFoHeoMAwwHIzTw2Xo7pfBkZ9iX3cP60Glofs4VFi90HEW8MqEuo/Wf
-         Fq9mlJTYL+5SRwjjYuqVncN6Pic0P5CLKMKwqYO8OnfQ4YITpnf1HuTw+mn2AgIKEQYu
-         NFBg==
-X-Forwarded-Encrypted: i=1; AFNElJ95MPUlM4Ly9/gCS8hr9oyupLBhLNbhUcdfUFMHS4SW9goYHZKedUQumuMpY+5wJ5rggFI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaV3Ei1SVyRtBVXwNFbfDdSVRvdQF2WhpWfbXrSXbU9/qS9Qpl
-	DgilA0wE4tt320go0iVEw0Gz+qpKvz7VO5RIcLvRXhKCkJ3lk44BxB9x
-X-Gm-Gg: Acq92OGoXfte/pTLDSo03Ukb1W9IlNOJ3yjWprAiEosSTnCkWAIFGXdfNrwubkkLvkn
-	zBAv4L2xlvo71t5rouN3/xAjAVbfjvM+gyTH/l/VjK2c+ueD8IBZAyDLbMWuDfZjKlwPRUO3kNE
-	09c/S3bhAR/xVArah3jvpV4xrKTZLLvwkZ95CAft6DFZkdO7w3qrEFtp4ddRgIkqAGyRsbnl3j2
-	z400nqua8FlxHgxahoMcJYGcPLl1AYnPFsoGTbodhoElGVJBH8aoAm89EQVDRQFtx6o/EQlRnXI
-	0RFJIojIn5j9f+lBqRxwapF7V+dUqsQCWWVvw75B6vUbtJTHynNVMEd4gn7EQVd+wkUL4ZvoOaI
-	PV+CXlpHLS9SJ2LzidEJPZIHz0dpSP9bs5znPbxcIEXQ2MwNjfumeZBNENXwKHpfCh6qd
-X-Received: by 2002:a17:903:948:b0:2bf:305a:310b with SMTP id d9443c01a7336-2c1639edf93mr84099595ad.1.1780585318015;
-        Thu, 04 Jun 2026 08:01:58 -0700 (PDT)
-Received: from localhost ([2a03:2880:7ff::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629d40asm57714915ad.64.2026.06.04.08.01.57
+        bh=xxHR67fZ2aTWHsPIWuXVLfBkGwXwQ/JLm/nLvvGQPDw=;
+        b=U5NwAnsUC1lR3GGpcx7bNioDhrDvxypxIOJo+glPWk5TnHCHQ0dedY4GRsJ8MPCRv2
+         AbLvbAHk2qBMr755BGMsRzzI92tQtTV2Nk+gMW+msxjmPVEY04/ecvaoX6Ofpm0ITJ75
+         UVSgbE8CTWLCPlbdAqsnmpzvg1GU7GywaWFnecFE5B66Nqns+hsgWzvWn5tD7F6k66tK
+         nYQOh17Xntb7uVWgL2Keq17x+sH3bqR35S6CSQhovYYfL3ismQCoJ8umUlSow7KN04xH
+         sQJGmDgw+7CrABEt3tWhLEZLuMxBr6MMz1Dj7hgAsDpSpUkIJexSC0npOO4YmKxyW32x
+         qDOg==
+X-Forwarded-Encrypted: i=1; AFNElJ8PP9fztiW1knEekKz4SHdSuOye3ZpKA3QWGFHYQs/AFCPnysrqf0Zq5rB5C3yNV8lVFKs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGkAdTwNMwEnWHx84/cAJlTLfh1w7dLAzKQj3b5IoZixtQ3BQg
+	91BCAIn99wFPJozPtShyzSTLWWvtLUpUBvOQCswAN8gNt343r2PPQtNx
+X-Gm-Gg: Acq92OGI/lUowKz2MIhLM3csvCDbpzoNPC4sJ1q6Y3P77rYASn7tUydvMaTm46abh0f
+	o6zsUdxP4+FMRpFX1Xw/lSEWRuVgcbK+60TYjW94jIvMdXpHincfD2bH9L+aavyVPvjS/vzs9nF
+	5re6kF7AgyqmJKiK4CEtg9vqn/nLnjbgMoDUvGshHIbTX0zvYAU6jTkeKPxMzB1fJZccyNuEf6w
+	97WAI7m1NJjIhHA1nG3wbITw0mFwwaG8C27TEEnVSsxmCwAEFmMOb1JyN+QpQXzWTVuwLs7v80O
+	iC21/MRmGUfDwLj4plb0dUyAQPx1FtI8Oq5nmm7mFar29zaOUAGwlyv5/M1kwLdN6e8ecqhd2x3
+	w8dCnaUDworUaBH2QCVOLk24cJhUqkNIStizWSXOvK6t3wqZM8W81YXFA6txSi0iEYUVVEbKiIr
+	amuBe78g1CIz8W6IBzXPr4BPBvrDCcrjK8BRx8LA==
+X-Received: by 2002:a05:6a00:6c8d:b0:842:47f7:5f1 with SMTP id d2e1a72fcca58-8429b73c68cmr3210028b3a.28.1780585319505;
+        Thu, 04 Jun 2026 08:01:59 -0700 (PDT)
+Received: from localhost ([2a03:2880:7ff:8::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84282882156sm6223764b3a.33.2026.06.04.08.01.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 08:01:57 -0700 (PDT)
+        Thu, 04 Jun 2026 08:01:58 -0700 (PDT)
 From: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
 To: Bjorn Helgaas <bhelgaas@google.com>
 Cc: linux-pci@vger.kernel.org,
@@ -89,9 +90,9 @@ Cc: linux-pci@vger.kernel.org,
 	linux-s390@vger.kernel.org,
 	kvm@vger.kernel.org,
 	xen-devel@lists.xenproject.org
-Subject: [RFC 02/12] PCI: Convert iov.c to pci_is_sriov_* helpers
-Date: Thu,  4 Jun 2026 08:01:43 -0700
-Message-ID: <20260604150153.3619662-3-dimitri.daskalakis1@gmail.com>
+Subject: [RFC 03/12] PCI: Convert pci.h to pci_is_sriov_* helpers
+Date: Thu,  4 Jun 2026 08:01:44 -0700
+Message-ID: <20260604150153.3619662-4-dimitri.daskalakis1@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260604150153.3619662-1-dimitri.daskalakis1@gmail.com>
 References: <20260604150153.3619662-1-dimitri.daskalakis1@gmail.com>
@@ -110,220 +111,22 @@ No functional changes.
 Assisted-by: Claude:claude-opus-4.7
 Signed-off-by: Dimitri Daskalakis <daskald@meta.com>
 ---
- drivers/pci/iov.c | 46 +++++++++++++++++++++++-----------------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+ drivers/pci/pci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
-index 91ac4e37ecb9..5de26057b99a 100644
---- a/drivers/pci/iov.c
-+++ b/drivers/pci/iov.c
-@@ -23,7 +23,7 @@
- 
- int pci_iov_virtfn_bus(struct pci_dev *dev, int vf_id)
- {
--	if (!dev->is_physfn)
-+	if (!pci_is_sriov_physfn(dev))
- 		return -EINVAL;
- 	return dev->bus->number + ((dev->devfn + dev->sriov->offset +
- 				    dev->sriov->stride * vf_id) >> 8);
-@@ -31,7 +31,7 @@ int pci_iov_virtfn_bus(struct pci_dev *dev, int vf_id)
- 
- int pci_iov_virtfn_devfn(struct pci_dev *dev, int vf_id)
- {
--	if (!dev->is_physfn)
-+	if (!pci_is_sriov_physfn(dev))
- 		return -EINVAL;
- 	return (dev->devfn + dev->sriov->offset +
- 		dev->sriov->stride * vf_id) & 0xff;
-@@ -42,7 +42,7 @@ int pci_iov_vf_id(struct pci_dev *dev)
- {
- 	struct pci_dev *pf;
- 
--	if (!dev->is_virtfn)
-+	if (!pci_is_sriov_virtfn(dev))
- 		return -EINVAL;
- 
- 	pf = pci_physfn(dev);
-@@ -71,7 +71,7 @@ void *pci_iov_get_pf_drvdata(struct pci_dev *dev, struct pci_driver *pf_driver)
- {
- 	struct pci_dev *pf_dev;
- 
--	if (!dev->is_virtfn)
-+	if (!pci_is_sriov_virtfn(dev))
- 		return ERR_PTR(-EINVAL);
- 	pf_dev = dev->physfn;
- 	if (pf_dev->driver != pf_driver)
-@@ -152,7 +152,7 @@ static void virtfn_remove_bus(struct pci_bus *physbus, struct pci_bus *virtbus)
- 
- resource_size_t pci_iov_resource_size(struct pci_dev *dev, int resno)
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 4a14f88e543a..73b913bcb87a 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -954,7 +954,7 @@ void pci_iov_resource_set_size(struct pci_dev *dev, int resno, int size);
+ bool pci_iov_is_memory_decoding_enabled(struct pci_dev *dev);
+ static inline u16 pci_iov_vf_rebar_cap(struct pci_dev *dev)
  {
 -	if (!dev->is_physfn)
 +	if (!pci_is_sriov_physfn(dev))
  		return 0;
  
- 	return dev->sriov->barsz[pci_resource_num_to_vf_bar(resno)];
-@@ -300,7 +300,7 @@ static umode_t sriov_vf_attrs_are_visible(struct kobject *kobj,
- 	struct device *dev = kobj_to_dev(kobj);
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 
--	if (!pdev->is_virtfn)
-+	if (!pci_is_sriov_virtfn(pdev))
- 		return 0;
- 
- 	return a->mode;
-@@ -604,7 +604,7 @@ static umode_t sriov_pf_attrs_are_visible(struct kobject *kobj,
- {
- 	struct device *dev = kobj_to_dev(kobj);
- 
--	if (!dev_is_pf(dev))
-+	if (!dev_is_sriov_pf(dev))
- 		return 0;
- 
- 	return a->mode;
-@@ -707,7 +707,7 @@ static int sriov_enable(struct pci_dev *dev, int nr_virtfn)
- 		if (!pdev)
- 			return -ENODEV;
- 
--		if (!pdev->is_physfn) {
-+		if (!pci_is_sriov_physfn(pdev)) {
- 			pci_dev_put(pdev);
- 			return -ENOSYS;
- 		}
-@@ -814,7 +814,7 @@ static int sriov_init(struct pci_dev *dev, int pos)
- 
- 	ctrl = 0;
- 	list_for_each_entry(pdev, &dev->bus->devices, bus_list)
--		if (pdev->is_physfn)
-+		if (pci_is_sriov_physfn(pdev))
- 			goto found;
- 
- 	pdev = NULL;
-@@ -1006,7 +1006,7 @@ int pci_iov_init(struct pci_dev *dev)
-  */
- void pci_iov_release(struct pci_dev *dev)
- {
--	if (dev->is_physfn)
-+	if (pci_is_sriov_physfn(dev))
- 		sriov_release(dev);
- }
- 
-@@ -1018,7 +1018,7 @@ void pci_iov_remove(struct pci_dev *dev)
- {
- 	struct pci_sriov *iov = dev->sriov;
- 
--	if (!dev->is_physfn)
-+	if (!pci_is_sriov_physfn(dev))
- 		return;
- 
- 	iov->driver_max_VFs = iov->total_VFs;
-@@ -1035,7 +1035,7 @@ void pci_iov_remove(struct pci_dev *dev)
-  */
- void pci_iov_update_resource(struct pci_dev *dev, int resno)
- {
--	struct pci_sriov *iov = dev->is_physfn ? dev->sriov : NULL;
-+	struct pci_sriov *iov = pci_is_sriov_physfn(dev) ? dev->sriov : NULL;
- 	struct resource *res = pci_resource_n(dev, resno);
- 	int vf_bar = pci_resource_num_to_vf_bar(resno);
- 	struct pci_bus_region region;
-@@ -1111,7 +1111,7 @@ resource_size_t pci_sriov_resource_alignment(struct pci_dev *dev, int resno)
-  */
- void pci_restore_iov_state(struct pci_dev *dev)
- {
--	if (dev->is_physfn) {
-+	if (pci_is_sriov_physfn(dev)) {
- 		sriov_restore_vf_rebar_state(dev);
- 		sriov_restore_state(dev);
- 	}
-@@ -1124,7 +1124,7 @@ void pci_restore_iov_state(struct pci_dev *dev)
-  */
- void pci_vf_drivers_autoprobe(struct pci_dev *dev, bool auto_probe)
- {
--	if (dev->is_physfn)
-+	if (pci_is_sriov_physfn(dev))
- 		dev->sriov->drivers_autoprobe = auto_probe;
- }
- 
-@@ -1141,7 +1141,7 @@ int pci_iov_bus_range(struct pci_bus *bus)
- 	struct pci_dev *dev;
- 
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
--		if (!dev->is_physfn)
-+		if (!pci_is_sriov_physfn(dev))
- 			continue;
- 		if (dev->sriov->max_VF_buses > max)
- 			max = dev->sriov->max_VF_buses;
-@@ -1161,7 +1161,7 @@ int pci_enable_sriov(struct pci_dev *dev, int nr_virtfn)
- {
- 	might_sleep();
- 
--	if (!dev->is_physfn)
-+	if (!pci_is_sriov_physfn(dev))
- 		return -ENOSYS;
- 
- 	return sriov_enable(dev, nr_virtfn);
-@@ -1176,7 +1176,7 @@ void pci_disable_sriov(struct pci_dev *dev)
- {
- 	might_sleep();
- 
--	if (!dev->is_physfn)
-+	if (!pci_is_sriov_physfn(dev))
- 		return;
- 
- 	sriov_disable(dev);
-@@ -1191,7 +1191,7 @@ EXPORT_SYMBOL_GPL(pci_disable_sriov);
-  */
- int pci_num_vf(struct pci_dev *dev)
- {
--	if (!dev->is_physfn)
-+	if (!pci_is_sriov_physfn(dev))
- 		return 0;
- 
- 	return dev->sriov->num_VFs;
-@@ -1212,7 +1212,7 @@ int pci_vfs_assigned(struct pci_dev *dev)
- 	unsigned short dev_id;
- 
- 	/* only search if we are a PF */
--	if (!dev->is_physfn)
-+	if (!pci_is_sriov_physfn(dev))
- 		return 0;
- 
- 	/*
-@@ -1228,7 +1228,7 @@ int pci_vfs_assigned(struct pci_dev *dev)
- 		 * It is considered assigned if it is a virtual function with
- 		 * our dev as the physical function and the assigned bit is set
- 		 */
--		if (vfdev->is_virtfn && (vfdev->physfn == dev) &&
-+		if (pci_is_sriov_virtfn(vfdev) && (vfdev->physfn == dev) &&
- 			pci_is_dev_assigned(vfdev))
- 			vfs_assigned++;
- 
-@@ -1254,7 +1254,7 @@ EXPORT_SYMBOL_GPL(pci_vfs_assigned);
-  */
- int pci_sriov_set_totalvfs(struct pci_dev *dev, u16 numvfs)
- {
--	if (!dev->is_physfn)
-+	if (!pci_is_sriov_physfn(dev))
- 		return -ENOSYS;
- 
- 	if (numvfs > dev->sriov->total_VFs)
-@@ -1279,7 +1279,7 @@ EXPORT_SYMBOL_GPL(pci_sriov_set_totalvfs);
-  */
- int pci_sriov_get_totalvfs(struct pci_dev *dev)
- {
--	if (!dev->is_physfn)
-+	if (!pci_is_sriov_physfn(dev))
- 		return 0;
- 
- 	return dev->sriov->driver_max_VFs;
-@@ -1301,7 +1301,7 @@ int pci_sriov_configure_simple(struct pci_dev *dev, int nr_virtfn)
- 
- 	might_sleep();
- 
--	if (!dev->is_physfn)
-+	if (!pci_is_sriov_physfn(dev))
- 		return -ENODEV;
- 
- 	if (pci_vfs_assigned(dev)) {
+ 	return dev->sriov->vf_rebar_cap;
 -- 
 2.52.0
 
