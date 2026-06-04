@@ -1,176 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2F42DECCC
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 23:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D1D23D2B1
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 23:49:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780616825; cv=none; b=EA2hZSh3Z6YO+IiuqurOizrwIsgTpWK7YR0hNTLasQ8EbsgP9cqyx1egPjY3rNaaHahDPnW3ENS2bkc1gZ3T6sZmNTm8I5f85Wu2Wwlp7V45wGTwtSCt3xrn+iKFhFpxxq3DlocN+VKg08tcABMs66COp2JTW++0Mqe9fC+s7oo=
+	t=1780616958; cv=none; b=uXrzEqd2vzrA9e/lbmMuiS/dwwqWYU6PrrSRRiaEX2EF8SYSkjgShWbkqnSmhv/5675OwbXvKdjeMHI0dKCbwJQfjIaAw0pJGtpWSKPAt13HKcSpoQFMMWrvzasepJmY5Dcih7hEEt6xss2sUFhfkIyf4uOyLXnEICvawOx6zO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780616825; c=relaxed/simple;
-	bh=Ji2I9v1x/zo7NPk+NFQgmhy0u8ZeKVJIYMlijduMUY0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EiPCaPdHxIcMuN6wySl6RqxStRbh+SknB+QKhRA4IBLz8/A/KT5nGJ52BSiSDTcO+UkJCM3W+VyotD7AZ+q6uc7IRZ+jAMva9Fkl5CZNyou/rpolv+XS1Fif3rSF57hksEbwutNB3vkm7mkJ128IfBQU8O4Tde/2/S86dPSzE2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DMhc3zqN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SWrOrpw5; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780616958; c=relaxed/simple;
+	bh=oJt2fFfQbIMLj8oKYfu7svnYMm4cuFXCaciuIc/eOAY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lznE7g33ed39a9+cR3DdzMvPHUHw4W2ABWwiSGxBG3ObsbfvpLudR3qrodlNQZPy+bwcYngLG4QiMehNwXuglbkUJpYr2mVhoMvUBVGTREJpRJfG28wvM+QCJpHJIqjCVn2EBAcGTZ9M8bQZ4UbM6YRcw1tYQLC84eFgdlPYm1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sHQYVQM8; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DMhc3zqN";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SWrOrpw5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780616823;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P95+fYJ3vYLC521V0/dnSJW7Xac+PprHiZPgTv1UdmY=;
-	b=DMhc3zqN10TCVBVJcRjKekdJXvcS+Slrkwo9MEwQeOSSFimE77zKzT6HlA9bPxM/AYk6dl
-	j+LTYIATJfkkBG7fYK1l5M2vWK1jua+0lJJ/nBR/+DRBYf8mGW5ohIxRm3PID4KdpzE28i
-	zqhne5h/nqOdh3BkNVCUiW3ANYontKQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-_jEd9fIjOAKH_LBCNhQd0g-1; Thu, 04 Jun 2026 19:47:00 -0400
-X-MC-Unique: _jEd9fIjOAKH_LBCNhQd0g-1
-X-Mimecast-MFC-AGG-ID: _jEd9fIjOAKH_LBCNhQd0g_1780616819
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45f3d008865so882317f8f.0
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 16:46:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sHQYVQM8"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7dca5a81be2so12753697b3.2
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 16:49:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780616819; x=1781221619; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=P95+fYJ3vYLC521V0/dnSJW7Xac+PprHiZPgTv1UdmY=;
-        b=SWrOrpw5uKmqcBPCvrBhHu1PyG8vxX6ayUSmr6FSEcN5NBDgFNZpuvnw8kvtha/eMv
-         77Hu8eFVPRJLxoxT3EGPGGS/y8tHC26s2WZmegu+OVoLEfIGhYmimDYP11RIjQIrpR30
-         LCg1DjcOXr82nahvo5vS/zWXg03PNhtz8KNGsxSLI1UTWzNDkJzc7AUoHlMjezsphFiq
-         9O69haP+8F/uchGUzUX6pcaDyFBeXoJj/zOxePNcFdvmGZN2uhm/ayVe0UJbFXfERu2a
-         DnSgp5v1zWdlPN1zI4h9mfdI5k0s8ugVZyUk5ya2qdNwVDj6OQ0zWA5hV/1lpuVHvuSK
-         PzuQ==
+        d=gmail.com; s=20251104; t=1780616956; x=1781221756; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FnTnrGN1rDoPr2XWYDmMjIU6l0/cMGNmMp999cHq+3Y=;
+        b=sHQYVQM8rcz8KhCQL24gtXa2eymMfA3tX+eHwmyfuefT/a3jbaBE6rK7qs/+9AT7Es
+         8/2vdM/nH2WyPuez7CBTVeJ1j/jQDErhdqEzVA0CNNUeJ+eEfdD5krdV7+/ldYmk9b2u
+         AtRopFOcphlnfzA7JQmlha7sWpzs62pNvyYqhY0FKzcTbC/CJ8aFtN1BIf/j0+0jtclV
+         Qsb8sTMJvo3qjxqmLwQ88VTbylsbpUBvHoPqnM2sRHgE5wAf/JtlxVcJpBEk7dT4nLEa
+         oA/Xd4zRKQECiHV0alLAQc1zsEaeZt4kFB7NR9ebw8rJacDHhzXGtSQPFSwzz4CUWjkx
+         LX6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780616819; x=1781221619;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P95+fYJ3vYLC521V0/dnSJW7Xac+PprHiZPgTv1UdmY=;
-        b=GYUTN3kznhvEwsnAqtWc2w7oPSKFP5t3urPD8/x3JMYITQLMPn8SxlYpycr2gKGGxt
-         ADCgD6wUGY2MrG6QimqUzAbyGFT2T/yY4tPPgS9uY2qQTD95+aRSHjw0nn9uI029mxOT
-         hiusi5vORhSNHYRUDjoouBeXl/gF6Dle6lXEuM8kUIKoxz5pP3KfvNWBQV7ZC3tqvFGc
-         Dxc2I4mWvDLItn9r0d1kRhTnIUdjPbKqVXArsJqdd51AJqPcLcciPxY2oKx7CUEQvGz0
-         SFXYGy77SeC98mJGr5zEXnJFTwuIudaOyTh110fAJoaQObnV7x56D0uup4ruJ8NjXoIs
-         YCyw==
-X-Forwarded-Encrypted: i=1; AFNElJ/tOVzcbWIkI3KPRdl9yNDNM5HhW7XOg6aGLE9A5pLNWq9T9qTtSuRgxhZLxvr3AaFv5N8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXg4jI4BlQsdCe+dlrJK/WIqM1epNkZuwLN2k5o5iARcR7AVl3
-	NQoMeEEA+XD/cHuzV/MgQZNkXupOsuaZvQgSvTPry/Sk0mZtRHonHAUJJcxOS3O4TLFn0ok5rS/
-	2QLoJOk9FI/vt8nlynWszSayWwWBhqFeziOOfJm/tBMIduOJzLF8rbw==
-X-Gm-Gg: Acq92OHrjB2ghTCHih9JpkSQNkNMdy9ZkxYhOl+NaG5A3I4b8LSKgz03Zw/1IFLqVVA
-	TSILZ1u4fPcChvrx3OqspkTP/pl36fUmz4IZdZ/nMUeLMy5zYKT6Pnl8bwhlAI2PXpHI2vk+dAC
-	qvqKXY2dibkNksqEWe/8Aelm8aIvHT/vM4eV6MQrY7PxqQrP4vHE0BNWIkUwKgCuRtqjg5EYpfj
-	94sY6E46cXkuxtqNTpa+H/y+pMjLMbMuAca6opZ3OkeDs1f3/FYWoIaBcXlLfOzHJHq/lEVILCG
-	VYIv3rc0jAJwzJy74z0iHOF1Kas8o6hku0OoHHqnq3CU7/4PxzAb5zmhJGelLa4qyrVLmb4Jp85
-	1xngl+y+HStjT5rF9NVBRfLn88wc2w1kmoILv/e2hebntOrVXTykBKgs=
-X-Received: by 2002:a05:6000:4b01:b0:45e:739b:2750 with SMTP id ffacd0b85a97d-46032b82296mr255384f8f.9.1780616818707;
-        Thu, 04 Jun 2026 16:46:58 -0700 (PDT)
-X-Received: by 2002:a05:6000:4b01:b0:45e:739b:2750 with SMTP id ffacd0b85a97d-46032b82296mr255353f8f.9.1780616818258;
-        Thu, 04 Jun 2026 16:46:58 -0700 (PDT)
-Received: from redhat.com (ppp-94-66-118-61.home.otenet.gr. [94.66.118.61])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f368e9fsm19912888f8f.37.2026.06.04.16.46.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 16:46:57 -0700 (PDT)
-Date: Thu, 4 Jun 2026 19:46:54 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "Garg, Shivank" <shivankg@amd.com>
-Cc: linux-kernel@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: guest_memfd: fix NUMA interleave index
- double-counting
-Message-ID: <20260604194613-mutt-send-email-mst@kernel.org>
-References: <0eff0a90667b900bee837d06b5db5025e1f304b5.1780501924.git.mst@redhat.com>
- <916681a5-dd66-4773-a46f-2273a72c11cf@amd.com>
+        d=1e100.net; s=20251104; t=1780616956; x=1781221756;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FnTnrGN1rDoPr2XWYDmMjIU6l0/cMGNmMp999cHq+3Y=;
+        b=WbaA5kAFGEs8JEI/2NQ+KfKM29ngSYI8y1kDL7vzK1fMtQl4ilEANsTbQLtRhIDYNM
+         3WhICR6tPSkOnrAbovnxfmLxvl4ygYr7GkhISi3YGNp86DjO1VJXD4FXo/Twto08P5LN
+         UtzFQ/xAqK/g2lmB+pOtfpHjGJn7x9n+xW4RZ2vARyefkqxbGyxQaVOVUGyJXEJf52yy
+         VJToJ684WkV273q7N/XW/lb0nZ6tkRCazH3G8yOZVADDBBNXJYlIlpetKbPL4lsgU0Ng
+         k9f1gfBWtN+KCHJ0ny/kVMoS9yPQpxCsAu93pB2YjTcw14+UrYw6rPz9So2L9IGeXiQs
+         sSZQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+vHOxD7WDChm3lpuwerSr/7t3v+YwK+bvroRwW8iYtroQJaBkc+ckqJF16koKoV1CMh6A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1ySxWNLsxx08LEeReFFRuxF+zSpGon3t3CSlo37J1tlUs2d3H
+	uYKtPLA0ec1J3P2SIrPF1A1RAwfAs3gUaeWf48hSkVHYES9VBAJk46Ll
+X-Gm-Gg: Acq92OEEnQkmvOepdsdCGWcW8swBzUVqxwq4yya3yad+dNhDuPWFSPmQS30IEIa75rz
+	Niqh8TCFCLMeUYpQlr8P/ICRqEZ/wdMItukcZ3mvuotqO4nH0uiF1NC6GS+vs6cV/ZfdIKjv0Xt
+	bLe7jDbEdJfWLhJ6GSEb+pQDhYCI8t0a1hFUhNqnuAi0/gPmeWJ48SC3J2HzGQ4fjMIcSrDvouI
+	0t1fPWyJ4Qjr00BBjLYTA9adkuiEl27P1vKwBTJ/M6FjQ/MeNMrnd35S1lWg4KNd+BEj2nga+v2
+	Qmdcd8RSCB6nn/QQXN6WJBVXf2Y3bUzX+aLUhbf3h4FPJ0tjaD1JA2N7gxdUZ87ZLFvE+DX+tpR
+	me1lPn2JgnXnqqzBlDLRUsvUIZEzibmsY1JKsOAIp3R4ttM1V0jXLRtlq4hoM97BMLIwyfuNQii
+	M+fNGr8p4YhWUWKymqjzUuUOIyLpeK9yEQvhLC5CUUzjZAvYlrfsNon2DS8uiB7gCnAHwYTwCbk
+	Aw+rFgehhRBJP/FcyrJzhqpa7BrHbGvgtCVUIW3hkgt
+X-Received: by 2002:a05:690c:c4e6:b0:7ec:5c2c:1d27 with SMTP id 00721157ae682-7ed0afadc30mr12160017b3.15.1780616956146;
+        Thu, 04 Jun 2026 16:49:16 -0700 (PDT)
+Received: from [192.168.4.45] (76-224-22-216.lightspeed.sntcca.sbcglobal.net. [76.224.22.216])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7ea23492a24sm42082017b3.27.2026.06.04.16.49.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Jun 2026 16:49:15 -0700 (PDT)
+Message-ID: <a07763e2-aff3-4468-83c2-d50a9e1605c8@gmail.com>
+Date: Thu, 4 Jun 2026 16:49:05 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <916681a5-dd66-4773-a46f-2273a72c11cf@amd.com>
-
-On Thu, Jun 04, 2026 at 12:21:15AM +0530, Garg, Shivank wrote:
-> 
-> 
-> On 6/3/2026 9:27 PM, Michael S. Tsirkin wrote:
-> > kvm_gmem_get_policy() sets *ilx to the full page offset
-> > (vm_pgoff + vma offset).  But get_vma_policy() adds the page
-> > offset on top of *ilx, so the offset is counted twice.  This
-> > causes NUMA interleaving to skip nodes: for order-0 pages the
-> > effective index jumps by 2 for each consecutive page.
-> > 
-> > The get_policy vm_op should return only a per-file bias in *ilx
-> > (like shmem_get_policy does with inode->i_ino), letting
-> > get_vma_policy() add the page-offset component.
-> > 
-> > Fix by setting *ilx to inode->i_ino instead of the full page
-> > offset.  The page offset is computed by get_vma_policy() in
-> > mm/mempolicy.c. The full offset is still computed
-> > in kvm_gmem_get_policy() for mpol_shared_policy_lookup().
-> > shmem_get_policy() follows the same pattern.
-> > 
-> > Found by Sashiko (sashiko.dev) AI code review.
-> > 
-> > Fixes: ed1ffa810bd6 ("KVM: guest_memfd: Enforce NUMA mempolicy using shared policy")
-> > Cc: Sean Christopherson <seanjc@google.com>
-> > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > Assisted-by: Claude:claude-opus-4-6
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> >  virt/kvm/guest_memfd.c | 7 ++++---
-> >  1 file changed, 4 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index 69c9d6d546b2..0bcf6fc08e2d 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -438,11 +438,12 @@ static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpo
-> >  }
-> > 
-> >  static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
-> > -                                            unsigned long addr, pgoff_t *pgoff)
-> > +                                            unsigned long addr, pgoff_t *ilx)
-> >  {
-> >         struct inode *inode = file_inode(vma->vm_file);
-> > +       pgoff_t pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
-> > 
-> > -       *pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
-> > +       *ilx = inode->i_ino;
-> > 
-> >         /*
-> >          * Return the memory policy for this index, or NULL if none is set.
-> > @@ -453,7 +454,7 @@ static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
-> >          * can then replace NULL with the default memory policy instead of the
-> >          * current task's memory policy.
-> >          */
-> > -       return mpol_shared_policy_lookup(&GMEM_I(inode)->policy, *pgoff);
-> > +       return mpol_shared_policy_lookup(&GMEM_I(inode)->policy, pgoff);
-> >  }
-> >  #endif /* CONFIG_NUMA */
-> > 
-> > --
-> > MST
-> > 
-> 
-> Thanks for fixing this. LGTM!
-> 
-> Reviewed-by: Shivank Garg <shivankg@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 00/12] PCI: Add support for Scalable I/O Virtualization
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Niklas Schnelle <schnelle@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Alex Williamson <alex@shazbot.org>,
+ Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Juergen Gross <jgross@suse.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Keith Busch <kbusch@kernel.org>, Alexander Duyck <alexanderduyck@fb.com>,
+ Jakub Kicinski <kuba@kernel.org>, Dimitri Daskalakis <daskald@meta.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ kvm@vger.kernel.org, xen-devel@lists.xenproject.org
+References: <20260604150153.3619662-1-dimitri.daskalakis1@gmail.com>
+ <20260604182031.GB2487554@ziepe.ca>
+Content-Language: en-US
+From: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
+In-Reply-To: <20260604182031.GB2487554@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
-Can u actually test it though pls?
-Because I think another patch I sent in response so Sashiko
-is also needed.
-
-> Best regards,
-> Shivank
+On 6/4/26 11:20 AM, Jason Gunthorpe wrote:
+> On Thu, Jun 04, 2026 at 08:01:41AM -0700, Dimitri Daskalakis wrote:
+>> With this patchset core enumarates the SIOV capability and can identify
+>> SIOV PFs. But there is no central mechanism to allocate/manage SIOV VFs.
+>> To support device pass through, devices will need to add a vfio-mdev
+>> driver with IOMMUFD support (or something similar).
 > 
+> There is an enormous amount of missing work to do something useful
+> with the SIOVr2 stuff. IIRC there is even supposed to be BIOS
+> components in this plan and there are some missing PCI SIG topics too
+> IIRC.
 > 
+> So, I'm not sure how much value there is in merging just the cap
+> discovery without a roadmap for the missing parts..
+> 
+> Also, I'm quite surprised to see this out of the blue, there is an OCP
+> workstream that was building out a standard that outlines how all the
+> different components have to act to successfully implement it.  What
+> is in PCI SIG was just some minor foundational adjustments without any
+> context on how to form them into a solution.
+> 
+> I think it is extremely premature to merge anything related to SIOV to
+> the kernel. Join the OCP work stream if you are interested. I think
+> the general feeling was there is not sufficient interest in the
+> industry to do this and it has gone quiet.
+> 
+> Jason
 
+Hey Jason, thanks for the feedback. We (at Meta) are definitely
+interested in SIOV-like capabilities for device passthrough to containers.
+
+For those scenarios, having PCIe transactions per RID plus IOMMU
+isolation is enough, but I can imagine hypervisors/VMs requiring more
+platform support.
+
+I hear you on the broader support story being premature. But on the
+other hand, this series unblocks experimentation at the driver level
+for basic data path validation.
