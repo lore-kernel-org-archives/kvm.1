@@ -1,33 +1,85 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34240409110
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 10:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B29C1E98E3
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 10:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780570311; cv=none; b=UxJ1DCYdvKJ74JNyji7svHl2/yENFG8lhj5gOVewhFzGM/74teBEM/zyPKhzBFy69uX0CHh7hIXn/RKm49sp2CK9656qzBUwzBVj5lJk9KXf36+owKkVNinmm748Yd7knwmUHfZ0zXqAK8iA8cKM6zuY0CHl4SgEZsiR4Up7G0k=
+	t=1780570557; cv=none; b=gI0q30G0cjYxgvJMoDx2TrJZp27bX1j3FMe4kdyoyQhCnOlGFowNTU/IX3R/E6M8Rpz5oaD9lrBPrNz7OBw2kaKzlbDYEx4iwEs5EKqqKwR5Nfg/PovXXMk546tvzmapNYkhubbz5Z6HE7Qy28IefdLaP/NsWRoFaiaXV/9mXHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780570311; c=relaxed/simple;
-	bh=hcVpIVW2Max3vDfb3aur+qELfZStk7+THs3lUeeL6IM=;
+	s=arc-20240116; t=1780570557; c=relaxed/simple;
+	bh=7PDVjOFFBvB62jh1T+5fxxeccqZf3wobQfN0ejWBl+k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mW6L0ZqUw2ToRP3o9c1y2tpA1Yy8GxnTQEGEQtB2CoyPUQKXnv+zdhhGdLai8bbgDOIr04MNoAeNpXyI+LMu/jm16GUTNMoJUalc7P6ySkEENiEKbz6YnonYQOfswbr1MV9gebgSB6i/tk5UzoFotb2FIRs/tJnIneGSyxFoWiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=nkx7kCmj; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 In-Reply-To:Content-Type; b=ONYr+P5yF7gJhcnJqgKa5MSxushuup0Y72qaTxSxHULMSQxyUY3v6xut4BMSO03IuL2cf+HwopEFDATzad1H22EbvIMkjFYcBgMPRMbkX2f6HG31L/8QF2cqEHJfmzckFuGzd6URwezz4nyx4+Q09tiblODdS87RefF66zr2uWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W6WlenL/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MI9EvFI5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="nkx7kCmj"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC52C3297;
-	Thu,  4 Jun 2026 03:51:44 -0700 (PDT)
-Received: from [10.1.37.187] (e121487-lin.cambridge.arm.com [10.1.37.187])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AEC2F3F7D8;
-	Thu,  4 Jun 2026 03:51:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780570309; bh=hcVpIVW2Max3vDfb3aur+qELfZStk7+THs3lUeeL6IM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nkx7kCmjhcaN00bGaHo8yX2ffHRscQe01ROlNwUF8LTgbRImBhSKXZcwwso7wDaE+
-	 M1rsqr/NjfzqEjspYRjXiUZ13A/KS0vhXEkuw6p2rex577T8pfDMvbKQn8F1SEGyat
-	 ziXbxQlqnsR5o+tgsNyd206nEYbv9TWQ2xCkDK74=
-Message-ID: <5f3a1f7c-f2f5-489a-a6ce-2e30f41cd422@arm.com>
-Date: Thu, 4 Jun 2026 11:51:44 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W6WlenL/";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MI9EvFI5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780570554;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7wklQVRsViMBNiTmJy4yFl6j2hWwlYVgd/9iVl7uSjw=;
+	b=W6WlenL/M7oHVRp9ZoquNNBSuLbQToiMFOhiyTatrKopA+IYkHoOmPbvXWAK00fXxdRKYA
+	S3WTy1PWVUJP+nvTcKOUKreU8kRvYv89fWeIVgqemYBxOc8e8uKNYczm6C5UV2RXf6ZID5
+	chZNYLFvbaG7BP1UZsBFhFl6WlaaEN4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-683-NsPo2h8SNFaQwZl_UV4jJw-1; Thu, 04 Jun 2026 06:55:53 -0400
+X-MC-Unique: NsPo2h8SNFaQwZl_UV4jJw-1
+X-Mimecast-MFC-AGG-ID: NsPo2h8SNFaQwZl_UV4jJw_1780570552
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45efa2f7009so366255f8f.3
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 03:55:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1780570552; x=1781175352; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7wklQVRsViMBNiTmJy4yFl6j2hWwlYVgd/9iVl7uSjw=;
+        b=MI9EvFI5CC492CNU1fnOZp0eV9EwEJ3muBcXeBfSLBLuG7XJFSapj1Za9v8hw6SiVZ
+         bFoTynRh2bExwPgVOiOic52NPaeBITTOJsOJs9F+T0mSuI5LYPAbetIBCcAcXyZHlTYE
+         2iM6zJwUYnPVOPtRnx2w1afksrn1P/NAe70hyHoEml68K5ap0j1aObZHaje9LViTQq/h
+         Gcb8UeA2YppKS+vRg8w2PGfVmwwSSk4vbpZ3z03JquRN2rl/yeYZFjVSknUajYrdMGrh
+         8PJzYqfbYcT6ZgbajW2ChvKV9os/h2XAvI/6hbLR9DGIJW4m0pYsz1nbO0VklJoDAxfN
+         3UQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780570552; x=1781175352;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7wklQVRsViMBNiTmJy4yFl6j2hWwlYVgd/9iVl7uSjw=;
+        b=AqRyGYxzT7IhjHhQ6NfwKWh7N9BNidyNBvhptRxh7o1/uMIE59gVEmUnl15VB1gemU
+         xionYWvFY61bfWv5u2EMniJu9XEBcWXnQeSp6UH6OGE4j2Vay321soXGQgrDv+bRo0P1
+         HpaWxcZztNNObnAq9ZkD/gHRZneKyUJUmkRWYDkFNH5AnAEXwriHFjPfy+gO8Oc7xPjn
+         lnODrWOJreKKafq19LITQjmUaueN9osiaJm/rtrqzxKmsWuhem1BXL9JPvUQpIVAI8Sw
+         qb/acB7bBsU+dZhRwazKtSafawbObcpQePyFSiDMtgjKpIt6NLUyRgBHCYYipmFRoTZ3
+         Ga4A==
+X-Forwarded-Encrypted: i=1; AFNElJ/uGcLqxDAV+oJvIk3MujGZ41TwWSaWMZO4kh7qjxRBozuds+/IYz4ze9OOLXJoSdgOODQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuOOTdd4VWsCJS+k2Jf0WWRq179tEVIH2lJp+VeDszzJ0d7Xr4
+	EPeH/RIjHzO/vCMyfDd/QHDd4CLMuQ8pdzcfyGGa7c+k5kFuBVMP12ITP6FOfnIgek7b4JO2G90
+	tuNEL52WpPuwlUfjIJlh3zwjZk1KyvyTaCplpsJ5AgOyGtSqv2pqKzA==
+X-Gm-Gg: Acq92OHGSREo1gV8Jwp8UmaK3w9YqrY6AjNaQcdqFNiWqIJozUnkq+BI0IPj20ePiGg
+	jlavaIYQlrz039ReWbxoZdY1A9vO0XLYNMEQdkPqbgSSB8+spawZmkOUaR5XCVAscgM8lD8ZMP4
+	PZR7kxcne0XRrhgyfy3hACuyuUCQcdH0xRu0+lAtzenGIN+g3ylwus+y08u/l6Flq+u2N7qIbz7
+	I2DrKSa/Jp6fBi7whBDo12tQ1Is71t3qXIhw6RmmtHGY+4lyYaJf7+kwPSQsYnCkvPw4WJX/Wyj
+	6AbPQBOazCAnSyEuiDeUjx+2pDO+Jc6gkQJ1QfOvJfmRBgHMlb5yijlNw6gatx9snOkPbwEA/zS
+	MjycFCeCWoVuI9xNcAqgwlfFNY4lM9nh5bv2pBZVRXlZ2mfy6GAFlGgFxiEtypnLzfc0=
+X-Received: by 2002:adf:fb85:0:b0:45e:fa38:c899 with SMTP id ffacd0b85a97d-46021783cecmr8984903f8f.4.1780570551758;
+        Thu, 04 Jun 2026 03:55:51 -0700 (PDT)
+X-Received: by 2002:adf:fb85:0:b0:45e:fa38:c899 with SMTP id ffacd0b85a97d-46021783cecmr8984861f8f.4.1780570551302;
+        Thu, 04 Jun 2026 03:55:51 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.155.59])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f3529e0sm15330789f8f.28.2026.06.04.03.55.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Jun 2026 03:55:50 -0700 (PDT)
+Message-ID: <b6182472-503c-43e9-a850-87cd40f86aa8@redhat.com>
+Date: Thu, 4 Jun 2026 12:55:49 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,131 +87,60 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 31/39] KVM: arm64: gic-v5: Add GICv5 SPI injection to
- irqfd
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Cc: nd <nd@arm.com>, "maz@kernel.org" <maz@kernel.org>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- Joey Gouly <Joey.Gouly@arm.com>, Suzuki Poulose <Suzuki.Poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
- Timothy Hayes <Timothy.Hayes@arm.com>
-References: <20260521144846.1899475-1-sascha.bischoff@arm.com>
- <20260521144846.1899475-32-sascha.bischoff@arm.com>
-Content-Language: en-GB
-From: Vladimir Murzin <vladimir.murzin@arm.com>
-In-Reply-To: <20260521144846.1899475-32-sascha.bischoff@arm.com>
+Subject: Re: [PATCH net] vhost/net: complete zerocopy ubufs only once
+To: Qing Ming <a0yami@mailbox.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+Cc: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Shirley <xma@us.ibm.com>, "David S. Miller" <davem@davemloft.net>,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260601104300.197210-1-a0yami@mailbox.org>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260601104300.197210-1-a0yami@mailbox.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Sascha,
-
-On 5/21/26 15:59, Sascha Bischoff wrote:
-> Now that there is support for GICv5 SPIs in KVM, update
-> vgic_irqfd_set_irq() to translate irqchip pins into GICv5 SPI IntIDs
-> before injecting them.
+On 6/1/26 12:43 PM, Qing Ming wrote:
+> vhost-net initializes one ubuf_info per outstanding zerocopy TX
+> descriptor and hands it to the backend socket.  The networking stack may
+> then clone a zerocopy skb before all skb references are released.  For
+> example, batman-adv fragmentation reaches skb_split(), which calls
+> skb_zerocopy_clone() and increments the same ubuf_info refcount.
 > 
-> Also adjust IRQCHIP route validation for GICv5: use the configured SPI
-> count, fall back to the default SPI count before VGIC init, and cap
-> the accepted pin range to the generic irq routing table size.
+> vhost_zerocopy_complete() currently treats every ubuf callback as a
+> completed vhost descriptor.  It dereferences ubuf->ctx, writes the
+> descriptor completion state, and drops the vhost_net_ubuf_ref even when
+> the callback only releases a cloned skb reference.  A backend reset can
+> therefore wait for and free the vhost_net_ubuf_ref while another cloned
+> skb still carries the same ubuf_info.  A later completion then
+> dereferences the freed ubufs pointer.
 > 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-irqfd.c | 20 +++++++++++++++++---
->  1 file changed, 17 insertions(+), 3 deletions(-)
+> KASAN reports the stale completion as:
 > 
-> diff --git a/arch/arm64/kvm/vgic/vgic-irqfd.c b/arch/arm64/kvm/vgic/vgic-irqfd.c
-> index b9b86e3a6c862..3644516811214 100644
-> --- a/arch/arm64/kvm/vgic/vgic-irqfd.c
-> +++ b/arch/arm64/kvm/vgic/vgic-irqfd.c
-> @@ -19,7 +19,12 @@ static int vgic_irqfd_set_irq(struct kvm_kernel_irq_routing_entry *e,
->  			struct kvm *kvm, int irq_source_id,
->  			int level, bool line_status)
->  {
-> -	unsigned int spi_id = e->irqchip.pin + VGIC_NR_PRIVATE_IRQS;
-> +	unsigned int spi_id;
-> +
-> +	if (kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V5)
-> +		spi_id = vgic_v5_make_spi(e->irqchip.pin);
-> +	else
-> +		spi_id = e->irqchip.pin + VGIC_NR_PRIVATE_IRQS;
->  
->  	if (!vgic_valid_spi(kvm, spi_id))
->  		return -EINVAL;
-> @@ -39,15 +44,24 @@ int kvm_set_routing_entry(struct kvm *kvm,
->  			  struct kvm_kernel_irq_routing_entry *e,
->  			  const struct kvm_irq_routing_entry *ue)
->  {
-> +	unsigned int nr_pins = KVM_IRQCHIP_NUM_PINS;
->  	int r = -EINVAL;
->  
-> +	if (vgic_is_v5(kvm)) {
-> +		nr_pins = kvm->arch.vgic.nr_spis;
-> +		if (!nr_pins)
-> +			nr_pins = VGIC_V5_DEFAULT_NR_SPIS;
-> +
-> +		nr_pins = min(nr_pins, KVM_IRQCHIP_NUM_PINS);
-> +	}
-> +
-
-I have a few questions about these checks.
-
-IIUC, there are two paths that can lead us here:
-
-vgic_init()
-  -> kvm_vgic_setup_default_irq_routing()
-       -> kvm_set_irq_routing()
-            -> setup_routing_entry()
-                 -> kvm_set_routing_entry()
-
-where vgic_init() sets nr_spis to the default value if it has not
-been configured already.
-
-And:
-
-kvm_vm_ioctl(KVM_SET_GSI_ROUTING)
-  -> kvm_set_irq_routing()
-       -> setup_routing_entry()
-            -> kvm_set_routing_entry()
-
-where nr_spis would still be 0 if KVM_SET_GSI_ROUTING is used
-before the vGIC is initialized. In that case, how much harm
-processing with nr_spis set to 0? Wouldn't the routing be
-overwritten once the vGIC is initialized anyway?
-
-Also, IIUC, this is not specific to vGICv5 and appears to be
-equally applicable to vGICv2/v3. If so, shouldn't we apply the
-same validation logic to the non-vGICv5 cases as well?
-
-Finally, it seems the core already enforces KVM_MAX_IRQ_ROUTES,
-and we lower that limit to KVM_IRQCHIP_NUM_PINS. IIUC, nr_spis
-limit for vGICv5 is FIELD_MAX(GICV5_IRS_IDR5_SPI_RANGE) which
-exceeds both core and our private limit.
-
-Would it be simpler/cleaner to reject nr_spis values provided
-through KVM_DEV_ARM_VGIC_GRP_NR_IRQS rather than allowing them
-and later capping the accepted pin range?
-
-Thanks
-Vladimir
-
->  	switch (ue->type) {
->  	case KVM_IRQ_ROUTING_IRQCHIP:
->  		e->set = vgic_irqfd_set_irq;
->  		e->irqchip.irqchip = ue->u.irqchip.irqchip;
->  		e->irqchip.pin = ue->u.irqchip.pin;
-> -		if ((e->irqchip.pin >= KVM_IRQCHIP_NUM_PINS) ||
-> -		    (e->irqchip.irqchip >= KVM_NR_IRQCHIPS))
-> +		if (e->irqchip.pin >= nr_pins ||
-> +		    e->irqchip.irqchip >= KVM_NR_IRQCHIPS)
->  			goto out;
->  		break;
->  	case KVM_IRQ_ROUTING_MSI:
-> -- 2.34.1
+>   BUG: KASAN: slab-use-after-free in vhost_zerocopy_complete+0x1d7/0x1f0
+>   BUG: KASAN: slab-use-after-free in vhost_zerocopy_complete+0x101/0x1f0
+>   vhost_zerocopy_complete
+>   skb_copy_ubufs
+>   __dev_forward_skb2
+>   veth_xmit
 > 
+> The freed object was allocated from vhost_net_ioctl() while setting the
+> backend and freed through kfree_rcu()/kvfree_rcu_bulk after backend
+> removal, while delayed skb completion still reached
+> vhost_zerocopy_complete().
+> 
+> Honor the generic ubuf_info refcount before touching vhost state, and run
+> the vhost descriptor completion only for the final ubuf reference.  This
+> matches the msg_zerocopy_complete() ownership rule for cloned zerocopy
+> skbs.
+> 
+> Fixes: bab632d69ee4 ("vhost: vhost TX zero-copy support")
+> Signed-off-by: Qing Ming <a0yami@mailbox.org>
+
+The patch LGTM.
+
+@Michael: to you want to take it via your tree?
+
+/P
 
