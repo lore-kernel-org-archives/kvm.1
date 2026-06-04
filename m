@@ -1,161 +1,165 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA533905EB;
-	Thu,  4 Jun 2026 09:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC13538F939
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 09:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780565405; cv=none; b=HW+yUuQoi5620fHA0wTO3KMLsBBUHe5zL+AN8iDNk3lbxqAx3UKiGHggtbPv/wLlPc8i5HPYQsbxGBe8bG7vxn5mt+INJO/KsJpD3dfMV1UvWpgOCe1Q8Ihn1YSR2QVxLClIEuh9a8o94KXDL+qvcDegj4Q9eXCSg//NcLrcJmw=
+	t=1780566147; cv=none; b=RVvVv4UhKFBOkys6aCBJVEqdNNdTOvM+f56ZhhovqnYwPvWuiH3p15rqVfAXv5MmDbdzJa4o7YTsxD+KxcZMz510VlpJ6/w93gyu/3pmtiYMhCYgZtdVsJNRPln8d6duLZ9YsoX9qLqummnpkYCXaqHg256iBk8XTPcjG76sUgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780565405; c=relaxed/simple;
-	bh=WuAsXfHYWxvwzP/EfipKlu8pksB1EL4t2LsY1UZ6kAQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jv3BVxXpjcawVORa3EAjJY/rMju8Pru8pcF2CWSNfHgUNzqMwqgbr4RWt92zT4VSLZQ63mtxE1iaoYeqUli9ZqUFRvVW5WE1WBOZFzFDrDm0H54GgYuoZjrysnMSKbC4Rdm08ffHXSIUeSvEV+w/AR51EqaitVNGp3R6D/79NEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nMiJvnwA; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780566147; c=relaxed/simple;
+	bh=yh/3DfNhzvQDZNpY3sDjDm0Xmh9qRX6yecLs2KZ5r2c=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=u13T5XBflf902Goaj4xTY4Drk7ksDbyQyAc0yxr/4RpuWAv3SuxkJ9jxSfkqDVryNx7CSGUtusznV0msOKov8jp3DJ1Pwti9KVaKhjWe21mMDupX8M9q7LG1HN3SCuIhiT8TAY15t2vhRG+vmYZdHrrlTOonZdUNDlJJlvpbKsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RWU34HRL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nMiJvnwA"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6545VIu1500650;
-	Thu, 4 Jun 2026 09:29:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=yrBNMboK/S7KMAQ3OGVJl0nTy2/+GtpZrb4kKiPuZ
-	PM=; b=nMiJvnwABLKnuqFq4CbyvHuIAmdK1L3UjUwdnNr5ZMjdkZZpKrzaOURBb
-	7QMHxGzaY6q5kLLGR8LaYAYIm8vO9WGGKnEJzOKNOugJB5ZQIazztPirUDU1FfmD
-	S76a6T62Mc3IIRlV16GYnN0oJnS91GA+eQinImqLsGMYy1ittGLRdNQcAc1bmCHj
-	Ko6B5ctJLcmak10hDjk13k9z7MLj2aqndMubFEaD7PlQ2/426IDl2iDLiz4cxhg3
-	afEgPR0Lqr6ZRAm1je3rGgQNo4pW+1G6ispdL1f7fNsEzY6rJ+cIglYgjtzhGtFj
-	nZlGCidCkpGLyBBubSlzK2kKBPSsA==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqjqf37x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Jun 2026 09:29:45 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6549O8I5013314;
-	Thu, 4 Jun 2026 09:29:44 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ega7qmkea-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Jun 2026 09:29:44 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6549TgOs26149624
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 Jun 2026 09:29:42 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6258658059;
-	Thu,  4 Jun 2026 09:29:42 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AFCE258043;
-	Thu,  4 Jun 2026 09:29:38 +0000 (GMT)
-Received: from vaibhav?linux.ibm.com (unknown [9.124.208.31])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with SMTP;
-	Thu,  4 Jun 2026 09:29:38 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Thu, 04 Jun 2026 14:59:36 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        kvm-ppc@vger.kernel.org
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH] kvm powerpc/book3s-apiv2: Add suite initialization to skip GSB tests without APIv2 support
-Date: Thu,  4 Jun 2026 14:59:30 +0530
-Message-ID: <20260604092931.344101-1-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RWU34HRL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE201F00893;
+	Thu,  4 Jun 2026 09:42:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780566146;
+	bh=kjjqElfgCERY0RcqecH/D2b9wdh4IVtbUXWU5a0qmPI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=RWU34HRLGExg7s+m1y8VM+fzOFaTv5j1DBysUaOytJUvW3mqqnP4z8qcbkpmEsJxS
+	 CIhfp8znYZqXIsAnMGXH6xJIXFW7cce7LM+79T3aZvBqSLKHQuHthFk1nFZaGuBB6S
+	 +A7ncIuAhnYVLObjjDRXu+IEm2Z5bJmWQlSfKr/0h0bt+iLcXe4k1prNQSpolGzmJ1
+	 D9udTV23zMMrC5GTdvZppMQeYKiE99z/6ZqVIxTxQqXrYnX/wdmtGVrAAKOD4obIoU
+	 rlXMTg4d+ujeP12X7NsGUWIC2C1rBIRcO5fS8hnqCD8YXrOgU7VX2u9TAxCkBuPa6c
+	 E+V2RtDiB/cKw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] kvm powerpc/book3s-apiv2: Add suite initialization to
+ skip GSB tests without APIv2 support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Vaibhav Jain" <vaibhav@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260604092931.344101-1-vaibhav@linux.ibm.com>
+References: <20260604092931.344101-1-vaibhav@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 04 Jun 2026 09:42:25 +0000
+Message-Id: <20260604094226.3BE201F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _uxoiUFcdeGLRCUHW02EHEZ614gqhGqZ
-X-Proofpoint-GUID: _uxoiUFcdeGLRCUHW02EHEZ614gqhGqZ
-X-Authority-Analysis: v=2.4 cv=bcVbluPB c=1 sm=1 tr=0 ts=6a214589 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=SRakg5jYXA31ZsQ6RxEA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA0MDA4NyBTYWx0ZWRfXz9x7Ll32E6/A
- f7VmUO4XAq6vRwQJQzjI5+IE03xXJFI6k7WDJzyY44t9nRUjTbSnZ1sov/5G1FeI42Z8lfGQ0DB
- ipkabMAdYA0GfuH5zxwJbx2zDNcZQd2nUpfJ/PSdfKw9dOf2wt1YS9p/gJJGVzs0pOFBxHFTjo4
- qX1v3gTPEaGxFvZIzsQZQhU08SrzPJ7B1SJZDo88XEI7fLZwvv8esSNCcBBymgnVZEiB/FxEAT6
- fNI5PC+r4LhGpJd0x/qo6grFwxh5ocZdkfwfwbbKSTdfIN48Nwdt8Ba/EAdTKXcfkLeSaUHkl9c
- 3rdGfP6gdmyCaOT/9N8Qk7iMNIyHWh6C60aQEFxJbq00zz7OX1gRkOWlH6YcCMZbMqKG/V7+tMH
- FiUOlGK98AaW9PhaAOLSeKRV2RmkOkab+LRJzegBClC1XUFW/DmQ4/aIcUiCYa/1ejBfX/Tm0mG
- VM8SbG+hL4zpoWMrnEA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-04_03,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 adultscore=0 priorityscore=1501 phishscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606040087
 
-The guest state buffer (GSB) test suite currently fails on systems that
-do not support the PAPR APIv2 nested virtualization. This happens because
-the tests attempt to use APIv2-specific functionality without first
-checking if the host supports it. This was recently reported [1] when
-test-guest-state-buffer kunit tests were being run on Qemu without enabling
-Qemu capability 'cap-nested-papr' which enabled APIv2 nested virtualization
-for PPC64 Pseries Qemu machine.
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [High] Unconditional hypercall execution in the test suite initialization=
+ will cause a kernel panic on bare-metal (PowerNV) systems.
+- [Medium] The capability check yields a false positive when compiled witho=
+ut `CONFIG_PPC_PSERIES`.
+- [Medium] Skipping the entire test suite when APIv2 is unavailable disable=
+s purely memory-manipulation tests that do not depend on the hypervisor.
+- [Low] Directly modifying the private `status` field of `struct kunit_case=
+` violates the KUnit API.
+--
 
-Add a suite_init callback that checks for APIv2 support by calling
-plpar_guest_get_capabilities(). If the host does not support APIv2
-(indicated by H_SUCCESS not being returned), mark all test cases in the
-suite as KUNIT_SKIPPED. This prevents test failures on systems without
-APIv2 support while still allowing the tests to run on capable systems.
+commit 91f29321c74a3de9acc6e6b6af3b00cdee30f4f2
+Author: Vaibhav Jain <vaibhav@linux.ibm.com>
 
-[1] https://lore.kernel.org/all/20260603064225.GC18149@sol/
+kvm powerpc/book3s-apiv2: Add suite initialization to skip GSB tests withou=
+t APIv2 support
 
-Reported-by: Eric Biggers <ebiggers@kernel.org>
-Closes: https://lore.kernel.org/all/20260603064225.GC18149@sol
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Assisted-by: Bob:Claude-3.7-Sonnet Bob-Shell
----
- arch/powerpc/kvm/test-guest-state-buffer.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+This commit adds a suite initialization callback to check for PAPR APIv2
+nested virtualization support. If APIv2 is not supported, it marks all test
+cases in the suite as KUNIT_SKIPPED to prevent test failures.
 
-diff --git a/arch/powerpc/kvm/test-guest-state-buffer.c b/arch/powerpc/kvm/test-guest-state-buffer.c
-index 5ccca306997a..f84b40fa55db 100644
---- a/arch/powerpc/kvm/test-guest-state-buffer.c
-+++ b/arch/powerpc/kvm/test-guest-state-buffer.c
-@@ -521,6 +521,24 @@ static void test_gs_hostwide_counters(struct kunit *test)
- 	kvmppc_gsb_free(gsb);
- }
- 
-+static int init_gs_test_suite(struct kunit_suite *suite)
-+{
-+	long rc;
-+	unsigned long host_capabilities;
-+	struct kunit_case *test_case;
-+
-+	/* Enable test suite only if APIv2 is supported */
-+	rc = plpar_guest_get_capabilities(0, &host_capabilities);
-+
-+	if (rc != H_SUCCESS) {
-+		/* Skip all testcases if no APIv2 support */
-+		kunit_suite_for_each_test_case(suite, test_case)
-+			WRITE_ONCE(test_case->status, KUNIT_SKIPPED);
-+	}
-+
-+	return 0;
-+}
-+
- static struct kunit_case guest_state_buffer_testcases[] = {
- 	KUNIT_CASE(test_creating_buffer),
- 	KUNIT_CASE(test_adding_element),
-@@ -535,6 +553,7 @@ static struct kunit_case guest_state_buffer_testcases[] = {
- static struct kunit_suite guest_state_buffer_test_suite = {
- 	.name = "guest_state_buffer_test",
- 	.test_cases = guest_state_buffer_testcases,
-+	.suite_init = init_gs_test_suite,
- };
- 
- kunit_test_suites(&guest_state_buffer_test_suite);
--- 
-2.54.0
+Link: https://lore.kernel.org/all/20260603064225.GC18149@sol
 
+> diff --git a/arch/powerpc/kvm/test-guest-state-buffer.c b/arch/powerpc/kv=
+m/test-guest-state-buffer.c
+> index 5ccca306997a8..f84b40fa55db6 100644
+> --- a/arch/powerpc/kvm/test-guest-state-buffer.c
+> +++ b/arch/powerpc/kvm/test-guest-state-buffer.c
+
+[ ... ]
+
+> @@ -521,6 +521,24 @@ static void test_gs_hostwide_counters(struct kunit *=
+test)
+>  	kvmppc_gsb_free(gsb);
+>  }
+> =20
+> +static int init_gs_test_suite(struct kunit_suite *suite)
+> +{
+> +	long rc;
+> +	unsigned long host_capabilities;
+> +	struct kunit_case *test_case;
+> +
+> +	/* Enable test suite only if APIv2 is supported */
+> +	rc =3D plpar_guest_get_capabilities(0, &host_capabilities);
+
+[Severity: High]
+Could this unconditional hypercall execution cause a kernel oops on bare-me=
+tal
+(PowerNV) environments?
+
+plpar_guest_get_capabilities() internally invokes plpar_hcall(), which
+issues an "sc 1" instruction. On bare-metal systems without an underlying
+hypervisor, executing this will trigger an Emulation Assistance exception.
+
+Should this code verify that it is running as a guest by checking
+kvmhv_on_pseries() before issuing the hypercall, similar to how
+test_gs_hostwide_counters() is protected?
+
+[Severity: Medium]
+When the kernel is compiled without CONFIG_PPC_PSERIES, will this check
+yield a false positive?
+
+In arch/powerpc/include/asm/plpar_wrappers.h, plpar_guest_get_capabilities()
+is defined as a stub that returns 0 (H_SUCCESS):
+
+static inline long plpar_guest_get_capabilities(unsigned long flags,
+						unsigned long *capabilities)
+{
+	return 0;
+}
+
+Because it returns success, init_gs_test_suite() could incorrectly assume
+that PAPR APIv2 is supported and fail to skip the test suite on these build=
+s.
+
+> +
+> +	if (rc !=3D H_SUCCESS) {
+> +		/* Skip all testcases if no APIv2 support */
+> +		kunit_suite_for_each_test_case(suite, test_case)
+
+[Severity: Medium]
+Does skipping the entire test suite unnecessarily bypass memory-based tests
+that do not depend on the hypervisor?
+
+Out of the 7 tests in the suite, only test_gs_hostwide_counters() executes
+hypercalls. Tests such as test_creating_buffer(), test_adding_element(), and
+test_gs_parsing() are strictly memory-based unit tests.
+
+Could this lead to a loss of test coverage for valid test cases in non-APIv2
+environments?
+
+> +			WRITE_ONCE(test_case->status, KUNIT_SKIPPED);
+
+[Severity: Low]
+Is it appropriate to directly modify the private status field of the
+struct kunit_case here?
+
+In include/kunit/test.h, the status field is explicitly marked for
+internal use only:
+
+struct kunit_case {
+[ ... ]
+	/* private: internal use only. */
+	enum kunit_status status;
+[ ... ]
+};
+
+Direct manipulation of framework internals from within an architecture's
+test module appears to violate the KUnit API.
+
+> +	}
+> +
+> +	return 0;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604092931.3441=
+01-1-vaibhav@linux.ibm.com?part=3D1
