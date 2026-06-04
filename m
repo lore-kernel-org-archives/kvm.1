@@ -1,308 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892573CAA2F;
-	Thu,  4 Jun 2026 16:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283583A0B2E
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 16:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780589160; cv=none; b=L/SbUkgxtGVnoKPs6A2fRKnfvf4jNcr/ZrmFN3X0/v8p+xVq45gzpLAlrcQASw1/CitdvsVvD9jyJD2aV5wDKRGHbPxAhU5FspDYPf9GOwZMZz4wsuIKaZKxLLVIWVQjQWCfAP3b8KDQcRbCPujE/pWFrIR7ZA028Xn2CUv+PyQ=
+	t=1780589261; cv=none; b=HkIt+fARyEXvxh7Cy0rG6Uw5qrr8jsWR5Ty2sAA1c+ynrynWSQrZId3UP3DnZ5nnnfX1i0JRGx+pOEaQ7J845VsbCf98uKAlBB7g8kEQ2Mz4vVOktpVjOkcFle4OwvpN9Gsbu4tU2NnaFoqbTH4pD73BRgsVuslNd9D14DixjjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780589160; c=relaxed/simple;
-	bh=C+3/Y8UM+QF4b+fxUP6DMkOPxlSgLT2Ew0IkUAd7ZBk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YSzhWwZBwayWA0y1JXlzM0MK0LJoT/cJQwaTsEaAa9rPU+fX8PoNk3U6+smAU25xQnmkmAwhE2WCXt5fI76wj/Jemy9sI2MQmr0v5ra2wo8wWzLNxQGHu+O0CZ7c+/cvvPWxPJlFXILaXrI9kgcIVMRmbTpQEytd4u9TPqQpDPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U53n/eYJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780589261; c=relaxed/simple;
+	bh=J5tZ9NNEIM9T2w2xibNmTr36mtNoOPW2WDlOYovucJQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KM6zyhHtj9q+mxb63FZIsp0qRwCn1NhlCchuH4V2xbBPjrkQWhcpDLzKm1XUT5ID339H0qPkfbJLtQRHjwEWb9DQ3m/Ml/TidsVCHjn4djGL79+EcDMorcVTpCWA/nTEQiqqhcGN6QAZU7Tjto+vxu40X2R3vzSloF3GBBmMcOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dXCvz38L; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U53n/eYJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69841F00899;
-	Thu,  4 Jun 2026 16:05:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780589157;
-	bh=yVTz1uwL1NNB95GiENNhSXV/zvAW1QB+RQh5yDivS9Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U53n/eYJFU+DltQIrh9jMR7xb6PYWBeAX+OJQ1QBCVtMnXdVZYyQ10H28CIt0yCjm
-	 NHvqDaLvs/8UZd06nXwa2/uPJsdYD7u3mKcH5pwnzWsg7qFRkQYLg3k5y2psbko+Rn
-	 0zCw6GA0Nv4+9W1VuJChafZzGAJlmOooCLVD14SegCTCGA7YBf8JuPNNbudHXFYnPj
-	 tHkUTUI5rXwhUCHjUBCbk7UJZDDdHjF2gx5bpQCJyOP2B+H6GDV3Rq3uo0ZxesHR79
-	 7OyMSbOYZjE08zq3KXmiB2yAwbhIz4XikTPR+RsF2F+hCDU7tXurawk5WknddQUXjK
-	 ffV3j2deZfdEQ==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id ED797F40072;
-	Thu,  4 Jun 2026 12:05:55 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Thu, 04 Jun 2026 12:05:55 -0400
-X-ME-Sender: <xms:Y6IhahnHXc09KilZvFzUSBZgTSLIkEVygC0kGisdcxVNEKWyRMxGBw>
-    <xme:Y6IhaqtBr2N5Ps4cgjVM-Im_rzv11AUNqNFez-P-R_haS4tzA3BMK62krcfnL0STb
-    2nMO5pkdjsKaKlgK95VqrzoeZWJ8bBKa5PIoiyvL4EWo-gzF_vR8w>
-X-ME-Received: <xmr:Y6IhagsMGGZ5nB454xWyFruYQrqtm5hAUF4aEe9Cx4QsVtL1cF2LpHxL1bd0wA>
-X-ME-Proxy-Cause: dmFkZTFWOXm/HbsQkCfZ0JEDY7FJu/nVG/x0j3OWWRZksOqWO2cAdoQsNzQcvJeAF7T6wu
-    yw3RhoVAzGLCcdWmON5DYz2p1qN+phCm6+K5u7cpldS1sgAmg2ww0rqmwunmD4tc32uiSL
-    OJaP+3cfqmhdriIifqpvM3rYkemJiIJaAuqZ/bYJu+yFHX1aUPGas+wSyV/YCgyg3apGfX
-    jeBZRQGpawV2oGEvl7OINeHp115YYqmyGZWnP4M8hNrIQs2UnHEAqSJAlDGkYGO06OF/AS
-    ipoLNMUWYA+g7PheK5gtmnLK0LaLiJvuy7PRw7r52HFPk19FLjXZ1XO2UKefyecs9Ox5kx
-    SZY8ocoNDU7HkqYDwAc+EvaIYPL/5dX42cdazX4XSGrW37W6+LpwvoM0cTUE1ZR+oVIQ3O
-    pN0C8RDxcNuWfZuqWqK+z/gGuJRPc5EM3LhvlI6/XN+IBB3bsmYZW7wdR4zvcwVsUz5J5B
-    XG+u49B2DvY0QFy2A+Pq2Ora3d5Gc1xpJyb8+SP03RID8WNfP7ZQi1VUd7u/FqJ33+MNPO
-    Jr6x9KlODIKyeQ1uSXXpMvuszK0ldcqOx3UOj0R+0f+pWmn/jqKctW8XfbLmm4WlW+N51V
-    f66QJpT5ZSKg10X+S+QoRl1Hod8ihzmmcD5TJKkG7W/O1vPBmThgYvLF7fNQ
-X-ME-Proxy: <xmx:Y6Ihai1gRVJqQDK-wAYgh4IVoPsfpj0WIZDWQoKtMJqeZkEwh9WgJg>
-    <xmx:Y6IhaoNjkt5jhap18TBFNnPFBYtRR6zhU4y2qrAm_sZeBfUjr3q9Ag>
-    <xmx:Y6IhaoWiwMRCKigm9wIuXI3pCgSjGuZgviC77oMPa72wIXF0dLSU-A>
-    <xmx:Y6IhaoYvxw-HXITfeaxlQuluR8fwJzGepU7zG1IqMj670gSDQ0Qt_Q>
-    <xmx:Y6IhajvO5uppJzHZ_sZztkh5Ssr3Q2CM6UlAyFYU0bB2iKgWAhO6cD0L>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Jun 2026 12:05:53 -0400 (EDT)
-Date: Thu, 4 Jun 2026 17:05:48 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com, pbonzini@redhat.com, 
-	seanjc@google.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org, 
-	chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Subject: Re: [PATCH v6 01/11] x86/virt/tdx: Simplify tdmr_get_pamt_sz()
-Message-ID: <aiGheH8YceumotUU@thinkstation>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-2-rick.p.edgecombe@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dXCvz38L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780589258;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3+/3qq3vcNnMSlbovUtLsbCgSAA5l6kz17jqK9FXU+0=;
+	b=dXCvz38LFwYQ/8QclbJ421U96EC8rra1YjXG236id2MQFaH7wuaq37QSJKyJ0xDkNpoJ+r
+	nfl3pKWODNiBCgohbjNeO85QXZK3r6o/BEdYiiYws+CjILkU7s5m9KJO+hWZNM5pIJrZVK
+	aoXipCvJ36LZSyElmtey8xVO0n4SXQo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-557-vNOPzmBhNGGYrQaRoVI2SA-1; Thu,
+ 04 Jun 2026 12:07:36 -0400
+X-MC-Unique: vNOPzmBhNGGYrQaRoVI2SA-1
+X-Mimecast-MFC-AGG-ID: vNOPzmBhNGGYrQaRoVI2SA_1780589255
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 25729195608E;
+	Thu,  4 Jun 2026 16:07:35 +0000 (UTC)
+Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A14BB1800347;
+	Thu,  4 Jun 2026 16:07:34 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/3] KVM: nVMX: unwind PDPTR load if processor triggers a nested VMFail
+Date: Thu,  4 Jun 2026 12:07:31 -0400
+Message-ID: <20260604160733.12555-2-pbonzini@redhat.com>
+In-Reply-To: <20260604160733.12555-1-pbonzini@redhat.com>
+References: <20260604160733.12555-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526023515.288829-2-rick.p.edgecombe@intel.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Mon, May 25, 2026 at 07:35:05PM -0700, Rick Edgecombe wrote:
-> For each memory region that the TDX module might use (called TDMR), three
-> separate traditional PAMT allocations are needed. One for each supported
-> page size (1GB, 2MB, 4KB). These store information on each page in the
-> TDMR. In Linux, they are allocated out of one physically contiguous block,
-> in order to more efficiently use some internal TDX module book keeping
-> resources. So some simple math is needed to break the single large
-> allocation into three smaller allocations for each page size.
-> 
-> There are some commonalities in the math needed to calculate the base and
-> size for each smaller allocation, and so an effort was made to share logic
-> across the three. Unfortunately doing this turned out unnaturally tortured,
-> with a loop iterating over the three page sizes, only to call into a
-> function with cases statement for each page size. In the future Dynamic
-> PAMT will add more logic that is special to the 4KB page size, making the
-> benefit of the math sharing even more questionable.
-> 
-> Three is not a very high number, so get rid of the loop and just duplicate
-> the small calculation three times. In doing so, setup for future Dynamic
-> PAMT changes.
-> 
-> Since the loop that iterates over it is gone, further simplify the code by
-> dropping the array of intermediate size and base storage. Just store the
-> values to their final locations. Accept the small complication of having
-> to clear tdmr->pamt_4k_base in the error path, so that tdmr_do_pamt_func()
-> will not try to operate on the TDMR struct when attempting to free it.
-> 
-> Assisted-by: GitHub Copilot:claude-opus-4-6 Claude:claude-opus-4-7
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Upon a VM-entry failure that is caught by the processor rather than
+KVM, nested_vmx_restore_host_state() restores L1's CR3 but not the
+PDPTRs.  If shadow paging is used (enable_ept is false), the L2
+PDPTRs loaded during the aborted entry attempt remain in
+vcpu->arch.mmu->pdptrs[].
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Note that the fact that the PDPTRs are stored in the MMU does not
+save the day, because KVM only uses root_mmu if enable_ept is false.
 
-Couple of nits below.
+To fix this, use nested_vmx_load_cr3() instead of open coding
+just the load of vcpu->arch.cr3, in the same guise as
+load_vmcs12_host_state().  nested_vmx_load_cr3() will mark the
+register as dirty rather than available, but this is only a
+very minor pessimization.
 
-> ---
-> v6:
->  - Drop {} by moving a comment (Binbin)
->  - Log tweaks
-> 
-> v4:
->  - Just refer to global var instead of passing pamt_entry_size around
->    (Xiaoyao)
->  - Remove setting pamt_4k_base to zero, because it already is zero.
->    Adjust the comment appropriately (Kai)
-> 
-> v3:
->  - New patch
-> ---
->  arch/x86/virt/vmx/tdx/tdx.c | 93 ++++++++++++-------------------------
->  1 file changed, 29 insertions(+), 64 deletions(-)
-> 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 967482ae3c801..487f389f52f4b 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -516,31 +516,21 @@ static __init int fill_out_tdmrs(struct list_head *tmb_list,
->   * Calculate PAMT size given a TDMR and a page size.  The returned
->   * PAMT size is always aligned up to 4K page boundary.
->   */
-> -static __init unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
-> -					     u16 pamt_entry_size)
-> +static __init unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz)
->  {
->  	unsigned long pamt_sz, nr_pamt_entries;
-> +	const int tdx_pg_size_shift[] = { PAGE_SHIFT, PMD_SHIFT, PUD_SHIFT };
-> +	const u16 pamt_entry_size[TDX_PS_NR] = {
-> +		tdx_sysinfo.tdmr.pamt_4k_entry_size,
-> +		tdx_sysinfo.tdmr.pamt_2m_entry_size,
-> +		tdx_sysinfo.tdmr.pamt_1g_entry_size,
-> +	};
->  
-> -	switch (pgsz) {
-> -	case TDX_PS_4K:
-> -		nr_pamt_entries = tdmr->size >> PAGE_SHIFT;
-> -		break;
-> -	case TDX_PS_2M:
-> -		nr_pamt_entries = tdmr->size >> PMD_SHIFT;
-> -		break;
-> -	case TDX_PS_1G:
-> -		nr_pamt_entries = tdmr->size >> PUD_SHIFT;
-> -		break;
-> -	default:
-> -		WARN_ON_ONCE(1);
-> -		return 0;
-> -	}
-> +	nr_pamt_entries = tdmr->size >> tdx_pg_size_shift[pgsz];
-> +	pamt_sz = nr_pamt_entries * pamt_entry_size[pgsz];
->  
-> -	pamt_sz = nr_pamt_entries * pamt_entry_size;
->  	/* TDX requires PAMT size must be 4K aligned */
-> -	pamt_sz = ALIGN(pamt_sz, PAGE_SIZE);
-> -
-> -	return pamt_sz;
-> +	return PAGE_ALIGN(pamt_sz);
->  }
->  
->  /*
-> @@ -578,28 +568,21 @@ static __init int tdmr_get_nid(struct tdmr_info *tdmr, struct list_head *tmb_lis
->   * within @tdmr, and set up PAMTs for @tdmr.
->   */
->  static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
-> -				   struct list_head *tmb_list,
-> -				   u16 pamt_entry_size[])
-> +				   struct list_head *tmb_list)
->  {
-> -	unsigned long pamt_base[TDX_PS_NR];
-> -	unsigned long pamt_size[TDX_PS_NR];
-> -	unsigned long tdmr_pamt_base;
->  	unsigned long tdmr_pamt_size;
->  	struct page *pamt;
-> -	int pgsz, nid;
-> -
-> +	int nid;
+If EPT *is* in use, do not load the PDPTRs and rely solely on
+ept_save_pdptrs() to reload them from VMCS01.  When vmx_load_mmu_pgd()
+runs on the next entry, the PDPTRs are available---meaning they are
+not incorrectly reloaded from memory.
 
-Add a newline here?
+kvm_mmu_unload() is preserved to keep the paths from the old
+kvm_mmu_reset_context(), but is actually unnecessary.  It can
+be removed as a separate patch.
 
->  	nid = tdmr_get_nid(tdmr, tmb_list);
->  
->  	/*
->  	 * Calculate the PAMT size for each TDX supported page size
->  	 * and the total PAMT size.
->  	 */
-> -	tdmr_pamt_size = 0;
-> -	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
-> -		pamt_size[pgsz] = tdmr_get_pamt_sz(tdmr, pgsz,
-> -					pamt_entry_size[pgsz]);
-> -		tdmr_pamt_size += pamt_size[pgsz];
-> -	}
-> +	tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K);
-> +	tdmr->pamt_2m_size = tdmr_get_pamt_sz(tdmr, TDX_PS_2M);
-> +	tdmr->pamt_1g_size = tdmr_get_pamt_sz(tdmr, TDX_PS_1G);
-> +	tdmr_pamt_size = tdmr->pamt_4k_size + tdmr->pamt_2m_size + tdmr->pamt_1g_size;
->  
->  	/*
->  	 * Allocate one chunk of physically contiguous memory for all
-> @@ -607,26 +590,18 @@ static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
->  	 * in overlapped TDMRs.
->  	 */
->  	pamt = alloc_contig_pages(tdmr_pamt_size >> PAGE_SHIFT, GFP_KERNEL,
-> -			nid, &node_online_map);
-> +				  nid, &node_online_map);
-> +
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/vmx/nested.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-Looks like unrelated whitespace change. Is it intentional?
-
-> +	/*
-> +	 * tdmr->pamt_4k_base is still zero so the error
-> +	 * path of the caller will skip freeing the pamt.
-> +	 */
->  	if (!pamt)
->  		return -ENOMEM;
->  
-> -	/*
-> -	 * Break the contiguous allocation back up into the
-> -	 * individual PAMTs for each page size.
-> -	 */
-> -	tdmr_pamt_base = page_to_pfn(pamt) << PAGE_SHIFT;
-> -	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
-> -		pamt_base[pgsz] = tdmr_pamt_base;
-> -		tdmr_pamt_base += pamt_size[pgsz];
-> -	}
-> -
-> -	tdmr->pamt_4k_base = pamt_base[TDX_PS_4K];
-> -	tdmr->pamt_4k_size = pamt_size[TDX_PS_4K];
-> -	tdmr->pamt_2m_base = pamt_base[TDX_PS_2M];
-> -	tdmr->pamt_2m_size = pamt_size[TDX_PS_2M];
-> -	tdmr->pamt_1g_base = pamt_base[TDX_PS_1G];
-> -	tdmr->pamt_1g_size = pamt_size[TDX_PS_1G];
-> +	tdmr->pamt_4k_base = page_to_phys(pamt);
-> +	tdmr->pamt_2m_base = tdmr->pamt_4k_base + tdmr->pamt_4k_size;
-> +	tdmr->pamt_1g_base = tdmr->pamt_2m_base + tdmr->pamt_2m_size;
->  
->  	return 0;
->  }
-> @@ -657,10 +632,7 @@ static __init void tdmr_do_pamt_func(struct tdmr_info *tdmr,
->  	tdmr_get_pamt(tdmr, &pamt_base, &pamt_size);
->  
->  	/* Do nothing if PAMT hasn't been allocated for this TDMR */
-> -	if (!pamt_size)
-> -		return;
-> -
-> -	if (WARN_ON_ONCE(!pamt_base))
-> +	if (!pamt_base)
->  		return;
->  
->  	pamt_func(pamt_base, pamt_size);
-> @@ -686,14 +658,12 @@ static __init void tdmrs_free_pamt_all(struct tdmr_info_list *tdmr_list)
->  
->  /* Allocate and set up PAMTs for all TDMRs */
->  static __init int tdmrs_set_up_pamt_all(struct tdmr_info_list *tdmr_list,
-> -					struct list_head *tmb_list,
-> -					u16 pamt_entry_size[])
-> +				 struct list_head *tmb_list)
->  {
->  	int i, ret = 0;
->  
->  	for (i = 0; i < tdmr_list->nr_consumed_tdmrs; i++) {
-> -		ret = tdmr_set_up_pamt(tdmr_entry(tdmr_list, i), tmb_list,
-> -				pamt_entry_size);
-> +		ret = tdmr_set_up_pamt(tdmr_entry(tdmr_list, i), tmb_list);
->  		if (ret)
->  			goto err;
->  	}
-> @@ -970,18 +940,13 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
->  				  struct tdmr_info_list *tdmr_list,
->  				  struct tdx_sys_info_tdmr *sysinfo_tdmr)
->  {
-> -	u16 pamt_entry_size[TDX_PS_NR] = {
-> -		sysinfo_tdmr->pamt_4k_entry_size,
-> -		sysinfo_tdmr->pamt_2m_entry_size,
-> -		sysinfo_tdmr->pamt_1g_entry_size,
-> -	};
->  	int ret;
->  
->  	ret = fill_out_tdmrs(tmb_list, tdmr_list);
->  	if (ret)
->  		return ret;
->  
-> -	ret = tdmrs_set_up_pamt_all(tdmr_list, tmb_list, pamt_entry_size);
-> +	ret = tdmrs_set_up_pamt_all(tdmr_list, tmb_list);
->  	if (ret)
->  		return ret;
->  
-> -- 
-> 2.54.0
-> 
-
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 4690a4d23709..d612a5d071fc 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4947,6 +4947,7 @@ static inline u64 nested_vmx_get_vmcs01_guest_efer(struct vcpu_vmx *vmx)
+ 
+ static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
+ {
++	enum vm_entry_failure_code ignored;
+ 	struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	struct vmx_msr_entry g, h;
+@@ -4984,20 +4985,19 @@ static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
+ 	vmx_set_cr4(vcpu, vmcs_readl(CR4_READ_SHADOW));
+ 
+ 	nested_ept_uninit_mmu_context(vcpu);
+-	vcpu->arch.cr3 = vmcs_readl(GUEST_CR3);
+-	kvm_register_mark_available(vcpu, VCPU_REG_CR3);
+ 
+ 	/*
+-	 * Use ept_save_pdptrs(vcpu) to load the MMU's cached PDPTRs
+-	 * from vmcs01 (if necessary).  The PDPTRs are not loaded on
+-	 * VMFail, like everything else we just need to ensure our
+-	 * software model is up-to-date.
++	 * Now that nested EPT has been disabled, load the MMU's CR3 and
++	 * possibly PDPTRs from vmcs01 (if necessary).  This should not
++	 * happen for VMFail, but we get here if the check was caught by
++	 * the processor and therefore the guest CR3 was loaded prematurely.
+ 	 */
++	kvm_mmu_unload(vcpu);
++	if (nested_vmx_load_cr3(vcpu, vmcs_readl(GUEST_CR3), false, !enable_ept, &ignored))
++		nested_vmx_abort(vcpu, VMX_ABORT_LOAD_HOST_PDPTE_FAIL);
+ 	if (enable_ept && is_pae_paging(vcpu))
+ 		ept_save_pdptrs(vcpu);
+ 
+-	kvm_mmu_reset_context(vcpu);
+-
+ 	/*
+ 	 * This nasty bit of open coding is a compromise between blindly
+ 	 * loading L1's MSRs using the exit load lists (incorrect emulation
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.52.0
+
+
