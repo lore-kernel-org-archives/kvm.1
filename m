@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209813502B8
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 02:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6040635674E
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 02:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780539652; cv=none; b=EtpaFVhvXHRanqLJdzlgpwMNkjwxpgfavJi9IPPTgDTciVwG0kgPJonL6X9u7JHzml/Rz6oAb2hFJ4cTYT2X3LAmnARMdOe7tC7e4MGoAcSl3FWfnl+Q3xDdF1h0wPR+nnkGbbBSQS7SeyUOAKxH/EA9jcDs2+MH3W7jL/SP3js=
+	t=1780539689; cv=none; b=u7uYsC+dexweNWweAV0NI+rQ4qX3MZpIFMYLGBzNUaLf7N1QwszMon76yJklvid35ahA9YOe/V9cv0/EEEXe4gWQB0rPS00W9NhkNooRwRXtQwhV4Xn1eiC8sqJXbxqQmvbzNyKMaSAC9KS+8/nGkxE/mRiNrbl+/6TfIv+Y9gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780539652; c=relaxed/simple;
-	bh=BxXVzPjDUTfeRHGRV/Gr7/uWAqdzc+VgkPEP7HzaBGE=;
+	s=arc-20240116; t=1780539689; c=relaxed/simple;
+	bh=N8n2wOMH1B1jDFXhHJb7vnWHUGZJ0uSVqNxOc0Em2Hk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=A3HPnB4q/m/ICzsIWcKqes3CMq86K+pcDkRMenOVOoHdoj+Nf/rhpnLQEHMu7eY6DsfRVtGLXhyu9s6wF24Zk6JmO+8jvg6VZSUNNRQkwjt3Lb7j4df8x6RgolnR2oKbBxKXs5e+b4O5wCQav/D3GlFRkymBc0WrVSlNegDbem0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PwbmqXp+; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WvtbKf1hm06cLXft5OCmAOJJUWturIvt38nHzNwb4rpWF4MBb8tiYdHvnDGQEEHUJJBcDPcjP9zNHdqToQcW74czj9nhtpXkGJRkzhZwRbJgLeDY/X2qSNTYT1o98V+O7LhyTKe8iGOHpxQIn0uD3hSxtodE6hrgLPoL1ShAGfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IMxrVw+a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PwbmqXp+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44EB1F00893;
-	Thu,  4 Jun 2026 02:20:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IMxrVw+a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29011F00893;
+	Thu,  4 Jun 2026 02:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780539649;
-	bh=mFpUMFmsPTDsUUlqZ7qSKwXxE2ZCgmZPZy7ge9dM8O4=;
+	s=k20260515; t=1780539685;
+	bh=TGzRYSkPoS/WYq42oTMynailrjOdWQgZCKfCWe7hOZM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PwbmqXp+4IUVYkfQm7S8VJfPxcaHw9JmowkFxGEKqWEOdCB/YW4X6YxVl/d789qSz
-	 r6OAutDM7AzusYgQNpj+5qfz0Xc2j19/MG5n+RMYaW/EzW9rgEPFZiry/ekUHNjHB9
-	 GlmpKBdBquk8FpzrG4SOmpqGtMBQ6fg6J0NxB0got7nDL6wiBlvr0N4GXv2dDdnWhB
-	 TaEFGjMAqJrgq9cTnaq9wRPg7k8Tyo3uL/eogkHjeg1mcon9q6ZN4Vsh2cEOHkWtpD
-	 lx7vx6KkkZL8ViLvHCwB3Q+AfweJaAo0Uher34rgy1HtoXNFN8ZSfr4/BbhGOhUYSl
-	 OOZZfrhnnxIFA==
+	b=IMxrVw+aLetIW1mtzEap/CyfknZsvG9r1cpPBtp//kTn3rcoI5jZSJ5xATP0dSLz1
+	 6sS1FTiAz3PFaEqfoIm/+gvq8+nN9AvWFU1TfKd5nxprL1MPtjTCoZmGPsqyUoKDqE
+	 EPgASFvD2qc3CFtb/8J/NM3DuGD8/+Bt3OsrsQ2/qlK7H4aLRR2VSKi0pNvTUSEyvl
+	 FLSIk91dTPiC2GmklXkqBnZp4UChIxQGKlsoBC63TKHerkE5w2rprveYhBwWyxypTZ
+	 43L5dQ0HLm3WpvRQM0QlbMV71c6HspFD51tCWil2GDAq/t8tqKOPRyZf0zbSdsH+6T
+	 bCSci2sSRuNKw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 20/21] KVM: selftests: Make number of vCPUs
- configurable in IRQ test
+Subject: Re: [PATCH v5 19/21] KVM: selftests: Print vCPU affinity on timeout
+ during IRQ test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Josh Hilke" <jrhilke@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604020143.748245-21-jrhilke@google.com>
-References: <20260604020143.748245-21-jrhilke@google.com>
+In-Reply-To: <20260604020143.748245-20-jrhilke@google.com>
+References: <20260604020143.748245-20-jrhilke@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 02:20:49 +0000
-Message-Id: <20260604022049.A44EB1F00893@smtp.kernel.org>
+Date: Thu, 04 Jun 2026 02:21:25 +0000
+Message-Id: <20260604022125.A29011F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,48 +46,99 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Missing bounds check on user-supplied `nr_vcpus` allows stack bu=
-ffer overflows and out-of-bounds global array accesses.
+- [Medium] kvm_print_vcpu_affinity() uses get_nprocs() as the loop boundary=
+, which silently truncates CPUs with indices >=3D get_nprocs() on sparse to=
+pologies.
 --
 
-commit 115e22303a8d11509c805d6bfdcdbd39b670c16d
-Author: David Matlack <dmatlack@google.com>
+commit 9e2355f47489ee5cf4674888f5c4b7d1058bc869
+Author: Josh Hilke <jrhilke@google.com>
 
-KVM: selftests: Make number of vCPUs configurable in IRQ test
+KVM: selftests: Print vCPU affinity on timeout during IRQ test
 
-This commit adds a '-v' flag to tools/testing/selftests/kvm/irq_test.c,
-allowing users to configure the number of vCPUs to run in the test.
+Adds a helper function to print the physical CPU affinity of a vCPU thread=
+=20
+in a human-readable format. Uses this new helper in the irq_test to provide=
+=20
+context when a vCPU times out waiting for an interrupt during migration.
 
-> diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selft=
-ests/kvm/irq_test.c
-> index 1d66293b6d0b8..41c50caa928e2 100644
-> --- a/tools/testing/selftests/kvm/irq_test.c
-> +++ b/tools/testing/selftests/kvm/irq_test.c
+> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/s=
+elftests/kvm/lib/kvm_util.c
+> index e538e6147ec3f..7fc3aaf763797 100644
+> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+
 [ ... ]
-> @@ -213,6 +214,9 @@ int main(int argc, char **argv)
->  		case 'n':
->  			use_nmi =3D true;
->  			break;
-> +		case 'v':
-> +			nr_vcpus =3D atoi_positive("Number of vCPUS", optarg);
+
+> @@ -662,6 +663,54 @@ void kvm_print_vcpu_pinning_help(void)
+>  	       "     (default: no pinning)\n", name, name);
+>  }
+> =20
+> +void kvm_print_vcpu_affinity(struct kvm_vcpu *vcpu, pid_t tid)
+> +{
+> +	int nprocs =3D get_nprocs();
+> +	bool first_range =3D true;
+> +	int i, start =3D -1;
+> +	cpu_set_t cpus;
+> +
+> +	kvm_sched_getaffinity(tid, sizeof(cpus), &cpus);
+> +
+> +	/*
+> +	 * Output format examples:
+> +	 * - Single CPU:  "vCPU 0 (TID 1234) affined to pCPU(s): 2"
+> +	 * - List:        "vCPU 0 (TID 1234) affined to pCPU(s): 0,2,4"
+> +	 * - Range:       "vCPU 0 (TID 1234) affined to pCPU(s): 0-7"
+> +	 * - Mixed:       "vCPU 0 (TID 1234) affined to pCPU(s): 0-3,8,10-12"
+> +	 */
+> +	printf("vCPU %u (TID %d) affined to pCPU(s): ", vcpu->id, tid);
+> +
+> +	for (i =3D 0; i <=3D nprocs; i++) {
+> +		/*
+> +		 * Iterate to nprocs (inclusive) to ensure that if the last pCPU
+> +		 * is part of a range, the 'else' block triggers one final time
+> +		 * to flush that range to stdout.
+> +		 */
+> +		if (i < nprocs && CPU_ISSET(i, &cpus)) {
 
 [Severity: Medium]
-Does this code need a bounds check for nr_vcpus against KVM_MAX_VCPUS?
+Does using get_nprocs() as the loop boundary risk silently truncating CPUs=
+=20
+on sparse topologies?
 
-Because vcpu_threads and vcpus are fixed-size stack arrays in main():
+get_nprocs() returns the count of currently online CPUs, not the maximum=20
+CPU ID. If a system has 4 online CPUs but their IDs are 0, 1, 2, and 7,=20
+get_nprocs() will return 4.
 
-	pthread_t vcpu_threads[KVM_MAX_VCPUS];
-	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
+This would cause the loop to terminate prematurely, completely ignoring=20
+valid but higher-numbered CPU indices (like CPU 7) in the cpu_set_t mask.
 
-if the user specifies a value larger than KVM_MAX_VCPUS, won't it cause a
-stack buffer overflow when passing vcpus to vm_create_with_vcpus() or
-subsequently populating the vcpu_threads array?
+Should this iterate up to CPU_SETSIZE instead to encompass the entire mask=
+=20
+capacity, similar to other helper functions like pin_task_to_random_cpu()?
 
-> +			break;
->  		case 'h':
->  		default:
->  			help(argv[0]);
+> +			if (start =3D=3D -1)
+> +				start =3D i;
+> +			continue;
+> +		}
+> +
+> +		if (start !=3D -1) {
+> +			int end =3D i - 1;
+> +
+> +			if (!first_range)
+> +				printf(",");
+> +
+> +			if (start =3D=3D end)
+> +				printf("%d", start);
+> +			else
+> +				printf("%d-%d", start, end);
+> +
+> +			start =3D -1;
+> +			first_range =3D false;
+> +		}
+> +	}
+> +	printf("\n");
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604020143.7482=
-45-1-jrhilke@google.com?part=3D20
+45-1-jrhilke@google.com?part=3D19
