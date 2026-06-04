@@ -1,198 +1,192 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8CC3C09FB
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 19:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED2C39BFE0
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 19:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780602149; cv=none; b=X7C7hXetUbbkkfVd8hlv1Z9G/GzXXiVVKhFJtCHcyoipV0pAI6jR7mTBpkXtErazu8JppBn4DPPv3UQPljfHKvnXn6hUi2r+9QMHj+oQTWH4s0keRXRCyhd70VtolSkVYaAzPF29mtHCr1WJV2Ca+sI7Aj+ncN4AbbCAnmO19LM=
+	t=1780602371; cv=none; b=ROg++WmYnC+F5uhttDP0AgQ6FV3SbvUoRlWkrD6WCkZ1S+c9mX0x2kYfPShlrP51QXEbLR4KNE8qq4Vv14mSKEB8fD0Doc/UhGcGZUzJk6kSpIrcPOznXiqSUySDNb8/CFs0o9W+7tdjF3fLKjaIiQqhdY6RnMeENG3p/0IiU0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780602149; c=relaxed/simple;
-	bh=G0BFi7dDU7RUWTvl0GR4QOh9jQwYMvWi7nKgww5BxXs=;
+	s=arc-20240116; t=1780602371; c=relaxed/simple;
+	bh=ZS6Q4NW/QnWykvaT6dckPok4js/bj/ShuiAEc8zsH8g=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Wg+a7ONKAfQULyCtNSwjgt8eacp33vtXSkuRrs0n8JuhcXUxdhKJSVOXsez144nMC6KAZqyVOBs+qRSjFgtmoL//s30iz28DlrA9qALaXg1z40lrrlaYOoWB9lBJNy/PWTUNYDDvJE9e+w4W2YtwUfXkOnHMlTIE697hrNp1q/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFW0dxmz; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Uakf41tXtmBYveZSL18kNDsKEfmSdAUqJGn+CkRxSzyhVAb9p0YoMCd9ABvSnsda2ayMb6VxqEsIzUX+q6kaAh30A3KqWJ1SzPpLeAi4W8XNwvtTIDAl3rTCN/5BPtODLPDUJAdt6RP11x27qW6Nd1RerwBGSrfq+RpqL7Z92nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IWDiOvgc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WFW0dxmz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA881F00893;
-	Thu,  4 Jun 2026 19:42:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IWDiOvgc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4C41F00893;
+	Thu,  4 Jun 2026 19:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780602147;
-	bh=FEoNyUW8jBGADVPxt7Ra5DhC9kW/epJpVBhaAQCVCu0=;
+	s=k20260515; t=1780602369;
+	bh=EBxzc2MiQOdw/CPhZlpEji0OPQLWzxXKwvaf+3JGSHs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WFW0dxmzh4oPoGfgw6fAUT2doAWfPnGy5KzMr5wUAqvBMmHrRtyNwMcMWzijdY0pT
-	 M7i71pQcBFPVgIyLVHsRPgTLjqaqpOX/AgwL6MMDPG0JJ71mEnsfU1nVYLOO6+gCgl
-	 1Wrl1MXbzS9cfSsyGkoHgA37NpTtRUTbXO+AHW3c1TiAHyJEL/pMMcSFeBnfnBDXx6
-	 fAZB4m0Cl9XlXYZSHMZYHUpf1z9KbPGTKS7Jxk8XIBA2bv+y6M6FFy0zUaoE1/hvtH
-	 WQbv6PddPPgzWpsdLn8iuubrq1dl6Ubhh+25MglmgpQoHJFA4neHQo6UYLuVwBLigJ
-	 PxaqKofAVnHwg==
+	b=IWDiOvgcHXBetGsab9NMUTqMtOLiVla4tkyhmUZFdGMv9AlCEnyxT2siBDx6/zJzC
+	 RaqvNvoQjNnA5FGZOudplAzMpnLtR9pCiZKDvtEaoGDd4hEb5Z+xrjaPY8/+ppNUk8
+	 lFIeNkmnUqAYE/AD+Kx9xPL4qqfEZLsi/v8+hVeHX5Ox1S3udiCTD+f1+5hJr+qXP+
+	 zyANVyWcaLYxDeVSpZ6ahORVJtnVcbaEoTkILTB7muWB0Z0fd6bQLf2RN/8qk264E4
+	 +ScssZsXTMY9pB5dvRxfpuT743O8/gwWDlQ31BuDphU5H0ng+L8EdfZCNji8Swzl5T
+	 IIMMh7EdCGxVA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v10 2/3] KVM: s390: Enable adapter_indicators_set to use
- mapped pages
+Subject: Re: [PATCH v10 3/3] KVM: s390: Introducing
+ kvm_arch_set_irq_inatomic fast inject
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Douglas Freimuth" <freimuth@linux.ibm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604192755.203143-3-freimuth@linux.ibm.com>
-References: <20260604192755.203143-3-freimuth@linux.ibm.com>
+In-Reply-To: <20260604192755.203143-4-freimuth@linux.ibm.com>
+References: <20260604192755.203143-4-freimuth@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 19:42:26 +0000
-Message-Id: <20260604194227.5CA881F00893@smtp.kernel.org>
+Date: Thu, 04 Jun 2026 19:46:09 +0000
+Message-Id: <20260604194609.7F4C41F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Host-userspace reachable WARN_ON_ONCE when pinning the summary pag=
-e fails.
-- [High] Broken atomicity: The indicator bit is set in guest memory before =
-validating the summary page, leaving the guest in an inconsistent state on =
-error.
-- [High] The fast path for long-term mapped adapter indicators modifies gue=
-st memory without updating KVM's dirty page tracking, breaking live migrati=
-on.
+
+New issues:
+- [High] Missing KVM Dirty Page Tracking during Fast IRQ Injection.
+
+Pre-existing issues:
+- [High] Guest-Triggerable WARNING / Denial of Service on memory allocation=
+ failure.
 --
 
-commit eab5dd8ef6ef5a366acb6ed92a72330259c39430
+commit 87294ba489c0602b2b9baebf0c40ddd4f77205c0
 Author: Douglas Freimuth <freimuth@linux.ibm.com>
-KVM: s390: Enable adapter_indicators_set to use mapped pages
+Subject: KVM: s390: Introducing kvm_arch_set_irq_inatomic fast inject
 
-This commit optimizes the s390 adapter_indicators_set function to use
-long-term mapped pages when available. It introduces a fast path that opera=
-tes
-under a spinlock, falling back to the existing pin-and-map slow path if
-the mapped pages are not found.
+This patch introduces a fast path for irq injection on s390 via
+kvm_arch_set_irq_inatomic. It avoids placing interrupts on the global
+work queue by directly mapping adapter indicator pages and accessing
+shared resources using spinlocks instead of mutexes.
 
 > diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> index d066a282271e2..b5304816aaa04 100644
+> index b5304816aaa04..9e3e6b0d72ad6 100644
 > --- a/arch/s390/kvm/interrupt.c
 > +++ b/arch/s390/kvm/interrupt.c
 [ ... ]
-> @@ -2892,41 +2892,80 @@ static unsigned long get_ind_bit(__u64 addr, unsi=
-gned long bit_nr, bool swap)
-[ ... ]
->  static int adapter_indicators_set(struct kvm *kvm,
->  				  struct s390_io_adapter *adapter,
->  				  struct kvm_s390_adapter_int *adapter_int)
->  {
-[ ... ]
-> +	spin_lock_irqsave(&adapter->maps_lock, flags);
+> @@ -2969,6 +2998,44 @@ static int adapter_indicators_set(struct kvm *kvm,
+>  	return summary_set ? 0 : 1;
+>  }
+> =20
+> +static int adapter_indicators_set_fast(struct kvm *kvm,
+> +				       struct s390_io_adapter *adapter,
+> +				       struct kvm_s390_adapter_int *adapter_int,
+> +				       int setbit)
+> +{
+> +	unsigned long bit;
+> +	int summary_set;
+> +	struct s390_map_info *ind_info, *summary_info;
+> +	void *map;
+> +
+> +	spin_lock(&adapter->maps_lock);
 > +	ind_info =3D get_map_info(adapter, adapter_int->ind_addr);
 > +	if (!ind_info) {
-> +		spin_unlock_irqrestore(&adapter->maps_lock, flags);
-> +		ind_page =3D pin_map_page(kvm, adapter_int->ind_addr, 0);
-> +		if (!ind_page)
-> +			return -1;
-> +		idx =3D srcu_read_lock(&kvm->srcu);
-> +		map =3D page_address(ind_page);
-> +		bit =3D get_ind_bit(adapter_int->ind_addr,
-> +				  adapter_int->ind_offset, adapter->swap);
-> +		set_bit(bit, map);
-
-[Severity: High]
-If the indicator bit is set here, but the subsequent attempt to resolve or =
-pin=20
-the summary page fails and the function returns -1, does this code leave the
-indicator bit permanently set in guest memory?
-
-Prior to this patch, both pages were successfully pinned before any bits we=
-re
-mutated, ensuring an all-or-nothing update.
-
-> +		mark_page_dirty(kvm, adapter_int->ind_gaddr >> PAGE_SHIFT);
-> +		set_page_dirty_lock(ind_page);
-> +		srcu_read_unlock(&kvm->srcu, idx);
-> +		unpin_user_page(ind_page);
-> +	} else {
-> +		map =3D page_address(ind_info->page);
-> +		bit =3D get_ind_bit(ind_info->addr, adapter_int->ind_offset, adapter->=
-swap);
-> +		set_bit(bit, map);
-> +		spin_unlock_irqrestore(&adapter->maps_lock, flags);
-
-[Severity: High]
-By modifying the long-term mapped adapter indicator directly in the host=20
-virtual mapping, does this bypass KVM's dirty page tracking?
-
-The slow path calls mark_page_dirty() and set_page_dirty_lock(), but the fa=
-st=20
-path skips them. Could this cause the migrated guest to lose interrupt=20
-delivery notifications if the updated indicator pages are not transferred t=
-o=20
-the destination VM?
-
+> +		spin_unlock(&adapter->maps_lock);
+> +		return -EWOULDBLOCK;
 > +	}
-> +	spin_lock_irqsave(&adapter->maps_lock, flags);
+> +	map =3D page_address(ind_info->page);
+> +	bit =3D get_ind_bit(ind_info->addr, adapter_int->ind_offset, adapter->s=
+wap);
+> +	if (setbit)
+> +		set_bit(bit, map);
+
+[Severity: High]
+Does this bypass dirty page tracking? Since the guest memory is directly
+mutated here using the kernel virtual address mapping, the hardware dirty
+bit won't be set.
+
+It appears KVM must explicitly invoke mark_page_dirty() (or an equivalent) =
+to
+record this modification in the memory slot's dirty bitmap. Without it, pen=
+ding
+interrupts injected via the fast path might be lost after live migration,
+leading to guest I/O hangs or data corruption.
+
 > +	summary_info =3D get_map_info(adapter, adapter_int->summary_addr);
 > +	if (!summary_info) {
-> +		spin_unlock_irqrestore(&adapter->maps_lock, flags);
-> +		summary_page =3D pin_map_page(kvm, adapter_int->summary_addr, 0);
-> +		if (WARN_ON_ONCE(!summary_page))
-> +			return -1;
+> +		spin_unlock(&adapter->maps_lock);
+> +		return -EWOULDBLOCK;
+> +	}
+> +	map =3D page_address(summary_info->page);
+> +	bit =3D get_ind_bit(summary_info->addr, adapter_int->summary_offset,
+> +			  adapter->swap);
+> +	/* If setbit then set summary bit. Else if falling back to the slow pat=
+h */
+> +	/* with setbit=3D=3D0 then clear the summary bit so the slow path re-in=
+jects */
+> +	if (setbit)
+> +		summary_set =3D test_and_set_bit(bit, map);
+> +	else
+> +		summary_set =3D test_and_clear_bit(bit, map);
 
 [Severity: High]
-Since the summary address is derived from guest-controlled KVM routing entr=
-ies=20
-and managed by host userspace, could a malicious or misbehaving userspace=20
-process trigger this warning by unmapping the memory or providing an invali=
-d=20
-address?
+Similarly, does the summary page modification here also need explicit dirty=
+=20
+page tracking?
 
-The KVM subsystem guidelines note that asserts whose conditions can be driv=
-en=20
-by unprivileged host userspace are a host-side denial of service, especiall=
-y=20
-if panic_on_warn is enabled. Is it better to just return -1 here without th=
-e=20
-warning?
-
-> +		idx =3D srcu_read_lock(&kvm->srcu);
-> +		map =3D page_address(summary_page);
-> +		bit =3D get_ind_bit(adapter_int->summary_addr,
-> +				  adapter_int->summary_offset, adapter->swap);
-> +		summary_set =3D test_and_set_bit(bit, map);
-> +		mark_page_dirty(kvm, adapter_int->summary_gaddr >> PAGE_SHIFT);
-> +		set_page_dirty_lock(summary_page);
-> +		srcu_read_unlock(&kvm->srcu, idx);
-> +		unpin_user_page(summary_page);
-> +	} else {
-> +		map =3D page_address(summary_info->page);
-> +		bit =3D get_ind_bit(summary_info->addr, adapter_int->summary_offset,
-> +				  adapter->swap);
-> +		summary_set =3D test_and_set_bit(bit, map);
-> +		spin_unlock_irqrestore(&adapter->maps_lock, flags);
-
-[Severity: High]
-Similar to the indicator page fast path above, does this code also bypass K=
-VM
-dirty page tracking for the summary page when a mapped info structure is fo=
-und?
-
->  	}
+> +	spin_unlock(&adapter->maps_lock);
+> +	return summary_set ? 0 : 1;
+> +}
+[ ... ]
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index 0d39c1375de21..98e7d807d6204 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+[ ... ]
+> @@ -4379,19 +4389,28 @@ int kvm_s390_try_set_tod_clock(struct kvm *kvm, c=
+onst struct kvm_s390_vm_tod_clo
+>  }
 > =20
-> -	idx =3D srcu_read_lock(&kvm->srcu);
-> -	map =3D page_address(ind_page);
-> -	bit =3D get_ind_bit(adapter_int->ind_addr,
-> -			  adapter_int->ind_offset, adapter->swap);
-> -	set_bit(bit, map);
-> -	mark_page_dirty(kvm, adapter_int->ind_gaddr >> PAGE_SHIFT);
-> -	set_page_dirty_lock(ind_page);
-> -	map =3D page_address(summary_page);
-> -	bit =3D get_ind_bit(adapter_int->summary_addr,
-> -			  adapter_int->summary_offset, adapter->swap);
-> -	summary_set =3D test_and_set_bit(bit, map);
-> -	mark_page_dirty(kvm, adapter_int->summary_gaddr >> PAGE_SHIFT);
-> -	set_page_dirty_lock(summary_page);
-> -	srcu_read_unlock(&kvm->srcu, idx);
-> -
-> -	unpin_user_page(ind_page);
-> -	unpin_user_page(summary_page);
->  	return summary_set ? 0 : 1;
+>  static void __kvm_inject_pfault_token(struct kvm_vcpu *vcpu, bool start_=
+token,
+> -				      unsigned long token)
+> +				     unsigned long token)
+>  {
+>  	struct kvm_s390_interrupt inti;
+>  	struct kvm_s390_irq irq;
+> +	struct kvm_s390_interrupt_info *inti_mem =3D NULL;
+> +	int ret =3D 0;
+> =20
+>  	if (start_token) {
+>  		irq.u.ext.ext_params2 =3D token;
+>  		irq.type =3D KVM_S390_INT_PFAULT_INIT;
+>  		WARN_ON_ONCE(kvm_s390_inject_vcpu(vcpu, &irq));
+>  	} else {
+> +		inti_mem =3D kzalloc_obj(*inti_mem, GFP_KERNEL_ACCOUNT);
+> +		if (WARN_ON_ONCE(!inti_mem))
+> +			return;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does this guest-triggerable
+warning create a Denial of Service risk?
+
+The KVM subsystem guidelines explicitly state there should be no guest- or=
+=20
+host-userspace-reachable WARN_ON or BUG_ON. If this allocation fails (e.g.=
+=20
+under host memory pressure, or if a malicious guest deliberately exhausts i=
+ts=20
+memory cgroup limits via asynchronous page faults), it will hit this warnin=
+g.=20
+On systems configured with panic_on_warn=3D1, an unprivileged guest could=20
+intentionally crash the host.
+
+> +
+>  		inti.type =3D KVM_S390_INT_PFAULT_DONE;
+>  		inti.parm64 =3D token;
+> -		WARN_ON_ONCE(kvm_s390_inject_vm(vcpu->kvm, &inti));
+> +		ret =3D kvm_s390_inject_vm(vcpu->kvm, &inti, inti_mem);
+> +		if (ret)
+> +			kfree(inti_mem);
+> +		WARN_ON_ONCE(ret);
+>  	}
 >  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604192755.2031=
-43-1-freimuth@linux.ibm.com?part=3D2
+43-1-freimuth@linux.ibm.com?part=3D3
