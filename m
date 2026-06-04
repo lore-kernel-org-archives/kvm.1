@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303C32E228D;
-	Thu,  4 Jun 2026 14:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D7F2DECA8;
+	Thu,  4 Jun 2026 14:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780584435; cv=none; b=n29kdo0/ofMf/racQ3pqDoF9xcIgx+RY2JWl1H+YsRFkAXPnTyCQ1voqJFryuRzecVeFAxGpULkN0qyjcYhO+zbAMRTH84K3VihEwlu6UMZaIzBMYuUicsqZSZqWC87k56XnudHP8NSwwAK50NrV3JTIcqIugtek5n2z6KwYbq4=
+	t=1780584438; cv=none; b=fl1plLXxGbogXgY20ntLofpCdJrTGhNpIJ8dZr376HfjJDd/3QJ9rKU8R7tUa0Z41aoI1Iqi9DnL9nIHJZqs7NL4F2M6MHx8n1hwPUiyo4vBHEq0HyFcLWIG/s8eqldEVQhcKb4b+QMe488GTD1JPz456wPwWIbQFG2efj8e6ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780584435; c=relaxed/simple;
-	bh=jgrP38vN0ksP/oa1kiyCmivDmkkc+7nIEFf7CigrHKs=;
+	s=arc-20240116; t=1780584438; c=relaxed/simple;
+	bh=RL31Gfg1eTNY6OHuTS5TeU5WfcxL4Weqp9TpWAfAUpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQzCykUqIEhlppFqh/DWddaaXmf6M6ik138MrvvRw4wxssDfsVLkjhswGzINttyjVU05tYfrKoJbFqefDNK3btAFifLUAzeiCqZtLIfsa/RX2mRoK+bOxORbFwJiKy0qIPiAmPgWuGYNzeq0kjBOy6GIvb9vE9C8RpCfStFWiZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OA4wo/Yi; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=r2CqnF+apLxPvSmoqNTos8hfo3+2JJjfXqhuv3JTWhZSbWewEsQqGhXWtVNnx77HroeQ+oAWrTEjX8gyDHCdtfgwLXWvcW1qY8SCTlDGc45hqFva2acQEn2JxmHKRLyEEwOVDfd1L6OCNiVCFCLTq9/cy/GUFUEGn/iRftlwtLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HsMA/eKo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OA4wo/Yi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F79B1F00899;
-	Thu,  4 Jun 2026 14:47:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HsMA/eKo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52291F00893;
+	Thu,  4 Jun 2026 14:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780584434;
-	bh=Gap47TFOhQ6ls41YxeGXU4G423uVPHsg939VsDxPFk8=;
+	s=k20260515; t=1780584435;
+	bh=BJNiAhUi1JSZBSURTg09310Ft25YHyhdAoc13ntBPJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OA4wo/Yit6QC6SB+7XkFzOujaIAnMDInZ5pbKNYuZ3X0xGlydjRhONcAbEjMDmux+
-	 rYQlzewkDNaSOmN6YGaJnF3sNU18oJOq/ypMoef7Y9gBWCBCe1xUY/z/dU4uGmKR3Z
-	 nEQAtBJkCiEPi8V4vC/U8/BE+/zx+pk77/E7PWmX2hywjkxLWSRIh4bzmN0YWrM+3X
-	 aZMQgVS/WR1zAuhFJqzcFbGs3R+udkb1bsgHKCo/Hd9EGJ6MJy7ciz3RUI8urpfC/W
-	 Ha1ZbfkTm9KOiz+dPANtzI3f5oA8P3t15euYcVSpvj+4d8LhbneR01kSb78qQvL3qO
-	 D4umjr9Z21rIw==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 60A49F4006A;
-	Thu,  4 Jun 2026 10:47:12 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 04 Jun 2026 10:47:12 -0400
-X-ME-Sender: <xms:8I8hamkVDjx1vv_gCAUnMk9k4UR47wDgOIBF-Xox9PwmUyQdHV8qGA>
-    <xme:8I8hauMnFs6LCF6ZpN8QoMRck9XdE5n0M9mJ8J_k0cXEEtOGG5eFt3MW-tiRZOOds
-    4sqRZbhwTP9oxmN_D4_L0Z9-HP0r386Nbaz8Nu6B1YVBAvuMUvTMw>
-X-ME-Received: <xmr:8I8halz7QsU7_Eb_1X1x-akBuELuyiRQGwSvBoA6F7phy3jJNjcE1Er5XIEu-g>
-X-ME-Proxy-Cause: dmFkZTFj8ZnrVtOWx8yn50yce9nPuOihKudbBgfFxqft5oPy1zZX5JIfLuFpGdCcWrnhfl
-    Pxz325N4XazAyAzTdNz9aWTIHmCJwIofCI+99fVGtXOCjxSo8k+EHuf2f7CbPoHEMSWrfL
-    Eu/vyp4eHayFnrBZ+cvyjC170T8MtAfXrlwruHYlST6W6tnHi2O6FaxgAEwRiKVEZclZgB
-    1OCxiWZWO0+bd+wOVrTUbIWcIOKxo9Jhw8E1nFS7ABPYRi3tBDwc6A3isnRgid/yx8777k
-    UbZgmYnR8zVjavXZPBuNijxgMcY5IV2jOz3OuyI0TuHvOl6pbuCj+E3+Wwala5e5leikEG
-    C+j80mjhalvt/GDp7Kt08a3Sdvna0iBUHd63KUeNIYVAizY212bFNayQnsE6YGNQ9bDdU5
-    yjCD8mQ79RkHa7mHneLUSPxcUSoY0RAdvlDZ5GJqOHTFkuJbe8NJ+DTrjpsQ8JZwil1fjE
-    FfgkAelctBIXeXXC5I+Yx6WUPRuegb8q4KGzM7FXjnNkLK/Pt7IXHIrbbwv48OiuILve2a
-    PmYdA+kzbDzP4iRYWejwTR4+mMCT3DbFJdoc2erIO81qAUAZgENV7QIH2rWDiuZxyCpRwk
-    /UI0kmcW0aLlkdxKzTlkpNVQPrnQFWSMmBt/gZKeufI97vEsqbUSlgUkl0bw
-X-ME-Proxy: <xmx:8I8hamlf-0kSWNvKyhQIFYUIV-MZp0_YO4e07htjrV_dTmR6Uwn9ag>
-    <xmx:8I8haj_6uvVtbW_4874bRh5QSMy09VOWb74eJg1I9CtNE-w13jA8XQ>
-    <xmx:8I8haqPOQJwW8e4qw16M8uX4AOJxBntYjErlgsl-T_nueocNsi3pqw>
-    <xmx:8I8hat8KqN_X7MAcWOSR7j8A_DJuBQ7KkYMMoPb10sWN8Baqve7KVw>
-    <xmx:8I8haiLCUbeeDY1DJwxJvCUYldoSKMzRYAS5uplOiFDuKStQtyUlWObE>
+	b=HsMA/eKoYs0mem0vIicbQeYx0RYO18o6beKHfNDIX6FWHit4NpunspjUPPukemiRy
+	 0Q713MyDJIb2bOGDb+ca+obt+IoY6mVK43ljgd7aOavoGIqFenVTD/mZiK0A7o8IvR
+	 aGzV0k7AFb17M/pLjMSmjnkGVn34vgtbRp6wWMGnan3/DVs9yOgun5N8ZZTM8JbGkq
+	 IYFv1poJc9r0HW/BIkMILVALE8X0z9TYUXbUVnU75kkDmVf77RVuy8ul37QQ+LFNoP
+	 BoAPfedcwwK5X7vc+QVBSpneVBk28vwxa2zN3OuV7I/6M/Z2Jvkc5c439jetqtrVI6
+	 M4xRTOl1kg4PQ==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 033EFF40079;
+	Thu,  4 Jun 2026 10:47:14 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 04 Jun 2026 10:47:14 -0400
+X-ME-Sender: <xms:8Y8hakKVfbM92Usf1GsmtEk9Fw4fJ3AFPGntlAvHBDCYEWBBF7yTsA>
+    <xme:8Y8hahUwoiskUVoZaMkyu-Iagz1VlrdcdfhJZrVnOoKwQIxz3NXRyMZFFdTiKU5Gp
+    EbGzbGhwULiI12O0OvfSfCtbQxCu-toSbfpYoHb9sioYqmIV-zn>
+X-ME-Received: <xmr:8Y8hapPPVMzqMsq6XCuGbHeZCQ4K8i8I4e58Dclr7YCE3NQ56zLJjjg0FA51cg>
+X-ME-Proxy-Cause: dmFkZTEnbxOoIv6tM0dLsEuDtk1qDKvd9SBoRk315SFIs+8A8nvG6NPaTuTHtWxX09pQd2
+    kmhZQJAFXIZRoG2uwqXsCvSQLHHFyqPBLRlgDZDOM1R+77uRHXsLwpqHqkuB/xQMEeL5H9
+    Yh7j9EoCepX3S8oxsk0Q7b1XMMuXVtxHCUg4Aa5UHd0TkOkqN6exGRI2HWKvJ5gzF66+CH
+    9fJySW0myPH7lfp6BMxlzjyNHqw9L6PwmZLSyt1okrlhfToPVERjX7lBHt/jPkXvBx/Qrl
+    D5naZubOYqFywyiARe2ZjFKnu+RDowAinYmgXtLtTezD1qxkQqUbpHifL2f+9hFdA0KVND
+    GXf7G3DsuFo4qYNje9KnNs2ve3hDdGpDonI7au6HfLD7L8B58SLnTRkAK3zMOZJb8zIVVR
+    qrjGRYiQ7qv1RaaZnF8UokegdOD59s1RcKkd6SHBk2G27FWTTHpsH7ahhm708iwZeycsQ6
+    baQpQOfcAa878UOJTpb8JYkopMIHV/85qKYNeW5iSsXfDdpDL99//ujKHD2rDXQwEt0PSN
+    vzJMrGhjqDn8uaH0Tcy+xm8nvQp8B20Tj88TCgXezk+nE2asDc8kMTuMNPa1yhm4HCTw4u
+    EG5nYPL137xe+9P4+/wNPgeZz/yg1Hsyf7rXOVyptwAsXc2OKFgPgXZ4IbWA
+X-ME-Proxy: <xmx:8Y8hatl65x2uV6jl8hwy6dcEtDz-lgHUKpXF6qhE2nU9QPk_6Q_RSw>
+    <xmx:8Y8hasUpvIhCP_W-JrUEL_aO15KrXaEFN2Q8uK_8YHH0ggUF2GzDRw>
+    <xmx:8Y8hasJtUmMw5Zyodsy0s9wrTwdbqWr-KIkxrcW70gxA22Hrifkobw>
+    <xmx:8Y8hagakh5Gbt4AFfjPDdryPhdBWL4lqf8s4NCCs1dFOBce0TuJUnw>
+    <xmx:8o8hagQu9z933pQbL-OhLP90sR6duVAQTZE1lftqwj7QDdTmzcKwIp2G>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Jun 2026 10:47:11 -0400 (EDT)
+ 4 Jun 2026 10:47:13 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: tglx@kernel.org,
 	mingo@redhat.com,
@@ -73,10 +73,11 @@ Cc: seanjc@google.com,
 	kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v4 2/3] x86/insn-eval: Add insn_assign_reg() helper
-Date: Thu,  4 Jun 2026 15:47:00 +0100
-Message-ID: <daac026e677c10b68740b16ed8ad2556bd9583f8.1780584300.git.kas@kernel.org>
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 3/3] x86/tdx: Fix zero-extension for 32-bit port I/O
+Date: Thu,  4 Jun 2026 15:47:01 +0100
+Message-ID: <ca503ae3de72d90956fcaf5dbc0760ec20f5a5e0.1780584300.git.kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1780584300.git.kas@kernel.org>
 References: <cover.1780584300.git.kas@kernel.org>
@@ -88,135 +89,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-KVM's instruction emulator has a small helper, assign_register(), that
-writes a value into a sub-register with x86 partial-register-write
-semantics: 1- and 2-byte writes leave the upper bits of the destination
-untouched, 4-byte writes zero-extend to 64 bits, 8-byte writes overwrite
-the full register.
+According to x86 architecture rules, 32-bit operations zero-extend the
+result to 64 bits. The current implementation of handle_in() only masks
+the lower 32 bits, which preserves the upper 32 bits of RAX when a
+32-bit port IN instruction is emulated.
 
-The TDX guest #VE handler needs the same logic for port I/O emulation
-to get 32-bit zero-extension right. Rather than copy-pasting the helper,
-lift it to <asm/insn-eval.h> as insn_assign_reg() so both can use it.
+Use insn_assign_reg() to write the result back into RAX with proper
+partial-register-write semantics: 1- and 2-byte forms leave the upper
+bits untouched, the 4-byte form zero-extends to the full register.
 
-Rewrite the body using arithmetic instead of pointer punning so the
-helper does not depend on -fno-strict-aliasing or little-endian byte
-order, and add <asm/insn.h> to the header's includes so it builds
-standalone in callers that have not pulled it in transitively.
-
-No functional change.
-
+Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
+Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
+Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com/
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Cc: stable@vger.kernel.org
 ---
- arch/x86/include/asm/insn-eval.h | 25 +++++++++++++++++++++++++
- arch/x86/kvm/emulate.c           | 26 ++++----------------------
- 2 files changed, 29 insertions(+), 22 deletions(-)
+ arch/x86/coco/tdx/tdx.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/insn-eval.h b/arch/x86/include/asm/insn-eval.h
-index 4733e9064ee5..85251e718a77 100644
---- a/arch/x86/include/asm/insn-eval.h
-+++ b/arch/x86/include/asm/insn-eval.h
-@@ -9,6 +9,7 @@
- #include <linux/compiler.h>
- #include <linux/bug.h>
- #include <linux/err.h>
-+#include <asm/insn.h>
- #include <asm/ptrace.h>
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 65119362f9a2..41cc23cc63dd 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -693,8 +693,8 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+ 		.r13 = PORT_READ,
+ 		.r14 = port,
+ 	};
+-	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+ 	bool success;
++	u64 val;
  
- #define INSN_CODE_SEG_ADDR_SZ(params) ((params >> 4) & 0xf)
-@@ -46,4 +47,28 @@ enum insn_mmio_type insn_decode_mmio(struct insn *insn, int *bytes);
+ 	/*
+ 	 * Emulate the I/O read via hypercall. More info about ABI can be found
+@@ -702,11 +702,9 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+ 	 * "TDG.VP.VMCALL<Instruction.IO>".
+ 	 */
+ 	success = !__tdx_hypercall(&args);
++	val = success ? args.r11 : 0;
  
- bool insn_is_nop(struct insn *insn);
+-	/* Update part of the register affected by the emulated instruction */
+-	regs->ax &= ~mask;
+-	if (success)
+-		regs->ax |= args.r11 & mask;
++	insn_assign_reg(&regs->ax, val, size);
  
-+/*
-+ * Write @val into *@reg with x86 partial-register-write semantics: a 1-
-+ * or 2-byte write leaves the upper bits of the destination untouched; a
-+ * 4-byte write zero-extends to 64 bits (matching IN[BWL], MOV[BWL]
-+ * etc.); an 8-byte write overwrites the full register.
-+ */
-+static inline void insn_assign_reg(unsigned long *reg, u64 val, int bytes)
-+{
-+	switch (bytes) {
-+	case 1:
-+		*reg = (*reg & ~0xfful)   | (val & 0xff);
-+		break;
-+	case 2:
-+		*reg = (*reg & ~0xfffful) | (val & 0xffff);
-+		break;
-+	case 4:
-+		*reg = (u32)val;
-+		break;
-+	case 8:
-+		*reg = val;
-+		break;
-+	}
-+}
-+
- #endif /* _ASM_X86_INSN_EVAL_H */
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 8013dccb3110..74972c17edb8 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -24,6 +24,7 @@
- #include "kvm_emulate.h"
- #include <linux/stringify.h>
- #include <asm/debugreg.h>
-+#include <asm/insn-eval.h>
- #include <asm/nospec-branch.h>
- #include <asm/ibt.h>
- #include <asm/text-patching.h>
-@@ -439,25 +440,6 @@ static void assign_masked(ulong *dest, ulong src, ulong mask)
- 	*dest = (*dest & ~mask) | (src & mask);
+ 	return success;
  }
- 
--static void assign_register(unsigned long *reg, u64 val, int bytes)
--{
--	/* The 4-byte case *is* correct: in 64-bit mode we zero-extend. */
--	switch (bytes) {
--	case 1:
--		*(u8 *)reg = (u8)val;
--		break;
--	case 2:
--		*(u16 *)reg = (u16)val;
--		break;
--	case 4:
--		*reg = (u32)val;
--		break;	/* 64b: zero-extend */
--	case 8:
--		*reg = val;
--		break;
--	}
--}
--
- static inline unsigned long ad_mask(struct x86_emulate_ctxt *ctxt)
- {
- 	return (1UL << (ctxt->ad_bytes << 3)) - 1;
-@@ -505,7 +487,7 @@ register_address_increment(struct x86_emulate_ctxt *ctxt, int reg, int inc)
- {
- 	ulong *preg = reg_rmw(ctxt, reg);
- 
--	assign_register(preg, *preg + inc, ctxt->ad_bytes);
-+	insn_assign_reg(preg, *preg + inc, ctxt->ad_bytes);
- }
- 
- static void rsp_increment(struct x86_emulate_ctxt *ctxt, int inc)
-@@ -1766,7 +1748,7 @@ static int load_segment_descriptor(struct x86_emulate_ctxt *ctxt,
- 
- static void write_register_operand(struct operand *op)
- {
--	return assign_register(op->addr.reg, op->val, op->bytes);
-+	return insn_assign_reg(op->addr.reg, op->val, op->bytes);
- }
- 
- static int writeback(struct x86_emulate_ctxt *ctxt, struct operand *op)
-@@ -2007,7 +1989,7 @@ static int em_popa(struct x86_emulate_ctxt *ctxt)
- 		rc = emulate_pop(ctxt, &val, ctxt->op_bytes);
- 		if (rc != X86EMUL_CONTINUE)
- 			break;
--		assign_register(reg_rmw(ctxt, reg), val, ctxt->op_bytes);
-+		insn_assign_reg(reg_rmw(ctxt, reg), val, ctxt->op_bytes);
- 		--reg;
- 	}
- 	return rc;
 -- 
 2.54.0
 
