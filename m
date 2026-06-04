@@ -1,152 +1,134 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D642BD59C
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 23:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20CD2C187
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 23:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780614875; cv=none; b=DTKI9hpA0aO0Sghd7sx5SstfOQA0nABmD76FEHoSyKwJ3Nc5jVQzlSSQb8fCAJpUTPsUyaOFC6S86U/0Di3JTcSCTaxIAHFMU2Dt+gTmU8FeRuxYvDxJEJu+pDqjlYPv+N0scgNPLZ+UPLa0Dp02SaZKmHcs7tlhK7t2RpoEER8=
+	t=1780615055; cv=none; b=JBNt18V4h2T6HE3TJjZERhmUh0Aac6FdcKIdMJMMPURD/B+yVXRJwWVWyYVSVn4fQKzLnKe24sKkWFWqD4HdkbWNtidq+Dc+w8UaAtPoGCgbCuInKYNOrepjmchO0clJR9VCoj4rGB92QduVQ6tRMD8K6jZ3I1XFkVwBesQ1Z1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780614875; c=relaxed/simple;
-	bh=KbIBD6Typey6Tj7uJR/pDL/KpVHmXj3HB1WG71/DbgA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XJBVcIkGgrLLlFWMiObHF+DlNO+LFuI00lu6sZ67OGKD7ioGzIpEyXnBbfobRfy3YFzB0qNsIpL4LSOkySNRRUeOA0GoyTl0SWv5M5UUm1nq3lSEEcnLQLQtAJe6dQ8fugc+PDN5QLw9zklOkMvVcrdN5z7WFf/LsnF+CpSr43s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uP/Osk2f; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780615055; c=relaxed/simple;
+	bh=h5HZwXfdM1n1zaFuwds3o5gxLDXfbGzfqRYvPorn+jE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=J3YEWrwbvqL1anOAlJuRaTStn3hjuQSL1z5tfPlOKdu3A/gDZ6p858HsCu/uyZ/4ygZzTqV05Hrs0yAchLcnvAPd5/GpTtmtnO9HjS6Hukp9yIPB5gPE0Qz0DAHyiOGMK6M8Cc2kx4et/20CgMc00K5MCSaPzfZB+N6Rb3RuY0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mqYhngwI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uP/Osk2f"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d98b828c8so507020a91.2
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 16:14:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780614874; x=1781219674; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mS9MJ5kCrWOlM6ucjjTqvWj1HBAg+22TNTpHduIiXcE=;
-        b=uP/Osk2fEuGVQvcQoZRPIVfLIy9uORK3Ra4um+6wpTSWHZjXaRLgVhtyRmX7ja+Tug
-         6lxR1+9j9JpohGLmm7jyXdpexNf3/gYyXMuEiJE/mrTcNY2OFeaXbJgkRGxWh7RXn8ek
-         YRI/8Q3FG7TfdYRFUG6b9fcXGz2cvYD7ViYIoX/lfT4IqWKLYz6tYGmNnbOSWPL88/d5
-         LgPudn99ggM4Lzdgc5NcUeaxEVJBf9Ggur+mwj45SGbWqmeCETTYysgdicTvdVdOt7k/
-         G2xkDhjOk8RmoP+36LG5Os2GPhabpA18i/3oYKrQHHAdDzy7HzSdv9rGKbgIypQZZJCM
-         /PXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780614874; x=1781219674;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mS9MJ5kCrWOlM6ucjjTqvWj1HBAg+22TNTpHduIiXcE=;
-        b=Wti4ruGIlIc8Nj74VFbVhhk62uGBtTaKD21st05DTcNar/aO8CUxJQ1izm46b9rNZw
-         sPGMXSYd5HHApRH8cz4HdXFRSrIZK6yxpAfFbB+ZKssSszQrKfc1JUzbCfUJNDrCHUWg
-         jF+JswYggPxdxcnxtfxiwQKyrcHhH83dWRNgn9t17+26V3jWxwMw5/CpMWUf8Y2J3kRF
-         Dsvf+gaUx4cS3VNJ04WNICHK4lYkzrjPwTuYRgPJnmHolN4Yzl31aDFD+6usnWpd1X1d
-         q7tTuFhKTM3m53khd6wf+cRaX6HIJIQH5F45SKSGsto82Kxvju80A7Pn4+26/pFg0+U3
-         ciEQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8a896xV+2vYMAWkjdhkSiG7zNUcPQbxgnh7G5f/vo/mbgZmEfUDr1MRNRY6BOv/CrbTrw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx09stn1bMEA5BKDUV51ejoddBO51PJrP9PaNz+BJYi0owzdM62
-	kEBK+T7WwUGU5zqwrSJyz5v00ut15zxIETBq9ja6Vzwyox0wYxpdwJL2WNggZtEFWR/Dl02rlHb
-	IWMCpLw==
-X-Received: from pjbbo10.prod.google.com ([2002:a17:90b:90a:b0:36b:d248:5f89])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:394e:b0:36a:aeaf:ab2a
- with SMTP id 98e67ed59e1d1-370f0d4c33emr986368a91.19.1780614873561; Thu, 04
- Jun 2026 16:14:33 -0700 (PDT)
-Date: Thu, 4 Jun 2026 16:14:32 -0700
-In-Reply-To: <aiHRIhxgBCy1TVfQ@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqYhngwI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0F61F00893;
+	Thu,  4 Jun 2026 23:17:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780615054;
+	bh=EO24sUx6N07N6hXorRwTHLOY4CCAj937CSTmg0lu3GA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mqYhngwIYKE5ytfsEVtUO44HXu+d4QGLNdDB0DD+JCXZt8KYcP6EHmngXy+wHMhca
+	 7GPAD4mNMHyFGmcgUOV8iYvkA7VGncEkBcGUSkx2kQawPBQHWeJniDyzYC+ot+PKYT
+	 UcDS9d/8tGb0W64k2mVbWPqFhnzcnAdFkBvQPtXZ8HdRyPvg+7rZHVnz12c97efoWx
+	 hapsa07WVZPtPWpbS+3f9nW+2sys7ov0GOl02F5CNK8iS6/KPks3N84fYcmekQF7dq
+	 C7V+EfsD+dczlRCqQP0KTog83nntMoVE8dfnc2ZfyLX57xwlFzn41flZNyWCuVzGpu
+	 W51C1aW5gSTxQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/2] RISC-V: KVM: Fix skip of valid pages in
+ kvm_riscv_gstage_wp_range
+Reply-To: sashiko-reviews@lists.linux.dev
+To: atwufei@163.com
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260604230317.30501-2-atwufei@163.com>
+References: <20260604230317.30501-2-atwufei@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 04 Jun 2026 23:17:33 +0000
+Message-Id: <20260604231734.5D0F61F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260604020143.748245-1-jrhilke@google.com> <20260604020143.748245-8-jrhilke@google.com>
- <aiG8Q31nF2L1gNwa@google.com> <aiHRIhxgBCy1TVfQ@google.com>
-Message-ID: <aiIG2L_KdPwuxYA1@google.com>
-Subject: Re: [PATCH v5 07/21] KVM: selftests: Verify IRQ bypass works in IRQ test
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex.williamson@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jun 04, 2026, Sean Christopherson wrote:
-> On Thu, Jun 04, 2026, Sean Christopherson wrote:
-> > The shortlog is at best misleading.  There are zero guarantees that IRQ bypass
-> > is supported and enabled.
-> > 
-> > On Thu, Jun 04, 2026, Josh Hilke wrote:
-> > > From: David Matlack <dmatlack@google.com>
-> > > 
-> > > Trigger interrupts from a VFIO device instead of emulating interrupts
-> > 
-> > It's not emulating, it's synthesizing.  Emulating implies there's a device of
-> > some kind that the test is mimicking.
-> > 
-> > > using KVM eventfds. This verifies that guests receive interrupts via IRQ
-> > > bypass.
-> > 
-> > No, it verifies that delivery of a VFIO MSI-X through VFIO=>KVM works, and *may*
-> > verify IRQ bypass.  And all of that very much relies on the eventfds to be in
-> > place.
-> > 
-> > > @@ -119,7 +160,17 @@ int main(int argc, char **argv)
-> > >  	vm = vm_create_with_vcpus(nr_vcpus, guest_code, vcpus);
-> > >  	vm_install_exception_handler(vm, vector, guest_irq_handler);
-> > >  
-> > > -	eventfd = kvm_new_eventfd();
-> > > +	if (device_bdf) {
-> > > +		iommu = iommu_init(default_iommu_mode);
-> > 
-> > This needs:
-> > 
-> > diff --git tools/testing/selftests/kvm/irq_test.c tools/testing/selftests/kvm/irq_test.c
-> > index cf4568718cee..2e7e100d4815 100644
-> > --- tools/testing/selftests/kvm/irq_test.c
-> > +++ tools/testing/selftests/kvm/irq_test.c
-> > @@ -235,6 +235,8 @@ int main(int argc, char **argv)
-> >         }
-> >  
-> >         if (device_bdf) {
-> > +               __open_path_or_exit("/dev/iommu", O_RDONLY, "Is IOMMUFD available?");
-> > +
-> >                 iommu = iommu_init(default_iommu_mode);
-> 
-> *sigh* 
-> 
-> <rant>
-> This is beyond frustating.  I have A PERFECTLY FUNCTIONAL KERNEL, but this test
-> VERY SUBTLY "defaults" to IOMMUFD.  ARGH!!!!!
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Ok, here's what I ended up with.  A param to let the user force a specific type:
+Pre-existing issues:
+- [Critical] Unmapped huge pages left stale in guest page tables, leading t=
+o Critical Use-After-Free / VM Escape, and unaligned address advancement sk=
+ipping subsequent huge pages.
+--
 
-	printf("-t	Override the IOMMU type to use (vfio_type1_iommu or iommufd)\n");
+commit c66a8f8b8062b26c9c1ff1c7378d57e05da217e0
+Author: Wu Fei <wu.fei9@sanechips.com.cn>
 
+RISC-V: KVM: Fix skip of valid pages in kvm_riscv_gstage_wp_range
 
-And then auto-probe logic to make a halfway decent guess as to which type/mode
-to use.
+The current gstage range walker unconditionally advances by 'page_size'
+when a leaf PTE is not found, e.g. when the range to wp is
+[0xfffff01fc000, 0xfffff023c000) and page_size is 2MB, if found_leaf of
+0xfffff01fc000 returns false, it skip the whole range, but it's possible
+to have valid entries in [0xfffff0200000, 0xfffff023c000).
 
-  static const char *probe_iommu_type(void)
-  {
-	int io_fd;
+> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+> index d9fe8be2a1516..2b141a78ecac7 100644
+> --- a/arch/riscv/kvm/gstage.c
+> +++ b/arch/riscv/kvm/gstage.c
+> @@ -429,14 +429,14 @@ void kvm_riscv_gstage_wp_range(struct kvm_gstage *g=
+stage, gpa_t start, gpa_t end
+>  		if (ret)
+>  			break;
+> =20
+> -		if (!found_leaf)
+> -			goto next;
+> -
+> -		addr =3D ALIGN_DOWN(addr, page_size);
+> -		kvm_riscv_gstage_op_pte(gstage, addr, ptep,
+> -					ptep_level, GSTAGE_OP_WP);
+> -next:
+> -		addr +=3D page_size;
+> +		if (!found_leaf) {
+> +			addr =3D ALIGN(addr + 1, page_size);
+> +		} else {
+> +			addr =3D ALIGN_DOWN(addr, page_size);
+> +			kvm_riscv_gstage_op_pte(gstage, addr, ptep,
+> +						ptep_level, GSTAGE_OP_WP);
+> +			addr +=3D page_size;
+> +		}
+>  	}
+>  }
 
-	io_fd = open("/dev/iommu", O_RDONLY);
-	if (io_fd >= 0) {
-		close(io_fd);
-		return MODE_IOMMUFD;
-	}
+[Severity: Critical]
+This is a pre-existing issue, but I see a similar pattern in
+kvm_riscv_gstage_unmap_range() that leads to a Use-After-Free / VM escape.
 
-	io_fd = __open_path_or_exit("/dev/vfio", O_RDONLY,
-				    "Is VFIO (or IOMMUFD) loaded and enabled?");
-	close(io_fd);
-	return MODE_VFIO_TYPE1_IOMMU;
-  }
+In kvm_riscv_gstage_unmap_range(), if the walker encounters a huge page leaf
+but the requested unmap range is unaligned or smaller than the huge page si=
+ze
+(e.g., when the host MMU notifier unmaps a 4K sub-page of a THP), it skips
+clearing the PTE.
 
-...
+Checking the final state of the series reveals that the subsequent patch
+"RISC-V: KVM: Fix skip of valid pages in kvm_riscv_gstage_unmap_range"
+fixes the !found_leaf case but only adds a WARN_ONCE to the found_leaf
+branch:
 
-		if (!iommu_type)
-			iommu_type = probe_iommu_type();
+		} else {
+			if (!(addr & (page_size - 1)) && ((end - addr) >=3D page_size))
+				kvm_riscv_gstage_op_pte(gstage, addr, ptep,
+							ptep_level, GSTAGE_OP_CLEAR);
+			else {
+				WARN_ONCE(1, "Skip unmap range addr: %#llx, end: %#llx, page_size: %#lx=
+\n",
+						addr, end, page_size);
+			}
 
-I'll probably throw a TODO in there, because the VFIO/IOMMU infrastructure really
-needs to handle this, *especially* since "default_iommu_mode" is globally visible.
-Hardcoding a "default" to an entirely optional thing is just evil.
+			addr +=3D page_size;
+		}
 
-E.g. instead of iommu_init() => lookup_iommu_mode() using default_iommu_mode when
-passed a NULL pointer, have it choose the type that's most likely to work.  Then
-the IRQ test can drop its probing logic.
+Does skipping the unmap here leave a stale, guest-accessible huge page
+mapping to physical memory that the host has reclaimed and potentially
+reallocated?
+
+Also, because addr was unaligned and is not aligned down to the huge page
+boundary, doesn't addr +=3D page_size preserve the unaligned offset? Would
+this misalign addr for all subsequent iterations, causing the walker to
+skip unmapping every subsequent huge page in the requested range?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604230317.3050=
+1-1-atwufei@163.com?part=3D1
