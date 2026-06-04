@@ -1,81 +1,197 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA91835DA75
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 17:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A635B3C4B9F;
+	Thu,  4 Jun 2026 17:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780593834; cv=none; b=tDXUgl/RBGZ5tJQOuT8zmT+NUMYW/XEmToDdpdG6sSBvAMPQxl6TYmBOjCWB5PYI2uJNKI6/Q392pZMhxJFUti9HWq3cZjpmUc81m4LaxiDno4K4b10SwPcZywu/vW0l4OO4VuEiN3BX5jaPSg5sG5frGPFRUaNLBJPBdzGSQnM=
+	t=1780593979; cv=none; b=Hi3jcCE9QllFUj0ZjX5PxO3Vx6S8wF6r74+dwjIZhJehk1BoICjOksjcATZ8rXIjMb9Phc0RboVY/lNEJARpkOhMnLrKhVrxx9rAnSgTBFcd4qpKqzjM+a3BsOW7qC8XLIMn+inMbTHKDod+3O9Fqwipr8sYe7UgaE60untNwb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780593834; c=relaxed/simple;
-	bh=LjLYVnR9m7bUQZQ3s8/GLfSPHl3AEWIEcB8mhwiUZi4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qGcZAzUyzfkL5cKDtKJ2SRsyko6pQNmg78DWjFad+R5XzI0Kqy5ushn+GugJGz4JCogQcjMBAPNk5OY6mI+g0uEFxcCEVlECBO4nJj6g6IdnZzNqVwqc8hD4NE1hBbxF3JTWtgLxXOmZnqs27bni0XOEi51vQgSvOSYwy+5O9cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xw29Ie2U; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780593979; c=relaxed/simple;
+	bh=7ZFPvY/I/PsSY8fcm8vfefmAGor7doQwI6PrTZ0rd1g=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=c7IrIr9GdfU6lLLf/amgT4LLffA0KIBN7egMyniwUZ43jN2A8iUj43Up5F8mhcgwrry7HOUBMUyZ1OZMgnBm0kQvdeHMKH9BxojgA3uDGQtrSTdr7+y41x8+OnevNnGsbcgP8IWPpbljbt3bLT9WWebZZXhZcCmmI4BRo4hDJSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNUxAzx8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xw29Ie2U"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c85798977dcso696686a12.0
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 10:23:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780593830; x=1781198630; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=X2GFo4mV5KPCKDAcv8VIIj/ikLydd1CezVJZsdaGFEo=;
-        b=Xw29Ie2UYrptQgk+g7ianQeRzz0qDxhWR6upPUO/tiZWMNXB2B5lPa3qwHGQCpbmgf
-         ZzqTu6CgG3KZRVr/RxLpylF+lsoZin5iOwRFxmFjd9E1wD31ql0ULAZTLao64CvjvMqQ
-         YdIw1d7Mat8QZpHCaEEZd+4WMXnqdnRoN1mT6+U4l8EhtsER6VMNa6o/XfgEP3LEAW7T
-         LGLz65nleTQrQZuq7/J7CNL93TduoFpeu4NVFRlohxGZ5JOK4GeKyGVhjWAyUCS5tJnx
-         LpMGW49cOPiCKp+8u2YcHu4niC5dd+vlfYm11Ae8v/ILfv+zFxZ8O+DrbDbxBe0J33le
-         f+Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780593830; x=1781198630;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X2GFo4mV5KPCKDAcv8VIIj/ikLydd1CezVJZsdaGFEo=;
-        b=PEBr7xbqHGsb25LUKBS+9jtOzd6adgcmIW9HA+QhpDmw+pgHPphV89IVIZ0Pmg3zC0
-         S/dXvfO7CRWY9f+BP2Vf7KT/fNKQs41WdqEd1rfV7FR8FHUoWlJpTQM1Fn4bJRfOkjKL
-         ON1gdaEfRyLGPYAede6nOUIlNs2art7rWICE4b/9nhRIAkDzGJkAi5peoWPWbwslOYDq
-         7Z7tccuHHBQGCOT9rXNSSXa+NtQ+wnWa7FV7BxFWqpqvVT+mU4Gqd++DS+i+95BXZhLA
-         NKS1MO48EXcL7RYgftRphtBwmB0z+HtXFxRNc1iTwiLYpHI9TLW1IvuSXFa82jOtpUca
-         XaEw==
-X-Forwarded-Encrypted: i=1; AFNElJ9wu3uTQMqwTgakk6KeHWrIC52B8r8WWKwzgJUqO0EhWQDHgng753qNj6KWDMCnLEjlpAQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJl3PICm3IXRrYlJVZDaSlXdW81V4Jn88HRx22ScKEHjnQ575k
-	T3KDFylPaKn21JhWijH+u4bkRRzPiA+5iDklwfq0Y+r6Z1Ab0niOzD8ub/JxcHTV9OQ+/aF8h8r
-	rwGNQxw==
-X-Received: from pfco2.prod.google.com ([2002:a05:6a00:b902:b0:842:492e:19cb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e89:b0:842:3be7:4d55
- with SMTP id d2e1a72fcca58-84284e21c0cmr8923708b3a.11.1780593829857; Thu, 04
- Jun 2026 10:23:49 -0700 (PDT)
-Date: Thu, 4 Jun 2026 10:23:49 -0700
-In-Reply-To: <20260604020143.748245-17-jrhilke@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNUxAzx8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242B81F00893;
+	Thu,  4 Jun 2026 17:26:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780593978;
+	bh=FXqQYk9Ehwutv2yNZxQbQfRhJ+5UbUFJWhCjY7BqmDY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PNUxAzx83pMPen16YzmCgCd/9MC7cuXXasMWQBj9uHAKaTDD/e/WTTqhXjbBwK5z4
+	 cQ4DDwDNta7YJGNiAmg2YzFybPHXpW3X0rEJvp4LwYt3F13uu99LnubN4uGI6iFGgE
+	 xmR1GUUzzMowPKz+QmE4OVIjDKUyE6pLDm7yM2BZM6kXUQ06G8IW+UJqDo0ryIG9QJ
+	 2T1WY+hMrBY9jAe35Stvf+hWXhj0+/b+mskDG50VXZjnR7NlPx+ME128YN/2BCAsxS
+	 Ic5jYYv85hhRLqod0++irSpYzC2sLD2TZbMs+/WXQcKZ7Kmx8V86qvWMkm/Nc8sEcM
+	 E9qv6F+Xz2kUw==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC 04/12] PCI: Convert arch/powerpc to pci_is_sriov_* helpers
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Dimitri Daskalakis" <dimitri.daskalakis1@gmail.com>
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260604150153.3619662-5-dimitri.daskalakis1@gmail.com>
+References: <20260604150153.3619662-5-dimitri.daskalakis1@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 04 Jun 2026 17:26:17 +0000
+Message-Id: <20260604172618.242B81F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260604020143.748245-1-jrhilke@google.com> <20260604020143.748245-17-jrhilke@google.com>
-Message-ID: <aiG0pYJhZVnR4X2R@google.com>
-Subject: Re: [PATCH v5 16/21] KVM: selftests: Add kvm_sched_getaffinity()
- wrapper and convert users
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex.williamson@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jun 04, 2026, Josh Hilke wrote:
-> Add a KVM wrapper for the sched_getaffinity syscall named
-> kvm_sched_getaffinity(). Convert existing users of sched_getaffinity to
-> use the new wrapper.
-> 
-> This helper will be used in a future change in the KVM IRQ test to
-> migrate vCPU threads.
-> 
-> No functional changes intended.
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
 
-There are most definitely functional changes, because not all existing callers
-assert success.  They obviously require success, but adding the assert *is* a
-functional change.
+New issues:
+- [High] Missed conversions of SR-IOV specific is_virtfn and is_physfn chec=
+ks.
+
+Pre-existing issues:
+- [High] Unconditional NULL pointer dereference in pnv_pci_sriov_disable() =
+if PE allocation fails.
+- [High] Unchecked NULL pointer dereference in pnv_pci_ioda_fixup_iov() for=
+ VFs with failed configuration.
+- [High] Failure to unshift IOV BAR resources in pnv_pci_sriov_disable() if=
+ the first VF's PE failed to configure.
+- [High] Lockless list traversal of phb->ioda.pe_list exposes traversal to =
+concurrent modifications.
+--
+
+commit 5e49eb3e31cb4ac469a301b263f891c4ba0713e3
+Author: Dimitri Daskalakis <daskald@meta.com>
+
+PCI: Convert arch/powerpc to pci_is_sriov_* helpers
+
+This patch converts SR-IOV specific is_physfn and is_virtfn reads in the
+PowerPC PCI code to use pci_is_sriov_physfn() and pci_is_sriov_virtfn().
+This is intended to keep SR-IOV semantics intact once those flags are
+widened to cover other virtualization types.
+
+> Convert SR-IOV-specific is_physfn / is_virtfn reads in the PowerPC
+> PCI code to use pci_is_sriov_physfn() / pci_is_sriov_virtfn(). These
+> call sites are all SR-IOV-specific: they guard SR-IOV state
+> dereferences, VF PE management, or sit inside #ifdef CONFIG_PCI_IOV
+> blocks.=20
+
+[Severity: High]
+The commit message states that all SR-IOV specific is_physfn and is_virtfn
+reads are converted, but did we miss some checks in other PowerPC PCI files?
+
+For instance, in arch/powerpc/kernel/eeh.c:eeh_break_device():
+
+    if (pdev->is_virtfn) {
+        ...
+        pos =3D pci_find_ext_capability(pdev->physfn, PCI_EXT_CAP_ID_SRIOV);
+        ...
+
+If a non-SR-IOV VF (like SIOV) has is_virtfn set, wouldn't this read from
+pdev->physfn (which might be NULL) or fail to find the SR-IOV capability
+(pos =3D 0) and corrupt the PCI config space at offset 8 (PCI_SRIOV_CTRL)?
+
+Similarly, there appear to be missed conversions guarding SR-IOV logic in:
+- arch/powerpc/platforms/powernv/eeh-powernv.c:pnv_eeh_get_upstream_pe()
+- arch/powerpc/kernel/eeh_sysfs.c:eeh_notify_resume_add()
+- arch/powerpc/kernel/eeh_sysfs.c:eeh_notify_resume_remove()
+
+
+> diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/pl=
+atforms/powernv/pci-sriov.c
+> index 7105a573aec42..1113488f43720 100644
+> --- a/arch/powerpc/platforms/powernv/pci-sriov.c
+> +++ b/arch/powerpc/platforms/powernv/pci-sriov.c
+> @@ -225,7 +225,7 @@ static void pnv_pci_ioda_fixup_iov_resources(struct p=
+ci_dev *pdev)
+> =20
+>  void pnv_pci_ioda_fixup_iov(struct pci_dev *pdev)
+>  {
+> -	if (pdev->is_virtfn) {
+> +	if (pci_is_sriov_virtfn(pdev)) {
+>  		struct pnv_ioda_pe *pe =3D pnv_ioda_get_pe(pdev);
+> =20
+>  		/*
+> @@ -235,7 +235,7 @@ void pnv_pci_ioda_fixup_iov(struct pci_dev *pdev)
+>  		 */
+>  		pe->pdev =3D pdev;
+
+[Severity: High]
+This is a pre-existing issue, but can pnv_ioda_get_pe() return NULL here,
+leading to a NULL pointer dereference when assigning pe->pdev =3D pdev?
+
+During SR-IOV enablement, if pnv_ioda_configure_pe() fails for a specific VF
+in pnv_ioda_setup_vf_PE(), the error is ignored and the VF's PE number
+remains IODA_INVALID_PE. When the PCI core subsequently adds the VF and cal=
+ls
+this function, pnv_ioda_get_pe() will return NULL because the PE number is
+invalid.
+
+[ ... ]
+
+> @@ -479,7 +479,7 @@ static void pnv_ioda_release_vf_PE(struct pci_dev *pd=
+ev)
+> =20
+>  	phb =3D pci_bus_to_pnvhb(pdev->bus);
+> =20
+> -	if (!pdev->is_physfn)
+> +	if (!pci_is_sriov_physfn(pdev))
+>  		return;
+> =20
+>  	/* FIXME: Use pnv_ioda_release_pe()? */
+>  	list_for_each_entry_safe(pe, pe_n, &phb->ioda.pe_list, list) {
+
+[Severity: High]
+This is a pre-existing issue, but does this lockless traversal of
+phb->ioda.pe_list expose us to concurrent modifications?
+
+The lock phb->ioda.pe_list_mutex is only held briefly during list_del()
+inside this loop. However, other PCI hotplug paths (such as
+pnv_ioda_setup_PE()) add entries to this list while holding the mutex.
+
+If a concurrent hotplug event mutates the list during this traversal,
+could it corrupt the cached pe_n pointer or list linkages, leading to
+a use-after-free?
+
+[ ... ]
+
+[Severity: High]
+This is a pre-existing issue, but I noticed a potential NULL pointer
+dereference in pnv_pci_sriov_disable() in the same file if PE allocation
+fails:
+
+arch/powerpc/platforms/powernv/pci-sriov.c:pnv_pci_sriov_disable() {
+    ...
+    base_pe =3D iov->vf_pe_arr[0].pe_number;
+    ...
+}
+
+In pnv_pci_sriov_enable(), if pnv_ioda_alloc_pe() fails, it returns -EBUSY
+and iov->vf_pe_arr remains NULL. The generic PCI core handles this failure
+by calling pcibios_sriov_disable(), which invokes pnv_pci_sriov_disable().
+This unconditionally accesses iov->vf_pe_arr[0], which would crash.
+
+[Severity: High]
+This is another pre-existing issue in pnv_pci_sriov_disable(). Does the
+error teardown path fail to unshift IOV BAR resources if the first VF's
+PE failed to configure?
+
+arch/powerpc/platforms/powernv/pci-sriov.c:pnv_pci_sriov_disable() {
+    ...
+    base_pe =3D iov->vf_pe_arr[0].pe_number;
+    ...
+    pnv_pci_vf_resource_shift(pdev, -base_pe);
+    ...
+}
+
+During SR-IOV enablement, pnv_pci_vf_resource_shift() shifts the IOV BARs
+based on the allocated base PE number. If pnv_ioda_configure_pe() fails
+for the first VF (VF 0), it zero-initializes the PE structure. During
+error teardown, base_pe is read as 0, resulting in a call to
+pnv_pci_vf_resource_shift(pdev, -0). This fails to unshift the IOV BARs
+back to their original addresses, which could leak the shifted MMIO windows.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604150153.3619=
+662-1-dimitri.daskalakis1@gmail.com?part=3D4
