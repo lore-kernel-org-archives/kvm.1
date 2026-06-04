@@ -1,51 +1,51 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9253D47DF80
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 13:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912113DB338
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 13:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780580743; cv=none; b=YT0+nP4xBhbR5VVowaWEHqHrA/owlx7xKmhibEeXmOks/ZjMlqHl0M0ljpJb4X1TGi2ik41xg0RKoJtF+5rvFQ8oWrogZAEfIzdr12fOKkRBBB2XavV9UAwvMLmlHwA8eSp15tNK9RmloDIvtGdsdnJt6YHrIskCCxfyS9tZwng=
+	t=1780580749; cv=none; b=RgE65klNe2EVztoU83FMvFgPovxB7mnHgGQOgB0emFzCuc0L7OVMBubLxJFi0hYAJFjc8fWy4n8nRUyq316A9QP3YOlyFLckVjF6vaGcvUJgsswBoW2SnqPEs1eNX6zfbZF3d7+a1zYgY/ugUbn1gWdDmSQr/N3qal/zWZTPsCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780580743; c=relaxed/simple;
-	bh=BfzRj9+PxZBuWnruTJpFaGdqesXc0dlzBlWko+GiOlg=;
+	s=arc-20240116; t=1780580749; c=relaxed/simple;
+	bh=SyRGQ/9CVUTbXvPLmC2d6rfZWAqfBUeosfx/J9loDVU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KcAY/eiyoOlqGPKxjdNiVFiBNvVJFSf/r2AUvZIMxQsrB510ccg6/drH+Q5QA79GNy1CZoAu6EMKrcyHT+6JtOfDcedmPeY4v0PsNnPQixJBfSaJGRQgdummPIxAbho/a+8RXNrhlW/tAwnXRmk0wH6NGqVsyepgf+LaMA+8leg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N6iI3Yil; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:To:Cc; b=snVH28aIm4FrqXXEICjHAhCpHaJ1o2rJW7QFoGgb9qSoJ06RDR+VWElOK38UJbzAhdnXtTTtp3OniuvfVk9mecv4KqGt9hHjW+wkZsd7Ad3oUIAFFyyuDANNgj8qZfEwIsQwkYMelmKFIGQ6KQo2m/k7XFhM+uhQocqzcSPlf8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UKezTEXk; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N6iI3Yil"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UKezTEXk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780580740;
+	s=mimecast20190719; t=1780580746;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3CqFxIqjMMdGXqKKnL+tbt++sUy9MTe8z+qAn52XsHg=;
-	b=N6iI3YilToHLvlQKw0ov3xIMezIv1/jdI8FwjStFirN0TDad5QQ3E8Cf8ftvIBu19uKHX5
-	VCWkBYYlXgR2/jA33s/+xKr6DPsprXU4Up8b/wW48yngSB36AOPjMCvSDndVod6ZAPqVz2
-	mubzWRtiG6tRj/jCs5aINTr2DBvIJf8=
+	bh=4Qk2+qTC/ZptS126mlZBTuBUK9Xm//0eYY52so2sEX8=;
+	b=UKezTEXkaL1GSKWYrb7V8yZIWPq8zZO3twm9/K6LggL9JRK0TSKFAzT7PTHS8cHBGL8Gbu
+	fztqyy7O4zjFgnvAOXhDQq7I98qMmhfxJSp0lO8ArR1WKAAbjDlxJDpUUDsD2BgUlbZu69
+	wSZ2JCv+3b6OnrEosQiOzUb3Tfh6dI0=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-hIXEbtZ2Oea0dXoPKwf-Ow-1; Thu,
- 04 Jun 2026 09:45:36 -0400
-X-MC-Unique: hIXEbtZ2Oea0dXoPKwf-Ow-1
-X-Mimecast-MFC-AGG-ID: hIXEbtZ2Oea0dXoPKwf-Ow_1780580734
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-sHB9DW_8M3WnPz0-V5_KEw-1; Thu,
+ 04 Jun 2026 09:45:43 -0400
+X-MC-Unique: sHB9DW_8M3WnPz0-V5_KEw-1
+X-Mimecast-MFC-AGG-ID: sHB9DW_8M3WnPz0-V5_KEw_1780580740
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 58F601956089;
-	Thu,  4 Jun 2026 13:45:34 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AB340195609F;
+	Thu,  4 Jun 2026 13:45:40 +0000 (UTC)
 Received: from localhost (unknown [10.44.24.6])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AB63E1955BC0;
-	Thu,  4 Jun 2026 13:45:32 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7AC7D180049F;
+	Thu,  4 Jun 2026 13:45:37 +0000 (UTC)
 From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Thu, 04 Jun 2026 17:43:57 +0400
-Subject: [PATCH v5 11/12] system/physmem: make ram_block_discard_range()
- handle guest_memfd
+Date: Thu, 04 Jun 2026 17:43:58 +0400
+Subject: [PATCH v5 12/12] RFC: monitor: add 'info ramblock-attributes'
+ command
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260604-rdm5-v5-11-5768e6a0943d@redhat.com>
+Message-Id: <20260604-rdm5-v5-12-5768e6a0943d@redhat.com>
 References: <20260604-rdm5-v5-0-5768e6a0943d@redhat.com>
 In-Reply-To: <20260604-rdm5-v5-0-5768e6a0943d@redhat.com>
 To: qemu-devel@nongnu.org
@@ -69,164 +69,284 @@ Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Ben Chaney <bchaney@akamai.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
  kvm@vger.kernel.org, "Dr. David Alan Gilbert" <dave@treblig.org>, 
  Zhao Liu <zhao1.liu@intel.com>, Eric Blake <eblake@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+ Markus Armbruster <armbru@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6549;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8557;
  i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=BfzRj9+PxZBuWnruTJpFaGdqesXc0dlzBlWko+GiOlg=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBqIYEyCdxsURB1AYlGa1B17jLxB6W6D7m5G2RE6
- ymjLAOxw0GJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCaiGBMgAKCRDa6OEJdZac
- 5YorD/90sr8de39/rv34Sc0bwAgHrajghrQW4um+atQdLhevyScbCk2Py7uBuN+8Q0DTwHaAIUp
- Nw8xKH6ECa8QVvDckPABb3h2R28R+Rze6X9UjJaHervUzFnq42+14pGBYANu0FoJ58Wn4CZaWAN
- cdoypI9gjaVmL+mCIDnigSCE16CncY4t21VUoo+5GP0BKA3KMZGdy5f0ZdNbkFBUbdfkbEqEQWG
- K89z9z2wdPQz++ikpN+Mhxw9MaVPrntmEYCFgxUGeBdx0Pfo0IPLecLUzGBQdZUNHcFlxG5Vxuj
- 1kxDFITQSCgBGy5z6WfAgPsIt1SwRtloKxzBty/k0VQYLbpv5QXziDziqe1rek1QMyuXeHOFq/C
- YSGsTOOXh7/EiKigMWc7IzOdbeCzvHION07ftzeO7KQVXwSbYPKm4VNf9RUPA0kFYOMpHv3c9Gi
- UwoE65+qVYF8idk0iUTUxZBGySLpxX8wcIude6+Svu11qh9j6xcdvyBrjLNb6KYu8rdkC6mNEmD
- MBH7MPtT4uzBhZ412faz4qX+y/wmsLP6RD/pu4XzbLYlJE+auZTEqPkX2umeCzjCkNN57DIsuOd
- XKUs9YLkAdZIkGZGSJuiwXmxs6W0aHsa8F+qc7b/KL27Y1u+LAfQE6Gxj81rQZy9TAWIpQRhqac
- JPteGbOCY/PZV8A==
+ bh=SyRGQ/9CVUTbXvPLmC2d6rfZWAqfBUeosfx/J9loDVU=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBqIYEys+d/G6REnNvFNdV9GPUy6EU6lmfCxV5SS
+ 1VqWaOGX/+JAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCaiGBMgAKCRDa6OEJdZac
+ 5X3QD/43KopmhpfJ7O2wtHVsi5AGEmd4A9DFBDSptNQo0ExXfj6Y6RgUxJo+VvgETkPrWvRdyrN
+ 6ZeB3Fzsdo239PHHhh6WPt1F4tjEVic0JEcd1ke8AoNTR6WpyGFNECIg6zrV3sjuBTIZtT12Dy4
+ +KNDTXhxmSaBg/ZBjbtXZwRzVuO3e3CUTy/x6ifUXEcxVlLAIksh1uV7+nPpU+UhfWKgcptukMM
+ NlpO3cIGV6oVoNKu9YcPqQlHAA3ylXUaFoSzblN/8J3BXjIoxk+NhgBhfLsr8oawVvMfQJ9VZvl
+ qhnE+utnN4xch1AcWYL/tz5i2o6cosT2KQuRmiwdr7zQp5BRSXstTMZ+nHhonYm1vJtnhZN6Ipp
+ tyUTUiF/q9GmSy4gBEuIconz1dYLx1wBf2ONRp3sA6rc1tc8xEBJ2VOkCdr/ZGZQLxGTNOCAd9b
+ cLfgWQIZEZZmJBzc4k6/y/fPaXrxFh3jLczA+71ycYj2YRFUY932oeXyhJDqxBDIY8of07Ei+iv
+ VdQBVjdu0dWQVLb7eQaXnbo77vlH2UHgIbCiri9h94JYwW3eTZXtvoCDn92WxbQgdZmbHilGKdq
+ HyEEyZ9bjUm2gVgbKPWDGzlgKOg2YF/tBgxE78feJ1U0X6dcVcBYgXpeY7KK7OTYn0mW1kn72lR
+ /A4ZnGstMoJ/6Xg==
 X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
  fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Most callers of ram_block_discard_range() want to discard both the
-shared and guest_memfd backing. Only kvm_convert_memory() intentionally
-discards a single plane during private/shared conversions.
+Add a new 'info ramblock-attributes' HMP command and the corresponding
+'x-query-ramblock-attributes' QMP command to display the shared/private
+memory attributes for ram blocks.
 
-Rename the current implementation to ram_block_discard_shared_range()
-and make ram_block_discard_range() a composite that also discards
-guest_memfd when present (rb->guest_memfd >= 0). This ensures callers
-like virtio-mem, virtio-balloon, hv-balloon, migration.. reclaim
-private pages on discard.
+The QMP command returns structured data (RamBlockAttributesInfo list
+with per-range shared/populated attributes), while HMP formats it for
+human consumption.
 
-Update kvm_convert_memory() to use the plane-specific
-ram_block_discard_shared_range() since it only needs to discard
-the shared backing when converting to private.
+This is useful for debugging confidential guests (TDX, SNP) to inspect
+which memory regions are shared vs private, and their population state
+when a RamDiscardManager is present (e.g. virtio-mem).
 
-Likewise, after TDVF image copy, use ram_block_discard_shared_range().
-
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/system/ramblock.h |  3 ++-
- accel/kvm/kvm-all.c       |  2 +-
- system/physmem.c          | 25 +++++++++++++++++++++----
- target/i386/kvm/tdx.c     |  2 +-
- system/trace-events       |  2 +-
- 5 files changed, 26 insertions(+), 8 deletions(-)
+ qapi/machine.json             | 56 ++++++++++++++++++++++++++++++++++
+ include/monitor/hmp.h         |  1 +
+ hw/core/machine-hmp-cmds.c    | 32 +++++++++++++++++++
+ system/ram-block-attributes.c | 71 +++++++++++++++++++++++++++++++++++++++++++
+ hmp-commands-info.hx          | 13 ++++++++
+ 5 files changed, 173 insertions(+)
 
-diff --git a/include/system/ramblock.h b/include/system/ramblock.h
-index 2b38718fe5f..f0639287bf0 100644
---- a/include/system/ramblock.h
-+++ b/include/system/ramblock.h
-@@ -103,7 +103,8 @@ struct RamBlockAttributes {
+diff --git a/qapi/machine.json b/qapi/machine.json
+index 685e4e29b87..a1af5c61176 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1738,6 +1738,62 @@
+   'returns': 'HumanReadableText',
+   'features': [ 'unstable' ] }
  
- /* @offset: the offset within the RAMBlock */
- int ram_block_discard_range(RAMBlock *rb, uint64_t offset, size_t length);
--/* @offset: the offset within the RAMBlock */
-+int ram_block_discard_shared_range(RAMBlock *rb, uint64_t offset,
-+                                   size_t length);
- int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t offset,
-                                         size_t length);
++##
++# @RamBlockAttributeRange:
++#
++# A contiguous range within a ram block with uniform attributes.
++#
++# @start: start offset in bytes within the ram block
++#
++# @length: length in bytes of the range
++#
++# @shared: true if the range is shared, false if private
++#
++# @populated: true if the entire range is fully populated across all
++#     RamDiscardManager sources; false if any sub-block is discarded.
++#     Only present when a RamDiscardManager is managing the block.
++#
++# Since: 11.1
++##
++{ 'struct': 'RamBlockAttributeRange',
++  'data': { 'start': 'uint64',
++            'length': 'uint64',
++            'shared': 'bool',
++            '*populated': 'bool' } }
++
++##
++# @RamBlockAttributesInfo:
++#
++# Shared/private memory attributes for a ram block.
++#
++# @name: the ram block identifier
++#
++# @ranges: list of attribute ranges
++#
++# Since: 11.1
++##
++{ 'struct': 'RamBlockAttributesInfo',
++  'data': { 'name': 'str',
++            'ranges': [ 'RamBlockAttributeRange' ] } }
++
++##
++# @x-query-ramblock-attributes:
++#
++# Query ram block shared/private attributes.  This is useful
++# to debug confidential guests.
++#
++# Features:
++#
++# @unstable: This command is meant for debugging.
++#
++# Returns: list of ram block attributes
++#
++# Since: 11.1
++##
++{ 'command': 'x-query-ramblock-attributes',
++  'returns': [ 'RamBlockAttributesInfo' ],
++  'features': [ 'unstable' ] }
++
+ ##
+ # @x-query-roms:
+ #
+diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
+index 9258a049bff..c069d5de8d1 100644
+--- a/include/monitor/hmp.h
++++ b/include/monitor/hmp.h
+@@ -137,6 +137,7 @@ void hmp_info_dump(Monitor *mon, const QDict *qdict);
+ void hmp_hotpluggable_cpus(Monitor *mon, const QDict *qdict);
+ void hmp_info_vm_generation_id(Monitor *mon, const QDict *qdict);
+ void hmp_info_memory_size_summary(Monitor *mon, const QDict *qdict);
++void hmp_info_ramblock_attributes(Monitor *mon, const QDict *qdict);
+ void hmp_info_replay(Monitor *mon, const QDict *qdict);
+ void hmp_replay_break(Monitor *mon, const QDict *qdict);
+ void hmp_replay_delete_break(Monitor *mon, const QDict *qdict);
+diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
+index 46846f741a2..122e1a0f735 100644
+--- a/hw/core/machine-hmp-cmds.c
++++ b/hw/core/machine-hmp-cmds.c
+@@ -24,6 +24,7 @@
+ #include "qapi/string-output-visitor.h"
+ #include "qemu/error-report.h"
+ #include "system/numa.h"
++#include "system/ramblock.h"
+ #include "hw/core/boards.h"
  
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 96f90ebb240..dcfb99cdf74 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3426,7 +3426,7 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-              */
-             goto out_unref;
-         }
--        ret = ram_block_discard_range(rb, offset, size);
-+        ret = ram_block_discard_shared_range(rb, offset, size);
-     } else {
-         ret = ram_block_discard_guest_memfd_range(rb, offset, size);
+ void hmp_info_cpus(Monitor *mon, const QDict *qdict)
+@@ -388,3 +389,34 @@ void hmp_info_memory_size_summary(Monitor *mon, const QDict *qdict)
      }
-diff --git a/system/physmem.c b/system/physmem.c
-index ddb67ba2359..0ff80a74917 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -4095,7 +4095,7 @@ int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque)
-  * Returns: 0 on success, none-0 on failure
-  *
-  */
--int ram_block_discard_range(RAMBlock *rb, uint64_t offset, size_t length)
-+int ram_block_discard_shared_range(RAMBlock *rb, uint64_t offset, size_t length)
- {
-     int ret = -1;
- 
-@@ -4144,7 +4144,7 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t offset, size_t length)
-              * have a MAP_PRIVATE mapping, possibly messing with other
-              * MAP_PRIVATE/MAP_SHARED mappings. There is no easy way to
-              * change that behavior whithout violating the promised
--             * semantics of ram_block_discard_range().
-+             * semantics of ram_block_discard_shared_range().
-              *
-              * Only warn, because it works as long as nobody else uses that
-              * file.
-@@ -4200,8 +4200,9 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t offset, size_t length)
-             goto err;
- #endif
-         }
--        trace_ram_block_discard_range(rb->idstr, host_startaddr, length,
--                                      need_madvise, need_fallocate, ret);
-+        trace_ram_block_discard_shared_range(rb->idstr, host_startaddr, length,
-+                                             need_madvise, need_fallocate,
-+                                             ret);
-     } else {
-         error_report("%s: Overrun block '%s' (%" PRIu64 "/%zx/" RAM_ADDR_FMT")",
-                      __func__, rb->idstr, offset, length, rb->max_length);
-@@ -4211,6 +4212,22 @@ err:
-     return ret;
+     hmp_handle_error(mon, err);
  }
- 
-+int ram_block_discard_range(RAMBlock *rb, uint64_t offset, size_t length)
++
++void hmp_info_ramblock_attributes(Monitor *mon, const QDict *qdict)
 +{
-+    int ret;
++    Error *err = NULL;
++    g_autoptr(RamBlockAttributesInfoList) list = NULL;
++    RamBlockAttributesInfoList *it;
 +
-+    ret = ram_block_discard_shared_range(rb, offset, length);
-+    if (ret) {
-+        return ret;
++    list = qmp_x_query_ramblock_attributes(&err);
++    if (hmp_handle_error(mon, err)) {
++        return;
 +    }
 +
-+    if (rb->guest_memfd >= 0) {
-+        ret = ram_block_discard_guest_memfd_range(rb, offset, length);
-+    }
++    for (it = list; it; it = it->next) {
++        RamBlockAttributesInfo *rba = it->value;
++        RamBlockAttributeRangeList *r;
 +
-+    return ret;
++        monitor_printf(mon, "%s:\n", rba->name);
++        for (r = rba->ranges; r; r = r->next) {
++            RamBlockAttributeRange *range = r->value;
++            const char *shared = range->shared ? "shared" : "private";
++            const char *pop = range->has_populated ?
++                (range->populated ? "+populated" : "-populated") : "";
++
++            monitor_printf(mon,
++                           "  0x%016" PRIx64 "-0x%016" PRIx64 " %s%s\n",
++                           range->start,
++                           range->start + range->length - 1,
++                           shared, pop);
++        }
++    }
 +}
+diff --git a/system/ram-block-attributes.c b/system/ram-block-attributes.c
+index 59ec7a28eb0..fb657ffca35 100644
+--- a/system/ram-block-attributes.c
++++ b/system/ram-block-attributes.c
+@@ -11,6 +11,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
++#include "qapi/qapi-commands-machine.h"
+ #include "system/ramblock.h"
+ #include "trace.h"
+ 
+@@ -221,3 +222,73 @@ static void ram_block_attributes_class_init(ObjectClass *klass,
+     rdsc->get_min_granularity = ram_block_attributes_rds_get_min_granularity;
+     rdsc->is_populated = ram_block_attributes_rds_is_populated;
+ }
 +
- int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t offset,
-                                         size_t length)
- {
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 4714c9d514e..fcb11aa67e4 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -385,7 +385,7 @@ static void tdx_finalize_vm(Notifier *notifier, void *unused)
-      * KVM_MEMORY_MAPPING. It becomes useless.
-      */
-     ram_block = tdx_guest->tdvf_mr->ram_block;
--    ram_block_discard_range(ram_block, 0, ram_block->max_length);
-+    ram_block_discard_shared_range(ram_block, 0, ram_block->max_length);
++RamBlockAttributesInfoList *qmp_x_query_ramblock_attributes(Error **errp)
++{
++    RamBlockAttributesInfoList *head = NULL, **tail = &head;
++    RAMBlock *block;
++    size_t rba_block_size = ram_block_attributes_get_block_size();
++
++    RCU_READ_LOCK_GUARD();
++
++    RAMBLOCK_FOREACH(block) {
++        RamBlockAttributesInfo *rba;
++        RamBlockAttributeRangeList **range_tail;
++        RamBlockAttributes *attr = block->attributes;
++        RamDiscardManager *rdm;
++        unsigned long pos;
++
++        if (!attr) {
++            continue;
++        }
++
++        rdm = memory_region_get_ram_discard_manager(block->mr);
++        g_assert(rdm);
++
++        rba = g_new0(RamBlockAttributesInfo, 1);
++        rba->name = g_strdup(block->idstr);
++        range_tail = &rba->ranges;
++
++        pos = 0;
++        while (pos < attr->bitmap_size) {
++            bool is_shared = test_bit(pos, attr->bitmap);
++            unsigned long next;
++            uint64_t start_offset, length;
++            RamBlockAttributeRange *range;
++
++            if (is_shared) {
++                next = find_next_zero_bit(attr->bitmap,
++                                          attr->bitmap_size, pos);
++            } else {
++                next = find_next_bit(attr->bitmap,
++                                     attr->bitmap_size, pos);
++            }
++
++            start_offset = (uint64_t)pos * rba_block_size;
++            length = (uint64_t)(next - pos) * rba_block_size;
++
++            range = g_new0(RamBlockAttributeRange, 1);
++            range->start = start_offset;
++            range->length = length;
++            range->shared = is_shared;
++
++            {
++                MemoryRegionSection section = {
++                    .mr = block->mr,
++                    .offset_within_region = start_offset,
++                    .size = int128_make64(length),
++                };
++                range->has_populated = true;
++                range->populated =
++                    ram_discard_manager_is_populated(rdm, &section);
++            }
++
++            QAPI_LIST_APPEND(range_tail, range);
++            pos = next;
++        }
++
++        QAPI_LIST_APPEND(tail, rba);
++    }
++
++    return head;
++}
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index 82134eb6c21..f119b9cfebc 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -761,6 +761,19 @@ SRST
+     Dump all the ramblocks of the system.
+ ERST
  
-     tdx_vm_ioctl(KVM_TDX_FINALIZE_VM, 0, NULL, &error_fatal);
-     CONFIDENTIAL_GUEST_SUPPORT(tdx_guest)->ready = true;
-diff --git a/system/trace-events b/system/trace-events
-index e6e1b612798..51b4a4679a2 100644
---- a/system/trace-events
-+++ b/system/trace-events
-@@ -32,7 +32,7 @@ global_dirty_changed(unsigned int bitmask) "bitmask 0x%"PRIx32
- address_space_map(void *as, uint64_t addr, uint64_t len, bool is_write, uint32_t attrs) "as:%p addr 0x%"PRIx64":%"PRIx64" write:%d attrs:0x%x"
- find_ram_offset(uint64_t size, uint64_t offset) "size: 0x%" PRIx64 " @ 0x%" PRIx64
- find_ram_offset_loop(uint64_t size, uint64_t candidate, uint64_t offset, uint64_t next, uint64_t mingap) "trying size: 0x%" PRIx64 " @ 0x%" PRIx64 ", offset: 0x%" PRIx64" next: 0x%" PRIx64 " mingap: 0x%" PRIx64
--ram_block_discard_range(const char *rbname, void *hva, size_t length, bool need_madvise, bool need_fallocate, int ret) "%s@%p + 0x%zx: madvise: %d fallocate: %d ret: %d"
-+ram_block_discard_shared_range(const char *rbname, void *hva, size_t length, bool need_madvise, bool need_fallocate, int ret) "%s@%p + 0x%zx: madvise: %d fallocate: %d ret: %d"
- qemu_ram_alloc_shared(const char *name, size_t size, size_t max_size, int fd, void *host) "%s size %zu max_size %zu fd %d host %p"
- 
- subpage_register(void *subpage, uint32_t start, uint32_t end, int idx, int eidx, uint16_t section) "subpage %p start 0x%08x end 0x%08x idx 0x%08x eidx 0x%08x section %u"
++    {
++        .name       = "ramblock-attributes",
++        .args_type  = "",
++        .params     = "",
++        .help       = "Display ramblock shared/private attributes",
++        .cmd        = hmp_info_ramblock_attributes,
++    },
++
++SRST
++  ``info ramblock-attributes``
++    Display the shared/private memory attributes for ram blocks.
++ERST
++
+     {
+         .name       = "hotpluggable-cpus",
+         .args_type  = "",
 
 -- 
 2.54.0
