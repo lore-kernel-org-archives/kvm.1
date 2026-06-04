@@ -1,150 +1,212 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6E3408015
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 14:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780582383; cv=none; b=Bkqeenl+cVG23hgWkuWxezkIQmFnELDXmiVzgiexfOJFTZ5jDSuSxb1wBIFyUvpROMpcno50ethVzzwyMRcjq+OJyqgdigLPx+n/2MwR7DuUD9PHuz4LgyLb5SfC9qbAWJhRKWYLu1EIRrFhoCoQnsTUgwA8/hKCEmhxMtk5jvQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780582383; c=relaxed/simple;
-	bh=gpdnwV2DnbeS2Luujuh3pWY+HT/ULmOQY1sUF7OfAQU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VUb5KUqmyKR+6vgxaNo5U8+LxJMg/lvQmJmZ5T7Mi/pl60zVfnl4mKVYki5NNqgLL+GBcj95t8bjOk3LVFJ0WroayRZtF8tKoFyMOvj8X8DVM6ooRErrFaYY716Mf1q0F5AIlZSQq1mSBdRn2VT/xyHLRApfwZ/tus7ZQfPUu54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=c67tRG3B; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8FD47DD6F
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 14:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780582430; cv=pass; b=mAG7A+I3DJ543mX3l1bJhhJoC6q9qHOHM1y4O4EBBjn8VhNUK0Izp7xxvpxuiVNq+mstDTnYS/AihegAfAXty6l7GR3+WPQFu5LL6pRKMuT3SauCzPGfoqsSONOV0uweAMVoaQVHNnvFPixjrgkG3+nEf6ABPttvdVCYuNXCajU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780582430; c=relaxed/simple;
+	bh=OaiUGVXIaoK58g4KUcH0QwFN2tyWJZUlc1JvNyAly3E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gC9PAddpbmcB4TMJql3JpPa2vEyNVqPOBr9WrIKQ5Miew+F78jQi2qaicoL583GVvrM93Ic4vj54pFlwLyHhPJ0kUGmEdIY7uaFTRbA8J87tTyIvfwu3guN0t5vmp97f2kV6CiVZHoICTZxd8isXFRvVuCNloMVyyjvb21X3iIw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=icNfnbPr; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="c67tRG3B"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-91550dfc11fso86498985a.1
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 07:13:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="icNfnbPr"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-68cb445dd5cso9263a12.1
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 07:13:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780582427; cv=none;
+        d=google.com; s=arc-20240605;
+        b=j6zNysOFhLjL8OQ7cJKMZKFifWGGkUSyjimW3z6V3aoCKjuuySw1tGEa71VqNVxZsq
+         /G6voBng0TpH9+jg4eaNuAVydK/Q5/CQwyQaBbCuVaaHIbzaOhQ5ulkBXvOpRZ3sBa+z
+         ukohzjlMl+L/22KA8PdSZa12q4j14/klYXJCMEq4G1JAHZ6L5UUbVAZ2zgTz32UNJ0Vv
+         LCVdgIcTxNn4QiaZhFdQdMSUbDtBkl+CMwheKk+5slAzQrW31wYYb4opFCwx8+/rn+0D
+         HjyUd0tK+pAXEjS3EAiPnO4fdfw49XTd3BYBKr91tp0gBJVaURMCVmQJPVtBhPJYHxR5
+         OliA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9O0Q3WeGriwMoc2YI/vhq5MLo+cTt56z0DuYwFzn6as=;
+        fh=rbRsiyZ+8PqOjxrgZQdB64ENBXlgTML+TsZf140LS3E=;
+        b=NPSx/ICu+vUZllWBW0fX0rJZGV870pHRX1WgYHEyrB3Tt5Dj9FcFQV0J4KwpR7rw5h
+         fR9EzC2ZVjAmXg+FoznJV0bYuYNlyaO09SOX+x2Cg53jYsYn1kcnNZRKTzOVF9uKYNAr
+         9mDhD1P7dUEel80W1pDyEbhOUCLpn0weqKOCVUajFVEQvXfXNYsMsrfb6K/Ml6m/0hVn
+         xEYbfsWYvxpwn/4Oo8S3PGt3FWPc0qbfN+YTIJ5C6Lymbh1t2/KyScicGa7FharWN6PS
+         fkp0s9+WBJu7eWsUa8z64eUdra5gE31Ydnp2Rn4t5axmZcu4XXQnYked58GLIFCzKgF9
+         U9nw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780582381; x=1781187181; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6SN06MWYgnamNhN1ZWgRIcR80dI4EtU2wUgYpm//Klo=;
-        b=c67tRG3B3PAGKlTxgPGjuzy6sp7oF3VdFIH+8eW5D3ETaVXhpD9bmHa9E40giBNASg
-         sXWlqXBf7AGX5d798/dw44Pd9Z76mpCs8vDhSRyMPTfezHcfxQCZVowz2qgDuV6TjVoy
-         Ykwk2xDUyZFZo5IuX2m6OvED3jgkNYNeEpkbeaSe6+DSqqhj4R/dCwOllSdjFuhwFzKk
-         dg6aQPuWyzFnSVC0U91Nz8bU4sws190YXgGP14qkC7o6/08mUbzj36wErfK8bX4ML5I/
-         R/TdkeUUGkrYbZvJJ7telR5Gak+6d9sq6zqAK4O/7/ibdfxNJhZtY89blfWXhTQ3cmo9
-         pAiQ==
+        d=google.com; s=20251104; t=1780582427; x=1781187227; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9O0Q3WeGriwMoc2YI/vhq5MLo+cTt56z0DuYwFzn6as=;
+        b=icNfnbPrvp/2jPejs9zC3Nzi5LOcAzd/IZsZ6k9O5gNjE+QfJAcz4CP0qk0i5pZt+o
+         RDLW57KbjbE1zfD/cYx8Co+VCTYzp6MiSi5OayZHgyOs/9akei1SuWQApUXLv296HQl2
+         TTDrVszZhQLupSRA/ye+tc4puNK/7oXj6lUi+SeGALay5aLl4IN7+mh3iiO31ihh0Vk8
+         Z3ZJtCh+pbX/Y8l/irT/wHkVmAPHaqRJngdSXtCZs7xki/HMEBtTFBp6N0o8wFFdxBl6
+         Gl16/ASE0VMA/1Zfc2j9pgEPd/73iR9+qzV5RS610BYAgh2GFuomSe1L4YiprfNP6OnD
+         fKJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780582381; x=1781187181;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6SN06MWYgnamNhN1ZWgRIcR80dI4EtU2wUgYpm//Klo=;
-        b=XOmQAoq5AiaEjSwF9U4ISYL+QOOk0nNyczKDIW5EVl3YEnIUIE79DMfb5XSs9IL/ZY
-         Tm4eNXYf7Cik/w99o9RonCo4n1CjPkiBUcY8WLXVbaVJ37YWGyYkjKlZF43xKYE9LrDc
-         aYJeH8kXxFwerscQb0QF2vtK5rSGb+ELREG5SM7tLqPGKbJqF3SPMBF6E3sDG6SiViLH
-         ko3iyJ0MxObNplgEsOpSXclbEfd6wFjHUf96YqXfjd5sVuOtlhpq4rj1OavA6IfBeiqO
-         3qaeDhzC04DDKtotTFUv8PIL19ttfZ0dmY89DX8jAZvO4OaKb9iMfkFVjlLGfGYGkqx1
-         KBrA==
-X-Forwarded-Encrypted: i=1; AFNElJ8z4slcGDyhV+z2/osOcTtViBhMECPu+7WylCwmvSAsjEA773VmzIit3XFyzKAFo6juHPk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdSPrb4Ux4TSBbgPF9sqsGgqQxi1fznYeI+PLchzRUza7KCtZA
-	ymjP5181dQnBL42h95ZHY8ThrK5bvIfMadZnsRy9reWadf+DW3jhke9iL8YkvvPgnKQ=
-X-Gm-Gg: Acq92OEaRmPHxcNUBbDUv4SsZrcmtLvdLDAiYp2MVSN0GjdxOuem00eK1i7Rn+l0Ph/
-	U1GY+MrR01yAWFp89ug9jc6DvrdFSlDu/Nkh0AJNjMYW0Y1Gmda/fp3d4ART+9g8ZLys+vGRYLT
-	+9MSyOgJc0Mr9DoLk2BzrdiO6CWcdtj4Ouae1KzX7ZaKcdt+vCnQsBPbnuCIu4adGPAysEpF7uC
-	aeUxBLa7b09UHB9g8WeUcUoKx4od9+r6gDUwOw8hCTI/Yxp+aLpGHdzPj2qME0CGBXwJDZArQMQ
-	C6o5zmFMv7d10CPGdWnT2Ja+sSIEeHjzge5VMBS6ZJQGi5CDwhY3rntj3DrcMGwfLSSU7841wUb
-	zov2bR+hxnuyWDPO/S2jmJxBLNZ+fuYLzBDX69rrRlMlToaytF2bk6xvJY7pTs8mWg5q7CFvYuY
-	S4aNF5ekkCtOXB3/JXm5qehM+kU6yKkSh6IdfYi4dw3WQv/wY4xki3FlO9FL5vbOHj8W6oGS57j
-	yuSI7XrXRsR+aRhPMba7Lkw+bg=
-X-Received: by 2002:a05:622a:598c:b0:517:1465:9167 with SMTP id d75a77b69052e-51778696c8emr120221011cf.28.1780582380950;
-        Thu, 04 Jun 2026 07:13:00 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775df4dd6sm52447511cf.27.2026.06.04.07.13.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 07:13:00 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wV8od-00000008HC1-3PHn;
-	Thu, 04 Jun 2026 11:12:59 -0300
-Date: Thu, 4 Jun 2026 11:12:59 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Guanghui Feng <guanghuifeng@linux.alibaba.com>,
-	adrian.larumbe@collabora.com, airlied@gmail.com, alex@shazbot.org,
-	alikernel-developer@linux.alibaba.com,
-	boris.brezillon@collabora.com, dri-devel@lists.freedesktop.org,
-	dwmw2@infradead.org, iommu@lists.linux.dev, joro@8bytes.org,
-	kevin.tian@intel.com, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	liviu.dudau@arm.com, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, oliver.yang@linux.alibaba.com, robh@kernel.org,
-	robin.murphy@arm.com, shiyu.zsq@linux.alibaba.com,
-	steven.price@arm.com, suravee.suthikulpanit@amd.com,
-	tzimmermann@suse.de, wei.guo.simon@linux.alibaba.com,
-	will@kernel.org, xlpang@linux.alibaba.com
-Subject: Re: [PATCH v3 05/32] iommu/generic_pt: implement iova_to_phys_length
-Message-ID: <20260604141259.GW2487554@ziepe.ca>
-References: <20260602104637.1219810-1-guanghuifeng@linux.alibaba.com>
- <20260603151804.1963871-1-guanghuifeng@linux.alibaba.com>
- <20260603151804.1963871-6-guanghuifeng@linux.alibaba.com>
- <c179b999-8c7f-4338-8aad-b61fd09f1329@linux.intel.com>
+        d=1e100.net; s=20251104; t=1780582427; x=1781187227;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9O0Q3WeGriwMoc2YI/vhq5MLo+cTt56z0DuYwFzn6as=;
+        b=QzeOvxglBrA3X58uwV1LJqO7KXOV7Ymj6VQE18zV2XkpnNaOsl3s0GpSOVdiVG0yoI
+         7i4ptbDbk+RvxdOirX4DRYkp1cemoEgzMPRBfnXwL/3wiWUr7rZiA1tLNm9K8bRvJ61H
+         XJHaH8kHQcGcbgTiZdayTyI+hg/1ZoVTOnXcY5WINTaV5/dpaxqAMe4qImpcMQb1g4WH
+         PS67iv0VfK2blRNZkrgCRiyXiIUD4Pja6qGg8YDh1KbUZpr4SEBb4/xdMTFTh9nb+GfC
+         lcYSlBHL136qZs4Mp0TRmuYGtYQ6rDnDsJ7ci9VOe72K93rwSJzLWYYXcANrixzzcvor
+         ciVQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9pB9xtIOmU+OqUx5t53In2wab+k6pCf71DfPQ6Dil9Gygv6zZqqt/03wNk/whR9+1Np6U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4NaUhzL4wWcqccCv+utM9AEE2K97KnIFiJCLOpCzkZ13yWK7u
+	MNfzFzZvBrCfYFaNcEbJKq+82MEdXD2HyEN0enUBKfDA6pIUC/9AA315fTtvBG/6vcudHucKeEG
+	uPDhPXD+PpzvW4fgyW88TkCMcCUUbMkjHkAMjAA1l
+X-Gm-Gg: Acq92OFtfS1dTFt3PRGSVS19Vvji+aZ3t/M3dP8i3F4x3r1SgPdSFHjK3dvVmYomudE
+	QRGi3QSJSRyuIml2cxEwMlRuPCXtlen5HvJN4vmjb7AkDIGzfS1FQL1wNDts4HzD7IGVhTjpeDN
+	mkvJuvAmoBcMJ4o3E96ZMaIDOb3QnbqTeeWHKorh4vsM1mKl9cEQuQabxfvcIbWWuaj8VuTb1Tv
+	qR7/RTejf+n0/MU8AENFUi1uiP4I6an1gMmgoBDAOzZic0Fg99zwMddM+XCelZTyD5jzyVZgl3f
+	p6eyuVWNtMrFtkQZug==
+X-Received: by 2002:a05:6402:4502:b0:66e:e3f9:ebb6 with SMTP id
+ 4fb4d7f45d1cf-68f1208d3bfmr124656a12.4.1780582426733; Thu, 04 Jun 2026
+ 07:13:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c179b999-8c7f-4338-8aad-b61fd09f1329@linux.intel.com>
+References: <20260603223418.1720035-1-seanjc@google.com> <CALMp9eT2mBWgX9VntLJcRYDCeMdLzZwzmPbHrbcM6CRL2tYT0g@mail.gmail.com>
+ <aiF6dg4_9mA-ID-5@google.com>
+In-Reply-To: <aiF6dg4_9mA-ID-5@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 4 Jun 2026 07:13:34 -0700
+X-Gm-Features: AVHnY4IQ33K-_t_o0K6DXcX4QZjibahd4Yk0IWq-AgxplGpwY-7k-x989JNEVtQ
+Message-ID: <CALMp9eRHaAVvAHKjpa82Be_5sk7YC5P37h5duYp+HiGAsjkdEw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] KVM: nVMX: Fix ept=n bugs where KVM runs L2 with
+ guest CR3
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 04, 2026 at 11:30:37AM +0800, Baolu Lu wrote:
-> > -static __always_inline int __do_iova_to_phys(struct pt_range *range, void *arg,
-> > -					     unsigned int level,
-> > -					     struct pt_table_p *table,
-> > -					     pt_level_fn_t descend_fn)
-> > +struct iova_to_phys_length_data {
-> > +	pt_oaddr_t phys;
-> > +	size_t length;
-> > +};
-> > +
-> > +static __always_inline int __do_iova_to_phys_length(struct pt_range *range,
-> > +					       void *arg, unsigned int level,
-> > +					       struct pt_table_p *table,
-> > +					       pt_level_fn_t descend_fn)
-> >   {
-> >   	struct pt_state pts = pt_init(range, level, table);
-> > -	pt_oaddr_t *res = arg;
-> > +	struct iova_to_phys_length_data *data = arg;
-> > +	unsigned int entry_lg2sz;
-> > +	size_t entry_sz;
-> > +	pt_oaddr_t expected_oa;
-> >   	switch (pt_load_single_entry(&pts)) {
-> >   	case PT_ENTRY_EMPTY:
-> > @@ -159,45 +167,77 @@ static __always_inline int __do_iova_to_phys(struct pt_range *range, void *arg,
-> >   	case PT_ENTRY_TABLE:
-> >   		return pt_descend(&pts, arg, descend_fn);
-> >   	case PT_ENTRY_OA:
-> > -		*res = pt_entry_oa_exact(&pts);
-> > -		return 0;
-> > +		break;
-> >   	}
-> > -	return -ENOENT;
-> > +
-> > +	data->phys = pt_entry_oa_exact(&pts);
-> > +	entry_lg2sz = pt_entry_oa_lg2sz(&pts);
-> > +	entry_sz = log2_to_int(entry_lg2sz);
-> > +
-> > +	/* Start with the full mapping size of the first entry */
-> > +	data->length = entry_sz;
-> 
-> data->length doesn't account for iova offset. Is this by design? We
-> should document this clearly somewhere.
+On Thu, Jun 4, 2026 at 6:15=E2=80=AFAM Sean Christopherson <seanjc@google.c=
+om> wrote:
+>
+> On Wed, Jun 03, 2026, Jim Mattson wrote:
+> > ...
+> > IIRC, the tests in question are confirming PCI bus error semantics.
+> > Why would the VMLAUNCH not succeed on bare metal?
+>
+> Well, I was assuming it would fail because it couldn't actually guarantee=
+ PCI Bus
+> Errors, as it could very well stumble into actual device memory.  But the=
+ test
+> leaves TPR_THRESHOLD as '0', and so regardless of what value the CPU gets=
+ back,
+> consistency check will still pass.
+>
+> But!  I'm pretty sure the test would generate #MCs, not PCI bus errors.  =
+The
+> SDM very, very strongly implies that the reads will use WB:
+>
+>   Bits 53:50 report the memory type that should be used for the VMCS, for
+>   data structures referenced by pointers in the VMCS (I/O bitmaps,
+>   virtual-APIC page, MSR areas for VMX transitions), and for the MSEG hea=
+der.
+>   ^^^^^^^^^^^^^^^^^
+>
+>   If software needs to access these data structures (e.g., to modify the
+>   contents of the MSR bitmaps), it can configure the paging structures to=
+ map
+>   them into the linear-address space. If it does so, it should establish
+>   mappings that use the memory type reported bits 53:50 in this MSR.
+>
+>   As of this writing, all processors that support VMX operation indicate =
+the
+>   write-back type. The values used are given in Table A-1.
+>
+> And _that_ will definitely cause problems, especially if the read hits de=
+vice
+> memory.
 
-That's defintaely a mistake, the phys has to be offset by the iova in all cases,
-it is part of the API.
+Good point. However, "problems" here are machine checks, right? Not VM
+entry with invalid control field(s).
 
-Also add kunits tests to the iommupt selftest to cover various
-scenarios please.
+> That said, KVM's de facto ABI is that VMX instructions get PCI Bus Error =
+semantics
+> on accesses KVM can't handle, and it's just as easy to skip the consisten=
+cy check.
+> Since a read of 0xff guarantees the vTPR >=3D TPR_THRESHOLD, the check wi=
+ll pass
+> regardless of TPR_THRESHOLD.
 
-Also this doesn't look quite right, the walk should look more like
-unmap where we just walk and stop walking when we hit a physical
-address discontiguity. The stop point defines the result length.
+Hmmm...Is that an erratum? :)
 
-Jason
+> So, other than my stubbornness :-D, there's no reason to deliberately fai=
+l the
+> check if KVM can't read memory.  I'll go with this for v2:
+>
+>         gpa_t vtpr_gpa =3D vmcs12->virtual_apic_page_addr + APIC_TASKPRI;
+>         u32 vtpr;
+>
+>         if (!nested_cpu_has(vmcs12, CPU_BASED_TPR_SHADOW))
+>                 return 0;
+>
+>         if (CC(!page_address_valid(vcpu, vmcs12->virtual_apic_page_addr))=
+)
+>                 return -EINVAL;
+>
+>         if (CC(!nested_cpu_has_vid(vmcs12) && vmcs12->tpr_threshold >> 4)=
+)
+>                 return -EINVAL;
+>
+>         /*
+>          * Do the illegal vTPR vs. TPR Threshold consistency check if and=
+ only
+>          * if KVM is configured to WARN on missed consistency checks, oth=
+erwise
+>          * it's a waste of time.  KVM needs to rely on hardware to fully =
+detect
+>          * an illegal combination due to the vTPR being writable by L1 at=
+ all
+>          * times (it's an in-memory value, not a VMCS field).  I.e. even =
+if the
+>          * check passes now, it might fail at the actual VM-Enter.
+>          *
+>          * If reading guest memory fails, skip the check as KVM's de fact=
+o ABI
+>          * for VMX instruction accesses to non-existent memory is to prov=
+ide
+>          * PCI Bus Error semantics (reads return 0xFFs), in which case th=
+e vTPR
+>          * is guaranteed to greater than or equal to the threshold.
+>          *
+>          * Note!  Deliberately use the VM-scoped API when reading guest m=
+emory,
+>          * to ensure the read doesn't hit SMRAM when restoring L2 state o=
+n RSM,
+>          * and only perform the check when in KVM_RUN, to avoid a false f=
+ailure
+>          * if userspace hasn't yet configured memslots during state resto=
+re.
+>          */
+
+I really wish that KVM dictated the save and restore sequences. :/
+
+>         if (warn_on_missed_cc && vcpu->wants_to_run &&
+>             nested_cpu_has(vmcs12, CPU_BASED_TPR_SHADOW) &&
+>             !nested_cpu_has_vid(vmcs12) &&
+>             !nested_cpu_has2(vmcs12, SECONDARY_EXEC_VIRTUALIZE_APIC_ACCES=
+SES) &&
+>             !kvm_read_guest(vcpu->kvm, vtpr_gpa, &vtpr, sizeof(vtpr)) &&
+>             CC((vmcs12->tpr_threshold & GENMASK(3, 0)) > ((vtpr >> 4) & G=
+ENMASK(3, 0))))
+>                 return -EINVAL;
+>
+>         return 0;
