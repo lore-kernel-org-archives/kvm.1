@@ -1,229 +1,213 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E5F3358B9;
-	Thu,  4 Jun 2026 15:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68063370EB
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 15:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780586895; cv=none; b=jvcbibxIXP0zGgUof8Up91cmdsz6dbYaLLBl7GxYUVruAztv5WuvAfjctM1RBD9TgN4hZMhMUYGAJEbwXqF9U1NjINhs5oEXYCwRBEWGjdWsHyA4iKWUU68GJMNqZksoupp6cLnVq7BtkpXHFN0zGSqZ0vhSXr6CV+MAygiBVq4=
+	t=1780586965; cv=none; b=ZCg/jFhRgee2Bo/OL4n5SVlPCEMSESzcwPZxI7ZvulprtgyePKIemBV18hTCATFzkia4d8+zHi5mxR9NtFROYUDWYXQIFcf74JtJOuoQi+B6KrwUuT0QoOjpYe6VhWecSBdXegYcwtzTgW68GNvRhrfY70VeNC0BjUVfSzWFpok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780586895; c=relaxed/simple;
-	bh=U+vxUTdHbW20siTX3dFVZo9Bt+XzRLjvG5MjTOCV9RQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HUn07/i+bakymgY1lErVFxdI8i5h4RhaU8IpOtEZsmKtqnfPF1LDyUcEt9hiU4eGuCnclJk5bYRTM0NnRYK2p6MhYHPEgmecav1PF96IkbkX7nZhptgBRGiIvxZv/A1XAjbRigc215tMVY9kw1j/bvA0H1VzzbgOe2TQ5FiUET4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=K0kmt3C/; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1780586965; c=relaxed/simple;
+	bh=UkMauGVB26yFY7UTIwWOcgIzL97oaXwcfIInVZVnp0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ks+glSKdpb7oerP/lEx7WWDmIsUqZLKJsUrtCUwVqro54p1+/9Jwg/Z76FCbpX8W9ampwTkrsF4J1rTFNUlE9E9LSOYrUH2HMleCjYAhcvYHXxweDnUUJDw+cYHYiPC3CJ7CcEoHWi9s8UNy7I74/745WGvhosncLmVpUaksjl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Qlncft6F; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ilYChW73; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="K0kmt3C/"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B775E1516;
-	Thu,  4 Jun 2026 08:28:07 -0700 (PDT)
-Received: from [10.1.34.54] (e122027.cambridge.arm.com [10.1.34.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 285EE3F86F;
-	Thu,  4 Jun 2026 08:28:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780586892; bh=U+vxUTdHbW20siTX3dFVZo9Bt+XzRLjvG5MjTOCV9RQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=K0kmt3C/w1k1/6n0F9rLjabKEulh884qSAOTEDtUvrfqwXhIPmD/u/+TDcan9mRlh
-	 Uz3PZDEhQmZP92vxbgVpLeStWi1s2nc35dzj+xBj6xzqW76+pEzcRfzfh9rdvb6zTJ
-	 hqvaO1R6yqUEw1gmGZCfBmf15tWhoWXn85jOGi5k=
-Message-ID: <16e9386c-7180-439d-8174-2be824abbd1e@arm.com>
-Date: Thu, 4 Jun 2026 16:27:58 +0100
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Qlncft6F";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ilYChW73"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654Delqj313995
+	for <kvm@vger.kernel.org>; Thu, 4 Jun 2026 15:29:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	qzF1JQDHu/K7zEZi00iVkIXGDGc/cwKiYYKzelWhYfQ=; b=Qlncft6Fwh6BKW7n
+	ka795Z+gVHHYDdEefWUmmoQD4RgUPeiGhHV8SLohswSyxQA7tUpBQh5QJy+w6cUx
+	nthELcj2CqKsQtu8IWnnUGVBvx1B4CcqQbh0/tJI53DobGxPsWEKB0olLTomoQjJ
+	dKokvTmQAdHSd8V/mrQrqOhm7qnHT3NPPfKphB5f08Ld+jJ4MMnuk4pGoYKPsYNR
+	fBUyH5fUfYvPA9cIOWGy6Lhda0l5bMpg0n4kcqegrR9PrsGt3p4KFs11AYqkLbIx
+	DPVLtwnic5BaEo8QCGinJHUSHwKzz5V/qJ+gTP541f0Kvr7AYVrKVIkHTnW2gfBI
+	ME5ykQ==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ejy5v36ex-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 15:29:22 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-3075fa5a407so2678197eec.1
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 08:29:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1780586962; x=1781191762; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qzF1JQDHu/K7zEZi00iVkIXGDGc/cwKiYYKzelWhYfQ=;
+        b=ilYChW73DD4JVlwf36MDUbIxRVgOyS/x4M+pk/YSoF4CFShn3QcVjT7yuhLbqj6elx
+         GIgZON3eOgFVYNPwfq2aCssnAKBiG2EOwLz0jGKfLeV5orEzfa1ocBlPQ+WRD4pOuHUZ
+         nDjxuNwkoRZ69kgRB8sdCYtLoLC6klk0IohQmhLgNlAHnY0ydj7r1dNnO87kawOJmD0a
+         xgoF6yE/KApkQoD+wORsoMHDYbEajBq63BM12BNVCEgrp42f5Fq11xieSh3EB+ImJWPX
+         cjEftxioWbf9VS0XKRHPz1tK+KufGQ0AB34pD78LtyEgMXJVNFpi1Z2CvfRvUcg5Dckt
+         Fojg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780586962; x=1781191762;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qzF1JQDHu/K7zEZi00iVkIXGDGc/cwKiYYKzelWhYfQ=;
+        b=fEiAidzhqz77o6SA+I4RY4JeioMK9AH8hFUUYciBvjYPngSfZVJGazV79CJhgZqHph
+         2VBp2W5yeKbds4cocL/X5ms4Fvr1J/03zWZ2lOHs8jhRm2Kdx9JMd3x72VWIuvHYKq6u
+         UDxNzXKvvjpS3aKvWe070wvqVDUrFLCFufs6Q7q2qqYQN6nFR2JWHW7cTUwRbAt+kAfL
+         WZuhFuZg5gY37bSm1pPJvz0TrtjCauzidi1GIAsTMbK4NZrRuPVP9x0Jmvg8Q5Be9Mja
+         cB4TvgECVBZX/C0rexx8LfQaH6CUWLzHf7hk2GxjxRvTDGXWO1qyHJNQ0iy/AVam6hSH
+         PP/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/aCzeuY6C4enzAuYQSdKc55Ga+hiVx516xvN89VVtcgfUvzC/1gPJluvss2+29x6zJfZo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyjqiob3auHS5GI/Gn81327VMJ0sJBu6IgMwpsd8AOMdTplKuGM
+	9NsCjcHJ/ls8ONe+NRrVnwL10NWLwH//oT1HCp+W8573HFeM966e7KcluNG0aAy0qwnXDA9+IGV
+	aMIR3jompCDs0G6EtIYRvOIzKG5i0FK1M/txq+3XpABnhggGyto7vStc=
+X-Gm-Gg: Acq92OE4yEKOAMZEE+RCTbbQUKQ1nUFDuECzcrWyketrgCpeGQG6p/aKGc+DQ7hBsB+
+	LnN9ItHSYzbWMmlI6Vl/Z8mCQ+kZnJ31msiroh9UYe12YhGbKNA+MVpfuxx3MSCwRXTKYmR8fQZ
+	pPFM0xnx4rA1zjuG6ayZgI23PxwPenx2hZXo3VmDNhq1vn6t3RIdV3i9YjMss2O8lrj9Sbweqa2
+	yi2ib8zr8SIrBU32S6SVIKbYMwuiNdqhpPxuwzbtiNWkbM8+tg7juZdWnjmIpin5I0SfOLHv2Qq
+	L0IHMJmr3m3WeFgUBSwyxStd1jGJRRpUG9idqq/66BKGU3BvoaMqrRAS7uGfoW9SlvhijGyXfzH
+	CpyxfgQkkt2qjZ4Uu1VYVtthc1pcD5nOLLRjmrVLHRQ==
+X-Received: by 2002:a05:7022:693:b0:136:90d9:f204 with SMTP id a92af1059eb24-137f6bb4bd5mr3557182c88.25.1780586961864;
+        Thu, 04 Jun 2026 08:29:21 -0700 (PDT)
+X-Received: by 2002:a05:7022:693:b0:136:90d9:f204 with SMTP id a92af1059eb24-137f6bb4bd5mr3557156c88.25.1780586961314;
+        Thu, 04 Jun 2026 08:29:21 -0700 (PDT)
+Received: from localhost ([140.82.166.162])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-137f5539035sm4107408c88.11.2026.06.04.08.29.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 08:29:20 -0700 (PDT)
+Date: Thu, 4 Jun 2026 10:29:19 -0500
+From: Andrew Jones <andrew.jones@oss.qualcomm.com>
+To: Guodong Xu <guodong@riscstar.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <pjw@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+        Shuah Khan <shuah@kernel.org>, Anup Patel <anup@brainfault.org>,
+        Atish Patra <atish.patra@linux.dev>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Deepak Gupta <debug@rivosinc.com>, Zong Li <zong.li@sifive.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Charlie Jenkins <charlie@rivosinc.com>,
+        Samuel Holland <samuel.holland@sifive.com>, linux-doc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+        kvm-riscv@lists.infradead.org, Guodong Xu <docularxu@outlook.com>
+Subject: Re: [PATCH v2 08/10] riscv: cpufeature: Introduce ISA bases bitmap
+ and rva23u64 detection
+Message-ID: <ug2cipududshcbv24ruicqpugzinujnamvdcuy6pubkwh67bfp@2fysrplz3nr4>
+References: <20260511-rva23u64-hwprobe-v2-v2-0-21c5a544f1dc@riscstar.com>
+ <20260511-rva23u64-hwprobe-v2-v2-8-21c5a544f1dc@riscstar.com>
+ <5tjmypgyxbhgxfjub5q6ne475uysse6yl473sxisjoammkdvbu@yebejqbiy6e3>
+ <CAH1PCMa-5W9PsX8cDLUk6-MkcM53HOz2QtaxCHd+XOr7DgH5+w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 13/44] arm64: RMI: Define the user ABI
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-14-steven.price@arm.com>
- <86jysovpxf.wl-maz@kernel.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <86jysovpxf.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH1PCMa-5W9PsX8cDLUk6-MkcM53HOz2QtaxCHd+XOr7DgH5+w@mail.gmail.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA0MDE1MSBTYWx0ZWRfX0NP5StM7nGYi
+ Fxm+8swAJMECU6jjo6it/su6PeVEwkIAWSScEP3GXfUa5ogozzC2dk5z5WHydvGoi5YKlDhx/vu
+ mhbvzfwPfOd4DnqTpMl3aD625aK7ey16iNNB9PRVZnLjBZ4m84RpB2zYGhZ3XDTU3iOw7TgvGPL
+ TFk/OI3ps2jD3Bl7elwIkublP1yXFaJO+TdJUnMWNxp8en+7JZJ0s3MvsqReYFQi/jrYyS7yMRe
+ KJEqPi7rD4OakVYEZSR1oMHwV9ToEvn4mDYPtkb4LiRFy5kvP+/zM2a+S3s/6+xWpE99RxDFc4J
+ fTsYqyzovVuRCJV3xXVqYTUf7z+Vrm5gnxT7H2F3DhKWOxTFQo5iiPSoh8olbSOZn34HvNAX2ss
+ njlSfoWzvz74UkivyGYeGElT7UziQIFDI4SbXEwoDWgLBmpZk60WTCjtEq9t72cE6ZYmEs4BTHx
+ r14gva0FdNWTn9FMzHw==
+X-Proofpoint-ORIG-GUID: NyNx-hXOLi78pVDQVC8VGJzEiux7ls58
+X-Authority-Analysis: v=2.4 cv=afRRWxot c=1 sm=1 tr=0 ts=6a2199d2 cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=cvcws7F5//HeuvjG1O1erQ==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=c92rfblmAAAA:8 a=ee_2aqc6AAAA:8 a=VwQbUJbxAAAA:8 a=-RU_IiooM-Ar16elnkoA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=PxkB5W3o20Ba91AHUih5:22
+ a=GvGzcOZaWPEFPQC_NcjD:22 a=VOpmJXOdbJOWo2YY3GeN:22
+X-Proofpoint-GUID: NyNx-hXOLi78pVDQVC8VGJzEiux7ls58
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-04_04,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 impostorscore=0 suspectscore=0 spamscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606040151
 
-On 27/05/2026 16:21, Marc Zyngier wrote:
-> On Wed, 13 May 2026 14:17:21 +0100,
-> Steven Price <steven.price@arm.com> wrote:
->>
->> There is one CAP which identified the presence of CCA, and one ioctl.
->> The ioctl is used to populate memory during creation of the realm as
->> this requires the RMM to copy data from an unprotected address to the
->> protected memory - CCA does not support memory conversion where the
->> memory contents is preserved as this is incompatible with memory
->> encryption.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v13:
->>  * KVM_ARM_VCPU_RMI_PSCI_COMPLETE removed.
->>  * KVM_ARM_RMI_POPULATE documentation updated to reflect that the
->>    structure is written by the kernel.
->>  * CAP number bumped.
->> Changes since v12:
->>  * Change KVM_ARM_RMI_POPULATE to update the structure with the amount
->>    that has been progressed rather than return the number of bytes
->>    populated.
->>  * Describe the flag KVM_ARM_RMI_POPULATE_FLAGS_MEASURE.
->>  * CAP number is bumped.
->>  * NOTE: The PSCI ioctl may be removed in a future spec release.
->> Changes since v11:
->>  * Completely reworked to be more implicit. Rather than having explicit
->>    CAP operations to progress the realm construction these operations
->>    are done when needed (on populating and on first vCPU run).
->>  * Populate and PSCI complete are promoted to proper ioctls.
->> Changes since v10:
->>  * Rename symbols from RME to RMI.
->> Changes since v9:
->>  * Improvements to documentation.
->>  * Bump the magic number for KVM_CAP_ARM_RME to avoid conflicts.
->> Changes since v8:
->>  * Minor improvements to documentation following review.
->>  * Bump the magic numbers to avoid conflicts.
->> Changes since v7:
->>  * Add documentation of new ioctls
->>  * Bump the magic numbers to avoid conflicts
->> Changes since v6:
->>  * Rename some of the symbols to make their usage clearer and avoid
->>    repetition.
->> Changes from v5:
->>  * Actually expose the new VCPU capability (KVM_ARM_VCPU_REC) by bumping
->>    KVM_VCPU_MAX_FEATURES - note this also exposes KVM_ARM_VCPU_HAS_EL2!
->> ---
->>  Documentation/virt/kvm/api.rst | 40 ++++++++++++++++++++++++++++++++++
->>  include/uapi/linux/kvm.h       | 13 +++++++++++
->>  2 files changed, 53 insertions(+)
+On Sat, May 30, 2026 at 08:42:29AM +0800, Guodong Xu wrote:
+> On Thu, May 28, 2026 at 12:35 AM Andrew Jones
+> > Sashiko points out a few things about this patch which I think I
+> > agree with
+> >
+> > https://sashiko.dev/#/patchset/20260511-rva23u64-hwprobe-v2-v2-0-21c5a544f1dc%40riscstar.com?part=8
 > 
-> $SUBJECT looks wrong. This is a KVM change, not an RMI change.
-
-Ah, true I guess "KVM: arm64: Define the user ABI for CCA" is more accurate.
-
->>
->> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
->> index 52bbbb553ce1..ca68aae7faa2 100644
->> --- a/Documentation/virt/kvm/api.rst
->> +++ b/Documentation/virt/kvm/api.rst
->> @@ -6553,6 +6553,37 @@ KVM_S390_KEYOP_SSKE
->>    Sets the storage key for the guest address ``guest_addr`` to the key
->>    specified in ``key``, returning the previous value in ``key``.
->>  
->> +4.145 KVM_ARM_RMI_POPULATE
->> +--------------------------
->> +
->> +:Capability: KVM_CAP_ARM_RMI
->> +:Architectures: arm64
->> +:Type: vm ioctl
->> +:Parameters: struct kvm_arm_rmi_populate (in/out)
->> +:Returns: 0 on success, < 0 on error
->> +
->> +::
->> +
->> +  struct kvm_arm_rmi_populate {
->> +	__u64 base;
->> +	__u64 size;
->> +	__u64 source_uaddr;
->> +	__u32 flags;
->> +	__u32 reserved;
->> +  };
->> +
->> +Populate a region of protected address space by copying the data from the
->> +(non-protected) user space pointer provided into a protected region (backed by
->> +guestmem_fd). It implicitly sets the destination region to RIPAS RAM. This is
->> +only valid before any VCPUs have been run. The ioctl might not populate the
->> +entire region and in this case the kernel updates the fields `base`, `size` and
->> +`source_uaddr`. User space may have to repeatedly call it until `size` is 0 to
->> +populate the entire region.
->> +
->> +`flags` can be set to `KVM_ARM_RMI_POPULATE_FLAGS_MEASURE` to request that the
->> +populated data is hashed and added to the guest's Realm Initial Measurement
->> +(RIM).
+> Quote the following from Sashiko.dev:
+> > Should this mask specify the individual subset extensions required by the
+> > profile instead of the superset extensions like RISCV_ISA_EXT_B,
+> > RISCV_ISA_EXT_C, and RISCV_ISA_EXT_V?
 > 
-> Where is that measurement stored? And retrieved? At least a pointer to
-> that would help.
+> My preference is to leave the mask on B/C/V (and A) as-is. I'd prefer to
+> keep matching on the single-letter, rather than expanding them. Here is why:
+> 
+> - The RVA23 profile lists A, B, C and V as single-letter mandatory
+>   extensions; it doesn't enumerate Zaamo/Zalrsc, Zba/Zbb/Zbs, Zc* or the
+>   Zve*/Zvl* subsets in the mandatory set.
+> 
+> - In current merged code, hwprobe_isa_ext0() is already using
+>   riscv_isa_extension_available() signle letter checking for C and V.
+> 
+> PS:
+> B maybe a special one, just in case anybody raise it. As the community
+> discussed when I adding it into the bindings, because B comes later than
+> its sub-components zba/zbb/zbs, so, when I added B, I cleaned up all
+> in-tree dts files which declared zba/zbb/zbs but not B and made them declare
+> both.
+> 
+> Link: https://lore.kernel.org/linux-riscv/20260115-adding-b-dtsi-v2-0-254dd61cf947@riscstar.com/
+> [1]
+> 
+> Also, in the bindings: extensions.yaml, a schema rule is added which requires
+> a node listing zba, zbb and zbs to also list b (and the reverse). Moving on,
+> new dtsi/dts fils, a node with only the subsets fails dtbs_check.
+> 
+> One may argue that the schema check doesn't cover ACPI path. But again,
+> shouldn't the vendor who publishs RVA23 hardware be conformant to the
+> extensions wording in RVA23 v1.0 spec?
+> 
+> What do you think?
+>
 
-It's stored within the RMM and retrieved by the guest (using the RSI
-interface). I'll update to:
+I certainly see a case for the kernel staying out of the extension
+dependency validation game. I think it makes sense for an ISA string
+validation tool to exist for vendors to do sanity checks on their
+ISA strings, but that's not the kernel's role. OTOH, whether or not
+the kernel wants to try and detect inconsistencies with the ISA
+string in order to build confidence in using what it sees there
+and publishing what it sees there to usermode, through hwprobe, might
+still be worth debating.
 
-`flags` can be set to `KVM_ARM_RMI_POPULATE_FLAGS_MEASURE` to request
-that the populated data is hashed and added to the guest's Realm Initial
-Measurement (RIM) stored by the RMM. This can then be retrieved by the
-guest (using the RSI interface) to present to an attestation server.
+Without CPUID / ID_* registers for Linux to be able to check an
+authoritative source of truth about what is and isn't supported by
+the CPU, riscv Linux has to decide to either blindly trust the
+hardware description or do sanity checks / probes in order to
+confirm what it sees there. Maybe we can assume that any extension
+used by the kernel will trip over itself quickly, alerting vendors
+to fix their ISA strings, but I'm not sure we can make that assumption
+for usermode extensions that Linux doesn't use, but does expose
+through hwprobe. What apps need to run in testing to exercise them?
+How long will those apps need to run before they trip over something?
+
+The more I think I about it, the more I think the lack of CPUID / ID_*
+registers puts Linux in a tight spot. If Linux trustingly publishes
+what firmware tells it to to userspace and userspace blows up, Linux
+will have to share some of the blame for having misled it. So, should
+Linux validate everything it publishes somehow? Or, should it at least
+do relatively cheap sanity checks on everything it publishes in order
+to build some confidence?
 
 Thanks,
-
-Steve
-
->> +
->>  .. _kvm_run:
->>  
->>  5. The kvm_run structure
->> @@ -8904,6 +8935,15 @@ helpful if user space wants to emulate instructions which are not
->>  This capability can be enabled dynamically even if VCPUs were already
->>  created and are running.
->>  
->> +7.47 KVM_CAP_ARM_RMI
->> +--------------------
->> +
->> +:Architectures: arm64
->> +:Target: VM
->> +:Parameters: None
->> +
->> +This capability indicates that support for CCA realms is available.
->> +
->>  8. Other capabilities.
->>  ======================
->>  
->> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
->> index 6c8afa2047bf..b8cff0938041 100644
->> --- a/include/uapi/linux/kvm.h
->> +++ b/include/uapi/linux/kvm.h
->> @@ -996,6 +996,7 @@ struct kvm_enable_cap {
->>  #define KVM_CAP_S390_USER_OPEREXEC 246
->>  #define KVM_CAP_S390_KEYOP 247
->>  #define KVM_CAP_S390_VSIE_ESAMODE 248
->> +#define KVM_CAP_ARM_RMI 249
->>  
->>  struct kvm_irq_routing_irqchip {
->>  	__u32 irqchip;
->> @@ -1669,4 +1670,16 @@ struct kvm_pre_fault_memory {
->>  	__u64 padding[5];
->>  };
->>  
->> +/* Available with KVM_CAP_ARM_RMI, only for VMs with KVM_VM_TYPE_ARM_REALM */
->> +#define KVM_ARM_RMI_POPULATE	_IOWR(KVMIO, 0xd7, struct kvm_arm_rmi_populate)
->> +#define KVM_ARM_RMI_POPULATE_FLAGS_MEASURE	(1 << 0)
->> +
->> +struct kvm_arm_rmi_populate {
->> +	__u64 base;
->> +	__u64 size;
->> +	__u64 source_uaddr;
->> +	__u32 flags;
->> +	__u32 reserved;
->> +};
->> +
->>  #endif /* __LINUX_KVM_H */
-> 
-> Thanks,
-> 
-> 	M.
-> 
-
+drew
