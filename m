@@ -1,264 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571663AB480;
-	Thu,  4 Jun 2026 03:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780543902; cv=none; b=NS+QDmCca/fJ9YBYEo7tZVvuoDNCxNv7GLrHRfiQok4SL00nef04/BNx93o2/rsY5Gj017fojbvVpOnza0q0VVRes5UTQlbH4SMRzIkWBpp674OwMiMIcqIMkoNcVsVk8PPJ7/Gey7a6FjYMS8UtclTv1BLg01BsR+Kg1VLQVRo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780543902; c=relaxed/simple;
-	bh=m9sAhUXyy3CacNduEVQURk/rlD5yMXkjDXgtTZSqvi0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AqH0CjJctVG+4O+ctPq09/VUw+4hld2SQRTiyjCEOz7tvasxhsazKTr8ADY+a+aCo/qZBmOkCFkr2ciBX9THLzpf7bo3jfezWClg+q3bLGak5L5V3Kr26+nOhI2T1R9H4hq7/53qRZrjqn4/+WslijLmr3mqJPiNBvHICHe3VmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PU4d1WTC; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903003BD228
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 05:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780549808; cv=pass; b=GmqH6w886YNCuRVzgqK+epD44oVJrB3v0HuboMymWlLtixD+k3BQMJ9KLv8vUBMqzCYE/T+Z4FTJTWViDPUqRtii3YF51KMI+CVvQvIJyHoMC3+V4YCYGmMPLCTwecfa0ChkqqVOyvhOKOk3MX9fyzoHZu038WZ5VxawaDm7M+k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780549808; c=relaxed/simple;
+	bh=S35ZVWeDDxTN5GtsP7ClV3ArVsjsJx5Z96CKf1ahOUo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y0Oo9vvFw+CQDu7UDlc8SkJM5PfzVUDY8sOGrXOs5YYYRpZzpjN0rum8gOGSrrWKleG48ZovxpCv8Zf/WvctulZGaBUnqF25iggaIU2/M2EJbhBfteEt1SqQGLu7MNvZKW6nddc3ip6uRW978KZX3v0xywxY4EoJs/tZGqphe2g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PGBewMit; arc=pass smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PU4d1WTC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780543900; x=1812079900;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=m9sAhUXyy3CacNduEVQURk/rlD5yMXkjDXgtTZSqvi0=;
-  b=PU4d1WTCv2Ax5HoUiCByMvKgK8V+QGwUsaOm3PFkaz56IPTADP4vR4jI
-   3LVfrS7z98KTKFKbthlf4NiMUcgZksQSbHS1hu8JQVSFM0rKJLhS/AtG2
-   v1k9u/GWvZHdGLrsBZMi8azYFGnSFUYSrQ5Wsty57jMY9QmuriJjVRGjO
-   /AL31aq0kbiXY94LctBygHXo6+ZONyTk1oVM36764xoVBvm2hpZSF/ze/
-   32z7FdUWD2Lo+hyu67mTcbgTWxlrrzd01qx+g2NQ8jqCbj7U2mYlkU2ln
-   ERAlBOQT3j8eTIWNQUnTM+VPWDey9tDxWz1Vx4jv5oU0cCQKy4SZcO1ks
-   w==;
-X-CSE-ConnectionGUID: GfyTQubQQOu/k3MXGzqvPA==
-X-CSE-MsgGUID: 0XgbJJXmTQa6rUCbRVsXpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11806"; a="84988558"
-X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; 
-   d="scan'208";a="84988558"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 20:31:39 -0700
-X-CSE-ConnectionGUID: tDtIkBjHQp+ahDL4TIlYWw==
-X-CSE-MsgGUID: RrMw6T74SU6zOV024GZFrg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; 
-   d="scan'208";a="243589464"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 20:31:34 -0700
-Message-ID: <c179b999-8c7f-4338-8aad-b61fd09f1329@linux.intel.com>
-Date: Thu, 4 Jun 2026 11:30:37 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PGBewMit"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-68ced08613aso6293a12.0
+        for <kvm@vger.kernel.org>; Wed, 03 Jun 2026 22:10:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780549806; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KAnLsbHpeQY2zcuB2mXvZYle951q1SpVciWFGNgp3kwZv9xA02wa58jsSKWsnEp9iU
+         0/s8hV3cLuAAT2F1rS1yccUGKd79p2r3zIwzLo9jEGkKEIAnfxStkUv7s5jXp6o4+17o
+         iGq5+t4FEM7k/a4rhnOK2tX4YKE1NIrziXgHYq4XlEwJr1NkxmfcxIfiqJf+nO/LgcPJ
+         HzHE2wOcoYKzKgoEs3dgzfQZ1Az+QdaWpXPxFxSiUeYCtBJzQiUG2XFmyWSxY2IskCWi
+         uFbztpWowmJmbkZ4SeliBvx4rtecapOfSjZQ+6H/onOlmqTcmKv2aOSiPxPoXxsNq4i7
+         cp9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=S35ZVWeDDxTN5GtsP7ClV3ArVsjsJx5Z96CKf1ahOUo=;
+        fh=7U6RgtWSRCBrU6hz55eMQwMORKfO+P5ilDqkBpleveM=;
+        b=Sgy4b/ujrJnKvOD+J4cw4XF6QdHaRo/Lxyey0kvVhtu9UW0rKJhjgKKsSbdUBlO6au
+         TNKCK/yTLtzUfGCkZSpG+whhfSThUCK0nTZ22OeqAcON19LBM0uwuDMUT7jtkwVbSSew
+         FKy+CsncU4PRw5xCN4L0F3bQ0q3XFiqfgEM5SQS9NYaQHBDWabKecVALxQlD47kwECNt
+         OCGizsGC6d84eZF5s1UsgpwfYLssulZqateBnPYrVfuyzousZVUFBw/kxowcRf3OKmzC
+         Tt1yMUePHeAHAf+Gzpb3AdJs8IOY+YZzBAELAoiQHRFzuKwVLt+uBltzNioTzsBBSq/C
+         zxRw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780549806; x=1781154606; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S35ZVWeDDxTN5GtsP7ClV3ArVsjsJx5Z96CKf1ahOUo=;
+        b=PGBewMitRaFv3LGLrGik/RMHgEkGv6wH6hHKacvssnHQl3tmPJb3W4LuW/pDj9/1YK
+         8YeTIKDxChsWZM2Y/joHhMBfNRq6anaa67PATY8Tc53ldtSn5cGcq7OtuBR0tC+Z5xME
+         fR8XRlZ5GXOStkHbf4pFcgx8gXL8hF4vjtYXbcp51ITAGwHurSuzQt3dlS0+eFppcmeT
+         YZOfe6PEQ/+lF/qYAEsdqFwKg72SA8XJHUDXeS83uLPFFNtWLQSD2QzAOyLqaG2tDGaD
+         2gJT3G2cosU8g0AwZz8xTO+ko79z8Xo2Ohk7JUWyK7wmBh7Q4eT+7xktX3rpP2GIqUjy
+         LNCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780549806; x=1781154606;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=S35ZVWeDDxTN5GtsP7ClV3ArVsjsJx5Z96CKf1ahOUo=;
+        b=BIGCxaodGn6sWBAGE53QlbjDZaoRTzbXQ7ue88g0pIKaeQFswMrRGBV4M93LpKpLg9
+         3Ndqr2byQdgTEUL4G6EMtfms3SxVYLxBf0QK6pAfqcifkVcvKQEJbGgW80EpsdmJQ192
+         ggpVcEkuJFrtVETycQwbsqbJsEecqx9CnRdYL55kLWlyq8nk2ZbGcMJLLAdZ1Dvn09Yq
+         IhLJtP2S+Y1iw1I6XLwZ8h2h7ZZL8nblLegHb9Yq1utpH89Y5JB21AeX3f4jOPd0MmD0
+         Kq53FSoq6FBbgGNMNdtBlE7dugVKBZchgD+d6JaoL5Qt8ytfYdJwgNNFQ1G5kxNHGZSH
+         a8yA==
+X-Forwarded-Encrypted: i=1; AFNElJ8b8Rcq25io2V31vCMK55XexyfNKL4IAvToxiz8aP2hXZoneYM5jR9KkG+XfMr3uNO/WDE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHxVbeYT4O+fWYF7ToTh7eh+nVWJEKAAfKcFVI/54HavxqVoPS
+	f9kWfhX4EvkBk+BGy1Tpg5T08+qPklNJbFr2W9OL/k+S6mMTjCen7GLhncEczyNIEod56Jj92FP
+	Rz3FKE5TtH+kOz3gdihmaLYEvwcdUIwjfBLhNXBIa
+X-Gm-Gg: Acq92OEEOMyYxoVM3+4XaWkxYtourXJD5ZNWwCrdibfNlSHP5Y0W1j0Bxy7ZODSeHrQ
+	nXbuUe5AJu7f6nRY0OE9Pr0KzMh7/hhF5wbI9c/iwp0OOdoJLMW4AgIEnzXZGMpzI26q21brDc8
+	1wmy2sZ0JnX7v+dobFmQ9PNWwwLsPzQgs+QNj8vGhT0qh22iIMDRZngwgoJEPLbUVquEg3UcxYn
+	MLU2a/FijwQNzGEfW5Qr/8/byMexSFpPXtXMpnmS76znjwqACRitIe+B9lfZLjM1HMYZ39J/1YH
+	AdJ/MwyOtWiFlq0aoQ==
+X-Received: by 2002:a05:6402:1a55:b0:68a:83c2:9c75 with SMTP id
+ 4fb4d7f45d1cf-68f1158030cmr63817a12.0.1780549805644; Wed, 03 Jun 2026
+ 22:10:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/32] iommu/generic_pt: implement iova_to_phys_length
-To: Guanghui Feng <guanghuifeng@linux.alibaba.com>, jgg@ziepe.ca
-Cc: adrian.larumbe@collabora.com, airlied@gmail.com, alex@shazbot.org,
- alikernel-developer@linux.alibaba.com, boris.brezillon@collabora.com,
- dri-devel@lists.freedesktop.org, dwmw2@infradead.org, iommu@lists.linux.dev,
- joro@8bytes.org, kevin.tian@intel.com, kvm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- liviu.dudau@arm.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- oliver.yang@linux.alibaba.com, robh@kernel.org, robin.murphy@arm.com,
- shiyu.zsq@linux.alibaba.com, steven.price@arm.com,
- suravee.suthikulpanit@amd.com, tzimmermann@suse.de,
- wei.guo.simon@linux.alibaba.com, will@kernel.org, xlpang@linux.alibaba.com
-References: <20260602104637.1219810-1-guanghuifeng@linux.alibaba.com>
- <20260603151804.1963871-1-guanghuifeng@linux.alibaba.com>
- <20260603151804.1963871-6-guanghuifeng@linux.alibaba.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260603151804.1963871-6-guanghuifeng@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <cover.1718214999.git.reinette.chatre@intel.com>
+ <2fccf35715b5ba8aec5e5708d86ad7015b8d74e6.1718214999.git.reinette.chatre@intel.com>
+ <Zn9X0yFxZi_Mrlnt@google.com> <agPUfzbMzTU1ebii@intel.com>
+ <agY6JuEJRhwpwlRL@google.com> <aga+jCVUW0d4GufQ@intel.com>
+In-Reply-To: <aga+jCVUW0d4GufQ@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 3 Jun 2026 22:09:53 -0700
+X-Gm-Features: AVHnY4I35ycO2NgmjczPlvA_AnXBGCMSXh6LORUscksc-B6RlXqcRzaIQ4f2KCo
+Message-ID: <CALMp9eSqqsEzd5MSeO46EdC8aOwhyhU7e2bOW2LSdnDQGXEVpw@mail.gmail.com>
+Subject: Re: VMX Preemption Timer appears to be buggy on SKX, CLX, and ICX
+To: Chao Gao <chao.gao@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	isaku.yamahata@intel.com, pbonzini@redhat.com, erdemaktas@google.com, 
+	vkuznets@redhat.com, vannapurve@google.com, mlevitsk@redhat.com, 
+	xiaoyao.li@intel.com, rick.p.edgecombe@intel.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, chenyi.qiang@intel.com, 
+	Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/3/26 23:17, Guanghui Feng wrote:
-> Extend the Generic Page Table framework to implement iova_to_phys_length.
-> Use pt_entry_oa_lg2sz() to determine PTE block size. Update
-> IOMMU_PT_DOMAIN_OPS macro to set .iova_to_phys_length.
-> 
-> Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-> Acked-by: Shiqiang Zhang <shiyu.zsq@linux.alibaba.com>
-> Acked-by: Simon Guo <wei.guo.simon@linux.alibaba.com>
-> ---
->   drivers/iommu/generic_pt/iommu_pt.h | 84 +++++++++++++++++++++--------
->   include/linux/generic_pt/iommu.h    | 13 ++---
->   2 files changed, 69 insertions(+), 28 deletions(-)
-> 
-> diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
-> index dc91fb4e2f61..e362e819ef9c 100644
-> --- a/drivers/iommu/generic_pt/iommu_pt.h
-> +++ b/drivers/iommu/generic_pt/iommu_pt.h
-> @@ -145,13 +145,21 @@ static inline unsigned int compute_best_pgsize(struct pt_state *pts,
->   				      pts->range->va, pts->range->last_va, oa);
->   }
->   
-> -static __always_inline int __do_iova_to_phys(struct pt_range *range, void *arg,
-> -					     unsigned int level,
-> -					     struct pt_table_p *table,
-> -					     pt_level_fn_t descend_fn)
-> +struct iova_to_phys_length_data {
-> +	pt_oaddr_t phys;
-> +	size_t length;
-> +};
-> +
-> +static __always_inline int __do_iova_to_phys_length(struct pt_range *range,
-> +					       void *arg, unsigned int level,
-> +					       struct pt_table_p *table,
-> +					       pt_level_fn_t descend_fn)
->   {
->   	struct pt_state pts = pt_init(range, level, table);
-> -	pt_oaddr_t *res = arg;
-> +	struct iova_to_phys_length_data *data = arg;
-> +	unsigned int entry_lg2sz;
-> +	size_t entry_sz;
-> +	pt_oaddr_t expected_oa;
->   
->   	switch (pt_load_single_entry(&pts)) {
->   	case PT_ENTRY_EMPTY:
-> @@ -159,45 +167,77 @@ static __always_inline int __do_iova_to_phys(struct pt_range *range, void *arg,
->   	case PT_ENTRY_TABLE:
->   		return pt_descend(&pts, arg, descend_fn);
->   	case PT_ENTRY_OA:
-> -		*res = pt_entry_oa_exact(&pts);
-> -		return 0;
-> +		break;
->   	}
-> -	return -ENOENT;
-> +
-> +	data->phys = pt_entry_oa_exact(&pts);
-> +	entry_lg2sz = pt_entry_oa_lg2sz(&pts);
-> +	entry_sz = log2_to_int(entry_lg2sz);
-> +
-> +	/* Start with the full mapping size of the first entry */
-> +	data->length = entry_sz;
+On Thu, May 14, 2026 at 11:35=E2=80=AFPM Chao Gao <chao.gao@intel.com> wrot=
+e:
+>
+> >> EMR158. VMX-Preemption Timer May Expire Earlier With Certain Large Tim=
+er Values
+> >
+> >I assume the same erratum applies to previous generations as well?
+>
+> Yes.
 
-data->length doesn't account for iova offset. Is this by design? We
-should document this clearly somewhere.
+This test still fails on our SKX, CLX, and ICX systems.
 
-Sashiko reported the same issue too.
+Sean,
 
-[Severity: High]
-Does this calculation overstate the mapped length for unaligned IOVAs?
-If the IOVA is not aligned to the PTE block size, pt_entry_oa_exact()
-includes the intra-page offset in data->phys. However, data->length
-is unconditionally initialized to the full entry_sz rather than
-entry_sz - offset. Callers relying on mapped_length might operate
-on out-of-bounds memory because data->phys + data->length extends
-beyond the valid mapped physical memory by the unaligned offset amount.
-
-> +
-> +	/* Accumulate subsequent physically contiguous entries */
-> +	expected_oa = pt_entry_oa(&pts) + entry_sz;
-> +	pts.end_index = log2_to_int(pt_num_items_lg2(&pts));
-> +	pt_next_entry(&pts);
-> +
-> +	while (pts.index < pts.end_index) {
-> +		pt_load_entry(&pts);
-> +		if (pts.type != PT_ENTRY_OA)
-> +			break;
-> +		if (pt_entry_oa_lg2sz(&pts) != entry_lg2sz)
-> +			break;
-> +		if (pt_entry_oa(&pts) != expected_oa)
-> +			break;
-> +		data->length += entry_sz;
-> +		expected_oa += entry_sz;
-> +		pt_next_entry(&pts);
-> +	}
-> +
-> +	return 0;
->   }
-> -PT_MAKE_LEVELS(__iova_to_phys, __do_iova_to_phys);
-> +PT_MAKE_LEVELS(__iova_to_phys_length, __do_iova_to_phys_length);
->   
->   /**
-> - * iova_to_phys() - Return the output address for the given IOVA
-> + * iova_to_phys_length() - Translate IOVA returning phys and contiguous length
->    * @domain: Table to query
->    * @iova: IO virtual address to query
-> + * @mapped_length: Output for the total contiguous mapped length in bytes
->    *
-> - * Determine the output address from the given IOVA. @iova may have any
-> - * alignment, the returned physical will be adjusted with any sub page offset.
-> + * Walk the IOMMU page table to translate @iova to a physical address while
-> + * also returning the total contiguous physically mapped length through
-> + * @mapped_length. The function accumulates consecutive page table entries that
-> + * are physically contiguous, so callers can determine the full contiguous
-> + * mapping extent with a single call.
->    *
->    * Context: The caller must hold a read range lock that includes @iova.
->    *
-> - * Return: 0 if there is no translation for the given iova.
-> + * Return: The physical address, or PHYS_ADDR_MAX if there is no translation.
->    */
-> -phys_addr_t DOMAIN_NS(iova_to_phys)(struct iommu_domain *domain,
-> -				    dma_addr_t iova)
-> +phys_addr_t DOMAIN_NS(iova_to_phys_length)(struct iommu_domain *domain,
-> +					    dma_addr_t iova,
-> +					    size_t *mapped_length)
->   {
->   	struct pt_iommu *iommu_table =
->   		container_of(domain, struct pt_iommu, domain);
->   	struct pt_range range;
-> -	pt_oaddr_t res;
-> +	struct iova_to_phys_length_data data;
->   	int ret;
->   
->   	ret = make_range(common_from_iommu(iommu_table), &range, iova, 1);
->   	if (ret)
-> -		return ret;
-> +		return PHYS_ADDR_MAX;
->   
-> -	ret = pt_walk_range(&range, __iova_to_phys, &res);
-> -	/* PHYS_ADDR_MAX would be a better error code */
-> +	ret = pt_walk_range(&range, __iova_to_phys_length, &data);
->   	if (ret)
-> -		return 0;
-> -	return res;
-> +		return PHYS_ADDR_MAX;
-> +
-> +	if (mapped_length)
-> +		*mapped_length = data.length;
-> +	return data.phys;
->   }
-> -EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(iova_to_phys), "GENERIC_PT_IOMMU");
-> +EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(iova_to_phys_length), "GENERIC_PT_IOMMU");
->   
->   struct pt_iommu_dirty_args {
->   	struct iommu_dirty_bitmap *dirty;
-> diff --git a/include/linux/generic_pt/iommu.h b/include/linux/generic_pt/iommu.h
-> index dd0edd02a48a..859b853e9dc7 100644
-> --- a/include/linux/generic_pt/iommu.h
-> +++ b/include/linux/generic_pt/iommu.h
-> @@ -249,8 +249,9 @@ struct pt_iommu_cfg {
->   
->   /* Generate the exported function signatures from iommu_pt.h */
->   #define IOMMU_PROTOTYPES(fmt)                                                  \
-> -	phys_addr_t pt_iommu_##fmt##_iova_to_phys(struct iommu_domain *domain, \
-> -						  dma_addr_t iova);            \
-> +	phys_addr_t pt_iommu_##fmt##_iova_to_phys_length(			\
-> +		struct iommu_domain *domain, dma_addr_t iova,			\
-> +		size_t *mapped_length);						\
->   	int pt_iommu_##fmt##_read_and_clear_dirty(                             \
->   		struct iommu_domain *domain, unsigned long iova, size_t size,  \
->   		unsigned long flags, struct iommu_dirty_bitmap *dirty);        \
-> @@ -267,11 +268,11 @@ struct pt_iommu_cfg {
->   	IOMMU_PROTOTYPES(fmt)
->   
->   /*
-> - * A driver uses IOMMU_PT_DOMAIN_OPS to populate the iommu_domain_ops for the
-> - * iommu_pt
-> + * A driver uses IOMMU_PT_DOMAIN_OPS to populate the iommu_domain_ops for
-> + * the iommu_pt
->    */
-> -#define IOMMU_PT_DOMAIN_OPS(fmt)                        \
-> -	.iova_to_phys = &pt_iommu_##fmt##_iova_to_phys
-> +#define IOMMU_PT_DOMAIN_OPS(fmt)					\
-> +	.iova_to_phys_length = &pt_iommu_##fmt##_iova_to_phys_length
->   #define IOMMU_PT_DIRTY_OPS(fmt) \
->   	.read_and_clear_dirty = &pt_iommu_##fmt##_read_and_clear_dirty
->   
-
-Thanks,
-baolu
+Were you thinking of enforcing a cap on delta_tsc in vmx_set_hv_timer()?
