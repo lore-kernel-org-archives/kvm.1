@@ -1,86 +1,155 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A6A3BC68E
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 20:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780604526; cv=none; b=kgUwpteVPnKd4QD/FE4mQeM11s6c/HEYSRvE1UQ2nCFDuoXY5JnRq6ep7tcHvgWEz4R9VRQh7lJBQS4N5T6NzC7vOGqseclE5shMaTK+LS9L6G5kqh14JAhnQfoKf89MtCHrSp26Yqg5gY+p4UPkZCQJMPf2WTFgNZRMm90g4Yo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780604526; c=relaxed/simple;
-	bh=vYEGEkk9TaYWUD17TDu0s93roszc7sna6I+XDHAqvm4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YwknQ1SxZxpP4lCjGxOERy6cyn1diYRw9mFsmVitMG4WVZPqdPK8Y4h+KczJRJwAlC+TceMtNy2ilCKqtjM//B7Hj7WGsGIvPMSHbMcKxiV0suFzXZucBGqEG7ZsCBWReyYW001Cy6gC1LqWp2aDanHEw6wsjZuV2PiEHbUHdZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bMze/6WM; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236653C6A5F
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 20:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780605083; cv=pass; b=oy3SRV8dS5WVhdy6hn7T4nSscIekexPoBZntkCtzUtpFQOcxx9QAW1ZVq5LiueMuGuNdm23eRQtuqxhuxB+gSLDkrzevITySI+UJ3wRLz0zzIc2TjJyxjXPFGj4CIBlz0aqBNld14UAtLqZMsOQDvAOOlerh1AJ0ogt7DFrSK5A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780605083; c=relaxed/simple;
+	bh=9kpC2nHMHfrFBBDbEImWKZiBaD4bqcBEfsrz4mjibt0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DraXI96h6pLEqANZFn3SCYV3mUpi8nf5iJOgJaf8jOrwQHHVXi4t8Z5zxAdlCdBf64bNHj2lfpClnf/G3TrFLIMvCzcwaAFj0p0YSd2/du3A6CZBmQ0jBadVcx6naVLtAvl6JHLSS7kXJfo6Bby6tPHBjyVe20T8QBTpAcRH/I0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pFw677m1; arc=pass smtp.client-ip=74.125.82.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bMze/6WM"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d98b828c8so332078a91.2
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 13:22:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pFw677m1"
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-135e7f4a295so750046c88.0
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 13:31:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780605081; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XJopt2uQbX0j+Qt9QdZheBM6Gb8g796NWi/4+/XmfidPsPA/eQEtHaO7KJfZcY52QJ
+         2e2m/yDfNq9XEgGfLNFwCrzBo7Adg+WyDWQj0eGGBSWoUBIBvq1XE0QFgHnWHLFulBij
+         QWuF9z+c6AmPDj0WNYWkIVzmwx23kMo9lvIOiVr/3/doDvp0A7RNN+vIupLBShjBTQfT
+         arMPuD3LF7e/O3sIAG/mzQcDxOOjX9jW0SUdcKxJCjoMTFKZBXJaV9hsVMqRs9SqjrUn
+         jQgoMAAwq8wr02P3eb7jvOetur+5lZBeu30AO6M2YBd1Ww5FoLcFzrk2sB9q+gY7JSnd
+         VWsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5eqxDNwMgXWFT6618jLIGF8ZKS5nIiFhwgYUzrXYF84=;
+        fh=KefFXkzf2XUeEXlaAXTi5ft4+xMqBvon9MyR4IegZdI=;
+        b=kN5OxW2GGEfFlHMi3O2tREgC7CN2cJbXCK5F8RGDvh2XGTgb+11GuuATPSDlIPHubD
+         e+UwwwrCnVyzLCitng5ASFMBxa1LAHr9QYcB+d7hecrIGvhT8v3Op0ZgRAoSgWypP1oR
+         pKUXUlY8eVkNuE1raYdkCqYQk5h9mv7VMooOGf5FoPgoK/KjZ4LV5rOtKFZMONw3h69m
+         1k0x4wi/h8Qs0sKBX9NAdWLp9AULV8cnLNH27v9GePh/jOuiFio+YmlY9MkINftQ+zFB
+         SCQvB1eMja6ofzBUFF196ZdNUEjHDmJNCWX2d/lA29777Uu+GaDQVeDQFxdxUiRQ04qG
+         7FzQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780604524; x=1781209324; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1H1TUlVlaeiimSfYrkWk3J3ECNUmlu7I7tzKEcGk+v4=;
-        b=bMze/6WMH/JyftPLpUIEhkURBBYwd0Zu1rdydZwFJx8xbKgOKbHCF/CYIvEAgGAPl8
-         GtRUPVWpQLu+Xs6XBke28KXX3FHnhfeYcDldDPz8OdTBFSfaYz+fqPCTTxuig/SKiKqK
-         3tUzwe6DO156dY8EcJ1XgLDLa5FuarkPsz7InG1KFLyzPkjPBEhAWGE6wxHW0C6sCa7F
-         WN9P4hVmhhkImlJxQ5Ddyf1ypPZihiIH+F+Z8vZlljS2AgvTluraqvh+cfRDeiB5kUHW
-         yPG+F284tJ+G3VjeWQpJWtVnURR2f2ovSBVJ9c7OYWzKBbSDiyY2dbBSqeb07WJCTq6i
-         4UbA==
+        d=google.com; s=20251104; t=1780605081; x=1781209881; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5eqxDNwMgXWFT6618jLIGF8ZKS5nIiFhwgYUzrXYF84=;
+        b=pFw677m1NksCLNCvmMLmc0N1IaYFudlMVBg6Ww0K27XytdArxFl3sPSvMkhrHMpmHh
+         UYrQ1+cbXlFyIo2wRbsLlB7pTdZ7IEKDcKot0DsFSuvytH0z+u5etQEPhPczqG9ocmk2
+         yH3s49gMwm7dgrzk1GRFGsDFNvLqgLDU9MnYHO+lyuDeYEM3/FU3cihH5aeKmNTEUM63
+         SxAf0k//vTLqomUDvwC7lA5gdimOPcXFxHfby3IZWEoA9Ew7tAZ7G7SLZXyfYR0WMBHc
+         xDhcVJZ84f+bbMz6yciRRF6GqyXUvbaJtJLgV+ATqFCHJ2E74G1OiDLW001IOV1eqHx5
+         nEdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780604524; x=1781209324;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1H1TUlVlaeiimSfYrkWk3J3ECNUmlu7I7tzKEcGk+v4=;
-        b=onpidze3gEg59lPJcpLjNWZEK+akLyehNBzlDYdf6ZcMP3ZrGMSVEoiG/XK7a7hpYA
-         sIXremltcJxCVl7cjyYLPV2MbcM8j0oDc9nwezPlzphdupzvQXS6sA8uY/rhg8twPNgA
-         WP87G38CHNY0UMxp8X1HeZ8/qD5bIt9OMHdgViRz6DXyK1JtG9Uf92pc1p+g5S6c5uWc
-         cMsHnog1sKqE3nbCg0z5ouMcz1YlExakjMPqxh/a3HAVsXRKiO5cpY6XP677N+PIvxOJ
-         I9V3Vr5CW3PJEs4AeLFuI3wvOWa8vgcK3GkNqWLuJh3APTupXgb/hKttXYce5mqRQpWM
-         0+Zw==
-X-Forwarded-Encrypted: i=1; AFNElJ+MoEgo7SNI6BKJQpHBGJ393/dVA5itPRiltvXKukctXylPd5zKimCXntlZ7WLVBALVDXQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWU6usBBLDAWqlS8C06KU9KyUprsnDlf3L+tJX+DWiP/zsZVOB
-	PvkgGlvsRyjVWTIxycOKUOmFjh6pNa4WLoJMgIaqRYvahsiBOvLis+es6tXD23ScfrlRS+Wd371
-	zdqkZ0Q==
-X-Received: from plae3.prod.google.com ([2002:a17:902:e0c3:b0:2b0:46bd:4fe5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a50:b0:368:af5c:5925
- with SMTP id 98e67ed59e1d1-370f133ab62mr442064a91.23.1780604524152; Thu, 04
- Jun 2026 13:22:04 -0700 (PDT)
-Date: Thu, 4 Jun 2026 13:22:03 -0700
-In-Reply-To: <20260604020143.748245-1-jrhilke@google.com>
+        d=1e100.net; s=20251104; t=1780605081; x=1781209881;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5eqxDNwMgXWFT6618jLIGF8ZKS5nIiFhwgYUzrXYF84=;
+        b=JU/6bm+2jgJAkFj13x1/cmt+gdkav8GPHiPGHW3UowfYgIMX1nOFvkRUDZ17T53wGs
+         HMLyDQBKWwMymkYtT+/qQe0zwq7Jt/PVMQvjHxkN9okc5+jqIQdreK1Fw02+Ql6ZcP9o
+         KwGJSsW2+pozatGWYeoWEvy/pnf62A7gUeVsiLf/WABs1jEPvNlKxq4Hl1Dh98YThYDX
+         0ljtZ8zBh427SHdKrxDMAa8N9ntBYmNLBWXPradcnMd5cswZqwdZGBbWB1fhQNd9DVZ5
+         3RG1+hMOC4O9oSP9NJgXWdaJlkcSEId/HYia8WiIO1mmPGF/wTmc0Ig7LTqalRKzlYW/
+         Kvug==
+X-Forwarded-Encrypted: i=1; AFNElJ/rG8fs1DBEZU7zzaymnrCaOGfNddeWJIyWEYEJX+itqtJ+IyZQgX/uWAanGgwSPiRS+mU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7jr1N2c7HnWtBkR6mGHvi1E/pACwwTQMQll97ygXO9pVR7KX/
+	11QKAnIgyMux94qpCTmajW1i6L8b1C7ovNsbI7nMA8hc63ochqjRaDPIryheYoQRCkbN2C3BcqG
+	TPOk9Nstk+lGNxdW1vpMIvZcc2MN8meegWJOyzXvD
+X-Gm-Gg: Acq92OHdnbAZGucREGCeAB/OUQgyhSkfinj/Qc9FB7jdXPjOeaimezLdh4RpTOUskn4
+	/7yDNMJrAD/jlpkHdF193fIYP/htQnHLOXj70J9U5qTH1A9nx9EB3Wri1vbCdEUQ6msoT1iHdu4
+	odNlgRK/vCB+JTz2LX7MjlaufugHuye/uZ7B3SZKCJdRBVHyYdW1s2UGNIFvN5zINleoNtxfqaf
+	+++x0YtH8yAAQGR2use4KrH/ixx7HetyY07inH7XTjofVjEGzZvlNlzGAsdLuc5dLkbD6h8ChfH
+	4OOBiL0QhZAeJEQkXg==
+X-Received: by 2002:a05:7022:6725:b0:12c:1288:ce63 with SMTP id
+ a92af1059eb24-137fdf48f79mr2155784c88.13.1780605080783; Thu, 04 Jun 2026
+ 13:31:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260604020143.748245-1-jrhilke@google.com>
-Message-ID: <aiHea0e1ntOKfdbO@google.com>
-Subject: Re: [PATCH v5 00/21] KVM: selftests: Link with VFIO selftests lib and
- test device interrupts
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex.williamson@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20260602222941.3133236-1-jrhilke@google.com> <aiHW_1vBrukpuaW2@google.com>
+In-Reply-To: <aiHW_1vBrukpuaW2@google.com>
+From: David Matlack <dmatlack@google.com>
+Date: Thu, 4 Jun 2026 13:30:53 -0700
+X-Gm-Features: AVHnY4KdT1r0GEFqRf1PcrTfObBktJcqyYjPXAeMt1dMh7yCC5NlZ2zlsiBQr98
+Message-ID: <CALzav=cb=SaTtkwdTpK32Nboq6Uj8WKiN_=wRfpO+zugdjLRCA@mail.gmail.com>
+Subject: Re: [PATCH v6] vfio: selftests: Find devices that have VFIO selftest drivers
+To: Sean Christopherson <seanjc@google.com>
+Cc: Josh Hilke <jrhilke@google.com>, Alex Williamson <alex@shazbot.org>, 
+	Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 04, 2026, Josh Hilke wrote:
-> This is v5 of a series which introduces tools/testing/selftests/kvm/irq_test.c
-> in KVM selftests. This test exercises the delivery of interrupts (both
-> emulated via eventfd and real from a VFIO device) to guest vCPUs. Beyond basic
-> injection, the series adds coverage for several complex scenarios, including:
-> - Dynamic updates to KVM's GSI routing table while interrupts are active.
-> - Waking up halted vCPUs via interrupts.
-> - Stressing interrupt delivery during random host IRQ affinity changes.
-> - Stressing interrupt delivery during random vCPU thread migration across
->   physical CPUs.
-> - Testing non-postable interrupt remapping (using NMIs to force transitions).
-> - Supporting both xAPIC and x2APIC modes in the guest.
-> 
-> The series also links the VFIO selftests library into KVM selftests to enable
-> testing of VFIO-KVM interactions.
+On Thu, Jun 4, 2026 at 12:50=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Tue, Jun 02, 2026, Josh Hilke wrote:
+> > Add a new script, list_supported_devices.sh, which prints out the
+> > segment:bus:device.function (SBDF) numbers and names of devices on a
+> > machine that have a VFIO selftest driver. This makes it easier to
+> > determine if the system is capable of running VFIO selftests.
+> >
+> > Includes a -q (quiet) argument which prints just the SBDFs so that the
+> > output can be passed to tools/testing/selftests/vfio/scripts/setup.sh
+> > (e.g. via xargs) to bind the devices to VFIO to use in VFIO selftests.
+> >
+> > Examples:
+> >
+> > $ ./list_supported_devices.sh
+> > 0000:6a:01.0 - Intel DSA SPR [8086:0b25]
+> > 0000:6f:01.0 - Intel DSA SPR [8086:0b25]
+> > 0000:74:01.0 - Intel DSA SPR [8086:0b25]
+> >
+> > $ ./list_supported_devices.sh -q
+> > 0000:6a:01.0
+> > 0000:6f:01.0
+> > 0000:74:01.0
+> >
+> > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > Signed-off-by: Josh Hilke <jrhilke@google.com>
+>
+> NAK, until this stuff is fixed and properly documented.
+>
+> This script needs to (a) communicate that some of the devices may be on V=
+FIO's
+> denylist, (b) NOT report them by default, (c) let the user report denylis=
+ted
+> devices, (d) make it *very* clear in the output that a device, and (e) id=
+eally
+> provide the user with a hint of how that might be able to test a denied d=
+evice,
+> e.g. by reloading vfio-pci with disable_denylist=3D1.
+>
+> Nothing in here so much as mentions that these "supported" devices may be
+> disallowed by the kernel, including the devices that's USED AS THE EXAMPL=
+E.
+>
+> The DSA SPR devices has been on the naughty list since commit 95feb3160ee=
+f ("VFIO:
+> Add the SPR_DSA and SPR_IAX devices to the denylist") from 2024, so I hav=
+e a
+> very hard time believing y'all weren't aware of this.  And if you really =
+truly
+> weren't aware of this quirk, than what exactly are you even testing!?!?
+>
+> C'mon.
 
-Lots of comments and changes.  I'll send a v6 (maybe later today, but probably
-tomorrow).  I have all the changes made locally, and the test is passing for me.
+Yeah vfio_pci.disable_denylist=3DY is required to use the Intel DSA SPR
+device. This script is a great place to capture that previously hidden
+requirement.
+
+Your proposed (a)-(e) sound good to me.
