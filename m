@@ -1,233 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503C83AB5DE;
-	Thu,  4 Jun 2026 14:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6E3408015
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 14:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780581911; cv=none; b=ulvXfMK62n2ZYDDoc/sn3nHwzxTUN8gYBQ2iw+ZaM2E7g+SzWKjzDpFfaZeOnL1s6sRBskFutPjFQj4oSlrx0OEkLfsOobNpkGYq2M+sAGE+ThXwdgm/i3HdJh6jL+OLrew7Fcdmz9Nt9y75WmqzOaXE28omBs5HrWPQMk5xMyc=
+	t=1780582383; cv=none; b=Bkqeenl+cVG23hgWkuWxezkIQmFnELDXmiVzgiexfOJFTZ5jDSuSxb1wBIFyUvpROMpcno50ethVzzwyMRcjq+OJyqgdigLPx+n/2MwR7DuUD9PHuz4LgyLb5SfC9qbAWJhRKWYLu1EIRrFhoCoQnsTUgwA8/hKCEmhxMtk5jvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780581911; c=relaxed/simple;
-	bh=uA3QTIUbYRKd5dS/NLgKkZbJw1ug9x9DOslMSgeVzEc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=oB7r8xmSAgABE9tlYDcghnyyAoealgAaZR7Vwq9uQSsQmov7OpjDAL1EHstjBE0mXW3Junhop4x8rDTp16n//8sFGeLabOx2a77wXnS6qswCxfNomHplG+ya/k5dPYkUamLKeDyHUfAHbtfsj+ZNlNQvNj2PbaYxARyadCmjwok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cy3myV5n; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780582383; c=relaxed/simple;
+	bh=gpdnwV2DnbeS2Luujuh3pWY+HT/ULmOQY1sUF7OfAQU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VUb5KUqmyKR+6vgxaNo5U8+LxJMg/lvQmJmZ5T7Mi/pl60zVfnl4mKVYki5NNqgLL+GBcj95t8bjOk3LVFJ0WroayRZtF8tKoFyMOvj8X8DVM6ooRErrFaYY716Mf1q0F5AIlZSQq1mSBdRn2VT/xyHLRApfwZ/tus7ZQfPUu54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=c67tRG3B; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cy3myV5n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1A41F00893;
-	Thu,  4 Jun 2026 14:05:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780581909;
-	bh=eY9rAekhErGVAalBijf5j11yUwa1urlhbwaFyfTFwx0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Cy3myV5nHuJrpd5DzxJlsThDMchJJQkdJpF/vBxYjBhCtptfyCqE4I8R9DG3FLwX+
-	 GA1z/jjuDxy+HVTk59xj3OwHiQ50Sr3CMegtvB2kFZw7ICm1i0E5c5LVuKM77TL6Lk
-	 TVJZImjEjD9iwyRzQi/YkgxV2oaPlooTWvYe2NVvzC618+XPz5kBoNc1BjsLa4TUL8
-	 NunP8PdcjCB4dqkpdbrJzm8F82CJNAIhTPZgDHMNG1B9wB+ImmkyOd9wMVG+k9tdSL
-	 by2QW7NdUhBsZXv9v5ulW+K+1BZhA0TbsV/M+4JK3XGm2dFVVpKg+0C83JackmU//Z
-	 DSOHiUIKXl0DQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v16 12/12] vfio/pci: Virtualize PCIe TPH capability
- registers
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chengwen Feng" <fengchengwen@huawei.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20260604132804.28678-13-fengchengwen@huawei.com>
-References: <20260604132804.28678-13-fengchengwen@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 14:05:09 +0000
-Message-Id: <20260604140509.BF1A41F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="c67tRG3B"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-91550dfc11fso86498985a.1
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 07:13:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1780582381; x=1781187181; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6SN06MWYgnamNhN1ZWgRIcR80dI4EtU2wUgYpm//Klo=;
+        b=c67tRG3B3PAGKlTxgPGjuzy6sp7oF3VdFIH+8eW5D3ETaVXhpD9bmHa9E40giBNASg
+         sXWlqXBf7AGX5d798/dw44Pd9Z76mpCs8vDhSRyMPTfezHcfxQCZVowz2qgDuV6TjVoy
+         Ykwk2xDUyZFZo5IuX2m6OvED3jgkNYNeEpkbeaSe6+DSqqhj4R/dCwOllSdjFuhwFzKk
+         dg6aQPuWyzFnSVC0U91Nz8bU4sws190YXgGP14qkC7o6/08mUbzj36wErfK8bX4ML5I/
+         R/TdkeUUGkrYbZvJJ7telR5Gak+6d9sq6zqAK4O/7/ibdfxNJhZtY89blfWXhTQ3cmo9
+         pAiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780582381; x=1781187181;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6SN06MWYgnamNhN1ZWgRIcR80dI4EtU2wUgYpm//Klo=;
+        b=XOmQAoq5AiaEjSwF9U4ISYL+QOOk0nNyczKDIW5EVl3YEnIUIE79DMfb5XSs9IL/ZY
+         Tm4eNXYf7Cik/w99o9RonCo4n1CjPkiBUcY8WLXVbaVJ37YWGyYkjKlZF43xKYE9LrDc
+         aYJeH8kXxFwerscQb0QF2vtK5rSGb+ELREG5SM7tLqPGKbJqF3SPMBF6E3sDG6SiViLH
+         ko3iyJ0MxObNplgEsOpSXclbEfd6wFjHUf96YqXfjd5sVuOtlhpq4rj1OavA6IfBeiqO
+         3qaeDhzC04DDKtotTFUv8PIL19ttfZ0dmY89DX8jAZvO4OaKb9iMfkFVjlLGfGYGkqx1
+         KBrA==
+X-Forwarded-Encrypted: i=1; AFNElJ8z4slcGDyhV+z2/osOcTtViBhMECPu+7WylCwmvSAsjEA773VmzIit3XFyzKAFo6juHPk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdSPrb4Ux4TSBbgPF9sqsGgqQxi1fznYeI+PLchzRUza7KCtZA
+	ymjP5181dQnBL42h95ZHY8ThrK5bvIfMadZnsRy9reWadf+DW3jhke9iL8YkvvPgnKQ=
+X-Gm-Gg: Acq92OEaRmPHxcNUBbDUv4SsZrcmtLvdLDAiYp2MVSN0GjdxOuem00eK1i7Rn+l0Ph/
+	U1GY+MrR01yAWFp89ug9jc6DvrdFSlDu/Nkh0AJNjMYW0Y1Gmda/fp3d4ART+9g8ZLys+vGRYLT
+	+9MSyOgJc0Mr9DoLk2BzrdiO6CWcdtj4Ouae1KzX7ZaKcdt+vCnQsBPbnuCIu4adGPAysEpF7uC
+	aeUxBLa7b09UHB9g8WeUcUoKx4od9+r6gDUwOw8hCTI/Yxp+aLpGHdzPj2qME0CGBXwJDZArQMQ
+	C6o5zmFMv7d10CPGdWnT2Ja+sSIEeHjzge5VMBS6ZJQGi5CDwhY3rntj3DrcMGwfLSSU7841wUb
+	zov2bR+hxnuyWDPO/S2jmJxBLNZ+fuYLzBDX69rrRlMlToaytF2bk6xvJY7pTs8mWg5q7CFvYuY
+	S4aNF5ekkCtOXB3/JXm5qehM+kU6yKkSh6IdfYi4dw3WQv/wY4xki3FlO9FL5vbOHj8W6oGS57j
+	yuSI7XrXRsR+aRhPMba7Lkw+bg=
+X-Received: by 2002:a05:622a:598c:b0:517:1465:9167 with SMTP id d75a77b69052e-51778696c8emr120221011cf.28.1780582380950;
+        Thu, 04 Jun 2026 07:13:00 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775df4dd6sm52447511cf.27.2026.06.04.07.13.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 07:13:00 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wV8od-00000008HC1-3PHn;
+	Thu, 04 Jun 2026 11:12:59 -0300
+Date: Thu, 4 Jun 2026 11:12:59 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Guanghui Feng <guanghuifeng@linux.alibaba.com>,
+	adrian.larumbe@collabora.com, airlied@gmail.com, alex@shazbot.org,
+	alikernel-developer@linux.alibaba.com,
+	boris.brezillon@collabora.com, dri-devel@lists.freedesktop.org,
+	dwmw2@infradead.org, iommu@lists.linux.dev, joro@8bytes.org,
+	kevin.tian@intel.com, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	liviu.dudau@arm.com, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, oliver.yang@linux.alibaba.com, robh@kernel.org,
+	robin.murphy@arm.com, shiyu.zsq@linux.alibaba.com,
+	steven.price@arm.com, suravee.suthikulpanit@amd.com,
+	tzimmermann@suse.de, wei.guo.simon@linux.alibaba.com,
+	will@kernel.org, xlpang@linux.alibaba.com
+Subject: Re: [PATCH v3 05/32] iommu/generic_pt: implement iova_to_phys_length
+Message-ID: <20260604141259.GW2487554@ziepe.ca>
+References: <20260602104637.1219810-1-guanghuifeng@linux.alibaba.com>
+ <20260603151804.1963871-1-guanghuifeng@linux.alibaba.com>
+ <20260603151804.1963871-6-guanghuifeng@linux.alibaba.com>
+ <c179b999-8c7f-4338-8aad-b61fd09f1329@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c179b999-8c7f-4338-8aad-b61fd09f1329@linux.intel.com>
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
+On Thu, Jun 04, 2026 at 11:30:37AM +0800, Baolu Lu wrote:
+> > -static __always_inline int __do_iova_to_phys(struct pt_range *range, void *arg,
+> > -					     unsigned int level,
+> > -					     struct pt_table_p *table,
+> > -					     pt_level_fn_t descend_fn)
+> > +struct iova_to_phys_length_data {
+> > +	pt_oaddr_t phys;
+> > +	size_t length;
+> > +};
+> > +
+> > +static __always_inline int __do_iova_to_phys_length(struct pt_range *range,
+> > +					       void *arg, unsigned int level,
+> > +					       struct pt_table_p *table,
+> > +					       pt_level_fn_t descend_fn)
+> >   {
+> >   	struct pt_state pts = pt_init(range, level, table);
+> > -	pt_oaddr_t *res = arg;
+> > +	struct iova_to_phys_length_data *data = arg;
+> > +	unsigned int entry_lg2sz;
+> > +	size_t entry_sz;
+> > +	pt_oaddr_t expected_oa;
+> >   	switch (pt_load_single_entry(&pts)) {
+> >   	case PT_ENTRY_EMPTY:
+> > @@ -159,45 +167,77 @@ static __always_inline int __do_iova_to_phys(struct pt_range *range, void *arg,
+> >   	case PT_ENTRY_TABLE:
+> >   		return pt_descend(&pts, arg, descend_fn);
+> >   	case PT_ENTRY_OA:
+> > -		*res = pt_entry_oa_exact(&pts);
+> > -		return 0;
+> > +		break;
+> >   	}
+> > -	return -ENOENT;
+> > +
+> > +	data->phys = pt_entry_oa_exact(&pts);
+> > +	entry_lg2sz = pt_entry_oa_lg2sz(&pts);
+> > +	entry_sz = log2_to_int(entry_lg2sz);
+> > +
+> > +	/* Start with the full mapping size of the first entry */
+> > +	data->length = entry_sz;
+> 
+> data->length doesn't account for iova offset. Is this by design? We
+> should document this clearly somewhere.
 
-New issues:
-- [Critical] Concurrent config writes cause Double-Free/Use-After-Free in p=
-ower management saved state.
-- [High] Missing virtual configuration rollback on power state transition f=
-ailure.
-- [High] Missing virtualization of TPH Capability Header leaks the physical=
- Next Capability Pointer to the guest.
-- [High] Race condition (TOCTOU) allows concurrent config writes to corrupt=
- virtual state and silently lose write requests.
-- [Medium] Silent failure when programming TPH shadow ST table entries into=
- hardware.
+That's defintaely a mistake, the phys has to be offset by the iova in all cases,
+it is part of the API.
 
-Pre-existing issues:
-- [High] Out-of-bounds write in extended capability parsing loop due to mis=
-sing boundary checks.
---
+Also add kunits tests to the iommupt selftest to cover various
+scenarios please.
 
-commit 32f3411184cca80f87b3f32db73925b8e64d5792
-Author: Chengwen Feng <fengchengwen@huawei.com>
+Also this doesn't look quite right, the walk should look more like
+unmap where we just walk and stop walking when we hit a physical
+address discontiguity. The stop point defines the result length.
 
-vfio/pci: Virtualize PCIe TPH capability registers
-
-This commit virtualizes TPH extended capability registers, splitting
-permissions so the header is read-only and the control register is writable.
-It restricts ST-table programming to a specific feature and syncs the
-cached shadow table to hardware upon enablement.
-
-> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_p=
-ci_config.c
-> index 5c6ab172df6c0..23c32aa5842fa 100644
-> --- a/drivers/vfio/pci/vfio_pci_config.c
-> +++ b/drivers/vfio/pci/vfio_pci_config.c
-> @@ -1086,6 +1086,109 @@ static int __init init_pci_ext_cap_pwr_perm(struc=
-t perm_bits *perm)
->  	return 0;
->  }
-> =20
-> +/* Permissions for TPH extended capability */
-> +static int __init init_pci_ext_cap_tph_perm(struct perm_bits *perm)
-> +{
-> +	int i;
-> +
-> +	if (alloc_perm_bits(perm, pci_ext_cap_length[PCI_EXT_CAP_ID_TPH]))
-> +		return -ENOMEM;
-> +
-> +	p_setd(perm, PCI_TPH_CAP, ALL_VIRT, NO_WRITE);
-
-[Severity: High]
-Does this miss virtualizing the TPH Capability Header at offset 0?
-
-Other capabilities use p_setd(perm, 0, ALL_VIRT, NO_WRITE) to ensure the
-guest reads the virtualized header instead of the physical one. Without thi=
-s,
-could guest reads to the TPH capability header fall through to physical
-hardware, leaking the physical Next Capability Pointer and breaking VFIO's
-ability to hide capabilities?
-
-[ ... ]
-
-> +static int vfio_tph_config_write(struct vfio_pci_core_device *vdev, int =
-pos,
-> +				 int count, struct perm_bits *perm,
-> +				 int offset, __le32 val)
-> +{
-> +	int req_en_byte =3D PCI_TPH_CTRL + 1;
-> +	struct pci_dev *pdev =3D vdev->pdev;
-> +	__le32 org_val =3D 0;
-> +	bool extended;
-> +	u8 mode, req;
-> +	int i, ret;
-> +	u16 start;
-> +	u32 data;
-> +
-> +	if (!vdev->tph_permit)
-> +		return count;
-> +
-> +	/* Back up the original values in order rollback when fail */
-> +	if (offset <=3D req_en_byte && offset + count > req_en_byte)
-> +		vfio_default_config_read(vdev, pos, count, perm, offset,
-> +					 &org_val);
-> +
-> +	ret =3D vfio_default_config_write(vdev, pos, count, perm, offset, val);
-> +	if (ret !=3D count)
-> +		return ret;
-
-[Severity: High]
-Can this create a race condition where concurrent writes corrupt the virtual
-state?
-
-Modifying vconfig via vfio_default_config_write() happens before acquiring
-vdev->tph_lock. If two threads concurrently write to the control register,
-both modify vconfig unprotected. If the first thread acquires the lock but
-fails to program hardware, its rollback would blindly overwrite the second
-thread's new state in vconfig.
-
-When the second thread subsequently acquires the lock, wouldn't it read the
-reverted vconfig value (the first thread's old state) and write it to
-hardware, effectively discarding the second thread's write while returning
-success?
-
-> +
-> +	/* Skip if write range does not cover Requester Enable byte */
-> +	if (offset > req_en_byte || offset + count <=3D req_en_byte)
-> +		return count;
-> +
-> +	ret =3D vfio_pci_set_power_state(vdev, PCI_D0);
-
-[Severity: Critical]
-Does calling vfio_pci_set_power_state() without a serializing lock expose a
-double-free vulnerability?
-
-If a guest VM concurrently writes to the TPH control register while the
-physical device is in D3hot, both threads can evaluate needs_restore =3D tr=
-ue.
-After the first thread transitions the device to D0, both threads will
-concurrently execute pci_load_and_free_saved_state(pdev, &vdev->pm_save).
-
-Since pci_load_and_free_saved_state() has no internal locking and directly
-frees the shared pointer, could this concurrent execution cause a double-fr=
-ee
-in the host kernel?
-
-> +	if (ret)
-> +		return count;
-
-[Severity: High]
-Is a rollback of the virtual configuration missing in this error path?
-
-If the power state transition fails, the function returns count (indicating
-success to userspace) but fails to roll back vconfig using the org_val back=
-ed
-up earlier. Doesn't this leave vconfig falsely indicating that the TPH
-Requester is configured while the physical hardware remains unprogrammed?
-
-> +
-> +	mutex_lock(&vdev->tph_lock);
-> +
-> +	start =3D vfio_find_cap_start(vdev, pos);
-> +	data =3D le32_to_cpu(*(__le32 *)&vdev->vconfig[start + PCI_TPH_CTRL]);
-> +	mode =3D FIELD_GET(PCI_TPH_CTRL_MODE_SEL_MASK, data);
-> +	req =3D FIELD_GET(PCI_TPH_CTRL_REQ_EN_MASK, data);
-> +
-> +	if (req =3D=3D PCI_TPH_REQ_TPH_ONLY || req =3D=3D PCI_TPH_REQ_EXT_TPH) {
-> +		extended =3D !!(req =3D=3D PCI_TPH_REQ_EXT_TPH);
-> +		ret =3D pcie_enable_tph_explicit(pdev, mode, extended);
-> +		if (!ret && vdev->tph_st_shadow) {
-> +			for (i =3D 0; i < vdev->tph_st_entries; i++)
-> +				pcie_tph_set_st_entry(pdev, i,
-> +						      vdev->tph_st_shadow[i]);
-
-[Severity: Medium]
-Should the return value of pcie_tph_set_st_entry() be checked here?
-
-If programming any ST entry fails, such as from hardware rejection or
-inaccessible registers, the failure appears to be silently ignored. Could
-this leave the hardware partially programmed while userspace is told the
-operation succeeded?
-
-> +		}
-
-[ ... ]
-
-> @@ -1704,6 +1810,8 @@ static int vfio_ecap_init(struct vfio_pci_core_devi=
-ce *vdev)
->  		ret =3D vfio_fill_vconfig_bytes(vdev, epos, len);
-
-[Severity: High]
-This is a pre-existing issue, but could this capability parsing loop allow
-out-of-bounds heap corruption?
-
-If a malicious hardware device or hotplugged peripheral provides a malformed
-capability list with a large length near the end of the PCIe config space,
-epos + len can exceed pdev->cfg_size. This would cause a buffer overflow in
-memset() and vfio_fill_vconfig_bytes(), corrupting the heap-allocated
-vdev->pci_config_map and vdev->vconfig buffers.
-
->  		if (ret)
->  			return ret;
-> +		if (ecap =3D=3D PCI_EXT_CAP_ID_TPH && !hidden)
-> +			vfio_tph_mask_ext_tph_bit(vdev, epos);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604132804.2867=
-8-1-fengchengwen@huawei.com?part=3D12
+Jason
