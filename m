@@ -1,323 +1,176 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010041.outbound.protection.outlook.com [52.101.85.41])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1E530D3E7
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 23:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780616224; cv=fail; b=dHTBhYpdpCBwz+iTs+ncum/S99+HEs0LsoV5hJxbXB9qCF7rybjqG9VKzabavyFcSZnwyDSTbJB+UkfJzhfa9E9JkiYW8o+zS3wXSdy4L4oMKfqgHZiY0uVE7n/yLzACXwRUZnF0W86xzTak3lGP7t7xGd4iXfa8SNR/wZZW2j0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780616224; c=relaxed/simple;
-	bh=+AkoyyhS4LTa5pWlJTYhTIwzNDQ0pbWH+YMBZ4Zcr9k=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e77BP0LysKNhoRCXVz8uADazHWo2fZm8BuWTXC1+YmncPTRLDO2gbFTx5938FOP78KwFcxdaaXwE6STKgfWRfbRisgmyRYw6g1IZbwD3hmGyLJ2FVHRmuq7iZFUokopv3iV3UZIlsJcuGd0p+rMKBMvcGhmQLufNCCvayEQixdE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=fail (1024-bit key) header.d=amd.com header.i=@amd.com header.b=33lwsfCU reason="signature verification failed"; arc=fail smtp.client-ip=52.101.85.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2F42DECCC
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 23:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780616825; cv=none; b=EA2hZSh3Z6YO+IiuqurOizrwIsgTpWK7YR0hNTLasQ8EbsgP9cqyx1egPjY3rNaaHahDPnW3ENS2bkc1gZ3T6sZmNTm8I5f85Wu2Wwlp7V45wGTwtSCt3xrn+iKFhFpxxq3DlocN+VKg08tcABMs66COp2JTW++0Mqe9fC+s7oo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780616825; c=relaxed/simple;
+	bh=Ji2I9v1x/zo7NPk+NFQgmhy0u8ZeKVJIYMlijduMUY0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EiPCaPdHxIcMuN6wySl6RqxStRbh+SknB+QKhRA4IBLz8/A/KT5nGJ52BSiSDTcO+UkJCM3W+VyotD7AZ+q6uc7IRZ+jAMva9Fkl5CZNyou/rpolv+XS1Fif3rSF57hksEbwutNB3vkm7mkJ128IfBQU8O4Tde/2/S86dPSzE2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DMhc3zqN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SWrOrpw5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=amd.com header.i=@amd.com header.b="33lwsfCU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rWJfSlWFPxD2uNDtneDWbjc/vFj+lzdhHui0XTRz4gdejXj5kz/lgkqe6GYj3r4fgKIM+nPwyfVmDy5ZP+JHDqpf6GEsvslvwOHwkRNHYXvSTviDX1pQ3H4v5TJKqRU9v+n8lsZAb661Ot7tUqYFn2XPndzC/7mxl/llCGLJ+BqMkskA+1+OXnKIV/9VaI8uPRGZJCoeKlSyANOnNHuJyxkVE9pJJzbSdRMw+557VTDB9bZHHtNh6T5wSkJUfm1elpqZc637dIy2Mi8Wcwr01lDabHLJiDFv3d/w69nuuhsDRv2nGN4Gvx36x145cLAaH607FrYoeEB7Ohbz/3C7cA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=haDnhOtNsg00SxRX6xmtqKWvwOkJM14sKSwtQz8GGM0=;
- b=zWBQp5EyqaTmNZ5O7nM4w8XKLOiNL1AEE1QtTUbTPIvutkjDs3naiFhpcgpcJs9oprdFnZ0d8ZLGESTyQfSzLL7Fq/aGYeVThfiwkZvW8Yb4Uab+4M/l7k8wfaH4FnfUcxj1vkcPLj3zrVUQH6o5n4UPRYDOUnJoLsWLZBsrsmgxsbWbbP91WmbxT4a4pAySdytGddKiD6LsOvocXOf8qrQ9nFxQclSXuLaDnRc9P81ggEDHFPC+I63BCtoj2XzthFnFpjxTmsIJt03H/DCR7wQZ8CiqMBEUNtP1aANui5de63BQRvR4PSDYopPGEByyeuJajEUkyrNIT6njzuveRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=haDnhOtNsg00SxRX6xmtqKWvwOkJM14sKSwtQz8GGM0=;
- b=33lwsfCULD6pZlVIUopriIAJ74cChAmRI5qNDaTlWXx/D0q19T7w+2L5r77mQSjSQ8LbcgZJWwqZ+CKFwaotXjUKJA+uMLSZyl9mR4imksqA7pBD30Fiy9uOC6BgP7QNccDDAEhximm8P5Z/XBrn1ZhPio3IIqzbXXLgcTWhfNU=
-Received: from BN0PR04CA0203.namprd04.prod.outlook.com (2603:10b6:408:e9::28)
- by MW6PR12MB8960.namprd12.prod.outlook.com (2603:10b6:303:23e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Thu, 4 Jun 2026
- 23:36:57 +0000
-Received: from BN2PEPF0000449E.namprd02.prod.outlook.com
- (2603:10b6:408:e9:cafe::13) by BN0PR04CA0203.outlook.office365.com
- (2603:10b6:408:e9::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.8 via Frontend Transport; Thu, 4
- Jun 2026 23:36:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF0000449E.mail.protection.outlook.com (10.167.243.149) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 23:36:56 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 4 Jun
- 2026 18:36:56 -0500
-Date: Thu, 4 Jun 2026 18:36:41 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: "Gupta, Pankaj" <pankaj.gupta@amd.com>
-CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, <pbonzini@redhat.com>,
-	<berrange@redhat.com>, <armbru@redhat.com>, <isaku.yamahata@intel.com>,
-	<xiaoyao.li@intel.com>, <chao.p.peng@linux.intel.com>, <david@kernel.org>,
-	<ashish.kalra@amd.com>, <ackerleytng@google.com>
-Subject: Re: [PATCH RFC 09/12] accel/kvm: Support shared/private conversions
- via guest_memfd ioctls
-Message-ID: <du65mzfertgaxvvzqbozgbnn7fasfinc67atbfhy5hjzaqpasx@2bmm2ol6tm52>
-References: <20260528000416.8161-1-michael.roth@amd.com>
- <20260528000416.8161-10-michael.roth@amd.com>
- <22bda2bc-97ba-4b08-ac75-a8807293441f@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DMhc3zqN";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SWrOrpw5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780616823;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P95+fYJ3vYLC521V0/dnSJW7Xac+PprHiZPgTv1UdmY=;
+	b=DMhc3zqN10TCVBVJcRjKekdJXvcS+Slrkwo9MEwQeOSSFimE77zKzT6HlA9bPxM/AYk6dl
+	j+LTYIATJfkkBG7fYK1l5M2vWK1jua+0lJJ/nBR/+DRBYf8mGW5ohIxRm3PID4KdpzE28i
+	zqhne5h/nqOdh3BkNVCUiW3ANYontKQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-_jEd9fIjOAKH_LBCNhQd0g-1; Thu, 04 Jun 2026 19:47:00 -0400
+X-MC-Unique: _jEd9fIjOAKH_LBCNhQd0g-1
+X-Mimecast-MFC-AGG-ID: _jEd9fIjOAKH_LBCNhQd0g_1780616819
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45f3d008865so882317f8f.0
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 16:46:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1780616819; x=1781221619; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=P95+fYJ3vYLC521V0/dnSJW7Xac+PprHiZPgTv1UdmY=;
+        b=SWrOrpw5uKmqcBPCvrBhHu1PyG8vxX6ayUSmr6FSEcN5NBDgFNZpuvnw8kvtha/eMv
+         77Hu8eFVPRJLxoxT3EGPGGS/y8tHC26s2WZmegu+OVoLEfIGhYmimDYP11RIjQIrpR30
+         LCg1DjcOXr82nahvo5vS/zWXg03PNhtz8KNGsxSLI1UTWzNDkJzc7AUoHlMjezsphFiq
+         9O69haP+8F/uchGUzUX6pcaDyFBeXoJj/zOxePNcFdvmGZN2uhm/ayVe0UJbFXfERu2a
+         DnSgp5v1zWdlPN1zI4h9mfdI5k0s8ugVZyUk5ya2qdNwVDj6OQ0zWA5hV/1lpuVHvuSK
+         PzuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780616819; x=1781221619;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P95+fYJ3vYLC521V0/dnSJW7Xac+PprHiZPgTv1UdmY=;
+        b=GYUTN3kznhvEwsnAqtWc2w7oPSKFP5t3urPD8/x3JMYITQLMPn8SxlYpycr2gKGGxt
+         ADCgD6wUGY2MrG6QimqUzAbyGFT2T/yY4tPPgS9uY2qQTD95+aRSHjw0nn9uI029mxOT
+         hiusi5vORhSNHYRUDjoouBeXl/gF6Dle6lXEuM8kUIKoxz5pP3KfvNWBQV7ZC3tqvFGc
+         Dxc2I4mWvDLItn9r0d1kRhTnIUdjPbKqVXArsJqdd51AJqPcLcciPxY2oKx7CUEQvGz0
+         SFXYGy77SeC98mJGr5zEXnJFTwuIudaOyTh110fAJoaQObnV7x56D0uup4ruJ8NjXoIs
+         YCyw==
+X-Forwarded-Encrypted: i=1; AFNElJ/tOVzcbWIkI3KPRdl9yNDNM5HhW7XOg6aGLE9A5pLNWq9T9qTtSuRgxhZLxvr3AaFv5N8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXg4jI4BlQsdCe+dlrJK/WIqM1epNkZuwLN2k5o5iARcR7AVl3
+	NQoMeEEA+XD/cHuzV/MgQZNkXupOsuaZvQgSvTPry/Sk0mZtRHonHAUJJcxOS3O4TLFn0ok5rS/
+	2QLoJOk9FI/vt8nlynWszSayWwWBhqFeziOOfJm/tBMIduOJzLF8rbw==
+X-Gm-Gg: Acq92OHrjB2ghTCHih9JpkSQNkNMdy9ZkxYhOl+NaG5A3I4b8LSKgz03Zw/1IFLqVVA
+	TSILZ1u4fPcChvrx3OqspkTP/pl36fUmz4IZdZ/nMUeLMy5zYKT6Pnl8bwhlAI2PXpHI2vk+dAC
+	qvqKXY2dibkNksqEWe/8Aelm8aIvHT/vM4eV6MQrY7PxqQrP4vHE0BNWIkUwKgCuRtqjg5EYpfj
+	94sY6E46cXkuxtqNTpa+H/y+pMjLMbMuAca6opZ3OkeDs1f3/FYWoIaBcXlLfOzHJHq/lEVILCG
+	VYIv3rc0jAJwzJy74z0iHOF1Kas8o6hku0OoHHqnq3CU7/4PxzAb5zmhJGelLa4qyrVLmb4Jp85
+	1xngl+y+HStjT5rF9NVBRfLn88wc2w1kmoILv/e2hebntOrVXTykBKgs=
+X-Received: by 2002:a05:6000:4b01:b0:45e:739b:2750 with SMTP id ffacd0b85a97d-46032b82296mr255384f8f.9.1780616818707;
+        Thu, 04 Jun 2026 16:46:58 -0700 (PDT)
+X-Received: by 2002:a05:6000:4b01:b0:45e:739b:2750 with SMTP id ffacd0b85a97d-46032b82296mr255353f8f.9.1780616818258;
+        Thu, 04 Jun 2026 16:46:58 -0700 (PDT)
+Received: from redhat.com (ppp-94-66-118-61.home.otenet.gr. [94.66.118.61])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f368e9fsm19912888f8f.37.2026.06.04.16.46.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 16:46:57 -0700 (PDT)
+Date: Thu, 4 Jun 2026 19:46:54 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "Garg, Shivank" <shivankg@amd.com>
+Cc: linux-kernel@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org
+Subject: Re: [PATCH] KVM: guest_memfd: fix NUMA interleave index
+ double-counting
+Message-ID: <20260604194613-mutt-send-email-mst@kernel.org>
+References: <0eff0a90667b900bee837d06b5db5025e1f304b5.1780501924.git.mst@redhat.com>
+ <916681a5-dd66-4773-a46f-2273a72c11cf@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <22bda2bc-97ba-4b08-ac75-a8807293441f@amd.com>
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF0000449E:EE_|MW6PR12MB8960:EE_
-X-MS-Office365-Filtering-Correlation-Id: 82718f29-4c1f-42c3-0ea9-08dec2922a47
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|376014|7416014|1800799024|18002099003|22082099003|6133799003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	eOHAQ6MZFuLSjT9A1rzQB+7qHlN+dxadssUl5UABlIR6qse2EzsyZJcSVDt4mA3tCjBFkXWLNCm2zorkRwFKwMInNU/V1TQD+IprGvDs0UJ9AetgWXM63gZgdkEwUVTOAg5MwZpJ0xUBJXCKaqlSf7Ww6hGSmP7P9Xc4RGFh9H1mpprqKE7P+xurCYKyJFIoRa53aiZjMbBOhgKso9PdFaH3i0OmOOKhUE+9tJvKh5f96mgQ7NQwmEWhKv7YDIkMHyndwiXNoxJLY9cqgLinOumMgqdEcfCLJHW50ONGq342lFoJH4TaZsylciINVqP2VZ4FNdLXQvGYMYTYW3C879BGNiYR4sMUaZVqb699wYkgSIpIHLqNibM1FWq1Pc9DzRyEiBlAerjZ07RiVskCVfAd5YC8XrjEyOH/N7fVQT2X7cc8/SDpP6QSjgXftxMb2KHnUx7MzHBIzp5qCXtrwJINZ55RBnDTHj0QUJM+9R4g1GAkR1582tDUpV0hxY+P1AQxrsnRpYa63O/hpXDKfLog/Q4kU+HXbn8ZV4VxmaESuTvF/WKYpeWM5DC1ug7cDMZ+GSjpkQye17al5NTvd+Z0XIb5ev/gKy1kulzyyAARHluLC0g52CHUOvcxic5CiIcqc5SJkdthuKmPGIFHdDvTXOHb/6vkhzBsIf6U+uiGYIIiHmHZjLAVVtwovcOpdlXjHJhMrw1QJEYGiQVwjHMPZUSe/R19NRhcskHdCDA=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(7416014)(1800799024)(18002099003)(22082099003)(6133799003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	CgKVT4vVC+b3KC/KXYIJFFXEIUJvgujsbJz4RIT1cAQypjNQ6u2wCQPnnxVegayMTiXEQuBZQdMKEJJmn4seu8v3zXhsV/raVS+tRCtEIEBUQNh0PHi0upbySKsujOSplFteemvBQ5YlznvNRYurJ9dZZBHiqkSDVvEsvByS3gohG7iKIAwwqjuvBi7GY5bRHwnYdh7Ifv9ZgW4tAesoz6WMSTbdwntAtaje2d594E/TYFIDaHcxLQnA/gc5JrH7JzgS8kNQWfbxR/rLjljjCs5AwzkUGFOQ7llVSgZDRnEONGkXXGw4bckAefVCkl4CjuzrinADTxteqcl7kut3fSvwYHhs+zrclrsNBc0UD+qXi8s1xxtKX1vWLtY6getvwMxJn94rLHODxpOo/PjF05NmMzNvNTvv7waf+MbK0yfk0326UkCdUOiFxhqBijyo
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 23:36:56.3106
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82718f29-4c1f-42c3-0ea9-08dec2922a47
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF0000449E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8960
+In-Reply-To: <916681a5-dd66-4773-a46f-2273a72c11cf@amd.com>
 
-On Thu, Jun 04, 2026 at 03:19:17PM +0200, Gupta, Pankaj wrote:
+On Thu, Jun 04, 2026 at 12:21:15AM +0530, Garg, Shivank wrote:
 > 
-> > When using guest_memfd with support for shared memory / in-place
-> > conversion, it is necessary to use the guest_memfd ioctls to handle
-> > conversions instead of KVM ioctls. Implement support for this by looping
-> > through all the sections within a converison range. Implement everything
-> > in terms of the kvm_convert_memory() loop, which already deals with some
-> > special considerations regarding various holes / region types that might
-> > be encountered.
+> 
+> On 6/3/2026 9:27 PM, Michael S. Tsirkin wrote:
+> > kvm_gmem_get_policy() sets *ilx to the full page offset
+> > (vm_pgoff + vma offset).  But get_vma_policy() adds the page
+> > offset on top of *ilx, so the offset is counted twice.  This
+> > causes NUMA interleaving to skip nodes: for order-0 pages the
+> > effective index jumps by 2 for each consecutive page.
 > > 
-> > Also update kvm_set_memory_attributes_*() to use the same common path
-> > when convert-in-place=false. This potentially results in a small change
-> > in behavior due to the additional MMIO checks/skips now being applied in
-> > that case (generally qemu-triggered during setup) rather than only for
-> > kvm_convert_memory() (generally guest-triggered), but this is arguably
-> > safer, and it provides similar behavior between convert-in-place=false
-> > vs. convert-in-place=true, the latter of which *must* skip MMIO holes
-> > because the regions (and associated guest_memfds) themselves track
-> > shared/private state internally and passing the whole conversion range
-> > through to KVM is not an option in that case.
+> > The get_policy vm_op should return only a per-file bias in *ilx
+> > (like shmem_get_policy does with inode->i_ino), letting
+> > get_vma_policy() add the page-offset component.
 > > 
-> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > Fix by setting *ilx to inode->i_ino instead of the full page
+> > offset.  The page offset is computed by get_vma_policy() in
+> > mm/mempolicy.c. The full offset is still computed
+> > in kvm_gmem_get_policy() for mpol_shared_policy_lookup().
+> > shmem_get_policy() follows the same pattern.
+> > 
+> > Found by Sashiko (sashiko.dev) AI code review.
+> > 
+> > Fixes: ed1ffa810bd6 ("KVM: guest_memfd: Enforce NUMA mempolicy using shared policy")
+> > Cc: Sean Christopherson <seanjc@google.com>
+> > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > Assisted-by: Claude:claude-opus-4-6
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 > > ---
-> >   accel/kvm/kvm-all.c | 131 ++++++++++++++++++++++++++++++++++++++------
-> >   1 file changed, 114 insertions(+), 17 deletions(-)
+> >  virt/kvm/guest_memfd.c | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
 > > 
-> > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> > index 62f2e8aa15..fd01435a0f 100644
-> > --- a/accel/kvm/kvm-all.c
-> > +++ b/accel/kvm/kvm-all.c
-> > @@ -1626,14 +1626,78 @@ static int kvm_set_memory_attributes(hwaddr start, uint64_t size, uint64_t attr)
-> >       return r;
-> >   }
-> > -int kvm_set_memory_attributes_private(hwaddr start, uint64_t size)
-> > +static int kvm_gmem_ioctl(int guest_memfd, unsigned long type, ...)
-> >   {
-> > -    return kvm_set_memory_attributes(start, size, KVM_MEMORY_ATTRIBUTE_PRIVATE);
-> > +    int ret;
-> > +    void *arg;
-> > +    va_list ap;
-> > +
-> > +    va_start(ap, type);
-> > +    arg = va_arg(ap, void *);
-> > +    va_end(ap);
-> > +
-> > +    ret = ioctl(guest_memfd, type, arg);
-> > +    if (ret == -1) {
-> > +        ret = -errno;
-> > +    }
-> > +    return ret;
-> >   }
-> > -int kvm_set_memory_attributes_shared(hwaddr start, uint64_t size)
-> > +static int guest_memfd_set_memory_attributes_fd(int guest_memfd, hwaddr offset,
-> > +                                                uint64_t size, uint64_t attr)
-> >   {
-> > -    return kvm_set_memory_attributes(start, size, 0);
-> > +    struct kvm_memory_attributes2 attrs;
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index 69c9d6d546b2..0bcf6fc08e2d 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -438,11 +438,12 @@ static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpo
+> >  }
+> > 
+> >  static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+> > -                                            unsigned long addr, pgoff_t *pgoff)
+> > +                                            unsigned long addr, pgoff_t *ilx)
+> >  {
+> >         struct inode *inode = file_inode(vma->vm_file);
+> > +       pgoff_t pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> > 
+> > -       *pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> > +       *ilx = inode->i_ino;
+> > 
+> >         /*
+> >          * Return the memory policy for this index, or NULL if none is set.
+> > @@ -453,7 +454,7 @@ static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+> >          * can then replace NULL with the default memory policy instead of the
+> >          * current task's memory policy.
+> >          */
+> > -       return mpol_shared_policy_lookup(&GMEM_I(inode)->policy, *pgoff);
+> > +       return mpol_shared_policy_lookup(&GMEM_I(inode)->policy, pgoff);
+> >  }
+> >  #endif /* CONFIG_NUMA */
+> > 
+> > --
+> > MST
+> > 
 > 
-> -    struct kvm_memory_attributes2 attrs;
-> +    struct kvm_memory_attributes2 attrs = {0};
+> Thanks for fixing this. LGTM!
 > 
-> Zero initializing 'attrs' fixed a '-EINVAL' error, caused because of kernel
-> 'attrs.reserved' check failed in 'kvm_gmem_set_attributes()'.
+> Reviewed-by: Shivank Garg <shivankg@amd.com>
 
-Indeed, thanks for the catch!
 
--Mike
+Can u actually test it though pls?
+Because I think another patch I sent in response so Sashiko
+is also needed.
 
+> Best regards,
+> Shivank
 > 
-> Thanks,
 > 
-> Pankaj
-> 
-> > +    int r;
-> > +
-> > +    assert((attr & kvm_supported_memory_attributes) == attr);
-> > +    attrs.attributes = attr;
-> > +    attrs.offset = offset;
-> > +    attrs.size = size;
-> > +    attrs.flags = 0;
-> > +
-> > +    /*
-> > +     * guest_memfd may need to delay conversion requests due to
-> > +     * the memory being in-use by the kernel. In most cases these
-> > +     * will be transient uses. In some cases, userspace itself may
-> > +     * be the cause of the memory being considered in-use, though
-> > +     * QEMU currently takes steps to avoid this (e.g. via
-> > +     * RamBlockAttributes). On that basis, this code loops
-> > +     * indefinitely with the assumption that only transient cases
-> > +     * will block, and that those will be for relatively short
-> > +     * periods vs. the overall conversion path.
-> > +     * If those assumptions at some point prove false, most likely
-> > +     * this will manifest as guest-side lockups on their conversion
-> > +     * path, which seems like the appropriate way to surface this
-> > +     * situation to the guest owner rather than some hard timeout.
-> > +     */
-> > +    do {
-> > +        r = kvm_gmem_ioctl(guest_memfd, KVM_SET_MEMORY_ATTRIBUTES2, &attrs);
-> > +    } while (r == -EAGAIN);
-> > +
-> > +    if (r) {
-> > +        error_report("failed to set memory (0x%" HWADDR_PRIx "+0x%" PRIx64 ") "
-> > +                     "with attr 0x%" PRIx64 " error '%s'",
-> > +                     offset, size, attr, strerror(-r));
-> > +    }
-> > +    return r;
-> > +}
-> > +
-> > +static int guest_memfd_set_memory_section_attributes(MemoryRegionSection *section, uint64_t attr)
-> > +{
-> > +    hwaddr convert_offset, convert_size;
-> > +    MemoryRegion *mr = section->mr;
-> > +    RAMBlock *rb;
-> > +
-> > +    assert(mr);
-> > +    rb = mr->ram_block;
-> > +    assert(rb->guest_memfd);
-> > +    convert_offset = section->offset_within_region;
-> > +    convert_size = int128_get64(section->size);
-> > +
-> > +    return guest_memfd_set_memory_attributes_fd(rb->guest_memfd,
-> > +                                                convert_offset,
-> > +                                                convert_size,
-> > +                                                attr);
-> >   }
-> >   /* Called with KVMMemoryListener.slots_lock held */
-> > @@ -3447,10 +3511,18 @@ static int kvm_convert_section(MemoryRegionSection *section, bool to_private)
-> >       hwaddr size = int128_get64(section->size);
-> >       int ret;
-> > -    if (to_private) {
-> > -        ret = kvm_set_memory_attributes_private(start, size);
-> > +    if (current_machine->cgs && current_machine->cgs->convert_in_place) {
-> > +        ret = guest_memfd_set_memory_section_attributes(section,
-> > +                                                        to_private ? KVM_MEMORY_ATTRIBUTE_PRIVATE
-> > +                                                                   : 0);
-> >       } else {
-> > -        ret = kvm_set_memory_attributes_shared(start, size);
-> > +        /*
-> > +         * Without in-place conversion, attribute-tracking is handled by KVM
-> > +         * across all guest memory rather than on a per-section/slot basis.
-> > +         */
-> > +        ret = kvm_set_memory_attributes(start, size,
-> > +                                        to_private ? KVM_MEMORY_ATTRIBUTE_PRIVATE
-> > +                                                   : 0);
-> >       }
-> >       return ret;
-> > @@ -3544,7 +3616,8 @@ static int kvm_post_convert_section(MemoryRegionSection *section, bool to_privat
-> >       return 0;
-> >   }
-> > -int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-> > +static int kvm_convert_memory_full(hwaddr start, hwaddr size, bool to_private,
-> > +                                   bool pre_hooks, bool post_hooks)
-> >   {
-> >       int ret = -EINVAL;
-> > @@ -3588,10 +3661,12 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-> >               continue;
-> >           }
-> > -        ret = kvm_pre_convert_section(&section, to_private);
-> > -        if (ret) {
-> > -            memory_region_unref(section.mr);
-> > -            break;
-> > +        if (pre_hooks) {
-> > +            ret = kvm_pre_convert_section(&section, to_private);
-> > +            if (ret) {
-> > +                memory_region_unref(section.mr);
-> > +                break;
-> > +            }
-> >           }
-> >           ret = kvm_convert_section(&section, to_private);
-> > @@ -3600,13 +3675,15 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-> >               break;
-> >           }
-> > -        ret = kvm_post_convert_section(&section, to_private);
-> > -        memory_region_unref(section.mr);
-> > -
-> > -        if (ret) {
-> > -            break;
-> > +        if (post_hooks) {
-> > +            ret = kvm_post_convert_section(&section, to_private);
-> > +            if (ret) {
-> > +                memory_region_unref(section.mr);
-> > +                break;
-> > +            }
-> >           }
-> > +        memory_region_unref(section.mr);
-> >           size -= section_end - start;
-> >           start = section_end;
-> >       }
-> > @@ -3614,6 +3691,26 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-> >       return ret;
-> >   }
-> > +int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-> > +{
-> > +    return kvm_convert_memory_full(start, size, to_private, true, true);
-> > +}
-> > +
-> > +static int kvm_convert_memory_attributes(hwaddr start, hwaddr size, bool to_private)
-> > +{
-> > +    return kvm_convert_memory_full(start, size, to_private, false, false);
-> > +}
-> > +
-> > +int kvm_set_memory_attributes_private(hwaddr start, uint64_t size)
-> > +{
-> > +    return kvm_convert_memory_attributes(start, size, KVM_MEMORY_ATTRIBUTE_PRIVATE);
-> > +}
-> > +
-> > +int kvm_set_memory_attributes_shared(hwaddr start, uint64_t size)
-> > +{
-> > +    return kvm_convert_memory_attributes(start, size, 0);
-> > +}
-> > +
-> >   int kvm_cpu_exec(CPUState *cpu)
-> >   {
-> >       struct kvm_run *run = cpu->kvm_run;
+
