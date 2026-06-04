@@ -1,117 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEE1492514
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 16:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC91A2DCF4C;
+	Thu,  4 Jun 2026 16:52:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780591633; cv=none; b=rhKcyk5DmTfLvykMTPYlHdFAD/uMA9O661hItbQSKrx3579dDF/Nq78212yAFDOWI2gRLV2HVEEgfEeQUDfiq3qbB957Ao9eIfA8LfpSK3hx4BCI2DeG0RupgbTH6r31ZsKAgwfzm2EFex0RFppmeS92k3A61kflx0tSXBMx9TA=
+	t=1780591925; cv=none; b=fOPVyvqUWyuUsotNpvLENC6lS9ojWRYI7IeNRovVBDbieE5yBOCFB/KZJCssdFqv/qZA0OXamX1acKGSUmosZ2STtV+AcHKWgXrqk2cvc+jOtjiEI029oCIKynmZh5SeVvq1o4a+tuhrKmywhtURZJWUq34OaCV520ySHIC32sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780591633; c=relaxed/simple;
-	bh=o45CmQRWD5tFGvhbPzw2B8XaE/wg+x2O+LTDY1wvRT8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qp5v8y6k4/dc0JAbMlilf5Bb+7nDrrpc6ZuUJC9XRc93dN7gnXd27Ub2Kb6dZEfU+Yiz3TaM/Itv/bVE05eeQpD6n8hNEgBISBZ9S8EQJM7RRBod13Czxkk4pMuBK6RvUHoBj932+207YEbR8Pwf5y12LN+XoMaGYdpQ5QHxlQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5Fcp6YI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780591925; c=relaxed/simple;
+	bh=bGekkKMrvCJEuovAEAIlT2J2j0aiywvMyBg8Z6i9Vzs=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=R3kjfadvIitHLLvUYZebJZ44y1tOqPCF6eDWfHQX4Ie24Ipg0vaRU2zOkTq7NhUf9le1oxseD6ob9+s4et3Xllg6reuZ7LfCEDBldVqgxpbfDqcI361I7sSNxMZWy7Daidgkdi0QI38Hk7fNFrok17qYLdZUrVNOdH1N6keP+Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lTve8epX; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5Fcp6YI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D46A1F00893;
-	Thu,  4 Jun 2026 16:47:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780591631;
-	bh=ov3hXK8XkKy/3iKhe738SQy7Tjlfnuys/xAb4dvE734=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=O5Fcp6YIG2f52F1W6vmjRxRXxY0agghPwRtpQF3YU5HxSGFMDI88Ali/PGxL/tPLV
-	 l21Y8nRsPRfHXUbXVWsVxmcgHGQm5FOPP/MiU6ybwNkZYtp4tozTMS/jR8KU2LD/V1
-	 qKGKKzB4M/hLg5B2lr0MthYT/RAcb/B7pLne5PEEYx/neswnp83EbpwMcPvfmLnrxn
-	 LtwFQ/3gasr/JKiCrj3gmBCvueHFRy9aYOf0D7+4euxwwHaSCygpKsZ1M42qNh2/70
-	 7SKdQUb7I7dThtUZ/xiJXRAKWolbk/7K4Vw1/+wNMMY4nj7+GsB6PPljFfs0LVcrrF
-	 rtd/UzGw6+lFA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] kunit: Add ability to skip entire test suites
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Vaibhav Jain" <vaibhav@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604162805.556135-2-vaibhav@linux.ibm.com>
-References: <20260604162805.556135-2-vaibhav@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 16:47:11 +0000
-Message-Id: <20260604164711.8D46A1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lTve8epX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780591923; x=1812127923;
+  h=date:from:to:cc:subject:message-id;
+  bh=bGekkKMrvCJEuovAEAIlT2J2j0aiywvMyBg8Z6i9Vzs=;
+  b=lTve8epXJRUX7449wRVw6hOXJYZxTCge2b3iUU/HX2+BOowQWnHcoLWG
+   DDirIFItHckFogNPB15wQYgHRpskRUlnuk0XieG9NfxfWNqbt4iTxrFpm
+   20opisnklGfDr5xj6xRRIgCgT2thuJloa6i6/aZ0q79yGbUzqsK8m5sct
+   YutyZ79AC+8Fbm1xZj+OQQmH5bJjDqcucFxi2rTO6DfpXFXFh2V7ouAqy
+   +3HxVq7ZISIDJ4Dl9ywiYmiyuOncSb549jYnxb2EHBV9WVWMxunHwgSLQ
+   iiv4lWBUvjRb0E7CJ5ZqaGGf/cAgW0gjKo9p2n76sQ9hYrBPOfwhEfrVk
+   g==;
+X-CSE-ConnectionGUID: pEQuQOx3SHGyxvfYvSU0bQ==
+X-CSE-MsgGUID: IIn+ulVeQI2VoaAn7VXNyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="92106473"
+X-IronPort-AV: E=Sophos;i="6.24,187,1774335600"; 
+   d="scan'208";a="92106473"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 09:52:03 -0700
+X-CSE-ConnectionGUID: BEgr8ZQkSpu+xFIcKwRHeA==
+X-CSE-MsgGUID: /48/aHS1TOy2K90wato3CA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,187,1774335600"; 
+   d="scan'208";a="238251939"
+Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
+  by fmviesa009.fm.intel.com with ESMTP; 04 Jun 2026 09:52:01 -0700
+Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wVBIV-000000002MH-2epl;
+	Thu, 04 Jun 2026 16:51:59 +0000
+Date: Thu, 04 Jun 2026 18:51:45 +0200
+From: kernel test robot <lkp@intel.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ netdev@vger.kernel.org
+Subject: [mst-vhost:balloon 8/38] Warning: mm/page_alloc.c:7002
+ function parameter 'user_addr' not described in '__alloc_contig_frozen_range'
+Message-ID: <202606041824.6UhiUn3N-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The newly added `suite->status` field is not reset in `kunit_ini=
-t_suite()`, leading to a sticky skipped state across multiple debugfs runs.
-- [Medium] Bypassing `suite_exit()` when `suite_init()` skips a test suite =
-violates standard kernel initialization contracts and forces resource leaks.
+Hi Michael,
+
+FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git balloon
+head:   ffd91da19b20a15bbcff7438ef1ad0031c110395
+commit: c2b251ca61f1a3911a1c9ea9d1a5511a4da1aa1c [8/38] mm: add alloc_contig_frozen_pages_user for cache-friendly zeroing
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260604/202606041824.6UhiUn3N-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project f43d6834093b19baf79beda8c0337ab020ac5f17)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260604/202606041824.6UhiUn3N-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606041824.6UhiUn3N-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> Warning: mm/page_alloc.c:7002 function parameter 'user_addr' not described in '__alloc_contig_frozen_range'
+>> Warning: mm/page_alloc.c:7002 expecting prototype for alloc_contig_frozen_range(). Prototype was for __alloc_contig_frozen_range() instead
+>> Warning: mm/page_alloc.c:7266 function parameter 'user_addr' not described in 'alloc_contig_frozen_pages_user'
+>> Warning: mm/page_alloc.c:7266 expecting prototype for alloc_contig_frozen_pages(). Prototype was for alloc_contig_frozen_pages_user() instead
+
 --
-
-commit b745c49805409babd4338da1946b7eb586892485
-Author: Vaibhav Jain <vaibhav@linux.ibm.com>
-
-kunit: Add ability to skip entire test suites
-
-This commit adds a status field to struct kunit_suite to allow suite_init
-callbacks to mark a suite as skipped. When a suite is marked as skipped,
-all test cases within the suite are bypassed without execution.
-
-> diff --git a/lib/kunit/test.c b/lib/kunit/test.c
-> index 99773e000e1b7..989acc770265d 100644
-> --- a/lib/kunit/test.c
-> +++ b/lib/kunit/test.c
-
-[ ... ]
-
-> @@ -795,12 +798,20 @@ int kunit_run_tests(struct kunit_suite *suite)
->  	/* Taint the kernel so we know we've run tests. */
->  	add_taint(TAINT_TEST, LOCKDEP_STILL_OK);
-> =20
-> +	if (suite->status =3D=3D KUNIT_SKIPPED)
-> +		goto suite_end;
-> +
-
-[Severity: Medium]
-Does this cause the suite to remain permanently skipped on subsequent runs?
-
-If a test suite is executed via debugfs and gets skipped, suite->status
-becomes KUNIT_SKIPPED. Because kunit_init_suite() does not reset
-suite->status back to KUNIT_SUCCESS, this check will immediately bypass
-the suite on all subsequent debugfs runs, preventing re-evaluation
-of runtime prerequisites.
-
->  	if (suite->suite_init) {
->  		suite->suite_init_err =3D suite->suite_init(suite);
->  		if (suite->suite_init_err) {
-> +			suite->status =3D KUNIT_FAILURE;
->  			kunit_err(suite, KUNIT_SUBTEST_INDENT
->  				  "# failed to initialize (%d)", suite->suite_init_err);
->  			goto suite_end;
-> +
-> +		} else if (suite->status =3D=3D KUNIT_SKIPPED) {
-> +			/* Skip this kunit suite */
-> +			goto suite_end;
-
-[Severity: Medium]
-Will this leak resources allocated during suite_init() prior to the skip?
-
-Standard kernel initialization patterns guarantee that if an init function
-returns 0 (success), the corresponding exit function will be called.
-
-If suite_init() allocates resources, then sets suite->status to
-KUNIT_SKIPPED and returns 0, the goto suite_end bypasses the
-suite->suite_exit(suite) call.
-
-Does this force test authors to manually free resources before returning 0
-when skipping, or should the exit function still be called here?
-
->  		}
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604162805.5561=
-35-1-vaibhav@linux.ibm.com?part=3D1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
