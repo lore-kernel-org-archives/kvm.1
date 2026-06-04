@@ -1,46 +1,46 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7254E47D928;
-	Thu,  4 Jun 2026 13:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4046F47F2EB;
+	Thu,  4 Jun 2026 13:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780579699; cv=none; b=eAGe2hoqz1bXyd+EyxdqXXGt9LLFRx6rMNLE4y1F0V0RrHeZwXusymGYHYu00JbEwzYTLDseDMsO+UI6v4QI5sL/h//gB7gsLaKMpfKcMPZkVYDaK8K04JFxR2Fu6LVdyEdFhzLEYyM/VgRJYUcsxvBByr8PdUtwlqZEive67pc=
+	t=1780579699; cv=none; b=tpLORejii0klN83/wSVeNd01AHVoVmDM2C5zApRUm51MyyiSrl1SQ4HFnj6PhgZy3t6kfMGDPtL8wOiaMkIcTL9cgsoarFj5+rHYKfrinw56xGR823mZfBF7Gl6Am6Tz76kFMNYkdD2JLSiPpVYPYJ71hi3578M09rcCq8EJh5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780579699; c=relaxed/simple;
-	bh=9J5bqqmSphQwLa6cry1/qexPnxbjcbd/eDu0T9ngMxY=;
+	bh=+lT2PLheMz0vA3Q43IQJQh0Dfgv++nFvwC5X13KZgD8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bghMUB3sl7t4on/nWimWxjeCmPeZz3idyQVUSp3+DzRuecLZDpTNq4shRIuAuHJlKXFN5kRCWB8Z6reGstyVHJbHeXfKtu5nVOJcD0oo29oBAL+vdWMScjl3sd30QJ3c002zj6SqjPZImPaEEAlXAg71rEYZtD/ScKopxcyG6q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=qG13va8h; arc=none smtp.client-ip=113.46.200.222
+	 MIME-Version:Content-Type; b=qukq1Lh2Texp+pFRmHTYNzOT4wzGE7/0BrtOcqL1/0vdt+VLLe0OaRq/YZpCDpt1J5v2n/UExG4IrLDd8IdT1nijrqRlbE9X5L4UrqezKhkf1kbZZbT/dlG0zyhShtUlBcHZoliCbJQ7SSIe9MVpRHnENM8p6qBl7rTcqGZCkn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=zm95gPlr; arc=none smtp.client-ip=113.46.200.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="qG13va8h"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="zm95gPlr"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=Q2I4UZb7prqaKrbv3UYYhTmywuHlp+yKxLX19M59nA8=;
-	b=qG13va8hOWNdR9awQ64S501kdnSRiwhIEaEirJVxXDdY+WZ1aesT9SIotpZXQmGmFBDNLzGta
-	LpxBdSY3r5irabLMRIDimaZTezBT+/8CWyGyN9WwCSHX5vH9n6bYeJp230Dx7OGq8WkwPLCL8FA
-	b/DDZbPiEaG0gZd88+GlwKg=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gWQD70zj0zLlYS;
-	Thu,  4 Jun 2026 21:20:23 +0800 (CST)
+	bh=ixSP1lnXVVLECCGBLS/UAeH8g22V0UZfjH234Po6tYg=;
+	b=zm95gPlr1VJ035GgIH9t7cinOZwGtzjsHW45zKg/WPBjKTp2NO1zPh+Lo9Q6PITTlm33U3Jc6
+	5euijuk1KBDH51jdgJ8eMKhQAz/lT4kYGXReYiExKBr6O2x3imqjgyEXWkh0hIfZEnlKyUpNc/5
+	6MdO91/ywpdxouJ+rsMKGbM=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4gWQD61qwCznTWY;
+	Thu,  4 Jun 2026 21:20:22 +0800 (CST)
 Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id 650BC40565;
-	Thu,  4 Jun 2026 21:28:13 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id AC890402AB;
+	Thu,  4 Jun 2026 21:28:14 +0800 (CST)
 Received: from localhost.localdomain (10.50.163.32) by
  kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 4 Jun 2026 21:28:12 +0800
+ 15.2.1544.11; Thu, 4 Jun 2026 21:28:14 +0800
 From: Chengwen Feng <fengchengwen@huawei.com>
 To: <alex@shazbot.org>, <jgg@ziepe.ca>
 CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>, <wei.huang2@amd.com>,
 	<zhipingz@meta.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
 	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: [PATCH v16 07/12] PCI/TPH: Add pcie_tph_supported() helper to check TPH capability attributes
-Date: Thu, 4 Jun 2026 21:27:59 +0800
-Message-ID: <20260604132804.28678-8-fengchengwen@huawei.com>
+Subject: [PATCH v16 10/12] vfio/pci: Add TPH_CPU_ST to query CPU's TPH steering tag
+Date: Thu, 4 Jun 2026 21:28:02 +0800
+Message-ID: <20260604132804.28678-11-fengchengwen@huawei.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260604132804.28678-1-fengchengwen@huawei.com>
 References: <20260604132804.28678-1-fengchengwen@huawei.com>
@@ -54,67 +54,163 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  kwepemk500009.china.huawei.com (7.202.194.94)
 
-Add new helper pcie_tph_supported() with want_ext parameter:
-- want_ext = false: Check if device has valid TPH capability;
-- want_ext = true: Check hardware Extended TPH support.
+Add read-only VFIO device feature TPH_CPU_ST for userspace to resolve
+PCIe TPH Steering Tag by given CPU ID, memory type (VM/PM), and
+TPH requester type (standard/extended).
 
-This helper is prepared for follow-up VFIO TPH virtualization patches to
-uniformly query basic TPH existence and Extended TPH capability.
+Define compact flag bits to select memory type and requester type.
+Implement batch query logic: input buffer carries CPU ID array, output
+returns corresponding resolved ST tags.
+
+Add strict sanity checks for flags, count and reserved fields.
+The feature is double gated:
+1. Global enable_unsafe_tph module parameter must be enabled;
+2. Userspace needs to firstly SET VFIO_DEVICE_FEATURE_TPH_ENABLE
+   to set per-device tph_permit flag before using TPH_CPU_ST.
 
 Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
 ---
- drivers/pci/tph.c       | 19 +++++++++++++++++++
- include/linux/pci-tph.h |  3 +++
- 2 files changed, 22 insertions(+)
+ drivers/vfio/pci/vfio_pci_core.c | 70 ++++++++++++++++++++++++++++++++
+ include/uapi/linux/vfio.h        | 31 ++++++++++++++
+ 2 files changed, 101 insertions(+)
 
-diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
-index 6c4623cacc85..95280aab4fb5 100644
---- a/drivers/pci/tph.c
-+++ b/drivers/pci/tph.c
-@@ -600,3 +600,22 @@ void pci_tph_init(struct pci_dev *pdev)
- 	save_size = sizeof(u32) + num_entries * sizeof(u16);
- 	pci_add_ext_cap_save_buffer(pdev, PCI_EXT_CAP_ID_TPH, save_size);
- }
-+
-+/**
-+ * pcie_tph_supported - Check TPH capability attribute
-+ * @pdev: PCI device to query
-+ * @want_ext: false - check TPH cap exists; true - check EXT_TPH support
-+ *
-+ * Return: true on matched condition, false otherwise
-+ */
-+bool pcie_tph_supported(struct pci_dev *pdev, bool want_ext)
-+{
-+	if (!pdev->tph_cap)
-+		return false;
-+
-+	if (!want_ext)
-+		return true;
-+
-+	return pdev->tph_ext_support;
-+}
-+EXPORT_SYMBOL(pcie_tph_supported);
-diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
-index e4f7045fc152..5917a0694c1d 100644
---- a/include/linux/pci-tph.h
-+++ b/include/linux/pci-tph.h
-@@ -36,6 +36,7 @@ int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode, bool extended);
- u8 pcie_tph_enabled_req_type(struct pci_dev *pdev);
- u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
- u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
-+bool pcie_tph_supported(struct pci_dev *pdev, bool want_ext);
- #else
- static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
- 					unsigned int index, u16 tag)
-@@ -60,6 +61,8 @@ static inline u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
- { return 0; }
- static inline u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
- { return PCI_TPH_LOC_NONE; }
-+static inline bool pcie_tph_supported(struct pci_dev *pdev, bool want_ext)
-+{ return false; }
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index d5e534dd5829..91c0737727f2 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -29,6 +29,7 @@
+ #include <linux/sched/mm.h>
+ #include <linux/iommufd.h>
+ #include <linux/pci-p2pdma.h>
++#include <linux/pci-tph.h>
+ #if IS_ENABLED(CONFIG_EEH)
+ #include <asm/eeh.h>
  #endif
+@@ -1570,6 +1571,72 @@ static int vfio_pci_core_feature_tph_enable(struct vfio_pci_core_device *vdev,
+ 	return 0;
+ }
  
- #endif /* LINUX_PCI_TPH_H */
++static int vfio_pci_core_feature_tph_cpu_st(struct vfio_pci_core_device *vdev,
++			u32 flags,
++			struct vfio_device_feature_tph_cpu_st __user *arg,
++			size_t argsz)
++{
++	struct vfio_device_feature_tph_cpu_st cpu_st;
++	struct pci_dev *pdev = vdev->pdev;
++	enum tph_mem_type mtype;
++	void __user *uptr;
++	bool extended;
++	int i, ret;
++	u32 *cpus;
++	u16 *sts;
++	u16 st;
++
++	if (!vdev->tph_permit)
++		return -EOPNOTSUPP;
++
++	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET,
++				 sizeof(cpu_st));
++	if (ret <= 0)
++		return ret;
++
++	if (copy_from_user(&cpu_st, arg, sizeof(cpu_st)))
++		return -EFAULT;
++
++	if (cpu_st.flags & ~(VFIO_TPH_CPU_ST_MEM_TYPE_MASK |
++			     VFIO_TPH_CPU_ST_REQ_TYPE_MASK) ||
++		cpu_st.count == 0 || cpu_st.count > nr_cpu_ids ||
++		cpu_st.reserved != 0)
++		return -EINVAL;
++
++	uptr = u64_to_user_ptr(cpu_st.data_uptr);
++	cpus = memdup_array_user(uptr, cpu_st.count, sizeof(u32));
++	if (IS_ERR(cpus))
++		return PTR_ERR(cpus);
++
++	sts = kcalloc(cpu_st.count, sizeof(u16), GFP_KERNEL);
++	if (!sts) {
++		ret = -ENOMEM;
++		goto out_free_cpus;
++	}
++
++	mtype = (cpu_st.flags & VFIO_TPH_CPU_ST_MEM_TYPE_MASK) ==
++		VFIO_TPH_CPU_ST_MEM_TYPE_VM ? TPH_MEM_TYPE_VM : TPH_MEM_TYPE_PM;
++	extended = !!(cpu_st.flags & VFIO_TPH_CPU_ST_REQ_TYPE_MASK);
++
++	for (i = 0; i < cpu_st.count; i++) {
++		ret = pcie_tph_get_cpu_st_explicit(pdev, mtype, extended,
++						   cpus[i], &st);
++		if (ret)
++			goto out_free_sts;
++		sts[i] = st;
++	}
++
++	ret = copy_to_user(uptr, sts, cpu_st.count * sizeof(u16));
++	if (ret)
++		ret = -EFAULT;
++
++out_free_sts:
++	kfree(sts);
++out_free_cpus:
++	kfree(cpus);
++	return ret;
++}
++
+ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
+ 				void __user *arg, size_t argsz)
+ {
+@@ -1590,6 +1657,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
+ 		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
+ 	case VFIO_DEVICE_FEATURE_TPH_ENABLE:
+ 		return vfio_pci_core_feature_tph_enable(vdev, flags, argsz);
++	case VFIO_DEVICE_FEATURE_TPH_CPU_ST:
++		return vfio_pci_core_feature_tph_cpu_st(vdev, flags,
++							arg, argsz);
+ 	default:
+ 		return -ENOTTY;
+ 	}
+diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+index e5a4d1d7091b..19b5fb7eeae6 100644
+--- a/include/uapi/linux/vfio.h
++++ b/include/uapi/linux/vfio.h
+@@ -1541,6 +1541,37 @@ struct vfio_device_feature_dma_buf {
+  */
+ #define VFIO_DEVICE_FEATURE_TPH_ENABLE	13
+ 
++/**
++ * VFIO_DEVICE_FEATURE_TPH_CPU_ST - Query TPH ST by CPU, mem and requester type
++ *
++ * Read-only interface to resolve Steering Tag using:
++ *  - CPU ID
++ *  - Memory type (volatile / persistent)
++ *  - TPH requested type (standard 8-bit / extended 16-bit)
++ *
++ * @flags: bit0 - memory type, bit1 - TPH requester type
++ * @count: Number of CPU IDs to query consecutively
++ * @data_uptr: Userspace buffer: [in] u32 cpu_id array, [out] u16 st_tag array
++ *
++ * This feature requires two preconditions:
++ * 1. Global enable_unsafe_tph module parameter is enabled;
++ * 2. VFIO_DEVICE_FEATURE_TPH_ENABLE has been SET on the device beforehand.
++ */
++#define VFIO_DEVICE_FEATURE_TPH_CPU_ST	14
++
++struct vfio_device_feature_tph_cpu_st {
++	__u32 flags;
++#define VFIO_TPH_CPU_ST_MEM_TYPE_MASK	1u
++#define VFIO_TPH_CPU_ST_MEM_TYPE_VM	(0u << 0)
++#define VFIO_TPH_CPU_ST_MEM_TYPE_PM	(1u << 0)
++#define VFIO_TPH_CPU_ST_REQ_TYPE_MASK	(1u << 1)
++#define VFIO_TPH_CPU_ST_REQ_STANDARD	(0u << 1)
++#define VFIO_TPH_CPU_ST_REQ_EXTENDED	(1u << 1)
++	__u16 count;
++	__u16 reserved; /* Reserved for future use, must be zero */
++	__aligned_u64 data_uptr;
++};
++
+ /* -------- API for Type1 VFIO IOMMU -------- */
+ 
+ /**
 -- 
 2.17.1
 
