@@ -1,176 +1,91 @@
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E9F47DD47;
-	Thu,  4 Jun 2026 13:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045CB47F2FC;
+	Thu,  4 Jun 2026 13:28:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780579485; cv=none; b=lR9NOfJRyNaFzAhZNgndsxxTbDv3pqaWNUE/fr7VTPilpr9btLyHY2SCny/XgGj3oEP8rC8XvtcTYqZDPE2joT5umm/+l8oHbklYEfhznomnM6VmJebhOFHEumy84NfF3bfqEabcCp49Zv/QEuMtxK9327vioQqDJ4/BjgbyPrU=
+	t=1780579697; cv=none; b=LNFdHtq8j7dg576aHRiB4cTAlGFxqY+s+MLTYLoINN7N5hDnBjsZ4e/jZ/P5zY0hWG3ekNuLnl/8cidTKIFumoGA+R2jMhjnrAzfjzWpn9E19fpMSjuiGSXF4TNbzKH0szmxOeYbSGtkVo7zH6YL+Y1KSr0hA7nPd3KtB6m0oVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780579485; c=relaxed/simple;
-	bh=mt6ccfxhzw2pzHfFjv/KPNuIPAOBrZOy3Mkk72W6BT0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NwDx7w0c/SFU5U52QqO9JAPXGYCpCD+ThLlzO7h77YUCiVQ8ZJ/x9I0NNEKNLdmwLktxujXtKGbOAgL2Q3WUdV53e+Y8E4wWsgGnaU75M0iS153GsfZZrM2qk/n5ib+SzUxU7CpzU+vRTIIbwQAgUkKG9mvbv9mJ3If7LPrTN5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=AocazI/m; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1780579697; c=relaxed/simple;
+	bh=BcMM7o7rHGvvQrMzqzdny1kg2PCOXB5MeNOma+0kOTU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r02zc0QFxGAN3Gwh/niH0fK+dYezFV4/epUgPl7uplGMrm27vkS/d1EdhnD2SFGbUXfDbE291r0SW8+8+Nswmfa/CgCobUgzQcQL1m4I1WlusDz6wVzt0ZRnvSjNrPSjSgaarpxuUEddchVpmrLBzdtHSoRqiPb8GSA5qJLQA1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=OHWn9OLh; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="AocazI/m"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1780579478; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=3+qPiQ2Gl/TMinxrqx2qmds9VgNiXB+sPEFSqxECM+0=;
-	b=AocazI/mJuBopEpVeKeQG5wkwm1KKwywm2ewQNdJLudCqad4K/edRcANsThxBufZ5CMEA8aeezpbkYZbEtdJ12HewTGDU9Io17abZHCQFEXgIEB3nG31xaUtHvTbbapuY0v39WVpmKZkDFrJJxu9NpkHxokfKhwpvSYUxvoK6tI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R961e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X4AKnaT_1780579474;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X4AKnaT_1780579474 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 04 Jun 2026 21:24:35 +0800
-From: fangyu.yu@linux.alibaba.com
-To: Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atishp@atishpatra.org>,
-	Nick Kossifidis <mick@ics.forth.gr>
-Cc: Song Shuai <songshuaishuai@tinylab.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Richard Lyu <richard.lyu@suse.com>,
-	Nam Cao <namcao@linutronix.de>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	guoren@kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [PATCH v3 8/9] riscv: kexec: Add the relocate-trampoline wrapper
-Date: Thu,  4 Jun 2026 21:24:17 +0800
-Message-Id: <20260604132418.15725-9-fangyu.yu@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260604132418.15725-1-fangyu.yu@linux.alibaba.com>
-References: <20260604132418.15725-1-fangyu.yu@linux.alibaba.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="OHWn9OLh"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=ByFC8vH4TSLCw4caLiYJj9r+6ZHL/T7RLgXIvzyRg+Q=;
+	b=OHWn9OLhqilh/F4dSA+ppf+wfhkNiwn7W/WxSvkSMcdV76WhtipZkk3HfV4zOATde9PRxk7op
+	r/uhrsg5EwiZTD2IXkHgw+lyhdjXc7V8IGyuR0W0K4oPynQ80UnInzXoAWEV8bqdgG6QIngN4Ot
+	DwuVi3VO9sPqrnpXqFoVTRk=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gWQD33Hj3zmV90;
+	Thu,  4 Jun 2026 21:20:19 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 545C340571;
+	Thu,  4 Jun 2026 21:28:11 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 4 Jun 2026 21:28:10 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: <alex@shazbot.org>, <jgg@ziepe.ca>
+CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>, <wei.huang2@amd.com>,
+	<zhipingz@meta.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: [PATCH v16 02/12] PCI/TPH: Fix tph_enabled concurrent update race by bitfield packing
+Date: Thu, 4 Jun 2026 21:27:54 +0800
+Message-ID: <20260604132804.28678-3-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260604132804.28678-1-fengchengwen@huawei.com>
+References: <20260604132804.28678-1-fengchengwen@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Split tph_enabled from shared pci_dev bitfield into spare bit of tph_cap's
+u16: tph_cap is immutable post-enumeration (15 bits for offset), remaining
+1 bit stores tph_enabled. Removes cross-bitfield concurrent write hazards
+highlighted by Sashiko after VFIO TPH exposure. No functional changes.
 
-Add riscv_kexec_relocate_entry to .kexec.tramp.text and the two
-asm-visible globals (riscv_kexec_relocate_entry_pa and
-riscv_kexec_cc_buffer_pa) that the wrapper consumes.
-
-The wrapper performs the same two-step transition used by the crash
-path: switch to the trampoline pgd, jump to the PA of self, then drop
-the MMU with PC already on a PA. It finally jumps to the PA of
-control_code_buffer.
-
-machine_kexec_prepare() publishes the wrapper PA via WRITE_ONCE for
-non-crash images. The per-image control_code_buffer PA is published
-later, at dispatch time, so a load failure between prepare() and the
-kexec_image swap cannot leave the global pointing at a freed page.
-Nothing routes to the wrapper yet; the switchover happens in the
-follow-up patch.
-
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
 ---
- arch/riscv/include/asm/kexec.h     |  1 +
- arch/riscv/kernel/kexec_relocate.S | 36 ++++++++++++++++++++++++++++++
- arch/riscv/kernel/machine_kexec.c  |  5 +++++
- 3 files changed, 42 insertions(+)
+ include/linux/pci.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/include/asm/kexec.h b/arch/riscv/include/asm/kexec.h
-index 6466c1f00d41..b75cab959e53 100644
---- a/arch/riscv/include/asm/kexec.h
-+++ b/arch/riscv/include/asm/kexec.h
-@@ -53,6 +53,7 @@ typedef void (*riscv_kexec_method)(unsigned long first_ind_entry,
- 				   unsigned long va_pa_off);
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 2c4454583c11..109182658f76 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -471,7 +471,6 @@ struct pci_dev {
+ 	unsigned int	ats_enabled:1;		/* Address Translation Svc */
+ 	unsigned int	pasid_enabled:1;	/* Process Address Space ID */
+ 	unsigned int	pri_enabled:1;		/* Page Request Interface */
+-	unsigned int	tph_enabled:1;		/* TLP Processing Hints */
+ 	unsigned int	fm_enabled:1;		/* Flit Mode (segment captured) */
+ 	unsigned int	is_managed:1;		/* Managed via devres */
+ 	unsigned int	is_msi_managed:1;	/* MSI release via devres installed */
+@@ -589,7 +588,8 @@ struct pci_dev {
+ 	u8 reset_methods[PCI_NUM_RESET_METHODS]; /* In priority order */
  
- extern riscv_kexec_method riscv_kexec_norelocate;
-+extern riscv_kexec_method riscv_kexec_relocate_entry;
- 
- #ifdef CONFIG_KEXEC_FILE
- extern const struct kexec_file_ops elf_kexec_ops;
-diff --git a/arch/riscv/kernel/kexec_relocate.S b/arch/riscv/kernel/kexec_relocate.S
-index 8cfdf6f4032a..6c624560c9ac 100644
---- a/arch/riscv/kernel/kexec_relocate.S
-+++ b/arch/riscv/kernel/kexec_relocate.S
-@@ -225,6 +225,42 @@ SYM_CODE_START(riscv_kexec_norelocate)
- 
- SYM_CODE_END(riscv_kexec_norelocate)
- 
-+.extern riscv_kexec_relocate_entry_pa
-+.extern riscv_kexec_cc_buffer_pa
-+.section ".kexec.tramp.text", "ax"
-+SYM_CODE_START(riscv_kexec_relocate_entry)
-+	/*
-+	 * Two-pass entry, identical in shape to riscv_kexec_norelocate:
-+	 *   - 1st entry: t3 == 0 (initialized by machine_kexec()).
-+	 *   - 2nd entry: t3 == PA of riscv_kexec_relocate_entry, so auipc
-+	 *                matches t3 and we fall through to label 1.
-+	 * Args a0..a4 are passed through unchanged to riscv_kexec_relocate.
-+	 */
-+	auipc	t0, 0
-+	beq	t0, t3, 1f
-+
-+	la	t0, riscv_kexec_relocate_entry_pa
-+	REG_L	t3, 0(t0)
-+	la	t0, kexec_tramp_satp
-+	REG_L	t1, 0(t0)
-+	csrw	CSR_SATP, t1
-+	sfence.vma x0, x0
-+
-+	jr	t3
-+1:
-+	/*
-+	 * Now executing at the PA of this wrapper with the trampoline pgd
-+	 * installed (identity-mapped). Drop the MMU; PC stays valid because
-+	 * it is already a PA.
-+	 */
-+	csrw	CSR_SATP, zero
-+
-+	/* Jump to the PA of control_code_buffer to run the relocate body. */
-+	la	t0, riscv_kexec_cc_buffer_pa
-+	REG_L	t0, 0(t0)
-+	jr	t0
-+SYM_CODE_END(riscv_kexec_relocate_entry)
-+
- .section ".rodata"
- SYM_DATA(riscv_kexec_relocate_size,
- 	.long riscv_kexec_relocate_end - riscv_kexec_relocate)
-diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machine_kexec.c
-index d82f45fb44b6..71688c63af65 100644
---- a/arch/riscv/kernel/machine_kexec.c
-+++ b/arch/riscv/kernel/machine_kexec.c
-@@ -20,6 +20,8 @@
- 
- unsigned long kexec_tramp_satp;
- unsigned long riscv_kexec_norelocate_pa;
-+unsigned long riscv_kexec_relocate_entry_pa;
-+unsigned long riscv_kexec_cc_buffer_pa;
- /*
-  * Trampoline page tables. Both the VA(trampoline)->PA and the
-  * PA(trampoline)->PA identity mapping are installed in this single
-@@ -164,6 +166,9 @@ machine_kexec_prepare(struct kimage *image)
- 
- 		/* Mark the control page executable */
- 		set_memory_x((unsigned long) control_code_buffer, 1);
-+
-+		WRITE_ONCE(riscv_kexec_relocate_entry_pa,
-+			   __pa_symbol(&riscv_kexec_relocate_entry));
- 	} else {
- 		WRITE_ONCE(riscv_kexec_norelocate_pa,
- 			   __pa_symbol(&riscv_kexec_norelocate));
+ #ifdef CONFIG_PCIE_TPH
+-	u16		tph_cap;	/* TPH capability offset */
++	u16		tph_cap:15;	/* TPH capability offset */
++	u16		tph_enabled:1;	/* Whether TPH is enabled */
+ 	u8		tph_mode;	/* TPH mode */
+ 	u8		tph_req_type;	/* TPH requester type */
+ #endif
 -- 
-2.50.1
+2.17.1
 
