@@ -1,155 +1,129 @@
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236653C6A5F
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 20:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780605083; cv=pass; b=oy3SRV8dS5WVhdy6hn7T4nSscIekexPoBZntkCtzUtpFQOcxx9QAW1ZVq5LiueMuGuNdm23eRQtuqxhuxB+gSLDkrzevITySI+UJ3wRLz0zzIc2TjJyxjXPFGj4CIBlz0aqBNld14UAtLqZMsOQDvAOOlerh1AJ0ogt7DFrSK5A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780605083; c=relaxed/simple;
-	bh=9kpC2nHMHfrFBBDbEImWKZiBaD4bqcBEfsrz4mjibt0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DraXI96h6pLEqANZFn3SCYV3mUpi8nf5iJOgJaf8jOrwQHHVXi4t8Z5zxAdlCdBf64bNHj2lfpClnf/G3TrFLIMvCzcwaAFj0p0YSd2/du3A6CZBmQ0jBadVcx6naVLtAvl6JHLSS7kXJfo6Bby6tPHBjyVe20T8QBTpAcRH/I0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pFw677m1; arc=pass smtp.client-ip=74.125.82.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D983C13E7;
+	Thu,  4 Jun 2026 20:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780605361; cv=none; b=F+ITUGOfqHzYe3CPPMYwRe9l2zxVrD1HuAC0svXxdeYq45zHSbshxizCmZ4k1nC/az6O4Ypqg/iSUK/3yydKK9SwKbfqJ5IQI5/JGFEk6ooqpsJ0+wvHwFH/ezlu+uIb9Pfrlrl1DPk1jL3AebUrtiyeoEv2JsmP4UgGwsTbRd4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780605361; c=relaxed/simple;
+	bh=bb7uXVgF99YCfYIp6Oc01bLAl+54GARn1JqlpwHwqBY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FsPSDZA2Esvn3WM5IKAJu86UDAzvsBiNg4lS+HI0BAHsW3k2pSA8QrOL4Uv1Ft1iaVlER5I3MFTbNIs4op8Xlo44I8v0OUDV1CiJ8ygWdgXRmDod+NQS6W9tZHmGTz77OBLG5ABB7BcaYRVr9Z2JZZf77iKUlUm+HImGO1hHSnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1qi+xit; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pFw677m1"
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-135e7f4a295so750046c88.0
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 13:31:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780605081; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XJopt2uQbX0j+Qt9QdZheBM6Gb8g796NWi/4+/XmfidPsPA/eQEtHaO7KJfZcY52QJ
-         2e2m/yDfNq9XEgGfLNFwCrzBo7Adg+WyDWQj0eGGBSWoUBIBvq1XE0QFgHnWHLFulBij
-         QWuF9z+c6AmPDj0WNYWkIVzmwx23kMo9lvIOiVr/3/doDvp0A7RNN+vIupLBShjBTQfT
-         arMPuD3LF7e/O3sIAG/mzQcDxOOjX9jW0SUdcKxJCjoMTFKZBXJaV9hsVMqRs9SqjrUn
-         jQgoMAAwq8wr02P3eb7jvOetur+5lZBeu30AO6M2YBd1Ww5FoLcFzrk2sB9q+gY7JSnd
-         VWsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5eqxDNwMgXWFT6618jLIGF8ZKS5nIiFhwgYUzrXYF84=;
-        fh=KefFXkzf2XUeEXlaAXTi5ft4+xMqBvon9MyR4IegZdI=;
-        b=kN5OxW2GGEfFlHMi3O2tREgC7CN2cJbXCK5F8RGDvh2XGTgb+11GuuATPSDlIPHubD
-         e+UwwwrCnVyzLCitng5ASFMBxa1LAHr9QYcB+d7hecrIGvhT8v3Op0ZgRAoSgWypP1oR
-         pKUXUlY8eVkNuE1raYdkCqYQk5h9mv7VMooOGf5FoPgoK/KjZ4LV5rOtKFZMONw3h69m
-         1k0x4wi/h8Qs0sKBX9NAdWLp9AULV8cnLNH27v9GePh/jOuiFio+YmlY9MkINftQ+zFB
-         SCQvB1eMja6ofzBUFF196ZdNUEjHDmJNCWX2d/lA29777Uu+GaDQVeDQFxdxUiRQ04qG
-         7FzQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780605081; x=1781209881; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5eqxDNwMgXWFT6618jLIGF8ZKS5nIiFhwgYUzrXYF84=;
-        b=pFw677m1NksCLNCvmMLmc0N1IaYFudlMVBg6Ww0K27XytdArxFl3sPSvMkhrHMpmHh
-         UYrQ1+cbXlFyIo2wRbsLlB7pTdZ7IEKDcKot0DsFSuvytH0z+u5etQEPhPczqG9ocmk2
-         yH3s49gMwm7dgrzk1GRFGsDFNvLqgLDU9MnYHO+lyuDeYEM3/FU3cihH5aeKmNTEUM63
-         SxAf0k//vTLqomUDvwC7lA5gdimOPcXFxHfby3IZWEoA9Ew7tAZ7G7SLZXyfYR0WMBHc
-         xDhcVJZ84f+bbMz6yciRRF6GqyXUvbaJtJLgV+ATqFCHJ2E74G1OiDLW001IOV1eqHx5
-         nEdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780605081; x=1781209881;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5eqxDNwMgXWFT6618jLIGF8ZKS5nIiFhwgYUzrXYF84=;
-        b=JU/6bm+2jgJAkFj13x1/cmt+gdkav8GPHiPGHW3UowfYgIMX1nOFvkRUDZ17T53wGs
-         HMLyDQBKWwMymkYtT+/qQe0zwq7Jt/PVMQvjHxkN9okc5+jqIQdreK1Fw02+Ql6ZcP9o
-         KwGJSsW2+pozatGWYeoWEvy/pnf62A7gUeVsiLf/WABs1jEPvNlKxq4Hl1Dh98YThYDX
-         0ljtZ8zBh427SHdKrxDMAa8N9ntBYmNLBWXPradcnMd5cswZqwdZGBbWB1fhQNd9DVZ5
-         3RG1+hMOC4O9oSP9NJgXWdaJlkcSEId/HYia8WiIO1mmPGF/wTmc0Ig7LTqalRKzlYW/
-         Kvug==
-X-Forwarded-Encrypted: i=1; AFNElJ/rG8fs1DBEZU7zzaymnrCaOGfNddeWJIyWEYEJX+itqtJ+IyZQgX/uWAanGgwSPiRS+mU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7jr1N2c7HnWtBkR6mGHvi1E/pACwwTQMQll97ygXO9pVR7KX/
-	11QKAnIgyMux94qpCTmajW1i6L8b1C7ovNsbI7nMA8hc63ochqjRaDPIryheYoQRCkbN2C3BcqG
-	TPOk9Nstk+lGNxdW1vpMIvZcc2MN8meegWJOyzXvD
-X-Gm-Gg: Acq92OHdnbAZGucREGCeAB/OUQgyhSkfinj/Qc9FB7jdXPjOeaimezLdh4RpTOUskn4
-	/7yDNMJrAD/jlpkHdF193fIYP/htQnHLOXj70J9U5qTH1A9nx9EB3Wri1vbCdEUQ6msoT1iHdu4
-	odNlgRK/vCB+JTz2LX7MjlaufugHuye/uZ7B3SZKCJdRBVHyYdW1s2UGNIFvN5zINleoNtxfqaf
-	+++x0YtH8yAAQGR2use4KrH/ixx7HetyY07inH7XTjofVjEGzZvlNlzGAsdLuc5dLkbD6h8ChfH
-	4OOBiL0QhZAeJEQkXg==
-X-Received: by 2002:a05:7022:6725:b0:12c:1288:ce63 with SMTP id
- a92af1059eb24-137fdf48f79mr2155784c88.13.1780605080783; Thu, 04 Jun 2026
- 13:31:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1qi+xit"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC82B1F00893;
+	Thu,  4 Jun 2026 20:35:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780605359;
+	bh=scZOl5vgdZbQOajz2C/Zjlq3Bej0uujX7Ph67xmO1U4=;
+	h=From:To:Cc:Subject:Date;
+	b=U1qi+xithSwLRc6TuTQ+urQNs2Nss0oIWUnUOiuTguOAyGR8aU8/CLsAu9LuQZCh+
+	 +FyCdoXXN3YImeT/fyBUWr4znouc/eTWKsIqFX8DzUZDyNaoqxkJvqTvJA3hQPnATk
+	 lOhFpQyHpr4nALpVK58ftx1/paIv0eAt4EWDuqXsS4nCjzPU+35I2NY9Yl9kqXcKyX
+	 fVIkgIc39GVxbdXIvCvL/4IlnXOgcNg1Po/X2eQxg5UUO+Dttp8jFY2yN8oZiH3VB7
+	 TD4UG2Ez3Si/bV82M9QWU7IHZIp22vXo2RkgjIe2ck7mLbyi1KTxWYwiFgtJgRYzf9
+	 B0kXFHENMGc4g==
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH v2 00/10] KVM: selftests: Stress save+restore and #PF (ft. nested)
+Date: Thu,  4 Jun 2026 20:35:36 +0000
+Message-ID: <20260604203546.365658-1-yosry@kernel.org>
+X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260602222941.3133236-1-jrhilke@google.com> <aiHW_1vBrukpuaW2@google.com>
-In-Reply-To: <aiHW_1vBrukpuaW2@google.com>
-From: David Matlack <dmatlack@google.com>
-Date: Thu, 4 Jun 2026 13:30:53 -0700
-X-Gm-Features: AVHnY4KdT1r0GEFqRf1PcrTfObBktJcqyYjPXAeMt1dMh7yCC5NlZ2zlsiBQr98
-Message-ID: <CALzav=cb=SaTtkwdTpK32Nboq6Uj8WKiN_=wRfpO+zugdjLRCA@mail.gmail.com>
-Subject: Re: [PATCH v6] vfio: selftests: Find devices that have VFIO selftest drivers
-To: Sean Christopherson <seanjc@google.com>
-Cc: Josh Hilke <jrhilke@google.com>, Alex Williamson <alex@shazbot.org>, 
-	Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 4, 2026 at 12:50=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Tue, Jun 02, 2026, Josh Hilke wrote:
-> > Add a new script, list_supported_devices.sh, which prints out the
-> > segment:bus:device.function (SBDF) numbers and names of devices on a
-> > machine that have a VFIO selftest driver. This makes it easier to
-> > determine if the system is capable of running VFIO selftests.
-> >
-> > Includes a -q (quiet) argument which prints just the SBDFs so that the
-> > output can be passed to tools/testing/selftests/vfio/scripts/setup.sh
-> > (e.g. via xargs) to bind the devices to VFIO to use in VFIO selftests.
-> >
-> > Examples:
-> >
-> > $ ./list_supported_devices.sh
-> > 0000:6a:01.0 - Intel DSA SPR [8086:0b25]
-> > 0000:6f:01.0 - Intel DSA SPR [8086:0b25]
-> > 0000:74:01.0 - Intel DSA SPR [8086:0b25]
-> >
-> > $ ./list_supported_devices.sh -q
-> > 0000:6a:01.0
-> > 0000:6f:01.0
-> > 0000:74:01.0
-> >
-> > Suggested-by: Sean Christopherson <seanjc@google.com>
-> > Signed-off-by: Josh Hilke <jrhilke@google.com>
->
-> NAK, until this stuff is fixed and properly documented.
->
-> This script needs to (a) communicate that some of the devices may be on V=
-FIO's
-> denylist, (b) NOT report them by default, (c) let the user report denylis=
-ted
-> devices, (d) make it *very* clear in the output that a device, and (e) id=
-eally
-> provide the user with a hint of how that might be able to test a denied d=
-evice,
-> e.g. by reloading vfio-pci with disable_denylist=3D1.
->
-> Nothing in here so much as mentions that these "supported" devices may be
-> disallowed by the kernel, including the devices that's USED AS THE EXAMPL=
-E.
->
-> The DSA SPR devices has been on the naughty list since commit 95feb3160ee=
-f ("VFIO:
-> Add the SPR_DSA and SPR_IAX devices to the denylist") from 2024, so I hav=
-e a
-> very hard time believing y'all weren't aware of this.  And if you really =
-truly
-> weren't aware of this quirk, than what exactly are you even testing!?!?
->
-> C'mon.
+Add a stress test for save+restore while the guest is triggering and
+handling #PFs, in both L1 and L2. The goal was to create a generic
+selftest that would catch bugs like the one fixed by commit 5c247d08bc81
+("KVM: nSVM: Use vcpu->arch.cr2 when updating vmcb12 on nested
+#VMEXIT"), instead of relying on high-level testing (e.g. building GCC
+in L2) to catch it.
 
-Yeah vfio_pci.disable_denylist=3DY is required to use the Intel DSA SPR
-device. This script is a great place to capture that previously hidden
-requirement.
+The test tries to be as generic as possible by triggering #PFs in a
+guest and installing a proper #PF handler, while the host is
+continuously doing save+restore cycles. Exiting to userspace is randomly
+triggered by a second thread that constantly signals the vCPU thread.
 
-Your proposed (a)-(e) sound good to me.
+Patches (1-6) are prep patches, fixing GPR switching for nSVM and
+generalizing it to cover nVMX, which is needed for the test to run
+properly with nVMX. Patch 4 removes HORRIFIC_L2_UCALL_CLOBBER_HACK, as
+it is no longer needed. While this series does not have the "complete"
+fix added by commit 6783ca4105a7 ("KVM: selftests: Add a shameful hack
+to preserve/clobber GPRs across ucall"), it's a good step in the right
+direction.
+
+Patches (7-10) add the actual test. The test is first introduced as a
+simple (read: dummy) stress test that just explicitly syncs to userspace
+after each #PF handling to do save+restore, then gradually evolves to
+add the random signaling and nested support. After the last patch, the
+test reliably reproduces the CR2 bug.
+
+This series conflicts with reworking L2 stack allocation in [1], but the
+conflict should be trivial to fix regardless of which series lands
+first.
+
+[1]https://lore.kernel.org/kvm/20260527234711.4175166-17-yosry@kernel.org/
+
+v1 -> v2:
+- Switch guest_regs to an array, which simplifies the offsets
+  calculation and forgoes the dependency on using OFFSET() or defining
+  the struct offsets for assembly otherwise.
+- Move page table mapping to the test (instead of a generic helper), as
+  the helper mistakenly tried to map the entire memslot, not just page
+  tables.
+- Do not use identity mappings for page tables as it collisions with
+  GVAs used for ELF in some cases.
+- Simplify page table walking by using loops.
+- Make sure the signals are ignored before creating the signaling
+  thread [Sashiko]
+- Assert that the guest actually ran and had page faults [Sashiko]
+- Add a patch to fix RAX and RFLAGS offsets in run_guest() [Sashiko]
+- Initialize exception_has_payload when injecting a #UD [Sashiko]
+- Only check KVM_STATE_NESTED_GUEST_MODE when running in nested mode
+  [Sashiko]
+
+v1: https://lore.kernel.org/all/20260518202514.2037078-1-yosry@kernel.org/
+
+
+Yosry Ahmed (10):
+  KVM: selftests: Move STR() and XSTR() definitions to test_util.h
+  KVM: selftests: Fix RAX and RFLAGS VMCB offsets when running L2
+  KVM: selftests: Use an array for guest_regs (and fix offsets)
+  KVM: selftests: Move GPR load/save definitions outside of nSVM code
+  KVM: selftests: Reuse GPR switching logic for nVMX
+  KVM: selftests: Drop HORRIFIC_L2_UCALL_CLOBBER_HACK
+  KVM: selftests: Add basic stress test for save+restore and #PF
+    handling
+  KVM: selftests: Trigger save+restore randomly in the #PF stress test
+  KVM: selftests: Support running stress save+restore and #PF test in L2
+  KVM: selftests: Trigger L2->L1 exits stress save+restore and #PF test
+
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../testing/selftests/kvm/include/test_util.h |   3 +
+ .../selftests/kvm/include/x86/processor.h     |  55 ++-
+ tools/testing/selftests/kvm/include/x86/vmx.h |  63 ++--
+ .../testing/selftests/kvm/lib/x86/processor.c |   2 +
+ tools/testing/selftests/kvm/lib/x86/svm.c     |  58 +--
+ tools/testing/selftests/kvm/lib/x86/ucall.c   |  32 +-
+ .../kvm/x86/evmcs_smm_controls_test.c         |   3 -
+ tools/testing/selftests/kvm/x86/smm_test.c    |   3 -
+ .../kvm/x86/stress_save_restore_pf_test.c     | 333 ++++++++++++++++++
+ 10 files changed, 435 insertions(+), 118 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
+
+
+base-commit: d4bfaa66fa171089b9b9fb2dc17af9245f2b9b34
+-- 
+2.54.0.1032.g2f8565e1d1-goog
+
