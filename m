@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F366D353EE0
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 05:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69421DC9B3
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 05:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780551159; cv=none; b=Y5MUZa+RMjI7S40t+JP9U0fA/O1HN4AImffyGB999MeSrBTX8T8AeB2VQJKES122zNnPa5C9XFEQS7tuno+mShINqq9LfGrEXQyYH0uH9L4cqy68raBQr7vxHZ+VVfbpsqAEQoOQ8I7Xd6RQpq3UHrvpXGHB6xXmMjLMf2mSZO8=
+	t=1780551463; cv=none; b=tmucdGwRnECmaii1kOWCXeWXXCYykOtv6gwBWPLpanacMtkGZjSFXRgQ5nABMobq+i/y4Paq1q50BrYLcXdd8tN4knELXaM2efAHreELYQXb/6IlFcjyDnjPyhDzBeIN/5A3lTGtawpgZ3pW+p43ddqB79+mdZaR4NuYPI/HJd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780551159; c=relaxed/simple;
-	bh=A2J9LO8Lgt+UPtTSt8kPI2wRLARc5uc90oOItpIkw9A=;
+	s=arc-20240116; t=1780551463; c=relaxed/simple;
+	bh=XquCwDNh5hsz8TEY31plU+ZX/bRYUutRHY6ODn7EXLw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mG8FV0k8QOIMAw7Z8+A8VObnWyys/SLM8RUuz190R42GuqNbQTRi333w3wPduuzLy1Zwe0f9kdTmNXuz6pHnoiIQeEuNK8wKkwkGU4gRpS18WBP4nQcXOMFlXZdoPvOzs8R+KmZZrV8IzV0xlw89FDQHWUOMMmv/48tQAe8bVIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W6n25gWa; arc=none smtp.client-ip=192.198.163.13
+	 In-Reply-To:Content-Type; b=SMBQLBEZcrc/ct32WbrzLl3jV0SrpbkDQyVqrKw1ILcb3UarsruUNZzTfWmEXp1hXJXNXrMI8HWbHsukQLHbxumHiRrI+UHHj68OBJgMrgAy8NJNfotzrKkNtTG+/zmRbdSgHu0t5NOY7YqFH0UiOe+cFU5UYR3DNRprQpnq+f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n048Kxjr; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W6n25gWa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n048Kxjr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780551158; x=1812087158;
+  t=1780551462; x=1812087462;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=A2J9LO8Lgt+UPtTSt8kPI2wRLARc5uc90oOItpIkw9A=;
-  b=W6n25gWat3NsM+PP/9/eww+vltqTjgto0YscZ9AWq3NfAvHIhGBvMuDX
-   6nyCl+wXNIQGgFVAYnz/xMYfuvhbpO42E8YBEfAAbipUfMYGMIx4kwYIH
-   /ntoOKIbFQTe8RGq69vDnExtHcFQIJjb6FCIG3IMMAVbatRHCMp5iSEPe
-   lDrBJfX71MTnler9BVsqhFMNk5Pg7fcheXhoCOBAEXaNQ6Rcl66e6Y7fJ
-   5hPsC7yDowPbOUidNbXEou9fCpraAvGzeFZW817LOVDrG1u2qqp6+kwaH
-   rqiueJXIYOeV2zXARgTTJ4+RGidVTQ/WEjmZUpqyniV5aSdRsHZzlg2ek
-   w==;
-X-CSE-ConnectionGUID: nxPZBSoITrux7csc7S07dw==
-X-CSE-MsgGUID: HOa2IitwQr28iUPOTD8yeg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11806"; a="83947710"
+  bh=XquCwDNh5hsz8TEY31plU+ZX/bRYUutRHY6ODn7EXLw=;
+  b=n048Kxjreycxse/pdhgTMgruWnofU2/c4zr1sNa/XmRaO104MCgF5Ptm
+   If56W59fg+mLQ9L5lcr5ARTy5gDLpIIPjCE6dSLic92ILo7yEnfrGJRlb
+   m6iTnDT45lN19UvYMq9LSMU4rRtgRjgZBDbM+0z4FQOEqgyuKQQL5ZFLN
+   cz6aTCoAwmGaNoNoRkwfmAkk2vYK7rKjjzf6CW7rdSdJWv+b2J3lhbWhB
+   gFEjBLk/Stnz1MgW3Su5CyH3OgHtYCyUshnTnRQKcRweZFEOmEWLr49/I
+   Qwe9y+3UtgJwzdgeVqeFeUev5v3eKeDkoeP/g9rOHW8SjdQLQdUMXf8aD
+   A==;
+X-CSE-ConnectionGUID: DAtQuJbwRvaAS8MlHQ+NIA==
+X-CSE-MsgGUID: 0mQDW1u1TvycwzzyOv/pLg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11806"; a="83948060"
 X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; 
-   d="scan'208";a="83947710"
+   d="scan'208";a="83948060"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 22:32:37 -0700
-X-CSE-ConnectionGUID: MHBpgH+9R0qEOnE9L624KA==
-X-CSE-MsgGUID: Zq0ITMpzTTesM6aN4g42HA==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 22:37:41 -0700
+X-CSE-ConnectionGUID: nstRqhw0RwqIOUu6LeE4/g==
+X-CSE-MsgGUID: msCjksH0RQeOUa7Z0LVf5w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; 
-   d="scan'208";a="249366437"
+   d="scan'208";a="249367100"
 Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 22:32:36 -0700
-Message-ID: <f33a2ef6-0f81-4417-89c4-ecf3d3e11e56@linux.intel.com>
-Date: Thu, 4 Jun 2026 13:32:34 +0800
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 22:37:40 -0700
+Message-ID: <5dc40153-1617-4f06-8433-a9f0064367c4@linux.intel.com>
+Date: Thu, 4 Jun 2026 13:37:38 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,87 +52,88 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 4/4] KVM: x86: TDX: Report CORE_CAPABILITIES as
- supported
+Subject: Re: [RFC PATCH v2 1/4] KVM: x86: TDX: Track supported configurable
+ CPUID bits
 To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>
-References: <20260604023314.3907511-5-binbin.wu@linux.intel.com>
- <20260604025142.200341F00893@smtp.kernel.org>
+Cc: kvm@vger.kernel.org
+References: <20260604023314.3907511-2-binbin.wu@linux.intel.com>
+ <20260604024425.4923D1F00893@smtp.kernel.org>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260604025142.200341F00893@smtp.kernel.org>
+In-Reply-To: <20260604024425.4923D1F00893@smtp.kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 6/4/2026 10:51 AM, sashiko-bot@kernel.org wrote:
+On 6/4/2026 10:44 AM, sashiko-bot@kernel.org wrote:
 > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] Missing handling of MSR_IA32_CORE_CAPS in tdx_set_msr() causes KVM_SET_MSRS to fail, breaking VM initialization and live migration.
+> - [Low] The `tdx_cpu_cfg_cap_init` macro is highly fragile and relies on the caller providing a mandatory trailing comma, which will cause obscure syntax errors if omitted.
 > --
 > 
-> commit 217a78047d73d2be68ef27e206470a6c237db79a
+> commit 8aa0677abade944ac536d7acccef89b12ace7386
 > Author: Binbin Wu <binbin.wu@linux.intel.com>
 > 
-> KVM: x86: TDX: Report CORE_CAPABILITIES as supported
+> KVM: x86: TDX: Track supported configurable CPUID bits
 > 
-> This commit adds CORE_CAPABILITIES to the TDX configurable CPUID allowlist
-> to accommodate legacy TDX module behavior. It also modifies tdx_get_msr()
-> to return 0 for MSR_IA32_CORE_CAPS.
+> This patch introduces an allowlist for TDX directly configurable CPUID bits
+> supported by KVM. It tracks the supported bits by statically initializing
+> multi-bit fields and dynamically populating feature bits during hardware
+> setup using a new initialization macro.
 > 
 >> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
->> index 26a5ad59a5694..b7661ba98a8d4 100644
+>> index b8c3d3d8bbfe5..028d54c76b81e 100644
 >> --- a/arch/x86/kvm/vmx/tdx.c
 >> +++ b/arch/x86/kvm/vmx/tdx.c
-> 
 > [ ... ]
+>> @@ -52,6 +52,178 @@
+>> +#define TDX_F(name)					\
+>> +({							\
+>> +	tdx_cpu_cfg_caps |= feature_bit(name);		\
+>> +})
+>> +
+>> +#define tdx_cpu_cfg_cap_init(_func, _index, _reg, feature_initializers...)		\
+>> +do {											\
+>> +	u32 tdx_cpu_cfg_caps = 0;							\
+>> +											\
+>> +	for (int i = 0; i < ARRAY_SIZE(tdx_kvm_supported_cpuid); i++) {			\
+>> +		struct tdx_supported_cpuid_reg *r = &tdx_kvm_supported_cpuid[i];	\
+>> +											\
+>> +		if (r->function == _func && r->index == _index && r->reg == _reg) {	\
+>> +			feature_initializers						\
+>> +			r->mask |= tdx_cpu_cfg_caps;					\
 > 
->> @@ -2319,6 +2319,14 @@ int tdx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
->>  			return 1;
->>  		msr->data = vcpu->arch.mcg_ext_ctl;
->>  		return 0;
->> +	case MSR_IA32_CORE_CAPS:
->> +		/*
->> +		 * KVM doesn't support MSR_IA32_CORE_CAPS, however, in some old
->> +		 * TDX modules, CPUID.0x7.0.EDX[30] is fixed-1. As a workaround,
->> +		 * just return 0 for this MSR.
->> +		 */
->> +		msr->data = 0;
->> +		return 0;
+> [Severity: Low]
+> Is this macro design relying on the caller providing a mandatory trailing
+> comma?
+
+Yes.
+It adopts the same style as kvm_cpu_cap_init() in cpuid.c
+
 > 
-> [Severity: High]
-> Since MSR_IA32_CORE_CAPS is now exposed to userspace via tdx_get_msr(), does
-MSR_IA32_CORE_CAPS is not exposed to userspace via KVM_GET_MSR_INDEX_LIST.
-I suppose userspace should retrieve the supported MSRs via KVM_GET_MSR_INDEX_LIST
-before KVM_GET_MSRS/KVM_SET_MSRS?
-
-
-Had a second thought, this MSR code could be dropped.
-In Linux kernel, MSR_IA32_CORE_CAPS is either read by the safe version or skipped
-when it's running in virtualized environment. Also, there was no complain about
-the access of this MSR in any guest so far.
-
-We can just report CORE_CAPABILITIES as a TDX configurable CPUID bit to userspace.
-Userspace can do some change to remove any bit that reported as configurable from
-fixed1 bits. Since KVM doesn't support CORE_CAPABILITIES via KVM_GET_CPUID2,
-userspace then should not enable CORE_CAPABILITIES bit for TDX guests.
-
-
-> tdx_set_msr() need a corresponding update to accept host-initiated writes?
+> Because feature_initializers expands to a list of statement expressions
+> like ({ tdx_cpu_cfg_caps |= feature_bit(name); }), omitting the trailing
+> comma in the macro invocation would result in a syntax error immediately
+> before r->mask |= tdx_cpu_cfg_caps.
 > 
-> During VM migration or state restore, userspace typically reads MSRs on the
-> source and writes them to the destination. If tdx_set_msr() doesn't handle
-> MSR_IA32_CORE_CAPS, the KVM_SET_MSRS ioctl will fall through to the default
-> case.
+> Could TDX_F be redesigned to return the bitmask directly so they can be
+> combined using bitwise-OR, avoiding the strict trailing comma dependency?
 > 
-> Because tdx_has_emulated_msr() does not include MSR_IA32_CORE_CAPS, won't
-> tdx_set_msr() return an error and immediately abort the migration?
+>> +			break;								\
+>> +		}									\
+>> +	}										\
+>> +											\
+>> +	WARN_ON_ONCE(!tdx_cpu_cfg_caps); 						\
+>> +} while (0)
+>> +
+>> +/* Only for TDX directly configurable CPUID feature bits */
+>> +static void __init tdx_initialize_cpu_cfg_caps(void)
+>> +{
+>> +	tdx_cpu_cfg_cap_init(0x1, 0, CPUID_ECX,
+>> +		TDX_F(MWAIT),
+>> +		TDX_F(TSC_DEADLINE_TIMER),
+>> +		TDX_F(AVX),
+>> +		TDX_F(F16C),
+>> +	);
 > 
->>  	default:
->>  		if (!tdx_has_emulated_msr(msr->index))
->>  			return 1;
-> 
-
-
-
 
