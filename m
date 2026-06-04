@@ -1,105 +1,117 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8B7399348
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 16:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCF6409E07;
+	Thu,  4 Jun 2026 16:14:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780589577; cv=none; b=eeCZcqNouFkrn94BATQqUu48btIslxxw46DEiK9P9spH9tdv/1TydqMVbm4JvJLJ9/9wuk3nGjSMnUrzm9S2ZBK58EUgDpWLWM9clA/Vc0KFDQS+JTUENELBsT4xLRq+HHox5LapqcYMMJTK+ZLDWP4+J2EeaVbMU4ucex2jzfk=
+	t=1780589662; cv=none; b=Bu3nRcJ3f/GzotIp5jiUlTQycyGfX1OhQtKpF2Zwh/RqVU8+9EEmYBj04HkDB4+s2//8oF0hYVQrp8hajm+diq2HxnHz/AxUaq4YzSUTP8XRF/OfSk0xygkFBBOWD+p7y2V89KcqktBgS4Uf7epGKuodSxQyOaVP7GEOmzWaRsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780589577; c=relaxed/simple;
-	bh=r5q17zAJ5FVo6m2eXuZpQdHcUcqOccrbNsR+ygn1HHQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nyQ2aScLmNH6ots1sWgl3OAHsAwUmi1jaQxBFPhMwU4WqjaaZ6zhDnVlz4LtjGWZXIsr8lr8AKEYmaq/8XdB5dcN1ocOJ4atDNC0qBxff1OoqNh2QDdX8lWvHsrZByUvsMZwhX288gC8sLwnbxnEYiBSKA3kOrHRZhJpzGXiMuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uyQQj2Fa; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780589662; c=relaxed/simple;
+	bh=PAnTwGzhU7hZQJBjO9YW2fVB7bTAGggEUp7o+9uA2PM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DC0yX8y/sYD/YHsVvOJfC8wj9qYZb4awCuC9V/L2HmrlkybM2gkcPspDf7kjSTqPkLO2MgmfnvLEo4O0ysDHAkCFk7LR/nnp6cZOGS+mRDm81gcz6QBk8m9uvXYUHn48oMw/cSmzq3G3heiA3hcQL6620IjhynVfFbzGp6+G9fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fGu6qSpc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uyQQj2Fa"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36bc54005a7so1240373a91.0
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 09:12:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780589575; x=1781194375; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qHofGI5BidNPmhFV7CbtCFar5wuofTyEezac0pXH5gE=;
-        b=uyQQj2Fa+b/qu1Q0zgMXqVoELTUiov4UBCIXxj6B3b6kw6joRhVVnvMvoOPXixla7H
-         JEH2OYPQtBiAf4nYYrv4kQR9idtCOAaXy3fh30AKpSAL5SA7jOmxlWHzcxuhENYahUzu
-         Ze/ELDIwZQirTRkr22qX97aj3DYRhexdf4todfHkgI8ST89zVuphiZ5ztuguZ8vH8I+5
-         dH+EfV1BMUcGQGBVX6/d2EcPJzj4KrLokSb8OZl3cJgibTtmE2NLi/4c/m9OBBWECFSC
-         riamsKbn8qjcWjKMsjobJSFrs5aHaQmarD5Tit2trFj5IafAim6rtdK/LnczmuuGSJ7M
-         fssA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780589575; x=1781194375;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qHofGI5BidNPmhFV7CbtCFar5wuofTyEezac0pXH5gE=;
-        b=ExpgqcoCiQA1w1YzCRMHRocJm1AGZxadrGFdv1//CTBzQrCvfs2KG+7KApHUSU+PVz
-         AZHofzOIsJW+Wl2KC+5XzLlriy66P8fFpEuRPytPJ3wgCXh5K482Gbrjc1RElmFrXmld
-         m9xs3RY/+3oFfmBeCbxAH2YAQ5S+L99/8dZGQLoOf4oUpy+ARn+ALVKEJ3yyOK1PIgWW
-         HPA9c/mJEc9KxXDmgignemY1jLxleO39pixIpMTtUwq+CriWwW49i9mfIEzRZclewYmv
-         SGf4YEo9n0q9cnc1I9GuuhKEmwdMjReJxTx+abuMXQhjp6+Lm9z1RGCATq7cDWqlc7N/
-         ro2g==
-X-Forwarded-Encrypted: i=1; AFNElJ97rV/OqRsjAwUfiYLI4b/+RN6OMlJa19tTv4ijsWLQCsHBiitthv4a7bBoYDiANBJ4NaI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzkow+667LV7S29kMkD7dlmeC+WFUHyroQUAYW/DbVJu7iyCPZj
-	uv342yLCJddjoO/DmQksiUm5Bp8h3o+EdtwaAijF176+85mRHuy9DCUungDo0Bqqs3TS539Zt92
-	uNsDvNA==
-X-Received: from pjqx13.prod.google.com ([2002:a17:90a:b00d:b0:36b:a7c4:95be])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e8d:b0:36b:afa0:c675
- with SMTP id 98e67ed59e1d1-36e31cacd39mr7915263a91.26.1780589575061; Thu, 04
- Jun 2026 09:12:55 -0700 (PDT)
-Date: Thu, 4 Jun 2026 09:12:54 -0700
-In-Reply-To: <20260604021233.703BC1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fGu6qSpc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AA01F00899;
+	Thu,  4 Jun 2026 16:14:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780589659;
+	bh=PpMgxAcmqP0/HxSDQyuooMlOZ/9hDkPU2x1Wgc+yUA8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fGu6qSpcPJU7kXUfED0HTmjGhylwEox9gFldFxHQohlR+zhnG8jMaBlWKnoz0liZW
+	 EOjVW9ZLlEmnSWxCkKHKlgmrnxQ+P7SNpk9QjesXs8+2GKM+uxAoreENEi8Z0e7gak
+	 eAwHHLp3WuDRZZQzBKDNmmGvMsnYftj2waVmY7HYYuByi544VdolBUrSiuHGnURXk+
+	 CvGae2pFtxUvs2s80ZCIsZj+0KheDy816uDx0SjW8+t3wYAZE4gRc5wBknzz45jpIO
+	 cHakwZ2XjP5p/j0+wlJ5SR7vVxJZNCjrzy2I37mslpeSoNp++aTUPT8+vUokIX2Mlp
+	 Ny+ei8FdNrhhg==
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 7E4D7F40076;
+	Thu,  4 Jun 2026 12:14:18 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Thu, 04 Jun 2026 12:14:18 -0400
+X-ME-Sender: <xms:WqQhamkdk1Y6jvyWyC8LH9ULV0ywiz9xz9YSe_41SIZuej7E1L_Xgg>
+    <xme:WqQhapgp38hR3XTiLct77z2TQcgEwq1RhYAbA0E4-DnUCg-Gd_S8CXZoh2kxLFtr7
+    bzmBSdh5EDjt2zerkPdm_TkPKQ7ZZY7rMKafEB3uO3AAxQ3qfikMrA>
+X-ME-Received: <xmr:WqQhaoTjvujKvwbj7wSCKiba7kDxsSPH_krjXI-Xw6x-8yZvvNqxQYA3qzK3eg>
+X-ME-Proxy-Cause: dmFkZTFGEzbEvp3rMXU4iRhENjqviIxNp7V0LUVnr+Fq6cSejAtx8FcqjjaURnh943PB5m
+    ACNmP1eVrpC4WKxEYFlGtsfl+sLKO/sIXhCA+l+8VyKxwjeCuqH9asWmc2xxn7AmvQ/nmS
+    JLcNtzbYuAPFWssmdGRx3PIY2B5Oj4NlPjetc7p2P2RvsOvn9uiwn+s+97/2wga6vp3Phg
+    qyACbjqJzuQpbEf/la0N8TltHAypJ5Terb6RIUUBdgEvR8j7GLzbUV2oBWGYM/En2oxjsU
+    xMb8khgoM+1JPXiuWXrvPiAb0xeb+IrPitlygBw8YtFGH++z/ZmC5dI/QMWr/NRv4gi7RK
+    yV9cXxNFhhlNF6aDjt30Z44QuXolA7Yd4qkf89w3cJioRLyZuk+1/gF7R1NfnIQtw0t69E
+    62fMkjo22E35jSDnOqreuzVpJBHxBTG+VUZ49omMPV9ygsc3HtwufIl/kdz61hj2mFwwDm
+    qawiqDTBbA6L0F8JUFwzOTs3oNZkLVRZWc/IYgH7PGSN6jLwY0mNQYTmF8fFw7AaTKrlL7
+    4BRLiI6jh83hqW87Ubpf9KqANLzx234YnvGOCXeNMVCaMcDWLAZA75WA+TlFxyzKfLbOU1
+    ACPT2g8UzLTTccfjEwnez4j3+yvF4WMcjAV7uR+3zgbxbGxLBvhYdi6ZDkUw
+X-ME-Proxy: <xmx:WqQhaq1FYbygoaciEetWj1LouU5Vp7CbRdBDOP8IclzhdZpIGzCE0w>
+    <xmx:WqQhai1epsazh011up9nQYHps2DaoGfTS9U0uBD98APiszB-Tfah9Q>
+    <xmx:WqQhapsoHVqy9O51rKBVvMNdmJJlal5ybc2revNTlYReZiTjJON8Hg>
+    <xmx:WqQhajAjWiUwnfBkiKCvjaGrdhKB0e0pDlRUX-BfBJODwSOwX5e4UQ>
+    <xmx:WqQhat8pG0cEfblocA4LNIImEc2AEn7PPipWFX0ivMWSaG-LblPomndH>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 4 Jun 2026 12:14:17 -0400 (EDT)
+Date: Thu, 4 Jun 2026 17:14:11 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com, pbonzini@redhat.com, 
+	seanjc@google.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org, 
+	chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Binbin Wu <binbin.wu@linux.intel.com>
+Subject: Re: [PATCH v6 02/11] x86/virt/tdx: Allocate page bitmap for Dynamic
+ PAMT
+Message-ID: <aiGi36_YpJBRechp@thinkstation>
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-3-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260604020143.748245-5-jrhilke@google.com> <20260604021233.703BC1F00893@smtp.kernel.org>
-Message-ID: <aiGkBodadEKK9F-w@google.com>
-Subject: Re: [PATCH v5 04/21] KVM: selftests: Add helper to generate random
- u64 in range [min,max]
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526023515.288829-3-rick.p.edgecombe@intel.com>
 
-On Thu, Jun 04, 2026, sashiko-bot@kernel.org wrote:
-> > @@ -42,6 +42,24 @@ u32 kvm_random_u32(struct kvm_random_state *state)
-> >  	return state->seed;
-> >  }
-> >  
-> > +/* Returns a random u64 in the inclusive range [min, max] */
-> > +u64 kvm_random_u64_in_range(struct kvm_random_state *state, u64 min,
-> > +			    u64 max)
-> > +{
-> > +	u64 value;
-> > +	u64 range;
-> > +
-> > +	TEST_ASSERT(min <= max, "PEBKAC, min = 0x%lx, max = 0x%lx", min, max);
-> > +
-> > +	value = kvm_random_u64(state);
-> > +
-> > +	range = max - min;
-> > +	if (range == ULLONG_MAX)
-> > +		return value;
-> > +
-> > +	return min + (value % (range + 1));
-> 
-> [Severity: Medium]
-> Will this return values uniformly across the entire 64-bit range?
-> 
-> Because kvm_random_u32() uses a Lehmer PRNG with a modulus of 2^31 - 1, its
-> maximum return value is 0x7FFFFFFE. When kvm_random_u64() concatenates two
-> of these values, the maximum possible output is 0x7FFFFFFE7FFFFFFE, meaning
-> bits 31 and 63 are never set.
-> 
-> Due to this restricted PRNG space, using the modulo operator here means the
-> function cannot generate values in the upper half of large ranges (above
-> 0x7FFFFFFE7FFFFFFE). It also introduces significant modulo bias for ranges
-> that don't evenly divide this artificial maximum, preventing uniform coverage
-> of the requested [min, max] range.
+On Mon, May 25, 2026 at 07:35:06PM -0700, Rick Edgecombe wrote:
+> @@ -579,7 +591,12 @@ static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+>  	 * Calculate the PAMT size for each TDX supported page size
+>  	 * and the total PAMT size.
+>  	 */
+> -	tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K);
+> +	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
+> +		/* With Dynamic PAMT, PAMT_4K is replaced with a bitmap */
+> +		tdmr->pamt_4k_size = tdmr_get_pamt_bitmap_sz(tdmr);
+> +	} else {
+> +		tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K);
+> +	}
+>  	tdmr->pamt_2m_size = tdmr_get_pamt_sz(tdmr, TDX_PS_2M);
+>  	tdmr->pamt_1g_size = tdmr_get_pamt_sz(tdmr, TDX_PS_1G);
+>  	tdmr_pamt_size = tdmr->pamt_4k_size + tdmr->pamt_2m_size + tdmr->pamt_1g_size;
 
-Not sure how much I trust AI's ability to reason about math, given past "bug"
-reports.  Regardless, this is a problem to solve in the future.
+Maybe it would more readable if we reverse the size order:
+
+	/*
+	 * Calculate the PAMT size for each TDX supported page size
+	 * and the total PAMT size.
+	 */
+  	tdmr->pamt_1g_size = tdmr_get_pamt_sz(tdmr, TDX_PS_1G);
+  	tdmr->pamt_2m_size = tdmr_get_pamt_sz(tdmr, TDX_PS_2M);
+
+	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
+		/* With Dynamic PAMT, PAMT_4K is replaced with a bitmap */
+		tdmr->pamt_4k_size = tdmr_get_pamt_bitmap_sz(tdmr);
+	} else {
+		tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K);
+	}
+
+  	tdmr_pamt_size = tdmr->pamt_1g_size + tdmr->pamt_2m_size + tdmr->pamt_4k_size;
+
+It allows split it into logical blocks while keeping the comment attached.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
