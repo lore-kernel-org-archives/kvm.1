@@ -1,88 +1,143 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A0330AAB8
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 16:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290F433A9FF;
+	Thu,  4 Jun 2026 16:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780590418; cv=none; b=SPq6yaaFRYoUknJwfY3ZFSOOut9wLqiL8Q2GZi75Nb5BzkDOZwEj/01AR89SLVsDX92A9L+/laGstzorQZYEGJXWXELR8AfcgrRt50SaT8gyWKiKY3ZpgY6S/xaqIXdJiuKbPmbccsqNDqa6wYvGUnl2K/o77EooBNJHzD8zDRQ=
+	t=1780590546; cv=none; b=JthqyjTNlovNwRBXyeCcw9He3Ac2o8/M5e/FHEq3xkmm9s8OkG2TkMggZtyBGBtGX0ONBLkCsBBEa+m4/hU7tbvFq3yu+I02YAgMG5Mv0b0V7KOcRa58CD2xTZ9TZix8oM+iD3sQ6dwW0nrRxzuy76x6SLYKjwtwxaUVqdWsU0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780590418; c=relaxed/simple;
-	bh=rL8z0sb0aozORlljoVXFqnxfct+9nFDK0ox1JpGznx4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=acLm65PppxT1vVhUxuKxS2lY5koVXTHR4kkz703bgu3xg6SBYEEBTd5qX/xjZkmpuTnVhaYLbH7ZHynS0VzAB7GgT+w5M0CQbb+JZYJK27ZUSiz8ZXtfyxbEf/hD602L2gKYGbeB26oniUflh0XuP0V+sp8Q5UcFO3dyZyBEPsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wBPLKC+b; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780590546; c=relaxed/simple;
+	bh=MDyqratiLi05/uyBtnVhplm4LWe2ncyRf8w2liNJtvw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gapgsCUGRXdxUwiX7/tQGSFm9/EvVMycrU1XFch1i+MO1KEJjaE8KTuOmmwQU6vOwoemaadtAfhGIH7txz4Sm6z3yKqnZ7N/FifPiMOzGm8fFzY6G3j94z833+zVZo/48E1xpSwrv4WSjisD6VtB7IdS5DhkRmO0x7C3fxXfPWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HuseX9g3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wBPLKC+b"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c85dc345ac8so551832a12.1
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 09:26:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780590416; x=1781195216; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b1PAoVWOX5uTiJ2KXbRfOf7Z3sR4S4Ul08plY8Umtbg=;
-        b=wBPLKC+boO33v86ArZBxo7qRsI1IYH8sjCIc5WJWjijZFBbGz7+aHykthQfvCgvaDC
-         WEalyq1LGSwpmXGv+bH3GutgGUsF3VtiBbH2DpjL8JUyOhPA3XqDrRYmIK/NxGX5r0Um
-         duMTEU7lkLztsrislRaihGQCVPU7do3bEEYNfy6ybIMrvB4G5de6loL3Hz/armetLXvf
-         qcpOn9mHx4EGkb0Xy1e1/NCmVF1Sa1bVYKRuJWUJEgccsgEcWT5uv6RImYsmw5cWp7Dm
-         bHCK9a58ab5Jzcc+lmhxXa+l/eqCn6Y+pfq2xdB/I+OpcfsNxBMS881xM/5K6HbnWePL
-         5ROA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780590416; x=1781195216;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b1PAoVWOX5uTiJ2KXbRfOf7Z3sR4S4Ul08plY8Umtbg=;
-        b=THeHZ3/Z9sHlUkuLYaO12kwizz0Rk5g7YpIghCqFAiqskEOkSbeCRzpIyao/TQuKkv
-         A2IbBJX/OLWQgTwVdF+hpFN3itkqyNaLIYntRaeW9Qr8ZGKqS3A5zKtHHLx/mY5ipdyp
-         O5oa4cCzpg2yMdYmlfKiKCAHlz0VUaU9GtkYQX4zJU2nunJUFRs28EKIxPFP1yjXsNPK
-         fE5/V/ABq7WdTFC8ziiwi5Ipyfa8EOahg7kO8iPjvxU7mzxzYski0qJS9gWuv+F3y7eO
-         GqN2myf1aLoJMsKRK/nJo4Eg9buOA70Gctl7jZhEzluTMD5KyBx6qeLm2ng9jp949v6K
-         gDtg==
-X-Forwarded-Encrypted: i=1; AFNElJ9AKDkrZmQ/eiUgAqD+BwbL9FuOXDwHdaljn6+q9KFR87XF9uxVgmVj/CMyDjBJPuCzHNU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXtEzJ7lbYZdwguIUkJm83a1z6EOJ12xxAKnDJojf2f9g4zYQe
-	AMpbBqkAjF+QLJ03QemXq2tFdKoB+Vg4/eMXQDrYNLpwp0Yqkq6MAfHRq/p1zfDkQ9s1325cCKN
-	K4dVs0Q==
-X-Received: from pgbbq18.prod.google.com ([2002:a05:6a02:452:b0:c82:295e:3b51])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6b18:b0:3b4:6dee:a427
- with SMTP id adf61e73a8af0-3b4976ba37fmr10251206637.44.1780590416182; Thu, 04
- Jun 2026 09:26:56 -0700 (PDT)
-Date: Thu, 4 Jun 2026 09:26:55 -0700
-In-Reply-To: <aiGlib6tvRkyNCIA@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HuseX9g3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5E31F00893;
+	Thu,  4 Jun 2026 16:29:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780590541;
+	bh=s7vqTQyEXNNXtpVsO2TTPhoidp7pJW7kCKN/X/mQRWI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HuseX9g3x2esz5tWdSRaffD0vdC5Ld4Dz9yENuKR1qheyFwvr6EkcttK7Lci4Cdpx
+	 SuS+4bz3pbrLrAD4vIQyF0JjWW/Jt90QnfbclwemsCLyoXgQxwhBUgxNEzlCXJuLYA
+	 0VO38/S5jnHzodKuVrf646Sjod273AFYjwJbIebFsWO/KKwYPo7HP2LpNzESDSVlIA
+	 RTphQjJa1E5FLAyEMWR1oHtgO0Zjx7xSfyaSp7jEs0AWN+tHPTeZ0sZiGnYajETvy+
+	 DONBiEQ3h5qMYKspX8UNK2/D+i8IRwXNWRD4bsPbSQH/H3YWJnc+0f5XKJYHHgNC2M
+	 cq/3zGLswFt/A==
+Date: Thu, 4 Jun 2026 17:28:58 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Guodong Xu <docular.xu@gmail.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
+	devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
+Subject: Re: [PATCH v3 08/15] riscv: Add Zic64b to cpufeature and hwprobe
+Message-ID: <20260604-activate-antidote-ebb9197b286f@spud>
+References: <20260603-rva23u64-hwprobe-v2-v3-8-5529a7b28384@gmail.com>
+ <20260602232800.768311F00893@smtp.kernel.org>
+ <CA+Ck9FbKRM0wjJMg1fQpdwmow8cf_zTfir7V6+T=CRxU+vomdg@mail.gmail.com>
+ <20260604-rice-protegee-3a0b8e4cb609@spud>
+ <u52q565xhv5s7gz3wbh4heplhbm4pv732s5kqvf4deiw6ceb4t@n4bnpzu5kabs>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260604020143.748245-1-jrhilke@google.com> <20260604020143.748245-6-jrhilke@google.com>
- <aiGlib6tvRkyNCIA@google.com>
-Message-ID: <aiGnT8oofyOiQrEn@google.com>
-Subject: Re: [PATCH v5 05/21] KVM: selftests: Add IRQ injection test
-From: Sean Christopherson <seanjc@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Alex Williamson <alex.williamson@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="UqEY10bqswxCer84"
+Content-Disposition: inline
+In-Reply-To: <u52q565xhv5s7gz3wbh4heplhbm4pv732s5kqvf4deiw6ceb4t@n4bnpzu5kabs>
 
-On Thu, Jun 04, 2026, Sean Christopherson wrote:
-> On Thu, Jun 04, 2026, Josh Hilke wrote:
-> > +		eventfd_write(eventfd, 1);
-> > +
-> > +		clock_gettime(CLOCK_MONOTONIC, &start);
-> > +		for (;;) {
-> > +			if (GUEST_RECEIVED_IRQ(vcpu))
-> > +				break;
-> 
-> This is a kludgy and confusing way of writing:
-> 
-> 		clock_gettime(CLOCK_MONOTONIC, &start);
-> 		while (GUEST_RECEIVED_INTERRUPT(vcpu, do_use_nmi) &&
 
-Heh, "minor" detail:
+--UqEY10bqswxCer84
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-		clock_gettime(CLOCK_MONOTONIC, &start);
-		while (!GUEST_RECEIVED_INTERRUPT(vcpu, do_use_nmi) &&
-		       timespec_to_ns(timespec_elapsed(start)) <= timeout_ns)
-			cpu_relax();
+On Thu, Jun 04, 2026 at 09:31:36PM -0400, Guodong Xu wrote:
+> On 2026-06-04 10:17, Conor Dooley wrote:
+> > On Thu, Jun 04, 2026 at 02:42:22PM +0800, Guodong Xu wrote:
+> > > On Wed, Jun 3, 2026 at 7:28=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
+> > > >
+> > > > > @@ -154,6 +154,23 @@ static int riscv_ext_zicbop_validate(const s=
+truct riscv_isa_ext_data *data,
+> > > > >       return 0;
+> > > > >  }
+> > > > >
+> > > > > +static int riscv_ext_zic64b_validate(const struct riscv_isa_ext_=
+data *data,
+> > > > > +                                  const unsigned long *isa_bitma=
+p)
+> > > > > +{
+> > > > > +     /*
+> > > > > +      * Zic64b mandates 64-byte naturally aligned cache blocks; =
+cross-check the
+> > > > > +      * cbom/cbop/cboz block-size device-tree properties to avoi=
+d inconsistency.
+> > > > > +      */
+> > > > > +     if (riscv_cbom_block_size !=3D 64 ||
+> > > > > +         riscv_cbop_block_size !=3D 64 ||
+> > > > > +         riscv_cboz_block_size !=3D 64) {
+> > > >
+> > > > [Severity: Medium]
+> > > > Will this check erroneously disable Zic64b if a platform does not i=
+mplement
+> > > > all three CBO extensions?
+> > >=20
+> > > Zic64b is mandatory in RVA22/RVA23, which also mandate Zicbom,
+> > > Zicbop and Zicboz, so all three block sizes must be present on any Zi=
+c64b
+> > > platform.
+> >=20
+> > Where do you get that conclusion from? That's not how we treat any other
+> > extension defined in the profiles spec. My understanding was that even
+> > if things are defined in the profiles spec that they're fair game for
+> > independent use.
+>=20
+> Ok, I get your point. Agree, Zic64b/Zicbom/cbop/cboz can be implemented
+> on each hart independently (at least spec doesn't say no). With this in
+> mind, the validation of Zic64b should be like this:
+>=20
+>     if ((riscv_cbom_block_size && riscv_cbom_block_size !=3D 64) ||
+>        (riscv_cbop_block_size && riscv_cbop_block_size !=3D 64) ||
+>        (riscv_cboz_block_size && riscv_cboz_block_size !=3D 64))
+
+Or you could check for the extension instead of the left-hand sides
+here, but I think that becomes more complex because you need to start
+returning EPROBE_DEFER sometimes etc.
+
+>     return -EINVAL;
+>=20
+> This will allow :
+> 1. A Zic64b hart with 0, 1, 2, or 3 CBO extension and block_size 64
+>    passes the validation.
+
+I'm not too worried about the 0 case here, people shouldn't be using
+zic64b if they don't have a corresponding extension after all.
+
+> 2. A Zic64b hart with CBO extensions but block_size is not 64
+>    fails the validation
+>=20
+> Thanks for the catch.
+>=20
+> I will fix that in v4.
+
+btw, can you fix your system time? It's like 12 hours in the future and
+that impacts the timestamps on emails you send.
+
+Cheers,
+Conor.
+
+--UqEY10bqswxCer84
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiGnygAKCRB4tDGHoIJi
+0jalAP9FtdZ57Gi9zqLt2uUSAeF6mH9GDBRQVZs/amLehpDPIwD/bbvLTDnhX8Nh
+QU4AIz0bQgcQ6NL0WZG49D7VpBxZCQY=
+=ctqz
+-----END PGP SIGNATURE-----
+
+--UqEY10bqswxCer84--
