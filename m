@@ -1,95 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DE5494A0F;
-	Thu,  4 Jun 2026 17:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3663A4F36
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 17:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780593266; cv=none; b=Q+/i0sxmM9Jl5ZA7+q4XMgL7pfTmIbKFCsFDPL9UFbBW61pkFWykeJ7ucFPFrITB4w7jGXdgzHSx0e3ofVtLlP9Hwx44aLbJNLk4SQ0RWOTxG8OETcMQm195UWSr/YD40o9sJljZ4yFtJqg6i7UWTFdBoh9YgdDaDAPnX9AP9Dk=
+	t=1780593455; cv=none; b=P5JT1MgJiLyafwKYur9TXmG2yfxBvds+BmTpLdqZJSoMRDO4ZF1l+thMDrS27o1nsS98NJ15IZmmgoKOjb8Y7jG+x24bjTb0sE51lHni9Zs1LwO0d96rbEVykqeuBNDCFDkwYHVlGnh5XP+pjv/0a8FB3mFb887/JLePa5M5XQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780593266; c=relaxed/simple;
-	bh=Is4h+tK1rCLbuW3KFCxbMSU9HjKfJ8hOG/p6BWn6+ns=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QtYDywPK4/isEC3qCeVpaee1WOcKRDbSxinXifNrSLhM+bg2Tg/W5YIKPT6RKAjpOS+aa5QZ2faJ+24eikkjcfprG0L/9uON8D1dqYAo89Ylrd9GRhjzrc/2oacIoPrcoviKmpLG+1MP2xWMcbLRZYNKeXpRd9Z2LsCXmJS0SHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y8ROKyzz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780593455; c=relaxed/simple;
+	bh=cnQDhI3rPLRAlQ3SMyaVGYpY+5KTbMQDpuXpfVrgGhA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=NWeux3cWDecoPqleeAKrMf/ueZNPdA8wkS4m+l7WwD1/zX8r7g/pKfR89dNi9/ec7hgSUl8B2rpSVU1uATZx345CNOGsD4grsCQMAjinPTevlqNXDmoYKTU3qk9GlyfCHU5Pl4ISq4GgEtS12JY30wP7SoqCiX7iLWk9biX+cws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tGUJGz4B; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y8ROKyzz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A30E1F00899;
-	Thu,  4 Jun 2026 17:14:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780593265;
-	bh=HwwGrQ3Fzu3hXrG2JwBFm+L7WF6JTxE+O6g6sL/Nxfc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Y8ROKyzzmMromHaFbIkRFfBke10aTOZoG4AbTGZHngzFOP3nCVHXP0uDg3EC8S6LA
-	 S2YZc2jrSLuq7kJduF3ffmdCQK9LPARjNnF2W2l4zu+NwUBhQ8SP2WgKxuZRv5mvwb
-	 r0o83jiRkFVZeqCtkFxgmAYKjUO5n08vqmTYHgKLbWYfiRd0Lh5NJlR+lUE0paIYnp
-	 lQagTph/OOZKwY42UuWGUplEGg7mJgXFRuquBgjkg2myuy4zf/3B5LjlJWt7LTaZcn
-	 /1fLWwaYGfTowzDtRMmU8wZQf3kXJzGg60mRWOyFZ/WDAF2DfbeEwTyLysFOPNM0u1
-	 E9nH7RwF+Yrww==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 793C7F40071;
-	Thu,  4 Jun 2026 13:14:23 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Thu, 04 Jun 2026 13:14:23 -0400
-X-ME-Sender: <xms:b7Ihar84HVyRRc3xs0md5kYBIuPakM60cg1pIaacmcUsyAA8lU9_Rg>
-    <xme:b7IhapwGVbs-oDM1dMAo9hxv7BMDMYs21bKUckxZxRxpx3RN2wyvRDl9oVH0kY7Kv
-    DnIcFyFrEatM_GoqfWJXJwpkoOPlMBZj4wg7HNlukPtsJx6GuPGdb8>
-X-ME-Received: <xmr:b7IhanL-yP8X9bPdCoF9cMo9Jd5yCvAXs6FVo_JzR0VvQL5OpVQwBgJAf7nnXw>
-X-ME-Proxy-Cause: dmFkZTEiECQ4MHRqDgrsgwv55MOnKX4gVy+9YgKFybarHA/KVwIk21BBtsmLPhAOt5Ys4j
-    IaL7A+BJTmqIHdPS0Gvg8ZBt7OiMHMFEZdGw8A4LagcjRH7ZVKriGiTNNW4qTQm3txX05k
-    RPE5LiJ0U5EsCtu/9co/h8mxTVBRgP/QDT5W3dveBZ4dLamlAyygHaWOcepNZ9QlKSp3BY
-    0dpoOKWnvGaHHDVg8avIis9ZzFiQGZbEIikyBkMNQ3rmsomhY30lUbAb7sK9ShJKUvaPW5
-    p9gQZmMY7hKCAX9AdQH7Ipb6yq4u0VCwnw6k3UE97nTvU/BcU1+bJMBKgSvFNwx/JKdiTR
-    PjpGHUMptXKWaLxSmlxUBZAkhjfujclBKJaT09eQjieq75wrMj+gwPHPqkHeddogTq6Kze
-    CqaOX9kNMyqAlN+KzPeuLr04O7DfblM69NP7cRbR5ZflZVkLDxsjnsWLocnGiXYvXuFh7K
-    IwwHA1V/GyEcVKcCBK4abCgsspSPYeg70EUYajgfigeLnJlLxWOEoSI9N8mjPRojCfTaRz
-    cHiYhM+P77o8Eir2+f/D5f7oz+p/N7LpQxToS8cV//1iT3VVqh1iGqbj7HuSwoLi+nBSx5
-    Afj5z9Di+J3CGkto4LEYZRqkLIqV3311GqeK2g9cQvzN5RnLNfvhWHf6/iFw
-X-ME-Proxy: <xmx:b7IhasY2HJbSUb85ah9oz-frV6gAeLKGrt9-b5r2V3aDI1jFiMzX-A>
-    <xmx:b7IhasyT0xC-pYQBXcj4JWHyuMg5rgyf0XgpsLeXWM-VaagXgdscdQ>
-    <xmx:b7IhajY4EzxvliA4n3IPmUU6HVnZb3ulwe1sAx3zo_6XnfDeCx6pDA>
-    <xmx:b7IharwEuKJ_2vcGoV9XRJFNLyrPXi9Rcpp1T4NEmD9FC6DtQx8ELg>
-    <xmx:b7IhavFqDRGo1jLz3v00BwICdE_AVF6OcG7eTxNgkn2BMN_EpZmcPhYl>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Jun 2026 13:14:22 -0400 (EDT)
-Date: Thu, 4 Jun 2026 18:14:17 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com, pbonzini@redhat.com, 
-	seanjc@google.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org, 
-	chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH v6 10/11] x86/virt/tdx: Enable Dynamic PAMT
-Message-ID: <aiGyIQvudD5ZF3lf@thinkstation>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-11-rick.p.edgecombe@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tGUJGz4B"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d99181eaaso1296606a91.3
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 10:17:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780593454; x=1781198254; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QiE08N0otE8gZoBNOAFs9Ba6fLHtJ9Xhjyt4xcKDCXo=;
+        b=tGUJGz4BSalyuHjP7z4e4RuTxPk3HWar9/up68mdQGmB79O87NSt2tVsbiJV5T7zqj
+         MTjuQnJLSVysQ8dd1Evz53O7IeuAgVhpya5GDN9fVFG933Q0Y+NvG+wNGdbBz6AWGJPl
+         09BzdVSk+ixNkHPmoj/IjbGHqHX3Mwv9ENBuCJzHlmXeO4dRhDKgXHmkmWd5Z2zthzo5
+         k5MEXDF63qZGSntrbrqLNu5t1JlgpX+tDs/v6fs42VfUgeO3JXWuA2T++c2mDTu3WxAT
+         E94b7uuivLZ2g/81CZSKbFxLjWr3KcEcYHl5f0ZRCanflV4ZRbXX69bavyl1BRse+BrU
+         cC3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780593454; x=1781198254;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QiE08N0otE8gZoBNOAFs9Ba6fLHtJ9Xhjyt4xcKDCXo=;
+        b=YNXjHBHOjYqw0ePIxpb9ShQmKNUs0eMyDSL5Bxp3rE2RbXIEe7IIyZ4DxXgMmpEEDA
+         0+laNR7kuLqCWc9fONPGxivDA6aP+PNbfH5Rb4GIqYXGPeXUcQquRoa7GEui1Wn00PEZ
+         cCZ9Lu7FSpw67BKbAq3HJiMsGBtnc90hLsppAIu5chYsV4YfHW1jLM05+jOLQAokfCmy
+         97kWxD638ndgnK8uiZmmrYf9W2X2bCRICxuBrUP3+NmbfMFZfpaSPqQOJCmIazsIL/tU
+         2cJ7l1YO84yl87bzzgvIAb0AxovDgTdrwUx8NfykKhNMEA8crdfSxw07goLh55QQSuAi
+         RpYw==
+X-Forwarded-Encrypted: i=1; AFNElJ9i4H95qAWvwGfNOagjpaT0J+8bpe4eeP+d1duLssnlgf3VHDjQNXvcpMTIakLY6XWfV9k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzc7P+M2qY5LSgFWQfrWRGIulehF/75y421DThN0HEiMzYgWiea
+	HP2lpbXdStltEefK2P2/nvIcAy/egA3dvg7g8lrA7U+cb5c5oW2OOE9ZxsxaSeKPQL4JdO2v/3M
+	GADgrdQ==
+X-Received: from pjbqi11.prod.google.com ([2002:a17:90b:274b:b0:368:1f77:ffae])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2742:b0:36b:bec8:94cf
+ with SMTP id 98e67ed59e1d1-36e2f9a2497mr8748830a91.9.1780593453567; Thu, 04
+ Jun 2026 10:17:33 -0700 (PDT)
+Date: Thu, 4 Jun 2026 10:17:32 -0700
+In-Reply-To: <20260604020939.3D12C1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526023515.288829-11-rick.p.edgecombe@intel.com>
+Mime-Version: 1.0
+References: <20260604020143.748245-10-jrhilke@google.com> <20260604020939.3D12C1F00893@smtp.kernel.org>
+Message-ID: <aiGzLEMLMR06kVZY@google.com>
+Subject: Re: [PATCH v5 09/21] KVM: selftests: Add helpers to print proc IRQ
+ affinity for IRQ test
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, May 25, 2026 at 07:35:14PM -0700, Rick Edgecombe wrote:
-> @@ -152,7 +156,12 @@ const struct tdx_sys_info *tdx_get_sysinfo(void);
->  
->  static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
->  {
-> -	return false; /* To be enabled when kernel is ready */
-> +	/*
-> +	 * The TDX Module's internal Dynamic PAMT tree structure can't
-> +	 * handle physical addresses with more than 48 bits.
-> +	 */
-> +	return sysinfo->features.tdx_features0 & TDX_FEATURES0_DYNAMIC_PAMT &&
-> +	       boot_cpu_data.x86_phys_bits <= 48;
+On Thu, Jun 04, 2026, sashiko-bot@kernel.org wrote:
+> > +static void print_proc_irq_file(unsigned int irq, const char *file)
+> > +{
+> > +	char path[PATH_MAX];
+> > +	char buf[256];
+> 
+> [Severity: Medium]
+> Will fgets() silently truncate the smp_affinity masks on large systems when
+> reading into this buffer?
+> 
+> CPU affinity masks are formatted as comma-separated 32-bit hex words. A
+> 256-byte buffer limits the output to roughly 910 CPUs. 
+> 
+> Because masks are printed from highest index to lowest, truncation would
+> drop the affinity data for lower CPU indices, which are typically where 
+> IRQs are pinned.
+> 
+> > +	FILE *fp;
+> > +
+> > +	snprintf(path, sizeof(path), "/proc/irq/%u/%s", irq, file);
+> > +	fp = fopen(path, "r");
+> > +	if (!fp) {
+> > +		printf("  Failed to open %s\n", path);
+> 
+> [Severity: Medium]
+> Does this bypass the selftest logging framework?
+> 
+> KVM selftests typically use pr_info() from test_util.h to allow standard
+> informational output to be suppressed when QUIET is defined. Using printf()
+> directly forces unconditional output and can cause log spam in CI
+> environments.
+> 
+> > +		return;
+> > +	}
+> > +
+> > +	if (fgets(buf, sizeof(buf), fp)) {
+> > +		buf[strcspn(buf, "\n")] = 0;
+> > +		printf("  %s: %s\n", path, buf);
+> 
+> [Severity: Medium]
+> Should this also be updated to use pr_info() instead of printf() to respect
+> the QUIET mode flag?
 
-Should we warn for >48?
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+I think for the initial landing, it makes sense to skip this and the usage in
+irq_test.  Printing the affinity information definitely qualifies as "nice to
+have", i.e. it can wait.
