@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935D74D2EC5;
-	Thu,  4 Jun 2026 20:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CEB4CA272;
+	Thu,  4 Jun 2026 20:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780605364; cv=none; b=D/dQfP3eggnhtGUsMjZD0prIJftq/OmJCoqVBcg+2v5+C3qnlNxVP7ZcBBW/dVJnm+SUE9gpdrgyYOKpgudiOESl94vnsW1jTCVPbbfHGa5T7M0p1p2Ny00wzUNC3LI4hMGZNai/hQGrtWLmwcoUxZn/1NXuVp7yRE3CvKt/4wE=
+	t=1780605365; cv=none; b=kHtCoNB4xY0z8Sd7enCJ8wTc/TgQC+HTwTg+v3042Il8XHCpiChZO/fm7L6cpPtGqWLyKZF0FS66qKaidMG8XZybv5hriYj5Kq9eEkyj9bZ3zXTUOSPTNrLW9DLp9Slgs5Vrx9EH/CCh7Vd+VIRoin0YusxePQhKkY1y9aYpbKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780605364; c=relaxed/simple;
-	bh=+e2vy5zU3nu1IPMrqBwOvvVwQTO1UvoxDGn9xFGsOMI=;
+	s=arc-20240116; t=1780605365; c=relaxed/simple;
+	bh=8iBKASzbz9mlsV2tDL6ihk64B3BCpKYDiU7NsrNIa1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFH8OMxAKi9DEhalXYj+JvsPGXvEuzvykLEY3WUJlK4mC2NvcKyFecMRlEq0IttTDDCRrzMwnF9nYKF31GKPiNbKjP/ot2/3U2Lgday3TENw1xBusY/nnXXU4OazUXCL2Ue+HjNt7MrQtFlh3sX20SqXJymTE0tjURxgwlP0MOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HencdQ5K; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=Mg3YtgPC8IpT+dI0ni+Bb2OgQbOR1Uog8IAGk2whpV1dKEBnefV8s/fg1HMSXBWTrY1OnifSQV1z8v+wCyS/fmb1pxINvwbSmIgQDo2iLG3rSk7OgzuSfK/BfAEUtaiA/M3ZXGSXcO9w9hCfdJ14mJXgSYM077CuvoO5hCcqtic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DsdXjiG9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HencdQ5K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4998F1F00898;
-	Thu,  4 Jun 2026 20:36:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DsdXjiG9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AEB1F0089B;
+	Thu,  4 Jun 2026 20:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780605363;
-	bh=bhRojyqIvVAuAQn/SyJnyO3rkyzuri5p/LOK2Hls3xk=;
+	s=k20260515; t=1780605362;
+	bh=VsVTfc8q8V6S6PMSRT8ydmbG/vrsrRUOqsArdYthojc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HencdQ5Kw0p9Ff2NnHBsWP8Acr6eL0tv5M/aH9wgEKfzYvJNVVBWhz6kWJ8yqJLTT
-	 0qAZsNvHKYTdPvzVv0JGhTmaDRhHoTM7Qb2mKDqUgfQHljBgqDsaMtJZlOxStymUY0
-	 sKHdp5e/6gLSXyhGJRTAGrVqxPo2eHYRCV/lYNm7OjqbQVADZ6+GAN2aNoc9LosY9D
-	 XNErpvmjiRBXqOoGiY77ISstkB6UY2vco71MI/pvQybsGia9L2Ph8Cm2AG6XaYShUa
-	 26f2FHgXaxvdZyvAtEMifrwKWTnOElci0x7rMkhZzvxjgQoUSQo3rax2SdXh1NLnHs
-	 pbKzXvIH1a43Q==
+	b=DsdXjiG9GbOPWYH/5Mn5OIaekbHvRlV0WFKW+s3vVwJ32A5vPgBWAUkin1ek+tTLI
+	 cY/9K/DwQgwHIXqIQL2I5e0AqXNQollFgKkNgQiCknboibnKUDv4QQMXiuXkvB5Eq7
+	 hKmHkasH8baEZ1YzqpJdbFGr9xgkb3M6vshsFrV8b2CXWAXJ8/Nfsx+s5TiARoW7OX
+	 dLio1Bsz6M5ZeXSlgUQ6v4sMeoFeAY9z15J9Vt8KDo4wAl9qS1WvpCHyLLmD11hB6L
+	 7rjmjnJTlLu+Ea0skafFuK+/B+e/BGJEMAFnH1zV9IHx9ayVPqoaYnhFORz313CO6h
+	 CDSxDQDq+ryAA==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v2 10/10] KVM: selftests: Trigger L2->L1 exits stress save+restore and #PF test
-Date: Thu,  4 Jun 2026 20:35:46 +0000
-Message-ID: <20260604203546.365658-11-yosry@kernel.org>
+Subject: [PATCH v2 08/10] KVM: selftests: Trigger save+restore randomly in the #PF stress test
+Date: Thu,  4 Jun 2026 20:35:44 +0000
+Message-ID: <20260604203546.365658-9-yosry@kernel.org>
 X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
 In-Reply-To: <20260604203546.365658-1-yosry@kernel.org>
 References: <20260604203546.365658-1-yosry@kernel.org>
@@ -46,116 +46,128 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Extend the testing coverage in L2 by injecting a #UD into the vCPU every
-other iteration during restore, and intercepting #UD from L1,
-essentially forcing an L2 -> L1 VM-Exit directly after save+restore.
+Instead of an explicit GUEST_SYNC() after each access+#PF, run another
+thread that keeps sending SIGUSR to the vCPU thread, essentially
+triggering exits to userspace and save+restore on random points in guest
+execution. This makes the test a lot more meaningful as it opens the
+door to exercising race conditions between #PF handling in the guest
+and save+restore in the host.
 
-With this change, the test reliably reproduces the CR2 bug fixed by
-commit 5c247d08bc81 ("KVM: nSVM: Use vcpu->arch.cr2 when updating vmcb12
-on nested #VMEXIT") -- at least on Milan, Genoa, and Turin CPUs.
+The signals are ignored using SIG_IGN outside of __vcpu_run() to avoid
+interrupting other ioctls/sysctls performed by the test.
 
 Assisted-by: Gemini:gemini-3.1-pro
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- .../kvm/x86/stress_save_restore_pf_test.c     | 47 +++++++++++++++++--
- 1 file changed, 42 insertions(+), 5 deletions(-)
+ .../kvm/x86/stress_save_restore_pf_test.c     | 59 ++++++++++++++++---
+ 1 file changed, 51 insertions(+), 8 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c b/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
-index c285ef093400d..6aae34cf8f13f 100644
+index 622d102179e66..92efb7ac9d95f 100644
 --- a/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
 +++ b/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
-@@ -110,8 +110,12 @@ static void l1_svm_code(struct svm_test_data *svm)
+@@ -5,6 +5,8 @@
+ #include <errno.h>
+ #include <sys/types.h>
+ #include <time.h>
++#include <pthread.h>
++#include <signal.h>
+ #include <unistd.h>
  
- 	generic_svm_setup(svm, guest_access_memory, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
- 
--	run_guest(svm->vmcb, svm->vmcb_gpa);
--	GUEST_ASSERT(false);
-+	svm->vmcb->control.intercept_exceptions |= BIT(UD_VECTOR);
-+
-+	while (1) {
-+		run_guest(svm->vmcb, svm->vmcb_gpa);
-+		GUEST_ASSERT_EQ(svm->vmcb->control.exit_code, (SVM_EXIT_EXCP_BASE + UD_VECTOR));
+ #include "test_util.h"
+@@ -94,15 +96,41 @@ static void guest_access_memory(void *arg)
+ 		/* Clear the present bit again so it faults next time */
+ 		*guest_get_pte(vaddr) &= ~pte_present_mask;
+ 		invlpg(vaddr);
 +	}
- }
- 
- static void l1_vmx_code(struct vmx_pages *vmx)
-@@ -122,13 +126,17 @@ static void l1_vmx_code(struct vmx_pages *vmx)
- 	GUEST_ASSERT(load_vmcs(vmx));
- 	prepare_vmcs(vmx, guest_access_memory, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
- 
--	/* Ignore any #PF */
--	GUEST_ASSERT(!vmwrite(EXCEPTION_BITMAP, BIT(PF_VECTOR)));
-+	/* Intercept UD, ignore any #PF */
-+	GUEST_ASSERT(!vmwrite(EXCEPTION_BITMAP, BIT(UD_VECTOR) | BIT(PF_VECTOR)));
- 	GUEST_ASSERT(!vmwrite(PAGE_FAULT_ERROR_CODE_MASK, 0));
- 	GUEST_ASSERT(!vmwrite(PAGE_FAULT_ERROR_CODE_MATCH, -1));
- 
- 	GUEST_ASSERT(!vmlaunch());
--	GUEST_ASSERT(false);
-+	while (1) {
-+		GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_EXCEPTION_NMI);
-+		GUEST_ASSERT_EQ(vmreadz(VM_EXIT_INTR_INFO) & 0xff, UD_VECTOR);
-+		GUEST_ASSERT(!vmresume());
-+	}
- }
- 
- static void l1_guest_code(void *test_data)
-@@ -166,6 +174,24 @@ static void vcpu_sigusr_ignore(void)
- 	sigaction(SIGUSR1, &sa, NULL);
- }
- 
-+static bool vcpu_state_is_guest_mode(struct kvm_x86_state *state)
-+{
-+	return !!(state->nested.flags & KVM_STATE_NESTED_GUEST_MODE);
 +}
 +
-+static void vcpu_state_inject_ud(struct kvm_x86_state *state)
++static void *sigusr_thread_fn(void *arg)
 +{
-+	if (state->events.exception.pending || state->events.exception.injected)
-+		return;
-+
-+	state->events.flags |= KVM_VCPUEVENT_VALID_PAYLOAD;
-+	state->events.exception.pending = true;
-+	state->events.exception.injected = false;
-+	state->events.exception.nr = UD_VECTOR;
-+	state->events.exception.has_error_code = false;
-+	state->events.exception_has_payload = false;
++	pthread_t vcpu_thread = (pthread_t)arg;
+ 
+-		GUEST_SYNC(guest_faults);
++	for (;;) {
++		pthread_testcancel();
++		pthread_kill(vcpu_thread, SIGUSR1);
++		usleep(100);
+ 	}
++	return NULL;
 +}
 +
- static bool parse_args_nested(int argc, char *argv[])
++static void dummy_signal_handler(int signo) {}
++static struct sigaction sa;
++
++static void vcpu_sigusr_listen(void)
++{
++	sa.sa_handler = dummy_signal_handler;
++	sigaction(SIGUSR1, &sa, NULL);
++}
++
++static void vcpu_sigusr_ignore(void)
++{
++	sa.sa_handler = SIG_IGN;
++	sigaction(SIGUSR1, &sa, NULL);
+ }
+ 
+ int main(int argc, char *argv[])
  {
- 	bool nested = false;
-@@ -199,10 +225,13 @@ int main(int argc, char *argv[])
- 	gva_t gva;
- 	u64 pte;
+ 	struct kvm_x86_state *state;
+ 	int r, i, level, count = 0;
++	pthread_t sigusr_thread;
+ 	gpa_t gpa, pgtable_gpa;
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+@@ -151,18 +179,30 @@ int main(int argc, char *argv[])
+ 		pgtable_gpa = PTE_GET_PA(pte);
+ 	}
  
-+	TEST_REQUIRE(kvm_has_cap(KVM_CAP_EXCEPTION_PAYLOAD));
++	/* Initialize the thread sending SIGUSR and install the handler */
++	vcpu_sigusr_ignore();
++	r = pthread_create(&sigusr_thread, NULL, sigusr_thread_fn,
++			   (void *)pthread_self());
++	TEST_ASSERT(!r, "pthread_create() failed: %d", r);
 +
- 	nested = parse_args_nested(argc, argv);
- 
- 	vm = vm_create_with_one_vcpu(&vcpu, nested ? l1_guest_code : guest_access_memory);
- 	vm_install_exception_handler(vm, PF_VECTOR, guest_pf_handler);
-+	vm_enable_cap(vm, KVM_CAP_EXCEPTION_PAYLOAD, -2ul);
- 
- 	if (nested) {
- 		TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM) || kvm_cpu_has(X86_FEATURE_VMX));
-@@ -277,8 +306,16 @@ int main(int argc, char *argv[])
+ 	while (count++ < NR_ITERATIONS) {
++		/*
++		 * Only handle SIGUSR while the vCPU is running, otherwise
++		 * ignore it to avoid interrupting other ioctls/syscalls.
++		 */
++		vcpu_sigusr_listen();
+ 		r = __vcpu_run(vcpu);
+-		TEST_ASSERT(!r, "vcpu_run failed");
+-		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
+-
+-		get_ucall(vcpu, &uc);
+-		if (uc.cmd == UCALL_ABORT) {
++		if (r == -1)
++			TEST_ASSERT_EQ(errno, EINTR);
++		vcpu_sigusr_ignore();
++
++		/* The guest only exits due to a signal or failed assertion */
++		if (!r) {
++			TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++			TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_ABORT);
+ 			REPORT_GUEST_ASSERT(uc);
+ 			break;
+ 		}
+-		TEST_ASSERT_EQ(uc.cmd, UCALL_SYNC);
+-		TEST_ASSERT_EQ(uc.args[1], count - 1);
  
  		state = vcpu_save_state(vcpu);
  
-+		/*
-+		 * If the vCPU is in guest mode, inject a #UD to trigger an
-+		 * L2->L1 VM-Exit every other iteration.
-+		 */
-+		if (nested && vcpu_state_is_guest_mode(state) && count % 2 == 0)
-+			vcpu_state_inject_ud(state);
-+
- 		kvm_vm_release(vm);
- 		vcpu = vm_recreate_with_one_vcpu(vm);
-+		vm_enable_cap(vm, KVM_CAP_EXCEPTION_PAYLOAD, -2ul);
- 		vcpu_load_state(vcpu, state);
- 		kvm_x86_state_cleanup(state);
+@@ -175,8 +215,11 @@ int main(int argc, char *argv[])
+ 	}
  
+ 	sync_global_from_guest(vm, guest_faults);
++	TEST_ASSERT(guest_faults > 0, "No guest page faults triggered");
+ 	pr_info("Guest page faults: %lu\n", guest_faults);
+ 
++	pthread_cancel(sigusr_thread);
++	pthread_join(sigusr_thread, NULL);
+ 	kvm_vm_free(vm);
+ 	return 0;
+ }
 -- 
 2.54.0.1032.g2f8565e1d1-goog
 
