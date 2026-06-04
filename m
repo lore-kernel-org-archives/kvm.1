@@ -1,88 +1,234 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6C03C768A;
-	Thu,  4 Jun 2026 06:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062BE30E84B
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 07:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780555999; cv=none; b=sldBYYKd2Hus/A81txPZ7DuHaYif1sZOt0GSgdHKLFKc5wvKMgI9PPMynkKDvQf/QbbyQyuQhGodfZfGW6Cc9NOanepanEjaCYDBvC+fwYnjgQOs+XkEysOuJKcc3WIJlj+iQu5lQ4IoRc2zMSywL425V+qkH8pCTyg/v2OgBK8=
+	t=1780556445; cv=none; b=mH8OIa1GD4iSwjQHh3FyrMoO5jxW/dJWZ2+wH/aQndbyc5N7V14JTbVN5g06thOqCZYsimRKzILSv2zk9fEHCpaip18AOpUAQWlgMUHSIiTdDixoIaqO1D+mCOSd9ojj5mB+wQL3ltSZ5pCo8gvYyHTDPL9tBb4StVvVI+eZAck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780555999; c=relaxed/simple;
-	bh=H8Shv1IuE1+2uLqdp2Vks+cfKeAGx1PzFQf8Gz4nKOI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n4Ed6R7VuT4iKo7WcgW5Sj7sRuXIj0wZQD3Qn1qAKluc+L4MQBZP+25UGhHywctJV5xx3S2swoxtBPZYPBJ8iv2IUO9WRYGk5ZlDIHVaQf0dcSbzLaOPDxZL6UoCL1GQTgPhuaE8fwXxI7l1UFfQn34qRDVMJSQzAttibGqVSFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YarUAfio; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1780556445; c=relaxed/simple;
+	bh=wGKMW1lWJzr5i7VJtB1p09tLyXvqtcFpwwHEOXxTkbA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WuuBFjkOSoceI/Jj7+cweCNOUhZrBCIMuPPkQo0xe7Bm6uejwuDrj5jgjd61oLV/GmaO+c+Nd7quAMK0+4Z1RIVgzZHEzqL6V2UCz0vu8UDfu5rh//CcfqcLWJjZzuUQXavOOccJNC6tREKGHlUOHIlazH+BTPuDdgBt9TmiZRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=W3z133pD; arc=none smtp.client-ip=115.124.30.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YarUAfio"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780555999; x=1812091999;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=H8Shv1IuE1+2uLqdp2Vks+cfKeAGx1PzFQf8Gz4nKOI=;
-  b=YarUAfiojqlv82YKxB3MuWX9z2H+bz7lQI8EhjxT88bhaSbA9p845BSQ
-   PS86/32ZLSmkPzud2f5lnYLSY9KiwWdumRi+7VTBWXEWooRAEyzauojlq
-   TW+moFvUbAKy8G3BiT8TvmNVxEngK2BD8KF24zGzeZ7tELVccqCQNBXjX
-   3eZcX2iXaEW0MsHxHOLmIx0JN8NdfFyRz8GVveF9y62UHu6/ohLfbCoV1
-   tihUf+5H7Pnhu2BlIlnoUUGVmSWsrxUSlVZnc07ukgmorljzETNrQLXXa
-   WRbyiXOdLkvdKrYS3S+IMW+lNNrkdpJ52513rxUGriAySdDVye6Ce8XwH
-   Q==;
-X-CSE-ConnectionGUID: 8FqrZ/42Q/KC8BwRrzDrNA==
-X-CSE-MsgGUID: NO0WIpvVR7KeQlJfYB9CYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11806"; a="91692486"
-X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; 
-   d="scan'208";a="91692486"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 23:53:18 -0700
-X-CSE-ConnectionGUID: G3WMCL6kR3mVBCPBCZlUHQ==
-X-CSE-MsgGUID: HbRZxf2qTtWgDXj+4LdcNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,186,1774335600"; 
-   d="scan'208";a="243391393"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 23:53:15 -0700
-Message-ID: <883588d1-27a2-4874-b832-5b1b62db3cb9@intel.com>
-Date: Thu, 4 Jun 2026 14:53:12 +0800
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="W3z133pD"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1780556431; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=N/wmenlWZj0voABROW3OovXPJqUV5xK6krbUpzP9YSY=;
+	b=W3z133pDJqawZW3zKE6qVhqCdy7+m3Ps1/RQLzLYgZxgc8mTQBCdBZsbQESwiHLg0sKX6Vb2XQvH8ImtmK8gcDC/8bsrmLJj5e/r/P6g8clji5h2r2tKlVQbwm61syuJ8ItDmLMTCWRquUJpSA6ZoRfTcVP58XAK1JF9ZQgmHLk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=guobin@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0X49Tjcr_1780556430;
+Received: from localhost(mailfrom:guobin@linux.alibaba.com fp:SMTPD_---0X49Tjcr_1780556430 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 04 Jun 2026 15:00:31 +0800
+From: Bin Guo <guobin@linux.alibaba.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Hyman Huang <infra.ai.cloud@bitdeer.com>
+Cc: kvm@vger.kernel.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH v2] accel/kvm: event-driven wakeup for dirty ring reaper thread
+Date: Thu,  4 Jun 2026 15:00:29 +0800
+Message-ID: <20260604070029.34982-1-guobin@linux.alibaba.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 4/4] KVM: x86: TDX: Report CORE_CAPABILITIES as
- supported
-To: Binbin Wu <binbin.wu@linux.intel.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: seanjc@google.com, pbonzini@redhat.com, rick.p.edgecombe@intel.com,
- chao.gao@intel.com, kai.huang@intel.com
-References: <20260604023314.3907511-1-binbin.wu@linux.intel.com>
- <20260604023314.3907511-5-binbin.wu@linux.intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260604023314.3907511-5-binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/4/2026 10:33 AM, Binbin Wu wrote:
-> Add CORE_CAPABILITIES (CPUID.0x7.0.EDX[30]) to the TDX configurable
-> CPUID allowlist to accommodate legacy TDX module behavior.
-> 
-> KVM doesn't support MSR_IA32_CORE_CAPS, however, some older TDX specs
-> define CORE_CAPABILITIES CPUID bit as fixed-1.  As a result, userspace
-> may expect this bit to be enabled in the TDX module for TDs.  When the
-> CPUID bit becomes a directly configurable without reporting to the
-> userspace, it can not be enabled.  To avoid confusing userspace, report
-> CORE_CAPABILITIES to userspace via KVM_TDX_CAPABILITIES.
-> 
-> Although KVM could determine the real CPUID setting by reading the
-> metadata via SEAMCALL after KVM_TDX_INIT_VM, doing so is overkill to
-> cover such a corner case.  If CORE_CAPABILITIES is exposed to a TDX
-> guest, and the guest reads it, simply return 0.
+The reaper polls with sleep(1) (TODO in the code) and only notices
+dirty-limit teardown at the next 1s tick.
 
-shouldn't this patch be put as patch 02 instead of 04?
+Replace the sleep with qemu_poll_ns() on an EventNotifier, kicked
+from dirtylimit_state_finalize() after dirtylimit_state has been
+cleared.  The kick must follow the NULL assignment: kicking earlier
+wakes the reaper while dirtylimit_in_service() still returns true,
+so it just loops back to wait.  A 1s fallback timeout remains as a
+liveness backstop.
 
-Patch 02 and 03 in this series break the old QEMU and then patch 04 
-fixes the broken. This is not friendly to the bisect.
+20 set-/cancel-vcpu-dirty-limit cycles via QMP, |reaper-wake -
+cancel-ack| measured with strace on the reaper TID:
+
+    before: median 255 ms, max 502 ms
+    after:  median 0.6 ms, max  27 ms
+
+kvm_dirty_ring_reaper_init() returns int again (was made void in
+commit 43a5e377f4) to propagate event_notifier_init() failure.
+
+Signed-off-by: Bin Guo <guobin@linux.alibaba.com>
+---
+Changes in v2:
+- Fix compilation error: kvm_init() has no Error **errp parameter, so
+  kvm_dirty_ring_reaper_init() now uses error_report() directly and
+  no longer accepts an errp argument.
+- Remove the kick from kvm_cpu_exec() KVM_EXIT_DIRTY_RING_FULL handler:
+  it already reaps synchronously (all vCPUs or the ring-full one), so
+  a background reaper kick would only be redundant or a no-op.
+- Move kick site from dirtylimit_change(false) to
+  dirtylimit_state_finalize() after dirtylimit_state = NULL, ensuring
+  the reaper actually proceeds past the dirtylimit_in_service() check.
+
+ accel/kvm/kvm-all.c      | 42 ++++++++++++++++++++++++++++++++++------
+ accel/stubs/kvm-stub.c   |  4 ++++
+ include/system/kvm.h     |  7 +++++++
+ include/system/kvm_int.h |  3 +++
+ system/dirtylimit.c      |  2 ++
+ 5 files changed, 52 insertions(+), 6 deletions(-)
+
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 96f90ebb24..be005832bc 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -1754,6 +1754,8 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml,
+     } while (size);
+ }
+ 
++#define KVM_DIRTY_RING_REAPER_FALLBACK_NS  (1 * NANOSECONDS_PER_SECOND)
++
+ static void *kvm_dirty_ring_reaper_thread(void *data)
+ {
+     KVMState *s = data;
+@@ -1764,12 +1766,18 @@ static void *kvm_dirty_ring_reaper_thread(void *data)
+     trace_kvm_dirty_ring_reaper("init");
+ 
+     while (true) {
++        GPollFD pfd = {
++            .fd = event_notifier_get_fd(&r->reaper_notifier),
++            .events = G_IO_IN,
++        };
++
+         r->reaper_state = KVM_DIRTY_RING_REAPER_WAIT;
+         trace_kvm_dirty_ring_reaper("wait");
+-        /*
+-         * TODO: provide a smarter timeout rather than a constant?
+-         */
+-        sleep(1);
++
++        qemu_poll_ns(&pfd, 1, KVM_DIRTY_RING_REAPER_FALLBACK_NS);
++
++        /* Drain unconditionally so a stale event can't spin the next loop. */
++        event_notifier_test_and_clear(&r->reaper_notifier);
+ 
+         /* keep sleeping so that dirtylimit not be interfered by reaper */
+         if (dirtylimit_in_service()) {
+@@ -1789,13 +1797,32 @@ static void *kvm_dirty_ring_reaper_thread(void *data)
+     g_assert_not_reached();
+ }
+ 
+-static void kvm_dirty_ring_reaper_init(KVMState *s)
++static int kvm_dirty_ring_reaper_init(KVMState *s)
+ {
+     struct KVMDirtyRingReaper *r = &s->reaper;
++    int ret;
++
++    ret = event_notifier_init(&r->reaper_notifier, 0);
++    if (ret < 0) {
++        error_report("Failed to initialize dirty ring reaper notifier: %s",
++                     strerror(-ret));
++        return ret;
++    }
+ 
+     qemu_thread_create(&r->reaper_thr, "kvm-reaper",
+                        kvm_dirty_ring_reaper_thread,
+                        s, QEMU_THREAD_JOINABLE);
++    return 0;
++}
++
++void kvm_dirty_ring_reaper_kick(void)
++{
++    KVMState *s = kvm_state;
++
++    if (!s || !s->kvm_dirty_ring_size) {
++        return;
++    }
++    event_notifier_set(&s->reaper.reaper_notifier);
+ }
+ 
+ static int kvm_dirty_ring_init(KVMState *s)
+@@ -3097,7 +3124,10 @@ static int kvm_init(AccelState *as, MachineState *ms)
+     }
+ 
+     if (s->kvm_dirty_ring_size) {
+-        kvm_dirty_ring_reaper_init(s);
++        ret = kvm_dirty_ring_reaper_init(s);
++        if (ret < 0) {
++            goto err;
++        }
+     }
+ 
+     if (kvm_check_extension(kvm_state, KVM_CAP_BINARY_STATS_FD)) {
+diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+index c4617caac6..b878598552 100644
+--- a/accel/stubs/kvm-stub.c
++++ b/accel/stubs/kvm-stub.c
+@@ -134,6 +134,10 @@ uint32_t kvm_dirty_ring_size(void)
+     return 0;
+ }
+ 
++void kvm_dirty_ring_reaper_kick(void)
++{
++}
++
+ bool kvm_hwpoisoned_mem(void)
+ {
+     return false;
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index 5fa33eddda..e127a5eb37 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -553,6 +553,13 @@ bool kvm_dirty_ring_enabled(void);
+ 
+ uint32_t kvm_dirty_ring_size(void);
+ 
++/**
++ * kvm_dirty_ring_reaper_kick - wake the background dirty ring reaper.
++ *
++ * Safe from any thread; no-op when the dirty ring is not in use.
++ */
++void kvm_dirty_ring_reaper_kick(void);
++
+ void kvm_mark_guest_state_protected(void);
+ 
+ /**
+diff --git a/include/system/kvm_int.h b/include/system/kvm_int.h
+index 0876aac938..c14ebc927f 100644
+--- a/include/system/kvm_int.h
++++ b/include/system/kvm_int.h
+@@ -12,6 +12,7 @@
+ #include "system/memory.h"
+ #include "qapi/qapi-types-common.h"
+ #include "qemu/accel.h"
++#include "qemu/event_notifier.h"
+ #include "qemu/queue.h"
+ #include "system/kvm.h"
+ #include "accel/accel-ops.h"
+@@ -100,6 +101,8 @@ struct KVMDirtyRingReaper {
+     QemuThread reaper_thr;
+     volatile uint64_t reaper_iteration; /* iteration number of reaper thr */
+     volatile enum KVMDirtyRingReaperState reaper_state; /* reap thr state */
++    /* Wakeup channel: kicked when dirty-limit is torn down. */
++    EventNotifier reaper_notifier;
+ };
+ struct KVMState
+ {
+diff --git a/system/dirtylimit.c b/system/dirtylimit.c
+index c934ceb0de..a33256ade7 100644
+--- a/system/dirtylimit.c
++++ b/system/dirtylimit.c
+@@ -239,6 +239,8 @@ void dirtylimit_state_finalize(void)
+     g_free(dirtylimit_state);
+     dirtylimit_state = NULL;
+ 
++    kvm_dirty_ring_reaper_kick();
++
+     trace_dirtylimit_state_finalize();
+ }
+ 
+-- 
+2.50.1 (Apple Git-155)
+
