@@ -1,499 +1,194 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7513A39936D;
-	Thu,  4 Jun 2026 15:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF14B3FF887
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 16:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780588511; cv=none; b=Fo8248Tl3zmZ/7Cs5bY8ixIdrtmOACARi7wp1tAW05No+V3LPJjbmitgjn0auhRnMRtjAO9vM9NL6bJnBShNuAchDnMfCwrKf/QP9fcO9nWJExx/Nvyi+E2ko0PJTSqcgcjxwLM251sQ2ng2gkai2ODy+J9SbpV09zyhEVnM61I=
+	t=1780588914; cv=none; b=QBfaoIuKJT3nBqj4ehDSOwPCxcoPivuKQF7OmWKFEUkXlwllghcOyKO2T3AowN72WRIMVwIODMrVRChQQtwLoKjQi7uBKaQ55Co6X354UAx1bN8dU19atlr8OtNC+yvX2tRp6sIiOoYizVmcAsPsA/QWkApr8eObVbIWrf2YKXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780588511; c=relaxed/simple;
-	bh=CsHrryjDtgR3ZDYbyzhq41lvy+WJE8b/sMyCmyZnR5Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OJKoXnEzi/Z2dK9lnc30dOVRitvj0Y2QoBzWjfYIeectLfikqbSTggEIwLqzgTBLE++HSGmgG6D8EWnykWmA555PUgFJEBTHxdXiVpHCyJGk5RHcqWXEa1WPZpOxKwBhSJ8HutvQMBW8FUZ6qm7my6i7ftBDMi65mkQCCn5uxQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=jC+NNncl; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1780588914; c=relaxed/simple;
+	bh=Bb5mTrgyt2h5wH9/ID4zexvhJBt+QMk4O3GE6dK3YOE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sNUl6ObEpfrrYlmvcqjX5DEhseI1W1tMGJB6YVV7XLvUtv6SbiLb8SunV2ygtV0FpRjJ1cM+ktgbBaeeU5dOPyF4zKeFqEx24JFBMIpPIWH4AUTCGFjiYU6eZD8vXBshVnJ4Jl4ehBAzDyko0JTzd/Zh/vjYvUnziTnDMT34IS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=OF+XSvRY; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=MiYgp1sV; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="jC+NNncl"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A75EE499F;
-	Thu,  4 Jun 2026 08:55:02 -0700 (PDT)
-Received: from [10.1.34.54] (e122027.cambridge.arm.com [10.1.34.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A071E3F86F;
-	Thu,  4 Jun 2026 08:55:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780588507; bh=CsHrryjDtgR3ZDYbyzhq41lvy+WJE8b/sMyCmyZnR5Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jC+NNncltyW8C1Hw6hB3OYN7d2ZzNnuWb33R14JtHRtYhxcJa7Vk/JCLu9/ZRxggS
-	 FFNw1+Xdtv98H494qn1FXD4Uzvt44NEYvg7EDkHKIiNu4JGAcdX5Mal59csDaPzW35
-	 LPFSB6Tk0ifJGTK0VOGjiV7FvLEzM9WKhw7wHi18=
-Message-ID: <cb918d27-e37a-41d8-b4b4-746ffa8d8583@arm.com>
-Date: Thu, 4 Jun 2026 16:55:01 +0100
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="OF+XSvRY";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="MiYgp1sV"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654Eg8us1132195
+	for <kvm@vger.kernel.org>; Thu, 4 Jun 2026 16:01:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=yt4gW85Y9LMlMB5+VVL9pvf/
+	wye7kF75DN7q+ptOBr4=; b=OF+XSvRYiLrTH54S9+jd0MNLNy21hVd6XdRt8wwZ
+	0pjMiHCqOMO+rMsINhJw6L7neH6unjvY+9GUSK/2X88fKg9XOTBb19AnBXn1LSoG
+	ou19z3e2t6MIjiBwOFCbQ3TSgGV8rxh1DVzmFwuS66BCG915tom3yAXcjdtUTsgW
+	j80safQqLSn+NuNnDb8Sltf82fX8mRFpErJcWSRgngpurvuc0LmzRv0Qe/vY1qzt
+	hhHsiPH/x2iTyAkULmj29aMqSZuAm05syng1M0Oit8Mgkp+PF4oHJ72dZ9KVspxZ
+	tGNduT1zRurOxBDDs2NtuTwW61/n5BBkmdLzzpBVW31+mQ==
+Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ek5wshus2-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 16:01:52 +0000 (GMT)
+Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-137fe4a3640so1369992c88.0
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 09:01:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1780588912; x=1781193712; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yt4gW85Y9LMlMB5+VVL9pvf/wye7kF75DN7q+ptOBr4=;
+        b=MiYgp1sVYYfSG/LwjzCN/hm92Mo1l7GJPFfl/+F1cYDCCkCS9ApSuqwafqEMKoX+JH
+         cjzahU83Ti8w6M4RsR2GrMoFwBsJdDce5XDnot6QPomdvdIp0+6hewXytRNpyOTuBR38
+         dg/6dVuvGHIBU1HPWWMm53rTjFMhIjTD6YgQdRN2BpTRGtl9s2pvYLRMiv6asdqgG51a
+         rqlDTODx26OOqw481OsOwDDPgjp+fNVVd7Y4/trINA2URybd+cL2gunpS5QXt3Y06yS+
+         6A6wYlMecuFHzVJd32Y1wyoxwzoCETG/sgxsIuJzDn2nY6w7yPa/V+lcFdWPwDUVbITR
+         4h6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780588912; x=1781193712;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yt4gW85Y9LMlMB5+VVL9pvf/wye7kF75DN7q+ptOBr4=;
+        b=E0x3XYZtMlpHIjToUAW6ImbmnV1NRZO+bSyA2Y0oVusYXvrvzMjU17qml1wlBVjEtH
+         /00yDzTdh2mus+Rv9rMgnB1lNFBg9W2MBDjlwCwDfiaxoeR3WPGH2N6mr+Dk1XLXv2uJ
+         rGmGOXHpExGt8JdzlniBhN0pnJgWLoCnq/NG6Ca7bCyVBV0Vq8jqQmwAT/lqkObdKWJf
+         HfdYceAEhjJeM6kUn6eara51yiqiKm3wWr3cuT7Eha0Fl2cmmqHLS/KgSgNRxauLEWlq
+         fNFGXwx/gcFAGliH/kF+CuINW2dsQyJNx+lTssTCVKlEXp3+Hid/FsUg4u5sR5ahsObG
+         gQXg==
+X-Forwarded-Encrypted: i=1; AFNElJ/+sMYyizvrTYzGu6b3bSg+JZXW8hzoSWclYnmKZDgjilAOQe5jWBIDM44sFN2xAc88vnI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzemVAshreaQx13T6lCc7yoWynhRj7/0M2Uh4BRqT/X+Ssbbqmc
+	NA0eiu3WGfq5QZUzud4r3zlAZzskUprdr9/kQPwR24DU+OyDbggvB5MphjUH4hHBohmfGg5fk8c
+	MhGbqziybmyTQoVqQltYt5y//GZwdkNhzzrF6egxIqSUB8t0mytE8+ow=
+X-Gm-Gg: Acq92OE5osHxV7yy/cGk8P6OmuCU0iVHIo+RyrZAZ6LY2jFZcVgNTky8a0rsSwjNqx9
+	LVhQe3wXGp5XupKUm/fW/hIkWo2/Ue5N2mNDNKOI+SeS/7T5iSIGlMGJNpawrFgMyLLUXDFfZk+
+	rLA8+6DGMaTBTNpj2SiJcstDdn5+qn2zQa3Ds1tG8l4PIj2zjpYzBEjlHNNLFk1/98XbKMyxMZv
+	KErPamYt1uPPNE55AzhHJ7/zXX9+vAvzaMlWoS/j2WGuBRqEntv3mD+3ZVFQzWgWU/KlrjUaYq3
+	c7ED4ACCU/0hVpVbrRdlllPlFCHuR4kQAe8myG+FiPQP2klpQ7D9WnmxsgshQg2tH8qHCeMcNzf
+	7fa91SqReCQ==
+X-Received: by 2002:a05:7022:206:b0:137:ea56:358 with SMTP id a92af1059eb24-137f6bd030emr3478933c88.30.1780588910501;
+        Thu, 04 Jun 2026 09:01:50 -0700 (PDT)
+X-Received: by 2002:a05:7022:206:b0:137:ea56:358 with SMTP id a92af1059eb24-137f6bd030emr3478562c88.30.1780588909024;
+        Thu, 04 Jun 2026 09:01:49 -0700 (PDT)
+Received: from localhost ([140.82.166.162])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-137f716017esm5199221c88.15.2026.06.04.09.01.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 09:01:48 -0700 (PDT)
+Date: Thu, 4 Jun 2026 11:01:47 -0500
+From: Andrew Jones <andrew.jones@oss.qualcomm.com>
+To: Guodong Xu <docular.xu@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+        Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+        Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>,
+        Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
+        Chen Wang <unicorn_wang@outlook.com>,
+        Inochi Amaoto <inochiama@gmail.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Shuah Khan <shuah@kernel.org>, Christian Brauner <brauner@kernel.org>,
+        linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        kvm-riscv@lists.infradead.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@sifive.com>, Conor Dooley <conor@kernel.org>,
+        devicetree@vger.kernel.org, spacemit@lists.linux.dev,
+        sophgo@lists.linux.dev, linux-kselftest@vger.kernel.org,
+        Charles Jenkins <thecharlesjenkins@gmail.com>,
+        Samuel Holland <samuel.holland@sifive.com>
+Subject: Re: [PATCH v3 02/15] riscv: hwprobe.rst: Document EXT_ZICFISS and
+ EXT_ZICFILP
+Message-ID: <vazr6kop3pbga22p5wbn3oursuic4thh4aeogkndyuskrncgta@cpk6igb7cr6a>
+References: <20260603-rva23u64-hwprobe-v2-v3-0-5529a7b28384@gmail.com>
+ <20260603-rva23u64-hwprobe-v2-v3-2-5529a7b28384@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 14/44] arm64: RMI: Basic infrastructure for creating a
- realm.
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-15-steven.price@arm.com>
- <86ik88ui0g.wl-maz@kernel.org> <1bb9da2a-bcc2-4232-944e-0730e9e1f45a@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <1bb9da2a-bcc2-4232-944e-0730e9e1f45a@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260603-rva23u64-hwprobe-v2-v3-2-5529a7b28384@gmail.com>
+X-Proofpoint-GUID: 95i9s-lQ-JwTnz3AsaWOZ5dbVtXVAMuU
+X-Proofpoint-ORIG-GUID: 95i9s-lQ-JwTnz3AsaWOZ5dbVtXVAMuU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA0MDE1NyBTYWx0ZWRfX33hyPTrsrRig
+ K85TU8vRjQU0VWi2KCqV1bqWmMAVOfwyXZ52InYF6dY4Ap8NWVbmgLG4g/FdijLPEHmzZivlhw2
+ rcsU93ZTgS0cBLHttbw0EFgKapj48UBI+QRu+PYsH3l5AsJmCmN1GDL+icwGgOcGQJOXnwwDRmZ
+ gNhmCdVc9h51yedp8D5nbPFrjCRWaKBZpGJhwS0NdYUDaq0fqs15ilSEFFO0VvxXYwR0SuQJwXg
+ 7q/4NKctoCQUateyP9Y6b/ntn9WgSeB1PBf8EU9NUhLyohwtZcTs4zgiiyLwjdheTztGkCF8SYB
+ Rb0gBMx35PlYhp+6/Q5nGzEsQ6yWOJ53WP24KhFPMKSD4soprEH6HvFyT4InZLm+/Zb7LNol0Kb
+ 7ZEk+UIFaGgR7DhbM3B1nCHu7v7X4rvx99oybUtIVbz8kfoErUvJACregTbwRVuWG5pGNVlYOiJ
+ bb0diLc5rjZl1fcTesg==
+X-Authority-Analysis: v=2.4 cv=POc/P/qC c=1 sm=1 tr=0 ts=6a21a170 cx=c_pps
+ a=SvEPeNj+VMjHSW//kvnxuw==:117 a=cvcws7F5//HeuvjG1O1erQ==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=MiYv3HnXQXVWDUVKjRcA:9 a=CjuIK1q_8ugA:10
+ a=Kq8ClHjjuc5pcCNDwlU0:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-04_04,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 phishscore=0 malwarescore=0 clxscore=1015 bulkscore=0
+ impostorscore=0 priorityscore=1501 spamscore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606040157
 
-On 02/06/2026 15:49, Suzuki K Poulose wrote:
-> Hi Marc
+On Wed, Jun 03, 2026 at 07:11:57AM -0400, Guodong Xu wrote:
+> Commit 30c3099036a9 ("riscv/hwprobe: add zicfilp / zicfiss
+> enumeration in hwprobe") added RISCV_HWPROBE_EXT_ZICFISS and
+> RISCV_HWPROBE_EXT_ZICFILP, but did not add matching entries to
+> Documentation/arch/riscv/hwprobe.rst.  Add them now.
 > 
-> On 28/05/2026 08:10, Marc Zyngier wrote:
->> On Wed, 13 May 2026 14:17:22 +0100,
->> Steven Price <steven.price@arm.com> wrote:
->>>
->>> Introduce the skeleton functions for creating and destroying a realm.
->>> The IPA size requested is checked against what the RMM supports.
->>>
->>> The actual work of constructing the realm will be added in future
->>> patches.
->>
->> Again, $SUBJECT doesn't reflect that this is purely a KVM patch.
+> Fixes: 30c3099036a9 ("riscv/hwprobe: add zicfilp / zicfiss enumeration in hwprobe")
+> Signed-off-by: Guodong Xu <docular.xu@gmail.com>
+> ---
+> v3:
+> - Also document RISCV_HWPROBE_EXT_ZICFILP (bit 63 of IMA_EXT_0), the
+>   sibling enumeration added by the same commit (Andrew).
+> v2: New patch.
+> ---
+>  Documentation/arch/riscv/hwprobe.rst | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/Documentation/arch/riscv/hwprobe.rst b/Documentation/arch/riscv/hwprobe.rst
+> index a09a8f16bd16f..3cedaaa53f331 100644
+> --- a/Documentation/arch/riscv/hwprobe.rst
+> +++ b/Documentation/arch/riscv/hwprobe.rst
+> @@ -289,6 +289,11 @@ The following keys are defined:
+>      defined in the RISC-V ISA manual starting from commit f88abf1 ("Integrating
+>      load/store pair for RV32 with the main manual") of the riscv-isa-manual.
+>  
+> +  * :c:macro:`RISCV_HWPROBE_EXT_ZICFILP`: The Zicfilp extension is supported,
+> +    as defined in version 1.0 of the RISC-V Control-flow Integrity (CFI)
+> +    extensions specification, ratified in commit ff03d8485a04 ("Update to
 
-Indeed - "KVM: arm64: CCA" is a better prefix.
+Can we use commit 302a2d45c243 instead since that one has the v1.0 tag?
 
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> ---
->>> Changes since v13:
->>>   * Rebased and updated to RMM-v2.0-bet1.
->>>   * Auxiliary granules have been removed in RMM-v2.0-bet1
->>> Changes since v12:
->>>   * Drop the RMM_PAGE_{SHIFT,SIZE} defines - the RMM is now
->>> configured to
->>>     be the same as the host's page size.
->>>   * Rework delegate/undelegate functions to use the new RMI range based
->>>     operations.
->>> Changes since v11:
->>>   * Major rework to drop the realm configuration and make the
->>>     construction of realms implicit rather than driven by the VMM
->>>     directly.
->>>   * The code to create RDs, handle VMIDs etc is moved to later patches.
->>> Changes since v10:
->>>   * Rename from RME to RMI.
->>>   * Move the stage2 cleanup to a later patch.
->>> Changes since v9:
->>>   * Avoid walking the stage 2 page tables when destroying the realm -
->>>     the real ones are not accessible to the non-secure world, and the
->>> RMM
->>>     may leave junk in the physical pages when returning them.
->>>   * Fix an error path in realm_create_rd() to actually return an
->>> error value.
->>> Changes since v8:
->>>   * Fix free_delegated_granule() to not call
->>> kvm_account_pgtable_pages();
->>>     a separate wrapper will be introduced in a later patch to deal with
->>>     RTTs.
->>>   * Minor code cleanups following review.
->>> Changes since v7:
->>>   * Minor code cleanup following Gavin's review.
->>> Changes since v6:
->>>   * Separate RMM RTT calculations from host PAGE_SIZE. This allows the
->>>     host page size to be larger than 4k while still communicating
->>> with an
->>>     RMM which uses 4k granules.
->>> Changes since v5:
->>>   * Introduce free_delegated_granule() to replace many
->>>     undelegate/free_page() instances and centralise the comment on
->>>     leaking when the undelegate fails.
->>>   * Several other minor improvements suggested by reviews - thanks for
->>>     the feedback!
->>> Changes since v2:
->>>   * Improved commit description.
->>>   * Improved return failures for rmi_check_version().
->>>   * Clear contents of PGD after it has been undelegated in case the RMM
->>>     left stale data.
->>>   * Minor changes to reflect changes in previous patches.
->>> ---
->>>   arch/arm64/include/asm/kvm_emulate.h | 29 ++++++++++++++
->>>   arch/arm64/include/asm/kvm_rmi.h     | 51 +++++++++++++++++++++++++
->>>   arch/arm64/kvm/arm.c                 | 12 ++++++
->>>   arch/arm64/kvm/mmu.c                 | 12 +++++-
->>>   arch/arm64/kvm/rmi.c                 | 57 ++++++++++++++++++++++++++++
->>>   5 files changed, 159 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/
->>> include/asm/kvm_emulate.h
->>> index 5bf3d7e1d92c..82fd777bd9bb 100644
->>> --- a/arch/arm64/include/asm/kvm_emulate.h
->>> +++ b/arch/arm64/include/asm/kvm_emulate.h
->>> @@ -688,4 +688,33 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu
->>> *vcpu)
->>>               vcpu->arch.hcrx_el2 |= HCRX_EL2_EnASR;
->>>       }
->>>   }
->>> +
->>> +static inline bool kvm_is_realm(struct kvm *kvm)
->>> +{
->>> +    if (static_branch_unlikely(&kvm_rmi_is_available))
->>> +        return kvm->arch.is_realm;
->>> +    return false;
->>> +}
->>> +
->>> +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
->>> +{
->>> +    return READ_ONCE(kvm->arch.realm.state);
->>> +}
->>> +
->>> +static inline void kvm_set_realm_state(struct kvm *kvm,
->>> +                       enum realm_state new_state)
->>> +{
->>> +    WRITE_ONCE(kvm->arch.realm.state, new_state);
->>> +}
->>> +
->>> +static inline bool kvm_realm_is_created(struct kvm *kvm)
->>> +{
->>> +    return kvm_is_realm(kvm) && kvm_realm_state(kvm) !=
->>> REALM_STATE_NONE;
->>> +}
->>> +
->>> +static inline bool vcpu_is_rec(const struct kvm_vcpu *vcpu)
->>> +{
->>> +    return false;
->>> +}
->>> +
->>>   #endif /* __ARM64_KVM_EMULATE_H__ */
->>> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
->>> asm/kvm_rmi.h
->>> index 4936007947fd..9de34983ee52 100644
->>> --- a/arch/arm64/include/asm/kvm_rmi.h
->>> +++ b/arch/arm64/include/asm/kvm_rmi.h
->>> @@ -6,12 +6,63 @@
->>>   #ifndef __ASM_KVM_RMI_H
->>>   #define __ASM_KVM_RMI_H
->>>   +#include <asm/rmi_smc.h>
->>> +
->>> +/**
->>> + * enum realm_state - State of a Realm
->>> + */
->>> +enum realm_state {
->>> +    /**
->>> +     * @REALM_STATE_NONE:
->>> +     *      Realm has not yet been created. rmi_realm_create() has not
->>> +     *      yet been called.
->>> +     */
->>> +    REALM_STATE_NONE,
->>> +    /**
->>> +     * @REALM_STATE_NEW:
->>> +     *      Realm is under construction, rmi_realm_create() has been
->>> +     *      called, but it is not yet activated. Pages may be
->>> populated.
->>> +     */
->>> +    REALM_STATE_NEW,
->>> +    /**
->>> +     * @REALM_STATE_ACTIVE:
->>> +     *      Realm has been created and is eligible for execution with
->>> +     *      rmi_rec_enter(). Pages may no longer be populated with
->>> +     *      rmi_data_create().
->>> +     */
->>> +    REALM_STATE_ACTIVE,
->>> +    /**
->>> +     * @REALM_STATE_DYING:
->>> +     *      Realm is in the process of being destroyed or has
->>> already been
->>> +     *      destroyed.
->>> +     */
->>> +    REALM_STATE_DYING,
->>> +    /**
->>> +     * @REALM_STATE_DEAD:
->>> +     *      Realm has been destroyed.
->>> +     */
->>> +    REALM_STATE_DEAD
->>> +};
->>
->> What is the ABI status of this state? Is it purely internal to KVM? Or
->> is it something that the RMM actively tracks?
+> +    ratified state") of riscv-cfi.
+> +
+>  * :c:macro:`RISCV_HWPROBE_KEY_CPUPERF_0`: Deprecated.  Returns similar values to
+>    :c:macro:`RISCV_HWPROBE_KEY_MISALIGNED_SCALAR_PERF`, but the key was
+>    mistakenly classified as a bitmask rather than a value.
+> @@ -391,3 +396,8 @@ The following keys are defined:
+>  * :c:macro:`RISCV_HWPROBE_KEY_IMA_EXT_1`: A bitmask containing additional
+>    extensions that are compatible with the
+>    :c:macro:`RISCV_HWPROBE_BASE_BEHAVIOR_IMA`: base system behavior.
+> +
+> +  * :c:macro:`RISCV_HWPROBE_EXT_ZICFISS`: The Zicfiss extension is supported,
+> +    as defined in version 1.0 of the RISC-V Control-flow Integrity (CFI)
+> +    extensions specification, ratified in commit ff03d8485a04 ("Update to
+> +    ratified state") of riscv-cfi.
 > 
-> The states are in line with what the RMM maintains for the Realm state,
-> (Section A2.2.5 Realm Lifecycle)
-> except for :
-> 
-> 1. REALM_STATE_DYING is really a KVM internal state to indicate, we
-> are in the process of destroying the Realm and no further requests
-> needs to be serviced
-> 
-> 2. We don't track the REALM_SYSTEM_OFF, REALM_ZOMBIE states separately
-> as we :
->  a) Always TERMINATE the Realm, just before the DESTROY
->  b) SYSTEM_OFF is naturally triggering the tear down path, leading to
-> DYING.
-> 
+> -- 
+> 2.43.0
+>
 
-I'll add a comment:
+Otherwise,
 
-+ * Mirrors the RMM's Realm lifecycle states where they are meaningful to KVM,
-+ * with REALM_STATE_DYING being a KVM-internal state used to prevent further
-+ * requests while teardown is in progress. KVM does not track REALM_SYSTEM_OFF
-+ * or REALM_ZOMBIE separately as they naturally lead to teardown.
-
-> 
-> 
->>
->>> +
->>>   /**
->>>    * struct realm - Additional per VM data for a Realm
->>> + *
->>> + * @state: The lifetime state machine for the realm
->>> + * @rd: Kernel mapping of the Realm Descriptor (RD)
->>> + * @params: Parameters for the RMI_REALM_CREATE command
->>> + * @ia_bits: Number of valid Input Address bits in the IPA
->>>    */
->>>   struct realm {
->>> +    enum realm_state state;
->>> +    void *rd;
->>
->> Why is this void? Doesn't it have a proper type?
-> 
-> Not really. This is an object that RMM manages (Realm Descriptor)
-> in the Realm world. We use it as a parameter to address the Realm.
-> 
-> 
->>
->>> +    struct realm_params *params;
->>> +    unsigned int ia_bits;
->>
->> Consider reordering this structure to avoid holes.
-
-Sure
-
->>>   };
->>>     void kvm_init_rmi(void);
->>> +u32 kvm_realm_ipa_limit(void);
->>
->> The use of 'realm' is confusing. This is not a per-realm property, but
->> something global. I'd rather reserve the term 'realm' for CCA VMs (cue
->> the two prototypes below).
-> 
-> Agreed. Perhaps, kvm_rmm_ipa_limit() ?
-
-Sounds good to me.
-
-> 
->>
->>> +
->>> +int kvm_init_realm(struct kvm *kvm);
->>> +void kvm_destroy_realm(struct kvm *kvm);
->>>     #endif /* __ASM_KVM_RMI_H */
->>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->>> index 247e03b33035..18251e561524 100644
->>> --- a/arch/arm64/kvm/arm.c
->>> +++ b/arch/arm64/kvm/arm.c
->>> @@ -264,6 +264,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned
->>> long type)
->>>         bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
->>>   +    /* Initialise the realm bits after the generic bits are
->>> enabled */
->>> +    if (kvm_is_realm(kvm)) {
->>> +        ret = kvm_init_realm(kvm);
->>> +        if (ret)
->>> +            goto err_uninit_mmu;
->>> +    }
->>> +
->>>       return 0;
->>>     err_uninit_mmu:
->>> @@ -326,6 +333,8 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
->>>       kvm_unshare_hyp(kvm, kvm + 1);
->>>         kvm_arm_teardown_hypercalls(kvm);
->>> +    if (kvm_is_realm(kvm))
->>> +        kvm_destroy_realm(kvm);
->>>   }
->>>     static bool kvm_has_full_ptr_auth(void)
->>> @@ -486,6 +495,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm,
->>> long ext)
->>>           else
->>>               r = kvm_supports_cacheable_pfnmap();
->>>           break;
->>> +    case KVM_CAP_ARM_RMI:
->>> +        r = static_key_enabled(&kvm_rmi_is_available);
->>> +        break;
->>>         default:
->>>           r = 0;
->>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>> index d089c107d9b7..ba8286472286 100644
->>> --- a/arch/arm64/kvm/mmu.c
->>> +++ b/arch/arm64/kvm/mmu.c
->>> @@ -877,10 +877,14 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
->>>     static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned
->>> long type)
->>>   {
->>> +    struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
->>>       u32 kvm_ipa_limit = get_kvm_ipa_limit();
->>>       u64 mmfr0, mmfr1;
->>>       u32 phys_shift;
->>>   +    if (kvm_is_realm(kvm))
->>> +        kvm_ipa_limit = kvm_realm_ipa_limit();
->>> +
->>>       phys_shift = KVM_VM_TYPE_ARM_IPA_SIZE(type);
->>>       if (is_protected_kvm_enabled()) {
->>>           phys_shift = kvm_ipa_limit;
->>> @@ -974,6 +978,8 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
->>> kvm_s2_mmu *mmu, unsigned long t
->>>           return -EINVAL;
->>>       }
->>>   +    mmu->arch = &kvm->arch;
->>> +
->>>       err = kvm_init_ipa_range(mmu, type);
->>>       if (err)
->>>           return err;
->>> @@ -982,7 +988,6 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
->>> kvm_s2_mmu *mmu, unsigned long t
->>>       if (!pgt)
->>>           return -ENOMEM;
->>>   -    mmu->arch = &kvm->arch;
->>
->> Why moving this init?
-> 
-> Because, we need to know the "kvm" instance for kvm_init_ipa_range to
-> detect the limit that applies to Realms.
-> 
->>
->>>       err = KVM_PGT_FN(kvm_pgtable_stage2_init)(pgt, mmu,
->>> &kvm_s2_mm_ops);
->>>       if (err)
->>>           goto out_free_pgtable;
->>> @@ -1114,7 +1119,10 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
->>>       write_unlock(&kvm->mmu_lock);
->>>         if (pgt) {
->>> -        kvm_stage2_destroy(pgt);
->>> +        if (!kvm_is_realm(kvm))
->>> +            kvm_stage2_destroy(pgt);
->>> +        else
->>> +            kvm_pgtable_stage2_destroy_pgd(pgt);
->>
->> Why can't you make kvm_stage2_destroy() do the right thing? Surely the
->> PTs have to be reclaimed one way or another.
-> 
-> Actually yes, we could make it work. We need to skip walking the page
-> table for Realms. We may be able to do the checks via pgt->mmu->arch-
->>kvm and skip the walking for Realms. ( The S2 is unmapped and torn
-> down before the RD is destroyed in kvm_destroy_realm(). We can't
-> rely on the contents of the PGDs to be zero - e.g., with MEC.)
-
-Yes I'll move the check into kvm_stage2_destroy() instead with a comment
-explaining what's going on.
-
->>
->>>           kfree(pgt);
->>>       }
->>>   }
->>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->>> index 6e28b669ded2..f51ec667445e 100644
->>> --- a/arch/arm64/kvm/rmi.c
->>> +++ b/arch/arm64/kvm/rmi.c
->>> @@ -5,6 +5,8 @@
->>>     #include <linux/kvm_host.h>
->>>   +#include <asm/kvm_emulate.h>
->>> +#include <asm/kvm_mmu.h>
->>>   #include <asm/kvm_pgtable.h>
->>>   #include <asm/rmi_cmds.h>
->>>   #include <asm/virt.h>
->>> @@ -14,6 +16,61 @@ static bool rmi_has_feature(unsigned long feature)
->>>       return !!u64_get_bits(rmm_feat_reg0, feature);
->>>   }
->>>   +u32 kvm_realm_ipa_limit(void)
->>> +{
->>> +    return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_S2SZ);
->>> +}
->>> +
->>> +void kvm_destroy_realm(struct kvm *kvm)
->>> +{
->>> +    struct realm *realm = &kvm->arch.realm;
->>> +    size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
->>> +
->>> +    if (realm->params) {
->>> +        free_page((unsigned long)realm->params);
->>> +        realm->params = NULL;
->>> +    }
->>> +
->>> +    if (!kvm_realm_is_created(kvm))
->>> +        return;
->>> +
->>> +    kvm_set_realm_state(kvm, REALM_STATE_DYING);
->>> +
->>> +    write_lock(&kvm->mmu_lock);
->>> +    kvm_stage2_unmap_range(&kvm->arch.mmu, 0,
->>> +                   BIT(realm->ia_bits - 1), true);
->>> +    write_unlock(&kvm->mmu_lock);
->>> +
->>> +    if (realm->rd) {
->>> +        phys_addr_t rd_phys = virt_to_phys(realm->rd);
->>> +
->>> +        if (WARN_ON(rmi_realm_terminate(rd_phys)))
->>> +            return;
->>> +
->>> +        if (WARN_ON(rmi_realm_destroy(rd_phys)))
->>> +            return;
->>> +        free_delegated_page(rd_phys);
->>> +        realm->rd = NULL;
->>> +    }
->>> +
->>> +    if (WARN_ON(rmi_undelegate_range(kvm->arch.mmu.pgd_phys,
->>> pgd_size)))
->>> +        return;
->>> +
->>> +    kvm_set_realm_state(kvm, REALM_STATE_DEAD);
->>> +
->>> +    /* Now that the Realm is destroyed, free the entry level RTTs */
->>> +    kvm_free_stage2_pgd(&kvm->arch.mmu);
->>> +}
->>
->> This really needs documentation: what happens at each stage? What
->> memory is reclaimed when?
-> 
-> Agreed.
-> 
->>
->> But even more importantly, why is this built in a completely parallel
->> way, potentially deviating from the existing KVM S2 management?
-> 
-> 
-> RMM requires a Realm is not live at the time of REALM_DESTROY.
-> (See section A2.2.4 Realm Liveness).
-> i.e., All RECs are destroyed, Root RTTs wiped clean (no live mappings)
-> before the RD is destroyed. So, we need to make sure all of this is
-> done at Realm Destroy. Hence we delay the kvm_free_stage2_pgd() until
-> we destroy the RD.
-> 
-> Does that help? May be we could improve the comments around it.
-
-I'll add a comment in kvm_destroy_realm().
-
-Thanks,
-Steve
-
-> 
-> Suzuki
-> 
-> 
-> 
->> Thanks,>
->>     M.
->>
-> 
-
+Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
