@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA981494A1A;
-	Thu,  4 Jun 2026 20:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3314C9008;
+	Thu,  4 Jun 2026 20:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780605363; cv=none; b=unDQR5QMUhM/B4UdGgYwGltJLakmRQ6MJ+gqlNgFabVtXR1lRa+9Cgcx+MfZCuAR+sfz/xoe3xs6K6FQM3Ms13x8cLFt4ZrQzkxrniAlqWEXVqAwNNZlE2vKelp6OM+9vRWkGimzwzlaVVTlvG+V0pB7wujPaoFAPQVa4Tecelk=
+	t=1780605363; cv=none; b=UM3xoQEXKnmJk5coXt5dzYJ6OoATquqatrioMqzuamBG5ESichnSLb0Ygr57DYEHcvp+tHOuUidfjFKfjVt7RJyFjK7OGFeZyRv+oBOlNJPgvzOVKiePeS68Rpe3lMwRZCaVpc4Pubqr+uWg+F0DEgTZm6XGCsESTSHR49gSZ8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780605363; c=relaxed/simple;
-	bh=j7IfzI3voPCQYj2N+nIvNBdNRyvLg7aGNszigvogpdU=;
+	bh=NC84ffeQy0iJL663aiqOy0R/eAc3gFvlRDSb+4dOhMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mA5Hxp55VvSSpQ67sk4FHivQOeLXbdzhjBNp608iEl+NJykyv+PcAznCwm23AnqVKzjV/KMUd7XDAuHgvbT1p08HozB767iB8pfd8LH+Svq66/ozS+Fo1bIkgoRHIFuBuz7SCfru3O4idzzAVG1IiMu9xUgc4CgP+dJa34oRF94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H+fxadKU; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=ozHsukRYnJHM4NU+YB8X/L37n4OlusyJWle8ewktYaUPGrBp8PHs5tm1tAnwwNb0XqOpf37kKnnrc0JZUsPBrBH0IeZXMXtjuspp9rJdNUwO5cZWSRC9MqXh7uTVq7/9l7iBUhP6q5CU4brrJ1/smGILenHhneg7Ncx95kbwBGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oH1kkwsF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H+fxadKU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8148B1F00898;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oH1kkwsF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C991F00899;
 	Thu,  4 Jun 2026 20:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780605361;
-	bh=ovrEBxl4FhwKwnx1ah7haB2DJeKCMEvjp5Fkgg7XjVA=;
+	s=k20260515; t=1780605362;
+	bh=OWWUy0BLOs/Gt8WhkITHDyuN301UMNeyVOt4Dhby09s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H+fxadKU6FYA7PhVsz9ZEGezp3EBvosGTYg7E8hmwvoYSj92a4iNO/SLDgY/TTxt5
-	 XfeTxhGWxKZsaKOtpbWbWJWj8GF8P694h9jwsNAyN8DJGnIUSUn9CRXJL27lVokFCZ
-	 GvZ2uG1bHX4ABjGKDIkHRq9iuhsB6gxQYFKtKg0OPaoAa43D6keAt3FR/v5XCDQfT/
-	 ebNDiZuviGIh4eDFDVT7sMyvK4KNKsR+OG9tJR3qibmUi43MVq66ugl6R9SzGXhzgs
-	 HC/BDEb+PNfe1FYF9mW+6s5QR03Ud7pWSpCr/waFVyidfsNOrMuW2JXnBIyXCtG0kF
-	 LhxOyzYsPLRTw==
+	b=oH1kkwsFdwRGgpHZxjhlKiE5RRHjvvjnVe6T66j8hFVdBYBtXHw9XtiNapkpTPLP8
+	 o03AfidrJKgfk9thQu7710O4iY9Dxnzc5ZM+oxn7cy6YLb+xjt+sTGisVFoV0+LUSC
+	 JdSfhadLUXt16Xvr9W9GXigip9+XNIT6rg/8EI93jD2qMZg9Lrhx7FmumXQ9TJT84c
+	 +l/Y6zU282CpomcVybBGji1rNFdoEwh4cT1Y3ZYVVOgo0UAbNI2rENzQO1Wd/XBhVE
+	 weqErBzebfGPUjl6bMdv6UPFs+FFXXOy+4K54qrmPmLKpjHyi5qnrgwpsGepi3IMZ2
+	 Fu+OS2KeRDNrw==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v2 05/10] KVM: selftests: Reuse GPR switching logic for nVMX
-Date: Thu,  4 Jun 2026 20:35:41 +0000
-Message-ID: <20260604203546.365658-6-yosry@kernel.org>
+Subject: [PATCH v2 06/10] KVM: selftests: Drop HORRIFIC_L2_UCALL_CLOBBER_HACK
+Date: Thu,  4 Jun 2026 20:35:42 +0000
+Message-ID: <20260604203546.365658-7-yosry@kernel.org>
 X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
 In-Reply-To: <20260604203546.365658-1-yosry@kernel.org>
 References: <20260604203546.365658-1-yosry@kernel.org>
@@ -46,126 +46,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Reuse the GPR switching logic for nVMX by defining VMX_SWITCH_GPRS_ASM,
-which is essentially the same as SVM_SWITCH_GPRS_ASM but also switches
-RAX, replacing the push/pop of a subset of the registers.
-
-The long clobber list of registers is no longer needed as registers are
-saved and restored appropriately (and not clobbered by L2).
+Now that nVMX test codes preserves GPRs across nested VM-Exits
+(specifically RBP, RDX, and RDI among others), drop the ucall-specific
+hack to avoid clobbering these registers.
 
 Assisted-by: Gemini:gemini-3.1-pro
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- tools/testing/selftests/kvm/include/x86/vmx.h | 63 +++++++++----------
- 1 file changed, 29 insertions(+), 34 deletions(-)
+ tools/testing/selftests/kvm/lib/x86/ucall.c | 32 ++-------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
-index 90fffaf915958..64996c310fe4c 100644
---- a/tools/testing/selftests/kvm/include/x86/vmx.h
-+++ b/tools/testing/selftests/kvm/include/x86/vmx.h
-@@ -363,9 +363,23 @@ static inline u64 vmptrstz(void)
- 	return value;
- }
+diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
+index e7dd5791959ba..38050c60a0670 100644
+--- a/tools/testing/selftests/kvm/lib/x86/ucall.c
++++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
+@@ -10,36 +10,8 @@
  
--/*
-- * No guest state (e.g. GPRs) is established by this vmlaunch.
-- */
-+#define VMX_SWITCH_GPRS_ASM \
-+	GUEST_SWITCH_GPR_ASM(rax, GUEST_REGS_RAX) \
-+	GUEST_SWITCH_GPR_ASM(rbx, GUEST_REGS_RBX) \
-+	GUEST_SWITCH_GPR_ASM(rcx, GUEST_REGS_RCX) \
-+	GUEST_SWITCH_GPR_ASM(rdx, GUEST_REGS_RDX) \
-+	GUEST_SWITCH_GPR_ASM(rbp, GUEST_REGS_RBP) \
-+	GUEST_SWITCH_GPR_ASM(rsi, GUEST_REGS_RSI) \
-+	GUEST_SWITCH_GPR_ASM(rdi, GUEST_REGS_RDI) \
-+	GUEST_SWITCH_GPR_ASM(r8,  GUEST_REGS_R8)  \
-+	GUEST_SWITCH_GPR_ASM(r9,  GUEST_REGS_R9)  \
-+	GUEST_SWITCH_GPR_ASM(r10, GUEST_REGS_R10) \
-+	GUEST_SWITCH_GPR_ASM(r11, GUEST_REGS_R11) \
-+	GUEST_SWITCH_GPR_ASM(r12, GUEST_REGS_R12) \
-+	GUEST_SWITCH_GPR_ASM(r13, GUEST_REGS_R13) \
-+	GUEST_SWITCH_GPR_ASM(r14, GUEST_REGS_R14) \
-+	GUEST_SWITCH_GPR_ASM(r15, GUEST_REGS_R15)
-+
- static inline int vmlaunch(void)
+ void ucall_arch_do_ucall(gva_t uc)
  {
- 	int ret;
-@@ -373,34 +387,23 @@ static inline int vmlaunch(void)
- 	if (enable_evmcs)
- 		return evmcs_vmlaunch();
- 
--	__asm__ __volatile__("push %%rbp;"
--			     "push %%rcx;"
--			     "push %%rdx;"
--			     "push %%rsi;"
--			     "push %%rdi;"
--			     "push $0;"
-+	__asm__ __volatile__("push $0;"
- 			     "vmwrite %%rsp, %[host_rsp];"
- 			     "lea 1f(%%rip), %%rax;"
- 			     "vmwrite %%rax, %[host_rip];"
-+			     VMX_SWITCH_GPRS_ASM
- 			     "vmlaunch;"
- 			     "incq (%%rsp);"
--			     "1: pop %%rax;"
--			     "pop %%rdi;"
--			     "pop %%rsi;"
--			     "pop %%rdx;"
--			     "pop %%rcx;"
--			     "pop %%rbp;"
-+			     "1: ;"
-+			     VMX_SWITCH_GPRS_ASM
-+			     "pop %%rax;"
- 			     : [ret]"=&a"(ret)
- 			     : [host_rsp]"r"((u64)HOST_RSP),
- 			       [host_rip]"r"((u64)HOST_RIP)
--			     : "memory", "cc", "rbx", "r8", "r9", "r10",
--			       "r11", "r12", "r13", "r14", "r15");
-+			     : "memory", "cc");
- 	return ret;
+-	/*
+-	 * FIXME: Revert this hack (the entire commit that added it) once nVMX
+-	 * preserves L2 GPRs across a nested VM-Exit.  If a ucall from L2, e.g.
+-	 * to do a GUEST_SYNC(), lands the vCPU in L1, any and all GPRs can be
+-	 * clobbered by L1.  Save and restore non-volatile GPRs (clobbering RBP
+-	 * in particular is problematic) along with RDX and RDI (which are
+-	 * inputs), and clobber volatile GPRs. *sigh*
+-	 */
+-#define HORRIFIC_L2_UCALL_CLOBBER_HACK	\
+-	"rcx", "rsi", "r8", "r9", "r10", "r11"
+-
+-	asm volatile("push %%rbp\n\t"
+-		     "push %%r15\n\t"
+-		     "push %%r14\n\t"
+-		     "push %%r13\n\t"
+-		     "push %%r12\n\t"
+-		     "push %%rbx\n\t"
+-		     "push %%rdx\n\t"
+-		     "push %%rdi\n\t"
+-		     "in %[port], %%al\n\t"
+-		     "pop %%rdi\n\t"
+-		     "pop %%rdx\n\t"
+-		     "pop %%rbx\n\t"
+-		     "pop %%r12\n\t"
+-		     "pop %%r13\n\t"
+-		     "pop %%r14\n\t"
+-		     "pop %%r15\n\t"
+-		     "pop %%rbp\n\t"
+-		: : [port] "d" (UCALL_PIO_PORT), "D" (uc) : "rax", "memory",
+-		     HORRIFIC_L2_UCALL_CLOBBER_HACK);
++	asm volatile("in %[port], %%al"
++		: : [port] "d" (UCALL_PIO_PORT), "D" (uc) : "rax", "memory");
  }
  
--/*
-- * No guest state (e.g. GPRs) is established by this vmresume.
-- */
- static inline int vmresume(void)
- {
- 	int ret;
-@@ -408,28 +411,20 @@ static inline int vmresume(void)
- 	if (enable_evmcs)
- 		return evmcs_vmresume();
- 
--	__asm__ __volatile__("push %%rbp;"
--			     "push %%rcx;"
--			     "push %%rdx;"
--			     "push %%rsi;"
--			     "push %%rdi;"
--			     "push $0;"
-+	__asm__ __volatile__("push $0;"
- 			     "vmwrite %%rsp, %[host_rsp];"
- 			     "lea 1f(%%rip), %%rax;"
- 			     "vmwrite %%rax, %[host_rip];"
-+			     VMX_SWITCH_GPRS_ASM
- 			     "vmresume;"
- 			     "incq (%%rsp);"
--			     "1: pop %%rax;"
--			     "pop %%rdi;"
--			     "pop %%rsi;"
--			     "pop %%rdx;"
--			     "pop %%rcx;"
--			     "pop %%rbp;"
-+			     "1: ;"
-+			     VMX_SWITCH_GPRS_ASM
-+			     "pop %%rax;"
- 			     : [ret]"=&a"(ret)
- 			     : [host_rsp]"r"((u64)HOST_RSP),
- 			       [host_rip]"r"((u64)HOST_RIP)
--			     : "memory", "cc", "rbx", "r8", "r9", "r10",
--			       "r11", "r12", "r13", "r14", "r15");
-+			     : "memory", "cc");
- 	return ret;
- }
- 
+ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
 -- 
 2.54.0.1032.g2f8565e1d1-goog
 
