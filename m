@@ -1,120 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD96279798
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 02:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57878175A87
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 02:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780538982; cv=none; b=Dw6uTi1Ih6owAIyV7mPN7LUExSa5KDZE7qEioriS5Ghdv/0TiYGaDWWsJ46eJUyDP9JU9YkMi47G7Yq6Obxi/OlTOaSB/skn9NvOKM/P9tjmJ8jAk0uKNMey7h/ZrwwJbKSN5XGkXq79OMqmwObBFDt97dxcYOUKX9b0qtCGQ84=
+	t=1780539001; cv=none; b=ii96JShyaC+kDN3f0pqa8t6oNaCc1FNnfNKajoqyAQuYDH4LTTP37vi3gI+HYruulBFPM4iSnKqYHekQWYHV2qmFUQo8zfkLwbbCpUa1X1gMMxJV4zHtRVsTf3kS8WW96NfqiLIKVwM4RqsRbbElUF8sRhg2it6RQVCfzs/JJD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780538982; c=relaxed/simple;
-	bh=GBkwi1bL9o5zkfwWC1h+9dcBO5ncimaNtnH78nvlJUc=;
+	s=arc-20240116; t=1780539001; c=relaxed/simple;
+	bh=dwQzc6WC1bwspV2hl5KdZ0s84rQspzAaBpXzU5n25dQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HOBWh6K0X/I5Bz7R9Ud7qbrLaCWNkqHPHWgQyD06lf3bH5Y+ldNKHYEVdXJdTVSUqzgVgLPxlnR3feBWmZTMnLgG0F0SiO68wpbTbGB2/pmr1zVVrUs1b2EyHS163VNHCr8MCP4vHCbzQg5xoxvKn2yfIAk6W2cwgu7IgxYgQtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FovVjfIl; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=tHkJNK6EIyIVy/7yGpZTIbqThrZ40WOcbjoyIwBGYAe8uheJgXlgeQpG1PfgfxuVO7FiLqcWWqx0K/k/RNwdkWeVXqmX2x/r1S5QL/t0wingSZK0mQ8VptnDmr5FIqB7yF4HM24zFolSz9V6obz+ISvF0lrn7lw5cY9rA8skPAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kTbnp9jW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FovVjfIl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D12C1F00893;
-	Thu,  4 Jun 2026 02:09:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kTbnp9jW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E008F1F00893;
+	Thu,  4 Jun 2026 02:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780538979;
-	bh=5Vdm7wuZPJoJnGd0ZerUCesR885Hbt9L5+j5qsXZy9M=;
+	s=k20260515; t=1780539000;
+	bh=/8UfWOh+w9L+sjMBxQHn0T8WCT3lax8AD4/7C15c8tY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FovVjfIlrIb492HEOIGXJ3c2v10RDS0N5rs4K9MNW8o3jR4+6obnbakg4N98vDLlI
-	 42Jk32MYF/zO4wI/wkTa5+KBpjc91fBgMZYEG/cwx5XScDFT2aG1liu9JLOFKWNBa3
-	 TXdk2TOczKMoQHWcQlma9uE6FMeVnB9z5gHZAoGe5NDwIFhHxdxEXVhaUrnNJ5Lfxi
-	 p3uJrSj/icmpyoj2Ac22xuNqwC63wMTm67DCSFI0JMWQJliVjonwWDmo6hrPppzO/e
-	 PmQGamoumIoBewRpfJmOeyylhiHg9KXZrO0K9VPzJh3LTGNSDO2odgJPGrufc26y2r
-	 YyKiZSdvU/D5w==
+	b=kTbnp9jWY5SljIMQmr3tR5Khzy/corIE7MXn5PO9ShtZTGFTutvYD8KHW8yQ/4qoM
+	 kxDxcokDXYdMW3jmCF47nz73SAWSiMti8GAZ9XRcyKrZ36+luLWxCfvtzTUfuryhEx
+	 Dc3FkQ7ZLXprMNXrvRtszj/VsxoXp7eZ3+p9h3Pa4B0bTJZgaqxIt0jH6Ck2Usvs0q
+	 BbWx1DDBVPLpyWkaZf5D/z4Frvpv4HJ9XhjD6VQi0E8nuW5iYYAR2zuPTr6Kv13j9o
+	 tZx64zgC1QNSnsDzapL4wBfUzmkjHIQJBl3iRfH3VARAQQw7brXQPPEYkpuR6fjDaH
+	 5WJMTHxmC2duQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 09/21] KVM: selftests: Add helpers to print proc IRQ
- affinity for IRQ test
+Subject: Re: [PATCH v5 06/21] KVM: selftests: Add helper to get host IRQ
+ from device MSIX for IRQ bypass test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Josh Hilke" <jrhilke@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604020143.748245-10-jrhilke@google.com>
-References: <20260604020143.748245-10-jrhilke@google.com>
+In-Reply-To: <20260604020143.748245-7-jrhilke@google.com>
+References: <20260604020143.748245-7-jrhilke@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 02:09:38 +0000
-Message-Id: <20260604020939.3D12C1F00893@smtp.kernel.org>
+Date: Thu, 04 Jun 2026 02:09:59 +0000
+Message-Id: <20260604020959.E008F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Silent buffer truncation of smp_affinity on systems with high CP=
-U counts.
-- [Medium] Bypassing selftest logging framework with direct `printf()` call=
-s.
+- [Medium] The fixed 4096-byte buffer for reading `/proc/interrupts` is ins=
+ufficient on high-core-count systems, causing line truncation that leads to=
+ silent parsing errors or test crashes.
 --
 
-commit 5691e1b7c72b1da31e3e650e6d818488952fb296
-Author: Josh Hilke <jrhilke@google.com>
+commit a5706dfe149c4f11538fb9fee08d9fb4a971e2d5
+Author: David Matlack <dmatlack@google.com>
 
-KVM: selftests: Add helpers to print proc IRQ affinity for IRQ test
+KVM: selftests: Add helper to get host IRQ from device MSIX for IRQ bypass =
+test
 
-This commit introduces utility functions to print IRQ affinity settings
-via the proc filesystem. These helpers will be used for debugging KVM IRQ
-test timeouts.
+This commit introduces proc_util.c and a helper function to parse
+/proc/interrupts, mapping a VFIO device BDF and MSI-X vector to its
+corresponding host IRQ number.
 
 > diff --git a/tools/testing/selftests/kvm/lib/proc_util.c b/tools/testing/=
 selftests/kvm/lib/proc_util.c
-> index 938c90d94f4dc..24a8de92e2290 100644
-> --- a/tools/testing/selftests/kvm/lib/proc_util.c
+> new file mode 100644
+> index 0000000000000..84d30f055a0a9
+> --- /dev/null
 > +++ b/tools/testing/selftests/kvm/lib/proc_util.c
 
 [ ... ]
 
-> +static void print_proc_irq_file(unsigned int irq, const char *file)
+> +unsigned int vfio_msix_to_host_irq(const char *device_bdf, int msix)
 > +{
-> +	char path[PATH_MAX];
-> +	char buf[256];
-
-[Severity: Medium]
-Will fgets() silently truncate the smp_affinity masks on large systems when
-reading into this buffer?
-
-CPU affinity masks are formatted as comma-separated 32-bit hex words. A
-256-byte buffer limits the output to roughly 910 CPUs.=20
-
-Because masks are printed from highest index to lowest, truncation would
-drop the affinity data for lower CPU indices, which are typically where=20
-IRQs are pinned.
-
+> +	char search_string[64];
+> +	char line[4096];
+> +	int irq =3D -1;
 > +	FILE *fp;
 > +
-> +	snprintf(path, sizeof(path), "/proc/irq/%u/%s", irq, file);
-> +	fp =3D fopen(path, "r");
-> +	if (!fp) {
-> +		printf("  Failed to open %s\n", path);
+> +	fp =3D open_proc_interrupts();
+> +
+> +	snprintf(search_string, sizeof(search_string), "vfio-msix[%d]", msix);
+> +
+> +	while (fgets(line, sizeof(line), fp)) {
+> +		if (strstr(line, device_bdf) && strstr(line, search_string)) {
+> +			TEST_ASSERT_EQ(1, sscanf(line, "%d:", &irq));
 
 [Severity: Medium]
-Does this bypass the selftest logging framework?
+Is the 4096-byte buffer large enough for systems with high core counts?
 
-KVM selftests typically use pr_info() from test_util.h to allow standard
-informational output to be suppressed when QUIET is defined. Using printf()
-directly forces unconditional output and can cause log spam in CI
-environments.
+In /proc/interrupts, each online CPU gets its own column for interrupt coun=
+ts.
+On systems with many CPUs, a single line might exceed 4096 bytes. When
+this happens, fgets() reads the line in multiple chunks.
 
-> +		return;
+If the line is chunked, the first chunk contains the IRQ number, and a
+subsequent chunk contains the target device names. The strstr() condition
+would match on the later chunk, but sscanf() would look for the IRQ number
+format at the beginning of that same chunk.
+
+Since the later chunk lacks the leading IRQ number, sscanf() would return 0,
+which would then cause TEST_ASSERT_EQ to fail and crash the test.
+
+> +			break;
+> +		}
 > +	}
 > +
-> +	if (fgets(buf, sizeof(buf), fp)) {
-> +		buf[strcspn(buf, "\n")] =3D 0;
-> +		printf("  %s: %s\n", path, buf);
-
-[Severity: Medium]
-Should this also be updated to use pr_info() instead of printf() to respect
-the QUIET mode flag?
-
-> +	}
 > +	fclose(fp);
-> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604020143.7482=
-45-1-jrhilke@google.com?part=3D9
+45-1-jrhilke@google.com?part=3D6
