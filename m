@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F5E224F3
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 02:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AF1223DE9
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 02:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780541239; cv=none; b=MsaXKU8YAW7bqwpwsi0LERj/r0wOasGQUNVZeCH9Pdl1rW7k2xrrrAusQ8iqxdYpiCt7k6pTJqCeU2d+g2KBYdZEYDJxa0/whi9gOsH3RvWMi/+QmTV/VUvH0utLuW46y5jUj/FD5XPgKqIOz2FjiTF7Yh/JhIBr5Hk1B3ATZ18=
+	t=1780541369; cv=none; b=EXaKdRW1t+cqZsl/y2U81UYDTsFJYvQPDOsMHbjRT4AN2+k/qbYHA/VUXOqRIkqIql7ZkxepLB89qv/36imATXIQ4i3vWeiaMxNuR80RH2EqVfTr3q6rZ26Lo+7a/pOitaaBZkNO4z0ACV0evv7D9E69gT2S7f6UotFSkQjjpgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780541239; c=relaxed/simple;
-	bh=Sbstv83V/sR9AtMvVIZPKYtL6poLD5aZNSAiPwNZaoE=;
+	s=arc-20240116; t=1780541369; c=relaxed/simple;
+	bh=Zf0i2nPMF7IunkWz4SdAPakOiqU2OLaJ40Zu7u+Etfo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=l6rNpoTjyORHhRSZCSMNi8FsbntNnX0pWJ+XBW/K+zuvJJrfv2B/3eHPG8OG9/tkh+dC403yIl5yTDwXDjZl9vV04wOzifxuFXJUEPJhA4V5NwXZotnStJdjf0CmTEHH+3S2KjIo+1ENWBALLEuEXtA+5n1l1Lp0aCdpcAPuPnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gx78ngiD; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=SGl8u5QQsOp/rZS/44B/VOXXQ65dyaFDRNPaPMSJOtYdIJQVziB4gYU8cAwbAZJIeQ2vdUnVi7Bo1F2v4VCTtpYu042dAXPRuHoy8KQBP6xfMil37p8C8N9OvgyABPx6ED8tt7PKI0cqvCtdz7EyWYZAOXORyK41ArkZRBVEpdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dazOcLjp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gx78ngiD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497F21F00893;
-	Thu,  4 Jun 2026 02:47:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dazOcLjp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E22311F00893;
+	Thu,  4 Jun 2026 02:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780541238;
-	bh=kKOP6eFYP25TAmj1nIp7jr3jV229xSLK8UHyVew1HSQ=;
+	s=k20260515; t=1780541368;
+	bh=YpacrZrtrrN9WT0ffn8ebpvM7hEL+eL57fpr07LIP8M=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Gx78ngiD0GrhLqqnp7zEwRM7SF3F75sIwQLG0Q6OqQvhQp7Fxk2N0vG8fYctPwcfR
-	 nAK62uGCgKzaeCQ+eZJVDB5r5qykg3npzk8YcjLr1yHv3ukshDQht0yzBV4V7lfNpX
-	 tQtyYmEIZUxY1gA83XTLTrLqiJlbg+SKbWkm4SKGQGzqVUXjwNrNxRQis1gvLopGki
-	 dAMT7t97I9nbHN1u/L+20hl0qa+JhICWWjv149um77NKZj72lWKZuHPxC3/9TTtEcD
-	 qFSU2sNpnQt24J3JPjRaoDvZtdWdqrBvTHaph2kI3jSK9o2zWh56niVLnyiabV56zA
-	 dfV65Tw1SlIJA==
+	b=dazOcLjpHcSqw2XeToX2cgOvuNpnMWYMiG1Do3cA6kIIyiQMCn6OftL0U+jGoPuxQ
+	 kTGK/0dqyZFpEhd3I88tuB8c5xPrCFB6c/rhyelmfMecrvRmuGZd16Zc5pzhJVLQOo
+	 X19Wlar6ljQSXtRkbW6nZEkOYGr423Jt6skBIpUebG0c562pxWrwsOXieLlegmdfJc
+	 5qPjHricsRNpjnN5kOnr2gbglOT7GerGjkGTeYQCHClueVr/sly34iqwwosSAb3cdt
+	 B6oVp81+q52Emb8oZuGF88VuYDg+6kcld79GZFtPIesfLdVB72/fVEYCrViOEn0ymw
+	 NLbRFSmlZxlsw==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 2/4] KVM: x86: TDX: Hide unsupported configurable
- CPUID bits
+Subject: Re: [RFC PATCH v2 3/4] KVM: x86: TDX: Validate userspace CPUID
+ input for KVM_TDX_INIT_VM
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Binbin Wu" <binbin.wu@linux.intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604023314.3907511-3-binbin.wu@linux.intel.com>
-References: <20260604023314.3907511-3-binbin.wu@linux.intel.com>
+In-Reply-To: <20260604023314.3907511-4-binbin.wu@linux.intel.com>
+References: <20260604023314.3907511-4-binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 02:47:17 +0000
-Message-Id: <20260604024718.497F21F00893@smtp.kernel.org>
+Date: Thu, 04 Jun 2026 02:49:27 +0000
+Message-Id: <20260604024927.E22311F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,82 +46,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] The secure-by-default CPUID allowlist is applied to KVM capability=
- reporting but missing from TD initialization validation. This allows a mal=
-icious userspace VMM to bypass capability enumeration and supply unsupporte=
-d configurable CPUID bits directly to the TDX module, potentially causing h=
-ost state corruption.
+- [High] `tdx_unsupported_cpuid()` incorrectly uses the userspace-provided =
+CPUID index instead of the canonical TDX configurable index for validation,=
+ allowing feature allowlist bypasses.
 --
 
-commit e4dd30c1f72bbeeb74f3ba5a865ab30e0c17bcf6
+commit c2adba56353483cd6dcf40b3fe14141409c0ce54
 Author: Binbin Wu <binbin.wu@linux.intel.com>
 
-KVM: x86: TDX: Hide unsupported configurable CPUID bits
+KVM: x86: TDX: Validate userspace CPUID input for KVM_TDX_INIT_VM
 
-This commit introduces get_supported_cfg_cpuid() to filter the CPUID=20
-capabilities reported by KVM_TDX_CAPABILITIES. It replaces a hardcoded=20
-denylist with a secure-by-default allowlist approach to prevent exposing=20
-unsupported features that could lead to host state corruption.
+This commit replaces the hardcoded CPUID denylist with a validation mechani=
+sm
+that checks userspace input against KVM's supported allowlist. It aims to
+prevent userspace from enabling unsupported TDX features during VM init.
 
 > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 028d54c76b81e..befda6bc17b1e 100644
 > --- a/arch/x86/kvm/vmx/tdx.c
 > +++ b/arch/x86/kvm/vmx/tdx.c
-
 [ ... ]
-
-> -static void clear_waitpkg(struct kvm_cpuid_entry2 *entry)
-> +static bool tdx_unsupported_cpuid(const struct kvm_cpuid_entry2 *entry)
->  {
-> -	entry->ecx &=3D ~__feature_bit(X86_FEATURE_WAITPKG);
-> +	return has_tsx(entry) || has_waitpkg(entry);
->  }
+> +static bool tdx_unsupported_cpuid(const struct kvm_cpuid_entry2 *e,
+> +				  const struct kvm_cpuid_entry2 *mask)
+> +{
+> +	return ((e->eax & mask->eax & (~get_supported_cfg_cpuid(e->function, e-=
+>index, CPUID_EAX))) ||
+> +		(e->ebx & mask->ebx & (~get_supported_cfg_cpuid(e->function, e->index,=
+ CPUID_EBX))) ||
+> +		(e->ecx & mask->ecx & (~get_supported_cfg_cpuid(e->function, e->index,=
+ CPUID_ECX))) ||
+> +		(e->edx & mask->edx & (~get_supported_cfg_cpuid(e->function, e->index,=
+ CPUID_EDX))));
+> +}
 
 [Severity: High]
-This is a pre-existing issue, but by keeping this legacy denylist active, is
-there a risk that userspace can bypass the new secure-by-default allowlist
-during TD initialization?
+Does this validation query the allowlist using the correct index?
 
-While this patch updates capability reporting to explicitly mask unsupporte=
-d=20
-features, the configuration path in setup_tdparams_cpuids() still appears t=
-o=20
-use this older denylist function to validate user input:
+If userspace provides a CPUID entry with the KVM_CPUID_FLAG_SIGNIFCANT_INDEX
+flag cleared, kvm_find_cpuid_entry2() matches based solely on the function.
+This means the returned entry 'e' could contain an arbitrary, user-controll=
+ed
+index.
 
-arch/x86/kvm/vmx/tdx.c:setup_tdparams_cpuids() {
-        ...
-        if (tdx_unsupported_cpuid(entry))
-                return -EINVAL;
+Because get_supported_cfg_cpuid() is queried using e->index instead of the
+canonical target subleaf mask->index, userspace could spoof e->index to
+point to a more permissive subleaf in KVM's allowlist. The TDX module would
+then blindly apply those validated bits to the original, narrower target
+subleaf, bypassing the intended feature restrictions.
 
-        value =3D &td_params->cpuid_values[i];
-        value->eax =3D entry->eax;
-        value->ebx =3D entry->ebx;
-        value->ecx =3D entry->ecx;
-        value->edx =3D entry->edx;
-        ...
-}
-
-Because these user-provided CPUID values are copied directly into the hardw=
-are=20
-initialization parameters without being masked against the newly introduced=
-=20
-get_supported_cfg_cpuid() allowlist, could a VMM explicitly request and pas=
-s=20
-unsupported configurable CPUID bits directly to the TDX module?
-
-Does this still leave the door open to the host state corruption mentioned
-in the commit message if the TDX module only enforces hardware-level support
-rather than KVM's software constraints?
-
-> =20
-> -static void tdx_clear_unsupported_cpuid(struct kvm_cpuid_entry2 *entry)
-> +static u32 get_supported_cfg_cpuid(u32 function, u32 index, u8 reg)
->  {
-
-[ ... ]
+Should this use mask->index instead of e->index when querying the allowlist?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604023314.3907=
-511-1-binbin.wu@linux.intel.com?part=3D2
+511-1-binbin.wu@linux.intel.com?part=3D3
