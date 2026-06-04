@@ -1,147 +1,152 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE9330BBB8
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 23:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D642BD59C
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 23:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780614862; cv=none; b=j+ZdMtIz+OD7D9jt4oClThliies3mntdAWip07Y/PSqBKFCGN83WcQO2eCMAEGM7ohREdpSlv5M1FsD2KJL99fJie8/inPHsbRsjTA/AO8jvu8WpPCI1+SMVTh2CHTviWMlcu87Kkcdutcf1Ioaw3dZtEPdOjA52AKPl1xu1jBM=
+	t=1780614875; cv=none; b=DTKI9hpA0aO0Sghd7sx5SstfOQA0nABmD76FEHoSyKwJ3Nc5jVQzlSSQb8fCAJpUTPsUyaOFC6S86U/0Di3JTcSCTaxIAHFMU2Dt+gTmU8FeRuxYvDxJEJu+pDqjlYPv+N0scgNPLZ+UPLa0Dp02SaZKmHcs7tlhK7t2RpoEER8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780614862; c=relaxed/simple;
-	bh=5y3PcmFRYqRP1NnGXJUwB0A0KdsvIgR/FJxx9aWTUsc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LTyJwpBNqQHlAmMSAGsukMU2b/6YAxDZnccHchfRTGDO2+TPj4GDNuW3WmsyL4QPkGZSIiiff4QXPI4+OC7RssWgmJ6pP1iP4dzBl9QbxjTsHeBb+ckH5ZKYsGDT30X8r/wqTOgm8fQAdR2JoehgHgPu26jchGzydfa7061qVUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YaElgTFt; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VjXZ3xoJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780614875; c=relaxed/simple;
+	bh=KbIBD6Typey6Tj7uJR/pDL/KpVHmXj3HB1WG71/DbgA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=XJBVcIkGgrLLlFWMiObHF+DlNO+LFuI00lu6sZ67OGKD7ioGzIpEyXnBbfobRfy3YFzB0qNsIpL4LSOkySNRRUeOA0GoyTl0SWv5M5UUm1nq3lSEEcnLQLQtAJe6dQ8fugc+PDN5QLw9zklOkMvVcrdN5z7WFf/LsnF+CpSr43s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uP/Osk2f; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YaElgTFt";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VjXZ3xoJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780614860;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BLGZz3723Aln9n0iz1W4fVsSKoXjcy4jTxlM5UdbXW0=;
-	b=YaElgTFtz5plumd3F9BmbQui7KnXRyEM2UVoXCdQoFTHSc9m+zaepTrAQKvMT3kaD24Mor
-	I2vnA4BqOLh91Nif6LdX5DexXWqpkS0erhrPYj5xcbVv4JdXtMBiOWaKmuWEA63QdN1Ed9
-	INLf5nlDDa8S+ac3z1/Ru38/LL20Wps=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-eC5snsMqNJmWZQ0VdBQZlw-1; Thu, 04 Jun 2026 19:14:19 -0400
-X-MC-Unique: eC5snsMqNJmWZQ0VdBQZlw-1
-X-Mimecast-MFC-AGG-ID: eC5snsMqNJmWZQ0VdBQZlw_1780614858
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45efa2f7009so752598f8f.3
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 16:14:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uP/Osk2f"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d98b828c8so507020a91.2
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 16:14:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780614858; x=1781219658; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BLGZz3723Aln9n0iz1W4fVsSKoXjcy4jTxlM5UdbXW0=;
-        b=VjXZ3xoJ+7gWk5xZ7MaEQIZs2AQEihJoTGtNlR329G+CyghMJ5Kz+UuOnM1hY3r4nh
-         NXPRM4rmYQpBVNPxofnQFzuI/UJ2AF2Ug8nuxk+5I+6YeCp3026A39HElL8Rc/sXxX5Q
-         /Y7G5NqFDEtFOOViULpsSKvGGNLXaI5qT3aP5EnSoOehtcbJue1YLgdvDaO9arOKteO+
-         UUtQT2NxKFLSmvanssklYrhl/PtMIO682auIkFVYlJUlXEc8CyUeMtEA2H5JvNpOfxuN
-         y/+J7wHUBCMZuGh0pw0mmpeW5IJW7LS/V51s5I0AFGmSYpvpylUIWHOcQMbq3X5nksLN
-         XCTg==
+        d=google.com; s=20251104; t=1780614874; x=1781219674; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mS9MJ5kCrWOlM6ucjjTqvWj1HBAg+22TNTpHduIiXcE=;
+        b=uP/Osk2fEuGVQvcQoZRPIVfLIy9uORK3Ra4um+6wpTSWHZjXaRLgVhtyRmX7ja+Tug
+         6lxR1+9j9JpohGLmm7jyXdpexNf3/gYyXMuEiJE/mrTcNY2OFeaXbJgkRGxWh7RXn8ek
+         YRI/8Q3FG7TfdYRFUG6b9fcXGz2cvYD7ViYIoX/lfT4IqWKLYz6tYGmNnbOSWPL88/d5
+         LgPudn99ggM4Lzdgc5NcUeaxEVJBf9Ggur+mwj45SGbWqmeCETTYysgdicTvdVdOt7k/
+         G2xkDhjOk8RmoP+36LG5Os2GPhabpA18i/3oYKrQHHAdDzy7HzSdv9rGKbgIypQZZJCM
+         /PXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780614858; x=1781219658;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BLGZz3723Aln9n0iz1W4fVsSKoXjcy4jTxlM5UdbXW0=;
-        b=ic7GFjuVQFyXwYNLNgnKZrQbKRa9sEg+AxOH5VMy8n0iUnrBC/vT+0LeY4e+n+Vbfo
-         w0Q2d/dJoq3p9SKuPc99+h7a3F8/cGO7YG7Kocy4UyOqiHpsBZIUBd64iz4KvxSR6jcI
-         PwT3FlSqYlIVqGfUgjOYgP2vr15ChQDN9QyiuHy3VWFMqQLasxmRQkgB48dAhU+/nMWx
-         tFCoqWt8m4FYJDYFPpVbOr+M6a2iHh64/oLbn9s2hzaFUXt9HKfwKicONbCrJRgDIM9O
-         Ms6vaTmHNUAjqC06OfT9KHtsLlIdPXYYVwFx8quJRT2o1vbI26Se4Lnf+3zFaD6rZ6CL
-         5Y5A==
-X-Forwarded-Encrypted: i=1; AFNElJ9gEPTP6okJlqS23+zxxv+aiuyRMxSahxana1ppgYtx9WkPrNDLVA8mWvrQ5BfzJPMwv3s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyoqOpI0lEDVggtNAXiH05+9bqjBt7CZmIfJC9Sz/UpvGXX8GB
-	KVmNU86AbpfKgDI51mleWBpSf5LgwMMPuPt/yfAmBYMDd09FxP4abhrzoaldqnytxiA8IcjsoOd
-	jX70mK5YxYN41Tc6DQ138Yy3EQ075oLMhyL/rGjCE2ZZVH1rNlMbatA==
-X-Gm-Gg: Acq92OHjq0BVzgA4V5DKCL1JT2I+dJbmdWF2LhYsyfagK2X+hOjb5neQIDLUkL98ARJ
-	+g2R7MyJs6NkzQLOFm13cxDgwUKN9GIQMxqwckpm0IQu/ARorTiCJ6nI8wjQSvwDTE/0xWCEYe4
-	Ry2aqV7qxJbBQdnKxkTv5ehUsvABW0AWmSmb4O1zsbB4iGbek0FbXmmxnukrTx4vc4wMEQwnkAP
-	Yv6tkmSK1XauaMwPGIjKwQrbfeA1WGtGh6Z70dz3/eKWjYRQgaAarsSW7Uy5kPagppid7EU6gT+
-	rsPMeCoEJIj2TCjs+VpJ8Qv49pJS2tI5LTN4UocSbzV7so4+UXhQiIpBHiQjxTfNt4PXF3aBFk+
-	z9U6pVqU6uZH/jyIBzvRLUeURqE7Sp/Zax0M3hdfg4QEQWm4XIavyrEY=
-X-Received: by 2002:a05:6000:b82:b0:460:1301:dec8 with SMTP id ffacd0b85a97d-460302dc4a8mr1134273f8f.3.1780614858162;
-        Thu, 04 Jun 2026 16:14:18 -0700 (PDT)
-X-Received: by 2002:a05:6000:b82:b0:460:1301:dec8 with SMTP id ffacd0b85a97d-460302dc4a8mr1134244f8f.3.1780614857676;
-        Thu, 04 Jun 2026 16:14:17 -0700 (PDT)
-Received: from redhat.com (ppp-94-66-118-61.home.otenet.gr. [94.66.118.61])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dc577sm19910295f8f.3.2026.06.04.16.14.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 16:14:17 -0700 (PDT)
-Date: Thu, 4 Jun 2026 19:14:14 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Qing Ming <a0yami@mailbox.org>, Jason Wang <jasowang@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Shirley <xma@us.ibm.com>, "David S. Miller" <davem@davemloft.net>,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] vhost/net: complete zerocopy ubufs only once
-Message-ID: <20260604191341-mutt-send-email-mst@kernel.org>
-References: <20260601104300.197210-1-a0yami@mailbox.org>
- <b6182472-503c-43e9-a850-87cd40f86aa8@redhat.com>
+        d=1e100.net; s=20251104; t=1780614874; x=1781219674;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mS9MJ5kCrWOlM6ucjjTqvWj1HBAg+22TNTpHduIiXcE=;
+        b=Wti4ruGIlIc8Nj74VFbVhhk62uGBtTaKD21st05DTcNar/aO8CUxJQ1izm46b9rNZw
+         sPGMXSYd5HHApRH8cz4HdXFRSrIZK6yxpAfFbB+ZKssSszQrKfc1JUzbCfUJNDrCHUWg
+         jF+JswYggPxdxcnxtfxiwQKyrcHhH83dWRNgn9t17+26V3jWxwMw5/CpMWUf8Y2J3kRF
+         Dsvf+gaUx4cS3VNJ04WNICHK4lYkzrjPwTuYRgPJnmHolN4Yzl31aDFD+6usnWpd1X1d
+         q7tTuFhKTM3m53khd6wf+cRaX6HIJIQH5F45SKSGsto82Kxvju80A7Pn4+26/pFg0+U3
+         ciEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8a896xV+2vYMAWkjdhkSiG7zNUcPQbxgnh7G5f/vo/mbgZmEfUDr1MRNRY6BOv/CrbTrw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx09stn1bMEA5BKDUV51ejoddBO51PJrP9PaNz+BJYi0owzdM62
+	kEBK+T7WwUGU5zqwrSJyz5v00ut15zxIETBq9ja6Vzwyox0wYxpdwJL2WNggZtEFWR/Dl02rlHb
+	IWMCpLw==
+X-Received: from pjbbo10.prod.google.com ([2002:a17:90b:90a:b0:36b:d248:5f89])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:394e:b0:36a:aeaf:ab2a
+ with SMTP id 98e67ed59e1d1-370f0d4c33emr986368a91.19.1780614873561; Thu, 04
+ Jun 2026 16:14:33 -0700 (PDT)
+Date: Thu, 4 Jun 2026 16:14:32 -0700
+In-Reply-To: <aiHRIhxgBCy1TVfQ@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b6182472-503c-43e9-a850-87cd40f86aa8@redhat.com>
+Mime-Version: 1.0
+References: <20260604020143.748245-1-jrhilke@google.com> <20260604020143.748245-8-jrhilke@google.com>
+ <aiG8Q31nF2L1gNwa@google.com> <aiHRIhxgBCy1TVfQ@google.com>
+Message-ID: <aiIG2L_KdPwuxYA1@google.com>
+Subject: Re: [PATCH v5 07/21] KVM: selftests: Verify IRQ bypass works in IRQ test
+From: Sean Christopherson <seanjc@google.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Alex Williamson <alex.williamson@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jun 04, 2026 at 12:55:49PM +0200, Paolo Abeni wrote:
-> On 6/1/26 12:43 PM, Qing Ming wrote:
-> > vhost-net initializes one ubuf_info per outstanding zerocopy TX
-> > descriptor and hands it to the backend socket.  The networking stack may
-> > then clone a zerocopy skb before all skb references are released.  For
-> > example, batman-adv fragmentation reaches skb_split(), which calls
-> > skb_zerocopy_clone() and increments the same ubuf_info refcount.
+On Thu, Jun 04, 2026, Sean Christopherson wrote:
+> On Thu, Jun 04, 2026, Sean Christopherson wrote:
+> > The shortlog is at best misleading.  There are zero guarantees that IRQ bypass
+> > is supported and enabled.
 > > 
-> > vhost_zerocopy_complete() currently treats every ubuf callback as a
-> > completed vhost descriptor.  It dereferences ubuf->ctx, writes the
-> > descriptor completion state, and drops the vhost_net_ubuf_ref even when
-> > the callback only releases a cloned skb reference.  A backend reset can
-> > therefore wait for and free the vhost_net_ubuf_ref while another cloned
-> > skb still carries the same ubuf_info.  A later completion then
-> > dereferences the freed ubufs pointer.
+> > On Thu, Jun 04, 2026, Josh Hilke wrote:
+> > > From: David Matlack <dmatlack@google.com>
+> > > 
+> > > Trigger interrupts from a VFIO device instead of emulating interrupts
 > > 
-> > KASAN reports the stale completion as:
+> > It's not emulating, it's synthesizing.  Emulating implies there's a device of
+> > some kind that the test is mimicking.
 > > 
-> >   BUG: KASAN: slab-use-after-free in vhost_zerocopy_complete+0x1d7/0x1f0
-> >   BUG: KASAN: slab-use-after-free in vhost_zerocopy_complete+0x101/0x1f0
-> >   vhost_zerocopy_complete
-> >   skb_copy_ubufs
-> >   __dev_forward_skb2
-> >   veth_xmit
+> > > using KVM eventfds. This verifies that guests receive interrupts via IRQ
+> > > bypass.
 > > 
-> > The freed object was allocated from vhost_net_ioctl() while setting the
-> > backend and freed through kfree_rcu()/kvfree_rcu_bulk after backend
-> > removal, while delayed skb completion still reached
-> > vhost_zerocopy_complete().
+> > No, it verifies that delivery of a VFIO MSI-X through VFIO=>KVM works, and *may*
+> > verify IRQ bypass.  And all of that very much relies on the eventfds to be in
+> > place.
 > > 
-> > Honor the generic ubuf_info refcount before touching vhost state, and run
-> > the vhost descriptor completion only for the final ubuf reference.  This
-> > matches the msg_zerocopy_complete() ownership rule for cloned zerocopy
-> > skbs.
+> > > @@ -119,7 +160,17 @@ int main(int argc, char **argv)
+> > >  	vm = vm_create_with_vcpus(nr_vcpus, guest_code, vcpus);
+> > >  	vm_install_exception_handler(vm, vector, guest_irq_handler);
+> > >  
+> > > -	eventfd = kvm_new_eventfd();
+> > > +	if (device_bdf) {
+> > > +		iommu = iommu_init(default_iommu_mode);
 > > 
-> > Fixes: bab632d69ee4 ("vhost: vhost TX zero-copy support")
-> > Signed-off-by: Qing Ming <a0yami@mailbox.org>
+> > This needs:
+> > 
+> > diff --git tools/testing/selftests/kvm/irq_test.c tools/testing/selftests/kvm/irq_test.c
+> > index cf4568718cee..2e7e100d4815 100644
+> > --- tools/testing/selftests/kvm/irq_test.c
+> > +++ tools/testing/selftests/kvm/irq_test.c
+> > @@ -235,6 +235,8 @@ int main(int argc, char **argv)
+> >         }
+> >  
+> >         if (device_bdf) {
+> > +               __open_path_or_exit("/dev/iommu", O_RDONLY, "Is IOMMUFD available?");
+> > +
+> >                 iommu = iommu_init(default_iommu_mode);
 > 
-> The patch LGTM.
+> *sigh* 
 > 
-> @Michael: to you want to take it via your tree?
-> 
-> /P
+> <rant>
+> This is beyond frustating.  I have A PERFECTLY FUNCTIONAL KERNEL, but this test
+> VERY SUBTLY "defaults" to IOMMUFD.  ARGH!!!!!
+
+Ok, here's what I ended up with.  A param to let the user force a specific type:
+
+	printf("-t	Override the IOMMU type to use (vfio_type1_iommu or iommufd)\n");
 
 
-I wan't copied) Alright then.
+And then auto-probe logic to make a halfway decent guess as to which type/mode
+to use.
 
+  static const char *probe_iommu_type(void)
+  {
+	int io_fd;
 
+	io_fd = open("/dev/iommu", O_RDONLY);
+	if (io_fd >= 0) {
+		close(io_fd);
+		return MODE_IOMMUFD;
+	}
+
+	io_fd = __open_path_or_exit("/dev/vfio", O_RDONLY,
+				    "Is VFIO (or IOMMUFD) loaded and enabled?");
+	close(io_fd);
+	return MODE_VFIO_TYPE1_IOMMU;
+  }
+
+...
+
+		if (!iommu_type)
+			iommu_type = probe_iommu_type();
+
+I'll probably throw a TODO in there, because the VFIO/IOMMU infrastructure really
+needs to handle this, *especially* since "default_iommu_mode" is globally visible.
+Hardcoding a "default" to an entirely optional thing is just evil.
+
+E.g. instead of iommu_init() => lookup_iommu_mode() using default_iommu_mode when
+passed a NULL pointer, have it choose the type that's most likely to work.  Then
+the IRQ test can drop its probing logic.
