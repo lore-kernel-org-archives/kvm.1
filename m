@@ -1,30 +1,30 @@
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF4647DD47;
-	Thu,  4 Jun 2026 13:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E53947B437;
+	Thu,  4 Jun 2026 13:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780579480; cv=none; b=E6RfTiza2lO4t3XbZddm8gcCO90S8ma2YWyR2Q8+Lzh+xcTpfiTOHgxBLEMy6BcU1IO2V9juRv/mRo2w5ZLyPcvFI7GMZEUYQfzlwcJPWs7NWoIUfGN5JpJJNVnVJ9hnHCJlQ4GIYfugjdoS1b7OvnRKiRKxpyqnNtgEqwmQvmk=
+	t=1780579481; cv=none; b=Sby+Ee8rwSqnsQtklkiWIUQlyrcq89hs/lrlafexdQ31COV+68X80cEKapBy8P2oY22BeGxrpdYsYidppb+w5RHXZ0X/Bt/1rNjbGkK0d/rXXjG82+EePYO7eDYL7PLe4gb+ZJrBHjJWeZT8f4oAnYb2dqsv4dtJJUnW2VkqEps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780579480; c=relaxed/simple;
-	bh=1/68anwHwJcr/r4neQJTEVtQ22cYwpuKahuDCH+4RVw=;
+	s=arc-20240116; t=1780579481; c=relaxed/simple;
+	bh=9Wtdo9q2x/YLBdHjLhT0ftIm6rLdKDB7Y1P8T76d+rY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jtHadFNkZrWPUcxUzxbeYcqiGXgob6RgUCHBBtYsV7HON4m4jUQZsW6kC6PzJxZBUSSFz/orAferoZSKaFEYQ4dN+IYLbMy6M6XgweLDxqeneQ0bRc114TlRYqB52SChF/bKls45eSvfBd4awT+QduLEDAfFkypqKm7k9nYDbkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=au/XwxPd; arc=none smtp.client-ip=115.124.30.111
+	 MIME-Version; b=TNzhvzh7X4KcM8WuwWt5zC56KRXeCKuNbrC+QF7sJH+ZKsDnubjeXOH5pre2BVah0lTOmW0+CRDvwqPryjNcAWukF+4gEhXwCttm3N+wt+RoHcjWmsm57OUt2h0uk82F5AmN9nVRJL9EuHtvlDsJkKbOQhHP825RQBeqyonN9cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rENG16V0; arc=none smtp.client-ip=115.124.30.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="au/XwxPd"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rENG16V0"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1780579472; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=vVBcY3pGKXN86VwrQOSMTZKS6zJWPeD7faRkNJrB9t8=;
-	b=au/XwxPdWdKXzkgD6Eoi2HOous1L76Pe0ybtfl9cAn7YUiABPg9tBKErNBif1Kl3luCvDE5jq13gqyRibSp2UWH2EIYBIXZBe6XXFJP44SZs+jz//llmoERLGTTnWFdddCBsCdQTOwf9lsc8kLzyd1l2xNBJ5ILvLsTANNBnBU4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X4AKnYU_1780579469;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X4AKnYU_1780579469 cluster:ay36)
+	t=1780579474; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=xMjkegraM71k9IHLeInMqEHvX6Vd1PM238tDiWPW/3k=;
+	b=rENG16V0SCZoaXwm67GQtRvX47z75DqvoHuqoOpNjpH+YuFQc0Dq0dFJ25aMmPGUbozTP+HHvu6mXVFBdDrEhrIgI5a6DWp3fjMFFLoupi0p7sKrmsFIhoIf8X/V6g05c48K3OlcDAIIwoxe1yPyuC9jkahvZtP2PK5JkS2z7tg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X4AKnZO_1780579471;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X4AKnZO_1780579471 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Thu, 04 Jun 2026 21:24:30 +0800
+          Thu, 04 Jun 2026 21:24:32 +0800
 From: fangyu.yu@linux.alibaba.com
 To: Paul Walmsley <pjw@kernel.org>,
 	Palmer Dabbelt <palmer@dabbelt.com>,
@@ -50,9 +50,9 @@ Cc: Song Shuai <songshuaishuai@tinylab.org>,
 	kvm-riscv@lists.infradead.org,
 	kvm@vger.kernel.org,
 	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [PATCH v3 5/9] riscv: kexec: Build trampoline page tables for crash kernel entry
-Date: Thu,  4 Jun 2026 21:24:14 +0800
-Message-Id: <20260604132418.15725-6-fangyu.yu@linux.alibaba.com>
+Subject: [PATCH v3 6/9] riscv: kexec: Switch to trampoline page table before norelocate
+Date: Thu,  4 Jun 2026 21:24:15 +0800
+Message-Id: <20260604132418.15725-7-fangyu.yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260604132418.15725-1-fangyu.yu@linux.alibaba.com>
 References: <20260604132418.15725-1-fangyu.yu@linux.alibaba.com>
@@ -66,130 +66,156 @@ Content-Transfer-Encoding: 8bit
 
 From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-Crash kexec uses riscv_kexec_norelocate as a trampoline to jump into
-the crashkernel. Pre-build dedicated 4 KB page tables in
-machine_kexec_prepare() that map the trampoline page as executable,
-so the panic path only has to switch satp and jump.
+Make riscv_kexec_norelocate a two-pass trampoline so it can
+drop the kernel page tables while still executing from a
+mapped address.
 
-Two mappings are installed into a shared pgd:
-  - VA(__kexec_tramp_text_start) -> PA(__kexec_tramp_text_start)
-  - PA(__kexec_tramp_text_start) -> PA(__kexec_tramp_text_start)
+On the first entry, t3 is initialized to 0 by machine_kexec().
+Loads the physical address of riscv_kexec_norelocate and the
+trampoline SATP value, switches to the trampoline page table,
+and jumps to the trampoline VA(=PA).
 
-The lower-level tables (p4d/pud/pmd/pte) are shared between both
-mappings; map_tramp_page() walks the existing tree and only
-populates entries that are still zero, so the two installs coexist
-even when their indices happen to collide at any level.
+On the second entry, t3 contains the physical address of
+riscv_kexec_norelocate, so the PC comparison matches and
+execution continues under trampoline VA(=PA).
+
+Since the trampoline page table is already active, replace the
+previous stvec-based handoff with a direct jump to the target
+entry (jr a2).
 
 Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 ---
- arch/riscv/kernel/machine_kexec.c | 87 +++++++++++++++++++++++++++++++
- 1 file changed, 87 insertions(+)
+ arch/riscv/kernel/kexec_relocate.S | 30 +++++++++++++++-----
+ arch/riscv/kernel/machine_kexec.c  | 44 +++++++++++++++++++++++++++---
+ 2 files changed, 63 insertions(+), 11 deletions(-)
 
+diff --git a/arch/riscv/kernel/kexec_relocate.S b/arch/riscv/kernel/kexec_relocate.S
+index af6b99f5b0fd..8cfdf6f4032a 100644
+--- a/arch/riscv/kernel/kexec_relocate.S
++++ b/arch/riscv/kernel/kexec_relocate.S
+@@ -147,13 +147,35 @@ riscv_kexec_relocate_end:
+ 
+ 
+ /* Used for jumping to crashkernel */
++.extern kexec_tramp_satp
++.extern riscv_kexec_norelocate_pa
+ .section ".kexec.tramp.text", "ax"
+ SYM_CODE_START(riscv_kexec_norelocate)
++	/*
++	 * Two-pass entry:
++	 *   - 1st entry: t3 == 0 (initialized by machine_kexec()).
++	 *
++	 *   - 2nd entry: t3 holds the physical address of
++	 *     riscv_kexec_norelocate, so auipc matches t3 and we fall through
++	 *     to label 1 to continue execution under trampoline VA(=PA).
++	 */
++	auipc   t0, 0
++	beq     t0, t3, 1f
++
++	la      t0, riscv_kexec_norelocate_pa
++	REG_L   t3, 0(t0)
++	la      t0, kexec_tramp_satp
++	REG_L   t1, 0(t0)
++	csrw	CSR_SATP, t1
++	sfence.vma x0, x0
++
++	jr      t3
+ 	/*
+ 	 * s0: (const) Phys address to jump to
+ 	 * s1: (const) Phys address of the FDT image
+ 	 * s2: (const) The hartid of the current hart
+ 	 */
++1:
+ 	mv	s0, a1
+ 	mv	s1, a2
+ 	mv	s2, a3
+@@ -198,14 +220,8 @@ SYM_CODE_START(riscv_kexec_norelocate)
+ 	csrw	CSR_SCAUSE, zero
+ 	csrw	CSR_SSCRATCH, zero
+ 
+-	/*
+-	 * Switch to physical addressing
+-	 * This will also trigger a jump to CSR_STVEC
+-	 * which in this case is the address of the new
+-	 * kernel.
+-	 */
+-	csrw	CSR_STVEC, a2
+ 	csrw	CSR_SATP, zero
++	jr	a2
+ 
+ SYM_CODE_END(riscv_kexec_norelocate)
+ 
 diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machine_kexec.c
-index e6e179cffc44..1947b7bdf5c4 100644
+index 1947b7bdf5c4..72817bba5d3b 100644
 --- a/arch/riscv/kernel/machine_kexec.c
 +++ b/arch/riscv/kernel/machine_kexec.c
-@@ -18,6 +18,85 @@
+@@ -18,6 +18,8 @@
  #include <linux/interrupt.h>
  #include <linux/irq.h>
  
-+/*
-+ * Trampoline page tables. Both the VA(trampoline)->PA and the
-+ * PA(trampoline)->PA identity mapping are installed in this single
-+ * pgd; the lower-level tables are shared so the two mappings can
-+ * coexist even if they happen to collide at any level (the walker
-+ * only populates entries that are still zero).
-+ *
-+ * Pre-allocate for the largest paging mode (Sv57). Levels that the
-+ * runtime mode does not use simply waste a page or two of BSS, in
-+ * exchange for a builder that is infallible and safe to run from
-+ * the panic path.
-+ */
-+static pgd_t kexec_tramp_pgd[PTRS_PER_PGD] __aligned(PAGE_SIZE);
-+#ifdef CONFIG_64BIT
-+static p4d_t kexec_tramp_p4d[PTRS_PER_P4D] __aligned(PAGE_SIZE);
-+static pud_t kexec_tramp_pud[PTRS_PER_PUD] __aligned(PAGE_SIZE);
-+static pmd_t kexec_tramp_pmd[PTRS_PER_PMD] __aligned(PAGE_SIZE);
-+#endif
-+static pte_t kexec_tramp_pte[PTRS_PER_PTE] __aligned(PAGE_SIZE);
-+
-+static void map_tramp_page(unsigned long va, unsigned long pa)
-+{
-+	pgd_t *pgd = kexec_tramp_pgd + pgd_index(va);
-+
-+#ifdef CONFIG_64BIT
-+	p4d_t *p4d;
-+	pud_t *pud;
-+	pmd_t *pmd;
-+
-+	if (pgtable_l5_enabled) {
-+		if (pgd_val(*pgd) == 0)
-+			set_pgd(pgd, pfn_pgd(PFN_DOWN(__pa_symbol(kexec_tramp_p4d)),
-+					     PAGE_TABLE));
-+		p4d = kexec_tramp_p4d + p4d_index(va);
-+	} else {
-+		p4d = (p4d_t *)pgd;
-+	}
-+
-+	if (pgtable_l4_enabled) {
-+		if (p4d_val(*p4d) == 0)
-+			set_p4d(p4d, pfn_p4d(PFN_DOWN(__pa_symbol(kexec_tramp_pud)),
-+					     PAGE_TABLE));
-+		pud = kexec_tramp_pud + pud_index(va);
-+	} else {
-+		pud = (pud_t *)p4d;
-+	}
-+
-+	if (pud_val(*pud) == 0)
-+		set_pud(pud, pfn_pud(PFN_DOWN(__pa_symbol(kexec_tramp_pmd)),
-+				     PAGE_TABLE));
-+	pmd = kexec_tramp_pmd + pmd_index(va);
-+
-+	if (pmd_val(*pmd) == 0)
-+		set_pmd(pmd, pfn_pmd(PFN_DOWN(__pa_symbol(kexec_tramp_pte)),
-+				     PAGE_TABLE));
-+#else
-+	/* Sv32: PGD points directly to the PTE table. */
-+	if (pgd_val(*pgd) == 0)
-+		set_pgd(pgd, pfn_pgd(PFN_DOWN(__pa_symbol(kexec_tramp_pte)),
-+				     PAGE_TABLE));
-+#endif
-+
-+	set_pte(kexec_tramp_pte + pte_index(va),
-+		pfn_pte(PFN_DOWN(pa), PAGE_KERNEL_EXEC));
-+}
-+
-+static void riscv_kexec_build_tramp(unsigned long va, unsigned long pa)
-+{
-+	/* VA -> PA: map the trampoline page via its kernel VA. */
-+	map_tramp_page(va, pa);
-+
-+	/*
-+	 * PA -> PA: identity-map the same page so the second-pass code
-+	 * can keep executing after the kernel VA mapping is dropped.
-+	 */
-+	map_tramp_page(pa, pa);
-+}
-+
-+
++unsigned long kexec_tramp_satp;
++unsigned long riscv_kexec_norelocate_pa;
  /*
-  * machine_kexec_prepare - Initialize kexec
-  *
-@@ -73,6 +152,14 @@ machine_kexec_prepare(struct kimage *image)
- 
- 		/* Mark the control page executable */
- 		set_memory_x((unsigned long) control_code_buffer, 1);
-+	} else {
-+		/*
-+		 * Crash kexec uses riscv_kexec_norelocate as a trampoline.
-+		 * Pre-build the trampoline page tables here so the panic
-+		 * path only has to switch satp and jump.
-+		 */
-+		riscv_kexec_build_tramp((unsigned long)__kexec_tramp_text_start,
-+					__pa_symbol(__kexec_tramp_text_start));
+  * Trampoline page tables. Both the VA(trampoline)->PA and the
+  * PA(trampoline)->PA identity mapping are installed in this single
+@@ -155,11 +157,17 @@ machine_kexec_prepare(struct kimage *image)
+ 	} else {
+ 		/*
+ 		 * Crash kexec uses riscv_kexec_norelocate as a trampoline.
+-		 * Pre-build the trampoline page tables here so the panic
+-		 * path only has to switch satp and jump.
++		 * Pre-build the trampoline page tables and capture the
++		 * trampoline SATP value plus the physical address of
++		 * riscv_kexec_norelocate so that the panic path only has
++		 * to switch satp and jump.
+ 		 */
+ 		riscv_kexec_build_tramp((unsigned long)__kexec_tramp_text_start,
+ 					__pa_symbol(__kexec_tramp_text_start));
++		WRITE_ONCE(riscv_kexec_norelocate_pa,
++			   __pa_symbol(&riscv_kexec_norelocate));
++		WRITE_ONCE(kexec_tramp_satp,
++			   PFN_DOWN(__pa_symbol(kexec_tramp_pgd)) | satp_mode);
  	}
  
  	return 0;
+@@ -276,7 +284,35 @@ machine_kexec(struct kimage *image)
+ 
+ 	/* Jump to the relocation code */
+ 	pr_notice("Bye...\n");
+-	kexec_method(first_ind_entry, jump_addr, fdt_addr,
+-		     this_hart_id, kernel_map.va_pa_offset);
++	/*
++	 * Hand off to the trampoline. For KEXEC_TYPE_CRASH we go into
++	 * riscv_kexec_norelocate, which uses t3 as the 1st/2nd-pass
++	 * discriminator (must be 0 on first entry). A bare
++	 *   asm volatile ("li t3, 0" ::: "t3")
++	 * before the C call only declares t3 *modified*; the compiler is
++	 * free to use t3 as scratch when materialising args. Pin t3 = 0
++	 * (and the args) via local register variables and perform the
++	 * indirect jump inside the same inline asm so t3 == 0 is
++	 * guaranteed at the moment control leaves machine_kexec().
++	 */
++	{
++		register unsigned long a0_val asm("a0") = first_ind_entry;
++		register unsigned long a1_val asm("a1") = jump_addr;
++		register unsigned long a2_val asm("a2") = fdt_addr;
++		register unsigned long a3_val asm("a3") = this_hart_id;
++		register unsigned long a4_val asm("a4") = kernel_map.va_pa_offset;
++		register unsigned long t3_zero asm("t3") = 0;
++		register riscv_kexec_method m asm("t6") = kexec_method;
++
++		asm volatile (
++			"jr %[m]"
++			:
++			: "r" (a0_val), "r" (a1_val), "r" (a2_val),
++			  "r" (a3_val), "r" (a4_val),
++			  "r" (t3_zero),
++			  [m] "r" (m)
++			: "memory"
++		);
++	}
+ 	unreachable();
+ }
 -- 
 2.50.1
 
