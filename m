@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6040635674E
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 02:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A032EC0A7
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 02:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780539689; cv=none; b=u7uYsC+dexweNWweAV0NI+rQ4qX3MZpIFMYLGBzNUaLf7N1QwszMon76yJklvid35ahA9YOe/V9cv0/EEEXe4gWQB0rPS00W9NhkNooRwRXtQwhV4Xn1eiC8sqJXbxqQmvbzNyKMaSAC9KS+8/nGkxE/mRiNrbl+/6TfIv+Y9gY=
+	t=1780539723; cv=none; b=fVgh46sRzdnkyveGJSLAo/kxYcG2ilQXRZDaDZjhCL+rS1kdnES1nDsLnrWxqZ0Ta0SRt2uaK6ZQQIw9QyQ8thteIYWiIvD2KO1JnuUXcUGv152Tn5uJp4KqPJz3s0+J1Bu94rKntOYrX7AKBA0smjy/msXALigfeNiuFkaV3co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780539689; c=relaxed/simple;
-	bh=N8n2wOMH1B1jDFXhHJb7vnWHUGZJ0uSVqNxOc0Em2Hk=;
+	s=arc-20240116; t=1780539723; c=relaxed/simple;
+	bh=JW+qB4GsuGptWQIbVdKVyFi+SpiTD+KRY5z+OEg2JQk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=WvtbKf1hm06cLXft5OCmAOJJUWturIvt38nHzNwb4rpWF4MBb8tiYdHvnDGQEEHUJJBcDPcjP9zNHdqToQcW74czj9nhtpXkGJRkzhZwRbJgLeDY/X2qSNTYT1o98V+O7LhyTKe8iGOHpxQIn0uD3hSxtodE6hrgLPoL1ShAGfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IMxrVw+a; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=DV3IfkidFILTUtmLQZoOHf3P3VAI8UJcy7BXlGKpqqn7KGKyZXmBGzklbmIfpTl3qgDs3UtEHJjN9zTlgVjbA7aYVATbXD8gDN8LzEVg5jUkmFPOQF96+l8UqW6Qssun8I1NmxGHRzQDImSX8dK1bNN3tCxJkYgn+OgAy2WnfbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hkiwkd1F; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IMxrVw+a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29011F00893;
-	Thu,  4 Jun 2026 02:21:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hkiwkd1F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B8F11F00893;
+	Thu,  4 Jun 2026 02:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780539685;
-	bh=TGzRYSkPoS/WYq42oTMynailrjOdWQgZCKfCWe7hOZM=;
+	s=k20260515; t=1780539722;
+	bh=FjdjX51shvQyfvG198te+ChqrQqTufU+GR7QeVeXDMs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IMxrVw+aLetIW1mtzEap/CyfknZsvG9r1cpPBtp//kTn3rcoI5jZSJ5xATP0dSLz1
-	 6sS1FTiAz3PFaEqfoIm/+gvq8+nN9AvWFU1TfKd5nxprL1MPtjTCoZmGPsqyUoKDqE
-	 EPgASFvD2qc3CFtb/8J/NM3DuGD8/+Bt3OsrsQ2/qlK7H4aLRR2VSKi0pNvTUSEyvl
-	 FLSIk91dTPiC2GmklXkqBnZp4UChIxQGKlsoBC63TKHerkE5w2rprveYhBwWyxypTZ
-	 43L5dQ0HLm3WpvRQM0QlbMV71c6HspFD51tCWil2GDAq/t8tqKOPRyZf0zbSdsH+6T
-	 bCSci2sSRuNKw==
+	b=Hkiwkd1FktqlOvNMjgPtDmeb8EIQWHqMiYaGxeGk93/Pmwx/m7/tLm5paTrihb1ac
+	 tR5pAD8odl+BNbACrqjvSbBDCee28H81uzFgZZ3L/QYGxNnb/6LmfE2veY+T2u2D7L
+	 LnPaUwJuYgkd3FmtPFMuJVxEHgi3a03JKAP2bwZw2gYkephPtw8t9288h3/JzR4x94
+	 sR7vk56g+Pqw3xJJclOSMY8709W1RY4i6HTwV//rOBUd3o9vH95BMlSqmdwLKtmav7
+	 Wf81mEYBuY9YD63QuteZim7YYkEQmUj3x/VYTrBRQGo6p8cX5L8/w5S8yld3VmyEY2
+	 ImQN6MuNoruNA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 19/21] KVM: selftests: Print vCPU affinity on timeout
- during IRQ test
+Subject: Re: [PATCH v5 21/21] KVM: selftests: Add xAPIC support in IRQ test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Josh Hilke" <jrhilke@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604020143.748245-20-jrhilke@google.com>
-References: <20260604020143.748245-20-jrhilke@google.com>
+In-Reply-To: <20260604020143.748245-22-jrhilke@google.com>
+References: <20260604020143.748245-22-jrhilke@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 02:21:25 +0000
-Message-Id: <20260604022125.A29011F00893@smtp.kernel.org>
+Date: Thu, 04 Jun 2026 02:22:01 +0000
+Message-Id: <20260604022202.0B8F11F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,99 +45,60 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] kvm_print_vcpu_affinity() uses get_nprocs() as the loop boundary=
-, which silently truncates CPUs with indices >=3D get_nprocs() on sparse to=
-pologies.
+- [Medium] The test will silently hang when run with `-x` (xAPIC mode) and =
+`-v` configured with 256 or more vCPUs due to 8-bit APIC ID truncation.
 --
 
-commit 9e2355f47489ee5cf4674888f5c4b7d1058bc869
-Author: Josh Hilke <jrhilke@google.com>
+commit 5d7e9bc4aa987e66842949c22b1af4bb4e8fff94
+Author: David Matlack <dmatlack@google.com>
 
-KVM: selftests: Print vCPU affinity on timeout during IRQ test
+KVM: selftests: Add xAPIC support in IRQ test
 
-Adds a helper function to print the physical CPU affinity of a vCPU thread=
-=20
-in a human-readable format. Uses this new helper in the irq_test to provide=
-=20
-context when a vCPU times out waiting for an interrupt during migration.
+This commit adds the -x flag to the irq_test to configure the guest to use
+xAPIC mode instead of the default x2APIC mode. This expands test coverage
+to ensure that IRQ injection and routing work correctly when the guest uses
+the older xAPIC interface.
 
-> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/s=
-elftests/kvm/lib/kvm_util.c
-> index e538e6147ec3f..7fc3aaf763797 100644
-> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
-> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-
+> diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selft=
+ests/kvm/irq_test.c
+> index 41c50caa928e2..7e421cb7bc69b 100644
+> --- a/tools/testing/selftests/kvm/irq_test.c
+> +++ b/tools/testing/selftests/kvm/irq_test.c
 [ ... ]
-
-> @@ -662,6 +663,54 @@ void kvm_print_vcpu_pinning_help(void)
->  	       "     (default: no pinning)\n", name, name);
->  }
+> @@ -31,14 +32,20 @@ static bool done;
 > =20
-> +void kvm_print_vcpu_affinity(struct kvm_vcpu *vcpu, pid_t tid)
-> +{
-> +	int nprocs =3D get_nprocs();
-> +	bool first_range =3D true;
-> +	int i, start =3D -1;
-> +	cpu_set_t cpus;
-> +
-> +	kvm_sched_getaffinity(tid, sizeof(cpus), &cpus);
-> +
-> +	/*
-> +	 * Output format examples:
-> +	 * - Single CPU:  "vCPU 0 (TID 1234) affined to pCPU(s): 2"
-> +	 * - List:        "vCPU 0 (TID 1234) affined to pCPU(s): 0,2,4"
-> +	 * - Range:       "vCPU 0 (TID 1234) affined to pCPU(s): 0-7"
-> +	 * - Mixed:       "vCPU 0 (TID 1234) affined to pCPU(s): 0-3,8,10-12"
-> +	 */
-> +	printf("vCPU %u (TID %d) affined to pCPU(s): ", vcpu->id, tid);
-> +
-> +	for (i =3D 0; i <=3D nprocs; i++) {
-> +		/*
-> +		 * Iterate to nprocs (inclusive) to ensure that if the last pCPU
-> +		 * is part of a range, the 'else' block triggers one final time
-> +		 * to flush that range to stdout.
-> +		 */
-> +		if (i < nprocs && CPU_ISSET(i, &cpus)) {
+>  static u32 guest_get_vcpu_id(void)
+>  {
+> -	return x2apic_read_reg(APIC_ID);
+> +	if (x2apic)
+> +		return x2apic_read_reg(APIC_ID);
+> +	else
+> +		return xapic_read_reg(APIC_ID) >> 24;
+>  }
 
 [Severity: Medium]
-Does using get_nprocs() as the loop boundary risk silently truncating CPUs=
-=20
-on sparse topologies?
+Does this truncation to 8 bits cause the test to silently hang if run with
+256 or more vCPUs in xAPIC mode?
 
-get_nprocs() returns the count of currently online CPUs, not the maximum=20
-CPU ID. If a system has 4 online CPUs but their IDs are 0, 1, 2, and 7,=20
-get_nprocs() will return 4.
+For vCPU IDs 256 and above, the 8-bit xAPIC ID will wrap around. When the
+guest signals readiness:
 
-This would cause the loop to terminate prematurely, completely ignoring=20
-valid but higher-numbered CPU indices (like CPU 7) in the cpu_set_t mask.
+guest_code()
+    WRITE_ONCE(guest_ready_for_irqs[guest_get_vcpu_id()], true);
 
-Should this iterate up to CPU_SETSIZE instead to encompass the entire mask=
-=20
-capacity, similar to other helper functions like pin_task_to_random_cpu()?
+it would update the flag for an aliased ID (like 0) instead of its own inde=
+x.
 
-> +			if (start =3D=3D -1)
-> +				start =3D i;
-> +			continue;
-> +		}
-> +
-> +		if (start !=3D -1) {
-> +			int end =3D i - 1;
-> +
-> +			if (!first_range)
-> +				printf(",");
-> +
-> +			if (start =3D=3D end)
-> +				printf("%d", start);
-> +			else
-> +				printf("%d-%d", start, end);
-> +
-> +			start =3D -1;
-> +			first_range =3D false;
-> +		}
-> +	}
-> +	printf("\n");
-> +}
+The host would then spin indefinitely waiting for the actual ID to become
+ready:
+
+main()
+    while (!SYNC_FROM_GUEST_AND_READ(vm, guest_ready_for_irqs[vcpu->id]))
+        continue;
+
+Should a bounds check be added in main() to ensure the number of vCPUs is
+not greater than 255 when the xAPIC mode flag is provided?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604020143.7482=
-45-1-jrhilke@google.com?part=3D19
+45-1-jrhilke@google.com?part=3D21
