@@ -1,163 +1,91 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F4E3F44EF;
-	Thu,  4 Jun 2026 16:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A70B3B6360;
+	Thu,  4 Jun 2026 16:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780590568; cv=none; b=rldFyB91XiXIyPr9RbCBJ0QKdW/79S032vkjKIsIqq8d4mzOqcCz29ztj6IgZ1/VNgpE2Cgn4MgVZOXKxMUrGlpYtFjwbbqeNocWKfhH4LCFkgdQor1ylq6SaL6YX5tJKuH4akb9z0cZ3NW2dgfeRxba+Jc9L1TqMSMsW8Ijp78=
+	t=1780590727; cv=none; b=nB/MyYOGcIHkpqNr6Ggmi4H2YV8biDEgKoXxFG+RFNHuzwfnfFoo8rznPAUwulsMety0VC7JeN2Y/ZyagB0cf3VHUUGnQ0PmFTiAf65grT4iQpVzPNw6/272J+GLxSROUSHYwkrPK859PIMmKFwtU6B3z1dDNvEpqtcqbdFjCzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780590568; c=relaxed/simple;
-	bh=DDcOqIBjRQzwmXhJDkYyKYdryiyxLCxifg8Mx9pyuF0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NGrERqQl3q8q9HHoIrydMY5YQ5oThjg/zOUOfskCLi57W+8GIWx22sSd3MALCYOU0pj7xd0IM5MrjPdrWdNL0fqB3eXEA6K1bJdjSQ6uDs3OCml1wHEMolgEqBAXnYheEztNPmfpTWWfiw70Gm3Vnc7zjRtQWLxfNCHcI1tuFLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UN8mARAu; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780590727; c=relaxed/simple;
+	bh=fXpBxqROFPJ4zku8Z90PN5SeF6qExYaF4VgwNxixemE=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=r+2ZYw8LaaKVtDMuO3MZ+2FIFMXwWAvBejte8Hhu9UBFT3Of3e/G4poByo6bTYdcUKq852BUvjnLe3mTaiyqbf7tGJQr9Qh9Q+h9nl7/7v38ZevGqDTyn7LLkQ63XK2oOG2YQwB2p0tPSbiI0NRfUurmIyx/cxcahF2SBh5y9Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LGFbL41j; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UN8mARAu"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654A7BHf2672300;
-	Thu, 4 Jun 2026 16:28:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=aF3VtsVK6VjPsfBug
-	0zmvWXAk8lr4Qk/gzqqi9bp3rA=; b=UN8mARAuf9RT2V3RQ0qU+0avs4zK+WfQc
-	6ri1EJBsnxLwpHxMr99M7mgwmvCbAMCmkFOcIyN1XcLCGmpSnQvBQhI3nIvyKPS8
-	Pelgyv24K/PiMsaDjzRm9RE4NxFouZ8citQmIrzi2Of6TBJ5xsGTfgbSLgTs1ZCT
-	00rWtZ4RSCnQaxBHUQJNlSUsKOvNexSV7cGKRrRqqjzJeXllb3ylIpOt4tD8MWGQ
-	ALRJwkFB6KZYn63sIdagJlHiI5IpxiXfVmCyHVgVtfXH43btBwiTS1hGaBdERHnZ
-	JANk+ojGnjk2zhPDJDGSDdkPT04St0ph2nJ2SQsE9jiOOjSsBJDlQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efqhtg2jf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Jun 2026 16:28:56 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 654GOBSo030484;
-	Thu, 4 Jun 2026 16:28:55 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4egcwynhkf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Jun 2026 16:28:55 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 654GSsjk6816750
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 Jun 2026 16:28:54 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2714D5805C;
-	Thu,  4 Jun 2026 16:28:54 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 664545805F;
-	Thu,  4 Jun 2026 16:28:47 +0000 (GMT)
-Received: from vaibhav?linux.ibm.com (unknown [9.124.208.128])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with SMTP;
-	Thu,  4 Jun 2026 16:28:46 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Thu, 04 Jun 2026 21:58:45 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        kvm-ppc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>
-Subject: [PATCH 2/2] kunit: Add example of test suite that can be skipped at runtime
-Date: Thu,  4 Jun 2026 21:58:01 +0530
-Message-ID: <20260604162805.556135-3-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260604162805.556135-1-vaibhav@linux.ibm.com>
-References: <20260604162805.556135-1-vaibhav@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LGFbL41j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780590725; x=1812126725;
+  h=date:from:to:cc:subject:message-id;
+  bh=fXpBxqROFPJ4zku8Z90PN5SeF6qExYaF4VgwNxixemE=;
+  b=LGFbL41jGfa9iblQobkfo3dgMgK+jx7fH3ax1LYhm7d91ptaP1zT2OU7
+   IDOpMEfEM4pFnv+gHcnZwrPatNhQPPmlXef4YCPnxvqvCn2krP5l73BMG
+   wI9+n7OT9FFSIpz6I2NGdhIRJl94lXMzqkWV27Y7fnoF7bSC3cRhvXwHz
+   vy/UjbdZBEhi5ddG6MFqO+TZsNqtniHhyKqQuUR68BVOlUKi6eyYmDHZb
+   zMuQPVaqeqkj4DaX9Lbw9Vxy9DVX9slRRx8R5Fwim78lLXF6uAhjx6p+7
+   n4JWV3RbCrrG0PqkbqxRAttKGkd00FUwkDFwm452JytUHaitzpXsy3Qn7
+   g==;
+X-CSE-ConnectionGUID: OvELZ9fITUGjha3dGdQg/Q==
+X-CSE-MsgGUID: 8oPj/KmZR4KFv/dFeLTbEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="92530671"
+X-IronPort-AV: E=Sophos;i="6.24,187,1774335600"; 
+   d="scan'208";a="92530671"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 09:32:04 -0700
+X-CSE-ConnectionGUID: EtyvINlqTimj/izOU8Aydg==
+X-CSE-MsgGUID: vC5BHr4aSJiOUyunkQqPhQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,187,1774335600"; 
+   d="scan'208";a="240124070"
+Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
+  by fmviesa006.fm.intel.com with ESMTP; 04 Jun 2026 09:32:01 -0700
+Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wVAz9-000000002M5-1swo;
+	Thu, 04 Jun 2026 16:31:59 +0000
+Date: Thu, 04 Jun 2026 18:31:09 +0200
+From: kernel test robot <lkp@intel.com>
+To: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Harald Mommer <harald.mommer@oss.qualcomm.com>,
+ "Mikhail Golubev-Ciuchea" <mikhail.golubev-ciuchea@oss.qualcomm.com>,
+ "Marc Kleine-Budde" <mkl@pengutronix.de>,
+ Francesco Valla <francesco@valla.it>
+Subject: [mst-vhost:vhost 5/37]
+ ./usr/include/linux/virtio_can.h:29:35: error: // comments are not allowed in
+ this language
+Message-ID: <202606041812.lddXUy2x-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: 529RJS71CVJ4fqSsq7qqwDDzJ65OZ34l
-X-Authority-Analysis: v=2.4 cv=fv/sol4f c=1 sm=1 tr=0 ts=6a21a7c8 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=fkRHeJpg8s6iXhkUuO0A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA0MDE1NyBTYWx0ZWRfX+3QmtTQ0k86p
- fD7KLKIB8MfqmiaaG5u+Lx9goECgQnQN0ZQ+/E+0rMCowZ6JRghldtvfNR4HFZ7MncXUqVxCmRS
- joHxjVqpVa0Mlnw3qnNVt/mi4E+tH2YmJUt1rUK59f6VzB+XULEQ+lRdKOjo/uBJECpVTSE+tOM
- ehEu6ct6PtZPhXhG/+BEgTc0afvYI6WgfH8PVte5lCadPyYHhARQU5gwmHSPRtcXVTv4IbGWFae
- ZOhOt6y+gY2AA979wipZtX09WyyCWf2pAbGdCSMXg+t4muOh794xtvXkaQwbP98Hn3+Z8vbWJDn
- XtrhCmr7VhL915/dXVsEOThHmGm0lesD1rufFbUoJuvQoovDPk14S7Zlvo49NxRhlVS5z1DyWAv
- 41Ecjyvs6dy7Zkm8mlPF3p44UTW5jjRlGEWnx5NRbTEvsTCE9YtNPUazrOzctpNjXu11pC1aMKI
- gxw+xnzZSSAQDa3VYaQ==
-X-Proofpoint-ORIG-GUID: XttEnZBjDkz5Xc6APcux1T1WIEVQ314w
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-04_04,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 spamscore=0 phishscore=0 clxscore=1011
- impostorscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606040157
 
-Add an example test suite name 'example_test_skip_suite' to
-'kunit-example-test.c' that shows how to skip an entire test suite based on
-runtime conditions.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git vhost
+head:   7a85231f762aa97b945878abb9a26683486836c6
+commit: 2b6b4bb7d96f407e42bfe28c4cd9ce8f7a59ab69 [5/37] can: virtio: Add virtio CAN driver
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260604/202606041812.lddXUy2x-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project f43d6834093b19baf79beda8c0337ab020ac5f17)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260604/202606041812.lddXUy2x-lkp@intel.com/reproduce)
 
-The example suite 'example_skip_suite' provides a 'suite_init' callback
-named example_skip_suite_init() which marks the entire suite as skipped
-using kunit_mark_skipped().
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606041812.lddXUy2x-lkp@intel.com/
 
-This demonstrates a way for conditionally skipping test suites when any
-prerequisites for kunit_suite execution are not met. The 'suite_init'
-callback can perform any necessary checks and mark the suite as skipped,
-preventing all test cases from executing while also indicating why the
-suite was skipped.
+All errors (new ones prefixed by >>):
 
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
- lib/kunit/kunit-example-test.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+   In file included from <built-in>:1:
+>> ./usr/include/linux/virtio_can.h:29:35: error: // comments are not allowed in this language [-Werror,-Wcomment]
+      29 | #define VIRTIO_CAN_MAX_DLEN    64 // this is like CANFD_MAX_DLEN
+         |                                   ^
+   1 error generated.
 
-diff --git a/lib/kunit/kunit-example-test.c b/lib/kunit/kunit-example-test.c
-index 0bae7b7ca0b0..b8ded54fa46d 100644
---- a/lib/kunit/kunit-example-test.c
-+++ b/lib/kunit/kunit-example-test.c
-@@ -591,5 +591,34 @@ static struct kunit_suite example_init_test_suite = {
-  */
- kunit_test_init_section_suites(&example_init_test_suite);
- 
-+/*
-+ * This test should always be skipped.
-+ */
-+static void example_skip_suite_test(struct kunit *test)
-+{
-+	/* This line should never be seen */
-+	KUNIT_FAIL(test, "You should not see a this.");
-+}
-+
-+static struct kunit_case  example_skip_suite_test_cases[] = {
-+	KUNIT_CASE(example_skip_suite_test),
-+	{}
-+};
-+
-+static int example_skip_suite_init(struct kunit_suite *suite)
-+{
-+	kunit_mark_skipped(suite, "Test suite expected to be skipped");
-+	return 0;
-+}
-+
-+static struct kunit_suite example_test_skip_suite = {
-+	.name = "example_skip_suite",
-+	.suite_init = example_skip_suite_init,
-+	.test_cases = example_skip_suite_test_cases,
-+};
-+
-+/* This registers a test suite that will be skipped */
-+kunit_test_suite(example_test_skip_suite);
-+
- MODULE_DESCRIPTION("Example KUnit test suite");
- MODULE_LICENSE("GPL v2");
--- 
-2.54.0
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
