@@ -1,110 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29AF480355
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 14:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66C646AEDD;
+	Thu,  4 Jun 2026 14:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780584155; cv=none; b=BDrBDF7i9EQKPIFr41CmoUV3H+/Gj15wpJlPxNvBoIMnBlrHwwYHisu1Vlhb9eGWhEl5eoGGovnTruT0muH5XTiG7joSkaObDxfgIRdmTWd6G6vAoIpQlRzntNu3J22ZzDSGot/Ns2AdGXFRFf2D7BPY1GNCqBA7CsS1jC3+lr4=
+	t=1780584238; cv=none; b=ttnDrcrGyO6nsFD4F8mincuiC+XMYYwrOLZ/vvS6tW6iM4daUlUIMmjOeDk1e6+3cmCGQJ6wTx60NbO+kCs1GLfs5PwCWHKcL9J7Rhq7LOFO3vR1HBIchQ6snJndoUp5XtF/pDG1cVhh9qG5DOaMORU42nudQXOHoB8xSABauDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780584155; c=relaxed/simple;
-	bh=+trEsoBJ7qqHJUncXWC/1jVw2JZyXFrF5ArCWwQAVEA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=O/Vc6Pwisza2FJEPyH1xRnPtTD0/S6kzmAmf902MGFxkBf76+PDMwLyyT5e1J+5bvkWXHKaynIx3/2/t9QpYM+AbjYYvXV0/wKbx51uFZEIfQzG13fmE+tIfWOV5MA+z22a5lCeJpO2ZrfLMSlkNsSYe73EREG+iBJUSuS+DB7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y9WOe1PX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780584238; c=relaxed/simple;
+	bh=b/UDPb8ZwzcbmTijGa9ghHw1SVkFtR2lx41scNsuBjo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a7tAJAe6liVW+zt/A7sjpNzG5MY6PzblcgCo2RSeu9V0QurbiUA90TPthLjXFedvql2ANb825ErivsPt0+DKXAMExgbZM4RLKLe7recsrRrjCBRD0WxmdzrydkGBgzwcMRQX1G+BA5GizM7o5zwZJ97qrdNmYsopVFonN3qSGL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Gn6z/d22; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y9WOe1PX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857031F00893;
-	Thu,  4 Jun 2026 14:42:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780584153;
-	bh=e6q7Es5Kp0zR6Jf64bblD8Qp7A0x16LixP59RRuZtxM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Y9WOe1PXfInrq5pK9WM+v64Igy66jA/xXXC15I27oMd6mQ4Sj12vVgH6tojAGUTFc
-	 5QIcvTyuvELMvtOnm6iAGDoo7SfZ0a0GNT6B+K479DfsR3n17mKdBtISQ9ABhy3SMo
-	 ZVr2Pfc6QnM5/QP6t7ZQpslHrRYmQvQ4UrtkUUChEwfsSST0/gaIGGPnS+RUa1QQ6q
-	 qZQfeiMirc+5d0agjjy9+73ubiLlcP7AuHX2C7VgTvg0URPkD7WIa6iciYOVNLnBvd
-	 szaHpmGFu+zQgeCiWlEFxuI+ogKDctrz08pAfpymP/sHv/YYZcaPoPGmZliKbFRdJK
-	 61sG69nyWufLQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] KVM: selftests: Add a hugetlb memslot alignment
- test mode
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jinyu Tang" <tjytimi@163.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604142602.3582602-3-tjytimi@163.com>
-References: <20260604142602.3582602-3-tjytimi@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 14:42:33 +0000
-Message-Id: <20260604144233.857031F00893@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Gn6z/d22"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F1F783D4D;
+	Thu,  4 Jun 2026 07:43:49 -0700 (PDT)
+Received: from [10.1.34.54] (e122027.cambridge.arm.com [10.1.34.54])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE2373F7D8;
+	Thu,  4 Jun 2026 07:43:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780584234; bh=b/UDPb8ZwzcbmTijGa9ghHw1SVkFtR2lx41scNsuBjo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Gn6z/d22MGsutY4vrKsRLbGb1JtpNa5H68u4zp2JsNXjaVzof1wCdH042dXjksL32
+	 3bQQkNGnNvI/E3bx/qFU+wirdXrg2s3UT8bnf/anDlnzOBsOrKTbQ0RD5hblrWE1yd
+	 Xm4/PDVe6lFcK9jaluBGd8A0FpR/YMBGavFmftuY=
+Message-ID: <fad5dc03-f7ce-4b15-bb73-e2dbd43810a6@arm.com>
+Date: Thu, 4 Jun 2026 15:43:47 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 09/44] arm64: RMI: Provide functions to
+ delegate/undelegate ranges of memory
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-10-steven.price@arm.com>
+ <867bowx3qx.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <867bowx3qx.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Moving the memslot GPA by `guest_page_size` breaks KVM's host pa=
-ge size alignment requirement when `guest_page_size < host_page_size`.
---
+On 21/05/2026 14:59, Marc Zyngier wrote:
+> On Wed, 13 May 2026 14:17:17 +0100,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> The RMM requires memory is 'delegated' to it so that it can be used
+>> either for a realm guest or for various tracking purposes within the RMM
+>> (e.g. for metadata or page tables). Memory that has been delegated
+>> cannot be accessed by the host (it will result in a Granule Protection
+>> Fault).
+>>
+>> Undelegation may fail if the memory is still in use by the RMM. This
+>> shouldn't happen (Linux should ensure it has destroyed the RMM objects
+>> before attempting to undelegate). In the event that it does happen this
+>> points to a programming bug and the only reasonable approach is for the
+>> physical pages to be leaked - it is up to the caller of
+>> rmi_undelegate_range() to handle this.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> v14:
+>>  * Split into separate patch and moved out of KVM
+>> ---
+>>  arch/arm64/include/asm/rmi_cmds.h | 13 +++++++++++
+>>  arch/arm64/kernel/rmi.c           | 36 +++++++++++++++++++++++++++++++
+>>  2 files changed, 49 insertions(+)
+>>
+>> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
+>> index 9078a2920a7c..eb213c8e6f26 100644
+>> --- a/arch/arm64/include/asm/rmi_cmds.h
+>> +++ b/arch/arm64/include/asm/rmi_cmds.h
+>> @@ -33,6 +33,19 @@ struct rmi_sro_state {
+>>  } while (RMI_RETURN_STATUS(res.a0) == RMI_BUSY ||			\
+>>  	 RMI_RETURN_STATUS(res.a0) == RMI_BLOCKED)
+>>  
+>> +int rmi_delegate_range(phys_addr_t phys, unsigned long size);
+>> +int rmi_undelegate_range(phys_addr_t phys, unsigned long size);
+>> +
+>> +static inline int rmi_delegate_page(phys_addr_t phys)
+>> +{
+>> +	return rmi_delegate_range(phys, PAGE_SIZE);
+>> +}
+>> +
+>> +static inline int rmi_undelegate_page(phys_addr_t phys)
+>> +{
+>> +	return rmi_undelegate_range(phys, PAGE_SIZE);
+>> +}
+>> +
+>>  bool rmi_is_available(void);
+>>  
+>>  unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp);
+>> diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
+>> index 52a415e99500..08cef54acadb 100644
+>> --- a/arch/arm64/kernel/rmi.c
+>> +++ b/arch/arm64/kernel/rmi.c
+>> @@ -12,6 +12,42 @@ static bool arm64_rmi_is_available;
+>>  unsigned long rmm_feat_reg0;
+>>  unsigned long rmm_feat_reg1;
+>>  
+>> +int rmi_delegate_range(phys_addr_t phys, unsigned long size)
+>> +{
+>> +	unsigned long ret = 0;
+>> +	unsigned long top = phys + size;
+>> +	unsigned long out_top;
+>> +
+>> +	while (phys < top) {
+>> +		ret = rmi_granule_range_delegate(phys, top, &out_top);
+>> +		if (ret == RMI_SUCCESS)
+>> +			phys = out_top;
+>> +		else if (ret != RMI_BUSY && ret != RMI_BLOCKED)
+>> +			return ret;
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +int rmi_undelegate_range(phys_addr_t phys, unsigned long size)
+>> +{
+>> +	unsigned long ret = 0;
+>> +	unsigned long top = phys + size;
+>> +	unsigned long out_top;
+>> +
+>> +	WARN_ON(size == 0);
+> 
+> I find it odd to warn on size = 0. After all, free(NULL) is not an
+> error. But even then, you continue feeding this to the RMM.
 
-commit 6f87612dbda5d8765dabde103b78b45366d2e3b8
-Author: Jinyu Tang <tjytimi@163.com>
+Ok, I'll admit that this is left over debugging - although this is a
+condition that shouldn't happen.
 
-KVM: selftests: Add a hugetlb memslot alignment test mode
+Note that the while() condition prevents this from actually getting to
+the RMM.
 
-This commit adds a -u option to kvm_page_table_test to intentionally
-misalign the test memslot GPA by one guest page. It creates the memslot
-aligned and then moves it to create a deliberate HVA/GPA offset mismatch.
+I'll drop the WARN_ON() since it's confusing.
 
-> diff --git a/tools/testing/selftests/kvm/kvm_page_table_test.c b/tools/te=
-sting/selftests/kvm/kvm_page_table_test.c
-> index fc5242fb956fc..a910e3abb8c71 100644
-> --- a/tools/testing/selftests/kvm/kvm_page_table_test.c
-> +++ b/tools/testing/selftests/kvm/kvm_page_table_test.c
-[ ... ]
-> @@ -276,13 +278,22 @@ static struct kvm_vm *pre_init_before_test(enum vm_=
-guest_mode mode, void *arg)
->  	/* Add an extra memory slot with specified backing src type */
->  	vm_userspace_mem_region_add(vm, src_type, guest_test_phys_mem,
->  				    TEST_MEM_SLOT_INDEX, guest_num_pages, 0);
-> +	region =3D memslot2region(vm, TEST_MEM_SLOT_INDEX);
-> +	host_test_mem =3D region->host_mem;
-> +
-> +	if (p->misalign_slot_gpa) {
-> +		TEST_ASSERT(is_backing_src_hugetlb(src_type),
-> +			    "Memslot GPA misalignment requires hugetlb backing");
-> +		TEST_ASSERT(guest_num_pages > 1,
-> +			    "Need at least two guest pages to misalign memslot GPA");
-> +
-> +		guest_test_phys_mem +=3D guest_page_size;
-> +		vm_mem_region_move(vm, TEST_MEM_SLOT_INDEX, guest_test_phys_mem);
+Thanks,
+Steve
 
-[Severity: Medium]
-Will this move operation fail on hosts where the guest page size is smaller
-than the host page size?
+> You also don't seem to be bothered with that on the delegation side...
+> 
+>> +
+>> +	while (phys < top) {
+>> +		ret = rmi_granule_range_undelegate(phys, top, &out_top);
+>> +		if (ret == RMI_SUCCESS)
+>> +			phys = out_top;
+> 
+> and size==0 doesn't violate any of the failure conditions listed in
+> B4.5.18.2 (beta2). Will you end-up looping around forever?
+> 
+> Same questions for the delegation, obviously.
+> 
+> 	M.
+> 
 
-The KVM_SET_USER_MEMORY_REGION ioctl requires the guest physical address to
-be aligned to the host's page size.=20
-
-Because for_each_guest_mode() iterates through configurations that can have=
- a
-smaller guest page size (like a 4K guest on a 64K ARM64 host), adding
-guest_page_size to the aligned GPA will produce a misaligned address for KV=
-M.
-
-Could vm_mem_region_move() fail with -EINVAL from KVM in these cases, causi=
-ng
-the test assertion to fail? Would it be safer to shift by the maximum of the
-guest page size and the host page size?
-
-> +	}
-> =20
->  	/* Do mapping(GVA->GPA) for the testing memory slot */
->  	virt_map(vm, guest_test_virt_mem, guest_test_phys_mem, guest_num_pages);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604142602.3582=
-602-1-tjytimi@163.com?part=3D2
