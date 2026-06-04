@@ -1,88 +1,186 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB92F3EDE67;
-	Thu,  4 Jun 2026 09:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010363DFC98
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 09:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780564011; cv=none; b=cr/s9xT0O6uMAn9tVXhO7BTNtO72lmIw91TiPrNHB8dUNAiBLLBvWL1F12h7WXY8OL45rkiH2firQobh1WdppCm10rNKB+izANb5yUPq8hUMFeAxPpFa/QqjWGzDlynwqxLn8/n8iX8YwvNA3Z6tPOJjHhlIBbweya1KruQBSF4=
+	t=1780564289; cv=none; b=mZVVa28e+dLfGgwbTNlSxA6DfWpcTKs2rrJ4bDW0+do8bQYm1MHfhKPi2LyiCAgCkjG3warQ8HNfnbCEoj7ZSyMBvOFQEsOpxLiVzvLloPq5DwFvoSQTuxqd4G7ucJcBD1HflxmkQFaEO0l4TZwS/dOLPgrraZ36wZY/W6Dj8TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780564011; c=relaxed/simple;
-	bh=pzO/hUhIdm2xnYffmhkX+QqsoCzo448WOXd4EYvdDYw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z5IvGWYTqC6BGa0lHYMfXZt/PIWCQNfaHfykbb1aIKUtxy1XsoD0EeTrHHyKeQ33+RxsZEJ84SBhIAn6X0p/nhY1GNBays5aGpJekm51yG45w6NKreQBeV8UJhk2L8qluRf0sxUvpHOJ3IJe9uqnj6m2oqKXNzFU+tGl4i116pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XfpefsoS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780564289; c=relaxed/simple;
+	bh=Xa3tWZFdSxu86hvxYlbTgy4Rm9ekfTlrQcs7Ipt1ekY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=rwi3WP1xnJCN39O3gSrFZVDT/bgYc35LXPUqj+RIu85HUHlLKC2ZlM9OrbKLTE2CAOnzjkSudBfsoX5P3aLILQ7xE2sGKEz4RGMnduZw+ViM5HyB5pnmMBtWJRrPHmYUjz5rmUPezF6XMZdGSQAdOex9ehrJS8pA1Wyo/jDPGqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HNMj+aL+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XfpefsoS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1601F00898;
-	Thu,  4 Jun 2026 09:06:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HNMj+aL+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F0D1F00898;
+	Thu,  4 Jun 2026 09:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780564010;
-	bh=pzO/hUhIdm2xnYffmhkX+QqsoCzo448WOXd4EYvdDYw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XfpefsoS9YKGQTXxZBIquD7gLbILYHBSCWKXhJL+DC7paRQqrbgdTLFwOnmX+nxN7
-	 +I4imkQQTdwTRWqxIn2FBFZQ4GivVuU2gDDQYrVGH9NStkmANhpunQW1LVwSxBPjzb
-	 +DZxDUjzZIQuG2cqClV7teLam4ubg4B2azHoK53vaJgEs8ujxElUS/YmptvSaNkarz
-	 HLwkxD5UBiBO7HNUV8ywwcvBCtv8g/mZY7gPYSF+/b22f7pORPOALzvI/kCdeOdrDv
-	 cae1qINYa68yDuIJbYw7ks/7Nyn/PWlGnks0S/1yKe+C70PWAmP9b1AX39ZbtLQLnL
-	 /8iYOGWIxZiIg==
-Date: Thu, 4 Jun 2026 10:06:47 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Guodong Xu <docular.xu@gmail.com>
-Cc: sashiko-reviews@lists.linux.dev, devicetree@vger.kernel.org,
-	conor+dt@kernel.org, kvm@vger.kernel.org, robh@kernel.org
-Subject: Re: [PATCH v3 13/15] riscv: cpufeature: Introduce ISA bases bitmap
- and rva23u64 detection
-Message-ID: <20260604-handwash-junkyard-ed931f40d678@spud>
-References: <20260603-rva23u64-hwprobe-v2-v3-13-5529a7b28384@gmail.com>
- <20260602233750.B03631F00893@smtp.kernel.org>
- <CA+Ck9FaHADhss2sV=Z-vX4zr6VL+X=goFX_vznYE9JWBGCjwZQ@mail.gmail.com>
+	s=k20260515; t=1780564287;
+	bh=UHL05Q1MYJheI/0cXMnlVR5EzF1cIyhk9rAZoMHk4DY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=HNMj+aL+It5Yxet16sMxxP8PzWXy6L4SpQqRpMU3ADy9Zk3yTzTkwONCPxAzKBRTd
+	 N+DWllPN8WbcFu5MZAyZxm2GG8cvDNr5h/ZUtr+pwOHT/W+IxoOhLEYq7KHdXwJTyP
+	 O/IdcB/SHCGbhV8unBr6f7lcjTU6rbp9NWngH0Pln0Jsvj6rmihaR2bwKlcUuL8qkp
+	 Sgw7Q4HXraCfCgUZzAnYUubgH3ttYSfOX8St0zDxqe1cJiRsHGMEQHpFGVXxXk852S
+	 iYmnXZrWQdWCPZTiID9kmDtsGIalf+5R+ItsazEMQN9RbHQ5rTzP20k88/Rb678bAx
+	 jZs8xWFVBaSFw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] KVM: LoongArch: selftests: Add FPU test case
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Bibo Mao" <maobibo@loongson.cn>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260604085752.2820331-3-maobibo@loongson.cn>
+References: <20260604085752.2820331-3-maobibo@loongson.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 04 Jun 2026 09:11:27 +0000
+Message-Id: <20260604091127.B9F0D1F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="L6Z/nkLzzY0eiXog"
-Content-Disposition: inline
-In-Reply-To: <CA+Ck9FaHADhss2sV=Z-vX4zr6VL+X=goFX_vznYE9JWBGCjwZQ@mail.gmail.com>
 
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
---L6Z/nkLzzY0eiXog
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+New issues:
+- [Medium] Missing register clobbers for `$f0`, `$vr0`, and `$xr0` in inlin=
+e assembly.
+- [Low] Missing `break;` or `/* fallthrough */` annotation in the `switch` =
+statement for `case UCALL_DONE:`.
 
-On Thu, Jun 04, 2026 at 02:46:36PM +0800, Guodong Xu wrote:
-> Hi,
->=20
-> On Wed, Jun 3, 2026 at 7:37=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
-> >
-> > Thank you for your contribution! Sashiko AI review found 1 potential is=
-sue(s) to consider:
-> > - [Medium] Detection of the RVA23U64 profile fails on compliant platfor=
-ms because it strictly requires the unratified `RISCV_ISA_EXT_B` bundle ins=
-tead of the formally ratified bitmanip extensions (`Zba`, `Zbb`, `Zbs`).
->=20
-> I disagree. But I would welcome more ideas.
->=20
-> My reply is threaded in v2, FYI:
-> Link: https://lore.kernel.org/linux-riscv/CAH1PCMa-5W9PsX8cDLUk6-MkcM53HO=
-z2QtaxCHd+XOr7DgH5+w@mail.gmail.com/#t
-> [1]
+Pre-existing issues:
+- [High] KVM_GET_FPU and KVM_SET_FPU ioctls incorrectly copy only 4 bytes p=
+er FPU register instead of the full 32 bytes (256 bits).
+--
 
-The v2 argument you made makes sense to me.
+commit e7df5d9c391e26058b67115312055b29d7797eda
+Author: Bibo Mao <maobibo@loongson.cn>
 
---L6Z/nkLzzY0eiXog
-Content-Type: application/pgp-signature; name="signature.asc"
+KVM: LoongArch: selftests: Add FPU test case
 
------BEGIN PGP SIGNATURE-----
+Add FPU test case and verify FPU register get and set APIs, the
+FPU width supports 64/128/256 bits.
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiFAJwAKCRB4tDGHoIJi
-0u+3AP9x32Ds6znHleKlkiiRURSzdLvPa17smm81pUNtZKhw5QD/aYzHPjnRJzQq
-D5/QLeE6qCpk/BA4NNLFM6goTl5hIg8=
-=z8cp
------END PGP SIGNATURE-----
+> diff --git a/tools/testing/selftests/kvm/loongarch/fpu_test.c b/tools/tes=
+ting/selftests/kvm/loongarch/fpu_test.c
+> new file mode 100644
+> index 0000000000000..459996286c832
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/loongarch/fpu_test.c
+> @@ -0,0 +1,144 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <stdio.h>
+> +#include <string.h>
+> +#include "kvm_util.h"
+> +#include "processor.h"
+> +#include "loongarch/processor.h"
 
---L6Z/nkLzzY0eiXog--
+[ ... ]
+
+> +static void guest_code(void)
+> +{
+> +	unsigned long val;
+> +	struct kvm_fpureg *fp =3D &vector;
+> +
+> +	val =3D csr_read(LOONGARCH_CSR_EUEN);
+> +	csr_write(val | 7, LOONGARCH_CSR_EUEN);
+> +
+> +	__asm__ __volatile__("fld.d $f0, %0, 0\n" : : "r"(fp) :);
+> +	GUEST_SYNC(0);
+> +
+> +	__asm__ __volatile__("vld $vr0, %0, 0\n" : : "r"(fp) : );
+> +	GUEST_SYNC(1);
+> +
+> +	__asm__ __volatile__("xvld $xr0, %0, 0\n" : : "r"(fp) :);
+> +	GUEST_SYNC(2);
+> +
+> +	__asm__ __volatile__("fst.d $f0, %0, 0\n" : : "r"(fp) : "memory");
+> +	GUEST_SYNC(3);
+> +
+> +	__asm__ __volatile__("vst $vr0, %0, 0\n" : : "r"(fp) : "memory");
+> +	GUEST_SYNC(4);
+> +
+> +	__asm__ __volatile__("xvst $xr0, %0, 0\n" : : "r"(fp) : "memory");
+> +	GUEST_SYNC(5);
+
+[Severity: Medium]
+Are we missing register clobbers for $f0, $vr0, and $xr0 in these inline
+assemblies?
+
+Since these statements load and store values into these registers, without
+clobbers the compiler might allocate variables to them or use them for
+standard floating-point operations. This could lead to their values being
+silently corrupted.
+
+> +
+> +	GUEST_DONE();
+> +}
+> +
+> +static void run_vcpu(struct kvm_vcpu *vcpu)
+> +{
+> +	struct ucall uc;
+> +	int cont;
+> +
+> +	cont =3D 1;
+> +	while (cont) {
+> +		vcpu_run(vcpu);
+> +
+> +		switch (get_ucall(vcpu, &uc)) {
+> +		case UCALL_PRINTF:
+> +			printf("%s", (const char *)uc.buffer);
+> +			break;
+> +		case UCALL_DONE:
+> +			printf("FPU test PASSED\n");
+> +		case UCALL_SYNC:
+> +			cont =3D 0;
+> +			break;
+
+[Severity: Low]
+Is there a missing break or fallthrough annotation here for case UCALL_DONE?
+
+While it successfully terminates the loop by falling through to case
+UCALL_SYNC, omitting the annotation might trigger -Wimplicit-fallthrough
+warnings. It could also lead to regressions if a break is later added blind=
+ly
+without setting cont =3D 0.
+
+[ ... ]
+
+> +	run_vcpu(vcpu);
+> +	vcpu_fpu_get(vcpu, &fpu);
+> +	sync_global_from_guest(vm, *fp);
+> +	TEST_ASSERT(!memcmp(fpu.fpr, fp, 8), "Wanted 0x%llx from f0, got 0x%llx=
+",
+> +			fp->val64[0], fpu.fpr[0].val64[0]);
+> +
+> +	run_vcpu(vcpu);
+> +	vcpu_fpu_get(vcpu, &fpu);
+> +	TEST_ASSERT(!memcmp(fpu.fpr, fp, 16), "Wanted 0x%llx %llx from vr0, got=
+ 0x%llx %llx",
+> +			fp->val64[0], fp->val64[1],
+> +			fpu.fpr[0].val64[0], fpu.fpr[0].val64[1]);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but will this test actually pass?
+
+In arch/loongarch/kvm/vcpu.c, kvm_arch_vcpu_ioctl_get_fpu() and
+kvm_arch_vcpu_ioctl_set_fpu() calculate the copy size like this:
+
+memcpy(&fpu->fpr[i], &vcpu->arch.fpu.fpr[i], FPU_REG_WIDTH / 64);
+
+Since FPU_REG_WIDTH is 256, this evaluates to 4 bytes instead of 32 bytes.
+Because memcpy expects bytes, it seems the ioctls will only copy 4 bytes
+(32 bits) per register instead of the full 256 bits, leaving upper bits
+uninitialized.
+
+Does this pre-existing bug cause these newly added 128-bit and 256-bit
+assertions to fail?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604085752.2820=
+331-1-maobibo@loongson.cn?part=3D2
