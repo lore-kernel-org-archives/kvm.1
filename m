@@ -1,37 +1,36 @@
 Received: from smtp186.sjtu.edu.cn (smtp186.sjtu.edu.cn [202.120.2.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2853B841B;
-	Fri,  5 Jun 2026 09:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5707D3D0C1D;
+	Fri,  5 Jun 2026 09:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.120.2.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780652388; cv=none; b=B/xu94Ee7ZzJioH3ZWuO/kItaY8rXDKvu1X5gGgTglZONQTLCJ9Mj1g5Pfjq5uIJzG4bHUpmxD+e9jtKkePzROX+mXu+mv1/AcQovWIasfHRllLv5Iq+h4GEVBQRqibwWgGn8BmZrEzKeef+kLMp7VRo4bzGlEcDVy2pXNIBsK4=
+	t=1780652727; cv=none; b=Zeea14sJhv3U2aTb1crmqG2SX+QT4mmc3JET9bCg5hgkRuRZ3xppRWkZ7I8jWfUJzxn9PYo1SocUEy5+4vgR/9xeX9ww9tYIqPcymREK/0x7HTjI1T3lOaN7L655+wB/GeHrjgA0imq5KRskedpyR81HeM05swQYy94oqa3HyRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780652388; c=relaxed/simple;
-	bh=91I8gKovLUZ0ITZOyIiUijFIcgcDYuZYN++HHQn56Ow=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+5sptjPiNN98jiK9mkTdLx5JFw7SMXgcThq9kAurtjJreHKauFPPME/kykdRIK6/tnI6thvFdp9ywnM7cw6Zh6rw05kGkn5d1XoSP+HF6CitqXMjJmTIKUcifB6/Wf23JK4rPz7kDC6YffVUq0u7LzlVMWe3HuUTukgX+9TOzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sjtu.edu.cn; spf=pass smtp.mailfrom=sjtu.edu.cn; dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b=cf1tKtLO; arc=none smtp.client-ip=202.120.2.186
+	s=arc-20240116; t=1780652727; c=relaxed/simple;
+	bh=/k4zGhSo2AuYfe+MgoveKrGF2rDSrqVyuZjaDtzYbk0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pM2LT7q96QNa3NorSTVT30YrfMDdN9uVGEv0Nf3ZXt+0VajwqlRQH/jMqDq+F0EcC7q7E4okT707/C8B/TGnrpdtGrNOlx5GlGQWXenV8uL2nOYprE1o5Cwnnpl1lXix3ZxT7BqabdpooIqHLg+H7AS+XFOTLpELBJ9v+1Y/66A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sjtu.edu.cn; spf=pass smtp.mailfrom=sjtu.edu.cn; dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b=BuHa2AoK; arc=none smtp.client-ip=202.120.2.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sjtu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sjtu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b="cf1tKtLO"
+	dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b="BuHa2AoK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sjtu.edu.cn;
 	s=default; t=1780652347;
-	bh=91I8gKovLUZ0ITZOyIiUijFIcgcDYuZYN++HHQn56Ow=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cf1tKtLONXwK1etQgQIbdaxAyrpOy6gW7LAyCcmpb50VAQ8gGMO6rGts9agKqNMNE
-	 Q6p6exSTJHvlchgHmrdWefKuzuCA5xmvWWtWU/MG0KGeyNK2e30asML+xGfXsKfVSe
-	 v0zL/HerelbhMs3lHrPiPxZnpy82Qn7E5atxL4wkrEexZ5AlAUWAOa14XVhbZjvtb8
-	 siDkUMpB4Im5swngef5NIzMrJk0iI6PTcsmDEQiXjDEr3PNA1Gvu43CaDRf4k8+II3
-	 qk+WsIGGdKbKulq7drvB335r1g0dNaLAkRjZQf7qv5WVprR18KtKOAyR+/+nP3pDLH
-	 0EdyDCQfK/5Mw==
+	bh=/k4zGhSo2AuYfe+MgoveKrGF2rDSrqVyuZjaDtzYbk0=;
+	h=From:To:Cc:Subject:Date;
+	b=BuHa2AoKt9VC24wQysGfaoX0jTqyfXekxpzJ/clrsIPO/GJAfFCYHb8yYj/UfAQFF
+	 KiTaDOEucThgaFbtjQuUsfQLveVMJCMMDTA+kA0vUsX9nAu1jL+55/VvgmDq7GJTh8
+	 44hf9TX2FHm5E8faoH5E5COu3d3nWi/wF3d3bLJo1YkarDJj3H81Qo+qd7LRAw4HlS
+	 O++GWYclK9zK6LZ3hgN1irTBYate4fKHa22Nk03lEKS4yUQgYgVFp6TanJxRyAHdJP
+	 o66xtAZdQtR0Pp+DEajFQWcSyVrAqxPC3jeIl+k2UV8N3J+4v5sDnieT27PgRC95Eq
+	 kul7qKJRBC8pA==
 Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
-	by smtp186.sjtu.edu.cn (Postfix) with ESMTPS id DECB52FF559;
+	by smtp186.sjtu.edu.cn (Postfix) with ESMTPS id 5E2E12FF3FD;
 	Fri,  5 Jun 2026 09:39:07 +0000 (UTC)
 Received: from mshou-H610M-K-DDR4.. (unknown [202.120.40.100])
-	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id 46F5B380C9A;
-	Fri,  5 Jun 2026 17:39:07 +0800 (CST)
+	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id C5B6E37C8EE;
+	Fri,  5 Jun 2026 17:39:05 +0800 (CST)
 From: "muliang.shou" <muliang.shou@sjtu.edu.cn>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -46,12 +45,10 @@ Cc: linux-kernel@vger.kernel.org,
 	olivier.hault@level-it.be,
 	jon@nutanix.com,
 	"muliang.shou" <muliang.shou@sjtu.edu.cn>
-Subject: [PATCH 3/3] KVM: x86: add DSM APIC forwarding ioctls
-Date: Fri,  5 Jun 2026 17:38:57 +0800
-Message-ID: <20260605093857.747735-4-muliang.shou@sjtu.edu.cn>
+Subject: [PATCH 0/3] GiantVM based on shared memory
+Date: Fri,  5 Jun 2026 17:38:54 +0800
+Message-ID: <20260605093857.747735-1-muliang.shou@sjtu.edu.cn>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260605093857.747735-1-muliang.shou@sjtu.edu.cn>
-References: <20260605093857.747735-1-muliang.shou@sjtu.edu.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -60,140 +57,251 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add userspace ioctls that apply forwarded APIC, x2APIC ICR, and APIC
-base updates on a target vCPU.
+GiantVM is a many-to-one virtualization framework built atop QEMU/KVM.
 
-Signed-off-by: muliang.shou <muliang.shou@sjtu.edu.cn>
+Many-to-one virtualization aims to aggregate commodity servers into one
+logical machine while preserving the standard VM abstraction based on
+Distributed Shared Memory (DSM) as pioneered by Prof. Kai Li back in 1986.
+
+As modern AI, big-data, and scientific workloads crave VMs whose CPU and
+memory demands exceed the capacity of a single physical server, the old
+dilemma strikes back. Scaling-up is increasingly costly due to diminishing
+returns, especially the memory wall, while scale-out clusters often require
+application refactoring and introduce message-passing overhead.
+
+GiantVM is our attempt to answer the following question: if a leopard can't
+change its spot, can we strike a balance between scaling-out and scaling-up
+to draw on the best of both worlds?
+
+We feel confident to propose our solution that aggregates multiple
+physical hosts into a single virtual machine while keeping the guest OS
+and applications unmodified.
+
+1. Key benefits
+===================
+
+The architecture provides several key benefits for memory-intensive
+services and HPC applications:
+-- Simplified programming model. GiantVM provides a shared-memory
+abstraction, so
+developers can access shared data almost like local memory.
+-- Higher resource utilization and scalable memory capacity.
+-- Transparent data sharing and migration.
+-- Integration with RDMA, CXL, UnifiedBus, and other modern high-speed
+interconnects for more performance optimization (Under active development;
+see Roadmap section).
+
+2. Architecture
+===============
++---------------------------------------------------+
+|                     Guest OS                      |
++-------------------------+-------------------------+
+                          |
++-------------------------V-------------------------+
+|                       Hosts                       |
+|                                                   |
+|       +-----------------------------------+       |
+|       |            Userspace DSM          |       |
+|       +----+-------------------------+----+       |
+|            |                         |            |
+|            V                         V            |
+|  +-------------------+     +-------------------+  |
+|  |       QEMU        |     |       QEMU        |  |
+|  |  +-------------+  |     |  +-------------+  |  |
+|  |  |    vCPU     |  |     |  |    vCPU     |  |  |
+|  |  +-------------+  |     |  +-------------+  |  |
+|  |  |  IO device  |  |     |  |  IO device  |  |  |
+|  |  +-------------+  |     |  +-------------+  |  |
+|  +-------------------+     +-------------------+  |
+|  |      Host OS      |     |      Host OS      |  |
+|  |  +-------------+  |     |  +-------------+  |  |
+|  |  |     KVM     |  |     |  |     KVM     |  |  |
+|  |  +-------------+  |     |  +-------------+  |  |
+|  +-------------------+     +-------------------+  |
+|  |     Hardware      |     |     Hardware      |  |
+|  +-------------------+     +-------------------+  |
+|         Node 0                    Node 1          |
++---------------------------------------------------+
+
+This series provides the foundational KVM APIC-forwarding support needed 
+for the GiantVM shared-memory startup path. 
+
+It implements a concise IRQ forwarding interface that lets KVM 
+hand selected LAPIC interrupt state to userspace, where the GiantVM 
+runtime can route and reinject the interrupt for the target vCPU.
+This allows guest APIC/IPI coordination to work across nodes during 
+boot and runtime.
+
+The series also includes UAPI definitions for related DSM APIC exits and
+reinjection helpers that are expected by the userspace runtime. 
+
+3. Implementation
+=================
+This series adds the interface through the following pieces:
+
+  - Adds CONFIG_KVM_DSM_IRQ_FORWARD as an Intel KVM build option.
+  - Adds KVM_REQ_DSM_IRQ_FORWARD and per-vCPU storage for one pending
+    forwarded LAPIC interrupt record.
+  - Extends KVM UAPI definitions with DSM exit reasons and struct kvm_run
+    metadata used by the forwarding path.
+  - Intercepts LAPIC MMIO writes to APIC_ICR and APIC_ICR2, records the
+    written register, value, and derived destination APIC ID, then raises a
+    KVM request.
+  - Handles the request in vcpu_enter_guest() by exiting to userspace with
+    KVM_EXIT_DSM_SEND_IRQ and filling the lapic_irq fields in struct
+    kvm_run.
+  - Adds VM ioctls for reinjecting DSM IPI, x2APIC ICR, and APIC base state
+    from the GiantVM userspace runtime back into KVM.
+
+The LAPIC MMIO path currently records APIC_ICR/APIC_ICR2 writes and leaves
+the policy decision, including whether the destination is remote, to
+userspace. 
+
+4. Patch Layout
+===============
+  01: Kconfig, KVM request, per-vCPU state, and UAPI definitions
+  02: LAPIC ICR/ICR2 MMIO interception and userspace exit handling
+  03: VM ioctls for applying forwarded APIC, x2APIC ICR, and APIC base
+      state
+
+You can opt-in the framework by selecting CONFIG_KVM_DSM_IRQ_FORWARD as
+a kernel compile flag in e.g. menuconfig.
+
+5. Performance Data
+===================
+CoreMark was run on VMs configured with different vCPU counts to compare
+the GiantVM shared-memory setup with a regular VM baseline.  Each VM was
+configured with 64 GiB of memory, and the tested vCPU counts were 4, 8,
+16, 32, 64, 72, and 128.  The reported values are CoreMark scores, where
+higher is better.
+
+  Cores  GVM score  GVM speedup  VM score  VM speedup  GVM/VM
+  4      98783      1.00x        101032    1.00x       97.77%
+  8      205642     2.08x        210817    2.09x       97.55%
+  16     390974     3.96x        400500    3.96x       97.62%
+  32     744099     7.53x        800328    7.92x       92.97%
+  64     1477804    14.96x       1629535   16.13x      90.69%
+  72     1511546    15.30x       1810068   17.92x      83.51%
+  128    2531447    25.63x       2556548   25.30x      99.02%
+
+Across these CoreMark runs, the GiantVM shared-memory configuration
+achieved 83.51% to 99.02% of the regular VM score. Relative to its
+4-core result, GiantVM scaled to 25.63x at 128 cores, while the regular
+VM scaled to 25.30x.
+
+6. Scope
+========
+Thanks for your interest in our humble project!
+
+We wish to publish a functional core architecture and gather initial
+feedback on the high-level design and overall approach in this Request
+for Comments(RFC) submission. Specific implementation and optimization
+details are curated in our GitHub repo on a rolling basis.
+
+The patch represents a foundational framework for GiantVM support. It
+provides a basic infrastructure and rudimentary resource sharing
+mechanisms. We welcome the community to leverage this initial groundwork
+and build solutions on their own. Advanced features such as DSM memory
+management and software coherence framework is planned for future work.
+
+Testing is primarily arranged towards running benchmarks on lab settings.
+Uncharted forest bring out the best of men and the meanest of bugs during
+summer time. Community testing and feedback on various hardware setup,
+configurations, and workloads would be greatly appreciated!
+
+Setup and demo instructions are available in the accompanying installation
+guide.
+
+Link: https://github.com/GiantVM/GVM-kernel/blob/shared-memory/v7.1-rc6/README.md
+
+7. Roadmap
+==============
+Future GiantVM work includes the following items:
+
+  - GiantVM over TCP.  This implementation is not
+    included in this submission, but is available in the GiantVM QEMU and
+    kernel repositories.
+
+Link: https://github.com/GiantVM/GVM-qemu
+Link: https://github.com/GiantVM/GVM-kernel
+  - RDMA support, completed and coming soon.
+  - CXL support, completed and coming soon.
+  - Huawei UnifiedBus support, completed and under testing.
+  - ARM architecture support, under active development and close to
+    completion.
+  - RISC-V support, planned.
+
+9. Project References
+=====================
+[General Info]
+  Organization: Trusted Cloud Group, Institute of Scalable Computing,
+                Shanghai Jiao Tong University
+  Website:
+Link: https://giantvm.github.io/
+  Repository:
+Link: https://github.com/GiantVM
+
+[Publications]
+  - Xingguo Jia, Jin Zhang, Boshi Yu, Xingyue Qian, Zhengwei Qi,
+    Haibing Guan:
+    "GiantVM: A Novel Distributed Hypervisor for Resource Aggregation with
+    DSM-aware Optimizations." ACM Trans. Archit. Code Optim. 19(2):
+    20:1-20:27 (2022).
+  - Jin Zhang, Zhuocheng Ding, Yubin Chen, Xingguo Jia, Boshi Yu,
+    Zhengwei Qi, Haibing Guan: "GiantVM: a type-II hypervisor implementing
+    many-to-one virtualization." VEE 2020: 30-44.
+
+[KVM Forum Presentations]
+  - KVM Forum 2025: "GiantVM: A Many-to-one Virtualization System Built
+    Atop the QEMU/KVM Hypervisor"
+Link: https://pretalx.com/kvm-forum-2025/talk/MDGYZG/
+  - KVM Forum 2018: "Distributed QEMU" by Yubin Chen & Zhuocheng Ding
+    (Video)
+Link: https://www.youtube.com/watch?v=GprmhYU1M8Q
+
+[Citations]
+  - Kai Li: "Shared virtual memory on loosely coupled multiprocessors."
+  PhD Dissertation, Yale University, 1986.
+
+10. Acknowledgments
+===================
+This work builds on a multi-year research and engineering effort.  We thank
+the following contributors for their work across different phases of the
+project:
+
+[Initial Project Development - Linux 4.19 era]
+  Ding Zhuocheng <tcbbd@sjtu.edu.cn>
+  Chen Yubin <binsschen@sjtu.edu.cn>
+  Zhang Jin <jzhang3002@sjtu.edu.cn>
+  Wang Yun <yunwang94@sjtu.edu.cn>
+  Ma Jiacheng <jiacheng.ma@amd.com>
+  Yu Boshi <201608ybs@sjtu.edu.cn>
+  Jia Xingguo <jiaxg1998@sjtu.edu.cn>
+  Chen Weiye <vorringer@sjtu.edu.cn>
+  Wu Chenggang <wuchenggang@sjtu.edu.cn>
+  Xiang Yuxin <xiangyuxin@sjtu.edu.cn>
+
+[Modernization, Upstream Development, and Active Maintenance]
+  Xiong Tianlei <qmyyxtl@sjtu.edu.cn>
+  Xu Kailiang <xukl2019@sjtu.edu.cn>
+  Xue Songtao <xxxlhhxz@sjtu.edu.cn>
+  Shou Muliang <muliang.shou@sjtu.edu.cn>
+  Han Fengze <adoniswhite926@gmail.com>
+  Ren Luobin <renluobin0257@gmail.com>
+
 ---
- arch/x86/kvm/lapic.c     |  8 ++++++++
- arch/x86/kvm/lapic.h     |  4 ++++
- arch/x86/kvm/x86.c       | 40 ++++++++++++++++++++++++++++++++++++++++
- include/uapi/linux/kvm.h | 27 +++++++++++++++++++++++++++
- 4 files changed, 79 insertions(+)
+muliang.shou (3):
+  KVM: x86: add DSM IRQ forwarding ABI and state
+  KVM: x86: forward LAPIC ICR writes to userspace
+  KVM: x86: add DSM APIC forwarding ioctls
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 2485d50b45647..a7b691aa9f020 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2555,6 +2555,14 @@ static int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
- 	return ret;
- }
- 
-+#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+int kvm_lapic_reg_write_remote(struct kvm_lapic *apic, u32 reg, u32 val, u32 dest_id)
-+{
-+	return kvm_lapic_reg_write(apic, reg, val);
-+}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_lapic_reg_write_remote);
-+#endif
-+
- static int apic_mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
- 			    gpa_t address, int len, const void *data)
- {
-diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
-index 274885af4ebc4..67828d7fc3be1 100644
---- a/arch/x86/kvm/lapic.h
-+++ b/arch/x86/kvm/lapic.h
-@@ -146,6 +146,10 @@ int kvm_lapic_set_vapic_addr(struct kvm_vcpu *vcpu, gpa_t vapic_addr);
- void kvm_lapic_sync_from_vapic(struct kvm_vcpu *vcpu);
- void kvm_lapic_sync_to_vapic(struct kvm_vcpu *vcpu);
- 
-+#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+int kvm_lapic_reg_write_remote(struct kvm_lapic *apic, u32 reg, u32 val, u32 dest_id);
-+#endif
-+
- int kvm_x2apic_icr_write_fast(struct kvm_lapic *apic, u64 data);
- int kvm_x2apic_msr_write(struct kvm_vcpu *vcpu, u32 msr, u64 data);
- int kvm_x2apic_msr_read(struct kvm_vcpu *vcpu, u32 msr, u64 *data);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 42d6f8c977985..06a1c5045606c 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -7633,6 +7633,46 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
- 		r = kvm_vm_ioctl_set_msr_filter(kvm, &filter);
- 		break;
- 	}
-+#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+	case KVM_DSM_IPI: {
-+		struct kvm_dipi_params params;
-+		struct kvm_vcpu *vcpu = NULL;
-+		u32 reg;
-+		u32 val;
-+
-+		r = 0;
-+		if (copy_from_user(&params, argp, sizeof(params)))
-+			goto out;
-+		vcpu = kvm_get_vcpu(kvm, params.vcpu_id);
-+		reg = params.val;
-+		val = params.val2;
-+		kvm_lapic_reg_write_remote(vcpu->arch.apic, reg, val, params.dest_id);
-+		break;
-+	}
-+	case KVM_DSM_X2APIC: {
-+		struct kvm_x2apic_params params;
-+		struct kvm_vcpu *vcpu = NULL;
-+
-+		r = 0;
-+		if (copy_from_user(&params, argp, sizeof(params)))
-+			goto out;
-+
-+		vcpu = kvm_get_vcpu(kvm, params.vcpu_id);
-+		kvm_x2apic_icr_write_fast(vcpu->arch.apic, params.data);
-+		break;
-+	}
-+	case KVM_DSM_APIC_BASE: {
-+		struct kvm_apic_base_params params;
-+		struct kvm_vcpu *vcpu = NULL;
-+
-+		r = 0;
-+		if (copy_from_user(&params, argp, sizeof(params)))
-+			goto out;
-+		vcpu = kvm_get_vcpu(kvm, params.vcpu_id);
-+		kvm_apic_set_base(vcpu, params.data, params.host);
-+		break;
-+	}
-+#endif
- 	default:
- 		r = -ENOTTY;
- 	}
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 75a11e72e232e..65d7094aa06e9 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -231,6 +231,33 @@ struct kvm_exit_snp_req_certs {
- #define HINT_UNSAFE_IN_KVM(_symbol) _symbol
- #endif
- 
-+#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+struct kvm_dipi_params {
-+	int vcpu_id;
-+	__u32 val;
-+	__u32 val2;
-+	__u32 dest_id;
-+};
-+
-+#define KVM_DSM_IPI _IOW(KVMIO,  0xf3, struct kvm_dipi_params)
-+
-+struct kvm_x2apic_params {
-+	int vcpu_id;
-+	__u64 data;
-+};
-+
-+#define KVM_DSM_X2APIC _IOW(KVMIO, 0xf4, struct kvm_x2apic_params)
-+
-+struct kvm_apic_base_params {
-+	int vcpu_id;
-+	bool host;
-+	__u32 index;
-+	__u64 data;
-+};
-+
-+#define KVM_DSM_APIC_BASE         _IOW(KVMIO, 0xf5, struct kvm_apic_base_params)
-+
-+#endif
- /* for KVM_RUN, returned by mmap(vcpu_fd, offset=0) */
- struct kvm_run {
- 	/* in */
+ arch/x86/include/asm/kvm_host.h | 17 ++++++++++
+ arch/x86/kvm/Kconfig            | 12 +++++++
+ arch/x86/kvm/lapic.c            | 38 +++++++++++++++++++++
+ arch/x86/kvm/lapic.h            |  4 +++
+ arch/x86/kvm/x86.c              | 54 +++++++++++++++++++++++++++++
+ include/uapi/linux/kvm.h        | 60 ++++++++++++++++++++++++++++++++-
+ 6 files changed, 184 insertions(+), 1 deletion(-)
+
 -- 
 2.43.0
-
