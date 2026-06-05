@@ -1,203 +1,142 @@
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4073F074A
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 16:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780676219; cv=pass; b=BpVo8cM12pUKB4kCr4hXXV3lutOMv5HjXV0QLwi0vfV8lOVZ6frovYH7kZuz2QNSiEMgK4qQLclHVVZZpBOdF4ySZvcjJ/5jKvLkDeUJKJSOLYyUnOClZ/3yzQvpZQUH3kOW+vxeGw3zwrhPV4OyoAwuMW6+I0schQhkEpz7OSk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780676219; c=relaxed/simple;
-	bh=KrEWzX5V+5sJCkuOqVh531ZQ8vZFkc8QDe+WK/l8uok=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r+DLWUK+hC7GFG+TdPrll0dxFoVqRmgId+5GZl4t9n73r1OmcKnBCQ/PlOErFPRty27n0UrrrJI5ti3T8vFJHFd5ThXoLwjWFDFC3+RwJr80hdtxeJ8TdAhUG1d+eXrLf64jH0GQa4yqnts3Tn/+q0COQow6dKsryFeEDTOP8BY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=UddL5jAj; arc=pass smtp.client-ip=209.85.161.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36682F39AB;
+	Fri,  5 Jun 2026 16:23:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780676613; cv=none; b=QpcP4tePy6K74YkJtRlGeGZ5Mf5/NBZ2mRkXEcVos3VCfAe73Xxf+6k4fty3CE2lLkC8Iy7lyU5/msRploc5gEa4rmjUasxf1s4APGnkfYPzIAIHofo3dpSrVqOd8UaoZiPFUhkZ6YKmMKpSXPZVB8nXXhTq2/YeUjsitWsUI/4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780676613; c=relaxed/simple;
+	bh=36G93fEgvDwrQQeVtWl6/OYIdFaFQDpGBD1vJIbr4sM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BXrHDNoJX3cGdKyawMPJHCEOwHmD+iDdJty9bUI1fhvc1LepQYDb9tUXBIlO21xbW7XMiiv8LqlVxHgoq4UxQd2Ao5cYfASMJpGxOdUePvPDZrv90GCRzMFhjOhALu+QKro3Emnxzv7jRRgPvGZMuO2YzRhIklYqWozs0x+Ews8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=imu5HU79; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="UddL5jAj"
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-69e505c7e22so535751eaf.3
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 09:16:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780676217; cv=none;
-        d=google.com; s=arc-20240605;
-        b=E8Ws49Av1SDVTSfqlLcuuZoeRVhKwUiWp2aR2cRflcs+0oyV3GhIoh27C7VZ89Cl11
-         JtqCmRP/X/2NVHbcdbNKhofFNzBIU8i3ZIYQAwIOFgaCqaitpmRfu9yglMqbssgNsyD3
-         5hUo0x8lzs5Llkm+rggK6OlIpsCQkRJt1i7+THk+hAw4SqqFuEnFlvtafri3vfJS28fm
-         tM+/hM7W7Q8ZyKL6kPdLeOcvnnPm9FBNfazNX0LDyyAe60aE9YmecKLGF7gGisjIPDzg
-         66yyTZjM6aW4DYsdwsLKhAdVuOVV4Mj6/rHh/25otZb+os/OA/pbkRIS6/nmZvq2dGDt
-         Kw0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LFoazSpHOzu3D4nnNfNyUkpuHouoQrz86xgnRKO3Hjk=;
-        fh=sMU33V5tl7A4z+wmWCru79p6Tc5Lx0W25leAPFbWqxk=;
-        b=cjmI/hzS3JrwsKuvsqD75i4tYmMfgZlP4PsEXFVwAdg26Nrw15l59zzXsKMtl90+R+
-         5vYKbF92Hz6uVB10DteXgZQjgXx9ipQPMYB6QRIO2TTtA5dt8k/ARvqRJPKM7m+TskWj
-         e8FQ0lIVz4TLU0q9O3fE+8DHgsjn1kxKmjcnOX8XLHDQbaxSrTV75Ws2RyrXwir/eVm5
-         /o2UP/anY59l1sAVWo7PQcXS8DxSXg9tBoAXqhh8pRu5qn3ww3laW8zoV7o0GnA41AgM
-         dBLiXaM/Nic1q3P6vUG5eOscBGDjUSdxNNzrE+XTh+r4gylWkFYcjBPSHUp+leXWHVuu
-         uHOg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1780676217; x=1781281017; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LFoazSpHOzu3D4nnNfNyUkpuHouoQrz86xgnRKO3Hjk=;
-        b=UddL5jAjNMAygQ65TPaYSjXk4hD4sj/pTIpdnouDlBhkQSMZ3VURwTKJHzo349B9oA
-         CyDYz/6VlLPlhlPa+sPTfPtsQT7xL3CwoDG+3qWsaBNhkQ/SdOytaQpIRn4Ei27pt0Fu
-         CbLo1lLUw2v3Ln7P66T0XeE5APyFnd4rhllAPdqXaj0jUNmeL1MbLDE/rgnfAirEUzoN
-         WkC5nYiVM3MJJc3YKbNjfamh2ntLnKOuY0beJIqjg77rmRywg0Oq5tizLV8U47SZPG5a
-         7/qWFnXIFMfhJOPoobNy2ngaF2X5X2S/QLxlUmfRckG/rSd/1U+txpvcPOdPSYW7kSS4
-         ZuXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780676217; x=1781281017;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LFoazSpHOzu3D4nnNfNyUkpuHouoQrz86xgnRKO3Hjk=;
-        b=qK57XbayFcarlryGz1C1XcXL/VbewSlLVprMvL+ZNwNn49G3Z0JfLQuoW4VkoYzRgq
-         b5QcsY30zmL7z77ZWwj/bPDaE5zXQNBkZ0/Qe3fokQBBRykOMa4R8Ers1iRvG+TvwQZL
-         8Vg5D1DJfDj60gkNFAz2MYj6pFIE0tqBoMgp2V/ir2k0dSKBqMB2nNk4f1JBC6At1iMG
-         w8sGMaEsgS1CYOlZTnm8yhE4hWjm6eUNCFZIoaE+9stBJzowc0P7HgTWPo3ae+hCZk9F
-         uAD5aCWb5TTEq7tPLIjznJ3w1DVw2hZsCy76+NA3lBlkGNhKnXSyECcSoDoi9eW5S/tC
-         KVdA==
-X-Forwarded-Encrypted: i=1; AFNElJ9vacpgae/mY51OVCTptlBL8J2LvE/lGEaoUABHzE0KKf+ZVfwiYJ8TQLjIR8ad60bQdQU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3wJZDgo789zwW2rgt8EgUclKg2oe0M4JTWMwicmUWpi2cTab4
-	tYm7juRnzjEU3qAd6QT0l8G4PkEdCFOZ0h+CzPKTkhJirecwGbDzcsCCdhghQLoy/8+poHEbg6x
-	hhy/ydf/GmNLz3zLpNXvfwEQg8OkwgJZm++xfI/i6Og==
-X-Gm-Gg: Acq92OEDiCp0ahdSigHayK4mp01gXDcbPBv63vDtb8aCO6da0KR04qic6kXoPxdbCxK
-	ovzQELxo1r7/5S77cUuG6JNOiAWPnVxKbW8T65gdQ4A27J7PARyBBmZSThUyEwRJuiseraxkGhb
-	pAPE3eZEm94vfcUrpbWrleAXUSGeKGaH22p9Ct8YUb60+Pq37H2eGIuhW3Kz2wooQyAZmCjIAsA
-	Sy8LVl+cpWRie5xB/9/v8y8e0LTsk1c1t5h3qegr1Ahi9VViTsA4z4SbFbh92tuvGAHVMRmig1R
-	dJfI6NUTyllW5cmIS/pZhFL8ajgqXnBca0ZQ2pUSoRd2FHdee+H9Reisoxly032hqjo3fxpfRWU
-	UsnUBaHDbVY0k4E1I/Do7lUn7RGh5lwLJebX1
-X-Received: by 2002:a05:6820:621:b0:69d:ee54:babb with SMTP id
- 006d021491bc7-69e68c7f707mr2648730eaf.46.1780676216681; Fri, 05 Jun 2026
- 09:16:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="imu5HU79"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780676611; x=1812212611;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=36G93fEgvDwrQQeVtWl6/OYIdFaFQDpGBD1vJIbr4sM=;
+  b=imu5HU79Y5Sa9e7gAC9iEtYHnzICi7i2ieR7oTOgqwm3Crr2+tcTUB5N
+   IYJ794kA4KHy+amEuT9ZCUx3enf8i9Q6dPy/rs2OmjwWGVyy1Pg/6qqiW
+   klwe3l35Q9DR6D7xTojSU8ATHiJmoodFl9v3sp6SPIIbBn69jWCZ5J2J6
+   gXkmXkjzqvueroy86a1YoFZWXLbiN0YXguIMIdqhNQKmE+wrZ4JGORfJc
+   1MTfFaro1CUNMs4dpAw8bQgNvyTaIdUDStnRkgUiygiIQcHubJcJs6Qrk
+   xzyG9eWusA6+ShGaQQwGnhniRxMEQo0+FmwZe8UPxjyKGHaKER58DpLA3
+   w==;
+X-CSE-ConnectionGUID: uAbO2sHwSnKnFblNY+U2aQ==
+X-CSE-MsgGUID: DDPFHPpAR8SOWhyObunieg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11808"; a="81634016"
+X-IronPort-AV: E=Sophos;i="6.24,189,1774335600"; 
+   d="scan'208";a="81634016"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 09:23:30 -0700
+X-CSE-ConnectionGUID: GDFLHO7TRnKWPVfOGssbUw==
+X-CSE-MsgGUID: 0MbgXl7lSTW/Z8KPX8x9Aw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,189,1774335600"; 
+   d="scan'208";a="282964733"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.26]) ([10.125.109.26])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 09:23:30 -0700
+Message-ID: <572868d7-4794-4fec-b80f-97d8434d5fb6@intel.com>
+Date: Fri, 5 Jun 2026 09:23:21 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260601-kvm-get_reg_list-v2-v5-0-415d08a2813b@sifive.com>
-In-Reply-To: <20260601-kvm-get_reg_list-v2-v5-0-415d08a2813b@sifive.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Fri, 5 Jun 2026 21:46:45 +0530
-X-Gm-Features: AVVi8CfqxZG-V8UYX903THbico9wP-cudNBEPgakg_WBZYUItP5SdwW-rpbB-E4
-Message-ID: <CAAhSdy1bMSadxaoKvSy6fdfb9pLufg=39-sHOHnr7Vj0Y-4Z2w@mail.gmail.com>
-Subject: Re: [PATCH v5 0/5] KVM: riscv: Fix stale FWFT feature exposure and
- enhance selftests
-To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, greentime.hu@sifive.com, vincent.chen@sifive.com, 
-	zong.li@sifive.com, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, inochiama@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 06/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
+To: Kiryl Shutsemau <kas@kernel.org>, Chao Gao <chao.gao@intel.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "Huang, Kai" <kai.huang@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
+ "seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com"
+ <mingo@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>,
+ "Annapurve, Vishal" <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>,
+ "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+ "x86@kernel.org" <x86@kernel.org>
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-7-rick.p.edgecombe@intel.com>
+ <ahVghgNAe4JrmlQH@intel.com>
+ <fe08f03a22acfe758cd97f7c2880deeafbc5fe58.camel@intel.com>
+ <aiGq7XjmMrsqdBY5@thinkstation> <aiJhScChLZkH44eB@intel.com>
+ <aiK1_q8beMcIEiwO@thinkstation>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aiK1_q8beMcIEiwO@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 1, 2026 at 3:56=E2=80=AFPM Yong-Xuan Wang <yongxuan.wang@sifive=
-.com> wrote:
->
-> This series fixes three bugs in the SBI FWFT (Firmware Features) extensio=
-n
-> and improves the related selftest infrastructure.
-> The bugs are:
-> 1. Missing CSR dirty marking: When userspace sets FWFT feature values via
->    KVM_SET_ONE_REG, modified CSRs (e.g., henvcfg.PMM for pointer masking)
->    are not marked dirty, leading to stale state after vCPU scheduling or
->    migration.
-> 2. Hardware probing side effects: The try_to_set_pmm() function modifies
->    HENVCFG.PMM during hardware capability detection but fails to restore
->    the original value, leaving the CSR in an altered state that affects
->    subsequent operations.
-> 3. Stale feature exposure: FWFT feature support is cached at vCPU
->    initialization time. When userspace subsequently disables ISA extensio=
-ns
->    via KVM_SET_ONE_REG, the cached support status is not updated, allowin=
-g
->    guests to access features that depend on disabled extensions.
-> Patches 1-3 fix these bugs separately.
->
-> The selftest improvements (patches 4-5) enhance the get-reg-list test by
-> refactoring the extension sublist infrastructure and splitting FWFT
-> feature testing into separate, properly-gated sublists.
->
-> ---
-> Changes in v5:
-> - Add CSR dirty marking fix (new patch 1/5) (sashiko-bot)
-> - Split original FWFT bug fix into two focused patches
->   - Add init() callback with try_to_set_pmm() restoration fix (new patch
->     2/5) (sashiko-bot)
->   - Keep runtime supported() checks as separate patch (patch 3/5)
-> - Link to v4: https://patch.msgid.link/20260601-kvm-get_reg_list-v2-v4-0-=
-c88abc81ebda@sifive.com
->
-> Changes in v4:
-> - Rename the title of cover letter
-> - Disable preemption when running try_to_set_pmm() (sashiko-bot)
-> - Remove check_supported_reg() (sashiko-bot)
-> - Link to v3: https://patch.msgid.link/20260528-kvm-get_reg_list-v2-v3-0-=
-170969a8599f@sifive.com
->
-> Changes in v3:
-> - Restore 'supported' field with init() callback for initialization probi=
-ng
->   (sashiko-bot)
-> - Add NULL checks before calling feature->supported() in all functions
-> - Fix isa_ext_enabled tracking logic and restore isa_ext_cant_disable arr=
-ay
-> - Add sbi_ext_enabled tracking and enhance dependency checking (sashiko-b=
-ot)
-> - Refine code organization and variable naming consistency (sashiko-bot)
-> - Link to v2: https://patch.msgid.link/20260526-kvm-get_reg_list-v2-v2-0-=
-7940a401454a@sifive.com
->
-> Changes in v2:
-> - Fix FWFT stale feature exposure by removing static 'supported' field
-> - Refactor get-reg-list test to use unified extension sublist macros
-> - Split FWFT testing into per-feature sublists with runtime checks
->   (Andrew)
->
-> To: Anup Patel <anup@brainfault.org>
-> To: Atish Patra <atish.patra@linux.dev>
-> To: Paul Walmsley <pjw@kernel.org>
-> To: Palmer Dabbelt <palmer@dabbelt.com>
-> To: Albert Ou <aou@eecs.berkeley.edu>
-> To: Alexandre Ghiti <alex@ghiti.fr>
-> To: Cl=C3=A9ment L=C3=A9ger <cleger@rivosinc.com>
-> To: Andrew Jones <ajones@ventanamicro.com>
-> To: Paolo Bonzini <pbonzini@redhat.com>
-> To: Shuah Khan <shuah@kernel.org>
-> Cc: greentime.hu@sifive.com
-> Cc: vincent.chen@sifive.com
-> Cc: zong.li@sifive.com
-> Cc: kvm@vger.kernel.org
-> Cc: kvm-riscv@lists.infradead.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-kselftest@vger.kernel.org
->
-> ---
-> Yong-Xuan Wang (5):
->       KVM: RISC-V: SBI FWFT: Mark vCPU CSRs dirty after setting feature v=
-alue
->       KVM: RISC-V: SBI FWFT: Add optional init() callback for hardware pr=
-obing
->       KVM: RISC-V: SBI FWFT: Fix stale feature exposure after runtime ext=
-ension changes
->       KVM: riscv: selftests: Refactor ISA and SBI extension sublist macro=
-s
->       KVM: riscv: selftests: Split SBI FWFT into separate feature-specifi=
-c sublists
+On 6/5/26 04:42, Kiryl Shutsemau wrote:
+>>> I don't see a reason why we can't keep the scoped_guard() on get side.
+>> One additional reason to drop scoped_guard() is that it mixes cleanup helpers
+>> with goto, which is discouraged. See [*]
+>>
+>>  :Lastly, given that the benefit of cleanup helpers is removal of “goto”, and
+>>  :that the “goto” statement can jump between scopes, the expectation is that
+>>  :usage of “goto” and cleanup helpers is never mixed in the same function.
+> Fair enough.
+> 
+> But it can also be address if we free the PAMT page array with the guard
+> too :P
 
-Queued this series for Linux-7.2
+How important is this patch? I see "Optimize" but I read "Optional".
 
-Regards,
-Anup
+If we're arguing about it, maybe we should just kick it out and focus on
+the more important bits.
