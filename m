@@ -1,150 +1,166 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73984386C24
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 17:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB8134751F
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 17:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780680259; cv=none; b=cbbITxAot+ls4GDtpKYPvSOE+Q6kC0M/bYF97wcGRL43XfPlgXuPoQdwZySBaRJ91TyGiHLOcu3TIBn8Nc59/ztaAQhJRzRfuajGvMvGvewOgJny1KhxuQx8ltmvLFzArGTuIiPYskQ5Yp3LoXlmgSvQ+ZV0RGkBrN4fAZ9DUz0=
+	t=1780680359; cv=none; b=cx3UNhQ8mIwoWncNOxbpHrQtQ0t+lNmkgemoC1U68lZgEh6rkzwQbYSW83UhEAAnhvAqFrLMxrWVG0sh406TI77L1LzEyqyDC1EmJnCn0McKnFFRNuOfSdgtBOuJgvEKHPlpvHjAS8ZPkp/Re5rjLsWNyk0Wk+FlZQUVsw1Xzck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780680259; c=relaxed/simple;
-	bh=r3OuyW/VOWaQTWD6FwbbFvhL8Nxdfu8RThpchA+MwCI=;
+	s=arc-20240116; t=1780680359; c=relaxed/simple;
+	bh=i+ttCMnFwDqg/lUb7XqdXKbzDoAnJCoMJ9m5EJHak10=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hGiU8DKeV2eHGRUq2hSSQRBpQBaAwHzORkiG+dLxzw8RovlP6PF/3el4zzs85t6vC1AFbNqrbpFYHOU/BM5BKnkTtnx2A9Z4nHQ0ZFyf6EDgP99jKktMSDdLOxtCtkTbZpFw2Depj8y681moVGKVfghXOu6eiGXS6g9mQ5rCni4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJlTEEg9; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=nTBokhSi2mFnQfabu67r7KZm3LU9Bt63JE1WXiNBO8VfQEp/xZOuEIWYRA1lQFeF6CPu+jGRF+iqXyrCX06wivLaKz3CMgmJYYTVFpoRU/EtCCkoS/Wp0+OcRrdqfYmJTV9ysTF2IxIWblfJTmvONJx5JPCid5pFhVO5UI3JJsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOewKbz7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJlTEEg9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012811F00893;
-	Fri,  5 Jun 2026 17:24:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOewKbz7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6A71F00898;
+	Fri,  5 Jun 2026 17:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780680258;
-	bh=s7jUHkasRg5VTpoMQ1lkh95bHJ+zczGu/MJ7mSAFIq4=;
+	s=k20260515; t=1780680358;
+	bh=hCXUJ3+QXvcQCKbLR7wDB7+ZEQ4wju5eaF6L+CZjUQA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dJlTEEg9qzAjoMCH3z528/P1LNB9r8mYi1TEv8FRd5LbgLPiYnr1otbe80muH4cEh
-	 2CtG+dD+NJjl2ygjmb7d3xBsGooAQRVNnDdaToGsjG58slnrcpP1vw2IQkylkwl+j9
-	 YVE1U53SC1Wb59HzEnB2/tM1wnYwqFoIPGqx2qH6Pw7rGbBLuiIQsQTy5kXOXgyaKb
-	 IGYk16Evv4iwaTk2CIp+GwI2L5KWNxWxc8x0CQINrjoIb/TZAVuOTyaswBO2VF8yGs
-	 FvBh40yzisvDDX5wcGXanj+VM6cfyPFA1uejVXb50gwPfZQhW8+8efr9My17sGv0cr
-	 67zIA9DFMeRjg==
+	b=IOewKbz7kdxH6LKZWkt4uiuUSNEgwcfduAjJxRrYCkyLCnUWOXqDS633hacaxuyvT
+	 TJ6e54Jg7LKvtuXlYNJxclWkQhn9elPftfpHNQW3x2ygvr9vT2JpH4MgBkNMncFkgg
+	 KOwNVZUsiWwlJ+BtsBoi/PPNECr1/R5rNGquXyehkDsgnfzUnoHzz4D2jzlQGH6aFp
+	 mDBNnte4Xkpcu6u9ptORTMIEMBe5CIqSGGgpI7BA8OH9hIXjxdbY+uilSjbLQ/7jXN
+	 O+K69mKTxQpPsasCGEpo29lyu2jR3R8BL5DKcrbJ8ZoWtWC9LVOUVGProw6k85OCQR
+	 +9gQq4Y95Aq+A==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 01/10] liveupdate: luo_file: Add internal APIs
- for file preservation
+Subject: Re: [RFC PATCH v2 07/10] kvm: guest_memfd_luo: add support for
+ guest_memfd preservation
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tarun Sahu" <tarunsahu@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <c054ba0fb2639932bbe354420d3f4f84cce84905.1780676742.git.tarunsahu@google.com>
-References: <c054ba0fb2639932bbe354420d3f4f84cce84905.1780676742.git.tarunsahu@google.com>
+In-Reply-To: <4b2216f5c459fe699a3f62464cbc765624e20ae6.1780676742.git.tarunsahu@google.com>
+References: <4b2216f5c459fe699a3f62464cbc765624e20ae6.1780676742.git.tarunsahu@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 05 Jun 2026 17:24:17 +0000
-Message-Id: <20260605172418.012811F00893@smtp.kernel.org>
+Date: Fri, 05 Jun 2026 17:25:57 +0000
+Message-Id: <20260605172557.DC6A71F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] Nested acquisition of `luo_file->mutex` causes a lockdep splat whe=
-n subsystems retrieve files programmatically.
-- [Low] Missing EXPORT_SYMBOL_GPL for `liveupdate_get_token_outgoing` and `=
-liveupdate_get_file_incoming` causes module build failures.
+- [Critical] Dereferencing `file->private_data` before validating the file =
+type causes a NULL pointer dereference.
+- [High] Logic inversion in `kvm_gmem_luo_finish()` causes a double-free of=
+ preservation structures and active guest memory folios on successful retri=
+eval.
+- [High] Missing `kho_is_enabled()` gate before invoking KHO serialization =
+APIs causes potential NULL pointer dereference.
 --
 
-commit 3b62824c5e4a0e08095576efe5b452875a92a685
-Author: Pasha Tatashin <pasha.tatashin@soleen.com>
+commit d0ebe234914d6981be774d511af45334f3db4977
+Author: Tarun Sahu <tarunsahu@google.com>
+Subject: kvm: guest_memfd_luo: add support for guest_memfd preservation
 
-liveupdate: luo_file: Add internal APIs for file preservation
+This patch sets up the basic infrastructure to preserve the guest_memfd.
+It registers a new LUO file handler for guest_memfd files to serialize
+and deserialize guest memory.
 
-This commit introduces internal APIs to allow kernel subsystems to
-programmatically preserve and retrieve file descriptors during a live updat=
-e.
-This enables subsystems managing struct file objects directly to participate
-without solely relying on userspace interaction.
-
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index a0a419085e283..0aa0b4e5339f3 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
+> diff --git a/virt/kvm/guest_memfd_luo.c b/virt/kvm/guest_memfd_luo.c
+> new file mode 100644
+> index 0000000000000..d466f889c9aa1
+> --- /dev/null
+> +++ b/virt/kvm/guest_memfd_luo.c
+> @@ -0,0 +1,485 @@
 [ ... ]
-> @@ -924,3 +931,65 @@ void liveupdate_unregister_file_handler(struct liveu=
-pdate_file_handler *fh)
->  	luo_flb_unregister_all(fh);
->  	list_del(&ACCESS_PRIVATE(fh, list));
->  }
-> +EXPORT_SYMBOL_GPL(liveupdate_unregister_file_handler);
-> +
-> +/**
-> + * liveupdate_get_token_outgoing - Get the token for a preserved file.
-[ ... ]
-> + */
-> +int liveupdate_get_token_outgoing(struct liveupdate_session *s,
-> +				  struct file *file, u64 *tokenp)
+> +static bool kvm_gmem_luo_can_preserve(struct liveupdate_file_handler *ha=
+ndler, struct file *file)
 > +{
+> +	struct inode *inode =3D file_inode(file);
+> +	struct gmem_file *gmem_file =3D file->private_data;
+> +	struct kvm *kvm =3D gmem_file->kvm;
 
-[Severity: Low]
-Should this function be exported?
+[Severity: Critical]
+Does this code dereference file->private_data before confirming the file
+is actually a guest_memfd?
 
-Since this API is intended for kernel subsystems that might be built as
-loadable modules, will leaving out EXPORT_SYMBOL_GPL() cause module link
-errors?
+The LUO framework might pass unrelated file descriptors where
+private_data is NULL. By extracting gmem_file->kvm before checking
+inode->i_sb->s_magic, could this cause a NULL pointer dereference
+when evaluating unrelated files?
 
-> +	struct luo_file_set *file_set =3D luo_file_set_from_session_locked(s);
-> +	struct luo_file *luo_file;
-> +	int err =3D -ENOENT;
 > +
-> +	list_for_each_entry(luo_file, &file_set->files_list, list) {
-> +		if (luo_file->file =3D=3D file) {
-> +			if (tokenp)
-> +				*tokenp =3D luo_file->token;
-> +			err =3D 0;
-> +			break;
-> +		}
-> +	}
+> +	if (inode->i_sb->s_magic !=3D GUEST_MEMFD_MAGIC)
+> +		return 0;
 > +
-> +	return err;
-> +}
-> +
-> +/**
-> + * liveupdate_get_file_incoming - Retrieves a preserved file for in-kern=
-el use.
 [ ... ]
-> + */
-> +int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
-> +				 struct file **filep)
+> +static int kvm_gmem_luo_preserve(struct liveupdate_file_op_args *args)
 > +{
-
-[Severity: Low]
-Similar to liveupdate_get_token_outgoing(), should this function also be
-exported with EXPORT_SYMBOL_GPL() to allow loadable modules to use it?
-
-> +	return luo_retrieve_file(luo_file_set_from_session_locked(s),
-> +				 token, filep);
+[ ... ]
+> +	end_index =3D size >> PAGE_SHIFT;
+> +
+> +	ser =3D kho_alloc_preserve(sizeof(*ser));
 
 [Severity: High]
-Will this cause a lockdep splat if a subsystem uses this API during retriev=
-al?
+Could this call trigger a NULL pointer dereference if the KHO subsystem
+is disabled?
 
-When a subsystem's .retrieve() callback is invoked from luo_retrieve_file(),
-it already holds the target file's luo_file->mutex:
+According to the KHO subsystem guidelines, all callers must explicitly
+gate KHO usage on kho_is_enabled(). It looks like kvm_gmem_luo_init()
+registers the file handler unconditionally, and this path invokes
+kho_alloc_preserve() and other KHO serialization APIs without checking.
 
-luo_retrieve_file() {
-    ...
-    guard(mutex)(&luo_file->mutex);
-    ...
-    err =3D luo_file->fh->ops->retrieve(&args);
-}
+Should this function (or the initialization) verify kho_is_enabled()
+before interacting with the KHO subsystem?
 
-If the subsystem callback then calls liveupdate_get_file_incoming(), it
-recursively calls luo_retrieve_file() for the dependency file, attempting
-to acquire a second luo_file->mutex.
+> +	if (IS_ERR(ser)) {
+> +		err =3D PTR_ERR(ser);
+> +		goto err_unfreeze_inode;
+> +	}
+[ ... ]
+> +static int kvm_gmem_luo_retrieve(struct liveupdate_file_op_args *args)
+> +{
+[ ... ]
+> +	args->file =3D file;
+> +	kho_restore_free(ser);
+> +	return 0;
+> +
+> +err_put_remaining_folios:
+[ ... ]
+> +static void kvm_gmem_luo_finish(struct liveupdate_file_op_args *args)
+> +{
+> +	struct guest_memfd_luo_ser *ser;
+> +	struct guest_memfd_luo_folio_ser *folios_ser;
+> +
+> +	/* Nothing to be done here, if retrieve_status was successful or errore=
+d,
+> +	 * Cleanup is taken care of in retrieval call.
+> +	 */
+> +	if (args->retrieve_status)
+> +		return;
 
-Since all luo_file->mutex instances share the same lock class, won't this
-trigger a 'possible recursive locking detected' warning?
+[Severity: High]
+Does this logic inversion cause a double-free on successful retrieval?
 
-> +}
+In kvm_gmem_luo_retrieve(), a successful retrieval frees the ser struct
+but leaves args->serialized_data intact:
+
+kvm_gmem_luo_retrieve()
+    kho_restore_free(ser);
+    return 0;
+
+Because standard Linux error handling uses 0 for success,
+if (args->retrieve_status) evaluates to false on success, causing this
+function to fall through instead of returning.
+
+Could this lead to accessing the freed ser struct, erroneously putting
+active folios, and calling kho_restore_free() a second time?
+
+> +
+> +	if (!args->serialized_data)
+> +		return;
+> +
+> +	ser =3D phys_to_virt(args->serialized_data);
+> +	if (!ser)
+> +		return;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780676742.gi=
-t.tarunsahu@google.com?part=3D1
+t.tarunsahu@google.com?part=3D7
