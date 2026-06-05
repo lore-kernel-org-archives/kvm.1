@@ -1,300 +1,235 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EA33C8C52
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 08:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780647753; cv=pass; b=ZETqC4hCseZgzueGXJADCZbCS6HdzCWPtNmwGEQEIUX7HpTeKgWHzqj9d0LoIFUja+BMI6TMqXSUpbLBwMjQCeFzkIW4FHQ2z7AwxehW5mShHgMFglkg4kvjE7s+LklePMhwzrx/sGTARhk7xdsNFPVSG/DOIHONLWksPpeeqCc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780647753; c=relaxed/simple;
-	bh=8b9XxNf9St3BzwW/NLcbUdWkrVeQWSc6jX8af0VFRck=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AMjCpk+gv28WykLYvY2fLoPN/wxr9xiGXmBKS7HL6kiJJkb9luwS6wbMSuDfTDaad9u8p6KUTDYxomijvdnsG0bDHokVHkYu6QWkPG8rG46WNXlf/88/RGPUOU2+F2uumV85wWoOQeHKuazEKroN2X7yL6bSfpJBDTHwKVWpJYs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bitdeer.com; spf=pass smtp.mailfrom=bitdeer.com; dkim=pass (2048-bit key) header.d=bitdeer.com header.i=@bitdeer.com header.b=DtRQ9Fnn; arc=pass smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bitdeer.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitdeer.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571BB3CDBAA;
+	Fri,  5 Jun 2026 08:29:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780648197; cv=none; b=ZnkC4MpCIKC5jE3/9KAYFu505jQuMLii4qaSW8GWyN+eBuwRopPItsPyPP0Z9TpAJ8HUj42vlM6093vUfQV99llfVwvILOq+U/3O7PiaqG639fEn2Q9RlFFhV6EucnQH+oGUE7AL4gZZBMr48yBxsT1iSTcncqxvX2T4z54Ash8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780648197; c=relaxed/simple;
+	bh=nXd0A+r89FuIKQpP6LrasSo0O8BaqgMBBgLC1Hv+46c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=jpJDRWCiIHObgBFdlsTOV9Fkp636f6Ck2VJRdTBS0VuJjwM5jWLXrCLY1XJogj9jzX+QEMGvgtUDd7GCDc1SvbUESQPfpTY2E9AiMDv1vTqywe4YcGAoz1lFt5M+Yr0dj9R3xXgdYTdXtwVBxy9TAbyaapMOnNSuZb2YEen5i6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=HH0ktyBM; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bitdeer.com header.i=@bitdeer.com header.b="DtRQ9Fnn"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5aa63628d26so1420251e87.0
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 01:22:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780647749; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BUMKez6fHguPCP+niwwsMbq0VcZKZDyWhR5sATtr5/daerm1wo0YKzi5BDLn4LAQpd
-         epPoPHi6KSCBcTFLz8bbR/21/wVg9K1PbDVi/knbCEFsjdAIZd6eC43fQ/gwJLgSbebQ
-         PDCe4vg0qBb/1Dmi+EHPdENYDb3DauE1rktSXb66evUptMpkYD05LjE84zbJRCBVU0Ko
-         4xyX7fsU+Jb27QgjFrWSHlspLoqtppNjAkRD8SXWiV3kob36w0uZT+TEv3pybwluhDef
-         q5R5PrtTKQDbOmmjTiTDgpIwvksmjRFI12NPU3KTpMPxVpO6GVgjn5u5hIkUF+uW9a5y
-         ecwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GpEHuE5kPK7Pr7bmO5Kq29IlE/AYkLhUV+YgYWTUjog=;
-        fh=iudupu1BXlnKrxqDq5o8+3H04i6po4T+824HpgoYHWk=;
-        b=Kv4xgODPxsunZXgniHbu0/EKvwr/gkKo+oe1WLvu8U3txSNpXj/EO8hknohiBo3jCr
-         VEith5NQ76i3ydsxPHINpPxsPzRSUYnKO0j4ImWw558/JllhmDrJR+uAURP72muhdvJ4
-         Ilj4uRoq6DnvAESEt+6XoprxzM0GO5pBMizGZrnyZo/rUTI15DqZ/A1sRhu8o4ADFH+X
-         SxrdaDXl8b//CAvLiAoJTEJtUcn1ALib57b+TE1KxZwSvvNRmDpirlPapSya8Q1dNHdU
-         KY07bacuk85hD0LC/FIVAQh/6CduBfciZf9/k/eMweZI7NggbpbC2ud3ta05VulBRu0X
-         Bnkg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bitdeer.com; s=google; t=1780647749; x=1781252549; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GpEHuE5kPK7Pr7bmO5Kq29IlE/AYkLhUV+YgYWTUjog=;
-        b=DtRQ9Fnndhih0RW0lxG4xsro3nj1kdipinv8/uDM2488nKTPCTBhgKdZK9ciE19RGb
-         vvgvtlF7VpR2PFA07JgwnI9FDcPmK8ECTZ0saiEEO3IV7mT2ntcVOzCKGmWl9iptQQXA
-         MiCuJhAmG9+erIuB2gkWi97l8qVFv+z2X1AYfT2TiCLqKqdu8INUtU/mo/XpzJxTHbrN
-         pPlxrbqesQ/hScZEpdUsmOecGorPChOvmfFQoa8Ys0e/bggcfgmPeqVwxQNHfqIttoW4
-         HnFd+KO16/ScC9xqcY+HKO8ey4XOtZeDqiQ9Qs9vxXIVET+1h4yEMEV40qrcUDxR50pi
-         vQfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780647749; x=1781252549;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GpEHuE5kPK7Pr7bmO5Kq29IlE/AYkLhUV+YgYWTUjog=;
-        b=XgHVD9GyK75dV1xuGN5Osi0YRbioZ2wpMf0ZFlj22Ewsmk8CQXQy7O/gm7qnhSUrgU
-         Xj+kcWTKf7Sf7DodoAKkJL4C4Sf7ANMWDFdQiiK/n0lAWSGm++Zc2uYLbNXyD3QRiH1+
-         XwX33nOqOgL8gSp37EDWVfbghrWB8TeJnoBbsOFM5ulLXJxA1LWJ0jZflS/jap3ikUm1
-         lFIorsUupwQA+aoJB6nl7GtexkQH2hB1cdBPErxqYVRthPNBP6oTqbQJ/rdxRLyaiC6H
-         yan6VKbwcxTn0XI4kzi/45XtXJBzom+mGmhKbLlLXxJ10uNMlugth+OB5J5FSdD95paN
-         NotQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+rb7NtBlSymwUY/XKVLbR1EhBvBIs+Rwr0hsGBKjy0i55Rx/2jJAY64diF/B4rchhtwBs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywe1/zui1kG7/XXdz4rwulBw4hFYTsHJmwuXjsTN/R9YbscXxgT
-	jGdg7nMWpKxjWRKhvOrT+RXuIaADNYnzGgzljXEI7x8E4dQfdss4uZaKGDjBAInRb3t1sGWuPAa
-	kr4vOb9Djcbv16AOQPQbvPKLV/LIOVBw6F8RLtlfYaw==
-X-Gm-Gg: Acq92OFSN5/58n3U+s5C7Q8fi9245A9qkG0SeG8GCM2bY0W7qjKkEfzFpVLu+KdEcyT
-	c5DsM0u9zTCYn/fSMWdVOVL6ob0F9dN2omTfRTv5v6e9AgwzjfuSdRoIH47SvKUDPE4APo4xrLS
-	8gnlyZM+2ZfXX3iUBRmOH9aUIEI8TI6dQSPZWd2RXTiNnhiVNHR6BJh4fyKM1k9Rr938J6sUoiJ
-	ed3vAz6HsYCtzOS3BpfLpdpMsUKSJxI/QlFOXr2N+RLNeBjkVGs10nKnoUzmBPECqyvlY/6lLeQ
-	rh8hgDSBOOlg4XmtttQC
-X-Received: by 2002:a05:6512:3503:b0:5aa:7363:8219 with SMTP id
- 2adb3069b0e04-5aa87bbc36dmr719979e87.17.1780647749283; Fri, 05 Jun 2026
- 01:22:29 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="HH0ktyBM"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=eJ3rd6muldb5Ys/jUa4C6DrQYqz6Oo7suf7mdItTnFQ=;
+	b=HH0ktyBMxXWRTw/q/P8xozXjuNm27h8Fvyyfntd5ZSceMqPqC0q4E4xGLazt1dCP72cDoP+ce
+	EEIHUiS04j8T2FGa6sIvRJYuMTAsgJrOvZSoxWM7IdxbUpoUUZfAWjJ/WqKW2Z343vKak3V0mDP
+	fevTQXcqKN9aiQ/bJwyoZGQ=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gWvYL5dm4zmV8m;
+	Fri,  5 Jun 2026 16:21:58 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2980440562;
+	Fri,  5 Jun 2026 16:29:51 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Fri, 5 Jun 2026 16:29:50 +0800
+Message-ID: <22abfaf8-8636-4ed3-9a5c-fb4fdef1bc19@huawei.com>
+Date: Fri, 5 Jun 2026 16:29:49 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260604070029.34982-1-guobin@linux.alibaba.com>
-In-Reply-To: <20260604070029.34982-1-guobin@linux.alibaba.com>
-From: Hy Man <infra.ai.cloud@bitdeer.com>
-Date: Fri, 5 Jun 2026 16:22:18 +0800
-X-Gm-Features: AVVi8CehWLP43yLhYl0QqKHuUEMtibp5cV8zT-_XbebMEoocv3nCz5FputHBJj8
-Message-ID: <CAFWXh4w==tF6VA1QyHWRqBX0hBE2R1Ko7u2Expwn+xv7=Fed2w@mail.gmail.com>
-Subject: Re: [PATCH v2] accel/kvm: event-driven wakeup for dirty ring reaper thread
-To: Bin Guo <guobin@linux.alibaba.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/5] KVM: arm64: Add support for FEAT_HDBSS
+To: Inochi Amaoto <inochiama@gmail.com>, Marc Zyngier <maz@kernel.org>
+CC: <oupton@kernel.org>, <catalin.marinas@arm.com>, <corbet@lwn.net>,
+	<pbonzini@redhat.com>, <will@kernel.org>, <yuzenghui@huawei.com>,
+	<wangzhou1@hisilicon.com>, <liuyonglong@huawei.com>,
+	<Jonathan.Cameron@huawei.com>, <yezhenyu2@huawei.com>, <linuxarm@huawei.com>,
+	<joey.gouly@arm.com>, <kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <skhan@linuxfoundation.org>,
+	<suzuki.poulose@arm.com>, <leo.bras@arm.com>
+References: <20260225040421.2683931-1-zhengtian10@huawei.com>
+ <20260225040421.2683931-4-zhengtian10@huawei.com>
+ <ahzUUDAMoHtDFJD3@inochi.infowork> <864ijmvdpy.wl-maz@kernel.org>
+ <ah1KLrpYBXSMM91H@inochi.infowork>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <ah1KLrpYBXSMM91H@inochi.infowork>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-Reviewed-by: Hyman Huang <infra.ai.cloud@bitdeer.com>
 
-On Thu, Jun 4, 2026 at 3:00=E2=80=AFPM Bin Guo <guobin@linux.alibaba.com> w=
-rote:
+On 6/1/2026 5:05 PM, Inochi Amaoto wrote:
+> On Mon, Jun 01, 2026 at 09:58:49AM +0100, Marc Zyngier wrote:
+>> On Mon, 01 Jun 2026 01:50:22 +0100,
+>> Inochi Amaoto <inochiama@gmail.com> wrote:
+>>> On Wed, Feb 25, 2026 at 12:04:19PM +0800, Tian Zheng wrote:
+>>>> From: eillon <yezhenyu2@huawei.com>
+>>>>
+>>>> Armv9.5 introduces the Hardware Dirty Bit State Structure (HDBSS) feature,
+>>>> indicated by ID_AA64MMFR1_EL1.HAFDBS == 0b0100. A CPU capability is added
+>>>> to notify the user of the feature.
+>>>>
+>>>> Add KVM_CAP_ARM_HW_DIRTY_STATE_TRACK ioctl and basic framework for
+>>>> ARM64 HDBSS support. Since the HDBSS buffer size is configurable and
+>>>> cannot be determined at KVM initialization, an IOCTL interface is
+>>>> required.
+>>>>
+>>>> Actually exposing the new capability to user space happens in a later
+>>>> patch.
+>>>>
+>>>> Signed-off-by: eillon <yezhenyu2@huawei.com>
+>>>> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+>>>> ---
+>>>>   arch/arm64/include/asm/cpufeature.h |  5 +++++
+>>>>   arch/arm64/kernel/cpufeature.c      | 12 ++++++++++++
+>>>>   arch/arm64/tools/cpucaps            |  1 +
+>>>>   include/uapi/linux/kvm.h            |  1 +
+>>>>   tools/include/uapi/linux/kvm.h      |  1 +
+>>>>   5 files changed, 20 insertions(+)
+>>>>
+>>>> diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+>>>> index 4de51f8d92cb..dcc2e2cad5ad 100644
+>>>> --- a/arch/arm64/include/asm/cpufeature.h
+>>>> +++ b/arch/arm64/include/asm/cpufeature.h
+>>>> @@ -856,6 +856,11 @@ static inline bool system_supports_haft(void)
+>>>>   	return cpus_have_final_cap(ARM64_HAFT);
+>>>>   }
+>>>>
+>>>> +static inline bool system_supports_hdbss(void)
+>>>> +{
+>>>> +	return cpus_have_final_cap(ARM64_HAS_HDBSS);
+>>>> +}
+>>>> +
+>>>>   static __always_inline bool system_supports_mpam(void)
+>>>>   {
+>>>>   	return alternative_has_cap_unlikely(ARM64_MPAM);
+>>>> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+>>>> index c31f8e17732a..348b0afffc3e 100644
+>>>> --- a/arch/arm64/kernel/cpufeature.c
+>>>> +++ b/arch/arm64/kernel/cpufeature.c
+>>>> @@ -2124,6 +2124,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
+>>>>   	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
+>>>>   }
+>>>>
+>>>> +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int cope)
+>>>> +{
+>>>> +	return is_kernel_in_hyp_mode() && has_cpuid_feature(entry, cope);
+>>>> +}
+>>>> +
+>>>>   bool cpu_supports_bbml2_noabort(void)
+>>>>   {
+>>>>   	/*
+>>>> @@ -2759,6 +2764,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+>>>>   		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HAFT)
+>>>>   	},
+>>>>   #endif
+>>>> +	{
+>>>> +		.desc = "Hardware Dirty state tracking structure (HDBSS)",
+>>>> +		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
+>>>> +		.capability = ARM64_HAS_HDBSS,
+>>>> +		.matches = has_vhe_hdbss,
+>>>> +		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HDBSS)
+>>>> +	},
+>>>>   	{
+>>>>   		.desc = "CRC32 instructions",
+>>>>   		.capability = ARM64_HAS_CRC32,
+>>>> diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
+>>>> index 7261553b644b..f6ece5b85532 100644
+>>>> --- a/arch/arm64/tools/cpucaps
+>>>> +++ b/arch/arm64/tools/cpucaps
+>>>> @@ -68,6 +68,7 @@ HAS_VA52
+>>>>   HAS_VIRT_HOST_EXTN
+>>>>   HAS_WFXT
+>>>>   HAS_XNX
+>>>> +HAS_HDBSS
+>>>>   HAFT
+>>>>   HW_DBM
+>>>>   KVM_HVHE
+>>>
+>>>> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+>>>> index 65500f5db379..15ee42cdbd51 100644
+>>>> --- a/include/uapi/linux/kvm.h
+>>>> +++ b/include/uapi/linux/kvm.h
+>>>> @@ -985,6 +985,7 @@ struct kvm_enable_cap {
+>>>>   #define KVM_CAP_ARM_SEA_TO_USER 245
+>>>>   #define KVM_CAP_S390_USER_OPEREXEC 246
+>>>>   #define KVM_CAP_S390_KEYOP 247
+>>>> +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
+>>>>
+>>>>   struct kvm_irq_routing_irqchip {
+>>>>   	__u32 irqchip;
+>>>> diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
+>>>> index dddb781b0507..93e0a1e14dc7 100644
+>>>> --- a/tools/include/uapi/linux/kvm.h
+>>>> +++ b/tools/include/uapi/linux/kvm.h
+>>>> @@ -974,6 +974,7 @@ struct kvm_enable_cap {
+>>>>   #define KVM_CAP_GUEST_MEMFD_FLAGS 244
+>>>>   #define KVM_CAP_ARM_SEA_TO_USER 245
+>>>>   #define KVM_CAP_S390_USER_OPEREXEC 246
+>>>> +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
+>>>>
+>>>>   struct kvm_irq_routing_irqchip {
+>>>>   	__u32 irqchip;
+>>>> --
+>>>> 2.33.0
+>>>>
+>>> Instead of having these architecture specific capability, I wonder if
+>>> we can add a generic capability like "KVM_CAP_HW_DIRTY_STATE", so
+>>> other architecture supports similar things can reuse this capability,
+>> What of the existing stuff doing the same thing? x86's PML, to start
+>> with?
+>>
+> In fact I think the HDBSS is the first one with non-fixed size.
+> Although there is a in process RISC-V extension for it, there will
+> be a long story to make it ratified.
 >
-> The reaper polls with sleep(1) (TODO in the code) and only notices
-> dirty-limit teardown at the next 1s tick.
->
-> Replace the sleep with qemu_poll_ns() on an EventNotifier, kicked
-> from dirtylimit_state_finalize() after dirtylimit_state has been
-> cleared.  The kick must follow the NULL assignment: kicking earlier
-> wakes the reaper while dirtylimit_in_service() still returns true,
-> so it just loops back to wait.  A 1s fallback timeout remains as a
-> liveness backstop.
->
-> 20 set-/cancel-vcpu-dirty-limit cycles via QMP, |reaper-wake -
-> cancel-ack| measured with strace on the reaper TID:
->
->     before: median 255 ms, max 502 ms
->     after:  median 0.6 ms, max  27 ms
->
-> kvm_dirty_ring_reaper_init() returns int again (was made void in
-> commit 43a5e377f4) to propagate event_notifier_init() failure.
->
-> Signed-off-by: Bin Guo <guobin@linux.alibaba.com>
-> ---
-> Changes in v2:
-> - Fix compilation error: kvm_init() has no Error **errp parameter, so
->   kvm_dirty_ring_reaper_init() now uses error_report() directly and
->   no longer accepts an errp argument.
-> - Remove the kick from kvm_cpu_exec() KVM_EXIT_DIRTY_RING_FULL handler:
->   it already reaps synchronously (all vCPUs or the ring-full one), so
->   a background reaper kick would only be redundant or a no-op.
-> - Move kick site from dirtylimit_change(false) to
->   dirtylimit_state_finalize() after dirtylimit_state =3D NULL, ensuring
->   the reaper actually proceeds past the dirtylimit_in_service() check.
->
->  accel/kvm/kvm-all.c      | 42 ++++++++++++++++++++++++++++++++++------
->  accel/stubs/kvm-stub.c   |  4 ++++
->  include/system/kvm.h     |  7 +++++++
->  include/system/kvm_int.h |  3 +++
->  system/dirtylimit.c      |  2 ++
->  5 files changed, 52 insertions(+), 6 deletions(-)
->
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index 96f90ebb24..be005832bc 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -1754,6 +1754,8 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml=
-,
->      } while (size);
->  }
->
-> +#define KVM_DIRTY_RING_REAPER_FALLBACK_NS  (1 * NANOSECONDS_PER_SECOND)
-> +
->  static void *kvm_dirty_ring_reaper_thread(void *data)
->  {
->      KVMState *s =3D data;
-> @@ -1764,12 +1766,18 @@ static void *kvm_dirty_ring_reaper_thread(void *d=
-ata)
->      trace_kvm_dirty_ring_reaper("init");
->
->      while (true) {
-> +        GPollFD pfd =3D {
-> +            .fd =3D event_notifier_get_fd(&r->reaper_notifier),
-> +            .events =3D G_IO_IN,
-> +        };
-> +
->          r->reaper_state =3D KVM_DIRTY_RING_REAPER_WAIT;
->          trace_kvm_dirty_ring_reaper("wait");
-> -        /*
-> -         * TODO: provide a smarter timeout rather than a constant?
-> -         */
-> -        sleep(1);
-> +
-> +        qemu_poll_ns(&pfd, 1, KVM_DIRTY_RING_REAPER_FALLBACK_NS);
-> +
-> +        /* Drain unconditionally so a stale event can't spin the next lo=
-op. */
-> +        event_notifier_test_and_clear(&r->reaper_notifier);
->
->          /* keep sleeping so that dirtylimit not be interfered by reaper =
-*/
->          if (dirtylimit_in_service()) {
-> @@ -1789,13 +1797,32 @@ static void *kvm_dirty_ring_reaper_thread(void *d=
-ata)
->      g_assert_not_reached();
->  }
->
-> -static void kvm_dirty_ring_reaper_init(KVMState *s)
-> +static int kvm_dirty_ring_reaper_init(KVMState *s)
->  {
->      struct KVMDirtyRingReaper *r =3D &s->reaper;
-> +    int ret;
-> +
-> +    ret =3D event_notifier_init(&r->reaper_notifier, 0);
-> +    if (ret < 0) {
-> +        error_report("Failed to initialize dirty ring reaper notifier: %=
-s",
-> +                     strerror(-ret));
-> +        return ret;
-> +    }
->
->      qemu_thread_create(&r->reaper_thr, "kvm-reaper",
->                         kvm_dirty_ring_reaper_thread,
->                         s, QEMU_THREAD_JOINABLE);
-> +    return 0;
-> +}
-> +
-> +void kvm_dirty_ring_reaper_kick(void)
-> +{
-> +    KVMState *s =3D kvm_state;
-> +
-> +    if (!s || !s->kvm_dirty_ring_size) {
-> +        return;
-> +    }
-> +    event_notifier_set(&s->reaper.reaper_notifier);
->  }
->
->  static int kvm_dirty_ring_init(KVMState *s)
-> @@ -3097,7 +3124,10 @@ static int kvm_init(AccelState *as, MachineState *=
-ms)
->      }
->
->      if (s->kvm_dirty_ring_size) {
-> -        kvm_dirty_ring_reaper_init(s);
-> +        ret =3D kvm_dirty_ring_reaper_init(s);
-> +        if (ret < 0) {
-> +            goto err;
-> +        }
->      }
->
->      if (kvm_check_extension(kvm_state, KVM_CAP_BINARY_STATS_FD)) {
-> diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
-> index c4617caac6..b878598552 100644
-> --- a/accel/stubs/kvm-stub.c
-> +++ b/accel/stubs/kvm-stub.c
-> @@ -134,6 +134,10 @@ uint32_t kvm_dirty_ring_size(void)
->      return 0;
->  }
->
-> +void kvm_dirty_ring_reaper_kick(void)
-> +{
-> +}
-> +
->  bool kvm_hwpoisoned_mem(void)
->  {
->      return false;
-> diff --git a/include/system/kvm.h b/include/system/kvm.h
-> index 5fa33eddda..e127a5eb37 100644
-> --- a/include/system/kvm.h
-> +++ b/include/system/kvm.h
-> @@ -553,6 +553,13 @@ bool kvm_dirty_ring_enabled(void);
->
->  uint32_t kvm_dirty_ring_size(void);
->
-> +/**
-> + * kvm_dirty_ring_reaper_kick - wake the background dirty ring reaper.
-> + *
-> + * Safe from any thread; no-op when the dirty ring is not in use.
-> + */
-> +void kvm_dirty_ring_reaper_kick(void);
-> +
->  void kvm_mark_guest_state_protected(void);
->
->  /**
-> diff --git a/include/system/kvm_int.h b/include/system/kvm_int.h
-> index 0876aac938..c14ebc927f 100644
-> --- a/include/system/kvm_int.h
-> +++ b/include/system/kvm_int.h
-> @@ -12,6 +12,7 @@
->  #include "system/memory.h"
->  #include "qapi/qapi-types-common.h"
->  #include "qemu/accel.h"
-> +#include "qemu/event_notifier.h"
->  #include "qemu/queue.h"
->  #include "system/kvm.h"
->  #include "accel/accel-ops.h"
-> @@ -100,6 +101,8 @@ struct KVMDirtyRingReaper {
->      QemuThread reaper_thr;
->      volatile uint64_t reaper_iteration; /* iteration number of reaper th=
-r */
->      volatile enum KVMDirtyRingReaperState reaper_state; /* reap thr stat=
-e */
-> +    /* Wakeup channel: kicked when dirty-limit is torn down. */
-> +    EventNotifier reaper_notifier;
->  };
->  struct KVMState
->  {
-> diff --git a/system/dirtylimit.c b/system/dirtylimit.c
-> index c934ceb0de..a33256ade7 100644
-> --- a/system/dirtylimit.c
-> +++ b/system/dirtylimit.c
-> @@ -239,6 +239,8 @@ void dirtylimit_state_finalize(void)
->      g_free(dirtylimit_state);
->      dirtylimit_state =3D NULL;
->
-> +    kvm_dirty_ring_reaper_kick();
-> +
->      trace_dirtylimit_state_finalize();
->  }
->
-> --
-> 2.50.1 (Apple Git-155)
->
+>>> For this generic thing I suggest, the getter returns the max support
+>>> entry count (or the buffer size) it supports like the dirty ring
+>>> capability. And the setter just let the architecture set the parameters
+>>> based on the user request.
+>> This looks wrong on a number of levels.
+>>
+>> - If you want something generic, there is the existing dirty
+>>    log/bitmap. How this stuff is populated is none of the user's
+>>    business (trapping write accesses, dirty bit collection from the
+>>    PTs, or HW-generated log), and we don't need an extra feature for
+>>    it. Performance will obviously suck, but that's what you pay for
+>>    something abstracted and cross-architecture.
+>>
+>> - If you want something architecture specific, then it can't be
+>>    generic, by definition. You get the raw speed and compatibility with
+>>    other arch-specific extensions.
+>>
+> OK, I agree, it is better to keep this thing arch-specific. Doing a
+> generic thing does not benefit too much, I have made a mistake on
+> it. Thanks for your kindly explanation.
+
+
+Awesome. Thanks for the review.
+
+I agree with Marc—keeping this ARM-specific is the right approach.
+Also, in v4 we're removing the ioctl interface entirely. HDBSS will be
+auto-enabled during migration setup and auto-disabled when migration
+completes, so the capability naming issue becomes moot.
+
+I plan to post v4 with the updated approach soon.
+
+
+>>> This should do no harm to this implement, as everything still depends
+>>> on the architecture behavior, and leave room for other architecture
+>>> to reuse this.
+>> Again, the generic framework exists, you just have to implement the
+>> backend you want.
+>>
+>> 	M.
+>>
+>> -- 
+>> Without deviation from the norm, progress is not possible.
+> Regards,
+> Inochi
