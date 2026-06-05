@@ -1,201 +1,71 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8073435B12B;
-	Thu,  4 Jun 2026 23:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5A123535E;
+	Fri,  5 Jun 2026 00:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780617512; cv=none; b=FdCN0c+h6veqdotfC/snX5MN5jjkpHVSeZucfxG8RvprnMsO5MbNoRCk13um7IVukZpizUhoGmBJ6Y4y9JgVxVaJSmTtroCZ3OIJhbfmQ02JfiuXJrplAzJI9Aik2ZQFMHmABqzaZIJEND1v7vXtl6N2CSCVXXePfstoc1ua8CE=
+	t=1780621216; cv=none; b=hx28wJbz+r9UBHC6DC33wUSxssvz7UcB7qE266jnUc3DxpAK++5WDHxvvvtvV8tH48TLXhjAtjdiX+reke4gqYQTYLsNUvLsujZOcyAMjaLD7RYr5OSTfkSxC7hFXX9jbGRkdg7ZeuhLK9MrdoHBNO4Rhck/JVxCwr/eRgWeAxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780617512; c=relaxed/simple;
-	bh=D8hZvcdxZFtLiZ7vT3E6K4VB2Tl2UlY1UkU/O9dPRho=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kR5NwC0TU4IlZB/tnUthMxEcH0sFU2gYTVzgsqlht4795Lj/eIsnmOsbR5Ca2I4NSaaXrVvK5x9+Ed1ijoi03grnIvOlHVrjw9Cxt+hEZ/z9O/XpzXMtG9MExxj7258HNtMdquBqluxOHlw1nWUDuNjHXRWWi4MCaSOxqPrRJZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=RRGfP6DK; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1780621216; c=relaxed/simple;
+	bh=uvxQ8m/0FnjSq2hX2DJ7JY5O6ptuAhKyFcmM0+SqdDI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AYl0UbDhFeNncG6SEth+K4kN9CcCflu0cuhVESpTVRu3Kzrui2SPSbKSxANp9WclIV+n7FT8TVVbQsWxwXoQB/y2A6isoW9nM1E+bJ+vESpE9DH/mcw8C0qZVSN9okUotSv4mKJTqYrB9fz0i3+XHVYuW7lUE7s/zTUqyXf0kSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FV7UuTIA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="RRGfP6DK"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=D8hZvcdxZFtLiZ7vT3E6K4VB2Tl2UlY1UkU/O9dPRho=; b=RRGfP6DKYSvmeWb6Bi1wClhgmh
-	KTwn5ydvOwgpwp0Jn38mPeeo1+LYr98OpZCzAxaNERn3Q34PY6sH4dnNyth9+EIehp0q1gW1FWdQY
-	D88Uw+gUxzpg4vyH/OC+5s3mAF4MWOIoJGooIZWEU1QEEC+rwsll8wlg9t6qiM6GDxflSXRqeI3PW
-	twVr0tnBMT5rxNopfedy364h6JHK3EW5KhpqnOiJeNZv/Qz+8kb0Bz0atUzOBEbpHxJklppyOXuVG
-	mhOzpFf8nyoUzCIYNug7gIUcs18G1YncfZJIj3WBoK+2Dno3XsLyILHysckGoR+t//cTpq4c4GVUs
-	4iUTpYgQ==;
-Received: from [2001:8b0:10b:5:2fb1:ec7c:80ac:932e] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wVHx4-00000006ysK-33VV;
-	Thu, 04 Jun 2026 23:58:19 +0000
-Message-ID: <29d859a8a5ff0a037a2305f14ce7b29632920b71.camel@infradead.org>
-Subject: Re: [PATCH v2 01/20] locking/rt: Use raw_spin_lock_irqsave() in
- __rwbase_read_unlock()
-From: David Woodhouse <dwmw2@infradead.org>
-To: Peter Zijlstra <peterz@infradead.org>, Sean Christopherson
-	 <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant <paul@xen.org>, Ingo
- Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng
- <boqun@kernel.org>,  Waiman Long <longman@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>,
- syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com,  Carsten Stollmaier	
- <stollmc@amazon.com>
-Date: Fri, 05 Jun 2026 00:58:18 +0100
-In-Reply-To: <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
-References: <20260529165114.748639-1-seanjc@google.com>
-	 <20260529165114.748639-2-seanjc@google.com>
-	 <20260529193214.GN3493090@noisy.programming.kicks-ass.net>
-	 <20260529193437.GB3568911@noisy.programming.kicks-ass.net>
-	 <ahnxfACTGeVFbJMk@google.com>
-	 <20260529201335.GP3493090@noisy.programming.kicks-ass.net>
-	 <20260529203841.GC3568911@noisy.programming.kicks-ass.net>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-Y1GjTcWj6fInc6xlGdIx"
-User-Agent: Evolution 3.60.3 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FV7UuTIA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEDF1F00893;
+	Fri,  5 Jun 2026 00:59:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780621197;
+	bh=uvxQ8m/0FnjSq2hX2DJ7JY5O6ptuAhKyFcmM0+SqdDI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=FV7UuTIA9nXYCTQdrZZfkYLPla7MfXoMk9JBQGXD8E6O3JeVZ8noXFwAiRTcGSkiG
+	 W1E6UfVYL1zDmwogaVZj3DwZpjueen+dGCzKQo0ke5ZCdkt5y4s6jQvB3vcBr0q2k/
+	 5zMUf1gXU4yYCb9VaqZ1FpKBYaxlJRzL8seAwf8I1EV3xbsR5RzcirVhuu+7mcYerp
+	 2iHf8scUUAf0UGYnrFlhzWpP25WM1cMsSOLI91OeLkt8yMjFwVNEf8x7lNB0JkDCVX
+	 FA7XptQIIQkiVR9RNrq6zyb+w3n9rtX2CXGMXtneI5zgxSgBjxNGwz6mh+H34odnWw
+	 kP5OoFOiPLZYg==
+Date: Thu, 4 Jun 2026 17:59:55 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <bhelgaas@google.com>,
+ linux-pci@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Mahesh J Salgaonkar
+ <mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>, Niklas
+ Schnelle <schnelle@linux.ibm.com>, Gerald Schaefer
+ <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, Alex Williamson <alex@shazbot.org>, Kevin Tian
+ <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Leon Romanovsky
+ <leon@kernel.org>, Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, Keith Busch <kbusch@kernel.org>, Alexander
+ Duyck <alexanderduyck@fb.com>, Dimitri Daskalakis <daskald@meta.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ kvm@vger.kernel.org, xen-devel@lists.xenproject.org
+Subject: Re: [RFC 00/12] PCI: Add support for Scalable I/O Virtualization
+Message-ID: <20260604175955.56ca1406@kernel.org>
+In-Reply-To: <a07763e2-aff3-4468-83c2-d50a9e1605c8@gmail.com>
+References: <20260604150153.3619662-1-dimitri.daskalakis1@gmail.com>
+	<20260604182031.GB2487554@ziepe.ca>
+	<a07763e2-aff3-4468-83c2-d50a9e1605c8@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu, 4 Jun 2026 16:49:05 -0700 Dimitri Daskalakis wrote:
+> Hey Jason, thanks for the feedback. We (at Meta) are definitely
+> interested in SIOV-like capabilities for device passthrough to containers.
 
---=-Y1GjTcWj6fInc6xlGdIx
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, 2026-05-29 at 22:38 +0200, Peter Zijlstra wrote:
-> On Fri, May 29, 2026 at 10:13:35PM +0200, Peter Zijlstra wrote:
->=20
-> > It is somewhat possible to do an RT aware read-write spinlock thing, bu=
-t
-> > it is definitely non-trivial and this would be the only user.
->=20
-> Furthermore, it is fundamentally one of the worst possible lock types.
->=20
-> It really isn't something you *want* to have -- arguably even for !RT.
->=20
-> They scale like ass; per them being a spinlock type, the critical
-> sections must be short, but this means there is nothing to amortize the
-> cost of bouncing the shared lock around -- which is the 'saving' grace
-> of the rwsem.
->=20
-> For short sections the cost of the shared access will dominate. I'm sure
-> Paul has a bunch of graphs to illustrate this point :-)
-
-Most of these are per-vCPU anyway. I think the only one that isn't is
-the Xen shared_info page, and we *could* have a GPC for that per vCPU
-if we really wanted.=C2=A0
-
-In *theory* we could be delivering hardware interrupts as event
-channels from multiple physical CPUs simultaneously. But that's
-probably fairly rare, at least for them all to be coming to the same
-vCPU.
-
-So in the general case, they don't bounce around much unless someone
-else takes a write lock to invalidate them.
-
-I suspect we could tolerate them being a raw_spin_lock on RT and only a
-rwlock on non-RT, if there's no appetite for raw_rwlock?=20
-
---=-Y1GjTcWj6fInc6xlGdIx
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwNDIzNTgx
-OFowLwYJKoZIhvcNAQkEMSIEIGn+U/tvJkq52GqhqFylanKrrto93fp8xlfEHp0z/rjcMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAR36lNFBE08jO
-AMrM1lPR8sfrP010KiIf4JBWn+HE45jiNGcID/A8XITUcBpBFr5/BU3GTswQ7qNP+qKDzaJcHcjb
-WXokQkQ7vdpQy0CRFmPIn+vHCsWG+wAX/RRQwgODTilnQ4bwqKesJj5pOV4Ivnky0svXuSjJpgiG
-DBBRY5WzfMUMCa4TUhCHpVHVbv+OloAMVZf/a0COVSqAiUoqCZHisYvzemCmQzu9JmqTzEGtE0PU
-GwDIGVMJHTosVTWyuC9pKXvp8JfSXmShnKGVi6ZiHvtLllbDugXepf+mogP52zBfWOi+8PSCwdcS
-bCHDHABzITXNfcvdEZcq4E5FEqyQcR4A+JLxxlGUodzA3P2vDcy6TrhU63LcvN/3Bw+CSszpXHv5
-sEGL7W7LP9Gkvw8w5g2m9MsOQbMuAgYAWrXIPUEPdL86oYs1saHIwGYg2RZT29jskOH9Gp0FVXr7
-RF7ICSybf2Un0QxRDWSSvFzCqtZP518EykdOTZBr7rT6QmS25NfIGzKD2OAQ9A8VcKgXNJXvYJiO
-httHxPDBSIGMEu7QfwgemflknaeP5cne2ol7qYrGj44Ke3IJPMBnb3xH514pL+q1unTZFufwzIsK
-K3dKU7BliyNL/WzY3OJ5lkvoDbqrtCHw5csvDnC94CBo0UajN679fRg7X8ULChkAAAAAAAA=
-
-
---=-Y1GjTcWj6fInc6xlGdIx--
+I think "definitely interested" is quite an exaggeration.
+More importantly, which big company is interested in what
+tech should be irrelevant upstream. Please don't make these
+sort of arguments. The code has to stand on its own.
