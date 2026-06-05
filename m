@@ -1,55 +1,55 @@
 Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E007E3806B6
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 17:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CF5416D04
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 17:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780681584; cv=none; b=iOT2JByPf1F45XyEJz+jbx/769QJuVNnzH9a8IPkNarqXwT8vZRtl7VwyqqJOA/igHYD+Sjn0U6P93/Hie5wQRYtXxvAJz0DG+4BL0jcaYPAtPsMo6yn+Ht+SMkskGFeWuDEZ5R4omi/hvM8QgH/7rdS9VDwIbeUh2iCBwcVqyU=
+	t=1780681592; cv=none; b=BTdgQ+1IZ8KnyoTDiPHlqjbdFkLj+P7BhlncoLwnsNIQTRM2d9PkpOEtVuh/W2WM378UqdtrkkRQuOMNwz7NoDgyryDebbK/hlLvBQ3cCRt0KLrTd4uqq4iIcOAf8hIoarxtRZXXRY6IepnGJXlU/HFNeS1zBh+v7BPfPNGLsYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780681584; c=relaxed/simple;
-	bh=MaGp98SPP5pLqA/SgDcjONweIRAww8zV/cITU0dzni4=;
+	s=arc-20240116; t=1780681592; c=relaxed/simple;
+	bh=8zuQHH+SQ3YapRGKVrkDRoM6/szKXPSMm+qil33kwII=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=js8+NPu3pBgyIQ1FzolJKh4L7wZ5BxwtaXUn0z2cH9uDhQDrkkreOwTkS8IlJShzrLpvFGhbodz6p+i/H/YP0KNfkxli9yUTeNGfzAOHjXhYAxCAhIQlQJilMdvWEZLmT3hknyg/AS6APInLmaeu8qn3TmsH3Z1vYFE8s8JuvwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hLPmjcrO; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=C3fq1IazdfaC8Y7geXFz9dDxswwSMRp0zMYdTHp4flgkjOCXHpplObbEw0m8oR1LaG7VU7JbY56zCJlnbba+mpXT8bLcz9Ywvo4pEcupQx5dTE+M0L6aqeXgp/UPBFgI9LhoDKHdl4e2dApXAkc0F2Kz/bQZ+1XBSRzFszjEsg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RapmEAdr; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hLPmjcrO"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c0532a6588so21373465ad.0
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 10:46:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RapmEAdr"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf243973c2so15654735ad.1
+        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 10:46:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780681576; x=1781286376; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780681575; x=1781286375; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=eJAya2rWHdwTV/i2f+Er10bBIZ9X+EeemiuR2u/Ktcg=;
-        b=hLPmjcrOLQv8Fk/0+sIz7aqsAOcUWtQcMMs/gUMdknHrZFmtmVZ6LNSPN9kXZo/wNq
-         1G/ETn8Ck/4N8P2BNWh1QY+Z7MWlGJlxtUsFg3zS0tHtjZAU/G6wVws8nqsG1BUD6/PR
-         fpLZGmVOYK3DRFOHie3R10z821mlxUZQvrP7SuQiKpgtNytDQNJb99tLgB5ha6BDrphE
-         ezNbK8PdG9R5xu2xS2AMbpHc2bP4uecZkBMpsftqiB8QeG/hCkSJWwFNBzvQyn/bVG+9
-         HaUmfP+Fyjw4SXHwjBCcPwdoMx9FhnLsnVwJfGjbCtg/84e3xM0g917Nm2UkaXihU8P4
-         mP2w==
+        bh=uZPieUENRjAFBSsrN9Q0ajHABgZwgeB6IKaETF6cS9M=;
+        b=RapmEAdr+hUtIVKbX5ri1sttvlEHEt8/QluNoIxE3yCCZVgsfNX9MRy/5BY/ozj6Si
+         Od/EhrQ0ciiUhg5ZdFQRxHvALXXmqhyDfcCJOxQQhLjkV/jfRNW2osvRX8ZIcbEiWAOI
+         4nLwxqFINLwpCKQ/X6za2NUkymBMWMBw9E6VPFp9fG2NC5rsEMZKpXNJy7cdHzZWmMEE
+         odera3pSb6OVWPZyEUz2dOx+oZ0u9fGRxfIRCe5cYUwbGTSgk6WQ9oBNWoptu6IAMNGV
+         7rgDCkxBrc/La9y22lZMzWCixcfHlU2Hzp17ElZtaORA981dwcilCT/WHj2O4Y7Dtvdh
+         KAxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780681576; x=1781286376;
+        d=1e100.net; s=20251104; t=1780681575; x=1781286375;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=eJAya2rWHdwTV/i2f+Er10bBIZ9X+EeemiuR2u/Ktcg=;
-        b=PUQ/cMChuAIPwIG3nVa9UoArvoV75Mh/EjpGW2usuNcNpyPwwfinDHcV4u0zWG5QAi
-         wgc5I0iap+ie+BDPvq4tXfWdsFucJuNQR8fi6efE2agIV1bvNCg17f0rFJT7TSp9v7dn
-         IgYrGdjV2+f48rrFj9SwULNC3XB9nMb6NUCy5hAPEU2pWsRMnhjxGe/zJXosAdVip72E
-         3SBN45HE4Fgby9p3ntA8wNJmVo/k0nY8skIcmbWWmWA0NQQk0A6sTh4kLLAKJrcYdtEj
-         gB3HNWnFlvx0Bnjz3d4EnBgCWJOoF1oE1wB407ZOIFTaHBO0AlclNMQn5aN4b2plnabb
-         07kg==
-X-Gm-Message-State: AOJu0YxMgsUnfKQdRE2YhrQK0A3RVyRZwvenwfpDzQ+fNg+cqp6RyHmr
-	8rgNIQL1oJpCJOybnSl7DvGypVJRmEuIihYRM2Q/KWheQG5ACy7HO3oJEmnit1RRmVxxPN5qdav
-	imzyjMQ==
-X-Received: from pgam25.prod.google.com ([2002:a05:6a02:2b59:b0:c80:26d4:20ea])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:514:b0:3b4:b6d7:a992
- with SMTP id adf61e73a8af0-3b4ccd1e2a2mr5750363637.8.1780681575824; Fri, 05
- Jun 2026 10:46:15 -0700 (PDT)
+        bh=uZPieUENRjAFBSsrN9Q0ajHABgZwgeB6IKaETF6cS9M=;
+        b=A0jJU8gdyLiZVueuFv0qOblMXA6EQ9EFADchAKRmjuzwQwCHAPr+6FPCOfUDjyY8m6
+         N15rSZ8eUzgucPMRa/ZpS5kzdingWhZtOkPHxsLKg3rbMEGadam/HkBcn4GPJMgmWvTC
+         cnLq6dolhWB4RcZjvnI/gWGNBEXRLT5rlRMAAdhWgob5MKd2XoIwHFyFr7oBJfU4fRA6
+         3wJHqH4dvZQK+1kxfwkYqLaHgo47E8lrEKGn7eo0YkEwObJK1ipu9N1b27dcr6e/kpLm
+         7q1aiDN9Ium2hVY/dwR9Bsq3V0xom1pgr3zQFt3Qt0xDYLeK1hurEvWBAUh9jJ7NlC0B
+         JCGA==
+X-Gm-Message-State: AOJu0YwesMWchzlPzKUF0HMhWdVA73Qb59fqPCx/eJgURCbOI4VDJL75
+	Dcmo2VhwiAfuMVLqEstDujEW65TZpDHojB8oU4T1KTXCrw/CVseaf71CqYvtEDQaJeK9+LnBmHG
+	l+ros0w==
+X-Received: from plcx3.prod.google.com ([2002:a17:903:c3:b0:2b4:6553:4533])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2d0:b0:2c0:bcff:e18c
+ with SMTP id d9443c01a7336-2c1e833c99dmr52147205ad.37.1780681574693; Fri, 05
+ Jun 2026 10:46:14 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri,  5 Jun 2026 10:46:11 -0700
+Date: Fri,  5 Jun 2026 10:46:10 -0700
 In-Reply-To: <20260605174611.2222504-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260605174611.2222504-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-Message-ID: <20260605174611.2222504-3-seanjc@google.com>
-Subject: [PATCH 2/2] KVM: x86/mmu: Expose number of shadow MMU shadow pages as
- a stat
+Message-ID: <20260605174611.2222504-2-seanjc@google.com>
+Subject: [PATCH 1/2] KVM: x86/mmu: Recursively zap orphaned nested TDP shadow
+ pages on emulated writes
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -69,113 +69,147 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	James Houghton <jthoughton@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Turn arch.n_used_mmu_pages into a stat, mmu_shadow_pages, as the number of
-live shadow pages is arguably _the_ most critical datapoint when it comes
-to analyzing the shadow MMU.  Before the TDP MMU came along, i.e. when the
-shadow MMU was the only MMU, explicitly tracking the number of shadow pages
-wasn't as interesting, because the same information could more or less be
-gleaned from the pages_{1g,2m,4k} stats.  But with the TDP MMU, where the
-shadow MMU is only used for nested TDP, it becomes extremely difficult, if
-not impossible, to determine which SPTEs are coming from the TDP MMU, and
-which are coming from the shadow MMU.
+Recursively zap orphaned nested TDP shadow pages when emulating a guest
+write to a shadowed page table, regardless of whether or not the associated
+(parent) shadow page will be zapped, e.g. due to detected write-flooding.
 
-E.g. when triaging/debugging shadow MMU performance issues due to "too many
-shadow pages", being able to observe that 99%+ of all shadow pages are
-unsync is critical to being able to deduce that KVM is effectively leaking
-shadow pages.
+This plugs a hole where KVM fails to reclaim defunct, unsync shadow pages
+for select L1 hypervisor patterns.  Commit 2de4085cccea ("KVM: x86/MMU:
+Recursively zap nested TDP SPs when zapping last/only parent") modified KVM
+to recursively zap synchronized shadow pages (KVM already recursively zaps
+unsync children) when a child is orphaned.  But the fix effectively only
+applied the logic to kvm_mmu_page_unlink_children(), i.e. only performs the
+recursive zap when KVM is already zapping a parent SP and processing its
+children.
 
+If L1 zaps SPTEs bottom-up (4KiB => 2MiB => ...), as KVM's TDP MMU does
+with CONFIG_KVM_PROVE_MMU=n since commit 8ca983631f3c ("KVM: x86/mmu: Zap
+invalidated TDP MMU roots at 4KiB granularity"), then KVM (as L0) will leak
+upwards of 4 shadow pages per GiB of L2 guest memory.  Over hundreds or
+thousands of L2 boots, if the VM is "lucky" enough to escape write-flooding
+detection, i.e. not trigger reclaim of the orphaned shadow pages by dumb
+luck, then it's possible to end up with tens or even hundreds of thousands
+of unsync shadow pages and associated rmap entries.
+
+Polluting the hash table and rmap entries with a horde of stale entries
+can eventually degrade L2 guest boot time by an order of magnitude,
+especially if there is any antagonistic activity in the host, i.e. anything
+that will contend for mmu_lock and/or needs to walk rmaps.
+
+With "top"-down zapping, where "top" is 1GiB or above, then L0 KVM is
+effectively limited to leaking 4 shadow pages per 256 GiB of memory, as
+KVM's write flooding detection will kick in on the third write to an L1
+TDP PUD, and thus recursively zap the entire 256 GiB range of the parent
+PGD.  I.e. even though L1 KVM still recursively zaps 2MiB => 4KiB SPTEs
+when zapping each 1GiB SPTE, KVM only gets through two of the 1GiB SPTEs
+before dropping everything.  E.g. hacking tracing into L0 KVM's
+kvm_mmu_track_write(), the top-down zapping of L1's TDP MMU for an L2 with
+16GiB of memory leads to:
+
+  gpa = 107407000, old = 800000010741bd07, new = 8000000000000000, level = 3, flood = 0
+  gpa = 10741b000, old = 8000000112fb2d07, new = 80000000000001a0, level = 2, flood = 0
+  gpa = 10741b008, old = 800000012509cd07, new = 80000000000001a0, level = 2, flood = 1
+  gpa = 10741b010, old = 80000001114b9d07, new = 80000000000001a0, level = 2, flood = 2
+  gpa = 107407008, old = 8000000112fb5d07, new = 8000000000000000, level = 3, flood = 1
+  gpa = 112fb5298, old = 8000000106f43d07, new = 80000000000001a0, level = 2, flood = 0
+  gpa = 112fb52a0, old = 8000000106f4dd07, new = 80000000000001a0, level = 2, flood = 1
+  gpa = 112fb5ea0, old = 8000000120490d07, new = 80000000000001a0, level = 2, flood = 2
+  gpa = 107407010, old = 8000000106df2d07, new = 8000000000000000, level = 3, flood = 2
+  gpa = 107410000, old = 8000000107408d07, new = 8000000000000000, level = 5, flood = 0
+  gpa = 107408000, old = 8000000107407d07, new = 80000000000001a0, level = 4, flood = 0
+
+Contrast that with a bottom-up zap, which effectively allows all 2MiB SPTEs
+in L1 to leak their children.
+
+  gpa = 167939000, old = 800000011c8f4d07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 167939020, old = 8000000104407d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 167939028, old = 800000011ed20d07, new = 8000000000000000, level = 2, flood = 2
+  gpa = 118c70bb0, old = 8000000167ab9d07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 118c70bb8, old = 8000000163913d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 118c70de8, old = 800000011cc9dd07, new = 8000000000000000, level = 2, flood = 2
+  gpa = 160be7fb0, old = 800000011d322d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 160be7fb8, old = 8000000126b1bd07, new = 8000000000000000, level = 2, flood = 2
+  gpa = 1634ab000, old = 800000010e984d07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 1634ab008, old = 800000016879fd07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 1634ab010, old = 800000016879ed07, new = 8000000000000000, level = 2, flood = 2
+  gpa = 11e3f1e48, old = 8000000168a33d07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 11e3f1e50, old = 80000001664dcd07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 1167eacb8, old = 8000000166544d07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 1167eacc0, old = 800000015c16bd07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 1689e89b8, old = 800000015f296d07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 1689e89c0, old = 8000000167ca8d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 107b35eb8, old = 8000000161e71d07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 107b35ec0, old = 8000000118cf3d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 118cf2d48, old = 8000000118cf1d07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 118cf2d50, old = 8000000118cf0d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 118dcb770, old = 8000000118dcad07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 118dcb778, old = 8000000118dc9d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 118dc87e8, old = 8000000126997d07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 118dc87f0, old = 8000000126996d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 126995148, old = 8000000126994d07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 126995150, old = 8000000103477d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 1034764c8, old = 8000000103475d07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 1034764d0, old = 8000000103474d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 10ea4b788, old = 800000010ea4ad07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 10ea4b790, old = 800000010ea49d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 10ea48928, old = 800000011a5bfd07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 10ea48930, old = 800000011a5bed07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 11a5bd0d8, old = 800000011a5bcd07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 11a5bd0e0, old = 800000011d323d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 122ce2b40, old = 800000011fe0bd07, new = 8000000000000000, level = 2, flood = 0
+  gpa = 122ce2b48, old = 800000010e985d07, new = 8000000000000000, level = 2, flood = 1
+  gpa = 122ce2b50, old = 8000000161c9dd07, new = 8000000000000000, level = 2, flood = 2
+  gpa = 16864c000, old = 8000000167939d07, new = 8000000000000000, level = 3, flood = 0
+  gpa = 16864c008, old = 8000000118c70d07, new = 8000000000000000, level = 3, flood = 1
+  gpa = 16864c010, old = 80000001688a6d07, new = 8000000000000000, level = 3, flood = 2
+  gpa = 11c8f7000, old = 80000001608a7d07, new = 8000000000000000, level = 5, flood = 0
+  gpa = 1608a7000, old = 800000016864cd07, new = 80000000000001a0, level = 4, flood = 0
+
+Note, in the shadow MMU, "level" describes the level a shadow page "points"
+at, not the level of its associated SPTE. I.e.  when write-flooding of 1GiB
+PUD entries is detected, KVM recursively zaps shadow pages covering 256GiB
+worth of memory.  And as shown above, KVM's write-flooding detection
+operates at all levels, so a single PMD (in L1) can effectively only leak
+two unsync children (4KiB shadow pages) before it gets recursively zapped.
+As a result, for the top-down zap, L0 KVM will leak at most 4 unsync shadow
+pages per 256GiB of L2 memory.
+
+The top-down zap also makes it more likely that L1 will self-heal (to some
+extent), as any shadow pages that are "rediscovered" by future runs of L2
+can get reclaimed by a recursive zap, whereas bottom-up zapping orphans
+shadow pages over and over.
+
+Note, in theory, there is some risk of over-zapping, e.g. due to zapping a
+a large branch of the paging tree that L1 is only temporarily removing.  In
+practice, the usage patterns of hypervisors are highly unlikely to trigger
+false positives.  E.g. temporarily changing paging protections is typically
+done at the leaf, not on a non-leaf entry.  And if the L1 hypervisor is
+updating large swaths of PTEs, e.g. to (temporarily?) remove chunks of
+memory from L2, then L0 KVM's write-flooding detection will kick in, and
+the children would be zapped anyways.
+
+Fixes: 2de4085cccea ("KVM: x86/MMU: Recursively zap nested TDP SPs when zapping last/only parent")
+Cc: Yosry Ahmed <yosry@kernel.org>
+Cc: Jim Mattson <jmattson@google.com>
+Cc: James Houghton <jthoughton@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h |  1 +
- arch/x86/kvm/mmu/mmu.c          | 14 +++++++-------
- arch/x86/kvm/mmu/mmutrace.h     |  2 +-
- arch/x86/kvm/x86.c              |  1 +
- 4 files changed, 10 insertions(+), 8 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 3886b536c8a5..be84e4d2405e 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1701,6 +1701,7 @@ struct kvm_vm_stat {
- 	u64 mmu_recycled;
- 	u64 mmu_cache_miss;
- 	u64 mmu_unsync;
-+	u64 mmu_shadow_pages;
- 	union {
- 		struct {
- 			atomic64_t pages_4k;
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 9368a71336fe..3839aef6819b 100644
+index b8f2edf2cfeb..9368a71336fe 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -1801,13 +1801,13 @@ static void kvm_mmu_check_sptes_at_free(struct kvm_mmu_page *sp)
+@@ -6376,7 +6376,7 @@ void kvm_mmu_track_write(struct kvm_vcpu *vcpu, gpa_t gpa, const u8 *new,
  
- static void kvm_account_mmu_page(struct kvm *kvm, struct kvm_mmu_page *sp)
- {
--	kvm->arch.n_used_mmu_pages++;
-+	kvm->stat.mmu_shadow_pages++;
- 	kvm_account_pgtable_pages((void *)sp->spt, +1);
- }
- 
- static void kvm_unaccount_mmu_page(struct kvm *kvm, struct kvm_mmu_page *sp)
- {
--	kvm->arch.n_used_mmu_pages--;
-+	kvm->stat.mmu_shadow_pages--;
- 	kvm_account_pgtable_pages((void *)sp->spt, -1);
- }
- 
-@@ -2833,9 +2833,9 @@ static unsigned long kvm_mmu_zap_oldest_mmu_pages(struct kvm *kvm,
- 
- static inline unsigned long kvm_mmu_available_pages(struct kvm *kvm)
- {
--	if (kvm->arch.n_max_mmu_pages > kvm->arch.n_used_mmu_pages)
-+	if (kvm->arch.n_max_mmu_pages > kvm->stat.mmu_shadow_pages)
- 		return kvm->arch.n_max_mmu_pages -
--			kvm->arch.n_used_mmu_pages;
-+			kvm->stat.mmu_shadow_pages;
- 
- 	return 0;
- }
-@@ -2871,11 +2871,11 @@ void kvm_mmu_change_mmu_pages(struct kvm *kvm, unsigned long goal_nr_mmu_pages)
- {
- 	write_lock(&kvm->mmu_lock);
- 
--	if (kvm->arch.n_used_mmu_pages > goal_nr_mmu_pages) {
--		kvm_mmu_zap_oldest_mmu_pages(kvm, kvm->arch.n_used_mmu_pages -
-+	if (kvm->stat.mmu_shadow_pages > goal_nr_mmu_pages) {
-+		kvm_mmu_zap_oldest_mmu_pages(kvm, kvm->stat.mmu_shadow_pages -
- 						  goal_nr_mmu_pages);
- 
--		goal_nr_mmu_pages = kvm->arch.n_used_mmu_pages;
-+		goal_nr_mmu_pages = kvm->stat.mmu_shadow_pages;
- 	}
- 
- 	kvm->arch.n_max_mmu_pages = goal_nr_mmu_pages;
-diff --git a/arch/x86/kvm/mmu/mmutrace.h b/arch/x86/kvm/mmu/mmutrace.h
-index fa01719baf8d..8354d9f39777 100644
---- a/arch/x86/kvm/mmu/mmutrace.h
-+++ b/arch/x86/kvm/mmu/mmutrace.h
-@@ -303,7 +303,7 @@ TRACE_EVENT(
- 
- 	TP_fast_assign(
- 		__entry->mmu_valid_gen = kvm->arch.mmu_valid_gen;
--		__entry->mmu_used_pages = kvm->arch.n_used_mmu_pages;
-+		__entry->mmu_used_pages = kvm->stat.mmu_shadow_pages;
- 	),
- 
- 	TP_printk("kvm-mmu-valid-gen %u used_pages %x",
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index cd68a5bad0c6..e4cbecaa105d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -244,6 +244,7 @@ const struct kvm_stats_desc kvm_vm_stats_desc[] = {
- 	STATS_DESC_COUNTER(VM, mmu_recycled),
- 	STATS_DESC_COUNTER(VM, mmu_cache_miss),
- 	STATS_DESC_ICOUNTER(VM, mmu_unsync),
-+	STATS_DESC_ICOUNTER(VM, mmu_shadow_pages),
- 	STATS_DESC_ICOUNTER(VM, pages_4k),
- 	STATS_DESC_ICOUNTER(VM, pages_2m),
- 	STATS_DESC_ICOUNTER(VM, pages_1g),
+ 		while (npte--) {
+ 			entry = *spte;
+-			mmu_page_zap_pte(vcpu->kvm, sp, spte, NULL);
++			mmu_page_zap_pte(vcpu->kvm, sp, spte, &invalid_list);
+ 			if (gentry && sp->role.level != PG_LEVEL_4K)
+ 				++vcpu->kvm->stat.mmu_pde_zapped;
+ 			if (is_shadow_present_pte(entry))
 -- 
 2.54.0.1032.g2f8565e1d1-goog
 
