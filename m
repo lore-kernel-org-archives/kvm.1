@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CA43CD8CA;
-	Fri,  5 Jun 2026 08:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237843D45E7;
+	Fri,  5 Jun 2026 09:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780649665; cv=none; b=ia+BuTMDPBEa6/Ga9OPQrFuePWpyBy/2PO7zabFosFvmQ29rXQ1pinkEC5oSIxpWPxmaYsPPeKM94ERnKOcxOSZwqrv9rgymQljeGRTcBzcknxt/+EScB8pnvZafEC3ktV+PJN7dZbl5r9Q4xb4SS5g3fq6dwZaIbHhQPrgSXeY=
+	t=1780650434; cv=none; b=cDVQbmGva75fRzD2S8xKwH+CRRz1mNorCDT1f9jVmFv61O6NZIsmIMZtsoc5uW8SPiXbeZlyxYGwJ10wqITCie63ZSUUx8Astl44J69fAQ3qFZAcyBggBHHp3V++13U7AJemL6BiopLiAPMajEh5KWatVbq7nsi9djqANwWeCVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780649665; c=relaxed/simple;
-	bh=za/Q5W3FetgNGBxC3/mNtBqJ6BCx8IDSiT33jjoXZNw=;
+	s=arc-20240116; t=1780650434; c=relaxed/simple;
+	bh=UXE7DC5dr6M+k24qAaywn7yvVqkTrb7vSLr7g8HR+1E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Pm8yLHMU0FSHv42HlYzliUvpAC4GQDZUuEUSNm3ar+YD/oCOhInywycxQlco664NYmq+Bcc8OJc1uibR5OindOycBu2GxOMjtN/aNpyHb1h9llJIBLPa/fxbI9cydXqsTPC9pbhNU1C6PpK5yyPTGG0o5pu01GlJgUmRyp8vcdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Gzzb9pgK; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=cjegiXMqQtZyRn1aGi/ACynk7eeB0NmQ78JnxyzmS+F1Hw8GLJZlDFEab6mlAcU2shBgIGtBCK7PI0rSEOfSwUDazr8zkw4XQw90zO89QuCUqYcJh/ZCOn53ASlRu1HOWKbqG068AWVykHLEx0tdFMS+L9b9b3aKJEFFCl4Bybc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=gjxPbq2p; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Gzzb9pgK"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="gjxPbq2p"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A3204CE7;
-	Fri,  5 Jun 2026 01:54:17 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 975364CDF;
+	Fri,  5 Jun 2026 02:07:06 -0700 (PDT)
 Received: from [10.57.92.75] (unknown [10.57.92.75])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 36C5A3F632;
-	Fri,  5 Jun 2026 01:54:14 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 891843F86F;
+	Fri,  5 Jun 2026 02:07:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780649662; bh=za/Q5W3FetgNGBxC3/mNtBqJ6BCx8IDSiT33jjoXZNw=;
+	t=1780650431; bh=UXE7DC5dr6M+k24qAaywn7yvVqkTrb7vSLr7g8HR+1E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gzzb9pgKm/VqzuNQWn4GqmeLpozOIVHEL4a7lpQ6LY9IuNt0PSiF4UMuyHA313reK
-	 adqVfC75WvtPaiw9gE55+iUPvW+5IJFa0HDb8PCVsfPSAiOnAbMba7hYbKQPgjS02w
-	 IVon2C90mRhBq/CB0loy54WttdKIcrw9FAQvra1o=
-Message-ID: <3322698e-af49-4998-b619-34ab24094374@arm.com>
-Date: Fri, 5 Jun 2026 09:54:12 +0100
+	b=gjxPbq2pHkOfACoMFtOdYFETh8vR9siYUcniNUVttHwVYajSgtBX2fT7r8/6nEQVU
+	 3U+mruFBjhkJwoh7yfUyp4HzYXblvxOs58WoMrl+NRHN430tFwRzHI5G6iytvzgqmP
+	 jhilsf5wSLNEWJnWJVKRp1qhWyGeYwpuFX4LwbOQ=
+Message-ID: <85b8c177-b566-4e26-884c-9122e2455316@arm.com>
+Date: Fri, 5 Jun 2026 10:06:58 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -38,17 +38,17 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v7 20/42] KVM: SEV: Make 'uaddr' parameter optional for
  KVM_SEV_SNP_LAUNCH_UPDATE
 Content-Language: en-GB
-To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com,
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
- steven.price@arm.com, tabba@google.com, willy@infradead.org,
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
- pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+To: Michael Roth <michael.roth@amd.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, ira.weiny@intel.com, jmattson@google.com,
+ jthoughton@google.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, aneesh.kumar@kernel.org,
+ liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
  "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
@@ -63,26 +63,76 @@ To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
  Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
  Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
  Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev
 References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
  <20260522-gmem-inplace-conversion-v7-20-2f0fae496530@google.com>
  <9d15479e-e36b-4865-804c-7d93eb339e4e@arm.com>
- <CAEvNRgF43RBv77RgM67kXRRHDnQw4L5uwQTuvkJHzkHJWB1mag@mail.gmail.com>
+ <4muegrza5iyyhqx6wevdlssnb6wvlc4m4wmuz5hmd3xikkftc4@3e2lpuq6tjgr>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CAEvNRgF43RBv77RgM67kXRRHDnQw4L5uwQTuvkJHzkHJWB1mag@mail.gmail.com>
+In-Reply-To: <4muegrza5iyyhqx6wevdlssnb6wvlc4m4wmuz5hmd3xikkftc4@3e2lpuq6tjgr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 04/06/2026 20:05, Ackerley Tng wrote:
-> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
-> 
+On 04/06/2026 21:11, Michael Roth wrote:
+> On Thu, Jun 04, 2026 at 04:29:19PM +0100, Suzuki K Poulose wrote:
+>> On 23/05/2026 01:18, Ackerley Tng via B4 Relay wrote:
+>>> From: Michael Roth <michael.roth@amd.com>
+>>>
+>>> For vm_memory_attributes=1, in-place conversion/population is not
+>>> supported, so the initial contents necessarily must need to come
+>>> from a separate src address, which is enforced by the current
+>>> implementation. However, for vm_memory_attributes=0, it is possible for
+>>> guest memory to be initialized directly from userspace by mmap()'ing the
+>>> guest_memfd and writing to it while the corresponding GPA ranges are in
+>>> a 'shared' state before converting them to the 'private' state expected
+>>> by KVM_SEV_SNP_LAUNCH_UPDATE.
+>>>
+>>> Update the handling/documentation for KVM_SEV_SNP_LAUNCH_UPDATE to allow
+>>> for 'uaddr' to be set to NULL when vm_memory_attributes=0, which
+>>> SNP_LAUNCH_UPDATE will then use to determine when it should/shouldn't
+>>> copy in data from a separate memory location. Continue to enforce
+>>> non-NULL for the original vm_memory_attributes=1 case.
+>>>
+>>> Signed-off-by: Michael Roth <michael.roth@amd.com>
+>>> [Added src_page check in error handling path when the firmware command fails]
+>>> [Dropped ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES]
+>>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 >>
->> [...snip...]
 >>
+>>
+>>
+>>> ---
+>>>    Documentation/virt/kvm/x86/amd-memory-encryption.rst | 15 +++++++++++----
+>>>    arch/x86/kvm/svm/sev.c                               | 18 +++++++++++++-----
+>>>    virt/kvm/kvm_main.c                                  |  1 +
+>>>    3 files changed, 25 insertions(+), 9 deletions(-)
+>>>
+>>> diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+>>> index b2395dd4769de..43085f65b2d85 100644
+>>> --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+>>> +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+>>> @@ -503,7 +503,8 @@ secrets.
+>>>    It is required that the GPA ranges initialized by this command have had the
+>>>    KVM_MEMORY_ATTRIBUTE_PRIVATE attribute set in advance. See the documentation
+>>> -for KVM_SET_MEMORY_ATTRIBUTES for more details on this aspect.
+>>> +for KVM_SET_MEMORY_ATTRIBUTES/KVM_SET_MEMORY_ATTRIBUTES2 for more details on
+>>> +this aspect.
+>>>    Upon success, this command is not guaranteed to have processed the entire
+>>>    range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
+>>> @@ -511,9 +512,15 @@ range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
+>>>    remaining range that has yet to be processed. The caller should continue
+>>>    calling this command until those fields indicate the entire range has been
+>>>    processed, e.g. ``len`` is 0, ``gfn_start`` is equal to the last GFN in the
+>>> -range plus 1, and ``uaddr`` is the last byte of the userspace-provided source
+>>> -buffer address plus 1. In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO,
+>>> -``uaddr`` will be ignored completely.
+>>> +range plus 1, and ``uaddr`` (if specified) is the last byte of the
+>>> +userspace-provided source buffer address plus 1.
+>>> +
 >>> +In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO, ``uaddr`` will be
 >>> +ignored completely. Otherwise, ``uaddr`` is required if
 >>> +kvm.vm_memory_attributes=1 and optional if kvm.vm_memory_attributes=0, since
@@ -90,29 +140,39 @@ On 04/06/2026 20:05, Ackerley Tng wrote:
 >>> +prior to converting it to private and passing the GPA range on to this
 >>> +interface.
 >>
->> Just to confirm, so the sev_gmem_prepare doesn't destroy the contents in
->> the process of making it "private" ? i.e., the contents of a SNP shared
+>> Just to confirm, so the sev_gmem_prepare doesn't destroy the contents in the
+>> process of making it "private" ? i.e., the contents of a SNP shared
 >> page are preserved while transitioning to "SNP Private" (via RMP
 >> update).
+> 
+> sev_gmem_prepare() does sort of destroy contents since it finalizes the
+> shared->private conversion which puts the page in an unusable state
+> until the guest 'accepts' it as private memory and re-initializes the
+> contents.
+> 
+> But that's run-time, when the guest is doing conversions. The
+> documentation here is relating to initialization time when we are
+> setting up the initial pre-encrypted/pre-measured guest memory image,
+> via SNP_LAUNCH_UPDATE. That path calls into kvm_gmem_populate(), and it
+> is then sev_gmem_post_populate() callback that actually finalizes the
+> shared->private conversion. The sev_gmem_prepare() hook doesn't get used
+> in this flow (kvm_gmem_populate() calls __kvm_gmem_get_pfn() which skips
+> preparation).
+
+Thanks, thats the bit I was missing. Skipping the prepare path, with 
+__kvm_gmem_get_pfn(). I was under the assumption that 
+kvm_arch_gmem_prepare() was called for all PFNs allocated from gmem
+and how SNP was handling this populate case.
+
+
+Thanks
+Suzuki
+
+
+> 
+> -Mike
+> 
 >>
 >> Suzuki
 >>
-> 
-> The following is the guest_memfd perspective, I didn't look at the SNP
-> spec:
-> 
-> Do you mean specifically for KVM_SEV_SNP_PAGE_TYPE_ZERO, or for any
-> type?
-> 
-> guest_memfd has no plans to do any special zeroing based on type.
-> 
-> guest_memfd decoupled zeroing from preparation a while ago (Michael had
-> some patches), so zeroing is supposed to be once during folio ownership
-> by guest_memfd, tracked by the uptodate flag, and preparation is tracked
-> outside of guest_memfd. So far only SNP does preparation.
-
-I am talking about the SEV SNP conversions (specifically quoted in my 
-response), I will follow up on Michael's response.
-
-Suzuki
-
+>>
