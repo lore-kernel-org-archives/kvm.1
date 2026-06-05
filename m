@@ -1,197 +1,146 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDEA40B6F2
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 15:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780672571; cv=none; b=AnTUSSJqow6/czoNldoWBYyFE5rrOqoXnkjl6rGz4tFknDyxP1LhNmgq8fVLjkKbeiyM+nfcpmMji8vO0dnGIM2Fi2hjMeol6bigg7ZP+WbGSPZdLjCzQft6kZclV3tTt/0EjOSMd4spkfFbHsIF0rYpRabatnAdrGXuG67wlYA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780672571; c=relaxed/simple;
-	bh=aShNvsl9/UV6Crwi+FiPnYS1KsTUHaoROsqg2c9hrKo=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Y8okwKJWGlRvecFK3n/f86rzguQhbKRGwMvbkQ56+zXOyeGIbinkZVgrUzuqJ90MGbCLTXeOvYVgqw8gxZwW8ZaL+Mk7u10FjaG+9ULiDm+1GlHb9vD+jx33GTGUf8qGOiIVTZHIneDibSMOAQBP2iroxwWl7BP8uz1ijq/+fJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=U8XPoeJ1; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BC1149C6F
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 15:31:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780673466; cv=pass; b=VL82c5tT76nOYuShDXz5k4Cpyl+6cR6t8/QW7yAeCY1h4mmOhnZDs6rpT3AkXJnq4Hcb/8lwVif9MtjSC9NDNlyLFZzWKRjE2Clps3nl4g0BGdATxIuv5w35doRMbBuulbfH7oeb0Z2eNRuIsR/a7p/fnGdLhLDCvPqRE/tt/tA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780673466; c=relaxed/simple;
+	bh=eMelHGD3cdQRkDg51khj7jdfPOgIx10EdmbVBnS2vYw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EzPv+BXqX26RkG4tBdNXAE0rKm2yor4dsYwjxIQuqg8R0ddbknU4IPWK3w0AxQrrJXxeFBpVmzOdmJJJ8tKT3nGJdWIV7Duyz9W5UYdTlfLVl08Kf+X8iiDMw71SDMgIvcWbCZI5csOBa+zcxu3V9C48TzUnamXdB5X++Pnfito=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=duCt5yFX; arc=pass smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="U8XPoeJ1"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-36b9b15af73so1745341a91.0
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 08:16:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="duCt5yFX"
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-69e67e90ac4so638144eaf.0
+        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 08:31:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780673464; cv=none;
+        d=google.com; s=arc-20240605;
+        b=l0wVoelVmHQJdAZmOBBdMugocSA8dIQpZF3owVASPgal/RKGaRU2XGdoOKhzZKTqRK
+         8DvKS8Ud+p+py4v2peLK+lbe8mW794Nf4WTGIZcjOAXE/KdkZVk6n4N7z8GuNoDxVZDs
+         8ZhOkI56HC0UMMmfAuaImbOWjar7POuTdmJzR3m5eOaVeHLGrYArIx1C9Z4VQzkXXD8Y
+         5Djcxrx5yvhwo/toCdjF0MFp8LUbOI+qW4U3jgOvOzPmtSgorH4yKGQY1L32pR3GFSUs
+         NdfunFTdxiQT8a0xg31uQUDzerq1/QFpsFZfEywtspcM8SodMjNXlhjL7TlElOzmhoj/
+         QE7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yLv7V9PhIjsPqwrVWbCtbGOYDdOFpGh6+/cNhdyXtio=;
+        fh=oDAkt8vwZH/ra2WYwxCXogNUFiaVKW45AZCBxhtqGFo=;
+        b=Hi95Cl1m+XSYTV4B93EeKMeAezQDtdxR5vUC6uolrIAPcfMEFmlwm+L81/M2ihOKw4
+         YHmnFfPB9KWGJESkDoYBp6jfvctkcwjSGtJtMcxkgpyR7CgjBVFhJvz7nRFbrmRVIcaR
+         /23KI+RI5i4Lon4qmyrjTUbdp39bmIPxivT0VHSMIdzeN1nJZy1mDRr8jTwXlSLbN99m
+         r2X88o8SBH1iKRuo4AQaS0xtYaXsJxhHPNd6q4rqrUea4EagXk60YKacumNgoTefhOEK
+         E+TAeDAYnV7CqZc5bIcUORmtTuReok7n1wQhEBzmi7cDh8vvAkLsPLDiDRHAEu67oXNo
+         SkcQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1780672569; x=1781277369; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1780673464; x=1781278264; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RIWsKvi/6lQbiJxe71BS27OCJvhTSW9AzUP/bpE81+Y=;
-        b=U8XPoeJ1Xy0VGoPLZbCpBi4T9sa9C8yKk0epoalWMDvtKwYEE3TgWKDQqODCeiTpsP
-         0zbB7AqbX8y/nifDtgiN7OXe5NHWc909+0sIjKV66RLZBezPBgDyf/Ja84PPGGe7FpCP
-         eOeeQuGbtFbcTV8Uou/H5Q5vSkIXGgVYfhd2FnrHWxU8Uc0hss8RT+fD2QWNM7ioodkY
-         LPQypblWOhA/E4SNRC1qZuPfSVh1tUyddpx/Z4+893pY5vK/4dpDwfQjjRBSaUgKGliE
-         1baNufm39IMldv+GVkJMaNF1UCezcoQ+vliV3moezH8vkRRHfx28xYw1414lddLi/8/P
-         bTXw==
+        bh=yLv7V9PhIjsPqwrVWbCtbGOYDdOFpGh6+/cNhdyXtio=;
+        b=duCt5yFXYu1pPhDZ7h0i0kxC3ArWOHaA7MW9IQX7D277BsppANKXCWoMAIF22gIngW
+         MGwli/M4dRoKIz5w+wBJds2dieIeYOsZfoFIs0aIjAtHLfgEHCXOKxaCuzesMVZA4slo
+         CnAa2qwH2x3jEGWFs/0akj4pREiSm6zzs3WFGyz54r2CMHit/B03QNdA1CdKO22t1ED6
+         9VYlK95clnTL4NBLQwjVPy+ZwEGL7g4kAa5agCelFPh9E28WT6dFeNTDwR6YiIYQ9gUI
+         l5PPwzT9it31YbK1UZ5qSpTCYFsDdkIx2JKJUlu7pttxHvmgRnWaAHqW81nPEG5RvBq7
+         YfeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780672569; x=1781277369;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RIWsKvi/6lQbiJxe71BS27OCJvhTSW9AzUP/bpE81+Y=;
-        b=V+hHZXKfJ303rR1/8YGQAS3myLv55GtaAS1FLAt5492y0+n/WorbOnia1stURsFvMd
-         Td/7xAieUCdWzzDCdOQgkmg/Epf9UtJ4HJqUNtOoGzvR0rxTmkmZ81ODfQ664o9dy8UR
-         kdPhp2Zn/wfeRLsy9JwFmmDNXfk/oikw5dndoKONVVvMvG2K1MVY5/00/ndLHB3en9iq
-         9GUIjFtubkYJlmILkZJZfRsykajjCTxanLFAHGIL4yI7o4ITRxybBr3jmiwDPNVfeWLB
-         50Fe3gYMa/ID/Tfl/cSzaM37PhHX3wWa32vcvETYMBtpoRO6z5y5v3BaAGTf3Z3nkKJw
-         VZwA==
-X-Forwarded-Encrypted: i=1; AFNElJ83unFYH3sxga+Gyv0mNDTG4+b9bVJEu5EdGruwjoMM+ub2DG+Zg3/39Gpz6zqe4gYiBzE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxizQiRTV+wM3hUXE3B2q4doJYSe9/3SJzNedVxt8M55PkWmqCX
-	9sUhAVc/6ce2fp9Ik5Yb4ih0sldl1d5e0U9fI5WxTyHSADS8pbiTeAi3MqvxI+ZNzuNy3pGMpTa
-	i4oNw
-X-Gm-Gg: Acq92OEEHkruiQBYx/UUlRrT4rfIrG4mnfLjjk7S4bhv1OcbQqP60zWLxJWKJN/8wxQ
-	QiPdxU91T3Ac5uvoEECWAwQbNaia/vC5jWAfwlwJ60uqXrMQCQE9+s6UUfmXkM+Nt9RUeaGPG83
-	lpEK6ETBXXF4YivCHWwM77D4C0fFoPx6R/v2wyzfHTMqWlKOX6oYJ4GdgTyKi9XCCmfsVKxVioh
-	2wC2/ZiymxHTGJGEN2SFMiWFgM915RvTvhF7iG02AY6zZUrmFWyUGWyqYaNzW7yvEP0MZ3JRU8y
-	ED/AaVTMgFUfR/23KUjNCYXvFvO5qJ7CRPB4hMt1Vtw/0zfoWkycQ2oZBQ8h2K8BWhZjIDcOdAl
-	zIJN0v+Au0WQDZJZp0CkZ533G/AloR+oy11cef2X/gyjV7j4j4zLFYAjZZDKyCtNJws+PtJ3gKU
-	hzCzOC1JtBEQhP0/0pNJtIxAEnCgfDw76lpSZL6yJjh1FeYdCWxLt0rgbAvAOQvvo=
-X-Received: by 2002:a17:90b:3dd0:b0:36b:8873:d96d with SMTP id 98e67ed59e1d1-370ef3e4eb0mr4796160a91.11.1780672568701;
-        Fri, 05 Jun 2026 08:16:08 -0700 (PDT)
-Received: from smtpclient.apple ([139.177.225.251])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6dba82c6sm6695319a91.13.2026.06.05.08.16.05
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 05 Jun 2026 08:16:08 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+        d=1e100.net; s=20251104; t=1780673464; x=1781278264;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yLv7V9PhIjsPqwrVWbCtbGOYDdOFpGh6+/cNhdyXtio=;
+        b=aOMwtbfe6YFZgh9GCS68PKfRPxp65RICna49zSp0tFlziuZytnFKvr028mXFxYYf/+
+         cA3ABe2gvJC2720uo6CBcaf8WRKU7a5O8ciZdzx+TnXCI21clNs/jenSkJi6V+wiUc34
+         jirXt1ClNjfl6KuS+uE/kowKa07lErhPLTAZ0cMGfHRYI26m88F1AuCrT1iuLmEtr01l
+         5A1QxWfzOODWT+3ehro+JYs1U8XwwyP8GQ8ByXdO1mSAuKjBCw08TPHroZu5/SftbtLS
+         FQr0VnGjM4cvG0wAMuJARSWltBWwbY14Dud0PTBf9lVOJH6enTcoG4bfRCJcbNV+08jP
+         8ozw==
+X-Forwarded-Encrypted: i=1; AFNElJ/9BdvcAoCAsRCMZlmxcVG2pgXKdRcJC1ME0vEqTeQthlAAmGAviXBJ12UTPK95HXWvpSI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcSMfkrewEicrbCNIVMB2mvR0gp4ySJhVmbtonM0Vy1ZCklZIK
+	0um9zUBbNnSmwgioZqzWCisphI8iiKpxOeVBiUBcNKucNkCa+mY7xLYuyLfoLIZWBjUMkx7jLRq
+	SOEwwvv2O2RNVhdIg4qklj40Yis1r9qFVl1CDWau6ig==
+X-Gm-Gg: Acq92OH0lNOOBWiWUy7aJwey+tBkiS9PTb7qWk6a8E9xXiyq2Z7fqDeepLwMwVc2PMa
+	egM79YcUlwcuQL5ZGqE4OVBYnlXOcoXd3AB1jaWIlIc1p0k4PuDfVul6PMRHzQQhsnQXpHN049K
+	iVzOcXtyMstscVR7GQJlYMoUqQIWxhwpWX6V7D09ZhT7z9qRGlqqFTMEQiN2croKpoYCx9f3INf
+	YnadEnha3sLqCK1UdweNnqdydR9NjgcgqmfLMkN7A9yjzaEbsOCp8ULfk0wzKzZ8MSS+sNjo8Ak
+	2wOGKD1yH2taqTt/BwZmOGzLpgJmwMGaLlIBFcud3HtLLeAKwVrGv0RldTqh5S4jziJCx3YHMe0
+	R6hleHvxI7IcE34cd7Tfp3lUScp4dxm7J3V8q
+X-Received: by 2002:a05:6820:570a:10b0:69e:7061:1ad7 with SMTP id
+ 006d021491bc7-69e7061218amr765816eaf.11.1780673464357; Fri, 05 Jun 2026
+ 08:31:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [External] [PATCH v3 08/15] riscv: Add Zic64b to cpufeature and
- hwprobe
-From: Qingwei Hu <qingwei.hu@bytedance.com>
-In-Reply-To: <a2o7tkslomyf43dcs4tultdmrzcjgvkjh736l7lqemasljhs2j@tyixe5krxw6z>
-Date: Fri, 5 Jun 2026 23:15:37 +0800
-Cc: Conor Dooley <conor@kernel.org>,
- sashiko-reviews@lists.linux.dev,
- kvm@vger.kernel.org,
- devicetree@vger.kernel.org,
- robh@kernel.org,
- conor+dt@kernel.org
+MIME-Version: 1.0
+References: <20260601-kvm-get_reg_list-v2-v5-0-415d08a2813b@sifive.com> <20260601-kvm-get_reg_list-v2-v5-1-415d08a2813b@sifive.com>
+In-Reply-To: <20260601-kvm-get_reg_list-v2-v5-1-415d08a2813b@sifive.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Fri, 5 Jun 2026 21:00:52 +0530
+X-Gm-Features: AVVi8Cce39tEXaZNh-7VPeh51marCJL4-w1WK5dzfxiMGfPYAU1071UHao6Z9nE
+Message-ID: <CAAhSdy0m+ZpxBznL-gx5ozpbyLzU7rO6zZnnB=5eZt=eLvV+sA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/5] KVM: RISC-V: SBI FWFT: Mark vCPU CSRs dirty after
+ setting feature value
+To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, greentime.hu@sifive.com, vincent.chen@sifive.com, 
+	zong.li@sifive.com, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, inochiama@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <72942B6A-0B50-49E4-B1F4-E69D1A09288B@bytedance.com>
-References: <20260603-rva23u64-hwprobe-v2-v3-8-5529a7b28384@gmail.com>
- <20260602232800.768311F00893@smtp.kernel.org>
- <CA+Ck9FbKRM0wjJMg1fQpdwmow8cf_zTfir7V6+T=CRxU+vomdg@mail.gmail.com>
- <20260604-rice-protegee-3a0b8e4cb609@spud>
- <u52q565xhv5s7gz3wbh4heplhbm4pv732s5kqvf4deiw6ceb4t@n4bnpzu5kabs>
- <6940420B-C9C3-4D60-AB7F-7FBC4B93D855@bytedance.com>
- <a2o7tkslomyf43dcs4tultdmrzcjgvkjh736l7lqemasljhs2j@tyixe5krxw6z>
-To: Guodong Xu <docular.xu@gmail.com>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
 
-Hi Guodong,
+On Mon, Jun 1, 2026 at 3:56=E2=80=AFPM Yong-Xuan Wang <yongxuan.wang@sifive=
+.com> wrote:
+>
+> Mark the vCPU CSRs as dirty after successfully setting an FWFT feature
+> value. FWFT features may modify CSRs (e.g., pointer masking modifies
+> henvcfg.PMM), and failing to mark them dirty can lead to the guest
+> observing stale CSR state after vCPU scheduling or migration.
+>
+> Fixes: 1323a5cfe52c ("KVM: riscv: Skip CSR restore if VCPU is reloaded on=
+ the same core")
+>
+> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-> On Jun 5, 2026, at 19:32, Guodong Xu <docular.xu@gmail.com> wrote:
->=20
-> Hi, Qingwei
->=20
-> On 2026-06-05 00:43, Qingwei Hu wrote:
->>=20
->>=20
->>> Ok, I get your point. Agree, Zic64b/Zicbom/cbop/cboz can be =
-implemented
->>> on each hart independently (at least spec doesn't say no). With this =
-in
->>> mind, the validation of Zic64b should be like this:
->>>=20
->>>   if ((riscv_cbom_block_size && riscv_cbom_block_size !=3D 64) ||
->>>      (riscv_cbop_block_size && riscv_cbop_block_size !=3D 64) ||
->>>      (riscv_cboz_block_size && riscv_cboz_block_size !=3D 64))
->>>   return -EINVAL;
->>>=20
->>> This will allow :
->>> 1. A Zic64b hart with 0, 1, 2, or 3 CBO extension and block_size 64
->>>  passes the validation.
->>> 2. A Zic64b hart with CBO extensions but block_size is not 64
->>>  fails the validation
->>>=20
->>> Thanks for the catch.
->>>=20
->>> I will fix that in v4.
->>>=20
->>> BR,
->>> Guodong
->>=20
->> Hi Guodong,
->>=20
->> Thanks for working on this.
->>=20
->> This overlaps with my earlier Zic64b cpufeature patch[1].
->=20
-> Thanks, and you're right that your patch predates mine. Your =
-validation
-> was also correct (at least resonate with what I planned to do in v4)
-> from the start.
->=20
->>=20
->> and Greg confirmed that Zic64b does not imply support for any CMO
->> extensions[2]. It only has meaning for whichever CMO extensions are
->=20
-> I'll add a link to quote this in v4. Great info. Thanks for checking
-> with them.
->=20
->> implemented.
->>=20
->> Since the Zic64b cpufeature support in this patch overlaps with my
->> earlier patch, if you keep this work in your series and base it on =
-that
->=20
-> Yes, I'd like to, and I prefer, take the your patch into this series, =
-and
-> credit you properly. In this series, I also added dt-binding, =
-documentation
-> and howprobe, and make it consumed by rva23u64 detection.
->=20
->> patch, could you please put my sign-off credit for the Zic64b =
-cpufeature part?
->>=20
->> For example:
->>=20
->> Signed-off-by: Qingwei Hu <qingwei.hu@bytedance.com>
->=20
-> Yes, since your work came first, I'm happy for you to be the author of =
-the
-> cpufeature patch, with me as Co-developed-by:
->=20
->    From: Qingwei Hu <qingwei.hu@bytedance.com>
->    ...
->    ...
->    Signed-off-by: Qingwei Hu <qingwei.hu@bytedance.com>
->    Co-developed-by: Guodong Xu <docular.xu@gmail.com>
->    Signed-off-by: Guodong Xu <docular.xu@gmail.com>
->=20
-> Let me know whether this works for you.
->=20
-> Thank you for pointing me to your existing patch.
->=20
-> BR,
-> Guodong
+LGTM.
 
-I agree with this arrangement.
+Reviewed-by: Anup Patel <anup@brainfault.org>
 
 Thanks,
-Qingwei Hu
+Anup
 
->=20
->>=20
->> [1] Link: =
-https://lore.kernel.org/all/20260528141630.2741710-1-qingwei.hu@bytedance.=
-com/
->> [2] Link: =
-https://lists.riscv.org/g/tech-unprivileged/topic/question_about_zic64b_an=
-d/119631059
->>=20
->> Best regards,
->> Qingwei Hu
-
+> ---
+>  arch/riscv/kvm/vcpu_sbi_fwft.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
+t.c
+> index 2eab15339694..5e4aafb0cbf1 100644
+> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
+> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
+> @@ -521,6 +521,7 @@ static int kvm_sbi_ext_fwft_set_reg(struct kvm_vcpu *=
+vcpu, unsigned long reg_num
+>                 break;
+>         case 2:
+>                 ret =3D conf->feature->set(vcpu, conf, true, value);
+> +               vcpu->arch.csr_dirty =3D true;
+>                 break;
+>         default:
+>                 return -ENOENT;
+>
+> --
+> 2.43.7
+>
