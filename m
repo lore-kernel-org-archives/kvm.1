@@ -1,169 +1,249 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468343E1D05
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 20:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780689825; cv=none; b=jqLKcz/JqBakdnfZGk9xYcGfFoQg3ijC2UAwFlUinJTaHu3HdH86NaQY3PTDiX7kIHT+5Xf4P0oYG/+YA8GPUDU2/9Tz1fbAw1LHSFrZWN0p4+e/90IPVWgfr72fLbSgvK3w9hmBgFcUk6vQDqHWKpMcYNWssCwF0+0mCGs2et0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780689825; c=relaxed/simple;
-	bh=+4CIY7Ynis+rMHOl6QrsbGIprSmxQOXY5/oYOOses1g=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JKRp9ib3Q3AStbICtiDCL824RGhEKMETQSDPeOWWs7KNvUtXSA+8v2pIdF5JoIZ9Qk+L4d+BoV/tt7YGP1/d3BkZsHhEWtA/vU6vPWVIeH7NLgk/i0gCswElsAq6xfAOalOXLBtFyLxQTsY/elv6oI2Qgbwxrl4vKsgA6NixQUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d3MzVZN2; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7953033DE
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 20:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780689906; cv=pass; b=irnWTYD0ZaG1W3feGSDyPt+a0DRGqWIaCw0G3oPxeJc4HniPYvHxvmQECEPSstwlStvjhLZRmD/BUVBWu7N4cMIRuL58zdd1LXVoFPizgTwQFlJU2ic9ueU3r8FYlGo3e6zfrd1kvSuqaZ6i8Ee/DVTInIE+RdJyXWBHWeORsJg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780689906; c=relaxed/simple;
+	bh=7/mWzWxPI8oQqXNv3WJswfOhn6IHE6PhTtx+2SIzYJQ=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=juga5kk0emSRyubcCgP9PtZDQbfDUv+i/64MkBTIR/wHBkVj0kaR+aUrkxmosaPStdrZl+6WKis937OIc/M8w31UhBmLF9PZiG+9n66CQlje+DvsQGPU7DhmajGQYQA5kkTfGibJ8cTnCVdhrfxbTPSt5yjXyOM1RjRC7m3Xk6Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cZsIH11h; arc=pass smtp.client-ip=74.125.82.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d3MzVZN2"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8423efbfb61so1448245b3a.0
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 13:03:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cZsIH11h"
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-138129a622dso1058171c88.0
+        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 13:05:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780689904; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bkTkceyoNnT0n7m8vmnBR2z9AD1DIx3HpHoY6SAVeOHRJUJpOa21hiuOVEI9tdnFbh
+         oBfdL8ZcpAxcTdjyoFsyDMNM+WgGrJXO4wr8eeiAbMBpMifN1vAepO0071dbeuCMKxif
+         NFwcAHhtb5KwnICO8qWWqnmnuOvw+V2NV1b4MUDpj05KRBDB+n82wIxE/pw+3dYjbuIf
+         RHKGMZCQjp+ViZa1CcPc8Zs9L9sfTK+NEouJVLIFMu+Mued3IBCPiMETivIPXnrDDW93
+         Qlvk7pWGrchg9BWkuFc6YeLkj5EZg9curuXHzuq/dZTwyB5+WZGzsk5z2OhLYd9z/rP9
+         X3FQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=ETQ/gp71oQXS00v/q0CniX+rY+uk3xd7pEHCdqYInDI=;
+        fh=mRFvqwJ68Wcy2jCqYCzVytCqW6QhRNRiTRYn9WS7xcI=;
+        b=GjgZ/BG2Xzw2wjSoOnNH0iQTUK2KPhtKjiV8xW4db794jw5KnxVsrhbaiQGIpLpN8T
+         Y/4AvZtBnwsyqMlQLtuP23PWmHXDoaJxEEEQNgrR09nqXu5/wf8jNyoEFAGhgxj+Y0Kg
+         CyXo6wlpWirxSZlG0ub+Nj7jiZb1UgXo5IGi0vOUk/LqE8ykTI8rmW8lt8Vm1GmJzoXk
+         dv929ToJLQ4NypFSpxB+5SbqtmwCS8hUUmocBxHkGK85aki/xpQ1TWZAXvpS0z+mkIZF
+         32IUeUh6ihR0FLrqYhLLyWuK1k17t1Zx2d8Yay8lX+r4eh+fzUEV/rAhPpac3aC9/9L4
+         e7ug==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780689823; x=1781294623; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wBLcJpUQejqUn4D2+44Z/s9VjbxJzGZ5eXm9TJWqVPA=;
-        b=d3MzVZN2qNxiwhBjwWHLxBJiIAFYZtxnA1X19aByQE69UnEFilMlHJXAO8ZV4fDALn
-         tKL1zJFjQWuF8crRFfECoFo81PXyOmD8+jn+PTQZRY81JlstEDI9iqjKDh9idl15KaIi
-         BcAacd7eWidND9nRSfkDbhxg0odnM+Tu0oc5PtsQ4cTHT0iY/CUUZIlWZ/2DphcAGXk/
-         zpKXKjOzGl3IfEl8lNuMIyznL9UMXBgb1RQE2vagN9SW7d/ulODHBg+WNa6kCkp/yp5C
-         ZixniH7xI7d2KsvugHBOUXDS0ZGSv24cihWkfxfLamNIu8pZEXanxr/pzwQD0Ae6L0JG
-         R9xQ==
+        d=google.com; s=20251104; t=1780689904; x=1781294704; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ETQ/gp71oQXS00v/q0CniX+rY+uk3xd7pEHCdqYInDI=;
+        b=cZsIH11hl8Pdobufke957AihMbed5MXpSGt7Gff1hSgGSzEVGRz0j/viw2pa71T+tp
+         4JYd1lrf8pFSqRRl10B9gl9aXbbvTlSF9omdmPjPzTzzbWtgjLbkBkq91omp2mTrYYwr
+         S2hk6mlwukIOb+ogfw/l+Bc7VnMeovR5za2M64xdIIGz4TsR/ttTMZKJDeVwdW+0SUDm
+         riVUAVQKgCfhPUDtzhtVjNwNgIgtXaj+8TUZXX9sw/Pc5EbZmj3hs8vh9qvOQa9odfDt
+         f656oLM2SSNr6mloTWWY77N2Ydk0pQmNtAtQzGgFvNvxiUmoBvVMiVaIyGnY7LXTQ0y3
+         tHXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780689823; x=1781294623;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wBLcJpUQejqUn4D2+44Z/s9VjbxJzGZ5eXm9TJWqVPA=;
-        b=nmcGQJLGJ1bryKkApqgosMcQRFR0PQqg/+naFwReKpGATeGY8/mFZPUl7tWjM5HKFz
-         /GwzQu6Xy6yV+FHkYId+5PQ4KwIUq1dzQvWhdg73tlQ/CL4XHS9bjz6jEZCAmaJiQOen
-         SR+rAz8YPcWMBv+xbf14F2xf/5RXfcJ+Is9jTbjXN+EHd5dMelo5upkeZPUB4aJO/6Xh
-         yrmKBSUCjtf9iZoVeSHKdEm+RY8JbJRXaQ6kyIFT2jqWMpb7mCX5736nDCq6Ko6zMj3v
-         nq6JApFYYgHml4AZIHnefsLBsa1/DqG66Z5aqzss7erGTFP253WfADAgBkv2IK8IVH2A
-         4RdQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9342FNRskj3F6Apv9/PhBjOJGLutUwZR8zM3W99xy7Rw+QMpq/9e7ybNDeVYmbr8WL2so=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx15aZbO7WofbMXJhnlR/on0dWDgVAUa10s74VtW+cZAZv7wj7H
-	1EBb/s7oH3K2NNDvN0VwGvTFFxSFJQCzcVoFHVcrsV9vTvu0uiWTUcLcUlFf6xy2/hck8VgXDMH
-	gu6eWnQ==
-X-Received: from pfbhx1.prod.google.com ([2002:a05:6a00:8981:b0:842:5a44:a83c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3ccf:b0:82f:72e6:ed4
- with SMTP id d2e1a72fcca58-842b0a9d376mr5173975b3a.0.1780689823138; Fri, 05
- Jun 2026 13:03:43 -0700 (PDT)
-Date: Fri, 5 Jun 2026 13:03:42 -0700
-In-Reply-To: <e1c32d6ba008a443797d26dba21cb9ae59b39f93.camel@intel.com>
+        d=1e100.net; s=20251104; t=1780689904; x=1781294704;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ETQ/gp71oQXS00v/q0CniX+rY+uk3xd7pEHCdqYInDI=;
+        b=X861VtKnhj7KcUMHStkSXN75tdrpHxZRzORerD8kQ66F/5tEO5bbWB916a7auwUTJT
+         NnCNylXI3iueTEED3jt9QxUI2h+KhInZU5H0Thw4wRlA+P8EI+PesrGqD6awjfDnTgUr
+         qhRiRN5R+F/kP5/IXl+5oRtwnIsGRD61vHG1XaqBQupEPBuaSM/q1COsXI5jTLZsSCQy
+         NVKn/gUmaQ3QVUyOituDh1TgRnnIMqrJLI8U7+Ce9tG5bvoOz7BpSl3J2Igm4VrMD3MG
+         KJ0IYKLa+Mb1GNd2XamAiW6g0/qPWCMWoSykAa4Ip4PwoWv2+TOhWYJrcCsZQGHzpmzz
+         uqrw==
+X-Forwarded-Encrypted: i=1; AFNElJ+vA5CISDAVcHDzQeERL7fKAiptLyKsBi+B5JWVFEyUe3obtotVdw1VIjh1hJrWUf+mcg8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweYncnjzN3vB21v1nFS/QrCUesdGNMfGtIC2i2ndjB7oxwCiP1
+	Fi1cBtjG0n0mbMhVWMtHVt7NQAT02p482iMDvWwTjIuM+C/KEo8wqR005s8FTMNBM+GpjVMpfQP
+	ZA889LoyppdkTMBVs7Q3vcJTSR4TL/9irtj+ehbMo
+X-Gm-Gg: Acq92OE66U3KXyEsAd2FZUQLi5fE0dJZxh58ooiVK/rrtwOmv3tz7KQZYLguolUpsqp
+	6AueiWF8iPO4EGw9t0jEeEstCOy35k0Zy+VxyOo5mGkXuxKoueoGO5xNEyA5NR5gTVHMONtCb3N
+	KAGtLVzWx7Zq2IeUkucm+a6hvcgV8LgG/oJhY0OviCIu4VmxkmIbs35e+kGKqclsIRtPsVJ7gAS
+	QdKdFDG7UBPVqRL0tEgu7X4UJM50kyWEwYyrvmHaiHeBHsuborTNlzpt/mY3UD8okXOrS+b0ec5
+	kMcYxB3f4GPMXtlg0hUqJ4LlbSSyIZfYegmhmRVwFjb/P/YOzWwK2zkgNsAzWlqyZo17UrVpALY
+	LJzZb
+X-Received: by 2002:a05:7022:6a6:b0:137:8921:4fe1 with SMTP id
+ a92af1059eb24-1380674296dmr2844699c88.37.1780689903477; Fri, 05 Jun 2026
+ 13:05:03 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 5 Jun 2026 13:05:02 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 5 Jun 2026 13:05:02 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <9huz33z06bu1.fsf@tarunix.c.googlers.com>
+References: <cover.1779080766.git.tarunsahu@google.com> <9huzwlwnbgdd.fsf@tarunix.c.googlers.com>
+ <ahmbVaCUcBrYK8qO@google.com> <CAEvNRgHsJbGz8k8vgCn_HSxeeQ8agEm4oBYQQ0+b3gFb-aVokg@mail.gmail.com>
+ <9huz33z06bu1.fsf@tarunix.c.googlers.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529222223.870923-1-seanjc@google.com> <20260529222223.870923-32-seanjc@google.com>
- <e1c32d6ba008a443797d26dba21cb9ae59b39f93.camel@intel.com>
-Message-ID: <aiMrnk8a5fsWfze9@google.com>
-Subject: Re: [PATCH v3 31/40] KVM: x86: Move MMU helper declarations from
- kvm_host.h => mmu.h
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
-	"dwmw2@infradead.org" <dwmw2@infradead.org>, "paul@xen.org" <paul@xen.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "dwmw@amazon.co.uk" <dwmw@amazon.co.uk>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "yosry@kernel.org" <yosry@kernel.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Date: Fri, 5 Jun 2026 13:05:02 -0700
+X-Gm-Features: AVHnY4L2Vz8Me8pcWVFAkqKnhq9-w0SZ89mR2JAxVASVs_8LCadd0XSvG-O3nmY
+Message-ID: <CAEvNRgEQ8SbqOL3yAri2NO7BoPd=-tqura9O5MKq57m1OLwkGw@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 0/8] liveupdate: kvm: Guest_memfd preservation
+To: tarunsahu@google.com, Sean Christopherson <seanjc@google.com>
+Cc: axelrasmussen@google.com, mark.rutland@arm.com, skhawaja@google.com, 
+	Mike Rapoport <rppt@kernel.org>, sagis@google.com, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Shuah Khan <shuah@kernel.org>, corbet@lwn.net, dmatlack@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, vannapurve@google.com, 
+	Pratyush Yadav <pratyush@kernel.org>, david@redhat.com, aneesh.kumar@kernel.org, 
+	vipinsh@google.com, Alexander Graf <graf@amazon.com>, David Hildenbrand <david@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, kexec@lists.infradead.org, 
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jun 05, 2026, Kai Huang wrote:
-> > 
-> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> > index 1143140592df..f217403e18fc 100644
-> > --- a/arch/x86/include/asm/kvm_host.h
-> > +++ b/arch/x86/include/asm/kvm_host.h
-> > @@ -161,12 +161,6 @@
-> >  #define KVM_HPAGE_MASK(x)	(~(KVM_HPAGE_SIZE(x) - 1))
-> >  #define KVM_PAGES_PER_HPAGE(x)	(KVM_HPAGE_SIZE(x) / PAGE_SIZE)
-> >  
-> > -#define KVM_MEMSLOT_PAGES_TO_MMU_PAGES_RATIO 50
-> > -#define KVM_MIN_ALLOC_MMU_PAGES 64UL
-> > -#define KVM_MMU_HASH_SHIFT 12
-> > -#define KVM_NUM_MMU_PAGES (1 << KVM_MMU_HASH_SHIFT)
-> > -#define KVM_MIN_FREE_MMU_PAGES 5
-> > -#define KVM_REFILL_PAGES 25 
-> > 
-> 
-> [...]
-> 
-> > diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-> > index d30676935fff..a6b871253bd7 100644
-> > --- a/arch/x86/kvm/mmu.h
-> > +++ b/arch/x86/kvm/mmu.h
-> > @@ -15,6 +15,13 @@ extern bool tdp_mmu_enabled;
-> >  extern bool __read_mostly enable_mmio_caching;
-> >  extern bool eager_page_split;
-> >  
-> > +#define KVM_MEMSLOT_PAGES_TO_MMU_PAGES_RATIO 50
-> > +#define KVM_MIN_ALLOC_MMU_PAGES 64UL
-> > +#define KVM_MMU_HASH_SHIFT 12
-> > +#define KVM_NUM_MMU_PAGES (1 << KVM_MMU_HASH_SHIFT)
-> > +#define KVM_MIN_FREE_MMU_PAGES 5
-> > +#define KVM_REFILL_PAGES 25
-> > +
-> 
-> Btw, I found below defines can be moved to "mmu.h" too:
-> 
-> #define INVALID_PAGE (~(hpa_t)0)
-> #define VALID_PAGE(x) ((x) != INVALID_PAGE)
-> 
-> #define KVM_MMU_ROOT_INFO_INVALID \
->         ((struct kvm_mmu_root_info) { .pgd = INVALID_PAGE, .hpa = INVALID_PAGE
-> })
+tarunsahu@google.com writes:
 
-I saw this one too, but I don't want to split KVM_MMU_ROOT_INFO_INVALID from the
-related defs:
+> Hi,
+>
+> Ackerley Tng <ackerleytng@google.com> writes:
+>
+>> Sean Christopherson <seanjc@google.com> writes:
+>>
+>>>>
+>>>> [...snip...]
+>>>>
+>>>> we have one open Question left:
+>>>> 1. How to check guest_memfd is fully shared.
+>>>>
+>>>> [...snip...]
+>>>>
+>>>
+>>> Given that lack of support isn't going to be limited to _just_ guest_memfd,
+>>> simply disallow preservation if the VM supports private memory:
+>>>
+>>> 	if (kvm_arch_has_private_mem(kvm))
+>>> 		return -EOPNOTSUPP;
+>>
+> This is a good idea, I have implemented it in V2 (sent it recently).
+>
 
-  #define KVM_MMU_NUM_PREV_ROOTS 3
+Will look at RFC v2 in a bit :) Thanks!
 
-  #define KVM_MMU_ROOT_CURRENT		BIT(0)
-  #define KVM_MMU_ROOT_PREVIOUS(i)	BIT(1+i)
-  #define KVM_MMU_ROOTS_ALL		(BIT(1 + KVM_MMU_NUM_PREV_ROOTS) - 1)
+> Below, I have mentioned a detailed analysis. Please let me know your thoughts.
+>
+>> Makes sense. Tarun this was the other option that I was suggesting when
+>> we discussed offline.
+>>
+>> I think (?) it is possible to create a fully-private guest_memfd for a
+>> non-Confidential VM, and even after conversion lands, for both
+>> vm_memory_attributes=true and vm_memory_attributes=false.
+>>
+>> In that case, your preservation series can still preserve memory tracked
+>> as private by guest_memfd but not used as private, right?
+>>
+>> I don't think anyone will use this combination before guest_memfd
+>> write() support lands, we just need to make sure there's no kernel crash
+>> or corruption in this case.
+>
+> IIUC, currently, private memory definition is where cocovm with HW based
+> private memory is supported. Which is directly checked by
+> kvm_arch_has_private_mem and this return false incase ARCH does not
+> support it in HW (SEV/SNP, TDX).
+>
+> So about the combination where a guest_memfd is tracked as private but
+> not actually private. (Created without the INIT_SHARED flags). Even
+> though kvm_arch_has_private_mem is false.
+>
+> In this case the luo will preserve the guest_memfd. But it will not
+> preserve any attributes, because
+> 1. during creation, we dont populate any attributes, so by default
+> guest_memfd memory always considered to be shared. (Even though no
+> INIT_SHARED is passed). Conversion to private IOCTL will fail as
+> kvm_arch_has_private_mem check will fail for non-COCOVM.
+> for COCOVM,
+> presevation will not be supported and conversion to private memory will
+> be succeded. (No corruption and kernel crash in this case)
+>
+>
+> ==== WHAT IF CONVERSION SERIES LANDS =========
+>
 
-Hrm, but KVM_MMU_ROOT_INFO_INVALID has exactly one user:
+I think there are quite many cases to consider if we consider both
+before and after conversion series lands. For preservation, shall we
+assume it will go after conversion? :) This way we can avoid discussing
+some cases.
 
-	for (i = 0; i < KVM_MMU_NUM_PREV_ROOTS; i++)
-		mmu->prev_roots[i] = KVM_MMU_ROOT_INFO_INVALID;
+> In this case, we have two scenerio
+> 1. kvm->attributes
+>    In this case, Every logic remains same as above.
 
-so leaving it in kvm_host.h is silly.  Oof, but that's odd, the code above it
-does:
+This is the vm_memory_attributes=true case.
 
-	mmu->root.hpa = INVALID_PAGE;
-	mmu->root.pgd = 0;
+Since kvm_supported_mem_attributes(kvm) returns 0 when
+kvm_arch_has_private_mem(kvm) returns false, the vm's mem_attr_array
+will always say shared for any vm where kvm_arch_has_private_mem() is
+false.
 
-as does kvm_mmu_free_roots():
+So yup, preservation doesn't preserve attributes but that's also
+effectively preserving always-shared attributes, so all is good.
 
-		mmu->root.hpa = INVALID_PAGE;
-		mmu->root.pgd = 0;
+> 2. gmem->attributes
+>    if INIT_SHARED: memory is initially shared and no entry in maple tree, and if
+>    kvm_arch_has_private_mem returns false (non-COCOVM), this will just
+>    fails any conversion request. hence preserving the guest_memfd wont
+>    have any problem (fully shared case).
+>
 
-mmu_alloc_direct_roots() deliberately zeros "pgd" to guarantee matches on the
-pgd, as guest CR3 is ignored for direct roots, but the "invalidation" code looks
-wrong.
+Yup, preservation doesn't preserve attributes but that's also
+effectively preserving always-shared attributes, so all is good.
 
-Let's handle KVM_MMU_ROOT_INFO_INVALID separately, as simply moving it probably
-isn't what we want to do.
+>    if INIT_SHARED not set: memory is initially private, and there is an
+>    entry in maple tree, marked the memory as private. During conversion:
+>    A. To private: it fails as kvm_arch_has_private_mem return false.
+>                   Preservation is safe and there will be no problem. as in preservation
+>                   we dont preserve any attributes, but on retrieval, when a new gmem
+>                   file is created, identical entry to attributes will also be assigned
+>                   as INIT_SHARED flag is not set. So we wont have any issues in this case.
+>    B. TO shared: it passes, and update the maple tree. preservation will
+>    not be preserving the attributes with current patches, and it will
+>    also allow the preservation as kvm_arch_has_private_mem is false. So
+>    in this case, on retrieval, we will lose the data regarding the
+>    private vs shared (non-cocovm). So if host want to access the shared
+>    memory, it will try MMAP and which will fail in new kernel (which was
+>    successful in old kernel as conversion happened). But I dont see any
+>    kernel crash or corruption.
 
-> And even below can be moved to "mmu.h", but perhaps you won't like that:
-> 
-> #define KVM_HPAGE_GFN_SHIFT(x) (((x) - 1) * 9)
-> #define KVM_HPAGE_SHIFT(x)     (PAGE_SHIFT + KVM_HPAGE_GFN_SHIFT(x))
-> #define KVM_HPAGE_SIZE(x)      (1UL << KVM_HPAGE_SHIFT(x))
-> #define KVM_HPAGE_MASK(x)      (~(KVM_HPAGE_SIZE(x) - 1))
-> #define KVM_PAGES_PER_HPAGE(x) (KVM_HPAGE_SIZE(x) / PAGE_SIZE)
+Perhaps it should be this way: the process of preserving should first
+freeze further conversions, then check for private/shared status, and if
+private, return error to userspace.
 
-Huh.  Oh, /facepalm.  I looked at these, but saw there were references in kvm_host.h
-and moved on.  But they're all "self" references.  So yeah, I agree moving these
-and INVALID_PAGE+VALID_PAGE makes sense.
+I haven't looked at RFC v2 yet, but IIUC this is kind of in line with
+the other issue where we freeze allocations:
 
-> #define KVM_MMU_ROOT_CURRENT           BIT(0)
-> #define KVM_MMU_ROOT_PREVIOUS(i)       BIT(1+i)
-> #define KVM_MMU_ROOTS_ALL              (BIT(1 + KVM_MMU_NUM_PREV_ROOTS) - 1)
++ When preserving, freeze further allocations, preserve all pages that
+  are already allocated. If there are pages that weren't allocated, too
+  bad - allocations are frozen until unpreserve.
++ When preserving, freeze further conversions, preserve all shared
+  pages. If there are private pages, fail preservation.
 
-These I want to keep in kvm_host.h because they're tied to KVM_MMU_NUM_PREV_ROOTS,
-which needs to stay in kvm_host.h.
+This way, there's no loss of any private/shared state, since only shared
+pages are preserved.
 
-Thanks so much for the thorough review(s)!
+>    This is an issue with only non-cocoVM support with conversion series
+>    having the gmem attribute enabled without INIT_SHARED flag. I am not
+>    sure, if there will be any user for this very soon (is it SW_PROTECTED_VM ?? ).
+>
+
+So if a non-CoCo VM does use an all-private guest_memfd (didn't specify
+INIT_SHARED) (don't think anyone will use this before guest_memfd
+write() support), it'll just always fail preservation unless before
+preserving everything was converted to shared.
+
+> Let me know, If my understanding is correct. Should we add INIT_SHARED
+> along with kvm_arch_has_private_mem check to make Above case 2.B.
+> impossible in future for the current support of guest_memfd.
