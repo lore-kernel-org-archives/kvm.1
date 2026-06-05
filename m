@@ -1,545 +1,300 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05B1451044
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 08:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780647090; cv=none; b=DpUK7tzBdc7Q5RxL/md18hGvhIembdEuoMRraYslcFOtXVNO7/6Nh7mQtgC14tudX39xtItBZWqZl4oAq4/cI07aRyTEsHLEKJm8H7xJVxjFtyxsb7oVJ6J0jxeoxhfydtnhwU4dKn+N56Q3xqT0AX/LP7M3qN0Sf15AckB2sKQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780647090; c=relaxed/simple;
-	bh=ytTl4W9hy9s+Kuo2g6sD9AkLVfSDOLaUZMuheWxCQfo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ekeMeQNWFvTzmkM68RkyqYCKsTDVF6Y2ynwIKFnufsm21fuo3oub2/CXITc/FnHAVqPLx0XuKAJKhwO3LX60sFXnF2JUlYi37GwIT9hUNnOMdO9OcbrIeqaffT0lFhnFzLLXkekaWyyjSqstQgR3gzwsP2kM+dNGAN+SUh4oVmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=InkYN/Fw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SZ2cX/lJ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EA33C8C52
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 08:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780647753; cv=pass; b=ZETqC4hCseZgzueGXJADCZbCS6HdzCWPtNmwGEQEIUX7HpTeKgWHzqj9d0LoIFUja+BMI6TMqXSUpbLBwMjQCeFzkIW4FHQ2z7AwxehW5mShHgMFglkg4kvjE7s+LklePMhwzrx/sGTARhk7xdsNFPVSG/DOIHONLWksPpeeqCc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780647753; c=relaxed/simple;
+	bh=8b9XxNf9St3BzwW/NLcbUdWkrVeQWSc6jX8af0VFRck=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AMjCpk+gv28WykLYvY2fLoPN/wxr9xiGXmBKS7HL6kiJJkb9luwS6wbMSuDfTDaad9u8p6KUTDYxomijvdnsG0bDHokVHkYu6QWkPG8rG46WNXlf/88/RGPUOU2+F2uumV85wWoOQeHKuazEKroN2X7yL6bSfpJBDTHwKVWpJYs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bitdeer.com; spf=pass smtp.mailfrom=bitdeer.com; dkim=pass (2048-bit key) header.d=bitdeer.com header.i=@bitdeer.com header.b=DtRQ9Fnn; arc=pass smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bitdeer.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitdeer.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="InkYN/Fw";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SZ2cX/lJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780647086;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7AEnsK/FD3KXyt2KNdoiyp75h33zTryYf8gCYYPzVxI=;
-	b=InkYN/FwPbZxoofgQRbOaqy9u9gYMQYTwzUcdLT167rohbOlJBqxkCiN5uz/5M84Hnc8B0
-	h3mSn3nNH6XlArSoh/9sEGNatsuRJUCa8Ztr+xslaqkKpWK8OFNUpAECJ3ZbBA53Lw1pZ8
-	STZIdP8mFzt03Qb4tBzC87WgHAWMn2s=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-110-U6aNOHOyPK2M5oj5hEEzIQ-1; Fri, 05 Jun 2026 04:11:25 -0400
-X-MC-Unique: U6aNOHOyPK2M5oj5hEEzIQ-1
-X-Mimecast-MFC-AGG-ID: U6aNOHOyPK2M5oj5hEEzIQ_1780647084
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2bf1dece2ecso17071925ad.1
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 01:11:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bitdeer.com header.i=@bitdeer.com header.b="DtRQ9Fnn"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5aa63628d26so1420251e87.0
+        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 01:22:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780647749; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BUMKez6fHguPCP+niwwsMbq0VcZKZDyWhR5sATtr5/daerm1wo0YKzi5BDLn4LAQpd
+         epPoPHi6KSCBcTFLz8bbR/21/wVg9K1PbDVi/knbCEFsjdAIZd6eC43fQ/gwJLgSbebQ
+         PDCe4vg0qBb/1Dmi+EHPdENYDb3DauE1rktSXb66evUptMpkYD05LjE84zbJRCBVU0Ko
+         4xyX7fsU+Jb27QgjFrWSHlspLoqtppNjAkRD8SXWiV3kob36w0uZT+TEv3pybwluhDef
+         q5R5PrtTKQDbOmmjTiTDgpIwvksmjRFI12NPU3KTpMPxVpO6GVgjn5u5hIkUF+uW9a5y
+         ecwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GpEHuE5kPK7Pr7bmO5Kq29IlE/AYkLhUV+YgYWTUjog=;
+        fh=iudupu1BXlnKrxqDq5o8+3H04i6po4T+824HpgoYHWk=;
+        b=Kv4xgODPxsunZXgniHbu0/EKvwr/gkKo+oe1WLvu8U3txSNpXj/EO8hknohiBo3jCr
+         VEith5NQ76i3ydsxPHINpPxsPzRSUYnKO0j4ImWw558/JllhmDrJR+uAURP72muhdvJ4
+         Ilj4uRoq6DnvAESEt+6XoprxzM0GO5pBMizGZrnyZo/rUTI15DqZ/A1sRhu8o4ADFH+X
+         SxrdaDXl8b//CAvLiAoJTEJtUcn1ALib57b+TE1KxZwSvvNRmDpirlPapSya8Q1dNHdU
+         KY07bacuk85hD0LC/FIVAQh/6CduBfciZf9/k/eMweZI7NggbpbC2ud3ta05VulBRu0X
+         Bnkg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780647084; x=1781251884; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7AEnsK/FD3KXyt2KNdoiyp75h33zTryYf8gCYYPzVxI=;
-        b=SZ2cX/lJXKfskSxFSeVDowpxmhc+biWPjV1j5mz/RLddZ+Ionc2038901G0g5kmaPJ
-         tDMy63LGSBEOAn5BY+VTK2sg5kTl/oCg64VVIumtjOaonEO0dF9zCBUjWoP6XRb+5OsA
-         ns/IDY6Vk8ch5Amd8FFJOydtTkplxdgwlWDTDx5KMx2qEYT33MDnvVyJ4jFYBRptlMfh
-         xAK6K2l1XsoosolVDI2jYvqiRvHYHr43osBWu4FnfCdLAbci0DhgmXRD4yo5AnY6cJsJ
-         2Drm7DryTyGXOpVYbzHVDCFGVnYC6xNGve3ZCwxepUBug1c8HegffRA+ZG2gIhHZmjrR
-         PTow==
+        d=bitdeer.com; s=google; t=1780647749; x=1781252549; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GpEHuE5kPK7Pr7bmO5Kq29IlE/AYkLhUV+YgYWTUjog=;
+        b=DtRQ9Fnndhih0RW0lxG4xsro3nj1kdipinv8/uDM2488nKTPCTBhgKdZK9ciE19RGb
+         vvgvtlF7VpR2PFA07JgwnI9FDcPmK8ECTZ0saiEEO3IV7mT2ntcVOzCKGmWl9iptQQXA
+         MiCuJhAmG9+erIuB2gkWi97l8qVFv+z2X1AYfT2TiCLqKqdu8INUtU/mo/XpzJxTHbrN
+         pPlxrbqesQ/hScZEpdUsmOecGorPChOvmfFQoa8Ys0e/bggcfgmPeqVwxQNHfqIttoW4
+         HnFd+KO16/ScC9xqcY+HKO8ey4XOtZeDqiQ9Qs9vxXIVET+1h4yEMEV40qrcUDxR50pi
+         vQfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780647084; x=1781251884;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7AEnsK/FD3KXyt2KNdoiyp75h33zTryYf8gCYYPzVxI=;
-        b=qNZtnAKSaNCAi6vtLXb2ISXrlqAJUDMdTsLPHW9rj9n8M0/DU1jXuutROdR59E7XrD
-         d+C8gh1X094KwZPNi2CThMZ1uv5yZwokfYNKhEtZo1ICOzLeMzorrndE/Ocu5Lq4fMNn
-         FvHJyyUOOgMuyfDQRuIlLPobbA6hVzcKDT995vx2r9/wO3S61kQ8t3Wh1ym/kCOmVSNz
-         s0kHMl3DztKBzNg9SS7PaLO7/8rqeJ/aCM/tZiibjU+PezND4a5AvxbywZER66LYALfv
-         5OUXJk4nutM8lcsuGtoh2IadBAITlGaoLMZRtRc5G7Qxa31ZYJwXSqaKKBjMc44LYh4d
-         Sslw==
-X-Forwarded-Encrypted: i=1; AFNElJ8UEbBqjOsL0ejUTZWh7InJGgiV1NOpqzaPNkXEma1xxGg2mC3TSXXyZpA/HrkHwXQjnWM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjP2AkxV1I9UkQATgQstRL4aWzcPa2jnOx1KJKdsjm65+J98jT
-	D64TQR9Y6dGdXtzhTo5dCUckTwR7lAJUPw6WknaNcnNKGFcALfC2JgI8MwGi1nVS0m9dHxSjS/c
-	KVUF0Jx0jUZ4Dk4czmFQqsUZhVE2L7n/ydx2OLz+defbtCgNvt+u1gRjempvTag==
-X-Gm-Gg: Acq92OFq9nyflk5XeNKa2VJGVxm9pU9Xt9i9upyUBCfcAsA/DTQSbHrx0MTEUzXw+9/
-	ofdjJNURjyrA+DyyUJ1d6CH3+XOsn6qrb4WfTjUhxW5X9wNxbTBzRVFbCQzMZZfH6tNuSpfeF5k
-	xg5msucL5mj+EcO6Kl6JdeN8X7z6VYXJEGRkDKPIOQEP9SaURaVsQKZEaPQ9i3d4Z9KTHncdf5t
-	4XSlMuCL/xi0Jg1NqCX0dINFRHhiFT2Tz08+lFYhIapegkN64OmMcV5mDZqWx2Dv+MNKsRe83Vf
-	llnIih+3C6dzH+3p8txpGmoo8aWEtXKFKOLrbUEwnCM0TxqAdqhKgfY0X+eOcuVikiRxXnbq53J
-	SopcUAqco0ngJDbkWPZmqyIqZk50CpnWOCxU3Lv90n02JMRvXBlQTuIncxA5MEAWM+FdohL/xWI
-	o=
-X-Received: by 2002:a17:902:f611:b0:2c0:bd28:bed5 with SMTP id d9443c01a7336-2c1e8214337mr26908385ad.10.1780647084225;
-        Fri, 05 Jun 2026 01:11:24 -0700 (PDT)
-X-Received: by 2002:a17:902:f611:b0:2c0:bd28:bed5 with SMTP id d9443c01a7336-2c1e8214337mr26907875ad.10.1780647083614;
-        Fri, 05 Jun 2026 01:11:23 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f6ce98sm74137225ad.10.2026.06.05.01.11.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jun 2026 01:11:22 -0700 (PDT)
-Message-ID: <ecef952b-e8c6-4102-933b-c99c46f14431@redhat.com>
-Date: Fri, 5 Jun 2026 18:11:11 +1000
+        d=1e100.net; s=20251104; t=1780647749; x=1781252549;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GpEHuE5kPK7Pr7bmO5Kq29IlE/AYkLhUV+YgYWTUjog=;
+        b=XgHVD9GyK75dV1xuGN5Osi0YRbioZ2wpMf0ZFlj22Ewsmk8CQXQy7O/gm7qnhSUrgU
+         Xj+kcWTKf7Sf7DodoAKkJL4C4Sf7ANMWDFdQiiK/n0lAWSGm++Zc2uYLbNXyD3QRiH1+
+         XwX33nOqOgL8gSp37EDWVfbghrWB8TeJnoBbsOFM5ulLXJxA1LWJ0jZflS/jap3ikUm1
+         lFIorsUupwQA+aoJB6nl7GtexkQH2hB1cdBPErxqYVRthPNBP6oTqbQJ/rdxRLyaiC6H
+         yan6VKbwcxTn0XI4kzi/45XtXJBzom+mGmhKbLlLXxJ10uNMlugth+OB5J5FSdD95paN
+         NotQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+rb7NtBlSymwUY/XKVLbR1EhBvBIs+Rwr0hsGBKjy0i55Rx/2jJAY64diF/B4rchhtwBs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywe1/zui1kG7/XXdz4rwulBw4hFYTsHJmwuXjsTN/R9YbscXxgT
+	jGdg7nMWpKxjWRKhvOrT+RXuIaADNYnzGgzljXEI7x8E4dQfdss4uZaKGDjBAInRb3t1sGWuPAa
+	kr4vOb9Djcbv16AOQPQbvPKLV/LIOVBw6F8RLtlfYaw==
+X-Gm-Gg: Acq92OFSN5/58n3U+s5C7Q8fi9245A9qkG0SeG8GCM2bY0W7qjKkEfzFpVLu+KdEcyT
+	c5DsM0u9zTCYn/fSMWdVOVL6ob0F9dN2omTfRTv5v6e9AgwzjfuSdRoIH47SvKUDPE4APo4xrLS
+	8gnlyZM+2ZfXX3iUBRmOH9aUIEI8TI6dQSPZWd2RXTiNnhiVNHR6BJh4fyKM1k9Rr938J6sUoiJ
+	ed3vAz6HsYCtzOS3BpfLpdpMsUKSJxI/QlFOXr2N+RLNeBjkVGs10nKnoUzmBPECqyvlY/6lLeQ
+	rh8hgDSBOOlg4XmtttQC
+X-Received: by 2002:a05:6512:3503:b0:5aa:7363:8219 with SMTP id
+ 2adb3069b0e04-5aa87bbc36dmr719979e87.17.1780647749283; Fri, 05 Jun 2026
+ 01:22:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 29/44] arm64: RMI: Runtime faulting of memory
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-30-steven.price@arm.com>
- <3359f788-07fa-41a1-9ac7-45c58577c1fa@redhat.com>
- <aiJ6u83O0nVUtPyv@lpieralisi>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <aiJ6u83O0nVUtPyv@lpieralisi>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260604070029.34982-1-guobin@linux.alibaba.com>
+In-Reply-To: <20260604070029.34982-1-guobin@linux.alibaba.com>
+From: Hy Man <infra.ai.cloud@bitdeer.com>
+Date: Fri, 5 Jun 2026 16:22:18 +0800
+X-Gm-Features: AVVi8CehWLP43yLhYl0QqKHuUEMtibp5cV8zT-_XbebMEoocv3nCz5FputHBJj8
+Message-ID: <CAFWXh4w==tF6VA1QyHWRqBX0hBE2R1Ko7u2Expwn+xv7=Fed2w@mail.gmail.com>
+Subject: Re: [PATCH v2] accel/kvm: event-driven wakeup for dirty ring reaper thread
+To: Bin Guo <guobin@linux.alibaba.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/5/26 5:28 PM, Lorenzo Pieralisi wrote:
-> On Fri, Jun 05, 2026 at 04:23:15PM +1000, Gavin Shan wrote:
-> 
-> [...]
-> 
->>> +static int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
->>> +			 kvm_pfn_t pfn, unsigned long map_size,
->>> +			 enum kvm_pgtable_prot prot,
->>> +			 struct kvm_mmu_memory_cache *memcache)
->>> +{
->>> +	struct realm *realm = &kvm->arch.realm;
->>> +
->>> +	/*
->>> +	 * Write permission is required for now even though it's possible to
->>> +	 * map unprotected pages (granules) as read-only. It's impossible to
->>> +	 * map protected pages (granules) as read-only.
->>> +	 */
->>> +	if (WARN_ON(!(prot & KVM_PGTABLE_PROT_W)))
->>> +		return -EFAULT;
->>> +
->>
->> I'm a bit concerned with this. We don't have KVM_PGTABLE_PROT_W set in @prot
->> if the stage2 fault is raised due to memory read. With -EFAULT returned to VMM
->> (e.g. QEMU), the vCPU continuous execution is stopped and system won't be
->> working any more.
->>
->>> +	ipa = ALIGN_DOWN(ipa, PAGE_SIZE);
->>> +	if (!kvm_realm_is_private_address(realm, ipa))
->>> +		return realm_map_non_secure(realm, ipa, pfn, map_size, prot,
->>> +					    memcache);
->>> +
->>> +	return realm_map_protected(kvm, ipa, pfn, map_size, memcache);
->>> +}
->>> +
->>>    static bool kvm_vma_is_cacheable(struct vm_area_struct *vma)
->>>    {
->>>    	switch (FIELD_GET(PTE_ATTRINDX_MASK, pgprot_val(vma->vm_page_prot))) {
->>> @@ -1604,27 +1641,52 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->>>    	bool write_fault, exec_fault;
->>>    	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_SHARED;
->>>    	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
->>> -	struct kvm_pgtable *pgt = s2fd->vcpu->arch.hw_mmu->pgt;
->>> +	struct kvm_vcpu *vcpu = s2fd->vcpu;
->>> +	struct kvm_pgtable *pgt = vcpu->arch.hw_mmu->pgt;
->>> +	gpa_t gpa = kvm_gpa_from_fault(vcpu->kvm, s2fd->fault_ipa);
->>>    	unsigned long mmu_seq;
->>>    	struct page *page;
->>> -	struct kvm *kvm = s2fd->vcpu->kvm;
->>> +	struct kvm *kvm = vcpu->kvm;
->>>    	void *memcache;
->>>    	kvm_pfn_t pfn;
->>>    	gfn_t gfn;
->>>    	int ret;
->>> -	memcache = get_mmu_memcache(s2fd->vcpu);
->>> -	ret = topup_mmu_memcache(s2fd->vcpu, memcache);
->>> +	if (kvm_is_realm(vcpu->kvm)) {
->>> +		/* check for memory attribute mismatch */
->>> +		bool is_priv_gfn = kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT);
->>> +		/*
->>> +		 * For Realms, the shared address is an alias of the private
->>> +		 * PA with the top bit set. Thus if the fault address matches
->>> +		 * the GPA then it is the private alias.
->>> +		 */
->>> +		bool is_priv_fault = (gpa == s2fd->fault_ipa);
->>> +
->>> +		if (is_priv_gfn != is_priv_fault) {
->>> +			kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
->>> +						      kvm_is_write_fault(vcpu),
->>> +						      false,
->>> +						      is_priv_fault);
->>> +			/*
->>> +			 * KVM_EXIT_MEMORY_FAULT requires an return code of
->>> +			 * -EFAULT, see the API documentation
->>> +			 */
->>> +			return -EFAULT;
->>> +		}
->>> +	}
->>> +
->>> +	memcache = get_mmu_memcache(vcpu);
->>> +	ret = topup_mmu_memcache(vcpu, memcache);
->>>    	if (ret)
->>>    		return ret;
->>>    	if (s2fd->nested)
->>>    		gfn = kvm_s2_trans_output(s2fd->nested) >> PAGE_SHIFT;
->>>    	else
->>> -		gfn = s2fd->fault_ipa >> PAGE_SHIFT;
->>> +		gfn = gpa >> PAGE_SHIFT;
->>> -	write_fault = kvm_is_write_fault(s2fd->vcpu);
->>> -	exec_fault = kvm_vcpu_trap_is_exec_fault(s2fd->vcpu);
->>> +	write_fault = kvm_is_write_fault(vcpu);
->>> +	exec_fault = kvm_vcpu_trap_is_exec_fault(vcpu);
->>>    	VM_WARN_ON_ONCE(write_fault && exec_fault);
->>> @@ -1634,7 +1696,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->>>    	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, &page, NULL);
->>>    	if (ret) {
->>> -		kvm_prepare_memory_fault_exit(s2fd->vcpu, s2fd->fault_ipa, PAGE_SIZE,
->>> +		kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
->>>    					      write_fault, exec_fault, false);
->>>    		return ret;
->>>    	}
->>> @@ -1654,14 +1716,20 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->>>    	kvm_fault_lock(kvm);
->>>    	if (mmu_invalidate_retry(kvm, mmu_seq)) {
->>>    		ret = -EAGAIN;
->>> -		goto out_unlock;
->>> +		goto out_release_page;
->>> +	}
->>> +
->>> +	if (kvm_is_realm(kvm)) {
->>> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn,
->>> +				    PAGE_SIZE, KVM_PGTABLE_PROT_R | KVM_PGTABLE_PROT_W, memcache);
->>> +		goto out_release_page;
->>>    	}
->>>    	ret = KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, s2fd->fault_ipa, PAGE_SIZE,
->>>    						 __pfn_to_phys(pfn), prot,
->>>    						 memcache, flags);
->>> -out_unlock:
->>> +out_release_page:
->>>    	kvm_release_faultin_page(kvm, page, !!ret, prot & KVM_PGTABLE_PROT_W);
->>>    	kvm_fault_unlock(kvm);
->>> @@ -1847,7 +1915,7 @@ static int kvm_s2_fault_get_vma_info(const struct kvm_s2_fault_desc *s2fd,
->>>    	 * mapping size to ensure we find the right PFN and lay down the
->>>    	 * mapping in the right place.
->>>    	 */
->>> -	s2vi->gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize) >> PAGE_SHIFT;
->>> +	s2vi->gfn = kvm_gpa_from_fault(kvm, ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize)) >> PAGE_SHIFT;
->>>    	s2vi->mte_allowed = kvm_vma_mte_allowed(vma);
->>> @@ -2056,6 +2124,9 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->>>    		prot &= ~KVM_NV_GUEST_MAP_SZ;
->>>    		ret = KVM_PGT_FN(kvm_pgtable_stage2_relax_perms)(pgt, gfn_to_gpa(gfn),
->>>    								 prot, flags);
->>> +	} else if (kvm_is_realm(kvm)) {
->>> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
->>> +				    prot, memcache);
->>>    	} else {
->>>    		ret = KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, gfn_to_gpa(gfn), mapping_size,
->>>    							 __pfn_to_phys(pfn), prot,
->>
->> For the case kvm_is_realm(), need we adjust 's2fd->fault_ipa' for the sake of
->> huge pages. In kvm_s2_fault_map(), @gfn and @pfn may have been adjusted by
->> transparent_hugepage_adjust() to be aligned with huge page size. If the
->> adjustment happened in transparent_hugepage_adjust(), we need to align
->> s2fd->fault_ipa down to the huge page size either.
-> 
-> All of the above + some RMM changes are needed to get QEmu VMM going
-> with anon pages guest memory backing - currently testing various
-> configurations in the background.
-> 
+Reviewed-by: Hyman Huang <infra.ai.cloud@bitdeer.com>
 
-I tried to rebase Jean's latest QEMU series [1] to upstream QEMU, and found
-that memory slots backed by THP are broken. With THP disabled on the host and
-other fixes (mentioned in my prevous replies) applied on the top of this (v14)
-series, I'm able to boot a realm guest with rebased QEMU series [2], plus more
-fxies on the top.
-
-[1] https://git.codelinaro.org/linaro/dcap/qemu.git  (branch: cca/latest)
-[2] https://git.qemu.org/git/qemu.git                (branch: cca/gavin)
-
-Lorenzo, You may be saying there is someone making QEMU to support ARM/CCA?
-If so, I'm not sure if there is a QEMU repository for me to try?
-
-Thanks,
-Gavin
-
-> Thanks,
-> Lorenzo
-> 
->>> @@ -2214,6 +2285,13 @@ int kvm_handle_guest_sea(struct kvm_vcpu *vcpu)
->>>    	return 0;
->>>    }
->>> +static bool shared_ipa_fault(struct kvm *kvm, phys_addr_t fault_ipa)
->>> +{
->>> +	gpa_t gpa = kvm_gpa_from_fault(kvm, fault_ipa);
->>> +
->>> +	return (gpa != fault_ipa);
->>> +}
->>> +
->>>    /**
->>>     * kvm_handle_guest_abort - handles all 2nd stage aborts
->>>     * @vcpu:	the VCPU pointer
->>> @@ -2324,8 +2402,9 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->>>    		nested = &nested_trans;
->>>    	}
->>> -	gfn = ipa >> PAGE_SHIFT;
->>> +	gfn = kvm_gpa_from_fault(vcpu->kvm, ipa) >> PAGE_SHIFT;
->>>    	memslot = gfn_to_memslot(vcpu->kvm, gfn);
->>> +
->>>    	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
->>>    	write_fault = kvm_is_write_fault(vcpu);
->>>    	if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
->>> @@ -2368,7 +2447,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->>>    		 * of the page size.
->>>    		 */
->>>    		ipa |= FAR_TO_FIPA_OFFSET(kvm_vcpu_get_hfar(vcpu));
->>> -		ret = io_mem_abort(vcpu, ipa);
->>> +		ret = io_mem_abort(vcpu, kvm_gpa_from_fault(vcpu->kvm, ipa));
->>>    		goto out_unlock;
->>>    	}
->>> @@ -2396,7 +2475,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->>>    				!write_fault &&
->>>    				!kvm_vcpu_trap_is_exec_fault(vcpu));
->>> -		if (kvm_slot_has_gmem(memslot))
->>> +		if (kvm_slot_has_gmem(memslot) && !shared_ipa_fault(vcpu->kvm, fault_ipa))
->>>    			ret = gmem_abort(&s2fd);
->>>    		else
->>>    			ret = user_mem_abort(&s2fd);
->>> @@ -2433,6 +2512,10 @@ bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
->>>    	if (!kvm->arch.mmu.pgt || kvm_vm_is_protected(kvm))
->>>    		return false;
->>> +	/* We don't support aging for Realms */
->>> +	if (kvm_is_realm(kvm))
->>> +		return true;
->>> +
->>>    	return KVM_PGT_FN(kvm_pgtable_stage2_test_clear_young)(kvm->arch.mmu.pgt,
->>>    						   range->start << PAGE_SHIFT,
->>>    						   size, true);
->>> @@ -2449,6 +2532,10 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
->>>    	if (!kvm->arch.mmu.pgt || kvm_vm_is_protected(kvm))
->>>    		return false;
->>> +	/* We don't support aging for Realms */
->>> +	if (kvm_is_realm(kvm))
->>> +		return true;
->>> +
->>>    	return KVM_PGT_FN(kvm_pgtable_stage2_test_clear_young)(kvm->arch.mmu.pgt,
->>>    						   range->start << PAGE_SHIFT,
->>>    						   size, false);
->>> @@ -2628,10 +2715,11 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
->>>    		return -EFAULT;
->>>    	/*
->>> -	 * Only support guest_memfd backed memslots with mappable memory, since
->>> -	 * there aren't any CoCo VMs that support only private memory on arm64.
->>> +	 * Only support guest_memfd backed memslots with mappable memory,
->>> +	 * unless the guest is a CCA realm guest.
->>>    	 */
->>> -	if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
->>> +	if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new) &&
->>> +	    !kvm_is_realm(kvm))
->>>    		return -EINVAL;
->>>    	hva = new->userspace_addr;
->>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->>> index cae29fd3353c..761b38a4071c 100644
->>> --- a/arch/arm64/kvm/rmi.c
->>> +++ b/arch/arm64/kvm/rmi.c
->>> @@ -597,6 +597,179 @@ static int realm_data_map_init(struct kvm *kvm, unsigned long ipa,
->>>    	return ret;
->>>    }
->>> +static unsigned long addr_range_desc(unsigned long phys, unsigned long size)
->>> +{
->>> +	unsigned long out = 0;
->>> +
->>> +	switch (size) {
->>> +	case P4D_SIZE:
->>> +		out = 3 | (1 << 2);
->>> +		break;
->>> +	case PUD_SIZE:
->>> +		out = 2 | (1 << 2);
->>> +		break;
->>> +	case PMD_SIZE:
->>> +		out = 1 | (1 << 2);
->>> +		break;
->>> +	case PAGE_SIZE:
->>> +		out = 0 | (1 << 2);
->>> +		break;
->>> +	default:
->>> +		/*
->>> +		 * Only support mapping at the page level granulatity when
->>> +		 * it's an unusual length. This should get us back onto a larger
->>> +		 * block size for the subsequent mappings.
->>> +		 */
->>> +		out = 0 | ((MIN(size >> PAGE_SHIFT, PTRS_PER_PTE - 1)) << 2);
->>> +		break;
->>> +	}
->>> +
->>> +	WARN_ON(phys & ~PAGE_MASK);
->>> +
->>> +	out |= phys & PAGE_MASK;
->>> +
->>> +	return out;
->>> +}
->>> +
->>> +int realm_map_protected(struct kvm *kvm,
->>> +			unsigned long ipa,
->>> +			kvm_pfn_t pfn,
->>> +			unsigned long map_size,
->>> +			struct kvm_mmu_memory_cache *memcache)
->>> +{
->>> +	struct realm *realm = &kvm->arch.realm;
->>> +	phys_addr_t phys = __pfn_to_phys(pfn);
->>> +	phys_addr_t base_phys = phys;
->>> +	phys_addr_t rd = virt_to_phys(realm->rd);
->>> +	unsigned long base_ipa = ipa;
->>> +	unsigned long ipa_top = ipa + map_size;
->>> +	int ret = 0;
->>> +
->>> +	if (WARN_ON(!IS_ALIGNED(map_size, PAGE_SIZE) ||
->>> +		    !IS_ALIGNED(ipa, map_size)))
->>> +		return -EINVAL;
->>> +
->>> +	if (rmi_delegate_range(phys, map_size)) {
->>> +		/*
->>> +		 * It's likely we raced with another VCPU on the same
->>> +		 * fault. Assume the other VCPU has handled the fault
->>> +		 * and return to the guest.
->>> +		 */
->>> +		return 0;
->>> +	}
->>> +
->>> +	while (ipa < ipa_top) {
->>> +		unsigned long flags = RMI_ADDR_TYPE_SINGLE;
->>> +		unsigned long range_desc = addr_range_desc(phys, ipa_top - ipa);
->>> +		unsigned long out_top;
->>> +
->>> +		ret = rmi_rtt_data_map(rd, ipa, ipa_top, flags, range_desc,
->>> +				       &out_top);
->>> +
->>> +		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
->>> +			/* Create missing RTTs and retry */
->>> +			int level = RMI_RETURN_INDEX(ret);
->>> +
->>> +			WARN_ON(level == KVM_PGTABLE_LAST_LEVEL);
->>> +			ret = realm_create_rtt_levels(realm, ipa, level,
->>> +						      KVM_PGTABLE_LAST_LEVEL,
->>> +						      memcache);
->>> +			if (ret)
->>> +				goto err_undelegate;
->>> +
->>> +			ret = rmi_rtt_data_map(rd, ipa, ipa_top, flags,
->>> +					       range_desc, &out_top);
->>> +		}
->>> +
->>> +		if (WARN_ON(ret))
->>> +			goto err_undelegate;
->>> +
->>> +		phys += out_top - ipa;
->>> +		ipa = out_top;
->>> +	}
->>> +
->>> +	return 0;
->>> +
->>> +err_undelegate:
->>> +	realm_unmap_private_range(kvm, base_ipa, ipa, true);
->>> +	if (WARN_ON(rmi_undelegate_range(base_phys, map_size))) {
->>> +		/* Page can't be returned to NS world so is lost */
->>> +		get_page(phys_to_page(base_phys));
->>> +	}
->>> +	return -ENXIO;
->>> +}
->>> +
->>> +int realm_map_non_secure(struct realm *realm,
->>> +			 unsigned long ipa,
->>> +			 kvm_pfn_t pfn,
->>> +			 unsigned long size,
->>> +			 enum kvm_pgtable_prot prot,
->>> +			 struct kvm_mmu_memory_cache *memcache)
->>> +{
->>> +	unsigned long attr, flags = 0;
->>> +	phys_addr_t rd = virt_to_phys(realm->rd);
->>> +	phys_addr_t phys = __pfn_to_phys(pfn);
->>> +	unsigned long ipa_top = ipa + size;
->>> +	int ret;
->>> +
->>> +	if (WARN_ON(!IS_ALIGNED(size, PAGE_SIZE) ||
->>> +		    !IS_ALIGNED(ipa, size)))
->>> +		return -EINVAL;
->>> +
->>> +	switch (prot & (KVM_PGTABLE_PROT_DEVICE | KVM_PGTABLE_PROT_NORMAL_NC)) {
->>> +	case KVM_PGTABLE_PROT_DEVICE | KVM_PGTABLE_PROT_NORMAL_NC:
->>> +		return -EINVAL;
->>> +	case KVM_PGTABLE_PROT_DEVICE:
->>> +		attr = MT_S2_FWB_DEVICE_nGnRE;
->>> +		break;
->>> +	case KVM_PGTABLE_PROT_NORMAL_NC:
->>> +		attr = MT_S2_FWB_NORMAL_NC;
->>> +		break;
->>> +	default:
->>> +		attr = MT_S2_FWB_NORMAL;
->>> +	}
->>> +
->>> +	flags |= FIELD_PREP(RMI_RTT_UNPROT_MAP_FLAGS_MEMATTR, attr);
->>> +
->>> +	if (prot & KVM_PGTABLE_PROT_R)
->>> +		flags |= FIELD_PREP(RMI_RTT_UNPROT_MAP_FLAGS_S2AP, RMI_S2AP_DIRECT_READ);
->>> +	if (prot & KVM_PGTABLE_PROT_W)
->>> +		flags |= FIELD_PREP(RMI_RTT_UNPROT_MAP_FLAGS_S2AP, RMI_S2AP_DIRECT_WRITE);
->>> +
->>> +	flags |= RMI_ADDR_TYPE_SINGLE;
->>> +
->>> +	while (ipa < ipa_top) {
->>> +		unsigned long range_desc = addr_range_desc(phys, ipa_top - ipa);
->>> +		unsigned long out_top;
->>> +
->>> +		ret = rmi_rtt_unprot_map(rd, ipa, ipa_top, flags, range_desc,
->>> +					 &out_top);
->>> +
->>> +		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
->>> +			/* Create missing RTTs and retry */
->>> +			int level = RMI_RETURN_INDEX(ret);
->>> +
->>> +			WARN_ON(level == KVM_PGTABLE_LAST_LEVEL);
->>> +			ret = realm_create_rtt_levels(realm, ipa, level,
->>> +						      KVM_PGTABLE_LAST_LEVEL,
->>> +						      memcache);
->>> +			if (ret)
->>> +				return ret;
->>> +
->>> +			ret = rmi_rtt_unprot_map(rd, ipa, ipa_top, flags,
->>> +						 range_desc, &out_top);
->>> +		}
->>> +
->>> +		if (WARN_ON(ret))
->>> +			return ret;
->>> +
->>> +		phys += out_top - ipa;
->>> +		ipa = out_top;
->>> +	}
->>> +
->>> +	return 0;
->>> +}
->>> +
->>>    static int populate_region_cb(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->>>    			      struct page *src_page, void *opaque)
->>>    {
->>
->> Thanks,
->> Gavin
->>
-> 
-
+On Thu, Jun 4, 2026 at 3:00=E2=80=AFPM Bin Guo <guobin@linux.alibaba.com> w=
+rote:
+>
+> The reaper polls with sleep(1) (TODO in the code) and only notices
+> dirty-limit teardown at the next 1s tick.
+>
+> Replace the sleep with qemu_poll_ns() on an EventNotifier, kicked
+> from dirtylimit_state_finalize() after dirtylimit_state has been
+> cleared.  The kick must follow the NULL assignment: kicking earlier
+> wakes the reaper while dirtylimit_in_service() still returns true,
+> so it just loops back to wait.  A 1s fallback timeout remains as a
+> liveness backstop.
+>
+> 20 set-/cancel-vcpu-dirty-limit cycles via QMP, |reaper-wake -
+> cancel-ack| measured with strace on the reaper TID:
+>
+>     before: median 255 ms, max 502 ms
+>     after:  median 0.6 ms, max  27 ms
+>
+> kvm_dirty_ring_reaper_init() returns int again (was made void in
+> commit 43a5e377f4) to propagate event_notifier_init() failure.
+>
+> Signed-off-by: Bin Guo <guobin@linux.alibaba.com>
+> ---
+> Changes in v2:
+> - Fix compilation error: kvm_init() has no Error **errp parameter, so
+>   kvm_dirty_ring_reaper_init() now uses error_report() directly and
+>   no longer accepts an errp argument.
+> - Remove the kick from kvm_cpu_exec() KVM_EXIT_DIRTY_RING_FULL handler:
+>   it already reaps synchronously (all vCPUs or the ring-full one), so
+>   a background reaper kick would only be redundant or a no-op.
+> - Move kick site from dirtylimit_change(false) to
+>   dirtylimit_state_finalize() after dirtylimit_state =3D NULL, ensuring
+>   the reaper actually proceeds past the dirtylimit_in_service() check.
+>
+>  accel/kvm/kvm-all.c      | 42 ++++++++++++++++++++++++++++++++++------
+>  accel/stubs/kvm-stub.c   |  4 ++++
+>  include/system/kvm.h     |  7 +++++++
+>  include/system/kvm_int.h |  3 +++
+>  system/dirtylimit.c      |  2 ++
+>  5 files changed, 52 insertions(+), 6 deletions(-)
+>
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 96f90ebb24..be005832bc 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -1754,6 +1754,8 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml=
+,
+>      } while (size);
+>  }
+>
+> +#define KVM_DIRTY_RING_REAPER_FALLBACK_NS  (1 * NANOSECONDS_PER_SECOND)
+> +
+>  static void *kvm_dirty_ring_reaper_thread(void *data)
+>  {
+>      KVMState *s =3D data;
+> @@ -1764,12 +1766,18 @@ static void *kvm_dirty_ring_reaper_thread(void *d=
+ata)
+>      trace_kvm_dirty_ring_reaper("init");
+>
+>      while (true) {
+> +        GPollFD pfd =3D {
+> +            .fd =3D event_notifier_get_fd(&r->reaper_notifier),
+> +            .events =3D G_IO_IN,
+> +        };
+> +
+>          r->reaper_state =3D KVM_DIRTY_RING_REAPER_WAIT;
+>          trace_kvm_dirty_ring_reaper("wait");
+> -        /*
+> -         * TODO: provide a smarter timeout rather than a constant?
+> -         */
+> -        sleep(1);
+> +
+> +        qemu_poll_ns(&pfd, 1, KVM_DIRTY_RING_REAPER_FALLBACK_NS);
+> +
+> +        /* Drain unconditionally so a stale event can't spin the next lo=
+op. */
+> +        event_notifier_test_and_clear(&r->reaper_notifier);
+>
+>          /* keep sleeping so that dirtylimit not be interfered by reaper =
+*/
+>          if (dirtylimit_in_service()) {
+> @@ -1789,13 +1797,32 @@ static void *kvm_dirty_ring_reaper_thread(void *d=
+ata)
+>      g_assert_not_reached();
+>  }
+>
+> -static void kvm_dirty_ring_reaper_init(KVMState *s)
+> +static int kvm_dirty_ring_reaper_init(KVMState *s)
+>  {
+>      struct KVMDirtyRingReaper *r =3D &s->reaper;
+> +    int ret;
+> +
+> +    ret =3D event_notifier_init(&r->reaper_notifier, 0);
+> +    if (ret < 0) {
+> +        error_report("Failed to initialize dirty ring reaper notifier: %=
+s",
+> +                     strerror(-ret));
+> +        return ret;
+> +    }
+>
+>      qemu_thread_create(&r->reaper_thr, "kvm-reaper",
+>                         kvm_dirty_ring_reaper_thread,
+>                         s, QEMU_THREAD_JOINABLE);
+> +    return 0;
+> +}
+> +
+> +void kvm_dirty_ring_reaper_kick(void)
+> +{
+> +    KVMState *s =3D kvm_state;
+> +
+> +    if (!s || !s->kvm_dirty_ring_size) {
+> +        return;
+> +    }
+> +    event_notifier_set(&s->reaper.reaper_notifier);
+>  }
+>
+>  static int kvm_dirty_ring_init(KVMState *s)
+> @@ -3097,7 +3124,10 @@ static int kvm_init(AccelState *as, MachineState *=
+ms)
+>      }
+>
+>      if (s->kvm_dirty_ring_size) {
+> -        kvm_dirty_ring_reaper_init(s);
+> +        ret =3D kvm_dirty_ring_reaper_init(s);
+> +        if (ret < 0) {
+> +            goto err;
+> +        }
+>      }
+>
+>      if (kvm_check_extension(kvm_state, KVM_CAP_BINARY_STATS_FD)) {
+> diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+> index c4617caac6..b878598552 100644
+> --- a/accel/stubs/kvm-stub.c
+> +++ b/accel/stubs/kvm-stub.c
+> @@ -134,6 +134,10 @@ uint32_t kvm_dirty_ring_size(void)
+>      return 0;
+>  }
+>
+> +void kvm_dirty_ring_reaper_kick(void)
+> +{
+> +}
+> +
+>  bool kvm_hwpoisoned_mem(void)
+>  {
+>      return false;
+> diff --git a/include/system/kvm.h b/include/system/kvm.h
+> index 5fa33eddda..e127a5eb37 100644
+> --- a/include/system/kvm.h
+> +++ b/include/system/kvm.h
+> @@ -553,6 +553,13 @@ bool kvm_dirty_ring_enabled(void);
+>
+>  uint32_t kvm_dirty_ring_size(void);
+>
+> +/**
+> + * kvm_dirty_ring_reaper_kick - wake the background dirty ring reaper.
+> + *
+> + * Safe from any thread; no-op when the dirty ring is not in use.
+> + */
+> +void kvm_dirty_ring_reaper_kick(void);
+> +
+>  void kvm_mark_guest_state_protected(void);
+>
+>  /**
+> diff --git a/include/system/kvm_int.h b/include/system/kvm_int.h
+> index 0876aac938..c14ebc927f 100644
+> --- a/include/system/kvm_int.h
+> +++ b/include/system/kvm_int.h
+> @@ -12,6 +12,7 @@
+>  #include "system/memory.h"
+>  #include "qapi/qapi-types-common.h"
+>  #include "qemu/accel.h"
+> +#include "qemu/event_notifier.h"
+>  #include "qemu/queue.h"
+>  #include "system/kvm.h"
+>  #include "accel/accel-ops.h"
+> @@ -100,6 +101,8 @@ struct KVMDirtyRingReaper {
+>      QemuThread reaper_thr;
+>      volatile uint64_t reaper_iteration; /* iteration number of reaper th=
+r */
+>      volatile enum KVMDirtyRingReaperState reaper_state; /* reap thr stat=
+e */
+> +    /* Wakeup channel: kicked when dirty-limit is torn down. */
+> +    EventNotifier reaper_notifier;
+>  };
+>  struct KVMState
+>  {
+> diff --git a/system/dirtylimit.c b/system/dirtylimit.c
+> index c934ceb0de..a33256ade7 100644
+> --- a/system/dirtylimit.c
+> +++ b/system/dirtylimit.c
+> @@ -239,6 +239,8 @@ void dirtylimit_state_finalize(void)
+>      g_free(dirtylimit_state);
+>      dirtylimit_state =3D NULL;
+>
+> +    kvm_dirty_ring_reaper_kick();
+> +
+>      trace_dirtylimit_state_finalize();
+>  }
+>
+> --
+> 2.50.1 (Apple Git-155)
+>
