@@ -1,170 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711EF2EEE92
-	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 23:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175872701CF
+	for <kvm@vger.kernel.org>; Thu,  4 Jun 2026 23:33:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780615076; cv=none; b=tAWbxkimjMe5Cm29SvUim1978sZC2YW8zxesnXr/+jjwKJPHB6L0ldaPlNd2aiokRKLThaADXKOY8tzW/QJkTxxxptBBlQT/tsslyYFDxw0ko6LDz16j9NkEfhXHJ3WOxvvjASeawJYds0Vd+6wW83PFMlaPoYGp/zeIGTBXR2s=
+	t=1780616003; cv=none; b=NHC3+N8An9XxZVbfgJqIQ8GMD6CLlPqGQzsrdPdk5YOumA7ukBSzZUyIAOJrPnWHnJL5XT51DAx1nnEzK4TMw0cCK6t5tFDx5SSbX7h4sJKORsrV196NyDtd45JfE/a+5+en++ZpM5Oyn5MbaBT6py0s19e9omjgGrGCFp22ZJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780615076; c=relaxed/simple;
-	bh=Gaee3oU6+TfV+olINyhWE4H94Yl1TYRZoOCFheJpwqQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RsG7j3LVSh6sX3tslW9w2Tq6N4rKwcRFxCoXDDHcDx1aRlj6cc+j+vlVzUwfDBAT3EeddXcwQ4IxxndHVK5b4WrLNxOXj/yMnliiF6stCT/E3XhsKO510229plqm5XSqlyzxBAbqElWh2HQiKlj9HQMQykwRVTK5a6Hw1SJj5V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jb9/0TKi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780616003; c=relaxed/simple;
+	bh=Lb+xLGteN8rGNFfXJPGYAlrX4zLjvvSOH8R+LOVRa9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sT2WDekeHji3yONIhOIG3HQrb7nIK7PmMU6fVW1TxtEtHM1DPB7JsTD4tp6dDInkWYD7M1KJxwIXxav16eiDh7LjJP0zNkV2gXn2RQewbIUPw23tKf2RhKsV1mqenZx9twGLXYskzcSgvS8PfWlZaAKaSI08ZyOGjQcTsmA5PVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wc7CO9e/; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jb9/0TKi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E6B1F00893;
-	Thu,  4 Jun 2026 23:17:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780615075;
-	bh=kkInxiDA5Rq5ZnGx0b2oUape5EboDYocuT8uKVFvP08=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jb9/0TKipGMLAdEjzNggrVqxJiu3A3igoMrWA2JfI6RmDppRz2PgnNXJB84ddA1H7
-	 Xp6VN+J2GVCKkcZR/aR+x0WlZtp39Eqq403SX4vyo64iK2QeqUuXnVocX9zH2EDxvx
-	 EiwCLuevf5/rtvYlWd6YqreLvjUT/O6r31Rle/yB737hR1ld8zed4rBo86WOY4GesZ
-	 HHN/l3mL9tOXeD2nxy8+PiFQHeBC7EdjsdiUS5JwMcMJitHKQp770TqoE622RA+T7f
-	 cIyNJg1k5J8IyWCflytQ+9FYurGzzPHImjmZLogYyPDGfF3TL6pKSIC67V8BzmlpUg
-	 t+4IA8k6cZihA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] RISC-V: KVM: Fix skip of valid pages in
- kvm_riscv_gstage_unmap_range
-Reply-To: sashiko-reviews@lists.linux.dev
-To: atwufei@163.com
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260604230317.30501-3-atwufei@163.com>
-References: <20260604230317.30501-3-atwufei@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 04 Jun 2026 23:17:54 +0000
-Message-Id: <20260604231755.06E6B1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wc7CO9e/"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c8583b8fd89so786058a12.0
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 16:33:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780616001; x=1781220801; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iGFlwyuNaR2/Raijzn5hJY/deT6FrQc+hecXmcS90Nw=;
+        b=Wc7CO9e/1SVK/5UNc/UMJQQXwXKmIl1vdT8lkXps89RnnRKVLa8uUmXcU+CCljUSeZ
+         iXj7nsWrdoiXLd4EbMObF4D0oEIXkv43lP1tHT8bEPlb61JdfqWW048iGhEAbwqCGGOy
+         x26LUUlFQRwKUkwX8uVySXgRiC1r7nyfZpbdoFQpXtLGCyXfdG5eWxhRGgaJdkeXbKaP
+         23u6OVCjSlzSTVFLtxWM0SIRN1RHcYopbDiH3rAfgk/6CQAtmBy/p/Ur21naCJxddy0G
+         4nVnGBUjs/XJy1KjqmXYIYWGpQrLkB+l3vjuQ4gjIP1SvL/G6cQiBPzSha02F7yuZ5cD
+         2ANQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780616001; x=1781220801;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iGFlwyuNaR2/Raijzn5hJY/deT6FrQc+hecXmcS90Nw=;
+        b=niyzfky1Tn8atsCs+sG8fUhElR6W8Y5J8Xz+ca+STNttOKp4ee7Td3tnHM4kDiAnFL
+         ir1Wp/gmXBUjHZhxnOZnud+XIvVHCsy923CZ5e6AWtBC4uiSSeO/rnyDasI7bNyp4fND
+         VZsSlNVEae5snTzn0fUKJCwio1L87KnhkO2dLDMi2UmTlzLqb39UHC9Zd1Xv77NfFfFu
+         0OeklP3CEcpnRFC0iQtJ+sxeRoL8UYWMq/ywostA8HDDlozx1/sabFEJ8HfqNyeFFdd2
+         cA5aP3YSw+/ugMZsNOZFb8Nn4VlgdbMhdSPMXQPOlZ3OOyMvx+Rpb9jO5Dg00KrxdW71
+         m3jQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8p/O/Ut+y3GSnEnOLRoiFR6R70CxkCvpsw/bKQSbEfWAyQnkO7jt5wSX7DN+LxfFflc0A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwusABKJq3MjAOjur+kzxV289Ln60qk/cbcVGLKjkhyXfmYNBtW
+	4iGOFJsI2vWYvBeekNMZNIL/Ib/ZTA5HH0se8F3w+F+ho/WhIYf06jSr
+X-Gm-Gg: Acq92OGaOMUnlQUg2fxcX8Amw+GZFyolhryd3LfcJUu5X71Y2A8TOOI0rFNAjvLwv9m
+	NucTIMyRUyGdWEAS7Vx8+Yyr5ZitK2OOw/ov1k3UqJUZpYW192Eh8zRh/Tr5OEVxh1A0BYMx2fA
+	yjpkK05DsOyzlLW2wYJi8eXs7i6sXE5kwkd/teNKOsCrpuNtaaDCnlw+4MOCO91kaXQTwwgf92S
+	Yd0VU7gFAMRYITFNAtJsAS1+bg9wvYMCX6W722G81EmZBNZEH8RcB8ZDB87jBz6Ucm7pvqP3/IF
+	wgzNtqFl6Yy/F6rOMOd2M4yrNt4vhN17QoD72euu7UtZJRCWbXQvzwe1ui7R09RHsq84JnjO4Tl
+	UNn+zus5eCD45SNMIaiczg6IO3CQbxStnA89sRuHhl81k99TwJ4T+WnbkJf0iGN1aRbJbDB2H9y
+	igHYbdUA==
+X-Received: by 2002:a05:6a21:9d4c:b0:398:89b6:1b41 with SMTP id adf61e73a8af0-3b4cd066bc8mr1219019637.32.1780616001275;
+        Thu, 04 Jun 2026 16:33:21 -0700 (PDT)
+Received: from localhost ([2a12:a305:4::305d])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df0a505fsm6146958a12.20.2026.06.04.16.33.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 16:33:20 -0700 (PDT)
+Date: Fri, 5 Jun 2026 07:32:42 -0400
+From: Guodong Xu <docular.xu@gmail.com>
+To: Qingwei Hu <qingwei.hu@bytedance.com>
+Cc: Conor Dooley <conor@kernel.org>, sashiko-reviews@lists.linux.dev, 
+	kvm@vger.kernel.org, devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
+Subject: Re: [PATCH v3 08/15] riscv: Add Zic64b to cpufeature and hwprobe
+Message-ID: <a2o7tkslomyf43dcs4tultdmrzcjgvkjh736l7lqemasljhs2j@tyixe5krxw6z>
+References: <20260603-rva23u64-hwprobe-v2-v3-8-5529a7b28384@gmail.com>
+ <20260602232800.768311F00893@smtp.kernel.org>
+ <CA+Ck9FbKRM0wjJMg1fQpdwmow8cf_zTfir7V6+T=CRxU+vomdg@mail.gmail.com>
+ <20260604-rice-protegee-3a0b8e4cb609@spud>
+ <u52q565xhv5s7gz3wbh4heplhbm4pv732s5kqvf4deiw6ceb4t@n4bnpzu5kabs>
+ <6940420B-C9C3-4D60-AB7F-7FBC4B93D855@bytedance.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <6940420B-C9C3-4D60-AB7F-7FBC4B93D855@bytedance.com>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+Hi, Qingwei
 
-New issues:
-- [High] Unprivileged host userspace can trivially trigger the newly added =
-`WARN_ONCE`, causing a Denial of Service.
+On 2026-06-05 00:43, Qingwei Hu wrote:
+>
+>
+>> Ok, I get your point. Agree, Zic64b/Zicbom/cbop/cboz can be implemented
+>> on each hart independently (at least spec doesn't say no). With this in
+>> mind, the validation of Zic64b should be like this:
+>>
+>>    if ((riscv_cbom_block_size && riscv_cbom_block_size != 64) ||
+>>       (riscv_cbop_block_size && riscv_cbop_block_size != 64) ||
+>>       (riscv_cboz_block_size && riscv_cboz_block_size != 64))
+>>    return -EINVAL;
+>>
+>> This will allow :
+>> 1. A Zic64b hart with 0, 1, 2, or 3 CBO extension and block_size 64
+>>   passes the validation.
+>> 2. A Zic64b hart with CBO extensions but block_size is not 64
+>>   fails the validation
+>>
+>> Thanks for the catch.
+>>
+>> I will fix that in v4.
+>>
+>> BR,
+>> Guodong
+>
+>Hi Guodong,
+>
+>Thanks for working on this.
+>
+>This overlaps with my earlier Zic64b cpufeature patch[1].
 
-Pre-existing issues:
-- [Critical] Skipping partial huge page unmaps leaves host memory accessibl=
-e to the guest after it is freed.
-- [High] Advancing an unaligned `addr` by `page_size` incorrectly preserves=
- the unaligned offset, causing subsequent valid pages in the range to be sk=
-ipped.
-- [High] Intermediate G-stage page table pages are completely bypassed duri=
-ng unmap operations and are never freed, causing a permanent memory leak wh=
-en VMs are destroyed.
---
+Thanks, and you're right that your patch predates mine. Your validation
+was also correct (at least resonate with what I planned to do in v4)
+from the start.
 
-commit d2321d423fc87ac8906198316ceb13deb7890738
-Author: Wu Fei <wu.fei9@sanechips.com.cn>
+>
+>and Greg confirmed that Zic64b does not imply support for any CMO
+>extensions[2]. It only has meaning for whichever CMO extensions are
 
-RISC-V: KVM: Fix skip of valid pages in kvm_riscv_gstage_unmap_range
+I'll add a link to quote this in v4. Great info. Thanks for checking
+with them.
 
-Same as kvm_riscv_gstage_wp_range, the possible valid pages should not
-be skipped if !found_leaf. Different from wp case, which can
-write-protect more than asked, unmap can't do that, no splitting is
-added right now but a warning is logged instead.
+>implemented.
+>
+>Since the Zic64b cpufeature support in this patch overlaps with my
+>earlier patch, if you keep this work in your series and base it on that
 
-> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-> --- a/arch/riscv/kvm/gstage.c
-> +++ b/arch/riscv/kvm/gstage.c
-> @@ -395,15 +395,19 @@ void kvm_riscv_gstage_unmap_range(struct kvm_gstage=
- *gstage,
->  		if (ret)
->  			break;
-> =20
-> -		if (!found_leaf)
-> -			goto next;
-> -
-> -		if (!(addr & (page_size - 1)) && ((end - addr) >=3D page_size))
-> -			kvm_riscv_gstage_op_pte(gstage, addr, ptep,
-> -						ptep_level, GSTAGE_OP_CLEAR);
-> +		if (!found_leaf) {
-> +			addr =3D ALIGN(addr + 1, page_size);
-> +		} else {
-> +			if (!(addr & (page_size - 1)) && ((end - addr) >=3D page_size))
-> +				kvm_riscv_gstage_op_pte(gstage, addr, ptep,
-> +							ptep_level, GSTAGE_OP_CLEAR);
+Yes, I'd like to, and I prefer, take the your patch into this series, and
+credit you properly. In this series, I also added dt-binding, documentation
+and howprobe, and make it consumed by rva23u64 detection.
 
-[Severity: Critical]
-This is a pre-existing issue, but by skipping the unmap of a partial
-huge page when the alignment or size check fails, does this leave the
-host memory accessible to the guest?
+>patch, could you please put my sign-off credit for the Zic64b cpufeature part?
+>
+>For example:
+>
+>Signed-off-by: Qingwei Hu <qingwei.hu@bytedance.com>
 
-When an MMU notifier requests unmapping a sub-page of a huge page, for
-example due to host page reclaim, migration, or a madvise DONTNEED call,
-KVM skips unmapping the PTE here. This bypasses the MMU notifier
-contract, leaving the guest with active read and write access to a
-physical page that has been freed and potentially reallocated by the
-host.
+Yes, since your work came first, I'm happy for you to be the author of the
+cpufeature patch, with me as Co-developed-by:
 
-[Severity: High]
-This is also a pre-existing issue, but does calling
-kvm_riscv_gstage_op_pte() exclusively on leaf PTEs cause a permanent
-memory leak of intermediate page tables?
+     From: Qingwei Hu <qingwei.hu@bytedance.com>
+     ...
+     ...
+     Signed-off-by: Qingwei Hu <qingwei.hu@bytedance.com>
+     Co-developed-by: Guodong Xu <docular.xu@gmail.com>
+     Signed-off-by: Guodong Xu <docular.xu@gmail.com>
 
-Because kvm_riscv_gstage_get_leaf() only returns leaf PTEs, the recursive
-branch in kvm_riscv_gstage_op_pte() intended to free intermediate page
-tables:
+Let me know whether this works for you.
 
-kvm_riscv_gstage_op_pte() {
-    ...
-    if (ptep_level && !gstage_pte_leaf(ptep)) {
-        ...
-        if (op =3D=3D GSTAGE_OP_CLEAR)
-            put_page(virt_to_page(next_ptep));
-    ...
-}
+Thank you for pointing me to your existing patch.
 
-is never reached. When a VM is destroyed, the leaves are unmapped but
-the intermediate page table pages appear to be leaked.
+BR,
+Guodong
 
-> +			else {
-> +				WARN_ONCE(1, "Skip unmap range addr: %#llx, end: %#llx, page_size: %=
-#lx\n",
-> +						addr, end, page_size);
-> +			}
-
-[Severity: High]
-Could this new WARN_ONCE be triggered by an unprivileged host userspace
-process, causing a denial of service?
-
-If userspace maps a huge page to a KVM guest and subsequently unmaps or
-changes protections on a 4KB sub-page, the MMU notifier will request a
-sub-page unmap. The alignment check will fail and trigger this warning.
-On systems with panic_on_warn enabled, this allows an unprivileged
-process to panic the host. Should this be converted to pr_warn_once()
-or removed entirely?
-
-> =20
-> -next:
-> -		addr +=3D page_size;
-> +			addr +=3D page_size;
-
-[Severity: High]
-This is a pre-existing issue, but if the address is unaligned, does
-advancing by page_size break the iterator alignment for all subsequent
-huge pages?
-
-If the unmap is skipped because addr is unaligned to the huge page size,
-advancing by page_size leaves addr at the exact same unaligned offset
-within the next huge page region. On the next iteration, the alignment
-check !(addr & (page_size - 1)) will fail again, causing KVM to silently
-skip unmapping every subsequent huge page up to the end of the range.
-Should addr be aligned down before adding page_size?
-
-> +		}
-> =20
->  		/*
->  		 * If the range is too large, release the kvm->mmu_lock
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260604230317.3050=
-1-1-atwufei@163.com?part=3D2
+>
+>[1] Link: https://lore.kernel.org/all/20260528141630.2741710-1-qingwei.hu@bytedance.com/
+>[2] Link: https://lists.riscv.org/g/tech-unprivileged/topic/question_about_zic64b_and/119631059
+>
+>Best regards,
+>Qingwei Hu
