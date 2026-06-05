@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A997C4D2EC3;
-	Fri,  5 Jun 2026 11:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E7A3126CD;
+	Fri,  5 Jun 2026 11:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780659347; cv=none; b=McXgKPk0qG2Pc5HwR1Vm+WrInXH/dMyRs8AbhT1pcRbmnBQ5QrqJ5s/mXewZi18Dssg87M953+lK7Mfe4uoU7XMEhUCPL2pwbCMC5js5QW3pGD57psTltLxj7NZlDga6xJpszQ25Jkoz66mLluqR41UCNyW6Wosssvv0CUiDu6s=
+	t=1780659518; cv=none; b=EEJaGXQcYCNbG4scNNKy5FkN/ErkRTREWQTFkPArS9VbgDPHZL/X1c8qqP4lalw23U9XnAUHdCU9GKv1KzMwrIrm3qnPQZDLxAMehjtLVjJ4kGF9LF2urX4BnFEixfp+ud5B0k6necHkaS9T2B0Y/JOz7cimkUtXgy0+7g3ZIjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780659347; c=relaxed/simple;
-	bh=4QQ4dKh884lp5FRbgPEjArjDvO0OP9dLm5s239AbpyM=;
+	s=arc-20240116; t=1780659518; c=relaxed/simple;
+	bh=sEsCwA2QH7uNmmVp2ZXsn8b5c6PTagtB940gkGRpKWI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fTkDikAMhfwgg3S0OzGrALXyTiKggmP6DHTS2i+fGWZsLg9vFQyJbPGNVHNf6KMMfsoiG0iTubvMdrHeMm1foGN6lbF9SLi9yKipUb+xrg/j2Y774JIiR30iVdHyyMAHpOnfyBFNdm186uBMqnIoOyWnkd6bfoXaatRSyGGkrWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SK3RXkPY; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=jgs/ilYMbjcjjOT4jVs9T1UEIBGmdjmA+qixCv6dWq/Ac2wb/Nt9895lIs6mW9B5Jp99zIxoAKnM5CbkjRHN8w2Z3N0noKTEs8gQhJAZrSAeRsud5145NMAmeTV/HlUpifD7fKmnpSaXZXrbNaRU7Cl3EzvAtS4xD+SLg4406bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNy6ftJA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SK3RXkPY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA411F00893;
-	Fri,  5 Jun 2026 11:35:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNy6ftJA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3098B1F00893;
+	Fri,  5 Jun 2026 11:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780659346;
-	bh=f7BVss6j6kOZoY1G1bBrjCYbl0PQn+LeN+QUqhUy2Gk=;
+	s=k20260515; t=1780659517;
+	bh=hk6Cdaq1vDA1FKg7w+fi/63xjHZurL3yEZTMwESU0Ro=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SK3RXkPY5ggBTCPPqN/gLZ6rjYe5Rq77NsYv80iGvYDVemRt2XMxKXlvlJ8fpHMcy
-	 loaWPJdEDu5dp63vdK3smDwIJ+GaOYH3MWlJvzqvAddah10I8ernY086EiSZiiXm0l
-	 IMoYvNZ/mCkVA7JYKHupElVmqsIK6FsBjZxf4Bub73gzNUTgJjKslKbar3Z7kbMIM/
-	 G+SFARLHUqtHEuXbidpNtE5vPwWb0YlxUx8PKF+jeb7OFT+v+dS0C+ntRMpw7Z0sZl
-	 HdcpsHQeKVeT6NWotvWbyLNs7GDqqJr1hsVyAc3Jtf4Due0rEJXeRv/KQe42AHcH/A
-	 NTehpmFHN237g==
-Message-ID: <a5c26cde-e23e-488c-ba3b-cf8bc9be76da@kernel.org>
-Date: Fri, 5 Jun 2026 13:35:37 +0200
+	b=BNy6ftJAwVHg37IYpk5Rv//MNKo5MzbM0y/uXf+gMVfqipFvNqQqbMAmBZfdu1VoF
+	 Iceg1pOY3uUfEjbQgLbNwQhVN9sZ/bRQ5CsvQC48QMRgE0pnhv+UFibDVg7KOSZOpm
+	 GwD5jeLzDG0h8BYYGceo9CgjFE5booO4aeafj65eHlnXp2p6XENnXZrQmSzWaIxJtl
+	 zpAL/OXvw86PTx8iWpOgzPXPqZpu9mjpiy1iTPS6BQ1g+UIgeLTMwKXziOTmzZjnI8
+	 eHhsMne8cBeDpp75AJfSj/Mg3Q9szdQB+/lkJZxEcGeYqnm+JtjNEU/fO29nEV2bWQ
+	 zX749eAX8p1mg==
+Message-ID: <6963083d-6725-4081-b2a2-894a0510c6fb@kernel.org>
+Date: Fri, 5 Jun 2026 13:38:28 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,8 +35,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/7] mm: memory_failure: Generalize extra_pins handling
- to all MF_DELAYED cases
+Subject: Re: [PATCH v4 5/7] mm: selftests: Add shmem into memory failure test
 To: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -52,7 +51,7 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
  vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
  tabba@google.com, dave.hansen@linux.intel.com
 References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
- <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-5-a5bc7db5a9b2@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -99,27 +98,64 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-5-a5bc7db5a9b2@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 6/2/26 23:55, Lisa Wang wrote:
-> Generalize extra_pins handling to all MF_DELAYED cases not only
-> shmem_mapping.
+> Add a shmem memory failure selftest to test the shmem memory failure is
+> correct after modifying shmem return value.
 > 
-> If MF_DELAYED is returned, the filemap continues to hold refcounts on the
-> folio. Hence, take that into account when checking for extra refcounts.
-> 
-> As clarified in an earlier patch, a return value of MF_DELAYED implies that
-> the page still has elevated refcounts. Hence, set extra_pins to true if the
-> return value is MF_DELAYED. This is aligned with the implementation in
-> me_swapcache_dirty(), where, if a folio is still in the swap cache, ret is
-> set to MF_DELAYED and extra_pins is set to true.
+> Specifically, test the expected behavior under various scenarios
+> combining page dirtiness (dirty vs clean) and failure types (hard vs
+> soft):
+> + Dirty + Hard: Trigger a SIGBUS on injection, and trigger another
+>   SIGBUS when reading the page again.
+> + Dirty + Soft: No SIGBUS is triggered, and the original value can be
+>   read successfully.
+> + Clean + Hard: No SIGBUS is triggered on injection, but trigger a
+>   SIGBUS when trying to read the page again.
+> + Clean + Soft: No SIGBUS is triggered, and the page can be read
+>   successfully.
 > 
 > Signed-off-by: Lisa Wang <wyihan@google.com>
 > ---
+>  tools/testing/selftests/mm/memory-failure.c | 111 +++++++++++++++++++++++++++-
+>  1 file changed, 108 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
+> index 3d9e0b9ffb41..43949b3b3565 100644
+> --- a/tools/testing/selftests/mm/memory-failure.c
+> +++ b/tools/testing/selftests/mm/memory-failure.c
+> @@ -30,9 +30,14 @@ enum result_type {
+>  	MADV_HARD_ANON,
+>  	MADV_HARD_CLEAN_PAGECACHE,
+>  	MADV_HARD_DIRTY_PAGECACHE,
+> +	MADV_HARD_CLEAN_SHMEM,
+> +	MADV_HARD_DIRTY_SHMEM,
+>  	MADV_SOFT_ANON,
+>  	MADV_SOFT_CLEAN_PAGECACHE,
+>  	MADV_SOFT_DIRTY_PAGECACHE,
+> +	MADV_SOFT_CLEAN_SHMEM,
+> +	MADV_SOFT_DIRTY_SHMEM,
+> +	READ_ERROR,
+>  };
+>  
+>  static jmp_buf signal_jmp_buf;
+> @@ -165,17 +170,21 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
+>  	case MADV_HARD_CLEAN_PAGECACHE:
+>  	case MADV_SOFT_CLEAN_PAGECACHE:
+>  	case MADV_SOFT_DIRTY_PAGECACHE:
+> -		/* It is not expected to receive a SIGBUS signal. */
+> -		ASSERT_EQ(setjmp, 0);
+> -
+> +	case MADV_SOFT_DIRTY_SHMEM:
+>  		/* The page content should remain unchanged. */
+>  		ASSERT_TRUE(check_memory(vaddr, self->page_size));
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+You should likely use "fallthrough;" ... unless you are missing a break; here.
+
+
 
 -- 
 Cheers,
