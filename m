@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A2F1AB6F1;
-	Fri,  5 Jun 2026 11:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A997C4D2EC3;
+	Fri,  5 Jun 2026 11:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780659320; cv=none; b=NCWY3WS9r2bD3Nz1Jm/G37gqt/si0Tm0HD6f5cqZs7MP8hnR+EQpFhCV9FiaqxwjhZsPmEjf47UIsmDz3lmeAgVOHVQXKOG9otcPSued89iktqWXXHZD/zAmOM7Tt1rh7yPdFFfIeVT3JkopgiKHFu26OA/n5dZju+uwxDmZvMc=
+	t=1780659347; cv=none; b=McXgKPk0qG2Pc5HwR1Vm+WrInXH/dMyRs8AbhT1pcRbmnBQ5QrqJ5s/mXewZi18Dssg87M953+lK7Mfe4uoU7XMEhUCPL2pwbCMC5js5QW3pGD57psTltLxj7NZlDga6xJpszQ25Jkoz66mLluqR41UCNyW6Wosssvv0CUiDu6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780659320; c=relaxed/simple;
-	bh=U/GhoExoN0LlA/r4cTbbZ/ZPVkMGgXARahm8n7mIjMg=;
+	s=arc-20240116; t=1780659347; c=relaxed/simple;
+	bh=4QQ4dKh884lp5FRbgPEjArjDvO0OP9dLm5s239AbpyM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=moXKVnu8H4gxwTRUeAjbMy0jehM4D79I2Z4HqNweRNJaPi/iHuO7FgSVye7zcjBI+uC+UVV9Gmv9zBWH35gnorv6Vidt06iyMngvE3s/rlbnriR6P2htBZt4UKUQSiCrw3LftvaTGzBsW5xjF7rf2oAIfO71FIi2tkFQy12K+6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCYLicqX; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=fTkDikAMhfwgg3S0OzGrALXyTiKggmP6DHTS2i+fGWZsLg9vFQyJbPGNVHNf6KMMfsoiG0iTubvMdrHeMm1foGN6lbF9SLi9yKipUb+xrg/j2Y774JIiR30iVdHyyMAHpOnfyBFNdm186uBMqnIoOyWnkd6bfoXaatRSyGGkrWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SK3RXkPY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCYLicqX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24BC1F00893;
-	Fri,  5 Jun 2026 11:35:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SK3RXkPY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA411F00893;
+	Fri,  5 Jun 2026 11:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780659319;
-	bh=VYwSlTfRiNAfg0kY061d17bvHyd81A79wpzN3UgaPPU=;
+	s=k20260515; t=1780659346;
+	bh=f7BVss6j6kOZoY1G1bBrjCYbl0PQn+LeN+QUqhUy2Gk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CCYLicqX0yVvXA51o3INPCbyOLWqJ3kuKlqsEkwDCzrSsTSZpghUE25hAudi8TcEX
-	 BOM0WLwYjoWHYFJkGEne/7igpxlsKjqmC2B9jVkPriF5xkM1boT+1PHxBqg3Dr75kW
-	 cd/FWJ1i492m6XRU/0DXAVs6NpqFsYVTPIo3lfWi5QIwA3O7jD/E8nJpst3/F517M+
-	 vbQCiiDF+qOesamEO8bTFvMyRvaGU5z4gvJfvMQgMWfCk1XxEfaX9AKXlENCXxMc1d
-	 4JqzIHo2FVc4UGTRmpgBCl2TCvnQxGMtcwZV0trWrIqsgu0qhnxkWKbvKsK5Juv3zG
-	 pcI4qiilLyNoQ==
-Message-ID: <7c96ba7b-1460-4d62-938a-5051d03609d5@kernel.org>
-Date: Fri, 5 Jun 2026 13:35:11 +0200
+	b=SK3RXkPY5ggBTCPPqN/gLZ6rjYe5Rq77NsYv80iGvYDVemRt2XMxKXlvlJ8fpHMcy
+	 loaWPJdEDu5dp63vdK3smDwIJ+GaOYH3MWlJvzqvAddah10I8ernY086EiSZiiXm0l
+	 IMoYvNZ/mCkVA7JYKHupElVmqsIK6FsBjZxf4Bub73gzNUTgJjKslKbar3Z7kbMIM/
+	 G+SFARLHUqtHEuXbidpNtE5vPwWb0YlxUx8PKF+jeb7OFT+v+dS0C+ntRMpw7Z0sZl
+	 HdcpsHQeKVeT6NWotvWbyLNs7GDqqJr1hsVyAc3Jtf4Due0rEJXeRv/KQe42AHcH/A
+	 NTehpmFHN237g==
+Message-ID: <a5c26cde-e23e-488c-ba3b-cf8bc9be76da@kernel.org>
+Date: Fri, 5 Jun 2026 13:35:37 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/7] mm: shmem: Update shmem handler to the MF_DELAYED
- definition
+Subject: Re: [PATCH v4 4/7] mm: memory_failure: Generalize extra_pins handling
+ to all MF_DELAYED cases
 To: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -52,7 +52,7 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
  vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
  tabba@google.com, dave.hansen@linux.intel.com
 References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
- <20260602-memory-failure-mf-delayed-fix-v4-3-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -99,35 +99,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-3-a5bc7db5a9b2@google.com>
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 6/2/26 23:55, Lisa Wang wrote:
-> To align with the definition of MF_DELAYED, update
-> shmem_error_remove_folio() to return MF_DELAYED.
+> Generalize extra_pins handling to all MF_DELAYED cases not only
+> shmem_mapping.
 > 
-> shmem handles memory failures but defers the actual file truncation. The
-> function's return value should therefore be MF_DELAYED to accurately
-> reflect the state.
+> If MF_DELAYED is returned, the filemap continues to hold refcounts on the
+> folio. Hence, take that into account when checking for extra refcounts.
 > 
-> Currently, this logical error does not cause a bug, because:
-> 
-> - For shmem folios, folio->private is not set.
-> - As a result, filemap_release_folio() is a no-op and returns true.
-> - This, in turn, causes truncate_error_folio() to incorrectly return
->   MF_RECOVERED.
-> - The caller then treats MF_RECOVERED as a success condition, masking the
->   issue.
-> 
-> The previous patch relays MF_DELAYED to the caller of
-> truncate_error_folio() before any logging, so returning MF_DELAYED from
-> shmem_error_remove_folio() will retain the original behavior of not
-> adding any logs.
-> 
-> The return value of truncate_error_folio() is consumed in action_result(),
-> which treats MF_DELAYED the same way as MF_RECOVERED, hence action_result()
-> also returns the same thing after this change.
+> As clarified in an earlier patch, a return value of MF_DELAYED implies that
+> the page still has elevated refcounts. Hence, set extra_pins to true if the
+> return value is MF_DELAYED. This is aligned with the implementation in
+> me_swapcache_dirty(), where, if a folio is still in the swap cache, ret is
+> set to MF_DELAYED and extra_pins is set to true.
 > 
 > Signed-off-by: Lisa Wang <wyihan@google.com>
 > ---
