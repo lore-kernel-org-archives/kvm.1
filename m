@@ -1,86 +1,33 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F664D2EE3
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 11:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D1247D94B;
+	Fri,  5 Jun 2026 11:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780658431; cv=none; b=qY9HPCZFn9nNW6mZJgviLMwZJMzpwEtlxn2DSrMfZ8lTGBAPwjqWuDhOkeAXvk5wYLGHkNXlJTih+l/2df6X1Y2NHUwAB6ZQExhgENFVZN6OFYCKa25hSV0nWvD8CFgWBudzFLPbxKxLgo+0rLEeRQ2ENEsiGlwiXgjb4C6TI6w=
+	t=1780659014; cv=none; b=urVZAgIs8mwSYR0t6Qtzow6d/Mr1G6pDG8yzH0JJZer4V2d6zRi7wo12eIDuaKePLvkr42+r5CtycfErWgYzrsRWm3cnL6cG6REsvoqtbqF7DKMxgiMYT0+p56qAhHmBJkE26F1V0xUt7yAIJ3IMWRbkkgQ+hvLlTLagrrICGVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780658431; c=relaxed/simple;
-	bh=x0UYxgYNv6TD6Wlw2FfxY0+ckKC90VlYJ2Ty2LB51yU=;
+	s=arc-20240116; t=1780659014; c=relaxed/simple;
+	bh=AUZmNkfpo8SiFYIKu8RSDVJzKof6T6m5QvrfOh4S094=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g9UtCTIMrRgw0bt386Z7TeEPYVFG28ufCQBAu7iZPNMVEp661W/4eIlQbI3BXYMCtsY3uFFoiHmm2gfha3M92LRx4r3kM0t+XA1hP6Pp3MlTOmzQ6gG5QYc4q6O6o8cwM8QZLBb+WE7d2L+7u9Scis6fimWZx18KY3jAZJBD/Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NQst+ned; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VzlfZwYc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=KERxifdTdiDC/+HcEElEuOHnzYaNY4oM/mPfKHmO4llzuxXjXmsyNhiFMmcRO43/ZSRcMAnWl8CAZBgK2nyWEj6fmFuUWY99/zpOfkGmKkgDdmV5x0v1bR+hDgr6o38yiLthvNYirDSsNf7lRTHTBmto6U1XO9S5nJppI4IrCa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2HGYkKv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NQst+ned";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VzlfZwYc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780658428;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M+dHNKFMVBkDdICjg2Muej8aIFbwcMiW4DpFYR49CkI=;
-	b=NQst+nedkCx5EBACavuTEYwl5fdcsVCvHNGRmBOs2S5+QnDNwUfcjHxgxAV6aLpCTpAkAo
-	155lKHETS6LRBxfRI9+0xO9qctfZxPVbGUV9IKmQtI4NRu4IHw/K7NLSJuerZQTt01NtCe
-	3JPteZmSK5LlE4UceS6v+KUDh0LQy7s=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-191-KmEs7QbDNlCIo7ZEYcGd2Q-1; Fri, 05 Jun 2026 07:20:27 -0400
-X-MC-Unique: KmEs7QbDNlCIo7ZEYcGd2Q-1
-X-Mimecast-MFC-AGG-ID: KmEs7QbDNlCIo7ZEYcGd2Q_1780658426
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8422382178bso1217033b3a.2
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 04:20:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780658426; x=1781263226; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=M+dHNKFMVBkDdICjg2Muej8aIFbwcMiW4DpFYR49CkI=;
-        b=VzlfZwYcPzu6rIDqmG3VRkK7Khwpjqg083mF+7HPhZNc8sh3ELnj+PCrnZfWXKrdQa
-         zvoDmQX93HuDpaGdw0Xb2bgyn4VhBgu2sXERD0KxLZCihjXUAYH551TZ4ul9Oolu3PGk
-         BIEzvpq3JnaoNoHym7GBEPeR+54KSSW2bX5EK92bwHjsV1VvB/KU0qJbwMmLK6S8aAcj
-         BA368dKsPVDMJWrvEe5XLVJhJohqteghL+vDBJL7I/UxX36HU2LbOOSYeJGB07fjBWzR
-         FrIIZQEtKbOOQltgkOnwmFyiWpOr+cQlkft3eZ1SfzaZm2s4gy4XjuZn/s0qjK09rxKL
-         pL3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780658426; x=1781263226;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=M+dHNKFMVBkDdICjg2Muej8aIFbwcMiW4DpFYR49CkI=;
-        b=dtpaArsBTqU1fHCUozl9AYv6Fmmw3EBN7nskJYv0ZdmlaDZVWzB6sy1bQf3mlkXTe8
-         JoPxoOiQMUZ4ipXJTNWkbX+a9dz5SgOrFs1tw2Em3eCU8AyLQqnSbqQHDjgO+qiPMakn
-         kpDa3TDOHri/zPLXZ7PsaFkj+99YQN50olF37DREnptWHWMJGjd+H0D0eyGQKwWQSfkG
-         YY+uomJggPuXC+HWGMypu2Vd4jxXO8/tRtWbvY4pxseXCB0WZgHXZh2NDNEEI/OdK9IP
-         XSD6lvOSBKuVQa3nwjQaungzF2SpWCfafS0rQENAzBDUzEQqkDF15gSHX0AGO1wQ8KIx
-         9Mdw==
-X-Forwarded-Encrypted: i=1; AFNElJ/zfj1Nfbn6xBrhPswvljt7z5fhZDd5SdCcnAL7n59caIDOqVVRdPdcu2o1ylVyvwqfv80=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7g6JxtR3qT74Nxiim3pdyZfVVUYli74brQrvGBGwcMAvnS5Pn
-	KBQTGXiZy+xhihDR9TrX9vhIorI/JIE/sXYxhzXCqAWJiztA0BrzMxa7WUyy3Ty+qWbhASKVkYT
-	SyrbO6pU5wv91VUaFIMPEX0BWYxvxV3OQKMFCiC6AbsBpspnjHeqVZge0YEkSGg==
-X-Gm-Gg: Acq92OHfjZ7ZqdUiqadtB4pomMLpl/E74jDd1elqEMXtLS6KpeB9V23s8rfVSrsBEtr
-	16Lvn9OYGo/ZJYa9q6Iy8jTgNbO76CBMM5z+tTN2ufWrBOo/Md831npmoFVqI3Axvcdaf6eBNyK
-	p7jejUbzaj8YcAgh/Xy1XQ1OKRrl0gIPwHB7s/FlDV1t5ViPPxUgKMHKnlYO16nh75iEvlb7qMK
-	vvgP/X9Oo0doF5DhQPVqz+jOlZf3UbgQ5iKXEj8/u9nXF0B09a+F55nm7kn13LFmaysZ3DaUlE2
-	+TZ1WP9peNIUdTFuNXTzKI+htWf1GQI7j1nja1QQZTS7wfuV1Ti5qyARUwNgvBDzSCzB9GK/pys
-	Wn4/SyFQLoAGOZMUbY59Pb8sEc1p+BSdgXaWtXJT6R1j+uDo/JTztMqyuBUiH/A+DP0kh+qFVlU
-	E=
-X-Received: by 2002:a05:6a00:2351:b0:835:3949:3c22 with SMTP id d2e1a72fcca58-842b0f52eefmr3355912b3a.27.1780658426157;
-        Fri, 05 Jun 2026 04:20:26 -0700 (PDT)
-X-Received: by 2002:a05:6a00:2351:b0:835:3949:3c22 with SMTP id d2e1a72fcca58-842b0f52eefmr3355817b3a.27.1780658425323;
-        Fri, 05 Jun 2026 04:20:25 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84282880050sm8756478b3a.29.2026.06.05.04.20.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jun 2026 04:20:24 -0700 (PDT)
-Message-ID: <d08ca4d6-1e7c-473d-909e-89642bd8c4c2@redhat.com>
-Date: Fri, 5 Jun 2026 21:20:14 +1000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2HGYkKv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B9C1F00893;
+	Fri,  5 Jun 2026 11:30:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780659011;
+	bh=zmTaJUj1lazUmadTOmGXnm/0jLcTFlnKa5WXCRJQ9Yo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=b2HGYkKv44kDDtzjt6zO4Sp4zEDiseh/8H35sCiD5i5BXeN9IOpRzFYog5HZWppKe
+	 DzZ2Ee8BTUhzvyE4dHMnDl9godhh1QtTIL2eq8ZOCxjEALQNMXjNGBF9fEn9LI5fTz
+	 Mb3Ns1UMCGshENCB2J/CKVVYHEmq2DSQtJ3aUD3r/agEp4Ck3tYpBrLaEQyvAw9jjS
+	 L9zJrsHRuEnlotBz8YRpiSmsDreYf9SZyhUj1K4IUzXkyGZyA+evSbMyOiDEWOloHw
+	 tew7Caegi387fDbDC+ALZvM6qPgmeca6+cPm3gEJvLinFbIuduGDwEUS1LVfSPwGjy
+	 bXZeB2nO79Mig==
+Message-ID: <0465e8ac-c2c6-4745-9027-da4fc9c402e4@kernel.org>
+Date: Fri, 5 Jun 2026 13:30:02 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -88,176 +35,84 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 29/44] arm64: RMI: Runtime faulting of memory
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-30-steven.price@arm.com>
+Subject: Re: [PATCH v4 1/7] mm: memory_failure: Clarify the MF_DELAYED
+ definition
+To: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
+ vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
+ tabba@google.com, dave.hansen@linux.intel.com
+References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-1-a5bc7db5a9b2@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260513131757.116630-30-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-1-a5bc7db5a9b2@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Steve,
-
-On 5/13/26 11:17 PM, Steven Price wrote:
-> At runtime if the realm guest accesses memory which hasn't yet been
-> mapped then KVM needs to either populate the region or fault the guest.
+On 6/2/26 23:55, Lisa Wang wrote:
+> This patch clarifies the definition of MF_DELAYED to represent cases
+> where a folio's removal is initiated but not immediately completed
+> (e.g., due to remaining metadata references).
 > 
-> For memory in the lower (protected) region of IPA a fresh page is
-> provided to the RMM which will zero the contents. For memory in the
-> upper (shared) region of IPA, the memory from the memslot is mapped
-> into the realm VM non secure.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v13:
->   * Numerous changes due to rebasing.
->   * Fix addr_range_desc() to encode the correct block size.
-> Changes since v12:
->   * Switch to RMM v2.0 range based APIs.
-> Changes since v11:
->   * Adapt to upstream changes.
-> Changes since v10:
->   * RME->RMI renaming.
->   * Adapt to upstream gmem changes.
-> Changes since v9:
->   * Fix call to kvm_stage2_unmap_range() in kvm_free_stage2_pgd() to set
->     may_block to avoid stall warnings.
->   * Minor coding style fixes.
-> Changes since v8:
->   * Propagate the may_block flag.
->   * Minor comments and coding style changes.
-> Changes since v7:
->   * Remove redundant WARN_ONs for realm_create_rtt_levels() - it will
->     internally WARN when necessary.
-> Changes since v6:
->   * Handle PAGE_SIZE being larger than RMM granule size.
->   * Some minor renaming following review comments.
-> Changes since v5:
->   * Reduce use of struct page in preparation for supporting the RMM
->     having a different page size to the host.
->   * Handle a race when delegating a page where another CPU has faulted on
->     a the same page (and already delegated the physical page) but not yet
->     mapped it. In this case simply return to the guest to either use the
->     mapping from the other CPU (or refault if the race is lost).
->   * The changes to populate_par_region() are moved into the previous
->     patch where they belong.
-> Changes since v4:
->   * Code cleanup following review feedback.
->   * Drop the PTE_SHARED bit when creating unprotected page table entries.
->     This is now set by the RMM and the host has no control of it and the
->     spec requires the bit to be set to zero.
-> Changes since v2:
->   * Avoid leaking memory if failing to map it in the realm.
->   * Correctly mask RTT based on LPA2 flag (see rtt_get_phys()).
->   * Adapt to changes in previous patches.
-> ---
->   arch/arm64/include/asm/kvm_emulate.h |   8 ++
->   arch/arm64/include/asm/kvm_rmi.h     |  12 ++
->   arch/arm64/kvm/mmu.c                 | 128 ++++++++++++++++----
->   arch/arm64/kvm/rmi.c                 | 173 +++++++++++++++++++++++++++
->   4 files changed, 301 insertions(+), 20 deletions(-)
-> 
+> Signed-off-by: Lisa Wang <wyihan@google.com>
 
-[...]
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> @@ -1604,27 +1641,52 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->   	bool write_fault, exec_fault;
->   	enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_SHARED;
->   	enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
-> -	struct kvm_pgtable *pgt = s2fd->vcpu->arch.hw_mmu->pgt;
-> +	struct kvm_vcpu *vcpu = s2fd->vcpu;
-> +	struct kvm_pgtable *pgt = vcpu->arch.hw_mmu->pgt;
-> +	gpa_t gpa = kvm_gpa_from_fault(vcpu->kvm, s2fd->fault_ipa);
->   	unsigned long mmu_seq;
->   	struct page *page;
-> -	struct kvm *kvm = s2fd->vcpu->kvm;
-> +	struct kvm *kvm = vcpu->kvm;
->   	void *memcache;
->   	kvm_pfn_t pfn;
->   	gfn_t gfn;
->   	int ret;
->   
-> -	memcache = get_mmu_memcache(s2fd->vcpu);
-> -	ret = topup_mmu_memcache(s2fd->vcpu, memcache);
-> +	if (kvm_is_realm(vcpu->kvm)) {
-> +		/* check for memory attribute mismatch */
-> +		bool is_priv_gfn = kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT);
-> +		/*
-> +		 * For Realms, the shared address is an alias of the private
-> +		 * PA with the top bit set. Thus if the fault address matches
-> +		 * the GPA then it is the private alias.
-> +		 */
-> +		bool is_priv_fault = (gpa == s2fd->fault_ipa);
-> +
-> +		if (is_priv_gfn != is_priv_fault) {
-> +			kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
-> +						      kvm_is_write_fault(vcpu),
-> +						      false,
-> +						      is_priv_fault);
-> +			/*
-> +			 * KVM_EXIT_MEMORY_FAULT requires an return code of
-> +			 * -EFAULT, see the API documentation
-> +			 */
-> +			return -EFAULT;
-> +		}
-> +	}
-> +
+-- 
+Cheers,
 
-For a Realm, gmem_abort() is called by kvm_handle_guest_abort() only when
-we're faulting in the private (protected) space.
-
-     if (kvm_slot_has_gmem(memslot) && !shared_ipa_fault(vcpu->kvm, fault_ipa))
-         ret = gmem_abort(&s2fd);
-     else
-         ret = user_mem_abort(&s2fd);
-
-With the condition, this block of code can be simplied to handle conversion
-(shared -> private) instead of both directions.
-
-     /* Convert the shared address to the private adress for Realm */
-     if (kvm_is_realm(vcpu->kvm) &&
-         !kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT)) {
-         /*
-          * KVM_EXIT_MEMORY_FAULT requires an return code of
-          * -EFAULT, see the API documentation
-          */
-         kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
-                                       kvm_is_write_fault(vcpu),
-                                       false, true);
-         return -EFAULT;
-     }
-
-
-[...]
-
-> @@ -2396,7 +2475,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->   				!write_fault &&
->   				!kvm_vcpu_trap_is_exec_fault(vcpu));
->   
-> -		if (kvm_slot_has_gmem(memslot))
-> +		if (kvm_slot_has_gmem(memslot) && !shared_ipa_fault(vcpu->kvm, fault_ipa))
->   			ret = gmem_abort(&s2fd);
->   		else
->   			ret = user_mem_abort(&s2fd);
-gmem_abort() is only called for faults in the protected (private) space.
-
-Thanks,
-Gavin
-
+David
