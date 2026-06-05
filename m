@@ -1,110 +1,118 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B701A683A
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 19:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780688815; cv=pass; b=WF3hXD3ADEsNU9Y01eLIrK43THNfIHO3sPt2DIp6q4whnRlo6Gx1nUTh6y5taEi0gjcftUsqAfvmTVVtHZH0c0tiUJNrzgPNoqzlmFjei+ceILXPAosJvaRA5TLaJ3E325SiBwOKMBGLUyNNOQjsAueZXHzOHKy/aBJHLb9O/KE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780688815; c=relaxed/simple;
-	bh=Fey+jTx0vHRsYaHeJ1TZrstn1canobwyLWL0ZAO7Tqw=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=MedEVRqraJ2NE3x6GaI4ljDnSZfjMCPW4F8cZ3qe2Sir9aPwSQuJvvCzqewJQ7yKSmjuddXIGL9aMb8X0Jw5htbcwfbElt+DfWXYSU7O8CqKEljvufRGb/rwClxtXGVwPw5tACiMjvbIdadS+G2kZ75YGq02HgrDBG4WSYWhvok=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CltL/6zM; arc=pass smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5B444A724;
+	Fri,  5 Jun 2026 19:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780689102; cv=none; b=qHbyfQWCkWnqYaU3oaDdvJOU6DvTFtOJY4yIZQtR3pq0gGB2arott2i0YEmBcLC+t+aUK3uCiQXhKgkpB+Ck0tLqPETnLSIVMzdPO6h3arv9itjzz1f2L83311965OFRLV5M2al1mDQ4qoeF4MTdmEpMz2ON0jQbsIH7jofZ4RE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780689102; c=relaxed/simple;
+	bh=nyCCfHlezDTGlkFVHqBKpPLP7Re1FMEtAy1uM5EiH7k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=I2G+bcaXJ4rkbXeayboviW8k3fmMkgICnTJ80ZJDvmT7DPCnc8moo6tembz0Wo6kNDMj5+zzTMz634vxAAqul/Y6VaFNV/fjPMWGhkbyn/0q8mwTNr9bK4ZynR+p9rcYMiwDW2OEdLTQaKHkvT1Pq0Hm0Qi4ohYJhQxkMkREPc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJKk9HX+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CltL/6zM"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-68c32f3c6d6so2436817a12.3
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 12:46:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780688812; cv=none;
-        d=google.com; s=arc-20240605;
-        b=C56Jj4mLJ9eMUoFZ7FnZedCEgeVgDGbX8Zgko9m7D5VNnLAvIsaflWZd/yEJPDCCz7
-         DoiN8FEUKWyN6JBwiyt6iZcec9mQARgYKgjil1KcBIQOzWWUH/Eo4pYf5/gPS9iXCVhB
-         UPRKf200H45j22S9j6kJW9SVYOczWJl7EtFqb0dKXZcPHvhnKVh13fqZT4QpUiLWZ08I
-         II2d25P5b5tTkPJUnreFWMCwLaKkG3vENXoSsdo4mn9o9ppYp/m3145RtH3g1TqX6D+6
-         WhBRQyifCeT6tt/3RBeAGq2KhP0s8Zg5YtnYTxX0ywaxFwhA46bXrSXYO6IduvXyuPaC
-         Hieg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:mime-version:dkim-signature;
-        bh=Fey+jTx0vHRsYaHeJ1TZrstn1canobwyLWL0ZAO7Tqw=;
-        fh=3x3ZdJ/Qd0GB/FmaJZ/ISLlT5X/H48C9HHO34rEPYNY=;
-        b=FnEoYWhDQk5YqQkMa4Btw46+R9QS+qXinX8Sr0jEIoEj82Ryl/MljzBJAuXvTgIHtw
-         2gGKHzelkQVYaTeu+d6inNqAVindDzA+Hghr/pa42Pl03U+7XiN6jdw41buhldSpvg2X
-         V9kcSsib6y3wBvgZwXNmaY5hGkw6RmpHCrIhpv5pdPD89uOQ9dI5ec72bvPkuMlxo1dV
-         ioxfFXNrE3GRUbhuR/VUxhy+ycUXV4TzW/USACQFdfE+jtQaKm7Y8enCgJ5ysaiZDIH5
-         hCry8YpbwgIL4ZzW2nsMyu8ep+IPTKNe2VRv3u+ZC4Yn+nN/GFUCHeP2uCSEZQ9QMaKp
-         mG9Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780688812; x=1781293612; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fey+jTx0vHRsYaHeJ1TZrstn1canobwyLWL0ZAO7Tqw=;
-        b=CltL/6zM0RybQ8z0JuYmBB3NrNhJ5vXfGUfTuZzfZeuniQtuOpujI+YxKXQKDQFnZK
-         o5naIo3ZX4xEiXwseRIleg0tS/BwXP64RXHlu94gJSYHlMRZoEtc7/AEp+eEWUbw3y1Z
-         P3T14enrk30e2lyGrLtnrqJ0zOxYr1pX6Oc2ubK5taEQJWQcqj+tSSvXpNG5R6w8F7a+
-         bnudwb18aXRd7+YxfZTA3XaHsYl159/4Ns452+ril/b29/YjBrKUAqIEGDmc1L251m5v
-         sIEp31djagtX1xaZz6MbEDw6S9JdP5xiPjW1rhoq3sM9Fq71ldJ66mqTkODjntvxANLm
-         l4Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780688812; x=1781293612;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Fey+jTx0vHRsYaHeJ1TZrstn1canobwyLWL0ZAO7Tqw=;
-        b=fQ5PCLYapXny/6AAgV9oReYvGodTNNifXWfqaYqNOt2qgtW2E5/L6hThAqGlK9czKK
-         8bLy5qEKuKTYfQbW76aU1vAzx5OjdoY38SQg58jIHeDEvoeqaCmhjukJG9fTkZlkERtc
-         TBD259csULALEmyQYVtvwkY4E/NmqJKkdP7H77yIBkBoz28ngysJOSSgI2W71vBlInhH
-         8sjNmhv820YTc4b8MF6dO3AdK89/T3NnZA4obWCpMWXmR43q9aFfuf+76uQ+xf2b73Q6
-         QpuNTWkijSKIcuea459DUGruThAuIaoTlEsE61wTcIr4xPho5cMX3L4o92VuQi/I3SOx
-         wOlQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9uBRSPn1rqyABlGeNwJcXT4stXpaOwtuItQB+x8k2BPp5/NqVg1JDiBMtQUbjbmwfDWOA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmR/Mt7GITWo5mrlq4WbWcu1GkHnfl7HZHNO+WnxWZO5IivJml
-	KV9+Ns6wcmykROLCDPQ2IUQ00HI4xuSBld9tM4Sd3nUFchnDw2hQa4cc9tUAqdQ3U06iAdHEMPn
-	Qub9YiQ9Y4C9Q50TN6OVXqkUY031xQd4=
-X-Gm-Gg: Acq92OHNvnfHi109O1onFVtSamvRAwjVSpRwqAyLYZnzfNvj/SNtNXzCFb0Uh4LrM1X
-	kMW570AqbD6JGq0CeFek8B9Y4gvsHQHJdY0MlgbM4+S1uRNG0bc8tORYECkFasNYtXyJM5l/ZHQ
-	VnQaqZsAeS/02Q1UicdN0FJNN4it5ptrYsgZVaRXsfvZhPCQAYDLvjqraXWC5N4cSuxldoSePby
-	5CLIufLrnIXsEhh3yxn54KRER4EPbsvRaq1BVjnFnXUQOiNCKmvYzIJBKRGZXr0FIpgq2xYLPmZ
-	RbS4rEsy0BhNxr6xSIqAnSQntotWDvZnIrHXjmL4bypcaPkdtgXESjgV+RQKlw==
-X-Received: by 2002:a05:6402:1590:b0:68b:117b:2158 with SMTP id
- 4fb4d7f45d1cf-68fa525bc86mr2480948a12.24.1780688811737; Fri, 05 Jun 2026
- 12:46:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJKk9HX+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AE31F00893;
+	Fri,  5 Jun 2026 19:51:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780689101;
+	bh=/4/R21/fqtDVS3dMxk8YUcZsiYIZNFflJGsvUsdqCpw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=HJKk9HX+g5UPbatALcVIkf0hR4ph+0Wx8iYP9GEhI83XdOxXt7ZFz/GyAcdNSqC3b
+	 59tx5s2p8e97ACe09fjCrUGDsFH0mUGYy6hjREF82KGE5tE3NRoM2KruI4GtHlI4zf
+	 9JzxtgHFG+ngZyRIRnCNTlILcrBvBhmuDuMhpklDDYDJvC7XRvgVA6xfP46bUmOz7Q
+	 DvD8utVSK+xnYsPP5vFZO758kEbbdtewrTCb2MLyAHXLoJqapxPvfVQRwAWSsiuX7l
+	 5hn4/v5jowzGbNQzjCTmK+bZEv5FiaP+Dh9Aalw1jf8a8vDBqU3s5PlzLhytckiQry
+	 oZh4Oqjmh3P1Q==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan"
+ <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
+ <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
+ <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
+ Makhalov <alexey.makhalov@broadcom.com>, Jan Kiszka
+ <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, Daniel
+ Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Broadcom internal kernel review
+ list <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-hyperv@vger.kernel.org,
+ virtualization@lists.linux.dev, xen-devel@lists.xenproject.org, David
+ Woodhouse <dwmw@amazon.co.uk>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, David Woodhouse <dwmw2@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v4 01/47] x86/tsc: Never re-calibrate TSC frequency if
+ its exact timing is known
+In-Reply-To: <aiMPxl5vkvJDldi9@google.com>
+References: <20260529144435.704127-1-seanjc@google.com>
+ <20260529144435.704127-2-seanjc@google.com> <87fr315fq9.ffs@fw13>
+ <aiMPxl5vkvJDldi9@google.com>
+Date: Fri, 05 Jun 2026 21:51:38 +0200
+Message-ID: <87a4t86a0l.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Reply-To: ludloff@gmail.com
-From: Christian Ludloff <ludloff@gmail.com>
-Date: Fri, 5 Jun 2026 12:46:40 -0700
-X-Gm-Features: AVVi8CeVQK4jkY4O6NY__I2P8vLSAnISPEqoKu0UP4epKGytmus3mYzWCZU7TTM
-Message-ID: <CAKSQd8VbXJ8pX_igweSAKv8qmP5vOpybaoTn5fuyFf_cXNyo8g@mail.gmail.com>
-Subject: Re: Re: [PATCH v2 2/6] KVM: x86: Prioritize DR7.GD #DB over #GP due
- to illegal DR6/7 value
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, 
-	Andrew Cooper <andrew.cooper3@citrix.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-> [DR7.GD gets cleared]
+On Fri, Jun 05 2026 at 11:04, Sean Christopherson wrote:
+> On Fri, Jun 05, 2026, Thomas Gleixner wrote:
+>> On Fri, May 29 2026 at 07:43, Sean Christopherson wrote:
+>> > Don't re-calibrate the TSC frequency if the TSC is known to run at a fixed
+>> > frequency.
+>> 
+>> That's misleading because fixed frequency means that the frequency does
+>> not change, i.e. X86_FEATURE_CONSTANT_TSC is set. But
+>> X86_FEATURE_CONSTANT_TSC does not imply that the frequency can be read
+>> from CPUID/MSRs.
+>
+> Sorry, "if the TSC runs at a known, fixed frequency" would be a better way to
+> phrase this.
+>
+>> > In practice, this is likely one big nop, as re-calibration is
+>> > used only for SMP=n kernels, and only for hardware that is 20+ years old,
+>> > i.e. is extremely unlikely to collide with TSC_KNOWN_FREQ.
+>> 
+>> recalibrate_cpu_khz() is only invoked from Intel P4 and AMD K7 CPU
+>> frequency drivers, which means that's absolutely not interesting and
+>> neither X86_FEATURE_CONSTANT_TSC nor X86_FEATURE_TSC_KNOWN_FREQ can be
+>> set on those systems.
+>
+> It _shouldn't_ be set on those systems, but in the world of virtualization it's
+> not completely impossible.
+>
+>> IOW, this patch is pointless voodoo ware.
+>
+> Would y'all be opposed to adding a WARN?  I don't actually care about P4 or K7
+> CPUs, but without any reference to X86_FEATURE_TSC_KNOWN_FREQ in
+> recalibrate_cpu_khz(), the code _looks_ wrong, and so is very confusing for
+> readers that don't already know that in practice, it's limited to ancient CPUs.
+>
+> In other words, the point is to document expectations and mutual exclusion, not
+> to "fix" anything.
 
-Another crucial tidbit: the clearing happens at the
-beginning of the #DB delivery attempt. So even if
-something goes wrong during that attempt, you'll
-end up in some other handler... with GD=3D0.
+Fair enough.
 
-See https://www.sandpile.org/x86/debug.htm for
-a 22 year old writeup, which =E2=80=93 thanks to a bunch
-of poking by Andy =E2=80=93 finally got published. Back in
-the old days, #DB implementations... well, let me
-put it this way... they left a lot to be desired.
+So yes, having a check there for actually X86_FEATURE_CONSTANT_TSC
+(X86_FEATURE_CONSTANT_TSC is not interesting) and emitting a warning and
+returning early is the right thing to do there.
 
---
-C.
+But we also should have a check in the TSC init code somewhere which
+validates that X86_FEATURE_CONSTANT_TSC is set when
+X86_FEATURE_TSC_KNOWN_FREQ is set. X86_FEATURE_TSC_KNOWN_FREQ is useless
+w/o X86_FEATURE_CONSTANT_TSC.
+
+Thanks,
+
+        tglx
+
+
