@@ -1,138 +1,128 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21D43CF21D
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 19:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1674071FC;
+	Fri,  5 Jun 2026 19:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780687192; cv=none; b=fyPojXfpk+5Hx7U/vjc9lA1LOtoA+KG3VsWMMQoUjrWnJOctCQWFhknRVv1i1fIKsLg2KazyhpkTte9p9bOs4mR+Qo7xnSugI/p+Dy0DFiVZgecNWU5Lyd/G5icMAwwuBcqpkyG6IAghh/TiUCS6xzElA6v2N8IzwtDLdxGYlv8=
+	t=1780687587; cv=none; b=bqwIrWjgGdbKIOF1VG649ySw/GjUPa1tVXUtFveEKImN/zJYZSR+9Un+Wggy2BAJt2+//QZkE4pDVwVTPwxmRCeldu0Rqjhq1t3Ywycsf2mGcNH+pqxI2BnZtsQ72+mBUqJanEVoE894AWKmV9IxjH/iouvb77/jsRzpigXuq9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780687192; c=relaxed/simple;
-	bh=lQyeoEHvPDcTd8UBfI28l1PrKOeUuXwWGO6rNePL3aM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fQYuOI3d0pU922V0id3oLpHsYlqUJXcit864abWfmjBqo2lsxj3MuYQ0rOFKPUcyENM6HzE2SFVznoToanOZTjJCBgy86LufLIpIJqU9MfMbR6t9gxCblCgumufCXHJY88jNgpikNu2a43ob3i/AJZ0EcLjnFsshYOLP56/M5Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu; spf=pass smtp.mailfrom=cs.unc.edu; dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.b=eCcGzrJ4; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.unc.edu
+	s=arc-20240116; t=1780687587; c=relaxed/simple;
+	bh=giWNS4+tfftdDEVsyGXDVou+jFlMi9toV3U2iEhy4/o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=j/UvrdP3cSieA1d1UDri+znTtX5c5jt3Ak9sCfvjoEVShJU7QM0ptsCVAQ4F9s8vKI3R95ya8CXt1+UcaZtFFCUlzEFeS7rqlpDQCfTjaYExglsRr8a32czV51Yf4nxR5ClcgxvBQeGsNh7cBclIaUQTzoEBC4SneOoNfBNq7gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=RpYmGY1Z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Yz+2l8Ew; arc=none smtp.client-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.b="eCcGzrJ4"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-36b7b802299so291016a91.1
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 12:19:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cs.unc.edu; s=google; t=1780687184; x=1781291984; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=B0vJH8NNd0RF41K/4FCBtez2ytaf4nIFe3x4aSA4G5w=;
-        b=eCcGzrJ4DDhZBO/s4Ntwd+hvBl/td6H2K4Kz8xGIIvcHauLoogijSjsyweD7TG1jZK
-         A2RmBx2Xkz8DtAhduy5k2tPwehKJki2ZV1RfRiYlEEVWG3lYihK/rxbHmjRoCWYr0UPD
-         Syj9Qv0wW2Sy9yKSfEQ3F0NQMg3esKIhBp2GmmgTgInWW/9dBiG9155fivTKff9bn9y5
-         AtYVksSDXPWAowQNxjP0Yd1Un6Onp4O10g1C6liujsxCho+Hf7VJVpgmJxr0KzFmHEfN
-         TPcKdaOZ68pVbgbeQpH/LIkUSr2UFKuUQEa/EvwIXE+bCB5fVkE3Jpe1Y5IuMCU26pXC
-         0O2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780687184; x=1781291984;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B0vJH8NNd0RF41K/4FCBtez2ytaf4nIFe3x4aSA4G5w=;
-        b=sZNLVk9ioFPaMtdX2RVmN7OmjJPlkE1PGKA1zY/dmBIFRKtDl6IUO1evWu1XUY5fee
-         MkD2N9vNTUX6teHAfB34mR//fSb3chZmFGnQONMXa1q3Ieaj8SwEokeaRM+TppSFc1au
-         3ZybmEw7CVnUPiN86+X/oCYE0l8r2kLSR2+bjI2TwiDTRm7vz3AcCr0w5kDbF6ArdCUr
-         gORjZ+KenbUO2WKsVkpDns8klHgNev+pyF8uhynsw6xbUaG75S2WJkSnl+n6jzdctYsP
-         QgFupr2ZCf1vJZ0CNJnvWpuHJ6WEK8mpAKBu4a9Pfor/I1HdMMDNBFD4ME7lsztpbpX1
-         8Bhw==
-X-Forwarded-Encrypted: i=1; AFNElJ/NqVASlu5RzLz8neZFwYhta0E6A2EmCIcZ0/EpQTReYziMXpXvGe4zVK6M/EXvwjuCf+M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyACqEzEnhvXlLdNiLGhXWv0rnim2SlirrsrrSPJNv6x36KG8G3
-	AtxDCtsZbgSenFZozqFiNUroCgSuBgqe/XGIFqHuxaFl+YCbEp9mgb+rlywEgjHRpg==
-X-Gm-Gg: Acq92OHO9BA6m2cLf2Mv+BXQ4+L0C+UwRNDVuxxsfKUqMkdHmyLL8g4e8eEOABRvKz3
-	2A8IhRzXGF8UzNOSPdaqRwokrYQgtNEMDEh/JzKGIs65YGmiya/SMcMSmCr+QJ0z4kkohj/+Eaa
-	LcqZdfNUae3zBJkL30wp3lFUogfiDXQd46gIBnxzJf7GdNWGgc29iLFPW0G0UujydcSXE7pf89c
-	MD0kF7VPNYyBGFKA2UwUUBg7jItyJVr855lgwiyB/lg36uIjiYXQos4ceL5ON4OiB462fw0ya4t
-	bHTX33uwLnD/EnpGfoHCiF//XWGsKt13DX98Z4GNDUPIfRyVKj+e+cSx3nKX8+/DADFAK3CD4Mb
-	35cRZl1Ws2W3WwzLFUV3VU4oS7OrXS3PAXAmA5YJCkLqiTfCJxVBEKZvqz3/W1nyXhqgPPrR0Dz
-	d/cepLwuSPGpzGXynb0zZp6cCvBM1e2cIroGKvtjLZRn4jBfDo6/aGQ7xplBSaxQ==
-X-Received: by 2002:a17:90b:3dcf:b0:36b:3ecd:88d7 with SMTP id 98e67ed59e1d1-370ef0f50ffmr2677491a91.2.1780687183832;
-        Fri, 05 Jun 2026 12:19:43 -0700 (PDT)
-Received: from localhost.localdomain ([106.51.195.148])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-842820e8e6asm9757737b3a.0.2026.06.05.12.19.39
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 05 Jun 2026 12:19:43 -0700 (PDT)
-From: Divya Mankani <divyakm@cs.unc.edu>
-X-Google-Original-From: Divya Mankani <divyakm@unc.edu>
-To: kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
-	Divya Mankani <divyakm@unc.edu>
-Subject: [PATCH] vsock/virtio: fix memory leak in virtio_transport_recv_listen
-Date: Sat,  6 Jun 2026 00:49:22 +0530
-Message-ID: <20260605191922.12720-1-divyakm@unc.edu>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="RpYmGY1Z";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Yz+2l8Ew"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id C839FEC0190;
+	Fri,  5 Jun 2026 15:26:22 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Fri, 05 Jun 2026 15:26:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1780687582;
+	 x=1780773982; bh=TQG6rK+DT2Llkzb+7UWII5d0rUPWDAdONOL4lGCmhH4=; b=
+	RpYmGY1ZQz7EVFqdlqVZG6U4hy6ZwouhwMR9PZGpHOlan/SlCmy9JUdQMo7yBymX
+	+6xja5CSIi/WguPwM189fl3zqMlpPhstQW01enqFqSc5Y+O5VHO60euVBd+NZDad
+	MYD7HtpJoJwy85iDXR20tRVMXzPkpR3hzU28sCqSeo/91/lLIJVZ1/kVnGqZMrPr
+	DZ8AbUdwnWECaDj/BbS68x99Tma+CPtOZ8NuJmJ+yyOQ0BJt8B9uP6k/PvN9YWa9
+	ex/bM/GMVSzjIzTMH87JO3PNXO8F6j485tO89wKoMTQY2SU5pHVeXi7K0T/FhBQ3
+	2KqcJFOd39ooGXsRJ/OChA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780687582; x=
+	1780773982; bh=TQG6rK+DT2Llkzb+7UWII5d0rUPWDAdONOL4lGCmhH4=; b=Y
+	z+2l8EwnPn323LBOWNw4mkqUnHlshC8bqbKq7zkL1hvQ+F1n/Wi39bcc2purtAkU
+	9c4n4ZGuQtWtkmssT1TGL7mIc9mxwyCoAmOLh+467GNKE7FXEYAYBZ+C0D7kVQm5
+	qQkP9PtrZb+f5vSorVoqIezuILh8KUSvKcjLMsdlFak7IKJBiTfkQkCHAgj772Ur
+	10jPkaiqpnQ9PvMInu214VGOUdmznfb0WtQyTreQHOmRMbYJH/b622e0hbnUiyIT
+	4ATJPtXzM13atWUyQzju6BZbXctQ4UOxbbZAD5d7jwAYwOnylHRx6y4d0R6QhOhj
+	hDc+eUB8VScGcXrEg4Cmg==
+X-ME-Sender: <xms:3iIjarrdV38Xu2humFgS4aWV0b75SEFQam6GAMBbUf3709e9SWQjQA>
+    <xme:3iIjahhX-9NIdrZNkowXF6Dkibc_OB3GES6t34_cqxz-qLntK_dXVgeyAqU9PY_Nr
+    cYrZtVV8ZKI-9tvvXwuQCg_9qUO2VXIDI0ukP_0NtK2UbV3-YN_DZo>
+X-ME-Received: <xmr:3iIjalPALvzCDBZcaKR-CuHEGLTtQjxJDZK3IxsVDv5zC_-kBpH0GUsMvDc>
+X-ME-Proxy-Cause: dmFkZTFpipnKTl7QL/Y3uF0JuGw6GU/nB6CelnxWNVmS0L1RdwhuClSMw4Z2MxMrVYLIDH
+    KFDDwq6s6fik8+Vp/2w6dQ8hS7q9lLuYFzYnby9VRk3rSlYVEv2jIWOKkKX+0zma2WF8Sw
+    +74ssZaeGu+hUnspuLLxDUVmdp2mW4pWGeAM/qgqRjtGwXK0z8jpCqP2qrLGk9ZJzx3TYc
+    JS+jynOn3qND1cDooJm/KX0bxP46Sk78Qj37Duns3dx2/RTBCV580riGI3ET7PW+uGDcxY
+    PfwJQAvaqeMXNfMcTvW4sCDNKI9gb0gGAJB4oapzYYzjQNEpGc4FmIti9JuKt0AaOBqZIR
+    xO5AK/kXpFx7Ss5cc6iHfYrKsC6eGQOGgklAk9YkCd0+9EZAbNGVVrS2jCirNpduhnzPKM
+    XOJRFBPWKh1V3xNJEs3antMXrxSH4ei1oSSoUgsehfTtsOzJNRXLoFdBrcglZ1PTwP8+96
+    +OwO0bJ/AnoDbb43EAI1DLL220edUt3RYWs+b1U/Q0BYRKri2ydMDTtvC7aB1UUGgvV5yw
+    0z/kisV/YLtvUvZzs0ieY/Jzaip7qRah+jg7sLZ064+np+fLAHzIF9DnjI5lgzYXcuJsEw
+    tp1w5YJcTUmO6rk68Z0Q1z1CTSYUPFCoZf4J2HTdSTELtdb4aC1COOWKfALQ
+X-ME-Proxy: <xmx:3iIjajzgZ2SDdqrm6hS_yBcbp1X6Ev00QzaUhvkND_mY3zbMb4fwZA>
+    <xmx:3iIjavqaUZs28vyBIuBvDrawzco59cD74t1eVqRcDIEqvQVZgw7ZsA>
+    <xmx:3iIjarPVIVCddA2M8g_gNprb_KKaNBnhHQCJ9-kYyf4K9nyw9a7ziA>
+    <xmx:3iIjardl9QV70qPSb2cINS4dJca74D_i7EPpLWBwIlMH6f7Sdky1PQ>
+    <xmx:3iIjamL1E0jM-CKiUzZwGB-xtoSzJ7q0YkykorVxOYedhyT596dcR0g->
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 5 Jun 2026 15:26:21 -0400 (EDT)
+Date: Fri, 5 Jun 2026 13:26:20 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Ankit Agrawal <ankita@nvidia.com>
+Cc: <kvm@vger.kernel.org>, <jgg@ziepe.ca>, <yishaih@nvidia.com>,
+ <skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <bhelgaas@google.com>,
+ <clg@redhat.com>, <linux-kernel@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v8 1/1] vfio/nvgrace-gpu: Add Blackwell-Next GPU
+ readiness check via CXL DVSEC
+Message-ID: <20260605132620.4f99e7f4@shazbot.org>
+In-Reply-To: <20260602063015.3915-1-ankita@nvidia.com>
+References: <20260602063015.3915-1-ankita@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Syzbot reported a memory leak inside virtio_transport_recv_listen
-caused by a race condition when the parent listener socket shuts down
-while an incoming packet is being enqueued.
+On Tue, 2 Jun 2026 06:30:15 +0000
+Ankit Agrawal <ankita@nvidia.com> wrote:
 
-Fix this by locking the parent socket and verifying its shutdown
-state under the lock before executing vsock_enqueue_accept().
+> Add a CXL DVSEC-based readiness check for Blackwell-Next GPUs alongside
+> the existing legacy BAR0 polling path. The CXL Device DVSEC offset is
+> discovered at probe time. Probe, fault and read/write paths then branch
+> on that to use either the legacy BAR0 polling or the CXL DVSEC polling.
+>=20
+> The CXL path polls Memory_Active, requiring MEM_INFO_VALID within 1s and
+> MEM_ACTIVE within Memory_Active_Timeout (up to 256s) as per CXL spec r4.0
+> sec 8.1.3.8.2. Given the long worst-case wait, the CXL poll runs outside
+> memory_lock with only a quick readiness check is done under the lock.
+>=20
+> The poll loops sleep with schedule_timeout_killable() and return -EINTR
+> on a fatal signal. This avoids hung-task panics during the long
+> uninterruptible wait. Extend this to the legacy based wait as well for
+> improvement.
+>=20
+> In the fault handler the wait runs locklessly before memory_lock. If a
+> reset races in, the in-lock recheck returns -EAGAIN and the wait is
+> retried rather than returning a spurious VM_FAULT_SIGBUS.
+>=20
+> Add PCI_DVSEC_CXL_MEM_ACTIVE_TIMEOUT to pci_regs.h for the timeout field.
+>=20
+> Cc: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+> Cc: Kevin Tian <kevin.tian@intel.com>
+> Suggested-by: Alex Williamson <alex@shazbot.org>
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> ---
+>  drivers/vfio/pci/nvgrace-gpu/main.c | 162 +++++++++++++++++++++++++---
+>  include/uapi/linux/pci_regs.h       |   1 +
+>  2 files changed, 151 insertions(+), 12 deletions(-)
 
-Fixes: a478546a782a ("vsock/virtio: add support for listen sockets")
-Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
-Signed-off-by: Divya Mankani <divyakm@unc.edu>
----
- net/vmw_vsock/virtio_transport_common.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+Applied to vfio next branch for v7.2.  Thanks,
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 3b294164b..8006a13bb 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1571,15 +1571,20 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
- 	vsock_addr_init(&vchild->remote_addr, le64_to_cpu(hdr->src_cid),
- 			le32_to_cpu(hdr->src_port));
- 
--	ret = vsock_assign_transport(vchild, vsk);
--	/* Transport assigned (looking at remote_addr) must be the same
--	 * where we received the request.
-+	/* Lock the parent listener socket to synchronize with a potential
-+	 * simultaneous shutdown thread running __vsock_release().
- 	 */
--	if (ret || vchild->transport != &t->transport) {
-+	lock_sock(sk);
-+
-+	/* Check if the listener socket was shut down while we were
-+	 * creating and configuring the child socket.
-+	 */
-+	if (sk->sk_shutdown == SHUTDOWN_MASK) {
-+		release_sock(sk);
- 		release_sock(child);
- 		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
- 		sock_put(child);
--		return ret;
-+		return -ESHUTDOWN;
- 	}
- 
- 	sk_acceptq_added(sk);
-@@ -1590,6 +1595,8 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
- 	vsock_enqueue_accept(sk, child);
- 	virtio_transport_send_response(vchild, skb);
- 
-+	/* Safely release both locked objects */
-+	release_sock(sk);
- 	release_sock(child);
- 
- 	sk->sk_data_ready(sk);
--- 
-2.50.1 (Apple Git-155)
-
+Alex
