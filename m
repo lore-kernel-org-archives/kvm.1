@@ -1,130 +1,175 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77333146588
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 08:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03D22C1595
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 08:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780648547; cv=none; b=TkFPuLBpyGUnToD8sISseCNGotDjRNAUoAjZVXQGDfXaMAoo2JcFFmMVt5acxa+5jVakLDXHndzA/n2fY3EYiGlwPAQabHb3vu3Fs4UhwOaKH2c17m3XqmoNsBVIzd2kVePlJhoIPC7WTsfooEJS40EV+Lcb0DNw629ZyKIJ2fI=
+	t=1780649173; cv=none; b=IxhcUgTPta+NWDjFTVHrN0jA43Zgd+78C4+d6WDdbSHuenvyUGVISbwL8vyIJlApsQBGluwkefQhEwObP2y0dC6w1Eyl2d6aMY/79j8Fhh0yfBiCYXLAN5b0gXG9M29J2AvQk2KywcJxMw25kCiN2aMhd0Em6Gkd6zUbLSBtEkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780648547; c=relaxed/simple;
-	bh=lz/atQq6KStQh8U6xBfmp+khBGYPURd2L9nazoIfSAY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BbKpXbeJERuSAmsR3rBEUELmSPuJH9jc+Sgn1NOdZvVKMOyDoojVFQqWUMHOkn2a7qvRXxI5ink2rN4E1E9PzVqcCkazuSRzbgb7BNQV7F0MpGIk6j2UYvdUqmlz4j5vJYvgnUSiRWXdh4C57HBuPqpIV1Ss3yRKP+pmvpBzxRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZV8FR6Iy; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780649173; c=relaxed/simple;
+	bh=i3uvjnA/Op2m8oC34bB1I8n+/fBXvwYp2ed6h+OSNPE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=aqtwj/jcSedV+y9K1uJPTvTrtGXFWcdG4XCWKSeBbqYNMdPqjOD7n08QeObbl2UEZvgb2+v4g3OLbpOrxhwq3JgR8yEuCX084erIzVSQysE/QTTXzRTV48C8WXMeLrXDVenMbQE3WcrCJVHxKpxbt31pvaoseQi+M/vHV1kHkJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UcoG2UaS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZV8FR6Iy"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6551GJek2252299;
-	Fri, 5 Jun 2026 08:35:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=/bMthG
-	QpBGrvZ1yGYTEDsg+MJuh7eQn1ERPWn07vDh0=; b=ZV8FR6Iye5OhdItmrxHP/j
-	Ku8suE1pY4E0T31hZsTLRJB3WK36MR0LnHSB/cbjIEhupWStqcmJKuGqJdqH1BRw
-	GcrRBujjhTU4+hIICkFi2l8BJDSTn6kyZ6NGkyp1BeEaOaWEnRkovNMogLrwc6z/
-	laYwwc5kxnfCzr8TtnZVDx2zJ0kZ6L+FSX1qrveNwMOM9FqpPLWExf2s3fPMny8R
-	l3Y4pZdOYll2vpiQMJ2XThwk7tjcBj6ypPwgjCxjNRCSucA8eZW8oTNMc2JYrzGw
-	av+6A2f9rprdhBb5y8o81miGmu2bGu2Srv5dcZoRqXIdKNWaPfAy83Hdzv6vTCAw
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4efpaejxn7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Jun 2026 08:35:28 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6558O7Gi001814;
-	Fri, 5 Jun 2026 08:35:28 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4egb7kgw4e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Jun 2026 08:35:28 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6558ZRKC34144848
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 5 Jun 2026 08:35:27 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 26B7F5805F;
-	Fri,  5 Jun 2026 08:35:27 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 00AE45805D;
-	Fri,  5 Jun 2026 08:35:24 +0000 (GMT)
-Received: from [9.39.25.43] (unknown [9.39.25.43])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri,  5 Jun 2026 08:35:23 +0000 (GMT)
-Message-ID: <f7d17628-9a46-4a9c-b2c5-8dca05ba0eed@linux.ibm.com>
-Date: Fri, 5 Jun 2026 14:04:55 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UcoG2UaS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3608B1F00893;
+	Fri,  5 Jun 2026 08:46:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780649172;
+	bh=ECOdBRY+tIJghnxpEsiNoGAZtgXxEoTZvYA3XXRttU4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=UcoG2UaSzqosUDBbzHobMsCQ8BMLpsAhR8zM/yr52ckb9T7IkwUdTUWJavtFF/Yuo
+	 wN6m0wg0rPEYE6PrprL2/xWO45/aL9XbnLwh4TM2WdjEnxWznR2Wq25094D4x59dOS
+	 2hMEqxO6TcHEiqV32mAMvqaudvpfpezrhT10u1DMy+yOV3RNmI4V6+aIm4LyRKAJj/
+	 FfA025GM/ZykB6gCp4Ty/8m8W3HXSLONXnmJkYylaKe0jm6je/o7loJ0SqiwskOvqa
+	 fIqAQxA2v50rIE68CyhtHgaS3szvc9u8oPBvVE32/PYipXqvrwI5pip3nGy9VwtOYW
+	 Jr/iBYjzkUbzQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PTACH v3] LoongArch: KVM: Add missing slots_lock for IO bus
+ device register/unregister
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zeng Chi" <zeng_chi911@163.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260605083108.2534481-1-zeng_chi911@163.com>
+References: <20260605083108.2534481-1-zeng_chi911@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 05 Jun 2026 08:46:11 +0000
+Message-Id: <20260605084612.3608B1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests RFC PATCH 2/6] configure: Make arch_libdir a
- first-class entity
-To: Andrew Jones <andrew.jones@linux.dev>, thuth@redhat.com
-Cc: npiggin@gmail.com, harshpb@linux.ibm.com, lvivier@redhat.com,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        sbhat@linux.ibm.com
-References: <20260602064806.3101025-1-rathc@linux.ibm.com>
- <20260602064806.3101025-3-rathc@linux.ibm.com>
- <emxfxob3hs2kqjmdbtucwr65dlywqapsz76ow7ebnqhf5vmrtq@i2wodbzjs5cb>
-Content-Language: en-US
-From: Chinmay Rath <rathc@linux.ibm.com>
-In-Reply-To: <emxfxob3hs2kqjmdbtucwr65dlywqapsz76ow7ebnqhf5vmrtq@i2wodbzjs5cb>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Zt3d7d7G c=1 sm=1 tr=0 ts=6a228a51 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=pGLkceISAAAA:8
- a=VnNF1IyMAAAA:8 a=3-C7bj3rQqdJ4O3LgvEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: fFz-IzJsf7ZaJA3Qizz_hBCSqDH74Vj1
-X-Proofpoint-ORIG-GUID: FZwyXgCu319T8eVsbqEKwGmPfRI2awcG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDA3NyBTYWx0ZWRfX9mRCAEeE+tQn
- GW/bpB45D8a8o+l4oW0qDUJLQjr3QqXefCF3TYuMltn6KNzvAC3begRBg7TwDOnfBHclGKBQIsn
- wpOu6ppOX8a/o1mJQ+cOlMh1MAYrspszyo5qWqHbiEeZZeBZjLA/KxC2CzWtnR5WPyjzj2afMd8
- upoTxmOPGKM4dZMtU52c6XMbJwzVNqBDXTHPs/S3gFK4Qna+EibTdPZkEuM1BaLDHkZetAgewk3
- Uk6MFcdjqG10F0lPwTzXkEtCsliRQyC8LqyNR8tMm8LA73iwR3t5k5H41+wR+e+arL8+2oEW/8Y
- wOfEl/WDHWVcNyzmrvr51gAw4iSYa3gn77RNM5Jlguqyg8jdkps2nErEiEl+kj895xH4WjCDoVS
- BiwZt3SBWCm1JWCuMJ0Tx+UWmx4r821mNSiQbJPZztDD5OluzoNmlaQsCnSEeBe7vZBHBV4kPuf
- Iu61UveTgdZp25MSIww==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-05_01,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- phishscore=0 spamscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606050077
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-On 6/2/26 21:24, Andrew Jones wrote:
-> On Tue, Jun 02, 2026 at 12:18:02PM +0530, Chinmay Rath wrote:
->> From: Nicholas Piggin <npiggin@gmail.com>
->>
->> arch_libdir was brought in to improve the heuristic determination of
->> the lib/ directory based on arch and testdir names, but it did not
->> entirely clean that mess up.
->>
->> Remove the arch_libdir->arch->testdir heuristic and just require
->> everybody sets arch_libdir correctly. Fail if the lib/arch or
->> lib/arch/asm directories can not be found.
->>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
->> ---
->>   Makefile  |  2 +-
->>   configure | 20 ++++++++++++--------
->>   2 files changed, 13 insertions(+), 9 deletions(-)
->>
-> Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
-Thank you Andrew !
+Pre-existing issues:
+- [Critical] Device destruction callbacks free the device state but fail to=
+ clear the corresponding `kvm->arch.*` pointer, leading to a Use-After-Free=
+ if the device is destroyed.
+- [Critical] Missing initialization check in `kvm_pch_pic_init` allows dupl=
+icate IO bus registrations, leading to UAF during VM destruction.
+--
 
-Hi Thomas, requesting your insight on the un-reviewed patches. TIA.
+commit 54efe4750d591583d326d010f7011322a7bf73f7
+Author: Zeng Chi <zengchi@kylinos.cn>
 
--Chinmay
+LoongArch: KVM: Add missing slots_lock for IO bus device register/unregister
+
+This commit adds the missing kvm->slots_lock around kvm_io_bus_register_dev=
+()
+and kvm_io_bus_unregister_dev() calls. This protection is added to the eioi=
+ntc,
+ipi, and pch_pic device initialization and destruction paths.
+
+> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/=
+eiointc.c
+> index 2ab7fafa86d59..2b14485d14a70 100644
+> --- a/arch/loongarch/kvm/intc/eiointc.c
+> +++ b/arch/loongarch/kvm/intc/eiointc.c
+[ ... ]
+> @@ -667,8 +671,10 @@ static void kvm_eiointc_destroy(struct kvm_device *d=
+ev)
+> =20
+>  	kvm =3D dev->kvm;
+>  	eiointc =3D kvm->arch.eiointc;
+> +	mutex_lock(&kvm->slots_lock);
+>  	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device);
+>  	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device_vext);
+> +	mutex_unlock(&kvm->slots_lock);
+>  	kfree(eiointc);
+
+[Severity: Critical]
+This is a pre-existing issue, but does this kfree() leave a dangling pointe=
+r?
+
+When userspace creates a device, the ops->create() callback saves the device
+pointer into kvm->arch.eiointc. If the device is destroyed, this function
+frees eiointc but leaves kvm->arch.eiointc pointing to the freed memory.
+
+If a subsequent ioctl or guest interaction routes interrupts, could it
+dereference kvm->arch.eiointc, such as in eiointc_set_irq() when it tries to
+acquire the spinlock? Should we set kvm->arch.eiointc to NULL after
+freeing it?
+
+>  	kfree(dev);
+>  }
+> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
+> index 1f6ebbd0af5c8..4fa0897d7bdb0 100644
+> --- a/arch/loongarch/kvm/intc/ipi.c
+> +++ b/arch/loongarch/kvm/intc/ipi.c
+> @@ -447,7 +447,9 @@ static void kvm_ipi_destroy(struct kvm_device *dev)
+> =20
+>  	kvm =3D dev->kvm;
+>  	ipi =3D kvm->arch.ipi;
+> +	mutex_lock(&kvm->slots_lock);
+>  	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &ipi->device);
+> +	mutex_unlock(&kvm->slots_lock);
+>  	kfree(ipi);
+
+[Severity: Critical]
+This is a pre-existing issue, but is kvm->arch.ipi also left dangling here?
+
+Like eiointc above, this frees the ipi structure without clearing the
+kvm->arch.ipi pointer. Could this also lead to a use-after-free if the VM
+continues running?
+
+>  	kfree(dev);
+>  }
+> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
+pch_pic.c
+> index aa0ed59ae8cf9..175a630aceb41 100644
+> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> @@ -481,7 +481,9 @@ static void kvm_pch_pic_destroy(struct kvm_device *de=
+v)
+>  	kvm =3D dev->kvm;
+>  	s =3D kvm->arch.pch_pic;
+>  	/* unregister pch pic device and free it's memory */
+> +	mutex_lock(&kvm->slots_lock);
+>  	kvm_io_bus_unregister_dev(kvm, KVM_MMIO_BUS, &s->device);
+> +	mutex_unlock(&kvm->slots_lock);
+>  	kfree(s);
+
+[Severity: Critical]
+This is a pre-existing issue, but are we leaving kvm->arch.pch_pic pointing=
+ to
+freed memory here as well?
+
+Additionally, this is a pre-existing issue, but does kvm_pch_pic_init() all=
+ow
+duplicate IO bus registrations?
+
+If userspace triggers the KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT ioctl multiple
+times, it appears kvm_pch_pic_init() lacks a check to see if the device is
+already initialized. This allows kvm_io_bus_register_dev() to register the
+same &s->device pointer to the KVM_MMIO_BUS array multiple times.
+
+During teardown, kvm_io_bus_unregister_dev() only removes the first matching
+entry:
+
+virt/kvm/kvm_main.c:kvm_io_bus_unregister_dev() {
+    ...
+	for (i =3D 0; i < bus->dev_count; i++) {
+		if (bus->range[i].dev =3D=3D dev) {
+			break;
+		}
+	}
+    ...
+}
+
+If the device was registered multiple times, would the duplicate entries
+remain on the bus after this function unregisters and frees the device?
+Could subsequent MMIO bus accesses or the final bus teardown then
+dereference the freed &s->device pointer?
+
+>  	kfree(dev);
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605083108.2534=
+481-1-zeng_chi911@163.com?part=3D1
