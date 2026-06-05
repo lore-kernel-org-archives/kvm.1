@@ -1,161 +1,188 @@
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF70382296
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 06:49:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780642158; cv=pass; b=P4DTpdILOBgMjcYlrf071YVDmCz+O2c9BH8Sd2+Yq222tPSWfzHAxBrntzdyPlSzVR99zMTVO+B527ANUSGGgrHEVkYL6C5YV17qV3QH6VPltLX1pvs7p97MDIja10h62nYa3CHrZHAjNI24VdCPuTDVE7k6sOPTLMzxppca8lI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780642158; c=relaxed/simple;
-	bh=snaCOCDAK97fyO9F4+M2h4JAVuixBPBOsKp1/H9MEb8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HMrt9JrlaZFzzvbgksWeYx/aD4L2rag3k+syvJOl8dJflGv6frTHSCMImTYYdgIh45uxXlJWmFIXblwxtZE+wgIVCLUrWILF/BYdZsa6AbpGdf0KCeEWoUO12NgY2zKDR5c+3LLx4BKms07036TsMnW9ibtKlMhr46LG78TCfww=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=KY1njjIn; arc=pass smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831904266A1;
+	Fri,  5 Jun 2026 06:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780642305; cv=none; b=aGIwetevorRNzsPSCEtoLfqwhFABV1m8Du3m7sCU1rqwGU+SB4aOsUYmwTPnh38eo2sIJ4FGb4KQNGubSy7SZsznExkV2g7QDD3oJcS02A2QuvfPsSlubDVwoh89o7iDYIYN4ctOBNJfL8TvohL9v8QyJOm0b60W+YKReIWtcUE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780642305; c=relaxed/simple;
+	bh=0GRND5Ewt6cXLnjmO6nyQPz6mj3/NACWiJfXWMDSpXM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tc99jQGdRP/XP8D5C9lEncyIk2Ah5WgHv9xdeohl+BR39++hXZ+lDGKyWCEBOKRvtYWjToBbh29mI/l5Ocx7/OgKUaBvfA1X/46QBvYKqWtbqZR3apncTt3mpGqlh7Di/6kyUwpW4JIdKhyKui6xKmfrIfCicNDmwkf02PPWknU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=GMn0VyBk; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="KY1njjIn"
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7e690c213e3so1266888a34.3
-        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 23:49:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780642154; cv=none;
-        d=google.com; s=arc-20240605;
-        b=K4niFoEs8S1V4U7pKQgOrANOPmN4oVPb7qftjcQof2dmI9Hp4LGLya7O4k/cTxxD22
-         83C4O3H9zc63rKst3ruhVY3Bse8h460yTMUzK3bHyUL8XZWcgzsH0K7/G0LpkiG11XvO
-         ghtYK4VKhdaoeLSAhsbB1ibhBYWVcAjFmqMrzVEbOU7AWIDL6uJ2JvDPGyk/70vjbS77
-         x2sGL2DZr0tG/+maszsl6v2pkqxlOMOUGeexP9Nnz62Hzzi5RzVd2MVaxTQlKkHp17ct
-         3e1laMiF7ug3wt7gbG7xgZxrM3smKYVkmbVJ9NZMNtr/C+GMdaqbJRFlBgP8BXouQxnJ
-         l49Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6XDq1xh1XzOsuKw97N0TVXndgcJC/tzYgMFv9LJzmno=;
-        fh=PldLLLclEviMRF5a5D3tzYPAu2j632iMSg6Rcr54xZ8=;
-        b=BumorfBbzPHTUqKn6TNzr0rdjJrA6Bg3Lfavpqum6/zZDFXejl9MKte7tMsl32cFjK
-         6tC5r03XU9+fxLLZnDNQGTP8vf9qIJdg8bfeeVrZ/TkeWenvbe7mQshNtitMbgvls/xV
-         VKKhEOyaFNr1PHs8Zmjr12NEVjeqsr5QFWvaM5VNiPuXgoqpa43H/Z8LfULFCNodPUNs
-         5TGMKp3ZILXUspGem9sGV8eiWJ9X3iimE2C5TSBQBZ9LSjFg6hkDCa2qVT6quxS3bi+c
-         UT7ljvYuMGIej2hdFI9SLJFnPxIEcJBZLD4+k1J3/WvQpYdjL8lr5XNOQziKxQkvYX/I
-         9XIw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1780642154; x=1781246954; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6XDq1xh1XzOsuKw97N0TVXndgcJC/tzYgMFv9LJzmno=;
-        b=KY1njjInEpZePjR/6JkT+SiaLThx6o8H9pQCD3WXijC2R2xhYoT7ydVyEpH6R48aXw
-         K6xVKvX/F+hMIoi3B8YwaNdKi2Du0iB1SflkPhoKjqHfJMq7BpPu7oK51LY3Pl3tCVKx
-         quUEeWrNZ3a2dvcqkxiW3qbAIgmedHg4JqZWAmNC9lPe8RcN/h1lTvJNrOOTP7xIno52
-         V3gjMkWH48tyb8tcKtB8me4Aqfo/4X1jv68+spjHN/nHppVFQs/NBvS4ekQ0HQjtelEv
-         KUMWhdyNKdrUOnx7GmTOXZ6qLMiFko3UaUgl0yEMzyxgMVmuTRPe9O+ERpME2VbWQbMu
-         qGbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780642154; x=1781246954;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6XDq1xh1XzOsuKw97N0TVXndgcJC/tzYgMFv9LJzmno=;
-        b=R729OkjyxjocjVBpz6JoGG1wJ3+bvkhivDV6/H1d3RdXoMZ+2BXZFJk9sgXhBeamEh
-         acpZrPebz3awp6fuvCLl1aP5Bw45orkBjheDVBK02vzRokxdvTyvYokWWEzXjiFLQOhC
-         vPpNgqP0jPIMAyN1g5clJ+hDIORbP0FgB8bskP02KYgWiIQxadaDAffUTbuESjn6U46P
-         UzMMOidjOWqgNJgKy+GHTD3igS1bm61IKGBz2rbu8ClrGH579wKswdiFx2zRQub+Zlpj
-         QANMvOsyXoZ6xLrDGBO2NZaQVVmru8I1MnVlgin1UWaymeRm7pV+P+txhEGOcBIBWy5T
-         PqUw==
-X-Forwarded-Encrypted: i=1; AFNElJ8m7SZlbGp/iWzGZU2yuTW59+du4SbuXl9IK6cPY7C0FWfxTa3LDPzTQBlcbXbz5gl2YFA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytXmgpSmK2etdCCRXqovSMoR58zw78NT1RZP5ZU5sECwYWXGvf
-	qyadi9AGJ/M6lY51Twk5Luos4wE2Pife7maXAvQ6vaMdYYoCJvTeCoJZp6OlwYnzifyqT7ev5Ls
-	sfm9RjoFnO+MdvG2c70+6WWWRZB1paLRa1DEpFUa6mw==
-X-Gm-Gg: Acq92OEdVODv0qleXiWyMhJ6nPdtNpLX9Ao+wuUg3K1e1RurDew5Ohg75+J0KSNizPW
-	fUynS4nH012c5kzr+A1AdOmEAt3E3MwqApYS3S3aeCh4+Vf5SBRW5L5vl2+enNYGjCMt3IrWc/g
-	SW6dR96ZEca8KwpkpLX3aaarqJxxZz8bJ0G6Xfg7RjiLAa2/3t05LLv4ZPZ7mNcWFuYOsoHROnH
-	H/+ZmFvUozeuOKedynbgnNGG6rORQ6uMU5gD74vIY1R1VR+eaNNR+IijPkTx+L9HkDnwGsgtI89
-	BFVL8d1MSsiFsSAXiTjuGTe/LpMDJ9W7/DGh6UWzlwRRD6iovK7bSI79E6I4pXB1sskkebDX1PC
-	dJsNR+EdbE3afzyEfK4lGNILmlyQNF3miWbSo
-X-Received: by 2002:a05:6820:561c:b0:69b:6d47:8180 with SMTP id
- 006d021491bc7-69e68c23141mr771817eaf.39.1780642154512; Thu, 04 Jun 2026
- 23:49:14 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="GMn0VyBk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1780642252;
+	bh=fcCoLgbGRFsEscMKd9ACVxdk//KZN9GsWeew7GW6eiE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=GMn0VyBkABQYJBLmo/dXtgavTtxIxvcI+uSjsZDtsL8hM8M772CxOsAo5UBLudfe7
+	 7olVCMLls+iTNoJy34i4TxLatbAtSFniQAugYOTU7lLFQtsNoh0Zmwwmww4mo2qMk/
+	 ZyyRUZaeMkS53Z+rk2EoYoGXMJ6LDBysfr15DUfk=
+X-QQ-mid: zesmtpsz3t1780642249t5482864b
+X-QQ-Originating-IP: 8+K/Zs9/X+TK3fr6lfPw+gApz3U20Ga2dKD/S6aS9P0=
+Received: from [10.10.73.115] ( [123.114.60.34])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 05 Jun 2026 14:50:47 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 6908254221687791739
+Message-ID: <18E186480A1197E1+43038b46-5635-4835-b01c-d64eacacea0f@uniontech.com>
+Date: Fri, 5 Jun 2026 14:50:47 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260528113840.2629186-1-inochiama@gmail.com>
-In-Reply-To: <20260528113840.2629186-1-inochiama@gmail.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Fri, 5 Jun 2026 12:19:03 +0530
-X-Gm-Features: AVVi8CeHnuM2CioMa5An9kIeCY2Cck7qIHe-9yB0iUqpIPQzrG2HNoEWHmj4vmY
-Message-ID: <CAAhSdy096z4SdwQKBxM0ZtE5=i3UZrhMD-BcES9UdP5OgajqEA@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Enhance the logging check for mmu mapping
-To: Inochi Amaoto <inochiama@gmail.com>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] LoongArch: KVM: return full old CSR value from
+ kvm_emu_xchg_csr()
+To: Bibo Mao <maobibo@loongson.cn>, zhaotianrui@loongson.cn,
+ chenhuacai@kernel.org, kernel@xen0n.name
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260604123433.3182173-1-maqianga@uniontech.com>
+ <08d3b817-9de6-746d-2b2c-acc4a578f95a@loongson.cn>
+ <4CD61A5AB07B2388+7fa119a1-af5f-4def-b2c4-6073fc397b10@uniontech.com>
+ <519ffada-5f2b-2896-30a8-9546d3795f62@loongson.cn>
+Content-Language: en-US
+From: Qiang Ma <maqianga@uniontech.com>
+In-Reply-To: <519ffada-5f2b-2896-30a8-9546d3795f62@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz3b-0
+X-QQ-XMAILINFO: N4WhQbLQyIqSSc4Oc+Su76JEBnl0V2tgrOseoYUjpdfhjbfui4S4Eb2w
+	nLjXTuBsi35/k0A5U2CCVdpfDOTfufDB5khxUCpwzVwGBR0+6oV1ZR6ea7CW+YfOKbpk3DQ
+	y1Lk3puRx5N615c/qHneZkJfZkTQTRdUCJ10SrfdecT+NzJ6w79WIj8N6XU8T68qSf8Oyu6
+	TGnU5B0qrSNdAsjSWq4Up+IVXZ6sCRAnRCWkfWwOvL8wshdBhGZh0rxj0rpWawQWkpcFyGT
+	DzvxlmLH2iW/xY7VR0iUqQAssdeyvfpmkIQ4viIHAk3QHhjFryJ8KzzrstXSy1ncJiB9/ie
+	cH8nqxJPP20x4BBig3ucFmWWVqQtAvjodgGAlnaX89IuCXu2/lZ5yPQaFnstnsgDxHB6gpL
+	+FIfP/USpOgbAiuTeFc99d3EUG1m71LqFKB/UCqs/e9uw83ck4oLBphMRBnxkPHngtmkKCm
+	DwnHZLNPiiJ+n8QzuspjBdUgUnosZIwna3On/zzVWfpKmXLoDQ5BWXDWdLtnC+vzKZ66YPw
+	y5ekw4vOdZcwFMEz/sDymsy1DSY6mMK+qsVix4bXj6JkEAF2BPvLKAUXeAuiioP08Vuj77Y
+	Z0IxooJxabH4c4oNe9f16uOOYTF9+hrvCqoW5NFiEpwQy0NT8E9E9CKMVxB7kN0YiPrglgx
+	7XJP0z98ewr7/6zBD6jnt+ZC5hMqQbhOc8wXtzeKAATaYY/MWzz17U7fGaJS/tj9V1Pp5uP
+	IgW7udljtfdeczw/tSnh+S9dpLG30djL5uxeu/nL/qmN+Q93MoCfWgavRumagVrU9l1f9AD
+	S19ix9m0J03PQyu3HiHBMj94ihlkXIBlY5koC5SBdFeEQ2B6Ij15YQrj877zLxWqGqBp+gw
+	vYdJBJIBqndPaR26aGm6squqdNIyS1DTwqpnOJRH3YKjthdaTX2lyEj72gCc77MAB0lgQNL
+	rH10dT3RtRKCCHSlIx4hy6uvUZHRTkqeKYLWQuxBeIoUNsfqVx6eZvnI9PUe9eotQ55Jake
+	QMbKqwC85I63x3qPCYfqIq3e2bTXOm40Qt/vnBHIbPx1qfXkGvze3DrVmPLovXGZNtgD/3X
+	XcvJ+UhbLQTmT7wv2Sz4y8=
+X-QQ-XMRINFO: Mp0Kj//9VHAxErtib8qEEVA+DLqTo30zhQ==
+X-QQ-RECHKSPAM: 0
 
-On Thu, May 28, 2026 at 5:08=E2=80=AFPM Inochi Amaoto <inochiama@gmail.com>=
- wrote:
->
-> When enabling dirty ring, the dirty bitmap is disable, and the logging
-> check is always false as the RISC-V architecture does not select
-> "NEED_KVM_DIRTY_RING_WITH_BITMAP". Although the dirty log is recorded
-> since the write path already trying to add the dirty log, the logic for
-> logging check is broken and some side effect will occurs.
->
-> Enhance the logging check for mmu mapping so it can check both the dirty
-> ring and the dirty bitmap.
->
-> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-> ---
->  arch/riscv/kvm/mmu.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 2d3def024270..b5873bca9dce 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-> @@ -142,9 +142,8 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
->                                 enum kvm_mr_change change)
->  {
->         /*
-> -        * At this point memslot has been committed and there is an
-> -        * allocated dirty_bitmap[], dirty pages will be tracked while
-> -        * the memory slot is write protected.
-> +        * At this point memslot has been committed and dirty pages will =
-be
-> +        * tracked while the memory slot is write protected.
->          */
->         if (change !=3D KVM_MR_DELETE && new->flags & KVM_MEM_LOG_DIRTY_P=
-AGES) {
->                 if (kvm_dirty_log_manual_protect_and_init_set(kvm))
-> @@ -433,8 +432,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct k=
-vm_memory_slot *memslot,
->         struct vm_area_struct *vma;
->         struct kvm *kvm =3D vcpu->kvm;
->         struct kvm_mmu_memory_cache *pcache =3D &vcpu->arch.mmu_page_cach=
-e;
-> -       bool logging =3D (memslot->dirty_bitmap &&
-> -                       !(memslot->flags & KVM_MEM_READONLY)) ? true : fa=
-lse;
 
-Why is this not correct approach to determine whether logging is enabled ?
-
-KVM ARM64 does a very similar thing (Refer, memslot_is_logging() in
-arch/arm64/kvm/mmu.c).
-
-> +       bool logging =3D kvm_slot_dirty_track_enabled(memslot) &&
-> +                      !(memslot->flags & KVM_MEM_READONLY);
->         unsigned long vma_pagesize, mmu_seq;
->         struct kvm_gstage gstage;
->         struct page *page;
-> --
-> 2.54.0
+在 2026/6/5 14:27, Bibo Mao 写道:
+>
+>
+> On 2026/6/5 下午2:08, Qiang Ma wrote:
+>>
+>> 在 2026/6/5 09:41, Bibo Mao 写道:
+>>>
+>>>
+>>> On 2026/6/4 下午8:34, Qiang Ma wrote:
+>>>> The LoongArch CSRXCHG instruction returns the full old CSR value in rd
+>>>> after applying the masked update. kvm_emu_xchg_csr() currently masks
+>>>> the saved value before returning it to the guest, so rd receives only
+>>>> the bits selected by the write mask.
+>>>>
+>>>> That breaks the architectural behavior and makes a zero mask return 0
+>>>> instead of the previous CSR value. Keep the masked CSR update, but
+>>>> return the unmodified old CSR value.
+>>>>
+>>>> Fixes: da50f5a693ff ("LoongArch: KVM: Implement handle csr exception")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Qiang Ma <maqianga@uniontech.com>
+>>>> ---
+>>>>   arch/loongarch/kvm/exit.c | 1 -
+>>>>   1 file changed, 1 deletion(-)
+>>>>
+>>>> diff --git a/arch/loongarch/kvm/exit.c b/arch/loongarch/kvm/exit.c
+>>>> index 3b95cd0f989b..264813d45cbe 100644
+>>>> --- a/arch/loongarch/kvm/exit.c
+>>>> +++ b/arch/loongarch/kvm/exit.c
+>>>> @@ -103,7 +103,6 @@ static unsigned long kvm_emu_xchg_csr(struct 
+>>>> kvm_vcpu *vcpu, int csrid,
+>>>>           old = kvm_read_sw_gcsr(csr, csrid);
+>>>>           val = (old & ~csr_mask) | (val & csr_mask);
+>>>>           kvm_write_sw_gcsr(csr, csrid, val);
+>>>> -        old = old & csr_mask;
+>>>
+>>> Hi Qiang Ma
+>>>
+>>> This is correct from the manual. Is there any test case or problem 
+>>> in practice?  I want to evaluate severity about this problem.
+>>
+>> Yes, I have written a selftest for this. Below are the test results 
+>> comparing without and with the patch.
+>>
+>> I have not encountered this problem in an actual operating environment.
+>>
+>> without this patch:
+>>
+>> [root@node1 loongarch]# ./csrxchg_testRandom seed: 0x6b8b4567Testing 
+>> guest mode: PA-bits:47, VA-bits:47, 16K pagesTesting CSR: IMPCTL1 
+>> (implementation-specific control 1)Initial guest CSR value: 
+>> 0x10000100Checking that CSRXCHG updates the CSR per mask and 
+>> returnsthe full old CSR value in rd.
+>>
+>> Case: zero-maskwrite value : 0xffffffffffffffffwrite mask : 0returned 
+>> old CSR value : 0expected old CSR value : 0x10000100CSR value after 
+>> update : 0x10000100expected CSR after update: 0x10000100result : FAIL
+>>
+>> Case: partial-maskwrite value : 0write mask : 0x100returned old CSR 
+>> value : 0x100expected old CSR value : 0x10000100CSR value after 
+>> update : 0x10000000expected CSR after update: 0x10000000result : FAIL
+>>
+>> CSRXCHG test FAILED
+>>
+>> with this patch:
+>>
+>> [root@node1 loongarch]# ./csrxchg_testRandom seed: 0x6b8b4567Testing 
+>> guest mode: PA-bits:47, VA-bits:47, 16K pagesTesting CSR: IMPCTL1 
+>> (implementation-specific control 1)Initial guest CSR value: 
+>> 0x10000100Checking that CSRXCHG updates the CSR per mask and 
+>> returnsthe full old CSR value in rd.
+>>
+>> Case: zero-maskwrite value : 0xffffffffffffffffwrite mask : 0returned 
+>> old CSR value : 0x10000100expected old CSR value : 0x10000100CSR 
+>> value after update : 0x10000100expected CSR after update: 
+>> 0x10000100result : PASS
+>>
+>> Case: partial-maskwrite value : 0write mask : 0x100returned old CSR 
+>> value : 0x10000100expected old CSR value : 0x10000100CSR value after 
+>> update : 0x10000000expected CSR after update: 0x10000000result : PASS
+>>
+>> CSRXCHG test PASSED
+>>
+>> Should this selftest case be included as a patch and sent along with 
+>> version 2?
+> No, it is not necessary. I test csrxchg instruction by myself, the 
+> manual is right, return value should be the whole old value.
+>
+> My meaning is that what is the scenery where CSR register is SW 
+> emulated in KVM mode, or this problem is found by code browsing.
+Understood. This was discovered while browsing the code.
+>
+> Regards
+> Bibo Mao
+>
+>>
+>>>
+>>> Regards
+>>> Bibo Mao
+>>>>       } else
+>>>>           pr_warn_once("Unsupported csrxchg 0x%x with pc %lx\n", 
+>>>> csrid, vcpu->arch.pc);
+>>>>
+>>>
+>>>
+>
 >
 
-Regards,
-Anup
