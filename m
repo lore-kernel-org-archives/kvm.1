@@ -1,279 +1,314 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp186.sjtu.edu.cn (smtp186.sjtu.edu.cn [202.120.2.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2957B2C028F
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 10:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF75419306;
+	Fri,  5 Jun 2026 10:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.120.2.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780653607; cv=none; b=fc4FguTht4oOdFlDgPGmOuntVgl0OjfNC03vn5UOkzzKd1OJDY08VfkZIjJbo5g4jTUhLOETuYlQccHIeJhz29BwMarpawEqTnQ+UlVMBhBSePIOC0uRM6K+16lRgQFfx5pqGiFZbPysgxDhU5kqQjucZpz7IW2O631tssipYZs=
+	t=1780653644; cv=none; b=Shaz0A1GKBz5ECO7nP3kRa+ALoth2ga3nPifC731jNbNhwKpHc95sZVdcZ6y3MEv/RUYcN9ym30UMofKzZ14SzFQj87/dgJZ6jAY26KIhfoFr9Xh4TFgvtZXVJUJr8nhn2Mvif12n7hU45Vuui89uY6lmW7WlkbDHfXG6xkxteE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780653607; c=relaxed/simple;
-	bh=VrcmJWQh5CRLg8FicAHkvxCM9Jabw923ljvd/PwWK/o=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nzFlMccyDT6YqAM4pWERFfBndy1L9thoaHlvyCjK97n2rZq73euH60CWoYOW5OizanFoMGdStme3VYiRDsm2S+kZdtYe/xBfW2uSyVJOJD2GiHjFrO80CqhDxPEaX0LvTZ5WSNlueb3jDWyyES/qmyfEZNXaEyCzxrAT5SBS7qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ui9HFvpX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780653644; c=relaxed/simple;
+	bh=XQRIyGOLNND3gFnjKW/BBMYpSX1mCH/72yhrkLkkFs8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KfGt77yS4xEjd682LEj+JhQ84a4mjojxwQfETRwYMNq4ypR3O64KoUKBk65AHt7g4iVtuueGlYv/D89akf4KKonyNun2MjfdADKDETsimV564FKdfZRaklMs0LkkRnLvZoQUSFNjVW5tkBc812tMjPFqP5EvYyhiLt+rhjEC9xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sjtu.edu.cn; spf=pass smtp.mailfrom=sjtu.edu.cn; dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b=lfMDJ3PW; arc=none smtp.client-ip=202.120.2.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sjtu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sjtu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ui9HFvpX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C171F00893;
-	Fri,  5 Jun 2026 10:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780653605;
-	bh=lzTMR9P5II63N94s/IAyUvPfw5Z3MZOMEyh4EGglpFc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ui9HFvpX+uthO6LHY8D5MiCxqEAt2T10JzYzJFLGf1mTEb9ERNSBp2dG0XH4SnEuL
-	 nkueuzzjvGefC9kCH1B19FM0Azs6uEuIk2BhN2FlHQblVfHp4liq/qcLOTZaPasbxF
-	 dZEYiRo+3O6/V1kCLO6hppFZgB8XYLLQDbIq3g7nPq/BmQEHvbSvN9PykOXuyjewIX
-	 slyM3Veo99MCR5JEc7NdzCAeIUNRPt8efH/IQhxSpAETXJv4eT8nYBa6/omTL2CkQH
-	 5ugqLBDLAOLWBnCgKkRaCq+Op/YhRerTfj+2otg+81sRI1SgFWY2+FawTIFb2v1rbl
-	 0lXIMW7v1iJlQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/3] KVM: x86: add DSM APIC forwarding ioctls
-Reply-To: sashiko-reviews@lists.linux.dev
-To: muliang.shou <muliang.shou@sjtu.edu.cn>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260605093857.747735-4-muliang.shou@sjtu.edu.cn>
-References: <20260605093857.747735-4-muliang.shou@sjtu.edu.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 05 Jun 2026 10:00:05 +0000
-Message-Id: <20260605100005.A1C171F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b="lfMDJ3PW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sjtu.edu.cn;
+	s=default; t=1780653639;
+	bh=XQRIyGOLNND3gFnjKW/BBMYpSX1mCH/72yhrkLkkFs8=;
+	h=From:To:Cc:Subject:Date;
+	b=lfMDJ3PWGU4OS2tCtJU/CeRs80sA1g44mJ8sIEqboSM+i6cY/CaimJggyVJETYMb1
+	 35qJgM4EujzomO6pIPSDiGJdfpl5k6B8daz2X8jNoqmHaoNGJKXv6PbvXiTu1n1SjZ
+	 YJDv+U/V0QQ5OCyyT5REJg4+xJy9wv6kzhkaYbHftp2Gg2ohIs8CYVyK2vlcx1C92+
+	 FJetSGGpvGzYKD+1WK/yILY4LKWop9T8/+AxipKgJdyBQnVuBi5WpsgJHLpWNNp7DS
+	 u//wREhr4Jcqtv0Ge+Vnf8Eco5PeqVeG30sZS4OYDt+fl4e06ZwhYOgciNO2pbITMM
+	 ijzThCx3+1GBQ==
+Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
+	by smtp186.sjtu.edu.cn (Postfix) with ESMTPS id E95952FF3F1;
+	Fri,  5 Jun 2026 10:00:38 +0000 (UTC)
+Received: from mshou-H610M-K-DDR4.. (unknown [202.120.40.100])
+	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id 5727637C8EE;
+	Fri,  5 Jun 2026 18:00:38 +0800 (CST)
+From: "muliang.shou" <muliang.shou@sjtu.edu.cn>
+To: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	olivier.hault@level-it.be,
+	jon@nutanix.com,
+	"muliang.shou" <muliang.shou@sjtu.edu.cn>
+Subject: [RFC PATCH v2 0/3] GiantVM based on shared memory
+Date: Fri,  5 Jun 2026 18:00:28 +0800
+Message-ID: <20260605100031.834938-1-muliang.shou@sjtu.edu.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 9 potential issue(=
-s) to consider:
-- [Critical] Incorrect vCPU lookup and missing NULL check for the result of=
- `kvm_get_vcpu()`.
-- [High] Dereferencing `vcpu->arch.apic` without verifying if the in-kernel=
- APIC is initialized.
-- [High] Modifying vCPU architectural and hardware-switched state from a VM=
- ioctl without `vcpu_load()` or `vcpu->mutex`.
-- [High] Implicit structure padding and the use of the `bool` type in UAPI =
-structs break 32-bit vs 64-bit ABI compatibility.
-- [High] Double IPI delivery in `apic_mmio_write()` due to executing intern=
-al KVM logic before queuing the DSM forward request.
-- [Medium] Silent error masking on `copy_from_user()` failure.
-- [Medium] `dest_id` parameter is completely ignored in `kvm_lapic_reg_writ=
-e_remote()`.
-- [Medium] Unnecessary and expensive VM exits triggered on standard `APIC_I=
-CR2` writes.
-- [Low] Unreachable `apic_x2apic_mode` condition in `apic_mmio_write()`.
---
+Changes since v1:
+- Mark the series as RFC, as the design is still under discussion.
+- No functional changes.
 
-commit 4bde3ce0dad331a911916cb971f72910f8f94774
-Author: muliang.shou <muliang.shou@sjtu.edu.cn>
+GiantVM is a many-to-one virtualization framework built atop QEMU/KVM.
 
-KVM: x86: add DSM APIC forwarding ioctls
+Many-to-one virtualization aims to aggregate commodity servers into one
+logical machine while preserving the standard VM abstraction based on
+Distributed Shared Memory (DSM) as pioneered by Prof. Kai Li back in 1986.
 
-This commit introduces three new ioctls (KVM_DSM_IPI, KVM_DSM_X2APIC, and
-KVM_DSM_APIC_BASE) to apply forwarded APIC, x2APIC ICR, and APIC base updat=
-es
-on a target vCPU. It also modifies the APIC MMIO write path to exit to
-userspace for interrupt forwarding.
+As modern AI, big-data, and scientific workloads crave VMs whose CPU and
+memory demands exceed the capacity of a single physical server, the old
+dilemma strikes back. Scaling-up is increasingly costly due to diminishing
+returns, especially the memory wall, while scale-out clusters often require
+application refactoring and introduce message-passing overhead.
 
-> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-> --- a/arch/x86/kvm/lapic.c
-> +++ b/arch/x86/kvm/lapic.c
-> @@ -2555,6 +2555,14 @@ static int kvm_lapic_reg_write(struct kvm_lapic *a=
-pic, u32 reg, u32 val)
->  	return ret;
->  }
-> =20
-> +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-> +int kvm_lapic_reg_write_remote(struct kvm_lapic *apic, u32 reg, u32 val,=
- u32 dest_id)
-> +{
-> +	return kvm_lapic_reg_write(apic, reg, val);
+GiantVM is our attempt to answer the following question: if a leopard can't
+change its spot, can we strike a balance between scaling-out and scaling-up
+to draw on the best of both worlds?
 
-[Severity: Medium]
-Will this ignore the dest_id parameter? When writing to APIC_ICR, KVM
-internally reads the destination ID from the target vCPU's pre-existing
-APIC_ICR2 register. Since dest_id is thrown away here, does KVM end up
-using whatever stale value resides in APIC_ICR2, sending the IPI to the
-wrong destination?
+We feel confident to propose our solution that aggregates multiple
+physical hosts into a single virtual machine while keeping the guest OS
+and applications unmodified.
 
-> +}
-> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_lapic_reg_write_remote);
-> +#endif
+1. Key benefits
+===================
 
-[ ... ]
+The architecture provides several key benefits for memory-intensive
+services and HPC applications:
+-- Simplified programming model. GiantVM provides a shared-memory
+abstraction, so
+developers can access shared data almost like local memory.
+-- Higher resource utilization and scalable memory capacity.
+-- Transparent data sharing and migration.
+-- Integration with RDMA, CXL, UnifiedBus, and other modern high-speed
+interconnects for more performance optimization (Under active development;
+see Roadmap section).
 
-> @@ -2583,6 +2591,24 @@ static int apic_mmio_write(struct kvm_vcpu *vcpu, =
-struct kvm_io_device *this,
->  	val =3D *(u32*)data;
-> =20
-> +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-> +	reg =3D offset & 0xff0;
-> +	if (reg =3D=3D APIC_ICR || reg =3D=3D APIC_ICR2) {
+2. Architecture
+===============
+The architecture is shown below in monospace text:
 
-[Severity: Medium]
-In xAPIC mode, a guest routinely writes to APIC_ICR2 merely to set up the
-destination ID, and then writes to APIC_ICR to trigger the interrupt.
-Since userspace cannot forward an incomplete IPI, does triggering a
-userspace exit on APIC_ICR2 subject the guest to a pointless, expensive
-roundtrip?
++---------------------------------------------------+
+|                     Guest OS                      |
++-------------------------+-------------------------+
+                          |
++-------------------------V-------------------------+
+|                       Hosts                       |
+|                                                   |
+|       +-----------------------------------+       |
+|       |            Userspace DSM          |       |
+|       +----+-------------------------+----+       |
+|            |                         |            |
+|            V                         V            |
+|  +-------------------+     +-------------------+  |
+|  |       QEMU        |     |       QEMU        |  |
+|  |  +-------------+  |     |  +-------------+  |  |
+|  |  |    vCPU     |  |     |  |    vCPU     |  |  |
+|  |  +-------------+  |     |  +-------------+  |  |
+|  |  |  IO device  |  |     |  |  IO device  |  |  |
+|  |  +-------------+  |     |  +-------------+  |  |
+|  +-------------------+     +-------------------+  |
+|  |      Host OS      |     |      Host OS      |  |
+|  |  +-------------+  |     |  +-------------+  |  |
+|  |  |     KVM     |  |     |  |     KVM     |  |  |
+|  |  +-------------+  |     |  +-------------+  |  |
+|  +-------------------+     +-------------------+  |
+|  |     Hardware      |     |     Hardware      |  |
+|  +-------------------+     +-------------------+  |
+|         Node 0                    Node 1          |
++---------------------------------------------------+
 
-> +		kvm_lapic_reg_write(apic, reg, val);
+This series provides the foundational KVM APIC-forwarding support needed 
+for the GiantVM shared-memory startup path. 
 
-[Severity: High]
-Does this execute the actual internal KVM IPI delivery mechanism before
-triggering the DSM forwarding request? Writing to APIC_ICR here invokes
-kvm_apic_send_ipi(). Does this mean the interrupt is sent internally by
-KVM first, and then the vCPU exits to userspace requesting it to forward
-the same IRQ, leading to duplicate interrupt delivery?
+It implements a concise IRQ forwarding interface that lets KVM 
+hand selected LAPIC interrupt state to userspace, where the GiantVM 
+runtime can route and reinject the interrupt for the target vCPU.
+This allows guest APIC/IPI coordination to work across nodes during 
+boot and runtime.
 
-> +		if (reg =3D=3D APIC_ICR) {
-> +			if (apic_x2apic_mode(apic)) {
+The series also includes UAPI definitions for related DSM APIC exits and
+reinjection helpers that are expected by the userspace runtime. 
 
-[Severity: Low]
-Is this apic_x2apic_mode() check reachable? Earlier in apic_mmio_write(),
-KVM checks if (!kvm_apic_hw_enabled(apic) || apic_x2apic_mode(apic)) and
-returns immediately. Therefore, MMIO writes to the APIC are unconditionally
-rejected when in x2APIC mode, making this new x2APIC check dead code.
+3. Implementation
+=================
+This series adds the interface through the following pieces:
 
-> +				dest_id =3D kvm_lapic_get_reg(apic, APIC_ICR2);
-> +			} else {
-> +				dest_id =3D kvm_lapic_get_reg(apic, APIC_ICR2);
-> +				dest_id =3D GET_XAPIC_DEST_FIELD(dest_id);
-> +			}
+  - Adds CONFIG_KVM_DSM_IRQ_FORWARD as an Intel KVM build option.
+  - Adds KVM_REQ_DSM_IRQ_FORWARD and per-vCPU storage for one pending
+    forwarded LAPIC interrupt record.
+  - Extends KVM UAPI definitions with DSM exit reasons and struct kvm_run
+    metadata used by the forwarding path.
+  - Intercepts LAPIC MMIO writes to APIC_ICR and APIC_ICR2, records the
+    written register, value, and derived destination APIC ID, then raises a
+    KVM request.
+  - Handles the request in vcpu_enter_guest() by exiting to userspace with
+    KVM_EXIT_DSM_SEND_IRQ and filling the lapic_irq fields in struct
+    kvm_run.
+  - Adds VM ioctls for reinjecting DSM IPI, x2APIC ICR, and APIC base state
+    from the GiantVM userspace runtime back into KVM.
 
-[ ... ]
+The LAPIC MMIO path currently records APIC_ICR/APIC_ICR2 writes and leaves
+the policy decision, including whether the destination is remote, to
+userspace. 
 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -7634,6 +7634,46 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned =
-int ioctl, unsigned long arg)
->  		r =3D kvm_vm_ioctl_set_msr_filter(kvm, &filter);
->  		break;
->  	}
-> +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-> +	case KVM_DSM_IPI: {
-> +		struct kvm_dipi_params params;
-> +		struct kvm_vcpu *vcpu =3D NULL;
-> +		u32 reg;
-> +		u32 val;
-> +
-> +		r =3D 0;
-> +		if (copy_from_user(&params, argp, sizeof(params)))
-> +			goto out;
+4. Patch Layout
+===============
+  01: Kconfig, KVM request, per-vCPU state, and UAPI definitions
+  02: LAPIC ICR/ICR2 MMIO interception and userspace exit handling
+  03: VM ioctls for applying forwarded APIC, x2APIC ICR, and APIC base
+      state
 
-[Severity: Medium]
-If copy_from_user() fails, the code executes goto out with r =3D 0. Does th=
-is
-falsely inform userspace that the operation succeeded when the parameters
-were invalid and no action was actually performed? Should this return
--EFAULT instead?
+You can opt-in the framework by selecting CONFIG_KVM_DSM_IRQ_FORWARD as
+a kernel compile flag in e.g. menuconfig.
 
-> +		vcpu =3D kvm_get_vcpu(kvm, params.vcpu_id);
-> +		reg =3D params.val;
-> +		val =3D params.val2;
-> +		kvm_lapic_reg_write_remote(vcpu->arch.apic, reg, val, params.dest_id);
+5. Performance Data
+===================
+CoreMark was run on VMs configured with different vCPU counts to compare
+the GiantVM shared-memory setup with a regular VM baseline.  Each VM was
+configured with 64 GiB of memory, and the tested vCPU counts were 4, 8,
+16, 32, 64, 72, and 128.  The reported values are CoreMark scores, where
+higher is better.
 
-[Severity: Critical]
-Does kvm_get_vcpu() expect an internal array index rather than the uAPI
-vcpu_id? If the provided ID/index is out of bounds, kvm_get_vcpu() returns
-NULL. Since the pointer is immediately dereferenced, could an unprivileged
-userspace process trigger a deterministic host kernel panic?
+  Cores  GVM score  GVM speedup  VM score  VM speedup  GVM/VM
+  4      98783      1.00x        101032    1.00x       97.77%
+  8      205642     2.08x        210817    2.09x       97.55%
+  16     390974     3.96x        400500    3.96x       97.62%
+  32     744099     7.53x        800328    7.92x       92.97%
+  64     1477804    14.96x       1629535   16.13x      90.69%
+  72     1511546    15.30x       1810068   17.92x      83.51%
+  128    2531447    25.63x       2556548   25.30x      99.02%
 
-[Severity: High]
-If userspace created the VM without an in-kernel local APIC, vcpu->arch.apic
-can be NULL. Will unconditionally dereferencing the APIC pointer lead to a
-host kernel panic?
+Across these CoreMark runs, the GiantVM shared-memory configuration
+achieved 83.51% to 99.02% of the regular VM score. Relative to its
+4-core result, GiantVM scaled to 25.63x at 128 cores, while the regular
+VM scaled to 25.30x.
 
-> +		break;
-> +	}
-> +	case KVM_DSM_X2APIC: {
-> +		struct kvm_x2apic_params params;
-> +		struct kvm_vcpu *vcpu =3D NULL;
-> +
-> +		r =3D 0;
-> +		if (copy_from_user(&params, argp, sizeof(params)))
-> +			goto out;
-> +
-> +		vcpu =3D kvm_get_vcpu(kvm, params.vcpu_id);
-> +		kvm_x2apic_icr_write_fast(vcpu->arch.apic, params.data);
-> +		break;
-> +	}
-> +	case KVM_DSM_APIC_BASE: {
-> +		struct kvm_apic_base_params params;
-> +		struct kvm_vcpu *vcpu =3D NULL;
-> +
-> +		r =3D 0;
-> +		if (copy_from_user(&params, argp, sizeof(params)))
-> +			goto out;
-> +		vcpu =3D kvm_get_vcpu(kvm, params.vcpu_id);
-> +		kvm_apic_set_base(vcpu, params.data, params.host);
+6. Scope
+========
+Thanks for your interest in our humble project!
 
-[Severity: High]
-These DSM ioctls are implemented as VM-level ioctls, which do not implicitly
-acquire vcpu->mutex or call vcpu_load(). Does modifying vCPU hardware state,
-such as APIC registers and apic_base, asynchronously without vcpu->mutex
-introduce severe data races? Also, failing to pair vcpu_load() and vcpu_put=
-()
-violates KVM subsystem guidelines and can lead to hardware state corruption.
+We wish to publish a functional core architecture and gather initial
+feedback on the high-level design and overall approach in this Request
+for Comments(RFC) submission. Specific implementation and optimization
+details are curated in our GitHub repo on a rolling basis.
 
-> +		break;
-> +	}
-> +#endif
+The patch represents a foundational framework for GiantVM support. It
+provides a basic infrastructure and rudimentary resource sharing
+mechanisms. We welcome the community to leverage this initial groundwork
+and build solutions on their own. Advanced features such as DSM memory
+management and software coherence framework is planned for future work.
 
-[ ... ]
+Testing is primarily arranged towards running benchmarks on lab settings.
+Uncharted forest bring out the best of men and the meanest of bugs during
+summer time. Community testing and feedback on various hardware setup,
+configurations, and workloads would be greatly appreciated!
 
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -231,6 +231,33 @@ struct kvm_exit_snp_req_certs {
->  #define HINT_UNSAFE_IN_KVM(_symbol) _symbol
->  #endif
-> =20
-> +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-> +struct kvm_dipi_params {
-> +	int vcpu_id;
-> +	__u32 val;
-> +	__u32 val2;
-> +	__u32 dest_id;
-> +};
-> +
-> +#define KVM_DSM_IPI _IOW(KVMIO,  0xf3, struct kvm_dipi_params)
-> +
-> +struct kvm_x2apic_params {
-> +	int vcpu_id;
-> +	__u64 data;
-> +};
+Setup and demo instructions are available in the accompanying installation
+guide.
 
-[Severity: High]
-Does this mix of 32-bit and 64-bit fields without explicit padding break
-32-bit vs 64-bit ABI compatibility? On 64-bit architectures, the compiler
-inserts 4 bytes of padding before __u64 data to maintain 8-byte alignment,
-while 32-bit x86 only requires 4-byte alignment, inserting no padding. This
-difference in size causes the _IOW macro to generate different ioctl
-command numbers for 32-bit and 64-bit userspace.
+Link: https://github.com/GiantVM/GVM-kernel/blob/shared-memory/v7.1-rc6/README.md
 
-> +
-> +#define KVM_DSM_X2APIC _IOW(KVMIO, 0xf4, struct kvm_x2apic_params)
-> +
-> +struct kvm_apic_base_params {
-> +	int vcpu_id;
-> +	bool host;
-> +	__u32 index;
-> +	__u64 data;
-> +};
+7. Roadmap
+==============
+Future GiantVM work includes the following items:
 
-[Severity: High]
-Similarly, does this struct suffer from the same 32-bit vs 64-bit implicit
-padding differences? Also, since the C++ bool type's size is
-compiler-defined, is it safe to use it in a UAPI struct, or will it further
-break ABI guarantees?
+  - GiantVM over TCP.  This implementation is not
+    included in this submission, but is available in the GiantVM QEMU and
+    kernel repositories.
 
-> +
-> +#define KVM_DSM_APIC_BASE         _IOW(KVMIO, 0xf5, struct kvm_apic_base=
-_params)
-> +
-> +#endif
+Link: https://github.com/GiantVM/GVM-qemu
+Link: https://github.com/GiantVM/GVM-kernel
+  - RDMA support, completed and coming soon.
+  - CXL support, completed and coming soon.
+  - Huawei UnifiedBus support, completed and under testing.
+  - ARM architecture support, under active development and close to
+    completion.
+  - RISC-V support, planned.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605093857.7477=
-35-1-muliang.shou@sjtu.edu.cn?part=3D3
+9. Project References
+=====================
+[General Info]
+  Organization: Trusted Cloud Group, Institute of Scalable Computing,
+                Shanghai Jiao Tong University
+  Website:
+Link: https://giantvm.github.io/
+  Repository:
+Link: https://github.com/GiantVM
+
+[Publications]
+  - Xingguo Jia, Jin Zhang, Boshi Yu, Xingyue Qian, Zhengwei Qi,
+    Haibing Guan:
+    "GiantVM: A Novel Distributed Hypervisor for Resource Aggregation with
+    DSM-aware Optimizations." ACM Trans. Archit. Code Optim. 19(2):
+    20:1-20:27 (2022).
+  - Jin Zhang, Zhuocheng Ding, Yubin Chen, Xingguo Jia, Boshi Yu,
+    Zhengwei Qi, Haibing Guan: "GiantVM: a type-II hypervisor implementing
+    many-to-one virtualization." VEE 2020: 30-44.
+
+[KVM Forum Presentations]
+  - KVM Forum 2025: "GiantVM: A Many-to-one Virtualization System Built
+    Atop the QEMU/KVM Hypervisor"
+Link: https://pretalx.com/kvm-forum-2025/talk/MDGYZG/
+  - KVM Forum 2018: "Distributed QEMU" by Yubin Chen & Zhuocheng Ding
+    (Video)
+Link: https://www.youtube.com/watch?v=GprmhYU1M8Q
+
+[Citations]
+  - Kai Li: "Shared virtual memory on loosely coupled multiprocessors."
+  PhD Dissertation, Yale University, 1986.
+
+10. Acknowledgments
+===================
+This work builds on a multi-year research and engineering effort.  We thank
+the following contributors for their work across different phases of the
+project:
+
+[Initial Project Development - Linux 4.19 era]
+  Ding Zhuocheng <tcbbd@sjtu.edu.cn>
+  Chen Yubin <binsschen@sjtu.edu.cn>
+  Zhang Jin <jzhang3002@sjtu.edu.cn>
+  Wang Yun <yunwang94@sjtu.edu.cn>
+  Ma Jiacheng <jiacheng.ma@amd.com>
+  Yu Boshi <201608ybs@sjtu.edu.cn>
+  Jia Xingguo <jiaxg1998@sjtu.edu.cn>
+  Chen Weiye <vorringer@sjtu.edu.cn>
+  Wu Chenggang <wuchenggang@sjtu.edu.cn>
+  Xiang Yuxin <xiangyuxin@sjtu.edu.cn>
+
+[Modernization, Upstream Development, and Active Maintenance]
+  Xiong Tianlei <qmyyxtl@sjtu.edu.cn>
+  Xu Kailiang <xukl2019@sjtu.edu.cn>
+  Xue Songtao <xxxlhhxz@sjtu.edu.cn>
+  Shou Muliang <muliang.shou@sjtu.edu.cn>
+  Han Fengze <adoniswhite926@gmail.com>
+  Ren Luobin <renluobin0257@gmail.com>
+
+---
+muliang.shou (3):
+  KVM: x86: add DSM IRQ forwarding ABI and state
+  KVM: x86: forward LAPIC ICR writes to userspace
+  KVM: x86: add DSM APIC forwarding ioctls
+
+ arch/x86/include/asm/kvm_host.h | 17 ++++++++++
+ arch/x86/kvm/Kconfig            | 12 +++++++
+ arch/x86/kvm/lapic.c            | 38 +++++++++++++++++++++
+ arch/x86/kvm/lapic.h            |  4 +++
+ arch/x86/kvm/x86.c              | 54 +++++++++++++++++++++++++++++
+ include/uapi/linux/kvm.h        | 60 ++++++++++++++++++++++++++++++++-
+ 6 files changed, 184 insertions(+), 1 deletion(-)
+
+-- 
+2.43.0
+
