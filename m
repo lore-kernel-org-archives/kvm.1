@@ -1,37 +1,37 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6653B2D0D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4C43B19CA;
 	Fri,  5 Jun 2026 14:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780669849; cv=none; b=CFUKk325Vm3U1E+HG5wk7Lmaawc30+9REk+8uCP5U7RPj9q5HQEnZteKc42Drnc8TE3QoSvGNeIq9r/YGHS7KnLiCFJobnqaAij1k6S74MXO3qAAT3NgHTKfKsbq7GT870BdS2alYOa8JDqpQbPLAEIpt21A17MEORmC5I+H+6k=
+	t=1780669850; cv=none; b=iGDZ3CL4QANdkG1INfPd5R69JL5kjxyVuZbpOPpdzBbE2t9KmhBaPU8PMeSjI0u7nFsD/E2/O+Ds5WWyoduuAC+EtW0mFGvVd9t1UjbYMKzdLPj0QNL8OL9be7URjIod9hF4Qbjyee3wmMx6920VrOvgWdU5olsjaIvDPFNA3XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780669849; c=relaxed/simple;
-	bh=AuIY14KqiA9W3u1TFh2kocuQhHEOHteA96oXska4omM=;
+	s=arc-20240116; t=1780669850; c=relaxed/simple;
+	bh=DNnGn2OnfpPBVTZZIweivJoAdbtiO5JytDbfWNhUziE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XvAK1nrSDiG157fAXsOGxmtHsNXFY9xtI6XDtl0Cfg0ldllC2cxJueusmxQPif0+mVwGXOviYR8iFTn8MhTgwuDiX+5REbBTEJCGCRL0Am6psRLQCjrByYmO3L3deZ7x1gf/6KNZDvSu32Rh+JAAS9spl9gBBrfGKx10u++RHs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Ur83SHeg; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=VGtlMS2rnSqstv5vi2CkavYJU27tXPkC5oYVALvYWtbG64Cb/p/7ngIXHmhcGi5h9ISOlPgQmkYSPWT3ZthvmTl/7c8ZLWkciFQD09sH8bBxaLZUIZG2JTT2f4M0o1RAxCR1xQ1WZ0GEv7e9KdJWBg9uNU73n8/54RTLmjCrPkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bMT/MRk6; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Ur83SHeg"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bMT/MRk6"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=HMHMnLtmFEnlXHeN04ELPbsc86c69hiUTB5mzlEYiuA=; b=Ur83SHegAnHFOaSy89pWD1Xt2w
-	CMsOW06tEiYKjfo0l8xt/2WpVccZ2WJ0Q80LWIq/Tqq4YjvimVmv+Q4RmB1kqbHNlBzEVcOnaW127
-	YGhjHxkIwWluaZ9Ch15O/xKR9D6hgzNDmi9UiOahJWHd79Z9thavcuRbW8ng6QZBWuThPJx5zcbOr
-	90zALbdLsB0hUwo98dq7JxaSORyV47vOP4qdT6Flq9YXomBpAhUfMdRpRutu++1Tx2va7V2WVUgJ/
-	prI/KLZq025wCnd7vCl/OI/h7vSFAApysvsgH8HTGlp9TNLD2FMN6rq6Yntru2nk+dxZI1zsyNQDy
-	JlcDaXnA==;
+	bh=YCyxV+ifjXIAhZC0d0vp2nQWP3P1f4jws00DSBIbGQY=; b=bMT/MRk6B5CMIVz0D9bt6Te6Da
+	FkviKAIEwIpfMINoNl/YFiuB/FAfgq4uOACoWvVIGZPgfZTst7IPR7jab6t//mas+f0Him7pENPDW
+	Cg6pytAv8e8gitZVsP1MGLMyjKWQaVh6wfqR2f91MV998Vojt/sIHCGdy33UGdAtRITuLSI4PneRS
+	e+ciR6uohbFQlN1Hrp1U/uCj8NMtlLvVascJfZJFvjKfEaf6vZL7F2E0ipyG9L1Zx8k14eRFZSnSC
+	/Lb723w1gSDGatiztA5qdHUtVJ2nDaQAr5CrsXBoT/kBXKaZBYr0gn1Jcyz95THp8EWJdABMdbmBh
+	NSHeyk+g==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wVVZE-0000000848c-26Pw;
+	id 1wVVZE-0000000848d-26wE;
 	Fri, 05 Jun 2026 14:30:37 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wVVZE-0000000013P-0z7g;
+	id 1wVVZE-0000000013U-1Ij3;
 	Fri, 05 Jun 2026 15:30:36 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Sean Christopherson <seanjc@google.com>
@@ -46,9 +46,9 @@ Cc: Paul Durrant <paul@xen.org>,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/8] KVM: x86/xen: Rename 'longmode' to 'is_64bit' in hypercall handling
-Date: Fri,  5 Jun 2026 15:17:26 +0100
-Message-ID: <20260605143034.3603-2-dwmw2@infradead.org>
+Subject: [PATCH 2/8] KVM: x86/xen: Introduce kvm_xen_has_64bit_shinfo() macro
+Date: Fri,  5 Jun 2026 15:17:27 +0100
+Message-ID: <20260605143034.3603-3-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260605143034.3603-1-dwmw2@infradead.org>
 References: <20260605143034.3603-1-dwmw2@infradead.org>
@@ -64,127 +64,113 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Rename the local 'longmode' variable and function parameter to
-'is_64bit' throughout the Xen hypercall handling code. This
-distinguishes it from the VM-wide kvm->arch.xen.long_mode which
-represents the Xen shared_info layout mode.
+Add a kvm_xen_has_64bit_shinfo() helper macro to replace the repeated
+pattern of 'IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode'
+throughout the Xen emulation code. The macro uses READ_ONCE() to
+ensure a consistent snapshot of the flag, which can be changed by
+another vCPU at any time.
 
-The 'is_64bit' parameter indicates whether the vCPU was in 64-bit
-mode when it made the hypercall, which determines how to parse the
-hypercall arguments. The UAPI field name (vcpu->run->xen.u.hcall.longmode)
-is unchanged.
+This is the KVM equivalent of Xen's !has_32bit_shinfo().
 
 Assisted-by: Kiro:claude-opus-4.6-1m
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/kvm/xen.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ arch/x86/kvm/xen.c | 16 ++++++++--------
+ arch/x86/kvm/xen.h |  5 +++++
+ 2 files changed, 13 insertions(+), 8 deletions(-)
 
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 91fd3673c09a..a7ab19f38b59 100644
+index a7ab19f38b59..acd3cd87dd2f 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -1468,7 +1468,7 @@ static bool wait_pending_event(struct kvm_vcpu *vcpu, int nr_ports,
- 	return ret;
- }
+@@ -72,7 +72,7 @@ static int kvm_xen_shared_info_init(struct kvm *kvm)
+ 	BUILD_BUG_ON(offsetof(struct shared_info, wc) != 0xc00);
+ 	BUILD_BUG_ON(offsetof(struct shared_info, wc_sec_hi) != 0xc0c);
  
--static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool longmode,
-+static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool is_64bit,
- 				 u64 param, u64 *r)
+-	if (IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode) {
++	if (kvm_xen_has_64bit_shinfo(kvm)) {
+ 		struct shared_info *shinfo = gpc->khva;
+ 
+ 		wc_sec_hi = &shinfo->wc_sec_hi;
+@@ -390,7 +390,7 @@ static void kvm_xen_update_runstate_guest(struct kvm_vcpu *v, bool atomic)
+ 	BUILD_BUG_ON(sizeof_field(struct vcpu_runstate_info, time) !=
+ 		     sizeof(vx->runstate_times));
+ 
+-	if (IS_ENABLED(CONFIG_64BIT) && v->kvm->arch.xen.long_mode) {
++	if (kvm_xen_has_64bit_shinfo(v->kvm)) {
+ 		user_len = sizeof(struct vcpu_runstate_info);
+ 		times_ofs = offsetof(struct vcpu_runstate_info,
+ 				     state_entry_time);
+@@ -661,7 +661,7 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 	}
+ 
+ 	/* Now gpc->khva is a valid kernel address for the vcpu_info */
+-	if (IS_ENABLED(CONFIG_64BIT) && v->kvm->arch.xen.long_mode) {
++	if (kvm_xen_has_64bit_shinfo(v->kvm)) {
+ 		struct vcpu_info *vi = gpc->khva;
+ 
+ 		asm volatile(LOCK_PREFIX "orq %0, %1\n"
+@@ -978,7 +978,7 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
+ 		 * address, that's actually OK. kvm_xen_update_runstate_guest()
+ 		 * will cope.
+ 		 */
+-		if (IS_ENABLED(CONFIG_64BIT) && vcpu->kvm->arch.xen.long_mode)
++		if (kvm_xen_has_64bit_shinfo(vcpu->kvm))
+ 			sz = sizeof(struct vcpu_runstate_info);
+ 		else
+ 			sz = sizeof(struct compat_vcpu_runstate_info);
+@@ -1424,7 +1424,7 @@ static int kvm_xen_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
+ 
+ static inline int max_evtchn_port(struct kvm *kvm)
  {
- 	struct sched_poll sched_poll;
-@@ -1480,7 +1480,7 @@ static bool kvm_xen_schedop_poll(struct kvm_vcpu *vcpu, bool longmode,
- 	    !(vcpu->kvm->arch.xen.hvm_config.flags & KVM_XEN_HVM_CONFIG_EVTCHN_SEND))
- 		return false;
+-	if (IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode)
++	if (kvm_xen_has_64bit_shinfo(kvm))
+ 		return EVTCHN_2L_NR_CHANNELS;
+ 	else
+ 		return COMPAT_EVTCHN_2L_NR_CHANNELS;
+@@ -1446,7 +1446,7 @@ static bool wait_pending_event(struct kvm_vcpu *vcpu, int nr_ports,
+ 		goto out_rcu;
  
--	if (IS_ENABLED(CONFIG_64BIT) && !longmode) {
-+	if (IS_ENABLED(CONFIG_64BIT) && !is_64bit) {
- 		struct compat_sched_poll sp32;
+ 	ret = false;
+-	if (IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode) {
++	if (kvm_xen_has_64bit_shinfo(kvm)) {
+ 		struct shared_info *shinfo = gpc->khva;
+ 		pending_bits = (unsigned long *)&shinfo->evtchn_pending;
+ 	} else {
+@@ -1820,7 +1820,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 	if (!kvm_gpc_check(gpc, PAGE_SIZE))
+ 		goto out_rcu;
  
- 		/* Sanity check that the compat struct definition is correct */
-@@ -1577,12 +1577,12 @@ static void cancel_evtchn_poll(struct timer_list *t)
- 	kvm_vcpu_kick(vcpu);
- }
+-	if (IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode) {
++	if (kvm_xen_has_64bit_shinfo(kvm)) {
+ 		struct shared_info *shinfo = gpc->khva;
+ 		pending_bits = (unsigned long *)&shinfo->evtchn_pending;
+ 		mask_bits = (unsigned long *)&shinfo->evtchn_mask;
+@@ -1861,7 +1861,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 			goto out_rcu;
+ 		}
  
--static bool kvm_xen_hcall_sched_op(struct kvm_vcpu *vcpu, bool longmode,
-+static bool kvm_xen_hcall_sched_op(struct kvm_vcpu *vcpu, bool is_64bit,
- 				   int cmd, u64 param, u64 *r)
- {
- 	switch (cmd) {
- 	case SCHEDOP_poll:
--		if (kvm_xen_schedop_poll(vcpu, longmode, param, r))
-+		if (kvm_xen_schedop_poll(vcpu, is_64bit, param, r))
- 			return true;
- 		fallthrough;
- 	case SCHEDOP_yield:
-@@ -1601,7 +1601,7 @@ struct compat_vcpu_set_singleshot_timer {
-     uint32_t flags;
- } __attribute__((packed));
- 
--static bool kvm_xen_hcall_vcpu_op(struct kvm_vcpu *vcpu, bool longmode, int cmd,
-+static bool kvm_xen_hcall_vcpu_op(struct kvm_vcpu *vcpu, bool is_64bit, int cmd,
- 				  int vcpu_id, u64 param, u64 *r)
- {
- 	struct vcpu_set_singleshot_timer oneshot;
-@@ -1633,7 +1633,7 @@ static bool kvm_xen_hcall_vcpu_op(struct kvm_vcpu *vcpu, bool longmode, int cmd,
- 		BUILD_BUG_ON(sizeof_field(struct compat_vcpu_set_singleshot_timer, flags) !=
- 			     sizeof_field(struct vcpu_set_singleshot_timer, flags));
- 
--		if (kvm_read_guest_virt(vcpu, param, &oneshot, longmode ? sizeof(oneshot) :
-+		if (kvm_read_guest_virt(vcpu, param, &oneshot, is_64bit ? sizeof(oneshot) :
- 					sizeof(struct compat_vcpu_set_singleshot_timer), &e)) {
- 			*r = -EFAULT;
- 			return true;
-@@ -1673,7 +1673,7 @@ static bool kvm_xen_hcall_set_timer_op(struct kvm_vcpu *vcpu, uint64_t timeout,
- 
- int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
- {
--	bool longmode;
-+	bool is_64bit;
- 	u64 input, params[6], r = -ENOSYS;
- 	bool handled = false;
- 	u8 cpl;
-@@ -1685,8 +1685,8 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
- 	    kvm_hv_hypercall_enabled(vcpu))
- 		return kvm_hv_hypercall(vcpu);
- 
--	longmode = is_64_bit_hypercall(vcpu);
--	if (!longmode) {
-+	is_64bit = is_64_bit_hypercall(vcpu);
-+	if (!is_64bit) {
- 		params[0] = (u32)kvm_rbx_read(vcpu);
- 		params[1] = (u32)kvm_rcx_read(vcpu);
- 		params[2] = (u32)kvm_rdx_read(vcpu);
-@@ -1727,17 +1727,17 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
- 			handled = kvm_xen_hcall_evtchn_send(vcpu, params[1], &r);
- 		break;
- 	case __HYPERVISOR_sched_op:
--		handled = kvm_xen_hcall_sched_op(vcpu, longmode, params[0],
-+		handled = kvm_xen_hcall_sched_op(vcpu, is_64bit, params[0],
- 						 params[1], &r);
- 		break;
- 	case __HYPERVISOR_vcpu_op:
--		handled = kvm_xen_hcall_vcpu_op(vcpu, longmode, params[0], params[1],
-+		handled = kvm_xen_hcall_vcpu_op(vcpu, is_64bit, params[0], params[1],
- 						params[2], &r);
- 		break;
- 	case __HYPERVISOR_set_timer_op: {
- 		u64 timeout = params[0];
- 		/* In 32-bit mode, the 64-bit timeout is in two 32-bit params. */
--		if (!longmode)
-+		if (!is_64bit)
- 			timeout |= params[1] << 32;
- 		handled = kvm_xen_hcall_set_timer_op(vcpu, timeout, &r);
- 		break;
-@@ -1752,7 +1752,7 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
- handle_in_userspace:
- 	vcpu->run->exit_reason = KVM_EXIT_XEN;
- 	vcpu->run->xen.type = KVM_EXIT_XEN_HCALL;
--	vcpu->run->xen.u.hcall.longmode = longmode;
-+	vcpu->run->xen.u.hcall.longmode = is_64bit;
- 	vcpu->run->xen.u.hcall.cpl = cpl;
- 	vcpu->run->xen.u.hcall.input = input;
- 	vcpu->run->xen.u.hcall.params[0] = params[0];
+-		if (IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode) {
++		if (kvm_xen_has_64bit_shinfo(kvm)) {
+ 			struct vcpu_info *vcpu_info = gpc->khva;
+ 			if (!test_and_set_bit(port_word_bit, &vcpu_info->evtchn_pending_sel)) {
+ 				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
+diff --git a/arch/x86/kvm/xen.h b/arch/x86/kvm/xen.h
+index 59e6128a7bd3..3e8c9306eb89 100644
+--- a/arch/x86/kvm/xen.h
++++ b/arch/x86/kvm/xen.h
+@@ -248,6 +248,11 @@ struct compat_shared_info {
+ #define COMPAT_EVTCHN_2L_NR_CHANNELS (8 *				\
+ 				      sizeof_field(struct compat_shared_info, \
+ 						   evtchn_pending))
++
++/* Latched VM-wide mode; the KVM equivalent of Xen's !has_32bit_shinfo(). */
++#define kvm_xen_has_64bit_shinfo(kvm) \
++	(IS_ENABLED(CONFIG_64BIT) && READ_ONCE((kvm)->arch.xen.long_mode))
++
+ struct compat_vcpu_runstate_info {
+     int state;
+     uint64_t state_entry_time;
 -- 
 2.54.0
 
