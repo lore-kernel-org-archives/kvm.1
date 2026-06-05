@@ -1,156 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28633101CE
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 17:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E79340403
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 17:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780680395; cv=none; b=m6ZswwQSHiy4blgnH+CZ39Ar2qs0XKF/OqDJijvfm13mIFJvY/wnWWw61QLmVFFkHPfxms7u+/cOE1A8m0ZS7qeP7MTdqIdq0DBj0Gpo6qyP2G4l6Zz+WC1GRp4ZvfJ+ZXJ4Zwu4Hx1Tr9DDWTg3q5uWCvgNELLl81jkcCb6LWc=
+	t=1780681580; cv=none; b=iuYVTH/PNp6oGOcVYn790HRnhgnTVbc4u+v6G8WTYWFbUg8pY6dWtofMp6cNNziR80H3XySCrNSq1qka1UTtB63Cuz2Eyu8bnaMLddlUkIKuWgXap5T43kBV5tqOPjQik9wi6HoHsyXdJkQ6G0jJu9b01golipiIemuDXS8odCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780680395; c=relaxed/simple;
-	bh=obLjybeKRSjooqH2EXAuPMHrupj5rYhfLbW54/+WQUE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=G1B4nHWn6eWE7uyxElBeTkaPmFxO/uvEtGLwS7fAir9OzKeKM6JA59BFV0PkZ6lSe/2KecGvP+Hqdl+o+za5fsUxf/FDGrVWDLsPc+lKpAMsR133IQ5Yb3KSapYa981QsGvqPLY/w8uccCSDLC7qg8BCbHFT5CEKl24vY0uausU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y8yIap9/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780681580; c=relaxed/simple;
+	bh=zj5FTTYykEKlVbFMcvZJ/Qz7wJTK3Bxldeavag57v/I=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QqcmMap1J+JNr3jfxxbxGPf4AcjUKpuunW1v4tpG6M/0NHGAgxADq3+//f58zg29tOrie4MDJWrEdyzomYTB7zkokPIHn/eeRGVWdxTUmFWA5OvxBtYWadAx6X0fJlhDCx1D+obcnb/zB5GZ1EhDyN6CTCqgYCDv2q8kgQ9eJ9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bJDGBYeS; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y8yIap9/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C811F00893;
-	Fri,  5 Jun 2026 17:26:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780680394;
-	bh=V5QwEmJ9oedrq12Hxks2aSvWLwA1NOk9geg1plblPhQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Y8yIap9/RU4jNw7STG0ghV/8V77dmY+Dio9GZbQ562RAmmfQSGlnIM5EifbjlUvIa
-	 7dhdliR45/ZWIN3o0LpePS6/Btm2P5C26OnX1dwTpC/gSsCnAYdlDMlWr6c8/esa9q
-	 c5p7arOB2MrmI250Xnrv/T4/jBgVkpXjB3+Wk2MmlKMSFNX04Uv2Z2Cw+8h5ptv1Y6
-	 16xTD+S+yBxCT8Bf6FV+zj2FIs6jN6Y2JCiug9MhHw/SA4SuJMDtmONWOSZjJIlEvj
-	 Jf7fdl5VvxDkwMuUHjJFIsYNIYoTDhEY1xNg8e/MrSSI0duRO8tOe5RWjWv90sp6lU
-	 Zw7GyJCz8gw+Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 04/10] kvm: kvm_luo: Allow kvm preservation with
- LUO
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tarun Sahu" <tarunsahu@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <8730c0e11acbd0d645a8b7187cd5cd7de373380e.1780676742.git.tarunsahu@google.com>
-References: <8730c0e11acbd0d645a8b7187cd5cd7de373380e.1780676742.git.tarunsahu@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 05 Jun 2026 17:26:34 +0000
-Message-Id: <20260605172634.95C811F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bJDGBYeS"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bf2bc4371bso23142885ad.1
+        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 10:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780681574; x=1781286374; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CU0M+d7o5scw842B6Rv3okGY/Zxdz96D5z3AKtUE3Mg=;
+        b=bJDGBYeS7mALJ9v7ldAvsE7rU/gBi/TgJmYcSC00ppo7+1KjtyDhBIJRpeoqNTmmmR
+         8Uqv3hzNVF5h9bssfwaq6Ocz/2xm56HeXQadTatKcU8I19UVL//7qjryzo2FiHjxQi7g
+         dl4mahcw8CpeQqW9hY0KxxVUWECEsbQM0hhousIHPLeaa9b8Y4/HKnFOGAEqQXoYOwUH
+         Ov5r2y3AFzYqALc/tFT7KGjfIHe5oxCiC1EEbyp8P4WxH/g3lUVgzbTNanciYQSY+Ern
+         gtfoV0BFvxGztC/aRfdcYMl2SglN8CEFNSpMGbfx7negYxuJDknkxXKfMIUGgm0dzRlK
+         tPXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780681574; x=1781286374;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CU0M+d7o5scw842B6Rv3okGY/Zxdz96D5z3AKtUE3Mg=;
+        b=f7WojT26KUEkmRYqXYHXVV73GraSHSX920zrJskugSULv9W5RHeVHCWPoPyjmNg1dU
+         +RPe68hN7F/298myjsBCA24PQyAMjmNkaJDf13nYP3KLm8LZLN6jCbFPUR2wj0T52xv4
+         Z6m6MyygASyLbNp19AF2KXkBQFHMPbXl0CW7Eck/z7/yxqxHvMJR/lFHnBQM1efAa7k4
+         Ky+uHfUM+wDpTUBMB54+ZahhqVCRX0zA3XQ4QKjdqGcTpr6nAzvTA/SjuXvSlR+szw1e
+         +zkb1rpF+mzTSK9D4G2mZwdurYu4dZN74LH0eZRnLQWArn5oaM06F54ReqybX4iNnh/8
+         0Qzg==
+X-Gm-Message-State: AOJu0YyutNcS3Ak27ZFADPzJU62EAOqygo2+hluK6etjlPl81B2R59Qb
+	iNzYCEOejUkzS9TzYBarqn8nrmRrxO8CxG3W6fN/lcGm/rSMOr7azL1cYPMhGMaqyQ18i94XoLa
+	UnhPqkw==
+X-Received: from plte9.prod.google.com ([2002:a17:902:7449:b0:2b0:ae36:890])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:8cc:b0:2c1:6ed:513b
+ with SMTP id d9443c01a7336-2c1ec94d1a6mr38710185ad.16.1780681573617; Fri, 05
+ Jun 2026 10:46:13 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri,  5 Jun 2026 10:46:09 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
+Message-ID: <20260605174611.2222504-1-seanjc@google.com>
+Subject: [PATCH 0/2] KVM: x86/mmu: Plug an unsync shadow page leak
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Jim Mattson <jmattson@google.com>, 
+	James Houghton <jthoughton@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] KVM live update silently drops the VM type on non-x86 architecture=
-s, leading to incorrect VM initialization during restore.
-- [High] Double free attempt of KHO serialized data on the successful retri=
-eve path triggers a kernel warning.
-- [Medium] Debugfs directory name collision for restored VMs silently drops=
- statistics for new VMs.
---
+Recursively zap orphaned nested TDP shadow pages on emulated writes, not just
+when the parent is being fully zapped, to plug an unsync shadow page leak if
+the L1 hypervisor zaps bottom-up instead of top-down, as KVM's TDP MMU has
+done since commit 8ca983631f3c ("KVM: x86/mmu: Zap invalidated TDP MMU roots
+at 4KiB granularity").
 
-commit ded3fe4d8e96caf44b395f665f8fedc9e63e601b
-Author: Tarun Sahu <tarunsahu@google.com>
+Gory details in patch 1.  Patch 2 adds a stat that, very thankfully, we more
+or less have in our internal kernels, and without which, diagnosing the bug
+would have been much more difficult.
 
-kvm: kvm_luo: Allow kvm preservation with LUO
+Sean Christopherson (2):
+  KVM: x86/mmu: Recursively zap orphaned nested TDP shadow pages on
+    emulated writes
+  KVM: x86/mmu: Expose number of shadow MMU shadow pages as a stat
 
-Introduce KVM VM preservation support for Live Update Orchestrator.
-This registers an LUO file handler for KVM files to serialize and
-deserialize necessary VM state across live updates.
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/kvm/mmu/mmu.c          | 16 ++++++++--------
+ arch/x86/kvm/mmu/mmutrace.h     |  2 +-
+ arch/x86/kvm/x86.c              |  1 +
+ 4 files changed, 11 insertions(+), 9 deletions(-)
 
-> diff --git a/virt/kvm/kvm_luo.c b/virt/kvm/kvm_luo.c
-> new file mode 100644
-> index 0000000000000..25619f94ace5b
-> --- /dev/null
-> +++ b/virt/kvm/kvm_luo.c
-[ ... ]
-> +static int kvm_luo_preserve(struct liveupdate_file_op_args *args)
-> +{
-[ ... ]
-> +#ifdef CONFIG_X86
-> +	ser->type =3D kvm->arch.vm_type;
-> +#else
-> +	ser->type =3D 0;
 
-[Severity: High]
-Does hardcoding the VM type to 0 on non-x86 architectures discard required
-state?=20
+base-commit: d4bfaa66fa171089b9b9fb2dc17af9245f2b9b34
+-- 
+2.54.0.1032.g2f8565e1d1-goog
 
-For instance, on ARM64, the VM type parameter encodes architectural
-information such as the Intermediate Physical Address (IPA) size and
-protection flags.=20
-
-Will restoring the VM with type 0 cause the new kernel to initialize the
-VM with default settings, potentially leading to a mismatched memory layout?
-
-> +#endif
-> +
-> +	args->serialized_data =3D virt_to_phys(ser);
-> +
-> +	return 0;
-> +}
-> +
-> +static atomic_t restored_vm_id =3D ATOMIC_INIT(0);
-> +
-> +static int kvm_luo_retrieve(struct liveupdate_file_op_args *args)
-> +{
-> +	char fdname[ITOA_MAX_LEN + 1];
-[ ... ]
-> +	snprintf(fdname, sizeof(fdname), "%d",
-> +		 atomic_inc_return(&restored_vm_id));
-
-[Severity: Medium]
-Since standard VMs use their native file descriptor numbers as fdname, and
-those typically start from low numbers, will this auto-incrementing counter
-guarantee namespace collisions?=20
-
-A collision here would result in a duplicate directory error in
-kvm_create_vm_debugfs(), which would cause debugfs statistics for newly
-created VMs to be skipped.
-
-> +
-> +	file =3D kvm_create_vm_file(ser->type, fdname);
-[ ... ]
-> +static void kvm_luo_finish(struct liveupdate_file_op_args *args)
-> +{
-> +	struct kvm_luo_ser *ser;
-> +
-> +	/*
-> +	 * If retrieve_status is true or set to error, nothing to do here.
-> +	 * Already cleaned up in kvm_luo_retrieve().
-> +	 */
-> +	if (args->retrieve_status)
-> +		return;
-> +
-> +	if (!args->serialized_data)
-> +		return;
-> +
-> +	ser =3D phys_to_virt(args->serialized_data);
-> +	kho_restore_free(ser);
-
-[Severity: High]
-Can this result in a double-free on the successful retrieve path?
-
-In kvm_luo_retrieve(), kho_restore_free() is explicitly called on success
-before returning 0:
-
-	args->file =3D file;
-	kho_restore_free(ser);
-
-	kvm_uevent_notify_vm_create(kvm);
-	return 0;
-
-Since the retrieve is successful, args->retrieve_status will be 0 here,
-and this function will call kho_restore_free() again on the same
-serialized data.
-
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780676742.gi=
-t.tarunsahu@google.com?part=3D4
