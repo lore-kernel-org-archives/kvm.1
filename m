@@ -1,36 +1,36 @@
 Received: from smtp186.sjtu.edu.cn (smtp186.sjtu.edu.cn [202.120.2.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8881284B3B;
-	Fri,  5 Jun 2026 10:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327553D9048;
+	Fri,  5 Jun 2026 10:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.120.2.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780653653; cv=none; b=J61Vm49zslG79ZnXkn72KtbTXfdJLAqDZ4hlFeUbzwaapCWNI4hUf5K30IGZL2+2CoWGqPrXCZpy5RCY/7/phWsBdkXla+G5hduxxG4bZQCS/kclLLjYcXU+HzapnfThQzX5zEdBHNe00YZzE+e7eTp1KmQldOQ8YePWSpnjFP4=
+	t=1780653664; cv=none; b=WeD7mUUBlR5h0hhUTHERDcCbGa/eE5T3FvVFXO1c2Kg9K2KxMAOYCBUqFks0Gotiz3NCnrSAyRcu2sgMSMfYtjnIKLveh4RIPzyi4zo2450qQqIbBarRZF1Gv2DwM44JToewE33xOjkeKFObUWHTJHsSNWW0QHP7LU7XxJQC7Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780653653; c=relaxed/simple;
-	bh=0kC+0SP1J7c/ktNyTh0NStfgv49xOboWMUIpauhPEII=;
+	s=arc-20240116; t=1780653664; c=relaxed/simple;
+	bh=Nh5tKSIFCx2IJvjr4Rep5umPsNkr7T6yLxUkdg/o7VA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5nGj80/8XMumeE4hN/l+sUEMqWHAmA9Sus1rSUFYtS3MoGphyM9nqhToIeUmsnSHPi7f0AqwrMc9cbmlDjWrtCDv0JljHY9535t7z7UXO+4ZUVoLEgtnDc/9E0xmXLey8vb9wcLBSHR6Uz6+rF+G43KBgLBY8cdEpVJe/lcqz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sjtu.edu.cn; spf=pass smtp.mailfrom=sjtu.edu.cn; dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b=K4yTxO9n; arc=none smtp.client-ip=202.120.2.186
+	 MIME-Version; b=oh5LlZOxNdNT4HduhBKRzLEowfoOW7ARqgh0OgNHC6m1Wx4blOKhu6558zrPgPQ7NLtf/YKyr3bqIJqtEgzQYYMKov8bt/9cpZAdPVtmFBuwfoZsGe0+P57SAnrduCY40dYVPejkxpmKGdthbzmgoU4Q5nsQOTN6MfTc/S4RbrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sjtu.edu.cn; spf=pass smtp.mailfrom=sjtu.edu.cn; dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b=KRdSGHuo; arc=none smtp.client-ip=202.120.2.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sjtu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sjtu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b="K4yTxO9n"
+	dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b="KRdSGHuo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sjtu.edu.cn;
 	s=default; t=1780653639;
-	bh=0kC+0SP1J7c/ktNyTh0NStfgv49xOboWMUIpauhPEII=;
+	bh=Nh5tKSIFCx2IJvjr4Rep5umPsNkr7T6yLxUkdg/o7VA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K4yTxO9nClJWyP/F6XbNOZRpU/9OWXtCcmtpeUmpv/68liIZiIA3JrVhlByKzKiUZ
-	 RwJAXjdPJiXGREjiNqKdugDG/B5XZQ8a7OXCJ0Y43PMN1xb+ddbTxPv/E4Q2H04TLv
-	 /R0dJcAYFMi9OIYT0Y/m44vAaicDjSTmUHu50avQ5tZ0uc3R8xMNe/A5GbilIRHyQ2
-	 pw5sWQsAZAs7Xm8/GbubGnB6Fnnr0pZFmfRRfirfeh4ptSGVYwdYVOU7LdshWb92aI
-	 eLBhpPLL/Kv25WzZKtAeiBAnm20L6naveBvsLqbHfKIx7Q5MsWZ4686UJBjk6HK4/n
-	 VPTaonLF9mZTA==
+	b=KRdSGHuo1aDzCxcP+7iDUarwiaU3BrSC8tNQuBFbYn2uCXvoFlGRbBtQYWVIIzZzm
+	 Cj9i50o0JRAGzyFhlc7KbXxcdrastH0gZ7J6FSw+g8pYxl9WYCJozob6H/D2iKyGNf
+	 +sWDFy7rMXXyjPLlUai0ItwZKrR6FSmcWqc/r6SIQcSWL8SZZgxn6rmwIbt5/f9Nfv
+	 ScxmDmfpoZ0Bg9l2yKhfZlnVUg8iFMRsrHgBNnH6ErH+d8uX7FIGPYVk9OeFZhPOCz
+	 cHMEFlpYFxRBtNSwWofLX50Zde/IYoZr6ZwOwErgsUMvCNlCAFVYRp/cIlBHQPSkj7
+	 MiAzI2F2Isnbw==
 Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
-	by smtp186.sjtu.edu.cn (Postfix) with ESMTPS id 3A6FE2FF3FD;
+	by smtp186.sjtu.edu.cn (Postfix) with ESMTPS id 70EED2FF408;
 	Fri,  5 Jun 2026 10:00:39 +0000 (UTC)
 Received: from mshou-H610M-K-DDR4.. (unknown [202.120.40.100])
-	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id 83D9A37C983;
+	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id C5EF037C98C;
 	Fri,  5 Jun 2026 18:00:38 +0800 (CST)
 From: "muliang.shou" <muliang.shou@sjtu.edu.cn>
 To: kvm@vger.kernel.org
@@ -46,9 +46,9 @@ Cc: linux-kernel@vger.kernel.org,
 	olivier.hault@level-it.be,
 	jon@nutanix.com,
 	"muliang.shou" <muliang.shou@sjtu.edu.cn>
-Subject: [RFC PATCH v2 1/3] KVM: x86: add DSM IRQ forwarding ABI and state
-Date: Fri,  5 Jun 2026 18:00:29 +0800
-Message-ID: <20260605100031.834938-2-muliang.shou@sjtu.edu.cn>
+Subject: [RFC PATCH v2 2/3] KVM: x86: forward LAPIC ICR writes to userspace
+Date: Fri,  5 Jun 2026 18:00:30 +0800
+Message-ID: <20260605100031.834938-3-muliang.shou@sjtu.edu.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260605100031.834938-1-muliang.shou@sjtu.edu.cn>
 References: <20260605100031.834938-1-muliang.shou@sjtu.edu.cn>
@@ -60,130 +60,89 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the Kconfig knob, request id, per-vCPU state, and userspace ABI
-needed to report DSM IRQ forwarding events to userspace.
+Intercept LAPIC ICR/ICR2 MMIO writes, record the forwarding payload, and
+return to userspace with KVM_EXIT_DSM_SEND_IRQ when the pending request is
+processed.
 
 Signed-off-by: muliang.shou <muliang.shou@sjtu.edu.cn>
 ---
- arch/x86/include/asm/kvm_host.h | 17 +++++++++++++++++
- arch/x86/kvm/Kconfig            | 12 ++++++++++++
- include/uapi/linux/kvm.h        | 33 ++++++++++++++++++++++++++++++++-
- 3 files changed, 61 insertions(+), 1 deletion(-)
+ arch/x86/kvm/lapic.c | 30 ++++++++++++++++++++++++++++++
+ arch/x86/kvm/x86.c   | 14 ++++++++++++++
+ 2 files changed, 44 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index f14009f25a3b6..7dccfeaee432d 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -131,6 +131,11 @@
- #define KVM_REQ_UPDATE_PROTECTED_GUEST_STATE \
- 	KVM_ARCH_REQ_FLAGS(34, KVM_REQUEST_WAIT)
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 4078e624ca667..2485d50b45647 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2561,6 +2561,10 @@ static int apic_mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
+ 	struct kvm_lapic *apic = to_lapic(this);
+ 	unsigned int offset = address - apic->base_address;
+ 	u32 val;
++#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
++	u32 reg;
++	u32 dest_id = 0;
++#endif
+ 
+ 	if (!apic_mmio_in_range(apic, address))
+ 		return -EOPNOTSUPP;
+@@ -2583,6 +2587,32 @@ static int apic_mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
+ 
+ 	val = *(u32*)data;
  
 +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+#define KVM_REQ_DSM_IRQ_FORWARD	\
-+	KVM_ARCH_REQ(33)
++	reg = offset & 0xff0;
++	if (reg == APIC_ICR || reg == APIC_ICR2) {
++		kvm_lapic_reg_write(apic, reg, val);
++		if (reg == APIC_ICR) {
++			if (apic_x2apic_mode(apic)) {
++				dest_id = kvm_lapic_get_reg(apic, APIC_ICR2);
++			} else {
++				dest_id = kvm_lapic_get_reg(apic, APIC_ICR2);
++				dest_id = GET_XAPIC_DEST_FIELD(dest_id);
++			}
++		} else {
++			dest_id = GET_XAPIC_DEST_FIELD(val);
++		}
++
++		vcpu->arch.dsm_irq_forward_pending = true;
++		vcpu->arch.dsm_irq_forward_reg = reg;
++		vcpu->arch.dsm_irq_forward_val = val;
++		vcpu->arch.dsm_irq_forward_dest_id = dest_id;
++
++		kvm_make_request(KVM_REQ_DSM_IRQ_FORWARD, vcpu);
++
++		return 0;
++	}
 +#endif
 +
- #define CR0_RESERVED_BITS                                               \
- 	(~(unsigned long)(X86_CR0_PE | X86_CR0_MP | X86_CR0_EM | X86_CR0_TS \
- 			  | X86_CR0_ET | X86_CR0_NE | X86_CR0_WP | X86_CR0_AM \
-@@ -1074,6 +1079,14 @@ struct kvm_vcpu_arch {
- 	/* AMD MSRC001_0015 Hardware Configuration */
- 	u64 msr_hwcr;
+ 	kvm_lapic_reg_write(apic, offset & 0xff0, val);
  
+ 	return 0;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0550359ed798f..42d6f8c977985 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -11338,6 +11338,20 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 				goto out;
+ 			}
+ 		}
 +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+	/* DSM interrupt forwarding */
-+	bool dsm_irq_forward_pending;
-+	u32 dsm_irq_forward_reg;
-+	u32 dsm_irq_forward_val;
-+	u32 dsm_irq_forward_dest_id;
-+#endif
++		if (kvm_check_request(KVM_REQ_DSM_IRQ_FORWARD, vcpu)) {
++			vcpu->run->exit_reason = KVM_EXIT_DSM_SEND_IRQ;
++			vcpu->run->lapic_irq.id = vcpu->vcpu_id;
++			vcpu->run->lapic_irq.val = vcpu->arch.dsm_irq_forward_reg;
++			vcpu->run->lapic_irq.val2 = vcpu->arch.dsm_irq_forward_val;
++			vcpu->run->lapic_irq.dest_id = vcpu->arch.dsm_irq_forward_dest_id;
 +
- 	/* pv related cpuid info */
- 	struct {
- 		/*
-@@ -1667,6 +1680,10 @@ struct kvm_arch {
- 	 * current VM.
- 	 */
- 	int cpu_dirty_log_size;
++			vcpu->arch.dsm_irq_forward_pending = false;
 +
-+#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+	int dsm_id;
++			r = 0;
++			goto out;
++		}
 +#endif
- };
+ 	}
  
- struct kvm_vm_stat {
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 801bf9e520db3..bd3a97f115284 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -240,4 +240,16 @@ config KVM_MAX_NR_VCPUS
- 	  the memory footprint of each KVM guest, regardless of how many vCPUs are
- 	  created for a given VM.
- 
-+config KVM_DSM_IRQ_FORWARD
-+	bool "KVM DSM interrupt forwarding support"
-+	depends on KVM && KVM_INTEL
-+	default n
-+	help
-+	  Provide support for interrupt forwarding in distributed KVM.
-+	  When enabled, guest ICR/ICR2 writes are intercepted and
-+	  forwarded to userspace via KVM_EXIT_DSM_SEND_IRQ exit,
-+	  allowing cross-node IPI delivery in a distributed KVM setup.
-+	  This feature can be used independently of the full DSM memory
-+	  coherence framework.
-+
- endif # VIRTUALIZATION
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 6c8afa2047bf3..75a11e72e232e 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -194,6 +194,17 @@ struct kvm_exit_snp_req_certs {
- #define KVM_EXIT_ARM_LDST64B      42
- #define KVM_EXIT_SNP_REQ_CERTS    43
- 
-+#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+/* DSM exit reason: distributed APIC region access */
-+#define KVM_EXIT_DAPIC            44
-+/* DSM exit reason: IPI forwarding to userspace */
-+#define KVM_EXIT_DSM_SEND_IRQ     45
-+/* DSM exit reason: X2APIC ICR write forwarding to userspace */
-+#define KVM_EXIT_DSM_X2_ICR       46
-+/* DSM exit reason: APIC base MSR write forwarding to userspace */
-+#define KVM_EXIT_DSM_APIC_BASE    47
-+#endif
-+
- /* For KVM_EXIT_INTERNAL_ERROR */
- /* Emulate instruction failed. */
- #define KVM_INTERNAL_ERROR_EMULATION	1
-@@ -243,7 +254,27 @@ struct kvm_run {
- 	__u64 psw_addr; /* psw lower half */
- #endif
- 	union {
--		/* KVM_EXIT_UNKNOWN */
-+#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+		/* DSM IPI forwarding data (KVM_EXIT_DSM_SEND_IRQ) */
-+		struct {
-+			__u32 id;
-+			__u32 val;
-+			__u32 val2;
-+			__u32 dest_id;
-+		} lapic_irq;
-+		/* DSM X2APIC write data (KVM_EXIT_DSM_X2APIC) */
-+		struct {
-+			__u32 id;
-+			__u64 data;
-+		} x2apic;
-+		/* DSM APIC base write data (KVM_EXIT_DSM_APIC_BASE) */
-+		struct {
-+			__u32 id;
-+			bool host;
-+			__u32 index;
-+			__u64 data;
-+		} x2msr_base;
-+#endif
- 		struct {
- 			__u64 hardware_exit_reason;
- 		} hw;
+ 	if (kvm_check_request(KVM_REQ_EVENT, vcpu) || req_int_win ||
 -- 
 2.43.0
 
