@@ -1,149 +1,177 @@
-Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EC02DD5E2;
-	Fri,  5 Jun 2026 05:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780636227; cv=none; b=PsXDlhNeVqUdd+jkF6yGMOhRQkwNesqLlu1b7xfX+SM9ZHPkMIuPYlXLP061a4LULTiIrkC5VpQI+iVY9llaiYX9GJF747FOIMD7nQjoDJhnRDQzHG+MkZzeAqX2oWVQioCcazcctKR8Fnt7IQgv0RBKnfGfd+I7gPTZDAKHcso=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780636227; c=relaxed/simple;
-	bh=2ZcqJXsmrbBpKhPyQMBIArzTEmFadM28MZ9/IfA+daU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ImluDGq17+X98yJK9+OsAbHsIPEdbjXyYu8PcI/AEnuCT2ySkZl0BsXMC6JiYCK6dmNvzuCMJsvktAQ2RM4CgYPL9rtaiSUgn5fZ4NiXNps6Yx3QruEohVRGrgWFMrRud3BQKwGDO9ykOHgn+TuwDomW1rsGC7BZ0goxnI9AoNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b=V7biNQ3D; dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b=V/EwKI+P; arc=none smtp.client-ip=203.29.242.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52693FE64E;
+	Fri,  5 Jun 2026 05:26:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780637172; cv=fail; b=j2ZolfhY0DKPXZxzzvHrMDMcS0XoDdP2+OmexqQAnG2QM7X5T5ATA5KoUDIpw+VaiiXB8sGfge07q9etwi3O0fZoK6VImblwkQtvd25L0LCUV+X7Mbfviw56Xf+B7xAUAxk21rAirHBndeVTTG5yOXQ0f6913OaBhgiKlQqHVjs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780637172; c=relaxed/simple;
+	bh=CMWIt0rn3l66G0XRJtarE6qCaXPZ9ZujV1Qxahls8E8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lUjeSrrTjM8l9tWwWx4bUTnDC2fI1jbHP5qLC5er+qPcsqyFDKlX2RtVeJWN+YnLxJhUA+0PhvFH8QjOKZh2WWjxtb7BuFlU4U8sVcc0bLjfH7jxRmGzhFc9l/i4TEr5nYCaQ1hC3QzZ/n46JqDFJKyEl+yWniJuGovaZAU7OTs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sw1fn2Nm; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b="V7biNQ3D";
-	dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b="V/EwKI+P"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
-	s=201606; t=1780636224;
-	bh=2ZcqJXsmrbBpKhPyQMBIArzTEmFadM28MZ9/IfA+daU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V7biNQ3DctMnlo8cMv5HHSMGtXZXVcOZL2Stz/dpF1N6PF08wHrBSqsPZg/i84dxX
-	 IKd066O9YyRSS8rmpqhhsLpfbbd2r30bmJPNd45GCO6fwRlyD/0KQoEbyJ2Ulg1NnI
-	 GCDOEqx2DiAlwTBAKNBSNcdJidvi9becaR/4ry2ssMxBUR0L4l//VmSCGTnzkuagiT
-	 hd79Pas8pAUXGWVUXYNavDVFYOwmyO4vXRaTidZlnb8yccK8rZndtgfQMC4oK0c//u
-	 E4igylSnkiyW+8i++0mQW94A2ZNLgEPMBBoCwvlnKRH7MIFhaOvCbFE3/05yFOTrRo
-	 wgpqemsan6XN6D1z6bB4OHawW5iD6eYaEUlP/ioWsZOsPvOPmzwCuTADA5SZx601zl
-	 9dFt4erElk6dlJxeZZvcsDopUpD7xNbXD2BvV29rhQkC4twJWWxBZL7sWZ/ci0yVpW
-	 xa8PCgXlKS8f8Ai3rKoi11+s8mKHLL3XrVqdKEtmjcz9LqM1NJ8V8dO/tDX02snYmd
-	 IwEArb9vco0jp+mtcWqzCp45cSL8R0MtfrnCSk7OzK+kf68apV6RZglg/sw6L2Groa
-	 0Z+X2MquW0sMxjpYakJZpSTPhNvy/mB+AjXnBovV5UQSXZXYaqEDeBOHLoDu5vZwPE
-	 E0j/wNVyeYJodv8B/sdvxX08=
-Received: by sphereful.davidgow.net (Postfix, from userid 119)
-	id 345361E920C; Fri,  5 Jun 2026 13:10:24 +0800 (AWST)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
-	s=201606; t=1780636223;
-	bh=2ZcqJXsmrbBpKhPyQMBIArzTEmFadM28MZ9/IfA+daU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V/EwKI+P6zhGP/r+9Mgv1zGYkS6O2PmVkcNNbGkxK2aaZ3eQl28uPRTETnnKIHUAG
-	 jRb5VIO5EENKtZeAjgx/7pYyjO1N0xweA+j/ZcpHbDKf+CU4/qOuPYsZIxwkkRwwZA
-	 flwnKLo6WNoA+QNR76TetVK7aimJ869zkEy4faHYQu3ADslDPBFmzQVxUlEmCPEMtH
-	 9gnJ5NLFc6YdKH1SUHycaIGw/n8hv6NYWsOtRkDJdPbPhYjg+vENHmgtgug79+Qq2D
-	 R1Te/zMEPRZ/tgoaLPFaRNajqwkmPUhag658oGaOQJ38ExzxeWlcABaxcUvizbShqE
-	 vbTLOkCsPAEMC/cmiv7pozXXdTClxWmx5iD/VCxql+bJDt+sLgslpnMspN5WwQK6xP
-	 CMSR2NqLG6fcdH0MMHqgp631RSU1xMlncHjf/vhyI94YSIdVeaq1ls4Bfztul1GFh9
-	 GPD/UxBBLFqyGyg8NPmu0d23Zik84n4X2Ro7SfiYoP7Ai0e2SGAYQosIk5c/+5gHTG
-	 Tmni9MdVXodKjxsixFVqQ8vdmnbh8dr009fYLjs87RIEOtknIkiYh5izg7tUGfqBMS
-	 DHrGiwRPiJF++h3nxIUPPwyyi/sK6ppHNTU7GTLV11JnCXmtvHze0n+CEd0irOJ5fo
-	 nk6QszY6ojbVT3ZTsNuevO4o=
-Received: from [IPV6:2001:8003:8810:ea00:ed87:ca88:5326:e11d] (unknown [IPv6:2001:8003:8810:ea00:ed87:ca88:5326:e11d])
-	by sphereful.davidgow.net (Postfix) with ESMTPSA id 29C521E9208;
-	Fri,  5 Jun 2026 13:10:23 +0800 (AWST)
-Message-ID: <d7b56622-6455-4e80-844f-086a0a3b1946@davidgow.net>
-Date: Fri, 5 Jun 2026 13:10:20 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sw1fn2Nm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780637171; x=1812173171;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=CMWIt0rn3l66G0XRJtarE6qCaXPZ9ZujV1Qxahls8E8=;
+  b=Sw1fn2NmfMFQRZq80zGuMmnotxSPSOYFTqci2AsE32ilPWCzDF/LFENL
+   fyw6Nz5lbMuEgrVmw60vdqkO/jharLBOeynVqlRSH36j1jyCDVSBBQ3dU
+   KOi0CV6PWLGRVUgWoeId/NKsqU/srGkGCAderUwilJ5EpNeznG/HR9uE2
+   F89fFUvu1Rcg9YQBcD7Xbv8bt5vC0gBk0mdt6ULjXN1/sUNr0ITgwcYCl
+   Ln7KegaYWMqvRxy/FJcuYkPc6lNEc4akyWw35O7cShsKSFp3SiF+7SPrw
+   hwiBNocchpIDJveVMSv3LsoZUpKhjPlR6qves3TPMycpN6t0VuAq7TjWI
+   Q==;
+X-CSE-ConnectionGUID: kroyFQ1ZQBqP0TatTKoe8Q==
+X-CSE-MsgGUID: ngqYQ9f2RXGh2TDaSUjNYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="81592747"
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
+   d="scan'208";a="81592747"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 22:26:10 -0700
+X-CSE-ConnectionGUID: w9j+5Qk2RWeetkepekm+IQ==
+X-CSE-MsgGUID: X4MEh/IhSRuPv5H4QOeslA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
+   d="scan'208";a="244866403"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 22:26:09 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 4 Jun 2026 22:26:09 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 4 Jun 2026 22:26:09 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.66) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 4 Jun 2026 22:26:09 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RsITK7mz7R2o/f4NsYV6kSrYLvE/+BDhuqrxG8jpcjF7fb4n5g3MKU8HUFb2N5CuWNVUfX58OH87wTrI37jBLjOVV5Np2sK77ryPvIFbNW4fJ9Uc08Pb3UWErqTyEPckfklNy9tiq+FSmAJYNUGj58xAhbzjh2yepy+DoCRopGp2SOQSbO7/94I9paOjdvq2AXLh9k2KgrYevZo4qwPUU+S9STzTihP7a044mlU2krz5D7T2PzAWqaWLrUrRUNgAoiWuXUn129ZfexBxF+wMHlWWgbbGMHSHTSqyf37NurZMJ32cXOCblaExSLqOxFLo42Y5Z93AUy43xeeoWhuZmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VC2EW4IGNsyIyKhJ9Ken7PuWE2v5DyYLVBZ5p8LaQJk=;
+ b=ndE/bgLLJiohfbKoqQCO4Pgok/h8NIY6ZmheZweXQ8WnYOiY/xg/95BW+oX8lBpGQ3NnvXWJWiFSQGm3XzbaQ4qYBq5aCotZ/KNz66Et/TTXzGBNqbszP7wSiNyNvOcFO9i94EYvlA9NWYbAzUMcUKrqufif7fJLG7JjVlPVOvALY4rSLikASIU9vCBtxxcvWV4MpHFMFV/vCuUn371BOQA5NXDFWQv7HgXaXVd/6TH2k2+1B75k6ylQRrDL3kkKXoVdKSNbrJ/hIRa5BvXYxPLb23A/OTnl2M7M4P/MuOPjo6ghxvb9k7hNwzR0fOIHEg6kP+J75mgfw9tmXml2cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
+ by SA2PR11MB5051.namprd11.prod.outlook.com (2603:10b6:806:11f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
+ 05:26:06 +0000
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
+ 05:26:06 +0000
+Date: Fri, 5 Jun 2026 13:25:53 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+CC: Rick Edgecombe <rick.p.edgecombe@intel.com>, <bp@alien8.de>,
+	<dave.hansen@intel.com>, <hpa@zytor.com>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <mingo@redhat.com>, <nik.borisov@suse.com>,
+	<pbonzini@redhat.com>, <seanjc@google.com>, <tglx@kernel.org>,
+	<vannapurve@google.com>, <x86@kernel.org>, <yan.y.zhao@intel.com>,
+	<kai.huang@intel.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH v6 10/11] x86/virt/tdx: Enable Dynamic PAMT
+Message-ID: <aiJd4XTToKX20j/R@intel.com>
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-11-rick.p.edgecombe@intel.com>
+ <aiGyIQvudD5ZF3lf@thinkstation>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <aiGyIQvudD5ZF3lf@thinkstation>
+X-ClientProxiedBy: SI2P153CA0011.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:140::14) To BN7PR11MB2836.namprd11.prod.outlook.com
+ (2603:10b6:406:ad::26)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] kunit: Add example of test suite that can be skipped
- at runtime
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
- linux-kernel@vger.kernel.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>
-References: <20260604162805.556135-1-vaibhav@linux.ibm.com>
- <20260604162805.556135-3-vaibhav@linux.ibm.com>
-From: David Gow <david@davidgow.net>
-Content-Language: fr
-In-Reply-To: <20260604162805.556135-3-vaibhav@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|SA2PR11MB5051:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9bcd93a3-c5ae-4a76-4583-08dec2c2f188
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|22082099003|56012099006|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info: YLG5vR2iJXwGhtWPxwrhOWAxWtnGb5Vxqt4RTblFR08Qf+wEh3ebEWerncWSKlLud18F49BuOE3JOaaRo7jQPNoUeJP5qrYrinCvdVEFvtxOku6D1NhlTFIrIo6+9NxWpytLcIbnhPydv1od4LbZ1160dNrXW/Ppvd4AahXrUnZeObd83/NKa3XWgq4gQOkSMKiLkVB2yjneg9xD4eM31ESLQ8vwItkJE76FHt4DglJNWUDNs5poaZICsGoScAWPnjHgtuh7iGwzeeqhsrEvjz5nevxyzlJOB0BQKtI9BET66hodrDP01wJbJTk+UxxwlN3hHJmCI+qWKCwUSm77zbpDa54WRsNNGxgTOOqWMzHOEw4VArv7agdz1iPJwBvv5PTih0lOI8ewv+mt1LHj7vRx+ukP+1XeXeNYb39V4/iTeTGZU4sJOoxX/WUboXGpQiKbGY13HCCD/XBU3kPt0l2uKDh83T/K03rNHkpeg/J9pEj/D9Amic0JhcBnHSvA11CqBVU5lW8pn8F6qoSMEiKZevWTh3n4+Mu+GVFYDhQZLlrOonoDJopITJBtB7mwhixKox4CHqKWF9a7QepQljr/JaB0qNMsy5W1gWACeD1i9wJtYvV5VkQXKI+aAHVcI6xfrozGwg17BupWq+JA2SIKX7rUJ/dnJhKU4odqGCQ63TV0E54HOqZkLQ6mX47P
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?vkciPSGz9o89HdXvo4iOgdJfjTEC7Invqzs+58wUz3UHhZ5Y8rwgkmhG6IWB?=
+ =?us-ascii?Q?pv9z+8CZDfM3V1UgTkB/lE5pRIjz0EtrCJmwiQMvsNgt96477Wzdt+/acSlp?=
+ =?us-ascii?Q?Tr4m6Utek69O6maW794wKFT5w2paR9MyWQnjjZRkMFg5MNmtVqaFfAcsMb17?=
+ =?us-ascii?Q?16y2C6Aipo0Zrjgh4dQzIuA87s8NxV/bfxVuI5qm15WYzzsWwH2Syn6QbieP?=
+ =?us-ascii?Q?g7xlC2nHQqSjI1opr0RU3sXoaqzeYI7Va0o0LUW7c8jCDEAQYt1sNXaZ5/tp?=
+ =?us-ascii?Q?NU9+9KLQ4UqQdWlRjlWSPPmoy1DuGkRH5e52lrnUbHMtiNahyj43vlfcjFxh?=
+ =?us-ascii?Q?vnnqHN+TpVTOAx4RglOfU/T3ciA9YU8qQN3UzhbQpHWVf85bHIHPfRuZeXP6?=
+ =?us-ascii?Q?14S5WziOcDPIjmZ4smWyCvdVuC+5cNXZ/wYNFrapEZGOcXty0ZMrE9/lF+dT?=
+ =?us-ascii?Q?jFSaUBWXr5Lvio23+PKhGZbLpIzPJ55KeGCGWrwp7xAMwaxOlp49nBJ907WP?=
+ =?us-ascii?Q?ZunafCbSa8eRrNht3qsVB2kTQg+lcJkZ3NSsDzMT+PoHIw5pghMoWH83mOuU?=
+ =?us-ascii?Q?jXd4S1Sj4Wop7WYLumuwamCNGbPtTqMsaGP2I1zMqLRlGXeaun1Sjr2izs7j?=
+ =?us-ascii?Q?ILTu87WMU7ltP8iPDM2XCi2uB55zCLnbwPzEbSmWmZPyJkSbJnU6X+dGh6DU?=
+ =?us-ascii?Q?pCwqNdbq4Ki8bzvhqUUWIi9BuDWxMYvfcl44p89d9jMlRukL78LDkdpb3nH/?=
+ =?us-ascii?Q?kdY7k6FzgnW89uWfgYb4SbwGPNzm3ygYqktXeXdSsX3PXbrqld8kZ4UL0GRi?=
+ =?us-ascii?Q?7fAkHTZ+yUCsTlOPGsHchMISJ5r7stAfiqK/G44JT7HxGizG7aKhET0bQf2v?=
+ =?us-ascii?Q?stN4/hyZ6g8JPs6QqhgyXqXN/pfh/vzQRTM6cw62n3vOoW10TnqEEhr2znll?=
+ =?us-ascii?Q?YkxQ7V0/Y/xNnCrkZF+1G2JMT5f0L0JVLzK2osEQOiW9lwp0tX7zUfZLPSNO?=
+ =?us-ascii?Q?uldEkyjdEtUjK9k24f2Kg3mL7Ig9C5wyt24Ei6YZJ8jVc5wJoA5nUob5R5BT?=
+ =?us-ascii?Q?Hhq52HsN9jpdRIMkXjxSMlB/ShjEgsrrZQ6EaYpzMqs9d4a+q78gWqL4W5pG?=
+ =?us-ascii?Q?A4osoVyQYN3fTv/RBgipzEvMO5uAj6vJagLUWG5iCYV6u4hJluz+rpHNva1e?=
+ =?us-ascii?Q?a8zejx2G7GKispeCqpD/enajGYo07MaNmatlTtY+s+qabJFiN7jxopygnINH?=
+ =?us-ascii?Q?CGS8iXEoxNUqR5koQ5kDv/a+Dr8PFUSgqyJ6tF+24MWxhg34iHlr9XAEcat2?=
+ =?us-ascii?Q?gOdvfFbXP0EyXvxvysriawU2HIJMq9EGDsBFRrahzbcA+/uiOkAWvQjkrYeP?=
+ =?us-ascii?Q?QJBOqMKXmNVeUALo4W0cCaufEprNIJuKguFmv6N0ziAKRsOk8ddfmOmnMJYQ?=
+ =?us-ascii?Q?/G+FOxB/4UA/SC/MA73lNtbHEoeAT0gAwch6I+wWRkLDTXrbzzul4GXwLgRc?=
+ =?us-ascii?Q?wKLSAnJvTRH9jnToCHVIkuHa0B4CRd2OvlDwZjrV40wLBrSpz1rdTIDrhtj1?=
+ =?us-ascii?Q?ScoH8q9i83YedN0lGD7YgB5yuYtd+/DLhAsr/oA5+y34N1H5kpVdO0SYM4zD?=
+ =?us-ascii?Q?NPh6+zVf1PDC+9S1V5FaZBk/+FzPuplWu1GTEo4QG0YlPPbp1XEOXtApr7Zt?=
+ =?us-ascii?Q?FJrVREfEVo7bRlU1PJRfgv0tV056FMc96rhFzkk9h6GQGCeZ6fqFGAO63ulV?=
+ =?us-ascii?Q?A7e6lzqh1A=3D=3D?=
+X-Exchange-RoutingPolicyChecked: bmFWoqRKMNhg22l92/P0TNsnUxMb4pj+hTscWveA5EUQy2atmK5NSD8pB+MjnPKRrGBOoSp7pVmDTAshKW3CsOmZxYVTrWA8zx4R/OfMMf1qOfaHVyZrbaMxEqkVpvxQajr7n0y1TbQH3j88N/InopBTAZAmOts3zNdlxGvoaoNMVTwYDaQNg0j9jRFCbMTHbrvWuiG0LQgGzQ1DKQAcKac9Vs1MTHCUoNoODODQZD5XmmjLHWAJELAl+gMeDgcSU4D8kZI5O2iAr++CZOaxllyeJtaJyeUclzF/z4PDLO8AEKd51EZBKTDV8RJkiBL78MlKB8o9kJo5+PBYHp4wqA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bcd93a3-c5ae-4a76-4583-08dec2c2f188
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 05:26:06.6436
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: a/Rl1WRptBwWPBsfBNV7f7ZUoeCCzfFe0vJM0g94yfAxVrzukAjMCKxP/Q/gQXfU5tTlMUDw3D/rz6eS+mGlMA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5051
+X-OriginatorOrg: intel.com
 
-Le 05/06/2026 à 12:28 AM, Vaibhav Jain a écrit :
-> Add an example test suite name 'example_test_skip_suite' to
-> 'kunit-example-test.c' that shows how to skip an entire test suite based on
-> runtime conditions.
-> 
-> The example suite 'example_skip_suite' provides a 'suite_init' callback
-> named example_skip_suite_init() which marks the entire suite as skipped
-> using kunit_mark_skipped().
-> 
-> This demonstrates a way for conditionally skipping test suites when any
-> prerequisites for kunit_suite execution are not met. The 'suite_init'
-> callback can perform any necessary checks and mark the suite as skipped,
-> preventing all test cases from executing while also indicating why the
-> suite was skipped.
-> 
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
+On Thu, Jun 04, 2026 at 06:14:17PM +0100, Kiryl Shutsemau wrote:
+>On Mon, May 25, 2026 at 07:35:14PM -0700, Rick Edgecombe wrote:
+>> @@ -152,7 +156,12 @@ const struct tdx_sys_info *tdx_get_sysinfo(void);
+>>  
+>>  static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
+>>  {
+>> -	return false; /* To be enabled when kernel is ready */
+>> +	/*
+>> +	 * The TDX Module's internal Dynamic PAMT tree structure can't
+>> +	 * handle physical addresses with more than 48 bits.
+>> +	 */
+>> +	return sysinfo->features.tdx_features0 & TDX_FEATURES0_DYNAMIC_PAMT &&
+>> +	       boot_cpu_data.x86_phys_bits <= 48;
+>
+>Should we warn for >48?
 
-Thanks!
-
-Reviewed-by: David Gow <david@davidgow.net>
-
-Cheers,
--- David
-
->  lib/kunit/kunit-example-test.c | 29 +++++++++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
-> 
-> diff --git a/lib/kunit/kunit-example-test.c b/lib/kunit/kunit-example-test.c
-> index 0bae7b7ca0b0..b8ded54fa46d 100644
-> --- a/lib/kunit/kunit-example-test.c
-> +++ b/lib/kunit/kunit-example-test.c
-> @@ -591,5 +591,34 @@ static struct kunit_suite example_init_test_suite = {
->   */
->  kunit_test_init_section_suites(&example_init_test_suite);
->  
-> +/*
-> + * This test should always be skipped.
-> + */
-> +static void example_skip_suite_test(struct kunit *test)
-> +{
-> +	/* This line should never be seen */
-> +	KUNIT_FAIL(test, "You should not see a this.");
-> +}
-> +
-> +static struct kunit_case  example_skip_suite_test_cases[] = {
-> +	KUNIT_CASE(example_skip_suite_test),
-> +	{}
-> +};
-> +
-> +static int example_skip_suite_init(struct kunit_suite *suite)
-> +{
-> +	kunit_mark_skipped(suite, "Test suite expected to be skipped");
-> +	return 0;
-> +}
-> +
-> +static struct kunit_suite example_test_skip_suite = {
-> +	.name = "example_skip_suite",
-> +	.suite_init = example_skip_suite_init,
-> +	.test_cases = example_skip_suite_test_cases,
-> +};
-> +
-> +/* This registers a test suite that will be skipped */
-> +kunit_test_suite(example_test_skip_suite);
-> +
->  MODULE_DESCRIPTION("Example KUnit test suite");
->  MODULE_LICENSE("GPL v2");
-
+Maybe we should drop this check. If the TDX module cannot handle that case,
+advertising TDX_FEATURES0_DYNAMIC_PAMT is a bug and should be fixed by the
+module.
