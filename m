@@ -1,214 +1,176 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEB235AC1E
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 16:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E889A3EB811
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 16:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780675942; cv=pass; b=AZdfNHWaBG0qLcz48+EvQPBPI3t0dW0dqeaOvT1ZvRHmsGJ8PiopWdRl4AbxWMBeMpgHSAHpF8Y8mYhzciKE5Ri8fnNz07wTV/oDHrvFH598zZa1FWMovSE4zKv7P8a8ra+pWmHt37KpSHqb9uehfAhBulBEMKMwT3LAB/C+BTM=
+	t=1780675947; cv=pass; b=PABaTRr+7EcB5cNOkeZrr3vJEm1qmi0I5eqAggB752/+gUFGYg6w2lbX8mlrO1V78M1Wa7ZL+OFXwfcfdjkxqyOPvujPM979AP4O4KpQm4SwfKNLfKTYJT76uUj/+jUeLkbvm2KZRs89L2LDMY/QcdrYMfAAOPhep05O3H4rcdE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780675942; c=relaxed/simple;
-	bh=/XfO5uK9c17TupHijoryKtiPHIhJ4G1dC+CFKMbv2gE=;
+	s=arc-20240116; t=1780675947; c=relaxed/simple;
+	bh=3g7eYKuzKdj52Ojm8yO2gNodZzant4h/o/vsYDKG0KQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VbJYRwd9lvOi05q5YUxFSH+GrS7P4wsClJ9FcA8PaaH183p59a0v+sj7YriMO+iCghnqgR1RmpOguUF7ouZwPh47ohBhhHjhGJXoIjphkAS4rirBKDCzd+Wqm3glYeDeYCR4vK1mEL3+sXFBisGfYdz9FNtpXCUgspm5TSjCWF4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=zof01yvl; arc=pass smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	 To:Cc:Content-Type; b=R2bmZQDyOUiUISpeayNIAPkfZZErSmr5E74D69bvvofrdCYA4mYedsvcySv36RfrCXbEbkEOruLY1yVsG4nTvimBAZX5Ct4qJ7iKO34+3DPXzu2SVBVwQsEJQuWj8hxV3+u8ejE7cvHE4mFmdhL60YTfigbI5ro0RYS7IUO1K24=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AzXkcdre; arc=pass smtp.client-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="zof01yvl"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8cce22e029cso39810916d6.0
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 09:12:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780675939; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AzXkcdre"
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-137eed84fc6so5742916c88.0
+        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 09:12:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780675945; cv=none;
         d=google.com; s=arc-20240605;
-        b=WjN29pgGcOT25BNy0fvSwXl1UuONSkSnpSpaEvjCkdMwHstTqxgJyrinGoWpdwH1Xl
-         4n1H/Lp4dKMAl5BWPKoKeihPaAA8naM2RsPbC7rgw6n5onE73bU6Tarh94RvBzPkk1d9
-         ANei6JqHOVAS39AHy8MggL7y7X0CnrCCMsUkuzrjqBqkgE7GpCIJuxszeYeWY/RAhNNG
-         uw1KK/dbqASW+7s5HsmlFeMe68r77YPVtdaXG6s1/62ozHPg5BtRc1LiYkP9C7EKuGtX
-         2OMZUL4avjD4FMJdR7LV/mGCtbCgyPHuZx2Kbs9viPw7cHknO9XhTOZDjFGNijUHkVFb
-         CrsQ==
+        b=O01BMIFcj4tydedJbDQMYJDg21omQL0ZiysqJz1YrJKxMBaOGAneYzk2ZvS9pmCivA
+         60gZqybQZ78BPWPKTFGzGpFU56bVQf2nCgdoa6w1e6SLINAc4VdTv3oMs+0b8a0np/Ha
+         SU8PoTG1r7vpBElcsanzyxfntxOMsXPI/MSC4whc82kNPcgm1unBwgqMhAKezVpMAvSS
+         ear+DxSov39ZzgK/x79WXemQSzwlY17bLTuKqtuewSozFDHnXCvmRH4FLJKj68N2zB9r
+         lnqB+RhLF3hcG1pIeh5oZAciScpJ/szoEflypTXCWQNmIdnNOL+z68RPYc9KmdsEmQ5V
+         +o8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=xPaw6mSt+SZ0+7hkZ5t+m28KWYkm5UvxnSOV1wRbNvc=;
-        fh=RutLvX4NWwbSIZxUmYuJtsuRyTr1UcJagUcefNmndBM=;
-        b=RbiBcPMWjq3uUXWidyEb/zI+aBneYYSf8wIaYMjxPlKrXJVD5+gbPy79qdMKvGIGVB
-         uTYXzdLYI9cXsr9PyOX5CisVAuImiFGsYshX80MMSfwc0Xcs6bki8TeNawfIaqkjyxJj
-         I8evdGQhkFXHCYeapncTkHxg0ojV026MfCuUc/l1mA/qc+Gms+x4FoDpXD8rT7CaIbRi
-         4r1F0EhyoaTiZZ/TSEYjNMPQo20wlMjH+qwyQkPnfPQbIywBDAY+FR3z2o/j7vBokYU6
-         ACcmd3qupEtXQw6tSG0RhzsVBLBOVzA+L1mMHC28qpHkMNB2PZzHK66Y0GP976MSpR06
-         8S0g==;
+        bh=Bgoqm9OosdYXkyWJvLWwn/Just9C3MWqroasfAHP0kc=;
+        fh=NN9bo4O/d4qddgnVMKBFXSKl5JodK/aIiev/TIaCIho=;
+        b=Pf/J/T7vz1M8bsiqPjCyMa0huid1Aecd0nR39G9FkyZTAxanswK5nGuoMKaaZuyZT9
+         1L7ZY7Ne2akB4oendpe7ajU4HqulifCLSn5E5BCmC1nb+CoY0kvUpqibMe1FwMJLhOGx
+         K7Hguz28FYA2gOzsfc+9YMz9Z23o8rT4DcmBeZnwoGxeIirsbheoiOESlKqe9a+URyQ7
+         0d52e37W7zUxDxbye5m6YgdNoPFsnxcKo5NMamVjXQ/znINeUKjDGAFG8/msTV5moHXY
+         bOu3tlHEcnxbSoZ1Mvtttl6WDAYmBM7TNUiWQphj5gZCP9ykVY4cJCLGWQD/cRbOKGCB
+         62EA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1780675939; x=1781280739; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780675945; x=1781280745; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xPaw6mSt+SZ0+7hkZ5t+m28KWYkm5UvxnSOV1wRbNvc=;
-        b=zof01yvlb1tEoUKrh1SpQLq1jYRg3ht5DNjAPnHlBuO4H/4BCBZ8icKKst4KP7s2D+
-         M4HlTfezv+EbEUjaTbB3OPyBeqShSnG/k9kTAHEOfMMJ2AWM+w1ov4vnsA24V+q3niUJ
-         VD01QRx7JYZLd+OIaQpBfe6OOtQRP8uvlov+NIguHQQ6mgzeYcIFSwSlwIjop3G1myIM
-         MpPIlU/dRNMlWNNmysgdNO9qPmL8WqYQn17e5mH6S43POQ3KsvPXC9QncYLkgr+m82+P
-         SsrX1kDehNpZFyMWzaWcZrkTO6+UIw3sHyl8zwXDrJcNsjGjTZQzjrCnMoOInCsTMuxg
-         jqAw==
+        bh=Bgoqm9OosdYXkyWJvLWwn/Just9C3MWqroasfAHP0kc=;
+        b=AzXkcdreY5UhAo6XrPeZrAJz0aDljAb+zl5vrS0i843pRDw22zZSrzz8vrCS8IJlZg
+         zdPDYDx+vcQ66XsA+XiLOLVB0cXyKkI0Ta/GXkjFdRwYLkmMdGhsG+KwoUpazJrLRrzp
+         Fi1Pdt9Wjr8fSIuANu9WvFTpV2KJJf6fwsUHntFf9sGOA4gJ/D6K4rBowEUgfoV3FskC
+         mKGCJfTw9CUD1glaTLwhbIog7aKbzAD1dNs9yfMshCTg6sjyNmhOnCl15VvFmWXwf/PK
+         59Dp0fIPN1CceEFmhr/qzwLIS7tdSGPWxVX13ARZHPy5EsvwOzl85T0hrRgS+8yRQFI8
+         qNEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780675939; x=1781280739;
+        d=1e100.net; s=20251104; t=1780675945; x=1781280745;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=xPaw6mSt+SZ0+7hkZ5t+m28KWYkm5UvxnSOV1wRbNvc=;
-        b=tPmbR08ScEz1rYeqoGQOB6QG+GA1R/pl26wZKC38Sd15wxuueUtPwk//tmXOHHfF66
-         02C3nz4H9RNia3HA6Iq3GqGK1yt+uUd+Lputm/GNcs1tz5q5ggns3rIlzUPIMfsYjqQX
-         pNJTkYCNrSFBHpH7arqKwlOK/ooFtz7OsH7kF+suvwzqoZrVtgW2FMUd45jJ7x3N9o+E
-         V1tKRuDhfBHq5zRRtvwP+GNE8OR7bDge3l1DXKu2yCQt6aZFXRCsmYwPnL/CqF4L/I8P
-         h2WFMVgsvKzQ0/MX5S6GaezR5BZmkuBaQR3pW9JkR4nDM+gB9qny9/lbl5y0He+UIAhd
-         difw==
-X-Forwarded-Encrypted: i=1; AFNElJ/2F6chn+fOkWnlfHcmleuUcugG8gedicnScEAgtRpM8l23pJ5D4iIdlpQp5mfs/c8mGDE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1Hg/+QfqZ9qaxI8yL+/AHOo0l+p2TehgxuwtdvnK9oS65MYmL
-	4E1rK4ykVxvdRIob3zWYNOdAFmb6nxp2ChrUMfGdExW5AjV1aCTpif4ILN5WsTMWAyY+vnAjNne
-	Ej6jmwHPp810uCqJldZTTYPFBxpSD3aEtmuorhP0xnQ==
-X-Gm-Gg: Acq92OFABOqO4ASgAmf/G8ku5mwq9jugDUz+EaC88ZTspzk86+lj3gtyu1Ti5UenSMX
-	OkqeSIKC0q1Xl0qZtolrdLFY60zn/7+Z+14WiawTMooDms7phUqJgWOvdN8yu/Wk9npNnx/PBfx
-	WZ4BxRExmZZnRCKO++kzqiyMrEnaf/kQvt01YpQjGgJBq13Hc/MeMvY0njmufx9SSShWAtBtO6I
-	DBs3jsqBXweRfu+s5JL6aG2QcMjyd4dvdC+Fc9Vn2VQUIugDrPPkRFFpxdStF+HucbiVjCSC4EZ
-	1vh0DQ6OK5fChwcgdA7Bl+u5muH6xBs5Nbx5kLeDs0t7sXCZBEOjkCxn4NFj7xNsMjP73umRS4W
-	DRINboYlHImAG8mPlYvO8H+XHgfkO9+6rUEey
-X-Received: by 2002:a05:622a:1144:b0:50f:c403:7ffb with SMTP id
- d75a77b69052e-517987acbbcmr40203221cf.18.1780675939140; Fri, 05 Jun 2026
- 09:12:19 -0700 (PDT)
+        bh=Bgoqm9OosdYXkyWJvLWwn/Just9C3MWqroasfAHP0kc=;
+        b=T921uXE18Uria+b2qnEBQmeDvC19LNArTipfIQU4/RtBxd9KCCYA14DKSxu3u42WEa
+         vLeWsbiueIYWv6TCLf02IDgZxG/XuVUirxaWQ/DdGPU0NPOTYUpYbzSJqiO6vA73S/5P
+         KhjFhLjcd/+pFti7ni9Nhz2FPLh0vSNKUWVsFwZauzLEi/rLV4VxPf4OVC9boYdrEXyB
+         AV5iCulOgQ8+GItVpIYCNYjVO4b/i/ug2zF5NyP64rIRAYeVWCdWHeRXIJH62Rt7Pawq
+         Wv8F6YzpOQ6NaDe5E2y+QI6ZlkPrGVPgpH454WrYdI+haxj14R3+Uh9UG3OKda6qx2M/
+         ZAJQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/L9RrDw4OszHtMxU0StKCiCJf1Y8v/AVzXZS+FygEPUZyZrbvFX+n8MHI1oFsSVtmGSOY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwklsnQCSXyUdmraAOqFmP17Dx1wzIzTHVogF9W9OVVt4PSsKP
+	JFHy/g3UI5jRpixhdeQdNjprPZKWmGoqB/TwQXt/ceQXE+sDwMZgoOil7dKDUuaqyqlr1FBE5m0
+	y8LlChW12OucC1ZvEjtQn8AMB25MArdAaXom/SQiD
+X-Gm-Gg: Acq92OGDTNy/lAob92qmvS7F9RpxGfV9GBYmvg9WrIqG8TlP7EpgnWtzVRRn/w1ceb0
+	5plXZ0lr+ZeIZKkIh0jBV0FxzYV9OCAUudNA/9E9HcAomSMKFG3j8NWI2Zz9LUk06dWLbJnwXCe
+	forFzP5ErQRxY/yeQfNRf/KaV+IM9bP+8L1eGFNInmDZ6avQstblmk36l4LcFIEp0o67cz971lL
+	2ndmKeJxPjdmVDZOQvYQ+KWwqAga91t98A+/93opMHcnwA9zFzw2lTVzfGi7cVfXKCHxIzyQMpH
+	8FoIWRb0TnFzdeyIdQ==
+X-Received: by 2002:a05:7022:6999:b0:138:104:439b with SMTP id
+ a92af1059eb24-138067234ecmr2017024c88.19.1780675944435; Fri, 05 Jun 2026
+ 09:12:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260601-kvm-get_reg_list-v2-v5-0-415d08a2813b@sifive.com> <20260601-kvm-get_reg_list-v2-v5-3-415d08a2813b@sifive.com>
-In-Reply-To: <20260601-kvm-get_reg_list-v2-v5-3-415d08a2813b@sifive.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Fri, 5 Jun 2026 21:42:07 +0530
-X-Gm-Features: AVHnY4Jd3LwHzYiVtfabtRsTfsG1iw3bev0LUzu4pHEM1i3Lnky8Ia0dxnf5nH8
-Message-ID: <CAAhSdy25VTfezS2zUsuTCTZ+Bwie7c-oHQYOWod1ix1y5rWOWQ@mail.gmail.com>
-Subject: Re: [PATCH v5 3/5] KVM: RISC-V: SBI FWFT: Fix stale feature exposure
- after runtime extension changes
-To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, greentime.hu@sifive.com, vincent.chen@sifive.com, 
-	zong.li@sifive.com, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, inochiama@gmail.com
+References: <20260602222941.3133236-1-jrhilke@google.com> <aiHW_1vBrukpuaW2@google.com>
+ <CALzav=cb=SaTtkwdTpK32Nboq6Uj8WKiN_=wRfpO+zugdjLRCA@mail.gmail.com>
+In-Reply-To: <CALzav=cb=SaTtkwdTpK32Nboq6Uj8WKiN_=wRfpO+zugdjLRCA@mail.gmail.com>
+From: David Matlack <dmatlack@google.com>
+Date: Fri, 5 Jun 2026 09:11:56 -0700
+X-Gm-Features: AVHnY4IG4c1v5aE_7MuPHMlLAw5N96PPqWZY97u0CTB01GjwbEtzJ4mUdoGQolI
+Message-ID: <CALzav=dCjGHMfDaW87jKOhquUvY6uEns1i+wGY1Kbq2A7Pfreg@mail.gmail.com>
+Subject: Re: [PATCH v6] vfio: selftests: Find devices that have VFIO selftest drivers
+To: Sean Christopherson <seanjc@google.com>
+Cc: Josh Hilke <jrhilke@google.com>, Alex Williamson <alex@shazbot.org>, 
+	Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Raghavendra Rao Ananta <rananta@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 1, 2026 at 3:56=E2=80=AFPM Yong-Xuan Wang <yongxuan.wang@sifive=
-.com> wrote:
+On Thu, Jun 4, 2026 at 1:30=E2=80=AFPM David Matlack <dmatlack@google.com> =
+wrote:
 >
-> Fix a bug where FWFT features could be incorrectly exposed to guests
-> after userspace disables their dependent ISA extensions at runtime.
+> On Thu, Jun 4, 2026 at 12:50=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > On Tue, Jun 02, 2026, Josh Hilke wrote:
+> > > Add a new script, list_supported_devices.sh, which prints out the
+> > > segment:bus:device.function (SBDF) numbers and names of devices on a
+> > > machine that have a VFIO selftest driver. This makes it easier to
+> > > determine if the system is capable of running VFIO selftests.
+> > >
+> > > Includes a -q (quiet) argument which prints just the SBDFs so that th=
+e
+> > > output can be passed to tools/testing/selftests/vfio/scripts/setup.sh
+> > > (e.g. via xargs) to bind the devices to VFIO to use in VFIO selftests=
+.
+> > >
+> > > Examples:
+> > >
+> > > $ ./list_supported_devices.sh
+> > > 0000:6a:01.0 - Intel DSA SPR [8086:0b25]
+> > > 0000:6f:01.0 - Intel DSA SPR [8086:0b25]
+> > > 0000:74:01.0 - Intel DSA SPR [8086:0b25]
+> > >
+> > > $ ./list_supported_devices.sh -q
+> > > 0000:6a:01.0
+> > > 0000:6f:01.0
+> > > 0000:74:01.0
+> > >
+> > > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > > Signed-off-by: Josh Hilke <jrhilke@google.com>
+> >
+> > NAK, until this stuff is fixed and properly documented.
+> >
+> > This script needs to (a) communicate that some of the devices may be on=
+ VFIO's
+> > denylist, (b) NOT report them by default, (c) let the user report denyl=
+isted
+> > devices, (d) make it *very* clear in the output that a device, and (e) =
+ideally
+> > provide the user with a hint of how that might be able to test a denied=
+ device,
+> > e.g. by reloading vfio-pci with disable_denylist=3D1.
+> >
+> > Nothing in here so much as mentions that these "supported" devices may =
+be
+> > disallowed by the kernel, including the devices that's USED AS THE EXAM=
+PLE.
+> >
+> > The DSA SPR devices has been on the naughty list since commit 95feb3160=
+eef ("VFIO:
+> > Add the SPR_DSA and SPR_IAX devices to the denylist") from 2024, so I h=
+ave a
+> > very hard time believing y'all weren't aware of this.  And if you reall=
+y truly
+> > weren't aware of this quirk, than what exactly are you even testing!?!?
+> >
+> > C'mon.
 >
-> The 'supported' field in kvm_sbi_fwft_config was set once during vCPU
-> initialization based on the initial hardware/extension availability.
-> However, when userspace subsequently disables ISA extensions via the KVM
-> ONE_REG interface, the 'supported' field was not updated. This caused
-> the following issues:
-> 1. FWFT features would remain visible and accessible to guests even
->    after their prerequisite ISA extensions were disabled
-> 2. Guests could configure FWFT features that depend on disabled
->    extensions, leading to undefined behavior
-> 3. The static 'supported' flag and the dynamic supported() callback
->    could disagree about feature availability
+> Yeah vfio_pci.disable_denylist=3DY is required to use the Intel DSA SPR
+> device. This script is a great place to capture that previously hidden
+> requirement.
 >
-> The fix introduces a two-layer checking mechanism:
-> 1. Add an optional init() callback to the kvm_sbi_fwft_feature structure
->    for features that require hardware probing during initialization. This
->    separates the one-time hardware detection logic from the runtime
->    availability check.
-> 2. Add runtime checks in all FWFT-related functions that call
->    feature->supported(vcpu) if the callback exists. This ensures feature
->    availability is re-evaluated based on the current ISA extension state.
->
-> This approach maintains the cached 'supported' field for initialization-
-> time decisions while ensuring runtime availability is always determined
-> by the current vCPU configuration, not initialization-time snapshots.
->
-> Fixes: 6b72fd170592 ("RISC-V: KVM: add support for FWFT SBI extension")
->
-> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+> Your proposed (a)-(e) sound good to me.
 
-LGTM.
+Another direction we could go in here would be to set disable_denylist
+to Y in setup.sh (if it is currently N) and set it back to N in
+cleanup.sh (after the last device is cleaned up and only if it was
+previously N). I was already thinking about doing something similar
+for setting enable_srio to Y for Raghu's new SR-IOV uAPI test.
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
-
-Thanks,
-Anup
-
-> ---
->  arch/riscv/kvm/vcpu_sbi_fwft.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
-t.c
-> index aee951f2b8e6..ab39ac464ffd 100644
-> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
-> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
-> @@ -303,6 +303,8 @@ static int kvm_fwft_get_feature(struct kvm_vcpu *vcpu=
-, u32 feature,
->
->         if (!tconf->supported || !tconf->enabled)
->                 return SBI_ERR_NOT_SUPPORTED;
-> +       else if (tconf->feature->supported && !tconf->feature->supported(=
-vcpu))
-> +               return SBI_ERR_NOT_SUPPORTED;
->
->         *conf =3D tconf;
->
-> @@ -433,6 +435,8 @@ static unsigned long kvm_sbi_ext_fwft_get_reg_count(s=
-truct kvm_vcpu *vcpu)
->                 conf =3D kvm_sbi_fwft_get_config(vcpu, feature->id);
->                 if (!conf || !conf->supported)
->                         continue;
-> +               else if (conf->feature->supported && !conf->feature->supp=
-orted(vcpu))
-> +                       continue;
->
->                 ret++;
->         }
-> @@ -455,6 +459,8 @@ static int kvm_sbi_ext_fwft_get_reg_id(struct kvm_vcp=
-u *vcpu, int index, u64 *re
->                 conf =3D kvm_sbi_fwft_get_config(vcpu, feature->id);
->                 if (!conf || !conf->supported)
->                         continue;
-> +               else if (conf->feature->supported && !conf->feature->supp=
-orted(vcpu))
-> +                       continue;
->
->                 if (index =3D=3D idx) {
->                         *reg_id =3D KVM_REG_RISCV |
-> @@ -490,6 +496,8 @@ static int kvm_sbi_ext_fwft_get_reg(struct kvm_vcpu *=
-vcpu, unsigned long reg_num
->         conf =3D kvm_sbi_fwft_get_config(vcpu, feature->id);
->         if (!conf || !conf->supported)
->                 return -ENOENT;
-> +       else if (conf->feature->supported && !conf->feature->supported(vc=
-pu))
-> +               return -ENOENT;
->
->         switch (reg_num - feature->first_reg_num) {
->         case 0:
-> @@ -527,6 +535,8 @@ static int kvm_sbi_ext_fwft_set_reg(struct kvm_vcpu *=
-vcpu, unsigned long reg_num
->         conf =3D kvm_sbi_fwft_get_config(vcpu, feature->id);
->         if (!conf || !conf->supported)
->                 return -ENOENT;
-> +       else if (conf->feature->supported && !conf->feature->supported(vc=
-pu))
-> +               return -ENOENT;
->
->         switch (reg_num - feature->first_reg_num) {
->         case 0:
->
-> --
-> 2.43.7
->
+The only issue is that disable_denylist is not currently writable. I
+don't see any functional reason why it can't be writable though. It is
+just sampled during probe. And from a security perspective, privileged
+users can already reload vfio-pci with different parameters if it is
+built as a module. But for built-ins, this would enable the denylist
+to be disabled.
