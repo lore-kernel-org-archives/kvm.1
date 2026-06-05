@@ -1,156 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308773033FB
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 14:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D983563EB
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 14:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780668163; cv=none; b=MOSM0Nsvu4qER7hqwHIYO9dOenCS5HYyFOxEpVBJGN0m+OD1WfpM9UNOuuK0wA8qmlZHysg0pULXX5chMqniyS9EIWH93j0OJG8J+bdSknOfE5J/l3I7CdwwECHFT4/EFhuBthwOBceNqP2HmWKSNOAGEMckmuss/FBZmoCFT0c=
+	t=1780669134; cv=none; b=n14geUFcflh1zb9UJHW2WrXwBPGS3Ve3iyG8ALRVZL2Wj0bLq6cqY4Rt75ebLo0c+UQpV46vKDovez695oE5tOtOf2B1K3XuOJB3xN2YUze3rSRvNPMCuoNudrsi3fwZWmRT3jN2qe8ur30N9K1qYuME/Uwou/GP2vS+k9Qsjd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780668163; c=relaxed/simple;
-	bh=gWBPtU2cqcbx/0cq5/3l1vBn3W8oqMiehaz14Dn6dAo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dPNiB2HU76AVYzJGOEkrW77N/WMdGwRT3PbQ8n65zCy41kdVzfoSoZFbRZA5A9O6yexaLnqz0O2gAzkCJByD2j32NwSevv8f0OXb5xhOg41ztWM59DsDhEUdP66DpprQX+Us2zkp6wmYQWlzr6JOM8QOBNdQyHZDP22yvaVUvCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+CyRjE2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780669134; c=relaxed/simple;
+	bh=TsTp+FBRvJpUoGimVtYkeJLacs7aQtLDqjxnfkcJZzo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=KmhW9eZ3TxDAzelFmEI8hkXNB8hL48bKPBgRb5MHBi3v/VB7cUyTI58geq4yO9SuqsG9ZodQZwZ9CJZ5RNrIzDq6fOStIMSWpyhRuU/Zu8k2EiPLpw7byQ4c0Z1+sbTIxDHS9ImD6FWHL7qzY48jOI78XzgPpJDnL1QCdHswsDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=twdh3Ycp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=aje03b7T; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bcgFYDsR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0lw9JYz+; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+CyRjE2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54BB1F0089E
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 14:02:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780668160;
-	bh=nfiObLvmOcsNy4699AN1tPJ0/P9ewISVmQ3n+5gyZe4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=W+CyRjE2zwmLCNLzZyzHm/c1Q8OCzjSSvbrMoO5ThJ1Oa7AWzbvxpB30JYU664qhc
-	 bn3NIF45HRVTRy+9gYlTpi1ZIua/Ysq9Qlx76cMz1lnue+lJoK9yk4PemgcRSgcT5C
-	 ZGZ27dGqbsVkEdGBDsDqEFkO4/JtNNXgT3XpZ2l8PzHQPaISyWaxX5dvy/jWUnVzhv
-	 JZURp9dEaOynmcMPH/Bl3hrTN1yV8v7gAJ2WImF9WdSwtrD+cvr0mpcVsradA3FFRT
-	 mNy6jKVu7FuTgBmY8Cf4jJp8W5xvCXJcqEYY5aHZUCEEt5nxIghBBvFUPYUcdxB+T4
-	 EHQ/DkYAkYuBw==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-beeba001887so256014266b.3
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 07:02:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/Bz8EPX3Xeqr8ldYoLHWrPZs/9Ca4gPMpX6HGVulUO74g/rAdCmJQX3n19bAv8rwjC1cA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5MIWuIer/yy58I0WU45XzES1LFkT8Y9yYEwd8vf0qYpGzBMyG
-	C0GPDsPkl8jovQxoXT0EogYqp1R9IR1pfWbxThpIKbZhnsB15USsfsIUSRUZRezVfePO0oN+DiT
-	ro+FCX9rxsmChoQ7MPxedy+qbzUo5HHA=
-X-Received: by 2002:a17:907:94cc:b0:be5:2bc0:5370 with SMTP id
- a640c23a62f3a-bf373eec55emr180650066b.36.1780668159364; Fri, 05 Jun 2026
- 07:02:39 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="twdh3Ycp";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="aje03b7T";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bcgFYDsR";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0lw9JYz+"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0BAD36B37B;
+	Fri,  5 Jun 2026 14:18:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780669131; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m/2vtSOVVlfj9Agh7xSvbB4JlaTvw+8qJ6jd6ubSUFs=;
+	b=twdh3Ycpj7sLpdtQLNHPHPVYHRUwWYN1ERYSFlfNpWLlvkLA0KIVdpLoe+MqfZC/jHHPEi
+	5SE6qz9q2Bvzo0cFjHwu6nSBqwAIGKnsT9bajMWc+7xmiGk/J0UXb99XLLwsr3D3/TSBGB
+	J/SDEZQTpO9cTGYPpaFksAMMdoKOlEs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780669131;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m/2vtSOVVlfj9Agh7xSvbB4JlaTvw+8qJ6jd6ubSUFs=;
+	b=aje03b7Tic9FXztzOMcuo43pteJhJBSxjuxEKffB7FLclGTddFvkuRMLl45UMwpOdWgC4h
+	iEz7USw1rOPyxoBA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780669130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m/2vtSOVVlfj9Agh7xSvbB4JlaTvw+8qJ6jd6ubSUFs=;
+	b=bcgFYDsRcdd4pV0+YmhAxW/uDp5Zcs7qceR0wzqMJwd42pu3lPWjhVye3JBFczNNKRMtlr
+	SvtwPECY1mW0JAOryguTiNqljlgj5a3SvO9dnAXlWKXTM1fdx7lVCA2YvPplLOU7MSVRJ+
+	W07L3Mm5GJByLf+7UCMMO/KfM6fRlfU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780669130;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m/2vtSOVVlfj9Agh7xSvbB4JlaTvw+8qJ6jd6ubSUFs=;
+	b=0lw9JYz+L3a9x9UBe4lLhhiA+BVjxe5ZjhtALZqx7G20eElpexJpOeoySxzKsIT4sOZDN4
+	6AUznHoM01SKqzAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 969AF779A8;
+	Fri,  5 Jun 2026 14:18:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 9ancGcnaImqhRAAAD6G6ig
+	(envelope-from <farosas@suse.de>); Fri, 05 Jun 2026 14:18:49 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Zide Chen <zide.chen@intel.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu
+ <zhao1.liu@intel.com>, Peter Xu <peterx@redhat.com>, Sandipan Das
+ <sandipan.das@amd.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Dongli Zhang
+ <dongli.zhang@oracle.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, Zide
+ Chen <zide.chen@intel.com>
+Subject: Re: [PATCH v4 1/6] target/i386: Don't save/restore
+ PERF_GLOBAL_OVF_CTRL MSRs
+In-Reply-To: <20260604025546.19378-2-zide.chen@intel.com>
+References: <20260604025546.19378-1-zide.chen@intel.com>
+ <20260604025546.19378-2-zide.chen@intel.com>
+Date: Fri, 05 Jun 2026 11:18:47 -0300
+Message-ID: <87ik7x6pfc.fsf@suse.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260525092633.1706633-1-zeng_chi911@163.com> <20260605083108.2534481-1-zeng_chi911@163.com>
-In-Reply-To: <20260605083108.2534481-1-zeng_chi911@163.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 5 Jun 2026 22:02:29 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7yd7x_8Dj2=FckRO+cjF7+H+3MXbfscqtz+5zSJwqL8w@mail.gmail.com>
-X-Gm-Features: AVVi8CfekefRdJ7Toyv8yVIDcC0Vphkua88IymWRs6Z4Ya24fhUvCwRyNPVjSwk
-Message-ID: <CAAhV-H7yd7x_8Dj2=FckRO+cjF7+H+3MXbfscqtz+5zSJwqL8w@mail.gmail.com>
-Subject: Re: [PTACH v3] LoongArch: KVM: Add missing slots_lock for IO bus
- device register/unregister
-To: Zeng Chi <zeng_chi911@163.com>
-Cc: zhaotianrui@loongson.cn, maobibo@loongson.cn, kernel@xen0n.name, 
-	kees@kernel.org, maqianga@uniontech.com, gaosong@loongson.cn, 
-	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	zengchi@kylinos.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,intel.com:email,oracle.com:email,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
 
-Applied, thanks.
+Zide Chen <zide.chen@intel.com> writes:
 
-Huacai
-
-On Fri, Jun 5, 2026 at 4:31=E2=80=AFPM Zeng Chi <zeng_chi911@163.com> wrote=
-:
+> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 >
-> From: Zeng Chi <zengchi@kylinos.cn>
+> MSR_CORE_PERF_GLOBAL_OVF_CTRL and MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR
+> are write-only MSRs and reads always return zero.
 >
-> kvm_io_bus_register_dev() and kvm_io_bus_unregister_dev() should be
-> called under kvm->slots_lock. The unregister calls in ipi.c, pch_pic.c
-> and eiointc.c were missing this protection. Add it to match the
-> register side.
+> Saving and restoring these MSRs is therefore unnecessary.  Replace
+> VMSTATE_UINT64 with VMSTATE_UNUSED in the VMStateDescription to ignore
+> env.msr_global_ovf_ctrl during migration.  This avoids the need to bump
+> version_id and does not introduce any migration incompatibility.
 >
-> Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
-> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+> Cc: Dongli Zhang <dongli.zhang@oracle.com>
+> Cc: Sandipan Das <sandipan.das@amd.com>
+> Fixes: e587632c228e ("target/i386/kvm: support perfmon-v2 for reset")
+> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> Co-developed-by: Zide Chen <zide.chen@intel.com>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
 > ---
-> v3: fix subject prefix (drop "net", LoongArch KVM does not go through the
->     net tree); add Reviewed-by from Bibo Mao. No code change.
-> v2: extend the fix from the EIOINTC virtual extension device registration
->     (v1) to the ipi.c / pch_pic.c / eiointc.c destroy paths as well.
+> V3:
+> - Remove MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR as well.
 > ---
->  arch/loongarch/kvm/intc/eiointc.c | 6 ++++++
->  arch/loongarch/kvm/intc/ipi.c     | 2 ++
->  arch/loongarch/kvm/intc/pch_pic.c | 2 ++
->  3 files changed, 10 insertions(+)
+>  target/i386/cpu.h     |  3 ---
+>  target/i386/kvm/kvm.c | 10 ----------
+>  target/i386/machine.c |  4 ++--
+>  3 files changed, 2 insertions(+), 15 deletions(-)
 >
-> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/=
-eiointc.c
-> index 2ab7fafa86d5..2b14485d14a7 100644
-> --- a/arch/loongarch/kvm/intc/eiointc.c
-> +++ b/arch/loongarch/kvm/intc/eiointc.c
-> @@ -645,10 +645,14 @@ static int kvm_eiointc_create(struct kvm_device *de=
-v, u32 type)
->
->         device =3D &s->device_vext;
->         kvm_iodevice_init(device, &kvm_eiointc_virt_ops);
-> +       mutex_lock(&kvm->slots_lock);
->         ret =3D kvm_io_bus_register_dev(kvm, KVM_IOCSR_BUS,
->                         EIOINTC_VIRT_BASE, EIOINTC_VIRT_SIZE, device);
-> +       mutex_unlock(&kvm->slots_lock);
->         if (ret < 0) {
-> +               mutex_lock(&kvm->slots_lock);
->                 kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &s->device)=
-;
-> +               mutex_unlock(&kvm->slots_lock);
->                 kfree(s);
->                 return ret;
->         }
-> @@ -667,8 +671,10 @@ static void kvm_eiointc_destroy(struct kvm_device *d=
-ev)
->
->         kvm =3D dev->kvm;
->         eiointc =3D kvm->arch.eiointc;
-> +       mutex_lock(&kvm->slots_lock);
->         kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device);
->         kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device_ve=
-xt);
-> +       mutex_unlock(&kvm->slots_lock);
->         kfree(eiointc);
->         kfree(dev);
->  }
-> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.=
-c
-> index 1f6ebbd0af5c..4fa0897d7bdb 100644
-> --- a/arch/loongarch/kvm/intc/ipi.c
-> +++ b/arch/loongarch/kvm/intc/ipi.c
-> @@ -447,7 +447,9 @@ static void kvm_ipi_destroy(struct kvm_device *dev)
->
->         kvm =3D dev->kvm;
->         ipi =3D kvm->arch.ipi;
-> +       mutex_lock(&kvm->slots_lock);
->         kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &ipi->device);
-> +       mutex_unlock(&kvm->slots_lock);
->         kfree(ipi);
->         kfree(dev);
->  }
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
-pch_pic.c
-> index aa0ed59ae8cf..175a630aceb4 100644
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> @@ -481,7 +481,9 @@ static void kvm_pch_pic_destroy(struct kvm_device *de=
-v)
->         kvm =3D dev->kvm;
->         s =3D kvm->arch.pch_pic;
->         /* unregister pch pic device and free it's memory */
-> +       mutex_lock(&kvm->slots_lock);
->         kvm_io_bus_unregister_dev(kvm, KVM_MMIO_BUS, &s->device);
-> +       mutex_unlock(&kvm->slots_lock);
->         kfree(s);
->         kfree(dev);
->  }
-> --
-> 2.25.1
->
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index 6b500737c3be..ff44487d0b6d 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -507,11 +507,9 @@ typedef enum X86Seg {
+>  #define MSR_CORE_PERF_FIXED_CTR_CTRL    0x38d
+>  #define MSR_CORE_PERF_GLOBAL_STATUS     0x38e
+>  #define MSR_CORE_PERF_GLOBAL_CTRL       0x38f
+> -#define MSR_CORE_PERF_GLOBAL_OVF_CTRL   0x390
+>  
+>  #define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS       0xc0000300
+>  #define MSR_AMD64_PERF_CNTR_GLOBAL_CTL          0xc0000301
+> -#define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR   0xc0000302
+>  
+>  #define MSR_K7_EVNTSEL0                 0xc0010000
+>  #define MSR_K7_PERFCTR0                 0xc0010004
+> @@ -2104,7 +2102,6 @@ typedef struct CPUArchState {
+>      uint64_t msr_fixed_ctr_ctrl;
+>      uint64_t msr_global_ctrl;
+>      uint64_t msr_global_status;
+> -    uint64_t msr_global_ovf_ctrl;
+>      uint64_t msr_fixed_counters[MAX_FIXED_COUNTERS];
+>      uint64_t msr_gp_counters[MAX_GP_COUNTERS];
+>      uint64_t msr_gp_evtsel[MAX_GP_COUNTERS];
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index a29f757c168a..1ac1803e8a2e 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -4290,8 +4290,6 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
+>              if (pmu_version > 1) {
+>                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_STATUS,
+>                                    env->msr_global_status);
+> -                kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
+> -                                  env->msr_global_ovf_ctrl);
+
+Assuming there's no weird nested virtualization scenario and combination
+of migration, resets and context-switching between L1/L2 that implicitly
+relies on this (effective) clearing of the MSR to work properly.
+
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+
