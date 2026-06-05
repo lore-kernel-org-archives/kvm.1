@@ -1,234 +1,209 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B7A3F44D9
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 10:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38D43ED5DC
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 10:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780654385; cv=none; b=cCqU0cdFX7kdAtfFzyONYiF4F0aa/jqScKX76vezO8F+PpYkhpO3tNWY6alvyC/ooReTuzOTGUBWlqhzkb8ThRAqgEJdBm0fDKDozWj3O6WhG1bOs4cM+deCL+y738D39ZfrNYRq+CLaeSolQvuYq63qsQw949uaqEVNIixMQPE=
+	t=1780654554; cv=none; b=UjoDQ3puAuincWMFs8LHV2JY2HKTo2r4g5tznQOe25iP2tiv2kplAmi/csSabzwT4lg3DHHzmbLR+Y5yGavqo7UVgLitT/LBqfbVHL2AQv05WTPy5JIAM6xrn672MbLZJY5+NgkqdbiNExq7jWM/DW/dPg7E3oTm6p0l6txmKwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780654385; c=relaxed/simple;
-	bh=1+dX0cUpyOc6qOAwRS16/j8rukMGs0f17utseRGMKcQ=;
+	s=arc-20240116; t=1780654554; c=relaxed/simple;
+	bh=7d9zOZUlrWn3ydcH3NtiZU9q3aKpDIlUkIfXUALB1Ok=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TCeABXB+qEptO/UvQJLvahFVYmG0VK0uike+Ewp8SaLCdu2Y0oEGsyGgdrIerdYhA1Eyf0IkeOFRVRJhoX8cr7CdHYG4S9H4Zwcyo2G/pFz3APNjApzsd6o/YOvkFOwc1vtXvMAbht2lni7WYdOLLznUL+G/Sy0kiZuzMZQDwac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=STJ3uIcU; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=IoXJB2nLyj6Q12up1RpwOOt9rXmcXwJXQ3qasC1uNdS+lN2a0yzfqsR54IXfE+sC02+Zf2sTJhP3QcF0cbQ53IMno25Dh4MYiMRntWF7Z2yNVdHAnmK07nbBOt9BNEIMvy+lNWlHEeS+fwzRO38zSGEpaNkWlAv1OJzhD8XWZ58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F0dM2qKt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="STJ3uIcU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9551F00893;
-	Fri,  5 Jun 2026 10:13:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0dM2qKt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A391F00893;
+	Fri,  5 Jun 2026 10:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780654383;
-	bh=6bYoHFwhUe+YQlDzu55ayCC9JgrgNY5MRJ+BR7jEd1Q=;
+	s=k20260515; t=1780654553;
+	bh=ZMXZQgI7/cc50pK1K50FNbMO5SKfvgyNmPm+cWBHzbM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=STJ3uIcUkRZPeCSUqRUIoi7y9e3VT3BfAIC0KJMxVkwKf81RkcQOVh9DMRxmmx4n7
-	 Il8gbOPI9q2pvMVa7hr9BYYUBFOzfFRiJOBhWwuoCvC/W1lMApsLwcT9P8OlSoTg+d
-	 lkAChXU/TeDG7kd58rqIPfCkH8PT3fZwT0WuJ6WPkt/qv25JRioWGXBx/kyGIUBud3
-	 STcssAQxJwUM4n6AfBLekP+FtSDO3iTcasFdOCo55wLh3xtZy9qNHUThkGHw2SC8U3
-	 5qWB+86IUKrYZXt7Gn53HwLkZpUQ52zeowMKztGu3vlbgUMjto8VUPsiCZwPhr8uHG
-	 0JtUaKn7IWXZw==
+	b=F0dM2qKttGok3fEtBESM+EkqbYWCbBk6Wj/Ygef2eSx8xTo6PnW29T5EWQHb6af7v
+	 4ETNNsh48boiO3n6D7MRknUCVUhuKf2LR8q27CcxC7/aMeK8BcSrxu5PgFhqijWQ36
+	 iLRE9hL8yn8O4lG+/bhX76yBhdgbizoRgfrhcxO//IAGjX6eEM4PcsrsGf5e4jgQ2J
+	 W9QYRGBnDQWMOOkcD4XryOD5LpkEQkPtw/ozbui5x/YYbgEnmFDNwDebuvzYLRzAlk
+	 OiN4uOMJ6qoLiEB3wCrlSlzsNwZPIW3TXdfQOO2LCHOzcuCZrXG2MJ/TEb0Dr9E/ur
+	 a3ovBfNtYX+YA==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 3/3] KVM: x86: add DSM APIC forwarding ioctls
+Subject: Re: [RFC PATCH v2 2/3] KVM: x86: forward LAPIC ICR writes to
+ userspace
 Reply-To: sashiko-reviews@lists.linux.dev
 To: muliang.shou <muliang.shou@sjtu.edu.cn>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260605100031.834938-4-muliang.shou@sjtu.edu.cn>
-References: <20260605100031.834938-4-muliang.shou@sjtu.edu.cn>
+In-Reply-To: <20260605100031.834938-3-muliang.shou@sjtu.edu.cn>
+References: <20260605100031.834938-3-muliang.shou@sjtu.edu.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 05 Jun 2026 10:13:03 +0000
-Message-Id: <20260605101303.8D9551F00893@smtp.kernel.org>
+Date: Fri, 05 Jun 2026 10:15:52 +0000
+Message-Id: <20260605101553.40A391F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 8 potential issue(=
+Thank you for your contribution! Sashiko AI review found 6 potential issue(=
 s) to consider:
-- [Critical] The new VM ioctls unconditionally dereference the vcpu pointer=
- returned by kvm_get_vcpu(), which can be NULL if the user-provided vcpu_id=
- is out of bounds.
-- [Critical] The ioctl handlers unconditionally dereference vcpu->arch.apic=
- without verifying that the VM has an in-kernel APIC instantiated.
-- [High] The VM ioctls modify target vCPU architectural and hardware-switch=
-ed state without holding vcpu->mutex or utilizing vcpu_load() and vcpu_put(=
-).
-- [High] Incorrect vCPU lookup function is used to resolve userspace vCPU I=
-Ds, potentially accessing the wrong vCPU.
-- [High] The UAPI structs contain implicit compiler padding and use the `bo=
-ol` type, breaking 32-bit/64-bit ABI compatibility.
-- [Medium] Failures in copy_from_user falsely return success (0) instead of=
- -EFAULT.
-- [Medium] The newly added VM ioctls are not enumerable by userspace becaus=
-e they are not backed by a KVM capability.
-- [Low] The `dest_id` field in `struct kvm_dipi_params` is passed to `kvm_l=
-apic_reg_write_remote` but completely ignored by the kernel.
+- [Critical] Unconditional KVM exit reason `KVM_EXIT_DSM_SEND_IRQ` breaks e=
+xisting userspace VMMs.
+- [High] DSM IPI forwarding completely bypasses x2APIC MSR writes and conta=
+ins unreachable dead code.
+- [High] DSM IPI forwarding is completely bypassed when hardware APIC virtu=
+alization (APICv/AVIC) is enabled.
+- [High] Redundant and potentially broken user-space exits on `APIC_ICR2` w=
+rites.
+- [Medium] Double delivery of IPI due to handling in-kernel before forwardi=
+ng to userspace.
+- [Low] Redundant state variable `dsm_irq_forward_pending` is written but n=
+ever read.
 --
 
-commit e8a8009fce815ec914cc7e9a3c8df8f13d03680a
+commit bdf02d4ca756633b7da489c2909a4855a29cb345
 Author: muliang.shou <muliang.shou@sjtu.edu.cn>
 
-KVM: x86: add DSM APIC forwarding ioctls
+KVM: x86: forward LAPIC ICR writes to userspace
 
-Add userspace ioctls that apply forwarded APIC, x2APIC ICR, and APIC
-base updates on a target vCPU.
+Intercept LAPIC ICR/ICR2 MMIO writes, record the forwarding payload, and
+return to userspace with KVM_EXIT_DSM_SEND_IRQ when the pending request is
+processed.
 
 > diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+> index 4078e624ca667..2485d50b45647 100644
 > --- a/arch/x86/kvm/lapic.c
 > +++ b/arch/x86/kvm/lapic.c
 [ ... ]
+> @@ -2583,6 +2587,32 @@ static int apic_mmio_write(struct kvm_vcpu *vcpu, =
+struct kvm_io_device *this,
+> =20
+>  	val =3D *(u32*)data;
+> =20
 > +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-> +int kvm_lapic_reg_write_remote(struct kvm_lapic *apic, u32 reg, u32 val,=
- u32 dest_id)
-> +{
-> +	return kvm_lapic_reg_write(apic, reg, val);
-> +}
+> +	reg =3D offset & 0xff0;
+> +	if (reg =3D=3D APIC_ICR || reg =3D=3D APIC_ICR2) {
+
+[Severity: High]
+Does this completely miss IPIs when hardware APIC virtualization (APICv or
+AVIC) is enabled?=20
+
+Memory-mapped writes to the LAPIC ICR on APICv/AVIC hardware trigger an
+APIC-write VM-exit, which KVM natively handles via kvm_apic_write_nodecode(=
+).
+Since that bypasses apic_mmio_write(), guests might bypass this interception
+entirely.
+
+[Severity: High]
+Should writing APIC_ICR2 queue a request and exit to userspace?
+
+In standard xAPIC mode, writing to APIC_ICR2 only sets the destination ID a=
+nd
+doesn't dispatch the IPI until APIC_ICR is subsequently written. Triggering=
+ a
+VM-exit on ICR2 might force userspace to handle incomplete IPIs and double =
+the
+exit overhead.
+
+> +		kvm_lapic_reg_write(apic, reg, val);
+
+[Severity: Medium]
+Will calling kvm_lapic_reg_write() here process the IPI inside the kernel
+before exiting to userspace?=20
+
+For APIC_ICR, this internally calls kvm_apic_send_ipi() which delivers the
+interrupt to local vCPUs. If userspace is also expected to manage IPI
+delivery, might this result in duplicate interrupt delivery?
+
+> +		if (reg =3D=3D APIC_ICR) {
+> +			if (apic_x2apic_mode(apic)) {
+> +				dest_id =3D kvm_lapic_get_reg(apic, APIC_ICR2);
+> +			} else {
+
+[Severity: High]
+Is the x2APIC branch here reachable?
+
+Earlier in apic_mmio_write(), the function returns early if
+apic_x2apic_mode() is true:
+
+	if (!kvm_apic_hw_enabled(apic) || apic_x2apic_mode(apic)) {
+		if (!kvm_check_has_quirk(vcpu->kvm,
+					 KVM_X86_QUIRK_LAPIC_MMIO_HOLE))
+			return -EOPNOTSUPP;
+        ...
+
+This means guests could potentially bypass this forwarding mechanism by
+enabling x2APIC mode, as it natively uses MSRs instead of MMIO.
+
+> +				dest_id =3D kvm_lapic_get_reg(apic, APIC_ICR2);
+> +				dest_id =3D GET_XAPIC_DEST_FIELD(dest_id);
+> +			}
+> +		} else {
+> +			dest_id =3D GET_XAPIC_DEST_FIELD(val);
+> +		}
+> +
+> +		vcpu->arch.dsm_irq_forward_pending =3D true;
 
 [Severity: Low]
-Is the dest_id parameter intended to be used here? It looks like it is
-passed in from KVM_DSM_IPI but completely ignored by kvm_lapic_reg_write().
+Is dsm_irq_forward_pending actually required? It appears to be written to
+here and cleared in vcpu_enter_guest(), but is never read to make control
+flow decisions.
 
-> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_lapic_reg_write_remote);
+> +		vcpu->arch.dsm_irq_forward_reg =3D reg;
+> +		vcpu->arch.dsm_irq_forward_val =3D val;
+> +		vcpu->arch.dsm_irq_forward_dest_id =3D dest_id;
+> +
+> +		kvm_make_request(KVM_REQ_DSM_IRQ_FORWARD, vcpu);
+
+[Severity: Critical]
+Could unconditionally queueing this request cause a host-side denial of
+service or VM abort?
+
+According to KVM ABI rules, new guest-visible behaviors and exit reasons mu=
+st
+be disabled by default. If a legacy userspace VMM receives an unrecognized
+KVM_EXIT_DSM_SEND_IRQ exit reason, it may crash. Does this need to be gated
+by a capability check (e.g., KVM_CAP_*)?
+
+> +
+> +		return 0;
+> +	}
 > +#endif
 > +
-[ ... ]
+>  	kvm_lapic_reg_write(apic, offset & 0xff0, val);
+> =20
+>  	return 0;
 > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index a5e09bf431cee..8e484a7230bdf 100644
 > --- a/arch/x86/kvm/x86.c
 > +++ b/arch/x86/kvm/x86.c
 [ ... ]
-> @@ -7634,6 +7634,46 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned =
-int ioctl, unsigned long arg)
->  		r =3D kvm_vm_ioctl_set_msr_filter(kvm, &filter);
->  		break;
+> @@ -11324,6 +11324,20 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcp=
+u)
+>  				goto out;
+>  			}
+>  		}
+> +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
+> +		if (kvm_check_request(KVM_REQ_DSM_IRQ_FORWARD, vcpu)) {
+> +			vcpu->run->exit_reason =3D KVM_EXIT_DSM_SEND_IRQ;
+
+[Severity: Critical]
+Are we safely gating this new exit reason? Setting KVM_EXIT_DSM_SEND_IRQ
+unconditionally without a capability negotiation breaks ABI for existing
+userspace implementations.
+
+> +			vcpu->run->lapic_irq.id =3D vcpu->vcpu_id;
+> +			vcpu->run->lapic_irq.val =3D vcpu->arch.dsm_irq_forward_reg;
+> +			vcpu->run->lapic_irq.val2 =3D vcpu->arch.dsm_irq_forward_val;
+> +			vcpu->run->lapic_irq.dest_id =3D vcpu->arch.dsm_irq_forward_dest_id;
+> +
+> +			vcpu->arch.dsm_irq_forward_pending =3D false;
+> +
+> +			r =3D 0;
+> +			goto out;
+> +		}
+> +#endif
 >  	}
-> +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-
-[Severity: Medium]
-Should these newly added KVM_DSM_* ioctls be discoverable by userspace via
-the KVM_CHECK_EXTENSION capability interface?
-
-> +	case KVM_DSM_IPI: {
-> +		struct kvm_dipi_params params;
-> +		struct kvm_vcpu *vcpu =3D NULL;
-> +		u32 reg;
-> +		u32 val;
-> +
-> +		r =3D 0;
-> +		if (copy_from_user(&params, argp, sizeof(params)))
-> +			goto out;
-
-[Severity: Medium]
-Does this mask the -EFAULT error if copy_from_user() fails? It appears r is
-set to 0 right before the check, so the out label will return success inste=
-ad
-of propagating the error to userspace.
-
-> +		vcpu =3D kvm_get_vcpu(kvm, params.vcpu_id);
-
-[Severity: High]
-Could this access the wrong vCPU or fail to find one entirely?
-kvm_get_vcpu() expects an internal 0-based array index, but userspace is
-passing an arbitrary vCPU ID. Should this use kvm_get_vcpu_by_id() instead?
-
-[Severity: Critical]
-Can kvm_get_vcpu() return NULL here if the provided vcpu_id is invalid or o=
-ut
-of bounds? If so, dereferencing vcpu->arch.apic immediately below would cau=
-se
-a kernel panic.
-
-> +		reg =3D params.val;
-> +		val =3D params.val2;
-> +		kvm_lapic_reg_write_remote(vcpu->arch.apic, reg, val, params.dest_id);
-
-[Severity: Critical]
-Is it guaranteed that the VM has an in-kernel APIC instantiated here? If
-the VM was created without calling KVM_CREATE_IRQCHIP, vcpu->arch.apic could
-be NULL, leading to a panic when passed into kvm_lapic_reg_write_remote().
-
-[Severity: High]
-Does modifying the target vCPU's architectural and hardware-switched state
-from a VM ioctl require holding vcpu->mutex and utilizing vcpu_load() and
-vcpu_put()? Updating APIC state asynchronously without these protections mi=
-ght
-lead to leaked preempt notifiers or hardware state corruption if the target
-vCPU is running concurrently.
-
-> +		break;
-> +	}
-> +	case KVM_DSM_X2APIC: {
-> +		struct kvm_x2apic_params params;
-> +		struct kvm_vcpu *vcpu =3D NULL;
-> +
-> +		r =3D 0;
-> +		if (copy_from_user(&params, argp, sizeof(params)))
-> +			goto out;
-> +
-> +		vcpu =3D kvm_get_vcpu(kvm, params.vcpu_id);
-> +		kvm_x2apic_icr_write_fast(vcpu->arch.apic, params.data);
-> +		break;
-> +	}
-> +	case KVM_DSM_APIC_BASE: {
-> +		struct kvm_apic_base_params params;
-> +		struct kvm_vcpu *vcpu =3D NULL;
-> +
-> +		r =3D 0;
-> +		if (copy_from_user(&params, argp, sizeof(params)))
-> +			goto out;
-> +		vcpu =3D kvm_get_vcpu(kvm, params.vcpu_id);
-> +		kvm_apic_set_base(vcpu, params.data, params.host);
-> +		break;
-> +	}
-> +#endif
-[ ... ]
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-[ ... ]
-> +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-> +struct kvm_dipi_params {
-> +	int vcpu_id;
-> +	__u32 val;
-> +	__u32 val2;
-> +	__u32 dest_id;
-> +};
-> +
-> +#define KVM_DSM_IPI _IOW(KVMIO,  0xf3, struct kvm_dipi_params)
-> +
-> +struct kvm_x2apic_params {
-> +	int vcpu_id;
-> +	__u64 data;
-> +};
-
-[Severity: High]
-Will this structure layout cause 32-bit/64-bit ABI compatibility issues? The
-__u64 data field requires 8-byte alignment, which introduces implicit
-compiler padding after vcpu_id on 64-bit systems but not on 32-bit ones. Th=
-is
-changes the structure size and the resulting ioctl number generated by the
-_IOW macro.
-
-> +
-> +#define KVM_DSM_X2APIC _IOW(KVMIO, 0xf4, struct kvm_x2apic_params)
-> +
-> +struct kvm_apic_base_params {
-> +	int vcpu_id;
-> +	bool host;
-
-[Severity: High]
-Is it safe to use the standard C bool type in a UAPI struct? Its size is
-implementation-defined, which can break ABI compat. Also, mixing bool,
-__u32, and __u64 introduces implicit compiler padding here as well.
-
-> +	__u32 index;
-> +	__u64 data;
-> +};
-> +
-> +#define KVM_DSM_APIC_BASE         _IOW(KVMIO, 0xf5, struct kvm_apic_base=
-_params)
-> +
-> +#endif
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605100031.8349=
-38-1-muliang.shou@sjtu.edu.cn?part=3D3
+38-1-muliang.shou@sjtu.edu.cn?part=3D2
