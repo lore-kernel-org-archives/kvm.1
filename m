@@ -1,209 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38D43ED5DC
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 10:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DDE4D2EFD
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 11:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780654554; cv=none; b=UjoDQ3puAuincWMFs8LHV2JY2HKTo2r4g5tznQOe25iP2tiv2kplAmi/csSabzwT4lg3DHHzmbLR+Y5yGavqo7UVgLitT/LBqfbVHL2AQv05WTPy5JIAM6xrn672MbLZJY5+NgkqdbiNExq7jWM/DW/dPg7E3oTm6p0l6txmKwQ=
+	t=1780658221; cv=none; b=BwiwJp/xNdV8GUeMJhiV9wrve5jzYPwKc1M8VgbEA19wS2N6b34sPbQMDj+QE8EqwuZEHYxhy89UpNqwXNqzWS6ElKtQCnB5eEQBrjCNNq6AdMcWEVid3qEeIEbE645qTqycTBusJPDuDN6/0DqZ5Lu9RCadTyuADRj5qYi3MSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780654554; c=relaxed/simple;
-	bh=7d9zOZUlrWn3ydcH3NtiZU9q3aKpDIlUkIfXUALB1Ok=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=IoXJB2nLyj6Q12up1RpwOOt9rXmcXwJXQ3qasC1uNdS+lN2a0yzfqsR54IXfE+sC02+Zf2sTJhP3QcF0cbQ53IMno25Dh4MYiMRntWF7Z2yNVdHAnmK07nbBOt9BNEIMvy+lNWlHEeS+fwzRO38zSGEpaNkWlAv1OJzhD8XWZ58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F0dM2qKt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780658221; c=relaxed/simple;
+	bh=QWNh1kai+/YIF9dhqjqzUUCouwYeMflDAeXhQ2ceyIw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DEqGnoK8qp9pfdldKe6CiyCMCQaJdwg+8w9uneYdGFfQZn6cHYf2jRi0W78R1fmyXxXsWpIIxMLecLnrocuDfPA41G5lXN7S0kMP0oQEs5HZ3VUVqU6T75wROBgo4JANXaWNWwRUzbxhZYD+d5/knO4pLZBgIqKzKFPQjAQshtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eoy4V9OB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0dM2qKt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A391F00893;
-	Fri,  5 Jun 2026 10:15:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eoy4V9OB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAA71F0089A;
+	Fri,  5 Jun 2026 11:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780654553;
-	bh=ZMXZQgI7/cc50pK1K50FNbMO5SKfvgyNmPm+cWBHzbM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=F0dM2qKttGok3fEtBESM+EkqbYWCbBk6Wj/Ygef2eSx8xTo6PnW29T5EWQHb6af7v
-	 4ETNNsh48boiO3n6D7MRknUCVUhuKf2LR8q27CcxC7/aMeK8BcSrxu5PgFhqijWQ36
-	 iLRE9hL8yn8O4lG+/bhX76yBhdgbizoRgfrhcxO//IAGjX6eEM4PcsrsGf5e4jgQ2J
-	 W9QYRGBnDQWMOOkcD4XryOD5LpkEQkPtw/ozbui5x/YYbgEnmFDNwDebuvzYLRzAlk
-	 OiN4uOMJ6qoLiEB3wCrlSlzsNwZPIW3TXdfQOO2LCHOzcuCZrXG2MJ/TEb0Dr9E/ur
-	 a3ovBfNtYX+YA==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 2/3] KVM: x86: forward LAPIC ICR writes to
- userspace
-Reply-To: sashiko-reviews@lists.linux.dev
-To: muliang.shou <muliang.shou@sjtu.edu.cn>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260605100031.834938-3-muliang.shou@sjtu.edu.cn>
-References: <20260605100031.834938-3-muliang.shou@sjtu.edu.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 05 Jun 2026 10:15:52 +0000
-Message-Id: <20260605101553.40A391F00893@smtp.kernel.org>
+	s=k20260515; t=1780658220;
+	bh=v+Y3Yj6bbgt0s0hPsfH89bzu08XBtigSYiFF6IT5TNs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Eoy4V9OBKmzfumOqPtdBbUml8gbaeIb4xH/DKR4vtnv3DS3bKFHtwIj3dbIKPGxIq
+	 7HEcS2218/NIbTnFhWyqqwJa0AEpiiLIIDLJUPl1kRsARqvqDBF1kKs0wZwlEyiGym
+	 AE/3i0xEsP0T4WZHMioAf/3l2mESb4fdo59Z82dYlr44D9V8+w5Qs9B5VZw93TYIYB
+	 YY5BE8gIQ+CJu6fxzR8SXgLctNW4fFd21PrXXqg1LQ3C33qq4nLMBW5wBXgrd2yzt/
+	 UIpnEugwz/6sBe2x++y5UPJ0lUizn91TlSmU7kcd5YQOfWFXSC74Eom3PkXHGsfXa4
+	 NoFhHIVDdI4yQ==
+Message-ID: <00427d28-3d84-4921-a4e1-145163a24b06@kernel.org>
+Date: Fri, 5 Jun 2026 13:16:52 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 03/12] system/memory: constify section arguments
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@mailo.com>, qemu-rust@nongnu.org, Alex Williamson
+ <alex@shazbot.org>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Fabiano Rosas <farosas@suse.de>, Mark Kanda <mark.kanda@oracle.com>,
+ Ben Chaney <bchaney@akamai.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ kvm@vger.kernel.org, "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20260604-rdm5-v5-0-5768e6a0943d@redhat.com>
+ <20260604-rdm5-v5-3-5768e6a0943d@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260604-rdm5-v5-3-5768e6a0943d@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
-- [Critical] Unconditional KVM exit reason `KVM_EXIT_DSM_SEND_IRQ` breaks e=
-xisting userspace VMMs.
-- [High] DSM IPI forwarding completely bypasses x2APIC MSR writes and conta=
-ins unreachable dead code.
-- [High] DSM IPI forwarding is completely bypassed when hardware APIC virtu=
-alization (APICv/AVIC) is enabled.
-- [High] Redundant and potentially broken user-space exits on `APIC_ICR2` w=
-rites.
-- [Medium] Double delivery of IPI due to handling in-kernel before forwardi=
-ng to userspace.
-- [Low] Redundant state variable `dsm_irq_forward_pending` is written but n=
-ever read.
---
+On 6/4/26 15:43, Marc-André Lureau wrote:
+> The sections shouldn't be modified.
+> 
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
 
-commit bdf02d4ca756633b7da489c2909a4855a29cb345
-Author: muliang.shou <muliang.shou@sjtu.edu.cn>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-KVM: x86: forward LAPIC ICR writes to userspace
+-- 
+Cheers,
 
-Intercept LAPIC ICR/ICR2 MMIO writes, record the forwarding payload, and
-return to userspace with KVM_EXIT_DSM_SEND_IRQ when the pending request is
-processed.
-
-> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-> index 4078e624ca667..2485d50b45647 100644
-> --- a/arch/x86/kvm/lapic.c
-> +++ b/arch/x86/kvm/lapic.c
-[ ... ]
-> @@ -2583,6 +2587,32 @@ static int apic_mmio_write(struct kvm_vcpu *vcpu, =
-struct kvm_io_device *this,
-> =20
->  	val =3D *(u32*)data;
-> =20
-> +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-> +	reg =3D offset & 0xff0;
-> +	if (reg =3D=3D APIC_ICR || reg =3D=3D APIC_ICR2) {
-
-[Severity: High]
-Does this completely miss IPIs when hardware APIC virtualization (APICv or
-AVIC) is enabled?=20
-
-Memory-mapped writes to the LAPIC ICR on APICv/AVIC hardware trigger an
-APIC-write VM-exit, which KVM natively handles via kvm_apic_write_nodecode(=
-).
-Since that bypasses apic_mmio_write(), guests might bypass this interception
-entirely.
-
-[Severity: High]
-Should writing APIC_ICR2 queue a request and exit to userspace?
-
-In standard xAPIC mode, writing to APIC_ICR2 only sets the destination ID a=
-nd
-doesn't dispatch the IPI until APIC_ICR is subsequently written. Triggering=
- a
-VM-exit on ICR2 might force userspace to handle incomplete IPIs and double =
-the
-exit overhead.
-
-> +		kvm_lapic_reg_write(apic, reg, val);
-
-[Severity: Medium]
-Will calling kvm_lapic_reg_write() here process the IPI inside the kernel
-before exiting to userspace?=20
-
-For APIC_ICR, this internally calls kvm_apic_send_ipi() which delivers the
-interrupt to local vCPUs. If userspace is also expected to manage IPI
-delivery, might this result in duplicate interrupt delivery?
-
-> +		if (reg =3D=3D APIC_ICR) {
-> +			if (apic_x2apic_mode(apic)) {
-> +				dest_id =3D kvm_lapic_get_reg(apic, APIC_ICR2);
-> +			} else {
-
-[Severity: High]
-Is the x2APIC branch here reachable?
-
-Earlier in apic_mmio_write(), the function returns early if
-apic_x2apic_mode() is true:
-
-	if (!kvm_apic_hw_enabled(apic) || apic_x2apic_mode(apic)) {
-		if (!kvm_check_has_quirk(vcpu->kvm,
-					 KVM_X86_QUIRK_LAPIC_MMIO_HOLE))
-			return -EOPNOTSUPP;
-        ...
-
-This means guests could potentially bypass this forwarding mechanism by
-enabling x2APIC mode, as it natively uses MSRs instead of MMIO.
-
-> +				dest_id =3D kvm_lapic_get_reg(apic, APIC_ICR2);
-> +				dest_id =3D GET_XAPIC_DEST_FIELD(dest_id);
-> +			}
-> +		} else {
-> +			dest_id =3D GET_XAPIC_DEST_FIELD(val);
-> +		}
-> +
-> +		vcpu->arch.dsm_irq_forward_pending =3D true;
-
-[Severity: Low]
-Is dsm_irq_forward_pending actually required? It appears to be written to
-here and cleared in vcpu_enter_guest(), but is never read to make control
-flow decisions.
-
-> +		vcpu->arch.dsm_irq_forward_reg =3D reg;
-> +		vcpu->arch.dsm_irq_forward_val =3D val;
-> +		vcpu->arch.dsm_irq_forward_dest_id =3D dest_id;
-> +
-> +		kvm_make_request(KVM_REQ_DSM_IRQ_FORWARD, vcpu);
-
-[Severity: Critical]
-Could unconditionally queueing this request cause a host-side denial of
-service or VM abort?
-
-According to KVM ABI rules, new guest-visible behaviors and exit reasons mu=
-st
-be disabled by default. If a legacy userspace VMM receives an unrecognized
-KVM_EXIT_DSM_SEND_IRQ exit reason, it may crash. Does this need to be gated
-by a capability check (e.g., KVM_CAP_*)?
-
-> +
-> +		return 0;
-> +	}
-> +#endif
-> +
->  	kvm_lapic_reg_write(apic, offset & 0xff0, val);
-> =20
->  	return 0;
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index a5e09bf431cee..8e484a7230bdf 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-[ ... ]
-> @@ -11324,6 +11324,20 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcp=
-u)
->  				goto out;
->  			}
->  		}
-> +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-> +		if (kvm_check_request(KVM_REQ_DSM_IRQ_FORWARD, vcpu)) {
-> +			vcpu->run->exit_reason =3D KVM_EXIT_DSM_SEND_IRQ;
-
-[Severity: Critical]
-Are we safely gating this new exit reason? Setting KVM_EXIT_DSM_SEND_IRQ
-unconditionally without a capability negotiation breaks ABI for existing
-userspace implementations.
-
-> +			vcpu->run->lapic_irq.id =3D vcpu->vcpu_id;
-> +			vcpu->run->lapic_irq.val =3D vcpu->arch.dsm_irq_forward_reg;
-> +			vcpu->run->lapic_irq.val2 =3D vcpu->arch.dsm_irq_forward_val;
-> +			vcpu->run->lapic_irq.dest_id =3D vcpu->arch.dsm_irq_forward_dest_id;
-> +
-> +			vcpu->arch.dsm_irq_forward_pending =3D false;
-> +
-> +			r =3D 0;
-> +			goto out;
-> +		}
-> +#endif
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605100031.8349=
-38-1-muliang.shou@sjtu.edu.cn?part=3D2
+David
