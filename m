@@ -1,36 +1,36 @@
 Received: from smtp186.sjtu.edu.cn (smtp186.sjtu.edu.cn [202.120.2.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327553D9048;
-	Fri,  5 Jun 2026 10:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA93B3911CA;
+	Fri,  5 Jun 2026 10:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.120.2.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780653664; cv=none; b=WeD7mUUBlR5h0hhUTHERDcCbGa/eE5T3FvVFXO1c2Kg9K2KxMAOYCBUqFks0Gotiz3NCnrSAyRcu2sgMSMfYtjnIKLveh4RIPzyi4zo2450qQqIbBarRZF1Gv2DwM44JToewE33xOjkeKFObUWHTJHsSNWW0QHP7LU7XxJQC7Eg=
+	t=1780653673; cv=none; b=LqLXXtKE4SMaqtE28oR7DbtY6r18+u+agRqYHpWpp2B954AzimWdueg0IWeTAePBk3QGO+8Zkxfweh7qA+ZnmWSztlmUKQRGZcwZyRSMfuwVRtVhkzwwi07MRbi6ZNI7vmI5CN2BB34q2XK7l49i2dWgCMr/+4SHRqymPyPWi8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780653664; c=relaxed/simple;
-	bh=Nh5tKSIFCx2IJvjr4Rep5umPsNkr7T6yLxUkdg/o7VA=;
+	s=arc-20240116; t=1780653673; c=relaxed/simple;
+	bh=91I8gKovLUZ0ITZOyIiUijFIcgcDYuZYN++HHQn56Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oh5LlZOxNdNT4HduhBKRzLEowfoOW7ARqgh0OgNHC6m1Wx4blOKhu6558zrPgPQ7NLtf/YKyr3bqIJqtEgzQYYMKov8bt/9cpZAdPVtmFBuwfoZsGe0+P57SAnrduCY40dYVPejkxpmKGdthbzmgoU4Q5nsQOTN6MfTc/S4RbrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sjtu.edu.cn; spf=pass smtp.mailfrom=sjtu.edu.cn; dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b=KRdSGHuo; arc=none smtp.client-ip=202.120.2.186
+	 MIME-Version; b=UlN81KWid69wmk+ND+q+Z7A1AC9Y+e9IirZOLHNpeGTOjsZmPFTx5WZbH6z5xH+tTExjnD0Z+aZR5urRz0E3TuibIdjpkGxMXwfyZRiJJBGg6A3RH4OzXMG14XUrOD5Z5+CWbVQpmobVHIJyB4PkI1CxIIhxLl/UWg55D8O5H8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sjtu.edu.cn; spf=pass smtp.mailfrom=sjtu.edu.cn; dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b=jL+anwgV; arc=none smtp.client-ip=202.120.2.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sjtu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sjtu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b="KRdSGHuo"
+	dkim=pass (2048-bit key) header.d=sjtu.edu.cn header.i=@sjtu.edu.cn header.b="jL+anwgV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sjtu.edu.cn;
 	s=default; t=1780653639;
-	bh=Nh5tKSIFCx2IJvjr4Rep5umPsNkr7T6yLxUkdg/o7VA=;
+	bh=91I8gKovLUZ0ITZOyIiUijFIcgcDYuZYN++HHQn56Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KRdSGHuo1aDzCxcP+7iDUarwiaU3BrSC8tNQuBFbYn2uCXvoFlGRbBtQYWVIIzZzm
-	 Cj9i50o0JRAGzyFhlc7KbXxcdrastH0gZ7J6FSw+g8pYxl9WYCJozob6H/D2iKyGNf
-	 +sWDFy7rMXXyjPLlUai0ItwZKrR6FSmcWqc/r6SIQcSWL8SZZgxn6rmwIbt5/f9Nfv
-	 ScxmDmfpoZ0Bg9l2yKhfZlnVUg8iFMRsrHgBNnH6ErH+d8uX7FIGPYVk9OeFZhPOCz
-	 cHMEFlpYFxRBtNSwWofLX50Zde/IYoZr6ZwOwErgsUMvCNlCAFVYRp/cIlBHQPSkj7
-	 MiAzI2F2Isnbw==
+	b=jL+anwgVaxD48aXHFAWAD99isn85TucTTulJWwCss4VhC6lDhF2xPiuGZ0IU+y+EX
+	 1f/5Ii+aRdrQxwwlgyzyEvI502GgnthKEP2jP3zle4fZ2fg92qBRI5L1kRDKyhA9aJ
+	 2c4Fb6NL/k1Kb8172mGhEx9yBHHpufoQMTIW/75EsvGmp6U5DNO90Pc9Bt3JYD/Nck
+	 o/zfHOUUBvzkvr+45ia8rAMF76/q6I/s+UNX1kbCLAQdzB/zCsT5cB6HGJwB/aKEnG
+	 iwoUCZ7XQKNTUaU7dyvhCElsvlAs+PTgF4Gb2j6YKuqnzc3/ImWqBPfvlH7nk0FvIe
+	 r69cxOkFEopAg==
 Received: from proxy188.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
-	by smtp186.sjtu.edu.cn (Postfix) with ESMTPS id 70EED2FF408;
+	by smtp186.sjtu.edu.cn (Postfix) with ESMTPS id 8C6B12FF4FC;
 	Fri,  5 Jun 2026 10:00:39 +0000 (UTC)
 Received: from mshou-H610M-K-DDR4.. (unknown [202.120.40.100])
-	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id C5EF037C98C;
+	by proxy188.sjtu.edu.cn (Postfix) with ESMTPSA id E73CF380C9A;
 	Fri,  5 Jun 2026 18:00:38 +0800 (CST)
 From: "muliang.shou" <muliang.shou@sjtu.edu.cn>
 To: kvm@vger.kernel.org
@@ -46,9 +46,9 @@ Cc: linux-kernel@vger.kernel.org,
 	olivier.hault@level-it.be,
 	jon@nutanix.com,
 	"muliang.shou" <muliang.shou@sjtu.edu.cn>
-Subject: [RFC PATCH v2 2/3] KVM: x86: forward LAPIC ICR writes to userspace
-Date: Fri,  5 Jun 2026 18:00:30 +0800
-Message-ID: <20260605100031.834938-3-muliang.shou@sjtu.edu.cn>
+Subject: [RFC PATCH v2 3/3] KVM: x86: add DSM APIC forwarding ioctls
+Date: Fri,  5 Jun 2026 18:00:31 +0800
+Message-ID: <20260605100031.834938-4-muliang.shou@sjtu.edu.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260605100031.834938-1-muliang.shou@sjtu.edu.cn>
 References: <20260605100031.834938-1-muliang.shou@sjtu.edu.cn>
@@ -60,89 +60,140 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Intercept LAPIC ICR/ICR2 MMIO writes, record the forwarding payload, and
-return to userspace with KVM_EXIT_DSM_SEND_IRQ when the pending request is
-processed.
+Add userspace ioctls that apply forwarded APIC, x2APIC ICR, and APIC
+base updates on a target vCPU.
 
 Signed-off-by: muliang.shou <muliang.shou@sjtu.edu.cn>
 ---
- arch/x86/kvm/lapic.c | 30 ++++++++++++++++++++++++++++++
- arch/x86/kvm/x86.c   | 14 ++++++++++++++
- 2 files changed, 44 insertions(+)
+ arch/x86/kvm/lapic.c     |  8 ++++++++
+ arch/x86/kvm/lapic.h     |  4 ++++
+ arch/x86/kvm/x86.c       | 40 ++++++++++++++++++++++++++++++++++++++++
+ include/uapi/linux/kvm.h | 27 +++++++++++++++++++++++++++
+ 4 files changed, 79 insertions(+)
 
 diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 4078e624ca667..2485d50b45647 100644
+index 2485d50b45647..a7b691aa9f020 100644
 --- a/arch/x86/kvm/lapic.c
 +++ b/arch/x86/kvm/lapic.c
-@@ -2561,6 +2561,10 @@ static int apic_mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
- 	struct kvm_lapic *apic = to_lapic(this);
- 	unsigned int offset = address - apic->base_address;
- 	u32 val;
-+#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+	u32 reg;
-+	u32 dest_id = 0;
-+#endif
- 
- 	if (!apic_mmio_in_range(apic, address))
- 		return -EOPNOTSUPP;
-@@ -2583,6 +2587,32 @@ static int apic_mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
- 
- 	val = *(u32*)data;
+@@ -2555,6 +2555,14 @@ static int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
+ 	return ret;
+ }
  
 +#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+	reg = offset & 0xff0;
-+	if (reg == APIC_ICR || reg == APIC_ICR2) {
-+		kvm_lapic_reg_write(apic, reg, val);
-+		if (reg == APIC_ICR) {
-+			if (apic_x2apic_mode(apic)) {
-+				dest_id = kvm_lapic_get_reg(apic, APIC_ICR2);
-+			} else {
-+				dest_id = kvm_lapic_get_reg(apic, APIC_ICR2);
-+				dest_id = GET_XAPIC_DEST_FIELD(dest_id);
-+			}
-+		} else {
-+			dest_id = GET_XAPIC_DEST_FIELD(val);
-+		}
-+
-+		vcpu->arch.dsm_irq_forward_pending = true;
-+		vcpu->arch.dsm_irq_forward_reg = reg;
-+		vcpu->arch.dsm_irq_forward_val = val;
-+		vcpu->arch.dsm_irq_forward_dest_id = dest_id;
-+
-+		kvm_make_request(KVM_REQ_DSM_IRQ_FORWARD, vcpu);
-+
-+		return 0;
-+	}
++int kvm_lapic_reg_write_remote(struct kvm_lapic *apic, u32 reg, u32 val, u32 dest_id)
++{
++	return kvm_lapic_reg_write(apic, reg, val);
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_lapic_reg_write_remote);
 +#endif
 +
- 	kvm_lapic_reg_write(apic, offset & 0xff0, val);
+ static int apic_mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *this,
+ 			    gpa_t address, int len, const void *data)
+ {
+diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+index 274885af4ebc4..67828d7fc3be1 100644
+--- a/arch/x86/kvm/lapic.h
++++ b/arch/x86/kvm/lapic.h
+@@ -146,6 +146,10 @@ int kvm_lapic_set_vapic_addr(struct kvm_vcpu *vcpu, gpa_t vapic_addr);
+ void kvm_lapic_sync_from_vapic(struct kvm_vcpu *vcpu);
+ void kvm_lapic_sync_to_vapic(struct kvm_vcpu *vcpu);
  
- 	return 0;
++#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
++int kvm_lapic_reg_write_remote(struct kvm_lapic *apic, u32 reg, u32 val, u32 dest_id);
++#endif
++
+ int kvm_x2apic_icr_write_fast(struct kvm_lapic *apic, u64 data);
+ int kvm_x2apic_msr_write(struct kvm_vcpu *vcpu, u32 msr, u64 data);
+ int kvm_x2apic_msr_read(struct kvm_vcpu *vcpu, u32 msr, u64 *data);
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0550359ed798f..42d6f8c977985 100644
+index 42d6f8c977985..06a1c5045606c 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -11338,6 +11338,20 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 				goto out;
- 			}
- 		}
-+#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
-+		if (kvm_check_request(KVM_REQ_DSM_IRQ_FORWARD, vcpu)) {
-+			vcpu->run->exit_reason = KVM_EXIT_DSM_SEND_IRQ;
-+			vcpu->run->lapic_irq.id = vcpu->vcpu_id;
-+			vcpu->run->lapic_irq.val = vcpu->arch.dsm_irq_forward_reg;
-+			vcpu->run->lapic_irq.val2 = vcpu->arch.dsm_irq_forward_val;
-+			vcpu->run->lapic_irq.dest_id = vcpu->arch.dsm_irq_forward_dest_id;
-+
-+			vcpu->arch.dsm_irq_forward_pending = false;
-+
-+			r = 0;
-+			goto out;
-+		}
-+#endif
+@@ -7633,6 +7633,46 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+ 		r = kvm_vm_ioctl_set_msr_filter(kvm, &filter);
+ 		break;
  	}
++#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
++	case KVM_DSM_IPI: {
++		struct kvm_dipi_params params;
++		struct kvm_vcpu *vcpu = NULL;
++		u32 reg;
++		u32 val;
++
++		r = 0;
++		if (copy_from_user(&params, argp, sizeof(params)))
++			goto out;
++		vcpu = kvm_get_vcpu(kvm, params.vcpu_id);
++		reg = params.val;
++		val = params.val2;
++		kvm_lapic_reg_write_remote(vcpu->arch.apic, reg, val, params.dest_id);
++		break;
++	}
++	case KVM_DSM_X2APIC: {
++		struct kvm_x2apic_params params;
++		struct kvm_vcpu *vcpu = NULL;
++
++		r = 0;
++		if (copy_from_user(&params, argp, sizeof(params)))
++			goto out;
++
++		vcpu = kvm_get_vcpu(kvm, params.vcpu_id);
++		kvm_x2apic_icr_write_fast(vcpu->arch.apic, params.data);
++		break;
++	}
++	case KVM_DSM_APIC_BASE: {
++		struct kvm_apic_base_params params;
++		struct kvm_vcpu *vcpu = NULL;
++
++		r = 0;
++		if (copy_from_user(&params, argp, sizeof(params)))
++			goto out;
++		vcpu = kvm_get_vcpu(kvm, params.vcpu_id);
++		kvm_apic_set_base(vcpu, params.data, params.host);
++		break;
++	}
++#endif
+ 	default:
+ 		r = -ENOTTY;
+ 	}
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 75a11e72e232e..65d7094aa06e9 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -231,6 +231,33 @@ struct kvm_exit_snp_req_certs {
+ #define HINT_UNSAFE_IN_KVM(_symbol) _symbol
+ #endif
  
- 	if (kvm_check_request(KVM_REQ_EVENT, vcpu) || req_int_win ||
++#ifdef CONFIG_KVM_DSM_IRQ_FORWARD
++struct kvm_dipi_params {
++	int vcpu_id;
++	__u32 val;
++	__u32 val2;
++	__u32 dest_id;
++};
++
++#define KVM_DSM_IPI _IOW(KVMIO,  0xf3, struct kvm_dipi_params)
++
++struct kvm_x2apic_params {
++	int vcpu_id;
++	__u64 data;
++};
++
++#define KVM_DSM_X2APIC _IOW(KVMIO, 0xf4, struct kvm_x2apic_params)
++
++struct kvm_apic_base_params {
++	int vcpu_id;
++	bool host;
++	__u32 index;
++	__u64 data;
++};
++
++#define KVM_DSM_APIC_BASE         _IOW(KVMIO, 0xf5, struct kvm_apic_base_params)
++
++#endif
+ /* for KVM_RUN, returned by mmap(vcpu_fd, offset=0) */
+ struct kvm_run {
+ 	/* in */
 -- 
 2.43.0
 
