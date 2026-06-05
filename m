@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B342E1C4E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3A32BE03C
 	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 17:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780680103; cv=none; b=PnQ1v2+ApWHc4t3iSfCGZ9IcFuQom2EEhhJ7Y7L5Lt8ucagNe68WcN7IMVxQ6nZdgc5UKGjDT6U/+OhDMITlDI59gDsS9U8vY2APfcAjV5wf87H/fSG7n0/I7jWgfk8LT3hUj4tg/vYJJ5T5Lext6FPxUjDfdAkLmUVBcdHWMk0=
+	t=1780680104; cv=none; b=J3yEuKMfd8gzPm4g55+pU2LDu5jQ+k1+6TfmHVDfCmHcUXWd6L+uToWTQrbD+q79CAxtDofAKScLgZaBZtG7r1+0n3+eVcRbPDgAtC3jfOXYIrPWbViFjW487uteki6LlRt+vH28A8QIdgK3oKjAGY+IqljA1tJmoN1goV7wFkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780680103; c=relaxed/simple;
-	bh=8tTRwbp9AcvSXwLZ47EatpQBCFtrnQzXwinzGNrdSUQ=;
+	s=arc-20240116; t=1780680104; c=relaxed/simple;
+	bh=xuTJitpB4bXL5l9ry5pSxcKxRfDCPbVCAnHrn6Bo3gg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RnysijtRYAtZ970WydgJevcNZROut6V0yo2W3mmbXnxv0PsBgSwYegqbEVYAoncOfACp2qWqDpbbyfVxs/jgVypVZdhZRzMf3P4lKamqT8TdgFdUj4LcQp2wNJL98iJ4ZeKSj5b0ydf2NQluAYqJCjWzcayhuXp2uiNLqF4q/gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYqDLqpY; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=MfISLl0aLFQ8dh0ABb4tiwUrOs4FxHGUTafXVxOHDBqSjxHF2yB4ixvD6Xm8DPOOIDDpxSsdRW91yyLwtV6Lt7R1Po7c+FVEwPLAwJ75+iwx3EMwRzLFAux8x0BrasYa8RYoPoIxE+JhH6eSMzj6vDNRiMTsxvk8sbp2E5VE7Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z2+BQ541; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYqDLqpY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8E21F00893;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z2+BQ541"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18F51F00898;
 	Fri,  5 Jun 2026 17:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1780680102;
-	bh=wx6MIxMGQ8ffiHKowvZ8HLnfj8URosmdvI51U9TlZdk=;
+	bh=cen82m+r38djMAhM23zwl7W9280ufmicHqB2605PXCs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PYqDLqpYQ+1rF3gRwXCYR9d5bfdVvYK9FtB0WKpylz2PARCFEHz5aO/HIfrpy98HC
-	 oYL05jZX5dXCwe4S7R2Qq33Of1HBSUGzxpRMyHqthPG16kQHjGzC9m/RO7ywRTZbBO
-	 7HAIEkmvbv1+CF29mM4ft3uIzso66fM/PitefAkBqZrFpn+EvlSNjnvA/2JsCdNu9E
-	 ya5bYedfYNnB0TCmdakT+yhiFAQkxjB5JFW9IbEmGGQpvoip9JxAJLMFKGTEqPpPzt
-	 4kVfKz2+UtI3NOIxW4cj8WmtNSXfVePJq6/FXNzal0hYrCptaTTar6+qffi65Fzpqt
-	 qwzdTilRJGaRA==
+	b=Z2+BQ5410IquXjghiU934bSFqnaw3ENvBFLCjIOC4CoH1gdKvN6cjHjTj4FCxMhdp
+	 NQqZWHNrvbda2EZZqeycHJglGvn/VHj3Zs4Pg4XFqVEL3jGJiUtF1SGoIj7fAmScNb
+	 Td2dlWRu3BXsLH+flgOulq1nniUiy0nkhuzDEwqkKleVghI0g50iSKrtdIn4H9I3YJ
+	 E4OCnYkNG6mlbF0b0ApPsSsfew8RUQQRcMt7M+14aqziRQLyp2qDa95Lr5CPikKSpj
+	 OYUb80L5FI2DIKsgBpzVseq4spXZ3xbucMgKkf3FV0vzFjV+eJnN9RgX5NggQoH2if
+	 0oOBOLJhjaMFw==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 03/10] kvm: Prepare core VM structs and helpers
- for LUO support
+Subject: Re: [RFC PATCH v2 06/10] kvm: guest_memfd: Add support for freezing
+ and unfreezing mappings
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tarun Sahu" <tarunsahu@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20ae20f9d1a198b289444ebb4c824314cbba1bcf.1780676742.git.tarunsahu@google.com>
-References: <20ae20f9d1a198b289444ebb4c824314cbba1bcf.1780676742.git.tarunsahu@google.com>
+In-Reply-To: <48777f4749fa43d5648085dbb2037aa99c144a88.1780676742.git.tarunsahu@google.com>
+References: <48777f4749fa43d5648085dbb2037aa99c144a88.1780676742.git.tarunsahu@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 05 Jun 2026 17:21:41 +0000
-Message-Id: <20260605172142.1E8E21F00893@smtp.kernel.org>
+Date: Fri, 05 Jun 2026 17:21:42 +0000
+Message-Id: <20260605172142.B18F51F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,49 +46,112 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Missing `__rcu` annotation on the `kvm->vm_file` field triggers Spa=
-rse warnings.
+- [High] A malicious tenant can inflict a cross-tenant denial-of-service by=
+ holding the global `kvm_gmem_freeze_srcu` read lock during massive, unboun=
+ded `fallocate()` operations, blocking `kvm_gmem_freeze()` for other VMs.
 --
 
-commit aba59ce9475ece27b2837967edea8ac0058bfe79
+commit 5ee5700d9538d9bd5f29f00de6d11fcc22d28ecc
 Author: Tarun Sahu <tarunsahu@google.com>
 
-kvm: Prepare core VM structs and helpers for LUO support
+kvm: guest_memfd: Add support for freezing and unfreezing mappings
 
-This introduces core infrastructure to support VM preservation with LUO.
-It refactors VM file creation into a new helper and tracks a weak
-reference to the backing file in struct kvm.
+This commit introduces freezing and unfreezing for guest_memfd mappings to
+prevent fallocate and page fault allocations during preservation. It uses a
+global SRCU structure to synchronize read-side operations with
+kvm_gmem_freeze().
 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 4c14aee1fb063..9111a28637aff 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 6740ae2bf948d..b94639cdf3126 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
 [ ... ]
-> @@ -874,6 +874,18 @@ struct kvm {
->  #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
->  	/* Protected by slots_lock (for writes) and RCU (for reads) */
->  	struct xarray mem_attr_array;
-> +#endif
-> +#ifdef CONFIG_LIVEUPDATE_GUEST_MEMFD
-> +	/*
-> +	 * Weak reference to the VFS file backing this KVM instance. Stored
-> +	 * without incrementing the file refcount to prevent a circular lifetime
-> +	 * dependency (since file->private_data already pins this struct kvm).
-> +	 * Used exclusively to resolve the file pointer back from struct kvm.
-> +	 *
-> +	 * Written/cleared via rcu_assign_pointer() and read locklessly under
-> +	 * RCU (e.g. via get_file_active() to prevent ABA races).
-> +	 */
-> +	struct file *vm_file;
+> @@ -273,16 +284,30 @@ static long kvm_gmem_allocate(struct inode *inode, =
+loff_t offset, loff_t len)
+>  static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offse=
+t,
+>  			       loff_t len)
+>  {
+> +	struct inode *inode =3D file_inode(file);
+>  	int ret;
+> +	int idx;
+> =20
+> -	if (!(mode & FALLOC_FL_KEEP_SIZE))
+> -		return -EOPNOTSUPP;
+> +	idx =3D srcu_read_lock(&kvm_gmem_freeze_srcu);
+> +	if (kvm_gmem_is_frozen(inode)) {
+> +		srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
+> +		return -EPERM;
+> +	}
+> =20
+[ ... ]
+> +	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len)) {
+> +		ret =3D -EINVAL;
+> +		goto out;
+> +	}
+> =20
+>  	if (mode & FALLOC_FL_PUNCH_HOLE)
+>  		ret =3D kvm_gmem_punch_hole(file_inode(file), offset, len);
+>  	else
+>  		ret =3D kvm_gmem_allocate(file_inode(file), offset, len);
 
-[Severity: Low]
-Since this pointer is meant to be read locklessly under RCU and is updated
-using rcu_assign_pointer() in kvm_create_vm_file() and kvm_vm_release(),
-should it be declared with the __rcu annotation?
+[Severity: High]
+Does this code allow a malicious tenant to inflict a cross-tenant denial of
+service?
 
-Without the __rcu qualifier, static analysis tools like Sparse will trigger
-a "different address spaces" warning during the rcu_assign_pointer() call.
+The srcu_read_lock() is acquired at the beginning of kvm_gmem_fallocate() a=
+nd
+held across the entire kvm_gmem_punch_hole() or kvm_gmem_allocate() executi=
+on.
+Because a guest_memfd can be terabytes in size, these operations could iter=
+ate
+over millions of pages and take a long time to complete.
+
+During this entire time, the global SRCU read lock is held uninterruptibly
+(yielding via cond_resched() in kvm_gmem_allocate() does not drop SRCU).
+
+> =20
+>  	if (!ret)
+>  		file_modified(file);
+> +
+> +out:
+> +	srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
+>  	return ret;
+>  }
+[ ... ]
+> @@ -1014,5 +1053,61 @@ void kvm_gmem_exit(void)
+[ ... ]
+> +void kvm_gmem_freeze(struct inode *inode, bool freeze)
+> +{
+> +	u64 flags =3D READ_ONCE(GMEM_I(inode)->flags);
+> +
+> +	if (freeze)
+> +		flags |=3D GUEST_MEMFD_F_MAPPING_FROZEN;
+> +	else
+> +		flags &=3D ~GUEST_MEMFD_F_MAPPING_FROZEN;
+> +
+> +	WRITE_ONCE(GMEM_I(inode)->flags, flags);
+> +
+> +	if (freeze)
+> +		synchronize_srcu(&kvm_gmem_freeze_srcu);
+
+[Severity: High]
+Can this synchronize_srcu() block indefinitely waiting on another tenant?
+
+Since the SRCU is global, calling kvm_gmem_freeze() on a completely unrelat=
+ed
+VM will invoke synchronize_srcu(&kvm_gmem_freeze_srcu). This will wait for =
+the
+first tenant's massive fallocate() to finish.
+
+The loop in kvm_gmem_allocate() checks kvm_gmem_is_frozen(inode) on its own
+inode, so it will not abort when a different inode is frozen. This effectiv=
+ely
+allows an unprivileged tenant to stall live updates and preservation
+system-wide.
+
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780676742.gi=
-t.tarunsahu@google.com?part=3D3
+t.tarunsahu@google.com?part=3D6
