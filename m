@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D1247D94B;
-	Fri,  5 Jun 2026 11:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B914C6EE6;
+	Fri,  5 Jun 2026 11:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780659014; cv=none; b=urVZAgIs8mwSYR0t6Qtzow6d/Mr1G6pDG8yzH0JJZer4V2d6zRi7wo12eIDuaKePLvkr42+r5CtycfErWgYzrsRWm3cnL6cG6REsvoqtbqF7DKMxgiMYT0+p56qAhHmBJkE26F1V0xUt7yAIJ3IMWRbkkgQ+hvLlTLagrrICGVM=
+	t=1780659141; cv=none; b=gPlOpqN0b7vGFfw/WHqlAs9C0tlonRe998ob7Rr9gQEoNA6DcA2pE1PTt8SQMHTuZkaIsupQhgbxG+y2B+d1/+xkLwnFOHzf7bsVcYRRVdCy4A2jRipM0OYGyoxWIqLYrg93au1CtkUT0ltqD2is3mENJVyok4lYLIOF8x3CCNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780659014; c=relaxed/simple;
-	bh=AUZmNkfpo8SiFYIKu8RSDVJzKof6T6m5QvrfOh4S094=;
+	s=arc-20240116; t=1780659141; c=relaxed/simple;
+	bh=EgYylSzY4KpqexrZw9CJWB9zf92Ds7M76j7Z+q19wGM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KERxifdTdiDC/+HcEElEuOHnzYaNY4oM/mPfKHmO4llzuxXjXmsyNhiFMmcRO43/ZSRcMAnWl8CAZBgK2nyWEj6fmFuUWY99/zpOfkGmKkgDdmV5x0v1bR+hDgr6o38yiLthvNYirDSsNf7lRTHTBmto6U1XO9S5nJppI4IrCa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2HGYkKv; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=qlIq65gp2W9zDPxpznW3SBNPNLJA/XTOh78zmwFJZqr7PWzKU5HZ2/TDsfug4eu6s3UR1l+0OmWomEoBoShGFoO31xbmv8FCpBrZP3IrAawrsGjPnQMzUZ6deBdTlwNJmyPadPt2reaM1jVD2lIUSwEBiidkQfqAzZ0mHQJKfQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahr5YecM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2HGYkKv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B9C1F00893;
-	Fri,  5 Jun 2026 11:30:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahr5YecM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D626E1F00893;
+	Fri,  5 Jun 2026 11:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780659011;
-	bh=zmTaJUj1lazUmadTOmGXnm/0jLcTFlnKa5WXCRJQ9Yo=;
+	s=k20260515; t=1780659139;
+	bh=fF/BiTpGv7MEy4Irsog+VHzMagQe3yTpi2h0C4MJboU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=b2HGYkKv44kDDtzjt6zO4Sp4zEDiseh/8H35sCiD5i5BXeN9IOpRzFYog5HZWppKe
-	 DzZ2Ee8BTUhzvyE4dHMnDl9godhh1QtTIL2eq8ZOCxjEALQNMXjNGBF9fEn9LI5fTz
-	 Mb3Ns1UMCGshENCB2J/CKVVYHEmq2DSQtJ3aUD3r/agEp4Ck3tYpBrLaEQyvAw9jjS
-	 L9zJrsHRuEnlotBz8YRpiSmsDreYf9SZyhUj1K4IUzXkyGZyA+evSbMyOiDEWOloHw
-	 tew7Caegi387fDbDC+ALZvM6qPgmeca6+cPm3gEJvLinFbIuduGDwEUS1LVfSPwGjy
-	 bXZeB2nO79Mig==
-Message-ID: <0465e8ac-c2c6-4745-9027-da4fc9c402e4@kernel.org>
-Date: Fri, 5 Jun 2026 13:30:02 +0200
+	b=ahr5YecMtOAvTEqCOgXxM67NPD7ec3mwlWfFszalPPSGGSAzTi3vRr8Ah44scyGa+
+	 Qmb1z7+bK+3yqNNsuaiXhUu2M7X8MKMnErlQMW6AlKfOzMW04X6bnauaWcZX0c1nuU
+	 0ohhtzmGS6KEZ7Qecscn7n39o2Gxdk6lqeuXUeGeceLf+Mg/toSVy3ml4Z3l22d5Z9
+	 gSKWAMmGTMqQ4SoQv8izDYFDByB2afWJi4CxvXB0ngUgL8Jk9FjUUNGoZavvjuus+q
+	 7PMeu8LE8u01xKcA6eUo2k7gozbNod+0sgL1FIs3RJ9Ty1Tku+mIpF0pisKd/8Hr/C
+	 /r/Di9hN4OiRQ==
+Message-ID: <d5d9365c-89b6-4dbf-9421-fbf7a709c225@kernel.org>
+Date: Fri, 5 Jun 2026 13:32:10 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/7] mm: memory_failure: Clarify the MF_DELAYED
- definition
+Subject: Re: [PATCH v4 2/7] mm: memory_failure: Allow truncate_error_folio to
+ return MF_DELAYED
 To: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -52,7 +52,7 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
  vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
  tabba@google.com, dave.hansen@linux.intel.com
 References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
- <20260602-memory-failure-mf-delayed-fix-v4-1-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-2-a5bc7db5a9b2@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -99,16 +99,29 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-1-a5bc7db5a9b2@google.com>
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-2-a5bc7db5a9b2@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 6/2/26 23:55, Lisa Wang wrote:
-> This patch clarifies the definition of MF_DELAYED to represent cases
-> where a folio's removal is initiated but not immediately completed
-> (e.g., due to remaining metadata references).
+> The .error_remove_folio a_ops is used by different filesystems to handle
+> folio truncation upon discovery of a memory failure in the memory
+> associated with the given folio.
+> 
+> Currently, MF_DELAYED is treated as an error, causing "Failed to punch
+> page" to be written to the console. MF_DELAYED is then relayed to the
+> caller of truncate_error_folio() as MF_FAILED. This further causes
+> memory_failure() to return -EBUSY, which then always causes a SIGBUS.
+> 
+> This is also implies that regardless of whether the thread's memory
+> corruption kill policy is PR_MCE_KILL_EARLY or PR_MCE_KILL_LATE, a
+> memory failure with MF_DELAYED will always cause a SIGBUS.
+> 
+> Update truncate_error_folio() to return MF_DELAYED to the caller if the
+> .error_remove_folio() callback reports MF_DELAYED.
 > 
 > Signed-off-by: Lisa Wang <wyihan@google.com>
+> ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
