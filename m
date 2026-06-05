@@ -1,119 +1,91 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A12392812
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 18:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D0C386552
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 18:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780682698; cv=none; b=f9T3N8wLdyGO0JbHwIBxzbwo3HPbGoHoaN4LwMhoixQ9JWKUNPGQ0JHQG6dfRZb9n4bUjUpT1wuQjbAybSZmTT/7B4kK5SPURCKIJ6j8Pjg3bpN8WYOIYUuNoG0/UjJUqIp+62laEiZeTaxHJwH/iDr6sADYaUuiHj/fYt44Omo=
+	t=1780682778; cv=none; b=UkqCaqJzhIKbz3hr+dhQANRndnRACdjUqrw96qS8Qw5aGFed12fzgOxSo8p4yv6B2fOyzEiY92Azmbi9RpOb7xOH0XLm+mVTTRJZlvNXgrpv8TM6h96YSSWiqqjCiS2yvXTThIRHQeBvboYqwJ8VKvITntEwSPQ+T2YsKopgmyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780682698; c=relaxed/simple;
-	bh=fCJzrdCYp/X/mAcNv+qBAxRieEPHzWXupi+xn0HxO88=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=S0bBfppunL2fcoOoxRO+jF0KfD8zEYisctXS8PeSBPBt93eVKK6SCn2M7MEvgWpHkElTrONuwsOGZY+pd7dWGrylZEh634i4yqpyFnweRWvbuoV4mx6xDpkis4aTOaOjlkYQn/C8J3zRNWFxUT35sUx2E7duPw1SyzexNw7xhQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dhhmGlYp; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780682778; c=relaxed/simple;
+	bh=+8gQj00GuJ586QRB6Rpkf1Gfw/HJzE/5m6yKLPedL3Y=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=DRZGzdHxY28VP3xG1LyY9SDUt+oFwz/m8H2w3lwdNFE/kqQkxe5JMgbFxkbVA4DeSVwOkEg83rm7+G84iwnpMc6Sj3qAj5wDRhSCY9QNFIkbOqjAI/bX66kspcT08Ug2yzam7DFNmKo157BwAz81mbnmhSWgAzHsjPXWJOe08wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0m+HVx4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dhhmGlYp"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8423f424d5bso1500478b3a.3
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 11:04:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780682696; x=1781287496; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zOxp1hSLKBpPLL80bFuxK8SsL52R5IjTb2Bqqq35EAY=;
-        b=dhhmGlYpvip0/a7ryW+v3le1CZoR0owUaFdjeKTxxdAmZ6EFzJSIQltQYjUpzQSzbW
-         YT+6bcnMtwnoOtjT6Nj67UVZj/zSng3g9YmVQOaa/XzhnC3aI+SL4tksqrG9IyNxebnh
-         nztPy6A+YKb9ZUkWM+59tEve5m+Q8SNPZHRWEKbkJRG0LvZ/MTBBDc+jHEFwEa1EZ8pa
-         1aVC7dD2CIR6KjG+TUil7dNC1vKDi30MGufegGgT4n92YbDMTEA+LDVKtBSinLbWoOoH
-         1FLQUzQw1mMaJrVHw7WlpIpMxJupjiIRp0m4lZ7ihHlyVBfm9A4uaQ9sc77w1xJ9TyBt
-         H95g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780682696; x=1781287496;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zOxp1hSLKBpPLL80bFuxK8SsL52R5IjTb2Bqqq35EAY=;
-        b=hEs9VTnnNfpeAe+5ofnGXOHI5RPWIg+kUJ7DrDbTifURhjBWqsuVRnvdS1tjKc2Dnk
-         kHNm7Xy2QJGWK8oYrTZE5py1yybqTTuZi99y136M4gY8pUyj59L/wz3TprQAXiYyXlG2
-         7sZy/NoqQbKkCYJINeYG1nEaApc8DXwFeM46PU0MN3+0HfdN5Kk+1/Zn6kRZSb2oKCbE
-         qQAN6d7LFpVoYpY6owLnk8zmZLGVVNCHOHzHQfE+00pQQRH480yqcgwqO/MXxfkTgdM+
-         JLd3Bfdgbp1TVUJF61A5qhwG2dsEUI043PId2OKxptosmHug3LrgDs6DhwUmKpyRvsHr
-         7J4g==
-X-Forwarded-Encrypted: i=1; AFNElJ8eYRVC33HtV9ng5M3NkpyMpFDSg7aaC33rOKKgu0Wv2tbT7NIUUuUaIHyPH14pXPut3vk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz941jeRCPA5HRZD83IRs7fEB3PydzcTI0neLfIBgxP21Vqnw0r
-	0+CFRKfuB2EfsummZysnZ4TuwcYVw07qwZnsegmGngu2S3D0q+q7ohjtN+hhPP4J6+pAc95lyQT
-	etg7Vcg==
-X-Received: from pfjq2.prod.google.com ([2002:a05:6a00:882:b0:842:1f0e:d24c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:218e:b0:842:4e43:6f6c
- with SMTP id d2e1a72fcca58-842b0fb60bfmr4509683b3a.39.1780682695567; Fri, 05
- Jun 2026 11:04:55 -0700 (PDT)
-Date: Fri, 5 Jun 2026 11:04:54 -0700
-In-Reply-To: <87fr315fq9.ffs@fw13>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0m+HVx4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4B01F00893;
+	Fri,  5 Jun 2026 18:06:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780682777;
+	bh=ljgWbqRzSzgZ/8fd2QBhSGec3VbuF3PokkzaYu4DaLc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=L0m+HVx4yNtFTVdmvvpoHkXaA+5aAuI7EZFrz4Id13fMN4B7BIzUoMI1xt++CU8/9
+	 h8Kq7GkIHThYy/Xj9mFfdopDKNEvYtT4KEe2540kICvHbtwUuYe+UZrYj2Nrm671l6
+	 l+koSbPwLPD9bBtY8DBdU230bORPXkcWNLjt7tRl642JdZ7jTpv+42/yshQpn1PQ6C
+	 LxfvHwO/WG8Ld0z7O7THQuIZJ25cBeenoYqb0TssKRfohRhhzg55MnJZVp3nhOjIzo
+	 LwICQybAqGuH3tcKK+K6007TMeMCi5WkHb7j7WyUuw388v6GcmjeYh+iad7oHBIBG3
+	 AajDTVSqAMmqg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] KVM: x86/mmu: Expose number of shadow MMU shadow
+ pages as a stat
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260605174611.2222504-3-seanjc@google.com>
+References: <20260605174611.2222504-3-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 05 Jun 2026 18:06:16 +0000
+Message-Id: <20260605180617.5B4B01F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529144435.704127-1-seanjc@google.com> <20260529144435.704127-2-seanjc@google.com>
- <87fr315fq9.ffs@fw13>
-Message-ID: <aiMPxl5vkvJDldi9@google.com>
-Subject: Re: [PATCH v4 01/47] x86/tsc: Never re-calibrate TSC frequency if its
- exact timing is known
-From: Sean Christopherson <seanjc@google.com>
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
-	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Michael Kelley <mhklinux@outlook.com>
-Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jun 05, 2026, Thomas Gleixner wrote:
-> On Fri, May 29 2026 at 07:43, Sean Christopherson wrote:
-> > Don't re-calibrate the TSC frequency if the TSC is known to run at a fixed
-> > frequency.
-> 
-> That's misleading because fixed frequency means that the frequency does
-> not change, i.e. X86_FEATURE_CONSTANT_TSC is set. But
-> X86_FEATURE_CONSTANT_TSC does not imply that the frequency can be read
-> from CPUID/MSRs.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] The field `n_used_mmu_pages` was not removed from `struct kvm_arch`=
+, leaving unused dead code.
+--
 
-Sorry, "if the TSC runs at a known, fixed frequency" would be a better way to
-phrase this.
+commit 5fa7e390c84e0ce29ce7989e7bf60ba442c4e942
+Author: Sean Christopherson <seanjc@google.com>
 
-> > In practice, this is likely one big nop, as re-calibration is
-> > used only for SMP=n kernels, and only for hardware that is 20+ years old,
-> > i.e. is extremely unlikely to collide with TSC_KNOWN_FREQ.
-> 
-> recalibrate_cpu_khz() is only invoked from Intel P4 and AMD K7 CPU
-> frequency drivers, which means that's absolutely not interesting and
-> neither X86_FEATURE_CONSTANT_TSC nor X86_FEATURE_TSC_KNOWN_FREQ can be
-> set on those systems.
+KVM: x86/mmu: Expose number of shadow MMU shadow pages as a stat
 
-It _shouldn't_ be set on those systems, but in the world of virtualization it's
-not completely impossible.
+Turn arch.n_used_mmu_pages into a stat, mmu_shadow_pages, as the number of
+live shadow pages is arguably the most critical datapoint when it comes
+to analyzing the shadow MMU.=20
 
-> IOW, this patch is pointless voodoo ware.
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index 3886b536c8a57..be84e4d2405e0 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1701,6 +1701,7 @@ struct kvm_vm_stat {
+>  	u64 mmu_recycled;
+>  	u64 mmu_cache_miss;
+>  	u64 mmu_unsync;
+> +	u64 mmu_shadow_pages;
+>  	union {
+>  		struct {
+>  			atomic64_t pages_4k;
 
-Would y'all be opposed to adding a WARN?  I don't actually care about P4 or K7
-CPUs, but without any reference to X86_FEATURE_TSC_KNOWN_FREQ in
-recalibrate_cpu_khz(), the code _looks_ wrong, and so is very confusing for
-readers that don't already know that in practice, it's limited to ancient CPUs.
+[Severity: Low]
+Should n_used_mmu_pages be removed from struct kvm_arch in this file?
 
-In other words, the point is to document expectations and mutual exclusion, not
-to "fix" anything.
+Since all usages of kvm->arch.n_used_mmu_pages are replaced by
+kvm->stat.mmu_shadow_pages in this patch, it appears the original
+declaration is left behind as unused dead code:
+
+arch/x86/include/asm/kvm_host.h:
+struct kvm_arch {
+	unsigned long n_used_mmu_pages;
+	...
+}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260605174611.2222=
+504-1-seanjc@google.com?part=3D2
