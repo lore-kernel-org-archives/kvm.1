@@ -1,117 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9414B1DFF0;
-	Fri,  5 Jun 2026 11:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7414D8D85
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 11:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780659782; cv=none; b=WYACXjkC4FPBXVz2e00FBxIOMkBt8p7wLzyLev8Jcw1Um1bQdbbhVn5hT6zk1ciXPXFyFasKzPfGHOAv76Y44iQv+QtnU2wXWrdU4hbYNfF5A066BaUm0j+66a57e7zDEM4oLvsVHw7hFmyXPSHsP2+tNmJn6+fCBb30sOJ+lQY=
+	t=1780660681; cv=none; b=nrkw+B3EcmAIWREXRY72FpSLAvPVX8TFT08BuC/0kYI4kArAnw+s9bY1KZhvSe/NlDluU1hlSkf/4lP2pgaGYmn35RIlY+1krtIkADWnqo6e6XlB8V3S8Pg1vnEo8VEKiIet7g2zG2Gf+AqCmJ+Dw4yLnD3dZX0/y5yGXa3K4ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780659782; c=relaxed/simple;
-	bh=vfXXqLlOtJN8aZcbY5EAxkL5IWkZ7JVgfcav9z4SLU4=;
+	s=arc-20240116; t=1780660681; c=relaxed/simple;
+	bh=zpQ6si7uw1jl/RIzu1NxCMPAq6M4QSAgXRUDFD4KHAY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uPpqjGrXfn17Y3xqk/16vwNwhxBJMsisNcaGeO36sc5ksriSfrAms4rif8aoYaHL9w2kZYUdu0ytoAhTVd99JIM/FGEbz4uX0I5oGWD1X6xL9r9fTekemdCkDHOYT/dnmlh8Qe6LtKC47OLeWyWbulAMH01qL2NmuRH3JO9ReIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMC21LFK; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=VLN4WBST9FWFVQzUweEi/cNjFPQA3+1Wpqvgq4V9m1Im1XSGT013FRjdfXdSkI5CZGTj4Xnam38zp2vbfBF9HN96IGL5Z4gWPGyiK58WTT3yhmWTN2UBJJGXEVKcLCFYUUNzuhn7J8bSoUUhO/DKENonCMrU9trM23cMRN+t+JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=loX0r3T+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMC21LFK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9162B1F00898;
-	Fri,  5 Jun 2026 11:43:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="loX0r3T+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBEC1F00899;
+	Fri,  5 Jun 2026 11:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780659781;
-	bh=UvHXc8Wa99igeIl7xckPhI70Cop5FhBGDIa6jmltA4g=;
+	s=k20260515; t=1780660680;
+	bh=N5UqwPknsHGDQjy1hj/N8q1WQ81FcdAIH2gYxPFswcQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JMC21LFKDA1kPlweR0clo954/ecOI5AU9OS9Zp07y3eR91V1xOl8O6J5r3seIzpRU
-	 ZGndTfupFYhckhpPW0to+Izj1rzvohHlzVRe+Ew0QwUNAUTZbXc1W1TjaHM8ug1/0J
-	 f5icpYSDKct/0/MNLgtK+uCSYMPbFsiN3MHxXQSDTRl/lHE1bT7iuYpE++MQzwCHE+
-	 nXYhbhFoN/pYVgVEoxLV5yWirylWZ6zn0bRr7d1Q9Z2Mmot5pjdb6ozaSeOVmSYfJZ
-	 0tlMK4JZjrEENpZdbKEH18Sn/WRBkH2/o12am0effAE1ufKvlcKfazl83erZ8HLFQo
-	 Sd5Brrgu74WSA==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A5B16F4007E;
-	Fri,  5 Jun 2026 07:42:59 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 05 Jun 2026 07:42:59 -0400
-X-ME-Sender: <xms:Q7YiagGo4p1mC9UkkVMbbzreAkrAzX0Cvz1bY3igE4JC9BJ09WshfA>
-    <xme:Q7YiaraxMuvzRQMRiK9r85BuT2JtizvmiAn7Z-C8feXKnzsIpl2e8eSU6N_3KmuU4
-    a1KWqC0vpJmiHJXGf4f3wBLy7BAMl1dW05_hLoSKtYg16yi9OMpvnc>
-X-ME-Received: <xmr:Q7YiaoQ03NAB-nX6EMWSpLVuokzrLP1jZ3dcbrGUsEAP6VyJ_pIUs8JGWbwzew>
-X-ME-Proxy-Cause: dmFkZTFYaIvxv9MP+iw0KsftJJWaFrp5VUjXabHoGf57vb2raD7+CO9Kp337Bre/hKBoAK
-    9IO/oXQejZtUBc2brjuFlQ4eTz6ohV5VY3IyFbCZl5laikyvbqiUnR0DIJEjq/7qfrFmS9
-    KkSKe2NHawg5KaGREDOHaStqlk3hw9Wddz5brumMPPgS0g5DcCsX9Ay2osLqaNLq5py/ib
-    s/mLxh+NqzybNG41UqbojayVEHkL7mySQTTIOfS+WzFElTpWWcy14u5vmuiOt+AlaYLPQm
-    xRMtTWF2kevkwye8RZm17o7WSC3MHDeHxQkDtei5bGD3keIPOXIkhIpgZffYLuaGdI5ae6
-    V/0nc/4ps2b8RU+qff2+EF1Jq6EZkXzd51RI/1MhCfAC34KfYaZKTaeabwgmxC/Y5qSPVQ
-    Ja2vXI9tPDFsa4XRPzXt9YvQBkaBhPc0OXasZaAb6Fe069yaJlNv1xwAC7Z7Xr2KI5H/EU
-    aaHMQZc/+m3WwhYc0TRtt2B4zSk8oznh8yiAwDbs3HLvUTQRp7W6NCDiDHqWbq2fWxFpqd
-    5DPc0vyXqVq4EknQgyYzjTnp1U3LfT1QJWC5WyZoFw4AhksjVRarENAifITjHSfQKgQ5AI
-    wrGxTUsJ3YPwqaeFRh4R24yc6carEM8iUOrHP+NQZzFlcvh33Rb9itatbU5w
-X-ME-Proxy: <xmx:Q7YianBodlK9I_FscX7uFhfmBzN2f0k0z4MMrB3gmEdt6HaaLUPdLw>
-    <xmx:Q7Yiai51kYAdfaI8HBCAvuWs_2mK4-l39rZmY7vNqKn5RX0MX1WdEA>
-    <xmx:Q7YiavA6wiqYkIysquuVFuPGZO2GYYoUUC9vL6xnnBqV77sXIjrYlA>
-    <xmx:Q7Yiau5JJ0_T8rOH5OCoGaLrs_VzPk87rSdzL49CDz7SrwgTrBu5Cg>
-    <xmx:Q7YiajvNsJrn3ZWwPQTsrmbq05jobKiz1J7aPkGi1jpQ5fovWvLdX_3k>
+	b=loX0r3T+GIzuMgq8TcMZ8o94w4VqLbhGRBvsOSMdJbI+GvVhZlqFeh8eFfrkPOpmR
+	 lHxxK6sIo8o3WRMl+kh2A5GnXGX16abFzkRB/ngbQxyCMUZeYkR5EKAz9KEFXY9sgg
+	 HtM+Gl1oYb4ckLWlSiidDiB6BGBq3OQXBaCReXKQB2NhXqE+h6FB9mV9JTiDpgM2F5
+	 mxvone+RMKG6Y8G1Rqw2H4+xAqCzBh9QFLfudlha5MfF30AT46oGOUtQl7SneX8gwk
+	 jzBUca0wI0u8wcp4UycrKiJdLcpVIa3xx7OoZtIkYB3uf6JEAP99q8XGg+Q4q3uQMG
+	 FExrZd7JszovQ==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CCB97F40068;
+	Fri,  5 Jun 2026 07:57:58 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 05 Jun 2026 07:57:58 -0400
+X-ME-Sender: <xms:xrkiaohhsBejZS_wkdgPIUUqGKdf3fbQxRq1bje0ytlp9LGjpgmkgA>
+    <xme:xrkiatNivklow-apLIqPrXnzlvtD55MOMJP9Af9jrxxfok6D17Y2-NcHJU6XzrMOI
+    Wm8bco-74L4fbFZbMG4s1mPI2ylnMwGOTQMbrYWjaGZhQlrN4pIAa0>
+X-ME-Received: <xmr:xrkianMMLoxn-PFPPoOphZYOXa6UwnUMayhMLOLmyxytdnAI6GXHJy38XTpkmg>
+X-ME-Proxy-Cause: dmFkZTGlMapHgO6YPxLOBpEgF2Nb0Po1CwNgwnzdZXXDmQLsRei8CnmZzV6j4zUiNwC0oR
+    n3vF7GbKPb4lL7Q26i3oNiGGyFvC7IrxrN6en5MlCla4erAiuF0EaxeRhcW2riql7/GA3e
+    qRJwlLyh0wNvOgiPpeUqndlYfnTbGpTJZnrBELkchn7nKJce6m77HAgeMqKrp0hWi3XArV
+    QEheiBglO4ZXJrJUBi4uCOBpmNwKMV0TC3LWNqs8VX2SRkiYX+GZ6/U2RBCZ+yd3x6h9Aa
+    Cl7+yqqNwQd6SvjfR6MlgnBRT84dO2WjZMf9U/Rx/RLVBXfmA+iKUYcRRpshqKu+GFTlJO
+    32m9WXtKGPKPsSRyqSKqWMJWyVJOHLAKvbjcPDuW9z53/AOT4tqdj8Vh2wy/6l0oyAEa8/
+    pSNJFWwTB5lQo49qxGYHREjjYYq3K6j9UfSuOPqJlG0dbT4Ueg/bKQevPqXa047DF39fJq
+    xtaTRRBx2ZrYj8M+yVOiTHFuH6vHE1+8kYRL7mW37Wjfm6yHhaLcPhdVE0Bya6LoPUYAok
+    c8ZclHkLl19lAr4Ne4Che6i7eywyuY3zmoZdqK8RJ9HSrW1ep/0WV/1mLK9zpK6klmx4Jv
+    f8KEsvIw2VmnF4QmwN41Bb4ewy2NFJyYFz7n97SzEfKzE4D7SqQAcvb3TfzA
+X-ME-Proxy: <xmx:xrkiak0BWjEcy2tZ0lbcC00Uno29pfygx18eQ-A0VffU7FhJpObPCQ>
+    <xmx:xrkianFb7boTwnKWIoN6F2s2X_bog_uFUWcDPqdGdpazlG0VMAL3RA>
+    <xmx:xrkiathKIFMy529l82kWgg44Vlikr1czc0Q_ghF0ysVd3DbaKHUjBg>
+    <xmx:xrkiatYgC1SxW_kVZmJ9eCACfB0RRmYQyAUg_o3afc5Tp3WmMddnzQ>
+    <xmx:xrkiaq1B7bC-cClojz01n-_Yb-gga_qG_w4EKf74606p9ygBanjTH_yd>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 Jun 2026 07:42:57 -0400 (EDT)
-Date: Fri, 5 Jun 2026 12:42:52 +0100
+ 5 Jun 2026 07:57:58 -0400 (EDT)
+Date: Fri, 5 Jun 2026 12:57:57 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"Huang, Kai" <kai.huang@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, 
-	"Zhao, Yan Y" <yan.y.zhao@intel.com>, "seanjc@google.com" <seanjc@google.com>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "Annapurve, Vishal" <vannapurve@google.com>, 
-	"bp@alien8.de" <bp@alien8.de>, 
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v6 06/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
-Message-ID: <aiK1_q8beMcIEiwO@thinkstation>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-7-rick.p.edgecombe@intel.com>
- <ahVghgNAe4JrmlQH@intel.com>
- <fe08f03a22acfe758cd97f7c2880deeafbc5fe58.camel@intel.com>
- <aiGq7XjmMrsqdBY5@thinkstation>
- <aiJhScChLZkH44eB@intel.com>
+To: dave.hansen@linux.intel.com, Binbin Wu <binbin.wu@linux.intel.com>
+Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, seanjc@google.com, 
+	pbonzini@redhat.com, sathyanarayanan.kuppuswamy@linux.intel.com, kai.huang@intel.com, 
+	xiaoyao.li@intel.com, rick.p.edgecombe@intel.com, david.laight.linux@gmail.com, 
+	ak@linux.intel.com, djbw@kernel.org, tsyrulnikov.borys@gmail.com, x86@kernel.org, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] x86/tdx: Fix zero-extension for 32-bit port I/O
+Message-ID: <aiK5eu0GuXhd0NAx@thinkstation>
+References: <cover.1780584300.git.kas@kernel.org>
+ <ca503ae3de72d90956fcaf5dbc0760ec20f5a5e0.1780584300.git.kas@kernel.org>
+ <22c789c3-13b1-4c39-898f-2eec3bce98c1@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aiJhScChLZkH44eB@intel.com>
+In-Reply-To: <22c789c3-13b1-4c39-898f-2eec3bce98c1@linux.intel.com>
 
-On Fri, Jun 05, 2026 at 01:40:25PM +0800, Chao Gao wrote:
-> On Thu, Jun 04, 2026 at 05:59:02PM +0100, Kiryl Shutsemau wrote:
-> >On Tue, May 26, 2026 at 04:42:24PM +0000, Edgecombe, Rick P wrote:
-> >> On Tue, 2026-05-26 at 16:57 +0800, Chao Gao wrote:
-> >> > > -	scoped_guard(spinlock, &pamt_lock) {
-> >> > 
-> >> > This converts the scoped_guard() added by the previous patch to
-> >> > explicit lock/unlock and goto. It would reduce code churn if the
-> >> > previous patch used that form directly.
-> >> 
-> >> Yea, it's a good point. I actually debated doing it, but decided not to because
-> >> the scoped version is cleaner for the non-optimized version. But for
-> >> reviewability, never doing the scoped version is probably better.
-> >
-> >I don't see a reason why we can't keep the scoped_guard() on get side.
+On Fri, Jun 05, 2026 at 03:10:39PM +0800, Binbin Wu wrote:
 > 
-> One additional reason to drop scoped_guard() is that it mixes cleanup helpers
-> with goto, which is discouraged. See [*]
 > 
->  :Lastly, given that the benefit of cleanup helpers is removal of “goto”, and
->  :that the “goto” statement can jump between scopes, the expectation is that
->  :usage of “goto” and cleanup helpers is never mixed in the same function.
+> On 6/4/2026 10:47 PM, Kiryl Shutsemau (Meta) wrote:
+> > According to x86 architecture rules, 32-bit operations zero-extend the
+> > result to 64 bits. The current implementation of handle_in() only masks
+> > the lower 32 bits, which preserves the upper 32 bits of RAX when a
+> > 32-bit port IN instruction is emulated.
+> > 
+> > Use insn_assign_reg() to write the result back into RAX with proper
+> > partial-register-write semantics: 1- and 2-byte forms leave the upper
+> > bits untouched, the 4-byte form zero-extends to the full register.
+> > 
+> > Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
+> > Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
+> > Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com/
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Cc: stable@vger.kernel.org
+> 
+> I think the concern sashiko commented in patch 2 is valid.
 
-Fair enough.
+Yeah. I guess I'll just use the KVM implementation verbatim.
 
-But it can also be address if we free the PAMT page array with the guard
-too :P
+Dave, any objections?
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
