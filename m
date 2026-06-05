@@ -1,177 +1,205 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52693FE64E;
-	Fri,  5 Jun 2026 05:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C3927CCF0
+	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 05:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780637172; cv=fail; b=j2ZolfhY0DKPXZxzzvHrMDMcS0XoDdP2+OmexqQAnG2QM7X5T5ATA5KoUDIpw+VaiiXB8sGfge07q9etwi3O0fZoK6VImblwkQtvd25L0LCUV+X7Mbfviw56Xf+B7xAUAxk21rAirHBndeVTTG5yOXQ0f6913OaBhgiKlQqHVjs=
+	t=1780637696; cv=pass; b=BkhtbaX3TVi59lTMK0CqtFc//v6fF1fuAa2aIqBezhKi8oRNcNCsYh8BMTz8+AQyHe7zJsFFlXt181XtuO/EJE7sNGzS6A3sVr7hUVIyMCd7P516QyY3DUyatHYgkxtDhH5ihJ+veJGvZCLJgFL4Y7Gdw7vSx1DCfw02VBbJzXo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780637172; c=relaxed/simple;
-	bh=CMWIt0rn3l66G0XRJtarE6qCaXPZ9ZujV1Qxahls8E8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lUjeSrrTjM8l9tWwWx4bUTnDC2fI1jbHP5qLC5er+qPcsqyFDKlX2RtVeJWN+YnLxJhUA+0PhvFH8QjOKZh2WWjxtb7BuFlU4U8sVcc0bLjfH7jxRmGzhFc9l/i4TEr5nYCaQ1hC3QzZ/n46JqDFJKyEl+yWniJuGovaZAU7OTs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sw1fn2Nm; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1780637696; c=relaxed/simple;
+	bh=GJas4J0aA0V4cel94iSgVO8GdOFu8QvZX6zxMLeVC0k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RcQQD9dKoRKu1NCWtjFwwsMLLzNwb98QnfBkdR8uurvMQ1hSsMxADvMvCOWOlmCHAZQkAmAoY9uwvxBL9zEuYdPg9zFdmNRU/hbG+DS79w2U5zCxp5bjB77vrna40K0PMwrmPGkCKpX6TKvFJhgwZ35X1RVCs0z4YLKFLQHggE4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GxG7KOmO; arc=pass smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sw1fn2Nm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780637171; x=1812173171;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=CMWIt0rn3l66G0XRJtarE6qCaXPZ9ZujV1Qxahls8E8=;
-  b=Sw1fn2NmfMFQRZq80zGuMmnotxSPSOYFTqci2AsE32ilPWCzDF/LFENL
-   fyw6Nz5lbMuEgrVmw60vdqkO/jharLBOeynVqlRSH36j1jyCDVSBBQ3dU
-   KOi0CV6PWLGRVUgWoeId/NKsqU/srGkGCAderUwilJ5EpNeznG/HR9uE2
-   F89fFUvu1Rcg9YQBcD7Xbv8bt5vC0gBk0mdt6ULjXN1/sUNr0ITgwcYCl
-   Ln7KegaYWMqvRxy/FJcuYkPc6lNEc4akyWw35O7cShsKSFp3SiF+7SPrw
-   hwiBNocchpIDJveVMSv3LsoZUpKhjPlR6qves3TPMycpN6t0VuAq7TjWI
-   Q==;
-X-CSE-ConnectionGUID: kroyFQ1ZQBqP0TatTKoe8Q==
-X-CSE-MsgGUID: ngqYQ9f2RXGh2TDaSUjNYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="81592747"
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="81592747"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 22:26:10 -0700
-X-CSE-ConnectionGUID: w9j+5Qk2RWeetkepekm+IQ==
-X-CSE-MsgGUID: X4MEh/IhSRuPv5H4QOeslA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="244866403"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 22:26:09 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 4 Jun 2026 22:26:09 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 4 Jun 2026 22:26:09 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.66) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 4 Jun 2026 22:26:09 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RsITK7mz7R2o/f4NsYV6kSrYLvE/+BDhuqrxG8jpcjF7fb4n5g3MKU8HUFb2N5CuWNVUfX58OH87wTrI37jBLjOVV5Np2sK77ryPvIFbNW4fJ9Uc08Pb3UWErqTyEPckfklNy9tiq+FSmAJYNUGj58xAhbzjh2yepy+DoCRopGp2SOQSbO7/94I9paOjdvq2AXLh9k2KgrYevZo4qwPUU+S9STzTihP7a044mlU2krz5D7T2PzAWqaWLrUrRUNgAoiWuXUn129ZfexBxF+wMHlWWgbbGMHSHTSqyf37NurZMJ32cXOCblaExSLqOxFLo42Y5Z93AUy43xeeoWhuZmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VC2EW4IGNsyIyKhJ9Ken7PuWE2v5DyYLVBZ5p8LaQJk=;
- b=ndE/bgLLJiohfbKoqQCO4Pgok/h8NIY6ZmheZweXQ8WnYOiY/xg/95BW+oX8lBpGQ3NnvXWJWiFSQGm3XzbaQ4qYBq5aCotZ/KNz66Et/TTXzGBNqbszP7wSiNyNvOcFO9i94EYvlA9NWYbAzUMcUKrqufif7fJLG7JjVlPVOvALY4rSLikASIU9vCBtxxcvWV4MpHFMFV/vCuUn371BOQA5NXDFWQv7HgXaXVd/6TH2k2+1B75k6ylQRrDL3kkKXoVdKSNbrJ/hIRa5BvXYxPLb23A/OTnl2M7M4P/MuOPjo6ghxvb9k7hNwzR0fOIHEg6kP+J75mgfw9tmXml2cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
- by SA2PR11MB5051.namprd11.prod.outlook.com (2603:10b6:806:11f::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
- 05:26:06 +0000
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
- 05:26:06 +0000
-Date: Fri, 5 Jun 2026 13:25:53 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-CC: Rick Edgecombe <rick.p.edgecombe@intel.com>, <bp@alien8.de>,
-	<dave.hansen@intel.com>, <hpa@zytor.com>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <mingo@redhat.com>, <nik.borisov@suse.com>,
-	<pbonzini@redhat.com>, <seanjc@google.com>, <tglx@kernel.org>,
-	<vannapurve@google.com>, <x86@kernel.org>, <yan.y.zhao@intel.com>,
-	<kai.huang@intel.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH v6 10/11] x86/virt/tdx: Enable Dynamic PAMT
-Message-ID: <aiJd4XTToKX20j/R@intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-11-rick.p.edgecombe@intel.com>
- <aiGyIQvudD5ZF3lf@thinkstation>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aiGyIQvudD5ZF3lf@thinkstation>
-X-ClientProxiedBy: SI2P153CA0011.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:140::14) To BN7PR11MB2836.namprd11.prod.outlook.com
- (2603:10b6:406:ad::26)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GxG7KOmO"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-68bd7ec2371so4726a12.1
+        for <kvm@vger.kernel.org>; Thu, 04 Jun 2026 22:34:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780637694; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LAjc2yRWaLHpKlYMuI/N5bd3XyR2jAL8wKo9N92JWRcVnWNU4jQlYfNQP6lDld7zrl
+         WSOa9R+q8M5RhO6KETkLxml1vlS4HvJTfy1hTok0URfRQMXVSMKqXNxNkMRLcW4DL1Ta
+         CfhUY8pc6an76wHz5gnVO1Z+JPd8BfhgRUt4yrupreYqGxyiq2ApgF1pFjDQtBELnrdK
+         UMhu3Kpe+kFdBzb5KoSX6RpYnllLSzvhEe2H7iFPhoyF/+sIUreMAFORO3089PhOmxb4
+         S5vK4gF5IEuczWxywSWsBVA279ZCcumvlTbWlqz72p3hFhZ6gpQgBDGVZLHt4AGaahPU
+         xPFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Up0lWmIuIgRDM+NyYjwdMkV4DaYubiQupw+dp3jtfeg=;
+        fh=iBABKnjJg7ebu/rFM+XjUCh5GbamYkeenuWqDBKEGj0=;
+        b=JuyTadUrmGt2qL+cBO6Zs42Le+pPZeJnTfTylGu4j4gq+2KBVBdvs4rTnMZbgKNAEK
+         OyfOBbhtMoRDGcPZNXgci+/eeHpXgi1ff3p4iAF+0POlI6rZd5eszVUFOjOpDOC2RAp4
+         +lVPutQrNcPosNAiIfz2Yajn2Ut9uBJJZBbgKrB7wv6LqxAgep/rYrNtqeIo4pYrKXNb
+         SqJZpruBViaarToLSgx0riyTvfYfYYNNRRLsBanZ/FELhacioLccUl/n7+eLkepXCxUq
+         ztCbyZZhCldB8uewlZUs0hGaRzSRWNaAzBTNeFZEOPdE448/K9RDvCNNHmYBNKv2xvm+
+         ReSQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780637694; x=1781242494; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Up0lWmIuIgRDM+NyYjwdMkV4DaYubiQupw+dp3jtfeg=;
+        b=GxG7KOmO6QNkfFl5yhurD7bZd1c90MnP+FXWaurGHposWDilswJE6J/WFY7KhKi7e8
+         bSaRPjfbXB0ugDTmcs3TNPNls0d8G20k2Agmt3b04rkWom/Y9uChs0t57siBgxqD4u/F
+         /ATinHD8o2VkMzBxtejnbxiZctcsQupeEeRayUIMj1KfURZh08F91gNni9BEIx2LkAV3
+         9OfjULOM4PAesMxtJB0CRWPYaI2SsdaKP0RAgLHluoDEZzMEPj/cPk2QxoWVMYdVNN3u
+         2LtrbD8Qiq5XtnQUY1p/a3wjix+RAwL3vI8JVcdp/82Lsf5cdti3zu+ZZmecBgmzOqAP
+         X/uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780637694; x=1781242494;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Up0lWmIuIgRDM+NyYjwdMkV4DaYubiQupw+dp3jtfeg=;
+        b=YAPF2rK9jTvXGTXUPB2wwLD1PHiiF9jTkUT2qcAxJn0Vvo0nfrDQj96QbKf392KVkd
+         15fFtV5gjSmsmUWnjjBuSbSojhu94nkSkuTRVqL5ycKIEA98TVUsRHVa3I7+I41qcDWj
+         gj5TTytG0iXnPaV1Xgk0kviSJ9E+34eNWUdL7nGAg+XcNAmbUmzm7AzDN8qnm0DzkPK+
+         I/f9tibdU9ejJsEEgwxYootV+QjE08dhEAakqFniFZSu34Ptwh8lgq19s8Jro4gUJTTc
+         WEWRDwEcAwza5vQvhvux6tvSzGTsX8SLZQDVXre1PPh4KwUxvkVAfZkJNGycnYL6Tq4x
+         7Ldg==
+X-Forwarded-Encrypted: i=1; AFNElJ/hG+AJA88z/0MvRfmyV7UFj5JK5jMTzMj/nXXMZnQb3uVHScTT0sosdSOKH0a7lYcyQ0M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRLLsmYThjGeWlaqbDx/8lmz3YvMfJbi40hYc2YfYZRWWejSik
+	Up1/LVPnv5vXS389vjqvBUggql360ndUSNQM0ZLtI1sM6jXJTtKzX9bJsFk4D8jXGWU3sgzrzX1
+	cBFRAioH/bL1vvZjZLT3N6bcH0JM7erAtkB5X+l9Y
+X-Gm-Gg: Acq92OH+YibyZr9eosJxkn+U78egyNzK35Nzghs+Q5eQjhVMH57gKbkW+TgJ2vDmhbl
+	mFKth4TJ+In2OYQ9RhgA3jkjW0pKfkWSLhm0pUonhuf0vHK6glyFNGinSLrSvx/lkdit7axiIPy
+	guxkvwUun4P+75BXSE7Z2lRwaFTWkJxNtMqsl4ArlmG4D5KQLDlctTpInhyQgC7H7xX2O5wk+q6
+	GB8MMihowEd/byxsYKI3Qe39L1mP2klDwX9pACoNc77/tZYYh5QwF4qEbCL8l2HrYfJO/LzfOfv
+	x5nZ2+a3StqFuS2BUA==
+X-Received: by 2002:a05:6402:52db:10b0:683:33ae:8689 with SMTP id
+ 4fb4d7f45d1cf-68fe8b4cf79mr15028a12.4.1780637693492; Thu, 04 Jun 2026
+ 22:34:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|SA2PR11MB5051:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9bcd93a3-c5ae-4a76-4583-08dec2c2f188
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|22082099003|56012099006|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info: YLG5vR2iJXwGhtWPxwrhOWAxWtnGb5Vxqt4RTblFR08Qf+wEh3ebEWerncWSKlLud18F49BuOE3JOaaRo7jQPNoUeJP5qrYrinCvdVEFvtxOku6D1NhlTFIrIo6+9NxWpytLcIbnhPydv1od4LbZ1160dNrXW/Ppvd4AahXrUnZeObd83/NKa3XWgq4gQOkSMKiLkVB2yjneg9xD4eM31ESLQ8vwItkJE76FHt4DglJNWUDNs5poaZICsGoScAWPnjHgtuh7iGwzeeqhsrEvjz5nevxyzlJOB0BQKtI9BET66hodrDP01wJbJTk+UxxwlN3hHJmCI+qWKCwUSm77zbpDa54WRsNNGxgTOOqWMzHOEw4VArv7agdz1iPJwBvv5PTih0lOI8ewv+mt1LHj7vRx+ukP+1XeXeNYb39V4/iTeTGZU4sJOoxX/WUboXGpQiKbGY13HCCD/XBU3kPt0l2uKDh83T/K03rNHkpeg/J9pEj/D9Amic0JhcBnHSvA11CqBVU5lW8pn8F6qoSMEiKZevWTh3n4+Mu+GVFYDhQZLlrOonoDJopITJBtB7mwhixKox4CHqKWF9a7QepQljr/JaB0qNMsy5W1gWACeD1i9wJtYvV5VkQXKI+aAHVcI6xfrozGwg17BupWq+JA2SIKX7rUJ/dnJhKU4odqGCQ63TV0E54HOqZkLQ6mX47P
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?vkciPSGz9o89HdXvo4iOgdJfjTEC7Invqzs+58wUz3UHhZ5Y8rwgkmhG6IWB?=
- =?us-ascii?Q?pv9z+8CZDfM3V1UgTkB/lE5pRIjz0EtrCJmwiQMvsNgt96477Wzdt+/acSlp?=
- =?us-ascii?Q?Tr4m6Utek69O6maW794wKFT5w2paR9MyWQnjjZRkMFg5MNmtVqaFfAcsMb17?=
- =?us-ascii?Q?16y2C6Aipo0Zrjgh4dQzIuA87s8NxV/bfxVuI5qm15WYzzsWwH2Syn6QbieP?=
- =?us-ascii?Q?g7xlC2nHQqSjI1opr0RU3sXoaqzeYI7Va0o0LUW7c8jCDEAQYt1sNXaZ5/tp?=
- =?us-ascii?Q?NU9+9KLQ4UqQdWlRjlWSPPmoy1DuGkRH5e52lrnUbHMtiNahyj43vlfcjFxh?=
- =?us-ascii?Q?vnnqHN+TpVTOAx4RglOfU/T3ciA9YU8qQN3UzhbQpHWVf85bHIHPfRuZeXP6?=
- =?us-ascii?Q?14S5WziOcDPIjmZ4smWyCvdVuC+5cNXZ/wYNFrapEZGOcXty0ZMrE9/lF+dT?=
- =?us-ascii?Q?jFSaUBWXr5Lvio23+PKhGZbLpIzPJ55KeGCGWrwp7xAMwaxOlp49nBJ907WP?=
- =?us-ascii?Q?ZunafCbSa8eRrNht3qsVB2kTQg+lcJkZ3NSsDzMT+PoHIw5pghMoWH83mOuU?=
- =?us-ascii?Q?jXd4S1Sj4Wop7WYLumuwamCNGbPtTqMsaGP2I1zMqLRlGXeaun1Sjr2izs7j?=
- =?us-ascii?Q?ILTu87WMU7ltP8iPDM2XCi2uB55zCLnbwPzEbSmWmZPyJkSbJnU6X+dGh6DU?=
- =?us-ascii?Q?pCwqNdbq4Ki8bzvhqUUWIi9BuDWxMYvfcl44p89d9jMlRukL78LDkdpb3nH/?=
- =?us-ascii?Q?kdY7k6FzgnW89uWfgYb4SbwGPNzm3ygYqktXeXdSsX3PXbrqld8kZ4UL0GRi?=
- =?us-ascii?Q?7fAkHTZ+yUCsTlOPGsHchMISJ5r7stAfiqK/G44JT7HxGizG7aKhET0bQf2v?=
- =?us-ascii?Q?stN4/hyZ6g8JPs6QqhgyXqXN/pfh/vzQRTM6cw62n3vOoW10TnqEEhr2znll?=
- =?us-ascii?Q?YkxQ7V0/Y/xNnCrkZF+1G2JMT5f0L0JVLzK2osEQOiW9lwp0tX7zUfZLPSNO?=
- =?us-ascii?Q?uldEkyjdEtUjK9k24f2Kg3mL7Ig9C5wyt24Ei6YZJ8jVc5wJoA5nUob5R5BT?=
- =?us-ascii?Q?Hhq52HsN9jpdRIMkXjxSMlB/ShjEgsrrZQ6EaYpzMqs9d4a+q78gWqL4W5pG?=
- =?us-ascii?Q?A4osoVyQYN3fTv/RBgipzEvMO5uAj6vJagLUWG5iCYV6u4hJluz+rpHNva1e?=
- =?us-ascii?Q?a8zejx2G7GKispeCqpD/enajGYo07MaNmatlTtY+s+qabJFiN7jxopygnINH?=
- =?us-ascii?Q?CGS8iXEoxNUqR5koQ5kDv/a+Dr8PFUSgqyJ6tF+24MWxhg34iHlr9XAEcat2?=
- =?us-ascii?Q?gOdvfFbXP0EyXvxvysriawU2HIJMq9EGDsBFRrahzbcA+/uiOkAWvQjkrYeP?=
- =?us-ascii?Q?QJBOqMKXmNVeUALo4W0cCaufEprNIJuKguFmv6N0ziAKRsOk8ddfmOmnMJYQ?=
- =?us-ascii?Q?/G+FOxB/4UA/SC/MA73lNtbHEoeAT0gAwch6I+wWRkLDTXrbzzul4GXwLgRc?=
- =?us-ascii?Q?wKLSAnJvTRH9jnToCHVIkuHa0B4CRd2OvlDwZjrV40wLBrSpz1rdTIDrhtj1?=
- =?us-ascii?Q?ScoH8q9i83YedN0lGD7YgB5yuYtd+/DLhAsr/oA5+y34N1H5kpVdO0SYM4zD?=
- =?us-ascii?Q?NPh6+zVf1PDC+9S1V5FaZBk/+FzPuplWu1GTEo4QG0YlPPbp1XEOXtApr7Zt?=
- =?us-ascii?Q?FJrVREfEVo7bRlU1PJRfgv0tV056FMc96rhFzkk9h6GQGCeZ6fqFGAO63ulV?=
- =?us-ascii?Q?A7e6lzqh1A=3D=3D?=
-X-Exchange-RoutingPolicyChecked: bmFWoqRKMNhg22l92/P0TNsnUxMb4pj+hTscWveA5EUQy2atmK5NSD8pB+MjnPKRrGBOoSp7pVmDTAshKW3CsOmZxYVTrWA8zx4R/OfMMf1qOfaHVyZrbaMxEqkVpvxQajr7n0y1TbQH3j88N/InopBTAZAmOts3zNdlxGvoaoNMVTwYDaQNg0j9jRFCbMTHbrvWuiG0LQgGzQ1DKQAcKac9Vs1MTHCUoNoODODQZD5XmmjLHWAJELAl+gMeDgcSU4D8kZI5O2iAr++CZOaxllyeJtaJyeUclzF/z4PDLO8AEKd51EZBKTDV8RJkiBL78MlKB8o9kJo5+PBYHp4wqA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9bcd93a3-c5ae-4a76-4583-08dec2c2f188
-X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 05:26:06.6436
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: a/Rl1WRptBwWPBsfBNV7f7ZUoeCCzfFe0vJM0g94yfAxVrzukAjMCKxP/Q/gQXfU5tTlMUDw3D/rz6eS+mGlMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5051
-X-OriginatorOrg: intel.com
+References: <cover.1718214999.git.reinette.chatre@intel.com>
+ <2fccf35715b5ba8aec5e5708d86ad7015b8d74e6.1718214999.git.reinette.chatre@intel.com>
+ <Zn9X0yFxZi_Mrlnt@google.com> <agPUfzbMzTU1ebii@intel.com>
+ <agY6JuEJRhwpwlRL@google.com> <aga+jCVUW0d4GufQ@intel.com>
+ <CALMp9eSqqsEzd5MSeO46EdC8aOwhyhU7e2bOW2LSdnDQGXEVpw@mail.gmail.com>
+ <aiHY8cWZYZNb-DED@google.com> <CALMp9eQ17UaAje1DQ7v24U7iKujvnOknY4itQjSqOaKSn_FqBw@mail.gmail.com>
+ <aiI6xge3Ev3PCpUV@intel.com>
+In-Reply-To: <aiI6xge3Ev3PCpUV@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 4 Jun 2026 22:34:40 -0700
+X-Gm-Features: AVVi8Cc_XsirzXhA3BVV64P98iM8XWJ3MeaaFW09qF1uHgxQn2-46j9Z8b1Tww4
+Message-ID: <CALMp9eTXLcDNAjjcsuo_nqjowk33yA58fjYZbz_Lqytn07RM-g@mail.gmail.com>
+Subject: Re: VMX Preemption Timer appears to be buggy on SKX, CLX, and ICX
+To: Chao Gao <chao.gao@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	isaku.yamahata@intel.com, pbonzini@redhat.com, erdemaktas@google.com, 
+	vkuznets@redhat.com, vannapurve@google.com, mlevitsk@redhat.com, 
+	xiaoyao.li@intel.com, rick.p.edgecombe@intel.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, chenyi.qiang@intel.com, 
+	Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 04, 2026 at 06:14:17PM +0100, Kiryl Shutsemau wrote:
->On Mon, May 25, 2026 at 07:35:14PM -0700, Rick Edgecombe wrote:
->> @@ -152,7 +156,12 @@ const struct tdx_sys_info *tdx_get_sysinfo(void);
->>  
->>  static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
->>  {
->> -	return false; /* To be enabled when kernel is ready */
->> +	/*
->> +	 * The TDX Module's internal Dynamic PAMT tree structure can't
->> +	 * handle physical addresses with more than 48 bits.
->> +	 */
->> +	return sysinfo->features.tdx_features0 & TDX_FEATURES0_DYNAMIC_PAMT &&
->> +	       boot_cpu_data.x86_phys_bits <= 48;
+On Thu, Jun 4, 2026 at 7:56=E2=80=AFPM Chao Gao <chao.gao@intel.com> wrote:
 >
->Should we warn for >48?
+> On Thu, Jun 04, 2026 at 02:59:45PM -0700, Jim Mattson wrote:
+> >?
+> >
+> >On Thu, Jun 4, 2026 at 12:58=E2=80=AFPM Sean Christopherson <seanjc@goog=
+le.com> wrote:
+> >>
+> >> On Wed, Jun 03, 2026, Jim Mattson wrote:
+> >> > On Thu, May 14, 2026 at 11:35=E2=80=AFPM Chao Gao <chao.gao@intel.co=
+m> wrote:
+> >> > >
+> >> > > >> EMR158. VMX-Preemption Timer May Expire Earlier With Certain La=
+rge Timer Values
+> >> > > >
+> >> > > >I assume the same erratum applies to previous generations as well=
+?
+> >> > >
+> >> > > Yes.
+> >> >
+> >> > This test still fails on our SKX, CLX, and ICX systems.
+> >> >
+> >> > Sean,
+> >> >
+> >> > Were you thinking of enforcing a cap on delta_tsc in vmx_set_hv_time=
+r()?
+> >>
+> >> Heh, to be honest, I wasn't thinking of a whole lot of nothing.  Falli=
+ng back to
+> >> hrtimers does seem like the easiest solution.
+> >
+> >I think vmx_set_hv_timer() should return -EINVAL for values impacted
+> >by this erratum. However, the only documented issue is for EMR, and we
+> >have not observed the problem on EMR. That's unsettling.
+>
+> Could you clarify what tests you ran?
 
-Maybe we should drop this check. If the TDX module cannot handle that case,
-advertising TDX_FEATURES0_DYNAMIC_PAMT is a bug and should be fixed by the
-module.
+Just tools/testing/selftests/kvm/x86/apic_bus_clock_test.
+
+It fails on SKX, CLX, and ICX. It passes on SPR,  EMR, and GMR.
+
+> I am using the reproducer from Yuan:
+> https://lore.kernel.org/kvm/20240708055559.rl4w5xfhj3uru6j2@yy-desk-7060/
+>
+> I write -1 to the VMX preemption timer, do VM-Enter, and have the guest
+> execute VMCALL to force a VM-Exit. On VM-Exit, we read back the preemptio=
+n
+> timer. The delta should be very small; otherwise, the platform likely has=
+ the
+> same issue.
+>
+> I tested several platforms, including EMR. The results are consistent wit=
+h the
+> erratum, i.e., I observed premature VMX preemption-timer VM-Exits, and th=
+e
+> documented limit did not trigger premature VMX preemption-timer VM-Exits =
+in my
+> testing.
+>
+> >
+> >Chao:
+> >
+> >1) Should we just assume that all Intel CPUs are affected?
+>
+> I think that is reasonable unless we have explicit evidence to exclude sp=
+ecific
+> parts.
+>
+> >
+> >2) Is there any compelling reason not to simplify the limit to 2^25?
+>
+> We can use 2^25 as a conservative bound, but it is much lower than necess=
+ary.
+> The current bound comes from theoretical analysis and was validated on mu=
+ltiple
+> platforms.
+
+Yes, but how often do guests program their local APIC timer to fire
+more than 2^(25 + IA32_VMX_MISC[4:0]) cycles in the future?
+
+> >
+> >3) Is it just coincidence that 25 + IA32_VMX_MISC[4:0] (on EMR) =3D=3D 3=
+2,
+> >or should the limit be calculated as 32 - IA32_VMX_MISC[4:0]?
+>
+> My understanding is that hardware scales the preemption-timer value and
+> converts it to a 32-bit core crystal clock counter, rather than directly
+> using a 32-bit TSC delta. IA32_VMX_MISC[4:0] likely participates in that
+> calculation.
+
+That doesn't definitively answer my question. Let me try to rephrase it.
+
+With respect to EMR, you wrote previously, "A mitigation for this
+erratum is for software to program the VMX preemption timer for values
+below 2^25 * CPUID.15H:EBX[31:0] / CPUID.15H:EAX[31:0]."
+
+My question is whether the exponent, 25, is a fixed value for all
+CPUs, regardless of their IA32_VMX_MISC[4:0]. It sounds like you are
+saying that the exponent may depend on IA32_VMX_MISC[4:0].
