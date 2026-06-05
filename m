@@ -1,185 +1,182 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D983563EB
-	for <kvm@vger.kernel.org>; Fri,  5 Jun 2026 14:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8553B1ECD;
+	Fri,  5 Jun 2026 14:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780669134; cv=none; b=n14geUFcflh1zb9UJHW2WrXwBPGS3Ve3iyG8ALRVZL2Wj0bLq6cqY4Rt75ebLo0c+UQpV46vKDovez695oE5tOtOf2B1K3XuOJB3xN2YUze3rSRvNPMCuoNudrsi3fwZWmRT3jN2qe8ur30N9K1qYuME/Uwou/GP2vS+k9Qsjd4=
+	t=1780669849; cv=none; b=K8l2AviuDuGjfVGoOJzBN4g1CuH43ir62VYBs5fu45WFESq0elN6XatJ0imE0UnmVLW5F6q+UEle4ZB0g4FS2SE+0RcUwqYX438qmswGraXhgwHTmmraM+6ul6YJRy/Ld/ZXxJFLFu0QGs8lJ5rySLTku+ViEEfrhmc8sdRbTuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780669134; c=relaxed/simple;
-	bh=TsTp+FBRvJpUoGimVtYkeJLacs7aQtLDqjxnfkcJZzo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KmhW9eZ3TxDAzelFmEI8hkXNB8hL48bKPBgRb5MHBi3v/VB7cUyTI58geq4yO9SuqsG9ZodQZwZ9CJZ5RNrIzDq6fOStIMSWpyhRuU/Zu8k2EiPLpw7byQ4c0Z1+sbTIxDHS9ImD6FWHL7qzY48jOI78XzgPpJDnL1QCdHswsDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=twdh3Ycp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=aje03b7T; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bcgFYDsR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0lw9JYz+; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1780669849; c=relaxed/simple;
+	bh=8T/5nsA/wlFXpvI3Www5yBG2dEEzVOH2TyRuWxqN+3o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FnBFgK+sTtRZd0JRqd/kR6AnQWGWbVAvbMesr+VgNgX9Upv/E+FVKMpbUElkMxKJUEGpLOWB6r19ZG/CQv3fgod5uukxibtKSKEZva8PdNqO03+1OOiuak/8zV2BNiBPnviH5t9OSNmHRFmtrKQgfDhvXIT1RL9Vg0n1vNUaCBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cKqqx7Lp; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="twdh3Ycp";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="aje03b7T";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bcgFYDsR";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0lw9JYz+"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0BAD36B37B;
-	Fri,  5 Jun 2026 14:18:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780669131; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m/2vtSOVVlfj9Agh7xSvbB4JlaTvw+8qJ6jd6ubSUFs=;
-	b=twdh3Ycpj7sLpdtQLNHPHPVYHRUwWYN1ERYSFlfNpWLlvkLA0KIVdpLoe+MqfZC/jHHPEi
-	5SE6qz9q2Bvzo0cFjHwu6nSBqwAIGKnsT9bajMWc+7xmiGk/J0UXb99XLLwsr3D3/TSBGB
-	J/SDEZQTpO9cTGYPpaFksAMMdoKOlEs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780669131;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m/2vtSOVVlfj9Agh7xSvbB4JlaTvw+8qJ6jd6ubSUFs=;
-	b=aje03b7Tic9FXztzOMcuo43pteJhJBSxjuxEKffB7FLclGTddFvkuRMLl45UMwpOdWgC4h
-	iEz7USw1rOPyxoBA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780669130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m/2vtSOVVlfj9Agh7xSvbB4JlaTvw+8qJ6jd6ubSUFs=;
-	b=bcgFYDsRcdd4pV0+YmhAxW/uDp5Zcs7qceR0wzqMJwd42pu3lPWjhVye3JBFczNNKRMtlr
-	SvtwPECY1mW0JAOryguTiNqljlgj5a3SvO9dnAXlWKXTM1fdx7lVCA2YvPplLOU7MSVRJ+
-	W07L3Mm5GJByLf+7UCMMO/KfM6fRlfU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780669130;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m/2vtSOVVlfj9Agh7xSvbB4JlaTvw+8qJ6jd6ubSUFs=;
-	b=0lw9JYz+L3a9x9UBe4lLhhiA+BVjxe5ZjhtALZqx7G20eElpexJpOeoySxzKsIT4sOZDN4
-	6AUznHoM01SKqzAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 969AF779A8;
-	Fri,  5 Jun 2026 14:18:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9ancGcnaImqhRAAAD6G6ig
-	(envelope-from <farosas@suse.de>); Fri, 05 Jun 2026 14:18:49 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Zide Chen <zide.chen@intel.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu
- <zhao1.liu@intel.com>, Peter Xu <peterx@redhat.com>, Sandipan Das
- <sandipan.das@amd.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Dongli Zhang
- <dongli.zhang@oracle.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, Zide
- Chen <zide.chen@intel.com>
-Subject: Re: [PATCH v4 1/6] target/i386: Don't save/restore
- PERF_GLOBAL_OVF_CTRL MSRs
-In-Reply-To: <20260604025546.19378-2-zide.chen@intel.com>
-References: <20260604025546.19378-1-zide.chen@intel.com>
- <20260604025546.19378-2-zide.chen@intel.com>
-Date: Fri, 05 Jun 2026 11:18:47 -0300
-Message-ID: <87ik7x6pfc.fsf@suse.de>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cKqqx7Lp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=S1+xA5OPImNvZdyaYwZzy4uNneY+HSte6Mte2bTUqTk=; b=cKqqx7Lp20LWJNAf4Cn5XN+pvI
+	FuJ/qqJOGvotmewxho4Hivl3hMZWNurfBle+v6NUQRudQ+5XdFdcZ2/KBYZW0Wn4zvsj9yMI/mdSf
+	c1xjloqFZ4l1ZPGgwsgd4ZR87ekVLUUDd4UFu3kDzx5DzuYnS+owVBqaERLwfTwnWWmZrcyGYVO92
+	MRYKaDzsmA4hRlXsYJg4gpFK0X5imdbLlPNiPdcELqZvuBvlUZH2r7dWVxks2X4aJSrUJFJUbyZtE
+	HA6pNdDKakMQQiFZGsX9wSkxPnTMfFcCU1bFGl9DznQh4m6+zh82frAC02dOiNPZ9Lb7ExjKka7N0
+	yGmVc4ZA==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wVVZE-0000000848a-24kV;
+	Fri, 05 Jun 2026 14:30:37 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wVVZE-0000000013n-2Not;
+	Fri, 05 Jun 2026 15:30:36 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paul Durrant <paul@xen.org>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 8/8] KVM: x86/xen: Use 32-bit locked ops in kvm_xen_inject_pending_events()
+Date: Fri,  5 Jun 2026 15:17:33 +0100
+Message-ID: <20260605143034.3603-9-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260605143034.3603-1-dwmw2@infradead.org>
+References: <20260605143034.3603-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,intel.com:email,oracle.com:email,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
+Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Zide Chen <zide.chen@intel.com> writes:
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
->
-> MSR_CORE_PERF_GLOBAL_OVF_CTRL and MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR
-> are write-only MSRs and reads always return zero.
->
-> Saving and restoring these MSRs is therefore unnecessary.  Replace
-> VMSTATE_UINT64 with VMSTATE_UNUSED in the VMStateDescription to ignore
-> env.msr_global_ovf_ctrl during migration.  This avoids the need to bump
-> version_id and does not introduce any migration incompatibility.
->
-> Cc: Dongli Zhang <dongli.zhang@oracle.com>
-> Cc: Sandipan Das <sandipan.das@amd.com>
-> Fixes: e587632c228e ("target/i386/kvm: support perfmon-v2 for reset")
-> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> Co-developed-by: Zide Chen <zide.chen@intel.com>
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-> ---
-> V3:
-> - Remove MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR as well.
-> ---
->  target/i386/cpu.h     |  3 ---
->  target/i386/kvm/kvm.c | 10 ----------
->  target/i386/machine.c |  4 ++--
->  3 files changed, 2 insertions(+), 15 deletions(-)
->
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 6b500737c3be..ff44487d0b6d 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -507,11 +507,9 @@ typedef enum X86Seg {
->  #define MSR_CORE_PERF_FIXED_CTR_CTRL    0x38d
->  #define MSR_CORE_PERF_GLOBAL_STATUS     0x38e
->  #define MSR_CORE_PERF_GLOBAL_CTRL       0x38f
-> -#define MSR_CORE_PERF_GLOBAL_OVF_CTRL   0x390
->  
->  #define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS       0xc0000300
->  #define MSR_AMD64_PERF_CNTR_GLOBAL_CTL          0xc0000301
-> -#define MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR   0xc0000302
->  
->  #define MSR_K7_EVNTSEL0                 0xc0010000
->  #define MSR_K7_PERFCTR0                 0xc0010004
-> @@ -2104,7 +2102,6 @@ typedef struct CPUArchState {
->      uint64_t msr_fixed_ctr_ctrl;
->      uint64_t msr_global_ctrl;
->      uint64_t msr_global_status;
-> -    uint64_t msr_global_ovf_ctrl;
->      uint64_t msr_fixed_counters[MAX_FIXED_COUNTERS];
->      uint64_t msr_gp_counters[MAX_GP_COUNTERS];
->      uint64_t msr_gp_evtsel[MAX_GP_COUNTERS];
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index a29f757c168a..1ac1803e8a2e 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -4290,8 +4290,6 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
->              if (pmu_version > 1) {
->                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_STATUS,
->                                    env->msr_global_status);
-> -                kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
-> -                                  env->msr_global_ovf_ctrl);
+The 64-bit path in kvm_xen_inject_pending_events() uses 'lock orq' and
+'lock andq' on vcpu_info->evtchn_pending_sel. If the vcpu_info was
+registered with only 4-byte alignment (valid for a 32-bit guest that
+later switches to 64-bit mode), this 8-byte locked operation can cause
+split-lock #AC exceptions on hosts with split_lock_detect=fatal.
 
-Assuming there's no weird nested virtualization scenario and combination
-of migration, resets and context-switching between L1/L2 that implicitly
-relies on this (effective) clearing of the MSR to work properly.
+Use the original 64-bit atomics when the vcpu_info is 8-byte aligned
+(the common case). Fall back to a 32-bit loop for the rare case where
+vcpu_info was registered at only 4-byte alignment. For compat guests
+(32-bit evtchn_pending_sel) the loop executes once. For native guests
+it executes a second iteration only if the high half has bits to
+deliver.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
+Reported-by: sashiko-bot@kernel.org
+Assisted-by: Kiro:claude-opus-4.6-1m
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ arch/x86/kvm/xen.c | 63 ++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 44 insertions(+), 19 deletions(-)
+
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 24e939ef5d64..e7b0263d5143 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -638,11 +638,17 @@ void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *v)
+  */
+ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ {
+-	unsigned long evtchn_pending_sel = READ_ONCE(v->arch.xen.evtchn_pending_sel);
+ 	struct gfn_to_pfn_cache *gpc = &v->arch.xen.vcpu_info_cache;
++	bool has_64bit_shinfo = kvm_xen_has_64bit_shinfo(v->kvm);
++	union evtchn_pending_sel {
++		u64 sel64;
++		u32 sel32[2];
++	} pending, *sel_addr;
++	struct vcpu_info *vi;
+ 	unsigned long flags;
+ 
+-	if (!evtchn_pending_sel)
++	pending.sel64 = READ_ONCE(v->arch.xen.evtchn_pending_sel);
++	if (!pending.sel64)
+ 		return;
+ 
+ 	/*
+@@ -661,31 +667,50 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 	}
+ 
+ 	/* Now gpc->khva is a valid kernel address for the vcpu_info */
+-	if (kvm_xen_has_64bit_shinfo(v->kvm)) {
+-		struct vcpu_info *vi = gpc->khva;
++	vi = gpc->khva;
++	sel_addr = gpc->khva + (has_64bit_shinfo ?
++				offsetof(struct vcpu_info, evtchn_pending_sel) :
++				offsetof(struct compat_vcpu_info, evtchn_pending_sel));
+ 
++	if (has_64bit_shinfo && IS_ALIGNED((unsigned long)sel_addr, sizeof(u64))) {
++		/*
++		 * 64-bit shinfo with 8-byte aligned vcpu_info (the common
++		 * case): use a single 64-bit atomic.
++		 */
+ 		asm volatile(LOCK_PREFIX "orq %0, %1\n"
+ 			     "notq %0\n"
+ 			     LOCK_PREFIX "andq %0, %2\n"
+-			     : "=r" (evtchn_pending_sel),
+-			       "+m" (vi->evtchn_pending_sel),
++			     : "=r" (pending.sel64),
++			       "+m" (sel_addr->sel64),
+ 			       "+m" (v->arch.xen.evtchn_pending_sel)
+-			     : "0" (evtchn_pending_sel));
+-		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
++			     : "0" (pending.sel64));
+ 	} else {
+-		u32 evtchn_pending_sel32 = evtchn_pending_sel;
+-		struct compat_vcpu_info *vi = gpc->khva;
+-
+-		asm volatile(LOCK_PREFIX "orl %0, %1\n"
+-			     "notl %0\n"
+-			     LOCK_PREFIX "andl %0, %2\n"
+-			     : "=r" (evtchn_pending_sel32),
+-			       "+m" (vi->evtchn_pending_sel),
+-			       "+m" (v->arch.xen.evtchn_pending_sel)
+-			     : "0" (evtchn_pending_sel32));
+-		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
++		/*
++		 * Use 32-bit operations to avoid splitlock on a vcpu_info
++		 * that is only 4-byte aligned (registered in 32-bit mode).
++		 * The loop copes with the extremely rare case that the
++		 * vcpu_info was registered in 32-bit mode and only enforced
++		 * 4-byte alignment, and then the VM was latched to 64-bit
++		 * mode afterwards. Which Xen tolerates, so so should KVM.
++		 */
++		int i = 0;
++		do {
++			asm volatile(LOCK_PREFIX "orl %0, %1\n"
++				     "notl %0\n"
++				     LOCK_PREFIX "andl %0, %2\n"
++				     : "=r" (pending.sel32[i]),
++				       "+m" (sel_addr->sel32[i]),
++				       "+m" (((u32 *)&v->arch.xen.evtchn_pending_sel)[i])
++				     : "0" (pending.sel32[i]));
++			i++;
++		} while (has_64bit_shinfo && i < 2 && pending.sel32[i]);
+ 	}
+ 
++	/* Assert that there is no need for compat for evtchn_upcall_pending */
++	BUILD_BUG_ON(offsetof(struct vcpu_info, evtchn_upcall_pending) !=
++		     offsetof(struct compat_vcpu_info, evtchn_upcall_pending));
++	WRITE_ONCE(vi->evtchn_upcall_pending, 1);
++
+ 	kvm_gpc_mark_dirty_in_slot(gpc);
+ 	read_unlock_irqrestore(&gpc->lock, flags);
+ 
+-- 
+2.54.0
 
