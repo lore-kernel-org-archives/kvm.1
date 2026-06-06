@@ -1,119 +1,138 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6992B346E40
-	for <kvm@vger.kernel.org>; Sat,  6 Jun 2026 14:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780757098; cv=none; b=VfGvQdk6+4NSIzR/Cscz8DW8D2gdM+yBC1xmODIzilqdDuhmrIlQlo2GD5hucQkiIoWStjkNQENDTW5SKXkGD1w5LW7RR4/akzafy2IR3wzGFkvqeSwAEdRtYPgnTWiS/2y7P4D1MYfXxxIW4GGcQe3XILR8VCcZsm5IioHsApE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780757098; c=relaxed/simple;
-	bh=y+Ou+RW/JftfJo+LY4g2rjPGS8YzJ/MKod2Duququq4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Huro0JUsqVDqiPlSyYpeKYW+kmR6JNUc29O2ZjDg1AMz1p/9wZeOML6DQRTdjYjgNdjo7e/dkl/ISEdWd6o9xGUjJ1IHs4n3o9oUB7QSWGZ1zsVMO881vmldzVYyg6Gs2Ip3K+DukqUc/WIqnA8oEWI/BdPnb63aVRDtHlUz9Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TiBoYWIX; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF671FFC59
+	for <kvm@vger.kernel.org>; Sat,  6 Jun 2026 15:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780758761; cv=pass; b=s1xsEwpVHK/FDlF454sBgRSbsDzyWxQtw3poHUbUNqlDR3Y+Gsp7IfTihDfs6Rd37NCip1I/T69NmFy3DpAEE0O/FSN7zvntR/yeax6JLo6TsHyNsjpwbOBacfOd1w2AWOSqDzIDyyUI0ekkInM9JT6JDib90btd0JhiKaMdi7c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780758761; c=relaxed/simple;
+	bh=In996MaRK1b1yryCiDiuIu5JXDlTrgSFPed3GJ9VBus=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T5/Wk09WEn/2kYaIhckKkh+0jsoILZJXAZLCyo2i1b/jDJyP7x3DqpwRlqnsNUEz2RzW9sza6u+O1FEvIW3XxzMAQ+NK8RjvCVMfVgTzpcfITwayeWameHXno2XT3CrtbmbouudCGzrSnXFqz6HLjkQHOHV0gp01L1HXeLq2754=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OhcrVXVO; arc=pass smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TiBoYWIX"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c85a2ca7bf7so1162798a12.3
-        for <kvm@vger.kernel.org>; Sat, 06 Jun 2026 07:44:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OhcrVXVO"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-68bd7ec2371so17385a12.1
+        for <kvm@vger.kernel.org>; Sat, 06 Jun 2026 08:12:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780758759; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dkhEXHrfUfoJpkZEFqNnIj8gQBbVTLNB/t/0yXoBUK3PBSSnQjEruYDkbe33dBfv/W
+         04omqGBvcVlyep4BF7uQWdiKtPtg6cZQWMTcqJ+D4FhKab0eOzJREaf6EeTnaVprqkPi
+         ztcX9ymjrFQJC71plAKi/yPkCmme3f73fm3NIz1MMkCLqUAwyelOolzDmxeTK2u68Jz0
+         6CZsxx5F7FyPsous2OKKu8ZAEQDivWV9VugeXWan4eNZgz9ZuzoQlq0Oc/8MXetkMpgw
+         Xab3TQ+NEJzYdDKGXelesQpnVzQjih5wn3mXpKfMQp3vexibUMPWm7J4fAZz/LXcv946
+         JjoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yaXDAm37FQ0K2c4b/udh9SWP+t2z0xMe7ch2lO/r3W4=;
+        fh=+DSbpPcM0Kk8dZr89L0UYAlApKAOwefu1woolTRf+yc=;
+        b=PDGv90Lta8peQTE4v1R9Uj2vPxaT7N9Lla+0RmOj/dvl5uYITW8iio2PEkg0cyeO61
+         Iwax1acMW1dJiiN65+zra1y7kqifqsuLULloxWoJrNBVNOdj4vfFc8ZDkNPXLc7sJDz/
+         lvHqASHNy3y82wHiim3r9ppDaPfkw1N7+1af3DZJIYO0aYAqGNh+Nr6kXx9fIvnYgKQW
+         Mh0wXvs7y4WyTlDJ02CBU1ejzs4j7NNvxRiR0Mijhi26PBD5YfViUDjOZ3tbXbldzTA0
+         ge2ir+hJnE3i089p8g/2V8KtHcMz8H6FTScKYrxEgsJaV2pBHwMJT5MvNLFCmNOR3O1D
+         vt9A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780757097; x=1781361897; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wYTa3IP1cU4Gwp1J6lpE/7RLamYxGpI0KGLIZWeGb5M=;
-        b=TiBoYWIX7twE56Ap7jBbj/ExTxlemPGs6cr4mpRURsW7xRJKeduuHmWXN3ZxdXYnXC
-         SlG49wUB/XsMGJzm03hegjX1UtIn8J9Xqju+Yq4hHY2FUf6STgmu6eZQxY8Yd6ikcSm+
-         fDc/tc46NxICqRxMLKZt1sp9b1lp/t8uHgTJJzEzeiOuydKYiAsE92N2yhLrw0DyI/NA
-         /03diL+bpOuxiUeDg62NCb9uIOFqMd469PJ3VZsWF4t6FCXoCULXEBdeju69SJVn+RLz
-         vm1YXuClERBYO5lEykhrNpmwAwL4gc8kzdjtWz3OFRrVl1GUNU8DRtk9hdKk9uA4mcGU
-         zqIA==
+        d=google.com; s=20251104; t=1780758759; x=1781363559; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yaXDAm37FQ0K2c4b/udh9SWP+t2z0xMe7ch2lO/r3W4=;
+        b=OhcrVXVOl4qt2NANBJfhglGH8mS4/L4fjXNODD/2p32cAultMvdJceT7adS9ERy46N
+         9xhczzDCLrA+2WMorhvuP4pybQLk74LZFcFvIxYqipfywO89BvgpW26Gnf7xlYqCGR3O
+         bDSIO2gqhZnBeMFsOAZSRNuKHYvkIFKJYrIFWeVLSd84GdfENf2jxLGZqJefdQ4eh0Fm
+         oJ66RruaN9ALTufcpS2H3svjJypVYFXZGkL1a4HuirEFTbAUU4HceTHJprjg7nBgNNV8
+         rRPGtDYRVdYw8DobDzvzYlBOLwEqQLyOK5JqJGPd7GU/YsJ8d0YA+UBa8pRtovEnE7zq
+         hLFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780757097; x=1781361897;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wYTa3IP1cU4Gwp1J6lpE/7RLamYxGpI0KGLIZWeGb5M=;
-        b=nfsGUZMP1gmk77sYAAL5X+cF2RUOGkby8SNvCGVcMIE5k0Sc41GHjxIBLsmFpneUmJ
-         A303EGoxLoR9btaRR47aA2sp+SO0BdT/s5WQgW/wOFg4Qg2g+R8rghNh2wGSSpsP24Yg
-         8p/ShoCzVu6vFpAHzH7VJM/FQoPTkBOvcLruauiZow/5MVkh+igCeJh4xNnGXlvwKxDO
-         O1DRJLCfDCWPs/ue0GUrtjs8n4utGUOpbYWfEm70nXvk+VF7S3sBH0c7ywInMumIonLS
-         Tz2IMUJRYKJRwci61TRHlEWvmTy/lLbmbfHXZ5zUsoTNNShUHVp6B4qLKjzqg/nkhuLm
-         ah8g==
-X-Gm-Message-State: AOJu0YyZJAYBI9g36OO2Zu1fmmQmarPy0e7nf8UQRhvb8YO6QrfP0POa
-	E2i38Knz2WBIqnk71FlTWkTsgJbXorWYCcqI5PFdc+WD9P/pUnwzANlh
-X-Gm-Gg: Acq92OGNOxyVWY78bjXPNm1M/x1SfAmuO37cQ4CB+A8dVCCgus4TYGA8DuxkwaP/ZnT
-	RkwZOczEVmuJ0qjzevO5hvbB9QkWjrXALw+yKwQebayF20HmN9HtWJsxS2mjQcuD5u2gwMk28pF
-	ly7+wx4BZ0JOMe4PAZOMwt03uRHm05opJ+7FwT1VWpwjVhOnI28RwHepEgiBocPYrssTvdP/IuL
-	+dd/j1DUdWOSo1LYCkV8T6x78JpT9PkWQ+qhymhWPniSKpDCot0hLUW1b52V/LdzadcRh/cZxuZ
-	fnbfMQbwJ+yWkaMw+oCuQBqqnzUI+ibvx11lLF/wohhez8/P00InbXwC02vcI73TWjgcM5JCTcq
-	8Fz+2n74lZ7DsY5LblebOK1iFdLW9z0yK9okc9dq+QxQlrfHjybgXlspL7welOWycPFYmk2RZO4
-	ILJmJCLGyKgjGAtKJ6b2f9P2PoRiDn6s7HCncmHhViU58LxDbuTCWynw==
-X-Received: by 2002:a05:6a21:a38b:b0:3b4:68e3:f14f with SMTP id adf61e73a8af0-3b4cccf7fa1mr10545721637.1.1780757096535;
-        Sat, 06 Jun 2026 07:44:56 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df0b2ddbsm10489084a12.24.2026.06.06.07.44.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Jun 2026 07:44:55 -0700 (PDT)
-Date: Sat, 6 Jun 2026 23:44:52 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: vkuznets@redhat.com, seanjc@google.com, pbonzini@redhat.com,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com
-Cc: kvm@vger.kernel.org, stable@vger.kernel.org, imv4bel@gmail.com
-Subject: [PATCH] KVM: x86: hyper-v: Bound the bank index in
- hv_is_vp_in_sparse_set()
-Message-ID: <aiQyZIJtO-2Aj_xN@v4bel>
+        d=1e100.net; s=20251104; t=1780758759; x=1781363559;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yaXDAm37FQ0K2c4b/udh9SWP+t2z0xMe7ch2lO/r3W4=;
+        b=AicwpWpqb5cNOoHInYMEiabPDqwnktGYCbMZ2elHjtQZz2X206JngFbcWN2DbgTrwf
+         Rlh4IpCM7zFKA6Y41abZEErHkNRHjakXbHOaAlUflnHJXkqKd4v+DNc13HmGecKbL/5L
+         yheZEY3W36CEhotoHHugC8J8kBlLc9ENgM0VmWsMiMhgHI7aeBNdsaU8wqPe/RBu/e7/
+         RhaqNFz2xifeW7o42TxnFACA6r1BxnO8yi4Y8XGhjQku4AP/IqdB46jaFTEfxQ2dTBQF
+         jQbVBMarUGa3s9IePqQ8vaXjKJUUYl5oEivOIKQgPp4M23KTId2B4HlwrUnGHkB08Z4h
+         zwjA==
+X-Forwarded-Encrypted: i=1; AFNElJ/OXBfd61rzsHAEaWmuVsQmhoyPFwm+5SRBsv8aE7vueWWUBWK6wXB7vBy6Ac3hAmGbwL0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6/sxIPLnwAQc1lwZ+X4kV90lA2TStU5MvI2HOdybvbNBnXuSK
+	hGP19YImkrGuo+TQKreN5zn4CwxxRr0sn03LFEgjXs6qbyn6zvQUqr8zy1ogZcZ2zZHwRGu9lAY
+	BxkzCex7wpwXMZqgi/QN4mXb73dHY4FcQ+/r7DoNu
+X-Gm-Gg: Acq92OGxgoqubOJZRwTEsMAbfApUH1g4hdGVnN3Yv2eHh0lnuDHOP+2eYqa1/QS5Icp
+	f9N8GtJ/l8svtSqMcnYgVc53lf+N/Ezk8u2UAWZKih6Jqj3uNktli6oDeQPUBW4QB0yD0Y2h+ms
+	FCfqziLzYhTMsTnQyzt1o7Bxo4FWGLybArzo6slqNBgonKFjHUbAs9raWGGC3Z+923bSV2SklSc
+	col3Wrk9Hr5Wq+CxTxglgruGY3UFWC7OATpDCWiGI+TVVdVVy/HVnUB9rR7RVpW8X+knw0VHjl3
+	dB7IhIPjBRdOd4uQTUIA6Vfnrl4Q
+X-Received: by 2002:a05:6402:4249:10b0:678:93b4:1fd3 with SMTP id
+ 4fb4d7f45d1cf-68fe8c55bc9mr79664a12.6.1780758758706; Sat, 06 Jun 2026
+ 08:12:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260527174347.2356165-1-jmattson@google.com> <178009472318.880870.7878635650921105255.b4-ty@google.com>
+In-Reply-To: <178009472318.880870.7878635650921105255.b4-ty@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Sat, 6 Jun 2026 08:12:26 -0700
+X-Gm-Features: AVVi8Ccv1u_7HnXyuP6YGCfDy3Eax8Y6OgqoRW_J3t3Bw-oamTD9jbnsNtAMOy8
+Message-ID: <CALMp9eQ-8h2F4HO8S666mJF3QzyH=0b30kC=n_9p7SMbBhxCMA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/5] KVM: x86: Virtualize AMD's "disable CPUID in usermode"
+To: Sean Christopherson <seanjc@google.com>
+Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, shuah@kernel.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, ctpence@google.com, David.Kaplan@amd.com, 
+	binbin.wu@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-hv_is_vp_in_sparse_set() uses valid_bit_nr, i.e. vp_id divided by
-HV_VCPUS_PER_SPARSE_BANK, as the test_bit() index into
-valid_bank_mask. valid_bank_mask is a single u64 and a sparse vCPU
-set holds at most HV_MAX_SPARSE_VCPU_BANKS banks, so valid_bit_nr
-must be less than HV_MAX_SPARSE_VCPU_BANKS.
+On Fri, May 29, 2026 at 3:47=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Wed, 27 May 2026 10:43:42 -0700, Jim Mattson wrote:
+> > AMD's "disable CPUID in usermode" feature is analogous to Intel's "CPUI=
+D
+> > faulting" feature, but it is advertised and activated differently.  The=
+ AMD
+> > feature is advertised via CPUID.80000021H:EAX.CpuidUserDis[bit 17] and
+> > activated by setting HWCR.CpuidUserDis[bit 35].
+> >
+> > Add virtualization support for the AMD feature.
+> >
+> > [...]
+>
+> Applied to kvm-x86 misc, thanks!
 
-The caller in kvm_hv_send_ipi_to_many() passes kvm_hv_get_vpindex(),
-which is below KVM_MAX_VCPUS and therefore always within that bound.
-The L2 direct flush branch in kvm_hv_flush_tlb(), however, passes
-hv_v->nested.vp_id, copied verbatim from the enlightened VMCS
-without any bounds check, so valid_bit_nr can reach
-HV_MAX_SPARSE_VCPU_BANKS or more and test_bit() then reads beyond
-valid_bank_mask.
+Oops! You haven't sent a pull request for this series yet, have you?
 
-Return false before the test_bit() when valid_bit_nr is not below
-HV_MAX_SPARSE_VCPU_BANKS, since such a VP cannot be present in the
-set.
+Our internal Sashiko asks:
 
-Cc: stable@vger.kernel.org
-Fixes: c58a318f6090 ("KVM: x86: hyper-v: L2 TLB flush")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
----
- arch/x86/kvm/hyperv.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> In kvm_set_msr_common(), the MSR_PLATFORM_INFO handler uses cpuid_fault_e=
+nabled() to prevent the host from clearing MSR_PLATFORM_INFO_CPUID_FAULT wh=
+ile CPUID faulting is enabled:
+>
+>    case MSR_PLATFORM_INFO:
+>         if (!msr_info->host_initiated ||
+>             (!(data & MSR_PLATFORM_INFO_CPUID_FAULT) &&
+>              cpuid_fault_enabled(vcpu)))
+>             return 1;
+>
+> If a VMM restores MSR_K7_HWCR before MSR_PLATFORM_INFO during live migrat=
+ion, and the guest had enabled AMD CPUID faulting, won't the write to MSR_P=
+LATFORM_INFO fail if it doesn't have MSR_PLATFORM_INFO_CPUID_FAULT set?
 
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 4438ecac9a89..d8782cb7ba02 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -1839,6 +1839,10 @@ static bool hv_is_vp_in_sparse_set(u32 vp_id, u64 valid_bank_mask, u64 sparse_ba
- 	int valid_bit_nr = vp_id / HV_VCPUS_PER_SPARSE_BANK;
- 	unsigned long sbank;
- 
-+	/* A bank index beyond the mask can't be set, the VP isn't in the set. */
-+	if (valid_bit_nr >= HV_MAX_SPARSE_VCPU_BANKS)
-+		return false;
-+
- 	if (!test_bit(valid_bit_nr, (unsigned long *)&valid_bank_mask))
- 		return false;
- 
--- 
-2.43.0
-
+Sadly, I think it's right. Even on AMD systems, MSR_PLATFORM_INFO is
+enumerated by KVM_GET_MSR_INDEX_LIST. It does come before MSR_K7_HWCR
+in that list, but userspace is free to restore the virtual MSRs in any
+order. For any sane AMD-hosted vCPU, MSR_PLATFORM_INFO will be zero.
