@@ -1,184 +1,189 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F4D2248A3
-	for <kvm@vger.kernel.org>; Sat,  6 Jun 2026 01:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB7722F388;
+	Sat,  6 Jun 2026 07:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780709122; cv=none; b=gmVbLHSX5S6lPAnkBHKNwa8Xw12yy7axmmHg2fckJ9/mEEec7HptfwvveNc/+lIWm59XZp5sDS5EGMBnxXYYN/mege8AcMKTGtb6+zC9ZQuSvS7i15hvxwmZ1wmja87DIfsK/ec30QYsoPXXjEokxtDNjiQLPaiFUsIIyUKCow0=
+	t=1780730438; cv=none; b=EFAOD5Hk2U2CGVqwoMa7x3qhWU1Vc4qcKt+UcDFD3wUyoJI8QCzWGXJLoMJlMGPonB1/anmQFJq1DGhe+HIvEZBo5WUWPQYVdNhVxrtwlF6IDeSb5d9VZsEuigVNRbPPfRCJomyPogWyu3pVRodcxuOrfizfmVoqWS6KjSVCK0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780709122; c=relaxed/simple;
-	bh=Zghga2gWe/toL9pwA3mj+ss7L7ysOvkr8dnfmHYAMhY=;
+	s=arc-20240116; t=1780730438; c=relaxed/simple;
+	bh=oLrCTrusbE1Dnnw5x61HR6wXcNqfs6DUM2PSApOo1rg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cX6W4HSFbfIcRggVYFUf4TK3/nn3JQ79Mu/ETmPvR9lO5iTTpeBvTslcZoQGnI9oWl/dTVWxOMaZR/w7+CTj8J7TJVnD5dWuKcTokMshC3pkogAYsaEIP9d4f23i8kHDx9ZulWcNhtiiBBKnqn8yDd5Ujhlj80cs1Mbf2uJ5pt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ka3Lwfnr; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=mUdXB4vFbEe3AvQipd0MK9PAiaDoqx+aZ+zqkslkokVgzBUpoyq+vPcu2E4aY35oNcnSlROJyWv0/kwephqGxAEyyL/uK6LkWVfaPf2TKvuy0jE6ecxqbY01KpxVzvmPvGu8V55ppz/dEhSTAysEgwKZHsHb/BwKXY1Vlcz2/lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RAD1qRWe; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ka3Lwfnr"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-36b8e1760ccso1618625a91.0
-        for <kvm@vger.kernel.org>; Fri, 05 Jun 2026 18:25:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780709120; x=1781313920; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xlHM4SwEYzgUkF12NjO2fDCV2nlBM3gTJYEltfg6ZDI=;
-        b=ka3LwfnrG4cmspNhsZMOJ8mMuDUSWbj3DXK3oQY19UDnkvlRgu2dcfPFNwQyuunNj3
-         QjzjNo4nbb0RfM7glSdfeKy9WzdaSDyfoAGNOsmjVxoj0TgvO1USmr7MvQGY5SPuxWTe
-         gBEIC2qCHLVDlN7DIyikkD10kWgTGlnwbhq5LvwHHuXjq1MbCK2Lbz/4gczSDUHCxynu
-         OU3wAd3kusx8fAKqNuD2Qo+mMXGLfaFGfnZjDxwVW+1E1Zcm/BgAtDYad07NwJINbv7d
-         KSS3PiE9Ao3eF+3OE1g0EJqpqrk8BxZZ3/cJBhYntmZSrXSFp45wpNiQJFFE0h8YZi5c
-         RDmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780709120; x=1781313920;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xlHM4SwEYzgUkF12NjO2fDCV2nlBM3gTJYEltfg6ZDI=;
-        b=odYP2Ky0+k9hPCLGrF4n6eZDBImz+mv6RXRQky3RpiTRZKTpoqtOTTh2FE0DwzNnT7
-         MKxSt7moPJ6JS/h4I5eBJ+pei43TNfvBa6CBrb8bHNEBI+dA5ttnula4mb2W7TtQMShO
-         5nce6i4NDueVZKeZPPX2u3GXaNGL1WXk7ltPSIeUwbZykpsAV/CLOs6M24kiOzVk6N+x
-         n8Gq61k30XfIz5MskcG/H7y20vm6Adgo6nje+Uo78QcE/N/jjWyr0tgYwLHtAfM9f4WP
-         E9SB4xmmG8y9QOh6/nndMOdPiRx/DwE/WHWwdovpm0/IVBaHQy1xsIRgL/jHEn5rJ7DL
-         O8EA==
-X-Forwarded-Encrypted: i=1; AFNElJ+YL/xtitClJWJU5zcqU47+ol65ktf+34WYajAXrfc2kZ3lzDTxiAKKIjnXTI7ZxSoP9mU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEKiVSrGjvfwMB4+pBpKrIb2IraH9bf/Ift3r+lMsp9ubL/i8h
-	oeVRz3+47uD9axOMLByuJXCWCP5mpCdc5GS60gFgBvI6JbxwStex+4Tw
-X-Gm-Gg: Acq92OGQlDR+xr3cUxPrmo00QgAhuHhQJONDGE5bODEyuRjcfa0kn9e/4yPm0DNFr2K
-	p5tPMBaBLacLaZSGCRcznee/MfZKfMpSdeRWE2n1tdmM38OO+6iFJp6h7q9dg9T9n45grOxdKhP
-	M1FOURtgyoV8lKHEGu7Ib0yCbAxZvjdHxdOdkHCiA7DGlfygAtCQRRy8iFiZ3y3JJw+OLYzOlxB
-	xSP4uLI0qwjrOCWkxQfR8aIGg+vbTPdJgaiT0axl32MtxXj72x4/u8u25kCKre++pOn7iYw5Z3T
-	tdlVK+KrcFaE+WP48AcO3DiKZJ3w1F3ciPxNdEL3rlmIqTqM5e9wr8SS3Gdsv6tYOmKgGaVgaIU
-	Nu3vHj4lPYAF0k0aSJXhf883xli+JmFKlmyqNUJyE0GMeK6tWAfAWafJVwZNUjqccArOMAVGKLV
-	oBsyxoqg==
-X-Received: by 2002:a17:90b:4b0b:b0:36b:a2cc:4857 with SMTP id 98e67ed59e1d1-370efdaca8fmr8095897a91.18.1780709119770;
-        Fri, 05 Jun 2026 18:25:19 -0700 (PDT)
-Received: from localhost ([2a12:a305:4::305d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c1664ae328sm101642545ad.84.2026.06.05.18.25.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 18:25:19 -0700 (PDT)
-Date: Fri, 5 Jun 2026 21:25:12 -0400
-From: Guodong Xu <docular.xu@gmail.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, 
-	devicetree@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org
-Subject: Re: [PATCH v3 08/15] riscv: Add Zic64b to cpufeature and hwprobe
-Message-ID: <3kr2pj3za5skl2auqezmdh32ctyw5uhswvro4jr6fqtyznp6lx@2sslriot2zcv>
-References: <20260603-rva23u64-hwprobe-v2-v3-8-5529a7b28384@gmail.com>
- <20260602232800.768311F00893@smtp.kernel.org>
- <CA+Ck9FbKRM0wjJMg1fQpdwmow8cf_zTfir7V6+T=CRxU+vomdg@mail.gmail.com>
- <20260604-rice-protegee-3a0b8e4cb609@spud>
- <u52q565xhv5s7gz3wbh4heplhbm4pv732s5kqvf4deiw6ceb4t@n4bnpzu5kabs>
- <20260604-activate-antidote-ebb9197b286f@spud>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RAD1qRWe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780730436; x=1812266436;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=oLrCTrusbE1Dnnw5x61HR6wXcNqfs6DUM2PSApOo1rg=;
+  b=RAD1qRWecXCMvpvwVDOq59r7m/iqnejGXzdjKE0jAichHNpgK376QoTM
+   oBxWEhS+No/Cea3WOo0DojLKZq45hy50TKYCx4g6r8tuX3ujSJXCQXzxv
+   ugmWFxJAmDlKtS67dO7wEqWB3D8w846OVxuoIjwwo5foc3wNlMfUiNvuM
+   jvqcg+jI+BB29KDoc+PdqQRggBDVqQC1dSmTKNR5VaLneUnRoTsdAuSRh
+   kFcsBhcuuimb9A6U++D9QmEwD88i9hF9jHmIcc6frfKFxOM0bVUPswtCS
+   3AmdlO0u618hQER/rEZKBUPv78uYsgrO/L4xdIDnnFs6nZPtNDJvPl0cL
+   w==;
+X-CSE-ConnectionGUID: oojvUS7xQZ6zAJlTc+uUHw==
+X-CSE-MsgGUID: kZjLmR7tQW69Rd1UZdzKgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11808"; a="93040148"
+X-IronPort-AV: E=Sophos;i="6.24,190,1774335600"; 
+   d="scan'208";a="93040148"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2026 00:20:35 -0700
+X-CSE-ConnectionGUID: XF/uVrspQyKHeQ4MdppY7g==
+X-CSE-MsgGUID: 2wq0+D3ZSgORxZGDxgERwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,190,1774335600"; 
+   d="scan'208";a="275258416"
+Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
+  by orviesa002.jf.intel.com with ESMTP; 06 Jun 2026 00:20:33 -0700
+Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wVlKY-000000002nd-3jPK;
+	Sat, 06 Jun 2026 07:20:30 +0000
+Date: Sat, 6 Jun 2026 09:19:51 +0200
+From: kernel test robot <lkp@intel.com>
+To: Divya Mankani <divyakm@cs.unc.edu>, kuba@kernel.org, pabeni@redhat.com
+Cc: oe-kbuild-all@lists.linux.dev, horms@kernel.org,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com,
+	Divya Mankani <divyakm@unc.edu>
+Subject: Re: [PATCH] vsock/virtio: fix memory leak in
+ virtio_transport_recv_listen
+Message-ID: <202606060907.y54Wngh6-lkp@intel.com>
+References: <20260605191922.12720-1-divyakm@unc.edu>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260604-activate-antidote-ebb9197b286f@spud>
+In-Reply-To: <20260605191922.12720-1-divyakm@unc.edu>
 
-On 2026-06-04 17:28, Conor Dooley wrote:
->On Thu, Jun 04, 2026 at 09:31:36PM -0400, Guodong Xu wrote:
->> On 2026-06-04 10:17, Conor Dooley wrote:
->> > On Thu, Jun 04, 2026 at 02:42:22PM +0800, Guodong Xu wrote:
->> > > On Wed, Jun 3, 2026 at 7:28 AM <sashiko-bot@kernel.org> wrote:
->> > > >
->> > > > > @@ -154,6 +154,23 @@ static int riscv_ext_zicbop_validate(const struct riscv_isa_ext_data *data,
->> > > > >       return 0;
->> > > > >  }
->> > > > >
->> > > > > +static int riscv_ext_zic64b_validate(const struct riscv_isa_ext_data *data,
->> > > > > +                                  const unsigned long *isa_bitmap)
->> > > > > +{
->> > > > > +     /*
->> > > > > +      * Zic64b mandates 64-byte naturally aligned cache blocks; cross-check the
->> > > > > +      * cbom/cbop/cboz block-size device-tree properties to avoid inconsistency.
->> > > > > +      */
->> > > > > +     if (riscv_cbom_block_size != 64 ||
->> > > > > +         riscv_cbop_block_size != 64 ||
->> > > > > +         riscv_cboz_block_size != 64) {
->> > > >
->> > > > [Severity: Medium]
->> > > > Will this check erroneously disable Zic64b if a platform does not implement
->> > > > all three CBO extensions?
->> > >
->> > > Zic64b is mandatory in RVA22/RVA23, which also mandate Zicbom,
->> > > Zicbop and Zicboz, so all three block sizes must be present on any Zic64b
->> > > platform.
->> >
->> > Where do you get that conclusion from? That's not how we treat any other
->> > extension defined in the profiles spec. My understanding was that even
->> > if things are defined in the profiles spec that they're fair game for
->> > independent use.
->>
->> Ok, I get your point. Agree, Zic64b/Zicbom/cbop/cboz can be implemented
->> on each hart independently (at least spec doesn't say no). With this in
->> mind, the validation of Zic64b should be like this:
->>
->>     if ((riscv_cbom_block_size && riscv_cbom_block_size != 64) ||
->>        (riscv_cbop_block_size && riscv_cbop_block_size != 64) ||
->>        (riscv_cboz_block_size && riscv_cboz_block_size != 64))
->
->Or you could check for the extension instead of the left-hand sides
->here, but I think that becomes more complex because you need to start
->returning EPROBE_DEFER sometimes etc.
+Hi Divya,
 
-Agree with you. riscv_ext_zicbom_validate() is already building its logic
-on riscv_cbom_block_size. Adding EPROBE_DEFER will make the logic look
-like code duplication, with no real gain:
+kernel test robot noticed the following build warnings:
 
-+       if ((riscv_cbom_block_size &&
-+            !__riscv_isa_extension_available(isa_bitmap, RISCV_ISA_EXT_ZICBOM)) ||
-+           (riscv_cbop_block_size &&
-+            !__riscv_isa_extension_available(isa_bitmap, RISCV_ISA_EXT_ZICBOP)) ||
-+           (riscv_cboz_block_size &&
-+            !__riscv_isa_extension_available(isa_bitmap, RISCV_ISA_EXT_ZICBOZ)))
-+               return -EPROBE_DEFER;
-+
-+       if ((__riscv_isa_extension_available(isa_bitmap, RISCV_ISA_EXT_ZICBOM) &&
-+            riscv_cbom_block_size != 64) ||
-+           (__riscv_isa_extension_available(isa_bitmap, RISCV_ISA_EXT_ZICBOP) &&
-+            riscv_cbop_block_size != 64) ||
-+           (__riscv_isa_extension_available(isa_bitmap, RISCV_ISA_EXT_ZICBOZ) &&
-+            riscv_cboz_block_size != 64)) {
-                 pr_err("Zic64b detected in ISA string, disabling as a CBO block size is not 64 bytes\n");
-                 return -EINVAL;
-  
-Just for record purpose. It's not my intention to do this. You won't see
-it in the next version. ^
+[auto build test WARNING on mst-vhost/linux-next]
+[also build test WARNING on linus/master v6.16-rc1 next-20260605]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->
->>     return -EINVAL;
->>
->> This will allow :
->> 1. A Zic64b hart with 0, 1, 2, or 3 CBO extension and block_size 64
->>    passes the validation.
->
->I'm not too worried about the 0 case here, people shouldn't be using
->zic64b if they don't have a corresponding extension after all.
->
->> 2. A Zic64b hart with CBO extensions but block_size is not 64
->>    fails the validation
->>
->> Thanks for the catch.
->>
->> I will fix that in v4.
->
->btw, can you fix your system time? It's like 12 hours in the future and
->that impacts the timestamps on emails you send.
+url:    https://github.com/intel-lab-lkp/linux/commits/Divya-Mankani/vsock-virtio-fix-memory-leak-in-virtio_transport_recv_listen/20260606-032557
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git linux-next
+patch link:    https://lore.kernel.org/r/20260605191922.12720-1-divyakm%40unc.edu
+patch subject: [PATCH] vsock/virtio: fix memory leak in virtio_transport_recv_listen
+config: s390-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260606/202606060907.y54Wngh6-lkp@intel.com/config)
+compiler: s390x-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260606/202606060907.y54Wngh6-lkp@intel.com/reproduce)
 
-Fixed. sorry for that. It should be correct this time (and future times).
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606060907.y54Wngh6-lkp@intel.com/
 
-BR,
-Gudong
+All warnings (new ones prefixed by >>):
 
->
->Cheers,
->Conor.
+   net/vmw_vsock/virtio_transport_common.c: In function 'virtio_transport_recv_listen':
+>> net/vmw_vsock/virtio_transport_common.c:1538:13: warning: unused variable 'ret' [-Wunused-variable]
+    1538 |         int ret;
+         |             ^~~
+>> net/vmw_vsock/virtio_transport_common.c:1535:28: warning: unused variable 'vsk' [-Wunused-variable]
+    1535 |         struct vsock_sock *vsk = vsock_sk(sk);
+         |                            ^~~
 
 
+vim +/ret +1538 net/vmw_vsock/virtio_transport_common.c
+
+c0cfa2d8a788fc Stefano Garzarella 2019-11-14  1528  
+06a8fc78367d07 Asias He           2016-07-28  1529  /* Handle server socket */
+06a8fc78367d07 Asias He           2016-07-28  1530  static int
+71dc9ec9ac7d3e Bobby Eshleman     2023-01-13  1531  virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
+c0cfa2d8a788fc Stefano Garzarella 2019-11-14  1532  			     struct virtio_transport *t)
+06a8fc78367d07 Asias He           2016-07-28  1533  {
+71dc9ec9ac7d3e Bobby Eshleman     2023-01-13  1534  	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+06a8fc78367d07 Asias He           2016-07-28 @1535  	struct vsock_sock *vsk = vsock_sk(sk);
+06a8fc78367d07 Asias He           2016-07-28  1536  	struct vsock_sock *vchild;
+06a8fc78367d07 Asias He           2016-07-28  1537  	struct sock *child;
+c0cfa2d8a788fc Stefano Garzarella 2019-11-14 @1538  	int ret;
+06a8fc78367d07 Asias He           2016-07-28  1539  
+71dc9ec9ac7d3e Bobby Eshleman     2023-01-13  1540  	if (le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_REQUEST) {
+a69686327e4291 Bobby Eshleman     2026-01-21  1541  		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+06a8fc78367d07 Asias He           2016-07-28  1542  		return -EINVAL;
+06a8fc78367d07 Asias He           2016-07-28  1543  	}
+06a8fc78367d07 Asias He           2016-07-28  1544  
+06a8fc78367d07 Asias He           2016-07-28  1545  	if (sk_acceptq_is_full(sk)) {
+a69686327e4291 Bobby Eshleman     2026-01-21  1546  		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+06a8fc78367d07 Asias He           2016-07-28  1547  		return -ENOMEM;
+06a8fc78367d07 Asias He           2016-07-28  1548  	}
+06a8fc78367d07 Asias He           2016-07-28  1549  
+d7b0ff5a866724 Michal Luczaj      2024-11-07  1550  	/* __vsock_release() might have already flushed accept_queue.
+d7b0ff5a866724 Michal Luczaj      2024-11-07  1551  	 * Subsequent enqueues would lead to a memory leak.
+d7b0ff5a866724 Michal Luczaj      2024-11-07  1552  	 */
+d7b0ff5a866724 Michal Luczaj      2024-11-07  1553  	if (sk->sk_shutdown == SHUTDOWN_MASK) {
+a69686327e4291 Bobby Eshleman     2026-01-21  1554  		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+d7b0ff5a866724 Michal Luczaj      2024-11-07  1555  		return -ESHUTDOWN;
+d7b0ff5a866724 Michal Luczaj      2024-11-07  1556  	}
+d7b0ff5a866724 Michal Luczaj      2024-11-07  1557  
+b9ca2f5ff7784d Stefano Garzarella 2019-11-14  1558  	child = vsock_create_connected(sk);
+06a8fc78367d07 Asias He           2016-07-28  1559  	if (!child) {
+a69686327e4291 Bobby Eshleman     2026-01-21  1560  		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+06a8fc78367d07 Asias He           2016-07-28  1561  		return -ENOMEM;
+06a8fc78367d07 Asias He           2016-07-28  1562  	}
+06a8fc78367d07 Asias He           2016-07-28  1563  
+06a8fc78367d07 Asias He           2016-07-28  1564  	lock_sock_nested(child, SINGLE_DEPTH_NESTING);
+06a8fc78367d07 Asias He           2016-07-28  1565  
+3b4477d2dcf270 Stefan Hajnoczi    2017-10-05  1566  	child->sk_state = TCP_ESTABLISHED;
+06a8fc78367d07 Asias He           2016-07-28  1567  
+06a8fc78367d07 Asias He           2016-07-28  1568  	vchild = vsock_sk(child);
+71dc9ec9ac7d3e Bobby Eshleman     2023-01-13  1569  	vsock_addr_init(&vchild->local_addr, le64_to_cpu(hdr->dst_cid),
+71dc9ec9ac7d3e Bobby Eshleman     2023-01-13  1570  			le32_to_cpu(hdr->dst_port));
+71dc9ec9ac7d3e Bobby Eshleman     2023-01-13  1571  	vsock_addr_init(&vchild->remote_addr, le64_to_cpu(hdr->src_cid),
+71dc9ec9ac7d3e Bobby Eshleman     2023-01-13  1572  			le32_to_cpu(hdr->src_port));
+06a8fc78367d07 Asias He           2016-07-28  1573  
+b09fac3ae8b655 Divya Mankani      2026-06-06  1574  	/* Lock the parent listener socket to synchronize with a potential
+b09fac3ae8b655 Divya Mankani      2026-06-06  1575  	 * simultaneous shutdown thread running __vsock_release().
+c0cfa2d8a788fc Stefano Garzarella 2019-11-14  1576  	 */
+b09fac3ae8b655 Divya Mankani      2026-06-06  1577  	lock_sock(sk);
+b09fac3ae8b655 Divya Mankani      2026-06-06  1578  
+b09fac3ae8b655 Divya Mankani      2026-06-06  1579  	/* Check if the listener socket was shut down while we were
+b09fac3ae8b655 Divya Mankani      2026-06-06  1580  	 * creating and configuring the child socket.
+b09fac3ae8b655 Divya Mankani      2026-06-06  1581  	 */
+b09fac3ae8b655 Divya Mankani      2026-06-06  1582  	if (sk->sk_shutdown == SHUTDOWN_MASK) {
+b09fac3ae8b655 Divya Mankani      2026-06-06  1583  		release_sock(sk);
+c0cfa2d8a788fc Stefano Garzarella 2019-11-14  1584  		release_sock(child);
+a69686327e4291 Bobby Eshleman     2026-01-21  1585  		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
+c0cfa2d8a788fc Stefano Garzarella 2019-11-14  1586  		sock_put(child);
+b09fac3ae8b655 Divya Mankani      2026-06-06  1587  		return -ESHUTDOWN;
+c0cfa2d8a788fc Stefano Garzarella 2019-11-14  1588  	}
+c0cfa2d8a788fc Stefano Garzarella 2019-11-14  1589  
+52bcb57a4e8a08 Dudu Lu            2026-04-13  1590  	sk_acceptq_added(sk);
+71dc9ec9ac7d3e Bobby Eshleman     2023-01-13  1591  	if (virtio_transport_space_update(child, skb))
+c0cfa2d8a788fc Stefano Garzarella 2019-11-14  1592  		child->sk_write_space(child);
+c0cfa2d8a788fc Stefano Garzarella 2019-11-14  1593  
+06a8fc78367d07 Asias He           2016-07-28  1594  	vsock_insert_connected(vchild);
+06a8fc78367d07 Asias He           2016-07-28  1595  	vsock_enqueue_accept(sk, child);
+71dc9ec9ac7d3e Bobby Eshleman     2023-01-13  1596  	virtio_transport_send_response(vchild, skb);
+06a8fc78367d07 Asias He           2016-07-28  1597  
+b09fac3ae8b655 Divya Mankani      2026-06-06  1598  	/* Safely release both locked objects */
+b09fac3ae8b655 Divya Mankani      2026-06-06  1599  	release_sock(sk);
+06a8fc78367d07 Asias He           2016-07-28  1600  	release_sock(child);
+06a8fc78367d07 Asias He           2016-07-28  1601  
+06a8fc78367d07 Asias He           2016-07-28  1602  	sk->sk_data_ready(sk);
+06a8fc78367d07 Asias He           2016-07-28  1603  	return 0;
+06a8fc78367d07 Asias He           2016-07-28  1604  }
+06a8fc78367d07 Asias He           2016-07-28  1605  
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
