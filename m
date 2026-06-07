@@ -1,84 +1,159 @@
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2842FB965
-	for <kvm@vger.kernel.org>; Sun,  7 Jun 2026 20:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3343B33067F;
+	Sun,  7 Jun 2026 20:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780864354; cv=none; b=oiySD3nXvjT7gdJXnoNrmyEQ6KyD/mmYaDtQzPhUqkLOMT5pZ4WFZgcXYf601RsrxWonjriFakebCOHUjQIen3mMOLk36sN8akuKzULTK3pmnRjuuDewOiMF8q9cGTc+nBzSEc62XfIewD8b+wrRjgIyKBTjSD67W6iYa/WYVY8=
+	t=1780865064; cv=none; b=TXqA3ZXiqBIQtjAz+bvP9Q91oU/GbtQhJPR8yHnX9AWcA2JQ2BzPaBDRojs7kRSPNeQrF7lnSAOe9ykG2mIz+1Cr6w0lqYZt+tnxtoH2swndNyoVyJ4CVW8A3YYLVsdtBYhuuYCKqXDEAhsniiHmAl8xyopR8UYw206RZoR2X5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780864354; c=relaxed/simple;
-	bh=cOB/P0EFdtxn7WE7O3sWfI8kdFMSLrrvuUnZYeovy4A=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=HF/kz4G71AxG/QpKS6a6heWlkFJRUQ9DbbSlHVbKiztbOpuNuxuo4FnjAuZpO/FhR8AxMvVlxnSVZ7DZS/D7P0zoVD2pdim3JtJQ9v02nHv0kp39t/MszjOIVc2N3QnpO/QSvl0p03L1y7c/ifQJ42PK6w80kZEajt8HK5NYZPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7e6e385508bso4361199a34.1
-        for <kvm@vger.kernel.org>; Sun, 07 Jun 2026 13:32:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780864352; x=1781469152;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=loy47b1cJMKBSei96C8sW4R+D0scmK3KfF0Drl1Jr+o=;
-        b=GBeZO41zoa5xs90j94XKsQpvq+r1SbXUcln7b9faXdQ0K8RKvwBwhh8jA4Ce9etA1F
-         xxdWieec+O/afQsbJvWlk+FrjmzUCVXBXMynTbd1+VbzYi5WmoUUvX45BFOQY3k1zIe1
-         fJ/D4mgICQRLjI+PerQGggBzZ1A/X04YtqmH1bXUJLefYb1X0GVizKjgmZ8wfzZrb7g7
-         bXqeYsF568ZhNTxcj3/7o4s/9wPIU+dKqH8gdBID2VZYXZI6273rB/JTI1MKSRi+YrRf
-         PVfxzz5cd8H6H/6zZ5ZycqsRMcgj5R1uLnwYXTKUvvTgaU4DkDZ3exf49oTF1wHSJjTv
-         ceiw==
-X-Gm-Message-State: AOJu0YyEt+K1cfJVZHUzlibwodHDkDxr1G3rhIxy+tNFAnYNLopP4QSo
-	JIpHCORj05/7r7Vl3DVLNfsIIk/HMrIx7DVb67fO4Swy7/SPdBA3rCYdbYUOrNHojiYYHJ0c5ei
-	PixLGVF8Ykrsspf/nMAeA6yGqkso7fgJd+k1/LyNiQ9a9qYRmcDXqMPz7Gkk=
+	s=arc-20240116; t=1780865064; c=relaxed/simple;
+	bh=g85QJn47EThEKRGwSKW/QRjWydFP9WGGTaOI6rbRGOM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jRXnpOKrNvzN9IjFizea165rOFXban1WM4BDtThQ8REExRHb/CQgWbx1idPvbqVmbkuf56RgtEcXNh2hynHyVIb+zmNdiDtjNPnqyXl89jEQHFlOY9d0hv4pxXbQEkl7uTcdAYtfy2Wu8TcAuazuoUnB/NupJ00/sNXxRxiYmEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXnDEAND; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXnDEAND"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65FB1F00893;
+	Sun,  7 Jun 2026 20:44:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780865062;
+	bh=vtESHvQ50fjYokNyM5J8XzrLXPw6aMyPidD3oI+lCZ4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ZXnDEANDtb+xOC1KS85q2WiGTTengV47I915Z2Mtje1Oj/mTpmAhnJ5BB6LaM9M6x
+	 JdsLogP9Z7F4kUBWG00enMpHYXpTE4ZeFn6U8YajWhcOuQ+TxTuJNnlhf+4CGaHQP/
+	 U9o25x8joZey0xd5TYzVYLOtORzHdtgcyPh1DoONAVsEwDmY2IPdGfIdakE+j7o6l5
+	 fSdgmkqwjhlYip1de+itpBUHLZprHZgYC17F6kd3kBrYAIurCxtnCtyVogUumO5N+2
+	 PtvBs0z+fgQuvNuETI/rUDE8iBosfhRGaWm9y+t2KbNQnjTtpN6q3pXgVsM3VEK5ey
+	 ddYtiroUGmI8w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wWKM1-0000000AFwE-0LVA;
+	Sun, 07 Jun 2026 20:44:21 +0000
+Date: Sun, 07 Jun 2026 21:47:41 +0100
+Message-ID: <87v7bu84cy.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: Add kvm_for_each_vncr_tlb() helper
+In-Reply-To: <20260607180815.85FBC1F00893@smtp.kernel.org>
+References: <20260607175745.297793-1-maz@kernel.org>
+	<20260607180815.85FBC1F00893@smtp.kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a4a:ec4b:0:b0:69d:8f47:f66e with SMTP id
- 006d021491bc7-69e68c27001mr6502790eaf.35.1780864352435; Sun, 07 Jun 2026
- 13:32:32 -0700 (PDT)
-Date: Sun, 07 Jun 2026 13:32:32 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a25d560.cfdcc988.c3351.0001.GAE@google.com>
-Subject: [syzbot] Monthly kvm report (Jun 2026)
-From: syzbot <syzbot+list241248dce8a952a0d450@syzkaller.appspotmail.com>
-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hello kvm maintainers/developers,
+On Sun, 07 Jun 2026 19:08:15 +0100,
+sashiko-bot@kernel.org wrote:
+> 
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> 
+> New issues:
+> - [Low] The `kvm_for_each_vncr_tlb` macro introduces an unbraced `if` statement, exposing callers to a dangling `else` vulnerability.
+> 
+> Pre-existing issues:
+> - [High] Concurrent lockless publication and observation of `vcpu->arch.vncr_tlb` lacks memory barriers and `READ_ONCE()`, risking uninitialized memory access.
+> - [High] Unconditional allocation in `kvm_vcpu_allocate_vncr_tlb` leaks memory if `kvm_arch_vcpu_run_pid_change` is restarted.
+> --
+> 
+> commit 03a7f368fcb61f7b51d0623ed1c15d57166b377e
+> Author: Marc Zyngier <maz@kernel.org>
+> Subject: KVM: arm64: Add kvm_for_each_vncr_tlb() helper
+> 
+> This commit introduces a new helper macro kvm_for_each_vncr_tlb() to 
+> iterate over vCPUs that have a valid vncr_tlb allocated. It then
+> converts kvm_invalidate_vncr_ipa() and invalidate_vncr_va() to use
+> this new iterator.
+> 
+> Link: https://lore.kernel.org/r/aiUvSbrWndQeUPc8@v4bel
+> 
+> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> > index 883b6c1008fbb..e25d7289aa9e5 100644
+> > --- a/arch/arm64/kvm/nested.c
+> > +++ b/arch/arm64/kvm/nested.c
+> > @@ -897,9 +897,21 @@ static void invalidate_vncr(struct vncr_tlb *vt)
+> >  		clear_fixmap(vncr_fixmap(vt->cpu));
+> >  }
+> >  
+> > +/*
+> > + * VNCR TLB invalidation occurs from MMU notifiers or TLBI instructions, and
+> > + * either can race against a vcpu not being onlined yet (no pseudo-TLB
+> > + * allocated). Similarly, the TLB might be invalid.  Skip those, as they
+> > + * obviously don't participate in the invalidation at this stage.
+> > + */
+> > +#define kvm_for_each_vncr_tlb(idx, vcpup, tlbp, kvm)	\
+> > +	kvm_for_each_vcpu(idx, vcpup, kvm)		\
+> > +		if (((tlbp) = vcpup->arch.vncr_tlb) &&	\
+> > +		    (tlbp)->valid)
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch, but can we read uninitialized
+> memory here due to a missing memory barrier?
+> 
+> When vcpu->arch.vncr_tlb is allocated in kvm_vcpu_allocate_vncr_tlb(),
+> it is assigned via a plain store without smp_store_release(), and not
+> under kvm->mmu_lock.
+> 
+> Concurrently, the MMU notifier path (which holds kvm->mmu_lock) iterates
+> over vCPUs and reads this pointer locklessly using a plain load here without
+> READ_ONCE() or smp_load_acquire(). 
+> 
+> On weakly-ordered architectures, could the observing CPU see a non-NULL
+> pointer before the zero-initialization of kzalloc_obj() is visible?
+> 
+> If so, tlbp->valid could be evaluated using uninitialized memory.
+> If it evaluates to true, invalidate_vncr() could read garbage from
+> vt->cpu and trigger the BUG_ON() in vncr_fixmap(), causing a host panic.
+> 
+> [Severity: High]
+> This is a pre-existing issue, but does kvm_vcpu_allocate_vncr_tlb() leak
+> memory if KVM_RUN is restarted?
+> 
+> In kvm_arch_vcpu_run_pid_change(), kvm_vcpu_allocate_vncr_tlb() is
+> called during the first KVM_RUN and unconditionally allocates the pointer
+> with kzalloc_obj().
+> 
+> If subsequent initialization steps in kvm_arch_vcpu_run_pid_change() fail
+> (like kvm_timer_enable()), it returns an error to userspace without
+> marking the vCPU as having run.
+> 
+> If userspace repeatedly invokes the KVM_RUN ioctl after a failure,
+> could kvm_vcpu_allocate_vncr_tlb() be executed again, overwriting the
+> previous vncr_tlb allocation without freeing it and leaking memory?
+>
 
-This is a 31-day syzbot report for the kvm subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/kvm
+Both issues can be solved in one go by taking the kvm->mmu_lock when
+updating vncr_tlb, relying on the release effects of the unlock, and
+testing for vncr_tlb before assignment. I'll hack something.
 
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 7 issues are still open and 67 have already been fixed.
-There is also 1 low-priority issue.
+> [Severity: Low]
+> Does the unbraced if in this macro expose callers to a dangling else
+> vulnerability?
+> 
+> While current usages are safely enclosed in braces, if a future caller uses
+> this macro inside an unbraced if block and attempts to attach an else,
+> the compiler could incorrectly bind it to this hidden internal if.
 
-Some of the still happening issues:
+This is C, and more importantly Linux-C. It's out to get you, on
+purpose, and by design. Try a scoped_guard() with a continue statement
+within a for loop to have some real fun, rather than this hypothetical
+'else' which would be most bizarre. Given the above and how its use is
+wildly promoted within the kernel, I'm not exactly worried.
 
-Ref Crashes Repro Title
-<1> 705     Yes   WARNING: locking bug in kvm_xen_set_evtchn_fast
-                  https://syzkaller.appspot.com/bug?extid=919877893c9d28162dc2
-<2> 123     Yes   WARNING in __kvm_gpc_refresh (3)
-                  https://syzkaller.appspot.com/bug?extid=cde12433b6c56f55d9ed
-<3> 4       No    KASAN: use-after-free Read in kvm_xen_shared_info_init
-                  https://syzkaller.appspot.com/bug?extid=0948c82180d475ad24e2
-<4> 26      Yes   BUG: unable to handle kernel paging request in vgic_its_save_tables_v0
-                  https://syzkaller.appspot.com/bug?extid=4ebd710a879482a93f8f
+	M.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+-- 
+Jazz isn't dead. It just smells funny.
