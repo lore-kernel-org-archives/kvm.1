@@ -1,194 +1,139 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EADA2512DE
-	for <kvm@vger.kernel.org>; Sun,  7 Jun 2026 17:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E9122370A
+	for <kvm@vger.kernel.org>; Sun,  7 Jun 2026 18:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780855110; cv=none; b=rMbM8zQ3rWpJGenL5/hh+r8dwPS6qa+jku0iaDCxMqMcmO4qcywICQZQZgkAaQir05RKx1riJf61a7YOk9nivAaXcwC+G0ccqhRWrWEjoUUkhEgVwHhFpEvHVLNYwdIaRMs/szZCpzqEthPrsKdxfXJLDZCUhyEhNb6aPZvt5ds=
+	t=1780855696; cv=none; b=hH4HpIBI4Y27N4a02LyQIRLyrBjLjMJ3MZxz9awIJgZ+/pBj6LQ3L58eJQZmT9u774oRMPhQWsGeDMotgDgD12uqwCMydnv2N3dX67x0HfsKIAAP/obTGWZqZUmKpAWqcCVVU5uwAFBaTiBQ1Kz04kJt2Vo7WV6Wf/UNDIpKDWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780855110; c=relaxed/simple;
-	bh=bY33RCJQEadB1FaV1As+lI256ULbTWOJA7RfVxN/ihQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sjMHdJSQaSx+JqZHuPY8PuI1hCtgBTgQukh0M8v/Fb0Fm6LelR+UPXEPufvPsgW31eCTS2PYd/HstIb3JFxn3XgzBbZ0eaKbHAaZDJIzmJLqyK6BsvzT+5bpu6rV5PYbrbPPPnplJuTt0LD/FX942PWD4+XPz6YW0nC6uQiSFUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GGfVAcJe; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780855696; c=relaxed/simple;
+	bh=O8eCoetuVwDwmef9Kb7N6RpcqXZBxo7WGWr+qjEhYP8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=cjL0om+QlvKUCboVthnMa6hhqObK5eAOlfKl/ZSeM27wVKUCwJQKBEaN7U2eoBNvxdRR0/7DRux2nMryfaaafM2/Ad7RedyYMrPZ7ysXwN+RBDZkWuWCEdYWxHVAbdN7v28T/VmxeKK2ieBpH2gYwGqw3SmRWsUfDdS4lsXlnuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bdrEUT3G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GGfVAcJe"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2c0b944f6edso37460475ad.2
-        for <kvm@vger.kernel.org>; Sun, 07 Jun 2026 10:58:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780855109; x=1781459909; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=c2RDc7vwCs214SZmSr6J53htm9NHLBxoNBLD3OPbxYs=;
-        b=GGfVAcJePwPZn9SyZlN5oZB6p60jJqINkxtQkvVjA4JRruGWPBz91LxmLSq1GfXJUP
-         OZebArlFAvYjvlz/rVRoWz07QWSGLGO6l/TLHqUHJcIjOmbAsuz2jWvREijwTk7uHoki
-         SNcUHa24EK9nJZpCMuanfVEE196SmtP7bWHOWCILCuLavnHuihOKQ6+NPZrrTOwkLiSO
-         swiiPamjnmnbd83CzctHxKfw23XDHhBWNpqGuYQXZa1jVBOF1DkfhIHxe1KJVbqQZNkP
-         a0BoVaKoUr40qFV6nllTpomwvLlMsbwpyLszRnN4ecfrMGYexDQatppzrFKZjU4eyR7s
-         4yFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780855109; x=1781459909;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c2RDc7vwCs214SZmSr6J53htm9NHLBxoNBLD3OPbxYs=;
-        b=hlT2AB2EipzF16MCma1MBqhFMKWME4xWVwr4vP73AFg5kCZ7FzZlNzLq01RnQIgQDR
-         FvGk620nvUHbsIpHrSc/saaVzPyunv50Hmy0mxuE0sOGVZGlg6xH7TO0eo0HWdhyqF2h
-         Z8yDqXEjsU344mGakOUpDCNAm9mplooqQ7no8VMMKej5MSJ5zX1CB73DcBsZPxxhERQF
-         1klYWNNNDlr3UjKpvRXqHE9snpcR5/X6GTzO9h7u0XNfRcfJe6Dcbi83rf4yxKbGGiH7
-         EG+cKjZ37o/JEuI7Z/Dw9hhuKmeHEbP2Nrm+uF9oRVRztly6gpahoatWrMbdMZBcP21m
-         95+g==
-X-Gm-Message-State: AOJu0Yy0TTry7Zkbr7+EYBvqjOCexkAd2tDpixH7lrMGGa31yGsPAuCh
-	34Rlcd32MJcyXhIINAEwoFmRJCCAU27gONR1BXcT3WsjkT3EyHeQHXXlVyoouwfTUKXL/w==
-X-Gm-Gg: Acq92OFd8dNE18gvU0Vq0flqu6O53r0GQL8xn8HmMLYADKPlfHX8mUN2j5f8i3VO+H4
-	OTfOzBRL2CNmIGRQyQHY+sHduZ1I7FjbFTOgYK5std6sYvrC5AEOfzL/FWOHZCbFivVJ4bwoxSq
-	gZF77xnA7oQtLjBgLlGu4iX37OwLIGy1NkgqqHk6kX9FRvkJ3E1At8fbTkESxaFOZDyOtXrBSpP
-	VDPNr9eYUEYhpT1RUTPpLSnYOUyC2goLUDc2FLXueHkhBH/ZM3e8m2pTtO+tuxKhz9O6xgPNsEt
-	r5o/07nDsRdeDMdEdnRhtN0o8q9DfiOmUd47Evi8lRg8yOEV9ubm2pb3BqsuYsjJ+DZ1Lvqj832
-	bAJbbn4CnOIbE5yCV1qD5wQGc0TfK832vXcWnsTXZ2xVWq6zvIPQn2DUmkOfCu1zuLjVKmxATSQ
-	X3FSjxRbwtyYMQrM2BEFoJ49wOmw07HaGns42j4jc=
-X-Received: by 2002:a17:903:8ce:b0:2c0:b4f5:41ea with SMTP id d9443c01a7336-2c1e7e93bf0mr125718445ad.17.1780855108460;
-        Sun, 07 Jun 2026 10:58:28 -0700 (PDT)
-Received: from localhost ([116.72.144.249])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629cf89sm156972585ad.56.2026.06.07.10.58.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Jun 2026 10:58:28 -0700 (PDT)
-Date: Sun, 7 Jun 2026 23:28:25 +0530
-From: shaikh kamaluddin <shaikhkamal2012@gmail.com>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	pbonzini@redhat.com, skhan@linuxfoundation.org,
-	me@brighamcampbell.com,
-	syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
-Subject: Re: [PATCH v2 0/1] mm/mmu_notifier: Add async OOM cleanup via
- call_srcu()
-Message-ID: <aiWxQSlfcAZCZrnw@acer-nitro-anv15-41>
-References: <CABgObfZQM0Eq1=vzm812D+CAcjOaE1f1QAUqGo5rTzXgLnR9cQ@mail.gmail.com>
- <20260430141639.10815-1-shaikhkamal2012@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bdrEUT3G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FBC1F00893;
+	Sun,  7 Jun 2026 18:08:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780855695;
+	bh=JpIgeYMPG/mzMTlguUOHjy+bt5AD9Ahxt6BlFXMVP1Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bdrEUT3GjeQhF+AQTZ+hWO9srSbcfjrCiCn6lZyy9JYPK3A0BzJ0PyBYjeMPEqkHl
+	 4zMlNnS/khV53Qmynrd6STGlSHJdCsPqRTJCfpkOLpHC0x3p6Bb12lBFvOoH6pcCJr
+	 NhjPU3xams8iyu+W34HuIjV6BrC736SBVmqp+Pu13YTQHf2Lv5pF0R9Eb/mbOQQG18
+	 E8S72W63qAGF3V7bqYEyuIwwAoHojfkEwCMq5CY91yW2lRAp7RKkyE55k8BaEW34py
+	 doOp8XMUzIaKQrlUp9A2dF4FjcKLLxpKqDAOu494drRNFK+YEXeVpx1tmB4IYrIRav
+	 O4vkWkKFfp06A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: arm64: Add kvm_for_each_vncr_tlb() helper
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Marc Zyngier" <maz@kernel.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260607175745.297793-1-maz@kernel.org>
+References: <20260607175745.297793-1-maz@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 07 Jun 2026 18:08:15 +0000
+Message-Id: <20260607180815.85FBC1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260430141639.10815-1-shaikhkamal2012@gmail.com>
 
-On Thu, Apr 30, 2026 at 07:46:39PM +0530, shaikh.kamal wrote:
-> This series implements the after_oom_unregister callback design
-> proposed by Paolo in v1 review [1].
-> 
-> The current OOM notifier path calls synchronize_srcu() inline from
-> mmu_notifier_oom_enter(), which can deadlock on PREEMPT_RT when
-> locks such as siglock are held. This series moves the cleanup to an
-> asynchronous context using call_srcu(), allowing the OOM path to
-> proceed without waiting for an SRCU grace period.
-> 
-> Subscribers opt in via a new after_oom_unregister callback in
-> struct mmu_notifier_ops.
-> 
-> KVM is the first (and currently only) user.
-> 
-> Changes since v1 [1]:
-> - Implement after_oom_unregister callback in struct
->   mmu_notifier_ops as proposed by Paolo
-> - Add mmu_notifier_oom_enter() to detach subscriptions and
->   schedule cleanup via call_srcu()
-> - Add mmu_notifier_barrier() (srcu_barrier wrapper) so consumers
->   can wait for pending callbacks during teardown
-> - Move call site from __oom_kill_process() to __oom_reap_task_mm()
->   to fix KASAN vmalloc-out-of-bounds observed in v1
-> - Use hlist_del_init() to keep hlist_unhashed() correct for the
->   kvm_destroy_vm() detection path, avoiding use-after-free on the
->   stack-allocated oom_list head
-> - Add KVM after_oom_unregister implementation to clear
->   mn_active_invalidate_count
-> - Update kvm_destroy_vm() to detect detached subscriptions via
->   hlist_unhashed() and use mmu_notifier_barrier() + mmdrop()
->   instead of mmu_notifier_unregister()
-> - Remove pr_err() on GFP_ATOMIC failure per checkpatch; the
->   trade-off is documented inline
-> 
-> Testing
-> -------
-> 
-> Developed and tested under virtme-ng with PREEMPT_RT, KASAN, and
-> lockdep enabled.
-> 
-> Test setup:
-> - simple_kvm.c: minimal userspace program that opens /dev/kvm,
->   creates a VM, registers memory, creates a vCPU, and sleeps
-> - CONFIG_DEBUG_VM-only debugfs interface (not part of this
->   submission) at /sys/kernel/debug/oom_reap_task to invoke
->   __oom_reap_task_mm() on a target task
-> 
-> Test sequence:
->   $ ./simple_kvm &
->   $ echo $! | sudo tee /sys/kernel/debug/oom_reap_task
-> 
-> Observed with patch applied:
-> - __oom_reap_task_mm() completes
-> - mmu_notifier_oom_enter() detaches the KVM subscription
-> - call_srcu() callback runs after (SRCU grace period)
-> - KVM after_oom_unregister clears mn_active_invalidate_count
-> - mmu_notifier_barrier() returns cleanly
-> - No KASAN reports, no kernel BUGs, lockdep clean
-> 
-> Stress runs (20 iterations) showed consistent results.
-> 
-> Reproducing the syzbot-reported issue
-> -------------------------------------
-> The issue reported by syzbot is reproducible on an unpatched
-> PREEMPT_RT kernel, triggering a "sleeping function called from
-> invalid context" warning in kvm_mmu_notifier_invalidate_range_start().
-> With this patch applied, the warning is no longer observed..
-> 
-> 
-> Known limitations
-> -----------------
-> 
-> Failure of GFP_ATOMIC allocation in mmu_notifier_oom_enter()
-> causes the corresponding after_oom_unregister callback to be
-> skipped. The OOM path cannot sleep without reintroducing the
-> deadlock this series fixes, and synchronous execution would
-> require waiting for SRCU readers. Cleanup still occurs later via
-> the normal unregister path. A mempool-backed allocator could
-> address this in the future.
->
-Hi Paolo, Lorenzo, Sean,
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-Gentle ping on v2, which implements the after_oom_unregister
-approach Paolo suggested on v1:
-  https://lore.kernel.org/all/20260430141701.10859-1-shaikhkamal2012@gmail.com/
+New issues:
+- [Low] The `kvm_for_each_vncr_tlb` macro introduces an unbraced `if` state=
+ment, exposing callers to a dangling `else` vulnerability.
 
-The one outstanding issue was a build failure on !CONFIG_MMU_NOTIFIER
-(arc/hexagon allnoconfig) from the kernel test robot, now fixed by
-adding the missing mmu_notifier_oom_enter() stub:
-  https://lore.kernel.org/all/20260607152830.8775-1-shaikhkamal2012@gmail.com/
+Pre-existing issues:
+- [High] Concurrent lockless publication and observation of `vcpu->arch.vnc=
+r_tlb` lacks memory barriers and `READ_ONCE()`, risking uninitialized memor=
+y access.
+- [High] Unconditional allocation in `kvm_vcpu_allocate_vncr_tlb` leaks mem=
+ory if `kvm_arch_vcpu_run_pid_change` is restarted.
+--
 
-So it builds clean and is ready for review whenever you have bandwidth.
+commit 03a7f368fcb61f7b51d0623ed1c15d57166b377e
+Author: Marc Zyngier <maz@kernel.org>
+Subject: KVM: arm64: Add kvm_for_each_vncr_tlb() helper
 
-Thanks,
-Kamal
-> [1] https://lore.kernel.org/all/CABgObfZQM0Eq1=vzm812D+CAcjOaE1f1QAUqGo5rTzXgLnR9cQ@mail.gmail.com
-> 
-> Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
-> Tested-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-> 
-> shaikh.kamal (1):
->   mm/mmu_notifier: Add async OOM cleanup via call_srcu()
-> 
->  include/linux/mmu_notifier.h |  10 +++
->  mm/mmu_notifier.c            | 123 +++++++++++++++++++++++++++++++++++
->  mm/oom_kill.c                |   3 +
->  virt/kvm/kvm_main.c          |  27 +++++++-
->  4 files changed, 162 insertions(+), 1 deletion(-)
-> 
-> --
-> 2.43.0
-> 
+This commit introduces a new helper macro kvm_for_each_vncr_tlb() to=20
+iterate over vCPUs that have a valid vncr_tlb allocated. It then
+converts kvm_invalidate_vncr_ipa() and invalidate_vncr_va() to use
+this new iterator.
+
+Link: https://lore.kernel.org/r/aiUvSbrWndQeUPc8@v4bel
+
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index 883b6c1008fbb..e25d7289aa9e5 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -897,9 +897,21 @@ static void invalidate_vncr(struct vncr_tlb *vt)
+>  		clear_fixmap(vncr_fixmap(vt->cpu));
+>  }
+> =20
+> +/*
+> + * VNCR TLB invalidation occurs from MMU notifiers or TLBI instructions,=
+ and
+> + * either can race against a vcpu not being onlined yet (no pseudo-TLB
+> + * allocated). Similarly, the TLB might be invalid.  Skip those, as they
+> + * obviously don't participate in the invalidation at this stage.
+> + */
+> +#define kvm_for_each_vncr_tlb(idx, vcpup, tlbp, kvm)	\
+> +	kvm_for_each_vcpu(idx, vcpup, kvm)		\
+> +		if (((tlbp) =3D vcpup->arch.vncr_tlb) &&	\
+> +		    (tlbp)->valid)
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can we read uninitialized
+memory here due to a missing memory barrier?
+
+When vcpu->arch.vncr_tlb is allocated in kvm_vcpu_allocate_vncr_tlb(),
+it is assigned via a plain store without smp_store_release(), and not
+under kvm->mmu_lock.
+
+Concurrently, the MMU notifier path (which holds kvm->mmu_lock) iterates
+over vCPUs and reads this pointer locklessly using a plain load here without
+READ_ONCE() or smp_load_acquire().=20
+
+On weakly-ordered architectures, could the observing CPU see a non-NULL
+pointer before the zero-initialization of kzalloc_obj() is visible?
+
+If so, tlbp->valid could be evaluated using uninitialized memory.
+If it evaluates to true, invalidate_vncr() could read garbage from
+vt->cpu and trigger the BUG_ON() in vncr_fixmap(), causing a host panic.
+
+[Severity: High]
+This is a pre-existing issue, but does kvm_vcpu_allocate_vncr_tlb() leak
+memory if KVM_RUN is restarted?
+
+In kvm_arch_vcpu_run_pid_change(), kvm_vcpu_allocate_vncr_tlb() is
+called during the first KVM_RUN and unconditionally allocates the pointer
+with kzalloc_obj().
+
+If subsequent initialization steps in kvm_arch_vcpu_run_pid_change() fail
+(like kvm_timer_enable()), it returns an error to userspace without
+marking the vCPU as having run.
+
+If userspace repeatedly invokes the KVM_RUN ioctl after a failure,
+could kvm_vcpu_allocate_vncr_tlb() be executed again, overwriting the
+previous vncr_tlb allocation without freeing it and leaking memory?
+
+[Severity: Low]
+Does the unbraced if in this macro expose callers to a dangling else
+vulnerability?
+
+While current usages are safely enclosed in braces, if a future caller uses
+this macro inside an unbraced if block and attempts to attach an else,
+the compiler could incorrectly bind it to this hidden internal if.
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260607175745.2977=
+93-1-maz@kernel.org?part=3D1
