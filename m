@@ -1,46 +1,46 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012038.outbound.protection.outlook.com [40.107.200.38])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011023.outbound.protection.outlook.com [40.93.194.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3A233F5AB
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 20:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8340438AC65
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 20:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.23
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780951387; cv=fail; b=Q/7xw4jyTzdmz3FfLO9J/hlXxkwFdiQBD+0/KfmrSRzmgA9Nlqbk1bKCjlgrftdKH9X+H7v85MRVR7m7SSmXKhvkSep7Mfr7YKES5zmWv/UKlsjNqVZ1SXFfYyYo2gkMNgWweDeKTeK7J0FUmUSy7wUt+/zZCEflMDjkrqCD8Ys=
+	t=1780951406; cv=fail; b=UJtU5tFtlV18EPMNclaSKoSodrn+uncwnv4N5EDEguPCLiTR+Oj7mEZsKpUe/ik6/mPpCra5rP84VJoF1lshA7Zf2LRNf7OEM6kw7hXu1T3/YX6VyLtE55bIQrnSGbBxKpLS8qJnxg5FX1OiZ9qyz9MW/bJMPbjZxMB7aiBAXTY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780951387; c=relaxed/simple;
-	bh=I+IWh8PpH4ShDNWcMdUENjEX6235p7MPNHBmEbCJ4Ek=;
+	s=arc-20240116; t=1780951406; c=relaxed/simple;
+	bh=o2OTfQCVgNjpCIu2Ozux7MwdfkHLFPFpJ5KGORev6e0=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Enqaba6tHZy49hoL516f6a0jLdluSIlpCChi1bGsM6InxLZ7wQTjAalHzXiq/ofPEZ3llQsZYGsmOMOrLq5cUU5YObrEs9AtnM6PPwienakSCh+fkX5jQlj6NNKTmVyrmbdoo3XpvG+Yh1zW3TR7RLMLT93SOt2W8njxTNVURJk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xjGQ2J2k; arc=fail smtp.client-ip=40.107.200.38
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZH/xndzWmyrAmFw/YkwHLhp7qMKFhVYsC92SscybQaLZA8pV5bQ6exgYlVSrP2K0+KpAbKFt9PHrykvYsKycMyjp4786+vtpHOyuiHHAnBFUvIm32oeO5FiRHeXdnsx/xylGShF5LvBRrfvM4hjm8gban5QNaIArQvfuvuhNrLc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=TfTXbeyM; arc=fail smtp.client-ip=40.93.194.23
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xjGQ2J2k"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="TfTXbeyM"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aaQWlMj2OmjyzG4i6XSinI5Az1XEqn+vp1THEOdI4rUbalflcq9WcwIBzC1n3zWsc3VAX8VoaUqGlv2Rlr62t/DjDNhibSxpfDt878etE9og14XpjGUmGRvhyauSUz6jLCaPkRe3wpCspWbh6cfuvmEQCpQM9/jRe8PkJGTaA5PV0BiM88MSpEJT6usmJQTuzEJs4AKLLYrNUSkaKwCXUphZJSVKG4/wRH/KoHN62xlE0kqSjn5aZiiGx72aWG7G/oyRxJVJSkj0YaIzDOFIBV4K1pDB/MLzsHBO8d2G8mmDVHPzIxagOhxu9f1gpxv3npI3QaVKD8yzwCf8obcnSA==
+ b=qOjnA6tk4dBPVp4++ca/sjTnkMixv0+1q9IkBXI16zbnE/Cvh4yzeVtcvqIU4bEZcLCeBTgLWIl4mPFWZxS6Fdv+EmxgLne7DpFDhvC0bkR5lerZiq0xviQju8Y96UL09T31/HueDH7c6DDT+XQ0kG5KG+NoJu+hcEkPe1E95pGn1nRZ7tpyCGQrTloVE74Dw1Cs7EYiXjzdkumawB6fpP8woGEG+QyckRwRHk2/v0iZoeR/oPPsH6ubqI8uwO62i9T0uaJ3iOPmyGcSnFtnJjWC5JW0F5Mede/cDNo1E3zf5+VB84vDv6Yhx6/k46vIo2+rWRLPQajiCaiWH+Q5mw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8VRgWXvT+NiziVGiykTeZz8RUTXsYuDDxEpb+DWwSfE=;
- b=YTb/1Z1lLh7vln1YQmgM0Mb21JLUVUx0B1A0MDyokccnUP1lvSn/rbeeKRpwvzt+5F9mP3lY0uU1VWGdHqBkmblUAgr1aSsFv6H0pIrEO0zUzvyXOD7KuyVTEj616Nhe9fzwaUOhKweEOrfEQEvSY2OP31VqN2R3DAb691GjDQ6pnqEUYgSUFIn8/gQUC4U4oWs4aGRkFyWVdAqiRhuKDb2MA3G/87fVF/SjHI7iGo3rhd/B0WceVagiXEP38a7NfraNZnYLa36/LU1pEurlZw3drImzA9VedCkjxEhk9MsROmJNprLl9HUdBVmM7hoIP/ouLD5DaGORvw5d66o5vw==
+ bh=caK17talZkMPn+wrd0iN633O6KBDgREuK95iwT+acX8=;
+ b=fPmqziggZzRauZ0GWv2O1qAotUpRzL2mV2BdFAwMie/kzKVoFU3LMszS48+atjZ8s/FAou6ObfD0rueUXbxrT9fPGDz16fqmsXdOemtt0nxOAYB3a1nxWSS1r4AeM12PGmhzEyHNnvzU2FYZWMSSoo86Xrqp59sET3VTXaA3UWZt69ueKPHTH5YQdSGKD3+D47lRTP27auqHjWmlCMXZe2r3nHgo8EQpNto2qDVy8CO+pQ+1i90644tLWf0MKSeiwKsaFqqciQHjXvSXFqu8d5/4U5c14+tk7nHS0M2ZBceR1elUCoj6v3A+RBfiLd5uLOYoetVenzJX4alj6gaOsA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8VRgWXvT+NiziVGiykTeZz8RUTXsYuDDxEpb+DWwSfE=;
- b=xjGQ2J2khIx/GhkTuYIYMFVZva6Mz8d4ZNVkxnIlbraeLa0v9TW3fXQ0iXWzeqEqxhLZJuGERw6OQ/f9TUL0l99K6YxeALwS0LSkrfCT096+8MdH2f2JlQVlfDvRtZeg/NFNEttIJN4rG1840G+PUIgp1rU1rhPk+5e2g/zy4sw=
-Received: from SA9P223CA0002.NAMP223.PROD.OUTLOOK.COM (2603:10b6:806:26::7) by
- MW5PR12MB5624.namprd12.prod.outlook.com (2603:10b6:303:19d::19) with
+ bh=caK17talZkMPn+wrd0iN633O6KBDgREuK95iwT+acX8=;
+ b=TfTXbeyMcRd2w0ppEtFLykkYhCktDzQ7z8HB+BhNTm9SDfzg6LTNSkV0KRhVofcATjMWTRfA1SqPjcg19CEqexDaQO39skVBVQogz8guUslmBsm3OxIfMBrPC6AXbYedb8ww/NjpGLab/gO2sOKep/9Wog0r+BbHYjy0sqLVxl8=
+Received: from SA1P222CA0192.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:3c4::13)
+ by SN7PR12MB7836.namprd12.prod.outlook.com (2603:10b6:806:34e::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Mon, 8 Jun 2026
- 20:42:56 +0000
-Received: from SA2PEPF00003AE6.namprd02.prod.outlook.com
- (2603:10b6:806:26:cafe::7d) by SA9P223CA0002.outlook.office365.com
- (2603:10b6:806:26::7) with Microsoft SMTP Server (version=TLS1_3,
+ 20:43:16 +0000
+Received: from SA2PEPF00003AE9.namprd02.prod.outlook.com
+ (2603:10b6:806:3c4:cafe::99) by SA1P222CA0192.outlook.office365.com
+ (2603:10b6:806:3c4::13) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.13 via Frontend Transport; Mon, 8
- Jun 2026 20:42:56 +0000
+ Jun 2026 20:43:16 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,28 +48,28 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SA2PEPF00003AE6.mail.protection.outlook.com (10.167.248.6) with Microsoft
+ SA2PEPF00003AE9.mail.protection.outlook.com (10.167.248.9) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Mon, 8 Jun 2026 20:42:56 +0000
+ 15.21.113.7 via Frontend Transport; Mon, 8 Jun 2026 20:43:16 +0000
 Received: from localhost (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 8 Jun
- 2026 15:42:55 -0500
-Date: Mon, 8 Jun 2026 15:21:45 -0500
+ 2026 15:43:16 -0500
+Date: Mon, 8 Jun 2026 15:42:40 -0500
 From: Michael Roth <michael.roth@amd.com>
 To: Markus Armbruster <armbru@redhat.com>
 CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, <pbonzini@redhat.com>,
 	<berrange@redhat.com>, <pankaj.gupta@amd.com>, <isaku.yamahata@intel.com>,
 	<xiaoyao.li@intel.com>, <chao.p.peng@linux.intel.com>, <david@kernel.org>,
 	<ashish.kalra@amd.com>, <ackerleytng@google.com>
-Subject: Re: [PATCH RFC 04/12] accel/kvm: Add CGS option to control in-place
- conversion support
-Message-ID: <2ein52r6fjl7gulyxuk6qe5nnppt4m5mjyjcjcceacakrviscw@qad6egy4vjb4>
+Subject: Re: [PATCH RFC 02/12] hostmem: Introduce dedicated memory backend
+ for guest_memfd
+Message-ID: <ftjw4gdopj7lwhwyzxqqqq4fgnn6qvjec4lkxlgwl4mxx6di6a@hxtznrzho7ui>
 References: <20260528000416.8161-1-michael.roth@amd.com>
- <20260528000416.8161-5-michael.roth@amd.com>
- <87wlwh5p0z.fsf@pond.sub.org>
- <bhawvkft4dhs6aq7jcajyf2zqk2fo6rta37jwit45l3z2txmh2@3yav2up5cthy>
- <87zf15la6q.fsf@pond.sub.org>
+ <20260528000416.8161-3-michael.roth@amd.com>
+ <871pep73o6.fsf@pond.sub.org>
+ <ge6uyrbigeoym74thogtolbe3e3jgya7hsibzrrqum6nevusys@ixh7rwe7lzsx>
+ <87v7btl9yx.fsf@pond.sub.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -78,148 +78,235 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <87zf15la6q.fsf@pond.sub.org>
+In-Reply-To: <87v7btl9yx.fsf@pond.sub.org>
 X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003AE6:EE_|MW5PR12MB5624:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8df30795-ddba-495f-4af2-08dec59e8540
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003AE9:EE_|SN7PR12MB7836:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6ba1eed5-2930-4c8c-6d35-08dec59e916d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|36860700016|376014|82310400026|22082099003|18002099003|11063799006|56012099006|4143699003;
+	BCL:0;ARA:13230040|36860700016|82310400026|1800799024|7416014|376014|13003099007|10063799003|18002099003|22082099003|11063799006|5023799004|3023799007|4143699003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	r1DuScfe1UMhEeSPWjvnCRw9yhHg06AQWFELPae5mWehK9GT596YthesjcFfoAb50Qslkl97OQUD7qiw6tcWqyqRIxfPCVst3zSHawsiUU2b2VzrIiygYhEYW+UvYbzNNtAu6yMTGmyK/gCnommpN93LhOjDMsKU4ldXec2/T8PtoAl6e/2r8/uWU/fr74uW/eq8fIoQJs628MNgFl0cVvmzxA3PezGEG+b7TNx0J39/XrHUfBdwiNqa0wd5sOrEp4ljTnb1lQIzBlo+3HBjHx+gTIR9DgAIspvKY8uiffT/nJoVcqDisBL93/iPjvraMvBrlEMd6s2EvVbV8LXRevKLAova/9FK8Y3T7ArRatBEIePigQvfCxmTYiyD8hsxn0+SVFJmaHnmvgzRCqonnnsPvLUgKZD6aNAl4eolLHjq+I0Q7t8JfZl+4nrlwI/IXZSSRPILMQMC3r4mutErWYGtNodHQmHzvTOv7fUjEI2Od/al+Xv6WanaaVqAbE+bixi57pLNOnbz2KiggVg/MtAiHTVf8TZU40pVQocj6Kl3vu3/e9weIRIJHidRB9PL8WJM5nGJCgfHHnQzH059Gey+OViZXLJMh0BLhRypxl6VnyKa65RpsQ7wtWvODn0VITEmZ6ISAGSDiWtfpronK+D8UxtdknWU19/ys7+4YZSadxirycqOadL+kw1RLOs5tJPznXG9lxrqJlFmBuIUDBndx4yq49nE1W1Vahf0BUM=
+	Mv/Zf0AT2yHA6yWlHFwxI37ADs0Lk7daUWmCFBc7h4r7TwQR8HKMS4Ei05OT4BLOUa6OWalTRPRpeFwBMq+JWbprHve9+ZhUFsv4Li+GujFYChneJ/+DUTs+xNaOHfiZ9ay2UEr6EtHarBSy+R2JERA2P0/y0CvMh54MG1LI03g1a01owDVuSxLarVgtkrD1w2C5CCcOPG8pSeUH/HQ4NXURzLM+uc+2hsGyrQAkAvYRHQeTUWoYjmlKI0cPd4kwgOUxej3s6xAp/b+8qiAU9lkZJ1dKylesOIAVMjfaWc+QEjCuNZafe02lua5K7pAgErgA2JRVvpowvqVpczdbAo4CDePYM8QdWDVr8A9aAcxRFz/CH5hKrX2X1ZEB6rNupSjDeS0A/QM3h2KXEyXBwLObb8Xv0pPc8KCW6knjnIh43ksjVk83UR7TsWp2hzxyQtjWaejxxkovKB0avZdIwoDTCTKX2ZGIB34HbYiGpP+j9MrpNPaCUBh7VHd4FbxFljaDGSyXfxG3AsdGBdjOVDBkqO6gI7bCfYyRaopafGs6DndKXBzyyIKALRZzd+FqTQdJt6n1doW/yaFMjwCpKcYmmbstQOcP7QuKyknBSHoQOQR+qfU1TlOF9JXN/I+/z+GGPR9/35b44xGnN1P47iQg1ouU/QmwSFg291FFkiGGVkK/26BqZpcl17XFCsnwOz+sm2XPPb+GLS0Z9WEVuRuwjo5uziZ+LHCfIOZItSM=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(36860700016)(376014)(82310400026)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(7416014)(376014)(13003099007)(10063799003)(18002099003)(22082099003)(11063799006)(5023799004)(3023799007)(4143699003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	qBiAwJ7hsX4eERXeD0HYvVDoM2+/GZacQnSoopEx+7AI3F8MPXMp+ONRgUUpMsGhwBDhyOuEvgT+ttMJ46IojnMP/Cfw5ke0NjXIG/YAfGozD5ugVkbqZUMAvxZQltyHB7t8sZ/sh4ZMW8sop/Q+XX+R+NEgH6w3NcJ7ahLGqPGpb6fmvzFgE0uh06Ce9zASUopIba/qcgbAQow9n3AqQ5+sgHO/YTyzh9nPm6ea9ABhObSVCi5xU2sY5fOyJMZGLYk6U6FCG+S+6veQ96DhcpVK4D+dwvrYlq2ICcQQRWjM32zsxUT0FsUcwFQyHR4UOfl4XzIc6ZjrDNnjuYMlLZzcl79OH+MOmRlyo6w52CwasuQfuqkwjigKDekhQYiw9M6etdECRUNK8fEx/6+o32PKeaKuAoqM6zeWGk04/QWHEUzcxGFafx16rHiJKTdx
+	MOHOOtl9FCNA+9QGC+gLBKG7fJCWnbsPhe/6RlOUjTp9b/S7OoydsMaNuu/h8Q+XiUt22IijQAp/ciw/Mn3ZFyZriKaxqCuVVsAOlfnO1+rKEnhMB1p5znmFkcvG2T2cuuP4zGahYCi1pExWxYkPB7A56PxNCxj6OVodPsjO8de4gKsbCeuY4JStaX6wddVS6E+b2vW3VlWf56Yc6/UpaXsa0ZCqMhQqAw2bCkjehcMXQei6r/ZgjLbaey0c3sR62s0eP4bFVG0x2TaprP7HP76RM+bSQd9ptyEdbXlyfr0frj6DoH6N1NvpJPZZN4fk/AR0AiSgg0hdQsUiSTCsWsaKRHXD7yLnRsn9AHx27DiCJAmPVUkRer/ujSNRTRMfCd8fwCgH4aucMEsQR1MeJAiHp6uQ2x7K4Ki7FaT/l06OeDzLIc1nmqqDW/mdtcIh
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 20:42:56.3560
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 20:43:16.7943
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8df30795-ddba-495f-4af2-08dec59e8540
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ba1eed5-2930-4c8c-6d35-08dec59e916d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003AE6.namprd02.prod.outlook.com
+	SA2PEPF00003AE9.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR12MB5624
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7836
 
-On Mon, Jun 08, 2026 at 10:15:41AM +0200, Markus Armbruster wrote:
+On Mon, Jun 08, 2026 at 10:20:22AM +0200, Markus Armbruster wrote:
 > Michael Roth <michael.roth@amd.com> writes:
 > 
-> > On Tue, Jun 02, 2026 at 10:23:40AM +0200, Markus Armbruster wrote:
+> > On Tue, Jun 02, 2026 at 10:22:01AM +0200, Markus Armbruster wrote:
 > >> Michael Roth <michael.roth@amd.com> writes:
 > >> 
-> >> > For confidential guests, guest_memfd is currently used only for private
-> >> > guest memory, and normal guest memory comes from the configured memory
-> >> > backend just as it does for a non-confidential guest. It is now possible
-> >> > to use the same physical memory to back a particular GPA regardless of
-> >> > whether it is in a shared or private state. This avoids the need to
-> >> > rely on discarding memory between shared/private conversions (to avoid
-> >> > doubled memory usage), and is intended to be the primary mode of using
-> >> > guest_memfd for confidential guests moving forward, and future features
-> >> > like hugepage support will likely require it.
+> >> > In the initial implementation of guest_memfd in the linux kernel, it
+> >> > was not possible to map memory into userspace for direct access; instead
+> >> > the memory provided by the memory backend would be used for cases where
+> >> > a confidential VM wants to access normal/unprotected/unencrypted memory
+> >> > that can be used for shared memory use cases, and for access to private
+> >> > memory a guest_memfd could be associated with the same memslot. A memory
+> >> > 'private' attribute set via KVM_SET_MEMORY_ATTRIBUTES could then be used
+> >> > to have KVM route to the approprate backing memory.
 > >> >
-> >> > Add an option to enable this support. Since ConfidentialGuestSupport is
-> >> > already used to track some guest_memfd-related functionality (e.g.
-> >> > whether it is required for the configured machine), similarly introduce
-> >> > this option as a property of ConfidentialGuestSupport.
+> >> > In that model, it didn't make sense to introduce a specific backend for
+> >> > guest_memfd, since there was always a generally need to have a separate
+> >> 
+> >> a general need?
+> >
+> > Much nicer :)
+> >
+> >> 
+> >> > backend type to handle shared memory access/allocation. Instead, QEMU
+> >> > configures the guest_memfd support for the associated memslots
+> >> > internally for cases where it is running a confidential VM.
 > >> >
-> >> > Also add the KVM-specific checks to enable this support, but leave the
-> >> > option disabled until other required changes are implemented for
-> >> > CGS variants that intend to make use of KVM's in-place conversion
-> >> > support.
+> >> > However, with recent changes in guest_memfd kernel support, it is now
+> >> > possible to mmap() a guest_memfd FD into userspace and use it for shared
+> >> > memory, as well as continue to use the same physical pages for the same
+> >> > GPA ranges after they are converted to private ("in-place conversion").
+> >> >
+> >> > To enable the use of this mmap()-able/guest_memfd-provided memory to be
+> >> > used for normal/shared memory instead of just for private memory,
+> >> > introduce a dedicated guest_memfd memory backend that can be used both
+> >> > for confidential VMs that wish to make use of in-place conversion, as
+> >> > well as for non-confidential VMs that just want to make use of
+> >> > guest_memfd for normal memory (which can be useful both for testing as
+> >> > well as a stepping stone to things like software-protected VMs where the
+> >> > host can be trusted to provided some additional degree of isolation for
+> >> > the VM independently of hardware support).
 > >> >
 > >> > Signed-off-by: Michael Roth <michael.roth@amd.com>
 > >> 
 > >> [...]
 > >> 
 > >> > diff --git a/qapi/qom.json b/qapi/qom.json
-> >> > index 502fafeb15..037c078799 100644
+> >> > index dd45ac1087..502fafeb15 100644
 > >> > --- a/qapi/qom.json
 > >> > +++ b/qapi/qom.json
-> >> > @@ -1014,6 +1014,21 @@
-> >> >    'if': 'CONFIG_IGVM',
-> >> >    'data': { 'file': 'str' } }
+> >> > @@ -661,7 +661,8 @@
+> >> >  # @share: if false, the memory is private to QEMU; if true, it is
+> >> >  #     shared (default false for backends memory-backend-file and
+> >> >  #     memory-backend-ram, true for backends memory-backend-epc,
+> >> > -#     memory-backend-memfd, and memory-backend-shm)
+> >> > +#     memory-backend-memfd, memory-backend-shm, and
+> >> > +#     memory-backend-guest-memfd)
+> >> >  #
+> >> >  # @reserve: if true, reserve swap space (or huge pages) if applicable
+> >> >  #     (default: true) (since 6.1)
+> >> > @@ -780,6 +781,18 @@
+> >> >              '*seal': 'bool' },
+> >> >    'if': 'CONFIG_LINUX' }
 > >> >  
 > >> > +##
-> >> > +# @ConfidentialGuestSupportProperties:
+> >> > +# @MemoryBackendGuestMemfdProperties:
 > >> > +#
-> >> > +# Properties for ConfidentialGuestSupport base class.
-> >> > +#
-> >> > +# @convert-in-place: If true, the same physical pages are reused
-> >> > +#     when memory is converted between shared and private states.
-> >> > +#     If false (default), separate allocations are used depending
-> >> > +#     on whether the page is private or shared.
+> >> > +# Properties for memory-backend-guest-memfd objects.
 > >> > +#
 > >> > +# Since: 11.1
 > >> > +##
-> >> > +{ 'struct': 'ConfidentialGuestSupportProperties',
-> >> > +  'data': { '*convert-in-place': 'bool' } }
+> >> > +{ 'struct': 'MemoryBackendGuestMemfdProperties',
+> >> > +  'base': 'MemoryBackendProperties',
+> >> > +  'data': {},
+> >> > +  'if': 'CONFIG_LINUX' }
 > >> > +
+> >> 
+> >> Identical to MemoryBackendProperties so far.
+> >> 
 > >> >  ##
-> >> >  # @SevCommonProperties:
+> >> >  # @MemoryBackendShmProperties:
 > >> >  #
-> >> > @@ -1038,6 +1053,7 @@
-> >> >  # Since: 9.1
-> >> >  ##
-> >> >  { 'struct': 'SevCommonProperties',
-> >> > +  'base': 'ConfidentialGuestSupportProperties',
-> >> >    'data': { '*sev-device': 'str',
-> >> >              '*cbitpos': 'uint32',
-> >> >              'reduced-phys-bits': 'uint32',
+> >> > @@ -1234,6 +1247,8 @@
+> >> >      'memory-backend-file',
+> >> >      { 'name': 'memory-backend-memfd',
+> >> >        'if': 'CONFIG_LINUX' },
+> >> > +    { 'name': 'memory-backend-guest-memfd',
+> >> > +      'if': 'CONFIG_LINUX' },
+> >> >      'memory-backend-ram',
+> >> >      { 'name': 'memory-backend-shm',
+> >> >        'if': 'CONFIG_POSIX' },
+> >> > @@ -1312,6 +1327,8 @@
+> >> >        'memory-backend-file':        'MemoryBackendFileProperties',
+> >> >        'memory-backend-memfd':       { 'type': 'MemoryBackendMemfdProperties',
+> >> >                                        'if': 'CONFIG_LINUX' },
+> >> > +      'memory-backend-guest-memfd': { 'type': 'MemoryBackendGuestMemfdProperties',
+> >> > +                                      'if': 'CONFIG_LINUX' },
 > >> 
-> >> Why use a base type instead of simply adding @convert-in-place to
-> >> SevCommonProperties?
-> >> 
+> >> You could use MemoryBackendProperties here, and drop
+> >> MemoryBackendGuestMemfdProperties, similar to how memory-backend-ram
+> >> is done.
 > >
-> > My thinking was that TDX and other implementations would similarly enable
-> > this through their CGS implementation, so I went ahead and carved out a
-> > set of common properties that ConfidentialGuestSupport implementations
-> > could use the same ,convert-in-place=true option (or set it by default
-> > for newer implementations)
+> > That's true. I think I was anticipating it being warranted at some point, but
+> > that doesn't need to happen here.
+> >
+> >> 
+> >> >        'memory-backend-ram':         'MemoryBackendProperties',
+> >> >        'memory-backend-shm':         { 'type': 'MemoryBackendShmProperties',
+> >> >                                        'if': 'CONFIG_POSIX' },
+> >> 
+> >> Should we provide guidance on when to use which memory backend?  The
+> >> commit message provides some clues...
+> >
+> > Were you thinking from a schema perspective, or something more
+> > user-facing?
 > 
-> How confident are we in future reuse by TDX and others?
+> The QAPI schema doc comments become the QEMU QMP Reference Manual, which
+> I believe is the first stop for "how do I use this?"
 > 
-> If there are doubts, refactoring for reuse when reuse happens would be
-> smarter.  The refactoring would be a bit of churn, but not all that
-> much.
-> 
-> If it's something like "pretty much inevitable", preparing the reuse now
-> saves us that churn, and makes sense.
-> 
-> Judgement call, i.e. you decide.
+> Sometimes, a full answer just doesn't fit there comfortably.  So we put
+> it elsewhere, and point to it from the QMP Reference.
 
-Hoping to hear back from the TDX folks on whether there's anything
-missing to switch things on there too, at which point maybe it won't be
-premature to have a common type. But yah, until then I can plan to keep
-the option specific to SEV/SevCommonProperties. As you said, not a big
-deal to move it out to a common base after-the-fact.
-
-> 
-> > It is sort of tied to the 'allow_convert_in_place' flag that is part of
-> > the common ConfidentialGuestSupport object struct, so the property
-> > handling is sort of tied to the common ConfidentialGuestSupport base
-> > class as well rather than something implementation-specific.
-> 
-> Valid point.  Not sure how much weight to assign to it, though.
-
-Yah, I was purposely trying to make it easy for other platforms to switch
-it on, but if we do for the time being keep it limited to SNP, then
-there's probably other ways to go about it.
-
-> 
-> > Not sure if there are better ways to handle all that though.
-> 
-> Work your rationale into the commit message, please.
-> 
-
-Will do!
+Makes sense, I'll cross reference the documentation and provide some
+background on how the backends / options are used.
 
 Thanks,
 
 Mike
+
+> 
+> > Either way, docs/system/confidential-guest-support.rst could definitely
+> > use some sprucing up as part of this series, so I can cover this aspect
+> > there as well.
+> >
+> >> 
+> >> > diff --git a/qemu-options.hx b/qemu-options.hx
+> >> > index 96ae41f787..3c754c149f 100644
+> >> > --- a/qemu-options.hx
+> >> > +++ b/qemu-options.hx
+> >> > @@ -5858,6 +5858,11 @@ SRST
+> >> >          off will cause a failure during allocation because it is not supported
+> >> >          by this backend.
+> >> >  
+> >> > +    ``-object memory-backend-guest-memfd,id=id,prealloc=on|off,size=size,host-nodes=host-nodes,policy=default|preferred|bind|interleave``
+> >> > +        Creates an anonymous memory file backend object that has similar
+> >> > +        semantics to memfd, but is also usable as private memory when
+> >> > +        running as a confidential VM. (Linux only)
+> >> 
+> >> There is no object type "memfd".  Do you mean "memory-backend-memfd"?
+> >
+> > Yes, will update.
+> >
+> >> 
+> >> If yes, that one has additional properties @hugetlb, @hugetlbsize, and
+> >> @seal.  Why are they not needed for memory-backend-guest-memfd?
+> >
+> > ATM, hugetlb is not enabled for guest_memfd in the kernel. It's likely the
+> > same set of options will apply, but there are also efforts to do things like
+> > plumb DAX memory through guest_memfd for confidential VMs where maybe we end
+> > up needing to be a bit more flexible/creative... not sure, but it seemed
+> > like a good idea to give ourselves a clean slate since the support isn't
+> > there yet anyway.
+> 
+> I gather these properties cannot work today.  I agree we shouldn't add
+> them until they do.
+> 
+> > For seal, I'm not aware of any plan to support that for guest_memfd, so
+> > it seems like unecessary baggage to pull in.
+> 
+> Likewise.
+
+Sounds good, though I'm sort of now leaning more toward the
+memory-backend-memfd,guest_memfd=on approach that Peter implemented[1]
+since it requires less assumptions about what we'll need to do later
+(i.e. if we want to introduce a backend specifically for guest_memfd
+we'll still have the option, but if we do it now, but decide to go back
+to re-using the existin *-memfd/*-file/*-etc backends because the
+option format seems more familiar to QEMU users, then the dedicated
+backend is a little bit more of a pain to turn around and try to
+deprecate.
+
+Not sure yet what we'll end up doing though, but hopefully for v2 we'll
+have a plan for what to do initially at least.
+
+Thanks,
+
+Mike
+
+[1] https://lore.kernel.org/qemu-devel/aiCAFWKEAHkPLCO5@x1.local/
+
+> 
+> > Thanks,
+> >
+> > Mike
+> >
+> >> 
+> >> > +
+> >> >      ``-object iommufd,id=id[,fd=fd]``
+> >> >          Creates an iommufd backend which allows control of DMA mapping
+> >> >          through the ``/dev/iommu`` device.
+> >> 
+> 
