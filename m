@@ -1,77 +1,81 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C1E3A9D9A;
-	Mon,  8 Jun 2026 09:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CD434D3B9;
+	Mon,  8 Jun 2026 09:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780909475; cv=none; b=EFEO7O3Wx1nMciKrVYipk+DqjpS/vGtg3CtSKWUS333gSOdPiIGC6JtGxUKuturJM2GK3TpRWNM7N2ji26g+gwuvQAXLVElNwI+JLnhTpoflUQ3OBbr/5fwjhzgwR9ohr2Wo5ZbMgxkPaZJEjpUtDmTZ3GH4ksXd/Bzy4sll6Dk=
+	t=1780910082; cv=none; b=GR5Rn4L//kUzxiP4rOlhVos9avyLt1oXAD5hsSHxLVlKsFtPLJ+ars5TlOYa8QqKUnV0SbXUKavqLcDUnwQkr0pWMis0jhrVuxxChCUP/ANQGFRuHLOEwWlxdo1RGxDUu7hGhGjaHELa0tg878Yru9dWwDQhs9DuhQlELZpR3QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780909475; c=relaxed/simple;
-	bh=UDLOwoz5/29T6sYP2Rlf3qHQ43L84ZJtyRl8TyopJmI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=BzHZduoMCJvbie5lZezeD8GOJTaR1mV+WQFvQ65wUseywaqV8hL0JLGcFA+FJBXBsYC3612gkuW+TqGKjxtPV1t4io6trauF0BToXlEcBJSso8lE1mSkogstUMqVSWV77RkNMxu6YRYBZU+By4EdDUqehfKMiLdVqlqQIVZ0+t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=N0ISW+Qx; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780910082; c=relaxed/simple;
+	bh=zh3aOXv7FCsKLJFMPpQ3VMZ7R5Oct/WwClPT+tKR/dU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GC9FJaN/JmM2LqWqQR3eQvW2M4MRh8bdw8NmXuT1NfGvo0qGy2LuuqmGFVKUu9g/Yh7ts5z6HHubYhVwKgOacDXE8HASM/jXiv7/DTq9fY4dY9FypmIzY40MByW/GX/niLHOWU7ztYfQZDAJi97I6U931ODV07zpBN29IhJTXuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVZfuFxz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="N0ISW+Qx"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 657BN0HV3223957;
-	Mon, 8 Jun 2026 09:04:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=cHgup3
-	axOMojWMulUtE7B/9JyHDSWEhW1MJrbppKeBg=; b=N0ISW+QxRY9OrWFRF0bv5Y
-	sNgVZ63tep4g/sbf3Idwj4M3BRhRNhQ62SWk7fzj/6h/y6z+2mkfexFSwUwK0N53
-	OSyHc8T9QM8uYzk6itFHkM/ItAd8HtZ+cGjxnoYLfHj34nhbDoiwtrrHGTc/eG88
-	WQia/+3Gy9Xpf/u6ggZl58Khd0Fuv85Ypa3sqOVqc/3hC+qmV02Auj4eOCoFeCui
-	AgXyFoGOG0rjKH65xCe2LaKvlNFpX04Ji4lyrA0+BEckIZLBfaTZhGa5ZFQ+rnhH
-	YaGFwztBM6jIgn2yLXIYFLY6jOvXjsjEwbuMjqqaOIu/ArXvXpXXeEzz6lcSWprQ
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4em8yhpn8h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Jun 2026 09:04:12 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6588nqOv032223;
-	Mon, 8 Jun 2026 09:04:12 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4emxvjmkh9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Jun 2026 09:04:12 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65894BaZ63701290
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 8 Jun 2026 09:04:11 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B1E5F58055;
-	Mon,  8 Jun 2026 09:04:11 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E1F2058054;
-	Mon,  8 Jun 2026 09:04:05 +0000 (GMT)
-Received: from vaibhav?linux.ibm.com (unknown [9.124.211.219])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with SMTP;
-	Mon,  8 Jun 2026 09:04:05 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Mon, 08 Jun 2026 14:34:04 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: David Gow <david@davidgow.net>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-        linux-kernel@vger.kernel.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman
- <mpe@ellerman.id.au>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        Rae
- Moar <raemoar63@gmail.com>
-Subject: Re: [PATCH 1/2] kunit: Add ability to skip entire test suites
-In-Reply-To: <758228d7-b555-447a-86f7-3c437ce92460@davidgow.net>
-References: <20260604162805.556135-1-vaibhav@linux.ibm.com>
- <20260604162805.556135-2-vaibhav@linux.ibm.com>
- <758228d7-b555-447a-86f7-3c437ce92460@davidgow.net>
-Date: Mon, 08 Jun 2026 14:34:04 +0530
-Message-ID: <87a4t5mmij.fsf@vajain21.in.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVZfuFxz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D3C1F00898;
+	Mon,  8 Jun 2026 09:14:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780910080;
+	bh=w8WKGVREdZOOpGk0gbtvvLzYoxX8JwWSTpgeaYJ7wyg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WVZfuFxzGYsoSVzDU7JQHqBL+HTFT5EeGJWDMv/LbjxDl/9rsOV9ZfagWMjjw608s
+	 vCYGYwjS5+KuqwbZ8NfepE+wEXVY03BhRb+PmTP6Ur48E/gatwv6g7gos3tCxKcRls
+	 +f9hoRGKnzrKnDRfWt6Kztoeg4om1fefMVuECQJ1aEKv03cdccSx/0R0rQH4qserAT
+	 pTSvHrafXkXuBc9zizyrfcWyKvVRGGs4IOw1m5SGyX4VFnWzJqfVyHkdjvCZoMGcHK
+	 aiIBvtSV5l13k9DfY6P1VBfP1Pi19jBVgBw7qjaSRfBUnvxv3II96d11s0xQdy9prM
+	 GOKNw0OC48uEQ==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 713FFF40084;
+	Mon,  8 Jun 2026 05:14:39 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Mon, 08 Jun 2026 05:14:39 -0400
+X-ME-Sender: <xms:_4cmajQs4cQla66AxF08vXsjqAsOXnvu0l2sTUmez5mUjPUbadrrAg>
+    <xme:_4cmam3NWkksKdHdbxbH3r4JqlDTrS8K9uzGn4ImmHQX-wk9Oyl9OOKEMditapvdE
+    QQvf1L2QOKcJ4D_XQU4ONjqSwx4GLQs_qP6CXobCjNa7v_nxmjXsw>
+X-ME-Received: <xmr:_4cmam9rii96eEMtYr8U6NX5U3miTkzQCukUrVe1mlwnaxzOA-dYyV9_vnmP1A>
+X-ME-Proxy-Cause: dmFkZTEpp2jBIHL1iG4u3SNtDTHsQFscovrVwxSBn9taEPDwJpp4yidpViy0S1I8sEq1aV
+    dkoS3sx14WWowFfj66Z4+UiLOZvtZV+g0lPVmr3I/tcJZ20sHxWeY7OPeYkmoQ/18TsISI
+    ZFWfJqR4dRUK5kAzGnR9gVGBOzl/HYQ8wVxMRaLGCWr9EqBEo8XlmMJw3jR7DHHEHNA+h6
+    sYTuHHNrKi7O5d0uEO9xI4FSuuHfSyIz4UqMDrpzVo1k4SnqTCI51LOhHNUZB0uMchMtRz
+    9fKgrh0U0MeyMFPZ8lQnj0c8k0j4R+K5AxxI2ycyHZQxi8fq2JPj4BtHhIe/f+y+O4TkTX
+    Bguiwksmi+aWiBYPcZ121bwizEVrU7e0twY82LV7VVqWnPNfeZjSZNwXdM5FFnxOCZe/jw
+    o4Aszsgs3UXqGhHRntrxQP+Zk7G5r+PC495LELFgSSmjYCE93Ml4MWxNLghCo5kbAF/xHR
+    MJEoPYeC0n76WKTtvkhKwkShTVe+DaON12gcBYJ1HTS1aEQTNXT58eofn/o85nsOK0lg0a
+    Oi7jleQiCru9iaHBdUi2R5Hdc/t98YW98a8hysMCBfTjiaArYf0Hj3p0alNavzcEJddO6h
+    w9ZRmllRky61bpJVh8KoScWAMRTHtuMa8MCOloP3fZ2/S93/UJscokAxk+EA
+X-ME-Proxy: <xmx:_4cman_snpJ-z0htfCY8nKeL78s0352ucCV07XZ0CjPpb1GWGKfLGA>
+    <xmx:_4cmapEpS_g94OjBuMSwu4KXsMRDF9zXA1RVeW7ksgooUxtFAw2V7w>
+    <xmx:_4cmahf7KCLdSQytLM2zu8zGy0OndWRJuVI2JhiVIM-2b-Jl1RIvjw>
+    <xmx:_4cmaokkfuynI7ORIBjoNHv9Of1GT7FxUJuuiJ9x1Obpr17Czc1rwQ>
+    <xmx:_4cmajoj95HHMjzAhL06tyvPYpCfGxQFvkEoKuQvviDeOBYL7Y6512Mz>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 8 Jun 2026 05:14:38 -0400 (EDT)
+Date: Mon, 8 Jun 2026 10:14:33 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Chao Gao <chao.gao@intel.com>, 
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Huang, Kai" <kai.huang@intel.com>, 
+	"Zhao, Yan Y" <yan.y.zhao@intel.com>, "seanjc@google.com" <seanjc@google.com>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "Annapurve, Vishal" <vannapurve@google.com>, 
+	"bp@alien8.de" <bp@alien8.de>, 
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v6 06/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
+Message-ID: <aiaGUD0B1Vtx_PlN@thinkstation>
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-7-rick.p.edgecombe@intel.com>
+ <ahVghgNAe4JrmlQH@intel.com>
+ <fe08f03a22acfe758cd97f7c2880deeafbc5fe58.camel@intel.com>
+ <aiGq7XjmMrsqdBY5@thinkstation>
+ <aiJhScChLZkH44eB@intel.com>
+ <aiK1_q8beMcIEiwO@thinkstation>
+ <572868d7-4794-4fec-b80f-97d8434d5fb6@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -79,209 +83,38 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDA3OSBTYWx0ZWRfXxwb0mWG3q74O
- WK7acvTZd/ZXpzsdiGr0JS7aj3cgaJSiht4kzNbbQcm/1YBWL7XZ1GkC1PTgX88uedkierYZbNh
- SXug70/CCM6RYXr7L0u6lyb03+ptcpk38rN/l5/QNNqR5Sxowpd68KQlxSjQ/GK6Vk1wRNmTQ+3
- yWwqS/LA4rpdZVT5Q4TqvDjBIYq3L0bFJq+ocha7Ko8++0sE0JD0NLD9m3ysLkG4Hy+YkWhyzhI
- KdLHSk0VVcfrjv6R1MfzhcuBMWt5QC2scxXl5xa/v0JNhHQzqB5B9zLT/F6p9vZtvwj+9J/+SMC
- XM1OWbD28UvGGDEdj5f/W5wM2wJNrfV/SIXldW+Ew8Ub6SB4Zv+H9czw+aZm45Cvuk+0feAwRFp
- aKuNZIisSKIzFaQSIOPhxmR1N+zw5S3Po6KEVBAvKtkjlxxCsNHou92wmX6YULAfAW5pk23vjVD
- gqMWEiw2pMSlUJQhM8w==
-X-Authority-Analysis: v=2.4 cv=HvFG3UTS c=1 sm=1 tr=0 ts=6a26858d cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=nzuXsxulAAAA:8
- a=ZakwTqujU9vwe5Myu5gA:9 a=QEXdDO2ut3YA:10 a=Jn5cl5okm61iLnyvC_SE:22
-X-Proofpoint-ORIG-GUID: vO5s46Ho2P0N--NGYYeSykMLWMhtzbUI
-X-Proofpoint-GUID: iSKoQ4sYqJK8uqVxpLQLtAOIAi4GN-c8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-08_02,2026-06-05_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0 suspectscore=0
- spamscore=0 priorityscore=1501 phishscore=0 malwarescore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606080079
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <572868d7-4794-4fec-b80f-97d8434d5fb6@intel.com>
 
-Hi David,
+On Fri, Jun 05, 2026 at 09:23:21AM -0700, Dave Hansen wrote:
+> On 6/5/26 04:42, Kiryl Shutsemau wrote:
+> >>> I don't see a reason why we can't keep the scoped_guard() on get side.
+> >> One additional reason to drop scoped_guard() is that it mixes cleanup helpers
+> >> with goto, which is discouraged. See [*]
+> >>
+> >>  :Lastly, given that the benefit of cleanup helpers is removal of “goto”, and
+> >>  :that the “goto” statement can jump between scopes, the expectation is that
+> >>  :usage of “goto” and cleanup helpers is never mixed in the same function.
+> > Fair enough.
+> > 
+> > But it can also be address if we free the PAMT page array with the guard
+> > too :P
+> 
+> How important is this patch? I see "Optimize" but I read "Optional".
+> 
+> If we're arguing about it, maybe we should just kick it out and focus on
+> the more important bits.
 
-Thanks for looking into this patch. My responses inline below:
+I don't think it is optional for anything outside of test setup.
 
+Without the optimization, we have all KVM memory allocations serialized
+on a single spinlock. And we do alloc_pamt_array()/free_pamt_array() all
+the time too.
 
-David Gow <david@davidgow.net> writes:
+And since the lock is global, it is an easy DoS attack vector: one guest
+can do a shared->private->shared conversion loop and make every guest on
+the host suffer.
 
-<snip>
-
->
-> Thanks =E2=80=94 this is great! There are a few cases it's not handling
-> properly, though, particularly with respect to the debugfs support.
->
-> I think we need to:
-> - Reset suite->status to KUNIT_SUCCESS in kunit_init_suite(), so that a
-> suite which is re-run via debugfs isn't automatically skipped again.
-> - Fix the result handling in debugfs to handle skipped suites.
-Agree, and I have addressed this in v2 of the patch using the
-code-snippets you have shared.
-
-> - (Optional) Maybe we could get rid of kunit_suite::suite_init_err now
-> that there's a specific status value. That'd have to be done carefully
-> to preserve all of the semantics, though.
-Yes fully agree that kunit_suite::suite_init_err will be redundant after
-introduction of kunit_suite::status. I have started looking into this
-and will post a different patch{series} for this.
-
->
-> Here's a quick (and slightly hacky) patch to fix the first couple of issu=
-es:
-> ---
-> diff --git a/lib/kunit/debugfs.c b/lib/kunit/debugfs.c
-> index 9c326f1837bd..23d34bfdba95 100644
-> --- a/lib/kunit/debugfs.c
-> +++ b/lib/kunit/debugfs.c
-> @@ -58,6 +58,22 @@ static void debugfs_print_result(struct seq_file
-> *seq, struct string_stream *log
->  	spin_unlock(&log->lock);
->  }
->
-> +/* Print the result line for a suite. */
-> +static void debugfs_print_ok_not_ok(struct seq_file *seq,
-> +				    enum kunit_status status,
-> +				    size_t test_number,
-> +				    const char *description,
-> +				    const char *directive)
-> +{
-> +	const char *directive_header =3D (status =3D=3D KUNIT_SKIPPED) ? " # SK=
-IP "
-> : "";
-> +	const char *directive_body =3D (status =3D=3D KUNIT_SKIPPED) ? directiv=
-e : "";
-> +
-> +	seq_printf(seq, "%s %zd %s%s%s\n",
-> +		   kunit_status_to_ok_not_ok(status),
-> +		   test_number, description, directive_header,
-> +		   directive_body);
-> +}
-> +
->  /*
->   * /sys/kernel/debug/kunit/<testsuite>/results shows all results for
-> testsuite.
->   */
-> @@ -77,17 +93,17 @@ static int debugfs_print_results(struct seq_file
-> *seq, void *v)
->  	seq_puts(seq, "1..1\n");
->
->  	/* Print suite header because it is not stored in the test logs. */
-> -	seq_puts(seq, KUNIT_SUBTEST_INDENT "KTAP version 1\n");
-> -	seq_printf(seq, KUNIT_SUBTEST_INDENT "# Subtest: %s\n", suite->name);
-> -	seq_printf(seq, KUNIT_SUBTEST_INDENT "1..%zd\n",
-> kunit_suite_num_test_cases(suite));
-> -
-> -	kunit_suite_for_each_test_case(suite, test_case)
-> -		debugfs_print_result(seq, test_case->log);
-> +	if (suite->status !=3D KUNIT_SKIPPED) {
-> +		seq_puts(seq, KUNIT_SUBTEST_INDENT "KTAP version 1\n");
-> +		seq_printf(seq, KUNIT_SUBTEST_INDENT "# Subtest: %s\n", suite->name);
-> +		seq_printf(seq, KUNIT_SUBTEST_INDENT "1..%zd\n",
-> kunit_suite_num_test_cases(suite));
->
-> +		kunit_suite_for_each_test_case(suite, test_case)
-> +			debugfs_print_result(seq, test_case->log);
-> +	}
->  	debugfs_print_result(seq, suite->log);
->
-> -	seq_printf(seq, "%s %d %s\n",
-> -		   kunit_status_to_ok_not_ok(success), 1, suite->name);
-> +	debugfs_print_ok_not_ok(seq, success, 1, suite->name,
-> suite->status_comment);
->  	return 0;
->  }
-Thanks, have modified these proposed changes a bit for v2
-
->
-> diff --git a/lib/kunit/test.c b/lib/kunit/test.c
-> index c0ae45a22b2c..2ff145796450 100644
-> --- a/lib/kunit/test.c
-> +++ b/lib/kunit/test.c
-> @@ -798,9 +798,6 @@ int kunit_run_tests(struct kunit_suite *suite)
->  	/* Taint the kernel so we know we've run tests. */
->  	add_taint(TAINT_TEST, LOCKDEP_STILL_OK);
->
-> -	if (suite->status =3D=3D KUNIT_SKIPPED)
-> -		goto suite_end;
-> -
->  	if (suite->suite_init) {
->  		suite->suite_init_err =3D suite->suite_init(suite);
->  		if (suite->suite_init_err) {
-> @@ -836,6 +833,7 @@ static void kunit_init_suite(struct kunit_suite *suit=
-e)
->  	kunit_debugfs_create_suite(suite);
->  	suite->status_comment[0] =3D '\0';
->  	suite->suite_init_err =3D 0;
-> +	suite->status =3D KUNIT_SUCCESS;
-Thanks, taken this change for v2.
-
->
->  	if (suite->log)
->  		string_stream_clear(suite->log);
-> ---
->
->
->>  include/kunit/test.h |  1 +
->>  lib/kunit/test.c     | 11 +++++++++++
->>  2 files changed, 12 insertions(+)
->>=20
->> diff --git a/include/kunit/test.h b/include/kunit/test.h
->> index ce0573e196ce..395221d623f7 100644
->> --- a/include/kunit/test.h
->> +++ b/include/kunit/test.h
->> @@ -285,6 +285,7 @@ struct kunit_suite {
->>  	struct string_stream *log;
->>  	int suite_init_err;
->>  	bool is_init;
->> +	enum kunit_status status;
->>  };
->>=20=20
->>  /* Stores an array of suites, end points one past the end */
->> diff --git a/lib/kunit/test.c b/lib/kunit/test.c
->> index 99773e000e1b..989acc770265 100644
->> --- a/lib/kunit/test.c
->> +++ b/lib/kunit/test.c
->> @@ -214,6 +214,9 @@ enum kunit_status kunit_suite_has_succeeded(struct k=
-unit_suite *suite)
->>  	const struct kunit_case *test_case;
->>  	enum kunit_status status =3D KUNIT_SKIPPED;
->>=20=20
->> +	if (suite->status =3D=3D KUNIT_SKIPPED)
->> +		return KUNIT_SKIPPED;
->> +
->>  	if (suite->suite_init_err)
->>  		return KUNIT_FAILURE;
->>=20=20
->> @@ -795,12 +798,20 @@ int kunit_run_tests(struct kunit_suite *suite)
->>  	/* Taint the kernel so we know we've run tests. */
->>  	add_taint(TAINT_TEST, LOCKDEP_STILL_OK);
->>=20=20
->> +	if (suite->status =3D=3D KUNIT_SKIPPED)
->> +		goto suite_end;
->> +
->
-> Do we want this? If a test is run more than once, we probably want to
-> re-run suite_init so that we can tell if we should still skip it.
-This condition should prevent a 'kunit_suite' from running if its marked
-skipped before suite_init() is called.=20
-
->
-> While I don't think it's likely that a test which was previously skipped
-> will suddenly become available, it's not impossible with, e.g., CPU hotpl=
-ug.
-Agree, I have updated kunit_init_suite() to set 'kunit_suite.status' =3D=3D
-KUNIT_SUCCESS. This should force the suite_init() to be calledback again
-when the suite is re-run.
-
-
---=20
-Cheers
-~ Vaibhav
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
