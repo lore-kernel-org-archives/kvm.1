@@ -1,37 +1,37 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA36D43E9DF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFFB43E9D2;
 	Mon,  8 Jun 2026 14:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780930540; cv=none; b=NELpBzeWU94iA/dVq5gyDoNG4iaS/cPbebUfYVerM8iCb7SVzHwJxR2DV4tPpRg2jrOCa1Vds/OmOkrWlbnyTcKjkC5TJ2z6En4NtvRtXQzf0LiWyG2cuE4XuWr3A3PQyBalHHl58FoRUeNWjjtwz/JYVdK4Bk0mWRst4u6pXCs=
+	t=1780930540; cv=none; b=NLgYieoNNHXy2EErJiA43vsWti6vBOf1LQHZJ8mg8xkp0B9/ISgK38sxBUUG6sfHs/yZJBr+H/Lzx4VVT9Zlhpk+m9LHdBdVA9FMBP+x1kuYn7gAkZoI1p2siGtHbgWlBK6igAlhVAUnASKHRUhQr9w3YGEpQ/JuLXG3r6aIT40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780930540; c=relaxed/simple;
-	bh=f0ywMWwOQi/gME2keYFYuL1CdWe5N2EjqIK4nwqWdbA=;
+	bh=W0liJgLUP+4F6PDsC7cXp3OtJreSUh0fBECzJHMveas=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QOL29TrRD+z6qPTQ6HWj3z5kJJWS4EWLKbar4vNQo1MJK/7C0EfJlIOHM4hZrMtYu+QQGb+qBOOORHUz2adN9cGY3cizM6MpeuveDkD9LbavkbsvrunkPXNBeyCNS7OipqhCZrjF8synCMAfW4xUH0wZly/agY9xAqTsf/lGXpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=QQavcMWo; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=u8RdlKCUS+4kLgT+N4WW5D5PCAyfCTwc4CoC25k8dZ29yB8+JdqaUzB6fHB0Z0KnmxqP+mfdxMKNwUyOXfSXuoqaZ4BnQPNzAv8z/L7Of20YerkMzcqvWT2oO7+W4JA6iFTUHcrIh4s5RckEJkLpTUvsmLQzWvqA8OZYFp2DN5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=szg0DuJa; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="QQavcMWo"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="szg0DuJa"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description;
-	bh=0atnhSqy/yhBdxYTwYxwUB4G++t3k5fRFvMbSMUIxqE=; b=QQavcMWoXNBjzD1rCz3GOy7WYG
-	A/Aa/6NRe4xs8pNb/rcy5Qzc8HeIkasYAKay8dnSVpg2u2oxChl+QRq4tLy0yP9m/yCdHS4SFqmEW
-	Oe8b1/W3mTGHty4ixZJrNDCpRmEJNpLZooFQszMGzOv9AAVn0vu49RHAZHyhJAsrsVWNUGx/9PpAw
-	gppme1iqYcn/KOkUMJBAJtHe2B5RZnG3ksd6IOplvI59AWB2sOZ9rQAxfjAQ5xGuASDoSaLMG3gyZ
-	Qxd47BVQwx6LTHvJW52iJfkEvzpu81k6IOiy6T/463nKGIiZaZXkSHyrLzhr+DIl6tcCQkjJFFCtD
-	Zn5XsUSA==;
+	bh=mK9MivH4Sa09pKns/iaOBplM1ylYPC1nLBsprSjeCoQ=; b=szg0DuJaBDaAO6gJ+6si2oIAis
+	T91YLENzCyD9xsWd+xbTgQw7GqijATO+tnbaTBL01eGHLbKCN5Cc3aCoQxj6HIAMG90eZjZs0Ydug
+	jPIbOu8aN+jme6AwIGKke4AjYZcyV9ipCdmVuwkICFvP8Ht0pf7uBv0dj7EY00YzdrWDTlNiKh6N7
+	pTg/dfcczCehCy18HLpKxo3Dhch1c3qYACouIglNEkfV4ijxAmKYsV6yx/YJ8ZfFPAQYuCyDeRHVv
+	gqbeTfHqe9xZAshQmAkH2NTO9GqdT8NLIKMzSAguCJgjcAqyyI+RQVUTleE5TBh2TgG8xYP3fhq19
+	TmvcWxLA==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wWbNR-0000000Dtx7-2v7C;
+	id 1wWbNR-0000000DtxA-32IJ;
 	Mon, 08 Jun 2026 14:54:58 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wWbNR-00000000NEe-1xOY;
+	id 1wWbNR-00000000NEz-3a70;
 	Mon, 08 Jun 2026 15:54:57 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
@@ -61,9 +61,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v5 03/34] UAPI: x86: Move pvclock-abi to UAPI for x86 platforms
-Date: Mon,  8 Jun 2026 15:47:44 +0100
-Message-ID: <20260608145455.89187-4-dwmw2@infradead.org>
+Subject: [PATCH v5 10/34] KVM: x86: Fold __get_kvmclock() into get_kvmclock()
+Date: Mon,  8 Jun 2026 15:47:51 +0100
+Message-ID: <20260608145455.89187-11-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260608145455.89187-1-dwmw2@infradead.org>
 References: <20260608145455.89187-1-dwmw2@infradead.org>
@@ -77,112 +77,101 @@ Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Jack Allister <jalliste@amazon.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-A subsequent commit will provide a new KVM interface for performing a
-fixup/correction of the KVM clock against the reference TSC. The
-KVM_[GS]ET_CLOCK_GUEST API requires a pvclock_vcpu_time_info, as such
-the caller must know about this definition.
+There is no need for the separate __get_kvmclock() helper; just inline
+its body into get_kvmclock() within the seqcount retry loop.
 
-Move the definition to the UAPI folder so that it is exported to
-usermode and also change the type definitions to use the standard for
-UAPI exports.
+No functional change.
 
-Signed-off-by: Jack Allister <jalliste@amazon.com>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
 ---
- MAINTAINERS                                   |  4 +--
- arch/x86/include/{ => uapi}/asm/pvclock-abi.h | 27 ++++++++++---------
- scripts/xen-hypercalls.sh                     |  2 +-
- 3 files changed, 18 insertions(+), 15 deletions(-)
- rename arch/x86/include/{ => uapi}/asm/pvclock-abi.h (82%)
+ arch/x86/kvm/x86.c | 63 +++++++++++++++++++++-------------------------
+ 1 file changed, 28 insertions(+), 35 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 882214b0e7db..dc0f6516beb4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14402,7 +14402,7 @@ S:	Supported
- T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
- F:	arch/um/include/asm/kvm_para.h
- F:	arch/x86/include/asm/kvm_para.h
--F:	arch/x86/include/asm/pvclock-abi.h
-+F:	arch/x86/include/uapi/asm/pvclock-abi.h
- F:	arch/x86/include/uapi/asm/kvm_para.h
- F:	arch/x86/kernel/kvm.c
- F:	arch/x86/kernel/kvmclock.c
-@@ -29081,7 +29081,7 @@ R:	Boris Ostrovsky <boris.ostrovsky@oracle.com>
- L:	xen-devel@lists.xenproject.org (moderated for non-subscribers)
- S:	Supported
- F:	arch/x86/configs/xen.config
--F:	arch/x86/include/asm/pvclock-abi.h
-+F:	arch/x86/include/uapi/asm/pvclock-abi.h
- F:	arch/x86/include/asm/xen/
- F:	arch/x86/platform/pvh/
- F:	arch/x86/xen/
-diff --git a/arch/x86/include/asm/pvclock-abi.h b/arch/x86/include/uapi/asm/pvclock-abi.h
-similarity index 82%
-rename from arch/x86/include/asm/pvclock-abi.h
-rename to arch/x86/include/uapi/asm/pvclock-abi.h
-index b9fece5fc96d..6d70cf640362 100644
---- a/arch/x86/include/asm/pvclock-abi.h
-+++ b/arch/x86/include/uapi/asm/pvclock-abi.h
-@@ -1,6 +1,9 @@
--/* SPDX-License-Identifier: GPL-2.0 */
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
- #ifndef _ASM_X86_PVCLOCK_ABI_H
- #define _ASM_X86_PVCLOCK_ABI_H
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 50bd2871b051..fce898811fe7 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3200,50 +3200,43 @@ static unsigned long get_cpu_tsc_khz(void)
+ 		return __this_cpu_read(cpu_tsc_khz);
+ }
+ 
+-/* Called within read_seqcount_begin/retry for kvm->pvclock_sc.  */
+-static void __get_kvmclock(struct kvm *kvm, struct kvm_clock_data *data)
++static void get_kvmclock(struct kvm *kvm, struct kvm_clock_data *data)
+ {
+ 	struct kvm_arch *ka = &kvm->arch;
+ 	struct pvclock_vcpu_time_info hv_clock;
++	unsigned int seq;
+ 
+-	/* both __this_cpu_read() and rdtsc() should be on the same cpu */
+-	get_cpu();
++	do {
++		seq = read_seqcount_begin(&ka->pvclock_sc);
+ 
+-	data->flags = 0;
+-	if (ka->use_master_clock &&
+-	    (static_cpu_has(X86_FEATURE_CONSTANT_TSC) || __this_cpu_read(cpu_tsc_khz))) {
++		/* both __this_cpu_read() and rdtsc() should be on the same cpu */
++		get_cpu();
 +
-+#include <linux/types.h>
++		data->flags = 0;
++		if (ka->use_master_clock &&
++		    (static_cpu_has(X86_FEATURE_CONSTANT_TSC) || __this_cpu_read(cpu_tsc_khz))) {
+ #ifdef CONFIG_X86_64
+-		struct timespec64 ts;
++			struct timespec64 ts;
+ 
+-		if (kvm_get_walltime_and_clockread(&ts, &data->host_tsc)) {
+-			data->realtime = ts.tv_nsec + NSEC_PER_SEC * ts.tv_sec;
+-			data->flags |= KVM_CLOCK_REALTIME | KVM_CLOCK_HOST_TSC;
+-		} else
++			if (kvm_get_walltime_and_clockread(&ts, &data->host_tsc)) {
++				data->realtime = ts.tv_nsec + NSEC_PER_SEC * ts.tv_sec;
++				data->flags |= KVM_CLOCK_REALTIME | KVM_CLOCK_HOST_TSC;
++			} else
+ #endif
+-		data->host_tsc = rdtsc();
+-
+-		data->flags |= KVM_CLOCK_TSC_STABLE;
+-		hv_clock.tsc_timestamp = ka->master_cycle_now;
+-		hv_clock.system_time = ka->master_kernel_ns + ka->kvmclock_offset;
+-		kvm_get_time_scale(NSEC_PER_SEC, get_cpu_tsc_khz() * 1000LL,
+-				   &hv_clock.tsc_shift,
+-				   &hv_clock.tsc_to_system_mul);
+-		data->clock = __pvclock_read_cycles(&hv_clock, data->host_tsc);
+-	} else {
+-		data->clock = get_kvmclock_base_ns() + ka->kvmclock_offset;
+-	}
+-
+-	put_cpu();
+-}
+-
+-static void get_kvmclock(struct kvm *kvm, struct kvm_clock_data *data)
+-{
+-	struct kvm_arch *ka = &kvm->arch;
+-	unsigned seq;
++			data->host_tsc = rdtsc();
 +
- #ifndef __ASSEMBLER__
++			data->flags |= KVM_CLOCK_TSC_STABLE;
++			hv_clock.tsc_timestamp = ka->master_cycle_now;
++			hv_clock.system_time = ka->master_kernel_ns + ka->kvmclock_offset;
++			kvm_get_time_scale(NSEC_PER_SEC, get_cpu_tsc_khz() * 1000LL,
++					   &hv_clock.tsc_shift,
++					   &hv_clock.tsc_to_system_mul);
++			data->clock = __pvclock_read_cycles(&hv_clock, data->host_tsc);
++		} else {
++			data->clock = get_kvmclock_base_ns() + ka->kvmclock_offset;
++		}
  
- /*
-@@ -24,20 +27,20 @@
-  */
+-	do {
+-		seq = read_seqcount_begin(&ka->pvclock_sc);
+-		__get_kvmclock(kvm, data);
++		put_cpu();
+ 	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
+ }
  
- struct pvclock_vcpu_time_info {
--	u32   version;
--	u32   pad0;
--	u64   tsc_timestamp;
--	u64   system_time;
--	u32   tsc_to_system_mul;
--	s8    tsc_shift;
--	u8    flags;
--	u8    pad[2];
-+	__u32   version;
-+	__u32   pad0;
-+	__u64   tsc_timestamp;
-+	__u64   system_time;
-+	__u32   tsc_to_system_mul;
-+	__s8    tsc_shift;
-+	__u8    flags;
-+	__u8    pad[2];
- } __attribute__((__packed__)); /* 32 bytes */
- 
- struct pvclock_wall_clock {
--	u32   version;
--	u32   sec;
--	u32   nsec;
-+	__u32   version;
-+	__u32   sec;
-+	__u32   nsec;
- } __attribute__((__packed__));
- 
- #define PVCLOCK_TSC_STABLE_BIT	(1 << 0)
-diff --git a/scripts/xen-hypercalls.sh b/scripts/xen-hypercalls.sh
-index f18b00843df3..51a722198997 100755
---- a/scripts/xen-hypercalls.sh
-+++ b/scripts/xen-hypercalls.sh
-@@ -5,7 +5,7 @@ shift
- in="$@"
- 
- for i in $in; do
--	eval $CPP $LINUXINCLUDE -dD -imacros "$i" -x c /dev/null
-+	eval $CPP -D__KERNEL__ $LINUXINCLUDE -dD -imacros "$i" -x c /dev/null
- done | \
- awk '$1 == "#define" && $2 ~ /__HYPERVISOR_[a-z][a-z_0-9]*/ { v[$3] = $2 }
- 	END {   print "/* auto-generated by scripts/xen-hypercall.sh */"
 -- 
 2.54.0
 
