@@ -1,105 +1,97 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151B2318EFF;
-	Mon,  8 Jun 2026 07:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA97A3859CE;
+	Mon,  8 Jun 2026 07:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780903154; cv=none; b=uU3LBIg6RSHiP60/YgA33MHy9UcZuDNEjDZNW2llo0YT+QAMZRjzR96JuIE/xeV5nHITXYoJmTFXJnIDHAfwWSyQq3ZqRlpEeksCB3mGSx/Saqcop3GiDJps3QIltTBx/LCZKQwCOjsOt59XDv8kST0rO+n4d8g2BYN7GxQlSKo=
+	t=1780903398; cv=none; b=AKg9cJ75tVnAhVmUDaxoM7UGhm17Cfxo3xPfzPzwTPnMaBfiFsR+UIwFjWtvjJy/8/DvAHBFDt06CDxFAZ+JvsUvr6MhdNjzJ/28gdR2PNRcB7VDgb8Ce5pEBZuiHVAv1c1dPyK9zZFGLfPDL4Zf1rcurmns8D2BckvxhoZ1lFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780903154; c=relaxed/simple;
-	bh=j16HnHumJlpOV5pgbjfvRktU8XXXUv1Da/NL5PH7GAg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b8EaVxkYIRcVCChJ+cSCsO0vxjGxnDhmmL4srRou4tYBuaThMnzCixORAN+hCTz2/e0/MWKFaT4FTRx5bgkfwRlZsssAz3O1Peb1pQqsFTRSU1rVQXOtb5PSTG6gIb6sSiNaHp1ZBxQ7T55kmi6NaNvujufI0ISfBdxUCKrkKnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UEDlSlAd; arc=none smtp.client-ip=198.175.65.11
+	s=arc-20240116; t=1780903398; c=relaxed/simple;
+	bh=C5Te/2htTWSeWTIybL+XiLOsacJn/MAyORmkF0yYaWI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OQks3qoy71s/KlxR0J3fzo+xELNlapt06EjwyjRNkPUrsETmNm3bxnt5HWffnvklUD1PADTMYRI55IUpu54yniEISVi4hnOZEQzTAikPqWXR/BcnOWGb6j0pa6Pxs8CFQQdQxfqZoH3qnWN3q0cIlPPpkljF22d2lev2eWTH9DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CRV3jkLM; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UEDlSlAd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CRV3jkLM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780903153; x=1812439153;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=j16HnHumJlpOV5pgbjfvRktU8XXXUv1Da/NL5PH7GAg=;
-  b=UEDlSlAdRh3EFw3bbc3fNyWMV6HTTMjA0X+u8mMmwbaVyHkBCw0Yq3Wq
-   P/3SWIopolAX+zM5cnXMQ3x4gNnVWLjDmuyWLQsbfuWWazwgvIC5QPFLq
-   vZr5vwZqasvck88gNBJd0jXQ7uCutiJjEFnhsUp8nO6O/iLtqlxRJfj9P
-   mkeVGU6SfJdFfieTwaCqByxWmggvPY06ui+wAmeU5hqO+9+oIdBgsiD6e
-   yIoeoQX24xscw9u1ve7hKU5jmLG7/sbo1RxgpHYm2ttO+7JOYylQVr4cT
-   ifoTE5pZRjX1kzX3Wb5rHxd/VmEEt72Dfr5D1s8QvZ8ZVAntzxEjiEWWQ
-   A==;
-X-CSE-ConnectionGUID: wCXFP7IMQB6xRZ8IS+J0vg==
-X-CSE-MsgGUID: wU76GQ98SWWre2BPkVen1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="91957163"
+  t=1780903397; x=1812439397;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=C5Te/2htTWSeWTIybL+XiLOsacJn/MAyORmkF0yYaWI=;
+  b=CRV3jkLMAi083ixozN2f3dz+s6oHe8S1BqpI8RroiPx2TwvVASW8qB6d
+   pkc8w5xkkIhlBCfSCSVT9/5B3wYgT+58EmGgTmCySO6PLdpWPhyxvsHXt
+   2kW5mPBWNI7Lhk0WHNH/rQQIha5tFVjeDs+WGYMKbRjw5toQc5CAY+lPy
+   H4/x1BultvK8IKM2Pcf+uGr4XhWJAB8fWNkxcIoD5qKNbYYpPgjtDXe1g
+   PnDk39sevA7OsVIKFoYgFf806jfyXsehyNQIJ038+Fw5pP66l6bgX6ttg
+   LfhdH8zY37/kLvmj4iFkLF8ilY0hlm1o4skF84cCLToB93ILeFO+aCGrb
+   Q==;
+X-CSE-ConnectionGUID: X7uGOWutQX6CzV8+60roUQ==
+X-CSE-MsgGUID: ODEr7E7XTOuWaBl6mpCA+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="84206178"
 X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="91957163"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 00:19:12 -0700
-X-CSE-ConnectionGUID: 1IN/Xup3SvSrMqgiJwyPNg==
-X-CSE-MsgGUID: +49W69+rT1emC1gmwOC8yA==
+   d="scan'208";a="84206178"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 00:23:16 -0700
+X-CSE-ConnectionGUID: 5SrVRyPbRK2KdUQcbNJP0g==
+X-CSE-MsgGUID: UPleJuXdRDas6zednTjEYQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="241290854"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa010.fm.intel.com with ESMTP; 08 Jun 2026 00:19:09 -0700
-Date: Mon, 8 Jun 2026 14:54:38 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kishen Maloor <kishen.maloor@intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
-	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
- Quoting
-Message-ID: <aiZnLqXIWBvo90vT@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <5c06bdbc-c847-4dfa-9c89-afbb52946b8f@intel.com>
+   d="scan'208";a="242494266"
+Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 00:23:09 -0700
+Message-ID: <ef2bb2ee-e076-47e7-8266-11c517957440@linux.intel.com>
+Date: Mon, 8 Jun 2026 15:23:07 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5c06bdbc-c847-4dfa-9c89-afbb52946b8f@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 11/22] KVM: selftests: Set up TDX boot parameters
+ region
+To: Lisa Wang <wyihan@google.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-11-6983ae4c3a4d@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260521-tdx-selftests-v13-v13-11-6983ae4c3a4d@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jun 06, 2026 at 09:36:41PM -0700, Kishen Maloor wrote:
-> On 5/21/26 8:41 PM, Xu Yilun wrote:
-> > ...
-> > This series has 2 distinct parts:
-> > 
-> >    Patches  1-4:  TDX Module Extensions enabling
-> >    Patches  5-15: DICE-based TDX Quoting, primarily Peter's work.
-> > 
-> Perhaps the extensions enabling patches could be organized more simply as
-> these three?
-> 
-> 1. Add TDX extensions metadata structure and accessor
-> 2. Add TDH.EXT.MEM.ADD
-> 3. Add TDH.EXT.INIT and wire extensions init into init_tdx_module()
-> 
-> This introduces the SEAMCALLs and lets the wiring land with the patch
-> that completes the init flow, avoiding a separate "enable" patch.
+On 5/22/2026 7:16 AM, Lisa Wang wrote:
+[...]> +void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm)
+> +{
+> +	struct td_boot_parameters *params =
+> +		addr_gpa2hva(vm, TD_BOOT_PARAMETERS_GPA);
+> +	u32 cr4;
+> +
+> +	TEST_ASSERT_EQ(vm->mode, VM_MODE_PXXVYY_4K);
+> +
+> +	cr4 = kvm_get_default_cr4();
+> +	if (vm->mmu.pgtable_levels == 5)
+> +		cr4 |= X86_CR4_LA57;
 
-Yes, several comments point to a same concern for patch organization - no
-need a separate "enable" patch. Also a more sound justfication to me is,
-the Extension will not actually been enabled until an add-on feature is
-explicitly configured (See patch #15). So we could add steps in nature
-order without worrying the incomplete flow breaks the kernel.
+This should be removed after the 5-level paging code is added back in
+kvm_get_default_cr4().
 
-My reordering is:
 
- 1. Add a placeholder for Extension initialization to hook into
-    init_tdx_module(). Give a chance to explain the considerations of
-    the enable-at-boot-up policy.
-
- 2. Detect if Extension is required based on the metadata, if no, skip.
-    So no side effect for following steps.
-
- 3. Add TDH.EXT.MEM.ADD
-
- 4. Add TDH.EXT.INIT
-> 
