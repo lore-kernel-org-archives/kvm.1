@@ -1,158 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF7A3976A0
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 20:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC16390209;
+	Mon,  8 Jun 2026 20:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780951733; cv=none; b=nQtImvgWl0lshaJhP4DaIBcGmZ7XyYS5HsqALlOQBiFvAqP4tarkmrrCcT+7jqTm+smx+ey2FCy0ViZVFt8GdbsV2Nta+8xPUB/jFa4DlUox+dFvzWE/UiwjekEfFzpq6xqU/DVXkNw1SPB3WXJDxqpekI+oqBgQnKxdKwJJD88=
+	t=1780952128; cv=none; b=bjhSxrBC40tAJ4Es/amlOAgcP/A/DjlliNmrKPWYITWACUkvCpHA1csnYwU4Atln74YT80Avt5myxEu08RuC/+RfHMIO7lrdOkhrgLoVwK8XT48QGgGqG8R4egnH0mcHOUNCuPih40aLKjP//fs3CghvCwLWKeyinzhYu8I7xQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780951733; c=relaxed/simple;
-	bh=vvqJiwaTaPbwiSFW0y5S+Pdj4cexUUWFOld9lBW8pnM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hBmZj8FrgNd7MGGumaPI3i+GdmlISmQlLCaS6B2eUdndM6m7AEw81PYGbsiTf3PqxDYgvNc8vsappfkkO7QBq2HIqgl34q5+LeeepRiaF7NnODuay3mG3YBx0bFfpgQ0peaW0F5XsSUKY9hV7NjxPdaskUQXObIK1cjMHCr9a30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TlIEecKa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780952128; c=relaxed/simple;
+	bh=4QBxR2PjlCKAPSvgpGacW2SShPc026qHj1QCYdxzg90=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sQAYNqalSfvEJe3iQdsB0xvsZM7thSc+4vFVzbGkMBle77cw+50Lhua6X9jngKr0qfDc8k1UGfX2SNzeqyekEWqfApoXDN3+Xb5hEJDleWk4la+1q07G/Rm4HO21CE4oP1azJlubNFXWtJxV0TJd70Xc9RGmmzVk+TWHwzrwiBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFipMoev; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TlIEecKa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C301F00893;
-	Mon,  8 Jun 2026 20:48:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFipMoev"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40F31F00893;
+	Mon,  8 Jun 2026 20:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780951731;
-	bh=werhy65zy0RfJlW41P3Zz++dmduOvV3FJfNj9lWBxcE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TlIEecKaK5LJO7bOkbtLbuic5JU+ROZDyQqGi0azVWO4qWxKX32I7+n0TouSYLOMU
-	 +nnX1pxYazAYKwyPtnAaxFO3af0nV+55RlGtjKvqwdEnPKfNn0FDvaeFttb5svWPQZ
-	 LAWK6N8v8wwj34mKOecf/hDekER0HsuzAUu84+vKS3rvWf4LtNfk/ecFLSn2LZWf7g
-	 r6KIYfXHcg/zKWsc0wRJL+1xyn9pYHxIfNtEhLhRS0QdsNfKrw7mCZSmuBEJUVaO+h
-	 P5pRopw9By6BZKaIHs2liQllAilce3MXR5FA3QNU8otQQ++5jKhb6uNJLVccgGH96Z
-	 f2usmPpQBbAGg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 45/60] kvm: x86: Update state for all plane VCPUs after
- CPUID update
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-46-joro@8bytes.org>
-References: <20260608144252.351443-46-joro@8bytes.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 20:48:51 +0000
-Message-Id: <20260608204851.75C301F00893@smtp.kernel.org>
+	s=k20260515; t=1780952127;
+	bh=Ww3MgvoKXBDrHgnorb3FWeSCZJO6ATl+G8SETSPUBWo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EFipMoevJToto3v2ysvCUrVS+ZNcPWf2WkIrdRmxt6ajG+mXOU7ZP7q3TcvhOXUNC
+	 qDfIs4f6CVWVFDfukXhxcsi/z9+8I8fEfyFVJnAeINqz3tyQMRRFDbbbKp/nRssbgA
+	 earCd0m4XpdT4x8esC01HGbXgpiz6mh4mF3UOURLcb8ccWt9Y5LeMFE82GAF4h587o
+	 g8vcrJMcuWtAqheTqHipclyaiAj3LetvPhcdqHqhdA/aU+XDY07vfcLivY4PLDfrlX
+	 CiMKzToPz8DcjfRwSAhGFz14sWZ+TkdYlvucSh/vYWnhrYREtBF9Fb2cHsVBOs8V1R
+	 uoL19+LlBq3JQ==
+Date: Mon, 8 Jun 2026 20:55:25 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, Steffen Eiden <seiden@linux.ibm.com>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH] KVM: arm64: Hold kvm->mmu_lock while initialising
+ vcpu->arch.vncr_tlb
+Message-ID: <aicqzM4W4NN-GndT@google.com>
+References: <20260608081108.2244133-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260608081108.2244133-1-maz@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Critical] `kvm_check_cpuid()` is called solely on the target `vcpu` outs=
-ide the `vcpu_for_each_plane` loop, failing to expand the FPU state buffer =
-(`guest_fpu`) for secondary vCPUs.
-- [High] `kvm_hv_vcpu_init()` is incorrectly called on the target `vcpu` in=
-stead of the loop variable `v` within the `vcpu_for_each_plane` loop, leavi=
-ng sibling vCPUs' Hyper-V state uninitialized.
-- [High] Bypassing KVM_RUN protection on CPUID updates leads to plane-wide =
-state corruption and `KVM_BUG_ON` crashes because `kvm_can_set_cpuid_and_fe=
-ature_msrs` is only evaluated on the target `vcpu`.
---
-
-commit 456fecfe1475933e67e33e9b01b14d9e0c1dc102
-Author: Joerg Roedel <joerg.roedel@amd.com>
-
-Make sure to update CPUID dependent state for all VCPUs of a given
-plane when CPUID state is updated.
-
-This commit modifies KVM to update CPUID-dependent state across all vCPUs
-in a plane when a CPUID update occurs. It iterates over sibling vCPUs to
-apply Hyper-V initialization, Xen CPUID updates, and general post-CPUID
-state synchronization.
-
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index 27e2f7e25038..fab075bb6fdc 100644
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
-> @@ -513,6 +513,8 @@ static int kvm_set_cpuid(struct kvm_vcpu *vcpu, struc=
-t kvm_cpuid_entry2 *e2,
->  {
->  	struct kvm_vcpu_common *common =3D vcpu->common;
->  	u32 vcpu_caps[NR_KVM_CPU_CAPS];
-> +	struct kvm_vcpu *v;
-> +	unsigned i;
->  	int r;
-> =20
->  	/*
-
-[Severity: High]
-Does this plane-wide update bypass the run protection for sibling vCPUs?
-
-The immutability gate kvm_can_set_cpuid_and_feature_msrs() is checked only
-against the target vcpu before this newly added plane-wide update.
-
-Could userspace execute the first vCPU, and then successfully call
-KVM_SET_CPUID on an un-run second vCPU?
-
-This would apply the CPUID change to the entire plane and invoke:
-kvm_vcpu_after_set_cpuid()
-  kvm_mmu_after_set_cpuid()
-
-on the already-run first vCPU, which then triggers a KVM_BUG_ON().
-
-[ ... ]
-
-> @@ -562,9 +564,11 @@ static int kvm_set_cpuid(struct kvm_vcpu *vcpu, stru=
-ct kvm_cpuid_entry2 *e2,
-> =20
->  #ifdef CONFIG_KVM_HYPERV
->  	if (kvm_cpuid_has_hyperv(vcpu)) {
-> -		r =3D kvm_hv_vcpu_init(vcpu);
-> -		if (r)
-> -			goto err;
-> +		vcpu_for_each_plane(common, i, v) {
-> +			r =3D kvm_hv_vcpu_init(vcpu);
-
-[Severity: High]
-Does this loop initialize the target vcpu rather than the iterator v?
-
-This leaves v->arch.hyperv unallocated for secondary vCPUs.
-
-When kvm_vcpu_after_set_cpuid() later invokes kvm_hv_set_cpuid(), can it
-trigger a WARN_ON_ONCE if an unprivileged host-userspace process triggers
-this path?
-
-> +			if (r)
-> +				goto err;
-> +		}
->  	}
->  #endif
-> =20
->  	r =3D kvm_check_cpuid(vcpu);
->  	if (r)
->  		goto err;
-
-[Severity: Critical]
-Is kvm_check_cpuid() expected to be called on all siblings?
-
-Because kvm_check_cpuid() handles dynamic reallocation of the guest_fpu
-buffer for XFD features like AMX, calling it only on the target vcpu means
-sibling vCPUs miss the expansion.
-
-Could this lead to a host kernel heap out-of-bounds write when the hardware
-xsave operation stores expanded FPU state into the unexpanded buffer of a
-sibling?
-
-> +	vcpu_for_each_plane(vcpu->common, i, v) {
->  #ifdef CONFIG_KVM_XEN
-> -	vcpu->arch.xen.cpuid =3D kvm_get_hypervisor_cpuid(vcpu, XEN_SIGNATURE);
-> +		v->arch.xen.cpuid =3D kvm_get_hypervisor_cpuid(vcpu, XEN_SIGNATURE);
->  #endif
-> -	kvm_vcpu_after_set_cpuid(vcpu);
-> +		kvm_vcpu_after_set_cpuid(v);
+On Mon, Jun 08, 2026 at 09:11:08AM +0100, Marc Zyngier wrote:
+> Sashiko reports that there is a race between initialising vncr_tlb
+> and making use of it, as we don't hold the mmu_lock at this point.
+> 
+> Additionally, it identifies a memory leak, should userspace repeatedly
+> invokes the KVM_RUN ioctl after a failure of kvm_arch_vcpu_run_pid_change(),
+> as we assign vncr_tlb blindly on first run, irrespective of prior
+> allocations.
+> 
+> Slap the two bugs in one go by taking the kvm->mmu_lock on assigning
+> vncr_tlb, preventing the race for good, and by checking that vncr_tlb
+> is indeed NULL prior to allocation.
+> 
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Link: https://lore.kernel.org/r/20260607180815.85FBC1F00893@smtp.kernel.org
+> ---
+>  arch/arm64/kvm/nested.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index 690b8e8564166..d11e36b3cfcc2 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -1253,8 +1253,14 @@ int kvm_vcpu_allocate_vncr_tlb(struct kvm_vcpu *vcpu)
+>  	if (!kvm_has_feat(vcpu->kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY))
+>  		return 0;
+>  
+> -	vcpu->arch.vncr_tlb = kzalloc_obj(*vcpu->arch.vncr_tlb,
+> -					  GFP_KERNEL_ACCOUNT);
+> +	if (!vcpu->arch.vncr_tlb) {
+> +		struct vncr_tlb *vt = kzalloc_obj(*vcpu->arch.vncr_tlb,
+> +						  GFP_KERNEL_ACCOUNT);
+> +
+> +		scoped_guard(write_lock, &vcpu->kvm->mmu_lock)
+> +			vcpu->arch.vncr_tlb = vt;
 > +	}
-> =20
->  success:
->  	kvfree(e2);
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D45
+(I am not familiar with this code at all, so apologies in advance if I
+am making an idiot out of myself here)
+
+IIUC, the point of holding the lock here is *not* to protect against
+concurrent initialization, as in this case the NULL check needs to be
+done under the lock.
+
+Rather, the goal is to prevent re-ordering of zeroing from kzalloc and
+the assignment to vcpu->arch.vncr_tlb, by depending on the barriers
+provided by the lock. The lock is held by the readers so holding it here
+conviently means we do not need to add any barriers to the readers.
+
+Is my understanding correct?
+
+If yes, I think the code looks confusing, at least to a layman like
+myself. It initially seems like the lock protects against concurrent
+initializations, but then the NULL check is not done again under the
+lock. The goal of the lock is not clear without the original report.
+
+Mayeb it's clearer to explicitly use barriers if the goal is preventing
+reordering?
