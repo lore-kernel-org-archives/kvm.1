@@ -1,144 +1,190 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2DD3C4557
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 14:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD873C9897;
+	Mon,  8 Jun 2026 14:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780928359; cv=none; b=YfNVZSZY3MqXP1jlmp+Dhv4fAL8SW8/EjY8QnD7JIkvV0GqelQM0lXLh8du2HPm9D9H34ho0PasqBONQSfwtWMYTtXgXhRESC8RST8MQsqVsn5Tnixp29XPBl8zaPrPPKaep64VUTUG3XPCRdDDYS+KpufJx1DxCM2HwZHuv948=
+	t=1780928396; cv=none; b=SCVHNmXMXSkhpAWik24yoU8+7zGdibYdvJndcUUN74nTzlHJN5j2mOHDT+roTRGEfVOhr4TFSLAIJZNxeNSINMiIgPw6Fx1WDEhRp7hEib+YQGrEeakfggpNBUduQ4uOmasc0StC+yYZXVmYoxpEzgSC+FbmmyJO5dVrnvpp5eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780928359; c=relaxed/simple;
-	bh=tCrAN+QwYjri3tjSjOiLo4/IEE/Kzj/RPrjDTuJhjQc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=m+VtxdolKhgpskVLCoBafN0qo8BczMlRDWqwHt0FQ3ylwEweN88PSY+NCsITtPCmAjajB2pjWNgQX3POvTtXYs75R2A1iDFNoF9q6rFbqccuN3ZNawblLcTQkE7LjddSG/9OvJLgRpsX7D6X4D+E49ja3Leq4xEogobsbI/GBfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fsg1FZ2Z; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780928396; c=relaxed/simple;
+	bh=JwAsSmZHEmJftDoDT4o1AxRFk9ffHF9QhSJ5W3MhLtA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BBv7PzX/9MfTm4mr+h6BeqPTcBeruHVRF4St2f3r8lqdVDef962O3nqYV08IMEZg0NFxxyGRMXbDGiJSry5yWK7vvjmRc4g2ax8iBbND2KdqkmI/j6D73XCSrsQjy0BiQYFoYWd6thih/E8Zzxhfcvjw8rIMVFlkKpLrFme2/dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Kv2q8G4S; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fsg1FZ2Z"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36e09ec696aso7437848a91.0
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 07:19:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780928357; x=1781533157; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3OMkuM0krcAErV2R0QvPhqc4eN2qPVaOBf2x8HQL30k=;
-        b=fsg1FZ2Z3MfEsFdIcj24CgYBn4MLlYgrkHRlSNIRrbgDSXeCX/CiG/sTb0YOOj1RxA
-         tiKXDQZ69GkKHnWfWYX+aT+XhVCf9JcT1yPHYM3Pcem8VknGBl0hP2Bxr/POSo/O5Lb1
-         neJxIebOop5kBFAQwN4G8KEFdqFbYtQAxhmKatBmty+MbeOwDJQfzahyG5+4Hc4ZrISq
-         +kb8nY0t9zku04Qtt0vaC5FzIqmTE3DVlTLOxolMbcQmFQil7peInp/w6aXtOOS1qcon
-         9Zf5JHUuxy5R0MGXMbM3VzFXucXD3sfQ7I4HJ3nj/iIhZ7At2JLdOTUfdurtSuIlyALL
-         I87A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780928357; x=1781533157;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3OMkuM0krcAErV2R0QvPhqc4eN2qPVaOBf2x8HQL30k=;
-        b=sQQqcTaBRD8J6okkNb6QGG6A45Uyvxid+HKVHxbyVWggFf4wP8GglAWCmlr9iYbRWi
-         TEFnneDD+BGCW5JzBNAAKhretZ8s3gnuwI3Lso5nU6i8GB/QR/nJUrbJtMEEPkK5sA1w
-         W9CO95TeV8aqfBOupldboMO/AWPkLWI9/F8viLOUC9Y2TswwKhxgOfiWWzG3l0tYITTQ
-         9IjwJsNR8JbhrqsiKYF0sYrXDhb2KsZkinIZaxbXiseSEwADYcw0lvsvmLwjgCCWyxRQ
-         r1wctCp6I9mpbKYYy1HQgSmsAmfKyM+kdKD/foO1ghWsw4EcL1MgXYok2O0qBlbwFixw
-         MgSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/PmQ/Mm6MU8Jnd9QVnWpZToFFAT0sGiCNuy/IVPMYZbMjNc6EUItLrTukDZ4Fe7Kv5srs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzhRs6vBOgvPlLidXHSzVUUPLmOyW/ApRATKhBJSad6RawnPIU
-	PLuLq3MOsSBuYjr1K7k/AM4iMQMTkFB4MyexF6lbakV/FFdi3lYOIurlB/v7ao5ZeSZQbiiiZQ5
-	nrBA61w==
-X-Received: from pgaq66.prod.google.com ([2002:a63:4345:0:b0:c80:24e3:5130])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3fd0:b0:36b:293:68d1
- with SMTP id 98e67ed59e1d1-370f0772017mr16427503a91.16.1780928357037; Mon, 08
- Jun 2026 07:19:17 -0700 (PDT)
-Date: Mon, 8 Jun 2026 07:19:16 -0700
-In-Reply-To: <4e5b6b9c-4f7d-4d62-874a-4bcb745e9a47@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Kv2q8G4S"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6588A7i91458768;
+	Mon, 8 Jun 2026 14:19:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=pTnj5hc2AGLIaTtiaPIpTmrWWo1jdc
+	JMYBjGgCDyyjs=; b=Kv2q8G4SKMkysAkJbBslHkb5PPRE3mJDxWiQ3cLgS3TK3G
+	CVxKz/xk7dwvU/sN5JEnyd+oX8gVFE422M9b9V1W7JOLoxcMu07mW5gSeWiWS5Te
+	N7Ia1GITDv+Lck+8yu3SNXU7fZ4arSA989yvWA2TlvIPrn86j9EHo126o3aFSrUD
+	+SRaUloFIfkjGc6eLFSeYb2dHbw24HVh8xovpQFm7lAKm32ZCGS7Dhy4ihBTriFG
+	Q+1luifPjiY0gyH1dQ0YsJovPIkGs8XRCPFOBa+xtlbFsd89mL9rKdeE3FpXqXiI
+	Z3op3V0W5+9uaP40C4KOqflfLYohTJxy9ImHwEOg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb957nvv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 14:19:35 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 658E4baE005680;
+	Mon, 8 Jun 2026 14:19:35 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4emwvpwt7x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 14:19:35 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 658EJXOH25821920
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 8 Jun 2026 14:19:33 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 122C358056;
+	Mon,  8 Jun 2026 14:19:33 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 060B058052;
+	Mon,  8 Jun 2026 14:19:27 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.39.27.161])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with SMTP;
+	Mon,  8 Jun 2026 14:19:26 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Mon, 08 Jun 2026 19:49:25 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Gautam Menghani <gautam@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Harsh Prateek Bora
+ <harshpb@linux.ibm.com>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Anushree
+ Mathur <anushree.mathur@linux.ibm.com>,
+        Nicholas Piggin
+ <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe
+ Leroy (CS GROUP)" <chleroy@kernel.org>,
+        kvm@vger.kernel.org, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Validate arch_compat against host
+ compatibility mode
+In-Reply-To: <aiaAPQmWG7JXGoGn@Gautams-MacBook-Pro.local>
+References: <20260603141539.47620-1-amachhiw@linux.ibm.com>
+ <aiGJvUqgjUo6M5et@mac.bl1-in.ibm.com> <87ldctmosh.fsf@vajain21.in.ibm.com>
+ <aiaAPQmWG7JXGoGn@Gautams-MacBook-Pro.local>
+Date: Mon, 08 Jun 2026 19:49:25 +0530
+Message-ID: <877bo9m7wy.fsf@vajain21.in.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
- <20260417073610.3246316-2-binbin.wu@linux.intel.com> <4e5b6b9c-4f7d-4d62-874a-4bcb745e9a47@linux.intel.com>
-Message-ID: <aibPZMfxabh6meOk@google.com>
-Subject: Re: [RFC PATCH 01/27] KVM: x86: Fix emulated CPUID features being
- applied to wrong sub-leaf
-From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, rick.p.edgecombe@intel.com, 
-	xiaoyao.li@intel.com, chao.gao@intel.com, kai.huang@intel.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=N4UZ0W9B c=1 sm=1 tr=0 ts=6a26cf78 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=FEvzW7QgZIPG8QhEdCYA:9
+X-Proofpoint-ORIG-GUID: IAcZRhrd19hqH9tIBTGj-YEn3gPFGtPn
+X-Proofpoint-GUID: 334FODx7fJ4QzIEJE24es4nh5iroqIfR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDEzNCBTYWx0ZWRfXylAXCFV89dhV
+ h3DNgITWM2xtuWmkgirPy1GBkIstat3tS0bbwOP6pFg0W7epEjmPogLG+49+SVmgT5o8R2kaKA8
+ BcnYW5fRkD1YcRbac6Fkget9AhawkCvWLuia7SF2XcEYkaohaiMjdFgaKO81cTrPv82Ec0lPTEP
+ YdNKRzsL65uq4+nOJSYSCAMcO6KXVozVhw8WK/6vIhoDNlW1n+wvWCyrWBlZh9DgipxZ6i9/x7s
+ WCVxXDeuKYbzYgAZcjnHeP3v283XEWZ/h43rBO3I8fK5XQ6m3Ocu1RGBTwH4IqOx4wFxcGPcoUe
+ VTO4J3b7jFYrK1ompMK2bobCbqF48BHCsCpS9LJDkLjtIOQTcQP4F6pdLHzVrMAPMuHwIgA7+dS
+ UBwKhdV4pWGY3McmyGpPcGmh5h5523bNRHcYNp92at38+nJbBuLRqrl30eP8lhSK7KTJebDta8x
+ Rem2ZlEwDleecsuhwzQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-08_03,2026-06-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0 spamscore=0 clxscore=1015 lowpriorityscore=0
+ phishscore=0 impostorscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606080134
 
-On Mon, Jun 08, 2026, Binbin Wu wrote:
-> 
-> 
-> On 4/17/2026 3:35 PM, Binbin Wu wrote:
-> > Guard the use of cpuid_func_emulated() with a check that the CPUID
-> > sub-leaf index is 0, as cpuid_func_emulated() unconditionally returns
-> > emulated features for index 0 and does not account for indexed leaves.
-> > 
-> > Without the guard, when iterating over reverse_cpuid[] entries that
-> > share the same CPUID function but have a non-zero index, e.g.
-> > CPUID_7_1_ECX (function=7, index=1), the emulated features for index 0
-> > are incorrectly OR'd into the wrong capability word.  For example,
-> > RDPID (CPUID.7.0:ECX[22]) gets erroneously applied to CPUID_7_1_ECX,
-> > which would allow userspace to set bit 22 of CPUID.7.1:ECX in the vCPU's
-> > capabilities.
-> > 
-> > This is currently benign as the affected bits in the non-zero index
-> > words happen to not correspond to meaningful features, but it could
-> > cause problems as new features are defined in those positions.
-> > 
-> 
-> Hi Sean/Paolo,
-> 
-> While the bug is currently benign, I still think it's worth fixing.
-> 
-> There could be two options:
-> - Considering cpuid_func_emulated() probably would not be extended
->   in the future, still keep this simple implementation, but add some
->   comments to cpuid_func_emulated() to call out only subleaf 0 is emulated
->   as suggested by Xiaoyao.
->   https://lore.kernel.org/kvm/fa47d520-1de9-4ddc-94ca-6bb53ac30f10@intel.com/
-> - Add the index input parameter to cpuid_func_emulated().
+Gautam Menghani <gautam@linux.ibm.com> writes:
 
-Definitely handle this in cpuid_func_emulated().
+> On Fri, Jun 05, 2026 at 12:55:50PM +0530, Vaibhav Jain wrote:
+>> Hi Gautam,
+>> 
+>> Thanks for testing this patch. Few questions:
+>> Gautam Menghani <gautam@linux.ibm.com> writes:
+>> 
+>> > On Wed, Jun 03, 2026 at 07:45:39PM +0530, Amit Machhiwal wrote:
+>> >> On IBM POWER systems, newer processor generations can operate in
+>> >> compatibility modes corresponding to earlier generations. This becomes
+>> >> relevant for nested virtualization, where nested KVM guests may need to
+>> >> run with a specific processor compatibility level.
+>> >> 
+>> <snip>
+>> >
+>> > I booted a KVM guest on LPAR with this patch in the following scenarios:
+>> <snip>
+>> 
+>> > 3. P11 guest on P11 host booted in P10 compat mode: No error observed
+>> This should have resulted in an error since booting a P11 guest on P10
+>> compat mode host is not allowed with/without this patch. Can you please
+>> check your test env and share the boot results.
+>
+> - lscpu output (host P11 LPAR booted in p10 compat mode)
+> # lscpu                                                                                                                                                   03:35:13 [3/3]
+> Architecture:                ppc64le
+>   Byte Order:                Little Endian
+> CPU(s):                      960
+>   On-line CPU(s) list:       0-959
+> Model name:                  POWER10 (architected), altivec supported
+>   Model:                     2.0 (pvr 0082 0200)
+>   Thread(s) per core:        8
+>   Core(s) per socket:        15
+>   Socket(s):                 8
+>   Physical sockets:          4
+>   Physical chips:            2
+>   Physical cores/chip:       16
+>
+>
+> - lscpu output from guest
+> # lscpu
+> Architecture:             ppc64le
+>   Byte Order:             Little Endian
+> CPU(s):                   4
+>   On-line CPU(s) list:    0-3
+> Model name:               Power11 (raw), altivec supported
+>   Model:                  2.0 (pvr 0082 0200)
+>   Thread(s) per core:     1
+>   Core(s) per socket:     4
+>   Socket(s):              1
+>
+Argh, this doesnt look right. The kernel patch should have prevented the
+P11 compat guest boot on P10 compat host. Looks like you havent used the
+corrosponding Qemu patch [1] that could have prevented this from
+happening.
 
-diff --git arch/x86/kvm/cpuid.c arch/x86/kvm/cpuid.c
-index db8be9173bd0..737ca3e7bda2 100644
---- arch/x86/kvm/cpuid.c
-+++ arch/x86/kvm/cpuid.c
-@@ -400,7 +400,7 @@ void kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
-                if (!entry)
-                        continue;
- 
--               cpuid_func_emulated(&emulated, cpuid.function, true);
-+               cpuid_func_emulated(&emulated, cpuid.function, cpuid.index, true);
- 
-                /*
-                 * A vCPU has a feature if it's supported by KVM and is enabled
-@@ -1369,11 +1369,15 @@ static struct kvm_cpuid_entry2 *do_host_cpuid(struct kvm_cpuid_array *array,
-        return entry;
- }
- 
--static int cpuid_func_emulated(struct kvm_cpuid_entry2 *entry, u32 func,
-+static int cpuid_func_emulated(struct kvm_cpuid_entry2 *entry, u32 func, u32 index,
-                               bool include_partially_emulated)
- {
-        memset(entry, 0, sizeof(*entry));
- 
-+       /* KVM doesn't currently emulate any non-zero indices. */
-+       if (cpuid_function_is_indexed(func) && index)
-+               return 0;
-+
-        entry->function = func;
-        entry->index = 0;
-        entry->flags = 0;
-@@ -1411,7 +1415,7 @@ static int __do_cpuid_func_emulated(struct kvm_cpuid_array *array, u32 func)
-        if (array->nent >= array->maxnent)
-                return -E2BIG;
- 
--       array->nent += cpuid_func_emulated(&array->entries[array->nent], func, false);
-+       array->nent += cpuid_func_emulated(&array->entries[array->nent], func, 0, false);
-        return 0;
- }
- 
+Had a off mailing list discussion with Amit on how to address this issue
+and he will be sending a new version of the patch to address this issue.
 
+
+[1] https://lore.kernel.org/all/20260502140021.69712-2-amachhiw@linux.ibm.com/
+
+>
+>
+> - QEMU command line
+> /usr/bin/qemu-system-ppc64 -device virtio-blk-pci,drive=drive0,id=virtblk0 \
+>     -drive file=/home/gautam/images/fc41.qcow2,format=qcow2,if=none,id=drive0 \
+>     -m 100G -smp 4 -cpu host -nographic -machine pseries,ic-mode=xics -accel kvm
+>
+>
+> Thanks,
+> Gautam
+>
+
+-- 
+Cheers
+~ Vaibhav
