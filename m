@@ -1,133 +1,123 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9787338E100
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 13:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780926698; cv=pass; b=ild15IP+OABaiJNabPfv2q8V3WF7VgVeRRuLS9XXxNnq9pkxNvxTcqlqL8LEy2X/9yMcIFpZ0vt3QhO4Cg5y4wC4gWYRlMwMADD4gpuYQIGemuW8d6Uqbss7OOy+l1uahuHEOfRpeY38Xp2tBOuxF45uKzrmYVMH4deGq4ZT108=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780926698; c=relaxed/simple;
-	bh=nW6pcbXAhBt0stazWFve4XZkgje0pUMWdBxj4dneZ/4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F7nAwMPgSGqd1RcZDdBf2u9LeFe3dIAn2rOoFvbrRwSUizgCESdd/i1qo+SWUJxIdqKtqZSLbBSehjn15oh+EGuihrgQmFN+rrKFu/qoNMx2wyprxRC1/asmT2LI8QnEMTBiQWCZp3ONjmRAU/fwwGpZTY/DCC37k1oJG3n6sMI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FV0JE+hZ; arc=pass smtp.client-ip=74.125.224.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0429230B51E;
+	Mon,  8 Jun 2026 13:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780926845; cv=none; b=bHb61URBjElSfskTk9rXwVfcdeQpAfrPgYb8CXBvOnEybknfREHFuFlgXjVkHSYKAhUaQp4+4Dfs2ecV4iNsMSjCl0OV5EIn2YcVrpoBnk1R7TOQDSRySWLNyhP7X2L3TfIlvuM/QEbOpd+53/u+vcJL/1Izpb7o2TeYA/WmGM8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780926845; c=relaxed/simple;
+	bh=zyFb9/SAECng/VTwTudQLxjUQyq0g0AZM0OK2JIT8NA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AVLxydCGloYv74gNbfZ78vK7aHCvhZB4/QkcoIYD+t/Rj4wyol/PbgJT1LnAdaXMfBAkEEyx+sgE5pKud9nFUe6DrvqahlLDS9PbU3nFHDeez+JmrXaUnWDPrXtfw+hUbe8HSte46XK4F/ZH7ucxqG2n++djSKpQqOFtA0igl4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Am229Gtp; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FV0JE+hZ"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6607048fa62so4231527d50.1
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 06:51:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780926696; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Pa4zvk7dG2rMXvw8yG/a0gTfUK/nGrRPVLtSTxUADuq0QqJsCR78fY5kT9wb/+VXQl
-         fDgMskZfKOWs0nnoFZZf250XUL+DamuoDJc7m22efTdBkPgD5oXJIuqB9EF6SMUNJ19E
-         NEnUrcRRCZ9PzQ4y6oVKWlltBvhWobb3B4XvaURX/sqXMjRSa7Bh+cBujkuJjNPIJOC8
-         E0dX6gUNKL/HDrAYSMsKogBsUXOvAnuR5brmE8Pqv77XxdWskoyFQCGzsPLXanjLBKdb
-         NojIo1O7Q2L9itgFFY4Pf0MnRwJ245yj/Z3qizTX4rBoX/uoGi0NuxFSC5PkL2d2BVi9
-         4e+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bKUj751TeY4nkEZpPo0FTWcTQnR2+/cwe6ZT7/QhNuQ=;
-        fh=lHNisCFACRn0+l2Oc5UxmlenRVm7BVWDz8y/yxM/2P8=;
-        b=a8hBWOxCCIn9lY9hdceVpaIN1hgID8IICpYEZYBy8H/CWNJCkMhKD452yF4gk48u0X
-         g8dG8EAq4S0+qfaBrGhoZ6KE7OKfaw2skmElxoiAjlQYBEonvK+ZixbvpRg/WXq9fKz/
-         v+28vA800pW0Jx/5JLpYElcO2j//uPnBZ91mjtFmqjtejWQon1LkydYJ+pknFqulBvkC
-         AFeTS0lJlRlaTW6pWst1+HltUW3u6klg5xrI72N4/6h5SP7IzCdyyhK+KdvRVQTQpVTh
-         3YhDU8IjrOgHSjU4muVyOyFsBzNecHwcIkqzE+M49oct0+ld9fJCmxyvFPt1Jg021ihW
-         RGKg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780926696; x=1781531496; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bKUj751TeY4nkEZpPo0FTWcTQnR2+/cwe6ZT7/QhNuQ=;
-        b=FV0JE+hZlBpw+WrvEPC+bAPsMPCL/Ry2L2MDMhyYEplZk3THbiM5BxDc/LDjBEYXoL
-         A9bMIO07r3D+DN+8aGBYDVfDf8YMkLaruGfqVrCFZpNAatVneHT1R/Ze1JgkXendCMo0
-         XqWkFEnve7FACi08pjICTBzdyIjERPzRXk+mYSUA9JGEFq1sY332sSY6ViwKDMkkYsQE
-         42etHZurGeohRsX0AsxAwhnxuWwtEphvkCf17EjaCMjD4P2WnJ6hS87a6nzXdWG4cFuZ
-         LAXarAE4SJy28JXLH2cOcd1XqK3fb98g5HGwFazLSfpmWJA1FTM+IvsZsXOoXbc4iBF/
-         PSHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780926696; x=1781531496;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bKUj751TeY4nkEZpPo0FTWcTQnR2+/cwe6ZT7/QhNuQ=;
-        b=cMtVZU8FBH78ufB4QfnpthQW5Dga2nYXmU3EIpb3UuB7TUpXcok+34Eb9qrtrLjINO
-         PbEobasISRKsuJm1oYPAbyclMauE1CINQNPPoBqF40v/+UiwGgfr/wRzmbW6bczW0cK/
-         NT9v2SkYCrMDdKTYK5cUfUs5oPXLPnNOIYPsqEwlpSpJQHxQ8dQhD/hQvBhTRKTBX0Jp
-         WV4agSoV111+fSGEYczKTsprHh+sD7S6z5ZOG/+rcmFcGK4wR66SUuYLfsz/t2WQmC/D
-         kKBmrV+8RUaeWkxBvM247GTp80j79Bv3MetvirEgqNXPM1LGwXFhSzh7BULrx1fTkO4H
-         jxtw==
-X-Forwarded-Encrypted: i=1; AFNElJ/GW1BppUM2v+hzaL/b8c4jo6/lX1wzTVxuEKMpaoxno12NpcyP4kU5vJ5DPyQ/1TdWLI8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvBbL6S4czO7Bfz6gZTXRvd3i/pFOoTVNQvFu85Re0524NpnmO
-	HXMC5wT4veiKrjEf5I+tMj0tHxZLIshVG8uRYOrtOCDboPZXusn2fbSfOAzUJwAO5XJsApqL/4E
-	6tfK2oLwEZvI8daAXmVQQWepQkWKqh24FxqkXiRiXsMtQt/yWdCdn
-X-Gm-Gg: Acq92OFf7AiJbVnRl2ianKyvCShUGqVILMK+GjZYZUh1s4rmDCuUp/KriYNfiIM7I8w
-	Wg0ZsrmpIzs3+O2l8zoJLAv8Bl+wOwDPbxozpbhLSq8HWYHbNYDuoGEx0CMeRMOb8CKja1aiRUS
-	HD3HXUErRTe9mTVvlS7lSdY8Tw2R689s0w+oWmO1+B+Ay21dYnyGhx9P+SZBnrv704Ao/w5VQjC
-	hZ0UI3mWybnvUKs9TJjdYsOnSC+pVcNcejJ95+zWIg1poewyfLCcxUu3tRtzr7oBUv6JEmBDa7X
-	DfWhlf5NBt86lmtEgeNhJ59ch8UhAMFgbMWe/8ve/q8ISm6JNRtBr970q7FRGGKvK5flNJC71cw
-	pZg==
-X-Received: by 2002:a53:ac87:0:b0:661:1307:3d49 with SMTP id
- 956f58d0204a3-66113074155mr12044887d50.7.1780926696345; Mon, 08 Jun 2026
- 06:51:36 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Am229Gtp"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5FD22244B;
+	Mon,  8 Jun 2026 06:53:57 -0700 (PDT)
+Received: from [10.57.28.93] (unknown [10.57.28.93])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4B1E43F86F;
+	Mon,  8 Jun 2026 06:53:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780926842; bh=zyFb9/SAECng/VTwTudQLxjUQyq0g0AZM0OK2JIT8NA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Am229GtpwnsAOTgPNgH0rKMU0izNXaGe3sEaiDNq7CSGq+5bEqKfsCQAYLrBmWu9g
+	 R3SFvmmvI0pML1LYEXP6f3iuiDl8j4v8RrDvp7FFT4rwKDMIrcT7jYncMiFsWKki02
+	 FZWtyD5eqhQTmw5GvKPFroyhVAwfW/ZXzGJk0H/A=
+Message-ID: <9631be66-c757-488d-bb66-a62698aa26b8@arm.com>
+Date: Mon, 8 Jun 2026 14:53:56 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260529082948.363931-1-alex.bennee@linaro.org>
-In-Reply-To: <20260529082948.363931-1-alex.bennee@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 8 Jun 2026 14:51:24 +0100
-X-Gm-Features: AVVi8CfELuu63-8QEYfJ12bzRvsrYJpzmkWaV0Rztq1EKICzbROxPC3RaYFy1rw
-Message-ID: <CAFEAcA94+mh_pigFDi+tEPRJ416fSWfxsQ1Lj8Byemug9kBp6w@mail.gmail.com>
-Subject: Re: [PATCH v7 0/8] target/arm: fully model WFxT instructions for A-profile
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Alexander Graf <agraf@csgraf.de>, Mohamed Mediouni <mohamed@unpredictable.fr>, 
-	Pedro Barbuda <pbarbuda@microsoft.com>, qemu-arm@nongnu.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 26/44] arm64: RMI: Allow populating initial contents
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, Gavin Shan <gshan@redhat.com>,
+ kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-27-steven.price@arm.com>
+ <ea4be6c5-9506-4253-80c5-c76c9ac3b77d@redhat.com>
+ <0c71b4b8-ad0b-4a24-9f4a-180b2aaacdb6@arm.com>
+ <ad45c64c-18ab-4d42-9813-0ac1704bb127@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <ad45c64c-18ab-4d42-9813-0ac1704bb127@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, 29 May 2026 at 09:29, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
-> This series fully models the behaviour of WFxT instructions. We
-> already had support for WFE for M-profile but we left off A-profile as
-> it has more potential sources of wake-ups. The main one is the event
-> stream which includes events from significant bits of the timer
-> ticking over.
->
-> The refactoring from the previous iterations of the patch have now
-> been merged.
->
-> I've dropped trying to fully model the global monitor in favour of
-> taking advantage of the architectural flexibility to have an IMPDEF
-> event wake up for any reason. We treat the setting of exclusive_addr
-> as such a reason because it indicates the current vCPU is in a ldstx
-> exclusive region and we don't want the guest to deadlock. This does mean
-> the system won't sleep on WFE enabled locks but people shouldn't be
-> relying on QEMU to model real world sleep patterns anyway given the
-> efficiency of emulation compared to real HW.
->
-> I've written a test case using kvm-unit-tests:
->
->   Message-ID: <20260527111822.1563679-1-alex.bennee@linaro.org>
->   Date: Wed, 27 May 2026 12:18:21 +0100
->   Subject: [kvm-unit-tests PATCH v2] arm: add wfx test case
->   From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.org>
->
-> All patches are now reviewed.
+On 08/06/2026 10:41, Suzuki K Poulose wrote:
+> On 08/06/2026 10:36, Steven Price wrote:
+>> On 28/05/2026 06:30, Gavin Shan wrote:
+>>> Hi Steve,
+>>>
+>>> On 5/13/26 11:17 PM, Steven Price wrote:
+>>>> The VMM needs to populate the realm with some data before starting
+>>>> (e.g.
+>>>> a kernel and initrd). This is measured by the RMM and used as part of
+>>>> the attestation later on.
+>>>>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+> 
+> ...
+> 
+>>>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>>>> index a89873a5eb77..209087bcf399 100644
+>>>> --- a/arch/arm64/kvm/rmi.c
+>>>> +++ b/arch/arm64/kvm/rmi.c
+>>>> @@ -486,6 +486,75 @@ void kvm_realm_unmap_range(struct kvm *kvm,
+>>>> unsigned long start,
+>>>>            realm_unmap_private_range(kvm, start, end, may_block);
+>>>>    }
+>>>>    +static int realm_data_map_init(struct kvm *kvm, unsigned long ipa,
+>>>> +                   kvm_pfn_t dst_pfn, kvm_pfn_t src_pfn,
+>>>> +                   unsigned long flags)
+>>>> +{
+>>>> +    struct realm *realm = &kvm->arch.realm;
+>>>> +    phys_addr_t rd = virt_to_phys(realm->rd);
+>>>> +    phys_addr_t dst_phys, src_phys;
+>>>> +    int ret;
+>>>> +
+>>>> +    dst_phys = __pfn_to_phys(dst_pfn);
+>>>> +    src_phys = __pfn_to_phys(src_pfn);
+>>>> +
+>>>> +    if (rmi_delegate_page(dst_phys))
+>>>> +        return -ENXIO;
+>>>> +
+>>>> +    ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys, flags);
+>>>> +    if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+>>>> +        /* Create missing RTTs and retry */
+>>>> +        int level = RMI_RETURN_INDEX(ret);
+>>>> +
+>>>> +        KVM_BUG_ON(level == KVM_PGTABLE_LAST_LEVEL, kvm);
+>>>
+>>>          KVM_BUG_ON(level >= KVM_PGTABLE_LAST_LEVEL, kvm);
+>>
+>> Ack.
+>>
+> 
+> Thinking more about this, I guess a buggy VMM can trigger this
+> by populating twice ? (level == KVM_PGTABLE_LAST_LEVEL). So, we should
+> return the error back, than warning here and suppressing the error ?
 
+Populating twice causes rmi_delegate_page() to be run twice on the same
+page and the second one will then fail. So I don't think this is
+possible (please correct me if I've missed something!)
 
-
-Applied to target-arm.next, thanks.
-
--- PMM
+Thanks,
+Steve
