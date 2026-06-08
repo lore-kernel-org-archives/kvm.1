@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6DD3F410C;
-	Mon,  8 Jun 2026 14:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905613F86EE;
+	Mon,  8 Jun 2026 14:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929816; cv=none; b=tpuLHi1z+lHne+R93u/Ytgm2JI1wBL8K9IbWdnnAmc+iDFOwwgs54yYakSOJxGi6VYlo3ZAugnCAcA9dDwP/emKzylswl82PsXFFjpmgxyFt0Eawx9Wwzcq9LxKxdf1FY0wjtAe3pMtY2HOv1WMxT9HRnIFjTYt3vAKLH6sn8V4=
+	t=1780929815; cv=none; b=OEJJwWKuuNlKIyJcGKgGWdh2a3c4eKsfSeoK6ToIk+EofHQBb2oW7g4T7LfDVZZRuM58R7znnQSemC449MrzI+svOMrEnL7GEGkvUqT1iOCDYahhV9/mRY82DNl5wI0eG7a9ZfmeiMZvjBdEZvnhB1gAlNCiESM8VDQ1W+Z5F6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780929816; c=relaxed/simple;
-	bh=BvjNCxnN228MSt40dnG4giObj3PBnoIC1IoQ5WyhYzg=;
+	s=arc-20240116; t=1780929815; c=relaxed/simple;
+	bh=A281n0uwpkwaIkUIEAZTxaFtsecaYV8JLEzr2FuXfns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pf9VBj6cZJxbTWor6QOO/ZL5hLw58Q0X+0LyMlKS9mRKYsZGK5uPMeSwRVMrRlFjT+IVmm4MiFDbrVFczPQvm4qVNupaCriHLP4EqkxcGYQtR771mqZaGqRmQLBO/QDDEu2tuF9ZJVtsNIa8oUUh/VbQeCR3RPsf3ea1ocj/y/8=
+	 MIME-Version; b=ku2c5OFQOjmSFxO4OaLA8HdyyAud1VrOJkLNz+H0xzBnOA1NtUQW+NURGv28x5ePeQwUWPTF0NxiYFIxm7xx5rh3nidYJYs7UyZD04VWqsiNX0x0lZw0iNx3AJUPCE5YmKKA87b+r4+JQZ2+ug2Gf5V8J8r/luCzLMeBuCNmtfA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,7 +16,7 @@ Received: from io.home.8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 94CCC2028D4;
+	by mail.8bytes.org (Postfix) with ESMTPSA id C82252028D5;
 	Mon,  8 Jun 2026 16:43:15 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
@@ -38,9 +38,9 @@ Cc: Tom Lendacky <thomas.lendacky@amd.com>,
 	x86@kernel.org,
 	coconut-svsm@lists.linux.dev,
 	joerg.roedel@amd.com
-Subject: [PATCH 49/60] kvm: x86: Allow hardware backend to overwrite struct kvm_plane allocation
-Date: Mon,  8 Jun 2026 16:42:41 +0200
-Message-ID: <20260608144252.351443-50-joro@8bytes.org>
+Subject: [PATCH 50/60] kvm: x86: Make KVM_REQ_UPDATE_PROTECTED_GUEST_STATE per plane
+Date: Mon,  8 Jun 2026 16:42:42 +0200
+Message-ID: <20260608144252.351443-51-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
 References: <20260608144252.351443-1-joro@8bytes.org>
@@ -54,127 +54,26 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-Allow the hardware backend implementations to allocate the struct
-kvm_plane instances so that they can carry hardware specific
-information along them.
+The VMSAs are per plane, so this request must be too.
 
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  2 ++
- arch/x86/include/asm/kvm_host.h    |  3 +++
- arch/x86/kvm/svm/svm.c             |  3 +++
- arch/x86/kvm/vmx/main.c            |  5 ++++-
- arch/x86/kvm/x86.c                 | 16 ++++++++++++++--
- arch/x86/kvm/x86.h                 |  4 ++++
- 6 files changed, 30 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index c8bff1e9325e..207d56d12459 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -150,6 +150,8 @@ KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
- KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
- KVM_X86_OP_OPTIONAL_RET0(gmem_max_mapping_level)
- KVM_X86_OP_OPTIONAL(gmem_invalidate)
-+KVM_X86_OP(alloc_plane)
-+KVM_X86_OP(free_plane)
- #endif
- 
- #undef KVM_X86_OP
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index c2651774d785..0955097aca9c 100644
+index 0955097aca9c..0327b77e56b7 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -2011,6 +2011,9 @@ struct kvm_x86_ops {
- 	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
- 	void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
- 	int (*gmem_max_mapping_level)(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
-+
-+	struct kvm_plane *(*alloc_plane)(void);
-+	void (*free_plane)(struct kvm_plane *);
- };
+@@ -129,7 +129,7 @@
+ #define KVM_REQ_HV_TLB_FLUSH \
+ 	KVM_ARCH_REQ_FLAGS(32, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
+ #define KVM_REQ_UPDATE_PROTECTED_GUEST_STATE \
+-	KVM_ARCH_REQ_FLAGS(34, KVM_REQUEST_WAIT)
++	KVM_ARCH_REQ_FLAGS(34, KVM_REQUEST_WAIT | KVM_REQUEST_PER_PLANE)
  
- struct kvm_x86_nested_ops {
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 0b57dde29e40..2a92d8d18d7c 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5445,6 +5445,9 @@ struct kvm_x86_ops svm_x86_ops __initdata = {
- 	.gmem_prepare = sev_gmem_prepare,
- 	.gmem_invalidate = sev_gmem_invalidate,
- 	.gmem_max_mapping_level = sev_gmem_max_mapping_level,
-+
-+	.alloc_plane = x86_alloc_plane,
-+	.free_plane = x86_free_plane,
- };
- 
- /*
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index f9c4703dda54..a2fc4eeeca1d 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -1030,7 +1030,10 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.vcpu_mem_enc_ioctl = vt_op_tdx_only(vcpu_mem_enc_ioctl),
- 	.vcpu_mem_enc_unlocked_ioctl = vt_op_tdx_only(vcpu_mem_enc_unlocked_ioctl),
- 
--	.gmem_max_mapping_level = vt_op_tdx_only(gmem_max_mapping_level)
-+	.gmem_max_mapping_level = vt_op_tdx_only(gmem_max_mapping_level),
-+
-+	.alloc_plane = x86_alloc_plane,
-+	.free_plane = x86_free_plane,
- };
- 
- struct kvm_x86_init_ops vt_init_ops __initdata = {
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index b9828cd31136..5f48392d4738 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -487,18 +487,30 @@ unsigned kvm_arch_max_planes(struct kvm *kvm)
- 	return 1;
- }
- 
--struct kvm_plane *kvm_alloc_plane(void)
-+struct kvm_plane *x86_alloc_plane(void)
- {
- 	/* For better type checking, do not return kzalloc() value directly */
- 	struct kvm_plane *plane = kzalloc(sizeof(*plane), GFP_KERNEL_ACCOUNT);
- 
- 	return plane;
- }
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(x86_alloc_plane);
- 
--void kvm_free_plane(struct kvm_plane *plane)
-+void x86_free_plane(struct kvm_plane *plane)
- {
- 	kfree(plane);
- }
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(x86_free_plane);
-+
-+struct kvm_plane *kvm_alloc_plane(void)
-+{
-+	return kvm_x86_call(alloc_plane)();
-+}
-+
-+void kvm_free_plane(struct kvm_plane *plane)
-+{
-+	kvm_x86_call(free_plane)(plane);
-+}
- 
- /*
-  * All feature MSRs except uCode revID, which tracks the currently loaded uCode
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 38a905fa86de..812bd6004a4c 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -797,4 +797,8 @@ static inline bool kvm_is_valid_u_s_cet(struct kvm_vcpu *vcpu, u64 data)
- 
- 	return true;
- }
-+
-+struct kvm_plane *x86_alloc_plane(void);
-+void x86_free_plane(struct kvm_plane *plane);
-+
- #endif
+ #define CR0_RESERVED_BITS                                               \
+ 	(~(unsigned long)(X86_CR0_PE | X86_CR0_MP | X86_CR0_EM | X86_CR0_TS \
 -- 
 2.53.0
 
