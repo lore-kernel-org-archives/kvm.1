@@ -1,135 +1,133 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058913B5F59
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 13:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780926428; cv=none; b=RNdPuYB3RxWJ/sr8v/aq78LVsqckWeAKSUrOxLmzFsgDIo+jJHyZVs/auAzJQxWgwCwjti68hOsoC1yk/68h48wsJh1ks50pQ1x7hYhhPk00HKZXvhwNCqYSif6IJUUQINh8zToCJGvjPc0bRBp38kHFZeSt6OLVpVBS6mbTOi8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780926428; c=relaxed/simple;
-	bh=Wgyh5RGDNcaXhBO9drrH6wHNTUNGPADmhjOWy8yBp10=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bvc9de0JKJIfBxsnPuRuE/qSPbsKLaAA8KBXtij2nw0r5LQ1fawv9I+Oh6bg3Z+aJMGoPi7Jpm59EC35r966oJH/xfc4oRdus+1eVG73dvpGPfrSwrO7VeyyMBgynLZ6fewx4JEF0whnmQM6k1kSmPhC7OQG9rknz++Nu/7cAc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OG2nZwtY; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9787338E100
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 13:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780926698; cv=pass; b=ild15IP+OABaiJNabPfv2q8V3WF7VgVeRRuLS9XXxNnq9pkxNvxTcqlqL8LEy2X/9yMcIFpZ0vt3QhO4Cg5y4wC4gWYRlMwMADD4gpuYQIGemuW8d6Uqbss7OOy+l1uahuHEOfRpeY38Xp2tBOuxF45uKzrmYVMH4deGq4ZT108=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780926698; c=relaxed/simple;
+	bh=nW6pcbXAhBt0stazWFve4XZkgje0pUMWdBxj4dneZ/4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F7nAwMPgSGqd1RcZDdBf2u9LeFe3dIAn2rOoFvbrRwSUizgCESdd/i1qo+SWUJxIdqKtqZSLbBSehjn15oh+EGuihrgQmFN+rrKFu/qoNMx2wyprxRC1/asmT2LI8QnEMTBiQWCZp3ONjmRAU/fwwGpZTY/DCC37k1oJG3n6sMI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FV0JE+hZ; arc=pass smtp.client-ip=74.125.224.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OG2nZwtY"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-68d05f6b3cbso805111a12.1
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 06:47:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FV0JE+hZ"
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6607048fa62so4231527d50.1
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 06:51:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780926696; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Pa4zvk7dG2rMXvw8yG/a0gTfUK/nGrRPVLtSTxUADuq0QqJsCR78fY5kT9wb/+VXQl
+         fDgMskZfKOWs0nnoFZZf250XUL+DamuoDJc7m22efTdBkPgD5oXJIuqB9EF6SMUNJ19E
+         NEnUrcRRCZ9PzQ4y6oVKWlltBvhWobb3B4XvaURX/sqXMjRSa7Bh+cBujkuJjNPIJOC8
+         E0dX6gUNKL/HDrAYSMsKogBsUXOvAnuR5brmE8Pqv77XxdWskoyFQCGzsPLXanjLBKdb
+         NojIo1O7Q2L9itgFFY4Pf0MnRwJ245yj/Z3qizTX4rBoX/uoGi0NuxFSC5PkL2d2BVi9
+         4e+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bKUj751TeY4nkEZpPo0FTWcTQnR2+/cwe6ZT7/QhNuQ=;
+        fh=lHNisCFACRn0+l2Oc5UxmlenRVm7BVWDz8y/yxM/2P8=;
+        b=a8hBWOxCCIn9lY9hdceVpaIN1hgID8IICpYEZYBy8H/CWNJCkMhKD452yF4gk48u0X
+         g8dG8EAq4S0+qfaBrGhoZ6KE7OKfaw2skmElxoiAjlQYBEonvK+ZixbvpRg/WXq9fKz/
+         v+28vA800pW0Jx/5JLpYElcO2j//uPnBZ91mjtFmqjtejWQon1LkydYJ+pknFqulBvkC
+         AFeTS0lJlRlaTW6pWst1+HltUW3u6klg5xrI72N4/6h5SP7IzCdyyhK+KdvRVQTQpVTh
+         3YhDU8IjrOgHSjU4muVyOyFsBzNecHwcIkqzE+M49oct0+ld9fJCmxyvFPt1Jg021ihW
+         RGKg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780926423; x=1781531223; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1780926696; x=1781531496; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PlHLPmEPwYMjH3EElGOjjI09oO4lUI4b+lkKofR57Co=;
-        b=OG2nZwtYv+SUeHhD8O9cElC9q5JwK2IL0G7mzrwvVr9zmgLBqggeFW6OPwtDiiTpJ4
-         ZG9oXCdkr966vSHQqLERr0PCWKq/7GgwtUzSzUPnB6H2HMHM7e2kBi8McLl/z67Ttxjv
-         VBvJgPvG10LyiNlpJuhqg4GQkKFRxa49LxbUsX72s2cN6a2KAOgppa7RgRPCJqPjkPED
-         Ef8xx7pNtsFNbn8s3hwtKfkuSFppwg2/HNWquv90AotDNW2NveCdg498km9B1Wrhv0yV
-         w2+y3CJdSBUNoVMkN8MqI9+yDTLdOCS+fZ/YlVa9SLxXDA5NKOObn9CXwfecXVAWUNzH
-         q/yA==
+        bh=bKUj751TeY4nkEZpPo0FTWcTQnR2+/cwe6ZT7/QhNuQ=;
+        b=FV0JE+hZlBpw+WrvEPC+bAPsMPCL/Ry2L2MDMhyYEplZk3THbiM5BxDc/LDjBEYXoL
+         A9bMIO07r3D+DN+8aGBYDVfDf8YMkLaruGfqVrCFZpNAatVneHT1R/Ze1JgkXendCMo0
+         XqWkFEnve7FACi08pjICTBzdyIjERPzRXk+mYSUA9JGEFq1sY332sSY6ViwKDMkkYsQE
+         42etHZurGeohRsX0AsxAwhnxuWwtEphvkCf17EjaCMjD4P2WnJ6hS87a6nzXdWG4cFuZ
+         LAXarAE4SJy28JXLH2cOcd1XqK3fb98g5HGwFazLSfpmWJA1FTM+IvsZsXOoXbc4iBF/
+         PSHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780926423; x=1781531223;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1780926696; x=1781531496;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=PlHLPmEPwYMjH3EElGOjjI09oO4lUI4b+lkKofR57Co=;
-        b=MKOl1rbNU/u/UaJjjf8s3Vy0qXgcP1+BJ7E69Mvj2QyNBVNfri69Io4+lEO9niu7Ab
-         yL68ctIxWxKU/ZFGy6RQ/jhEzSuaNk/SODKBY66bID9z5xSj5OEiJHMD1cax1Ed5Pf0x
-         iNon9P3JGHyGeDEyb0Oid+iIw2xl94zWwEyeDc53lOvijn0DoyGAjgsjMPY27+qvf5J6
-         jMCe5kPYYEVUkwOi0/bRQCuYRajKyDJDKFpN9P5b6CbTzGabIZp50gG03jYmN394A4nG
-         li7Q/iMZw4WAnOGakmfCNFM97xNeR/UqQH/tHcACurBkZEwsrWE9PkqDmLpivJMpP01a
-         cOGg==
-X-Forwarded-Encrypted: i=1; AFNElJ+jYfU9JdKZkoLDDA89JY2mQQhzz3DRK5Jif/KTqOebjykHS5omgi+yJOKgoiQaIbnFbqo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaBr3+TQKSRh/viTXbYWL1Cvla5D+fIa5qGIb3DzxtWl1A8D1B
-	Qa8X+fysqCur77CDyaITSZCDzBolreJzckjpFvqJSHzAXvlNTfomeSEB
-X-Gm-Gg: Acq92OFnuMMmQbP17cZnFToa/lWgSD0N+2Q4wsZlaSPLlEwoL4OLRcUl4juKy69c/rb
-	P17CGl6Y5y4ZN6+AW0RNwYGStabYaQybQOFw5XvMTVY49WU4VyoifrloC61LKKSXW9vTHTIN2ca
-	bZXpYI4KynXDgnDKN65UTZQHkGoDCc1mEG4C9Q5y5MG+N6oeMeiSakVY7X1wErpAqwQIKcBKXx4
-	QNWGR/Ei1Bf+EtUbdBmYua7TGFeZrS+UOF4ewlWJkR15ChvUYe1hWOju3ZuTkoJl/oqEUJ/hpMr
-	PRqqBGnest/DoOMZgeXMqXScalE67sYRYVib23snO7uTBaZk5WfHf/sWkIld54ILixe6ESJOULd
-	hi7JpDkAExsDlWW/hlwsJq0Wc9Q8A03QlKnWybd3Y6QnPaP/0WMAM5oBzVSA2ko6noAnW6dmNhT
-	H6TTTorefvsyr9NdMxxyKUcUJ8g4WS21LXuVR4RMlH7LdxtZgXcJ3hGIbCFkG6aF0+NIjzUg==
-X-Received: by 2002:a05:6402:3609:b0:688:1d01:407b with SMTP id 4fb4d7f45d1cf-68fa503aea8mr3257144a12.4.1780926422874;
-        Mon, 08 Jun 2026 06:47:02 -0700 (PDT)
-Received: from Kayra-MacBook-Pro ([2a00:1d34:85f:fd00:9db9:b857:33b5:b17c])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-691afe82416sm1829797a12.13.2026.06.08.06.47.00
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 08 Jun 2026 06:47:02 -0700 (PDT)
-From: Kayra Cizmeci <kayracizmeci@gmail.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com
-Cc: tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kayra Cizmeci <kayracizmeci@gmail.com>
-Subject: [PATCH v2] KVM: x86: Add IDT limit check in __emulate_int_real()
-Date: Mon,  8 Jun 2026 16:46:42 +0300
-Message-ID: <20260608134642.25849-1-kayracizmeci@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260608123503.23298-1-kayracizmeci@gmail.com>
-References: <20260608123503.23298-1-kayracizmeci@gmail.com>
+        bh=bKUj751TeY4nkEZpPo0FTWcTQnR2+/cwe6ZT7/QhNuQ=;
+        b=cMtVZU8FBH78ufB4QfnpthQW5Dga2nYXmU3EIpb3UuB7TUpXcok+34Eb9qrtrLjINO
+         PbEobasISRKsuJm1oYPAbyclMauE1CINQNPPoBqF40v/+UiwGgfr/wRzmbW6bczW0cK/
+         NT9v2SkYCrMDdKTYK5cUfUs5oPXLPnNOIYPsqEwlpSpJQHxQ8dQhD/hQvBhTRKTBX0Jp
+         WV4agSoV111+fSGEYczKTsprHh+sD7S6z5ZOG/+rcmFcGK4wR66SUuYLfsz/t2WQmC/D
+         kKBmrV+8RUaeWkxBvM247GTp80j79Bv3MetvirEgqNXPM1LGwXFhSzh7BULrx1fTkO4H
+         jxtw==
+X-Forwarded-Encrypted: i=1; AFNElJ/GW1BppUM2v+hzaL/b8c4jo6/lX1wzTVxuEKMpaoxno12NpcyP4kU5vJ5DPyQ/1TdWLI8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvBbL6S4czO7Bfz6gZTXRvd3i/pFOoTVNQvFu85Re0524NpnmO
+	HXMC5wT4veiKrjEf5I+tMj0tHxZLIshVG8uRYOrtOCDboPZXusn2fbSfOAzUJwAO5XJsApqL/4E
+	6tfK2oLwEZvI8daAXmVQQWepQkWKqh24FxqkXiRiXsMtQt/yWdCdn
+X-Gm-Gg: Acq92OFf7AiJbVnRl2ianKyvCShUGqVILMK+GjZYZUh1s4rmDCuUp/KriYNfiIM7I8w
+	Wg0ZsrmpIzs3+O2l8zoJLAv8Bl+wOwDPbxozpbhLSq8HWYHbNYDuoGEx0CMeRMOb8CKja1aiRUS
+	HD3HXUErRTe9mTVvlS7lSdY8Tw2R689s0w+oWmO1+B+Ay21dYnyGhx9P+SZBnrv704Ao/w5VQjC
+	hZ0UI3mWybnvUKs9TJjdYsOnSC+pVcNcejJ95+zWIg1poewyfLCcxUu3tRtzr7oBUv6JEmBDa7X
+	DfWhlf5NBt86lmtEgeNhJ59ch8UhAMFgbMWe/8ve/q8ISm6JNRtBr970q7FRGGKvK5flNJC71cw
+	pZg==
+X-Received: by 2002:a53:ac87:0:b0:661:1307:3d49 with SMTP id
+ 956f58d0204a3-66113074155mr12044887d50.7.1780926696345; Mon, 08 Jun 2026
+ 06:51:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260529082948.363931-1-alex.bennee@linaro.org>
+In-Reply-To: <20260529082948.363931-1-alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 8 Jun 2026 14:51:24 +0100
+X-Gm-Features: AVVi8CfELuu63-8QEYfJ12bzRvsrYJpzmkWaV0Rztq1EKICzbROxPC3RaYFy1rw
+Message-ID: <CAFEAcA94+mh_pigFDi+tEPRJ416fSWfxsQ1Lj8Byemug9kBp6w@mail.gmail.com>
+Subject: Re: [PATCH v7 0/8] target/arm: fully model WFxT instructions for A-profile
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Alexander Graf <agraf@csgraf.de>, Mohamed Mediouni <mohamed@unpredictable.fr>, 
+	Pedro Barbuda <pbarbuda@microsoft.com>, qemu-arm@nongnu.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-During real mode interrupt emulation, KVM currently pushes data to the
-stack before checking IDT limits.
+On Fri, 29 May 2026 at 09:29, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+> This series fully models the behaviour of WFxT instructions. We
+> already had support for WFE for M-profile but we left off A-profile as
+> it has more potential sources of wake-ups. The main one is the event
+> stream which includes events from significant bits of the timer
+> ticking over.
+>
+> The refactoring from the previous iterations of the patch have now
+> been merged.
+>
+> I've dropped trying to fully model the global monitor in favour of
+> taking advantage of the architectural flexibility to have an IMPDEF
+> event wake up for any reason. We treat the setting of exclusive_addr
+> as such a reason because it indicates the current vCPU is in a ldstx
+> exclusive region and we don't want the guest to deadlock. This does mean
+> the system won't sleep on WFE enabled locks but people shouldn't be
+> relying on QEMU to model real world sleep patterns anyway given the
+> efficiency of emulation compared to real HW.
+>
+> I've written a test case using kvm-unit-tests:
+>
+>   Message-ID: <20260527111822.1563679-1-alex.bennee@linaro.org>
+>   Date: Wed, 27 May 2026 12:18:21 +0100
+>   Subject: [kvm-unit-tests PATCH v2] arm: add wfx test case
+>   From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.org>
+>
+> All patches are now reviewed.
 
-This patch fetches the IDT early and injects a #GP if the limit
-is exceeded. This prevents potential corruption.
 
-Signed-off-by: Kayra Cizmeci <kayracizmeci@gmail.com>
----
- arch/x86/kvm/emulate.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 8013dccb3110..32168db07dd2 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -2022,7 +2022,11 @@ static int __emulate_int_real(struct x86_emulate_ctxt *ctxt, int irq)
- 	gva_t eip_addr;
- 	u16 cs, eip;
- 
--	/* TODO: Add limit checks */
-+	ops->get_idt(ctxt, &dt);
-+
-+	if (dt.size < (irq << 2) + 3)
-+		return emulate_gp(ctxt, 0);
-+
- 	ctxt->src.val = ctxt->eflags;
- 	rc = em_push(ctxt);
- 	if (rc != X86EMUL_CONTINUE)
-@@ -2040,8 +2044,6 @@ static int __emulate_int_real(struct x86_emulate_ctxt *ctxt, int irq)
- 	if (rc != X86EMUL_CONTINUE)
- 		return rc;
- 
--	ops->get_idt(ctxt, &dt);
--
- 	eip_addr = dt.address + (irq << 2);
- 	cs_addr = dt.address + (irq << 2) + 2;
- 
-@@ -4324,7 +4326,7 @@ static const struct opcode opcode_table[256] = {
- 	I(Stack, em_leave),
- 	I(ImplicitOps | SrcImmU16 | IsBranch | ShadowStack, em_ret_far_imm),
- 	I(ImplicitOps | IsBranch | ShadowStack, em_ret_far),
--	D(ImplicitOps | IsBranch), DI(SrcImmByte | IsBranch | ShadowStack, intn),
-+	D(ImplicitOps | IsBranch), DI(SrcImmUByte | IsBranch | ShadowStack, intn),
- 	D(ImplicitOps | No64 | IsBranch),
- 	II(ImplicitOps | IsBranch | ShadowStack, em_iret, iret),
- 	/* 0xD0 - 0xD7 */
--- 
-2.54.0
+Applied to target-arm.next, thanks.
 
+-- PMM
