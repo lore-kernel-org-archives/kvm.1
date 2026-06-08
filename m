@@ -1,156 +1,256 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBDD30569D
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 16:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04B63CFF65
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 16:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780936779; cv=none; b=CiGEYgpEadjHS70wIi4GFzJAtnN+UW6EBSZxxV4RyqtSlr2EHntxRElNfqePO+6F0vO79JqX0Jag6N1na0QMUteSGZLuIvMxpRd+PUXYW5+GSCaBXkOD4ESAYLL8E+GKp6BBu7vK4bbKwmrKzexiStln2mx/862IkntlCClmxtE=
+	t=1780937293; cv=none; b=EIeupXMLPNU6Xgo7zHtTkankEUKjZDQqxonEx+CSD4CWfLS9ebXLTYtP88oo5yqDk7yznUZqMrSJPj/j3QBsv7QegdGS5Wy50yov3IrRQjsgbE2C9w3VgP2RCIX3xZpggQ3NQOL5g4AaEhOXB8zXx8elJWq8shVIuDgqJVlsyiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780936779; c=relaxed/simple;
-	bh=YS8jSAGTHN1p+8xkZwmsebfPTzKbkfOhbGwBkcLtjes=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=M+r9ZXLmmp0S8dICfJqF3cV+D4Q3GodgVi5/rmojKgewxEogUu9mIM5RBnQ2wX3PAH0sCiTSEmUUJ78sPPrYzXtJ3Ut51WrQkImlyvTeZ/YBWGBG82cbvjKsBg4Gn4NEH7PZX4UfPwmlOjMCpBpDldklEaLteVidTkV3c5tpM2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RvfUZEnT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780937293; c=relaxed/simple;
+	bh=JI5C7ugHpC0Id6mKn0j06lGdSpthSyUJLbA8pjzWS6I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pVPQGhgpWCTOdZ096QiE6UGAcNTxuq28yd4/mnaMrN53rvWcOf1BkJLsHR9m1P1g+8ESxHxZkUxdIEMgpXPGFJkTts9B9yOEQzAQtHJFVbXFdi0yqRO7HIrtDbHC8iqrrKwl8b6dxo5/i5ul1hQG4dHMCMjHP8/XZTvLwCoWg8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OEpBYxWV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RvfUZEnT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B54F1F00893;
-	Mon,  8 Jun 2026 16:39:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780936778;
-	bh=kc8h8sioyu7QxdgCSvHLx2G+zuNiarScChSLgh1sVA8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RvfUZEnTUqnsCNitJTF4h4cEQlZAoQvdonPfDiRGZiYWQqYGE0+qVWG/MrtMgO9d9
-	 XV7uMZ48wqg9odG7aE9VAP3qIEi8UrMCYAC9kTXIVc0pX/EOT1UQI2Ig3MXsEoU1AL
-	 uCUXS9IJeChpkf6zfqQG/q+YeJPcOcQwikgEqlyDMYgnGfuJoAi/sqWk4V52l5N6sg
-	 lSj6LI8D2gIkv+TipJYDoY4RwAqYP/4N9Jj+Uv3T5JNnXTbg0ehb6dtbosbjCfCH1k
-	 aGWvXEtUQ+OgFJueuxDPy+ce2nkyVaE9jYdSriQ9xStclIiXwgGSMruOLc7sEOk7z3
-	 Y4jpq8O/jcziw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 08/34] KVM: x86: Add KVM_VCPU_TSC_SCALE and fix the
- documentation on TSC migration
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608145455.89187-9-dwmw2@infradead.org>
-References: <20260608145455.89187-9-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 16:39:37 +0000
-Message-Id: <20260608163938.0B54F1F00893@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OEpBYxWV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780937290;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HO1z1hECglS3oHNycHe52C8L+SIuRFyFX5+d24s3Qxo=;
+	b=OEpBYxWVuO5IaOsmKPM2fgb2r2tB1Ui5RLZhCotUEZY8ymI3WqeFt2ufOceP3R0uur62dA
+	zp6Mw2BohC8TLdjWNXGWMhE/n1+wEP3CmDydmy9CkMjSifk/NWy+G0pwtY22dLNUGo7RpK
+	e9xyQ8rVWu3ByFjcCmEnflzFZEN4snQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-664-jTkQIDEiMJ6cjZxqb-ZLkw-1; Mon,
+ 08 Jun 2026 12:48:07 -0400
+X-MC-Unique: jTkQIDEiMJ6cjZxqb-ZLkw-1
+X-Mimecast-MFC-AGG-ID: jTkQIDEiMJ6cjZxqb-ZLkw_1780937285
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0DA901800605;
+	Mon,  8 Jun 2026 16:48:04 +0000 (UTC)
+Received: from [10.44.48.99] (unknown [10.44.48.99])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A13881800664;
+	Mon,  8 Jun 2026 16:47:56 +0000 (UTC)
+Message-ID: <e7eb0dba-790a-4644-9895-5c9a7420d7fe@redhat.com>
+Date: Mon, 8 Jun 2026 18:47:54 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 35/60] kvm: Add VCPU plane-scheduling state and helpers
+To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
+ Sean Christopherson <seanjc@google.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, ashish.kalra@amd.com,
+ michael.roth@amd.com, nsaenz@amazon.com, anelkz@amazon.de,
+ James.Bottomley@HansenPartnership.com, Melody Wang <huibo.wang@amd.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
+ x86@kernel.org, coconut-svsm@lists.linux.dev, joerg.roedel@amd.com
+References: <20260608144252.351443-1-joro@8bytes.org>
+ <20260608144252.351443-36-joro@8bytes.org>
+Content-Language: en-US
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20260608144252.351443-36-joro@8bytes.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] Missing capability check for TSC scaling in `pvclock_migration_t=
-est` causes unconditional test failure on unsupported hardware.
-- [Medium] Integer overflow in `tsc_dst` and `tsc_ofs_delta_ns` calculation=
-s in `pvclock_migration_test`.
---
+On 6/8/26 16:42, Jörg Rödel wrote:
+> From: Joerg Roedel <joerg.roedel@amd.com>
+> 
+> The algorithm is to always run the lowest runnable plane. Plane
+> switches are done by stopping the current plane and setting another
+> runnable.
+> 
+> Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 
-commit 672fb23aded51a56922a91383781eb9402e95560
-Author: David Woodhouse <dwmw@amazon.co.uk>
+This was left arbitrary in my version because for example Hyper-V VTLs 
+use highest-runnable instead.  It also made pure userspace scheduling 
+possible, though that may not be very important in the grand scheme of 
+things.
 
-KVM: x86: Add KVM_VCPU_TSC_SCALE and fix the documentation on TSC migration
+Did you drop it because it didn't work, or just for simplicity?
 
-Adds KVM_VCPU_TSC_SCALE to extract the scale ratio and frac_bits, and
-documents the process for userspace to preserve the TSC across migration.
-Adds a selftest to verify KVM clock precision across simulated live migrati=
-on.
+Paolo
 
-> diff --git a/tools/testing/selftests/kvm/x86/pvclock_migration_test.c b/t=
-ools/testing/selftests/kvm/x86/pvclock_migration_test.c
-> new file mode 100644
-> index 0000000000000..6a7eaf627d1a7
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/pvclock_migration_test.c
-
-[ ... ]
-
-> +int main(void)
+> ---
+>   include/linux/kvm_host.h | 16 ++++++++++++++
+>   virt/kvm/kvm_main.c      | 45 ++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 61 insertions(+)
+> 
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 5c3f9dfa15ea..e3611e6cc3e4 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -168,6 +168,7 @@ static inline bool kvm_is_error_gpa(gpa_t gpa)
+>   #define KVM_REQ_VM_DEAD			(1 | KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
+>   #define KVM_REQ_UNBLOCK			2
+>   #define KVM_REQ_DIRTY_RING_SOFT_FULL	3
+> +#define KVM_REQ_PLANE_RESCHED		4
+>   #define KVM_REQUEST_ARCH_BASE		8
+>   
+>   /*
+> @@ -324,6 +325,8 @@ struct kvm_mmio_fragment {
+>   	unsigned int len;
+>   };
+>   
+> +
+> +
+>   struct kvm_vcpu_common {
+>   	struct kvm *kvm;
+>   
+> @@ -381,6 +384,8 @@ struct kvm_vcpu_common {
+>   
+>   	struct kvm_dirty_ring dirty_ring;
+>   
+> +	bool plane_switch;
+> +
+>   	struct kvm_vcpu_arch_common arch;
+>   };
+>   
+> @@ -388,6 +393,12 @@ struct kvm_vcpu_common {
+>   	for ((i) = 0; (i) < KVM_MAX_PLANES; ++(i))		\
+>   		if (((v) = common->vcpus[(i)]) != NULL)
+>   
+> +/* Tracked per plane-VCPU - used for deciding which plane-vcpu to run */
+> +enum kvm_vcpu_state {
+> +	STOPPED,
+> +	RUNNABLE,
+> +};
+> +
+>   struct kvm_vcpu {
+>   	struct kvm *kvm;
+>   	struct kvm_plane *plane;
+> @@ -401,6 +412,7 @@ struct kvm_vcpu {
+>   	struct kvm_run *run;
+>   
+>   	u64 plane_requests;
+> +	enum kvm_vcpu_state plane_state;
+>   
+>   	/* S390 only */
+>   	bool valid_wakeup;
+> @@ -440,6 +452,10 @@ struct kvm_vcpu {
+>   	unsigned plane_level;
+>   };
+>   
+> +void kvm_vcpu_set_plane_runnable(struct kvm_vcpu *vcpu);
+> +void kvm_vcpu_set_plane_stopped(struct kvm_vcpu *vcpu);
+> +struct kvm_vcpu *kvm_vcpu_select_plane(struct kvm_vcpu *vcpu);
+> +
+>   static inline bool kvm_vcpu_wants_to_run(struct kvm_vcpu *vcpu)
+>   {
+>   	return vcpu->common->wants_to_run;
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 9d30fd85ce5f..a30123b77112 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -4397,6 +4397,7 @@ static int kvm_plane_ioctl_create_vcpu(struct kvm_plane *plane, unsigned long id
+>   	vcpu->vcpu_idx = vcpu->common->vcpu_idx;
+>   	vcpu->plane = plane;
+>   	vcpu->plane_level = plane->level;
+> +	vcpu->plane_state = STOPPED;
+>   	vcpu->run = vcpu->common->run;
+>   
+>   	kvm_vcpu_init(vcpu, kvm, id);
+> @@ -4938,6 +4939,50 @@ static struct file_operations kvm_plane_fops = {
+>   	KVM_COMPAT(kvm_plane_ioctl),
+>   };
+>   
+> +void kvm_vcpu_set_plane_runnable(struct kvm_vcpu *vcpu)
 > +{
-
-[ ... ]
-
-> +	uint32_t freq_khz =3D 1500000; /* 1.5 GHz =E2=80=94 forces TSC scaling =
-*/
-> +	int ret;
+> +	vcpu->plane_state = RUNNABLE;
+> +	vcpu->common->plane_switch = true;
+> +	kvm_make_request(KVM_REQ_PLANE_RESCHED, vcpu);
+> +}
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_set_plane_runnable);
 > +
-> +	TEST_REQUIRE(sys_clocksource_is_based_on_tsc());
+> +void kvm_vcpu_set_plane_stopped(struct kvm_vcpu *vcpu)
+> +{
+> +	vcpu->plane_state = STOPPED;
+> +	kvm_make_request(KVM_REQ_PLANE_RESCHED, vcpu);
+> +}
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_set_plane_stopped);
 > +
-> +	/* =3D=3D=3D SOURCE SIDE =3D=3D=3D */
-> +	pr_info("=3D=3D=3D Source VM =3D=3D=3D\n");
-> +	vm =3D create_vm(&vcpu);
+> +struct kvm_vcpu *kvm_vcpu_select_plane(struct kvm_vcpu *vcpu)
+> +{
+> +	struct kvm_vcpu_common *common = vcpu->common;
+> +	struct kvm_vcpu *ret = NULL;
+> +	unsigned i;
 > +
-> +	/* Set guest TSC frequency (may trigger scaling) */
-> +	vcpu_ioctl(vcpu, KVM_SET_TSC_KHZ, (void *)(unsigned long)freq_khz);
-
-[Severity: Medium]
-Will this unconditionally fail on hardware that lacks TSC scaling?
-
-The test unconditionally forces a 1.5 GHz guest TSC frequency. If the host
-lacks hardware TSC scaling (kvm_caps.has_tsc_control is false) and the
-physical TSC frequency is greater than 1.5 GHz, KVM returns -EINVAL.
-
-Should there be a check like TEST_REQUIRE(kvm_has_cap(KVM_CAP_TSC_CONTROL))
-before forcing this, or a way to gracefully handle the error?
-
-[ ... ]
-
-> +	/* Step 6: =CE=94T */
-> +	delta_t =3D (int64_t)(time_dst - time_src);
+> +	for (i = 0; i < KVM_MAX_PLANES; i++) {
+> +		if (common->vcpus[i] == NULL)
+> +			continue;
 > +
-> +	/* Step 7: Compute destination offset */
-> +	{
-> +		struct kvm_device_attr attr =3D {
-> +			.group =3D KVM_VCPU_TSC_CTRL,
-> +			.attr =3D KVM_VCPU_TSC_SCALE,
-> +			.addr =3D (uint64_t)(uintptr_t)&scale_dst,
-> +		};
-> +		memset(&scale_dst, 0, sizeof(scale_dst));
-> +		__vcpu_ioctl(vcpu, KVM_GET_DEVICE_ATTR, &attr);
+> +		if (common->vcpus[i]->plane_state == RUNNABLE) {
+> +			ret = common->vcpus[i];
+> +			break;
+> +		}
 > +	}
 > +
-> +	tsc_dst =3D tsc_src + (uint64_t)((int64_t)freq_khz * 1000 * delta_t / 1=
-000000000LL);
-
-[Severity: Medium]
-Can this calculation overflow under heavy load?
-
-With freq_khz set to 1500000, the intermediate multiplication is
-1.5e9 * delta_t. This exceeds INT64_MAX if delta_t is greater than ~6.14
-seconds. While the test uses sleep(1), VM teardown and creation under heavy
-CI load might cause the time delta to exceed this.
-
-Could this be rearranged to avoid intermediate overflow, for example:
-delta_t * freq_khz / 1000000LL?
-
+> +	if (ret == NULL) {
+> +		ret = common->vcpus[0];
+> +		ret->plane_state = RUNNABLE;
+> +	}
 > +
-> +	if (scale_dst.tsc_frac_bits)
-> +		raw_dst =3D (unsigned __int128)host_tsc_dst * scale_dst.tsc_ratio
-> +			  >> scale_dst.tsc_frac_bits;
-> +	else
-> +		raw_dst =3D host_tsc_dst;
+> +	common->current_vcpu = ret;
 > +
-> +	ofs_dst =3D tsc_dst - raw_dst;
+> +	common->plane_switch = false;
 > +
-> +	/*
-> +	 * The TSC offset delta introduced by using CLOCK_REALTIME to
-> +	 * estimate elapsed time. On same host, the correct offset is
-> +	 * ofs_src; the difference is the CLOCK_REALTIME-vs-TSC error.
-> +	 */
-> +	int64_t tsc_ofs_delta =3D (int64_t)(ofs_dst - ofs_src);
-> +	int64_t tsc_ofs_delta_ns =3D tsc_ofs_delta * 1000000000LL / ((int64_t)f=
-req_khz * 1000);
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_select_plane);
+> +
+>   static int kvm_device_mmap(struct file *filp, struct vm_area_struct *vma)
+>   {
+>   	struct kvm_device *dev = filp->private_data;
 
-[Severity: Medium]
-Could a similar integer overflow happen here if the TSC offset delta cycles
-are abnormally large?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608145455.8918=
-7-1-dwmw2@infradead.org?part=3D8
