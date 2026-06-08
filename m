@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543B033A9E1
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 16:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7D331E827
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 16:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780934830; cv=none; b=SIzPbVtO9QZOl1cRN+lIXtao+QGDJC9DU8FOpZnp0FSHQZ78NvXCHxO9uQ6IBkICDITJSsVVtGc1lWEKa0ppdJj0k3dbnOUTJAsD5GKOZZJro/8rYpuiTFQThzAgjiHpam8T5f0fQvAqaoybRdsEGSxF5k0JtiMunBxzRVpG3wg=
+	t=1780934893; cv=none; b=oAjGEWMMfBWvdlxcSXC4dQ+bHRLwu+mhoGTYbFy0tCIC82Vb0CL6JhiDvFuUtFzLmyWZ8RemkFyo6Vt28LMfasqryucM9FM1SYz8robNVKlymv19ObnefIK7dtDmBk2YzzQ0eTj14bvOOn2vXn+F4Abjw+nks+qKUk0qLim6HDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780934830; c=relaxed/simple;
-	bh=2w+YZNdu4gYqxTN6CaH/U5Bf62BsxfRrsv+dKLjN+5s=;
+	s=arc-20240116; t=1780934893; c=relaxed/simple;
+	bh=qawFykfB03MgF4oYCwCePh/OamoSy85ZapP3BM4uvz0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Nr3nFE3dLuZ+bfvYUAEaVbJj6uQkXDaY3Wd3vl0TeJ7JXgmIXnCMaE+Fjk6zKnY1KCC4V3TGbHJu3s0LR0TDxbkMcqabvnF60GqJskxTK9b8j7Z6upfMCnlDN7az6prlZgPosbx3h6v3Nn2Ckxf1JW4/lWBmO3tAUCac7dwUgZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBft+1Ta; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=YGn0Kbwfu9brMmSigSWKLZl8emdFOa2d7umE2KRp955GkbeAq+zdQaNNNNM7AdaFvSOJ/nTW5sL//OuvPNRGW2JLVAES/Xi2nIpJsyVIIl+VOt2sN0Lhfh+h2q+jhrofBglK4IhqBxR/cWjS1RiyljKJInj3wYCQDoli/cVFnVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ce4OIU1M; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBft+1Ta"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E161F00893;
-	Mon,  8 Jun 2026 16:07:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ce4OIU1M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AA71F00893;
+	Mon,  8 Jun 2026 16:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780934829;
-	bh=R7CA90X1l4BhXppow45UkA5jJrMxkJNWxIWd57D1kqg=;
+	s=k20260515; t=1780934892;
+	bh=YtjOQeUtOc3J3bEa8qiwKnu31jbs+td4xswegOx841g=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dBft+1TakJ2FTDLsy7TLDpRVkPnCXplyiPkZuOS/DbPlyvMG+pQ3xa620fA16fsWw
-	 PBhypxzooW3RcJ7B3wtrZBvc3FaBN7Em5rVLVMTHtioimu6v7/dP26tr1xUHzDPGH3
-	 qyXK5TRH5rgprdOt5vx5eHFWMfoOe+vwt3fpc29QBX5NTrQ8yIqVa8DLW7IY1OJ8Ib
-	 Hv/SuZSfEC/sks3HU8ZyS1oJeKjkgLGz10Jw1DnSpiguMRdKsE47wwTSWmbdiXSLnb
-	 4DtrJrbjgOyDZAJwpHBL15WmmuTCxMgJnGSDXTfbp9vVBn70MtAsrdz4CPtW8rHgKV
-	 5Dt9LP1HkGprQ==
+	b=Ce4OIU1MpaBnguQUSqlMqZqb2EuC4LxrRevB10MXZiSNfouAtfPkviB5awfrRadNm
+	 SeQJuRBcOw33ksC2hO2TRtojrNY9c0l8Ace3F76nZtzLszImL2NWo10qwaOfu4bHHO
+	 BPRIrui56uGL45XLjZgut3+c3KJyEd/Gdh5xsAHuogMRLT5qvpd2CmdI5dar2OYT4K
+	 iEG1pVqQ/UxFMuTJet6V+7j2WuC4bmkfN0fx7v6LbzuhVfRvX3o+cbq7CjEzn0MywL
+	 KAzwbZ9ccHMwGxDoP2Z8ddzuG5Jua5O2oo74yy/zx82HLtiIRqg0GXs4uc1WmN2+nz
+	 7HwN3lOt9Wb0Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 15/60] kvm: Move VCPU scheduling state to struct
- kvm_vcpu_common
+Subject: Re: [PATCH v1] riscv: kvm: Use endian-specific __lelong for NACL
+ shared memory
 Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: "Sean Chang" <seanwascoding@gmail.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-16-joro@8bytes.org>
-References: <20260608144252.351443-16-joro@8bytes.org>
+In-Reply-To: <20260608155252.4292-1-seanwascoding@gmail.com>
+References: <20260608155252.4292-1-seanwascoding@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 16:07:08 +0000
-Message-Id: <20260608160709.15E161F00893@smtp.kernel.org>
+Date: Mon, 08 Jun 2026 16:08:11 +0000
+Message-Id: <20260608160811.D6AA71F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,114 +46,113 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] The active vCPU pointer `common->current_vcpu` is not updated =
-during `vcpu_load()`, causing preemption handlers to save and restore the p=
-hysical state of the wrong VCPU plane.
-- [Low] Mixing `goto`-based error handling and `__free()` cleanup declarati=
-ons in the same function.
+
+Pre-existing issues:
+- [High] Infinite loop in `__kvm_riscv_nacl_hfence` due to missing `try_cou=
+nt` decrement.
+- [High] Race condition and memory ordering bugs in NACL shared memory upda=
+tes.
 --
 
-commit aa5b05dc8fcf8ce2c82b92d710cc33efdf5543d2
-Author: Joerg Roedel <joerg.roedel@amd.com>
+commit 041fd3e0bc4c133e6f04a198d4795da99daa15bb
+Author: Sean Chang <seanwascoding@gmail.com>
 
-kvm: Move VCPU scheduling state to struct kvm_vcpu_common
+riscv: kvm: Use endian-specific __lelong for NACL shared memory
 
-The scheduling state of the KVM VCPU is shared between all per-plane
-VCPU objects. Move it to struct kvm_vcpu_common.
+This patch fixes bitwise type warnings from sparse by introducing __lelong
+and replacing raw unsigned long pointers in SBI NACL shared memory. It also
+adds a __force cast to __get_user_asm to safely suppress implicit cast
+warnings.
 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -166,7 +166,7 @@ void vcpu_load(struct kvm_vcpu *vcpu)
->  	int cpu =3D get_cpu();
-> =20
->  	__this_cpu_write(kvm_running_vcpu, vcpu->common);
-> -	preempt_notifier_register(&vcpu->preempt_notifier);
-> +	preempt_notifier_register(&vcpu->common->preempt_notifier);
->  	kvm_arch_vcpu_load(vcpu, cpu);
->  	put_cpu();
->  }
+> diff --git a/arch/riscv/include/asm/kvm_nacl.h b/arch/riscv/include/asm/k=
+vm_nacl.h
+> index 4124d5e06a0ff..f45407bcaa26a 100644
+> --- a/arch/riscv/include/asm/kvm_nacl.h
+> +++ b/arch/riscv/include/asm/kvm_nacl.h
+
+[ ... ]
+
+> @@ -176,7 +178,7 @@ __kvm_riscv_nacl_hfence(__shmem,					\
+>  do {									\
+>  	void *__s =3D (__shmem);						\
+>  	unsigned int __i =3D SBI_NACL_SHMEM_CSR_INDEX(__csr);		\
+> -	unsigned long *__a =3D (__s) + SBI_NACL_SHMEM_CSR_OFFSET;		\
+> +	__lelong *__a =3D (__s) + SBI_NACL_SHMEM_CSR_OFFSET;		\
+>  	u8 *__b =3D (__s) + SBI_NACL_SHMEM_DBITMAP_OFFSET;		\
+>  	__a[__i] =3D cpu_to_lelong(__val);				\
+>  	__b[__i >> 3] |=3D 1U << (__i & 0x7);				\
 
 [Severity: High]
-Does this code need to dynamically record the actively loaded vCPU in
-common->current_vcpu?
+This is a pre-existing issue, but does the lack of a memory barrier between
+the CSR value update and the dirty bit update risk a race condition?
 
-When an ioctl is invoked on a secondary plane's file descriptor, this will
-load the physical state of the secondary plane onto the current CPU.=20
+On RISC-V's relaxed memory model, these stores could be reordered without an
+smp_wmb(), potentially allowing the hardware or firmware to observe the
+dirty bit before the payload is visible in nacl_csr_write.
 
-If common->current_vcpu is not updated here, could preemption cause the wro=
-ng
-state to be saved?
-
-[ ... ]
-
-> @@ -468,6 +468,12 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcp=
-u, struct kvm *kvm, unsigned
-> =20
->  	common->kvm =3D kvm;
->  	common->current_vcpu =3D vcpu;
-> +
-> +	common->wants_to_run =3D false;
-> +	common->preempted =3D false;
-> +	common->ready =3D false;
-> +	preempt_notifier_init(&common->preempt_notifier, &kvm_preempt_ops);
-> +
->  	vcpu->common =3D no_free_ptr(common);
-> =20
->  	return 0;
-
-[Severity: Low]
-This isn't a bug, but does kvm_vcpu_init_common() mix goto-based error
-handling and __free() cleanup declarations in the same function?
-
-The cleanup guidelines suggest that for a given routine, all resources shou=
-ld
-be converted to scope-based cleanup, or none of them, to avoid confusing
-ownership semantics.
-
-[ ... ]
-
-> @@ -6487,36 +6490,36 @@ static void kvm_init_debug(void)
->  }
-> =20
->  static inline
-> -struct kvm_vcpu *preempt_notifier_to_vcpu(struct preempt_notifier *pn)
-> +struct kvm_vcpu_common *preempt_notifier_to_vcpu_common(struct preempt_n=
-otifier *pn)
->  {
-> -	return container_of(pn, struct kvm_vcpu, preempt_notifier);
-> +	return container_of(pn, struct kvm_vcpu_common, preempt_notifier);
->  }
-
-[ ... ]
-
->  static void kvm_sched_out(struct preempt_notifier *pn,
->  			  struct task_struct *next)
->  {
-> -	struct kvm_vcpu *vcpu =3D preempt_notifier_to_vcpu(pn);
-> +	struct kvm_vcpu_common *common =3D preempt_notifier_to_vcpu_common(pn);
-> =20
-> -	WRITE_ONCE(vcpu->scheduled_out, true);
-> +	WRITE_ONCE(common->scheduled_out, true);
-> =20
-> -	if (task_is_runnable(current) && kvm_vcpu_wants_to_run(vcpu)) {
-> -		WRITE_ONCE(vcpu->preempted, true);
-> -		WRITE_ONCE(vcpu->ready, true);
->  	}
-> -	kvm_arch_vcpu_put(vcpu);
-> +	kvm_arch_vcpu_put(common->current_vcpu);
->  	__this_cpu_write(kvm_running_vcpu, NULL);
->  }
+> @@ -186,7 +188,7 @@ do {									\
+>  ({									\
+>  	void *__s =3D (__shmem);						\
+>  	unsigned int __i =3D SBI_NACL_SHMEM_CSR_INDEX(__csr);		\
+> -	unsigned long *__a =3D (__s) + SBI_NACL_SHMEM_CSR_OFFSET;		\
+> +	__lelong *__a =3D (__s) + SBI_NACL_SHMEM_CSR_OFFSET;		\
+>  	u8 *__b =3D (__s) + SBI_NACL_SHMEM_DBITMAP_OFFSET;		\
+>  	unsigned long __r =3D lelong_to_cpu(__a[__i]);			\
+>  	__a[__i] =3D cpu_to_lelong(__val);				\
+>  	__b[__i >> 3] |=3D 1U << (__i & 0x7);				\
 
 [Severity: High]
-If common->current_vcpu still points to the primary plane because it wasn't
-updated in vcpu_load(), will this save the active physical state of the
-secondary plane directly into the primary plane's structure?
+This isn't a bug introduced by this patch, but similar to nacl_csr_write,
+could these writes be reordered by the CPU in the nacl_csr_swap macro?
 
-It looks like upon resuming, kvm_sched_in() would load the primary plane's
-corrupted state back into the physical CPU, which might cause deterministic
-architectural guest state corruption between planes.
+[ ... ]
+
+> diff --git a/arch/riscv/kvm/nacl.c b/arch/riscv/kvm/nacl.c
+> index 08a95ad9ada2c..6f9f8963e9ddc 100644
+> --- a/arch/riscv/kvm/nacl.c
+> +++ b/arch/riscv/kvm/nacl.c
+> @@ -20,7 +20,7 @@ void __kvm_riscv_nacl_hfence(void *shmem,
+>  			     unsigned long page_count)
+>  {
+>  	int i, ent =3D -1, try_count =3D 5;
+> -	unsigned long *entp;
+> +	__lelong *entp;
+> =20
+>  again:
+>  	for (i =3D 0; i < SBI_NACL_SHMEM_HFENCE_ENTRY_MAX; i++) {
+
+[Severity: High]
+This is also a pre-existing issue, but does this retry loop run infinitely
+if the queue remains full?
+
+Looking at __kvm_riscv_nacl_hfence(), it appears try_count is never
+decremented before taking the goto:
+
+    if (ent < 0) {
+        if (try_count) {
+            nacl_sync_hfence(-1UL);
+            goto again;
+        } else {
+            pr_warn("KVM: No free entry in NACL shared memory\n");
+            return;
+        }
+    }
+
+Additionally, there seems to be a pre-existing ordering hazard when writing
+the entry payload further down in __kvm_riscv_nacl_hfence():
+
+    entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_CONFIG(i);
+    *entp =3D cpu_to_lelong(control);
+    entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PNUM(i);
+    *entp =3D cpu_to_lelong(page_num);
+    entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PCOUNT(i);
+    *entp =3D cpu_to_lelong(page_count);
+
+Since the CONFIG element contains the valid bit, writing it before PNUM and
+PCOUNT could allow another vCPU on the same physical CPU to trigger
+nacl_sync_hfence() if KVM is preempted right after the CONFIG write. Would
+this cause the firmware to process uninitialized payload data?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D15
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608155252.4292=
+-1-seanwascoding@gmail.com?part=3D1
