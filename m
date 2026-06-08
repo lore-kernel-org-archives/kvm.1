@@ -1,57 +1,71 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41608312832
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 15:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780933536; cv=none; b=roIMZloFAD4ovMCblv9J+UDgMCYH1fhzNt+bv9OWftFqb3yNXaH2YxJPYtXCSeUW5mT8G8NpSJlloT7vBXqvWdb4AA7GoY1qll/+fBoI++YaWpYTGiXHrf4TRNd85BejrVaODjx1iwshcVvspiY1OEGrodnxx1uwrZupbZY73XA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780933536; c=relaxed/simple;
-	bh=/ZRUYQ3Qiw/BIZ/qrmsWY1dhK54RSGasZuBgu2EpNVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZJt/LgcXFQYBuJE5RXOVFW63RU2V63vTThkh5eqGMjN8/a7IrWiDOBMRnM/6HWJGhJ/oQYVVLxSKHmGOPxVc8Q/Mpq2UtRmaMcB2Ziuw9oJAV7WsYPPmT45p0+5rlXyS4Z/lAJrP9DnXxtxJZaF1P4Wk2yHAA0Nfghx+oqiV73w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 2660F20243E;
-	Mon,  8 Jun 2026 17:45:34 +0200 (CEST)
-Date: Mon, 8 Jun 2026 17:45:32 +0200
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
-	Richard Henderson <richard.henderson@linaro.org>, philmd@linaro.org, marcel.apfelbaum@gmail.com, 
-	zhao1.liu@intel.com, mst@redhat.com, cohuck@redhat.com, mtosatti@redhat.com, 
-	Tom Lendacky <thomas.lendacky@amd.com>, qemu-devel@nongnu.org, kvm@vger.kernel.org, 
-	coconut-svsm@lists.linux.dev, joerg.roedel@amd.com
-Subject: Re: [RFC PATCH 00/10] QEMU Support for KVM Planes
-Message-ID: <aibi-SOE-eiBZ44K@8bytes.org>
-References: <20260608152109.356783-1-joro@8bytes.org>
- <aibiXAlJtbZdGdHl@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8B933CEB0;
+	Mon,  8 Jun 2026 15:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780933628; cv=none; b=Ya+86ZpMlSNtRx4+LIlajwoAMDPJulFcZwB98lRzov3Rw8AijBMNLkXBsttOVy9UDexNZDwWWlaqhDDYwAkoVdIun1650c2fl2z6E+n2OsNJ7PlPAhjJStUIBQp/W1p2f5XeikFheSNB4vGX+wixHL/YFch2VMMH1xtQfqve41w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780933628; c=relaxed/simple;
+	bh=Iq+6ojP7AgppYPts7xyLxCZYGE1ZVizTuyix4WGPuxM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=FMHoY4zJp4eNn8Ouky9WLdwpfXXhp5tC2s12UpcpLdNHpKdItgMNNpHTFBHsRniPq26aZNYIGg0GcYg0wSASFXxvaiI3gVudz4XovDvyGsucLKky2/ELgFmZfwX0Mc55D4JT1KtU1GAQGfKctkeiDNifbSEozhIDNFOun+xFSr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eHNRSNQU; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eHNRSNQU"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0ADBC1F00893;
+	Mon,  8 Jun 2026 15:47:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780933627;
+	bh=n4hnVEfxComf4F6YWKkdUl61CJnEKjlTtTpb1nSSawg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=eHNRSNQUsT4haJHtOCo0wLuutOOuztmdqV3Sy4EbW8Pl+mExGkdKvt3Dl1z68GS0Q
+	 0wNe9fnB/TXtocgurldMflVdrO5J3fzfyclVziZhW88hWAeSsJzvBG1hbhfUpZ2jLr
+	 D0jf7VAVsLLGQ5xtpQAkObz6AFN/iUT7p/z8dQdFqi2of4vpD7bKC3Gcv1fjwdKl1X
+	 sxnQdMEV76YBya/DzftB8Ezev3BYTdqLtANYz8v2nnqJwxWGxV+vrfllDyC8jcQbZd
+	 Cfb3nNc5EYrYPh7wt+dY+yNzzXaXR46s96GSB50nbC3TjjU9GwLOJyU1MxtVadf89r
+	 VILX745YZXFUQ==
+Date: Mon, 8 Jun 2026 10:47:05 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Ankit Agrawal <ankita@nvidia.com>, kvm@vger.kernel.org, jgg@ziepe.ca,
+	yishaih@nvidia.com, skolothumtho@nvidia.com, kevin.tian@intel.com,
+	bhelgaas@google.com, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v7 1/1] vfio/nvgrace-gpu: Add Blackwell-Next GPU
+ readiness check via CXL DVSEC
+Message-ID: <20260608154705.GA36965@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aibiXAlJtbZdGdHl@redhat.com>
+In-Reply-To: <20260528115613.63f1b178@shazbot.org>
 
-Hi Daniel,
-
-On Mon, Jun 08, 2026 at 04:40:12PM +0100, Daniel P. Berrangé wrote:
-> How are device-plane values intended to be chosen by the user ?
+On Thu, May 28, 2026 at 11:56:13AM -0600, Alex Williamson wrote:
+> On Thu, 28 May 2026 09:38:40 +0000
+> Ankit Agrawal <ankita@nvidia.com> wrote:
+> ...
+> >  drivers/vfio/pci/nvgrace-gpu/main.c | 144 ++++++++++++++++++++++++++--
+> >  include/uapi/linux/pci_regs.h       |   1 +
 > 
-> Is "2" a value that can/should always be used, or is there a dependency
-> on the igvm file, or somethihng else ?
+> Bjorn, I assume you don't object to this trivial addition:
+> 
+> > diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+> > index 14f634ab9350..718fb630f5bb 100644
+> > --- a/include/uapi/linux/pci_regs.h
+> > +++ b/include/uapi/linux/pci_regs.h
+> > @@ -1357,6 +1357,7 @@
+> >  #define  PCI_DVSEC_CXL_RANGE_SIZE_LOW(i)		(0x1C + (i * 0x10))
+> >  #define   PCI_DVSEC_CXL_MEM_INFO_VALID			_BITUL(0)
+> >  #define   PCI_DVSEC_CXL_MEM_ACTIVE			_BITUL(1)
+> > +#define   PCI_DVSEC_CXL_MEM_ACTIVE_TIMEOUT		__GENMASK(15, 13)
+> >  #define   PCI_DVSEC_CXL_MEM_SIZE_LOW			__GENMASK(31, 28)
+> >  #define  PCI_DVSEC_CXL_RANGE_BASE_HIGH(i)		(0x20 + (i * 0x10))
+> >  #define  PCI_DVSEC_CXL_RANGE_BASE_LOW(i)		(0x24 + (i * 0x10))
 
-Currently it is based on how COCONUT in the IGVM file it built. It will launch
-the Linux guest at plane 2, so all IRQs must go to plane 2 as well. For the
-future we are considering passing the device-plane value to the SVSM so it can
-decide on which plane to run Linux based on that value.
-
--Joerg
+Yep, looks fine to me.
