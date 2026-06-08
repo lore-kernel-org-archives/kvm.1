@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE543F58CD;
-	Mon,  8 Jun 2026 14:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98F83F8EDA;
+	Mon,  8 Jun 2026 14:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929816; cv=none; b=eSyVZD/5r3yDC2k4us8GJkV5+nR1oLQ4LlN3/ASDfeOEWN+wogE2PBn8QbpBp6stpbWdxwZDcAu8SHKDkFWqDEZlX3z7i4MSXU24virdfBQDPXX2X1psqOy4sM/ON1Uj9DOkR44GJsE8bAjz9HWrm2rKPlQgzioedQ+iHdQpkdo=
+	t=1780929818; cv=none; b=TByeDzOitGr7GyCMEM+PMB5YP52PXYsaeK1P75PEgabFK3R114ta4uec7oRkJTLMoCCVZeuofBAOGtN80ZCaYdyjrt29NfHlhzp/iCWIShMd41zT5A7dIy1QolrMv6rKiaYUICTfVwYmwN+/THt/mbfSt+D7smgF348cN+rIcew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780929816; c=relaxed/simple;
-	bh=db/Q7SVfsAoxR5f7Ac6G5I8uePQOMBXsCr5MOziknUk=;
+	s=arc-20240116; t=1780929818; c=relaxed/simple;
+	bh=Vg4yOkePdRdKG/abJ/Tj7JapEcEFmmEQlW00KZrlOXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vkk4W6PNufRQl+yV6b6kB9ueG8qt2+8Jo8VQ6qa3oN4F+uwQUXaU6zowUn+d98/ygFcyoxEFv99bxUpicJUQafPbuLKreS1Wd6MeD7hVb6hNl3mXnRW70RkzVG5T4m/kIEn4QCz7rKbLylLsL/oos4yBugB1mL8vLKxncYKtEpk=
+	 MIME-Version:Content-Type; b=C1CaXZ1Kcw9YbiJmWM6yXhtvi+tesxVcO834HYGEmIBdCivcAddEI4G6AQFMHvmb3b/+xJb34Ze1Gn6fzB+73BOdA5H32smlIcFK9OOCIGM0wLqS2g1e+5etnL6Tub31IE9dUJqSPkioWPPmNyVK2dKKVs0wZaUY4n3FOLk1l+s=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,8 +16,8 @@ Received: from io.home.8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id DAF792028CC;
-	Mon,  8 Jun 2026 16:43:13 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 180AF2028DB;
+	Mon,  8 Jun 2026 16:43:17 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
@@ -37,10 +37,11 @@ Cc: Tom Lendacky <thomas.lendacky@amd.com>,
 	kvm-riscv@lists.infradead.org,
 	x86@kernel.org,
 	coconut-svsm@lists.linux.dev,
-	joerg.roedel@amd.com
-Subject: [PATCH 41/60] kvm: x86: Make apic_map per plane
-Date: Mon,  8 Jun 2026 16:42:33 +0200
-Message-ID: <20260608144252.351443-42-joro@8bytes.org>
+	joerg.roedel@amd.com,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+Subject: [PATCH 56/60] kvm: svm: Implement GET_AP_APIC_IDS NAE event
+Date: Mon,  8 Jun 2026 16:42:48 +0200
+Message-ID: <20260608144252.351443-57-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
 References: <20260608144252.351443-1-joro@8bytes.org>
@@ -50,383 +51,175 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Implement the GET_APIC_IDS NAE event to gather and return the list of
+APIC IDs for all vCPUs in the guest.
+
+Since it is now possible to launch vCPUs without going through the
+LAUNCH_UPDATE process, be sure to mark the guest state protected and to
+enable LBR virtualization.
+
+Since it is now possible to launch vCPUs by APIC ID before the first
+INIT-SIPI request, be sure to check for the AP create event in the
+kvm_arch_vcpu_ioctl_run() loop when the AP is in the uninitialized state.
+
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Co-developed-by: Joerg Roedel <joerg.roedel@amd.com>
+Co-developed-by: Carlos López <clopez@suse.de>
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- arch/x86/include/asm/kvm_host.h | 24 +++++------
- arch/x86/kvm/i8254.c            |  2 +-
- arch/x86/kvm/lapic.c            | 71 +++++++++++++++++----------------
- arch/x86/kvm/x86.c              | 18 +++++++--
- 4 files changed, 61 insertions(+), 54 deletions(-)
+ arch/x86/include/asm/sev-common.h |  1 +
+ arch/x86/include/uapi/asm/svm.h   |  1 +
+ arch/x86/kvm/svm/sev.c            | 87 +++++++++++++++++++++++++++++--
+ 3 files changed, 86 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 134bc02962fd..11e52f8bb2c2 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1418,16 +1418,17 @@ enum kvm_mmu_type {
- };
- 
- /* Per-plane state of VM */
--struct kvm_arch_plane {};
-+struct kvm_arch_plane {
-+	atomic_t vapics_in_nmi_mode;
- 
--static inline int kvm_arch_plane_init(struct kvm *kvm,
--				      struct kvm_plane *plane,
--				      unsigned plane_level)
--{
--	return 0;
--}
-+	struct mutex apic_map_lock;
-+	struct kvm_apic_map __rcu *apic_map;
-+	atomic_t apic_map_dirty;
-+};
- 
--static inline void kvm_arch_plane_destroy(struct kvm_plane *plane) {}
-+int kvm_arch_plane_init(struct kvm *kvm, struct kvm_plane *plane,
-+			unsigned plane_level);
-+void kvm_arch_plane_destroy(struct kvm_plane *plane);
- 
- struct kvm_arch {
- 	unsigned long n_used_mmu_pages;
-@@ -1465,11 +1466,6 @@ struct kvm_arch {
- 	struct kvm_ioapic *vioapic;
- 	struct kvm_pit *vpit;
- #endif
--	atomic_t vapics_in_nmi_mode;
--
--	struct mutex apic_map_lock;
--	struct kvm_apic_map __rcu *apic_map;
--	atomic_t apic_map_dirty;
- 
- 	bool apic_access_memslot_enabled;
- 	bool apic_access_memslot_inhibited;
-@@ -2458,7 +2454,7 @@ int kvm_cpu_get_extint(struct kvm_vcpu *v);
- int kvm_cpu_get_interrupt(struct kvm_vcpu *v);
- void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event);
- 
--int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
-+int kvm_pv_send_ipi(struct kvm_vcpu *kvm_vcpu, unsigned long ipi_bitmap_low,
- 		    unsigned long ipi_bitmap_high, u32 min,
- 		    unsigned long icr, int op_64_bit);
- 
-diff --git a/arch/x86/kvm/i8254.c b/arch/x86/kvm/i8254.c
-index 1982b0077ddd..bfe590378bd2 100644
---- a/arch/x86/kvm/i8254.c
-+++ b/arch/x86/kvm/i8254.c
-@@ -260,7 +260,7 @@ static void pit_do_work(struct kthread_work *work)
- 	 * VCPUs and only when LVT0 is in NMI mode.  The interrupt can
- 	 * also be simultaneously delivered through PIC and IOAPIC.
- 	 */
--	if (atomic_read(&kvm->arch.vapics_in_nmi_mode) > 0)
-+	if (atomic_read(&kvm->planes[0]->arch.vapics_in_nmi_mode) > 0)
- 		kvm_for_each_vcpu(i, vcpu, kvm)
- 			kvm_apic_nmi_wd_deliver(vcpu);
- }
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 1b763f164951..06a12b49fafa 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -403,36 +403,37 @@ enum {
- 	DIRTY
- };
- 
--static void kvm_recalculate_apic_map(struct kvm *kvm)
-+static void kvm_recalculate_apic_map(struct kvm_plane *plane)
- {
- 	struct kvm_apic_map *new, *old = NULL;
-+	struct kvm *kvm = plane->kvm;
- 	struct kvm_vcpu *vcpu;
- 	unsigned long i;
- 	u32 max_id = 255; /* enough space for any xAPIC ID */
- 	bool xapic_id_mismatch;
- 	int r;
- 
--	/* Read kvm->arch.apic_map_dirty before kvm->arch.apic_map.  */
--	if (atomic_read_acquire(&kvm->arch.apic_map_dirty) == CLEAN)
-+	/* Read plane->arch.apic_map_dirty before plane->arch.apic_map.  */
-+	if (atomic_read_acquire(&plane->arch.apic_map_dirty) == CLEAN)
- 		return;
- 
--	WARN_ONCE(!irqchip_in_kernel(kvm),
-+	WARN_ONCE(!irqchip_in_kernel(plane->kvm),
- 		  "Dirty APIC map without an in-kernel local APIC");
- 
--	mutex_lock(&kvm->arch.apic_map_lock);
-+	mutex_lock(&plane->arch.apic_map_lock);
- 
- retry:
- 	/*
--	 * Read kvm->arch.apic_map_dirty before kvm->arch.apic_map (if clean)
-+	 * Read plane->arch.apic_map_dirty before plane->arch.apic_map (if clean)
- 	 * or the APIC registers (if dirty).  Note, on retry the map may have
- 	 * not yet been marked dirty by whatever task changed a vCPU's x2APIC
- 	 * ID, i.e. the map may still show up as in-progress.  In that case
- 	 * this task still needs to retry and complete its calculation.
- 	 */
--	if (atomic_cmpxchg_acquire(&kvm->arch.apic_map_dirty,
-+	if (atomic_cmpxchg_acquire(&plane->arch.apic_map_dirty,
- 				   DIRTY, UPDATE_IN_PROGRESS) == CLEAN) {
- 		/* Someone else has updated the map. */
--		mutex_unlock(&kvm->arch.apic_map_lock);
-+		mutex_unlock(&plane->arch.apic_map_lock);
- 		return;
- 	}
- 
-@@ -445,7 +446,7 @@ static void kvm_recalculate_apic_map(struct kvm *kvm)
- 	 */
- 	xapic_id_mismatch = false;
- 
--	kvm_for_each_vcpu(i, vcpu, kvm)
-+	plane_for_each_vcpu(i, vcpu, plane)
- 		if (kvm_apic_present(vcpu))
- 			max_id = max(max_id, kvm_x2apic_id(vcpu->arch.apic));
- 
-@@ -459,7 +460,7 @@ static void kvm_recalculate_apic_map(struct kvm *kvm)
- 	new->max_apic_id = max_id;
- 	new->logical_mode = KVM_APIC_MODE_SW_DISABLED;
- 
--	kvm_for_each_vcpu(i, vcpu, kvm) {
-+	plane_for_each_vcpu(i, vcpu, plane) {
- 		if (!kvm_apic_present(vcpu))
- 			continue;
- 
-@@ -498,16 +499,16 @@ static void kvm_recalculate_apic_map(struct kvm *kvm)
- 	else
- 		kvm_clear_apicv_inhibit(kvm, APICV_INHIBIT_REASON_APIC_ID_MODIFIED);
- 
--	old = rcu_dereference_protected(kvm->arch.apic_map,
--			lockdep_is_held(&kvm->arch.apic_map_lock));
--	rcu_assign_pointer(kvm->arch.apic_map, new);
-+	old = rcu_dereference_protected(plane->arch.apic_map,
-+			lockdep_is_held(&plane->arch.apic_map_lock));
-+	rcu_assign_pointer(plane->arch.apic_map, new);
- 	/*
--	 * Write kvm->arch.apic_map before clearing apic->apic_map_dirty.
-+	 * Write kvm->arch.apic_map before clearing plane->apic_map_dirty.
- 	 * If another update has come in, leave it DIRTY.
- 	 */
--	atomic_cmpxchg_release(&kvm->arch.apic_map_dirty,
-+	atomic_cmpxchg_release(&plane->arch.apic_map_dirty,
- 			       UPDATE_IN_PROGRESS, CLEAN);
--	mutex_unlock(&kvm->arch.apic_map_lock);
-+	mutex_unlock(&plane->arch.apic_map_lock);
- 
- 	if (old)
- 		kvfree_rcu(old, rcu);
-@@ -528,7 +529,7 @@ static inline void apic_set_spiv(struct kvm_lapic *apic, u32 val)
- 		else
- 			static_branch_inc(&apic_sw_disabled.key);
- 
--		atomic_set_release(&apic->vcpu->kvm->arch.apic_map_dirty, DIRTY);
-+		atomic_set_release(&apic->vcpu->plane->arch.apic_map_dirty, DIRTY);
- 	}
- 
- 	/* Check if there are APF page ready requests pending */
-@@ -541,19 +542,19 @@ static inline void apic_set_spiv(struct kvm_lapic *apic, u32 val)
- static inline void kvm_apic_set_xapic_id(struct kvm_lapic *apic, u8 id)
- {
- 	kvm_lapic_set_reg(apic, APIC_ID, id << 24);
--	atomic_set_release(&apic->vcpu->kvm->arch.apic_map_dirty, DIRTY);
-+	atomic_set_release(&apic->vcpu->plane->arch.apic_map_dirty, DIRTY);
- }
- 
- static inline void kvm_apic_set_ldr(struct kvm_lapic *apic, u32 id)
- {
- 	kvm_lapic_set_reg(apic, APIC_LDR, id);
--	atomic_set_release(&apic->vcpu->kvm->arch.apic_map_dirty, DIRTY);
-+	atomic_set_release(&apic->vcpu->plane->arch.apic_map_dirty, DIRTY);
- }
- 
- static inline void kvm_apic_set_dfr(struct kvm_lapic *apic, u32 val)
- {
- 	kvm_lapic_set_reg(apic, APIC_DFR, val);
--	atomic_set_release(&apic->vcpu->kvm->arch.apic_map_dirty, DIRTY);
-+	atomic_set_release(&apic->vcpu->plane->arch.apic_map_dirty, DIRTY);
- }
- 
- static inline void kvm_apic_set_x2apic_id(struct kvm_lapic *apic, u32 id)
-@@ -564,7 +565,7 @@ static inline void kvm_apic_set_x2apic_id(struct kvm_lapic *apic, u32 id)
- 
- 	kvm_lapic_set_reg(apic, APIC_ID, id);
- 	kvm_lapic_set_reg(apic, APIC_LDR, ldr);
--	atomic_set_release(&apic->vcpu->kvm->arch.apic_map_dirty, DIRTY);
-+	atomic_set_release(&apic->vcpu->plane->arch.apic_map_dirty, DIRTY);
- }
- 
- static inline int apic_lvt_enabled(struct kvm_lapic *apic, int lvt_type)
-@@ -860,7 +861,7 @@ static int __pv_send_ipi(unsigned long *ipi_bitmap, struct kvm_apic_map *map,
- 	return count;
- }
- 
--int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
-+int kvm_pv_send_ipi(struct kvm_vcpu *vcpu, unsigned long ipi_bitmap_low,
- 		    unsigned long ipi_bitmap_high, u32 min,
- 		    unsigned long icr, int op_64_bit)
- {
-@@ -878,7 +879,7 @@ int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
- 	irq.trig_mode = icr & APIC_INT_LEVELTRIG;
- 
- 	rcu_read_lock();
--	map = rcu_dereference(kvm->arch.apic_map);
-+	map = rcu_dereference(vcpu->plane->arch.apic_map);
- 
- 	count = -EOPNOTSUPP;
- 	if (likely(map)) {
-@@ -1240,7 +1241,7 @@ static bool __kvm_irq_delivery_to_apic_fast(struct kvm *kvm, struct kvm_lapic *s
- 	}
- 
- 	rcu_read_lock();
--	map = rcu_dereference(kvm->arch.apic_map);
-+	map = rcu_dereference(kvm->planes[0]->arch.apic_map);
- 
- 	ret = kvm_apic_map_get_dest_lapic(kvm, &src, irq, map, &dst, &bitmap);
- 	if (ret) {
-@@ -1290,7 +1291,7 @@ static bool kvm_intr_is_single_vcpu_fast(struct kvm *kvm,
- 		return false;
- 
- 	rcu_read_lock();
--	map = rcu_dereference(kvm->arch.apic_map);
-+	map = rcu_dereference(kvm->planes[0]->arch.apic_map);
- 
- 	if (kvm_apic_map_get_dest_lapic(kvm, NULL, irq, map, &dst, &bitmap) &&
- 			hweight16(bitmap) == 1) {
-@@ -1511,7 +1512,7 @@ void kvm_bitmap_or_dest_vcpus(struct kvm *kvm, struct kvm_lapic_irq *irq,
- 	bool ret;
- 
- 	rcu_read_lock();
--	map = rcu_dereference(kvm->arch.apic_map);
-+	map = rcu_dereference(kvm->planes[0]->arch.apic_map);
- 
- 	ret = kvm_apic_map_get_dest_lapic(kvm, &src, irq, map, &dest_vcpu,
- 					  &bitmap);
-@@ -2389,9 +2390,9 @@ static void apic_manage_nmi_watchdog(struct kvm_lapic *apic, u32 lvt0_val)
- 	if (apic->lvt0_in_nmi_mode != lvt0_in_nmi_mode) {
- 		apic->lvt0_in_nmi_mode = lvt0_in_nmi_mode;
- 		if (lvt0_in_nmi_mode) {
--			atomic_inc(&apic->vcpu->kvm->arch.vapics_in_nmi_mode);
-+			atomic_inc(&apic->vcpu->plane->arch.vapics_in_nmi_mode);
- 		} else
--			atomic_dec(&apic->vcpu->kvm->arch.vapics_in_nmi_mode);
-+			atomic_dec(&apic->vcpu->plane->arch.vapics_in_nmi_mode);
- 	}
- }
- 
-@@ -2551,7 +2552,7 @@ static int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
- 	 * was toggled, the APIC ID changed, etc...   The maps are marked dirty
- 	 * on relevant changes, i.e. this is a nop for most writes.
- 	 */
--	kvm_recalculate_apic_map(apic->vcpu->kvm);
-+	kvm_recalculate_apic_map(apic->vcpu->plane);
- 
- 	return ret;
- }
-@@ -2767,7 +2768,7 @@ static void __kvm_apic_set_base(struct kvm_vcpu *vcpu, u64 value)
- 			kvm_make_request(KVM_REQ_APF_READY, vcpu);
- 		} else {
- 			static_branch_inc(&apic_hw_disabled.key);
--			atomic_set_release(&apic->vcpu->kvm->arch.apic_map_dirty, DIRTY);
-+			atomic_set_release(&apic->vcpu->plane->arch.apic_map_dirty, DIRTY);
- 		}
- 	}
- 
-@@ -2814,7 +2815,7 @@ int kvm_apic_set_base(struct kvm_vcpu *vcpu, u64 value, bool host_initiated)
- 	}
- 
- 	__kvm_apic_set_base(vcpu, value);
--	kvm_recalculate_apic_map(vcpu->kvm);
-+	kvm_recalculate_apic_map(vcpu->plane);
- 	return 0;
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_apic_set_base);
-@@ -2983,7 +2984,7 @@ void kvm_lapic_reset(struct kvm_vcpu *vcpu, bool init_event)
- 	vcpu->arch.apic_arb_prio = 0;
- 	vcpu->arch.apic_attention = 0;
- 
--	kvm_recalculate_apic_map(vcpu->kvm);
-+	kvm_recalculate_apic_map(vcpu->plane);
- }
+diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+index ee17a3541b55..cedb7ea91da5 100644
+--- a/arch/x86/include/asm/sev-common.h
++++ b/arch/x86/include/asm/sev-common.h
+@@ -137,6 +137,7 @@ enum psc_op {
+ #define GHCB_HV_FT_SNP			BIT_ULL(0)
+ #define GHCB_HV_FT_SNP_AP_CREATION	BIT_ULL(1)
+ #define GHCB_HV_FT_SNP_RINJ		(BIT_ULL(2) | GHCB_HV_FT_SNP_AP_CREATION)
++#define GHCB_HV_FT_APIC_ID_LIST		BIT_ULL(4)
+ #define GHCB_HV_FT_SNP_MULTI_VMPL	BIT_ULL(5)
  
  /*
-@@ -3271,13 +3272,13 @@ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s)
+diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
+index d281dd21c540..91395b82eadd 100644
+--- a/arch/x86/include/uapi/asm/svm.h
++++ b/arch/x86/include/uapi/asm/svm.h
+@@ -123,6 +123,7 @@
+ #define SVM_VMGEXIT_HVDB_QUERY			2
+ #define SVM_VMGEXIT_HVDB_CLEAR			3
+ #define SVM_VMGEXIT_HV_IPI                      0x80000015ull
++#define SVM_VMGEXIT_GET_APIC_IDS		0x80000017ull
+ #define SVM_VMGEXIT_SNP_RUN_VMPL		0x80000018ull
+ #define SVM_VMGEXIT_SAVIC			0x8000001aull
+ #define SVM_VMGEXIT_SAVIC_REGISTER_GPA		0
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 12b039823c1c..c0b2879f8e9f 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -40,9 +40,10 @@
+ #define GHCB_VERSION_MAX	2ULL
+ #define GHCB_VERSION_MIN	1ULL
  
- 	r = kvm_apic_state_fixup(vcpu, s, true);
- 	if (r) {
--		kvm_recalculate_apic_map(vcpu->kvm);
-+		kvm_recalculate_apic_map(vcpu->plane);
- 		return r;
- 	}
- 	memcpy(vcpu->arch.apic->regs, s->regs, sizeof(*s));
+-#define GHCB_HV_FT_SUPPORTED	(GHCB_HV_FT_SNP |		\
+-				 GHCB_HV_FT_SNP_AP_CREATION |	\
+-				 GHCB_HV_FT_SNP_RINJ)
++#define GHCB_HV_FT_SUPPORTED	(GHCB_HV_FT_SNP			| \
++				 GHCB_HV_FT_SNP_AP_CREATION	| \
++				 GHCB_HV_FT_SNP_RINJ		| \
++				 GHCB_HV_FT_APIC_ID_LIST)
  
--	atomic_set_release(&apic->vcpu->kvm->arch.apic_map_dirty, DIRTY);
--	kvm_recalculate_apic_map(vcpu->kvm);
-+	atomic_set_release(&apic->vcpu->plane->arch.apic_map_dirty, DIRTY);
-+	kvm_recalculate_apic_map(vcpu->plane);
- 	kvm_apic_set_version(vcpu);
- 
- 	apic_update_ppr(apic);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index a158740a6fc1..070f87ae23eb 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10441,7 +10441,7 @@ static void kvm_sched_yield(struct kvm_vcpu *vcpu, unsigned long dest_id)
- 		goto no_yield;
- 
- 	rcu_read_lock();
--	map = rcu_dereference(vcpu->kvm->arch.apic_map);
-+	map = rcu_dereference(vcpu->plane->arch.apic_map);
- 
- 	if (likely(map) && dest_id <= map->max_apic_id) {
- 		dest_id = array_index_nospec(dest_id, map->max_apic_id + 1);
-@@ -10528,7 +10528,7 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_PV_SEND_IPI))
- 			break;
- 
--		ret = kvm_pv_send_ipi(vcpu->kvm, a0, a1, a2, a3, op_64_bit);
-+		ret = kvm_pv_send_ipi(vcpu, a0, a1, a2, a3, op_64_bit);
+ /*
+  * The GHCB spec essentially states that all non-zero error codes other than
+@@ -3518,6 +3519,10 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
+ 			if (!kvm_ghcb_rax_is_valid(svm))
+ 				goto vmgexit_err;
  		break;
- 	case KVM_HC_SCHED_YIELD:
- 		if (!guest_pv_has(vcpu, KVM_FEATURE_PV_SCHED_YIELD))
-@@ -13397,6 +13397,18 @@ void kvm_arch_free_vm(struct kvm *kvm)
- 	__kvm_arch_free_vm(kvm);
++	case SVM_VMGEXIT_GET_APIC_IDS:
++		if (!kvm_ghcb_rax_is_valid(svm))
++			goto vmgexit_err;
++		break;
+ 	case SVM_VMGEXIT_NMI_COMPLETE:
+ 	case SVM_VMGEXIT_AP_HLT_LOOP:
+ 	case SVM_VMGEXIT_AP_JUMP_TABLE:
+@@ -4439,6 +4444,78 @@ static int sev_snp_hv_ipi(struct vcpu_svm *svm)
+ 	return 0;
  }
  
-+int kvm_arch_plane_init(struct kvm *kvm, struct kvm_plane *plane,
-+			unsigned plane_level)
-+{
-+	mutex_init(&plane->arch.apic_map_lock);
++struct sev_apic_id_desc {
++	u32	num_entries;
++	u32	apic_ids[];
++};
 +
-+	return 0;
++static void sev_get_apic_ids(struct vcpu_svm *svm)
++{
++	struct ghcb *ghcb = svm->sev_es.ghcb;
++	struct kvm_vcpu *vcpu = &svm->vcpu, *loop_vcpu;
++	struct kvm *kvm = vcpu->kvm;
++	unsigned int id_desc_size;
++	struct sev_apic_id_desc *desc;
++	struct page *page;
++	gpa_t gpa;
++	u64 pages;
++	unsigned long i;
++	int n;
++
++	pages = vcpu->arch.regs[VCPU_REGS_RAX];
++
++	/* Each APIC ID is 32-bits in size, so make sure there is room */
++	n = atomic_read(&kvm->online_vcpus);
++	/*TODO: is this possible? */
++	if (n < 0)
++		return;
++
++	id_desc_size = sizeof(*desc);
++	id_desc_size += n * sizeof(desc->apic_ids[0]);
++	if (id_desc_size > (pages * PAGE_SIZE)) {
++		vcpu->arch.regs[VCPU_REGS_RAX] = PFN_UP(id_desc_size);
++		return;
++	}
++
++	gpa = svm->vmcb->control.exit_info_1;
++
++	ghcb_set_sw_exit_info_1(ghcb, 2);
++	ghcb_set_sw_exit_info_2(ghcb, 5);
++
++	if (!page_address_valid(vcpu, gpa))
++		return;
++
++	page = gfn_to_page(kvm, gpa_to_gfn(gpa));
++	kvm_release_page_unused(page);
++	if (!page)
++		return;
++
++	if (!pages)
++		return;
++
++	/* Allocate a buffer to hold the APIC IDs */
++	desc = kvzalloc(id_desc_size, GFP_KERNEL_ACCOUNT);
++	if (!desc)
++		return;
++
++	desc->num_entries = n;
++	kvm_for_each_vcpu(i, loop_vcpu, kvm) {
++		/*TODO: is this possible? */
++		if (i >= n)
++			break;
++
++		desc->apic_ids[i] = loop_vcpu->vcpu_id;
++	}
++
++	if (!kvm_write_guest(kvm, gpa, desc, id_desc_size)) {
++		/* IDs were successfully written */
++		ghcb_set_sw_exit_info_1(ghcb, 0);
++		ghcb_set_sw_exit_info_2(ghcb, 0);
++	}
++
++	kvfree(desc);
 +}
 +
-+void kvm_arch_plane_destroy(struct kvm_plane *plane)
-+{
-+	kvfree(rcu_dereference_check(plane->arch.apic_map, 1));
-+}
- 
- int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
  {
-@@ -13429,7 +13441,6 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
- 	atomic_set(&kvm->arch.noncoherent_dma_count, 0);
- 
- 	raw_spin_lock_init(&kvm->arch.tsc_write_lock);
--	mutex_init(&kvm->arch.apic_map_lock);
- 	seqcount_raw_spinlock_init(&kvm->arch.pvclock_sc, &kvm->arch.tsc_write_lock);
- 	ratelimit_state_init(&kvm->arch.kvmclock_update_rs, HZ, 10);
- 	ratelimit_set_flags(&kvm->arch.kvmclock_update_rs, RATELIMIT_MSG_ON_RELEASE);
-@@ -13587,7 +13598,6 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
- 	kvm_pic_destroy(kvm);
- 	kvm_ioapic_destroy(kvm);
- #endif
--	kvfree(rcu_dereference_check(kvm->arch.apic_map, 1));
- 	kfree(srcu_dereference_check(kvm->arch.pmu_event_filter, &kvm->srcu, 1));
- 	kvm_mmu_uninit_vm(kvm);
- 	kvm_page_track_cleanup(kvm);
+ 	struct vmcb_control_area *control = &svm->vmcb->control;
+@@ -4730,6 +4807,10 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 		}
+ 		ret = 1;
+ 		break;
++	case SVM_VMGEXIT_GET_APIC_IDS:
++		sev_get_apic_ids(svm);
++		ret = 1;
++		break;
+ 	case SVM_VMGEXIT_UNSUPPORTED_EVENT:
+ 		vcpu_unimpl(vcpu,
+ 			    "vmgexit: unsupported event - exit_info_1=%#llx, exit_info_2=%#llx\n",
 -- 
 2.53.0
 
