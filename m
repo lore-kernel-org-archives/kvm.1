@@ -1,238 +1,160 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2243B2FDC
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 22:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3C92F8EBB
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 22:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780958337; cv=none; b=M/yIVm4027CwgxF/qOe/HP4VbELzaVQdryVvlOGsD8v0kvNl/E713CsWwSzWkVJy/SWXO6otv278Ut6UoN+q891ylFIWvSPZJHCBI/C6ikq0N4KQdDnDk7NZjaR1X7E/rKQ1+bTjgAm6Tossfd51OUvztl+s0xiLdVcrpMLjMdg=
+	t=1780958752; cv=none; b=POGD6qji1DsTANfEg4Sp9F0hVQcOkZH7cngG+VvqyQGCreQkNlQumz7a7I+68gRt6m4J/3A5zISpmkx5tXW3oLfp1csV9WqcBq2q3M1Zz+96zKUzSTb+y6AYBLPws63vHLq4DtaNmlM0jzfDSDx5a0D3E3ePuZa40w+O/VKgTZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780958337; c=relaxed/simple;
-	bh=g0z45+aYiJC51GAUvnfRAO2uYrqdMzpO8Z4vJI4yeCI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hiHGBHwrMKo3CMwmCzVr02akMIYnbNSR6OMlVl1MlycHiSJqRU4z69+Wy9Vhh5qgaGqOAdkDszhmV6PysCh9X1SLUANC8u95cD49o2D3/yX7FMVi4wyQnpULkIequMsQgEeItSp1PF0dyBM/IWp9EmHsfVS4hNMXv2LKqdxgFPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rRKkkdlT; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780958752; c=relaxed/simple;
+	bh=0m3o+qhxlgUf+faFpfQ1HekVYOS9BwJh0a2KOX0fLkQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=O6oo/hhMDpn0Sb35bb4LFwkh5yh7xtzEbTcmICmDenPSdru/cW+v1Uano9YToaj0U4b007hYtCDksznLIWePM9sRl8aFC8q+FFDjrFigJSCiJhI6GZHF2/0HQ1zALd8Yjg24MIXEbfFrFZQAahAv6RRdagnSbDc0hThNALC7MRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=irCbsip6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rRKkkdlT"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf1dece2ecso50041825ad.1
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 15:38:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780958335; x=1781563135; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6/e8MVVf+gn1nbLHbwfdQ87xOkjbdduwr2NDuGKxrzw=;
-        b=rRKkkdlTgxOw/XR5ERUnqkzpmbXai+ki2s8Px+pwOgnqGW4WnSpIqlT5DK4sRnwbwB
-         2tW3kQl8wEtOTM97fer7Nky9ftFEaH2i0grKjn3MAuzFr0STXAdGbX6cZku7MWLYo2dv
-         zToHu1Iu5ERH0SJDktD8JkFxXKM12iFg9vNlEXxIBOUaYSJ2hIZb5dQLBy8OakB87auF
-         y/8dHnk/h+Xx77pSx3eKeIazoZ7H0s4a9igi/4il+/Y6KGgQp4m8Dzus+RFfLR8Sg+7e
-         hKskDRh3gaApq4SFfkTJ5yKEK83QTPceN7N+QxieG069wt9ffI4EUOy9bxxI6kTPC58i
-         HEUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780958335; x=1781563135;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6/e8MVVf+gn1nbLHbwfdQ87xOkjbdduwr2NDuGKxrzw=;
-        b=DeoVDuG3hToS6YDGElHN9HQoR2Hvyf+vCh4AyDB31Pwh6l7onKNWZP8ifFKRdPgVg8
-         baDeO0jPDx62s7Rp6dLsv7307FjQaL+XbVKhVdwRb9uDoquNICVHa6q6Vq0+I3I5nFaL
-         fSXaQ/g5+vl3PMt+QpzhCjatpUpiRqBYnUJbRx3v3yzRk8QdM3p78M+yxMj5mw8dp36e
-         ZmDOdrKTqSXWiEE+QozuJMoBH3vZiq4/DknIXzcBB0PB+S/YflHOu2BQ4IpvP1q6AZtJ
-         E2mCXLgzxJCgHfDq9YLziOacu6aCCm/wrRmSa8DN4T400BkVh69wEz7+FsniB794g5I6
-         LIkA==
-X-Forwarded-Encrypted: i=1; AFNElJ/xrp+bR5mCKPFyUJIMAUhCRDQK+00eFaYX0bDq3yGi5Kmk72umVxM8oUlsFHCG8lA536o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUA5SHpOWO6IBzG+miJ73wCKMrPaItr4c012JgTCnoIgBuw93Q
-	WLMJgTk0zXQUnwkV8Wyma8VkcsRNeFCFTRbPzt3AXXf1uEqnWiXumrhNYR3QETRJ7rtLe5xMTmC
-	ts99KxA==
-X-Received: from pldv17.prod.google.com ([2002:a17:902:ca91:b0:2b0:ba5a:1fe])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:da8d:b0:2be:fda1:42d9
- with SMTP id d9443c01a7336-2c1e7845a08mr176535715ad.0.1780958335144; Mon, 08
- Jun 2026 15:38:55 -0700 (PDT)
-Date: Mon, 8 Jun 2026 15:38:54 -0700
-In-Reply-To: <eef867eae15e30d08482ba16a1a32159745b64a7.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="irCbsip6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1F31F00893;
+	Mon,  8 Jun 2026 22:45:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780958751;
+	bh=C9lqjhNvnY4Qw43NqzN0lOsSO/JFNMp1EjvJfmi6+rw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=irCbsip69ztU9/qXGToZERwTCCNNjz25GHEPIIzDLNNKfvXU6AI0/eeH7ElYulTny
+	 q6Wg6A8O7CiUMj+vIFatgaWnCkYrO8UTR20RzL5ZUxFtDbiv+klj6M4Hq8ehFAFfv7
+	 KwAonJ3jPayMLWfPj0OKizWbkLiiz2MqKAONsO8Ud9uGdBonkCoXvgKzFW7js46EAf
+	 neuX2RcRJ6B8wV/WIG2FvjoYO7gLbabsRLGdqvJhlfmtMo7FfXnvPva5vrIpwFmbdP
+	 P5b28RmQg6haaLKH1nO6mAuqQjGy0Zl9CAcGoKaBMEoVCbritJ5M+/4aTA2rrOwsUm
+	 vNsOrOCKhFM0Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 55/60] kvm: svm: Track vmsa_features per plane
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260608144252.351443-56-joro@8bytes.org>
+References: <20260608144252.351443-56-joro@8bytes.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 08 Jun 2026 22:45:51 +0000
+Message-Id: <20260608224551.6F1F31F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529144435.704127-1-seanjc@google.com> <20260529144435.704127-11-seanjc@google.com>
- <877boc554l.ffs@fw13> <eef867eae15e30d08482ba16a1a32159745b64a7.camel@infradead.org>
-Message-ID: <aidEfvTMjLa2zt43@google.com>
-Subject: Re: [PATCH v4 10/47] x86/tsc: Consolidate forcing of
- X86_FEATURE_TSC_KNOWN_FREQ for PV code
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Thomas Gleixner <tglx@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
-	xen-devel@lists.xenproject.org, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Nikunj A Dadhania <nikunj@amd.com>, Michael Kelley <mhklinux@outlook.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 06, 2026, David Woodhouse wrote:
-> On Sat, 2026-06-06 at 12:34 +0200, Thomas Gleixner wrote:
-> > On Fri, May 29 2026 at 07:43, Sean Christopherson wrote:
-> >=20
-> > > Now that all paravirt code that explicitly specifies the TSC frequenc=
-y
-> > > also sets X86_FEATURE_TSC_KNOWN_FREQ, replace all of the one-off code
-> > > and simply set X86_FEATURE_TSC_KNOWN_FREQ if the TSC frequency is kno=
-wn.
-> > >=20
-> > > Do NOT force set TSC_KNOWN_FREQ if the "known" TSC frequency was prov=
-ided
-> > > by the user.=C2=A0 Per commit bd35c77e32e4 ("x86/tsc: Add tsc_early_k=
-hz command
-> > > line parameter"), one of the goals of the param is to allow the refin=
-ed
-> > > calibration work "to do meaningful error checking".
-> > >=20
-> > > Note, preferring the user-provided TSC frequency over the frequency f=
-rom
-> > > the hypervisor or trusted firmware, while simultaneously not treating=
- the
-> > > user-provided frequency as gospel, is obviously incongruous.=C2=A0 Sw=
-eep the
-> > > problem under the rug for now to avoid opening a big can of worms tha=
-t
-> > > likely doesn't have a great answer.
-> >=20
-> > There is a good answer I think.
-> >=20
-> > early_tsc_khz exists to cater for the overclocking crowd. On their
-> > modded systems the firmware supplied TSC frequency (CPUID/MSR) is not
-> > matching reality anymore. So they work around that by supplying a close
-> > enough tsc_early_khz and then they let the refined calibration work
-> > figure it out.
-> >=20
-> > Arguably that's only relevant for bare metal systems and what's worse i=
-s
-> > that in virtual environments the refined calibration work can fail,
-> > which renders the TSC unstable.
-> >=20
-> > So I'd rather say we change this logic to:
-> >=20
-> > =C2=A0=C2=A0 if (!hypervisor_is_type(X86_HYPER_NATIVE)) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tsc_khz =3D x86_init.....();
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 force(X86_FEATURE_TSC_KNOWN_FREQ);
-> > =C2=A0=C2=A0 } else if (tsc_khz_early) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ....
-> > =C2=A0=C2=A0 } else {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ...
-> > =C2=A0=C2=A0 }
-> >=20
-> > Along with:
-> >=20
-> > =C2=A0=C2=A0 if (!hypervisor_is_type(X86_HYPER_NATIVE)) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (tsc_khz_early)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_warn("Ignoring non-=
-sensical tsc_early_khz command line argument\n");
-> >=20
-> > or something daft like that.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] sev_snp_ap_creation() validates requested vmsa_features against th=
+e calling vCPU's plane instead of the target vCPU's plane.
+- [High] Secondary planes' vmsa_features are never initialized or migrated,=
+ causing silent loss of security features.
+--
 
-Ya, I ended up in the same place once Sashiko pointed out that skipping the=
- SNP/TDX
-setup was hazardous[*], and also once I realized that tsc_khz_early *comple=
-mented*
-the refinement instead of replacing it.
+commit 654ad38ffbc973d598194f49a24442f700bbdaec
+Author: Joerg Roedel <joerg.roedel@amd.com>
 
-This is what I have locally:
+kvm: svm: Track vmsa_features per plane
 
-        if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
-                known_tsc_khz =3D snp_secure_tsc_init();
-        else if (boot_cpu_has(X86_FEATURE_TDX_GUEST))
-                known_tsc_khz =3D tdx_tsc_init();
+Planes can have different set of SEV features enabled. Track the
+enabled features per plane instead of per VM.
 
-        /*
-         * If the TSC frequency wasn't provided by trusted firmware, try to=
- get
-         * it from the hypervisor (which is untrusted when running as a CoC=
-o guest).
-         */
-        if (!known_tsc_khz && x86_init.hyper.get_tsc_khz)
-                known_tsc_khz =3D x86_init.hyper.get_tsc_khz();
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 374236210ef47..f803afcc3989d 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
 
-        /*
-         * Mark the TSC frequency as known if it was obtained from a hyperv=
-isor
-         * or trusted firmware.  Don't mark the frequency as known if the u=
-ser
-         * specified the frequency, as the user-provided frequency is inten=
-ded
-         * as a "starting point", not a known, guaranteed frequency.
-         */
-        if (known_tsc_khz && !tsc_early_khz)
-                setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+[ ... ]
 
-        /*
-         * Ignore the user-provided TSC frequency if the exact frequency wa=
-s
-         * obtained from trusted firmware or the hypervisor, as the user-
-         * provided frequency is intended as a "starting point", not a know=
-n,
-         * guaranteed frequency.
-         */
-        if (!known_tsc_khz)
-                known_tsc_khz =3D tsc_early_khz;
-        else if (tsc_early_khz)
-                pr_err("Ignoring 'tsc_early_khz' in favor of firmware/hyper=
-visor.\n");
+> @@ -534,11 +534,11 @@ static int __sev_guest_init(struct kvm *kvm, struct=
+ kvm_sev_cmd *argp,
+> =20
+>  	sev->active =3D true;
+>  	sev->es_active =3D es_active;
+> -	sev->vmsa_features =3D data->vmsa_features;
+> +	sev_plane->vmsa_features =3D data->vmsa_features;
 
-[*] https://lore.kernel.org/all/ahnF-FehodVd474X@google.com
+[Severity: High]
+Does this code only initialize vmsa_features for the first plane? If
+secondary planes are allocated via svm_alloc_plane(), will their
+vmsa_features remain 0?
 
-> > The kernel has for various reasons always tried to cater for the needs
-> > of users who are plagued by bonkers firmware, but we have to stop to
-> > prioritize or treating equal ancient and modded out of spec hardware.
-> >=20
-> > TBH, I consider that whole KVM clock nonsense to fall into the modded
-> > out of spec hardware realm. Do a reality check:
-> >=20
-> > =C2=A0=C2=A0 How many production systems are out there still which run =
-VMs on CPUs
-> > =C2=A0=C2=A0 with a broken TSC and the lack of VM TSC scaling?
-> >=20
-> > I'm not saying that we should not support the few remaining systems
-> > anymore, but our tendency to pretend that we can keep all of this
-> > nonsense working and at the same time making progress is just a fallacy=
-.
+>  	sev->ghcb_version =3D data->ghcb_version;
+> =20
+>  	if (snp_active)
+> -		sev->vmsa_features |=3D SVM_SEV_FEAT_SNP_ACTIVE;
+> +		sev_plane->vmsa_features |=3D SVM_SEV_FEAT_SNP_ACTIVE;
+> =20
+>  	ret =3D sev_asid_new(sev, vm_type);
+>  	if (ret)
 
-FWIW, I have the exact same sentiments about kvmclock, but I'm also trying =
-my
-best not to break folks that are happily running on what is effectively fla=
-wed,
-ancient "hardward".=20
+[ ... ]
 
-> I don't know that we can take the KVM (and Xen) clock away from guests,
-> but all of the *horrid* part about it is the way it attempts to cope
-> with the possibility that the *host* timekeeping might flip away from
-> TSC-based mode at any point in time. By the end of my outstanding
-> cleanup series, that is the *only* thing the gtod_notifier remains for.
->=20
-> If we can trust the hardware *and* the host kernel, then KVM could
-> theoretically hardwire the kvmclock into 'master clock mode' where it
-> basically just advertises the TSC=E2=86=92kvmclock relationship *once* to=
- all
-> CPUs and it never changes.
->=20
-> All the nonsense about updating it every time we enter a CPU could just
-> go away completely.
+> @@ -2039,7 +2041,7 @@ static void sev_migrate_from(struct kvm *dst_kvm, s=
+truct kvm *src_kvm)
+>  	dst->pages_locked =3D src->pages_locked;
+>  	dst->enc_context_owner =3D src->enc_context_owner;
+>  	dst->es_active =3D src->es_active;
+> -	dst->vmsa_features =3D src->vmsa_features;
+> +	dst_plane->vmsa_features =3D src_plane->vmsa_features;
 
-But to Thomas' point, why bother?  For actual old hardware, kvmclock is wha=
-t it
-is.  For modern hardware, it's completely antiquated.
+[Severity: High]
+Does this only migrate vmsa_features for planes[0]? Could this drop
+the features for secondary planes during migration?
+
+> =20
+>  	src->asid =3D 0;
+>  	src->active =3D false;
+
+[ ... ]
+
+> @@ -4162,9 +4164,9 @@ static int sev_snp_ap_creation(struct vcpu_svm *svm)
+>  	switch (request) {
+>  	case SVM_VMGEXIT_AP_CREATE_ON_INIT:
+>  	case SVM_VMGEXIT_AP_CREATE:
+> -		if (vcpu->arch.regs[VCPU_REGS_RAX] !=3D sev->vmsa_features) {
+> +		if (vcpu->arch.regs[VCPU_REGS_RAX] !=3D sev_plane->vmsa_features) {
+
+[Severity: High]
+Does this validate the requested vmsa_features against the calling
+vCPU's plane rather than the target vCPU's plane?
+
+If a guest creates an AP on a different plane, and planes can have
+different SEV features, will this incorrectly reject a valid request
+if the target plane's features differ from the caller's plane?
+
+>  			vcpu_unimpl(vcpu, "vmgexit: mismatched AP sev_features [%#lx] !=3D [%=
+#llx] from guest\n",
+> -				    vcpu->arch.regs[VCPU_REGS_RAX], sev->vmsa_features);
+> +				    vcpu->arch.regs[VCPU_REGS_RAX], sev_plane->vmsa_features);
+>  			return -EINVAL;
+>  		}
+
+[ ... ]
+
+> @@ -4795,15 +4797,16 @@ void sev_vcpu_after_set_cpuid(struct vcpu_svm *sv=
+m)
+> =20
+>  static void sev_snp_init_vmcb(struct vcpu_svm *svm)
+>  {
+> -	struct kvm_sev_info *sev =3D &to_kvm_svm(svm->vcpu.kvm)->sev_info;
+> +	struct kvm_sev_info_plane *sev_plane =3D &to_kvm_svm_plane(svm->vcpu.pl=
+ane)->sev_info_plane;
+> =20
+>  	/* V_NMI is not supported when Restricted Injection is enabled */
+> -	if (sev->vmsa_features & SVM_SEV_FEAT_RESTRICTED_INJECTION)
+> +	if (sev_plane->vmsa_features & SVM_SEV_FEAT_RESTRICTED_INJECTION)
+
+[Severity: High]
+If secondary planes have their vmsa_features left as 0, will this
+security check fail for them and incorrectly leave V_NMI_ENABLE_MASK set?
+
+This seems like it could break Restricted Injection isolation for
+secondary plane vCPUs.
+
+>  		svm->vmcb->control.int_ctl &=3D ~V_NMI_ENABLE_MASK;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
+43-1-joro@8bytes.org?part=3D55
