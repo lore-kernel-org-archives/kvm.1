@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56863F20E9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF293F20E4;
 	Mon,  8 Jun 2026 14:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929808; cv=none; b=p5bQGurYgZGEyF28XqpkSWJRoHwK7LC9CwwvXIeGJohkh7pDNY6/A7zoCrZk9LheXQu9PqSkItKCB4sb21SiXnoeA0Vy+i8hUtSX+SZHJZOMhMLwuxqWSwIrzz9rHj5nyNcsr11sPLTWYto2LjPuxaZa7Nfo15h6slSYxEtLlXc=
+	t=1780929808; cv=none; b=Z4Ab0rFZXBBXo/GYXxj94ThT32UiIpGaVbTMf3e8dXIenAPllb641cExcxGu/yli6i0nRm9clMSWblEL8LvzDBjCPVzPJ4hvPEsHIGsv074+lH6QL2jCTRqfE2E/O+BYbOI4A+S6rkPFObrRDLIfCrYe+nHEUyp7WdA2zMVHA9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780929808; c=relaxed/simple;
-	bh=wyg3CLEuRspMj18NL+RGWxAX5QENKg3H1zUIBYbL3U0=;
+	bh=V/Ys57aOLGv6qIDnHGtiqpzoSHb4c8fN1Q0hv67K0O4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEaIiEkFNzgcbrT8Y2ftWG+MsRvWs3F8SoK/b5ryMnG7f6v0B9pr1WxhrTIyQOoc2Bb+Ab8RdTCqjcqvTYN4FJ6OP8QVAwzB6kyml6vB2gN6n+17pQ2cMRALRn2hEE/zL+p0sCeL5gaBm1aUHBxtaUMOFL4G00cuGPjnr9T0Aak=
+	 MIME-Version; b=QiZ+KvtcRZ3h3L+Z0hNGvOFujF1fOsfxXlaQ24Kk6IPWTQKgpKZDH/OrSAVoJvMKSRvkgsJlosM3K1ubOvTjibzNwJTuVE5Bp4Mgzj2A7GffXOuu0mJGwJeChjYb10/LL8eIKr4P8h05TiKHIuAA1N5c+MyEwXTUsow145QeDN4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,8 +16,8 @@ Received: from io.home.8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 15AC22028BF;
-	Mon,  8 Jun 2026 16:43:11 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 67A2E2028BC;
+	Mon,  8 Jun 2026 16:43:10 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
@@ -38,9 +38,9 @@ Cc: Tom Lendacky <thomas.lendacky@amd.com>,
 	x86@kernel.org,
 	coconut-svsm@lists.linux.dev,
 	joerg.roedel@amd.com
-Subject: [PATCH 28/60] kvm: Implement KVM_CAP_PLANES
-Date: Mon,  8 Jun 2026 16:42:20 +0200
-Message-ID: <20260608144252.351443-29-joro@8bytes.org>
+Subject: [PATCH 25/60] kvm: Move kvm_vcpu->dirty_ring to struct kvm_vcpu_common
+Date: Mon,  8 Jun 2026 16:42:17 +0200
+Message-ID: <20260608144252.351443-26-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
 References: <20260608144252.351443-1-joro@8bytes.org>
@@ -52,166 +52,135 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Joerg Roedel <joerg.roedel@amd.com>
 
-Introduce an architecture call-back to request the VM-specific maximum
-number of supported planes. Use that to implement the KVM_CAP_PLANES
-capability check.
+The dirty tracking should happen across all planes of a given VCPU, so
+move the dirty_ring to struct kvm_vcpu_common.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Co-developed-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- arch/arm64/kvm/arm.c       | 5 +++++
- arch/loongarch/kvm/vm.c    | 5 +++++
- arch/mips/kvm/mips.c       | 5 +++++
- arch/powerpc/kvm/powerpc.c | 5 +++++
- arch/riscv/kvm/main.c      | 5 +++++
- arch/s390/kvm/kvm-s390.c   | 5 +++++
- arch/x86/kvm/x86.c         | 5 +++++
- include/linux/kvm_host.h   | 2 ++
- virt/kvm/kvm_main.c        | 4 ++++
- 9 files changed, 41 insertions(+)
+ include/linux/kvm_host.h |  3 ++-
+ virt/kvm/dirty_ring.c    |  4 ++--
+ virt/kvm/kvm_main.c      | 22 ++++++++++------------
+ 3 files changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 1e2f42134b74..7e6d2773fd39 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -200,6 +200,11 @@ static int kvm_arm_default_max_vcpus(void)
- 	return vgic_present ? kvm_vgic_get_max_vcpus() : KVM_MAX_VCPUS;
- }
- 
-+unsigned kvm_arch_max_planes(struct kvm *kvm)
-+{
-+	return 1;
-+}
-+
- /**
-  * kvm_arch_init_vm - initializes a VM data structure
-  * @kvm:	pointer to the KVM struct
-diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-index 1317c718f896..14f1232c6e0c 100644
---- a/arch/loongarch/kvm/vm.c
-+++ b/arch/loongarch/kvm/vm.c
-@@ -109,6 +109,11 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
- 	kvm->arch.phyid_map = NULL;
- }
- 
-+unsigned kvm_arch_max_planes(struct kvm *kvm)
-+{
-+	return 1;
-+}
-+
- int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- {
- 	int r;
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 776aba0af096..60870452119d 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -115,6 +115,11 @@ int kvm_arch_vcpu_runnable(struct kvm_vcpu *vcpu)
- 	return !!(vcpu->arch.pending_exceptions);
- }
- 
-+unsigned kvm_arch_max_planes(struct kvm *kvm)
-+{
-+	return 1;
-+}
-+
- bool kvm_arch_vcpu_in_kernel(struct kvm_vcpu *vcpu)
- {
- 	return false;
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index 5d94e0f676ec..cfa40be20e00 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -499,6 +499,11 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
- 	module_put(kvm->arch.kvm_ops->owner);
- }
- 
-+unsigned kvm_arch_max_planes(struct kvm *kvm)
-+{
-+	return 1;
-+}
-+
- int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- {
- 	int r;
-diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
-index cb8a65273c1f..5adba3a455a3 100644
---- a/arch/riscv/kvm/main.c
-+++ b/arch/riscv/kvm/main.c
-@@ -17,6 +17,11 @@
- 
- DEFINE_STATIC_KEY_FALSE(kvm_riscv_vsstage_tlb_no_gpa);
- 
-+unsigned kvm_arch_max_planes(struct kvm *kvm)
-+{
-+	return 1;
-+}
-+
- static void kvm_riscv_setup_vendor_features(void)
- {
- 	/* Andes AX66: split two-stage TLBs */
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index e6fe83da172f..24f24ea95f86 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -3186,6 +3186,11 @@ static void sca_dispose(struct kvm *kvm)
- 	kvm->arch.sca = NULL;
- }
- 
-+unsigned kvm_arch_max_planes(struct kvm *kvm)
-+{
-+	return 1;
-+}
-+
- void kvm_arch_free_vm(struct kvm *kvm)
- {
- 	if (IS_ENABLED(CONFIG_VFIO_PCI_ZDEV_KVM))
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 50601ac2828f..25299c8c28e3 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -482,6 +482,11 @@ static u32 msr_based_features[ARRAY_SIZE(msr_based_features_all_except_vmx) +
- 			      (KVM_LAST_EMULATED_VMX_MSR - KVM_FIRST_EMULATED_VMX_MSR + 1)];
- static unsigned int num_msr_based_features;
- 
-+unsigned kvm_arch_max_planes(struct kvm *kvm)
-+{
-+	return 1;
-+}
-+
- /*
-  * All feature MSRs except uCode revID, which tracks the currently loaded uCode
-  * patch, are immutable once the vCPU model is defined.
 diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 291bccce9b74..3ecd472c7cfa 100644
+index f6e8a0b653b3..7d06459a06f3 100644
 --- a/include/linux/kvm_host.h
 +++ b/include/linux/kvm_host.h
-@@ -1156,6 +1156,8 @@ void kvm_unlock_all_vcpus(struct kvm *kvm);
- void vcpu_load(struct kvm_vcpu *vcpu);
- void vcpu_put(struct kvm_vcpu *vcpu);
- 
-+unsigned kvm_arch_max_planes(struct kvm *kvm);
+@@ -373,6 +373,8 @@ struct kvm_vcpu_common {
+ 	bool preempted;
+ 	bool ready;
+ 	bool scheduled_out;
 +
- #ifdef CONFIG_KVM_IOAPIC
- void kvm_arch_post_irq_ack_notifier_list_update(struct kvm *kvm);
- #else
++	struct kvm_dirty_ring dirty_ring;
+ };
+ 
+ struct kvm_vcpu {
+@@ -413,7 +415,6 @@ struct kvm_vcpu {
+ 	struct kvm_vcpu_arch arch;
+ 	struct kvm_vcpu_stat stat;
+ 	char stats_id[KVM_STATS_NAME_SIZE];
+-	struct kvm_dirty_ring dirty_ring;
+ 
+ 	/*
+ 	 * The most recently used memslot by this vCPU and the slots generation
+diff --git a/virt/kvm/dirty_ring.c b/virt/kvm/dirty_ring.c
+index 572b854edf74..c6f46b93bddb 100644
+--- a/virt/kvm/dirty_ring.c
++++ b/virt/kvm/dirty_ring.c
+@@ -218,7 +218,7 @@ int kvm_dirty_ring_reset(struct kvm *kvm, struct kvm_dirty_ring *ring,
+ 
+ void kvm_dirty_ring_push(struct kvm_vcpu *vcpu, u32 slot, u64 offset)
+ {
+-	struct kvm_dirty_ring *ring = &vcpu->dirty_ring;
++	struct kvm_dirty_ring *ring = &vcpu->common->dirty_ring;
+ 	struct kvm_dirty_gfn *entry;
+ 
+ 	/* It should never get full */
+@@ -250,7 +250,7 @@ bool kvm_dirty_ring_check_request(struct kvm_vcpu *vcpu)
+ 	 * the dirty ring is reset by userspace.
+ 	 */
+ 	if (kvm_check_request(KVM_REQ_DIRTY_RING_SOFT_FULL, vcpu) &&
+-	    kvm_dirty_ring_soft_full(&vcpu->dirty_ring)) {
++	    kvm_dirty_ring_soft_full(&vcpu->common->dirty_ring)) {
+ 		kvm_make_request(KVM_REQ_DIRTY_RING_SOFT_FULL, vcpu);
+ 		vcpu->run->exit_reason = KVM_EXIT_DIRTY_RING_FULL;
+ 		trace_kvm_dirty_ring_exit(vcpu);
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 7a0b632e3ac0..5a0277e2ac7c 100644
+index 24ff8748a317..f85ddb0fc781 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -5079,6 +5079,10 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
- 	case KVM_CAP_GUEST_MEMFD_FLAGS:
- 		return kvm_gmem_get_supported_flags(kvm);
+@@ -483,6 +483,13 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
+ 	common->ready = false;
+ 	preempt_notifier_init(&common->preempt_notifier, &kvm_preempt_ops);
+ 
++	if (kvm->dirty_ring_size) {
++		r = kvm_dirty_ring_alloc(kvm, &common->dirty_ring,
++					 id, kvm->dirty_ring_size);
++		if (r)
++			goto out_drop_counter;
++	}
++
+ 	vcpu->common = no_free_ptr(common);
+ 
+ 	kvm_vcpu_set_in_spin_loop(vcpu, false);
+@@ -547,6 +554,7 @@ static void kvm_vcpu_common_destroy(struct kvm_vcpu *vcpu)
+ 	 * are already gone.
+ 	 */
+ 	put_pid(common->pid);
++	kvm_dirty_ring_free(&common->dirty_ring);
+ 	kfree(common);
+ }
+ 
+@@ -555,7 +563,6 @@ static void kvm_vcpu_destroy(struct kvm_vcpu *vcpu)
+ 	kvm_arch_vcpu_destroy(vcpu);
+ 
+ 	kvm_vcpu_common_destroy(vcpu);
+-	kvm_dirty_ring_free(&vcpu->dirty_ring);
+ 
+ 	free_page((unsigned long)vcpu->run);
+ 	kmem_cache_free(kvm_vcpu_cache, vcpu);
+@@ -4209,7 +4216,7 @@ static vm_fault_t kvm_vcpu_fault(struct vm_fault *vmf)
  #endif
-+	case KVM_CAP_PLANES:
-+		if (kvm)
-+			return kvm_arch_max_planes(kvm);
-+		return 1;
- 	default:
- 		break;
+ 	else if (kvm_page_in_dirty_ring(vcpu->kvm, vmf->pgoff))
+ 		page = kvm_dirty_ring_get_page(
+-		    &vcpu->dirty_ring,
++		    &vcpu->common->dirty_ring,
+ 		    vmf->pgoff - KVM_DIRTY_LOG_PAGE_OFFSET);
+ 	else
+ 		return kvm_arch_vcpu_fault(vcpu, vmf);
+@@ -4338,13 +4345,6 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 	if (r)
+ 		goto vcpu_free_run_page;
+ 
+-	if (kvm->dirty_ring_size) {
+-		r = kvm_dirty_ring_alloc(kvm, &vcpu->dirty_ring,
+-					 id, kvm->dirty_ring_size);
+-		if (r)
+-			goto arch_vcpu_destroy;
+-	}
+-
+ 	mutex_lock(&kvm->lock);
+ 
+ 	if (kvm_get_vcpu_by_id(kvm, id)) {
+@@ -4385,8 +4385,6 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 	xa_erase(&kvm->planes[0]->vcpu_array, vcpu->vcpu_idx);
+ unlock_vcpu_destroy:
+ 	mutex_unlock(&kvm->lock);
+-	kvm_dirty_ring_free(&vcpu->dirty_ring);
+-arch_vcpu_destroy:
+ 	kvm_arch_vcpu_destroy(vcpu);
+ vcpu_free_run_page:
+ 	free_page((unsigned long)vcpu->run);
+@@ -5120,7 +5118,7 @@ static int kvm_vm_ioctl_reset_dirty_pages(struct kvm *kvm)
+ 	mutex_lock(&kvm->slots_lock);
+ 
+ 	kvm_for_each_vcpu(i, vcpu, kvm) {
+-		r = kvm_dirty_ring_reset(vcpu->kvm, &vcpu->dirty_ring, &cleared);
++		r = kvm_dirty_ring_reset(vcpu->kvm, &vcpu->common->dirty_ring, &cleared);
+ 		if (r)
+ 			break;
  	}
 -- 
 2.53.0
