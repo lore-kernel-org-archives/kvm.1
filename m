@@ -1,195 +1,144 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8883C3C0E
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 13:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2DD3C4557
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 14:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780927055; cv=none; b=azVbAZE9uWNsKq9dKRrQNeqcRWVIRF4sw+JcsaNFRNJ2aIdk6DkNFaSrDir1AgP4KSE0Qte+z2NJVmN9vpDe496ofW8pPfy4c4Jie0npwsXb1v73dEJehg/J6U0wCpFApNhM6YIfyFaJHi8gXFlpZ2biirORF2MBSphKlFqXT2Q=
+	t=1780928359; cv=none; b=YfNVZSZY3MqXP1jlmp+Dhv4fAL8SW8/EjY8QnD7JIkvV0GqelQM0lXLh8du2HPm9D9H34ho0PasqBONQSfwtWMYTtXgXhRESC8RST8MQsqVsn5Tnixp29XPBl8zaPrPPKaep64VUTUG3XPCRdDDYS+KpufJx1DxCM2HwZHuv948=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780927055; c=relaxed/simple;
-	bh=V/PRzVGD/Wn9Z1UfqbT/SqDvTctLoLUeiR9lmm2cxOE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=pbSsh7MYq9qicWlT3I7nrKHEm/yRztEk8CVWTJ4t2fr9S7RP9E2uJVqECU/apeKs+EuO/nIHXACi9nxM1ffVnJfBImGiJ2VUJvy8up/xuoyAZuiYrVjMJjELPdElm/g97GattJcspvvGpGZJGokRrrBeKhdCBAXtxlnpwWeNBiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FfhFnb3D; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PsggIQVM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780928359; c=relaxed/simple;
+	bh=tCrAN+QwYjri3tjSjOiLo4/IEE/Kzj/RPrjDTuJhjQc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=m+VtxdolKhgpskVLCoBafN0qo8BczMlRDWqwHt0FQ3ylwEweN88PSY+NCsITtPCmAjajB2pjWNgQX3POvTtXYs75R2A1iDFNoF9q6rFbqccuN3ZNawblLcTQkE7LjddSG/9OvJLgRpsX7D6X4D+E49ja3Leq4xEogobsbI/GBfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fsg1FZ2Z; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FfhFnb3D";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PsggIQVM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780927041;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=3QZwl1Yn9MoZg35gakkX81ZZXe4u4EcmIxBYNzqBHiw=;
-	b=FfhFnb3DLeQ5m3yVGfaIpJH9GFcnclSpJ8heyrgTdDR+rtXns4wQlxB+IVrHaa2L6Eion3
-	r3/aIQahMwTn7NZ5KnpOrsKvYS5f5IlHxrw+MBOFBWn6M35RO2wFVM4YMeOknDa6GVyAjX
-	ZAiq67P1oAbvPO9Z91t0ZypKu18NDSE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-MrzY9clePK6mQRXnGsVVIw-1; Mon, 08 Jun 2026 09:57:18 -0400
-X-MC-Unique: MrzY9clePK6mQRXnGsVVIw-1
-X-Mimecast-MFC-AGG-ID: MrzY9clePK6mQRXnGsVVIw_1780927037
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45ef0af9517so2176490f8f.3
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 06:57:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fsg1FZ2Z"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36e09ec696aso7437848a91.0
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 07:19:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780927037; x=1781531837; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=3QZwl1Yn9MoZg35gakkX81ZZXe4u4EcmIxBYNzqBHiw=;
-        b=PsggIQVMp5IbC2KQ767ANmnkcmclZNfSCQ63d7iOIgLEHep9Qc2cbUpjMoJ+nAA/vs
-         8G60nkxklLybCA6hv5SRr4yTkgUnIQ3W4LLJhFfV3FIN/yWF7seYjlr9oCZkZu4tJWkc
-         u1/HThTvV46Aq1D9c4ngAbIw7kdNeVXRSPY1Z7dW0NQt019+AZZtKs2+QaJh2KK9txVS
-         SQzo4PYOS8SOoj9FsKt80AizZFQGNijk1FlW7g4nYM4HO1MmV7eF5aXAkZUWtpl3MQla
-         OdJOidWpb8ZRPAl4kB+l+d6zo6nyMuDELL9XRLL7J0DucvHI+S1tEyS1ai3qdhP6xoQv
-         8dyg==
+        d=google.com; s=20251104; t=1780928357; x=1781533157; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3OMkuM0krcAErV2R0QvPhqc4eN2qPVaOBf2x8HQL30k=;
+        b=fsg1FZ2Z3MfEsFdIcj24CgYBn4MLlYgrkHRlSNIRrbgDSXeCX/CiG/sTb0YOOj1RxA
+         tiKXDQZ69GkKHnWfWYX+aT+XhVCf9JcT1yPHYM3Pcem8VknGBl0hP2Bxr/POSo/O5Lb1
+         neJxIebOop5kBFAQwN4G8KEFdqFbYtQAxhmKatBmty+MbeOwDJQfzahyG5+4Hc4ZrISq
+         +kb8nY0t9zku04Qtt0vaC5FzIqmTE3DVlTLOxolMbcQmFQil7peInp/w6aXtOOS1qcon
+         9Zf5JHUuxy5R0MGXMbM3VzFXucXD3sfQ7I4HJ3nj/iIhZ7At2JLdOTUfdurtSuIlyALL
+         I87A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780927037; x=1781531837;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3QZwl1Yn9MoZg35gakkX81ZZXe4u4EcmIxBYNzqBHiw=;
-        b=EQOgS967whwoVRO/6HR4WHkX1PMfpnrCf9aVUS65xnUgON19QLxSk1ee4rqune+3HU
-         sig/w+gdPBWs6GldSaFxog/Rd/3DNzQRXH+KiFeprn2SN9FGLawlgswJjhkZQ9whLMfS
-         RAaRuaTFBY1q/rAU6FP/ATdX8nyb1g5D9YJ/KxiOJOclEe4UVbTqjVP7p90eYIymHm3A
-         Stth4b9p+AQvbNi2SCkJU9l1sW47Nezg/weLiOf2b4y0GZFTl2Lmgx+IPayEU2OJBjrO
-         FwTsV709g60CT8gBh+Bvp2VoSTTHOjpvAXjca1UkDKqhPXt1NZzefP3c79KAnJaNEDmX
-         Ysfw==
-X-Forwarded-Encrypted: i=1; AFNElJ/AGQSazliLejvrN5pv5aTM19Bcv71w4M6IQg8FOpZHNnmmcUlzQrOXniX6VwFalB2L1Yc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7qzWSuYQtqId2fI/ZAQEJ5lrk6TlrusNLmD2gp2zcy15UvuWs
-	EzKny8GoGdjL6xu+F4wIspCrgZV4aX9xhSLl7X5q9ZOAe1NyZLMquhnSCnTNWpa+4TXTnnXR4Mw
-	YW1TdGh6MZM1SQHKhWh///9bA+nRD41bX43aqZcVU2sP+dr36+BbPIA==
-X-Gm-Gg: Acq92OHWLugOYe/N0l9BjeroXvNOAyKdBkjn9QQqe+VBgW2nuKUmcZrMIXbWrbAtDHY
-	Iw8m72C3QEy6gmBY2BWciUwWNFt6o75XQjMMHctf7iFLuHmJozVttwfekADVPGLi5ZmFWZAoL8N
-	sIOS91tFl7f2lvuwG2MngETqfjmrPaiQWCf5Gx2SGwE8CI31ZcKBUDpdxzrwp5KWT9prFg3GxyH
-	nhC8RAckY6QVpb6lStlQUOxs7/3RP0c5XlOkdi7u5RgFxn06QNmCxc9X/FkWWnVVUj6pvEp+0kQ
-	FORfifTIielR8qYBqTzqYhoXU4MthmfTfhz+EmVWSqBja45oI40lpr1B9dEsOVjNJRKRrNiInel
-	FnWy4J/XiRATTFDLZhYLPPrIu/xSAGg==
-X-Received: by 2002:a05:600c:620c:b0:490:b28d:a6f9 with SMTP id 5b1f17b1804b1-490c256f1f1mr258398405e9.8.1780927037303;
-        Mon, 08 Jun 2026 06:57:17 -0700 (PDT)
-X-Received: by 2002:a05:600c:620c:b0:490:b28d:a6f9 with SMTP id 5b1f17b1804b1-490c256f1f1mr258398055e9.8.1780927036954;
-        Mon, 08 Jun 2026 06:57:16 -0700 (PDT)
-Received: from [192.168.0.9] ([47.64.115.148])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2e4b18sm40542835f8f.10.2026.06.08.06.57.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jun 2026 06:57:16 -0700 (PDT)
-Message-ID: <0c95c25f-1400-4912-befc-c5b32968d9ab@redhat.com>
-Date: Mon, 8 Jun 2026 15:57:15 +0200
+        d=1e100.net; s=20251104; t=1780928357; x=1781533157;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3OMkuM0krcAErV2R0QvPhqc4eN2qPVaOBf2x8HQL30k=;
+        b=sQQqcTaBRD8J6okkNb6QGG6A45Uyvxid+HKVHxbyVWggFf4wP8GglAWCmlr9iYbRWi
+         TEFnneDD+BGCW5JzBNAAKhretZ8s3gnuwI3Lso5nU6i8GB/QR/nJUrbJtMEEPkK5sA1w
+         W9CO95TeV8aqfBOupldboMO/AWPkLWI9/F8viLOUC9Y2TswwKhxgOfiWWzG3l0tYITTQ
+         9IjwJsNR8JbhrqsiKYF0sYrXDhb2KsZkinIZaxbXiseSEwADYcw0lvsvmLwjgCCWyxRQ
+         r1wctCp6I9mpbKYYy1HQgSmsAmfKyM+kdKD/foO1ghWsw4EcL1MgXYok2O0qBlbwFixw
+         MgSQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/PmQ/Mm6MU8Jnd9QVnWpZToFFAT0sGiCNuy/IVPMYZbMjNc6EUItLrTukDZ4Fe7Kv5srs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzhRs6vBOgvPlLidXHSzVUUPLmOyW/ApRATKhBJSad6RawnPIU
+	PLuLq3MOsSBuYjr1K7k/AM4iMQMTkFB4MyexF6lbakV/FFdi3lYOIurlB/v7ao5ZeSZQbiiiZQ5
+	nrBA61w==
+X-Received: from pgaq66.prod.google.com ([2002:a63:4345:0:b0:c80:24e3:5130])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3fd0:b0:36b:293:68d1
+ with SMTP id 98e67ed59e1d1-370f0772017mr16427503a91.16.1780928357037; Mon, 08
+ Jun 2026 07:19:17 -0700 (PDT)
+Date: Mon, 8 Jun 2026 07:19:16 -0700
+In-Reply-To: <4e5b6b9c-4f7d-4d62-874a-4bcb745e9a47@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests RFC PATCH 1/6] powerpc: add pmu tests
-From: Thomas Huth <thuth@redhat.com>
-To: Chinmay Rath <rathc@linux.ibm.com>
-Cc: npiggin@gmail.com, harshpb@linux.ibm.com, lvivier@redhat.com,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, andrew.jones@linux.dev,
- sbhat@linux.ibm.com
-References: <20260602064806.3101025-1-rathc@linux.ibm.com>
- <20260602064806.3101025-2-rathc@linux.ibm.com>
- <b7aa2c73-be32-47e2-8452-e626845f4d3e@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <b7aa2c73-be32-47e2-8452-e626845f4d3e@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
+ <20260417073610.3246316-2-binbin.wu@linux.intel.com> <4e5b6b9c-4f7d-4d62-874a-4bcb745e9a47@linux.intel.com>
+Message-ID: <aibPZMfxabh6meOk@google.com>
+Subject: Re: [RFC PATCH 01/27] KVM: x86: Fix emulated CPUID features being
+ applied to wrong sub-leaf
+From: Sean Christopherson <seanjc@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, rick.p.edgecombe@intel.com, 
+	xiaoyao.li@intel.com, chao.gao@intel.com, kai.huang@intel.com
+Content-Type: text/plain; charset="us-ascii"
 
-On 08/06/2026 14.45, Thomas Huth wrote:
-> On 02/06/2026 08.48, Chinmay Rath wrote:
->> From: Nicholas Piggin <npiggin@gmail.com>
->>
->> Add some initial PMU testing.
->>
->> - PMC5/6 tests
->> - PMAE / PMI test
->> - BHRB basic tests
->>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
->> ---
->>   lib/powerpc/asm/processor.h |   2 +
->>   lib/powerpc/asm/reg.h       |   9 +
->>   lib/powerpc/asm/setup.h     |   1 +
->>   lib/powerpc/setup.c         |  20 ++
->>   powerpc/Makefile.common     |   3 +-
->>   powerpc/pmu.c               | 567 ++++++++++++++++++++++++++++++++++++
->>   powerpc/unittests.cfg       |   3 +
->>   7 files changed, 604 insertions(+), 1 deletion(-)
->>   create mode 100644 powerpc/pmu.c
-> 
->   Hi Chinmay,
-> 
-> the problem with Clang on Travis [*] still seems to persist:
-> 
->   https://app.travis-ci.com/github/huth/kvm-unit-tests/jobs/639614142
-> 
-> Could you please have a look?
-> 
->   Thanks,
->    Thomas
+On Mon, Jun 08, 2026, Binbin Wu wrote:
 > 
 > 
-> [*] This already happened with Nicolas' last version:
+> On 4/17/2026 3:35 PM, Binbin Wu wrote:
+> > Guard the use of cpuid_func_emulated() with a check that the CPUID
+> > sub-leaf index is 0, as cpuid_func_emulated() unconditionally returns
+> > emulated features for index 0 and does not account for indexed leaves.
+> > 
+> > Without the guard, when iterating over reverse_cpuid[] entries that
+> > share the same CPUID function but have a non-zero index, e.g.
+> > CPUID_7_1_ECX (function=7, index=1), the emulated features for index 0
+> > are incorrectly OR'd into the wrong capability word.  For example,
+> > RDPID (CPUID.7.0:ECX[22]) gets erroneously applied to CPUID_7_1_ECX,
+> > which would allow userspace to set bit 22 of CPUID.7.1:ECX in the vCPU's
+> > capabilities.
+> > 
+> > This is currently benign as the affected bits in the non-zero index
+> > words happen to not correspond to meaningful features, but it could
+> > cause problems as new features are defined in those positions.
+> > 
 > 
->   https://www.spinics.net/lists/kvm/msg351218.html
+> Hi Sean/Paolo,
+> 
+> While the bug is currently benign, I still think it's worth fixing.
+> 
+> There could be two options:
+> - Considering cpuid_func_emulated() probably would not be extended
+>   in the future, still keep this simple implementation, but add some
+>   comments to cpuid_func_emulated() to call out only subleaf 0 is emulated
+>   as suggested by Xiaoyao.
+>   https://lore.kernel.org/kvm/fa47d520-1de9-4ddc-94ca-6bb53ac30f10@intel.com/
+> - Add the index input parameter to cpuid_func_emulated().
 
-I managed to get access to a ppc64 machine. The error is:
+Definitely handle this in cpuid_func_emulated().
 
-/tmp/pmu-eab466.s: Assembler messages:
-/tmp/pmu-eab466.s:1649: Error: unrecognized opcode: `ldat'
-clang: error: assembler command failed with exit code 1 (use -v to see 
-invocation)
-make: *** [<builtin>: powerpc/pmu.o] Error 1
-
-  HTH,
-   Thomas
+diff --git arch/x86/kvm/cpuid.c arch/x86/kvm/cpuid.c
+index db8be9173bd0..737ca3e7bda2 100644
+--- arch/x86/kvm/cpuid.c
++++ arch/x86/kvm/cpuid.c
+@@ -400,7 +400,7 @@ void kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
+                if (!entry)
+                        continue;
+ 
+-               cpuid_func_emulated(&emulated, cpuid.function, true);
++               cpuid_func_emulated(&emulated, cpuid.function, cpuid.index, true);
+ 
+                /*
+                 * A vCPU has a feature if it's supported by KVM and is enabled
+@@ -1369,11 +1369,15 @@ static struct kvm_cpuid_entry2 *do_host_cpuid(struct kvm_cpuid_array *array,
+        return entry;
+ }
+ 
+-static int cpuid_func_emulated(struct kvm_cpuid_entry2 *entry, u32 func,
++static int cpuid_func_emulated(struct kvm_cpuid_entry2 *entry, u32 func, u32 index,
+                               bool include_partially_emulated)
+ {
+        memset(entry, 0, sizeof(*entry));
+ 
++       /* KVM doesn't currently emulate any non-zero indices. */
++       if (cpuid_function_is_indexed(func) && index)
++               return 0;
++
+        entry->function = func;
+        entry->index = 0;
+        entry->flags = 0;
+@@ -1411,7 +1415,7 @@ static int __do_cpuid_func_emulated(struct kvm_cpuid_array *array, u32 func)
+        if (array->nent >= array->maxnent)
+                return -E2BIG;
+ 
+-       array->nent += cpuid_func_emulated(&array->entries[array->nent], func, false);
++       array->nent += cpuid_func_emulated(&array->entries[array->nent], func, 0, false);
+        return 0;
+ }
+ 
 
