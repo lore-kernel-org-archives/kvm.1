@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAD933F8D6
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 16:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA237333730
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 16:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780935976; cv=none; b=hrMXck3czUOpCLKMWL5mlB0vwwyoJoN23NAOiCHCXlG2rW8IDb8czaiPTLdSa9LYKESUpPBJbBzlgzi+XiaRaHpqNwkgNUGn8IpOphJIH8oN2Yreq6QirO6xObjQVa0Ch6Vtu48knj0F/V46GUZDap/90SfpUIeaX/ns+8qk89I=
+	t=1780936028; cv=none; b=PMYNgawt92mykZ/a+CXT/f8cqHC2H3mHNfPLHtq9Za665o8co9gQvxGgdYivRaag3sikRCGQv111caHn1HjcpOrStGwAY3c+MpvhnxnUcBjQTX+kLYJIARweF+EWjqL/XEbB8WP6y4KcG6uuc5OyhloWS6rjck4ASPrqYLRyk7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780935976; c=relaxed/simple;
-	bh=Q67hG9Yc6XgZMuYbbp9TFj1vf+sBjRNVsuFCvIsUeDs=;
+	s=arc-20240116; t=1780936028; c=relaxed/simple;
+	bh=/aCKtALrVl7N8WNnj9mrSALIqO/DuNPZt5SYukVt9S8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=CWUAWtwycp5LN7biYZ0YjMIbUT/+1GVw933egABd5HYlN6AiSiBwnJHHRTw7tgslnleSv6tCk9UyfO4dee6m/CVQAdunN72v+MugXvhw1HjftR64YvF4dOTzoJImSMLBD+VBNJLBsVZEiab3jxSh14pKFty4d9CUm+JRatc4iGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WOKd+fsO; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=OPWPLYDz+oq8mpuASA6yxsfH0c/6Kx9jbegzZNlBnnzflzlzsR4a1yvfF/tWKwj+g2HeTSAlndCRdaZpkr8B8eTszBboxaS9fzI3fWOPL4+ZM1iWIqKwlbqSW8F/9VdBfSkcTtV3anZqOjiMrE+ApcAXQ1fCzyvLlHah0acDSNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fEz0Zs2n; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WOKd+fsO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD921F0089F;
-	Mon,  8 Jun 2026 16:26:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fEz0Zs2n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CA21F00893;
+	Mon,  8 Jun 2026 16:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780935975;
-	bh=fN4A54eWzWyNOG0hHwlqs4WO+WO6Hs56p/rU7UmXfu0=;
+	s=k20260515; t=1780936027;
+	bh=c1cNVYQfKalLEbJV/TANaQ/a1JJo7CdqszY+i5zIwas=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WOKd+fsOlkuzpMag9X4B1lMQmDZxnzhymiP0SlpXDYknYpD9veqzeLHc0wE8z+s1N
-	 ZDC/Q4923jGOZBAbMSlGxDP9pg5g1aXnA5eGJtJGSz/0+vyvz7le9BDsglghvQhJ4B
-	 PaLfkCHtGq2mOgAmRINYNmssUZJwh8JoK90PP2Wa7Vy71QFmdVIPRZwZHh1RqVoAXr
-	 ljHEbZqDc14cso5Uc4U7fIBdaqCw3Hx2GrTptxDzWDXQdpJNn2zNLOAGiOHMW1WeHw
-	 adNXcExwa71Gh+kjCgAPDyTZbyek6U2pqhZmQFwh8/7LFexD1Xo+3WtHpjy7G8kUEy
-	 KIvuPrINbIYGg==
+	b=fEz0Zs2nHTdtBI58hE1I24WjG4C/82+4k2Ai4i2yCR6bgTbOq6+OwTvKjfZIYAofs
+	 cIPH53vaePKSf1HfADa1IkUuwtvC5XoZ/5tH8iN8yPRsBqtWn7fzrLTbyHgu7RKsGP
+	 4Az9Db9m7Z3UbiDoHZUwTwuHig5mLgJTPxbtEPBJ5bj8YrRNjjKeaBqSDvw/LhtehP
+	 1/WwxkX3fQiBjebzPbR/+J37kdU10ikggZJshgkb8ukEB5DC+JcnfMuHbBCZUyJhLa
+	 KK4Kz+zUsk50/XhxJQYeE4U+KoG5R64CfU98nugMCDbX/Fxny8Tvy9Lqoi+O0sAI2B
+	 LRzdoYc2S6XSg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 18/60] kvm: Move kvm_vcpu->rcuwait to struct
- kvm_vcpu_common
+Subject: Re: [PATCH v5 07/34] KVM: x86: Activate master clock immediately on
+ vCPU creation
 Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: "David Woodhouse" <dwmw2@infradead.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-19-joro@8bytes.org>
-References: <20260608144252.351443-19-joro@8bytes.org>
+In-Reply-To: <20260608145455.89187-8-dwmw2@infradead.org>
+References: <20260608145455.89187-8-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 16:26:15 +0000
-Message-Id: <20260608162615.7CD921F0089F@smtp.kernel.org>
+Date: Mon, 08 Jun 2026 16:27:06 +0000
+Message-Id: <20260608162707.39CA21F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,61 +46,51 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] Host kernel panic (NULL pointer dereference) triggered by MIPS out=
--of-bounds CPU ID in interrupt ioctl/MMIO.
+- [High] Unconditional masterclock update causes O(N^2) overhead during VM =
+creation
 --
 
-commit 1db0b07fbf183499e26c76e72be724cdc1b067cc
-Author: Joerg Roedel <joerg.roedel@amd.com>
+commit 8f4737a975ef2b2f510c7316ea3baa233e41c647
+Author: David Woodhouse <dwmw@amazon.co.uk>
 
-kvm: Move kvm_vcpu->rcuwait to struct kvm_vcpu_common
+KVM: x86: Activate master clock immediately on vCPU creation
 
-This commit moves the rcuwait member from the architecture-specific
-vcpu structure to the common kvm_vcpu_common struct. This ensures
-there is only a single wait object shared across all plane VCPUs.
+This commit updates vCPU creation to activate the master clock immediately,
+rather than waiting for the first vCPU to process KVM_REQ_MASTERCLOCK_UPDAT=
+E.
+This allows KVM_GET_CLOCK to return a valid host_tsc and realtime pair right
+away without requiring a dummy vCPU run.
 
-> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-> index f928ba105104b..6469ec246dd60 100644
-> --- a/arch/mips/kvm/mips.c
-> +++ b/arch/mips/kvm/mips.c
-[ ... ]
-> @@ -507,7 +507,7 @@ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu,
-> =20
->  	dvcpu->arch.wait =3D 0;
-> =20
-> -	rcuwait_wake_up(&dvcpu->wait);
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index b7e5f6e3dc6c1..c1897d939da91 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -13098,6 +13098,8 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vc=
+pu)
+>  		return;
+>  	vcpu_load(vcpu);
+>  	kvm_synchronize_tsc(vcpu, NULL);
+> +	if (!vcpu->kvm->arch.use_master_clock)
+> +		kvm_update_masterclock(vcpu->kvm);
 
 [Severity: High]
-This is a pre-existing issue, but is there a missing NULL pointer check for
-dvcpu before these operations?
+Does this cause an O(N^2) scaling issue during VM creation if the host=20
+clocksource doesn't support the masterclock?
 
-Looking at kvm_vcpu_ioctl_interrupt() earlier in this function:
+If the host lacks masterclock support (for example, missing a TSC=20
+clocksource), vcpu->kvm->arch.use_master_clock remains false after the=20
+update. This means every subsequent vCPU creation will re-trigger=20
+kvm_update_masterclock() unnecessarily.
 
-    if (irq->cpu =3D=3D -1)
-        dvcpu =3D vcpu;
-    else
-        dvcpu =3D kvm_get_vcpu(vcpu->kvm, irq->cpu);
-       =20
-If irq->cpu is out of bounds, kvm_get_vcpu() will return NULL. We then
-unconditionally dereference dvcpu at dvcpu->arch.wait =3D 0 and pass it into
-kvm_arch_vcpu_get_wait(), which could trigger a host kernel panic.
+Since kvm_update_masterclock() makes requests for all existing vCPUs=20
+using kvm_make_all_cpus_request() and loops over them, creating N vCPUs=20
+would result in O(N^2) lock acquisitions and iterations. Could this=20
+cause noticeable latency regressions or soft lockups when booting large VMs?
 
-Additionally, if kvm_vcpu_ioctl_interrupt() is called with a NULL vcpu
-argument (for example, from loongson_vipi_write() using kvm_get_vcpu(kvm, i=
-d)
-with an out-of-bounds ID), it would also dereference NULL when evaluating
-vcpu->kvm.
-
-Should there be a check ensuring these pointers are valid before they are
-dereferenced?
-
-> +	rcuwait_wake_up(kvm_arch_vcpu_get_wait(dvcpu));
+>  	vcpu_put(vcpu);
 > =20
->  	return 0;
->  }
+>  	/* poll control enabled by default */
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D18
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608145455.8918=
+7-1-dwmw2@infradead.org?part=3D7
