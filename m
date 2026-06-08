@@ -1,331 +1,311 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA4C397332;
-	Mon,  8 Jun 2026 09:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFEE3AFCEC
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 09:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780911385; cv=none; b=ksuY3bZsP7wpB8ga2fXsHDV64xvKGRimmGXT93MjQq2yqWG+fAK8hp4DkUM9KvvekODt4KGTia4i+grD50b4rahNzF8wZA3ZK819x7/sqIBuCOFOefLTzRUbgZu4Ecci1vGZjE8a5aTEGHH2WySR+4+hhXEnUx9VuImOWUuQLQo=
+	t=1780911427; cv=none; b=bGbozHj3MTzT8FzZaeq1MHyiFKwuUh7uX++eCpQlfgfgPYVUczAZ7FT8KVX3n0KQbjcod0WqsdKboFE3gpqVhAHUIfZ4/wpseOk1K090TH+0pXtNWEP3pXobbLjdvlaQc3OUL7DWx3Dhww5L1dw3qgSRNafaANk3c1iK67P0NI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780911385; c=relaxed/simple;
-	bh=ptBDlnNoQB7aZGMNpR/K2NrWMUcuiU/2bNd4uG2P9Ds=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gQrALpUZZPPeuENex5NmsCAA8UTBq4r7cWVk8AbETVHKPUEjWtYbMM5AvX62QdEeNjYY4aeU7GnMgX9xdK67zPWGmIpzI3GY6z4fGx44mHBb8Dk/3NMy6j+q+pQcGl0Dh1bLc09dLgvOIZr1ji7Llj6xB2A2UkPv/eMounmH1yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=B0aOHrMn; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1780911427; c=relaxed/simple;
+	bh=59/tSJ0dW51Zn1c5BQkejmWziRwoc8zt4d0DBdDQLfw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rVj2l6eYxY+IEplwC1SmN3eS13Ub0lZ1s2NWAEZ/ar1h5U3Z2kpkImaVcj6xZiKK41llrux/6jmMgEASOZW5KZVB6VFY7z0ErjRJvRCAooNDqi1yJ61c0Dlh1PC2ZiLu35I4vCK1WGxesuNniSJb8PdXY+tIaUJ1KQFitH5b18Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X8G3fjYi; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="B0aOHrMn"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 364782403;
-	Mon,  8 Jun 2026 02:36:17 -0700 (PDT)
-Received: from [10.57.28.93] (unknown [10.57.28.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D15903F86F;
-	Mon,  8 Jun 2026 02:36:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780911382; bh=ptBDlnNoQB7aZGMNpR/K2NrWMUcuiU/2bNd4uG2P9Ds=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=B0aOHrMn1wQ+AD09z+YNbPv8pr9VNorpnZTqJwtmXy0P+tLj7cuVkyrJFuQH2Ho7a
-	 Aukof9amQe7l9icSEd2yyrwS90+GV17g7rkZYQdIEEkU0rYs83LJ7/xS0op07+C9RC
-	 f0ntwypkLUd6sc2M1qkm19hj/WmlJnvrcfArIbIo=
-Message-ID: <0c71b4b8-ad0b-4a24-9f4a-180b2aaacdb6@arm.com>
-Date: Mon, 8 Jun 2026 10:36:14 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X8G3fjYi"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-45ef1629ff4so2667846f8f.0
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 02:37:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780911424; x=1781516224; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4Spb0RtZEviQD3qiwv62vU4Wzwzz7ccUnGUeAg2w4gY=;
+        b=X8G3fjYiOpM9+24zhgjsJrZ3zuEqBqU3EkC2N1dTwSoOTpEl1xndwv3zkfy4ROBwEg
+         RosFkFZZgdpiII42/uF4+TMOWexyXGPc1aESM3UNq3oiZIdHDaSG0JFWXU125LUmLRAd
+         icY2fBfrbiZvzSTrMHimrJjfF84rs27H3w1nJg4A+McoZpIluyn5iBftyHK/9iYnu3g9
+         BZQmnPsO71bxLwat/Su8u0tdV6V4lxCk5wi1ROw1tbVUspchpzCuLG+NQsJI8qEeDheT
+         Wb7OlT3mXNrxIaUEQf1AS0I+sYfGE080oOis35xpFKLrSHAteFwnuLq+G6MxVJjeof1+
+         /6ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780911424; x=1781516224;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4Spb0RtZEviQD3qiwv62vU4Wzwzz7ccUnGUeAg2w4gY=;
+        b=BYd/PJXCxMqOdtgHlK2xr8ZbsWN/G6/UjQi5ZV0CUveUI4bstt70FO/ozpKT2mJ7hr
+         kxf+5Nbvoc0WkbVvbEM1bYdCXW0xjIvZfC9hAmrJl7FMfmv2CJon+uBF7LA3CJ+6PNsW
+         IJjW6m9Iuqhq2ZRrc3KIJNrtNFa5wO0Y/R/pyMZry7gJpCaGBFMxFSleFkpvWZaHZj14
+         /XgqQ9xX5WnHxBQAMN8ja26orTpSuzWGWfUNEq5DmxqxdYNLufJBPaABtG4lnFX+z4x4
+         oe8bhw63G+t2ALdr8rnQB/Eb2FIZ4xOi85qE49swj45+3U4d20zS6YsvA1qHKTqi0vxj
+         HZgA==
+X-Forwarded-Encrypted: i=1; AFNElJ8DC0Iw0ZtLgijexpp1EYx/3jaPgqve75IPm9DRTDXQTZQbgSLXZrNojMSwljWiNpYfAF8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx090NETv2XzHEmCYzo4iV05f95T9QTc/Iiy8/kNVMdZWdSDmgL
+	4UrcIl6gqDZBJENPnRV0x4grvHHYFiXz5oXhuKyS98oIKb7ol2CqE6qO
+X-Gm-Gg: Acq92OGXLYBxj7p/cyVVyThCiaM0wL/TeIOgqVtji8eDhKUX24nY+K1Y1pScPyUgy9Z
+	aEAT0IzYcqgc8WuMVyhmszQPSjJJMntv7PWd+ZJ/bx1spi6dvMQ+JZ9LmfQwky0HfLgaG6sj10C
+	x3VHtJsp/Jb48BurCjrliFUm0T2cBpEBl4+THiCYPSQlTGxmjC7oGRX4x/UHNUILejJgltf1jjI
+	PaIz26SgRohZWse5I6+xQgMJkuQrmxRJmFqrAt6UDStwtwOoMzpcl+m2qZYEGua7gWGljikgl8j
+	0fBNb25pK4ZDPg8sD7g7jSQHXJS5T/1/apSjHKBtAnQSOQu+HlCWZ/TT73ms/+zEDl6o2IqTxP7
+	VHat7itxA8oUiIMn2A6uD2t1kkGGgzW68bVCVZG72x3PaicIJsYRBgHOPrmD4DUXEUZfp80nF4h
+	66Q2Z085Dzody1TeaML+yL0I28Q9fuibo2iYQwxvyyI6WhCHxOPpMIXPtWSi3llpEOjtz9WSh+C
+	eFuuvVTVg==
+X-Received: by 2002:a5d:42d1:0:b0:43c:fa96:d939 with SMTP id ffacd0b85a97d-46030609782mr16804802f8f.22.1780911423510;
+        Mon, 08 Jun 2026 02:37:03 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcad5sm55824962f8f.5.2026.06.08.02.37.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 02:37:03 -0700 (PDT)
+Date: Mon, 8 Jun 2026 10:37:01 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Arseniy Krasnov <avkrasnov@rulkc.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella
+ <sgarzare@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason
+ Wang <jasowang@redhat.com>, Bobby Eshleman <bobby.eshleman@bytedance.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?UTF-8?B?UMOpcmV6?=
+ <eperezma@redhat.com>, Simon Horman <horms@kernel.org>,
+ kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, oxffffaa@gmail.com,
+ rulkc@linuxtesting.org
+Subject: Re: [PATCH v1] vsock/virtio: rework MSG_ZEROCOPY flag handling
+Message-ID: <20260608103701.7839ff1b@pumpkin>
+In-Reply-To: <e5200406-d336-4ddf-9abd-78fccda24546@rulkc.org>
+References: <20260605115314.552321-1-avkrasnov@rulkc.org>
+	<20260605160851.3ddbd2ed@pumpkin>
+	<e5200406-d336-4ddf-9abd-78fccda24546@rulkc.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 26/44] arm64: RMI: Allow populating initial contents
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-27-steven.price@arm.com>
- <ea4be6c5-9506-4253-80c5-c76c9ac3b77d@redhat.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <ea4be6c5-9506-4253-80c5-c76c9ac3b77d@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-On 28/05/2026 06:30, Gavin Shan wrote:
-> Hi Steve,
-> 
-> On 5/13/26 11:17 PM, Steven Price wrote:
->> The VMM needs to populate the realm with some data before starting (e.g.
->> a kernel and initrd). This is measured by the RMM and used as part of
->> the attestation later on.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v13:
->>   * Rename realm_create_protected_data_page() to realm_data_map_init().
->> Changes since v12:
->>   * The ioctl now updates the structure with the amount populated rather
->>     than returning this through the ioctl return code.
->>   * Use the new RMM v2.0 range based RMI calls.
->>   * Adapt to upstream changes in kvm_gmem_populate().
->> Changes since v11:
->>   * The multiplex CAP is gone and there's a new ioctl which makes use of
->>     the generic kvm_gmem_populate() functionality.
->> Changes since v7:
->>   * Improve the error codes.
->>   * Other minor changes from review.
->> Changes since v6:
->>   * Handle host potentially having a larger page size than the RMM
->>     granule.
->>   * Drop historic "par" (protected address range) from
->>     populate_par_region() - it doesn't exist within the current
->>     architecture.
->>   * Add a cond_resched() call in kvm_populate_realm().
->> Changes since v5:
->>   * Refactor to use PFNs rather than tracking struct page in
->>     realm_create_protected_data_page().
->>   * Pull changes from a later patch (in the v5 series) for accessing
->>     pages from a guest memfd.
->>   * Do the populate in chunks to avoid holding locks for too long and
->>     triggering RCU stall warnings.
->> ---
->>   arch/arm64/include/asm/kvm_rmi.h |   4 ++
->>   arch/arm64/kvm/Kconfig           |   1 +
->>   arch/arm64/kvm/arm.c             |  13 ++++
->>   arch/arm64/kvm/rmi.c             | 106 +++++++++++++++++++++++++++++++
->>   4 files changed, 124 insertions(+)
->>
->> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
->> asm/kvm_rmi.h
->> index 007249a13dbc..a2b6bc412a22 100644
->> --- a/arch/arm64/include/asm/kvm_rmi.h
->> +++ b/arch/arm64/include/asm/kvm_rmi.h
->> @@ -88,6 +88,10 @@ int kvm_rec_enter(struct kvm_vcpu *vcpu);
->>   int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
->>   int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
->>   +struct kvm_arm_rmi_populate;
->> +
->> +int kvm_arm_rmi_populate(struct kvm *kvm,
->> +             struct kvm_arm_rmi_populate *arg);
->>   void kvm_realm_unmap_range(struct kvm *kvm,
->>                  unsigned long ipa,
->>                  unsigned long size,
->> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
->> index 4e16719fda22..d0cd011cf672 100644
->> --- a/arch/arm64/kvm/Kconfig
->> +++ b/arch/arm64/kvm/Kconfig
->> @@ -38,6 +38,7 @@ menuconfig KVM
->>       select GUEST_PERF_EVENTS if PERF_EVENTS
->>       select KVM_GUEST_MEMFD
->>       select KVM_GENERIC_MEMORY_ATTRIBUTES
->> +    select HAVE_KVM_ARCH_GMEM_POPULATE
->>       help
->>         Support hosting virtualized guest machines.
->>   diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->> index ed88a203b892..073ba9181da9 100644
->> --- a/arch/arm64/kvm/arm.c
->> +++ b/arch/arm64/kvm/arm.c
->> @@ -2131,6 +2131,19 @@ int kvm_arch_vm_ioctl(struct file *filp,
->> unsigned int ioctl, unsigned long arg)
->>               return -EFAULT;
->>           return kvm_vm_ioctl_get_reg_writable_masks(kvm, &range);
->>       }
->> +    case KVM_ARM_RMI_POPULATE: {
->> +        struct kvm_arm_rmi_populate req;
->> +        int ret;
->> +
->> +        if (!kvm_is_realm(kvm))
->> +            return -ENXIO;
->> +        if (copy_from_user(&req, argp, sizeof(req)))
->> +            return -EFAULT;
->> +        ret = kvm_arm_rmi_populate(kvm, &req);
->> +        if (copy_to_user(argp, &req, sizeof(req)))
->> +            return -EFAULT;
->> +        return ret;
->> +    }
-> 
-> s/return ret/return 0; The variable 'ret' can be dropped.
+On Mon, 8 Jun 2026 11:10:24 +0300
+Arseniy Krasnov <avkrasnov@rulkc.org> wrote:
 
-kvm_arm_rmi_populate() may return an error though. E.g. if the
-"reserved" field is set then it's kvm_arm_rmi_populate() that detects
-that and returns -EINVAL.
+> On 05/06/2026 18:08, David Laight wrote:
+> > On Fri,  5 Jun 2026 14:53:14 +0300
+> > Arseniy Krasnov <avkrasnov@rulkc.org> wrote:
+> > =20
+> >> Logically it was based on TCP implementation, so to make further
+> >> support easier, rewrite it in the TCP way.
+> >>
+> >> Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
+> >> ---
+> >>  net/vmw_vsock/virtio_transport_common.c | 64 ++++++++++++-------------
+> >>  1 file changed, 32 insertions(+), 32 deletions(-)
+> >>
+> >> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/v=
+irtio_transport_common.c
+> >> index 2fd9eaaf5ca6..00caeeaa5590 100644
+> >> --- a/net/vmw_vsock/virtio_transport_common.c
+> >> +++ b/net/vmw_vsock/virtio_transport_common.c
+> >> @@ -73,10 +73,13 @@ static bool virtio_transport_can_zcopy(const struc=
+t virtio_transport *t_ops,
+> >>  static int virtio_transport_fill_skb(struct sk_buff *skb,
+> >>  				     struct virtio_vsock_pkt_info *info,
+> >>  				     size_t len,
+> >> -				     bool zcopy)
+> >> +				     bool zcopy, struct ubuf_info *uarg)
+> >>  {
+> >>  	struct msghdr *msg =3D info->msg;
+> >> =20
+> >> +	/* We have completion - attach it to 'skb'. */
+> >> +	skb_zcopy_set(skb, uarg, NULL);
+> >> +
+> >>  	if (zcopy)
+> >>  		return __zerocopy_sg_from_iter(msg, NULL, skb,
+> >>  					       &msg->msg_iter, len, NULL);
+> >> @@ -208,7 +211,8 @@ static struct sk_buff *virtio_transport_alloc_skb(=
+struct virtio_vsock_pkt_info *
+> >>  						  u32 src_cid,
+> >>  						  u32 src_port,
+> >>  						  u32 dst_cid,
+> >> -						  u32 dst_port)
+> >> +						  u32 dst_port,
+> >> +						  struct ubuf_info *uarg)
+> >>  {
+> >>  	struct vsock_sock *vsk;
+> >>  	struct sk_buff *skb;
+> >> @@ -245,7 +249,7 @@ static struct sk_buff *virtio_transport_alloc_skb(=
+struct virtio_vsock_pkt_info *
+> >>  	if (info->msg && payload_len > 0) {
+> >>  		int err;
+> >> =20
+> >> -		err =3D virtio_transport_fill_skb(skb, info, payload_len, zcopy);
+> >> +		err =3D virtio_transport_fill_skb(skb, info, payload_len, zcopy, ua=
+rg);
+> >>  		if (err)
+> >>  			goto out;
+> >> =20
+> >> @@ -321,38 +325,36 @@ static int virtio_transport_send_pkt_info(struct=
+ vsock_sock *vsk,
+> >>  	if (pkt_len =3D=3D 0 && info->op =3D=3D VIRTIO_VSOCK_OP_RW)
+> >>  		return pkt_len;
+> >> =20
+> >> -	if (info->msg) {
+> >> -		/* If zerocopy is not enabled by 'setsockopt()', we behave as
+> >> -		 * there is no MSG_ZEROCOPY flag set.
+> >> +	if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
+> >> +		/* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
+> >> +		 * 'MSG_ZEROCOPY' flag handling here is based on the same flag
+> >> +		 * handling from 'tcp_sendmsg_locked()'.
+> >>  		 */
+> >> -		if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
+> >> -			info->msg->msg_flags &=3D ~MSG_ZEROCOPY;
+> >> +		if (info->msg->msg_ubuf) {
+> >> +			uarg =3D info->msg->msg_ubuf;
+> >> +			can_zcopy =3D virtio_transport_can_zcopy(t_ops, info, pkt_len);
+> >> +		} else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
+> >> +			uarg =3D msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
+> >> +						    NULL, false);
+> >> +			if (!uarg) {
+> >> +				virtio_transport_put_credit(vvs, pkt_len);
+> >> +				return -ENOMEM;
+> >> +			}
+> >> =20
+> >> -		if (info->msg->msg_flags & MSG_ZEROCOPY)
+> >>  			can_zcopy =3D virtio_transport_can_zcopy(t_ops, info, pkt_len);
+> >> =20
+> >> +			if (!can_zcopy)
+> >> +				uarg_to_msgzc(uarg)->zerocopy =3D 0;
+> >> +
+> >> +			have_uref =3D true;
+> >> +		}
+> >> +
+> >> +		/* 'can_zcopy' means that this transmission will be
+> >> +		 * in zerocopy way (e.g. using 'frags' array).
+> >> +		 */ =20
+> > I've not looked at the tcp code, but the above doesn't look right.
+> > I don't see why msg->msg_ubuf might be non-NULL without SOCK_ZEROCOPY s=
+et.
+> > That would give the outer code a callback when the last skb is freed but
+> > still copy the data. =20
+>=20
+> Hi,=C2=A0
+>=20
+> I guess case when 'msg->msg_ubuf' is non-NULL is special case today for i=
+o_uring MSG_ZEROCOPY implementation.
+> It was added here https://git.kernel.org/pub/scm/linux/kernel/git/torvald=
+s/linux.git/commit/?id=3Deb315a7d1396b1139fc7daea55f2d3191e8e7092
+> As I see implementation of its tests in tools/testing/selftests/net/io_ur=
+ing_zerocopy_tx.c , it doesn't require setting SOCK_ZEROCOPY option for
+> socket, so for virtio vsock case I just copied same logic to maintain com=
+patibility, because there is MSG_ZEROCOPY io_uring test for virtio/vsock.
 
->>       default:
->>           return -EINVAL;
->>       }
->> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->> index a89873a5eb77..209087bcf399 100644
->> --- a/arch/arm64/kvm/rmi.c
->> +++ b/arch/arm64/kvm/rmi.c
->> @@ -486,6 +486,75 @@ void kvm_realm_unmap_range(struct kvm *kvm,
->> unsigned long start,
->>           realm_unmap_private_range(kvm, start, end, may_block);
->>   }
->>   +static int realm_data_map_init(struct kvm *kvm, unsigned long ipa,
->> +                   kvm_pfn_t dst_pfn, kvm_pfn_t src_pfn,
->> +                   unsigned long flags)
->> +{
->> +    struct realm *realm = &kvm->arch.realm;
->> +    phys_addr_t rd = virt_to_phys(realm->rd);
->> +    phys_addr_t dst_phys, src_phys;
->> +    int ret;
->> +
->> +    dst_phys = __pfn_to_phys(dst_pfn);
->> +    src_phys = __pfn_to_phys(src_pfn);
->> +
->> +    if (rmi_delegate_page(dst_phys))
->> +        return -ENXIO;
->> +
->> +    ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys, flags);
->> +    if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
->> +        /* Create missing RTTs and retry */
->> +        int level = RMI_RETURN_INDEX(ret);
->> +
->> +        KVM_BUG_ON(level == KVM_PGTABLE_LAST_LEVEL, kvm);
-> 
->         KVM_BUG_ON(level >= KVM_PGTABLE_LAST_LEVEL, kvm);
+That code path probably sets info->msg->msg_flags & MSG_ZEROCOPY so wants '=
+zerocopy'.
+But wants it's own callback function called rather than one that msg_zeroco=
+py_realloc()
+adds.
 
-Ack.
+But there is no reason why a caller might not just want a notification that
+all the skb associated with the sendmsg have been freed without requesting =
+zerocopy.
+Maybe no one does it today, but it is trivial to support.
 
->> +        ret = realm_create_rtt_levels(realm, ipa, level,
->> +                          KVM_PGTABLE_LAST_LEVEL, NULL);
->> +        if (!ret) {
->> +            ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys,
->> +                            flags);
->> +        }
->> +    }
->> +
->> +    if (ret) {
->> +        if (WARN_ON(rmi_undelegate_page(dst_phys))) {
->> +            /* Undelegate failed, so we leak the page */
->> +            get_page(pfn_to_page(dst_pfn));
->> +        }
->> +    }
->> +
-> 
->     if (ret && WARN_ON(rmi_undelegate_page(dst_phys)) {
->         /* Leak the page that fails to be undelegated */
->         get_page(pfn_to_page(dst_pfn));
->     }
+>=20
+>=20
+> >
+> > I also don't see the point of calling msg_zerocopy_realloc() to get a
+> > callback when the last skb is freed and then setting
+> > 	uarg_to_msgzc(uarg)->zerocopy =3D 0;
+> > so that the callback doesn't actually do anything.
+> > It isn't as though you 'find out' later on that you can't actually do
+> > zerocopy. =20
+>=20
+>=20
+> Sorry, what do You mean "last skb" ? In this code we first allocate uarg =
+(allocate, because third arg is always NULL). Then in
+> loop we allocate sk_buffs, fill it with data and send. I mean first/last =
+skb will be freed after uarg is already allocated and we
+> don't touch it. I think i didn't understand Your question here.
 
-Ack
+The 'uarg' is referenced by all of the skb that contain data for the sendms=
+g().
+So when the last one of them is freed the callback function is called.
+The purpose of that callback is to 'undo' the zerocopy (page pinning etc).
+But when you set uarg_to_msgzc(uarg)->zerocopy =3D 0 the callback does noth=
+ing.
+So there is no point setting up the callback at all.
 
->> +    return ret;
->> +}
->> +
->> +static int populate_region_cb(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->> +                  struct page *src_page, void *opaque)
->> +{
->> +    unsigned long data_flags = *(unsigned long *)opaque;
->> +    phys_addr_t ipa = gfn_to_gpa(gfn);
->> +
->> +    if (!src_page)
->> +        return -EOPNOTSUPP;
->> +
->> +    return realm_data_map_init(kvm, ipa, pfn, page_to_pfn(src_page),
->> +                   data_flags);
->> +}
->> +
->> +static long populate_region(struct kvm *kvm,
->> +                gfn_t base_gfn,
->> +                unsigned long pages,
->> +                u64 uaddr,
->> +                unsigned long data_flags)
->> +{
->> +    long ret = 0;
->> +
->> +    mutex_lock(&kvm->slots_lock);
->> +    ret = kvm_gmem_populate(kvm, base_gfn, u64_to_user_ptr(uaddr),
->> pages,
->> +                populate_region_cb, &data_flags);
->> +    mutex_unlock(&kvm->slots_lock);
->> +
->> +    return ret;
->> +}
->> +
->>   enum ripas_action {
->>       RIPAS_INIT,
->>       RIPAS_SET,
->> @@ -574,6 +643,43 @@ static int realm_ensure_created(struct kvm *kvm)
->>       return -ENXIO;
->>   }
->>   +int kvm_arm_rmi_populate(struct kvm *kvm,
->> +             struct kvm_arm_rmi_populate *args)
->> +{
->> +    unsigned long data_flags = 0;
->> +    unsigned long ipa_start = args->base;
->> +    unsigned long ipa_end = ipa_start + args->size;
->> +    long pages_populated;
->> +    int ret;
->> +
->> +    if (args->reserved ||
->> +        (args->flags & ~KVM_ARM_RMI_POPULATE_FLAGS_MEASURE) ||
->> +        !IS_ALIGNED(ipa_start, PAGE_SIZE) ||
->> +        !IS_ALIGNED(ipa_end, PAGE_SIZE) ||
->> +        !IS_ALIGNED(args->source_uaddr, PAGE_SIZE))
->> +        return -EINVAL;
->> +
-> 
-> There are more conditions missed here:
-> 
->     args->size == 0, return 0;
->     args->base + args->size < args->base, return -EINVAL;  // wrapped range
+-- David
 
-Good catch. args->size == 0 can trigger a WARN_ON currently. I'll put
-the "return 0" after the realm_ensure_created() call so the behaviour
-matches.
-
-I don't think the wrapped range is quite such a problem - but detecting
-it and rejecting it early seems like a good idea.
-
->> +    ret = realm_ensure_created(kvm);
->> +    if (ret)
->> +        return ret;
->> +
->> +    if (args->flags & KVM_ARM_RMI_POPULATE_FLAGS_MEASURE)
->> +        data_flags |= RMI_MEASURE_CONTENT;
->> +
->> +    pages_populated = populate_region(kvm, gpa_to_gfn(ipa_start),
->> +                      args->size >> PAGE_SHIFT,
->> +                      args->source_uaddr, data_flags);
->> +
->> +    if (pages_populated < 0)
->> +        return pages_populated;
-> 
-> pages_populaged is 'unsigned long', this function returns a 'int' value.
-
-pages_populated is *signed* long. This is handling an error code - so if
-it's negative we expect the error code to be between -1 and -MAX_ERRNO
-which should easily fit within the 'int' return.
-
-For positive values we continue below (encoding the potentially larger
-number in the args outputs) and return 0.
-
-Thanks,
-Steve
-
->> +
->> +    args->size -= pages_populated << PAGE_SHIFT;
->> +    args->source_uaddr += pages_populated << PAGE_SHIFT;
->> +    args->base += pages_populated << PAGE_SHIFT;
->> +
->> +    return 0;
->> +}
->> +
->>   static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
->>   {
->>       struct kvm *kvm = vcpu->kvm;
-> 
-> Thanks,
-> Gavin
-> 
+>=20
+>=20
+> > =20
+> >>  		if (can_zcopy)
+> >>  			max_skb_len =3D min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+> >>  					    (MAX_SKB_FRAGS * PAGE_SIZE));
+> >> -
+> >> -		if (info->msg->msg_flags & MSG_ZEROCOPY &&
+> >> -		    info->op =3D=3D VIRTIO_VSOCK_OP_RW) {
+> >> -			uarg =3D info->msg->msg_ubuf;
+> >> -
+> >> -			if (!uarg) {
+> >> -				uarg =3D msg_zerocopy_realloc(sk_vsock(vsk),
+> >> -							    pkt_len, NULL, false);
+> >> -				if (!uarg) {
+> >> -					virtio_transport_put_credit(vvs, pkt_len);
+> >> -					return -ENOMEM;
+> >> -				}
+> >> -
+> >> -				if (!can_zcopy)
+> >> -					uarg_to_msgzc(uarg)->zerocopy =3D 0;
+> >> -
+> >> -				have_uref =3D true;
+> >> -			}
+> >> -		}
+> >>  	}
+> >> =20
+> >>  	rest_len =3D pkt_len;
+> >> @@ -365,14 +367,12 @@ static int virtio_transport_send_pkt_info(struct=
+ vsock_sock *vsk,
+> >> =20
+> >>  		skb =3D virtio_transport_alloc_skb(info, skb_len, can_zcopy,
+> >>  						 src_cid, src_port,
+> >> -						 dst_cid, dst_port);
+> >> +						 dst_cid, dst_port, uarg);
+> >>  		if (!skb) {
+> >>  			ret =3D -ENOMEM;
+> >>  			break;
+> >>  		}
+> >> =20
+> >> -		skb_zcopy_set(skb, uarg, NULL); =20
+> > Aren't you passing uarg through two function calls instead of doing it =
+here.
+> > Doesn't even make it clearer what is going on. =20
+>=20
+>=20
+> Agree, to simplify patch, uarg could be set earlier (without passing it t=
+o functions) I guess.
+>=20
+> Thanks
+>=20
+>=20
+> >
+> > -- David
+> > =20
+> >> -
+> >>  		virtio_transport_inc_tx_pkt(vvs, skb);
+> >> =20
+> >>  		ret =3D t_ops->send_pkt(skb, info->net);
+> >> @@ -1178,7 +1178,7 @@ static int virtio_transport_reset_no_sock(const =
+struct virtio_transport *t,
+> >>  					   le64_to_cpu(hdr->dst_cid),
+> >>  					   le32_to_cpu(hdr->dst_port),
+> >>  					   le64_to_cpu(hdr->src_cid),
+> >> -					   le32_to_cpu(hdr->src_port));
+> >> +					   le32_to_cpu(hdr->src_port), NULL);
+> >>  	if (!reply)
+> >>  		return -ENOMEM;
+> >>   =20
 
