@@ -1,266 +1,156 @@
-Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8F33DD518;
-	Mon,  8 Jun 2026 18:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E333DD86F
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 18:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780942858; cv=none; b=qBz6jZoegsEBm5TiXFExnW4xFDsNkqvoCBZEH6/mZgoz/+VyqQLoumn0/1LqIDL1zy2QMen2VJR5r/ThnFzIobcaFI40XNf20yOLFipB6y7NNjp0pd4G+GUzECzJ1HEHas3M5nWCJmjjUUgpG/7r3veu4IjRg/2CpXESbfpaH/E=
+	t=1780942959; cv=none; b=mhVeafG0MRuKfeJYzwmOD4W6VUtIr+qdvtBezuYimUb1zLKLcYf6D4b0PqFg952T2RP5PlGQqOixx4sQP+XPXozCJHRPaILufg4lyebNUj4fCMwdTwzgr0Qao2tykvOhfEfdtz3SlBL0nE/odLCltCKrvzTcPcsuABZzbbKbLFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780942858; c=relaxed/simple;
-	bh=AFivZ9sIdgvcSE8MfbkuLx31k8O7VSDGHadagPSMhrA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XeQjyjSsxiUHZ90666P4TfXVsLN8St3tJo1VUK0t1rHYt45ooXMc8CQUSKZ8yc/4BUaYKvU8xcFk139dSSuOiAD5X5Evwg1aqVcf/+mnpI7A+rba2Ibn48ByNjXfFY6fUqtvnVK+h2C7f0Drso7dDB+F6mGKBtrgI+Hh4N8PAlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=KfnbqbsF; arc=none smtp.client-ip=155.212.184.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
+	s=arc-20240116; t=1780942959; c=relaxed/simple;
+	bh=2Tw6d79+RZj0yB4HhQNDfDoy/A/ckujvR3JQH2oMqc4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=BrAK+Gkmi22LXEb3BN1PoXIE4HDIT1mI3Uxq86CU80WZI8Qq/NqJd5CpbJdVmBwFoJBy/Rn8D57gGG8ln5H62RgvOZ7klbEwE8avRfUpuQ0xYXa6SRh+mY2+4+wMKX2Kc4Z13ApP1S40fZAWXRwO7wR0BWYWbg/YGXgRI5a6keM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRlpQ7S9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="KfnbqbsF"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9AD921003A5;
-	Mon,  8 Jun 2026 21:20:37 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
-	t=1780942847; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=kLCvwaWNfVfagj2opTtr+6FvDI985J5g55JamF0EV1k=;
-	b=KfnbqbsFpVN0zO/IRKidz1SRD3Sw3c5Zyuvt7oRmqrT/d4iUwMXdBLINweuwU7R8t8jMMl
-	4uqgmkAbRNiYt1TbU/ctfoc6VAC3ZALOjtjseTkA35rhnJ+FA0hiOhcB5wfGLQ9toCa0Zj
-	7LvyORxuPC2grZuwTUmX9VeVox5HE00oIlJLjrQs/MLi3H99VR0gU2CfYVsbAOYFBfaYM3
-	dizEl+VPQDonNBZ2srNepR5DxL9quwSgcSdnZJ/IoLqPoUEbu0eGdg6RcSZQeGdiawQs1l
-	go1ix/fvxSs9sa2vRPDaSvqWLHeqU4/zJ3+HoT9xZ8jr5T2FbAta1K6IAKZq5w==
-Message-ID: <57227194-f10a-49ab-acb1-a4bc0ba1c817@rulkc.org>
-Date: Mon, 8 Jun 2026 21:20:29 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRlpQ7S9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844651F00893;
+	Mon,  8 Jun 2026 18:22:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780942957;
+	bh=0fKGuESUc2X53r4T4ZWo3SfPVcILKaf4yDCzLSOSETU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eRlpQ7S9C585L+GRQ8sK3WniE+hhyKtfIDb1e/rX1OV0gZaqlXYJDQU56fLx3hbDM
+	 NXtBYRyJ4CJ85uy6QDWT0QQcWGT9rR9jHf+FqfMZ0PEvsgqpv/q2/KhO6hcG/EsQJk
+	 dbg1bP03aslBRpgipAlwFu0LS6ZYK/KRYHnW9phAfDLTJ+bHpDXqOFDn2CbnCb0nfo
+	 lx78Y+koaFzxp2mo72QzWnogghkjUgMQ1PTvcHZ23HBnKRV0HnaQT74tMLJdwGQeLz
+	 FcaHffN6G3id1qPSKEPLlRkQFh+d/TYuC4gHIpfbByllliqTICFvFsmoImj7XbcYsv
+	 JPmDoPQGWdUxQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 3/4] vfio-pci/zdev: Add VFIO FMB device features
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Omar Elghoul" <oelghoul@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260608171850.62829-4-oelghoul@linux.ibm.com>
+References: <20260608171850.62829-4-oelghoul@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 08 Jun 2026 18:22:37 +0000
+Message-Id: <20260608182237.844651F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] vsock/virtio: rework MSG_ZEROCOPY flag handling
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Bobby Eshleman <bobby.eshleman@bytedance.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Simon Horman <horms@kernel.org>, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, oxffffaa@gmail.com, rulkc@linuxtesting.org
-References: <20260605115314.552321-1-avkrasnov@rulkc.org>
- <20260605160851.3ddbd2ed@pumpkin>
- <e5200406-d336-4ddf-9abd-78fccda24546@rulkc.org>
- <20260608103701.7839ff1b@pumpkin>
-Content-Language: ru
-From: Arseniy Krasnov <avkrasnov@rulkc.org>
-In-Reply-To: <20260608103701.7839ff1b@pumpkin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The UAPI structure `vfio_device_feature_zpci_fmb_read` uses a `voi=
+d __user *` pointer instead of an `__aligned_u64`, breaking 32-bit compat u=
+serspace execution on 64-bit kernels.
+- [Medium] Double enabling the FMB succeeds and silently resets the state, =
+violating the explicitly documented UAPI contract that specifies it should =
+fail.
+--
 
-On 08/06/2026 12:37, David Laight wrote:
-> On Mon, 8 Jun 2026 11:10:24 +0300
-> Arseniy Krasnov <avkrasnov@rulkc.org> wrote:
->
->> On 05/06/2026 18:08, David Laight wrote:
->>> On Fri,  5 Jun 2026 14:53:14 +0300
->>> Arseniy Krasnov <avkrasnov@rulkc.org> wrote:
->>>  
->>>> Logically it was based on TCP implementation, so to make further
->>>> support easier, rewrite it in the TCP way.
->>>>
->>>> Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
->>>> ---
->>>>  net/vmw_vsock/virtio_transport_common.c | 64 ++++++++++++-------------
->>>>  1 file changed, 32 insertions(+), 32 deletions(-)
->>>>
->>>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->>>> index 2fd9eaaf5ca6..00caeeaa5590 100644
->>>> --- a/net/vmw_vsock/virtio_transport_common.c
->>>> +++ b/net/vmw_vsock/virtio_transport_common.c
->>>> @@ -73,10 +73,13 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
->>>>  static int virtio_transport_fill_skb(struct sk_buff *skb,
->>>>  				     struct virtio_vsock_pkt_info *info,
->>>>  				     size_t len,
->>>> -				     bool zcopy)
->>>> +				     bool zcopy, struct ubuf_info *uarg)
->>>>  {
->>>>  	struct msghdr *msg = info->msg;
->>>>  
->>>> +	/* We have completion - attach it to 'skb'. */
->>>> +	skb_zcopy_set(skb, uarg, NULL);
->>>> +
->>>>  	if (zcopy)
->>>>  		return __zerocopy_sg_from_iter(msg, NULL, skb,
->>>>  					       &msg->msg_iter, len, NULL);
->>>> @@ -208,7 +211,8 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
->>>>  						  u32 src_cid,
->>>>  						  u32 src_port,
->>>>  						  u32 dst_cid,
->>>> -						  u32 dst_port)
->>>> +						  u32 dst_port,
->>>> +						  struct ubuf_info *uarg)
->>>>  {
->>>>  	struct vsock_sock *vsk;
->>>>  	struct sk_buff *skb;
->>>> @@ -245,7 +249,7 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
->>>>  	if (info->msg && payload_len > 0) {
->>>>  		int err;
->>>>  
->>>> -		err = virtio_transport_fill_skb(skb, info, payload_len, zcopy);
->>>> +		err = virtio_transport_fill_skb(skb, info, payload_len, zcopy, uarg);
->>>>  		if (err)
->>>>  			goto out;
->>>>  
->>>> @@ -321,38 +325,36 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->>>>  	if (pkt_len == 0 && info->op == VIRTIO_VSOCK_OP_RW)
->>>>  		return pkt_len;
->>>>  
->>>> -	if (info->msg) {
->>>> -		/* If zerocopy is not enabled by 'setsockopt()', we behave as
->>>> -		 * there is no MSG_ZEROCOPY flag set.
->>>> +	if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
->>>> +		/* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
->>>> +		 * 'MSG_ZEROCOPY' flag handling here is based on the same flag
->>>> +		 * handling from 'tcp_sendmsg_locked()'.
->>>>  		 */
->>>> -		if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
->>>> -			info->msg->msg_flags &= ~MSG_ZEROCOPY;
->>>> +		if (info->msg->msg_ubuf) {
->>>> +			uarg = info->msg->msg_ubuf;
->>>> +			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
->>>> +		} else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
->>>> +			uarg = msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
->>>> +						    NULL, false);
->>>> +			if (!uarg) {
->>>> +				virtio_transport_put_credit(vvs, pkt_len);
->>>> +				return -ENOMEM;
->>>> +			}
->>>>  
->>>> -		if (info->msg->msg_flags & MSG_ZEROCOPY)
->>>>  			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
->>>>  
->>>> +			if (!can_zcopy)
->>>> +				uarg_to_msgzc(uarg)->zerocopy = 0;
->>>> +
->>>> +			have_uref = true;
->>>> +		}
->>>> +
->>>> +		/* 'can_zcopy' means that this transmission will be
->>>> +		 * in zerocopy way (e.g. using 'frags' array).
->>>> +		 */  
->>> I've not looked at the tcp code, but the above doesn't look right.
->>> I don't see why msg->msg_ubuf might be non-NULL without SOCK_ZEROCOPY set.
->>> That would give the outer code a callback when the last skb is freed but
->>> still copy the data.  
->> Hi, 
->>
->> I guess case when 'msg->msg_ubuf' is non-NULL is special case today for io_uring MSG_ZEROCOPY implementation.
->> It was added here https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=eb315a7d1396b1139fc7daea55f2d3191e8e7092
->> As I see implementation of its tests in tools/testing/selftests/net/io_uring_zerocopy_tx.c , it doesn't require setting SOCK_ZEROCOPY option for
->> socket, so for virtio vsock case I just copied same logic to maintain compatibility, because there is MSG_ZEROCOPY io_uring test for virtio/vsock.
-> That code path probably sets info->msg->msg_flags & MSG_ZEROCOPY so wants 'zerocopy'.
-> But wants it's own callback function called rather than one that msg_zerocopy_realloc()
-> adds.
->
-> But there is no reason why a caller might not just want a notification that
-> all the skb associated with the sendmsg have been freed without requesting zerocopy.
-> Maybe no one does it today, but it is trivial to support.
+commit 3703a22be992c7a39e18f49c3a21771a62d41260
+Author: Omar Elghoul <oelghoul@linux.ibm.com>
 
-Caller for this path is io_uring today. It uses own callback 'io_tx_ubuf_complete()' which implements notification using io_uring
-achitecture instead of classic MSG_ERRQUEUE socket read way.
+vfio-pci/zdev: Add VFIO FMB device features
 
->
->>
->>> I also don't see the point of calling msg_zerocopy_realloc() to get a
->>> callback when the last skb is freed and then setting
->>> 	uarg_to_msgzc(uarg)->zerocopy = 0;
->>> so that the callback doesn't actually do anything.
->>> It isn't as though you 'find out' later on that you can't actually do
->>> zerocopy.  
->>
->> Sorry, what do You mean "last skb" ? In this code we first allocate uarg (allocate, because third arg is always NULL). Then in
->> loop we allocate sk_buffs, fill it with data and send. I mean first/last skb will be freed after uarg is already allocated and we
->> don't touch it. I think i didn't understand Your question here.
-> The 'uarg' is referenced by all of the skb that contain data for the sendmsg().
-> So when the last one of them is freed the callback function is called.
-> The purpose of that callback is to 'undo' the zerocopy (page pinning etc).
-> But when you set uarg_to_msgzc(uarg)->zerocopy = 0 the callback does nothing.
-> So there is no point setting up the callback at all.
+Introduce new VFIO features for zPCI devices to provide FMB passthrough to
+userspace. Allow the user to enable or disable the FMB using the SET-only
+feature VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE. Likewise allow the user to read
+the latest FMB using the GET-only feature VFIO_DEVICE_FEATURE_ZPCI_FMB_READ.
 
-Pages are unpinned in sk_buff freeing logic: 'skb_release_data()' -> '__skb_frag_unref()'.  'zerocopy' flag of uarg shows 
-caller that real zerocopy was used of not - it is checked in '__msg_zerocopy_callback()' and 'SO_EE_CODE_ZEROCOPY_COPIED' is set in
-the 'ee_code' field of struct 'sock_extended_err' which is read by user. I mean idea of MSG_ZEROCOPY API is that if kernel doesn't
-return error from 'sendmsg()' call with MSG_ZEROCOPY flag passed, it will send notification about data tx complete anyway - it doesn't
-matter that real zercopy was done or not.
+> diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci=
+_zdev.c
+> index 0990fdb146b78..09454495ee230 100644
+> --- a/drivers/vfio/pci/vfio_pci_zdev.c
+> +++ b/drivers/vfio/pci/vfio_pci_zdev.c
+[ ... ]
+> @@ -167,3 +167,60 @@ void vfio_pci_zdev_close_device(struct vfio_pci_core=
+_device *vdev)
+[ ... ]
+> +int vfio_pci_zdev_feature_fmb_enable(struct vfio_pci_core_device *vdev, =
+u32 flags,
+> +				     void __user *arg, size_t argsz)
+> +{
+[ ... ]
+> +	if (fmb_enable.enabled)
+> +		return zpci_fmb_reenable_device(zdev);
 
-Thanks
+[Severity: Medium]
+Does this violate the explicitly documented UAPI contract?=20
 
+The UAPI documentation for VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE states that
+the feature "fails on attempt to double enable/disable". However,
+zpci_fmb_reenable_device() unconditionally succeeds and resets the hardware
+block if already enabled.
 
->
-> -- David
->
->>
->>>  
->>>>  		if (can_zcopy)
->>>>  			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
->>>>  					    (MAX_SKB_FRAGS * PAGE_SIZE));
->>>> -
->>>> -		if (info->msg->msg_flags & MSG_ZEROCOPY &&
->>>> -		    info->op == VIRTIO_VSOCK_OP_RW) {
->>>> -			uarg = info->msg->msg_ubuf;
->>>> -
->>>> -			if (!uarg) {
->>>> -				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
->>>> -							    pkt_len, NULL, false);
->>>> -				if (!uarg) {
->>>> -					virtio_transport_put_credit(vvs, pkt_len);
->>>> -					return -ENOMEM;
->>>> -				}
->>>> -
->>>> -				if (!can_zcopy)
->>>> -					uarg_to_msgzc(uarg)->zerocopy = 0;
->>>> -
->>>> -				have_uref = true;
->>>> -			}
->>>> -		}
->>>>  	}
->>>>  
->>>>  	rest_len = pkt_len;
->>>> @@ -365,14 +367,12 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->>>>  
->>>>  		skb = virtio_transport_alloc_skb(info, skb_len, can_zcopy,
->>>>  						 src_cid, src_port,
->>>> -						 dst_cid, dst_port);
->>>> +						 dst_cid, dst_port, uarg);
->>>>  		if (!skb) {
->>>>  			ret = -ENOMEM;
->>>>  			break;
->>>>  		}
->>>>  
->>>> -		skb_zcopy_set(skb, uarg, NULL);  
->>> Aren't you passing uarg through two function calls instead of doing it here.
->>> Doesn't even make it clearer what is going on.  
->>
->> Agree, to simplify patch, uarg could be set earlier (without passing it to functions) I guess.
->>
->> Thanks
->>
->>
->>> -- David
->>>  
->>>> -
->>>>  		virtio_transport_inc_tx_pkt(vvs, skb);
->>>>  
->>>>  		ret = t_ops->send_pkt(skb, info->net);
->>>> @@ -1178,7 +1178,7 @@ static int virtio_transport_reset_no_sock(const struct virtio_transport *t,
->>>>  					   le64_to_cpu(hdr->dst_cid),
->>>>  					   le32_to_cpu(hdr->dst_port),
->>>>  					   le64_to_cpu(hdr->src_cid),
->>>> -					   le32_to_cpu(hdr->src_port));
->>>> +					   le32_to_cpu(hdr->src_port), NULL);
->>>>  	if (!reply)
->>>>  		return -ENOMEM;
->>>>    
+Will userspace applications expecting an error on double-enable instead
+silently lose counter data?
+
+> +	return zpci_fmb_disable_device(zdev);
+> +}
+> +
+> +int vfio_pci_zdev_feature_fmb_read(struct vfio_pci_core_device *vdev, u3=
+2 flags,
+> +				   void __user *arg, size_t argsz)
+> +{
+> +	struct zpci_dev *zdev;
+> +	struct vfio_device_feature_zpci_fmb_read fmb_read;
+> +	struct zpci_fmb fmb_temp =3D {0};
+> +	int ret;
+> +
+> +	ret =3D vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET, sizeo=
+f(fmb_read));
+
+[Severity: High]
+Can this check reject valid 32-bit process payloads on 64-bit kernels?
+
+Because vfio_device_feature_zpci_fmb_read defines data as a pointer type,
+it has different sizes for 32-bit and 64-bit userspace (4 bytes vs 8 bytes).
+When a 32-bit process computes argsz and passes it to the ioctl,
+vfio_check_feature() computes the minimum required payload size based on the
+64-bit kernel structure size (8 bytes).
+
+Since the 32-bit process provides a smaller 4-byte payload size, will this
+cause the ioctl to unconditionally fail with -EINVAL and break compat
+userspace execution?
+
+> +	if (ret !=3D 1)
+> +		return ret;
+> +
+[ ... ]
+> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> index 5de618a3a5eee..3988e8690e0b3 100644
+> --- a/include/uapi/linux/vfio.h
+> +++ b/include/uapi/linux/vfio.h
+[ ... ]
+> +/**
+> + * Upon VFIO_DEVICE_FEATURE_SET, enable or disable FMB for the VFIO zPCI=
+ device.
+> + *
+> + * enabled is treated as a bool, so any non-zero value evaluates to true=
+. This
+> + * feature fails on attempt to double enable/disable.
+> + *
+> + * Returns: 0 on success, -1 and errno set appropriately on error.
+> + */
+> +#define VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE 13
+[ ... ]
+> +struct vfio_device_feature_zpci_fmb_read {
+> +	void __user *data;
+> +};
+
+[Severity: High]
+Is it safe to use a variable-sized pointer type in a UAPI structure?
+
+As mentioned above, this pointer will be 4 bytes for 32-bit userspace and
+8 bytes for 64-bit kernels. Should this UAPI structure use a fixed-size type
+like __aligned_u64 for the pointer instead?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608171850.6282=
+9-1-oelghoul@linux.ibm.com?part=3D3
