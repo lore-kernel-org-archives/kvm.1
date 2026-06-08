@@ -1,174 +1,200 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94C33ACEE9;
-	Mon,  8 Jun 2026 20:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A82313E29;
+	Mon,  8 Jun 2026 21:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780952304; cv=none; b=aMXJXcls4aPgvJJGqyvSJpHngFElTflcet5NK/z6Kjq4CantGb9Bha0L18CxYEWVS0CFvwVWcFGPTbZnhm9MF3XK3+pilxSC7wttpuHGYOtHeCFHUjOXsGDzLnci8Z3l7qxUAqrM0le7rCQqVWOgY5ksaAJHu29t8oj7kRrmX1A=
+	t=1780952820; cv=none; b=nELj0CvzUSRu0p3H9oTp3HCRDkn1GVjGFznwTnNXs53dpge5AGjKar9aI50KCJGbF8qZyI1+b4iG3FdDutgShiC3R8oL6bWS+ee/UY2o8P3ooawx/gzycbLDXf9XoER02FzFY9VU58zNDa5RwETN4GKhTEnVGD/i2Fnp8rsVDR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780952304; c=relaxed/simple;
-	bh=Q27Zdb+kF51K+jdqLK0AruNnM8NCFFoZ7m413Ngs/cc=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=lmVav7JanCt3pVi8zdhP+Sre7sGTFYRzwqGe3JQ2AJXwEUUTMXOKLavQUYHPiJczq853lX0xwouMkHUYZ+Y6oDv4tINKKuzu/17WHBMuI3Pd4syembKYmOCkolqRauMCqTpDbPfNDzgRC9J0wzCnO2MF5CI5qKETY+7QNSM/dMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ih0Yppl7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780952820; c=relaxed/simple;
+	bh=Gi13r7WTZYK7i0VWQlhp1ip86bg1HIXpvlnb/PXA3/c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SPWjQJ5Mid0nGzpe7DHdUvtIzwxchFwAKJoRFAe/94m6BC79BI+8tYtHUAL9gJme8ec1KPCAivS/kalvLmlD3kIfnClx+XVuxlC5fCy3OkHzw859lIF1WHihntLrTeYUFDX1WUzPK4Pr4Hcyoq3wGg4WhFWyMhWpvz/YVn9Fwgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZxGLOoEF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ih0Yppl7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FE91F00898;
-	Mon,  8 Jun 2026 20:58:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZxGLOoEF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17E61F00893;
+	Mon,  8 Jun 2026 21:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780952303;
-	bh=MnnYMxjYrpHOw7mwTYOO6RexMQiDhUDcBZsiKTjwfkM=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=Ih0Yppl7pFXzMm4unDKUWZADI+HdUUopOs1VjiFQFxDBFXeV/jgy6S0NLcOUynuzn
-	 ceUbDC7ME4k3aRYbEaI6bjcIn2Ah0iToiUoMufU3E8bne5kwULoAg0qedzw1YK6PVF
-	 okzf/1McD96k886/SOgRqROygwN6JNM2P2a+pyW0PPr+PhE6IQefzzBqXIGEQKfH3C
-	 JgPaNvWy0fwpBBDMQitMo6Qkjj7pytBbW/HUGfNj81LhgY4wcVBX9F3FozqsrXMrsD
-	 FBphSKVSYyptZp0Ucty3008+vHDuWFz82MVfKQqwsKJhqXgE1u8YPj7L1VSJJ1gT2j
-	 uS7VwxoasBd4w==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id F2973F40076;
-	Mon,  8 Jun 2026 16:58:21 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Mon, 08 Jun 2026 16:58:22 -0400
-X-ME-Sender: <xms:7SwnasK1vwPI6yq-jWrrV-wxSqWYp3h-BhXqa1MPoRYCCuhdjvqHlQ>
-    <xme:7SwnanQYOOVXFJv5iW1n2ySdZYJL2Znm2HmUHYvbzEt8O-axb4B9HIue7KfgNZl4I
-    LkBYQO8zaOni7Fe4nEJ6_YZa-Q4h7RW7rTkxT93fxbMretR-vp05N0>
-X-ME-Received: <xmr:7SwnajFIeLRrVS89yZM79i49yQfqWUrK-WbleevLjNRwgl5ePK7_tCU5o1cUAZuyhwgEODFAJuBDaZj6DNBakENJ17MzDCNJihI>
-X-ME-Proxy-Cause: dmFkZTGP9x8buTQcIGw9eBuielzgRk78B5z7jEIpxuXdhXbMY3b3bCj/WyeIYQV5NgDglD
-    q1JwUuBggNZgjADQ893ZM+dthjPdfnhQFB6H/PFmyV1IWif+adhfC/SUsoHRe+1JQxW9DJ
-    t5bcS7GNIvRhD/mIVeBtbBVzzbBYL8rlYKCUVly1FzibZDeyWk7STAmZ1Z1+DAKo6nG7mL
-    neUTtcjh7VPvYOJQggjAJvMUVnzWceSVmbvLONMxv11siBHty2D7S8UUXQAnBCGxnXtc7O
-    E57znILnfs0VWSi8HPlmq7Q2jhdz8+M+Vj7JGz9oPJk41BLvML9M/sVsnEyPstBwSpY2F7
-    uEHHp3kXXNWii6ZfOjNgkPOnhF9qAM9wJHMLNeIeJHiulCnDy4wW+G4Pna5nJHJ5w9DqZ2
-    Ns+OpB6nkDmr3J6KyHmaelXoff8wLwTux+u+HKBHjlY7bZZkGnmv9eDXZWw+1m6u/371Az
-    4fuOOJ6PSINwESQ72WLkMfLv+BMq4p+TADU0Ic93rVPTCgYvHrGKnTEakCaKiPiEQzKXPG
-    SebO2OVdAWAnp16t3mo5+7tBm0pj+I0us0+OCpzl9M+7FDjn3tyMM0N1ZgzDcnnEanhWIk
-    6j9V3wdt5JT5oxi8nhukS74Dh9/kX2/rHSTe0uVjoh+w5QUx0RLyM9E0Kkww
-X-ME-Proxy: <xmx:7SwnakWz0TW4RvbJ4B5HPTaGRQO8RQXSlE9eFO__EkBXtSomkENEXA>
-    <xmx:7SwnalyHpT4bamDdI_8r50K51151jtoYe40VtT52cgmVoNr-3SL1ow>
-    <xmx:7Swnag-Y6ol94bkeTGOS5GYWpOGvHtsk4sUlOrq6tFIFWVpxS2snMQ>
-    <xmx:7Swnai_Wj2ffpyXcI2n777ZFPFkk3u6OihrgqhODTv6Oq98DKB1kBg>
-    <xmx:7Swnanw6AnXrPO7wNAQIUI1IMUMNYVpe2JnNzz2l8pSPo5TOS6_GOHE6>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Jun 2026 16:58:21 -0400 (EDT)
-Date: Mon, 08 Jun 2026 13:58:19 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- "Dan Williams (nvidia)" <djbw@kernel.org>, 
- "Dan Williams (nvidia)" <djbw@kernel.org>, 
- Alexey Kardashevskiy <aik@amd.com>, 
- linux-coco@lists.linux.dev, 
- iommu@lists.linux.dev, 
- linux-kernel@vger.kernel.org, 
- kvm@vger.kernel.org
-Cc: Bjorn Helgaas <helgaas@kernel.org>,  Dan Williams <djbw@kernel.org>,
-  Jason Gunthorpe <jgg@ziepe.ca>,  Joerg Roedel <joro@8bytes.org>,
-  Jonathan Cameron <jic23@kernel.org>,  Kevin Tian <kevin.tian@intel.com>,
-  Nicolin Chen <nicolinc@nvidia.com>,  Samuel Ortiz <sameo@rivosinc.com>,
-  Steven Price <steven.price@arm.com>,
-  Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-  Will Deacon <will@kernel.org>,  Xu Yilun <yilun.xu@linux.intel.com>,
-  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-  Paolo Bonzini <pbonzini@redhat.com>,
-  Tony Krowiak <akrowiak@linux.ibm.com>,
-  Halil Pasic <pasic@linux.ibm.com>,  Jason Herne <jjherne@linux.ibm.com>,
-  Harald Freudenberger <freude@linux.ibm.com>,
-  Holger Dengler <dengler@linux.ibm.com>,
-  Heiko Carstens <hca@linux.ibm.com>,  Vasily Gorbik <gor@linux.ibm.com>,
-  Alexander Gordeev <agordeev@linux.ibm.com>,
-  Christian Borntraeger <borntraeger@linux.ibm.com>,
-  Sven Schnelle <svens@linux.ibm.com>,
-  Alex Williamson <alex@shazbot.org>,
-  Matthew Rosato <mjrosato@linux.ibm.com>,
-  Farhan Ali <alifm@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,
-  linux-s390@vger.kernel.org
-Message-ID: <6a272cebec4af_4fa7810048@djbw-dev.notmuch>
-In-Reply-To: <yq5aik81sf22.fsf@kernel.org>
-References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
- <20260525154816.1029642-6-aneesh.kumar@kernel.org>
- <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
- <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
- <yq5apl2gsw6y.fsf@kernel.org>
- <yq5aldd4spyc.fsf@kernel.org>
- <6a1774dd80f74_19737610095@djbw-dev.notmuch>
- <yq5aik81sf22.fsf@kernel.org>
-Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
+	s=k20260515; t=1780952819;
+	bh=N0rZ9IE8WpdVExxfMexSLZwhCCEGPXFpm+U0jL5ZYtE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZxGLOoEFce7AJZYSnqIpTG4ZLg/rIdBf+1F6qTC3oPyn4Az2S/HefluPb2dC3KE6b
+	 qEnlgBjVsMT74SAITeGSsw7wzBZTjFV1OGXITXerV/mVdcyoZf3DgSKFmYpvQjOEG/
+	 OLBddN8p+iAM4DoGYV4fbnuDTWog7uGEzH+rrhZkWYwZC5hc24tM8HOYHYiex4r5PS
+	 iUX0rW5a5bdrNE9tJNQ0+U1yD1ipr766EEShxfrpJeW3f6uJDyXXuJnujwJ/tWEtab
+	 Kx+xm4HpISt49txrnxW1B/H7T9i/y6KmRGilOTpjSUCc2IlogVYUvvZLqwYoUMAVdd
+	 oU9yK/lqhSAfA==
+Date: Mon, 8 Jun 2026 21:06:57 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jim Mattson <jmattson@google.com>, 
+	James Houghton <jthoughton@google.com>
+Subject: Re: [PATCH 1/2] KVM: x86/mmu: Recursively zap orphaned nested TDP
+ shadow pages on emulated writes
+Message-ID: <aicuvY6FwIguzkg5@google.com>
+References: <20260605174611.2222504-1-seanjc@google.com>
+ <20260605174611.2222504-2-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260605174611.2222504-2-seanjc@google.com>
 
-Aneesh Kumar K.V wrote:
-[..]
-> > I think we can wait to move it to its own IOMMU operation unless/until
-> > there is a need to set RUN outside of an explicit guest request, right?
+On Fri, Jun 05, 2026 at 10:46:10AM -0700, Sean Christopherson wrote:
+> Recursively zap orphaned nested TDP shadow pages when emulating a guest
+> write to a shadowed page table, regardless of whether or not the associated
+> (parent) shadow page will be zapped, e.g. due to detected write-flooding.
 > 
-> Something like the below? (the diff against this series)
+> This plugs a hole where KVM fails to reclaim defunct, unsync shadow pages
+> for select L1 hypervisor patterns.  Commit 2de4085cccea ("KVM: x86/MMU:
+> Recursively zap nested TDP SPs when zapping last/only parent") modified KVM
+> to recursively zap synchronized shadow pages (KVM already recursively zaps
+> unsync children) when a child is orphaned.  But the fix effectively only
+> applied the logic to kvm_mmu_page_unlink_children(), i.e. only performs the
+> recursive zap when KVM is already zapping a parent SP and processing its
+> children.
 > 
-> I have not yet integrated this into the full CCA patchset for testing,
-> but I wanted to make sure we are aligned on the UAPI.
-[..]
-> -static bool iommufd_vdevice_tsm_req_scope_valid(u32 scope)
-> +static bool iommufd_vdevice_tsm_req_arch_valid(u32 tvm_arch)
->  {
-> -	if (scope > IOMMU_VDEVICE_TSM_REQ_SCOPE_PCI_LAST)
-> +	switch (tvm_arch) {
-> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_CCA:
-> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_SEV:
-> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_TDX:
+> If L1 zaps SPTEs bottom-up (4KiB => 2MiB => ...), as KVM's TDP MMU does
+> with CONFIG_KVM_PROVE_MMU=n since commit 8ca983631f3c ("KVM: x86/mmu: Zap
+> invalidated TDP MMU roots at 4KiB granularity"), then KVM (as L0) will leak
+> upwards of 4 shadow pages per GiB of L2 guest memory.  Over hundreds or
+> thousands of L2 boots, if the VM is "lucky" enough to escape write-flooding
+> detection, i.e. not trigger reclaim of the orphaned shadow pages by dumb
+> luck, then it's possible to end up with tens or even hundreds of thousands
+> of unsync shadow pages and associated rmap entries.
+> 
+> Polluting the hash table and rmap entries with a horde of stale entries
+> can eventually degrade L2 guest boot time by an order of magnitude,
+> especially if there is any antagonistic activity in the host, i.e. anything
+> that will contend for mmu_lock and/or needs to walk rmaps.
+> 
+> With "top"-down zapping, where "top" is 1GiB or above, then L0 KVM is
+> effectively limited to leaking 4 shadow pages per 256 GiB of memory, as
+> KVM's write flooding detection will kick in on the third write to an L1
+> TDP PUD, and thus recursively zap the entire 256 GiB range of the parent
+> PGD.  I.e. even though L1 KVM still recursively zaps 2MiB => 4KiB SPTEs
+> when zapping each 1GiB SPTE, KVM only gets through two of the 1GiB SPTEs
+> before dropping everything.  E.g. hacking tracing into L0 KVM's
+> kvm_mmu_track_write(), the top-down zapping of L1's TDP MMU for an L2 with
+> 16GiB of memory leads to:
+> 
+>   gpa = 107407000, old = 800000010741bd07, new = 8000000000000000, level = 3, flood = 0
+>   gpa = 10741b000, old = 8000000112fb2d07, new = 80000000000001a0, level = 2, flood = 0
+>   gpa = 10741b008, old = 800000012509cd07, new = 80000000000001a0, level = 2, flood = 1
+>   gpa = 10741b010, old = 80000001114b9d07, new = 80000000000001a0, level = 2, flood = 2
+>   gpa = 107407008, old = 8000000112fb5d07, new = 8000000000000000, level = 3, flood = 1
+>   gpa = 112fb5298, old = 8000000106f43d07, new = 80000000000001a0, level = 2, flood = 0
+>   gpa = 112fb52a0, old = 8000000106f4dd07, new = 80000000000001a0, level = 2, flood = 1
+>   gpa = 112fb5ea0, old = 8000000120490d07, new = 80000000000001a0, level = 2, flood = 2
+>   gpa = 107407010, old = 8000000106df2d07, new = 8000000000000000, level = 3, flood = 2
+>   gpa = 107410000, old = 8000000107408d07, new = 8000000000000000, level = 5, flood = 0
+>   gpa = 107408000, old = 8000000107407d07, new = 80000000000001a0, level = 4, flood = 0
+> 
+> Contrast that with a bottom-up zap, which effectively allows all 2MiB SPTEs
+> in L1 to leak their children.
+> 
+>   gpa = 167939000, old = 800000011c8f4d07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 167939020, old = 8000000104407d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 167939028, old = 800000011ed20d07, new = 8000000000000000, level = 2, flood = 2
+>   gpa = 118c70bb0, old = 8000000167ab9d07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 118c70bb8, old = 8000000163913d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 118c70de8, old = 800000011cc9dd07, new = 8000000000000000, level = 2, flood = 2
+>   gpa = 160be7fb0, old = 800000011d322d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 160be7fb8, old = 8000000126b1bd07, new = 8000000000000000, level = 2, flood = 2
+>   gpa = 1634ab000, old = 800000010e984d07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 1634ab008, old = 800000016879fd07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 1634ab010, old = 800000016879ed07, new = 8000000000000000, level = 2, flood = 2
+>   gpa = 11e3f1e48, old = 8000000168a33d07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 11e3f1e50, old = 80000001664dcd07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 1167eacb8, old = 8000000166544d07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 1167eacc0, old = 800000015c16bd07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 1689e89b8, old = 800000015f296d07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 1689e89c0, old = 8000000167ca8d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 107b35eb8, old = 8000000161e71d07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 107b35ec0, old = 8000000118cf3d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 118cf2d48, old = 8000000118cf1d07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 118cf2d50, old = 8000000118cf0d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 118dcb770, old = 8000000118dcad07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 118dcb778, old = 8000000118dc9d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 118dc87e8, old = 8000000126997d07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 118dc87f0, old = 8000000126996d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 126995148, old = 8000000126994d07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 126995150, old = 8000000103477d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 1034764c8, old = 8000000103475d07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 1034764d0, old = 8000000103474d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 10ea4b788, old = 800000010ea4ad07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 10ea4b790, old = 800000010ea49d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 10ea48928, old = 800000011a5bfd07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 10ea48930, old = 800000011a5bed07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 11a5bd0d8, old = 800000011a5bcd07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 11a5bd0e0, old = 800000011d323d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 122ce2b40, old = 800000011fe0bd07, new = 8000000000000000, level = 2, flood = 0
+>   gpa = 122ce2b48, old = 800000010e985d07, new = 8000000000000000, level = 2, flood = 1
+>   gpa = 122ce2b50, old = 8000000161c9dd07, new = 8000000000000000, level = 2, flood = 2
+>   gpa = 16864c000, old = 8000000167939d07, new = 8000000000000000, level = 3, flood = 0
+>   gpa = 16864c008, old = 8000000118c70d07, new = 8000000000000000, level = 3, flood = 1
+>   gpa = 16864c010, old = 80000001688a6d07, new = 8000000000000000, level = 3, flood = 2
+>   gpa = 11c8f7000, old = 80000001608a7d07, new = 8000000000000000, level = 5, flood = 0
+>   gpa = 1608a7000, old = 800000016864cd07, new = 80000000000001a0, level = 4, flood = 0
+> 
+> Note, in the shadow MMU, "level" describes the level a shadow page "points"
+> at, not the level of its associated SPTE. I.e.  when write-flooding of 1GiB
+> PUD entries is detected, KVM recursively zaps shadow pages covering 256GiB
+> worth of memory.  And as shown above, KVM's write-flooding detection
+> operates at all levels, so a single PMD (in L1) can effectively only leak
+> two unsync children (4KiB shadow pages) before it gets recursively zapped.
+> As a result, for the top-down zap, L0 KVM will leak at most 4 unsync shadow
+> pages per 256GiB of L2 memory.
+> 
+> The top-down zap also makes it more likely that L1 will self-heal (to some
+> extent), as any shadow pages that are "rediscovered" by future runs of L2
+> can get reclaimed by a recursive zap, whereas bottom-up zapping orphans
+> shadow pages over and over.
+> 
+> Note, in theory, there is some risk of over-zapping, e.g. due to zapping a
+> a large branch of the paging tree that L1 is only temporarily removing.  In
+> practice, the usage patterns of hypervisors are highly unlikely to trigger
+> false positives.  E.g. temporarily changing paging protections is typically
+> done at the leaf, not on a non-leaf entry.  And if the L1 hypervisor is
+> updating large swaths of PTEs, e.g. to (temporarily?) remove chunks of
+> memory from L2, then L0 KVM's write-flooding detection will kick in, and
+> the children would be zapped anyways.
+> 
+> Fixes: 2de4085cccea ("KVM: x86/MMU: Recursively zap nested TDP SPs when zapping last/only parent")
+> Cc: Yosry Ahmed <yosry@kernel.org>
+> Cc: Jim Mattson <jmattson@google.com>
+> Cc: James Houghton <jthoughton@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Makes sense for any command that needs tunneling. However, see below, what is
-that set, and do we need a IOMMU_VDEVICE_TSM_COMMON when architecture
-differentiation is not required?
+The changelog (and problem in general) is quite the ride. Assuming I
+followed along correctly, this LGTM:
 
-> +		return true;
-> +	default:
->  		return false;
-> +	}
-> +}
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+
+> ---
+>  arch/x86/kvm/mmu/mmu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index b8f2edf2cfeb..9368a71336fe 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -6376,7 +6376,7 @@ void kvm_mmu_track_write(struct kvm_vcpu *vcpu, gpa_t gpa, const u8 *new,
 >  
-> -	switch (scope) {
-> -	case IOMMU_VDEVICE_TSM_REQ_PCI_INFO:
-> -	case IOMMU_VDEVICE_TSM_REQ_PCI_STATE_CHANGE:
-> -	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_READ:
-> -	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_WRITE:
-> +static bool iommufd_vdevice_tsm_req_op_valid(u32 op, u32 tvm_arch)
-> +{
-> +	switch (op) {
-> +	case TSM_REQ_READ_OBJECT:
-> +	case TSM_REQ_REGEN_OBJECT:
-> +	case TSM_REQ_OBJECT_INFO:
-
-The design goal of the netlink device-evidence interface is to be able
-to respond to all shapes of requests for evidence. So netlink caches
-objects that the hypercall handler can fill responses from.
-
-It eliminates a class of commands that need tunneling.
-
-> +	case TSM_REQ_VALIDATE_MMIO:
-> +	case TSM_REQ_SET_TDI_STATE:
-
-Are these potentially candidates for a IOMMU_VDEVICE_TSM_COMMON? The
-handler knows how to do the arch-specific response from the common
-iommufd result, or is there TSM-specific payload beyond @tsm_code for
-these.
-
-Make it the case that guest_req only needs non-common arch for
-operations that are implementation unique, or where the response payload
-exceeds what can be conveyed via @tsm_code.
-
->  		return true;
-> +	case TSM_REQ_SEV_ENABLE_DMA:
-> +	case TSM_REQ_SEV_DISABLE_DMA:
-> +		return tvm_arch == IOMMU_VDEVICE_TSM_TVM_ARCH_SEV;
-
-Right, this appears to be the only case where the command is
-implementation unique. The handler can only ask iommufd to take
-arch-specific action.
+>  		while (npte--) {
+>  			entry = *spte;
+> -			mmu_page_zap_pte(vcpu->kvm, sp, spte, NULL);
+> +			mmu_page_zap_pte(vcpu->kvm, sp, spte, &invalid_list);
+>  			if (gentry && sp->role.level != PG_LEVEL_4K)
+>  				++vcpu->kvm->stat.mmu_pde_zapped;
+>  			if (is_shadow_present_pte(entry))
+> -- 
+> 2.54.0.1032.g2f8565e1d1-goog
+> 
