@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BAA3F5BEC
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31BC3F5BED
 	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 15:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780932078; cv=none; b=kZ08dPr1q1SPd4KmApblSVBPC/kd4TtOxEMrS8ezKqinsHQSK34PFLhlp7g8yVBciqxXFEHGx+xDQE6ZgdECcPMC93OHaWLI6szA3vkgONqJsF1nIyUSD++zBDYOLUCpThkJhW/5rwdXQ+1u1m65V0wO0YQKh1dqepXRHXiMunk=
+	t=1780932078; cv=none; b=EXH/KZHTity9rgXPG0uVKv4A+AyUyZbNQjc//oALz8G5DVfuJnRJCxt1vRWO1vHDCv5c/Lw+QJF4yMsm+MjQai45IDx9gTQ2WcCQsLowfxtd50ln1FA/aNujvwyP2zKcHgodeAiuTXvix8FqPdcsqVmlrAO0uJRDADs/zYzkyVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780932078; c=relaxed/simple;
-	bh=qNVohiNH33pygLZJYQAyaygk8Vidu5NGbTz6TPlpep0=;
+	bh=0H8btrO3XE996UmD57wM0yZdPr07haD3RLlIh36Dgpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dFPcwiYGlC7C1FdRxC1Y8fByGP9dpsMB0snboHmJwGyLSGKNpBSH5rlmi3qjJoHfwYl1cuylxoWdbOid+wgTrZ+eRG5mCWpX/ds2ltMg1A7WdbD4IskLDd1gWDCtqCJ9w9umjcycBW0M4+0ZiVxN/FG3D5gQF6DwSjzKUKn2d4k=
+	 MIME-Version; b=YL6z4X/yj+R3X+JOf4Qt+rN/9dzHUQKf3lhoiGt51BpNgLKA63sudHtbs/IqzwcnBkRhtfxT3oYIlyUwHMbN3AUXF6S4oPWHmz00qMovWNkYqTXWrHwU4GNQXAGfXBxyrL2fILUqcMHUIiycuBRCAg3B/FIHrQsW+Vjhqu1+YLg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,8 +16,8 @@ Received: from io.home.8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id E8939202943;
-	Mon,  8 Jun 2026 17:21:14 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 1D402202944;
+	Mon,  8 Jun 2026 17:21:15 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Richard Henderson <richard.henderson@linaro.org>
@@ -33,9 +33,9 @@ Cc: philmd@linaro.org,
 	kvm@vger.kernel.org,
 	coconut-svsm@lists.linux.dev,
 	joerg.roedel@amd.com
-Subject: [RFC PATCH 02/10] accel/kvm: Extend KVMState to carry fds for planes
-Date: Mon,  8 Jun 2026 17:21:01 +0200
-Message-ID: <20260608152109.356783-3-joro@8bytes.org>
+Subject: [RFC PATCH 03/10] accel/kvm: Extend CPUState to handle Planes
+Date: Mon,  8 Jun 2026 17:21:02 +0200
+Message-ID: <20260608152109.356783-4-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260608152109.356783-1-joro@8bytes.org>
 References: <20260608152109.356783-1-joro@8bytes.org>
@@ -49,183 +49,242 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-Extend the vmfd member of KVMState into an array and rename it to
-plane_fds. The vmfd will be stored at index 0.
+Extend the KVM specific part of the CPUState data structure to handle
+the FDs for multiple planes.
 
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- accel/kvm/kvm-all.c      | 97 ++++++++++++++++++++++++++++++++--------
- accel/kvm/trace-events   |  1 +
- include/system/kvm.h     |  3 ++
- include/system/kvm_int.h | 22 ++++++++-
- target/arm/kvm.c         |  2 +-
- 5 files changed, 104 insertions(+), 21 deletions(-)
+ accel/kvm/kvm-all.c      | 121 +++++++++++++++++++++++++++++++--------
+ accel/kvm/trace-events   |   1 +
+ include/hw/core/cpu.h    |  17 +++++-
+ include/system/kvm.h     |   4 ++
+ include/system/kvm_int.h |   8 +++
+ 5 files changed, 126 insertions(+), 25 deletions(-)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 92af42503b1c..1a2f8e0f417c 100644
+index 1a2f8e0f417c..7429e2be8ba9 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -770,8 +770,12 @@ void kvm_close(void)
+@@ -133,6 +133,7 @@ static NotifierWithReturnList register_vcpufd_changed_notifiers =
+ static int map_kvm_run(KVMState *s, CPUState *cpu, Error **errp);
+ static int map_kvm_dirty_gfns(KVMState *s, CPUState *cpu, Error **errp);
+ static int vcpu_unmap_regions(KVMState *s, CPUState *cpu);
++static void kvm_alloc_vcpu_plane(CPUState *cpu, unsigned plane_id, int kvm_fd);
+ 
+ struct KVMResampleFd {
+     int gsi;
+@@ -429,10 +430,16 @@ err:
+ 
+ static void kvm_create_vcpu_internal(CPUState *cpu, KVMState *s, int kvm_fd)
+ {
+-    cpu->kvm_fd = kvm_fd;
++    if (cpu->kvm_plane_state[0] == NULL) {
++        kvm_alloc_vcpu_plane(cpu, 0, kvm_fd);
++    } else {
++        cpu_kvm_plane(cpu, 0)->kvm_fd = kvm_fd;
++    }
++
++    cpu->kvm_plane = 0;
+     cpu->kvm_state = s;
+     if (!s->guest_state_protected) {
+-        cpu->vcpu_dirty = true;
++        cpu_kvm_plane(cpu, 0)->vcpu_dirty = true;
+     }
+     cpu->dirty_pages = 0;
+     cpu->throttle_us_per_full = 0;
+@@ -450,8 +457,8 @@ static int kvm_rebind_vcpus(Error **errp)
+     CPU_FOREACH(cpu) {
+         vcpu_id = kvm_arch_vcpu_id(cpu);
+ 
+-        if (cpu->kvm_fd) {
+-            close(cpu->kvm_fd);
++        if (cpu_kvm_plane(cpu, 0)->kvm_fd) {
++            close(cpu_kvm_plane(cpu, 0)->kvm_fd);
+         }
+ 
+         ret = kvm_arch_destroy_vcpu(cpu);
+@@ -501,8 +508,9 @@ static int kvm_rebind_vcpus(Error **errp)
+                              vcpu_id);
+         }
+ 
+-        close(cpu->kvm_vcpu_stats_fd);
+-        cpu->kvm_vcpu_stats_fd = kvm_vcpu_ioctl(cpu, KVM_GET_STATS_FD, NULL);
++        close(cpu_kvm_plane(cpu, 0)->kvm_vcpu_stats_fd);
++        cpu_kvm_plane(cpu, 0)->kvm_vcpu_stats_fd =
++            kvm_vcpu_ioctl(cpu, KVM_GET_STATS_FD, NULL);
+         kvm_init_cpu_signals(cpu);
+     }
+     trace_kvm_rebind_vcpus();
+@@ -519,7 +527,7 @@ static void kvm_park_vcpu(CPUState *cpu)
+ 
+     vcpu = g_malloc0(sizeof(*vcpu));
+     vcpu->vcpu_id = kvm_arch_vcpu_id(cpu);
+-    vcpu->kvm_fd = cpu->kvm_fd;
++    vcpu->kvm_fd = cpu_kvm_plane(cpu, 0)->kvm_fd;
+     QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
+ }
+ 
+@@ -551,6 +559,34 @@ static void kvm_reset_parked_vcpus(KVMState *s)
+     }
+ }
+ 
++static void kvm_alloc_vcpu_plane(CPUState *cpu, unsigned plane_id, int kvm_fd)
++{
++    struct KVMPlane *p = NULL;
++
++    if (cpu->kvm_plane_state[plane_id] != NULL) {
++        return;
++    }
++
++    p = g_malloc0(sizeof(struct KVMPlane));
++    p->kvm_fd = kvm_fd;
++
++    cpu->kvm_plane_state[plane_id] = p;
++}
++
++void kvm_create_vcpu_plane(CPUState *cpu, unsigned plane_id, int kvm_fd)
++{
++    int vcpu_fd = cpu_kvm_plane(cpu, 0)->kvm_fd;
++    int plane_fd = kvm_vm_plane_ioctl(cpu->kvm_state, plane_id, KVM_CREATE_VCPU, vcpu_fd);
++
++    if (plane_fd < 0) {
++        fprintf(stderr, "Failed to create plane vcpu\n");
++        abort();
++    }
++
++    kvm_alloc_vcpu_plane(cpu, plane_id, plane_fd);
++}
++
++
+ /**
+  * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
+  * @cpu: QOM CPUState object for which KVM vCPU has to be fetched/created.
+@@ -676,7 +712,7 @@ static int map_kvm_run(KVMState *s, CPUState *cpu, Error **errp)
+     }
+ 
+     cpu->kvm_run = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE, MAP_SHARED,
+-                        cpu->kvm_fd, 0);
++                        cpu_kvm_plane(cpu, 0)->kvm_fd, 0);
+     if (cpu->kvm_run == MAP_FAILED) {
+         ret = -errno;
+         error_setg_errno(errp, ret,
+@@ -700,7 +736,7 @@ static int map_kvm_dirty_gfns(KVMState *s, CPUState *cpu, Error **errp)
+     /* Use MAP_SHARED to share pages with the kernel */
+     cpu->kvm_dirty_gfns = mmap(NULL, s->kvm_dirty_ring_bytes,
+                                PROT_READ | PROT_WRITE, MAP_SHARED,
+-                               cpu->kvm_fd,
++                               cpu_kvm_plane(cpu, 0)->kvm_fd,
+                                PAGE_SIZE * KVM_DIRTY_LOG_PAGE_OFFSET);
+     if (cpu->kvm_dirty_gfns == MAP_FAILED) {
+         ret = -errno;
+@@ -747,7 +783,7 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+                          "kvm_init_vcpu: kvm_arch_init_vcpu failed (%lu)",
+                          kvm_arch_vcpu_id(cpu));
+     }
+-    cpu->kvm_vcpu_stats_fd = kvm_vcpu_ioctl(cpu, KVM_GET_STATS_FD, NULL);
++    cpu_kvm_plane(cpu, 0)->kvm_vcpu_stats_fd = kvm_vcpu_ioctl(cpu, KVM_GET_STATS_FD, NULL);
+ 
+ err:
+     return ret;
+@@ -762,11 +798,17 @@ void kvm_close(void)
+     }
+ 
+     CPU_FOREACH(cpu) {
++        unsigned plane_id = KVM_MAX_PLANES;
+         cpu_remove_sync(cpu);
+-        close(cpu->kvm_fd);
+-        cpu->kvm_fd = -1;
+-        close(cpu->kvm_vcpu_stats_fd);
+-        cpu->kvm_vcpu_stats_fd = -1;
++        do {
++            struct KVMPlane *plane;
++            plane_id--;
++            plane = cpu_kvm_plane(cpu, plane_id);
++            close(plane->kvm_fd);
++            plane->kvm_fd = -1;
++            close(plane->kvm_vcpu_stats_fd);
++            plane->kvm_vcpu_stats_fd = -1;
++        } while (plane_id != 0);
      }
  
      if (kvm_state && kvm_state->fd != -1) {
--        close(kvm_state->vmfd);
--        kvm_state->vmfd = -1;
-+        unsigned plane_id = KVM_MAX_PLANES;
-+        do {
-+            plane_id--;
-+            close(kvm_get_plane_fd(kvm_state, plane_id));
-+            kvm_set_plane_fd(kvm_state, plane_id, -1);
-+        } while (plane_id != 0);
-         close(kvm_state->fd);
-         kvm_state->fd = -1;
-     }
-@@ -2774,12 +2778,41 @@ static int kvm_setup_dirty_ring(KVMState *s)
+@@ -3238,7 +3280,9 @@ void kvm_flush_coalesced_mmio_buffer(void)
  
-     return 0;
- }
-+static int kvm_create_plane(KVMState *s, unsigned id)
-+{
-+    int fd = kvm_vm_ioctl(s, KVM_CREATE_PLANE, id);
-+    if (fd >= 0) {
-+        kvm_set_plane_fd(s, id, fd);
-+    }
-+
-+    return fd;
-+}
-+
-+int kvm_get_or_create_plane_fd(KVMState *s, unsigned id)
-+{
-+    int fd = kvm_get_plane_fd(s, id);
-+    if (fd >= 0) {
-+        return fd;
-+    }
-+
-+    return kvm_create_plane(s, id);
-+}
-+
-+static void kvm_init_plane_fds(KVMState *s)
-+{
-+    int i;
-+
-+    for (i = 0; i < KVM_MAX_PLANES; i++) {
-+        kvm_set_plane_fd(s, i, -1);
-+    }
-+}
- 
- static int kvm_reset_vmfd(MachineState *ms)
+ static void do_kvm_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
  {
-     KVMState *s;
-     KVMMemoryListener *kml;
-     int ret = 0, type;
-+    unsigned plane_id;
-     Error *err = NULL;
- 
-     /*
-@@ -2805,9 +2838,14 @@ static int kvm_reset_vmfd(MachineState *ms)
-     }
-     assert(!err);
- 
--    if (s->vmfd >= 0) {
--        close(s->vmfd);
--    }
-+    plane_id = KVM_MAX_PLANES;
-+    do {
-+        plane_id--;
-+        if (kvm_get_plane_fd(s, plane_id) >= 0) {
-+            close(kvm_get_plane_fd(s, plane_id));
-+            kvm_set_plane_fd(s, plane_id, -1);
-+        }
-+    } while (plane_id != 0);
- 
-     type = find_kvm_machine_type(ms);
-     if (type < 0) {
-@@ -2819,7 +2857,7 @@ static int kvm_reset_vmfd(MachineState *ms)
-         return ret;
-     }
- 
--    s->vmfd = ret;
-+    kvm_set_vm_fd(s, ret);
- 
-     /* guest state is now unprotected again */
-     kvm_state->guest_state_protected = false;
-@@ -2846,7 +2884,7 @@ static int kvm_reset_vmfd(MachineState *ms)
-     /*
-      * notify everyone that vmfd has changed.
-      */
--    vmfd_notifier.vmfd = s->vmfd;
-+    vmfd_notifier.vmfd = kvm_vm_fd(s);
-     vmfd_notifier.pre = false;
- 
-     ret = kvm_vmfd_change_notify(&err);
-@@ -2913,6 +2951,8 @@ static int kvm_init(AccelState *as, MachineState *ms)
- 
-     qemu_mutex_init(&kml_slots_lock);
- 
-+    kvm_init_plane_fds(s);
+-    if (!cpu->vcpu_dirty && !kvm_state->guest_state_protected) {
++    KVMPlane *plane = cpu_active_kvm_plane(cpu);
 +
-     /*
-      * On systems where the kernel can support different base page
-      * sizes, host page size may be different from TARGET_PAGE_SIZE,
-@@ -2969,7 +3009,7 @@ static int kvm_init(AccelState *as, MachineState *ms)
-         goto err;
++    if (!plane->vcpu_dirty && !kvm_state->guest_state_protected) {
+         Error *err = NULL;
+         int ret = kvm_arch_get_registers(cpu, &err);
+         if (ret) {
+@@ -3252,13 +3296,15 @@ static void do_kvm_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
+             vm_stop(RUN_STATE_INTERNAL_ERROR);
+         }
+ 
+-        cpu->vcpu_dirty = true;
++        plane->vcpu_dirty = true;
      }
- 
--    s->vmfd = ret;
-+    kvm_set_plane_fd(s, 0, ret);
- 
-     s->nr_as = kvm_vm_check_extension(s, KVM_CAP_MULTI_ADDRESS_SPACE);
-     if (s->nr_as <= 1) {
-@@ -3109,8 +3149,8 @@ static int kvm_init(AccelState *as, MachineState *ms)
- 
- err:
-     assert(ret < 0);
--    if (s->vmfd >= 0) {
--        close(s->vmfd);
-+    if (kvm_vm_fd(s) >= 0) {
-+        close(kvm_vm_fd(s));
-     }
-     if (s->fd != -1) {
-         close(s->fd);
-@@ -3646,9 +3686,21 @@ int kvm_ioctl(KVMState *s, unsigned long type, ...)
-     return ret;
  }
  
--int kvm_vm_ioctl(KVMState *s, unsigned long type, ...)
-+static int __vm_plane_ioctl(KVMState *s, unsigned plane_id, unsigned long type, void *arg)
+ void kvm_cpu_synchronize_state(CPUState *cpu)
  {
-     int ret;
+-    if (!cpu->vcpu_dirty && !kvm_state->guest_state_protected) {
++    KVMPlane *plane = cpu_active_kvm_plane(cpu);
 +
-+    accel_ioctl_begin();
-+    ret = ioctl(kvm_get_plane_fd(s, plane_id), type, arg);
-+    accel_ioctl_end();
-+    if (ret == -1) {
-+        ret = -errno;
-+    }
-+    return ret;
++    if (!plane->vcpu_dirty && !kvm_state->guest_state_protected) {
+         run_on_cpu(cpu, do_kvm_cpu_synchronize_state, RUN_ON_CPU_NULL);
+     }
+ }
+@@ -3278,7 +3324,7 @@ static bool kvm_cpu_synchronize_put(CPUState *cpu, KvmPutState state,
+         return false;
+     }
+ 
+-    cpu->vcpu_dirty = false;
++    cpu_active_kvm_plane(cpu)->vcpu_dirty = false;
+ 
+     return true;
+ }
+@@ -3320,7 +3366,7 @@ void kvm_cpu_synchronize_post_init(CPUState *cpu)
+ 
+ static void do_kvm_cpu_synchronize_pre_loadvm(CPUState *cpu, run_on_cpu_data arg)
+ {
+-    cpu->vcpu_dirty = true;
++    cpu_active_kvm_plane(cpu)->vcpu_dirty = true;
+ }
+ 
+ void kvm_cpu_synchronize_pre_loadvm(CPUState *cpu)
+@@ -3478,6 +3524,7 @@ out_unref:
+ 
+ int kvm_cpu_exec(CPUState *cpu)
+ {
++    KVMPlane *plane = cpu_active_kvm_plane(cpu);
+     struct kvm_run *run = cpu->kvm_run;
+     int ret, run_ret;
+ 
+@@ -3493,7 +3540,7 @@ int kvm_cpu_exec(CPUState *cpu)
+     do {
+         MemTxAttrs attrs;
+ 
+-        if (cpu->vcpu_dirty) {
++        if (plane->vcpu_dirty) {
+             if (!kvm_cpu_synchronize_put(cpu, KVM_PUT_RUNTIME_STATE,
+                                          "at runtime")) {
+                 ret = -1;
+@@ -3725,8 +3772,36 @@ int kvm_vm_plane_ioctl(KVMState *s, unsigned plane_id, unsigned long type, ...)
+     return __vm_plane_ioctl(s, plane_id, type, arg);
+ }
+ 
++static inline int __vcpu_plane_ioctl(KVMPlane *plane, unsigned long type, void *arg)
++{
++    return ioctl(plane->kvm_fd, type, arg);
 +}
 +
-+int kvm_vm_ioctl(KVMState *s, unsigned long type, ...)
++int kvm_vcpu_plane_ioctl(CPUState *cpu, unsigned plane_id, unsigned long type, ...)
 +{
-     void *arg;
-     va_list ap;
- 
-@@ -3657,13 +3709,20 @@ int kvm_vm_ioctl(KVMState *s, unsigned long type, ...)
-     va_end(ap);
- 
-     trace_kvm_vm_ioctl(type, arg);
--    accel_ioctl_begin();
--    ret = ioctl(s->vmfd, type, arg);
--    if (ret == -1) {
--        ret = -errno;
--    }
--    accel_ioctl_end();
--    return ret;
-+    return __vm_plane_ioctl(s, 0, type, arg);
-+}
-+
-+int kvm_vm_plane_ioctl(KVMState *s, unsigned plane_id, unsigned long type, ...)
-+{
++    KVMPlane *plane = cpu_kvm_plane(cpu, plane_id);
++    int ret;
 +    void *arg;
 +    va_list ap;
 +
@@ -233,100 +292,161 @@ index 92af42503b1c..1a2f8e0f417c 100644
 +    arg = va_arg(ap, void *);
 +    va_end(ap);
 +
-+    trace_kvm_vm_plane_ioctl(type, plane_id, arg);
-+    return __vm_plane_ioctl(s, plane_id, type, arg);
- }
- 
++    trace_kvm_vcpu_plane_ioctl(cpu->cpu_index, plane_id, type, arg);
++    accel_cpu_ioctl_begin(cpu);
++    ret = __vcpu_plane_ioctl(plane, type, arg);
++    accel_cpu_ioctl_end(cpu);
++    if (ret == -1) {
++        ret = -errno;
++    }
++    return ret;
++}
++
  int kvm_vcpu_ioctl(CPUState *cpu, unsigned long type, ...)
-@@ -4266,8 +4325,8 @@ static void kvm_accel_instance_init(Object *obj)
  {
-     KVMState *s = KVM_STATE(obj);
++    /* Most VCPU IOCTLs (including KVM_RUN) must happen on the Plane-0 FD */
++    KVMPlane *plane = cpu_kvm_plane(cpu, 0);
+     int ret;
+     void *arg;
+     va_list ap;
+@@ -3737,7 +3812,7 @@ int kvm_vcpu_ioctl(CPUState *cpu, unsigned long type, ...)
  
-+    kvm_init_plane_fds(s);
-     s->fd = -1;
--    s->vmfd = -1;
-     s->kvm_shadow_mem = -1;
-     s->kernel_irqchip_allowed = true;
-     s->kernel_irqchip_split = ON_OFF_AUTO_AUTO;
+     trace_kvm_vcpu_ioctl(cpu->cpu_index, type, arg);
+     accel_cpu_ioctl_begin(cpu);
+-    ret = ioctl(cpu->kvm_fd, type, arg);
++    ret = __vcpu_plane_ioctl(plane, type, arg);
+     accel_cpu_ioctl_end(cpu);
+     if (ret == -1) {
+         ret = -errno;
+@@ -4731,7 +4806,7 @@ static void query_stats_schema(StatsSchemaList **result, StatsTarget target,
+ 
+ static void query_stats_vcpu(CPUState *cpu, StatsArgs *kvm_stats_args)
+ {
+-    int stats_fd = cpu->kvm_vcpu_stats_fd;
++    int stats_fd = cpu_active_kvm_plane(cpu)->kvm_vcpu_stats_fd;
+     Error *local_err = NULL;
+ 
+     if (stats_fd == -1) {
+@@ -4746,7 +4821,7 @@ static void query_stats_vcpu(CPUState *cpu, StatsArgs *kvm_stats_args)
+ 
+ static void query_stats_schema_vcpu(CPUState *cpu, StatsArgs *kvm_stats_args)
+ {
+-    int stats_fd = cpu->kvm_vcpu_stats_fd;
++    int stats_fd = cpu_active_kvm_plane(cpu)->kvm_vcpu_stats_fd;
+     Error *local_err = NULL;
+ 
+     if (stats_fd == -1) {
 diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
-index 4a8921c632bf..2f3bd9ba7052 100644
+index 2f3bd9ba7052..1ca7be8a4b3b 100644
 --- a/accel/kvm/trace-events
 +++ b/accel/kvm/trace-events
-@@ -3,6 +3,7 @@
- # kvm-all.c
- kvm_ioctl(unsigned long type, void *arg) "type 0x%lx, arg %p"
+@@ -5,6 +5,7 @@ kvm_ioctl(unsigned long type, void *arg) "type 0x%lx, arg %p"
  kvm_vm_ioctl(unsigned long type, void *arg) "type 0x%lx, arg %p"
-+kvm_vm_plane_ioctl(unsigned long type, unsigned id, void *arg) "type 0x%lx, plane_id %d arg %p"
+ kvm_vm_plane_ioctl(unsigned long type, unsigned id, void *arg) "type 0x%lx, plane_id %d arg %p"
  kvm_vcpu_ioctl(int cpu_index, unsigned long type, void *arg) "cpu_index %d, type 0x%lx, arg %p"
++kvm_vcpu_plane_ioctl(int cpu_index, unsigned plane_id, unsigned long type, void *arg) "cpu_index %d, plane_id %u type 0x%lx, arg %p"
  kvm_run_exit(int cpu_index, uint32_t reason) "cpu_index %d, reason %d"
  kvm_device_ioctl(int fd, unsigned long type, void *arg) "dev fd %d, type 0x%lx, arg %p"
+ kvm_failed_reg_get(uint64_t id, const char *msg) "Warning: Unable to retrieve ONEREG %" PRIu64 " from KVM: %s"
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 04e1f970caf2..4025db67e13b 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -36,6 +36,7 @@
+ #include "qemu/lockcnt.h"
+ #include "qemu/thread.h"
+ #include "qom/object.h"
++#include "linux/kvm.h"
+ 
+ typedef int (*WriteCoreDumpFunction)(const void *buf, size_t size,
+                                      void *opaque);
+@@ -545,13 +546,15 @@ struct CPUState {
+     uintptr_t mem_io_pc;
+ 
+     /* Only used in KVM */
+-    int kvm_fd;
+     struct KVMState *kvm_state;
+     struct kvm_run *kvm_run;
+     struct kvm_dirty_gfn *kvm_dirty_gfns;
+     uint32_t kvm_fetch_index;
+     uint64_t dirty_pages;
+-    int kvm_vcpu_stats_fd;
++
++    /* KVM plane state */
++    unsigned kvm_plane;                                    /* Current active plane */
++    struct KVMPlane *kvm_plane_state[KVM_MAX_PLANES]; /* Per-Plane state */
+ 
+     /* Use by accel-block: CPU is executing an ioctl() */
+     QemuLockCnt in_ioctl_lock;
+@@ -596,6 +599,16 @@ struct CPUState {
+     CPUNegativeOffsetState neg;
+ };
+ 
++static inline struct KVMPlane *cpu_kvm_plane(CPUState *s, unsigned plane_id)
++{
++	return s->kvm_plane_state[plane_id];
++}
++
++static inline struct KVMPlane *cpu_active_kvm_plane(CPUState *s)
++{
++	return s->kvm_plane_state[s->kvm_plane];
++}
++
+ /* Validate placement of CPUNegativeOffsetState. */
+ QEMU_BUILD_BUG_ON(offsetof(CPUState, neg) !=
+                   sizeof(CPUState) - sizeof(CPUNegativeOffsetState));
 diff --git a/include/system/kvm.h b/include/system/kvm.h
-index 5fa33eddda38..885ed35b061a 100644
+index 885ed35b061a..16597333cfa5 100644
 --- a/include/system/kvm.h
 +++ b/include/system/kvm.h
-@@ -216,6 +216,9 @@ int kvm_on_sigbus(int code, void *addr);
- int kvm_check_extension(KVMState *s, unsigned int extension);
+@@ -172,10 +172,12 @@ typedef struct KVMCapabilityInfo {
+ #define KVM_CAP_INFO(CAP) { "KVM_CAP_" stringify(CAP), KVM_CAP_##CAP }
+ #define KVM_CAP_LAST_INFO { NULL, 0 }
  
- int kvm_vm_ioctl(KVMState *s, unsigned long type, ...);
-+int kvm_vm_plane_ioctl(KVMState *s, unsigned plane_id, unsigned long type, ...);
-+
-+int kvm_get_or_create_plane_fd(KVMState *s, unsigned id);
++struct KVMPlane;
+ struct KVMState;
+ 
+ #define TYPE_KVM_ACCEL ACCEL_CLASS_NAME("kvm")
+ typedef struct KVMState KVMState;
++typedef struct KVMPlane KVMPlane;
+ DECLARE_INSTANCE_CHECKER(KVMState, KVM_STATE,
+                          TYPE_KVM_ACCEL)
+ 
+@@ -219,6 +221,7 @@ int kvm_vm_ioctl(KVMState *s, unsigned long type, ...);
+ int kvm_vm_plane_ioctl(KVMState *s, unsigned plane_id, unsigned long type, ...);
+ 
+ int kvm_get_or_create_plane_fd(KVMState *s, unsigned id);
++void kvm_create_vcpu_plane(CPUState *cpu, unsigned plane, int kvm_fd);
  
  void kvm_flush_coalesced_mmio_buffer(void);
  
+@@ -251,6 +254,7 @@ static inline int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_t
+ 
+ int kvm_ioctl(KVMState *s, unsigned long type, ...);
+ 
++int kvm_vcpu_plane_ioctl(CPUState *cpu, unsigned plane_id, unsigned long type, ...);
+ int kvm_vcpu_ioctl(CPUState *cpu, unsigned long type, ...);
+ 
+ /**
 diff --git a/include/system/kvm_int.h b/include/system/kvm_int.h
-index 0876aac938d3..bfac331949f9 100644
+index bfac331949f9..70b381f1ba05 100644
 --- a/include/system/kvm_int.h
 +++ b/include/system/kvm_int.h
-@@ -107,7 +107,7 @@ struct KVMState
-     /* Max number of KVM slots supported */
-     int nr_slots_max;
-     int fd;
--    int vmfd;
-+    int plane_fds[KVM_MAX_PLANES];
-     int coalesced_mmio;
-     int coalesced_pio;
-     struct kvm_coalesced_mmio_ring *coalesced_mmio_ring;
-@@ -170,6 +170,26 @@ struct KVMState
-     OnOffAuto honor_guest_pat;
+@@ -101,6 +101,14 @@ struct KVMDirtyRingReaper {
+     volatile uint64_t reaper_iteration; /* iteration number of reaper thr */
+     volatile enum KVMDirtyRingReaperState reaper_state; /* reap thr state */
  };
- 
-+static inline void kvm_set_plane_fd(KVMState *s, unsigned plane, int fd)
-+{
-+    s->plane_fds[plane] = fd;
-+}
 +
-+static inline int kvm_get_plane_fd(KVMState *s, unsigned plane)
-+{
-+    return s->plane_fds[plane];
-+}
++/* VCPU per-plane state */
++struct KVMPlane {
++    int kvm_fd;
++    int kvm_vcpu_stats_fd;
++    bool vcpu_dirty;
++};
 +
-+static inline void kvm_set_vm_fd(KVMState *s, int vmfd)
-+{
-+    kvm_set_plane_fd(s, 0, vmfd);
-+}
-+
-+static inline int kvm_vm_fd(KVMState *s)
-+{
-+    return kvm_get_plane_fd(s, 0);
-+}
-+
- void kvm_memory_listener_register(KVMState *s, KVMMemoryListener *kml,
-                                   AddressSpace *as, int as_id, const char *name);
- 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index d4a68874b880..0bc869aa5d92 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -134,7 +134,7 @@ bool kvm_arm_create_scratch_host_vcpu(int *fdarray,
-         KVMState kvm_state;
- 
-         kvm_state.fd = kvmfd;
--        kvm_state.vmfd = vmfd;
-+        kvm_set_vm_fd(&kvm_state, vmfd);
-         kvm_vm_enable_cap(&kvm_state, KVM_CAP_ARM_MTE, 0);
-     }
- 
+ struct KVMState
+ {
+     AccelState parent_obj;
 -- 
 2.53.0
 
