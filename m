@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49E93F39DC;
-	Mon,  8 Jun 2026 14:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFF23EFD0B;
+	Mon,  8 Jun 2026 14:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929809; cv=none; b=AMJaIgbpXlzvMp3vamAahNE1fjYurfObHzg3+4xYpRwgO410ZSWiCWV4Lr42bym1wahHdPNgBo/Bm2soZjApP7Y/5qOzC8vVvw72CBWFleQgbsIENrUblCEZRLon/Qps828+zsbQNNSxbFHWGOmJcw2uPc1DAeGlTnQeo+1e2HM=
+	t=1780929811; cv=none; b=I7xFMSXyBOT8l/UWK27YnFuE/gpndqgOEs3RCELI7mLhsYMUitlFcoq/N8JVkyB6cPH1VE0Lve2EpYFbYn9ij9ct27hE8x7Sq78dmglpS3LsfElkT4nh5JhXB8GNkrTmYxI/bs8kPebHozeYsqzFJ8fn/DM2DSG8EDmg9Uh95x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780929809; c=relaxed/simple;
-	bh=+10xLxSz2hdoIHB3HQB3QYazOPEqpz5qTWBbJNGvwo0=;
+	s=arc-20240116; t=1780929811; c=relaxed/simple;
+	bh=pcp4odT3NNnPWZpyjZ6003LhvZo4f0DoCv0aN5fr2xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDM4390/Ref+hYWFiraYYe6QdHxY1z9KgtyX/BXUmIc0+W9s4K8svIhwAEK0vrG5RKN+G7g/HlB3RHIxdHb+psjlfSnbKrnvLIzQ6scB2mplzpi+XIYVT3xlZY3LRXUaMR8hhebPCfQQXlWi+JW0brqz6XjpSb/uhNSzm7i3VFA=
+	 MIME-Version; b=h7nzmxM+YhOO/rJ4yc8VkOZLJsz92BUkOULAHlOS8aSCAje4MOstpiZywzJfLm2fRgsoj/hrSERZUqSTzm5ADbkP3CsHEWqHqT6zquvP3SC0NHkFK/IN7lvcloY+7jDYOgLcW4ge3S3QoVxCkKlXQ8KkGhaMw4VNHJDTHKeiK2M=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,8 +16,8 @@ Received: from io.home.8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 5E0962028C5;
-	Mon,  8 Jun 2026 16:43:12 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id B9A7C2028D0;
+	Mon,  8 Jun 2026 16:43:14 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
@@ -38,9 +38,9 @@ Cc: Tom Lendacky <thomas.lendacky@amd.com>,
 	x86@kernel.org,
 	coconut-svsm@lists.linux.dev,
 	joerg.roedel@amd.com
-Subject: [PATCH 34/60] kvm: Keep track of plane VCPUs in struct kvm_vcpu_common
-Date: Mon,  8 Jun 2026 16:42:26 +0200
-Message-ID: <20260608144252.351443-35-joro@8bytes.org>
+Subject: [PATCH 45/60] kvm: x86: Update state for all plane VCPUs after CPUID update
+Date: Mon,  8 Jun 2026 16:42:37 +0200
+Message-ID: <20260608144252.351443-46-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
 References: <20260608144252.351443-1-joro@8bytes.org>
@@ -54,61 +54,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-Introduce an array which keeps track of per-plane VCPU instances for a
-single VCPU index. This is a short-cut to not always tranverse the
-xarrays on plane switches.
+Make sure to update CPUID dependent state for all VCPUs of a given
+plane when CPUID state is updated.
 
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- include/linux/kvm_host.h | 6 ++++++
- virt/kvm/kvm_main.c      | 3 +++
- 2 files changed, 9 insertions(+)
+ arch/x86/kvm/cpuid.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index b8c3f8f11cb4..5c3f9dfa15ea 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -335,6 +335,8 @@ struct kvm_vcpu_common {
- 	/* Currently active VCPU */
- 	struct kvm_vcpu *current_vcpu;
- 
-+	struct kvm_vcpu *vcpus[KVM_MAX_PLANES];
-+
- 	/* Locks */
- 	int ____srcu_idx; /* Don't use this directly.  You've been warned. */
- #ifdef CONFIG_PROVE_RCU
-@@ -382,6 +384,10 @@ struct kvm_vcpu_common {
- 	struct kvm_vcpu_arch_common arch;
- };
- 
-+#define vcpu_for_each_plane(common, i, v)			\
-+	for ((i) = 0; (i) < KVM_MAX_PLANES; ++(i))		\
-+		if (((v) = common->vcpus[(i)]) != NULL)
-+
- struct kvm_vcpu {
- 	struct kvm *kvm;
- 	struct kvm_plane *plane;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 8839f91fd15e..9d30fd85ce5f 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -524,6 +524,8 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
- 
- static void kvm_vcpu_finish_common(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 27e2f7e25038..fab075bb6fdc 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -513,6 +513,8 @@ static int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2,
  {
-+	WARN_ON(vcpu->common->vcpus[vcpu->plane_level] != NULL);
-+	vcpu->common->vcpus[vcpu->plane_level] = vcpu;
- 	smp_wmb();
- 	if (vcpu->plane_level == 0) {
- 		/*
-@@ -555,6 +557,7 @@ static void kvm_vcpu_common_destroy(struct kvm_vcpu *vcpu)
+ 	struct kvm_vcpu_common *common = vcpu->common;
+ 	u32 vcpu_caps[NR_KVM_CPU_CAPS];
++	struct kvm_vcpu *v;
++	unsigned i;
+ 	int r;
  
- 	vcpu->common = NULL;
- 	vcpu->run = NULL;
-+	common->vcpus[vcpu->plane_level] = NULL;
+ 	/*
+@@ -562,9 +564,11 @@ static int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2,
  
- 	if (vcpu->plane_level != 0)
- 	       return;
+ #ifdef CONFIG_KVM_HYPERV
+ 	if (kvm_cpuid_has_hyperv(vcpu)) {
+-		r = kvm_hv_vcpu_init(vcpu);
+-		if (r)
+-			goto err;
++		vcpu_for_each_plane(common, i, v) {
++			r = kvm_hv_vcpu_init(vcpu);
++			if (r)
++				goto err;
++		}
+ 	}
+ #endif
+ 
+@@ -572,10 +576,12 @@ static int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2,
+ 	if (r)
+ 		goto err;
+ 
++	vcpu_for_each_plane(vcpu->common, i, v) {
+ #ifdef CONFIG_KVM_XEN
+-	vcpu->arch.xen.cpuid = kvm_get_hypervisor_cpuid(vcpu, XEN_SIGNATURE);
++		v->arch.xen.cpuid = kvm_get_hypervisor_cpuid(vcpu, XEN_SIGNATURE);
+ #endif
+-	kvm_vcpu_after_set_cpuid(vcpu);
++		kvm_vcpu_after_set_cpuid(v);
++	}
+ 
+ success:
+ 	kvfree(e2);
 -- 
 2.53.0
 
