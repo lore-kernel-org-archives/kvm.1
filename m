@@ -1,97 +1,138 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28DC38B7C3
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 20:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7393F39E6DE
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 20:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780949882; cv=none; b=hzi0TtrxxAGo6T2Tu5ZBD1rgHnATwXblL19UR+rwYDs+y0zWVCkLztBnhDDltK23ENhPTEfvtpTSUo/R9a/0JjT3z/XbQMGxxELSG4QbP48RZ3xFiOLDEvp2pEGpAtKQAeVdrgcoI+OfQFDXkmvurb375TiUSAfTXr2mSt0DJlI=
+	t=1780950469; cv=none; b=TsU4+dwpcjXWujcmUPoM3UWgVOJeBjyZ7KSv3DzqVYKFOY5gy1hA8QjwN8Bg96LBjlKGGWQ7CX02Zerp/PgrccFtuShsQf1WGtFRlbmkx2pXqRSofVtVvydwY8IRQ+VOMhpXTvdHS/zHLgyfFseyOJCgxd3wEG0PIEdB1kNEU1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780949882; c=relaxed/simple;
-	bh=k2PTBsN/hx3V62iZTp5D1MZ7DT8Fb3J8V1qSSukkbRU=;
+	s=arc-20240116; t=1780950469; c=relaxed/simple;
+	bh=+ru/mLlPFWt8te+Mak5rNfpMnEFYQNFLPOjZGEGHdLM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nM/whxdZ1x74LGsClO126byWISTeYtTHtKkze7VNMkRGHlIpgTi7I8ZKThfsbAvQCLKC++5VXJVxBLFPtUBxUlKKDCsNEn0yezdaVAXtY2iRCWm8xGvf0ClPryOeuPZ3+lab0ZAO75/RTwrduXOqR/qmrSCGK9cRguCwRVVo34A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LMtB+8xN; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=mlkrll0l3m3m2MGg8veppFFML04WdzJzXS7iGwUQJqNJBQiurnNYv0tqGlojCuAMRjzXm4O+5Wupo4z6HNmU9JTSO+/wCW4l7sQToGDotdhIH1krN4ndllt/T1hcHhFQZ9D48BijKrA3A6+bZTZrc8UDGEbrNdiGRIDFgVEZSjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQU/Gk+o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LMtB+8xN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CF51F0089A;
-	Mon,  8 Jun 2026 20:18:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQU/Gk+o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E521A1F00893;
+	Mon,  8 Jun 2026 20:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780949880;
-	bh=HjjbxEYqKHS0O7vK1B2lnSFAe4A7a2RqBxu9Ywenqak=;
+	s=k20260515; t=1780950468;
+	bh=IbFJzL9O+gwSO3G/kILgFJwwktnbsOA7t47S86UnGjs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LMtB+8xNwGyWE9E3rglVuITFbONcqc9cuTKlv70yEPpJDLEAysQ9TCkpI8udM6b4u
-	 EGZDoOrttk/z/J/xV3VDFXVBp6uDMsZEwSdBMco1JahAM355xDQszPtgJVslqqENnU
-	 tI6HCtxotVv4w8fvT4Qkvl6nzG0wG7ALsdscqmeHYVnFB2grWkZoxlzX93Ua0ms4vy
-	 R/bZsv4+9mioydldeTaT9kSPvKzhFFRQmIIPw0VApNWPCwZP+h70w3FcL+WMiC8qbF
-	 SvekThkBY4u1pcsuwCuLuIZL/F9hvtHyNIbbDFen55Mnqb7QmFJrsdIWbUrA0EVPJ4
-	 4AUTSiRaZPc5g==
+	b=iQU/Gk+ojlrSpGQf5rxOBywKuqnIZdylOb+bX6888C+q105U6dBpF7s0cn6VHJQwS
+	 v6DkdVhJtlN+AE84jJeUqRnkeWfwvxnuuHW2tVpMzlqY/Mq+uqp+/8gBz1G9UfecJu
+	 9u49BkxTWW0QAiBGnS2O48dfC6bixtqlVQQkk72mpzyGry3ceO06QUziKaDXLYxzYG
+	 iREmJfTPf+3tZ/FKEj3saF7vlogMYZ6EZrdxqZjPOVgRxgrixqLSAkImLREcYvN/IJ
+	 NSv4AFrC9R4JAW8SOu/4LPbqpH1Lea4iCFtIegpNNYLoCw+vtFD9qMKseaaUma28cr
+	 IXGaxZW2OEIxQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 43/60] kvm: x86: Move CPUID state to struct
- kvm_vcpu_arch_common
+Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Validate arch_compat against
+ host compatibility mode
 Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-44-joro@8bytes.org>
-References: <20260608144252.351443-44-joro@8bytes.org>
+In-Reply-To: <20260608201001.65760-1-amachhiw@linux.ibm.com>
+References: <20260608201001.65760-1-amachhiw@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 20:17:59 +0000
-Message-Id: <20260608201800.74CF51F0089A@smtp.kernel.org>
+Date: Mon, 08 Jun 2026 20:27:47 +0000
+Message-Id: <20260608202747.E521A1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Sharing `cpuid_entries` and `cpuid_dynamic_bits_dirty` across plan=
-es causes dynamic CPUID bits to reflect the architectural state of the wron=
-g plane, leading to cross-plane state corruption.
+- [High] Unconditional dereference of `vcpu->arch.vcore` in `kvmppc_sanity_=
+check()` causes a deterministic kernel panic for Book3S PR and BookE KVM gu=
+ests.
+- [Medium] Bypassing PCR capability checks corrupts shared VCORE state on o=
+lder architectures and inconsistently blocks sibling VCPUs.
 --
 
-commit 696f84e84e21cbabab51dbf9bde76487e123b217
-Author: Joerg Roedel <joerg.roedel@amd.com>
+commit 8aae14bd53c26cd9bec6b3a9d75dc94d32e6e296
+Author: Amit Machhiwal <amachhiw@linux.ibm.com>
 
-The CPUID state is shared across all planes, so move it to struct
-kvm_vcpu_arch_common.
+KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
 
-This commit moves cpuid state tracking from the per-plane kvm_vcpu_arch
-to the shared kvm_vcpu_arch_common structure.
+This commit detects unsupported arch_compat values early in the guest
+initialization path. It sets arch_compat to PVR_ARCH_INVALID and marks
+the vCPU as invalid, preventing the guest from running with an invalid
+processor compatibility configuration.
 
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index e69156b54cff..6d948d63306c 100644
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
+Cc: stable@vger.kernel.org # v6.13+
+
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 61dbeea317f3b..f9380ef657500 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
 [ ... ]
-> @@ -2089,10 +2094,11 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u=
-32 *ebx,
->  	       u32 *ecx, u32 *edx, bool exact_only)
->  {
->  	u32 orig_function =3D *eax, function =3D *eax, index =3D *ecx;
-> +	struct kvm_vcpu_common *common =3D vcpu->common;
->  	struct kvm_cpuid_entry2 *entry;
->  	bool exact, used_max_basic =3D false;
+> @@ -446,7 +446,19 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *v=
+cpu, u32 arch_compat)
+>  			guest_pcr_bit =3D PCR_ARCH_300;
+>  			break;
+>  		case PVR_ARCH_31:
+> +			guest_pcr_bit =3D PCR_ARCH_31;
+> +			break;
+>  		case PVR_ARCH_31_P11:
+> +			/*
+> +			 * Need to check this for ISA 3.1, as Power10 and
+> +			 * Power11 share the same PCR. For any subsequent ISA
+> +			 * versions, this will be taken care of by the guest vs
+> +			 * host PCR comparison below.
+> +			 */
+> +			if (!cpu_has_feature(CPU_FTR_P11_PVR)) {
+> +				arch_compat =3D PVR_ARCH_INVALID;
+> +				goto out;
+
+[Severity: Medium]
+When jumping to the out label, the code applies the invalid arch_compat and
+a restricted pcr to the shared vcore structure before returning an error.
+Since vcore can be shared among multiple vCPUs on older Power architectures,
+does this state affect sibling vCPUs?
+
+While kvmppc_sanity_check() marks the current vCPU as insane, sibling vCPUs
+might retain sane =3D=3D true. Could they then execute the guest using the
+updated pcr and invalid arch_compat state?
+
+> +			}
+>  			guest_pcr_bit =3D PCR_ARCH_31;
+>  			break;
+>  		default:
+[ ... ]
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 00302399fc37b..7e2d489af6423 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -258,6 +258,9 @@ int kvmppc_sanity_check(struct kvm_vcpu *vcpu)
+>  	if (!vcpu->arch.pvr)
+>  		goto out;
 > =20
-> -	if (vcpu->arch.cpuid_dynamic_bits_dirty)
-> +	if (common->arch.cpuid_dynamic_bits_dirty)
->  		kvm_update_cpuid_runtime(vcpu);
-> =20
->  	entry =3D kvm_find_cpuid_entry_index(vcpu, function, index);
+> +	if (vcpu->arch.vcore->arch_compat =3D=3D PVR_ARCH_INVALID)
+> +		goto out;
+> +
 
 [Severity: High]
-Will this cause planes to observe dynamic cpuid bits from other planes?
+Does this code introduce a null pointer dereference for Book3S PR and BookE
+guests?
 
-Since cpuid_entries and cpuid_dynamic_bits_dirty are now shared across all
-planes in vcpu->common->arch, kvm_update_cpuid_runtime() will modify the
-shared array using per-plane state like vcpu->arch.cr4 and vcpu->arch.xcr0.
+kvmppc_sanity_check() is a generic helper used across Book3S HV, PR, and
+BookE KVM implementations. While vcpu->arch.vcore is populated for Book3S H=
+V,
+it remains null for Book3S PR and BookE guests.
 
-When kvm_update_cpuid_runtime() completes, it clears the shared dirty flag.
-If a different plane later calls kvm_cpuid(), won't it see the dirty flag
-as cleared and bypass its own update? This seems like it would return the
-other plane's cached dynamic bits and xstate sizes.
+During vCPU creation for PR or BookE, the initialization sequence sets
+vcpu->arch.pvr and calls kvmppc_sanity_check(). Because pvr is non-zero,
+execution will reach this check and dereference the null vcore pointer,
+which can cause a host panic.
+
+>  	/* PAPR only works with book3s_64 */
+>  	if ((vcpu->arch.cpu_type !=3D KVM_CPU_3S_64) && vcpu->arch.papr_enabled)
+>  		goto out;
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D43
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608201001.6576=
+0-1-amachhiw@linux.ibm.com?part=3D1
