@@ -1,222 +1,227 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437383B95E3;
-	Mon,  8 Jun 2026 09:56:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58126366816;
+	Mon,  8 Jun 2026 10:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780912572; cv=none; b=IQvAnBGVDX/Pnq5cHm3101JuBYjRWn1GxYE0Xey682vIvMQs3ZJ4kYIrbcBLFA0Ow1+ze58bVULT0K3TPkLcW95OTnUuO2horP/+LAvfih40nR3ZuQIOPdVMDR5LuzokG5Bi/znqTR2C1TL9C0LPROEbG/VhQIR52HjoctIDTOE=
+	t=1780913189; cv=none; b=UpPkmGje16rJah3PDV3f45q1+vsfatbukmMJ8V2weHSaVofa9lH3esCWYExP6GxZeutwK7s7Kkp6BRjH5M068OjZGqXfTU9RrBHwSczO5qR1r69ptw4d+qSrvEYfoUmF5pHg/rtPsHNgdLRU0ynxI7gXEhe2SNUmJLql4yXyKHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780912572; c=relaxed/simple;
-	bh=tEwhZkzwjwEE0dwYylC47fmcCPwjFEH9NhQpi6/O7nQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JuACVOi6CS0L2a7LWEOaNxBkCKDIed8503H4ckdHSenRvJcDXrjDWIALaJZGXGDfyAZ2lsuFWid2q89AzW4L9AD+hHIWRdXU6/NsOZWLeizwhRdIlurxHcwRlZ8ur7/BODX/0RyHV25MCxMyhp0fNrf2Gcxx/z3DK2f4RoixoZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NtunVchA; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1780913189; c=relaxed/simple;
+	bh=xdhG/ioRhAMR/g7wNYlodNkn4+4Mop5CuoSu7LEokY8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bYxC6ywDoIPk7M6gaUDlabFkaiapnM81or9wWubODj1347bJeUDNbxf7QJrL1C0pG8GSKemRWbe0M9QFi1dg8+X6DZV1tKnnPSrgf9NI67EyUopTYSQYE9uBiIPL2zU5j7YgPO+Z39lnF6U7TNNiTjJAo6/KO3vroKKWxVR+1H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AN9ZWUJZ; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NtunVchA"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C158E3553;
-	Mon,  8 Jun 2026 02:56:04 -0700 (PDT)
-Received: from [10.57.28.93] (unknown [10.57.28.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4B9003F86F;
-	Mon,  8 Jun 2026 02:56:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780912569; bh=tEwhZkzwjwEE0dwYylC47fmcCPwjFEH9NhQpi6/O7nQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NtunVchA2xdyL7Jkp7NqMp20PIDmeuVMaovaiiy9AwSpdRJnCbC/zOOHupq3mNEDr
-	 gvjQVS63gFqv3mGDS66wIfdhwAFT28EuEzQSmljGPqKjNjuJqyklBt1xJOh4jLCb5R
-	 AmL0/hm6NJWiaQ5vHLyC6qQ9gW830eVgw24gzs2s=
-Message-ID: <54b6859f-276d-428a-99ad-bb8b93f62cde@arm.com>
-Date: Mon, 8 Jun 2026 10:56:03 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AN9ZWUJZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780913187; x=1812449187;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xdhG/ioRhAMR/g7wNYlodNkn4+4Mop5CuoSu7LEokY8=;
+  b=AN9ZWUJZraePhIwcrZtSlbOuUMF+9bkzl1QNlcoxsAA4w4vjtwWebjnS
+   jOvArP+DyO449zpaYmCoFFGCjimqK6+rzDgItNuESttItV2o2GmfYqb1Q
+   SYoCXNPWbmZNDbS9MqwmUdQpe7lmg+xMazpyey7/PmFsT6UYLfFFRVFuM
+   dmCcawDDWOid3SM907tcJJ5eAifS8gaprKYj02iD59nMPKYgYJv3bSNNT
+   j/izGxoXpL5o2UaFG5D60TXNtsqg/ZWfVScbS1A8cGOa3ZEuNCbJaotnf
+   Tx83y6rxNFCz8rig33Uq1TgLBxk5/kmXhu5hZ1aTVpriuQfYtXCCtrW1K
+   Q==;
+X-CSE-ConnectionGUID: j5snsPM/RXK9a1vkBKUVxQ==
+X-CSE-MsgGUID: wwhQwlK8RXmZpRw+1FtHIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="80778652"
+X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
+   d="scan'208";a="80778652"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 03:06:27 -0700
+X-CSE-ConnectionGUID: a7GXfx0HRJ65XibKJ8VhCw==
+X-CSE-MsgGUID: fAgt/Ha0R/Sv7FfZ2yjXmA==
+X-ExtLoop1: 1
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa003.fm.intel.com with ESMTP; 08 Jun 2026 03:06:23 -0700
+Date: Mon, 8 Jun 2026 17:41:52 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
+	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+Subject: Re: [PATCH 02/15] x86/virt/tdx: Add extra memory to TDX Module for
+ Extensions
+Message-ID: <aiaOYOlVlz6g1eIT@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-3-yilun.xu@linux.intel.com>
+ <f44d997e-49fe-4d48-84e3-e260bb9d3164@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 28/44] arm64: RMI: Create the realm descriptor
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-29-steven.price@arm.com>
- <80b6ab2d-1a3e-4c15-b06b-00aaa23fcf74@redhat.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <80b6ab2d-1a3e-4c15-b06b-00aaa23fcf74@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f44d997e-49fe-4d48-84e3-e260bb9d3164@intel.com>
 
-On 28/05/2026 06:51, Gavin Shan wrote:
-> Hi Steve,
+> > +static int tdx_ext_mem_add(struct page *root, unsigned int nr_pages)
+> > +{
+> > +	struct tdx_module_args args = {
+> > +		.rcx = to_hpa_list_info(root, nr_pages),
+> > +	};
+> > +	u64 r;
+> > +
+> > +	tdx_clflush_hpa_list(root, nr_pages);
+> > +
+> > +	do {
+> > +		/*
+> > +		 * TDH_EXT_MEM_ADD is designed to use output parameter RCX to
+> > +		 * override/update input parameter RCX, so the caller doesn't
+> > +		 * have to do manual parameter update on retry call.
+> > +		 */
+> > +		r = seamcall_ret(TDH_EXT_MEM_ADD, &args);
+> > +	} while (r == TDX_INTERRUPTED_RESUMABLE);
 > 
-> On 5/13/26 11:17 PM, Steven Price wrote:
->> Creating a realm involves first creating a realm descriptor (RD). This
->> involves passing the configuration information to the RMM. Do this as
->> part of realm_ensure_created() so that the realm is created when it is
->> first needed.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v13:
->>   * The RMM no longer uses AUX granules, so no need to ask it how many it
->>     needs.
->>   * Adapted to other changes.
->> Changes since v12:
->>   * Since RMM page size is now equal to the host's page size various
->>     calculations are simplified.
->>   * Switch to using range based APIs to delegate/undelegate.
->>   * VMID handling is now handled entirely by the RMM.
->> ---
->>   arch/arm64/kvm/rmi.c | 88 +++++++++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 86 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->> index fb96bcaa73ed..cae29fd3353c 100644
->> --- a/arch/arm64/kvm/rmi.c
->> +++ b/arch/arm64/kvm/rmi.c
->> @@ -418,6 +418,77 @@ static void realm_unmap_shared_range(struct kvm
->> *kvm,
->>                    start, end);
->>   }
->>   +static int realm_create_rd(struct kvm *kvm)
->> +{
->> +    struct realm *realm = &kvm->arch.realm;
->> +    struct realm_params *params = realm->params;
->> +    void *rd = NULL;
->> +    phys_addr_t rd_phys, params_phys;
->> +    size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
->> +    int r;
->> +
->> +    realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
->> +
->> +    if (WARN_ON(realm->rd || !realm->params))
->> +        return -EEXIST;
->> +
->> +    rd = (void *)__get_free_page(GFP_KERNEL_ACCOUNT);
->> +    if (!rd)
->> +        return -ENOMEM;
->> +
->> +    rd_phys = virt_to_phys(rd);
->> +    if (rmi_delegate_page(rd_phys)) {
->> +        r = -ENXIO;
->> +        goto free_rd;
->> +    }
->> +
->> +    if (rmi_delegate_range(kvm->arch.mmu.pgd_phys, pgd_size)) {
->> +        r = -ENXIO;
->> +        goto out_undelegate_tables;
->> +    }
->> +
->> +    params->s2sz = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
->> +    params->rtt_level_start = get_start_level(realm);
->> +    params->rtt_num_start = pgd_size / PAGE_SIZE;
->> +    params->rtt_base = kvm->arch.mmu.pgd_phys;
->> +
->> +    if (kvm->arch.arm_pmu) {
->> +        params->pmu_num_ctrs = kvm->arch.nr_pmu_counters;
->> +        params->flags |= RMI_REALM_PARAM_FLAG_PMU;
->> +    }
->> +
->> +    if (kvm_lpa2_is_enabled())
->> +        params->flags |= RMI_REALM_PARAM_FLAG_LPA2;
->> +
->> +    params_phys = virt_to_phys(params);
->> +
->> +    if (rmi_realm_create(rd_phys, params_phys)) {
->> +        r = -ENXIO;
->> +        goto out_undelegate_tables;
->> +    }
->> +
->> +    realm->rd = rd;
->> +    kvm_set_realm_state(kvm, REALM_STATE_NEW);
->> +    /* The realm is up, free the parameters.  */
->> +    free_page((unsigned long)realm->params);
->> +    realm->params = NULL;
->> +
->> +    return 0;
->> +
->> +out_undelegate_tables:
->> +    if (WARN_ON(rmi_undelegate_range(kvm->arch.mmu.pgd_phys,
->> pgd_size))) {
->> +        /* Leak the pages if they cannot be returned */
->> +        kvm->arch.mmu.pgt = NULL;
->> +    }
-> 
-> In the latest RMM implementation (topics/rmm-v2.0-poc_2),
-> rmi_delegate_range() works
-> with the granularity of granule (4KB) and it can fail on any granule.
-> For example,
-> we have 16x granule as the root RTT and rmi_delegate_range() fails on
-> the first
-> granule, we're going to undelegate all these 16x granules, which were
-> never delegated
-> to RMM. It eventually leads to error and memory leakage.
-> 
-> For this, rmi_delegate_range() could be improved to return the number of
-> granules that
-> have been delegated. The return value can be used by the caller to
-> handle the erroneous
-> case by passing the correct range to rmi_undelegate_page().
+> The retry loop compares the full return value against TDX_INTERRUPTED_RESUMABLE. Should
+> it mask with TDX_SEAMCALL_STATUS_MASK first, in case the module sets any
+> lower detail bits?
 
-Well spotted - yes the current situation where the entire region is
-leaked if the delegate only partially completes is less than ideal! I'll
-add a third argument to rmi_delegate_range() to return the top of the
-region that was successfully delegated. The caller can then attempt an
-undelegate on just the range which was delegated.
+mm.. there is an existing case for TDX_INTERRUPTED_RESUMABLE which
+doesn't do the mask:
+
+  err = tdh_phymem_cache_wb(resume);
+  switch (err) {
+	case TDX_INTERRUPTED_RESUMABLE:
+		continue;
+
+I believe we don't mask it. TDX_INTERRUPTED_RESUMABLE should not carry
+any lower bits according to its bit definition, if it does it's a
+problem we should not skip.
+
+> 
+> Ditto for TDH.EXT.INIT in patch 3.
+> 
+> > +
+> > +	if (r != TDX_SUCCESS)
+> > +		return -EFAULT;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int tdx_ext_mem_setup(void)
+> > +{
+> > +	unsigned int nr_pages;
+> > +	struct page *page;
+> > +	u64 *root;
+> > +	unsigned int i;
+> > +	int ret;
+> > +
+> > +	nr_pages = tdx_sysinfo.ext.memory_pool_required_pages;
+> > +	/*
+> > +	 * memory_pool_required_pages == 0 means no need to add pages,
+> > +	 * skip the memory setup.
+> > +	 */
+> > +	if (!nr_pages)
+> > +		return 0;
+> > +
+> > +	root = kzalloc(PAGE_SIZE, GFP_KERNEL);
+> > +	if (!root)
+> > +		return -ENOMEM;
+> > +
+> > +	page = alloc_contig_pages(nr_pages, GFP_KERNEL, numa_mem_id(),
+> > +				  &node_online_map);
+> 
+> The SEAMCALL takes a scatter list (HPA_LIST_INFO), so the module
+> doesn't require contiguity. If the goal is just to avoid scattering
+> pages across many 2MB regions, maybe dense, 2MB-aligned allocations should
+> achieve that without a single pool-wide contiguous block.
+> 
+> > +	if (!page) {
+> > +		ret = -ENOMEM;
+> > +		goto out_free_root;
+> > +	}
+> > +
+> > +	for (i = 0; i < nr_pages;) {
+> > +		unsigned int nents = min(nr_pages - i,
+> > +					 PAGE_SIZE / sizeof(*root));
+> > +		int j;
+> > +
+> > +		for (j = 0; j < nents; j++)
+> > +			root[j] = page_to_phys(page + i + j);
+> 
+> Would it be better to allocate per-batch (i.e. one root page's worth
+> at a time) rather than the whole pool up front?
+> 
+> That way an intermediate TDH.EXT.MEM.ADD failure wouldn't leak
+> all nr_pages. Also, a batch is up to 512 pages (= 2MB) and its allocation
+> could be 2MB-aligned, addressing your fragmentation concern.
+
+So IIUC allocating 2MB by 2MB has the pros:
+
+  - Larger chance to get the memory.
+  - Less memory waste when TDH.EXT.MEM.ADD failed.
+
+and the cons:
+
+  - Still fragment 4M & 1G memory region.
+
+
+I think first of all we should focus on the normal path when Extension is
+successfully initialized and memory is added, note these memory can
+never be reclaimed in this case, so memory fragmentation becomes the
+primary considration.
+
+And in TDX platform, the TDH.EXT.MEM.ADD failure is not expected to
+happen, which means the TDX module is buggy and from Confidential
+Computing POV we should not continue, we should change to a new module
+and reboot. So less memory waste doesn't matter much actually.
+
+Then, the Extension initialization is done at bootup time. We can get
+the memory in big chance. If we really can't, it is a signal that the
+system is not well configured for TDX, and failing earlier isn't such
+a bad thing to me.
+
+So for now I still think alloc_contig_pages() is better than 2M-by-2M
+allocation.
+
+> 
+> > +
+> > +		ret = tdx_ext_mem_add(virt_to_page(root), nents);
+> > +		/*
+> > +		 * No SEAMCALLs to reclaim the added pages. For simple error
+> > +		 * handling, leak all pages.
+> > +		 */
+> > +		WARN_ON_ONCE(ret);
+> > +		if (ret)
+> > +			break;
+> > +
+> > +		i += nents;
+> > +	}
+> > +
+> > +	/*
+> > +	 * Extensions memory can't be reclaimed once added, print out the
+> > +	 * amount, stop tracking it and free the root page, no matter success
+> > +	 * or failure.
+> > +	 */
+> > +	pr_info("%lu KB allocated for TDX Module Extensions\n",
+> > +		nr_pages * PAGE_SIZE / 1024);
+> > +
+> > +out_free_root:
+> > +	kfree(root);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int __maybe_unused init_tdx_ext(void)
+> 
+> Could this be named init_tdx_extensions() instead to disambiguate
+> from tdx_ext_init() in patch 3?
+
+Yes, good to me.
+
+I'm changing all Extensions to Extension, cause the SPEC says "TDX
+Module Extension". So I'll use init_tdx_extension().
 
 Thanks,
-Steve
-
->> +    if (WARN_ON(rmi_undelegate_page(rd_phys))) {
->> +        /* Leak the page if it isn't returned */
->> +        return r;
->> +    }
->> +free_rd:
->> +    free_page((unsigned long)rd);
->> +    return r;
->> +}
->> +
->>   static void realm_unmap_private_range(struct kvm *kvm,
->>                         unsigned long start,
->>                         unsigned long end,
->> @@ -647,8 +718,21 @@ static int realm_init_ipa_state(struct kvm *kvm,
->>     static int realm_ensure_created(struct kvm *kvm)
->>   {
->> -    /* Provided in later patch */
->> -    return -ENXIO;
->> +    int ret;
->> +
->> +    switch (kvm_realm_state(kvm)) {
->> +    case REALM_STATE_NONE:
->> +        break;
->> +    case REALM_STATE_NEW:
->> +        return 0;
->> +    case REALM_STATE_DEAD:
->> +        return -ENXIO;
->> +    default:
->> +        return -EBUSY;
->> +    }
->> +
->> +    ret = realm_create_rd(kvm);
->> +    return ret;
->>   }
->>     static int set_ripas_of_protected_regions(struct kvm *kvm)
-> 
-> Thanks,
-> Gavin
-> 
-
+Yilun
