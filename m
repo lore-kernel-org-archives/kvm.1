@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD153F0AB9;
-	Mon,  8 Jun 2026 14:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E923EFD2C;
+	Mon,  8 Jun 2026 14:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929803; cv=none; b=Yo8pdPO8IOEVxt3D5LrZqGKiKeQvzYwwnHIBUeSVn9yWcRP3yUAGarzmCQUHO++FiXQNbMfu8croiCoa06OuLRQYbflewkVOs8VNMUrminv68KJTaS43lq9Wq64PNR55lwGqrE+W4iLGsnQx+6r9th3BmF/xeI4WCw1H/CashII=
+	t=1780929801; cv=none; b=cCKewU+v9phWjMEjEz9liK1GQwPKfMdf9c4r2LEumrD+H7po1aezrG+dI93XpNAzPAp08kFVY77oH+b8A7eFyqf/p2/ylcPKhb+MaisONJgtwOzsamrBl3d4GJGh/b1RAcim2XLPHMwA7kkJhYwOwzDFwCt7M3i1grzI5YdNYnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780929803; c=relaxed/simple;
-	bh=ecIswUIlz2dZEZyPp1fDGDg0/BzqfWneAm2qf4rsnKA=;
+	s=arc-20240116; t=1780929801; c=relaxed/simple;
+	bh=sj5qOHLYW02zuH39dxwjZL1FmODVc+KM6dPGRJ9mA4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwfZvL71fJfixUYWTN1MsixE9NLstTihTyCMSVBEvLS+gH9XJlvUgT8Iv2FFaGLnhXcxbwkyAxRT24szBP+PGYjP83edji8+566V6xiNLE2pqSJnogfTRJSw5prYKYcolOhHaDrZLrN1q0b2mxkB4oSskD4jsvdpswpUJsskN7A=
+	 MIME-Version; b=EV8E1B4VyMbnTl3jrwvky2gDsuZevDDywd4IM7t2MS2zYrK+CxcrtueUZ/J4ADo4yUD0QLRv2HH1YjxGML/WlwtsMn7stNp+R38B7pgz1ppSTFPG/OfOG0JVKX9bj8drhgBNdQJzGy8LSombASOBoJQ6e4ujR2kJM+hC3KieFgE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,8 +16,8 @@ Received: from io.home.8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id BF5B22028B8;
-	Mon,  8 Jun 2026 16:43:09 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id B17262028B4;
+	Mon,  8 Jun 2026 16:43:08 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
@@ -38,9 +38,9 @@ Cc: Tom Lendacky <thomas.lendacky@amd.com>,
 	x86@kernel.org,
 	coconut-svsm@lists.linux.dev,
 	joerg.roedel@amd.com
-Subject: [PATCH 22/60] kvm: Move kvm_vcpu pid members to struct kvm_vcpu_common
-Date: Mon,  8 Jun 2026 16:42:14 +0200
-Message-ID: <20260608144252.351443-23-joro@8bytes.org>
+Subject: [PATCH 17/60] kvm: Move VCPU locking to struct kvm_vcpu_common
+Date: Mon,  8 Jun 2026 16:42:09 +0200
+Message-ID: <20260608144252.351443-18-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
 References: <20260608144252.351443-1-joro@8bytes.org>
@@ -54,188 +54,116 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-These are the same across all planes for one VCPU, so make then
-shared.
+Fields in struct kvm_vcpu which are protected by these locks is going
+to move to struct kvm_vcpu_common. So move the locks as well.
 
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- arch/arm64/include/asm/kvm_host.h |  2 +-
- arch/arm64/kvm/arm.c              |  2 +-
- include/linux/kvm_host.h          |  5 ++--
- virt/kvm/kvm_main.c               | 44 ++++++++++++++++---------------
- 4 files changed, 28 insertions(+), 25 deletions(-)
+ include/linux/kvm_host.h | 31 +++++++++++++++++--------------
+ virt/kvm/kvm_main.c      |  3 ++-
+ 2 files changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index a49042bfa801..32dc484781f0 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -1270,7 +1270,7 @@ int __kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
- void kvm_arm_halt_guest(struct kvm *kvm);
- void kvm_arm_resume_guest(struct kvm *kvm);
- 
--#define vcpu_has_run_once(vcpu)	(!!READ_ONCE((vcpu)->pid))
-+#define vcpu_has_run_once(vcpu)	(!!READ_ONCE((vcpu)->common->pid))
- 
- #ifndef __KVM_NVHE_HYPERVISOR__
- #define kvm_call_hyp_nvhe(f, ...)						\
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 001f83f737ea..1e2f42134b74 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -726,7 +726,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 	if (!cpumask_test_cpu(cpu, vcpu->kvm->arch.supported_cpus))
- 		vcpu_set_on_unsupported_cpu(vcpu);
- 
--	vcpu->arch.pid = pid_nr(vcpu->pid);
-+	vcpu->arch.pid = pid_nr(vcpu->common->pid);
- }
- 
- void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
 diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 3c72a462ccfa..73786712495d 100644
+index 611bba515ac0..c8085c23e18e 100644
 --- a/include/linux/kvm_host.h
 +++ b/include/linux/kvm_host.h
-@@ -346,6 +346,9 @@ struct kvm_vcpu_common {
- 	int mode;
- 	u64 requests;
+@@ -330,6 +330,13 @@ struct kvm_vcpu_common {
+ 	/* Currently active VCPU */
+ 	struct kvm_vcpu *current_vcpu;
  
-+	struct pid *pid;
-+	rwlock_t pid_lock;
++	/* Locks */
++	int ____srcu_idx; /* Don't use this directly.  You've been warned. */
++#ifdef CONFIG_PROVE_RCU
++	int srcu_depth;
++#endif
++	struct mutex mutex;
 +
  	/* Scheduling state */
  #ifdef CONFIG_PREEMPT_NOTIFIERS
  	struct preempt_notifier preempt_notifier;
-@@ -368,8 +371,6 @@ struct kvm_vcpu {
+@@ -347,15 +354,11 @@ struct kvm_vcpu {
+ 	int cpu;
+ 	int vcpu_id; /* id given by userspace at creation */
+ 	int vcpu_idx; /* index into kvm->planes[]->vcpu_array */
+-	int ____srcu_idx; /* Don't use this directly.  You've been warned. */
+-#ifdef CONFIG_PROVE_RCU
+-	int srcu_depth;
+-#endif
++
+ 	int mode;
+ 	u64 requests;
+ 	unsigned long guest_debug;
  
+-	struct mutex mutex;
  	struct kvm_run *run;
  
--	struct pid *pid;
--	rwlock_t pid_lock;
- 	int sigset_active;
- 	sigset_t sigset;
- 	unsigned int halt_poll_ns;
+ #ifndef __KVM_HAVE_ARCH_WQP
+@@ -1001,35 +1004,35 @@ static inline void kvm_vm_bugged(struct kvm *kvm)
+ 
+ static inline void kvm_vcpu_lock(struct kvm_vcpu *vcpu)
+ {
+-	mutex_lock(&vcpu->mutex);
++	mutex_lock(&vcpu->common->mutex);
+ }
+ 
+ static inline void kvm_vcpu_unlock(struct kvm_vcpu *vcpu)
+ {
+-	mutex_unlock(&vcpu->mutex);
++	mutex_unlock(&vcpu->common->mutex);
+ }
+ 
+ static inline struct mutex *kvm_vcpu_mutex(struct kvm_vcpu *vcpu)
+ {
+-	return &vcpu->mutex;
++	return &vcpu->common->mutex;
+ }
+ 
+ static inline void kvm_vcpu_srcu_read_lock(struct kvm_vcpu *vcpu)
+ {
+ #ifdef CONFIG_PROVE_RCU
+-	WARN_ONCE(vcpu->srcu_depth++,
+-		  "KVM: Illegal vCPU srcu_idx LOCK, depth=%d", vcpu->srcu_depth - 1);
++	WARN_ONCE(vcpu->common->srcu_depth++,
++		  "KVM: Illegal vCPU srcu_idx LOCK, depth=%d", vcpu->common->srcu_depth - 1);
+ #endif
+-	vcpu->____srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
++	vcpu->common->____srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
+ }
+ 
+ static inline void kvm_vcpu_srcu_read_unlock(struct kvm_vcpu *vcpu)
+ {
+-	srcu_read_unlock(&vcpu->kvm->srcu, vcpu->____srcu_idx);
++	srcu_read_unlock(&vcpu->kvm->srcu, vcpu->common->____srcu_idx);
+ 
+ #ifdef CONFIG_PROVE_RCU
+-	WARN_ONCE(--vcpu->srcu_depth,
+-		  "KVM: Illegal vCPU srcu_idx UNLOCK, depth=%d", vcpu->srcu_depth);
++	WARN_ONCE(--vcpu->common->srcu_depth,
++		  "KVM: Illegal vCPU srcu_idx UNLOCK, depth=%d", vcpu->common->srcu_depth);
+ #endif
+ }
+ 
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 7ea20d96bc89..af3c4e0081b8 100644
+index d6975a5c60b4..9accca10c249 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -475,6 +475,9 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
+@@ -466,6 +466,8 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
+ 
+ 	common->vcpu_idx = atomic_read(&kvm->online_vcpus);
+ 
++	mutex_init(&common->mutex);
++
  	common->kvm = kvm;
  	common->current_vcpu = vcpu;
  
-+	common->pid = NULL;
-+	rwlock_init(&common->pid_lock);
-+
- 	common->wants_to_run = false;
- 	common->preempted = false;
- 	common->ready = false;
-@@ -510,8 +513,6 @@ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+@@ -500,7 +502,6 @@ static void kvm_vcpu_finish_common(struct kvm_vcpu *vcpu)
+ 
+ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+ {
+-	mutex_init(&vcpu->mutex);
+ 	vcpu->cpu = -1;
  	vcpu->kvm = kvm;
  	vcpu->plane = kvm->planes[0];
- 	vcpu->vcpu_id = id;
--	vcpu->pid = NULL;
--	rwlock_init(&vcpu->pid_lock);
- 	kvm_async_pf_vcpu_init(vcpu);
- 
- 	kvm_vcpu_set_in_spin_loop(vcpu, false);
-@@ -539,6 +540,12 @@ static void kvm_vcpu_common_destroy(struct kvm_vcpu *vcpu)
- 	kvm->created_vcpus--;
- 	mutex_unlock(&common->kvm->lock);
- 
-+	/*
-+	 * No need for rcu_read_lock as VCPU_RUN is the only place that changes
-+	 * the common->pid pointer, and at destruction time all file descriptors
-+	 * are already gone.
-+	 */
-+	put_pid(common->pid);
- 	kfree(common);
- }
- 
-@@ -549,13 +556,6 @@ static void kvm_vcpu_destroy(struct kvm_vcpu *vcpu)
- 	kvm_vcpu_common_destroy(vcpu);
- 	kvm_dirty_ring_free(&vcpu->dirty_ring);
- 
--	/*
--	 * No need for rcu_read_lock as VCPU_RUN is the only place that changes
--	 * the vcpu->pid pointer, and at destruction time all file descriptors
--	 * are already gone.
--	 */
--	put_pid(vcpu->pid);
--
- 	free_page((unsigned long)vcpu->run);
- 	kmem_cache_free(kvm_vcpu_cache, vcpu);
- }
-@@ -3996,16 +3996,17 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(__kvm_vcpu_kick);
- 
- int kvm_vcpu_yield_to(struct kvm_vcpu *target)
- {
-+	struct kvm_vcpu_common *common = target->common;
- 	struct task_struct *task = NULL;
- 	int ret;
- 
--	if (!read_trylock(&target->pid_lock))
-+	if (!read_trylock(&common->pid_lock))
- 		return 0;
- 
--	if (target->pid)
--		task = get_pid_task(target->pid, PIDTYPE_PID);
-+	if (common->pid)
-+		task = get_pid_task(common->pid, PIDTYPE_PID);
- 
--	read_unlock(&target->pid_lock);
-+	read_unlock(&common->pid_lock);
- 
- 	if (!task)
- 		return 0;
-@@ -4258,9 +4259,9 @@ static int vcpu_get_pid(void *data, u64 *val)
- {
- 	struct kvm_vcpu *vcpu = data;
- 
--	read_lock(&vcpu->pid_lock);
--	*val = pid_nr(vcpu->pid);
--	read_unlock(&vcpu->pid_lock);
-+	read_lock(&vcpu->common->pid_lock);
-+	*val = pid_nr(vcpu->common->pid);
-+	read_unlock(&vcpu->common->pid_lock);
- 	return 0;
- }
- 
-@@ -4558,6 +4559,7 @@ static long kvm_vcpu_ioctl(struct file *filp,
- 		return -EINTR;
- 	switch (ioctl) {
- 	case KVM_RUN: {
-+		struct kvm_vcpu_common *common = vcpu->common;
- 		struct pid *oldpid;
- 		r = -EINVAL;
- 		if (arg)
-@@ -4569,7 +4571,7 @@ static long kvm_vcpu_ioctl(struct file *filp,
- 		 * read vcpu->pid while this vCPU is in KVM_RUN, e.g. to yield
- 		 * directly to this vCPU
- 		 */
--		oldpid = vcpu->pid;
-+		oldpid = common->pid;
- 		if (unlikely(oldpid != task_pid(current))) {
- 			/* The thread running this VCPU changed. */
- 			struct pid *newpid;
-@@ -4579,15 +4581,15 @@ static long kvm_vcpu_ioctl(struct file *filp,
- 				break;
- 
- 			newpid = get_task_pid(current, PIDTYPE_PID);
--			write_lock(&vcpu->pid_lock);
--			vcpu->pid = newpid;
--			write_unlock(&vcpu->pid_lock);
-+			write_lock(&common->pid_lock);
-+			common->pid = newpid;
-+			write_unlock(&common->pid_lock);
- 
- 			put_pid(oldpid);
- 		}
- 		vcpu->common->wants_to_run = !READ_ONCE(vcpu->run->immediate_exit__unsafe);
- 		r = kvm_arch_vcpu_ioctl_run(vcpu);
--		vcpu->common->wants_to_run = false;
-+		common->wants_to_run = false;
- 
- 		/*
- 		 * FIXME: Remove this hack once all KVM architectures
 -- 
 2.53.0
 
