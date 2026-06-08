@@ -1,112 +1,161 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9BD3FBB5E
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 15:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11C43FFADD
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 15:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780932268; cv=none; b=HmjcJ5RLlRBT+WaK9nP2ifw/cRfoJop6tz7nPvn3pLggcJ7R6aZBh1Bfy/hrtsI+qBVTuf8OMc1yzIxMT3qLgGCuEDtwz7a6RC8neBVhGoP//mT3tINbFsJjyuvs0WoN1ldlZlUq0gbUyrwm36lqW/waSzYlKlXO+RnU04oJZkM=
+	t=1780932499; cv=none; b=gFb67Q20Xtvbrn8veJtS6XuF/tPsPv8VrkuSsbwoVGJISjYI6TpXGyX87FQGJVedK0MAxxedoi97H9I48XyavP0L1IqSkXPctQHW4Je0MKjGHnRhLDlvzLgfz/7FfEOH8hr9oW+Egajf/hwfNQQRyiZ0+gLfyM466cNP00fKGR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780932268; c=relaxed/simple;
-	bh=UGvj9+fTNicg8OVHAc4FfoTSAld78NvFBDQkr1vG0/E=;
+	s=arc-20240116; t=1780932499; c=relaxed/simple;
+	bh=sKyOyRT2Rng3lzNiVirGCNSfNQ1SmgVaUDAGXI2yfZ8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=pKVOZV8k0RGQYY59ogR+qib2Tfl1ZQbPu8Q9zpX6b2Qo5AVvqoHU3dk1SfFAM6OKXpbqgl4CEzFpyoHMjXt3MWYSAQ/P3bQAjFzM3N+SI56g3ik9duDvz0GF4qOQ23a7ThgwYAfJgVv050T22vhj7a80xikVru3jkEMiCJZkltY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kxTIt7D5; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=c4nwWT2xn7l9OIBRfG6FS2G/AnAuOD29u2AnX8s8YjxCexoZ+UCMIuahbGLYObCgR4t7IUrkG6UoVfwP1iZrhhxZqz+PDPY+INarIBCc8+W/ZCSjdAFOMGsNqZ72uVbML/mq1e9gWLGua87NvHLl4lIRBC2JXO2SROkCR6cmImw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aj9MDURa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kxTIt7D5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6F41F00893;
-	Mon,  8 Jun 2026 15:24:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aj9MDURa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69CB31F00898;
+	Mon,  8 Jun 2026 15:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780932267;
-	bh=JvueXYLKBVq34rjHz7MFIk7ha3xlNo2yd9lYU8tF1AY=;
+	s=k20260515; t=1780932497;
+	bh=cEbk0kRk2UJ+cTe/9b8/Z2nTnC1T5MR4/S3O358ToHY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kxTIt7D5YJObZlxKBW9PT4JDchPc3QK3ihnaFjwDK/zx1XxpcDCqV2RYac89d4/fP
-	 GXv8JkBEsaFbtcSdhugp070O1qZBFA9f7Je58gCUSIDMYsHcOGsI1qSqk6KcK6oQmU
-	 lTvYaVyDM+JWgEc5uWbaQaD8ADbuE8DBdb1vjZNcrc0yxcy+Oz5LUMvfNV5JqNiCEF
-	 3oeh1MeGBzAikOUC1+P2B5lUwdxaTGAbtlyMAKwRznyTxhnRZMSj/0gzgwtW307gOd
-	 rX3fh142WI0ExWSiCZ6HB6PPpjAAj0yavUbhoYHTSaLzLpvh8jV4cOsoZDkPFVcI3J
-	 UgTaVt0Ov+zMA==
+	b=aj9MDURamcQduh4sBte34ILe428b3ObjFkredqWplYFTfI9fhBxSesPKkG62ZHNwo
+	 0Tjt+Bc1SUWZgeetymmv0j0j3SDSLA7NCuoQUuwCxTgY0RP4Ik+Ng428oqJBODFJD+
+	 lRQgdsfscAaGm2T6p+1b3rYJ/l1GK+Igm2yr0YKADcUHj8VqSTWX/8q9Szur1seJWX
+	 GwDAqCguQFtulINB9+McnrHQHZqJEjm9my+kotONw6evd91xJ7Hg42lT7p01C45RE4
+	 JNkAo5xmzOGDnaEyCT59GD1XxBasIhjCpPgnehedi2jY9q3QgkGcG3Ku0yqnv2XZrc
+	 abc2TfeFdGfEQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 07/60] KVM: SVM: Add support for the SEV-SNP #HV IPI NAE
- event
+Subject: Re: [PATCH 05/60] KVM: SVM: Inject MCEs when Restricted Injection
+ is active
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-8-joro@8bytes.org>
-References: <20260608144252.351443-8-joro@8bytes.org>
+In-Reply-To: <20260608144252.351443-6-joro@8bytes.org>
+References: <20260608144252.351443-6-joro@8bytes.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 15:24:26 +0000
-Message-Id: <20260608152427.5C6F41F00893@smtp.kernel.org>
+Date: Mon, 08 Jun 2026 15:28:16 +0000
+Message-Id: <20260608152817.69CB31F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] Unconditional dereference of `vcpu->arch.apic` before verifyin=
-g its existence causes a host kernel panic if the in-kernel LAPIC is absent.
+- [High] Deferring MCE injection bypasses clearing `vcpu->arch.exception.pe=
+nding`, triggering a host `WARN_ON_ONCE` and silently dropping the MCE acro=
+ss VM-Exits.
+- [High] Priority inversion during event evaluation causes multiple doorbel=
+l events to be set concurrently, leading to bitwise corruption during cance=
+llation.
 --
 
-commit a2db726cf6351649d4f8b6df636d0b3bb754fe98
+commit 92a79deb45b58e8dfe9005d032cb1b5d2cd5935c
 Author: Melody Wang <huibo.wang@amd.com>
-KVM: SVM: Add support for the SEV-SNP #HV IPI NAE event
 
-This commit introduces support for the #HV IPI NAE event for SEV-SNP
-guests, allowing them to send IPIs to other vCPUs when Restricted
-Injection is enabled. It implements the NAE event according to the GHCB
-specification and adds a helper to send the IPI via x2APIC or xAPIC.
+KVM: SVM: Inject MCEs when Restricted Injection is active
 
-> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-> index 4078e624ca667..ab40a2e4ab9d5 100644
-> --- a/arch/x86/kvm/lapic.c
-> +++ b/arch/x86/kvm/lapic.c
+When Restricted Injection is active, only #HV exceptions can be injected
+into the SEV-SNP guest. Detect that, and then follow the #HV doorbell
+communication from the GHCB specification to inject the MCEs.
+
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 44be2c9b8286d..17168a145d18b 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
 
 [ ... ]
 
-> @@ -3583,3 +3583,25 @@ void kvm_lapic_exit(void)
->  	static_key_deferred_flush(&apic_sw_disabled);
->  	WARN_ON(static_branch_unlikely(&apic_sw_disabled.key));
->  }
-> +
-> +/* Send IPI by writing ICR with MSR write when X2APIC enabled, with mmio=
- write when XAPIC enabled */
-> +int kvm_xapic_x2apic_send_ipi(struct kvm_vcpu *vcpu, u64 data)
-> +{
-> +	u32 icr_msr_addr =3D APIC_BASE_MSR + (APIC_ICR >> 4);
-> +	struct kvm_lapic *apic =3D vcpu->arch.apic;
-> +	gpa_t gpa =3D apic->base_address + APIC_ICR;
+> @@ -5493,7 +5500,7 @@ void sev_snp_cancel_injection(struct kvm_vcpu *vcpu)
+> =20
+>  	/*
+>  	 * KVM only injects a single event each time (prepare_hv_injection),
+> -	 * so when events.nmi is true, the vector will be zero
+> +	 * so when events.nmi is true, the MCE and vector will be zero.
+>  	 */
+>  	if (hvdb->events.vector)
+>  		svm->vmcb->control.event_inj |=3D hvdb->events.vector |
+> @@ -5502,6 +5509,9 @@ void sev_snp_cancel_injection(struct kvm_vcpu *vcpu)
+>  	if (hvdb->events.nmi)
+>  		svm->vmcb->control.event_inj |=3D SVM_EVTINJ_TYPE_NMI;
+> =20
+> +	if (hvdb->events.mce)
+> +		svm->vmcb->control.event_inj |=3D MC_VECTOR | SVM_EVTINJ_TYPE_EXEPT;
 
-[Severity: Critical]
-Does this unconditionally dereference the apic pointer before verifying it
-is non-NULL?
+[Severity: High]
+If multiple events manage to get injected at once, will this bitwise OR
+corrupt the exception vector?
 
-If a guest or userspace process triggers the #HV IPI VMGEXIT for a VM
-created without an in-kernel APIC, vcpu->arch.apic will be NULL. Because
-apic->base_address is accessed immediately to calculate gpa, could this
-trigger a host kernel panic?
+For example, if an MCE is blocked but an IRQ is injected, and the injection
+is subsequently cancelled, this could bitwise OR MC_VECTOR (0x12) with the
+interrupt vector (e.g., 0x0C). For an IRQ vector of 0x0C, this produces 0x1E
+combined with SVM_EVTINJ_TYPE_EXEPT, which synthesizes a Security Exception=
+=20
+(#SX) instead of the intended events.
 
-Could the gpa calculation be deferred until after the kvm_lapic_enabled()
-check to prevent this?
+[ ... ]
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 0550359ed798f..4b6b628efa219 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -10794,6 +10794,12 @@ static int kvm_check_and_inject_events(struct kv=
+m_vcpu *vcpu,
+>  			kvm_update_dr7(vcpu);
+>  		}
+> =20
+> +		if (vcpu->arch.exception.vector =3D=3D MC_VECTOR) {
+> +			r =3D static_call(kvm_x86_mce_allowed)(vcpu);
+> +			if (!r)
+> +				goto out_except;
+> +		}
+
+[Severity: High]
+Does jumping to out_except here skip clearing the exception queue?
+
+If mce_allowed() returns 0, bypassing the assignment
+vcpu->arch.exception.pending =3D false leaves the MCE pending.
+At the end of kvm_check_and_inject_events(), KVM unconditionally evaluates:
+
+    WARN_ON_ONCE(vcpu->arch.exception.pending);
+
+which can trigger a host warning.
+
+Furthermore, because the exception isn't propagated but remains pending,
+is it silently dropped on the next VM-Exit?
+
+svm_complete_interrupts() unconditionally clears it:
+
+    kvm_clear_exception_queue(vcpu);
 
 > +
-> +	if (!kvm_lapic_enabled(vcpu))
-> +		return 1;
-> +
-> +	if (vcpu->arch.apic_base & X2APIC_ENABLE) {
-> +		if (!kvm_x2apic_msr_write(vcpu, icr_msr_addr, data))
-> +			return 0;
-> +	} else {
-> +		if (!apic_mmio_write(vcpu, NULL, gpa, 4, &data))
-> +			return 0;
-> +	}
-> +
-> +	return 1;
-> +}
-> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_xapic_x2apic_send_ipi);
+>  		kvm_inject_exception(vcpu);
+> =20
+>  		vcpu->arch.exception.pending =3D false;
+> @@ -10801,6 +10807,7 @@ static int kvm_check_and_inject_events(struct kvm=
+_vcpu *vcpu,
+> =20
+>  		can_inject =3D false;
+>  	}
+> +out_except:
+> =20
+>  	/* Don't inject interrupts if the user asked to avoid doing so */
+>  	if (vcpu->guest_debug & KVM_GUESTDBG_BLOCKIRQ)
+
+[Severity: High]
+Does jumping to out_except bypass the can_inject =3D false assignment?
+
+If can_inject remains true when an MCE is blocked, KVM proceeds to evaluate
+and inject lower-priority events like NMIs or IRQs.
+
+This breaks the assumption in sev_snp_cancel_injection() that only a single
+event is injected at a time, potentially leading to the bitwise corruption
+mentioned earlier if an IRQ and a blocked MCE overlap during cancellation.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D7
+43-1-joro@8bytes.org?part=3D5
