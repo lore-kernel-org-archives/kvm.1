@@ -1,84 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B97352C3C;
-	Mon,  8 Jun 2026 05:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4EC37BE9E;
+	Mon,  8 Jun 2026 05:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780897520; cv=none; b=LR8AVEZZN8AYytsvI2V6x7Dro6s+xPQcvv7DNIU9NMbL+G8HzzzeOwBnJIRBUnk1fs3xI27gTN/PYb+KWAxi9c34HQ2oANOz/Tj4mv/4zCsL2tk+Fbsg4Fqy/UhteYYK699qP6d/u5L89LwXcsSHakDGSVYECvMGXz0vuezo7k4=
+	t=1780898253; cv=none; b=Dc/aG1p6Huc/FkeExo029Ed7e3vKLOwpKm9rN633kg/XBp3P5mtuyuSN8xzUE31P1IF2ebL3Nanno2AWh+2X1a/XGG69B0ZS6zQpbTkoht1v+1hdBBTOMNQVR/YfJEzkTMbAawpYCqtEAjmIZQqGo5SbLDAX0y3xF0rzJ8JBo9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780897520; c=relaxed/simple;
-	bh=/RGGAgxhY6od1kGgxTlv0melPSju+MK4bbQR13r3qWw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sk434A3EcaYDkAt++MhgC/+lH2vMggMndRI74UV0P34GzmIl674wEa2Yx7wuEeMHEtTsQz5Ag1pis/0ZCS+geOj+NedpQnlI4ZSAS8fU6X9AD7u6anx5cElAfOnaLb7aeRf3L7+yR7fXjNgkJdBDr1TZnxKvTFSm7EkZjZQlvlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T/HG7y0I; arc=none smtp.client-ip=192.198.163.13
+	s=arc-20240116; t=1780898253; c=relaxed/simple;
+	bh=UhM05LYQzK8PNX2EjRBagWrP6FFhDloRZ4eE3WBSkco=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WomuH58h0ef1fGhek8O+QUGFgLdD6Rff+jLyoTMksOEc/mlVVkJfPo1LE0PM2OjXOAUqQ4jCnA7mtEfSlCFyzmP4uQZJkPe6j/0ZlKhesb/qnA5svMN1rGFd1URICsLF51fmwYaB72sFfOcoolU6az+CJeLED+EjWlJAr+uDMLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MvGrofbP; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T/HG7y0I"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MvGrofbP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780897519; x=1812433519;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/RGGAgxhY6od1kGgxTlv0melPSju+MK4bbQR13r3qWw=;
-  b=T/HG7y0I2CtcFblYrDZsjs/LcEmg0lYRO/Kr/r2/Cg1TtzfoSKqdGy7C
-   vAkvgIjL/pV8HQv+ZRAF4zrhKX0ll4RZKKNYddSxiykDqA/sXK52c7H/1
-   Yc14kOLGd1GJR81U1k3kLHtaAnXZG/JdvCJ7yrN1DG34+Eeqh9qZ1DYz6
-   zdTIvsCmPWeKtD9wBUcG0yRZ55C3GhmwAIm0O9nqxNNvdYL4Ke1AgTAWg
-   iHJRMLVmwCY/O0ZJ9P4TwQbczETv59TxLV6QIqBX0CsFONxwr3FsKm1BR
-   3kn2ZMgN55GfKGCM0XwIvVXWuoxIEwBHuo3hjp5Y5kwjoiUiOILZZsYQc
+  t=1780898252; x=1812434252;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=UhM05LYQzK8PNX2EjRBagWrP6FFhDloRZ4eE3WBSkco=;
+  b=MvGrofbPq7JnTnaREWu+j5cEeNGK60ac72Kkx3s7VlXgUEKdpY40xu+S
+   W/xIIyFdeqNUCZSHLOSiS2CT0cGBlPHCxqDjt6kXYZmWPOr6VkUZdy7uo
+   hFgDckcBqY4iCDm4zfhtOwmAEg1WYQG3z579ZiWoGx6T5zN3yVGP34BoB
+   H4eNEhKzAGBgPhDnD1iI5D6lxJfRDmxrM/dw5MF6Iym8Um7OxPQuFftIF
+   64GjDFjUmhskfAZQOdZ1/jZZknTDAEz0bRMKR+CJj3eISd2pH/2uNKRig
+   Qsk8Wctt8uOzVsWwyRX4bND/F9OKO4YJjtqe1zLqU4DMA46QU6W2dPOfC
    g==;
-X-CSE-ConnectionGUID: gTSztelsTkq3wtdNBrvnXw==
-X-CSE-MsgGUID: UhmW7l7JSv6kx5nlYttNew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="84199709"
+X-CSE-ConnectionGUID: /xyvxPMNTGu23i1eQaCR8A==
+X-CSE-MsgGUID: U3sqoLNiSAe/d87/i+AOAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="92192860"
 X-IronPort-AV: E=Sophos;i="6.24,193,1774335600"; 
-   d="scan'208";a="84199709"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2026 22:45:19 -0700
-X-CSE-ConnectionGUID: qH9sb52xRkSt8Gzwh/PMTA==
-X-CSE-MsgGUID: qegt3SeTQE+/bqLd8HfVSQ==
+   d="scan'208";a="92192860"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2026 22:57:32 -0700
+X-CSE-ConnectionGUID: JTWGYyAaQpm5TsCLm5FTmg==
+X-CSE-MsgGUID: 0xV4nBAXSyuHM7jGUUtmYA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,193,1774335600"; 
-   d="scan'208";a="250362963"
-Received: from mkosciow-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.107])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2026 22:45:13 -0700
-Date: Mon, 8 Jun 2026 08:45:10 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, kas@kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	mingo@redhat.com, nik.borisov@suse.com, pbonzini@redhat.com,
-	seanjc@google.com, tglx@kernel.org, vannapurve@google.com,
-	x86@kernel.org, chao.gao@intel.com, yan.y.zhao@intel.com,
-	kai.huang@intel.com
-Subject: Re: [PATCH v6 00/11] Dynamic PAMT
-Message-ID: <aiZW5oSFJMnr-p7J@tlindgre-MOBL1>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2026 22:57:27 -0700
+Message-ID: <a58e2941-77f9-43cf-a54d-023506dd7eb0@linux.intel.com>
+Date: Mon, 8 Jun 2026 13:57:24 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 03/22] KVM: selftests: Initialize the TDX VM
+To: Lisa Wang <wyihan@google.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-3-6983ae4c3a4d@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260521-tdx-selftests-v13-v13-3-6983ae4c3a4d@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, May 25, 2026 at 07:35:04PM -0700, Rick Edgecombe wrote:
-> For a simple small server with mostly physical contiguous RAM and no CXL
-> complications, the basic implementation should be close to optimal anyway.
-> And for big servers, an 8GB allocation is going to have less impact. In
-> the end Dynamic PAMT *is* an optimization that we will force on as a
-> good default option. Even with all the optimizations we could throw at it,
-> if the system is 100% TDs, Dynamic PAMT could come out slightly behind. So
-> judgment on good defaults is needed regardless.
+On 5/22/2026 7:16 AM, Lisa Wang wrote:
+[...]
 
-From usage point of view it's not just a memory optimization though.
-These patches make it easier to see what gets allocated for TDX IMO.
+> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+> index f647e6ca6b34..48d4bd36c35b 100644
+> --- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+> @@ -11,4 +11,34 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
+>  	return vm->type == KVM_X86_TDX_VM;
+>  }
+>  
+> +/*
+> + * TDX ioctls
+> + * Use underscores to avoid collisions with struct member names.
+> + */
+> +#define __tdx_vm_ioctl(vm, cmd, _flags, arg)				\
+> +({									\
+> +	int r;								\
+> +									\
+> +	union {								\
+> +		struct kvm_tdx_cmd c;					\
+> +		unsigned long raw;					\
+> +	} tdx_cmd = { .c = {						\
+> +		.id = (cmd),						\
+> +		.flags = (u32)(_flags),				\
+> +		.data = (u64)(arg),				\
 
-This based on rebasing other patches on the dynamic PAMT series a few
-times over the past year. So for the series:
+Nit:
+The two lines' backslashes are misaligned.
 
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> +	} };								\
+> +									\
+> +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
+> +	r ?: tdx_cmd.c.hw_error;					\
+> +})
+> +
+> +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
+> +({									\
+> +	int ret = __tdx_vm_ioctl(vm, cmd, flags, arg);			\
+
+tdx_cmd.c.hw_error is u64 and it could be assigned to ret, which is a int,
+the upper bits could be truncated if the upper 32-bit is set.
+
+> +									\
+> +	__TEST_ASSERT_VM_VCPU_IOCTL(!ret, #cmd,	ret, vm);		\
+> +})
+> +
+> +void tdx_init_vm(struct kvm_vm *vm, u64 attributes);
+> +
+>  #endif /* SELFTESTS_TDX_TDX_UTIL_H */[...]
