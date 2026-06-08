@@ -1,162 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF0D352021
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 18:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5865F3D7D77
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 18:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780942422; cv=none; b=adr1UMxghhQplTagq0Ayo0Fs5cuQ8X3608FoH13+beoI5+4P8fBgB9wWZ98IqWMdqNEEXqKA9ugSmCYnjJQQRdTVb4VW6fYp0JrrE09+1ywLjMuGy3I+zzQF3DAlRzGr4hUFGbYGy696Vx48msAf4XXmXws3YZtcyZflEMXHI/E=
+	t=1780942828; cv=none; b=J3I2h1dJSMF5GANu7vO/9Wqgxuw6N6zO2rNNXSYxmxNH3T0NmAct8QMm8Ca0q33XTT1m2ACfxHFyKbNeEMGXE1xI/5yXy+5sWgFKP1J90VkhH2jmVIbF3QbSUMX6d0+yNhNP5ZkmqlvXB3w/VsXy1GM3ff98GGNreIC0YWQNdBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780942422; c=relaxed/simple;
-	bh=7z5w2c4IF3zLKzZn7LkK75a0IwUPxLl/LKpIP97efWM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=h8RrZf6f8dqcFCcvi/pjXG3uUh5ncZ84+gEJGafOglmJcfYQSzB2dilvzF9mTXBo8l+iuhZi8RtDx/bBe4jsF6fRMUsMcDzUDtRUqwqpFUQfLC3SvLTYS3aPNIE+kKqSp6juyj94uGx7C4CN0L30tqNNzYLboFW0GmMRf+snnJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G/v6gQFZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780942828; c=relaxed/simple;
+	bh=uDlD/Bu/PQ0e61cH+SHapBI07ybnECSXHATY9NVPzQY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jNJVJOkVWeDN/IGyynQZTXBpZea4GtaerrE3IKYb1Z9lbHlyoNkNy++UTyBxKxWxZnHrr0dXgzhPOAiVCb4i/CEaMhUxN16p6H7eem4GCxmWbFloMg3OyJdY8OhOyQXLi+gVsPxWYgsnANtMXgUFA8ukLyN/zNUV++vd69zQtd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IFmAgWvK; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G/v6gQFZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A508D1F00893;
-	Mon,  8 Jun 2026 18:13:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780942420;
-	bh=WS0htAmPzyer+yiXeBCxgx+b5zSr38kf8CgdgMTZiA8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=G/v6gQFZrkvw2+2N9foWQhpInHCMJddqE7D4J64oULIeFr4n3b456RrzogGtwIK38
-	 g78qOxhstPsR1nxXHPTXXfxKHQB23l9B8EzPfNla35R33AbdJUZPQ41rEe4aY4QynW
-	 oi2nPmfPrGXXV/UXahua5hwwuSnK+D/kLn2dW4KbXI9f/kkxla68M4Nhbj/6ivOCvd
-	 ipzkV9NK3pOUuuBoE6cda75yWNweXsZYwWDFR30uAKf99nT6tYh3MtBvpmBkQ8paJu
-	 ad/3BFXe72u/6Dp93qANPOe1n0Aesb30v/u57FcHA0raObM26/S/35g1REEA5VmH2U
-	 YXaYPUJ1DXLxA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 15/34] KVM: x86: Restructure kvm_guest_time_update()
- for TSC upscaling
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608145455.89187-16-dwmw2@infradead.org>
-References: <20260608145455.89187-16-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 18:13:40 +0000
-Message-Id: <20260608181340.A508D1F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IFmAgWvK"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-beba94353acso453497466b.3
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 11:20:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780942823; x=1781547623; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pXH/4dC+kvIrN8dyPSz1oRdGYg1mvWltQA3ulgK7Yz4=;
+        b=IFmAgWvKmF5siMt4mNH3q0W9blHwJYGP+OztJBkCZ7ooqeUrP5KOuidPRDa6xTnVy1
+         6eydcBAEAawVeeXQgecfOAgPux4krxA/zVEC4VP8J7XqtC8pyEa2XlW3Zrpc4wYW0gER
+         cR7kIp1kLXNjr+YjeWZ7AqooLzqmfyUOxtLd3jbajnSEMF3szsszWy3EizLDkvCU4G+C
+         N1fiKIyPt4amNSqnUGO/Qy3gB5XhTowz+gxnFeRG0RcJ4E9QWhOXe/V9mJ/G/KKg//qr
+         qL837wf1fsZw/oSNzx66DNNRL5xpnwIku3jw11XwgeByJ83KIalqQRv75G4EMwnfPt2Y
+         Jy9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780942823; x=1781547623;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pXH/4dC+kvIrN8dyPSz1oRdGYg1mvWltQA3ulgK7Yz4=;
+        b=eBMkt3hUooka23/eJqS6V8MndmS02bJW2nN3AhKdY52xK1BHzlIGcP9b+2Wq3fofGI
+         XqaJu8fKbIMaytFMH6672z2bX9k0f1LKmyz+cp+sGP0AXMeo8PEas2keFDvdJsXpEpQ4
+         O8sAHtJPmhOFD0RR+hWUl2q1OWsurCMznQ/ApM0S7WOQu7w8VTqmCBVuoUQftc71PuBv
+         vOK42hWDatelHm5rJaIRO4z9VGLn7ImiIrWMhDn6+TFlHI1U6wAJP1gF0n/wdzbuox6q
+         IfH2NZjQVH45w1PsCc3mcZthnV0aNBrw1WyyMkvOvhOWbujLCqn1SSYdIfvlPnplvPRH
+         9XUQ==
+X-Gm-Message-State: AOJu0Yzk+Q/S3Rx/0Jz5XM1JQ1WyEwr4DUO8P7c88AZ99LdfB5jmH125
+	2YlU07h1mucgk3hT8GbvdFjdi8GLE11PBKKd9Eyab+kcwmli1B4cnNizzX9T1UBbC07sTySFvvm
+	9yIP11NYR4MCflNy+qg==
+X-Received: from ejbze21.prod.google.com ([2002:a17:906:ef95:b0:bf7:f52e:7ba0])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:a70b:b0:bec:b4e3:e930 with SMTP id a640c23a62f3a-bf370477ec4mr849247466b.12.1780942822361;
+ Mon, 08 Jun 2026 11:20:22 -0700 (PDT)
+Date: Mon, 08 Jun 2026 18:20:21 +0000
+In-Reply-To: <20260605172142.B18F51F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <48777f4749fa43d5648085dbb2037aa99c144a88.1780676742.git.tarunsahu@google.com>
+ <20260605172142.B18F51F00898@smtp.kernel.org>
+Message-ID: <9huz8q8oyjve.fsf@tarunix.c.googlers.com>
+Subject: Re: [RFC PATCH v2 06/10] kvm: guest_memfd: Add support for freezing
+ and unfreezing mappings
+From: tarunsahu@google.com
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Dropping the `local_irq_save()` protection around the TSC catchup =
-calculation exposes an unprotected Read-Modify-Write (RMW) of `l1_tsc_offse=
-t`, leading to guest TSC corruption on systems with unstable TSC.
-- [Medium] The commit message claims a WARN is added for `kvm_get_time_and_=
-clockread()` unexpected failures, but the implementation silently handles i=
-t.
---
+sashiko-bot@kernel.org writes:
 
-commit f05935e83e34b920673a8039b5e1b6c7443ffe07
-Author: David Woodhouse <dwmw@amazon.co.uk>
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [High] A malicious tenant can inflict a cross-tenant denial-of-service =
+by holding the global `kvm_gmem_freeze_srcu` read lock during massive, unbo=
+unded `fallocate()` operations, blocking `kvm_gmem_freeze()` for other VMs.
+> --
+>
+> commit 5ee5700d9538d9bd5f29f00de6d11fcc22d28ecc
+> Author: Tarun Sahu <tarunsahu@google.com>
+>
+> kvm: guest_memfd: Add support for freezing and unfreezing mappings
+>
+> This commit introduces freezing and unfreezing for guest_memfd mappings t=
+o
+> prevent fallocate and page fault allocations during preservation. It uses=
+ a
+> global SRCU structure to synchronize read-side operations with
+> kvm_gmem_freeze().
+>
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> index 6740ae2bf948d..b94639cdf3126 100644
+>> --- a/virt/kvm/guest_memfd.c
+>> +++ b/virt/kvm/guest_memfd.c
+> [ ... ]
+>> @@ -273,16 +284,30 @@ static long kvm_gmem_allocate(struct inode *inode,=
+ loff_t offset, loff_t len)
+>>  static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offs=
+et,
+>>  			       loff_t len)
+>>  {
+>> +	struct inode *inode =3D file_inode(file);
+>>  	int ret;
+>> +	int idx;
+>> =20
+>> -	if (!(mode & FALLOC_FL_KEEP_SIZE))
+>> -		return -EOPNOTSUPP;
+>> +	idx =3D srcu_read_lock(&kvm_gmem_freeze_srcu);
+>> +	if (kvm_gmem_is_frozen(inode)) {
+>> +		srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
+>> +		return -EPERM;
+>> +	}
+>> =20
+> [ ... ]
+>> +	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len)) {
+>> +		ret =3D -EINVAL;
+>> +		goto out;
+>> +	}
+>> =20
+>>  	if (mode & FALLOC_FL_PUNCH_HOLE)
+>>  		ret =3D kvm_gmem_punch_hole(file_inode(file), offset, len);
+>>  	else
+>>  		ret =3D kvm_gmem_allocate(file_inode(file), offset, len);
+>
+> [Severity: High]
+> Does this code allow a malicious tenant to inflict a cross-tenant denial =
+of
+> service?
+>
+> The srcu_read_lock() is acquired at the beginning of kvm_gmem_fallocate()=
+ and
+> held across the entire kvm_gmem_punch_hole() or kvm_gmem_allocate() execu=
+tion.
+> Because a guest_memfd can be terabytes in size, these operations could it=
+erate
+> over millions of pages and take a long time to complete.
+>
+> During this entire time, the global SRCU read lock is held uninterruptibl=
+y
+> (yielding via cond_resched() in kvm_gmem_allocate() does not drop SRCU).
+>
+>> =20
+>>  	if (!ret)
+>>  		file_modified(file);
+>> +
+>> +out:
+>> +	srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
+>>  	return ret;
+>>  }
+> [ ... ]
+>> @@ -1014,5 +1053,61 @@ void kvm_gmem_exit(void)
+> [ ... ]
+>> +void kvm_gmem_freeze(struct inode *inode, bool freeze)
+>> +{
+>> +	u64 flags =3D READ_ONCE(GMEM_I(inode)->flags);
+>> +
+>> +	if (freeze)
+>> +		flags |=3D GUEST_MEMFD_F_MAPPING_FROZEN;
+>> +	else
+>> +		flags &=3D ~GUEST_MEMFD_F_MAPPING_FROZEN;
+>> +
+>> +	WRITE_ONCE(GMEM_I(inode)->flags, flags);
+>> +
+>> +	if (freeze)
+>> +		synchronize_srcu(&kvm_gmem_freeze_srcu);
+>
+> [Severity: High]
+> Can this synchronize_srcu() block indefinitely waiting on another tenant?
+>
+> Since the SRCU is global, calling kvm_gmem_freeze() on a completely unrel=
+ated
+> VM will invoke synchronize_srcu(&kvm_gmem_freeze_srcu). This will wait fo=
+r the
+> first tenant's massive fallocate() to finish.
+>
+> The loop in kvm_gmem_allocate() checks kvm_gmem_is_frozen(inode) on its o=
+wn
+> inode, so it will not abort when a different inode is frozen. This effect=
+ively
+> allows an unprivileged tenant to stall live updates and preservation
+> system-wide.
 
-Restructure kvm_guest_time_update() so that kernel_ns/host_tsc are
-always "now" when doing TSC catchup, then swap in the master clock
-reference values afterward for the hv_clock.
+Agree. With having per-cpu have a problem with the per-cpu structure for
+the inode freeze as it is not tracked in cgroup (IIUC). which might result =
+in
+OOM on host when a lot of guest_memfd allocation are triggered.
 
-This makes the TSC upscaling code considerably simpler: the catchup
-adjustment is computed as the delta between what the guest TSC *should*
-be at "now" and what it actually is, rather than mixing "now" and
-"master clock reference" timestamps.
+We can use per inode rw_semaphore, but they will not be per-cpu, so
+there will be cache line bouncing. Which will affect only slow path
+(page fault allocation, fallocate). I would like to discuss on the best
+strategy.
 
-> The seqcount loop now also contains the kvm_get_time_and_clockread()
-> call (matching get_kvmclock's pattern), with the same WARN for
-> unexpected failure.
-
-[Severity: Medium]
-The commit message mentions that a WARN is added for unexpected failures of
-kvm_get_time_and_clockread(), but the implementation inside the
-CONFIG_X86_64 block seems to silently handle the failure by clearing
-use_master_clock. Was the WARN intentionally omitted from the patch?
-
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 8aae22401046..92e32d720523 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-[ ... ]
-> @@ -3363,46 +3363,63 @@ static void kvm_setup_guest_pvclock(struct pvcloc=
-k_vcpu_time_info *ref_hv_clock,
-[ ... ]
-> -	/* Keep irq disabled to prevent changes to the clock */
-> -	local_irq_save(flags);
-> -	tgt_tsc_hz =3D (u64)get_cpu_tsc_khz() * 1000;
->  	if (unlikely(tgt_tsc_hz =3D=3D 0)) {
-> -		local_irq_restore(flags);
->  		kvm_make_request(KVM_REQ_CLOCK_UPDATE, v);
->  		return 1;
->  	}
-> +
->  	if (!use_master_clock) {
-> +		unsigned long flags;
-> +
-> +		local_irq_save(flags);
->  		host_tsc =3D rdtsc();
->  		kernel_ns =3D get_kvmclock_base_ns();
-> +		local_irq_restore(flags);
->  	}
-> =20
-> -	tsc_timestamp =3D kvm_read_l1_tsc(v, host_tsc);
-> -
->  	/*
->  	 * We may have to catch up the TSC to match elapsed wall clock
->  	 * time for two reasons, even if kvmclock is used.
-> @@ -3411,17 +3428,32 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
->  	 *      entry to avoid unknown leaps of TSC even when running
->  	 *      again on the same CPU.  This may cause apparent elapsed
->  	 *      time to disappear, and the guest to stand still or run
-> -	 *	very slowly.
-> +	 *      very slowly.
->  	 */
->  	if (vcpu->tsc_catchup) {
-> -		u64 tsc =3D compute_guest_tsc(v, kernel_ns);
-> -		if (tsc > tsc_timestamp) {
-> -			adjust_tsc_offset_guest(v, tsc - tsc_timestamp);
-> -			tsc_timestamp =3D tsc;
-> -		}
-> +		s64 adjustment;
-> +
-> +		/*
-> +		 * Calculate the delta between what the guest TSC *should* be
-> +		 * and what it actually is according to kvm_read_l1_tsc().
-> +		 */
-> +		adjustment =3D compute_guest_tsc(v, kernel_ns) -
-> +			     kvm_read_l1_tsc(v, host_tsc);
-> +		if (adjustment > 0)
-> +			adjust_tsc_offset_guest(v, adjustment);
-
-[Severity: High]
-Does dropping the local_irq_save() protection around the TSC catchup calcul=
-ation
-expose an unprotected read-modify-write of l1_tsc_offset?
-
-If preemption occurs inside adjust_tsc_offset_guest() after reading the off=
-set:
-
-arch/x86/kvm/x86.c:adjust_tsc_offset_guest() {
-    u64 tsc_offset =3D vcpu->arch.l1_tsc_offset;
-    /* <--- preemption here */
-    kvm_vcpu_write_tsc_offset(vcpu, tsc_offset + adjustment);
-}
-
-And the vCPU migrates to a new CPU with an unstable TSC, KVM's preempt
-notifiers would call kvm_arch_vcpu_load() and write a new compensation
-offset. When this thread resumes, wouldn't it write back the stale base
-offset and overwrite the preempt notifier's compensation?
-
-Since the code only corrects positive adjustments, the corrupted offset
-would remain, potentially causing the guest TSC to leap forward.
-
->  	}
-> =20
-> -	local_irq_restore(flags);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608145455.8918=
-7-1-dwmw2@infradead.org?part=3D15
+>
+>> +}
+>
+> --=20
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780676742.=
+git.tarunsahu@google.com?part=3D6
