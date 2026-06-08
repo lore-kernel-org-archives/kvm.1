@@ -1,156 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E333DD86F
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 18:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E953D9666
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 18:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780942959; cv=none; b=mhVeafG0MRuKfeJYzwmOD4W6VUtIr+qdvtBezuYimUb1zLKLcYf6D4b0PqFg952T2RP5PlGQqOixx4sQP+XPXozCJHRPaILufg4lyebNUj4fCMwdTwzgr0Qao2tykvOhfEfdtz3SlBL0nE/odLCltCKrvzTcPcsuABZzbbKbLFA=
+	t=1780942979; cv=none; b=GuwrlJPp5/8/rux6MSkvB/WsSwHlqNcT2ctfsfLTZQnDvMoXkMblqn9W0wl6AyOYHCuoE2lzQYHD25bGP20ycQJREc0dSHHSZt8NrRtZx74wi0xP8QdhA9EOZa1SLb8Th5HVDlusg7SzLHtUywt+cug9sUnPySKK6tAo86PkyG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780942959; c=relaxed/simple;
-	bh=2Tw6d79+RZj0yB4HhQNDfDoy/A/ckujvR3JQH2oMqc4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BrAK+Gkmi22LXEb3BN1PoXIE4HDIT1mI3Uxq86CU80WZI8Qq/NqJd5CpbJdVmBwFoJBy/Rn8D57gGG8ln5H62RgvOZ7klbEwE8avRfUpuQ0xYXa6SRh+mY2+4+wMKX2Kc4Z13ApP1S40fZAWXRwO7wR0BWYWbg/YGXgRI5a6keM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRlpQ7S9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780942979; c=relaxed/simple;
+	bh=v6Y3fa7kX8cOD75Cvz/PmmMEKU1iHPrCF8yX1Opx2XE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oaw2JzElRR7IuJWS9/WaG+QpTwVAI8IN0VKHOvm8CtCPkJM7hv1NNWKsNaUdMmFbanT5ec0aGw0qXL4ImEHn6zEfqoxX2WosrzaqskaoanCk/2BiaWMMQJ9fR3wXJ85DKNzWPM0XKYDBd4rRpi8mhUUfn/uf+PwZticLtj7k8o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nlkUvU5r; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRlpQ7S9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844651F00893;
-	Mon,  8 Jun 2026 18:22:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780942957;
-	bh=0fKGuESUc2X53r4T4ZWo3SfPVcILKaf4yDCzLSOSETU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eRlpQ7S9C585L+GRQ8sK3WniE+hhyKtfIDb1e/rX1OV0gZaqlXYJDQU56fLx3hbDM
-	 NXtBYRyJ4CJ85uy6QDWT0QQcWGT9rR9jHf+FqfMZ0PEvsgqpv/q2/KhO6hcG/EsQJk
-	 dbg1bP03aslBRpgipAlwFu0LS6ZYK/KRYHnW9phAfDLTJ+bHpDXqOFDn2CbnCb0nfo
-	 lx78Y+koaFzxp2mo72QzWnogghkjUgMQ1PTvcHZ23HBnKRV0HnaQT74tMLJdwGQeLz
-	 FcaHffN6G3id1qPSKEPLlRkQFh+d/TYuC4gHIpfbByllliqTICFvFsmoImj7XbcYsv
-	 JPmDoPQGWdUxQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/4] vfio-pci/zdev: Add VFIO FMB device features
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Omar Elghoul" <oelghoul@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608171850.62829-4-oelghoul@linux.ibm.com>
-References: <20260608171850.62829-4-oelghoul@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 18:22:37 +0000
-Message-Id: <20260608182237.844651F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nlkUvU5r"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-bf5ea9d140eso203893066b.1
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 11:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780942977; x=1781547777; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SosLKBVvUMZz/rhhs2ynRuPONsMChlqS4SGtsVqD34c=;
+        b=nlkUvU5rYKpPBZ8e7Se1aJxyOlZVQIkZuhDCtojc7dH9reIeDRNw+eBQAYZk7ggp7I
+         6emR84y3Kc+biVUwSdL3LYbDxRW4y64NZhh7UDK+DlXTTlae/YPL6FvW9C7Oo/QrJK+u
+         NoTtlnxth31NkJXGUGMFM2HfdpFcc19afFbg0zIotoXjLuaLOsLjaAknyeJRN9clCGYt
+         piKGTrab59KsR37XgUisSvRMAIRGhauY328MLeRJ/py3LBAc04A2JT4wEBaONJ9rq4kN
+         3vNjSe8hQI7lCF71EX9WlAjW547JjZyqogE9XyAqzz+mSInZell1JIqSy96jp7rNQvKG
+         aWag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780942977; x=1781547777;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SosLKBVvUMZz/rhhs2ynRuPONsMChlqS4SGtsVqD34c=;
+        b=oZSOmvBOuTFzYf6JjQsb9+PSEOkYxMNFtsqi/Ql4HNHVCzRXD3V4nknVvdkdjwRBEy
+         fFlf2iPfN8aeBRdmUhq3pj1HoAKf+B6m1OgR66i08c67EV0d6OQ5VSGyq7Kv/A7rz481
+         tEQST8O0kRjsxjNud6uUZq4QJyzU7hZBnqprnwQZo/t//nZhvRxreyvDxtfJOpQ6Odiy
+         uiIig6y078VcxzuiKd/eNYQzZ0ldQhk8V5j4r0Z0ZVL3uU0cnWsMeHPtuzdoAYOpIVhM
+         tg6/9oISs1XCRp9YuFNLKiQuzXAkF21Y0OSaRqxhYQSbP664DDctThBJIo8CEEmvarnu
+         HMnA==
+X-Gm-Message-State: AOJu0Yyel/jwsc2zK2XAgIJ50kvvTTBOCLTzqQ7+xoJbAxJ5ysCg8Gbe
+	+DvQs++MJtmslOVGPuPFdUyfg+tzPFQ3NV5K583a8PSremxFdooPcP/UjskBQLE4T9U/k7OkpW7
+	SbT2LGLxw5UxNmZS81w==
+X-Received: from ejet27.prod.google.com ([2002:a17:906:179b:b0:bf0:cf6e:c85])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:2d89:b0:bee:72b9:f5a4 with SMTP id a640c23a62f3a-bf3a70fdd2emr636456966b.13.1780942976837;
+ Mon, 08 Jun 2026 11:22:56 -0700 (PDT)
+Date: Mon, 08 Jun 2026 18:22:56 +0000
+In-Reply-To: <20260605172557.DC6A71F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <4b2216f5c459fe699a3f62464cbc765624e20ae6.1780676742.git.tarunsahu@google.com>
+ <20260605172557.DC6A71F00898@smtp.kernel.org>
+Message-ID: <9huz5x3syjr3.fsf@tarunix.c.googlers.com>
+Subject: Re: [RFC PATCH v2 07/10] kvm: guest_memfd_luo: add support for
+ guest_memfd preservation
+From: tarunsahu@google.com
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] The UAPI structure `vfio_device_feature_zpci_fmb_read` uses a `voi=
-d __user *` pointer instead of an `__aligned_u64`, breaking 32-bit compat u=
-serspace execution on 64-bit kernels.
-- [Medium] Double enabling the FMB succeeds and silently resets the state, =
-violating the explicitly documented UAPI contract that specifies it should =
-fail.
---
+sashiko-bot@kernel.org writes:
 
-commit 3703a22be992c7a39e18f49c3a21771a62d41260
-Author: Omar Elghoul <oelghoul@linux.ibm.com>
+> [ ... ]
+>> +static bool kvm_gmem_luo_can_preserve(struct liveupdate_file_handler *handler, struct file *file)
+>> +{
+>> +	struct inode *inode = file_inode(file);
+>> +	struct gmem_file *gmem_file = file->private_data;
+>> +	struct kvm *kvm = gmem_file->kvm;
+>
+> [Severity: Critical]
+> Does this code dereference file->private_data before confirming the file
+> is actually a guest_memfd?
+>
+> The LUO framework might pass unrelated file descriptors where
+> private_data is NULL. By extracting gmem_file->kvm before checking
+> inode->i_sb->s_magic, could this cause a NULL pointer dereference
+> when evaluating unrelated files?
 
-vfio-pci/zdev: Add VFIO FMB device features
+Oops, This is a bug, I will update it.
 
-Introduce new VFIO features for zPCI devices to provide FMB passthrough to
-userspace. Allow the user to enable or disable the FMB using the SET-only
-feature VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE. Likewise allow the user to read
-the latest FMB using the GET-only feature VFIO_DEVICE_FEATURE_ZPCI_FMB_READ.
+>
+>> +
+>> +	if (inode->i_sb->s_magic != GUEST_MEMFD_MAGIC)
+>> +		return 0;
+>> +
+> [ ... ]
+>> +static int kvm_gmem_luo_preserve(struct liveupdate_file_op_args *args)
+>> +{
+> [ ... ]
+>> +	end_index = size >> PAGE_SHIFT;
+>> +
+>> +	ser = kho_alloc_preserve(sizeof(*ser));
+>
+> [Severity: High]
+> Could this call trigger a NULL pointer dereference if the KHO subsystem
+> is disabled?
+>
+> According to the KHO subsystem guidelines, all callers must explicitly
+> gate KHO usage on kho_is_enabled(). It looks like kvm_gmem_luo_init()
+> registers the file handler unconditionally, and this path invokes
+> kho_alloc_preserve() and other KHO serialization APIs without checking.
+>
+> Should this function (or the initialization) verify kho_is_enabled()
+> before interacting with the KHO subsystem?
 
-> diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci=
-_zdev.c
-> index 0990fdb146b78..09454495ee230 100644
-> --- a/drivers/vfio/pci/vfio_pci_zdev.c
-> +++ b/drivers/vfio/pci/vfio_pci_zdev.c
-[ ... ]
-> @@ -167,3 +167,60 @@ void vfio_pci_zdev_close_device(struct vfio_pci_core=
-_device *vdev)
-[ ... ]
-> +int vfio_pci_zdev_feature_fmb_enable(struct vfio_pci_core_device *vdev, =
-u32 flags,
-> +				     void __user *arg, size_t argsz)
-> +{
-[ ... ]
-> +	if (fmb_enable.enabled)
-> +		return zpci_fmb_reenable_device(zdev);
+Luo already does the check, this review in incorrect.
 
-[Severity: Medium]
-Does this violate the explicitly documented UAPI contract?=20
+> [ ... ]
+>> +static void kvm_gmem_luo_finish(struct liveupdate_file_op_args *args)
+>> +{
+>> +	struct guest_memfd_luo_ser *ser;
+>> +	struct guest_memfd_luo_folio_ser *folios_ser;
+>> +
+>> +	/* Nothing to be done here, if retrieve_status was successful or errored,
+>> +	 * Cleanup is taken care of in retrieval call.
+>> +	 */
+>> +	if (args->retrieve_status)
+>> +		return;
+>
+> [Severity: High]
+> Does this logic inversion cause a double-free on successful retrieval?
+>
+> In kvm_gmem_luo_retrieve(), a successful retrieval frees the ser struct
+> but leaves args->serialized_data intact:
+>
+> kvm_gmem_luo_retrieve()
+>     kho_restore_free(ser);
+>     return 0;
+>
+> Because standard Linux error handling uses 0 for success,
+> if (args->retrieve_status) evaluates to false on success, causing this
+> function to fall through instead of returning.
+>
+> Could this lead to accessing the freed ser struct, erroneously putting
+> active folios, and calling kho_restore_free() a second time?
 
-The UAPI documentation for VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE states that
-the feature "fails on attempt to double enable/disable". However,
-zpci_fmb_reenable_device() unconditionally succeeds and resets the hardware
-block if already enabled.
+retrieve_status is 1 when successful not 0, this review is incorrect.
 
-Will userspace applications expecting an error on double-enable instead
-silently lose counter data?
-
-> +	return zpci_fmb_disable_device(zdev);
-> +}
-> +
-> +int vfio_pci_zdev_feature_fmb_read(struct vfio_pci_core_device *vdev, u3=
-2 flags,
-> +				   void __user *arg, size_t argsz)
-> +{
-> +	struct zpci_dev *zdev;
-> +	struct vfio_device_feature_zpci_fmb_read fmb_read;
-> +	struct zpci_fmb fmb_temp =3D {0};
-> +	int ret;
-> +
-> +	ret =3D vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET, sizeo=
-f(fmb_read));
-
-[Severity: High]
-Can this check reject valid 32-bit process payloads on 64-bit kernels?
-
-Because vfio_device_feature_zpci_fmb_read defines data as a pointer type,
-it has different sizes for 32-bit and 64-bit userspace (4 bytes vs 8 bytes).
-When a 32-bit process computes argsz and passes it to the ioctl,
-vfio_check_feature() computes the minimum required payload size based on the
-64-bit kernel structure size (8 bytes).
-
-Since the 32-bit process provides a smaller 4-byte payload size, will this
-cause the ioctl to unconditionally fail with -EINVAL and break compat
-userspace execution?
-
-> +	if (ret !=3D 1)
-> +		return ret;
-> +
-[ ... ]
-> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> index 5de618a3a5eee..3988e8690e0b3 100644
-> --- a/include/uapi/linux/vfio.h
-> +++ b/include/uapi/linux/vfio.h
-[ ... ]
-> +/**
-> + * Upon VFIO_DEVICE_FEATURE_SET, enable or disable FMB for the VFIO zPCI=
- device.
-> + *
-> + * enabled is treated as a bool, so any non-zero value evaluates to true=
-. This
-> + * feature fails on attempt to double enable/disable.
-> + *
-> + * Returns: 0 on success, -1 and errno set appropriately on error.
-> + */
-> +#define VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE 13
-[ ... ]
-> +struct vfio_device_feature_zpci_fmb_read {
-> +	void __user *data;
-> +};
-
-[Severity: High]
-Is it safe to use a variable-sized pointer type in a UAPI structure?
-
-As mentioned above, this pointer will be 4 bytes for 32-bit userspace and
-8 bytes for 64-bit kernels. Should this UAPI structure use a fixed-size type
-like __aligned_u64 for the pointer instead?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608171850.6282=
-9-1-oelghoul@linux.ibm.com?part=3D3
