@@ -1,174 +1,250 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444B7390986
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 20:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5865338CFE8;
+	Mon,  8 Jun 2026 20:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780948995; cv=none; b=p+lkXv2pC5It7dclkyy9JpN/dmWw92CZLZFJC+dtEPCBdOZ6fdM4Iy+8BGTCkopk06ibnhUexc/cidoKoTU5HChSYypZvIHTzws4jWUA+bJtaQPnYRMfqYDtzK4iT10S8rSPQBxHSjGmQ4w2sqBXjyi3cw6UD/0ChW6ThkVJIgk=
+	t=1780949439; cv=none; b=G60/5av3IhE+8fVp5+x2r1QYIptSgtuiZXpNTNeaFyO/zSAWCzutVdAVZL6RC8oLAXCWm6LINIsvv1n8wQRr69G2PMsndnvJQ+UMzIzNlkftjVrsxg8r3rjRBrqzjzFoxNoN75ruu1MbKKTmdJPr8VAtu9OWaw6mZ5ttLHP5V9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780948995; c=relaxed/simple;
-	bh=ldwX9IaVrWaWJ+ykPPt7Nlm1aCVmDCK2Kdd3SJEvh5E=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=dYx/tAs06cNK1ZIMJkiEGsxpWRrEMYicx3pcZ6rpMDIU7pM7DI0csEFNQ50tE1FayX0GEiwAHhX9kgOGv7jCPR5JVq3Pp8kY3PkDL4FAohqnHCgAXx1pFdwXO2lKbOgavFZ0zsRLrhGtn7pBT7/g8Tjyu2dCIUAQVMURmoH5/BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ejoYUyL1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780949439; c=relaxed/simple;
+	bh=WdvzLkxk8MyiMgSQc9Es2xOIw4Dj4CL8OMXLKX2UKHs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YFad8JvUwhDXwjUv9ORce9PKa2xhpFfT198PUUTuvteZiNIi79HwwaLcqViBLlVUrYmmlyQI2ceGw0khW/DXaNsknHx8CZUburemE9uDKdHd+AWwbyDTcrP9dSm2rgjmz006KaX3Pp+7FJUKfnDDve1u7bdLyQTpc9Wtb4B9n+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QYSPYV1j; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ejoYUyL1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7171F00893;
-	Mon,  8 Jun 2026 20:03:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780948993;
-	bh=gHlUAiBtNNcE96BDm2olKsRGYNtritEgNKTkUIdHtds=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ejoYUyL1iykrgFGh3dPxh2iezg70bAomS7V8EZxqUmcZwidZtzlXbTQOMT87uQb5G
-	 89cZYoMNq1l1JiaSfEAH2SzzWpMzcn99wvWbpCBMUTA+SNqZ/GszjKd5cFtZXmamht
-	 8XjjOpO5w01J8VJGv0t5MifI672VPypG9bSDEN0Im16v1rPirzJk58M+CkPuscsfdA
-	 Gdez4HfaUjb0Ik0oTtF9YDNy9BD2ai9E3RNofgF1PBsE6D2qki+rh9Y1qs5EZNW3+4
-	 z2xDMdAaicZ7yJ81JR6ufpcx3Q/l6vSW0SdZ5NiC1HmN/Xl9ztjdAU180mHhhX1CHo
-	 a0ZBIcMGQcPtA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 42/60] kvm: x86: Make local APIC code aware of planes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-43-joro@8bytes.org>
-References: <20260608144252.351443-43-joro@8bytes.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 20:03:12 +0000
-Message-Id: <20260608200313.0F7171F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QYSPYV1j"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 658ASRUL3475344;
+	Mon, 8 Jun 2026 20:10:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=N2zRYpqXjA1FsqP58fFXgUbTJQ7nsH5ZeApmyS6E4
+	W8=; b=QYSPYV1j+xXJ1qfwFm8hImfSLrfWgtBKdgsIfYri1v3MUW/G6uUxonP5B
+	eI105p7XshME/pIsTZ9puyhTLSLVwGpTfJv195NwFwcpmZdj7cN5Wl9XG17WAaW2
+	p3Bjb+xFkFwYNl/DPmNS9JdRobD92vvN4yf7zTdYlZWetw36saqUCIso79TahhXs
+	N1PWaV79XwFvRxd63JgpE/i2aW19i7FF/nCAHA9rNCG1ePxXD+tGcn5uh65lHZBB
+	f6QBVDWvX9ahIFNYPzsoM2ReBsy3msKI3J/qfmzmDnj5bmgsOi+Rn7PcVvGi13hb
+	cf9Wu6N+W2XMjxdkqQjz1ExWCXANw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4em8yhs790-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 20:10:16 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 658K4fo5001188;
+	Mon, 8 Jun 2026 20:10:15 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4en0jy6qf3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 20:10:15 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 658KABlg16187670
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 8 Jun 2026 20:10:12 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C1C9C20040;
+	Mon,  8 Jun 2026 20:10:11 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DE2D420043;
+	Mon,  8 Jun 2026 20:10:07 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.124.208.180])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  8 Jun 2026 20:10:07 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Gautam Menghani <gautam@linux.ibm.com>,
+        Mukesh Kumar Chaurasiya <mkchauras@gmail.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+Date: Tue,  9 Jun 2026 01:40:01 +0530
+Message-ID: <20260608201001.65760-1-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDE4MiBTYWx0ZWRfX08rontH0jGL1
+ nPfxUKgiw/iAevdxbCr1/do/EcWH6mfrtHL2VCp9PIC1Jmjgbse2RlbklaygtnTObhnnidbgqwH
+ LaK5clBfh5lLeRrSryaPnEllsxRz+BhFv/7BVigCBBuRNNCgewu+4spyoWT556B14g+iZPAbu2k
+ 6EiD51FvFYnNteSdwzniT16loObWijbYCnMVTjYEmiAicBPNtUgCAY1mr6KZjFYWu7Vih1gzBZf
+ rfJ3kAYYHKjFSCR/oCQzRto/GryUNLPgigCIDkE32pJ4jDConKKGXPxKUT4VunAtT/p8bP2vF1L
+ HGmYg7AeZKGjEFoejgljD35oMftiANuW8jhmRCiwAo/XoM/nNB/41QtMaYwoDd9zjput3S597Is
+ kMJCx5mgA2/Jo9xkvr0w2kmlBpcFvm9D+js968D/TpLtQxHiUWqwmzdj6k6GJUNGrOFpODRR5tE
+ Jsk/HXUvm5s5FFHZUmA==
+X-Authority-Analysis: v=2.4 cv=HvFG3UTS c=1 sm=1 tr=0 ts=6a2721a8 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=9YAIjoFcglyEYsXf--YA:9
+X-Proofpoint-ORIG-GUID: 6PiZMTJrvxEG9tkgHTQkZgB_dw4BjJDC
+X-Proofpoint-GUID: FplBwTkmv2YHom8WSz4ZVI5no8F0Htj7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-08_05,2026-06-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0 suspectscore=0
+ spamscore=0 priorityscore=1501 phishscore=0 malwarescore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606080182
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Critical] Uninitialized stack variable leads to out-of-bounds array read=
- and NULL pointer dereference in KVM_SIGNAL_MSI.
-- [High] kvm_pi_update_irte() unconditionally hardcodes plane 0, breaking p=
-osted interrupts for MSIs targeted at other planes.
-- [Medium] kvm_sched_yield() operates on the global VM APIC map, violating =
-plane isolation and potentially yielding to the wrong vCPU.
---
+On IBM POWER systems, newer processor generations can operate in
+compatibility modes corresponding to earlier generations. This becomes
+relevant for nested virtualization, where nested KVM guests may need to
+run with a specific processor compatibility level.
 
-commit 06af524f9c5368917a9b156f85c8c35815e2a5e4
-Author: Paolo Bonzini <pbonzini@redhat.com>
+Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
+logical partition (L1) booted in Power10 compatibility mode, the guest
+fails to boot while setting 'arch_compat'. This happens because the CPU
+class is derived from the hardware PVR (via mfspr()), which reflects the
+physical processor generation (Power11), rather than the effective
+compatibility mode (Power10).
 
-Make the local apic code aware of planes and only operate on APICs
-within the same plane level.
+As a result, userspace may request a Power11 arch_compat for the L2
+guest. However, the L1 partition, running in Power10 compatibility, has
+only negotiated support up to Power10 with the Power Hypervisor (L0).
+When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
+hypervisor rejects the request, leading to a late guest boot failure:
 
-This patch updates KVM's local APIC, IOAPIC, and MSI handling to operate
-within isolated planes rather than treating all APICs as a single global po=
-ol.
-By using the newly introduced plane structures, APIC delivery and lookup
-operations now restrict themselves to the APIC map and vCPUs associated
-with a specific plane level.
+  KVM-NESTEDv2: couldn't set guest wide elements
+  [..KVM reg dump..]
 
-> diff --git a/arch/x86/kvm/irq.c b/arch/x86/kvm/irq.c
-> index bc748a4b7cbd..3bf2ecfd9cb4 100644
-> --- a/arch/x86/kvm/irq.c
-> +++ b/arch/x86/kvm/irq.c
-> @@ -226,6 +226,7 @@ int kvm_set_msi(struct kvm_kernel_irq_routing_entry *=
-e,
->  		struct kvm *kvm, int irq_source_id, int level, bool line_status)
->  {
->  	struct kvm_lapic_irq irq;
-> +	struct kvm_plane *plane;
-> =20
->  	if (kvm_msi_route_invalid(kvm, e))
->  		return -EINVAL;
-> @@ -234,8 +235,9 @@ int kvm_set_msi(struct kvm_kernel_irq_routing_entry *=
-e,
->  		return -1;
-> =20
->  	kvm_msi_to_lapic_irq(kvm, e, &irq);
-> +	plane =3D kvm->planes[e->msi.plane_level];
-> =20
-> -	return kvm_irq_delivery_to_apic(kvm, NULL, &irq);
-> +	return kvm_irq_delivery_to_apic(plane, NULL, &irq);
->  }
+This situation should be detected earlier and rejected by KVM. Without
+proper validation, if userspace ignores the error, the guest may continue
+to boot in Power11 raw mode on a Power10 compatibility host, which should
+not be allowed.
 
-[Severity: Critical]
-Could this lead to an out-of-bounds array read and a subsequent NULL pointer
-dereference?
+Introduce a validation mechanism that detects unsupported arch_compat
+values early in the guest initialization path. When an unsupported
+arch_compat is requested (e.g., Power11 on a Power10 compatibility mode
+host), kvmppc_set_arch_compat() uses cpu_has_feature(CPU_FTR_P11_PVR) to
+detect the mismatch and sets arch_compat to PVR_ARCH_INVALID. This
+triggers kvmppc_sanity_check() to mark the vCPU as invalid by setting
+vcpu->arch.sane to false. On the next vCPU run, kvmppc_vcpu_run_hv()
+checks this flag and returns -EINVAL, preventing the guest from running
+with an invalid processor compatibility configuration.
 
-In virt/kvm/irqchip.c:kvm_send_userspace_msi(), the route structure is
-allocated on the stack but not fully zero-initialized:
+With this, when a Power11 arch_compat is requested on a Power10
+compatibility mode host, the guest fails early during boot with:
 
-struct kvm_kernel_irq_routing_entry route;
-...
-return kvm_set_msi(&route, kvm, KVM_USERSPACE_IRQ_SOURCE_ID, 1, false);
+  error: kvm run failed Invalid argument
 
-If route.msi.plane_level contains uninitialized stack garbage, we might acc=
-ess
-an out-of-bounds index in the kvm->planes array here, and potentially pass a
-NULL plane to kvm_irq_delivery_to_apic(). Is there a bounds check missing?
+This provides a much clearer failure mode compared to the previous
+behavior where the guest could boot in Power11 raw mode (if userspace
+ignored the error) or fail late during H_GUEST_SET_STATE.
 
-[ ... ]
+Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Cc: stable@vger.kernel.org # v6.13+
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+---
+Changes in v2:
+* Fixed issue where v1 allowed guest to boot in Power11 raw mode when
+  userspace ignored the error, by adding validation in kvmppc_sanity_check()
+  to ensure early failure during vCPU run [Found the issue after posting v1,
+  also reported by Gautam.]
+* Introduced PVR_ARCH_INVALID constant for marking invalid arch_compat
+* Dropped all Reviewed-by and Tested-by tags due to code changes; requesting
+  fresh reviews
+* v1: https://lore.kernel.org/all/20260603141539.47620-1-amachhiw@linux.ibm.com/
 
-> @@ -453,7 +455,7 @@ static int kvm_pi_update_irte(struct kvm_kernel_irqfd=
- *irqfd,
->  		 * if they have a single CPU as the destination, e.g. only if
->  		 * the guest has affined the interrupt to a single vCPU.
->  		 */
-> -		if (!kvm_intr_is_single_vcpu(kvm, &irq, &vcpu) ||
-> +		if (!kvm_intr_is_single_vcpu(kvm->planes[0], &irq, &vcpu) ||
->  		    !kvm_irq_is_postable(&irq))
->  			vcpu =3D NULL;
->  	}
+Changes in v1:
+* Moved this patch out of the v3 series [1] as discussed here [2]
+* Addressed below review comments from Ritesh:
+  - Based the PVR validation on cpu features
+  - Fixed hcall name typo
+  - Stable backport
 
-[Severity: High]
-Will hardcoding kvm->planes[0] here break posted interrupts for MSIs target=
-ed
-at other planes?
+[1] https://lore.kernel.org/all/20260522152744.55251-1-amachhiw@linux.ibm.com/
+[2] https://lore.kernel.org/all/20260522152744.55251-2-amachhiw@linux.ibm.com/
+---
+ arch/powerpc/include/asm/reg.h |  1 +
+ arch/powerpc/kvm/book3s_hv.c   | 15 ++++++++++++++-
+ arch/powerpc/kvm/powerpc.c     |  3 +++
+ 3 files changed, 18 insertions(+), 1 deletion(-)
 
-Since kvm_set_msi() was updated to route dynamically based on
-entry->msi.plane_level, using plane 0 unconditionally here seems like it co=
-uld
-cause posted interrupts to be disabled (if the target APIC ID doesn't exist=
- on
-plane 0) or misrouted (if the APIC ID overlaps with one on plane 0).
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index 3449dd2b577d..7472b9522f71 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -1356,6 +1356,7 @@
+ #define PVR_ARCH_300	0x0f000005
+ #define PVR_ARCH_31	0x0f000006
+ #define PVR_ARCH_31_P11	0x0f000007
++#define PVR_ARCH_INVALID	0xffffffff
+ 
+ /* Macros for setting and retrieving special purpose registers */
+ #ifndef __ASSEMBLER__
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 61dbeea317f3..f9380ef65750 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -446,7 +446,19 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+ 			guest_pcr_bit = PCR_ARCH_300;
+ 			break;
+ 		case PVR_ARCH_31:
++			guest_pcr_bit = PCR_ARCH_31;
++			break;
+ 		case PVR_ARCH_31_P11:
++			/*
++			 * Need to check this for ISA 3.1, as Power10 and
++			 * Power11 share the same PCR. For any subsequent ISA
++			 * versions, this will be taken care of by the guest vs
++			 * host PCR comparison below.
++			 */
++			if (!cpu_has_feature(CPU_FTR_P11_PVR)) {
++				arch_compat = PVR_ARCH_INVALID;
++				goto out;
++			}
+ 			guest_pcr_bit = PCR_ARCH_31;
+ 			break;
+ 		default:
+@@ -469,6 +481,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+ 			return -EINVAL;
+ 	}
+ 
++out:
+ 	spin_lock(&vc->lock);
+ 	vc->arch_compat = arch_compat;
+ 	kvmhv_nestedv2_mark_dirty(vcpu, KVMPPC_GSID_LOGICAL_PVR);
+@@ -479,7 +492,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+ 	vc->pcr = (host_pcr_bit - guest_pcr_bit) | PCR_MASK;
+ 	spin_unlock(&vc->lock);
+ 
+-	return 0;
++	return kvmppc_sanity_check(vcpu);
+ }
+ 
+ static void kvmppc_dump_regs(struct kvm_vcpu *vcpu)
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 00302399fc37..7e2d489af642 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -258,6 +258,9 @@ int kvmppc_sanity_check(struct kvm_vcpu *vcpu)
+ 	if (!vcpu->arch.pvr)
+ 		goto out;
+ 
++	if (vcpu->arch.vcore->arch_compat == PVR_ARCH_INVALID)
++		goto out;
++
+ 	/* PAPR only works with book3s_64 */
+ 	if ((vcpu->arch.cpu_type != KVM_CPU_3S_64) && vcpu->arch.papr_enabled)
+ 		goto out;
 
-Should this be using entry->msi.plane_level as well?
+base-commit: 4549871118cf616eecdd2d939f78e3b9e1dddc48
+-- 
+2.50.1 (Apple Git-155)
 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 070f87ae23eb..7fc08df245bd 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-
-[ ... ]
-
-> @@ -10515,7 +10515,7 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vc=
-pu, int cpl,
->  		if (!guest_pv_has(vcpu, KVM_FEATURE_PV_UNHALT))
->  			break;
-> =20
-> -		kvm_pv_kick_cpu_op(vcpu->kvm, a1);
-> +		kvm_pv_kick_cpu_op(vcpu->plane, a1);
->  		kvm_sched_yield(vcpu, a1);
->  		ret =3D 0;
->  		break;
-
-[Severity: Medium]
-Does kvm_sched_yield() need to be updated to be plane-aware?
-
-While kvm_pv_kick_cpu_op() is updated here to operate within the context of
-vcpu->plane, kvm_sched_yield() still resolves the destination APIC ID again=
-st
-the global VM APIC map:
-
-arch/x86/kvm/x86.c:kvm_sched_yield() {
-    ...
-    map =3D rcu_dereference(vcpu->kvm->arch.apic_map);
-    ...
-}
-
-Since APIC maps and IDs are now plane-specific, could this cause KVM to yie=
-ld
-the CPU to the wrong vCPU if APIC IDs overlap between planes?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D42
