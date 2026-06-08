@@ -1,82 +1,117 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E007C343D66;
-	Mon,  8 Jun 2026 17:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780941132; cv=none; b=iz2cmYtYJKuYU4/tpeRohdgAX5oZ5snV4T/fRGloWQiej+78Du2IRwi7J9/FnWswr53aymDJacPfJdyvyeZrNWdgdLXkORwGLYX8aWqtjLPXvTDHdpuyWP2mOjiEo7cXHO3u1UmIvq9NHpbr4F9P/U8PeBmITSf64k3vBLij+dg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780941132; c=relaxed/simple;
-	bh=QSal/tVkHxeb9vLgIzl1B7joICUP1agySJd1l/0Ed44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RzNipArLblF7NScUg67dY01kGA+1fLn6U66jStt4aqwF/Btz7hPBfVPkVbXRunkUEaiQ8gEodi3m5ggUK7oy23z/mdD5Rt3l6ivwUtOrIwd09y0Blfd8XUn8AdfloWyA03B6aMLgHAp3Ywd+LJywUKhOj9ATW57500ZKavLbxvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 46872202AB5;
-	Mon,  8 Jun 2026 19:52:09 +0200 (CEST)
-Date: Mon, 8 Jun 2026 19:52:08 +0200
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, ashish.kalra@amd.com, michael.roth@amd.com, nsaenz@amazon.com, 
-	anelkz@amazon.de, James.Bottomley@hansenpartnership.com, 
-	Melody Wang <huibo.wang@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kvmarm@lists.linux.dev, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, x86@kernel.org, 
-	coconut-svsm@lists.linux.dev, joerg.roedel@amd.com
-Subject: Re: [PATCH 35/60] kvm: Add VCPU plane-scheduling state and helpers
-Message-ID: <aib8n5lO6HKbLC4Y@8bytes.org>
-References: <20260608144252.351443-1-joro@8bytes.org>
- <20260608144252.351443-36-joro@8bytes.org>
- <e7eb0dba-790a-4644-9895-5c9a7420d7fe@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5443B19B5
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 17:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780941204; cv=none; b=eZ9YgR5FnLOgFYZU8m4iArFRnDesuv0DDO6gvvc4P+HhvDTn78dSvFJrRhNfPLC2KgzbYvMUOe6DRWjuXqp6b36je3pIA3zjo4HdS34RQHpn0MlF2hVi0GkEG7hxwjKgtG8bJKDMO8CU7Xz16Kr8hIwg6lBl+T0CTYJP+tttIKI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780941204; c=relaxed/simple;
+	bh=qPwlDVrYAoqzTbKJhw46a365nFwiREkN7/4tu5U8WJg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=VZGZtS85oe/THdW84OWWww+RNcG9WR56jdATWVRFopiAd2siakYtnNw03ODjehuTRmDMTKUZ55m23r114pwofokz1raJWNMAT2BREw7dx2ncbNEaWPZdW5fHO+EvpDqchf3FwfLxMtQFbVFaJJbtToPbi0qURNqNEb12QRVUqiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLj/jx3Q; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLj/jx3Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7E91F00898;
+	Mon,  8 Jun 2026 17:53:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780941203;
+	bh=1GjPVJ6Pk/53XEA6IENP0xKIG43A1uC+eDCIVcuOyxo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PLj/jx3QInzAT5+FX3kS70sVPfvrP/CqTp/5ulGzBVexFikKYo1Hz8PH8an2JOj0Y
+	 3tSMnQGESXbBDIu9WoP3mSrbp3gqUPK61K0FX4YFa7hu4e4q/i8CaFN0yY8OA5PQgO
+	 qrpCCR8yxmeWKqCVciLrW28GlXGM/q5UuqNnfe86ap4Pebnzf2xysMnDAMJ4H5Gn1f
+	 McujCS+NoZjYkFtzoqgTfI21H0o9pFOC/wiFb4Wl+5M6niq0QFB1eXJarxAewWOQFh
+	 XbwFYs2eOiCs0fKoqQikvX1oJWeif1V+uGE0c9yMhcryDfylsRcr/BCcFHJflbNVuE
+	 BeLatjv6/0z1w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 32/60] kvm: Allocate struct kvm_run only for struct
+ kvm_vcpu_common
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260608144252.351443-33-joro@8bytes.org>
+References: <20260608144252.351443-33-joro@8bytes.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 08 Jun 2026 17:53:22 +0000
+Message-Id: <20260608175323.2E7E91F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e7eb0dba-790a-4644-9895-5c9a7420d7fe@redhat.com>
 
-Hi Paolo,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-On Mon, Jun 08, 2026 at 06:47:54PM +0200, Paolo Bonzini wrote:
-> On 6/8/26 16:42, Jörg Rödel wrote:
-> > From: Joerg Roedel <joerg.roedel@amd.com>
-> > 
-> > The algorithm is to always run the lowest runnable plane. Plane
-> > switches are done by stopping the current plane and setting another
-> > runnable.
-> > 
-> > Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-> 
-> This was left arbitrary in my version because for example Hyper-V VTLs use
-> highest-runnable instead.  It also made pure userspace scheduling possible,
-> though that may not be very important in the grand scheme of things.
+Pre-existing issues:
+- [Critical] Use-After-Free of the shared `kvm_vcpu_common` struct and its =
+`run` page during VM teardown due to lack of reference counting.
+--
 
-IIRC what Hyper-V does is always the run the highest-privileged runnable level,
-no?  Maybe in their numbering level 0 has the least privileges?  Anyway, I am
-happy to make changes here, also based on input from the VSM side.
+commit 7fd60c1bd4dd10b32f1fba34d759b1ff92afdd4f
+Author: Paolo Bonzini <pbonzini@redhat.com>
 
-> Did you drop it because it didn't work, or just for simplicity?
+Share the struct kvm_run across all planes for one VCPU id.
 
-The user-space scheduling worked, my 6.17 planes implementation used it. But
-there are some problems with it going forward, because TDX Partitioning (and
-likely ARM CCA Planes as well) do not allow arbitrary switches forced by the
-hypervisor. All they allow is a forced switch to the highest privileged plane,
-the SVSM on SNP will force the same constraints by making lower-privilege VMSAs
-not-runnable when it executes.
+This commit shares the kvm_run structure across all planes for a single
+VCPU by allocating it and storing it within the shared kvm_vcpu_common
+structure.
 
-So exposing an interface for user-space to chose which plane to run does seem
-to gain some weird, platform dependent semantics going forward. TDX and CCA
-also require in-kernel switching as they can switch planes without a VMEXIT, so
-I decided to have it from the start.
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 4f2c8f46a0d3..2d0d5f4fd356 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
 
+[ ... ]
 
--Joerg
+> @@ -546,6 +557,7 @@ static void kvm_vcpu_common_destroy(struct kvm_vcpu *=
+vcpu)
+>  	struct kvm *kvm =3D common->kvm;
+> =20
+>  	vcpu->common =3D NULL;
+> +	vcpu->run =3D NULL;
+> =20
+>  	if (vcpu->plane_level !=3D 0)
+>  	       return;
+
+[Severity: Critical]
+This is a pre-existing issue, but could this cause a use-after-free during
+VM teardown?
+
+The common struct and its shared run page are freed when destroying the
+plane 0 VCPU:
+
+kvm_vcpu_common_destroy() {
+        ...
+        if (vcpu->plane_level !=3D 0)
+               return;
+        ...
+        free_page((unsigned long)common->run);
+        kfree(common);
+}
+
+If the VM teardown process happens to destroy the plane 0 VCPU before the
+non-zero planes, wouldn't the later calls to kvm_vcpu_common_destroy() for
+the remaining planes dereference a freed vcpu->common pointer?
+
+For instance, the function begins by accessing common->kvm, which would be
+a use-after-free if plane 0 has already been destroyed:
+
+kvm_vcpu_common_destroy() {
+        struct kvm_vcpu_common *common =3D vcpu->common;
+        struct kvm *kvm =3D common->kvm;
+        ...
+
+Would it be safer to use a standard refcount mechanism to manage the lifecy=
+cle
+of this shared structure across independent teardown paths?
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
+43-1-joro@8bytes.org?part=3D32
