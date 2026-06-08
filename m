@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990FA3D5676;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821083D88FA;
 	Mon,  8 Jun 2026 14:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929799; cv=none; b=ORZFUWuN76ufPEq7whMBXiWvvFQrreS5LkpVb7j6l9XWXKVEpXdB7l+UVkSNFhFF7AuP3r3Hbw2pBWFCYIQpRz9y/HRqz0aRdlZ4PCnmZOPK18s9XMF8yQAmG4+gaNGxIuabIlJV6URBCZ60pUIp4AgGF0YS7mm+qZROl5mG9FE=
+	t=1780929800; cv=none; b=NZe3NwC861DSeoYKXGWLMpO21YOh0JZ0IXzFoGiMkZwAGSEEqYZS6outlCKgtOza2z5uiARnNPE/elp/jNrZEXGrgfeGRI9rYQarPrD1Ik/sxhUJcRW62TG/vyOewsExw47qsoDt+0lwjlMLH1mhVMRH4MOKJuQrGD8tDKpxGf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780929799; c=relaxed/simple;
-	bh=hIJot40vOqp2I86HNZX2yK27+S1gZmwy5Um7uPgT008=;
+	s=arc-20240116; t=1780929800; c=relaxed/simple;
+	bh=4ORi4B4afWlRXij5S4yTmEvVrbaYG/uVZorjzk7jihg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gbhLALGMK38AKlyPRM/7+OPdbOMygwxf5q7VIYxUc4KArNHLo+qijl4oR4ZPxABzzaqkpL/msME/En7wy7fieQm1zeG14ehEerhpizKt+/Ytp+J6Wrf1toLsXrWyHaLxpM141L7qFo6spCxSeQm/dpRnhT7+aNGwZSYYfWbD7FE=
+	 MIME-Version:Content-Type; b=Hw5A0U7Mkqb4JVCoBYzoTzmNDp729wYsDGIX27xTYG/TwzDRuNz7jNwWHNuezuPi9zeDgIrD7esHkE7f48OB4O5eGhoiKoH8B9HrSy2+vQMeVlqIXVWueL5bDcvgSq3PRwkGdtwIergXm0ke0pzlD6DdXPBNKGOVKZmvcC9G9XE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,7 +16,7 @@ Received: from io.home.8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 8D3EE2028AF;
+	by mail.8bytes.org (Postfix) with ESMTPSA id 579A02028AE;
 	Mon,  8 Jun 2026 16:43:07 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
@@ -39,9 +39,9 @@ Cc: Tom Lendacky <thomas.lendacky@amd.com>,
 	coconut-svsm@lists.linux.dev,
 	joerg.roedel@amd.com,
 	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-Subject: [PATCH 12/60] kvm: Move vcpu accounting to struct kvm_vcpu_common
-Date: Mon,  8 Jun 2026 16:42:04 +0200
-Message-ID: <20260608144252.351443-13-joro@8bytes.org>
+Subject: [PATCH 11/60] kvm: Introduce struct kvm_vcpu_common
+Date: Mon,  8 Jun 2026 16:42:03 +0200
+Message-ID: <20260608144252.351443-12-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
 References: <20260608144252.351443-1-joro@8bytes.org>
@@ -56,209 +56,133 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-Do the accounting of created vcpus and the sanity checks only once per
-plane.
+When creating one VCPU object per plane there is still a lot of VCPU
+state which needes to be shared across all planes. Create struct
+kvm_vcpu_common as a container for this shared state.
 
 Co-developed-by: Carlos López <clopez@suse.de>
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- include/linux/kvm_host.h |   2 +
- virt/kvm/kvm_main.c      | 108 ++++++++++++++++++++++++---------------
- 2 files changed, 68 insertions(+), 42 deletions(-)
+ include/linux/kvm_host.h | 10 ++++++++++
+ virt/kvm/kvm_main.c      | 36 ++++++++++++++++++++++++++++++++++--
+ 2 files changed, 44 insertions(+), 2 deletions(-)
 
 diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index c4c4922df965..47144a83f9c5 100644
+index 5a72f73a2f31..c4c4922df965 100644
 --- a/include/linux/kvm_host.h
 +++ b/include/linux/kvm_host.h
-@@ -325,6 +325,8 @@ struct kvm_mmio_fragment {
- struct kvm_vcpu_common {
- 	struct kvm *kvm;
- 
-+	int vcpu_idx; /* index into kvm->planes[]->vcpu_array */
-+
- 	/* Currently active VCPU */
- 	struct kvm_vcpu *current_vcpu;
+@@ -322,6 +322,13 @@ struct kvm_mmio_fragment {
+ 	unsigned int len;
  };
+ 
++struct kvm_vcpu_common {
++	struct kvm *kvm;
++
++	/* Currently active VCPU */
++	struct kvm_vcpu *current_vcpu;
++};
++
+ struct kvm_vcpu {
+ 	struct kvm *kvm;
+ 	struct kvm_plane *plane;
+@@ -400,6 +407,9 @@ struct kvm_vcpu {
+ 	 */
+ 	struct kvm_memory_slot *last_used_slot;
+ 	u64 last_used_slot_gen;
++
++	struct kvm_vcpu_common *common;
++	unsigned plane_level;
+ };
+ 
+ /*
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index fb840d029c56..14e74cdc4709 100644
+index 668645dd3945..fb840d029c56 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -438,18 +438,58 @@ void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc)
+@@ -438,6 +438,20 @@ void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc)
  }
  #endif
  
--static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm)
-+static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned long id)
- {
--	struct kvm_vcpu_common *common = kzalloc(sizeof(*common), GFP_KERNEL_ACCOUNT);
-+	struct kvm_vcpu_common *common __free(kfree) = kzalloc(sizeof(*common), GFP_KERNEL_ACCOUNT);
-+	int r;
- 
--	if (common == NULL)
--		return -ENOMEM;
-+	/*
-+	 * KVM tracks vCPU IDs as 'int', be kind to userspace and reject
-+	 * too-large values instead of silently truncating.
-+	 *
-+	 * Ensure KVM_MAX_VCPU_IDS isn't pushed above INT_MAX without first
-+	 * changing the storage type (at the very least, IDs should be tracked
-+	 * as unsigned ints).
-+	 */
-+	BUILD_BUG_ON(KVM_MAX_VCPU_IDS > INT_MAX);
-+	if (id >= KVM_MAX_VCPU_IDS)
-+		return -EINVAL;
++static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm)
++{
++	struct kvm_vcpu_common *common = kzalloc(sizeof(*common), GFP_KERNEL_ACCOUNT);
 +
-+	mutex_lock(&kvm->lock);
-+	kvm->created_vcpus++;
-+	mutex_unlock(&kvm->lock);
++	if (common == NULL)
++		return -ENOMEM;
 +
-+	if (common == NULL) {
-+		r = -ENOMEM;
-+		goto out_drop_counter;
-+	}
++	common->kvm = kvm;
++	common->current_vcpu = vcpu;
++	vcpu->common = common;
 +
-+	common->vcpu_idx = atomic_read(&kvm->online_vcpus);
- 
- 	common->kvm = kvm;
- 	common->current_vcpu = vcpu;
--	vcpu->common = common;
-+	vcpu->common = no_free_ptr(common);
- 
- 	return 0;
-+
-+out_drop_counter:
-+	mutex_lock(&kvm->lock);
-+	kvm->created_vcpus--;
-+	mutex_unlock(&kvm->lock);
-+
-+	return r;
++	return 0;
 +}
 +
-+static void kvm_vcpu_finish_common(struct kvm_vcpu *vcpu)
-+{
-+	smp_wmb();
-+	if (vcpu->plane_level == 0) {
-+		/*
-+		 * Pairs with smp_rmb() in kvm_get_vcpu.  Store the vcpu
-+		 * pointer before kvm->online_vcpu's incremented value.
-+		 */
-+		atomic_inc(&vcpu->kvm->online_vcpus);
-+	}
- }
- 
  static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
-@@ -482,10 +522,19 @@ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
- 
- static void kvm_vcpu_common_destroy(struct kvm_vcpu *vcpu)
  {
--	if (vcpu->plane_level == 0)
--		kfree(vcpu->common);
-+	struct kvm_vcpu_common *common = vcpu->common;
-+	struct kvm *kvm = common->kvm;
+ 	mutex_init(&vcpu->mutex);
+@@ -459,14 +473,26 @@ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+ 	preempt_notifier_init(&vcpu->preempt_notifier, &kvm_preempt_ops);
+ 	vcpu->last_used_slot = NULL;
  
- 	vcpu->common = NULL;
++	vcpu->plane_level = 0;
 +
-+	if (vcpu->plane_level != 0)
-+	       return;
-+
-+	mutex_lock(&common->kvm->lock);
-+	kvm->created_vcpus--;
-+	mutex_unlock(&common->kvm->lock);
-+
-+	kfree(common);
+ 	/* Fill the stats id string for the vcpu */
+ 	snprintf(vcpu->stats_id, sizeof(vcpu->stats_id), "kvm-%d/vcpu-%d",
+ 		 task_pid_nr(current), id);
  }
  
++static void kvm_vcpu_common_destroy(struct kvm_vcpu *vcpu)
++{
++	if (vcpu->plane_level == 0)
++		kfree(vcpu->common);
++
++	vcpu->common = NULL;
++}
++
  static void kvm_vcpu_destroy(struct kvm_vcpu *vcpu)
-@@ -4235,22 +4284,10 @@ static void kvm_create_vcpu_debugfs(struct kvm_vcpu *vcpu)
-  */
- static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
  {
--	int r;
-+	int r = -EINVAL;
- 	struct kvm_vcpu *vcpu;
- 	struct page *page;
+ 	kvm_arch_vcpu_destroy(vcpu);
++
++	kvm_vcpu_common_destroy(vcpu);
+ 	kvm_dirty_ring_free(&vcpu->dirty_ring);
  
--	/*
--	 * KVM tracks vCPU IDs as 'int', be kind to userspace and reject
--	 * too-large values instead of silently truncating.
--	 *
--	 * Ensure KVM_MAX_VCPU_IDS isn't pushed above INT_MAX without first
--	 * changing the storage type (at the very least, IDs should be tracked
--	 * as unsigned ints).
--	 */
--	BUILD_BUG_ON(KVM_MAX_VCPU_IDS > INT_MAX);
--	if (id >= KVM_MAX_VCPU_IDS)
--		return -EINVAL;
--
- 	mutex_lock(&kvm->lock);
- 	if (kvm->created_vcpus >= kvm->max_vcpus) {
- 		mutex_unlock(&kvm->lock);
-@@ -4258,24 +4295,20 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 	/*
+@@ -1360,8 +1386,8 @@ static void kvm_destroy_vm(struct kvm *kvm)
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ 	xa_destroy(&kvm->mem_attr_array);
+ #endif
+-	kvm_arch_free_vm(kvm);
+ 	kvm_destroy_planes(kvm);
++	kvm_arch_free_vm(kvm);
+ 	preempt_notifier_dec();
+ 	kvm_disable_virtualization();
+ 	mmdrop(mm);
+@@ -4246,11 +4272,15 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 		goto vcpu_decrement;
  	}
  
- 	r = kvm_arch_vcpu_precreate(kvm, id);
--	if (r) {
--		mutex_unlock(&kvm->lock);
--		return r;
--	}
--
--	kvm->created_vcpus++;
- 	mutex_unlock(&kvm->lock);
++	r = kvm_vcpu_init_common(vcpu, kvm);
 +	if (r)
-+		return r;
- 
- 	vcpu = kmem_cache_zalloc(kvm_vcpu_cache, GFP_KERNEL_ACCOUNT);
--	if (!vcpu) {
--		r = -ENOMEM;
--		goto vcpu_decrement;
--	}
-+	if (!vcpu)
-+		return -ENOMEM;
- 
--	r = kvm_vcpu_init_common(vcpu, kvm);
-+	r = kvm_vcpu_init_common(vcpu, kvm, id);
- 	if (r)
- 		goto vcpu_free;
- 
-+	vcpu->vcpu_idx = vcpu->common->vcpu_idx;
++		goto vcpu_free;
 +
  	BUILD_BUG_ON(sizeof(struct kvm_run) > PAGE_SIZE);
  	page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
  	if (!page) {
-@@ -4304,7 +4337,6 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- 		goto unlock_vcpu_destroy;
+ 		r = -ENOMEM;
+-		goto vcpu_free;
++		goto vcpu_free_common;
  	}
+ 	vcpu->run = page_address(page);
  
--	vcpu->vcpu_idx = atomic_read(&kvm->online_vcpus);
- 	r = xa_insert(&kvm->planes[0]->vcpu_array, vcpu->vcpu_idx, vcpu, GFP_KERNEL_ACCOUNT);
- 	WARN_ON_ONCE(r == -EBUSY);
- 	if (r)
-@@ -4324,12 +4356,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- 	if (r < 0)
- 		goto kvm_put_xa_erase;
- 
--	/*
--	 * Pairs with smp_rmb() in kvm_get_vcpu.  Store the vcpu
--	 * pointer before kvm->online_vcpu's incremented value.
--	 */
--	smp_wmb();
--	atomic_inc(&kvm->online_vcpus);
-+	kvm_vcpu_finish_common(vcpu);
- 	mutex_unlock(&vcpu->mutex);
- 
- 	mutex_unlock(&kvm->lock);
-@@ -4352,10 +4379,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- 	kvm_vcpu_common_destroy(vcpu);
+@@ -4318,6 +4348,8 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 	kvm_arch_vcpu_destroy(vcpu);
+ vcpu_free_run_page:
+ 	free_page((unsigned long)vcpu->run);
++vcpu_free_common:
++	kvm_vcpu_common_destroy(vcpu);
  vcpu_free:
  	kmem_cache_free(kvm_vcpu_cache, vcpu);
--vcpu_decrement:
--	mutex_lock(&kvm->lock);
--	kvm->created_vcpus--;
--	mutex_unlock(&kvm->lock);
-+
- 	return r;
- }
- 
+ vcpu_decrement:
 -- 
 2.53.0
 
