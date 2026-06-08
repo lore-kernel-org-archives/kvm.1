@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590741B6D08
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 18:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8352F1FC9
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 19:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780945097; cv=none; b=dNkXLDDhFCieWTbR/cf+u8eHsAr2S1yjvTgUoP4a/ggQBORnuYA7DqHMfzxWzkPLZknFQTtQntDPjb28iRJix872JqabHFW22VJ9i90uiR5hwUmt7PuPxva7pd17BDvFHFzeXNyFR7oWOwPH69vPJP3pzxxeHFCZBS7mYqLmkwk=
+	t=1780945947; cv=none; b=f93yl8pVLeVzcesA7ohi6nlm2Ae2WX6do4nF/E0XftGOrBnH38ele9dyvbkUWuru9P/xb9BfLEzy3rGwJ6hN88NHgEuq5+T86Y+IC4bViI/u8rL+0TlrX9FfD8iTMkTezchJqqgm/IT29TS0JO4qfi45h+AQWCcwjcVhOyaj1u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780945097; c=relaxed/simple;
-	bh=xPdknWNi6m6ddYNXIa5bf7UsXWZ/XGVWxFfo8z1mlj4=;
+	s=arc-20240116; t=1780945947; c=relaxed/simple;
+	bh=nFsaSD8lCqmBc39lxTH3tPplGW76yzJ44QwMA5vSdK0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Q6DVYQBIPj2jjPT/Q38UlFAGiaYr7B8I0e930zPdEsTM5iFlhELwZt1h7knX5dvswYNJqrNOJaudy4p0gXQgKPwe5dqDmEAknMVkgyufsG+80+mTEiznReMtLJOem9xHJ7unkn294DX57kwUslnzVQMWQQYEc35Hq79iYRLucVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U3h+qAwD; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=NFOMDmGaDD0uyWRh4r7bBNc1JB1uSZHoVWNiSnPYlnDdYhx9PaH7eq8lxZ1DqpQobFA0Kbsu3SeaWBuG/yI6RXedl7k/wCZUjh3xp4QvzTz9I32s+g3Z1USpCAR/v17a4IQxuYFAyBUvLKptl+kujU8L8VbEJji3AAoVemNd8fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FIf4FpDI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U3h+qAwD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3B31F00893;
-	Mon,  8 Jun 2026 18:58:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FIf4FpDI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BF81F00893;
+	Mon,  8 Jun 2026 19:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780945096;
-	bh=sM+Xq6xNYRQkdHtYqcjzM8tXGzyxkpTZW4pSFVrUyd8=;
+	s=k20260515; t=1780945945;
+	bh=D4WhSfUb4C1DGoX7S8um3pkoTEVW/Bx0t285jmVeSDE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=U3h+qAwDl8OBvMayiXsGw699FfP2SYfX3k/DtY40Ab8lhnVOLG4eXAtx6bgZaVij5
-	 zOgboOCMwyFSFutvd0UsTjoHY1vDGzVjzLb4vwtKPtAS2SDIrgGWYB1+5RCbkLZxa9
-	 axAsBpMhGNg+TujJ1nlw4YaurfilVXmX5uVKf/lBLBoi+duNbArS8/n0bNB7b1EPNY
-	 uKyhlnJL7Uw2g5f+NmPggeBCKJnsm4sCK7aHGKbzr3tuuzJCjhEwfozjJZACzQrpJJ
-	 /cSnreJsScucnnmPXMqK6tGfwfWGwr5drTJvXQM422U4NdlTCYG6alEjGImBt/Ukm0
-	 medYG/00iCBIg==
+	b=FIf4FpDIC09dNpMoXjQ838QVf09sD1QTOwuoZYq0Ie+YeUNEYRE9U7DFxk0O8FTVO
+	 RaPVFV5Nl6wM2hlQ4JJb98vUnmDPTm09eQvj0nMnD4kBs6FXA8/CR6bQTNXipRa6GG
+	 F+ZZd7UfC7G3lVbWIhYlUcjgascr7v17i0ydC5hcc8QtIfTnv4Bb11o7T0+56jqLk2
+	 7UqJ7haJylKLHDfgfuKrTQK/xOiRoBBl4Q2IiYFIFYMWR70mwAEZ6qp5mnXm+Fp/OL
+	 px7VhZe7qRiIwv728CJD4cqkVvvKqU0v/DGuVjvdK+cnUa/3JXfpgc+DsiWfx+PvqG
+	 MwB4G33MPhICg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 37/60] kvm: Pass plane_level to kvm_set_routing_entry()
+Subject: Re: [PATCH v7 5/6] KVM: SEV: Perform RMP optimizations on SNP guest
+ shutdown
 Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: "Ashish Kalra" <Ashish.Kalra@amd.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-38-joro@8bytes.org>
-References: <20260608144252.351443-38-joro@8bytes.org>
+In-Reply-To: <bfefc8564ae28a05be565d60e8857173d9c1ae7c.1780903370.git.ashish.kalra@amd.com>
+References: <bfefc8564ae28a05be565d60e8857173d9c1ae7c.1780903370.git.ashish.kalra@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 18:58:15 +0000
-Message-Id: <20260608185815.DF3B31F00893@smtp.kernel.org>
+Date: Mon, 08 Jun 2026 19:12:25 +0000
+Message-Id: <20260608191225.96BF81F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,58 +46,66 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The `plane_level` field in the stack-allocated `route` structure i=
-n `kvm_send_userspace_msi()` is left uninitialized, leading to unpredictabl=
-e routing.
+- [Medium] The RMPOPT batching logic fails to optimize memory for guests th=
+at terminate shortly before an already-pending workqueue timer expires.
 --
 
-commit c0cc00a54b6971a99bf9346816eca0f0b3372493
-Author: Joerg Roedel <joerg.roedel@amd.com>
+commit 855d23e84feebfc7b3cebafc11cb0b8453330a11
+Author: Ashish Kalra <ashish.kalra@amd.com>
 
-The plane_level is used to route MSI IRQs to the correct plane.
+KVM: SEV: Perform RMP optimizations on SNP guest shutdown
 
-This patch updates the KVM routing entry setup to include a plane_level
-parameter. It modifies kvm_set_routing_entry across multiple architectures
-to pass this target plane level for MSI IRQ routing.
+This commit triggers an RMP optimization pass after an SNP guest
+terminates to take advantage of pages being converted back to shared.
+It batches the work so that a single optimization pass can cover
+multiple guests terminating within a short period.
 
-[ ... ]
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 4272293478766..0e94f81907ec2 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2992,6 +2992,8 @@ void sev_vm_destroy(struct kvm *kvm)
+>  		 */
+>  		if (snp_decommission_context(kvm))
+>  			return;
+> +
+> +		snp_rmpopt_all_physmem();
 
-> diff --git a/virt/kvm/irqchip.c b/virt/kvm/irqchip.c
-> index ae47e56176f1..14480d1df4f9 100644
-> --- a/virt/kvm/irqchip.c
-> +++ b/virt/kvm/irqchip.c
-> @@ -146,7 +146,7 @@ static int setup_routing_entry(struct kvm *kvm,
-> =20
->  	e->gsi =3D gsi;
->  	e->type =3D ue->type;
-> -	r =3D kvm_set_routing_entry(kvm, e, ue);
-> +	r =3D kvm_set_routing_entry(kvm, e, ue, 0);
+[Severity: Medium]
+Does calling snp_rmpopt_all_physmem() here trigger the optimization pass
+too early in the KVM teardown sequence?
 
-[Severity: High]
-Does this routing change leave route.msi.plane_level uninitialized in
-kvm_send_userspace_msi() when handling the KVM_SIGNAL_MSI ioctl?
+sev_vm_destroy() runs during kvm_arch_destroy_vm(), which executes before
+kvm_free_memslots() where the actual conversion of guest memory from private
+to shared occurs.
 
-Looking at virt/kvm/irqchip.c:kvm_send_userspace_msi():
+Additionally, looking at snp_rmpopt_all_physmem() in arch/x86/virt/svm/sev.=
+c,
+it appears to use queue_delayed_work() rather than mod_delayed_work():
 
-	struct kvm_kernel_irq_routing_entry route;
+    queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work,
+                       msecs_to_jiffies(RMPOPT_WORK_TIMEOUT));
 
-	if (!kvm_arch_irqchip_in_kernel(kvm) || (msi->flags & ~KVM_MSI_VALID_DEVID=
-))
-		return -EINVAL;
+Because queue_delayed_work() does not reset the timer of an already-queued
+work item, the timer is not extended when subsequent guests terminate.
 
-	route.msi.address_lo =3D msi->address_lo;
-	route.msi.address_hi =3D msi->address_hi;
-	route.msi.data =3D msi->data;
-	route.msi.flags =3D msi->flags;
-	route.msi.devid =3D msi->devid;
+If a second guest terminates just before the pending RMPOPT work item execu=
+tes,
+the optimization pass will run concurrently with or prior to the second gue=
+st's
+kvm_free_memslots(). Since the second guest's memory is still private at th=
+at
+point, the RMPOPT pass would skip it, leaving the memory unoptimized and
+causing a performance regression for RMP checks.
 
-	return kvm_set_msi(&route, kvm, KVM_USERSPACE_IRQ_SOURCE_ID, 1, false);
+Would it be safer to use mod_delayed_work() to ensure the timer is properly
+extended, and perhaps trigger the pass after the memslots have actually been
+freed?
 
-Since the struct kvm_kernel_irq_routing_entry is allocated on the stack and
-isn't zero-initialized, and plane_level isn't explicitly set here, could
-route.msi.plane_level contain garbage stack data before it is passed to
-kvm_set_msi()?
+>  	} else {
+>  		sev_unbind_asid(kvm, sev->handle);
+>  	}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D37
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780903370.gi=
+t.ashish.kalra@amd.com?part=3D5
