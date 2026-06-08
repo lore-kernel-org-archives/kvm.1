@@ -1,108 +1,174 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC16390209;
-	Mon,  8 Jun 2026 20:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94C33ACEE9;
+	Mon,  8 Jun 2026 20:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780952128; cv=none; b=bjhSxrBC40tAJ4Es/amlOAgcP/A/DjlliNmrKPWYITWACUkvCpHA1csnYwU4Atln74YT80Avt5myxEu08RuC/+RfHMIO7lrdOkhrgLoVwK8XT48QGgGqG8R4egnH0mcHOUNCuPih40aLKjP//fs3CghvCwLWKeyinzhYu8I7xQc=
+	t=1780952304; cv=none; b=aMXJXcls4aPgvJJGqyvSJpHngFElTflcet5NK/z6Kjq4CantGb9Bha0L18CxYEWVS0CFvwVWcFGPTbZnhm9MF3XK3+pilxSC7wttpuHGYOtHeCFHUjOXsGDzLnci8Z3l7qxUAqrM0le7rCQqVWOgY5ksaAJHu29t8oj7kRrmX1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780952128; c=relaxed/simple;
-	bh=4QBxR2PjlCKAPSvgpGacW2SShPc026qHj1QCYdxzg90=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sQAYNqalSfvEJe3iQdsB0xvsZM7thSc+4vFVzbGkMBle77cw+50Lhua6X9jngKr0qfDc8k1UGfX2SNzeqyekEWqfApoXDN3+Xb5hEJDleWk4la+1q07G/Rm4HO21CE4oP1azJlubNFXWtJxV0TJd70Xc9RGmmzVk+TWHwzrwiBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFipMoev; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780952304; c=relaxed/simple;
+	bh=Q27Zdb+kF51K+jdqLK0AruNnM8NCFFoZ7m413Ngs/cc=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=lmVav7JanCt3pVi8zdhP+Sre7sGTFYRzwqGe3JQ2AJXwEUUTMXOKLavQUYHPiJczq853lX0xwouMkHUYZ+Y6oDv4tINKKuzu/17WHBMuI3Pd4syembKYmOCkolqRauMCqTpDbPfNDzgRC9J0wzCnO2MF5CI5qKETY+7QNSM/dMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ih0Yppl7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFipMoev"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40F31F00893;
-	Mon,  8 Jun 2026 20:55:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ih0Yppl7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FE91F00898;
+	Mon,  8 Jun 2026 20:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780952127;
-	bh=Ww3MgvoKXBDrHgnorb3FWeSCZJO6ATl+G8SETSPUBWo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EFipMoevJToto3v2ysvCUrVS+ZNcPWf2WkIrdRmxt6ajG+mXOU7ZP7q3TcvhOXUNC
-	 qDfIs4f6CVWVFDfukXhxcsi/z9+8I8fEfyFVJnAeINqz3tyQMRRFDbbbKp/nRssbgA
-	 earCd0m4XpdT4x8esC01HGbXgpiz6mh4mF3UOURLcb8ccWt9Y5LeMFE82GAF4h587o
-	 g8vcrJMcuWtAqheTqHipclyaiAj3LetvPhcdqHqhdA/aU+XDY07vfcLivY4PLDfrlX
-	 CiMKzToPz8DcjfRwSAhGFz14sWZ+TkdYlvucSh/vYWnhrYREtBF9Fb2cHsVBOs8V1R
-	 uoL19+LlBq3JQ==
-Date: Mon, 8 Jun 2026 20:55:25 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, Steffen Eiden <seiden@linux.ibm.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH] KVM: arm64: Hold kvm->mmu_lock while initialising
- vcpu->arch.vncr_tlb
-Message-ID: <aicqzM4W4NN-GndT@google.com>
-References: <20260608081108.2244133-1-maz@kernel.org>
+	s=k20260515; t=1780952303;
+	bh=MnnYMxjYrpHOw7mwTYOO6RexMQiDhUDcBZsiKTjwfkM=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=Ih0Yppl7pFXzMm4unDKUWZADI+HdUUopOs1VjiFQFxDBFXeV/jgy6S0NLcOUynuzn
+	 ceUbDC7ME4k3aRYbEaI6bjcIn2Ah0iToiUoMufU3E8bne5kwULoAg0qedzw1YK6PVF
+	 okzf/1McD96k886/SOgRqROygwN6JNM2P2a+pyW0PPr+PhE6IQefzzBqXIGEQKfH3C
+	 JgPaNvWy0fwpBBDMQitMo6Qkjj7pytBbW/HUGfNj81LhgY4wcVBX9F3FozqsrXMrsD
+	 FBphSKVSYyptZp0Ucty3008+vHDuWFz82MVfKQqwsKJhqXgE1u8YPj7L1VSJJ1gT2j
+	 uS7VwxoasBd4w==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id F2973F40076;
+	Mon,  8 Jun 2026 16:58:21 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 08 Jun 2026 16:58:22 -0400
+X-ME-Sender: <xms:7SwnasK1vwPI6yq-jWrrV-wxSqWYp3h-BhXqa1MPoRYCCuhdjvqHlQ>
+    <xme:7SwnanQYOOVXFJv5iW1n2ySdZYJL2Znm2HmUHYvbzEt8O-axb4B9HIue7KfgNZl4I
+    LkBYQO8zaOni7Fe4nEJ6_YZa-Q4h7RW7rTkxT93fxbMretR-vp05N0>
+X-ME-Received: <xmr:7SwnajFIeLRrVS89yZM79i49yQfqWUrK-WbleevLjNRwgl5ePK7_tCU5o1cUAZuyhwgEODFAJuBDaZj6DNBakENJ17MzDCNJihI>
+X-ME-Proxy-Cause: dmFkZTGP9x8buTQcIGw9eBuielzgRk78B5z7jEIpxuXdhXbMY3b3bCj/WyeIYQV5NgDglD
+    q1JwUuBggNZgjADQ893ZM+dthjPdfnhQFB6H/PFmyV1IWif+adhfC/SUsoHRe+1JQxW9DJ
+    t5bcS7GNIvRhD/mIVeBtbBVzzbBYL8rlYKCUVly1FzibZDeyWk7STAmZ1Z1+DAKo6nG7mL
+    neUTtcjh7VPvYOJQggjAJvMUVnzWceSVmbvLONMxv11siBHty2D7S8UUXQAnBCGxnXtc7O
+    E57znILnfs0VWSi8HPlmq7Q2jhdz8+M+Vj7JGz9oPJk41BLvML9M/sVsnEyPstBwSpY2F7
+    uEHHp3kXXNWii6ZfOjNgkPOnhF9qAM9wJHMLNeIeJHiulCnDy4wW+G4Pna5nJHJ5w9DqZ2
+    Ns+OpB6nkDmr3J6KyHmaelXoff8wLwTux+u+HKBHjlY7bZZkGnmv9eDXZWw+1m6u/371Az
+    4fuOOJ6PSINwESQ72WLkMfLv+BMq4p+TADU0Ic93rVPTCgYvHrGKnTEakCaKiPiEQzKXPG
+    SebO2OVdAWAnp16t3mo5+7tBm0pj+I0us0+OCpzl9M+7FDjn3tyMM0N1ZgzDcnnEanhWIk
+    6j9V3wdt5JT5oxi8nhukS74Dh9/kX2/rHSTe0uVjoh+w5QUx0RLyM9E0Kkww
+X-ME-Proxy: <xmx:7SwnakWz0TW4RvbJ4B5HPTaGRQO8RQXSlE9eFO__EkBXtSomkENEXA>
+    <xmx:7SwnalyHpT4bamDdI_8r50K51151jtoYe40VtT52cgmVoNr-3SL1ow>
+    <xmx:7Swnag-Y6ol94bkeTGOS5GYWpOGvHtsk4sUlOrq6tFIFWVpxS2snMQ>
+    <xmx:7Swnai_Wj2ffpyXcI2n777ZFPFkk3u6OihrgqhODTv6Oq98DKB1kBg>
+    <xmx:7Swnanw6AnXrPO7wNAQIUI1IMUMNYVpe2JnNzz2l8pSPo5TOS6_GOHE6>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 8 Jun 2026 16:58:21 -0400 (EDT)
+Date: Mon, 08 Jun 2026 13:58:19 -0700
+From: "Dan Williams (nvidia)" <djbw@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ "Dan Williams (nvidia)" <djbw@kernel.org>, 
+ "Dan Williams (nvidia)" <djbw@kernel.org>, 
+ Alexey Kardashevskiy <aik@amd.com>, 
+ linux-coco@lists.linux.dev, 
+ iommu@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, 
+ kvm@vger.kernel.org
+Cc: Bjorn Helgaas <helgaas@kernel.org>,  Dan Williams <djbw@kernel.org>,
+  Jason Gunthorpe <jgg@ziepe.ca>,  Joerg Roedel <joro@8bytes.org>,
+  Jonathan Cameron <jic23@kernel.org>,  Kevin Tian <kevin.tian@intel.com>,
+  Nicolin Chen <nicolinc@nvidia.com>,  Samuel Ortiz <sameo@rivosinc.com>,
+  Steven Price <steven.price@arm.com>,
+  Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+  Will Deacon <will@kernel.org>,  Xu Yilun <yilun.xu@linux.intel.com>,
+  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+  Paolo Bonzini <pbonzini@redhat.com>,
+  Tony Krowiak <akrowiak@linux.ibm.com>,
+  Halil Pasic <pasic@linux.ibm.com>,  Jason Herne <jjherne@linux.ibm.com>,
+  Harald Freudenberger <freude@linux.ibm.com>,
+  Holger Dengler <dengler@linux.ibm.com>,
+  Heiko Carstens <hca@linux.ibm.com>,  Vasily Gorbik <gor@linux.ibm.com>,
+  Alexander Gordeev <agordeev@linux.ibm.com>,
+  Christian Borntraeger <borntraeger@linux.ibm.com>,
+  Sven Schnelle <svens@linux.ibm.com>,
+  Alex Williamson <alex@shazbot.org>,
+  Matthew Rosato <mjrosato@linux.ibm.com>,
+  Farhan Ali <alifm@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,
+  linux-s390@vger.kernel.org
+Message-ID: <6a272cebec4af_4fa7810048@djbw-dev.notmuch>
+In-Reply-To: <yq5aik81sf22.fsf@kernel.org>
+References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
+ <20260525154816.1029642-6-aneesh.kumar@kernel.org>
+ <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
+ <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
+ <yq5apl2gsw6y.fsf@kernel.org>
+ <yq5aldd4spyc.fsf@kernel.org>
+ <6a1774dd80f74_19737610095@djbw-dev.notmuch>
+ <yq5aik81sf22.fsf@kernel.org>
+Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260608081108.2244133-1-maz@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 08, 2026 at 09:11:08AM +0100, Marc Zyngier wrote:
-> Sashiko reports that there is a race between initialising vncr_tlb
-> and making use of it, as we don't hold the mmu_lock at this point.
+Aneesh Kumar K.V wrote:
+[..]
+> > I think we can wait to move it to its own IOMMU operation unless/until
+> > there is a need to set RUN outside of an explicit guest request, right?
 > 
-> Additionally, it identifies a memory leak, should userspace repeatedly
-> invokes the KVM_RUN ioctl after a failure of kvm_arch_vcpu_run_pid_change(),
-> as we assign vncr_tlb blindly on first run, irrespective of prior
-> allocations.
+> Something like the below? (the diff against this series)
 > 
-> Slap the two bugs in one go by taking the kvm->mmu_lock on assigning
-> vncr_tlb, preventing the race for good, and by checking that vncr_tlb
-> is indeed NULL prior to allocation.
-> 
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Link: https://lore.kernel.org/r/20260607180815.85FBC1F00893@smtp.kernel.org
-> ---
->  arch/arm64/kvm/nested.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> index 690b8e8564166..d11e36b3cfcc2 100644
-> --- a/arch/arm64/kvm/nested.c
-> +++ b/arch/arm64/kvm/nested.c
-> @@ -1253,8 +1253,14 @@ int kvm_vcpu_allocate_vncr_tlb(struct kvm_vcpu *vcpu)
->  	if (!kvm_has_feat(vcpu->kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY))
->  		return 0;
->  
-> -	vcpu->arch.vncr_tlb = kzalloc_obj(*vcpu->arch.vncr_tlb,
-> -					  GFP_KERNEL_ACCOUNT);
-> +	if (!vcpu->arch.vncr_tlb) {
-> +		struct vncr_tlb *vt = kzalloc_obj(*vcpu->arch.vncr_tlb,
-> +						  GFP_KERNEL_ACCOUNT);
-> +
-> +		scoped_guard(write_lock, &vcpu->kvm->mmu_lock)
-> +			vcpu->arch.vncr_tlb = vt;
+> I have not yet integrated this into the full CCA patchset for testing,
+> but I wanted to make sure we are aligned on the UAPI.
+[..]
+> -static bool iommufd_vdevice_tsm_req_scope_valid(u32 scope)
+> +static bool iommufd_vdevice_tsm_req_arch_valid(u32 tvm_arch)
+>  {
+> -	if (scope > IOMMU_VDEVICE_TSM_REQ_SCOPE_PCI_LAST)
+> +	switch (tvm_arch) {
+> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_CCA:
+> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_SEV:
+> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_TDX:
+
+Makes sense for any command that needs tunneling. However, see below, what is
+that set, and do we need a IOMMU_VDEVICE_TSM_COMMON when architecture
+differentiation is not required?
+
+> +		return true;
+> +	default:
+>  		return false;
 > +	}
+> +}
+>  
+> -	switch (scope) {
+> -	case IOMMU_VDEVICE_TSM_REQ_PCI_INFO:
+> -	case IOMMU_VDEVICE_TSM_REQ_PCI_STATE_CHANGE:
+> -	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_READ:
+> -	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_WRITE:
+> +static bool iommufd_vdevice_tsm_req_op_valid(u32 op, u32 tvm_arch)
+> +{
+> +	switch (op) {
+> +	case TSM_REQ_READ_OBJECT:
+> +	case TSM_REQ_REGEN_OBJECT:
+> +	case TSM_REQ_OBJECT_INFO:
 
-(I am not familiar with this code at all, so apologies in advance if I
-am making an idiot out of myself here)
+The design goal of the netlink device-evidence interface is to be able
+to respond to all shapes of requests for evidence. So netlink caches
+objects that the hypercall handler can fill responses from.
 
-IIUC, the point of holding the lock here is *not* to protect against
-concurrent initialization, as in this case the NULL check needs to be
-done under the lock.
+It eliminates a class of commands that need tunneling.
 
-Rather, the goal is to prevent re-ordering of zeroing from kzalloc and
-the assignment to vcpu->arch.vncr_tlb, by depending on the barriers
-provided by the lock. The lock is held by the readers so holding it here
-conviently means we do not need to add any barriers to the readers.
+> +	case TSM_REQ_VALIDATE_MMIO:
+> +	case TSM_REQ_SET_TDI_STATE:
 
-Is my understanding correct?
+Are these potentially candidates for a IOMMU_VDEVICE_TSM_COMMON? The
+handler knows how to do the arch-specific response from the common
+iommufd result, or is there TSM-specific payload beyond @tsm_code for
+these.
 
-If yes, I think the code looks confusing, at least to a layman like
-myself. It initially seems like the lock protects against concurrent
-initializations, but then the NULL check is not done again under the
-lock. The goal of the lock is not clear without the original report.
+Make it the case that guest_req only needs non-common arch for
+operations that are implementation unique, or where the response payload
+exceeds what can be conveyed via @tsm_code.
 
-Mayeb it's clearer to explicitly use barriers if the goal is preventing
-reordering?
+>  		return true;
+> +	case TSM_REQ_SEV_ENABLE_DMA:
+> +	case TSM_REQ_SEV_DISABLE_DMA:
+> +		return tvm_arch == IOMMU_VDEVICE_TSM_TVM_ARCH_SEV;
+
+Right, this appears to be the only case where the command is
+implementation unique. The handler can only ask iommufd to take
+arch-specific action.
