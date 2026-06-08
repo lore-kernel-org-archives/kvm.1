@@ -1,205 +1,196 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E87350A18
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 23:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E943833BBA7
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 23:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780960139; cv=none; b=K+5/ZKDLP/DUknXi1t6BnCBNq8FcKL/eD7B/jPFIoZJQ5KpdsFYNapPMUlPP4hy9M6B8RA9j2d2c4EdHSG7z7vockIt+9hTwHCP2v2l6g703s/YEnijgc1uUy9ebuKuqtHqW7u4ZIV21Y2yVbOhtXj1pEmcUVJA+xrUb4MMIs6A=
+	t=1780960901; cv=none; b=q3tjElGX9kK/gihAcvRr2KQUDS9ekl0unMAmKJIjtaAUgnD0RmpqVS87w/KP5dqs3dI4OeXh9Ch6fPE4ND4fHAsun6koZuI0y70+53w7bp1ECEbx9mhpTe00Lcx7ORwIOYawC6Y3KiTD8VfwSrdFVRRDxecMlFuZon9wb4g9aQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780960139; c=relaxed/simple;
-	bh=dArw80YZNl4rZ7xbi46yj0nvPX4JDK79vtxoE9hUvzI=;
+	s=arc-20240116; t=1780960901; c=relaxed/simple;
+	bh=f4bFS8D7VoioQ27Rb43CJ+vmZezJOeZM1VcTKPaBg68=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=A1G1inv7V3L4ITy6j3jZeDjvvIzpyHbw89EU+wLUhpnYOxXdg9TlBzPEWr0Ui1IE4OJAR4c+p1FLdXA3nQ6ABN5ebgrnI84k3Qb0kAQFXkdoR2bRMb3k0ORVqAefTZAt8+lMEyyiDRfe18Byra8dkD8F1lsz9/2VU5TE+ZBnY74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BqlbDEIa; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=mTsfW5gEV+ZMU+qThR7JntpILXCdzGX4PG4KPiE6EAZd72Vzgj1GF+OAQGRu0oRtRIfsbQwtz7wJEdatBW29gwbfg3sNN/M74YXksrJCOlGMedUP+7SdEKWggVM+izGf6qRaKt3MffHPIIxgcq8ZpU8cCAfHoYYImh1vcVKN8o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJHQfmC4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BqlbDEIa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D6B1F00893;
-	Mon,  8 Jun 2026 23:08:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZJHQfmC4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E8F1F00893;
+	Mon,  8 Jun 2026 23:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780960138;
-	bh=xGn2nwza4y2IWv3eV3LMq+CViFOi2yzSlVPAGnofWQc=;
+	s=k20260515; t=1780960899;
+	bh=7NeBmDVSRGcBwv6YwY84avh6AEszEyCHvDflgmgybWI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BqlbDEIaQ2jRDY5U3cPGKDPXNh6cRYyzwoqUwLT5zyySmhb6kDuOWO4hiDD7CeRJt
-	 butoxlBvzsoW+VeXChwyJXspUsWfL2R4BJq/Z9iaEpk9mv41zdpzCN4rJUPQC15iFK
-	 1pU/C43yYmZRAx0XF7W7i15GKf+piQelRBGraJGyhD5UEgz/87bKMFPdLf2uG3jdcl
-	 JVyejfJ+awrFQ0ZM85qqhdzZrmjIziZCxLBM7MqU5hJTB2PBRnzJUL+mo/yR8p/coR
-	 RNMMYKvaTnQsnJhX9sEBd1DhCYc/AGbBKWvM34AMOcskAeP+gusFqpKTvTwaul5KJk
-	 ADJmYI+CA2Fag==
+	b=ZJHQfmC4o9P+BjVBnQkt5Hw+NZlmJTJW1NlWr9GV9OBjqWvUHEZvcYajbcbdfMeC4
+	 TQR+37j4cnULHbHkjHlQLJeIYgFi6QoIw89s4Ui7W6aE8ijb6bmkoE18iQ3TkOILdP
+	 3Wb2Eg0c9ncd27Cl/39HmEo0rb/u3w3C1RyZn8OeoskIT6qv9E5r6vgZXaH3GAFONw
+	 WKStqVX26cjYd/0Y6b8HF3nGQ/zKAGY+GcO73XN20B553gz88OarJNnW9tIb/AYnK6
+	 /sa+qM8uAyy/0WfQw/YfXBUKI8UMb5bCfHiV23l3rLdOq1Y1q4E4YosmHA41WyL19e
+	 y/cDSWcQSf00A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 57/60] kvm: sev: Allow for VMPL level specification in
- AP create
+Subject: Re: [PATCH 58/60] kvm: svm: Invoke a specified VMPL level VMSA for
+ the vCPU
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-58-joro@8bytes.org>
-References: <20260608144252.351443-58-joro@8bytes.org>
+In-Reply-To: <20260608144252.351443-59-joro@8bytes.org>
+References: <20260608144252.351443-59-joro@8bytes.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 23:08:57 +0000
-Message-Id: <20260608230857.D6D6B1F00893@smtp.kernel.org>
+Date: Mon, 08 Jun 2026 23:21:39 +0000
+Message-Id: <20260608232139.61E8F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-
-New issues:
-- [High] Returning -EINVAL from the complete_userspace_io callback abruptly=
- aborts the entire VM.
-- [High] Non-VMPL0 vCPUs are incorrectly permitted to replace their own VMS=
-A.
-- [High] Processing an `AP_DESTROY` request sets the target vCPU to `KVM_MP=
-_STATE_HALTED` instead of `KVM_MP_STATE_UNINITIALIZED` and leaves its VMSA =
-PA invalid, exposing the VM to a host crash upon spurious wakeup.
-- [Medium] Unsynchronized concurrent access to the shared `target_sev_plane=
-->vmsa_features` variable.
-- [Low] `#define SVM_SEV_VMPL_MAX 4` improperly redefines an existing enum =
-constant as a preprocessor macro.
-- [Low] Commented-out lines left over from debugging or refactoring.
-
-Pre-existing issues:
-- [Critical] Hardware use-after-free vulnerability due to missing lifetime =
-pinning of the VMSA guest_memfd page.
+- [High] The MSR protocol handler for GHCB_MSR_VMPL_REQ propagates `-EINVAL=
+` to KVM_RUN when a requested VMPL plane does not exist, causing the VM to =
+crash.
+- [High] Requesting a switch to the currently active VMPL puts the active v=
+CPU plane into the STOPPED state, permanently hanging the vCPU thread.
+- [High] Missing array_index_nospec() on guest-controlled VMPL index create=
+s a Spectre v1 vulnerability.
 --
 
-commit 5d5c749babe4794fbb4e0c07b6fb01ee70a1da40
+commit 13abcdff43b65b23c1d479626cab3e83b513a2c8
 Author: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: kvm: sev: Allow for VMPL level specification in AP create
 
-This commit updates AP creation to support adding or destroying VMSAs at
-levels other than VMPL0. It creates tracking arrays for VMSAs and GHCBs
-across different levels to allow running under an SVSM at VMPL1 or lower.
+kvm: svm: Invoke a specified VMPL level VMSA for the vCPU
 
-> Additional checks are applied to prevent a non-VMPL0 vCPU from being able
-> to perform an AP creation request at VMPL0. Additionally, a vCPU cannot
-> replace its own VMSA.
-
-[Severity: High]
-Does this logic successfully prevent a non-VMPL0 vCPU from replacing its
-own VMSA? As implemented in sev_snp_ap_creation() below, the condition
-evaluates to false for any VMPL greater than 0, which entirely bypasses
-the target_vcpu check and allows a lower-privileged guest vCPU to
-replace its own VMSA.
+Implement the SNP Run VMPL NAE event and MSR protocol to allow a guest to
+request a different VMPL level VMSA be run for the vCPU. This allows the
+guest to "call" an SVSM to process an SVSM request.
 
 > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 0b531eda062f3..70a06769a4100 100644
 > --- a/arch/x86/kvm/svm/sev.c
 > +++ b/arch/x86/kvm/svm/sev.c
-> @@ -4131,8 +4137,26 @@ static void sev_snp_init_protected_guest_state(str=
-uct kvm_vcpu *vcpu)
-
 [ ... ]
-
->  	/* Mark the vCPU as runnable */
-> -	kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
-> +	if (svm->sev_es.snp_ap_runnable) {
-> +		kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
-> +	} else {
-> +		kvm_set_mp_state(vcpu, KVM_MP_STATE_UNINITIALIZED);
-> +	}
+> @@ -4573,6 +4577,45 @@ static void sev_get_apic_ids(struct vcpu_svm *svm)
+>  	kvfree(desc);
+>  }
+> =20
+> +static int __sev_snp_run_vmpl(struct vcpu_svm *svm, unsigned int vmpl)
+> +{
+> +	struct kvm_vcpu *vcpu =3D &svm->vcpu;
+> +	struct kvm_vcpu *target =3D vcpu->common->vcpus[vmpl];
+> +	struct vcpu_svm *target_svm =3D to_svm(target);
+> +
+> +	if (!target)
+> +		return -EINVAL;
+> +
+> +	/* Mark current plane as stopped so it is not selected */
+> +	kvm_set_mp_state(target, KVM_MP_STATE_RUNNABLE);
+> +	/* In case KVM_REQ_UPDATE_PROTECTED_GUEST_STATE is set - mark the new V=
+MSA as runnable */
+> +	target_svm->sev_es.snp_ap_runnable =3D true;
+> +	kvm_vcpu_set_plane_runnable(target);
+> +	kvm_vcpu_set_plane_stopped(vcpu);
 
 [Severity: High]
-Will an AP_DESTROY request successfully reach this new state transition?
-Earlier in sev_snp_init_protected_guest_state(), there is a check:
+If a guest requests a switch to the VMPL level it is already executing on,
+target and vcpu will point to the same object.  Will this sequence
+cause the vCPU to hang?
 
-	if (!VALID_PAGE(svm->sev_es.snp_vmsa_gpa))
-		return;
+Since kvm_vcpu_set_plane_runnable(target) is immediately followed by
+kvm_vcpu_set_plane_stopped(vcpu), the plane's state would be overwritten
+to STOPPED, indefinitely suspending the vCPU.
 
-Since an AP_DESTROY sets snp_vmsa_gpa to INVALID_PAGE, the early return
-bypasses this MP state transition. This leaves the vCPU in
-KVM_MP_STATE_HALTED with an invalid vmsa_pa, making it susceptible to
-standard APIC wakeups that could lead to a #VMEXIT(INVALID) crash.
+Should there be an explicit check for target =3D=3D vcpu to handle this?
 
->  	/*
->  	 * gmem pages aren't currently migratable, but if this ever changes
-> @@ -4142,36 +4166,87 @@ static void sev_snp_init_protected_guest_state(st=
-ruct kvm_vcpu *vcpu)
->  	kvm_release_page_clean(page);
->  }
-
-[Severity: Critical]
-This is a pre-existing issue, but does dropping the software reference
-to the VMSA page here expose KVM to a use-after-free? KVM writes the
-pfn directly into the hardware VMCB (svm->vmcb->control.vmsa_pa), but
-calling kvm_release_page_clean(page) unpins it. If host userspace frees
-the physical page, the hardware could continue executing with a VMCB
-pointing to freed memory since MMU notifiers won't intercept hardware
-VMCB pointers.
-
-> -static int sev_snp_ap_creation(struct vcpu_svm *svm)
-> +static unsigned int get_ap_creation_request(struct vcpu_svm *svm)
->  {
-> -	struct kvm_sev_info_plane *sev_plane =3D to_kvm_sev_info_plane(svm->vcp=
-u.plane);
-> -	struct kvm_vcpu *vcpu =3D &svm->vcpu;
-> -	struct kvm_vcpu *target_vcpu;
-> -	struct vcpu_svm *target_svm;
-> -	unsigned int request;
-> +//	struct kvm_sev_info_plane *sev_plane =3D to_kvm_sev_info_plane(svm->v=
-cpu.plane);
-> +//	struct kvm_vcpu *vcpu =3D &svm->vcpu;
-> +	unsigned int req =3D lower_32_bits(svm->vmcb->control.exit_info_1);
 > +
-> +	return req & ~SVM_VMGEXIT_AP_VMPL_MASK;
+> +	kvm_make_request(KVM_REQ_PLANE_RESCHED, vcpu);
+> +
+> +	return 1;
 > +}
-
-[Severity: Low]
-Are these commented-out lines intended to be removed?
-
-[ ... ]
-
-> +#define SVM_SEV_VMPL_MAX	4
 > +
-> +static int sev_snp_ap_creation(struct kvm_vcpu *vcpu)
+> +static int sev_snp_run_vmpl(struct vcpu_svm *svm)
 > +{
-
-[Severity: Low]
-Does this macro redefine the SVM_SEV_VMPL_MAX enum constant added
-to arch/x86/include/asm/svm.h in this same patch?
-
-[ ... ]
-
-> +	/* Request user-space to create target plane VCPU if it does not exist =
-*/
-> +	if (!target_plane || !target_vcpu) {
-> +		vcpu->arch.complete_userspace_io =3D sev_snp_ap_creation;
-> +		return kvm_request_create_plane(vcpu, vmpl, apic_id);
-> +	}
-
-[ ... ]
-
-> +	/* VMPL0 can only be replaced by another vCPU running VMPL0 */
-> +	if (vmpl =3D=3D SVM_SEV_VMPL0 &&
-> +	    (vcpu =3D=3D target_vcpu || vcpu->plane_level !=3D SVM_SEV_VMPL0)) {
-> +		vcpu_unimpl(vcpu, "vmgexit: VMPL0 AP action not allowed\n");
+> +	struct ghcb *ghcb =3D svm->sev_es.ghcb;
+> +	struct kvm_vcpu *vcpu =3D &svm->vcpu;
+> +	unsigned int vmpl;
+> +
+> +	vmpl =3D lower_32_bits(svm->vmcb->control.exit_info_1);
+> +	if (vmpl >=3D SVM_SEV_VMPL_MAX) {
+> +		vcpu_unimpl(vcpu, "vmgexit: invalid VMPL level [%u] from guest\n", vmp=
+l);
 > +		return -EINVAL;
 > +	}
 
 [Severity: High]
-If this validation check (or the ones further down) fails during the
-second pass of sev_snp_ap_creation() acting as a complete_userspace_io
-callback, does returning -EINVAL abort the entire VM? Since it executes
-via kvm_arch_vcpu_ioctl_run, the error isn't intercepted to inject a
-guest error code, and instead bubbles up to userspace to terminate the VM.
+Since vmpl is guest-controlled and used as an index into the
+vcpu->common->vcpus[vmpl] array in __sev_snp_run_vmpl(), is there a risk
+of speculative out-of-bounds execution here?
 
->  	switch (request) {
->  	case SVM_VMGEXIT_AP_CREATE_ON_INIT:
->  	case SVM_VMGEXIT_AP_CREATE:
-> -		if (vcpu->arch.regs[VCPU_REGS_RAX] !=3D sev_plane->vmsa_features) {
-> +		/* Initialize target planes SEV features if necessary */
-> +		if (target_sev_plane->vmsa_features =3D=3D 0)
-> +			target_sev_plane->vmsa_features =3D vcpu->arch.regs[VCPU_REGS_RAX];
+Should vmpl be sanitized with array_index_nospec() after this bounds
+check to prevent a potential Spectre v1 vulnerability?
 
-[Severity: Medium]
-Can this lead to a data race on the shared target_sev_plane structure?
-This update modifies a plane-wide shared variable while only protected by
-the per-target vCPU mutex (target_svm->sev_es.snp_vmsa_mutex). Multiple
-vCPUs executing AP creation concurrently for different targets on the same
-uninitialized plane might encounter load/store tearing.
+> +
+> +	ghcb_set_sw_exit_info_1(ghcb, 0);
+> +	ghcb_set_sw_exit_info_2(ghcb, 0);
+> +
+> +	return __sev_snp_run_vmpl(svm, vmpl);
+> +}
+> +
+[ ... ]
+> @@ -4684,6 +4727,27 @@ static int sev_handle_vmgexit_msr_protocol(struct =
+vcpu_svm *svm)
+> =20
+>  		ret =3D snp_begin_psc_msr(svm, control->ghcb_gpa);
+>  		break;
+> +	case GHCB_MSR_VMPL_REQ: {
+> +		unsigned int vmpl;
+> +
+> +		if (!sev_snp_guest(vcpu->kvm))
+> +			goto out_terminate;
+> +
+> +		vmpl =3D get_ghcb_msr_bits(svm, GHCB_MSR_VMPL_LEVEL_MASK, GHCB_MSR_VMP=
+L_LEVEL_POS);
+> +
+> +		set_ghcb_msr_bits(svm, 0, GHCB_MSR_VMPL_ERROR_MASK, GHCB_MSR_VMPL_ERRO=
+R_POS);
+> +		set_ghcb_msr_bits(svm, 0, GHCB_MSR_VMPL_RSVD_MASK, GHCB_MSR_VMPL_RSVD_=
+POS);
+> +		set_ghcb_msr_bits(svm, GHCB_MSR_VMPL_RESP, GHCB_MSR_INFO_MASK, GHCB_MS=
+R_INFO_POS);
+> +
+> +		if (vmpl >=3D SVM_SEV_VMPL_MAX) {
+> +			vcpu_unimpl(vcpu, "vmgexit: invalid VMPL level [%u] from guest\n", vm=
+pl);
+> +			set_ghcb_msr_bits(svm, 1, GHCB_MSR_VMPL_ERROR_MASK, GHCB_MSR_VMPL_ERR=
+OR_POS);
+> +			break;
+> +		}
+
+[Severity: High]
+Similar to sev_snp_run_vmpl(), does this guest-controlled vmpl index require
+array_index_nospec() after the bounds check to mitigate Spectre v1?
+
+> +
+> +		ret =3D __sev_snp_run_vmpl(svm, vmpl);
+> +		break;
+
+[Severity: High]
+If target =3D=3D NULL inside __sev_snp_run_vmpl(), it returns -EINVAL which
+is then assigned to ret here and propagated up.  Will this cause the
+KVM_RUN ioctl to return -EINVAL to userspace?
+
+Since QEMU treats negative returns from KVM_RUN as fatal errors and aborts
+the VM, could a less privileged guest level (e.g., VMPL3) exploit this to
+intentionally crash the VM and disrupt more privileged levels?
+
+Should the MSR handler trap the negative return, set GHCB_MSR_VMPL_ERROR_MA=
+SK
+in the response, and return 1 to safely resume the guest instead?
+
+> +	}
+>  	case GHCB_MSR_TERM_REQ: {
+>  		u64 reason_set, reason_code;
+>
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D57
+43-1-joro@8bytes.org?part=3D58
