@@ -1,38 +1,38 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3B83F5BCF;
-	Mon,  8 Jun 2026 14:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E9D43C078;
+	Mon,  8 Jun 2026 14:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780930525; cv=none; b=iKjHoqHGQdYduRg3TA52a+nFGmTBo12g+gQQjWuXEGG/lM22mHXRpj5O2ebNvDlVmetyNOac4VBvTFtuq8nqub9pHeRtaOfyaS5UlktsGBQrz5TppysC5IC/DO/vlX//eX+0xRTPfDBLSXWOIZ+VgiG/bERFC9YKZFUHRto1NUA=
+	t=1780930535; cv=none; b=FwDvs3GlGC82s7VRU5SIyYDf7YW5GyOvPw51/Ymv82aKFKh1BWkmW7ZvmExVWGG/NT7J4qrIYbT2fpY8iYAm6Z+Ony8HP96bWpZRySC9mPdvCSbFGZ+xhj6dzmlBR/9Z+gxjxpm/vaTuyq/iwz75PHIYmw6x1TS3bGJQpuPTopw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780930525; c=relaxed/simple;
-	bh=B+BQ5L7yBB9kGW/497uG83c6n7nQ++JTRtgQ3bPi+wE=;
+	s=arc-20240116; t=1780930535; c=relaxed/simple;
+	bh=71gV0mDZxAEjllWxf1uNy29m6gSw/przYwtIy9HLqNU=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EtljkacDIRZLOd+gsSDnxHBY6b3o+7SBG+RPuiv/GtncLKnQL6tHZfewDfywkkZ+UzQF0KBE53IKKTzpseLd3mH+W81JdZVr9iHuwEhly7ZYSC0CrT63axECHF1fPIA+6wz4M1GSBSVphZbiHfKgsgqmh4wF8L4rHvP7KmHkxIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=i4Kiovwv; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version:Content-Type; b=Lc03t1jM/YkhxDOqy6/Hji1IuSVUmgobbcRAs1Slfi+ZnMDT8SskYroh9SV8UlWkH2CKiuFYsY68cXnRRH8eAsYsX2Ya1NuicAIdv+Rhujrp/lDzJ5HeVj5qgH9N4/ykCOCr9x69zbBTMM0dJXo4+8SGXze9khQAzhac7NvF9v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=N9+adQEb; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="i4Kiovwv"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="N9+adQEb"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:
 	From:Reply-To:Cc:Content-ID:Content-Description;
-	bh=0hmHp3Tay4e4dT67OIE0sxOXH554yCe/d2xysunw/ow=; b=i4KiovwvvEpSBanZMuNSv5yZaZ
-	MBttEb7j17qLekz/G3XnoOg9pg40k7eaIcK/1OltaMIFfRBdN5OH3uAsh1KZWItODngkNk8FdevOj
-	vxZ3DFrsjPbmW+xiFTwKHTyqiuEdTYi1SONbS/EpVsqlyxsqhnvLB8S65jQIqPpL+6o01TpuMF7OV
-	v4ZnBnApmz5klnUuTBWgqpMm17FdLze2GnhK01WACOGWv+cIJf+kJrZ1ZzXMji4QG5ZrP7Aicqgob
-	sWK115j7XH875jTDi/U1JV7VneYjYvHLhuN583CY/lge9rNDvGaviarRV+TPryj598ZGQfi0iGvqx
-	m8nfsVhg==;
+	bh=aHV9lck9iJ7HfeFHLwY/x8/L76vGmBWhEjbD8RUPDnI=; b=N9+adQEbHGyBhmT81pe1mmYYck
+	LjW/bk4JiQDQVfbGbb3rZrQkZSu2DFaWqWwtmJ4aYta+6mUnOrqpsfIou57Twpu7e3mpdtOR6IaS/
+	PR30FjJPheq3HC07+oHZIvW0QagIsGBCO4FGmfBYHGTO6L32PDV0Gau8jWk4WqHWk2LxHqr7BBkeg
+	InjZCCPr2gDsciyXM/r+vac1yWl6d0xWHTwRNSxvzqdCOnylWOjVvDEBHh/ul2i4PBO8o+YQL6ivG
+	9Y+C1B3FJ8v/gGK94o+RhO5HmgPf9ZaXmgM9mMzuTK+aM+zaoXaQmTWHqMhV9AhnL2ZQbnsjqcGaA
+	wWHDSRaQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wWbNU-00000001Aft-2Ksg;
-	Mon, 08 Jun 2026 14:55:00 +0000
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wWbNS-0000000Dtxj-2vXt;
+	Mon, 08 Jun 2026 14:54:59 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wWbNR-00000000NEt-37cf;
-	Mon, 08 Jun 2026 15:54:57 +0100
+	id 1wWbNS-00000000NGX-3X6a;
+	Mon, 08 Jun 2026 15:54:58 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -61,9 +61,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v5 08/34] KVM: x86: Add KVM_VCPU_TSC_SCALE and fix the documentation on TSC migration
-Date: Mon,  8 Jun 2026 15:47:49 +0100
-Message-ID: <20260608145455.89187-9-dwmw2@infradead.org>
+Subject: [PATCH v5 30/34] KVM: selftests: Add Xen runstate migration test
+Date: Mon,  8 Jun 2026 15:48:11 +0100
+Message-ID: <20260608145455.89187-31-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260608145455.89187-1-dwmw2@infradead.org>
 References: <20260608145455.89187-1-dwmw2@infradead.org>
@@ -76,285 +76,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The documentation on TSC migration using KVM_VCPU_TSC_OFFSET is woefully
-inadequate. It ignores TSC scaling, and ignores the fact that the host
-TSC may differ from one host to the next (and in fact because of the way
-the kernel calibrates it, it generally differs from one boot to the next
-even on the same hardware).
+Test that Xen runstate (steal time) is correctly accounted across a
+simulated live migration using KVM_XEN_VCPU_ATTR and KVM_[GS]ET_CLOCK_GUEST.
 
-Add KVM_VCPU_TSC_SCALE to extract the actual scale ratio and frac_bits,
-and attempt to document the process that userspace needs to follow to
-preserve the TSC across migration. Add a self test to function as an
-exemplar.
+The test simulates what a real VMM does during migration:
+1. Creates a VM with Xen HVM config and runstate tracking
+2. Runs the guest to accumulate some kvmclock time
+3. Saves clock (KVM_GET_CLOCK_GUEST), TSC offset, and runstate
+4. Marks the saved state as RUNSTATE_runnable (vCPU not running)
+5. Destroys the source VM
+6. Sleeps 10ms (simulating migration network transfer time)
+7. Creates a new VM and restores all state precisely as saved
+8. Runs the guest and verifies the migration gap appears as steal
 
-Only enumerate KVM_VCPU_TSC_SCALE when kvm_caps.has_tsc_control is true,
-since the scaling ratio is only meaningful when hardware TSC scaling is
-supported.
+The kernel accounts the gap because: on vcpu_load, it transitions from
+RUNSTATE_runnable to RUNSTATE_running, computing delta = kvmclock_now -
+state_entry_time. Since kvmclock has advanced past the saved entry time
+(real time elapsed during migration), the delta is added to time_runnable.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
 ---
- Documentation/virt/kvm/devices/vcpu.rst       | 119 ++++--
- arch/x86/include/uapi/asm/kvm.h               |   6 +
- arch/x86/kvm/x86.c                            |  22 +
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../kvm/x86/pvclock_migration_test.c          | 382 ++++++++++++++++++
- 5 files changed, 500 insertions(+), 30 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/pvclock_migration_test.c
+ .../selftests/kvm/x86/xen_migration_test.c    | 194 ++++++++++++++++++
+ 1 file changed, 194 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/xen_migration_test.c
 
-diff --git a/Documentation/virt/kvm/devices/vcpu.rst b/Documentation/virt/kvm/devices/vcpu.rst
-index 5e3805820010..167aa4140d30 100644
---- a/Documentation/virt/kvm/devices/vcpu.rst
-+++ b/Documentation/virt/kvm/devices/vcpu.rst
-@@ -243,7 +243,10 @@ Returns:
- Specifies the guest's TSC offset relative to the host's TSC. The guest's
- TSC is then derived by the following equation:
- 
--  guest_tsc = host_tsc + KVM_VCPU_TSC_OFFSET
-+  guest_tsc = ((host_tsc * tsc_scale_ratio) >> tsc_scale_bits) + KVM_VCPU_TSC_OFFSET
-+
-+The values of tsc_scale_ratio and tsc_scale_bits can be obtained using
-+the KVM_VCPU_TSC_SCALE attribute.
- 
- This attribute is useful to adjust the guest's TSC on live migration,
- so that the TSC counts the time during which the VM was paused. The
-@@ -251,44 +254,100 @@ following describes a possible algorithm to use for this purpose.
- 
- From the source VMM process:
- 
--1. Invoke the KVM_GET_CLOCK ioctl to record the host TSC (tsc_src),
-+1. Invoke the KVM_GET_CLOCK ioctl to record the host TSC (host_tsc_src),
-    kvmclock nanoseconds (guest_src), and host CLOCK_REALTIME nanoseconds
--   (host_src).
-+   (time_src) at a given moment (Tsrc).
-+
-+2. For each vCPU[i]:
-+
-+   a. Read the KVM_VCPU_TSC_OFFSET attribute to record the guest TSC offset
-+      (ofs_src[i]).
- 
--2. Read the KVM_VCPU_TSC_OFFSET attribute for every vCPU to record the
--   guest TSC offset (ofs_src[i]).
-+   b. Read the KVM_VCPU_TSC_SCALE attribute to record the guest TSC scaling
-+      ratio (ratio_src[i], frac_bits_src[i]).
- 
--3. Invoke the KVM_GET_TSC_KHZ ioctl to record the frequency of the
--   guest's TSC (freq).
-+   c. Use host_tsc_src and the scaling/offset factors to calculate this
-+      vCPU's TSC at time Tsrc:
-+
-+      tsc_src[i] = ((host_tsc_src * ratio_src[i]) >> frac_bits_src[i]) + ofs_src[i]
-+
-+3. Invoke the KVM_GET_CLOCK_GUEST ioctl on the boot vCPU to return the KVM
-+   clock as a function of the guest TSC (pvti_src). (This ioctl may not
-+   succeed if the host and guest TSCs are not consistent and well-behaved.)
- 
- From the destination VMM process:
- 
--4. Invoke the KVM_SET_CLOCK ioctl, providing the source nanoseconds from
--   kvmclock (guest_src) and CLOCK_REALTIME (host_src) in their respective
--   fields.  Ensure that the KVM_CLOCK_REALTIME flag is set in the provided
--   structure.
-+4. Before creating the vCPUs, invoke the KVM_SET_TSC_KHZ ioctl on the VM, to
-+   set the scaled frequency of the guest's TSC (freq).
-+
-+5. Invoke the KVM_GET_CLOCK ioctl to record the host TSC (host_tsc_dst) and
-+   host CLOCK_REALTIME nanoseconds (time_dst) at a given moment (Tdst).
-+
-+6. Calculate the number of nanoseconds elapsed between Tsrc and Tdst:
-+
-+   ΔT = time_dst - time_src
-+
-+7. As each vCPU[i] is created:
-+
-+   a. Read the KVM_VCPU_TSC_SCALE attribute to record the guest TSC scaling
-+      ratio (ratio_dst[i], frac_bits_dst[i]).
-+
-+   b. Calculate the intended guest TSC value at time Tdst:
-+
-+      tsc_dst[i] = tsc_src[i] + (ΔT * freq[i])
- 
--   KVM will advance the VM's kvmclock to account for elapsed time since
--   recording the clock values.  Note that this will cause problems in
--   the guest (e.g., timeouts) unless CLOCK_REALTIME is synchronized
--   between the source and destination, and a reasonably short time passes
--   between the source pausing the VMs and the destination executing
--   steps 4-7.
-+   c. Use host_tsc_dst and the scaling factors to calculate this vCPU's
-+      raw scaled TSC at time Tdst without offsetting:
-+
-+      raw_dst[i] = ((host_tsc_dst * ratio_dst[i]) >> frac_bits_dst[i])
-+
-+   d. Calculate ofs_dst[i] = tsc_dst[i] - raw_dst[i] and set the resulting
-+      offset using the KVM_VCPU_TSC_OFFSET attribute.
-+
-+8. If pvti_src was provided, invoke the KVM_SET_CLOCK_GUEST ioctl on the boot
-+   vCPU to restore the KVM clock as a precise function of the guest TSC.
-+
-+9. If KVM_SET_CLOCK_GUEST was not available or failed (e.g. because the
-+   master clock is not active), fall back to the KVM_SET_CLOCK ioctl,
-+   providing the source nanoseconds from kvmclock (guest_src) and
-+   CLOCK_REALTIME (time_src) in their respective fields. Ensure that the
-+   KVM_CLOCK_REALTIME flag is set in the provided structure.
-+
-+   KVM will restore the VM's kvmclock, accounting for elapsed time since
-+   the clock values were recorded. Note that this will cause problems in
-+   the guest (e.g., timeouts) unless CLOCK_REALTIME is synchronized between
-+   the source and destination, and a reasonably short time passes between
-+   the source pausing the VMs and the destination resuming them.
-+   Due to the KVM_[SG]ET_CLOCK API using CLOCK_REALTIME instead of
-+   CLOCK_TAI, leap seconds during the migration may also introduce errors.
-+
-+4.2 ATTRIBUTE: KVM_VCPU_TSC_SCALE
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+:Parameters: struct kvm_vcpu_tsc_scale
-+
-+Returns:
-+
-+	 ======= ======================================
-+	 -EFAULT Error reading the provided parameter
-+		 address.
-+	 -ENXIO  Attribute not supported (no TSC scaling)
-+	 -EINVAL Invalid request to write the attribute
-+	 ======= ======================================
- 
--5. Invoke the KVM_GET_CLOCK ioctl to record the host TSC (tsc_dest) and
--   kvmclock nanoseconds (guest_dest).
-+This read-only attribute reports the guest's TSC scaling factor, in the form
-+of a fixed-point number represented by the following structure::
- 
--6. Adjust the guest TSC offsets for every vCPU to account for (1) time
--   elapsed since recording state and (2) difference in TSCs between the
--   source and destination machine:
-+  struct kvm_vcpu_tsc_scale {
-+	__u64 tsc_ratio;
-+	__u64 tsc_frac_bits;
-+  };
- 
--   ofs_dst[i] = ofs_src[i] -
--     (guest_src - guest_dest) * freq +
--     (tsc_src - tsc_dest)
-+The tsc_frac_bits field indicates the location of the fixed point, such that
-+host TSC values are converted to guest TSC using the formula:
- 
--   ("ofs[i] + tsc - guest * freq" is the guest TSC value corresponding to
--   a time of 0 in kvmclock.  The above formula ensures that it is the
--   same on the destination as it was on the source).
-+  guest_tsc = ((host_tsc * tsc_ratio) >> tsc_frac_bits) + offset
- 
--7. Write the KVM_VCPU_TSC_OFFSET attribute for every vCPU with the
--   respective value derived in the previous step.
-+Userspace can use this to precisely calculate the guest TSC from the host
-+TSC at any given moment. This is needed for accurate migration of guests,
-+as described in the documentation for the KVM_VCPU_TSC_OFFSET attribute.
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-index 5f2b30d0405c..384be9a53395 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -961,6 +961,12 @@ struct kvm_hyperv_eventfd {
- /* for KVM_{GET,SET,HAS}_DEVICE_ATTR */
- #define KVM_VCPU_TSC_CTRL 0 /* control group for the timestamp counter (TSC) */
- #define   KVM_VCPU_TSC_OFFSET 0 /* attribute for the TSC offset */
-+#define   KVM_VCPU_TSC_SCALE  1 /* attribute for TSC scaling factor */
-+
-+struct kvm_vcpu_tsc_scale {
-+	__u64 tsc_ratio;
-+	__u64 tsc_frac_bits;
-+};
- 
- /* x86-specific KVM_EXIT_HYPERCALL flags. */
- #define KVM_EXIT_HYPERCALL_LONG_MODE	_BITULL(0)
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index c1897d939da9..6337f9b9d7ac 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5930,6 +5930,9 @@ static int kvm_arch_tsc_has_attr(struct kvm_vcpu *vcpu,
- 	case KVM_VCPU_TSC_OFFSET:
- 		r = 0;
- 		break;
-+	case KVM_VCPU_TSC_SCALE:
-+		r = kvm_caps.has_tsc_control ? 0 : -ENXIO;
-+		break;
- 	default:
- 		r = -ENXIO;
- 	}
-@@ -5950,6 +5953,22 @@ static int kvm_arch_tsc_get_attr(struct kvm_vcpu *vcpu,
- 			break;
- 		r = 0;
- 		break;
-+	case KVM_VCPU_TSC_SCALE: {
-+		struct kvm_vcpu_tsc_scale scale;
-+
-+		if (!kvm_caps.has_tsc_control) {
-+			r = -ENXIO;
-+			break;
-+		}
-+
-+		scale.tsc_ratio = vcpu->arch.l1_tsc_scaling_ratio;
-+		scale.tsc_frac_bits = kvm_caps.tsc_scaling_ratio_frac_bits;
-+		r = -EFAULT;
-+		if (copy_to_user(uaddr, &scale, sizeof(scale)))
-+			break;
-+		r = 0;
-+		break;
-+	}
- 	default:
- 		r = -ENXIO;
- 	}
-@@ -5989,6 +6008,9 @@ static int kvm_arch_tsc_set_attr(struct kvm_vcpu *vcpu,
- 		r = 0;
- 		break;
- 	}
-+	case KVM_VCPU_TSC_SCALE:
-+		r = -EINVAL; /* Read only */
-+		break;
- 	default:
- 		r = -ENXIO;
- 	}
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index fb935ae3bf38..90568ab631d7 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -106,6 +106,7 @@ TEST_GEN_PROGS_x86 += x86/pmu_event_filter_test
- TEST_GEN_PROGS_x86 += x86/private_mem_conversions_test
- TEST_GEN_PROGS_x86 += x86/private_mem_kvm_exits_test
- TEST_GEN_PROGS_x86 += x86/pvclock_test
-+TEST_GEN_PROGS_x86 += x86/pvclock_migration_test
- TEST_GEN_PROGS_x86 += x86/set_boot_cpu_id
- TEST_GEN_PROGS_x86 += x86/set_sregs_test
- TEST_GEN_PROGS_x86 += x86/smaller_maxphyaddr_emulation_test
-diff --git a/tools/testing/selftests/kvm/x86/pvclock_migration_test.c b/tools/testing/selftests/kvm/x86/pvclock_migration_test.c
+diff --git a/tools/testing/selftests/kvm/x86/xen_migration_test.c b/tools/testing/selftests/kvm/x86/xen_migration_test.c
 new file mode 100644
-index 000000000000..6a7eaf627d1a
+index 000000000000..37e8ace00611
 --- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/pvclock_migration_test.c
-@@ -0,0 +1,382 @@
++++ b/tools/testing/selftests/kvm/x86/xen_migration_test.c
+@@ -0,0 +1,194 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Test KVM clock precision across simulated live migration.
++ * Test Xen runstate (steal time) preservation across simulated migration.
 + *
-+ * Verifies that the documented TSC migration procedure (using
-+ * KVM_VCPU_TSC_OFFSET, KVM_VCPU_TSC_SCALE, KVM_GET_CLOCK, and
-+ * KVM_SET_CLOCK_GUEST) preserves the kvmclock's relationship to
-+ * CLOCK_MONOTONIC_RAW.
++ * Verifies that the kernel correctly accounts the migration gap as
++ * steal time (runnable) when runstate data is saved and restored
++ * precisely, but real time elapses during the migration.
 + *
-+ * The test:
-+ * 1. Creates a VM, runs the guest to enable kvmclock
-+ * 2. Does a PTP-like ABA measurement of kvmclock vs CLOCK_MONOTONIC_RAW
-+ * 3. Follows the documented migration procedure (same host, 1s pause)
-+ * 4. Does the same ABA measurement on the destination VM
-+ * 5. Verifies the kvmclock-vs-monotonic delta is preserved
++ * The key insight: userspace saves the runstate with state=RUNSTATE_runnable
++ * (the vCPU is not running during migration). On restore, the kernel sees
++ * that kvmclock has advanced past state_entry_time, and accounts the
++ * difference as time spent in the runnable state.
 + */
 +#include <inttypes.h>
 +#include <stdint.h>
 +#include <stdio.h>
 +#include <string.h>
-+#include <time.h>
 +#include <unistd.h>
 +
 +#include "test_util.h"
@@ -363,357 +135,173 @@ index 000000000000..6a7eaf627d1a
 +
 +#include <asm/pvclock-abi.h>
 +
-+#define KVMCLOCK_GPA	0xc0000000ULL
++#define SHINFO_GPA	0xc0000000ULL
++#define RUNSTATE_GPA	(SHINFO_GPA + 0x1000)
++
++#define RUNSTATE_running  0
++#define RUNSTATE_runnable 1
++#define RUNSTATE_blocked  2
++#define RUNSTATE_offline  3
++
++struct vcpu_runstate_info {
++	uint32_t state;
++	uint64_t state_entry_time;
++	uint64_t time[4];
++} __attribute__((packed));
 +
 +static void guest_code(void)
 +{
-+	wrmsr(MSR_KVM_SYSTEM_TIME_NEW, KVMCLOCK_GPA | 1);
-+	GUEST_SYNC(0);
-+	GUEST_SYNC(1);
++	volatile struct vcpu_runstate_info *rs =
++		(void *)(unsigned long)RUNSTATE_GPA;
++
++	/* Report runstate times — no need to enable kvmclock MSR,
++	 * the kernel writes runstate using its internal kvmclock. */
++	GUEST_SYNC_ARGS(0, rs->time[RUNSTATE_runnable],
++			rs->time[RUNSTATE_running], 0, 0);
 +}
 +
-+static uint64_t read_kvmclock_ns(struct kvm_vm *vm)
++static struct kvm_vm *create_xen_vm(struct kvm_vcpu **vcpu)
 +{
-+	struct kvm_clock_data data = {};
++	struct kvm_vm *vm;
++	int xen_caps;
 +
-+	vm_ioctl(vm, KVM_GET_CLOCK, &data);
-+	return data.clock;
-+}
++	vm = vm_create_with_one_vcpu(vcpu, guest_code);
 +
-+static uint64_t pvclock_read_cycles(struct pvclock_vcpu_time_info *src,
-+				    uint64_t tsc)
-+{
-+	uint64_t delta = tsc - src->tsc_timestamp;
-+	uint64_t ns;
++	xen_caps = kvm_check_cap(KVM_CAP_XEN_HVM);
++	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_SHARED_INFO);
++	TEST_REQUIRE(xen_caps & KVM_XEN_HVM_CONFIG_RUNSTATE);
 +
-+	if (src->tsc_shift >= 0)
-+		delta <<= src->tsc_shift;
-+	else
-+		delta >>= -(int32_t)src->tsc_shift;
-+
-+	ns = (unsigned __int128)delta * src->tsc_to_system_mul >> 32;
-+	return src->system_time + ns;
-+}
-+
-+/*
-+ * ABA measurement: read CLOCK_MONOTONIC_RAW, kvmclock, CLOCK_MONOTONIC_RAW.
-+ * Repeat 3 times, keep the reading with the smallest spread.
-+ */
-+static void aba_reading(struct kvm_vm *vm, uint64_t *lo, uint64_t *kvm_ns,
-+			uint64_t *hi)
-+{
-+	uint64_t best_spread = UINT64_MAX;
-+	int i;
-+
-+	for (i = 0; i < 3; i++) {
-+		struct timespec ts1, ts2;
-+		uint64_t m1, m2, clk;
-+
-+		clock_gettime(CLOCK_MONOTONIC_RAW, &ts1);
-+		clk = read_kvmclock_ns(vm);
-+		clock_gettime(CLOCK_MONOTONIC_RAW, &ts2);
-+
-+		m1 = ts1.tv_sec * 1000000000ULL + ts1.tv_nsec;
-+		m2 = ts2.tv_sec * 1000000000ULL + ts2.tv_nsec;
-+
-+		if (m2 - m1 < best_spread) {
-+			best_spread = m2 - m1;
-+			*lo = m1;
-+			*kvm_ns = clk;
-+			*hi = m2;
-+		}
-+	}
-+}
-+
-+static struct kvm_vm *create_vm(struct kvm_vcpu **vcpu)
-+{
-+	struct kvm_vm *vm = vm_create_with_one_vcpu(vcpu, guest_code);
-+
++	/* Map pages */
 +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
-+				    KVMCLOCK_GPA, 1, 1, 0);
-+	virt_map(vm, KVMCLOCK_GPA, KVMCLOCK_GPA, 1);
++				    SHINFO_GPA, 1, 2, 0);
++	virt_map(vm, SHINFO_GPA, SHINFO_GPA, 2);
++
++	/* Enable Xen HVM with MSR interception (enables runstate tracking) */
++	struct kvm_xen_hvm_config cfg = {
++		.flags = KVM_XEN_HVM_CONFIG_INTERCEPT_HCALL,
++		.msr = 0x40000000,
++	};
++	vm_ioctl(vm, KVM_XEN_HVM_CONFIG, &cfg);
++
++	/* Set shared_info */
++	struct kvm_xen_hvm_attr ha = {
++		.type = KVM_XEN_ATTR_TYPE_SHARED_INFO,
++		.u.shared_info.gfn = SHINFO_GPA >> 12,
++	};
++	vm_ioctl(vm, KVM_XEN_HVM_SET_ATTR, &ha);
++
++	/* Set runstate address */
++	struct kvm_xen_vcpu_attr rs_addr = {
++		.type = KVM_XEN_VCPU_ATTR_TYPE_RUNSTATE_ADDR,
++		.u.gpa = RUNSTATE_GPA,
++	};
++	vcpu_ioctl(*vcpu, KVM_XEN_VCPU_SET_ATTR, &rs_addr);
++
 +	return vm;
 +}
 +
 +int main(void)
 +{
-+	struct pvclock_vcpu_time_info pvti_src;
-+	struct kvm_clock_data clock_src, clock_dst;
-+	struct kvm_vcpu_tsc_scale scale_src, scale_dst;
++	struct pvclock_vcpu_time_info pvti;
++	struct kvm_xen_vcpu_attr runstate_save;
 +	struct kvm_vcpu *vcpu;
 +	struct kvm_vm *vm;
 +	struct ucall uc;
-+	uint64_t mono_before, kvm_before, kvm_after;
-+	int64_t delta_before;
-+	uint64_t ofs_src, tsc_src, tsc_dst, raw_dst, ofs_dst;
-+	uint64_t host_tsc_src, host_tsc_dst;
-+	uint64_t time_src, time_dst;
-+	int64_t delta_t;
-+	uint32_t freq_khz = 1500000; /* 1.5 GHz — forces TSC scaling */
++	uint64_t tsc_offset;
 +	int ret;
 +
-+	TEST_REQUIRE(sys_clocksource_is_based_on_tsc());
-+
 +	/* === SOURCE SIDE === */
-+	pr_info("=== Source VM ===\n");
-+	vm = create_vm(&vcpu);
++	pr_info("=== Source: create VM and run guest ===\n");
++	vm = create_xen_vm(&vcpu);
 +
-+	/* Set guest TSC frequency (may trigger scaling) */
-+	vcpu_ioctl(vcpu, KVM_SET_TSC_KHZ, (void *)(unsigned long)freq_khz);
-+
-+	/* Run guest to enable kvmclock */
++	/* Run guest once to accumulate some runstate time */
 +	vcpu_run(vcpu);
 +	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
 +	TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_SYNC);
 +
-+	/* ABA measurement: kvmclock vs CLOCK_MONOTONIC_RAW */
-+	uint64_t src_mono_lo, src_mono_hi;
-+	aba_reading(vm, &src_mono_lo, &kvm_before, &src_mono_hi);
-+	mono_before = (src_mono_lo + src_mono_hi) / 2;
-+	delta_before = (int64_t)(kvm_before - mono_before);
-+	pr_info("  kvmclock - MONOTONIC_RAW = %" PRId64 " ns (±%" PRIu64 " ns)\n",
-+		delta_before, (src_mono_hi - src_mono_lo) / 2);
++	pr_info("  Guest sees: runnable=%" PRIu64 " running=%" PRIu64 "\n",
++		uc.args[2], uc.args[3]);
 +
-+	/* Step 1: KVM_GET_CLOCK for atomic {host_tsc, realtime} */
-+	memset(&clock_src, 0, sizeof(clock_src));
-+	clock_src.flags = KVM_CLOCK_REALTIME;
-+	vm_ioctl(vm, KVM_GET_CLOCK, &clock_src);
-+	host_tsc_src = clock_src.host_tsc;
-+	time_src = clock_src.realtime;
-+
-+	/* Step 2: Save TSC offset and scale */
-+	{
-+		struct kvm_device_attr attr = {
-+			.group = KVM_VCPU_TSC_CTRL,
-+			.attr = KVM_VCPU_TSC_OFFSET,
-+			.addr = (uint64_t)(uintptr_t)&ofs_src,
-+		};
-+		vcpu_ioctl(vcpu, KVM_GET_DEVICE_ATTR, &attr);
-+	}
-+	{
-+		struct kvm_device_attr attr = {
-+			.group = KVM_VCPU_TSC_CTRL,
-+			.attr = KVM_VCPU_TSC_SCALE,
-+			.addr = (uint64_t)(uintptr_t)&scale_src,
-+		};
-+		memset(&scale_src, 0, sizeof(scale_src));
-+		__vcpu_ioctl(vcpu, KVM_GET_DEVICE_ATTR, &attr);
-+	}
-+
-+	/* Compute guest TSC at Tsrc */
-+	if (scale_src.tsc_frac_bits)
-+		tsc_src = ((unsigned __int128)host_tsc_src * scale_src.tsc_ratio
-+			   >> scale_src.tsc_frac_bits) + ofs_src;
-+	else
-+		tsc_src = host_tsc_src + ofs_src;
-+
-+	/* Step 3: KVM_GET_CLOCK_GUEST */
-+	ret = __vcpu_ioctl(vcpu, KVM_GET_CLOCK_GUEST, &pvti_src);
++	/* Save clock state */
++	ret = __vcpu_ioctl(vcpu, KVM_GET_CLOCK_GUEST, &pvti);
 +	TEST_ASSERT(!ret, "KVM_GET_CLOCK_GUEST failed");
 +
-+	pr_info("  TSC freq=%u kHz, offset=%" PRId64 "\n", freq_khz, (int64_t)ofs_src);
++	/* Save TSC offset */
++	tsc_offset = vcpu_get_msr(vcpu, MSR_IA32_TSC_ADJUST);
++
++	/* Save runstate — the vCPU is now "runnable" (not running) */
++	runstate_save.type = KVM_XEN_VCPU_ATTR_TYPE_RUNSTATE_DATA;
++	vcpu_ioctl(vcpu, KVM_XEN_VCPU_GET_ATTR, &runstate_save);
++
++	/*
++	 * Transition to runnable state before saving — the vCPU is
++	 * not running during migration.
++	 */
++	runstate_save.u.runstate.state = RUNSTATE_runnable;
++
++	pr_info("  Saved runstate: running=%" PRIu64 " runnable=%" PRIu64
++		" entry=%" PRIu64 "\n",
++		(uint64_t)runstate_save.u.runstate.time_running,
++		(uint64_t)runstate_save.u.runstate.time_runnable,
++		(uint64_t)runstate_save.u.runstate.state_entry_time);
++
++	uint64_t saved_runnable = runstate_save.u.runstate.time_runnable;
 +
 +	kvm_vm_release(vm);
 +
-+	/* === PAUSE (simulate migration) === */
-+	pr_info("=== Pausing 1 second ===\n");
-+	sleep(1);
++	/* === MIGRATION GAP === */
++	pr_info("=== Simulating migration (sleeping 10ms) ===\n");
++	usleep(10000);
 +
 +	/* === DESTINATION SIDE === */
-+	pr_info("=== Destination VM ===\n");
-+	vm = create_vm(&vcpu);
++	pr_info("=== Destination: create new VM and restore ===\n");
++	vm = create_xen_vm(&vcpu);
 +
-+	/* Step 4: KVM_SET_TSC_KHZ */
-+	vcpu_ioctl(vcpu, KVM_SET_TSC_KHZ, (void *)(unsigned long)freq_khz);
++	/* Restore TSC offset */
++	vcpu_set_msr(vcpu, MSR_IA32_TSC_ADJUST, tsc_offset);
 +
-+	/* Step 5: KVM_GET_CLOCK for atomic {host_tsc, realtime} pair.
-+	 * Master clock is active from vCPU creation.
-+	 */
-+	memset(&clock_dst, 0, sizeof(clock_dst));
-+	vm_ioctl(vm, KVM_GET_CLOCK, &clock_dst);
-+	host_tsc_dst = clock_dst.host_tsc;
-+	time_dst = clock_dst.realtime;
++	/* Restore clock — kvmclock will now be ~10ms ahead of the snapshot */
++	vcpu_ioctl(vcpu, KVM_SET_CLOCK_GUEST, &pvti);
 +
-+	/* Step 6: ΔT */
-+	delta_t = (int64_t)(time_dst - time_src);
-+
-+	/* Step 7: Compute destination offset */
-+	{
-+		struct kvm_device_attr attr = {
-+			.group = KVM_VCPU_TSC_CTRL,
-+			.attr = KVM_VCPU_TSC_SCALE,
-+			.addr = (uint64_t)(uintptr_t)&scale_dst,
-+		};
-+		memset(&scale_dst, 0, sizeof(scale_dst));
-+		__vcpu_ioctl(vcpu, KVM_GET_DEVICE_ATTR, &attr);
-+	}
-+
-+	tsc_dst = tsc_src + (uint64_t)((int64_t)freq_khz * 1000 * delta_t / 1000000000LL);
-+
-+	if (scale_dst.tsc_frac_bits)
-+		raw_dst = (unsigned __int128)host_tsc_dst * scale_dst.tsc_ratio
-+			  >> scale_dst.tsc_frac_bits;
-+	else
-+		raw_dst = host_tsc_dst;
-+
-+	ofs_dst = tsc_dst - raw_dst;
++	/* Restore runstate exactly as saved (state=runnable) */
++	runstate_save.type = KVM_XEN_VCPU_ATTR_TYPE_RUNSTATE_DATA;
++	ret = __vcpu_ioctl(vcpu, KVM_XEN_VCPU_SET_ATTR, &runstate_save);
++	TEST_ASSERT(!ret, "Restore runstate failed: errno %d", errno);
 +
 +	/*
-+	 * The TSC offset delta introduced by using CLOCK_REALTIME to
-+	 * estimate elapsed time. On same host, the correct offset is
-+	 * ofs_src; the difference is the CLOCK_REALTIME-vs-TSC error.
++	 * Run the guest. When the vCPU enters vcpu_run, the kernel
++	 * transitions from RUNSTATE_runnable to RUNSTATE_running.
++	 * It computes: delta = kvmclock_now - state_entry_time
++	 * This delta (which includes the migration gap) is added to
++	 * time_runnable (steal time).
 +	 */
-+	int64_t tsc_ofs_delta = (int64_t)(ofs_dst - ofs_src);
-+	int64_t tsc_ofs_delta_ns = tsc_ofs_delta * 1000000000LL / ((int64_t)freq_khz * 1000);
-+	pr_info("  Destination TSC offset=%" PRId64
-+		", imprecision from CLOCK_REALTIME: %" PRId64 " cycles = %"
-+		PRId64 " ns\n", (int64_t)ofs_dst, tsc_ofs_delta, tsc_ofs_delta_ns);
-+
-+	/* Set TSC offset */
-+	{
-+		struct kvm_device_attr attr = {
-+			.group = KVM_VCPU_TSC_CTRL,
-+			.attr = KVM_VCPU_TSC_OFFSET,
-+			.addr = (uint64_t)(uintptr_t)&ofs_dst,
-+		};
-+		vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &attr);
-+	}
-+
-+	/* Step 8: KVM_SET_CLOCK_GUEST */
-+	ret = __vcpu_ioctl(vcpu, KVM_SET_CLOCK_GUEST, &pvti_src);
-+	TEST_ASSERT(!ret, "KVM_SET_CLOCK_GUEST failed: errno %d", errno);
-+
-+	/* Run guest to update pvclock page on destination */
 +	vcpu_run(vcpu);
 +	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
 +	TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_SYNC);
 +
-+	/* ABA measurement on destination */
-+	uint64_t mono_lo, mono_hi;
-+	aba_reading(vm, &mono_lo, &kvm_after, &mono_hi);
++	uint64_t guest_runnable = uc.args[2];
++	uint64_t guest_running = uc.args[3];
++
++	pr_info("  Guest sees: runnable=%" PRIu64 " running=%" PRIu64 "\n",
++		guest_runnable, guest_running);
++
++	uint64_t steal_increase = guest_runnable - saved_runnable;
++	pr_info("  Steal time increase: %" PRIu64 " ns (migration gap)\n",
++		steal_increase);
 +
 +	/*
-+	 * The kvmclock is tied to the guest TSC via SET_CLOCK_GUEST.
-+	 * The guest TSC is offset from the correct value by tsc_ofs_delta_ns
-+	 * (due to CLOCK_REALTIME imprecision). So the kvmclock should be
-+	 * offset from CLOCK_MONOTONIC_RAW by exactly:
-+	 *   (original delta) + tsc_ofs_delta_ns
-+	 *
-+	 * The "original delta" has uncertainty from the source ABA spread,
-+	 * and the measurement has uncertainty from the destination ABA spread.
-+	 * Verify the expected value falls within the combined bounds.
++	 * The steal time increase should be at least 10ms (the sleep)
++	 * but not more than 5s (allowing for VM creation overhead).
++	 * The actual gap is from the source's state_entry_time to the
++	 * destination's kvmclock "now" at vcpu_load time.
 +	 */
-+	int64_t delta_before_lo = (int64_t)(kvm_before - src_mono_hi);
-+	int64_t delta_before_hi = (int64_t)(kvm_before - src_mono_lo);
-+	int64_t expected_lo = delta_before_lo + tsc_ofs_delta_ns;
-+	int64_t expected_hi = delta_before_hi + tsc_ofs_delta_ns;
-+	int64_t actual_lo = (int64_t)(kvm_after - mono_hi);
-+	int64_t actual_hi = (int64_t)(kvm_after - mono_lo);
-+
-+	/* Show the shift relative to the source measurement */
-+	int64_t expected_mid = tsc_ofs_delta_ns;
-+	int64_t expected_err = (int64_t)(src_mono_hi - src_mono_lo) / 2;
-+	int64_t actual_mid = ((actual_lo + actual_hi) / 2) - delta_before;
-+	int64_t actual_err = (int64_t)(mono_hi - mono_lo) / 2;
-+	pr_info("  kvmclock-mono shift: expected %" PRId64 " ns (±%" PRId64
-+		"), measured %" PRId64 " ns (±%" PRId64 ")\n",
-+		expected_mid, expected_err, actual_mid, actual_err);
-+
-+	/* The ranges must overlap */
-+	TEST_ASSERT(expected_hi >= actual_lo && expected_lo <= actual_hi,
-+		    "Ranges don't overlap: expected [%" PRId64 ", %" PRId64
-+		    "] measured [%" PRId64 ", %" PRId64 "]",
-+		    expected_lo, expected_hi, actual_lo, actual_hi);
-+
-+	/*
-+	 * Direct pvclock verification: read the destination pvclock page
-+	 * and verify that computing kvmclock from pvti_src and pvti_dst
-+	 * at the same guest TSC gives the same result.
-+	 *
-+	 * Get an atomic {host_tsc, kvmclock} pair, scale host_tsc to
-+	 * guest TSC using KVM_VCPU_TSC_SCALE, then compute kvmclock
-+	 * from both pvclock structs.
-+	 */
-+	struct kvm_clock_data clock_now = {};
-+	vm_ioctl(vm, KVM_GET_CLOCK, &clock_now);
-+
-+	struct pvclock_vcpu_time_info *pvti_dst = addr_gpa2hva(vm, KVMCLOCK_GPA);
-+	uint64_t host_tsc_now = clock_now.host_tsc;
-+	uint64_t guest_tsc_now;
-+
-+	if (scale_dst.tsc_frac_bits)
-+		guest_tsc_now = ((unsigned __int128)host_tsc_now *
-+				 scale_dst.tsc_ratio >> scale_dst.tsc_frac_bits)
-+				+ ofs_dst;
-+	else
-+		guest_tsc_now = host_tsc_now + ofs_dst;
-+
-+	uint64_t clk_from_src = pvclock_read_cycles(&pvti_src, guest_tsc_now);
-+	uint64_t clk_from_dst = pvclock_read_cycles(pvti_dst, guest_tsc_now);
-+	int64_t pvclock_delta = (int64_t)(clk_from_src - clk_from_dst);
-+
-+	pr_info("  Pvclock direct: src=%" PRIu64 " dst=%" PRIu64
-+		" delta=%" PRId64 " ns\n", clk_from_src, clk_from_dst, pvclock_delta);
-+	pr_info("  KVM_GET_CLOCK:  %" PRIu64 " ns\n", (uint64_t)clock_now.clock);
-+
-+	TEST_ASSERT(pvclock_delta >= -1 && pvclock_delta <= 1,
-+		    "pvclock src vs dst disagree by %" PRId64 " ns", pvclock_delta);
-+
-+	/*
-+	 * Tight ABA: compare pvclock_read() directly (no ioctl) against
-+	 * CLOCK_MONOTONIC_RAW. The spread should be much smaller since
-+	 * there's no syscall between the two clock_gettime calls — just
-+	 * rdtsc + userspace mul/shift.
-+	 */
-+	uint64_t tight_mono_lo = 0, tight_mono_hi = 0, tight_kvm = 0;
-+	uint64_t tight_best_spread = UINT64_MAX;
-+	for (int i = 0; i < 3; i++) {
-+		struct timespec ts1, ts2;
-+		uint64_t m1, m2, tsc, clk;
-+
-+		clock_gettime(CLOCK_MONOTONIC_RAW, &ts1);
-+		tsc = rdtsc();
-+		clock_gettime(CLOCK_MONOTONIC_RAW, &ts2);
-+
-+		m1 = ts1.tv_sec * 1000000000ULL + ts1.tv_nsec;
-+		m2 = ts2.tv_sec * 1000000000ULL + ts2.tv_nsec;
-+
-+		/* Scale host TSC to guest TSC */
-+		if (scale_dst.tsc_frac_bits)
-+			tsc = ((unsigned __int128)tsc * scale_dst.tsc_ratio
-+			       >> scale_dst.tsc_frac_bits) + ofs_dst;
-+		else
-+			tsc += ofs_dst;
-+
-+		clk = pvclock_read_cycles(pvti_dst, tsc);
-+
-+		if (m2 - m1 < tight_best_spread) {
-+			tight_best_spread = m2 - m1;
-+			tight_mono_lo = m1;
-+			tight_mono_hi = m2;
-+			tight_kvm = clk;
-+		}
-+	}
-+	pr_info("  Tight ABA spread: %" PRIu64 " ns (best of 3)\n", tight_best_spread);
-+
-+	int64_t tight_expected_lo = delta_before_lo + tsc_ofs_delta_ns;
-+	int64_t tight_expected_hi = delta_before_hi + tsc_ofs_delta_ns;
-+	int64_t tight_actual_lo = (int64_t)(tight_kvm - tight_mono_hi);
-+	int64_t tight_actual_hi = (int64_t)(tight_kvm - tight_mono_lo);
-+	int64_t tight_actual_mid = ((tight_actual_lo + tight_actual_hi) / 2) - delta_before;
-+	int64_t tight_actual_err = (int64_t)(tight_mono_hi - tight_mono_lo) / 2;
-+
-+	pr_info("  Tight kvmclock-mono shift: expected %" PRId64
-+		" ns (±%" PRId64 "), measured %" PRId64 " ns (±%" PRId64 ")\n",
-+		expected_mid, expected_err, tight_actual_mid, tight_actual_err);
-+
-+	TEST_ASSERT(tight_expected_hi >= tight_actual_lo &&
-+		    tight_expected_lo <= tight_actual_hi,
-+		    "Tight ABA ranges don't overlap");
++	TEST_ASSERT(steal_increase >= 10000000ULL &&
++		    steal_increase < 5000000000ULL,
++		    "Steal time increase %" PRIu64 " ns not in expected range "
++		    "[10ms, 5s]", steal_increase);
 +
 +	kvm_vm_release(vm);
-+	pr_info("PASS: kvmclock offset matches TSC delta from CLOCK_REALTIME"
-+		" (%" PRId64 " ns) within ABA bounds\n", tsc_ofs_delta_ns);
++	pr_info("PASS: Migration gap correctly accounted as steal time\n");
 +	return 0;
 +}
 -- 
