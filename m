@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D60A3914F0;
-	Mon,  8 Jun 2026 07:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723AB3A3826;
+	Mon,  8 Jun 2026 08:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780903892; cv=none; b=pwQpxla76aFQbMfztX6OHh2Oh3xISa76B/FfVVKVD3k3HBy749g3TVAGjmwSAvvkQI4qhQWmcszxJuBkTYZqhdXkcGSdWkhGetGP8lKTgaWMalykZLJBzzlTXJPDjjEFf7JLFiZ461uzSrJrabx7bvGY1qmkK+g1yF6zKCMqKR4=
+	t=1780905813; cv=none; b=navR1OORRWeJDP0tMKgoCrRT/KmeVVAkkCGtlzex++nRa9rI+nY66U0RZ6LF7bOfuz0k0AjqZDEhZTwjzVqkMybcsSYMUhX8gSsbDwYKRFPaLr9qcN6X6bjSHGbSpsAGiCYXt2nD73ya4RV7eaXLif0T6SzCekAYhUbopTYySZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780903892; c=relaxed/simple;
-	bh=CvTLFyhxq9msoIgNWC90DtZohlxaCQTF9fNqOcbIN3g=;
+	s=arc-20240116; t=1780905813; c=relaxed/simple;
+	bh=lWOxm6TUe+DG9ihCJuhA3Y9rlGGk3r5B8BALzosQTT4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CCCKAMZVfpq0MQhbPE6F2ONitMcphvREIVliYYcxKaCdjgqtbs8YgY8+vAubNaZCT1KQNcpdhMntsoU50+IIsBQ4xTLaHBIgbIXTCbrx218Iz3Xg1Qy6DmV9ap9gyyN7qcFeUIEtZYypavic/ra3OsHmG9FXMT3lPDaRgEbsrwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V5fxnQbo; arc=none smtp.client-ip=192.198.163.13
+	 In-Reply-To:Content-Type; b=sluJDXDcgs0pcLVfaaUNXn+nNd65z26WygK/E/4QHO6tHkfkxoJM/zUSssBhewvtPg2v6gD49gokiYKghu3rKmiSA6Gc9Dm8IXSrermQKHpqjPOi7SuwntKU2lZbh1jdiH66ZTzdiTw6C7AdTCzvj1F6wy40zr31BqsXj2bGx2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bky4TLfV; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V5fxnQbo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bky4TLfV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780903889; x=1812439889;
+  t=1780905812; x=1812441812;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=CvTLFyhxq9msoIgNWC90DtZohlxaCQTF9fNqOcbIN3g=;
-  b=V5fxnQbopyLIlesGC8aG9YMAchWDac6kRSZFOD8M3db7CEkNIvtdofzs
-   96oxwL3p3K8OSDr0/6T8O7IDzxZwHlxb11RDwcBrd/zm4nER5VO+gdtW6
-   AdBHb0179VI71Li6nvf8ty2WZ/iRr7o0bV/AuaR3JseSKW/URvrejPhKa
-   CjcAF7VTV4lPYi9422IoQWBiAq2lwuPF99CnSv1KHhh4Ow8bkmZxHNVFs
-   5C40KEjFF0uPh6u/j6VomOBS/lmu3h5dJSRlgdj9zTr/c23YWnGN5QpIj
-   Ht+wzPsmveKFvQ/erpZbnOy7ew91GmJ6v9w8ya42q4f3P1OGqk+29Pxie
-   A==;
-X-CSE-ConnectionGUID: dlFW4YDOQMCN92C+iMk2pA==
-X-CSE-MsgGUID: gk8uiiL3Qee0cqPtvM8AUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="84206795"
+  bh=lWOxm6TUe+DG9ihCJuhA3Y9rlGGk3r5B8BALzosQTT4=;
+  b=bky4TLfVyiHfTCwaPyd5+EwfKae+dovif/JBHVMtDU/BQ2j0gZReB3pm
+   sdkGy4Z66K14yhZviQmPhml6+A/M2Y1s20qaD8VFIa9iU9RqEf2UomlwQ
+   /3YYB1+Y2HTSY0j+ERMolgqP709ptSGfP3JpOgA4WV5iUWtK2cxEuWRdq
+   jRo61SIf2XEfFFYb9KniwNSYqfNI1aTsgUlrzIV+Sv9zgfs77XNnVLknn
+   4ATM3TDAoU1Tuu1U3Ei0vfS8BU6TI9DOWqtIrcMHqLns82KRbTROrbS/1
+   z2T22lii5N7HSKepQbiYXhozKPksakeDhvP8uO0H2A9t6AWI6R4hV9rkK
+   Q==;
+X-CSE-ConnectionGUID: a3D4ZPOwQCmXIj78uau3/Q==
+X-CSE-MsgGUID: 13qDwj0XTZitwyFJHFdHdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="85261201"
 X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="84206795"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 00:31:18 -0700
-X-CSE-ConnectionGUID: dlvNSPV/Qf6vGo/QWFgWxA==
-X-CSE-MsgGUID: d3OpymgeS7SsWO8cOkbqIg==
+   d="scan'208";a="85261201"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 01:03:32 -0700
+X-CSE-ConnectionGUID: DG8gH77kTXCi+6OfFkzb8g==
+X-CSE-MsgGUID: hj9ON4Y/QsyZrIxnE+OQsw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="242496781"
+   d="scan'208";a="243025774"
 Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 00:31:12 -0700
-Message-ID: <14385c18-a236-44fd-8728-598d6b6cc8a5@linux.intel.com>
-Date: Mon, 8 Jun 2026 15:31:10 +0800
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 01:03:26 -0700
+Message-ID: <eab3711d-c5b1-4132-92e4-7f7040fcd17b@linux.intel.com>
+Date: Mon, 8 Jun 2026 16:03:23 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 12/22] KVM: selftests: Back the first memory region
- with guest_memfd for TDX
+Subject: Re: [PATCH v13 13/22] KVM: selftests: Set first memory region as
+ shared if guest_memfd
 To: Lisa Wang <wyihan@google.com>
 Cc: Andrew Jones <ajones@ventanamicro.com>,
  Ackerley Tng <ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>,
@@ -71,44 +71,80 @@ Cc: Andrew Jones <ajones@ventanamicro.com>,
  Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
 References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-12-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-13-6983ae4c3a4d@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260521-tdx-selftests-v13-v13-12-6983ae4c3a4d@google.com>
+In-Reply-To: <20260521-tdx-selftests-v13-v13-13-6983ae4c3a4d@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 On 5/22/2026 7:16 AM, Lisa Wang wrote:
-> Force GUEST_MEMFD for the primary memory region of TDX VMs.
+> Set the initial state of the first memory region as shared if it is
+> backed by guest_memfd, so that the KVM selftest framework functions can
+> populate mmap()-ed guest_memfd memory the same way memory from other
+> memory providers are populated.
 > 
-> TDX must use guest_memfd for private pages as there is no alternative
-> mechanism supported by the TDX architecture.
-
-This sounds a bit confusing to me.
-It's the kernel/KVM only support guest_memfd for private pages.
-The restriction is not from the "TDX architecture".
-
-Also, the short log is also a bit confusing.
-Why describe the "first memory region" here?
-
+> For CoCo VMs, pages that need to be private are explicitly set to
+> private before executing the VM.
 > 
 > Signed-off-by: Lisa Wang <wyihan@google.com>
 > ---
->  tools/testing/selftests/kvm/lib/kvm_util.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  tools/testing/selftests/kvm/lib/kvm_util.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
 > 
 > diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-> index d1befa3f4b30..9a29540fff40 100644
+> index 9a29540fff40..1bab7d76a59c 100644
 > --- a/tools/testing/selftests/kvm/lib/kvm_util.c
 > +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-> @@ -472,7 +472,7 @@ void kvm_set_files_rlimit(u32 nr_vcpus)
->  static bool is_guest_memfd_required(struct vm_shape shape)
->  {
->  #ifdef __x86_64__
-> -	return shape.type == KVM_X86_SNP_VM;
-> +	return (shape.type == KVM_X86_SNP_VM || shape.type == KVM_X86_TDX_VM);
->  #else
->  	return false;
->  #endif
+> @@ -484,8 +484,10 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+>  	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+>  						 nr_extra_pages);
+>  	struct userspace_mem_region *slot0;
+> +	u64 gmem_flags = 0;
+>  	struct kvm_vm *vm;
+> -	int i, flags;
+> +	int flags = 0;
+> +	int i;
+>  
+>  	kvm_set_files_rlimit(nr_runnable_vcpus);
+>  
+> @@ -495,14 +497,16 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+>  	vm = ____vm_create(shape);
+>  
+>  	/*
+> -	 * Force GUEST_MEMFD for the primary memory region if necessary, e.g.
+> -	 * for CoCo VMs that require GUEST_MEMFD backed private memory.
+> +	 * Force GUEST_MEMFD for the primary memory region if necessary, and
+> +	 * initialize it as shared so the selftest framework can populate it
+> +	 * exactly like other memory providers.
+>  	 */
+> -	flags = 0;
+> -	if (is_guest_memfd_required(shape))
+> +	if (is_guest_memfd_required(shape)) {
+>  		flags |= KVM_MEM_GUEST_MEMFD;
+> +		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
+> +	}
+>  
+> -	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
+> +	vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags, -1, 0, gmem_flags);
+
+The build failed due to this:
+
+lib/kvm_util.c: In function ‘__vm_create’:
+lib/kvm_util.c:507:9: error: too many arguments to function ‘vm_mem_add’
+  507 |         vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags, -1, 0, gmem_flags);
+      |         ^~~~~~~~~~
+In file included from lib/kvm_util.c:9:
+include/kvm_util.h:714:6: note: declared here
+  714 | void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+      |      ^~~~~~~~~~
+lib/kvm_util.c: At top level:
+cc1: note: unrecognized command-line option ‘-Wno-gnu-variable-sized-type-not-at-end’ may have been intended to silence earlier diagnostics
+
+It seems the patch set doesn't wire gmem_flags parameter to vm_mem_add().
+
+>  	for (i = 0; i < NR_MEM_REGIONS; i++)
+>  		vm->memslots[i] = 0;
+>  
 > 
 
