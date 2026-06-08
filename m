@@ -1,278 +1,287 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E963B3C13;
-	Mon,  8 Jun 2026 08:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C1E3A9D9A;
+	Mon,  8 Jun 2026 09:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780908942; cv=none; b=MkXCp25G8E3IOjHkvduf6hLsqOlCxHt10zYTmoErhtm/5T24V/fvuFnYurtjeyQ75l/FTxFI1dAnoBx92UeOEEUkPdDqAy+7tfCP1l7tmfiCBuyJBfaW05S1uDH/G6qMbmx9Od8Db5OQX0djagtZYu8zUoQ9aTOlDy8VuKBfzdA=
+	t=1780909475; cv=none; b=EFEO7O3Wx1nMciKrVYipk+DqjpS/vGtg3CtSKWUS333gSOdPiIGC6JtGxUKuturJM2GK3TpRWNM7N2ji26g+gwuvQAXLVElNwI+JLnhTpoflUQ3OBbr/5fwjhzgwR9ohr2Wo5ZbMgxkPaZJEjpUtDmTZ3GH4ksXd/Bzy4sll6Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780908942; c=relaxed/simple;
-	bh=AQxbdis5fYVpW/l4ioAowTrjnq0+amNVD+C5Jl2I3P4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mrP7SfyrYG5/7dtC3lcXstNAQ4rXQ30PfQIOwfOsyvdbEcci94BCEmk12bExrjwfUYjx5UUCvuscpcnuy1IPomDrlYl/XvUdCRQZXU53cQtlrM3bvaRpy9Bvx2j333hBAdXKnhwu8uDGGXcEPz5q2jg6Xec+odQcMTny3LH9ei8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LCkFO8Pv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780909475; c=relaxed/simple;
+	bh=UDLOwoz5/29T6sYP2Rlf3qHQ43L84ZJtyRl8TyopJmI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BzHZduoMCJvbie5lZezeD8GOJTaR1mV+WQFvQ65wUseywaqV8hL0JLGcFA+FJBXBsYC3612gkuW+TqGKjxtPV1t4io6trauF0BToXlEcBJSso8lE1mSkogstUMqVSWV77RkNMxu6YRYBZU+By4EdDUqehfKMiLdVqlqQIVZ0+t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=N0ISW+Qx; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LCkFO8Pv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117A91F00898;
-	Mon,  8 Jun 2026 08:55:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780908941;
-	bh=andKjaputZdj2JK89k0CuUeF5jJoG1iFA1/oxm6MK6g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LCkFO8PvYSl8Urpj1ZwGCTb0JbUIruFNU8NPeRbexBg3c7UY2kvFToy1FTWXfh5Lj
-	 WeDCzn3IDSlJPtiUORlmJ+cRn71gfM9RDXfTKT0KY/Z6zBLid4w3b357zEY71o3wDc
-	 C/blPBYKpCuwB9inhb9qEruw4GomE0sl/zPk5RsV+LbFcW+NyCrB2x/2txoYQPfQQA
-	 j7UjPugNjlHbDFNHM5TYMxf7j+ciL6RP5yeGqf/+G2ZghhBe0onF//HgmJTwlVg6Xv
-	 dZIpWCdsF70Rxp33LFaWIbaanFGRwE+OwHrvy0GjAEl2sNVKtGcVy/oP1Vjskyn78i
-	 O5zIEEP3sY8Cw==
-Message-ID: <509f9a66-5ae9-4c05-bef1-ced89fd29bf0@kernel.org>
-Date: Mon, 8 Jun 2026 10:55:28 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="N0ISW+Qx"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 657BN0HV3223957;
+	Mon, 8 Jun 2026 09:04:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=cHgup3
+	axOMojWMulUtE7B/9JyHDSWEhW1MJrbppKeBg=; b=N0ISW+QxRY9OrWFRF0bv5Y
+	sNgVZ63tep4g/sbf3Idwj4M3BRhRNhQ62SWk7fzj/6h/y6z+2mkfexFSwUwK0N53
+	OSyHc8T9QM8uYzk6itFHkM/ItAd8HtZ+cGjxnoYLfHj34nhbDoiwtrrHGTc/eG88
+	WQia/+3Gy9Xpf/u6ggZl58Khd0Fuv85Ypa3sqOVqc/3hC+qmV02Auj4eOCoFeCui
+	AgXyFoGOG0rjKH65xCe2LaKvlNFpX04Ji4lyrA0+BEckIZLBfaTZhGa5ZFQ+rnhH
+	YaGFwztBM6jIgn2yLXIYFLY6jOvXjsjEwbuMjqqaOIu/ArXvXpXXeEzz6lcSWprQ
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4em8yhpn8h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 09:04:12 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6588nqOv032223;
+	Mon, 8 Jun 2026 09:04:12 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4emxvjmkh9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 09:04:12 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65894BaZ63701290
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 8 Jun 2026 09:04:11 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B1E5F58055;
+	Mon,  8 Jun 2026 09:04:11 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E1F2058054;
+	Mon,  8 Jun 2026 09:04:05 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.124.211.219])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with SMTP;
+	Mon,  8 Jun 2026 09:04:05 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Mon, 08 Jun 2026 14:34:04 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: David Gow <david@davidgow.net>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+        linux-kernel@vger.kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman
+ <mpe@ellerman.id.au>,
+        Brendan Higgins <brendan.higgins@linux.dev>,
+        Rae
+ Moar <raemoar63@gmail.com>
+Subject: Re: [PATCH 1/2] kunit: Add ability to skip entire test suites
+In-Reply-To: <758228d7-b555-447a-86f7-3c437ce92460@davidgow.net>
+References: <20260604162805.556135-1-vaibhav@linux.ibm.com>
+ <20260604162805.556135-2-vaibhav@linux.ibm.com>
+ <758228d7-b555-447a-86f7-3c437ce92460@davidgow.net>
+Date: Mon, 08 Jun 2026 14:34:04 +0530
+Message-ID: <87a4t5mmij.fsf@vajain21.in.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 10/42] KVM: guest_memfd: Ensure pages are not in use
- before conversion
-Content-Language: en-US
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, ira.weiny@intel.com, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
- <20260522-gmem-inplace-conversion-v7-10-2f0fae496530@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260522-gmem-inplace-conversion-v7-10-2f0fae496530@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDA3OSBTYWx0ZWRfXxwb0mWG3q74O
+ WK7acvTZd/ZXpzsdiGr0JS7aj3cgaJSiht4kzNbbQcm/1YBWL7XZ1GkC1PTgX88uedkierYZbNh
+ SXug70/CCM6RYXr7L0u6lyb03+ptcpk38rN/l5/QNNqR5Sxowpd68KQlxSjQ/GK6Vk1wRNmTQ+3
+ yWwqS/LA4rpdZVT5Q4TqvDjBIYq3L0bFJq+ocha7Ko8++0sE0JD0NLD9m3ysLkG4Hy+YkWhyzhI
+ KdLHSk0VVcfrjv6R1MfzhcuBMWt5QC2scxXl5xa/v0JNhHQzqB5B9zLT/F6p9vZtvwj+9J/+SMC
+ XM1OWbD28UvGGDEdj5f/W5wM2wJNrfV/SIXldW+Ew8Ub6SB4Zv+H9czw+aZm45Cvuk+0feAwRFp
+ aKuNZIisSKIzFaQSIOPhxmR1N+zw5S3Po6KEVBAvKtkjlxxCsNHou92wmX6YULAfAW5pk23vjVD
+ gqMWEiw2pMSlUJQhM8w==
+X-Authority-Analysis: v=2.4 cv=HvFG3UTS c=1 sm=1 tr=0 ts=6a26858d cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=nzuXsxulAAAA:8
+ a=ZakwTqujU9vwe5Myu5gA:9 a=QEXdDO2ut3YA:10 a=Jn5cl5okm61iLnyvC_SE:22
+X-Proofpoint-ORIG-GUID: vO5s46Ho2P0N--NGYYeSykMLWMhtzbUI
+X-Proofpoint-GUID: iSKoQ4sYqJK8uqVxpLQLtAOIAi4GN-c8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-08_02,2026-06-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0 suspectscore=0
+ spamscore=0 priorityscore=1501 phishscore=0 malwarescore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606080079
 
-On 5/23/26 02:17, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> When converting memory to private in guest_memfd, it is necessary to ensure
-> that the pages are not currently being accessed by any other part of the
-> kernel or userspace to avoid any current user writing to guest private
-> memory.
-> 
-> guest_memfd checks for unexpected refcounts to determine whether a page is
-> still in use. The only expected refcounts after unmapping the range
-> requested for conversion are those that are held by guest_memfd itself.
+Hi David,
 
-Is it sufficient to only check, and not also freeze the refcount? (i.e.
-using folio_ref_freeze()), because without freezing, anything (e.g.
-compaction's pfn-based scanner) could do a speculative folio_try_get() and
-the checked refcount becomes stale.
+Thanks for looking into this patch. My responses inline below:
 
-Might be ok if we know that no such speculative increment can result in
-actually touching the page contents, and the extra refcount and something
-inspecting the struct folio won't interfere with anything else. Then it
-could be just a comment mentioning why it's safe.
 
-IIRC the compaction's scanning can result in a migration here so it's
-probably ok?
+David Gow <david@davidgow.net> writes:
 
-> Update the kvm_memory_attributes2 structure to include an error_offset
-> field. This allows KVM to report the exact offset where a conversion
-> failed to userspace. If the safety check fails, return -EAGAIN and copy
-> the error_offset back to userspace so that it can potentially retry the
-> operation or handle the failure gracefully.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+<snip>
+
+>
+> Thanks =E2=80=94 this is great! There are a few cases it's not handling
+> properly, though, particularly with respect to the debugfs support.
+>
+> I think we need to:
+> - Reset suite->status to KUNIT_SUCCESS in kunit_init_suite(), so that a
+> suite which is re-run via debugfs isn't automatically skipped again.
+> - Fix the result handling in debugfs to handle skipped suites.
+Agree, and I have addressed this in v2 of the patch using the
+code-snippets you have shared.
+
+> - (Optional) Maybe we could get rid of kunit_suite::suite_init_err now
+> that there's a specific status value. That'd have to be done carefully
+> to preserve all of the semantics, though.
+Yes fully agree that kunit_suite::suite_init_err will be redundant after
+introduction of kunit_suite::status. I have started looking into this
+and will post a different patch{series} for this.
+
+>
+> Here's a quick (and slightly hacky) patch to fix the first couple of issu=
+es:
 > ---
->  include/uapi/linux/kvm.h |  3 ++-
->  virt/kvm/guest_memfd.c   | 68 ++++++++++++++++++++++++++++++++++++++++++++----
->  2 files changed, 65 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index e6bbf68a83813..0b55258573d3d 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1658,7 +1658,8 @@ struct kvm_memory_attributes2 {
->  	__u64 size;
->  	__u64 attributes;
->  	__u64 flags;
-> -	__u64 reserved[12];
-> +	__u64 error_offset;
-> +	__u64 reserved[11];
->  };
->  
->  #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 426917d22a2b6..2767992955752 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -572,9 +572,45 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
->  	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
+> diff --git a/lib/kunit/debugfs.c b/lib/kunit/debugfs.c
+> index 9c326f1837bd..23d34bfdba95 100644
+> --- a/lib/kunit/debugfs.c
+> +++ b/lib/kunit/debugfs.c
+> @@ -58,6 +58,22 @@ static void debugfs_print_result(struct seq_file
+> *seq, struct string_stream *log
+>  	spin_unlock(&log->lock);
 >  }
->  
-> +static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
-> +					    size_t nr_pages, pgoff_t *err_index)
+>
+> +/* Print the result line for a suite. */
+> +static void debugfs_print_ok_not_ok(struct seq_file *seq,
+> +				    enum kunit_status status,
+> +				    size_t test_number,
+> +				    const char *description,
+> +				    const char *directive)
 > +{
-> +	struct address_space *mapping = inode->i_mapping;
-> +	const int filemap_get_folios_refcount = 1;
-> +	pgoff_t last = start + nr_pages - 1;
-> +	struct folio_batch fbatch;
-> +	bool safe = true;
-> +	pgoff_t next;
-> +	int i;
+> +	const char *directive_header =3D (status =3D=3D KUNIT_SKIPPED) ? " # SK=
+IP "
+> : "";
+> +	const char *directive_body =3D (status =3D=3D KUNIT_SKIPPED) ? directiv=
+e : "";
 > +
-> +	folio_batch_init(&fbatch);
-> +
-> +	next = start;
-> +	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
-> +
-> +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> +			struct folio *folio = fbatch.folios[i];
-> +
-> +			if (folio_ref_count(folio) !=
-> +			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
-> +				safe = false;
-> +				*err_index = max(start, folio->index);
-> +				break;
-> +			}
-> +		}
-> +
-> +		folio_batch_release(&fbatch);
-> +		cond_resched();
-> +	}
-> +
-> +	return safe;
+> +	seq_printf(seq, "%s %zd %s%s%s\n",
+> +		   kunit_status_to_ok_not_ok(status),
+> +		   test_number, description, directive_header,
+> +		   directive_body);
 > +}
 > +
->  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> -				     size_t nr_pages, uint64_t attrs)
-> +				     size_t nr_pages, uint64_t attrs,
-> +				     pgoff_t *err_index)
->  {
-> +	bool to_private = attrs & KVM_MEMORY_ATTRIBUTE_PRIVATE;
->  	struct address_space *mapping = inode->i_mapping;
->  	struct gmem_inode *gi = GMEM_I(inode);
->  	pgoff_t end = start + nr_pages;
-> @@ -588,8 +624,21 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->  
->  	mas_init(&mas, mt, start);
->  	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
-> -	if (r)
-> +	if (r) {
-> +		*err_index = start;
->  		goto out;
+>  /*
+>   * /sys/kernel/debug/kunit/<testsuite>/results shows all results for
+> testsuite.
+>   */
+> @@ -77,17 +93,17 @@ static int debugfs_print_results(struct seq_file
+> *seq, void *v)
+>  	seq_puts(seq, "1..1\n");
+>
+>  	/* Print suite header because it is not stored in the test logs. */
+> -	seq_puts(seq, KUNIT_SUBTEST_INDENT "KTAP version 1\n");
+> -	seq_printf(seq, KUNIT_SUBTEST_INDENT "# Subtest: %s\n", suite->name);
+> -	seq_printf(seq, KUNIT_SUBTEST_INDENT "1..%zd\n",
+> kunit_suite_num_test_cases(suite));
+> -
+> -	kunit_suite_for_each_test_case(suite, test_case)
+> -		debugfs_print_result(seq, test_case->log);
+> +	if (suite->status !=3D KUNIT_SKIPPED) {
+> +		seq_puts(seq, KUNIT_SUBTEST_INDENT "KTAP version 1\n");
+> +		seq_printf(seq, KUNIT_SUBTEST_INDENT "# Subtest: %s\n", suite->name);
+> +		seq_printf(seq, KUNIT_SUBTEST_INDENT "1..%zd\n",
+> kunit_suite_num_test_cases(suite));
+>
+> +		kunit_suite_for_each_test_case(suite, test_case)
+> +			debugfs_print_result(seq, test_case->log);
 > +	}
-> +
-> +	if (to_private) {
-> +		unmap_mapping_pages(mapping, start, nr_pages, false);
-> +
-> +		if (!kvm_gmem_is_safe_for_conversion(inode, start, nr_pages,
-> +						     err_index)) {
-> +			mas_destroy(&mas);
-> +			r = -EAGAIN;
-> +			goto out;
-> +		}
-> +	}
->  
->  	/*
->  	 * From this point on guest_memfd has performed necessary
-> @@ -609,9 +658,10 @@ static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
->  	struct gmem_file *f = file->private_data;
->  	struct inode *inode = file_inode(file);
->  	struct kvm_memory_attributes2 attrs;
-> +	pgoff_t err_index;
->  	size_t nr_pages;
->  	pgoff_t index;
-> -	int i;
-> +	int i, r;
->  
->  	if (copy_from_user(&attrs, argp, sizeof(attrs)))
->  		return -EFAULT;
-> @@ -635,8 +685,16 @@ static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
->  
->  	nr_pages = attrs.size >> PAGE_SHIFT;
->  	index = attrs.offset >> PAGE_SHIFT;
-> -	return __kvm_gmem_set_attributes(inode, index, nr_pages,
-> -					 attrs.attributes);
-> +	r = __kvm_gmem_set_attributes(inode, index, nr_pages, attrs.attributes,
-> +				      &err_index);
-> +	if (r) {
-> +		attrs.error_offset = ((uint64_t)err_index) << PAGE_SHIFT;
-> +
-> +		if (copy_to_user(argp, &attrs, sizeof(attrs)))
-> +			return -EFAULT;
-> +	}
-> +
-> +	return r;
+>  	debugfs_print_result(seq, suite->log);
+>
+> -	seq_printf(seq, "%s %d %s\n",
+> -		   kunit_status_to_ok_not_ok(success), 1, suite->name);
+> +	debugfs_print_ok_not_ok(seq, success, 1, suite->name,
+> suite->status_comment);
+>  	return 0;
 >  }
->  
->  static long kvm_gmem_ioctl(struct file *file, unsigned int ioctl,
-> 
+Thanks, have modified these proposed changes a bit for v2
 
+>
+> diff --git a/lib/kunit/test.c b/lib/kunit/test.c
+> index c0ae45a22b2c..2ff145796450 100644
+> --- a/lib/kunit/test.c
+> +++ b/lib/kunit/test.c
+> @@ -798,9 +798,6 @@ int kunit_run_tests(struct kunit_suite *suite)
+>  	/* Taint the kernel so we know we've run tests. */
+>  	add_taint(TAINT_TEST, LOCKDEP_STILL_OK);
+>
+> -	if (suite->status =3D=3D KUNIT_SKIPPED)
+> -		goto suite_end;
+> -
+>  	if (suite->suite_init) {
+>  		suite->suite_init_err =3D suite->suite_init(suite);
+>  		if (suite->suite_init_err) {
+> @@ -836,6 +833,7 @@ static void kunit_init_suite(struct kunit_suite *suit=
+e)
+>  	kunit_debugfs_create_suite(suite);
+>  	suite->status_comment[0] =3D '\0';
+>  	suite->suite_init_err =3D 0;
+> +	suite->status =3D KUNIT_SUCCESS;
+Thanks, taken this change for v2.
+
+>
+>  	if (suite->log)
+>  		string_stream_clear(suite->log);
+> ---
+>
+>
+>>  include/kunit/test.h |  1 +
+>>  lib/kunit/test.c     | 11 +++++++++++
+>>  2 files changed, 12 insertions(+)
+>>=20
+>> diff --git a/include/kunit/test.h b/include/kunit/test.h
+>> index ce0573e196ce..395221d623f7 100644
+>> --- a/include/kunit/test.h
+>> +++ b/include/kunit/test.h
+>> @@ -285,6 +285,7 @@ struct kunit_suite {
+>>  	struct string_stream *log;
+>>  	int suite_init_err;
+>>  	bool is_init;
+>> +	enum kunit_status status;
+>>  };
+>>=20=20
+>>  /* Stores an array of suites, end points one past the end */
+>> diff --git a/lib/kunit/test.c b/lib/kunit/test.c
+>> index 99773e000e1b..989acc770265 100644
+>> --- a/lib/kunit/test.c
+>> +++ b/lib/kunit/test.c
+>> @@ -214,6 +214,9 @@ enum kunit_status kunit_suite_has_succeeded(struct k=
+unit_suite *suite)
+>>  	const struct kunit_case *test_case;
+>>  	enum kunit_status status =3D KUNIT_SKIPPED;
+>>=20=20
+>> +	if (suite->status =3D=3D KUNIT_SKIPPED)
+>> +		return KUNIT_SKIPPED;
+>> +
+>>  	if (suite->suite_init_err)
+>>  		return KUNIT_FAILURE;
+>>=20=20
+>> @@ -795,12 +798,20 @@ int kunit_run_tests(struct kunit_suite *suite)
+>>  	/* Taint the kernel so we know we've run tests. */
+>>  	add_taint(TAINT_TEST, LOCKDEP_STILL_OK);
+>>=20=20
+>> +	if (suite->status =3D=3D KUNIT_SKIPPED)
+>> +		goto suite_end;
+>> +
+>
+> Do we want this? If a test is run more than once, we probably want to
+> re-run suite_init so that we can tell if we should still skip it.
+This condition should prevent a 'kunit_suite' from running if its marked
+skipped before suite_init() is called.=20
+
+>
+> While I don't think it's likely that a test which was previously skipped
+> will suddenly become available, it's not impossible with, e.g., CPU hotpl=
+ug.
+Agree, I have updated kunit_init_suite() to set 'kunit_suite.status' =3D=3D
+KUNIT_SUCCESS. This should force the suite_init() to be calledback again
+when the suite is re-run.
+
+
+--=20
+Cheers
+~ Vaibhav
