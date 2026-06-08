@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7063EF67E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9873EFFC5;
 	Mon,  8 Jun 2026 14:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929800; cv=none; b=UEON7/B5uh5Tv8IGjkmMQB6iAcOHi9dNz9NBHbGFOe+kKzlprF/DawMDFXYUbQPIWYgqYa0uvjPoNEtgaK5THIP9kec2RpQOviSu6K+IwYg8NtHd/pBhkjkQODVf34Bx5qolsCXSV7hWH6CeUjSuqk0VxcI4dZhbeqaacV/LOlI=
+	t=1780929801; cv=none; b=Jno++r43hP3rbneV7BGpc1hbGLuz7DcUgEBwC+78qYKYwdCT3ZdMqkajjdNVW9NJsX1ME5CzynA/NVaVSAkN5RZg8dI8JEIoF+F/M2m7Sc/4Ed7HMBybfI3k1s80lctEu1I1/EaYqMVoEu7BJ8BRP9jaXfzYD9oTD7DzMK08wyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780929800; c=relaxed/simple;
-	bh=5lZgKKZU06HyUoBgmxgC+k6xsrw8n7Uakjte5BD8eLU=;
+	s=arc-20240116; t=1780929801; c=relaxed/simple;
+	bh=GwS6kcUIvEphAp9+YzSLC0PCBhSrcE7LKoDUAyaBGsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNcxoHpa+Ty9puCh0+E8Qk1olvqLkCMR2Gqs590YFpAI9Zv7qpksXFeU72KtRix3yWVYb5cGIAYl7y2n+fZW5e27AU3NVqbIBiBgyqQQjvgtj7g8eZlVLTJ1/wH1ag3mBD/3sIxgfWuE1IIJpunW6qNNCMGbSByzGPP1bLIDefg=
+	 MIME-Version; b=A/GumxYtFv+pLxHg4NfewY3JZdrXq6cKqoqSCkeQWiKFF+Qu+zm02ZmseKP+qYGP/Ac7iiGqtUn7df92JRRqiD1nmLYE36+hCOD9gHRoODz5iwdm6GxvRfJMMmYEx0pE7eZQ6S568lbGM/qAkLW4O59praWWnKi4k+WtgZ+ZNFg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,7 +16,7 @@ Received: from io.home.8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 4B2B22028B2;
+	by mail.8bytes.org (Postfix) with ESMTPSA id E5D642028B5;
 	Mon,  8 Jun 2026 16:43:08 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
@@ -38,9 +38,9 @@ Cc: Tom Lendacky <thomas.lendacky@amd.com>,
 	x86@kernel.org,
 	coconut-svsm@lists.linux.dev,
 	joerg.roedel@amd.com
-Subject: [PATCH 15/60] kvm: Move VCPU scheduling state to struct kvm_vcpu_common
-Date: Mon,  8 Jun 2026 16:42:07 +0200
-Message-ID: <20260608144252.351443-16-joro@8bytes.org>
+Subject: [PATCH 18/60] kvm: Move kvm_vcpu->rcuwait to struct kvm_vcpu_common
+Date: Mon,  8 Jun 2026 16:42:10 +0200
+Message-ID: <20260608144252.351443-19-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
 References: <20260608144252.351443-1-joro@8bytes.org>
@@ -54,213 +54,111 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-The scheduling state of the KVM VCPU is shared between all per-plane
-VCPU objects. Move it to struct kvm_vcpu_common.
+The rcuwait member is used to block and wake a VCPU thread. Since all
+plane VCPUs share a thread, there must only be a single wait object.
 
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- arch/x86/kvm/svm/svm.c   |  2 +-
- include/linux/kvm_host.h | 24 ++++++++++----------
- virt/kvm/kvm_main.c      | 47 +++++++++++++++++++++-------------------
- 3 files changed, 39 insertions(+), 34 deletions(-)
+ arch/loongarch/kvm/timer.c | 2 +-
+ arch/mips/kvm/mips.c       | 4 ++--
+ include/linux/kvm_host.h   | 9 +++++----
+ virt/kvm/kvm_main.c        | 7 ++++---
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 1524c1bb4f37..f5cc30a6732f 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -229,7 +229,7 @@ int svm_set_efer(struct kvm_vcpu *vcpu, u64 efer)
- 			 * and only if the vCPU is actively running, e.g. to
- 			 * avoid positives if userspace is stuffing state.
- 			 */
--			if (is_guest_mode(vcpu) && vcpu->wants_to_run)
-+			if (is_guest_mode(vcpu) && vcpu->common->wants_to_run)
- 				kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+diff --git a/arch/loongarch/kvm/timer.c b/arch/loongarch/kvm/timer.c
+index 8356fce0043f..9da10aa90558 100644
+--- a/arch/loongarch/kvm/timer.c
++++ b/arch/loongarch/kvm/timer.c
+@@ -31,7 +31,7 @@ enum hrtimer_restart kvm_swtimer_wakeup(struct hrtimer *timer)
  
- 			svm_leave_nested(vcpu);
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index d54f299218a4..a6aacd507c02 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -329,15 +329,21 @@ struct kvm_vcpu_common {
+ 	vcpu = container_of(timer, struct kvm_vcpu, arch.swtimer);
+ 	kvm_queue_irq(vcpu, INT_TI);
+-	rcuwait_wake_up(&vcpu->wait);
++	rcuwait_wake_up(kvm_arch_vcpu_get_wait(vcpu));
  
- 	/* Currently active VCPU */
- 	struct kvm_vcpu *current_vcpu;
-+
-+	/* Scheduling state */
-+#ifdef CONFIG_PREEMPT_NOTIFIERS
-+	struct preempt_notifier preempt_notifier;
-+#endif
-+	bool wants_to_run;
-+	bool preempted;
-+	bool ready;
-+	bool scheduled_out;
- };
- 
- struct kvm_vcpu {
- 	struct kvm *kvm;
- 	struct kvm_plane *plane;
- 
--#ifdef CONFIG_PREEMPT_NOTIFIERS
--	struct preempt_notifier preempt_notifier;
--#endif
- 	int cpu;
- 	int vcpu_id; /* id given by userspace at creation */
- 	int vcpu_idx; /* index into kvm->planes[]->vcpu_array */
-@@ -392,10 +398,6 @@ struct kvm_vcpu {
- 		bool dy_eligible;
- 	} spin_loop;
- #endif
--	bool wants_to_run;
--	bool preempted;
--	bool ready;
--	bool scheduled_out;
- 	struct kvm_vcpu_arch arch;
- 	struct kvm_vcpu_stat stat;
- 	char stats_id[KVM_STATS_NAME_SIZE];
-@@ -416,22 +418,22 @@ struct kvm_vcpu {
- 
- static inline bool kvm_vcpu_wants_to_run(struct kvm_vcpu *vcpu)
- {
--	return vcpu->wants_to_run;
-+	return vcpu->common->wants_to_run;
+ 	return HRTIMER_NORESTART;
  }
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index f928ba105104..6469ec246dd6 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -265,7 +265,7 @@ static enum hrtimer_restart kvm_mips_comparecount_wakeup(struct hrtimer *timer)
+ 	kvm_mips_callbacks->queue_timer_int(vcpu);
  
- static inline bool kvm_vcpu_preempted(struct kvm_vcpu *vcpu)
- {
--	return READ_ONCE(vcpu->preempted);
-+	return READ_ONCE(vcpu->common->preempted);
+ 	vcpu->arch.wait = 0;
+-	rcuwait_wake_up(&vcpu->wait);
++	rcuwait_wake_up(kvm_arch_vcpu_get_wait(vcpu));
+ 
+ 	return kvm_mips_count_timeout(vcpu);
  }
+@@ -507,7 +507,7 @@ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu,
  
- static inline bool kvm_vcpu_ready(struct kvm_vcpu *vcpu)
- {
--	return READ_ONCE(vcpu->ready);
-+	return READ_ONCE(vcpu->common->ready);
- }
+ 	dvcpu->arch.wait = 0;
  
- static inline bool kvm_vcpu_scheduled_out(struct kvm_vcpu *vcpu)
- {
--	return vcpu->scheduled_out;
-+	return vcpu->common->scheduled_out;
- }
- 
- /*
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 9c07321e30f4..a44f8dc8418a 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -166,7 +166,7 @@ void vcpu_load(struct kvm_vcpu *vcpu)
- 	int cpu = get_cpu();
- 
- 	__this_cpu_write(kvm_running_vcpu, vcpu->common);
--	preempt_notifier_register(&vcpu->preempt_notifier);
-+	preempt_notifier_register(&vcpu->common->preempt_notifier);
- 	kvm_arch_vcpu_load(vcpu, cpu);
- 	put_cpu();
- }
-@@ -176,7 +176,7 @@ void vcpu_put(struct kvm_vcpu *vcpu)
- {
- 	preempt_disable();
- 	kvm_arch_vcpu_put(vcpu);
--	preempt_notifier_unregister(&vcpu->preempt_notifier);
-+	preempt_notifier_unregister(&vcpu->common->preempt_notifier);
- 	__this_cpu_write(kvm_running_vcpu, NULL);
- 	preempt_enable();
- }
-@@ -468,6 +468,12 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
- 
- 	common->kvm = kvm;
- 	common->current_vcpu = vcpu;
-+
-+	common->wants_to_run = false;
-+	common->preempted = false;
-+	common->ready = false;
-+	preempt_notifier_init(&common->preempt_notifier, &kvm_preempt_ops);
-+
- 	vcpu->common = no_free_ptr(common);
+-	rcuwait_wake_up(&dvcpu->wait);
++	rcuwait_wake_up(kvm_arch_vcpu_get_wait(dvcpu));
  
  	return 0;
-@@ -508,9 +514,6 @@ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+ }
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index c8085c23e18e..c08ede1cefd2 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -337,6 +337,10 @@ struct kvm_vcpu_common {
+ #endif
+ 	struct mutex mutex;
+ 
++#ifndef __KVM_HAVE_ARCH_WQP
++	struct rcuwait wait;
++#endif
++
+ 	/* Scheduling state */
+ #ifdef CONFIG_PREEMPT_NOTIFIERS
+ 	struct preempt_notifier preempt_notifier;
+@@ -361,9 +365,6 @@ struct kvm_vcpu {
+ 
+ 	struct kvm_run *run;
+ 
+-#ifndef __KVM_HAVE_ARCH_WQP
+-	struct rcuwait wait;
+-#endif
+ 	struct pid *pid;
+ 	rwlock_t pid_lock;
+ 	int sigset_active;
+@@ -1806,7 +1807,7 @@ static inline struct rcuwait *kvm_arch_vcpu_get_wait(struct kvm_vcpu *vcpu)
+ #ifdef __KVM_HAVE_ARCH_WQP
+ 	return vcpu->arch.waitp;
+ #else
+-	return &vcpu->wait;
++	return &vcpu->common->wait;
+ #endif
+ }
+ 
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 9accca10c249..11e0d4af82df 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -468,6 +468,10 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
+ 
+ 	mutex_init(&common->mutex);
+ 
++#ifndef __KVM_HAVE_ARCH_WQP
++	rcuwait_init(&common->wait);
++#endif
++
+ 	common->kvm = kvm;
+ 	common->current_vcpu = vcpu;
+ 
+@@ -508,9 +512,6 @@ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+ 	vcpu->vcpu_id = id;
+ 	vcpu->pid = NULL;
+ 	rwlock_init(&vcpu->pid_lock);
+-#ifndef __KVM_HAVE_ARCH_WQP
+-	rcuwait_init(&vcpu->wait);
+-#endif
+ 	kvm_async_pf_vcpu_init(vcpu);
  
  	kvm_vcpu_set_in_spin_loop(vcpu, false);
- 	kvm_vcpu_set_dy_eligible(vcpu, false);
--	vcpu->preempted = false;
--	vcpu->ready = false;
--	preempt_notifier_init(&vcpu->preempt_notifier, &kvm_preempt_ops);
- 	vcpu->last_used_slot = NULL;
- 
- 	vcpu->plane_level = 0;
-@@ -3927,7 +3930,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_halt);
- bool kvm_vcpu_wake_up(struct kvm_vcpu *vcpu)
- {
- 	if (__kvm_vcpu_wake_up(vcpu)) {
--		WRITE_ONCE(vcpu->ready, true);
-+		WRITE_ONCE(vcpu->common->ready, true);
- 		++vcpu->stat.generic.halt_wakeup;
- 		return true;
- 	}
-@@ -4580,9 +4583,9 @@ static long kvm_vcpu_ioctl(struct file *filp,
- 
- 			put_pid(oldpid);
- 		}
--		vcpu->wants_to_run = !READ_ONCE(vcpu->run->immediate_exit__unsafe);
-+		vcpu->common->wants_to_run = !READ_ONCE(vcpu->run->immediate_exit__unsafe);
- 		r = kvm_arch_vcpu_ioctl_run(vcpu);
--		vcpu->wants_to_run = false;
-+		vcpu->common->wants_to_run = false;
- 
- 		/*
- 		 * FIXME: Remove this hack once all KVM architectures
-@@ -6488,36 +6491,36 @@ static void kvm_init_debug(void)
- }
- 
- static inline
--struct kvm_vcpu *preempt_notifier_to_vcpu(struct preempt_notifier *pn)
-+struct kvm_vcpu_common *preempt_notifier_to_vcpu_common(struct preempt_notifier *pn)
- {
--	return container_of(pn, struct kvm_vcpu, preempt_notifier);
-+	return container_of(pn, struct kvm_vcpu_common, preempt_notifier);
- }
- 
- static void kvm_sched_in(struct preempt_notifier *pn, int cpu)
- {
--	struct kvm_vcpu *vcpu = preempt_notifier_to_vcpu(pn);
-+	struct kvm_vcpu_common *common = preempt_notifier_to_vcpu_common(pn);
- 
--	WRITE_ONCE(vcpu->preempted, false);
--	WRITE_ONCE(vcpu->ready, false);
-+	WRITE_ONCE(common->preempted, false);
-+	WRITE_ONCE(common->ready, false);
- 
--	__this_cpu_write(kvm_running_vcpu, vcpu->common);
--	kvm_arch_vcpu_load(vcpu, cpu);
-+	__this_cpu_write(kvm_running_vcpu, common);
-+	kvm_arch_vcpu_load(common->current_vcpu, cpu);
- 
--	WRITE_ONCE(vcpu->scheduled_out, false);
-+	WRITE_ONCE(common->scheduled_out, false);
- }
- 
- static void kvm_sched_out(struct preempt_notifier *pn,
- 			  struct task_struct *next)
- {
--	struct kvm_vcpu *vcpu = preempt_notifier_to_vcpu(pn);
-+	struct kvm_vcpu_common *common = preempt_notifier_to_vcpu_common(pn);
- 
--	WRITE_ONCE(vcpu->scheduled_out, true);
-+	WRITE_ONCE(common->scheduled_out, true);
- 
--	if (task_is_runnable(current) && kvm_vcpu_wants_to_run(vcpu)) {
--		WRITE_ONCE(vcpu->preempted, true);
--		WRITE_ONCE(vcpu->ready, true);
-+	if (task_is_runnable(current) && common->wants_to_run) {
-+		WRITE_ONCE(common->preempted, true);
-+		WRITE_ONCE(common->ready, true);
- 	}
--	kvm_arch_vcpu_put(vcpu);
-+	kvm_arch_vcpu_put(common->current_vcpu);
- 	__this_cpu_write(kvm_running_vcpu, NULL);
- }
- 
 -- 
 2.53.0
 
