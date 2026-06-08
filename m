@@ -1,168 +1,203 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1B032B13F;
-	Mon,  8 Jun 2026 23:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C2E31AA92
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 23:33:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780961357; cv=none; b=qRPnI6d2AbkCLrz9Pl3jd3BqDtTBCHwrDpp5D6eOfDTJ7kd60+HitSHtNLYHo58bD2mUaU713eQLgTeZZX/CbXudx891eIFXkQw7rDtXtsKfCCjh7Pj9zfSiGiFt8vUxWUlQO0wozjCI+K0Hb1jrE55y/04i65/6hKRvxVSEeu4=
+	t=1780961641; cv=none; b=gsyEWm9J7mdIvihjhCtvWEEnwEq1XAk8bqqSJQ+rcad4GSqs2eJRBWed0J7sy/MTn57euUydabSBjyJ5IX2fXRAFCE4f+T29kXKNBbyrVTXi1Zl7To9doJKD50m2IUJxYSx7Xq0w20Sd+joP7CsKtBKM41jYmCra7VjEWzHgrfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780961357; c=relaxed/simple;
-	bh=oBxjz/fQv5NENmvsHzK7bIfWg3xYlofz0EOJrHY972A=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=pLXb2cj+LauZwVDmF/QY7sYXM0/9RVhuTfkSMYUJK4eP9ICVowlUPHqlonnQtDR0spUbtaS48nZo9meQeiVkcEFtbbzbR4GNGd3pRqa7aeWWpkQB545KK4JFaQznnsyIa6oAgzljeLClg0U+ranUoyuo9+ex/s/bsIF7/lJThCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Ym80X/bF; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1780961641; c=relaxed/simple;
+	bh=3YFaEfzwQ2eJH+dd9dSIGTJaaW1QtMpALn44mMEcSMk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=NVCmj90kMa7iaObbKwyELB/2M6ftLbFMOJqhY1JVSBqwcdThI/3IQqSqDWABqtEvEGosLgrntdyHveSIVB+Z+bHT66JLnFJEx/BKJHOIkG/AQUFHdGQCiOkZN5k/RNaId0J21lesDtlSJEbjWAlEMbFISM2rwY05RBWw/0A2ylk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G8oQfYx9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Ym80X/bF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=oBxjz/fQv5NENmvsHzK7bIfWg3xYlofz0EOJrHY972A=; b=Ym80X/bFbBKH/P9luepQcpV5Zi
-	s4fQu80fXDNeIwWgVQ5oN11JdoMxFl21oxSDVSqFfil9j8sMonCqsIObZAVd2a9KZvBQOskqwphtc
-	6XAIPS5XmAZhrGjShCLfpGkBr6u0DLLBlvCV6pyGOCwd9+Z3VKSGnd6Dq55z5P6jdi1NqL6NGDn7c
-	fTPyyR6kdRdKQrjgeFWuPT3YOrDcLLHEGZZDM4V1WieczsTqf0cQ4L1nVYcgTP8b1Bgl4GCNHupAe
-	OK2YCiYzKS1VnY+k1JD0QIZkhYXMRbC1KqNlgvpZXH40swEzg8PxPNit6Holn9JcNsRYI2eeX/zZ7
-	+P+WWDWQ==;
-Received: from [2001:8b0:10b:5:30c7:a671:e76:6796] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wWjP4-0000000Eako-0kdI;
-	Mon, 08 Jun 2026 23:29:10 +0000
-Message-ID: <c1f6ae6779d6475d6ad86a6a721a1ae080dad015.camel@infradead.org>
-Subject: Re: [PATCH v5 07/34] KVM: x86: Activate master clock immediately on
- vCPU creation
-From: David Woodhouse <dwmw2@infradead.org>
-To: sashiko-bot@kernel.org
-Cc: dwmw2@infradead.org, kvm@vger.kernel.org, sashiko-reviews@lists.linux.dev
-Date: Tue, 09 Jun 2026 00:29:10 +0100
-In-Reply-To: <20260608162707.39CA21F00893@smtp.kernel.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-rJVbqIELOsPaImM2Xv70"
-User-Agent: Evolution 3.60.3 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G8oQfYx9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644B01F00893;
+	Mon,  8 Jun 2026 23:33:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780961639;
+	bh=UXl50x9fS9Lwn7n9QeKSNCAI59lrsSshqlpgLBb2YIU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=G8oQfYx9Murgpr+lZ+4F7MFSb3uURfgv6y4cBWSgeieio5axGAwUnmcOmTbbo3lPh
+	 OiGwbjPA19WThKdr3JKHxZEZBn9IKBfXWGXbROxwXyCs2tcVrrn496LbWh7Q1p76LJ
+	 oWHI1tDroiV51rzeskacEKc2+7L0KPYCYR0KjYYaTmp9B1y+Dm4vGYV37Wf+3wFb0W
+	 WXjyCXcfOGfC9L5dl7KGf2Zx/7DHmMw5leIrxvywtflRxvQldN0lferBzoCY03pv1O
+	 BuPmynhhUgTcgw69IA1OBBufJoQJcxrfsY3OE1rb3hOqUpg47+AWr+6XBPLFN98R5i
+	 vnNHUuHws8sUQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 59/60] kvm: svm: Implement max_planes x86 operation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260608144252.351443-60-joro@8bytes.org>
+References: <20260608144252.351443-60-joro@8bytes.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 08 Jun 2026 23:33:59 +0000
+Message-Id: <20260608233359.644B01F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
 
---=-rJVbqIELOsPaImM2Xv70
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+New issues:
+- [High] `sev_snp_max_planes()` can return 0, breaking the invariant that K=
+VM_CAP_PLANES is at least 1 and potentially invalidating VM capability chec=
+ks.
+- [High] Data race in `svm_max_planes` leads to dynamic capability mutation=
+ and can trigger a host-userspace reachable `WARN_ON_ONCE`.
+- [Low] Dead declaration of `sev_nr_vcpu_planes()`.
+- [Low] Mismatched return types for `sev_snp_max_planes()` across declarati=
+ons, definitions, and fallback stubs.
 
-On Mon, 2026-06-08 at 16:27 +0000, sashiko-bot@kernel.org wrote:
-> [Severity: High]
-> Does this cause an O(N=C2=B2) scaling issue during VM creation if the hos=
-t
-> clocksource doesn't support the masterclock?
+Pre-existing issues:
+- [Critical] Dangling plane pointer in error path of `kvm_vm_ioctl_create_p=
+lane()` leads to a Double Free during VM destruction.
+--
 
-Good catch. Fixed in v6 by replacing the synchronous
-kvm_update_masterclock() call with a simple
-kvm_make_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu).
+commit c8552c7d8852aecb64608575360c9abf90b077c5
+Author: Tom Lendacky <thomas.lendacky@amd.com>
 
-The vCPU will process the request on its first run,
-avoiding the O(N) iteration over all existing vCPUs
-that made vCPU creation O(N=C2=B2) on archaic hardware
-without a TSC-based clocksource.
+kvm: svm: Implement max_planes x86 operation
 
---=-rJVbqIELOsPaImM2Xv70
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Report the number of VMPL levels supported by SEV-SNP guests.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwODIzMjkx
-MFowLwYJKoZIhvcNAQkEMSIEIJduHwqSbHELWp6lBkinq6cfMdgHBopfAsCARHC3NRXBMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAwDpoknzLXmbv
-Lsm4GZaUa14YF9wGds6MV3Uh3nHuP5Q/3triyJK3Q52P0D2p5LHLebIekMEw+GEg8ynu/Qt3C2Hv
-HQ18Fp9+tgzKhihEUG9BE67cnq778Xlm+YNU2z7F9icxpT76azJchS819MG1ApxhCdQldgYzgmuo
-pHQ4tpInt6Vj3Dqd6DQc3dIkVSxwH+/hmNS/haCkuelvl6y0fjQiM7LNeX//z+KVK0qtwwxu8HHw
-j9lpnuB9kuAwn3bHxdMP0hLxHgCzsJwj3a3yVTHtTnGhQ6QfE+gXdE/ZB51yHQWaRxsEic3KVYud
-CN3hHz95ulNsaWxAWbZLn7y3jZBc0ow/1shfBnUO0SrKzAGg22iYCS+G8x+pVX/5UBPhikW7bMc1
-wOP/wLA1H8i+mrFR3I2s63LxgVKPi/e+agG6cM82wUDrp7ppkOgvVJ9hD+Z0xXkISKNJ0hkiRE9P
-7FUh42Iahe+kSU1PNGTY7X4dEVCsKXe8Fe6WNbKjzFo1J9jH1j5F0+uvkQAxT867ykOdV3Iq9XxH
-rwlHlw1arqZ9ygKcDWUg/LH6sbU3SNGoHNzQ6c4i/r9VzRjJGJ/6NaiwpIEmnS2BR0bD1uWhEAJz
-tkk97tV6MJJRNdYsGfNBtx20KmFvteI2COEsffszGxn51BLvaX+4iPdj9j807rcAAAAAAAA=
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 70a06769a4100..4a6166d2a71df 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
 
+[ ... ]
 
---=-rJVbqIELOsPaImM2Xv70--
+> @@ -5832,3 +5837,8 @@ bool sev_snp_blocked(enum inject_type type, struct =
+kvm_vcpu *vcpu)
+> =20
+>  	return blocked;
+>  }
+> +
+> +int sev_snp_max_planes(struct kvm *kvm)
+> +{
+> +	return vmpl_levels;
+> +}
+
+[Severity: High]
+Can this return 0 and break the KVM_CAP_PLANES invariant?
+
+If the CPU supports only VMPL0, the value extracted directly from CPUID
+0x8000001F_EBX[15:12] will be 0. Returning 0 without adjusting it contradic=
+ts
+KVM's invariant that all VMs have at least 1 plane.
+
+Could this invalidate capability discovery and prevent userspace from
+creating any vCPUs if planes are required?
+
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 2ae82dc058c96..705063c7f0f0a 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -5321,6 +5321,16 @@ static void svm_free_plane(struct kvm_plane *plane)
+>  	kfree(svm_plane);
+>  }
+> =20
+> +static unsigned svm_max_planes(struct kvm *kvm)
+> +{
+> +#ifdef CONFIG_KVM_AMD_SEV
+> +	if (____sev_snp_guest(kvm))
+> +		return sev_snp_max_planes(kvm);
+> +#endif
+
+[Severity: High]
+Can this lockless check observe torn state and trigger a WARN_ON_ONCE?
+
+KVM_CAP_PLANES delegates to svm_max_planes(), which userspace can call
+locklessly at any time via KVM_CHECK_EXTENSION. The call to
+____sev_snp_guest() performs a lockless read of sev->vmsa_features and
+sev->es_active.
+
+If queried concurrently with KVM_SEV_INIT (which populates these fields
+non-atomically under kvm->lock), this lockless check could observe
+SVM_SEV_FEAT_SNP_ACTIVE as true while es_active evaluates to false. This
+triggers the WARN_ON_ONCE(!____sev_es_guest(kvm)), allowing an unprivileged
+host-userspace process to cause a host denial of service via kernel log
+flooding or panic if panic_on_warn is set.
+
+[Severity: Critical]
+This is a pre-existing issue, but does exposing max_planes > 1 trigger a
+double free during VM destruction?
+
+In the error path of kvm_vm_ioctl_create_plane(), if anon_inode_getfile()
+fails, kvm_destroy_one_plane() is called, but it leaves a dangling pointer
+in kvm->planes[id]:
+
+virt/kvm/kvm_main.c:kvm_vm_ioctl_create_plane() {
+    ...
+    kvm_create_plane(kvm, id);
+    ...
+    fd =3D anon_inode_getfile(...);
+    if (IS_ERR(fd)) {
+        ...
+put_kvm:
+        kvm_destroy_one_plane(plane);
+    }
+}
+
+When the VM is later destroyed, kvm_destroy_planes() loops over kvm->planes
+and calls kvm_destroy_one_plane() on the dangling pointer. Previously this
+was unreachable because max_planes was hardcoded to 1 and kvm->planes[0]
+is always initialized at VM creation, safely returning -EEXIST early. Now
+that max_planes can be greater than 1, this double free becomes reachable.
+
+> +
+> +	return kvm_x86_default_max_planes(kvm);
+> +}
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 61f9c4cb4f52a..0c9b81029e241 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -1005,6 +1005,8 @@ static inline bool sev_snp_is_rinj_active(struct kv=
+m_vcpu *vcpu)
+>  	return is_sev_snp_guest(vcpu) &&
+>  		(sev->vmsa_features & SVM_SEV_FEAT_RESTRICTED_INJECTION);
+>  };
+> +int sev_nr_vcpu_planes(struct kvm *kvm);
+
+[Severity: Low]
+Is sev_nr_vcpu_planes() a dead declaration? This function doesn't appear
+to be defined or used anywhere in the codebase.
+
+> +int sev_snp_max_planes(struct kvm *kvm);
+>  #else
+>  static inline struct page *snp_safe_alloc_page_node(int node, gfp_t gfp)
+>  {
+
+[ ... ]
+
+> @@ -1048,6 +1050,7 @@ static inline bool sev_snp_inject(enum inject_type =
+type, struct kvm_vcpu *vcpu)
+>  static inline void sev_snp_cancel_injection(struct kvm_vcpu *vcpu) {}
+>  static inline bool sev_snp_blocked(enum inject_type type, struct kvm_vcp=
+u *vcpu) { return false; }
+>  static inline bool sev_snp_is_rinj_active(struct kvm_vcpu *vcpu) { retur=
+n false; }
+> +static inline unsigned sev_snp_max_planes(struct kvm *kvm) { return 1; }
+>  #endif
+
+[Severity: Low]
+Does sev_snp_max_planes() have mismatched return types?
+
+It is declared and defined as returning an int, but this fallback stub
+returns unsigned. It is also assigned to svm_max_planes() which returns
+unsigned.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
+43-1-joro@8bytes.org?part=3D59
