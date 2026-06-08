@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8853F7897
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA0F3F7885
 	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 15:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780932081; cv=none; b=bT81MLnXdM8ZkFkp4WnxOhT411H72Qqp4a0xulvvL8mRUlLVkHQfBkykrE+On3iEIkCDIo2TKdjtwjbkpxE0uwLUHI2ASs8/cr2ccsxAaDO4yjA561Ju7rOnMtPPJThiEXmSj7BF4boAR1wamxHZeiPuqDmkms0Dn6o214Ya0zI=
+	t=1780932081; cv=none; b=VfhemUvVv1whqrHJPborYIy5cArnkgY+w+n09I3muMdGfKtntY53gdQkyWcCExECVOtPF3fmLhqfRlrIlyNBL7ll5k3N5k28GBdZ1vsY+CX7jGM4D6hRmvxgLWZ/FNIwiVP4007O+AIJ4eamCzWZaDdLl2NKEg1YFCP7Iu3T6c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780932081; c=relaxed/simple;
-	bh=jD+5YzYt/ja2jVYAJmHM+1HKagzMUvVMpUGxMkd3Wgk=;
+	bh=eOvIdkYFBULNOIRJoja5+cnwmNVJ0BMislIpc8EaIJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+luSsbYwanxNxV2hAAqC0mLD4iaqHgWDk+fOMMh3G/BMs0gQSjOgbV3Z6SLlJtN4Gvd5XtjXlg/x22QnS/eymlGhcLlo5Wdereegkiq6as4hZffC+PoxNeFibhJ2gh5TWa/f9+pi6t+ioAP1LBsRtKZl88x1HHrikTEiPQfOQM=
+	 MIME-Version; b=rzLTMvRz7T6AK3zu+MCayydZqpk1fSA7O/nGOzwccg+qnOIAiI5p9eX/G6hW2OalzLwMnEKdJ5SAftRGynrJV4LZqEGATa/oVshbCmaGSSbT1JW5vpSFCSN/sXvnz2cDd4qnvbIpkpckqkRFshy+xeOTYT6uPPOBCVRZXqiqFco=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,7 +16,7 @@ Received: from io.home.8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 27BC920294A;
+	by mail.8bytes.org (Postfix) with ESMTPSA id 5144020294B;
 	Mon,  8 Jun 2026 17:21:16 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
@@ -33,9 +33,9 @@ Cc: philmd@linaro.org,
 	kvm@vger.kernel.org,
 	coconut-svsm@lists.linux.dev,
 	joerg.roedel@amd.com
-Subject: [RFC PATCH 09/10] MSI: Inject into correct plane
-Date: Mon,  8 Jun 2026 17:21:08 +0200
-Message-ID: <20260608152109.356783-10-joro@8bytes.org>
+Subject: [RFC PATCH 10/10] KVM: Set GSI routes for default plane
+Date: Mon,  8 Jun 2026 17:21:09 +0200
+Message-ID: <20260608152109.356783-11-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260608152109.356783-1-joro@8bytes.org>
 References: <20260608152109.356783-1-joro@8bytes.org>
@@ -49,98 +49,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-Inject MSI and MSI-X IRQs into the correct device plane.
+This ensures that all IOAPIC IRQs are routed to the default device
+plane in the KVM guest.
 
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- accel/kvm/kvm-all.c  | 2 +-
- hw/i386/kvm/apic.c   | 6 +++++-
- hw/pci/msi.c         | 3 +++
- hw/pci/msix.c        | 3 +++
- include/hw/pci/msi.h | 1 +
- 5 files changed, 13 insertions(+), 2 deletions(-)
+ accel/kvm/kvm-all.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index c5fe6d189e62..31d80f7ac48b 100644
+index 31d80f7ac48b..2bd98efaadab 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -2407,7 +2407,7 @@ int kvm_irqchip_send_msi(KVMState *s, MSIMessage msg)
-     msi.flags = 0;
-     memset(msi.pad, 0, sizeof(msi.pad));
+@@ -134,6 +134,7 @@ static int map_kvm_run(KVMState *s, CPUState *cpu, Error **errp);
+ static int map_kvm_dirty_gfns(KVMState *s, CPUState *cpu, Error **errp);
+ static int vcpu_unmap_regions(KVMState *s, CPUState *cpu);
+ static void kvm_alloc_vcpu_plane(CPUState *cpu, unsigned plane_id, int kvm_fd);
++static int kvm_create_plane(KVMState *s, unsigned id);
  
--    return kvm_vm_ioctl(s, KVM_SIGNAL_MSI, &msi);
-+    return kvm_vm_plane_ioctl(s, msg.plane_id, KVM_SIGNAL_MSI, &msi);
- }
+ struct KVMResampleFd {
+     int gsi;
+@@ -2238,6 +2239,7 @@ void kvm_init_irq_routing(KVMState *s)
  
- int kvm_irqchip_add_msi_route(KVMRouteChange *c, int vector, PCIDevice *dev)
-diff --git a/hw/i386/kvm/apic.c b/hw/i386/kvm/apic.c
-index 82355f04631a..4dd946d6f26b 100644
---- a/hw/i386/kvm/apic.c
-+++ b/hw/i386/kvm/apic.c
-@@ -210,7 +210,11 @@ static uint64_t kvm_apic_mem_read(void *opaque, hwaddr addr,
- static void kvm_apic_mem_write(void *opaque, hwaddr addr,
-                                uint64_t data, unsigned size)
+ void kvm_irqchip_commit_routes(KVMState *s)
  {
--    MSIMessage msg = { .address = addr, .data = data };
-+    MSIMessage msg = {
-+	    .address = addr,
-+	    .data = data,
-+	    .plane_id = qdev_default_plane(),
-+    };
++    unsigned plane = qdev_default_plane();
+     int ret;
  
-     kvm_send_msi(&msg);
- }
-diff --git a/hw/pci/msi.c b/hw/pci/msi.c
-index b9f5b45920b6..d0373131dd06 100644
---- a/hw/pci/msi.c
-+++ b/hw/pci/msi.c
-@@ -142,6 +142,7 @@ static MSIMessage msi_prepare_message(PCIDevice *dev, unsigned int vector)
-     uint16_t flags = pci_get_word(dev->config + msi_flags_off(dev));
-     bool msi64bit = flags & PCI_MSI_FLAGS_64BIT;
-     unsigned int nr_vectors = msi_nr_vectors(flags);
-+    DeviceState *dev_state= DEVICE(dev);
-     MSIMessage msg;
+     if (kvm_gsi_direct_mapping()) {
+@@ -2250,7 +2252,7 @@ void kvm_irqchip_commit_routes(KVMState *s)
  
-     assert(vector < nr_vectors);
-@@ -159,6 +160,8 @@ static MSIMessage msi_prepare_message(PCIDevice *dev, unsigned int vector)
-         msg.data |= vector;
-     }
- 
-+    msg.plane_id =  dev_state->plane;
-+
-     return msg;
+     s->irq_routes->flags = 0;
+     trace_kvm_irqchip_commit_routes();
+-    ret = kvm_vm_ioctl(s, KVM_SET_GSI_ROUTING, s->irq_routes);
++    ret = kvm_vm_plane_ioctl(s, plane, KVM_SET_GSI_ROUTING, s->irq_routes);
+     assert(ret == 0);
  }
  
-diff --git a/hw/pci/msix.c b/hw/pci/msix.c
-index 1b23eaf10079..1773f8eccae8 100644
---- a/hw/pci/msix.c
-+++ b/hw/pci/msix.c
-@@ -37,10 +37,13 @@
- static MSIMessage msix_prepare_message(PCIDevice *dev, unsigned vector)
+@@ -2667,6 +2669,8 @@ static int do_kvm_irqchip_create(KVMState *s)
+ 
+ static void kvm_irqchip_create(KVMState *s)
  {
-     uint8_t *table_entry = dev->msix_table + vector * PCI_MSIX_ENTRY_SIZE;
-+    DeviceState *dev_state= DEVICE(dev);
-     MSIMessage msg;
- 
-     msg.address = pci_get_quad(table_entry + PCI_MSIX_ENTRY_LOWER_ADDR);
-     msg.data = pci_get_long(table_entry + PCI_MSIX_ENTRY_DATA);
-+    msg.plane_id = dev_state->plane;
++    int device_plane = qdev_default_plane();
 +
-     return msg;
- }
+     assert(s->kernel_irqchip_split != ON_OFF_AUTO_AUTO);
  
-diff --git a/include/hw/pci/msi.h b/include/hw/pci/msi.h
-index abcfd1392521..6bedf97b6f03 100644
---- a/include/hw/pci/msi.h
-+++ b/include/hw/pci/msi.h
-@@ -26,6 +26,7 @@
- struct MSIMessage {
-     uint64_t address;
-     uint32_t data;
-+    uint8_t plane_id;
- };
+     if (do_kvm_irqchip_create(s) < 0) {
+@@ -2679,6 +2683,11 @@ static void kvm_irqchip_create(KVMState *s)
+     kvm_async_interrupts_allowed = true;
+     kvm_halt_in_kernel_allowed = true;
  
- extern bool msi_nonbroken;
++    /* Make sure irqchip target plane is known to KVM */
++    if (device_plane != 0) {
++        kvm_create_plane(s, device_plane);
++    }
++
+     kvm_init_irq_routing(s);
+ 
+     s->gsimap = g_hash_table_new(g_direct_hash, g_direct_equal);
 -- 
 2.53.0
 
