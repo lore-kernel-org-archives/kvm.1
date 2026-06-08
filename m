@@ -1,129 +1,184 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9745D3ACF14
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 19:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5435A3E5570
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 19:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780946263; cv=none; b=njwxoiwT8XDg2F9GQz23pka58Z8R0Ve+nz3TsE/a/t6umlyV8yMjj6vGf3bX98KrUG7L4xdScpabVYzxAnlgkheZV54+WVtk+tYXxvut0Xn6YsZ3/PV7pC1R7S5RoYuPcHFMcab42gBeMGs7wS90OFcvmIITLpsm8pkTVAjpF2w=
+	t=1780946622; cv=none; b=eKWd05HbSaOVJpkF7nXtjClmhgnpXalqP+m794QKQTgSjSp/Dy5vhf45CIdhwjKShlfgvrDFDNscoFdtQid3GpJ/YR0PdWYllbgk4EVLTLgpPHX2gzfNwBSk/ZmzrFt2ZKIl2SIdf9bYVzGZGQs5EmFw2yDTnsig5hX9yQXeuFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780946263; c=relaxed/simple;
-	bh=Lq37KQciIuDEf2yT5XZs0Qu3epqd0kbYLqeg1g2hIe8=;
+	s=arc-20240116; t=1780946622; c=relaxed/simple;
+	bh=b2mhH2Zlc32tXQ+NNHk/elZFvFwi4gD9bA3HUFNSHJI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=AvITO03LzXgMt0gNlLDsCfqnd8n4EpOXeZAgSuN13PY95IAQjvIWsB6ntwK473QX0OeDeN11POptXO7Pi6r49s+dyqXzRibNHB3dzMgZlHJRYXjH7XZa+i5bBqhBj9cEwKR1GuzjHf8cS006hqgvzJ8FLL+bt8P3/f2tUXd6l9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MCmiewmy; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=tZ8Mc4asoKHKvbq0zhmWs39i8BlC1XMHCdz0TPffVT7yY/jwvagHZbbqYHoGU4QbB/aGy72jyDE0POp40MSGkGzYvxgukECvruUjkVDbXLCxwvEEi6S5zVC5LMK9JlfuNhjUGISTjyDRpbS2VWkoWDr9htTFh95/5lOzcRhykvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QrTUL5jq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MCmiewmy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21ABD1F00893;
-	Mon,  8 Jun 2026 19:17:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QrTUL5jq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FAB1F00893;
+	Mon,  8 Jun 2026 19:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780946262;
-	bh=9lUr98WBt+zrrnIGrUFYtctUB3NBp3jkwxaNAvJFIIo=;
+	s=k20260515; t=1780946620;
+	bh=aO5gO7YqgigpX0mgc5JeujoV7aKywRwSAeUAbDkwRjw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MCmiewmy3Nd3so2L6FXhjtiq1a+OfhZoEN9NlUHYA9Rtdn5VBIk2Eo+nxcBs4E3B5
-	 8/OL2nRUdjpK7rA5MDoSo0nG2KZ5B3MxzNxL7+hKr32Og/1NkHYZxu+I5G90g/+Tjb
-	 OwZ79fE6qnn+wx2vQohzWlPdp3KFwSRPzUxv1L0j3shtTST0x621B7Q3JlbW6KL8Kw
-	 8JswJZVBGDAmQl3/PlOWSRDYXcIczIw77lD7XD0K/9KCvMjd6yFaaaU1sRj5VQZaLe
-	 ZtHxmwqgn3SmW0BW8QrzIApUCc/vg9ibnJIy4CrYwSkGbgGu+2w5miNknEkZTzp8mi
-	 ZjL6+433kEX9A==
+	b=QrTUL5jqk1C0O/ksjYww4j3x/kSYWMsCfcIAKEJqhgLkDlEuAYc7rIfu7PzGhYHV+
+	 pUoQYA1NAevwF1udRnWvj9T7Kl44dChEch+Y3amcrne5J2cUYnehXi5sgCpQxAYlAV
+	 Rdht17tot/P5YgBEFJ4A5t9zy1w12QOp2fI7ielg2PSTZeFvVOi66IwzOxbku99rU1
+	 DFE4l0+xSwQDXnuPgpXSmPy8yId6C1Y2mVSNWrBVJfnHgB91mKiL6VopRQX2AtD4g3
+	 VB5oSEjbIsaiHAoO7v++0qxt6acWbgKcDp+dYzRTsHjwfmPvXubMTcwztEMcE9twqn
+	 Pqdn77Gycc9qQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 2/6] x86/sev: Initialize RMPOPT configuration MSRs
+Subject: Re: [PATCH 39/60] kvm: Make KVM_SET_GSI_ROUTING per plane
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ashish Kalra" <Ashish.Kalra@amd.com>
+To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <2c2ef36f9dfc5eebb719bf45457b48712ce7e821.1780903370.git.ashish.kalra@amd.com>
-References: <2c2ef36f9dfc5eebb719bf45457b48712ce7e821.1780903370.git.ashish.kalra@amd.com>
+In-Reply-To: <20260608144252.351443-40-joro@8bytes.org>
+References: <20260608144252.351443-40-joro@8bytes.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 19:17:41 +0000
-Message-Id: <20260608191742.21ABD1F00893@smtp.kernel.org>
+Date: Mon, 08 Jun 2026 19:23:40 +0000
+Message-Id: <20260608192340.D1FAB1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] Calling `setup_clear_cpu_cap()` during initcalls triggers an uncon=
-ditional kernel `WARN_ON` trace because CPU alternatives have already been =
-patched.
+
+New issues:
+- [Critical] NULL Pointer Dereference in KVM_SET_GSI_ROUTING via uninitiali=
+zed planes array
+- [High] KVM_IRQ_ROUTING_IRQCHIP ignores `plane_level`, breaking intended G=
+SI routing behavior
+- [Medium] UAPI Design Flaw forces all MSI routes to a single plane
+
+Pre-existing issues:
+- [Critical] NULL Pointer Dereference in KVM_SIGNAL_MSI and KVM_CREATE_VCPU=
+ via uninitialized planes
 --
 
-commit 155a667bf78d513dde1064d7dae284cc80a5dcba
-Author: Ashish Kalra <ashish.kalra@amd.com>
+commit 7d28b1526ab90d058ab359f062a984d50de2e8a8
+Author: Joerg Roedel <joerg.roedel@amd.com>
 
-x86/sev: Initialize RMPOPT configuration MSRs
+Allow the KVM_SET_GSI_ROUTING on each plane.
 
-The new RMPOPT instruction helps manage per-CPU RMP optimization
-structures inside the CPU. It takes a 1GB-aligned physical address
-and either returns the status of the optimizations or tries to enable
-the optimizations.
+There is still only one GSI routing table maintained per VM by the KVM
+module, the plane this IOCTL was last issued at will get all GSI
+interrupts.
 
-> diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-> index 989ca9f72ba30..a8fc2ae502985 100644
-> --- a/arch/x86/coco/core.c
-> +++ b/arch/x86/coco/core.c
-> @@ -172,6 +173,8 @@ static void amd_cc_platform_clear(enum cc_attr attr)
->  	switch (attr) {
->  	case CC_ATTR_HOST_SEV_SNP:
->  		cc_flags.host_sev_snp =3D 0;
-> +		snp_clear_rmpopt_configured();
-> +		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
+> diff --git a/virt/kvm/irqchip.c b/virt/kvm/irqchip.c
+> --- a/virt/kvm/irqchip.c
+> +++ b/virt/kvm/irqchip.c
+> @@ -146,7 +147,7 @@ static int setup_routing_entry(struct kvm *kvm,
+> =20
+>  	e->gsi =3D gsi;
+>  	e->type =3D ue->type;
+> -	r =3D kvm_set_routing_entry(kvm, e, ue, 0);
+> +	r =3D kvm_set_routing_entry(kvm, e, ue, plane_level);
 
 [Severity: High]
-Does this code trigger a WARN_ON() stack trace?
+Does KVM_IRQ_ROUTING_IRQCHIP ignore the plane_level parameter?
 
-The function setup_clear_cpu_cap() has an explicit WARN_ON(alternatives_pat=
-ched).
-This path can be executed from initcalls long after arch_cpu_finalize_init()
-has set alternatives_patched to 1.
+While KVM_IRQ_ROUTING_MSI correctly captures plane_level, the
+kvm_kernel_irq_routing_entry struct only includes plane_level for the msi
+union member. The irqchip struct lacks the plane_level field:
 
->  		break;
->  	default:
->  		break;
+include/linux/kvm_host.h:
+    union {
+        struct {
+            unsigned irqchip;
+            unsigned pin;
+        } irqchip;
+
+When architecture-specific handlers like kvm_set_routing_entry() process
+KVM_IRQ_ROUTING_IRQCHIP, the plane_level is discarded entirely.
+
+Does this structurally prevent binding IRQCHIP interrupts to a plane?
 
 [ ... ]
 
-> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-> index 8bcdce98f6dce..482008bb07e48 100644
-> --- a/arch/x86/virt/svm/sev.c
-> +++ b/arch/x86/virt/svm/sev.c
-
-[ ... ]
-
-> @@ -488,9 +492,14 @@ static bool __init setup_segmented_rmptable(void)
->  static bool __init setup_rmptable(void)
->  {
->  	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
-> -		if (!setup_segmented_rmptable())
-> +		if (!setup_segmented_rmptable()) {
-> +			setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-
-[Severity: High]
-Can this also trigger the same alternatives_patched WARN_ON() trace?
-
-Since setup_rmptable() can run as part of rootfs_initcalls (via pci_iommu_i=
-nit()
-and amd_iommu_init()), alternatives will already be patched by the time thi=
-s runs.
-
->  			return false;
-> +		}
-> +		rmpopt_configured =3D true;
->  	} else {
-> +		/* Note that Segmented RMP must be enabled to enable RMPOPT. */
-> +		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-
-[Severity: High]
-Would this also result in a WARN_ON() during boot if the system supports RM=
-POPT
-but segmented RMP is disabled?
-
->  		if (!setup_contiguous_rmptable())
->  			return false;
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -4918,6 +4918,34 @@ static long __kvm_plane_ioctl(struct kvm_plane *pl=
+ane, unsigned int ioctl, unsig
+>  		break;
 >  	}
+>  #endif
+> +#ifdef CONFIG_HAVE_KVM_IRQ_ROUTING
+> +	case KVM_SET_GSI_ROUTING: {
+> +		void __user *argp =3D (void __user *)arg;
+> +		struct kvm_irq_routing routing;
+> +		struct kvm_irq_routing __user *urouting;
+> +		struct kvm_irq_routing_entry *entries =3D NULL;
+> +
+> +		if (copy_from_user(&routing, argp, sizeof(routing)))
+> +			return -EFAULT;
+> +		if (!kvm_arch_can_set_irq_routing(plane->kvm) ||
+> +		    routing.nr > KVM_MAX_IRQ_ROUTES ||
+> +		    routing.flags)
+> +			return -EINVAL;
+> +		if (routing.nr) {
+> +			urouting =3D argp;
+> +			entries =3D vmemdup_array_user(urouting->entries,
+> +						     routing.nr, sizeof(*entries));
+> +			if (IS_ERR(entries)) {
+> +				r =3D PTR_ERR(entries);
+> +				return r;
+> +			}
+> +		}
+> +		r =3D kvm_set_irq_routing(plane->kvm, entries, routing.nr,
+> +					routing.flags, plane->level);
+
+[Severity: Medium]
+Does applying plane->level uniformly to all entries in the user payload
+force all MSI routes to a single plane?
+
+Since KVM maintains only one global routing table per VM, userspace cannot
+configure a routing table where some MSIs route to plane 0 and others to
+plane 1. Any subsequent call to KVM_SET_GSI_ROUTING overwrites the entire
+table and binds all routes to the single plane targeted by the ioctl.
+
+Is this intended, given it limits the ability to manage multi-plane VMs?
+
+> +		kvfree(entries);
+> +		break;
+> +	}
+> +#endif /* CONFIG_HAVE_KVM_IRQ_ROUTING */
+>  	default:
+>  		r =3D -ENOTTY;
+>  	}
+> @@ -5506,6 +5534,9 @@ static long kvm_vm_ioctl(struct file *filp,
+>  	case KVM_CREATE_VCPU:
+>  #ifdef CONFIG_HAVE_KVM_MSI
+>  	case KVM_SIGNAL_MSI:
+> +#endif
+> +#ifdef CONFIG_HAVE_KVM_IRQ_ROUTING
+> +	case KVM_SET_GSI_ROUTING:
+>  #endif
+>  		r =3D __kvm_plane_ioctl(kvm->planes[0], ioctl, arg);
+
+[Severity: Critical]
+This is a pre-existing issue, but can kvm->planes[0] be NULL here for
+KVM_CREATE_VCPU and KVM_SIGNAL_MSI?
+
+If planes are not explicitly initialized at VM creation, passing NULL to
+__kvm_plane_ioctl() results in an unconditional NULL pointer dereference
+when accessing plane->kvm and plane->level.
+
+[Severity: Critical]
+Does this same NULL pointer dereference now apply to KVM_SET_GSI_ROUTING?
+
+If kvm->planes[0] defaults to NULL and is passed into __kvm_plane_ioctl(),
+the new code dereferences it immediately:
+
+__kvm_plane_ioctl()
+    if (!kvm_arch_can_set_irq_routing(plane->kvm) || ...
+
+Is there a guarantee that kvm->planes[0] is strictly initialized before
+this ioctl can be called?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780903370.gi=
-t.ashish.kalra@amd.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
+43-1-joro@8bytes.org?part=3D39
