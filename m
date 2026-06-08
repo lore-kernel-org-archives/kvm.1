@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F6C3F23A6;
-	Mon,  8 Jun 2026 14:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71AA53F4859;
+	Mon,  8 Jun 2026 14:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929809; cv=none; b=Y5NjCUfD7vhrZ/NkSdeIzIkjK774hoMUSQYaV6o/4RncLckzEsukVkUsFwXSDyf6wvv/kyN+0FpPgMVBnvinCA31J0eBEk9skJRzG8lzgjGKo+R1LdrTC6fEP0/dDdBpt8taYJW5HuRFLPHm/FfdNGAlRRk4Tj7CuX56j8/tVM4=
+	t=1780929809; cv=none; b=i61w7Nd0zshFcSwHDJICmEmsb6jJLh8T/ibZ7EfeocB1YrEYNfJQD+N6t2Dr2g5YUmzuD8TVlLszCtW9std1VD1ddFzRT4RGmi+c8wzJSTxHFK41j4ptaGAvt8mcOIIBz6Cps0RLkzb6Tt7rU2Jgxls0k5SHgt75caWSOEnf9bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780929809; c=relaxed/simple;
-	bh=ZZJbGJUhiiGFWgFTbdDCyJO09rTLqSkOLbFX4XL1Epg=;
+	bh=Le/G0vQ0/TnbqWe2dBxWLFgIozxJJ/jsvXKWfnBsbj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1HIpuoGO0LgUdjH884EGCWFgIqLWwOgvYzoEjXI871ZjZiGR7d7PYx+zXmjOtf3fOtr4vVDdNzEDwLu+n0QvUlFRkOuVLglrQn+7h2b58/bXGZkPHzQ4pg0VuG4Ga0hXCdSv7LoXinyazn1fLibQVM5Hv9OkurZ5NZMZAJxMHg=
+	 MIME-Version; b=MO+NdmJcdrh1VeNWgRF8IpjCaV1b2Buz7rF8n/X2tuu7LgVk1nLAs+yygS+Q4msqD4MI5kskR8y9j2TiJzFzMSp/i7x1tlHU+Z3SyUcDSFkeG6R6pe8sJAAojlupyJrfN9V6gP+ugQj56ZjYH7atuD7+PH5u1eLqJGKzStKYhLY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,8 +16,8 @@ Received: from io.home.8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id E8B912028C3;
-	Mon,  8 Jun 2026 16:43:11 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 3F1722028C9;
+	Mon,  8 Jun 2026 16:43:13 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
@@ -38,9 +38,9 @@ Cc: Tom Lendacky <thomas.lendacky@amd.com>,
 	x86@kernel.org,
 	coconut-svsm@lists.linux.dev,
 	joerg.roedel@amd.com
-Subject: [PATCH 32/60] kvm: Allocate struct kvm_run only for struct kvm_vcpu_common
-Date: Mon,  8 Jun 2026 16:42:24 +0200
-Message-ID: <20260608144252.351443-33-joro@8bytes.org>
+Subject: [PATCH 38/60] kvm: Make KVM_SIGNAL_MSI per plane
+Date: Mon,  8 Jun 2026 16:42:30 +0200
+Message-ID: <20260608144252.351443-39-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
 References: <20260608144252.351443-1-joro@8bytes.org>
@@ -54,131 +54,102 @@ Content-Transfer-Encoding: 8bit
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-Share the struct kvm_run across all planes for one VCPU id.
+Allow the KVM_SIGNAL_MSI ioctl for every plane instead of per VM.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Co-developed-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- include/linux/kvm_host.h |  3 +++
- virt/kvm/kvm_main.c      | 29 ++++++++++++++++-------------
- 2 files changed, 19 insertions(+), 13 deletions(-)
+ include/linux/kvm_host.h |  2 +-
+ virt/kvm/irqchip.c       |  4 ++--
+ virt/kvm/kvm_main.c      | 25 ++++++++++++++-----------
+ 3 files changed, 17 insertions(+), 14 deletions(-)
 
 diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 55e3e9046975..385e1ee8fd3a 100644
+index cfb6911d6771..05a10836d92d 100644
 --- a/include/linux/kvm_host.h
 +++ b/include/linux/kvm_host.h
-@@ -327,6 +327,9 @@ struct kvm_mmio_fragment {
- struct kvm_vcpu_common {
- 	struct kvm *kvm;
+@@ -2370,7 +2370,7 @@ static inline int kvm_init_irq_routing(struct kvm *kvm)
  
-+	/* kvm_run struct shared across all planes */
-+	struct kvm_run *run;
-+
- 	int vcpu_idx; /* index into kvm->planes[]->vcpu_array */
+ #endif
  
- 	/* Currently active VCPU */
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 4f2c8f46a0d3..2d0d5f4fd356 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -441,6 +441,7 @@ void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc)
- static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned long id)
- {
- 	struct kvm_vcpu_common *common __free(kfree) = kzalloc(sizeof(*common), GFP_KERNEL_ACCOUNT);
-+	struct page *page;
- 	int r;
+-int kvm_send_userspace_msi(struct kvm *kvm, struct kvm_msi *msi);
++int kvm_send_userspace_msi(struct kvm *kvm, struct kvm_msi *msi, unsigned plane_level);
  
- 	/*
-@@ -466,6 +467,14 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
- 
- 	common->vcpu_idx = atomic_read(&kvm->online_vcpus);
- 
-+	BUILD_BUG_ON(sizeof(struct kvm_run) > PAGE_SIZE);
-+	page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
-+	if (!page) {
-+		r = -ENOMEM;
-+		goto out_drop_counter;
-+	}
-+	common->run = page_address(page);
-+
- 	mutex_init(&common->mutex);
- 
- #ifndef __KVM_HAVE_ARCH_WQP
-@@ -487,7 +496,7 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
- 		r = kvm_dirty_ring_alloc(kvm, &common->dirty_ring,
- 					 id, kvm->dirty_ring_size);
- 		if (r)
--			goto out_drop_counter;
-+			goto out_free_run;
- 	}
- 
- 	r = kvm_arch_vcpu_common_init(common);
-@@ -503,6 +512,8 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
- 
- out_free_dirty_ring:
- 	kvm_dirty_ring_free(&common->dirty_ring);
-+out_free_run:
-+	free_page((unsigned long)common->run);
- out_drop_counter:
- 	mutex_lock(&kvm->lock);
- 	kvm->created_vcpus--;
-@@ -546,6 +557,7 @@ static void kvm_vcpu_common_destroy(struct kvm_vcpu *vcpu)
- 	struct kvm *kvm = common->kvm;
- 
- 	vcpu->common = NULL;
-+	vcpu->run = NULL;
- 
- 	if (vcpu->plane_level != 0)
- 	       return;
-@@ -563,6 +575,7 @@ static void kvm_vcpu_common_destroy(struct kvm_vcpu *vcpu)
- 	 */
- 	put_pid(common->pid);
- 	kvm_dirty_ring_free(&common->dirty_ring);
-+	free_page((unsigned long)common->run);
- 	kfree(common);
+ void kvm_eventfd_init(struct kvm *kvm);
+ int kvm_ioeventfd(struct kvm *kvm, struct kvm_ioeventfd *args);
+diff --git a/virt/kvm/irqchip.c b/virt/kvm/irqchip.c
+index 14480d1df4f9..a4fea7d8dde6 100644
+--- a/virt/kvm/irqchip.c
++++ b/virt/kvm/irqchip.c
+@@ -45,7 +45,7 @@ int kvm_irq_map_chip_pin(struct kvm *kvm, unsigned irqchip, unsigned pin)
+ 	return irq_rt->chip[irqchip][pin];
  }
  
-@@ -4337,7 +4350,6 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+-int kvm_send_userspace_msi(struct kvm *kvm, struct kvm_msi *msi)
++int kvm_send_userspace_msi(struct kvm *kvm, struct kvm_msi *msi, unsigned plane_level)
  {
- 	int r = -EINVAL;
- 	struct kvm_vcpu *vcpu;
--	struct page *page;
+ 	struct kvm_kernel_irq_routing_entry route;
  
- 	mutex_lock(&kvm->lock);
- 	if (kvm->created_vcpus >= kvm->max_vcpus) {
-@@ -4359,20 +4371,13 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- 		goto vcpu_free;
+@@ -57,7 +57,7 @@ int kvm_send_userspace_msi(struct kvm *kvm, struct kvm_msi *msi)
+ 	route.msi.data = msi->data;
+ 	route.msi.flags = msi->flags;
+ 	route.msi.devid = msi->devid;
+-	route.msi.plane_level = 0;
++	route.msi.plane_level = plane_level;
  
- 	vcpu->vcpu_idx = vcpu->common->vcpu_idx;
+ 	return kvm_set_msi(&route, kvm, KVM_USERSPACE_IRQ_SOURCE_ID, 1, false);
+ }
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index a30123b77112..dc59f2f9d405 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4907,6 +4907,17 @@ static long __kvm_plane_ioctl(struct kvm_plane *plane, unsigned int ioctl, unsig
+ 	case KVM_CREATE_VCPU:
+ 		r = kvm_plane_ioctl_create_vcpu(plane, arg);
+ 		break;
++#ifdef CONFIG_HAVE_KVM_MSI
++	case KVM_SIGNAL_MSI: {
++		void __user *argp = (void __user *)arg;
++		struct kvm_msi msi;
++
++		if (copy_from_user(&msi, argp, sizeof(msi)))
++			return -EFAULT;
++		r = kvm_send_userspace_msi(plane->kvm, &msi, plane->level);
++		break;
++	}
++#endif
+ 	default:
+ 		r = -ENOTTY;
+ 	}
+@@ -5493,6 +5504,9 @@ static long kvm_vm_ioctl(struct file *filp,
+ 		r = kvm_vm_ioctl_create_plane(kvm, arg);
+ 		break;
+ 	case KVM_CREATE_VCPU:
++#ifdef CONFIG_HAVE_KVM_MSI
++	case KVM_SIGNAL_MSI:
++#endif
+ 		r = __kvm_plane_ioctl(kvm->planes[0], ioctl, arg);
+ 		break;
+ 	case KVM_ENABLE_CAP: {
+@@ -5597,17 +5611,6 @@ static long kvm_vm_ioctl(struct file *filp,
+ 		r = kvm_ioeventfd(kvm, &data);
+ 		break;
+ 	}
+-#ifdef CONFIG_HAVE_KVM_MSI
+-	case KVM_SIGNAL_MSI: {
+-		struct kvm_msi msi;
 -
--	BUILD_BUG_ON(sizeof(struct kvm_run) > PAGE_SIZE);
--	page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
--	if (!page) {
--		r = -ENOMEM;
--		goto vcpu_free_common;
+-		r = -EFAULT;
+-		if (copy_from_user(&msi, argp, sizeof(msi)))
+-			goto out;
+-		r = kvm_send_userspace_msi(kvm, &msi);
+-		break;
 -	}
--	vcpu->run = page_address(page);
-+	vcpu->run = vcpu->common->run;
- 
- 	kvm_vcpu_init(vcpu, kvm, id);
- 
- 	r = kvm_arch_vcpu_create(vcpu);
- 	if (r)
--		goto vcpu_free_run_page;
-+		goto vcpu_free_common;
- 
- 	mutex_lock(&kvm->lock);
- 
-@@ -4415,8 +4420,6 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- unlock_vcpu_destroy:
- 	mutex_unlock(&kvm->lock);
- 	kvm_arch_vcpu_destroy(vcpu);
--vcpu_free_run_page:
--	free_page((unsigned long)vcpu->run);
- vcpu_free_common:
- 	kvm_vcpu_common_destroy(vcpu);
- vcpu_free:
+-#endif
+ #ifdef __KVM_HAVE_IRQ_LINE
+ 	case KVM_IRQ_LINE_STATUS:
+ 	case KVM_IRQ_LINE: {
 -- 
 2.53.0
 
