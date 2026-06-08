@@ -1,85 +1,85 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC6A23C4F3
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 12:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A895277C81
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 12:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780922719; cv=none; b=IWtRYv58hgQ4LZve0ibxiyeOjQwtKQ8aYo0p7qa2rjdQ7ELmFtEGqWs2MQaNBf6k1+UHaGBJp9B4HBLDsB2JSrSy76+QsXI4Hcci3wrXhbl66Vb8yzzX+pBKb8Zxn2mUhMjBUOFGxDyqNtwdiwdiBb6psm9ngt5HZa/6l+ZYhus=
+	t=1780922942; cv=none; b=CcOSzHHUR1jVv4epD4WMfxqve9VzO85efV04XaTydf3jSFE7HQsLIgeESng08cDNZtYfA9an2GaOPoje2/OD1E8mSW3WnCw9EMzKGy0e3wZ/1FlOVkIqzzba/dzkMHFWPVsXhKqeIXpRXAvHodDRAhMfo4wlzooKx1zQ+6P6/o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780922719; c=relaxed/simple;
-	bh=42qVtwWKcjvteBcYswE8CJYNa8605hjoVwQzGeK/4TQ=;
+	s=arc-20240116; t=1780922942; c=relaxed/simple;
+	bh=S1qZmtftVLAF1cyDOhOGZT02C/tfoJu8CkLtSfH5UyM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rvvF3cI3PJB3bNmOkGEC7+LZFVunOgg3/DfwUhvygB7STznRBoCG1I7q99AyiXVaJ8/QGQ8ZE9JDHJOPij0e6ibXZtlDNWt/vofidw7EN5XeDsSWA/AWoTLZLjlO89t+xC/NtOck9t+kXpnJj8gdUQUdd5qvT9WnLpaoCTFTvuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jWO3+cBX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mjqam+D3; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=Iiy3YyBOj20VCa8YOK9SKKdm53VhW9mTM1IvP/Xzm+pfr9xkOSe2nUHtYFujTz1O1qFvN27QCKGOF3vuhUEgmdt10yZ8AMyxnOgYrS30uMaM+37CS920lT4ZhhAdyqv7Q0J06Beirbg3prDn2poxjRUkzUSSDoio3QM2w1DNxR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M0tjozC1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pPMxDzyW; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jWO3+cBX";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mjqam+D3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M0tjozC1";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pPMxDzyW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780922716;
+	s=mimecast20190719; t=1780922940;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OBX5ZjVJ9Vt5icolNqsYRF5h5TyAgyLBE7tpU2Ey3us=;
-	b=jWO3+cBX7U4xGjrR3+YRdcKxkxtPtIhsFj9NtC77KW4Q9xFq8R0dQx65jYaet0OrnXQ/sE
-	7VZdDPuJKMQ5HMxm/g7Im4ZsiHvmzCANIRY4Io0HQWVP6HUvAgweeXimZeazwTLt4SFtcM
-	0kyew7RW7lb/gPibtZu0i4JBDMnx5eE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0N12o8wJNxfvgAwguu0stKJ3LYzNmqODr7O6RIf4oEw=;
+	b=M0tjozC15PaOOHr71Zp0PwN/isI/DqE511GLQSv5r8WWANVZv/bAfmCI1871Gf5qUn0Hf3
+	O7IAtCRz5Y6EUhYsALb2QzE74r40TboRTda3DKIPfwAVc3VZm+tFsfltLlqg+CPB3Ozmuv
+	4LENgltqzDJWQs8OZQhTtBSJSNog7/Y=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-rB9iN32HOsS0HjOW34t8SQ-1; Mon, 08 Jun 2026 08:45:14 -0400
-X-MC-Unique: rB9iN32HOsS0HjOW34t8SQ-1
-X-Mimecast-MFC-AGG-ID: rB9iN32HOsS0HjOW34t8SQ_1780922713
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-460153ce644so3108613f8f.0
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 05:45:14 -0700 (PDT)
+ us-mta-187-L8gL5qEBNLqXGiKXLmSDPg-1; Mon, 08 Jun 2026 08:48:59 -0400
+X-MC-Unique: L8gL5qEBNLqXGiKXLmSDPg-1
+X-Mimecast-MFC-AGG-ID: L8gL5qEBNLqXGiKXLmSDPg_1780922938
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45ef63d1214so2811914f8f.3
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 05:48:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780922713; x=1781527513; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1780922938; x=1781527738; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=OBX5ZjVJ9Vt5icolNqsYRF5h5TyAgyLBE7tpU2Ey3us=;
-        b=Mjqam+D343wJgy+utEDaCynxFIp/Dq3b2xHgygne517PaEQ0E16G82gcxnVwIpVjKo
-         DYfxaUq93g94zT1b4ec0oxsfJNDs7mWyIF6ZQ5Zu+CJFo2qPlE2euDgj7tZ5iGUif+hA
-         Y4s5dGQcuXORNUpAqBV6Vh4j/YfbdcjASPoM8m1W7l9KlwI6xH0pBgbYjfU09vDd/pFh
-         OacPdYfYUIq4KFvWXTO76TFBPed31c5FblJiuQl4BDMb9CbAjzRyAZUX3pwEC55yjO08
-         A/jW2rqAOueGYnwrBgRBjY1k+WLOpvuKNq6723UJ24K002BKKsoqrLyZbzJDcNPhFOE3
-         jzmw==
+        bh=0N12o8wJNxfvgAwguu0stKJ3LYzNmqODr7O6RIf4oEw=;
+        b=pPMxDzyW4CbftxDh65WFqp4yu8EGG/eK55GsaP6y+0CswPEEEnpaeQDNwpxz0QTGZe
+         6FXfMFwPeIy8JIhx9dTSWDO4oiMOpqw19G9lFaNav6VnYDGRTVeVQBn4ik0/U3N1C7qz
+         EOz0qfL5p6Or33aF9qq16gxTrYXhkXyPjbtHDvgcgUsVCLDOu3rgKo1jWSerBFwcC5Ke
+         VckogEb6d/Kcr7iJmS08WUWcRt8a75JezIsa2Y1NsjFLGzzyjZrxKcx2uN4KK5lF81k/
+         fGDcfLbAtsjIF8aJHPa1IqaPMBgywRddvj2kxX/guJ3O3hvJTEIV4H4EteerT5nuorXR
+         ijDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780922713; x=1781527513;
+        d=1e100.net; s=20251104; t=1780922938; x=1781527738;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OBX5ZjVJ9Vt5icolNqsYRF5h5TyAgyLBE7tpU2Ey3us=;
-        b=Kku1PBFCt1K3z4BYlRop/TUcSseXhPHaDKPy8ofCrRCWSr69caO3pT3IQZZ+lq/rx1
-         ZFSKTHqaDnNqKj8Fb5dJmhWR+owLg7PjnykFcfnJeadpNvX6gN2hXlZM80TC+lQ7+qkS
-         e589BazDXYipcY1mGn0WnSyWyagsdJXQFV+NDq+TF+klz4oUW6WGzyq5b15W/Tz29oiS
-         iNGUHLVx5NTImcZO5hzy15XDw9i7MbuoHnd9n959gE4w73Zd3DxhEkwF5BopnEsRkkpu
-         Aqr9C2N9UWt9WY9DWn9bfg25pA0ghgG7tSEpEFChpu4bO2rmdQxwvEAJmvQdAXAzHuDb
-         fFfw==
-X-Forwarded-Encrypted: i=1; AFNElJ9WVd70j5VGtVmELOCKc3HDcDF3CmDoNfJ2SDsQRMS2EuSPBoriDARbJrmdLav3LwgE9h4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqzPn9rAKVnhm5OmHHHCVZss9NrVk54J8jQVzszop+bxfK+iZk
-	9ksbOmvfLK2EgGkLrj4LUKpB9mwORtuWqAOsHNH0+1+FnnkdjL0SVB3Nw5ff3TlLA9mFxaBwBSh
-	rmR8Kh3p4KaRmoVISMnzsNtDv2RIKpZekJpqheM++KfZkZNDVnucERg==
-X-Gm-Gg: Acq92OGZyjjlyuT+qIR2At3FjhyydiP7H0VjFrL3oaHf8xyMiR/dtN4OTpqXFtYoNcm
-	6hTr+it9rX76M3VVVJ/K1jT2bnZviVhkjUXy0qFSFloj7CIueVvPQwSbOo+oZmxohyjohV0sl8a
-	dQAiIbEJFCt2b0xLm5lASgfbU6hmjVhenKM8HxpBvDJu4OAWJpT8KfvS4TYvfYI5ptbMcDaviVJ
-	JTer6P/K323rD25KWwvtPie3GdmPyP5dxaStAIGOYX+GnCDKKsdG/AzzN96B66fSZhiDtFGQvPn
-	aun3dXX0oFaG6TnOj+/TYL3kPOI84wGkMC/HJAqvBxWtF7U/mEY+kTalZONN+5k1z+bRnTQaZl6
-	cDn9RLsA6LHlOOMcO5iJ/tSk/O6JxPg==
-X-Received: by 2002:a5d:5049:0:b0:441:1c18:f779 with SMTP id ffacd0b85a97d-4603063cf3fmr17162356f8f.37.1780922712940;
-        Mon, 08 Jun 2026 05:45:12 -0700 (PDT)
-X-Received: by 2002:a5d:5049:0:b0:441:1c18:f779 with SMTP id ffacd0b85a97d-4603063cf3fmr17162311f8f.37.1780922712460;
-        Mon, 08 Jun 2026 05:45:12 -0700 (PDT)
+        bh=0N12o8wJNxfvgAwguu0stKJ3LYzNmqODr7O6RIf4oEw=;
+        b=GjsgLb/xuY8NqbqHFHzYzIDoB9bjARpvuv/wre5CyrqFSl+GkWYQbb2iaCsHW9lt/M
+         e+3XfqsevEzDRVqJH3RSaDd3j21+JB7rUpsHqXswHIJ0OIMJ00c5vvzMsRMlzCySRSAK
+         8x5ILCRnIHbz5tI+/e0Px/w3bucNu8Bfj/zsWpCBYeoL6/CJT2afa8cpsVV25cKMBj/E
+         dy+1aaVvSnzoFKbmOZjDda11kV87gpd/A0L64ZJ0U/0MVHfvScw2pHQ5sqj30jBgM604
+         lkfuarXIIY+NoF4S86/+0gX3FsxDxyRhZC1RhgQoH+beuni+cIezJgUiOuPh4eCK0FV2
+         DLmg==
+X-Forwarded-Encrypted: i=1; AFNElJ/14BzhllDmEp3M2sB+tLMKAPDBA3RzxRT1OB94TruuzTPQ9napu7AKGTw2//YTMFGUFl8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVfCb+/0mpT5LtxFJt9yquMhmHJYWg9Z4lO3w0aAx+TqdGskel
+	mRVzk3DMNlRdGmTiWTyax7Ld3JIeq/a/5lbTms65KzxcZp5XNxqb1HdoAR0tuuotAgGaXoJxDFX
+	wr3ifqvN0vS81qNO806A3X1bIbLVTFJi1j/zJ80tRY3vpWIse4a55To3o13lqsQ==
+X-Gm-Gg: Acq92OGQcPKQzkKK5sLAGy+Sdqz0W+JYYnYcULEAxHoPLX3TC2FYkp98ygycXNFU+V4
+	VdXGQ3JLtFJOsGvoGojiufi3YDRsMmXBmTPkQ9PJwM8tUpNicEdj59X33bcvNhNYcE4rVE1Skgo
+	R/5XcTHLmF8cFm5wjyS4GYGrmy0kJtDKUTAuQMWED4OEPu8osU3CSLoK+g/xAxi8AYMazt0CUks
+	T7/hXU7Dgk6CBhBA3vJsGn3gL5ns6h0On+PVO5JYRI0pEdpTGm69HvBOy7Zyf8pc4apHItCUjgc
+	Dd7/rvP0iA0nijKW2+59DlpS5zEEE4o4bmrJtMLZ6A0z5Az5Ntrn/hOizCUSlQ2m6yXHEsd1vw0
+	VbXD5vzVii/pIvtCNAOVMfRx0ZomA+w==
+X-Received: by 2002:a5d:458d:0:b0:460:e4d:bd46 with SMTP id ffacd0b85a97d-46030631c25mr19295182f8f.21.1780922937974;
+        Mon, 08 Jun 2026 05:48:57 -0700 (PDT)
+X-Received: by 2002:a5d:458d:0:b0:460:e4d:bd46 with SMTP id ffacd0b85a97d-46030631c25mr19295150f8f.21.1780922937604;
+        Mon, 08 Jun 2026 05:48:57 -0700 (PDT)
 Received: from [192.168.0.9] ([47.64.115.148])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2ed944sm53768450f8f.13.2026.06.08.05.45.11
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcde3sm54213965f8f.1.2026.06.08.05.48.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jun 2026 05:45:11 -0700 (PDT)
-Message-ID: <b7aa2c73-be32-47e2-8452-e626845f4d3e@redhat.com>
-Date: Mon, 8 Jun 2026 14:45:10 +0200
+        Mon, 08 Jun 2026 05:48:56 -0700 (PDT)
+Message-ID: <e375b2ec-3f60-4403-8b0d-aeb1d6943f65@redhat.com>
+Date: Mon, 8 Jun 2026 14:48:55 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -87,13 +87,13 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests RFC PATCH 1/6] powerpc: add pmu tests
+Subject: Re: [kvm-unit-tests RFC PATCH 4/6] powerpc: gitlab CI update
 To: Chinmay Rath <rathc@linux.ibm.com>
 Cc: npiggin@gmail.com, harshpb@linux.ibm.com, lvivier@redhat.com,
  linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, andrew.jones@linux.dev,
  sbhat@linux.ibm.com
 References: <20260602064806.3101025-1-rathc@linux.ibm.com>
- <20260602064806.3101025-2-rathc@linux.ibm.com>
+ <20260602064806.3101025-5-rathc@linux.ibm.com>
 Content-Language: en-US
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -138,45 +138,31 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20260602064806.3101025-2-rathc@linux.ibm.com>
+In-Reply-To: <20260602064806.3101025-5-rathc@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 02/06/2026 08.48, Chinmay Rath wrote:
 > From: Nicholas Piggin <npiggin@gmail.com>
 > 
-> Add some initial PMU testing.
+> Change to using a gitlab-ci test group instead of specifying all
+> tests in .gitlab-ci.yml, and adds a few additional tests (smp, atomics)
+> that are known to work in CI.
 > 
-> - PMC5/6 tests
-> - PMAE / PMI test
-> - BHRB basic tests
+> To control overhead, ppc64be is used to test 64k page size, ppc64le is
+> used to test 4k page size.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
 > ---
->   lib/powerpc/asm/processor.h |   2 +
->   lib/powerpc/asm/reg.h       |   9 +
->   lib/powerpc/asm/setup.h     |   1 +
->   lib/powerpc/setup.c         |  20 ++
->   powerpc/Makefile.common     |   3 +-
->   powerpc/pmu.c               | 567 ++++++++++++++++++++++++++++++++++++
->   powerpc/unittests.cfg       |   3 +
->   7 files changed, 604 insertions(+), 1 deletion(-)
->   create mode 100644 powerpc/pmu.c
+>   .gitlab-ci.yml        | 53 ++++++++-----------------------------------
+>   powerpc/unittests.cfg | 36 ++++++++++++++++++++++-------
+>   2 files changed, 37 insertions(+), 52 deletions(-)
 
-  Hi Chinmay,
+I don't like the idea of handling this differently for powerpc compared to 
+the other architectures ... so please either also provide (separate) patches 
+for the other architectures, too, or drop this patch.
 
-the problem with Clang on Travis [*] still seems to persist:
-
-  https://app.travis-ci.com/github/huth/kvm-unit-tests/jobs/639614142
-
-Could you please have a look?
-
-  Thanks,
+  Thanks
    Thomas
-
-
-[*] This already happened with Nicolas' last version:
-
-  https://www.spinics.net/lists/kvm/msg351218.html
 
