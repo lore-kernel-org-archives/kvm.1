@@ -1,60 +1,85 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58126366816;
-	Mon,  8 Jun 2026 10:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28473B7763;
+	Mon,  8 Jun 2026 10:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780913189; cv=none; b=UpPkmGje16rJah3PDV3f45q1+vsfatbukmMJ8V2weHSaVofa9lH3esCWYExP6GxZeutwK7s7Kkp6BRjH5M068OjZGqXfTU9RrBHwSczO5qR1r69ptw4d+qSrvEYfoUmF5pHg/rtPsHNgdLRU0ynxI7gXEhe2SNUmJLql4yXyKHA=
+	t=1780913607; cv=none; b=YqEUXg1dG1jdlBnl934ERRIMjUy5U5JUiidVr1b+Rti8OvtuqN2Q1VoKzo2JDAgYC5SSk8sdjL/+L0jt/XRYWKUxV4Z3UpfaqRfXXAVKDIkhlvqYO5ZNaZamJNFEQBQ5Gn+fluZiZH+cjXzg1k7yRxyBOWyl8JQwbY+ck7iYotA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780913189; c=relaxed/simple;
-	bh=xdhG/ioRhAMR/g7wNYlodNkn4+4Mop5CuoSu7LEokY8=;
+	s=arc-20240116; t=1780913607; c=relaxed/simple;
+	bh=sT+TMpHORRrE3eWVBbl+LZ+t7JMx5GappnT400SS0L8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bYxC6ywDoIPk7M6gaUDlabFkaiapnM81or9wWubODj1347bJeUDNbxf7QJrL1C0pG8GSKemRWbe0M9QFi1dg8+X6DZV1tKnnPSrgf9NI67EyUopTYSQYE9uBiIPL2zU5j7YgPO+Z39lnF6U7TNNiTjJAo6/KO3vroKKWxVR+1H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AN9ZWUJZ; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=F5PsFoeBKnB1KsLZEFd1AnELKQZEoJTGTQ312E0W0r686B90vyQ7LSfxQfk25rtQEtl9IhlWf5dkWv+Hd5xCkd5Ib3IjrV8EkMs+m+GnpmsIxLnygCkWG3sncv/tcsoKPXdeaPfz8kIYoahIhVKwc5dNbYeRGV4g4Tuo8nHvdnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Hu8uT8Qn; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AN9ZWUJZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780913187; x=1812449187;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xdhG/ioRhAMR/g7wNYlodNkn4+4Mop5CuoSu7LEokY8=;
-  b=AN9ZWUJZraePhIwcrZtSlbOuUMF+9bkzl1QNlcoxsAA4w4vjtwWebjnS
-   jOvArP+DyO449zpaYmCoFFGCjimqK6+rzDgItNuESttItV2o2GmfYqb1Q
-   SYoCXNPWbmZNDbS9MqwmUdQpe7lmg+xMazpyey7/PmFsT6UYLfFFRVFuM
-   dmCcawDDWOid3SM907tcJJ5eAifS8gaprKYj02iD59nMPKYgYJv3bSNNT
-   j/izGxoXpL5o2UaFG5D60TXNtsqg/ZWfVScbS1A8cGOa3ZEuNCbJaotnf
-   Tx83y6rxNFCz8rig33Uq1TgLBxk5/kmXhu5hZ1aTVpriuQfYtXCCtrW1K
-   Q==;
-X-CSE-ConnectionGUID: j5snsPM/RXK9a1vkBKUVxQ==
-X-CSE-MsgGUID: wwhQwlK8RXmZpRw+1FtHIw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11810"; a="80778652"
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="80778652"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 03:06:27 -0700
-X-CSE-ConnectionGUID: a7GXfx0HRJ65XibKJ8VhCw==
-X-CSE-MsgGUID: fAgt/Ha0R/Sv7FfZ2yjXmA==
-X-ExtLoop1: 1
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa003.fm.intel.com with ESMTP; 08 Jun 2026 03:06:23 -0700
-Date: Mon, 8 Jun 2026 17:41:52 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Kishen Maloor <kishen.maloor@intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
-	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 02/15] x86/virt/tdx: Add extra memory to TDX Module for
- Extensions
-Message-ID: <aiaOYOlVlz6g1eIT@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-3-yilun.xu@linux.intel.com>
- <f44d997e-49fe-4d48-84e3-e260bb9d3164@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Hu8uT8Qn"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6582srvE1207171;
+	Mon, 8 Jun 2026 10:13:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=P3ow97rFE6f2Ih3ZMtzn1DulWuogxa
+	DRu6iHa6vmpoo=; b=Hu8uT8QnTY5znXFiSbKOnxrrO6rn/PYMbSxE2OER493NVs
+	F0dULt8pcXi2PBcGflq/ulOz3c+fU8RRWQFboHnkk4P5hELHVinbpJTRhmwCZeMY
+	LJpwzX2u/QC6wbJX8OUnFcUwPmm1MT03KcabYGvdPVkOr6at3gnSKAxdQUTCTWrt
+	ha31fKfM7Uo8ZdEOPAagD/Kur17rMOTsD39tsS/3HTlZv7QxLz9wz6BzgDJ20W4p
+	+X1mMqReprk4n+3ePW518ra7zIOAniiZzxZ6SwbLFedwbMfDcsLYVR9lUhyTJpVK
+	nQt3WShon2QXLyoUIqD/LyrOI+riT/SUQFpbDUjA==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb6spkv7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 10:13:12 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 658A4iYT012551;
+	Mon, 8 Jun 2026 10:13:11 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4emxvjmtjh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 10:13:11 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 658AD7SD30212720
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 8 Jun 2026 10:13:07 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 988A320043;
+	Mon,  8 Jun 2026 10:13:07 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2EEEB20040;
+	Mon,  8 Jun 2026 10:13:05 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  8 Jun 2026 10:13:05 +0000 (GMT)
+Date: Mon, 8 Jun 2026 15:42:44 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Gautam Menghani <gautam@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        kvm@vger.kernel.org, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Validate arch_compat against host
+ compatibility mode
+Message-ID: <20260608144125.9694b0b9-e8-amachhiw@linux.ibm.com>
+Mail-Followup-To: Gautam Menghani <gautam@linux.ibm.com>, 
+	Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+	Ritesh Harjani <ritesh.list@gmail.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, kvm@vger.kernel.org, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+References: <20260603141539.47620-1-amachhiw@linux.ibm.com>
+ <aiGJvUqgjUo6M5et@mac.bl1-in.ibm.com>
+ <87ldctmosh.fsf@vajain21.in.ibm.com>
+ <aiaAPQmWG7JXGoGn@Gautams-MacBook-Pro.local>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -63,165 +88,134 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f44d997e-49fe-4d48-84e3-e260bb9d3164@intel.com>
+In-Reply-To: <aiaAPQmWG7JXGoGn@Gautams-MacBook-Pro.local>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: PyEKVYJNTp1i19MThskL6WXJWiwFQbA-
+X-Proofpoint-GUID: IdWJ4CXLTMgaewP-ms9n0O9mjdozBMWh
+X-Authority-Analysis: v=2.4 cv=ZbEt8MVA c=1 sm=1 tr=0 ts=6a2695b8 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=pCLllbXSNW6fl1ZUPXkA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDA5NCBTYWx0ZWRfX/402WAUii+nj
+ FZTP63Nb/YjSb0LkrFgwnctt8t7HGshqcQI6mRIzG9Kg8iFBb6lUv4qx2ZY08HcaAHxadi9d/3v
+ J+JVI9KMsTANtAG+dwVX1pTJj3acZ1tBvZ/jZSI4bMb2nHe1+5VhH08Oh0BrSn6xG+Ur7y6Jwjp
+ K8WHIWJvSHHRmN7C7q3CsUVH3p8ebzjg5WtpoE3pabusHEh8bfo0KJsb+3z6O2Epmje2DzAt19d
+ 6QEIlL6lTUiq01nlNFtW6+NdZHHJNqDe3TAIpLjMhplhcmdoc2xuqh83vi5mTrHo8pz2PJNrnNW
+ lTEXmPFZ8yEAqsancoCtOdnnJ67Tw+5DEmVHXY8mhXPvwAb2+LLwoEp45X905qbmqd5wlAx3hY/
+ EU320tlvcDtC3BxcI+51JgkSkMu0xefupMrCKbvt6rL+703qls3xd1rt9ioAP2sYezyhMfPkJzH
+ dvyaC5X1MwJZ9DPZF7A==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-08_02,2026-06-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0
+ clxscore=1015 adultscore=0 spamscore=0 priorityscore=1501 bulkscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
+ definitions=main-2606080094
 
-> > +static int tdx_ext_mem_add(struct page *root, unsigned int nr_pages)
-> > +{
-> > +	struct tdx_module_args args = {
-> > +		.rcx = to_hpa_list_info(root, nr_pages),
-> > +	};
-> > +	u64 r;
-> > +
-> > +	tdx_clflush_hpa_list(root, nr_pages);
-> > +
-> > +	do {
-> > +		/*
-> > +		 * TDH_EXT_MEM_ADD is designed to use output parameter RCX to
-> > +		 * override/update input parameter RCX, so the caller doesn't
-> > +		 * have to do manual parameter update on retry call.
-> > +		 */
-> > +		r = seamcall_ret(TDH_EXT_MEM_ADD, &args);
-> > +	} while (r == TDX_INTERRUPTED_RESUMABLE);
-> 
-> The retry loop compares the full return value against TDX_INTERRUPTED_RESUMABLE. Should
-> it mask with TDX_SEAMCALL_STATUS_MASK first, in case the module sets any
-> lower detail bits?
+Hi Gautam,
 
-mm.. there is an existing case for TDX_INTERRUPTED_RESUMABLE which
-doesn't do the mask:
+Thanks for testing this patch.
 
-  err = tdh_phymem_cache_wb(resume);
-  switch (err) {
-	case TDX_INTERRUPTED_RESUMABLE:
-		continue;
+On 2026/06/08 02:11 PM, Gautam Menghani wrote:
+> On Fri, Jun 05, 2026 at 12:55:50PM +0530, Vaibhav Jain wrote:
+> > Hi Gautam,
+> > 
+> > Thanks for testing this patch. Few questions:
+> > Gautam Menghani <gautam@linux.ibm.com> writes:
+> > 
+> > > On Wed, Jun 03, 2026 at 07:45:39PM +0530, Amit Machhiwal wrote:
+> > >> On IBM POWER systems, newer processor generations can operate in
+> > >> compatibility modes corresponding to earlier generations. This becomes
+> > >> relevant for nested virtualization, where nested KVM guests may need to
+> > >> run with a specific processor compatibility level.
+> > >> 
+> > <snip>
+> > >
+> > > I booted a KVM guest on LPAR with this patch in the following scenarios:
+> > <snip>
+> > 
+> > > 3. P11 guest on P11 host booted in P10 compat mode: No error observed
+> > This should have resulted in an error since booting a P11 guest on P10
+> > compat mode host is not allowed with/without this patch. Can you please
+> > check your test env and share the boot results.
 
-I believe we don't mask it. TDX_INTERRUPTED_RESUMABLE should not carry
-any lower bits according to its bit definition, if it does it's a
-problem we should not skip.
-
-> 
-> Ditto for TDH.EXT.INIT in patch 3.
-> 
-> > +
-> > +	if (r != TDX_SUCCESS)
-> > +		return -EFAULT;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int tdx_ext_mem_setup(void)
-> > +{
-> > +	unsigned int nr_pages;
-> > +	struct page *page;
-> > +	u64 *root;
-> > +	unsigned int i;
-> > +	int ret;
-> > +
-> > +	nr_pages = tdx_sysinfo.ext.memory_pool_required_pages;
-> > +	/*
-> > +	 * memory_pool_required_pages == 0 means no need to add pages,
-> > +	 * skip the memory setup.
-> > +	 */
-> > +	if (!nr_pages)
-> > +		return 0;
-> > +
-> > +	root = kzalloc(PAGE_SIZE, GFP_KERNEL);
-> > +	if (!root)
-> > +		return -ENOMEM;
-> > +
-> > +	page = alloc_contig_pages(nr_pages, GFP_KERNEL, numa_mem_id(),
-> > +				  &node_online_map);
-> 
-> The SEAMCALL takes a scatter list (HPA_LIST_INFO), so the module
-> doesn't require contiguity. If the goal is just to avoid scattering
-> pages across many 2MB regions, maybe dense, 2MB-aligned allocations should
-> achieve that without a single pool-wide contiguous block.
-> 
-> > +	if (!page) {
-> > +		ret = -ENOMEM;
-> > +		goto out_free_root;
-> > +	}
-> > +
-> > +	for (i = 0; i < nr_pages;) {
-> > +		unsigned int nents = min(nr_pages - i,
-> > +					 PAGE_SIZE / sizeof(*root));
-> > +		int j;
-> > +
-> > +		for (j = 0; j < nents; j++)
-> > +			root[j] = page_to_phys(page + i + j);
-> 
-> Would it be better to allocate per-batch (i.e. one root page's worth
-> at a time) rather than the whole pool up front?
-> 
-> That way an intermediate TDH.EXT.MEM.ADD failure wouldn't leak
-> all nr_pages. Also, a batch is up to 512 pages (= 2MB) and its allocation
-> could be 2MB-aligned, addressing your fragmentation concern.
-
-So IIUC allocating 2MB by 2MB has the pros:
-
-  - Larger chance to get the memory.
-  - Less memory waste when TDH.EXT.MEM.ADD failed.
-
-and the cons:
-
-  - Still fragment 4M & 1G memory region.
-
-
-I think first of all we should focus on the normal path when Extension is
-successfully initialized and memory is added, note these memory can
-never be reclaimed in this case, so memory fragmentation becomes the
-primary considration.
-
-And in TDX platform, the TDH.EXT.MEM.ADD failure is not expected to
-happen, which means the TDX module is buggy and from Confidential
-Computing POV we should not continue, we should change to a new module
-and reboot. So less memory waste doesn't matter much actually.
-
-Then, the Extension initialization is done at bootup time. We can get
-the memory in big chance. If we really can't, it is a signal that the
-system is not well configured for TDX, and failing earlier isn't such
-a bad thing to me.
-
-So for now I still think alloc_contig_pages() is better than 2M-by-2M
-allocation.
+Yes, this should have errored out if the patch were tested in
+combination with the QEMU patches posted here [1]. 
 
 > 
-> > +
-> > +		ret = tdx_ext_mem_add(virt_to_page(root), nents);
-> > +		/*
-> > +		 * No SEAMCALLs to reclaim the added pages. For simple error
-> > +		 * handling, leak all pages.
-> > +		 */
-> > +		WARN_ON_ONCE(ret);
-> > +		if (ret)
-> > +			break;
-> > +
-> > +		i += nents;
-> > +	}
-> > +
-> > +	/*
-> > +	 * Extensions memory can't be reclaimed once added, print out the
-> > +	 * amount, stop tracking it and free the root page, no matter success
-> > +	 * or failure.
-> > +	 */
-> > +	pr_info("%lu KB allocated for TDX Module Extensions\n",
-> > +		nr_pages * PAGE_SIZE / 1024);
-> > +
-> > +out_free_root:
-> > +	kfree(root);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int __maybe_unused init_tdx_ext(void)
+> - lscpu output (host P11 LPAR booted in p10 compat mode)
+> # lscpu
+> Architecture:                ppc64le
+>   Byte Order:                Little Endian
+> CPU(s):                      960
+>   On-line CPU(s) list:       0-959
+> Model name:                  POWER10 (architected), altivec supported
+>   Model:                     2.0 (pvr 0082 0200)
+>   Thread(s) per core:        8
+>   Core(s) per socket:        15
+>   Socket(s):                 8
+>   Physical sockets:          4
+>   Physical chips:            2
+>   Physical cores/chip:       16
 > 
-> Could this be named init_tdx_extensions() instead to disambiguate
-> from tdx_ext_init() in patch 3?
+> 
+> - lscpu output from guest
+> # lscpu
+> Architecture:             ppc64le
+>   Byte Order:             Little Endian
+> CPU(s):                   4
+>   On-line CPU(s) list:    0-3
+> Model name:               Power11 (raw), altivec supported
+>   Model:                  2.0 (pvr 0082 0200)
+>   Thread(s) per core:     1
+>   Core(s) per socket:     4
+>   Socket(s):              1
+> 
+> 
+> 
+> - QEMU command line
+> /usr/bin/qemu-system-ppc64 -device virtio-blk-pci,drive=drive0,id=virtblk0 \
 
-Yes, good to me.
+So, this patch was indeed tested on a distro qemu binary.
 
-I'm changing all Extensions to Extension, cause the SPEC says "TDX
-Module Extension". So I'll use init_tdx_extension().
+But without the above mentioned QEMU patches, currently the '-EINVAL'
+returned in this patch (or any other error returned for the compat
+ioctl) is simply ignored by QEMU (which Patch#1 in the QEMU series is
+trying to fix) and continues with arch_compat == 0, making the guest
+continue with raw PVR support.
+
+Now when we again land up in gs_msg_ops_vcpu_fill_info() in the guest
+entry path, with the current logic and arch_compat being 0, we try to
+set an appropriate value by looking at the cpu features, which in this
+case, turns out to be the P10 LPVR. Subsequently, H_GUEST_SET_STATE is
+called with this value of arch_compat and L0 never compalains about it
+and guest continues to boot in P11 RAW mode while it shouldn't. The
+guest booting in raw mode can be confirmed from the below information
+from L2 guest:
+
+  # lsprop /sys/firmware/devicetree/base/cpus/PowerPC\,POWER11@0/cpu-version 
+  /sys/firmware/devicetree/base/cpus/PowerPC,POWER11@0/cpu-version
+                   00820200 (8520192
+
+Having said this, we should not only be relying on userspace/vmm to
+handle this situation but detect this in KVM and error out as
+appropriate. I'm currenlty working on the v2 of this patch for handling
+this case and will post it after some more testing.
+
+
+>     -drive file=/home/gautam/images/fc41.qcow2,format=qcow2,if=none,id=drive0 \
+>     -m 100G -smp 4 -cpu host -nographic -machine pseries,ic-mode=xics -accel kvm
+
+[1] https://lore.kernel.org/all/20260502140021.69712-1-amachhiw@linux.ibm.com/
 
 Thanks,
-Yilun
+Amit
+
+> 
+> 
+> Thanks,
+> Gautam
