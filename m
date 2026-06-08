@@ -1,306 +1,217 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4484C3563D4;
-	Mon,  8 Jun 2026 18:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780943525; cv=fail; b=bLLgHlRM89fzlKTZJTcXmF/9bY+WdDBzfD4cgVG5ZZgSF3B3YAVaCHaKtUx5MofQae2uHsBqGaH7fugwJRWe8TwWaFeC9h3NZYvJVB1k0z/oPLLn34jR1SpHLXLjo382p257aoTMtIbJq1ECXHrJb6Nvge4OU0aLPmcBPlEnx2s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780943525; c=relaxed/simple;
-	bh=DXakx+GpjvOzqFHZP6ajowfh0GEpQywed7mokrp2xio=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=jHbM7RKAde1CML6y24RgcQuwKeRxceOo4QrMlaiww+AuUlHWrgtJZGbLsaURxKC/h4W42cxGOyfq4xs+vvLgJgWRqd2J79V7kcqwkadWJTUVaMxOs0H0vNJAVLJFBr2wwjZi+5zRNU+ge3D726xMN65aG5iJU3TooqTgU5IBeeQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c39uKZxN; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769723E0230
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 18:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780943705; cv=none; b=HnuGfndt1aUrbY8BQzJzh4eo0r1L2vlg1Du/CC/WJzW3kG6Ydxns0Uveghkwk8skfSIOhXCOSMRryYOm2bLxlmEAPl081kHXCCKwxVQ/yBruVeocmKRV+/9PTHPCFsx+cp4f7UAhff71l1otiMCPpgZ6IRFy5+P+Cgvf6NpbcVY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780943705; c=relaxed/simple;
+	bh=r2+oNhkrnpn5ngF8fEc+4WdZgag6SVn6RSHoepvTgx4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=nVVpMavyRUFVoIfOagPOAB19X9DWoaljUclwvd/uxUTtHxzQ6YhNL/u8HbnvZ7rYleBUv4YFBv5rLVCiwkegJUrOuspXxUrNoTX4nEVyhc/qhAxwWy5cX9te6fmbmfnEDh1zypT4VwNB7bgZ5Jx5pk4MAO4MghgbtHUitiwhcTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KUmH/iSv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c39uKZxN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780943523; x=1812479523;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=DXakx+GpjvOzqFHZP6ajowfh0GEpQywed7mokrp2xio=;
-  b=c39uKZxNuzEkqO124XdFnuLX5/LCKUNBNsvpSbbUCjptEB9X6HqW3/sp
-   E9VGh/UeXPwqdHbCTsj26u8tr8P+1FTPWEbVVuyy3/K4Ya4QowHi2EIq/
-   TT18eP8itp6Kceqcxi0NnG0lt6831B03mhOxAvDRsz8R4o+nHgzxVQiv4
-   TqSS4vDIDDA/DcO+fEK/8CqH1UMR8HNPoWcrEpzr7Z7P9NFmpycOZNjMH
-   F1RLXIdsirFT6x5sKNcX2VFDatnyFrFCdv9yxHYHmPUc8GdjRMh9fzioM
-   /kAiZckHEBgTl0eMTGuZP6N07eBJdTyvNolcSEQlw6a8aqIpJ6xna7dTG
-   A==;
-X-CSE-ConnectionGUID: +qBtrkW+QW63BzR2cYQ9UA==
-X-CSE-MsgGUID: v6aJ94a5RwqagG6+erBF9w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="81668180"
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="81668180"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 11:32:03 -0700
-X-CSE-ConnectionGUID: F6yiHyJ0SoiArawHXPQg2A==
-X-CSE-MsgGUID: 4MruYHC+SOOU+BMabw3luA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="241188781"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 11:32:02 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 8 Jun 2026 11:32:02 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 8 Jun 2026 11:32:02 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.22) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 8 Jun 2026 11:32:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SfQqkqKDN+nKseoAHvFZUJM85r5pBVi0k6TWr5rZr8AhtYx0d87k6GOjx/n7BuCAuj+99lzNIf4WD7er9/C2l495lnseZtZIrv8YyvCedJZZWNCQbBSIc+uE/nwM7Fqv1IpqHg4SX5UC91x+cFy51TK/bdl+Z8qWZYTQoX0EZpqhuEUbP8OvGSgKY26jRwVANSXbvxNACPW0afndomclKbfuhcCHShI+oUq3OJn3yiE38Hvw3sfiCARu+J4r92WePoDE2w4QuBLJEParZBCJKBTFpKdEYrrqaVSSK9R+aHuRDO3HvgugNNFxZ9Dzbm8XM/SoNYg8XysL+7tCZ4lz+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Of2RqnWBKz8FPakJJhZj/8yrS/jiwC4KDkslUtrYmYY=;
- b=Qvl3vExHqvpu12y+awbiCu3YmESgjEX9ZeZ32wdJHMbIDA5k2KZTCfqzJ4HbNB9sajfamc7ZuxBuie4DJtCEubD8E6pwhh8+BYR9/ddGdmJRI72MU8QQmvQSIKeJ4HwmXeiaerEq9e/4Ud1fc2o8nT5Mq5H7ehPQynKIlFN8LyWULPNZLLyf8kLk52B7LTyR0VqT68qevDdgUWJ+CcQ5JjZ107hqO7wbHJQ2z2T2XOYJEC2GaGdxN0Uv/2xenFh382N4xx79SumxzOyAs3WA93rf74mP6su7WJqN7KbKy5PtIRenUpiNscQ0eCyxvXV6f1/Do4FdLjKPg9u4Df+zYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
- by SA3PR11MB7462.namprd11.prod.outlook.com (2603:10b6:806:31d::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Mon, 8 Jun 2026
- 18:31:58 +0000
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::2c4e:e92a:4fa:a456]) by IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::2c4e:e92a:4fa:a456%3]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
- 18:31:52 +0000
-Message-ID: <af2063d5-3d00-4d1a-83b5-de709825759d@intel.com>
-Date: Mon, 8 Jun 2026 21:31:47 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
- Quoting
-To: Xu Yilun <yilun.xu@linux.intel.com>, <kas@kernel.org>, <djbw@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <x86@kernel.org>, <peter.fang@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <sohil.mehta@intel.com>, <yilun.xu@intel.com>,
-	<baolu.lu@linux.intel.com>, <zhenzhong.duan@intel.com>,
-	<xiaoyao.li@intel.com>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
- 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
- 4, Domiciled in Helsinki
-In-Reply-To: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DU2PR04CA0298.eurprd04.prod.outlook.com
- (2603:10a6:10:28c::33) To IA1PR11MB7198.namprd11.prod.outlook.com
- (2603:10b6:208:419::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KUmH/iSv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E2C1F00898;
+	Mon,  8 Jun 2026 18:35:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780943704;
+	bh=UbxvpfcNZOOIpQl5Lh0YL1YR8/s6HFNthZP1+XyluTA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KUmH/iSv97dfGfUZLGfQwV/O5UfQ8wWblVsHRL8STTQfQUQAamDV0qIo6SwEULh9t
+	 SisbYzPHChK38wRf9Tbf5vr+V6HJ5neA+51czGW5ZsuDha4gVMp5kjMsgww9nj4gPX
+	 GDHlhuGtvZwYMzNI8ixuPJy9OPWMebN+31rX23q36vpk1Yieb9neY9+AZgOVkLYsaK
+	 vA8OfwLOplQkohCU/N7fgpDMJu3pbodi8zHK1H/y9LCMdKL6VHxTzB1kOciTk7RtAn
+	 D4ruiRTTfZeecRbJv/5OH1ecir/tvsD9QDcxgjYawKZyO/RN1amblJJt1QexOeVC24
+	 QOk5DH9o2Fosg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 35/60] kvm: Add VCPU plane-scheduling state and helpers
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260608144252.351443-36-joro@8bytes.org>
+References: <20260608144252.351443-36-joro@8bytes.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 08 Jun 2026 18:35:03 +0000
+Message-Id: <20260608183504.23E2C1F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|SA3PR11MB7462:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5441ef6f-2322-4a11-88f7-08dec58c3603
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|6133799003|22082099003|18002099003|56012099006|5023799004|11063799006;
-X-Microsoft-Antispam-Message-Info: 5zLVVg4uo7GpBrpTgcOOSAjbUiw+qwpYuO1rdfPYwXw63m+oxHXay1Oye3JcnRnuHsgWeyS35ILtlS/XEFi1D1I99eHAficF5oCYrItLyDSs/XBE/Xe62so3QfQ1WGq66HdiKkoD03xCLo6cFAR0Pyia3nK/J04GG1uaiacYSOIqe6pywnP6yvJxbZJRRAuMHtMHrDVE4IieRACrMOIAvqw7oVZ8OtUqFUyMpXHUOWAqggeyCj7rL4F/i06glQJUDV0Uu7tQZHvuMcQRrKDPV/lwXfXUsEPShkqHB1NuZp60hTZkUVtsaeKMAYCOLyxHXjWnUAuqnRz2kaCJ9nfi/9Mq+iH8EQ0eXPsfreBo9JEkv9lBLtbDqPjizrC4rFw+s9BtKDCulGQK+ucteH2bJu2qdtjDeiyp5n1ljCqj4E8nQIsBFUWbT3I/VCwFP/g6NAUV7ZZxhVP4/eeC7JgH5iM5AkbnX+9JV1QxvetHkyNQWJ3ramboisTgMxoDAflPUvKeneD5osSvPvR5vNpktF4u4hRAYVzFMnlvL79+ejXEYQxbeodlNBAl52x8D3bNYkdTZKtmLj2eq5izWdKRdik5H0XLaWYFKljR3HwmKuRmKZXy6+QSdpBnAFqqFtz4FI1vlv9DlGJ47evWT8o6cg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(6133799003)(22082099003)(18002099003)(56012099006)(5023799004)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TkxMeUhabnl1cVZzZU5JS3FqR1l3SU9VZVgyUWJheXdjdGREdnlJZStTYXdm?=
- =?utf-8?B?MTM2VkdZOVFOMjhXSXpnSXhEKzQvZXFFY1JrbGgyYjNadC9XVkxvU2ZPQmVy?=
- =?utf-8?B?dUVNb2Y1QzNiMkxRd0gzTXpTNmc0Q09rSnVHUG9LdjhTYnUycFg2TFd3bEVN?=
- =?utf-8?B?a0g1YW95M0dqaXNKSU1mNXF5THpDWkk2Q0djRXlyUitzMFFpMnE2bzNiNnBV?=
- =?utf-8?B?Vm51ckNkb0s0MWk5TWJwTHB2VnhXM2NxVHVvT1NZemo5UVZmanR4TWNqT1E2?=
- =?utf-8?B?aCs5ZHBZUEJJREphaHZnallWTU1vZEh4R3p3bVR0N3RZWGlZaEFQNzNxZEVR?=
- =?utf-8?B?V3FDQVJHT1ViL1VzallKV1NJeEk3K3VjbXg0M21sRU9JMTVLRHg5VVlJc0p4?=
- =?utf-8?B?T1FpcFlEUml0MHU0TW5Nc1VubXR2aDY3T3NvdDNEZmNYLzd0OW9XR09BS2Y5?=
- =?utf-8?B?Z3llaXhKUkVGQkFyaHdXeG1IcFZsR3RDbkJJbjNQVVU3SjMwNTdPdkxRVkdO?=
- =?utf-8?B?UitxTm9JS2hSYTA0WnM3WVdLcm1RYUlTdmFVL2hjdGluRXJubVhocmlEZ1px?=
- =?utf-8?B?WE0wWE4zS0E2YTNmNUV5MVZ2YjcxSGo5VDJtUmFyVDRCRFF3OXRnTEZTU1Ez?=
- =?utf-8?B?bGQ4MlkrYko2TmxTeCsyVm5TYTh3UHp5U1dSRDh2b2dsM2RBTEpOYmUyajZY?=
- =?utf-8?B?RXYySzFSalFHU1hRRFdnNGFyaFMrVHdEdFpVaTlzQ254UE05WHpmNmJyWDA4?=
- =?utf-8?B?ZStPVXA1Y1ZxUDZZejQ0TWtnSUpyMVkwYjIrOGRvV2pRREFhYlA3dCtTeTAy?=
- =?utf-8?B?Umo5aGJhR2JhdmxYMkNxNUR2dDF5QWk5bmdzVnhvOXZ5OW8yNGg2YTRLNnJo?=
- =?utf-8?B?K2w2cTdyVlZsc3J5VUNWaVZId0xoNnNXYjM2S0hmRTFuM2hEeU5oZWdRajFW?=
- =?utf-8?B?RHJjcFZnamhmOFIyRk02UEpUTm1DLzVJb3NYU3dwazh2ZklNODFCdWxmTXE4?=
- =?utf-8?B?N3ZsZWFneUw2U0Zka0NQT2FqVUJ1RlBUZms5dGsxcXdtcGlTNmlaaVhnM1NI?=
- =?utf-8?B?K3NnOHBpL1p1VjJKL0k2TlVJamNOZ2tZZ2ZHTHRJcnU4ZTVWOW1PWUhvKy9H?=
- =?utf-8?B?elNnVzRNU2lTQ29lcEpMZFhQSUx2SzFrUnNlWjJrL0FQL3ovdmw0Z1VpdVJ1?=
- =?utf-8?B?cElxbklpTGF4cmVtaVVxQ0sxVkNiRGcyQW9JNk40TDNlYVJtdFRsZ29NVkJt?=
- =?utf-8?B?N2tyU0xtWk9DeW9uNmd2S2c2bkRiaXFiQWtybzVQSko1b1ZkbUxCTG1ERGNv?=
- =?utf-8?B?K0ZmTEkxSWJZdER2SUtSdDYvVVpKQzZQSzR1OUFleXUrL1lMQ28xY01SU01h?=
- =?utf-8?B?M1RSNm8wcnIzeEpKUStOQm9wTThYVlJYTkkySk5YZmJlWW1pZkoyMS91RS9D?=
- =?utf-8?B?S0QzejQyMGt4Ty9IUC81bTVMUk1TUlZLblc0VzNZUE9xL0dXZk56a0RWL3p2?=
- =?utf-8?B?TGwwZVVKR2xqZWFtOE1UMXhYMjZzRS82dFVGQlFsNmJJekxWVlZveEpXU0RK?=
- =?utf-8?B?QkdxUEx2MWd2LzJ6UTVxUXRBNHVSVXBlNUx0UlBwQ3BzVjFOS0U3VittMGRC?=
- =?utf-8?B?Kzd5cVA3WmV1S3JQcHRZYjBFRVNSLzVwNmxFYnR4YkRZbjBlL28yNlE1OXlu?=
- =?utf-8?B?SjI0cGVsLzYxY3pONHQyVjEycHFHU3FoKzRqODFDeHJOL2JYRGJtNXNuaWwx?=
- =?utf-8?B?R2FvNExjdS9VSnVaVWRjSDVmSEZhd2F2ZHNMUGVwSDFndlFOc2dPa3E3Njk0?=
- =?utf-8?B?bnI5LzM2NTJFZkZOOWVRdEE1SUpQMnBxSG12UE1oWUpueXZ6UTgwK01YRC9Y?=
- =?utf-8?B?RmgxUjdBQ3JiVXJVMzU5NmVmbkV1dmlXYnRoWVZuRkpidlhvNnI3dlVsR2Z1?=
- =?utf-8?B?ekw5Sk13RDI3NWZ6dUdzc012Yy9CVmtFOE0vOU1jejZpREwwVU14ZmdENVZG?=
- =?utf-8?B?di9QdlErSm5zekNLSTlHdFpXV2k0YmR6M3N5czZSVEtkcjBwYklGbmRsdXdu?=
- =?utf-8?B?dmxrYlFiY3FnNU9aU3NLUy9jQUlvMDBIRFF3Y0RVcHlFV0pON0RYUU82V0cy?=
- =?utf-8?B?L3JKZFYzSytCdzZWQlVvNmtVd2liaGNXRHJLOU1HOS8vU3RNKzFpSFk2NGJs?=
- =?utf-8?B?S1BPWDN5NzNaemdGa0pwSEFNcjVFWXZwdmlZY3VWT3dwUmpYOVdhejQ4a1ZE?=
- =?utf-8?B?TzJvS2kvSmdGMFYycFV0cTgrQlI1S0VaeU95UDRtRE9xOXFQT3pwdTNvRG9J?=
- =?utf-8?B?OUZaVENyQlBtcDMzUElER1IySmhyY05DT3JjWEMzdHQzTTNFWUU2N1Z6T0o4?=
- =?utf-8?Q?25aJsZ2EBV4C/x8M=3D?=
-X-Exchange-RoutingPolicyChecked: guVUDbTQ4Mt+1FAYStkqV9x/S3RI94kmlpaSPSieaJboCiAbzXaf8aSGSKVDvp1mOnWygu4CMC/M29W+eXBROahaH/wkD/inXzSqfWrVytUAGPBvzGVeqs2a7XRkeHw0Ual9i4nU0wJXuW5QymAW/bnEVzI0IaZx9UUh64bBGGJzjO2GKbn4X7Ustb7SM0uYOAFABriSllEZ7OQK0wonZLrY1qP2GN5lkaBs2C0lyg9WPRZghHQOyaodyd1BxSxtG5YfGnhbyqsaj/52FZrfzHpxlAmnHrqIQ8KR74giXlgZFRi9eix8UJB+hgCNZrMQQDnU2cE4bjt/hAxe0umCcw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5441ef6f-2322-4a11-88f7-08dec58c3603
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 18:31:52.8688
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /ROwurSXpVNzZT1csjX9sekZwZsJRFCwzzmoXB8xVF0IUtk+Wzd/MyTIrpVc6spnCeIYqkh3SxFpoOHrbBMgvg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7462
-X-OriginatorOrg: intel.com
 
-On 22/05/2026 06:41, Xu Yilun wrote:
-> This posting is just to collect initial review.
-> 
-> Sean, Paolo, Dave please feel free to ignore for now. Sean, especially
-> the x86 KVM stuff is only here as an example for the init code, and not
-> ready for review.
-> 
-> Kiryl and Dan, we are trying to get acks for the first 4 patches of the
-> series so they can be serve as a settled base for all the other work
-> that uses Extensions. Please review the first 4 patches and treat the
-> later ones as an example for the Extensions initialization.
-> 
-> == Why it's being posted ==
-> 
-> The TDX Module is introducing a new concept called "TDX Module
-> Extensions", and several upcoming features depend on them. The
-> Extensions need some extra setup at TDX module init time, and the code
-> to do this is expected to be somewhat generic.
-> 
-> We want to get the basics of this TDX module extensions piece sorted so
-> that all of the extension-based work can build on it. This series
-> includes those basics, and an example usage called DICE-based TDX
-> Quoting. Only the first 4 patches are about initializing the TDX module
-> Extensions. I'd like some review on them. The later DICE patches are
-> just included to serve as a usage example for the TDX module extension
-> code.
-> 
-> The first 4 patches will eventually need an ack by an x86 maintainer, so
-> please review with that in mind.
-> 
-> == Overview ==
-> 
-> TDX Module introduces the "TDX Module Extensions" to support long
-> running / hard-irq preemptible flows inside. This makes TDX Module
-> capable of handling complex tasks through "Extension SEAMCALLs".
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+s) to consider:
+- [Critical] Error path during secondary VCPU creation destroys shared stru=
+cture, causing Use-After-Free.
+- [High] Missing IPI kick to the active VCPU prevents prompt preemption dur=
+ing plane switch.
+- [High] Unhandled KVM_REQ_PLANE_RESCHED request causes infinite vCPU loop.
+- [High] Concurrent VCPU creation bypasses ID checks, allowing unprivileged=
+ userspace to trigger a host DoS via WARN_ON_ONCE.
+- [High] Non-atomic state transitions in plane switching result in state co=
+rruption and force plane 0 to execute.
+--
 
-For me it would be easier to understand by starting higher level,
-like:
+commit 1f17dacf62458889297d745dc273354c7b7cb798
+Author: Joerg Roedel <joerg.roedel@amd.com>
 
-"TDX Module Extensions enables optional but important TDX features
- - such as DICE-based attestation quoting, TDX Connect, and live
-migration - that require substantially more processing time than
-core TDX operations, and also additional memory."
+KVM: Plane switching algorithm implementation
 
-Also I would find it helpful to clarify how "TDX Module Extensions"
-enhances interruptibility for Extension SEAMCALLs compared with
-regular SEAMCALLs, since "hard-irq preemptible flows" had me
-initially thinking along the wrong lines.
+This commit introduces the algorithm to run the lowest runnable plane.
+It implements plane switches by stopping the current plane and setting
+another to runnable, adding state tracking and requests to manage this.
 
-> 
-> TDX Module allows some add-on features to use the Extension. The first
-> feature to use Extensions is DICE-based TDX Quoting [1]. DICE is an
-> industry-standard, certificate-backed attestation framework that layers
-> evidence through a chain of certificates.
-> 
-> This series adds infrastructure to enable the Extensions and then
-> implement DICE-based TDX Quoting.
-> 
-> The Extensions consumes relatively large amount of memory (~50MB). So it
-> is designed to be off by default. It must be enabled after basic TDX
-> Module initialization and when add-on features require it. To enable
-> the Extensions, host first adds extra memory to TDX Module via a
-> SEAMCALL (TDH.EXT.MEM.ADD), then uses another SEAMCALL (TDH.EXT.INIT) to
-> initialize Extensions, and then some add-on features, e.g. DICE, could
-> use Extension SEAMCALLs for work. Note that host can never get the added
-> memory back.
-> 
-> Theoretically, the Extensions doesn't need to be enabled right after
-> basic TDX initialization. It could be enabled right before the first
-> Extension SEAMCALL is issued. That would save or postpone memory usage.
-> But it isn't worth the complexity, the needs for the Extensions are vast
-> but the savings are little for a typical TDX capable system (about
-> 0.001% of memory). So the Linux decision is to just enable it along with
-> the basic TDX.
-> 
-> This series has 2 distinct parts:
-> 
->   Patches  1-4:  TDX Module Extensions enabling
->   Patches  5-15: DICE-based TDX Quoting, primarily Peter's work.
-> 
-> == Some history ==
-> 
-> The TDX Module Extensions part was first posted along with TDX
-> Connect [2]. Now this part is remarkably smaller because we've removed
-> the generic tdx_page_array abstraction for HPA_LIST_INFO. TDX Module
-> Extensions is the first user of HPA_LIST_INFO, and doesn't use it in a
-> typical way (HPA_LIST_INFO can only hold at most 2MB memory). There
-> isn't enough justification to make the abstraction in this series. A
-> possible plan is to rebuild tdx_page_array iteratively when more use
-> cases arise.
-> 
-> == Misc ==
-> 
-> This series is based on tip/x86/tdx [3], because we need a small
-> being-merged patch [4] before our work.
-> 
-> 
-> Link: https://cdrdv2.intel.com/v1/dl/getContent/874303 # [1]
-> Link: https://lore.kernel.org/all/20260327160132.2946114-1-yilun.xu@linux.intel.com/ # [2]
-> Link: https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=x86/tdx # [3]
-> Link: https://patch.msgid.link/20260402-fuller_tdx_kexec_support-v3-1-34438d7094bf@intel.com # [4]
-> 
-> 
-> Peter Fang (10):
->   x86/virt/tdx: Move tdx_tdr_pa() up in the file
->   x86/virt/tdx: Initialize Quoting extension during bringup
->   x86/virt/tdx: Prepare Quote buffer during extension bringup
->   x86/virt/tdx: Add interface to check Quoting availability
->   x86/virt/tdx: Add interface to generate a Quote
->   x86/tdx: Move and rename Quote request structure
->   KVM: TDX: Factor out userspace return path from tdx_get_quote()
->   KVM: TDX: Add in-kernel Quote generation
->   KVM: TDX: Support event-notify interrupts only with userspace quoting
->   x86/virt/tdx: Enable TDX Quoting extension
-> 
-> Xu Yilun (5):
->   x86/virt/tdx: Read global metadata for TDX Module Extensions
->   x86/virt/tdx: Add extra memory to TDX Module for Extensions
->   x86/virt/tdx: Make TDX Module initialize Extensions
->   x86/virt/tdx: Enable the Extensions right after basic TDX Module init
->   x86/virt/tdx: Embed version info in SEAMCALL leaf function definitions
-> 
->  Documentation/virt/kvm/api.rst              |   8 +-
->  arch/x86/include/asm/tdx.h                  |  34 ++
->  arch/x86/include/asm/tdx_global_metadata.h  |  11 +
->  arch/x86/kvm/vmx/tdx.h                      |   6 +
->  arch/x86/virt/vmx/tdx/tdx.h                 |  32 +-
->  arch/x86/kvm/vmx/tdx.c                      | 176 ++++++++-
->  arch/x86/virt/vmx/tdx/tdx.c                 | 387 +++++++++++++++++++-
->  arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  27 ++
->  drivers/virt/coco/tdx-guest/tdx-guest.c     |  25 +-
->  virt/kvm/kvm_main.c                         |   1 +
->  10 files changed, 655 insertions(+), 52 deletions(-)
-> 
-> 
-> base-commit: 5209e5bfe5cab593476c3e7754e42c5e47ce36de
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 5c3f9dfa15ea..e3611e6cc3e4 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -168,6 +168,7 @@ static inline bool kvm_is_error_gpa(gpa_t gpa)
+>  #define KVM_REQ_VM_DEAD			(1 | KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
+>  #define KVM_REQ_UNBLOCK			2
+>  #define KVM_REQ_DIRTY_RING_SOFT_FULL	3
+> +#define KVM_REQ_PLANE_RESCHED		4
 
+[Severity: High]
+This patch adds KVM_REQ_PLANE_RESCHED and asserts it via kvm_make_request(),
+but is there a corresponding handler to process and clear this request?
+
+Without a call to kvm_clear_request(), the bit remains permanently set.
+Could this cause kvm_request_pending() to perpetually return true,
+forcing the VCPU to endlessly abort guest entry and spin in a soft lockup?
+
+[ ... ]
+
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 9d30fd85ce5f..a30123b77112 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -4397,6 +4397,7 @@ static int kvm_plane_ioctl_create_vcpu(struct kvm_p=
+lane *plane, unsigned long id
+>  	vcpu->vcpu_idx =3D vcpu->common->vcpu_idx;
+>  	vcpu->plane =3D plane;
+>  	vcpu->plane_level =3D plane->level;
+> +	vcpu->plane_state =3D STOPPED;
+>  	vcpu->run =3D vcpu->common->run;
+> =20
+>  	kvm_vcpu_init(vcpu, kvm, id);
+
+[Severity: High]
+Can a concurrent VCPU creation bypass the ID checks in this function?
+
+Looking at kvm_plane_ioctl_create_vcpu(), the plane_get_vcpu_by_id() check
+is performed locklessly before acquiring kvm->lock:
+
+	r =3D -EEXIST;
+	if (plane_get_vcpu_by_id(plane, id))
+		goto vcpu_free;
+
+	...
+	mutex_lock(&kvm->lock);
+	r =3D xa_insert(&plane->vcpu_array, vcpu->vcpu_idx, vcpu, ...);
+	WARN_ON_ONCE(r =3D=3D -EBUSY);
+
+If a malicious userspace process concurrently creates multiple VCPUs with t=
+he
+same ID, could multiple threads pass the existence check?
+
+When they subsequently acquire the lock to insert into the xarray, the
+second thread would receive -EBUSY and hit the WARN_ON_ONCE(r =3D=3D -EBUSY)
+inside the lock. Could this regression allow unprivileged userspace to trig=
+ger
+a host denial-of-service if panic_on_warn is set?
+
+[Severity: Critical]
+Does the error path for secondary VCPU creation safely handle the shared
+common structure?
+
+When creating a secondary VCPU, it inherits the common state from the plane=
+ 0
+VCPU:
+
+	vcpu->common =3D vcpu_plane0->common;
+
+If a subsequent step like kvm_arch_vcpu_create() fails, the error path jumps
+to vcpu_free_common, which unconditionally executes
+kvm_vcpu_common_destroy(vcpu):
+
+vcpu_free_common:
+	kvm_vcpu_common_destroy(vcpu);
+
+Because this destruction logic does not verify whether the common struct
+is exclusively owned by the failing VCPU, could it destroy the shared
+structure while the plane 0 VCPU is still actively using it, resulting
+in a use-after-free and state corruption for the primary plane?
+
+[ ... ]
+
+> @@ -4938,6 +4939,50 @@ static struct file_operations kvm_plane_fops =3D {
+>  	KVM_COMPAT(kvm_plane_ioctl),
+>  };
+> =20
+> +void kvm_vcpu_set_plane_runnable(struct kvm_vcpu *vcpu)
+> +{
+> +	vcpu->plane_state =3D RUNNABLE;
+> +	vcpu->common->plane_switch =3D true;
+> +	kvm_make_request(KVM_REQ_PLANE_RESCHED, vcpu);
+> +}
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_set_plane_runnable);
+
+[Severity: High]
+Is this request being sent to the correct VCPU?
+
+When switching planes, KVM_REQ_PLANE_RESCHED is sent to the target vcpu.
+Because the target VCPU is often inactive (in the STOPPED state, not loaded
+on a physical CPU, and not in guest mode), kvm_vcpu_kick() will not issue
+an IPI.
+
+Will this prevent the currently running VCPU (vcpu->common->current_vcpu)
+from being promptly preempted, allowing it to continue executing until an
+unrelated VM exit occurs?
+
+[ ... ]
+
+> +struct kvm_vcpu *kvm_vcpu_select_plane(struct kvm_vcpu *vcpu)
+> +{
+> +	struct kvm_vcpu_common *common =3D vcpu->common;
+> +	struct kvm_vcpu *ret =3D NULL;
+> +	unsigned i;
+> +
+> +	for (i =3D 0; i < KVM_MAX_PLANES; i++) {
+> +		if (common->vcpus[i] =3D=3D NULL)
+> +			continue;
+> +
+> +		if (common->vcpus[i]->plane_state =3D=3D RUNNABLE) {
+> +			ret =3D common->vcpus[i];
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (ret =3D=3D NULL) {
+> +		ret =3D common->vcpus[0];
+> +		ret->plane_state =3D RUNNABLE;
+> +	}
+
+[Severity: High]
+Could this fallback resurrect plane 0 during an in-progress plane switch?
+
+Plane switching involves independent calls to kvm_vcpu_set_plane_stopped(ol=
+d)
+and kvm_vcpu_set_plane_runnable(new). This non-atomic sequence creates a ra=
+ce
+window where all planes temporarily appear STOPPED.
+
+If kvm_vcpu_select_plane() runs during this window, this fallback logic
+forces plane 0 to RUNNABLE. When the target plane is subsequently marked
+runnable by the transitioning thread, both plane 0 and the target plane
+are RUNNABLE.
+
+Because select_plane() always selects the lowest index, will this trap the
+VCPU on plane 0 and defeat the intended switch to the higher plane?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
+43-1-joro@8bytes.org?part=3D35
