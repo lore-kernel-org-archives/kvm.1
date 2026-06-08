@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B73401A38
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 15:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0751D3CB8F4
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 15:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780932546; cv=none; b=C0IpYVWUPkCUkULPXRB3TgxdCoWgigiOEgnuQ4W6TVQ89AlNOGzdIStxw/aWU5Z2pv4x9z/V1wtPHgwBrAxCHfEwF/4lVWYC3lFK6ih2BIOxBl+MbM8d30UAdevjxwOJtwXKbcBiFFjgM03KAMDFyf2AdmjPYMd8YfB7lRAoPlo=
+	t=1780932841; cv=none; b=o6edGpiaK5IgE69Iml+agwXJevL4LqmuDcqwWN2/nB+lmeaRLvKG79E6uQI6b5023SdXeWcW8UknQGtc0wSE7oj7wx83plWMRWVuMy7rR6hqMiU0OPjh1EUZE8EO4vRZZRyquX2Au1iqWZsBZk3Q+t9uy/AFk7xCtzkc7XR6hPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780932546; c=relaxed/simple;
-	bh=0KrvFL3PsvxU7X44gXw91tvXcjO4gAJAf/UJfi3J80g=;
+	s=arc-20240116; t=1780932841; c=relaxed/simple;
+	bh=/oINTM2ZbCAsfgE0CDtrTAe0STZjVao7z/rcmC1Ij6Y=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Pw4ILcOLilerVvO/TNegfLcAWGtWJrxyk0KEQQtNtckCp084JoBAHl4cjYKsYzM9K1IzAXC15LfJYoL/yxWJZ0UNzPNso2M1QRa1HH5eXSNyPUDBrZjbpWFXgjzvA1Zzp8WTiHNb509QeTzzx53WiHRKooLeK/0MmI5uzmmQSts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UDBc8NXy; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=tkCKTioBNsRva/JgYLiIrfFMQ02f3A4WFV8NjdVfxvJny/dBW6AfMSpCWO+Ey3aBVue2aScmMmIWNISeLZkWlF0Ty625Rz/8I2vjqVzYK9ZJCFg3grkSEdkJ6UwQ/pYe3UAhMKh3mgBqjmkMEQCk8DMQufpKtNxw01zF9Py78Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hdJFFxog; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UDBc8NXy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147701F00893;
-	Mon,  8 Jun 2026 15:29:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hdJFFxog"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DACED1F00893;
+	Mon,  8 Jun 2026 15:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780932545;
-	bh=XIgv0R2KVbwH+yWyYmu8SMLJS4Sn3QA5IhA+UtNuy0c=;
+	s=k20260515; t=1780932839;
+	bh=C0AZoZ6m1/cfJ6RS1zlCPCy8YPRBrraHjb4l8zoZN14=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UDBc8NXyfUKp2US3lHSc9r8zY1ov5MCKuwptBRkmieY4PKwhYGYgq3x5MQ0JBt2t/
-	 Q+X0rG/4w6tIt2EaPbinHFvLxXAfWNWJYNehjr88AslOLM/P3I4yANq2XGyUtDqabl
-	 mXw9n5k1ShmwQu4aqeBMh0rK/7W9a6SVcBZ3/a7l5GPy1XL0FqLy/MfDhEV2EzW8VL
-	 vGcx73OQPtKTtNwjPZ7YDOkHt5HJ5RuQ5qP6/03bSHMcLYT18CttHfufnM0k6gXW9Q
-	 5vZBPNdyNARYlRIsd+aMYNDfhIs908mGO9nMhCUSc+PI6Bgh0lw+InRkCyjLe/u5Ts
-	 9htKmUg6P8IFg==
+	b=hdJFFxoghO6VdzFeMiDrCA+y8aJJlFPRPzAban34CV1mjdzN21zO+Sz5jV7K23skT
+	 TAMfJP2X1u/u9onsb4MUVy7Qogxgyh/s7/DkneXOWfWGY0agXEM8Co/j1PZaJisVh8
+	 Kpy5/XNvea2887qcabflvAEZnfxyX4O0qx7S8mFTU5WWwry0KR2TIw0xbg4bBL/agc
+	 dApK8L2mCrGJwKYNCB5IBHOYYXoPifVvgyhYOizV+I1dkLc64aa73259m0Wvspo25u
+	 /ADwR9WhNBKESf9PWsRKmyUxT55+P6zLbs9Qw7r9xScNC6vuOkCyEir6UFV48bFiw3
+	 nc5TiRrECZCmA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 08/60] Documentation: kvm: introduce "VM plane" concept
+Subject: Re: [PATCH v5 04/34] KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for
+ accurate KVM clock migration
 Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: "David Woodhouse" <dwmw2@infradead.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-9-joro@8bytes.org>
-References: <20260608144252.351443-9-joro@8bytes.org>
+In-Reply-To: <20260608145455.89187-5-dwmw2@infradead.org>
+References: <20260608145455.89187-5-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 15:29:04 +0000
-Message-Id: <20260608152905.147701F00893@smtp.kernel.org>
+Date: Mon, 08 Jun 2026 15:33:58 +0000
+Message-Id: <20260608153358.DACED1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,84 +46,141 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Medium] The documented API for VM planes directly contradicts the restri=
-ctions claimed in the commit message.
-- [Medium] Implicit 'last caller wins' global state in KVM_SET_GSI_ROUTING =
-for planes prevents concurrent routing to multiple planes.
-- [Low] Missing word 'with' in KVM_CREATE_VCPU plane constraints.
+
+New issues:
+- [High] Unbounded bitwise shift in `hvclock_to_hz()` triggered by user-con=
+trolled input can cause Undefined Behavior (shift out-of-bounds) and a kern=
+el panic (DoS).
+- [Low] The KVM_[GS]ET_CLOCK_GUEST ioctls cause compilation failures in use=
+rspace due to an incomplete type in the generic UAPI header.
+
+Pre-existing issues:
+- [High] Race condition in `kvm_guest_time_update` reads `kvmclock_offset` =
+unsynchronized, leading to corrupt guest `system_time`.
 --
 
-commit 1a4c73ae992840db0208f48635c236bd7636131e
-Author: Paolo Bonzini <pbonzini@redhat.com>
+commit fdd3f3e2e20605997654a24ac2e941cc677cf87b
+Author: Jack Allister <jalliste@amazon.com>
 
-Documentation: kvm: introduce "VM plane" concept
+KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for accurate KVM clock migration
 
-This commit introduces the concept of "VM planes" to represent virtual
-privilege levels (like AMD VMPLs, Intel TDX, and Arm CCA planes). It
-documents how these planes and their restricted subset of KVM APIs are
-exposed to userspace through separate file descriptors.
+This commit adds per-vCPU ioctls (KVM_GET_CLOCK_GUEST and KVM_SET_CLOCK_GUE=
+ST)
+to allow userspace to precisely save and restore the arithmetic relationship
+between the guest TSC and the KVM clock across live migrations.
 
-> In fact for
-> the vm file descriptor it is only three ioctls: KVM_CHECK_EXTENSION,
-> KVM_SIGNAL_MSI, KVM_SET_MEMORY_ATTRIBUTES.  For vCPUs it is basically
-> KVM_GET/SET_*.
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index d9ef165df6a14..b7e5f6e3dc6c1 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
 
-[Severity: Medium]
-Does the documentation in api.rst diverge from this commit message?
-
-The commit message states that only three ioctls are supported on the VM
-file descriptor for planes other than 0. However, the documentation
-changes below mark both KVM_CREATE_VCPU and KVM_SET_GSI_ROUTING as
-"vm ioctl (all planes)".
-
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
-rst
-> index 52bbbb553ce10..d90b4a406454c 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
 [ ... ]
-> @@ -350,6 +367,8 @@ machines, the resulting vcpu fd can be memory mapped =
-at page offset
->  KVM_S390_SIE_PAGE_OFFSET in order to obtain a memory map of the virtual
->  cpu's hardware control block.
+
+> +static u64 hvclock_to_hz(u32 mul, s8 shift)
+> +{
+> +	u64 tm =3D NSEC_PER_SEC << 32;
+> +
+> +	/* Maximise precision. Shift right until the top bit is set */
+> +	tm <<=3D 2;
+> +	shift +=3D 2;
+> +
+> +	/* While 'mul' is even, increase the shift *after* the division */
+> +	while (!(mul & 1)) {
+> +		shift++;
+> +		mul >>=3D 1;
+> +	}
+> +
+> +	tm /=3D mul;
+> +
+> +	if (shift > 0)
+> +		return tm >> shift;
+
+[Severity: High]
+Can this result in an undefined bitwise shift? If userspace provides a
+tsc_shift of 32 and a tsc_to_system_mul with 31 trailing zeroes (like
+0x80000000), the loop will increment the shift 31 times. This results in a
+total shift amount of 65. Since tm is a 64-bit integer, shifting it by 65
+bits triggers undefined behavior. Does the validation in
+kvm_vcpu_ioctl_set_clock_guest() need to enforce a limit on the combined
+shift amount?
+
+> +	else
+> +		return tm << -shift;
+> +}
+
+[ ... ]
+
+> +static int kvm_vcpu_ioctl_set_clock_guest(struct kvm_vcpu *v, void __use=
+r *argp)
+> +{
+
+[ ... ]
+
+> +	/*
+> +	 * Calculate the guest TSC at the new reference point, and the
+> +	 * corresponding KVM clock value according to user_hv_clock.
+> +	 * Adjust kvmclock_offset so both definitions agree.
+> +	 */
+> +	guest_tsc =3D kvm_read_l1_tsc(v, ka->master_cycle_now);
+> +	user_clk_ns =3D __pvclock_read_cycles(&user_hv_clock, guest_tsc);
+> +	ka->kvmclock_offset =3D user_clk_ns - ka->master_kernel_ns;
+
+[Severity: High]
+This is a pre-existing issue, but is it possible for concurrent updates to
+cause a torn read in kvm_guest_time_update() now that this ioctl modifies
+kvmclock_offset?
+
+In kvm_guest_time_update(), master_kernel_ns is read safely inside the
+pvclock_sc seqcount loop, but kvmclock_offset is read outside of it:
+
+kvm_guest_time_update() {
+        do {
+                seq =3D read_seqcount_begin(&ka->pvclock_sc);
+                ...
+                master_kernel_ns =3D ka->master_kernel_ns;
+        } while (read_seqcount_retry(&ka->pvclock_sc, seq));
+        ...
+        hv_clock.system_time =3D kernel_ns + v->kvm->arch.kvmclock_offset;
+}
+
+If kvm_vcpu_ioctl_set_clock_guest() modifies both variables under the seqco=
+unt
+write lock after the reader finishes the loop but before reading
+kvmclock_offset, couldn't the guest receive a stale kernel_ns combined with=
+ a
+new kvmclock_offset?
+
+> +
+> +out:
+> +	kvm_end_pvclock_update(kvm);
+> +	return rc;
+> +}
+
+[ ... ]
+
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 6c8afa2047bf3..9b50191b859cd 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -1669,4 +1669,7 @@ struct kvm_pre_fault_memory {
+>  	__u64 padding[5];
+>  };
 > =20
-> +VCPUs for non-zero planes can only be created if the VCPU the same index=
- has
-> +already been created for plane zero.
+> +#define KVM_SET_CLOCK_GUEST	_IOW(KVMIO, 0xd6, struct pvclock_vcpu_time_i=
+nfo)
+> +#define KVM_GET_CLOCK_GUEST	_IOR(KVMIO, 0xd7, struct pvclock_vcpu_time_i=
+nfo)
+> +
 
 [Severity: Low]
-This isn't a bug, but should "the VCPU the same index has" be "the VCPU
-with the same index has"?
+Does this cause compilation failures for userspace applications? The ioctls
+use struct pvclock_vcpu_time_info which is defined in asm/pvclock-abi.h, but
+that header is not included by linux/kvm.h. Since UAPI headers should be
+self-contained, could this result in an 'invalid application of sizeof to
+incomplete type' error?
 
-[ ... ]
-> @@ -1886,11 +1905,14 @@ The flags bitmap is defined as::
-> =20
->  :Capability: KVM_CAP_IRQ_ROUTING
->  :Architectures: x86 s390 arm64
-> -:Type: vm ioctl
-> +:Type: vm ioctl (all planes)
->  :Parameters: struct kvm_irq_routing (in)
->  :Returns: 0 on success, -1 on error
-> =20
->  Sets the GSI routing table entries, overwriting any previously set entri=
-es.
-> +Note that the kernel maintains only one GSI routing table for all planes=
-. The
-> +plane for which the GSI routing table was set last will receive all inte=
-rrupts
-> +signaled through GSI pins.
-
-[Severity: Medium]
-Does this implicit "last caller wins" global state prevent concurrent routi=
-ng
-to multiple planes?
-
-Since KVM_SET_GSI_ROUTING replaces the entire routing table at once, it
-appears a call on one plane's VM fd will hijack all GSI interrupts for that
-plane, overwriting any previous plane's configuration. Is there a way to
-concurrently route different GSIs to different planes under this UAPI
-design?
+>  #endif /* __LINUX_KVM_H */
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D8
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608145455.8918=
+7-1-dwmw2@infradead.org?part=3D4
