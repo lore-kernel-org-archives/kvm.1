@@ -1,146 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B3E3DF011
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 18:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B643AE188
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 18:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780943051; cv=none; b=ToDDu19hrRmX1saoDLfgvGMhPEkR053AoHaIrGjHPotztqjjh4ByVK2bJ/SK/XD4gyrTKV6KvVOS6y6KfqUZ3Y+hg8w7dlCORF2jA7qJUKDrwEMaNiQwT+hSGU7JQtwpDg6IFLVHLw/MB5QAZIvc/IqhzaDLhY6iYvR8gVFYFmg=
+	t=1780943219; cv=none; b=knpo9Zag2mdyH5WtUPnfQhokUbvyXLr09W6ctDx6IoPNk6BufQlGlhW25lHx3KiUZNVoYphZutXsfSamtrf8YcYJs472E5FyBmpuHOO5irUqrl6n0Z497TFHc+FtNB8pHqEyKFaW3rglNTH6JjLWsbtP1c9aweyQaqfGDDSN3jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780943051; c=relaxed/simple;
-	bh=RhmdXR+Nc6mzbWvZTXftnj2cObmN71gI4MCPNKC1G9Q=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qkhwmF6OhjkR9jIZeBS+vuKJ0/kbBuYv5mfG8U3/XTCaJ1Qlm7abauX0VW7EB3LaWwWAYJLrdvKqhp9lkyFxpA+9GGd3ZUDgeK/5YRMwrKiTEw04xEZkLdxPknuir++7oSeKLbWHN7X/rYLhaIQnxBZmaDlDt52b3eb7bnIsZHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IbscHbIp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780943219; c=relaxed/simple;
+	bh=VtPbXJcQD8aAoOfXGNNyaFs2IxqUgTcWCdXJamVavio=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HFTq8knif16yMHDwpBBqTD/AYaObuxWX+U3W6b3EOvXPlt/UYXcd33yV8gF9tc+57VOywIBYPMyEs5S0uS0IMisiYDLUzaczdf7WpsO4rPa6fNkOC8/5gxNpYMATfqXKYaE7v6UwPcemwV8JqrIlg9aC8JhdtWfcjh9iOM/DkX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iJv0+4H/; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IbscHbIp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689A11F00893;
-	Mon,  8 Jun 2026 18:24:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780943049;
-	bh=BipP0OWKIzViVqX7Xnvt3pJEiXa9aszNAw6kGn5o/9c=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IbscHbIpAqyH5mB9wh9m4JhaL4iHBCiUMQBMzBegnpZGUB4eCSwvx2KTPCSCSJh9t
-	 4BXz2UlUOA/pbXbfsXQVMLJVqtN0WL3+7YyBQo86b4sVqAOg/4QJhGAyx3kj28zPT1
-	 Va9vlYrUUFVChMjQZYNsP2/qM/qtgHnBcJS5wcX9wJ1XgBQKTAHsD2a4Tay1ewdmD/
-	 RGDBJpi+IvrhGZFImVoEAEIwFKrG1Jc4fs6JgR3sh14U3PW1Jmk67OvefiGkfFW3XR
-	 ++TyCPOrcIeKUSSu8dyo54vuc/hJCDhduxfO+myZlW5mYGYegb43g1R+cURreI4Fcb
-	 ci6ONHUI9vhNQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 34/60] kvm: Keep track of plane VCPUs in struct
- kvm_vcpu_common
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-35-joro@8bytes.org>
-References: <20260608144252.351443-35-joro@8bytes.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 18:24:09 +0000
-Message-Id: <20260608182409.689A11F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iJv0+4H/"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-beb5131c31cso238012566b.3
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 11:26:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780943217; x=1781548017; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kWfuFGQtFl9xemEBK6hAwxQUYib3QQYLIakJAgyEoEE=;
+        b=iJv0+4H/f0vd9BSxnoRnsMBa7RAzqQQs2w02vqh9T59QkfcS7kOZ1uhVBzBU4hghrO
+         hTPr8d7dQVCX2KOlubWA4Dam5hzKjhdOAs4e0x5OyShtGeKZzrH150YV4pwerQiuprYp
+         fMKLsDmSM9idIC1pGgiOwg0mfme6N1oBRbML9PT8r7P9o7CulsCCS4phtmlPjHtUHvdt
+         jl53hbLNbA7Q0Lc/AnrNtDZAIRPWiEbTVym3cEeFQ5PTbA3gPbu9Vb71Pxiu+m58tt+L
+         wFHnkqKwU1Bq7w1lscESCqV+evbsk+rEMHzV+BqRdr61rJx1ToY7VvpPxRUGXw/f5+ZQ
+         KolA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780943217; x=1781548017;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=kWfuFGQtFl9xemEBK6hAwxQUYib3QQYLIakJAgyEoEE=;
+        b=fJ67WWinsyS6wqnjz/+k9DD1ehkFedjrCw62KErlboPxYJgKYOKd0iyGBxKoW58iT7
+         u1bo1heFAvfopnqFapekrt4/1i2iP/ibUuMjS6LQ0bVz8WaInml4njuSUpTdiGC7qnF3
+         sXV13mgnfOBksLizy7M3jYEbLQF2ou2IhVPspBXPEbh1HmqaXLkpU2ILbyTdHzo1Sbqd
+         j1CE22nFl0dcHtRhzEA4tcqnigth5+BeQAaeuzyqfJWI7WK9KSqkBciuFzlF9tZCXhh/
+         D7vV0Xgi0CkD3wHTQmj7BRyTG6CU1iW1vNgOKPsNpluRPKXVHxIgliklVBH7+8ehxEzP
+         Y6nw==
+X-Gm-Message-State: AOJu0YzLzizjtYDD6RkLUVHHmxucVMAQoKOyrpz76uIo/HYVOHmLC07Q
+	ln9gHjJ37jWqNIB3rX6z66ffK/PeD3fgBLVImU87t8F6ifZkGLSLrA4jyrY228yyOAITYgsIUWE
+	qeKloftig+hajNfsCmw==
+X-Received: from ejcxa14.prod.google.com ([2002:a17:907:b9ce:b0:bed:b4b3:da8b])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:267b:b0:bd1:fe8f:59ab with SMTP id a640c23a62f3a-bf37234c4fcmr548468666b.23.1780943216517;
+ Mon, 08 Jun 2026 11:26:56 -0700 (PDT)
+Date: Mon, 08 Jun 2026 18:26:55 +0000
+In-Reply-To: <20260605172249.B9A691F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <deb20fbe3584a8c6bfda276447fe464c6553737d.1780676742.git.tarunsahu@google.com>
+ <20260605172249.B9A691F00893@smtp.kernel.org>
+Message-ID: <9huz33ywyjkg.fsf@tarunix.c.googlers.com>
+Subject: Re: [RFC PATCH v2 10/10] selftests: kvm: Add guest_memfd_preservation_test
+From: tarunsahu@google.com
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Critical] Lack of reference counting in `kvm_vcpu_common_destroy` leads =
-to a Use-After-Free write on the shared `common` structure.
-- [High] The `vcpu_for_each_plane` macro contains an unclosed `if` statemen=
-t, creating a severe dangling `else` vulnerability.
-- [High] Missing memory barrier before publishing the VCPU pointer leads to=
- lockless data races and read of uninitialized data.
-- [Low] Missing parentheses around the `common` parameter in the `vcpu_for_=
-each_plane` macro.
---
+sashiko-bot@kernel.org writes:
 
-commit f70085341f8e117bed07bbc3da5525ab9b2b6aa4
-Author: Joerg Roedel <joerg.roedel@amd.com>
+>
+>> +	session_fd =3D luo_create_session(dev_luo_fd, SESSION_NAME);
+>> +	TEST_ASSERT(session_fd >=3D 0, "Failed to create LUO session");
+>> +
+>> +	ret =3D luo_session_preserve_fd(session_fd, vm->fd, VM_TOKEN);
+>> +	TEST_ASSERT(ret =3D=3D 0, "Failed to preserve VM file descriptor");
+>
+> [Severity: Medium]
+> Since this test creates a VM with vCPU 0 and preserves the VM file descri=
+ptor,
+> but doesn't preserve the vCPU file descriptor, will vCPU 0 still be retai=
+ned
+> in KVM's state for phase 2 without a way to access it?
 
-Introduce an array which keeps track of per-plane VCPU instances for a
-single VCPU index.
+This is not the scope of the test.
+>
+>> +
+>> +	ret =3D luo_session_preserve_fd(session_fd, gmem_fd, GMEM_TOKEN);
+>> +	TEST_ASSERT(ret =3D=3D 0, "Failed to preserve guest_memfd file descrip=
+tor");
+>
+> [ ... ]
+>
+>> +static void do_phase2(void)
+>> +{
+>
+> [ ... ]
+>
+>> +	vm =3D vm_create_from_fd(retrieved_vm_fd, shape);
+>> +
+>> +	u64 nr_pages =3D 2048; /* 8MB is plenty for slot0 pages */
+>> +
+>> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, =
+0);
+>
+> [Severity: Medium]
+> Does this code attempt to overwrite existing memslot 0 with a new userspa=
+ce
+> address without deleting it first?
+>
+> Since the VM's internal memslots are retained in KVM kernel state when
+> preserved, redefining slot 0 with a new userspace_addr violates KVM's mem=
+slot
+> mutability rules and will likely cause KVM_SET_USER_MEMORY_REGION to fail=
+ with
+> -EINVAL.
+Not preserving the memslots. Only preserving the guest_memfd which is
+attached to memslot 1.
 
-This commit adds an array to struct kvm_vcpu_common to track per-plane
-VCPU instances and introduces a macro to iterate over them on plane
-switches.
+>
+>> +	kvm_vm_elf_load(vm, program_invocation_name);
+>> +
+>> +	for (int i =3D 0; i < NR_MEM_REGIONS; i++)
+>> +		vm->memslots[i] =3D 0;
+>> +
+>> +	struct userspace_mem_region *slot0 =3D memslot2region(vm, 0);
+>> +
+>> +	ucall_init(vm, slot0->region.guest_phys_addr + slot0->region.memory_si=
+ze);
+>> +
+>> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, GMEM_SI=
+ZE, NULL,
+>> +				   retrieved_gmem_fd, 0);
+>
+> [Severity: Medium]
+> Will this also trigger an -EINVAL error from KVM?
+>
+> Similar to slot 0, redefining the guest_memfd memslot (slot 1) without ex=
+plicit
+> deletion first also violates KVM's memslot mutability rules.
 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
+reattaching the guest_memfd not preserving the memslot mapping. so this
+is not valid here.
+>
+>> +
+>> +	for (size_t i =3D 0; i < GMEM_SIZE; i +=3D page_size)
+>> +		virt_pg_map(vm, gpa + i, gpa + i);
+>> +
+>> +	vcpu =3D vm_vcpu_add(vm, 0, guest_code_phase2);
+>
+> [Severity: Medium]
+> Will this blindly recreate a vCPU on the preserved VM, resulting in an
+> immediate -EEXIST failure?
 
-[ ... ]
+Incorrect, THere was no preservation of vCPU.
+>
+> Because the entire VM state was preserved in phase 1, vCPU 0 already exis=
+ts in
+> KVM's state. Calling vm_vcpu_add() for vCPU 0 again causes KVM to reject =
+the
+> duplicate KVM_CREATE_VCPU request.
 
-> @@ -382,6 +384,10 @@ struct kvm_vcpu_common {
->  	struct kvm_vcpu_arch_common arch;
->  };
-> =20
-> +#define vcpu_for_each_plane(common, i, v)			\
-> +	for ((i) =3D 0; (i) < KVM_MAX_PLANES; ++(i))		\
-> +		if (((v) =3D common->vcpus[(i)]) !=3D NULL)
+No. Only guest_memfd and vm file was preserved. vm_file only preserved
+with vm_type and everything else was recreated so, incorrect review.
 
-[Severity: High]
-If a caller uses this macro inside an unbraced if block followed by an
-else branch, will the C parser attach the else block to the macro's
-internal if condition instead of the intended outer if? Could this
-cause the else branch to execute for every NULL plane during iteration?
-
-[Severity: Low]
-Should the common argument be parenthesized as (common)->vcpus[(i)] to
-ensure correct operator precedence if a caller passes a complex
-expression to the macro?
-
-[Severity: High]
-Since the vcpu pointer is published without an smp_store_release() and
-read here using plain loads instead of READ_ONCE(), could a concurrent
-reader observe the VCPU pointer before its initialization is complete?
-
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-
-[ ... ]
-
-> @@ -524,6 +524,8 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu=
-, struct kvm *kvm, unsigned
-> =20
->  static void kvm_vcpu_finish_common(struct kvm_vcpu *vcpu)
->  {
-> +	WARN_ON(vcpu->common->vcpus[vcpu->plane_level] !=3D NULL);
-> +	vcpu->common->vcpus[vcpu->plane_level] =3D vcpu;
->  	smp_wmb();
-
-[Severity: High]
-Because the vcpu pointer is published to the shared array before the
-smp_wmb() executes, could the CPU reorder the initialization stores to
-happen after the pointer is visible? Would an smp_wmb() before the
-assignment (or an smp_store_release) be needed to ensure concurrent
-readers don't see uninitialized data?
-
->  	if (vcpu->plane_level =3D=3D 0) {
-
-[ ... ]
-
-> @@ -555,6 +557,7 @@ static void kvm_vcpu_common_destroy(struct kvm_vcpu *=
-vcpu)
-> =20
->  	vcpu->common =3D NULL;
->  	vcpu->run =3D NULL;
-> +	common->vcpus[vcpu->plane_level] =3D NULL;
-> =20
->  	if (vcpu->plane_level !=3D 0)
->  	       return;
-
-[Severity: Critical]
-If plane 0 is destroyed before secondary planes (for instance, during VM
-teardown or an error path), will the shared common structure be freed
-via kfree(common) when plane_level is 0?=20
-
-If a secondary plane is destroyed later, won't it write to the freed
-memory when executing common->vcpus[vcpu->plane_level] =3D NULL? Does the
-shared structure need a reference count to manage its lifetime safely?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D34
+>
+>> +	kvm_arch_vm_finalize_vcpus(vm);
+>> +
+>> +	vcpu_args_set(vcpu, 3, gpa, GMEM_SIZE, DATA_SIZE);
+>
+> --=20
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1780676742.=
+git.tarunsahu@google.com?part=3D10
