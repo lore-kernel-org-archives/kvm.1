@@ -1,158 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7D331E827
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 16:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D4D33D6F0
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 16:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780934893; cv=none; b=oAjGEWMMfBWvdlxcSXC4dQ+bHRLwu+mhoGTYbFy0tCIC82Vb0CL6JhiDvFuUtFzLmyWZ8RemkFyo6Vt28LMfasqryucM9FM1SYz8robNVKlymv19ObnefIK7dtDmBk2YzzQ0eTj14bvOOn2vXn+F4Abjw+nks+qKUk0qLim6HDU=
+	t=1780935157; cv=none; b=l65o1h8dxXEOsuu4jRfJaXIkKrnHEoOEzI+IbYeul/XIq2G2jo1pwW2SwFEm9qSmaVCxjebXiariVIjwh/mz5E7hPalfxPttTmaAMObvwhnsNbmcYMmYsXop+KM4hs6g+BiIqpu3NvX3Cjt0YgldNLJUV+aAXeaYewiPZHQ30qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780934893; c=relaxed/simple;
-	bh=qawFykfB03MgF4oYCwCePh/OamoSy85ZapP3BM4uvz0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=YGn0Kbwfu9brMmSigSWKLZl8emdFOa2d7umE2KRp955GkbeAq+zdQaNNNNM7AdaFvSOJ/nTW5sL//OuvPNRGW2JLVAES/Xi2nIpJsyVIIl+VOt2sN0Lhfh+h2q+jhrofBglK4IhqBxR/cWjS1RiyljKJInj3wYCQDoli/cVFnVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ce4OIU1M; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780935157; c=relaxed/simple;
+	bh=QK2d+EFkM2Jtcy3rK4m4tmFaP/iY5rpk9MkUsFv20kI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=iJX4eiAlM/3tA6CNElHtztgOedsmu5XOCk/a2/ha+H1q/wVXgi4qZplMPZ/iTbxfaKjqXZp88e/2OHXj/ctm+3PIJg/0KDm6pSn9DjlVjMUYw75imNXboU6jQgFUulexG9nbTc/4riSaerl6kC0hAuMjUD8UrkhDxJO+0EsCh98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ios92L04; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=lbviphp0; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ce4OIU1M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AA71F00893;
-	Mon,  8 Jun 2026 16:08:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780934892;
-	bh=YtjOQeUtOc3J3bEa8qiwKnu31jbs+td4xswegOx841g=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ce4OIU1MpaBnguQUSqlMqZqb2EuC4LxrRevB10MXZiSNfouAtfPkviB5awfrRadNm
-	 SeQJuRBcOw33ksC2hO2TRtojrNY9c0l8Ace3F76nZtzLszImL2NWo10qwaOfu4bHHO
-	 BPRIrui56uGL45XLjZgut3+c3KJyEd/Gdh5xsAHuogMRLT5qvpd2CmdI5dar2OYT4K
-	 iEG1pVqQ/UxFMuTJet6V+7j2WuC4bmkfN0fx7v6LbzuhVfRvX3o+cbq7CjEzn0MywL
-	 KAzwbZ9ccHMwGxDoP2Z8ddzuG5Jua5O2oo74yy/zx82HLtiIRqg0GXs4uc1WmN2+nz
-	 7HwN3lOt9Wb0Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1] riscv: kvm: Use endian-specific __lelong for NACL
- shared memory
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Chang" <seanwascoding@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608155252.4292-1-seanwascoding@gmail.com>
-References: <20260608155252.4292-1-seanwascoding@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 16:08:11 +0000
-Message-Id: <20260608160811.D6AA71F00893@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ios92L04";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="lbviphp0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780935154;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8Vd3ZUm0dCzJ/8uu5rCwpPdtB8pbC5Kh3pUk3hRwNB0=;
+	b=ios92L04N2pg+sO9MrZcDf3cW2zQLKt1GLPmRjNqQ7N4nUvl/Q77ZfUzQmZfc2NGqgEvMz
+	oxcyq9IunEOYApOtTCdVVgSN6GGnqAnv1cq1eLGxgYOVysLwYsvxeUwgIERNYuUDz4mKuX
+	XZ1+oCoj5iUrO7d1C5SXyrJcyMAtlqc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-441-9Ol5wwGMO4SsjifkeEIwrQ-1; Mon, 08 Jun 2026 12:12:33 -0400
+X-MC-Unique: 9Ol5wwGMO4SsjifkeEIwrQ-1
+X-Mimecast-MFC-AGG-ID: 9Ol5wwGMO4SsjifkeEIwrQ_1780935152
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45ef9f0af71so3412599f8f.1
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 09:12:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1780935152; x=1781539952; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Vd3ZUm0dCzJ/8uu5rCwpPdtB8pbC5Kh3pUk3hRwNB0=;
+        b=lbviphp0DoQPv1e9fNAnYoWbVCHmRe7sDFD+y+Ebf8iRu6jMg+aen/qafuxZItmm+N
+         qqhPU8cb/G21NUM8e1Itzz3sQ0H3qwS2C61GiwQmAApXZx8UdJ1AS9tPpvYTTmygRXVo
+         B0AOmRu3hYzgY48UJxzOwU0bqfUbixbV5ETE4T/mkiLFJVyPz9x3JNeCszzznqrk0PtS
+         8B8NAFbaoMlzcnEmnT+F/22XJXRtE5DIjC3quijKCKJy2Xh752kQWK6036oJ46Irn+uX
+         SuBUxioFI5nufxHHDFJSYDG3sgRTLANXyfLvtWLqv+YhrL89g7H1luCAQCzLh2Aj9zsZ
+         97hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780935152; x=1781539952;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8Vd3ZUm0dCzJ/8uu5rCwpPdtB8pbC5Kh3pUk3hRwNB0=;
+        b=PMb8pbjXBS6aMEZQ/EScTJ7clB77RN0e34JSM7dlM+WG4mm2/kNjwlzxqLHmJ34PVM
+         7ZHULgux6dIwFmbVw/ucv7j4CU8jGo3iB0HnMFrBov+Fs5keOvQxmMimrceQYV+0py5a
+         XQDhTiOyNkFllM1qWUerESbagu1vg1palmQfvcsyqVtNsATXbCqDB33wHIqan9n5Qqno
+         Na2G3fr/E6mwoamdlBxCFFioDrKqiq+Kd46f0YVKO00BhCKvwQsBoK+abRc3IlsdF7wr
+         nsQu+nLnQYBvcJIS7Q05DmLb8D6MIOf20V+GobzUDlMEsIKND9NOMmeUmq92nHtarVq1
+         MGtA==
+X-Gm-Message-State: AOJu0YwUU9SajD5nHbp0TGgGNvLB37xBKen0e8fEzA4M6NiQguElt7u0
+	uUolp67zKbEOwkjXf5FqcCKbZ029q1pR/OCRDg1ZLsZ4yprX9IvhjIedxL81gVMQomGZheCnWSa
+	YEAqAE+Ghl97VpqRaKn5T2WNYPVIJea2MEvx4UdDSeFbQETrnXMakhQ==
+X-Gm-Gg: Acq92OHfLScksWy2ZOFCTnhvzIWoAsgTTJSLPUI4qM0/PTF55CJ7jdJxfGznTp10+N5
+	B2U+QJvwSxkU3jUCVq7BkwGpVpGfXrNUSnw5mbYNo8kM64ciUzxEfIkFJ6nRPQS/Dn4tFnN+pK9
+	LDJnEz8QYKsjjtygY4rN3QR5JU/u2y60RzdxsWTqKdbUhIVLEOZQzOoF+4NHMH/IlrtO6KOiBuL
+	yAKxJKV703NvNw85Qik8+P6Hp9nEsKS3JeL8Ld3x0zw8peC0x3/4Xw+L0gSDf9pql+CBrEunuMj
+	9moqFyDKmSsIPk0X8YVX9J7mXEHbVNZMOvoQaN/WxUzpedSXf7A5vZoQHgaG47AVOZYVDr/QthJ
+	1yVypUYipZH6PBDzL/gWbnyv6
+X-Received: by 2002:a05:6000:4802:b0:45e:f3b2:1228 with SMTP id ffacd0b85a97d-46032b611d3mr24384802f8f.3.1780935152152;
+        Mon, 08 Jun 2026 09:12:32 -0700 (PDT)
+X-Received: by 2002:a05:6000:4802:b0:45e:f3b2:1228 with SMTP id ffacd0b85a97d-46032b611d3mr24384745f8f.3.1780935151643;
+        Mon, 08 Jun 2026 09:12:31 -0700 (PDT)
+Received: from fedora ([91.219.240.20])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dc577sm54249702f8f.3.2026.06.08.09.12.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 09:12:31 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Hyunwoo Kim <imv4bel@gmail.com>, seanjc@google.com, pbonzini@redhat.com,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com
+Cc: kvm@vger.kernel.org, stable@vger.kernel.org, imv4bel@gmail.com
+Subject: Re: [PATCH] KVM: x86: hyper-v: Bound the bank index in
+ hv_is_vp_in_sparse_set()
+In-Reply-To: <aiQyZIJtO-2Aj_xN@v4bel>
+References: <aiQyZIJtO-2Aj_xN@v4bel>
+Date: Mon, 08 Jun 2026 18:12:30 +0200
+Message-ID: <87o6hlhuz5.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Hyunwoo Kim <imv4bel@gmail.com> writes:
 
-Pre-existing issues:
-- [High] Infinite loop in `__kvm_riscv_nacl_hfence` due to missing `try_cou=
-nt` decrement.
-- [High] Race condition and memory ordering bugs in NACL shared memory upda=
-tes.
---
+> hv_is_vp_in_sparse_set() uses valid_bit_nr, i.e. vp_id divided by
+> HV_VCPUS_PER_SPARSE_BANK, as the test_bit() index into
+> valid_bank_mask. valid_bank_mask is a single u64 and a sparse vCPU
+> set holds at most HV_MAX_SPARSE_VCPU_BANKS banks, so valid_bit_nr
+> must be less than HV_MAX_SPARSE_VCPU_BANKS.
+>
+> The caller in kvm_hv_send_ipi_to_many() passes kvm_hv_get_vpindex(),
+> which is below KVM_MAX_VCPUS and therefore always within that bound.
+> The L2 direct flush branch in kvm_hv_flush_tlb(), however, passes
+> hv_v->nested.vp_id, copied verbatim from the enlightened VMCS
+> without any bounds check, so valid_bit_nr can reach
+> HV_MAX_SPARSE_VCPU_BANKS or more and test_bit() then reads beyond
+> valid_bank_mask.
+>
+> Return false before the test_bit() when valid_bit_nr is not below
+> HV_MAX_SPARSE_VCPU_BANKS, since such a VP cannot be present in the
+> set.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: c58a318f6090 ("KVM: x86: hyper-v: L2 TLB flush")
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> ---
+>  arch/x86/kvm/hyperv.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+> index 4438ecac9a89..d8782cb7ba02 100644
+> --- a/arch/x86/kvm/hyperv.c
+> +++ b/arch/x86/kvm/hyperv.c
+> @@ -1839,6 +1839,10 @@ static bool hv_is_vp_in_sparse_set(u32 vp_id, u64 valid_bank_mask, u64 sparse_ba
+>  	int valid_bit_nr = vp_id / HV_VCPUS_PER_SPARSE_BANK;
+>  	unsigned long sbank;
+>  
+> +	/* A bank index beyond the mask can't be set, the VP isn't in the set. */
+> +	if (valid_bit_nr >= HV_MAX_SPARSE_VCPU_BANKS)
+> +		return false;
+> +
+>  	if (!test_bit(valid_bit_nr, (unsigned long *)&valid_bank_mask))
+>  		return false;
 
-commit 041fd3e0bc4c133e6f04a198d4795da99daa15bb
-Author: Sean Chang <seanwascoding@gmail.com>
+I think the concern is valid, so
 
-riscv: kvm: Use endian-specific __lelong for NACL shared memory
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-This patch fixes bitwise type warnings from sparse by introducing __lelong
-and replacing raw unsigned long pointers in SBI NACL shared memory. It also
-adds a __force cast to __get_user_asm to safely suppress implicit cast
-warnings.
+what I'm not sure about if we should also deliberately crash the VM
+which does such a hypercall. This way it would be easier to find buggy
+L1s but given that they are most likely Windows, we need to do some
+tests to see if this is not actually happening today (e.g. Hyper-V usign
+VP_ID or '-1' for something). Let's have this as a future TODO item.
 
-> diff --git a/arch/riscv/include/asm/kvm_nacl.h b/arch/riscv/include/asm/k=
-vm_nacl.h
-> index 4124d5e06a0ff..f45407bcaa26a 100644
-> --- a/arch/riscv/include/asm/kvm_nacl.h
-> +++ b/arch/riscv/include/asm/kvm_nacl.h
+-- 
+Vitaly
 
-[ ... ]
-
-> @@ -176,7 +178,7 @@ __kvm_riscv_nacl_hfence(__shmem,					\
->  do {									\
->  	void *__s =3D (__shmem);						\
->  	unsigned int __i =3D SBI_NACL_SHMEM_CSR_INDEX(__csr);		\
-> -	unsigned long *__a =3D (__s) + SBI_NACL_SHMEM_CSR_OFFSET;		\
-> +	__lelong *__a =3D (__s) + SBI_NACL_SHMEM_CSR_OFFSET;		\
->  	u8 *__b =3D (__s) + SBI_NACL_SHMEM_DBITMAP_OFFSET;		\
->  	__a[__i] =3D cpu_to_lelong(__val);				\
->  	__b[__i >> 3] |=3D 1U << (__i & 0x7);				\
-
-[Severity: High]
-This is a pre-existing issue, but does the lack of a memory barrier between
-the CSR value update and the dirty bit update risk a race condition?
-
-On RISC-V's relaxed memory model, these stores could be reordered without an
-smp_wmb(), potentially allowing the hardware or firmware to observe the
-dirty bit before the payload is visible in nacl_csr_write.
-
-> @@ -186,7 +188,7 @@ do {									\
->  ({									\
->  	void *__s =3D (__shmem);						\
->  	unsigned int __i =3D SBI_NACL_SHMEM_CSR_INDEX(__csr);		\
-> -	unsigned long *__a =3D (__s) + SBI_NACL_SHMEM_CSR_OFFSET;		\
-> +	__lelong *__a =3D (__s) + SBI_NACL_SHMEM_CSR_OFFSET;		\
->  	u8 *__b =3D (__s) + SBI_NACL_SHMEM_DBITMAP_OFFSET;		\
->  	unsigned long __r =3D lelong_to_cpu(__a[__i]);			\
->  	__a[__i] =3D cpu_to_lelong(__val);				\
->  	__b[__i >> 3] |=3D 1U << (__i & 0x7);				\
-
-[Severity: High]
-This isn't a bug introduced by this patch, but similar to nacl_csr_write,
-could these writes be reordered by the CPU in the nacl_csr_swap macro?
-
-[ ... ]
-
-> diff --git a/arch/riscv/kvm/nacl.c b/arch/riscv/kvm/nacl.c
-> index 08a95ad9ada2c..6f9f8963e9ddc 100644
-> --- a/arch/riscv/kvm/nacl.c
-> +++ b/arch/riscv/kvm/nacl.c
-> @@ -20,7 +20,7 @@ void __kvm_riscv_nacl_hfence(void *shmem,
->  			     unsigned long page_count)
->  {
->  	int i, ent =3D -1, try_count =3D 5;
-> -	unsigned long *entp;
-> +	__lelong *entp;
-> =20
->  again:
->  	for (i =3D 0; i < SBI_NACL_SHMEM_HFENCE_ENTRY_MAX; i++) {
-
-[Severity: High]
-This is also a pre-existing issue, but does this retry loop run infinitely
-if the queue remains full?
-
-Looking at __kvm_riscv_nacl_hfence(), it appears try_count is never
-decremented before taking the goto:
-
-    if (ent < 0) {
-        if (try_count) {
-            nacl_sync_hfence(-1UL);
-            goto again;
-        } else {
-            pr_warn("KVM: No free entry in NACL shared memory\n");
-            return;
-        }
-    }
-
-Additionally, there seems to be a pre-existing ordering hazard when writing
-the entry payload further down in __kvm_riscv_nacl_hfence():
-
-    entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_CONFIG(i);
-    *entp =3D cpu_to_lelong(control);
-    entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PNUM(i);
-    *entp =3D cpu_to_lelong(page_num);
-    entp =3D shmem + SBI_NACL_SHMEM_HFENCE_ENTRY_PCOUNT(i);
-    *entp =3D cpu_to_lelong(page_count);
-
-Since the CONFIG element contains the valid bit, writing it before PNUM and
-PCOUNT could allow another vCPU on the same physical CPU to trigger
-nacl_sync_hfence() if KVM is preempted right after the CONFIG write. Would
-this cause the firmware to process uninitialized payload data?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608155252.4292=
--1-seanwascoding@gmail.com?part=3D1
