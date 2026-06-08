@@ -1,33 +1,33 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16672E739C;
-	Mon,  8 Jun 2026 08:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B7F3AFD1A;
+	Mon,  8 Jun 2026 08:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780908356; cv=none; b=krC5457nDZsED6TPg9x+4Uj6BU4WHCnP0JCN116Hr2PPLxzxHQMtUXeS07YZZrQ/FbDBByUdqOGn0kIpy17JUnfnlqOGQP4bN83bYXv7Eh8GEmDYftVqvoexewyhKDcQLEjsqRnj3c56mvZg7Crgz9K48Oe7+5dKuilxoGfx3/s=
+	t=1780908572; cv=none; b=jujpA8ng8fzldstPpQXjQbAwkjuOvX1urVRCvvMEwU4M/oPWTEQ39rqtVVTZNnfyTBRN2mpTrm8/QkznGPOHlB6yNSsUhiiuurlj51sRit6e+oMWzbhGY2znwewC61YolqT0/DH+7xUzRmZPOtgzuYQ77CiQWNLpA6okGl3ZrTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780908356; c=relaxed/simple;
-	bh=HKFycMw8SADc7AzCbdnusE7SU1MMyYsdtx2WKJd0lHA=;
+	s=arc-20240116; t=1780908572; c=relaxed/simple;
+	bh=qWIbo9Jph/VqJbQLKnGpxwigEGe2RpFukz/vUdfHRbo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pPdCmBtPVkn3Ycl94lA3kWrIQf2M61N+mKwrH1ZtSOVO4QPr1wguFIGGTalfOMhXIGlzjIr/tVhpClhGdjQtYlCQIbJZf4rkAHi1AG318Vo4Y9mk7yZsPO9E2dJsLvAPiiY4rDioBsLWgx4qUffJ6eEzbviYGPWJv2+oIhIdoXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rg+0H1P6; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=GcGllB2XOsh66q1S7nxFWwXTZUlfLmazHSjrbARlDuW///abLQQd4vqnTAwX34znYbExC0qgX9Ql/cxsVWGHVpnvCQXx5WUo/ppdS+UxiaxwCaEJIOopJOwlzbQsH0/wms+4XDRnCaIHk3AbYSqm09h4lxgrHDzKQkrSmHhQfvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=h8xPaLJJ; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rg+0H1P6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E7C1F00893;
-	Mon,  8 Jun 2026 08:45:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780908355;
-	bh=XuarSeLN78HVSV2cIgbzTlP+3ajrwTiQFsYhkjJgQjU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Rg+0H1P6GbsUsqwBUMQLth91KISm3oK8bATyCyasCZ/lmHFNBI0q13Ke0sOQFDI35
-	 uCyrOY5QpDByDZ7XOw/08kVwZyMLV2/n7kD7vOn7Dd+jl8hIUY2bRSXup0b0XQa1x2
-	 0qzfuUd1axp3VTbjdNYpCqbl8rCndYHH8DGFMdQ5eFYLv8x00yBet47bXPorw32JCR
-	 U05aqtV92bpp9yMrU7MI6TW2BYmGPrXRlfwBAJyw4ksSUGbJfG9c+CYLGXowfelT5+
-	 LZ1/eGbk7Iu0NtPpClo0paZxEAH8x8uFX39on25mRqArScVJLus674PVsQnqA1RALC
-	 zxypmzn5TlWwg==
-Message-ID: <79a8abe4-ea1c-456b-b438-44213b042287@kernel.org>
-Date: Mon, 8 Jun 2026 10:45:41 +0200
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="h8xPaLJJ"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C0621596;
+	Mon,  8 Jun 2026 01:49:25 -0700 (PDT)
+Received: from [10.57.28.93] (unknown [10.57.28.93])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D3B043F62B;
+	Mon,  8 Jun 2026 01:49:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1780908570; bh=qWIbo9Jph/VqJbQLKnGpxwigEGe2RpFukz/vUdfHRbo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=h8xPaLJJCRjZLDMWSuF+FYRCSpx0fOTs4+bUdTghjG+5rXEpQqPWn3P3D+ry8k7/R
+	 G2TVLclRVYqoTNxBdcdovuvEkUBVpi85wsuA+AoBu4HoqyCcBpgfDmIdVqqVMONSGv
+	 B8A0i/PwkdgdlyEiRYSSB1sf+RZUaN9jvedXyAuw=
+Message-ID: <92882427-7ce4-4cb3-a25d-3942a9ec40c3@arm.com>
+Date: Mon, 8 Jun 2026 09:49:22 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,107 +35,168 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 14/42] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
-Content-Language: en-US
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, ira.weiny@intel.com, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
- <20260522-gmem-inplace-conversion-v7-14-2f0fae496530@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260522-gmem-inplace-conversion-v7-14-2f0fae496530@google.com>
+Subject: Re: [PATCH v14 24/44] KVM: arm64: Handle realm MMIO emulation
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-25-steven.price@arm.com>
+ <8b648b59-c411-4126-be18-686d2927f24a@redhat.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <8b648b59-c411-4126-be18-686d2927f24a@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/23/26 02:17, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+On 28/05/2026 06:03, Gavin Shan wrote:
+> Hi Steve,
 > 
-> When checking if a guest_memfd folio is safe for conversion, its refcount
-> is examined. A folio may be present in a per-CPU lru_add fbatch, which
-> temporarily increases its refcount. This can lead to a false positive,
-> incorrectly indicating that the folio is in use and preventing the
-> conversion, even if it is otherwise safe. The conversion process might not
-> be on the same CPU that holds the folio in its fbatch, making a simple
-> per-CPU check insufficient.
+> On 5/13/26 11:17 PM, Steven Price wrote:
+>> MMIO emulation for a realm cannot be done directly with the VM's
+>> registers as they are protected from the host. However, for emulatable
+>> data aborts, the RMM uses GPRS[0] to provide the read/written value.
+>> We can transfer this from/to the equivalent VCPU's register entry and
+>> then depend on the generic MMIO handling code in KVM.
+>>
+>> For a MMIO read, the value is placed in the shared RecExit structure
+>> during kvm_handle_mmio_return() rather than in the VCPU's register
+>> entry.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
+>> Changes since v7:
+>>   * New comment for rec_exit_sync_dabt() explaining the call to
+>>     vcpu_set_reg().
+>> Changes since v5:
+>>   * Inject SEA to the guest is an emulatable MMIO access triggers a data
+>>     abort.
+>>   * kvm_handle_mmio_return() - disable kvm_incr_pc() for a REC (as the PC
+>>     isn't under the host's control) and move the REC_ENTER_EMULATED_MMIO
+>>     flag setting to this location (as that tells the RMM to skip the
+>>     instruction).
+>> ---
+>>   arch/arm64/kvm/inject_fault.c |  4 +++-
+>>   arch/arm64/kvm/mmio.c         | 16 ++++++++++++----
+>>   arch/arm64/kvm/rmi-exit.c     | 14 ++++++++++++++
+>>   3 files changed, 29 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/
+>> inject_fault.c
+>> index 89982bd3345f..6492397b73d7 100644
+>> --- a/arch/arm64/kvm/inject_fault.c
+>> +++ b/arch/arm64/kvm/inject_fault.c
+>> @@ -228,7 +228,9 @@ static void inject_abt32(struct kvm_vcpu *vcpu,
+>> bool is_pabt, u32 addr)
+>>     static void __kvm_inject_sea(struct kvm_vcpu *vcpu, bool iabt, u64
+>> addr)
+>>   {
+>> -    if (vcpu_el1_is_32bit(vcpu))
+>> +    if (unlikely(vcpu_is_rec(vcpu)))
+>> +        vcpu->arch.rec.run->enter.flags |= REC_ENTER_FLAG_INJECT_SEA;
+>> +    else if (vcpu_el1_is_32bit(vcpu))
+>>           inject_abt32(vcpu, iabt, addr);
+>>       else
+>>           inject_abt64(vcpu, iabt, addr);
+>> diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
+>> index e2285ed8c91d..6a8cb927fcca 100644
+>> --- a/arch/arm64/kvm/mmio.c
+>> +++ b/arch/arm64/kvm/mmio.c
+>> @@ -6,6 +6,7 @@
+>>     #include <linux/kvm_host.h>
+>>   #include <asm/kvm_emulate.h>
+>> +#include <asm/rmi_smc.h>
+>>   #include <trace/events/kvm.h>
+>>     #include "trace.h"
+>> @@ -138,14 +139,21 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
+>>           trace_kvm_mmio(KVM_TRACE_MMIO_READ, len, run->mmio.phys_addr,
+>>                      &data);
+>>           data = vcpu_data_host_to_guest(vcpu, data, len);
+>> -        vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu), data);
+>> +
+>> +        if (vcpu_is_rec(vcpu))
+>> +            vcpu->arch.rec.run->enter.gprs[0] = data;
+>> +        else
+>> +            vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu), data);
+>>       }
+>>         /*
+>>        * The MMIO instruction is emulated and should not be re-executed
+>>        * in the guest.
+>>        */
+>> -    kvm_incr_pc(vcpu);
+>> +    if (vcpu_is_rec(vcpu))
+>> +        vcpu->arch.rec.run->enter.flags |= REC_ENTER_FLAG_EMULATED_MMIO;
+>> +    else
+>> +        kvm_incr_pc(vcpu);
+>>         return 1;
+>>   }
+>> @@ -167,14 +175,14 @@ int io_mem_abort(struct kvm_vcpu *vcpu,
+>> phys_addr_t fault_ipa)
+>>        * No valid syndrome? Ask userspace for help if it has
+>>        * volunteered to do so, and bail out otherwise.
+>>        *
+>> -     * In the protected VM case, there isn't much userspace can do
+>> +     * In the protected/realm VM case, there isn't much userspace can do
+>>        * though, so directly deliver an exception to the guest.
+>>        */
+>>       if (!kvm_vcpu_dabt_isvalid(vcpu)) {
+>>           trace_kvm_mmio_nisv(*vcpu_pc(vcpu), esr,
+>>                       kvm_vcpu_get_hfar(vcpu), fault_ipa);
+>>   -        if (vcpu_is_protected(vcpu))
+>> +        if (vcpu_is_protected(vcpu) || vcpu_is_rec(vcpu))
+>>               return kvm_inject_sea_dabt(vcpu, kvm_vcpu_get_hfar(vcpu));
+>>             if (test_bit(KVM_ARCH_FLAG_RETURN_NISV_IO_ABORT_TO_USER,
+>> diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
+>> index e7c51b6cf6ce..8ec0d179eba2 100644
+>> --- a/arch/arm64/kvm/rmi-exit.c
+>> +++ b/arch/arm64/kvm/rmi-exit.c
+>> @@ -25,6 +25,20 @@ static int rec_exit_reason_notimpl(struct kvm_vcpu
+>> *vcpu)
+>>     static int rec_exit_sync_dabt(struct kvm_vcpu *vcpu)
+>>   {
+>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>> +
+>> +    /*
+>> +     * In the case of a write, copy over gprs[0] to the target GPR,
+>> +     * preparing to handle MMIO write fault. The content to be
+>> written has
+>> +     * been saved to gprs[0] by the RMM (even if another register was
+>> used
+>> +     * by the guest). In the case of normal memory access this is
+>> redundant
+>> +     * (the guest will replay the instruction), but the overhead is
+>> +     * minimal.
+>> +     */
+>> +    if (kvm_vcpu_dabt_iswrite(vcpu) && kvm_vcpu_dabt_isvalid(vcpu))
+>> +        vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu),
+>> +                 rec->run->exit.gprs[0]);
+>> +
 > 
-> To address this, drain all CPUs' lru_add fbatches if an unexpectedly high
-> refcount is encountered during the safety check. This is performed at most
-> once per conversion request. Draining only if the folio in question may be
-> lru cached.
-> 
-> guest_memfd folios are unevictable, so they can only reside in the lru_add
-> fbatch. If the folio's refcount is still unsafe after draining, then the
-> conversion is truly deemed unsafe.
-> 
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> { } is needed here.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Indeed - I'm surprised checkpatch didn't manage to flag that. I'll fix.
+
+Thanks,
+Steve
+
+>>       return kvm_handle_guest_abort(vcpu);
+>>   }
+>>   
+> 
+> Thanks,
+> Gavin
+> 
 
