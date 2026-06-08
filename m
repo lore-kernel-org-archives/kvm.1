@@ -1,169 +1,155 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1551829AB02
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 17:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B0F332621
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 17:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780938123; cv=none; b=OB5FHppOnW5Zsl1yJT1sx4tgk9X7vc8GbyXzxD11PXufXJ9jWkeDahv8Y8B/sAyT+cmc6DozBq4oWzy7Vu+xM0v2SF4kpfBb1zKx+d/MLgDgLVHa1bnUwORhRbswN/FrSEtdyQTJBOLr3YISutiGOreROCq+iV3L9+CG0J8AxYM=
+	t=1780938787; cv=none; b=SvEpc0xoqkIh9TT8ySaRp/SBRbWdslsg77gAHkZSbDHtDQ0vy/pgnxYhd1W7Ka2UxHXLemKv5oz5+nEOMsDpPLaGL5F1NjVQi3btRKxlxNtkAaLfPl7Ix7An7f0YRFBf6cvRUhHeqgn+SdtzMjP4Thr8cipXFE+/j0tnZm3HkxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780938123; c=relaxed/simple;
-	bh=mw4btTvK/1gBkb6sYCM9mnFdJzn0VFLK9WojcbfILaA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HDgZg53jQti26OSBZ9FEG0O/J+dg823seyDsjNKxJK9cylLZvo2QTv1prZSuEKDn6i/FPcU1a61w1ddbB8+OkFtnyVN8/LbGpWuCGOK3rNZJqD3fhS54dt4lGFDmS5/zEiBg5AzdXUmwjCA3UvaVdG54mjLAc5X8YBaEa//SvB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FdU16ooi; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1780938787; c=relaxed/simple;
+	bh=8jDKeVmzrsw3XZYj1p6Iz/B/5LnokmtPlxwwHNum/HM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Z6elN6gRcnUTbfYAkRMULGigxp/90E3l5FatrZQypieVcVPwEfNfEn96arWG+cKufraMgjpv83I7PSUxCybG8mC5T/HNxQlMYZOFQl//Mq71Lq0Dk+PE6x7Z12nWgz/k76EFXb+BAT0c8AF+HVn7eBtxnuObxuCfedAxRJsA2Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AS2AQndM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FdU16ooi"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-45eedcdaeaaso3182861f8f.3
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 10:02:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1780938120; x=1781542920; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2Xj+SKmjFc6s1UJlgY0hUfGaxYukZbxmJSQ4x5M+AHw=;
-        b=FdU16ooiIGLPeS+fOu9xHM/m1672tYRzSd0xPiQ85fhcblWd4/WPFo9lMkWCAkH1Oi
-         wDIxPeBLDheKuKuHNUlcDc9dzDaziNidlfXjA9ijVBDpkuPRf4M27+kTe5pW1S96NJoI
-         1GXuw1w0/vQbVyDUmLWkt4thXnRUNUBR0RKySm8XpxEV5QwVNRnd3MQxULg/PitWdPgM
-         /vFdQiqIfpM+TBQYj/TqviDql0R45eB9eTQaDEZ5bXarkHscp6QsJf06qnukZ2uOED9S
-         Rk0f8iRgF924zR/TWxaAfcAH6Ot8Hny7pifYDn02MZQVzLWTqmf7ZyrX/8Z0Kmih/A2C
-         iRcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780938120; x=1781542920;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Xj+SKmjFc6s1UJlgY0hUfGaxYukZbxmJSQ4x5M+AHw=;
-        b=kriydNQPtPs62/XO/OimdGbeRDYYonJTDKqPcjGDXAFVgcmUXV27M+rFS36ip4Sq5z
-         kz7mi55Vo2ucDY1Slnvue8cHW5/yOshGNpD1Nlt/bEH1/wHYmI4rsK441Ka1fIDejH1A
-         9JzecamNMlAUp/Ur0U3LdKFtMqdc4h9zVYjY/Qv1hf3OEHgu9P28xSI/lMW/S3WCTf5a
-         Ip8jEKgT0kfSsAdtCNXqvYhAX4kKHrNQzZz300ZRTq/nm8Cunge/fg5Oomj+F2YXj6jl
-         nBeZ4TBMh2FcVChUioukZXm2q5waJ3ZU8k1jLDvGbG2EEW/pxDDT4zkAYLOTm0hTZYB8
-         SQEg==
-X-Forwarded-Encrypted: i=1; AFNElJ8w4nob5ExPmW7WTN0zuNZiDS4Wdep6A77D0Jl0GtXPloS/2PJmACuwVXwi2y8UUoQU42Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweHXplMgfwA6udi4Q3okBoU0EXdcTOAcJZymPvor11Ez08s0pf
-	CXn3UX7HuuT1WgK77DhXGDLdKqUSudhiZ8ghBpEogzqMQBAbF7xfTZSYgC8yVIXdS+mvzjn8bhF
-	OayZp
-X-Gm-Gg: Acq92OG/0WIQ63rc2JD5y22Fs19mxum+ffK9E8AruGOhyWLe2OTJ8N45y7rIRgbS4z9
-	O7n6wSBdmzQ2xRV+xujNOQp05m19je2zTNIacjeTKTgnAn7r8siuGHilgxLGWZ8yW3wBh8uyxJm
-	PoJKp/3gY/s9O9XFq55KbGLcqB1N1T6SR866Dp6zLz0pkC2c/87jKz65KWWql27IMWOeMgMq6jk
-	5ENGbiqvt0idasL3Qd/9KWqnJu1QkWeEzL8KF0XgeS9a15OGKk5XkGNaHnXIE7sCYtUnqp4c4tb
-	WoNIkX98kWQmyFt6fPI5tPVuYw5PX360F2nziffnXvfcwuDQN5ix5gHf0THbFG4Z9HnQ24hjsXb
-	+3y/lZlSEwc27mf3/GwTmQIwv4TRo7WRtiLtamwi5i7tr558GkSanHssdiXYQ8kASvlfHbARrsv
-	Opfw8dKnwkvSYfCItOLq/8gsFbBkDuoW9zPg==
-X-Received: by 2002:a05:6000:184e:b0:45d:77f4:1ac2 with SMTP id ffacd0b85a97d-46030183b8cmr26123425f8f.0.1780938120382;
-        Mon, 08 Jun 2026 10:02:00 -0700 (PDT)
-Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcde3sm55826031f8f.1.2026.06.08.10.01.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 10:01:59 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 9E0755F7DE;
-	Mon, 08 Jun 2026 18:01:58 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Alexander
- Graf <agraf@csgraf.de>,  Mohamed Mediouni <mohamed@unpredictable.fr>,
-  Pedro Barbuda <pbarbuda@microsoft.com>,  qemu-arm@nongnu.org,
-  kvm@vger.kernel.org
-Subject: Re: [PATCH v7 0/8] target/arm: fully model WFxT instructions for
- A-profile
-In-Reply-To: <CAFEAcA_5uw3z9ePV83Ni1fsVj_m3340i7E2X-DO0=st-ZDqxEg@mail.gmail.com>
-	(Peter Maydell's message of "Mon, 8 Jun 2026 16:54:17 +0100")
-References: <20260529082948.363931-1-alex.bennee@linaro.org>
-	<CAFEAcA94+mh_pigFDi+tEPRJ416fSWfxsQ1Lj8Byemug9kBp6w@mail.gmail.com>
-	<CAFEAcA_5uw3z9ePV83Ni1fsVj_m3340i7E2X-DO0=st-ZDqxEg@mail.gmail.com>
-User-Agent: mu4e 1.14.1; emacs 30.1
-Date: Mon, 08 Jun 2026 18:01:58 +0100
-Message-ID: <87h5ndge49.fsf@draig.linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AS2AQndM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2771F00899;
+	Mon,  8 Jun 2026 17:13:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780938785;
+	bh=kLfVeRXRCdwSsGQCdBopBknwTUlQHVXmPT6XfAvjMko=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=AS2AQndM+ShovFVxRWZpGUzJpaZjfmxCPQiiV8ECj/Tk8NlPbE8my5kwpV/0awTky
+	 6EMSxWtxY3ppLnDCkf0mquyTHuHGRyn3vmaAb/vuSNcfuvWBjBfbP9g1TmFoQ1/4+0
+	 DVD62oM5+BaK1CyVxry2VDWOSVrX/uSMu0O+bsTpX62fzuDPX8Ne9WZDKbG7Ur1PsT
+	 XoGZJUDbyoRbX+nHlkM1uwRYRAcPCMqcx03J1I0d1ukUiA1FT1nsqKCoUHLGqpKmgF
+	 wjhV979QrV5bKckcRFI/2Vyn9UQmbXgerSbvfrX325hhmp9nLVB8vmN3fMM3+dnhrG
+	 2GueSR4Zq0QGA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 29/60] kvm: Implement KVM_CREATE_PLANE ioctl
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260608144252.351443-30-joro@8bytes.org>
+References: <20260608144252.351443-30-joro@8bytes.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 08 Jun 2026 17:13:04 +0000
+Message-Id: <20260608171305.4F2771F00899@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Critical] Failed KVM_CREATE_PLANE ioctl leaves a dangling pointer in kvm=
+->planes[id] causing Use-After-Free and Double-Free.
+- [Medium] Mixing `guard()` scoped cleanup with `goto`-based error handling=
+ in `kvm_vm_ioctl_create_plane()`.
+--
 
-> On Mon, 8 Jun 2026 at 14:51, Peter Maydell <peter.maydell@linaro.org> wro=
-te:
->>
->> On Fri, 29 May 2026 at 09:29, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
-wrote:
->> >
->> > This series fully models the behaviour of WFxT instructions. We
->> > already had support for WFE for M-profile but we left off A-profile as
->> > it has more potential sources of wake-ups. The main one is the event
->> > stream which includes events from significant bits of the timer
->> > ticking over.
->> >
->> > The refactoring from the previous iterations of the patch have now
->> > been merged.
->> >
->> > I've dropped trying to fully model the global monitor in favour of
->> > taking advantage of the architectural flexibility to have an IMPDEF
->> > event wake up for any reason. We treat the setting of exclusive_addr
->> > as such a reason because it indicates the current vCPU is in a ldstx
->> > exclusive region and we don't want the guest to deadlock. This does me=
-an
->> > the system won't sleep on WFE enabled locks but people shouldn't be
->> > relying on QEMU to model real world sleep patterns anyway given the
->> > efficiency of emulation compared to real HW.
->> >
->> > I've written a test case using kvm-unit-tests:
->> >
->> >   Message-ID: <20260527111822.1563679-1-alex.bennee@linaro.org>
->> >   Date: Wed, 27 May 2026 12:18:21 +0100
->> >   Subject: [kvm-unit-tests PATCH v2] arm: add wfx test case
->> >   From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.o=
-rg>
->> >
->> > All patches are now reviewed.
->>
->>
->>
->> Applied to target-arm.next, thanks.
->
-> This turns out to cause failures in "make check-functional": some
-> tests now time out. It looks like the patch that triggers this
-> is the "enable event stream on WFE instructions".
->
-> 13/79 func-thorough+func-arm-thorough+thorough -
-> qemu:func-arm-aspeed_rainier               ERROR            36.17s
-> exit status 1
-> 74/79 func-thorough+func-arm-thorough+thorough -
-> qemu:func-arm-smdkc210                     TIMEOUT          90.01s
-> killed by signal 15 SIGTERM
-> 75/79 func-thorough+func-arm-thorough+thorough - qemu:func-arm-raspi2
->                      TIMEOUT         120.01s   killed by signal 15
-> SIGTERM
-> 76/79 func-thorough+func-arm-thorough+thorough -
-> qemu:func-arm-quanta_gsj                   TIMEOUT         240.01s
-> killed by signal 15 SIGTERM
-> 77/79 func-thorough+func-arm-thorough+thorough - qemu:func-arm-bpim2u
->                      TIMEOUT         500.01s   killed by signal 15
-> SIGTERM
-> 78/79 func-thorough+func-arm-thorough+thorough -
-> qemu:func-arm-orangepi                     TIMEOUT         540.01s
-> killed by signal 15 SIGTERM
-> 79/79 func-thorough+func-aarch64-thorough+thorough -
-> qemu:func-aarch64-sbsaref_freebsd      TIMEOUT         720.02s
-> killed by signal 15 SIGTERM
->
->
-> I've kept the first 4 patches, but dropped patches 5-8.
-> I also noticed a problem with patch 5 which I've commented on.
+commit b6872a36c29c142bcf253335bda2d600adade6a7
+Author: Paolo Bonzini <pbonzini@redhat.com>
 
-OK I'll have a look.
+kvm: Implement KVM_CREATE_PLANE ioctl
 
->
-> thanks
-> -- PMM
+Add a new VM ioctl to create a new plane. It returns a new file descriptor
+which supports per-plane ioctls.
+
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 4dbb7659fa2b8..e5d941b1d6fd6 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+
+[ ... ]
+
+> @@ -5287,6 +5315,49 @@ static int kvm_vm_ioctl_get_stats_fd(struct kvm *k=
+vm)
+>  	return fd;
+>  }
+> =20
+> +static int kvm_vm_ioctl_create_plane(struct kvm *kvm, unsigned id)
+> +{
+> +	struct kvm_plane *plane;
+> +	struct file *file;
+> +	int r, fd;
+> +
+> +	if (id >=3D kvm_arch_max_planes(kvm) ||
+> +	    WARN_ON_ONCE(id >=3D KVM_MAX_PLANES))
+> +		return -EINVAL;
+> +
+> +	guard(mutex)(&kvm->lock);
+
+[Severity: Medium]
+Does mixing a scoped guard with explicit goto-based cleanup labels violate
+subsystem guidelines?
+
+The subsystem documentation states that the expectation is that usage of go=
+to
+and cleanup helpers is never mixed in the same function.
+
+> +	if (kvm->planes[id])
+> +		return -EEXIST;
+> +
+> +	fd =3D get_unused_fd_flags(O_CLOEXEC);
+> +	if (fd < 0)
+> +		return fd;
+> +
+> +	plane =3D kvm_create_plane(kvm, id);
+> +	if (!plane) {
+> +		r =3D -ENOMEM;
+> +		goto put_fd;
+> +	}
+> +
+> +	kvm_get_kvm(kvm);
+> +	file =3D anon_inode_getfile("kvm-plane", &kvm_plane_fops, plane, O_RDWR=
+);
+> +	if (IS_ERR(file)) {
+> +		r =3D PTR_ERR(file);
+> +		goto put_kvm;
+> +	}
+> +
+> +	fd_install(fd, file);
+> +	return fd;
+> +
+> +put_kvm:
+> +	kvm_put_kvm(kvm);
+> +	kvm_destroy_one_plane(plane);
+
+[Severity: Critical]
+If anon_inode_getfile() fails, does this error path leave a dangling pointer
+in kvm->planes[id]?
+
+Assuming kvm_create_plane() publishes the plane to the array before returni=
+ng:
+
+virt/kvm/kvm_main.c:kvm_create_plane() {
+	...
+	kvm->planes[plane_level] =3D plane;
+	...
+}
+
+When the error path destroys the plane but fails to clear kvm->planes[id],
+could this lead to a double-free later when kvm_destroy_planes() iterates o=
+ver
+the kvm->planes array?
+
+virt/kvm/kvm_main.c:kvm_destroy_planes() {
+	...
+	if (kvm->planes[i] =3D=3D NULL)
+		continue;
+	kvm_destroy_one_plane(kvm->planes[i]);
+	...
+}
+
+> +put_fd:
+> +	put_unused_fd(fd);
+> +	return r;
+> +}
 
 --=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
+43-1-joro@8bytes.org?part=3D29
