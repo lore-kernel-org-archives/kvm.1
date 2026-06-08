@@ -1,144 +1,123 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00721230BE9;
-	Mon,  8 Jun 2026 12:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2EA37BE74
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 12:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780920575; cv=none; b=NkLbePqluUbmJ++hRfjqgHLAL9cBr7/m5QvZfn2K9cEymzY2YN2gDPCyQ8TnH50wh6aJljjenLiVwfc44IRBdm3qcWQ3pS4p7w/W01mDIH8B+zmIcJgLnsXHTujiyMOZlD0CbRb+dqO5FnbMt5et5KKm3wTJ0MqRLx/Wi1XHa50=
+	t=1780922127; cv=none; b=PgCd3XuRlBcZbimcUugpFSwaSE0+FIQj0Adv1ecexLm7N/NQX1uV6kgvY5g6exZv/al4bKvXnVey38luv1d6abqitQjiMsV0vEA9/4dmztp3MICQ+Q+Hrvpo62n20/njzMXl1QAQFEiHJy0n6GNU4kVjEmFhIbFJJGJj5WQz3E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780920575; c=relaxed/simple;
-	bh=lx5/sZHJfsfJ+guaof003PPuTXoIXivzBp1RA0FoL9A=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=sSyK1rwQl0AUJsIJmSwnRdkb73NkgQG+IqKjNlGjHYV8CIT3hMLZr3lc+c7cfIBaKrdJLsH51Nmgtfz9Qfw0vXnfQZaIC90LBd22uKv0VwLLmZFgJNBiLNpXehDX70X6BK4180ud3W5UK79b4VoerD095qf6YEZ7vj0OKwRBWtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=V4N8m0h5; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1780922127; c=relaxed/simple;
+	bh=CYYDWqyVN6rQRyrhyeSFNbNRecXMfXc9yaACOsDkXqE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=onz55sZmKGI34EXI5twqTAQj6AhxJp5syzXI32xEeHoi86PSTDq44M8oeD7EyuV6QkLVanOXzXgp4gpJM7yr6Y/C9WdWLs0/6dEIhCQRJAxyhDqs3CWKCWAAza8OO61H4WP6HNio5eh4hvo5EJy9uEtSwB4CAnwJQcwJw3VYHUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTLQIxpO; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="V4N8m0h5"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 657Lcv9m646062;
-	Mon, 8 Jun 2026 12:09:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=lx5/sZ
-	HJfsfJ+guaof003PPuTXoIXivzBp1RA0FoL9A=; b=V4N8m0h5gplWYy5nhBBNAu
-	LUoWFeZfXih5bkK0YLMJ17hCK1nhLGUXoQGRwC4+4AIORSmLX9GYRINanTQp30ft
-	EtcQ27j2ZewQYlYhX8ZaJVxMfN63AIvXFtSDb8shI5/5TP6e3wcgfi5ejzosaPpa
-	rkivFm1P2b+Lrt3V9HFRGz6WbJuaqkqSjeVrBl3KkuU+2/2i2zsHb+7ieDyo6o72
-	Zs31JwAuwKTsxRf3voi0CWYfvf0ZgGO0fRs1060ngCyap6OAvlvalEmBvh4hl4te
-	rO2g81gGjBw16vsmj9ui++xITSru7TqaM6ZdysJEdRt1Pbt33gUmbMyboMwyEmHg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4em9ydy4a3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Jun 2026 12:09:04 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 658BnguG023861;
-	Mon, 8 Jun 2026 12:09:03 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4emwvpwb1x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Jun 2026 12:09:03 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 658C8u1R27328966
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 8 Jun 2026 12:08:56 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4924620043;
-	Mon,  8 Jun 2026 12:08:56 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B5E7720040;
-	Mon,  8 Jun 2026 12:08:55 +0000 (GMT)
-Received: from t14-nrb (unknown [9.111.29.158])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  8 Jun 2026 12:08:55 +0000 (GMT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTLQIxpO"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-bec85f03e14so63098966b.0
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 05:35:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780922124; x=1781526924; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=z+NDiLOfcXQ8JmuQqrk6+Ji+NDT4+3lQ7MCKUmz9FTk=;
+        b=BTLQIxpOdMFfv+Pdqw+8LaWLszo4ixaRviwDSiFdY/StYWJD+FZI5QeMvjJkRIeoX+
+         qpp+uWHRJ3eihuvJnkp4o29fMRhWfCKVeuruZ/bkvfmw8TtiZvnLoiD1FMPetgBeoMYn
+         aMKvSclolACR47NR+uX+F7UYFopf3Fiw1nb7mh7kwZ4VHw0J2HfrmwbpCHRWJwr+LMLQ
+         Ygfy12luNRy75hV+4qwH1PjKiFxDYzVs9hQOIRlbE62GGkeDiG4NcmFDyLNGo0W/SnBQ
+         q6yYPdfqjFGwDdsZ+wyNwoFz2IsmIJllCUKLZu7iQIcX6OQ68AA4JdvdcnuG/Z9NgoLE
+         XFsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780922124; x=1781526924;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z+NDiLOfcXQ8JmuQqrk6+Ji+NDT4+3lQ7MCKUmz9FTk=;
+        b=eYwDXCAp3lVQw4FgMz1Bko6w3v5MsvldwXbwBNqHOgxr1hG8mgeBFJgZ7OmbI9/xRi
+         GUlV7ZZc753CaGSJvRqymG/rDpHI9jRsdDgQBzN5e/F9b5AIw9AEfgbNkYPR8M/B6FZn
+         5FVNGUYM5wubu1UW+aDlsKgCjJ95O6gAh82LVLaZBRAW2QZ84sbkaRlQ4oZt0OK/ulcU
+         tATmUuuj2JCMN85cVbJ3Vyshhoy6t2R6PGWfh4Cd6byEqgpqU9sRuuo9ILp1JWYhqJWj
+         c8bWg9rC//ORtWftHW/B/c84Y4M+hBTJNJPFPSxbpTTDjjM4AL3U5gMd6Yp3X0PpTm2U
+         Id5Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8XNElWlCBHjzE9Ce49ebuUaQ0oDT+03maR6amk/nrUOAHPfFSftBqLeBIMRC2lVZp+G3g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzufb1cRk9hcavGQ83VSZKA+PCzt7M5p+OqHU/WYdmc+aLsKeVK
+	CP6iDo85YBVC7LsPiEep6qiv1609FtRtYf4kVT/O0g32MQ3gUaWnRgvp
+X-Gm-Gg: Acq92OFVvZMRR6+L+KMtzeN6nuZboTj6OXEWGdlE8xiNTQA+lUte15tcTWwKoo0DQt3
+	NkDAatCpgTlIBeGRSUQl0UrVydXIgtgZm0ToXwKLGd4+lHHWvnSKU0+4AAk08NXm9zDADtpxOrM
+	cWGDrceyVXfJmfox/oXOvIujsWPlVh3QbuVkbvxorGEjqg2AQxYc++HNiqcpg1mrDx5uY8iJWbI
+	pJSxkCG6a9yXIkXE0EKg+wkWd4ROyKIBJ7vDr002FhCP7QT1cSOKqPQduOVhuc+huNvRRVLumvC
+	6fsBeb/vExdBQiOBhZoyUCd5j0c6VdfSYy2qyWg5NKMu3MD4OT8KRwoJoKK22v7v4eCPUbWIQvh
+	iRwZhyPPmK21ROX4sdmoVd95gSaTdPI6GdssCh5QRnTjiddLCsrEqqUl09hnJxRN5p1Y8MXwGcd
+	6+0rOC0sFDbuY7qSiiXaB9RdDKwd8h5o6fhJWiZO7llM0jCV/1QWk/6b30CfNtCISPCu1U
+X-Received: by 2002:a17:907:971b:b0:beb:cc42:eaa8 with SMTP id a640c23a62f3a-bf37076c08bmr353336766b.1.1780922123939;
+        Mon, 08 Jun 2026 05:35:23 -0700 (PDT)
+Received: from Kayra-MacBook-Pro ([2a00:1d34:85f:fd00:89b:7f3a:f691:1b4b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf3e39647c4sm485107366b.63.2026.06.08.05.35.21
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 08 Jun 2026 05:35:23 -0700 (PDT)
+From: Kayra Cizmeci <kayracizmeci@gmail.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	Kayra Cizmeci <kayracizmeci@gmail.com>
+Subject: [PATCH] KVM: x86: Add IDT limit check in __emulate_int_real()
+Date: Mon,  8 Jun 2026 15:35:02 +0300
+Message-ID: <20260608123503.23298-1-kayracizmeci@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 08 Jun 2026 14:08:55 +0200
-Message-Id: <DJ3NN3DTFU62.CFTF1O1HOP93@linux.ibm.com>
-From: "Nico Boehr" <nrb@linux.ibm.com>
-To: "Oliver Upton" <oupton@kernel.org>,
-        "Andreas Grapentin"
- <gra@linux.ibm.com>
-Cc: "Steffen Eiden" <seiden@linux.ibm.com>, <kvm@vger.kernel.org>,
-        <kvmarm@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>,
-        "Alexander
- Gordeev" <agordeev@linux.ibm.com>,
-        "Arnd Bergmann" <arnd@arndb.de>,
-        "Catalin Marinas" <catalin.marinas@arm.com>,
-        "Christian Borntraeger"
- <borntraeger@linux.ibm.com>,
-        "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
-        "David Hildenbrand" <david@kernel.org>,
-        "Friedrich Welter"
- <fritz@linux.ibm.com>,
-        "Gautam Gala" <ggala@linux.ibm.com>,
-        "Hariharan
- Mari" <hari55@linux.ibm.com>,
-        "Heiko Carstens" <hca@linux.ibm.com>,
-        "Hendrik Brueckner" <brueckner@linux.ibm.com>,
-        "Ilya Leoshkevich"
- <iii@linux.ibm.com>,
-        "Janosch Frank" <frankja@linux.ibm.com>,
-        "Joey Gouly"
- <joey.gouly@arm.com>, "Marc Zyngier" <maz@kernel.org>,
-        "Nico Boehr"
- <nrb@linux.ibm.com>,
-        "Nina Schoetterl-Glausch"
- <oss@nina.schoetterlglausch.eu>,
-        "Paolo Bonzini" <pbonzini@redhat.com>,
-        "Suzuki K Poulose" <suzuki.poulose@arm.com>,
-        "Sven Schnelle"
- <svens@linux.ibm.com>,
-        "Ulrich Weigand" <Ulrich.Weigand@de.ibm.com>,
-        "Vasily Gorbik" <gor@linux.ibm.com>, "Will Deacon" <will@kernel.org>,
-        "Zenghui Yu" <yuzenghui@huawei.com>
-Subject: Re: [PATCH v1 15/26] s390: Add functions to query arm guest time
-X-Mailer: aerc 0.21.0
-References: <20260529155601.2927240-1-seiden@linux.ibm.com>
- <20260529155601.2927240-16-seiden@linux.ibm.com>
- <ah4G847iT_pPRuQm@kernel.org>
- <ah7Ul7YwJOFuSMaD@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
- <ah9MFEq09ISAu9cb@kernel.org>
-In-Reply-To: <ah9MFEq09ISAu9cb@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDExNCBTYWx0ZWRfXwMmg62f7h0sB
- RfcqtOVixT1f4AbtezpbVPnnHvj3LHz2fnYbybT7m/eYsZGA85CY3yxfEoQHIBG5+URxkgly1EO
- zzkIEqD5u0LOyxim1tyw7Lzofi+VcESL2dBXa8V+KQFVYyNWixGCIFyqwHhwLAMjoAkS71njNTw
- 4/EI3Zbv+ulFK3ntDnu2eU0/jxOqAYJQ3Sn96KlhGr5NqsF5okkRna7t9fIln2Lk/EMtRMkTJPF
- GxSFXtjqf4I7szJEAUCjecGvE3JBYHS4k0Gs0v1yRqJxFcC8FgMNWI9OnLM7ZQ6BkjGxzoCq2nr
- uV9DJp8ueyMF0Cy8bWaFEvu8QaPYId/X6n2z7Es4/UT5MQZoB6cIEEoV1bT0MAwdZlPNlD4+sbx
- ldAhYFivNU0rghPuUbu/oJOyHTk31LTOcgrcGuIrZiF1VYzEM0yr0JbiXnCw4dA8WgQWDWvtQCt
- g9qCVc5uIR/2K3u7iNQ==
-X-Authority-Analysis: v=2.4 cv=QKhYgALL c=1 sm=1 tr=0 ts=6a26b0e0 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=HgQSQ640rxy7bNeMIXcA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: huzLH-LR3kW0VDa6TnkgF4yRlFlgHVz1
-X-Proofpoint-ORIG-GUID: huzLH-LR3kW0VDa6TnkgF4yRlFlgHVz1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-08_03,2026-06-05_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0
- malwarescore=0 impostorscore=0 suspectscore=0 spamscore=0 clxscore=1011
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606080114
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue Jun 2, 2026 at 11:33 PM CEST, Oliver Upton wrote:
-> I was trying to figure out how these functions
-> apply to the virtual and "physical" views of the counter inside the VM.
+During real mode interrupt emulation, KVM currently pushes data to the
+stack before checking IDT limits.
 
-I think conceptually these functions affect what is returned by
-PhysicalCountInt() in ARM pseudocode and thus they apply to both virtual an=
-d
-"physical" views inside the VM.
+This patch fetches the IDT early and injects a #GP if the limit
+is exceeded. This prevents potential corruption.
+
+Signed-off-by: Kayra Cizmeci <kayracizmeci@gmail.com>
+---
+ arch/x86/kvm/emulate.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 8013dccb3110..04e6c80bdb14 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -2022,7 +2022,11 @@ static int __emulate_int_real(struct x86_emulate_ctxt *ctxt, int irq)
+ 	gva_t eip_addr;
+ 	u16 cs, eip;
+ 
+-	/* TODO: Add limit checks */
++	ops->get_idt(ctxt, &dt);
++
++	if (dt.size < (irq << 2) + 3)
++		return emulate_gp(ctxt, 0);
++
+ 	ctxt->src.val = ctxt->eflags;
+ 	rc = em_push(ctxt);
+ 	if (rc != X86EMUL_CONTINUE)
+@@ -2040,8 +2044,6 @@ static int __emulate_int_real(struct x86_emulate_ctxt *ctxt, int irq)
+ 	if (rc != X86EMUL_CONTINUE)
+ 		return rc;
+ 
+-	ops->get_idt(ctxt, &dt);
+-
+ 	eip_addr = dt.address + (irq << 2);
+ 	cs_addr = dt.address + (irq << 2) + 2;
+ 
+-- 
+2.54.0
+
