@@ -1,159 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3343B33067F;
-	Sun,  7 Jun 2026 20:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D9A304BB2;
+	Mon,  8 Jun 2026 01:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780865064; cv=none; b=TXqA3ZXiqBIQtjAz+bvP9Q91oU/GbtQhJPR8yHnX9AWcA2JQ2BzPaBDRojs7kRSPNeQrF7lnSAOe9ykG2mIz+1Cr6w0lqYZt+tnxtoH2swndNyoVyJ4CVW8A3YYLVsdtBYhuuYCKqXDEAhsniiHmAl8xyopR8UYw206RZoR2X5I=
+	t=1780882356; cv=none; b=Gh4b6KLpjnZshHnbKYMqSWnGQA/nfcBT7ftj8678601RoZKGsMrA6JCJjs6fFNRGMvyU3jq+KYB8PVOSJ4jmZc0XHOIrZFy7mNFELIL2ywOr3KQC8/pkYdOhFm6L7FlmoPXWRDlzJq+3agRRc5ZbNF1PTR5S9fjXr9S7d+n3L34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780865064; c=relaxed/simple;
-	bh=g85QJn47EThEKRGwSKW/QRjWydFP9WGGTaOI6rbRGOM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jRXnpOKrNvzN9IjFizea165rOFXban1WM4BDtThQ8REExRHb/CQgWbx1idPvbqVmbkuf56RgtEcXNh2hynHyVIb+zmNdiDtjNPnqyXl89jEQHFlOY9d0hv4pxXbQEkl7uTcdAYtfy2Wu8TcAuazuoUnB/NupJ00/sNXxRxiYmEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXnDEAND; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXnDEAND"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65FB1F00893;
-	Sun,  7 Jun 2026 20:44:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780865062;
-	bh=vtESHvQ50fjYokNyM5J8XzrLXPw6aMyPidD3oI+lCZ4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZXnDEANDtb+xOC1KS85q2WiGTTengV47I915Z2Mtje1Oj/mTpmAhnJ5BB6LaM9M6x
-	 JdsLogP9Z7F4kUBWG00enMpHYXpTE4ZeFn6U8YajWhcOuQ+TxTuJNnlhf+4CGaHQP/
-	 U9o25x8joZey0xd5TYzVYLOtORzHdtgcyPh1DoONAVsEwDmY2IPdGfIdakE+j7o6l5
-	 fSdgmkqwjhlYip1de+itpBUHLZprHZgYC17F6kd3kBrYAIurCxtnCtyVogUumO5N+2
-	 PtvBs0z+fgQuvNuETI/rUDE8iBosfhRGaWm9y+t2KbNQnjTtpN6q3pXgVsM3VEK5ey
-	 ddYtiroUGmI8w==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wWKM1-0000000AFwE-0LVA;
-	Sun, 07 Jun 2026 20:44:21 +0000
-Date: Sun, 07 Jun 2026 21:47:41 +0100
-Message-ID: <87v7bu84cy.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: Add kvm_for_each_vncr_tlb() helper
-In-Reply-To: <20260607180815.85FBC1F00893@smtp.kernel.org>
-References: <20260607175745.297793-1-maz@kernel.org>
-	<20260607180815.85FBC1F00893@smtp.kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1780882356; c=relaxed/simple;
+	bh=jzVWtUayeOPCeFSiXCUSWlxb3xZ9FyPrfGI2r0tqKgE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=njK4QywWuZrHkW65PSkQUl5gVWg+/Gk0jWCRKqWOUUAV3GU4c+ohAl4SshV3c/2Eg1rFmYYayh0JWldofDPc/ohdibiOKTA9jW3WOHkShekzlkOqM3uj5kKgiv02h0ON6DdDzVoHUr7MtR/sxXmWaaXMdtxlTDjhTgydFhka040=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8Dx8eqqGyZqK5kRAA--.47440S3;
+	Mon, 08 Jun 2026 09:32:26 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJAxHMKoGyZqNTafAA--.39164S3;
+	Mon, 08 Jun 2026 09:32:26 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: kernel@xen0n.name,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/4] LoongArch: KVM: Add separate KVM_REQ_LBT_LOAD request bit
+Date: Mon,  8 Jun 2026 09:32:19 +0800
+Message-Id: <20260608013222.375257-2-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20260608013222.375257-1-maobibo@loongson.cn>
+References: <20260608013222.375257-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxHMKoGyZqNTafAA--.39164S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On Sun, 07 Jun 2026 19:08:15 +0100,
-sashiko-bot@kernel.org wrote:
-> 
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> 
-> New issues:
-> - [Low] The `kvm_for_each_vncr_tlb` macro introduces an unbraced `if` statement, exposing callers to a dangling `else` vulnerability.
-> 
-> Pre-existing issues:
-> - [High] Concurrent lockless publication and observation of `vcpu->arch.vncr_tlb` lacks memory barriers and `READ_ONCE()`, risking uninitialized memory access.
-> - [High] Unconditional allocation in `kvm_vcpu_allocate_vncr_tlb` leaks memory if `kvm_arch_vcpu_run_pid_change` is restarted.
-> --
-> 
-> commit 03a7f368fcb61f7b51d0623ed1c15d57166b377e
-> Author: Marc Zyngier <maz@kernel.org>
-> Subject: KVM: arm64: Add kvm_for_each_vncr_tlb() helper
-> 
-> This commit introduces a new helper macro kvm_for_each_vncr_tlb() to 
-> iterate over vCPUs that have a valid vncr_tlb allocated. It then
-> converts kvm_invalidate_vncr_ipa() and invalidate_vncr_va() to use
-> this new iterator.
-> 
-> Link: https://lore.kernel.org/r/aiUvSbrWndQeUPc8@v4bel
-> 
-> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> > index 883b6c1008fbb..e25d7289aa9e5 100644
-> > --- a/arch/arm64/kvm/nested.c
-> > +++ b/arch/arm64/kvm/nested.c
-> > @@ -897,9 +897,21 @@ static void invalidate_vncr(struct vncr_tlb *vt)
-> >  		clear_fixmap(vncr_fixmap(vt->cpu));
-> >  }
-> >  
-> > +/*
-> > + * VNCR TLB invalidation occurs from MMU notifiers or TLBI instructions, and
-> > + * either can race against a vcpu not being onlined yet (no pseudo-TLB
-> > + * allocated). Similarly, the TLB might be invalid.  Skip those, as they
-> > + * obviously don't participate in the invalidation at this stage.
-> > + */
-> > +#define kvm_for_each_vncr_tlb(idx, vcpup, tlbp, kvm)	\
-> > +	kvm_for_each_vcpu(idx, vcpup, kvm)		\
-> > +		if (((tlbp) = vcpup->arch.vncr_tlb) &&	\
-> > +		    (tlbp)->valid)
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but can we read uninitialized
-> memory here due to a missing memory barrier?
-> 
-> When vcpu->arch.vncr_tlb is allocated in kvm_vcpu_allocate_vncr_tlb(),
-> it is assigned via a plain store without smp_store_release(), and not
-> under kvm->mmu_lock.
-> 
-> Concurrently, the MMU notifier path (which holds kvm->mmu_lock) iterates
-> over vCPUs and reads this pointer locklessly using a plain load here without
-> READ_ONCE() or smp_load_acquire(). 
-> 
-> On weakly-ordered architectures, could the observing CPU see a non-NULL
-> pointer before the zero-initialization of kzalloc_obj() is visible?
-> 
-> If so, tlbp->valid could be evaluated using uninitialized memory.
-> If it evaluates to true, invalidate_vncr() could read garbage from
-> vt->cpu and trigger the BUG_ON() in vncr_fixmap(), causing a host panic.
-> 
-> [Severity: High]
-> This is a pre-existing issue, but does kvm_vcpu_allocate_vncr_tlb() leak
-> memory if KVM_RUN is restarted?
-> 
-> In kvm_arch_vcpu_run_pid_change(), kvm_vcpu_allocate_vncr_tlb() is
-> called during the first KVM_RUN and unconditionally allocates the pointer
-> with kzalloc_obj().
-> 
-> If subsequent initialization steps in kvm_arch_vcpu_run_pid_change() fail
-> (like kvm_timer_enable()), it returns an error to userspace without
-> marking the vCPU as having run.
-> 
-> If userspace repeatedly invokes the KVM_RUN ioctl after a failure,
-> could kvm_vcpu_allocate_vncr_tlb() be executed again, overwriting the
-> previous vncr_tlb allocation without freeing it and leaking memory?
->
+There are different structures with LBT and FPU register restore,
+with LBT the structure is vcpu::arch::lbt, with FPU the structure
+is vcpu::arch::fpu. And FPU/LSX/LASX saving and restoring share
+the common structure vcpu::arch::fpu.
 
-Both issues can be solved in one go by taking the kvm->mmu_lock when
-updating vncr_tlb, relying on the release effects of the unlock, and
-testing for vncr_tlb before assignment. I'll hack something.
+New request bit KVM_REQ_LBT_LOAD is used for LBT register restore,
+and rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD for FPU register
+restore.
 
-> [Severity: Low]
-> Does the unbraced if in this macro expose callers to a dangling else
-> vulnerability?
-> 
-> While current usages are safely enclosed in braces, if a future caller uses
-> this macro inside an unbraced if block and attempts to attach an else,
-> the compiler could incorrectly bind it to this hidden internal if.
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+---
+ arch/loongarch/include/asm/kvm_host.h |  3 ++-
+ arch/loongarch/kvm/exit.c             | 12 +++++-------
+ arch/loongarch/kvm/vcpu.c             |  8 ++++----
+ 3 files changed, 11 insertions(+), 12 deletions(-)
 
-This is C, and more importantly Linux-C. It's out to get you, on
-purpose, and by design. Try a scoped_guard() with a continue statement
-within a for loop to have some real fun, rather than this hypothetical
-'else' which would be most bizarre. Given the above and how its use is
-wildly promoted within the kernel, I'm not exactly worried.
-
-	M.
-
+diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+index 776bc487a705..e76a49d4233b 100644
+--- a/arch/loongarch/include/asm/kvm_host.h
++++ b/arch/loongarch/include/asm/kvm_host.h
+@@ -38,7 +38,8 @@
+ #define KVM_REQ_TLB_FLUSH_GPA		KVM_ARCH_REQ(0)
+ #define KVM_REQ_STEAL_UPDATE		KVM_ARCH_REQ(1)
+ #define KVM_REQ_PMU			KVM_ARCH_REQ(2)
+-#define KVM_REQ_AUX_LOAD		KVM_ARCH_REQ(3)
++#define KVM_REQ_FPU_LOAD		KVM_ARCH_REQ(3)
++#define KVM_REQ_LBT_LOAD		KVM_ARCH_REQ(4)
+ 
+ #define KVM_GUESTDBG_SW_BP_MASK		\
+ 	(KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_USE_SW_BP)
+diff --git a/arch/loongarch/kvm/exit.c b/arch/loongarch/kvm/exit.c
+index 3b95cd0f989b..b839c989d3dc 100644
+--- a/arch/loongarch/kvm/exit.c
++++ b/arch/loongarch/kvm/exit.c
+@@ -756,7 +756,7 @@ static int kvm_handle_fpu_disabled(struct kvm_vcpu *vcpu, int ecode)
+ 	}
+ 
+ 	vcpu->arch.aux_ldtype = KVM_LARCH_FPU;
+-	kvm_make_request(KVM_REQ_AUX_LOAD, vcpu);
++	kvm_make_request(KVM_REQ_FPU_LOAD, vcpu);
+ 
+ 	return RESUME_GUEST;
+ }
+@@ -798,7 +798,7 @@ static int kvm_handle_lsx_disabled(struct kvm_vcpu *vcpu, int ecode)
+ 		kvm_queue_exception(vcpu, EXCCODE_INE, 0);
+ 	else {
+ 		vcpu->arch.aux_ldtype = KVM_LARCH_LSX;
+-		kvm_make_request(KVM_REQ_AUX_LOAD, vcpu);
++		kvm_make_request(KVM_REQ_FPU_LOAD, vcpu);
+ 	}
+ 
+ 	return RESUME_GUEST;
+@@ -818,7 +818,7 @@ static int kvm_handle_lasx_disabled(struct kvm_vcpu *vcpu, int ecode)
+ 		kvm_queue_exception(vcpu, EXCCODE_INE, 0);
+ 	else {
+ 		vcpu->arch.aux_ldtype = KVM_LARCH_LASX;
+-		kvm_make_request(KVM_REQ_AUX_LOAD, vcpu);
++		kvm_make_request(KVM_REQ_FPU_LOAD, vcpu);
+ 	}
+ 
+ 	return RESUME_GUEST;
+@@ -828,10 +828,8 @@ static int kvm_handle_lbt_disabled(struct kvm_vcpu *vcpu, int ecode)
+ {
+ 	if (!kvm_guest_has_lbt(&vcpu->arch))
+ 		kvm_queue_exception(vcpu, EXCCODE_INE, 0);
+-	else {
+-		vcpu->arch.aux_ldtype = KVM_LARCH_LBT;
+-		kvm_make_request(KVM_REQ_AUX_LOAD, vcpu);
+-	}
++	else
++		kvm_make_request(KVM_REQ_LBT_LOAD, vcpu);
+ 
+ 	return RESUME_GUEST;
+ }
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index e28084c49e68..c28aa37f37a9 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -239,7 +239,7 @@ static void kvm_late_check_requests(struct kvm_vcpu *vcpu)
+ 			vcpu->arch.flush_gpa = INVALID_GPA;
+ 		}
+ 
+-	if (kvm_check_request(KVM_REQ_AUX_LOAD, vcpu)) {
++	if (kvm_check_request(KVM_REQ_FPU_LOAD, vcpu)) {
+ 		switch (vcpu->arch.aux_ldtype) {
+ 		case KVM_LARCH_FPU:
+ 			kvm_own_fpu(vcpu);
+@@ -250,15 +250,15 @@ static void kvm_late_check_requests(struct kvm_vcpu *vcpu)
+ 		case KVM_LARCH_LASX:
+ 			kvm_own_lasx(vcpu);
+ 			break;
+-		case KVM_LARCH_LBT:
+-			kvm_own_lbt(vcpu);
+-			break;
+ 		default:
+ 			break;
+ 		}
+ 
+ 		vcpu->arch.aux_ldtype = 0;
+ 	}
++
++	if (kvm_check_request(KVM_REQ_LBT_LOAD, vcpu))
++		kvm_own_lbt(vcpu);
+ }
+ 
+ /*
 -- 
-Jazz isn't dead. It just smells funny.
+2.39.3
+
