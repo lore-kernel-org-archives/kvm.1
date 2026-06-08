@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73B73E7BA4
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 19:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E8A3E6394
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 19:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780948150; cv=none; b=nBAJyfl7DVY5ZwlnQi/VLCZyddkmHecKOhKJyrFD045hf0F+YP0j8f781vrW3gE0XsW+YmEsNQWprNfN9UkvyLd54bRmvwU/Zo9t+CzsLIZwW35yKPjCfaSmk4o0U6ZGkQVUMPuhI2smn2a4iq0Ee4smAgueQCXEmfoo9nrkepE=
+	t=1780948717; cv=none; b=sdZFPHlm4auQx1v29eHdViy7p1mbz1K9YlnsG1VSYU3m0kjeYC+7QSZPBmWXp/qDRFd+RND0gJsdBODG9/4l2Ke1YM818R+Aa8JZQdtiAnnFYF7Fu+bVo1CfbhpspGwrIsSq5viPRot1bcIUyx1liihCrql2wGxn/Nfwfsviwxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780948150; c=relaxed/simple;
-	bh=t5m6ERCM8/ja5UM9fijNwIn/f3zPS9hEw9/pidTjO3E=;
+	s=arc-20240116; t=1780948717; c=relaxed/simple;
+	bh=yN3wmg8g4iqdKHMrE8SC6Uv/TbtxlpnxOUFysw9Bf/0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=IeBEu4TGDCUhirMSGnV8lTMljbKA9wph+7TKCF87DaSlrVFCrAqC2gLUAzjPZVyDbTYcOkyLLt+772taVzT0Up9WifTPYXrjpBAO8ulSjOb6pNpuwGIFe5Rn4WJfEq33WEu9b2f5a/uyD2PBPBgD1/aAeETuFRbpAXxlJmt6wcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ekuoyVVO; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=gRaf3K2KIhO2tlSYf23uxlGd6mP7r6kSFbHkaWTXXBtCBAVQRYU5pmaabPBSrCmbQtjzD0a0DVhdPza+9BD0wqUyb3U/10MzK+0W6JQVycvCcR5zOm/Dl+iDdCYQ4GrLULOGEf2pbu7yKvDonHgbVpZzOc86dJa3Vtw3uTOaaAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDyfCdSc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ekuoyVVO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891731F0089A;
-	Mon,  8 Jun 2026 19:49:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDyfCdSc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFD71F00893;
+	Mon,  8 Jun 2026 19:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780948149;
-	bh=BDM8/KCRocwZwMfuBHfThStY6xCOWJAyIAKetr/Aj+w=;
+	s=k20260515; t=1780948716;
+	bh=gd1Uii58XjTrgTC/iGqglue7gNeEVes2KuOht/1WvV0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ekuoyVVO1Fm1Fir4GNeHWXlvhowsYnJl4JG5UEu+yO6oEXbka2Iciq2xOuppkWH0G
-	 QawVTOX8IZ66WsW0ld5JZBacdZUuWnj2kcf/dCZlhOMPNehp0g5QoV0arJsh2083/0
-	 A/iJAu9k9sDBdegIsnUao1ij1XbxRyZuuBUFK0neQY+1JbhWJlfVf2fcGQ9RDZFdjj
-	 7pUPJ+2DQpXe8pPMZe3Vd73p/cFvZiDsUUsn6yT2V593iYkPK1CzlRaRs1Tk5I44/3
-	 kTJeOK2CNhrCFnpcBRHSmIljryBRCAnMwAKpnNSMuJUxopjVF2xz/xc8Y9GG4PQk8Q
-	 UymFjSu1GW6hQ==
+	b=CDyfCdScuPi9A4tw/GgNUJkPge4H6OENsj8zKmWNbw4ZRjvKAk+t9wDuaKDAOxBtU
+	 nIUhNfBNQVicyrBJm9EHvupfJchHYXochutFBzW2jZODqMR4MuJv1/9sTjLRwW6O0N
+	 ohlUW7MGGb1BDCn1kQWbOQcOpgBpJkWinFIhZwi1MCv1RGaPh4hGDqQ8axnB0/x7AW
+	 51qAUf/xI8MxQ3+JM7M6XWklEkokLtw6sl/QSHYM5koHAFcIDNZI+M/AhQenctmijA
+	 bmrwaoVysgS3HEU4Sx1RS0B/I24JojgwQodrTXLcmswd+1vO0+sDeakrjHqijhwblU
+	 Opl06g/omHREQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 41/60] kvm: x86: Make apic_map per plane
+Subject: Re: [PATCH v5 25/34] KVM: x86/xen: Prevent runstate times from
+ becoming negative
 Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: "David Woodhouse" <dwmw2@infradead.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-42-joro@8bytes.org>
-References: <20260608144252.351443-42-joro@8bytes.org>
+In-Reply-To: <20260608145455.89187-26-dwmw2@infradead.org>
+References: <20260608145455.89187-26-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 19:49:09 +0000
-Message-Id: <20260608194909.891731F0089A@smtp.kernel.org>
+Date: Mon, 08 Jun 2026 19:58:35 +0000
+Message-Id: <20260608195835.CCFD71F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,76 +46,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Per-plane APIC map recalculation erroneously overwrites VM-global =
-APICv inhibit state, enabling APICv unsafely.
+
+Pre-existing issues:
+- [High] Double-counting and state corruption of KVM Xen runstate times due=
+ to reentrancy from preempt notifiers.
 --
 
-commit ed523cb8e92284e8a72c3abcbafa7f4ecb34091f
-Author: Paolo Bonzini <pbonzini@redhat.com>
+commit 4a9cda06784af6de072f170463bdc1b39cf8245c
+Author: David Woodhouse <dwmw@amazon.co.uk>
 
-    KVM: x86: Move apic_map to per-plane state
-   =20
-    This commit moves the local APIC map and related dirty tracking from KVM
-    VM-wide state into the per-plane structure.
+KVM: x86/xen: Handle retrograde KVM clock in runstate accounting
 
-> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-> index 1b763f164951..06a12b49fafa 100644
-> --- a/arch/x86/kvm/lapic.c
-> +++ b/arch/x86/kvm/lapic.c
-> @@ -403,36 +403,37 @@ enum {
->  	DIRTY
->  };
-> =20
-> -static void kvm_recalculate_apic_map(struct kvm *kvm)
-> +static void kvm_recalculate_apic_map(struct kvm_plane *plane)
->  {
->  	struct kvm_apic_map *new, *old =3D NULL;
-> +	struct kvm *kvm =3D plane->kvm;
+When kvm_xen_update_runstate() is invoked to set a vCPU's runstate, the
+time spent in the previous runstate is accounted. This commit handles
+cases where the KVM clock goes backwards by refraining from updating
+runstate times until the clock catches up with runstate_entry_time.
+
+> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> index 82e34edbfdbd..b1d67ece5db3 100644
+> --- a/arch/x86/kvm/xen.c
+> +++ b/arch/x86/kvm/xen.c
 
 [ ... ]
 
-> @@ -498,16 +499,16 @@ static void kvm_recalculate_apic_map(struct kvm *kv=
-m)
->  	else
->  		kvm_clear_apicv_inhibit(kvm, APICV_INHIBIT_REASON_APIC_ID_MODIFIED);
+> @@ -586,29 +586,45 @@ void kvm_xen_update_runstate(struct kvm_vcpu *v, in=
+t state)
+
+[ ... ]
+
+>  	vx->runstate_times[vx->current_runstate] +=3D delta_ns;
+> -	vx->current_runstate =3D state;
+>  	vx->runstate_entry_time =3D now;
 > =20
+> + update_guest:
+> +	vx->current_runstate =3D state;
 
 [Severity: High]
-Does this per-plane recalculation erroneously overwrite the VM-global APICv
-inhibit state?
+This isn't a bug introduced by this patch, but can this read-modify-write
+sequence be safely executed with preemption enabled?
 
-Since APICv inhibit flags (like APICV_INHIBIT_REASON_PHYSICAL_ID_ALIASED) a=
-re
-global per-VM state stored in kvm->arch.apicv_inhibit_reasons, unconditiona=
-lly
-clearing them when a single plane doesn't have aliases might be unsafe.
+If record_steal_time() calls kvm_xen_update_runstate() with preemption
+enabled, and the thread is preempted in the middle of these updates:
 
-If Plane 0 correctly inhibits APICv due to aliased IDs, and a subsequent
-recalculation occurs on Plane 1 (which lacks aliases), would this
-kvm_clear_apicv_inhibit() call globally clear the inhibit flag?
+Original thread starts:
+    vx->runstate_times[vx->current_runstate] +=3D delta_ns;
+    <preempted here>
 
-This could improperly re-enable hardware APIC virtualization for the entire=
- VM
-while Plane 0 is still in an invalid aliased state, leading to incorrect
-interrupt delivery and potential hardware state corruption.
+Preempt notifier kvm_sched_out() triggers:
+    kvm_xen_runstate_set_preempted() re-enters kvm_xen_update_runstate()
+    updates vx->runstate_entry_time and vx->current_runstate
 
-> -	old =3D rcu_dereference_protected(kvm->arch.apic_map,
-> -			lockdep_is_held(&kvm->arch.apic_map_lock));
-> -	rcu_assign_pointer(kvm->arch.apic_map, new);
-> +	old =3D rcu_dereference_protected(plane->arch.apic_map,
-> +			lockdep_is_held(&plane->arch.apic_map_lock));
-> +	rcu_assign_pointer(plane->arch.apic_map, new);
->  	/*
-> -	 * Write kvm->arch.apic_map before clearing apic->apic_map_dirty.
-> +	 * Write kvm->arch.apic_map before clearing plane->apic_map_dirty.
->  	 * If another update has come in, leave it DIRTY.
->  	 */
-> -	atomic_cmpxchg_release(&kvm->arch.apic_map_dirty,
-> +	atomic_cmpxchg_release(&plane->arch.apic_map_dirty,
->  			       UPDATE_IN_PROGRESS, CLEAN);
-> -	mutex_unlock(&kvm->arch.apic_map_lock);
-> +	mutex_unlock(&plane->arch.apic_map_lock);
+Original thread resumes:
+    vx->runstate_entry_time =3D now;
+    vx->current_runstate =3D state;
+
+Would this cause the original execution to overwrite the state variables
+with its old, pre-preemption timestamps and state? It seems this would
+obliterate the preempt notifier's update and force runstate_entry_time
+backwards, potentially causing KVM to double-count elapsed time on the
+next accounting cycle.
+
+Does this state tracking need to be protected by disabling preemption or
+using a lock to avoid this reentrancy problem?
+
+> +	vx->last_steal =3D run_delay;
+>  	if (vx->runstate_cache.active)
+>  		kvm_xen_update_runstate_guest(v, state =3D=3D RUNSTATE_runnable);
+>  }
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D41
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608145455.8918=
+7-1-dwmw2@infradead.org?part=3D25
