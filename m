@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702533D8133;
-	Mon,  8 Jun 2026 14:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840963D647F;
+	Mon,  8 Jun 2026 14:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780929799; cv=none; b=nJuErF6XhnilJZ1eaTp0YqDX85MaBY328beCgVSj+DYQuCrSLYmFdDxvcoGXIbheenEMH+Ojjk/qMkqxLNJpllGXmb96yGw+GELQYGIkCo3P+9q22Ijus99tqF8kd6H6XlkUT7lGn2qoO3KLoxrsDg0GqoNcbMZoPz8HgaXDjjY=
+	t=1780929799; cv=none; b=eujn6chPfk/Qm+HrueV9WpqoF3qEYIXWLSdlqs9aH7Toimsd7ccDT0ZPEDT+MulYWQpwdrEuuOuZce/0ui8096phaqwmNCZ6mCZJ7kxLYxLuzHqdGUIjyOzwg19Urx1uwykd5yzCy8AzF7md43cpnIDLItnPF+Uoe9EisYI7Y18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780929799; c=relaxed/simple;
-	bh=B8owqNt41sNkaAjE2zg/9bm9OW2tnDyZAeoTDaGU7ao=;
+	bh=6aySD2cd3gjBLclt68B9z4lNL1/HGQzFEpEM/r752dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opqnJEe/L8CMya4yEP1fyJk5HbDmQATjfeF79/SIgNzvlLcighJbMI5vhHl8K2bz8U3l/xh3/jPgGC0tIxAGwGQbSR0lTr88c663BpxdKRhHmI1U/EXvND6fwQXUvDKnovS6bSv7+u1zDTlaeafhwIwvNcWpz5UFVZGPRgSPZ2w=
+	 MIME-Version; b=OleMjl1HiHhCe++XLLQAlwgyVXSMb/X0Mn2ItmcPa0ORiF7S0rTYGWAlntO8hvkD8roN2CrYoxsXgaI7587OIceXr3sFcACR5aZfUCczCYDCQqSbUhE+Q0bAWqI1KvgBZH4VUk10d62UoNKm1Pj1fdH83GC8RDQBPOmvZ9K66F0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,8 +16,8 @@ Received: from io.home.8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 255222028AD;
-	Mon,  8 Jun 2026 16:43:07 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id B25C02028AB;
+	Mon,  8 Jun 2026 16:43:06 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
@@ -38,9 +38,9 @@ Cc: Tom Lendacky <thomas.lendacky@amd.com>,
 	x86@kernel.org,
 	coconut-svsm@lists.linux.dev,
 	joerg.roedel@amd.com
-Subject: [PATCH 10/60] kvm: Move vcpu_array to struct kvm_plane
-Date: Mon,  8 Jun 2026 16:42:02 +0200
-Message-ID: <20260608144252.351443-11-joro@8bytes.org>
+Subject: [PATCH 08/60] Documentation: kvm: introduce "VM plane" concept
+Date: Mon,  8 Jun 2026 16:42:00 +0200
+Message-ID: <20260608144252.351443-9-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
 References: <20260608144252.351443-1-joro@8bytes.org>
@@ -54,192 +54,431 @@ Content-Transfer-Encoding: 8bit
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-Each plane will have its own set of VCPUs, so move the vcpu_array to
-the plane structure.
+There have been multiple occurrences of processors introducing a virtual
+privilege level concept for guests, where the hypervisor hosts multiple
+copies of a vCPU's register state (or at least of most of it) and provides
+hypercalls or instructions to switch between them.  These include AMD
+VMPLs, Intel TDX partitions, Microsoft Hyper-V VTLs, and ARM CCA planes.
+Include documentation on how the feature will be exposed to userspace.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+In the past, two main solutions that were attempted, mostly in the context
+of Hyper-V VTLs and SEV-SNP VMPLs:
+
+- use a single vCPU file descriptor, and store multiple copies of the state
+  in a single struct kvm_vcpu.  This requires a lot of changes to
+  provide multiple copies of affected fields, especially MMUs and APICs;
+  and complex uAPI extensions to direct existing ioctls to a specific
+  privilege level.  This solution looked marginally okay for SEV-SNP
+  VMPLs, but only because the copies of the register state were hidden
+  in the VMSA (KVM does not manage it); it showed all its problems when
+  applied to Hyper-V VTLs.
+
+- use multiple VM and vCPU file descriptors, and handle the switch entirely
+  in userspace.  This got gnarly pretty fast for even more reasons than
+  the previous case, for example because VMs could not share anymore
+  memslots, including dirty bitmaps and private/shared attributes (a
+  substantial problem for SEV-SNP since VMPLs share their ASID).  Another
+  problem was the need to share _some_ register state across VTLs and
+  to control that vCPUs did not run in parallel; there needed to be a
+  lot of logic to be added in userspace to ensure that higher-privileged
+  VTL properly interrupted a lower-privileged one.
+
+  This solution also complicates in-kernel implementation of privilege
+  level switch, or even makes it impossible, because there is no kernel
+  knowledge of the relationship between vCPUs that have the same id but
+  belong to different privilege levels.
+
+Especially given the need to accelerate switches in kernel, it is clear
+that KVM needs some level of knowledge of the relationship between vCPUs
+that have the same id but belong to different privilege levels.  For this
+reason, I proposed a design that only gives the initial set of VM and vCPU file
+descriptors the full set of ioctls + struct kvm_run; other privilege
+levels instead only support a small part of the KVM API.  In fact for
+the vm file descriptor it is only three ioctls: KVM_CHECK_EXTENSION,
+KVM_SIGNAL_MSI, KVM_SET_MEMORY_ATTRIBUTES.  For vCPUs it is basically
+KVM_GET/SET_*.
+
+This solves a lot of the problems in the multiple-file-descriptors solution,
+namely it gets for free the ability to avoid parallel execution of the
+same vCPUs in different privilege levels.  Changes to the userspace API
+of course exist, but they are relatively small and more easily backwards
+compatible, because they boil down to the introduction of new file
+descriptor kinds instead of having to change the inputs to all affected
+ioctls.
+
+It does share some of the code churn issues in the single-file-descriptor
+solution; on the other hand a prototype multi-fd VMPL implementation[1]
+also needed large scale changes which therefore seem unavoidable when
+privilege levels are provided by hardware, and not a software concept
+only as is the case for VTLs.
+hardware
+
+   [1] https://lore.kernel.org/lkml/cover.1726506534.git.roy.hopkins@suse.com/
+
+Acknowledgements: thanks to everyone who participated in the discussions,
+you are too many to mention in a small margin.  Thanks to Roy Hopkins,
+Tom Lendacky, Anel Orazgaliyeva, Nicolas Saenz-Julienne for experimenting
+with implementations of VTLs and VMPLs.
+
+Ah, and because x86 has three names for it and Arm has one, choose the
+Arm name for all architectures to avoid bikeshedding and to displease
+everyone---including the KVM/arm64 folks, probably.
+
 Co-developed-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- include/linux/kvm_host.h | 30 +++++++++++++++++++++---------
- virt/kvm/kvm_main.c      | 33 +++++++++++++++++++++++++--------
- 2 files changed, 46 insertions(+), 17 deletions(-)
+ Documentation/virt/kvm/api.rst | 102 +++++++++++++++++++++++----------
+ 1 file changed, 72 insertions(+), 30 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 5be4c9f118b4..5a72f73a2f31 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -324,12 +324,14 @@ struct kvm_mmio_fragment {
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index 52bbbb553ce1..d90b4a406454 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -56,6 +56,18 @@ be checked with :ref:`KVM_CHECK_EXTENSION <KVM_CHECK_EXTENSION>`.  Some
+ capabilities also need to be enabled for VMs or VCPUs where their
+ functionality is desired (see :ref:`cap_enable` and :ref:`cap_enable_vm`).
  
- struct kvm_vcpu {
- 	struct kvm *kvm;
-+	struct kvm_plane *plane;
++On some architectures, a "virtual privilege level" concept may be present
++apart from the usual separation between user and supervisor mode, or
++between hypervisor and guest mode.  When this is the case, a single vCPU
++can have multiple copies of its register state (or at least most of it),
++and will switch between them through a special processor instruction,
++or through some kind of hypercall.
 +
- #ifdef CONFIG_PREEMPT_NOTIFIERS
- 	struct preempt_notifier preempt_notifier;
- #endif
- 	int cpu;
- 	int vcpu_id; /* id given by userspace at creation */
--	int vcpu_idx; /* index into kvm->vcpu_array */
-+	int vcpu_idx; /* index into kvm->planes[]->vcpu_array */
- 	int ____srcu_idx; /* Don't use this directly.  You've been warned. */
- #ifdef CONFIG_PROVE_RCU
- 	int srcu_depth;
-@@ -770,6 +772,9 @@ struct kvm_memslots {
- struct kvm_plane {
- 	struct kvm *kvm;
- 	unsigned level;
++KVM calls these privilege levels "planes".  Planes other than the
++initially-created one (called "plane 0") have a file descriptor each,
++and so do the planes of each vCPU.  Ioctls for vCPU planes should also
++be issued from a single thread, unless specially marked as asynchronous
++in the documentation.
+ 
+ 2. Restrictions
+ ===============
+@@ -119,6 +131,11 @@ description:
+   Type:
+       system, vm, or vcpu.
+ 
++      File descriptors for planes other than plane 0 provide a subset
++      of vm and vcpu ioctls.  Those that *are* supported in extra
++      planes are marked specially in the documentation (for example,
++      `vcpu (all planes)`).
 +
-+	/* Per-Plane VCPU array */
-+	struct xarray vcpu_array;
- };
+   Parameters:
+       what parameters are accepted by the ioctl.
  
- struct kvm {
-@@ -795,7 +800,6 @@ struct kvm {
- 	struct kvm_memslots __memslots[KVM_MAX_NR_ADDRESS_SPACES][2];
- 	/* The current active memslot set for each address space */
- 	struct kvm_memslots __rcu *memslots[KVM_MAX_NR_ADDRESS_SPACES];
--	struct xarray vcpu_array;
- 	/*
- 	 * Protected by slots_lock, but can be read outside if an
- 	 * incorrect answer is acceptable.
-@@ -996,9 +1000,9 @@ static inline struct kvm_io_bus *kvm_get_bus(struct kvm *kvm, enum kvm_bus idx)
- 					 lockdep_is_held(&kvm->slots_lock));
- }
+@@ -309,7 +326,7 @@ the VCPU file descriptor can be mmap-ed, including:
  
--static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
-+static inline struct kvm_vcpu *plane_get_vcpu(struct kvm_plane *plane, int i)
- {
--	int num_vcpus = atomic_read(&kvm->online_vcpus);
-+	int num_vcpus = atomic_read(&plane->kvm->online_vcpus);
+ :Capability: basic
+ :Architectures: all
+-:Type: vm ioctl
++:Type: vm ioctl (all planes)
+ :Parameters: vcpu id (apic id on x86)
+ :Returns: vcpu fd on success, -1 on error
  
- 	/*
- 	 * Explicitly verify the target vCPU is online, as the anti-speculation
-@@ -1012,13 +1016,21 @@ static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
+@@ -350,6 +367,8 @@ machines, the resulting vcpu fd can be memory mapped at page offset
+ KVM_S390_SIE_PAGE_OFFSET in order to obtain a memory map of the virtual
+ cpu's hardware control block.
  
- 	/* Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu.  */
- 	smp_rmb();
--	return xa_load(&kvm->vcpu_array, i);
-+	return xa_load(&plane->vcpu_array, i);
- }
++VCPUs for non-zero planes can only be created if the VCPU the same index has
++already been created for plane zero.
  
--#define kvm_for_each_vcpu(idx, vcpup, kvm)				\
--	if (atomic_read(&kvm->online_vcpus))				\
--		xa_for_each_range(&kvm->vcpu_array, idx, vcpup, 0,	\
--				  (atomic_read(&kvm->online_vcpus) - 1))
-+static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
-+{
-+	return plane_get_vcpu(kvm->planes[0], i);
-+}
+ 4.8 KVM_GET_DIRTY_LOG
+ ---------------------
+@@ -421,7 +440,7 @@ kvm_run' (see below).
+ 
+ :Capability: basic
+ :Architectures: all except arm64
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_regs (out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -461,7 +480,7 @@ Reads the general purpose registers from the vcpu.
+ 
+ :Capability: basic
+ :Architectures: all except arm64
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_regs (in)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -475,7 +494,7 @@ See KVM_GET_REGS for the data structure.
+ 
+ :Capability: basic
+ :Architectures: x86, ppc
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_sregs (out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -506,7 +525,7 @@ but not yet injected into the cpu core.
+ 
+ :Capability: basic
+ :Architectures: x86, ppc
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_sregs (in)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -519,7 +538,7 @@ data structures.
+ 
+ :Capability: basic
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_translation (in/out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -645,7 +664,7 @@ This is an asynchronous vcpu ioctl and can be invoked from any thread.
+ 
+ :Capability: basic (vcpu), KVM_CAP_GET_MSR_FEATURES (system)
+ :Architectures: x86
+-:Type: system ioctl, vcpu ioctl
++:Type: system ioctl, vcpu ioctl (all planes)
+ :Parameters: struct kvm_msrs (in/out)
+ :Returns: number of msrs successfully returned;
+           -1 on error
+@@ -685,7 +704,7 @@ kvm will fill in the 'data' member.
+ 
+ :Capability: basic
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_msrs (in)
+ :Returns: number of msrs successfully set (see below), -1 on error
+ 
+@@ -773,7 +792,7 @@ signal mask.
+ 
+ :Capability: basic
+ :Architectures: x86, loongarch
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_fpu (out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -811,7 +830,7 @@ Reads the floating point state from the vcpu.
+ 
+ :Capability: basic
+ :Architectures: x86, loongarch
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_fpu (in)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -1128,7 +1147,7 @@ Other flags returned by ``KVM_GET_CLOCK`` are accepted but ignored.
+ :Capability: KVM_CAP_VCPU_EVENTS
+ :Extended by: KVM_CAP_INTR_SHADOW
+ :Architectures: x86, arm64
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_vcpu_events (out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -1254,7 +1273,7 @@ Calling this ioctl on a vCPU that hasn't been initialized will return
+ :Capability: KVM_CAP_VCPU_EVENTS
+ :Extended by: KVM_CAP_INTR_SHADOW
+ :Architectures: x86, arm64
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_vcpu_events (in)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -1323,7 +1342,7 @@ Calling this ioctl on a vCPU that hasn't been initialized will return
+ 
+ :Capability: KVM_CAP_DEBUGREGS
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_debugregs (out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -1345,7 +1364,7 @@ Reads debug registers from the vcpu.
+ 
+ :Capability: KVM_CAP_DEBUGREGS
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_debugregs (in)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -1662,7 +1681,7 @@ otherwise it will return EBUSY error.
+ 
+ :Capability: KVM_CAP_XSAVE
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_xsave (out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -1682,7 +1701,7 @@ This ioctl would copy current vcpu's xsave struct to the userspace.
+ 
+ :Capability: KVM_CAP_XSAVE and KVM_CAP_XSAVE2
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_xsave (in)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -1710,7 +1729,7 @@ contents of CPUID leaf 0xD on the host.
+ 
+ :Capability: KVM_CAP_XCRS
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_xcrs (out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -1737,7 +1756,7 @@ This ioctl would copy current vcpu's xcrs to the userspace.
+ 
+ :Capability: KVM_CAP_XCRS
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_xcrs (in)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -1886,11 +1905,14 @@ The flags bitmap is defined as::
+ 
+ :Capability: KVM_CAP_IRQ_ROUTING
+ :Architectures: x86 s390 arm64
+-:Type: vm ioctl
++:Type: vm ioctl (all planes)
+ :Parameters: struct kvm_irq_routing (in)
+ :Returns: 0 on success, -1 on error
+ 
+ Sets the GSI routing table entries, overwriting any previously set entries.
++Note that the kernel maintains only one GSI routing table for all planes. The
++plane for which the GSI routing table was set last will receive all interrupts
++signaled through GSI pins.
+ 
+ On arm64, GSI routing has the following limitation:
+ 
+@@ -2040,7 +2062,7 @@ error.
+ 
+ :Capability: KVM_CAP_IRQCHIP
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_lapic_state (out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -2071,7 +2093,7 @@ always uses xAPIC format.
+ 
+ :Capability: KVM_CAP_IRQCHIP
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_lapic_state (in)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -2305,7 +2327,7 @@ prior to calling the KVM_RUN ioctl.
+ 
+ :Capability: KVM_CAP_ONE_REG
+ :Architectures: all
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_one_reg (in)
+ :Returns: 0 on success, negative value on failure
+ 
+@@ -2930,7 +2952,7 @@ Following are the KVM-defined registers for x86:
+ 
+ :Capability: KVM_CAP_ONE_REG
+ :Architectures: all
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_one_reg (in and out)
+ :Returns: 0 on success, negative value on failure
+ 
+@@ -2984,7 +3006,7 @@ after pausing the vcpu, but before it is resumed.
+ 
+ :Capability: KVM_CAP_SIGNAL_MSI
+ :Architectures: x86 arm64
+-:Type: vm ioctl
++:Type: vm ioctl (all planes)
+ :Parameters: struct kvm_msi (in)
+ :Returns: >0 on delivery, 0 if guest blocked the MSI, and -1 on error
+ 
+@@ -3605,7 +3627,7 @@ VCPU matching underlying host.
+ 
+ :Capability: basic
+ :Architectures: arm64, mips, riscv, x86 (if KVM_CAP_ONE_REG)
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_reg_list (in/out)
+ :Returns: 0 on success; -1 on error
+ 
+@@ -4904,7 +4926,7 @@ The acceptable values for the flags field are::
+ 
+ :Capability: KVM_CAP_NESTED_STATE
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_nested_state (in/out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -4978,7 +5000,7 @@ to the KVM_CHECK_EXTENSION ioctl().
+ 
+ :Capability: KVM_CAP_NESTED_STATE
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_nested_state (in)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -5859,7 +5881,7 @@ then ``length`` is returned.
+ 
+ :Capability: KVM_CAP_SREGS2
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_sregs2 (out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -5892,7 +5914,7 @@ flags values for ``kvm_sregs2``:
+ 
+ :Capability: KVM_CAP_SREGS2
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_sregs2 (in)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -6108,7 +6130,7 @@ as the descriptors in Descriptors block.
+ 
+ :Capability: KVM_CAP_XSAVE2
+ :Architectures: x86
+-:Type: vcpu ioctl
++:Type: vcpu ioctl (all planes)
+ :Parameters: struct kvm_xsave (out)
+ :Returns: 0 on success, -1 on error
+ 
+@@ -6555,6 +6577,26 @@ KVM_S390_KEYOP_SSKE
+ 
+ .. _kvm_run:
+ 
++.. _KVM_CREATE_PLANE:
 +
-+#define plane_for_each_vcpu(idx, vcpup, plane)					\
-+	if (atomic_read(&plane->kvm->online_vcpus))				\
-+		xa_for_each_range(&plane->vcpu_array, idx, vcpup, 0,		\
-+				  (atomic_read(&plane->kvm->online_vcpus) - 1))
++4.145 KVM_CREATE_PLANE
++----------------------
 +
-+#define kvm_for_each_vcpu(idx, vcpup, kvm)					\
-+	plane_for_each_vcpu(idx, vcpup, kvm->planes[0])
- 
- static inline struct kvm_vcpu *kvm_get_vcpu_by_id(struct kvm *kvm, int id)
- {
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index a68469c6d12e..668645dd3945 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -443,6 +443,7 @@ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
- 	mutex_init(&vcpu->mutex);
- 	vcpu->cpu = -1;
- 	vcpu->kvm = kvm;
-+	vcpu->plane = kvm->planes[0];
- 	vcpu->vcpu_id = id;
- 	vcpu->pid = NULL;
- 	rwlock_init(&vcpu->pid_lock);
-@@ -479,14 +480,14 @@ static void kvm_vcpu_destroy(struct kvm_vcpu *vcpu)
- 	kmem_cache_free(kvm_vcpu_cache, vcpu);
- }
- 
--void kvm_destroy_vcpus(struct kvm *kvm)
-+static void plane_destroy_vcpus(struct kvm_plane *plane)
- {
- 	unsigned long i;
- 	struct kvm_vcpu *vcpu;
- 
--	kvm_for_each_vcpu(i, vcpu, kvm) {
-+	plane_for_each_vcpu(i, vcpu, plane) {
- 		kvm_vcpu_destroy(vcpu);
--		xa_erase(&kvm->vcpu_array, i);
-+		xa_erase(&plane->vcpu_array, i);
- 
- 		/*
- 		 * Assert that the vCPU isn't visible in any way, to ensure KVM
-@@ -494,7 +495,22 @@ void kvm_destroy_vcpus(struct kvm *kvm)
- 		 * in VM-wide request, e.g. to flush remote TLBs when tearing
- 		 * down MMUs, or to mark the VM dead if a KVM_BUG_ON() fires.
- 		 */
--		WARN_ON_ONCE(xa_load(&kvm->vcpu_array, i) || kvm_get_vcpu(kvm, i));
-+		WARN_ON_ONCE(xa_load(&plane->vcpu_array, i) || plane_get_vcpu(plane, i));
-+	}
++:Capability: KVM_CAP_PLANES
++:Architectures: none
++:Type: vm ioctl
++:Parameters: plane id
++:Returns: a VM fd that can be used to control the new plane.
 +
-+}
++Creates a new *plane*, i.e. a separate privilege level for the virtual machine.
 +
-+void kvm_destroy_vcpus(struct kvm *kvm)
-+{
-+	unsigned lvl;
++Each plane has a numeric id that is used when communicating with KVM.  While
++KVM is currently agnostic to whether low ids are more or less privileged, it is
++expected that this will not always be the case in the future.  For example KVM
++in the future may use the plane id when planes are supported by hardware (as is
++the case for VMPLs in AMD), or if KVM supports accelerated plane switch
++operations (as might be the case for Hyper-V VTLs).
 +
-+	for (lvl = KVM_MAX_PLANES; lvl > 0; lvl--) {
-+		struct kvm_plane *plane = kvm->planes[lvl - 1];
-+
-+		if (plane == NULL)
-+			continue;
-+
-+		plane_destroy_vcpus(plane);
- 	}
+ 5. The kvm_run structure
+ ========================
  
- 	atomic_set(&kvm->online_vcpus, 0);
-@@ -1105,6 +1121,8 @@ static struct kvm_plane *kvm_create_plane(struct kvm *kvm, unsigned plane_level)
- 	plane->kvm = kvm;
- 	plane->level = plane_level;
- 
-+	xa_init(&plane->vcpu_array);
-+
- 	kvm->planes[plane_level] = plane;
- 
- 	return plane;
-@@ -1146,7 +1164,6 @@ static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
- 	mutex_init(&kvm->slots_arch_lock);
- 	spin_lock_init(&kvm->mn_invalidate_lock);
- 	rcuwait_init(&kvm->mn_memslots_update_rcuwait);
--	xa_init(&kvm->vcpu_array);
- #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
- 	xa_init(&kvm->mem_attr_array);
- #endif
-@@ -4039,7 +4056,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
- 		if (idx == me->vcpu_idx)
- 			continue;
- 
--		vcpu = xa_load(&kvm->vcpu_array, idx);
-+		vcpu = xa_load(&kvm->planes[0]->vcpu_array, idx);
- 		if (!READ_ONCE(vcpu->ready))
- 			continue;
- 		if (kvm_vcpu_is_blocking(vcpu) && !vcpu_dy_runnable(vcpu))
-@@ -4258,7 +4275,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- 	}
- 
- 	vcpu->vcpu_idx = atomic_read(&kvm->online_vcpus);
--	r = xa_insert(&kvm->vcpu_array, vcpu->vcpu_idx, vcpu, GFP_KERNEL_ACCOUNT);
-+	r = xa_insert(&kvm->planes[0]->vcpu_array, vcpu->vcpu_idx, vcpu, GFP_KERNEL_ACCOUNT);
- 	WARN_ON_ONCE(r == -EBUSY);
- 	if (r)
- 		goto unlock_vcpu_destroy;
-@@ -4293,7 +4310,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- kvm_put_xa_erase:
- 	mutex_unlock(&vcpu->mutex);
- 	kvm_put_kvm_no_destroy(kvm);
--	xa_erase(&kvm->vcpu_array, vcpu->vcpu_idx);
-+	xa_erase(&kvm->planes[0]->vcpu_array, vcpu->vcpu_idx);
- unlock_vcpu_destroy:
- 	mutex_unlock(&kvm->lock);
- 	kvm_dirty_ring_free(&vcpu->dirty_ring);
 -- 
 2.53.0
 
