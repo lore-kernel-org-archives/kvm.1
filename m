@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5144A23
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 22:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AB4353EF3
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 22:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780956631; cv=none; b=Om0t+pABvAhvZrvdixXUoe2rpQC4/Dc5hN+KUQ0bjd2HeEGzsgardnGEDGpSjw8fd/7HzoOe2lIafkp4TwLDvAnf90oQoevN8+pCjka9gi6j3KLdOUnRvkEc0t+YGmGZaHaJLvBQO0eXnGqOXcDpAmpwlkFpR2dPPblAufJiYU4=
+	t=1780957947; cv=none; b=WkJffD3aKGIsA8ywZqDNwIHSNbIRE0T5zsoFWs7sUWWF//90NfzFi7w+1VnZNEmGAqPXNnXIJMnVrUvyhhwrbTbO+2H3CKMSmpnDNfQuCCCsdgtey6FGO/thIRbx99iFuhuZG+r/0KJ9DOMcH1AvBlhSQfZvXCKFOq4cuEQiYlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780956631; c=relaxed/simple;
-	bh=ibLZERc3yFCSG3U8rVioI+C3Y7EebOdK5bRKC3ic1nc=;
+	s=arc-20240116; t=1780957947; c=relaxed/simple;
+	bh=QknG9VD0Id2vFEVniTI1ZsfPRSwHgmKqmqeQgMHU6XQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=U1K5THq6F5UqHfXFYDfIiP26z2SF7ccF7XBaAx2wg+qeJbyOupagjnzLoUN8fkaatwvE1lO2e+Ga+zPcewz0NUZEgezGg/pu9w3zWOBHz6us6zVKyy2S3FkYrIV+Fm8cK6jrWxlJ75bpIs4PTelN/dJacxb9yRtA9Y9970zwPUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mDFZYcyg; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=gPt9YdR8S+VoiPSo3BqGjz6PPx7i/Imxg7dX/TmI1OmnGeM/f5VqyFXTpleeA7HZQszA0Pgw4X87e7XkJs6GXfJQL8HdJ6KRVDCnnbMa4eqhMqRekb55kEIMjrP2/q2+Sl4IQWRnBuomRcEMI1YAx9Pe+P91TCUdBmOcOOdprHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjI1caaM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mDFZYcyg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8C31F00893;
-	Mon,  8 Jun 2026 22:10:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjI1caaM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3801F00893;
+	Mon,  8 Jun 2026 22:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780956629;
-	bh=Skl+22p/a3TXR8aFl0toDMent7Q6M5iHol2ruLoNwVs=;
+	s=k20260515; t=1780957946;
+	bh=QhXRWl0RGOE6nm/8Fq0ZqIW5vXZORqN+KwIIWBhUhs0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mDFZYcygTH7DUjDIQLmCqCi2UGGMk/u+fm5i1S7sy73qxxtOjv3zcxOFuz5ddLp3G
-	 q7n9bC1x6ZLai2iA0MmnsxKlbpcjYqXQzpUG3pNE27n51FE3SEjZlsUgURLjHr5UIO
-	 /po2CcazkKQKtXJBO2mHljcdYZq0gWc8konWxjD3c1+5+stc44ylITVO6p0tQjDOSl
-	 mNHyIMPAFYQezxq8QlVLnG0Z5pKnGkOnn0eDomS+3mKJSw3amkmH2ibHkHMAKnc3jl
-	 gfW0CXK0VGuL8wKBWsCJvG6CHccPN5STNp+YrOOwRd/yiYuaOG/P+cgl8rAhhwiHv5
-	 qCnhKGssXsNig==
+	b=CjI1caaMFamZ+6+Jh7OADBN3I4Np4fjGcFHuZ865Zt9dgRiMe6ZXGxot1aZwop2b7
+	 IO9ziHmN7RvthTNcrdZRh2dO7iFj/1SBlHpEovKes5HeSZC08OqDisjiECLlXbF9IH
+	 CWxFHKbMH20MMVWuoF6U+OMugMOU8UwN8N8CRdVhqDiB9//1y+csd4AMoEl9Kjh9la
+	 k9nh5eLY2a1vn3LYOpx4D850sHVFAGNajRY9gXIA25Jr4aS0K8IVHLHP9rsK8ylmEr
+	 HY2cwQm+SPQBvN4z6LBgbxzinAmnJ7IXpmKxLOPNA4yCBKtxnNDeZ7etXNRQsqBZ0f
+	 eZfuIgwGB9FoQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 52/60] kvm: x86: Switch to plane0 if it has events
+Subject: Re: [PATCH 54/60] kvm: x86: Restrict KVM planes support to
+ KVM_IRQCHIP_SPLIT
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-53-joro@8bytes.org>
-References: <20260608144252.351443-53-joro@8bytes.org>
+In-Reply-To: <20260608144252.351443-55-joro@8bytes.org>
+References: <20260608144252.351443-55-joro@8bytes.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 22:10:29 +0000
-Message-Id: <20260608221029.BF8C31F00893@smtp.kernel.org>
+Date: Mon, 08 Jun 2026 22:32:25 +0000
+Message-Id: <20260608223226.0D3801F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,83 +46,112 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] Cross-vCPU architectural state corruption due to accessing har=
-dware-backed state of an unloaded vCPU.
-- [High] Event starvation for plane 0 due to checking post-processed pendin=
-g flags instead of queued KVM requests.
+
+New issues:
+- [Low] Redundant and mathematically unreachable `kvm->has_planes` checks i=
+n KVM ioctls.
+
+Pre-existing issues:
+- [Critical] Dangling pointer in `kvm->planes[id]` upon `anon_inode_getfile=
+` failure leading to a Use-After-Free and Double Free.
 --
 
-commit 376cda0c730616cf64ef48d0e29e3bef6fee2d77
+commit b876ab94af3e1c6ebb40fe49338194bf465b5ec6
 Author: Joerg Roedel <joerg.roedel@amd.com>
 
-When there are IRQs or events pending for plane0, make sure it can handle i=
-t.
+kvm: x86: Restrict KVM planes support to KVM_IRQCHIP_SPLIT
 
-This commit introduces a check in the vCPU entry path to determine if plane=
-0=20
-has pending events like interrupts, NMIs, or SMIs. If plane0 has pending=20
-events, it makes requests to reschedule to plane0 so it can process them.
+The code right now only supports plane-aware IOAPIC IRQ routing for
+IRQ-chip in split mode. Enforce that restriction in the KVM x86 code.
 
 > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 08fe65b8d57d..60b34bd4da9d 100644
+> index c6910356b0619..0b9fa10594812 100644
 > --- a/arch/x86/kvm/x86.c
 > +++ b/arch/x86/kvm/x86.c
-> @@ -10962,6 +10962,20 @@ static int kvm_check_and_inject_events(struct kv=
-m_vcpu *vcpu,
->  	return r;
->  }
+
+[ ... ]
+
+> @@ -6833,7 +6837,7 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+>  		if (cap->args[0] > KVM_MAX_IRQ_ROUTES)
+>  			goto split_irqchip_unlock;
+>  		r =3D -EEXIST;
+> -		if (irqchip_in_kernel(kvm))
+> +		if (irqchip_in_kernel(kvm) || kvm->has_planes)
+
+[Severity: Low]
+Is this kvm->has_planes check redundant? Since kvm->has_planes is only
+set to true in kvm_vm_ioctl_create_plane() which requires
+kvm_arch_irqchip_in_kernel(kvm) to already be true, wouldn't
+irqchip_in_kernel(kvm) always evaluate to true if has_planes is set?
+
+>  			goto split_irqchip_unlock;
+>  		if (kvm->created_vcpus)
+>  			goto split_irqchip_unlock;
+
+[ ... ]
+
+> @@ -7398,7 +7402,7 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned i=
+nt ioctl, unsigned long arg)
+>  			goto create_irqchip_unlock;
 > =20
-> +static inline bool kvm_check_plane0_events(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm_vcpu *vcpu_plane0;
-> +
-> +	if (vcpu->plane_level =3D=3D 0)
-> +		return false;
-> +
-> +	vcpu_plane0 =3D vcpu->common->vcpus[0];
-> +
-> +	return kvm_cpu_has_injectable_intr(vcpu_plane0) ||
+>  		r =3D -EINVAL;
+> -		if (kvm->created_vcpus)
+> +		if (kvm->created_vcpus || kvm->has_planes)
+
+[Severity: Low]
+Is the kvm->has_planes check unreachable here? A few lines earlier in
+this same function (inside the KVM_CREATE_IRQCHIP case), there is an
+early exit:
+
+    if (irqchip_in_kernel(kvm))
+        goto create_irqchip_unlock;
+
+Because kvm->has_planes can only be set when the irqchip is in-kernel,
+wouldn't we always exit at the first check before ever reaching this
+second condition?
+
+>  			goto create_irqchip_unlock;
+> =20
+>  		r =3D kvm_pic_init(kvm);
+
+[ ... ]
+
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 09fc74fe9d848..690858be8ef5b 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+
+[ ... ]
+
+> @@ -5497,6 +5501,7 @@ static int kvm_vm_ioctl_create_plane(struct kvm *kv=
+m, unsigned id)
+>  		goto put_kvm;
+>  	}
+> =20
+> +	kvm->has_planes =3D true;
 
 [Severity: Critical]
-Does calling kvm_cpu_has_injectable_intr() on vcpu_plane0 while the current=
-=20
-vCPU is loaded risk corrupting architectural state?
+This is a pre-existing issue, but can the error path above this line leave
+a dangling pointer in kvm->planes[id]?
 
-If RFLAGS is not cached in software, the architecture-specific callback=20
-(such as vmx_interrupt_allowed()) might execute a hardware vmread to fetch=
-=20
-GUEST_RFLAGS. Because vmread implicitly reads from the currently active=20
-VMCS, it would fetch the RFLAGS of the currently running vCPU and cache it=
-=20
-into the state of vcpu_plane0.
+If anon_inode_getfile() fails, the code jumps to put_kvm and calls
+kvm_destroy_one_plane(plane). However, kvm_create_plane() already
+saved the pointer into the array:
 
-Could this silently overwrite and corrupt the state of plane0 with the stat=
-e=20
-of the active plane?
+virt/kvm/kvm_main.c:kvm_create_plane() {
+    ...
+    kvm->planes[plane_level] =3D plane;
+    ...
+}
 
-> +		vcpu_plane0->arch.nmi_pending ||
-> +		vcpu_plane0->arch.smi_pending;
-> +}
+Since kvm->planes[id] is never cleared on this error path, will a
+subsequent call to kvm_destroy_planes() during VM destruction trigger
+a double-free or use-after-free on this dangling pointer?
 
-[Severity: High]
-Does this check miss events that are queued but not yet pending?
-
-When an NMI or SMI is injected by the host, KVM sets the KVM_REQ_NMI or=20
-KVM_REQ_SMI bit and increments vcpu->arch.nmi_queued. The nmi_pending flag=
-=20
-is only updated later when process_nmi() executes during the entry loop for=
-=20
-that vCPU.
-
-Because plane0 is inactive while the secondary plane is running, its entry=
-=20
-loop never executes to transfer the queued requests to the pending state.
-
-Will kvm_check_plane0_events() evaluate to false despite NMIs or SMIs being=
-=20
-queued, potentially starving plane0? Should this check kvm_test_request()=20
-for KVM_REQ_NMI and KVM_REQ_SMI instead?
+>  	fd_install(fd, file);
+>  	return fd;
+>
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D52
+43-1-joro@8bytes.org?part=3D54
