@@ -1,114 +1,156 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EAD33F8D6
-	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 16:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBDD30569D
+	for <kvm@vger.kernel.org>; Mon,  8 Jun 2026 16:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780936675; cv=none; b=eINyoZqCMyPzQKwiJQC9aB93PDAzj1Bj+dnVUNnkDrplZ4j1kl0jAdL+9L4jW5pmbZCD1fM6ID3CDM5AqIw6/nEs9Al2Azps+3Zg5oXXOzJN/YGdkKoD51J3EhE2tC3pK7DbMkOp80X3n1f9ezRNC7zUHd132w5wR7IYuoJEYjA=
+	t=1780936779; cv=none; b=CiGEYgpEadjHS70wIi4GFzJAtnN+UW6EBSZxxV4RyqtSlr2EHntxRElNfqePO+6F0vO79JqX0Jag6N1na0QMUteSGZLuIvMxpRd+PUXYW5+GSCaBXkOD4ESAYLL8E+GKp6BBu7vK4bbKwmrKzexiStln2mx/862IkntlCClmxtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780936675; c=relaxed/simple;
-	bh=XNFOeKXks6an52eTmeRmZ6VvMe5nElYpNCKDNdPtQpQ=;
+	s=arc-20240116; t=1780936779; c=relaxed/simple;
+	bh=YS8jSAGTHN1p+8xkZwmsebfPTzKbkfOhbGwBkcLtjes=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=h2naQOVkficHkAneKsC1yRbh8aL+B1spZJvbNVBipQ30NJFaQQkQzfzyJQQGPz88PyoddWFy9ZSHfcG76hx6/V0fwHfXdCyYSKgJshBgezeke/6ZULHuUCLRam7q8c+ckLvnIhoZb0C92lN/Q3NgYB6VVOs5FTWDtGjScV0J3ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LX1+WOFp; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=M+r9ZXLmmp0S8dICfJqF3cV+D4Q3GodgVi5/rmojKgewxEogUu9mIM5RBnQ2wX3PAH0sCiTSEmUUJ78sPPrYzXtJ3Ut51WrQkImlyvTeZ/YBWGBG82cbvjKsBg4Gn4NEH7PZX4UfPwmlOjMCpBpDldklEaLteVidTkV3c5tpM2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RvfUZEnT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LX1+WOFp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CB51F00893;
-	Mon,  8 Jun 2026 16:37:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RvfUZEnT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B54F1F00893;
+	Mon,  8 Jun 2026 16:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780936669;
-	bh=X9oaJnHDSK5zqTwCBUFn73LR5p6Ik4xGoVOXGK4JDhU=;
+	s=k20260515; t=1780936778;
+	bh=kc8h8sioyu7QxdgCSvHLx2G+zuNiarScChSLgh1sVA8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LX1+WOFpehCIih+7LJoRyCHRum2qTe7PdK0r/gmevYeTd2lIerWiAc/rDd8A62Wxw
-	 4Rinv1bLsOrVsXlqyrWgJBwshZhY45sWeL0ItIUQMg7HicYC6cNulOvWAz5suOoCH9
-	 lkoTXvac0Mb6vpGBf2OGWtHQz7rUq3aIfSGQwLb1IWeyRE6NIal824KBgvzw8plaRa
-	 mkLY51JAxXq4GmdOUk9sxpbOP4vRjnrrRMC0LX7w4gAE9xQ2Zc3qNrQyX+Ild/+fTJ
-	 PaR8oARuvLiG9xvV+LRhUsDRkxrFLr5NINn4rgKk+IrZxRZpI4r6Jf6PKFRGn8IY7H
-	 I0bHD3sLPBN8g==
+	b=RvfUZEnTUqnsCNitJTF4h4cEQlZAoQvdonPfDiRGZiYWQqYGE0+qVWG/MrtMgO9d9
+	 XV7uMZ48wqg9odG7aE9VAP3qIEi8UrMCYAC9kTXIVc0pX/EOT1UQI2Ig3MXsEoU1AL
+	 uCUXS9IJeChpkf6zfqQG/q+YeJPcOcQwikgEqlyDMYgnGfuJoAi/sqWk4V52l5N6sg
+	 lSj6LI8D2gIkv+TipJYDoY4RwAqYP/4N9Jj+Uv3T5JNnXTbg0ehb6dtbosbjCfCH1k
+	 aGWvXEtUQ+OgFJueuxDPy+ce2nkyVaE9jYdSriQ9xStclIiXwgGSMruOLc7sEOk7z3
+	 Y4jpq8O/jcziw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 20/60] kvm: Move kvm_vcpu mode and requests field to
- struct kvm_vcpu_common
+Subject: Re: [PATCH v5 08/34] KVM: x86: Add KVM_VCPU_TSC_SCALE and fix the
+ documentation on TSC migration
 Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: "David Woodhouse" <dwmw2@infradead.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608144252.351443-21-joro@8bytes.org>
-References: <20260608144252.351443-21-joro@8bytes.org>
+In-Reply-To: <20260608145455.89187-9-dwmw2@infradead.org>
+References: <20260608145455.89187-9-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 08 Jun 2026 16:37:49 +0000
-Message-Id: <20260608163749.83CB51F00893@smtp.kernel.org>
+Date: Mon, 08 Jun 2026 16:39:37 +0000
+Message-Id: <20260608163938.0B54F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Kicking an inactive plane consumes the shared `IN_GUEST_MODE` tran=
-sition but sends the IPI to the wrong host CPU, leading to lost wakeups.
+- [Medium] Missing capability check for TSC scaling in `pvclock_migration_t=
+est` causes unconditional test failure on unsupported hardware.
+- [Medium] Integer overflow in `tsc_dst` and `tsc_ofs_delta_ns` calculation=
+s in `pvclock_migration_test`.
 --
 
-commit 88d15ceb3d5f247a97568016e3edb271e847d58a
-Author: Joerg Roedel <joerg.roedel@amd.com>
+commit 672fb23aded51a56922a91383781eb9402e95560
+Author: David Woodhouse <dwmw@amazon.co.uk>
 
-kvm: Move kvm_vcpu mode and requests field to struct kvm_vcpu_common
+KVM: x86: Add KVM_VCPU_TSC_SCALE and fix the documentation on TSC migration
 
-This commit moves the mode and requests fields from the per-plane
-struct kvm_vcpu into the shared struct kvm_vcpu_common. This ensures
-these states are shared across all planes of a given VCPU.
+Adds KVM_VCPU_TSC_SCALE to extract the scale ratio and frac_bits, and
+documents the process for userspace to preserve the TSC across migration.
+Adds a selftest to verify KVM clock precision across simulated live migrati=
+on.
 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 45286b3b35c9f..7704820986da5 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
+> diff --git a/tools/testing/selftests/kvm/x86/pvclock_migration_test.c b/t=
+ools/testing/selftests/kvm/x86/pvclock_migration_test.c
+> new file mode 100644
+> index 0000000000000..6a7eaf627d1a7
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/pvclock_migration_test.c
+
+[ ... ]
+
+> +int main(void)
+> +{
 
 [ ... ]
 
-> @@ -630,7 +631,7 @@ static inline int kvm_vcpu_exiting_guest_mode(struct =
-kvm_vcpu *vcpu)
->  	 * memory barrier following the write of vcpu->mode in VCPU RUN.
->  	 */
->  	smp_mb__before_atomic();
-> -	return cmpxchg(&vcpu->mode, IN_GUEST_MODE, EXITING_GUEST_MODE);
-> +	return cmpxchg(&vcpu->common->mode, IN_GUEST_MODE, EXITING_GUEST_MODE);
+> +	uint32_t freq_khz =3D 1500000; /* 1.5 GHz =E2=80=94 forces TSC scaling =
+*/
+> +	int ret;
+> +
+> +	TEST_REQUIRE(sys_clocksource_is_based_on_tsc());
+> +
+> +	/* =3D=3D=3D SOURCE SIDE =3D=3D=3D */
+> +	pr_info("=3D=3D=3D Source VM =3D=3D=3D\n");
+> +	vm =3D create_vm(&vcpu);
+> +
+> +	/* Set guest TSC frequency (may trigger scaling) */
+> +	vcpu_ioctl(vcpu, KVM_SET_TSC_KHZ, (void *)(unsigned long)freq_khz);
 
-[Severity: High]
-Could sharing the mode field across planes lead to permanently lost wakeups
-when an inactive plane is kicked?
+[Severity: Medium]
+Will this unconditionally fail on hardware that lacks TSC scaling?
 
-If an inactive plane is kicked (for example, if kvm_get_vcpu_by_id() returns
-plane 0 while plane 1 is active), this cmpxchg will successfully transition
-the shared mode to EXITING_GUEST_MODE.
+The test unconditionally forces a 1.5 GHz guest TSC frequency. If the host
+lacks hardware TSC scaling (kvm_caps.has_tsc_control is false) and the
+physical TSC frequency is greater than 1.5 GHz, KVM returns -EINVAL.
 
-However, when __kvm_vcpu_kick() subsequently runs, it reads the per-plane
-vcpu->cpu field:
-
-virt/kvm/kvm_main.c:__kvm_vcpu_kick() {
-    ...
-    cpu =3D READ_ONCE(vcpu->cpu);
-    if (cpu !=3D me && (unsigned int)cpu < nr_cpu_ids && cpu_online(cpu)) {
-        ...
-        smp_send_reschedule(cpu);
-    }
-}
-
-Because the kicked plane is inactive, its cpu field may be stale or -1. Will
-this cause the IPI to be sent to the wrong host CPU, leaving the active pla=
-ne
-running in the guest?
-
-Furthermore, since the shared mode was consumed and is now EXITING_GUEST_MO=
-DE,
-would all subsequent kicks to any plane fail the cmpxchg and be ignored unt=
-il
-the guest naturally exits?
-
->  }
+Should there be a check like TEST_REQUIRE(kvm_has_cap(KVM_CAP_TSC_CONTROL))
+before forcing this, or a way to gracefully handle the error?
 
 [ ... ]
+
+> +	/* Step 6: =CE=94T */
+> +	delta_t =3D (int64_t)(time_dst - time_src);
+> +
+> +	/* Step 7: Compute destination offset */
+> +	{
+> +		struct kvm_device_attr attr =3D {
+> +			.group =3D KVM_VCPU_TSC_CTRL,
+> +			.attr =3D KVM_VCPU_TSC_SCALE,
+> +			.addr =3D (uint64_t)(uintptr_t)&scale_dst,
+> +		};
+> +		memset(&scale_dst, 0, sizeof(scale_dst));
+> +		__vcpu_ioctl(vcpu, KVM_GET_DEVICE_ATTR, &attr);
+> +	}
+> +
+> +	tsc_dst =3D tsc_src + (uint64_t)((int64_t)freq_khz * 1000 * delta_t / 1=
+000000000LL);
+
+[Severity: Medium]
+Can this calculation overflow under heavy load?
+
+With freq_khz set to 1500000, the intermediate multiplication is
+1.5e9 * delta_t. This exceeds INT64_MAX if delta_t is greater than ~6.14
+seconds. While the test uses sleep(1), VM teardown and creation under heavy
+CI load might cause the time delta to exceed this.
+
+Could this be rearranged to avoid intermediate overflow, for example:
+delta_t * freq_khz / 1000000LL?
+
+> +
+> +	if (scale_dst.tsc_frac_bits)
+> +		raw_dst =3D (unsigned __int128)host_tsc_dst * scale_dst.tsc_ratio
+> +			  >> scale_dst.tsc_frac_bits;
+> +	else
+> +		raw_dst =3D host_tsc_dst;
+> +
+> +	ofs_dst =3D tsc_dst - raw_dst;
+> +
+> +	/*
+> +	 * The TSC offset delta introduced by using CLOCK_REALTIME to
+> +	 * estimate elapsed time. On same host, the correct offset is
+> +	 * ofs_src; the difference is the CLOCK_REALTIME-vs-TSC error.
+> +	 */
+> +	int64_t tsc_ofs_delta =3D (int64_t)(ofs_dst - ofs_src);
+> +	int64_t tsc_ofs_delta_ns =3D tsc_ofs_delta * 1000000000LL / ((int64_t)f=
+req_khz * 1000);
+
+[Severity: Medium]
+Could a similar integer overflow happen here if the TSC offset delta cycles
+are abnormally large?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608144252.3514=
-43-1-joro@8bytes.org?part=3D20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608145455.8918=
+7-1-dwmw2@infradead.org?part=3D8
