@@ -1,230 +1,84 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C734192E1
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 12:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155CE419302;
+	Tue,  9 Jun 2026 12:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781009801; cv=none; b=EYZe0j8Vo/tkjuMss2jRD3t09mx0KmpVV8g7+J/Wt+sbj19E3HtG6G1vdi4A9I9833TDe1C5H8NtGBvF50/+UZFqiWOz5a91pKsoSnhyilD218qhLjy49mlogqoUFeC77L5AmPNG51NojJxP9/NC1rwvRRW4V/3anzDSXIbvVoE=
+	t=1781009946; cv=none; b=lut5z3YtIR5n9/H0dwrR3QUnUZ2spslG0dc1Syk9i8CvwaR3BOoB/wOU+7cvp8eBppAoIAYp7EsaAO0jpWAe8kYCEtnJV25yy6v7vFG7F3p2nPS8rhfV/Ft/BNhENvnUm8ZdP4+cXec5wHvYeMYkWxU97syUboJMZ948nGv+Oz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781009801; c=relaxed/simple;
-	bh=W3VVv8w7O8NsuvevGkI+HPwIbasarLMRJoV8rL4P4/A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gySQ0np7pevWYbS9JV4RjJQojemdGOgZYF2j3MqGUwd74oNZESHMt7f5roDGlcsspoZ2sYNUn6vXqLVhPvLUp/yt8SgF9lFEGkI1jrqVSC1aG3xcB5QLlPHHLAQVRuMn5MYTSTBc3YIo/mzbocin/O6ChfLEh8cYZ86qe/+F2Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eSu81QoH; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=zGaKbvY3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eSu81QoH; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=zGaKbvY3; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1781009946; c=relaxed/simple;
+	bh=oOlQRAHiBLgMxjzLyql7jF/C1SL0ImL5l5YRcEK7hGQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=twbvQqKcNAN2m6yASDSyFZg0dy7myDpI0mdrl9HlpkKaoPnD2t/Qreu/PyAOCNJomHDAt6SorOWuCh742JOPsVnD1OV894MtFhQGA++/OtQbe9eIZ/D/eq/NRlfeQLFPXf4Xa25CHHcJdHAm766uvZv6HdskuhS9EjiS9422m64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=LnfrNzxG; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eSu81QoH";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="zGaKbvY3";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eSu81QoH";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="zGaKbvY3"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="LnfrNzxG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1781009943;
+	bh=oOlQRAHiBLgMxjzLyql7jF/C1SL0ImL5l5YRcEK7hGQ=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=LnfrNzxGzhWtUzwHEeK0zRYWxuVX5x2QmL2laq7ZMOO45H0kpf2xchAqekObC65Zr
+	 ai6Vw1+kuCyJ2DhshlqZ4bdpgfNnbqTYBxb3gpfNA00BtQvXzQalot544NOsgAuUrf
+	 d+xVZcSjqy5QOIaDYWQZqSbbOBqxyHK/yiDHxRBc=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::8c71])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 10DB16AC3B;
-	Tue,  9 Jun 2026 12:56:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781009798; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T66gqKrB+hOrTOe+15wRB7xkdjL7vspaccmWAvn9gYw=;
-	b=eSu81QoHeoupr9FT5wLWuHfSqkttPYMTWZD/Nwti6otDsohmVsxDsjJEWV9Hbthu5Rln4f
-	br77kdq33JynWcONKlxPle53S8zkPR6eaGTdDBzHptetQFpB/6pua9rjGBs++Re1BGl8+q
-	pY1/VVQHuw2X/3QpmvvSC1zVJDMe6Hg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781009798;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T66gqKrB+hOrTOe+15wRB7xkdjL7vspaccmWAvn9gYw=;
-	b=zGaKbvY3InEeLbar4s+a01V4kZhMXqwSodtJAl288cWDoH1SC72lnOu8bRDI1kZm+KQLTg
-	3YgbNyLR9KazE/DA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781009798; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T66gqKrB+hOrTOe+15wRB7xkdjL7vspaccmWAvn9gYw=;
-	b=eSu81QoHeoupr9FT5wLWuHfSqkttPYMTWZD/Nwti6otDsohmVsxDsjJEWV9Hbthu5Rln4f
-	br77kdq33JynWcONKlxPle53S8zkPR6eaGTdDBzHptetQFpB/6pua9rjGBs++Re1BGl8+q
-	pY1/VVQHuw2X/3QpmvvSC1zVJDMe6Hg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781009798;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T66gqKrB+hOrTOe+15wRB7xkdjL7vspaccmWAvn9gYw=;
-	b=zGaKbvY3InEeLbar4s+a01V4kZhMXqwSodtJAl288cWDoH1SC72lnOu8bRDI1kZm+KQLTg
-	3YgbNyLR9KazE/DA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D5883779A7;
-	Tue,  9 Jun 2026 12:56:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id rJwmMYUNKGpmcwAAD6G6ig
-	(envelope-from <clopez@suse.de>); Tue, 09 Jun 2026 12:56:37 +0000
-Message-ID: <a071493a-185b-48b2-a0ff-ba02a1c4730e@suse.de>
-Date: Tue, 9 Jun 2026 14:56:33 +0200
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 5F2841C0266;
+	Tue, 09 Jun 2026 08:59:03 -0400 (EDT)
+Message-ID: <51421426e0d4b154281e80d9f1c6c9a628d21c94.camel@HansenPartnership.com>
+Subject: Re: [PATCH 35/60] kvm: Add VCPU plane-scheduling state and helpers
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>, Paolo Bonzini
+	 <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, ashish.kalra@amd.com, michael.roth@amd.com, 
+ nsaenz@amazon.com, anelkz@amazon.de, Melody Wang <huibo.wang@amd.com>, 
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, 
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
+ x86@kernel.org,  coconut-svsm@lists.linux.dev, joerg.roedel@amd.com
+Date: Tue, 09 Jun 2026 08:59:02 -0400
+In-Reply-To: <aigE2EvJyZlYDz0V@8bytes.org>
+References: <20260608144252.351443-1-joro@8bytes.org>
+	 <20260608144252.351443-36-joro@8bytes.org>
+	 <e7eb0dba-790a-4644-9895-5c9a7420d7fe@redhat.com>
+	 <aib8n5lO6HKbLC4Y@8bytes.org>
+	 <CABgObfbUsDeStnZF-7oyR-W-Bvd4qTMoeUwGizgn10UTdKtZ2A@mail.gmail.com>
+	 <aigE2EvJyZlYDz0V@8bytes.org>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] KVM: x86: Do not gate MCE logging based on
- IA32_MCi_CTL
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20260609105525.2545638-4-clopez@suse.de>
- <20260609111012.8B1111F00899@smtp.kernel.org>
-From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
-Content-Language: en-US
-In-Reply-To: <20260609111012.8B1111F00899@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	URIBL_BLOCKED(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_NONE(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
-X-Spam-Score: -4.30
 
-On 6/9/26 1:10 PM, sashiko-bot@kernel.org wrote:
->> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
->> --- a/arch/x86/kvm/x86.c
->> +++ b/arch/x86/kvm/x86.c
->> @@ -5486,24 +5486,31 @@ static int kvm_vcpu_ioctl_x86_set_mce(struct kvm_vcpu *vcpu,
->>  	if ((mce->status & MCI_STATUS_UC) && (mcg_cap & MCG_CTL_P) &&
->>  	    vcpu->arch.mcg_ctl != ~(u64)0)
->>  		return 0;
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but does this global control
-> register check also need to be adjusted?
-> 
-> Just like IA32_MCi_CTL, the Intel SDM states that error logging happens
-> regardless of the setting of the IA32_MCG_CTL bits. By returning early
-> here, KVM skips logging the uncorrectable error to the bank if the global
-> reporting is disabled.
+On Tue, 2026-06-09 at 14:37 +0200, J=C3=B6rg R=C3=B6del wrote:
+> On Mon, Jun 08, 2026 at 07:58:43PM +0200, Paolo Bonzini wrote:
+> > Related to this, let me know if you want me to pick up again the
+> > common part, especially with Sashiko being hard at work on it.
+>=20
+> Yeah, that might be good, let me think a bit about it and discuss in
+> tomorrows
+> PUCK call.
 
-Does the SDM specify so, though? As Sean noted, and as echoed in the
-cover letter, this is pretty ambiguous.
+Are the details of this anywhere?  The last PUCK information I saw on
+the kvm list was the cancellation of the March and April calls.
 
-> Additionally, KVM currently suppresses generation and logging for all
-> banks if any bit in IA32_MCG_CTL is 0, rather than checking the specific
-> bit for the bank. Should the logging logic be hoisted above this check
-> as well?
-> 
->> -	/*
->> -	 * if IA32_MCi_CTL is not all 1s, the uncorrected error
->> -	 * reporting is disabled for the bank
->> -	 */
->> -	if ((mce->status & MCI_STATUS_UC) && banks[0] != ~(u64)0)
->> -		return 0;
->> +
->>  	if (mce->status & MCI_STATUS_UC) {
->> +		/*
->> +		 * Per the SDM, error logging always happens independently of
->> +		 * IA32_MCi_CTL
->> +		 */
->> +		if (banks[1] & MCI_STATUS_VAL)
->> +			mce->status |= MCI_STATUS_OVER;
->> +		banks[2] = mce->addr;
->> +		banks[3] = mce->misc;
->> +		banks[1] = mce->status;
->> +
->> +		/*
->> +		 * if IA32_MCi_CTL is not all 1s, the uncorrected error
->> +		 * reporting is disabled for the bank
->> +		 */
->> +		if (banks[0] != ~(u64)0)
->> +			return 0;
->> +
->>  		if ((vcpu->arch.mcg_status & MCG_STATUS_MCIP) ||
->>  		    !kvm_is_cr4_bit_set(vcpu, X86_CR4_MCE)) {
->>  			kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
->>  			return 0;
->>  		}
-> 
-> [Severity: High]
-> By hoisting the error logging block above the IA32_MCi_CTL check, does
-> this now incorrectly overwrite the MCE banks when a double or triple fault
-> occurs?
-> 
-> According to the SDM, if the processor encounters another machine-check
-> error while the MCIP flag is already set, it causes a triple fault and
-> does not update the status registers for the second error.
+Regards,
 
-17.3.1.2 "IA32_MCG_STATUS MSR" does not say anything about updating or
-not addr/misc/status depending on MCIP, it just says:
-
-  The occurrence of a second Machine-Check Event while MCIP is set will
-  cause the processor to enter a shutdown state.
-
-Claude helped me find a good counterexample to what Sashiko says
-regarding MCIP. Table 18-40 "Machine Check Error Codes for
-IA32_MC4_STATUS" says this about bits 19:16:
-
-  Model specific error code bits 19:16.
-  If MACOD = 40CH, MSCOD encoding should be interpreted as:
-  01H: MCE when CR4.MCE is clear.
-  02H: MCE when MCIP bit is set.
-
-MSCOD=02H is precisely a case of an update to an MCi_STATUS MSR while
-MCIP is set.
-
-> Since the logging block in kvm_vcpu_ioctl_x86_set_mce() now executes
-> before checking for MCG_STATUS_MCIP, it looks like it will overwrite the
-> original addr, misc, and status of the first error before requesting the
-> triple fault.
-
-17.3.2.2 "IA32_MCi_STATUS MSRS" does say that a second UC *to the same
-bank* should not overwrite the first:
-
-  OVER (machine check overflow) flag, bit 62 - (...). Uncorrected errors
-  are not written over previous valid uncorrected errors. (...)
-
-But this has nothing to do with MCIP. So, IIUC, the the new behavior is
-still not completely correct because a second UC to the *same* bank
-would overwrite the first. I can prepare a v3 with this.
-
-> 
->> -		if (banks[1] & MCI_STATUS_VAL)
->> -			mce->status |= MCI_STATUS_OVER;
->> -		banks[2] = mce->addr;
->> -		banks[3] = mce->misc;
->>  		vcpu->arch.mcg_status = mce->mcg_status;
->> -		banks[1] = mce->status;
->>  		kvm_queue_exception(vcpu, MC_VECTOR);
->>  	} else if (!(banks[1] & MCI_STATUS_VAL)
-> [ ... ]
-> 
+James
 
