@@ -1,143 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D2E37CD5C;
-	Tue,  9 Jun 2026 07:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4D12AD00;
+	Tue,  9 Jun 2026 07:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780989903; cv=none; b=oKAo6LXx0BEyKMIdg2xk6E1tZqdbFYc9gxuuPY4HNYAy/0dp0Y9ZuKB/NOZ90QMMkYc1rE7AXFWtvZJu9dNqtc6+78dLidE4PvowlLclUdTq1pU673dFWz2tZApr4tneaRUS9+NkkQJWLkWVyWAPZtlflYvSzV1vdxVLi+Uyn4A=
+	t=1780990047; cv=none; b=LlTbTJngIRG7QjhgdmC7Wl+y9FSX+kX8br78wy6k4yPR5q0jCfARhzIIsC+jbzWAgkoUU//5KnTfGWlMBNX1cahjloKsRdvMiyj/tT3s+QM6s6BQWqvVjuKY+63O+NgzYE8EgjAwK1hXWlfwHkWXrI26zG5QHkKgGe4ZptGtvqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780989903; c=relaxed/simple;
-	bh=OhmPEdTEX2bgvY3uHBYhAxz6vnODQgfYbE1LLEqq5P0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bf+yXmbAavF4HAnfwre5W/3lZT39rh7jTaBdI480pu19GpCbehez5bShLoP0eAZ2bVdQLyOR84Y1++tpc/ZPLv6TqZDilCcdMm2b7uCR4wpl8iS8A44SKG3v4QBXESQ6iscz+CiCcbMLz/bnnbtb8DUaNeRGK7uRaoL6bFTiZx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=diCh9Cro; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="diCh9Cro"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E8A1F00893;
-	Tue,  9 Jun 2026 07:25:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780989902;
-	bh=Qpz3SdkUYISithjygHc1jib5Zu/rO+fgThVHu853SKI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=diCh9CroxRr1M/NLX82W9xpSc2vmG5xzr4jz6sRjKRyV3XXh9NeqKnYzFQfOH4Nwh
-	 sFr3o9p4StESVETMkgR1gEBFAB45lfCaAI1WOjXOS0XN0WonIcAZ/P14Ir0l03f2p3
-	 4iGOvT+GtroGBJ9LiW/LCDivHr//MiOKARWqAn2j6YLXyJVXdmiMUs2+rrH9E7vy4i
-	 6M38Tw6ftE8Mp2WVYv8dVbRFOz+StYiGze+nQRvPeTA7SI1n6Freqhf+yOckfJflyg
-	 XccN8eXWgnp5ZHfnoGW+C19PsttbJcQmNlj6LGr75guvbdyGcRUqNbWq/BIIreoerN
-	 ofDyyzCfYkyeg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wWqpY-0000000AnMP-1UFX;
-	Tue, 09 Jun 2026 07:25:00 +0000
-Date: Tue, 09 Jun 2026 08:25:00 +0100
-Message-ID: <86ldcotbub.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH] KVM: arm64: Hold kvm->mmu_lock while initialising vcpu->arch.vncr_tlb
-In-Reply-To: <aicqzM4W4NN-GndT@google.com>
-References: <20260608081108.2244133-1-maz@kernel.org>
-	<aicqzM4W4NN-GndT@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1780990047; c=relaxed/simple;
+	bh=hw8Dwm3pt/+zDzGc7w6MSKicdrHi14/dfJrVgEJJ7ls=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C3eu8rQUeqjlORPYRTe84tUjPaY1JwWZmXha1OTILSTRlb99YTwU27hHaTek7fBfByNZ62uOHQIDhHANjQWo0TybDydJEKknGaFRmn67zfEK4fupupBX0rgr5rddDBTuFLEYBMgritbpOU6dv6eHfm4s+xJKwoZlbaeIsgaIiiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8AxAutZwCdqQCkSAA--.48682S3;
+	Tue, 09 Jun 2026 15:27:21 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJDxquBUwCdq7oqgAA--.42025S2;
+	Tue, 09 Jun 2026 15:27:16 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v2 0/2] KVM: LoongArch: selftests: Add FPU test case
+Date: Tue,  9 Jun 2026 15:27:13 +0800
+Message-Id: <20260609072715.1005923-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: yosry@kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxquBUwCdq7oqgAA--.42025S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On Mon, 08 Jun 2026 21:55:25 +0100,
-Yosry Ahmed <yosry@kernel.org> wrote:
-> 
-> On Mon, Jun 08, 2026 at 09:11:08AM +0100, Marc Zyngier wrote:
-> > Sashiko reports that there is a race between initialising vncr_tlb
-> > and making use of it, as we don't hold the mmu_lock at this point.
-> > 
-> > Additionally, it identifies a memory leak, should userspace repeatedly
-> > invokes the KVM_RUN ioctl after a failure of kvm_arch_vcpu_run_pid_change(),
-> > as we assign vncr_tlb blindly on first run, irrespective of prior
-> > allocations.
-> > 
-> > Slap the two bugs in one go by taking the kvm->mmu_lock on assigning
-> > vncr_tlb, preventing the race for good, and by checking that vncr_tlb
-> > is indeed NULL prior to allocation.
-> > 
-> > Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > Link: https://lore.kernel.org/r/20260607180815.85FBC1F00893@smtp.kernel.org
-> > ---
-> >  arch/arm64/kvm/nested.c | 10 ++++++++--
-> >  1 file changed, 8 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> > index 690b8e8564166..d11e36b3cfcc2 100644
-> > --- a/arch/arm64/kvm/nested.c
-> > +++ b/arch/arm64/kvm/nested.c
-> > @@ -1253,8 +1253,14 @@ int kvm_vcpu_allocate_vncr_tlb(struct kvm_vcpu *vcpu)
-> >  	if (!kvm_has_feat(vcpu->kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY))
-> >  		return 0;
-> >  
-> > -	vcpu->arch.vncr_tlb = kzalloc_obj(*vcpu->arch.vncr_tlb,
-> > -					  GFP_KERNEL_ACCOUNT);
-> > +	if (!vcpu->arch.vncr_tlb) {
-> > +		struct vncr_tlb *vt = kzalloc_obj(*vcpu->arch.vncr_tlb,
-> > +						  GFP_KERNEL_ACCOUNT);
-> > +
-> > +		scoped_guard(write_lock, &vcpu->kvm->mmu_lock)
-> > +			vcpu->arch.vncr_tlb = vt;
-> > +	}
-> 
-> (I am not familiar with this code at all, so apologies in advance if I
-> am making an idiot out of myself here)
-> 
-> IIUC, the point of holding the lock here is *not* to protect against
-> concurrent initialization, as in this case the NULL check needs to be
-> done under the lock.
-> 
-> Rather, the goal is to prevent re-ordering of zeroing from kzalloc and
-> the assignment to vcpu->arch.vncr_tlb, by depending on the barriers
-> provided by the lock. The lock is held by the readers so holding it here
-> conviently means we do not need to add any barriers to the readers.
-> 
-> Is my understanding correct?
+Here add FPU test case and verify FPU register get and set APIs, the
+FPU width supports 64/128/256 bits. It is important for VM migration.
+---
+v1 ... v2:
+  1. Replace hardcode value with CSR_EUEN_XXX when enable FPU access.
+  2. Add attribute __aligned(64) with kvm_fpureg variable with better FPU
+     save and restore.
+  3. Add clobber $f0 register with inline assemble language with
+     fld.d/vld/xvld instruction.
+  4. Add fallthrough between UCALL_DONE and UCALL_SYNC switch case
+     sentences.
+  5. Remove sync_global_from_guest() between vcpu_fpu_get() ioctl test
+     case, since the buffer is not modified with such instructions
+     fld.d/vld/xvld.
+  6. Modify FPU register with random value rather than plus 0x10, and
+     random() is replaced with value 0x10.
+---
+Bibo Mao (2):
+  KVM: LoongArch: selftests: Enable LASX feature by auto detect method
+  KVM: LoongArch: selftests: Add FPU test case
 
-It is correct.
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../kvm/include/loongarch/processor.h         |  18 +++
+ .../selftests/kvm/lib/loongarch/processor.c   |  12 +-
+ .../selftests/kvm/loongarch/fpu_test.c        | 145 ++++++++++++++++++
+ 4 files changed, 175 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/kvm/loongarch/fpu_test.c
 
-> 
-> If yes, I think the code looks confusing, at least to a layman like
-> myself. It initially seems like the lock protects against concurrent
-> initializations, but then the NULL check is not done again under the
-> lock. The goal of the lock is not clear without the original report.
->
-> Mayeb it's clearer to explicitly use barriers if the goal is preventing
-> reordering?
 
-This would require both the initialisation of vncr_tlb to use a store
-release, *and* all the other call sites to use a load acquire.
-
-I really don't think it is worth the churn, nor the (very small)
-burden on the readers.
-
-Thanks,
-
-	M.
-
+base-commit: 2d3090a8aeb596a26935db0955d46c9a5db5c6ce
 -- 
-Without deviation from the norm, progress is not possible.
+2.39.3
+
