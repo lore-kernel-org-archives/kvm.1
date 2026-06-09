@@ -1,116 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E7640E8C7
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 13:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1677032470A
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 14:09:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781012481; cv=none; b=t8Pph4mbracsYSKuIqIp58B2gCsrogXVx4ai/P9TPbvnrubE2Oojr0+IMFZ/8XWN4qsaAX9vHy7U9vUCyQUnQ1IRSMWOTJL3bQylCgpCShfb9VNvJAYFD1ws1sQTdGvoI4ZrxpSycJIw+BFV42wxnTtDuvCZOSgMka5SEHvgefI=
+	t=1781014182; cv=none; b=iBlpawCpchAD6ntzT9VcVzUKVpcDRiSjJ9QEwNTnhBqGw84FDEMjCwu+/fCFrw63gsd4f0Uy3Fgg6eH9hPeMu4r5H5/MzCGTQrADV+NZsHxr3S62x8RFV3ZWm2mTty3ugIJDTOD8ztKrrWQ7NGEgkkvTRoEOPc40/BW0CIR9vNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781012481; c=relaxed/simple;
-	bh=0/cb6X+3/7WDEPBMpZS9PoJb9fPynqblASk+IpgSwBA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uvphQ+Vx5liO9VmwnrW6x2VQgWXgH8+TqfWHUsmvHgq71nNLhwoCYHxtg40m1XkuIf+8AM4Ju/J7Wbc984hKXsAnOFWDoKwyXCqmZnFBYueWuZ3lbPXQEcs7n6dlEA0fJkTZxCSXsbt4OyDoM2Xa+fOQGWMHjX8gOtt/qIMR8cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VERxQwgl; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1781014182; c=relaxed/simple;
+	bh=kywE8Vrmn1O7rebvzvCRtt1xBrCcdah1h6YPJmsM76Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TPKOB4Lgwos2QhAJNF/SljXZw+yplFxmNlZ17qWGz4WH8IoiV6aoUDQCHquAcVv0OzRWzqXAaOSNPGEQEZtCYMF5EWAiLsA2XrCT/DtugW0sr0DxvwwsZqp/eK6I1jTm5va1UC6JqEzs2boqM+iPGJ9SOGqDHkXk1OsbNKRWmbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=q0IIhudU; arc=none smtp.client-ip=34.218.115.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VERxQwgl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781012480; x=1812548480;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0/cb6X+3/7WDEPBMpZS9PoJb9fPynqblASk+IpgSwBA=;
-  b=VERxQwglE0Irk5iK7DxJLbTxwCei2KxJLPqny/0xxRwFy8+M/phvM04c
-   n1h9wxCFLFhL0XirphSpw7tZQSi0+ERg3/EDqOPiVhiVnqVTMFsd6sR5P
-   Buco4x65Zswe6Zj+ugkSyhDKldjXk+xW0dIo2D6wPE3viTMU91HuTWQW/
-   Eb/umUUI32du1eKt1jbGX1VmmA8ZVExLMEJHIt3Pa/Q+/su/0OQawjfKM
-   rxO+bbegGzuld5A2kSuW0ktutyOTP0FB1pMP/oWdX/12cmbRoLjjHjHtT
-   kNEUBJOM5PskCUhjqlN/0PLcZufaFcvLCRV5++J5+89D8d+HF+Vrp1Vjr
-   A==;
-X-CSE-ConnectionGUID: g/lKtTSkS42nG4zNVrXu9w==
-X-CSE-MsgGUID: 2AY+DVf5S82qqXqMdlHHgQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="69305659"
-X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="69305659"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 06:41:19 -0700
-X-CSE-ConnectionGUID: dI1afqVvRE2u2hWhsADygg==
-X-CSE-MsgGUID: 3S6CJqNqTUKf+M/aa9Mvvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="239527819"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa009.fm.intel.com with ESMTP; 09 Jun 2026 06:41:16 -0700
-Date: Tue, 9 Jun 2026 22:09:23 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
-	mtosatti@redhat.com, dapeng1.mi@linux.intel.com,
-	sandipan.das@amd.com, zide.chen@intel.com, joe.jin@oracle.com,
-	qemu-stable@nongnu.org
-Subject: Re: [PATCH 1/1] target/i386/kvm: Use logical counter index for AMD
- PMU getter
-Message-ID: <aigek5eqJr6DHZau@intel.com>
-References: <20260325021236.14574-1-dongli.zhang@oracle.com>
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="q0IIhudU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1781014181; x=1812550181;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kywE8Vrmn1O7rebvzvCRtt1xBrCcdah1h6YPJmsM76Q=;
+  b=q0IIhudUKI51xyiTTPDIcY8c5CNejDr3zCHIHEBCW5xKAV7wXNNbAwVZ
+   3Lj7lVrMSX2o8DhioEWb+vBokZ3nerBVBXLB00jGziphB0c06cK/WJ1xZ
+   CX+qrnce1HaA0y/ei/xcVrBIutqiN18a2fhYXbJePoB+OCWSRV1QlHVDD
+   cZlYBfzBsH5pKwOcuq9SyI8Us/NE7xGRs2K6WiHUdTxgRril/aAUoG20I
+   mQYeM9v7g2proNDslehThdtM9wKPGgWGiuzIBS6GUJndD5yYQcUlJHqCV
+   82s6yj08xOwNFjMjXnh4gJam+i5v9eiikNvqt2xSY0sVT/XwE5RhiEcEt
+   g==;
+X-CSE-ConnectionGUID: 5cJ/lgEUR1WJZXm0OjEJxg==
+X-CSE-MsgGUID: ZFxFExKKTNSCD+wFOuGILQ==
+X-IronPort-AV: E=Sophos;i="6.24,196,1774310400"; 
+   d="scan'208";a="21195001"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 14:09:38 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:31569]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.30.151:2525] with esmtp (Farcaster)
+ id e131bc41-7ec2-4c24-a2d5-f9a2b42bf317; Tue, 9 Jun 2026 14:09:37 +0000 (UTC)
+X-Farcaster-Flow-ID: e131bc41-7ec2-4c24-a2d5-f9a2b42bf317
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Tue, 9 Jun 2026 14:09:37 +0000
+Received: from dev-dsk-gmazz-1b-865f0d50.eu-west-1.amazon.com (10.253.70.18)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Tue, 9 Jun 2026 14:09:36 +0000
+From: Giacomo Mazzola <gmazz@amazon.de>
+To: <kvm@vger.kernel.org>
+CC: Giacomo Mazzola <gmazz@amazon.de>
+Subject: [kvm-unit-tests PATCH 0/8] x86: fixes for running KUT as EFI on non-QEMU KVM hosts
+Date: Tue, 9 Jun 2026 14:08:52 +0000
+Message-ID: <20260609140901.95727-1-gmazz@amazon.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260325021236.14574-1-dongli.zhang@oracle.com>
+X-ClientProxiedBy: EX19D039UWA003.ant.amazon.com (10.13.139.49) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Cc: qemu-stable@nongnu.org
-
-On Tue, Mar 24, 2026 at 07:12:36PM -0700, Dongli Zhang wrote:
-> Date: Tue, 24 Mar 2026 19:12:36 -0700
-> From: Dongli Zhang <dongli.zhang@oracle.com>
-> Subject: [PATCH 1/1] target/i386/kvm: Use logical counter index for AMD PMU
->  getter
-> X-Mailer: git-send-email 2.43.5
-> 
-> For Intel PMU, the counter and selector MSR ranges are disjoint. AMD PMU
-> behaves the same way when PerfCore is unavailable.
-> 
-> However, once PerfCore is present, AMD PMU switches to an interleaved
-> layout in which selector and counter MSRs share a single alternating range.
-> 
-> MSR_F15H_PERF_CTL0 = 0xc0010200
-> MSR_F15H_PERF_CTR0 = 0xc0010201
-> ... ...
-> ... ...
-> MSR_F15H_PERF_CTL5 = 0xc001020a
-> MSR_F15H_PERF_CTR5 = 0xc001020b
-> 
-> The commit 4c7f05232c ("target/i386/kvm: reset AMD PMU registers during VM
-> reset") added the getter/putter pair for AMD PMU MSRs to clear them on
-> reset, but it ignored that, without PerfCore, AMD reuses alternating MSR
-> addresses for selectors and counters. env->msr_gp_counters[] holds the raw
-> counts and env->msr_gp_evtsel[] holds the selectors, so with the
-> interleaved layout we must translate the MSR address back to the logical
-> counter index instead of treating the interleaved slot as the array index.
-> 
-> The arrays are sized to MAX_GP_COUNTERS = 18, so the code never writes past
-> the end. And in the reset path QEMU simply zeroes everything, so that use
-> case still works.
-> 
-> However, the live migration is broken. The PMU state is stored at the
-> wrong indices, so the destination VM reloads mismatched selector/counter
-> pairs. Fix the getter to use the logical counter index rather than the raw
-> interleaved offset.
-> 
-> Fixes: 4c7f05232c ("target/i386/kvm: reset AMD PMU registers during VM reset")
-> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-> ---
->  target/i386/kvm/kvm.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-
-Sorry for late response, LGTM,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+VGhpcyBzZXJpZXMgZml4ZXMgc2V2ZXJhbCBpc3N1ZXMgZW5jb3VudGVyZWQgd2hlbiBydW5uaW5n
+IEtVVCB4ODYgdGVzdHMKYXMgRUZJIGFwcGxpY2F0aW9ucyBvbiBhIEtWTS1iYXNlZCBoeXBlcnZp
+c29yIHRoYXQgbGFja3MgYW55IGFkLWhvYwpwYXJhLXZpcnR1YWxpemVkIGludGVyZmFjZSAoZS5n
+LiBmd19jZmcpLCBvbiBhcmJpdHJhcnkgVk0gc2hhcGVzCih2YXJpYWJsZSBDUFUgY291bnQgYW5k
+IG1lbW9yeSBzaXplKS4KClBhdGNoZXMgMS00IGZpeCBjcmFzaGVzIGFuZCBmYXVsdHM6CiAgLSBT
+dGFjayBzaXplIG1pc21hdGNoIGJldHdlZW4gRUZJIGFuZCBub24tRUZJIHBhdGhzCiAgLSBNZW1v
+cnkgYWxsb2NhdG9yIHNlbGVjdGluZyByZWdpb25zIGFib3ZlIHRoZSA0IEdpQiBpZGVudGl0eSBt
+YXAKICAtICNHUCBvbiBzeXN0ZW1zIHdpdGhvdXQgYSBQTVUKICAtIElTUiB0aHVua3MgdXNpbmcg
+cmVsMzIganVtcHMgdGhhdCBvdmVyZmxvdyBiZXlvbmQgMiBHaUIKClBhdGNoZXMgNS02IGZpeCBT
+TVAgYnJpbmd1cDoKICAtIFJlcGxhY2UgcGVyLUFQIHNlcmlhbCBwcmludHMgdGhhdCBjYXVzZSB3
+YXRjaGRvZyB0aW1lb3V0cyBvbgogICAgbGFyZ2Ugc3lzdGVtcwogIC0gQWRkIHRpbWVvdXQtYmFz
+ZWQgQVAgZGV0ZWN0aW9uIHdoZW4gZndfY2ZnIGlzIHVuYXZhaWxhYmxlCgpQYXRjaGVzIDctOCBm
+aXggRUZJIGNvbW1hbmQgbGluZSBoYW5kbGluZzoKICAtIENvcnJlY3QgdGhlIGxvYWRfb3B0aW9u
+c19zaXplIGJ5dGUtdG8tY2hhcmFjdGVyIGNvbnZlcnNpb24KICAtIEFkZCBLVVRfRU5WPSBwYXJz
+aW5nIGZvciBwYXNzaW5nIGVudmlyb25tZW50IHZhcmlhYmxlcyB2aWEKICAgIFVFRkkgbG9hZCBv
+cHRpb25zCgpUaGUgdGFyZ2V0IGVudmlyb25tZW50IGlzIHJ1bm5pbmcgS1VUIGFzIFVFRkkgYXBw
+bGljYXRpb25zIG9uIGEKS1ZNLWJhc2VkIGh5cGVydmlzb3Igd2l0aG91dCBhZC1ob2MgUFYgaW50
+ZXJmYWNlcywgb24gYXJiaXRyYXJ5IFZNCnNoYXBlcy4KClJlZ3Jlc3Npb24tdGVzdGVkIGJ5IHJ1
+bm5pbmcgdGhlIGZ1bGwgS1VUIHN1aXRlIHVuZGVyIFFFTVUrS1ZNK09WTUYsCmluIGJvdGggLi9j
+b25maWd1cmUgYW5kIC4vY29uZmlndXJlIC0tZW5hYmxlLWVmaS4gUmVzdWx0cyBhcmUKaWRlbnRp
+Y2FsIHdpdGggYW5kIHdpdGhvdXQgdGhpcyBzZXJpZXMuCgpHaWFjb21vIE1henpvbGEgKDgpOgog
+IHg4NjogZWZpOiB1c2UgUEVSX0NQVV9TSVpFIGZvciBwZXItQ1BVIHN0YWNrIGFsbG9jYXRpb24K
+ICB4ODY6IGZpeCBFRkkgbWVtb3J5IGFsbG9jYXRvciB0byBjbGFtcCByZWdpb25zIHRvIDQgR2lC
+CiAgeDg2OiBza2lwIFBNVSBpbml0IHdoZW4gbm8gUE1VIGlzIGFkdmVydGlzZWQKICB4ODY6IGZp
+eCBJU1IgdGh1bmsgdG8gdXNlIGFic29sdXRlIGluZGlyZWN0IGp1bXAKICB4ODY6IHJlcGxhY2Ug
+cGVyLUFQIGJyaW5ndXAgcHJpbnRzIHdpdGggYSBzaW5nbGUgc3VtbWFyeSBsaW5lCiAgeDg2OiBh
+ZGQgdGltZW91dC1iYXNlZCBTTVAgYnJpbmd1cCB3aGVuIGZ3X2NmZyBpcyB1bmF2YWlsYWJsZQog
+IGVmaTogZml4IGxvYWRfb3B0aW9uc19zaXplIGNvbnZlcnNpb24gdG8gY2hhcmFjdGVyIGNvdW50
+CiAgZWZpOiBwYXJzZSBLVVRfRU5WPSBmcm9tIGxvYWQgb3B0aW9ucyBpbnRvIGVudmlyb24KCiBs
+aWIvZWZpLmMgICAgICAgICAgICB8IDM5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKystLQogbGliL3g4Ni9hcGljLmMgICAgICAgfCAgMSAtCiBsaWIveDg2L2lzci5jICAgICAg
+ICB8ICA4ICsrKysrLS0tCiBsaWIveDg2L3NldHVwLmMgICAgICB8IDI0ICsrKysrKysrKysrKysr
+KysrKysrLS0tLQogbGliL3g4Ni9zbXAuYyAgICAgICAgfCAzMSArKysrKysrKysrKysrKysrKysr
+KysrKysrKystLS0tCiB4ODYvZWZpL2VmaXN0YXJ0NjQuUyB8ICAyICstCiA2IGZpbGVzIGNoYW5n
+ZWQsIDkwIGluc2VydGlvbnMoKyksIDE1IGRlbGV0aW9ucygtKQoKLS0gCjIuNDcuMwoKCgoKQW1h
+em9uIFdlYiBTZXJ2aWNlcyBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJIClRhbWFyYS1E
+YW56LVN0ci4gMTMKMTAyNDMgQmVybGluCkdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0b2YgSGVs
+bG1pcywgQW5kcmVhcyBTdGllZ2VyCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0
+ZW5idXJnIHVudGVyIEhSQiAyNTc3NjQgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBERSAzNjUgNTM4
+IDU5Nwo=
 
