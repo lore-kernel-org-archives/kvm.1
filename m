@@ -1,134 +1,156 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F44C26C385
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 00:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B9D230BDB
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 00:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780965949; cv=none; b=tkKli4P5lQlDUzIUqI5EgJrmkbpW2Qixx7HMJXAtkTNPb78CWGtP77u18g7siIJpSJBaUfvCv5IvevfgUXhmTIKEH1q7ruuRKHmhmO5TS5GO3wcNka47bQFTTbse82TCs5BRud79dV5sTH1AwRzHGJ+OgbQ4J7AfrTIS7ZnMvUk=
+	t=1780966106; cv=none; b=IHGQ6aPo2irUDBqSkTvkPKXkkVdW5GuIm3BbWlDW1RNwkjOc6z27gLveaGgYCYeoUj681Gwz0kEnIsq+9/KJnzSxYa5RP4wpEms33gtp2xOZ3r0CssRt5V2u4RvpbCgPdqxWbcVEVJSDUmKaOhcJyF1B9hrpUG2Tov6PXAvS95w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780965949; c=relaxed/simple;
-	bh=I/tGt7KzcBETNAgm8Dtn6Epq7mEFNModkgfXeYn3IKc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=deDGFJ92XntwP9cEdT6cjz8U5f/i4vL3kPp5uZeFB8GG4n9gCNYJ5cBdBAfmTGRzikTTHbS5eDiTPFQAKh5Y3s63YYMJ2ATcIltuoJPyiv8LV7+msP+aF12HHdyJ2o6MP6mWQuwOBsPvp1xLsrZbbLzLxhaH6teK7X6KFjux7Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GEQ+lQDx; arc=none smtp.client-ip=209.85.215.201
+	s=arc-20240116; t=1780966106; c=relaxed/simple;
+	bh=37MPcfbmxnv7oFfJE4XBHYuIXMm5oEIMI1uGgOdOOVk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ML00GRXdxD4CGhWmr8Q6d0i4fQeF8J1jSksuGSpC3lYGD8cp0GIZ5ZksCPT6GD3a+/X8Y7+AwjuRrjdb4h5RswRVGFv9OoBEelwo+99Czjim+Sctd8Ev9VkyjjcCyKAK++6yaCrGyuT67pmlX0VElmhcZfVARUZkvTQiGBEpZuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P0yHBx+C; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GEQ+lQDx"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c85a2f19558so2870584a12.2
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 17:45:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P0yHBx+C"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84240683a82so3523781b3a.1
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 17:48:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780965946; x=1781570746; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/WefpHHOSV8JYGHScIIv9soq8IINRPl3fy/zAA/txa0=;
-        b=GEQ+lQDxnkBqxmbEAuySBBkpXDr8A9pOSa2Q6srV20FTmWKozDp7/mA+MnDsAV/jHq
-         iIVxdDF4W7vggi+Xj3mxCoGAcssT5AcyzMWHg7naIXWR5vr+3ybd62r5kHv47HgkqvfF
-         t60tqphiMGBm1QcZjFzTAwkD9HSwZ/eZgUsoUk8GOvenyFKG81ALH5j1TVKqiKAZEqpa
-         VDeoGWSW72Yu2I4L8vQgHxY6Ka912Qib3UUlbtCZkO0d5vbGjPmJ7Y3Vx8Ktqe2Vd5sy
-         uzG94SRPXSg7V8mIkB+JKq1GBYhweWvgo5F7zxQEw1vJIWnALRiWMUVJRkMBxQtTXQ2S
-         g53w==
+        d=google.com; s=20251104; t=1780966104; x=1781570904; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=StLjLCmXgF4Q/Ry3fnTHjp2FbwAsDgAHQZYkD5rM9oc=;
+        b=P0yHBx+C1xVV+S6q8DF3QpNF2JZfGhlRDiAOPlYC29qERfa1ozh4eNBU902QdOmjfd
+         oc7eJex/AQwf2BN2uB649ODJISdEdEBacsParxwbDjgMWoWNZLwnLobB2RHtAgTtIJgg
+         R5hGnhQHaMxamLxWf4oyX6P4loV3gPCZdT/PyKOPdOq6x7AjQgZzX7iOh6jjpQhntjY/
+         FF0lDGZnKbayApMcikmT6M+uR9r4HcmsqaaD6JorWmuYKs7HVYDru3l/EZnWFRjll34C
+         C9VXKC8amlWxNh0p9hhS1Hk0uYQ7VjtA+Kr8eruFOchdGJw7e+/FH45QXVw/3Liov2Ki
+         T8FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780965946; x=1781570746;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/WefpHHOSV8JYGHScIIv9soq8IINRPl3fy/zAA/txa0=;
-        b=HcAG4+oLcdBWVLSPQy767XZLwax7dAvg5jbreKKXt6Hpk//iNPrSW/xsuXKHxMyLtU
-         vSz7L5QVKGtcpfdFSy5xuUcGY3A9e4FgiAVAdqOGmhLfP8lxQ1DKUhp/CImBUqUDMjZ9
-         lCl9yzPkIRHHUnNI4z++8Al3M5sVCQzeM7Igk34Kr84qUI1IoHTlzRSw9SY7w4TuXgTk
-         3Nrl7PtgRvsxTcjVD9yxD6kMDcFZ4vo1X4UGnp/mQcQ//m6jtstxBd+KGlcGCv+ZnnHK
-         eaxV4vkpkrmwGwtKg8dGz+5srvWCEsz3er1cRgFX+XLtGWA5jFLt8YEFz5fgeyi+Ad20
-         cjXQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8t8Ne5ozLUkgqwwMMaovm54uGQyVYICN2+05Vpr/e/tNlyOIxxq7WvgLu6OVDqusFl6sw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzrVSb987GN9f7w6sS803/XYYlI5wS4lDSpgZjfDNj3QtruseN
-	UTM6CGtMsCUl3k37IE1FPfearNF8B8ci41rzvW3GAxj7eCAEZh1DgdmSBWTFaEG+1sDOlbQT6Y7
-	7Rbjo3w==
-X-Received: from pgbl13.prod.google.com ([2002:a63:570d:0:b0:c82:295e:3b51])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:eec4:10b0:3b4:6265:3787
- with SMTP id adf61e73a8af0-3b4ccf49532mr11901169637.28.1780965946303; Mon, 08
- Jun 2026 17:45:46 -0700 (PDT)
-Date: Mon, 8 Jun 2026 17:45:45 -0700
-In-Reply-To: <3291d47ea5fdd6ee2f284cadb518473130954cfc.camel@infradead.org>
+        d=1e100.net; s=20251104; t=1780966104; x=1781570904;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=StLjLCmXgF4Q/Ry3fnTHjp2FbwAsDgAHQZYkD5rM9oc=;
+        b=QbS3E6TwdKSZH7VMteBtWhCOCPbfXXo4GrpLPbgGJl7kawq/0BSOmImtBjdocd1+zV
+         tYkBep2hzOMsHJRJ1fHxMJLWJK/qvs8w/LUZj1j/p06NjDorJ5luMiIZa4Ma1Zxw0iQj
+         M14FMW2CZ3eHypZcQ0zeAMvQPtWmbJXAujIJByckimsyzUx6jRryAYVDnR5RGCWfHjrS
+         yBsjNZV7P+7KLvRhsmgEktFBSlN29k1nSeCVmIFSBhnF2C9C56e16i1SNN5cNZdm8y8k
+         YbbkDYcYYdADLbs/TA1g7c8Quomm65GdiTMvA+QhU7C61rddPbZLkmCUkCgH9IQeBcxm
+         2U/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8Lb5/WhUHlq4QnXE1VX0I38XhxAFh19Z7Jlglmj9Uphq+0wPCrYSDgIM+CWXJ8p1qbQPc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8GyrOTm7gEY3WnL5fZDYW84xjzvJN2lGUAQjpOvNVMz4ghIij
+	bLCG+E5Sjl5HTVzmcHcMJmNjenUU6aQDbu+hO2EYthbJfbSkJpBuzN33cjp0ah0gOD0+1nyF8Ow
+	y7w==
+X-Received: from pfjd3.prod.google.com ([2002:a05:6a00:2443:b0:842:33b9:bdf8])
+ (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a201:b0:842:6293:fc43
+ with SMTP id d2e1a72fcca58-842b66aa645mr12846516b3a.15.1780966103837; Mon, 08
+ Jun 2026 17:48:23 -0700 (PDT)
+Date: Tue,  9 Jun 2026 00:48:05 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260530061932.7849D1F00893@smtp.kernel.org> <3291d47ea5fdd6ee2f284cadb518473130954cfc.camel@infradead.org>
-Message-ID: <aidiOemcna1Un9wG@google.com>
-Subject: Re: [PATCH v2 20/20] KVM: x86: Use gfn_to_pfn_cache for record_steal_time
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: sashiko-bot@kernel.org, pbonzini@redhat.com, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	sashiko-reviews@lists.linux.dev, stollmc@amazon.com, dwmw@amazon.co.uk
-Content-Type: text/plain; charset="us-ascii"
+X-Mailer: git-send-email 2.54.0.1064.gd145956f57-goog
+Message-ID: <20260609004809.1285028-1-tavip@google.com>
+Subject: [PATCH net] vsock/virtio: restore msg_iter on transmission failure
+From: Octavian Purdila <tavip@google.com>
+To: netdev@vger.kernel.org
+Cc: Octavian Purdila <tavip@google.com>, syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jun 02, 2026, David Woodhouse wrote:
-> On Sat, 30 May 2026 06:19:32 +0000, sashiko-bot@kernel.org wrote:
-> > [Severity: High]
-> > Does this introduce a scheduling while atomic bug on non-PREEMPT_RT kernels?
-> >
-> > The CLASS(gpc_map_local, st_map) macro acquires a read_lock on gpc->lock,
-> > which disables preemption. While this lock is held, if the guest supports
-> > PV TLB flush, the code calls kvm_vcpu_flush_tlb_guest().
-> >
-> > If TDP is disabled (shadow paging), kvm_vcpu_flush_tlb_guest() calls
-> > kvm_mmu_sync_roots() and eventually mmu_sync_children(). This path can yield
-> > via cond_resched_rwlock_write(). Yielding while preemption is disabled by
-> > the gpc read lock will trigger a BUG.
-> 
-> Ah, that issue exists in the previous versions too, but it's simple
-> enough to fix. There's no particular timing constraint for flushing the
-> TLB; it just have to be done before this vCPU ever runs again. It can
-> just be moved to the end of the function after the lock is dropped.
-> 
-> That does mean record_steal_time() should use the explicit
-> gpc_map_local_lock()/gpc_map_local_unlock() instead of the CLASS()
-> macro, but that's easy enough.
+When transmission fails in virtio_transport_send_pkt_info, the msg_iter
+might have been partially advanced. If we don't restore it, the next
+attempt to send data will use an incorrect iterator state, leading to
+desync and warnings like "send_pkt() returns 0, but X expected".
 
-Actually, we use KVM_REQ_TLB_FLUSH_GUEST and "optimize" the code for the rare
-case where KVM already have a TLB flushed queued for the vCPU.  E.g. over two
-patches (so that changing the order of the request processing is isolated):
+Specifically, this can happen in the following scenario, triggered by
+the syzkaller repro:
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 1b27dd9ba0aa..48234eeb246b 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3764,7 +3764,7 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
-                trace_kvm_pv_tlb_flush(vcpu->vcpu_id,
-                                       st_preempted & KVM_VCPU_FLUSH_TLB);
-                if (st_preempted & KVM_VCPU_FLUSH_TLB)
--                       kvm_vcpu_flush_tlb_guest(vcpu);
-+                       kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
-        } else {
-                WRITE_ONCE(st->preempted, 0);
-                vcpu->arch.st.preempted = 0;
-@@ -11165,6 +11165,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
-                        if (unlikely(r))
-                                goto out;
-                }
-+               if (kvm_check_request(KVM_REQ_STEAL_UPDATE, vcpu))
-+                       record_steal_time(vcpu);
-                if (kvm_check_request(KVM_REQ_MMU_SYNC, vcpu))
-                        kvm_mmu_sync_roots(vcpu);
-                if (kvm_check_request(KVM_REQ_LOAD_MMU_PGD, vcpu))
-@@ -11214,8 +11216,6 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
-                        r = 1;
-                        goto out;
-                }
--               if (kvm_check_request(KVM_REQ_STEAL_UPDATE, vcpu))
--                       record_steal_time(vcpu);
-                if (kvm_check_request(KVM_REQ_PMU, vcpu))
-                        kvm_pmu_handle_event(vcpu);
-                if (kvm_check_request(KVM_REQ_PMI, vcpu))
+1. A write-only VMA (PROT_WRITE only) is partially populated by a
+   prior TUN write that failed with -EIO but still faulted in some
+   pages).
+2. A vsock sendmmsg call with MSG_ZEROCOPY requests transmission of a
+   buffer from this VMA.
+3. The first packet (64KB) is sent successfully because the pages are
+   populated.
+4. The second packet allocation fails because GUP fast pins the first page
+   but GUP slow fails on the next unpopulated page due to PROT_WRITE-only
+   permissions.
+5. The iterator is advanced by the partially successful GUP (68KB total
+   advanced: 64KB from first packet + 4KB from second), but the send loop
+   breaks and only reports 64KB sent. This creates a 4KB desync.
+6. The next retry starts with a non-zero iov_offset, disabling zerocopy
+   and falling back to copy mode.
+7. In copy mode, the transmission succeeds for the next packets but
+   exhausts the iterator early because of the desync.
+8. The final retry sees an empty iterator but zerocopy is re-enabled
+   (offset resets). It attempts to send the remaining bytes with zerocopy
+   but pins 0 pages, creating an empty packet.
+9. The transport sends the empty packet, triggering the warning because
+   the returned bytes (header only) do not match the expected payload size.
+10. The loop continues to spin, allocating ubuf_info each time, eventually
+    exhausting sysctl_optmem_max and returning -ENOMEM to userspace.
 
+Restore msg_iter to its original state before the packet allocation
+and transmission attempt if they fail.
 
-KVM needs to ensure the RMW on st->preempted is atomic, to avoid re-introducing
-the bug fixed by commit b043138246a4 ("x86/KVM: Make sure KVM_VCPU_FLUSH_TLB flag
-is not missed"), but AFAICT there's nothing that requires to complete the TLB
-flush before bumping the version, KVM just needs to service the flush before
-entering the guest on that vCPU.
+Fixes: e0718bd82e27 ("vsock: enable setting SO_ZEROCOPY")
+Reported-by: syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=28e5f3d207b14bae122a
+Assisted-by: gemini:gemini-3.1-pro
+Signed-off-by: Octavian Purdila <tavip@google.com>
+---
+ net/vmw_vsock/virtio_transport_common.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index b10666937c490..588623a3e2bbc 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -367,6 +367,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 	do {
+ 		struct sk_buff *skb;
+ 		size_t skb_len;
++		struct iov_iter saved_iter;
++
++		if (info->msg)
++			saved_iter = info->msg->msg_iter;
+ 
+ 		skb_len = min(max_skb_len, rest_len);
+ 
+@@ -375,6 +379,8 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 						 src_cid, src_port,
+ 						 dst_cid, dst_port);
+ 		if (!skb) {
++			if (info->msg)
++				info->msg->msg_iter = saved_iter;
+ 			ret = -ENOMEM;
+ 			break;
+ 		}
+@@ -382,8 +388,11 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 		virtio_transport_inc_tx_pkt(vvs, skb);
+ 
+ 		ret = t_ops->send_pkt(skb, info->net);
+-		if (ret < 0)
++		if (ret < 0) {
++			if (info->msg)
++				info->msg->msg_iter = saved_iter;
+ 			break;
++		}
+ 
+ 		/* Both virtio and vhost 'send_pkt()' returns 'skb_len',
+ 		 * but for reliability use 'ret' instead of 'skb_len'.
+-- 
+2.54.0.1064.gd145956f57-goog
+
