@@ -1,45 +1,45 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE28128DC4;
-	Tue,  9 Jun 2026 00:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FE7EADC;
+	Tue,  9 Jun 2026 00:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780963340; cv=none; b=CQDBPdweCF09FThKEmQYDI7UfUiO2GOj1HyGeeo40ZIvYKTyhgA23/ZkEP/VBK//zrAhz+xghq4jxvfBPzh9PhMf7NJKoseLTyQXFeyITOfUZLh70aILHB9w+XeOvOwUpYD01xonkz+OqbslZ2lCGXwS6/8hT+Qw762hAzC6w0E=
+	t=1780964095; cv=none; b=M1rkiryZUB1afK56QOXv0J58YcSfLL8uIk++mCoFRipSb1ijp0gWKLbjj1Q+j+KLvmQYrXdHZ2w7VFcpJZ0wvCIq/5C0b/u+WN+PftgVa7PBJubdZFp6ORz5hJ85S6xex/aO52rtfQWaUCHbgBCaIwvhDntVN1HaL4ZteRnyEUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780963340; c=relaxed/simple;
-	bh=JJHnIwEkA0RuMMA2xZJU1IVo8y1WLuMncqfuaEeUG1k=;
+	s=arc-20240116; t=1780964095; c=relaxed/simple;
+	bh=cvZscaKiYeJiD5ofEzVbi/FPgjyG6Oz/m0uB34y8I7U=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=QJNKBKvQSk1Uc8G3AqnnxQo4z9pSayWu7gs3g3FcI1yY1rtF9yXbCanumqx9UDZYYVovTw5DScVA4jLS4wju+9F4K19McynVoAXnV5F+ALwLpSh4/YEU2s1BC6otw9OPf/884wPHCRvWpKFy3q4wLKcJy+iAsrhOns1HSltpivk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GOerAnvq; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=rCHunp2ZOswZWhvDI8fJhfxq9ULKosb7qTnf0mEyjgIHapWg+//Ju3MMX4VEa69DWEZDR1lI68/99mTzlcEpM78yCwHvyeE2KeMJ2iqdtyWbSca0mGDkpRD+UgteQhCg+h92l8VOvXoRrjGmsP7ZrJ4bjIHnVxtv8qjGvsF+/ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lc0DD1NR; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GOerAnvq"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lc0DD1NR"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
 	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:References;
-	bh=1+OmBkhzLm41qXfpG7H59C30bMa9gggX4KV7v3AONTU=; b=GOerAnvqPwSqVqI2eJvc4WXUJc
-	THc47+JvHxC14A5atAB4GbAYU7Xk22kpUz5PzJGvBhXKxYUbUwOTF/tAm/yyJTagidV340GWBnx8B
-	KaVhdbsq3/VAsA47ZW1bHpfS/1kQJRDxpofs1sdooZ2eXW36JccP3SDZMUntWjEa49Jm+RrThRgaj
-	PvH9KjbLPGadQ8YCOQpaY2oYHxVF8eliRxTmxmIylcyDErfP7SpwYk+fvMCWNnIbCX2D6aFOfdBl4
-	M3ucR6nuHq/SGnkthw5qXl6hMP8DjBRJ1HE77DVKLekX+wJrGQ6Ch+Mu3D0mKZkKWUIgZA73LGl9y
-	kDvWkYLQ==;
+	bh=4b37Ot7OeBZuRlKIUdYEeP+AC2ZvjWt802pAA4//gsg=; b=lc0DD1NRVR2YnF5J8AelpFhdOk
+	Q3sGJD/BL0xRiA4/EfAjlIbUYbnWaVVJANQQfT9UG7hA9deLp+Xaab/KWqn2x/0xOOuMiw0yZNzZ6
+	4AFwJEvMq3tRAlQcxXqi/fuaLodkXibWWEhBLv8EjHiBnkd5ToIPRy026+DwcUK6j7QftwhLa91DL
+	z/jSyO+vxBxESHMzCvpOsecRlVwcr27017jUVUZPtkX4NmVHvWNQuKYl+HbFxFSU++/iw5IqZfl8L
+	xe0LSwouBxCH7XBZlVm/UUlYCBPgbZw+fl+rJGtN/aD3J5jNnLFqPz8kvZRqiCnHN1NR6t/871IJw
+	MRKR/HJg==;
 Received: from [2001:8b0:10b:5:30c7:a671:e76:6796] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wWjv4-0000000EdSR-3kuM;
-	Tue, 09 Jun 2026 00:02:15 +0000
-Message-ID: <659f388895335dc2badbf728a7442e5bc0decbe7.camel@infradead.org>
-Subject: Re: [PATCH v5 14/34] KVM: x86: Fix compute_guest_tsc() to handle
- negative time deltas
+	id 1wWk7H-0000000EeJa-1u2U;
+	Tue, 09 Jun 2026 00:14:51 +0000
+Message-ID: <2d50853c7e783ab0f0f3fad6536cbeb05ede224d.camel@infradead.org>
+Subject: Re: [PATCH v5 18/34] KVM: x86: Improve synchronization in
+ kvm_synchronize_tsc()
 From: David Woodhouse <dwmw2@infradead.org>
 To: sashiko-bot@kernel.org
 Cc: dwmw2@infradead.org, kvm@vger.kernel.org, sashiko-reviews@lists.linux.dev
-Date: Tue, 09 Jun 2026 01:02:14 +0100
-In-Reply-To: <20260608175924.0FDDE1F00893@smtp.kernel.org>
+Date: Tue, 09 Jun 2026 01:14:51 +0100
+In-Reply-To: <20260608183904.09A481F00893@smtp.kernel.org>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-ZrwLJCBhH1oN64fDZQ6h"
+	boundary="=-1nIYrk9yZcx1tHUSsERy"
 User-Agent: Evolution 3.60.3 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -50,39 +50,44 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-ZrwLJCBhH1oN64fDZQ6h
+--=-1nIYrk9yZcx1tHUSsERy
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2026-06-08 at 17:59 +0000, sashiko-bot@kernel.org wrote:
+On Mon, 2026-06-08 at 18:39 +0000, sashiko-bot@kernel.org wrote:
 > [Severity: High]
-> Can this result in ... the caller kvm_guest_time_update() ...
-> adjust_tsc_offset_guest() is then called with the wrapped value
+> Does forcing ns and data back to the start of the generation break
+> the 1-second TSC matching interval extension for large VMs?
 
-I don't think so... the very next patch in the series refactors that so
-it looks like this:
+Good point. Fixed in v6 by always advancing the reference point
+to "now" in the matched path, unifying the stable/unstable cases:
 
-		adjustment =3D compute_guest_tsc(v, kernel_ns) -
-			     kvm_read_l1_tsc(v, host_tsc);
-		if (adjustment > 0)
-			adjust_tsc_offset_guest(v, adjustment);
+    if (synchronizing &&
+        vcpu->arch.virtual_tsc_khz =3D=3D kvm->arch.cur_tsc_khz) {
+            /*
+             * If synchronizing, advance the reference point to "now"
+             * so the matching window slides forward with each vCPU.
+             */
+            u64 delta =3D nsec_to_cycles(vcpu, elapsed);
 
-> [Severity: High]
-> does __pvclock_read_cycles() suffer from the exact same scaling
-> corruption?
+            data =3D kvm->arch.cur_tsc_write + delta;
 
-I think it's OK in that case as it's only used in masterclock mode, and
-we do expect the TSC to be strictly monotonic.
+            if (!kvm_check_tsc_unstable())
+                    offset =3D kvm->arch.cur_tsc_offset;
+            else
+                    offset =3D kvm_compute_l1_tsc_offset(vcpu, host_tsc, da=
+ta);
+            matched =3D true;
+    }
 
-(ISTR I experimented with letting the masterclock reference time be in
-the future, and ... didn't like it. Even KVM_SET_CLOCK_GUEST doesn't
-let you do that.)
+This maintains the sliding window behaviour (ns stays as the
+current time, data advances by elapsed TSC cycles) so the 1s
+matching threshold is relative to the most recent matched
+write, not the generation start.
 
-Huh, probably do need to make KVM_SET_CLOCK_GUEST reject the case where
-guest_tsc < user_hv_clock.tsc_timestamp, or that *will* have the same
-problem with __pvclock_read_cycles()...
+Subject to full testing once I'm done on this fixup pass...
 
---=-ZrwLJCBhH1oN64fDZQ6h
+--=-1nIYrk9yZcx1tHUSsERy
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -161,21 +166,21 @@ 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
-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
+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
-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
+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
 
 
---=-ZrwLJCBhH1oN64fDZQ6h--
+--=-1nIYrk9yZcx1tHUSsERy--
