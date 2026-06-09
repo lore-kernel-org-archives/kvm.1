@@ -1,133 +1,210 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9382D0602
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 01:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3623B26B2D3;
+	Tue,  9 Jun 2026 01:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780968226; cv=none; b=SdjEI4rTpCGBgR5llMeHgHkwgsdaYetlTasi0iE6Ety5tkuTH1o4K14HTtkNoxEpRcQGejt7+8ZiH6sg4l0WcwgbbaMWglvxwnqRswA5psdjpIo+DCQILl3O5VDAiYkZFbHIaQofq1Z9seYvDDSuQpWB2Lbdd5S24qZUUK30Zvo=
+	t=1780968868; cv=none; b=nQZdA6PU5ZanjwAca3tkXjvYsbQiGL8k6A0I25GGf2tqTy2KvEHnb45m+i4/6+ZtyJttO7o7kXVUIOYOMCeybdtm9CEUQUfs5uzlF4GH0WHyY8oHZpDhDUNKvaTZbKygqBn0NOqQFhVqyi9P4mAdF9cy3iiQpi01v3gvpbz/opU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780968226; c=relaxed/simple;
-	bh=7S7S+4qFdZAcOIEweB5ndmN9jzOHUFfNoQ6vZjhK6zI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TYEQav+0FBH1JP9nsyPWJItArnx8Z2Qy2RAgFMS26iZQjPBhCtzRvyoyJYdHY++duP9Aul0syLLNIAv4jK767gUGSrFvIcB3/ULUGffczoxqbYm9z9ELc0/aB8l4/paZRvd8dXmFuzmTFCBXkE6O2ZOg6ETNChHBDpQ6ctk1Y9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R67Wo33e; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780968868; c=relaxed/simple;
+	bh=/xraJGX+U70IiiqNfQU0TldqdMX7o9u+Nc4DXM6baBw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
+	 MIME-Version; b=byHqyV2CHNLu6TATaAnp6D6hzv+smsdFl4bqkHO/8K8QLv1xhcGV8IxVSTXKmA0KZ7LclV9B0y7IIyjVCGPSZoKd4yGQCEkIa30XvNTFqeqvKUfph3Kg2bJB3Nv1NwhlTPtpGJ+Onnl5mR0ZUMSFOLIEs8tHaKVXDIfzOEtg/78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=gpbhOxeM; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R67Wo33e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5D91F00893;
-	Tue,  9 Jun 2026 01:23:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780968225;
-	bh=5IbmjOQvxJUvOx2wwKlNGUxOA4hiaZVxfuUgiGR3s7M=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=R67Wo33e4+ny+KdfHV4rwsctafmRGqMYoxxIi0cWnLVOlSNkylrrs5p0ne0eZk7Ws
-	 HjTM7phU7tg5GzfqoI4ofoi4bp+xjRv1jS0lxg0Cb2R7pVFZh8uuUvTpoxkZz805CK
-	 u9YlbnqtKa7sHGeBxHjGcbta2PorgCYSojcL1BWgVWjPOtbWCguFi2sNCG86/M3T9s
-	 RPAbsoInIA+Qcz7arYIgB/6oq/PfD+risxyBmIboQhMLBG4RFROlXmFKrZIMFsuSby
-	 cjyBK2RiXZ4WXEvuE7GbuG87nfLP7m3kCAduQl3Db1sutpROCnxnruZZ19liEbp5qu
-	 y3xWZSCje4wNQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 33/34] KVM: x86: Replace pvclock_gtod_data
- vclock_mode with boolean
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260608145455.89187-34-dwmw2@infradead.org>
-References: <20260608145455.89187-34-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 09 Jun 2026 01:23:44 +0000
-Message-Id: <20260609012344.CC5D91F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="gpbhOxeM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=/xraJGX+U70IiiqNfQU0TldqdMX7o9u+Nc4DXM6baBw=; b=gpbhOxeMGkyvM7dcm1+MacL0Pd
+	7r38bZv9Kvt9M+z7vN2EPu829jA7PNgKbu+9BMUUsc1cid7N7SUnt+orEb0rVlK7eolCys3qaHmgp
+	QM3VKGDQWHT5jA9iuyRUTjkMkYik/QlxobJox1sdg93Y60UIkRf+j8412BJ5f4jmIdZ22KjvSDi6J
+	Oq21yY+7jHAPjngDtt11h4Ytn05JzZIVzfl3OblW+flcmm/B1FmdNbHxTB05KZbfqRVdSQvo9venR
+	wepvd2aQwt8EMDnTju7ZRwS7766SRLuJsQhzrlehlVazComAjtp+6YVvLQYVoOvE128Izaeq8jbFA
+	5k8+aaVQ==;
+Received: from [2001:8b0:10b:5:30c7:a671:e76:6796] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wWlMG-0000000Eky0-04zb;
+	Tue, 09 Jun 2026 01:34:25 +0000
+Message-ID: <c2589691ed30fef8a3e70ea6f8f584b941acfd4f.camel@infradead.org>
+Subject: Re: [PATCH v5 26/34] KVM: x86: Avoid redundant masterclock updates
+ from multiple vCPUs
+From: David Woodhouse <dwmw2@infradead.org>
+To: sashiko-bot@kernel.org
+Cc: dwmw2@infradead.org, kvm@vger.kernel.org, sashiko-reviews@lists.linux.dev
+Date: Tue, 09 Jun 2026 02:34:24 +0100
+In-Reply-To: <20260608201120.B2A511F00893@smtp.kernel.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-F+3ajDbw6TKXllNN4ZQ7"
+User-Agent: Evolution 3.60.3 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] `kvm_check_tsc_unstable()` incorrectly masks TSC instability when =
-the host uses a native TSC clocksource, breaking backward TSC compensation.
-- [Medium] Tracepoints expect a clock mode enum but now receive a collapsed=
- boolean value, changing trace output and breaking observability tooling.
---
 
-commit e7585c139257b84c3968a9648d71f5c5478115f9
-Author: David Woodhouse <dwmw@amazon.co.uk>
-Subject: KVM: x86: Replace vclock_mode checks with kvm_host_has_tsc_clockso=
-urce
+--=-F+3ajDbw6TKXllNN4ZQ7
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This commit replaces remaining users of pvclock_gtod_data with a simple
-kvm_host_has_tsc_clocksource boolean. This removes the need for tracking
-the exact vclock_mode when determining if the host clocksource is
-TSC-based.
+On Mon, 2026-06-08 at 20:11 +0000, sashiko-bot@kernel.org wrote:
+> [Severity: High]
+> O(N) vCPU iteration loops moved inside a raw spinlock
 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index c18947c5b63f..93a428c37847 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-[ ... ]
-> @@ -2726,7 +2727,7 @@ static void kvm_track_tsc_matching(struct kvm_vcpu =
-*vcpu, bool new_generation)
-> =20
->  	trace_kvm_track_tsc(vcpu->vcpu_id, ka->nr_vcpus_matched_tsc,
->  			    atomic_read(&vcpu->kvm->online_vcpus),
-> -		            ka->use_master_clock, gtod->clock.vclock_mode);
-> +		            ka->use_master_clock, kvm_host_has_tsc_clocksource);
+This is an existing pattern in KVM =E2=80=94 kvm_end_pvclock_update()
+always iterated over all vCPUs under the lock. The per-vCPU
+operations are just atomic bit set/clear, so the hold time
+is bounded by N * (one atomic op) which is a few microseconds
+even for very large VMs.
 
-[Severity: Medium]
-Will this change break ABI for observability tooling that expects the
-tracepoint to log the original vclock_mode integer enum?
+> [Severity: High]
+> Unilateral clearing of KVM_REQ_MCLOCK_INPROGRESS in the bailout
+> path creates a race condition
 
-Since kvm_host_has_tsc_clocksource is a boolean, a true value will
-implicitly cast to 1 (VDSO_CLOCKMODE_TSC). If the actual mode is
-VDSO_CLOCKMODE_HVCLOCK (3), the boolean still evaluates to 1, causing the
-trace output to erroneously log 'tsc' instead of the expected integer 3.
+Hm, I don't think so.
 
-[ ... ]
-> @@ -2850,7 +2851,7 @@ static inline bool kvm_check_tsc_unstable(void)
->  	 * TSC is marked unstable when we're running on Hyper-V,
->  	 * 'TSC page' clocksource is good.
->  	 */
-> -	if (pvclock_gtod_data.clock.vclock_mode =3D=3D VDSO_CLOCKMODE_HVCLOCK)
-> +	if (kvm_host_has_tsc_clocksource)
->  		return false;
+All vCPUs might react to KVM_REQ_MASTERCLOCK_UPDATE in parallel and
+each set KVM_REQ_MCLOCK_INPROGRESS on the others (which can't be done
+under spinlock as it has to kick), then they=C2=A0all try to take the lock
+in __kvm_start_pvclock_update().
 
-[Severity: High]
-Does this change unintentionally mask TSC instability when the host uses a
-native TSC clocksource?
+The *winner* will actually do the work, then clear INPROGRESS on the
+rest. The *losers* then each take the lock, realise there's nothing to
+do, and also clear INPROGRESS (just in case they were late to the party
+and they had *set* it themselves, long after everyone else was done).
 
-Previously, this check bypassed check_tsc_unstable() only when the clocksou=
-rce
-was VDSO_CLOCKMODE_HVCLOCK. Now, it evaluates to true for both HVCLOCK and
-native TSC clocksources.
+Could that bailout clearing of INPROGRESS race with a *new* round of
+KVM_REQ_MASTERCLOCK_UPDATE? Not without the requesting vCPU actually
+having that REQ set again... in which case it wouldn't take the bailout
+at all, would it?
 
-When using a native TSC clocksource, KVM detects backwards TSCs in
-kvm_arch_vcpu_load() and synchronously calls mark_tsc_unstable(). However,
-because kvm_host_has_tsc_clocksource remains true until the timekeeper
-notifier fires, the subsequent call to kvm_check_tsc_unstable() will
-immediately return false.
+Hm, I think there's a different, pre-existing race here, with a vCPU
+that was *going* to bail out, but actually it sees a
+KVM_REQ_MASTERCLOCK_UPDATE for a *next* generation, and processes it
+even though MCLOCK_INPROGRESS already got *cleared* again for the last
+generation, and hasn't been reasserted yet?
 
-Will this completely bypass the TSC offset catchup logic, directly exposing
-the backwards TSC jump to the guest?
+That existed in the old code where everyone was a winner: the *last*
+winner could be clearing MCLOCK_INPROGRESS, just after the first winner
+has set it for the next round.
 
-[ ... ]
-> @@ -3315,7 +3316,7 @@ static void pvclock_update_vm_gtod_copy(struct kvm =
-*kvm)
->  			ka->use_master_clock =3D false;
->  	}
-> =20
-> -	vclock_mode =3D pvclock_gtod_data.clock.vclock_mode;
-> +	vclock_mode =3D kvm_host_has_tsc_clocksource;
->  	trace_kvm_update_master_clock(ka->use_master_clock, vclock_mode,
->  					ka->all_vcpus_matched_freq);
->  #endif
+I *think* it can be resolved by taking the bailout path if
+MCLOCK_INPROGRESS is already clear, as well as if MASTERCLOCK_UPDATE is
+already clear. But it's pre-existing, makes my head hurt, and is for a
+very rare condition of back-to-back updates. So it's going on the 'for
+later' list.
 
-[Severity: Medium]
-Similar to trace_kvm_track_tsc above, does passing a boolean here break
-tools expecting the original vclock_mode enum for
-trace_kvm_update_master_clock?
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608145455.8918=
-7-1-dwmw2@infradead.org?part=3D33
+> [Severity: High]
+> Does moving write_seqcount_end() after the loops risk stalling
+> seqcount readers?
+
+The loops are O(N) atomic bit operations. On the guest side,
+readers that observe the seqcount mid-write simply retry =E2=80=94
+they don't spin indefinitely. The window is microseconds
+even for large VMs.
+
+--=-F+3ajDbw6TKXllNN4ZQ7
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwOTAxMzQy
+NFowLwYJKoZIhvcNAQkEMSIEIPHk3tvQZiCcSzcNbJzWvgdC8FqCFkbfj+vIOctm7aF5MGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAxiP+5F55jMoa
+mK+L2AtV8s+bkwbt086NxlbnVeLp5W+dcjO90IOsfCD9P9f8BInMZjpRZrwr+TfzwAnWjxrwYDUC
+6ci81HIpjdq2WJ7rIvbv6xdBsL9f0MTOgfHVR3qYLXwZZearvMwde4Z740sxkz0VbN+MpDb7kzNX
+0fwpwCuspD9z18sWuhzvIAaRGe7GEhg0/qvcK6nzV+06TtZBjXILrJ74bvf5/Rmz6QSyKKnvHGwf
+sbMIsTzZu+XlhMejckc+CVb4U9m16F32I88jtMxpwntXwtU+XTNMMZU7KNPf3gMUVz0CtxzlpksR
+ZYB4ukCX6MnFvUnEZas+XtT8aS3MsGgUjrsYODpdl7pNvLPxyhPplzmog1BWEjKJ9SrIAhezMhoT
+DxRQPAifeiOPRwoXAdCKZF/RER3S74wnDEucEJD5Yc09QIel+DRED56cFjutzpym/ZRoyiUSjguA
+9cPBd9QsP6AMSvUGNVM9Ps9UbhC8Qt3fVaCBnefXLYTdwQFGpV7i7983Ov4MSwqUcyWdV7kNDCMC
+bhbonkrWABodKQctKjVKRGO/RSLInWygNnfp8KzNmF2sm7o1IYjHzm3SE7ehB5TCOwBHwoCBizh4
+mD7xja/pWP6WzdrylFp7glb3TEyT8Q68xyD5Yu15VXLCrcLcraa6Rgm++sn0gpAAAAAAAAA=
+
+
+--=-F+3ajDbw6TKXllNN4ZQ7--
