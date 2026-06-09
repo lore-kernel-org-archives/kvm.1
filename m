@@ -1,142 +1,204 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011046.outbound.protection.outlook.com [40.93.194.46])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB7B3815D9;
-	Tue,  9 Jun 2026 03:53:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780977236; cv=fail; b=VarOSmTWKEq60is5Fx3K6TQKpVMZ5cLX1NWQ/QI3RvmZkUoEYxzuiAinYPYeXh2r3jp8GaLYPA6Q2X40PYlZg9FO2kLmyX8cOheqI00sGgXYsHmrbChSZ42UKZqZH4WzLqcu2MOcdG5ctewqETu7MuonFUqN5efmb7tNO0hSmMQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780977236; c=relaxed/simple;
-	bh=29spU32gP0NJSkxsMed7YmDdkTVsT7yf65GhyDmUwYY=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UjvqSBnjUfivbGYu4ad/9lS9mC+9A8sZoxstdl6yNCk+jnenZusJrmf0qAzdBPxTciRKw+EBXrtEFm9WEkiie3wvrJknHJo/FoY51yM6PEYS/A377FuYhpDMfgHhstYX/145rn8QvMcuQAyalbpZTGeSUsfnA/heBNIKivkZJ98=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QW9jh64t; arc=fail smtp.client-ip=40.93.194.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255983ACA5D;
+	Tue,  9 Jun 2026 05:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780981911; cv=none; b=jhdEje1boyyv9SdXHIYtYzeJCeL7xHmeUd9RXAbWhOX2pxYwTRZI4fWaOBG1ZtmCj7uzFbaqHEmidJQ1JNpB72xRNmoHpoqZT8wR3+Eog0+hsHw3FykcVq3MnWB/rfegtw+DzYFaCwYnO+lkn5AvFbuDS1rD+mOM/4z30AV7Yls=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780981911; c=relaxed/simple;
+	bh=Ekdj8csd/Z47gl9OxUyZNrIx6pkiqBtQLQ5bt+pDHiA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sSssgvUlCdp5qdixqo87hbI2vPOSbMehpp39Hv1So6I6bD+9wmCKHKe+dw5It5TuV30pkyQ1dSqVHte3rtP6vCcY38zSPjGmDDlla0y/oFeo366MbT0gnQAMtN+Nnk2oS01kd7nzmkrFjog670RhwPmWB0hsn+KHNnnolYjmn8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nhRzzKq3; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QW9jh64t"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T+MTiai5PZBY0g0asktAE7Qx0KJvbB6lLzidcXJFeoiKuOr7DkewzTsVXDG9Phyr7JVB6rjqU1p+N7DW6obMg+ecf3vQQLK9zcPNA4hmMfL3QNt+tdlc21WWmF+rSzojHGTokd/syqIbaWzLo2Csewzy3uFMRcYVSN+iXMXCrceBN5lC6jZHj9ZcCA5P81nN5aY+ociIRo4SlWq8SPOzeqepF94jdAoiL1mz47JT7xYCpotCjRP3hzED/qygOeiMGE0l7fCU8zZ8mKDf27mbdFcGT4d4ONjeKXwzvU7cKDR4ndwOpVIxzN5O6QPJElLBE4ZZdEJwMKAvKOfOcdCvCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yhW868Xp6mP77t5wirse7yDQXlbkDUs4be2za0EXcJU=;
- b=GVbeNvkDQdnslZ6AWQTaWzBx31gJ5+32ecBxxfl2vFEWIzg5SJ07hg/RjeRmmj0S3JYVSAXy/JcF8abS48yGdrZH6c4oAEWIg6v6jM4cdWuneTzG926MSSxSbXT1QBc+9k7eznH7R2XAqW1wlPr31G5G/GL9NpdKhdIgYp87fJgnET5zHHw+qURJp6acO5oabf6NDqCkXvtpV5mxI+CdspaXdpIJnwKbesZdjxDeh2DhSu023RGqhUAEh376VqkmGFvY1W3A1du9/ZpIpQk6ynvWSwQSr4iTnw8h+6D67fjsILEUnUiA82uyoUABRs9eP41DzaN8XnQ6CLRMQ+naDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yhW868Xp6mP77t5wirse7yDQXlbkDUs4be2za0EXcJU=;
- b=QW9jh64tiJPKzW4+MKENhYRGCX2rBUBLuapraMFHZtz8fgBkdBIs8Mex+2gGNw5Op28OR+lTlvu1DIgv5vycQoCxYPIwNffveNn211QQZlnIgIZ/ulsRaOnxAPNHfF3RJ9ek8sXoF9sHqf8r8t+7Vz6Y5AwySoNeMbRWWT7h650=
-Received: from BN0PR04CA0012.namprd04.prod.outlook.com (2603:10b6:408:ee::17)
- by CH3PR12MB7500.namprd12.prod.outlook.com (2603:10b6:610:148::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Tue, 9 Jun 2026
- 03:53:44 +0000
-Received: from BN1PEPF00004680.namprd03.prod.outlook.com
- (2603:10b6:408:ee:cafe::72) by BN0PR04CA0012.outlook.office365.com
- (2603:10b6:408:ee::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.13 via Frontend Transport; Tue, 9
- Jun 2026 03:53:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN1PEPF00004680.mail.protection.outlook.com (10.167.243.85) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Tue, 9 Jun 2026 03:53:43 +0000
-Received: from BLR-L1-NDADHANI (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 8 Jun
- 2026 22:53:39 -0500
-From: Nikunj A Dadhania <nikunj@amd.com>
-To: Carlos =?utf-8?Q?L=C3=B3pez?= <clopez@suse.de>, <kvm@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Carlos =?utf-8?Q?L=C3=B3pez?= <clopez@suse.de>, Paolo Bonzini
-	<pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
-	<skhan@linuxfoundation.org>, Ashish Kalra <ashish.kalra@amd.com>, "Michael
- Roth" <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, "Isaku
- Yamahata" <isaku.yamahata@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>
-Subject: Re: [PATCH] Documentation: KVM: Synchronize x86 VM types
-In-Reply-To: <20260603114504.814647-2-clopez@suse.de>
-References: <20260603114504.814647-2-clopez@suse.de>
-Date: Tue, 9 Jun 2026 03:53:36 +0000
-Message-ID: <85bjdkjrnj.fsf@amd.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nhRzzKq3"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 658Kg8px3420508;
+	Tue, 9 Jun 2026 05:11:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ZESugM
+	OhTaltoGi7S5b9tGg+zWmprJ8SdomDsrK9xjI=; b=nhRzzKq3XWRMzV1OBxfq6o
+	xhWMkKCECG0p/n/kThMJwhQ+d2ETCQDHZX/HaF0wJt1uFpqLiI4DXkLZbyRRLxJa
+	JtWr4RZZnbWiHmATWPSKsNAnHANQZlskpA8GsfBNKqzRiCaw4eUh163AZCazZpEg
+	1eEW3NYJi1xsG+B1eiHYIc26PDra2rqasOLGAH4EoCI3Ny3mjXf465tQTi2zhQv8
+	i/V/l6gBd8cJeRuTrLd2/ecC71gI8SYPb3qtR1e88Aa+D1dfgNWFMMHwkDxa8aYt
+	bQaKmU2y/FkaSBIKVnKkI9JsrH35oOlpP/NnCD/9BOB1lOdSa9Q4JhDxRuEpXbSg
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4em9ye2dgc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jun 2026 05:11:48 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65954fkI032061;
+	Tue, 9 Jun 2026 05:11:48 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4emxvjrfnn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jun 2026 05:11:48 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6595BiZX49611196
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 9 Jun 2026 05:11:44 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5284620043;
+	Tue,  9 Jun 2026 05:11:44 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 893C820040;
+	Tue,  9 Jun 2026 05:11:43 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  9 Jun 2026 05:11:43 +0000 (GMT)
+Date: Tue, 9 Jun 2026 10:41:55 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Validate arch_compat against
+ host compatibility mode
+Message-ID: <20260609103124.a7827206-22-amachhiw@linux.ibm.com>
+Mail-Followup-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+References: <20260608201001.65760-1-amachhiw@linux.ibm.com>
+ <20260608202747.E521A1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004680:EE_|CH3PR12MB7500:EE_
-X-MS-Office365-Filtering-Correlation-Id: 162ff0f0-4329-49a8-98f2-08dec5dab33f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|376014|1800799024|18002099003|22082099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	PHLTkDkU0koj0omFEu32bcXylDEBgIxjFHxcENQRvd5IfJDQ5wmTAURQ+UM32+MB6qVxsPAuqH1G4lNaJjJQiC9clEwnQSmkvT6LfhodHI6SXb8Rq5xLB7J16Ajd/bdRecHykQuzaJmw8fqWrMyKOBvVctG5BWU6lt4z3YmOyRkMqAUQNF71OwYScZFlk91XRKvaISaR1dkoIoE3PHuyPdjFeXCOZaFDdIHtOKufMOB5aa1Am1Sc8gbBXC1T7Tt8CdIPnU/hxmcBAg5k0aU/D3aOQonQuPR8aiKW+rO7ZpHuNWDlb3OGOpRafMU3BTfhzt4nQlv/0gZmUinV842f4OhLNW+1UafAd8aovtau+dlyN8O+Wwe3uPV1yFjo/mRkppPT0TTyhDGccqA/PSgPfa33XXGo4PCS0HzwRHD08TT6EpgDWM9qcoz2ySU4ohb4nNzzQZFt/1AZfuasu/dMqTE2+8Zd2jq5dkJsOyx2cDIjxgbcZoNm4vVwWlCvdl5iqA6p0hTjwezIU7uuii7iXuplyNulNkGmB6b7PrmqMbpm3qcJ2w1J6sm7n9IifbChQ1heiOJq/J9q5JpNy3fZ1o5xYOafB0JD4byVvUNqX+GdhwnX8PLMVfjoa2wnq2660RhoATo/ULQk+k2NUH0o2p4VxSuhyWf+su/2ooNDEUS/3wCo4Y2KNwMfMtYVfGe8WGGXn4eXJeQv2E9NTr6YlapxKpSqZcgxPJxs2vPMWq8=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(1800799024)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	N4Ts7INwN0Eme6PqLOCyGCvezqpFpxem9RmVpSOSZO+Neg1P6rohlNa6ZMaRavA+6ouYPmropbWmSGK1zWSvDkPBZS5vuhCMMbBbrjHFvni539mElzFqMWUADdwP9XcWTxYtV3OY5Agd5jq6KmTcPT3eeRZuOcX814m0HJXgIBRUyno2ur5+48icujscJDN88rGGhja/Zwe/hECMNc1sL9/8qXP13JuNLBCvP2kLoS1XzWvCH85J4O/doVDJPcQi/VhXhuv+CQDgiRhyO27/5eJXG85n2ziojSBR4isOQpkk2EfdGn+xLDYz6F65DFxOrRUveo6QX2kR3OiQ/jk3OSaFj0xcz47XsHLJzms3HMex13QznY2YHcR3EiZTBl+lckldCj6pEVOEOQAAuJDhlr+GXdTlN7ot7BVWkFDlzm66kwzxko2glwF5UZScfAJe
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 03:53:43.3624
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 162ff0f0-4329-49a8-98f2-08dec5dab33f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00004680.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7500
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260608202747.E521A1F00893@smtp.kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDA0NCBTYWx0ZWRfXzJuSyb9WYWiu
+ fALS1LiVWXLxzDUWmbc1UoxDL2r3WJZDQPz4AeZ5sxRp+UEErsE9Ar+NaHO5e0wkruZ8Jwm+Uuo
+ 8k0udb0MqXn7iTqJrZsuX4RawGlHngddq7cZlOSno4M+qL8UHyP4+OnYCYQ3+fUhfHsT9Gxu5U+
+ ftFQEbS2u4gcaUr+rc+J5+ZKll3i3oVYzKsljW2Ba5ePIpKopblhyz8Tnz2KmC2XcJ8+Kr0KvVF
+ OmNnT1wJLJn/nipXbicRQPvGOsz7kNSTFS8c+bRH9JacT4wQHyxoxEsATRt4vmHjiwas4EPTjaE
+ tnIhUG25CBaBVzkyK462eOa5xv/GVyTzTMBJUl153G5Qzbtjk+E1WnEy94mjhdtO0SRbqKJl45O
+ 1DiaKmViWsLfP8qJhC7bS1W16J0QjTp8hTsMDCmAN9m0Gea3bBHk/p7WpdkEjrZB4PQhSWnpmmX
+ 1LEVp48MwCxV7o+v+jw==
+X-Authority-Analysis: v=2.4 cv=QKhYgALL c=1 sm=1 tr=0 ts=6a27a094 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=8nJEP1OIZ-IA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=c92rfblmAAAA:8
+ a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=jqxJ-K0nebAUikD8VG0A:9 a=3ZKOabzyN94A:10
+ a=wPNLvfGTeEIA:10 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-GUID: mM95Ee9CypC8p-gd4J-6pTkuVq78-kj3
+X-Proofpoint-ORIG-GUID: mM95Ee9CypC8p-gd4J-6pTkuVq78-kj3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-09_01,2026-06-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0
+ malwarescore=0 impostorscore=0 suspectscore=0 spamscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606090044
 
-Carlos L=C3=B3pez <clopez@suse.de> writes:
+On 2026/06/08 08:27 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] Unconditional dereference of `vcpu->arch.vcore` in `kvmppc_sanity_check()` causes a deterministic kernel panic for Book3S PR and BookE KVM guests.
+> - [Medium] Bypassing PCR capability checks corrupts shared VCORE state on older architectures and inconsistently blocks sibling VCPUs.
+> --
+> 
+> commit 8aae14bd53c26cd9bec6b3a9d75dc94d32e6e296
+> Author: Amit Machhiwal <amachhiw@linux.ibm.com>
+> 
+> KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+> 
+> This commit detects unsupported arch_compat values early in the guest
+> initialization path. It sets arch_compat to PVR_ARCH_INVALID and marks
+> the vCPU as invalid, preventing the guest from running with an invalid
+> processor compatibility configuration.
+> 
+> Cc: stable@vger.kernel.org # v6.13+
+> 
+> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> > index 61dbeea317f3b..f9380ef657500 100644
+> > --- a/arch/powerpc/kvm/book3s_hv.c
+> > +++ b/arch/powerpc/kvm/book3s_hv.c
+> [ ... ]
+> > @@ -446,7 +446,19 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+> >  			guest_pcr_bit = PCR_ARCH_300;
+> >  			break;
+> >  		case PVR_ARCH_31:
+> > +			guest_pcr_bit = PCR_ARCH_31;
+> > +			break;
+> >  		case PVR_ARCH_31_P11:
+> > +			/*
+> > +			 * Need to check this for ISA 3.1, as Power10 and
+> > +			 * Power11 share the same PCR. For any subsequent ISA
+> > +			 * versions, this will be taken care of by the guest vs
+> > +			 * host PCR comparison below.
+> > +			 */
+> > +			if (!cpu_has_feature(CPU_FTR_P11_PVR)) {
+> > +				arch_compat = PVR_ARCH_INVALID;
+> > +				goto out;
+> 
+> [Severity: Medium]
+> When jumping to the out label, the code applies the invalid arch_compat and
+> a restricted pcr to the shared vcore structure before returning an error.
+> Since vcore can be shared among multiple vCPUs on older Power architectures,
+> does this state affect sibling vCPUs?
 
-> KVM has reflected KVM_X86_SNP_VM to userspace since 1dfe571c12cf
-> ("KVM: SEV: Add initial SEV-SNP support"), and KVM_X86_TDX_VM since
-> 161d34609f9b ("KVM: TDX: Make TDX VM type supported"). Update the
-> documentation to reflect this fact.
->
-> Fixes: 1dfe571c12cf ("KVM: SEV: Add initial SEV-SNP support")
-> Fixes: 161d34609f9b ("KVM: TDX: Make TDX VM type supported")
-> Signed-off-by: Carlos L=C3=B3pez <clopez@suse.de>
+Setting arch_compat to PVR_ARCH_INVALID is intentional. The value is
+stored in the shared vcore so that all vCPUs associated with the VM
+observe the invalid compatibility state. Subsequent calls to
+kvmppc_sanity_check() fail and prevent any vCPU from entering the guest.
 
-Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+> 
+> While kvmppc_sanity_check() marks the current vCPU as insane, sibling vCPUs
+> might retain sane == true. Could they then execute the guest using the
+> updated pcr and invalid arch_compat state?
+> 
+> > +			}
+> >  			guest_pcr_bit = PCR_ARCH_31;
+> >  			break;
+> >  		default:
+> [ ... ]
+> > diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> > index 00302399fc37b..7e2d489af6423 100644
+> > --- a/arch/powerpc/kvm/powerpc.c
+> > +++ b/arch/powerpc/kvm/powerpc.c
+> > @@ -258,6 +258,9 @@ int kvmppc_sanity_check(struct kvm_vcpu *vcpu)
+> >  	if (!vcpu->arch.pvr)
+> >  		goto out;
+> >  
+> > +	if (vcpu->arch.vcore->arch_compat == PVR_ARCH_INVALID)
+> > +		goto out;
+> > +
+> 
+> [Severity: High]
+> Does this code introduce a null pointer dereference for Book3S PR and BookE
+> guests?
+> 
+> kvmppc_sanity_check() is a generic helper used across Book3S HV, PR, and
+> BookE KVM implementations. While vcpu->arch.vcore is populated for Book3S HV,
+> it remains null for Book3S PR and BookE guests.
 
-> ---
->  Documentation/virt/kvm/api.rst | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
-rst
-> index 52bbbb553ce1..3ec574a41f60 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -9363,6 +9363,8 @@ means the VM type with value @n is supported.  Poss=
-ible values of @n are::
->    #define KVM_X86_SW_PROTECTED_VM	1
->    #define KVM_X86_SEV_VM	2
->    #define KVM_X86_SEV_ES_VM	3
-> +  #define KVM_X86_SNP_VM		4
-> +  #define KVM_X86_TDX_VM		5
->=20=20
->  Note, KVM_X86_SW_PROTECTED_VM is currently only for development and test=
-ing.
->  Do not use KVM_X86_SW_PROTECTED_VM for "real" VMs, and especially not in
-> --=20
-> 2.51.0
+Good catch! I see vcore is only set for KVM-HV and may cause a null
+deref on PR and BookE. I'll introduce a NULL check in the next version.
+
+# git grep "arch.vcore.*="
+[...]
+arch/powerpc/kvm/book3s_hv.c:   vcpu->arch.vcore = vcore;
+
+Thanks,
+Amit
+
+> 
+> During vCPU creation for PR or BookE, the initialization sequence sets
+> vcpu->arch.pvr and calls kvmppc_sanity_check(). Because pvr is non-zero,
+> execution will reach this check and dereference the null vcore pointer,
+> which can cause a host panic.
+> 
+> >  	/* PAPR only works with book3s_64 */
+> >  	if ((vcpu->arch.cpu_type != KVM_CPU_3S_64) && vcpu->arch.papr_enabled)
+> >  		goto out;
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260608201001.65760-1-amachhiw@linux.ibm.com?part=1
