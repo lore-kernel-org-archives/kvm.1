@@ -1,90 +1,86 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7132EEE79;
-	Tue,  9 Jun 2026 21:46:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DF23AF668;
+	Tue,  9 Jun 2026 22:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781041600; cv=none; b=Y7rjfFnlWi6Tq7v+4FkQsL8lTCMERjQzdg4LSZ+lpSINtzefhJhfYX/ZrXGCKN9zLzvUguaIJ6vwOL9EnNylKFRJg1xwPVekVulXfIa/VWomAb1lzDPoY59Ja7FWWUDLay8XG/201mlJH2oCWriZfjQly0mHf7wDgKkm6+qXcVk=
+	t=1781045018; cv=none; b=GSiWPnSGgvyEktUifZzzzRMXWwkoAtiY4JaqjXWQSkJa91wLcLUR8JeaIs4MxVDIolch6pdw8Vn93+UZpOOgcYl4l7hSHVwW25NOGZoskVb2Qom6d24k32xyNp2v60krPcJL1khDzBPrqOI6VHcfpPhqP6j8ZIgd3zmxkrFBTYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781041600; c=relaxed/simple;
-	bh=BsLNVgcsHZe2ZdsnQZYPq8d5+s128ZmNZcF9+xivLx8=;
+	s=arc-20240116; t=1781045018; c=relaxed/simple;
+	bh=0IpaWrIodcly2t7PYOgU+dX1cmASrL64/OfF49Vv3kY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rxC0w1UQsIb/pML2ncJghJMWtdvf5NaxLYbyvZjux0qeLIV/niM09n+XR9enrBK6NficlZM5ydpAdgbpmiOSpgehlZb53irkxEzn7tUKOJODHUnlr/wrvTH2aEn9eSL1/VwZbznm8VbXw/P74zogt4fxCFUuEpxQCIB6Chrvfu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=dAXXjj9F; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Qo21B5LF; arc=none smtp.client-ip=103.168.172.149
+	 MIME-Version:Content-Type; b=TcrZhQkm3/lJ1ZV7rco3TyUOS6LjwTWMMNLDIZsdk2vCzabsF0sDJfB1BT2IJuqcDEsp//cNxTTLg4g7F42vr70qU0r0haf6TfP5v6+PBF1lguOtME5t2zDDiicEwtl+Hdgt6Hcqt29a4ROu85UZ66eH7wDQgAVXmTVuElD+Ip4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=exNfD1wD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LnfyTPDc; arc=none smtp.client-ip=103.168.172.147
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="dAXXjj9F";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Qo21B5LF"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id E59C2EC021C;
-	Tue,  9 Jun 2026 17:46:36 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 09 Jun 2026 17:46:36 -0400
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="exNfD1wD";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LnfyTPDc"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id AEDCCEC0184;
+	Tue,  9 Jun 2026 18:43:35 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Tue, 09 Jun 2026 18:43:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1781041596;
-	 x=1781127996; bh=Le4mzZitUOCcD3l+m59chdRcJdHFdgu8c/ZCYemC1C4=; b=
-	dAXXjj9FfExLlbaZ9I2g8ETi3RfKBVVFAjpT64jfIpEeerruRAoxo75VuDeTTOYH
-	C4WRuvCF61il3A6t7Vws5R6SpTeb1fv8D2rNZjTNLKjk15s/tfCHIqvyvQmSYPZM
-	KD0rnyJJ/kdT6YI5kByaNcrVyal5Ck6YJl96vuVv3jRgrNvkprWnUX5FnIU6eqJi
-	sQ4jreWBdxEs9n2gzMPa73E1wHEkoKP6VUDGj6arD4qir6OScDV/cw4Q3I+D55JZ
-	Sve/4zBKcQkY0Opq0utfqXU6SBh9oCwVYW2UHmVHWzn0X8tZZeZ5iYD0Nqv201Wl
-	d5pDFtoa32d4CB/TB+4skQ==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1781045015;
+	 x=1781131415; bh=LG2vrIAk2mS1EqfLIJ+l00ZnjUcmIRtgt527GUdbCAI=; b=
+	exNfD1wDZGAQYN5+qISNu9xtgGcYJ5t7XT9qaTzIsDN5CLg07RWuzC1dgAeDaieb
+	uGMXdoS27uPeqTBwU6+SrgqDaAwTxENsdZVkvresVe7x9oWfFQfDmsRHbe3rZ/dU
+	Fsv2aFDAd1VmEhL0eHyeY2ZWQWW8muUfjteh8PVv7H79KgSrdABUVGJQg1x/q5Qr
+	jRcub36xWcE55I3ciFzlZkzsh9exGnU54lOSfvLXUwfNDo/XKL32OwSeO12/oTkF
+	hkpH/wZFENd5SP/iOM7Z+rTJpbNs/JpEdNenT1xHg+5j5VtW898g/zfh8eiKySS+
+	wwKB0kfBPT1vhE/oNGERAg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781041596; x=
-	1781127996; bh=Le4mzZitUOCcD3l+m59chdRcJdHFdgu8c/ZCYemC1C4=; b=Q
-	o21B5LF6+eVL0FrVT//T8T5IHgrmhItN0lO4QjPVCLE+55+XbYzUbECnJYNPnqpU
-	oioIUooojwU//H0OdfrU9N8VGfPuvJs6tmJ3gTZ7oG+3LV/3BCgXj5FNuvzRMBag
-	tm3Ebpy+m/Qyuiuy40/EYivPkRkLM1hMpzrqU0nT5My8eqDFJmfQqvzdjpxR3Qem
-	74fcufgERoS35lQRLdwbMBhabC598IW/uiESIPIod9FPnLtKrh2ZzePOPRjRJgO8
-	dahezYcPhB4IhzpYN0e6TSjqC/KWOyFXT7+QApoFjGly8i5lzGflLanrd/DSIK4j
-	uKQSN0LlNpWkjX8Yyjk7w==
-X-ME-Sender: <xms:vIkoav41sU7sUzGrTPA6Kff5nPOhMu_tjTb6AT9cHRwX6gkJpgJiVQ>
-    <xme:vIkoascAsBg9rjm1TIvDQLPRmo3JsuqYZfKzLN0ep1brQTA-tc4ZUYEbdWsD3z4sh
-    aHIQZtRYOWsFwwwsOypRNiBEEJ5CxLFFgBP3risaH7qSxWeUqtKxg>
-X-ME-Received: <xmr:vIkoamEpwgfC3N0c3HCxtvQF2l3JuR_hnvE96yKATYM1_m9HJ5DCmtEPQLs>
-X-ME-Proxy-Cause: dmFkZTGvUY/GUU1gU7Kcsq7cJWzYPAILCs/dFDD0hst22ThCwBi1vnbQlHAm+Nvcf7Bswg
-    rV++wJ6ac08HqzD/HSLDgPd/SlMmTO3zNwe5YrT/8VO+Q+5wZNBDjXouEW7LFTFvz+RBQ+
-    vlOKXPM6scyo8puzQmKqCveaX9HSJfQ2w2WRB0T912qT5whajjDBx3ext/e3Gh8OY/6MUC
-    L+qEUjjfT1XOZefkH/n5nReGu6UoHEQ6moOujnT8WMFvSnEeVIVESzvcI7l9CFe7ru6XCJ
-    PpRu4o7ejKUdJzxysGMIHOyfkdkThi58pkUt1P6FVOnn+7dGQIaw8N0aLCrRSRmWRM+PMh
-    ikaLjSpPoBdefLsitXogYOQsUUb07nZmsb1VJhDUaUDxH2g0KjaBiKMbZc0jFPjleo2Iyk
-    KfNbodWo8iutszHty+zZo5toIMA1VA6Xnvc8RtbExEfjg/4TDeUq67f9evEtZsA+7fBPzX
-    0VkyVmm2fiI30Vh/OuKtzGGaGTHFiJyglA0jGoi5s3r1MCCtYucoekbpoJMAslDejOBC10
-    QuX+elWdeC9DTHBdmtsu/M7La/kMfxu5OERbW+NMAVyH3lKzW/xMTCUanptzfek4kFoH9n
-    IdQmZJA9vlrGsGhG/KUeVFv+Sy10TDmJQghO7iPWhZhw/IFBIKUt/tPJ4jIw
-X-ME-Proxy: <xmx:vIkoas4j-LUxltDGhE3c2BEzr58JQdPq2sL1nVn3EGkTXjLWeiWMKg>
-    <xmx:vIkoapvaCyVyJiLgHqTcdsrjJPegXxR_V8GvUKpBiytgnbZ4Ik0uDg>
-    <xmx:vIkoag-U3Ty5QcEbjE9wXqfPiARWA8hlGVRxPn2FO4IGKLCUvbzTpw>
-    <xmx:vIkoajmgLfPH9lLOmlpZjWXYSL7XQCMrbH6d9qhFwJ-yNqnrIzRVWw>
-    <xmx:vIkoagld8r8MNa3yFhypdE_45wM3TTznM9aALYwL4tuY1ylX1DrQEkjw>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781045015; x=
+	1781131415; bh=LG2vrIAk2mS1EqfLIJ+l00ZnjUcmIRtgt527GUdbCAI=; b=L
+	nfyTPDckOvl2xHgwUZfZppyakFX0+ppWAPuM0bv9wGM84d6z4itXCZfmkXWaUJjy
+	cgFrq7Pkw9DkqRT5grTU5tDG2h4ixWc/dVkS+0FsvhinsPrUDSnwWw3VdvUjP9sL
+	yVCyQXBdw9H5kD8fXjNzJ1a2pOd8jFFzopPA40a2iRm0jmGZSQklR1R6sOckEoGt
+	ugratWCI9++FCk0oufahGqbrMOJteuzTzOoZ6c79ONlQYtdWb7OaehYa5CPrgBU2
+	gWUizzm5MgIz0xZikjVtDPIeupKqumPvaDOGytwNZV1FbCasgkJ0+FNeB3cIvPA9
+	TbhGSDhNcG/aYs2iMyy8A==
+X-ME-Sender: <xms:F5coavug36U3Oe3SqkAIt72BsZ5kb-WFtQvxQJ5V2SnJQWffX37KiA>
+    <xme:F5coah2kV_4MYU6TJNGLz-VjegysrZsfOqqfHRpf8iNFb4CbEr-nyECScjHjTOFlA
+    s7xyzAPrA3RKecrN4Uu3IIk0VV5Dqq3ULQ4ouebdDWWsLVXm-NkJg>
+X-ME-Received: <xmr:F5coasCtNRWKhKHa93CeHGXdEJV8UwKRNObXA9PHJ2CO2Dwqb2b80a5V3Vo>
+X-ME-Proxy-Cause: dmFkZTE8jEnSpP6DxEe5aJ5ZGJxvLElyKulphKp2EhYMQTxhzHICItgQMblQxVAoCsUwrb
+    d3AggRcsfGtRcC5wb7FJuapqNCWSHyBMhuzXKqPEnFI6mHeQjXRWTGQaNgnOjqagRqoUBs
+    SAj+igc4EH/Bmm9TacT/LIhWBuB9IClNgG/aqDEsayoBXWJZeKk++zRmjTpcgfrtucyMWq
+    tgmWpb8KGRDJFz3fby/lfV1O8cNu9V5tDG4byEch5rsNRPQuHTeZm2tb2wRaoNEBqkBDJm
+    7rLIFzayeZMTZytNY4tTfWfS5haxYKief6U3VkZIAFam9TLHq+ihbUv7sBU5T0rXTT3hmY
+    nObayYPmbilUpX+8FXw/ZJdSBgEj7BAgUaCHQMWoklh/IBjdoBTWeG9Hh66hbj1owQcwQD
+    8SS4i7Inkr2mhf9GIubb/SsdogW977SV2ICqsxU0NBHpUwK27jpJChNW+WsbnbRY6CkVme
+    lWMGBZ9B/pR7IJmrPYRhf22fYV6Dju1XOSj5lmsB63mAOcYIpymf/lgDwoa1KBKmjAZf55
+    b33eKByPGn6uqniikIgixJ1s6c0mwJhPlxF2ts2dTKAGskxxZGwpQpMxZ9H4GRHvkXJLNN
+    B34mC0ig5t+/IhMnPxbM0ocmf2psISR+oxR1G37NFyXnPwXjxdZ3dDZSMqvw
+X-ME-Proxy: <xmx:F5coamcx7PKts6QlyfO9vylXYU__-qBM8VkI0z2vsEjX8W3gSG1kcw>
+    <xmx:F5coamycjZWmhcJySK0A0MfnPX1f8dLbFR9eczKSzPZ56lLGN70WfQ>
+    <xmx:F5coapP_R9hF-peGqKVBsH_3hT31g5ZYmn2eZkVRACinRZ80HutW3w>
+    <xmx:F5coatY1uY2UXDWWK4I5YCqlFyI-UEKISfauliJBliz5eqK9j-g-Pw>
+    <xmx:F5coans8O-X_XC3TlwWXQ0a5wdtnVcJxaYWZlEl0iss6WYgxD6dAhH1S>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 9 Jun 2026 17:46:35 -0400 (EDT)
-Date: Tue, 9 Jun 2026 15:46:34 -0600
+ 9 Jun 2026 18:43:34 -0400 (EDT)
+Date: Tue, 9 Jun 2026 16:43:32 -0600
 From: Alex Williamson <alex@shazbot.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Sumit
- Semwal <sumit.semwal@linaro.org>, Christian Konig
- <christian.koenig@amd.com>, Bjorn Helgaas <helgaas@kernel.org>,
- <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <netdev@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, Keith Busch <kbusch@kernel.org>, Yochai
- Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
- alex@shazbot.org
-Subject: Re: [PATCH v6 4/5] vfio/pci: implement get_tph and DMA_BUF_TPH
- feature
-Message-ID: <20260609154634.46ee8328@shazbot.org>
-In-Reply-To: <20260608185646.4085127-5-zhipingz@meta.com>
-References: <20260608185646.4085127-1-zhipingz@meta.com>
-	<20260608185646.4085127-5-zhipingz@meta.com>
+To: Omar Elghoul <oelghoul@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
+ farman@linux.ibm.com, gbayer@linux.ibm.com, alex@shazbot.org
+Subject: Re: [PATCH v3 3/4] vfio-pci/zdev: Add VFIO FMB device features
+Message-ID: <20260609164332.5dc548f5@shazbot.org>
+In-Reply-To: <20260608171850.62829-4-oelghoul@linux.ibm.com>
+References: <20260608171850.62829-1-oelghoul@linux.ibm.com>
+	<20260608171850.62829-4-oelghoul@linux.ibm.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -95,164 +91,133 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 8 Jun 2026 11:56:41 -0700
-Zhiping Zhang <zhipingz@meta.com> wrote:
-> @@ -327,12 +358,71 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  err_free_phys:
->  	kfree(priv->phys_vec);
->  err_free_priv:
-> +	mutex_destroy(&priv->tph_lock);
->  	kfree(priv);
->  err_free_ranges:
->  	kfree(dma_ranges);
->  	return ret;
+On Mon,  8 Jun 2026 13:18:49 -0400
+Omar Elghoul <oelghoul@linux.ibm.com> wrote:
+
+> diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci_zdev.c
+> index 0990fdb146b7..09454495ee23 100644
+> --- a/drivers/vfio/pci/vfio_pci_zdev.c
+> +++ b/drivers/vfio/pci/vfio_pci_zdev.c
+> @@ -167,3 +167,60 @@ void vfio_pci_zdev_close_device(struct vfio_pci_core_device *vdev)
+>  	if (zpci_kvm_hook.kvm_unregister)
+>  		zpci_kvm_hook.kvm_unregister(zdev);
 >  }
->  
-> +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-> +				      u32 flags,
-> +				      struct vfio_device_feature_dma_buf_tph __user *arg,
-> +				      size_t argsz)
+> +
+> +int vfio_pci_zdev_feature_fmb_enable(struct vfio_pci_core_device *vdev, u32 flags,
+> +				     void __user *arg, size_t argsz)
 > +{
-> +	struct vfio_device_feature_dma_buf_tph set_tph;
-> +	struct vfio_pci_dma_buf *priv;
-> +	struct dma_buf *dmabuf;
+> +	struct zpci_dev *zdev;
+> +	struct vfio_device_feature_zpci_fmb_enable fmb_enable;
 > +	int ret;
 > +
-> +	if (!pcie_tph_supported(vdev->pdev))
-> +		return -EOPNOTSUPP;
-
-This tests for the TPH capability, but the TPH capability is only a
-requirement for functions that generate TLPs with TPH, ie. a requester.
-This feature is about providing TPH steering tags when the device is a
-completer.  Bits 13:12 of the Device Capabilities 2 register indicate
-if the device is supported as a TPH completer.
-
-Additionally these bits indicate if the device supports standard and
-extended TPH, which means we should not only fail if the device reports
-00b, but should reject extended steering tags unless the device reports
-11b.
-
-> +
-> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET,
-> +				 sizeof(set_tph));
+> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, sizeof(fmb_enable));
 > +	if (ret != 1)
 > +		return ret;
 > +
-> +	if (copy_from_user(&set_tph, arg, sizeof(set_tph)))
+> +	zdev = to_zpci(vdev->pdev);
+> +	if (!zdev)
+> +		return -ENODEV;
+> +
+> +	guard(mutex)(&zdev->fmb_lock);
+> +
+> +	if (copy_from_user(&fmb_enable, arg, sizeof(fmb_enable)))
 > +		return -EFAULT;
-> +
-> +	if (set_tph.flags & ~(VFIO_DMA_BUF_TPH_ST | VFIO_DMA_BUF_TPH_ST_EXT))
-> +		return -EINVAL;
-> +
-> +	/* PCIe TLP Processing Hint is a 2-bit field. */
-> +	if (set_tph.ph & ~0x3)
-> +		return -EINVAL;
 
-Sashiko notes what appears to be a false positive here, the uAPI states
-ph is to be in the range [0, 3] and nowhere else says that it's allowed
-to be garbage for a clear operation.
+The guard can drop to here, it doesn't protect anything related to the
+copy_from_user().
 
 > +
-> +	dmabuf = dma_buf_get(set_tph.dmabuf_fd);
-> +	if (IS_ERR(dmabuf))
-> +		return PTR_ERR(dmabuf);
-> +
-> +	if (dmabuf->ops != &vfio_pci_dmabuf_ops) {
-> +		ret = -EINVAL;
-> +		goto out_put;
-> +	}
-> +
-> +	priv = dmabuf->priv;
-> +	if (priv->vdev != vdev) {
-> +		ret = -EINVAL;
-> +		goto out_put;
-> +	}
-
-Sashiko notes this may need READ_ONCE()/WRITE_ONCE() semantics, but
-that may get fixed as part of the resv lock usage.
-
-> +
-> +	scoped_guard(mutex, &priv->tph_lock) {
-> +		priv->tph_st = set_tph.steering_tag;
-> +		priv->tph_st_ext = set_tph.steering_tag_ext;
-> +		priv->tph_ph = set_tph.ph;
-> +		priv->tph_st_valid = !!(set_tph.flags & VFIO_DMA_BUF_TPH_ST);
-> +		priv->tph_st_ext_valid =
-> +			!!(set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT);
-> +	}
-> +	ret = 0;
-> +
-> +out_put:
-> +	dma_buf_put(dmabuf);
-> +	return ret;
+> +	if (fmb_enable.enabled)
+> +		return zpci_fmb_reenable_device(zdev);
+> +	return zpci_fmb_disable_device(zdev);
 > +}
 > +
->  void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
->  {
->  	struct vfio_pci_dma_buf *priv;
-...
+> +int vfio_pci_zdev_feature_fmb_read(struct vfio_pci_core_device *vdev, u32 flags,
+> +				   void __user *arg, size_t argsz)
+> +{
+> +	struct zpci_dev *zdev;
+> +	struct vfio_device_feature_zpci_fmb_read fmb_read;
+> +	struct zpci_fmb fmb_temp = {0};
+
+Unnecessary initialization, we only copy to the user what's been
+written.
+
+> +	int ret;
+> +
+> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET, sizeof(fmb_read));
+> +	if (ret != 1)
+> +		return ret;
+> +
+> +	zdev = to_zpci(vdev->pdev);
+> +	if (!zdev)
+> +		return -ENODEV;
+> +
+> +	guard(mutex)(&zdev->fmb_lock);
+> +
+> +	if (!zdev->fmb)
+> +		return -ENOMSG;
+> +	if (copy_from_user(&fmb_read, arg, sizeof(fmb_read)))
+> +		return -EFAULT;
+> +	if (!fmb_read.data)
+> +		return -EINVAL;
+> +
+> +	memcpy(&fmb_temp, zdev->fmb, zdev->fmb_length);
+> +	if (copy_to_user(fmb_read.data, &fmb_temp, zdev->fmb_length))
+> +		return -EFAULT;
+
+The bounce buffer itself seems unnecessary in this usage, we could just:
+
+	if (copy_to_user(fmb_read.data, zdev->fmb, zdev->fmb_length))
+
+But maybe there was an intention to scope the bounce buffer copy within
+the guard and perform the copy_to_user() after releasing the lock?
+
+
+> +
+> +	return 0;
+> +}
 > diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> index 5de618a3a5ee..0ca26721849b 100644
+> index 5de618a3a5ee..3988e8690e0b 100644
 > --- a/include/uapi/linux/vfio.h
 > +++ b/include/uapi/linux/vfio.h
-> @@ -1534,6 +1534,51 @@ struct vfio_device_feature_dma_buf {
+> @@ -1534,6 +1534,35 @@ struct vfio_device_feature_dma_buf {
 >   */
 >  #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
 >  
 > +/**
-> + * Upon VFIO_DEVICE_FEATURE_SET associate TPH (TLP Processing Hints) metadata
-> + * with a vfio-exported dma-buf. The dma-buf must have been created by
-> + * VFIO_DEVICE_FEATURE_DMA_BUF on this device, and the device must expose the
-> + * TPH Extended Capability (otherwise the ioctl returns -EOPNOTSUPP).
+> + * Upon VFIO_DEVICE_FEATURE_SET, enable or disable FMB for the VFIO zPCI device.
 > + *
-> + * dmabuf_fd is the file descriptor returned by VFIO_DEVICE_FEATURE_DMA_BUF.
-> + *
-> + * 8-bit ST (steering_tag) and 16-bit Extended ST (steering_tag_ext) are
-> + * distinct namespaces in the PCIe TPH ST table and may both be present with
-> + * different values. Userspace should populate the value(s) it has from the
-> + * firmware ST table for this device and set the matching VFIO_DMA_BUF_TPH_ST /
-> + * VFIO_DMA_BUF_TPH_ST_EXT bit in @flags. An importer requests a specific
-> + * width and receives the matching value; if the requested width is not
-> + * present, the importer is told TPH is unavailable for this dma-buf.
-> + *
-> + * This publishes the PCI SIG-defined ST/PH tuple for a VFIO-owned PCIe
-> + * completer. The dma-buf core treats the tuple as opaque completer-owned
-> + * metadata; an importer simply requests the namespace it supports and places
-> + * the returned value on generated TLPs.
-> + *
-> + * @flags == 0 clears any previously published metadata.
+> + * enabled is treated as a bool, so any non-zero value evaluates to true. This
+> + * feature fails on attempt to double enable/disable.
 
-This is overselling the invalidation.  It only flags the fields as
-invalid for future get_tph() requests, it does nothing to clear
-previously published metadata from importers.  Thanks,
-
-Alex
-
+Does it?  Double enable just does a re-enable.
 
 > + *
-> + * ph is the 2-bit TLP Processing Hint and must be in the range [0, 3].
-> + *
-> + * Userspace is responsible for setting TPH on the dma-buf before handing the
-> + * fd to the importer. Calling SET again replaces the previously published
-> + * values; racing a SET against an importer that is already consuming the
-> + * dma-buf is a userspace ordering problem.
-> + *
-> + * Return: 0 on success, -errno on failure.
+> + * Returns: 0 on success, -1 and errno set appropriately on error.
 > + */
-> +#define VFIO_DEVICE_FEATURE_DMA_BUF_TPH 13
+> +#define VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE 13
 > +
-> +#define VFIO_DMA_BUF_TPH_ST		(1 << 0)  /* steering_tag valid */
-> +#define VFIO_DMA_BUF_TPH_ST_EXT		(1 << 1)  /* steering_tag_ext valid */
-> +
-> +struct vfio_device_feature_dma_buf_tph {
-> +	__s32	dmabuf_fd;
-> +	__u32	flags;
-> +	__u16	steering_tag_ext;
-> +	__u8	steering_tag;
-> +	__u8	ph;
+> +struct vfio_device_feature_zpci_fmb_enable {
+> +	__u8 enabled;
 > +};
 > +
->  /* -------- API for Type1 VFIO IOMMU -------- */
->  
->  /**
+> +/**
+> + * Upon VFIO_DEVICE_FEATURE_GET, provide FMB passthrough for VFIO zPCI devices.
+> + *
+> + * The user-provided buffer must be at least fmb_length large, where fmb_length
+> + * is reported in VFIO_DEVICE_INFO_CAP_ZPCI_BASE.
+> + *
+> + * Returns: 0 on success, -1 and errno set appropriately on error. errno==ENOMSG
+> + * when the FMB is not enabled.
+> + */
+> +#define VFIO_DEVICE_FEATURE_ZPCI_FMB_READ 14
+> +
+> +struct vfio_device_feature_zpci_fmb_read {
+> +	void __user *data;
 
+We should use explicit data sizes for uAPI:
+
+	__aligned_u64 data;
+
+Thanks,
+Alex
