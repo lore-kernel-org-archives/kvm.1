@@ -1,186 +1,206 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65CE3C10AA
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 17:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781027924; cv=pass; b=acczE84dOrPTw3/uyDKzIs68cT7BOu6gWehMTWEQc5qWdFHFR9G/+NE+bbTjTHDzVrrBl0mOzg96Rsjmzi/tcrUOFv0rFfco5E2ecCKjr9TSjqUCJTzKjMS6dLSoJCMIk4NDQlVrNhdxXuVjOmYaT2uxCoNGSP4Fu4Cb6n+HU8M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781027924; c=relaxed/simple;
-	bh=ybsezbay7k70lPOQonDhXOaQ/fkYTSjG31ey35ltwqg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IW7Fl7MnVRSHW+/G7dNpjPZhsyJ+6ygFGtyHjSazEP8n3rWtwLjmG/T1PtD9pXdbj8rP8qLNab7xRPlBk16NeCnSENe+t15JHjmBrx2VdSjfX8mKeT62GlmLVcyj3eCwgn6EsITOzXKqc+l7rcE6w1CCtWMSFa/1uLduzCz4q5U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uq8BjBRM; arc=pass smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2E8331EC9;
+	Tue,  9 Jun 2026 18:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781031083; cv=none; b=bL2c0aq+B7RZY+wXNeQfyHAYBCn7cWd2oGuyJ9Ul3da3WT8VPpZwWGNK9ANAJFmToPbcwdYzoE0h1V/tkZCbJNrk7Nmw6lKD4JefspQbjX56cWmTDJUtzZLV8TEd6yS7GOvUhmn4VGQpdYjnbqzAR/LNXMqaGz5fMeQjLmHoyO8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781031083; c=relaxed/simple;
+	bh=Je/qwhOHN5nIVTRrk7V2WIb1Wqh//9z1/oEb7+DUvyM=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lUkcPv0KQ0Wiem+pFwEwyiBnsr275TUjP0GGig46G/cbq31qgqHK2Cgh1qd1YrmP1b6IsWflsUygaYLly6O6TmHUr9fGWoaRIcGXwJ5B8vVFjkZXCNjy+q/QrFe6YptlNOmlLtpKEGXj44k08XkXYMfWEbAv6hL0rV3zWJAzy6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=tgnPqv6V; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uq8BjBRM"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51765331535so2619601cf.1
-        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 10:58:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781027923; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Ss5hIwK3FIACGhIYQNoCAMRYhNrdiZQ1OwsUNw7/G7oLWceFNtKPVvrEOXhFsyZdCH
-         yzCsPO6JmKFSLARb579aSjPpO4LVYBS4xXQlspwtJ1PeddVvmkPhixs1Ql1/nEnhEunl
-         deW9QKqEZZ4iZjmFIcTGcEy4X0zXHodgHk+MCtzd/J2yHlpyloCqGxWAcEfeJs1GHCtT
-         6XePdtKB0MszlT6tZRzgpdb5GNokG34KWAbPF78mThNSASm65UgMq2PS2eMd67/1dm4D
-         sz3zUGKxCvhFo0Dk9Owua8Z9yIZcEPcPH1VL77L9s0dLn3FhvpVQ3s4wY3N2yB8pg/jz
-         C8yA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Nwn+8bVabCNfsWsGPnwkQLJpfQuXsi9OyDflFuRUOro=;
-        fh=mOY1cfKQetqN5fbzT3CB9GUcQtlkvZfV1PvhhaaW47w=;
-        b=Lxk7TUUwEK2yDF4fAtT89CVch9AZXVp1RhxhftcyovctbaNwxT0F6Sb1zSCg+Q6aFu
-         VeSuLwTVx5U1mUpMrRNPFVMrtmWpk36Wu1Ijr+eUeTFcmSCij+XsZddPshYWzazFAOs7
-         rE4J51fA4VP2jXmldv+T+aYwU8thpQoeHHflLiHghWQoFGySmpgKr1wvISvCOAjNFl7K
-         Ar5C3xwOPPmYY+EmYP9DeMozYuAoCHohWG3iKN2S2w5PrWdp8vkTeCvh/PojWZ4nt4u1
-         Byg2Q36KqURQGq0S7fKp5xN4za0y1Opr5xsTjxjGtZuV5my9kCTKkPsMx1rcKwBCYULx
-         bnaQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781027923; x=1781632723; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Nwn+8bVabCNfsWsGPnwkQLJpfQuXsi9OyDflFuRUOro=;
-        b=uq8BjBRMK6RN4WOdIhKOT4vdaKifcO+F4oT5ZGYeNV9c0nDzbftCYWicIDWO7inBX/
-         hk1EaQOr4tMyD9unFepPE9LfBXy0fdNXJv9VKSnGkYtmEfux1lpnKRx6UmQqkQcqubdC
-         mlXFmiXyo+rCS5TXbzZ5DlU6RqLKkwRod0K2YU5rh+mTyxVACOFPYQMQ0X+kRsvjs8lS
-         NF9VI2vE5jhZ8iHtTgOIe+8QHttVeuYXf4ba98UDuUMxT/aVgFfUxti1/U565oicj7fI
-         71OZTFp3QQf/HW1fQmbmi98627koeQ73sXssKUsCVq/oYTM85TaRrscCbkXCBO65qzCg
-         CH8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781027923; x=1781632723;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Nwn+8bVabCNfsWsGPnwkQLJpfQuXsi9OyDflFuRUOro=;
-        b=OQWHlgbKKjl54V8DJeYLLKs1PjRixojAyIBsAUZ734IPbBisfPVjOChbTEbtBeYbRL
-         8fHbOhYNjLAJul0lOvY6tyADYgAVEYkunvJ67s5rj9Fn0S4oJPxsjpW7JrIw1ATjUm7V
-         Ps6hQmwB0EpsoL2b5b9YEbSM/DtDT38rTqludjHHt7BCrL3l5tQZkY8WSPuZr5zsTYX4
-         KaskkSsJdgjyPusSQj/UR+eNQazIuEHkClx7dXWU9OI9T+iv1ZEUAdTOothitgUTPfiH
-         3uTi4lUVDwUvr9Tbq2CWGX7rre50aXTQgiDO+3xlYL0GoePvtx9hIvGrnufkmdpMs6dF
-         by6A==
-X-Forwarded-Encrypted: i=1; AFNElJ+4Y8VaNFl0VTiY+iXw7khGEGJ56lIdeVNxTnRxbSdT87KgZ3m6SQSEjeUzpOodH3O1m7U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywbu9z98pIZwgL+hC6GEgU4tAYoksuyZjXa0byND3IqfR+EI7Qa
-	gxLwqaSYe4i9wRRqFuUMKhPl3ErRWEdKG0aMug/Hx1YvDVyVsyh00xaCwUS9cBIEzSCUB+8mZr3
-	ApzaxbatzPOxj5ZaMrpL3ATyO8bdee8T/AaNDx30i
-X-Gm-Gg: Acq92OFx1rKdpbXJcnnC67pZBpwNQCmjkQl4CULWeauZoMvGBAUpCrIunGCG8LbVhbx
-	m4YYpRA6pecB2d8r4k2+eHsuHv2DiYUheJuVag6cnSQLQepmw7aAW6+wz7cbnZgQKwAwpdJlX3i
-	E7ayyBpugxSEwX1PvsIlJ/o9ifIpe/rlWcOTTa0cjRgGk2Ub8w1HdGPDJd530CWXRXv/ScuJv+O
-	eueVVN/4c2+LtSGqZphdBNIphND9h3TRnCnEtMtDACJYU+A0QDUuV8l7oikL+NzZBpBmH0PPldW
-	h+MnPEpHdQ5n1Y4s7BARSd0xOoel3zMMsXZ6G8Be0So/yUrZGXhgdt1iOn00TMs=
-X-Received: by 2002:a05:622a:6843:20b0:516:4f62:85ed with SMTP id
- d75a77b69052e-5179b114418mr33538681cf.18.1781027922090; Tue, 09 Jun 2026
- 10:58:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="tgnPqv6V"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Je/qwhOHN5nIVTRrk7V2WIb1Wqh//9z1/oEb7+DUvyM=; b=tgnPqv6V2/Ji6KB1G4lqLbJP5p
+	oLzPSvMiIWVvulahV35c4IPfJqRpUlPy01KxhqpQHUSXw7HxF4RgQa+Oil7Rh2axEiufq4xt4iTrX
+	hnPfNY/AKdzl6lPyR0gI7pF0ZmYuckBdV8gdFz/kVoS23r4YPuTqw3VgO/htl5webiODI+ybPNus4
+	LpSk2/Ru+GW8de8kfXd2qjIcxf8Qt0KX8hg8WghnX7vuFoT0xlx2EQAhb3KXOyxFKeWvR0fDYfcDs
+	56Sq72c4BMU81maDRlvt5WhDTJ7gy4/H6ZUqOpf0oomkWuXZ0sQTuxE8p4hOFn63ggP6pMdiWhe3I
+	0YEO13Ww==;
+Received: from [2001:8b0:10b:5:6142:9ddd:3a45:5d21] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wX1XQ-0000000GD8M-48LY;
+	Tue, 09 Jun 2026 18:51:01 +0000
+Message-ID: <674521f9c133c397638a13c55a61d15ecc16816d.camel@infradead.org>
+Subject: Re: [PATCH v5 00/34] Cleaning up the KVM clock mess
+From: David Woodhouse <dwmw2@infradead.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner	 <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,  Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross
+ <jgross@suse.com>, Boris Ostrovsky	 <boris.ostrovsky@oracle.com>, Paul
+ Durrant <paul@xen.org>, Jonathan Cameron	 <jic23@kernel.org>, Sascha
+ Bischoff <Sascha.Bischoff@arm.com>, Marc Zyngier	 <maz@kernel.org>, Joey
+ Gouly <joey.gouly@arm.com>, Jack Allister	 <jalliste@amazon.com>, Dongli
+ Zhang <dongli.zhang@oracle.com>, 	joe.jin@oracle.com, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ xen-devel@lists.xenproject.org, 	linux-kselftest@vger.kernel.org
+Date: Tue, 09 Jun 2026 19:50:59 +0100
+In-Reply-To: <20260608145455.89187-1-dwmw2@infradead.org>
+References: <20260608145455.89187-1-dwmw2@infradead.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-SGiV83CvkmPXW69xBczW"
+User-Agent: Evolution 3.60.3 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609004809.1285028-1-tavip@google.com> <aifL0f_QO1kocccU@sgarzare-redhat>
-In-Reply-To: <aifL0f_QO1kocccU@sgarzare-redhat>
-From: Octavian Purdila <tavip@google.com>
-Date: Tue, 9 Jun 2026 10:58:30 -0700
-X-Gm-Features: AVVi8CdWuQeEp3U6i-IMth0fBQwGbxFj2zuxQPoE0fGsqs-1g0UsFmC0xhO_DaE
-Message-ID: <CAGWr4cSY9V7JyvJWyO_YRR-9KJtp=OzAkDjjODJ9tM7orebZ5w@mail.gmail.com>
-Subject: Re: [PATCH net] vsock/virtio: restore msg_iter on transmission failure
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, 
-	syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-SGiV83CvkmPXW69xBczW
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 9, 2026 at 1:48=E2=80=AFAM Stefano Garzarella <sgarzare@redhat.=
-com> wrote:
->
-> On Tue, Jun 09, 2026 at 12:48:05AM +0000, Octavian Purdila wrote:
-> >When transmission fails in virtio_transport_send_pkt_info, the msg_iter
-> >might have been partially advanced. If we don't restore it, the next
-> >attempt to send data will use an incorrect iterator state, leading to
-> >desync and warnings like "send_pkt() returns 0, but X expected".
->
-> Thanks for the fix! I have some comments.
+On Mon, 2026-06-08 at 15:47 +0100, David Woodhouse wrote:
+> This is v5 of the series to clean up the KVM clock, rebased onto
+> tip/timers/ptp (which now includes Thomas's ktime snapshot series and
+> the read_snapshot patches for hyperv, kvmclock, and vmclock).
+>=20
+> The KVM clock has historically suffered from three problems:
+>=20
+> =C2=A01. Imprecision: get_kvmclock_ns() computed the clock from the *host=
+*
+> =C2=A0=C2=A0=C2=A0 TSC without applying guest TSC scaling, causing system=
+ic drift from
+> =C2=A0=C2=A0=C2=A0 the values the guest computes from its own TSC.
+>=20
+> =C2=A02. Unnecessary discontinuities: gratuitous KVM_REQ_MASTERCLOCK_UPDA=
+TE
+> =C2=A0=C2=A0=C2=A0 requests caused the master clock reference point to be=
+ re-snapshotted,
+> =C2=A0=C2=A0=C2=A0 yanking the guest's clock due to arithmetic precision =
+differences.
+>=20
+> =C2=A03. No precise migration API: the existing KVM_[GS]ET_CLOCK only all=
+ows
+> =C2=A0=C2=A0=C2=A0 setting the clock at a given UTC reference time, which=
+ is necessarily
+> =C2=A0=C2=A0=C2=A0 imprecise. There was no way to preserve the exact arit=
+hmetic
+> =C2=A0=C2=A0=C2=A0 relationship between guest TSC and KVM clock across li=
+ve migration.
+>=20
+> This series addresses all three, and adds new APIs for precise clock=20
+> migration and TSC frequency reporting. As an added bonus, it now rips
+> out the whole pvclock_gtod_data hack which was shadowing the kernel's
+> timekeeping, and uses ktime snapshots as $DEITY (well, Thomas) intended.
 
-Thank you for the quick review!
+Updated series with Sashiko's fixes pushed out to
+https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Drefs/=
+heads/kvmclock6
 
-> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/vir=
-tio_transport_common.c
-> >index b10666937c490..588623a3e2bbc 100644
-> >--- a/net/vmw_vsock/virtio_transport_common.c
-> >+++ b/net/vmw_vsock/virtio_transport_common.c
-> >@@ -367,6 +367,10 @@ static int virtio_transport_send_pkt_info(struct vs=
-ock_sock *vsk,
-> >       do {
-> >               struct sk_buff *skb;
-> >               size_t skb_len;
-> >+              struct iov_iter saved_iter;
->
-> trivial: reverse xmas tree:
-> https://docs.kernel.org/process/maintainer-netdev.html#local-variable-ord=
-ering-reverse-xmas-tree-rcs
->
+I'll give it a while for meat-based reviewers to opine before sending
+another round. (Is there a way to get Sashiko to take another look
+without sending it all to the list again?)
 
-I'll fix it in v2, sorry for missing this.
+--=-SGiV83CvkmPXW69xBczW
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-> >+
-> >+              if (info->msg)
-> >+                      saved_iter =3D info->msg->msg_iter;
->
-> What about using iov_iter_save_state()/iov_iter_restore() ?
->
-> IIUC we may need to export iov_iter_restore(), so not a strong opinion,
-> but it looks better to use those API IMHO.
->
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwOTE4NTA1
+OVowLwYJKoZIhvcNAQkEMSIEIKQ4y9DWuP5RRPhQpel32/EUnEAxygoYI8A9y5f5ewKdMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAOOo007Teb9xs
+KsWdHu76kaFGmdGIPSgSyFwmZlm7TAbCJF2I5N86bbGOHV3m+U+2QRyVMD+fex0m9m7rIXkFS7iT
+drtFS8iqPbouu3NMt+ZGv+z7XLhht/UvDeD73whc5OGUfyGyo9DhOlbzD8HA0U4M9vFdA9iPg7tu
+ZoyeHYsvgAISA8MtwjgUrSHF96SJ+eqdBIcnUv4VhMJqnMLfpILG+Pmdw48MpIfZoJEXTC7MeeTk
+B/nXHsyMfSK6H4AozIYDD8J4YqC96aTFMn75rR51bfwtEY51xtVqNlT1C1sUrYtupoOQ2BJTMzQU
+Tj2vQgWNmRAsdI86dZwOjhzUlA9T7QuGsHK7qv8vHPW6g3Z1HlEW3Lgc0zEBoKutlC/5vEVvJVxt
+lkMxXdZcvPcFFyvjThntO2ycnkw9z+zSoE9ccj2ke4c2+edl8F3AbIz+knaXTo+PTHRf367g3vUR
+F+yGsn1in5mCdhNjPkWtCGbmeMLI/xREJsQSzmzIRrUQsHRzxod14f29ftoG5uy89Zla2+xs4qnm
+RW1cueleAgIG4xjpqnMgNNzsNNDW2iHfs8enrLa7ilnzAkcmbiHqDkyzHgJ1eg2rn5csbIIwHUB3
+zgmpWsUxzX7p2Sw6YFS32/rorf3Jflyf1nB5SOfvFpA/6ON5DQQ52jKTgEFWr68AAAAAAAA=
 
-I agree,  I'll add the export as a separate patch in v2 and move to
-using these APIs.
 
-> >
-> >               skb_len =3D min(max_skb_len, rest_len);
-> >
-> >@@ -375,6 +379,8 @@ static int virtio_transport_send_pkt_info(struct vso=
-ck_sock *vsk,
-> >                                                src_cid, src_port,
-> >                                                dst_cid, dst_port);
->
-> What about adding a comment on top of virtio_transport_alloc_skb() call
-> (or when we save the state) to explain that in specific cases it can
-> advance the msg_iter ?
->
-
-Good point, I will add a comment explaining this in v2.
-
-> >               if (!skb) {
-> >+                      if (info->msg)
-> >+                              info->msg->msg_iter =3D saved_iter;
-> >                       ret =3D -ENOMEM;
-> >                       break;
-> >               }
-> >@@ -382,8 +388,11 @@ static int virtio_transport_send_pkt_info(struct vs=
-ock_sock *vsk,
-> >               virtio_transport_inc_tx_pkt(vvs, skb);
-> >
-> >               ret =3D t_ops->send_pkt(skb, info->net);
-> >-              if (ret < 0)
-> >+              if (ret < 0) {
-> >+                      if (info->msg)
-> >+                              info->msg->msg_iter =3D saved_iter;
->
-> Also, what about having a single restore point after the loop?
->
-> I mean something like this (untested):
->
-
-Yes, that looks much better. I tested it locally and it works fine. Thanks!
-
-I'll follow-up with v2 in a day or two.
+--=-SGiV83CvkmPXW69xBczW--
