@@ -1,174 +1,288 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21D53F1ADD;
-	Tue,  9 Jun 2026 09:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7035C194AE6;
+	Tue,  9 Jun 2026 09:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780995604; cv=none; b=f80Fm2eABtYJ0g4b6TIWnVJlrAIIQUtOezGstwARukx/A/dUxLaEMSn+GhmQQnU75B3qxYeiWSRVXW2/dm1PqSYLvoNrczfyU9xY4gmyjXnvQ+zJc1n4JU0wbpdR88nzsWdYGsGkwN0swsVyWSttEhKaMmk30u6rk82/Jm7E4NY=
+	t=1780995766; cv=none; b=D93Q+pYb+LB2HJZW2LRBaOw6JZ25iE/FJmOs8c6IMURPcrD/l3MAyzrgcXG+aV8ssVUT8QNeBB/gG0qPQZ3LXym6oeV4zSzqfHn4QUR656lOk+vNNdLYN0xLhvhwSSjl3W/pezWeR4BRhK0UyzUMYL1f8RVoQTlfmRRAH6F/oe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780995604; c=relaxed/simple;
-	bh=2QEP28zLm/5WdjCEqhLpCisxt20Jp0JzixfLVYeCmP0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LkukA0a/jVwo5hCWWqpmOBXhnvnr2E9p0dUnQKU7UbdrMjtskccdvO7eQ/CrlIRGjaY4IfEm/AH5jF27m/ocaZBpp94L3qJ5xUGCOtAbHhsGG52wlMzNuEWS57GzO1aBM9HQHjv4RnH2cx1q/dGPR2i4nEaOAeuKq+c9z3UMBm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/lD6ewV; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/lD6ewV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0471B1F00893;
-	Tue,  9 Jun 2026 08:59:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780995603;
-	bh=5PZ+LrewxpCuXLMvn3PnybJtDeV/69ic6D4NMS386sQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=V/lD6ewVP+EoDqUMcEVKI2sD1hyaOO3BkeKU6RSif2kdo5jrK/Pz3dGH+nKy0yiwl
-	 GkcFRWm1bfXDZ5G+6pXWLYyeUfJWm7+IZ0B9df71sjZwwF60I0iqK3CtHdpIwD+SvD
-	 18pe11K69nHGIbmpkB0Onj2R9KYyHN9PZUhNMsk8rdNJq+9c33Er41sVQJlVkBhvbX
-	 p7cjR5sypoB2y0AuL5w7gBsZAQUVbp0Fkizy+sRFRMauWGHF9nWPKvukIs6VPyCwk/
-	 qbJNUFrr28q96fsjSCKVnrZKa39ARSwnvxyBNlZFOWdhgDxqz6S8YASpiFX/604Ble
-	 GhuJ3zRxhL8+w==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: "Dan Williams (nvidia)" <djbw@kernel.org>,
-	"Dan Williams (nvidia)" <djbw@kernel.org>,
-	"Dan Williams (nvidia)" <djbw@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Bjorn Helgaas <helgaas@kernel.org>,
-	Dan Williams <djbw@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tony Krowiak <akrowiak@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Jason Herne <jjherne@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
-In-Reply-To: <6a272cebec4af_4fa7810048@djbw-dev.notmuch>
-References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
- <20260525154816.1029642-6-aneesh.kumar@kernel.org>
- <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
- <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch> <yq5apl2gsw6y.fsf@kernel.org>
- <yq5aldd4spyc.fsf@kernel.org> <6a1774dd80f74_19737610095@djbw-dev.notmuch>
- <yq5aik81sf22.fsf@kernel.org> <6a272cebec4af_4fa7810048@djbw-dev.notmuch>
-Date: Tue, 09 Jun 2026 14:29:49 +0530
-Message-ID: <yq5aik7sytq2.fsf@kernel.org>
+	s=arc-20240116; t=1780995766; c=relaxed/simple;
+	bh=WOtz/NbdCJ8NiMOZ+ZkHeWuV0Hv7t2iQYK/ZVFHMVDc=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=uMH96VXwKnPA6p34XdOnqfQv3PdaMEnPDAG/riQ515+frNys6fsEU94zPQ1G7QhSzj154tCY9AlEOe4kmfS/lmbMkuUCd30WXVsaM+RnG39806i682DZYW+AqCuTJsJfHXjcc3RvM1XxkHh7xsKbQ03gQqZIOdJ4kqr3zYXS2W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Ax_umw1idqAzESAA--.47904S3;
+	Tue, 09 Jun 2026 17:02:40 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJCx+8Gv1idqCKCgAA--.43514S3;
+	Tue, 09 Jun 2026 17:02:39 +0800 (CST)
+Subject: Re: [PATCH v2 2/2] KVM: LoongArch: selftests: Add FPU test case
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260609072715.1005923-1-maobibo@loongson.cn>
+ <20260609072715.1005923-3-maobibo@loongson.cn>
+ <CAAhV-H64=C8iBRHrE=0rohnGxK1WeWUoG9zWrH9MB1kaw6usww@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <efe9f60e-6229-06bc-0dc5-cee9c53a2076@loongson.cn>
+Date: Tue, 9 Jun 2026 16:59:32 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <CAAhV-H64=C8iBRHrE=0rohnGxK1WeWUoG9zWrH9MB1kaw6usww@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCx+8Gv1idqCKCgAA--.43514S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3JF4fZw47WrWUWryfJrWxKrX_yoW3Arykp3
+	yvk3WqgF48tF17Jw48Zws8ur4fKr18Kr4Igr1SqFWUAr1qkrZ3tF1kKrWvgrn8uws5X3WF
+	vF1fJwsI9FyDJacCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9ab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+	AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C2
+	67AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
+	8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWU
+	CwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
+	1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsG
+	vfC2KfnxnUUI43ZEXa7IU8czVUUUUUU==
 
-"Dan Williams (nvidia)" <djbw@kernel.org> writes:
 
-> Aneesh Kumar K.V wrote:
-> [..]
->> > I think we can wait to move it to its own IOMMU operation unless/until
->> > there is a need to set RUN outside of an explicit guest request, right?
->> 
->> Something like the below? (the diff against this series)
->> 
->> I have not yet integrated this into the full CCA patchset for testing,
->> but I wanted to make sure we are aligned on the UAPI.
-> [..]
->> -static bool iommufd_vdevice_tsm_req_scope_valid(u32 scope)
->> +static bool iommufd_vdevice_tsm_req_arch_valid(u32 tvm_arch)
->>  {
->> -	if (scope > IOMMU_VDEVICE_TSM_REQ_SCOPE_PCI_LAST)
->> +	switch (tvm_arch) {
->> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_CCA:
->> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_SEV:
->> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_TDX:
->
-> Makes sense for any command that needs tunneling. However, see below, what is
-> that set, and do we need a IOMMU_VDEVICE_TSM_COMMON when architecture
-> differentiation is not required?
->
->> +		return true;
->> +	default:
->>  		return false;
->> +	}
->> +}
->>  
->> -	switch (scope) {
->> -	case IOMMU_VDEVICE_TSM_REQ_PCI_INFO:
->> -	case IOMMU_VDEVICE_TSM_REQ_PCI_STATE_CHANGE:
->> -	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_READ:
->> -	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_WRITE:
->> +static bool iommufd_vdevice_tsm_req_op_valid(u32 op, u32 tvm_arch)
+
+On 2026/6/9 下午4:40, Huacai Chen wrote:
+> Hi, Bibo,
+> 
+> On Tue, Jun 9, 2026 at 3:27 PM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>> Add FPU test case and verify FPU register get and set APIs, the
+>> FPU width supports 64/128/256 bits.
+>>
+>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>> ---
+>>   tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>>   .../kvm/include/loongarch/processor.h         |   8 +
+>>   .../selftests/kvm/loongarch/fpu_test.c        | 145 ++++++++++++++++++
+>>   3 files changed, 154 insertions(+)
+>>   create mode 100644 tools/testing/selftests/kvm/loongarch/fpu_test.c
+>>
+>> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+>> index 9118a5a51b89..7d11592b3759 100644
+>> --- a/tools/testing/selftests/kvm/Makefile.kvm
+>> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+>> @@ -224,6 +224,7 @@ TEST_GEN_PROGS_riscv += rseq_test
+>>   TEST_GEN_PROGS_riscv += steal_time
+>>
+>>   TEST_GEN_PROGS_loongarch = loongarch/pmu_test
+>> +TEST_GEN_PROGS_loongarch += loongarch/fpu_test
+>>   TEST_GEN_PROGS_loongarch += arch_timer
+>>   TEST_GEN_PROGS_loongarch += coalesced_io_test
+>>   TEST_GEN_PROGS_loongarch += demand_paging_test
+>> diff --git a/tools/testing/selftests/kvm/include/loongarch/processor.h b/tools/testing/selftests/kvm/include/loongarch/processor.h
+>> index 2324e311180f..981ae7078354 100644
+>> --- a/tools/testing/selftests/kvm/include/loongarch/processor.h
+>> +++ b/tools/testing/selftests/kvm/include/loongarch/processor.h
+>> @@ -82,6 +82,14 @@
+>>   #define  PLV_MASK                      0x3
+>>   #define LOONGARCH_CSR_PRMD             0x1
+>>   #define LOONGARCH_CSR_EUEN             0x2
+>> +#define  CSR_EUEN_LBTEN_SHIFT          3
+>> +#define  CSR_EUEN_LBTEN                        BIT_ULL(CSR_EUEN_LBTEN_SHIFT)
+>> +#define  CSR_EUEN_LASXEN_SHIFT         2
+>> +#define  CSR_EUEN_LASXEN               BIT_ULL(CSR_EUEN_LASXEN_SHIFT)
+>> +#define  CSR_EUEN_LSXEN_SHIFT          1
+>> +#define  CSR_EUEN_LSXEN                        BIT_ULL(CSR_EUEN_LSXEN_SHIFT)
+>> +#define  CSR_EUEN_FPEN_SHIFT           0
+>> +#define  CSR_EUEN_FPEN                 BIT_ULL(CSR_EUEN_FPEN_SHIFT)
+>>   #define LOONGARCH_CSR_ECFG             0x4
+>>   #define  ECFGB_PMU                     10
+>>   #define  ECFGF_PMU                     (BIT_ULL(ECFGB_PMU))
+>> diff --git a/tools/testing/selftests/kvm/loongarch/fpu_test.c b/tools/testing/selftests/kvm/loongarch/fpu_test.c
+>> new file mode 100644
+>> index 000000000000..5bccce9db5d0
+>> --- /dev/null
+>> +++ b/tools/testing/selftests/kvm/loongarch/fpu_test.c
+>> @@ -0,0 +1,145 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +#include <stdio.h>
+>> +#include <string.h>
+>> +#include "kvm_util.h"
+>> +#include "processor.h"
+>> +#include "loongarch/processor.h"
+>> +
+>> +struct kvm_fpureg __aligned(64) vector = {{1, 2, 3, 4 }};
+>> +
+>> +static void guest_code(void)
 >> +{
->> +	switch (op) {
->> +	case TSM_REQ_READ_OBJECT:
->> +	case TSM_REQ_REGEN_OBJECT:
->> +	case TSM_REQ_OBJECT_INFO:
->
-> The design goal of the netlink device-evidence interface is to be able
-> to respond to all shapes of requests for evidence. So netlink caches
-> objects that the hypercall handler can fill responses from.
->
-> It eliminates a class of commands that need tunneling.
->
+>> +       unsigned long val;
+>> +       struct kvm_fpureg *fp = &vector;
+>> +
+>> +       val = csr_read(LOONGARCH_CSR_EUEN);
+>> +       val |= CSR_EUEN_FPEN | CSR_EUEN_LSXEN | CSR_EUEN_LASXEN;
+>> +       csr_write(val, LOONGARCH_CSR_EUEN);
+>> +
+>> +       __asm__ __volatile__("fld.d $f0, %0, 0\n" : : "r"(fp) : "$f0");
+>> +       GUEST_SYNC(0);
+>> +
+>> +       __asm__ __volatile__("vld $vr0, %0, 0\n" : : "r"(fp) : "$vr0");
+>> +       GUEST_SYNC(1);
+>> +
+>> +       __asm__ __volatile__("xvld $xr0, %0, 0\n" : : "r"(fp) : "$xr0");
+>> +       GUEST_SYNC(2);
+>> +
+>> +       __asm__ __volatile__("fst.d $f0, %0, 0\n" : : "r"(fp) : "memory");
+>> +       GUEST_SYNC(3);
+>> +
+>> +       __asm__ __volatile__("vst $vr0, %0, 0\n" : : "r"(fp) : "memory");
+>> +       GUEST_SYNC(4);
+>> +
+>> +       __asm__ __volatile__("xvst $xr0, %0, 0\n" : : "r"(fp) : "memory");
+>> +       GUEST_SYNC(5);
+>> +
+>> +       GUEST_DONE();
+>> +}
+>> +
+>> +static void run_vcpu(struct kvm_vcpu *vcpu)
+>> +{
+>> +       struct ucall uc;
+>> +       int cont;
+>> +
+>> +       cont = 1;
+>> +       while (cont) {
+>> +               vcpu_run(vcpu);
+>> +
+>> +               switch (get_ucall(vcpu, &uc)) {
+>> +               case UCALL_PRINTF:
+>> +                       printf("%s", (const char *)uc.buffer);
+>> +                       break;
+>> +               case UCALL_DONE:
+>> +                       printf("FPU test PASSED\n");
+>> +                       fallthrough;
+>> +               case UCALL_SYNC:
+>> +                       cont = 0;
+>> +                       break;
+>> +               case UCALL_ABORT:
+>> +                       REPORT_GUEST_ASSERT(uc);
+>> +               default:
+>> +                       TEST_ASSERT(false, "Unexpected exit: %s",
+>> +                               exit_reason_str(vcpu->run->exit_reason));
+>> +               }
+>> +       }
+>> +}
+>> +
+>> +static bool __vm_has_feature(struct kvm_vm *vm, int feature)
+>> +{
+>> +       int ret;
+>> +
+>> +       ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, feature);
+>> +       return !ret;
+>> +}
+>> +
+>> +
+>> +int main(void)
+>> +{
+>> +       struct kvm_vcpu *vcpu;
+>> +       struct kvm_vm *vm;
+>> +       struct kvm_fpu fpu;
+>> +       struct kvm_fpureg *fp = &vector;
+>> +
+>> +       vm = vm_create_with_one_vcpu(&vcpu, guest_code);
+>> +       __TEST_REQUIRE(__vm_has_feature(vm, KVM_LOONGARCH_VM_FEAT_LSX),
+>> +                       "LSX not available, skipping test\n");
+>> +       __TEST_REQUIRE(__vm_has_feature(vm, KVM_LOONGARCH_VM_FEAT_LASX),
+>> +                       "LASX not available, skipping test\n");
+> Directly use __kvm_has_device_attr() as the first patch, or use
+> __vm_has_feature() in the first patch?
+do you mean something like this?
+        ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, 
+KVM_LOONGARCH_VM_FEAT_LSX);
+        __TEST_REQUIRE(!ret, "LSX not available, skipping test\n");
+        ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, 
+KVM_LOONGARCH_VM_FEAT_LASX);
+        __TEST_REQUIRE(!ret, "LASX not available, skipping test\n");
 
-Sure, I can drop this from the iommufd ioctl and use netlink to read and
-regenerate the objects from the VMM.
+I am ok with both.
+> 
+> BTW, I don't think the __ prefix is necessary.
+There seem no unified rules with kvm selftest cases, I have no idea 
+about this actually. There are __kvm_has_device_attr/__TEST_REQUIRE 
+public APIs and real usages.
 
-Can I use netlink to find the cached object size? CCA supports
-RHI_DA_OBJECT_SIZE, which can be used to query the object size.
-If not should we have TSM_REQ_OBJECT_INFO? 
+Regards
+Bibo Mao
+> 
+> Huacai
+> 
+>> +
+>> +       run_vcpu(vcpu);
+>> +       vcpu_fpu_get(vcpu, &fpu);
+>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 8), "Wanted 0x%llx from f0, got 0x%llx",
+>> +                       fp->val64[0], fpu.fpr[0].val64[0]);
+>> +
+>> +       run_vcpu(vcpu);
+>> +       vcpu_fpu_get(vcpu, &fpu);
+>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 16), "Wanted 0x%llx %llx from vr0, got 0x%llx %llx",
+>> +                       fp->val64[0], fp->val64[1],
+>> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1]);
+>> +
+>> +       run_vcpu(vcpu);
+>> +       vcpu_fpu_get(vcpu, &fpu);
+>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 32),
+>> +                       "Wanted 0x%llx %llx %llx %llx from xr0, got 0x%llx %llx %llx %llx",
+>> +                       fp->val64[0], fp->val64[1], fp->val64[2], fp->val64[3],
+>> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1],
+>> +                       fpu.fpr[0].val64[2], fpu.fpr[0].val64[3]);
+>> +
+>> +       fpu.fpr[0].val64[0] += random();
+>> +       vcpu_fpu_set(vcpu, &fpu);
+>> +       run_vcpu(vcpu);
+>> +       vcpu_fpu_get(vcpu, &fpu);
+>> +       sync_global_from_guest(vm, *fp);
+>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 8), "Wanted 0x%llx from f0, got 0x%llx",
+>> +                       fp->val64[0], fpu.fpr[0].val64[0]);
+>> +
+>> +       fpu.fpr[0].val64[0] += random();
+>> +       fpu.fpr[0].val64[1] += random();
+>> +       vcpu_fpu_set(vcpu, &fpu);
+>> +       run_vcpu(vcpu);
+>> +       vcpu_fpu_get(vcpu, &fpu);
+>> +       sync_global_from_guest(vm, *fp);
+>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 16), "Wanted 0x%llx %llx from vr0, got 0x%llx %llx",
+>> +                       fp->val64[0], fp->val64[1],
+>> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1]);
+>> +
+>> +       fpu.fpr[0].val64[0] += random();
+>> +       fpu.fpr[0].val64[1] += random();
+>> +       fpu.fpr[0].val64[2] += random();
+>> +       fpu.fpr[0].val64[3] += random();
+>> +       vcpu_fpu_set(vcpu, &fpu);
+>> +       run_vcpu(vcpu);
+>> +       vcpu_fpu_get(vcpu, &fpu);
+>> +       sync_global_from_guest(vm, *fp);
+>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 32),
+>> +                       "Wanted 0x%llx %llx %llx %llx from xr0, got 0x%llx %llx %llx %llx",
+>> +                       fp->val64[0], fp->val64[1], fp->val64[2], fp->val64[3],
+>> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1],
+>> +                       fpu.fpr[0].val64[2], fpu.fpr[0].val64[3]);
+>> +
+>> +       run_vcpu(vcpu);
+>> +       kvm_vm_free(vm);
+>> +       return 0;
+>> +}
+>> --
+>> 2.39.3
+>>
 
->
->> +	case TSM_REQ_VALIDATE_MMIO:
->> +	case TSM_REQ_SET_TDI_STATE:
->
-> Are these potentially candidates for a IOMMU_VDEVICE_TSM_COMMON? The
-> handler knows how to do the arch-specific response from the common
-> iommufd result, or is there TSM-specific payload beyond @tsm_code for
-> these.
->
-> Make it the case that guest_req only needs non-common arch for
-> operations that are implementation unique, or where the response payload
-> exceeds what can be conveyed via @tsm_code.
->
-
-I am not sure I follow the IOMMU_VDEVICE_TSM_COMMON feedback above.
-
-Earlier discussions around this concluded that we may want iommufd
-to validate all input commands, rather than making the guest request
-ioctl a passthrough interface.
-
-If we make the ops IOMMU_VDEVICE_TSM_COMMON, we would still need to add
-TSM_REQ_VALIDATE_MMIO and TSM_REQ_SET_TDI_STATE for the arch-specific
-handler. Why not expose those to the generic iommufd layer, so that we
-can add operation validation there and completely drop IOMMU_VDEVICE_TSM_COMMON?
-
->>  		return true;
->> +	case TSM_REQ_SEV_ENABLE_DMA:
->> +	case TSM_REQ_SEV_DISABLE_DMA:
->> +		return tvm_arch == IOMMU_VDEVICE_TSM_TVM_ARCH_SEV;
->
-> Right, this appears to be the only case where the command is
-> implementation unique. The handler can only ask iommufd to take
-> arch-specific action.
-
--aneesh
