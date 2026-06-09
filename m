@@ -1,113 +1,114 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8E035C19D
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 03:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C01360EED
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 03:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780974049; cv=none; b=Ip9VrCl/5sxmCJNsg+mur+H+sPMhAmNRf209STyCBbY0NpzJUf/CMf4VJ8yuh1K6LHbeY+2rIPCm/ihiM73A9rbzQkH+dpWJkHdyPqYnsmGsqLmqS6Dw8OsgfK5y/xvehwMGwW/Yp+hHHp9Xc7RY2XIGiKlSs8ev9MWOpy9XX1E=
+	t=1780974524; cv=none; b=c+zIpqsW0f1Rby9lo4Xd65mG6s7czRn2ZBmyve+rMdGPMaQiBO1o6h2VA1OquoQ1H29Td0NrWXDyltm6jHkIuV0ZCUvL08y7h9SXoxYe3am8QCP2ioebQXX4QM0mRXDnzzKDr4jVmn70rWHFcPjOWHg1G9tZhgzGjVBi2WRNBbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780974049; c=relaxed/simple;
-	bh=Gd5jVtuJQiQ7JlAEfSo8CzJBlq/O8FT63MLf3/NDo1w=;
+	s=arc-20240116; t=1780974524; c=relaxed/simple;
+	bh=ZWOR/QrGmJu+uFyB1Ae1JiHHn0938DbKRArZn+SVsjg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YPSZL6mHh/B24wROGrxS/BxU64qhrz44vDk9OIsZrZ9X91cGrw18n58rzHpNs3YCebT2Oc5eTccmPX8thUyICByabQGJE1uAnVeFYs1/q4DiwDPmMYvxeqC8lpLwC/d/OjlGMrwjyIsfycK2ySgfpQAlWbtj4wutrLCEItPOD5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FfQyXUJN; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=CikyqCouMqIIsr+AxXcfWn2BZp74puqFv9g2iYcF47iLZ9r3elpDLzSAZ8LmcXoxk0Um86rpKPrdW8nBoCd0dcOhPyFNIOD84x55O1M70KAd8J0jTXkA6xDWYtYvvihbKF+zMgLEmE+OG33o2RqPOguVG4u30+aXF0L7ffbgvaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q9jzrwcu; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FfQyXUJN"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c85a2c0b56fso4495684a12.0
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 20:00:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q9jzrwcu"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0c1e112dfso70068705ad.0
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 20:08:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780974038; x=1781578838; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780974523; x=1781579323; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kT6zNJuN43ARIxYKIBqAoaKHU3qYmWXT0x+9LehhU2o=;
-        b=FfQyXUJN/vsSoIkdM2tqNNoG4Nt9SbAzJvUIMp5B1Mf+XkyGp/biCY03wmYr63YjPy
-         7m9smUewPHrho7aJVB3LsyH6NmvvbM4gIsHdBc4usTY/cMvWTKmoyNAAkzulsRvdQosS
-         K2zSfGnJPyDOm3FnTMVBnZChXYUm9pleOtEtfotTBX8MdQpDAXTRGL5uWVhdGQgS0YDP
-         IAR0LLxdhhd1ofJX3l3ymyiQHRlI2reZCv8CccvXQNAFVwbdAiWfww5y/aos0yI5bqD1
-         gmJNh+M/FJuXTAq/zFSCgVD4Hhh7sKhAnAUn9wRds+7gOoBZtByOoQ5+qStx2gkP+9Jy
-         xUNQ==
+        bh=WZhzMIPpW0uftooDfGhS6jJvYEf+eSZUIwidGAEeFqU=;
+        b=q9jzrwcuQNqmpceaam+6jcf2tBk8GwjGUprRtthw1FYhw92n/M9caY3tTJI9xSWnxo
+         WPyWP9ZV7bilSNRMN/PTNtaVqZOtvYbcBtvmKiI0fhatogrE6eLnW/AjibGXe5C8NHDN
+         cbgarGcLlbLLobHodOFcoOPVpjielAwsuRNun/UZivGIjF+39Xh8KOSv5nm2sLWauvQa
+         8s+EwPBSA11xDRfP9lVGzp8EMlRV/ZoUOkwdO9y+ruK/6G3iEGr6ZxWrhkFMRHLFWGTZ
+         f2JOr9Wk0I25M/n+t3/R+vIndtvtd7x/JXpGNFY3ndtX6Dco7Jb00tgIDzEvhDzUTrHY
+         J+hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780974038; x=1781578838;
+        d=1e100.net; s=20251104; t=1780974523; x=1781579323;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kT6zNJuN43ARIxYKIBqAoaKHU3qYmWXT0x+9LehhU2o=;
-        b=Dlt10gbJM0SAyddC8hgkiupr/nW+RzaNkls6kRkWCdvtheVno4IIoj1P2wp9a9Er8q
-         whdQLtmLDgPcKQVvKituFosUjrvNRIv1WTz+p5B00uV8FAfqKvCnGI2ejxBkNDci4uEW
-         OXQaxUNuyw0WCQdYFomEM73oNHG8oo6YjnnUPkkolK/hVkCkgdzjsjkxty+zbwHcnEpQ
-         SsKCn7cfUSwZF31/U4eaKEzZ7NUqUtNj0ql/Ovb9FXT1ahdw0LvgvuMzflibq7ct72aR
-         72pdkOpRHne7p1TSy2lp+cM4e9MqwPB92tdDS9FldiflW/hZvp7x3AgPi9uguMGa7FVO
-         Sr5g==
-X-Forwarded-Encrypted: i=1; AFNElJ+ad1Bd7d4pI1ainxaULGsZAZ3jfiUaO0Sd9Cb4VLnsoBRIQXkcjoH48AjEJTaiEMrKWH4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8u7h2aWDaImfaXC+KYP6OyWrhZh4pVwH6Xmemg4laO/Qhhv86
-	ZXngxC2kN1ZBetsBIBr4e1YVx5k8lSI9FHoi5MKrrnTmvopVjtaL11xyE/mKXoZAf5wavvZRakW
-	6HJ0Qyg==
-X-Received: from pgc17.prod.google.com ([2002:a05:6a02:2f91:b0:c82:35ce:8939])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3949:b0:38b:eadd:449a
- with SMTP id adf61e73a8af0-3b4cd042933mr21709786637.38.1780974037611; Mon, 08
- Jun 2026 20:00:37 -0700 (PDT)
-Date: Mon, 8 Jun 2026 20:00:36 -0700
-In-Reply-To: <cb8d64e6-dfc6-4984-a46a-157e57e55aaf@linux.intel.com>
+        bh=WZhzMIPpW0uftooDfGhS6jJvYEf+eSZUIwidGAEeFqU=;
+        b=ZSdaN5DwI9EdOfRBeNo16lno9qHkiGImk+vXHw62orqeux+WMgscNBtsIQECnReS/n
+         HqdXCtKp/Iy7i6Xeg5q2Bk6bdx65VFkaVheFLQXZ3enRI1yXywHOw6/T+jPFOt1VXv1k
+         0sRt6h26bTsXHJMnkDXRClL/wOIsHyN6suD15dJtgVIhAlsiX7NOB9vQUwICXLg6LG+2
+         cvZvIVUjdaW8Yg9R15uGiR1YFlnUhd2FfzQIFDJdsP5NoRapTCvMeQsyAQgPT5wS8Olm
+         JNw6xGeN+MNcAviCRiWocnnwlqaXJ77J2RLEnXJgLt3KW97Df9niQefRsB+0+AXIrJlG
+         s48w==
+X-Forwarded-Encrypted: i=1; AFNElJ+KSBNKbPcp0NNCBL1r5Yd/8GKClijAu38ZNPPgaegfCh9GxkkkuOKG29a++JeWXemcp6s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUOfBf7mHqr4l7JztY9Jhj9qpsEYY8YJ03+zmPkYcjIs9ZanFU
+	SEa0+Ph7jdjl+qph7skLkQAPGHaf4InxDpVu+e9+cReNko65wjvKdepe6ml+DDBjbJttfk7XYXl
+	9BqgblQ==
+X-Received: from plbz12.prod.google.com ([2002:a17:902:ee0c:b0:2bf:ce7:ae06])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f543:b0:2c2:27be:39a3
+ with SMTP id d9443c01a7336-2c227be3b4fmr142116515ad.29.1780974522512; Mon, 08
+ Jun 2026 20:08:42 -0700 (PDT)
+Date: Mon, 8 Jun 2026 20:08:41 -0700
+In-Reply-To: <CAEvNRgHtpFa+HAhPVBvB4=ixUuEW-r_Xh49SHEPktUmHgzYcAw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
- <20260417073610.3246316-2-binbin.wu@linux.intel.com> <4e5b6b9c-4f7d-4d62-874a-4bcb745e9a47@linux.intel.com>
- <aibPZMfxabh6meOk@google.com> <cb8d64e6-dfc6-4984-a46a-157e57e55aaf@linux.intel.com>
-Message-ID: <aieB1E_nVyO5vOTk@google.com>
-Subject: Re: [RFC PATCH 01/27] KVM: x86: Fix emulated CPUID features being
- applied to wrong sub-leaf
+References: <20260603-snp-selftest-cleanup-v1-1-73b29fe31ce6@google.com>
+ <aiCzNbtQ4FPu2yCR@google.com> <CAEvNRgHtpFa+HAhPVBvB4=ixUuEW-r_Xh49SHEPktUmHgzYcAw@mail.gmail.com>
+Message-ID: <aieDuZi3oMQvdwaK@google.com>
+Subject: Re: [PATCH] KVM: selftests: Make guest_code_xsave more friendly
 From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, rick.p.edgecombe@intel.com, 
-	xiaoyao.li@intel.com, chao.gao@intel.com, kai.huang@intel.com
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	michael.roth@amd.com, jackyli@google.com, liruxin@google.com, 
+	darwinguo@google.com, jacobhxu@google.com
 Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jun 09, 2026, Binbin Wu wrote:
-> On 6/8/2026 10:19 PM, Sean Christopherson wrote:
-> > On Mon, Jun 08, 2026, Binbin Wu wrote:
-> >>
-> >>
-> >> On 4/17/2026 3:35 PM, Binbin Wu wrote:
-> >>> Guard the use of cpuid_func_emulated() with a check that the CPUID
-> >>> sub-leaf index is 0, as cpuid_func_emulated() unconditionally returns
-> >>> emulated features for index 0 and does not account for indexed leaves.
-> >>>
-> >>> Without the guard, when iterating over reverse_cpuid[] entries that
-> >>> share the same CPUID function but have a non-zero index, e.g.
-> >>> CPUID_7_1_ECX (function=7, index=1), the emulated features for index 0
-> >>> are incorrectly OR'd into the wrong capability word.  For example,
-> >>> RDPID (CPUID.7.0:ECX[22]) gets erroneously applied to CPUID_7_1_ECX,
-> >>> which would allow userspace to set bit 22 of CPUID.7.1:ECX in the vCPU's
-> >>> capabilities.
-> >>>
-> >>> This is currently benign as the affected bits in the non-zero index
-> >>> words happen to not correspond to meaningful features, but it could
-> >>> cause problems as new features are defined in those positions.
-> >>>
-> >>
-> >> Hi Sean/Paolo,
-> >>
-> >> While the bug is currently benign, I still think it's worth fixing.
-> >>
-> >> There could be two options:
-> >> - Considering cpuid_func_emulated() probably would not be extended
-> >>   in the future, still keep this simple implementation, but add some
-> >>   comments to cpuid_func_emulated() to call out only subleaf 0 is emulated
-> >>   as suggested by Xiaoyao.
-> >>   https://lore.kernel.org/kvm/fa47d520-1de9-4ddc-94ca-6bb53ac30f10@intel.com/
-> >> - Add the index input parameter to cpuid_func_emulated().
-> > 
-> > Definitely handle this in cpuid_func_emulated().
+On Fri, Jun 05, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> > Uh, so as the comment says, the goal is to stash state before _any_ compiled
+> > code runs.  Shoving the code into inline asm breaks that.  The compiler *probably*
+> > won't shove anything before the first inline assembly, but there are absolutely
+> > no guarantees.  E.g. you're subtly relying on a tail-call optimization to avoid
+> > any stack operations.  If I force guest_sev_es_code() to be inlined, then the
+> > prologue becomes:
+> >
+> > 0000000000402a10 <guest_code_xsave>:
+> >   402a10:       48 83 ec 08                                     sub    $0x8,%rsp
+> >   402a14:       b8 07 00 00 00                                  mov    $0x7,%eax
+> >   402a19:       31 d2                                           xor    %edx,%edx
+> >   402a1b:       0f ae 27                                        xsave  (%rdi)
+> >   402a1e:       b9 31 01 01 c0                                  mov    $0xc0010131,%ecx
+> >
+> > and we're hosed.
+> >
 > 
-> Thanks, the diff looks good to me.
-> I will send a separate patch for this.
-> 
-> BTW, do you want to provide your SOB?
+> And omg, I thought I was running the tests!!
 
-Nah, you did the hard part, claim it as your own.
+FWIW, you probably were, I had to force it to be inline via __always_inline.
+
+> >> +		"xsave (%0)"
+> >> +		:
+> >> +		: "r"(addr)
+> >> +		: "eax", "edx", "memory"
+> >> +	 );
+> >> +}
+> >> +
+> >>
+> >> [...snip...]
+> >>
+> 
+> My bad, this patch is such a goof!
+> 
+> I still feel that it'd be nice to allow commenting out functions parts
+> of selftests while developing other parts, but let's shelve this for
+> now.
+
+I mean, it's always "allowed", but that's firmly "Here be dragons!" territory.
+There are any number of things that can go sideways when adding and/or removing
+code for development and debug purposes, many of which are far more nefarious
+and subtle than obscure compiler errors.
