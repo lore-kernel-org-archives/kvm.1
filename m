@@ -1,305 +1,197 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF41E800;
-	Tue,  9 Jun 2026 09:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F409371D00
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 09:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780997247; cv=none; b=g2mKU/7PgsB5F5y5nEqmCV2hNQmoDodSbDH90oi84m8GvtYwt/Z0nuv7hbt8S4SOSzjgz0St6uTIFuV+wmIjmTpebUbBmkl1JFJgd6I7UP3734d184CewhKVyFiq0fT2E6zBchCPfahNFFzVaY0aK/PfdvPkoCAvkLdjl9pjx1g=
+	t=1780997351; cv=none; b=X5qzg3jbyQ9vZkSNnolH8VkUtnUBJcMwgl7JUvBy1AmNf8Bc2a/eo3uOYh2t85I8Ibc0w2eFyYRZqja6zSY3+b8SkKWHCfTM2xsRYDvXBRQEAoSkPt8L0H/nS0Cbgj0QcFT6EDN9qgwPO7n51/3HM85Wboq5e9YObpM54RBSLb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780997247; c=relaxed/simple;
-	bh=fIeE9ivwtPH8PJXqfFRmYEVH+fP3+jTygzmFkgUVIEM=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=DppG5B//uXnWf7CsEr8Qo+FYGGOiQmYsBd8x3UfLy8zxGatUpZDoDjUmsP4gGUKAEXqnyVI/Gn5IrFCVQDsVExyE+KdUQUocfg1N/tyFIZDl2J7FGfFJfCyWTW8ZMEtyXoe91/3MEgMNkXrd73D1YI6C2Wr0NIRD8EEnL7xn3lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Dxlnh43CdqaDMSAA--.23790S3;
-	Tue, 09 Jun 2026 17:27:20 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCx+8F43CdqjqegAA--.43586S3;
-	Tue, 09 Jun 2026 17:27:20 +0800 (CST)
-Subject: Re: [PATCH v2 2/2] KVM: LoongArch: selftests: Add FPU test case
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260609072715.1005923-1-maobibo@loongson.cn>
- <20260609072715.1005923-3-maobibo@loongson.cn>
- <CAAhV-H64=C8iBRHrE=0rohnGxK1WeWUoG9zWrH9MB1kaw6usww@mail.gmail.com>
- <efe9f60e-6229-06bc-0dc5-cee9c53a2076@loongson.cn>
- <CAAhV-H6VmmFiVy=2d_1bACErUv62L+4+Q6b2xVcxmNjnjv4=sw@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <856fbbf5-95a7-5118-66ba-57b279d6cbaf@loongson.cn>
-Date: Tue, 9 Jun 2026 17:24:13 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1780997351; c=relaxed/simple;
+	bh=FcCAg8VdrQBhc3e9Aqg/PJ3XfA/85D0+dFBWko2gRiE=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=YHJ+dASYBw13a1U/nZquF52xnhBtJJokbp7NVkbZf/c1s4u6NunFUmKNORutusDzbZvyQrAld2+8ya22G1pq45smPg7HYeMIaDJXdifPneJftg0eF/uI7K/efhfMVDzMshjeJPE40wqQQelxA/CWgzZ0nfYzaKMOHjDMNhWueJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-69e412347c1so7619547eaf.3
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 02:29:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780997348; x=1781602148;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tDtntZKOvf+QgM91JxUiEGn+OVlpeQ6B56aULm94QfI=;
+        b=az5Al7P8lXjW8s20hTDJDAFdxAzHGExA460804q+bZaB6yLGx/GnB6u+p50w8lmugZ
+         40pWQcP1ErE3w6hopIOFKzDNmNVqDku4sQ9T21p4PNLpa/ahDj8QNoHl3ch0tmIHDO7R
+         fTGselSIpT2u+gVR8zcYWZZO1TzsIOQkOhE+ttPcFCiiy1XCXAVdTlgwGINsbaTuF290
+         CiuUUWgVSvKLd8HGRwWMeiy09cwRA8AG00nRuFCT5MA+0mgamP/PXJYpUYpe4ABSlSeo
+         shBqyMI1t7SBgohxyA+yZOcOhEgDTi9/Scb1P8iF/n/cSLmahlskJk/a02J+kZcP4mSc
+         KAiA==
+X-Forwarded-Encrypted: i=1; AFNElJ/w7LknH19Jw1RhlU1d0LZ2bHqqnPK5HS1rFPG0nLxiEvGFFza/MiQTPzh043GJVEzP1hU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP+jbaYxINx+laZhPInxwPWX3Oyo9TTIHEK53Mu6XGo6ht2fVD
+	mhrmiPvztTrMOFtTfJ29A10GV8FDiDMSmCXhdkQRRqxuqgg3W4diYxppfZiiipCnf7rJv+qv9Tr
+	DkPAWLRt4awNT1CazmcQrJPKF5+H4c9EOp3bWSeyrrntpGr5GjxF7xC7cLqA=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H6VmmFiVy=2d_1bACErUv62L+4+Q6b2xVcxmNjnjv4=sw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCx+8F43CdqjqegAA--.43586S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxtF47KrW5Ar1rXry7XryDtwc_yoWfGr45p3
-	yvkF1jgr48tF13Jw10vwn0yrs3Kr18Kr1xXr1IgryUAr1DKFZ7JF1kJrWqgrn5uws5X3WU
-	Zr1fGw43uFy5JacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Sb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
-	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
-	67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
-	AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C2
-	67AKxVWUtVW8ZwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
-	8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWU
-	CwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
-	1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBI
-	daVFxhVjvjDU0xZFpf9x07jnUUUUUUUU=
+X-Received: by 2002:a05:6820:818f:b0:69e:424a:8df1 with SMTP id
+ 006d021491bc7-69e68b4b285mr10545972eaf.19.1780997348483; Tue, 09 Jun 2026
+ 02:29:08 -0700 (PDT)
+Date: Tue, 09 Jun 2026 02:29:08 -0700
+In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a27dce4.39669fcc.33b062.0090.GAE@google.com>
+Subject: [syzbot ci] Re: KVM Planes + SEV-SNP Support
+From: syzbot ci <syzbot+ci5127b91b8837842d@syzkaller.appspotmail.com>
+To: anelkz@amazon.de, ashish.kalra@amd.com, clopez@suse.de, 
+	coconut-svsm@lists.linux.dev, huibo.wang@amd.com, 
+	james.bottomley@hansenpartnership.com, joerg.roedel@amd.com, joro@8bytes.org, 
+	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
+	michael.roth@amd.com, nsaenz@amazon.com, pbonzini@redhat.com, 
+	seanjc@google.com, thomas.lendacky@amd.com, x86@kernel.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+
+syzbot ci has tested the following series
+
+[v1] KVM Planes + SEV-SNP Support
+https://lore.kernel.org/all/20260608144252.351443-1-joro@8bytes.org
+* [PATCH 01/60] x86/sev: Define the #HV doorbell page structure
+* [PATCH 02/60] KVM: SVM: Add support for the SEV-SNP #HV doorbell page NAE event
+* [PATCH 03/60] KVM: SVM: Inject #HV when Restricted Injection is active
+* [PATCH 04/60] KVM: SVM: Inject NMIs when Restricted Injection is active
+* [PATCH 05/60] KVM: SVM: Inject MCEs when Restricted Injection is active
+* [PATCH 06/60] KVM: SVM: Enable Restricted Injection for an SEV-SNP guest
+* [PATCH 07/60] KVM: SVM: Add support for the SEV-SNP #HV IPI NAE event
+* [PATCH 08/60] Documentation: kvm: introduce "VM plane" concept
+* [PATCH 09/60] kvm: Introduce struct kvm_plane
+* [PATCH 10/60] kvm: Move vcpu_array to struct kvm_plane
+* [PATCH 11/60] kvm: Introduce struct kvm_vcpu_common
+* [PATCH 12/60] kvm: Move vcpu accounting to struct kvm_vcpu_common
+* [PATCH 13/60] kvm: Add read accessors for kvm_vcpu scheduling state
+* [PATCH 14/60] kvm: Make kvm_running_vcpus point to struct kvm_vcpu_common
+* [PATCH 15/60] kvm: Move VCPU scheduling state to struct kvm_vcpu_common
+* [PATCH 16/60] kvm: Add accessors for kvm_vcpu->mutex
+* [PATCH 17/60] kvm: Move VCPU locking to struct kvm_vcpu_common
+* [PATCH 18/60] kvm: Move kvm_vcpu->rcuwait to struct kvm_vcpu_common
+* [PATCH 19/60] kvm: Introduce accessors for kvm_vcpu->mode
+* [PATCH 20/60] kvm: Move kvm_vcpu mode and requests field to struct kvm_vcpu_common
+* [PATCH 21/60] kvm: Introduce per-plane VCPU requests
+* [PATCH 22/60] kvm: Move kvm_vcpu pid members to struct kvm_vcpu_common
+* [PATCH 23/60] kvm: Move kvm_vcpu sigset members to struct kvm_vcpu_common
+* [PATCH 24/60] kvm: Move kvm_vcpu spinloop members to struct kvm_vcpu_common
+* [PATCH 25/60] kvm: Move kvm_vcpu->dirty_ring to struct kvm_vcpu_common
+* [PATCH 26/60] kvm: Introduce arch-specific plane state
+* [PATCH 27/60] kvm: Introduce arch-specific part of struct kvm_vcpu_common
+* [PATCH 28/60] kvm: Implement KVM_CAP_PLANES
+* [PATCH 29/60] kvm: Implement KVM_CREATE_PLANE ioctl
+* [PATCH 30/60] kvm: Add KVM_EXIT_PLANE_EVENT
+* [PATCH 31/60] kvm: Allocate struct kvm_plane in architecture code
+* [PATCH 32/60] kvm: Allocate struct kvm_run only for struct kvm_vcpu_common
+* [PATCH 33/60] KVM: Implement KVM_CREATE_VCPU ioctl for planes
+* [PATCH 34/60] kvm: Keep track of plane VCPUs in struct kvm_vcpu_common
+* [PATCH 35/60] kvm: Add VCPU plane-scheduling state and helpers
+* [PATCH 36/60] kvm: Add plane_level to kvm_kernel_irq_routing_entry
+* [PATCH 37/60] kvm: Pass plane_level to kvm_set_routing_entry()
+* [PATCH 38/60] kvm: Make KVM_SIGNAL_MSI per plane
+* [PATCH 39/60] kvm: Make KVM_SET_GSI_ROUTING per plane
+* [PATCH 40/60] kvm: x86: Handle IOAPIC EOIs per plane
+* [PATCH 41/60] kvm: x86: Make apic_map per plane
+* [PATCH 42/60] kvm: x86: Make local APIC code aware of planes
+* [PATCH 43/60] kvm: x86: Move CPUID state to struct kvm_vcpu_arch_common
+* [PATCH 44/60] kvm: x86: Move cpu_caps to struct kvm_vcpu_arch_common
+* [PATCH 45/60] kvm: x86: Update state for all plane VCPUs after CPUID update
+* [PATCH 46/60] kvm: x86: Share MTRR state across planes
+* [PATCH 47/60] kvm: x86: Select a plane to run
+* [PATCH 48/60] kvm: x86: Make event injection VCPU requests per-plane
+* [PATCH 49/60] kvm: x86: Allow hardware backend to overwrite struct kvm_plane allocation
+* [PATCH 50/60] kvm: x86: Make KVM_REQ_UPDATE_PROTECTED_GUEST_STATE per plane
+* [PATCH 51/60] kvm: x86: Share pio_data across planes
+* [PATCH 52/60] kvm: x86: Switch to plane0 if it has events
+* [PATCH 53/60] kvm: x86: Introduce max_planes x86-op
+* [PATCH 54/60] kvm: x86: Restrict KVM planes support to KVM_IRQCHIP_SPLIT
+* [PATCH 55/60] kvm: svm: Track vmsa_features per plane
+* [PATCH 56/60] kvm: svm: Implement GET_AP_APIC_IDS NAE event
+* [PATCH 57/60] kvm: sev: Allow for VMPL level specification in AP create
+* [PATCH 58/60] kvm: svm: Invoke a specified VMPL level VMSA for the vCPU
+* [PATCH 59/60] kvm: svm: Implement max_planes x86 operation
+* [PATCH 60/60] kvm: svm: Advertise full multi-VMPL support to the SNP guest
+
+and found the following issue:
+WARNING in __kvm_plane_ioctl
+
+Full report is available here:
+https://ci.syzbot.org/series/7426b4e7-e1df-4f2e-8464-acda36316e29
+
+***
+
+WARNING in __kvm_plane_ioctl
+
+tree:      torvalds
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
+base:      2d3090a8aeb596a26935db0955d46c9a5db5c6ce
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/f9f7af87-a544-413f-b7e0-662f92794f11/config
+syz repro: https://ci.syzbot.org/findings/751865bf-494c-4000-9b11-d8aa15f03893/syz_repro
+
+------------[ cut here ]------------
+r == -EBUSY
+WARNING: arch/x86/kvm/../../../virt/kvm/kvm_main.c:4412 at kvm_plane_ioctl_create_vcpu virt/kvm/kvm_main.c:4412 [inline], CPU#1: syz.2.19/5809
+WARNING: arch/x86/kvm/../../../virt/kvm/kvm_main.c:4412 at __kvm_plane_ioctl+0x8bd/0xa70 virt/kvm/kvm_main.c:4908, CPU#1: syz.2.19/5809
+Modules linked in:
+CPU: 1 UID: 0 PID: 5809 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:kvm_plane_ioctl_create_vcpu virt/kvm/kvm_main.c:4412 [inline]
+RIP: 0010:__kvm_plane_ioctl+0x8bd/0xa70 virt/kvm/kvm_main.c:4908
+Code: e8 c8 0a 09 00 4c 89 f7 e8 80 a3 ff ff 48 8b 3d a9 a8 fd 11 4c 89 f6 e8 c1 35 e7 00 49 63 c7 e9 8c fc ff ff e8 94 2f 87 00 90 <0f> 0b 90 41 bf f0 ff ff ff eb bc e8 e3 eb 68 0a 89 f9 80 e1 07 80
+RSP: 0018:ffffc9000318f940 EFLAGS: 00010293
+RAX: ffffffff813f480c RBX: ffff8881ba113410 RCX: ffff88810d4f4a80
+RDX: 0000000000000000 RSI: ffffffff8e6fa0b0 RDI: 00000000fffffff0
+RBP: ffffc9000318fa70 R08: ffff88810d4f4a80 R09: 0000000000000002
+R10: 00000000fffffff0 R11: 0000000000000000 R12: 1ffff92000631f34
+R13: dffffc0000000000 R14: ffff8881b446cb18 R15: 00000000fffffff0
+FS:  00007f13e64ad6c0(0000) GS:ffff8882a929c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f13e64acff8 CR3: 00000001a6053000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ kvm_vm_ioctl+0x88e/0xbf0 virt/kvm/kvm_main.c:5546
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f13e559ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f13e64ad028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f13e5816090 RCX: 00007f13e559ce59
+RDX: 0000000000000000 RSI: 000000000000ae41 RDI: 0000000000000004
+RBP: 00007f13e5632d6f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f13e5816128 R14: 00007f13e5816090 R15: 00007fff90c39748
+ </TASK>
 
 
+***
 
-On 2026/6/9 下午5:23, Huacai Chen wrote:
-> On Tue, Jun 9, 2026 at 5:02 PM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->>
->>
->> On 2026/6/9 下午4:40, Huacai Chen wrote:
->>> Hi, Bibo,
->>>
->>> On Tue, Jun 9, 2026 at 3:27 PM Bibo Mao <maobibo@loongson.cn> wrote:
->>>>
->>>> Add FPU test case and verify FPU register get and set APIs, the
->>>> FPU width supports 64/128/256 bits.
->>>>
->>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->>>> ---
->>>>    tools/testing/selftests/kvm/Makefile.kvm      |   1 +
->>>>    .../kvm/include/loongarch/processor.h         |   8 +
->>>>    .../selftests/kvm/loongarch/fpu_test.c        | 145 ++++++++++++++++++
->>>>    3 files changed, 154 insertions(+)
->>>>    create mode 100644 tools/testing/selftests/kvm/loongarch/fpu_test.c
->>>>
->>>> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
->>>> index 9118a5a51b89..7d11592b3759 100644
->>>> --- a/tools/testing/selftests/kvm/Makefile.kvm
->>>> +++ b/tools/testing/selftests/kvm/Makefile.kvm
->>>> @@ -224,6 +224,7 @@ TEST_GEN_PROGS_riscv += rseq_test
->>>>    TEST_GEN_PROGS_riscv += steal_time
->>>>
->>>>    TEST_GEN_PROGS_loongarch = loongarch/pmu_test
->>>> +TEST_GEN_PROGS_loongarch += loongarch/fpu_test
->>>>    TEST_GEN_PROGS_loongarch += arch_timer
->>>>    TEST_GEN_PROGS_loongarch += coalesced_io_test
->>>>    TEST_GEN_PROGS_loongarch += demand_paging_test
->>>> diff --git a/tools/testing/selftests/kvm/include/loongarch/processor.h b/tools/testing/selftests/kvm/include/loongarch/processor.h
->>>> index 2324e311180f..981ae7078354 100644
->>>> --- a/tools/testing/selftests/kvm/include/loongarch/processor.h
->>>> +++ b/tools/testing/selftests/kvm/include/loongarch/processor.h
->>>> @@ -82,6 +82,14 @@
->>>>    #define  PLV_MASK                      0x3
->>>>    #define LOONGARCH_CSR_PRMD             0x1
->>>>    #define LOONGARCH_CSR_EUEN             0x2
->>>> +#define  CSR_EUEN_LBTEN_SHIFT          3
->>>> +#define  CSR_EUEN_LBTEN                        BIT_ULL(CSR_EUEN_LBTEN_SHIFT)
->>>> +#define  CSR_EUEN_LASXEN_SHIFT         2
->>>> +#define  CSR_EUEN_LASXEN               BIT_ULL(CSR_EUEN_LASXEN_SHIFT)
->>>> +#define  CSR_EUEN_LSXEN_SHIFT          1
->>>> +#define  CSR_EUEN_LSXEN                        BIT_ULL(CSR_EUEN_LSXEN_SHIFT)
->>>> +#define  CSR_EUEN_FPEN_SHIFT           0
->>>> +#define  CSR_EUEN_FPEN                 BIT_ULL(CSR_EUEN_FPEN_SHIFT)
->>>>    #define LOONGARCH_CSR_ECFG             0x4
->>>>    #define  ECFGB_PMU                     10
->>>>    #define  ECFGF_PMU                     (BIT_ULL(ECFGB_PMU))
->>>> diff --git a/tools/testing/selftests/kvm/loongarch/fpu_test.c b/tools/testing/selftests/kvm/loongarch/fpu_test.c
->>>> new file mode 100644
->>>> index 000000000000..5bccce9db5d0
->>>> --- /dev/null
->>>> +++ b/tools/testing/selftests/kvm/loongarch/fpu_test.c
->>>> @@ -0,0 +1,145 @@
->>>> +// SPDX-License-Identifier: GPL-2.0
->>>> +
->>>> +#include <stdio.h>
->>>> +#include <string.h>
->>>> +#include "kvm_util.h"
->>>> +#include "processor.h"
->>>> +#include "loongarch/processor.h"
->>>> +
->>>> +struct kvm_fpureg __aligned(64) vector = {{1, 2, 3, 4 }};
->>>> +
->>>> +static void guest_code(void)
->>>> +{
->>>> +       unsigned long val;
->>>> +       struct kvm_fpureg *fp = &vector;
->>>> +
->>>> +       val = csr_read(LOONGARCH_CSR_EUEN);
->>>> +       val |= CSR_EUEN_FPEN | CSR_EUEN_LSXEN | CSR_EUEN_LASXEN;
->>>> +       csr_write(val, LOONGARCH_CSR_EUEN);
->>>> +
->>>> +       __asm__ __volatile__("fld.d $f0, %0, 0\n" : : "r"(fp) : "$f0");
->>>> +       GUEST_SYNC(0);
->>>> +
->>>> +       __asm__ __volatile__("vld $vr0, %0, 0\n" : : "r"(fp) : "$vr0");
->>>> +       GUEST_SYNC(1);
->>>> +
->>>> +       __asm__ __volatile__("xvld $xr0, %0, 0\n" : : "r"(fp) : "$xr0");
->>>> +       GUEST_SYNC(2);
->>>> +
->>>> +       __asm__ __volatile__("fst.d $f0, %0, 0\n" : : "r"(fp) : "memory");
->>>> +       GUEST_SYNC(3);
->>>> +
->>>> +       __asm__ __volatile__("vst $vr0, %0, 0\n" : : "r"(fp) : "memory");
->>>> +       GUEST_SYNC(4);
->>>> +
->>>> +       __asm__ __volatile__("xvst $xr0, %0, 0\n" : : "r"(fp) : "memory");
->>>> +       GUEST_SYNC(5);
->>>> +
->>>> +       GUEST_DONE();
->>>> +}
->>>> +
->>>> +static void run_vcpu(struct kvm_vcpu *vcpu)
->>>> +{
->>>> +       struct ucall uc;
->>>> +       int cont;
->>>> +
->>>> +       cont = 1;
->>>> +       while (cont) {
->>>> +               vcpu_run(vcpu);
->>>> +
->>>> +               switch (get_ucall(vcpu, &uc)) {
->>>> +               case UCALL_PRINTF:
->>>> +                       printf("%s", (const char *)uc.buffer);
->>>> +                       break;
->>>> +               case UCALL_DONE:
->>>> +                       printf("FPU test PASSED\n");
->>>> +                       fallthrough;
->>>> +               case UCALL_SYNC:
->>>> +                       cont = 0;
->>>> +                       break;
->>>> +               case UCALL_ABORT:
->>>> +                       REPORT_GUEST_ASSERT(uc);
->>>> +               default:
->>>> +                       TEST_ASSERT(false, "Unexpected exit: %s",
->>>> +                               exit_reason_str(vcpu->run->exit_reason));
->>>> +               }
->>>> +       }
->>>> +}
->>>> +
->>>> +static bool __vm_has_feature(struct kvm_vm *vm, int feature)
->>>> +{
->>>> +       int ret;
->>>> +
->>>> +       ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, feature);
->>>> +       return !ret;
->>>> +}
->>>> +
->>>> +
->>>> +int main(void)
->>>> +{
->>>> +       struct kvm_vcpu *vcpu;
->>>> +       struct kvm_vm *vm;
->>>> +       struct kvm_fpu fpu;
->>>> +       struct kvm_fpureg *fp = &vector;
->>>> +
->>>> +       vm = vm_create_with_one_vcpu(&vcpu, guest_code);
->>>> +       __TEST_REQUIRE(__vm_has_feature(vm, KVM_LOONGARCH_VM_FEAT_LSX),
->>>> +                       "LSX not available, skipping test\n");
->>>> +       __TEST_REQUIRE(__vm_has_feature(vm, KVM_LOONGARCH_VM_FEAT_LASX),
->>>> +                       "LASX not available, skipping test\n");
->>> Directly use __kvm_has_device_attr() as the first patch, or use
->>> __vm_has_feature() in the first patch?
->> do you mean something like this?
->>          ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL,
->> KVM_LOONGARCH_VM_FEAT_LSX);
->>          __TEST_REQUIRE(!ret, "LSX not available, skipping test\n");
->>          ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL,
->> KVM_LOONGARCH_VM_FEAT_LASX);
->>          __TEST_REQUIRE(!ret, "LASX not available, skipping test\n");
-> Yes, I think this is a little better, it removes the inconsistency
-> between two patch.
-ok, will do in this way in the next version.
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
-Regards
-Bibo Mao
-> 
-> Huacai
-> 
->>
->> I am ok with both.
->>>
->>> BTW, I don't think the __ prefix is necessary.
->> There seem no unified rules with kvm selftest cases, I have no idea
->> about this actually. There are __kvm_has_device_attr/__TEST_REQUIRE
->> public APIs and real usages.
->>
->> Regards
->> Bibo Mao
->>>
->>> Huacai
->>>
->>>> +
->>>> +       run_vcpu(vcpu);
->>>> +       vcpu_fpu_get(vcpu, &fpu);
->>>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 8), "Wanted 0x%llx from f0, got 0x%llx",
->>>> +                       fp->val64[0], fpu.fpr[0].val64[0]);
->>>> +
->>>> +       run_vcpu(vcpu);
->>>> +       vcpu_fpu_get(vcpu, &fpu);
->>>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 16), "Wanted 0x%llx %llx from vr0, got 0x%llx %llx",
->>>> +                       fp->val64[0], fp->val64[1],
->>>> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1]);
->>>> +
->>>> +       run_vcpu(vcpu);
->>>> +       vcpu_fpu_get(vcpu, &fpu);
->>>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 32),
->>>> +                       "Wanted 0x%llx %llx %llx %llx from xr0, got 0x%llx %llx %llx %llx",
->>>> +                       fp->val64[0], fp->val64[1], fp->val64[2], fp->val64[3],
->>>> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1],
->>>> +                       fpu.fpr[0].val64[2], fpu.fpr[0].val64[3]);
->>>> +
->>>> +       fpu.fpr[0].val64[0] += random();
->>>> +       vcpu_fpu_set(vcpu, &fpu);
->>>> +       run_vcpu(vcpu);
->>>> +       vcpu_fpu_get(vcpu, &fpu);
->>>> +       sync_global_from_guest(vm, *fp);
->>>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 8), "Wanted 0x%llx from f0, got 0x%llx",
->>>> +                       fp->val64[0], fpu.fpr[0].val64[0]);
->>>> +
->>>> +       fpu.fpr[0].val64[0] += random();
->>>> +       fpu.fpr[0].val64[1] += random();
->>>> +       vcpu_fpu_set(vcpu, &fpu);
->>>> +       run_vcpu(vcpu);
->>>> +       vcpu_fpu_get(vcpu, &fpu);
->>>> +       sync_global_from_guest(vm, *fp);
->>>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 16), "Wanted 0x%llx %llx from vr0, got 0x%llx %llx",
->>>> +                       fp->val64[0], fp->val64[1],
->>>> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1]);
->>>> +
->>>> +       fpu.fpr[0].val64[0] += random();
->>>> +       fpu.fpr[0].val64[1] += random();
->>>> +       fpu.fpr[0].val64[2] += random();
->>>> +       fpu.fpr[0].val64[3] += random();
->>>> +       vcpu_fpu_set(vcpu, &fpu);
->>>> +       run_vcpu(vcpu);
->>>> +       vcpu_fpu_get(vcpu, &fpu);
->>>> +       sync_global_from_guest(vm, *fp);
->>>> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 32),
->>>> +                       "Wanted 0x%llx %llx %llx %llx from xr0, got 0x%llx %llx %llx %llx",
->>>> +                       fp->val64[0], fp->val64[1], fp->val64[2], fp->val64[3],
->>>> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1],
->>>> +                       fpu.fpr[0].val64[2], fpu.fpr[0].val64[3]);
->>>> +
->>>> +       run_vcpu(vcpu);
->>>> +       kvm_vm_free(vm);
->>>> +       return 0;
->>>> +}
->>>> --
->>>> 2.39.3
->>>>
->>
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
+
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
