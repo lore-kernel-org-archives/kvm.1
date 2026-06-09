@@ -1,206 +1,100 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2E8331EC9;
-	Tue,  9 Jun 2026 18:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A28E40D563;
+	Tue,  9 Jun 2026 19:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781031083; cv=none; b=bL2c0aq+B7RZY+wXNeQfyHAYBCn7cWd2oGuyJ9Ul3da3WT8VPpZwWGNK9ANAJFmToPbcwdYzoE0h1V/tkZCbJNrk7Nmw6lKD4JefspQbjX56cWmTDJUtzZLV8TEd6yS7GOvUhmn4VGQpdYjnbqzAR/LNXMqaGz5fMeQjLmHoyO8=
+	t=1781033241; cv=none; b=ZvJesJiFIUXFlLDampdEzu+7GP/D17kTBcL1fsK2IMMTvKLIxJsO3ovVRKOiIrWJwk3kcT8pRVrPWTRl2eaYkoytpjpQ4O3p56bzQcT7VK91i9vcXGI+ORUy2BB7sLpRkR67TBbkIb8R7+GB4UPZlpqweG3o3X0lNgHDFYWkwcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781031083; c=relaxed/simple;
-	bh=Je/qwhOHN5nIVTRrk7V2WIb1Wqh//9z1/oEb7+DUvyM=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lUkcPv0KQ0Wiem+pFwEwyiBnsr275TUjP0GGig46G/cbq31qgqHK2Cgh1qd1YrmP1b6IsWflsUygaYLly6O6TmHUr9fGWoaRIcGXwJ5B8vVFjkZXCNjy+q/QrFe6YptlNOmlLtpKEGXj44k08XkXYMfWEbAv6hL0rV3zWJAzy6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=tgnPqv6V; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1781033241; c=relaxed/simple;
+	bh=t+WvsS2QinBoSI2OXuMQMgk8edo+7KuSw0OLqOxN6Rg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=IVgU5P6rmoZciOVsOTN3IRAWS55dc6O39hgR80XPKrGSni9c4h4+dRonQasdjLJXZB9rWtC8EjQt8XAc3HphLtbfjAKw5fDioc5TrRgHk/tRD16oBtsuwyrR/CpWmTKyE4CfDElbAbEnA4WUbXyP5WYsXFiYVQSwZzWpxprIbGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oStFu7N1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="tgnPqv6V"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Je/qwhOHN5nIVTRrk7V2WIb1Wqh//9z1/oEb7+DUvyM=; b=tgnPqv6V2/Ji6KB1G4lqLbJP5p
-	oLzPSvMiIWVvulahV35c4IPfJqRpUlPy01KxhqpQHUSXw7HxF4RgQa+Oil7Rh2axEiufq4xt4iTrX
-	hnPfNY/AKdzl6lPyR0gI7pF0ZmYuckBdV8gdFz/kVoS23r4YPuTqw3VgO/htl5webiODI+ybPNus4
-	LpSk2/Ru+GW8de8kfXd2qjIcxf8Qt0KX8hg8WghnX7vuFoT0xlx2EQAhb3KXOyxFKeWvR0fDYfcDs
-	56Sq72c4BMU81maDRlvt5WhDTJ7gy4/H6ZUqOpf0oomkWuXZ0sQTuxE8p4hOFn63ggP6pMdiWhe3I
-	0YEO13Ww==;
-Received: from [2001:8b0:10b:5:6142:9ddd:3a45:5d21] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wX1XQ-0000000GD8M-48LY;
-	Tue, 09 Jun 2026 18:51:01 +0000
-Message-ID: <674521f9c133c397638a13c55a61d15ecc16816d.camel@infradead.org>
-Subject: Re: [PATCH v5 00/34] Cleaning up the KVM clock mess
-From: David Woodhouse <dwmw2@infradead.org>
-To: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner	 <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,  Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross
- <jgross@suse.com>, Boris Ostrovsky	 <boris.ostrovsky@oracle.com>, Paul
- Durrant <paul@xen.org>, Jonathan Cameron	 <jic23@kernel.org>, Sascha
- Bischoff <Sascha.Bischoff@arm.com>, Marc Zyngier	 <maz@kernel.org>, Joey
- Gouly <joey.gouly@arm.com>, Jack Allister	 <jalliste@amazon.com>, Dongli
- Zhang <dongli.zhang@oracle.com>, 	joe.jin@oracle.com, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- xen-devel@lists.xenproject.org, 	linux-kselftest@vger.kernel.org
-Date: Tue, 09 Jun 2026 19:50:59 +0100
-In-Reply-To: <20260608145455.89187-1-dwmw2@infradead.org>
-References: <20260608145455.89187-1-dwmw2@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-SGiV83CvkmPXW69xBczW"
-User-Agent: Evolution 3.60.3 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oStFu7N1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2361F0089A;
+	Tue,  9 Jun 2026 19:27:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781033239;
+	bh=NlG5HlDElQCbuP6bN10xR/q116+/zHdLSEjJOyQFwVw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=oStFu7N1msk7hGRxaIGxcPhSkCbArM8aV/psZO+WarZaxilvwF2cpbMRAt4n7Fpb8
+	 jdoLMC/Us2am6UlMm/XjVRtHxd9CKSOXzbAPqtoDlCiOpZbpOFQ+SdLvuk0GQ7AACZ
+	 3CmrygZjXjo8BSZ2RdYoEHPzauVhH2OoyWisV2Oubk42MoerR11HkIf28Ex0JbwmFs
+	 FQo5z4rMOOXRCRjhYFFjZN0UvGaCt0DcbGJcLs9foFY3WZlZjLxuhnEKgDEnd+uRNU
+	 itpIBzoF6ZpH4lsa9xtkX9k8gZsXaOt9VgUNb/27eAHzLLvBE62W766RQhGapY7M0m
+	 b9tzm1j9ME+sA==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan"
+ <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
+ <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
+ <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
+ Makhalov <alexey.makhalov@broadcom.com>, Jan Kiszka
+ <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, Daniel
+ Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Broadcom internal kernel review
+ list <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-hyperv@vger.kernel.org,
+ virtualization@lists.linux.dev, xen-devel@lists.xenproject.org, David
+ Woodhouse <dwmw@amazon.co.uk>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, David Woodhouse <dwmw2@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v4 01/47] x86/tsc: Never re-calibrate TSC frequency if
+ its exact timing is known
+In-Reply-To: <aihKj-0nP7bUbNHH@google.com>
+References: <20260529144435.704127-1-seanjc@google.com>
+ <20260529144435.704127-2-seanjc@google.com> <87fr315fq9.ffs@fw13>
+ <aiMPxl5vkvJDldi9@google.com> <87a4t86a0l.ffs@fw13>
+ <aihKj-0nP7bUbNHH@google.com>
+Date: Tue, 09 Jun 2026 21:27:17 +0200
+Message-ID: <87pl1z346i.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain
 
+On Tue, Jun 09 2026 at 10:17, Sean Christopherson wrote:
 
---=-SGiV83CvkmPXW69xBczW
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> On Fri, Jun 05, 2026, Thomas Gleixner wrote:
+>> On Fri, Jun 05 2026 at 11:04, Sean Christopherson wrote:
+>> But we also should have a check in the TSC init code somewhere which
+>> validates that X86_FEATURE_CONSTANT_TSC is set when
+>> X86_FEATURE_TSC_KNOWN_FREQ is set. X86_FEATURE_TSC_KNOWN_FREQ is useless
+>> w/o X86_FEATURE_CONSTANT_TSC.
+>
+> Ugh, any objection to punting on this for now?  KVM and Xen guests will trigger
+> TSC_KNOWN_FREQ without CONSTANT_TSC, thanks to commits:
+>
+>   e10f78050323 ("kvmclock: fix TSC calibration for nested guests")
+>   898ec52d2ba0 ("x86/xen/time: Set the X86_FEATURE_TSC_KNOWN_FREQ flag in xen_tsc_khz()")
+>
+> Hyper-V guests might as well?  Hyper-V's handling of TSC is weird, even for a
+> hypervisor.
 
-On Mon, 2026-06-08 at 15:47 +0100, David Woodhouse wrote:
-> This is v5 of the series to clean up the KVM clock, rebased onto
-> tip/timers/ptp (which now includes Thomas's ktime snapshot series and
-> the read_snapshot patches for hyperv, kvmclock, and vmclock).
->=20
-> The KVM clock has historically suffered from three problems:
->=20
-> =C2=A01. Imprecision: get_kvmclock_ns() computed the clock from the *host=
-*
-> =C2=A0=C2=A0=C2=A0 TSC without applying guest TSC scaling, causing system=
-ic drift from
-> =C2=A0=C2=A0=C2=A0 the values the guest computes from its own TSC.
->=20
-> =C2=A02. Unnecessary discontinuities: gratuitous KVM_REQ_MASTERCLOCK_UPDA=
-TE
-> =C2=A0=C2=A0=C2=A0 requests caused the master clock reference point to be=
- re-snapshotted,
-> =C2=A0=C2=A0=C2=A0 yanking the guest's clock due to arithmetic precision =
-differences.
->=20
-> =C2=A03. No precise migration API: the existing KVM_[GS]ET_CLOCK only all=
-ows
-> =C2=A0=C2=A0=C2=A0 setting the clock at a given UTC reference time, which=
- is necessarily
-> =C2=A0=C2=A0=C2=A0 imprecise. There was no way to preserve the exact arit=
-hmetic
-> =C2=A0=C2=A0=C2=A0 relationship between guest TSC and KVM clock across li=
-ve migration.
->=20
-> This series addresses all three, and adds new APIs for precise clock=20
-> migration and TSC frequency reporting. As an added bonus, it now rips
-> out the whole pvclock_gtod_data hack which was shadowing the kernel's
-> timekeeping, and uses ktime snapshots as $DEITY (well, Thomas) intended.
+Hypervisors are ranked by weirdness? I ranked them by insanity so far.
 
-Updated series with Sashiko's fixes pushed out to
-https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Drefs/=
-heads/kvmclock6
+> Even when the frequency is provided in CPUID by the hypervisor, QEMU at least
+> requires a fairly explicit opt-in to advertise CONSTANT_TSC, presumably to try
+> to prevent users from shooting themselves in the foot.
 
-I'll give it a while for meat-based reviewers to opine before sending
-another round. (Is there a way to get Sashiko to take another look
-without sending it all to the list again?)
+Bah. We really should have enforced the dependency when we introduced
+KNOWN_FREQ. But that ship has sailed.
 
---=-SGiV83CvkmPXW69xBczW
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Though for correctness sake this should be fixed at some point in the
+foreseeable future.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwOTE4NTA1
-OVowLwYJKoZIhvcNAQkEMSIEIKQ4y9DWuP5RRPhQpel32/EUnEAxygoYI8A9y5f5ewKdMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAOOo007Teb9xs
-KsWdHu76kaFGmdGIPSgSyFwmZlm7TAbCJF2I5N86bbGOHV3m+U+2QRyVMD+fex0m9m7rIXkFS7iT
-drtFS8iqPbouu3NMt+ZGv+z7XLhht/UvDeD73whc5OGUfyGyo9DhOlbzD8HA0U4M9vFdA9iPg7tu
-ZoyeHYsvgAISA8MtwjgUrSHF96SJ+eqdBIcnUv4VhMJqnMLfpILG+Pmdw48MpIfZoJEXTC7MeeTk
-B/nXHsyMfSK6H4AozIYDD8J4YqC96aTFMn75rR51bfwtEY51xtVqNlT1C1sUrYtupoOQ2BJTMzQU
-Tj2vQgWNmRAsdI86dZwOjhzUlA9T7QuGsHK7qv8vHPW6g3Z1HlEW3Lgc0zEBoKutlC/5vEVvJVxt
-lkMxXdZcvPcFFyvjThntO2ycnkw9z+zSoE9ccj2ke4c2+edl8F3AbIz+knaXTo+PTHRf367g3vUR
-F+yGsn1in5mCdhNjPkWtCGbmeMLI/xREJsQSzmzIRrUQsHRzxod14f29ftoG5uy89Zla2+xs4qnm
-RW1cueleAgIG4xjpqnMgNNzsNNDW2iHfs8enrLa7ilnzAkcmbiHqDkyzHgJ1eg2rn5csbIIwHUB3
-zgmpWsUxzX7p2Sw6YFS32/rorf3Jflyf1nB5SOfvFpA/6ON5DQQ52jKTgEFWr68AAAAAAAA=
+Thanks,
 
-
---=-SGiV83CvkmPXW69xBczW--
+        tglx
