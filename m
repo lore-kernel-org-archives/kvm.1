@@ -1,280 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7217A3EE1DB
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 08:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092843B14C6
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 08:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780994430; cv=none; b=VK02R69mHv1mSsLm10lYjNNKxLCeRXUg5e6j29ZP/F95SXMcpQWilY1xuh9Q3zw5tAfkfT9gYTnRa5wNeOIHDuIeOaAco4tuASqqdgCT6nwh6LIZmnhrlIImno2wfx/02MmUIWmp6CPcNNqfNCjwbOsER7BCGmUYshHc/7Kmuwk=
+	t=1780994806; cv=none; b=iWnN1nOhDFGicvnUi0XbXS9yi0mpi3wSsg6+MUDiGD3eNzuHldVdFw5Km45h3aSVHGmDsRZysCC/guyWL0BR3zUJL7YoKAUVk+G6tU7mF5Tvtx+APf8dJuA27NTIddkwT+yRI2sJ6kCya/F0zRlKvfAg0cwFIoRlOvZHl6vYX8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780994430; c=relaxed/simple;
-	bh=mGx9VaD8afIyX1ECvO/M16OEgtnR/1mrMF6nmnDUMZ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IBHDgBbr4HkSGGY1I191MmumKd4fUEjt73p41wbDbtCm75O+EBFeJQxaNzNRxPmP97BoFs6OAIIIAMTgYdGvBkG9x2M95vHXgr6a/mZMnwHrJPv3EGyCNkXGfbaRWa06gVJA+yf/TlGC/ZVyeGXmwYyvDPrd+kwrNEBQ9WuAtMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eflku0SF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780994806; c=relaxed/simple;
+	bh=LRvwKo+qnU53CopQyDWdwxmCysOcs2U49k8qwQikoYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f+PFPTjuR223iLFEzUA6gorjNxsnpxsg3hm/IVez78y6uBVb7yrTvRkh76YE6yz46nKXXx0q+R2IsifTJgfM8eKbJg9LpHHySIadVmO69e7vp1954aTCD2UYjLXmYstMkMO4LMDKRi5VPCRNMUYBtXCSsf6iLEVZr7VUbTgJdMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=iifc0pdL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=EvEGavgP; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=y9Kd2cpH; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=8s7K2iF7; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eflku0SF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382A61F00899
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 08:40:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780994429;
-	bh=mNReZRsJZUNy13WJ7kOv/YFvHk/F6L0CB8U7FfkyJZE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=eflku0SFzpNNitfyLQ2iUHkvFl6s/2sTMUdJJ5KS0We7pg+yaoIkWfRWwV6iNsYK2
-	 H/WLgz0JsG2gpMeyceHNPnw2InHforUEWd+9eHjB437KG7NOlMVm7ZlGlqb/5S3ju8
-	 g/pCIWJyINnW6+ZCJrZBJtbjH9wdVzXPtSAKWjuHZst2wBS5APXcbJPbChwQHSXu/o
-	 Ev/DFydsv97X02WHhZ6dpXrxePFov/0k+NaFIFH31+EWg8cBjyIf84Yzpcms6P32lA
-	 Z8+MjZqfROlOVlwJ3LyNTKPc0BjgzcddGM+bxqO7aAPbGpetIXwMEdn1oXES0Qr+93
-	 nSlRB5Ct0eNXQ==
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-68c19f1f3ceso8233958a12.2
-        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 01:40:29 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yz8s67SwTQtWHS3rHlPjr2FhTh2Bt/FlKWxxnYnQD8Hp9QjEFMX
-	fJ0sy1fwHdHEQJUwanSJQj/XgmmwlSsUt/vKG9rjTPumdYlOOYGhhothhjD6ZF2oBCwjQcscmUT
-	Bem7BYF4sqXWMVTPFxTH5+wgam5zy3EY=
-X-Received: by 2002:a05:6402:35cd:b0:68d:651f:ccf6 with SMTP id
- 4fb4d7f45d1cf-68fa4c06618mr8739246a12.4.1780994427655; Tue, 09 Jun 2026
- 01:40:27 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="iifc0pdL";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="EvEGavgP";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="y9Kd2cpH";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="8s7K2iF7"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 409446A7D5;
+	Tue,  9 Jun 2026 08:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1780994803; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SkwgUno5OVjg29hLYJfsk0E2z8CzY6794Poai6l+Syg=;
+	b=iifc0pdLEJFFz7v/nTbIvZHa0aSmahb6nKmAc4JRUnbwNn9QaHqbdA0XFQj2oRrUVJ6Ywq
+	fXfttPOuSZO3+B6b2S/x/80dZYPGFCgWGcu4ok9kxKlxXZ+qKVJrXg3erC/3vxjJuz0QjR
+	smJS8VKQzCN/tGzKIds6ThXcFGQHOso=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1780994803;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SkwgUno5OVjg29hLYJfsk0E2z8CzY6794Poai6l+Syg=;
+	b=EvEGavgPfqnRsj+bigCqM6Nre3O4jhxk2gVNy46rYQtMxClruQlhTfICwsRCfChXJxTSwn
+	kRA5R5H+A20BpcBA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=y9Kd2cpH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8s7K2iF7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1780994799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SkwgUno5OVjg29hLYJfsk0E2z8CzY6794Poai6l+Syg=;
+	b=y9Kd2cpHerZ3l4p8U1BCmKTQtSyWENzbZAsreFaiCeAdtHXYhk/30v/l/qZDBQZUfyxbe9
+	RV6WLmQoKYEtlBwsBd7ZZvnXt1t3Kc6KiR5dMaoZIqNtE/u1kZKz75l9Z4nfleNzC7Pb2l
+	5Vzho73fdJ+7mSEiFfbl7DdNvWgUwIA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1780994799;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SkwgUno5OVjg29hLYJfsk0E2z8CzY6794Poai6l+Syg=;
+	b=8s7K2iF76Cm36PZHMJRIknZM58rOeOSYodxzyzZvuCd2izMaAMudwtzN4KAWHqUhNELa6M
+	TjDt8cHOL3HYDgDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 34C98779A7;
+	Tue,  9 Jun 2026 08:46:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id r93dDO/SJ2qNdQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 09 Jun 2026 08:46:39 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id BB4F5A0A90; Tue, 09 Jun 2026 10:46:38 +0200 (CEST)
+Date: Tue, 9 Jun 2026 10:46:38 +0200
+From: Jan Kara <jack@suse.cz>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@infradead.org>, 
+	Kees Cook <kees@kernel.org>, Cong Wang <xiyou.wangcong@gmail.com>, 
+	Chia-Lin Kao <acelan.kao@canonical.com>, Benjamin LaHaise <bcrl@kvack.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, 
+	linux-aio@kvack.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] libfs: set SB_I_NOEXEC and SB_I_NODEV by default
+ in init_pseudo()
+Message-ID: <c2upjkd7boexrdqi4t2i7tcm36mdjo3nz6p4js4heyhb7xjp5e@pkhjld3pafvu>
+References: <20260604025315.245910-1-jhubbard@nvidia.com>
+ <20260604025315.245910-2-jhubbard@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609072715.1005923-1-maobibo@loongson.cn> <20260609072715.1005923-3-maobibo@loongson.cn>
-In-Reply-To: <20260609072715.1005923-3-maobibo@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 9 Jun 2026 16:40:48 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H64=C8iBRHrE=0rohnGxK1WeWUoG9zWrH9MB1kaw6usww@mail.gmail.com>
-X-Gm-Features: AVVi8CciuXG_2FA7TZUnl2LpbyGEL8fdPgVBIcRUtTBWBmT_kod4H8h70RAVmdA
-Message-ID: <CAAhV-H64=C8iBRHrE=0rohnGxK1WeWUoG9zWrH9MB1kaw6usww@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] KVM: LoongArch: selftests: Add FPU test case
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260604025315.245910-2-jhubbard@nvidia.com>
+X-Spam-Flag: NO
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	URIBL_BLOCKED(0.00)[nvidia.com:email,infradead.org:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email,suse.cz:email,suse.cz:dkim];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,infradead.org,gmail.com,canonical.com,kvack.org,linux-foundation.org,redhat.com,linaro.org,amd.com,kernel.dk,vger.kernel.org,lists.freedesktop.org,lists.linaro.org];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,suse.cz:email,suse.cz:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,infradead.org:email,suse.com:email]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 409446A7D5
+X-Spam-Score: -2.51
 
-Hi, Bibo,
+On Wed 03-06-26 19:53:14, John Hubbard wrote:
+> Since commit 1e7ab6f67824 ("anon_inode: rework assertions"),
+> path_noexec() warns when an anonymous-inode file is mmap'd from a
+> superblock that has not set SB_I_NOEXEC. dma-buf backs its files this
+> way and never set the flag, so mmap of any exported buffer trips the
+> warning on a CONFIG_DEBUG_VFS=y kernel:
+> 
+>   WARNING: CPU: 11 PID: 121813 at fs/exec.c:118 path_noexec+0x47/0x50
+>    do_mmap+0x2b5/0x680
+>    vm_mmap_pgoff+0x129/0x210
+>    ksys_mmap_pgoff+0x177/0x240
+>    __x64_sys_mmap+0x33/0x70
+> 
+> init_pseudo() sets up internal SB_NOUSER mounts that are never
+> path-reachable. Set both flags here so every pseudo filesystem gets
+> them by default instead of each caller setting them.
+> 
+> SB_I_NODEV is inert for unreachable mounts. SB_I_NOEXEC has one
+> visible effect: an executable mapping of a pseudo-fs fd, such as a
+> dma-buf, now fails with -EPERM, which is the invariant the assertion
+> enforces. No in-tree caller maps these executable.
+> 
+> Reproduce on CONFIG_DEBUG_VFS=y:
+> 
+>   make -C tools/testing/selftests/dmabuf-heaps
+>   sudo ./tools/testing/selftests/dmabuf-heaps/dmabuf-heap -t system
+> 
+> Fixes: 1e7ab6f67824 ("anon_inode: rework assertions")
+> Suggested-by: Christoph Hellwig <hch@infradead.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 
-On Tue, Jun 9, 2026 at 3:27=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrote=
-:
->
-> Add FPU test case and verify FPU register get and set APIs, the
-> FPU width supports 64/128/256 bits.
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Looks good. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
 > ---
->  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
->  .../kvm/include/loongarch/processor.h         |   8 +
->  .../selftests/kvm/loongarch/fpu_test.c        | 145 ++++++++++++++++++
->  3 files changed, 154 insertions(+)
->  create mode 100644 tools/testing/selftests/kvm/loongarch/fpu_test.c
->
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/sel=
-ftests/kvm/Makefile.kvm
-> index 9118a5a51b89..7d11592b3759 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -224,6 +224,7 @@ TEST_GEN_PROGS_riscv +=3D rseq_test
->  TEST_GEN_PROGS_riscv +=3D steal_time
->
->  TEST_GEN_PROGS_loongarch =3D loongarch/pmu_test
-> +TEST_GEN_PROGS_loongarch +=3D loongarch/fpu_test
->  TEST_GEN_PROGS_loongarch +=3D arch_timer
->  TEST_GEN_PROGS_loongarch +=3D coalesced_io_test
->  TEST_GEN_PROGS_loongarch +=3D demand_paging_test
-> diff --git a/tools/testing/selftests/kvm/include/loongarch/processor.h b/=
-tools/testing/selftests/kvm/include/loongarch/processor.h
-> index 2324e311180f..981ae7078354 100644
-> --- a/tools/testing/selftests/kvm/include/loongarch/processor.h
-> +++ b/tools/testing/selftests/kvm/include/loongarch/processor.h
-> @@ -82,6 +82,14 @@
->  #define  PLV_MASK                      0x3
->  #define LOONGARCH_CSR_PRMD             0x1
->  #define LOONGARCH_CSR_EUEN             0x2
-> +#define  CSR_EUEN_LBTEN_SHIFT          3
-> +#define  CSR_EUEN_LBTEN                        BIT_ULL(CSR_EUEN_LBTEN_SH=
-IFT)
-> +#define  CSR_EUEN_LASXEN_SHIFT         2
-> +#define  CSR_EUEN_LASXEN               BIT_ULL(CSR_EUEN_LASXEN_SHIFT)
-> +#define  CSR_EUEN_LSXEN_SHIFT          1
-> +#define  CSR_EUEN_LSXEN                        BIT_ULL(CSR_EUEN_LSXEN_SH=
-IFT)
-> +#define  CSR_EUEN_FPEN_SHIFT           0
-> +#define  CSR_EUEN_FPEN                 BIT_ULL(CSR_EUEN_FPEN_SHIFT)
->  #define LOONGARCH_CSR_ECFG             0x4
->  #define  ECFGB_PMU                     10
->  #define  ECFGF_PMU                     (BIT_ULL(ECFGB_PMU))
-> diff --git a/tools/testing/selftests/kvm/loongarch/fpu_test.c b/tools/tes=
-ting/selftests/kvm/loongarch/fpu_test.c
-> new file mode 100644
-> index 000000000000..5bccce9db5d0
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/loongarch/fpu_test.c
-> @@ -0,0 +1,145 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include "kvm_util.h"
-> +#include "processor.h"
-> +#include "loongarch/processor.h"
-> +
-> +struct kvm_fpureg __aligned(64) vector =3D {{1, 2, 3, 4 }};
-> +
-> +static void guest_code(void)
-> +{
-> +       unsigned long val;
-> +       struct kvm_fpureg *fp =3D &vector;
-> +
-> +       val =3D csr_read(LOONGARCH_CSR_EUEN);
-> +       val |=3D CSR_EUEN_FPEN | CSR_EUEN_LSXEN | CSR_EUEN_LASXEN;
-> +       csr_write(val, LOONGARCH_CSR_EUEN);
-> +
-> +       __asm__ __volatile__("fld.d $f0, %0, 0\n" : : "r"(fp) : "$f0");
-> +       GUEST_SYNC(0);
-> +
-> +       __asm__ __volatile__("vld $vr0, %0, 0\n" : : "r"(fp) : "$vr0");
-> +       GUEST_SYNC(1);
-> +
-> +       __asm__ __volatile__("xvld $xr0, %0, 0\n" : : "r"(fp) : "$xr0");
-> +       GUEST_SYNC(2);
-> +
-> +       __asm__ __volatile__("fst.d $f0, %0, 0\n" : : "r"(fp) : "memory")=
-;
-> +       GUEST_SYNC(3);
-> +
-> +       __asm__ __volatile__("vst $vr0, %0, 0\n" : : "r"(fp) : "memory");
-> +       GUEST_SYNC(4);
-> +
-> +       __asm__ __volatile__("xvst $xr0, %0, 0\n" : : "r"(fp) : "memory")=
-;
-> +       GUEST_SYNC(5);
-> +
-> +       GUEST_DONE();
-> +}
-> +
-> +static void run_vcpu(struct kvm_vcpu *vcpu)
-> +{
-> +       struct ucall uc;
-> +       int cont;
-> +
-> +       cont =3D 1;
-> +       while (cont) {
-> +               vcpu_run(vcpu);
-> +
-> +               switch (get_ucall(vcpu, &uc)) {
-> +               case UCALL_PRINTF:
-> +                       printf("%s", (const char *)uc.buffer);
-> +                       break;
-> +               case UCALL_DONE:
-> +                       printf("FPU test PASSED\n");
-> +                       fallthrough;
-> +               case UCALL_SYNC:
-> +                       cont =3D 0;
-> +                       break;
-> +               case UCALL_ABORT:
-> +                       REPORT_GUEST_ASSERT(uc);
-> +               default:
-> +                       TEST_ASSERT(false, "Unexpected exit: %s",
-> +                               exit_reason_str(vcpu->run->exit_reason));
-> +               }
-> +       }
-> +}
-> +
-> +static bool __vm_has_feature(struct kvm_vm *vm, int feature)
-> +{
-> +       int ret;
-> +
-> +       ret =3D __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL,=
- feature);
-> +       return !ret;
-> +}
-> +
-> +
-> +int main(void)
-> +{
-> +       struct kvm_vcpu *vcpu;
-> +       struct kvm_vm *vm;
-> +       struct kvm_fpu fpu;
-> +       struct kvm_fpureg *fp =3D &vector;
-> +
-> +       vm =3D vm_create_with_one_vcpu(&vcpu, guest_code);
-> +       __TEST_REQUIRE(__vm_has_feature(vm, KVM_LOONGARCH_VM_FEAT_LSX),
-> +                       "LSX not available, skipping test\n");
-> +       __TEST_REQUIRE(__vm_has_feature(vm, KVM_LOONGARCH_VM_FEAT_LASX),
-> +                       "LASX not available, skipping test\n");
-Directly use __kvm_has_device_attr() as the first patch, or use
-__vm_has_feature() in the first patch?
-
-BTW, I don't think the __ prefix is necessary.
-
-Huacai
-
-> +
-> +       run_vcpu(vcpu);
-> +       vcpu_fpu_get(vcpu, &fpu);
-> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 8), "Wanted 0x%llx from f0, got =
-0x%llx",
-> +                       fp->val64[0], fpu.fpr[0].val64[0]);
-> +
-> +       run_vcpu(vcpu);
-> +       vcpu_fpu_get(vcpu, &fpu);
-> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 16), "Wanted 0x%llx %llx from vr=
-0, got 0x%llx %llx",
-> +                       fp->val64[0], fp->val64[1],
-> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1]);
-> +
-> +       run_vcpu(vcpu);
-> +       vcpu_fpu_get(vcpu, &fpu);
-> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 32),
-> +                       "Wanted 0x%llx %llx %llx %llx from xr0, got 0x%ll=
-x %llx %llx %llx",
-> +                       fp->val64[0], fp->val64[1], fp->val64[2], fp->val=
-64[3],
-> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1],
-> +                       fpu.fpr[0].val64[2], fpu.fpr[0].val64[3]);
-> +
-> +       fpu.fpr[0].val64[0] +=3D random();
-> +       vcpu_fpu_set(vcpu, &fpu);
-> +       run_vcpu(vcpu);
-> +       vcpu_fpu_get(vcpu, &fpu);
-> +       sync_global_from_guest(vm, *fp);
-> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 8), "Wanted 0x%llx from f0, got =
-0x%llx",
-> +                       fp->val64[0], fpu.fpr[0].val64[0]);
-> +
-> +       fpu.fpr[0].val64[0] +=3D random();
-> +       fpu.fpr[0].val64[1] +=3D random();
-> +       vcpu_fpu_set(vcpu, &fpu);
-> +       run_vcpu(vcpu);
-> +       vcpu_fpu_get(vcpu, &fpu);
-> +       sync_global_from_guest(vm, *fp);
-> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 16), "Wanted 0x%llx %llx from vr=
-0, got 0x%llx %llx",
-> +                       fp->val64[0], fp->val64[1],
-> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1]);
-> +
-> +       fpu.fpr[0].val64[0] +=3D random();
-> +       fpu.fpr[0].val64[1] +=3D random();
-> +       fpu.fpr[0].val64[2] +=3D random();
-> +       fpu.fpr[0].val64[3] +=3D random();
-> +       vcpu_fpu_set(vcpu, &fpu);
-> +       run_vcpu(vcpu);
-> +       vcpu_fpu_get(vcpu, &fpu);
-> +       sync_global_from_guest(vm, *fp);
-> +       TEST_ASSERT(!memcmp(fpu.fpr, fp, 32),
-> +                       "Wanted 0x%llx %llx %llx %llx from xr0, got 0x%ll=
-x %llx %llx %llx",
-> +                       fp->val64[0], fp->val64[1], fp->val64[2], fp->val=
-64[3],
-> +                       fpu.fpr[0].val64[0], fpu.fpr[0].val64[1],
-> +                       fpu.fpr[0].val64[2], fpu.fpr[0].val64[3]);
-> +
-> +       run_vcpu(vcpu);
-> +       kvm_vm_free(vm);
-> +       return 0;
-> +}
-> --
-> 2.39.3
->
+>  fs/libfs.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/fs/libfs.c b/fs/libfs.c
+> index 1bbea5e7bae3..e8226b9e1bc8 100644
+> --- a/fs/libfs.c
+> +++ b/fs/libfs.c
+> @@ -736,6 +736,7 @@ struct pseudo_fs_context *init_pseudo(struct fs_context *fc,
+>  		fc->fs_private = ctx;
+>  		fc->ops = &pseudo_fs_context_ops;
+>  		fc->sb_flags |= SB_NOUSER;
+> +		fc->s_iflags |= SB_I_NOEXEC | SB_I_NODEV;
+>  		fc->global = true;
+>  	}
+>  	return ctx;
+> -- 
+> 2.54.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
