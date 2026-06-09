@@ -1,114 +1,126 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C01360EED
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 03:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12371372EC0
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 03:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780974524; cv=none; b=c+zIpqsW0f1Rby9lo4Xd65mG6s7czRn2ZBmyve+rMdGPMaQiBO1o6h2VA1OquoQ1H29Td0NrWXDyltm6jHkIuV0ZCUvL08y7h9SXoxYe3am8QCP2ioebQXX4QM0mRXDnzzKDr4jVmn70rWHFcPjOWHg1G9tZhgzGjVBi2WRNBbw=
+	t=1780975897; cv=none; b=sneMgpWtwbDRcicAMwgcGNOjKiyDDZyz4X3GytPnzO8xMV/yIx/VyD9FANoGhZThR175VuANFZ8tBhvW2B3vZl+Ur9fcMJPLoP5PL6LbLPKZtZQ6XYnlMn5kqBDfiuk3JQQNz9QEjx6hXwNq2k++yuh+5RCvh1eCvxFAkcXLBbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780974524; c=relaxed/simple;
-	bh=ZWOR/QrGmJu+uFyB1Ae1JiHHn0938DbKRArZn+SVsjg=;
+	s=arc-20240116; t=1780975897; c=relaxed/simple;
+	bh=jfe0Gv32TJvkzmDAezzNMWcuvBvk140gbHR2Jyv9rfI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CikyqCouMqIIsr+AxXcfWn2BZp74puqFv9g2iYcF47iLZ9r3elpDLzSAZ8LmcXoxk0Um86rpKPrdW8nBoCd0dcOhPyFNIOD84x55O1M70KAd8J0jTXkA6xDWYtYvvihbKF+zMgLEmE+OG33o2RqPOguVG4u30+aXF0L7ffbgvaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q9jzrwcu; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=YHFWLnq16fB6t/sMIyTnTUM63GuEFc3s+SMRt4UW6efUPsvL0VVk5HCnDZ/TjPKigbp1vDj54JqXbX2AcNNU5SXU997FptMBKny8W7oHRGYCjJTQB/k0Nv4LTYUX1bB6Y/2S0KvBsycjX/wHI/dOS6bfW4o0kumL1MjCI88fpMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LfkVgTXj; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q9jzrwcu"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0c1e112dfso70068705ad.0
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 20:08:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LfkVgTXj"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8423f6247c6so5760581b3a.3
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 20:31:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780974523; x=1781579323; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780975894; x=1781580694; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WZhzMIPpW0uftooDfGhS6jJvYEf+eSZUIwidGAEeFqU=;
-        b=q9jzrwcuQNqmpceaam+6jcf2tBk8GwjGUprRtthw1FYhw92n/M9caY3tTJI9xSWnxo
-         WPyWP9ZV7bilSNRMN/PTNtaVqZOtvYbcBtvmKiI0fhatogrE6eLnW/AjibGXe5C8NHDN
-         cbgarGcLlbLLobHodOFcoOPVpjielAwsuRNun/UZivGIjF+39Xh8KOSv5nm2sLWauvQa
-         8s+EwPBSA11xDRfP9lVGzp8EMlRV/ZoUOkwdO9y+ruK/6G3iEGr6ZxWrhkFMRHLFWGTZ
-         f2JOr9Wk0I25M/n+t3/R+vIndtvtd7x/JXpGNFY3ndtX6Dco7Jb00tgIDzEvhDzUTrHY
-         J+hg==
+        bh=j4QWk8m6cD8s0kHa/VMPBa/DWD4qEXAmgem93o9OWtA=;
+        b=LfkVgTXjWg6w2Pa92RZVsOYk5zPx3oLfnJqAWpStN/Nc2cOJm9wTgqhh90rcciZszt
+         INDN5/ONVbpjfjJa2eity9kmz9XFIQ2tx+5blzmuMNqwarJ/aC0eHNpVwkwa4bAVGgOS
+         NN+GjHP8UoSugXRBUNpiZYxitQO1UKrqEgdaHg5JIxo6VQ1/exJgBnJnD9MK3cV6ZT7S
+         0fa/Pa9aZqPVPdbSKJB0xZWFcoNzl3J84ppfVPILsJuxjpg/mENGYF1NN+LT9Rb2NHNg
+         +u8leYn2RqBurcN0H0Xiid7TrhZCYdk8kYSIgdNtK0SFkbKKwv9OtEmVEYFc0WLJIzrk
+         4MRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780974523; x=1781579323;
+        d=1e100.net; s=20251104; t=1780975894; x=1781580694;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WZhzMIPpW0uftooDfGhS6jJvYEf+eSZUIwidGAEeFqU=;
-        b=ZSdaN5DwI9EdOfRBeNo16lno9qHkiGImk+vXHw62orqeux+WMgscNBtsIQECnReS/n
-         HqdXCtKp/Iy7i6Xeg5q2Bk6bdx65VFkaVheFLQXZ3enRI1yXywHOw6/T+jPFOt1VXv1k
-         0sRt6h26bTsXHJMnkDXRClL/wOIsHyN6suD15dJtgVIhAlsiX7NOB9vQUwICXLg6LG+2
-         cvZvIVUjdaW8Yg9R15uGiR1YFlnUhd2FfzQIFDJdsP5NoRapTCvMeQsyAQgPT5wS8Olm
-         JNw6xGeN+MNcAviCRiWocnnwlqaXJ77J2RLEnXJgLt3KW97Df9niQefRsB+0+AXIrJlG
-         s48w==
-X-Forwarded-Encrypted: i=1; AFNElJ+KSBNKbPcp0NNCBL1r5Yd/8GKClijAu38ZNPPgaegfCh9GxkkkuOKG29a++JeWXemcp6s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUOfBf7mHqr4l7JztY9Jhj9qpsEYY8YJ03+zmPkYcjIs9ZanFU
-	SEa0+Ph7jdjl+qph7skLkQAPGHaf4InxDpVu+e9+cReNko65wjvKdepe6ml+DDBjbJttfk7XYXl
-	9BqgblQ==
-X-Received: from plbz12.prod.google.com ([2002:a17:902:ee0c:b0:2bf:ce7:ae06])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f543:b0:2c2:27be:39a3
- with SMTP id d9443c01a7336-2c227be3b4fmr142116515ad.29.1780974522512; Mon, 08
- Jun 2026 20:08:42 -0700 (PDT)
-Date: Mon, 8 Jun 2026 20:08:41 -0700
-In-Reply-To: <CAEvNRgHtpFa+HAhPVBvB4=ixUuEW-r_Xh49SHEPktUmHgzYcAw@mail.gmail.com>
+        bh=j4QWk8m6cD8s0kHa/VMPBa/DWD4qEXAmgem93o9OWtA=;
+        b=WRp8DoV0jnkt3fVQkAfNXzvhB4XuPSLXJMm1LMwVgDzcwa/z36xfNbJ/Ii25c9kjRP
+         G/9jcdYv47SgxUD6gPYpKGPIIzFqDTUyPP1nP41P1fRiMKdpjJz2fDg8ygdA96LRp5t0
+         thA6hdoopMHAqykuVHbpwYNW4VgWoxWy6GmBbfU0q6E62UFC16zmFtQKxCXezBybTiKT
+         VNJT3E0fAlfI5pUz+Vy8qEJ1fNasmEM0uuPvLHgNtUhdLm3ErJuyUWq1L4uLsVwhj9Sg
+         jP0uSGhvVbEz5TF77HQHjxUCjPZtwAngIOhK2Z6qx2SvSg6bpe0dWwUVTkute8cSvd07
+         5HGA==
+X-Forwarded-Encrypted: i=1; AFNElJ9jevt88FU2bsZ6AKZKqewLXth1RCbLLOitVk8ZkXabIRlQQzabnMZOdVese++MHG6ATyw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yywh284jHF1iLin1nRXgO5kgOVdxV1v0buUB7XnRvBWlRL6hpST
+	4E5Ly4dAUUibKIvQXosj/bnQWhPaFntE7IBiBEK4GVQpT7CWeBoFeMzYVksptHRo0WQxiTTzBLF
+	tS38YKQ==
+X-Received: from pfn35.prod.google.com ([2002:a05:6a00:a223:b0:842:b0e7:887d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1d8e:b0:842:6099:c55c
+ with SMTP id d2e1a72fcca58-842b0d82a44mr18014085b3a.3.1780975894067; Mon, 08
+ Jun 2026 20:31:34 -0700 (PDT)
+Date: Mon, 8 Jun 2026 20:31:33 -0700
+In-Reply-To: <20260604160733.12555-2-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260603-snp-selftest-cleanup-v1-1-73b29fe31ce6@google.com>
- <aiCzNbtQ4FPu2yCR@google.com> <CAEvNRgHtpFa+HAhPVBvB4=ixUuEW-r_Xh49SHEPktUmHgzYcAw@mail.gmail.com>
-Message-ID: <aieDuZi3oMQvdwaK@google.com>
-Subject: Re: [PATCH] KVM: selftests: Make guest_code_xsave more friendly
+References: <20260604160733.12555-1-pbonzini@redhat.com> <20260604160733.12555-2-pbonzini@redhat.com>
+Message-ID: <aieJFWE3gQBwkS07@google.com>
+Subject: Re: [PATCH 1/3] KVM: nVMX: unwind PDPTR load if processor triggers a
+ nested VMFail
 From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	michael.roth@amd.com, jackyli@google.com, liruxin@google.com, 
-	darwinguo@google.com, jacobhxu@google.com
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jun 05, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> > Uh, so as the comment says, the goal is to stash state before _any_ compiled
-> > code runs.  Shoving the code into inline asm breaks that.  The compiler *probably*
-> > won't shove anything before the first inline assembly, but there are absolutely
-> > no guarantees.  E.g. you're subtly relying on a tail-call optimization to avoid
-> > any stack operations.  If I force guest_sev_es_code() to be inlined, then the
-> > prologue becomes:
-> >
-> > 0000000000402a10 <guest_code_xsave>:
-> >   402a10:       48 83 ec 08                                     sub    $0x8,%rsp
-> >   402a14:       b8 07 00 00 00                                  mov    $0x7,%eax
-> >   402a19:       31 d2                                           xor    %edx,%edx
-> >   402a1b:       0f ae 27                                        xsave  (%rdi)
-> >   402a1e:       b9 31 01 01 c0                                  mov    $0xc0010131,%ecx
-> >
-> > and we're hosed.
-> >
-> 
-> And omg, I thought I was running the tests!!
+On Thu, Jun 04, 2026, Paolo Bonzini wrote:
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index 4690a4d23709..d612a5d071fc 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+> @@ -4947,6 +4947,7 @@ static inline u64 nested_vmx_get_vmcs01_guest_efer(struct vcpu_vmx *vmx)
+>  
+>  static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
+>  {
+> +	enum vm_entry_failure_code ignored;
+>  	struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
+>  	struct vcpu_vmx *vmx = to_vmx(vcpu);
+>  	struct vmx_msr_entry g, h;
+> @@ -4984,20 +4985,19 @@ static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
+>  	vmx_set_cr4(vcpu, vmcs_readl(CR4_READ_SHADOW));
+>  
+>  	nested_ept_uninit_mmu_context(vcpu);
+> -	vcpu->arch.cr3 = vmcs_readl(GUEST_CR3);
+> -	kvm_register_mark_available(vcpu, VCPU_REG_CR3);
+>  
+>  	/*
+> -	 * Use ept_save_pdptrs(vcpu) to load the MMU's cached PDPTRs
+> -	 * from vmcs01 (if necessary).  The PDPTRs are not loaded on
+> -	 * VMFail, like everything else we just need to ensure our
+> -	 * software model is up-to-date.
+> +	 * Now that nested EPT has been disabled, load the MMU's CR3 and
+> +	 * possibly PDPTRs from vmcs01 (if necessary).  This should not
+> +	 * happen for VMFail, but we get here if the check was caught by
+> +	 * the processor and therefore the guest CR3 was loaded prematurely.
+>  	 */
+> +	kvm_mmu_unload(vcpu);
+> +	if (nested_vmx_load_cr3(vcpu, vmcs_readl(GUEST_CR3), false, !enable_ept, &ignored))
+> +		nested_vmx_abort(vcpu, VMX_ABORT_LOAD_HOST_PDPTE_FAIL);
 
-FWIW, you probably were, I had to force it to be inline via __always_inline.
+This isn't quite correct either.  I mean, none of this is architecturally correct,
+but this is less correct than the other incorrect code here :-)
 
-> >> +		"xsave (%0)"
-> >> +		:
-> >> +		: "r"(addr)
-> >> +		: "eax", "edx", "memory"
-> >> +	 );
-> >> +}
-> >> +
-> >>
-> >> [...snip...]
-> >>
-> 
-> My bad, this patch is such a goof!
-> 
-> I still feel that it'd be nice to allow commenting out functions parts
-> of selftests while developing other parts, but let's shelve this for
-> now.
+To do this "right", KVM should snapshot the PDPTRs and shove them into the MMU,
+without touching guest memory.
 
-I mean, it's always "allowed", but that's firmly "Here be dragons!" territory.
-There are any number of things that can go sideways when adding and/or removing
-code for development and debug purposes, many of which are far more nefarious
-and subtle than obscure compiler errors.
+On a very related topic, I have a patch to stash CR3 in software instead of
+abusing vmcs01.GUEST_CR3, as KVM fails to restore vmcs01.GUEST_CR3 to its proper
+state if nested_vmx_enter_non_root_mode() bails after clobbering vmcs01.GUEST_CR3,
+but before loading guest state.  We could probably do the same thing for PDPTRs?
+
+https://lore.kernel.org/all/20260603223418.1720035-3-seanjc@google.com
+
+>  	if (enable_ept && is_pae_paging(vcpu))
+>  		ept_save_pdptrs(vcpu);
+>  
+> -	kvm_mmu_reset_context(vcpu);
+> -
+>  	/*
+>  	 * This nasty bit of open coding is a compromise between blindly
+>  	 * loading L1's MSRs using the exit load lists (incorrect emulation
+> -- 
+> 2.52.0
+> 
+> 
