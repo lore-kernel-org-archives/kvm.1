@@ -1,211 +1,148 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799353FFFB3
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 10:57:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC1B3FDBE7
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 11:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781002675; cv=none; b=q+Nlfp03AyxGSvw0EM7yTP+qAc4GR4J5F5WkR7tPw7BWLpJzBuqzdDDBqsb060dxZfd7YexkDN+9VeWfqbxs50TFCu7xeZ31auRRVj/KjANPm/UET+8nrE/xACXFBKgwyTyR4Zq0KZi/dgrClKjpQewLK7BwUTV+IRfe9ccoK/E=
+	t=1781003414; cv=none; b=uwz+WoYdQH5GC67cyASm4QZDAxJgKT/Kr+PuYtf3TYUWudxOGAk+MbpIAKkY5gH0ADzPeOsYq6J+D01m2/DT9XPnOYLPHXeZZ3uXdXTx4YJl5DsWubbG/UoYd2yfYVemU7XiaPlbk/DYVOM9VX6nkFmuyoJ4Yb+K+decV3uMZ9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781002675; c=relaxed/simple;
-	bh=0+hCJrR+Kk5hWVVRyMb8mErOPqcZoJ7vEPDKobvngn4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K2vW+bGG6TaAeOenwRKm2tiLXi9RHf9Gvlxc6Vko2vD5/+9zHPeJ8tVpY/Vd8fXofnqs7dj+9Nn9GW49Q6YaDzzDC9eRhuUrU+awX7m94tgynqj9fBR4YKcfYua9KAsHm8vPiW8uLyuq44Ul5tq4H9XNvPaLZ9xB3e+ikvkZkR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LVBGWlF6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=XwHQVGNB; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=omUoP79U; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Jc7NG0u7; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1781003414; c=relaxed/simple;
+	bh=XxR77+goy7o218aTD2lsuF8kSz0ytT3pDsFi99NsT4s=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=n5RKGG8D18CkkqPUWS0XD6+agJI/ZhxbZvFOVOJlwF+eg1VaEkqzfYpcE2CB75a0DKJoIjVVN6rAhYsYe8ckZRbvRJPmA2faijbYwzC5HecWygoSYOf0QY5WT9f24fi8c81/6QFEODG92sJeRAW2baDcCninCWuoPkOenYYVEoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OSXrkcHq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LVBGWlF6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="XwHQVGNB";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="omUoP79U";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Jc7NG0u7"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EDA8A6A9FD;
-	Tue,  9 Jun 2026 10:57:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781002668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yGlWtYgrO0YxufvHwO0YTY8OWVNzkXDp7S5Vn+Qlx0A=;
-	b=LVBGWlF6C+jHmJjnU3dEiiGA3pRM/MWD1+00CKUvNiIQE93mSRz4AN+AaXWG/VfMc2TbI/
-	BzJthHGKxptDg37RX18n4kBgNeoqZsLcCEf740oEi5BJnQDkBnyiWg2p5UCYn3VbCLOKWk
-	0nVc9rEt+s/nwsar2TSs3pjQV+WTKKA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781002668;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yGlWtYgrO0YxufvHwO0YTY8OWVNzkXDp7S5Vn+Qlx0A=;
-	b=XwHQVGNB/tAh4CrKCCCSz/WJdoXznpW2Hm3Xdf0k2ksJVGGIepnXUz+eB8kWnvAcDm0VNy
-	cijt7AAxkno/mwCg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=omUoP79U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Jc7NG0u7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781002667; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yGlWtYgrO0YxufvHwO0YTY8OWVNzkXDp7S5Vn+Qlx0A=;
-	b=omUoP79UceVEKKmMLXO/xm6HRbbaoHtEJOhap910J9/SL3hXuQPDzbfpWqgxK9F99JgQii
-	1ErLIP7I4l5NGaUuOkUQSpFQ4Gck9wixw7cqS58AXgvqQRSF30743kBIjxI61S8u70+Bnw
-	D+GxbF6gqaSMOGtwmkSpggfK4vpmE1Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781002667;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yGlWtYgrO0YxufvHwO0YTY8OWVNzkXDp7S5Vn+Qlx0A=;
-	b=Jc7NG0u7ZNDVUD2JE4pyP2onkLrPo38pHpxKAo8uLRu5Ha+zpOXTzBd+yqhj+cDraZIh60
-	ki/q/wlrdBXqBWAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 30CF7779A7;
-	Tue,  9 Jun 2026 10:57:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IP4ACavxJ2qYewAAD6G6ig
-	(envelope-from <clopez@suse.de>); Tue, 09 Jun 2026 10:57:47 +0000
-From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-To: kvm@vger.kernel.org,
-	seanjc@google.com,
-	pbonzini@redhat.com
-Cc: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Ying Huang <huang.ying.caritas@gmail.com>,
-	Avi Kivity <avi@redhat.com>
-Subject: [PATCH v2 2/2] KVM: x86: Do not gate MCE logging based on IA32_MCi_CTL
-Date: Tue,  9 Jun 2026 12:55:26 +0200
-Message-ID: <20260609105525.2545638-4-clopez@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260609105525.2545638-2-clopez@suse.de>
-References: <20260609105525.2545638-2-clopez@suse.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OSXrkcHq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1111F00899;
+	Tue,  9 Jun 2026 11:10:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781003412;
+	bh=ft2SwOszfFgHDcwDkp7GdCgoqVf02m9iwL93YZ88ovc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=OSXrkcHq2N16dSgRDeHI4EWZjsmTZduLMdHxSBS3R5QgKYQ/77aWiD6EIRH4HCV30
+	 FT7CmIwlzlBh32Zb53NemrE3wg1904zik8hE/fvFvw6YJP9Onufg79A4jIO0oeD4Yz
+	 xhPfMZIQcOig2YA4FBR0/CJtvret9BdUQn8rs2V3BytpMjd1fn75EDETUN5rLXkRC1
+	 YlO5b6DdRSE8uGXreUVfEiBcVh35Hfl920cFO2GjZ/McY2LOnpWuVHmZETx9Wuw6QE
+	 diQxO72fG1Z3FVJ4zTcQJG0l7SR/YY3JIRHCkhabTJHG3HdKVJLLY1pl5GNsIrRJz7
+	 8DcJ6m+QmnwOg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/2] KVM: x86: Do not gate MCE logging based on
+ IA32_MCi_CTL
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Q2FybG9zIEzDs3Bleg==?= <clopez@suse.de>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260609105525.2545638-4-clopez@suse.de>
+References: <20260609105525.2545638-4-clopez@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 09 Jun 2026 11:10:12 +0000
+Message-Id: <20260609111012.8B1111F00899@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: EDA8A6A9FD
-X-Spam-Flag: NO
-X-Spam-Score: -2.01
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	URIBL_BLOCKED(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,redhat.com,linux.intel.com,zytor.com,suse.de,alien8.de,gmail.com];
-	RCVD_COUNT_TWO(0.00)[2];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
-When userspace issues KVM_X86_SET_MCE, kvm_vcpu_ioctl_x86_set_mce()
-decides whether to log an uncorrectable MCE by looking at the
-corresponding IA32_MCi_CTL MSR. This is not the behavior specified in
-the Intel SDM (17.3.2.1 IA32_MCi_CTL MSRs):
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-  Setting an EEj flag enables signaling #MC of the associated error and
-  clearing it disables signaling of the error. Error logging happens
-  regardless of the setting of these bits. The processor drops writes to
-  bits that are not implemented.
+New issues:
+- [High] The patch incorrectly overwrites the MCE banks when a double/tripl=
+e fault occurs (MCIP flag already set).
 
-Hoist the logging code, which writes to the corresponding error banks,
-above the MCi_CTL check. Keep the #MC delivery after the check, as this
-is correct behavior.
+Pre-existing issues:
+- [High] The patch fails to apply the MCE logging fix to the global control=
+ register IA32_MCG_CTL, leaving MCE emulation architecturally broken.
+--
 
-Fixes: 890ca9aefa78 ("KVM: Add MCE support")
-Signed-off-by: Carlos López <clopez@suse.de>
----
- arch/x86/kvm/x86.c | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+commit 146247f45f3a8d3f982b364bba19a51f76828ce0
+Author: Carlos L=C3=B3pez <clopez@suse.de>
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 77a780177c4e..722bead405b5 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5485,24 +5485,31 @@ static int kvm_vcpu_ioctl_x86_set_mce(struct kvm_vcpu *vcpu,
- 	if ((mce->status & MCI_STATUS_UC) && (mcg_cap & MCG_CTL_P) &&
- 	    vcpu->arch.mcg_ctl != ~(u64)0)
- 		return 0;
--	/*
--	 * if IA32_MCi_CTL is not all 1s, the uncorrected error
--	 * reporting is disabled for the bank
--	 */
--	if ((mce->status & MCI_STATUS_UC) && banks[0] != ~(u64)0)
--		return 0;
-+
- 	if (mce->status & MCI_STATUS_UC) {
-+		/*
-+		 * Per the SDM, error logging always happens independently of
-+		 * IA32_MCi_CTL
-+		 */
-+		if (banks[1] & MCI_STATUS_VAL)
-+			mce->status |= MCI_STATUS_OVER;
-+		banks[2] = mce->addr;
-+		banks[3] = mce->misc;
-+		banks[1] = mce->status;
-+
-+		/*
-+		 * if IA32_MCi_CTL is not all 1s, the uncorrected error
-+		 * reporting is disabled for the bank
-+		 */
-+		if (banks[0] != ~(u64)0)
-+			return 0;
-+
- 		if ((vcpu->arch.mcg_status & MCG_STATUS_MCIP) ||
- 		    !kvm_is_cr4_bit_set(vcpu, X86_CR4_MCE)) {
- 			kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
- 			return 0;
- 		}
--		if (banks[1] & MCI_STATUS_VAL)
--			mce->status |= MCI_STATUS_OVER;
--		banks[2] = mce->addr;
--		banks[3] = mce->misc;
- 		vcpu->arch.mcg_status = mce->mcg_status;
--		banks[1] = mce->status;
- 		kvm_queue_exception(vcpu, MC_VECTOR);
- 	} else if (!(banks[1] & MCI_STATUS_VAL)
- 		   || !(banks[1] & MCI_STATUS_UC)) {
--- 
-2.51.0
+KVM: x86: Do not gate MCE logging based on IA32_MCi_CTL
 
+This patch hoists the MCE logging logic above the IA32_MCi_CTL check.
+This ensures that KVM logs uncorrectable machine check errors even if
+reporting is disabled for that specific bank, conforming to the Intel SDM.
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -5486,24 +5486,31 @@ static int kvm_vcpu_ioctl_x86_set_mce(struct kvm_=
+vcpu *vcpu,
+>  	if ((mce->status & MCI_STATUS_UC) && (mcg_cap & MCG_CTL_P) &&
+>  	    vcpu->arch.mcg_ctl !=3D ~(u64)0)
+>  		return 0;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does this global control
+register check also need to be adjusted?
+
+Just like IA32_MCi_CTL, the Intel SDM states that error logging happens
+regardless of the setting of the IA32_MCG_CTL bits. By returning early
+here, KVM skips logging the uncorrectable error to the bank if the global
+reporting is disabled.
+
+Additionally, KVM currently suppresses generation and logging for all
+banks if any bit in IA32_MCG_CTL is 0, rather than checking the specific
+bit for the bank. Should the logging logic be hoisted above this check
+as well?
+
+> -	/*
+> -	 * if IA32_MCi_CTL is not all 1s, the uncorrected error
+> -	 * reporting is disabled for the bank
+> -	 */
+> -	if ((mce->status & MCI_STATUS_UC) && banks[0] !=3D ~(u64)0)
+> -		return 0;
+> +
+>  	if (mce->status & MCI_STATUS_UC) {
+> +		/*
+> +		 * Per the SDM, error logging always happens independently of
+> +		 * IA32_MCi_CTL
+> +		 */
+> +		if (banks[1] & MCI_STATUS_VAL)
+> +			mce->status |=3D MCI_STATUS_OVER;
+> +		banks[2] =3D mce->addr;
+> +		banks[3] =3D mce->misc;
+> +		banks[1] =3D mce->status;
+> +
+> +		/*
+> +		 * if IA32_MCi_CTL is not all 1s, the uncorrected error
+> +		 * reporting is disabled for the bank
+> +		 */
+> +		if (banks[0] !=3D ~(u64)0)
+> +			return 0;
+> +
+>  		if ((vcpu->arch.mcg_status & MCG_STATUS_MCIP) ||
+>  		    !kvm_is_cr4_bit_set(vcpu, X86_CR4_MCE)) {
+>  			kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+>  			return 0;
+>  		}
+
+[Severity: High]
+By hoisting the error logging block above the IA32_MCi_CTL check, does
+this now incorrectly overwrite the MCE banks when a double or triple fault
+occurs?
+
+According to the SDM, if the processor encounters another machine-check
+error while the MCIP flag is already set, it causes a triple fault and
+does not update the status registers for the second error.
+
+Since the logging block in kvm_vcpu_ioctl_x86_set_mce() now executes
+before checking for MCG_STATUS_MCIP, it looks like it will overwrite the
+original addr, misc, and status of the first error before requesting the
+triple fault.
+
+> -		if (banks[1] & MCI_STATUS_VAL)
+> -			mce->status |=3D MCI_STATUS_OVER;
+> -		banks[2] =3D mce->addr;
+> -		banks[3] =3D mce->misc;
+>  		vcpu->arch.mcg_status =3D mce->mcg_status;
+> -		banks[1] =3D mce->status;
+>  		kvm_queue_exception(vcpu, MC_VECTOR);
+>  	} else if (!(banks[1] & MCI_STATUS_VAL)
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260609105525.2545=
+638-2-clopez@suse.de?part=3D2
