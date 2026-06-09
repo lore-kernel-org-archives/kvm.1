@@ -1,156 +1,184 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B9D230BDB
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 00:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F20554763;
+	Tue,  9 Jun 2026 00:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780966106; cv=none; b=IHGQ6aPo2irUDBqSkTvkPKXkkVdW5GuIm3BbWlDW1RNwkjOc6z27gLveaGgYCYeoUj681Gwz0kEnIsq+9/KJnzSxYa5RP4wpEms33gtp2xOZ3r0CssRt5V2u4RvpbCgPdqxWbcVEVJSDUmKaOhcJyF1B9hrpUG2Tov6PXAvS95w=
+	t=1780966208; cv=none; b=BJn2lYfK8gPytMX0pRk1uuSKDwqpWdGoZFA8pN6MGPbnXdgsKg/U4S/L00fh4uxyHUKXX+jYNdkJM3vQDXCCLiy6SZs6nnqznst/QSE890Q7I5mz8cJZjp+9aeqpndlx6GjhJZyxecP1ol+8dn8WxZ//5w3+CFFn0h/KPdKhQug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780966106; c=relaxed/simple;
-	bh=37MPcfbmxnv7oFfJE4XBHYuIXMm5oEIMI1uGgOdOOVk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ML00GRXdxD4CGhWmr8Q6d0i4fQeF8J1jSksuGSpC3lYGD8cp0GIZ5ZksCPT6GD3a+/X8Y7+AwjuRrjdb4h5RswRVGFv9OoBEelwo+99Czjim+Sctd8Ev9VkyjjcCyKAK++6yaCrGyuT67pmlX0VElmhcZfVARUZkvTQiGBEpZuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P0yHBx+C; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com
+	s=arc-20240116; t=1780966208; c=relaxed/simple;
+	bh=KlBzj0u7zWmCeEq+4Glc3YyDpiK7qWg91xjsoWmVOHY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
+	 MIME-Version; b=fHiXs/mgsX+SKBHvrPTQP9Jk5CLxOvfsbJquIsg2PV05gQeH9IJtySrwuO1wCb1cCOYbsbhaVz7jeWNv3Ai5ogHIqQl7AZxCApGPPsAuUKjxW28b7jrMiRdqdkUybXrIJKZNkG7TYYv4sSvhodSTYQgLQ3mOUczcANEFqMO45PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rVtoCafu; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P0yHBx+C"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84240683a82so3523781b3a.1
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 17:48:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780966104; x=1781570904; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=StLjLCmXgF4Q/Ry3fnTHjp2FbwAsDgAHQZYkD5rM9oc=;
-        b=P0yHBx+C1xVV+S6q8DF3QpNF2JZfGhlRDiAOPlYC29qERfa1ozh4eNBU902QdOmjfd
-         oc7eJex/AQwf2BN2uB649ODJISdEdEBacsParxwbDjgMWoWNZLwnLobB2RHtAgTtIJgg
-         R5hGnhQHaMxamLxWf4oyX6P4loV3gPCZdT/PyKOPdOq6x7AjQgZzX7iOh6jjpQhntjY/
-         FF0lDGZnKbayApMcikmT6M+uR9r4HcmsqaaD6JorWmuYKs7HVYDru3l/EZnWFRjll34C
-         C9VXKC8amlWxNh0p9hhS1Hk0uYQ7VjtA+Kr8eruFOchdGJw7e+/FH45QXVw/3Liov2Ki
-         T8FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780966104; x=1781570904;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=StLjLCmXgF4Q/Ry3fnTHjp2FbwAsDgAHQZYkD5rM9oc=;
-        b=QbS3E6TwdKSZH7VMteBtWhCOCPbfXXo4GrpLPbgGJl7kawq/0BSOmImtBjdocd1+zV
-         tYkBep2hzOMsHJRJ1fHxMJLWJK/qvs8w/LUZj1j/p06NjDorJ5luMiIZa4Ma1Zxw0iQj
-         M14FMW2CZ3eHypZcQ0zeAMvQPtWmbJXAujIJByckimsyzUx6jRryAYVDnR5RGCWfHjrS
-         yBsjNZV7P+7KLvRhsmgEktFBSlN29k1nSeCVmIFSBhnF2C9C56e16i1SNN5cNZdm8y8k
-         YbbkDYcYYdADLbs/TA1g7c8Quomm65GdiTMvA+QhU7C61rddPbZLkmCUkCgH9IQeBcxm
-         2U/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8Lb5/WhUHlq4QnXE1VX0I38XhxAFh19Z7Jlglmj9Uphq+0wPCrYSDgIM+CWXJ8p1qbQPc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8GyrOTm7gEY3WnL5fZDYW84xjzvJN2lGUAQjpOvNVMz4ghIij
-	bLCG+E5Sjl5HTVzmcHcMJmNjenUU6aQDbu+hO2EYthbJfbSkJpBuzN33cjp0ah0gOD0+1nyF8Ow
-	y7w==
-X-Received: from pfjd3.prod.google.com ([2002:a05:6a00:2443:b0:842:33b9:bdf8])
- (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a201:b0:842:6293:fc43
- with SMTP id d2e1a72fcca58-842b66aa645mr12846516b3a.15.1780966103837; Mon, 08
- Jun 2026 17:48:23 -0700 (PDT)
-Date: Tue,  9 Jun 2026 00:48:05 +0000
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rVtoCafu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=KlBzj0u7zWmCeEq+4Glc3YyDpiK7qWg91xjsoWmVOHY=; b=rVtoCafugCW1HwCqRvWteODpyr
+	yR6T8Xde4yOfU3MbwkDWvc74ihUZTPphRQgvvm4bG+V/xxp6J15rC3gtjyr13aoZ+kzAh+lJNBBJG
+	xkp1AqJUS21oHMfqc7np+MLqGvTqon3jsLjdXEfVc6hiGkU+cNwW7mpbt1jPr1QFHsMYRaNzfCSBn
+	gUXw4UhwSkvfBP/HIJciZ9Sj7wbXryJWhnZo5V4UB1jIoOP+jBMlGofT1ajhILUb82sq3JVY9D4H3
+	A9DBeXwKzU75uXHFU+nDLZ3cgjYjYTwKBH54MRLooAmo2N6ZpB8GQxKXWzyrGXwdTbQ7ZqmJGZpdq
+	tp7fKM9g==;
+Received: from [2001:8b0:10b:5:30c7:a671:e76:6796] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wWkfN-0000000EhDG-0fk5;
+	Tue, 09 Jun 2026 00:50:05 +0000
+Message-ID: <f0d76213bdc73eb409f362fbf6c17cb387a9f881.camel@infradead.org>
+Subject: Re: [PATCH v5 22/34] KVM: selftests: Add master clock offset test
+From: David Woodhouse <dwmw2@infradead.org>
+To: sashiko-bot@kernel.org
+Cc: dwmw2@infradead.org, kvm@vger.kernel.org, sashiko-reviews@lists.linux.dev
+Date: Tue, 09 Jun 2026 01:50:05 +0100
+In-Reply-To: <20260608192659.042CE1F00893@smtp.kernel.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-ZF3eEz74sIwalpeEOZu1"
+User-Agent: Evolution 3.60.3 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.1064.gd145956f57-goog
-Message-ID: <20260609004809.1285028-1-tavip@google.com>
-Subject: [PATCH net] vsock/virtio: restore msg_iter on transmission failure
-From: Octavian Purdila <tavip@google.com>
-To: netdev@vger.kernel.org
-Cc: Octavian Purdila <tavip@google.com>, syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-ZF3eEz74sIwalpeEOZu1
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When transmission fails in virtio_transport_send_pkt_info, the msg_iter
-might have been partially advanced. If we don't restore it, the next
-attempt to send data will use an incorrect iterator state, leading to
-desync and warnings like "send_pkt() returns 0, but X expected".
+On Mon, 2026-06-08 at 19:26 +0000, sashiko-bot@kernel.org wrote:
+> [Severity: High]
+> Does the KVM_GET_CLOCK_GUEST macro exist?
 
-Specifically, this can happen in the following scenario, triggered by
-the syzkaller repro:
+Yes =E2=80=94 it's defined in include/uapi/linux/kvm.h by patch 04
+in this series.
 
-1. A write-only VMA (PROT_WRITE only) is partially populated by a
-   prior TUN write that failed with -EIO but still faulted in some
-   pages).
-2. A vsock sendmmsg call with MSG_ZEROCOPY requests transmission of a
-   buffer from this VMA.
-3. The first packet (64KB) is sent successfully because the pages are
-   populated.
-4. The second packet allocation fails because GUP fast pins the first page
-   but GUP slow fails on the next unpopulated page due to PROT_WRITE-only
-   permissions.
-5. The iterator is advanced by the partially successful GUP (68KB total
-   advanced: 64KB from first packet + 4KB from second), but the send loop
-   breaks and only reports 64KB sent. This creates a 4KB desync.
-6. The next retry starts with a non-zero iov_offset, disabling zerocopy
-   and falling back to copy mode.
-7. In copy mode, the transmission succeeds for the next packets but
-   exhausts the iterator early because of the desync.
-8. The final retry sees an empty iterator but zerocopy is re-enabled
-   (offset resets). It attempts to send the remaining bytes with zerocopy
-   but pins 0 pages, creating an empty packet.
-9. The transport sends the empty packet, triggering the warning because
-   the returned bytes (header only) do not match the expected payload size.
-10. The loop continues to spin, allocating ubuf_info each time, eventually
-    exhausting sysctl_optmem_max and returning -ENOMEM to userspace.
+> [Severity: Medium]
+> Will this assertion fail? KVM disables the master clock if all
+> online vCPUs do not have matching TSC offsets
 
-Restore msg_iter to its original state before the packet allocation
-and transmission attempt if they fail.
+No =E2=80=94 patch 21 in this series decouples master clock from offset
+matching. Master clock only requires matching *frequency*.
+Different offsets are fine. That's kind of the point in the test!
 
-Fixes: e0718bd82e27 ("vsock: enable setting SO_ZEROCOPY")
-Reported-by: syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=28e5f3d207b14bae122a
-Assisted-by: gemini:gemini-3.1-pro
-Signed-off-by: Octavian Purdila <tavip@google.com>
----
- net/vmw_vsock/virtio_transport_common.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+> [Severity: Medium]
+> The commit message claims KVM_CLOCK_TSC_STABLE is NOT set, but
+> the code asserts it is present.
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index b10666937c490..588623a3e2bbc 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -367,6 +367,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 	do {
- 		struct sk_buff *skb;
- 		size_t skb_len;
-+		struct iov_iter saved_iter;
-+
-+		if (info->msg)
-+			saved_iter = info->msg->msg_iter;
- 
- 		skb_len = min(max_skb_len, rest_len);
- 
-@@ -375,6 +379,8 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 						 src_cid, src_port,
- 						 dst_cid, dst_port);
- 		if (!skb) {
-+			if (info->msg)
-+				info->msg->msg_iter = saved_iter;
- 			ret = -ENOMEM;
- 			break;
- 		}
-@@ -382,8 +388,11 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 		virtio_transport_inc_tx_pkt(vvs, skb);
- 
- 		ret = t_ops->send_pkt(skb, info->net);
--		if (ret < 0)
-+		if (ret < 0) {
-+			if (info->msg)
-+				info->msg->msg_iter = saved_iter;
- 			break;
-+		}
- 
- 		/* Both virtio and vhost 'send_pkt()' returns 'skb_len',
- 		 * but for reliability use 'ret' instead of 'skb_len'.
--- 
-2.54.0.1064.gd145956f57-goog
+You're right =E2=80=94 the commit message is wrong. KVM_CLOCK_TSC_STABLE
+(VM-level) IS set in master clock mode. What is NOT set is
+PVCLOCK_TSC_STABLE_BIT (per-vCPU), which requires matching
+offsets. Will fix the commit message in v6.
 
+> [Severity: Medium]
+> PVCLOCK_TSC_STABLE_BIT should be set when master clock is active
+
+No =E2=80=94 patch 21 gates PVCLOCK_TSC_STABLE_BIT on
+all_vcpus_matched_tsc (full offset match), not just
+use_master_clock. This is the intended decoupling, as guests use
+PVCLOCK_TSC_STABLE_BIT to infer that TSC is stable across vCPUs.
+
+--=-ZF3eEz74sIwalpeEOZu1
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYwOTAwNTAw
+NVowLwYJKoZIhvcNAQkEMSIEILSTK6SZ0NfX06cD9FrXeY7+cvzfXKuO/JSJJ8qhxBbEMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAxZlywDkyR4z6
+BpIWI207gADp+10IMCSF6Reou6S+0i57PyXV2wSy2Y9+6pnJ/qchrOwLt5azWVZqViiT1BdLi2Z1
+xMxRx08Y48I2dbwKNqVSLGhOyDRYnBM6kz88sXu7wneboyGlgW0zpFsIlGph/R64n2p3B10tgd+E
+qniAedxlmuNgXYcqGwtaCmQl+iQfR9LjpOLvZChX+y5m56rW9zZGim7dKgMmt7J/L4bhO2qQjDGA
+NSQKiff+3EdD4PA+8xrLwnGUZCzaTsb9PtFVdosuMWrq/LKTO1S1iqSTZrLGRYlwhQr8mKzNxt9P
+JYLj+O6NNa5SPe9BgHyS0VOzCCHvBZXTqdg2AP4lzO7RvVR3JjOlzdnI0iRvqke5j9pmZ2qclkgX
+sCjorg+rC9E2C4tae78rsVM092ARmtSnr7zq7zC1gS/HyS0h2zOaVPEHFY6vle+u1iC3RYJTT00v
+4Lq3zjTNH3Xk1i/PIA1pQwBG4GVugR38KzzObBrvZWKwGf4bMgp6ASipeRMf/GLUr+QvX05r2ytN
+oHvPuadrZ9y9JqaXb7PhFNRqRNepKzegX94/pX/+RXexMgsI1oSN/2nSCptjsK41Tgjy99qPCAFG
+LXMgxYvcph/Opo9P3Z5tUioXW+4Lc/JlDWjnVZVAKCEluUWDg9nP4WlaaOcHU8sAAAAAAAA=
+
+
+--=-ZF3eEz74sIwalpeEOZu1--
