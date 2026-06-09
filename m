@@ -1,144 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDFA3E5EE3;
-	Tue,  9 Jun 2026 07:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E01369990;
+	Tue,  9 Jun 2026 07:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780991292; cv=none; b=EEaRFHt0w7kNcCfULhcLp5Qyu86gnx4HdIST2JRfYADdZTRkZY69v9e88hJPwa6l6RdiYKfx7MqKJqsZcZ86kHzGZJWwqkT3vA1zzwhmaRiFD3IdgstbY9DuxSncZ3hd1BplMYnEJZ5+aLY/GUdALUeLxKCvaDojLQlhSFKJgdk=
+	t=1780991520; cv=none; b=rOpoVgNTWUYhxTKEp+6UkHm6few0Mu7eyMwq+LZSFr7jHZ/9j6qtvurd6E+3q7OE7jzIez9wKW7dcSFEnUDs4KDwqTLp88xCkXWXVqRre4+/3T/3ukRkoD8jJg+kXuS+gA4Dq/FmFqzT040vhbeHMT7yY8CteJi1jH8FZIH2n7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780991292; c=relaxed/simple;
-	bh=ZBX5eahzd46CUbwIFun4qVkUb3QTM+g7fn0ziOL7Zx4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=i+xLbsH5B/AdRFAIAZXqVCbK4/yx/OJdO/iJH+K29HTkXq1o9U+a+YFQFRKutJaRjDPzyh85f7/Veo9++YOdY33qWBpME9NO8rNgIDGLDIJYHJuD58DXV6/fcKDHlotI15aip+Jpr6AQg9J56WlmDCvAgLpEvWbyVhfBh/mvzLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fhT/BnDr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780991520; c=relaxed/simple;
+	bh=DgpCBuylZz3lMAzLfOHE16OZ72InBRt2krZnuWafBns=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=I3Km0s8E32l0J7BiEnSTooX8FbbnWGlJr+OTJ0LSKb72K3x//FvMcVexnae+eURkUwf4LZ0i8BRFWyYqSeIyjjujsmZgxJB9SUgWVROOr9pMl94jRwFmO0GM1U/3MECnogfZK4AtAeYyPUZFyw36Acdvgq7vHlN7c6YV3OKd+x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Un4O6Gug; arc=none smtp.client-ip=113.46.200.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fhT/BnDr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB4D1F00893;
-	Tue,  9 Jun 2026 07:48:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780991290;
-	bh=iiljLo4Dj3SESslIfwzIuSptLw3aAN39KXfU2xj2Ngk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=fhT/BnDr+KIL6FSHMueMDrXiAeihxCx9XYmV4sQEsCrgZ1a/wLUlA82c1I6chu2MM
-	 rwKusfZOsEM3kx5pEdK9ggrNvlOkxF1bXbC0sEg1cxOzYdFCuBBw2Q4HB3K+Tk2mgF
-	 cv0n962KH23nlUg4uss93akTXM5KJMfq8JYgGQ0evU2dHo+DKQ9+YcNw/k+9RPPLKp
-	 J47WOewPhoa36WNJqXt4oaEjhDK0itmBDVBlKuYN0GyqnPG07ArrFllQqbbqboqHCC
-	 oIieu3huEj6Hct6nh+p+M18BgnBSbKYb1ebIk/0iA2wklf1pZ6SvQa5gkT9+Y/gL8Z
-	 WvHbYAtwWzDSg==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Sean Christopherson <seanjc@google.com>, David Woodhouse
- <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan"
- <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
- <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
- <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
- Makhalov <alexey.makhalov@broadcom.com>, Jan Kiszka
- <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, Daniel
- Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, "H.
- Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Broadcom internal kernel review
- list <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-hyperv@vger.kernel.org,
- virtualization@lists.linux.dev, xen-devel@lists.xenproject.org, Tom
- Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
- Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH v4 10/47] x86/tsc: Consolidate forcing of
- X86_FEATURE_TSC_KNOWN_FREQ for PV code
-In-Reply-To: <aidEfvTMjLa2zt43@google.com>
-References: <20260529144435.704127-1-seanjc@google.com>
- <20260529144435.704127-11-seanjc@google.com> <877boc554l.ffs@fw13>
- <eef867eae15e30d08482ba16a1a32159745b64a7.camel@infradead.org>
- <aidEfvTMjLa2zt43@google.com>
-Date: Tue, 09 Jun 2026 09:48:07 +0200
-Message-ID: <87a4t440js.ffs@fw13>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Un4O6Gug"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=2FM4sS/C5uG7Pi6GSiyi+YB4VWpWxENKePM4logKFk8=;
+	b=Un4O6GugkBeaXI2tHa2pBYDiDsQNOT3aw8431Ml92QSBu5/2j/xqtEeqpALgdvA7z46KaugH2
+	1DZmGtnDu8tDUmW2iNV15nVdEeHyJ1KXdK+HCzE1oRxGwRVFGxLlF4K1jw88UF3b/Pw//53l6+X
+	GOLUWCp1IxoyE73b5Suc1Fc=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gZLWb4131zRhWL;
+	Tue,  9 Jun 2026 15:43:55 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id C8ECD4056A;
+	Tue,  9 Jun 2026 15:51:48 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Jun 2026 15:51:48 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Jun 2026 15:51:47 +0800
+Subject: Re: [PATCH v4 2/7] mm: memory_failure: Allow truncate_error_folio to
+ return MF_DELAYED
+To: Lisa Wang <wyihan@google.com>
+CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
+	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
+	<tabba@google.com>, <dave.hansen@linux.intel.com>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins
+	<hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "David
+ Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-2-a5bc7db5a9b2@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <76848661-d3cb-03d5-f351-4ffdf889a09e@huawei.com>
+Date: Tue, 9 Jun 2026 15:51:46 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-2-a5bc7db5a9b2@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 
-On Mon, Jun 08 2026 at 15:38, Sean Christopherson wrote:
-> On Sat, Jun 06, 2026, David Woodhouse wrote:
->> > Along with:
->> >=20
->> > =C2=A0=C2=A0 if (!hypervisor_is_type(X86_HYPER_NATIVE)) {
->> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (tsc_khz_early)
->> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_warn("Ignoring non=
--sensical tsc_early_khz command line argument\n");
->> >=20
->> > or something daft like that.
->
-> Ya, I ended up in the same place once Sashiko pointed out that skipping t=
-he SNP/TDX
-> setup was hazardous[*], and also once I realized that tsc_khz_early *comp=
-lemented*
-> the refinement instead of replacing it.
->
-> This is what I have locally:
->
->         if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
->                 known_tsc_khz =3D snp_secure_tsc_init();
->         else if (boot_cpu_has(X86_FEATURE_TDX_GUEST))
->                 known_tsc_khz =3D tdx_tsc_init();
->
->         /*
->          * If the TSC frequency wasn't provided by trusted firmware, try =
-to get
->          * it from the hypervisor (which is untrusted when running as a C=
-oCo guest).
->          */
->         if (!known_tsc_khz && x86_init.hyper.get_tsc_khz)
->                 known_tsc_khz =3D x86_init.hyper.get_tsc_khz();
->
->         /*
->          * Mark the TSC frequency as known if it was obtained from a hype=
-rvisor
->          * or trusted firmware.  Don't mark the frequency as known if the=
- user
->          * specified the frequency, as the user-provided frequency is int=
-ended
->          * as a "starting point", not a known, guaranteed frequency.
->          */
->         if (known_tsc_khz && !tsc_early_khz)
->                 setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+On 2026/6/3 5:55, Lisa Wang wrote:
+> The .error_remove_folio a_ops is used by different filesystems to handle
+> folio truncation upon discovery of a memory failure in the memory
+> associated with the given folio.
+> 
+> Currently, MF_DELAYED is treated as an error, causing "Failed to punch
+> page" to be written to the console. MF_DELAYED is then relayed to the
+> caller of truncate_error_folio() as MF_FAILED. This further causes
+> memory_failure() to return -EBUSY, which then always causes a SIGBUS.
+> 
+> This is also implies that regardless of whether the thread's memory
+> corruption kill policy is PR_MCE_KILL_EARLY or PR_MCE_KILL_LATE, a
+> memory failure with MF_DELAYED will always cause a SIGBUS.
+> 
+> Update truncate_error_folio() to return MF_DELAYED to the caller if the
+> .error_remove_folio() callback reports MF_DELAYED.
+> 
+> Signed-off-by: Lisa Wang <wyihan@google.com>
 
-If the frequenct is known via the above then you want to set the
-KNOWN_FREQ feature bit unconditionally. SNP/TDX/hypervisor override the
-command line argument as you print below.
+Should we add a Fixes tag here?
 
->         /*
->          * Ignore the user-provided TSC frequency if the exact frequency =
-was
->          * obtained from trusted firmware or the hypervisor, as the user-
->          * provided frequency is intended as a "starting point", not a kn=
-own,
->          * guaranteed frequency.
->          */
->         if (!known_tsc_khz)
->                 known_tsc_khz =3D tsc_early_khz;
->         else if (tsc_early_khz)
->                 pr_err("Ignoring 'tsc_early_khz' in favor of firmware/hyp=
-ervisor.\n");
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 
->> All the nonsense about updating it every time we enter a CPU could just
->> go away completely.
->
-> But to Thomas' point, why bother?  For actual old hardware, kvmclock is w=
-hat it
-> is.  For modern hardware, it's completely antiquated.
-
-I agree, but we are not forced to make it a first class citizen to the
-detriment of sane systems.
-
-Thanks,
-
-        tglx
+Thanks.
+.
