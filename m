@@ -1,216 +1,125 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D003E009B;
-	Tue,  9 Jun 2026 16:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499573B42C4
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 16:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781021823; cv=none; b=fNTBYIsR5ePY1dDT8AkvsrJbQZuZtZXSwrGLhxQ/xEyy4XXg6UzyxUzRzmUiZxxS17rBzxHF4bkz/BWAyLxFdVFVjhjOAouRmcJh+QVraZHpEU3+TQxB2pcCuAT+6mGI8tekyYPBF+4/yN61aS7SWiQpl3YPPUTwjenp9ccHCQw=
+	t=1781022069; cv=none; b=dV7A02doc9QjyPC0cL7FOjDngqpVJkv6gtgPyVBWU3Pyn02kP8lboL+9ILzBB263Q35Paw6OSWiYmkrTnxvPAz4t3+V8U9BQrM7MjBI0Av/2VwE8nlbiT8iJOEJ68ejnwOHZr3DY0ljfdF/BGSs5wPcNvIVZchwLn5RT+fIpOd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781021823; c=relaxed/simple;
-	bh=/m0kCb4H5ZRvx3+KwFCzamoiQDgIj8JHzOIXcUbu2mQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQmQPlG0I4s0iirMSBTq2GsRxn/LX/a6/6FGtJVsvEfSBgw+gxrqKVzOOpkM06rMPKTSbRA4rmGY2Z7tXSC6J6V/dKQRFq1LKuFNTXrElOIDnyqfCTejucZQ/VbwYXdqGiPyzBR9Lp2tBMkI9b4/tx942x0Pk54KSa327p8hs90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rIGJTrkk; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1781022069; c=relaxed/simple;
+	bh=k0w9sVqvj2jX5d0E928Q03YI1/HvAyAtxjAX9SacJwU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=k2298v0wdBrO2Hi16zr4MUgmYtP7ak1TKXJUD6nEFsj90w6pRrtPwVlSj391WgoEP5LWV23hMk70hQ7VLSxqPfm3S0ZwIszrmoOESUYReourA2Ebeu5Kehn0KVd8QcaR7cb0YD8q14oC+xntoN4b5EjfQuEMaVstrzDJZ9AqZP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hsmW82b5; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rIGJTrkk"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 659CwPOr1475403;
-	Tue, 9 Jun 2026 16:17:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=+kx6+VFAffAOX221N
-	9Sn4YC8rqVcjxUqvfEquMZYTeQ=; b=rIGJTrkkbbkwZUXuF7HgOkswCZDOeNetA
-	u5nQQBGuxqcDofe9ih1zYMZmBTVlBN+tuhCk1v33yAzi3bBBl7E1LuJsJ+LdYMAx
-	COkzM85zx6vuK4KuuoyaRmWLC2MYaAqDiuEIoJXgZUl9meiszK1ZW5hngfBwxq81
-	ZpTQsDKDOf6Euvn8CT1sqUSJD+WbXq+xgAejQaHEf/6aK/7nsEE5jMXMppY94W2r
-	U/vZAtzW5W+1m4Wf2plnsdHXV/ZKadENGcSXZAl60qH0bpb/EVsziwYSLjdaxYar
-	8j69E54qR1ZNDEVf37Kl/XiP4r/S0d+ob0LY+ztegkd+FX1tXGXag==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb7qn3kr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jun 2026 16:17:00 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 659G4f3e017255;
-	Tue, 9 Jun 2026 16:16:59 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4emych2q9d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jun 2026 16:16:58 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 659GGrbB7405902
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Jun 2026 16:16:53 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 00BE420040;
-	Tue,  9 Jun 2026 16:16:53 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC4C02004D;
-	Tue,  9 Jun 2026 16:16:51 +0000 (GMT)
-Received: from p-imbrenda.ibmuc.com (unknown [9.111.28.58])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  9 Jun 2026 16:16:51 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        borntraeger@de.ibm.com, frankja@linux.ibm.com, david@kernel.org,
-        seiden@linux.ibm.com, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
-        gra@linux.ibm.com
-Subject: [PATCH v1 3/3] KVM: s390: vsie: Use mmu cache to allocate rmap
-Date: Tue,  9 Jun 2026 18:16:46 +0200
-Message-ID: <20260609161646.695361-4-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260609161646.695361-1-imbrenda@linux.ibm.com>
-References: <20260609161646.695361-1-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hsmW82b5"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b982ec338so6673478a91.0
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 09:21:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781022067; x=1781626867; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+Gvd6MFO1re+VzEtiBDJtkgK8ixXm4k63qOd4VnBfUo=;
+        b=hsmW82b5PY+vXS52/eYAh1Gcjdvgo5ADsIJDUkQeqp8UhvDknnfJWKnlB8sK+tpwJU
+         MjN3VZPfSDXu3fMdXIL6uSoIOi1doNwHFhhgaxZrzzoILDBhk0T95K+EcMNRjE/3OMRM
+         kRTmTlZmt2ZqIf5i/1zrL7cTbK30WGGp4ycnxpa8NFocbIbXjcTiPwy0j9XT8cR9ZlwW
+         560vqpHgkab4JItz/cQF+lQrtk1GwMy8rezG31EYQIdR9JUPwgleHIscUJcj8ZymKX+R
+         CMcn0TLXMcneVpa8MQxlkaW5zLnpbkPynfOqoMTt2zqN/SRRrdJsbaqvoR1leQPvkV2N
+         DYcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781022067; x=1781626867;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+Gvd6MFO1re+VzEtiBDJtkgK8ixXm4k63qOd4VnBfUo=;
+        b=ZdMQ0DRz+nRbhJ94qrpolksWuSte59pM5kw94N1nqprtVFw41lkfOI+h44mVw4g5JM
+         r0ue9xlj+iwAeRNgHhxF86HnOWtiBw9gZFNQwEKWzH7CB7rEVpBpzQ4o77X/HCidasto
+         KS4UQ6yEOYx2YGpGKQVTeJSwgS0r4UWPYSj+6ckR2YeWctlxiC9WM834gqVqDFyCWBfQ
+         Nw67eQ/NZiLpZD9zfuXYcRve0rkp+l9l86+uOummz66MDdQju1LGu95IYuwydF00UfnS
+         hZpCxjjQ/G5+yAHiklToksi45783kypRY2Dm3It4o8o5cl/VSuIbYwv3PuALRdDO5kvc
+         OUhg==
+X-Forwarded-Encrypted: i=1; AFNElJ+rB/azQneS2yRdNK0V99qyJKbTaVXKtY4MjSSu8PO9O94jCIObY7e6A1tVIrgyud08zm0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+OwaMwN85Jo+5bBmdorL+c2b8+wtocNDmdTDlkXnEgcHvlsKV
+	VY2cFsZAyDj5aHY8+yRi8lD32NkJT4gvo3myrDotnt6YTErxUnKd1Kp6EGHu1CVEbZetiMt8qN+
+	2k/jMQg==
+X-Received: from pjx7.prod.google.com ([2002:a17:90b:5687:b0:36b:bdb2:1426])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:35c1:b0:36d:dd4a:1e59
+ with SMTP id 98e67ed59e1d1-370f057ea9emr23407467a91.23.1781022067379; Tue, 09
+ Jun 2026 09:21:07 -0700 (PDT)
+Date: Tue, 9 Jun 2026 09:21:06 -0700
+In-Reply-To: <alpine.DEB.2.21.2606040048520.22659@angie.orcam.me.uk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=HppG3UTS c=1 sm=1 tr=0 ts=6a283c7c cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=xGrK5rwyTb2P39Z5L3IA:9
-X-Proofpoint-GUID: Z7xQ8B31mSj0pXS6jdgIhnw6nQXaS9ln
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDE1MyBTYWx0ZWRfX1MoDzRxhsCzI
- YP6kzDhImYTbkEMjGS2CTys4wsLVu5QxDJ9b7F5qY/WPGic277gWTJrfTHE2b88zo3jQvz4SOgf
- GwpfJTIDHC12TJlAKhrBkhOEqAFbjQ+MUDtoMaI4CeO4j8JbY3S3vHNpSVpeZSJQHfu79SJBC/q
- gcKzUp6Sz+ruYS35P/7SEzHgQDVB2rcJAmdMrJa4/H/coo//0yecV3zRjoNHAO4boTgpT9SmKHP
- 2ZFvQi2/cl8/tH4lut7tVn8UgtvKI+13bIwGMWCA+RGq83R1ht9KzgDzg3syCDiNDeubzK+/hf3
- R6kZiiiV/yF3rs2a819ZUZ8G8QAPiAQZlJMTU4aGb2lF+IIg01ABQmZokGmKI5xNuHaQjOjq2Qq
- gsUU/LyG2pfx/RiCKqFPnE3CZnCpilCWK0N1gadt0OWVYRpOsPxiZML53Wj9laszbHp97iyqpGA
- dFvQ9Lsy5p5zSayYD7A==
-X-Proofpoint-ORIG-GUID: Z7xQ8B31mSj0pXS6jdgIhnw6nQXaS9ln
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-09_03,2026-06-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 phishscore=0 malwarescore=0 impostorscore=0
- priorityscore=1501 clxscore=1015 bulkscore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606090153
+Mime-Version: 1.0
+References: <20260603230718.1733483-1-seanjc@google.com> <20260603230718.1733483-3-seanjc@google.com>
+ <alpine.DEB.2.21.2606040048520.22659@angie.orcam.me.uk>
+Message-ID: <aig9ckd1f6oZaYgA@google.com>
+Subject: Re: [PATCH v2 2/6] KVM: x86: Prioritize DR7.GD #DB over #GP due to
+ illegal DR6/7 value
+From: Sean Christopherson <seanjc@google.com>
+To: "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
+Content-Type: text/plain; charset="us-ascii"
 
-Use kvm_s390_mmu_cache_alloc_rmap() to allocate the rmap in
-gmap_insert_rmap(), instead of a normal kzalloc_obj() with GFP_ATOMIC.
+On Thu, Jun 04, 2026, Maciej W. Rozycki wrote:
+> On Wed, 3 Jun 2026, Sean Christopherson wrote:
+> 
+> > When emulating a MOV DR, specifically a write to DR6 or DR7, treat a #DB
+> > due to DR7.GD (General Detect) as higher priority than a #GP due to an
+> > illegal value.  While neither Intel's SDM nor AMD's APM says anything
+> > about the relative priority, empirical testing on Intel and AMD shows that
+> > the #DB has higher priority.  
+> 
+>  It has to.  
 
-This guarantees forward progress.
+Not super strictly speaking though, because ucode _could_ check for an illegal
+value before enforcing DR7.GD.
 
-Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-CC: stable@vger.kernel.org # 7.1
----
- arch/s390/kvm/gaccess.c | 16 ++++++++--------
- arch/s390/kvm/gmap.c    |  7 ++++---
- arch/s390/kvm/gmap.h    |  3 ++-
- 3 files changed, 14 insertions(+), 12 deletions(-)
+OMG, Intel and AMD don't even behave the same.  I _was_ going to say that
+"obviously the CPL #GP check has priority over DR7.GD", but on Intel the DR7.GD
+#DB has priority over the CPL check, whereas on AMD the CPL check has priority.
 
-diff --git a/arch/s390/kvm/gaccess.c b/arch/s390/kvm/gaccess.c
-index 20e28b183c1a..022ea7736521 100644
---- a/arch/s390/kvm/gaccess.c
-+++ b/arch/s390/kvm/gaccess.c
-@@ -1419,8 +1419,8 @@ static int walk_guest_tables(struct gmap *sg, unsigned long saddr, struct pgtwal
- 	return kvm_s390_get_guest_page(kvm, entries + LEVEL_MEM, table.pte.pfra, wr);
- }
- 
--static int _do_shadow_pte(struct gmap *sg, gpa_t raddr, union pte *ptep_h, union pte *ptep,
--			  struct guest_fault *f, bool p)
-+static int _do_shadow_pte(struct kvm_s390_mmu_cache *mc, struct gmap *sg, gpa_t raddr,
-+			  union pte *ptep_h, union pte *ptep, struct guest_fault *f, bool p)
- {
- 	union pgste pgste;
- 	union pte newpte;
-@@ -1430,7 +1430,7 @@ static int _do_shadow_pte(struct gmap *sg, gpa_t raddr, union pte *ptep_h, union
- 	lockdep_assert_held(&sg->parent->children_lock);
- 
- 	scoped_guard(spinlock, &sg->host_to_rmap_lock)
--		rc = gmap_insert_rmap(sg, f->gfn, gpa_to_gfn(raddr), TABLE_TYPE_PAGE_TABLE);
-+		rc = gmap_insert_rmap(mc, sg, f->gfn, gpa_to_gfn(raddr), TABLE_TYPE_PAGE_TABLE);
- 	if (rc)
- 		return rc;
- 
-@@ -1462,8 +1462,8 @@ static int _do_shadow_pte(struct gmap *sg, gpa_t raddr, union pte *ptep_h, union
- 	return 0;
- }
- 
--static int _do_shadow_crste(struct gmap *sg, gpa_t raddr, union crste *host, union crste *table,
--			    struct guest_fault *f, bool p)
-+static int _do_shadow_crste(struct kvm_s390_mmu_cache *mc, struct gmap *sg, gpa_t raddr,
-+			    union crste *host, union crste *table, struct guest_fault *f, bool p)
- {
- 	union crste newcrste, oldcrste;
- 	unsigned long mask;
-@@ -1476,7 +1476,7 @@ static int _do_shadow_crste(struct gmap *sg, gpa_t raddr, union crste *host, uni
- 	mask = is_pmd(*table) ? _SEGMENT_FR_MASK : _REGION3_FR_MASK;
- 	r_gfn = gpa_to_gfn(raddr) & mask;
- 	scoped_guard(spinlock, &sg->host_to_rmap_lock)
--		rc = gmap_insert_rmap(sg, f->gfn & mask, r_gfn, host->h.tt);
-+		rc = gmap_insert_rmap(mc, sg, f->gfn & mask, r_gfn, host->h.tt);
- 	if (rc)
- 		return rc;
- 
-@@ -1578,8 +1578,8 @@ static int _gaccess_do_shadow(struct kvm_s390_mmu_cache *mc, struct gmap *sg,
- 	if (KVM_BUG_ON(l > TABLE_TYPE_REGION3, sg->kvm))
- 		return -EFAULT;
- 	if (l == TABLE_TYPE_PAGE_TABLE)
--		return _do_shadow_pte(sg, saddr, ptep_h, ptep, entries + LEVEL_MEM, w->p);
--	return _do_shadow_crste(sg, saddr, host, table, entries + LEVEL_MEM, w->p);
-+		return _do_shadow_pte(mc, sg, saddr, ptep_h, ptep, entries + LEVEL_MEM, w->p);
-+	return _do_shadow_crste(mc, sg, saddr, host, table, entries + LEVEL_MEM, w->p);
- }
- 
- static inline int _gaccess_shadow_fault(struct kvm_vcpu *vcpu, struct gmap *sg, gpa_t saddr,
-diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
-index 52d55ddea8d4..1d289f8fa3b2 100644
---- a/arch/s390/kvm/gmap.c
-+++ b/arch/s390/kvm/gmap.c
-@@ -1000,7 +1000,8 @@ int gmap_pv_destroy_range(struct gmap *gmap, gfn_t start, gfn_t end, bool interr
- 	return 0;
- }
- 
--int gmap_insert_rmap(struct gmap *sg, gfn_t p_gfn, gfn_t r_gfn, int level)
-+int gmap_insert_rmap(struct kvm_s390_mmu_cache *mc, struct gmap *sg, gfn_t p_gfn,
-+		     gfn_t r_gfn, int level)
- {
- 	struct vsie_rmap *rmap __free(kvfree) = NULL;
- 	struct vsie_rmap *temp;
-@@ -1010,7 +1011,7 @@ int gmap_insert_rmap(struct gmap *sg, gfn_t p_gfn, gfn_t r_gfn, int level)
- 	KVM_BUG_ON(!is_shadow(sg), sg->kvm);
- 	lockdep_assert_held(&sg->host_to_rmap_lock);
- 
--	rmap = kzalloc_obj(*rmap, GFP_ATOMIC);
-+	rmap = kvm_s390_mmu_cache_alloc_rmap(mc);
- 	if (!rmap)
- 		return -ENOMEM;
- 
-@@ -1057,7 +1058,7 @@ int gmap_protect_rmap(struct kvm_s390_mmu_cache *mc, struct gmap *sg, gfn_t p_gf
- 	if (level <= TABLE_TYPE_REGION1) {
- 		bitmask = -1UL << (8 + 11 * level);
- 		scoped_guard(spinlock, &sg->host_to_rmap_lock)
--			rc = gmap_insert_rmap(sg, p_gfn, r_gfn & bitmask, level);
-+			rc = gmap_insert_rmap(mc, sg, p_gfn, r_gfn & bitmask, level);
- 	}
- 	if (rc)
- 		return rc;
-diff --git a/arch/s390/kvm/gmap.h b/arch/s390/kvm/gmap.h
-index 4e6979783e16..75df5d39bd78 100644
---- a/arch/s390/kvm/gmap.h
-+++ b/arch/s390/kvm/gmap.h
-@@ -100,7 +100,8 @@ int gmap_ucas_map(struct gmap *gmap, gfn_t p_gfn, gfn_t c_gfn, unsigned long cou
- void gmap_ucas_unmap(struct gmap *gmap, gfn_t c_gfn, unsigned long count);
- int gmap_enable_skeys(struct gmap *gmap);
- int gmap_pv_destroy_range(struct gmap *gmap, gfn_t start, gfn_t end, bool interruptible);
--int gmap_insert_rmap(struct gmap *sg, gfn_t p_gfn, gfn_t r_gfn, int level);
-+int gmap_insert_rmap(struct kvm_s390_mmu_cache *mc, struct gmap *sg, gfn_t p_gfn,
-+		     gfn_t r_gfn, int level);
- int gmap_protect_rmap(struct kvm_s390_mmu_cache *mc, struct gmap *sg, gfn_t p_gfn, gfn_t r_gfn,
- 		      kvm_pfn_t pfn, int level, bool wr);
- void gmap_set_cmma_all_dirty(struct gmap *gmap);
--- 
-2.54.0
+Which actually proves my point: hardware/ucode doesn't _have to_ treat DR7.GD
+with the absolute highest priority.
 
+Ugh, and KVM's emulator doesn't get the priority between the #UD checks and the
+CPL check.  Double ugh, half of the instructions that #GP at CPL>0 don't get the
+priority right.
+
+> The primary reason for the existence of DR7.GD is to prevent 
+> software being debugged such as an OS kernel from clobbering the debug 
+> register state when executed under the control of an ICE or a JTAG (XDP) 
+> debug probe.  Under these circumstances #GP remains an ordinary exception 
+> routed via the IDT to a handler provided by the OS, however #DB traps into 
+> the ICE or SMM mode instead and the OS handler is never reached.
+> 
+>  This is also the reason why DR7.GD gets cleared at the same time -- so
+> that the debug firmware can then access the debug state rather than making 
+> the exception trigger again -- and for the existence of the ICEBP aka INT1 
+> instruction -- so that #DB can be triggered and control regained by the 
+> debug firmware via a software breakpoint, since the number of hardware 
+> breakpoints is limited (and #BP is an ordinary exception).
+> 
+>  It's unsurprising that the priority of these exceptions is not documented 
+> well in the processor developer's manuals given that x86 hardware debug 
+> features remain vaguely documented overall in public resources.  Though I 
+> note the Intel wording for the GD bit is "[it] causes a debug exception to 
+> be generated prior to any MOV instruction that accesses a debug register." 
+
+Define "accesses" though.  MOV DR at CPL>0 definitely isn't going to access
+anything, and so that statement still holds true if the #GP due to CPL>0 had higher
+priority, as there wouldn't be any DR access to prevent.
+
+> so I think it actually implies no action resulting from the execution of 
+> the affected instruction happens, including in particular any exception it 
+> might otherwise trigger.
+> 
+>  FWIW,
+> 
+>   Maciej
