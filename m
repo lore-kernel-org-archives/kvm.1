@@ -1,44 +1,44 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E833D8101;
-	Tue,  9 Jun 2026 07:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F427384233;
+	Tue,  9 Jun 2026 08:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780991899; cv=none; b=Jq4nDp6Dr03TWKr30ZihMnjMwY022yor/FyqpvQxTbFEcZ65ugu0W9qzr5QB9fglMZ1oSocFajoC1hctciknbu/0UV0+l1d/0VhnUaJg4Rx4PZ5Xa4mqfFHTg7bpsfnov5vCGsh47gVjUvkn9MZmNZIQTMRSfr/XICy5O2M7Y88=
+	t=1780992223; cv=none; b=D4bnnPtO/moLm+LcjGMr8qO/mi2p16QM6RDUmQOguA5PQ59DECLQTFgWY9+VYrx4oLg/5avYMcJv/YLbl4oJ83sSxF0he5ahorxcYWoy8EhGnhKJipXszo69kUun5o53j4wXNRECI1yAyhFQWOS+h09YnSClzctcvsRVRFOUA+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780991899; c=relaxed/simple;
-	bh=l97AYm4yo1vd1g+PINyqk9y3n50GZKNqoO5F7+cnl0g=;
+	s=arc-20240116; t=1780992223; c=relaxed/simple;
+	bh=tcPEnFaGHlyq3HGOis5Z/JiQSEi5N9zhgX+AvfVV4FY=;
 	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=WzvTZ/9lxVI+f5pB7a4FSAjVHCVxfjuJ/7tNob/PGSLcPAM3UDb+fI22MsJAa8vjASophylMHQSp9DtfCcPO4Z29x9g9sp/wgEww6MCNgwzrLivU+lIUfadWf0T7pv+hH53eeOYB48dl52ON0rlqBXYND/zUdCsPuxHgzp11hGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=neXony9Q; arc=none smtp.client-ip=113.46.200.222
+	 In-Reply-To:Content-Type; b=rCgISG9aM+I9m5eH1YQkxV9ETXVtk4PPQ5vVfPiqLGLKShaj8IteyT+FalaQDuw6TzIsNbttjKbo34j6iuL47Nco4b3MsEuL1oo+WXOy79jejCV0ZcfEde0p5xxVhJmDllN1UthPYSgbOGioo2HqNcvaZ7lKr48vgTfAe1ZC5RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=xQAuBxMb; arc=none smtp.client-ip=113.46.200.226
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="neXony9Q"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="xQAuBxMb"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=aZW27Z0cG5ZBxv+2DhR3no8vztYQbkpn9oxsBKpw1oU=;
-	b=neXony9QCUc1tse0odsjp7be85xjmajBOkbHWEkkmavuVuUTUb5tf1zrE2TlNpkIaLDj8LeEX
-	wC9dtZwjGcb+Avq4dCXAGUsaIKrs62aMIaLXnxiaeFz+I1Efoh1t72/I7nrI7zL6GoESbeQXANz
-	+u1mwXlQ4+DUOXVVHfox6JM=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gZLft36s7zLlvJ;
-	Tue,  9 Jun 2026 15:50:14 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 99E7B402AB;
-	Tue,  9 Jun 2026 15:58:07 +0800 (CST)
+	bh=HlBlOHMPbvtbUB1n/vkZ2Ftsfcpe6TvbqLXbZg5mnVk=;
+	b=xQAuBxMb8mzsb7Jf7ox4zUkRKG53+Cimxagzt8XKYaOjdENJso8ZC07weXNRQH5oR687sy+m6
+	uXXB+h8Fi4Kp8IbHwqYAtIXlS6EWgn4Ic3ovMEgUrzAUwgGaWTXAQWhBYp6VKMDgM8ICPj468nr
+	/yxBP9dKfByAYRac+9pNCAs=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gZLn15GD0zKm4s;
+	Tue,  9 Jun 2026 15:55:33 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id C430940565;
+	Tue,  9 Jun 2026 16:03:29 +0800 (CST)
 Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Jun 2026 15:58:02 +0800
+ 15.2.1544.11; Tue, 9 Jun 2026 16:03:29 +0800
 Received: from [10.173.124.160] (10.173.124.160) by
  kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Jun 2026 15:58:00 +0800
-Subject: Re: [PATCH v4 3/7] mm: shmem: Update shmem handler to the MF_DELAYED
- definition
+ 15.2.1544.11; Tue, 9 Jun 2026 16:03:27 +0800
+Subject: Re: [PATCH v4 4/7] mm: memory_failure: Generalize extra_pins handling
+ to all MF_DELAYED cases
 To: Lisa Wang <wyihan@google.com>
 CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
 	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
@@ -53,10 +53,10 @@ CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
 	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-kselftest@vger.kernel.org>
 References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
- <20260602-memory-failure-mf-delayed-fix-v4-3-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
 From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <a87da745-4310-d5cd-3562-384b12a55a35@huawei.com>
-Date: Tue, 9 Jun 2026 15:58:00 +0800
+Message-ID: <1fcac146-cb21-7012-3eeb-e4bcc6d9ac0b@huawei.com>
+Date: Tue, 9 Jun 2026 16:03:27 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 Precedence: bulk
@@ -65,7 +65,7 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-3-a5bc7db5a9b2@google.com>
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -73,30 +73,17 @@ X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemq500010.china.huawei.com (7.202.194.235)
 
 On 2026/6/3 5:55, Lisa Wang wrote:
-> To align with the definition of MF_DELAYED, update
-> shmem_error_remove_folio() to return MF_DELAYED.
+> Generalize extra_pins handling to all MF_DELAYED cases not only
+> shmem_mapping.
 > 
-> shmem handles memory failures but defers the actual file truncation. The
-> function's return value should therefore be MF_DELAYED to accurately
-> reflect the state.
+> If MF_DELAYED is returned, the filemap continues to hold refcounts on the
+> folio. Hence, take that into account when checking for extra refcounts.
 > 
-> Currently, this logical error does not cause a bug, because:
-> 
-> - For shmem folios, folio->private is not set.
-> - As a result, filemap_release_folio() is a no-op and returns true.
-> - This, in turn, causes truncate_error_folio() to incorrectly return
->   MF_RECOVERED.
-> - The caller then treats MF_RECOVERED as a success condition, masking the
->   issue.
-> 
-> The previous patch relays MF_DELAYED to the caller of
-> truncate_error_folio() before any logging, so returning MF_DELAYED from
-> shmem_error_remove_folio() will retain the original behavior of not
-> adding any logs.
-> 
-> The return value of truncate_error_folio() is consumed in action_result(),
-> which treats MF_DELAYED the same way as MF_RECOVERED, hence action_result()
-> also returns the same thing after this change.
+> As clarified in an earlier patch, a return value of MF_DELAYED implies that
+> the page still has elevated refcounts. Hence, set extra_pins to true if the
+> return value is MF_DELAYED. This is aligned with the implementation in
+> me_swapcache_dirty(), where, if a folio is still in the swap cache, ret is
+> set to MF_DELAYED and extra_pins is set to true.
 > 
 > Signed-off-by: Lisa Wang <wyihan@google.com>
 
