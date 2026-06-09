@@ -1,108 +1,96 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9088414ABE
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 00:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D911E0E14
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 00:31:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780964966; cv=none; b=A9n3/nVwSIdZjlcgT9da8l9sF6cTIiH4MZtkLNWjzBog150BB6vUAn3KB34T3WCKv/Bsv0uOdGOn835ZYQsNrXQ8bhduehSnE36Nv/3+cZvIro5X2P+k5IuacCKjUkd3MAEOmXPAGSepzK89ydgSD/Rr5nGKy24/1tTiAppzJjA=
+	t=1780965088; cv=none; b=WJktomxgA9d8xYSMXYEnzss3ypGkbx56l39c4TB3lIgVorXEm2IhmeOZym1i2aI1IzJU4f6rYcJHOTS1AODl7pl3N6WJEoJ9Tv+Dg5q5Pm5J39en75GYD/59XwzUt9p57u963MIkGcC6I78nnXeAyXznfWakmcXG6HHOEQMOThc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780964966; c=relaxed/simple;
-	bh=okCLjjcx6Ed0kcVEOGQC7olTqLps3Bv3+utUO7Z5QBk=;
+	s=arc-20240116; t=1780965088; c=relaxed/simple;
+	bh=yIJ6TQJxT7dONmA/83aONXNhkBdZrn6zCKFw130M9Q4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lUjwlp1O38xk3UcduFZ/YrHc4ZQeyy2s1xLK+zr0dUJXvKwCzB78rIt1WS7HVxMK/F0bgfYqnqxy0SUYUzYJkbr2ZUh+h/l5+v9czj29y2Ib4im9R1+lAjb34QkK1+UGv2ZEy5g4RjxzoW+NUPPVtF9jUEyMiVJeV6NPKtywI0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DwyHuGox; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=KYj9ep0UWFNAa2J8iYGNU/eDy9tC/k8bI22eY8gjesXNkmsJeC5fFJADHffqYrL5idyIOHCUg6XcSQwXpnF8dx08YqVNRtFSGnmvzhcfr2YGOxuVwvJZfjku/IuPFKojFBS/LlwM5wGKMfd5JWXyJYtqnZV2rlQMRiXEL+fuuU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=leHyf0cd; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DwyHuGox"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8428419982eso4163597b3a.3
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 17:29:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="leHyf0cd"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d992fa39eso6029515a91.3
+        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 17:31:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780964964; x=1781569764; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780965087; x=1781569887; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7x3B1HPEV4Wpd1aCcBTxaYdKxkJL89lmWQlqj4XB55Y=;
-        b=DwyHuGoxoP4V91Seaq3cQo9RaGlA4kh2ma+QPTeYHMJxcrNoA8bnlo6Lvnsc2f0Ly6
-         rf9AYAszdcIBmXUHnEU+ac0+v7W7LzfRdKK74vEcH8uQX+7vpTpcvtVquMId47oCRIkL
-         2iZgKQGivDJ/kq3gw8GPFCIK25Z0HwwXM/cZsK3xEKPtJo7gbaiBadg+Ei7VC5zOmSlw
-         Qb8rNt/fMgKpTXJfMP1pscN4q41iNdusZ3ZNDSEXRlMNNF0MG1O2epH9y4UrUrNOXs06
-         TJa9O3Ba0tit9HADdLVFNyFrxuINsVFjBIyafXCmOv3SZs3pTia1rXT6SfhjvGKfn640
-         i+wQ==
+        bh=p2pVFo4dJytLODVsSoHOHadkmK9decmDzlODrRei+YU=;
+        b=leHyf0cdogosuxxRPjbyiB8XJyMDOjXYEh1zdkbpSjrn/myRf1p2V0bAWPZ3I46xAd
+         HU8+F0GSG/0gImPb3sRwhzzgknD8mtFSt4HyG1kd22w+9iQa2GnQWCnU228N78WaxMJN
+         Vc5D1xHt4WSYR33XTspNrBWZ0lNGlVBAAHlDPCZjFea8VfbL2KcjmvLFTvGHKW7Cc/Jo
+         6svmRjNKIYkODQZpsJhnGnZVkSAr6zUCTmdUA1avO3qm3H7gOhhyiWp3wqvP42QUdkHR
+         bLUSVPnNwYEoOaUjQBAkuV11UyMNWzwjOoBgEvpwo/BpVleCju/Ueijr8+SCbJ70vbAW
+         0LTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780964964; x=1781569764;
+        d=1e100.net; s=20251104; t=1780965087; x=1781569887;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7x3B1HPEV4Wpd1aCcBTxaYdKxkJL89lmWQlqj4XB55Y=;
-        b=JYAkYxSacAHAb54VVKntcLnPlEXlZp1vl9FpLhTdkZ7FPbm4T/Fsc09zBbgcyp2kgj
-         YuayBA8q0BfBmklEQKtmL7gyFIqsMfS3+eYlksrCX1ZeWvEIaVqFKM12RiUe9F40w+TF
-         VguGq1zxvo1856AyYxtJHXqB7Z36Rcv8kL79ZhwbKqVuPJQznx0j5lWXcSKI0fjP5kbG
-         R2e39OboCksm8dWxsRfrfLWempAROQ0mSbwb98HP9JMDA5VWoyhesLvC9NB6u9R0pqF1
-         SMv9OzESWQwdbcaUM4hxd3ZyiI8bFf85Sgz6+YUtSOjnX+OsOJPyrR5uot7JmSJyrDsR
-         UfJA==
-X-Gm-Message-State: AOJu0YyR9CHF8ORXAllDETSH9F0K6uFtATkfr4bWXGwMLgjEgAv02jQO
-	MhZjEhsYSKphmfWPz1i/5JenjFN0c/6r3QDPZWNTlGOGIvUceqrxj9rvaYvf9QsVbJCwmYFcp8t
-	up3SJtw==
-X-Received: from pffy10.prod.google.com ([2002:aa7:93ca:0:b0:838:ec6d:449c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:90a7:b0:842:3aee:12c1
- with SMTP id d2e1a72fcca58-842b0e8312bmr17335107b3a.18.1780964963660; Mon, 08
- Jun 2026 17:29:23 -0700 (PDT)
-Date: Mon, 8 Jun 2026 17:29:22 -0700
-In-Reply-To: <20260530063531.D034A1F00898@smtp.kernel.org>
+        bh=p2pVFo4dJytLODVsSoHOHadkmK9decmDzlODrRei+YU=;
+        b=DL9I6I0CWCAAaWIemdmGwGS8lVlZC9m1iwvRdJSaU9hQQKnfZM+qJefQk8k3xjWmNt
+         Kkjb2JWb8iSFkFtrFJNb8q6oSvVy7fChMzK2HlUcjID8TwopjhMkLE7YjnT8lOXEOORT
+         IvPSV5D27GtNtz3dtaGkavXYtNNyYVppqOmVTOI/BEnXKFBG6rzXZPpw9beVaMX+1uyh
+         pKhzoiOCNf6+UFz6Lh1LuRA20q9kd8dKK3KU+02E9HLJAh3befAAlCOaH+uoOPR93HAJ
+         EhRkluGVXH/6AJ8xo36RD+b8Qh+BPWfk0s8jA7fnUJwvmrkM6YNOHAlAWScsCfgDrpJe
+         DucA==
+X-Forwarded-Encrypted: i=1; AFNElJ9o4l5rpYNRJGTrvRg5u9wADgECDi6XJvBk54/7SbAsp7UYQ+GHaq7igIpZ3ZIUXabxxV0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTqU99N3yXAKA3Ct8ujwgwDodHbHRahdN2gJ8n8vHev8H+Y+sJ
+	Ag96SNwLa4+CyVQllAsm6R1ZikRp69DbdOxEbhz0i0lcak2jqWEU7xzBZSAdPLyFy2Ty+qPjoad
+	3irxb+A==
+X-Received: from pjbfh16.prod.google.com ([2002:a17:90b:350:b0:36b:c7cb:baf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:58e7:b0:36b:936e:73c8
+ with SMTP id 98e67ed59e1d1-370f0e4ad33mr20840879a91.19.1780965086844; Mon, 08
+ Jun 2026 17:31:26 -0700 (PDT)
+Date: Mon, 8 Jun 2026 17:31:26 -0700
+In-Reply-To: <20260530070848.158521F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260529144435.704127-22-seanjc@google.com> <20260530063531.D034A1F00898@smtp.kernel.org>
-Message-ID: <aideYkFmpELRfcX5@google.com>
-Subject: Re: [PATCH v4 21/47] x86/xen: Obtain TSC frequency from CPUID if present
+References: <20260529144435.704127-27-seanjc@google.com> <20260530070848.158521F00893@smtp.kernel.org>
+Message-ID: <aide3ppnmB_suEab@google.com>
+Subject: Re: [PATCH v4 26/47] x86/kvm: Don't disable kvmclock on BSP in syscore_suspend()
 From: Sean Christopherson <seanjc@google.com>
 To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, linux-hyperv@vger.kernel.org
+Cc: linux-hyperv@vger.kernel.org, kvm@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
 On Sat, May 30, 2026, sashiko-bot@kernel.org wrote:
-> > diff --git a/arch/x86/xen/time.c b/arch/x86/xen/time.c
-> > index 487ad838c4418..36d66abf53796 100644
-> > --- a/arch/x86/xen/time.c
-> > +++ b/arch/x86/xen/time.c
-> > @@ -42,6 +42,17 @@ static unsigned int __init xen_tsc_khz(void)
+> > diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+> > index c81a24d0efdf6..fd1c417b4f9b9 100644
+> > --- a/arch/x86/kernel/kvm.c
+> > +++ b/arch/x86/kernel/kvm.c
+> > @@ -460,7 +460,7 @@ static void __init sev_map_percpu_data(void)
+> 
+> [ ... ]
+> 
+> > -static void kvm_guest_cpu_offline(bool shutdown)
+> > +static void kvm_guest_cpu_offline(enum kvm_guest_cpu_action action)
 > >  {
-> >  	struct pvclock_vcpu_time_info *info =
-> >  		&HYPERVISOR_shared_info->vcpu_info[0].time;
-> > +	u32 base = xen_cpuid_base();
-> > +	u32 eax, ebx, ecx, edx;
-> > +
-> > +	/*
-> > +	 * If Xen provides the guest TSC frequency directly in CPUID
-> > +	 * (leaf 3, sub-leaf 0, ECX), use that instead of reverse-
-> > +	 * calculating from the pvclock mul/shift.
-> > +	 */
-> > +	cpuid_count(base + 3, 0, &eax, &ebx, &ecx, &edx);
-> > +	if (ecx)
-> > +		return ecx;
+> >  	kvm_disable_steal_time();
+> >  	if (kvm_para_has_feature(KVM_FEATURE_PV_EOI))
+> > @@ -468,9 +468,10 @@ static void kvm_guest_cpu_offline(bool shutdown)
+> >  	if (kvm_para_has_feature(KVM_FEATURE_MIGRATION_CONTROL))
+> >  		wrmsrq(MSR_KVM_MIGRATION_CONTROL, 0);
 > 
 > [Severity: High]
-> Is it possible for the hypervisor to support a maximum leaf of base + 2,
-> resulting in an out-of-bounds CPUID query here?
+> This isn't a bug introduced by this patch, but I noticed that
+> MSR_KVM_MIGRATION_CONTROL is cleared to 0 here during CPU offline and system
+> suspend, but it does not appear to be re-enabled upon online/resume.
 > 
-> Looking at xen_cpuid_base(), it calls cpuid_base_hypervisor(XEN_SIGNATURE, 2)
-> which only guarantees that the hypervisor supports up to leaf base + 2.
-> 
-> If the hypervisor does not support base + 3, this CPUID query could be out
-> of bounds. Processors handling out-of-bounds CPUID requests typically return
-> data from the maximum basic leaf.
+> Since this patch introduces the kvm_guest_cpu_action enum to solve an
+> identical state-machine issue for kvmclock, should we also use this action
+> enum to ensure the migration control MSR isn't incorrectly cleared on
+> suspend? Otherwise, wouldn't a single CPU hotplug event or a suspend/resume
+> cycle permanently disable live migration for the entire VM?
 
-Heh, depends on the hypervisor.  This quirk is specific to Intel CPUs, and so
-KVM emulates this behavior only when the advertised vCPU vendor is Intel.
-
-Anyways, AFAICT, Sashiko is right to be skeptical, I don't see anything obvious
-that guarantees +3 will be supported.
-
-David, can you send this as a standalone patch, and either address Sashiko's
-concern or add a blurb/comment explaining why it's safe?  Unlike the KVM changes,
-this won't conflict with any of the other changes in this series.  So while it's
-themetatically very related to this series, in practice it can go in separately,
-and I'd strongly prefer to let the Xen folks handle this one.
+Looks like.  That's someone else's future problem though.
