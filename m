@@ -1,165 +1,155 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5502701B6
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 01:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D86E28980F
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 01:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780969285; cv=none; b=LsoVFXBPk1Yn47saxVVVsxISBk5M6+ODzH2JFH5Ot4dPDdJWMkESyieJVIeKRy9lHsYMbtSOmVtJYXM+LC1jCJ8yAF1pHsKyvj6gbWFovamnw7PJcqB4j66Tgwwi6E5WrVaosNzwXXUmCeoUc0lvZtzjbjj6aqn/DnubV28nZ4k=
+	t=1780970188; cv=none; b=pCtMjTtTAZeClZLs/GI9rxw/DIkUkwQVgxyHtzuwOWkLes3W6AybkJ/3kpiMUUEen/KbuNlng8YgjjdIFpCs2X5zPKNRcMGjrQ2z+12LVcWzgfXYFXHu8VXAg8aMpH32XvTWyD75m97PW2eHD9pLj6rg29kU8MNE0MxO6V78saE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780969285; c=relaxed/simple;
-	bh=evEJ9Cv0ADapdlTZTbGnfQnGbAgrD+WBunpt2jAAuy8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nTz94MvTA7u+fThTcWvU2e9bSR7sIyr+XfNJV3bjQpeHWY+uL+6hwQoszMof5iziiToTVP6UmZH0W8+PrQl0qkdnxNwJ3bWiSxJYeZRTYsVlC1AK5VzZ0ZtzOpmDt3qD7ivbKEzszq+InmAUsiuT2OLQNQpNP8FaugTviYeohYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n108n/np; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1780970188; c=relaxed/simple;
+	bh=qnFjluhbPPO0+WMlQldDrpcpBgOuQUGugXIPgx7I9vw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OKiOm910GaMpLUw5cTLkdC5Z/jnBnNfr460Nog3XzdmgYACOy+BZk3hfd2rS2NB4m0hzKSyCgE1IIT9xpdttnC9AE0l+GdMRKxZC2XQXkueGu49DIQlqGJ0EWaIGbFuV1I/PdZ6Ymg/m2Z4wBebnfT8o9zJ/V94hm1svqBD7bic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mYRjwQdy; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n108n/np"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36bc02d28b6so3717740a91.3
-        for <kvm@vger.kernel.org>; Mon, 08 Jun 2026 18:41:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780969284; x=1781574084; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=48v5PxuBrwdarW691tZXx+UR0HGEgyClg2xzzbjeLY0=;
-        b=n108n/npvwilrwMXzdF/1abX7rb54QODUrcW5WZBRzPXtwZEVVgZGD1G5XYBEtyP1T
-         mwgynNIyZudAcvPrZ3RtiJDqfXjgfmufQsk6PrbCqgQKOWy2v94WQpiIMfk/ZULnopez
-         GyMeBI8kX0xgMd9zJ8XbTsZldfx26xVfOkcjNtTZrc9VaR9ENmHcGrKPRcTv03Ah9OYo
-         Hsu9Z0eNbWjKea3fIYpIWuR+kgVuWwwQS6V+KjD6bXtrg6KsGC9l9d4fy7nMHe1cIXSt
-         DLLcaEwQbxGXCoyjxd+8BdT9Q9NMuVOqMZg0WVpn0z6XqeRo2TkcQJUxwUfEcfT2KgoE
-         mzeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780969284; x=1781574084;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=48v5PxuBrwdarW691tZXx+UR0HGEgyClg2xzzbjeLY0=;
-        b=AvqLCZvxQxiOhv+oFaJw8OS6EkcQNW07cNkXF07LQhonDF2ZmB5W8Ph+MPKKtwjOUn
-         E4pqV75ir5aPDA/+GngSp4j+s5HhBdJwa5vk19uR7BmwphKVkAcQjeD6Z8XYSaylXmwN
-         wSbx2zsOeALtbNEC5AToGtt3e2ldpG4Re13gxZ8QquYnKQ2ygX2RSQ2Ok1b1MqBkmZji
-         r8KMuNY2HgxY+lsdC2V2j7I66bHTySjiewl/i5PXpM/FbE4xqOrXUr2qiOwOYCVZar9b
-         N7Tvplt4v0wJrbwz4EAR0fLg6TfGMjepHO0aYDIN2CaAOCLjAqO62/eN5sRLkd8MBLz5
-         lzEA==
-X-Forwarded-Encrypted: i=1; AFNElJ8c3p/1cXivZd4TeDaAYQUxhPE7zGAR1jobG1n7lM9e/MpxXvivaJDKXUhUB3OtLbZlMe4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4RCfRdAc7tCvDQitODQ0n5QT5GjkMkPIMy25IxauNnz9pDgbM
-	PgoA4kACC5HOWTqOisc8KCcd+Dc0ooLGFFnmOFsENuJnEsFKWpmAeBOYPeaIEucjQkOIIVKVIam
-	kG8tTCg==
-X-Received: from pjff14.prod.google.com ([2002:a17:90b:562e:b0:36b:8abb:86b8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:580e:b0:36b:944b:fd81
- with SMTP id 98e67ed59e1d1-370ee82e03amr18072580a91.4.1780969283938; Mon, 08
- Jun 2026 18:41:23 -0700 (PDT)
-Date: Mon, 8 Jun 2026 18:41:23 -0700
-In-Reply-To: <aiKJt5j6vIqfh7S9@yzhao56-desk.sh.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mYRjwQdy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780970186; x=1812506186;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=qnFjluhbPPO0+WMlQldDrpcpBgOuQUGugXIPgx7I9vw=;
+  b=mYRjwQdyeRe2uPXV0OA4Bi8Xri/B2b2xLdERElMKZt8MZ53hmE0KonKq
+   BE+BJmiyptjam7y1m0cxmK84TZ5dI8G149J7SixtBOV2sNoUwoO52jluN
+   Oqt7wOfB32tE6M7pq72pu8hMld/b6tpxlkHeSE/SiRspqurvBCCeXVTbc
+   EJ4zkT6GszCujscLqVtjIK4x+gdSA8GTPTCgcQR6nMVeTljed7T+2UcMG
+   1lREWA6hcehZKNFCD7kT5GPmVojnKRTvLBg4LfanMqUEt1FCx2MiJtglN
+   pt3ykb+YntUfY5nXWUtu19A4p0sCpY4YWkgPey0nfzc5KDADVX0J552bZ
+   w==;
+X-CSE-ConnectionGUID: n7chIO/tR36r+yvYwqbn0w==
+X-CSE-MsgGUID: KLtI4g9NSASzSoxxG/ESyw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="93108214"
+X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; 
+   d="scan'208";a="93108214"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 18:56:25 -0700
+X-CSE-ConnectionGUID: ckZeUZ2IQBu8fVUcs6srvw==
+X-CSE-MsgGUID: WQ4CmCQXRkuT0cv+/Squ5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; 
+   d="scan'208";a="241543069"
+Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 18:56:24 -0700
+Message-ID: <cb8d64e6-dfc6-4984-a46a-157e57e55aaf@linux.intel.com>
+Date: Tue, 9 Jun 2026 09:56:21 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251113232229.1698886-1-seanjc@google.com> <aRsIstNXu0Bl0oID@yzhao56-desk.sh.intel.com>
- <aiDCkz9V2aS5Qcuf@google.com> <aiKJt5j6vIqfh7S9@yzhao56-desk.sh.intel.com>
-Message-ID: <aidvQyD6BqbE2_A5@google.com>
-Subject: Re: [PATCH] KVM: guest_memfd: Elaborate on how release() vs.
- get_pfn() is safe against UAF
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Vishal Annapurve <vannapurve@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 01/27] KVM: x86: Fix emulated CPUID features being
+ applied to wrong sub-leaf
+To: Sean Christopherson <seanjc@google.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, rick.p.edgecombe@intel.com,
+ xiaoyao.li@intel.com, chao.gao@intel.com, kai.huang@intel.com
+References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
+ <20260417073610.3246316-2-binbin.wu@linux.intel.com>
+ <4e5b6b9c-4f7d-4d62-874a-4bcb745e9a47@linux.intel.com>
+ <aibPZMfxabh6meOk@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <aibPZMfxabh6meOk@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 05, 2026, Yan Zhao wrote:
-> On Wed, Jun 03, 2026 at 05:10:59PM -0700, Sean Christopherson wrote:
-> > > > +	/*
-> > > > +	 * Note!  synchronize_srcu() is _not_ needed after nullifying memslot
-> > > > +	 * bindings as slot->gmem.file cannot be set back to a non-null value
-> > > > +	 * without the memslot first being deleted.  I.e. this relies on the
-> > > > +	 * synchronize_srcu_expedited() in kvm_swap_active_memslots() to ensure
-> > > > +	 * kvm_gmem_get_pfn() (which runs with kvm->srcu held for read) can't
-> > > > +	 * grab a reference to slot->gmem.file even if the struct file object
-> > > > +	 * is reallocated.
-> > > Do you mean that as kvm_gmem_get_pfn() can't find a stale slot, it can't grab
-> > > reference to stale slot->gmem.file, even if slot->gmem.file has been set to a
-> > > different value, i.e., after invoking unbind(), bind() ?
-> > 
-> > I was specifically trying to say this:
-> > 
-> >  1. slot->gmem.file == old  ==
-> >     synchronize_srcu()       |===> window #1 for readers
-> >  2. slot->gmem.file == NULL ==
-> >     synchronize_srcu()       |===> window #2 for readers
-> >  3. slot->gmem.file == new  ==
-> > 
-> > kvm_gmem_get_pfn() can run in two "windows".  In the window #1, it can see @old
-> > or NULL.  In window #2, it can see NULL or @new.  The synchronization ensures
-> > it can't grab a reference to @old once window #2 has been opened.
-> Thanks for the clarification.
+
+
+On 6/8/2026 10:19 PM, Sean Christopherson wrote:
+> On Mon, Jun 08, 2026, Binbin Wu wrote:
+>>
+>>
+>> On 4/17/2026 3:35 PM, Binbin Wu wrote:
+>>> Guard the use of cpuid_func_emulated() with a check that the CPUID
+>>> sub-leaf index is 0, as cpuid_func_emulated() unconditionally returns
+>>> emulated features for index 0 and does not account for indexed leaves.
+>>>
+>>> Without the guard, when iterating over reverse_cpuid[] entries that
+>>> share the same CPUID function but have a non-zero index, e.g.
+>>> CPUID_7_1_ECX (function=7, index=1), the emulated features for index 0
+>>> are incorrectly OR'd into the wrong capability word.  For example,
+>>> RDPID (CPUID.7.0:ECX[22]) gets erroneously applied to CPUID_7_1_ECX,
+>>> which would allow userspace to set bit 22 of CPUID.7.1:ECX in the vCPU's
+>>> capabilities.
+>>>
+>>> This is currently benign as the affected bits in the non-zero index
+>>> words happen to not correspond to meaningful features, but it could
+>>> cause problems as new features are defined in those positions.
+>>>
+>>
+>> Hi Sean/Paolo,
+>>
+>> While the bug is currently benign, I still think it's worth fixing.
+>>
+>> There could be two options:
+>> - Considering cpuid_func_emulated() probably would not be extended
+>>   in the future, still keep this simple implementation, but add some
+>>   comments to cpuid_func_emulated() to call out only subleaf 0 is emulated
+>>   as suggested by Xiaoyao.
+>>   https://lore.kernel.org/kvm/fa47d520-1de9-4ddc-94ca-6bb53ac30f10@intel.com/
+>> - Add the index input parameter to cpuid_func_emulated().
 > 
-> > > But I'm not sure why to put the kvm_gmem_get_pfn() relying on
-> > > synchronize_srcu_expedited() in kvm_swap_active_memslots() in the comment of
-> > > release().  Without the guard of kvm_gmem_get_file(), kvm_gmem_get_pfn() may
-> > > need to provide some RCU read-critial section too for release() to wait by
-> > > synchronize_srcu()?
-> > 
-> > No, what I'm saying is that without synchronize_srcu() to create distinct
-> > window #1 and window #2 above, KVM would need this:
-> > 
-> > diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
-> > index a1cb72e66288..e66e431bdb98 100644
-> > --- virt/kvm/guest_memfd.c
-> > +++ virt/kvm/guest_memfd.c
-> > @@ -347,6 +347,8 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
-> >         xa_for_each(&f->bindings, index, slot)
-> >                 WRITE_ONCE(slot->gmem.file, NULL);
-> >  
-> > +       synchronize_srcu();
-> > +
-> >         /*
-> >          * All in-flight operations are gone and new bindings can be created.
-> >          * Zap all SPTEs pointed at by this file.  Do not free the backing
-> > 
-> > Otherwise there is no guarantee in-flight readers can't reach the old
-> > slot->gmem.file.
-> Hmm, however, if the reader (kvm_gmem_get_pfn()) has grabbed a reference to @old,
-> kvm_gmem_release() can't come; if kvm_gmem_release() comes, kvm_gmem_get_pfn()
-> should not have been able to successfully invoke get_file_active() on @old.
-> After kvm_gmem_release() returns, any subsequent calls to get_file_active() on
-> @old should fail and return NULL.
+> Definitely handle this in cpuid_func_emulated().
+
+Thanks, the diff looks good to me.
+I will send a separate patch for this.
+
+BTW, do you want to provide your SOB?
+
 > 
-> So, even if the reader can see @old, we're still fine without synchronize_srcu(),
-> as get_file_active() and SLAB_TYPESAFE_BY_RCU should have provide the safety.
+> diff --git arch/x86/kvm/cpuid.c arch/x86/kvm/cpuid.c
+> index db8be9173bd0..737ca3e7bda2 100644
+> --- arch/x86/kvm/cpuid.c
+> +++ arch/x86/kvm/cpuid.c
+> @@ -400,7 +400,7 @@ void kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
+>                 if (!entry)
+>                         continue;
+>  
+> -               cpuid_func_emulated(&emulated, cpuid.function, true);
+> +               cpuid_func_emulated(&emulated, cpuid.function, cpuid.index, true);
+>  
+>                 /*
+>                  * A vCPU has a feature if it's supported by KVM and is enabled
+> @@ -1369,11 +1369,15 @@ static struct kvm_cpuid_entry2 *do_host_cpuid(struct kvm_cpuid_array *array,
+>         return entry;
+>  }
+>  
+> -static int cpuid_func_emulated(struct kvm_cpuid_entry2 *entry, u32 func,
+> +static int cpuid_func_emulated(struct kvm_cpuid_entry2 *entry, u32 func, u32 index,
+>                                bool include_partially_emulated)
+>  {
+>         memset(entry, 0, sizeof(*entry));
+>  
+> +       /* KVM doesn't currently emulate any non-zero indices. */
+> +       if (cpuid_function_is_indexed(func) && index)
+> +               return 0;
+> +
+>         entry->function = func;
+>         entry->index = 0;
+>         entry->flags = 0;
+> @@ -1411,7 +1415,7 @@ static int __do_cpuid_func_emulated(struct kvm_cpuid_array *array, u32 func)
+>         if (array->nent >= array->maxnent)
+>                 return -E2BIG;
+>  
+> -       array->nent += cpuid_func_emulated(&array->entries[array->nent], func, false);
+> +       array->nent += cpuid_func_emulated(&array->entries[array->nent], func, 0, false);
+>         return 0;
+>  }
+>  
 > 
-> Am I missing something? 
+> 
 
-In kvm_gmem_get_pfn(), because slots_lock isn't held, this could happen if
-kvm_set_memory_region() didn't synchronize_srcu().
- 
-  CPU0                                    CPU1
-  kvm_gmem_get_pfn()                     
-    f = X (from slot->gmem.file)
-
-                                          kvm_gmem_release())
-                                            slot->gmem.file = NULL
-
-                                          kvm_set_memory_region()
-                                            slot deleted
-
-                                          kvm_set_memory_region()
-                                            slot created
-                                            slot->gmem.file = f (alloc the same object)
-
-  get_file_active()
-    file = f
-    file_reloaded = f
-
-  <KVM does weird things with an old memslot+file> 
-
-Obviously KVM would be wildly broken for other reasons, but just saying
-get_file_active() takes care of everything is misleading because it only handles
-reallocation of the object, it doesn't guarantee a reference to the correct file
-was obtained.
-
-E.g. AFAICT, users of get_mm_exe_file() don't care if they race with
-replace_mm_exe_file(), they only care that they have a reference to a live file.
-
-KVM on the other hand cares that kvm_gmem_get_pfn() gets the exact file that is
-associated with its memslot point.
