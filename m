@@ -1,117 +1,178 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CBF40D566
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 19:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E11346E7A;
+	Tue,  9 Jun 2026 19:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781033333; cv=none; b=ASlRoSVHbyMYqVx6etRO1+pUPemRFtDm2z0NNUwoRtWXXUKCerFjn+bvQ8OVf/KeCeRnTUVZnlooCMu/INjvtFidEPeieixWaC9tLSFTGFvI/UDEeEhZt0yOfwjHiYgSpEDH0t4mWhAwfXYiEduv6BUpze0KuC3ONbdeymmJuj4=
+	t=1781033920; cv=none; b=HK+oOQZbe+l7WqeBdp5MfPsRyal303eamJFc+NhLJ1lataNNuWkqsFa4F2Zm3SgFnzdZd5MVh4crsDHAD0+mRn9Bk+RyW12vMGZsnkov21hheuo8krXLJVh7zQ4R2IrxB8d47gToMX1XddWeI5O3ZIP5CUQPYJIlNGfH4XwbXVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781033333; c=relaxed/simple;
-	bh=DEq1jYRvE+O17je84XUU131j/oCIfTBQGBFCnmOvDsA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tXXCltoaqPJaNyqwawRC9Hifn/m1OH/qpfwzWa8xHmfELXCWWvc4hOl5YAEFsLY7NgExDU4s58G7+ItVjh7lnBxwMA54YqGM4IDNIcGaILw+SuKquGTRipbAtRkrgYVisMdN+/yLFl6iuV/eS6TzZMIJdGt5FeB3C9Ul8xpKVUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uEECr2HU; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781033920; c=relaxed/simple;
+	bh=KEmtf101ZMIJ0jpmSMTIacoCWDu2qiGGkHnUjRVZkz4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=rEx2PBTWQazzJPLRvVdVJ0r1aFjb8FHGJn9bKhH0/nRYECWreWu2Yf5F9fDqlj52oubMHlYT7Atm8Lzbo/gL7jwZ5sAVDbHwDnQSTjeTfsWhrcCzdmwfjKn5JQXVOG3/3U2PYFZN3szRwfiaeRcri0wkIcIFN4T9jGpN2fbMUrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ny7mzlMr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uEECr2HU"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d99629fd6so9707543a91.1
-        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 12:28:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781033332; x=1781638132; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=guAeemkMCkyys/PJ2ZLLCH34LSaDcqFIXbZHYNdXwyE=;
-        b=uEECr2HUmSWcV55B9qz9Ny9DXNP3hIV/RKcnoFLGbHpIv8QB6MmHdAlq+lQZ79z0eQ
-         qbQoP9XGhjLjR+GZMMTeEfSeDIQDcc70Tw39p5niuEKkQQxXwqG72JICA6F1zK4ERkh9
-         i6YL0rMFeBwMHfHCcwQ2XRm+7Li/V8KGyH0f6gqzU3JEmsFS2fvfq4mDZzqG/zn+/P8C
-         Ava0Zgpviwd/HCc+nBSyIvebYsklKQ8SGTOWnZ7hMsOXhzJgM4hisfLkwcqJk5pT2VsP
-         bUYm82u6SFL6AsBLkgVjgWD34maJ6WDmb+n1XgCEON2xgeosYfeSppa2zUHT1x/VUnr2
-         FEwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781033332; x=1781638132;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=guAeemkMCkyys/PJ2ZLLCH34LSaDcqFIXbZHYNdXwyE=;
-        b=dvzJRCvD0vD0WGXffk0k/OFcwHmQh/nJXKTbX1XvrHlw5OS97rok17Tv5W0vxvHTbb
-         d+80Bc6wGhnKS23zqB7ynMpXqxZzMLrAcapEW63PsdE6LaPTHwUe3Us4MTyrY7cMOgtm
-         4xG+4zO/FSZe7YP/zj8W85HeP87AKN6877QbIjFJJKoiO8axzMd6t1xVHm8WGcEtoMLE
-         Z0Y5brZtynfaoQ7KOUuPUQ7+Ujz3njdLojTNh0bJG8ngKRs+xzw71r1EacCeRnC8YE2v
-         TcEZgD1ZBVEE1crolO5nAF2mirtRoK7FD4wOkKXHKHGZNLZYrVM3ZEH8aH7NTQVby5rO
-         SDcA==
-X-Forwarded-Encrypted: i=1; AFNElJ9zdqtGjvq2/gLH+z1nigPV8hwCx6EKMH5xQufaV37+xUIdHDwkPL6k+/QDMPEJJDTk0U8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYeyr2zR2QqelJuMscDER4NgG4BpOmZtOlNgQMaLClInw/MFoS
-	5BDLOFjzABiG0MquSrotouL69BonJAiSQdZi3mZdLU7tkObfp9Yty7IH8nOHbtcjxi4Xaxx8QX7
-	MjKfjtw==
-X-Received: from pjbgq16.prod.google.com ([2002:a17:90b:1050:b0:36d:c3f4:8460])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:390c:b0:36d:f28b:72e2
- with SMTP id 98e67ed59e1d1-370ef2ec248mr22562261a91.8.1781033331787; Tue, 09
- Jun 2026 12:28:51 -0700 (PDT)
-Date: Tue, 9 Jun 2026 12:28:50 -0700
-In-Reply-To: <20260602034916.GGah5SvARd77mkvxe3@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ny7mzlMr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D337F1F00893;
+	Tue,  9 Jun 2026 19:38:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781033919;
+	bh=XPHGM0EGRSSY/Vy8eoWWttPOeuJ+XBDhfAa5o4+g8Sg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ny7mzlMrbHxebg5xp2gHjvAYhkJI01uzJ+ouzby6qT7y1pViGH+4HhN3VO90rOnqN
+	 OLvd16IRq2uR9vJ0LJoGlfBslukL1uZAv434N4XtLfrfEW1jD+C8d3HprQRzo+Ji4D
+	 whC71dm75hgy+Ed5uAXqstfnMuA1IJMCcrgcZLEiQHSYxtxksZc2X61v8qMlX1CYeg
+	 q72g+JIrElHNwaSUYv56fxBATu9jFOhSbISPXK0JnAIAIFxDo9CIrCjzmVvSf6RnjB
+	 hU5sl/5T/jnaDA4Pd9ZSmX6j2ZU/UzwYKXAkNiJFetjyL9fQG6kngC6foFbKZUd9Qp
+	 tq+sH9lZ+B7pA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 4/5] vfio/pci: implement get_tph and DMA_BUF_TPH
+ feature
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zhiping Zhang" <zhipingz@meta.com>
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org
+In-Reply-To: <20260608185646.4085127-5-zhipingz@meta.com>
+References: <20260608185646.4085127-5-zhipingz@meta.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 09 Jun 2026 19:38:38 +0000
+Message-Id: <20260609193838.D337F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529144435.704127-1-seanjc@google.com> <20260529144435.704127-3-seanjc@google.com>
- <20260602034916.GGah5SvARd77mkvxe3@fat_crate.local>
-Message-ID: <aihpch8FG6Esl3Jx@google.com>
-Subject: Re: [PATCH v4 02/47] x86/tsc: Add a standalone helpers for getting
- TSC info from CPUID.0x15
-From: Sean Christopherson <seanjc@google.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
-	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Michael Kelley <mhklinux@outlook.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Jun 01, 2026, Borislav Petkov wrote:
-> On Fri, May 29, 2026 at 07:43:49AM -0700, Sean Christopherson wrote:
-> > +static int cpuid_get_tsc_info(struct cpuid_tsc_info *info)
-> > +{
-> > +	unsigned int ecx_hz, edx;
-> > +
-> > +	memset(info, 0, sizeof(*info));
-> 
-> Let's not clear this unnecessarily...
-> 
-> > +
-> > +	if (boot_cpu_data.cpuid_level < CPUID_LEAF_TSC)
-> > +		return -ENOENT;
-> 
-> ... just to return here...
-> 
-> > +
-> > +	/* CPUID 15H TSC/Crystal ratio, plus optionally Crystal Hz */
-> > +	cpuid(CPUID_LEAF_TSC, &info->denominator, &info->numerator, &ecx_hz, &edx);
-> > +
-> > +	if (!info->denominator || !info->numerator)
-> > +		return -ENOENT;
-> 
-> ... or here.
-> 
-> We wanna clear it here, when we'll return success.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Medium] Unconditional validation of the flag-gated `ph` parameter causes=
+ valid requests clearing metadata to be rejected.
+- [Low] Mixing `goto`-based error handling with scope-based cleanup helpers=
+ (`scoped_guard`) in the same function.
+- [Low] Unprotected read of `priv->vdev` races with concurrent write to `NU=
+LL`.
+--
 
-Actually, if we take the approach of relying on the user to check the return
-code, then there's no need to zero the struct since all fields will be explicitly
-written, especially if we drop the "tsc_khz" field.  I was zeroing the field
-purely as defense in depth.
+commit f7be31969e4c92a551932ef245b8d9697e571272
+Author: Zhiping Zhang <zhipingz@meta.com>
+
+vfio/pci: implement get_tph and DMA_BUF_TPH feature
+
+This commit implements the dma-buf get_tph callback for vfio-pci-exported
+dma-bufs. It also adds the VFIO_DEVICE_FEATURE_DMA_BUF_TPH feature to allow
+userspace to attach TPH metadata to a dma-buf.
+
+> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_p=
+ci_dmabuf.c
+> index 1a177ce7de546..f1bc3733d3db5 100644
+> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+[ ... ]
+> @@ -327,12 +358,71 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_c=
+ore_device *vdev, u32 flags,
+[ ... ]
+> +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
+> +				      u32 flags,
+> +				      struct vfio_device_feature_dma_buf_tph __user *arg,
+> +				      size_t argsz)
+> +{
+> +	struct vfio_device_feature_dma_buf_tph set_tph;
+> +	struct vfio_pci_dma_buf *priv;
+> +	struct dma_buf *dmabuf;
+> +	int ret;
+> +
+> +	if (!pcie_tph_supported(vdev->pdev))
+> +		return -EOPNOTSUPP;
+> +
+> +	ret =3D vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET,
+> +				 sizeof(set_tph));
+> +	if (ret !=3D 1)
+> +		return ret;
+> +
+> +	if (copy_from_user(&set_tph, arg, sizeof(set_tph)))
+> +		return -EFAULT;
+> +
+> +	if (set_tph.flags & ~(VFIO_DMA_BUF_TPH_ST | VFIO_DMA_BUF_TPH_ST_EXT))
+> +		return -EINVAL;
+> +
+> +	/* PCIe TLP Processing Hint is a 2-bit field. */
+> +	if (set_tph.ph & ~0x3)
+> +		return -EINVAL;
+
+[Severity: Medium]
+Will this unconditionally reject requests clearing the metadata?
+
+The documentation mentions that setting flags to 0 clears previously publis=
+hed
+metadata. However, because this check is evaluated unconditionally, userspa=
+ce
+leaving the ph field uninitialized (containing stack garbage) when passing
+flags =3D 0 will cause the kernel to erroneously reject a valid clear reque=
+st
+with -EINVAL.
+
+Should this validation only occur if the relevant flags are set?
+
+> +
+> +	dmabuf =3D dma_buf_get(set_tph.dmabuf_fd);
+> +	if (IS_ERR(dmabuf))
+> +		return PTR_ERR(dmabuf);
+> +
+> +	if (dmabuf->ops !=3D &vfio_pci_dmabuf_ops) {
+> +		ret =3D -EINVAL;
+> +		goto out_put;
+> +	}
+> +
+> +	priv =3D dmabuf->priv;
+> +	if (priv->vdev !=3D vdev) {
+
+[Severity: Low]
+Does this unprotected read of priv->vdev race with concurrent unbound opera=
+tions?
+
+In vfio_pci_dma_buf_cleanup(), there is a concurrent write setting=20
+priv->vdev =3D NULL under the vdev->memory_lock semaphore.
+
+Since this read occurs without locks, can it race with the concurrent write
+and cause KCSAN warnings or load tearing? Would using READ_ONCE() here and
+WRITE_ONCE() in vfio_pci_dma_buf_cleanup() help prevent this?
+
+> +		ret =3D -EINVAL;
+> +		goto out_put;
+> +	}
+> +
+> +	scoped_guard(mutex, &priv->tph_lock) {
+> +		priv->tph_st =3D set_tph.steering_tag;
+> +		priv->tph_st_ext =3D set_tph.steering_tag_ext;
+> +		priv->tph_ph =3D set_tph.ph;
+> +		priv->tph_st_valid =3D !!(set_tph.flags & VFIO_DMA_BUF_TPH_ST);
+> +		priv->tph_st_ext_valid =3D
+> +			!!(set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT);
+> +	}
+> +	ret =3D 0;
+> +
+> +out_put:
+
+[Severity: Low]
+Is it okay to mix goto-based error handling and scope-based cleanup helpers=
+ in
+this function?
+
+The kernel cleanup guidelines discourage mixing goto labels for cleanup (li=
+ke
+goto out_put here) and scoped_guard() in the same function to avoid confusi=
+ng
+ownership semantics.
+
+Would it be better to either use a __free() wrapper for the dmabuf or stick=
+ to
+traditional mutex_lock()/mutex_unlock() here?
+
+> +	dma_buf_put(dmabuf);
+> +	return ret;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260608185646.4085=
+127-1-zhipingz@meta.com?part=3D4
