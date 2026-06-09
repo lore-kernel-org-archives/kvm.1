@@ -1,58 +1,58 @@
-Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
+Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B32322B9F
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 14:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.83.148.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4868E2820A9
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 14:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.13.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781014329; cv=none; b=sKUyeG15/D123STGuBFG8bSYhWJW4zcWsAd6L5dIFlxUO6n3l47P0GQpDT3rQxqtZ469eTtXHrcuneBESI/UaNQnYMrfbpHYGJ5F/BMcROfMcD9HQTrX5UAztYMHr81QcFVFfaDNAoUApnNPuD/ZJw3C6Tsks9FFYHNqvGGuWxI=
+	t=1781014363; cv=none; b=rZw2frXeTCrsvQlABv85Y+Qqc5S5dbIYbBA96o+Ezyv+xcO6D4AaecXfbqRpoteMfS9kjlUUqHUamSbMjKbUU1zGF26m2mv/k2rLpapcnCPQ1jX3HQ3ugWZYl8NFa/8p6L0SU4wKsvZ6YKfWgO7AgTE6YwWUxqT7e1dInfGeIao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781014329; c=relaxed/simple;
-	bh=NFh52IwhbAuSzafOUg9FspTSIETuppT70/9FXJHg/xI=;
+	s=arc-20240116; t=1781014363; c=relaxed/simple;
+	bh=1wYM4RKY+H1AM9KotMN6AdjWfWVDw7n4fZfwXbtIpsM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nhy/HLK2wT/tf99tTp1TemEQAN84++2F0lcsAIkIf/ugXGdJNMibzlP4GVyOGTiH/gXjtJq/wZzWDGGWGUTgWUvqeHarkbbCXXblIN+15FiYqlQ8OBmT6aSuQXzDhYnzVwGUxebq8QkGaQNWQJ55MyoFZRGfXvqpnvqtPzRczOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=dgv/76cc; arc=none smtp.client-ip=35.83.148.184
+	 MIME-Version:Content-Type; b=M1WJuFFlHhHfW14mRPXKqirI8AnFkp7vlrBcBg+53dwdtMuKZ5tmithZ2xgBcEDN8Apjc7FlAatwLtYZSLOJzSlq/pKz7rooq+AthKq8Vf3LFkRpYyjqD/RzdbCbLDEjB0+IiTVviV3cTKtdObOhfQPOs8xo82byc0CYufdHCns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=m+2fGP8M; arc=none smtp.client-ip=52.13.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="dgv/76cc"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="m+2fGP8M"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1781014327; x=1812550327;
+  t=1781014362; x=1812550362;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RmLG5xdfVKsoeFzFGudwb0+dfk57vQTiPg/nbQ0Btyc=;
-  b=dgv/76cc9LGIzpuOoKaCJDE6W67eYYnaRqkYSZ9miHyW+QJBfNuehqh6
-   oWwdatXtXyK4H+WbPjgdA8MS1aqA9CvnaSmNPZx2+dD6u2/MMO/yLavQ0
-   KeIdX9YA5WNWmpjXxUw2HEKqi3NzWCWVVQsjpEbqyeKrtfZ2EKQK7/5EQ
-   9tEb6wA947nLoXTr70laZFy6MVfOHoCt4oGUVfhQHidtqw6tH7ctTnZ+T
-   pUc1WwmUx+5GywtWZ1QN+jjwgCCruM1+BibxC+bRDGjWsWI1dPpiQXiZl
-   UrIp/3KRuGzGHhRhesKCWuDgoySbm7MB3OkQHgWZl1vwSeMQv4BaWfNnD
+  bh=E83tRH+t9tx2AQYd+iPOeKafd+rraU3Xm94zeMyDYRI=;
+  b=m+2fGP8MfksP1BFJ/4TDIVevca7+gzTQx/nTg2dCxuaG+cBfhZKIcA6J
+   2/arRcDaFKzsvNaqLk2bdDKKWCGOwMfnyjUMhHA2+OgWVpAZHNPWPiyjb
+   ORsYVUGL9roUefP34q5MQLVRB+2V5a8mJGBXQSGNeSoDdci++UphT4ML9
+   kJQv8gS90w+ze41pEARSoKwH7hHSqgi8WXqUEV9PziM8+7H8PnjS84Nki
+   v8lxgPVoTXOenjuwl17PaczHT1YXFvt59EDJBxYLLBIXYjNZuY1SCS5eX
+   yRjw5okQHyEiymN0HoOwOAOrESk1fw0cwqC2haV21XFDwTyQDMD03qA19
    Q==;
-X-CSE-ConnectionGUID: I4A33L2DS5aiA6re2BHqBg==
-X-CSE-MsgGUID: CZpu6Pw/QuOd/fPNvi3HeA==
+X-CSE-ConnectionGUID: 2Y79L9zrR5aOMhi2OBfDZg==
+X-CSE-MsgGUID: FzdZJ5SuRiCGD1hGvLCWHw==
 X-IronPort-AV: E=Sophos;i="6.24,196,1774310400"; 
-   d="scan'208";a="21187015"
+   d="scan'208";a="21389180"
 Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 14:12:05 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:14361]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.58.234:2525] with esmtp (Farcaster)
- id b7046bd1-063f-4771-b750-b723909d470e; Tue, 9 Jun 2026 14:12:04 +0000 (UTC)
-X-Farcaster-Flow-ID: b7046bd1-063f-4771-b750-b723909d470e
+  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 14:12:39 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:18651]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.226:2525] with esmtp (Farcaster)
+ id 1f144e75-09bf-43bf-961d-23262118e5f3; Tue, 9 Jun 2026 14:12:39 +0000 (UTC)
+X-Farcaster-Flow-ID: 1f144e75-09bf-43bf-961d-23262118e5f3
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 9 Jun 2026 14:12:04 +0000
+ Tue, 9 Jun 2026 14:12:39 +0000
 Received: from dev-dsk-gmazz-1b-865f0d50.eu-west-1.amazon.com (10.253.70.18)
  by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 9 Jun 2026 14:12:03 +0000
+ Tue, 9 Jun 2026 14:12:38 +0000
 From: Giacomo Mazzola <gmazz@amazon.de>
 To: <kvm@vger.kernel.org>
 CC: Giacomo Mazzola <gmazz@amazon.de>
-Subject: [kvm-unit-tests PATCH 5/8] x86: replace per-AP bringup prints with a single summary line
-Date: Tue, 9 Jun 2026 14:08:57 +0000
-Message-ID: <20260609140901.95727-6-gmazz@amazon.de>
+Subject: [kvm-unit-tests PATCH 6/8] x86: add timeout-based SMP bringup when fw_cfg is unavailable
+Date: Tue, 9 Jun 2026 14:08:58 +0000
+Message-ID: <20260609140901.95727-7-gmazz@amazon.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260609140901.95727-1-gmazz@amazon.de>
 References: <20260609140901.95727-1-gmazz@amazon.de>
@@ -62,60 +62,70 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D035UWB002.ant.amazon.com (10.13.138.97) To
+X-ClientProxiedBy: EX19D032UWB001.ant.amazon.com (10.13.139.152) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Remove the per-AP "CPU %d online" printf from ap_online() and the
-per-CPU "enabling apic" printf from enable_apic().  Replace them
-with a single "smp: %d CPUs online" message printed once after all
-APs have come up.
+When fw_cfg is unavailable, fwcfg_get_nb_cpus()
+returns 0 and the existing bringup loop spins forever waiting for
+cpu_online_count to match.  Add a timeout-based fallback that
+watches cpu_online_count and declares bringup complete once no new
+AP has checked in for AP_QUIESCE_TICKS (~4 billion TSC ticks).
 
-On systems with many CPUs, the serial lock contention from per-AP
-prints delays bringup long enough to trigger platform watchdogs.
-A single summary line provides the same information without O(ncpus)
-serial transactions during bringup.
+Assuming a TSC frequency of at least 1 GHz, this gives between ~1 s
+(at 4 GHz) and ~4 s (at 1 GHz) of quiescence after the last AP
+before declaring bringup complete.
 
 Signed-off-by: Giacomo Mazzola <gmazz@amazon.de>
 ---
- lib/x86/apic.c | 1 -
- lib/x86/smp.c  | 4 ++--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ lib/x86/smp.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/lib/x86/apic.c b/lib/x86/apic.c
-index c538fb5f..483b26d3 100644
---- a/lib/x86/apic.c
-+++ b/lib/x86/apic.c
-@@ -237,7 +237,6 @@ void set_irq_line(unsigned line, int val)
- 
- void enable_apic(void)
- {
--	printf("enabling apic\n");
- 	xapic_write(APIC_SPIV, 0x1ff);
- }
- 
 diff --git a/lib/x86/smp.c b/lib/x86/smp.c
-index 0cd44cdc..706f071a 100644
+index 706f071a..2fcc6c65 100644
 --- a/lib/x86/smp.c
 +++ b/lib/x86/smp.c
-@@ -97,7 +97,6 @@ void ap_online(void)
- {
- 	sti();
+@@ -14,6 +14,13 @@
  
--	printf("setup: CPU %" PRId32 " online\n", apic_id());
- 	atomic_inc(&cpu_online_count);
+ #define IPI_VECTOR 0x20
  
- 	/* Only the BSP runs the test's main(), APs are given work via IPIs. */
-@@ -294,7 +293,8 @@ void bringup_aps(void)
++/*
++ * Quiescence timeout for AP bringup when the CPU count is not known
++ * (bare-metal EFI without fw_cfg).  Assumes a TSC frequency of at
++ * least 1 GHz; at 4 GHz this gives ~1 s, at 1 GHz ~4 s.
++ */
++#define AP_QUIESCE_TICKS (4ull * 1000 * 1000 * 1000)
++
+ typedef void (*ipi_function_type)(void *data);
+ 
+ static struct spinlock ipi_lock;
+@@ -293,8 +300,24 @@ void bringup_aps(void)
  
  	_cpu_count = fwcfg_get_nb_cpus();
  
--	printf("smp: waiting for %d APs\n", _cpu_count - 1);
- 	while (_cpu_count != atomic_read(&cpu_online_count))
- 		cpu_relax();
+-	while (_cpu_count != atomic_read(&cpu_online_count))
+-		cpu_relax();
++	if (_cpu_count) {
++		while (_cpu_count != atomic_read(&cpu_online_count))
++			cpu_relax();
++	} else {
++		int prev = atomic_read(&cpu_online_count);
++		u64 last_change = rdtsc();
 +
-+	printf("smp: %d CPUs online\n", _cpu_count);
++		while (rdtsc() - last_change < AP_QUIESCE_TICKS) {
++			int cur = atomic_read(&cpu_online_count);
++
++			if (cur != prev) {
++				prev = cur;
++				last_change = rdtsc();
++			}
++			cpu_relax();
++		}
++		_cpu_count = prev;
++	}
+ 
+ 	printf("smp: %d CPUs online\n", _cpu_count);
  }
 -- 
 2.47.3
