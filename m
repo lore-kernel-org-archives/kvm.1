@@ -1,144 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB50A3FD95C
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 16:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85A54C0431
+	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 17:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781022808; cv=none; b=abO1OBcTDRo3kFgsoso6CNX4xPvFkdfeFbSAM/a501OC/gujP8uzQKJistxp9fVaorjzQUwIHggA3EqxYk05Cu+yndGOnnZWqD8CrHgDj0A9rGILWGsEpRDyHPaVkelCTkXl4TTW3Qi1UtN2Kt/WnIJ672YbG1h6783/F6lc0Wo=
+	t=1781025427; cv=none; b=AvRanXmG25oSa9MxeWtgdLiJybTXy7dwOhUmggfrgOL1LUhJRYwtmD6P988yZuDmQLyPsrEWEeyPDKdx1kR6XmM/dWgyNecbbW8qmfaKgI0pJACYp2y4saDgd/k99p7W6k/uhiMFcwpABNjF6RmLtGkkpnO2Lf3rrgkh3wcv7sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781022808; c=relaxed/simple;
-	bh=VfH9LGZUMTYegd/Bzv8UU3wNweKq2zzgov3XFILWfYw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=WNuPRCYbNq9XtAUA8Opl6GsHJLLcCN2yj8IYcvCj1MeVLPYLijhsJ17XWJbGDEWmTRWBJbOWLZL69aR9XTUG2u0JoOPqdh2ByIn+4L5SPq5eE/ZN+4adNUsC0KfH3iakwLJY32E2h4jdMOYAc7UZyr4qmMZ5NIArnd8ZqvLmqCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOWFqMaO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781025427; c=relaxed/simple;
+	bh=0yX1le44tc/9XtzmqoIANl5jWHza37di/KrrdJWLzbQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=S4yDI4SIoOnCJvgIPR5ZyGT8JrqBRoXFkF1O31fMhijogWpzBIeR50amcJswchuucmur6Njfqizm9+78HYpTgGWfCVglsRtvL7/Wzfp54Wazg0DiR4mPEQFFb1iHYJdY8SJ9heBKe3p+HSZB9r5cFsTl5R55avuyUJweYKx+H/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s8KBVCtV; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOWFqMaO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CD31F00893;
-	Tue,  9 Jun 2026 16:33:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781022807;
-	bh=g894BgMtN/gVQ87leMONI6+j9eHxQUA5SXiC+yVEYmo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NOWFqMaOKHB7wUkl+L3GItyTEWarE/9j3Gnk7CwU6h62WBfffbu/Ymh18Hi48V1LV
-	 DBTVF/v2jsWxIygGQQDsaQjJ4BQkeQwTE1m+d/AYBOSPDZJ5W4l72kbbHzhH+P6lKb
-	 o+VhOiBS+8Mt8JU41gl4bJ+vNGtdtkwxFtu1qDe8/HFZyQ9+tbnEdwbFzGq8OWsFsx
-	 DhCYhOdZLR/+PUqDZ9d/lWyM7L7Bt1ZqBbB43R/5bP8gRjtVUur3kzlwZHy2/+DMH/
-	 jW40McCST0Hp2Ua5a4ZIfflW8V4Q1oN/6J+DjK6pwG3Bad9Hno3lLAZHh4eY2cZGpn
-	 Mttwtxjaz/uAw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 3/3] KVM: s390: vsie: Use mmu cache to allocate rmap
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260609161646.695361-4-imbrenda@linux.ibm.com>
-References: <20260609161646.695361-4-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 09 Jun 2026 16:33:27 +0000
-Message-Id: <20260609163327.73CD31F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s8KBVCtV"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf30576aa3so41043885ad.3
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 10:17:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781025424; x=1781630224; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=llq4Kn5i8ui4r4izxxTvg7cm7qJE2krNstJXZkbKQn4=;
+        b=s8KBVCtVd1cjGtYZ0XC+KmoyL3dYkMocyXltXuOVX001T1Vhpg3oSCO9LHHYzPEx+R
+         v7llcoRBz8VAxnVxAfrGryebeAP7OpQ2dL9s4xEoeTK7Hil6CKRqTQp50RUmnbKwA//0
+         sTaGzvjKSq2vSxnkWKrL47I58hGeXqgNHkBOZhk9wtx8Q0K5ydW+9WDyL7dbm9PD/ZVL
+         5wptLmtUv9nrDXECohxU5pjxw2jVrg4+s0p9MrHtikrGvAKHcvSStexyfHFVVnhlxzER
+         34Oxm/AN5N2LfYI+z1dMtGtFErPRMECxr8fxI3k4MnXbZmYe176ZX/emaTmKyc1ppxPY
+         AEaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781025424; x=1781630224;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=llq4Kn5i8ui4r4izxxTvg7cm7qJE2krNstJXZkbKQn4=;
+        b=YWU2KrRLRt7nvDYsfks1i+oSKlCjpnKcYsKS7VDyaw4uTsP6Jv41oaVe2L2vpTnoMU
+         30Sn1Vw2aNRxnefTIgRlFj6Id0OQkicg5edaIr0wmHg7zgF34u9af8XI7ob5VD44eYvb
+         3sd4Ze/3sEhgFfH87klEnCaiNu5fD+s/OTOux+UkjWg9RCCqRtqBUGhLML+BAzDIVfjb
+         MhrwDA4qGx0uOb3j+YaAXerQXxJbkwA2zlFc+IeR+rE+nVwHAJ14vrE0/6upBq7znkRc
+         75jv/mmrchTnOEdORaQ74ADKlMpoJRC873Nf1EdAitP5QefauKlLwKi4MzUui6iW7hEL
+         VjEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9rqDU8nRzhMYMh1sT6hx/Y7meoxMo3KlioR0rDhkOyDRzyZSFfjhH/79XV/jPv2FvgKnE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyH8T7oT16vNrCQH6t4m9Z1PB4AJ45hJDyb8h+gAMd2rjQFb7SN
+	el615uAjarSVPeDGBa9geIp83LNv3aJOk18ha5bhIg2anZ5DTzaxILA8uNQ2WgtHY9YFk0AIjKf
+	7smJd9w==
+X-Received: from plpg1.prod.google.com ([2002:a17:902:9341:b0:2bd:1ca5:b928])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:196b:b0:2be:3434:4e28
+ with SMTP id d9443c01a7336-2c2a1c66522mr44737215ad.19.1781025423861; Tue, 09
+ Jun 2026 10:17:03 -0700 (PDT)
+Date: Tue, 9 Jun 2026 10:17:03 -0700
+In-Reply-To: <87a4t86a0l.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260529144435.704127-1-seanjc@google.com> <20260529144435.704127-2-seanjc@google.com>
+ <87fr315fq9.ffs@fw13> <aiMPxl5vkvJDldi9@google.com> <87a4t86a0l.ffs@fw13>
+Message-ID: <aihKj-0nP7bUbNHH@google.com>
+Subject: Re: [PATCH v4 01/47] x86/tsc: Never re-calibrate TSC frequency if its
+ exact timing is known
+From: Sean Christopherson <seanjc@google.com>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
+	xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Michael Kelley <mhklinux@outlook.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Fri, Jun 05, 2026, Thomas Gleixner wrote:
+> On Fri, Jun 05 2026 at 11:04, Sean Christopherson wrote:
+> But we also should have a check in the TSC init code somewhere which
+> validates that X86_FEATURE_CONSTANT_TSC is set when
+> X86_FEATURE_TSC_KNOWN_FREQ is set. X86_FEATURE_TSC_KNOWN_FREQ is useless
+> w/o X86_FEATURE_CONSTANT_TSC.
 
-New issues:
-- [High] Slab out-of-bounds write due to undersized MMU cache allocations
+Ugh, any objection to punting on this for now?  KVM and Xen guests will trigger
+TSC_KNOWN_FREQ without CONSTANT_TSC, thanks to commits:
 
-Pre-existing issues:
-- [High] Incomplete forward progress guarantee leaves preexisting livelock =
-unresolved
---
+  e10f78050323 ("kvmclock: fix TSC calibration for nested guests")
+  898ec52d2ba0 ("x86/xen/time: Set the X86_FEATURE_TSC_KNOWN_FREQ flag in xen_tsc_khz()")
 
-commit d137e1b91e093869ffa253ca4d6339ea68a1d49a
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Hyper-V guests might as well?  Hyper-V's handling of TSC is weird, even for a
+hypervisor.
 
-KVM: s390: vsie: Use mmu cache to allocate rmap
-
-Use kvm_s390_mmu_cache_alloc_rmap() to allocate the rmap in
-gmap_insert_rmap(), instead of a normal kzalloc_obj() with GFP_ATOMIC.
-
-> This guarantees forward progress.
-
-[Severity: High]
-This is a pre-existing issue, but does this actually guarantee
-forward progress?
-
-Immediately after allocating the rmap, gmap_insert_rmap() calls
-radix_tree_insert(&sg->host_to_rmap, p_gfn, rmap).
-
-Because the radix tree is initialized with GFP_ATOMIC, node allocations
-can still fail under memory pressure and return -ENOMEM. The fault loop in
-_gaccess_shadow_fault() catches this, drops the lock, calls
-kvm_s390_mmu_cache_topup(), and retries:
-
-again:
-	rc =3D kvm_s390_mmu_cache_topup(vcpu->arch.mc);
-	...
-		rc =3D _gaccess_do_shadow(vcpu->arch.mc, sg, saddr, walk);
-	...
-	if (rc =3D=3D -ENOMEM)
-		goto again;
-
-Since kvm_s390_mmu_cache_topup() does not call radix_tree_preload(), the
-retry attempts another atomic allocation, potentially leading to an infinite
-livelock when atomic memory is exhausted.
-
-> Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> CC: stable@vger.kernel.org # 7.1
-
-[ ... ]
-
-> diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
-> index 52d55ddea8d4f..1d289f8fa3b20 100644
-> --- a/arch/s390/kvm/gmap.c
-> +++ b/arch/s390/kvm/gmap.c
-> @@ -1000,7 +1000,8 @@ int gmap_pv_destroy_range(struct gmap *gmap, gfn_t =
-start, gfn_t end, bool interr
->  	return 0;
->  }
-> =20
-> -int gmap_insert_rmap(struct gmap *sg, gfn_t p_gfn, gfn_t r_gfn, int leve=
-l)
-> +int gmap_insert_rmap(struct kvm_s390_mmu_cache *mc, struct gmap *sg, gfn=
-_t p_gfn,
-> +		     gfn_t r_gfn, int level)
->  {
->  	struct vsie_rmap *rmap __free(kvfree) =3D NULL;
->  	struct vsie_rmap *temp;
-> @@ -1010,7 +1011,7 @@ int gmap_insert_rmap(struct gmap *sg, gfn_t p_gfn, =
-gfn_t r_gfn, int level)
->  	KVM_BUG_ON(!is_shadow(sg), sg->kvm);
->  	lockdep_assert_held(&sg->host_to_rmap_lock);
-> =20
-> -	rmap =3D kzalloc_obj(*rmap, GFP_ATOMIC);
-> +	rmap =3D kvm_s390_mmu_cache_alloc_rmap(mc);
-
-[Severity: High]
-Does this result in a 1-byte allocation for the rmap?
-
-Since mc->rmaps is an array of void pointers, when kvm_s390_mmu_cache_topup=
-()
-populates the cache in arch/s390/kvm/dat.c:
-
-	o =3D kzalloc_obj(*mc->rmaps[0], GFP_KERNEL_ACCOUNT);
-
-it evaluates sizeof(void), which is 1 byte. When gmap_insert_rmap()
-fetches this 1-byte object from the cache and writes to rmap->r_gfn
-(at offset 8):
-
-	rmap->r_gfn =3D r_gfn;
-
-can this cause a slab out-of-bounds write and memory corruption?
-
->  	if (!rmap)
->  		return -ENOMEM;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260609161646.6953=
-61-1-imbrenda@linux.ibm.com?part=3D3
+Even when the frequency is provided in CPUID by the hypervisor, QEMU at least
+requires a fairly explicit opt-in to advertise CONSTANT_TSC, presumably to try
+to prevent users from shooting themselves in the foot.
