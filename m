@@ -1,92 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4FB41169D
-	for <kvm@vger.kernel.org>; Tue,  9 Jun 2026 19:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3848E3905F4;
+	Tue,  9 Jun 2026 19:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781034857; cv=none; b=tgqcIO9xrUSA5ZlipSURqMkDKIhPmnglE/EJ0/TsVpaD/VmfYLIr1JP1mAJTYh9rp6+n5OFVq6+myj3Zb1fNgJPx2qEPwNbRGVqgvi9fYvI2H3GzydhaftVrDkoMsVzT3kbyhex6E6+8WFqYTICqJRWyyVLrU+gAPbqhFPsKEmE=
+	t=1781034975; cv=none; b=svhnITqJsNmIRiQ+WEzoHqixkuUWlAEComAeJO09BsOBKokgtE7G8Ec5rGpNmRMu2PIvqPUs6O+Ikc+ewwBAKC+Ko2vDw4Q/vVGTiJhiskRrijIWwJcag2Sv8GBnBW1f7+5tO9VF3x2SmwAkyj5a5GoYcG8kLDZGlIQvNpMTTgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781034857; c=relaxed/simple;
-	bh=TkaWFvSM6RyZrxUqK+02jv3D7cQIKgZRTwhbtgg1dkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CPJLGUQHzyQtCL6/A3S3hFoWalD6f5bPuj2KcnMabfUWkicw4D7WZcM0mQcFo9DcAm/6QcRUD9psMcyq7GlzS3CvG/HiCEX2C+Bh9CKBt1ZMhwlcGHUznaSCPhxqCdnI+rGTE12614QqdP+psZXUbORby7zNnjC43ku0Ou2MccU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JTGFSfSN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mygTeC2u; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781034975; c=relaxed/simple;
+	bh=6NOGgMTwvpFK9y9CwWV59BdaEs794jRjbrN/rBHlaP0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=YU0ADBRRaPzT773Fqhuu8aVRjuUaMdTy0AGJZ5Q5llobRIN/+vd5bnZTJgOhNH0UsItjQHgfM9ToxhwusEcny24BpIau6lDRO9OPsImpws9Y5SXnmEouf7AJMWhvmSHnmIbCK8NyZzVhJ3/EfSWABIejr/twIzCoSKJs2iGJAsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QvSThxOG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JTGFSfSN";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mygTeC2u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781034852;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JJYRstItJSN50oqy/Ac1ulkKACubDQSvXFZtdF0CG6M=;
-	b=JTGFSfSN+bAVLQzYPuhpi3zLNtLLz/SCxRqnIi3ewWC0pnES4GuwmMulxe9Ebq5B7X9eFc
-	JyfPCm2W44WtKyrvRgXu+eh8U8DgQZtqzSICossYBsWHDCILAsQ0OOisuuNXZuQGpVKnpp
-	PBqf4uVXTUZDxrJv9BmAf+lfv7M6Ni0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-428-_D53AjS1PmCmtVNvWkPiJw-1; Tue, 09 Jun 2026 15:54:08 -0400
-X-MC-Unique: _D53AjS1PmCmtVNvWkPiJw-1
-X-Mimecast-MFC-AGG-ID: _D53AjS1PmCmtVNvWkPiJw_1781034847
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-460153ce644so4459730f8f.0
-        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 12:54:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781034846; x=1781639646; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JJYRstItJSN50oqy/Ac1ulkKACubDQSvXFZtdF0CG6M=;
-        b=mygTeC2u5j8LZWYScebgCwO/NH4RzZ6PN7eqj++qs6EmIiDux0MtYalgKNEhNzzIa6
-         bXObRAVzagZ0PXOTV5iQDA3cH2leJghZhkumz8uW9zO0Tu+tAdKfwABjxkJKQEn5c6TD
-         YOnD/eGBZ1j+KRUd7H9GgmVzxa3Ft9SEYHNhHkNpwTQVJ5bRnNLcxB5eLBCNqt8xiSzg
-         T1vAi7PCdiGZ2UM/H4BxAzjQQ2Lufp0eywpW+UZB6n1lYfMrgqW8SrBn1qE63zDvA/4d
-         1lZNuZQkEEvRH380SZDNWZz6k/swK8ENr8X+GANVugNHV3LhH/ORh/bAlrGp2KxuPGXD
-         2CCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781034846; x=1781639646;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JJYRstItJSN50oqy/Ac1ulkKACubDQSvXFZtdF0CG6M=;
-        b=fri+5STo1WX8oz2lq+ydzxFCLRooBIu/DM3vZs9StC4xhsoMsdIL9koEy33CjLjw1S
-         OuxxeZSxm5NcxgQWxZA1Vt3wPbX1P9PWoGN/Gz3agQPSkcDF9rj+UtencO/gIQoI7Pis
-         c+nXZrhmRQliE2GhbL5Su8sNaFOWuddlLmn5ikYez2taTmDLk/HEXxRyCkUA+aovJYSl
-         uKLbVle2TLzRGf4LQMoldPjMxSBUeRMDbwRnT+a9Ja94UBBG0WIYW9yPMHHtVwMIKdJk
-         IZwogjxj2+Lgx46TauxmkgHLFQRTqcDgBVuC0Gob2aWp4bWGwmo7rTboSooYMRrmQ0sW
-         NlVA==
-X-Forwarded-Encrypted: i=1; AFNElJ/hBipMutTOVNrGRaoWjbgR85AuZpNQlEBhFFnFM7LqlmGYS7QoXozv+vW+eJdN+4qLLfg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpMxGlM1aVBWTJxdSvULl4vWraE4lsG+uM28/0lELYzJnef9QB
-	QBGFXyI94aQmUuHFeR2MWc3TLbUPONy47gqibfoGWGzcxgguyHC7t84azJNkQhP79PaRJ7G5ftM
-	6Xqs/eGq3Cvet7YsPIwZq0FHw1gEDPBH/6PyeaMkHag3n60buEQga9g==
-X-Gm-Gg: Acq92OEppqRqfvnrRTAti691UEEAjpZrPfm3qV7DruoNkAECVFGcyBPwMzQlYDZteDd
-	zQvisRoANoOyMsqXSiPbwZiKEUDTlnA7+GwJOWBeulj9XDuQdT+MObfi8kB+qIzL+6U1YW9Xigy
-	IkpQsJXOC7hNfdWset3254WahKnhQyARhIynbSJHFJWY9B4bZZqRjLt2Me4b/FLQwIDdJQVH4PJ
-	hTeL+MSjlai7HeCLXPCuOjIpDcu0Bd1dOtb28e2hXrNtUWp/Zp5kpxGKdFo+HkGoy49WU+ilw7+
-	Tm9v4EVntQObiJrH9yBlUKAy3UrkOxiuuF31P0xsvgkE+8MgQbhoGwSRZe6sD4115qMnTDspA1F
-	M4u5IAdIz1xVvzlI8LTV3RA0LuacCCd2hx7liVj7jtticVZ2gVVLIkg==
-X-Received: by 2002:a05:600c:8b6a:b0:490:bb19:b110 with SMTP id 5b1f17b1804b1-490c26216ddmr332896585e9.27.1781034845719;
-        Tue, 09 Jun 2026 12:54:05 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b6a:b0:490:bb19:b110 with SMTP id 5b1f17b1804b1-490c26216ddmr332896135e9.27.1781034845160;
-        Tue, 09 Jun 2026 12:54:05 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3c183asm511355045e9.6.2026.06.09.12.54.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 12:54:04 -0700 (PDT)
-Date: Tue, 9 Jun 2026 15:54:02 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Shivank Garg <shivankg@amd.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: guest_memfd: fix NUMA interleave index
- double-counting
-Message-ID: <20260609154046-mutt-send-email-mst@kernel.org>
-References: <0eff0a90667b900bee837d06b5db5025e1f304b5.1780501924.git.mst@redhat.com>
- <178102235481.2735841.1203781071933134475.b4-ty@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QvSThxOG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A840F1F00893;
+	Tue,  9 Jun 2026 19:56:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781034973;
+	bh=y4iRsk+AhfxJSSqxKswZ1/phd34ipK67r/z1ycidumM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=QvSThxOGvVJFNdr/naZAD6M8F4kr7tHnFy+Z5x0HnJL/H4yOVFl3qTjhpbbvPGMXQ
+	 cXBHVIgTsrYY2nzaNrl7bYLp6vnklAFTnZQoIcYV9NGY/Efnk/tQmTYqAA9txv/DT8
+	 QLQwMkUg9p9H7vm1ZqQ4AEd31RQjqayQa3zEkyboXBs7J1b/INwl2LvqmwkbktcPwY
+	 rMxsJIWA5Fwt7aVHw7Tk6enfab2EDtBKPtxIAHQIs4X0WnrC/AwdOpKaAbq9Lr+rf/
+	 BUyg3HdHYBXhG3pYTlAv3BqUpiW25/Fr1l0EXlFT6nTpJEpXw4jXyCecBwicC6NX39
+	 dmlfW70iAH08w==
+Date: Tue, 9 Jun 2026 14:56:12 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Zhiping Zhang <zhipingz@meta.com>
+Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian Konig <christian.koenig@amd.com>, kvm@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>
+Subject: Re: [PATCH v6 2/5] PCI/TPH: expose enabled requester type and
+ capability helpers
+Message-ID: <20260609195612.GA85322@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -95,47 +48,106 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <178102235481.2735841.1203781071933134475.b4-ty@google.com>
+In-Reply-To: <20260608185646.4085127-3-zhipingz@meta.com>
 
-On Tue, Jun 09, 2026 at 09:31:29AM -0700, Sean Christopherson wrote:
-> On Wed, 03 Jun 2026 11:57:33 -0400, Michael S. Tsirkin wrote:
-> > kvm_gmem_get_policy() sets *ilx to the full page offset
-> > (vm_pgoff + vma offset).  But get_vma_policy() adds the page
-> > offset on top of *ilx, so the offset is counted twice.  This
-> > causes NUMA interleaving to skip nodes: for order-0 pages the
-> > effective index jumps by 2 for each consecutive page.
-> > 
-> > The get_policy vm_op should return only a per-file bias in *ilx
-> > (like shmem_get_policy does with inode->i_ino), letting
-> > get_vma_policy() add the page-offset component.
-> > 
-> > [...]
+On Mon, Jun 08, 2026 at 11:56:39AM -0700, Zhiping Zhang wrote:
+> Add pcie_tph_enabled_req_type() so drivers can query the enabled TPH
+> requester mode without reaching into pci_dev internals, and
+> pcie_tph_supported() so they can test whether the device exposes the
+> PCIe TPH Extended Capability without doing the same.
+
+s/exposes/advertises/
+
+> This keeps pci_dev::tph_req_type and pci_dev::tph_cap inside the
+> PCI/TPH code and provides !CONFIG_PCIE_TPH stubs for callers.
+
+Update subject line to match capitalization of history
+(use "git log --oneline drivers/pci/tph.c")
+
+s/expose/Add/ in subject.
+
+("Expose" suggests that the interfaces already exist and we're just
+exporting them, but these interfaces didn't exist at all before.)
+
+> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+
+With the above,
+
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+
+> ---
+>  drivers/pci/tph.c       | 25 +++++++++++++++++++++++++
+>  include/linux/pci-tph.h |  7 +++++++
+>  2 files changed, 32 insertions(+)
 > 
-> Applied to kvm-x86 gmem, with a heavily massaged changelog to explicitly spell
-> out that ilx == interleave index, and to try and explain the role of the index
-> (it wasn't at all obvious to me why using the inode number was "correct").
+> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+> index 91145e8d9d95..aa09113c46d4 100644
+> --- a/drivers/pci/tph.c
+> +++ b/drivers/pci/tph.c
+> @@ -174,6 +174,31 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
+>  }
+>  EXPORT_SYMBOL(pcie_tph_get_st_table_loc);
+>  
+> +/**
+> + * pcie_tph_enabled_req_type - Return the device's enabled TPH requester type
+> + * @pdev: PCI device to query
+> + *
+> + * Return: PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY or PCI_TPH_REQ_EXT_TPH.
+> + */
+> +u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
+> +{
+> +	return pdev->tph_req_type;
+> +}
+> +EXPORT_SYMBOL(pcie_tph_enabled_req_type);
+> +
+> +/**
+> + * pcie_tph_supported - Whether the device advertises the TPH Extended Cap
+> + * @pdev: PCI device to query
+> + *
+> + * Return: true when the device exposes the PCIe TPH Extended Capability,
+> + * false otherwise.
+> + */
+> +bool pcie_tph_supported(struct pci_dev *pdev)
+> +{
+> +	return pdev->tph_cap != 0;
+> +}
+> +EXPORT_SYMBOL(pcie_tph_supported);
+> +
+>  /*
+>   * Return the size of ST table. If ST table is not in TPH Requester Extended
+>   * Capability space, return 0. Otherwise return the ST Table Size + 1.
+> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+> index be68cd17f2f8..2e07bce77038 100644
+> --- a/include/linux/pci-tph.h
+> +++ b/include/linux/pci-tph.h
+> @@ -9,6 +9,8 @@
+>  #ifndef LINUX_PCI_TPH_H
+>  #define LINUX_PCI_TPH_H
+>  
+> +#include <linux/pci_regs.h>
+> +
+>  /*
+>   * According to the ECN for PCI Firmware Spec, Steering Tag can be different
+>   * depending on the memory type: Volatile Memory or Persistent Memory. When a
+> @@ -30,6 +32,8 @@ void pcie_disable_tph(struct pci_dev *pdev);
+>  int pcie_enable_tph(struct pci_dev *pdev, int mode);
+>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
+>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
+> +u8 pcie_tph_enabled_req_type(struct pci_dev *pdev);
+> +bool pcie_tph_supported(struct pci_dev *pdev);
+>  #else
+>  static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
+>  					unsigned int index, u16 tag)
+> @@ -41,6 +45,9 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
+>  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
+>  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>  { return -EINVAL; }
+> +static inline u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
+> +{ return PCI_TPH_REQ_DISABLE; }
+> +static inline bool pcie_tph_supported(struct pci_dev *pdev) { return false; }
+>  #endif
+>  
+>  #endif /* LINUX_PCI_TPH_H */
+> -- 
+> 2.53.0-Meta
 > 
-> Thanks!
-> 
-> [1/1] KVM: guest_memfd: fix NUMA interleave index double-counting
->       https://github.com/kvm-x86/linux/commit/48dbe4732198
-
-Thanks!
-
-Sean, what is your take on interleaving for guest_memfd?
-
-To the best of my understanding:
-
-Right now IIUC kvm calls __filemap_get_folio_mpol which in turn does not pass
-the index to filemap_alloc_folio. That uses NO_INTERLEAVE_INDEX, so
-MPOL_INTERLEAVE uses the task's global counter - effectively
-unpredictable placement. This looks like an oversight (the index was
-available but never threaded down), but it's been shipping since 6.19.
-
-Should we fix it to use the file offset instead? Or GPA? And if so,
-should that be the default or does userspace need a way to opt out of
-NO_INTERLEAVE_INDEX?
-
-Thanks,
-MST
-
