@@ -1,43 +1,45 @@
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60332DEA74
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 05:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668E7388868;
+	Wed, 10 Jun 2026 07:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781070464; cv=none; b=WKeN7HITTEkUaL+nrfGeTKodvK2sPkQ7ZxKiFYEbIfyUbDOqz3dYRv+2hpZOJMBALsEExlzYLg8jWq9FXVBt9pH5xGM5G81f53q3poZk8lHd2Ifmb54CGn5YngZ06zsj/3KE7WWc0IB50lgowLsI4hh6EIf2mEBbWGmefuR5zRQ=
+	t=1781075164; cv=none; b=V3+f1c35nEO95iAnlo6hukndxERagq0jhUc31ZH2MrbJVVxrEw31lqrwiTjrNQiVPkAEyKpHimuv6NOCb1NIDuTnVVu/oUKLQEmO2EPAFwysA+M3YNj8l74TVVeYmcFSrFf4yPe9ZjQOYrlBKosDeUTMylj2GGQcqzI2EQn1NvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781070464; c=relaxed/simple;
-	bh=nLmz9/Qd//C+4o2dXaRH73tYjWB1R4TR/5ERz+418w0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HeLguqBakBsOk1ifIF1KLtXv0nH1AqusgvjjOewRowQzsmSfE3riEzGaWMmWomMtX7gPVqL/MipN+sqXAsYBxjBiV40sXg5csOubSQzaDY0K+nAte5EfnUNJ9sPIUlvcC+9f4aaI6W9N+UJskyMGn/In4nnF0LpHWO9KH/V2Bwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=PgEtDMhg; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1781075164; c=relaxed/simple;
+	bh=sObZv7no16cEocysFNZp2gbSUeFIxkDn/LkizdkVTb4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UIJM811/q+Ku7DS+cnTkZDnirgc4dXnr3xIndPzqIQVFAqKFlIZzWOn4+QHC1XW1ZHHU9mtexGXrevJMXTL4KU2O64ilJfozmRH7HnPtvQjtvJOl13YtZyFw5f9Pc4HgT4YAAe8Pe7NBkesbWXVTwB6JIpKSZuegFyrrg4cRBlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=KoP8hH2Q; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="PgEtDMhg"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1781070459; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=fcA6KLT7zJgfoyb1BLA3aFvyit7BdjojJ+YH53V4aso=;
-	b=PgEtDMhg11UXlezMQBof7Tcl6scdXyqKgkxcDRZg13tniH7XuXHr2zS1EuBLqFcjT3rV6wvQ5BlGK1rha4n/j+zJcfLyOQ+I7Cl4sUSTml1rVJR1dBW57+lZ+pYYv3qXLv7lYVcPcvqDse2ShJs5BUqXDVUgn1dUhEs5cAeISJg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=kanie@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X4ZWCmN_1781070454;
-Received: from localhost(mailfrom:kanie@linux.alibaba.com fp:SMTPD_---0X4ZWCmN_1781070454 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 10 Jun 2026 13:47:39 +0800
-From: Guixin Liu <kanie@linux.alibaba.com>
-To: Alex Williamson <alex@shazbot.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Leon Romanovsky <leon@kernel.org>
-Cc: kvm@vger.kernel.org,
-	xlpang@linux.alibaba.com,
-	oliver.yang@linux.alibaba.com
-Subject: [PATCH] vfio/pci: make nointxmask and disable_idle_d3 module params read-only
-Date: Wed, 10 Jun 2026 13:47:34 +0800
-Message-ID: <20260610054734.3591169-1-kanie@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="KoP8hH2Q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Hf
+	FJe0MqonfQnym7z5Rv6QCMJe2GN62r9Bmh1e2CkTo=; b=KoP8hH2QM6PYEuCHwA
+	YKFpHiGLA4vw69FQOezjnqnU+UiIIXIlYApzhsy4mlLHRbq5gA96liqLD6B/2dl3
+	ChWU/tlX+sRQCd612pv+m+1nrkLbuoosypy7e52ufVFQjsLYnW6TjdgI7uRLEYe3
+	CN2IgeLf5CeFlZCK/nOXZkBpw=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgAHCyKrDClqpIKtBQ--.7345S2;
+	Wed, 10 Jun 2026 15:05:15 +0800 (CST)
+From: xin guo <m18700951735@163.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	xin guo <m18700951735@163.com>
+Subject: [PATCH] KVM: SVM: Clear dummy V_IRQ in vmcb01 when deactivating AVIC
+Date: Wed, 10 Jun 2026 15:05:12 +0800
+Message-Id: <20260610070512.85463-1-m18700951735@163.com>
+X-Mailer: git-send-email 2.27.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,56 +47,48 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgAHCyKrDClqpIKtBQ--.7345S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw17Zr1xKry3Cw4xJrWrZrb_yoW8Xw45pF
+	ZrCw1vvr4qgasay34DK3WkuFy7AFZ5CFyxCFWvkr13ZF109wnFgFy0yw1qvF15CryrWr18
+	Zw1Yv3y5ZFy5AaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRR6wJUUUUU=
+X-CM-SenderInfo: jpryliyqzvilitv6il2tof0z/xtbCwgwTWWopDKxZmAAA3m
 
-The nointxmask and disable_idle_d3 module parameters are registered with
-S_IWUSR, exposing a writable node under /sys/module/vfio_pci/parameters/.
-However, writing to them at runtime has no effect on driver behaviour:
+When KVM requests an IRQ window via svm_set_vintr(), it programs a
+dummy VINTR with int_vector=0 and V_IRQ=1 into the current VMCB.
+These int_ctl fields are documented to be ignored while AVIC is
+enabled, so the dummy VINTR is harmless during AVIC operation.
 
- - Both values are copied into vfio-pci-core's own static variables via
-   vfio_pci_core_set_params(), which is only called once at module init
-   time.  A later write to the vfio_pci front-end variable is never
-   propagated to the core.
+However, avic_deactivate_vmcb() only clears AVIC_ENABLE_MASK and
+X2APIC_MODE_MASK, and does not clear the VINTR injection state. Once
+AVIC is disabled, hardware honors V_IRQ again and injects vector 0
+into the guest on the next VMRUN. Windows guests observe this as a
+spurious interrupt and crash, e.g. with STATUS_INTEGER_DIVIDE_BY_ZERO.
 
- - disable_idle_d3 additionally gates paired runtime PM get/put calls
-   across the probe/remove (register/unregister) and open/close
-   (enable/disable) life cycles.  Changing it at runtime would tear
-   these pairs apart and leak or underflow the runtime PM usage counter.
+Fix this by also clearing V_IRQ_INJECTION_BITS_MASK from vmcb01's
+int_ctl in avic_deactivate_vmcb(), so that no stale dummy VINTR is
+left behind when AVIC transitions from enabled to disabled.
 
- - nointxmask is latched into per-device state (vdev->nointx /
-   vdev->pci_2_3) at device open time, so a later change can only affect
-   newly opened devices and yields inconsistent behaviour.
-
-These parameters are effectively load-time constants.  Drop the write
-permission so they match disable_vga, which is already read-only, and to
-stop misleading users into thinking they are runtime tunable.
-
-Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Signed-off-by: xin guo <m18700951735@163.com>
 ---
- drivers/vfio/pci/vfio_pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/avic.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-index 0c771064c0b8..b72f168feb3c 100644
---- a/drivers/vfio/pci/vfio_pci.c
-+++ b/drivers/vfio/pci/vfio_pci.c
-@@ -35,7 +35,7 @@ module_param_string(ids, ids, sizeof(ids), 0);
- MODULE_PARM_DESC(ids, "Initial PCI IDs to add to the vfio driver, format is \"vendor:device[:subvendor[:subdevice[:class[:class_mask]]]]\" and multiple comma separated entries can be specified");
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index cdd5a6dc646f..b042c3f5f90e 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -257,7 +257,9 @@ static void avic_deactivate_vmcb(struct vcpu_svm *svm)
+ {
+ 	struct vmcb *vmcb = svm->vmcb01.ptr;
  
- static bool nointxmask;
--module_param_named(nointxmask, nointxmask, bool, S_IRUGO | S_IWUSR);
-+module_param_named(nointxmask, nointxmask, bool, 0444);
- MODULE_PARM_DESC(nointxmask,
- 		  "Disable support for PCI 2.3 style INTx masking.  If this resolves problems for specific devices, report lspci -vvvxxx to linux-pci@vger.kernel.org so the device can be fixed automatically via the broken_intx_masking flag.");
+-	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
++	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK |
++				V_IRQ_INJECTION_BITS_MASK);
++
+ 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
  
-@@ -46,7 +46,7 @@ MODULE_PARM_DESC(disable_vga, "Disable VGA resource access through vfio-pci");
- #endif
- 
- static bool disable_idle_d3;
--module_param(disable_idle_d3, bool, S_IRUGO | S_IWUSR);
-+module_param(disable_idle_d3, bool, 0444);
- MODULE_PARM_DESC(disable_idle_d3,
- 		 "Disable using the PCI D3 low power state for idle, unused devices");
- 
+ 	if (!is_sev_es_guest(&svm->vcpu))
 -- 
-2.43.7
+2.27.0
 
