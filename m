@@ -1,26 +1,26 @@
 Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D6E212542
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056C027E1DC
 	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 02:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781058933; cv=none; b=qaBiryAjtdG+4D6L7td3C2lsfdNnhzjTB++jnI54kEdJENlUwrkO617wupwj9evkbTjeGDkb30Gsgy0lm2nIcUGdKsmJi7ljFF7xtN6HP670UwFKQELrIGwx0UdBFHIvZ5hD3/k1m0vmz8SapKi275c3ExPeKWWDWTWMvwmm8AA=
+	t=1781058935; cv=none; b=byOiug4b2P8oQqAY9uId6tzX0ba8PqGeDEJn81nM5nkOFSht+Wytv1wXYTizL5Zr2MKzv6++0xf76C3U6eeXNONrRHGULPY+cIZwRQRXPEiavw69hGwJ+2Sg+LjP+Jrtu5ylFr4rtwETlOXXDPEojGKY3uym9VoW/n2au5LpGPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781058933; c=relaxed/simple;
-	bh=xistowtJYDdD1yLQ3ZTUaLPuGUiLU44YdN7WY4YGAcs=;
+	s=arc-20240116; t=1781058935; c=relaxed/simple;
+	bh=Nc2fshPyr/aIhu+foihGacIoeXNaC2kfdR68oN3KEPk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ue41GzAT9foG7fLu1Pq4VAX3TRyz5T2gG7BSAK1DTuJeDN5k4yPU0g/dvSLYKHoKuDMlY1Ow/ZI50rG2ySapjvGpnJQKFcxsFAtLu/b4qRYUzjm2QyEUMnVG7luM6nT4NP558x4pBfHvrARurROiyRW449ygRxGa1LXk2Le0U5U=
+	 MIME-Version; b=LQzQSLVML0p30xWq+DkrNAYHphtm+HD7b/AAWR1wp/kAHJ95Zf7xxE4bDuJ7q8JlBAAa9ZrKWwTrdVfUcdgL+/2GHS2kqcLdlvSsLgEdlepVE4LjELBgw+pNaBD7Udv80+D0ZjhZUxcWfR3ik1Rw+wy0ClM4C9WOzWENNzn640k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1781058916-1eb14e680ebe4c0001-HEqcsx
-Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id 3HWCyhBlZmClwyjS; Wed, 10 Jun 2026 10:35:16 +0800 (CST)
+X-ASG-Debug-ID: 1781058918-1eb14e680bbe4c0001-HEqcsx
+Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id Sffz6uBDLIQ0rpSp; Wed, 10 Jun 2026 10:35:18 +0800 (CST)
 X-Barracuda-Envelope-From: ewanhai-oc@zhaoxin.com
 X-Barracuda-RBL-Trusted-Forwarder: 10.28.208.166
 Received: from ewan-server.tailb932da.ts.net (ewan-server.tailb932da.ts.net [10.28.24.2])
-	by zhaoxin.com (8.30) with ESMTPa0e123fa20ebb6cdc0b5b20647d55086
-	Wed, 10 Jun 2026 10:35:15 +0800
+	by zhaoxin.com (8.30) with ESMTP927a0bf868a4e13f73f06f3ff2305086
+	Wed, 10 Jun 2026 10:35:16 +0800
 X-Eyou-Smtpauth: ewanhai-oc@zhaoxin.com
 X-Barracuda-RBL-Trusted-Forwarder: 10.28.24.2
 X-Eyou-EnvelopeSender: ewanhai-oc@zhaoxin.com
@@ -39,10 +39,10 @@ To: seanjc@google.com,
 Cc: binbin.wu@linux.intel.com,
 	cobechen@zhaoxin.com,
 	tonywwang@zhaoxin.com
-Subject: [PATCH v3 3/5] KVM: x86: Expose Zhaoxin RNG2 CPUID feature
-Date: Wed, 10 Jun 2026 10:35:10 +0800
-X-ASG-Orig-Subj: [PATCH v3 3/5] KVM: x86: Expose Zhaoxin RNG2 CPUID feature
-Message-Id: <20260610023512.3690734-4-ewanhai-oc@zhaoxin.com>
+Subject: [PATCH v3 5/5] KVM: x86: Expose Zhaoxin RSA CPUID feature
+Date: Wed, 10 Jun 2026 10:35:12 +0800
+X-ASG-Orig-Subj: [PATCH v3 5/5] KVM: x86: Expose Zhaoxin RSA CPUID feature
+Message-Id: <20260610023512.3690734-6-ewanhai-oc@zhaoxin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260610023512.3690734-1-ewanhai-oc@zhaoxin.com>
 References: <20260610023512.3690734-1-ewanhai-oc@zhaoxin.com>
@@ -55,10 +55,10 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Eyou-Sender: <ewanhai-oc@zhaoxin.com>
 X-Barracuda-Connect: zxmail.zhaoxin.com[10.28.208.166]
-X-Barracuda-Start-Time: 1781058916
+X-Barracuda-Start-Time: 1781058918
 X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
 X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 2204
+X-Barracuda-Scan-Msg-Size: 2490
 X-Barracuda-BRTS-Status: 1
 X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
 X-Barracuda-Spam-Score: -0.96
@@ -70,22 +70,28 @@ X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.159832
 	0.01 FROM_EXCESS_BASE64     From: base64 encoded unnecessarily
 	1.05 FROM_EXCESS_BASE64_2   From: base64 encoded unnecessarily
 
-Advertise the Zhaoxin second-generation hardware RNG to guests via
-CPUID 0xC0000001 EDX bits 22 (RNG2) and 23 (RNG2_EN).
+Advertise the Zhaoxin big-number arithmetic engine to guests via
+CPUID 0xC0000001 EDX bits 27 (RSA) and 28 (RSA_EN). The RSA feature
+provides two unprivileged instructions for modular arithmetic on big
+integers, documented in the Zhaoxin PadLock Instruction Reference,
+chapter 4 ("Modular Multiplication and Exponentiation Engine"). Both
+support operand sizes from 256 to 32768 bits (in 128-bit increments):
 
-RNG2 is exposed by the REP XRNG2 instruction (encoding F3 0F A7 F8),
-documented in the Zhaoxin PadLock Instruction Reference, subsection 1.3
-("REP XRNG2"). It produces random bytes from two on-die RNG sources
-selectable via RAX bits[10:9] and an output mode (raw vs post-processed)
-controlled by RDX bits[1:0], providing high-quality entropy intended
-for cryptographic operations.
+  - REP XMODEXP  (encoding F3 0F A6 F8, subsection 4.1) computes
+    A^B mod M
+  - REP MONTMUL2 (encoding F3 0F A6 F0, subsection 4.2) computes
+    A*B mod M
 
-REP XRNG2 is unprivileged (no CPL restriction) and available in all
-CPU modes, with no associated MSR control. The RNG2 and RNG2_EN bits
-are redundant by hardware design (set or cleared together) and both
-serve purely as CPUID-level feature-presence reporting flags requiring
-no KVM emulation. Both bits are advertised because different software
-may probe either one when checking for RNG2 availability.
+REP MONTMUL2 is the long-mode replacement of legacy REP MONTMUL, which
+is restricted to compatibility and 32-bit protected modes. These
+primitives accelerate RSA and related public-key operations.
+
+Both instructions are unprivileged (no CPL restriction) and available
+in all CPU modes, with no associated MSR control. The RSA and RSA_EN
+bits are redundant by hardware design (set or cleared together) and
+both serve purely as CPUID-level feature-presence reporting flags
+requiring no KVM emulation. Both bits are advertised because different
+software may probe either one when checking for RSA availability.
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
@@ -95,28 +101,28 @@ Signed-off-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
  2 files changed, 4 insertions(+)
 
 diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 276e4ef90bd0..e264758d58e2 100644
+index 3702d7a30ae6..a769c83588f7 100644
 --- a/arch/x86/include/asm/cpufeatures.h
 +++ b/arch/x86/include/asm/cpufeatures.h
-@@ -150,6 +150,8 @@
- #define X86_FEATURE_PHE_EN		( 5*32+11) /* "phe_en" PHE enabled */
- #define X86_FEATURE_PMM			( 5*32+12) /* "pmm" PadLock Montgomery Multiplier */
- #define X86_FEATURE_PMM_EN		( 5*32+13) /* "pmm_en" PMM enabled */
-+#define X86_FEATURE_RNG2		( 5*32+22) /* "rng2" RNG v2 */
-+#define X86_FEATURE_RNG2_EN		( 5*32+23) /* "rng2_en" RNG2 enabled */
+@@ -154,6 +154,8 @@
+ #define X86_FEATURE_RNG2_EN		( 5*32+23) /* "rng2_en" RNG2 enabled */
+ #define X86_FEATURE_PHE2		( 5*32+25) /* "phe2" PadLock Hash Engine v2 */
+ #define X86_FEATURE_PHE2_EN		( 5*32+26) /* "phe2_en" PHE2 enabled */
++#define X86_FEATURE_RSA			( 5*32+27) /* "rsa" Big-number arithmetic */
++#define X86_FEATURE_RSA_EN		( 5*32+28) /* "rsa_en" RSA enabled */
  
  /* More extended AMD flags: CPUID level 0x80000001, ECX, word 6 */
  #define X86_FEATURE_LAHF_LM		( 6*32+ 0) /* "lahf_lm" LAHF/SAHF in long mode */
 diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 8aaa3f20670e..087c41341240 100644
+index 3fb81f7a6107..94ea9abae566 100644
 --- a/arch/x86/kvm/cpuid.c
 +++ b/arch/x86/kvm/cpuid.c
-@@ -1286,6 +1286,8 @@ void kvm_initialize_cpu_caps(void)
- 		F(PHE_EN),
- 		F(PMM),
- 		F(PMM_EN),
-+		F(RNG2),
-+		F(RNG2_EN),
+@@ -1290,6 +1290,8 @@ void kvm_initialize_cpu_caps(void)
+ 		F(RNG2_EN),
+ 		F(PHE2),
+ 		F(PHE2_EN),
++		F(RSA),
++		F(RSA_EN),
  	);
  
  	/*
