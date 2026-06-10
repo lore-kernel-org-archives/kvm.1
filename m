@@ -1,56 +1,56 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD2921ADC7
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EBC22256F
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781052828; cv=none; b=uTeiEg4CLkqo+sZGXPH84LPnwiLfKwWFKFilmFJz7T1N6PLnnsXJwUonQtrLekJJMrsrlgxr9ZY5X30/LJDxoCPpsSxGLy9Ap3ajIvczVdbjyUcsN8ZGKaojrzK2VBPpqHpmlD1hp8Q2P6NfWzqCDCpeN4AqVRLOurfKqm+TuSE=
+	t=1781052830; cv=none; b=ADpVPq4qsPoD/BJVj5oEjxR6ccrbbY2NDcHQd2aMt6roTAEjxXJKNIM437wBvlnGgMB7PkmMSuAiZyZfnhc9n+r6gr2bhhByyzKDbLE4Bobl5gtq93gawKSJ+kp1HxmtWttUrwzOEcrmU4F2N4bSJl+0ctnOrGTscbnSnCVqu7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781052828; c=relaxed/simple;
-	bh=Kub5eQ7O/mtG75/OYJ/I1Cabb/JLl9Pdz2YqhISQBWM=;
+	s=arc-20240116; t=1781052830; c=relaxed/simple;
+	bh=OMHgBZdQznbdaBHXokn5ySfwp9R7As9kWeHY4hFWOew=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=F3hu16+VCOgfCKwJoW8n7rS77h/HD6i3JNRcVOEKEcFg0JP2oV1yvuE1WVHCqC0WfX8+XTx9UhXlfdg5BiOGpVhw0cLR/Y8Q24vBc2NolUqyQl5FojBd/mBKt76WuelS5iff5Hgc728Os3fryWntGzZkBzk7b7nWX97EnKZznQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DIL6lm2e; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=gFyylszROqQDSwSFgBdOWSd7OUSMMV82h3iP5CsJaIK7ndP2nxjZYVAH4dfcxolkMCje7aZyt54D9ONmxD+djCsxjq4vQLamDTo5uFKaz+CiFpnktXN9EwL9yemojmRh9Z64Bn/uWlBpBL/U8wmiaYdZ5nHBI6w4ixZGnrHkm00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d1uvXn5l; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DIL6lm2e"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b982ec27aso4484717a91.1
-        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:53:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d1uvXn5l"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-842692bf60aso8749430b3a.1
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:53:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781052826; x=1781657626; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781052828; x=1781657628; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=tOfKL3aC3TJI7zJE4ow9XI3oPw5OgYVgulJRJ35YFpw=;
-        b=DIL6lm2efrkYTXoIvQ0/IVvjmWxNQnNPeME90mK1WJj6Ai9mEssCqzJgCgqOPQ4HVO
-         QMz4aUar4//5RQSTgEOS5IkdIPrSC3PP0bN8AJLArKjADsw2eH0D25RPqMRrc+JGjTsK
-         CntiW9JbLqi3PcMmd69fmoeg3+5qphAuAvI8+te7/NziKMCLemrhbMJM+6nCp4miBISB
-         Tt+6bCMyKyuiYFlRPs/kVpYXMk5BUfoB+h/VnZfCkvHcCA7X0pxTdhuZu6f4BPMP+6FE
-         DNf++NJ6VE3ZsvsZPCc1y7KJZKcFtGWwGJ9hXj3GsBtgL2A5I7lCVU+WkKfT63wnnMx4
-         E4uA==
+        bh=Y4jgcYAAflMnUINIsIj8y+YCHO2jVOfAFlt5LrZDdIY=;
+        b=d1uvXn5lpz3CHcCXTvHbrntuqt0KoVfr0getf+HoWKV6y3hTzQd+05T0iZLlUFiSbl
+         63bkC2DB5wr+zX124YlOCo1gT7MHaqc60h0HSs4tv1WrN1Tq/9DoRzVnd9YkgmnKB/NL
+         kBlM8tHDfVXwFzxTfo+ZG7KsU7cpiGddqvsWYoIR5Cux1/Io4/FKStA94/CjMS49rSxg
+         HmNmKXYjPz0yFivxnaJPTHOue/wjPCUMCPuCUXkm9CSln7fexTNHJ39iPymCxXHHvBAb
+         WgQuCPmNPr7FgvaR9vSjiI7znNPvCTKIpMG3zvbBtTHXQZOm6N4/U/jk1T0rOS4KAf9j
+         zkkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781052826; x=1781657626;
+        d=1e100.net; s=20251104; t=1781052828; x=1781657628;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tOfKL3aC3TJI7zJE4ow9XI3oPw5OgYVgulJRJ35YFpw=;
-        b=jhKyAM13aZN6idtcERGsvJlmbQ6+3pSvZbg13hYVXzgLlYCG1Cdde5NeSsdZg8y/jm
-         Hsg49Ws+61xDktxA/HItXEht1TizObjddWGORsgaaC2nk1Koy9OWmXLIr/RNSPZZJRPI
-         TykVEWKRBKJLoKPD2bPqcGUsLCehXYvrpCQ5pMrqo3SxlOa8OXIlfYPxig5eutQTscVm
-         aDofTz0KQF1G4wbfwFc8wgASx5nH0Ypp9nc7mo0K0FF/NSW9zHF4HQgr2gBQcr/MpLKH
-         E8dyur62fqV6yR5fyEbWfUBj9k0d44IoBXluemrm1WWy1O5KxWfV7ZfUa3N4RITJeTRu
-         tWqQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9U/lZrSJ1F3hz/sOZpNQntHy4k1iv5dzcKgTi2LwsD54gaw7UrxNoT0giu0dQNoFtNKBk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIWM+3MNc5LzMxps2PplYZ/JPo5bOYTe5RQqe2kEpE/+LltAnC
-	+mMGEHj7P25cc6f/lkIxtvQf+PxoQeBsjlxx9fCgBd7Dlwd8g/ApRI4Lzmhuzx0ZIu3KAJE/2MN
-	Rl//OdA==
-X-Received: from pfbmt10.prod.google.com ([2002:a05:6a00:6e6a:b0:83c:61b2:176b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5787:b0:368:147f:bd27
- with SMTP id 98e67ed59e1d1-370f0d52f5cmr24860811a91.23.1781052825537; Tue, 09
- Jun 2026 17:53:45 -0700 (PDT)
+        bh=Y4jgcYAAflMnUINIsIj8y+YCHO2jVOfAFlt5LrZDdIY=;
+        b=BrZttp4CXNcz1S3LUi/gc2RDwNrWeqQDZwsHJD3MzvkA5LNCxl+133Hy8wt/ij9Av3
+         41r5tHpODopOaE1ipdhMFn3Lzi3HWpvGHBMt4xzDFPfuz8/EpRExsMVN1ZpGm6tfCeAH
+         0WmFsqmS2n4fbSrzZYE8VruRpFRRieIoYCv18heXgGnvjKuZr0wal4QpAwEjXf+7pq3f
+         WaKDXXrSo0M/mBRb7LimNeVS6+OG9R1XYWBl96KW3VkbCgPufqEbS24oN4U9CLPa1i2x
+         Vx81LNGC6fc4wMlj6T6a2kEDaqUBNC+UvvQ13V+VRj2/dwMfkQNN1NtXFIzmcBKXD7b2
+         BBPA==
+X-Forwarded-Encrypted: i=1; AFNElJ+eB474mcwlhSlDBhBNB9EA74r70Iw5rQUf+e1IV17RADwaVBsQRvVah7cgT0Om62KOaAc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRYF2v9DBhVpDNSz5kKMwwb51Sp+bdbcNMadku1F8aZsCpF9my
+	LPSpqY7x6UtFb60F1rG/qoroVfVcjpRu0+A2vI0qgoEnu5iiZbEgelhEw/W4vT3CmDGvN4G6b6c
+	0A5x8Rg==
+X-Received: from pfnd21.prod.google.com ([2002:aa7:8155:0:b0:842:5989:fb63])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:9286:b0:842:4023:42c9
+ with SMTP id d2e1a72fcca58-842b0fc08c5mr23541407b3a.41.1781052828129; Tue, 09
+ Jun 2026 17:53:48 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue,  9 Jun 2026 17:53:23 -0700
+Date: Tue,  9 Jun 2026 17:53:25 -0700
 In-Reply-To: <20260610005338.2967132-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260610005338.2967132-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
-Message-ID: <20260610005338.2967132-4-seanjc@google.com>
-Subject: [PATCH v6 03/18] KVM: selftests: Rename guest_rng to kvm_rng
+Message-ID: <20260610005338.2967132-6-seanjc@google.com>
+Subject: [PATCH v6 05/18] KVM: selftests: Add an irqfd send+receive (and later
+ IRQ bypass) test
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Sean Christopherson <seanjc@google.com>
@@ -72,244 +73,221 @@ Cc: Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>,
 	Josh Hilke <jrhilke@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Josh Hilke <jrhilke@google.com>
+From: David Matlack <dmatlack@google.com>
 
-Rename functions prefixed with 'guest_random_' to 'kvm_random_' and the
-global random state variable 'guest_rng' to 'kvm_rng', as the pRNG isn't
-strictly limited to guest code.  This will allow using the pRNG in host
-code without creating confusing/misleading function calls.
+Add a new test, irq_test to verify that KVM correctly delivers interrupts
+to a running vCPU, when triggered via an eventfd bound to a KVM GSI using
+KVM's irqfd mechanism.
 
-No functional changes are intended.
+This test is intentionally simple, for now.  Support for sending interrupts
+via VFIO devices, for IRQ bypass, and for other features will be added in
+the near future.
+
+Add the test in common code, even though it currently will only build and
+run on x86, as the concept and the bulk of the host-side code isn't
+specific to x86.
 
 Suggested-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/kvm/20250404193923.1413163-68-seanjc@google.com
+Signed-off-by: David Matlack <dmatlack@google.com>
+Co-developed-by: Josh Hilke <jrhilke@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
-[sean: massage changelog]
+[sean: use while() and TEST_ASSERT() instead of if-statement => TEST_FAIL()]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../selftests/kvm/dirty_log_perf_test.c       |  4 ++--
- tools/testing/selftests/kvm/dirty_log_test.c  |  2 +-
- .../testing/selftests/kvm/include/test_util.h | 22 +++++++++----------
- .../selftests/kvm/include/x86/kvm_util_arch.h |  4 ++--
- tools/testing/selftests/kvm/lib/kvm_util.c    | 20 ++++++++---------
- tools/testing/selftests/kvm/lib/memstress.c   |  8 +++----
- tools/testing/selftests/kvm/lib/test_util.c   |  6 ++---
- .../testing/selftests/kvm/x86/sev_dbg_test.c  |  2 +-
- 8 files changed, 34 insertions(+), 34 deletions(-)
+ tools/testing/selftests/kvm/Makefile.kvm |   1 +
+ tools/testing/selftests/kvm/irq_test.c   | 170 +++++++++++++++++++++++
+ 2 files changed, 171 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/irq_test.c
 
-diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-index ef779fa91827..7c5abe1ae9e0 100644
---- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
-+++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-@@ -311,7 +311,7 @@ int main(int argc, char *argv[])
- 	int opt;
- 
- 	/* Override the seed to be deterministic by default. */
--	guest_random_seed = 1;
-+	kvm_random_seed = 1;
- 
- 	dirty_log_manual_caps =
- 		kvm_check_cap(KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2);
-@@ -357,7 +357,7 @@ int main(int argc, char *argv[])
- 			p.phys_offset = strtoull(optarg, NULL, 0);
- 			break;
- 		case 'r':
--			guest_random_seed = atoi_positive("Random seed", optarg);
-+			kvm_random_seed = atoi_positive("Random seed", optarg);
- 			break;
- 		case 's':
- 			p.backing_src = parse_backing_src_type(optarg);
-diff --git a/tools/testing/selftests/kvm/dirty_log_test.c b/tools/testing/selftests/kvm/dirty_log_test.c
-index 087e94a8a81a..e8419d7da1ea 100644
---- a/tools/testing/selftests/kvm/dirty_log_test.c
-+++ b/tools/testing/selftests/kvm/dirty_log_test.c
-@@ -121,7 +121,7 @@ static void guest_code(void)
- 	while (true) {
- 		while (!READ_ONCE(vcpu_stop)) {
- 			addr = guest_test_virt_mem;
--			addr += (guest_random_u64(&guest_rng) % guest_num_pages)
-+			addr += (kvm_random_u64(&kvm_rng) % guest_num_pages)
- 				* guest_page_size;
- 			addr = align_down(addr, host_page_size);
- 
-diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
-index a56271c237ae..44c0104d60ac 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -108,30 +108,30 @@ struct timespec timespec_sub(struct timespec ts1, struct timespec ts2);
- struct timespec timespec_elapsed(struct timespec start);
- struct timespec timespec_div(struct timespec ts, int divisor);
- 
--struct guest_random_state {
-+struct kvm_random_state {
- 	u32 seed;
- };
- 
--extern u32 guest_random_seed;
--extern struct guest_random_state guest_rng;
-+extern u32 kvm_random_seed;
-+extern struct kvm_random_state kvm_rng;
- 
--struct guest_random_state new_guest_random_state(u32 seed);
--u32 guest_random_u32(struct guest_random_state *state);
-+struct kvm_random_state new_kvm_random_state(u32 seed);
-+u32 kvm_random_u32(struct kvm_random_state *state);
- 
--static inline bool __guest_random_bool(struct guest_random_state *state,
-+static inline bool __kvm_random_bool(struct kvm_random_state *state,
- 				       u8 percent)
- {
--	return (guest_random_u32(state) % 100) < percent;
-+	return (kvm_random_u32(state) % 100) < percent;
- }
- 
--static inline bool guest_random_bool(struct guest_random_state *state)
-+static inline bool kvm_random_bool(struct kvm_random_state *state)
- {
--	return __guest_random_bool(state, 50);
-+	return __kvm_random_bool(state, 50);
- }
- 
--static inline u64 guest_random_u64(struct guest_random_state *state)
-+static inline u64 kvm_random_u64(struct kvm_random_state *state)
- {
--	return ((u64)guest_random_u32(state) << 32) | guest_random_u32(state);
-+	return ((u64)kvm_random_u32(state) << 32) | kvm_random_u32(state);
- }
- 
- enum vm_mem_backing_src_type {
-diff --git a/tools/testing/selftests/kvm/include/x86/kvm_util_arch.h b/tools/testing/selftests/kvm/include/x86/kvm_util_arch.h
-index c33ab6e04171..6904dbda79f9 100644
---- a/tools/testing/selftests/kvm/include/x86/kvm_util_arch.h
-+++ b/tools/testing/selftests/kvm/include/x86/kvm_util_arch.h
-@@ -55,9 +55,9 @@ static inline bool __vm_arch_has_protected_memory(struct kvm_vm_arch *arch)
- do {											\
- 	const typeof(mem) val = (__val);						\
- 											\
--	if (!is_forced_emulation_enabled || guest_random_bool(&guest_rng)) {		\
-+	if (!is_forced_emulation_enabled || kvm_random_bool(&kvm_rng)) {		\
- 		(mem) = val;								\
--	} else if (guest_random_bool(&guest_rng)) {					\
-+	} else if (kvm_random_bool(&kvm_rng)) {					\
- 		__asm__ __volatile__(KVM_FEP "mov %1, %0"				\
- 				     : "+m" (mem)					\
- 				     : "r" (val) : "memory");				\
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 195f3fdae1e3..875030c22d07 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -20,9 +20,9 @@
- 
- #define KVM_UTIL_MIN_PFN	2
- 
--u32 guest_random_seed;
--struct guest_random_state guest_rng;
--static u32 last_guest_seed;
-+u32 kvm_random_seed;
-+struct kvm_random_state kvm_rng;
-+static u32 last_kvm_seed;
- 
- static size_t vcpu_mmap_sz(void);
- 
-@@ -515,12 +515,12 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
- 	slot0 = memslot2region(vm, 0);
- 	ucall_init(vm, slot0->region.guest_phys_addr + slot0->region.memory_size);
- 
--	if (guest_random_seed != last_guest_seed) {
--		pr_info("Random seed: 0x%x\n", guest_random_seed);
--		last_guest_seed = guest_random_seed;
-+	if (kvm_random_seed != last_kvm_seed) {
-+		pr_info("Random seed: 0x%x\n", kvm_random_seed);
-+		last_kvm_seed = kvm_random_seed;
- 	}
--	guest_rng = new_guest_random_state(guest_random_seed);
--	sync_global_to_guest(vm, guest_rng);
-+	kvm_rng = new_kvm_random_state(kvm_random_seed);
-+	sync_global_to_guest(vm, kvm_rng);
- 
- 	kvm_arch_vm_post_create(vm, nr_runnable_vcpus);
- 
-@@ -2279,8 +2279,8 @@ void __attribute((constructor)) kvm_selftest_init(void)
- 	sigaction(SIGILL, &sig_sa, NULL);
- 	sigaction(SIGFPE, &sig_sa, NULL);
- 
--	guest_random_seed = last_guest_seed = random();
--	pr_info("Random seed: 0x%x\n", guest_random_seed);
-+	kvm_random_seed = last_kvm_seed = random();
-+	pr_info("Random seed: 0x%x\n", kvm_random_seed);
- 
- 	kvm_selftest_arch_init();
- }
-diff --git a/tools/testing/selftests/kvm/lib/memstress.c b/tools/testing/selftests/kvm/lib/memstress.c
-index 6dcd15910a06..3599b75d97c9 100644
---- a/tools/testing/selftests/kvm/lib/memstress.c
-+++ b/tools/testing/selftests/kvm/lib/memstress.c
-@@ -48,14 +48,14 @@ void memstress_guest_code(u32 vcpu_idx)
- {
- 	struct memstress_args *args = &memstress_args;
- 	struct memstress_vcpu_args *vcpu_args = &args->vcpu_args[vcpu_idx];
--	struct guest_random_state rand_state;
-+	struct kvm_random_state rand_state;
- 	gva_t gva;
- 	u64 pages;
- 	u64 addr;
- 	u64 page;
- 	int i;
- 
--	rand_state = new_guest_random_state(guest_random_seed + vcpu_idx);
-+	rand_state = new_kvm_random_state(kvm_random_seed + vcpu_idx);
- 
- 	gva = vcpu_args->gva;
- 	pages = vcpu_args->pages;
-@@ -69,13 +69,13 @@ void memstress_guest_code(u32 vcpu_idx)
- 
- 		for (i = 0; i < pages; i++) {
- 			if (args->random_access)
--				page = guest_random_u32(&rand_state) % pages;
-+				page = kvm_random_u32(&rand_state) % pages;
- 			else
- 				page = i;
- 
- 			addr = gva + (page * args->guest_page_size);
- 
--			if (__guest_random_bool(&rand_state, args->write_percent))
-+			if (__kvm_random_bool(&rand_state, args->write_percent))
- 				*(u64 *)addr = 0x0123456789ABCDEF;
- 			else
- 				READ_ONCE(*(u64 *)addr);
-diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
-index bab1bd2b775b..e98ca7ef439c 100644
---- a/tools/testing/selftests/kvm/lib/test_util.c
-+++ b/tools/testing/selftests/kvm/lib/test_util.c
-@@ -30,13 +30,13 @@ void __attribute__((used)) expect_sigbus_handler(int signum)
-  * Park-Miller LCG using standard constants.
-  */
- 
--struct guest_random_state new_guest_random_state(u32 seed)
-+struct kvm_random_state new_kvm_random_state(u32 seed)
- {
--	struct guest_random_state s = {.seed = seed};
-+	struct kvm_random_state s = {.seed = seed};
- 	return s;
- }
- 
--u32 guest_random_u32(struct guest_random_state *state)
-+u32 kvm_random_u32(struct kvm_random_state *state)
- {
- 	state->seed = (u64)state->seed * 48271 % ((u32)(1 << 31) - 1);
- 	return state->seed;
-diff --git a/tools/testing/selftests/kvm/x86/sev_dbg_test.c b/tools/testing/selftests/kvm/x86/sev_dbg_test.c
-index a9d8e4c059f9..eaa8201b937d 100644
---- a/tools/testing/selftests/kvm/x86/sev_dbg_test.c
-+++ b/tools/testing/selftests/kvm/x86/sev_dbg_test.c
-@@ -34,7 +34,7 @@ static void validate_buffers(void)
- 
- static void ____test_sev_dbg(struct kvm_vm *vm, int i, int j, int nr_bytes)
- {
--	u8 pattern = guest_random_u32(&guest_rng);
-+	u8 pattern = kvm_random_u32(&kvm_rng);
- 
- 	if (i + nr_bytes > BUFFER_SIZE || j + nr_bytes > BUFFER_SIZE)
- 		return;
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 14316358fd9f..1339228cbf53 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -156,6 +156,7 @@ TEST_GEN_PROGS_x86 += coalesced_io_test
+ TEST_GEN_PROGS_x86 += dirty_log_perf_test
+ TEST_GEN_PROGS_x86 += guest_memfd_test
+ TEST_GEN_PROGS_x86 += hardware_disable_test
++TEST_GEN_PROGS_x86 += irq_test
+ TEST_GEN_PROGS_x86 += mmu_stress_test
+ TEST_GEN_PROGS_x86 += rseq_test
+ TEST_GEN_PROGS_x86 += steal_time
+diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
+new file mode 100644
+index 000000000000..9f8895b89821
+--- /dev/null
++++ b/tools/testing/selftests/kvm/irq_test.c
+@@ -0,0 +1,170 @@
++// SPDX-License-Identifier: GPL-2.0
++#include "kvm_util.h"
++#include "test_util.h"
++#include "apic.h"
++#include "processor.h"
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <pthread.h>
++#include <sys/eventfd.h>
++
++static u64 timeout_ns = 2ULL * 1000 * 1000 * 1000;
++static bool guest_ready_for_irqs[KVM_MAX_VCPUS];
++static bool guest_received_irq[KVM_MAX_VCPUS];
++static bool done;
++
++#define GUEST_RECEIVED_IRQ(__vcpu)	\
++	SYNC_FROM_GUEST_AND_READ((__vcpu)->vm, guest_received_irq[(__vcpu)->id])
++
++static u32 guest_get_vcpu_id(void)
++{
++	return x2apic_read_reg(APIC_ID);
++}
++
++static void guest_irq_handler(struct ex_regs *regs)
++{
++	WRITE_ONCE(guest_received_irq[guest_get_vcpu_id()], true);
++
++	x2apic_write_reg(APIC_EOI, 0);
++}
++
++static void guest_code(void)
++{
++	x2apic_enable();
++
++	sti_nop();
++
++	WRITE_ONCE(guest_ready_for_irqs[guest_get_vcpu_id()], true);
++
++	while (!READ_ONCE(done))
++		cpu_relax();
++
++	GUEST_DONE();
++}
++
++static void *vcpu_thread_main(void *arg)
++{
++	struct kvm_vcpu *vcpu = arg;
++	struct ucall uc;
++
++	vcpu_run(vcpu);
++	TEST_ASSERT_EQ(UCALL_DONE, get_ucall(vcpu, &uc));
++
++	return NULL;
++}
++
++static void kvm_route_msi(struct kvm_vm *vm, u32 gsi, struct kvm_vcpu *vcpu,
++			  u8 vector)
++{
++	struct {
++		struct kvm_irq_routing header;
++		struct kvm_irq_routing_entry entry;
++	} routing = {
++		.header.nr = 1,
++		.entry = {
++			.gsi = gsi,
++			.type = KVM_IRQ_ROUTING_MSI,
++			.u.msi.address_lo = 0xFEE00000 | (vcpu->id << 12),
++			.u.msi.data = vector,
++		},
++	};
++
++	vm_ioctl(vm, KVM_SET_GSI_ROUTING, &routing.header);
++}
++
++static void help(const char *name)
++{
++	printf("Usage: %s [-h]\n", name);
++	printf("\n");
++	printf("Tests KVM interrupt routing and delivery via irqfd.\n");
++	printf("\n");
++	exit(KSFT_FAIL);
++}
++
++int main(int argc, char **argv)
++{
++	/*
++	 * Pick a random vector and a random GSI to use for device IRQ.
++	 *
++	 * Pick an IRQ vector in range [32, UINT8_MAX]. Min value is 32 because
++	 * Linux/x86 reserves vectors 0-31 for exceptions and architecture
++	 * defined NMIs and interrupts.
++	 *
++	 * Pick a GSI in range [24, KVM_MAX_IRQ_ROUTES - 1]. The min value is 24
++	 * because KVM reserves GSIs 0-15 for legacy ISA IRQs and 16-23 only go
++	 * to the IOAPIC. The max is KVM_MAX_IRQ_ROUTES - 1, because
++	 * KVM_MAX_IRQ_ROUTES is exclusive.
++	 */
++	u32 gsi = kvm_random_u64_in_range(&kvm_rng, 24, KVM_MAX_IRQ_ROUTES - 1);
++	u8 vector = kvm_random_u64_in_range(&kvm_rng, 32, UINT8_MAX);
++
++	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
++	pthread_t vcpu_threads[KVM_MAX_VCPUS];
++	int nr_irqs = 1000, nr_vcpus = 1;
++	int i, j, c, eventfd;
++	struct kvm_vm *vm;
++
++	while ((c = getopt(argc, argv, "h")) != -1) {
++		switch (c) {
++		case 'h':
++		default:
++			help(argv[0]);
++		}
++	}
++
++	TEST_REQUIRE(kvm_arch_has_default_irqchip());
++
++	vm = vm_create_with_vcpus(nr_vcpus, guest_code, vcpus);
++	vm_install_exception_handler(vm, vector, guest_irq_handler);
++
++	eventfd = kvm_new_eventfd();
++
++	pr_info("Injecting interrupts for GSI %d (guest vector 0x%x) %d times\n",
++		gsi, vector, nr_irqs);
++
++	kvm_assign_irqfd(vm, gsi, eventfd);
++
++	for (i = 0; i < nr_vcpus; i++)
++		pthread_create(&vcpu_threads[i], NULL, vcpu_thread_main, vcpus[i]);
++
++	for (i = 0; i < nr_vcpus; i++) {
++		struct kvm_vcpu *vcpu = vcpus[i];
++
++		while (!SYNC_FROM_GUEST_AND_READ(vm, guest_ready_for_irqs[vcpu->id]))
++			continue;
++	}
++
++	for (i = 0; i < nr_irqs; i++) {
++		struct kvm_vcpu *vcpu = vcpus[i % nr_vcpus];
++		struct timespec start;
++
++		kvm_route_msi(vm, gsi, vcpu, vector);
++
++		for (j = 0; j < nr_vcpus; j++)
++			TEST_ASSERT(!GUEST_RECEIVED_IRQ(vcpus[j]),
++				    "IRQ flag for vCPU %d not clear prior to test",
++				    vcpus[j]->id);
++
++		eventfd_write(eventfd, 1);
++
++		clock_gettime(CLOCK_MONOTONIC, &start);
++		while (!GUEST_RECEIVED_IRQ(vcpu) &&
++		       timespec_to_ns(timespec_elapsed(start)) <= timeout_ns)
++			cpu_relax();
++
++		TEST_ASSERT(GUEST_RECEIVED_IRQ(vcpu),
++			    "vCPU %d timed out waiting for IRQ (vector 0x%x) from GSI %d\n",
++			    vcpu->id, vector, gsi);
++
++		WRITE_AND_SYNC_TO_GUEST(vm, guest_received_irq[vcpu->id], false);
++	}
++
++	WRITE_AND_SYNC_TO_GUEST(vm, done, true);
++
++	for (i = 0; i < nr_vcpus; i++)
++		pthread_join(vcpu_threads[i], NULL);
++
++	return 0;
++}
 -- 
 2.54.0.1099.g489fc7bff1-goog
 
