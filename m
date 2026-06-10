@@ -1,125 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD9129D291
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 16:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91911314D1A
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 16:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781108784; cv=none; b=AnkI4Zv5daEvFS4SMTw0EMCr2XMSZSWCOnDCQc3uv4zPdyeG+2yQKjEDx9/danoSHHUu8o9S/2aMeplFikDUkvqQvl2YibP+fNzGmh++PvLdySg/cvYyYgcq3OLEoTg9Z/jvy9+zvPX4YJDbUyQAWtpAVvZKObM60EajjkiBXy8=
+	t=1781108931; cv=none; b=DSJHK7Dz54AlkQEMCB+umgtPUH4j0gGOjJAwDVKUd09ic7FwI15yCeogNbH0SzxK0oUkD4LDYNrIaMGP9cdmCWo+KKLIMnwYB3Dvs8cSC/er7syjErs+tsl512X1aEsB7ecNIrUbCR1PNpFqIqMr0X/nZWNbfBeywAgXHMHLgJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781108784; c=relaxed/simple;
-	bh=+GQ3/eCDhBl+eqISMmMv83MWxZXiMSzrWVVHRU8fBC8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hrjRcey2UMW3hTkdZLTwdtCTFE4FHHdmjx+eJIvdVK/uiiJX9cVFha8k8VG3sbb6iJXgZ5MRYUk83nxTcUhOBNVzCKkUtTxB8/M8v2l6Y3qkI5YFVXdr20FKafsrtw5fV9a7ugeBCLot6NkzjfsB8O8f2bkYnFPCkQN+CEvIT5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AJaIPZ9x; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781108931; c=relaxed/simple;
+	bh=oNtJLGUkWCaRM3PrOBCSWnEFF8AV6QL1YRj/wcqe5Nk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L1b/0P6Kf/VjOVDWN42xA8VEKYerEIMxDuJC6B4R19NuXL4zoJqi2XseH9QGhoAjuk7PyTKFGJ/+rsW7XiO+v8kTwICuGiK1JdTtth/sgJ1tYgWIKwOXW0w2T1tQ908O+v4XAyZKXZHAbhrooyuto147DJd6dZaNT9wKt/QxxBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=HHqd+2Ox; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AJaIPZ9x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061BA1F00898;
-	Wed, 10 Jun 2026 16:26:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781108783;
-	bh=zSlNFbSCdKzcSNO9IhQMi5ZM3WZ7nDYdpNhBa4jIcyU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AJaIPZ9xKm10uR3ROe9zdf2O2ZgpItk+gKhAxcemogiJ/aaoGyCW7/XQmY1voxytR
-	 Rapxh3/53gIU28h7ygdzdn1jwpwo63IMZElaEg+Vq11StQNCHEOD35V1dtZyX5ZxBM
-	 eUvKvCE1lTYFY84WwfULQNojJjQCpHmPFJBU7GdqxgKB0fqa0syudM2z6kCzNWkZmI
-	 yOxR2g/NBBvJsM4tCaiyvsGhMDboQ/BEQrH57vmR5WrEi6xOntTKPVuQIEFZZzKc0H
-	 KPIbK1y0A9FsedYpuwRChDDvgIUqhdAAktZ+Wi/2nW+FI3GvuKFq8ohhx+eXaHIqxp
-	 BNdjd7l2NmHkQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: SEV: Don't return a still-assigned gmem page to
- the host
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Hyunwoo Kim" <imv4bel@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <aimMWzAf5b3luM0b@v4bel>
-References: <aimMWzAf5b3luM0b@v4bel>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 10 Jun 2026 16:26:22 +0000
-Message-Id: <20260610162623.061BA1F00898@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="HHqd+2Ox"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5174a3a025aso70199981cf.3
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 09:28:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1781108929; x=1781713729; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oNtJLGUkWCaRM3PrOBCSWnEFF8AV6QL1YRj/wcqe5Nk=;
+        b=HHqd+2Oxxgfstvd/wG7ueC47k9AaXG6HUc5jm1vsWWMzobtt2kxh0bE1kJobuLGFkn
+         C4UkRIdfPNS+oDSPxCUfu2WzD63r6SmUCCiU9m+hRhDZEbGPJMpfzMa1F5+e1mZLqCRp
+         g8TLpkzlMiZr+us2QE1wKo/uGSRpHRdPa4+4YeZ0uYgEigi8lVzd6IQWV8tnUUF7pLh3
+         h+xEpxrkrhBbvVUrY+hTXaSnD97UwE8QRtfrtBlVQ6WnImcz4jq61s89DyRtB8EqxNiA
+         9dZhEWoZNAhri5PzbUze1hF37Yz72zuQeoUV5/sEixNc0cIChevlf6TnLSCxaWjYLb6M
+         oSfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781108929; x=1781713729;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oNtJLGUkWCaRM3PrOBCSWnEFF8AV6QL1YRj/wcqe5Nk=;
+        b=O7DKCnxrMcXMhilUpX6YCZ8mlIXs9+3IkjcG935rnNBuSMl4tX6yfmOHb8nUi+jhpH
+         X7TEyciQeTn/yl/lJuGqgpMhshL7qebJhLmrlVW13VMt4PWbRGtY7UX+LwaiMVbYOiT/
+         nSb5eEEs4OqD/s2W47JJOwFiLKLvK+DuCFhhTGcOO5KrZDzto6q4Rv9Uzuh7RUBVe/yx
+         N9raLgO8jSKZn98OO205/GcX/4nKcLDBkr704kjtfiLxnAOnQJoe41WXTlL8cXNhc6QY
+         3JNp+6vCoQdfimu1ulr+GVNkt9M1af0upzIC7eLDASKN/JjPfcLBQNKdYALxfjxzgxOs
+         1F9A==
+X-Forwarded-Encrypted: i=1; AFNElJ+U2j8q7P4BL59pARJ1f1DLLOYSgib/U6Z89DgTGFnV9Hp45q08K2OnT9dEBqyh4Lb256s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTrJfUG8BSy23tOkbvqb+y6jYJBYuWsUjsGTNddSZJSweu1OCr
+	+Wu87SbF1cfOX6oE8Tb+iFmiPT3YmVJxEaoEs32G8VjsEQGbFIxdxLv2eVG993dwjbE=
+X-Gm-Gg: Acq92OF5r25/aY31NWcgH64Ht7wwMA74B1cAZEQNppVFRBUNbQpqZJ7TfDQcNYlwPTW
+	Fsho3cR2aMUbYkkuqyG4ZAKBXF6MvcgKozmByFjxxfFNB0JyZLqGQVvHqhPOH7Q8bL162TLM6x5
+	bvB6NdRrtz2YEU+tcZJCqP8bvo1VBuqKFIaRF2gODo15Q2jrnKAHUECbfavaDZhSgmBpdUtWJxI
+	oYVdBIXqdgThwAq7S8vDAmvsQ52jDnS9nm4TwP9sMXIS9PJhNWombZi+TWwZ9pZwl1BHv6ArRII
+	3APttBlB9H07qFoz9tBem+ccF2AtTt0PVyDGsdY3Yw7OghkXEvKEgTG3gBXQwRiTP4+xCCCUwxP
+	aW2m5CkgUDAqMY5ENR9batLXW9Cd8/7/nCnBvYXdo5L6RB5RWmbrThgLmhSVXwfSlHbrfUyvwXH
+	SMzb9lGYINFyOmv03IO1XCnaND6b0c/KIPhFuzzRMP8+4Y8TEeMAT4gRP+/oZM43WqeL894Z48q
+	KBL7ENBO/EN1tq0
+X-Received: by 2002:a05:622a:5b0a:b0:517:7faf:bafb with SMTP id d75a77b69052e-51795bfd7d2mr326551591cf.40.1781108929553;
+        Wed, 10 Jun 2026 09:28:49 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775c60dedsm214392091cf.13.2026.06.10.09.28.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 09:28:48 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wXLnM-000000047em-15sV;
+	Wed, 10 Jun 2026 13:28:48 -0300
+Date: Wed, 10 Jun 2026 13:28:48 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>, Matt Evans <mattev@meta.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Shivaji Kant <shivajikant@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>
+Subject: Re: [RFC PATCH 0/5] vfio/pci: Support ZONE_DEVICE-backed P2P
+ Registration
+Message-ID: <20260610162848.GO2764304@ziepe.ca>
+References: <20260610151853.3608948-1-praan@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260610151853.3608948-1-praan@google.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] Calling snp_leak_pages() on a pinned guest_memfd folio corrupt=
-s the system-wide LRU list by overwriting the folio's LRU pointers.
-- [High] Unconditional PAGE_SIZE-stepping PFN iteration on large folios res=
-ults in duplicate folio_get() increments on the same folio and failure to t=
-rack leaked pages.
---
+On Wed, Jun 10, 2026 at 03:18:48PM +0000, Pranjal Shrivastava wrote:
 
-commit 5d574de6d0d362139fa648b3657e2f24c06fd5ee
-Author: Hyunwoo Kim <imv4bel@gmail.com>
+> Users utilize the standard sysfs p2pmem/allocate interface for managing
+> memory slices once a BAR is registered.
 
-KVM: SEV: Don't return a still-assigned gmem page to the host
+I'm shocked someone wants to use API, what are you expecting to do
+with it??
 
-This commit addresses an issue where guest_memfd frees a page that is
-still assigned to the guest. To prevent returning it to the host, the
-page is pinned and leaked.
+> An alternative implementation has been explored which integrates with the
+> ongoing VFIO DMABUF-mmap refactor [1]. In that approach, rather than
+> registering a BAR as a system-wide P2P provider, VFIO optionally
+> allocates ZONE_DEVICE pages only for specifically exported DMABUFs via a
+> new VFIO_DMA_BUF_FLAG_ALLOC_STRUCT_PAGES flag.
 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index f59c65abe3cfa..dbde6dce79b76 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-[ ... ]
-> @@ -5036,8 +5036,12 @@ void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_=
-t end)
-> =20
->  		rc =3D rmp_make_shared(pfn, use_2m_update ? PG_LEVEL_2M : PG_LEVEL_4K);
->  		if (WARN_ONCE(rc, "SEV: Failed to update RMP entry for PFN 0x%llx erro=
-r %d\n",
-> -			      pfn, rc))
-> +			      pfn, rc)) {
-> +			/* Still assigned to the guest; pin and leak rather than freeing. */
-> +			folio_get(page_folio(pfn_to_page(pfn)));
-> +			snp_leak_pages(pfn, use_2m_update ? PTRS_PER_PMD : 1);
+That's probably more sensible but you can't have a DMABUF mmap
+actually install non-special memory. The native vfio mmap still can,
+but not mmap on the dmabuf fd. That's still workable, just keep in
+mind.
 
-[Severity: Critical]
-Does calling snp_leak_pages() on a pinned guest_memfd folio corrupt the
-system-wide LRU list?
+What do you even intend to do with this? With the new work to tie
+dmabuf directly into io_uring I really wonder if this is worth doing
+for VFIO?
 
-Memory allocated by guest_memfd is added to the page cache, which
-unconditionally places the memory on the global unevictable LRU list. When
-guest_memfd memory is freed, the folio has been removed from the page cache
-but is still actively linked in the global LRU list until its reference
-count drops to zero.
-
-By calling folio_get() here, the reference count is elevated, keeping the
-folio on the LRU list. Then, snp_leak_pages() unconditionally links the
-page into a tracking list via list_add_tail(&page->buddy_list, ...).
-
-Because buddy_list and lru share the exact same union inside struct page
-and struct folio, modifying buddy_list silently overwrites the lru.next and
-lru.prev pointers of the folio, severing the global LRU linked list.
-
-[Severity: High]
-Does this code also double-account references and fail to track the leaked
-pages when processing large folios?
-
-When guest_memfd allocates a large 2MB PMD-size folio, but the RMP table
-has it mapped as 4K entries, use_2m_update will be false and the loop
-unconditionally steps by 1 PFN.
-
-Because page_folio(pfn_to_page(pfn)) returns the head folio for any subpage,
-folio_get() will be redundantly called up to 512 times on the exact same
-head folio.
-
-Furthermore, passing use_2m_update ? PTRS_PER_PMD : 1 (which is 1) to
-snp_leak_pages() results in the internal check compound_nr(page) <=3D npages
-evaluating to 512 <=3D 1 (false). This causes the entire compound page to be
-completely skipped and omitted from the snp_leaked_pages_list.
-
->  			goto next_pfn;
-> +		}
-> =20
->  		/*
->  		 * SEV-ES avoids host/guest cache coherency issues through
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/aimMWzAf5b3luM0b@v4=
-bel?part=3D1
+Jason
