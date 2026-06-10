@@ -1,84 +1,117 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833B25477E
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 17:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557932E1F06
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 18:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781114361; cv=none; b=VkVGFfNhJhfWq2s5Hinv8vAkA0HpMVaN6gEwc5IIvQbsKmncnUxmKDVnrxGhXF4OJfSLr4pqXF75sukIaEEnpbny2m+4oEyiFx/t53TAxKmSezoy5Abba4sHrc6NaB0M6Ocoq3SIkaaIO1dC/Luxf8YPRqNyA65o4BDmbuFCdX0=
+	t=1781114767; cv=none; b=qvAgAlku6wrufjuXevO4de+E8SoB5cpALFT5a1KxedUkV+YYQ2+h/7BENLExCjSp0Ld+3I3CrZsbnEz+hOfkhYm7340r6Ltrp8Gsvw/5vGC4rr++BCtGNQ0qefPDkntvxH2BaecUne1b/62hJpK55Fj5q7vGsxKbVTQDbXcoeZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781114361; c=relaxed/simple;
-	bh=ooQLKDt4t/umsUYSpGFIHEX7BwMgJ6SDbR70bsEWiv8=;
+	s=arc-20240116; t=1781114767; c=relaxed/simple;
+	bh=k6GjeYxgByZDSIuzADvt///QHoQS2Zd6HyjRvMqVz9k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HAz78CM99ndxlqAVhhSKNnYhuaw4ZJNJ8o4Adh3I08sqzOowpK/Z+Vki/O8YHGG8bZ0PQva0KKqOYBSFJealtWM3dYrOr1BUpz+L6GhytltiPnDCzQ+1VrfSUJozPYhtE2Sj3yyHP8mKtNUsJaJNB0AWic1i08pGytIQCp1JJxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uS99sxT4; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=U4MluhGkACseYkHqtN1jRIWrJWGz/QhDabw1Hoh3nTPi9RbbmyYbi4xpDQ7mOpbOY79cSfWOpB/rYkiXMUwOU9gCQH/b++cGI4itDipIQagaJiwJ4Bd/GIOZco9fxSmTUdO9nuBxpl9SLH3L5FmTc4BjuWEEs3g3L4/I80NaMsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uPDEuxoV; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uS99sxT4"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36bcfce8a33so70740a91.1
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 10:59:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uPDEuxoV"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8428419982eso6125146b3a.3
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 11:06:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781114360; x=1781719160; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781114766; x=1781719566; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eUrC+jAn2iYzK3cyoAqLDZt/8SWBUONJdIH1jABrZ7Y=;
-        b=uS99sxT4TS+HKgVBsegCJzGGFhOP5gUFRc6fMVWN9MDz2i6or8KSVzsvlknlT7ff9k
-         5ON/PVF8Nz77HlxIfMqRyDpxP9grKB84qrOsVIcjIc2P8NmM6ala1NT1dt/RZ1LE9KAZ
-         nNbYO8m4y76hrdQtJyvywEgodMtS66cXPzMPE+0qOXc/tjKeHkVRTy1zuVOQwCT99rQm
-         xUmW9jempWGCHOWmYQEOeUcZ8cQY2+hLEA0H95NC0eM9N1JzF/YF1sBnQE2aO2B5PseP
-         8zXa1IaN2sk8PVAJwvrbsReqrLURTUjf/cviCwcK9ggc8n2kFuWyFnkUhSNLWaSiry2n
-         mhvQ==
+        bh=xkFkBgd+xuByNIegpgrKJZN9LP1SaVEtSyMl1cJUNS0=;
+        b=uPDEuxoVQ6yPs0FGagoTsDLJvp1mYlq3025SwMzEtUnubH+8kFxxvXtM6s0byKbLwf
+         Wyc7yhMrkrg8+/lNRrqzSg/MYobSqLG0+zPUQ83sRrqIPaCe4cdz7SiXj7uGkZvVqE/r
+         LqnO2wS7G7AJmRVsGupkKVgx8lHdNIkfU5BqvfAGiW2ZflF310tx/ac8tdXSgGEIk7zH
+         H84XG5soQNVURQOa17DOBv5+easX2aIxhT6irClbM8hyHNO0aqBbB6lGsqwHUIdZguIy
+         cLZ3my3OJSrYMBjjyt4msG2Rde2tbweyixUdUcUPjvqpJ5uQlJLKxCBmAji70KCMIoe9
+         plKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781114360; x=1781719160;
+        d=1e100.net; s=20251104; t=1781114766; x=1781719566;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eUrC+jAn2iYzK3cyoAqLDZt/8SWBUONJdIH1jABrZ7Y=;
-        b=GdDPQ6nSnkg3UVedbbMz7lUJiWjI4m3IkUv5MYJMwiRhlFWorfxwmUuYyXpX2FsSTA
-         DPbh5hRAXOZh+d6RGGyI5h8hq2CaADsr4nFb0HJiAYJ94VercKSo1suY34Vj+2wJMOgY
-         5NRq4vmVsYTI2C63N/ZYepQ0MpNgFL0SNDVF3jvyTAf1hOFjTd/kwiM8JpXft3LCQLBO
-         Jqj9fJhk1lpGFa9soQwraX1ZimX03JfWxxGungLpkhlFK8Vj6ZDKEdUR1Y8aB6NS+M8o
-         MQ/DZRqaiq5w4XlXVvdt2jHI50zMSQlGBjtWAT33GXtkcAsiq47Y25Ho5VXFuDMA81S8
-         rvRg==
-X-Gm-Message-State: AOJu0YzOcRy77UX1xl3UuDKf3LVGZL8gDhHXWgk/Fj/slleCvbws9ZVt
-	bIiI2yMZ1as1d4WK3tbErrhyrxm9Px+DBhYafsRAv6uzCAQ+dMP9DEunx4rA623pr3awP1iutEv
-	hpTJmhA==
-X-Received: from pjut3.prod.google.com ([2002:a17:90a:d503:b0:36b:bc13:f5a6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f46:b0:35f:b9f1:fded
- with SMTP id 98e67ed59e1d1-3713336f91fmr19807082a91.12.1781114359586; Wed, 10
- Jun 2026 10:59:19 -0700 (PDT)
-Date: Wed, 10 Jun 2026 10:59:18 -0700
-In-Reply-To: <ed1d75f27a3b02897a8f54721d9f7f21bb163d9c.1781093720.git.ritesh.list@gmail.com>
+        bh=xkFkBgd+xuByNIegpgrKJZN9LP1SaVEtSyMl1cJUNS0=;
+        b=Yzy5z9hf7LM+Qt4UnrCRgvcipKrVPiikAwQuOGe2+gPW86CaiNDN12ei0HQl8fqm7N
+         LVtONFUy4B0Wne4q3+2ODZiGkum3uFKQVmLYSWLRt52sy8tayRAJ8dEYrG9lUbIKZm5h
+         bnTifi6vf/vT+kZBeI6Q4O/LcidojEB7TPwty/iBjdJR4usTU3qo4/0pQEVn91XLouNX
+         LYH/+IsvZgvcxngXeiwhhpidBEOs6CsiOzXuTfw/KLxsoGv2WU8Sw2cUNiMBCbv4PRd+
+         q1mcYomBaJ4BVRJECUlpUM2gj2PSAqJ+zOH7nTNIQEwkX7ZPjLxOB0slTEhKydeSQjjn
+         ucjA==
+X-Gm-Message-State: AOJu0Yz0Z2tdE117Bs9xdCJ26lNpfvzfaXvEfTiEEuNxuH/T3cqDYQRc
+	yupmWPxRbKkPY+M4TUx4lJXnWGZnX5GfZnfd5hUwgMJcdZ6tjgPerwTUJv0HKMhKYJcyPbufKg/
+	yybBTcA==
+X-Received: from pfob8.prod.google.com ([2002:aa7:8708:0:b0:842:47f8:d51d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2303:b0:842:3be7:4d55
+ with SMTP id d2e1a72fcca58-842b0e588c9mr27119419b3a.11.1781114765452; Wed, 10
+ Jun 2026 11:06:05 -0700 (PDT)
+Date: Wed, 10 Jun 2026 11:06:04 -0700
+In-Reply-To: <20260610010517.1333F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1781093720.git.ritesh.list@gmail.com> <ed1d75f27a3b02897a8f54721d9f7f21bb163d9c.1781093720.git.ritesh.list@gmail.com>
-Message-ID: <aiml9iB_vUASRRQV@google.com>
-Subject: Re: [PATCH v3 RESEND 04/10] KVM: PPC: selftests: powerpc enable
- kvm_create_max_vcpus test
+References: <20260610005338.2967132-8-seanjc@google.com> <20260610010517.1333F1F00893@smtp.kernel.org>
+Message-ID: <aimnjHurnYPMI5ii@google.com>
+Subject: Re: [PATCH v6 07/18] KVM: selftests: Add VFIO device support to
+ eventfd IRQ test
 From: Sean Christopherson <seanjc@google.com>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
-	Christophe Leroy <chleroy@kernel.org>, Anushree Mathur <anushree.mathur@linux.ibm.com>, 
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Jun 10, 2026, Ritesh Harjani (IBM) wrote:
-> From: Nicholas Piggin <npiggin@gmail.com>
+On Wed, Jun 10, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
+> > index 9f8895b898214..6888be54ee4a9 100644
+> > --- a/tools/testing/selftests/kvm/irq_test.c
+> > +++ b/tools/testing/selftests/kvm/irq_test.c
 > 
-> powerpc's maximum permitted vCPU ID depends on the VM's SMT mode, and
-> the maximum reported by KVM_CAP_MAX_VCPU_ID exceeds a simple non-SMT
-> VM's limit.
+> [ ... ]
 > 
-> The powerpc KVM selftest port uses non-SMT VMs, so add a workaround
-> to the kvm_create_max_vcpus test case to limit vCPU IDs to
-> KVM_CAP_MAX_VCPUS on powerpc.
+> > @@ -74,11 +107,29 @@ static void kvm_route_msi(struct kvm_vm *vm, u32 gsi, struct kvm_vcpu *vcpu,
+> >  	vm_ioctl(vm, KVM_SET_GSI_ROUTING, &routing.header);
+> >  }
+> >  
+> > +static const char *probe_iommu_type(void)
+> > +{
+> > +	int io_fd;
+> > +
+> > +	io_fd = open("/dev/iommu", O_RDONLY);
+> > +	if (io_fd >= 0) {
+> > +		close(io_fd);
+> > +		return MODE_IOMMUFD;
+> > +	}
+> > +
+> > +	io_fd = __open_path_or_exit("/dev/vfio", O_RDONLY,
+> > +				    "Is VFIO (or IOMMUFD) loaded and enabled?");
+> > +	close(io_fd);
+> 
+> [Severity: Medium]
+> The commit message states that the test will auto-probe IOMMUFD vs legacy
+> VFIO and skip the test if neither is available. However, probe_iommu_type()
+> calls __open_path_or_exit() on /dev/vfio.
+> 
+> Because /dev/vfio is a directory, open() with O_RDONLY will succeed if the
+> directory exists (e.g., created by udev or left over after a module unload),
+> even if the VFIO module is not loaded and the character device is absent.
+> Opening a directory does not trigger the kernel's character device module
+> autoloading.
+> 
+> If this occurs, probe_iommu_type() incorrectly assumes VFIO is available and
+> returns MODE_VFIO_TYPE1_IOMMU. The test then calls iommu_init(), which attempts
+> to open /dev/vfio/vfio and will fatally abort, resulting in a test crash rather
+> than a clean skip.
+> 
+> Additionally, using __open_path_or_exit() will cause the test to exit rather
+> than skip if the path does not exist.
+> 
+> Should this probe instead check for the /dev/vfio/vfio character device and
+> use open() instead of __open_path_or_exit() to allow the test to gracefully
+> skip and trigger module autoloading?
 
-How is this not a KVM bug?  Literally the reason this test exists is to validate
-KVM's advertised KVM_CAP_MAX_VCPU_ID and KVM_CAP_MAX_VCPUS.
+No, "probe" here means guessing which flavor of VFIO vs. IOMMUFD, it doesn't
+mean probing a kernel module.
