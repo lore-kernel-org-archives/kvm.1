@@ -1,229 +1,194 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B01444A71C;
-	Wed, 10 Jun 2026 15:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D293D428463;
+	Wed, 10 Jun 2026 15:54:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781106818; cv=none; b=pks+CTN0hwaHhBsQgb5DmykxiJ0S5PhAirbvm9kFFy4meh+0T601z9J4ezck6vslBV/G1rqECRWIwr6Sk5xxzNsTWTc6aHfNoxPtcDR5aLxnrYLF9DoHNaS2oNBGgXmjMc0AEpiNw4DJhbSUpffN2MPifOgVhJBoU3lX5t/AWU8=
+	t=1781106892; cv=none; b=dfXrfgEm4EqeVK+fdVaJ/eyymBOc2uzOLTDgdlpIdCUnGa7sMGAdROPZNEfAFv69Et+s4qAa4jXgVbRVg8S7mvF6356e2U2+S4+DZ/rQEv3cQUmj7mF0eCgDm2iJ9FfNM4uXHtFCfQcjvg+/aqJnH3lHHdtDxekW3ORZBg/8LDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781106818; c=relaxed/simple;
-	bh=zdyLP7ouTkt+ILiSuCO1olIjLO1MUnak+VQbsyrfxUQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jPvIlH0PtICXfZmPFqHuX0Bo/Rcu2eLwCPzxvZ0D+21ffYYnHaaFy0NdJzbkKhyyvTUuxpzl2ZhkV4TJ7RxCWeXpvIsod1xeyTZ1NkdVWkYOC6tbyH9YGucWT4aK9n+wukf5mMVe7WRceYQAgjJ1NM5sUAMd9yXG60Hq2xXjscc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bF+TY6su; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1781106892; c=relaxed/simple;
+	bh=ukW1c1uMt9ueafvMqFkHXTOSlFzpWGuyC9gLsCXloss=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=VPveNsCe9eVP4YoUIIoPcP1SMkudypZ4QUmDBHJ3/goRvcS7EcXTCoNjvfYI71ERW569IrhOnAjiFyEX+tKi1xgc+EBf3g8ccRBMopn63QigSZIdz3lvucYf9VZLnYsrFVZ2cWey0eb/D/3s4Y7P68ELZVHhF8baOg5HX8be+Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fXwMepDg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bF+TY6su"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65A7m09X3513101;
-	Wed, 10 Jun 2026 15:53:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=g2E5FiZ63LRQIjfKGaaxoNu3uHCI5b
-	0O4yQZ5HCqp38=; b=bF+TY6suCU7NSUN42/xQ8hAiMiLkJ/omkP9OHFZtm6ufnm
-	oX8ejIdjOM7Vi7w+4ADrs71k99YhZLCe4I9UfZQh9GKAdLhlZl9zr/fL/YhPfD6J
-	DfcseSLIJXvANMmdwu0L4D2hSVAONj8sdlFJBfIpu1KRBodBNEHzyLVyz2wUgJjX
-	sEw9KnhsdIMQ8zBFZOcv7cXng+y0FQqjGO3cqS6ul59v4e80+RoQkDeoSh3xM8tS
-	JuYGDkbPgRSmU+q5nWQgBESFJZWvcAAUGqiuu63tUAxIaSLzbTzVI2KXZFJQKPzE
-	mvJvks8NCtcyUsc2dW9XPgPJvqxLBar7B3R41Y7w==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb241xt5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jun 2026 15:53:22 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65AFntBE004934;
-	Wed, 10 Jun 2026 15:53:21 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4en03g73b5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jun 2026 15:53:21 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65AFrIe044368306
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Jun 2026 15:53:18 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4FF8920049;
-	Wed, 10 Jun 2026 15:53:18 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C79E20040;
-	Wed, 10 Jun 2026 15:53:15 +0000 (GMT)
-Received: from fedora (unknown [9.5.7.39])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 10 Jun 2026 15:53:15 +0000 (GMT)
-Date: Wed, 10 Jun 2026 21:23:17 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, lkp@intel.com
-Subject: Re: [PATCH v3 4/5] KVM: PPC: Book3S HV: Add support for compat CPU
- capabilities for KVM on PowerNV
-Message-ID: <20260610212254.3cec19b0-ef-amachhiw@linux.ibm.com>
-Mail-Followup-To: Vaibhav Jain <vaibhav@linux.ibm.com>, 
-	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anushree Mathur <anushree.mathur@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, lkp@intel.com
-References: <20260522152744.55251-1-amachhiw@linux.ibm.com>
- <20260522152744.55251-5-amachhiw@linux.ibm.com>
- <87jysgz292.fsf@vajain21.in.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fXwMepDg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E831F00893;
+	Wed, 10 Jun 2026 15:54:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781106890;
+	bh=oP35lkm7tGMje2LGiaFXL2/xfgQkw9B2auCSNuH9frI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=fXwMepDghijxTfr+6Dwkpzz5P25W8gI+zIZgXmML989ZTt1kvi9ezwsQe+gRHxp5D
+	 5mB87Un+iW4kwbYWGoUOOJje/8mB0NvgXxoN/sO3+P1lLrg5cf8TOsvVHhYZJIHclJ
+	 kzV4aRg0JFmQMb/tJFw0413aVJXMNGwp4QVt7i/YTEq388pHZVKMKdNhMy/n3vvGck
+	 AmzgfGcs5JDF38NgAIVrzcu9F+XcLfZk3ja5quiU55GC1BQTbHU6bT9rGuTdq/X9eU
+	 H5VfKjLto7LnA5Vb/ohKdj7OM8FPgVQdwowyTwp1OTurvVQ/QCN1LrqrYq21jo25lk
+	 LLNKUrIhSsEBA==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 5/5] PCI/P2PDMA: Introduce a helper to release P2P
+ resources
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Pranjal Shrivastava" <praan@google.com>
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260610151853.3608948-6-praan@google.com>
+References: <20260610151853.3608948-6-praan@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 10 Jun 2026 15:54:49 +0000
+Message-Id: <20260610155450.32E831F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87jysgz292.fsf@vajain21.in.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=b4uCJNGx c=1 sm=1 tr=0 ts=6a298873 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=C8Vz2Ujs2r1iiY_tozkA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: QS9JKwRuI7EoydCswWm4uUnL-s98AkHl
-X-Proofpoint-GUID: 3aN2sU-fgy2MYeKTz0nVVxtBonT1tyqA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEwMDE0OCBTYWx0ZWRfX1EnIf+YbxpRy
- 5srb6zES9vsIinzvkbAQkr395H2uGvsOyOp8qiVIgTFdPlCiMkyHXSyJ+Eqgtb0XhTyD8j5PtzR
- v98Zcfe72P8lCipU5X0KKLmMWKNmW2wUoUXmDVOJe8eIyha+SglKBFqSW+WSQEV/sEhl9o9kIxY
- ezjZUxxJ5bqT+zOd8W+J0YvcWhjygs5yN5lcPfCFbtEdtBjWE1d1re/XzzsvPmvAQd8ZyofOsNm
- 9uTlFEWoal7hLg36rY9pJkjIFIQ6+MKrT7xxw2wn3Q79v9+9TUa07640Rt/6J/ERJhjoiiPyUmD
- vuwCIZ/aCOWo3jZV3zNhrf6eli+Au9Bovsm7MFIlTNSd9/JkDpOi5xlTgUkOmWx90kygmxwyy6K
- SLnwb9VKDgy0bPTGMRKYrvG+ZUEvEqbuxcUQZjDs8xMG22BN0ho20SHOnNYpByh6z1jPDSy64k+
- tZxQSK7Sig5c87Dp0jg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-10_03,2026-06-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606100148
 
-On 2026/06/03 09:47 AM, Vaibhav Jain wrote:
-> Hi Amit,
-> 
-> Thanks for the patch. My review comments inline:
-> 
-> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
-> 
-> > Currently, when booting a compatibility-mode KVM guest (L1) on a PowerNV
-> > hypervisor (L0), the guest runs with the expected processor
-> > compatibility level. However, when booting a nested KVM guest (L2)
-> > inside the L1, QEMU derives the CPU model from the raw host PVR and
-> > attempts to run the nested guest at that level, instead of honoring the
-> > compatibility mode of the L1.
-> >
-> > Extend host CPU compatibility capability reporting to support nested
-> > virtualization on PowerNV systems (PAPR nested API v1).
-> >
-> > For nested API v2 (PowerVM), compatibility capabilities are obtained
-> > from the hypervisor via the H_GUEST_GET_CAPABILITIES hcall. This
-> > information is not available on PowerNV systems.
-> >
-> > For nested API v1, derive the compatibility capabilities from the L1
-> > guest by reading the "cpu-version" property from the device tree, which
-> > reflects the effective (logical) processor compatibility level. Map this
-> > value to the corresponding compatibility capability bitmap.
-> >
-> > Introduce a helper to translate CPU version values into compatibility
-> > capability bits and integrate it into kvmppc_get_compat_cpu_caps().
-> >
-> > This allows userspace to query host CPU compatibility modes on both
-> > PowerVM and PowerNV platforms via the KVM_PPC_GET_COMPAT_CAPS ioctl.
-> >
-> > Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> > Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
-> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> > ---
-> >  arch/powerpc/kvm/book3s_hv.c | 37 +++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 36 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> > index 38de7040e2b7..18774c49af85 100644
-> > --- a/arch/powerpc/kvm/book3s_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_hv.c
-> > @@ -6522,15 +6522,50 @@ static bool kvmppc_hash_v3_possible(void)
-> >  	return true;
-> >  }
-> >  
-> > +static int kvmppc_map_compat_capabilities(const __be32 cpu_version,
-> > +				      unsigned long *capabilities)
-> > +{
-> > +	switch (cpu_version) {
-> > +	case PVR_ARCH_31_P11:
-> > +		*capabilities |= H_GUEST_CAP_POWER11;
-> > +		break;
-> > +	case PVR_ARCH_31:
-> > +		*capabilities |= H_GUEST_CAP_POWER10;
-> > +		break;
-> > +	case PVR_ARCH_300:
-> > +		*capabilities |= H_GUEST_CAP_POWER9;
-> > +		break;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> >  
-> >  static int kvmppc_get_compat_cpu_caps(struct kvm_ppc_compat_caps *host_caps)
-> >  {
-> > +	struct device_node *np;
-> >  	unsigned long capabilities = 0;
-> > +	const __be32 *prop = NULL;
-> >  	long rc = -EINVAL;
-> > +	u32 cpu_version;
-> >  
-> >  	if (kvmhv_on_pseries()) {
-> > -		if (kvmhv_is_nestedv2())
-> > +		if (kvmhv_is_nestedv2()) {
-> >  			rc = plpar_guest_get_capabilities(0,
-> >  	&capabilities);
-> Need to mask capabilities as mentioned in the review comments for
-> previous patch. I would suggest creating a helper that performs the
-> hcall and applies the mask which can then be used at
-> plpar_guest_get_capabilities() call sites.
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
 
-Sure, will do.
+New issues:
+- [Critical] `pci_p2pdma_remove_resource()` destroys the P2P memory pool wi=
+thout RCU synchronization, causing Use-After-Free and NULL pointer derefere=
+nces.
+- [High] `vfio_pci_core_feature_p2p_register()` modifies P2P resources with=
+out acquiring any serialization lock, causing data races with concurrent io=
+ctls and `vfio_pci_zap_bars()`.
+- [High] `devm_memunmap_pages()` blocks indefinitely in `vfio_pci_zap_bars(=
+)` if P2P memory pages are persistently pinned by userspace, causing a loca=
+l Denial of Service.
 
-Thanks,
-Amit
+Pre-existing issues:
+- [High] Error path in `pci_p2pdma_add_resource()` leaves a dangling devres=
+ action, causing a Use-After-Free during driver unbind.
+--
 
-> 
-> > +		} else {
-> > +			for_each_node_by_type(np, "cpu") {
-> > +				prop = of_get_property(np, "cpu-version", NULL);
-> > +				if (prop) {
-> > +					cpu_version = be32_to_cpup(prop);
-> > +					break;
-> > +				}
-> > +			}
-> > +			if (!prop)
-> > +				return -EINVAL;
-> > +			rc = kvmppc_map_compat_capabilities(cpu_version,
-> > +								&capabilities);
-> > +		}
-> >  		host_caps->compat_capabilities = capabilities;
-> >  	}
-> >  
-> > -- 
-> > 2.50.1 (Apple Git-155)
-> >
-> 
-> -- 
-> Cheers
-> ~ Vaibhav
+commit f498fe90fe30c1dceda58fbbdcd2de8314934e62
+Author: Pranjal Shrivastava <praan@google.com>
+
+PCI/P2PDMA: Introduce a helper to release P2P resources
+   =20
+Introduce pci_p2pdma_remove_resource() to allow manual teardown of a
+device's P2P DMA pool. The new API enables exclusive owners of a device,
+such as vfio-pci, to cleanly release P2P resources during session closure
+or hardware reset.
+
+> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+> index adb17a4f69396..2a48ffefa01c4 100644
+> --- a/drivers/pci/p2pdma.c
+> +++ b/drivers/pci/p2pdma.c
+[ ... ]
+> @@ -466,6 +469,41 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, in=
+t bar, size_t size,
+>  }
+>  EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
+
+[Severity: High]
+This is a pre-existing issue, but does the error path in
+pci_p2pdma_add_resource() leave a dangling devres action?
+
+If gen_pool_add_owner() fails, the code jumps to pages_free:
+
+pages_free:
+	devm_memunmap_pages(&pdev->dev, pgmap);
+pgmap_free:
+	devm_kfree(&pdev->dev, p2p_pgmap);
+	return error;
+
+The devm_add_action_or_reset() called earlier registers
+pci_p2pdma_unmap_mappings() with the p2p_pgmap pointer, but it doesn't
+appear to be deregistered here. When the device driver later unbinds,
+will the devres core execute pci_p2pdma_unmap_mappings() with the already
+freed p2p_pgmap pointer, leading to a Use-After-Free of p2p_pgmap->mem->own=
+er?
+
+> +/**
+> + * pci_p2pdma_remove_resource - remove all p2p memory for a device
+> + * @pdev: the device to remove the memory from
+> + *
+> + * Tear down the entire p2p DMA pool for the device. Zap any existinga
+> + * userspace mappings of the p2pmem/allocate file
+> + */
+> +void pci_p2pdma_remove_resource(struct pci_dev *pdev)
+> +{
+[ ... ]
+> +	gen_pool_destroy(p2pdma->pool);
+> +	p2pdma->pool =3D NULL;
+
+[Severity: Critical]
+Does destroying the pool and setting it to NULL here without RCU
+synchronization cause Use-After-Free and NULL pointer dereferences?
+
+Because pdev->p2pdma is still active and accessible to RCU readers, it seems
+this can race with several concurrent operations:
+
+Concurrent sysfs readers like size_show() might read p2pdma->pool and
+trigger a Use-After-Free when executing gen_pool_size().
+
+Concurrent callers of pci_alloc_p2pmem() read p2pdma under RCU, see it is
+not NULL, and could unconditionally pass the now-NULL p2pdma->pool to
+gen_pool_alloc_owner(), causing a NULL pointer dereference.
+
+Additionally, the driver detach handler pci_p2pdma_release() checks
+if (p2pdma->pool) synchronize_rcu();. Since the pool is now NULL, it skips
+RCU synchronization and immediately destroys the xarray, leading to a UAF
+of the p2pdma structure itself by any remaining RCU readers.
+
+> +
+> +	sysfs_remove_group(&pdev->dev.kobj, &p2pmem_group);
+> +
+> +	pci_info(pdev, "removed all peer-to-peer DMA memory\n");
+> +}
+> +EXPORT_SYMBOL_GPL(pci_p2pdma_remove_resource);
+[ ... ]
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index 7913b8916df91..7b58cb344408d 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1704,6 +1704,11 @@ static void vfio_pci_zap_bars(struct vfio_pci_core=
+_device *vdev)
+>  	loff_t len =3D end - start;
+> =20
+>  	unmap_mapping_range(core_vdev->inode->i_mapping, start, len, true);
+> +
+> +	if (vdev->p2p_registered_bars) {
+> +		pci_p2pdma_remove_resource(vdev->pdev);
+
+[Severity: High]
+Is it possible for devm_memunmap_pages() to block indefinitely here while
+holding a critical device rwsem?
+
+Inside pci_p2pdma_remove_resource(), devm_memunmap_pages() synchronously
+waits via wait_for_completion(&pgmap->done) for all device page references
+to be released. If userspace has persistently pinned these P2P pages (e.g.,
+by registering them with RDMA or io_uring), the reference count might remain
+elevated, causing the kernel thread to hang in uninterruptible sleep.
+
+Because vfio_pci_zap_bars() is called with down_write(&vdev->memory_lock)
+held, this hang could prevent any future operations on the device, including
+administrative driver unbinding.
+
+[Severity: High]
+Can pci_p2pdma_remove_resource() run concurrently with the ioctl handler
+vfio_pci_core_feature_p2p_register()?
+
+It looks like vfio_pci_core_feature_p2p_register() updates
+vdev->p2p_registered_bars and calls pci_p2pdma_add_resource() without taking
+vdev->memory_lock or any other serialization lock.
+
+Since vfio_pci_zap_bars() directly calls pci_p2pdma_remove_resource(),
+concurrent execution could cause a TOCTOU race and corrupt the p2pdma pool
+state and pagemaps, as the PCI P2P subsystem assumes exclusive access from
+the caller for state modifications.
+
+> +		vdev->p2p_registered_bars =3D 0;
+> +	}
+>  }
+> =20
+>  void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device=
+ *vdev)
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610151853.3608=
+948-1-praan@google.com?part=3D5
