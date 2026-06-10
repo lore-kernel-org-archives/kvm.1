@@ -1,62 +1,62 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F856406800
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 12:48:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20283AE199
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 12:48:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781095695; cv=none; b=sV2T1LC9GYG/SedoN8ADw36M0BwdfEL9u8UIhCoP0WvpnfYVxyLMDL7QHnbH2IxU5hoLTdz2G3KQtjnr4mvuXpi4Ja3K6ZFOeZtt0gIrN2P33s5Fk2gxigddKxWv2vmaMgvu79QiDNtseqj6MxjgmpVlOJpFJsBUtp/DDISAp4Y=
+	t=1781095700; cv=none; b=AekLNUMW6CvoEx2bzVqJLDF5SqmGpTW0F3WjC3X9B22LvqG2d92lK+b3jb9CwShkcSX7FcbBn16sBRC9LXgZOgm9DMgK36WfJ+ha0Sk/2LUFc+Zg/e1iNVhF/8BN6a4LovDOmt0bmJsTXLoLU9zF2aLyx4T/MVUOp0V6D/NOcCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781095695; c=relaxed/simple;
-	bh=iuKoNf2i+PHXWeiokIk7S1PGimD80LQSYGSvE6JQtqA=;
+	s=arc-20240116; t=1781095700; c=relaxed/simple;
+	bh=cbadhVdGENuf2REpDYOzhf+HgyWklEFQdkhkdFB9nVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHnPP/0LFdLYlA1gc0pTUlaDEiCY3/7ry5Xqr0by8DKHA812JyTzFNFMKkB0/lpwoz+puZMxq7+gxM/RMGtYkqzKpLt5wfty/JAHlx15Lt64y8TiJwTldRuotErOzSqBNjy8K+vWAd/w6FRkXhVR955WeEdH6dmDzfDZdChMeSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QYiEpZrL; arc=none smtp.client-ip=209.85.216.43
+	 MIME-Version; b=U9tQPNkaYiL2QrHigTLIStXWfHym0isMoCZkmrzRV2ejgT4kGhjizh+2HLByy73A4fNgmH7bfTQOCvdHk/TyBDAV7Sg6z7oeifGcWJJ2CzStUwUvOIpkfl3/YQD2IXLhDY3qgny3IH2rNDyxvHS5nCwvGA1oc72PYU9+AA7ftEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nzddjn7f; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QYiEpZrL"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-36b8e1760ccso4254011a91.0
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 05:48:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nzddjn7f"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-36dac5d5d05so3609147a91.2
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 05:48:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781095694; x=1781700494; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781095699; x=1781700499; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nqa48U7Zo36zEODVSIgL4W0ts+Mysp9P11byxscZfNU=;
-        b=QYiEpZrLAGK0lsO502lzbILUEH8Sf/SQ6Q77HHhhY5H8r8h3iHz6XIJ6NsAl3woWdp
-         Y9gJAwvvixAISeA+mEtj/3fqroSvNRK3CmBDSUqKhAC4eYYCxk4EbFN+idx6svllsyll
-         WsZWpGFXciQfXQWoza3pQ8JKWcY4dThKmCrAGsQQclpjYnut3/U2xmqGQKek3Rk9haWW
-         ThbVBwuh6joyw+q5R+xLx+o8MVm9vYPb7AxD2N0KQJyDwydqVQbkrGdkMs9nD550sv6j
-         ghWTa/Hw6mL4aCl8+ZpfnnTA+F1SgSxCI6K3m3RPJ+Ud7sx7rqSJfOtmCcRitlbH4zRK
-         ToRA==
+        bh=o8+a22vFLAJgAuwgI2KpSatIpPOW4GGFBsrZIpdJO1g=;
+        b=nzddjn7fnzgAy2zMqv2xwOTbQHkmVv+jas0/xgOGmHQKBRJy86xcyzyuwxJb507yvf
+         Y+SoNDT8z64eqW6KyPRKcEIN6XtFa9RwqcESWJqh+PbQDI6aXsOZTY/gA/8MNq4cM35j
+         BmRNsNbP1zzOtVuhnYJcEpHf11AOn8WWYH9NIC4rIJvdWxAcf8ohneXEWRAJUZidDuiT
+         9RISX+Ce7ubvG7onr/6k3GDRuz0Et+yf/1UVPa7EemBmD6H6KaSoHbfwYZ+TCDTLI8Xd
+         fw1OtJpWdjmKgrBn0L4ZEUFDNh752rCADqIUxly5b3d2Lpa0LgvgSR67ef5bVXMzgRMS
+         HRFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781095694; x=1781700494;
+        d=1e100.net; s=20251104; t=1781095699; x=1781700499;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=nqa48U7Zo36zEODVSIgL4W0ts+Mysp9P11byxscZfNU=;
-        b=E833iLusqSfPJzYh77rK0vsp39kKMPrLkSIB4qMy0TtijlW+ClVuM6LAWQYdPoW593
-         P1zG4w7px/6imRPUNQXIZ2jBs7sbh1/Vfp8iArev6hRG8ZxAwVfkClzOnOFM7gcszE6d
-         8bnGoNYRMu7XGZrtuTOCRSpsMhHgYiLOpIjzsTAmxMoCNxU9pqJRnJ2ZprnNTI2jMPyl
-         zyGAam9xUNpbdBjPaNnwIHMKLkOmwFAIqXmhhmP0OvRTadXY6gjWQgIwA92j8hkrCpy+
-         3xyqLKt4bP672zYHrFQIL7GOLOMqyDGYG0qN0dUreGU9oEVrf3+y3WZht3/u0+VKaEgH
-         PDHw==
-X-Gm-Message-State: AOJu0Yy4ka/HPXDGbt+QVI461u/vb4L0b0krin06qDJm3OIO+leSNj7N
-	1fBWWemoyFxcyFn7la5aK/GNcOo2da9lt1swVc/XTtYr4w6o4FC5vadwaiR2Tw==
-X-Gm-Gg: Acq92OGZKsFEwxWFOmVelfJ8Fps5MovzQU5FL+vCJYLFzNVzWCH92fAvrriGf+wFup2
-	LKpYaCnPBKDyHx/A3YNl4CCl3oChSFwvi2KcQCyKSgKcgO+kCAFmJAn7axubxyKmU4VPZIgIhhg
-	8kxOjy8MjT4vtrl/Vl73cCydnxGPJfQ4XJjdRTEQBBVt8OZhxnUTDG9xfGYc7d2QiSfCk5MC9DF
-	DMmAPM6fHvy0u02aXfH1MRLT/DrKpoQoZ1U7lK+BEryluExRi5EazOb6d1JVW6hwy+HisUWypYb
-	BESsO5vUK4q9FpVgRjaZXn0o57e+trEQBMsbG7RUv9l8sQ9eo1sdEJFIoOW08o/Zj//8hh2vqdV
-	GXN4P0pwW0XKrS9+7zR4PhzwTIFK/dtuo/5WoQgbhJ5sRXoRu3JjZ1KcxQnTr7NgUzgaJRHLZbf
-	S5S7mi3IZrZJgAFy9doGXwLEZlFmfOQDQamPhaSXyaU5a3UxNT4PCw1KhebWK2YA==
-X-Received: by 2002:a17:90b:2706:b0:36b:ad81:c134 with SMTP id 98e67ed59e1d1-370ee928d34mr26496639a91.10.1781095693483;
-        Wed, 10 Jun 2026 05:48:13 -0700 (PDT)
+        bh=o8+a22vFLAJgAuwgI2KpSatIpPOW4GGFBsrZIpdJO1g=;
+        b=NdBCAbeDxtzfDWzJoG1om5l/lDAkk7haQaKs9QNGYVk+8kMEaabtG0q81OLtFYjdNN
+         koP5uDNZcQgT7VRxmxcLrRiuiXB/RzfrbeB8Mr5IVGVu9C36eHZl/uwNJKcg6sUNkp+1
+         RvaLkgc6EmEzwC3tMfj5Lf44qy0whQRhSm+acSZgcIc+JElU4YDvM8j/di+1BcWwn91f
+         nRmxNyKothfSnuIcVIuuWF7czeDOR/nz4rNQj/q7MRsMO15HER8bjpAz3ZDgq55Gn7dy
+         dUUag6YcESLFl6rLNAtJLLcWVz7UDt+WRA8Ma9RS9DqpJEHZIrNkInOqaLM9k5QuPmQH
+         jiig==
+X-Gm-Message-State: AOJu0Yzf53AxzfqQAgtvuU1ORFLC/HYfnJAcb0wlX4ZYdDIe6kmJU4Uq
+	j3kA1G1NBqCiE+y3LJEwVGey2AAZ7Byv0/ETab9Ps2Gvaq8IqeUq0bL3xxNqHg==
+X-Gm-Gg: Acq92OF3ADv8BL81WbDgUGOMo3D42T34YPYcr/aMmu9b/gDDwA3iP7pMGhyS9XZwBzz
+	Q8YAA79MHfN6gidtcEv8tqmuQfmNxFhw+iVi7cB6KA0ozi1qxIMx2tRr07GI0b29USlwRgm7NVp
+	RG2KNAn4/9QDHae/Hkt2QdeFXUTQM3K22CyEEEjP5sneniFpYJCbxiRROumyo5O39N0orTlO6yC
+	+oiK32BQt7aMOk/5WknZhT8KfKjaYgRVlUhsoPiYxKXvpIMGRozKcSmcLQ6mfCsyo67C0u/xJZ6
+	eWb4oUNc4zMGULoB6tr218ylf+3pP2Hnkq/3e7oa87Zz2bcbIFwY+jrQPybI++6z/RdP1BBBRht
+	K5bCoTtWklFP9d7j1Ou/+rD3VQIEBmW2LClC8+gdjYPJErllVCVBYMHVRiDqe2HMqOxDfcCIKKv
+	iVHxcE/TNY/zQrcclCnqovMGVuumAG3nRNEMwi6AqgWl/gid3DIWPA+xPSyerWG5AofSPx0wOI
+X-Received: by 2002:a17:90b:5747:b0:36b:9798:4f67 with SMTP id 98e67ed59e1d1-370eee03facmr24853662a91.8.1781095699281;
+        Wed, 10 Jun 2026 05:48:19 -0700 (PDT)
 Received: from localhost.localdomain ([171.76.83.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37624b83589sm3783554a91.16.2026.06.10.05.48.08
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37624b83589sm3783554a91.16.2026.06.10.05.48.13
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 10 Jun 2026 05:48:12 -0700 (PDT)
+        Wed, 10 Jun 2026 05:48:18 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: kvm@vger.kernel.org,
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -72,9 +72,9 @@ Cc: linuxppc-dev@lists.ozlabs.org,
 	Christian Borntraeger <borntraeger@linux.ibm.com>,
 	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v3 RESEND 06/10] KVM: PPC: selftests: Use u64 instead of uint64_t
-Date: Wed, 10 Jun 2026 18:17:22 +0530
-Message-ID: <a09b26fcaceb79693b38af9c6ece9a8a9a4b93a9.1781093720.git.ritesh.list@gmail.com>
+Subject: [PATCH v3 RESEND 07/10] KVM: PPC: selftests: Use s64 instead of int64_t
+Date: Wed, 10 Jun 2026 18:17:23 +0530
+Message-ID: <851c5eaf017e29795adc5681ea568a78182cc0ac.1781093720.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1781093720.git.ritesh.list@gmail.com>
 References: <cover.1781093720.git.ritesh.list@gmail.com>
@@ -86,225 +86,67 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-commit 26f8453288d4c ("KVM: selftests: Use u64 instead of uint64_t")
-made this change from uint64_t -> u64 for all other kvm selftests.
+commit 286e8903aed14 ("KVM: selftests: Use s64 instead of int64_t")
+made this change from int64_t -> s64 for all other kvm selftests.
 
 Do the same for powerpc as well. No functional changes expected.
+It uses the same method describes in above commit.
+
+  git ls-files tools/testing/selftests/kvm | xargs sed -i 's/int64_t/s64/g'
 
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- .../selftests/kvm/include/powerpc/hcall.h     |  6 +--
- .../selftests/kvm/include/powerpc/processor.h | 16 +++----
- .../testing/selftests/kvm/lib/powerpc/hcall.c |  6 +--
- .../selftests/kvm/lib/powerpc/processor.c     | 44 +++++++++----------
- 4 files changed, 36 insertions(+), 36 deletions(-)
+ tools/testing/selftests/kvm/include/powerpc/hcall.h | 6 +++---
+ tools/testing/selftests/kvm/lib/powerpc/hcall.c     | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/include/powerpc/hcall.h b/tools/testing/selftests/kvm/include/powerpc/hcall.h
-index 4028baa6c5d8..f923b3f5e233 100644
+index f923b3f5e233..21b2bf9180f1 100644
 --- a/tools/testing/selftests/kvm/include/powerpc/hcall.h
 +++ b/tools/testing/selftests/kvm/include/powerpc/hcall.h
 @@ -10,8 +10,8 @@
  /* Ucalls use unimplemented PAPR hcall 0 which exits KVM */
  #define H_UCALL	0
  
--int64_t hcall0(uint64_t token);
--int64_t hcall1(uint64_t token, uint64_t arg1);
--int64_t hcall2(uint64_t token, uint64_t arg1, uint64_t arg2);
-+int64_t hcall0(u64 token);
-+int64_t hcall1(u64 token, u64 arg1);
-+int64_t hcall2(u64 token, u64 arg1, u64 arg2);
+-int64_t hcall0(u64 token);
+-int64_t hcall1(u64 token, u64 arg1);
+-int64_t hcall2(u64 token, u64 arg1, u64 arg2);
++s64 hcall0(u64 token);
++s64 hcall1(u64 token, u64 arg1);
++s64 hcall2(u64 token, u64 arg1, u64 arg2);
  
  #endif
-diff --git a/tools/testing/selftests/kvm/include/powerpc/processor.h b/tools/testing/selftests/kvm/include/powerpc/processor.h
-index cb75b77c33bb..cbbe390ae244 100644
---- a/tools/testing/selftests/kvm/include/powerpc/processor.h
-+++ b/tools/testing/selftests/kvm/include/powerpc/processor.h
-@@ -15,16 +15,16 @@ struct kvm_vm;
- struct kvm_vcpu;
- 
- struct ex_regs {
--	uint64_t	gprs[32];
--	uint64_t	nia;
--	uint64_t	msr;
--	uint64_t	cfar;
--	uint64_t	lr;
--	uint64_t	ctr;
--	uint64_t	xer;
-+	u64	gprs[32];
-+	u64	nia;
-+	u64	msr;
-+	u64	cfar;
-+	u64	lr;
-+	u64	ctr;
-+	u64	xer;
- 	uint32_t	cr;
- 	uint32_t	trap;
--	uint64_t	vaddr; /* vaddr of this struct */
-+	u64	vaddr; /* vaddr of this struct */
- };
- 
- void vm_install_exception_handler(struct kvm_vm *vm, int vector,
 diff --git a/tools/testing/selftests/kvm/lib/powerpc/hcall.c b/tools/testing/selftests/kvm/lib/powerpc/hcall.c
-index efb4318252be..cd10022572a5 100644
+index cd10022572a5..d5f5282654ee 100644
 --- a/tools/testing/selftests/kvm/lib/powerpc/hcall.c
 +++ b/tools/testing/selftests/kvm/lib/powerpc/hcall.c
 @@ -5,7 +5,7 @@
  #include "kvm_util.h"
  #include "hcall.h"
  
--int64_t hcall0(uint64_t token)
-+int64_t hcall0(u64 token)
+-int64_t hcall0(u64 token)
++s64 hcall0(u64 token)
  {
  	register uintptr_t r3 asm ("r3") = token;
  
-@@ -17,7 +17,7 @@ int64_t hcall0(uint64_t token)
+@@ -17,7 +17,7 @@ int64_t hcall0(u64 token)
  	return r3;
  }
  
--int64_t hcall1(uint64_t token, uint64_t arg1)
-+int64_t hcall1(u64 token, u64 arg1)
+-int64_t hcall1(u64 token, u64 arg1)
++s64 hcall1(u64 token, u64 arg1)
  {
  	register uintptr_t r3 asm ("r3") = token;
  	register uintptr_t r4 asm ("r4") = arg1;
-@@ -30,7 +30,7 @@ int64_t hcall1(uint64_t token, uint64_t arg1)
+@@ -30,7 +30,7 @@ int64_t hcall1(u64 token, u64 arg1)
  	return r3;
  }
  
--int64_t hcall2(uint64_t token, uint64_t arg1, uint64_t arg2)
-+int64_t hcall2(u64 token, u64 arg1, u64 arg2)
+-int64_t hcall2(u64 token, u64 arg1, u64 arg2)
++s64 hcall2(u64 token, u64 arg1, u64 arg2)
  {
  	register uintptr_t r3 asm ("r3") = token;
  	register uintptr_t r4 asm ("r4") = arg1;
-diff --git a/tools/testing/selftests/kvm/lib/powerpc/processor.c b/tools/testing/selftests/kvm/lib/powerpc/processor.c
-index 9846ec26a32a..ac5c3421ec81 100644
---- a/tools/testing/selftests/kvm/lib/powerpc/processor.c
-+++ b/tools/testing/selftests/kvm/lib/powerpc/processor.c
-@@ -14,9 +14,9 @@
- #define RADIX_TREE_SIZE ((0x2UL << 61) | (0x5UL << 5)) /* 52-bits */
- #define RADIX_PGD_INDEX_SIZE 13
- 
--static void set_proc_table(struct kvm_vm *vm, int pid, uint64_t dw0, uint64_t dw1)
-+static void set_proc_table(struct kvm_vm *vm, int pid, u64 dw0, u64 dw1)
- {
--	uint64_t *proc_table;
-+	u64 *proc_table;
- 
- 	proc_table = addr_gpa2hva(vm, vm->arch.prtb);
- 	proc_table[pid * 2 + 0] = cpu_to_be64(dw0);
-@@ -81,9 +81,9 @@ static int pt_shift(struct kvm_vm *vm, int level)
- 	}
- }
- 
--static uint64_t pt_entry_coverage(struct kvm_vm *vm, int level)
-+static u64 pt_entry_coverage(struct kvm_vm *vm, int level)
- {
--	uint64_t size = vm->page_size;
-+	u64 size = vm->page_size;
- 
- 	if (level == 4)
- 		return size;
-@@ -97,7 +97,7 @@ static uint64_t pt_entry_coverage(struct kvm_vm *vm, int level)
- 	return size;
- }
- 
--static int pt_idx(struct kvm_vm *vm, uint64_t vaddr, int level, uint64_t *nls)
-+static int pt_idx(struct kvm_vm *vm, u64 vaddr, int level, u64 *nls)
- {
- 	switch (level) {
- 	case 1:
-@@ -128,11 +128,11 @@ static int pt_idx(struct kvm_vm *vm, uint64_t vaddr, int level, uint64_t *nls)
- 	}
- }
- 
--static uint64_t *virt_get_pte(struct kvm_vm *vm, gpa_t pt,
--			  uint64_t vaddr, int level, uint64_t *nls)
-+static u64 *virt_get_pte(struct kvm_vm *vm, gpa_t pt,
-+			  u64 vaddr, int level, u64 *nls)
- {
- 	int idx = pt_idx(vm, vaddr, level, nls);
--	uint64_t *ptep = addr_gpa2hva(vm, pt + idx * 8);
-+	u64 *ptep = addr_gpa2hva(vm, pt + idx * 8);
- 
- 	return ptep;
- }
-@@ -151,7 +151,7 @@ static uint64_t *virt_get_pte(struct kvm_vm *vm, gpa_t pt,
- #define PDE_NLS		0x0000000000000011ull
- #define PDE_PT_MASK	0x0fffffffffffff00ull
- 
--static gpa_t __vm_alloc_pt(struct kvm_vm *vm, uint64_t pt_shift)
-+static gpa_t __vm_alloc_pt(struct kvm_vm *vm, u64 pt_shift)
- {
- 	gpa_t pt;
- 
-@@ -189,16 +189,16 @@ static gpa_t __vm_alloc_pt(struct kvm_vm *vm, uint64_t pt_shift)
- 	return pt;
- }
- 
--void virt_arch_pg_map(struct kvm_vm *vm, uint64_t gva, uint64_t gpa)
-+void virt_arch_pg_map(struct kvm_vm *vm, u64 gva, u64 gpa)
- {
- 	gpa_t pt = vm->mmu.pgd;
--	uint64_t *ptep, pte;
-+	u64 *ptep, pte;
- 	int level;
- 
- 	for (level = 1; level <= 3; level++) {
--		uint64_t nls;
--		uint64_t *pdep = virt_get_pte(vm, pt, gva, level, &nls);
--		uint64_t pde = be64_to_cpu(*pdep);
-+		u64 nls;
-+		u64 *pdep = virt_get_pte(vm, pt, gva, level, &nls);
-+		u64 pde = be64_to_cpu(*pdep);
- 
- 		if (pde) {
- 			TEST_ASSERT((pde & PDE_VALID) && !(pde & PTE_LEAF),
-@@ -227,13 +227,13 @@ void virt_arch_pg_map(struct kvm_vm *vm, uint64_t gva, uint64_t gpa)
- gpa_t addr_arch_gva2gpa(struct kvm_vm *vm, gva_t gva)
- {
- 	gpa_t pt = vm->mmu.pgd;
--	uint64_t *ptep, pte;
-+	u64 *ptep, pte;
- 	int level;
- 
- 	for (level = 1; level <= 3; level++) {
--		uint64_t nls;
--		uint64_t *pdep = virt_get_pte(vm, pt, gva, level, &nls);
--		uint64_t pde = be64_to_cpu(*pdep);
-+		u64 nls;
-+		u64 *pdep = virt_get_pte(vm, pt, gva, level, &nls);
-+		u64 pde = be64_to_cpu(*pdep);
- 
- 		TEST_ASSERT((pde & PDE_VALID) && !(pde & PTE_LEAF),
- 			"PDE not present at level: %u gva: 0x%lx pde:0x%lx\n",
-@@ -263,8 +263,8 @@ static void virt_dump_pt(FILE *stream, struct kvm_vm *vm, gpa_t pt,
- 	size = 1U << (pt_shift(vm, level) + 3);
- 
- 	for (idx = 0; idx < size; idx += 8, va += pt_entry_coverage(vm, level)) {
--		uint64_t *page_table = addr_gpa2hva(vm, pt + idx);
--		uint64_t pte = be64_to_cpu(*page_table);
-+		u64 *page_table = addr_gpa2hva(vm, pt + idx);
-+		u64 pte = be64_to_cpu(*page_table);
- 
- 		if (!(pte & PTE_VALID))
- 			continue;
-@@ -320,7 +320,7 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, uint32_t vcpu_id)
- 	struct ex_regs *ex_regs;
- 	struct kvm_regs regs;
- 	struct kvm_vcpu *vcpu;
--	uint64_t lpcr;
-+	u64 lpcr;
- 
- 	stack_vaddr = __vm_alloc(vm, stack_size,
- 				       DEFAULT_GUEST_STACK_VADDR_MIN,
-@@ -374,7 +374,7 @@ void vcpu_args_set(struct kvm_vcpu *vcpu, unsigned int num, ...)
- 	vcpu_regs_get(vcpu, &regs);
- 
- 	for (i = 0; i < num; i++)
--		regs.gpr[i + 3] = va_arg(ap, uint64_t);
-+		regs.gpr[i + 3] = va_arg(ap, u64);
- 
- 	vcpu_regs_set(vcpu, &regs);
- 	va_end(ap);
 -- 
 2.50.1 (Apple Git-155)
 
