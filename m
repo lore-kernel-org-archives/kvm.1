@@ -1,358 +1,141 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013067.outbound.protection.outlook.com [40.107.201.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C271C4192E0;
-	Wed, 10 Jun 2026 15:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781103945; cv=fail; b=kysr74+t8DrkvAe9q2fa8vU+e+httl6tHng0Wp7Oq3hOsKVsvnCDt1HVX5v+d5IBBRIyTetb6F0ExIw2IPqgkrmMj+HF0ZoeDnL9gmRallJGxNrze3SUwFtBSYwZTc8869bRC5ffLKcGXTAbUEfkCj50PYgMxpsqh5plpqHGX+8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781103945; c=relaxed/simple;
-	bh=Pt7U8T5TcUzok8eQ/SyNxk4SZYwR0uKWnesyrUojjk0=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jb+z7e4KDDSTk890m+ng3TA6i3gaSYA8cfRdcYuR7EYl/AosrlLt1xwpGlpR6DV8j4ZSt3899IUuozC29rBrdADe6pbkBPtknm4mfI+ly/exe68mVRNM0L0E+0fQmNwH0UZUHSesmPL5YwzknGgJMtxj6ulUUuqThPrLG6dXXiU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=uT8yiqK+; arc=fail smtp.client-ip=40.107.201.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6D532143D
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 15:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781104738; cv=none; b=uxCUzcl1VLgnAJ0Qx8f0828vvKzx3rUjvudfTAJCPodREvbaCzCJmuQ4AgBxxiuO9GMXkJ24/blN0iSBM4Gi8ncIjtNrx1PP67pV/IP2vWKy4ECyjPj0e7VUQfB8IPj2vNd+swIZRd6hlPhqDBOowZgIg1FCUMnkerjbQc6W0OY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781104738; c=relaxed/simple;
+	bh=2FikaBR52j14eG2q4c7uEh8VobH/ZwHZeG2IeNzY9To=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=s4GKCsEYUMV6NEQy+6G7di82nkSt0UB3kSAsRKbuMVyoJwy8DrmUDCCORJSJkxnUk1e9LLFXzwImPNHOSMXmFCgmpnD1bHYWex6JMe9rwI6RVg6KtKPheKmnF3F39ItmZ7saXUasr5Y80JizCOKHMiD6uAv0aRsevms9J/de7+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uodRyeWq; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--praan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="uT8yiqK+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PO1bTp9XNbJiDAVYJgb7jtuaSYIx8zvfedyfPvPCqiLbWz/mTR1VXi6a+YQLaC9pIxY+CzeWNQoGXIERTJ/VvVSrTPVGtlWRqfGQ7d6UEzIAr9kGGj4c7hY5FwQqYrXjAAWCs4VA6bfccU2+XOhPcSI6DWpYLRksj/BpbpmrudFJNPcDNs5ytjrQ0CfHRZ9MKNu2qnZwSd+qLflTf0+HakM6h7P6RWSxHgJ1WHQJ9fg22WxbIEyq80yYqviz+uYZ/g6XQUBeCzcT0iwbpwEJAB39EkpdBJmqu15l731o25ucg2XaaiuxKiMRWcnjF0hcjavSu+fL+vZ3thex8vNXEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j9tIhIPQphrxm3pR+/cf/HO7w5GMlLnMtFVJ2GKtoLs=;
- b=bgBgL9LZWwucvLX1ZM974wDhubmHGzvBSQGZShX6dvCqq/etNZukbXJeDwOLOo6KeryqCCTY9M9BCjbqochyQg7vjsbHfRmJJZ9W8vkeSC6SUWGVosdJHMRTi5ly0WFlGEuiBUdgvibdGp4wmfGvsynY/XcGJAzvUcJSET5CCM/XtxleH/BGuK0L357N3FUBhIaltLtzNexoNhRJlJUmmxcRBNR7VRNhh8Qu+NOZbNKtUHgtlueCZVeJ+GaguxQTVJb9ThV0VjmmHvoW1d7O6DwvaUKMq0up2G0ZO+yyRt3y6tVKITYs6k3uDOzEq1KcKMHCy8TOdhw99UG+if6C4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j9tIhIPQphrxm3pR+/cf/HO7w5GMlLnMtFVJ2GKtoLs=;
- b=uT8yiqK+qy9K3X3mHXpZrWkhivcA69lKS88Ul+UUD0S6s5IgjM1G5uha5Vko+p41fUwoKUX8gwcY3exZ6ICJZXH38/d5YqjV/v3bLZorD4BQM1aRXKQq3G5/TdCQ4vKqCb59RitGR1M2HIQojbtATrDPJJb/RkC3VO3sPzVISKQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN7PR12MB8131.namprd12.prod.outlook.com (2603:10b6:806:32d::12)
- by DM6PR12MB4236.namprd12.prod.outlook.com (2603:10b6:5:212::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Wed, 10 Jun
- 2026 15:05:40 +0000
-Received: from SN7PR12MB8131.namprd12.prod.outlook.com
- ([fe80::c2dd:62c5:67fe:aa46]) by SN7PR12MB8131.namprd12.prod.outlook.com
- ([fe80::c2dd:62c5:67fe:aa46%4]) with mapi id 15.21.0092.011; Wed, 10 Jun 2026
- 15:05:40 +0000
-Message-ID: <9621612f-c5f4-4c37-93ba-5e79b841e949@amd.com>
-Date: Wed, 10 Jun 2026 10:05:37 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/60] KVM: SVM: Add support for the SEV-SNP #HV doorbell
- page NAE event
-From: Tom Lendacky <thomas.lendacky@amd.com>
-To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
-Cc: ashish.kalra@amd.com, michael.roth@amd.com, nsaenz@amazon.com,
- anelkz@amazon.de, James.Bottomley@HansenPartnership.com,
- Melody Wang <huibo.wang@amd.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
- x86@kernel.org, coconut-svsm@lists.linux.dev, joerg.roedel@amd.com
-References: <20260608144252.351443-1-joro@8bytes.org>
- <20260608144252.351443-3-joro@8bytes.org>
- <be57043d-6abf-402e-93b4-a01519c97c1f@amd.com>
-Content-Language: en-US
-Autocrypt: addr=thomas.lendacky@amd.com; keydata=
- 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
- WiyqywZI5g==
-In-Reply-To: <be57043d-6abf-402e-93b4-a01519c97c1f@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH0P223CA0008.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:610:116::19) To SN7PR12MB8131.namprd12.prod.outlook.com
- (2603:10b6:806:32d::12)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uodRyeWq"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d979441eeso5953750a91.0
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 08:18:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781104736; x=1781709536; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=B3ufllk0o8kYPSdIZb3vpcLex8ZiEWODUNKVQWpmUYY=;
+        b=uodRyeWqx2qrn/F7GC1FiUjPsxT03DAhr3png2dsGvE7wx+70Bas4NcySYhlrvHCtL
+         fUTUbhhzf7eSbrdwYSROX1gKLQ63Zy2Vd71phl3g7T1Sm/goljIb1PEB72lz12D2a8gW
+         wZys+OFE3hAkmhoWiBGRTtLuU8esUzGTL4cDbLy5RePE7smh/ncALvRLoHYHM3aqTcgP
+         IPGBjDkzHptgODU2keotgcYYDyvDP/PD/aQ6r63+IFpDWk7Ws6D30uDrkwLWetUnngaR
+         bkBcqyBHJ66BqX7cmRg0OErac6jhL8FGJOcmz+iPweX68Xa7J9V4mdiCZ23RFZhlYtHL
+         DEtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781104736; x=1781709536;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=B3ufllk0o8kYPSdIZb3vpcLex8ZiEWODUNKVQWpmUYY=;
+        b=svGKJ54TbGBX9QRaPQhIs7S0QhuninEJp1yx0I+M96JKGIsL3ePn1X2D7VVf6uJYBf
+         eTJIHiwZHaORHJrXgn0nRX9c+ZC8JEIGy8a2numeQ7YDjYcNfAhs4j0TXTSSv3uTmtpX
+         kvmRVMu/7rJTjJUEJ513fmAqCfktPHp+mlX6x0Yoooe78nlZdrjAFoe4tYlyQ1qjgS5k
+         o3/XT6zqK+YHxps+WaLUpDTMqdqGaTI7arV6PT1cXSjOwbW312TOLtxaM67fH2Wn1Le0
+         31YQ/XIvfRw+62SUx9jzQ7sG+wrsKPGiOOZNs1ThW08/+0O9toal3n36KGJCYmvsb7IR
+         umJw==
+X-Forwarded-Encrypted: i=1; AFNElJ9SSYkAW1L2JxsznxdTIwFrEXV08/J1PKb/Xtnd4yBgW2UArA7hJIzjctJHFv9Dxp4tFIM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzF8GmzqVNEkLILUq5ZYRoX3mAtSwiD1OaaQDwB2ICREoT4hG3i
+	y9cx8TJnpN/q7Ijhqo7dwv/HO8jiKCJJ8xaSfmkcucdAhzYR6KGkjyW6wFa/SeQjT2Z1JmEADye
+	RIg==
+X-Received: from plbkn13.prod.google.com ([2002:a17:903:78d:b0:2b9:6a4a:141])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a46:b0:36d:bbe0:de7c
+ with SMTP id 98e67ed59e1d1-370eeff19bamr24652982a91.12.1781104735720; Wed, 10
+ Jun 2026 08:18:55 -0700 (PDT)
+Date: Wed, 10 Jun 2026 15:18:48 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8131:EE_|DM6PR12MB4236:EE_
-X-MS-Office365-Filtering-Correlation-Id: 96209fec-2a04-4e52-9eb0-08dec701bc16
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|22082099003|18002099003|3023799007|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	/aGBvAiK11+S0MQXPYLtB2/Ese5utXfC/Hzs0hGVWmSw1epiu+KYgG0ZTTveFIB4HmRTqXqvsPIywWBfddU4uZ2GMJUKBZF99QF9Hy+IuPwG+cmUjkUIO3kM045RcRb3Hntx+U3kGqje6d/5FG1t+RjuWE+sx24HotqQ6v/GStAs/d4FOesRvZlB3tiex0VoeCFnF/iTL0HEGCEnfszB3Y1apeyYPoNkCeeyz/nTYMZNtAGKPoQd1yvQ1aRWC8iHlAkC1LmCWWhYkvzRi2+IvPaKq74MbT8yVHsqMt2s7NNTRX/mKx21X1rJosDtHwKUtOL8Qa4E+AwoSKtVmL+tQkLcFNtjGtSJyIwXC4RbAaHE+FuMgBgACZbQN1V1OZHNEm/lXPcAqLBW7OfGIRnG5jpYgZpzgSIUQ7HqcjXrzIRyRm+PAjm3nzYxX1A1XfW7858PDPBXwA31elRAisJz+GwdaiCa++G1n8JlcQ89j/oJGSp8Bj005q9VSwvLrt7TYGhl+yKrx/sn1q9r5R3m6E5+Xc80AwJRfX8H/zD87iwCqc7tftMUi1cNUzdXkp1n/K9TUPfoWLVAwiT/19LL3yjhFLQlaikxNRRIgXAfg62aQFRWUu0gRfpYL5s4i97kulsvMO3MGRloq9BuATkgTfhW0miHkmEAgwjC5fS+B87QvmZjbEisPZUlHBuxyEVQ
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8131.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(22082099003)(18002099003)(3023799007)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RHJIUkd4V0I4Y0I1UWcxS3BCTnVnYjhoODNNRmFodXQrWHFNTmFmQXVudlNJ?=
- =?utf-8?B?WjBLU3owamZzL2ZDa3Z5amgwcVkzM2p2bTFHN3lBSlA2ZTRQTkVGQjdtVGNZ?=
- =?utf-8?B?alBOZWROZGtyU0pJZGJQQXFYK25ld1pyT1plY0psMWNkWGpNcXZUVUthREt2?=
- =?utf-8?B?eS9ia2dCRDFIaGQ0MjRLK2NacVM4TWdyekZVY0dYbmMybHdYVW5BcDMyMkRm?=
- =?utf-8?B?NURCN2hlTzhDcHltS3VDVzlLTVVYVkJMVXZ6eWhMaTZYeVB0WkdYTjVzMFIx?=
- =?utf-8?B?cGEzNC9LdlcrZmJFUEhPOU9neUd4ZXcwc01vZmcxUnhkRExXZEFpcys0K1hq?=
- =?utf-8?B?VHllWFRZaTRVaVJqUzFjcE5uMHlqb2c3SUNFanRCNHp3RkZoU1VVUHFYRHBM?=
- =?utf-8?B?bEFHenZWUHdpNHdrWkN1WVhPODBHNkNJZitERkIrR2pLRjgreFpzUHZkeXpO?=
- =?utf-8?B?Zlc2VzNTOU00Q1NVdzQwRVJuUThqT1NNaE43WVNMZEM4bEhJWmNFMWlRUmsx?=
- =?utf-8?B?UGVpK3hYK0FySHJQdldhVUdZRSs0TTJMTnVFU1luK2xxTmE1WGlDM2J1c2R6?=
- =?utf-8?B?TmN3aHAzMXdSOE1oRHh5MGo4U1Y5VFhmY3VrbnovanB0WFozeGZqR2FzTzIr?=
- =?utf-8?B?TjZzVE1NZlJHVkxBTDRCYXJjMTNvNEdKd0hRK1doU0U3OVRad0UrSGV6RDhi?=
- =?utf-8?B?Y2JYcVBoNGc1dTRVTVNpWXgxeU1ZZzJZY1drckE0dG9OU3BYM2ZCWmV3OGl4?=
- =?utf-8?B?bWtaOUtrYXhOeHlabmRTcDc3NTY2SEJDc0RaTi9VUmNGZUNZZ21la1dYeHRo?=
- =?utf-8?B?M0pJK2pieEZ2SEVQVWxSdVpqbFJ3cVRHLzZ3SlZ6U0VzVnlTWVM0WFFVaThv?=
- =?utf-8?B?aDJJVEJXVUgxK0xRYlZCRFVjSFBEMlc1bzV2bkJzcFY0S1V5SDhkVmxub1hC?=
- =?utf-8?B?eWsxQVVuSjJJdVRGbEJXL1hRM1kxZGQ2aHI2V2ZCVnErbWhOYkUxWm4xQmdO?=
- =?utf-8?B?VVJiUno4d3Jhcy81c3hScENzOWt5QktiN0F1RGhSWDNPNjd0d2l4dC92N1ZX?=
- =?utf-8?B?bUE2ZE11U05QZ0RnbzRqL01ud2tWaGs1RFpiR1NnK1BjdTJZcTFNQVMrVUpL?=
- =?utf-8?B?bVBCT2J4NERWcU52MXp1K056MGN2NkJNWlFPYmQ4aHY4STBRaHJwRWdBdFcv?=
- =?utf-8?B?ckE2U1ZtRE16cHJDSEt4WXpoRnV6cWlOZ256SjVBZUh2OU8zK3B1dVQ1cDB4?=
- =?utf-8?B?eFB6Y2o0eFNjc01USnZQRC9VT2g5aGF5VFI2bytmM1ZpRElJUmxjZ3FVblAz?=
- =?utf-8?B?YytSV1FOTG1SM2xiV1ZsYUxkREUza3B1N25oRDRIME14dUtmaXdNVUhlalNF?=
- =?utf-8?B?Z3A4WDJiWUppNUNPNGZmVjJSY2ZWR05VOHJJaW8vNVViM25mU1NGeTBRZ2M1?=
- =?utf-8?B?L0FJMHBJamdtL1BZSXJRMkpoK0xEb1EyM1NlYW5yOWVXZVMvdjNjUjFXdDBa?=
- =?utf-8?B?V1B6WFdPelJWbExjTkdJTUpoSWZuWUNhL2ppNnJKVzR3VFVzNUVqWEY3dFE5?=
- =?utf-8?B?aVFOT2p3NTR5NGx6WHg1aWxVU3NRa3ZPVVJYbngwaFdrOVE4MzlHcmdOQzJS?=
- =?utf-8?B?UUQ5VG96V2wrWEwxWlphVVZJNlpBc3VzZ1VQVGh3eEFBVkNMajJXNnlrOVlr?=
- =?utf-8?B?TE5RejlURDFHMmFBb1FnSVNoMUtFMTFnUGdRQ3lia1dGbmNmQkxrdmRUcGJn?=
- =?utf-8?B?Z2dNcEZmcWZZNDlWR3d1MGJ2UGttNXU4NE0rcHJtbC9sSVVPcXhYWldFbUVi?=
- =?utf-8?B?dW9iN0x0MGdzTU1oeHZuNlhzRE1KNDd3NTF5N1c1c2lYRng2UzMzb2cxMGdl?=
- =?utf-8?B?TFhxLzVub0kyMDB0OEFnbXUzNmZxditJcjVsQ08vUWZ4RU5LM2lDR1dZeWJt?=
- =?utf-8?B?VEtlSzNIaGVMRVEyMmhPaHBWS1lyUTEzR2J4Wm40ZC9ZY3lSc0FlZDkxWHNv?=
- =?utf-8?B?MnVrVHFJMmY3OVBvaENxUklQWmF0QmNLSlJ0TlA5V2I3RnFZc3A3eUdpcWFj?=
- =?utf-8?B?ZzM4bWNNNEErM1BMS3o3TDZUZ3hUQWJRdG5ZMGttdGVTdWhOWENCcmg1VkE4?=
- =?utf-8?B?cElvQTVSdXJ5MUM1YzJoUldjOXIrTHJnaEovYkMxMEFZZm5EbEIvWHAxTVZq?=
- =?utf-8?B?bjFSdUxmdjJ3NW1OemRTWmhNZXplaTEvcU1EREY5S2s2UnU1WGQwUXExT3NQ?=
- =?utf-8?B?cGpCMlRWUG9kYVo4QldzY0FQZCt5WnE2cnBoSlB3SG4wOXRiamY2eTFCVzNB?=
- =?utf-8?Q?maprtK76jjWcPKdAUv?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 96209fec-2a04-4e52-9eb0-08dec701bc16
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8131.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 15:05:39.9367
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tIzKW1vx3TV+ZWPOHSm3efgzXCzlBRsB98W9e/Jl8sXur4HWoRrVIoPIXH4mqSgdqQGID9Ws2r8QfLcKOezuSA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4236
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
+Message-ID: <20260610151853.3608948-1-praan@google.com>
+Subject: [RFC PATCH 0/5] vfio/pci: Support ZONE_DEVICE-backed P2P Registration
+From: Pranjal Shrivastava <praan@google.com>
+To: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>, 
+	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, 
+	Pranjal Shrivastava <praan@google.com>, Ankit Agrawal <ankita@nvidia.com>, Matt Evans <mattev@meta.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+	Shivaji Kant <shivajikant@google.com>, Samiullah Khawaja <skhawaja@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/10/26 08:28, Tom Lendacky wrote:
-> On 6/8/26 09:41, Jörg Rödel wrote:
->> From: Melody Wang <huibo.wang@amd.com>
->>
->> To support Restricted Injection, the SEV-SNP guest must register a doorbell
->> page for use with #HV. This is done using the #HV doorbell page NAE event.
->>
->> This event consists of four actions: GET_PREFERRED, SET, QUERY, CLEAR.
->> Implement it per the GHCB specification.
->>
->> Co-developed-by: Thomas Lendacky <thomas.lendacky@amd.com>
->> Signed-off-by: Thomas Lendacky <thomas.lendacky@amd.com>
->> Signed-off-by: Melody Wang <huibo.wang@amd.com>
->> Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
->> ---
->>  arch/x86/include/uapi/asm/svm.h |  5 +++
->>  arch/x86/kvm/svm/sev.c          | 71 +++++++++++++++++++++++++++++++++
->>  arch/x86/kvm/svm/svm.c          |  3 ++
->>  arch/x86/kvm/svm/svm.h          |  2 +
->>  4 files changed, 81 insertions(+)
->>
->> diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
->> index 010a45c9f614..d84a13ac4627 100644
->> --- a/arch/x86/include/uapi/asm/svm.h
->> +++ b/arch/x86/include/uapi/asm/svm.h
->> @@ -117,6 +117,11 @@
->>  #define SVM_VMGEXIT_AP_CREATE_ON_INIT		0
->>  #define SVM_VMGEXIT_AP_CREATE			1
->>  #define SVM_VMGEXIT_AP_DESTROY			2
->> +#define SVM_VMGEXIT_HVDB_PAGE			0x80000014ull
->> +#define SVM_VMGEXIT_HVDB_GET_PREFERRED		0
->> +#define SVM_VMGEXIT_HVDB_SET			1
->> +#define SVM_VMGEXIT_HVDB_QUERY			2
->> +#define SVM_VMGEXIT_HVDB_CLEAR			3
->>  #define SVM_VMGEXIT_SNP_RUN_VMPL		0x80000018ull
->>  #define SVM_VMGEXIT_SAVIC			0x8000001aull
->>  #define SVM_VMGEXIT_SAVIC_REGISTER_GPA		0
->> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
->> index 6c6a6d663e29..b9ad1169cb2c 100644
->> --- a/arch/x86/kvm/svm/sev.c
->> +++ b/arch/x86/kvm/svm/sev.c
->> @@ -3522,6 +3522,10 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
->>  		    control->exit_info_1 == control->exit_info_2)
->>  			goto vmgexit_err;
->>  		break;
->> +	case SVM_VMGEXIT_HVDB_PAGE:
->> +		if (!is_sev_snp_guest(vcpu))
+Introduce ZONE_DEVICE backing for VFIO-exposed PCIe BARs.
+Currently, kernel drivers can register their BARs with the P2PDMA
+subsystem to enable high-performance, page-backed P2P DMA. However, when
+a device is bound to vfio-pci, this capability is missing.
 
-I think it should also be validated that Restricted Injection is enabled
-for the guest as well - either here or in the sev_snp_hv_doorbell_page()
-function.
+As a framework, VFIO should support the same set of capabilities 
+available to kernel drivers, provided appropriate isolation and 
+lifecycles are maintained.
 
-Thanks,
-Tom
+This series adds support for VFIO to register BARs as page-backed P2P
+providers, enabling userspace drivers to perform zero-copy P2P DMA via
+standard POSIX APIs (e.g., O_DIRECT) which require struct page metadata.
 
->> +			goto vmgexit_err;
->> +		break;
->>  	default:
->>  		reason = GHCB_ERR_INVALID_EVENT;
->>  		goto vmgexit_err;
->> @@ -4341,6 +4345,65 @@ static int snp_handle_ext_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t r
->>  	return 1; /* resume guest */
->>  }
->>  
->> +static int sev_snp_hv_doorbell_page(struct vcpu_svm *svm)
->> +{
->> +	struct kvm_vcpu *vcpu = &svm->vcpu;
->> +	struct kvm_host_map hvdb_map;
->> +	gpa_t hvdb_gpa;
->> +	u64 request;
->> +
->> +	if (!is_sev_snp_guest(vcpu))
->> +		return -EINVAL;
->> +
->> +	request = svm->vmcb->control.exit_info_1;
->> +	hvdb_gpa = svm->vmcb->control.exit_info_2;
->> +
->> +	switch (request) {
->> +	case SVM_VMGEXIT_HVDB_GET_PREFERRED:
->> +		ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, ~0ULL);
->> +		break;
->> +	case SVM_VMGEXIT_HVDB_SET:
->> +		svm->sev_es.hvdb_gpa = INVALID_PAGE;
->> +
->> +		if (!PAGE_ALIGNED(hvdb_gpa)) {
->> +			vcpu_unimpl(vcpu, "vmgexit: unaligned #HV doorbell page address [%#llx] from guest\n",
->> +				    hvdb_gpa);
->> +			return -EINVAL;
->> +		}
->> +
->> +		if (!page_address_valid(vcpu, hvdb_gpa)) {
->> +			vcpu_unimpl(vcpu, "vmgexit: invalid #HV doorbell page address [%#llx] from guest\n",
->> +				    hvdb_gpa);
->> +			return -EINVAL;
->> +		}
->> +
->> +		/* Map and unmap the GPA just to be sure the GPA is valid */
->> +		if (kvm_vcpu_map(vcpu, gpa_to_gfn(hvdb_gpa), &hvdb_map)) {
->> +			vcpu_unimpl(vcpu, "vmgexit: error mapping #HV doorbell page [%#llx] from guest\n",
->> +				    hvdb_gpa);
->> +			return -EINVAL;
->> +		}
->> +		kvm_vcpu_unmap(vcpu, &hvdb_map);
->> +
->> +		svm->sev_es.hvdb_gpa = hvdb_gpa;
->> +		fallthrough;
->> +	case SVM_VMGEXIT_HVDB_QUERY:
->> +		ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, svm->sev_es.hvdb_gpa);
->> +		break;
->> +	case SVM_VMGEXIT_HVDB_CLEAR:
->> +		svm->sev_es.hvdb_gpa = INVALID_PAGE;
->> +		break;
->> +	default:
->> +		svm->sev_es.hvdb_gpa = INVALID_PAGE;
->> +
->> +		vcpu_unimpl(vcpu, "vmgexit: invalid #HV doorbell page request [%#llx] from guest\n",
->> +			    request);
->> +		return -EINVAL;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->>  static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
->>  {
->>  	struct vmcb_control_area *control = &svm->vmcb->control;
->> @@ -4617,6 +4680,14 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
->>  	case SVM_VMGEXIT_EXT_GUEST_REQUEST:
->>  		ret = snp_handle_ext_guest_req(svm, control->exit_info_1, control->exit_info_2);
->>  		break;
->> +	case SVM_VMGEXIT_HVDB_PAGE:
->> +		if (sev_snp_hv_doorbell_page(svm)) {
->> +			ghcb_set_sw_exit_info_1(svm->sev_es.ghcb, 2);
->> +			ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, GHCB_ERR_INVALID_INPUT);
->> +		}
->> +
->> +		ret = 1;
->> +		break;
->>  	case SVM_VMGEXIT_UNSUPPORTED_EVENT:
->>  		vcpu_unimpl(vcpu,
->>  			    "vmgexit: unsupported event - exit_info_1=%#llx, exit_info_2=%#llx\n",
->> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
->> index e02a38da5296..7981e7583384 100644
->> --- a/arch/x86/kvm/svm/svm.c
->> +++ b/arch/x86/kvm/svm/svm.c
->> @@ -1277,6 +1277,9 @@ static void __svm_vcpu_reset(struct kvm_vcpu *vcpu)
->>  
->>  	svm->nmi_masked = false;
->>  	svm->awaiting_iret_completion = false;
->> +
->> +	if (is_sev_es_guest(vcpu))
-> 
-> Shouldn't this be is_sev_snp_guest() ?
-> 
-> Thanks,
-> Tom
-> 
->> +		svm->sev_es.hvdb_gpa = INVALID_PAGE;
->>  }
->>  
->>  static void svm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
->> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
->> index 5137416be593..fb956c37c941 100644
->> --- a/arch/x86/kvm/svm/svm.h
->> +++ b/arch/x86/kvm/svm/svm.h
->> @@ -270,6 +270,8 @@ struct vcpu_sev_es_state {
->>  	gpa_t snp_vmsa_gpa;
->>  	bool snp_ap_waiting_for_reset;
->>  	bool snp_has_guest_vmsa;
->> +
->> +	gpa_t hvdb_gpa;
->>  };
->>  
->>  struct vcpu_svm {
-> 
+Design
+======
+The proposed design enables VFIO to leverage the kernel's pci-p2pdma 
+infrastructure, delegating memory management and slicing to the managed
+P2P pool.
+
+1. ZONE_DEVICE Registration
+A new feature, VFIO_DEVICE_FEATURE_P2P_REGISTER, is introduced to trigger
+pci_p2pdma_add_resource() for a target BAR which creates the ZONE_DEVICE
+struct pages and registers the BAR as a standard P2P provider.
+
+2. Mutual Exclusivity Policy
+A strict mutual exclusion policy is enforced:
+     - Registered BARs: Standard mmap() and DMABUF export are blocked.
+     - Exported BARs: Native P2P registration is blocked.
+
+Users utilize the standard sysfs p2pmem/allocate interface for managing
+memory slices once a BAR is registered.
+
+3. Lifecycle and Resource Reclamation
+A new helper is introduced: pci_p2pdma_remove_resource(), is implemented
+to support manual teardown of the P2P pool. VFIO invokes this helper 
+during device reset or session termination to ensure the pool is
+destroyed and the ZONE_DEVICE pages are unmapped.
+
+This is on github: https://github.com/pran005/linux/tree/vfio-p2p
+
+Alternative Approach: Page-backed DMABUF Export
+================================================
+An alternative implementation has been explored which integrates with the
+ongoing VFIO DMABUF-mmap refactor [1]. In that approach, rather than
+registering a BAR as a system-wide P2P provider, VFIO optionally
+allocates ZONE_DEVICE pages only for specifically exported DMABUFs via a
+new VFIO_DMA_BUF_FLAG_ALLOC_STRUCT_PAGES flag.
+
+A proof-of-concept of this approach is available at:
+https://github.com/pran005/linux/tree/vfio-p2p-alt
+
+[1] https://lore.kernel.org/all/20260527102319.100128-1-mattev@meta.com/
+
+Pranjal Shrivastava (5):
+  vfio: Add UAPI for ZONE_DEVICE-backed P2P registration
+  vfio/pci: Implement ZONE_DEVICE-backed P2P registration
+  vfio/pci: Block mmap & dmabuf export for ZONE_DEVICE-registered BARs
+  vfio/pci: Block ZONE_DEVICE registration for BARs with active DMABUFs
+  PCI/P2PDMA: Introduce a helper to release P2P resources
+
+ drivers/pci/p2pdma.c               | 38 ++++++++++++++++++++
+ drivers/vfio/pci/vfio_pci_core.c   | 57 ++++++++++++++++++++++++++++++
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 22 ++++++++++++
+ drivers/vfio/pci/vfio_pci_priv.h   |  6 ++++
+ include/linux/pci-p2pdma.h         |  1 +
+ include/linux/vfio_pci_core.h      |  1 +
+ include/uapi/linux/vfio.h          | 15 ++++++++
+ 7 files changed, 140 insertions(+)
+
+-- 
+2.54.0.1099.g489fc7bff1-goog
 
