@@ -1,100 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D444F340405
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 16:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05EE347532;
+	Wed, 10 Jun 2026 16:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781109600; cv=none; b=Ngtwa4wtiNMJk5H0YpzEqSwlOyBhF0r7jcXBQttDfTCKMMWLI5s6DM6kPiLMmFMSrIVgFalTmkZ0A8iEpDrF5GBAKhh1ZQAECR0HZ8bs579sLlRcN5Bl2G5E/smqqHilBQNnpdZBCQENpEKwQdsBBV1T//aA/TD8A2Wrm3EZBJc=
+	t=1781110378; cv=none; b=Klf4HLutOpEbn+YKS4ioeOvmLol7VHouiPSa2787wg/QZWBTId1EdIrRRm/0o+aYq7AxcboZ9+oO84OsZZJzaPivbdjq0/7Eud4jXz3n9XOTUsjoFbnz+ORq6VuFfOLtJj9Hx5t6t1SJVFeMid3oI5gQeNJFZpg9JLhs/PaXEk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781109600; c=relaxed/simple;
-	bh=Z7vIw7KQP0N58o/IuszZIO+3/9P2eBf3Z6F8b/gnZGQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rX51GLmUud2e9g5b3OGzIfxb6+TP73ht07QnokADh9lh7gUQ4NrVc/T8TYxpusgYLCP3Sy8RLoUyq/89gnDl0a8Ai+eO+u+mVDx5vBx5hPeykRsFrblYwAknZWPD652sbiUGdgfq/dergjdb+47BJRyVim9zktgz5bhyVaH5X6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OvMH6ICw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781110378; c=relaxed/simple;
+	bh=FDLy1BGQO+w9DStrNektS2alXBoWqeTa1GWUcs6Szow=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=M8DM866+4zUnkIeoEbqhAoLhbYv1gS0S+idtKvEQxMMU7fDSKyC6AATns6Xq8M2l8CCq0zxrEmxFjhTd8Xnu0LKKWtfS3e6kzQ+SizUuvQ8cnAjz7a5wSi8raFuOA7ushvmvX8GSW4nC2ffpWGhyyaEZO7b999Gfwl87AsiPBuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ogW9Frp3; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OvMH6ICw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D0E1F0089C
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 16:39:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781109599;
-	bh=fY+/iwaOPYWuto/d+Egk+UNuK/OHewkC2tBLDoQLz7I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=OvMH6ICwhQKkIUGA+edTgG0PKBmg5SlpfwOfYZ34l99VedDIaip3L+7MVDvXeCWtt
-	 g6U+cI5bZoe9q0fCZEtjBzOHV3t6rRmH35PBUegQ8cs4IM6bmf/NfyuAm+3cWKMGmm
-	 nOcq1MRjcvSMKNHpJbT4mB1RI3qUGDFgHOUrHN+1t4/pCHrzVOvsNhuMMPTrN4G8mg
-	 XScp2AqXA3lTp3p8oqqznFl6pxZxsx4lgcFElF9zUsEHus5rI8M85UjZdrnfGPDIoe
-	 GXcqfRFhmJ6xHRsH2Vjqpui/a8MKhZBlxv+QuJaIl86LZvyjneghsdu51/ZQ91+y03
-	 iaXs6PqJQLhIQ==
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-68d23396ed3so12438562a12.1
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 09:39:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9U0KTaLWi5AN9o06veq4VKbdnvoRZlL/Bc1GKIWtXaODgddMDmxyYcoW6wSsBUIlAFj5w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdEeQ1s1s39LNWo/eWUTiBtg12Uxqe0tEJmoRgdrk98qwB45hE
-	20s8Y2j2LXzvCInwMFErlFNWcbeU3jjoXBHUZFxo4VK6zscnLkgbKKztbTSOZ+pshkX4tK2Qcz2
-	WRtdSCiWvwUNHawAz54Jmql7yM8K12NM=
-X-Received: by 2002:a17:907:7fa8:b0:beb:4674:6a1d with SMTP id
- a640c23a62f3a-bf936bec9e4mr497683466b.11.1781109598524; Wed, 10 Jun 2026
- 09:39:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ogW9Frp3"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65AAm29f139779;
+	Wed, 10 Jun 2026 16:52:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=b6mCg6pnc58br7ZYF
+	XzXHqfVSwYRPg2iIm7vCGixyXQ=; b=ogW9Frp3rqiru77o8ocxd13tgE7WO70mw
+	yzIVudaw80CYbxQlhmfDzyJTkh/0Mjf5ZBmoh/fZXz4gOCQ3r13I/cpabU4ZF94/
+	V1NNpMR6m51TSlUue4fbbD/k0qSzDUSDHCZA5oQORjYUci4297BvuWRx812HuT83
+	seAlIUE0bFJQWx1LToj+gg72wSUrn2vHZj7IUsqGZgPOeh/L6ClkKdcMOG9JLKDd
+	RSDrxO9egZi6DKLuriK7w3TbLWll+uDGgL2Z2vlY3Om1yjbu4UkYyTwdk8vXUiHx
+	n19O0ZDCuR4d3SilbdRkm0hSrbxFKROwun3luT+VJVRmdyVQNaAIA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb2426xb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jun 2026 16:52:54 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65AGnZdU005253;
+	Wed, 10 Jun 2026 16:52:53 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4en03g7at8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jun 2026 16:52:53 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65AGqlXi49545712
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 10 Jun 2026 16:52:48 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D933E20040;
+	Wed, 10 Jun 2026 16:52:47 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B31E12004E;
+	Wed, 10 Jun 2026 16:52:47 +0000 (GMT)
+Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.224.75.30])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 10 Jun 2026 16:52:47 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        borntraeger@de.ibm.com, frankja@linux.ibm.com, david@kernel.org,
+        seiden@linux.ibm.com, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
+        gra@linux.ibm.com
+Subject: [PATCH v2 1/5] KVM: s390: Silence potential warnings in _gmap_crstep_xchg_atomic()
+Date: Wed, 10 Jun 2026 18:52:43 +0200
+Message-ID: <20260610165247.238366-2-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260610165247.238366-1-imbrenda@linux.ibm.com>
+References: <20260610165247.238366-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260608081108.2244133-1-maz@kernel.org> <aicqzM4W4NN-GndT@google.com>
- <86ldcotbub.wl-maz@kernel.org> <CAO9r8zMpvxoVcDvWn3q0C0Dv=0Kknt_BqZ8KqddwuKa5bd44Dw@mail.gmail.com>
- <868q8mu0hr.wl-maz@kernel.org>
-In-Reply-To: <868q8mu0hr.wl-maz@kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 10 Jun 2026 09:39:46 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zO8e9LCCevab2Rf9ArV9eHJ=L+n-hPWCGgkC47udEVARA@mail.gmail.com>
-X-Gm-Features: AVVi8CcVcXwzy45XyjikMi6K7M6sV9Fac4tlWVWAJx-O0hPoeftmoxR-za9Ausc
-Message-ID: <CAO9r8zO8e9LCCevab2Rf9ArV9eHJ=L+n-hPWCGgkC47udEVARA@mail.gmail.com>
-Subject: Re: [PATCH] KVM: arm64: Hold kvm->mmu_lock while initialising vcpu->arch.vncr_tlb
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, Steffen Eiden <seiden@linux.ibm.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=b4uCJNGx c=1 sm=1 tr=0 ts=6a299666 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=4xVTsJvn8g-7h_O1kUwA:9
+X-Proofpoint-ORIG-GUID: uBp-dXJYal7OgHg0irvFhcxjWAnEmyjU
+X-Proofpoint-GUID: uBp-dXJYal7OgHg0irvFhcxjWAnEmyjU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEwMDE1NiBTYWx0ZWRfX487m+DaG8ps8
+ A9EeAA2eaZxsvRYzpk+8KE9uMrVU3JfZzWAhxZ+KwFZ6KAvCMP7eSDDQgE5mH5IvxQLMGchxPmF
+ +sH7llaFbvlXk54JDBB/E7fIeCSC5OP872NSmkEg5ogn1DLE3OubOygsuyjKD+p7OGqGBmLT8O8
+ J2ombDsCEHxPpwNvgcyh42UWbVEBHgXnTgKaqs7/nbivPp4hP2HakAjeL3D/7jpyv8Unug+o+70
+ 1BpH1+18lAZ1B2XsYeMrYf/cFpJZUvbnoTzlu5V+jeFIpDNe8W3dpsQ/yUFevyzbrOp/FjrLZit
+ Yne4zQmX/dSF0+MJpYa0py0DJaDBos0QNSfYR/bTzhqGlRs1CE+6NI5AHCtvQIPmRclYRHQZ/Zy
+ T6dJsZYSXFqfE3WVOZkldqcxcEdPOVXdiLluklsOAWJ3G3IxTuq4RG1lB0mJCMApHpyLLnPG/JV
+ bWtd+ecFhkbqP1k6sAg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-10_03,2026-06-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606100156
 
-On Wed, Jun 10, 2026 at 3:57=E2=80=AFAM Marc Zyngier <maz@kernel.org> wrote=
-:
->
-> On Tue, 09 Jun 2026 18:57:26 +0100,
-> Yosry Ahmed <yosry@kernel.org> wrote:
-> >
-> > > > If yes, I think the code looks confusing, at least to a layman like
-> > > > myself. It initially seems like the lock protects against concurren=
-t
-> > > > initializations, but then the NULL check is not done again under th=
-e
-> > > > lock. The goal of the lock is not clear without the original report=
-.
-> > > >
-> > > > Mayeb it's clearer to explicitly use barriers if the goal is preven=
-ting
-> > > > reordering?
-> > >
-> > > This would require both the initialisation of vncr_tlb to use a store
-> > > release, *and* all the other call sites to use a load acquire.
-> > >
-> > > I really don't think it is worth the churn, nor the (very small)
-> > > burden on the readers.
-> >
-> > That's fair. I was mainly just pointing out my initial confusion and
-> > that others may share it. Avoiding the churn on the readers' side is
-> > understandable. Maybe a comment here would help explain why the lock
-> > needs to be held?
->
-> I have added this:
->
->         /*
->          * Taking the lock on assignment ensures that the TLB is
->          * seen as initialised when following the pointer (release
->          * semantics of the unlock), and avoids having acquires on
->          * each user which already take the lock.
->          */
+While dat_crstep_xchg_atomic() is marked as __must_check, in this
+particular case the return value should be ignored.
 
-Looks good, thank you!
+Silence potential compiler warnings with a pointless check, and add a
+comment to explain the situation.
+
+Fixes: d1adc098ce08 ("KVM: s390: Fix _gmap_crstep_xchg_atomic()")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+CC: stable@vger.kernel.org # 7.1
+---
+ arch/s390/kvm/gmap.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/arch/s390/kvm/gmap.h b/arch/s390/kvm/gmap.h
+index 5374f21aaf8d..20881e3ce9d8 100644
+--- a/arch/s390/kvm/gmap.h
++++ b/arch/s390/kvm/gmap.h
+@@ -279,7 +279,16 @@ static inline bool __must_check _gmap_crstep_xchg_atomic(struct gmap *gmap, unio
+ 			gmap_handle_vsie_unshadow_event(gmap, gfn);
+ 		else
+ 			_gmap_handle_vsie_unshadow_event(gmap, gfn);
+-		dat_crstep_xchg_atomic(crstep, oldcrste, newcrste, gfn, gmap->asce);
++		if (!dat_crstep_xchg_atomic(crstep, oldcrste, newcrste, gfn, gmap->asce))
++			return false;
++		/*
++		 * Return false even if the swap was successful, as it only
++		 * indicates that the best effort clearing of the vsie_notif
++		 * bit was successful. The caller will have to try again
++		 * regardless, since the desired value has not been set.
++		 * This pointless check is needed to silence a potential
++		 * __must_check warning.
++		 */
+ 		return false;
+ 	}
+ 	if (!oldcrste.s.fc1.d && newcrste.s.fc1.d && !newcrste.s.fc1.s)
+-- 
+2.54.0
+
