@@ -1,137 +1,158 @@
 Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5338C28DC4
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447B9335BA
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781051434; cv=none; b=lG+cPy5t8ssczqmgvG5N2eTNPreH0cpcGSFNVEbMXVz/31Fgw1oEQLt0wVe8pOG67rr+CLo5zL/z2Sh+dO513BA0yB3n20f4ulz2l2r815klUK9POCifbwFOcjfwiRg+ry5PTH29lUHCXs15fO3ZVAsM0FTkDIICHP/biFlLg+Y=
+	t=1781051435; cv=none; b=O0QaHCdX1XI+ob8Xswh6JFkMd+2g2/hNTKoA8boYDzlfMr7yavgFvxrr5sjcCOT49+szsHsHgMyoP7/46WgHqs7nr/zc5EyhB4+iTDM82sqKLtmtsV97NQOq4uIEJFpi5wQoRjK+APju5/sm0U8KqDN+YXHw/0pZsSM3lK4Je0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781051434; c=relaxed/simple;
-	bh=4d2YpPE3MJSwpFCXtKtMn7CD4QRh4ycTaVKBrV61MdA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=L+EbqRudPgJRaPEkt0QGeMRaA/nocVUR8HRz9JKLup+/GjWmrTugL179CZi14Y8DPsCN8QuxqEhN0xDHrDuRze+ZIo00yJGp/pZM5Fn+8lRPZRf1kzR8Zr64fvIgrYtCd1Fsj0U2q145ZWEMBaYXHl9VGkUmucckhbMXSiDQuFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sXQ4qg6d; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1781051435; c=relaxed/simple;
+	bh=JhITAjbEXL61jBsabwwqBTvuTP7jx4PZiaHnLoKzjsY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=h/+UQd+wbbh+5Eu4GknTLdFqvGnrt/ixSf3EAZpH2ljBdY2iIVnGqeC9ZjTA0agRBBObjB9JDyMBf1ssdyeMVdMnLr6Cl4mjcNAvgaj+Zy5LtJ9M/K8D39Uaz09nGA5ThYUcl6PLrKFZ5z3zT1eSAyt0b3ypuv17hVDGgEHXaxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jp+CKQGc; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sXQ4qg6d"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bfdd99f6b7so86363455ad.0
-        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:30:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jp+CKQGc"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c10cd7df22so81939355ad.2
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:30:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781051432; x=1781656232; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7wmvrWZYdbFP/pyb4oIuyF7Q4qkwJgfKUGT83D582MQ=;
-        b=sXQ4qg6dYxkxVlwFhPT2ONAAwCqhUPanXQlFC53D1jXzwKLpFji3fBF8JnmonPI4Fq
-         Eib+jcbpmSXAGTa6hhtKnGkZdeq0VJFeMgDw9sqZfWxx5QKKHfleDjTJJwRvwJRmV4f1
-         cIHxY90iZ5MqxLjC2Kx8x3Ulf0Dz81ACGJNS6yoFT/XjS3btwUr+HsH3CrMNO3L2nbPN
-         cFoi4nf1bf1/vXMfN2PxgxaB2q0uDWZZ0J9KesK/r58ZzdPL9ZZATPWtYDIUPx8HGLgs
-         8Be5V43RVJZttlqm1kc9wkxbCSy2RDwspbE6KSrnVSD14giL96bsq9lV1IWf9pMTAzRH
-         m63w==
+        d=google.com; s=20251104; t=1781051434; x=1781656234; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=aaCRfVH8CKZcSVl6mmM7CvGswcE0rcOuOdeUfo9Cnrw=;
+        b=jp+CKQGcX0YCEn8LHuc4pq3GYuB9zlnddezbdmI8xRI5gL7Cdhs/X8d3bJOfUlnrmK
+         qWmQ39cJKsMxUYqyRfML+y3v6Ptgz2dHJt86b2wyVBdrcTSCLsGBtycOrhYJE2y+rhaz
+         f0zKICpWlp/OYRW4iCz/6+Cnm0doOds5SnlCyMfRssgr9teQH1tkqxB0O6w5E12hxnjX
+         a1dI3rGcxewe6sk/AYlmSIIg/eB0cdW/cLFQkjDabn24d5ow6J5sC0Jnk7ttdQZSCi+u
+         FwtIisZ0tAHxtEK3oe0JGA7DV0psa/+GWAHV7If6udFr8nAzl/5HTQrrJO/r7XV3YVAA
+         QAGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781051432; x=1781656232;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7wmvrWZYdbFP/pyb4oIuyF7Q4qkwJgfKUGT83D582MQ=;
-        b=ANemjvF7vs15KMewFiJZOcYauGm8zKtZwFqzeY2idKo0vdUaMIP5zdfGQa1XMMaDnl
-         5oRoU6yEpswcFLpeyVaRzFUQGlBVRKxjugEQF+ftza5A/cb0fKCLtQXWC9KNqaTT/QYd
-         ae3ocQ1qgqDwFnbSBaZ0UfaaxFY8iHvx8/ZlSTeoi0tbiEbCnRVh9P0Pd75LAq8sxkLG
-         QQ64d7eP3tPtcLoFBoP7XTcgw91R7oSWdUY+yB8PXV7As75E8hzTxjUvLdxvXr2+eScJ
-         aqfKJBs6QpPz1hZYerFb1kpvWp4JBnWv+Kf01/trgBFK393T62tX6gZlXm6lOBHhMYm1
-         mxXg==
-X-Gm-Message-State: AOJu0YyvWUFwLpLFKHyutFxH0Oi605QlRBc3nbEy7zfCNFX0TGU3/hEq
-	pQUegYhctHB/0j1FGvvAqNmDE79iz9XPgHXLnVPLnNo8MK4mPFaiFD5pMjLbZyTqelgEhgLCAZP
-	CUKX6jQ==
-X-Received: from plbmf15.prod.google.com ([2002:a17:902:fc8f:b0:2bf:14c9:866d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1205:b0:2c0:b6c7:2271
- with SMTP id d9443c01a7336-2c1e80e3bc0mr276805925ad.4.1781051432376; Tue, 09
- Jun 2026 17:30:32 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781051434; x=1781656234;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aaCRfVH8CKZcSVl6mmM7CvGswcE0rcOuOdeUfo9Cnrw=;
+        b=HZQEu36Q1+dYnCXid39xvUYy3Gz+av7dZKWcBxTHBmtSDZgtxSy9RCD6IZlLEbzI94
+         j8zm27MiGa3oC8AiuUr8X55Jn8RY+k7kotrnF20SYJ1a9cnjUKR0ONfAQOXqvtx2OX3p
+         eIAIL1ITI52e0giafHHeAwmM9dD/qJDAthJxDPz5OwDPRduOzvDxGc0610hvc/IySV7F
+         i+8ZvfTEG3GdkI4ConZMNhL4R33rNaZfv5VT3LVsCEmZTmKqDGkKBglxJGZ5KYOYgdSC
+         xagAA2k6DrkrwDS4dt7hAUIaR8uoy9vvbTTBn4Dr8hH3pk32NWWfzaqGETKMJLdC0nEV
+         8gcA==
+X-Gm-Message-State: AOJu0YwdQVvn1VilpsHF+jXu6EL9d1exxvIeGxtCN1Vv8qM5MuhTXflO
+	/qMuJlvZ5Xg5nOraGKb5PIc05mP2x9e7vRk7Ubu0E//cAZ3NRPW3hPmeH+rHs+OPQjzvvogd9rM
+	nsu8Lkw==
+X-Received: from plbkv13.prod.google.com ([2002:a17:903:28cd:b0:2bd:55dc:a132])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5d2:b0:2c0:cb90:1dfc
+ with SMTP id d9443c01a7336-2c1e8219fccmr270263525ad.12.1781051433467; Tue, 09
+ Jun 2026 17:30:33 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue,  9 Jun 2026 17:30:25 -0700
+Date: Tue,  9 Jun 2026 17:30:26 -0700
+In-Reply-To: <20260610003030.2957261-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260610003030.2957261-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
-Message-ID: <20260610003030.2957261-1-seanjc@google.com>
-Subject: [PATCH v8 0/5] KVM: selftests: Add AMD PMU Host/Guest test
+Message-ID: <20260610003030.2957261-2-seanjc@google.com>
+Subject: [PATCH v8 1/5] KVM: selftests: Refactor allocating guest stack into a helper
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Yosry Ahmed <yosry@kernel.org>, Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-This is the selftests portion of the mediated PMU Host-Only/Guest-Only series.
-My plan is to get this into 7.2-rc1, but after the other KVM x86 pull requests
-have been merged by Paolo (several unpleasant conflicts across multiple
-branches).  I'll either send a separate pull request, or see if Paolo wants
-to apply them directly.
+From: Yosry Ahmed <yosry@kernel.org>
 
-v8:
- - Add a kvm_is_mediated_pmu_enabled() helper.
- - Drop the AMD Family check.
+In preparation for reusing the logic to allocate stacks for nested
+guests, refactoring allocating a guest stack and aligning RSP into a
+helper.
 
-v7: https://lore.kernel.org/all/20260527234711.4175166-1-yosry@kernel.org
+No functional change intended.
 
-Jim Mattson (1):
-  KVM: selftests: Add svm_pmu_host_guest_test for Host-Only/Guest-Only
-    bits
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ .../testing/selftests/kvm/lib/x86/processor.c | 45 ++++++++++---------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
-Sean Christopherson (1):
-  KVM: selftests: Add a helper to query enable_mediated_pmu module param
-
-Yosry Ahmed (3):
-  KVM: selftests: Refactor allocating guest stack into a helper
-  KVM: selftests: Allocate a dedicated guest page for x86 L2 guest stack
-  KVM: selftests: Drop L1-provided stacks for L2 guests on x86
-
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- tools/testing/selftests/kvm/include/x86/pmu.h |   6 +
- .../selftests/kvm/include/x86/processor.h     |  10 +
- .../selftests/kvm/include/x86/svm_util.h      |   5 +-
- tools/testing/selftests/kvm/include/x86/vmx.h |   4 +-
- .../testing/selftests/kvm/lib/x86/memstress.c |  19 +-
- .../testing/selftests/kvm/lib/x86/processor.c |  45 ++--
- tools/testing/selftests/kvm/lib/x86/svm.c     |   6 +-
- tools/testing/selftests/kvm/lib/x86/vmx.c     |   6 +-
- .../selftests/kvm/x86/aperfmperf_test.c       |   9 +-
- .../kvm/x86/evmcs_smm_controls_test.c         |   5 +-
- .../testing/selftests/kvm/x86/hyperv_evmcs.c  |   6 +-
- .../selftests/kvm/x86/hyperv_svm_test.c       |   6 +-
- .../selftests/kvm/x86/kvm_buslock_test.c      |   9 +-
- .../selftests/kvm/x86/nested_close_kvm_test.c |  12 +-
- .../selftests/kvm/x86/nested_dirty_log_test.c |   8 +-
- .../selftests/kvm/x86/nested_emulation_test.c |   4 +-
- .../kvm/x86/nested_exceptions_test.c          |   9 +-
- .../kvm/x86/nested_invalid_cr3_test.c         |  10 +-
- .../selftests/kvm/x86/nested_tdp_fault_test.c |   9 +-
- .../kvm/x86/nested_tsc_adjust_test.c          |  10 +-
- .../kvm/x86/nested_tsc_scaling_test.c         |  10 +-
- .../kvm/x86/nested_vmsave_vmload_test.c       |   6 +-
- tools/testing/selftests/kvm/x86/smm_test.c    |   8 +-
- tools/testing/selftests/kvm/x86/state_test.c  |  11 +-
- .../selftests/kvm/x86/svm_int_ctl_test.c      |   5 +-
- .../selftests/kvm/x86/svm_lbr_nested_state.c  |   6 +-
- .../kvm/x86/svm_nested_clear_efer_svme.c      |   7 +-
- .../selftests/kvm/x86/svm_nested_pat_test.c   |   8 +-
- .../kvm/x86/svm_nested_shutdown_test.c        |   5 +-
- .../kvm/x86/svm_nested_soft_inject_test.c     |   6 +-
- .../selftests/kvm/x86/svm_nested_vmcb12_gpa.c |  13 +-
- .../kvm/x86/svm_pmu_host_guest_test.c         | 215 ++++++++++++++++++
- .../selftests/kvm/x86/svm_vmcall_test.c       |   5 +-
- .../kvm/x86/triple_fault_event_test.c         |   9 +-
- .../selftests/kvm/x86/vmx_apic_access_test.c  |   5 +-
- .../kvm/x86/vmx_apicv_updates_test.c          |   4 +-
- .../kvm/x86/vmx_invalid_nested_guest_state.c  |   6 +-
- .../kvm/x86/vmx_nested_la57_state_test.c      |   5 +-
- .../kvm/x86/vmx_preemption_timer_test.c       |   5 +-
- 40 files changed, 323 insertions(+), 215 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/svm_pmu_host_guest_test.c
-
-
-base-commit: de3a35be92d2391ece4bf3143ef2887192625fd0
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index 4ca48de7a926..9393bb580a58 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -778,6 +778,30 @@ void assert_on_unhandled_exception(struct kvm_vcpu *vcpu)
+ 		REPORT_GUEST_ASSERT(uc);
+ }
+ 
++static gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages)
++{
++	int size = nr_pages * getpagesize();
++	gva_t stack_gva;
++
++	stack_gva = __vm_alloc(vm, size, DEFAULT_GUEST_STACK_VADDR_MIN, MEM_REGION_DATA);
++	stack_gva += size;
++
++	/*
++	 * Align stack to match calling sequence requirements in section "The
++	 * Stack Frame" of the System V ABI AMD64 Architecture Processor
++	 * Supplement, which requires the value (%rsp + 8) to be a multiple of
++	 * 16 when control is transferred to the function entry point.
++	 *
++	 * If this code is ever used to launch a vCPU with 32-bit entry point it
++	 * may need to subtract 4 bytes instead of 8 bytes.
++	 */
++	TEST_ASSERT(IS_ALIGNED(stack_gva, PAGE_SIZE),
++		    "__vm_alloc() did not provide a page-aligned address");
++	stack_gva -= 8;
++
++	return stack_gva;
++}
++
+ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
+ {
+ 	int r;
+@@ -820,27 +844,8 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+ {
+ 	struct kvm_mp_state mp_state;
+ 	struct kvm_regs regs;
+-	gva_t stack_gva;
+ 	struct kvm_vcpu *vcpu;
+ 
+-	stack_gva = __vm_alloc(vm, DEFAULT_STACK_PGS * getpagesize(),
+-			       DEFAULT_GUEST_STACK_VADDR_MIN, MEM_REGION_DATA);
+-
+-	stack_gva += DEFAULT_STACK_PGS * getpagesize();
+-
+-	/*
+-	 * Align stack to match calling sequence requirements in section "The
+-	 * Stack Frame" of the System V ABI AMD64 Architecture Processor
+-	 * Supplement, which requires the value (%rsp + 8) to be a multiple of
+-	 * 16 when control is transferred to the function entry point.
+-	 *
+-	 * If this code is ever used to launch a vCPU with 32-bit entry point it
+-	 * may need to subtract 4 bytes instead of 8 bytes.
+-	 */
+-	TEST_ASSERT(IS_ALIGNED(stack_gva, PAGE_SIZE),
+-		    "__vm_alloc() did not provide a page-aligned address");
+-	stack_gva -= 8;
+-
+ 	vcpu = __vm_vcpu_add(vm, vcpu_id);
+ 	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
+ 	vcpu_init_sregs(vm, vcpu);
+@@ -849,7 +854,7 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+ 	/* Setup guest general purpose registers */
+ 	vcpu_regs_get(vcpu, &regs);
+ 	regs.rflags = regs.rflags | X86_EFLAGS_FIXED;
+-	regs.rsp = stack_gva;
++	regs.rsp = vm_alloc_stack(vm, DEFAULT_STACK_PGS);
+ 	vcpu_regs_set(vcpu, &regs);
+ 
+ 	/* Setup the MP state */
 -- 
 2.54.0.1099.g489fc7bff1-goog
 
