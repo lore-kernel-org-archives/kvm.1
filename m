@@ -1,171 +1,102 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A7030B51D
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 18:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CEA349CE7
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 18:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781115554; cv=none; b=DGXVrVf4RntgaoczWQtaH+pPv/rcK4fLgNTeE8fhDDk98spcvP+mWFGJv8/KuaVhMeZ1wu4C3iByHJSY/B6rFnsipDUV19GzA0hJID1fGes5wwrw6abvuE6SGJB6XEV5JOkXUeHiT0xMWApkgrPP53BPy1f7ybjNegRS27sCmMU=
+	t=1781115941; cv=none; b=dkc+g9AAW6k9AVlLqhbXW/ZEWIt69XQpzOb9G1RkNeI7eWrIqmg+CGVXjtnU+uL21SXnEN05YZM1DNC/hb0kefUcc62p/ST7vogdQMZeMTVosoKfwyekqVH91vreJT5fD9iDbG9zOvqhJGiOMA/p3jD38hITu6v4Z1SkRHGjKOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781115554; c=relaxed/simple;
-	bh=3uT7uCBdHK7Q6DaRVzxdqQ7Pf1aj9vdwZKSO+LExmHo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H31NgbkbIKHH/YqRIhdiWaNWcgTqWl6VM+hFu+h1DSCWDzdGEtX2m5G0Gj9tM0vkvnCCJtefKvZswjaRNzNbffzW0uH4UzL7Dimp3lv2goSNnQJ7SjtKXhZptRSTg8nBzwEcyyDdJXx6Tg47t7Dz7lKaGXj9gvVwlWskABGFQoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eHiOtfhv; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1781115941; c=relaxed/simple;
+	bh=yKq2Ui00JXDy2Up9TpO1zuormhAd0uRGnQ1pNcg5FBk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nM3BCs15f2HlIxiGhr4dt6IO2AtMxZwb2MQxB8JzW1nPKw20GNi6OkcUoVpwtAik308VEtvvSqqWRYqe7IxRF14f5hFLBt96lvNfLJnpnqShI78kj8rfgJvoOl6mNTzeGVlNGq7QbVIqdq1MDgh84RuTgGjMBElo6XTeBbzoQgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jlAbULC7; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eHiOtfhv"
-Date: Wed, 10 Jun 2026 13:18:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781115549;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VGw3GTptSdUZrSWoVBsdx3rZSXvewu+MVPBIyfKEYDU=;
-	b=eHiOtfhvY62FsMW+ywCEhpWPyI2U5QDpe5TzSyI08nwUP/Fvjk4p2MXF/0tU8SSKbXoaj6
-	XQzp0OhVJraggC03VQBl0qanxFoObbKmM+PanWrkjFt1H1nwx4GwftMyra5ECEpbqBu/y8
-	EkQdggHSU7B2/4Q+YuoTevZmNJuzf88=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Giacomo Mazzola <gmazz@amazon.de>
-Cc: kvm@vger.kernel.org
-Subject: Re: [kvm-unit-tests PATCH 8/8] efi: parse KUT_ENV= from load options
- into environ
-Message-ID: <wsgckfz4gz2lrmr44yijsmb4ytrdwbmjev5r6c4cz7mhpv6eni@bdlwodcdnly7>
-References: <20260609140901.95727-1-gmazz@amazon.de>
- <20260609140901.95727-9-gmazz@amazon.de>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jlAbULC7"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c0bf6904a6so104130465ad.1
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 11:25:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781115940; x=1781720740; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kB5UUPePlwgpE8nklgBfMtK83uf+7umzGBRIUNT+CTg=;
+        b=jlAbULC7ZbKNTBfiRh1dDpedXH3FOUxFufum/EE0XTDh9UjR8PGNrvo2i6aU3g8k4h
+         /Vgh4h8CFwnrNI1fnNXYpYVu8N2jKRP0lqG+jbZ41G5D4yGIjhxckKOAR5jAo4tSvDU0
+         qMrfjCor+mruG3pA92IViDc2p4A2WHqYFDq8r7ROnE3Vl70sj6JpjNyy2JDBjFTmwUSi
+         jTDr7KWZp+THwVs9+yRpXCZ75z/Crqszjl74HdsiaflvCiiv6DHvEr5vCORSnOjPR9T1
+         tnR/1NU095KSQO6I+tUwIqxYReN92LIRGGHjq3nGJHaB3xcYVz+sjVnL25EMXUsZU7xc
+         IpWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781115940; x=1781720740;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kB5UUPePlwgpE8nklgBfMtK83uf+7umzGBRIUNT+CTg=;
+        b=euRIbTux50QyVYSk+j+KAylI9GFJfnQyjxKNmmHdC/aV756V7kghLHRY+mG+znv8Do
+         uOPZqBMMRym4IIXV0JqJCE2zjXYjgWcW3HXrQdqOE/9/YGmM4wNiS7rRkJ/pZPGhJ5H9
+         oe7i7zBJsA7Fb7laLmI3/vv7n2an/vqdpuBmzMWu+/osIOfP7bEZVis9h/V6yoMTYDHi
+         7VT4/qXNLQtyNQoUKtqlvFl0qi2AFsFL+FHMAF0ltXu7EDhmeN7g5jBwRRZUjFU1Q5x0
+         agKs/AJn3nq6D42LZZpMwAQOk2k6RCBF/+zpqCVO3qvfltvXw5u0FuTh7Z3sFbk6jLwP
+         NjEA==
+X-Forwarded-Encrypted: i=1; AFNElJ/Aumhzh4HevyrJvvuCTignXXWLfmTuN3CYf6upAHA9nY7cjDlTLOvm/MwY4F/d9W5jFs4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIWBt7zE8uVAQky1iLJYoAA8NabFHL9cjIJ4YZyTnNwjMPra1u
+	29YCbR/dfWSAKVd+cQBSxX+/CvP2Wecv+o1Vt4MB57rcXop2AzBCqRYUbxmHRDxR1otHefHd7ZJ
+	Jg72h4g==
+X-Received: from plbmp5.prod.google.com ([2002:a17:902:fd05:b0:2bd:c925:e1dc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1247:b0:2c0:b35d:ed54
+ with SMTP id d9443c01a7336-2c1e85e04c7mr306277645ad.35.1781115940004; Wed, 10
+ Jun 2026 11:25:40 -0700 (PDT)
+Date: Wed, 10 Jun 2026 11:25:39 -0700
+In-Reply-To: <20260610162623.061BA1F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260609140901.95727-9-gmazz@amazon.de>
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+References: <aimMWzAf5b3luM0b@v4bel> <20260610162623.061BA1F00898@smtp.kernel.org>
+Message-ID: <aimsI-8mcO9oCq_q@google.com>
+Subject: Re: [PATCH] KVM: SEV: Don't return a still-assigned gmem page to the host
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Hyunwoo Kim <imv4bel@gmail.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jun 09, 2026 at 02:09:00PM +0000, Giacomo Mazzola wrote:
-> Allow EFI applications to receive environment variables via the UEFI
-> load options string.  If any argv element contains 'KUT_ENV=', the
-> value after the '=' is parsed as a comma-separated list of KEY=VAL
-> pairs and fed to setup_env().  The KUT_ENV= argument is then removed
-> from argv so tests do not see it as a spurious positional argument.
+On Wed, Jun 10, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > index f59c65abe3cfa..dbde6dce79b76 100644
+> > --- a/arch/x86/kvm/svm/sev.c
+> > +++ b/arch/x86/kvm/svm/sev.c
+> [ ... ]
+> > @@ -5036,8 +5036,12 @@ void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
+> >  
+> >  		rc = rmp_make_shared(pfn, use_2m_update ? PG_LEVEL_2M : PG_LEVEL_4K);
+> >  		if (WARN_ONCE(rc, "SEV: Failed to update RMP entry for PFN 0x%llx error %d\n",
+> > -			      pfn, rc))
+> > +			      pfn, rc)) {
+> > +			/* Still assigned to the guest; pin and leak rather than freeing. */
+> > +			folio_get(page_folio(pfn_to_page(pfn)));
+> > +			snp_leak_pages(pfn, use_2m_update ? PTRS_PER_PMD : 1);
 > 
-> This lets a UEFI boot manager pass runtime configuration (e.g.
-> KUT_ENV=PARAM_1=VALUE_1,PARAM_2=VALUE_2) without needing an initrd
-> environ file — useful in EFI environments where no filesystem is
-> available to the test.
+> [Severity: Critical]
+> Does calling snp_leak_pages() on a pinned guest_memfd folio corrupt the
+> system-wide LRU list?
 > 
-> Signed-off-by: Giacomo Mazzola <gmazz@amazon.de>
-> ---
->  lib/efi.c | 37 ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 36 insertions(+), 1 deletion(-)
+> Memory allocated by guest_memfd is added to the page cache, which
+> unconditionally places the memory on the global unevictable LRU list. When
+> guest_memfd memory is freed, the folio has been removed from the page cache
+> but is still actively linked in the global LRU list until its reference
+> count drops to zero.
 > 
-> diff --git a/lib/efi.c b/lib/efi.c
-> index d1be2bfc..650671e9 100644
-> --- a/lib/efi.c
-> +++ b/lib/efi.c
-> @@ -13,6 +13,8 @@
->  #include <asm/setup.h>
->  #include "efi.h"
->  
-> +#define COMMAND_LINE_SIZE  2048
-> +
->  /* From each arch */
->  extern char *initrd;
->  extern u32 initrd_size;
-> @@ -139,7 +141,6 @@ static char *efi_convert_cmdline(struct efi_loaded_image_64 *image, int *cmd_lin
->  	int options_bytes = 0, safe_options_bytes = 0;  /* UTF-8 bytes */
->  	bool in_quote = false;
->  	efi_status_t status;
-> -	const int COMMAND_LINE_SIZE = 2048;
->  
->  	if (options) {
->  		s2 = options;
-> @@ -397,6 +398,39 @@ static void efi_load_initrd(void)
->  	}
->  }
->  
-> +#define ENV_STR "KUT_ENV"
-> +
-> +static void efi_setup_env(void)
-> +{
-> +	char *env = NULL, *p;
-> +	int i, size = 0;
-> +
-> +	for (i = 0; i < __argc && !env; i++)
-> +		env = strstr(__argv[i], ENV_STR "=");
+> By calling folio_get() here, the reference count is elevated, keeping the
+> folio on the LRU list. Then, snp_leak_pages() unconditionally links the
+> page into a tracking list via list_add_tail(&page->buddy_list, ...).
+> 
+> Because buddy_list and lru share the exact same union inside struct page
+> and struct folio, modifying buddy_list silently overwrites the lru.next and
+> lru.prev pointers of the folio, severing the global LRU linked list.
 
-strstr will also match something like FOO_KUT_ENV=
-Maybe that's intentional?
-
-> +
-> +	if (!env)
-> +		return;
-> +
-> +	/* Remove the KUT_ENV= argument from argv. */
-> +	__argv[i - 1] = __argv[__argc - 1];
-> +	__argv[__argc - 1] = NULL;
-> +	__argc -= 1;
-
-What if the command line is something like
-
- $ testbin KUT_ENV=p1=v1,p2=v2 -param_with_arg arg
-
-then we'd get
-
- $ testbin arg -param_with_arg
-
-We need to loop and shift all down.
-
-> +
-> +	env += strlen(ENV_STR) + 1; /* skip past 'KUT_ENV=' */
-> +	p = env;
-> +	while (*p && !isspace(*p) && size < COMMAND_LINE_SIZE) {
-
-Do we need the !isspace() check? I wouldn't expect spaces in this string
-since it comes from an argument parsed by __setup_args() which splits on
-space.
-
-> +		if (*p == ',')
-> +			*p = '\n';
-> +		size++;
-> +		p++;
-> +	}
-> +
-> +	if (size >= COMMAND_LINE_SIZE)
-> +		report_abort("Cmdline arguments too long, or bad format");
-
-I don't understand the need to restrict the environment size with this
-check.
-
-> +
-> +	setup_env(env, size);
-> +}
-> +
->  efi_status_t efi_main(efi_handle_t handle, efi_system_table_t *sys_tab)
->  {
->  	int ret;
-> @@ -434,6 +468,7 @@ efi_status_t efi_main(efi_handle_t handle, efi_system_table_t *sys_tab)
->  		goto efi_main_error;
->  	}
->  	setup_args(cmdline_ptr);
-> +	efi_setup_env();
->  
->  	efi_load_initrd();
->  
-> -- 
-> 2.47.3
->
-
-Finally, why restrict this feature to EFI builds? Let's add the support to
-lib/argv.c in order to get it everywhere. Just add a static function
-implemented similarly to efi_setup_env() instead to lib/argv.c and call it
-at the bottom of __setup_args().
-
-Thanks,
-drew
+Yeah, trying to prevent a folio/page from being freed from within ->free_folio()
+seems like a fool's errand.
