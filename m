@@ -1,101 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F50331A41;
-	Wed, 10 Jun 2026 18:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603D7349CCD
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 18:53:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781116801; cv=none; b=Xa1xuMqHMbPtYiaEdigWCucXY2+GjqLpqcD6cdJsggrQeXNsMFmoHr/TvX4g4h2CvkUw/vqCDWlj6zuOJ9tVZC4bFPtyjaO2NS/P9HkMHVe5VdkMUy9kSwU6nJKcKGiy+DUR0Y/sLXhWaqhf9kSsOF/KKuDunFDmB4i9gPn1UV8=
+	t=1781117587; cv=none; b=f7eQIzgGWeIz4WT8DHGO02OX8vsCrfnaDEcJ5a6NQ+MbVNODbjHSaspUE/A3K37QhlhRzb5UFVVbRxATpPWUNBtV7Je63US81HdTcWMtjEtzP48yQvFpe13BuNgqQlRmTBpmiovOxWBALD/0ZscyGa2gBD4C6Zt9JjaBnQKcNsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781116801; c=relaxed/simple;
-	bh=pcqvCel3cIid7Uxi8NGfFZNo5OffXfeC6iaAMBMqxqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i8CUAPlbHCUie+Y74IpYsovBA3gqSBdX1cCs0N1wT90MZll4C2WINV/VnLV65+/LHoC3mKj+q6VsWLPa3UvrEuyuZCdplbWVIS9NUPymdXv8mQJKiJ9YLbC+KuVPdrjNOpiE/JgEb9W850vIUm1VuIFvOWWxL8pwsd9T6A7DXX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXQg2sOU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781117587; c=relaxed/simple;
+	bh=WZckIkPtJEFt85KizNg0TyTxE35KcCiksInVQT7La7Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cxFhyrVjM3Zub3w5fn8X+W+/yUXhPKemfLEuiL4rla8grDxHHTKfyh2Gra90USyi8nxRqAXKMhyEsLf3zxoI9Xr8qGZslmD9ADovJzIOyMxhnjFWErEcRHhEb2qipU/bHbzfDQ7TQKbJ+cal1xWHZOZCT/wd0EhI61nLDFBJc9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=NDFVv3f3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+Bl4g6Bv; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=NDFVv3f3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+Bl4g6Bv; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXQg2sOU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD661F00893;
-	Wed, 10 Jun 2026 18:39:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781116800;
-	bh=2O7wrREt4oiDQ0b6njA5QsbmFiFGcobC6ew3dRXWqcA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AXQg2sOUQCvZAEJpOUDjFxgGFGvNfk8Y+NFsIF1/5oh/Jf0NM00X8fx1vrkj5uHRU
-	 OlivCH41ngLCnSfN3Chi7Nbnl211nqRmBag5EgqKauDJGnoTKxPiAeXPg3Im9QJr7C
-	 G/Mq1DzVMYclnYZohJe3cwSTZr098ztfrRB47bVZbuSTaTrtVEE98yEqSH9XqmKUs9
-	 3yot7t6yapyBUqRxmz6sKh59pKB+J1q5svMihAX9BkJwa/BC5TRn3xH7sUWMMWKBlM
-	 mSJOMDo83XjooT0ElGcgMVQVMiOomdtvmuTfggBaGn8mtlW19fIc56coy6MYgdanRT
-	 AW/Wmn8mfjmvA==
-Date: Wed, 10 Jun 2026 21:39:54 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 1/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
-Message-ID: <20260610183954.GK327369@unreal>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-2-matt@ozlabs.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="NDFVv3f3";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+Bl4g6Bv";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="NDFVv3f3";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+Bl4g6Bv"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9942B6AD9B;
+	Wed, 10 Jun 2026 18:53:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781117583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yQrpQAXhwzte2PS5h1duYn8S+KPaq/lup3R50f9DqUg=;
+	b=NDFVv3f3DGbRJECfKy850c4mmohlkt5vb4m5Dj7jJWtKuoZN4VY44bQ6hqIsuhRpKdi6qT
+	cN6hPCrxNu2yl1PmygAFC+E6VNQMVvkkHuvwNmTjn4QiBvUEzJR46ND1+GP+bbPIu4WoHh
+	evUV6fxv20PmYvl4AI7QKZt9s8b86BY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781117583;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yQrpQAXhwzte2PS5h1duYn8S+KPaq/lup3R50f9DqUg=;
+	b=+Bl4g6BvB5FTZR6UsAVzGbR4LWz8BVvV6ibX0OfBBaexWwjnRI4ht+H3VJlt2oFkq+376y
+	xhjiHf6UtgY3wjBg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781117583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yQrpQAXhwzte2PS5h1duYn8S+KPaq/lup3R50f9DqUg=;
+	b=NDFVv3f3DGbRJECfKy850c4mmohlkt5vb4m5Dj7jJWtKuoZN4VY44bQ6hqIsuhRpKdi6qT
+	cN6hPCrxNu2yl1PmygAFC+E6VNQMVvkkHuvwNmTjn4QiBvUEzJR46ND1+GP+bbPIu4WoHh
+	evUV6fxv20PmYvl4AI7QKZt9s8b86BY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781117583;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yQrpQAXhwzte2PS5h1duYn8S+KPaq/lup3R50f9DqUg=;
+	b=+Bl4g6BvB5FTZR6UsAVzGbR4LWz8BVvV6ibX0OfBBaexWwjnRI4ht+H3VJlt2oFkq+376y
+	xhjiHf6UtgY3wjBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C62DE779A7;
+	Wed, 10 Jun 2026 18:53:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 921CLY6yKWotZQAAD6G6ig
+	(envelope-from <clopez@suse.de>); Wed, 10 Jun 2026 18:53:02 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kvm@vger.kernel.org,
+	seanjc@google.com,
+	pbonzini@redhat.com
+Cc: osteffen@redhat.com,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	stable@vger.kernel.org,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Roman Kagan <rkagan@virtuozzo.com>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))
+Subject: [PATCH] KVM: VMX: Raise KVM_REQ_EVENT on TPR below threshold exit
+Date: Wed, 10 Jun 2026 20:50:43 +0200
+Message-ID: <20260610185042.2810880-2-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610154327.37758-2-matt@ozlabs.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-3.29 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.19)[-0.963];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
+X-Spam-Score: -3.29
 
-On Wed, Jun 10, 2026 at 04:43:15PM +0100, Matt Evans wrote:
-> The P2PDMA code currently provides two features under the same
-> CONFIG_PCI_P2PDMA option:
-> 
->  1.  Locate providers via pcim_p2pdma_provider()
->  2.  Manage actual P2P DMA
-> 
-> Some drivers (such as vfio-pci) depend on 1, without having a hard
-> dependency on 2.
-> 
-> A future commit expands the use of DMABUF in vfio-pci for non-P2P
-> scenarios, relying on pcim_p2pdma_provider() always being present.  If
-> that depended on CONFIG_PCI_P2PDMA, it would make vfio-pci only
-> available if CONFIG_ZONE_DEVICE is present (e.g. 64-bit systems), even
-> when P2P is not needed.
-> 
-> To resolve this, introduce CONFIG_PCI_P2PDMA_CORE and refactor the
-> basic provider functionality into a new p2pdma_core.c file.  This is
-> available even if the CONFIG_PCI_P2PDMA feature is disabled (or
-> unavailable due to !CONFIG_ZONE_DEVICE).  Then, drivers can enable any
-> additional P2P features with the original CONFIG_PCI_P2PDMA (available
-> when CONFIG_ZONE_DEVICE is set).
-> 
-> Signed-off-by: Matt Evans <matt@ozlabs.org>
-> ---
->  MAINTAINERS                |   2 +-
->  drivers/pci/Kconfig        |  10 ++--
->  drivers/pci/Makefile       |   1 +
->  drivers/pci/p2pdma.c       | 109 ++--------------------------------
->  drivers/pci/p2pdma.h       |  29 +++++++++
->  drivers/pci/p2pdma_core.c  | 118 +++++++++++++++++++++++++++++++++++++
->  include/linux/pci-p2pdma.h |  24 ++++----
->  include/linux/pci.h        |   2 +-
->  8 files changed, 174 insertions(+), 121 deletions(-)
->  create mode 100644 drivers/pci/p2pdma.h
->  create mode 100644 drivers/pci/p2pdma_core.c
+The TPR_THRESHOLD field in the VMCS is used by VMX to induce VM exits
+when the guest's virtual TPR falls under the specified threshold,
+allowing KVM to inject previously masked interrupts.
 
-Thanks,
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+KVM handles these VM exits in handle_tpr_below_threshold().
+Commit eb90f3417a0c ("KVM: vmx: speed up TPR below threshold vmexits")
+optimized this function by calling apic_update_ppr() instead of raising
+KVM_REQ_EVENT. apic_update_ppr() then raises KVM_REQ_EVENT if there is
+a pending, deliverable interrupt.
+
+However, if there are no new interrupts pending, apic_update_ppr()
+does not issue the request. This skips calling update_cr8_intercept(),
+and thus vmx_update_cr8_intercept() before VM entry, which results in
+a high, stale TPR_THRESHOLD. This is problematic due to the following
+sentence in 28.2.1.1 "VM-Execution Control Fields" in the SDM:
+
+  The following check is performed if the “use TPR shadow” VM-execution
+  control is 1 and the “virtualize APIC accesses” and “virtual-interrupt
+  delivery” VM-execution controls are both 0: the value of bits 3:0 of
+  the TPR threshold VM-execution control field should not be greater
+  than the value of bits 7:4 of VTPR.
+
+This error condition is typically not observed when KVM runs on a bare
+metal system because modern processors support APICv, which enables
+virtual-interrupt delivery, and which KVM uses when possible. This
+causes the processor to no longer generate TPR-below threshold exits
+and to no longer check TPR_THRESHOLD on entry. However, when running
+on older platforms, or under nested virtualization on a hypervisor that
+does not support virtual-interrupt delivery and enforces this check
+(like Hyper-V) this can cause a VM entry failure with hardware error
+0x7, as seen in [1].
+
+Fix this by re-introducing an unconditional KVM_REQ_EVENT when reacting
+to a TPR-below-threshold exit, ensuring that vmx_update_cr8_intercept()
+is called to re-evaluate TPR_THRESHOLD before entering the guest.
+
+Link: https://github.com/coconut-svsm/svsm/issues/1081 [1]
+Tested-by: Stefano Garzarella <sgarzare@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: eb90f3417a0c ("KVM: vmx: speed up TPR below threshold vmexits")
+Signed-off-by: Carlos López <clopez@suse.de>
+---
+ arch/x86/kvm/vmx/vmx.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index c548f22375ad..21a469d3ba21 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5824,6 +5824,7 @@ void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned long val)
+ static int handle_tpr_below_threshold(struct kvm_vcpu *vcpu)
+ {
+ 	kvm_apic_update_ppr(vcpu);
++	kvm_make_request(KVM_REQ_EVENT, vcpu);
+ 	return 1;
+ }
+ 
+
+base-commit: c1f7303302927f9cbf4efedf70f0512cde168c65
+-- 
+2.51.0
+
