@@ -1,183 +1,114 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603D7349CCD
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 18:53:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3489E35E1AD
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 19:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781117587; cv=none; b=f7eQIzgGWeIz4WT8DHGO02OX8vsCrfnaDEcJ5a6NQ+MbVNODbjHSaspUE/A3K37QhlhRzb5UFVVbRxATpPWUNBtV7Je63US81HdTcWMtjEtzP48yQvFpe13BuNgqQlRmTBpmiovOxWBALD/0ZscyGa2gBD4C6Zt9JjaBnQKcNsc=
+	t=1781118607; cv=none; b=nGmqsXWuTezQMWzRXqpSp1lF1IjTn+jT8EctpgGHmUmKF/uWBKng2evleyBtvTbJ8b8eRrpqovp2oirv4eapsc9p41IKfkCqGlXyJOmFG2TwB7TF9xpUdA9KBp+FS2/fnbXyQhIfBbSFVROKjeMYIRcQ6njBZ+dhEUCkleO7Lww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781117587; c=relaxed/simple;
-	bh=WZckIkPtJEFt85KizNg0TyTxE35KcCiksInVQT7La7Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cxFhyrVjM3Zub3w5fn8X+W+/yUXhPKemfLEuiL4rla8grDxHHTKfyh2Gra90USyi8nxRqAXKMhyEsLf3zxoI9Xr8qGZslmD9ADovJzIOyMxhnjFWErEcRHhEb2qipU/bHbzfDQ7TQKbJ+cal1xWHZOZCT/wd0EhI61nLDFBJc9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=NDFVv3f3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+Bl4g6Bv; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=NDFVv3f3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+Bl4g6Bv; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1781118607; c=relaxed/simple;
+	bh=hZNSV67JuHmfQtWprS1Y7e67EaDGRLPEvIVKQoJrkWU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=XajE1Wjur6yGqumkDU7gO+BFlHqqVF2Wn3vuN02fA5Bf8uqzWdIRUY6doRye+lC7lVXwHOqf64kg4G/F6zEHY5pzJyIGm95kgzYn6r8bFkw08QZCyOq6Th8gWOG5NVGbc+wi2+draB8Zr9xyg2f2auUjaSTmGNpArZmnHBK4t3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVXJu+Hr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="NDFVv3f3";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+Bl4g6Bv";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="NDFVv3f3";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+Bl4g6Bv"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9942B6AD9B;
-	Wed, 10 Jun 2026 18:53:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781117583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yQrpQAXhwzte2PS5h1duYn8S+KPaq/lup3R50f9DqUg=;
-	b=NDFVv3f3DGbRJECfKy850c4mmohlkt5vb4m5Dj7jJWtKuoZN4VY44bQ6hqIsuhRpKdi6qT
-	cN6hPCrxNu2yl1PmygAFC+E6VNQMVvkkHuvwNmTjn4QiBvUEzJR46ND1+GP+bbPIu4WoHh
-	evUV6fxv20PmYvl4AI7QKZt9s8b86BY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781117583;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yQrpQAXhwzte2PS5h1duYn8S+KPaq/lup3R50f9DqUg=;
-	b=+Bl4g6BvB5FTZR6UsAVzGbR4LWz8BVvV6ibX0OfBBaexWwjnRI4ht+H3VJlt2oFkq+376y
-	xhjiHf6UtgY3wjBg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781117583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yQrpQAXhwzte2PS5h1duYn8S+KPaq/lup3R50f9DqUg=;
-	b=NDFVv3f3DGbRJECfKy850c4mmohlkt5vb4m5Dj7jJWtKuoZN4VY44bQ6hqIsuhRpKdi6qT
-	cN6hPCrxNu2yl1PmygAFC+E6VNQMVvkkHuvwNmTjn4QiBvUEzJR46ND1+GP+bbPIu4WoHh
-	evUV6fxv20PmYvl4AI7QKZt9s8b86BY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781117583;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yQrpQAXhwzte2PS5h1duYn8S+KPaq/lup3R50f9DqUg=;
-	b=+Bl4g6BvB5FTZR6UsAVzGbR4LWz8BVvV6ibX0OfBBaexWwjnRI4ht+H3VJlt2oFkq+376y
-	xhjiHf6UtgY3wjBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C62DE779A7;
-	Wed, 10 Jun 2026 18:53:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 921CLY6yKWotZQAAD6G6ig
-	(envelope-from <clopez@suse.de>); Wed, 10 Jun 2026 18:53:02 +0000
-From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-To: kvm@vger.kernel.org,
-	seanjc@google.com,
-	pbonzini@redhat.com
-Cc: osteffen@redhat.com,
-	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	stable@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Roman Kagan <rkagan@virtuozzo.com>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))
-Subject: [PATCH] KVM: VMX: Raise KVM_REQ_EVENT on TPR below threshold exit
-Date: Wed, 10 Jun 2026 20:50:43 +0200
-Message-ID: <20260610185042.2810880-2-clopez@suse.de>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVXJu+Hr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F731F00893;
+	Wed, 10 Jun 2026 19:10:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781118605;
+	bh=5lCHaRx4+5CwxWscGckE6b9oHeqUtQkeax09RDARoJA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bVXJu+Hrq0aHDamwcA5rOKiFTJS9w9lqzvecofRdPFBTFtuE7e7bpnaR9u1Ll/Api
+	 Koq3bsT2QnxOgvtO1VgopirW25qaNhtnz83LOGhtwaTA0XgS2Yt/Sh71PNAHErK2Fr
+	 I9dOzVy7Pd7RgG406PV+EUnvYtAxYF2DcGEnjMjdx1hZH1LT4Eiy7tW2ZM11XRxv1G
+	 9yqgbD7fWov+u5i0FBkpjIwEbuQm8g7wbZb/PTKdcNjKE+CLatSaUe/4j5ZQeOI2uW
+	 B8WikUQN9dKS19c8iL/bJCoc32l2csPRuInw4icy/ohN1l8VUsWq4cv7BzLjELVCY7
+	 ousSso++YkAXg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: VMX: Raise KVM_REQ_EVENT on TPR below threshold
+ exit
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Q2FybG9zIEzDs3Bleg==?= <clopez@suse.de>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260610185042.2810880-2-clopez@suse.de>
+References: <20260610185042.2810880-2-clopez@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 10 Jun 2026 19:10:05 +0000
+Message-Id: <20260610191005.93F731F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-3.29 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.19)[-0.963];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
-X-Spam-Score: -3.29
 
-The TPR_THRESHOLD field in the VMCS is used by VMX to induce VM exits
-when the guest's virtual TPR falls under the specified threshold,
-allowing KVM to inject previously masked interrupts.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-KVM handles these VM exits in handle_tpr_below_threshold().
-Commit eb90f3417a0c ("KVM: vmx: speed up TPR below threshold vmexits")
-optimized this function by calling apic_update_ppr() instead of raising
-KVM_REQ_EVENT. apic_update_ppr() then raises KVM_REQ_EVENT if there is
-a pending, deliverable interrupt.
+Pre-existing issues:
+- [High] The patch successfully fixes the VM entry failure for hardware-ind=
+uced TPR_BELOW_THRESHOLD exits but leaves the exact same vulnerability in s=
+oftware-emulated TPR writes (MMIO, MSR, or intercepted CR8 writes). If the =
+guest lowers TPR such that VTPR falls below TPR_THRESHOLD, but PPR does not=
+ drop enough to unmask a pending interrupt (e.g., due to a higher-priority =
+ISR), `apic_update_ppr()` will not raise KVM_REQ_EVENT. Consequently, `kvm_=
+lapic_update_cr8_intercept()` is skipped, leaving a stale TPR_THRESHOLD in =
+the VMCS that is strictly greater than VTPR[7:4]. On hardware without virtu=
+al-interrupt delivery, this directly violates SDM VM-entry constraints, cau=
+sing the exact same hardware error 0x7 VM entry failure the patch was inten=
+ded to fix.
+--
 
-However, if there are no new interrupts pending, apic_update_ppr()
-does not issue the request. This skips calling update_cr8_intercept(),
-and thus vmx_update_cr8_intercept() before VM entry, which results in
-a high, stale TPR_THRESHOLD. This is problematic due to the following
-sentence in 28.2.1.1 "VM-Execution Control Fields" in the SDM:
+commit 277f13148f7967e36731fd691e61fdaf6d48f638
+Author: Carlos L=C3=B3pez <clopez@suse.de>
 
-  The following check is performed if the “use TPR shadow” VM-execution
-  control is 1 and the “virtualize APIC accesses” and “virtual-interrupt
-  delivery” VM-execution controls are both 0: the value of bits 3:0 of
-  the TPR threshold VM-execution control field should not be greater
-  than the value of bits 7:4 of VTPR.
+KVM: VMX: Raise KVM_REQ_EVENT on TPR below threshold exit
 
-This error condition is typically not observed when KVM runs on a bare
-metal system because modern processors support APICv, which enables
-virtual-interrupt delivery, and which KVM uses when possible. This
-causes the processor to no longer generate TPR-below threshold exits
-and to no longer check TPR_THRESHOLD on entry. However, when running
-on older platforms, or under nested virtualization on a hypervisor that
-does not support virtual-interrupt delivery and enforces this check
-(like Hyper-V) this can cause a VM entry failure with hardware error
-0x7, as seen in [1].
-
-Fix this by re-introducing an unconditional KVM_REQ_EVENT when reacting
-to a TPR-below-threshold exit, ensuring that vmx_update_cr8_intercept()
-is called to re-evaluate TPR_THRESHOLD before entering the guest.
+This commit fixes a VM entry failure with hardware error 0x7 on older
+platforms or under nested virtualization by re-introducing an unconditional
+KVM_REQ_EVENT when handling TPR-below-threshold exits. This ensures that
+vmx_update_cr8_intercept() is called to re-evaluate TPR_THRESHOLD.
 
 Link: https://github.com/coconut-svsm/svsm/issues/1081 [1]
-Tested-by: Stefano Garzarella <sgarzare@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: eb90f3417a0c ("KVM: vmx: speed up TPR below threshold vmexits")
-Signed-off-by: Carlos López <clopez@suse.de>
----
- arch/x86/kvm/vmx/vmx.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index c548f22375ad..21a469d3ba21 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5824,6 +5824,7 @@ void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned long val)
- static int handle_tpr_below_threshold(struct kvm_vcpu *vcpu)
- {
- 	kvm_apic_update_ppr(vcpu);
-+	kvm_make_request(KVM_REQ_EVENT, vcpu);
- 	return 1;
- }
- 
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index c548f22375ad6..21a469d3ba211 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -5824,6 +5824,7 @@ void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned lo=
+ng val)
+>  static int handle_tpr_below_threshold(struct kvm_vcpu *vcpu)
+>  {
+>  	kvm_apic_update_ppr(vcpu);
+> +	kvm_make_request(KVM_REQ_EVENT, vcpu);
 
-base-commit: c1f7303302927f9cbf4efedf70f0512cde168c65
--- 
-2.51.0
+[Severity: High]
+This isn't a bug introduced by this patch, but does the same regression
+still exist in the software-emulated TPR write paths?
 
+Looking at apic_set_tpr() in arch/x86/kvm/lapic.c:
+
+static void apic_set_tpr(struct kvm_lapic *apic, u32 tpr)
+{
+        kvm_lapic_set_reg(apic, APIC_TASKPRI, tpr);
+        apic_update_ppr(apic);
+}
+
+If the guest lowers the TPR via MMIO, MSR, or an intercepted CR8 write such
+that VTPR falls below TPR_THRESHOLD, but the PPR does not drop enough to
+unmask a pending interrupt, apic_update_ppr() will not raise KVM_REQ_EVENT.
+
+Consequently, kvm_lapic_update_cr8_intercept() would be skipped, leaving a
+stale TPR_THRESHOLD in the VMCS that is strictly greater than VTPR[7:4].
+
+Could this lead to the exact same hardware error 0x7 VM entry failure that
+this patch aims to fix?
+
+>  	return 1;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610185042.2810=
+880-2-clopez@suse.de?part=3D1
