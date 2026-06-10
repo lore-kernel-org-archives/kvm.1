@@ -1,148 +1,120 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C3333B951;
-	Wed, 10 Jun 2026 15:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8080E13959D;
+	Wed, 10 Jun 2026 15:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781106996; cv=none; b=e8SPdmcxcwzmILsWF+SnP4MeXNDRrYwmKy5pv2w1DqjtH3NiDxMfoELDn6ogzxqwAQZK/FD/s18YC+riAZlRgRjxMs3WoZk3Tf/EItqXDVAjq1hWNvdI9ttSuc3HgQrChAuKAB4p/Me0TIlzHlpe+HJJjs7f5AUGOOITS+kIYrA=
+	t=1781107171; cv=none; b=hcDvRVCx4qHGGNRg6TA33e4zLXrrQ4JIuVtaZNW+ZnUEn32qhjo8Roacbul38keuRcE2TIlkpqMwDHppKjJRBLJFWhUK0BTqDqOXP3yPibvq130qyvSDShy4rZ88w5kkJTBhmriG2PmhPsvJP+PqwFliXRCHSBmZi/aLKkxCNig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781106996; c=relaxed/simple;
-	bh=yHnlfRfzdScgY+L6lCO63Nq6VBektdqv83HheroE71M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZC9jV3JOJVTVorK0R2dPgUplPlmQhCQj9kQNwkzdMs3E5e933Pdh/j0h7BIT/Kt9ER4nMXKQ1SefYQuznCD28ghbk/q20lUqP3VrLsbTUq6gQdcOIaZ2jZxGytNRcilNXGBcxKrAa2QrHglnb2c9nFvUq56/EIznM8B0CBFPNH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Evzdm+SM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HzG5JS6i; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1781107171; c=relaxed/simple;
+	bh=Vb7BHcXUEbWMm9U+eXrYGZhoh5ZaNKeY/ZtJxABDK/0=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=MO3H+N/lLzBvy5x/IhHvuFtXuAu47MNbG6jRPDGaV7m+hLzjsogVnDM1jgPFZulFsrDxwdFWR7dE5+dfMyweWTfbSxv+hlT/zlrALKb7FWEvGkx1sXVDboNTWW/VFwHxTOgrUnAzCqM38R3n9cFv8WiYSZPUtnOku437cJkdaus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B596G8wn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Evzdm+SM";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HzG5JS6i"
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1781106986;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=msjhwjsuJi/htIU80DZBT36GfATEuBVhKi4XiG52gs8=;
-	b=Evzdm+SMUac0KWBp/cSjFK4ibPrgnP+r5mKRPgQnPivfV4ERX9NRAyOQ5yu543SPvXmg5h
-	yJAtK1t0KzFg+b8Uv9bz/Whm8ORmqCXerfUfGAoBvEOHHqpG1ZjMl/DVGIWUUgw3ehKjA8
-	YEuA5NKVOeL7SEE3qt2+QH/88E7UkZ1cxv4/gt82Sr8lUYPK5RaqDIpz/AnAQJNjdr6dz0
-	b79Kc4fVb6yQFzfE4F37jsmNrWmbm3yNKG89hEqFJNpAAoPhDfGnPl47moLlUPZpX2sgTO
-	ZX02s59l5CieC6vsqboDL1jvp/5At+Yu0wlxI5s1r6RrDBUdXrTe4621WGAIJQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1781106986;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=msjhwjsuJi/htIU80DZBT36GfATEuBVhKi4XiG52gs8=;
-	b=HzG5JS6iQRXS2PQdNGQVgSzLFt0ZH82WyaHCRre7c3gkPL0HlgAN+iMasP7WUDwalbAl1s
-	ZM7DaVfLKgoCAYBg==
-To: Charlie Jenkins via B4 Relay
- <devnull+thecharlesjenkins.gmail.com@kernel.org>, Paul Walmsley
- <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti
- <alex@ghiti.fr>, Anup Patel <anup@brainfault.org>, Atish Patra
- <atish.patra@linux.dev>, Conor Dooley <conor@kernel.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Shuah
- Khan <shuah@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-kselftest@vger.kernel.org, Charlie Jenkins
- <thecharlesjenkins@gmail.com>
-Subject: Re: [PATCH 01/16] riscv: Introduce instruction table generation
-In-Reply-To: <20260407-riscv_insn_table-v1-1-54b4736a1e77@gmail.com>
-References: <20260407-riscv_insn_table-v1-0-54b4736a1e77@gmail.com>
- <20260407-riscv_insn_table-v1-1-54b4736a1e77@gmail.com>
-Date: Wed, 10 Jun 2026 17:56:25 +0200
-Message-ID: <878q8m1j9y.fsf@yellow.woof>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B596G8wn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC621F00893;
+	Wed, 10 Jun 2026 15:59:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781107170;
+	bh=Wwl5EFOwcAOEDq8p0RlqImogvq+z7shANIcC+8tlztc=;
+	h=Date:From:To:Subject;
+	b=B596G8wnDvRmb7UeeKOXoUJnVEaxNNezk/kt+6eRUKSVAn8HYJU26RIJuJq0jCFVy
+	 ARrLxecy2/jdFDvEf1TBuUaOu85pCBE5/uvzNuTMHdBql46cnUCwfYWYDwys3Igyiu
+	 EJwqvkFm+ZZCegIAZnBqvinTVbtYTlxPsqv2imToSnY4OyzF6Q0x3F46rDHskGrZYl
+	 06+fENzyrC/W0Rg5iKikVRRkZyfrOAluHpNXD2yzwxZqPt9TAoAmdhie6eWM88RfKB
+	 dVo7T2ZOf0NyWCFsXA3a2IfQ/mpEYe+ykhicN8KeDwtVrSsSHNh+bsEp+MacaLql+J
+	 mqAsGCPhmzU/Q==
+Message-ID: <8ca7bdec-847d-405a-adb9-ada87e7222aa@kernel.org>
+Date: Wed, 10 Jun 2026 17:59:18 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-06-11
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Charlie Jenkins via B4 Relay
-<devnull+thecharlesjenkins.gmail.com@kernel.org> writes:
-> From: Charlie Jenkins <thecharlesjenkins@gmail.com>
->
-> Eliminate the need to hand-write riscv instructions by using a shell
-> script to autogenerate a header from an instruction table. This is modeled
-> after the syscall table infrastructure.
->
-> The table is generated externally by riscv-unified-db [1], but is
-> in a simple format to make it possible to use other tools or modify
-> manually.
->
-> [1] https://github.com/riscv-software-src/riscv-unified-db
->
-> Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
+Hi,
 
-Thanks for the work, I really like the idea. This will make it much
-easier to maintain the instruction stuffs.
+Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+2026-06-11 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-> +c.ld common,32 011<13|00<0 imm<3=6-5|12-10 xd!1!3!5!7=4-2 xs1=9-7
-> +c.ld common,64 011<13|00<0 imm<3=6-5|12-10 xd=4-2 xs1=9-7
+So far we don't have a lot of topics: I'll have some clarifying questions around
+virtio-mem for CoCo, and likely it would be a good idea to talk about memory
+hot(un)plug+memory ballooning for CoCo in general (what already works, what
+doesn't, which requirements/limitations do different platforms have, etc). Apart
+from that, I'm sure interesting stuff will come up.
 
-Not sure if I confuse something, but the spec says "C.LD is an
-RV64C-only instruction". Why do we have 32 here?
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
-> +echo "#define COMMA ," >> $outfile
-> +echo "#define SEMICOLON ;" >> $outfile
-> +echo "#define SINGLE_ARG(...) __VA_ARGS__" >> $outfile
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+or Ackerley a mail.
 
-Aren't these macro unused?
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
 
-> +echo >> $outfile
-> +
-> +grep -E "^[a-z\.0-9]+[[:space:]]+" "$infile" | {
-> +    while read name base fixed variables; do
-> +        echo "/* $name */"
-> +
-> +        compressed_name=${name##c.*}
-	   ^^^^^^^^^^^^^^^
-	   this name is misleading
 
-> +        invalid_inst_functions=""
-> +        variable_params=""
-> +        constraints=""
-> +        match=""
-> +        mask=""
-> +        make=""
-> +
-> +        # All compressed instructions start with "c."
-> +        size=${compressed_name:+32};
-> +        size=${size:-16};
-> +
-> +        # Replace all . with _
-> +        formatted_inst_name=$name
-> +        while [ ! ${formatted_inst_name##*.*} ]; do
-> +            prefix=${formatted_inst_name%.*}
-> +            suffix=${formatted_inst_name##*.}
-> +            contains_dot=${formatted_inst_name##*.*}
-> +            formatted_inst_name=${contains_dot:-${prefix}_${suffix}}
-> +        done
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
 
-Does the simplier
-     formatted_inst_name=$(echo $name | tr '.' '_')
-work?
+-- 
+Cheers,
 
-> +            echo "static __always_inline ${type}${size} riscv_insn_${formatted_inst_name}_extract_${variable_name}(u${size} ${insn})"
-> +            echo "{"
-> +            echo "\treturn ${extract};"
-> +            echo "}"
-> +            echo "static __always_inline void riscv_insn_${formatted_inst_name}_insert_${variable_name}(u${size} *${insn}, ${type}32 ${var})"
-> +            echo "{"
-> +            echo "\t*_insn &= ${insert_mask# & };"
+David
 
-Why is this required? Isn't this part always zero at this point?
-
-> +            echo "\t*_insn |= ${insert# | };"
-> +            echo "}"
-> +
-> +            if [ "${only_base}" ]; then
-> +                invalid_inst_functions="${invalid_inst_functions}static __always_inline ${type}${size} riscv_insn_${formatted_inst_name}_extract_${variable_name}(u${size} ${insn}) {\n\tpanic(\"${name} is not supported on non ${only_base}-bit systems.\");\n}\n"
-
-Instead of panic(), can we do BUILD_BUG() instead?
-
-Nam
