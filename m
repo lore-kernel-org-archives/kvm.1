@@ -1,56 +1,56 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BC72E7389
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218072E92B3
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781052840; cv=none; b=O14jGXo+e9DBNoJlIvsqyb/D+PlH+fNd6OZIcY2OCNyXI4OGgeXRrlgzzOscNN/6np3dp3BpLfK5I8VPeMsywoQhcaJZmy06lwonn65suK0l5drLeFL3AgObFs6Ly7IrMNk0Bs4ceLjMjFJYzhKNfTLVBT7GvHsK0jge8L4irf8=
+	t=1781052841; cv=none; b=u8rjq/Sp8CjCFva30W2bgyD4F7T6Zq9qkQ9gfHBAxbHZYGfEHFDi0HnYl/ueWkEjV2WcrwELJe9iYEgID5cajzi86IxXzNPD5TU9Csn9Uif2jhgnhRdcnatDOwThbcyblmDL7gSwf3kxJ2RPiZSlQBpCU5Erg4AP1D57S90BDH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781052840; c=relaxed/simple;
-	bh=kTsTUQjOgq2pBM78bPztwNpiRrfOvWm2sYF+7djT1RM=;
+	s=arc-20240116; t=1781052841; c=relaxed/simple;
+	bh=TF/7f1GoTDJgtPk44yqwmW7J2ephny2Ec/VMEg4h/4o=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QD1PFBJHABUVj94jGV1X4WIAfRZg7YjkEDenOehlbdvNwgeR6FYM5jrE8r+UNSqVt1zWUxIIb0EqV/Ryzcg71Sn7Q7aoH2r9Ge9Ri8lddPbfbzmnUTMT+PqX1GeJei/1yd2rVU1V/XpIuRlcrYrhMWeXkL6dk9QWVYOEMSQfU+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E0oVZGjg; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=iDrPxhbEtgDoovgFxsklXzRHkUWD+XtTGamfDfyHEFiKFaiged2+C2jYlSZXWwCupGsFlCP4gOQYIsCBKYlsv1qtjVYMZ6zxtNY7JT0yDne9f6F4xPLAKq7n0WznCY9DrOpKiRFNMdxjdR26DaNm2mHmjllZsdGZqxCpW1lOGj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TzEtMNEw; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E0oVZGjg"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c857ebbb0easo3982676a12.1
-        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:53:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TzEtMNEw"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8423f3e4728so4039918b3a.2
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:54:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781052838; x=1781657638; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781052839; x=1781657639; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=oMIGqi5rnt7y0yP17wmyIl1/mzPYUzFOX3xknWS/BZY=;
-        b=E0oVZGjgFRHC5PBhRKhSMx6RKCG1rSAnBXcuDztgJB4tZUpqL76+5HPvYRZHDJFev8
-         QUWpQVdPhxI2ds6ddn6m7xH7x85bSgY3IoQjh9uxHs3hPfYTpiV+hsLcJoBlqNzImtFk
-         fJ/uNI26voyj4dEDUzg0nHnxIGLyIrANS2pVpFc0SYh5H8kfJ8LzwaJCxkVxgkkqQzko
-         Qrx4scVQGcZ9puLpI9BXFY8B91rYaJ91aIaKPBnTK7aPLYxC9/2XFq3IhSjMhtir+/h2
-         vgh2hPPXUDvO5jgxqtJcbum2H0mOpCHjb8xWA4od8kH1vFA1+gyLUWjc9+OS0ldTk7Hy
-         b80w==
+        bh=8ZpcWMnVr5/m3HbsHebdKOhGRYEoJTay0WQIxFsC+10=;
+        b=TzEtMNEw0P5oQSJUyrguYAGFLoFgUTycn3J9Ff4CobtGp55DTZFVR//77G1XcSxXzN
+         bKMTqKQchJFfSq8LE3N4M6qXpj/h0BiOlJTvm9Fw1BhMK+qx1exWtsOP2ImzXW1WD+sV
+         5apRyOmu18R5iGlunWD8E6C7Qcq5F8zebOn1YX17bkXQOS6+ORFAMrqZeQ2YlW0wE8C5
+         xU7GkNSO34DxvvLXysY3aLwektvq8/V5DjpHm8w8bLQPVfI3+SXQg298+25cUGBHCvN0
+         9gpdj/oEpjsIzZZ2Oktlc+zvCgUcJjr/R9o6r5KWxT7TB2FkPtinbrAwBe2dntBunVML
+         gTdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781052838; x=1781657638;
+        d=1e100.net; s=20251104; t=1781052839; x=1781657639;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oMIGqi5rnt7y0yP17wmyIl1/mzPYUzFOX3xknWS/BZY=;
-        b=c4neoX4D6NfPU3iqz/w0huiJPkcrkb+WF2dZEj5Wi972Es53GGjA+ETe8cTcJ99jzM
-         KvERYqpUnIBeaeRukx8jb96v5P5yrS1o2E+H3cJp9OL1MY6/ncbHF8ut5KNUjA2Dpp9L
-         sP6Mgcy9/5eaCIbj3r6V6I2BvdVfihrBN7z8TPwYdEUpByqyllJ41TUez9aaFyHSbi6K
-         wn0Wqx6/M4JBpRT2pF+58Nqqcevrm7CQPd7iCltKuRtMGgnDQV6SX5u7WW6CNSKHi1zK
-         GvlUWE8ityOOndNvQNeWSijqbtnty6/8yHs8R+KhXJPJ3e3r5tqZa9VWEKq+z/kqK92C
-         w8UA==
-X-Forwarded-Encrypted: i=1; AFNElJ9CX2tXTqkmqhwc5yiK0e1q4FmSohGPJfr8FjRAXKBqvMeIJDhuzQKL2AWQH7xTroBj6fI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRT2A5cYmDMaBYxdrhFan91hv+QOIr26TBCz2TI+ZckEOcMDOW
-	6MY5Xh7tVHL+2zeopB2uK18CV31F5+Y5Pxc8weq4dA6cbPybzL+CXJtvxpK1Mjf08yrlXpIMqBv
-	YgHPv2w==
-X-Received: from pgww20.prod.google.com ([2002:a05:6a02:2c94:b0:c86:21eb:a0c2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4387:b0:3b4:661d:8405
- with SMTP id adf61e73a8af0-3b4d39f7d02mr20264688637.4.1781052838106; Tue, 09
- Jun 2026 17:53:58 -0700 (PDT)
+        bh=8ZpcWMnVr5/m3HbsHebdKOhGRYEoJTay0WQIxFsC+10=;
+        b=gfB54Z1h4YJsJOtRxZeBQFIMJI4TuZQznOFUx4c8GCDMFiviJPH4Jw0Lq0ftWvvLHZ
+         bQREy5wXEvvYd5rmy4fxUhCpk6C3aCiEuzIj7hu5HgbD4b1U7N25cg5Een0zx7eK5tmd
+         +ec3ugxpexQJN2egRZZVjnxubkit43AXZMB/I2aVl357AndBhWpzhmV5UzpbW4/nat0L
+         kypndFxmfG9pookOmXqirn5sTOyxdVzad+EokWnTiu81qj00JDIt4WisDXdouFWxSlWy
+         2bXMzvSS5qTbjylPV2fsx1VtXm4DNjohczXbnCO36JgP0wZqVlmJ3c43OTjOyl3Y0jEM
+         O7og==
+X-Forwarded-Encrypted: i=1; AFNElJ93Cm181aRDEgprdSIaTiwBksvvXx7/lAlFZFC1E4DjZ8iXLf1nKC9/3KZ1Kd/dIZ6buOY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+mO5bSqIjg9JnZF6Oe33l7YPPD5z01w8oIowqlxwvnLhCzSSQ
+	FsXpVzZ3yJxh1HCljEZJL0bV2fcjdcoa9hiuvjEmae0LQATw9HWLjxyP2RFTvpVG4HSMELsZGK4
+	ioruQLw==
+X-Received: from pfuj3.prod.google.com ([2002:a05:6a00:1303:b0:842:35ec:5b49])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2ea9:b0:842:7a78:8f14
+ with SMTP id d2e1a72fcca58-842b0f1f235mr20890818b3a.6.1781052839177; Tue, 09
+ Jun 2026 17:53:59 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue,  9 Jun 2026 17:53:33 -0700
+Date: Tue,  9 Jun 2026 17:53:34 -0700
 In-Reply-To: <20260610005338.2967132-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260610005338.2967132-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
-Message-ID: <20260610005338.2967132-14-seanjc@google.com>
-Subject: [PATCH v6 13/18] KVM: selftests: Add kvm_gettid() wrapper and convert users
+Message-ID: <20260610005338.2967132-15-seanjc@google.com>
+Subject: [PATCH v6 14/18] KVM: selftests: Add kvm_sched_getaffinity() wrapper
+ and convert users
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Sean Christopherson <seanjc@google.com>
@@ -74,126 +75,123 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Josh Hilke <jrhilke@google.com>
 
-Add a KVM wrapper for the gettid() syscall so that tests don't have to
-open code the syscall() themselves.  Unfortunately, not all flavors of
-libc that KVM selftests support provide gettid().  Convert all existing
-users of the syscall to the new wrapper.
+Add and use a KVM wrapper for the sched_getaffinity() syscall so that
+selftests don't need to manually assert that the syscall succeeded.
 
-Note, per the gettid() manpage[1], "This call is always successful", i.e.
-prefixing kvm_ to the syscall name is aligned with the goal of providing
-syscall wrappers that guarantee success.
+Note, some tests didn't actually assert success, but they all obviously
+rely on the syscall to succeed.
 
-No functional changes intended.
-
-Link: https://man7.org/linux/man-pages/man2/gettid.2.html [1]
 Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
 [sean: massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/demand_paging_test.c   | 2 +-
- tools/testing/selftests/kvm/include/kvm_syscalls.h | 5 +++++
- tools/testing/selftests/kvm/lib/assert.c           | 8 ++------
- tools/testing/selftests/kvm/lib/test_util.c        | 3 ++-
- tools/testing/selftests/kvm/rseq_test.c            | 2 +-
- 5 files changed, 11 insertions(+), 9 deletions(-)
+ tools/testing/selftests/kvm/arch_timer.c                  | 2 +-
+ tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c | 2 +-
+ tools/testing/selftests/kvm/include/kvm_syscalls.h        | 2 ++
+ tools/testing/selftests/kvm/lib/kvm_util.c                | 5 ++---
+ tools/testing/selftests/kvm/mmu_stress_test.c             | 6 +-----
+ tools/testing/selftests/kvm/rseq_test.c                   | 4 +---
+ 6 files changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/demand_paging_test.c b/tools/testing/selftests/kvm/demand_paging_test.c
-index 302c4923d093..f8b3d0b68830 100644
---- a/tools/testing/selftests/kvm/demand_paging_test.c
-+++ b/tools/testing/selftests/kvm/demand_paging_test.c
-@@ -57,7 +57,7 @@ static void vcpu_worker(struct memstress_vcpu_args *vcpu_args)
- static int handle_uffd_page_request(int uffd_mode, int uffd,
- 		struct uffd_msg *msg)
- {
--	pid_t tid = syscall(__NR_gettid);
-+	pid_t tid = kvm_gettid();
- 	u64 addr = msg->arg.pagefault.address;
- 	struct timespec start;
- 	struct timespec ts_diff;
+diff --git a/tools/testing/selftests/kvm/arch_timer.c b/tools/testing/selftests/kvm/arch_timer.c
+index 90c475a61b22..f8b02597897b 100644
+--- a/tools/testing/selftests/kvm/arch_timer.c
++++ b/tools/testing/selftests/kvm/arch_timer.c
+@@ -85,7 +85,7 @@ static u32 test_get_pcpu(void)
+ 	cpu_set_t online_cpuset;
+ 
+ 	nproc_conf = get_nprocs_conf();
+-	sched_getaffinity(0, sizeof(cpu_set_t), &online_cpuset);
++	kvm_sched_getaffinity(0, sizeof(cpu_set_t), &online_cpuset);
+ 
+ 	/* Randomly find an available pCPU to place a vCPU on */
+ 	do {
+diff --git a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c b/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
+index f7625eb711d6..d9c9377a6325 100644
+--- a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
++++ b/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
+@@ -1039,7 +1039,7 @@ int main(int argc, char *argv[])
+ 	if (!parse_args(argc, argv))
+ 		exit(KSFT_SKIP);
+ 
+-	sched_getaffinity(0, sizeof(default_cpuset), &default_cpuset);
++	kvm_sched_getaffinity(0, sizeof(default_cpuset), &default_cpuset);
+ 	set_counter_defaults();
+ 
+ 	if (test_args.test_virtual) {
 diff --git a/tools/testing/selftests/kvm/include/kvm_syscalls.h b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-index 6cb3bed29b81..dc4fb97aef8d 100644
+index dc4fb97aef8d..5dae6143ddb0 100644
 --- a/tools/testing/selftests/kvm/include/kvm_syscalls.h
 +++ b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-@@ -83,6 +83,11 @@ static inline int kvm_dup(int fd)
- 	return new_fd;
- }
- 
-+static inline pid_t kvm_gettid(void)
-+{
-+	return syscall(__NR_gettid);
-+}
-+
- __KVM_SYSCALL_DEFINE(munmap, 2, void *, mem, size_t, size);
- __KVM_SYSCALL_DEFINE(close, 1, int, fd);
- __KVM_SYSCALL_DEFINE(fallocate, 4, int, fd, int, mode, loff_t, offset, loff_t, len);
-diff --git a/tools/testing/selftests/kvm/lib/assert.c b/tools/testing/selftests/kvm/lib/assert.c
-index 8be0d09ecf0f..1d72dcdfce3b 100644
---- a/tools/testing/selftests/kvm/lib/assert.c
-+++ b/tools/testing/selftests/kvm/lib/assert.c
-@@ -10,6 +10,7 @@
+@@ -12,6 +12,7 @@
+ #include <sys/mman.h>
  #include <sys/syscall.h>
  
- #include "kselftest.h"
-+#include "kvm_syscalls.h"
++#include <sched.h>
+ #include <test_util.h>
  
- #ifdef __GLIBC__
- #include <execinfo.h>
-@@ -64,11 +65,6 @@ static void test_dump_stack(void)
- static void test_dump_stack(void) {}
- #endif
+ #define MAP_ARGS0(m,...)
+@@ -93,6 +94,7 @@ __KVM_SYSCALL_DEFINE(close, 1, int, fd);
+ __KVM_SYSCALL_DEFINE(fallocate, 4, int, fd, int, mode, loff_t, offset, loff_t, len);
+ __KVM_SYSCALL_DEFINE(ftruncate, 2, unsigned int, fd, off_t, length);
+ __KVM_SYSCALL_DEFINE(madvise, 3, void *, addr, size_t, length, int, advice);
++__KVM_SYSCALL_DEFINE(sched_getaffinity, 3, pid_t, pid, size_t, cpusetsize, cpu_set_t *, mask);
  
--static pid_t _gettid(void)
--{
--	return syscall(SYS_gettid);
--}
+ #define kvm_free_fd(fd)		\
+ do {				\
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 875030c22d07..92013883f35b 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -668,13 +668,12 @@ void kvm_parse_vcpu_pinning(const char *pcpus_string, u32 vcpu_to_pcpu[],
+ 	cpu_set_t allowed_mask;
+ 	char *cpu, *cpu_list;
+ 	char delim[2] = ",";
+-	int i, r;
++	int i;
+ 
+ 	cpu_list = strdup(pcpus_string);
+ 	TEST_ASSERT(cpu_list, "strdup() allocation failed.");
+ 
+-	r = sched_getaffinity(0, sizeof(allowed_mask), &allowed_mask);
+-	TEST_ASSERT(!r, "sched_getaffinity() failed");
++	kvm_sched_getaffinity(0, sizeof(allowed_mask), &allowed_mask);
+ 
+ 	cpu = strtok(cpu_list, delim);
+ 
+diff --git a/tools/testing/selftests/kvm/mmu_stress_test.c b/tools/testing/selftests/kvm/mmu_stress_test.c
+index 473ef4c0ea9f..3d5f33a63b2b 100644
+--- a/tools/testing/selftests/kvm/mmu_stress_test.c
++++ b/tools/testing/selftests/kvm/mmu_stress_test.c
+@@ -255,11 +255,7 @@ static void rendezvous_with_vcpus(struct timespec *time, const char *name)
+ static void calc_default_nr_vcpus(void)
+ {
+ 	cpu_set_t possible_mask;
+-	int r;
 -
- void __attribute__((noinline))
- test_assert(bool exp, const char *exp_str,
- 	const char *file, unsigned int line, const char *fmt, ...)
-@@ -81,7 +77,7 @@ test_assert(bool exp, const char *exp_str,
- 		fprintf(stderr, "==== Test Assertion Failure ====\n"
- 			"  %s:%u: %s\n"
- 			"  pid=%d tid=%d errno=%d - %s\n",
--			file, line, exp_str, getpid(), _gettid(),
-+			file, line, exp_str, getpid(), kvm_gettid(),
- 			errno, strerror(errno));
- 		test_dump_stack();
- 		if (fmt) {
-diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
-index e208a57f190c..6b00ab11f3c0 100644
---- a/tools/testing/selftests/kvm/lib/test_util.c
-+++ b/tools/testing/selftests/kvm/lib/test_util.c
-@@ -17,6 +17,7 @@
- #include "linux/kernel.h"
+-	r = sched_getaffinity(0, sizeof(possible_mask), &possible_mask);
+-	TEST_ASSERT(!r, "sched_getaffinity failed, errno = %d (%s)",
+-		    errno, strerror(errno));
++	kvm_sched_getaffinity(0, sizeof(possible_mask), &possible_mask);
  
- #include "test_util.h"
-+#include "kvm_syscalls.h"
- 
- sigjmp_buf expect_sigbus_jmpbuf;
- 
-@@ -395,7 +396,7 @@ long get_run_delay(void)
- 	long val[2];
- 	FILE *fp;
- 
--	sprintf(path, "/proc/%ld/schedstat", syscall(SYS_gettid));
-+	sprintf(path, "/proc/%ld/schedstat", (long)kvm_gettid());
- 	fp = fopen(path, "r");
- 	/* Return MIN_RUN_DELAY_NS upon failure just to be safe */
- 	if (fscanf(fp, "%ld %ld ", &val[0], &val[1]) < 2)
+ 	nr_vcpus = CPU_COUNT(&possible_mask);
+ 	TEST_ASSERT(nr_vcpus > 0, "Uh, no CPUs?");
 diff --git a/tools/testing/selftests/kvm/rseq_test.c b/tools/testing/selftests/kvm/rseq_test.c
-index f80ad6b47d16..6510fbfd64f1 100644
+index 6510fbfd64f1..557e393c223b 100644
 --- a/tools/testing/selftests/kvm/rseq_test.c
 +++ b/tools/testing/selftests/kvm/rseq_test.c
-@@ -244,7 +244,7 @@ int main(int argc, char *argv[])
- 	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
+@@ -226,9 +226,7 @@ int main(int argc, char *argv[])
+ 		}
+ 	}
  
- 	pthread_create(&migration_thread, NULL, migration_worker,
--		       (void *)(unsigned long)syscall(SYS_gettid));
-+		       (void *)(unsigned long)kvm_gettid());
+-	r = sched_getaffinity(0, sizeof(possible_mask), &possible_mask);
+-	TEST_ASSERT(!r, "sched_getaffinity failed, errno = %d (%s)", errno,
+-		    strerror(errno));
++	kvm_sched_getaffinity(0, sizeof(possible_mask), &possible_mask);
  
- 	if (latency >= 0) {
- 		/*
+ 	calc_min_max_cpu();
+ 
 -- 
 2.54.0.1099.g489fc7bff1-goog
 
