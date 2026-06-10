@@ -1,152 +1,171 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011001.outbound.protection.outlook.com [52.101.52.1])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CCB3546FE;
-	Wed, 10 Jun 2026 18:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781115246; cv=fail; b=nY8rA3DkvecrjDFZQsaBvhD/vWg2sBb8vYUefGn53SgdeRPIKhclWdhaa1pGOB0ZGJQCxyFV3nnbjye98q3zMVV8pTAs2kAmcTA1yopKrfGfWQvF6zmmHCxUjujROP10OzxOH07sAQUVHOSnoUfNVFYB1a0omL2RIz0rrJvyg5I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781115246; c=relaxed/simple;
-	bh=fZdHXRlGxTNqS9K/7Pp64tF416skNgES8YaG2jNzNN0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=sToWfeUYyjonEQqbjeNTgYVRdReOb93SBNGaujnn7iD36kfHt4kRjHCjejipQexhfMGpRB3fnIDJSQR/iRJc/x5uPnwnDG0Ia/Om55OA9eqvjO2hFXrQl+iigReRlzfg8O1oXTeVqT8WYkX0ZS6T8o06TpXgRlTv5hkogw8gXPk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VLO5u0Yp; arc=fail smtp.client-ip=52.101.52.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A7030B51D
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 18:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781115554; cv=none; b=DGXVrVf4RntgaoczWQtaH+pPv/rcK4fLgNTeE8fhDDk98spcvP+mWFGJv8/KuaVhMeZ1wu4C3iByHJSY/B6rFnsipDUV19GzA0hJID1fGes5wwrw6abvuE6SGJB6XEV5JOkXUeHiT0xMWApkgrPP53BPy1f7ybjNegRS27sCmMU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781115554; c=relaxed/simple;
+	bh=3uT7uCBdHK7Q6DaRVzxdqQ7Pf1aj9vdwZKSO+LExmHo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H31NgbkbIKHH/YqRIhdiWaNWcgTqWl6VM+hFu+h1DSCWDzdGEtX2m5G0Gj9tM0vkvnCCJtefKvZswjaRNzNbffzW0uH4UzL7Dimp3lv2goSNnQJ7SjtKXhZptRSTg8nBzwEcyyDdJXx6Tg47t7Dz7lKaGXj9gvVwlWskABGFQoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eHiOtfhv; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VLO5u0Yp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XT369nfkbHNw7KmVRlTSq4RQKqCOE/jKD30QFDpVPC+vYzmnMjTGIAthqlMRsEaanv4sxiukPjKnxasiOkP1w0JohwnRAhNzlzR13FJ9qj+IBjpxsKMt/F2zCb7WKCL1fHd8AGEmjhUURvqnp02wOPhLtkje4MdpSaRhgdwUaG9WAFnciZwrryDO4YMkAkS0RgojT2Jyb3i2uwaGj6PO7AKAExAeml5HC6udC54oMU1mEz5AEU0AwusCvitvQetmy7AadFIx22uCiBlmHZNByWOo+VxZvwNeH54YveSHjcDXT/bZXnX7LJHvfJZbLj3LVfbWt2UnU6btaEmunz9Ttg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DkS1FTd+qbaNr9HqaYWVqCBsm78oGqOVbxJkY8Ve68Y=;
- b=g25dqjAmevSWxqBgZXiGBB7ZjMC624tFM/A4u7fLTSLvsaG/PanBUU7YUhcix/j7wmgp8wymgAnSt749I6JBb1lrFMXWKO3YnD7yCLgWyxprsESZuPITj1fwBIT1zGF4mcDdoNyLzJPewnWGDcCEnD9Vv+0J8zMO8tV29txpDOpsJeO+yqClHxh9j/E/41HThe1HimZ1bfaKzTexnAZDKVs6qCWR3rGW2Snq4Jt0PsBzy2bZvlP+j+uMn1f+O0vGVMe2+Qf/fkvmY6jpY2nxTqnDlGS4RXWcA6zooVsKXhTKbQf8TgGcXbAiynz8NZCwKUSywDsF5qxOW90PR8dp/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DkS1FTd+qbaNr9HqaYWVqCBsm78oGqOVbxJkY8Ve68Y=;
- b=VLO5u0YpzdY5MiuzFIRaEu6JSGGiiRpjua7AecQFkFBVMOVip0aPhuJq9lH4VVC9XWnzHYnq6Gz6W0D3Ksn0csYNdWx7LSGmCutAyv2+YHrcntfG/30bFDir52IIsLlYMoaIscPG2KFhS5/2fHHJBlLYSsyiH+OiSRPOlBwHVnI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH1PR12MB9575.namprd12.prod.outlook.com (2603:10b6:610:2ad::12)
- by IA1PR12MB6044.namprd12.prod.outlook.com (2603:10b6:208:3d4::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Wed, 10 Jun
- 2026 18:14:00 +0000
-Received: from CH1PR12MB9575.namprd12.prod.outlook.com
- ([fe80::2aab:a788:44ed:f4da]) by CH1PR12MB9575.namprd12.prod.outlook.com
- ([fe80::2aab:a788:44ed:f4da%6]) with mapi id 15.21.0092.011; Wed, 10 Jun 2026
- 18:14:00 +0000
-Message-ID: <3c4c6c24-ec76-4085-b6da-cadfc8a229aa@amd.com>
-Date: Wed, 10 Jun 2026 11:13:57 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/60] KVM Planes + SEV-SNP Support
-To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, ashish.kalra@amd.com,
- michael.roth@amd.com, nsaenz@amazon.com, anelkz@amazon.de,
- James.Bottomley@HansenPartnership.com, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
- x86@kernel.org, coconut-svsm@lists.linux.dev, joerg.roedel@amd.com
-References: <20260608144252.351443-1-joro@8bytes.org>
-Content-Language: en-US
-From: Melody Wang <huibo.wang@amd.com>
-In-Reply-To: <20260608144252.351443-1-joro@8bytes.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY3PR04CA0020.namprd04.prod.outlook.com
- (2603:10b6:a03:217::25) To CH1PR12MB9575.namprd12.prod.outlook.com
- (2603:10b6:610:2ad::12)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eHiOtfhv"
+Date: Wed, 10 Jun 2026 13:18:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781115549;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VGw3GTptSdUZrSWoVBsdx3rZSXvewu+MVPBIyfKEYDU=;
+	b=eHiOtfhvY62FsMW+ywCEhpWPyI2U5QDpe5TzSyI08nwUP/Fvjk4p2MXF/0tU8SSKbXoaj6
+	XQzp0OhVJraggC03VQBl0qanxFoObbKmM+PanWrkjFt1H1nwx4GwftMyra5ECEpbqBu/y8
+	EkQdggHSU7B2/4Q+YuoTevZmNJuzf88=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Giacomo Mazzola <gmazz@amazon.de>
+Cc: kvm@vger.kernel.org
+Subject: Re: [kvm-unit-tests PATCH 8/8] efi: parse KUT_ENV= from load options
+ into environ
+Message-ID: <wsgckfz4gz2lrmr44yijsmb4ytrdwbmjev5r6c4cz7mhpv6eni@bdlwodcdnly7>
+References: <20260609140901.95727-1-gmazz@amazon.de>
+ <20260609140901.95727-9-gmazz@amazon.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PR12MB9575:EE_|IA1PR12MB6044:EE_
-X-MS-Office365-Filtering-Correlation-Id: c6b4ca4c-1c34-4f54-d74d-08dec71c0b89
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	85rVobyKmzAiMmj0x9bsU7nkxs2Ql9SZvtnsjHoHirXMbPzb7KoTTAbXcInHr+dDsC0rWdRdA1MPfbMB1ZYC9yjdt1OM9u4tM+Y0HNvJmjeFxeRqxtmu/byzJPJMWDkO07lopvy5zRxgFWAHixBUvaTG5IjxBxEJwa9+Biex/XMkB7ktzh6JnoNa67BUbSZ/Oa5nTvDJ2zpRjOIfjqDzaii+bjGz06ndPhpsrmWpbYYhHdkRkBEjSa9SP0QutITV1PnaJp0o7E5UFBICbi8fd6Dib0b51H/BHuoScV7lKiuWU1QgGaf9PBoA6/xGQdD4pR0opRiONWOZIj5QWCGuNlqNJ24M2oViLZ/yy6XITXhZ7FD+9uz2u2rm36xzhjpmanMI6gQmPxFEQ/d3ut1vSQq28QgxyP386sM/ljUl6MTRxMGJJIafHmhmarRuu7BKrplcMRibayOgdtLJ/uJa9tDjYv/VmLQmhoVjgQ3Twjz8q35HMx+GLg/csoWWir1OPu0Oy/OphO52+6Ap7OLhkiOdnrYZzbO2xkCZwc7TtbGTo5nmOYFWkB7mwfBTmyXH517lNvTU/PIzeWyaD9bqCwWo0vpAQG4vLyiPpfZRLyzkHDqnqwOcw+2sAcJhoaHwoKZdKi7+FUXeQolCRkpHJ5ieXCm7I+gDkdPPu38XknKKOTBWloB3KmQ5LngJ4sxI
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH1PR12MB9575.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cUJwYndwY3ZQOE1aeHkxbS94cGp5NmRvd0k2QVppNmZhMGdGUEppUEpkTlMv?=
- =?utf-8?B?aUFWdGZoZHU4bk9yUWp2RmpsczJycFpKcmorR212TFZNVGo4QXQ3ME12Mjg5?=
- =?utf-8?B?aXZMdEpjNURVWFN2enhSM1lvZEhLazE3QndQN2p4VFg1aVE3c1RnVUVQRGl0?=
- =?utf-8?B?aDZUSkJXQjhtVldHOENGdVhUbVphdzRsRjdPMVYvRG9hTWR4SStKL1VFN1Fy?=
- =?utf-8?B?OFJ3TGttU1MxK1ZHVlorRWh0UXE1VzRmU2JNTWUxdUFWb1ZNWEcvZjd6OVgw?=
- =?utf-8?B?d3F1TFN3QmR5ZlJodXVsd1B4bFhZVHpySE9zbFliMklubEt0K2UyeWl3eWhh?=
- =?utf-8?B?OTZGQi9BOCtTQVVacm5vYm55ajk3M0tLVTFIc0JFeCtYNkF3aVRYcS9IcWMz?=
- =?utf-8?B?eHNPakswelpFYXo0YVhXNmxZOGNNK2dEaUJEZmdXTzJtNDJzWGFrd0N4Ty9y?=
- =?utf-8?B?ZVdrUFV2ekNtOTB0ZnFBd2RTU2hTVXFDcHhjNWs1a09TQ3IzbzZnQUJnckpS?=
- =?utf-8?B?SWRhUkJOMzV2Nis5WGVIUTBneEtSZkkvY0RyVWI0R3EyYVJjTWV3VnorNDgy?=
- =?utf-8?B?YWNXNy9QSHliaHJRUFFDcUxYVTdBNHJTWUErSHRDeGdhVUFNUTl3LzFGMGdW?=
- =?utf-8?B?aHNWczh6YTRaeE1JY1RKUzVNU2U4Rmd4OWxuUHVpdjZFL0hKcVArV1BUcDI2?=
- =?utf-8?B?eW01b2NDTFVQckxFV1p4REs2M2pOcnVPcC9TdGxjR0Y0M3dSamhSa1ZFVjFL?=
- =?utf-8?B?TzRWaklxNWN6MGJ5Zy9WYmJYdkZ3VDVOdytQK1VBL05zOFRxcVcxQTdLbTlK?=
- =?utf-8?B?clIweGthdU1BdDV5ZlBTRWxJa2crWkdJZVIxMUZWQTd3NXBTS3Vrbk5SakFD?=
- =?utf-8?B?aHIrZTM1STE0UUNmMGlOcE96ZVV1SzlCaFUwbjZSeFJXZ2hVL3c5Z3JseElm?=
- =?utf-8?B?cy84T1R0OTc1ZzAwVWppVXZTdjNqTW54dnlHZjY3Rk1aS3JHYTdBR1BjSDZB?=
- =?utf-8?B?L1VTcHY4b3NYUGU2RUh1RnQveCtadHhPeHhGZFNTV2NEWVZxRUZHRVF6ZHpx?=
- =?utf-8?B?MTYvNDNRdy9vck1zWVEydS8yOU1JZnlKeUYwT0VJbGdzU0hnaDQ4VldVcjRJ?=
- =?utf-8?B?UXR2bU9KYThnZ3BIbTBka3c0V0M4dFRUZVVEbDdYTUdxRFdiN1BFaWFwWDBI?=
- =?utf-8?B?UHpXeFBIbndNd0k4OWZlZXZJQWxqZmZhRC82dG1WRzFKOFhxQmN6M1ZKcmpp?=
- =?utf-8?B?OEV0dzFFcEdEVWNJZWZoYnlWa2kyKzZnc2djbHdBK3RJdncrd1ZpRDdKZTFG?=
- =?utf-8?B?WU1KUlZTZllOckM2T210b3IvVDB5K1hNblZIT3BGQUxWY3M5aUFhaWNOc3hP?=
- =?utf-8?B?Q3NNYmpFVHRvN3RyMVN0dHVxNWdnSUN6TmxTbUg1TzN5dENPMnhwZy81REs3?=
- =?utf-8?B?NHZvbDFXQ2ppb0JocStzU2pPNHMrdjE2dVR1UlFxUFZMTHJMdXNka09zdG45?=
- =?utf-8?B?d09aVDdiSzY5SlliVHpUbG1BYVlmWXZ6NDBoUExDRTc4UTFzY2FpdTdCaS9x?=
- =?utf-8?B?TXZoR1l6Y2w4VHoxSmwvbXlpVmY0MGZ6eGx3ajZUQnBhaTNURWVmN1ZLZHh5?=
- =?utf-8?B?dU5LT3VvSXpmVk9EVkVDT1RpTDZrU3NNOGYwbWRHRm93RjZBM2FaVXpxdzEz?=
- =?utf-8?B?Ty91SHd2d0NaWGN2WDdWMmN1VlRFT2RSQ0V1aEFtQkVwakI0bkZIZGVNSWgy?=
- =?utf-8?B?MEp3cC9YaVRyMCthYUpNQjNOK0F5QWF2VlNtRU1Cdnk3OFB2V0lucTJZK293?=
- =?utf-8?B?b1JpTFpxY0w4YTJWWmQ3Smc3MHdMYmRlTkYxdURPaDJ4K3VORjllWDZjZ3dF?=
- =?utf-8?B?MGZkRHNFOVdMOGpWaXRkeklmbGVRWUpnODU0MTVrZzlzNFR3WkJxSmF4S0pz?=
- =?utf-8?B?VS9yTmpnZnlOZFV6VGFtVEpDM0lVTDkvSURxSm9ib1JiQnQ2S0Y0Rmdvbkhk?=
- =?utf-8?B?QzhwODRoOWxCT2dncXdhMWJRb1F1VGxETFpMdDJwU1Z6N2doZExCc2R4cTJY?=
- =?utf-8?B?ZndhMVg3dVpFOWVJT2pYV1pRWlM3L1R0VE5rRnowenlZd3J5Qi90TzFqUE9Q?=
- =?utf-8?B?UDdvNGZnOHRHVHRMdVI2bWNLSDBwYmZnYnVIN3RXbVBLVFFCSVUxWmFyb25H?=
- =?utf-8?B?TEg3ZEtpLzFpNlZ3Sy9zY1lqM2VNbkczVlJjNVB6cmF5dU5ZcTJQQXc2R2Vq?=
- =?utf-8?B?VnpVUXZMMkNJTzk0bnJVL3h2akJUNFprQThPM2QzQ2hzTWp5Z2dkVnZhVHdO?=
- =?utf-8?B?eHh1V3NGekowNUx1aU9jRCtZSUNrQkJLZkVGSlJ1WGNRbHNTWXpZZz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6b4ca4c-1c34-4f54-d74d-08dec71c0b89
-X-MS-Exchange-CrossTenant-AuthSource: CH1PR12MB9575.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 18:14:00.1893
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i+Rg3KGvROGFm1p95CNRxo1p8Fw3mpQCssxc/9Xmhd4JJxA6pqRX6qTQQvbV0FtEYTz03B48tas2e9pYtD/xLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6044
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260609140901.95727-9-gmazz@amazon.de>
+X-Migadu-Flow: FLOW_OUT
 
-Hi,
+On Tue, Jun 09, 2026 at 02:09:00PM +0000, Giacomo Mazzola wrote:
+> Allow EFI applications to receive environment variables via the UEFI
+> load options string.  If any argv element contains 'KUT_ENV=', the
+> value after the '=' is parsed as a comma-separated list of KEY=VAL
+> pairs and fed to setup_env().  The KUT_ENV= argument is then removed
+> from argv so tests do not see it as a spurious positional argument.
+> 
+> This lets a UEFI boot manager pass runtime configuration (e.g.
+> KUT_ENV=PARAM_1=VALUE_1,PARAM_2=VALUE_2) without needing an initrd
+> environ file — useful in EFI environments where no filesystem is
+> available to the test.
+> 
+> Signed-off-by: Giacomo Mazzola <gmazz@amazon.de>
+> ---
+>  lib/efi.c | 37 ++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 36 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/efi.c b/lib/efi.c
+> index d1be2bfc..650671e9 100644
+> --- a/lib/efi.c
+> +++ b/lib/efi.c
+> @@ -13,6 +13,8 @@
+>  #include <asm/setup.h>
+>  #include "efi.h"
+>  
+> +#define COMMAND_LINE_SIZE  2048
+> +
+>  /* From each arch */
+>  extern char *initrd;
+>  extern u32 initrd_size;
+> @@ -139,7 +141,6 @@ static char *efi_convert_cmdline(struct efi_loaded_image_64 *image, int *cmd_lin
+>  	int options_bytes = 0, safe_options_bytes = 0;  /* UTF-8 bytes */
+>  	bool in_quote = false;
+>  	efi_status_t status;
+> -	const int COMMAND_LINE_SIZE = 2048;
+>  
+>  	if (options) {
+>  		s2 = options;
+> @@ -397,6 +398,39 @@ static void efi_load_initrd(void)
+>  	}
+>  }
+>  
+> +#define ENV_STR "KUT_ENV"
+> +
+> +static void efi_setup_env(void)
+> +{
+> +	char *env = NULL, *p;
+> +	int i, size = 0;
+> +
+> +	for (i = 0; i < __argc && !env; i++)
+> +		env = strstr(__argv[i], ENV_STR "=");
 
-On 6/8/26 7:41 AM, Jörg Rödel wrote:
-> From: Joerg Roedel <joerg.roedel@amd.com>
- > ...
-> This changes depend on Melodys patches for supporting restricted
-> injection. As they are required to run COCONUT-SVSM, they are included
-> here for completeness.
+strstr will also match something like FOO_KUT_ENV=
+Maybe that's intentional?
 
-Btw, I am fixing up the restricted injection patches based on AI 
-reviews, will send the new version out upstream soon. So you dont need 
-to review the current version.
+> +
+> +	if (!env)
+> +		return;
+> +
+> +	/* Remove the KUT_ENV= argument from argv. */
+> +	__argv[i - 1] = __argv[__argc - 1];
+> +	__argv[__argc - 1] = NULL;
+> +	__argc -= 1;
 
--- 
+What if the command line is something like
+
+ $ testbin KUT_ENV=p1=v1,p2=v2 -param_with_arg arg
+
+then we'd get
+
+ $ testbin arg -param_with_arg
+
+We need to loop and shift all down.
+
+> +
+> +	env += strlen(ENV_STR) + 1; /* skip past 'KUT_ENV=' */
+> +	p = env;
+> +	while (*p && !isspace(*p) && size < COMMAND_LINE_SIZE) {
+
+Do we need the !isspace() check? I wouldn't expect spaces in this string
+since it comes from an argument parsed by __setup_args() which splits on
+space.
+
+> +		if (*p == ',')
+> +			*p = '\n';
+> +		size++;
+> +		p++;
+> +	}
+> +
+> +	if (size >= COMMAND_LINE_SIZE)
+> +		report_abort("Cmdline arguments too long, or bad format");
+
+I don't understand the need to restrict the environment size with this
+check.
+
+> +
+> +	setup_env(env, size);
+> +}
+> +
+>  efi_status_t efi_main(efi_handle_t handle, efi_system_table_t *sys_tab)
+>  {
+>  	int ret;
+> @@ -434,6 +468,7 @@ efi_status_t efi_main(efi_handle_t handle, efi_system_table_t *sys_tab)
+>  		goto efi_main_error;
+>  	}
+>  	setup_args(cmdline_ptr);
+> +	efi_setup_env();
+>  
+>  	efi_load_initrd();
+>  
+> -- 
+> 2.47.3
+>
+
+Finally, why restrict this feature to EFI builds? Let's add the support to
+lib/argv.c in order to get it everywhere. Just add a static function
+implemented similarly to efi_setup_env() instead to lib/argv.c and call it
+at the bottom of __setup_args().
+
 Thanks,
-Melody
-
+drew
