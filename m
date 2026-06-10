@@ -1,54 +1,54 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044FC33344A
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 15:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C174416CEE
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 15:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781104740; cv=none; b=MpbGNao2ZuD+CBHOrLfs+1hkn4Mwd8s83ZomXngWT7g092dX9GynO1ejxBcrWAKswDkmLloIqFXblmTm/Un1P5u3E6szYdjadBJjRYjlypRFsLW9QOjiS7YHROPxpTqpWAWx03xnBWf6YhdaWzbsKYgyRXM0YYmhJgCmxLAiG7Y=
+	t=1781104742; cv=none; b=lizTimN2XGyOY7BKtBqSQjV+GSuHOhmYvhcLWhZ14fcyy7el5EftqDuNGjKGsGZnRE4iAUlK/ogt5Cy+GSUZas/R4EGdZq/M3SvCZbd5eOtj2ArBtgzVEhcZH5LbzZl4xVp9L766zMGYK29oJ8kpfhEcMBGFuuyANTRRZ3kdTfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781104740; c=relaxed/simple;
-	bh=cjehl/AogF+ja+2ZcxwqddIpx4w4iJYwr6NEwkFI7Bg=;
+	s=arc-20240116; t=1781104742; c=relaxed/simple;
+	bh=UkLj+tZqpkffpEV5QRjxZQz63KWtzsiYYBPOPyc3h+Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=a5uIm4txkw45kDsqEHMRxeQbfXnoNHIXTwlBAXMU7F96exjkus4pJhZamHXqlVnQAWw9TH0bHD6bqIYAzzO7kvy923dUXa8SuUPgwSAl3sRlQl+Vf42p/owJy88rz8dcGHEFRj+kA1y1E1eFxJGDJSpn2bKYpAKQvz6BoWgkPqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I6ZNUuzl; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=O/p6+LhkNX20XUP4DgA1tlw4B1wWOdtOoTf8Jyh9LhLNawie7KLzLFAFwZy04M9mEKDl3H+vfse3DvEvEEO4zX0UFs+FsPEu2ile1dysmKsrW6eQdm2VovZpRX8Ao8hAHr7ZtbXPQ6dt0VP6SdCJH+a+GylF4kE3EXTWb7jlGDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MKP784vD; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--praan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I6ZNUuzl"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bf004bf8beso79358095ad.3
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 08:18:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MKP784vD"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8422ca754d8so4788160b3a.1
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 08:19:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781104738; x=1781709538; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781104740; x=1781709540; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OH2gPa+CKBfgNfPcHJ5LqpJB+w0Mlwm6m76dwlsEpz0=;
-        b=I6ZNUuzlDuwjSf8mEIj5cZ8KxNyFHIkRPnjqwkP2aJ3iBuNFm/hL4YqFn0m2+omFQU
-         2csptVNh/2aagLG7hhU5H8U2CTKtLCVEgsak4z4jy7jAIriDPcW/WT8inw4tcqbDofK6
-         Ib8AQpBzNvJLHNDCbvUHNcXlz8maen4g5lmVtX7AsJ928gv/5r1TRAwusgPxfqapVxKj
-         syXIS56j2vfcDa976Ny97YA8kh5UntSICvPDdGeWRkKA/RAU2o5wUrZDBcUz70gNvKRD
-         VqOS+xSYASnb5YkHEQj/g4gOToyWEUvkwS/bp5JHHJdkTaIWx6Ky4gSSbGSBS+Y4SkHR
-         tjRA==
+        bh=U0es0rdpo5zHpTGer7c4Y4kWiVEeVry4q+hd8CbVLqA=;
+        b=MKP784vDc7UNawXDtsg5E7d6oNffWCVBigWrW1Ew20YpxmMB8ThtgADhHLGt7L6kRR
+         q0D+IHtzvCZ3LcvOTJ45TLSAt2/WNKybrhMQi5DGQtZxdkX4XgsnRAqfsZB7sB0ooXzX
+         2WdWGa91rOez5S2tWKMbzMlXxJk//O1fW6tdEachK5wLhwUXxCShQ/iTgvJ4DGL+98pY
+         Q32APzBQCU6zsbo2GVU7LZ/1ei0kouhczuWuIQr1CJEB3LyQ0Y4lGifnWrExvNhz1xvt
+         IhugI5NV///6FTrnYxWBrnxSLKySqEX9Gq9fR5GaS69WOn42rXaNHGcVELgrcfraQqLr
+         v2iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781104738; x=1781709538;
+        d=1e100.net; s=20251104; t=1781104740; x=1781709540;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OH2gPa+CKBfgNfPcHJ5LqpJB+w0Mlwm6m76dwlsEpz0=;
-        b=GiyIvvCHTYmYxM5/VrKF05VOXjtc2UtjFyMbe+nNdRTi3O1kJYWPsk0OJ/YrJzCp7C
-         al425LDJ0Bwh50D5GCQdlamSpQWuEdp8m8hrTGMFtUPMrjRjGaUDpLgMYq3J1ByQT4p2
-         ExIf5DfhdetCT2rbeYyZlIX2ayyaZWY5fZ0JnIiWIl+VPz4W9pf6goEKgDnvVtG2kO+7
-         lPK1rPutXG3/Yd46q79W7gNASClPQYNsd/T6gyDixE/RWPTNapbaxTGQh9p3Ua9E91I3
-         kcJPULx/Lv3JlVRLPAiiBz5Uy/U0VSZYxobvk6jh22MF3iB3FMRKf+STWFerMl0Jgm69
-         HRBg==
-X-Forwarded-Encrypted: i=1; AFNElJ9ZDjNGIGNTFbyqPwSTu04xGYHt/1rMLTk90m10ZCOAxJZM7ru7NMcB9tXm0XlRWZi2pCA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1f8Z/iGed2ktLenELTR7VEaJhNDx8WOrrXJ4K0Txgoikv0rqn
-	3rmMdmuh1y+8cxTD/xu/wAjT9IndQ9kId9uUiOtmqPi3WJPp7aR8IbfWmgACRNlTeTwulEDIMoJ
-	fZA==
-X-Received: from plbmp5.prod.google.com ([2002:a17:902:fd05:b0:2bd:c925:e1dc])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5ce:b0:2bd:5ab:af95
- with SMTP id d9443c01a7336-2c1e77d145fmr286373475ad.0.1781104738079; Wed, 10
- Jun 2026 08:18:58 -0700 (PDT)
-Date: Wed, 10 Jun 2026 15:18:49 +0000
+        bh=U0es0rdpo5zHpTGer7c4Y4kWiVEeVry4q+hd8CbVLqA=;
+        b=hhGDwTWpvqbfze3glolp1ThxEakkC92a+WVED3Q8cAKIEVbcLvrTAzJEks6MlGMNCl
+         0R6TfbP0kV3DYSTqF+9xsFjXIQRWybWRg7tTyoIX+xUPNveyZjQ9oeXiBc0iHuQ9ZZ+H
+         S6gqADGe8PmuSCcqT36dRc9WkMK2mXPMPLLZsXhs3LV3r9sRFMcBXJmq1Doiomk5MT+p
+         C1rz020ZJfM9nwL7NPoPLlgPcE757lpqe/exMZ5RWjJdeT0fG3/RRDO9wLqZo54XERR8
+         +eAMDojzEpD70YkO09ibzed1ADq3+W4jSta9TmKB3iv2FzrL/NjhgaW1CnsGtRPmDyvz
+         fyTQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8hDcOa/1NDswWDQMXTbFFrddl718JBmnTyyu+1T0GdgxaxL6O6WwWfhGrproC0sGktIuw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxs5p/aYUw8iLHHT2qrjN23ssUAu2ys2nYz8hNw+eMc2A+2kAu3
+	3GMhBEC/Cxs6MjOe1jOrD25NEGJZBJIkUUx/5SyML6Y87ibdVheE2Tbq40uv2ghFwo1KdL2Gglj
+	Keg==
+X-Received: from pfne8.prod.google.com ([2002:aa7:8248:0:b0:842:4f22:f388])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:440a:b0:842:614e:cc9d
+ with SMTP id d2e1a72fcca58-8430a70be01mr8519996b3a.27.1781104740313; Wed, 10
+ Jun 2026 08:19:00 -0700 (PDT)
+Date: Wed, 10 Jun 2026 15:18:50 +0000
 In-Reply-To: <20260610151853.3608948-1-praan@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260610151853.3608948-1-praan@google.com>
 X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
-Message-ID: <20260610151853.3608948-2-praan@google.com>
-Subject: [RFC PATCH 1/5] vfio: Add UAPI for ZONE_DEVICE-backed P2P registration
+Message-ID: <20260610151853.3608948-3-praan@google.com>
+Subject: [RFC PATCH 2/5] vfio/pci: Implement ZONE_DEVICE-backed P2P registration
 From: Pranjal Shrivastava <praan@google.com>
 To: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	kvm@vger.kernel.org
@@ -70,49 +70,87 @@ Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
 	Shivaji Kant <shivajikant@google.com>, Samiullah Khawaja <skhawaja@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Introduce VFIO_DEVICE_FEATURE_P2P_REGISTER to the VFIO_DEVICE_FEATURE
-ioctl. This feature allows a privileged userspace process to register
-a specific PCI BAR with the kernel's PCI P2P DMA provider framework.
+Implement the VFIO_DEVICE_FEATURE_P2P_REGISTER. A bitmask is added to
+track the registered regions.
 
-Unlike the standard VFIO dmabuf exporter, this feature leverages the
-pci-p2pdma infrastructure to manufacture ZONE_DEVICE struct pages for
-the BAR.
-
-Standard VFIO mmap() is not supported for BARs registered via this
-interface. Users are instead expected to use the native p2pmem sysfs
-interface for memory allocation and management.
+Post-registration, the BAR is added to the device's P2P pool and is
+available to be used with standard page-based APIs.
 
 Signed-off-by: Pranjal Shrivastava <praan@google.com>
 ---
- include/uapi/linux/vfio.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/vfio/pci/vfio_pci_core.c | 39 ++++++++++++++++++++++++++++++++
+ include/linux/vfio_pci_core.h    |  1 +
+ 2 files changed, 40 insertions(+)
 
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index 5de618a3a5ee..adbac3f965eb 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -1534,6 +1534,21 @@ struct vfio_device_feature_dma_buf {
-  */
- #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index a28f1e99362c..1e922e3aaeb3 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1554,6 +1554,43 @@ static int vfio_pci_core_feature_token(struct vfio_pci_core_device *vdev,
+ 	return 0;
+ }
  
-+/**
-+ * Upon VFIO_DEVICE_FEATURE_SET register a PCI BAR with the kernel
-+ * P2P DMA subsystem (pci-p2pdma).
-+ *
-+ * Once a BAR is registered, it will be added to the device's P2P
-+ * pool and can be allocated via the standard sysfs p2pmem/allocate
-+ * interface.
-+ *
-+ * Note: Standard VFIO mmap() of the BAR will be blocked once it is
-+ * registered for native P2P.
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+#define VFIO_DEVICE_FEATURE_P2P_REGISTER 13
++static int vfio_pci_core_feature_p2p_register(struct vfio_pci_core_device *vdev,
++					      u32 flags, u32 __user *arg,
++					      size_t argsz)
++{
++	u32 bar_index;
++	int ret;
 +
- /* -------- API for Type1 VFIO IOMMU -------- */
- 
- /**
++	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET,
++				 sizeof(bar_index));
++	if (ret != 1)
++		return ret;
++
++	if (copy_from_user(&bar_index, arg, sizeof(bar_index)))
++		return -EFAULT;
++
++	if (bar_index >= PCI_STD_NUM_BARS)
++		return -EINVAL;
++
++	if (!(pci_resource_flags(vdev->pdev, bar_index) & IORESOURCE_MEM))
++		return -EINVAL;
++
++	/* Already registered */
++	if (vdev->p2p_registered_bars & (1 << bar_index))
++		return 0;
++
++	ret = pci_p2pdma_add_resource(vdev->pdev, bar_index, 0, 0);
++	if (ret && ret != -EEXIST)
++		return ret;
++
++	vdev->p2p_registered_bars |= (1 << bar_index);
++
++	pci_info(vdev->pdev, "BAR %d registered for ZONE_DEVICE P2P\n",
++		 bar_index);
++
++	return 0;
++}
++
+ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
+ 				void __user *arg, size_t argsz)
+ {
+@@ -1572,6 +1609,8 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
+ 		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
+ 	case VFIO_DEVICE_FEATURE_DMA_BUF:
+ 		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
++	case VFIO_DEVICE_FEATURE_P2P_REGISTER:
++		return vfio_pci_core_feature_p2p_register(vdev, flags, arg, argsz);
+ 	default:
+ 		return -ENOTTY;
+ 	}
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index 5fc6ce4dd786..cae7f069e5b6 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -112,6 +112,7 @@ struct vfio_pci_core_device {
+ 	struct vfio_pci_region	*region;
+ 	u8			msi_qmax;
+ 	u8			msix_bar;
++	u8			p2p_registered_bars;
+ 	u16			msix_size;
+ 	u32			msix_offset;
+ 	u32			rbar[7];
 -- 
 2.54.0.1099.g489fc7bff1-goog
 
