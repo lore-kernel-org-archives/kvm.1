@@ -1,55 +1,55 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1E71A3164
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185671A238F
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781051437; cv=none; b=pbQZgft1GK9DdCUseCGxjTZgUXeEbdsar4Fsh8As/lXIXuURF22MolGGkWAlUUGzTMHdJoJoeOTbTZx8llno9y9l0Di/jATmcTf+wsPkbAzHacYX3LccqbAOyhYrA6S6QmGxEuk0MCXjVa1uElwiluwuFVAMKDaHKoiUF80CgVA=
+	t=1781051440; cv=none; b=NfxKdHzSJMJR8wef5FNXrbZ7h4eiuTLLijfhxxjLQE6OkYIX5Hlj1fgiPquSCiwTI+1zzFZIYAUGSnr49g1s8eM3VPr2/f2frjSWnGku9ovF/hnrXqkD8dC4cIcJsdYHkV9jpx/VnyTBSm9Rth9CrUhNu8yn1aawqQhB74T0SHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781051437; c=relaxed/simple;
-	bh=UVOUK190TAot1BYKdHOpM94CfG7FvG1AXFAa3WA4gPg=;
+	s=arc-20240116; t=1781051440; c=relaxed/simple;
+	bh=rEsImFJvobqHTxRFc0aTHgtw8MeRUYKpSvy6huXoUrw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oGxD3VqUsWitN2+h8xnP25ukcLJcjX8A7HhAZRxiPrP++F1BcoifXMqGGEWAeheefVBsz/dmdLDgLwfjXd5tnnp5uLEj4pEYXC2HwTpIbAnaSB/rYZU/vs4fCDVUQRU9pVgj6iodJAHtYILPntNRuDO/qgkuQRyayvVg8+LEX1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XNf9bl7h; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=aHqus7q/AF8BpbujFa3540daJVbuMhRGBjmjnPul6sKAn/mpgZQ49td5izsbBxD6jsuE8rolYQ0aQrvwtt1R+gtOF03S3K49v5DWP67ff+q+KveoiBWehFZ/0/nasUuNpmACQBqRW7aTCoWw2uKwMOP1EL8sia12AfdnQcn7Iq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eDSnNnq7; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XNf9bl7h"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c2a4babe45so7199475ad.2
-        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:30:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eDSnNnq7"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b982ec338so7064644a91.0
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:30:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781051435; x=1781656235; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781051436; x=1781656236; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=uoaeZM2cBi70aDozoJDMHRLADhXkQUKeba0NLjqMBPs=;
-        b=XNf9bl7hUBCpBfTfVAKFmiK0hWvF1ywYc97j4srn6FyHE2+E37yZVg3EiW9HbUTXTh
-         KaQM8n2zA6pDdlovZu25OfhUUG6SnwmhYfbw4llZaG34xyBDDq8/ik7hw1XeFJb90Oej
-         niBFLQMUNZ5pYQzZV14Rs/OnqM6h1AQtgJskBq6jhU7q168PBy1NjGcrwRXtdu4N3hJY
-         NFUNiRtclmoxWXNkHIUF190cIXyDlcWgeH+0WRQIeFHUXk8qFeAm3ZxAKWWMH+LgI7D5
-         qsLCiKdAv4qIlYJR3yrhQiMYdyscU0pFXCqRUt1wQcCWc0gvUP0WCNLWJj4YIK1UlWRf
-         k1PA==
+        bh=E3mNuR1jGzD1lIryx+oiJHQFF1lR06EHE4PFg/U9fD4=;
+        b=eDSnNnq7wVC2B9Tx6ymxzw+KjKtBlhrrLuK1C+t5O2n/xoUPM7X8z0HeA3BM9FKjsJ
+         TfaRykkXFR1v5tFBVieWz3OQFMoLnf6hbXSvTtFuZz0niZQhuNBYh+T7QT1qRyB5M1ac
+         JZsgP9C7/bjETqlwIyoGGd/PDgJtN/J56OUPVPY+EnzF4jIbTy+sgZJPfsfoVYPuutvz
+         /BRQVTuTQKWz95gdeHgGqx+NSBxisKuw01d+NwzFHIkg4YU6bSOlaHP0dQuCWIJaAcQp
+         9g5a55yI8Pnv5tbmHnaplG9U2Y6QZg/fISNdunxyrqj3vp/f86CSsxYG/wtChlXZTBfI
+         pyjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781051435; x=1781656235;
+        d=1e100.net; s=20251104; t=1781051436; x=1781656236;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uoaeZM2cBi70aDozoJDMHRLADhXkQUKeba0NLjqMBPs=;
-        b=jticsur3gbtE2xWrdL+AwxH09kogGJwkJkLF7vBuVN8iTQyCbGysu9Y+r7PbD4p+JZ
-         tWV0BQF8O6blkqNAcpQcEFak03bKL2EDXbjgGId7m+5WPz+Vk5K8F+Q6QCh5EN94LDwd
-         p3Zmo/H18/66XtMYulhtcyHfnsd3e8ES2LHplF2oqYacU6U+EuDtTBTrxq4LRJnLBnGu
-         d1Vvks6e9ptqrna9So01DfYzdHeDEHvLvZYQKvdXzPFE3756//xYUCXPKfTW+qTOQ/lS
-         N1sNVfID0msw32H3+PHH3oSIiHVTc2WV0/B8O5rDL5364LCCrkpf3vzv03GPyACh+Ytp
-         1B5A==
-X-Gm-Message-State: AOJu0Yy6MXGh0NE9oklOTP2c6/sKbWlzpAE8gj50+lrEQ66Q20XqkZrf
-	NQirXw50nCIPWWbdULxJ9cvm8wvlAJMIvcNdjvgi7zxJ+qCuxvLY+2U0/pTGdYqHmqIzMnEVWzD
-	A5R85lQ==
-X-Received: from pgjz6.prod.google.com ([2002:a63:e546:0:b0:c79:1600:6a09])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3cc2:b0:38d:fad1:cf2a
- with SMTP id adf61e73a8af0-3b4ccd65aebmr24776030637.13.1781051434478; Tue, 09
- Jun 2026 17:30:34 -0700 (PDT)
+        bh=E3mNuR1jGzD1lIryx+oiJHQFF1lR06EHE4PFg/U9fD4=;
+        b=Dim/zLkpOp1/i2z2rXP80j5ElaYe5xJcgEnNfggRY8cleS5u6N9AvCrqxrwrY8WfVc
+         /atlN7NTxDT7BqwT6YAwTd35fd93YN/SaApq2xOad0PL4SbSZM22t53YbVvOCFTnaSL2
+         O6wldfsJtatyAuV1m5NaTIsKf0/Z/1b8h89z6bJOLoZSbUtgIc0ve65t2OH+BSjOEkgu
+         hq3FmfGZnGKoZc6TitvJWp5BRrkjvvHr5fPWfb3SFRwS7/596bLdqjqVUrBqXfRdAFjM
+         gWuPEbB+HNcEkDIqajZcG/22LO2elD5tPWrveafFoXJEPq3bf7aRsJNm+1ya6+cFvSmI
+         fcAg==
+X-Gm-Message-State: AOJu0YzZqmslfStxQWI7evjsZWtfnf7hxGLzVd4A25H3uYazPpz8IMAI
+	BqswB/n+unEKRIURRMSwyHJxGq1eSFn+Txh31LzrJ2UBI4ppDxKh4cXlkTj/rQgnIS44IAAfAC2
+	es+vl3w==
+X-Received: from pgkk188.prod.google.com ([2002:a63:24c5:0:b0:c76:9c2d:449b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:244c:b0:39b:fbb2:5e46
+ with SMTP id adf61e73a8af0-3b4cd070ffdmr26477555637.40.1781051435944; Tue, 09
+ Jun 2026 17:30:35 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue,  9 Jun 2026 17:30:27 -0700
+Date: Tue,  9 Jun 2026 17:30:28 -0700
 In-Reply-To: <20260610003030.2957261-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260610003030.2957261-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
-Message-ID: <20260610003030.2957261-3-seanjc@google.com>
-Subject: [PATCH v8 2/5] KVM: selftests: Allocate a dedicated guest page for
- x86 L2 guest stack
+Message-ID: <20260610003030.2957261-4-seanjc@google.com>
+Subject: [PATCH v8 3/5] KVM: selftests: Drop L1-provided stacks for L2 guests
+ on x86
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -70,153 +70,1094 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Yosry Ahmed <yosry@kernel.org>
 
-Instead of relying on the L1-provided stack for L2, which is usually an
-array on L1's own stack, allocate a dedicated page of VM memory for the
-L2 stack in vcpu_alloc_{vmx/svm}() and use that as L2's RSP in the
-VMCS/VMCB instead of the L1-provided value.
-
-Most L1 guest code does not do anything with the L2 stack other than
-stuff it in RSP, so this change is transparent and the L1-provided stack
-is silently ignored. The only exception is memstress nested L1 code
-which puts the vCPU index on L2's stack, so update this code to use the
-newly allocated stack.
-
-L1-provided stacks will be dropped and cleaned up separately.
+Now that a dedicated page is allocated for L2's stack and stuffed in
+RSP, the L1-provided stack is unused. Drop the stacks allocated by L1
+guest code for L2 in all x86 tests.
 
 Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/include/x86/processor.h | 2 ++
- tools/testing/selftests/kvm/include/x86/svm_util.h  | 3 +++
- tools/testing/selftests/kvm/include/x86/vmx.h       | 2 ++
- tools/testing/selftests/kvm/lib/x86/memstress.c     | 5 ++---
- tools/testing/selftests/kvm/lib/x86/processor.c     | 2 +-
- tools/testing/selftests/kvm/lib/x86/svm.c           | 4 +++-
- tools/testing/selftests/kvm/lib/x86/vmx.c           | 4 +++-
- 7 files changed, 16 insertions(+), 6 deletions(-)
+ tools/testing/selftests/kvm/include/x86/svm_util.h |  2 +-
+ tools/testing/selftests/kvm/include/x86/vmx.h      |  2 +-
+ tools/testing/selftests/kvm/lib/x86/memstress.c    | 14 ++------------
+ tools/testing/selftests/kvm/lib/x86/svm.c          |  2 +-
+ tools/testing/selftests/kvm/lib/x86/vmx.c          |  2 +-
+ tools/testing/selftests/kvm/x86/aperfmperf_test.c  |  9 ++-------
+ .../selftests/kvm/x86/evmcs_smm_controls_test.c    |  5 +----
+ tools/testing/selftests/kvm/x86/hyperv_evmcs.c     |  6 +-----
+ tools/testing/selftests/kvm/x86/hyperv_svm_test.c  |  6 +-----
+ tools/testing/selftests/kvm/x86/kvm_buslock_test.c |  9 ++-------
+ .../selftests/kvm/x86/nested_close_kvm_test.c      | 12 ++----------
+ .../selftests/kvm/x86/nested_dirty_log_test.c      |  8 ++------
+ .../selftests/kvm/x86/nested_emulation_test.c      |  4 ++--
+ .../selftests/kvm/x86/nested_exceptions_test.c     |  9 ++-------
+ .../selftests/kvm/x86/nested_invalid_cr3_test.c    | 10 ++--------
+ .../selftests/kvm/x86/nested_tdp_fault_test.c      |  9 ++-------
+ .../selftests/kvm/x86/nested_tsc_adjust_test.c     | 10 ++--------
+ .../selftests/kvm/x86/nested_tsc_scaling_test.c    | 10 ++--------
+ .../selftests/kvm/x86/nested_vmsave_vmload_test.c  |  6 +-----
+ tools/testing/selftests/kvm/x86/smm_test.c         |  8 ++------
+ tools/testing/selftests/kvm/x86/state_test.c       | 11 ++---------
+ tools/testing/selftests/kvm/x86/svm_int_ctl_test.c |  5 +----
+ .../selftests/kvm/x86/svm_lbr_nested_state.c       |  6 +-----
+ .../selftests/kvm/x86/svm_nested_clear_efer_svme.c |  7 +------
+ .../selftests/kvm/x86/svm_nested_pat_test.c        |  8 ++------
+ .../selftests/kvm/x86/svm_nested_shutdown_test.c   |  5 +----
+ .../kvm/x86/svm_nested_soft_inject_test.c          |  6 +-----
+ .../selftests/kvm/x86/svm_nested_vmcb12_gpa.c      | 13 ++++---------
+ tools/testing/selftests/kvm/x86/svm_vmcall_test.c  |  5 +----
+ .../selftests/kvm/x86/triple_fault_event_test.c    |  9 ++-------
+ .../selftests/kvm/x86/vmx_apic_access_test.c       |  5 +----
+ .../selftests/kvm/x86/vmx_apicv_updates_test.c     |  4 +---
+ .../kvm/x86/vmx_invalid_nested_guest_state.c       |  6 +-----
+ .../selftests/kvm/x86/vmx_nested_la57_state_test.c |  5 +----
+ .../selftests/kvm/x86/vmx_preemption_timer_test.c  |  5 +----
+ 35 files changed, 53 insertions(+), 190 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 513e4a1075fa..e5a602c87273 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -1226,6 +1226,8 @@ struct idt_entry {
- void vm_install_exception_handler(struct kvm_vm *vm, int vector,
- 			void (*handler)(struct ex_regs *));
- 
-+gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages);
-+
- /*
-  * Exception fixup morphs #DE to an arbitrary magic vector so that '0' can be
-  * used to signal "no expcetion".
 diff --git a/tools/testing/selftests/kvm/include/x86/svm_util.h b/tools/testing/selftests/kvm/include/x86/svm_util.h
-index 6c013eb838be..3b1cc484fba1 100644
+index 3b1cc484fba1..c201c30485e7 100644
 --- a/tools/testing/selftests/kvm/include/x86/svm_util.h
 +++ b/tools/testing/selftests/kvm/include/x86/svm_util.h
-@@ -28,6 +28,9 @@ struct svm_test_data {
- 	void *msr_hva;
- 	u64 msr_gpa;
+@@ -60,7 +60,7 @@ static inline void vmmcall(void)
+ 		)
  
-+	/* Stack */
-+	void *stack; /* gva */
-+
- 	/* NPT */
- 	u64 ncr3_gpa;
- };
+ struct svm_test_data *vcpu_alloc_svm(struct kvm_vm *vm, gva_t *p_svm_gva);
+-void generic_svm_setup(struct svm_test_data *svm, void *guest_rip, void *guest_rsp);
++void generic_svm_setup(struct svm_test_data *svm, void *guest_rip);
+ void run_guest(struct vmcb *vmcb, u64 vmcb_gpa);
+ 
+ static inline bool kvm_cpu_has_npt(void)
 diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
-index 90fffaf91595..1dcb9b86d33d 100644
+index 1dcb9b86d33d..4bcfd60e3aec 100644
 --- a/tools/testing/selftests/kvm/include/x86/vmx.h
 +++ b/tools/testing/selftests/kvm/include/x86/vmx.h
-@@ -524,6 +524,8 @@ struct vmx_pages {
- 	u64 apic_access_gpa;
- 	void *apic_access;
+@@ -554,7 +554,7 @@ union vmx_ctrl_msr {
  
-+	void *stack;
-+
- 	u64 eptp_gpa;
- };
+ struct vmx_pages *vcpu_alloc_vmx(struct kvm_vm *vm, gva_t *p_vmx_gva);
+ bool prepare_for_vmx_operation(struct vmx_pages *vmx);
+-void prepare_vmcs(struct vmx_pages *vmx, void *guest_rip, void *guest_rsp);
++void prepare_vmcs(struct vmx_pages *vmx, void *guest_rip);
+ bool load_vmcs(struct vmx_pages *vmx);
  
+ bool ept_1g_pages_supported(void);
 diff --git a/tools/testing/selftests/kvm/lib/x86/memstress.c b/tools/testing/selftests/kvm/lib/x86/memstress.c
-index 61cf952cd2dc..fa07ef037cad 100644
+index fa07ef037cad..e19e8b5a09c5 100644
 --- a/tools/testing/selftests/kvm/lib/x86/memstress.c
 +++ b/tools/testing/selftests/kvm/lib/x86/memstress.c
-@@ -43,7 +43,7 @@ static void l1_vmx_code(struct vmx_pages *vmx, u64 vcpu_id)
+@@ -30,21 +30,15 @@ __asm__(
+ "	ud2;"
+ );
+ 
+-#define L2_GUEST_STACK_SIZE 64
+-
+ static void l1_vmx_code(struct vmx_pages *vmx, u64 vcpu_id)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-	unsigned long *rsp;
+-
+ 	GUEST_ASSERT(vmx->vmcs_gpa);
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx));
+ 	GUEST_ASSERT(load_vmcs(vmx));
  	GUEST_ASSERT(ept_1g_pages_supported());
  
- 	rsp = &l2_guest_stack[L2_GUEST_STACK_SIZE - 1];
--	*rsp = vcpu_id;
-+	*(u64 *)vmx->stack = vcpu_id;
- 	prepare_vmcs(vmx, memstress_l2_guest_entry, rsp);
+-	rsp = &l2_guest_stack[L2_GUEST_STACK_SIZE - 1];
+ 	*(u64 *)vmx->stack = vcpu_id;
+-	prepare_vmcs(vmx, memstress_l2_guest_entry, rsp);
++	prepare_vmcs(vmx, memstress_l2_guest_entry);
  
  	GUEST_ASSERT(!vmlaunch());
-@@ -56,9 +56,8 @@ static void l1_svm_code(struct svm_test_data *svm, u64 vcpu_id)
- 	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
- 	unsigned long *rsp;
+ 	GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_VMCALL);
+@@ -53,12 +47,8 @@ static void l1_vmx_code(struct vmx_pages *vmx, u64 vcpu_id)
  
+ static void l1_svm_code(struct svm_test_data *svm, u64 vcpu_id)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-	unsigned long *rsp;
 -
- 	rsp = &l2_guest_stack[L2_GUEST_STACK_SIZE - 1];
--	*rsp = vcpu_id;
-+	*(u64 *)svm->stack = vcpu_id;
- 	generic_svm_setup(svm, memstress_l2_guest_entry, rsp);
+-	rsp = &l2_guest_stack[L2_GUEST_STACK_SIZE - 1];
+ 	*(u64 *)svm->stack = vcpu_id;
+-	generic_svm_setup(svm, memstress_l2_guest_entry, rsp);
++	generic_svm_setup(svm, memstress_l2_guest_entry);
  
  	run_guest(svm->vmcb, svm->vmcb_gpa);
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index 9393bb580a58..ef56dcefe011 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -778,7 +778,7 @@ void assert_on_unhandled_exception(struct kvm_vcpu *vcpu)
- 		REPORT_GUEST_ASSERT(uc);
- }
- 
--static gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages)
-+gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages)
- {
- 	int size = nr_pages * getpagesize();
- 	gva_t stack_gva;
+ 	GUEST_ASSERT_EQ(svm->vmcb->control.exit_code, SVM_EXIT_VMMCALL);
 diff --git a/tools/testing/selftests/kvm/lib/x86/svm.c b/tools/testing/selftests/kvm/lib/x86/svm.c
-index 3b01605ab016..4e9c37f8d1a6 100644
+index 4e9c37f8d1a6..1445b890986f 100644
 --- a/tools/testing/selftests/kvm/lib/x86/svm.c
 +++ b/tools/testing/selftests/kvm/lib/x86/svm.c
-@@ -46,6 +46,8 @@ vcpu_alloc_svm(struct kvm_vm *vm, gva_t *p_svm_gva)
- 	svm->msr_gpa = addr_gva2gpa(vm, (uintptr_t)svm->msr);
- 	memset(svm->msr_hva, 0, getpagesize());
+@@ -83,7 +83,7 @@ void vm_enable_npt(struct kvm_vm *vm)
+ 	tdp_mmu_init(vm, vm->mmu.pgtable_levels, &pte_masks);
+ }
  
-+	svm->stack = (void *)vm_alloc_stack(vm, 1);
-+
- 	if (vm->stage2_mmu.pgd_created)
- 		svm->ncr3_gpa = vm->stage2_mmu.pgd;
- 
-@@ -122,7 +124,7 @@ void generic_svm_setup(struct svm_test_data *svm, void *guest_rip, void *guest_r
- 	ctrl->msrpm_base_pa = svm->msr_gpa;
- 
- 	vmcb->save.rip = (u64)guest_rip;
--	vmcb->save.rsp = (u64)guest_rsp;
-+	vmcb->save.rsp = (u64)svm->stack;
- 	guest_regs.rdi = (u64)svm;
- 
- 	if (svm->ncr3_gpa) {
+-void generic_svm_setup(struct svm_test_data *svm, void *guest_rip, void *guest_rsp)
++void generic_svm_setup(struct svm_test_data *svm, void *guest_rip)
+ {
+ 	struct vmcb *vmcb = svm->vmcb;
+ 	u64 vmcb_gpa = svm->vmcb_gpa;
 diff --git a/tools/testing/selftests/kvm/lib/x86/vmx.c b/tools/testing/selftests/kvm/lib/x86/vmx.c
-index 7c10ba6e6fb4..36aa108088dd 100644
+index 36aa108088dd..cd09c9de4485 100644
 --- a/tools/testing/selftests/kvm/lib/x86/vmx.c
 +++ b/tools/testing/selftests/kvm/lib/x86/vmx.c
-@@ -116,6 +116,8 @@ vcpu_alloc_vmx(struct kvm_vm *vm, gva_t *p_vmx_gva)
- 	vmx->vmwrite_gpa = addr_gva2gpa(vm, (uintptr_t)vmx->vmwrite);
- 	memset(vmx->vmwrite_hva, 0, getpagesize());
+@@ -368,7 +368,7 @@ static inline void init_vmcs_guest_state(void *rip, void *rsp)
+ 	vmwrite(GUEST_SYSENTER_EIP, vmreadz(HOST_IA32_SYSENTER_EIP));
+ }
  
-+	vmx->stack = (void *)vm_alloc_stack(vm, 1);
-+
- 	if (vm->stage2_mmu.pgd_created)
- 		vmx->eptp_gpa = vm->stage2_mmu.pgd;
- 
-@@ -370,7 +372,7 @@ void prepare_vmcs(struct vmx_pages *vmx, void *guest_rip, void *guest_rsp)
+-void prepare_vmcs(struct vmx_pages *vmx, void *guest_rip, void *guest_rsp)
++void prepare_vmcs(struct vmx_pages *vmx, void *guest_rip)
  {
  	init_vmcs_control_fields(vmx);
  	init_vmcs_host_state();
--	init_vmcs_guest_state(guest_rip, guest_rsp);
-+	init_vmcs_guest_state(guest_rip, vmx->stack);
+diff --git a/tools/testing/selftests/kvm/x86/aperfmperf_test.c b/tools/testing/selftests/kvm/x86/aperfmperf_test.c
+index c91660103137..845cb685f174 100644
+--- a/tools/testing/selftests/kvm/x86/aperfmperf_test.c
++++ b/tools/testing/selftests/kvm/x86/aperfmperf_test.c
+@@ -54,8 +54,6 @@ static void guest_read_aperf_mperf(void)
+ 		GUEST_SYNC2(rdmsr(MSR_IA32_APERF), rdmsr(MSR_IA32_MPERF));
  }
  
- bool kvm_cpu_has_ept(void)
+-#define L2_GUEST_STACK_SIZE	64
+-
+ static void l2_guest_code(void)
+ {
+ 	guest_read_aperf_mperf();
+@@ -64,21 +62,18 @@ static void l2_guest_code(void)
+ 
+ static void l1_svm_code(struct svm_test_data *svm)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 
+-	generic_svm_setup(svm, l2_guest_code, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 	run_guest(vmcb, svm->vmcb_gpa);
+ }
+ 
+ static void l1_vmx_code(struct vmx_pages *vmx)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ 	GUEST_ASSERT_EQ(prepare_for_vmx_operation(vmx), true);
+ 	GUEST_ASSERT_EQ(load_vmcs(vmx), true);
+ 
+-	prepare_vmcs(vmx, NULL, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx, NULL);
+ 
+ 	/*
+ 	 * Enable MSR bitmaps (the bitmap itself is allocated, zeroed, and set
+diff --git a/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c b/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c
+index 5b3aef109cfc..77ce87c41a86 100644
+--- a/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c
++++ b/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c
+@@ -52,8 +52,6 @@ static void l2_guest_code(void)
+ static void guest_code(struct vmx_pages *vmx_pages,
+ 		       struct hyperv_test_pages *hv_pages)
+ {
+-#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 
+ 	/* Set up Hyper-V enlightenments and eVMCS */
+ 	wrmsr(HV_X64_MSR_GUEST_OS_ID, HYPERV_LINUX_OS_ID);
+@@ -62,8 +60,7 @@ static void guest_code(struct vmx_pages *vmx_pages,
+ 
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+ 	GUEST_ASSERT(load_evmcs(hv_pages));
+-	prepare_vmcs(vmx_pages, l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, l2_guest_code);
+ 
+ 	GUEST_ASSERT(!vmlaunch());
+ 
+diff --git a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
+index c7fa114aee20..1bda2cd3f739 100644
+--- a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
++++ b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
+@@ -78,9 +78,6 @@ void l2_guest_code(void)
+ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
+ 		gpa_t hv_hcall_page_gpa)
+ {
+-#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ 	wrmsr(HV_X64_MSR_GUEST_OS_ID, HYPERV_LINUX_OS_ID);
+ 	wrmsr(HV_X64_MSR_HYPERCALL, hv_hcall_page_gpa);
+ 
+@@ -100,8 +97,7 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
+ 	GUEST_SYNC(4);
+ 	GUEST_ASSERT(vmptrstz() == hv_pages->enlightened_vmcs_gpa);
+ 
+-	prepare_vmcs(vmx_pages, l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, l2_guest_code);
+ 
+ 	GUEST_SYNC(5);
+ 	GUEST_ASSERT(vmptrstz() == hv_pages->enlightened_vmcs_gpa);
+diff --git a/tools/testing/selftests/kvm/x86/hyperv_svm_test.c b/tools/testing/selftests/kvm/x86/hyperv_svm_test.c
+index 7a62f6a9d606..1f74b0fa9b83 100644
+--- a/tools/testing/selftests/kvm/x86/hyperv_svm_test.c
++++ b/tools/testing/selftests/kvm/x86/hyperv_svm_test.c
+@@ -18,8 +18,6 @@
+ #include "svm_util.h"
+ #include "hyperv.h"
+ 
+-#define L2_GUEST_STACK_SIZE 256
+-
+ /* Exit to L1 from L2 with RDMSR instruction */
+ static inline void rdmsr_from_l2(u32 msr)
+ {
+@@ -69,7 +67,6 @@ static void __attribute__((__flatten__)) guest_code(struct svm_test_data *svm,
+ 						    struct hyperv_test_pages *hv_pages,
+ 						    gpa_t pgs_gpa)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 	struct hv_vmcb_enlightenments *hve = &vmcb->control.hv_enlightenments;
+ 
+@@ -81,8 +78,7 @@ static void __attribute__((__flatten__)) guest_code(struct svm_test_data *svm,
+ 
+ 	GUEST_ASSERT(svm->vmcb_gpa);
+ 	/* Prepare for L2 execution. */
+-	generic_svm_setup(svm, l2_guest_code,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 
+ 	/* L2 TLB flush setup */
+ 	hve->partition_assist_page = hv_pages->partition_assist_gpa;
+diff --git a/tools/testing/selftests/kvm/x86/kvm_buslock_test.c b/tools/testing/selftests/kvm/x86/kvm_buslock_test.c
+index 52014a3210c8..25a182be00a9 100644
+--- a/tools/testing/selftests/kvm/x86/kvm_buslock_test.c
++++ b/tools/testing/selftests/kvm/x86/kvm_buslock_test.c
+@@ -26,8 +26,6 @@ static void guest_generate_buslocks(void)
+ 		atomic_inc(val);
+ }
+ 
+-#define L2_GUEST_STACK_SIZE	64
+-
+ static void l2_guest_code(void)
+ {
+ 	guest_generate_buslocks();
+@@ -36,21 +34,18 @@ static void l2_guest_code(void)
+ 
+ static void l1_svm_code(struct svm_test_data *svm)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 
+-	generic_svm_setup(svm, l2_guest_code, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 	run_guest(vmcb, svm->vmcb_gpa);
+ }
+ 
+ static void l1_vmx_code(struct vmx_pages *vmx)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ 	GUEST_ASSERT_EQ(prepare_for_vmx_operation(vmx), true);
+ 	GUEST_ASSERT_EQ(load_vmcs(vmx), true);
+ 
+-	prepare_vmcs(vmx, NULL, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx, NULL);
+ 
+ 	GUEST_ASSERT(!vmwrite(GUEST_RIP, (u64)l2_guest_code));
+ 	GUEST_ASSERT(!vmlaunch());
+diff --git a/tools/testing/selftests/kvm/x86/nested_close_kvm_test.c b/tools/testing/selftests/kvm/x86/nested_close_kvm_test.c
+index 761fec293408..b974cfb347d6 100644
+--- a/tools/testing/selftests/kvm/x86/nested_close_kvm_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_close_kvm_test.c
+@@ -21,8 +21,6 @@ enum {
+ 	PORT_L0_EXIT = 0x2000,
+ };
+ 
+-#define L2_GUEST_STACK_SIZE 64
+-
+ static void l2_guest_code(void)
+ {
+ 	/* Exit to L0 */
+@@ -32,14 +30,11 @@ static void l2_guest_code(void)
+ 
+ static void l1_vmx_code(struct vmx_pages *vmx_pages)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+ 	GUEST_ASSERT(load_vmcs(vmx_pages));
+ 
+ 	/* Prepare the VMCS for L2 execution. */
+-	prepare_vmcs(vmx_pages, l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, l2_guest_code);
+ 
+ 	GUEST_ASSERT(!vmlaunch());
+ 	GUEST_ASSERT(0);
+@@ -47,11 +42,8 @@ static void l1_vmx_code(struct vmx_pages *vmx_pages)
+ 
+ static void l1_svm_code(struct svm_test_data *svm)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ 	/* Prepare the VMCB for L2 execution. */
+-	generic_svm_setup(svm, l2_guest_code,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 
+ 	run_guest(svm->vmcb, svm->vmcb_gpa);
+ 	GUEST_ASSERT(0);
+diff --git a/tools/testing/selftests/kvm/x86/nested_dirty_log_test.c b/tools/testing/selftests/kvm/x86/nested_dirty_log_test.c
+index 0e67cce83570..26b474bf1353 100644
+--- a/tools/testing/selftests/kvm/x86/nested_dirty_log_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_dirty_log_test.c
+@@ -40,8 +40,6 @@
+ 
+ #define TEST_HVA(vm, idx)		addr_gpa2hva(vm, TEST_GPA(idx))
+ 
+-#define L2_GUEST_STACK_SIZE 64
+-
+ /* Use the page offset bits to communicate the access+fault type. */
+ #define TEST_SYNC_READ_FAULT		BIT(0)
+ #define TEST_SYNC_WRITE_FAULT		BIT(1)
+@@ -92,7 +90,6 @@ static void l2_guest_code_tdp_disabled(void)
+ 
+ void l1_vmx_code(struct vmx_pages *vmx)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	void *l2_rip;
+ 
+ 	GUEST_ASSERT(vmx->vmcs_gpa);
+@@ -104,7 +101,7 @@ void l1_vmx_code(struct vmx_pages *vmx)
+ 	else
+ 		l2_rip = l2_guest_code_tdp_disabled;
+ 
+-	prepare_vmcs(vmx, l2_rip, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx, l2_rip);
+ 
+ 	GUEST_SYNC(TEST_SYNC_NO_FAULT);
+ 	GUEST_ASSERT(!vmlaunch());
+@@ -115,7 +112,6 @@ void l1_vmx_code(struct vmx_pages *vmx)
+ 
+ static void l1_svm_code(struct svm_test_data *svm)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	void *l2_rip;
+ 
+ 	if (svm->ncr3_gpa)
+@@ -123,7 +119,7 @@ static void l1_svm_code(struct svm_test_data *svm)
+ 	else
+ 		l2_rip = l2_guest_code_tdp_disabled;
+ 
+-	generic_svm_setup(svm, l2_rip, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_rip);
+ 
+ 	GUEST_SYNC(TEST_SYNC_NO_FAULT);
+ 	run_guest(svm->vmcb, svm->vmcb_gpa);
+diff --git a/tools/testing/selftests/kvm/x86/nested_emulation_test.c b/tools/testing/selftests/kvm/x86/nested_emulation_test.c
+index fb7dcbe53ac7..e08c6b0697e5 100644
+--- a/tools/testing/selftests/kvm/x86/nested_emulation_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_emulation_test.c
+@@ -57,7 +57,7 @@ static void guest_code(void *test_data)
+ 		struct svm_test_data *svm = test_data;
+ 		struct vmcb *vmcb = svm->vmcb;
+ 
+-		generic_svm_setup(svm, NULL, NULL);
++		generic_svm_setup(svm, NULL);
+ 		vmcb->save.idtr.limit = 0;
+ 		vmcb->save.rip = (u64)l2_guest_code;
+ 
+@@ -69,7 +69,7 @@ static void guest_code(void *test_data)
+ 		GUEST_ASSERT(prepare_for_vmx_operation(test_data));
+ 		GUEST_ASSERT(load_vmcs(test_data));
+ 
+-		prepare_vmcs(test_data, NULL, NULL);
++		prepare_vmcs(test_data, NULL);
+ 		GUEST_ASSERT(!vmwrite(GUEST_IDTR_LIMIT, 0));
+ 		GUEST_ASSERT(!vmwrite(GUEST_RIP, (u64)l2_guest_code));
+ 		GUEST_ASSERT(!vmwrite(EXCEPTION_BITMAP, 0));
+diff --git a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c b/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
+index 186e980aa8ee..aeec3121c8e8 100644
+--- a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
+@@ -5,8 +5,6 @@
+ #include "vmx.h"
+ #include "svm_util.h"
+ 
+-#define L2_GUEST_STACK_SIZE 256
+-
+ /*
+  * Arbitrary, never shoved into KVM/hardware, just need to avoid conflict with
+  * the "real" exceptions used, #SS/#GP/#DF (12/13/8).
+@@ -91,9 +89,8 @@ static void svm_run_l2(struct svm_test_data *svm, void *l2_code, int vector,
+ static void l1_svm_code(struct svm_test_data *svm)
+ {
+ 	struct vmcb_control_area *ctrl = &svm->vmcb->control;
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 
+-	generic_svm_setup(svm, NULL, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, NULL);
+ 	svm->vmcb->save.idtr.limit = 0;
+ 	ctrl->intercept |= BIT_ULL(INTERCEPT_SHUTDOWN);
+ 
+@@ -128,13 +125,11 @@ static void vmx_run_l2(void *l2_code, int vector, u32 error_code)
+ 
+ static void l1_vmx_code(struct vmx_pages *vmx)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ 	GUEST_ASSERT_EQ(prepare_for_vmx_operation(vmx), true);
+ 
+ 	GUEST_ASSERT_EQ(load_vmcs(vmx), true);
+ 
+-	prepare_vmcs(vmx, NULL, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx, NULL);
+ 	GUEST_ASSERT_EQ(vmwrite(GUEST_IDTR_LIMIT, 0), 0);
+ 
+ 	/*
+diff --git a/tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c b/tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c
+index 11fd2467d823..8c2ba9674558 100644
+--- a/tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c
+@@ -11,8 +11,6 @@
+ #include "kselftest.h"
+ 
+ 
+-#define L2_GUEST_STACK_SIZE 64
+-
+ static void l2_guest_code(void)
+ {
+ 	vmcall();
+@@ -20,11 +18,9 @@ static void l2_guest_code(void)
+ 
+ static void l1_svm_code(struct svm_test_data *svm)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	uintptr_t save_cr3;
+ 
+-	generic_svm_setup(svm, l2_guest_code,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 
+ 	/* Try to run L2 with invalid CR3 and make sure it fails */
+ 	save_cr3 = svm->vmcb->save.cr3;
+@@ -42,14 +38,12 @@ static void l1_svm_code(struct svm_test_data *svm)
+ 
+ static void l1_vmx_code(struct vmx_pages *vmx_pages)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	uintptr_t save_cr3;
+ 
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+ 	GUEST_ASSERT(load_vmcs(vmx_pages));
+ 
+-	prepare_vmcs(vmx_pages, l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, l2_guest_code);
+ 
+ 	/* Try to run L2 with invalid CR3 and make sure it fails */
+ 	save_cr3 = vmreadz(GUEST_CR3);
+diff --git a/tools/testing/selftests/kvm/x86/nested_tdp_fault_test.c b/tools/testing/selftests/kvm/x86/nested_tdp_fault_test.c
+index fa95568f55ff..2e04563790ff 100644
+--- a/tools/testing/selftests/kvm/x86/nested_tdp_fault_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_tdp_fault_test.c
+@@ -9,8 +9,6 @@
+ #include "svm_util.h"
+ #include "vmx.h"
+ 
+-#define L2_GUEST_STACK_SIZE 64
+-
+ enum test_type {
+ 	TEST_FINAL_PAGE_UNMAPPED,	    /* Final data page not present */
+ 	TEST_PT_PAGE_UNMAPPED,		    /* Page table page not present */
+@@ -54,14 +52,13 @@ static void l2_guest_code_ins(void)
+ static void l1_vmx_code(struct vmx_pages *vmx, u64 expected_fault_gpa,
+ 			u64 test_type)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	u64 exit_qual;
+ 
+ 	GUEST_ASSERT(vmx->vmcs_gpa);
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx));
+ 	GUEST_ASSERT(load_vmcs(vmx));
+ 
+-	prepare_vmcs(vmx, l2_entry, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx, l2_entry);
+ 
+ 	GUEST_ASSERT(!vmlaunch());
+ 
+@@ -120,12 +117,10 @@ static void l1_vmx_code(struct vmx_pages *vmx, u64 expected_fault_gpa,
+ static void l1_svm_code(struct svm_test_data *svm, u64 expected_fault_gpa,
+ 			 u64 test_type)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 	u64 exit_info_1;
+ 
+-	generic_svm_setup(svm, l2_entry,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_entry);
+ 
+ 	run_guest(vmcb, svm->vmcb_gpa);
+ 
+diff --git a/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c b/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
+index f0e4adac4751..cb79d7b9619c 100644
+--- a/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c
+@@ -34,8 +34,6 @@
+ #define TSC_ADJUST_VALUE (1ll << 32)
+ #define TSC_OFFSET_VALUE -(1ll << 48)
+ 
+-#define L2_GUEST_STACK_SIZE 64
+-
+ enum {
+ 	PORT_ABORT = 0x1000,
+ 	PORT_REPORT,
+@@ -75,8 +73,6 @@ static void l2_guest_code(void)
+ 
+ static void l1_guest_code(void *data)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ 	/* Set TSC from L1 and make sure TSC_ADJUST is updated correctly */
+ 	GUEST_ASSERT(rdtsc() < TSC_ADJUST_VALUE);
+ 	wrmsr(MSR_IA32_TSC, rdtsc() - TSC_ADJUST_VALUE);
+@@ -93,8 +89,7 @@ static void l1_guest_code(void *data)
+ 		GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+ 		GUEST_ASSERT(load_vmcs(vmx_pages));
+ 
+-		prepare_vmcs(vmx_pages, l2_guest_code,
+-			     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++		prepare_vmcs(vmx_pages, l2_guest_code);
+ 		control = vmreadz(CPU_BASED_VM_EXEC_CONTROL);
+ 		control |= CPU_BASED_USE_MSR_BITMAPS | CPU_BASED_USE_TSC_OFFSETTING;
+ 		vmwrite(CPU_BASED_VM_EXEC_CONTROL, control);
+@@ -105,8 +100,7 @@ static void l1_guest_code(void *data)
+ 	} else {
+ 		struct svm_test_data *svm = data;
+ 
+-		generic_svm_setup(svm, l2_guest_code,
+-				  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++		generic_svm_setup(svm, l2_guest_code);
+ 
+ 		svm->vmcb->control.tsc_offset = TSC_OFFSET_VALUE;
+ 		run_guest(svm->vmcb, svm->vmcb_gpa);
+diff --git a/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c b/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
+index 190e93af20a1..18f765835bf4 100644
+--- a/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c
+@@ -22,8 +22,6 @@
+ #define TSC_OFFSET_L2 ((u64)-33125236320908)
+ #define TSC_MULTIPLIER_L2 (L2_SCALE_FACTOR << 48)
+ 
+-#define L2_GUEST_STACK_SIZE 64
+-
+ enum { USLEEP, UCHECK_L1, UCHECK_L2 };
+ #define GUEST_SLEEP(sec)         ucall(UCALL_SYNC, 2, USLEEP, sec)
+ #define GUEST_CHECK(level, freq) ucall(UCALL_SYNC, 2, level, freq)
+@@ -82,13 +80,10 @@ static void l2_guest_code(void)
+ 
+ static void l1_svm_code(struct svm_test_data *svm)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ 	/* check that L1's frequency looks alright before launching L2 */
+ 	check_tsc_freq(UCHECK_L1);
+ 
+-	generic_svm_setup(svm, l2_guest_code,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 
+ 	/* enable TSC scaling for L2 */
+ 	wrmsr(MSR_AMD64_TSC_RATIO, L2_SCALE_FACTOR << 32);
+@@ -105,7 +100,6 @@ static void l1_svm_code(struct svm_test_data *svm)
+ 
+ static void l1_vmx_code(struct vmx_pages *vmx_pages)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	u32 control;
+ 
+ 	/* check that L1's frequency looks alright before launching L2 */
+@@ -115,7 +109,7 @@ static void l1_vmx_code(struct vmx_pages *vmx_pages)
+ 	GUEST_ASSERT(load_vmcs(vmx_pages));
+ 
+ 	/* prepare the VMCS for L2 execution */
+-	prepare_vmcs(vmx_pages, l2_guest_code, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, l2_guest_code);
+ 
+ 	/* enable TSC offsetting and TSC scaling for L2 */
+ 	control = vmreadz(CPU_BASED_VM_EXEC_CONTROL);
+diff --git a/tools/testing/selftests/kvm/x86/nested_vmsave_vmload_test.c b/tools/testing/selftests/kvm/x86/nested_vmsave_vmload_test.c
+index 85d3f4cc76f3..a130759f39a1 100644
+--- a/tools/testing/selftests/kvm/x86/nested_vmsave_vmload_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_vmsave_vmload_test.c
+@@ -28,8 +28,6 @@
+ 
+ #define TEST_VMCB_L2_GPA		TEST_VMCB_L1_GPA(0)
+ 
+-#define L2_GUEST_STACK_SIZE		64
+-
+ static void l2_guest_code_vmsave(void)
+ {
+ 	asm volatile("vmsave %0" : : "a"(TEST_VMCB_L2_GPA) : "memory");
+@@ -70,10 +68,8 @@ static void l2_guest_code_vmcb1(void)
+ 
+ static void l1_guest_code(struct svm_test_data *svm)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ 	/* Each test case initializes the guest RIP below */
+-	generic_svm_setup(svm, NULL, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, NULL);
+ 
+ 	/* Set VMSAVE/VMLOAD intercepts and make sure they work with.. */
+ 	svm->vmcb->control.intercept |= (BIT_ULL(INTERCEPT_VMSAVE) |
+diff --git a/tools/testing/selftests/kvm/x86/smm_test.c b/tools/testing/selftests/kvm/x86/smm_test.c
+index 740051167dbd..e2542f4ced60 100644
+--- a/tools/testing/selftests/kvm/x86/smm_test.c
++++ b/tools/testing/selftests/kvm/x86/smm_test.c
+@@ -63,8 +63,6 @@ static void l2_guest_code(void)
+ 
+ static void guest_code(void *arg)
+ {
+-	#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	u64 apicbase = rdmsr(MSR_IA32_APICBASE);
+ 	struct svm_test_data *svm = arg;
+ 	struct vmx_pages *vmx_pages = arg;
+@@ -81,13 +79,11 @@ static void guest_code(void *arg)
+ 
+ 	if (arg) {
+ 		if (this_cpu_has(X86_FEATURE_SVM)) {
+-			generic_svm_setup(svm, l2_guest_code,
+-					  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++			generic_svm_setup(svm, l2_guest_code);
+ 		} else {
+ 			GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+ 			GUEST_ASSERT(load_vmcs(vmx_pages));
+-			prepare_vmcs(vmx_pages, l2_guest_code,
+-				     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++			prepare_vmcs(vmx_pages, l2_guest_code);
+ 		}
+ 
+ 		sync_with_host(5);
+diff --git a/tools/testing/selftests/kvm/x86/state_test.c b/tools/testing/selftests/kvm/x86/state_test.c
+index 409c6cc9f921..4a1056a6cb8d 100644
+--- a/tools/testing/selftests/kvm/x86/state_test.c
++++ b/tools/testing/selftests/kvm/x86/state_test.c
+@@ -19,8 +19,6 @@
+ #include "vmx.h"
+ #include "svm_util.h"
+ 
+-#define L2_GUEST_STACK_SIZE 256
+-
+ void svm_l2_guest_code(void)
+ {
+ 	GUEST_SYNC(4);
+@@ -35,13 +33,11 @@ void svm_l2_guest_code(void)
+ 
+ static void svm_l1_guest_code(struct svm_test_data *svm)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 
+ 	GUEST_ASSERT(svm->vmcb_gpa);
+ 	/* Prepare for L2 execution. */
+-	generic_svm_setup(svm, svm_l2_guest_code,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, svm_l2_guest_code);
+ 
+ 	vmcb->control.int_ctl |= (V_GIF_ENABLE_MASK | V_GIF_MASK);
+ 
+@@ -78,8 +74,6 @@ void vmx_l2_guest_code(void)
+ 
+ static void vmx_l1_guest_code(struct vmx_pages *vmx_pages)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ 	GUEST_ASSERT(vmx_pages->vmcs_gpa);
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+ 	GUEST_SYNC(3);
+@@ -89,8 +83,7 @@ static void vmx_l1_guest_code(struct vmx_pages *vmx_pages)
+ 	GUEST_SYNC(4);
+ 	GUEST_ASSERT(vmptrstz() == vmx_pages->vmcs_gpa);
+ 
+-	prepare_vmcs(vmx_pages, vmx_l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, vmx_l2_guest_code);
+ 
+ 	GUEST_SYNC(5);
+ 	GUEST_ASSERT(vmptrstz() == vmx_pages->vmcs_gpa);
+diff --git a/tools/testing/selftests/kvm/x86/svm_int_ctl_test.c b/tools/testing/selftests/kvm/x86/svm_int_ctl_test.c
+index d3cc5e4f7883..7b1f4a4818bd 100644
+--- a/tools/testing/selftests/kvm/x86/svm_int_ctl_test.c
++++ b/tools/testing/selftests/kvm/x86/svm_int_ctl_test.c
+@@ -54,15 +54,12 @@ static void l2_guest_code(struct svm_test_data *svm)
+ 
+ static void l1_guest_code(struct svm_test_data *svm)
+ {
+-	#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 
+ 	x2apic_enable();
+ 
+ 	/* Prepare for L2 execution. */
+-	generic_svm_setup(svm, l2_guest_code,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 
+ 	/* No virtual interrupt masking */
+ 	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
+diff --git a/tools/testing/selftests/kvm/x86/svm_lbr_nested_state.c b/tools/testing/selftests/kvm/x86/svm_lbr_nested_state.c
+index 7fbfaa054c95..77c6ce9f4507 100644
+--- a/tools/testing/selftests/kvm/x86/svm_lbr_nested_state.c
++++ b/tools/testing/selftests/kvm/x86/svm_lbr_nested_state.c
+@@ -9,8 +9,6 @@
+ #include "svm_util.h"
+ 
+ 
+-#define L2_GUEST_STACK_SIZE 64
+-
+ #define DO_BRANCH() do { asm volatile("jmp 1f\n 1: nop"); } while (0)
+ 
+ struct lbr_branch {
+@@ -55,7 +53,6 @@ static void l2_guest_code(struct svm_test_data *svm)
+ 
+ static void l1_guest_code(struct svm_test_data *svm, bool nested_lbrv)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 	struct lbr_branch l1_branch;
+ 
+@@ -65,8 +62,7 @@ static void l1_guest_code(struct svm_test_data *svm, bool nested_lbrv)
+ 	CHECK_BRANCH_MSRS(&l1_branch);
+ 
+ 	/* Run L2, which will also do the same */
+-	generic_svm_setup(svm, l2_guest_code,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 
+ 	if (nested_lbrv)
+ 		vmcb->control.misc_ctl2 = SVM_MISC2_ENABLE_V_LBR;
+diff --git a/tools/testing/selftests/kvm/x86/svm_nested_clear_efer_svme.c b/tools/testing/selftests/kvm/x86/svm_nested_clear_efer_svme.c
+index 6a89eaffc657..6bc301207cbc 100644
+--- a/tools/testing/selftests/kvm/x86/svm_nested_clear_efer_svme.c
++++ b/tools/testing/selftests/kvm/x86/svm_nested_clear_efer_svme.c
+@@ -8,8 +8,6 @@
+ #include "kselftest.h"
+ 
+ 
+-#define L2_GUEST_STACK_SIZE 64
+-
+ static void l2_guest_code(void)
+ {
+ 	unsigned long efer = rdmsr(MSR_EFER);
+@@ -24,10 +22,7 @@ static void l2_guest_code(void)
+ 
+ static void l1_guest_code(struct svm_test_data *svm)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+-	generic_svm_setup(svm, l2_guest_code,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 	run_guest(svm->vmcb, svm->vmcb_gpa);
+ 
+ 	/* Unreachable, L1 should be shutdown */
+diff --git a/tools/testing/selftests/kvm/x86/svm_nested_pat_test.c b/tools/testing/selftests/kvm/x86/svm_nested_pat_test.c
+index 92da8ff34da1..14ec9d6ad195 100644
+--- a/tools/testing/selftests/kvm/x86/svm_nested_pat_test.c
++++ b/tools/testing/selftests/kvm/x86/svm_nested_pat_test.c
+@@ -25,8 +25,6 @@
+ #include "processor.h"
+ #include "svm_util.h"
+ 
+-#define L2_GUEST_STACK_SIZE 256
+-
+ #define PAT_DEFAULT		0x0007040600070406ULL
+ #define L1_PAT_VALUE		0x0007040600070404ULL  /* Change PA0 to WT */
+ #define L2_VMCB12_PAT		0x0606060606060606ULL  /* All WB */
+@@ -59,14 +57,13 @@ static void l2_guest_code(void)
+ 
+ static void l1_guest_code(struct svm_test_data *svm)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 	int i;
+ 
+ 	wrmsr(MSR_IA32_CR_PAT, L1_PAT_VALUE);
+ 	GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L1_PAT_VALUE);
+ 
+-	generic_svm_setup(svm, l2_guest_code, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 
+ 	vmcb->save.g_pat = L2_VMCB12_PAT;
+ 	vmcb->control.intercept &= ~(1ULL << INTERCEPT_MSR_PROT);
+@@ -94,11 +91,10 @@ static void l1_guest_code(struct svm_test_data *svm)
+ 
+ static void l1_guest_code_invalid_gpat(struct svm_test_data *svm)
+ {
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 
+ 	/* VMRUN should fail without running L2 */
+-	generic_svm_setup(svm, NULL, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, NULL);
+ 
+ 	vmcb->save.g_pat = INVALID_PAT_VALUE;
+ 	run_guest(vmcb, svm->vmcb_gpa);
+diff --git a/tools/testing/selftests/kvm/x86/svm_nested_shutdown_test.c b/tools/testing/selftests/kvm/x86/svm_nested_shutdown_test.c
+index c6ea3d609a62..2a4a216954bb 100644
+--- a/tools/testing/selftests/kvm/x86/svm_nested_shutdown_test.c
++++ b/tools/testing/selftests/kvm/x86/svm_nested_shutdown_test.c
+@@ -19,12 +19,9 @@ static void l2_guest_code(struct svm_test_data *svm)
+ 
+ static void l1_guest_code(struct svm_test_data *svm, struct idt_entry *idt)
+ {
+-	#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 
+-	generic_svm_setup(svm, l2_guest_code,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 
+ 	vmcb->control.intercept &= ~(BIT(INTERCEPT_SHUTDOWN));
+ 
+diff --git a/tools/testing/selftests/kvm/x86/svm_nested_soft_inject_test.c b/tools/testing/selftests/kvm/x86/svm_nested_soft_inject_test.c
+index f72f11d4c4f8..0b640d09d194 100644
+--- a/tools/testing/selftests/kvm/x86/svm_nested_soft_inject_test.c
++++ b/tools/testing/selftests/kvm/x86/svm_nested_soft_inject_test.c
+@@ -78,17 +78,13 @@ static void l2_guest_code_nmi(void)
+ 
+ static void l1_guest_code(struct svm_test_data *svm, u64 is_nmi, u64 idt_alt)
+ {
+-	#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 
+ 	if (is_nmi)
+ 		x2apic_enable();
+ 
+ 	/* Prepare for L2 execution. */
+-	generic_svm_setup(svm,
+-			  is_nmi ? l2_guest_code_nmi : l2_guest_code_int,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, is_nmi ? l2_guest_code_nmi : l2_guest_code_int);
+ 
+ 	vmcb->control.intercept_exceptions |= BIT(PF_VECTOR) | BIT(UD_VECTOR);
+ 	vmcb->control.intercept |= BIT(INTERCEPT_NMI) | BIT(INTERCEPT_HLT);
+diff --git a/tools/testing/selftests/kvm/x86/svm_nested_vmcb12_gpa.c b/tools/testing/selftests/kvm/x86/svm_nested_vmcb12_gpa.c
+index a4935ce2fb99..b3f45035745f 100644
+--- a/tools/testing/selftests/kvm/x86/svm_nested_vmcb12_gpa.c
++++ b/tools/testing/selftests/kvm/x86/svm_nested_vmcb12_gpa.c
+@@ -9,14 +9,9 @@
+ #include "kvm_test_harness.h"
+ #include "test_util.h"
+ 
+-
+-#define L2_GUEST_STACK_SIZE 64
+-
+ #define SYNC_GP 101
+ #define SYNC_L2_STARTED 102
+ 
+-static unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ static void guest_gp_handler(struct ex_regs *regs)
+ {
+ 	GUEST_SYNC(SYNC_GP);
+@@ -30,28 +25,28 @@ static void l2_code(void)
+ 
+ static void l1_vmrun(struct svm_test_data *svm, gpa_t gpa)
+ {
+-	generic_svm_setup(svm, l2_code, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_code);
+ 
+ 	asm volatile ("vmrun %[gpa]" : : [gpa] "a" (gpa) : "memory");
+ }
+ 
+ static void l1_vmload(struct svm_test_data *svm, gpa_t gpa)
+ {
+-	generic_svm_setup(svm, l2_code, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_code);
+ 
+ 	asm volatile ("vmload %[gpa]" : : [gpa] "a" (gpa) : "memory");
+ }
+ 
+ static void l1_vmsave(struct svm_test_data *svm, gpa_t gpa)
+ {
+-	generic_svm_setup(svm, l2_code, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_code);
+ 
+ 	asm volatile ("vmsave %[gpa]" : : [gpa] "a" (gpa) : "memory");
+ }
+ 
+ static void l1_vmexit(struct svm_test_data *svm, gpa_t gpa)
+ {
+-	generic_svm_setup(svm, l2_code, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_code);
+ 
+ 	run_guest(svm->vmcb, svm->vmcb_gpa);
+ 	GUEST_ASSERT(svm->vmcb->control.exit_code == SVM_EXIT_VMMCALL);
+diff --git a/tools/testing/selftests/kvm/x86/svm_vmcall_test.c b/tools/testing/selftests/kvm/x86/svm_vmcall_test.c
+index b1887242f3b8..7c57fb7e6422 100644
+--- a/tools/testing/selftests/kvm/x86/svm_vmcall_test.c
++++ b/tools/testing/selftests/kvm/x86/svm_vmcall_test.c
+@@ -19,13 +19,10 @@ static void l2_guest_code(struct svm_test_data *svm)
+ 
+ static void l1_guest_code(struct svm_test_data *svm)
+ {
+-	#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	struct vmcb *vmcb = svm->vmcb;
+ 
+ 	/* Prepare for L2 execution. */
+-	generic_svm_setup(svm, l2_guest_code,
+-			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 
+ 	run_guest(vmcb, svm->vmcb_gpa);
+ 
+diff --git a/tools/testing/selftests/kvm/x86/triple_fault_event_test.c b/tools/testing/selftests/kvm/x86/triple_fault_event_test.c
+index f1c488e0d497..0d83516f4bd0 100644
+--- a/tools/testing/selftests/kvm/x86/triple_fault_event_test.c
++++ b/tools/testing/selftests/kvm/x86/triple_fault_event_test.c
+@@ -21,9 +21,6 @@ static void l2_guest_code(void)
+ 		     : : [port] "d" (ARBITRARY_IO_PORT) : "rax");
+ }
+ 
+-#define L2_GUEST_STACK_SIZE 64
+-unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ void l1_guest_code_vmx(struct vmx_pages *vmx)
+ {
+ 
+@@ -31,8 +28,7 @@ void l1_guest_code_vmx(struct vmx_pages *vmx)
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx));
+ 	GUEST_ASSERT(load_vmcs(vmx));
+ 
+-	prepare_vmcs(vmx, l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx, l2_guest_code);
+ 
+ 	GUEST_ASSERT(!vmlaunch());
+ 	/* L2 should triple fault after a triple fault event injected. */
+@@ -44,8 +40,7 @@ void l1_guest_code_svm(struct svm_test_data *svm)
+ {
+ 	struct vmcb *vmcb = svm->vmcb;
+ 
+-	generic_svm_setup(svm, l2_guest_code,
+-			&l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	generic_svm_setup(svm, l2_guest_code);
+ 
+ 	/* don't intercept shutdown to test the case of SVM allowing to do so */
+ 	vmcb->control.intercept &= ~(BIT(INTERCEPT_SHUTDOWN));
+diff --git a/tools/testing/selftests/kvm/x86/vmx_apic_access_test.c b/tools/testing/selftests/kvm/x86/vmx_apic_access_test.c
+index 1720113eae79..463f73aa9159 100644
+--- a/tools/testing/selftests/kvm/x86/vmx_apic_access_test.c
++++ b/tools/testing/selftests/kvm/x86/vmx_apic_access_test.c
+@@ -36,16 +36,13 @@ static void l2_guest_code(void)
+ 
+ static void l1_guest_code(struct vmx_pages *vmx_pages, unsigned long high_gpa)
+ {
+-#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	u32 control;
+ 
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+ 	GUEST_ASSERT(load_vmcs(vmx_pages));
+ 
+ 	/* Prepare the VMCS for L2 execution. */
+-	prepare_vmcs(vmx_pages, l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, l2_guest_code);
+ 	control = vmreadz(CPU_BASED_VM_EXEC_CONTROL);
+ 	control |= CPU_BASED_ACTIVATE_SECONDARY_CONTROLS;
+ 	vmwrite(CPU_BASED_VM_EXEC_CONTROL, control);
+diff --git a/tools/testing/selftests/kvm/x86/vmx_apicv_updates_test.c b/tools/testing/selftests/kvm/x86/vmx_apicv_updates_test.c
+index 80a4fd1e5bbb..f9b88a6f6113 100644
+--- a/tools/testing/selftests/kvm/x86/vmx_apicv_updates_test.c
++++ b/tools/testing/selftests/kvm/x86/vmx_apicv_updates_test.c
+@@ -31,15 +31,13 @@ static void l2_guest_code(void)
+ 
+ static void l1_guest_code(struct vmx_pages *vmx_pages)
+ {
+-#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	u32 control;
+ 
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+ 	GUEST_ASSERT(load_vmcs(vmx_pages));
+ 
+ 	/* Prepare the VMCS for L2 execution. */
+-	prepare_vmcs(vmx_pages, l2_guest_code, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, l2_guest_code);
+ 	control = vmreadz(CPU_BASED_VM_EXEC_CONTROL);
+ 	control |= CPU_BASED_USE_MSR_BITMAPS;
+ 	vmwrite(CPU_BASED_VM_EXEC_CONTROL, control);
+diff --git a/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c b/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
+index a2eaceed9ad5..6d88c54f69fa 100644
+--- a/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
++++ b/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
+@@ -25,15 +25,11 @@ static void l2_guest_code(void)
+ 
+ static void l1_guest_code(struct vmx_pages *vmx_pages)
+ {
+-#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+-
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+ 	GUEST_ASSERT(load_vmcs(vmx_pages));
+ 
+ 	/* Prepare the VMCS for L2 execution. */
+-	prepare_vmcs(vmx_pages, l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, l2_guest_code);
+ 
+ 	/*
+ 	 * L2 must be run without unrestricted guest, verify that the selftests
+diff --git a/tools/testing/selftests/kvm/x86/vmx_nested_la57_state_test.c b/tools/testing/selftests/kvm/x86/vmx_nested_la57_state_test.c
+index f13dee317383..75073efa926d 100644
+--- a/tools/testing/selftests/kvm/x86/vmx_nested_la57_state_test.c
++++ b/tools/testing/selftests/kvm/x86/vmx_nested_la57_state_test.c
+@@ -27,8 +27,6 @@ static void l2_guest_code(void)
+ 
+ static void l1_guest_code(struct vmx_pages *vmx_pages)
+ {
+-#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	u64 guest_cr4;
+ 	gpa_t pml5_pa, pml4_pa;
+ 	u64 *pml5;
+@@ -42,8 +40,7 @@ static void l1_guest_code(struct vmx_pages *vmx_pages)
+ 	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
+ 	GUEST_ASSERT(load_vmcs(vmx_pages));
+ 
+-	prepare_vmcs(vmx_pages, l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, l2_guest_code);
+ 
+ 	/*
+ 	 * Set up L2 with a 4-level page table by pointing its CR3 to
+diff --git a/tools/testing/selftests/kvm/x86/vmx_preemption_timer_test.c b/tools/testing/selftests/kvm/x86/vmx_preemption_timer_test.c
+index 1b7b6ba23de7..eb8021c33cd4 100644
+--- a/tools/testing/selftests/kvm/x86/vmx_preemption_timer_test.c
++++ b/tools/testing/selftests/kvm/x86/vmx_preemption_timer_test.c
+@@ -66,8 +66,6 @@ void l2_guest_code(void)
+ 
+ void l1_guest_code(struct vmx_pages *vmx_pages)
+ {
+-#define L2_GUEST_STACK_SIZE 64
+-	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	u64 l1_vmx_pt_start;
+ 	u64 l1_vmx_pt_finish;
+ 	u64 l1_tsc_deadline, l2_tsc_deadline;
+@@ -77,8 +75,7 @@ void l1_guest_code(struct vmx_pages *vmx_pages)
+ 	GUEST_ASSERT(load_vmcs(vmx_pages));
+ 	GUEST_ASSERT(vmptrstz() == vmx_pages->vmcs_gpa);
+ 
+-	prepare_vmcs(vmx_pages, l2_guest_code,
+-		     &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++	prepare_vmcs(vmx_pages, l2_guest_code);
+ 
+ 	/*
+ 	 * Check for Preemption timer support
 -- 
 2.54.0.1099.g489fc7bff1-goog
 
