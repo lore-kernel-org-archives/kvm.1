@@ -1,56 +1,56 @@
 Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D741F91D6
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494F1242D9D
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781052831; cv=none; b=Gz/syrAeAy/QmVkyBoN7D05dRfhVIUQ1AIvOAjjwRSk1+J3Sk3ksaBatDvFe71p+DuWE0xbyoyBymEnX+CigPuLVUVNsSC+zcLhkteNxsUHABEWUFz6VXvw2kfkDRCj+wQvokLy+rV0asASJZ/V1b93QPzVcJkDdFl2Y09Ar3Mk=
+	t=1781052831; cv=none; b=X87swUjlHhfuZr5/t+WCmrZzZA0Coxz8W/vsWnROdM4R2oduj0ZJwcp4YGeoJ5fj4YiD8Mx8ibR9rHYsQKpeeRD81syjsbdGIrVFISeqUPshQBThDm8zh6c59xwcIfywlA7vmOnu6v7DUF2dDqXFKI4lL6ipuZsUi6Aw5SYqLkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781052831; c=relaxed/simple;
-	bh=vIl+HWefkeqsv1qtuVtCcBVofBdfj9obESA6FgCgLp4=;
+	bh=zND3vvwQyaPgYriOhaRZZgPXLGs7NEXIBc9VDNPOrfQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HJn91W7ddrCIFVDgaYBAkTafZIYJWXMJeh9c5h6dcjAovi0x/GFY+GFFlmkt4j4zct1QV9L7GkY+8Y1F2UAT3tT1VGk1Pi5I6PEznt7aSuBYJyoZ/RqWIGIYwHZ+XPtLacy2eQ5LSBx4GUELf7McIxww8VxFStQbDmvjLREWVvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L+Sk0aaP; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=JDGs1PK1YMzQxPOS0WJj8MrkgMXghnhtxLPHkFgLG3/BYcGhfrNi9RCvJg6X++MtlAPABgtWuotIXrg4xbk/+lizh2/kfENRt63+LwPY0fZAgdroVJEwuv/+y2ppT/tOiYp9Wfs2yecaH8t5pj+5EaMdCsj04dnsXFutzDcvXN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O6FCB+6v; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L+Sk0aaP"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c85dc345ac8so3076452a12.1
-        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:53:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O6FCB+6v"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8581f7723aso3546166a12.0
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:53:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781052827; x=1781657627; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781052830; x=1781657630; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=8NGdw5RJ6bJAu+NqY9JKZh9Q+XXOC2uDO6XCtjvqorw=;
-        b=L+Sk0aaPcgzNwZK6SXQ0EuPHiAGYHDVreLjDsb41JIuqi60SCm4ejLy8Q/1ZGBZ8PY
-         32JkRSxwyTFfPAyoB9rgRPMZbixfbORgddOZ4go5GQfXCJPD193r8V6Zk7UQY2CgkVrR
-         gfF0Gn7GKctU6iaKSQpUtHYzxyJ8UoYpsDRnnIPwPg7TlHyzqxCzAEwzuWTrORACqSMZ
-         PM/XO50ey6TxGhGQqO6rqQC0IZKu0WKBgZbs4CiR78xi7Yu0mY52v28B8k+OjZ6QUAny
-         vFwmu6Kk7B06YOzgxwaLVER/v97Cpc2wsDSEaDvTJb0TXnH/m+RCnG6HmYqQpat9PHkF
-         4KSQ==
+        bh=724RgwNGECYZAQrR7huttJyeJ2iqdlEoMMuWqlZB/zc=;
+        b=O6FCB+6vsNr2DF7lR3C6Ac+hDVdNlwAy4h7nxJ5iHRCIOpKNGlAgWrvwUHpP1VRvSJ
+         PjL+mKQZIJTnkrk1W8IyH+Y37EQnIZS+20ie1ZOaqAglfiKULWWaui+vHdBCm9AbQYUQ
+         nVds6LJ2oQ9W0/oJ+CWg1A/4jHvO9xPkJgXSR//3nOnEt9c6y395Pv4iVDN6wa+A9Gsu
+         aQFw8ULn5dit88wAVHD3nhX59mwjnuIEvi1uPvQ7yVUv4Vph4WPwX6NUXi0QvKSCJUPx
+         JgDOyLzF0k4cAuVkjVr28o4f+Qra3zUrm86DjDivY0y7dNbKqpB7NvI9y/dDIyCzkrkq
+         7Gbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781052827; x=1781657627;
+        d=1e100.net; s=20251104; t=1781052830; x=1781657630;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8NGdw5RJ6bJAu+NqY9JKZh9Q+XXOC2uDO6XCtjvqorw=;
-        b=h0DX/DDjZd9l68N7lW3NEkY8yReTOSb6h5ci5YN6NC+okVplXsC0mtlUuGUxfwrFY2
-         NW/zGSoGuGRvI0LAWSA2WuoFMdauiJQPAbLMkNLi1kwL8QO0pJHv/p4zal7v6vx8UZNn
-         mv+vdJwSdMh2sp2mWv7nF71gd0m8Z6eCzaX9oQoITacFMi44tf8L6nh6LvQaFgSMvWRN
-         Hsnb2cZoHrKcwOv4vVikB7udPE+XGye3Udpy0xscym4BwaZRr7isu0ZLYLQTQAuYLJMp
-         SE+XrtJe2Qf1wFFVhJkc+xFoCt+Aqsqsa8LdYJvFMCF0joLCnfcdmwH187NVs8Q01oAv
-         lQ1A==
-X-Forwarded-Encrypted: i=1; AFNElJ9LLg9Hmiv5ic28pp2PW2DETDgxqPi0isFCHdSWvq0PMJZ7IFFwZUkPHnoA5ZmZ5hK6ln8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEAuo4kuNhsRlDF653G2Vlkc+elXyx8L3P37u/YJczVp5PoPTM
-	P3nlyaf2Yi6VYbaRGqCqowNd12iZAUsyfH1cwOJ3Yl4xv2gnttqk2LiCLvxR9KTHQsG1w0CpjbN
-	Pj+nZmQ==
-X-Received: from pfbhk10.prod.google.com ([2002:a05:6a00:878a:b0:842:723a:7919])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2351:b0:842:569d:b105
- with SMTP id d2e1a72fcca58-842b0f8bd8bmr25284333b3a.34.1781052826595; Tue, 09
- Jun 2026 17:53:46 -0700 (PDT)
+        bh=724RgwNGECYZAQrR7huttJyeJ2iqdlEoMMuWqlZB/zc=;
+        b=OgJ0zTOhtO0mkxfXJHIK9RcdenTsdL8Axrd381efvNxYfFwixhDuFPsHiAabFavKA1
+         Az/C80CAEX6Dieo+fyq0zFLc6by0Eh+2PuvCek3UgLNIYk+svxByowCM/tHfUHyuhdix
+         q33bOBSkxzDQ7ZFjrJMThIMVVY6wbYDoUWOHVDWxY/l6XX2iH++BkAdtAVEqRlxBTWkV
+         d5M+NIHW20t2EAcu3n5fK3kziwGfAfaobsojkYxEiwuNkpxEIZ5oUt2ERpo7xEmx+QIa
+         PwsfokccasAYDqPgyc039DEfFB4SWOaKdUnHu9q+/RNQM9z+AIF18LWj/4sixCn/09de
+         3Y0w==
+X-Forwarded-Encrypted: i=1; AFNElJ/fsNZ63w0DHaQT288aeifnXrk43dOqylCkh8GOcUZRFtZaZtLnDSNRI3plYuN9Aw4d+9M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwD6luryqMuindqylJOQ+g9aMnW82b4wmxzNNsy6cZf77Q+5tXb
+	vZg2flK/WRrhtWxyPJzUt+AwIvlC7oS9+Bm/KvCaTrMOCIYq7Icv7H/2T/4/WbqEyYrHXEyfx+i
+	AfXSzTQ==
+X-Received: from pfw3.prod.google.com ([2002:a05:6a00:a263:b0:82f:4d28:b8c5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4390:b0:82c:d7c4:4c57
+ with SMTP id d2e1a72fcca58-842b0e73596mr23804989b3a.19.1781052829531; Tue, 09
+ Jun 2026 17:53:49 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue,  9 Jun 2026 17:53:24 -0700
+Date: Tue,  9 Jun 2026 17:53:26 -0700
 In-Reply-To: <20260610005338.2967132-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260610005338.2967132-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
-Message-ID: <20260610005338.2967132-5-seanjc@google.com>
-Subject: [PATCH v6 04/18] KVM: selftests: Add helper to generate random u64 in
- range [min,max]
+Message-ID: <20260610005338.2967132-7-seanjc@google.com>
+Subject: [PATCH v6 06/18] KVM: selftests: Add helper to get host IRQ from
+ device MSI-X for IRQ bypass test
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Sean Christopherson <seanjc@google.com>
@@ -73,63 +73,105 @@ Cc: Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>,
 	Josh Hilke <jrhilke@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Josh Hilke <jrhilke@google.com>
+From: David Matlack <dmatlack@google.com>
 
-Introduce kvm_random_u64_in_range(state, min, max). This function
-returns a random u64 in the inclusive range of [min, max] using a struct
-kvm_random_state.
+Introduce proc_util.c and proc_util.h to house utility functions for
+interacting with the proc filesystem.
+
+Add vfio_msix_to_host_irq(), which parses /proc/interrupts, to get the host
+Linux IRQ for a given VFIO device BDF and MSI-X vector.
+
+This helper will be used by the eventfd IRQ test to print the host IRQ
+number when triggering IRQs via VFIO device, e.g. to aid in debugging if
+the test fails.
 
 Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
+Co-developed-by: Josh Hilke <jrhilke@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
+[sean: massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../testing/selftests/kvm/include/test_util.h  |  3 +++
- tools/testing/selftests/kvm/lib/test_util.c    | 18 ++++++++++++++++++
- 2 files changed, 21 insertions(+)
+ tools/testing/selftests/kvm/Makefile.kvm      |  1 +
+ .../testing/selftests/kvm/include/proc_util.h |  9 +++++
+ tools/testing/selftests/kvm/lib/proc_util.c   | 40 +++++++++++++++++++
+ 3 files changed, 50 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/include/proc_util.h
+ create mode 100644 tools/testing/selftests/kvm/lib/proc_util.c
 
-diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
-index 44c0104d60ac..d64c8a228207 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -134,6 +134,9 @@ static inline u64 kvm_random_u64(struct kvm_random_state *state)
- 	return ((u64)kvm_random_u32(state) << 32) | kvm_random_u32(state);
- }
- 
-+u64 kvm_random_u64_in_range(struct kvm_random_state *state, u64 min,
-+			    u64 max);
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 1339228cbf53..90a370ed99f2 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -11,6 +11,7 @@ LIBKVM += lib/kvm_util.c
+ LIBKVM += lib/lru_gen_util.c
+ LIBKVM += lib/memstress.c
+ LIBKVM += lib/guest_sprintf.c
++LIBKVM += lib/proc_util.c
+ LIBKVM += lib/rbtree.c
+ LIBKVM += lib/sparsebit.c
+ LIBKVM += lib/test_util.c
+diff --git a/tools/testing/selftests/kvm/include/proc_util.h b/tools/testing/selftests/kvm/include/proc_util.h
+new file mode 100644
+index 000000000000..704839b6d7af
+--- /dev/null
++++ b/tools/testing/selftests/kvm/include/proc_util.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef SELFTEST_KVM_PROC_UTIL_H
++#define SELFTEST_KVM_PROC_UTIL_H
 +
- enum vm_mem_backing_src_type {
- 	VM_MEM_SRC_ANONYMOUS,
- 	VM_MEM_SRC_ANONYMOUS_THP,
-diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
-index e98ca7ef439c..e208a57f190c 100644
---- a/tools/testing/selftests/kvm/lib/test_util.c
-+++ b/tools/testing/selftests/kvm/lib/test_util.c
-@@ -42,6 +42,24 @@ u32 kvm_random_u32(struct kvm_random_state *state)
- 	return state->seed;
- }
- 
-+/* Returns a random u64 in the inclusive range [min, max] */
-+u64 kvm_random_u64_in_range(struct kvm_random_state *state, u64 min,
-+			    u64 max)
++#include <stdint.h>
++
++unsigned int vfio_msix_to_host_irq(const char *vfio_device_bdf, int msix);
++
++#endif /* SELFTEST_KVM_PROC_UTIL_H */
+diff --git a/tools/testing/selftests/kvm/lib/proc_util.c b/tools/testing/selftests/kvm/lib/proc_util.c
+new file mode 100644
+index 000000000000..84d30f055a0a
+--- /dev/null
++++ b/tools/testing/selftests/kvm/lib/proc_util.c
+@@ -0,0 +1,40 @@
++// SPDX-License-Identifier: GPL-2.0
++#include "kvm_util.h"
++#include "test_util.h"
++#include "proc_util.h"
++
++static FILE *open_proc_interrupts(void)
 +{
-+	u64 value;
-+	u64 range;
++	FILE *fp;
 +
-+	TEST_ASSERT(min <= max, "PEBKAC, min = 0x%lx, max = 0x%lx", min, max);
++	fp = fopen("/proc/interrupts", "r");
++	TEST_ASSERT(fp, "fopen(/proc/interrupts) failed");
 +
-+	value = kvm_random_u64(state);
-+
-+	range = max - min;
-+	if (range == ULLONG_MAX)
-+		return value;
-+
-+	return min + (value % (range + 1));
++	return fp;
 +}
 +
- /*
-  * Parses "[0-9]+[kmgt]?".
-  */
++unsigned int vfio_msix_to_host_irq(const char *device_bdf, int msix)
++{
++	char search_string[64];
++	char line[4096];
++	int irq = -1;
++	FILE *fp;
++
++	fp = open_proc_interrupts();
++
++	snprintf(search_string, sizeof(search_string), "vfio-msix[%d]", msix);
++
++	while (fgets(line, sizeof(line), fp)) {
++		if (strstr(line, device_bdf) && strstr(line, search_string)) {
++			TEST_ASSERT_EQ(1, sscanf(line, "%d:", &irq));
++			break;
++		}
++	}
++
++	fclose(fp);
++
++	TEST_ASSERT(irq != -1, "Failed to locate IRQ for %s %s", device_bdf,
++		    search_string);
++	return (unsigned int)irq;
++}
++
 -- 
 2.54.0.1099.g489fc7bff1-goog
 
