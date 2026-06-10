@@ -1,109 +1,161 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571A83451CC
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 22:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0C637C918;
+	Wed, 10 Jun 2026 23:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781130200; cv=none; b=HiTBCe3RkzeDs3e/mO3fbPTflVnQ+/Lhyl8bjDnBIg5u/EmaFqQ5hLBUidfSCVdZL9UuPBu2sSoTtVDuRwpvzA1xxsGSBKtLJ17LKmN/kI62ZVBf+YUzAxTLdXaz8FJtcsMCu7XERtn6TwnYCsO1xnXqTwJ99mCqXzWFVTLQGBk=
+	t=1781135134; cv=none; b=lNwHsafpqtbekquGTV/bXo8A8x89EuI/INDlgFSWjz7OnrO3D+ggmf7EYhsy1DZufBFPMwVo8bhVXherb3uoIKgMg5nZhZRAM87k5LToQV2ahBASCWN1iqAJ9Ejav6mLp/dmlKc6XFoXEQgPpv29kh2jJuQiUVhnQDontG5CdNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781130200; c=relaxed/simple;
-	bh=qAjd2/KUhCE05aLK86qBIKOiIpOhNXWGC/5z6iGv760=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZJmKBUHuSXYAIBQTU7QzVEhRlairulx3hRurZHI2KPGnIApMFCryPeuy5QMbqsOjnT6a2y2zhz7WST6F+/Z8sAN8FNcrxXQGISmEdwm8NF6IXJ2VADVlyETVjs2fj8mMvgaGUIyEEVIqBKvb2vOuDFwL8TJGX7GhsVx18kdyp1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v/y78KOp; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781135134; c=relaxed/simple;
+	bh=M+YUlXtymD9rTEjCDvoSC/mwh+dWiVT8OwL3uxvAT2I=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=bQYk82i4OCRW9E16JpGWFML9LdZ54bLdgLSgjB9xtU7WK9K/nBgrA7j4KvwJSfaBj4FoYXsc+9KWM4EnlhfaaHqRa6F/yaSt28DIHa0PwKJzg3yUIDwSXoB02aHUB6F8Qlie6y/lZglXiFooU1W8OXcEboAwfwDN1GQ3lImxd9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=SrCrCNGx; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v/y78KOp"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf55c3f44aso2207005ad.0
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 15:23:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781130198; x=1781734998; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=98nQEvZDyKKcPdn3AcVzWFv9XYmn8L+0P9K+2v5L7Fk=;
-        b=v/y78KOpMM8Epdinj0Xd1ajiQGJ9nvLmAuLlvnNN5mC4ejiucVZcg1iGoZf/12aAoa
-         ten+bmESuXsdcP+YVqnpO7vMWHm7dOm7LxSCrDZH9Qm/3AtgtBAVQhA7/N8RirUKtbxd
-         wyiW5hY2MiniyOnEqEKUh6fBTZPo2FvpttmZylPFqs9nh9mE9EnwJ6LKdSSwItCt2xiF
-         FBbGo4j9qn8cAH1sqgrtZ8Kfs6vyBwlVdV2l9LiYQskgBRd4w2or4xutpD/CTi+xGa6s
-         riN21OgqjBNctSNpy/6f2xk4rYgNsXb8fGoIStUcoB31NggKGLXJVp71Om83RhR26I4E
-         Qv8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781130198; x=1781734998;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=98nQEvZDyKKcPdn3AcVzWFv9XYmn8L+0P9K+2v5L7Fk=;
-        b=ZidOSJJZK8v9kuuS4OnuVfCm7VcxfBQJf+IBPZdP9NuOXatf1dS9bmMmsSC4trZvx6
-         sNqrGqWa/eG9cfD6JTllIkOkX3OrKklhITJIoEbT7tM0GpzdAmvDFWm1IliP0sy4WTmM
-         HrnnQmbaV+0I28zQ9zJNoPSeTL3XoKI9ZENWHLzQ1pWoHJwU7G+RgI6gtABGaG7DOsJh
-         JRV7ji4UFLsfejK/hJEGhgaxiSw+SAmbGMjNB70l6aBHcvCaGtQstdQ1WUHRS94OS69G
-         INPUi9m7Ir70S157W82NL9qeY2tWtJne78ZLHDRADRibCxu5VPQ11lVZcCUPOfd7q34l
-         bG9w==
-X-Forwarded-Encrypted: i=1; AFNElJ8aViizJCO34AX2JUDkBf0Y5KZXuelXCe8DH9yF1MQZArZDzoJR+M2w3O+NY902rmjv3u8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAA7oA+9yVWWUnWkCnwPeyIgumvVqN83QeJXgtAiJViuU/Gh9Q
-	vVDJ/Qo8tDR8uPvew7bEi0fQjWMnPZPiyW7+/MCznbgZh2nq6owaCfyopjCwgi9vuqzdpaCVBYk
-	wZ1MC/w==
-X-Received: from plpv10.prod.google.com ([2002:a17:902:9a0a:b0:2bf:224f:daf])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c6f:b0:2bf:1aa9:6c8a
- with SMTP id d9443c01a7336-2c2dce83fd5mr4806375ad.12.1781130197572; Wed, 10
- Jun 2026 15:23:17 -0700 (PDT)
-Date: Wed, 10 Jun 2026 15:23:16 -0700
-In-Reply-To: <20260522-gmem-inplace-conversion-v7-6-2f0fae496530@google.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="SrCrCNGx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Content-Type:Mime-Version:Subject:From:Date:
+	Message-Id:To; bh=0UgYFdXvIJZ0/2u/k0FRzMTYcQqPIV/APvU/sucKQcs=;
+	b=SrCrCNGxakQZx7TPvwRY3ckSDuhDzRnSRWnGgoYcXosoUN1DcAtoXz0dOjk4+u
+	2IQQeW4IrK2zuuyEXpRBNsVJD8EihFeGHgxjG8/oBta6u12wYJptRX56MiVVKHZV
+	3fpJaABwbGdh06n6MLJPW4nRELX/Fp9tZv9bgXIXMFIJQ=
+Received: from smtpclient.apple (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wAHd6vq9ilqc7JjCg--.30065S3;
+	Thu, 11 Jun 2026 07:44:42 +0800 (CST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com> <20260522-gmem-inplace-conversion-v7-6-2f0fae496530@google.com>
-Message-ID: <ainj1B4jB_XihoHZ@google.com>
-Subject: Re: [PATCH v7 06/42] KVM: guest_memfd: Update kvm_gmem_populate() to
- use gmem attributes
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
+Subject: Re: [PATCH] KVM: SVM: Clear dummy V_IRQ in vmcb01 when deactivating
+ AVIC
+From: xinguo <m18700951735@163.com>
+In-Reply-To: <ailce3eU59J4bv6x@google.com>
+Date: Thu, 11 Jun 2026 07:44:31 +0800
+Cc: pbonzini@redhat.com,
+ tglx@kernel.org,
+ mingo@redhat.com,
+ bp@alien8.de,
+ dave.hansen@linux.intel.com,
+ x86@kernel.org,
+ hpa@zytor.com,
+ kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5230F158-B766-4BDD-8D94-FFE6AA46BF8C@163.com>
+References: <20260610070512.85463-1-m18700951735@163.com>
+ <ailce3eU59J4bv6x@google.com>
+To: Sean Christopherson <seanjc@google.com>
+X-Mailer: Apple Mail (2.3776.700.51)
+X-CM-TRANSID:_____wAHd6vq9ilqc7JjCg--.30065S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCr13Zw4fWr4DXryUZFy7Wrg_yoWrXw18pF
+	Z3GanFvr4DX3Z7tryUKa1Dury7Aa95WF18GFykGr13A34SkF12gF92ywnY9F90kFy8Gw10
+	vw1jv3yrua4YyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRk9N-UUUUU=
+X-CM-SenderInfo: jpryliyqzvilitv6il2tof0z/xtbCwgrcI2op9upq8wAA3x
 
-On Fri, May 22, 2026, Ackerley Tng wrote:
-> Update the guest_memfd populate() flow to pull memory attributes from the
-> gmem instance instead of the VM when KVM is not configured to track
-> shared/private status in the VM.
-> 
-> Rename the per-VM API to make it clear that it retrieves per-VM
-> attributes, i.e. is not suitable for use outside of flows that are
-> specific to generic per-VM attributes.
-> 
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Fair point, my changelog reasoning is incomplete and I owe you data
+rather than speculation.
 
-We should squash this in with the previous patch, i.e. wire up PRIVATE to gmem
-in a single patch (sans the ioctl support).  I had a hell of time figure out how
-the range-based lookup was supposed to work when revisiting the "wire up" patch,
-until I realized populate() was handled in the next patch.
+What I actually trigger is a workload that repeatedly toggles AVIC
+on and off, i.e. avic_activate_vmcb() / avic_deactivate_vmcb() get
+called many times in quick succession.  Under that load the Windows
+guest blue screens with STATUS_INTEGER_DIVIDE_BY_ZERO.
+
+=46rom the dump, Windows takes the bugcheck while dispatching an
+interrupt: an unhandled #DE is raised inside the interrupt dispatch
+path and ultimately reported by nt!KiInterruptHandler.  The faulting
+RIP saved in the trap frame is:
+
+	je   nt!KiInterruptSubDispatchNoLockNoEtw+0xd5
+
+which is a conditional branch, not a div/idiv.  In other words, the
+guest is being vectored through IDT entry 0 (#DE) at an instruction
+boundary that has nothing to do with division, which is consistent
+with the CPU delivering vector 0 from KVM rather than the guest
+actually executing a faulting div.  That is what made me suspect a
+stale dummy V_IRQ (vector=3D0, V_IRQ=3D1) becoming effective once AVIC
+is disabled.
+
+I agree this needs to be backed by traces, not just by that
+hypothesis.  Let me instrument svm_set_vintr(), svm_clear_vintr(),
+the intercept-recalc paths, and avic_deactivate_vmcb() to capture
+vmcb01's int_ctl / int_vector / INTERCEPT_VINTR / is_guest_mode()
+at each transition, reproduce the crash, and come back with the
+actual call sequence that leaves vmcb01 in a state where V_IRQ
+becomes effective once AVIC is disabled.
+
+Please hold off on this patch in the meantime; I'll resend (or drop
+it) based on what the trace shows.
+
+Thanks for the review.
+
+> 2026=E5=B9=B46=E6=9C=8810=E6=97=A5 20:45=EF=BC=8CSean Christopherson =
+<seanjc@google.com> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> On Wed, Jun 10, 2026, xin guo wrote:
+>> When KVM requests an IRQ window via svm_set_vintr(), it programs a
+>> dummy VINTR with int_vector=3D0 and V_IRQ=3D1 into the current VMCB.
+>> These int_ctl fields are documented to be ignored while AVIC is
+>> enabled, so the dummy VINTR is harmless during AVIC operation.
+>>=20
+>> However, avic_deactivate_vmcb() only clears AVIC_ENABLE_MASK and
+>> X2APIC_MODE_MASK, and does not clear the VINTR injection state. Once
+>> AVIC is disabled, hardware honors V_IRQ again and injects vector 0
+>> into the guest on the next VMRUN. Windows guests observe this as a
+>> spurious interrupt and crash, e.g. with =
+STATUS_INTEGER_DIVIDE_BY_ZERO.
+>=20
+> Can you provide a reproducer, or at least instructions to reproduce?  =
+This feels
+> like we're treating a symptom, not the underlying bug.  And while I =
+can definitely
+> see KVM leaving a stale V_IRQ_MASK in vmcb01, I don't see how that can =
+happen
+> while also clearing INTERCEPT_VINTR, as the only place INTERCEPT_VINTR =
+is cleared
+> in vmcb01 is svm_clear_vintr(), which also purges V_IRQ_MASK.
+>=20
+> 	svm_clr_intercept(svm, INTERCEPT_VINTR);
+>=20
+> 	/* Drop int_ctl fields related to VINTR injection.  */
+> 	svm->vmcb->control.int_ctl &=3D ~V_IRQ_INJECTION_BITS_MASK;
+>=20
+>> Fix this by also clearing V_IRQ_INJECTION_BITS_MASK from vmcb01's
+>> int_ctl in avic_deactivate_vmcb(), so that no stale dummy VINTR is
+>> left behind when AVIC transitions from enabled to disabled.
+>>=20
+>> Signed-off-by: xin guo <m18700951735@163.com>
+>> ---
+>> arch/x86/kvm/svm/avic.c | 4 +++-
+>> 1 file changed, 3 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+>> index cdd5a6dc646f..b042c3f5f90e 100644
+>> --- a/arch/x86/kvm/svm/avic.c
+>> +++ b/arch/x86/kvm/svm/avic.c
+>> @@ -257,7 +257,9 @@ static void avic_deactivate_vmcb(struct vcpu_svm =
+*svm)
+>> {
+>> 	struct vmcb *vmcb =3D svm->vmcb01.ptr;
+>>=20
+>> -	vmcb->control.int_ctl &=3D ~(AVIC_ENABLE_MASK | =
+X2APIC_MODE_MASK);
+>> +	vmcb->control.int_ctl &=3D ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK =
+|
+>> +				V_IRQ_INJECTION_BITS_MASK);
+>> +
+>> 	vmcb->control.avic_physical_id &=3D =
+~AVIC_PHYSICAL_MAX_INDEX_MASK;
+>>=20
+>> 	if (!is_sev_es_guest(&svm->vcpu))
+>> --=20
+>> 2.27.0
+>>=20
+
