@@ -1,55 +1,55 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447B9335BA
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1E71A3164
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781051435; cv=none; b=O0QaHCdX1XI+ob8Xswh6JFkMd+2g2/hNTKoA8boYDzlfMr7yavgFvxrr5sjcCOT49+szsHsHgMyoP7/46WgHqs7nr/zc5EyhB4+iTDM82sqKLtmtsV97NQOq4uIEJFpi5wQoRjK+APju5/sm0U8KqDN+YXHw/0pZsSM3lK4Je0k=
+	t=1781051437; cv=none; b=pbQZgft1GK9DdCUseCGxjTZgUXeEbdsar4Fsh8As/lXIXuURF22MolGGkWAlUUGzTMHdJoJoeOTbTZx8llno9y9l0Di/jATmcTf+wsPkbAzHacYX3LccqbAOyhYrA6S6QmGxEuk0MCXjVa1uElwiluwuFVAMKDaHKoiUF80CgVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781051435; c=relaxed/simple;
-	bh=JhITAjbEXL61jBsabwwqBTvuTP7jx4PZiaHnLoKzjsY=;
+	s=arc-20240116; t=1781051437; c=relaxed/simple;
+	bh=UVOUK190TAot1BYKdHOpM94CfG7FvG1AXFAa3WA4gPg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=h/+UQd+wbbh+5Eu4GknTLdFqvGnrt/ixSf3EAZpH2ljBdY2iIVnGqeC9ZjTA0agRBBObjB9JDyMBf1ssdyeMVdMnLr6Cl4mjcNAvgaj+Zy5LtJ9M/K8D39Uaz09nGA5ThYUcl6PLrKFZ5z3zT1eSAyt0b3ypuv17hVDGgEHXaxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jp+CKQGc; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=oGxD3VqUsWitN2+h8xnP25ukcLJcjX8A7HhAZRxiPrP++F1BcoifXMqGGEWAeheefVBsz/dmdLDgLwfjXd5tnnp5uLEj4pEYXC2HwTpIbAnaSB/rYZU/vs4fCDVUQRU9pVgj6iodJAHtYILPntNRuDO/qgkuQRyayvVg8+LEX1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XNf9bl7h; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jp+CKQGc"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c10cd7df22so81939355ad.2
-        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:30:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XNf9bl7h"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c2a4babe45so7199475ad.2
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:30:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781051434; x=1781656234; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781051435; x=1781656235; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=aaCRfVH8CKZcSVl6mmM7CvGswcE0rcOuOdeUfo9Cnrw=;
-        b=jp+CKQGcX0YCEn8LHuc4pq3GYuB9zlnddezbdmI8xRI5gL7Cdhs/X8d3bJOfUlnrmK
-         qWmQ39cJKsMxUYqyRfML+y3v6Ptgz2dHJt86b2wyVBdrcTSCLsGBtycOrhYJE2y+rhaz
-         f0zKICpWlp/OYRW4iCz/6+Cnm0doOds5SnlCyMfRssgr9teQH1tkqxB0O6w5E12hxnjX
-         a1dI3rGcxewe6sk/AYlmSIIg/eB0cdW/cLFQkjDabn24d5ow6J5sC0Jnk7ttdQZSCi+u
-         FwtIisZ0tAHxtEK3oe0JGA7DV0psa/+GWAHV7If6udFr8nAzl/5HTQrrJO/r7XV3YVAA
-         QAGA==
+        bh=uoaeZM2cBi70aDozoJDMHRLADhXkQUKeba0NLjqMBPs=;
+        b=XNf9bl7hUBCpBfTfVAKFmiK0hWvF1ywYc97j4srn6FyHE2+E37yZVg3EiW9HbUTXTh
+         KaQM8n2zA6pDdlovZu25OfhUUG6SnwmhYfbw4llZaG34xyBDDq8/ik7hw1XeFJb90Oej
+         niBFLQMUNZ5pYQzZV14Rs/OnqM6h1AQtgJskBq6jhU7q168PBy1NjGcrwRXtdu4N3hJY
+         NFUNiRtclmoxWXNkHIUF190cIXyDlcWgeH+0WRQIeFHUXk8qFeAm3ZxAKWWMH+LgI7D5
+         qsLCiKdAv4qIlYJR3yrhQiMYdyscU0pFXCqRUt1wQcCWc0gvUP0WCNLWJj4YIK1UlWRf
+         k1PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781051434; x=1781656234;
+        d=1e100.net; s=20251104; t=1781051435; x=1781656235;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aaCRfVH8CKZcSVl6mmM7CvGswcE0rcOuOdeUfo9Cnrw=;
-        b=HZQEu36Q1+dYnCXid39xvUYy3Gz+av7dZKWcBxTHBmtSDZgtxSy9RCD6IZlLEbzI94
-         j8zm27MiGa3oC8AiuUr8X55Jn8RY+k7kotrnF20SYJ1a9cnjUKR0ONfAQOXqvtx2OX3p
-         eIAIL1ITI52e0giafHHeAwmM9dD/qJDAthJxDPz5OwDPRduOzvDxGc0610hvc/IySV7F
-         i+8ZvfTEG3GdkI4ConZMNhL4R33rNaZfv5VT3LVsCEmZTmKqDGkKBglxJGZ5KYOYgdSC
-         xagAA2k6DrkrwDS4dt7hAUIaR8uoy9vvbTTBn4Dr8hH3pk32NWWfzaqGETKMJLdC0nEV
-         8gcA==
-X-Gm-Message-State: AOJu0YwdQVvn1VilpsHF+jXu6EL9d1exxvIeGxtCN1Vv8qM5MuhTXflO
-	/qMuJlvZ5Xg5nOraGKb5PIc05mP2x9e7vRk7Ubu0E//cAZ3NRPW3hPmeH+rHs+OPQjzvvogd9rM
-	nsu8Lkw==
-X-Received: from plbkv13.prod.google.com ([2002:a17:903:28cd:b0:2bd:55dc:a132])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5d2:b0:2c0:cb90:1dfc
- with SMTP id d9443c01a7336-2c1e8219fccmr270263525ad.12.1781051433467; Tue, 09
- Jun 2026 17:30:33 -0700 (PDT)
+        bh=uoaeZM2cBi70aDozoJDMHRLADhXkQUKeba0NLjqMBPs=;
+        b=jticsur3gbtE2xWrdL+AwxH09kogGJwkJkLF7vBuVN8iTQyCbGysu9Y+r7PbD4p+JZ
+         tWV0BQF8O6blkqNAcpQcEFak03bKL2EDXbjgGId7m+5WPz+Vk5K8F+Q6QCh5EN94LDwd
+         p3Zmo/H18/66XtMYulhtcyHfnsd3e8ES2LHplF2oqYacU6U+EuDtTBTrxq4LRJnLBnGu
+         d1Vvks6e9ptqrna9So01DfYzdHeDEHvLvZYQKvdXzPFE3756//xYUCXPKfTW+qTOQ/lS
+         N1sNVfID0msw32H3+PHH3oSIiHVTc2WV0/B8O5rDL5364LCCrkpf3vzv03GPyACh+Ytp
+         1B5A==
+X-Gm-Message-State: AOJu0Yy6MXGh0NE9oklOTP2c6/sKbWlzpAE8gj50+lrEQ66Q20XqkZrf
+	NQirXw50nCIPWWbdULxJ9cvm8wvlAJMIvcNdjvgi7zxJ+qCuxvLY+2U0/pTGdYqHmqIzMnEVWzD
+	A5R85lQ==
+X-Received: from pgjz6.prod.google.com ([2002:a63:e546:0:b0:c79:1600:6a09])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3cc2:b0:38d:fad1:cf2a
+ with SMTP id adf61e73a8af0-3b4ccd65aebmr24776030637.13.1781051434478; Tue, 09
+ Jun 2026 17:30:34 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue,  9 Jun 2026 17:30:26 -0700
+Date: Tue,  9 Jun 2026 17:30:27 -0700
 In-Reply-To: <20260610003030.2957261-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260610003030.2957261-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
-Message-ID: <20260610003030.2957261-2-seanjc@google.com>
-Subject: [PATCH v8 1/5] KVM: selftests: Refactor allocating guest stack into a helper
+Message-ID: <20260610003030.2957261-3-seanjc@google.com>
+Subject: [PATCH v8 2/5] KVM: selftests: Allocate a dedicated guest page for
+ x86 L2 guest stack
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -69,90 +70,153 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Yosry Ahmed <yosry@kernel.org>
 
-In preparation for reusing the logic to allocate stacks for nested
-guests, refactoring allocating a guest stack and aligning RSP into a
-helper.
+Instead of relying on the L1-provided stack for L2, which is usually an
+array on L1's own stack, allocate a dedicated page of VM memory for the
+L2 stack in vcpu_alloc_{vmx/svm}() and use that as L2's RSP in the
+VMCS/VMCB instead of the L1-provided value.
 
-No functional change intended.
+Most L1 guest code does not do anything with the L2 stack other than
+stuff it in RSP, so this change is transparent and the L1-provided stack
+is silently ignored. The only exception is memstress nested L1 code
+which puts the vCPU index on L2's stack, so update this code to use the
+newly allocated stack.
 
+L1-provided stacks will be dropped and cleaned up separately.
+
+Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../testing/selftests/kvm/lib/x86/processor.c | 45 ++++++++++---------
- 1 file changed, 25 insertions(+), 20 deletions(-)
+ tools/testing/selftests/kvm/include/x86/processor.h | 2 ++
+ tools/testing/selftests/kvm/include/x86/svm_util.h  | 3 +++
+ tools/testing/selftests/kvm/include/x86/vmx.h       | 2 ++
+ tools/testing/selftests/kvm/lib/x86/memstress.c     | 5 ++---
+ tools/testing/selftests/kvm/lib/x86/processor.c     | 2 +-
+ tools/testing/selftests/kvm/lib/x86/svm.c           | 4 +++-
+ tools/testing/selftests/kvm/lib/x86/vmx.c           | 4 +++-
+ 7 files changed, 16 insertions(+), 6 deletions(-)
 
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 513e4a1075fa..e5a602c87273 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -1226,6 +1226,8 @@ struct idt_entry {
+ void vm_install_exception_handler(struct kvm_vm *vm, int vector,
+ 			void (*handler)(struct ex_regs *));
+ 
++gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages);
++
+ /*
+  * Exception fixup morphs #DE to an arbitrary magic vector so that '0' can be
+  * used to signal "no expcetion".
+diff --git a/tools/testing/selftests/kvm/include/x86/svm_util.h b/tools/testing/selftests/kvm/include/x86/svm_util.h
+index 6c013eb838be..3b1cc484fba1 100644
+--- a/tools/testing/selftests/kvm/include/x86/svm_util.h
++++ b/tools/testing/selftests/kvm/include/x86/svm_util.h
+@@ -28,6 +28,9 @@ struct svm_test_data {
+ 	void *msr_hva;
+ 	u64 msr_gpa;
+ 
++	/* Stack */
++	void *stack; /* gva */
++
+ 	/* NPT */
+ 	u64 ncr3_gpa;
+ };
+diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
+index 90fffaf91595..1dcb9b86d33d 100644
+--- a/tools/testing/selftests/kvm/include/x86/vmx.h
++++ b/tools/testing/selftests/kvm/include/x86/vmx.h
+@@ -524,6 +524,8 @@ struct vmx_pages {
+ 	u64 apic_access_gpa;
+ 	void *apic_access;
+ 
++	void *stack;
++
+ 	u64 eptp_gpa;
+ };
+ 
+diff --git a/tools/testing/selftests/kvm/lib/x86/memstress.c b/tools/testing/selftests/kvm/lib/x86/memstress.c
+index 61cf952cd2dc..fa07ef037cad 100644
+--- a/tools/testing/selftests/kvm/lib/x86/memstress.c
++++ b/tools/testing/selftests/kvm/lib/x86/memstress.c
+@@ -43,7 +43,7 @@ static void l1_vmx_code(struct vmx_pages *vmx, u64 vcpu_id)
+ 	GUEST_ASSERT(ept_1g_pages_supported());
+ 
+ 	rsp = &l2_guest_stack[L2_GUEST_STACK_SIZE - 1];
+-	*rsp = vcpu_id;
++	*(u64 *)vmx->stack = vcpu_id;
+ 	prepare_vmcs(vmx, memstress_l2_guest_entry, rsp);
+ 
+ 	GUEST_ASSERT(!vmlaunch());
+@@ -56,9 +56,8 @@ static void l1_svm_code(struct svm_test_data *svm, u64 vcpu_id)
+ 	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+ 	unsigned long *rsp;
+ 
+-
+ 	rsp = &l2_guest_stack[L2_GUEST_STACK_SIZE - 1];
+-	*rsp = vcpu_id;
++	*(u64 *)svm->stack = vcpu_id;
+ 	generic_svm_setup(svm, memstress_l2_guest_entry, rsp);
+ 
+ 	run_guest(svm->vmcb, svm->vmcb_gpa);
 diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index 4ca48de7a926..9393bb580a58 100644
+index 9393bb580a58..ef56dcefe011 100644
 --- a/tools/testing/selftests/kvm/lib/x86/processor.c
 +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -778,6 +778,30 @@ void assert_on_unhandled_exception(struct kvm_vcpu *vcpu)
+@@ -778,7 +778,7 @@ void assert_on_unhandled_exception(struct kvm_vcpu *vcpu)
  		REPORT_GUEST_ASSERT(uc);
  }
  
-+static gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages)
-+{
-+	int size = nr_pages * getpagesize();
-+	gva_t stack_gva;
-+
-+	stack_gva = __vm_alloc(vm, size, DEFAULT_GUEST_STACK_VADDR_MIN, MEM_REGION_DATA);
-+	stack_gva += size;
-+
-+	/*
-+	 * Align stack to match calling sequence requirements in section "The
-+	 * Stack Frame" of the System V ABI AMD64 Architecture Processor
-+	 * Supplement, which requires the value (%rsp + 8) to be a multiple of
-+	 * 16 when control is transferred to the function entry point.
-+	 *
-+	 * If this code is ever used to launch a vCPU with 32-bit entry point it
-+	 * may need to subtract 4 bytes instead of 8 bytes.
-+	 */
-+	TEST_ASSERT(IS_ALIGNED(stack_gva, PAGE_SIZE),
-+		    "__vm_alloc() did not provide a page-aligned address");
-+	stack_gva -= 8;
-+
-+	return stack_gva;
-+}
-+
- void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
+-static gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages)
++gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages)
  {
- 	int r;
-@@ -820,27 +844,8 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+ 	int size = nr_pages * getpagesize();
+ 	gva_t stack_gva;
+diff --git a/tools/testing/selftests/kvm/lib/x86/svm.c b/tools/testing/selftests/kvm/lib/x86/svm.c
+index 3b01605ab016..4e9c37f8d1a6 100644
+--- a/tools/testing/selftests/kvm/lib/x86/svm.c
++++ b/tools/testing/selftests/kvm/lib/x86/svm.c
+@@ -46,6 +46,8 @@ vcpu_alloc_svm(struct kvm_vm *vm, gva_t *p_svm_gva)
+ 	svm->msr_gpa = addr_gva2gpa(vm, (uintptr_t)svm->msr);
+ 	memset(svm->msr_hva, 0, getpagesize());
+ 
++	svm->stack = (void *)vm_alloc_stack(vm, 1);
++
+ 	if (vm->stage2_mmu.pgd_created)
+ 		svm->ncr3_gpa = vm->stage2_mmu.pgd;
+ 
+@@ -122,7 +124,7 @@ void generic_svm_setup(struct svm_test_data *svm, void *guest_rip, void *guest_r
+ 	ctrl->msrpm_base_pa = svm->msr_gpa;
+ 
+ 	vmcb->save.rip = (u64)guest_rip;
+-	vmcb->save.rsp = (u64)guest_rsp;
++	vmcb->save.rsp = (u64)svm->stack;
+ 	guest_regs.rdi = (u64)svm;
+ 
+ 	if (svm->ncr3_gpa) {
+diff --git a/tools/testing/selftests/kvm/lib/x86/vmx.c b/tools/testing/selftests/kvm/lib/x86/vmx.c
+index 7c10ba6e6fb4..36aa108088dd 100644
+--- a/tools/testing/selftests/kvm/lib/x86/vmx.c
++++ b/tools/testing/selftests/kvm/lib/x86/vmx.c
+@@ -116,6 +116,8 @@ vcpu_alloc_vmx(struct kvm_vm *vm, gva_t *p_vmx_gva)
+ 	vmx->vmwrite_gpa = addr_gva2gpa(vm, (uintptr_t)vmx->vmwrite);
+ 	memset(vmx->vmwrite_hva, 0, getpagesize());
+ 
++	vmx->stack = (void *)vm_alloc_stack(vm, 1);
++
+ 	if (vm->stage2_mmu.pgd_created)
+ 		vmx->eptp_gpa = vm->stage2_mmu.pgd;
+ 
+@@ -370,7 +372,7 @@ void prepare_vmcs(struct vmx_pages *vmx, void *guest_rip, void *guest_rsp)
  {
- 	struct kvm_mp_state mp_state;
- 	struct kvm_regs regs;
--	gva_t stack_gva;
- 	struct kvm_vcpu *vcpu;
+ 	init_vmcs_control_fields(vmx);
+ 	init_vmcs_host_state();
+-	init_vmcs_guest_state(guest_rip, guest_rsp);
++	init_vmcs_guest_state(guest_rip, vmx->stack);
+ }
  
--	stack_gva = __vm_alloc(vm, DEFAULT_STACK_PGS * getpagesize(),
--			       DEFAULT_GUEST_STACK_VADDR_MIN, MEM_REGION_DATA);
--
--	stack_gva += DEFAULT_STACK_PGS * getpagesize();
--
--	/*
--	 * Align stack to match calling sequence requirements in section "The
--	 * Stack Frame" of the System V ABI AMD64 Architecture Processor
--	 * Supplement, which requires the value (%rsp + 8) to be a multiple of
--	 * 16 when control is transferred to the function entry point.
--	 *
--	 * If this code is ever used to launch a vCPU with 32-bit entry point it
--	 * may need to subtract 4 bytes instead of 8 bytes.
--	 */
--	TEST_ASSERT(IS_ALIGNED(stack_gva, PAGE_SIZE),
--		    "__vm_alloc() did not provide a page-aligned address");
--	stack_gva -= 8;
--
- 	vcpu = __vm_vcpu_add(vm, vcpu_id);
- 	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
- 	vcpu_init_sregs(vm, vcpu);
-@@ -849,7 +854,7 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
- 	/* Setup guest general purpose registers */
- 	vcpu_regs_get(vcpu, &regs);
- 	regs.rflags = regs.rflags | X86_EFLAGS_FIXED;
--	regs.rsp = stack_gva;
-+	regs.rsp = vm_alloc_stack(vm, DEFAULT_STACK_PGS);
- 	vcpu_regs_set(vcpu, &regs);
- 
- 	/* Setup the MP state */
+ bool kvm_cpu_has_ept(void)
 -- 
 2.54.0.1099.g489fc7bff1-goog
 
