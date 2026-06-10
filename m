@@ -1,109 +1,121 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AE4248F57
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 19:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4190A3921C8
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 20:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781120133; cv=none; b=l6a7taR6QS1Ze7AB/lKN0Lua8oDfgENU+fdggZkZ784Rohu8Z4+l/AaLOi6obPXxtoPjM9Q6WlZ8SqT7jUIF7jcvIoe/z8/GmDmAM9ekJPuAPKIVTRGil7+ouVVrGKmcKfBEeK5lY0AlTloXdW39G8AFvvpULiNPFkwTczagiFE=
+	t=1781122505; cv=none; b=rRueibpew2UsisEqmbg+A+RqcVGyUGxIyfp+Nomsy9EWDY6gKe/4RKmPET9j66sJNDXYhEH7Wm3REcuF94pogR9IACUYed41syJqHTgIUoKU/OJp1TSDbgVMm0pwf18v9UcmpiCTlbsPxi+UdLtEi2qHegVTbbtv4FNASY2roEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781120133; c=relaxed/simple;
-	bh=LK7uQDvrcQgh523UutGordIYjAMZa9A3xyiaK41syLY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sN8qfEL9CkSmLdBnxMUL+V8y1rZ4631ob8dtcCuvyKaWoCrt+SKIJfagdaFFvUQaVRXE2n8KekyyfVE/raynsBxzpWSDsp+7MP8ywPWzB6bfh5354rRdcQ+ZlADZmwQk1ostN7DQgAQKs/ohfhAZhRwWRTpdHnjmE7QClGwF1mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NKIG3qiE; arc=none smtp.client-ip=209.85.214.201
+	s=arc-20240116; t=1781122505; c=relaxed/simple;
+	bh=0/TGp3mL/zf8reME5kYkhYaPhOH91jl/0E7euIeuEBQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JL7sy8xdXqKYZeSxgvGreLTD66OpFXXa++AkiqfQl8M1JMUgURyrJnmvwv9G+ZKd5tvZ/1k6yQDO2sr8VVarwUV45BGIOFMQn4FA0YtNFxZoDX44zq04r8n0wiaZvM0lzkiGyH59VI8+xnZb3dvwAdM3UD8WS3q2FYoaJgw7E/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kgv8Fy27; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NKIG3qiE"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bd04e4fe3dso118788875ad.3
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 12:35:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kgv8Fy27"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8423610ec93so5633231b3a.2
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 13:15:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781120132; x=1781724932; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EEoSZc/Ri3Fj9efC7RN3D4uVzworhU8OsOiH614JgHk=;
-        b=NKIG3qiE6Ay3je2sSwl80PyrZJk5aX/GbVJnbr4YousSC98RlcONzC8e1cRMmN7N9k
-         u2422AUNxJ+/xXpvlHuDhiqQjKVvKVapN/EvKfoQ0c6vMAOc555td0JNnkrMun7Y0CjY
-         EhgXTbNQjU6fpYv/wkbH5Z1azCQozthBoQevOem3b64jD5FpEQUPWAHEHLXWiG9wqPjc
-         AQcnwZr+SFSKX4j/2I7k5VVskQMBStCYoAJyghYaAAE8yFpHccUxJ9w0lxlJmmzvQun5
-         juO9n8607dnTJAr8CzXxMTSsKBUcR3IS94/X/Zr+xmgM1nYzY/lpYdRwIlQ7uwW4SDJK
-         VOSg==
+        d=google.com; s=20251104; t=1781122502; x=1781727302; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xNT9caAsP3Naf8qE0f2/dE5BKFFF9+5h248zDPqxkMc=;
+        b=kgv8Fy27q7WMJGSgHiBq+cPZ4oIc8bg16diBEKm/M28RAjphfCvSe4rAHYY6aWH6Ra
+         KzkQUbfgaDZ++GVaiDRgBJujhcT3GzNjMs/8JkksSrdLN744fLNXf1ZjYhGgLCDUf5Wf
+         D2u279xiuAarIXHCH+/ER+cUHnuBiTJUFM5ijwubnYUEBErWegBPY/ghFXWhcAvsJWad
+         2XUasWiaulHHSZPufjJWCfTRQieFGH9xN60dufuGpRrYiUg9sBBGoxeodhchbaTzzTNs
+         waMmYN4TyDM4upttpXD6UYsEmpyELmDocWwGgMW386cc0XRSHoKBHQMLoAXfRg/5urKa
+         RhlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781120132; x=1781724932;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EEoSZc/Ri3Fj9efC7RN3D4uVzworhU8OsOiH614JgHk=;
-        b=Ks7EFr6vTs7MPb1LBLalvsdQyXc4x/L7PBiq3eOLUkAG68HEVQjpaQWhM7NHnkPuTS
-         RYqFC5mcVGIBkoOLGanv538c6uuQY5C4KmMbK+sN8dywnzu2+8x1VJD/pHu6UslTr6Uu
-         mXwDcnvsBaeLkSKtXP5o0yZkId0Dpj6yda9B4VIZKgXtZjvyKVDZqTwH9bbWzlugrH8Y
-         NrW/g4m4OgvadGjxfOTNXH5ScWlQIlw+xzJdHp9dYltOYHqxOc3GdTugFc+g604qqcXF
-         1niJ2rWCl0satbixEt0P1rDAuivuQO2DZTmvl0cbQ+I3pX0wNMTCjNsahyqybIe/jLy5
-         rEpQ==
-X-Gm-Message-State: AOJu0Yw4sLrDFq7AMz9XFtrN+lzixNm0lraFfxzOyiXAshc50fcUOJUE
-	f60jf8b//AtIUMOB7vp714MUo1WeexAs4CgWJTO8Ceh1Wyci3va+FWslVNrqGhBHcNdKHM66Jwt
-	rAv+7Mg==
-X-Received: from plbiy23.prod.google.com ([2002:a17:903:1317:b0:2ba:1011:efb7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3847:b0:2c0:c262:b917
- with SMTP id d9443c01a7336-2c1e80e429amr312731605ad.5.1781120131430; Wed, 10
- Jun 2026 12:35:31 -0700 (PDT)
-Date: Wed, 10 Jun 2026 12:35:30 -0700
-In-Reply-To: <20260610010824.47A0D1F00893@smtp.kernel.org>
+        d=1e100.net; s=20251104; t=1781122502; x=1781727302;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xNT9caAsP3Naf8qE0f2/dE5BKFFF9+5h248zDPqxkMc=;
+        b=cN2UXpHN6DI5HYcpLU2sCtEDyVZxw2qpucDtKNK0GTNZ/hhCbshd6vL3Geww3M7AJk
+         9F4EosvCfjgz85Jwitogz5zJfzZYsqVXIylo1+IuvXK2lPQYqOO5GxZOnfKk7GrtNaEK
+         DiPIzt2J/AF9WnT1tMOyQtDLrA6BxXhFfY+VLi5r58RGUwnHveV4oaLhnjb4S2HgHZnL
+         MOd52m7zvLjsVEVvJK17mk7zhRcrSsWqxigfgreNebOqzoTmgwt6BwjA42nkml9g1NlW
+         UoqziqOKHus4uEYWTP9pw17sLc4mvlBo61aakGddpD2aSp26BXI/qsgvFWk900rxFnZ/
+         YfmQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9dAQwfB2ER1D3nVJk7w2JOTdj49S8zLBv1BDLzbhbc9/DE+/J/4Tgr9bM7knsDsyX7HNg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxS/WlNDWhtI1woYLNodXHZjMXnf+pXl7ZL12WRCjR3nWo61O/k
+	G3GEFZ6ogj9zO8eEb2G4m9W+Ik1mdVqpDm7Xpx0fDdoJ/TBs7W/fJBGQWAWrzKi4bA==
+X-Gm-Gg: Acq92OHAThlnOtS1V4YSANrP5jHkWygfiZHykQ7YDCwj9nNnBPTKO5p8i4VJgWyy51y
+	R3cUNNoVMLS/h0mL6buU/HsToM1EhchaW6fbOdA5R27nDi54MzxBOevnVypxYZs8+iLJEN5XGs8
+	aIupkuNvKiogQCft7ZslfY0GD2VNPebxyUMvJ/mY5BPuqYu+hD3A15i7o5revm02oia8R4KYKhL
+	Y8rTdJ3soCUAtY+fawGnlOhvNqUQwbwKqwF06hUbRKmZZN6aNaLAbmFmYRJsIK40v6Ompq7ZgKZ
+	rUIs2I+SRktZghYbzZc++WxL/kDmqsPYG72xUh2W3AEErG5HU1iCtB3p9ke2W8o6sIrow5AqjWS
+	Wm0rb77yt/VvUMJ+E4Lu3Bs6nTpBSiELVB6AbOx7UbSe4Yp+sJH3xi8rl5VDIv1ytfM5oBssk4+
+	BmGciRNpwV8TgPIsxLNAq4MfX35UBP9UvK239Fq/IdhGD8qMAmN422nh+P3YPKiY+WlikrUd7e
+X-Received: by 2002:a05:6a00:b90b:b0:82f:280a:d888 with SMTP id d2e1a72fcca58-842b0db894cmr26207134b3a.12.1781122502162;
+        Wed, 10 Jun 2026 13:15:02 -0700 (PDT)
+Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-842828e21c8sm30824970b3a.49.2026.06.10.13.15.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 13:15:01 -0700 (PDT)
+Date: Wed, 10 Jun 2026 20:14:57 +0000
+From: David Matlack <dmatlack@google.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
+	Josh Hilke <jrhilke@google.com>
+Subject: Re: [PATCH v6 01/18] KVM: selftests: Build and link
+ selftests/vfio/lib into KVM selftests
+Message-ID: <ainFwSTb5-8itT9y@google.com>
+References: <20260610005338.2967132-2-seanjc@google.com>
+ <20260610010314.DB8861F00893@smtp.kernel.org>
+ <aim4lld49oqLrthg@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260610005338.2967132-6-seanjc@google.com> <20260610010824.47A0D1F00893@smtp.kernel.org>
-Message-ID: <aim8giv0brgyIuv-@google.com>
-Subject: Re: [PATCH v6 05/18] KVM: selftests: Add an irqfd send+receive (and
- later IRQ bypass) test
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aim4lld49oqLrthg@google.com>
 
-On Wed, Jun 10, 2026, sashiko-bot@kernel.org wrote:
-> > diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
-> > new file mode 100644
-> > index 0000000000000..9f8895b898214
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/kvm/irq_test.c
+On 2026-06-10 12:18 PM, Sean Christopherson wrote:
+> On Wed, Jun 10, 2026, sashiko-bot@kernel.org wrote:
+> > > diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> > > index e0ddd3ff9472d..14316358fd9fb 100644
+> > > --- a/tools/testing/selftests/kvm/Makefile.kvm
+> > > +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> > > @@ -257,6 +257,7 @@ OVERRIDE_TARGETS = 1
+> > >  # which causes the environment variable to override the makefile).
+> > >  include ../lib.mk
+> > >  include ../cgroup/lib/libcgroup.mk
+> > > +include ../vfio/lib/libvfio.mk
+> > 
+> > [Severity: Low]
+> > Does including libvfio.mk here break the "make clean all" sequence for KVM 
+> > selftests?
 > 
-> [ ... ]
-> 
-> > +int main(int argc, char **argv)
-> > +{
-> > +	/*
-> > +	 * Pick a random vector and a random GSI to use for device IRQ.
-> > +	 *
-> > +	 * Pick an IRQ vector in range [32, UINT8_MAX]. Min value is 32 because
-> > +	 * Linux/x86 reserves vectors 0-31 for exceptions and architecture
-> > +	 * defined NMIs and interrupts.
-> > +	 *
-> > +	 * Pick a GSI in range [24, KVM_MAX_IRQ_ROUTES - 1]. The min value is 24
-> > +	 * because KVM reserves GSIs 0-15 for legacy ISA IRQs and 16-23 only go
-> > +	 * to the IOAPIC. The max is KVM_MAX_IRQ_ROUTES - 1, because
-> > +	 * KVM_MAX_IRQ_ROUTES is exclusive.
-> > +	 */
-> > +	u32 gsi = kvm_random_u64_in_range(&kvm_rng, 24, KVM_MAX_IRQ_ROUTES - 1);
-> > +	u8 vector = kvm_random_u64_in_range(&kvm_rng, 32, UINT8_MAX);
-> 
-> [Severity: Medium]
-> Is kvm_rng initialized before it is used here?
-> 
-> It appears that kvm_random_u64_in_range() is being called before
-> vm_create_with_vcpus() executes later in this function, which is where
-> kvm_rng normally gets initialized.
-> 
-> Because kvm_rng is a global variable and zero-initialized, the RNG algorithm
-> will consistently yield 0. This causes the variables to always evaluate to
-> their minimum bounds (24 for gsi and 32 for vector).
-> 
-> Does this defeat the intended randomization for this test?
+> David and/or Josh, can you verify whether Sashiko is hallucinating or has a
+> legitimate concern?
 
-Yeah, I'll add a patch to properly initialize kvm_rng.  I'll also add a patch to
-seed libc's RNG before calling random(), because as-is, every x86 test uses
-0x6b8b4567 to seed KVM's pRNG (and I assume the same holds true for all other
-architectures).
+That is a legitimate bug in libvfio.mk. Want me to send a separate patch
+to fix (see below) or do you want to include as part of your series?
+
+diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
+index 9f47bceed16f..1f1ab180f42d 100644
+--- a/tools/testing/selftests/vfio/lib/libvfio.mk
++++ b/tools/testing/selftests/vfio/lib/libvfio.mk
+@@ -21,9 +21,12 @@ LIBVFIO_O := $(patsubst %.c, $(LIBVFIO_OUTPUT)/%.o, $(LIBVFIO_C))
+ LIBVFIO_O_DIRS := $(shell dirname $(LIBVFIO_O) | uniq)
+ $(shell mkdir -p $(LIBVFIO_O_DIRS))
+
++$(LIBVFIO_O_DIRS):
++       mkdir -p $@
++
+ CFLAGS += -I$(LIBVFIO_SRCDIR)/include
+
+-$(LIBVFIO_O): $(LIBVFIO_OUTPUT)/%.o : $(LIBVFIO_SRCDIR)/%.c
++$(LIBVFIO_O): $(LIBVFIO_OUTPUT)/%.o : $(LIBVFIO_SRCDIR)/%.c $(LIBVFIO_O_DIRS)
+        $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+
+ EXTRA_CLEAN += $(LIBVFIO_OUTPUT)
+
