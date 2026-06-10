@@ -1,32 +1,39 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8080E13959D;
-	Wed, 10 Jun 2026 15:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA7E275870;
+	Wed, 10 Jun 2026 16:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781107171; cv=none; b=hcDvRVCx4qHGGNRg6TA33e4zLXrrQ4JIuVtaZNW+ZnUEn32qhjo8Roacbul38keuRcE2TIlkpqMwDHppKjJRBLJFWhUK0BTqDqOXP3yPibvq130qyvSDShy4rZ88w5kkJTBhmriG2PmhPsvJP+PqwFliXRCHSBmZi/aLKkxCNig=
+	t=1781107255; cv=none; b=Kqx0Yvc5awlucey9B/oJuScqw1XecmtdBMykPZm5vmPiwexu5xbR2bJgbYDjKwU1wCH45O29jeVziJiqeslyS3+iU8rXb5coKvpTQAeIlVh5B4t0mGN2lHa28V94fnrX6wGGcb6FZ4TgJ6Sm98xwYTXiZeMYqmOty5jvIyFZito=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781107171; c=relaxed/simple;
-	bh=Vb7BHcXUEbWMm9U+eXrYGZhoh5ZaNKeY/ZtJxABDK/0=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=MO3H+N/lLzBvy5x/IhHvuFtXuAu47MNbG6jRPDGaV7m+hLzjsogVnDM1jgPFZulFsrDxwdFWR7dE5+dfMyweWTfbSxv+hlT/zlrALKb7FWEvGkx1sXVDboNTWW/VFwHxTOgrUnAzCqM38R3n9cFv8WiYSZPUtnOku437cJkdaus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B596G8wn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781107255; c=relaxed/simple;
+	bh=u0cfWQHO4BqT4UOku7Xois919JN2h7T81+Y0jfGvg2s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aMBoudZeREPb+xRpJ6qq5GQW15dOFQ9Gt8a9Lx3Z+iaGzcnxHVGG+rHPvm1atfJL2ILlj4eeX6+BjrXSeHVxk507BK5WV5ZFo+ld1RWIyfh1Hn9BXpyBH3vk9wuWyFwVcEHBX9352VpMvknYIW2sI0CcG1gV43rRS3G6EEB0ZXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=bB0PRaIM; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B596G8wn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC621F00893;
-	Wed, 10 Jun 2026 15:59:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781107170;
-	bh=Wwl5EFOwcAOEDq8p0RlqImogvq+z7shANIcC+8tlztc=;
-	h=Date:From:To:Subject;
-	b=B596G8wnDvRmb7UeeKOXoUJnVEaxNNezk/kt+6eRUKSVAn8HYJU26RIJuJq0jCFVy
-	 ARrLxecy2/jdFDvEf1TBuUaOu85pCBE5/uvzNuTMHdBql46cnUCwfYWYDwys3Igyiu
-	 EJwqvkFm+ZZCegIAZnBqvinTVbtYTlxPsqv2imToSnY4OyzF6Q0x3F46rDHskGrZYl
-	 06+fENzyrC/W0Rg5iKikVRRkZyfrOAluHpNXD2yzwxZqPt9TAoAmdhie6eWM88RfKB
-	 dVo7T2ZOf0NyWCFsXA3a2IfQ/mpEYe+ykhicN8KeDwtVrSsSHNh+bsEp+MacaLql+J
-	 mqAsGCPhmzU/Q==
-Message-ID: <8ca7bdec-847d-405a-adb9-ada87e7222aa@kernel.org>
-Date: Wed, 10 Jun 2026 17:59:18 +0200
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="bB0PRaIM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1781107251;
+	bh=eDEkk4f7S76uj36wByzSVbCn2IDwUfz2uxF1LUdS/0Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bB0PRaIM4+jrYgnE3WcqtZCosNRTn/dSy2m0AXX+ymW/8IYLTa6cRUe8zxHtEFQAD
+	 ekpOcPyLvQEddGX9u07/sC5TMCQ430i5e03rRXfswTAd09MloYA/i4/ZUA8Wxu77eZ
+	 L7QoCI2PIOqKG7EnVRSjbclfVXwcpIjR8kBDaPWvry8DpAfjNQDTIz4jxE9h+L+5Oj
+	 ZYVROtNv2VyhvQdQVHoDwt3UF+8PrD2cNa6ICcjDtk5NHo/GRPy9byWtLrapYHhnU1
+	 HbcWbcePG9H1w4vZ95R189BPokROy+dyqpHNfzkw9/I+i13lgt9vQOCnrPZXRy/QH5
+	 h0WAye/RMrEUw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gb9VN0LRgz4wCj;
+	Thu, 11 Jun 2026 02:00:43 +1000 (AEST)
+Message-ID: <39e5e731-bfa2-484d-ad29-a9e173ccc6d1@ozlabs.org>
+Date: Wed, 10 Jun 2026 17:00:38 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -34,87 +41,81 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-06-11
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
+Subject: Re: [PATCH v2 1/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
+Content-Language: en-GB
+To: Pranjal Shrivastava <praan@google.com>, Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex.williamson@nvidia.com>, Matt Evans
+ <mattev@meta.com>, Leon Romanovsky <leon@kernel.org>,
+ Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Logan Gunthorpe <logang@deltatee.com>, Mahmoud Adam <mngyadam@amazon.de>,
+ David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20260527102319.100128-1-mattev@meta.com>
+ <20260527102319.100128-2-mattev@meta.com>
+ <20260527150946.312b3042@nvidia.com> <20260529230553.GE3195266@nvidia.com>
+ <aimCfaCM-m4TS2g9@google.com>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <aimCfaCM-m4TS2g9@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi,
+Hi Praan,
 
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2026-06-11 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+On 10/06/2026 16:27, Pranjal Shrivastava wrote:
+> On Fri, May 29, 2026 at 08:05:53PM -0300, Jason Gunthorpe wrote:
+>> On Wed, May 27, 2026 at 03:09:46PM -0600, Alex Williamson wrote:
+>>> This deserves a /* CONFIG_PCI_P2PDMA */ reference like the previous
+>>> long span, though potentially a better solution would be to split the
+>>> core code out to a separate file with shared header.  I asked opus to
+>>> see what this would look like and it generated the patch below
+>>> (unverified, compile tested only).  Bigger diff, harder to follow
+>>> blame, but the shape of the core is much more apparent.  You're welcome
+>>> to take or leave it.
+>>
+>> I think it is a good idea, it will make it easier to add more stuff to
+>> these different aspects.
+>>
+>> Really they are now two different things with one layered on top of
+>> the other.
+>>
+> 
+> A little late to this party. I agree with this split per status quo.
+> Although, one observation from me, I've posted a concurrent RFC [1] that
+> implements ZONE_DEVICE P2P registration for VFIO. That work relies on
+> pci_p2pdma_add_resource(), which requires ZONE_DEVICE and the full
+> CONFIG_PCI_P2PDMA stack rather than just the CORE part.
+> 
+> I guess I can be careful to guard the ZONE_DEVICE P2P registration 
+> feature in VFIO with the full PCI_P2PDMA config. Apart from that, this
+> split provides a clean foundation for both series to coexist.
 
-So far we don't have a lot of topics: I'll have some clarifying questions around
-virtio-mem for CoCo, and likely it would be a good idea to talk about memory
-hot(un)plug+memory ballooning for CoCo in general (what already works, what
-doesn't, which requirements/limitations do different platforms have, etc). Apart
-from that, I'm sure interesting stuff will come up.
+Thanks for the heads-up/Cc.
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+From your description, I agree, just depend on/select CONFIG_PCI_P2PDMA
+as usual.  The only new thing in this split is the
+CONFIG_PCI_P2PDMA_CORE allows the subset, but the default case (as used
+by a couple of other drivers) stays the same.
 
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
+I just posted a v3 including this split so you can see it in practice.
+(I'd done part of it manually anyway so just finished it off, not
+character-identical to Alex's patch but does the same thing.)
 
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
+Thanks,
 
 
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+Matt
 
--- 
-Cheers,
 
-David
+> 
+> Thanks,
+> Praan
+> 
+> [1] https://lore.kernel.org/all/20260610151853.3608948-1-praan@google.com/
 
