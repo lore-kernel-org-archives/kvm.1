@@ -1,62 +1,62 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20283AE199
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 12:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E623FFAD7
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 12:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781095700; cv=none; b=AekLNUMW6CvoEx2bzVqJLDF5SqmGpTW0F3WjC3X9B22LvqG2d92lK+b3jb9CwShkcSX7FcbBn16sBRC9LXgZOgm9DMgK36WfJ+ha0Sk/2LUFc+Zg/e1iNVhF/8BN6a4LovDOmt0bmJsTXLoLU9zF2aLyx4T/MVUOp0V6D/NOcCI=
+	t=1781095706; cv=none; b=MWKiuZGAt11Me8wT8nXKqTvdwlTqwO0wl2FoVaESGWt7Dr6S+ugVxWZoacuqlAhmYcLKyfd9HOUInarCHKIlWgSLE+RVwyeFPmt7R/LVsIjIzkaax3Fe5Qth57UfnJh5fh128XukywcIKxjiXqhrbM83KEsql9lU9rJD3PIpmls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781095700; c=relaxed/simple;
-	bh=cbadhVdGENuf2REpDYOzhf+HgyWklEFQdkhkdFB9nVE=;
+	s=arc-20240116; t=1781095706; c=relaxed/simple;
+	bh=Y31XkwIuwQTJXeg8ZC5KVfyvvvcpOlYKgg3Rn+lQh7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9tQPNkaYiL2QrHigTLIStXWfHym0isMoCZkmrzRV2ejgT4kGhjizh+2HLByy73A4fNgmH7bfTQOCvdHk/TyBDAV7Sg6z7oeifGcWJJ2CzStUwUvOIpkfl3/YQD2IXLhDY3qgny3IH2rNDyxvHS5nCwvGA1oc72PYU9+AA7ftEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nzddjn7f; arc=none smtp.client-ip=209.85.216.54
+	 MIME-Version; b=sjX5nyX15VtGu0EhXoArLsWYUObEcbwxCqPWk3n7vP0SBov3dewPt7hpKPWJIlvdzEwKc4ePOsIRLmE5th+ZFiKGE9k4hW4uW5nAoSybS2LlRSuh4CDReI9xjTv2ytKr7yHwtROw5dn4MXyt873Qj8KB4TOspHzfxh5xeKXQ9Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sxO+K1Ku; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nzddjn7f"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-36dac5d5d05so3609147a91.2
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 05:48:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sxO+K1Ku"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-36d9794d82aso4668607a91.0
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 05:48:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781095699; x=1781700499; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781095705; x=1781700505; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o8+a22vFLAJgAuwgI2KpSatIpPOW4GGFBsrZIpdJO1g=;
-        b=nzddjn7fnzgAy2zMqv2xwOTbQHkmVv+jas0/xgOGmHQKBRJy86xcyzyuwxJb507yvf
-         Y+SoNDT8z64eqW6KyPRKcEIN6XtFa9RwqcESWJqh+PbQDI6aXsOZTY/gA/8MNq4cM35j
-         BmRNsNbP1zzOtVuhnYJcEpHf11AOn8WWYH9NIC4rIJvdWxAcf8ohneXEWRAJUZidDuiT
-         9RISX+Ce7ubvG7onr/6k3GDRuz0Et+yf/1UVPa7EemBmD6H6KaSoHbfwYZ+TCDTLI8Xd
-         fw1OtJpWdjmKgrBn0L4ZEUFDNh752rCADqIUxly5b3d2Lpa0LgvgSR67ef5bVXMzgRMS
-         HRFA==
+        bh=5AEmDg81pB30v/Br0Irm0sFgmM4aAhJYvvee5RH7rUM=;
+        b=sxO+K1KuGUJTy62fUhLp1Z7khRhxfzT5qa/uy4B4YIeWa5ukePrdhPh56uKkZhjSVc
+         sQOOCCtIIW1ZAXjXS0uQ8HmmWzZb+rOVXY9szNe994123cRyU+W1PMhzNVtlP7kveHs9
+         3PG+CMq8iUP57HbPFYysArO/CcYuWMcGU6M7AqhRtCuGfEaoLRm394Ea44BQ+JCf4XUI
+         ZB0GpjLpYDmKhILqWmoiz4sMbdiVRd/1dOTv3rlR/gr1TO77WS91bbcFlC54+A3v04UF
+         b+Vbo963/2eaExkaIgxLKVRsYPXk4TzHvLNf136ro3omJr058p4Kr05UToGEJxMq88ls
+         uVgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781095699; x=1781700499;
+        d=1e100.net; s=20251104; t=1781095705; x=1781700505;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=o8+a22vFLAJgAuwgI2KpSatIpPOW4GGFBsrZIpdJO1g=;
-        b=NdBCAbeDxtzfDWzJoG1om5l/lDAkk7haQaKs9QNGYVk+8kMEaabtG0q81OLtFYjdNN
-         koP5uDNZcQgT7VRxmxcLrRiuiXB/RzfrbeB8Mr5IVGVu9C36eHZl/uwNJKcg6sUNkp+1
-         RvaLkgc6EmEzwC3tMfj5Lf44qy0whQRhSm+acSZgcIc+JElU4YDvM8j/di+1BcWwn91f
-         nRmxNyKothfSnuIcVIuuWF7czeDOR/nz4rNQj/q7MRsMO15HER8bjpAz3ZDgq55Gn7dy
-         dUUag6YcESLFl6rLNAtJLLcWVz7UDt+WRA8Ma9RS9DqpJEHZIrNkInOqaLM9k5QuPmQH
-         jiig==
-X-Gm-Message-State: AOJu0Yzf53AxzfqQAgtvuU1ORFLC/HYfnJAcb0wlX4ZYdDIe6kmJU4Uq
-	j3kA1G1NBqCiE+y3LJEwVGey2AAZ7Byv0/ETab9Ps2Gvaq8IqeUq0bL3xxNqHg==
-X-Gm-Gg: Acq92OF3ADv8BL81WbDgUGOMo3D42T34YPYcr/aMmu9b/gDDwA3iP7pMGhyS9XZwBzz
-	Q8YAA79MHfN6gidtcEv8tqmuQfmNxFhw+iVi7cB6KA0ozi1qxIMx2tRr07GI0b29USlwRgm7NVp
-	RG2KNAn4/9QDHae/Hkt2QdeFXUTQM3K22CyEEEjP5sneniFpYJCbxiRROumyo5O39N0orTlO6yC
-	+oiK32BQt7aMOk/5WknZhT8KfKjaYgRVlUhsoPiYxKXvpIMGRozKcSmcLQ6mfCsyo67C0u/xJZ6
-	eWb4oUNc4zMGULoB6tr218ylf+3pP2Hnkq/3e7oa87Zz2bcbIFwY+jrQPybI++6z/RdP1BBBRht
-	K5bCoTtWklFP9d7j1Ou/+rD3VQIEBmW2LClC8+gdjYPJErllVCVBYMHVRiDqe2HMqOxDfcCIKKv
-	iVHxcE/TNY/zQrcclCnqovMGVuumAG3nRNEMwi6AqgWl/gid3DIWPA+xPSyerWG5AofSPx0wOI
-X-Received: by 2002:a17:90b:5747:b0:36b:9798:4f67 with SMTP id 98e67ed59e1d1-370eee03facmr24853662a91.8.1781095699281;
-        Wed, 10 Jun 2026 05:48:19 -0700 (PDT)
+        bh=5AEmDg81pB30v/Br0Irm0sFgmM4aAhJYvvee5RH7rUM=;
+        b=lc/hdbHCCIbRplxZXYtOnANnrlYbrFgb3wF1ExkP37kBstZPHrsG6MACj2wmrGI4CO
+         t0LZsC6etLO8zdjuUXzMfPEkZIDqrPbxEt2aNtqKoSRdIoAqO3phBq1DWSn2Ekm00pOD
+         v9yNLenXLWpaPWVEfKlqXbC7f/Sv4F523qHzkK01zqKV2nRjdqt/dE8hxQb2RJHqqa6V
+         +paumptyo4yIFyeUt0Bb4kB9zYAau6m/ED1JZbfq0+EZztKv+jX7/QfBfd+OknXfkmD+
+         af0FJ30ilp1Xg11R2OgMPOwmjbOWzXwetOn898YsAZZ4iv/+R70yotprXU44j6wEpfQj
+         iuxw==
+X-Gm-Message-State: AOJu0YyMbOGcSrqmXbLJlbdBt9/XojDqFbbJz2E8y+Go4g+64KPTQ65i
+	0yHjs6plhhNld/Mdy6b/pIPB81wQP8wheHqRbhzDCy78+jLNecH8fn0YAogP7w==
+X-Gm-Gg: Acq92OGCF+djrm3Bm2swLGnk8zm8XC+4R+vSjFjqAL/ode1jMi40shxyLb7h/dvowH6
+	dplMQKw0cuYz4GjyHOjAm1w/XpqQA9XXo7JpithhMyI1OT+y3TvWK6oL41d+K+NB3M6bHO69/b+
+	+ErZi4Xrd5825hfFnsOI0ZF4qOUMFGpzCOv62q3Yu1py8yYKi81W3JugOfUVF3Ec71GiXZQpZN6
+	osRC8LRJ4cywqEaDLwMeOILaStig2e6UEBC8vqdwpyyVscxCLUMX4UykepVYN+pd+FFxjrW3+Fs
+	/SA7rQQ/8hTIHKB+MEJyfZPvyuXuU28M+Dvc2UsX+ud9u4z2UogwNduMO+mLOXVm3+noaPDNcvT
+	Sx4NVJX+IdLNTg/PS7Aky1yKqTsD9cN906tue00R10qRb0vP+L3brhH/lxJZshmBeMXGpOMuoTO
+	cKQ9irP72nSiCz1Ss/HnCx6sU7z+djT0n57/IeQEk5JNqvmRKMIW6pepVOvtmaCA==
+X-Received: by 2002:a17:90b:57c4:b0:35f:b647:d98a with SMTP id 98e67ed59e1d1-370ee64373dmr26186012a91.5.1781095704856;
+        Wed, 10 Jun 2026 05:48:24 -0700 (PDT)
 Received: from localhost.localdomain ([171.76.83.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37624b83589sm3783554a91.16.2026.06.10.05.48.13
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37624b83589sm3783554a91.16.2026.06.10.05.48.19
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 10 Jun 2026 05:48:18 -0700 (PDT)
+        Wed, 10 Jun 2026 05:48:24 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: kvm@vger.kernel.org,
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -72,9 +72,9 @@ Cc: linuxppc-dev@lists.ozlabs.org,
 	Christian Borntraeger <borntraeger@linux.ibm.com>,
 	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v3 RESEND 07/10] KVM: PPC: selftests: Use s64 instead of int64_t
-Date: Wed, 10 Jun 2026 18:17:23 +0530
-Message-ID: <851c5eaf017e29795adc5681ea568a78182cc0ac.1781093720.git.ritesh.list@gmail.com>
+Subject: [PATCH v3 RESEND 08/10] KVM: PPC: selftests: Use u32 instead of uint32_t
+Date: Wed, 10 Jun 2026 18:17:24 +0530
+Message-ID: <5b6a7a730a8a35fcd661eadcb3dc6687a6c75b84.1781093720.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1781093720.git.ritesh.list@gmail.com>
 References: <cover.1781093720.git.ritesh.list@gmail.com>
@@ -86,67 +86,48 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-commit 286e8903aed14 ("KVM: selftests: Use s64 instead of int64_t")
-made this change from int64_t -> s64 for all other kvm selftests.
+commit 0c3a8774692aa ("KVM: selftests: Use u32 instead of uint32_t")
+made this change from uint32_t -> u32 for all other kvm selftests.
 
 Do the same for powerpc as well. No functional changes expected.
-It uses the same method describes in above commit.
 
-  git ls-files tools/testing/selftests/kvm | xargs sed -i 's/int64_t/s64/g'
+It uses the same method described in above commit.
+  git ls-files tools/testing/selftests/kvm | xargs sed -i 's/uint32_t/u32/g'
 
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- tools/testing/selftests/kvm/include/powerpc/hcall.h | 6 +++---
- tools/testing/selftests/kvm/lib/powerpc/hcall.c     | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ tools/testing/selftests/kvm/include/powerpc/processor.h | 4 ++--
+ tools/testing/selftests/kvm/lib/powerpc/processor.c     | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/powerpc/hcall.h b/tools/testing/selftests/kvm/include/powerpc/hcall.h
-index f923b3f5e233..21b2bf9180f1 100644
---- a/tools/testing/selftests/kvm/include/powerpc/hcall.h
-+++ b/tools/testing/selftests/kvm/include/powerpc/hcall.h
-@@ -10,8 +10,8 @@
- /* Ucalls use unimplemented PAPR hcall 0 which exits KVM */
- #define H_UCALL	0
+diff --git a/tools/testing/selftests/kvm/include/powerpc/processor.h b/tools/testing/selftests/kvm/include/powerpc/processor.h
+index cbbe390ae244..95ec3debc83c 100644
+--- a/tools/testing/selftests/kvm/include/powerpc/processor.h
++++ b/tools/testing/selftests/kvm/include/powerpc/processor.h
+@@ -22,8 +22,8 @@ struct ex_regs {
+ 	u64	lr;
+ 	u64	ctr;
+ 	u64	xer;
+-	uint32_t	cr;
+-	uint32_t	trap;
++	u32	cr;
++	u32	trap;
+ 	u64	vaddr; /* vaddr of this struct */
+ };
  
--int64_t hcall0(u64 token);
--int64_t hcall1(u64 token, u64 arg1);
--int64_t hcall2(u64 token, u64 arg1, u64 arg2);
-+s64 hcall0(u64 token);
-+s64 hcall1(u64 token, u64 arg1);
-+s64 hcall2(u64 token, u64 arg1, u64 arg2);
- 
- #endif
-diff --git a/tools/testing/selftests/kvm/lib/powerpc/hcall.c b/tools/testing/selftests/kvm/lib/powerpc/hcall.c
-index cd10022572a5..d5f5282654ee 100644
---- a/tools/testing/selftests/kvm/lib/powerpc/hcall.c
-+++ b/tools/testing/selftests/kvm/lib/powerpc/hcall.c
-@@ -5,7 +5,7 @@
- #include "kvm_util.h"
- #include "hcall.h"
- 
--int64_t hcall0(u64 token)
-+s64 hcall0(u64 token)
- {
- 	register uintptr_t r3 asm ("r3") = token;
- 
-@@ -17,7 +17,7 @@ int64_t hcall0(u64 token)
- 	return r3;
+diff --git a/tools/testing/selftests/kvm/lib/powerpc/processor.c b/tools/testing/selftests/kvm/lib/powerpc/processor.c
+index ac5c3421ec81..0a65fc3a8d9a 100644
+--- a/tools/testing/selftests/kvm/lib/powerpc/processor.c
++++ b/tools/testing/selftests/kvm/lib/powerpc/processor.c
+@@ -312,7 +312,7 @@ void vcpu_arch_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code)
+ 	vcpu_regs_set(vcpu, &regs);
  }
  
--int64_t hcall1(u64 token, u64 arg1)
-+s64 hcall1(u64 token, u64 arg1)
+-struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, uint32_t vcpu_id)
++struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
  {
- 	register uintptr_t r3 asm ("r3") = token;
- 	register uintptr_t r4 asm ("r4") = arg1;
-@@ -30,7 +30,7 @@ int64_t hcall1(u64 token, u64 arg1)
- 	return r3;
- }
- 
--int64_t hcall2(u64 token, u64 arg1, u64 arg2)
-+s64 hcall2(u64 token, u64 arg1, u64 arg2)
- {
- 	register uintptr_t r3 asm ("r3") = token;
- 	register uintptr_t r4 asm ("r4") = arg1;
+ 	const size_t stack_size = SZ_64K;
+ 	gva_t stack_vaddr, ex_regs_vaddr;
 -- 
 2.50.1 (Apple Git-155)
 
