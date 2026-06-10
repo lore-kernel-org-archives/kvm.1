@@ -1,116 +1,124 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D08228CB8
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 01:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90EE23E33D
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 01:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781053396; cv=none; b=JebYN82kbFWunrRziajXmIXOI1eviqEy561FNY3/Rdh1LeAlZpena78pQk3/fUkFeatvBmKJIxRN15ntX//90dt7kMMlxSm1dpavRwJYldHTY4XxmuEg0N/nwmfS84ek+czLW6cicezNSBsOSWbr4QB9rTC+H6dDYD6aKVftVUQ=
+	t=1781053520; cv=none; b=A+hIn87j37wK2L+JEJFxJT9vBJNmumWS4QbU5Tge7yVhI41zGyRlT9OHlPA2TiDmJictcd+ZNuuLOwyRyfVWgG8BebZTkQWBXqqNVzfjtqZ1MuHLyZrEXDpLXcCZ/eQ5bbWLmOAH9VTom0gRmkeydOV/64XBfveTi8shii7rK78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781053396; c=relaxed/simple;
-	bh=x9hVVQdrhXAgaPd5B/lPE3thMKH6jIKKySchsRDSQtk=;
+	s=arc-20240116; t=1781053520; c=relaxed/simple;
+	bh=piiyC9M18SpUnABaQZHzRm7dCIZj+EB7/naJs7sHSfk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=AtdD9Sc7mMmJBGD6TW5aDROq20n9RC+4ZZFEmOi7Uzh1fyVVPO4JvQhXAT0UqVI0DgrhVHL1isOB1umnM0VyABtC4OgsJuyGVS8/lLQmpE4MUuyNSLxkQ0aNiGEzaiTdKs+GuZqXQB597oL+imGzgncR1QlXwa8NNFj417twgSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BO25pRN7; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=pJXrm1iR8AvGJILNhvkxd/vBrcO+YTKCprN9qGafj9m5Y3tUilLx9mYqOk7iUJhIXmJhHtndQ4Pbp7Z6iNKjSGZZOdnLyt/6XwNcIk9EgIFO5qDUH/Yb+o2s0R4/SLQY57oLhbTzStWNgu/yT2rrCtEyuVfM3qdZN03bNyFDLwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AyqV2lOG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BO25pRN7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8861F00893;
-	Wed, 10 Jun 2026 01:03:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AyqV2lOG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1333F1F00893;
+	Wed, 10 Jun 2026 01:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781053395;
-	bh=Y8JF4ToHHTqjBAAcxuCws9BQShwomuTL9bzmU7N34Ac=;
+	s=k20260515; t=1781053517;
+	bh=r21NDtjf/tdgr6noH0bXBBlZFURQ3RpcFLiqamF4NiQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BO25pRN7I2gYgfujEC3Am59wDaOprk1/DbSwLMONy3AZ/DnduCTTDYEDsHPIX6uI/
-	 9VLHh9kYq/3bFWM9q25trEfDpO+9IB6Px975GmqVG7hlEMZnZnTEOJ4dgMMYnnR39e
-	 A28fZV4cFsBxkPnqcMBfAjDjJBkCgxT2Y62F6h+jS/mc/0UdJ3B9iTRHG9lMKQzKsX
-	 IHQXbpGZ6zqhRw3njS+xPiMYY91tCwM/r3Q6k3q4XN5LAbdS3dHMt+ThL9SBPXljOp
-	 W6LOmSMJUgzsVF9LZ00HvYywWQRVQkbz6XUDz82ZWpE61qclGMSrLY6XIgb6d56zQa
-	 +FvXZ/UmGj5vw==
+	b=AyqV2lOGK7LALoPdN+3ajFgSmVGFn8nJv4KnNeVGRkM1RTHcysBLk3Q2j2Zrl6W4l
+	 oZpo4C93fzSQ/QCmUbrzY4gUeGpDZNxi3p553lj2IAYIKwveY2+yl1aT0zF3fuqw7F
+	 JdAHWgWsxANA6dTeMiGdHy3yIICy+AznfZjPoK+CBiGtVw3RDfQGOqJ/q3tGMcrbXX
+	 Vn9k4BKLOGgAMvrYUcp6+Jy2Uqgz0g1NOQ4OHWOYPzbi+A0j6vMNd6vwy2eV9Bfifd
+	 gS75HQivsL/Oss6cNM0GsxpeAtWnYzHLzSgBSdAY+8ARcog6COxKGizWvwqm0ERhKg
+	 7q+3OxesntRCA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 01/18] KVM: selftests: Build and link
- selftests/vfio/lib into KVM selftests
+Subject: Re: [PATCH v6 07/18] KVM: selftests: Add VFIO device support to
+ eventfd IRQ test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260610005338.2967132-2-seanjc@google.com>
-References: <20260610005338.2967132-2-seanjc@google.com>
+In-Reply-To: <20260610005338.2967132-8-seanjc@google.com>
+References: <20260610005338.2967132-8-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 10 Jun 2026 01:03:14 +0000
-Message-Id: <20260610010314.DB8861F00893@smtp.kernel.org>
+Date: Wed, 10 Jun 2026 01:05:16 +0000
+Message-Id: <20260610010517.1333F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Including `libvfio.mk` breaks the `make clean all` sequence for KVM=
- selftests because `libvfio.mk` eagerly creates output directories during M=
-akefile parsing and deletes them during `clean`.
-- [Low] The commit message incorrectly states the output directory for VFIO=
- object files.
+- [Medium] `probe_iommu_type()` incorrectly checks for the existence of the=
+ `/dev/vfio` directory instead of the `/dev/vfio/vfio` character device, ca=
+using the test to fail instead of gracefully skipping on systems without VF=
+IO.
 --
 
-commit 603b6019849c316e7022070d57840b9b75c1791c
+commit f5addd74013c3a4a3fb4fedd4bad238886d29e95
 Author: David Matlack <dmatlack@google.com>
 
-KVM: selftests: Build and link selftests/vfio/lib into KVM selftests
+KVM: selftests: Add VFIO device support to eventfd IRQ test
 
-This patch includes libvfio.mk into the KVM selftests Makefile and links it
-into all KVM selftests.
+Extends the eventfd IRQ test to support triggering interrupts via a VFIO
+device instead of manually signaling the eventfd. It also introduces logic
+to auto-probe between IOMMUFD and legacy VFIO.
 
-> Note that KVM selftests build their own copy of selftests/vfio/lib and
-> the resulting object files are placed in $(OUTPUT)/lib. This allows the
-> KVM and VFIO selftests to apply different CFLAGS when building without
-> conflicting with each other.
+Link: https://lore.kernel.org/all/20260602222941.3133236-1-jrhilke%40google=
+.com [1]
 
-[Severity: Low]
-This isn't a bug, but the commit message states the output directory is
-$(OUTPUT)/lib. Looking at tools/testing/selftests/vfio/lib/libvfio.mk,
-LIBVFIO_OUTPUT is actually set to $(OUTPUT)/libvfio. Could the commit
-message be updated to match the code?
-
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/sel=
-ftests/kvm/Makefile.kvm
-> index e0ddd3ff9472d..14316358fd9fb 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -257,6 +257,7 @@ OVERRIDE_TARGETS =3D 1
->  # which causes the environment variable to override the makefile).
->  include ../lib.mk
->  include ../cgroup/lib/libcgroup.mk
-> +include ../vfio/lib/libvfio.mk
-
-[Severity: Low]
-Does including libvfio.mk here break the "make clean all" sequence for KVM=
-=20
-selftests?
-
-In tools/testing/selftests/vfio/lib/libvfio.mk, the output directory is
-eagerly created at parse time:
-
-LIBVFIO_O_DIRS :=3D $(shell dirname $(LIBVFIO_O) | uniq)
-$(shell mkdir -p $(LIBVFIO_O_DIRS))
-
-The directory is also added to EXTRA_CLEAN.=20
-
-If a developer runs "make clean all", Make will parse the included libvfio.=
-mk=20
-and run the shell mkdir command at parse time. Then it executes the clean=20
-target, which deletes the newly created libvfio directory. Finally, it=20
-executes the all target, but the compilation fails with a "No such file or=
-=20
-directory" error because the output directory was deleted and isn't recreat=
-ed
-in the build recipe.
-
-> =20
->  INSTALL_HDR_PATH =3D $(top_srcdir)/usr
+> diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selft=
+ests/kvm/irq_test.c
+> index 9f8895b898214..6888be54ee4a9 100644
+> --- a/tools/testing/selftests/kvm/irq_test.c
+> +++ b/tools/testing/selftests/kvm/irq_test.c
 
 [ ... ]
 
+> @@ -74,11 +107,29 @@ static void kvm_route_msi(struct kvm_vm *vm, u32 gsi=
+, struct kvm_vcpu *vcpu,
+>  	vm_ioctl(vm, KVM_SET_GSI_ROUTING, &routing.header);
+>  }
+> =20
+> +static const char *probe_iommu_type(void)
+> +{
+> +	int io_fd;
+> +
+> +	io_fd =3D open("/dev/iommu", O_RDONLY);
+> +	if (io_fd >=3D 0) {
+> +		close(io_fd);
+> +		return MODE_IOMMUFD;
+> +	}
+> +
+> +	io_fd =3D __open_path_or_exit("/dev/vfio", O_RDONLY,
+> +				    "Is VFIO (or IOMMUFD) loaded and enabled?");
+> +	close(io_fd);
+
+[Severity: Medium]
+The commit message states that the test will auto-probe IOMMUFD vs legacy
+VFIO and skip the test if neither is available. However, probe_iommu_type()
+calls __open_path_or_exit() on /dev/vfio.
+
+Because /dev/vfio is a directory, open() with O_RDONLY will succeed if the
+directory exists (e.g., created by udev or left over after a module unload),
+even if the VFIO module is not loaded and the character device is absent.
+Opening a directory does not trigger the kernel's character device module
+autoloading.
+
+If this occurs, probe_iommu_type() incorrectly assumes VFIO is available and
+returns MODE_VFIO_TYPE1_IOMMU. The test then calls iommu_init(), which atte=
+mpts
+to open /dev/vfio/vfio and will fatally abort, resulting in a test crash ra=
+ther
+than a clean skip.
+
+Additionally, using __open_path_or_exit() will cause the test to exit rather
+than skip if the path does not exist.
+
+Should this probe instead check for the /dev/vfio/vfio character device and
+use open() instead of __open_path_or_exit() to allow the test to gracefully
+skip and trigger module autoloading?
+
+> +	return MODE_VFIO_TYPE1_IOMMU;
+> +}
+
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610005338.2967=
-132-1-seanjc@google.com?part=3D1
+132-1-seanjc@google.com?part=3D7
