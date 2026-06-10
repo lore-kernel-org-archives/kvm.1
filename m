@@ -1,122 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A79EEEBA
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 01:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8D71A0BD0
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 01:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781053320; cv=none; b=PtTuq8MAH6zAyZ5zPVjoQiBMyYXdVSqtkUxIlyCcoQnIY/okQt0XuQmF0V9zUYLKS6mGG7LPFMioTsdPPBiW8FiOasviMLczea6+JZnn/cYITdOrwS8lxPesQ7zWP8P/3sQbUQrVPbt5RyweaI/7NvNvTr8krlfAdaHbU3pjyos=
+	t=1781053366; cv=none; b=N0HTGp9E8Wx8fXYv0G3qprtISbRenMQkVUpYfyiD8uShy4D3YAgiD3NQhFd5/rqnHsfGgl0nIdymM7+E0F55vHbMQepxrCTonrm5IRgyMTgBFeuNr6wCVOtoj4/SxbVTIls6MFF3lHbrWb4vCvyRUbQeYGcQQ0suFbk/pzWOB5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781053320; c=relaxed/simple;
-	bh=IUymJ0+kyHTOqEAgusELFWfzgana5Oag94LjiahJa7w=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XE5uv1sM1qc+Jk38L9fUVQpJwQ+9Mq1gfNXCmFMChASe21bwPa5i1h72VOp/PccGgiNsRL11deSn0YZcF9uxjpuj/2T7PDCP7XdEoYAFY4w9C9C1UGBAJPGfl7N0UnSrf6BRre9vUcxTnVtjcA9BsumD0X6RcJVmHgDA6VYq9n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mo7L9leF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781053366; c=relaxed/simple;
+	bh=8UWEFz5xc8HwIgYURG3o+VWfvwL8FlRHhf8cAD+DfKQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Os6A+WZLmEBzyekZwv7lxPhbjek7wlymhsQ4A5zM/t1YfXxG99KVe2rBShtvb5/zrCoeUwAcGEfPWP5Plcz+dMqrsByQNuk9fnwePhgWemVGkb2SkWrANbVU7P8cQo19IpDkCNtzBSePtWzARslPVWwDH6uF9Z2wiXPHKGhUYd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ASCd/Nc+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mo7L9leF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF361F00893;
-	Wed, 10 Jun 2026 01:01:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ASCd/Nc+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462991F00899
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 01:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781053318;
-	bh=zTFQddiWGqZIaxaaO9Fskr35XkYlFbRBs9EJzZMG8OA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Mo7L9leFgcoYkPQdFIatZorjd/HSHaAUqV76riwsezE0QwpKC+CvECY0ypVtns3/q
-	 9+X+I7D8bXygi/h/ZC/czA/vhTFSJk3ZS1YX3BUD4fpoV9toCB8RffI0IQ909rbbuh
-	 otAUA+25D6D7c+raofZzZ0ujtwz20QVUt+ZzOC9SO3CBBseVa3BeUxql9c3Y3iFPh7
-	 Lu+lqr8gePCF0VcDkUPuOCCTeMWSnC1IcWL6naYm6WPATo+TPnbD3NMAiXS1o3waWN
-	 r1swM7wzP+5O1V6Zi4GyKuRmyl13rLRs01lzA3ZtgRO6Rz6/KPMpMlta2EeMnrmvmW
-	 23ibJk85BX/QQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 06/18] KVM: selftests: Add helper to get host IRQ
- from device MSI-X for IRQ bypass test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260610005338.2967132-7-seanjc@google.com>
-References: <20260610005338.2967132-7-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 10 Jun 2026 01:01:58 +0000
-Message-Id: <20260610010158.9FF361F00893@smtp.kernel.org>
+	s=k20260515; t=1781053365;
+	bh=vtq2TzIQPc0sOwt4ZlxQX3DJsDR4yPut91teeqgfuns=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ASCd/Nc+OeLvSOd+VbIzSuXmOjinZwYRisgBbY+8R5MgUWgzGkzYyIBh6pS8uybs8
+	 5cY7yncPA2nOqA3HbOTguj718NWhv6Ggh459MfokFEJfpifYHDyjvmU3esCRZewgpP
+	 NvW+KP1XK4CZM0pSRGBxK+cYg74HGAxWbdkKzwl38bEOaFPJNJCSuH3rSGFIlG0Wtg
+	 dg/yuMMxzd+8cm0ERAgFBSnEE+KMdkpzt1pHQWLFZIEscQBeN43LDsKvfTv6CdhPvh
+	 AOjkUJBdXAQNZjt5HzM2aniL7jEDUJ/c/Cuiv1fd/umBullkUJY1ebOx08R3b/O/24
+	 zmPQtqxgJKnYQ==
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-68d233bf083so8749054a12.1
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 18:02:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/d82wC21TIfRNN57HKEdIp+MgGLiBkoY5BwU4/EOEgs/2KOIGBjnVGaLhoNbkb5iW4DUI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8t8jX8xb+0FP8MEFPD5SS3MPF+rFN2zhC1B1dyMwfnB6n6L/p
+	YmHsNYa4zy7sfHVMQ338zx/haR7utNw3YPOqbI1HQ7x7OJkAIgbGFgigkG+ItV7acz9gVirY5k4
+	hGABSWxTd8AW04T0A7BmtOkFe4dfT3HQ=
+X-Received: by 2002:a17:907:94c7:b0:bc2:70ca:c41e with SMTP id
+ a640c23a62f3a-bf372159ff7mr1128691866b.25.1781053364243; Tue, 09 Jun 2026
+ 18:02:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260610003030.2957261-1-seanjc@google.com> <20260610003030.2957261-6-seanjc@google.com>
+In-Reply-To: <20260610003030.2957261-6-seanjc@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 9 Jun 2026 18:02:33 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMHosEKimDkFsiwT-1mft0XMnOdprzSJUY-WZvXT5ggAQ@mail.gmail.com>
+X-Gm-Features: AVVi8CdT9w99oql69u0JP04isfDd1ATVOzzzeShFS1dRfdSIIDKh4WhHFApUIqA
+Message-ID: <CAO9r8zMHosEKimDkFsiwT-1mft0XMnOdprzSJUY-WZvXT5ggAQ@mail.gmail.com>
+Subject: Re: [PATCH v8 5/5] KVM: selftests: Add svm_pmu_host_guest_test for
+ Host-Only/Guest-Only bits
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Buffer truncation when parsing /proc/interrupts causes incorrect=
- IRQ extraction or test crashes on large systems.
---
-
-commit e51d631d9d46231f822d202d28c9466d2c3d253d
-Author: David Matlack <dmatlack@google.com>
-
-KVM: selftests: Add helper to get host IRQ from device MSI-X for IRQ bypass=
- test
-
-This commit introduces proc_util.c and proc_util.h to provide utility funct=
-ions
-for interacting with the proc filesystem. It adds vfio_msix_to_host_irq() to
-parse /proc/interrupts and find the host Linux IRQ for a given VFIO device =
-BDF
-and MSI-X vector.
-
-> diff --git a/tools/testing/selftests/kvm/lib/proc_util.c b/tools/testing/=
-selftests/kvm/lib/proc_util.c
-> new file mode 100644
-> index 0000000000000..84d30f055a0a9
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/proc_util.c
-[ ... ]
-> +unsigned int vfio_msix_to_host_irq(const char *device_bdf, int msix)
+> +int main(int argc, char *argv[])
 > +{
-> +	char search_string[64];
-> +	char line[4096];
-> +	int irq =3D -1;
-> +	FILE *fp;
+> +       struct kvm_pmu_event_filter *filter;
+> +       struct kvm_vcpu *vcpu;
+> +       struct kvm_vm *vm;
+> +       struct ucall uc;
+> +       gva_t svm_gva;
 > +
-> +	fp =3D open_proc_interrupts();
-> +
-> +	snprintf(search_string, sizeof(search_string), "vfio-msix[%d]", msix);
-> +
-> +	while (fgets(line, sizeof(line), fp)) {
-> +		if (strstr(line, device_bdf) && strstr(line, search_string)) {
-> +			TEST_ASSERT_EQ(1, sscanf(line, "%d:", &irq));
+> +       TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
+> +       TEST_REQUIRE(kvm_is_pmu_enabled());
 
-[Severity: Medium]
-Could this fixed-size buffer lead to truncated line parsing on larger syste=
-ms?
-
-On systems with many CPUs, a single line in /proc/interrupts can exceed 4096
-bytes. When this happens, fgets() will split the line into multiple chunks.=
-=20
-
-The first chunk will contain the actual IRQ number at the start, but not th=
-e=20
-device_bdf or vfio-msix strings (which are at the end of the line), so it=20
-will be skipped.
-
-The subsequent chunk will contain the device strings, causing strstr() to
-match, but this chunk won't start with the IRQ number. When sscanf() runs
-on this later chunk, it could return 0 and cause the TEST_ASSERT_EQ() to
-abort the test, or worse, silently parse an interrupt count as the IRQ numb=
-er,
-which could disrupt the host system if the test attempts to change the SMP
-affinity of that unrelated IRQ.
-
-> +			break;
-> +		}
-> +	}
-> +
-> +	fclose(fp);
-> +
-> +	TEST_ASSERT(irq !=3D -1, "Failed to locate IRQ for %s %s", device_bdf,
-> +		    search_string);
-> +	return (unsigned int)irq;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610005338.2967=
-132-1-seanjc@google.com?part=3D6
+Nit: This is probably redundant since we can't enable the mediated PMU
+when the PMU is disabled, but it might be useful to tell us that the
+mediated PMU is disabled *because* the PMU is disabled.
