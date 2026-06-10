@@ -1,304 +1,117 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAEC30ACE3
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 19:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2BF36A027
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 19:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781118721; cv=none; b=a5V87dMP2MkMeLeY3D69a8bx4Cx3q+0fvFBzrPjjn5HZsAaC9YJNUIs7YLs7ILK3vRx6jt8KHX+9/mzAPs52tj34WHIDtFHbx7hIBaIkQqOt3TXqOgaekqqmwgqFRMjEHfd6HlDXmPfltuXb9avQISU9fUX9Xyn4W3PcNDlMMuc=
+	t=1781119129; cv=none; b=ZdfdoP6F0wBj6koGL6cy/0jT2u25Meru4Wq9B6b7zVnhrPF8LfPVLA9UQ+sJPsa6uNSRzXum2sWQXwesgNX/LNuh+Mhhmv8oPHP+4zIP3a5mo25/cXdQvLDnoXEe2j4/UWd6s1r+4h/soxPeCR5bhpz5FrA8qaotrKYIpGrMZK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781118721; c=relaxed/simple;
-	bh=6qPeeETsH8DfHzoaCXPyZV/P/25z5Erm5s91u41VSZE=;
+	s=arc-20240116; t=1781119129; c=relaxed/simple;
+	bh=bWOieN7hFnS5AkVT6IUrpQaoTZ6d+J/rfYok78HffKw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kElLJluX+zIBLII5C72PsPLFUeCeDA4zFDNeZ/+/WAqqa6YCQB3DFLDx3n5wN6qM+l8VtJ1flyMBfPBgwDtiDy9qM28i88UMJb4ex2rNzev7Uu7lbSjZSbtb9tsZYqCQYL+VjRbX/dfgJ745JGAQ/FfXL9WB6tVa5Kqst31tv4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pKFRx5eL; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=MFdlueLbW5gw7Zt/xr4wD8Sfz0CCQI4TU3p5LhcOP1E8fycByWvD91KUjEfDWqEzb8nrbKhZnG38dBNSgdUqkgJNp1TqeBn57E3nXrPS6biN0YmfNZoK6cmpXrup0rlfM/xMX39rdEip5GXVVEGXpr0az8lOkGZjTSwgS93QTe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s+M0xMnC; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pKFRx5eL"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36bc5e97950so7996918a91.1
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 12:11:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s+M0xMnC"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d98b5a68fso12208856a91.2
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 12:18:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781118719; x=1781723519; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781119127; x=1781723927; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=MylOMmA1pK0Mdv0TuXqGz6CpqHZasbjFvUmh+v6hUKQ=;
-        b=pKFRx5eL30rfv4woWxNOzL2wIAFNze+vf0HiHAN1fFup+DnLVj7ZVN5Vtv5Lu9V204
-         ZQLsBmEGaHMKUnMMcYeyGGdsPLEkS9ouH6n91ooBLCbisRp03jflJdCDfK47GkvuGpDD
-         v8ol3YyIBPQFYjf0cYE0y/wCf8o97dhsuwJdenhCCl2p1lx9FHUWMoEthwwacniXjUoR
-         mRLvfNXKIl+ftP9Pqy3APY/UUHDF4pgAAY3zGAMQt50MbdQBsOZOsSkzLIHMvwGfpznm
-         DNQpRRedBgJnBhwQTaM32gIK4/jl57gw+TMwiIlAZerGHNKXdAGA0fpuJ+mUnpwl9l0w
-         xdHg==
+        bh=EEBmDx98caEzFpRXeIqJTAyOlpfmMPXYTcbS9AlAlm8=;
+        b=s+M0xMnCpcYNTag+MHk5EqjdbQK2YtLt+nt3rS6LCDtpqzEtXHY+t/aW54YfW7Qm+D
+         665zKwgRpB26CvhzckSPBaaT6kA+EONfP9OEy0JXEdvmBlmpfba1UGt8y4WNywGyMR+e
+         0AILd2caQ9J9ETenSEs1vMg9vNX/TfBBV8+YLppyUI3lYaPK9IBFKIjlK0gK73uiOdV1
+         PldzZW3eHtJYE8mX9bNBRQkfw8qPkpL+xIceYnEy06hGKPKWZFV9A7YPHNxiyaf+5KJk
+         Ax0c8g3VdkFiqMcvUSyGEKUgw28QxChVaAhxddAyDFzTn9yoGcYk6s2kMYn1mql1ofpB
+         Kjxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781118719; x=1781723519;
+        d=1e100.net; s=20251104; t=1781119127; x=1781723927;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=MylOMmA1pK0Mdv0TuXqGz6CpqHZasbjFvUmh+v6hUKQ=;
-        b=s+AJZpseRAXZkx5iyNTiQlxsti5xYCl9qYjSGJgw3dbPI2xyMRnQt8/rCtR25pckol
-         g5t+SWkWnGg+9ZyUwqKH6cJfykF0EuatrSrT6cSsUlne4zmcBSO7BkZtZNnNyuJ3xXeu
-         KLKms8skeRrtnXBeJyNEqfhGKKwHK+i4MZB+aiXby2K7ktUNz8WYGGrdFk46GaoEMMln
-         Zh0ybHYC/mGcTVFFogmaOvyE5PdLMVPlaxHFEkvUrAURImfo4quiUBMKk3M9kDImkpn4
-         HqJW4dX+P1PLlV6EO3KwjxLHC+Q4MqJukIxA/pGj+aMeAI1NCxvW+BTIMLFrteE2RBys
-         sKBw==
-X-Gm-Message-State: AOJu0YyFRnCVB2i+y38wkE1OodnmR5cPrxp0xepTOju8LDQ4J+9wAWmf
-	RNHipdAZnHTWSP/htKrPaAdJn5TCuPtjknvrapDO/2kRq4kiEz6X6o0V+hfwHFBZfdP2Z8a/h9P
-	gk2h21w==
-X-Received: from pjez16.prod.google.com ([2002:a17:90a:150:b0:36b:be09:e0f7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5145:b0:36a:ee1:fc24
- with SMTP id 98e67ed59e1d1-370eedfff82mr28908614a91.8.1781118719080; Wed, 10
- Jun 2026 12:11:59 -0700 (PDT)
-Date: Wed, 10 Jun 2026 12:11:58 -0700
-In-Reply-To: <20260610185042.2810880-2-clopez@suse.de>
+        bh=EEBmDx98caEzFpRXeIqJTAyOlpfmMPXYTcbS9AlAlm8=;
+        b=G2/uvOe+JjLy8sz94LpU2NlvD4DNtLQpm92fWqmcyyttbd4mwwF4sN2cUjwCTCjGtl
+         nUG9otii0qDihBQXh6H1GlomVfrPNmla6qscURd7+9DDkXPm9cBiVCDP1Rc6aKLxImh+
+         +YHfmlQobWD7pUMnXnAHVNUiDHNuqVhRKB20VWE1npvU8pVficNeaOIa0seZUnpSWD9A
+         BSyldCC5v0hcOhqcRea4ffs5/g+dtrnEpWGrLbNUofCJRuIy/NhaQjwxlUeZH9+Oo3hD
+         0vhJcflpp0P+wwhHiIFdqCeHP6qAuBI6eUhLGKF2YKnRl7e9TuFjHW6/1Ze7Boy3Gz49
+         qyPg==
+X-Gm-Message-State: AOJu0Yw2YzpnGZSjNgPPsrEhxmliAR6SdU+7W/wkcMF/ickrh8xB3JD1
+	EVP36ruo2rCcdWV56MMemBDXz0So1ZUNw/NuN74aVf9snNZBkHh4+SxOuwxt0uh/Kv16rIxFFTQ
+	7LkBvwQ==
+X-Received: from pjji9.prod.google.com ([2002:a17:90a:6509:b0:36b:cf62:6827])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2741:b0:366:10f1:3d86
+ with SMTP id 98e67ed59e1d1-370f0b55ebbmr28954281a91.22.1781119126862; Wed, 10
+ Jun 2026 12:18:46 -0700 (PDT)
+Date: Wed, 10 Jun 2026 12:18:46 -0700
+In-Reply-To: <20260610010314.DB8861F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260610185042.2810880-2-clopez@suse.de>
-Message-ID: <aim2_s0loBcb3fav@google.com>
-Subject: Re: [PATCH] KVM: VMX: Raise KVM_REQ_EVENT on TPR below threshold exit
+References: <20260610005338.2967132-2-seanjc@google.com> <20260610010314.DB8861F00893@smtp.kernel.org>
+Message-ID: <aim4lld49oqLrthg@google.com>
+Subject: Re: [PATCH v6 01/18] KVM: selftests: Build and link
+ selftests/vfio/lib into KVM selftests
 From: Sean Christopherson <seanjc@google.com>
-To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, osteffen@redhat.com, 
-	Stefano Garzarella <sgarzare@redhat.com>, stable@vger.kernel.org, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Roman Kagan <rkagan@virtuozzo.com>, 
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, David Matlack <dmatlack@google.com>, 
+	Josh Hilke <jrhilke@google.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 10, 2026, Carlos L=C3=B3pez wrote:
-> The TPR_THRESHOLD field in the VMCS is used by VMX to induce VM exits
-> when the guest's virtual TPR falls under the specified threshold,
-> allowing KVM to inject previously masked interrupts.
+On Wed, Jun 10, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/s=
+elftests/kvm/Makefile.kvm
+> > index e0ddd3ff9472d..14316358fd9fb 100644
+> > --- a/tools/testing/selftests/kvm/Makefile.kvm
+> > +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> > @@ -257,6 +257,7 @@ OVERRIDE_TARGETS =3D 1
+> >  # which causes the environment variable to override the makefile).
+> >  include ../lib.mk
+> >  include ../cgroup/lib/libcgroup.mk
+> > +include ../vfio/lib/libvfio.mk
 >=20
-> KVM handles these VM exits in handle_tpr_below_threshold().
-> Commit eb90f3417a0c ("KVM: vmx: speed up TPR below threshold vmexits")
-> optimized this function by calling apic_update_ppr() instead of raising
-> KVM_REQ_EVENT. apic_update_ppr() then raises KVM_REQ_EVENT if there is
-> a pending, deliverable interrupt.
->=20
-> However, if there are no new interrupts pending, apic_update_ppr()
-> does not issue the request. This skips calling update_cr8_intercept(),
-> and thus vmx_update_cr8_intercept() before VM entry, which results in
-> a high, stale TPR_THRESHOLD. This is problematic due to the following
-> sentence in 28.2.1.1 "VM-Execution Control Fields" in the SDM:
->=20
->   The following check is performed if the =E2=80=9Cuse TPR shadow=E2=80=
-=9D VM-execution
->   control is 1 and the =E2=80=9Cvirtualize APIC accesses=E2=80=9D and =E2=
-=80=9Cvirtual-interrupt
->   delivery=E2=80=9D VM-execution controls are both 0: the value of bits 3=
-:0 of
->   the TPR threshold VM-execution control field should not be greater
->   than the value of bits 7:4 of VTPR.
->=20
-> This error condition is typically not observed when KVM runs on a bare
-> metal system because modern processors support APICv, which enables
-> virtual-interrupt delivery, and which KVM uses when possible. This
-> causes the processor to no longer generate TPR-below threshold exits
-> and to no longer check TPR_THRESHOLD on entry. However, when running
-> on older platforms, or under nested virtualization on a hypervisor that
-> does not support virtual-interrupt delivery and enforces this check
-> (like Hyper-V) this can cause a VM entry failure with hardware error
-> 0x7, as seen in [1].
->=20
-> Fix this by re-introducing an unconditional KVM_REQ_EVENT when reacting
-> to a TPR-below-threshold exit, ensuring that vmx_update_cr8_intercept()
-> is called to re-evaluate TPR_THRESHOLD before entering the guest.
->=20
-> Link: https://github.com/coconut-svsm/svsm/issues/1081 [1]
-> Tested-by: Stefano Garzarella <sgarzare@redhat.com>
-> Cc: stable@vger.kernel.org
-> Fixes: eb90f3417a0c ("KVM: vmx: speed up TPR below threshold vmexits")
-> Signed-off-by: Carlos L=C3=B3pez <clopez@suse.de>
-> ---
->  arch/x86/kvm/vmx/vmx.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index c548f22375ad..21a469d3ba21 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -5824,6 +5824,7 @@ void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned lo=
-ng val)
->  static int handle_tpr_below_threshold(struct kvm_vcpu *vcpu)
->  {
->  	kvm_apic_update_ppr(vcpu);
-> +	kvm_make_request(KVM_REQ_EVENT, vcpu);
->  	return 1;
->  }
+> [Severity: Low]
+> Does including libvfio.mk here break the "make clean all" sequence for KV=
+M=20
+> selftests?
 
-Don't all the other flows that update PPR have the same bug, at least in th=
-eory?
-Forcing KVM_REQ_EVENT is a bit of a hack, it seems like we should instead b=
-e able
-to do something like this (probably not this aggressively for stable@):
+David and/or Josh, can you verify whether Sashiko is hallucinating or has a
+legitimate concern?
 
----
- arch/x86/kvm/lapic.c | 31 +++++++++++++++++++++++++++++++
- arch/x86/kvm/x86.c   | 37 ++-----------------------------------
- 2 files changed, 33 insertions(+), 35 deletions(-)
-
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 4078e624ca66..1b66c878bb67 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -939,6 +939,32 @@ static bool pv_eoi_test_and_clr_pending(struct kvm_vcp=
-u *vcpu)
- 	return val;
- }
+> In tools/testing/selftests/vfio/lib/libvfio.mk, the output directory is
+> eagerly created at parse time:
+>=20
+> LIBVFIO_O_DIRS :=3D $(shell dirname $(LIBVFIO_O) | uniq)
+> $(shell mkdir -p $(LIBVFIO_O_DIRS))
+>=20
+> The directory is also added to EXTRA_CLEAN.=20
+>=20
+> If a developer runs "make clean all", Make will parse the included libvfi=
+o.mk=20
+> and run the shell mkdir command at parse time. Then it executes the clean=
 =20
-+static void update_cr8_intercept(struct kvm_vcpu *vcpu)
-+{
-+	int max_irr, tpr;
-+
-+	if (!kvm_x86_ops.update_cr8_intercept)
-+		return;
-+
-+	if (WARN_ON_ONCE(!lapic_in_kernel(vcpu)))
-+		return;
-+
-+	if (vcpu->arch.apic->apicv_active)
-+		return;
-+
-+	if (!vcpu->arch.apic->vapic_addr)
-+		max_irr =3D kvm_lapic_find_highest_irr(vcpu);
-+	else
-+		max_irr =3D -1;
-+
-+	if (max_irr !=3D -1)
-+		max_irr >>=3D 4;
-+
-+	tpr =3D kvm_lapic_get_cr8(vcpu);
-+
-+	kvm_x86_call(update_cr8_intercept)(vcpu, tpr, max_irr);
-+}
-+
- static int apic_has_interrupt_for_ppr(struct kvm_lapic *apic, u32 ppr)
- {
- 	int highest_irr;
-@@ -980,6 +1006,8 @@ static void apic_update_ppr(struct kvm_lapic *apic)
- 	if (__apic_update_ppr(apic, &ppr) &&
- 	    apic_has_interrupt_for_ppr(apic, ppr) !=3D -1)
- 		kvm_make_request(KVM_REQ_EVENT, apic->vcpu);
-+	else
-+		update_cr8_intercept(apic->vcpu);
- }
-=20
- void kvm_apic_update_ppr(struct kvm_vcpu *vcpu)
-@@ -3290,6 +3318,7 @@ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct =
-kvm_lapic_state *s)
- 	kvm_apic_update_apicv(vcpu);
- 	if (apic->apicv_active)
- 		kvm_x86_call(apicv_post_state_restore)(vcpu);
-+
- 	kvm_make_request(KVM_REQ_EVENT, vcpu);
-=20
- #ifdef CONFIG_KVM_IOAPIC
-@@ -3394,6 +3423,8 @@ void kvm_lapic_sync_to_vapic(struct kvm_vcpu *vcpu)
- 	int max_irr, max_isr;
- 	struct kvm_lapic *apic =3D vcpu->arch.apic;
-=20
-+	update_cr8_intercept(vcpu);
-+
- 	apic_sync_pv_eoi_to_guest(vcpu, apic);
-=20
- 	if (!test_bit(KVM_APIC_CHECK_VAPIC, &vcpu->arch.apic_attention))
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0550359ed798..116ce6209c67 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -128,7 +128,6 @@ static u64 __read_mostly efer_reserved_bits =3D ~((u64)=
-EFER_SCE);
- 				    KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST	| \
- 				    KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST)
-=20
--static void update_cr8_intercept(struct kvm_vcpu *vcpu);
- static void process_nmi(struct kvm_vcpu *vcpu);
- static void __kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags);
- static void store_regs(struct kvm_vcpu *vcpu);
-@@ -5340,7 +5339,6 @@ static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *=
-vcpu,
- 	r =3D kvm_apic_set_state(vcpu, s);
- 	if (r)
- 		return r;
--	update_cr8_intercept(vcpu);
-=20
- 	return 0;
- }
-@@ -10595,33 +10593,6 @@ static void post_kvm_run_save(struct kvm_vcpu *vcp=
-u)
- 		kvm_run->flags |=3D KVM_RUN_X86_GUEST_MODE;
- }
-=20
--static void update_cr8_intercept(struct kvm_vcpu *vcpu)
--{
--	int max_irr, tpr;
--
--	if (!kvm_x86_ops.update_cr8_intercept)
--		return;
--
--	if (!lapic_in_kernel(vcpu))
--		return;
--
--	if (vcpu->arch.apic->apicv_active)
--		return;
--
--	if (!vcpu->arch.apic->vapic_addr)
--		max_irr =3D kvm_lapic_find_highest_irr(vcpu);
--	else
--		max_irr =3D -1;
--
--	if (max_irr !=3D -1)
--		max_irr >>=3D 4;
--
--	tpr =3D kvm_lapic_get_cr8(vcpu);
--
--	kvm_x86_call(update_cr8_intercept)(vcpu, tpr, max_irr);
--}
--
--
- int kvm_check_nested_events(struct kvm_vcpu *vcpu)
- {
- 	if (kvm_test_request(KVM_REQ_TRIPLE_FAULT, vcpu)) {
-@@ -11361,10 +11332,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		if (req_int_win)
- 			kvm_x86_call(enable_irq_window)(vcpu);
-=20
--		if (kvm_lapic_enabled(vcpu)) {
--			update_cr8_intercept(vcpu);
-+		if (kvm_lapic_enabled(vcpu))
- 			kvm_lapic_sync_to_vapic(vcpu);
--		}
- 	}
-=20
- 	r =3D kvm_mmu_reload(vcpu);
-@@ -12481,8 +12450,6 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu=
-, struct kvm_sregs *sregs,
- 	kvm_register_mark_dirty(vcpu, VCPU_EXREG_CR3);
- 	kvm_x86_call(post_set_cr3)(vcpu, sregs->cr3);
-=20
--	kvm_set_cr8(vcpu, sregs->cr8);
--
- 	*mmu_reset_needed |=3D vcpu->arch.efer !=3D sregs->efer;
- 	kvm_x86_call(set_efer)(vcpu, sregs->efer);
-=20
-@@ -12511,7 +12478,7 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu=
-, struct kvm_sregs *sregs,
- 	kvm_set_segment(vcpu, &sregs->tr, VCPU_SREG_TR);
- 	kvm_set_segment(vcpu, &sregs->ldt, VCPU_SREG_LDTR);
-=20
--	update_cr8_intercept(vcpu);
-+	kvm_set_cr8(vcpu, sregs->cr8);
-=20
- 	/* Older userspace won't unhalt the vcpu on reset. */
- 	if (kvm_vcpu_is_bsp(vcpu) && kvm_rip_read(vcpu) =3D=3D 0xfff0 &&
-
-base-commit: fd408f8da71c91d589cf05674c2e114fc2267b31
---=20
-
+> target, which deletes the newly created libvfio directory. Finally, it=20
+> executes the all target, but the compilation fails with a "No such file o=
+r=20
+> directory" error because the output directory was deleted and isn't recre=
+ated
+> in the build recipe.
+>=20
+> > =20
+> >  INSTALL_HDR_PATH =3D $(top_srcdir)/usr
+>=20
+> [ ... ]
+>=20
+> --=20
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610005338.29=
+67132-1-seanjc@google.com?part=3D1
