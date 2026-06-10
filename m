@@ -1,117 +1,88 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2BF36A027
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 19:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6556D372B4F
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 19:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781119129; cv=none; b=ZdfdoP6F0wBj6koGL6cy/0jT2u25Meru4Wq9B6b7zVnhrPF8LfPVLA9UQ+sJPsa6uNSRzXum2sWQXwesgNX/LNuh+Mhhmv8oPHP+4zIP3a5mo25/cXdQvLDnoXEe2j4/UWd6s1r+4h/soxPeCR5bhpz5FrA8qaotrKYIpGrMZK8=
+	t=1781119235; cv=none; b=QsKXLD+Y2aWME5Ax7+ZYs53caLOHs8xCFetrW6XKZ6Z4jYfMWxjw7k5+HH/PquegSkTvb/O8+rg+c/YFPlBciskRbR/1r5S/zgJ40lBThHyrKcAr6i3VwGOczFXCMVH34H7jjbOwMQ6WGy/pnFiJeAtV87THiafmcOFNhC88qkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781119129; c=relaxed/simple;
-	bh=bWOieN7hFnS5AkVT6IUrpQaoTZ6d+J/rfYok78HffKw=;
+	s=arc-20240116; t=1781119235; c=relaxed/simple;
+	bh=ibXY4lUk2DRCYZ1FGiZekl7s7+d7c+g3KmcX+nfztQM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MFdlueLbW5gw7Zt/xr4wD8Sfz0CCQI4TU3p5LhcOP1E8fycByWvD91KUjEfDWqEzb8nrbKhZnG38dBNSgdUqkgJNp1TqeBn57E3nXrPS6biN0YmfNZoK6cmpXrup0rlfM/xMX39rdEip5GXVVEGXpr0az8lOkGZjTSwgS93QTe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s+M0xMnC; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=Cuo4DhhRLtheqiKC2XhfGWhXEHIMImYUo3km8IVKczEx7Egm3DNOVvHAK5TXDRXRsf3fwktDmh2IJxOSYaSYJsoWuonDTrzO/3g2AzpeQG2zquPZjsMGf1WbjYJufmkaU9mkh/0IVnQVOyTDxvdP6HCQnUvn8c175C7xijAEG/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gw1kaFK7; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s+M0xMnC"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d98b5a68fso12208856a91.2
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 12:18:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gw1kaFK7"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d98b6f019so7060879a91.2
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 12:20:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781119127; x=1781723927; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EEBmDx98caEzFpRXeIqJTAyOlpfmMPXYTcbS9AlAlm8=;
-        b=s+M0xMnCpcYNTag+MHk5EqjdbQK2YtLt+nt3rS6LCDtpqzEtXHY+t/aW54YfW7Qm+D
-         665zKwgRpB26CvhzckSPBaaT6kA+EONfP9OEy0JXEdvmBlmpfba1UGt8y4WNywGyMR+e
-         0AILd2caQ9J9ETenSEs1vMg9vNX/TfBBV8+YLppyUI3lYaPK9IBFKIjlK0gK73uiOdV1
-         PldzZW3eHtJYE8mX9bNBRQkfw8qPkpL+xIceYnEy06hGKPKWZFV9A7YPHNxiyaf+5KJk
-         Ax0c8g3VdkFiqMcvUSyGEKUgw28QxChVaAhxddAyDFzTn9yoGcYk6s2kMYn1mql1ofpB
-         Kjxg==
+        d=google.com; s=20251104; t=1781119234; x=1781724034; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rXbhmrrYImUQv4H/dhcmoVKM/0EEFpXQX6uTvjIXuTw=;
+        b=gw1kaFK7KMu6aN1Jtgz4zHsI1E/J1SARM9tHW/Ich/ie3OE/TeCOUd+dQh/iItaeY4
+         1FozcsVsR56nF7WMnPl04ELDTeP4POanj+XwrPyP7x8f24AGW+kizFLX0vfih6LBLsi0
+         ta6K5erDeZg6VqUo+4eTdTB7ZL8TZCNP7U7wz8D8JICabG7fSRhwsLyTcqkyHkk99Vq3
+         3L9KovuRXPe9t7nMHERajyFyMjhzGFwuIXVhdT8sht5slBx9/d3BFGD48W06pxNji8Fv
+         +aLezLFLntyXESSVcEDSISCJGMTmMsBiPTJ/jVXAGye67d4UdX7eyXazhVn4Tu/iwhQA
+         VRog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781119127; x=1781723927;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EEBmDx98caEzFpRXeIqJTAyOlpfmMPXYTcbS9AlAlm8=;
-        b=G2/uvOe+JjLy8sz94LpU2NlvD4DNtLQpm92fWqmcyyttbd4mwwF4sN2cUjwCTCjGtl
-         nUG9otii0qDihBQXh6H1GlomVfrPNmla6qscURd7+9DDkXPm9cBiVCDP1Rc6aKLxImh+
-         +YHfmlQobWD7pUMnXnAHVNUiDHNuqVhRKB20VWE1npvU8pVficNeaOIa0seZUnpSWD9A
-         BSyldCC5v0hcOhqcRea4ffs5/g+dtrnEpWGrLbNUofCJRuIy/NhaQjwxlUeZH9+Oo3hD
-         0vhJcflpp0P+wwhHiIFdqCeHP6qAuBI6eUhLGKF2YKnRl7e9TuFjHW6/1Ze7Boy3Gz49
-         qyPg==
-X-Gm-Message-State: AOJu0Yw2YzpnGZSjNgPPsrEhxmliAR6SdU+7W/wkcMF/ickrh8xB3JD1
-	EVP36ruo2rCcdWV56MMemBDXz0So1ZUNw/NuN74aVf9snNZBkHh4+SxOuwxt0uh/Kv16rIxFFTQ
-	7LkBvwQ==
-X-Received: from pjji9.prod.google.com ([2002:a17:90a:6509:b0:36b:cf62:6827])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2741:b0:366:10f1:3d86
- with SMTP id 98e67ed59e1d1-370f0b55ebbmr28954281a91.22.1781119126862; Wed, 10
- Jun 2026 12:18:46 -0700 (PDT)
-Date: Wed, 10 Jun 2026 12:18:46 -0700
-In-Reply-To: <20260610010314.DB8861F00893@smtp.kernel.org>
+        d=1e100.net; s=20251104; t=1781119234; x=1781724034;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rXbhmrrYImUQv4H/dhcmoVKM/0EEFpXQX6uTvjIXuTw=;
+        b=htasLXfoWUB8ziTYPfQCZjyMZFMjBJzP58xoljcVOjCHQ+5ELur+LD6vBctGop4mPX
+         +v0uEgLfgf4jUYMfS/A5AsAXnNI7++Q+ieuLkT0KbOWSsRqFrke12s2eNZu2I+OIfuGd
+         pBEylg07nbVtdFfA0qC2bjPOUJLvOF0T/Kowaw2x4ggCyt6js4or9k+ftoz3AcoD8Vve
+         yr+S2boCHQo2hkkq6tchGAWlG3hF1pPeW5TICw8QO14phtKa7dwbAeNcx8XAPMqSI39Q
+         oxHocHiSv5o4pVw9FRX8kV1Fx7+kujuYPyHcxzXh/0E8aO8vgo2O7sftkvDD25D7vJhh
+         8hSw==
+X-Gm-Message-State: AOJu0Yx7M82qMS24EAgDm/4KPC0RDd0eCGddfEW5gHHGnK2LTuuvnbmX
+	GFCsHvsY8lgJJaiFIOIA3VDxayxjE/xajYc6UxvPvAy7/ti9uLePaaqXCt1UKmhwtYACIM1IG0I
+	+58ix1Q==
+X-Received: from pjyt18.prod.google.com ([2002:a17:90a:e512:b0:36a:8554:a396])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5747:b0:368:3d3e:efa6
+ with SMTP id 98e67ed59e1d1-375212a2eebmr9794823a91.20.1781119233493; Wed, 10
+ Jun 2026 12:20:33 -0700 (PDT)
+Date: Wed, 10 Jun 2026 12:20:32 -0700
+In-Reply-To: <20260610010658.1E0501F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260610005338.2967132-2-seanjc@google.com> <20260610010314.DB8861F00893@smtp.kernel.org>
-Message-ID: <aim4lld49oqLrthg@google.com>
-Subject: Re: [PATCH v6 01/18] KVM: selftests: Build and link
- selftests/vfio/lib into KVM selftests
+References: <20260610005338.2967132-10-seanjc@google.com> <20260610010658.1E0501F00898@smtp.kernel.org>
+Message-ID: <aim5AGJwj6tlkigX@google.com>
+Subject: Re: [PATCH v6 09/18] KVM: selftests: Verify interrupts are received
+ when IRQ affinity changes in IRQ test
 From: Sean Christopherson <seanjc@google.com>
 To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, David Matlack <dmatlack@google.com>, 
-	Josh Hilke <jrhilke@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
 On Wed, Jun 10, 2026, sashiko-bot@kernel.org wrote:
-> > diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/s=
-elftests/kvm/Makefile.kvm
-> > index e0ddd3ff9472d..14316358fd9fb 100644
-> > --- a/tools/testing/selftests/kvm/Makefile.kvm
-> > +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> > @@ -257,6 +257,7 @@ OVERRIDE_TARGETS =3D 1
-> >  # which causes the environment variable to override the makefile).
-> >  include ../lib.mk
-> >  include ../cgroup/lib/libcgroup.mk
-> > +include ../vfio/lib/libvfio.mk
->=20
+> > @@ -192,7 +198,12 @@ int main(int argc, char **argv)
+> >  		printf("Using device %s MSI-X[%d] (IRQ-%u)\n", device_bdf, msix,
+> >  		       irq);
+> >  	} else {
+> > +		TEST_ASSERT(!irq_affinity,
+> > +			    "Setting IRQ affinity (-a) requires a backing device (-d)");
+> > +
+> >  		eventfd = kvm_new_eventfd();
+> > +		irq = -1;
+> > +		irq_cpu = -1;
+> >  	}
+> 
 > [Severity: Low]
-> Does including libvfio.mk here break the "make clean all" sequence for KV=
-M=20
-> selftests?
+> Is irq_cpu used uninitialized here when the test is run with -d but without -a?
+> 
+> When a backing device is specified (-d), the code enters the if (device_bdf)
+> block and irq_cpu remains uninitialized. If a vCPU times out waiting for an
+> interrupt, the TEST_ASSERT macro evaluates and passes the uninitialized
+> irq_cpu to the variadic format string, printing garbage values.
 
-David and/or Josh, can you verify whether Sashiko is hallucinating or has a
-legitimate concern?
-
-> In tools/testing/selftests/vfio/lib/libvfio.mk, the output directory is
-> eagerly created at parse time:
->=20
-> LIBVFIO_O_DIRS :=3D $(shell dirname $(LIBVFIO_O) | uniq)
-> $(shell mkdir -p $(LIBVFIO_O_DIRS))
->=20
-> The directory is also added to EXTRA_CLEAN.=20
->=20
-> If a developer runs "make clean all", Make will parse the included libvfi=
-o.mk=20
-> and run the shell mkdir command at parse time. Then it executes the clean=
-=20
-> target, which deletes the newly created libvfio directory. Finally, it=20
-> executes the all target, but the compilation fails with a "No such file o=
-r=20
-> directory" error because the output directory was deleted and isn't recre=
-ated
-> in the build recipe.
->=20
-> > =20
-> >  INSTALL_HDR_PATH =3D $(top_srcdir)/usr
->=20
-> [ ... ]
->=20
-> --=20
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610005338.29=
-67132-1-seanjc@google.com?part=3D1
+Gah, I meant to initialize it to -1 (hence the signed %d instead of %u).
