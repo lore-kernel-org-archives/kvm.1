@@ -1,172 +1,148 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012005.outbound.protection.outlook.com [40.93.195.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6748B15746F
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 22:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781129838; cv=fail; b=EpeNTxuu+o3PY1amOVB/rXHAViFiq0ZbUEsrunUldDRjKVdEW7mqAZCZSQ/1P9BRi/yrgO8/HHfPDQ49LBqEfM1g/wjyt601mgtcJgRa5WCqti7lFese3lYvJW5lKeFM2KZcixQgqfeOmgeXIHxVdxSMLPR+/vhkeOhLUf5SGSQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781129838; c=relaxed/simple;
-	bh=I0sXv5LYw8MB13Brg/oBp/Mu+SQMQ8pW+iRLjKkMd7I=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BnSWVZxDpXdyfTd67TF2AApIL0iRK04zmp1oVWn9/IAsbk1avunSGl3CqM5m3KQTNfEXxLf5WF7q7XCPv3E0Wv0eZv2FOZ/7UV/VzYvp6Q8ty1LTYU+MA96xXbPqxNsGZQKtRKFQPY1XoPMY65Cth3r+8o2l3rSB2ZeH7ZLDAQY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=MHs5Y4IA; arc=fail smtp.client-ip=40.93.195.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03C7331ED7
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 22:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781129994; cv=none; b=dZhlFGU7d74eIjYufCEL/dbp7CuJKpoY907bpHHjMBhmIBpY9uLDl0J3RZnVNXgOWXc8cJzISzuOuCUdT825mhCDlT5/Gy9sKoUug5Z+4W43i7knWEiGwCd3b4K1Wc8+ffMkMUwokkqAp9j+dggzWYEtADzXNg6GKuutw912Jys=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781129994; c=relaxed/simple;
+	bh=BOqSVJmxLhcTxId4mKxBy6QT0CiREOB6byamA0QERaI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Kmf4+GPWNh9poGlAzqFf6ShCo5mKhMchL4HkNzxN56RI904EmxZwECDz8h9w1t2OIp4UQL9PAoKRHS0wihtwkXl+oVvP+c4vaa6GN5QusWA+v07aSVsGS5pqSXoC95vhWqoIwesqPTIcA3FQ6j1VP6dydZyz0vcNirGibJxiVxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aTXNsPFv; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="MHs5Y4IA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jw9EohAJQLjsnI/vnMZj1I8YPxV6vR6XB8zKGn/9q1ctFiNWgLmVb7qO1NlI6Ac7aDRDa02JToic0r775lQWCSOCs9Ez7DwNnujFDdZetE0Yq+75OD/DR2oKEhi/BETFp1pjp14HSmxR6L/BfjhJazQqFyzdYxltJW6ILkeQ6n6jgTgXGM/f5I8AwK9oYe5Q16aDKHumsz+Z06pKNf4hLzvu/xk15GQc45EWFk4i07o+mu8RTdtuiru9y1FuFWxod15KyyWXWAIG8J/qMDIYD+S9stm1pzlDM7ECs3Dp+GfCJuHkZTxI6XZQsQE6RvNMTCxL3J55fv6QKgxiorUxlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CcPrSK7FnZuvzYXwvC9nW6i3kL7ss9suZR4xgt21UF4=;
- b=rvxZS3/L1x624RciO7/xnQUt2u0k0Qe+Sq40uprJMbQhbB9P5/fs0Lt0XUfAE3GNknHvKz9cKotBPlX880ktYAuciMSXSF4faK3oQ4HcCOvKJofbc5EzlgNF5XlGHqe3jPFPealp0bHkMwOo8OYdZo7I/b9/KH0PjsRxeYOas77pP+ghSNEYueIZv6QewEez5zCTiHgkb9UMGwJv18qxp+yxtd5rU2l7oMLGgLDs9zaa6K2TaZkg5F3J7q/mkYPGfKhKJoBXhRmgrLG2eDt/X1sBuoJPA0xI3qvn9CF9rkfEkScro3naLE4lM4bM62pF1vadH45/jWwxaWtgaYEK2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CcPrSK7FnZuvzYXwvC9nW6i3kL7ss9suZR4xgt21UF4=;
- b=MHs5Y4IA2lIcfH+eeRZboMbr1KLlUgY2/IuLWhtN9cdyRSVNxhYTX2+NIhfZdt0umE8WtPpfCJF+mBvwAjqiNzbLG8Czt8Mqh3r6tKGpr1UqqhEL5H07XZSrk2srSS8qBOTH7cgLHDRwrZcGJQ2QTkc58xv0DXN5BGKVUoOHyJw=
-Received: from CH0PR03CA0195.namprd03.prod.outlook.com (2603:10b6:610:e4::20)
- by PH7PR12MB7819.namprd12.prod.outlook.com (2603:10b6:510:27f::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Wed, 10 Jun
- 2026 22:17:12 +0000
-Received: from CH2PEPF00000099.namprd02.prod.outlook.com
- (2603:10b6:610:e4:cafe::39) by CH0PR03CA0195.outlook.office365.com
- (2603:10b6:610:e4::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.12 via Frontend Transport; Wed,
- 10 Jun 2026 22:17:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CH2PEPF00000099.mail.protection.outlook.com (10.167.244.20) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Wed, 10 Jun 2026 22:17:12 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 10 Jun
- 2026 17:17:12 -0500
-Date: Wed, 10 Jun 2026 17:16:57 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH] KVM: SEV: Don't return a still-assigned gmem page to the
- host
-Message-ID: <wxamg6zqn2qmsci2fwfepbqou5vtgydqmonr67mu7b73nkakbe@zedss5vzeci3>
-References: <aimMWzAf5b3luM0b@v4bel>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aTXNsPFv"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c2d65d9773so5741865ad.0
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 15:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781129991; x=1781734791; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DCXjEr9VLMiB3RNr9V4LUHEdwVcyHXL9rlViMmJIYhA=;
+        b=aTXNsPFvPEiDDCAFSsO+jf7T2rvyxel9mt033kL/2WL2iU91N/kmuxaDkFJgWYjFrd
+         SeQarSM61K9UxEz7t5fxO91xCLK5u1UtLCm11LwAgOOqlmET3VCO7jeKEDEZW1nL5iPZ
+         cD9EfhFKfLZ0pmGEBkL33ve59G8BqR9xLPF24QZjIet4MbrvMQwSz9RC/qQUg/KouUT9
+         d7gF9HeqEnJpwczrFtsW+UHc61nR3EU16RbvvPsFkQ1iT5bCa+Sl0pyPVOGPALqv4QHV
+         Navl7sxehCbkngefZoZEEEdrhdv4O2S11Iur3zsllRJU3IySo8ExbT34nHpLJaD14ia2
+         Ev2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781129991; x=1781734791;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DCXjEr9VLMiB3RNr9V4LUHEdwVcyHXL9rlViMmJIYhA=;
+        b=BRtHpNSzLfn65rShsiJu4Nqs2vp3KLzkHNgwhCLSWQ0tY+FFjYMddp2HC1Cd/SF2YK
+         l3bSrl1KT5G7ZgLcx8FaZvQF3FBB4HJMkn2aWHJrKFv+03vnpUuKzedHfwp1aG4F9NSu
+         pa5/lGXRCCmdXspQYjGaG/0x2GgYfwt2uiYmUSPHhG9LZ55xSXoKnpP6VdB6eQiDH0wp
+         XumGPfisCLu8+XdqPFazroqizyT4FAdvGjuL9NiVyvAgv+06Z+BlIMbFA3r2UrLCt7Uw
+         CEvWtVc0G1eXi3RWQkQUOiXNFdIoGYJfBcvjEntXgH2kRQRsPSVaapm65rPiXNFEa/Ge
+         yGbg==
+X-Forwarded-Encrypted: i=1; AFNElJ+gZpMHpOkuJeyOv2rH91qSh56ERl2WL3bbokR0V8eSQtzpvzkgNvCNj30I19EOjmwXCPw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiXE21lza3bhYPGY6apdBBDIM8j89NxTsAA0NWm9X0cVRW7Qij
+	pIKHQGpX905Ia/sKn2vsb2WRsjQECk6KtN5HBm78J0wIzJA8GGAv6xCE2ji8HgMI92U9Hd58/rE
+	S6TjqNw==
+X-Received: from plcp17.prod.google.com ([2002:a17:902:e351:b0:2bf:1958:c64d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1acb:b0:2c0:ccdb:e02c
+ with SMTP id d9443c01a7336-2c2a1baf93fmr114931065ad.7.1781129990748; Wed, 10
+ Jun 2026 15:19:50 -0700 (PDT)
+Date: Wed, 10 Jun 2026 15:19:50 -0700
+In-Reply-To: <20260522-gmem-inplace-conversion-v7-4-2f0fae496530@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com> <20260522-gmem-inplace-conversion-v7-4-2f0fae496530@google.com>
+Message-ID: <ainjBvqDTU5DNZR7@google.com>
+Subject: Re: [PATCH v7 04/42] KVM: Stub in ability to disable per-VM memory
+ attribute tracking
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aimMWzAf5b3luM0b@v4bel>
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF00000099:EE_|PH7PR12MB7819:EE_
-X-MS-Office365-Filtering-Correlation-Id: a187b781-0cc1-4a4a-d66f-08dec73e0588
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|23010399003|376014|7416014|22082099003|13003099007|11063799006|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	gQOCoYPLWzx4zctIDVW/+bEuM215+LlLaJEST9raPDaHU73fRf5BplD2rh0WksMfu7JlX4R4noasfPCXzLX+aENRlm/JTnUbPabcW+JdsTvBrqAURdbsikC0VLfyWwfq/abKcSuyOcVKjNQQI7WuGpYOeZpQ+FjiuapmhB8RFQTLwvC4gGEqoaRe32M00nwWEykwKHCPyROnThCZDPidFnCH2jd8S7f+XR+tXV1hFtj+g3YnJeRyxqyDz4l32EAWJFSyAzy6Ix7OGAius6Dk8HIR1FKFv2j3JQ6lpqBT+eLlNk2FO+r5DoJuB2SCecDZJpgNiVJG6FCUhO8lUC1Jd/EXmxDI6vGdWTFZ89YgI3GFzH5bpVcv/1uBJljEOwOygcSf6iMX4mGKefWn2C/HVHOZbC20aFrKmrRVhNFO/+fnyG3Xj3XxxEvjfOBUV3/6VqCv3oy17dVZ3tXJ8D/Aw1OuGW5nB7JoQQTO/x0fyTy+472Wcx9YfuJJL+BsjH4PshBwoue+JiN3VQ2byETGpK5KbZhLyl6v7bLhn/0XKV9nHJ/KRXSi5Kq68aWRtZb2lB7V+xzsv5qraY8VPMUEjZ58O6VtIzGWWOI0IxKfNLp4y8h2beBEa1AuUWU8KY40oUVC0RAEVa5sVNGTf0ALj5B1bs7/a2fZ8XMCei0MtKRxct81rIeKac6N+b2oFYBQJhyYtMQ+AjLgpQLy3z5Kn9HxE+HnGI6oAHQNrHcGw2c=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(23010399003)(376014)(7416014)(22082099003)(13003099007)(11063799006)(18002099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Y+vnyL4dm/8tG5J/a7IXqPq0ZDn6jhBiG6zDlOs4b/S6R0x11ya/BRkGbCRYYO9eZsiI6RZLA1nMQ66Jrlzk8lTNdGRHkrswGXQoAANHTlp6VoD0pUtB00H3pdFM1O/lXVKM9LHLHmRcysQ+uKNm6vCQOkOhPJxoNNHV0LAyXyhl600TT7BXrYDcDWau6kqYfUzzoTuGIG7avDmMBRmq2NCGjFubAK/H+KElsC2HQ9y2eiTCsHpd3Jyxncl/17TJxV9AoUJD+/gMZ6RS/Oa2jzmkNSIEnb+kfOL/jmVpCjCwlJKauLuNXU6UlGewgTeDJLeoGGyGKpIe5s39KomKXr9/jVbzauLYfDRtgNyNsOkRdO0dqLJSGi24sP09CnQAq6fwQ7msEzxpnPWGacyAx8X+5HpYH1v5ndd6F2CeZvpkmc00V4S/bOhdC5s4J7CW
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 22:17:12.7673
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a187b781-0cc1-4a4a-d66f-08dec73e0588
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF00000099.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7819
 
-On Thu, Jun 11, 2026 at 01:10:03AM +0900, Hyunwoo Kim wrote:
-> [You don't often get email from imv4bel@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+On Fri, May 22, 2026, Ackerley Tng wrote:
+> From: Sean Christopherson <seanjc@google.com>
 > 
-> sev_gmem_invalidate() is called when guest_memfd frees a gmem page.
-> For each PFN that is still assigned to the guest in the RMP table, it
-> transitions the page back to hypervisor-owned via rmp_make_shared()
-> before the page is returned to the host.
+> Introduce the basic infrastructure to allow per-VM memory attribute
+> tracking to be disabled. This will be built-upon in a later patch, where a
+> module param can disable per-VM memory attribute tracking.
 > 
-> A guest-assigned page can reach this path while still private,
-> because the free path does not transition it beforehand and
-> sev_gmem_invalidate() is the only place that does. A gmem page used
-> as a vCPU's VMSA after SEV-SNP AP creation is one such case. When
-> rmp_make_shared() fails, the RMP entry remains guest-owned and the
-> host cannot use the page because of RMP protection, so it must not be
-> returned to the host. The existing code only issues WARN_ONCE() and
-> continues to the next PFN, returning the page to the host allocator.
+> Split the Kconfig option into a base KVM_MEMORY_ATTRIBUTES and the
+> existing KVM_VM_MEMORY_ATTRIBUTES. The base option provides the core
+> plumbing, while the latter enables the full per-VM tracking via an xarray
+> and the associated ioctls.
 > 
-> Leak the page instead of freeing it, as kvm_rmp_make_shared(),
-> snp_page_reclaim() and sev_free_vcpu() already do when a transition
-> back to shared fails. snp_leak_pages() does not take a reference of
-> its own, and on this path the page is freed right after the hook
-> returns, so take a reference with folio_get() first to keep the page
-> from being freed.
+> kvm_get_memory_attributes() now performs a static call that either looks up
+> kvm->mem_attr_array with CONFIG_KVM_VM_MEMORY_ATTRIBUTES is enabled, or
+> just returns 0 otherwise. The static call can be patched depending on
+> whether per-VM tracking is enabled by the CONFIG.
 > 
-> Fixes: 8eb01900b018 ("KVM: SEV: Implement gmem hook for invalidating private pages")
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> No functional change intended.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 > ---
->  arch/x86/kvm/svm/sev.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 6c6a6d663e29..8fee6ec529f9 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -5178,8 +5178,12 @@ void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
-> 
->                 rc = rmp_make_shared(pfn, use_2m_update ? PG_LEVEL_2M : PG_LEVEL_4K);
->                 if (WARN_ONCE(rc, "SEV: Failed to update RMP entry for PFN 0x%llx error %d\n",
-> -                             pfn, rc))
-> +                             pfn, rc)) {
-> +                       /* Still assigned to the guest; pin and leak rather than freeing. */
-> +                       folio_get(page_folio(pfn_to_page(pfn)));
-> +                       snp_leak_pages(pfn, use_2m_update ? PTRS_PER_PMD : 1);
->                         goto next_pfn;
-> +               }
 
-This roughly aligns with what would happen if snp_page_reclaim() fails
-in sev_gmem_post_populate(), while the guest is being initialized via
-KVM_SEV_SNP_LAUNCH_UPDATE ioctl, which calls into kvm_gmem_populate().
+...
 
-However, in kvm_gmem_populate(), we still free the page. Maybe, to
-address both cases, we should just add a parameter to snp_leak_pages()
-to tell it to take an extra ref and use that in both of these paths.
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index abb9cfa3eb04d..ee26f1d9b5fda 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -101,6 +101,17 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
+>  static bool __ro_after_init allow_unsafe_mappings;
+>  module_param(allow_unsafe_mappings, bool, 0444);
+>  
+> +#ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
+> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> +static bool vm_memory_attributes = true;
+> +#else
+> +#define vm_memory_attributes false
+> +#endif
+> +DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_TRAMP(__kvm_get_memory_attributes));
+> +#endif
 
-Or we can just do the direct folio_get() in both cases, the above
-formalizes the handling convention a little better though IMO.
+Fudge.  This morning's PUCK discussion about VBS made me realize that we really
+don't want to kill off _all_ per-VM attributes like this, we really just want to
+kill off PRIVATE.  And even if RWX protections never arrive, conceptually shoving
+all attributes into guest_memfd doesn't make any sense, because it really is only
+the private vs. shared state that is tied to the physical memory, things like RWX
+protections aren't so tightly couple to the data.
 
-Thanks,
+It'll require a bit of minor surgery to these patches, but the silver lining is
+that I think the end code will be slightly easier to follow.
 
-Mike
-
-> 
->                 /*
->                  * SEV-ES avoids host/guest cache coherency issues through
-> --
-> 2.43.0
-> 
+I'll sync with you off-list to splice in the changes to your current series (I
+have them sketched out).
