@@ -1,56 +1,56 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494F1242D9D
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEC125B0A8
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 00:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781052831; cv=none; b=X87swUjlHhfuZr5/t+WCmrZzZA0Coxz8W/vsWnROdM4R2oduj0ZJwcp4YGeoJ5fj4YiD8Mx8ibR9rHYsQKpeeRD81syjsbdGIrVFISeqUPshQBThDm8zh6c59xwcIfywlA7vmOnu6v7DUF2dDqXFKI4lL6ipuZsUi6Aw5SYqLkU=
+	t=1781052834; cv=none; b=P4rSrV4G8Eh4+H7kqHPz5fKtsCv4xOTbzKzGNaA4oMQqreplthtjs9hkolzz4TI62WHF+t5muBqjyxdeELw4oTJjKbffQmcuiAzlo8SbW1Xuskv/a77suM70CrZTsQs1AkoX77UpbjtTwekvwRff/6jKeN/ROzYSGOfLcaGmDz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781052831; c=relaxed/simple;
-	bh=zND3vvwQyaPgYriOhaRZZgPXLGs7NEXIBc9VDNPOrfQ=;
+	s=arc-20240116; t=1781052834; c=relaxed/simple;
+	bh=3kgZ4Hp3aocx9frJ+hGvONt/ETFM1SIvxHL3/CDxT+o=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JDGs1PK1YMzQxPOS0WJj8MrkgMXghnhtxLPHkFgLG3/BYcGhfrNi9RCvJg6X++MtlAPABgtWuotIXrg4xbk/+lizh2/kfENRt63+LwPY0fZAgdroVJEwuv/+y2ppT/tOiYp9Wfs2yecaH8t5pj+5EaMdCsj04dnsXFutzDcvXN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O6FCB+6v; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=dkdDDW54XCKeFLDySgBgihax3V6U2DHWBeNPASrZR1M0rI67W+PkjYMhckyWzTPsUDIn24PW3B5nb40fXA2edtsT9myCJn7nWarG8BlzDCQmHZzIK1Z6Se/IcDjz/tQ1ISz63KIzM5wsvjocywKTiEHtzmdz5gVaI++Ai8XwwKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pkxZQCBO; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O6FCB+6v"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8581f7723aso3546166a12.0
-        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:53:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pkxZQCBO"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8423f424d5bso4139150b3a.3
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 17:53:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781052830; x=1781657630; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781052831; x=1781657631; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=724RgwNGECYZAQrR7huttJyeJ2iqdlEoMMuWqlZB/zc=;
-        b=O6FCB+6vsNr2DF7lR3C6Ac+hDVdNlwAy4h7nxJ5iHRCIOpKNGlAgWrvwUHpP1VRvSJ
-         PjL+mKQZIJTnkrk1W8IyH+Y37EQnIZS+20ie1ZOaqAglfiKULWWaui+vHdBCm9AbQYUQ
-         nVds6LJ2oQ9W0/oJ+CWg1A/4jHvO9xPkJgXSR//3nOnEt9c6y395Pv4iVDN6wa+A9Gsu
-         aQFw8ULn5dit88wAVHD3nhX59mwjnuIEvi1uPvQ7yVUv4Vph4WPwX6NUXi0QvKSCJUPx
-         JgDOyLzF0k4cAuVkjVr28o4f+Qra3zUrm86DjDivY0y7dNbKqpB7NvI9y/dDIyCzkrkq
-         7Gbw==
+        bh=uJ3/l2MPP25v59/w1QGxHHbEaCrmVOx/NA7PdBl04FQ=;
+        b=pkxZQCBOHq+1pbkfOb0Fup7nlWHfKDVpJp5TLfy3mn+V4qCI5zG18Ko92QTFWhIe+j
+         lw3ypmxIoMPWvjvs9Hq7Qxu0YPtI1F/8hxifvAYg7sffkdGzk+9SroguGq4GAaiabkCa
+         R6gdRZeB4QTnUQ778Yde1XPx1pbJGUzzVx4Tl2+hQv6KV4gjkTgDnaY5KKbleUJH5ISX
+         djuSSQfV7e8jprLZgQjpGhSX/7rPbvGTghR8HUf2zJPBAjj5uk+b60m2xT/rgUjWy7MN
+         Jqg/BV2NLTrG9XGwqcaVXg7qyLmQJLF0n8f3hEDNKZjNGN9q124xpXpvtxXXleTzF1MN
+         /SnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781052830; x=1781657630;
+        d=1e100.net; s=20251104; t=1781052831; x=1781657631;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=724RgwNGECYZAQrR7huttJyeJ2iqdlEoMMuWqlZB/zc=;
-        b=OgJ0zTOhtO0mkxfXJHIK9RcdenTsdL8Axrd381efvNxYfFwixhDuFPsHiAabFavKA1
-         Az/C80CAEX6Dieo+fyq0zFLc6by0Eh+2PuvCek3UgLNIYk+svxByowCM/tHfUHyuhdix
-         q33bOBSkxzDQ7ZFjrJMThIMVVY6wbYDoUWOHVDWxY/l6XX2iH++BkAdtAVEqRlxBTWkV
-         d5M+NIHW20t2EAcu3n5fK3kziwGfAfaobsojkYxEiwuNkpxEIZ5oUt2ERpo7xEmx+QIa
-         PwsfokccasAYDqPgyc039DEfFB4SWOaKdUnHu9q+/RNQM9z+AIF18LWj/4sixCn/09de
-         3Y0w==
-X-Forwarded-Encrypted: i=1; AFNElJ/fsNZ63w0DHaQT288aeifnXrk43dOqylCkh8GOcUZRFtZaZtLnDSNRI3plYuN9Aw4d+9M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwD6luryqMuindqylJOQ+g9aMnW82b4wmxzNNsy6cZf77Q+5tXb
-	vZg2flK/WRrhtWxyPJzUt+AwIvlC7oS9+Bm/KvCaTrMOCIYq7Icv7H/2T/4/WbqEyYrHXEyfx+i
-	AfXSzTQ==
-X-Received: from pfw3.prod.google.com ([2002:a05:6a00:a263:b0:82f:4d28:b8c5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4390:b0:82c:d7c4:4c57
- with SMTP id d2e1a72fcca58-842b0e73596mr23804989b3a.19.1781052829531; Tue, 09
- Jun 2026 17:53:49 -0700 (PDT)
+        bh=uJ3/l2MPP25v59/w1QGxHHbEaCrmVOx/NA7PdBl04FQ=;
+        b=LS1lMZ5JKRo9D5LQSKn2jfu/8zVAb4Sq8K/CRhiig5/uFJ81Yq+zyey4q37YjtqVkp
+         cYj2gbOmYZt6Ew1DS9W6Nw1/cJsysI3cbCQg5JyxMMX91RbjzhvtQuxjKCoTJlYK3eRI
+         KnoV1NEjyZIt7a0hZ96B+sAy7bcY6FwvUhf6upsb3MWehM6bz2ZCwjiDlUAt6J3W2/Xz
+         2oUZnYuSszMs1ZfHBTPBnE1tP5LpBCOqKPfEVBv1iBChW/dHkbuPmm3zT/eYt60xdME9
+         tP0hQQ6jRmO3hyOnU8ROWs6Ccz1JwtkYUBHTVTXU2LSXaU0mlEi91brdeJSWky6BiKC7
+         wKNQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/a2B1VOoZhgxAv+CgbL7W8kZeLJ/kJHP1MTvJV9n3G90dTpIWnueDIV7bLeed2x6YFDJQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJmWRMPTG7XE6UTeyvq2KyWaOlYVW2dMZnOaL1DBTq6CAQ8EfB
+	TOslcr9jtaBk6PLbbZv02mDyxS2Wh5FPnxlpCGoVMcuNy1xt/xkaVWXKQNmWyrvnwXZkd1qoEuF
+	OKXmqYw==
+X-Received: from pfr9.prod.google.com ([2002:a05:6a00:94c9:b0:842:3697:8685])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:21c5:b0:831:7f71:c810
+ with SMTP id d2e1a72fcca58-842b0f9455fmr23501445b3a.35.1781052830791; Tue, 09
+ Jun 2026 17:53:50 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue,  9 Jun 2026 17:53:26 -0700
+Date: Tue,  9 Jun 2026 17:53:27 -0700
 In-Reply-To: <20260610005338.2967132-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260610005338.2967132-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
-Message-ID: <20260610005338.2967132-7-seanjc@google.com>
-Subject: [PATCH v6 06/18] KVM: selftests: Add helper to get host IRQ from
- device MSI-X for IRQ bypass test
+Message-ID: <20260610005338.2967132-8-seanjc@google.com>
+Subject: [PATCH v6 07/18] KVM: selftests: Add VFIO device support to eventfd
+ IRQ test
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Sean Christopherson <seanjc@google.com>
@@ -75,103 +75,181 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: David Matlack <dmatlack@google.com>
 
-Introduce proc_util.c and proc_util.h to house utility functions for
-interacting with the proc filesystem.
+Extend the eventfd IRQ test with a '-d' argument that takes a BDF (in the
+format segment:bus:device.function) of an interrupt-capable PCI(e) device
+bound to VFIO, and use said device to trigger interrupts instead of always
+synthesizing interrupts via direct writes to the eventfd.
 
-Add vfio_msix_to_host_irq(), which parses /proc/interrupts, to get the host
-Linux IRQ for a given VFIO device BDF and MSI-X vector.
+Using a VFIO device to trigger interrupts validates the end-to-end delivery
+of IRQs for "real" devices, and when supported by hardware (and KVM), also
+validates interrupt delivery via IRQ bypass, i.e. via device posted IRQs.
 
-This helper will be used by the eventfd IRQ test to print the host IRQ
-number when triggering IRQs via VFIO device, e.g. to aid in debugging if
-the test fails.
+Now that IOMMUFD is a thing, auto-probe IOMMUFD vs. "legacy" VFIO by
+temporarily opening /dev/iommufd, and skip the test if neither IOMMUFD nor
+legacy VFIO is available.  Add a '-t' option to the user override the probe
+logic, e.g. in case IOMMUFD is available but the system is configured for
+legacy usage.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Note, the device must have a VFIO selftest driver in order to work with
+the test.  A helper script to list supported devices will hopefully be
+available in the near future at
+tools/testing/selftests/vfio/scripts/list_supported_devices.sh[1].
+
+Example:
+$ ./tools/testing/selftests/kvm/irq_test -d 0000:06:0a.1
+
+Link: https://lore.kernel.org/all/20260602222941.3133236-1-jrhilke%40google.com [1]
 Signed-off-by: David Matlack <dmatlack@google.com>
 Co-developed-by: Josh Hilke <jrhilke@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
-[sean: massage changelog]
+Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |  1 +
- .../testing/selftests/kvm/include/proc_util.h |  9 +++++
- tools/testing/selftests/kvm/lib/proc_util.c   | 40 +++++++++++++++++++
- 3 files changed, 50 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/include/proc_util.h
- create mode 100644 tools/testing/selftests/kvm/lib/proc_util.c
+ tools/testing/selftests/kvm/irq_test.c | 86 ++++++++++++++++++++++++--
+ 1 file changed, 80 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 1339228cbf53..90a370ed99f2 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -11,6 +11,7 @@ LIBKVM += lib/kvm_util.c
- LIBKVM += lib/lru_gen_util.c
- LIBKVM += lib/memstress.c
- LIBKVM += lib/guest_sprintf.c
-+LIBKVM += lib/proc_util.c
- LIBKVM += lib/rbtree.c
- LIBKVM += lib/sparsebit.c
- LIBKVM += lib/test_util.c
-diff --git a/tools/testing/selftests/kvm/include/proc_util.h b/tools/testing/selftests/kvm/include/proc_util.h
-new file mode 100644
-index 000000000000..704839b6d7af
---- /dev/null
-+++ b/tools/testing/selftests/kvm/include/proc_util.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef SELFTEST_KVM_PROC_UTIL_H
-+#define SELFTEST_KVM_PROC_UTIL_H
-+
-+#include <stdint.h>
-+
-+unsigned int vfio_msix_to_host_irq(const char *vfio_device_bdf, int msix);
-+
-+#endif /* SELFTEST_KVM_PROC_UTIL_H */
-diff --git a/tools/testing/selftests/kvm/lib/proc_util.c b/tools/testing/selftests/kvm/lib/proc_util.c
-new file mode 100644
-index 000000000000..84d30f055a0a
---- /dev/null
-+++ b/tools/testing/selftests/kvm/lib/proc_util.c
-@@ -0,0 +1,40 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include "kvm_util.h"
-+#include "test_util.h"
+diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
+index 9f8895b89821..6888be54ee4a 100644
+--- a/tools/testing/selftests/kvm/irq_test.c
++++ b/tools/testing/selftests/kvm/irq_test.c
+@@ -3,7 +3,10 @@
+ #include "test_util.h"
+ #include "apic.h"
+ #include "processor.h"
 +#include "proc_util.h"
-+
-+static FILE *open_proc_interrupts(void)
+ 
++#include <libvfio.h>
++#include <linux/sizes.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+@@ -55,6 +58,36 @@ static void *vcpu_thread_main(void *arg)
+ 	return NULL;
+ }
+ 
++static int vfio_setup_msi(struct vfio_pci_device *device)
 +{
-+	FILE *fp;
++	const int flags = MAP_SHARED | MAP_ANONYMOUS;
++	const int prot = PROT_READ | PROT_WRITE;
++	struct dma_region *region;
 +
-+	fp = fopen("/proc/interrupts", "r");
-+	TEST_ASSERT(fp, "fopen(/proc/interrupts) failed");
++	/* A driver is required to generate an MSI. */
++	TEST_REQUIRE(device->driver.ops);
 +
-+	return fp;
++	/* Set up a DMA-able region for the driver to use. */
++	region = &device->driver.region;
++	region->iova = 0;
++	region->size = SZ_2M;
++	region->vaddr = kvm_mmap(region->size, prot, flags, -1);
++	TEST_ASSERT(region->vaddr != MAP_FAILED, "mmap() failed\n");
++	iommu_map(device->iommu, region);
++
++	vfio_pci_driver_init(device);
++	return device->driver.msi;
 +}
 +
-+unsigned int vfio_msix_to_host_irq(const char *device_bdf, int msix)
++static void trigger_interrupt(struct vfio_pci_device *device, int eventfd)
 +{
-+	char search_string[64];
-+	char line[4096];
-+	int irq = -1;
-+	FILE *fp;
++	if (device)
++		vfio_pci_driver_send_msi(device);
++	else
++		eventfd_write(eventfd, 1);
++}
 +
-+	fp = open_proc_interrupts();
 +
-+	snprintf(search_string, sizeof(search_string), "vfio-msix[%d]", msix);
+ static void kvm_route_msi(struct kvm_vm *vm, u32 gsi, struct kvm_vcpu *vcpu,
+ 			  u8 vector)
+ {
+@@ -74,11 +107,29 @@ static void kvm_route_msi(struct kvm_vm *vm, u32 gsi, struct kvm_vcpu *vcpu,
+ 	vm_ioctl(vm, KVM_SET_GSI_ROUTING, &routing.header);
+ }
+ 
++static const char *probe_iommu_type(void)
++{
++	int io_fd;
 +
-+	while (fgets(line, sizeof(line), fp)) {
-+		if (strstr(line, device_bdf) && strstr(line, search_string)) {
-+			TEST_ASSERT_EQ(1, sscanf(line, "%d:", &irq));
-+			break;
-+		}
++	io_fd = open("/dev/iommu", O_RDONLY);
++	if (io_fd >= 0) {
++		close(io_fd);
++		return MODE_IOMMUFD;
 +	}
 +
-+	fclose(fp);
-+
-+	TEST_ASSERT(irq != -1, "Failed to locate IRQ for %s %s", device_bdf,
-+		    search_string);
-+	return (unsigned int)irq;
++	io_fd = __open_path_or_exit("/dev/vfio", O_RDONLY,
++				    "Is VFIO (or IOMMUFD) loaded and enabled?");
++	close(io_fd);
++	return MODE_VFIO_TYPE1_IOMMU;
 +}
 +
+ static void help(const char *name)
+ {
+-	printf("Usage: %s [-h]\n", name);
++	printf("Usage: %s [-d <segment:bus:device.function>] [-h] [-t iommu_type]\n", name);
+ 	printf("\n");
+ 	printf("Tests KVM interrupt routing and delivery via irqfd.\n");
++	printf("-d	Use a VFIO device to send MSI-X interrupts instead of manually signaling the eventfd\n");
++	printf("-t	Override the IOMMU type to use (vfio_type1_iommu or iommufd)\n");
+ 	printf("\n");
+ 	exit(KSFT_FAIL);
+ }
+@@ -100,14 +151,25 @@ int main(int argc, char **argv)
+ 	u32 gsi = kvm_random_u64_in_range(&kvm_rng, 24, KVM_MAX_IRQ_ROUTES - 1);
+ 	u8 vector = kvm_random_u64_in_range(&kvm_rng, 32, UINT8_MAX);
+ 
+-	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
+ 	pthread_t vcpu_threads[KVM_MAX_VCPUS];
++	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
++	struct vfio_pci_device *device = NULL;
+ 	int nr_irqs = 1000, nr_vcpus = 1;
+-	int i, j, c, eventfd;
++	const char *device_bdf = NULL;
++	const char *iommu_type = NULL;
++	int i, j, c, msix, eventfd;
++	struct iommu *iommu;
+ 	struct kvm_vm *vm;
++	int irq;
+ 
+-	while ((c = getopt(argc, argv, "h")) != -1) {
++	while ((c = getopt(argc, argv, "d:ht:")) != -1) {
+ 		switch (c) {
++		case 'd':
++			device_bdf = optarg;
++			break;
++		case 't':
++			iommu_type = optarg;
++			break;
+ 		case 'h':
+ 		default:
+ 			help(argv[0]);
+@@ -119,7 +181,19 @@ int main(int argc, char **argv)
+ 	vm = vm_create_with_vcpus(nr_vcpus, guest_code, vcpus);
+ 	vm_install_exception_handler(vm, vector, guest_irq_handler);
+ 
+-	eventfd = kvm_new_eventfd();
++	if (device_bdf) {
++		if (!iommu_type)
++			iommu_type = probe_iommu_type();
++		iommu = iommu_init(iommu_type);
++		device = vfio_pci_device_init(device_bdf, iommu);
++		msix = vfio_setup_msi(device);
++		irq = vfio_msix_to_host_irq(device_bdf, msix);
++		eventfd = device->msi_eventfds[msix];
++		printf("Using device %s MSI-X[%d] (IRQ-%u)\n", device_bdf, msix,
++		       irq);
++	} else {
++		eventfd = kvm_new_eventfd();
++	}
+ 
+ 	pr_info("Injecting interrupts for GSI %d (guest vector 0x%x) %d times\n",
+ 		gsi, vector, nr_irqs);
+@@ -147,7 +221,7 @@ int main(int argc, char **argv)
+ 				    "IRQ flag for vCPU %d not clear prior to test",
+ 				    vcpus[j]->id);
+ 
+-		eventfd_write(eventfd, 1);
++		trigger_interrupt(device, eventfd);
+ 
+ 		clock_gettime(CLOCK_MONOTONIC, &start);
+ 		while (!GUEST_RECEIVED_IRQ(vcpu) &&
 -- 
 2.54.0.1099.g489fc7bff1-goog
 
