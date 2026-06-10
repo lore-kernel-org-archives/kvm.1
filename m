@@ -1,86 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B71257435
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 02:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4381E2BCF46
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 03:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781059519; cv=none; b=q6UVdVpfdRndp4SvazR3/O+jbcF+jOOZkSOOud3wNRl6qVOBSlfJ9wrHoByRwaUMWUJGwI01Q6aKUm5uZhaPmLU5Jl4jHZis/cfDuyAgomXeMSXsy3b0UqrV6wJxYQCtyuwIoJbuTpzYKm1FrI/yvZGiNYI0nIYIAxvSAvlNlzo=
+	t=1781061492; cv=none; b=J1vqgQJ4kZKzhzHJl95eA34nXL7eMmHTvhnOvCG9uHgNvWeJsYByywAVZscOAHmGG3x0mrm2FHDzusgpHkNb4A65ibQtSsGTzjNXrFqxQWxbb2f5J32VYU74j9HtkbtsuzVy81VAQp3jzPkHsayH8syKKFgIRU0LfusWM19Znr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781059519; c=relaxed/simple;
-	bh=ABPzTbNM34L8vHrjGSH4I8y2WgzMlSxxLRTGAmy8rWI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=gM3Z1hkuCNMo7Tf8yUcnKwapBLjKRi3IAGmOreLYHR1Xr46uCTN/xki1NLfJZzH52npN9IEeIa6ieZtWJXz/7pXqs3VbAMSURtFwRgH83InpYzYykKpBGrK50ApeYxWpaVbmUnL5ztmcpgl38lirkq8/uEikJsQE7aXiSIv/6gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwZkj750; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781061492; c=relaxed/simple;
+	bh=hl7seAN7FAeAknkeaOkMZMH/DKFvK5ydQO7UdcfJZXs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n0mwLl7qusPdfLKVVkZRxDhjw9g3oVGEpijNzPyr1IuepITYoDTlHld2PEk1qViZFzEocaasiL/qXQnfgneqFXhJ75KQT6DHYn7ajgOZLHim5NegpZ2PRymhIm3RPIlT5mM/0DFgeYTR+iMClDdWyXyZaHzh1m7ZTa2QygbIsWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PxoTk+Wt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwZkj750"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F95D1F00893;
-	Wed, 10 Jun 2026 02:45:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PxoTk+Wt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4EE1F0089A
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 03:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781059518;
-	bh=HqiEBW6bysyy9DQ7mzsn+21tl2EZjzatUAC4wwlcsu0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kwZkj750PJLqUdVae7Kfe8kSNQVBgvlV8IAotld+YLG61yA6ARfoRjULRmUg1lUHt
-	 n/uvA07a9MmWGwPj/80EWweSs0zKGUpVhRtYD1LJcLkZS8xa3aE03qnL+skUHOSaIP
-	 31CWZya7EhAf8dq99xILOxAgu58grXrmQtFOk/H80g4QlUtjKLjoULh3fs3YiT41HM
-	 jU26HZ70ZwZuCdqmjWgBsbCUWp/jppAq8gyJEgVqERNNSg0y0IJP+uycK2q5SUD2mB
-	 mn1pNPKF77BkywgzDNiSsVIsz/kks2Hjnd/gK0wrES0mMVC0jKq+EPmM6gELoQb3Qc
-	 Ie1/c8dX70HFg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 4/5] KVM: x86: Expose Zhaoxin PHE2 CPUID feature
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ewan Hai-oc" <ewanhai-oc@zhaoxin.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260610023512.3690734-5-ewanhai-oc@zhaoxin.com>
-References: <20260610023512.3690734-5-ewanhai-oc@zhaoxin.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 10 Jun 2026 02:45:17 +0000
-Message-Id: <20260610024518.3F95D1F00893@smtp.kernel.org>
+	s=k20260515; t=1781061490;
+	bh=rYEOyf8S2GNd7k/qbqeSQ56NQg1v22wqgzWlZA54PBg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=PxoTk+Wt1xw7Vc7FCdyhpdOIHsoffwP2S1tGTw0lMOuF1gQJcEfdg5ttTxDy5BcS2
+	 0WuNxM1SoKKcIMoI3kT/GAd0Endwia+JzBB643dHwT+9mmIIMoP0G4n2IdEPEHlnEU
+	 WqNL6PSIMzo+11zsOsSRX7E0U0rkeIy9rqrHvj3K8MMb8pgXqrxwMNx4uv7yd+vcd2
+	 4tsojouhjzWSDQaJZw4apMLD3Yd66pIfkSTKOpf5zPXz38zY81OGi+EB4l/tql7OWq
+	 yBL22YMa/Exd0uDE2rj1DRCpJtuxE9F7hPhLIkxP03ykUbd+uIkFp4/Cof6CP1GpA0
+	 uUMlwxkd8IOxA==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-68d232ed3f9so10540008a12.0
+        for <kvm@vger.kernel.org>; Tue, 09 Jun 2026 20:18:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/5Q+8f7YtFdoQD0IJndSYpp0kkwnngDZ91emu9lh9SULjunoWtx4qaZ+aQPng0CoOgaI4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxBDQ8Wu59Kv/fnxgY9xblQWlyDDLCP3RbfJbL6xwOAh1b9G6d
+	xdrcIKWtxtC+pcpGAGWcFxXLCHxJ8jNooxcZAGimNL2kDLefiZ0sSCj0sgD7H57Ets1Tff3Y1y6
+	0TCnCUGRYmez6OABFggUqEKLxx7rVVU4=
+X-Received: by 2002:a05:6402:5519:b0:691:7054:8c6a with SMTP id
+ 4fb4d7f45d1cf-69170548d49mr7300002a12.20.1781061489578; Tue, 09 Jun 2026
+ 20:18:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260608013222.375257-1-maobibo@loongson.cn>
+In-Reply-To: <20260608013222.375257-1-maobibo@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 10 Jun 2026 11:17:57 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5mZMciE5YY8MA-OW5+CTzjp+qsPDkHHuEdwO+3xFiWJw@mail.gmail.com>
+X-Gm-Features: AVVi8Cf-r8ZZ0hYGCUbHisWqv0SrYRZnMLYzqCj6eomKOSfZmvJutaV1znFw0Gk
+Message-ID: <CAAhV-H5mZMciE5YY8MA-OW5+CTzjp+qsPDkHHuEdwO+3xFiWJw@mail.gmail.com>
+Subject: Re: [PATCH v4 0/4] LoongArch: KVM: Set max VM supported FPU type with
+ FPU exception
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The patch adds X86_FEATURE_PHE2 and X86_FEATURE_PHE2_EN to arch/x86=
-/include/asm/cpufeatures.h but fails to update the corresponding tools head=
-er tools/arch/x86/include/asm/cpufeatures.h.
---
+Applied, thanks.
 
-commit 3f9973df29d33e555520e65352e2ad0d4e602e77
-Author: Ewan Hai-oc <ewanhai-oc@zhaoxin.com>
+Huacai
 
-KVM: x86: Expose Zhaoxin PHE2 CPUID feature
-
-This commit advertises the Zhaoxin PadLock Hash Engine v2 to guests via
-CPUID 0xC0000001 EDX bits 25 and 26. It exposes unprivileged instructions
-for SHA-384 and SHA-512 support.
-
-> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cp=
-ufeatures.h
-> index e264758d58e22..3702d7a30ae61 100644
-> --- a/arch/x86/include/asm/cpufeatures.h
-> +++ b/arch/x86/include/asm/cpufeatures.h
-> @@ -152,6 +152,8 @@
->  #define X86_FEATURE_PMM_EN		( 5*32+13) /* "pmm_en" PMM enabled */
->  #define X86_FEATURE_RNG2		( 5*32+22) /* "rng2" RNG v2 */
->  #define X86_FEATURE_RNG2_EN		( 5*32+23) /* "rng2_en" RNG2 enabled */
-> +#define X86_FEATURE_PHE2		( 5*32+25) /* "phe2" PadLock Hash Engine v2 */
-> +#define X86_FEATURE_PHE2_EN		( 5*32+26) /* "phe2_en" PHE2 enabled */
-
-[Severity: Low]
-Is it necessary to synchronize this addition with the tooling headers?
-
-Adding new feature bits to arch/x86/include/asm/cpufeatures.h without also
-mirroring them to tools/arch/x86/include/asm/cpufeatures.h usually causes
-check-headers.sh to emit a build warning in the tools/perf tree.
-
-Could this patch include the update to the tools directory copy to prevent
-these warnings?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260610023512.3690=
-734-1-ewanhai-oc@zhaoxin.com?part=3D4
+On Mon, Jun 8, 2026 at 9:32=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wrote=
+:
+>
+> With FPU save and restore, the cost is the same with different FPU width
+> 8/16/32 bytes, whatever from CPU cycle and cache line impaction.
+>
+> Here is to enable FPU with max VM supported type, for example if
+> VM supports LASX instrction, enable FPU with LASX type with all FPU
+> exceptions including FPU/LSX/LASX exception. So if LASX is enabled with
+> FPU exception, it can avoid potential LSX/LASX exception in future.
+>
+> With context switch microbench which touches FPU and LASX, there is 9%
+> improvement when halt_poll_ns is disabled. The command is
+> "./context --test=3Dpipe" and source code located at:
+>   https://github.com/bibo-mao/context_switch/blob/main/context.c
+>
+> Original     Wih patch      improvement
+> 75232        82440          9%
+>
+> ---
+> v3 ... v4:
+>   1. Fix one issue on patch 4 with function kvm_lose_fpu(), where flag
+>      KVM_LARCH_FPU is checked too early so that LBT disabling is
+>      skipped, since API kvm_lose_fpu() implies kvm_lose_lbt().
+>
+> v2 ... v3:
+>   1. Merge patch 1 and patch 3 together, patch 1 adds KVM_REQ_LBT_LOAD
+>      type, patch 3 renames KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD.
+>   2. Merge patch 5 and patch 6 together, which remove aux flags
+>      KVM_LARCH_LSX and KVM_LARCH_LASX
+>
+> v1 ... v2:
+>   1. Enable FPU with max VM supported FPU type, rather than max used type=
+.
+>   2. Add new request bit KVM_REQ_LBT_LOAD for LBT restore
+>   3. Rename KVM_REQ_AUX_LOAD with KVM_REQ_FPU_LOAD
+>   3. Remove aux_ldtype and KVM_LARCH_LSX/KVM_LARCH_LSX
+>   4. Remove middle FPU state handling in kvm_own_lsx() and kvm_own_lasx()=
+,
+>      directly enable LSX or LASX from FPU none state.
+> ---
+> Bibo Mao (4):
+>   LoongArch: KVM: Add separate KVM_REQ_LBT_LOAD request bit
+>   LoongArch: KVM: Enable FPU with max VM supported FPU type
+>   LoongArch: KVM: Remove some middle FPU states
+>   LoongArch: KVM: Remove KVM_LARCH_LASX and KVM_LARCH_LSX
+>
+>  arch/loongarch/include/asm/kvm_host.h |  6 +--
+>  arch/loongarch/kvm/exit.c             | 21 +++-----
+>  arch/loongarch/kvm/vcpu.c             | 78 ++++++++-------------------
+>  3 files changed, 31 insertions(+), 74 deletions(-)
+>
+>
+> base-commit: c10130c234c81f4a7a143edbf413080235f8d8ce
+> --
+> 2.39.3
+>
