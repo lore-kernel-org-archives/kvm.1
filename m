@@ -1,181 +1,126 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DCD3346B4
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 15:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD4E3FF8BA
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 15:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781104750; cv=none; b=uGX82+atW1ESRi0//65lpQ5+7jmIhVL77mrqk0E/ngkiCVSmb+omgeTQpQHeADtxUgcNHsjfyp5/gJu3XuLtjkeu6gr7Zkj7INQWzLtmAWnWGxsIyQpmngvCSUaeNrr1GkUck8fOoGwS4Oc0uVJYc5pO8QOf5vKYMOlSpcNE7b4=
+	t=1781105289; cv=none; b=ktO+QDKsJFpwHCeryYHFUGxsQZuhJe46zuCIPa4SeA5og45CGRBnIAhKNDUAe54b95bK6HH0+cFlEbyHl+0eafpQuRN6eZlBBjdcdXl+X3LEfvTT0xKXaD7FwRCaHL2CiZA7SfYjnRSneMeJfudTswM/uDdBmLdl8bSrQhevMwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781104750; c=relaxed/simple;
-	bh=/cTHa/At87E8vPajzqVShlG51CB8kJlWKuB7Y9ueVDM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lKWy+tOWSR3Qtw1S3EkwaPyEXtq/VrEDJPNfPjBPDkV/SiADGTsX9ClTVHh1aHLGNsExGKlhaPUZvDEK6p8exR80MtZIghJxsjvklhzNjL+XHNifgX7BgNlcAU1yLFKkm+SW15XDo+T6dtvCSpPZHCddAzxwJL8NPsA8x0WNqyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WyvMCm0U; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1781105289; c=relaxed/simple;
+	bh=UfgjSrJv5x93WLnwBClpKnVXrgqeDqs+cM42kwPrScc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q2nTIqsYPqPWI6f3CiqdNXnMPo9AH6yC+LC3STZ+S5PT+aFnC73GBuyMima6JNF028wTqjahgHaQc+wnxghd3ZQRAdFy7j+6BR73f3mqCU2f31CvBqFQHA1YDJSjn92WLJkWt39N5rLtMvAcR1fjqRz3gnmJMaTuTxCpn4CYvoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UuSViu1U; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--praan.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WyvMCm0U"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-842308adb3bso9005187b3a.0
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 08:19:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UuSViu1U"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2bf2911f93cso74085ad.1
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 08:28:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781104747; x=1781709547; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FVXdMltEQgkHjALmtUIidgf93/BpfptYJnT+4mfBNsk=;
-        b=WyvMCm0UGjpAb6BuGOEQKY+IAyw4avJUemQTxYl/zrRpwFBXwR2cj2t3zW5opYa+8u
-         bbVLnqax+0eD1PDRusKGlS+p5csSkjjPuuMtir/OwWRIgSLaF91/BibkNE+1R0yWNJ4u
-         vP6Ge80y1hNhEOn64tDLFRcQNiBZX/XkJ68pZq3XRLXaxpovCmHEdBBS/HL94peq7JmM
-         SFeFqUWpvB5kuudfNfNDK1PLE0F1uXSIfRIw2mPGsWnZ1iZuxbKgbp3vaTrSOJVCx8K0
-         4diRedEVC1TSo/sfbQhXZO+WdcmekYhaID9DVYeHiR3Gv5yI9VQI8ppbxeXpBKAF6+Fh
-         6/qg==
+        d=google.com; s=20251104; t=1781105286; x=1781710086; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rRGcDEeCGM58JoYwcY0kneIT0WSa4bKVwTj3Opbvtug=;
+        b=UuSViu1UGKFFX74cajjbEFJ7xVtKBndYL0DocayMpjiMCsactJBZLNsehZDDcNwHxe
+         9Y16F8huDvl8pFGidJdOj5VuQKJhzwbyDnFjQLX55kqZzZKPq4WnTUtttIrBeHKPmU7W
+         ceq2lnQf6ix+EV5EdvezEfcykpr9JzMM6dcC8Cuw68texJofrOajMHd+g5a+0Uwu8+Ga
+         pX5A5PAzKTNsbpc2aQ59MpTXwHPPqSpL6gozLRpd7UKJdiE/GSXAr0wEkfJ5pjA4Qsxd
+         2PmDP9E3SI+/f6a45Hm64sgUtW6zXT7OBmu9iiWXEoZU8K/tum7ISPuugiozydhP8RAx
+         1buQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781104747; x=1781709547;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FVXdMltEQgkHjALmtUIidgf93/BpfptYJnT+4mfBNsk=;
-        b=FCfI7Hltem/qJTpX2gTSYuJL1e0h8dy4Xe39bV7Ze1CK43cyMIXN3/kCxDJq73q6dN
-         +jJQjGedHBTLmFEzzkJOcpmdurckkqjhbJG+05ALngcA3lHcet/liPuI1IUjzPaDyZdM
-         507BNe08c1za1yU/BxuXINQKliBGOqDdzdh57mjn0EgIXhq/MMl0VFa0QjExpMKHQUSC
-         P6sesIquxw2DkSvE2j9C2JuJArc4yI62a8HmHjDYU8zNuyn3uIUjJ9yKDhYy9sGJU3zq
-         7LkFKpUvmSuM0azZ+LkJcAzBkuO+KJkX1AA4acedvwCxfMQAV7Ox6jr0MnvtV8tC7UaR
-         Xjcg==
-X-Forwarded-Encrypted: i=1; AFNElJ9B49PM3m4v9DiXpsT3Jwv8ygPn5TqvUWT511tRSmysOzdy8S1jqwZp/D6QDWL2R4kk0mk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+fyuLgblvyPrYKVBWjqQaRBDC7RLOiUnDB4UbED9vwSBrIp5K
-	BOyQVdWwmj4VQhye2DpnSZnueAIqmyM+q/KZrMr9uR0UdOLAyA8aAAyRSzeRvuOPlWuj1nLu1xU
-	DhA==
-X-Received: from pfmb16.prod.google.com ([2002:a05:6a00:1150:b0:842:7045:f89b])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1302:b0:82c:9897:70e6
- with SMTP id d2e1a72fcca58-842b0f9c4abmr26940329b3a.34.1781104746343; Wed, 10
- Jun 2026 08:19:06 -0700 (PDT)
-Date: Wed, 10 Jun 2026 15:18:53 +0000
-In-Reply-To: <20260610151853.3608948-1-praan@google.com>
+        d=1e100.net; s=20251104; t=1781105286; x=1781710086;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rRGcDEeCGM58JoYwcY0kneIT0WSa4bKVwTj3Opbvtug=;
+        b=HYm4wnQ7NANOWrR2n2gb1dzMnRGFJ0qZ3F1Hbt5o03Uoixy0iPiK521gzlfiuqiUNW
+         KXZkjmhuRtquT1ImSoKquT+xTHxzlJ3EW1ac0C/IFDs4XpO5z+ZGGRyMaa8E5AUG4Itn
+         ZGENVBiHSo3zeABr0YX9KsI5HBq9e/h2Z+YIGwK9DKvhHIAwergqPG92xd3jY6oUILKW
+         lbzRvldu0fDosojMkOlDS/fpSD9TN8x3YsIyOdWrsFoWaIlymaLuQxcdUSfk5zfiYZKb
+         crtJwnTRSQucFgPyBJFSjy8FNY/V4YMnruIH0uXFfyt/ST4DIWDaNtJA45kDBWoIANZq
+         zMvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+hQTHUQpDg+x+P+snOLxKypHerRHDCN7seE9kS4BiixfZQkqs4JV+HU8R1hX55dHnlB+Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzObUYi88A/DUrSrMvUCLXHQkp9OJf91M0byGYV4WhUTiNmNccU
+	s0Z7o4OocK/bsYPAOIk3YS0lAjmHzztglfg82Kib0SldvaZKYNlkF+aPaxyx4j86bA==
+X-Gm-Gg: Acq92OGcmrxbLTdFFWhg/zgIFXTy0QujfYMxYknER/Byv5F51xV2fvvoo/2+JoFmKns
+	z5pRAwenZCx4LTddliFquM4N4vbgtsVVwBcFPilt4/tLCxPJDACxx5MpMY1NpifENM22Ov+WmeO
+	+0CMpH9EzPwwTuaf1suzxQn5zjgeRXBJMiC4S2u/6CtmyV96r5q9x0QkjWmGQP2KMJ2AFl1t919
+	Exun8BSkNHffCeGJNQgXOVtXC1JfuAzUnEfQ02t/L4Rn6qiqOHz7EQ9jxltbETsDxRVlCyaaNCY
+	f43iPR3lug0UHdv0F6XTsUxiNexU7aAfzrzYcH+9O6B9T9McXWzVTkGUP6lfwI6eJuAkeOZibV4
+	nUA1ii3i/S1eTgdXrtQosRC+mck2DLseBdzD77TPpDIj6qUC24cEQhjL49DDhzdPYS1ueJ3DVfc
+	WyNmF9u3FM8WK74fp9/qZR7eMIfQhhVeiB6j1E9B8VIPe+XwphJ6tFYMiCD0j573/VLZZvP3E=
+X-Received: by 2002:a17:903:1ad0:b0:2b0:b925:da98 with SMTP id d9443c01a7336-2c2d941bcf3mr118265ad.19.1781105285671;
+        Wed, 10 Jun 2026 08:28:05 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164fa00b3sm237800395ad.32.2026.06.10.08.28.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 08:28:05 -0700 (PDT)
+Date: Wed, 10 Jun 2026 15:27:57 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex.williamson@nvidia.com>,
+	Matt Evans <mattev@meta.com>, Leon Romanovsky <leon@kernel.org>,
+	Alex Mastro <amastro@fb.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v2 1/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
+Message-ID: <aimCfaCM-m4TS2g9@google.com>
+References: <20260527102319.100128-1-mattev@meta.com>
+ <20260527102319.100128-2-mattev@meta.com>
+ <20260527150946.312b3042@nvidia.com>
+ <20260529230553.GE3195266@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260610151853.3608948-1-praan@google.com>
-X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
-Message-ID: <20260610151853.3608948-6-praan@google.com>
-Subject: [RFC PATCH 5/5] PCI/P2PDMA: Introduce a helper to release P2P resources
-From: Pranjal Shrivastava <praan@google.com>
-To: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>, 
-	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, 
-	Pranjal Shrivastava <praan@google.com>, Ankit Agrawal <ankita@nvidia.com>, Matt Evans <mattev@meta.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Shivaji Kant <shivajikant@google.com>, Samiullah Khawaja <skhawaja@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260529230553.GE3195266@nvidia.com>
 
-Introduce pci_p2pdma_remove_resource() to allow manual teardown of a
-device's P2P DMA pool. The new API enables exclusive owners of a device,
-such as vfio-pci, to cleanly release P2P resources during session closure
-or hardware reset.
+On Fri, May 29, 2026 at 08:05:53PM -0300, Jason Gunthorpe wrote:
+> On Wed, May 27, 2026 at 03:09:46PM -0600, Alex Williamson wrote:
+> > This deserves a /* CONFIG_PCI_P2PDMA */ reference like the previous
+> > long span, though potentially a better solution would be to split the
+> > core code out to a separate file with shared header.  I asked opus to
+> > see what this would look like and it generated the patch below
+> > (unverified, compile tested only).  Bigger diff, harder to follow
+> > blame, but the shape of the core is much more apparent.  You're welcome
+> > to take or leave it.
+> 
+> I think it is a good idea, it will make it easier to add more stuff to
+> these different aspects.
+> 
+> Really they are now two different things with one layered on top of
+> the other.
+> 
 
-Update vfio-pci to call this function during vfio_pci_zap_bars(),
-ensuring that any BARs registered with ZONE_DEVICE P2P are released.
+A little late to this party. I agree with this split per status quo.
+Although, one observation from me, I've posted a concurrent RFC [1] that
+implements ZONE_DEVICE P2P registration for VFIO. That work relies on
+pci_p2pdma_add_resource(), which requires ZONE_DEVICE and the full
+CONFIG_PCI_P2PDMA stack rather than just the CORE part.
 
-Signed-off-by: Pranjal Shrivastava <praan@google.com>
----
- drivers/pci/p2pdma.c             | 38 ++++++++++++++++++++++++++++++++
- drivers/vfio/pci/vfio_pci_core.c |  5 +++++
- include/linux/pci-p2pdma.h       |  1 +
- 3 files changed, 44 insertions(+)
+I guess I can be careful to guard the ZONE_DEVICE P2P registration 
+feature in VFIO with the full PCI_P2PDMA config. Apart from that, this
+split provides a clean foundation for both series to coexist.
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index adb17a4f6939..2a48ffefa01c 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -26,6 +26,7 @@ struct pci_p2pdma {
- 	bool p2pmem_published;
- 	struct xarray map_types;
- 	struct p2pdma_provider mem[PCI_STD_NUM_BARS];
-+	struct pci_p2pdma_pagemap *pagemaps[PCI_STD_NUM_BARS];
- };
- 
- struct pci_p2pdma_pagemap {
-@@ -453,6 +454,8 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- 	if (error)
- 		goto pages_free;
- 
-+	p2pdma->pagemaps[bar] = p2p_pgmap;
-+
- 	pci_info(pdev, "added peer-to-peer DMA memory %#llx-%#llx\n",
- 		 pgmap->range.start, pgmap->range.end);
- 
-@@ -466,6 +469,41 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- }
- EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
- 
-+/**
-+ * pci_p2pdma_remove_resource - remove all p2p memory for a device
-+ * @pdev: the device to remove the memory from
-+ *
-+ * Tear down the entire p2p DMA pool for the device. Zap any existinga
-+ * userspace mappings of the p2pmem/allocate file
-+ */
-+void pci_p2pdma_remove_resource(struct pci_dev *pdev)
-+{
-+	struct pci_p2pdma *p2pdma;
-+	int i;
-+
-+	p2pdma = rcu_dereference_protected(pdev->p2pdma, 1);
-+	if (!p2pdma || !p2pdma->pool)
-+		return;
-+
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
-+		if (p2pdma->pagemaps[i]) {
-+			devm_release_action(&pdev->dev, pci_p2pdma_unmap_mappings,
-+					    p2pdma->pagemaps[i]);
-+			devm_memunmap_pages(&pdev->dev, &p2pdma->pagemaps[i]->pgmap);
-+			devm_kfree(&pdev->dev, p2pdma->pagemaps[i]);
-+			p2pdma->pagemaps[i] = NULL;
-+		}
-+	}
-+
-+	gen_pool_destroy(p2pdma->pool);
-+	p2pdma->pool = NULL;
-+
-+	sysfs_remove_group(&pdev->dev.kobj, &p2pmem_group);
-+
-+	pci_info(pdev, "removed all peer-to-peer DMA memory\n");
-+}
-+EXPORT_SYMBOL_GPL(pci_p2pdma_remove_resource);
-+
- /*
-  * Note this function returns the parent PCI device with a
-  * reference taken. It is the caller's responsibility to drop
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 7913b8916df9..7b58cb344408 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1704,6 +1704,11 @@ static void vfio_pci_zap_bars(struct vfio_pci_core_device *vdev)
- 	loff_t len = end - start;
- 
- 	unmap_mapping_range(core_vdev->inode->i_mapping, start, len, true);
-+
-+	if (vdev->p2p_registered_bars) {
-+		pci_p2pdma_remove_resource(vdev->pdev);
-+		vdev->p2p_registered_bars = 0;
-+	}
- }
- 
- void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device *vdev)
-diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
-index 873de20a2247..14ee2e59a43e 100644
---- a/include/linux/pci-p2pdma.h
-+++ b/include/linux/pci-p2pdma.h
-@@ -72,6 +72,7 @@ int pcim_p2pdma_init(struct pci_dev *pdev);
- struct p2pdma_provider *pcim_p2pdma_provider(struct pci_dev *pdev, int bar);
- int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- 		u64 offset);
-+void pci_p2pdma_remove_resource(struct pci_dev *pdev);
- int pci_p2pdma_distance_many(struct pci_dev *provider, struct device **clients,
- 			     int num_clients, bool verbose);
- struct pci_dev *pci_p2pmem_find_many(struct device **clients, int num_clients);
--- 
-2.54.0.1099.g489fc7bff1-goog
+Thanks,
+Praan
 
+[1] https://lore.kernel.org/all/20260610151853.3608948-1-praan@google.com/
