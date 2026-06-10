@@ -1,322 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB2B3B19A8
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 09:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C343E33438F
+	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 09:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781082693; cv=none; b=D/mReCoKgMkyOQ61bDxFtyZSRqdFITFW2iq9A+mX9Bymvz6h8ht5912TCBPdLCT7IBVJrR/S+7JfD1/iC0hLjwLEdyJ6UAZJM0tzkthcx1Fbo5FP8NTj7lVcOnPI+4Hjd2uwt+/kncBJFicE6mTt40W9izdk7e28BCcZuHD6CSs=
+	t=1781083683; cv=none; b=IGDMsSnkT/oN6y0sR38IRyi2ZRZXvIaXMtTPS2YX8wQxCOlF31xifjXWPuG8hEcOHku26fT7TgCUvhfReySsIfL2gUXprAFHj2x9XjjS3ZpL+qVrrdI2RFBcHgoFwV+GwyaeFFLHLJb0FzBc3bCAzd3tC4R1s1ly8S5M+F0Ii/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781082693; c=relaxed/simple;
-	bh=dadgJbnRTYQ1rz2/9PHuyR3TAlWs1uTRv5bASghSU5E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TTcK4eoExTkkwb0tKVJuiC0NGD5NbJebGfcAdIbQUZ8uLoS9lsrhCAjiQxqVSI+i1G9Ww74zQPBA6DnA5jHUphtJQqzg5yNz6qDPxG7RYi/5/0af0q0MAhGGFqvk36auEhPPcr/MlywgAZB09OLqEWZ2EmJftB7s+Uo3nKX4S4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h2e91mw8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781083683; c=relaxed/simple;
+	bh=ZsybMfZx9fw6a4PU9UkysJwlsCJasb1AyxXx/ZYEJZc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ln5HCHRgTFXSQKutIw4UEykNbF35WTV8uK70xeqIe0cHI6MRlsgI80gcihBxm8Y4i3gdZLadMdFHauK9LD00ilwb4MQwAETH8vAg1pDpGK/OCIELAX85EIpn4beq6zSYdetOhTE9Mm1pFlDftZR/Ks+hsRzBIDol+DQnT76HBKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=M0IYqq27; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h2e91mw8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2461F00893
-	for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 09:11:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781082691;
-	bh=R2vpCuAgnwmJOPkYcqw6QnIp6UBB/1oC5OiuKjowSiI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=h2e91mw8khkrrE40K75/SdqZP3o4d0cmeWMXzNhGFUCIt0rwQspDpxA6O0X9uFqeC
-	 TX3zM0+P/OLI5iiiqMqUvtsEN/FJ5VeAm0SqYNlthMGtOo7VNQHwXG61VO2QjfkUsu
-	 rtzF0zETIllQQyoiUhGRKk0OAeMTaNzVcDt9jXgkKyymWStxp+udhibb/j7g5xLBiq
-	 NR3lqWdZpA6Z6EWjA10tyCR2HM1XQorsvj8THaLg5x6bsT2EXb3HPmNN17j5JtzU4P
-	 a9MX3rPI/fu7fr/jYVSUa81P4wxsUJu657pJOpFtTnMSUJwv91ZMNzIja/ym7kEH1s
-	 vLZfONbU0zLfQ==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6870ad8072eso2541675a12.0
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 02:11:31 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8PSVkDXm2JPXIeK0XW3y6T7PyA8OKV4q/dHyLBtpWGHXDULAQM0fSiIvklhBav0YE9VH0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCC2shrTXNnf+AfwQjjb6LXdC7Xutg3Oj1qAR9HK42X6HDQAjs
-	xFpDEzXvraxs039cFfzeUPLGal98CojB+WYwg0tA81A/v4Vv5lKPmpt2m9rLvk2EiFZZ1WEetwS
-	RYm3YENTB9zv+s30+ZIW/KojSkFWW61E=
-X-Received: by 2002:a05:6402:e9f:b0:688:e4c6:fd1c with SMTP id
- 4fb4d7f45d1cf-68ff1d404d3mr8669214a12.8.1781082689746; Wed, 10 Jun 2026
- 02:11:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="M0IYqq27"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 659MMKq5957566;
+	Wed, 10 Jun 2026 09:27:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=0l8o41
+	VibrX/0Q5+SFQerCq1eT0fKLZTjZUPdFXK3a8=; b=M0IYqq276Xn6S/J37uVaEc
+	Zo64DlI9dLWSCDhwf1baffouK+zdIUl/4qfejrLAUzo7CWsgC1oatZKPZgUABO6M
+	x0qULu57BDLipccanTvcEma6B4jSESJS29CVgP8Ed8Hj5Ffy/lQeyy2TQARJn73O
+	D9kqT8HvAnpCUcOrN9KhdDGUFkw5F0OZSgpgxH5nvK291cAEXlw0s0l+R6FL8Lgk
+	+Ylhp47RZuTpCVH6AUA++J/54TzQopvcZ6ZuaJgD4zIlWbR+O4TwEWm7hXLRaNW7
+	6j6PfKeVxfEq+Qy2mB70VB+qOSgaepS+6hhLIclM5W5M5EP7X87SBYbyWQhn7QyQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb7qrd50-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jun 2026 09:27:33 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65A9Jc0r020109;
+	Wed, 10 Jun 2026 09:27:32 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4en03g5u4u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jun 2026 09:27:32 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65A9RUTj38470176
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 10 Jun 2026 09:27:30 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9C3B458064;
+	Wed, 10 Jun 2026 09:27:30 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1EF3658062;
+	Wed, 10 Jun 2026 09:27:27 +0000 (GMT)
+Received: from [9.39.27.242] (unknown [9.39.27.242])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 10 Jun 2026 09:27:26 +0000 (GMT)
+Message-ID: <a406db02-3aeb-4922-b6b1-8a030ca45a7b@linux.ibm.com>
+Date: Wed, 10 Jun 2026 14:57:04 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260526125256.2511876-1-maobibo@loongson.cn> <20260526125256.2511876-4-maobibo@loongson.cn>
- <CAAhV-H5Bkg1MrWr_8YcvCdHWAfX_-WLzdFGukJQVu330LoL5KA@mail.gmail.com>
- <d5722640-538c-4a97-7dff-bcec91a4c955@loongson.cn> <CAAhV-H6TfJ8c8SmLZ=9PtGPWWOjSTQD=utHVp5aoEa5ZoO71Cw@mail.gmail.com>
- <e228286e-7008-e66b-18b3-1140b2916f0e@loongson.cn> <CAAhV-H5gLxujRbS01zXjeof-F5RYw2MhMm-in8p83chfTt=0=w@mail.gmail.com>
- <ec8614d5-ed40-d2b9-37c7-6f04b6bd010f@loongson.cn> <CAAhV-H7M3Gbv8dXP=KnKzRSLJn5QoZt_hJvmuMmTL_MWo7gk0A@mail.gmail.com>
- <a1e65711-957f-2ff1-91e0-b1a93b687acb@loongson.cn>
-In-Reply-To: <a1e65711-957f-2ff1-91e0-b1a93b687acb@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 10 Jun 2026 17:11:52 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4XFbnNssUcnzhq2JQkSVqpJsTCb_+UM=F_A40oR=53qQ@mail.gmail.com>
-X-Gm-Features: AVVi8CcA_su6sxGhh4Ew3czMYp4UHCTsfgzN6eN1ZGcE-sd5vYy4kKHpKozFbMg
-Message-ID: <CAAhV-H4XFbnNssUcnzhq2JQkSVqpJsTCb_+UM=F_A40oR=53qQ@mail.gmail.com>
-Subject: Re: [PATCH v5 3/6] LoongArch: KVM: Use existing macro about interrupt
- bit mask
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Jun 10, 2026 at 5:01=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
-e:
->
->
->
-> On 2026/6/6 =E4=B8=8B=E5=8D=886:03, Huacai Chen wrote:
-> > On Thu, Jun 4, 2026 at 9:51=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> w=
-rote:
-> >>
-> >>
-> >>
-> >> On 2026/6/3 =E4=B8=8B=E5=8D=8810:23, Huacai Chen wrote:
-> >>> On Tue, Jun 2, 2026 at 4:13=E2=80=AFPM Bibo Mao <maobibo@loongson.cn>=
- wrote:
-> >>>>
-> >>>>
-> >>>>
-> >>>> On 2026/6/2 =E4=B8=8B=E5=8D=881:01, Huacai Chen wrote:
-> >>>>> On Tue, Jun 2, 2026 at 9:39=E2=80=AFAM Bibo Mao <maobibo@loongson.c=
-n> wrote:
-> >>>>>>
-> >>>>>>
-> >>>>>>
-> >>>>>> On 2026/6/1 =E4=B8=8B=E5=8D=889:50, Huacai Chen wrote:
-> >>>>>>> Hi, Bibo,
-> >>>>>>>
-> >>>>>>> On Tue, May 26, 2026 at 8:53=E2=80=AFPM Bibo Mao <maobibo@loongso=
-n.cn> wrote:
-> >>>>>>>>
-> >>>>>>>> With interrupt post, register CSR_GINTC and CSR_ESTAT is used, a=
-nd
-> >>>>>>>> CSR_ESTAT is used for percpu interrupt injection and CSR_GINTC i=
-s for
-> >>>>>>>> external hardware interrupt injection.
-> >>>>>>>>
-> >>>>>>>> Here use existing macro about interrupt bit of register CSR_GINT=
-C and
-> >>>>>>>> CSR_ESTAT, rather than hard coded constant value.
-> >>>>>>>>
-> >>>>>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> >>>>>>>> ---
-> >>>>>>>>      arch/loongarch/include/asm/kvm_vcpu.h | 43 ++++++++++++++++=
-++---------
-> >>>>>>>>      1 file changed, 29 insertions(+), 14 deletions(-)
-> >>>>>>>>
-> >>>>>>>> diff --git a/arch/loongarch/include/asm/kvm_vcpu.h b/arch/loonga=
-rch/include/asm/kvm_vcpu.h
-> >>>>>>>> index 3784ab4ccdb5..efe26b04b35f 100644
-> >>>>>>>> --- a/arch/loongarch/include/asm/kvm_vcpu.h
-> >>>>>>>> +++ b/arch/loongarch/include/asm/kvm_vcpu.h
-> >>>>>>>> @@ -10,22 +10,37 @@
-> >>>>>>>>      #include <asm/loongarch.h>
-> >>>>>>>>
-> >>>>>>>>      /* Controlled by 0x5 guest estat */
-> >>>>>>>> -#define CPU_SIP0                       (_ULCAST_(1))
-> >>>>>>>> -#define CPU_SIP1                       (_ULCAST_(1) << 1)
-> >>>>>>>> -#define CPU_PMU                                (_ULCAST_(1) << =
-10)
-> >>>>>>>> -#define CPU_TIMER                      (_ULCAST_(1) << 11)
-> >>>>>>>> -#define CPU_IPI                                (_ULCAST_(1) << =
-12)
-> >>>>>>>> -#define CPU_AVEC                        (_ULCAST_(1) << 14)
-> >>>>>>>> +#define CPU_SIP0                       BIT(INT_SWI0)
-> >>>>>>>> +#define CPU_SIP1                       BIT(INT_SWI1)
-> >>>>>>>> +#define CPU_HWI0                       BIT(INT_HWI0)
-> >>>>>>>> +#define CPU_HWI1                       BIT(INT_HWI1)
-> >>>>>>>> +#define CPU_HWI2                       BIT(INT_HWI2)
-> >>>>>>>> +#define CPU_HWI3                       BIT(INT_HWI3)
-> >>>>>>>> +#define CPU_HWI4                       BIT(INT_HWI4)
-> >>>>>>>> +#define CPU_HWI5                       BIT(INT_HWI5)
-> >>>>>>>> +#define CPU_HWI6                       BIT(INT_HWI6)
-> >>>>>>>> +#define CPU_HWI7                       BIT(INT_HWI7)
-> >>>>>>>> +#define CPU_PMU                                BIT(INT_PCOV)
-> >>>>>>>> +#define CPU_TIMER                      BIT(INT_TI)
-> >>>>>>>> +#define CPU_IPI                                BIT(INT_IPI)
-> >>>>>>>> +#define CPU_AVEC                       BIT(INT_AVEC)
-> >>>>>>>> +#define KVM_ESTAT_IRQ_MASK             (CPU_SIP0 | CPU_SIP1 | C=
-PU_PMU | CPU_TIMER \
-> >>>>>>>> +                                               | CPU_IPI | CPU_=
-AVEC)
-> >>>>>>>> +#define KVM_ESTAT_HWI_MASK             (CPU_HWI0 | CPU_HWI1 | C=
-PU_HWI2 | CPU_HWI3 \
-> >>>>>>>> +                                               | CPU_HWI4 | CPU=
-_HWI5 | CPU_HWI6 | CPU_HWI7)
-> >>>>>>>>
-> >>>>>>>>      /* Controlled by 0x52 guest exception VIP aligned to estat =
-bit 5~12 */
-> >>>>>>>> -#define CPU_IP0                                (_ULCAST_(1))
-> >>>>>>>> -#define CPU_IP1                                (_ULCAST_(1) << =
-1)
-> >>>>>>>> -#define CPU_IP2                                (_ULCAST_(1) << =
-2)
-> >>>>>>>> -#define CPU_IP3                                (_ULCAST_(1) << =
-3)
-> >>>>>>>> -#define CPU_IP4                                (_ULCAST_(1) << =
-4)
-> >>>>>>>> -#define CPU_IP5                                (_ULCAST_(1) << =
-5)
-> >>>>>>>> -#define CPU_IP6                                (_ULCAST_(1) << =
-6)
-> >>>>>>>> -#define CPU_IP7                                (_ULCAST_(1) << =
-7)
-> >>>>>>>> +#define GINTC_VIP_DELTA                        (INT_HWI0 - CSR_=
-GINTC_VIP_SHIFT)
-> >>>>>>> Don't use too many wrappers, just use INT_HWI0 instead of
-> >>>>>>> GINTC_VIP_DELTA in this series is perfect. In other places INT_SW=
-I0 is
-> >>>>>>> also used for shifts.
-> >>>>>>
-> >>>>>> The above macro definition is a little complicated, I do not know =
-how to
-> >>>>>> optimize it. do you mean remove GINTC_VIP_DELTA just use 2 such as=
-:
-> >>>>>> #define CPU_IP0                       BIT(INT_HWI0 - 2)
-> >>>>> CSR_GINTC_VIP_SHIFT is 0 and GINTC_VIP_DELTA is equal to INT_HWI0. =
-I
-> >>>>> mean remove the GINTC_VIP_DELTA definition and use INT_HWI0 instead=
-.
-> >>>> For macro definition such CPU_IP0, GINTC_VIP_DELTA can be removed. A=
-nd
-> >>>> define it as follows directly.
-> >>>> #define CPU_IP0                       BIT(0)
-> >>>>
-> >>>> However GINTC_VIP_DELTA is still useful, because bitmap with HWI0-HW=
-I7
-> >>>> in estat register starts from INT_HWI0, however with register gintc =
-it
-> >>>> starts from CSR_GINTC_VIP_SHIFT.
-> >>>>
-> >>>> For example with _kvm_getcsr() API, it is to get interrupt status. H=
-ere
-> >>>> is the example code.
-> >>>> gintc =3D kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC)& KVM_GINTC_IRQ_=
-MASK;
-> >>>> estat =3D kvm_read_sw_gcsr(csr, LOONGARCH_CSR_ESTAT) &~KVM_ESTAT_HWI=
-_MASK;
-> >>>> *val =3D estat | (gintc << GINTC_VIP_DELTA);
-> >>>>
-> >>>> Remove GINTC_VIP_DELTA and use INT_HWI0 directly, it will be
-> >>>> *val =3D estat | (gintc << INT_HWI0);
-> >>>>
-> >>>> I do not know what is the meaning about "gintc << INT_HWI0", especia=
-lly
-> >>>> if the value of CSR_GINTC_VIP_SHIFT is no zero.
-> >>> In your Patch-2 there is "clear_csr_estat(1 << INT_SWI0)", INT_SW0 an=
-d
-> >>> INT_HW0 are good friends. Why "1 << INT_SWI0" is acceptable but
-> >>> "gintc << INT_HWI0" is not?
-> >>
-> >> The bit definition INT_SWI0 is for ESTAT register, is that right?
-> >>
-> >> The bitmap mask KVM_GINTC_IRQ_MASK is for GINTC register, to convert t=
-o
-> >> bitmap mask of ESTAT,  should not be (gintc >> CSR_GINTC_VIP_SHIFT) <<
-> >> INT_HWI0? why CSR_GINTC_VIP_SHIFT is discarded here, just because it i=
-s
-> >> zero?
-> > Yes, this is a reason,  but if you insist on, the macro can be
-> > defined, but the name can be changed.
-> yes, I want to use one macro describe the delta value.
->
-> >
-> > In theory, it is VIP_DELTA_BETWEEN_ESTAT_AND_GINTC, but we can just
-> > use VIP_DELTA for short because CPU_IP0, CPU_IP1 .... also don't have
-> > a "GINTC_" prefix.
-> yes, prefix GINTC_ should be removed. VIP_DELTA_BETWEEN_ESTAT_AND_GINTC
-> is a little long, how about KVM_VIP_DELTA or others for short.
-This is a definition for hardware, not for KVM, so I prefer VIP_DELTA,
-but KVM_VIP_DELTA is also OK.
-
->
-> >
-> > And KVM_ESTAT_IRQ_MASK is not suitable. In theory SWI and HWI are both
-> > IRQ, so you cannot use KVM_ESTAT_IRQ_MASK to stand for the rest IRQ
-> > bits of KVM_ESTAT_HWI_MASK.
-> >
-> > Yes, KVM_ESTAT_SWI_MASK is also not suitable because TI, IPI are
-> > "hardware interrupts" indeed, but KVM_ESTAT_SWI_MASK is still better
-> > than KVM_ESTAT_IRQ_MASK.
-> >
-> > A even better distinction is using "internal interrupts" and "external
-> > interrupts" to describe, so KVM_ESTAT_INTI_MASK and
-> > KVM_ESTAT_EXTI_MASK can be considered.
-> KVM_ESTAT_EXTI_MASK is ok for me. With KVM_ESTAT_INTI_MASK, how about
-> KVM_ESTAT_PPI_MASK or KVM_ESTAT_CPU_MASK to emphasize percpu interrupt?
-> I am not name specialist, just a suggestion, or other names will be bette=
-r.
-PPI is hard to understand, CPU loses the "interrupt" information, so I
-think KVM_ESTAT_INTI_MASK is better.
-
-Though INT in INTI may be misunderstood, but it is defined near EXTI
-so I think we needn't worry.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests RFC PATCH 1/6] powerpc: add pmu tests
+To: Thomas Huth <thuth@redhat.com>
+Cc: npiggin@gmail.com, harshpb@linux.ibm.com, lvivier@redhat.com,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        andrew.jones@linux.dev, sbhat@linux.ibm.com
+References: <20260602064806.3101025-1-rathc@linux.ibm.com>
+ <20260602064806.3101025-2-rathc@linux.ibm.com>
+ <b7aa2c73-be32-47e2-8452-e626845f4d3e@redhat.com>
+ <0c95c25f-1400-4912-befc-c5b32968d9ab@redhat.com>
+Content-Language: en-US
+From: Chinmay Rath <rathc@linux.ibm.com>
+In-Reply-To: <0c95c25f-1400-4912-befc-c5b32968d9ab@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=HppG3UTS c=1 sm=1 tr=0 ts=6a292e05 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=FPh58N5xAAAA:8
+ a=OLL_FvSJAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=octOoDlM_WqTSxbGpL4A:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=Q4WRRM2E_uQYcjguQaFu:22
+ a=oIrB72frpwYPwTMnlWqB:22
+X-Proofpoint-GUID: vSXMprX2JNWjTCqt8t7r3ekW_WSLkyhb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEwMDA4NiBTYWx0ZWRfXzbn2wRIXVi7i
+ OgalVTcpFmZGlCs3vEiHklDggrYjQEi+uHV1lfZ0DLOYRE5Z49PpaylBWoAe6vRfYeLesDCJo2b
+ TWS3vzHdfTXVcJ2J/AIIMArcv15ViddYRV03NtJagI6IAjzVLX90JX/Wm91OxCXMrTHperkOshY
+ 87n96NpIpUAc6PJSr9ZUai+W2YIIHYn/qvH2dj350ewDYDcysSLHynFxGxQZno7ARz3hu+WlskX
+ ghCJN5qZfrZopAyoyTiPB1xtXlEZiEJnHM+cgRglxxIkwL/4DzNFK6qWjhZI9L5MnTqItUTBNIY
+ mew9YmYFk3qrf9Cr0zjkwfBIqhIQ51VHfl/Ezuo7fgr991N0LHmHKoxMsipmHqdc8jIcVEp4Edt
+ XcSb8WUGzE3efli1B9CT88OSWQvwkaKEKw3PyuOB1a4mT7QSqVThu5VH6LxEF6e2gux6RQykvdt
+ zvPDtwnuNubW88kA5uA==
+X-Proofpoint-ORIG-GUID: sIREZPas2ym2ME0GwzmLs_F3j6FMhqYr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-10_02,2026-06-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 malwarescore=0 impostorscore=0
+ priorityscore=1501 clxscore=1015 bulkscore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606100086
 
 
-Huacai
+On 6/8/26 19:27, Thomas Huth wrote:
+> On 08/06/2026 14.45, Thomas Huth wrote:
+>> On 02/06/2026 08.48, Chinmay Rath wrote:
+>>> From: Nicholas Piggin <npiggin@gmail.com>
+>>>
+>>> Add some initial PMU testing.
+>>>
+>>> - PMC5/6 tests
+>>> - PMAE / PMI test
+>>> - BHRB basic tests
+>>>
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>> Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
+>>> ---
+>>>   lib/powerpc/asm/processor.h |   2 +
+>>>   lib/powerpc/asm/reg.h       |   9 +
+>>>   lib/powerpc/asm/setup.h     |   1 +
+>>>   lib/powerpc/setup.c         |  20 ++
+>>>   powerpc/Makefile.common     |   3 +-
+>>>   powerpc/pmu.c               | 567 
+>>> ++++++++++++++++++++++++++++++++++++
+>>>   powerpc/unittests.cfg       |   3 +
+>>>   7 files changed, 604 insertions(+), 1 deletion(-)
+>>>   create mode 100644 powerpc/pmu.c
+>>
+>>   Hi Chinmay,
+>>
+>> the problem with Clang on Travis [*] still seems to persist:
+>>
+>>   https://app.travis-ci.com/github/huth/kvm-unit-tests/jobs/639614142
+>>
+>> Could you please have a look?
+>>
+>>   Thanks,
+>>    Thomas
+>>
+>>
+>> [*] This already happened with Nicolas' last version:
+>>
+>>   https://www.spinics.net/lists/kvm/msg351218.html
+>
+> I managed to get access to a ppc64 machine. The error is:
+>
+> /tmp/pmu-eab466.s: Assembler messages:
+> /tmp/pmu-eab466.s:1649: Error: unrecognized opcode: `ldat'
+> clang: error: assembler command failed with exit code 1 (use -v to see 
+> invocation)
+> make: *** [<builtin>: powerpc/pmu.o] Error 1
+>
+>  HTH,
+>   Thomas
+Hi Thomas,
 
->
-> Regards
-> Bibo Mao
-> >
-> >
-> > Huacai
-> >
-> >>
-> >>>
-> >>> Huacai
-> >>>
-> >>>>
-> >>>> Regards
-> >>>> Bibo Mao
-> >>>>>
-> >>>>>
-> >>>>> Huacai
-> >>>>>
-> >>>>>>
-> >>>>>> or something like this:
-> >>>>>> #define CPU_IP0                       (CPU_HWI0 >> GINTC_VIP_DELTA=
-)
-> >>>>>>
-> >>>>>> Regards
-> >>>>>> Bibo Mao
-> >>>>>>>
-> >>>>>>>
-> >>>>>>> Huacai
-> >>>>>>>
-> >>>>>>>> +#define CPU_IP0                                BIT(INT_HWI0 - G=
-INTC_VIP_DELTA)
-> >>>>>>>> +#define CPU_IP1                                BIT(INT_HWI1 - G=
-INTC_VIP_DELTA)
-> >>>>>>>> +#define CPU_IP2                                BIT(INT_HWI2 - G=
-INTC_VIP_DELTA)
-> >>>>>>>> +#define CPU_IP3                                BIT(INT_HWI3 - G=
-INTC_VIP_DELTA)
-> >>>>>>>> +#define CPU_IP4                                BIT(INT_HWI4 - G=
-INTC_VIP_DELTA)
-> >>>>>>>> +#define CPU_IP5                                BIT(INT_HWI5 - G=
-INTC_VIP_DELTA)
-> >>>>>>>> +#define CPU_IP6                                BIT(INT_HWI6 - G=
-INTC_VIP_DELTA)
-> >>>>>>>> +#define CPU_IP7                                BIT(INT_HWI7 - G=
-INTC_VIP_DELTA)
-> >>>>>>>> +#define KVM_GINTC_IRQ_MASK             (CPU_IP0 | CPU_IP1 | CPU=
-_IP2 | CPU_IP3 \
-> >>>>>>>> +                                               | CPU_IP4 | CPU_=
-IP5 | CPU_IP6 | CPU_IP7)
-> >>>>>>>>
-> >>>>>>>>      #define MNSEC_PER_SEC                  (NSEC_PER_SEC >> 20)
-> >>>>>>>>
-> >>>>>>>> --
-> >>>>>>>> 2.39.3
-> >>>>>>>>
-> >>>>>>>>
-> >>>>>>
-> >>>>>>
-> >>>>
-> >>>>
-> >>
->
->
+Thanks for looking into this and providing the exact error message.
+
+I was looking into this Travis CI job that you pointed to and noticed 
+that the clang version being used was 14.
+I was wondering, would it be possible to use a newer version of clang 
+for the job since LDAT is a legit PPC insn,
+that was introduced with Power 9, ISA version 3.0, way back a decade in 
+2016 !
+So I was wondering if using a newer version of clang that recognizes the 
+instruction would be a better approach.
+
+I checked the .travis.yml file (config) for the job, which mentions :
+|apt_packages: clang qemu-system-ppc|
+
+Can we change it to something like :
+|apt_packages: clang19 qemu-system-ppc |or (clang-19)  ?
+
+In the same config s390x uses a specific version of clang that is 11 in 
+similar manner.
+
+However if you'd still prefer working around LDAT, I could try with 
+LDARX instead, but I am unable to verify if
+clang-14 will recognize that since the oldest version of clang I could 
+find in ppc64le repo was clang-15 which
+was able to work with LDAT as well. Hence, could you help me with 
+providing the steps to use Travis-CI so I could verify ?
+(I had skipped doing the credit card payment while signing up, in case 
+that's mandatory for Travis CI. Pardon me I'm new to it XD)
+
+Thanks,
+Chinmay
+
