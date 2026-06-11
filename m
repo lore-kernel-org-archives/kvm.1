@@ -1,130 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8318B380FCC;
-	Thu, 11 Jun 2026 16:08:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EE82D739C
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 16:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781194128; cv=none; b=TJhR+cxQFognlvbxOPX/lfiYu73v0RhnQSmNsPGfgxVdZkh2y410UR7sQXtqMAApj7e+l3OJX8+KO4gRF6dPkfxlqIYUTV4sHFUm5p/vjkov5ysfuOlerzzN1JaSsHCo0+ZPRIuXwaTeUf5WzcBeXdvfNWIMiuraij1DxGw6XMM=
+	t=1781194557; cv=none; b=rkOtcd1w8RIyzv8n2kgvvWZcZLkIjmozVZzuctK0EDp9oB27tIcDYdeXWPHSxkykE/GDsh0YzYmYxzUP40ugEXERK9Q5zbN9EeZMi1Ofn6OL1S5e+rLPkcuvEVTaW2g4xvpAUm12dhBr33pUU+MjDnaBTF+1TUahK9aFg4+UdPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781194128; c=relaxed/simple;
-	bh=VU7u4gcjsIJs96WJ32X+KbXTNkJwjC8iDCLEsym1PvA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=W+xE2mtwZFXa5x2vbJlW7dByxWjqlCVeWYEbGEuJCuaQl1tVoJCxQd7O6WsUUxnFRP1rHpjCeEnMuI9GkR+626cuSNpbQkXYOGK+s52LryH4mnP5vrJ6U3uoT/wEwCd1wakwC5ts5xSv+UfFSalcugYf7uby2PG34YZAq1iH4UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aPyXTcMi; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aPyXTcMi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFA51F00893;
-	Thu, 11 Jun 2026 16:08:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781194127;
-	bh=67pyTVN1Quk2VsSRevFkiRkJdj2mczxJGsOwI6S5CMo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aPyXTcMioo16GP6o7JRZKvXeRf96lKMSeg0OT1lVK3Bjj0NqgNBeR5acC4R2c6VWy
-	 S3pQAbaM8FDOK+nmfutGJGnqtQpKsZ0X4rBVNkzb97GrQBrvFPeOLTvJDSUEmPVNd+
-	 9E7WZsoUT4cQWdXx7ED45oiRxpPuTUpM/v5lHGZ0gRmmDGOhiNnrM36pf7/kXoBveo
-	 hmOcsuEqW0djCRLGDMXPZXJ2viAXCkgn9WRHYHDdcEwJGIlusb1wSviGt25doVHE4o
-	 q4bzQcYU2StUIXi00t/gla6Q9vXqkEkS+rQyt6LRmmdNB7TyKo6TKLv71QSvTLMZ8Q
-	 WUuo6ZpTtACtQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 4/4] KVM: s390: vsie: Implement ASTFLEIE facility 2
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org
-In-Reply-To: <20260611-vsie-alter-stfle-fac-v3-4-b1a35efedaba@linux.ibm.com>
-References: <20260611-vsie-alter-stfle-fac-v3-4-b1a35efedaba@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Jun 2026 16:08:46 +0000
-Message-Id: <20260611160847.1EFA51F00893@smtp.kernel.org>
+	s=arc-20240116; t=1781194557; c=relaxed/simple;
+	bh=cx2qflHw6C4M4RY90ItuEe017sHOEZ5NnTaU/Zxi+us=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=HyUy9BzZH28b1keBDAHk4CN2ZZPVzfFsbY0HUfWpown67fbutdkY2fSZgxJn4JqYu+Y+q9P2GHdsIXCOxKEjXk5omEPrg3GUQWi4nC/6skWbQ052V6YzdOooFS9yU/dX6k0nT1rKPcnJD2FxUrGxK7eK8xmgMIuxjruJoRgXNyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2c354050c34so10065ad.3
+        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 09:15:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781194555; x=1781799355;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0lM2grzrB5nVp/LDdwf5++oZa/eGINgQ46KeI9aLB8w=;
+        b=W2N6faHszWqmioAECyi55oJRoC0s8Y12kXEaHMEGb/1MxAxOG+PeOIInpvSMO4XosL
+         X5Fiq9qCJjFPTjTTwOglblMCz2MhJVWoAXPltX4qzV6FtfoPDXsspVaSGfP6mDZqKfsq
+         wB4NT1kTfJDnyOqBmhrlxVWO0KsAwzzgL+q/9g6AKFijSbU5F8+UUW5zh96BWBGHxgXj
+         Dv/ne2z0oCgX5CHvmcwgn/LmcGLVxERYWvWmmUaCHLSyG+juacjCAabq3TRE+DPgp0YT
+         j+Cug6Z9UMnZ7cB0P2/R/V/N8vE4gHvw8lsYKCYdKHdrHZn1XxKFqxJTHrgezM9d+okw
+         MOjA==
+X-Forwarded-Encrypted: i=1; AFNElJ8mcJq3jQGIMWaavywxeJMJFmHvi1MYe5nimN/6uD1xgM5frI1f59AwF5e6+Oa0tHN4wv4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRDUBCYyNHOjzE4FFGQqzXBo/atlu5DI8Ahg6TbjBl5EOYkGf8
+	tuZ1vLe+IgqvIqyMEqbHelAzrpKFmscsPo/yPw4luHJNpbVtmjwN3sdIZnKsT9xFzL0FNQdKmnf
+	h53pez++RqMUSN7KsVufcUojJQiuoGpvtir/PNq8FqSXzpRSn0hVjycZmRwM=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-Received: by 2002:a17:903:1112:b0:2c0:c14c:bf38 with SMTP id
+ d9443c01a7336-2c2f229cf4dmr41104675ad.24.1781194555490; Thu, 11 Jun 2026
+ 09:15:55 -0700 (PDT)
+Date: Thu, 11 Jun 2026 09:15:55 -0700
+In-Reply-To: <20260610214523.2905255-2-clopez@suse.de>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a2adf3b.3b0a2d4e.8c8d1.0012.GAE@google.com>
+Subject: [syzbot ci] Re: KVM: x86: Unconditionally recompute CR8 intercept on
+ PPR update
+From: syzbot ci <syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com>
+To: bp@alien8.de, clopez@suse.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
+	osteffen@redhat.com, pbonzini@redhat.com, rkagan@virtuozzo.com, 
+	seanjc@google.com, sgarzare@redhat.com, stable@vger.kernel.org, 
+	tglx@kernel.org, x86@kernel.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] Hardware alignment violation for Cryptographic Control Block (=
-CRYCB) Format 2.
-- [High] Uninitialized `reserved0` field in the shadow format-2 facility li=
-st control block leads to hardware state corruption.
---
+syzbot ci has tested the following series
 
-commit 74d49835ae9f08ad6c33a2e48ab3b975fa0b0159
-Author: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+[v2] KVM: x86: Unconditionally recompute CR8 intercept on PPR update
+https://lore.kernel.org/all/20260610214523.2905255-2-clopez@suse.de
+* [PATCH v2] KVM: x86: Unconditionally recompute CR8 intercept on PPR update
 
-KVM: s390: vsie: Implement ASTFLEIE facility 2
+and found the following issue:
+WARNING in vmx_update_cr8_intercept
 
-This commit implements shadowing of the format-2 facility list when
-running in VSIE, to support the ASTFLEIE2 facility available since
-IBM z16.
+Full report is available here:
+https://ci.syzbot.org/series/d94aebb2-8082-4777-ab08-5c3a0d680bed
 
-> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
-> index 2ea3bbaf568e5..592d6b6f57292 100644
-> --- a/arch/s390/kvm/vsie.c
-> +++ b/arch/s390/kvm/vsie.c
-> @@ -65,9 +65,9 @@ struct vsie_page {
->  	gpa_t scb_gpa;				/* 0x0258 */
->  	/* the shadow gmap in use by the vsie_page */
->  	struct gmap_cache gmap_cache;		/* 0x0260 */
-> -	__u8 reserved[0x0700 - 0x0278];		/* 0x0278 */
-> -	struct kvm_s390_crypto_cb crycb;	/* 0x0700 */
-> -	__u8 fac[S390_ARCH_FAC_LIST_SIZE_BYTE];	/* 0x0800 */
-> +	__u8 reserved[0x06f8 - 0x0278];		/* 0x0278 */
-> +	struct kvm_s390_crypto_cb crycb;	/* 0x06f8 */
+***
 
-[Severity: Critical]
-Does moving crycb to offset 0x06f8 violate the hardware's 256-byte
-alignment requirement for the Cryptographic Control Block (CRYCB) Origin
-address?
+WARNING in vmx_update_cr8_intercept
 
-When KVM applies CRYCB_FORMAT2 to this unaligned physical address in
-shadow_crycb():
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      c1f7303302927f9cbf4efedf70f0512cde168c65
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/8f417377-50a6-450a-8ce0-a83de33b8c6d/config
+syz repro: https://ci.syzbot.org/findings/62a660e6-a9b1-42ca-9cf0-7aadd2f5d292/syz_repro
 
-    scb_s->crycbd =3D (u32)virt_to_phys(&vsie_page->crycb) | CRYCB_FORMAT2;
+------------[ cut here ]------------
+debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || !refcount_read(&vcpu->kvm->users_count))
+WARNING: arch/x86/kvm/vmx/nested.h:61 at get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline], CPU#0: syz.2.19/5879
+WARNING: arch/x86/kvm/vmx/nested.h:61 at vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879, CPU#0: syz.2.19/5879
+Modules linked in:
+CPU: 0 UID: 0 PID: 5879 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline]
+RIP: 0010:vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879
+Code: 0b 90 e9 f1 fe ff ff e8 30 12 69 00 90 0f 0b 90 e9 59 fe ff ff e8 22 12 69 00 e8 ad 86 d6 ff e9 ca fe ff ff e8 13 12 69 00 90 <0f> 0b 90 e9 fc fc ff ff e8 05 12 69 00 e8 90 86 d6 ff eb a7 48 c7
+RSP: 0018:ffffc9000271f758 EFLAGS: 00010293
+RAX: ffffffff815d048d RBX: ffff888113380000 RCX: ffff8881142b8000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: 00000000ffffffff R08: ffff8881114d9703 R09: 1ffff1102229b2e0
+R10: dffffc0000000000 R11: ffffed102229b2e1 R12: 0000000000000000
+R13: dffffc0000000000 R14: ffff888116d0bca0 R15: 0000000000000001
+FS:  00007ff34d6b86c0(0000) GS:ffff88818dc9b000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffc75e78ae8 CR3: 000000010c609000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ apic_update_ppr arch/x86/kvm/lapic.c:984 [inline]
+ kvm_lapic_reset+0x1c24/0x2980 arch/x86/kvm/lapic.c:3023
+ kvm_vcpu_reset+0x44c/0x1bf0 arch/x86/kvm/x86.c:12986
+ kvm_arch_vcpu_create+0x746/0x8b0 arch/x86/kvm/x86.c:12847
+ kvm_vm_ioctl_create_vcpu+0x428/0x930 virt/kvm/kvm_main.c:4201
+ kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5159
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff34c79ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ff34d6b8028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007ff34ca15fa0 RCX: 00007ff34c79ce59
+RDX: 0000000000000002 RSI: 000000000000ae41 RDI: 0000000000000004
+RBP: 00007ff34c832d6f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ff34ca16038 R14: 00007ff34ca15fa0 R15: 00007ffe4bc28aa8
+ </TASK>
 
-will the hardware see a misaligned crycbd value and either inject a
-validity intercept or mask out the lower bits, reading keys from
-uninitialized padding instead of the actual control block?
 
-[ ... ]
+***
 
-> @@ -999,6 +999,28 @@ static int handle_stfle_0(struct kvm_vcpu *vcpu, str=
-uct vsie_page *vsie_page,
->  	return 0;
->  }
-> =20
-> +static int handle_stfle_2(struct kvm_vcpu *vcpu, struct vsie_page *vsie_=
-page, u32 fac_list_origin)
-> +{
-> +	struct kvm_s390_flcb2 *flcb_s =3D (struct kvm_s390_flcb2 *)vsie_page->f=
-ac;
-> +	struct kvm_s390_sie_block *scb_s =3D &vsie_page->scb_s;
-> +	u64 len;
-> +
-> +	if (read_guest_real(vcpu, fac_list_origin, &len, sizeof(len)))
-> +		return set_validity_icpt(scb_s, 0x1090U);
-> +
-> +	/* discard reserved bits */
-> +	len =3D (len & U8_MAX);
-> +	flcb_s->length =3D len;
-> +	len +=3D 1;
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
-[Severity: High]
-Could this leave the 7-byte reserved0 array in the shadow format-2
-facility list uninitialized?
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-Since vsie_page structures are pooled and reused across nested executions
-without zeroing the fac array, will reserved0 contain stale data from
-previous executions, like facility bits from a prior format-0 STFLE
-execution?
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
 
-If the architecture requires these reserved bits to be zero, will passing
-non-zero reserved bits to the hardware cause a validity intercept and
-crash the nested guest?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611-vsie-alter=
--stfle-fac-v3-0-b1a35efedaba@linux.ibm.com?part=3D4
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
