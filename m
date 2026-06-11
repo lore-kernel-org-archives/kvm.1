@@ -1,183 +1,244 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D964E3FB077
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 13:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B474D2EA731
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 13:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781182861; cv=none; b=cPFF6OTM7fjhtIgPCSSmt+GoQfxm1dq9apfqSJRd9BHPk1TrhBcPSmJPCbXHffADBIcAt4Yj5QjH58aPgILTG6orQyyAW/GYPSCLteP/nt/RcGjH+SU6PADaAZDFzPL2i/MYs/zbhnuZbZS99HEx203RoYD8qnAaMjfKexBXv7I=
+	t=1781183139; cv=none; b=kpO8yUy7GHAttVz8P9gAKT+aAPtXsiGURG5UjgZRTmOrbOY9z++3B1LhJ+HmeFze8CnEdj1tfzJgv3rRZpJ+dips4iVIUUzFX57w84z4DnyU3zIu0UV+XUpReGyt7JWvvzYvIrj1JdipQIwYbK6JwTCafLx3Ny7CWJpJWOerGMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781182861; c=relaxed/simple;
-	bh=0YOHxKDJtE7JUCdcSrUwyxUab8YtMn/ilX+FHdAOQE0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GGvSnI8x1CjYo/5lrX7DC8ODlmBxz4FbO3ltV3sM5QI7q8YUr3i/1e00L89NBkzC1hBsCglOjtXpj1Qv9dEyIqGxRwpgECCh4aVWuttN0H2MxK0t9tNOKX7FI1z193r8ZpMwkgPV8guMRtazpK9zlBMgiTg5bIRy6ztNTfGMyYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B36c6ggD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781183139; c=relaxed/simple;
+	bh=toylZ1F/AypNVx7jf+8JX7PP6YGbFclPni7FooxC58M=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Gzxu8kwgSWfgqlNQ4hWnl7ITY0Nyx4AXSYeblRtPXoQhdRI8ptCSaLg/qZH/n57dxaf7xF6DPQVawJfDrjtfCKeM2wIlFZ1Cb6DmrKlT5D1fvNiMJYThpHNq3IoFoLO3BrvyjiOzS8GeMtVBHiYrSFt2SF0Vtqd6OD85l55xabA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIj2tV7G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B36c6ggD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47FA1F00898
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 13:00:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIj2tV7G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216371F00893;
+	Thu, 11 Jun 2026 13:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781182859;
-	bh=pxqLifDJGGZYXoj4VfsxRd6YGJLysVvyhwmhrG2Zi5o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=B36c6ggDm2VliBV/+axoFvv2OBV9imDY7iqCs91sl0ZWeXdiFAHhZl7PnAQESNnHY
-	 GD6LqHOnqpX/pdepIqVax+1+CaOid7XpPOuFDGjT5ilcrLBrgYpa818pFhXbHMK5+M
-	 5+SKBXuyVnOz09i29VPmfHIY72JLzR7lQqz9XEGOHuCE64Nkva63A5VH6G44OiPJIj
-	 VhX0IVe/N+HdqCWrrCuxwxmYZAFtmbVY2Suun8R9jeL7DuWI54RSRQFUmWlo9GrjRj
-	 b6Gawj1hSd4zJn43v7FuDV8+KSaFUQoTljORn2ruC+1/4Rmq0S/iswbXm69gfYjoGF
-	 xdfFY37MzXuhA==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6924a68e3f3so5316902a12.1
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 06:00:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/rz0DWYwqI+5uUeWL5eudLediWuWrKEtS2A0kVIawRRn5lzPibCfKO2kH4uuMVdzw8hnw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywy0cXb2/h9tV2LOUAcE3xEFOS/xWR8XeZ0JYYpoDE+xrtpgryR
-	62EuLjXIDXg/Z30Ui4As79p+HUZ4vd51XILQh4l5pAFj7DJfjA3q6nLb7eUoLc/hkJqaBjKXCGI
-	DcAIfceSqobsJD5nP5ixJlX/wZl7Dahk=
-X-Received: by 2002:a05:6402:3897:b0:687:ece2:aac6 with SMTP id
- 4fb4d7f45d1cf-6930e32cf5dmr1380316a12.15.1781182858289; Thu, 11 Jun 2026
- 06:00:58 -0700 (PDT)
+	s=k20260515; t=1781183137;
+	bh=wY3K3T1IX/7TFU0ad7D4lA6LrtT1Aij1i6C1fP43BDQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=EIj2tV7GXyEoivkHDvxG6SkFjjioRm3r+uan5B5a6kxnEFtR3FBZYhd/KJSy9uZOh
+	 j2kx6HboZZ/UaOwIsQonbq60pn5go42QTYO2IlAx9FxSZTz0AqE27BVRewjTrTtg1H
+	 r96/io4NyFpDQHBR/agQjwFEIrmsrG+ckhBIeRWPwC78k0imImLl9UdXZ3uTKRSg6x
+	 nljCDpvQGuQU+V9nO6mFkFUAAnUB8mNALrfNAxsMowUiO3lN2OgVjx+mFb4JwEkruN
+	 i1FsNvAetBFYQieH56rBzLnKbHb6ntx2CWb/4x9ipF68t/Pu0uL6TzPVdjwJhv2P0d
+	 zhJaoc0ydonxw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/4] kvm: svm: Support guest-provided VMSA for launching
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260611123528.572255-4-joro@8bytes.org>
+References: <20260611123528.572255-4-joro@8bytes.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 11 Jun 2026 13:05:36 +0000
+Message-Id: <20260611130537.216371F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260611065815.1439154-1-maobibo@loongson.cn> <20260611065815.1439154-6-maobibo@loongson.cn>
- <CAAhV-H7vMq+-nm8f8aL2CvmNYivaHgWj1cTuyv0BTfPQRKpSJA@mail.gmail.com> <00f28be5-3805-90d1-d2a5-69734b3d0a03@loongson.cn>
-In-Reply-To: <00f28be5-3805-90d1-d2a5-69734b3d0a03@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 11 Jun 2026 21:01:21 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H460mXx5ojv-=Bah5HoMHqy2bDB38uWaXXGkLeDNt8zRg@mail.gmail.com>
-X-Gm-Features: AVVi8Ce0q9ZqmjqSIljoivrfPJzG9mEucIizwIMxsOxnMJqWsRqfcisZfh8OSgo
-Message-ID: <CAAhV-H460mXx5ojv-=Bah5HoMHqy2bDB38uWaXXGkLeDNt8zRg@mail.gmail.com>
-Subject: Re: [PATCH v6 5/6] LoongArch: KVM: Add valid bit check when set ESTAT
- CSR register
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 11, 2026 at 8:55=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
-e:
->
->
->
-> On 2026/6/11 =E4=B8=8B=E5=8D=886:10, Huacai Chen wrote:
-> > Hi, Bibo,
-> >
-> > On Thu, Jun 11, 2026 at 2:58=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> =
-wrote:
-> >>
-> >> When set ESTAT CSR register in function _kvm_setcsr(), valid bit check
-> >> is added here. Also interrupt CPU_AVEC is checked by msgint feature.
-> >>
-> >> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> >> ---
-> >>   arch/loongarch/kvm/vcpu.c | 25 ++++++++++++++++---------
-> >>   1 file changed, 16 insertions(+), 9 deletions(-)
-> >>
-> >> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> >> index e986146d2272..4f67eefbd4f1 100644
-> >> --- a/arch/loongarch/kvm/vcpu.c
-> >> +++ b/arch/loongarch/kvm/vcpu.c
-> >> @@ -602,7 +602,7 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm =
-*kvm, int cpuid)
-> >>
-> >>   static int _kvm_getcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 *=
-val)
-> >>   {
-> >> -       unsigned long gintc;
-> >> +       unsigned long gintc, estat;
-> >>          struct loongarch_csrs *csr =3D vcpu->arch.csr;
-> >>
-> >>          if (get_gcsr_flag(id) & INVALID_GCSR)
-> >> @@ -621,8 +621,9 @@ static int _kvm_getcsr(struct kvm_vcpu *vcpu, unsi=
-gned int id, u64 *val)
-> >>                  preempt_enable();
-> >>
-> >>                  /* ESTAT IP0~IP7 get from GINTC */
-> >> -               gintc =3D kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC) &=
- 0xff;
-> >> -               *val =3D kvm_read_sw_gcsr(csr, LOONGARCH_CSR_ESTAT) | =
-(gintc << 2);
-> >> +               gintc =3D kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC) &=
- KVM_GINTC_IRQ_MASK;
-> >> +               estat =3D kvm_read_sw_gcsr(csr, LOONGARCH_CSR_ESTAT) &=
- ~KVM_ESTAT_EXTI_MASK;
-> >> +               *val =3D estat | (gintc << VIP_DELTA);
-> >>                  return 0;
-> >>          }
-> >>
-> >> @@ -637,7 +638,8 @@ static int _kvm_getcsr(struct kvm_vcpu *vcpu, unsi=
-gned int id, u64 *val)
-> >>
-> >>   static int _kvm_setcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 v=
-al)
-> >>   {
-> >> -       int ret =3D 0, gintc;
-> >> +       int ret =3D 0;
-> >> +       unsigned long gintc, estat;
-> >>          struct loongarch_csrs *csr =3D vcpu->arch.csr;
-> >>
-> >>          if (get_gcsr_flag(id) & INVALID_GCSR)
-> >> @@ -648,11 +650,16 @@ static int _kvm_setcsr(struct kvm_vcpu *vcpu, un=
-signed int id, u64 val)
-> >>
-> >>          if (id =3D=3D LOONGARCH_CSR_ESTAT) {
-> >>                  /* ESTAT IP0~IP7 inject through GINTC */
-> >> -               gintc =3D (val >> 2) & 0xff;
-> >> -               kvm_set_sw_gcsr(csr, LOONGARCH_CSR_GINTC, gintc);
-> >> -
-> >> -               gintc =3D val & ~(0xffUL << 2);
-> >> -               kvm_set_sw_gcsr(csr, LOONGARCH_CSR_ESTAT, gintc);
-> >> +               gintc =3D kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC) &=
- ~KVM_GINTC_IRQ_MASK;
-> >> +               gintc |=3D (val >> VIP_DELTA) & KVM_GINTC_IRQ_MASK;
-> >> +               kvm_write_sw_gcsr(csr, LOONGARCH_CSR_GINTC, gintc);
-> > I think read & write can be combined, which means it can be simplified =
-as:
-> >                  gintc =3D (val >> VIP_DELTA) & KVM_GINTC_IRQ_MASK;
-> >                  kvm_set_sw_gcsr(csr, LOONGARCH_CSR_GINTC, gintc);
-> >
-> >> +
-> >> +               /* only set valid ESTAT bits */
-> >> +               estat =3D val & ~KVM_ESTAT_EXTI_MASK;
-> >> +               estat &=3D CSR_ESTAT_IS | CSR_ESTAT_EXC | CSR_ESTAT_ES=
-UBCODE;
-> >> +               if (!kvm_guest_has_msgint(&vcpu->arch))
-> >> +                       estat &=3D ~CPU_AVEC;
-> >> +               kvm_write_sw_gcsr(csr, LOONGARCH_CSR_ESTAT, estat);
-> > I think write csr may lose bits from the original value, so
-> >                  kvm_write_sw_gcsr(csr, LOONGARCH_CSR_ESTAT, estat)
-> > should be
-> >                  kvm_set_sw_gcsr(csr, LOONGARCH_CSR_ESTAT, estat)
-> >
-> > If you agree, I will change it when I apply because all others look goo=
-d to me.
-> At the beginning, it is kvm_set_sw_gcsr() with CSR_GINTC/CSR_ESTAT,
-> later I change it with kvm_write_sw_gcsr(). With kvm_set_sw_gcsr() API,
-> it is only set new interrupt, however does not clear the interrupt. So I
-> change it with kvm_write_sw_gcsr() which will overwrite the interrupt bit=
-s.
->
-> At the same time, bit field CSR_ESTAT_EXC | CSR_ESTAT_ESUBCODE is not
-> suitable for bit set, overwrite its value is more suitable.
-OK, then I will keep using kvm_write_sw_gcsr(), and please update the
-selftest series if needed.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-Huacai
+New issues:
+- [High] Resolving the guest-provided VMSA GPA via `gfn_to_memslot()` occur=
+s without holding `kvm->srcu` or `kvm->slots_lock`, violating KVM's memslot=
+ locking hierarchy.
 
->
-> Regards
-> Bibo Mao
->
-> >
-> > Huacai
-> >
-> >>
-> >>                  return ret;
-> >>          }
-> >> --
-> >> 2.39.3
-> >>
->
+Pre-existing issues:
+- [Critical] Guest-provided VMSA pages are freed to the host buddy allocato=
+r while still in the RMP Firmware state, allowing userspace to trigger a ho=
+st kernel panic (Denial of Service).
+- [High] KVM-allocated VMSA pages for successfully launched SNP VMs are per=
+manently leaked during VM teardown.
+--
+
+commit 7ccfa1323e073ebe13797e68f8f429e2d5dfb5ec
+Author: Joerg Roedel <joerg.roedel@amd.com>
+
+kvm: svm: Support guest-provided VMSA for launching
+   =20
+Introduce a way to provide a guest GPA as the initial BSP VMSA and
+avoid allocating KVM-managed VMSAs in this case. Only one
+guest-provided VMSA is supported at the moment as IGVM also only
+supports to set a single VMSA.
+
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 0aa62cb802fe5..0c42af2e62016 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+
+[ ... ]
+
+> @@ -2680,6 +2681,46 @@ static int snp_launch_update(struct kvm *kvm, stru=
+ct kvm_sev_cmd *argp)
+>  	return 0;
+>  }
+> =20
+> +static int snp_init_guest_vmsa(struct kvm_vcpu *vcpu, gpa_t vmsa_gpa)
+> +{
+> +	/* Only one initial guest VMSA can exist (per IGVM) - so it belongs to =
+the BSP */
+> +	if (vcpu->vcpu_idx !=3D 0)
+> +		return 0;
+> +
+> +	/* VMSA already private and encrypted via LAUNCH_UPDATE */
+> +	sev_es_set_guest_vmsa(vcpu, vmsa_gpa);
+> +
+> +	return 0;
+> +}
+
+[Severity: Critical]
+This is a pre-existing issue, but can unprivileged userspace panic the host
+kernel by punching a hole in the guest_memfd file backing the guest-provided
+VMSA pages?
+
+Guest-provided VMSA pages are placed into the VMSA (Firmware) RMP state.
+However, KVM drops its page reference immediately after lookup:
+
+arch/x86/kvm/svm/sev.c:sev_es_vmsa_pa() {
+    ...
+    kvm_release_page_clean(page);
+    ...
+}
+
+If userspace triggers a page release, the page is freed by the core MM
+subsystem. During freeing, sev_gmem_invalidate() attempts to transition the
+page via rmp_make_shared(), which architecturally fails on VMSA-state pages:
+
+arch/x86/kvm/svm/sev.c:sev_gmem_invalidate() {
+    ...
+    rc =3D rmp_make_shared(pfn, use_2m_update ? PG_LEVEL_2M : PG_LEVEL_4K);
+    if (WARN_ONCE(rc, "SEV: Failed to update RMP entry for PFN 0x%llx error=
+ %d\n", pfn, rc))
+        goto next_pfn;
+    ...
+}
+
+Because the failure is only logged as a warning, the page is returned to the
+buddy allocator in Firmware state. When the host reallocates and accesses
+this page, it triggers a fatal RMP #PF and panics the kernel. KVM must
+properly reclaim VMSA pages before allowing them to be freed.
+
+> +
+> +static int snp_init_kvm_vmsa(struct kvm_vcpu *vcpu,
+> +			     struct sev_data_snp_launch_update *data,
+> +			     struct kvm_sev_cmd *argp)
+> +{
+> +	struct vcpu_svm *svm =3D to_svm(vcpu);
+> +	int ret;
+> +	void *vmsa;
+> +
+> +	ret =3D sev_es_sync_vmsa(svm);
+> +	if (ret)
+> +		return ret;
+> +
+> +	vmsa =3D sev_es_vmsa_ref(vcpu);
+> +
+> +	ret =3D sev_es_vcpu_vmsa_make_private(vcpu);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Issue the SNP command to encrypt the VMSA */
+> +	data->address =3D __sme_pa(vmsa);
+> +	ret =3D __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_LAUNCH_UPDATE,
+> +			      data, &argp->error);
+> +	if (ret)
+> +		sev_snp_vcpu_reclaim_vmsa(vcpu);
+> +
+> +	return ret;
+> +}
+
+[Severity: High]
+This is a pre-existing issue, but does KVM permanently leak successfully=20
+launched SNP VM VMSA pages during VM teardown?
+
+During normal teardown of an SNP guest, KVM attempts to transition its
+allocated VMSA pages to shared state via kvm_rmp_make_shared():
+
+arch/x86/kvm/svm/sev.c:sev_es_vcpu_free_vmsa() {
+    ...
+    if (kvm_rmp_make_shared(vcpu->kvm, pfn, PG_LEVEL_4K)) {
+        pr_err("Failed to make VMSA page shared - leaking it to avoid re-us=
+e\n");
+        goto out;
+    }
+    ...
+}
+
+kvm_rmp_make_shared() uses the RMPUPDATE instruction, which architecturally
+fails on pages that are in the VMSA state. The function detects the failure,
+logs the error, and permanently leaks the page. Because VMs are destroyed
+routinely, this will eventually exhaust host memory. KVM must use
+snp_page_reclaim() instead of kvm_rmp_make_shared() for pages in the VMSA
+state.
+
+>  static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *a=
+rgp)
+>  {
+>  	struct kvm_sev_info *sev =3D to_kvm_sev_info(kvm);
+> @@ -2700,28 +2741,13 @@ static int snp_launch_update_vmsa(struct kvm *kvm=
+, struct kvm_sev_cmd *argp)
+> =20
+>  	kvm_for_each_vcpu(i, vcpu, kvm) {
+>  		struct vcpu_svm *svm =3D to_svm(vcpu);
+> -		void *vmsa;
+> =20
+> -		ret =3D sev_es_sync_vmsa(svm);
+> +		ret =3D VALID_PAGE(sev->initial_vmsa_gpa) ?
+> +			snp_init_guest_vmsa(vcpu, sev->initial_vmsa_gpa) :
+> +			snp_init_kvm_vmsa(vcpu, &data, argp);
+>  		if (ret)
+>  			goto out;
+> =20
+> -		vmsa =3D sev_es_vmsa_ref(vcpu);
+> -
+> -		ret =3D sev_es_vcpu_vmsa_make_private(vcpu);
+> -		if (ret)
+> -			goto out;
+> -
+> -		/* Issue the SNP command to encrypt the VMSA */
+> -		data.address =3D __sme_pa(vmsa);
+> -		ret =3D __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_LAUNCH_UPDATE,
+> -				      &data, &argp->error);
+> -		if (ret) {
+> -			sev_snp_vcpu_reclaim_vmsa(vcpu);
+> -
+> -			goto out;
+> -		}
+> -
+>  		svm->vcpu.arch.guest_state_protected =3D true;
+> =20
+>  		/* VMSA encrypted - put it into the VMCB */
+
+[Severity: High]
+Does this code call sev_es_vmsa_pa() without holding kvm->srcu or=20
+kvm->slots_lock?
+
+Looking at the execution path immediately following this comment in=20
+snp_launch_update_vmsa():
+
+        /* VMSA encrypted - put it into the VMCB */
+        svm->vmcb->control.vmsa_pa =3D sev_es_vmsa_pa(vcpu);
+
+arch/x86/kvm/svm/sev.c:sev_es_vmsa_pa() {
+    ...
+    slot =3D gfn_to_memslot(vcpu->kvm, gfn);
+    ...
+}
+
+gfn_to_memslot() dereferences the KVM memslots array. Since this is called=
+=20
+without SRCU or slots_lock, a concurrent thread executing=20
+KVM_SET_USER_MEMORY_REGION can swap and free the memslots array while=20
+gfn_to_memslot() is accessing it, leading to a use-after-free.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611123528.5722=
+55-1-joro@8bytes.org?part=3D3
