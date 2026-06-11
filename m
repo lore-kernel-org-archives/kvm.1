@@ -1,215 +1,126 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC373A4521
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 20:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781208921; cv=none; b=lYUIL/OT6zTieI9odLsYunrbzAzSZIDoXxMJLr82efVu9AGm/b8jqbn1ueq62wtVs+GErDdRrn0ookh7Ydg0If0MgOohGmivU+UYF1xBmKC75ech60kZOojnLCFzYhBvaMYEPt2NWKF4CyQNLtnqb3hkXwT85tVt0DT+8HdWT3Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781208921; c=relaxed/simple;
-	bh=ztCzluR5K1LOfYvJO2M/7Jb0AjscEHQ8dyRN17VY1U0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=W2alsCzF64+99Qvv8kiFUiTT540uVeaa7PDdTheB5hRDarl5Gi3hmlMwiYgLp3k6D4UFEHLSIIRBGwqmH7KLCXzKwRE8WRhfydS3MRxEoXhnIEFdMWyY2cWIeGxsQ+QK8cfxz9iz1BM6DZYJL/i2rblB46Z87NQzgX89VqML0C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cwYKRP7H; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1956D367B71
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 20:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781208992; cv=pass; b=TcFF9XqVzDx3I8K4A9/3A5RCt5x5UpkPa4nXDXh/fs0AxnkOHPc2b0qYZZeqx/uQkx4dlpeAStlFDdT4a52gAiotH3SpeCeQarRgrOTNWq7RRBenK8B5VsEYpthZDqedjlkhAKUVeHm34O3s7wkKOUMv3GXFJL8PFM313YzJ1fk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781208992; c=relaxed/simple;
+	bh=hJba3+vHUhRZcQprsnZOYpmT859TwISmDOQQW+AUK/A=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Tq4zBHXifgYR7pQlpj7fifHkD43KwIffCDPHZssAgIm0pVevd0/smcDYjUbnMirY9K10SdHwGshf4UBLF6T/gu/4jL0lfa0iEsRWy3TYXoxpb0b/Lced6VtIk2BgNarg1sXnYGB7lrBXCI8IYkC826wai6sqg08BHHNsQneuovI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f3oGGg0/; arc=pass smtp.client-ip=74.125.82.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cwYKRP7H"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-36bb3551f6eso308628a91.1
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 13:15:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f3oGGg0/"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-13809223fd4so276750c88.1
+        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 13:16:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781208990; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iZo2GwDg5NM85nXlm7go5fQuuHWGmIZe/imt+R1t/OzWU/mSHIWjSfmRo0u0xDG8KR
+         CnWSxogus1KeuaAeYsBi4lf213rJvnDq4GCKnbDfLUMOHS5HKDgRS9VthrKQjwS4o9/3
+         Y8+l9bpHiQDBkDqdLkvB/rt5UjeOqYt/M6gakolpr0DlZfTIT4nHFP/xiPYwxntSZZtw
+         0QCNnT08XtjHAnjHAsbK2RkaWHQvh8emLEMru3gSGYWmz4yCwWeFteI5k9MEi0vtGQHj
+         y4B8SGgtqiWLdZLbAp/d4Hqbgug0NT1R5b3Z/NAzqvG2GFkwI8sHq9o8sy0tMZiy0CeP
+         s2Ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=c6w4o8cPFnkNvj1bY6N4ohMTXqYLTs78fDk/pXJtYGc=;
+        fh=dAAoiL6RiU75H5WvirX/gIQ5AvifpwC0i8gLUyGu2RM=;
+        b=dIeUO5A+fRGI6jwtYyHmfjslFqAKqeWyCah6lToZFQmBcw3mXtN7quEO0Q61fb5JOe
+         W7kHpfNGKv5S/hRznQ3yKP+5CAueO1+f63i7IzTmpWvftN4pA2Tl/uv7oasGVjL3wpxo
+         5pqyOzeOBMOX81oeRvw1yB5t3wd8XmNNTtp15qt2hvlcZwbQQ2Jnq8a/t2y0tB+v77G9
+         uEPVCC1ttQyAALYIOuIO1F2APYkR3bvWt+vAYkrf0ACv/n7CWbnm61JRlRZk1z5zdmjJ
+         ca631dk9195mNfsnz5uvp0Zq3Rp/0JCRSDXKJB9LJAz9MJPzRtrrck42n/j0wBKTVnYw
+         1eWw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781208919; x=1781813719; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SXkT6PmbtXC0d/wtet81Vb0IYNXQoXYAymVUyoGXQ78=;
-        b=cwYKRP7H0hMspF2eflJUOVW/ASjUQVltymU6Ucn7ZhbPsEcfM7MZ2EHpEyOHRwiXLB
-         av4+wGegLgIE/8oyiGzhmO3Ujl1bNC5eN+dYKLZnO/+jKAEtFm90u2S2vTb9xWkGvL9k
-         VORd676sMF5oH0b+wVVh48CX//QrU5qGjwFZzwF409sgK2WNXjls1NdUZ0Xl1qBtbsMX
-         vwqu6BZoIw67aJ8Bs+aKEAFfxAiNg4Lrzmf7o1NCqHbr59jTLYufLPlOJEnViSgefpze
-         yvHsNWgG4BKnlVTa7DitJPu+gJqrrKGe1TgGpwP0M+5OZ5t6SiC0e08ZMLIXjqBoSkg/
-         yH5w==
+        d=google.com; s=20251104; t=1781208990; x=1781813790; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c6w4o8cPFnkNvj1bY6N4ohMTXqYLTs78fDk/pXJtYGc=;
+        b=f3oGGg0/7rZPWaCJBnzE5By98SJvMx6oqquL+2qn2D4FB1BKxhPwb3nsMH5Xertko6
+         qHW6sA4XUa2Q5JHPU1jUFt1De5aiDkwFTa6RYLj6HwP+z8Dqqx43Pki/TKxTgMi1dS2k
+         Vx9lTymVsWYWEvVbFwQTfx0y62pvHaLuqpbe9b8zAqfmBKq01c874d1iq/LANEjAFP+t
+         4brXavxu1qySjGywMdRIkW4zKl7iyvaMSUoKEbNR2BB95EQT/oQ6VNwWk8ZTtm6iVfGU
+         q/UAgsJScGLYfg35lbW/PEBaRol7QsHHlQVl4Ol/Ozj7WFnsPzDSbq9kuvipu8n1P9WQ
+         RYHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781208919; x=1781813719;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=SXkT6PmbtXC0d/wtet81Vb0IYNXQoXYAymVUyoGXQ78=;
-        b=UinoGagrGw+JpgvqeKO2x4hcANLBMZ/eSU3OB0wpP+uFvnPp3mn5kYFm4OPwUGuPOI
-         r7IMf+tePPRK7Pm1R21aOm0Ik0fqCWQeyW5EbQh7GrKfBHjqfBwtWyKfIUXvrji9jav+
-         J/gPfQOoorrXwJ5/DhIsfOEEWMZ6rqWCcP9nrcRt9RtBXf3ey4Vz/8cYMNRpEy977yeK
-         3B1+CHZwtIqCpJ5gwATnoNWpU26PFSii/+xHPPMQ/QATFThj4rppXld8thdHsVpWB0mH
-         5m13sCq3zX+sbSKapU/YdXLtnYLvOGL0rZDRezL5kpDCrojO0WMEH6eKFkQ0o7mNPZJn
-         InOg==
-X-Forwarded-Encrypted: i=1; AFNElJ/l167Dirp3pFTfiO+MM1qSZWSuJkoap2HzbTuZ9Cv39yiFFG92nvwF2D65JA4JVpPyY6g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwxfESTRZEWfrIJGaCiWAF84bkV5iCB7+zEk6ex4okyVYuwDrt
-	QKfJT+IT9XaoyI5uOrStTEePq0ZggrykZwR+wGbajjfpcNqKmkOUhxJw
-X-Gm-Gg: Acq92OG5pWUZ44TSp63JWLuU2OgRDBA3qgY8C+GEWDYqt2FOx1YX3VKa3pCMM2ZyrHp
-	Y2hKsnoL+VBmtLZOBUYRP9wTMae+iB6nwYN7hNL1DChR0R+fAoZEj7tU5VB2aCrRoKj6gbb7kWS
-	hdfRQp24rW3dDG21wsQxDVeUs0S2H4nRoosPEvYXzivKuHW7WYlKHVlYQqWDBfEvEeOdGieWFDh
-	Qon07uuAFckNjbPuE2yd3giLmBzA1wI2Oh9aqAGWZp6qFz5VZwcUfanTrp4Sn76BNtq+c0dbuaE
-	FAvysQmA+UZH2Cx9W9uaPmXapWHcXjqu01aW804yHS30hK99P721MzC8pKE9orGiigy29hqlA7c
-	84UvlBBgmPeJtnP7RgAerC9Y8CUtnTH23Q/fte40SGo6DJEyGoLcjylp+SdSjU6a3+k0Rg+H4uA
-	==
-X-Received: by 2002:a17:903:41cf:b0:2b4:656b:aeb0 with SMTP id d9443c01a7336-2c2f4fd8bbemr50216465ad.35.1781208919538;
-        Thu, 11 Jun 2026 13:15:19 -0700 (PDT)
-Received: from [127.0.1.1] ([2a12:a305:4::302d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f875casm288730475ad.22.2026.06.11.13.15.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 13:15:19 -0700 (PDT)
-From: Guodong Xu <docular.xu@gmail.com>
-Date: Thu, 11 Jun 2026 16:12:53 -0400
-Subject: [PATCH v4 16/16] riscv: hwprobe: Introduce rva23u64 base behavior
+        d=1e100.net; s=20251104; t=1781208990; x=1781813790;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c6w4o8cPFnkNvj1bY6N4ohMTXqYLTs78fDk/pXJtYGc=;
+        b=SKK7U2lmVtdEVKgFSxgLt9EfC0q+l/P2Ex1RzpFw4RCqLCLnxhD7SnzsDXKjDlaSQA
+         KzvbTDw3tqEwYXB7C+FGlNxumvmEtORpXft9gi2t0/BU2W5hIY+K0tCWPbH15IooJs4Y
+         m8UB2EiMHLshu3Cs4rr3PnKTpQuhOsv5vMMFdSHnnAfdHr/sOTkjpXvmT3FHVjIPVyU/
+         X58UUMgAcLkU8DVE0KaqVwS0WA5U9PykV310F0yvkXZl6p1sFOxpVvi9Vm+f2SrRBqqi
+         T/7vj54CuodkExk2AY4qGd5c2alMdi9a1O+FO0U8DKa6IsHDayoJFucfVHucxZyZTFbr
+         RkYg==
+X-Forwarded-Encrypted: i=1; AFNElJ/r0Cwsp2GNJUqvrMKAPD48WwgUDdBz41jpjBgBUg7BWewutfCGwVIsHjB2iPO6yzWvxIg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzw4mxjb9366ilSwLlstK9vuojpvr6mVZ/y9ZUl7uTLn97vF/X4
+	hNuJe+fGkyChbCx0teGGPD5XhVdnZBGYEaieQ0NnBWF1uURBtZ5e/rC4emvCLonqDHk55h2XEPy
+	shUi4bb2kFscNR52ydh3HWd9EG9RPshCKU/AzJZ3H
+X-Gm-Gg: Acq92OGKQPn+Ne/ZCqx4lSmpjrQ7n5L2BIvzA1/y5Vh3xShlCifK7YcMogHr5TrwYJy
+	G+n1ajlAB4HqzokkF3eVKkUsUev8e2fY/aqMw1X5fr34+bEacmzNl/45x9NPqe6TE8rvgpuop32
+	emN1jj7Z7NL0zaf9ZIfMd0BAofFgtacGugzOq05+t+ndSEr/G/vvw3wsObgnPQYPVfus0ECuXNo
+	dwLr1RIOjIv1oI+vcqBBORancLH4M55rVbGgdcc5IQti11k/yS7RiZ/sV8WEgiMKk+1V9VkPkfI
+	/zAikL+/AQqJNNhzk87PQmxFWUBPpHVyS8hUVIxEIGpJjlbpJ8phaXVVgmcVP0eSptyn4g==
+X-Received: by 2002:a05:7022:fd04:b0:137:fb6c:5355 with SMTP id
+ a92af1059eb24-1384211e6fcmr2478309c88.3.1781208989421; Thu, 11 Jun 2026
+ 13:16:29 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 11 Jun 2026 13:16:28 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 11 Jun 2026 13:16:28 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aisHySKe0PwM5DSg@google.com>
+References: <20260331194202.1722082-1-vipinsh@google.com> <20260331194202.1722082-2-vipinsh@google.com>
+ <CAEvNRgGrPKBXh=VA3QBLJOczKRpMOB4nDmZL0XRwV6B3PT_7+Q@mail.gmail.com> <aisHySKe0PwM5DSg@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260611-rva23u64-hwprobe-v2-v4-16-3f01a2449488@gmail.com>
-References: <20260611-rva23u64-hwprobe-v2-v4-0-3f01a2449488@gmail.com>
-In-Reply-To: <20260611-rva23u64-hwprobe-v2-v4-0-3f01a2449488@gmail.com>
-To: Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Zong Li <zong.li@sifive.com>, 
- Deepak Gupta <debug@rivosinc.com>, Anup Patel <anup@brainfault.org>, 
- Atish Patra <atish.patra@linux.dev>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>, 
- Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>
-Cc: linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org, 
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, 
- Conor Dooley <conor@kernel.org>, devicetree@vger.kernel.org, 
- spacemit@lists.linux.dev, sophgo@lists.linux.dev, 
- linux-kselftest@vger.kernel.org, Palmer Dabbelt <palmer@sifive.com>, 
- Guodong Xu <docular.xu@gmail.com>, 
- Andrew Jones <andrew.jones@oss.qualcomm.com>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4843; i=docular.xu@gmail.com;
- h=from:subject:message-id; bh=ztCzluR5K1LOfYvJO2M/7Jb0AjscEHQ8dyRN17VY1U0=;
- b=owGbwMvMwCXWtEl1Z3CGpCDjabUkhixtsSM//PujPG/o5C1988NFUFrlz3OZHb+sFHZukhbJ4
- gmQWDGzo5SFQYyLQVZMkeXw0Zbsra98on2fc/6AmcPKBDKEgYtTACZyvoWR4Yvq2kdr86/OeP4u
- qMp8S+LZV3N353cxPzBS0t6YmX07+h0jw50MkaNquufeZAvdUuY5IyOsvCP6GE9UwXfZPrNulv3
- drAA=
-X-Developer-Key: i=docular.xu@gmail.com; a=openpgp;
- fpr=90B1DC3DF0BD10FD1227BD6344F254AF42F143EE
+Date: Thu, 11 Jun 2026 13:16:28 -0700
+X-Gm-Features: AVVi8CeGqWOzdSyzWUUivrRwH0AG_QWu1g0DCt9ZOfKtFkCXDKefnGkWsFu90NU
+Message-ID: <CAEvNRgE-qt8DAjOeE5ANpXzrgEKs+2_wh4YSmY=pe6krngBXqQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/9] KVM: selftest: Create KVM selftest runner
+To: Sean Christopherson <seanjc@google.com>
+Cc: Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	kvm-riscv@lists.infradead.org, pbonzini@redhat.com, borntraeger@linux.ibm.com, 
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, anup@brainfault.org, 
+	atish.patra@linux.dev, zhaotianrui@loongson.cn, maobibo@loongson.cn, 
+	chenhuacai@kernel.org, maz@kernel.org, oliver.upton@linux.dev, 
+	ajones@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
 
-Provide a hwprobe base-behavior bit so userspace can check RVA23U64
-support in one call.  Without it, a consumer needs five hwprobe
-calls and four prctl calls, which is error-prone to require of every
-caller.  Most software treats RVA23U64 as a new base anyway, so
-expose it directly.
+Sean Christopherson <seanjc@google.com> writes:
 
-Signed-off-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-Signed-off-by: Guodong Xu <docular.xu@gmail.com>
----
-v4: No change.
-v3: No change.
-v2:
-- Detect RVA23U64 by reading from the cached hart_isa[].isa_bases
-  bitmap populated by riscv_init_isa_bases() at init time, sharing
-  one source of truth with /proc/cpuinfo.
----
- Documentation/arch/riscv/hwprobe.rst               |  8 ++++++++
- arch/riscv/include/uapi/asm/hwprobe.h              |  3 ++-
- arch/riscv/kernel/sys_hwprobe.c                    | 23 +++++++++++++++-------
- tools/testing/selftests/riscv/hwprobe/which-cpus.c |  2 +-
- 4 files changed, 27 insertions(+), 9 deletions(-)
+> On Wed, Jun 10, 2026, Ackerley Tng wrote:
+>> Vipin Sharma <vipinsh@google.com> writes:
+>> My (future) use case is that with hugepages, I want to run something
+>> like
+>>
+>>   ./guest_memfd_test --order=0
+>>   ./guest_memfd_test --order=9
+>>   ./guest_memfd_test --order=18
+>>
+>> And 0, 9 and 18 are the supported HugeTLB orders on the machine being
+>> tested. I'd like to iterate over supported HugeTLB orders at runner
+>> runtime instead of at build time.
+>
+> No.  The right way to handle this is to define testcases for the "interesting"
+> sizes, and then rely on the test itself to SKIP if the size is unsupported.  This
+> is no different than a test that requires EPT, or nested VMX, or nested SVM, etc.
 
-diff --git a/Documentation/arch/riscv/hwprobe.rst b/Documentation/arch/riscv/hwprobe.rst
-index 32a14331eb9de..dc70470093b1b 100644
---- a/Documentation/arch/riscv/hwprobe.rst
-+++ b/Documentation/arch/riscv/hwprobe.rst
-@@ -67,6 +67,14 @@ The following keys are defined:
-       programs (it may still be executed in userspace via a
-       kernel-controlled mechanism such as the vDSO).
- 
-+  * :c:macro:`RISCV_HWPROBE_BASE_BEHAVIOR_RVA23U64`: Support for all mandatory
-+    extensions of RVA23U64, as defined in the RISC-V Profiles specification
-+    starting from commit 0273f3c921b6 ("rva23/rvb23 ratified").
-+
-+    The RVA23U64 base is based upon the IMA base and therefore IMA extension
-+    keys (e.g. :c:macro:`RISCV_HWPROBE_KEY_IMA_EXT_0`:) may be used to probe
-+    optional extensions.
-+
- * :c:macro:`RISCV_HWPROBE_KEY_IMA_EXT_0`: A bitmask containing extensions
-   that are compatible with the :c:macro:`RISCV_HWPROBE_BASE_BEHAVIOR_IMA`:
-   base system behavior.
-diff --git a/arch/riscv/include/uapi/asm/hwprobe.h b/arch/riscv/include/uapi/asm/hwprobe.h
-index 36ec8ab470423..50733d3db7633 100644
---- a/arch/riscv/include/uapi/asm/hwprobe.h
-+++ b/arch/riscv/include/uapi/asm/hwprobe.h
-@@ -21,7 +21,8 @@ struct riscv_hwprobe {
- #define RISCV_HWPROBE_KEY_MARCHID	1
- #define RISCV_HWPROBE_KEY_MIMPID	2
- #define RISCV_HWPROBE_KEY_BASE_BEHAVIOR	3
--#define		RISCV_HWPROBE_BASE_BEHAVIOR_IMA	(1 << 0)
-+#define		RISCV_HWPROBE_BASE_BEHAVIOR_IMA		(1 << 0)
-+#define		RISCV_HWPROBE_BASE_BEHAVIOR_RVA23U64	(1 << 1)
- #define RISCV_HWPROBE_KEY_IMA_EXT_0	4
- #define		RISCV_HWPROBE_IMA_FD		(1 << 0)
- #define		RISCV_HWPROBE_IMA_C		(1 << 1)
-diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
-index 3e80e5551ae0d..3f66f2e99d41a 100644
---- a/arch/riscv/kernel/sys_hwprobe.c
-+++ b/arch/riscv/kernel/sys_hwprobe.c
-@@ -226,6 +226,17 @@ static bool hwprobe_ext0_has(const struct cpumask *cpus, u64 ext)
- 	return (pair.value & ext);
- }
- 
-+static bool hwprobe_has_isa_base(const struct cpumask *cpus, unsigned int base)
-+{
-+	int cpu;
-+
-+	for_each_cpu(cpu, cpus) {
-+		if (!test_bit(base, hart_isa[cpu].isa_bases))
-+			return false;
-+	}
-+	return true;
-+}
-+
- #if defined(CONFIG_RISCV_PROBE_UNALIGNED_ACCESS)
- static u64 hwprobe_misaligned(const struct cpumask *cpus)
- {
-@@ -308,14 +319,12 @@ static void hwprobe_one_pair(struct riscv_hwprobe *pair,
- 	case RISCV_HWPROBE_KEY_MIMPID:
- 		hwprobe_arch_id(pair, cpus);
- 		break;
--	/*
--	 * The kernel already assumes that the base single-letter ISA
--	 * extensions are supported on all harts, and only supports the
--	 * IMA base, so just cheat a bit here and tell that to
--	 * userspace.
--	 */
- 	case RISCV_HWPROBE_KEY_BASE_BEHAVIOR:
--		pair->value = RISCV_HWPROBE_BASE_BEHAVIOR_IMA;
-+		pair->value = 0;
-+		if (hwprobe_has_isa_base(cpus, RISCV_ISA_BASE_IMA))
-+			pair->value |= RISCV_HWPROBE_BASE_BEHAVIOR_IMA;
-+		if (hwprobe_has_isa_base(cpus, RISCV_ISA_BASE_RVA23U64))
-+			pair->value |= RISCV_HWPROBE_BASE_BEHAVIOR_RVA23U64;
- 		break;
- 
- 	case RISCV_HWPROBE_KEY_IMA_EXT_0:
-diff --git a/tools/testing/selftests/riscv/hwprobe/which-cpus.c b/tools/testing/selftests/riscv/hwprobe/which-cpus.c
-index 587feb198c049..f8c797b1d0fd9 100644
---- a/tools/testing/selftests/riscv/hwprobe/which-cpus.c
-+++ b/tools/testing/selftests/riscv/hwprobe/which-cpus.c
-@@ -105,7 +105,7 @@ int main(int argc, char **argv)
- 	pairs[0] = (struct riscv_hwprobe){ .key = RISCV_HWPROBE_KEY_BASE_BEHAVIOR, };
- 	rc = riscv_hwprobe(pairs, 1, 0, NULL, 0);
- 	assert(rc == 0 && pairs[0].key == RISCV_HWPROBE_KEY_BASE_BEHAVIOR &&
--	       pairs[0].value == RISCV_HWPROBE_BASE_BEHAVIOR_IMA);
-+	       (pairs[0].value & RISCV_HWPROBE_BASE_BEHAVIOR_IMA));
- 
- 	pairs[0] = (struct riscv_hwprobe){ .key = RISCV_HWPROBE_KEY_IMA_EXT_0, };
- 	rc = riscv_hwprobe(pairs, 1, 0, NULL, 0);
+That should work too. So at build time I'd make it define all the
+possible HugeTLB sizes on every arch, and then skip as necessary.
 
--- 
-2.43.0
-
+Why though, why not find the supported sizes at runtime?
