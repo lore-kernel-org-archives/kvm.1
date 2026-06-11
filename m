@@ -1,140 +1,155 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013015.outbound.protection.outlook.com [40.107.201.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E674C0406
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 18:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE554C8FFB;
+	Thu, 11 Jun 2026 18:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781202332; cv=pass; b=R2vg9eIxUxppu/5nAyVSlLb2hgjSUXzO0muhQPGdBW+TPqDKJzjRDWtxHfq03uo2S6McFv7PH0WMR+HM7aK+maSPCoOr/8RICcA934odgk9jM8MDUlQockhKeS3sOdq2OiHniPEH3B0GDHKAXkylpaTnBqSWKIHXubn9KoHkAlE=
+	t=1781202340; cv=fail; b=qQ/TglJTcxTF85CZFSstXo+BsX/wgMgnw5T5yX6k4NEigDTIP/Lvv0/+4z6GfrFx79V55hVF7gFg4nv5gDrQxKx9AkozIVr4douJpAHimtNE9CuThfbKMqnxAIQjrO2ezQbVmRIqLaBwsOfq+gmN/kkswYzzDpS7lmFOi560Xy8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781202332; c=relaxed/simple;
-	bh=9KXgna/nwfEIF7S1Yx4SAsalr5XgJDJshnViSXgFlJs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JmmrvoVMe6LUKJFOssimb2sjIg4Fqh3JIENvmbaWpGs9Jb88lNrL9h7eNQkuH02tM8EY0udzNRT8sZvhySiMAJsA0zLbzYWACp2Puv0qyhteoZFzl3+aVgn1koi2z5DZG4wcUH8F2sbCHj2ifm3PTa5wMzb4pODURMnAnKeOZjk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qttur0NS; arc=pass smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1781202340; c=relaxed/simple;
+	bh=SFlezyuXjhsuHrkSx3xApbsABn/i+fB9GEC/LbMZruU=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=E1tLFA7uDzUP9qs51p3vmFClGyvZOhiZ8cVsL1m+9hpygPOEClAK895pKlVBFhnbX7cmUQ7nGsVse0sYuta6iE6GfK9RttloHsxdz4kNys4O2NXvQgvVx7zWuPvr4Ji1zRPkEdeCg7jnBSpbAzfuldoM3gR6xQJiiIP5r0smvZU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CiAvh3lj; arc=fail smtp.client-ip=40.107.201.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qttur0NS"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5177d1ff061so57781cf.1
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 11:25:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781202328; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EQu+As4zdg/zsXq9g5jfNIvarYKZZzBQJJA8yR3hzvuyRNiyADlNyw3scPU6ftT8TT
-         hiO8L051igI2J3OTHGvjDnXqDB6QhgIhuMcJGaKVYBEVEvaZV8awwqWC5v/SPT2CuGnb
-         X8ESpMdyYjINsXMwtVHatLIEdMYkJhMHrJ6AMy8UlI//5y9UIjuBzi2SH7V5yIdCVM8g
-         FKc3D6Ym87xwsk2BHJZNxwIdVcwzdSamsMsV1AqJqvMzm73/e12LNsloHzM4iKIwr+BC
-         6SOzDPRIzgDvVLLaiH1WDXSDLtUEKbF5XPmlB2pLFmnzxdNxajxpSW7LrDKlgcegNgqU
-         uGNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9KXgna/nwfEIF7S1Yx4SAsalr5XgJDJshnViSXgFlJs=;
-        fh=FUJgSJ53MVxrw1Mj9RxSGKPj0e4Col5YyUytED5eBaQ=;
-        b=cSEnu9xk4Bv3i7e6WI9DDeJcCU3Kawba0NmYE9Rxl/II7QrgZSfpZNnzVS1ZmRE1mx
-         algVAXHFRJYOCOLmdz8P3IeOxtvUKvEgHHnRA+yv2z+uajfGsM8iUx+RRNh9gNP7SBfD
-         DCRaMN7LgEUM6EUq+SxcQdui907APmXgmgi6/yXlQUESvwn8WfDbG/GEt4dikGsCjFlO
-         bmTMoKyYBB87eETe3LEPj38xgq58GUSVTv830MG4z+R341nGiWymg3rBgeD7ZK1Oed6g
-         6sNI9E7NHd0Hq2CcUR2yN1BHOTpRXAzOtKXtyQVQnTKFgNco8uqkmyYHoPRaMxZWK96e
-         wgfg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781202328; x=1781807128; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9KXgna/nwfEIF7S1Yx4SAsalr5XgJDJshnViSXgFlJs=;
-        b=Qttur0NS3fFLjDE54LJqlQKOmHCQLE5fa/7eh8CWm6wDv3iVxNDzli1fOu8O3t1h2+
-         w7Fq1vRhqJRhDSSR1j+glcW8B4QmefOMySSY54jp6zRPl6hsiYL9bAxB+AbDbkXGvnU8
-         W9vh/ogmqw3lhRk88Ddj+SUJn1VCbDRErvL4Rej0D0NqPSk+pBMOgQgCvQCvH4Fb+rG0
-         AUwi0Ar20ywO4PuqjnNwOBX+CK+fspqrWAoO6SdisgrP+AULHSBEeea6Gk8h/qZY+Occ
-         BHubIU0MBv7aJssBB/I0RVhElze2cKk/vyE8xWeUsClabPX1D19PpAtBmc+0ZG+w8UJS
-         tYZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781202328; x=1781807128;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9KXgna/nwfEIF7S1Yx4SAsalr5XgJDJshnViSXgFlJs=;
-        b=MZeMllZqaqozM4XFSQf8G+04p5+2zjOhPK5Q4kwt7p8GisdKnwXXTqUIVT9j+0xWcU
-         onfHnZRGsW20gT1HkWf3LOKJInbOp3olZlTAs7dCI1w7XCsAb5ORl/8tI8GBR7XS5e2b
-         vFTnFrx6RAq8cn1VsQkXuCIyZX3Rw8iXkWVfZgLPZDK4EVc6sRfnJqQuzqZkodEIz/Jw
-         ZCh6XFbf8yLXOMOM2I7LQTDqJF93p+Q5e1sRnFUz0jmZO7gBFcAahxvI4FMr7Tm9Vx5A
-         Z/uYlXqYIlF0nxla+7p0YQF1yQGFWjl+WXF04kYT/fVeZwhPP3Tn7rmb1VQAc+EdPb9z
-         XIog==
-X-Forwarded-Encrypted: i=1; AFNElJ+xX5uK+DyvphuLz+0aPG2INWsX/54b8qBdHPlKdOYOENIA0DPPV0N3fHOIWICIiXFMMEg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2H1WtwJ4BbTeBBR8cScEQ9LezqTzHrqA8a2GJ5sXAb9s/zWh9
-	vMzudjY3zKC7CsZFoqex/AyQMTbOG/qk515E85UJxB7UQ5cH7p4dQtH7/biT5kzJ396WziG74y/
-	5g6ID4e1jdBXxb4T28WHr+WsRc3VvEh12TSiJ7WwA
-X-Gm-Gg: Acq92OE65Sn1GBpcbx4HKruQhNlroKBDv3newYpz7Us7fBEYF+SOW3FueRtIqlqeDMF
-	NkIwP+aAMUWToaBhVzJMRxQnk0r+e7ljU7+r8NLBB9+qRA3Da1JF0fzVT+YWRSJhF31gZv/CPUN
-	Hh3zMcob7r4neZjC2xdlh6KdM3bKv9k7VReyMmKzsIyLsKtPxKeK19ruWycYta1KAopJeyhDo2u
-	m3Qi2n3NTE33snvn7Egr7s4SHDCsYgEurOGwgPone+/kze+vu5kfXkOxxMEjgiKPrDWHtsPhYiW
-	W8xIAYFQAm0gFJO0HX+GqNlgnmCcLKueIsP9xyg1
-X-Received: by 2002:ac8:5d16:0:b0:517:6dc0:698d with SMTP id
- d75a77b69052e-517facbda8fmr1217551cf.0.1781202327712; Thu, 11 Jun 2026
- 11:25:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CiAvh3lj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WyVe1l9isFLqSn4weJLO6NC2EfEcM4A5QLkdrxkkPYmmHTCiQeXf8yUg2WoR5Z7hIBUNhLYfLG83OnubjAq6kQMqWL9/06EeMSHqfvSW9aw2HNJhJBdvaJcc7XTyyB30IMtCttSFA+diA3Q6fnT/dLbYAM63bh05s6aH191OZGMWrOVEv3uc5XdaeSHNC0+pX4ahbSPnnXYlwKwcU9SeW66j+0VcN/ZtbYQjX7fmSDEiXq+La6Ii+tvbn2KPnfdpiOlPKb3TIEZoIuUAlyVkWj1OAuWJEMyaGFJeaKqgcX4Kpk+mmfhGOkhITAZLH8MfzoSpjOgoDO8+tE/s+kcz+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aKP2YfsOH+b9AzV0NJoZO09hoc2KKoyBOGyTxrHgt+A=;
+ b=GCvCnZz6FK88uKPelm0/64hjhBbe3quk8PDEXy6YKnSMTV/Ugb9Eeej35SVhh3jdvk/LHiVrZuevcmZ4RdYAzdVeltluh4KmrcjOLwvxCpytSNZGG7961omet3XDfgqYg5pxrlUIdTPeLKe8VPZGzQ/q6IkS84wGIU0/saS3TFW1F2YzVqn10lNEFkHHAXzBnRTptf+zJeYhryft621DDgn2jWS/hCo2ItK5lJGUdDhuDtjB+VUbHs73WY9AWhD+JtMSZI2TB/Epp6D/V5qxqMkonMkofSQQNzkn/DrB3UANvaIAoqckklN7VbhSrLHFYP1u7pRco4eVTHifMzqw9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aKP2YfsOH+b9AzV0NJoZO09hoc2KKoyBOGyTxrHgt+A=;
+ b=CiAvh3lj6mTLQa+LSsEwBByfN1F9zipm0pfZWOgxF2YSEEOp/5u0HJiHRpKhDYSdSCFn74PKYGKPGb/RqcZy42r5HuWIulS74rAVDvdC2d6lGibEBnUwhmy3/jrt25JZZGbmgBXRnk7CYYj6C20fKEuGwBTQenXy2g2RcDNkRDdCH6jEbKBKGI2nuubVudNzu4MWOB8TSAWc/f7tu17QzyDz28c0CZPeMc20gENijBe0TiVUmtd76cRoI8bViRwPfDm1XsaTAR/lWoorqN8fpuZhDi7+V8O/y4W1J8g6qjG2nUWDkmiCJ5EnU93t+O+GfnRZhMg9k7G/cTw/EUKajg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
+ by IA1PR12MB6579.namprd12.prod.outlook.com (2603:10b6:208:3a1::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.14; Thu, 11 Jun
+ 2026 18:25:33 +0000
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15%6]) with mapi id 15.21.0092.017; Thu, 11 Jun 2026
+ 18:25:33 +0000
+From: Alex Williamson <alex.williamson@nvidia.com>
+To: kvm <kvm@vger.kernel.org>,
+	Alex Williamson <alex@shazbot.org>
+Cc: Alex Williamson <alex.williamson@nvidia.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	kanie@linux.alibaba.com
+Subject: [PATCH 0/2] vfio/pci: Latch module parameters per device
+Date: Thu, 11 Jun 2026 12:25:24 -0600
+Message-ID: <20260611182528.4004073-1-alex.williamson@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CY5PR18CA0044.namprd18.prod.outlook.com
+ (2603:10b6:930:13::13) To LV3PR12MB9411.namprd12.prod.outlook.com
+ (2603:10b6:408:215::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com> <20260526023515.288829-2-rick.p.edgecombe@intel.com>
-In-Reply-To: <20260526023515.288829-2-rick.p.edgecombe@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Thu, 11 Jun 2026 11:25:16 -0700
-X-Gm-Features: AVVi8Cc_4ND7d7yx-9ajFnqcQ8evQgoIAwHtu_wkSwUVPyjfFy-YFFdjIGUufDs
-Message-ID: <CAGtprH9HupUdHmLJbxk0QL=8bQ0kKNw=j_-fpvfAKTf=x7izgw@mail.gmail.com>
-Subject: Re: [PATCH v6 01/11] x86/virt/tdx: Simplify tdmr_get_pamt_sz()
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, kas@kernel.org, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com, 
-	pbonzini@redhat.com, seanjc@google.com, tglx@kernel.org, x86@kernel.org, 
-	chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|IA1PR12MB6579:EE_
+X-MS-Office365-Filtering-Correlation-Id: 015a735f-a9d8-49f5-9bd9-08dec7e6d319
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|56012099006|11063799006|3023799007|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	COVQFa+3FlRAPShcfBXrF0Zh668BAKjGFkqkYNQwrEkv626HO1qDAEmZZKOgIB2ARF5ycLlNZU/kXUBqS+9MYXUKz8Ra1L3sYD1nkmtIdBGS6K3dwpywpGfqdrcGDThx2s8sN+BFKvazpG4LZNVU6g1qoMtoYW2tjv1GBITYBaIN4WWB2A7kWfBsjWbJ1DWp3leZjJtyqhYjZ1OcmHbXfdzg3FBGTF8RQkWtNni9i984ft6u29MCw6o40ldh0fzG7CsRUeulZ0cLNjKnMeXDBnJ8jeD71wn2KPs0ofLcNzdA3d3Aoc9y1Ei1UX1EX9qSqDo5/YoHLfYNvpo6y1+gf0ytNQ19pK0/FD+mV6wCM1X3NWziY9h0jpLaEJAy8oAkRtsi1HZgeXsd6oigljfS77zuYrylOFZJMdDCKep4aE+3iUpGtLx6EgnA7htDRFq6FelJw52aXtrjYkXQsxFOKnW83Nnz9j3d54sdzlYMuVQzHhPVuAArOEMC1r/3TtTVKIQXNQeAAOTjZIJBQ93k18Sr3E66NxQUeGs71EopDvtmo3bIlRzqEZddRpaw2EeTydT+WW2bhUu+w4Hdr8UEEFwGFKqynebS1EkrSR/5bsQHIbrXB0vSK1zl0TMxBJJetJzi+WoiTwyqaFPAenNRh4/LwyHR7OrZqckhFP4AE+4zdwUJ9HrxHHI0PbtgYCUx
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(56012099006)(11063799006)(3023799007)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?XAc45LYJRCsiuHKcaszIbNefAangJUHugs+J2rnhQI6tQcDzTKSr0MVqFjPB?=
+ =?us-ascii?Q?JJN1KT3yxsGHN/sNx9AzqOjC0A3j9AS9yOIUfUmL1DxxsCFknSKk6rumhv2+?=
+ =?us-ascii?Q?+F7eWQ9OChw5nRi3k5fuLV9DaBaJ86ldAYRWNOZIayRweqKvnrOS1Nk0sL75?=
+ =?us-ascii?Q?x5C7WAoD30+dzUND/4UUqd8SeEJ+0BnQE0HkBlhJCxEzBIL8FMVIZMpdaxbL?=
+ =?us-ascii?Q?qzfYbcveGbMVyEzuGYa2ValoJp8W4tRj+zms8NbUmukaUe+A/7UZnvAHn0YL?=
+ =?us-ascii?Q?NCaT5Fv1rbKITA4rNraqPykgbkADZNkT9py2Lj4AU7jLzHzIp7u/YzbJRXmS?=
+ =?us-ascii?Q?ZcXTXXERU1iYAi0jEAIX8JOJ2NZL18CLUTGFg4GLCYgbtqvMsxPn+jc3WIVQ?=
+ =?us-ascii?Q?vpGLA7LAPz1SO/FLIC28OBVZ/zVGGrwhRNiNvszV+Tehetu55zF1adg8XiG8?=
+ =?us-ascii?Q?TmMsfsAGjL8chpOBWIF5noRwPmsHw2R4lHqKjXLAk5GVilCC+rRV7ifh5dfi?=
+ =?us-ascii?Q?UwxjKWHlsiqYBqTyafr8tRCoSNYniTV/QG3/FdG8rq73j2P7yBeqRLYE5GsK?=
+ =?us-ascii?Q?GxTA4xs6SAFovmhaq8DVi1SKT7qSSBKo43LlZROnBUMiB3ugBmKeBk8bheph?=
+ =?us-ascii?Q?HRIdUg2xILfLXsbeY3U+UiLqHn0yDBvFI4RwkTKcjsmiZNTKfq8kHjBcm3Ak?=
+ =?us-ascii?Q?Z+fGIDszVRksrKQ+GnGfZr0XYmkHXsKvyOxPvTTpl1Gdpr2jcf/gFUxzPCRF?=
+ =?us-ascii?Q?76mqEPvsN5aska+7t5ohDWy1BuFg1Sig5Vr+0Hbe43Az5KHiU149xwGj8LHU?=
+ =?us-ascii?Q?Okt574RSkQxyXYpJUc27wBFUIpy0YvFYru6+vKLTqP0fvU5DUc4KZ3Ff0rHv?=
+ =?us-ascii?Q?na1PyZ7dM4UpgmoGKmBxrW6sYtkyLEcsY+zG3OoIe06aIKAoW2IpV0t+u0Oc?=
+ =?us-ascii?Q?O/6KeIL7jN2+86Fj19rsE4F2IK3IW7BQ+Vm4TmNXbPUaPP1Qh1qPWEqHm+ca?=
+ =?us-ascii?Q?KO3QopDTgo25RklyRRgktKKXQuC0y7TyE0Z0tn6gayBiYzF/HrixE9rhcKsB?=
+ =?us-ascii?Q?owitPIu1ZO3qSU3NYnrW0STv4QRInewOCw+lfi4g170Tr2FmbSdcEFdiBImY?=
+ =?us-ascii?Q?BvPcFwNi4gMb6IghSanm49PcrPfRe5Bkdk2F+mYm4nc3MNe4PSCtBDoqoR4v?=
+ =?us-ascii?Q?/sLXs1WD/9nwg4XY6jAkRZjcNNEN9sdH76oqnjfw5vQ3kssxYlFi1ZK5VAqV?=
+ =?us-ascii?Q?UGvsFqiUyFBjcU/AiZFZqgbA/robVmVkG7sgsqSty3KQHb+snZ8YPC96rxOY?=
+ =?us-ascii?Q?fQNWWwRkdA+aD2DoNqMtSkd74lsb04h57WwjuZ5ujRS471DwHz+hLbNfk2G1?=
+ =?us-ascii?Q?GSOa4eLS59r3FfJVaryDlY0hqvol8YLdZxJ0wd9ORN3+/lqiuS2H164q6tOV?=
+ =?us-ascii?Q?8xaPPo0OglGDgTPlGIIbbAjK4n/8eZy0+tObkUa56lKp1tA9F4OHiHY3r6Oi?=
+ =?us-ascii?Q?97DoCFvKAXgsy6bGCSUBm6u4U3UY7I6jlR4xJP1Slpg5i/j1Mg8i4jUoyj+I?=
+ =?us-ascii?Q?/7HDbGl952BRaDgs1p+SyBYI51dH97iDlCm2dYyU2YHGBrrBGK50fvpQ0WFj?=
+ =?us-ascii?Q?wuHagad3uyfoqMm86y95SLIvy+xdEDbskZ68vK4Hd3Wkj5ciK9QwFwuJcFRN?=
+ =?us-ascii?Q?8tWjs4XdsAXF021oxNm1pA8i8hLHLhU8WXlwzxCYf7k1AhzSlnQT0kp4FJWK?=
+ =?us-ascii?Q?V1hM/tTAvQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 015a735f-a9d8-49f5-9bd9-08dec7e6d319
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 18:25:33.3558
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9tEhh0C/SHIdIaIDIiCAH3bxdmYae69HC5/ZySKElI3/HBuGkeYFznOkK0MiHIHwjAyhc8MxGF+EDKieh2eC7Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6579
 
-On Mon, May 25, 2026 at 7:35=E2=80=AFPM Rick Edgecombe
-<rick.p.edgecombe@intel.com> wrote:
->
-> For each memory region that the TDX module might use (called TDMR), three
-> separate traditional PAMT allocations are needed. One for each supported
-> page size (1GB, 2MB, 4KB). These store information on each page in the
-> TDMR. In Linux, they are allocated out of one physically contiguous block=
-,
-> in order to more efficiently use some internal TDX module book keeping
-> resources. So some simple math is needed to break the single large
-> allocation into three smaller allocations for each page size.
->
-> There are some commonalities in the math needed to calculate the base and
-> size for each smaller allocation, and so an effort was made to share logi=
-c
-> across the three. Unfortunately doing this turned out unnaturally torture=
-d,
-> with a loop iterating over the three page sizes, only to call into a
-> function with cases statement for each page size. In the future Dynamic
-> PAMT will add more logic that is special to the 4KB page size, making the
-> benefit of the math sharing even more questionable.
->
-> Three is not a very high number, so get rid of the loop and just duplicat=
-e
-> the small calculation three times. In doing so, setup for future Dynamic
-> PAMT changes.
->
-> Since the loop that iterates over it is gone, further simplify the code b=
-y
-> dropping the array of intermediate size and base storage. Just store the
-> values to their final locations. Accept the small complication of having
-> to clear tdmr->pamt_4k_base in the error path, so that tdmr_do_pamt_func(=
-)
-> will not try to operate on the TDMR struct when attempting to free it.
->
-> Assisted-by: GitHub Copilot:claude-opus-4-6 Claude:claude-opus-4-7
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+The vfio-pci module pushes module parameters into vfio-pci-core at
+initialization that change global policies for all devices, bound to
+vfio-pci itself or other variant drivers.  Not only is this generally bad
+practice, but in the case of runtime PM, policy changes can affect
+initialized devices, even while they're in use, resulting in unbalanced
+operations.
 
-Reviewed-by: Vishal Annapurve <vannapurve@google.com>
+This series first addresses the runtime PM case as a separate fix for
+stable, latching the runtime PM support into the device.  It then
+expands the scope to pull the policy set by vfio-pci out of the core,
+making each policy latched at the device by the variant driver.
+
+This also has the effect of restoring the mutability of two of the module
+parameters, where that functionality was lost with the vfio-pci-core
+split.  With this series, the current parameter values are latched into
+the device at probe time.
+
+Please review.  Thanks,
+
+Alex
+
+
+Alex Williamson (2):
+  vfio/pci: Latch disable_idle_d3 per device
+  vfio/pci: Latch all module parameters per device
+
+ drivers/vfio/pci/vfio_pci.c      | 30 +++++++++++++-----
+ drivers/vfio/pci/vfio_pci_core.c | 52 +++++++++++++++-----------------
+ include/linux/vfio_pci_core.h    |  5 +--
+ 3 files changed, 49 insertions(+), 38 deletions(-)
+
+-- 
+2.53.0
+
