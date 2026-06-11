@@ -1,362 +1,415 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C8E3FFAD1
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 16:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4D93FAE1D
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 17:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781196385; cv=none; b=NE5zs44xubGUOII9mKyhVxkADuavxKLNr1BKZ27V7wjzehB/H1tlGXea1ruw0iq9GJfKm3bFClJeCKF9qJkwrpBcEJOJKGkiEdI35SWmb+Ss2SkYT4u4neTy/E4OWte9xRec9B2I2/WKWyLttwYpYcnr+GJf/n7ANMHI63F6bvI=
+	t=1781197683; cv=none; b=QHuWuFzFGCxMAQG/67QFGIS3wK0dkUc+PyXbiN5cKZq4ZE8Dod9djfvl8v9lxPBgykhJor07vDOClJGEBo+Jc4ACJeKMSkU8tH0bVSPCQkdJbuJUu0CGvhlURxzI1j0nQMaN36WcS7S3XL8c0o3jwRcuF8AEXzbdGpfI4kpN4i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781196385; c=relaxed/simple;
-	bh=Atlcqwx1CSWgGgkvnS0mRZ+P+9R1RYqnbvptj2L+F+8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YQjD2BuYLopdoqdqnFwsHVrG16ab5XhWC/BJWwWx8SWdhSEkAUl5NkxblycRQaijomoiplDLdWcHvJj9LQzJ64qhwfC/yJVFdCm+9z5pRjdSKS6CnuL//FpNFOSly0lDsTptXQCRvSnecDtaYM/crUzuJDRy2NHvh+AxOsBDrkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=GCRlI9JE; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1781197683; c=relaxed/simple;
+	bh=TbxooEcSClF8dasbFkydod2uvkWaaP5TXOiJT88iHTg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WXWxboavwadRnPJB7ipRPtiJtz1SJwFpgpTQkPedACsgecZzS4sDh9kfUDJ7MBTP2Gznt2fmL7kRQ+NF3EKBUFslpemSMY8T6+nB4Hm4O4yHb2vZCnDB6MhbQ+Sju1nwHhg+tb2masKkEZsgn8TgA1Pj4UyZA/yHDTVjbYrq0JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iLgNr68i; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="GCRlI9JE"
-Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BEFbPQ2468407
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 09:46:22 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=i0/fryQsHZZUsVpWLovLPhh4uANlkSKGKFUxbWvZ4kE=; b=GCRlI9JEnuhx
-	Sl1/K5JKeGBIsRlXMmgFITWKUVKP+QzM4E6F+G4ncR11jjNlaKjygRt8WQahf5Qy
-	5Owb3G2biK+qYe8Mrteh4smjeJyTLxIMjm54JOo8TGPbg7lY8vdwB/28lCB/yC1o
-	4a8pyMTDOAZPISDgT0s4U/HqY+uFlxqDf1gLN2Tqqss3/433EXpzznMQ4SwooE5t
-	EJ9idSicRgxxkkKsgvyzUgXnzbromuNz2NkT/NeO6mUfxew6vB6zEzEdPW9d4z8E
-	9XBYPDj9EOCvtw22TvvR27nCEO4LlZUBFQWslmLBpsJif0EcLx4ZgmO1Y5YrponX
-	SP5NXhy9DA==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4eqe7dy2f0-4
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 09:46:22 -0700 (PDT)
-Received: from twshared90953.15.frc2.facebook.com (2620:10d:c0a8:1b::30) by
- mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.41; Thu, 11 Jun 2026 16:46:20 +0000
-Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
-	id 663463DD363EC; Thu, 11 Jun 2026 09:23:46 -0700 (PDT)
-From: Zhiping Zhang <zhipingz@meta.com>
-To: <netdev@vger.kernel.org>
-CC: <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        Zhiping Zhang
-	<zhipingz@meta.com>
-Subject: [PATCH v7 4/5] vfio/pci: implement get_tph and DMA_BUF_TPH feature
-Date: Thu, 11 Jun 2026 09:11:19 -0700
-Message-ID: <20260611161546.4075580-5-zhipingz@meta.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260611161546.4075580-1-zhipingz@meta.com>
-References: <20260611161546.4075580-1-zhipingz@meta.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iLgNr68i"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-842273a2c4dso96139b3a.3
+        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 10:08:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781197681; x=1781802481; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2DeqOLdmdRzQaGvNp5ATMe65/kZqWAqS0toOxYUEP8g=;
+        b=iLgNr68iMESeh5vDcV+cXPPL5YhznkyuDiM2V3odU+rTot5VJbNzSyLLdnZawqqkAY
+         ajKkclubvTdG4dH+g8FU6b/xJprx/kRQlyL4UGkCr/OrTq1Qgrr7YX+SZoC+KEpRO9Ob
+         a34W1iQdhMo/VykJ//HXcw2SrFdV33aGLn42P1VqmOYu/EcoeL91iChs4w0Z3TOP/PEp
+         JqT2nBYRSywUipC5vT0pjT4Mgv3zhi7MmIKXlK987dMErfhgAyA8+amviYyO/5LRhfJd
+         5upRh+H3Ywxox/3WltEBDMlafx12ul4c0E8czudCxXe49ZTVNOarg51SMfLEfJMzqRCF
+         pnQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781197681; x=1781802481;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2DeqOLdmdRzQaGvNp5ATMe65/kZqWAqS0toOxYUEP8g=;
+        b=DQ6AyBmTNmqvDi7N+tsLbcpL5yKjprdZxco+1zsctYhY43fK/WxsejpjSji886syip
+         gz7kQIrSsZNv3jDhOKAKbB3w0vD6pje+nCQftyHAdSja0I9dE+gAHQeTUqQm1mBU1kCK
+         zT2t1prYFDIcpGApACFNSmbKeLz7PAlgelwpE1yZxXanwKxEBnv9891tmB8i+l6Vn3bJ
+         XDzLd6wjq7WG3X+rhXlpRqhkb4fMK6rKfWTE8ujZcyxqX5/BshwxhdNpZe6roEMeS9Ho
+         KNQt60GDv1f3K3AZf/zGHDej3prRaZR9kGffzFrjqRezYDu1kVnJvhWV2zW1oa3nDwVk
+         0PiQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+LSrUhK6qVqcxAJGkILaBo5njSW5wRBTIPHrv6jvjv6fKQzgqQEX+c+3qRssEgCQYVSyE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKgMd87YqWocMCRxkPlAC/CWmARv/0L7vc13ExqOIlsPXgSWIF
+	mGrseC6dqCVU2MnEGbIIg1Q5O+pTlEqLJR4mTie2mlKQ/UbPtz3FKgBp
+X-Gm-Gg: Acq92OEd75HbjAu2Wg8AGshRMki6mBlIH094++1vi9WmP6vpptOWZo7PCWdcB0hWePc
+	TEyQV86YWr+6BaFeTxVXFBzl/kdpAFgdtz49188LTtentWgX2hXd2gJFcxRRZRr2ZVryh+O3vXe
+	2yGe5APno+kSKcswitcnsptxOuLOlJuLeG35z4czwWcnTai6rrs5jdWvt3cP+uejqcKvcRbsWLY
+	hD8S7iCgaQhV5zVQKNb9IMW/mN5uMsyUrVDjq+TYJGTTMR4CqP9XmJXf/rYp/oIs20t7meCFlQV
+	N/Fh3AQjp0RFdMQWFXQUkLWQAuRTf2mzj/28YCju/k0co+q+BEzbKJ65CDBso2JXWVwXqsSQZlT
+	8O2wbhYLTs2xGrSe60/1txJe58IX9aBvCJgN57IIrEkmSL69/8V2M7zeHba5xJClfzmDH3SmZMA
+	+5CkZJnnG4OYtuDdYny17W9yjquHdj5nu8F5yEkxOqb41Y2UYczzJJ5Q==
+X-Received: by 2002:a05:6a00:1904:b0:82a:6461:6d15 with SMTP id d2e1a72fcca58-84336e3b4admr4381300b3a.46.1781197680846;
+        Thu, 11 Jun 2026 10:08:00 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-843382f3dfbsm2583636b3a.48.2026.06.11.10.07.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 10:08:00 -0700 (PDT)
+Date: Fri, 12 Jun 2026 02:07:56 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Michael Roth <michael.roth@amd.com>, pbonzini@redhat.com,
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	kvm@vger.kernel.org, imv4bel@gmail.com
+Subject: Re: [PATCH] KVM: SEV: Don't return a still-assigned gmem page to the
+ host
+Message-ID: <airrbMQafcuxoVkg@v4bel>
+References: <aimMWzAf5b3luM0b@v4bel>
+ <wxamg6zqn2qmsci2fwfepbqou5vtgydqmonr67mu7b73nkakbe@zedss5vzeci3>
+ <aiqNPBQzoU9f8RwI@v4bel>
+ <aiqueNUndQsbMNud@google.com>
+ <airAthcKDZeDfzXS@v4bel>
+ <airS1G23atiuWdTl@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-FB-Internal: Safe
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: RuTfCI_ikuUohTP2SJauFYUM9Doz1jv0
-X-Authority-Analysis: v=2.4 cv=GfgnWwXL c=1 sm=1 tr=0 ts=6a2ae65e cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=wpfVPzegXHpEFt3DAXn9:22 a=VabnemYjAAAA:8 a=pIVkarnfHJxX8sQW8bgA:9
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: RuTfCI_ikuUohTP2SJauFYUM9Doz1jv0
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDE2OCBTYWx0ZWRfXzWXQ+Y255R0V
- wyQuks7ABa0d8v3z1nRMbSLoC3MRpIKKwlOL2zodoan/g5tRd6sQbtTNq36lllv21tzT9ooFifE
- 9kr/P3XaVI4CJe/HkFWJcIB6LA2WWtU=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDE2OCBTYWx0ZWRfXzQSuvZ0wyj0s
- VZ3nXu7civ02lqGQdr0V4zjkJ3PyOEHuk89c6FTGp9kcbZichdC2rncEqZd35zzZkE1UQIqFwig
- JV+k7HZpRG+v1xxkiQrDXRUQKNDVGZvTQK79zY1cAKv3p4kXq0b8jHaRMLitQIr2TM/uHOswS04
- FHLTbnv2qGch9SgHp00L4uYOLj8cZZJq1HZSArpm0r4+CRKfSLg5GsjDF5m+uK+ofq36KAwa9Lv
- 9NpD9ZmHssRxOvgsUaQuW/QKTDSN7/3o58m50toeQcw/Vm2QrN8gjXWdYdfkj1YH0pAqf2rrIDJ
- jXfGtmDso2lA0LNUXaIly5h/zPMpuV4xg2tIr0TYW9djlLDIFUeRC2A+AMm9Q7lqyjnxL34h41P
- Oe8n10tPHphxiOWgLUsk6kwSiInA/QgQwRvgXaGNJSsOmEa/ONcnr1c6F6L9caaOfordUKiwkL5
- ZcBo39uh7Z9ASLmJGWQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-11_03,2026-06-11_01,2025-10-01_01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <airS1G23atiuWdTl@google.com>
 
-Implement dma-buf get_tph for vfio-pci exported dma-bufs and add
-VFIO_DEVICE_FEATURE_DMA_BUF_TPH so userspace can publish TPH metadata
-for a VFIO-owned device.
+On Thu, Jun 11, 2026 at 08:23:00AM -0700, Sean Christopherson wrote:
+> On Thu, Jun 11, 2026, Hyunwoo Kim wrote:
+> > On Thu, Jun 11, 2026 at 05:47:52AM -0700, Sean Christopherson wrote:
+> > > On Thu, Jun 11, 2026, Hyunwoo Kim wrote:
+> > > > On Wed, Jun 10, 2026 at 05:16:57PM -0500, Michael Roth wrote:
+> > > > > On Thu, Jun 11, 2026 at 01:10:03AM +0900, Hyunwoo Kim wrote:
+> > > > > > ---
+> > > > > >  arch/x86/kvm/svm/sev.c | 6 +++++-
+> > > > > >  1 file changed, 5 insertions(+), 1 deletion(-)
+> > > > > > 
+> > > > > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > > > > > index 6c6a6d663e29..8fee6ec529f9 100644
+> > > > > > --- a/arch/x86/kvm/svm/sev.c
+> > > > > > +++ b/arch/x86/kvm/svm/sev.c
+> > > > > > @@ -5178,8 +5178,12 @@ void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
+> > > > > > 
+> > > > > >                 rc = rmp_make_shared(pfn, use_2m_update ? PG_LEVEL_2M : PG_LEVEL_4K);
+> > > > > >                 if (WARN_ONCE(rc, "SEV: Failed to update RMP entry for PFN 0x%llx error %d\n",
+> > > > > > -                             pfn, rc))
+> > > > > > +                             pfn, rc)) {
+> > > > > > +                       /* Still assigned to the guest; pin and leak rather than freeing. */
+> > > > > > +                       folio_get(page_folio(pfn_to_page(pfn)));
+> > > > > > +                       snp_leak_pages(pfn, use_2m_update ? PTRS_PER_PMD : 1);
+> > > > > >                         goto next_pfn;
+> > > > > > +               }
+> > > > > 
+> > > > > This roughly aligns with what would happen if snp_page_reclaim() fails
+> > > > > in sev_gmem_post_populate(), while the guest is being initialized via
+> > > > > KVM_SEV_SNP_LAUNCH_UPDATE ioctl, which calls into kvm_gmem_populate().
+> > > > > 
+> > > > > However, in kvm_gmem_populate(), we still free the page. Maybe, to
+> > > > > address both cases, we should just add a parameter to snp_leak_pages()
+> > > > > to tell it to take an extra ref and use that in both of these paths.
+> > > > > 
+> > > > > Or we can just do the direct folio_get() in both cases, the above
+> > > > > formalizes the handling convention a little better though IMO.
+> > > > 
+> > > > If I understand correctly, an extra ref alone still seems to leave the
+> > > > LRU corruption that sashiko flagged:
+> > > > 
+> > > > https://lore.kernel.org/all/20260610162623.061BA1F00898@smtp.kernel.org/
+> > > > 
+> > > > A gmem folio is on the unevictable LRU, and taking a ref keeps the folio
+> > > > on the LRU. page->buddy_list, which snp_leak_pages() uses, shares the
+> > > > same union as folio->lru, so leaking the page overwrites the folio's LRU
+> > > > pointers. Both paths deal with a gmem folio, so the same applies.
+> > > > 
+> > > > To handle this properly, the folio would need to be taken off the LRU
+> > > > before leaking, with something like folio_isolate_lru(), but that is
+> > > > mm-internal and does not look usable from KVM. How should we proceed?
+> > > > Please let me know if I am missing something.
+> > > 
+> > > I'm inclined to do nothing.  rmp_make_shared() should only fail in this case if
+> > > there's a fatal bug somewhere, no?  Either that or do BUG_ON(), because at some
+> > > point these types of errors are simply unrecoverable.
+> > 
+> > A guest can make a gmem page a VMSA via AP creation,
+> 
+> Ugh, the bane of my existence.  Can we kill off that feature yet?  I'm only half
+> joking.  Not even half.
+> 
+> > and if that gfn is then hole-punched, a page that is still assigned to the
+> > guest is returned to the host in sev_gmem_invalidate(), which looked like it
+> > could lead to a host RMP PF, so I sent the patch.
+> 
+> Yeah, I suspect you're right.  But leaking the page doesn't fix the underlying
+> problem, which is that it's possible to free a page that's being used as a VMSA.
+> 
+> We can't simply pin the page, because IIUC ->free_folio() is called when the page
+> is removed from the filemap, not when the folio/page is free back to the allocator.
+> 
+> I.e. we can't do this.
+> 
+> diff --git arch/x86/kvm/svm/sev.c arch/x86/kvm/svm/sev.c
+> index 74fb15551e83..ea70c7ade152 100644
+> --- arch/x86/kvm/svm/sev.c
+> +++ arch/x86/kvm/svm/sev.c
+> @@ -3510,6 +3510,9 @@ void sev_free_vcpu(struct kvm_vcpu *vcpu)
+>  
+>         svm = to_svm(vcpu);
+>  
+> +       if (svm->sev_es.snp_has_guest_vmsa)
+> +               kvm_release_page_clean(phys_to_page(svm->vmcb->control.vmsa_pa));
+> +
+>         /*
+>          * If it's an SNP guest, then the VMSA was marked in the RMP table as
+>          * a guest-owned page. Transition the page to hypervisor state before
+> @@ -4027,6 +4030,13 @@ static void sev_snp_init_protected_guest_state(struct kvm_vcpu *vcpu)
+>         if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, &page, NULL))
+>                 return;
+>  
+> +       /*
+> +        * Drop the reference to the previous VMSA page (acquired above) if the
+> +        * guest is changing its VMSA.
+> +        */
+> +       if (svm->sev_es.snp_has_guest_vmsa)
+> +               kvm_release_page_clean(phys_to_page(svm->vmcb->control.vmsa_pa));
+> +
+>         /*
+>          * From this point forward, the VMSA will always be a guest-mapped page
+>          * rather than the initial one allocated by KVM in svm->sev_es.vmsa. In
+> @@ -4043,13 +4053,6 @@ static void sev_snp_init_protected_guest_state(struct kvm_vcpu *vcpu)
+>  
+>         /* Mark the vCPU as runnable */
+>         kvm_set_mp_state(vcpu, KVM_MP_STATE_RUNNABLE);
+> -
+> -       /*
+> -        * gmem pages aren't currently migratable, but if this ever changes
+> -        * then care should be taken to ensure svm->sev_es.vmsa is pinned
+> -        * through some other means.
+> -        */
+> -       kvm_release_page_clean(page);
+>  }
+>  
+>  static int sev_snp_ap_creation(struct vcpu_svm *svm)
+> 
+> The right way to handle this is to treat the VMSA "mapping" like an MMU mapping.
+> I.e. this is fundamentally the same mess we have to solve in order to not pin
+> pages that are mapped into L2 via vmcs01/vmcb02 for nVMX/nSVM.
+> 
+> Something like this, sans the actually handling of the request.  The simple way
+> to handle the request would be to invalidate control.vmsa_pa if snp_has_guest_vmsa
+> is true, and then redo the mapping part of sev_snp_init_protected_guest_state().
 
-8-bit ST and 16-bit Extended ST are distinct PCIe TPH namespaces; the
-uAPI carries both with explicit validity flags, and get_tph() returns
-the value matching the importer's requested namespace or -EOPNOTSUPP.
+Understood. This looks like a fairly large change, at least for me, so
+would you be able to handle the patch?
 
-Publish and read the TPH descriptor under dmabuf->resv, matching the
-locking used for other importer-visible dma-buf state. The SET ioctl
-takes dma_resv_lock_interruptible(), while the callback runs under
-DMA-buf's asserted resv lock.
-
-Reject requests the device cannot consume as a completer:
-pcie_tph_completer_type() must report at least
-PCI_EXP_DEVCAP2_TPH_COMP_TPH_ONLY, and Extended ST requires
-PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH. Validate fields before the completer
-check so userspace gets the narrowest errno.
-
-Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
----
- drivers/vfio/pci/vfio_pci_core.c   |  3 +
- drivers/vfio/pci/vfio_pci_dmabuf.c | 94 +++++++++++++++++++++++++++++-
- drivers/vfio/pci/vfio_pci_priv.h   | 12 ++++
- include/uapi/linux/vfio.h          | 37 ++++++++++++
- 4 files changed, 145 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-index 050e7542952e..4fa36f2f7555 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1569,6 +1569,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_device =
-*device, u32 flags,
- 		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
- 	case VFIO_DEVICE_FEATURE_DMA_BUF:
- 		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
-+	case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
-+		return vfio_pci_core_feature_dma_buf_tph(vdev, flags, arg,
-+							 argsz);
- 	default:
- 		return -ENOTTY;
- 	}
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_p=
-ci_dmabuf.c
-index 1a177ce7de54..0a0705c8dbea 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -3,6 +3,7 @@
-  */
- #include <linux/dma-buf-mapping.h>
- #include <linux/pci-p2pdma.h>
-+#include <linux/pci-tph.h>
- #include <linux/dma-resv.h>
-=20
- #include "vfio_pci_priv.h"
-@@ -19,7 +20,12 @@ struct vfio_pci_dma_buf {
- 	u32 nr_ranges;
- 	struct kref kref;
- 	struct completion comp;
--	u8 revoked : 1;
-+	u8 tph_st_valid:1;
-+	u8 tph_st_ext_valid:1;
-+	u8 tph_ph:2;
-+	u8 tph_st;
-+	u16 tph_st_ext;
-+	u8 revoked:1;
- };
-=20
- static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-@@ -69,6 +75,26 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attach=
-ment,
- 	return ret;
- }
-=20
-+static int vfio_pci_dma_buf_get_tph(struct dma_buf *dmabuf, bool extende=
-d,
-+				    u16 *steering_tag, u8 *ph)
-+{
-+	struct vfio_pci_dma_buf *priv =3D dmabuf->priv;
-+
-+	dma_resv_assert_held(dmabuf->resv);
-+
-+	if (extended) {
-+		if (!priv->tph_st_ext_valid)
-+			return -EOPNOTSUPP;
-+		*steering_tag =3D priv->tph_st_ext;
-+	} else {
-+		if (!priv->tph_st_valid)
-+			return -EOPNOTSUPP;
-+		*steering_tag =3D priv->tph_st;
-+	}
-+	*ph =3D priv->tph_ph;
-+	return 0;
-+}
-+
- static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachment=
-,
- 				   struct sg_table *sgt,
- 				   enum dma_data_direction dir)
-@@ -101,6 +127,7 @@ static void vfio_pci_dma_buf_release(struct dma_buf *=
-dmabuf)
-=20
- static const struct dma_buf_ops vfio_pci_dmabuf_ops =3D {
- 	.attach =3D vfio_pci_dma_buf_attach,
-+	.get_tph =3D vfio_pci_dma_buf_get_tph,
- 	.map_dma_buf =3D vfio_pci_dma_buf_map,
- 	.unmap_dma_buf =3D vfio_pci_dma_buf_unmap,
- 	.release =3D vfio_pci_dma_buf_release,
-@@ -333,6 +360,71 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_co=
-re_device *vdev, u32 flags,
- 	return ret;
- }
-=20
-+int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-+				      u32 flags,
-+				      struct vfio_device_feature_dma_buf_tph __user *arg,
-+				      size_t argsz)
-+{
-+	struct vfio_device_feature_dma_buf_tph set_tph;
-+	struct vfio_pci_dma_buf *priv;
-+	struct dma_buf *dmabuf;
-+	u8 comp;
-+	int ret;
-+
-+	ret =3D vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET,
-+				 sizeof(set_tph));
-+	if (ret !=3D 1)
-+		return ret;
-+
-+	if (copy_from_user(&set_tph, arg, sizeof(set_tph)))
-+		return -EFAULT;
-+
-+	if (set_tph.flags & ~(VFIO_DMA_BUF_TPH_ST | VFIO_DMA_BUF_TPH_ST_EXT))
-+		return -EINVAL;
-+
-+	if (set_tph.ph & ~0x3)
-+		return -EINVAL;
-+
-+	comp =3D pcie_tph_completer_type(vdev->pdev);
-+	if (comp =3D=3D PCI_EXP_DEVCAP2_TPH_COMP_NONE)
-+		return -EOPNOTSUPP;
-+	if ((set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT) &&
-+	    comp !=3D PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH)
-+		return -EOPNOTSUPP;
-+
-+	dmabuf =3D dma_buf_get(set_tph.dmabuf_fd);
-+	if (IS_ERR(dmabuf))
-+		return PTR_ERR(dmabuf);
-+
-+	if (dmabuf->ops !=3D &vfio_pci_dmabuf_ops) {
-+		ret =3D -EINVAL;
-+		goto out_put;
-+	}
-+
-+	priv =3D dmabuf->priv;
-+	if (priv->vdev !=3D vdev) {
-+		ret =3D -EINVAL;
-+		goto out_put;
-+	}
-+
-+	ret =3D dma_resv_lock_interruptible(dmabuf->resv, NULL);
-+	if (ret)
-+		goto out_put;
-+
-+	priv->tph_st         =3D set_tph.steering_tag;
-+	priv->tph_st_ext     =3D set_tph.steering_tag_ext;
-+	priv->tph_ph         =3D set_tph.ph;
-+	priv->tph_st_valid   =3D !!(set_tph.flags & VFIO_DMA_BUF_TPH_ST);
-+	priv->tph_st_ext_valid =3D
-+		!!(set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT);
-+	dma_resv_unlock(dmabuf->resv);
-+	ret =3D 0;
-+
-+out_put:
-+	dma_buf_put(dmabuf);
-+	return ret;
-+}
-+
- void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revok=
-ed)
- {
- 	struct vfio_pci_dma_buf *priv;
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci=
-_priv.h
-index fca9d0dfac90..c58f369be4b3 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -118,6 +118,10 @@ static inline bool vfio_pci_is_vga(struct pci_dev *p=
-dev)
- int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32=
- flags,
- 				  struct vfio_device_feature_dma_buf __user *arg,
- 				  size_t argsz);
-+int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-+				      u32 flags,
-+				      struct vfio_device_feature_dma_buf_tph __user *arg,
-+				      size_t argsz);
- void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev);
- void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revok=
-ed);
- #else
-@@ -128,6 +132,14 @@ vfio_pci_core_feature_dma_buf(struct vfio_pci_core_d=
-evice *vdev, u32 flags,
- {
- 	return -ENOTTY;
- }
-+
-+static inline int
-+vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev, u32=
- flags,
-+				  struct vfio_device_feature_dma_buf_tph __user *arg,
-+				  size_t argsz)
-+{
-+	return -ENOTTY;
-+}
- static inline void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device =
-*vdev)
- {
- }
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index 5de618a3a5ee..5dd693220a0d 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -1534,6 +1534,43 @@ struct vfio_device_feature_dma_buf {
-  */
- #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
-=20
-+/**
-+ * Upon VFIO_DEVICE_FEATURE_SET associate TPH (TLP Processing Hints) met=
-adata
-+ * with a vfio-exported dma-buf. The dma-buf must have been created by
-+ * VFIO_DEVICE_FEATURE_DMA_BUF on this device, and the device must repor=
-t
-+ * TPH Completer support in Device Capabilities 2 (bits 13:12); requests
-+ * carrying VFIO_DMA_BUF_TPH_ST_EXT additionally require the device to
-+ * report the Extended TPH Completer encoding. Otherwise the ioctl
-+ * returns -EOPNOTSUPP.
-+ *
-+ * dmabuf_fd is the file descriptor returned by VFIO_DEVICE_FEATURE_DMA_=
-BUF.
-+ *
-+ * 8-bit ST (steering_tag) and 16-bit Extended ST (steering_tag_ext) are
-+ * distinct namespaces. Userspace supplies whichever values are valid an=
-d sets
-+ * the matching VFIO_DMA_BUF_TPH_ST / VFIO_DMA_BUF_TPH_ST_EXT bits in @f=
-lags;
-+ * an importer requests one namespace and receives the matching value.
-+ *
-+ * @flags =3D=3D 0 marks any previously published ST / Extended-ST as in=
-valid
-+ * for future get_tph() requests on this dma-buf.
-+ *
-+ * ph is the 2-bit TLP Processing Hint and must be in the range [0, 3].
-+ *
-+ * Userspace must publish TPH before handing the dma-buf fd to an import=
-er.
-+ * Calling SET again replaces the published values.
-+ */
-+#define VFIO_DEVICE_FEATURE_DMA_BUF_TPH 13
-+
-+#define VFIO_DMA_BUF_TPH_ST		(1 << 0)
-+#define VFIO_DMA_BUF_TPH_ST_EXT		(1 << 1)
-+
-+struct vfio_device_feature_dma_buf_tph {
-+	__s32	dmabuf_fd;
-+	__u32	flags;
-+	__u16	steering_tag_ext;
-+	__u8	steering_tag;
-+	__u8	ph;
-+};
-+
- /* -------- API for Type1 VFIO IOMMU -------- */
-=20
- /**
---=20
-2.53.0-Meta
-
+> 
+> We could put the kvm_x86_call(gmem_invalidate_range)(kvm, range) call in
+> kvm_unmap_gfn_range() to avoid the extra arch hook, but I would prefer to have an
+> explicit connection between the invalidate() phase and the free() phase.
+> 
+> Have I mentioned how much I hate AP creation?
+> 
+> ---
+>  arch/x86/include/asm/kvm-x86-ops.h |  3 ++-
+>  arch/x86/include/asm/kvm_host.h    |  3 ++-
+>  arch/x86/kvm/svm/sev.c             | 11 ++++++++++-
+>  arch/x86/kvm/svm/svm.c             |  5 ++++-
+>  arch/x86/kvm/svm/svm.h             | 13 ++-----------
+>  arch/x86/kvm/x86.c                 |  9 +++++++--
+>  include/linux/kvm_host.h           |  3 ++-
+>  virt/kvm/guest_memfd.c             | 17 +++++------------
+>  8 files changed, 34 insertions(+), 30 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+> index 83dc5086138b..ea308250ef47 100644
+> --- a/arch/x86/include/asm/kvm-x86-ops.h
+> +++ b/arch/x86/include/asm/kvm-x86-ops.h
+> @@ -147,7 +147,8 @@ KVM_X86_OP_OPTIONAL(get_untagged_addr)
+>  KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
+>  KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
+>  KVM_X86_OP_OPTIONAL_RET0(gmem_max_mapping_level)
+> -KVM_X86_OP_OPTIONAL(gmem_invalidate)
+> +KVM_X86_OP_OPTIONAL(gmem_invalidate_range)
+> +KVM_X86_OP_OPTIONAL(gmem_free_folio)
+>  #endif
+>  
+>  #undef KVM_X86_OP
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 3886b536c8a5..0a5aec1701bd 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -2009,7 +2009,8 @@ struct kvm_x86_ops {
+>  	gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
+>  	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+>  	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+> -	void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
+> +	void (*gmem_invalidate_range)(struct kvm *kvm, struct kvm_gfn_range *range);
+> +	void (*gmem_free_folio)(struct folio *folio);
+>  	int (*gmem_max_mapping_level)(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
+>  };
+>  
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 74fb15551e83..411480a90e36 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -5115,9 +5115,18 @@ int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
+>  
+>  	return 0;
+>  }
+> +void sev_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range)
+> +{
+> +	if (!sev_snp_guest(kvm))
+> +		return;
+> +
+> +	kvm_make_all_cpus_request(kvm, KVM_REQ_VMSA_PAGE_RELOAD);
+> +}
+>  
+> -void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
+> +void sev_gmem_free_folio(struct folio *folio)
+>  {
+> +	kvm_pfn_t start = page_to_pfn(folio_page(folio, 0));
+> +	kvm_pfn_t end = start + (1ul << folio_order(folio));
+>  	kvm_pfn_t pfn;
+>  
+>  	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 526e0fdcd16b..907be66d6f2a 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -5460,9 +5460,12 @@ struct kvm_x86_ops svm_x86_ops __initdata = {
+>  	.vcpu_get_apicv_inhibit_reasons = avic_vcpu_get_apicv_inhibit_reasons,
+>  	.alloc_apic_backing_page = svm_alloc_apic_backing_page,
+>  
+> +#ifdef CONFIG_KVM_AMD_SEV
+>  	.gmem_prepare = sev_gmem_prepare,
+> -	.gmem_invalidate = sev_gmem_invalidate,
+> +	.gmem_invalidate_range = sev_gmem_invalidate_range,
+> +	.gmem_free_folio = sev_gmem_free_folio,
+>  	.gmem_max_mapping_level = sev_gmem_max_mapping_level,
+> +#endif
+>  };
+>  
+>  /*
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 716be21fba33..5129ab1a84d7 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -1008,7 +1008,8 @@ int sev_dev_get_attr(u32 group, u64 attr, u64 *val);
+>  extern unsigned int max_sev_asid;
+>  void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code);
+>  int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+> -void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
+> +void sev_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range);
+> +void sev_gmem_free_folio(struct folio *folio);
+>  int sev_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
+>  struct vmcb_save_area *sev_decrypt_vmsa(struct kvm_vcpu *vcpu);
+>  void sev_free_decrypted_vmsa(struct kvm_vcpu *vcpu, struct vmcb_save_area *vmsa);
+> @@ -1034,16 +1035,6 @@ static inline int sev_cpu_init(struct svm_cpu_data *sd) { return 0; }
+>  static inline int sev_dev_get_attr(u32 group, u64 attr, u64 *val) { return -ENXIO; }
+>  #define max_sev_asid 0
+>  static inline void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code) {}
+> -static inline int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
+> -{
+> -	return 0;
+> -}
+> -static inline void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end) {}
+> -static inline int sev_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private)
+> -{
+> -	return 0;
+> -}
+> -
+>  static inline struct vmcb_save_area *sev_decrypt_vmsa(struct kvm_vcpu *vcpu)
+>  {
+>  	return NULL;
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index cf122b8c3210..a734ddf59cf9 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -14134,9 +14134,14 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
+>  #endif
+>  
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> -void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
+> +void kvm_arch_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range)
+>  {
+> -	kvm_x86_call(gmem_invalidate)(start, end);
+> +	kvm_x86_call(gmem_invalidate_range)(kvm, range);
+> +}
+> +
+> +void kvm_arch_gmem_free_folio(struct folio *folio)
+> +{
+> +	kvm_x86_call(gmem_free_folio)(folio);
+>  }
+>  #endif
+>  #endif
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 27498e990dff..7de9b07870b7 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2602,7 +2602,8 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
+>  #endif
+>  
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> -void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
+> +void kvm_arch_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range);
+> +void kvm_arch_gmem_free_folio(struct folio *folio);
+>  #endif
+>  
+>  #ifdef CONFIG_KVM_GENERIC_PRE_FAULT_MEMORY
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 86690683b2fe..8ec5041934db 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -185,6 +185,10 @@ static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
+>  		}
+>  
+>  		flush |= kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
+> +
+> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> +		kvm_arch_gmem_invalidate_range(kvm, &gfn_range);
+> +#endif
+>  	}
+>  
+>  	if (flush)
+> @@ -523,23 +527,12 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
+>  	return MF_DELAYED;
+>  }
+>  
+> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> -static void kvm_gmem_free_folio(struct folio *folio)
+> -{
+> -	struct page *page = folio_page(folio, 0);
+> -	kvm_pfn_t pfn = page_to_pfn(page);
+> -	int order = folio_order(folio);
+> -
+> -	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
+> -}
+> -#endif
+> -
+>  static const struct address_space_operations kvm_gmem_aops = {
+>  	.dirty_folio = noop_dirty_folio,
+>  	.migrate_folio	= kvm_gmem_migrate_folio,
+>  	.error_remove_folio = kvm_gmem_error_folio,
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> -	.free_folio = kvm_gmem_free_folio,
+> +	.free_folio = kvm_arch_gmem_free_folio,
+>  #endif
+>  };
+>  
+> 
+> base-commit: de3a35be92d2391ece4bf3143ef2887192625fd0
+> -- 
+> 
+> > Other sites such as snp_page_reclaim() leak the page on this failure rather
+> > than freeing it.
+> > 
+> > If you think this isn't a real problem, leaving it as is seems fine to me.
+> > I don't see a good place to put a BUG_ON.
