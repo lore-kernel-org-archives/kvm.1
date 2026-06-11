@@ -1,88 +1,86 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4636820DD51
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 19:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118BB4D2EF7
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 19:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781204940; cv=none; b=ieMyLmT926LZ019nlzIWsM2H0IgcvwuYVbPjhZDimO8P8LYfo8+xojMFhXV5BQogvDPmjtyE4vMr56herkybF4FtQp4T6H2msD7WwwxmKl/Vrzq8xQMdYDPDrKq0nfIdLSqvBz2IS8ULPke1EhyxmQWaX/eEfMx0YIi6aVfU1pg=
+	t=1781205280; cv=none; b=tVMDqYryJfo9UwcahzyblpGPlpxBcT1MUIaxovdQIUswaBPOtay1c5npT2n1jZ55yAGvIBaqeCp8JPNl7BZsJ9ErEQqF86cThs5XRg5x37AfL5YijYk7rFF2DXZwmbuq6L2ukAkcAwyYrvNz7OwVNknb4KFXtUePwNE4GSDjF7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781204940; c=relaxed/simple;
-	bh=fhPyyRBuJXO+c1O4aIoSvv3vaX+DNXmCRBVMOMQ54mg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Y6MmWbq/H1IcFZFTICdyRrhj62V7228puVNjkHHaIoKxxNBpR9iHfgcNHWG5UwGhR3KgvgX9rdYpnlF/vszRFONOhWZIVc4N9Dy1AtjhbQx9wCFrLVyiq87vvLPsZRQk/Cf0P9jVNt8mcsPBxXjVmgVHfqpaGRdI7JZ3sgyCqws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uMt6S3b5; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781205280; c=relaxed/simple;
+	bh=xbVJML230yKeUvNITt95ue6YNo9RjYwciNyHOYUt+5o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nemRsMRdc5hq1WCKGSPaRxl7LVwSw8np+mnaVM8IvEoYkuutDWzUJA8Yp786yfG6sHD6Ymw3OxIrpm9fdWgEhK4K8FLR26RnXXUZXZIHvtC8IXSS8WkucdeQmUA8l2y9V6XKHJnMARfh/vrCATbGaSB+pkOsgdc9FRkGvmjbVnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ksZHw8Jj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uMt6S3b5"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bfdd99f6b7so2884195ad.0
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 12:08:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781204939; x=1781809739; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6cgKILDAticaRzulsJIYH9W464IRS0YMv9PGXESfrWA=;
-        b=uMt6S3b5UF2DW577U9JOSbzITD5oZLystXr/OY6EnBZy0j2ue6SFedG+CEdmDXi9pz
-         QKxBT4sPDCr2bcqIY5p4LnShVnNvNUNW+BGAvoMMmEdqYWfsaRsuNXd5MbFAIhqJ4vOn
-         3XfZtpeNkojurtsQYEKo9X/08HZ/iO34udBx7uTr711L28cTvGN4HBz3kH5muoKzkhwe
-         bCXxnvRd36iiplr7Xl8N40JBtMm6/x8zJgKW6/a09dnLh45HU0807KqbRcxTWU5u+6pn
-         bMVSPBm6vbX0rX4mANkRdinzH3OO1ChHBbOg2a047GPTlKCHBNg70S3oR8t6Swt0DE+C
-         zHCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781204939; x=1781809739;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6cgKILDAticaRzulsJIYH9W464IRS0YMv9PGXESfrWA=;
-        b=ITPAbvZYBgMMkZjZ5LNrHVcmF8GyYr4bHaRw7uBnV2RRdH4O5cvY4tVPJ+xiedsgYv
-         lVWZ92SkSetIG2/rQLQbEy7HIM9R6kS07Mfgf92qxxinAG2CUPeT9KZq/9qaS1FSZmv6
-         IeJaxb/MbvKDaoO5tkDLDe+Q3dJufDvBq/xoh1wxbktASGQZ/ypymt7XrRsqlGTHltZm
-         yi1EVp7GZszd6LpNHD+KYStsQ8X5utUKskEm3mgQdCenXgD0rWYD38ii/FHk0ZL12v16
-         ePMuAFeb0QxyU7g83hq22L1oDyUTBJr7eXif6oht3nMFcsdceS4Tn+sPoVPkz6+BMcaC
-         oYJg==
-X-Forwarded-Encrypted: i=1; AFNElJ9A7AoP43jFmlV6Qy+ZgFF0uOq3tGjoqWGTy/7NPdOvP6ejDYhVe9HLORQ+SqAVhQxAl1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmvOBE5g7tMWcMAR6i5VrUq3Jnm07M62uIq+h1IySVDLXxVRSq
-	984MML534W/fqK2kMmbmW6bZGennd4Hlqa7l83QGqZdlWC0yDYq4KTbq7h0exY1KW2XEdmuEmIY
-	Uwu0YIA==
-X-Received: from plkn7.prod.google.com ([2002:a17:902:6a87:b0:2bf:10b7:41d7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cccd:b0:2c0:c262:b917
- with SMTP id d9443c01a7336-2c2f0059f43mr46929825ad.5.1781204938424; Thu, 11
- Jun 2026 12:08:58 -0700 (PDT)
-Date: Thu, 11 Jun 2026 12:08:57 -0700
-In-Reply-To: <CAEvNRgGrPKBXh=VA3QBLJOczKRpMOB4nDmZL0XRwV6B3PT_7+Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ksZHw8Jj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90581F00A3A
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 19:14:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781205278;
+	bh=7VADOQgsZ+nB0F0qeAZfXqhe9nKZgfofXnfonH3aZZA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ksZHw8Jj4KgdiAEGnz2u1ysdGM7Gz9VGSqsZwKn3oJugu9ny7izMj631OyKgLn4vn
+	 l4Upxm2zcktT4V16jM/44T81eckXEzcR7+V5n7IAYCznmr8Xvaf2ct9NeRZ4PSy0bg
+	 +ymgp+gYhjnLiXXonSy6NT2lbDsNO0cF77ATvr4pR2+dhCg6GahIVYpujxrmJml0Ci
+	 6oeBRlYIOCtxA2F4YX2Jh6HJDwTmX1mtgVmeFm6bYO28q06dpjpXMAX0l5JrwLRCeQ
+	 q5gtDyqIT4JABkyfT9j16ewNx3ew9SPzVo8KxpDeGTwF3dQgbHddNHFIX5rUjzXEet
+	 JTcE9q78ODZ8Q==
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-bed19623d6eso29628366b.1
+        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 12:14:38 -0700 (PDT)
+X-Gm-Message-State: AOJu0Ywmx/kEZ/0WAo1qNqGu3MovjcZgLk4q4n9k4loTLRhrsVqRbDX9
+	tuSvcb4PAqAacPctkqgaDhj8/ibI7IKcExnTntDOH7vhCZv7f8PXq496HZZxwCloIAzqNm/sIqL
+	ytoWJ71cP0KCGyBgY7kV0RjM80L+mVwM=
+X-Received: by 2002:a17:907:b18:b0:bb8:fd88:f400 with SMTP id
+ a640c23a62f3a-bfc85f88eb0mr168781766b.21.1781205277757; Thu, 11 Jun 2026
+ 12:14:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260331194202.1722082-1-vipinsh@google.com> <20260331194202.1722082-2-vipinsh@google.com>
- <CAEvNRgGrPKBXh=VA3QBLJOczKRpMOB4nDmZL0XRwV6B3PT_7+Q@mail.gmail.com>
-Message-ID: <aisHySKe0PwM5DSg@google.com>
-Subject: Re: [PATCH v4 1/9] KVM: selftest: Create KVM selftest runner
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	kvm-riscv@lists.infradead.org, pbonzini@redhat.com, borntraeger@linux.ibm.com, 
-	frankja@linux.ibm.com, imbrenda@linux.ibm.com, anup@brainfault.org, 
-	atish.patra@linux.dev, zhaotianrui@loongson.cn, maobibo@loongson.cn, 
-	chenhuacai@kernel.org, maz@kernel.org, oliver.upton@linux.dev, 
-	ajones@ventanamicro.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20260604203546.365658-9-yosry@kernel.org> <20260604204911.80D601F00893@smtp.kernel.org>
+ <CAO9r8zMQrKy8YTNebBVXLt3Zsrbym57wOsbv1Rw-vGFO-osjnw@mail.gmail.com>
+In-Reply-To: <CAO9r8zMQrKy8YTNebBVXLt3Zsrbym57wOsbv1Rw-vGFO-osjnw@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 11 Jun 2026 12:14:25 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPHX2DH8q-G9xO91DvumNL87M6epVxo+rq1XQm4oxL4ww@mail.gmail.com>
+X-Gm-Features: AVVi8CcHErePEs6k0xG28ur8Fhf2xpSAogmMuV-_I8d_EUrORsR2L5ur6B9yR1s
+Message-ID: <CAO9r8zPHX2DH8q-G9xO91DvumNL87M6epVxo+rq1XQm4oxL4ww@mail.gmail.com>
+Subject: Re: [PATCH v2 08/10] KVM: selftests: Trigger save+restore randomly in
+ the #PF stress test
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jun 10, 2026, Ackerley Tng wrote:
-> Vipin Sharma <vipinsh@google.com> writes:
-> My (future) use case is that with hugepages, I want to run something
-> like
-> 
->   ./guest_memfd_test --order=0
->   ./guest_memfd_test --order=9
->   ./guest_memfd_test --order=18
-> 
-> And 0, 9 and 18 are the supported HugeTLB orders on the machine being
-> tested. I'd like to iterate over supported HugeTLB orders at runner
-> runtime instead of at build time.
+> > > +static void *sigusr_thread_fn(void *arg)
+> > > +{
+> > > +     pthread_t vcpu_thread = (pthread_t)arg;
+> > >
+> > > -             GUEST_SYNC(guest_faults);
+> > > +     for (;;) {
+> > > +             pthread_testcancel();
+> > > +             pthread_kill(vcpu_thread, SIGUSR1);
+> > > +             usleep(100);
+> >
+> > [Severity: Medium]
+> > Could this aggressive 100-microsecond signal interval cause a livelock on
+> > slower hosts or nested environments?
+>
+> Not sure if that's practically a concern.
 
-No.  The right way to handle this is to define testcases for the "interesting"
-sizes, and then rely on the test itself to SKIP if the size is unsupported.  This
-is no different than a test that requires EPT, or nested VMX, or nested SVM, etc.
+Spoiler alert: it is.
+
+>
+> In earlier iterations of the test, I remember higher intervals not
+> reliably reproducing the bug, but trying now, seems like this is no
+> longer the case. With 1 msec the bug still seems to reproduce
+> reliably, at least on Turin, and we get a lot more page faults. The
+> overall test runtime doesn't change much either.
+>
+> So I think we can do usleep(msecs_to_usecs(1)) in the next version.
+
+We observed the test failing internally on slow builds (e.g. with
+ASAN), due to the test not completing any accesses. Using 1 msec
+instead of 100us does fix it indeed.
