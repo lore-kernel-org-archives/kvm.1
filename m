@@ -1,121 +1,163 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5393F44EE
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 12:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F9D3FBB4D;
+	Thu, 11 Jun 2026 12:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781182075; cv=none; b=N9T/dAVljSEpsguHDfOTF4AOC7mwf1cmbQqgBUwIIatFtau/emoljABjuzrxY0ej4CXqiyp59H6AkkWWOb2QiQWEluvcu2xgj9V2TEG/dTH5EdITt5lXfIIffI9NfDVZxrwnsu08gkXu1PybboWVqA7Q1nEfUh7UYQLnvmki2C8=
+	t=1781182516; cv=none; b=Nl5fBh68N3jz58HiMn9UQPZZ71EQpnjzUqOksfhYRsKKBcZH25np0bQzptTNV752M5lKh+yxagmhYrw8Hy4VuUH2zeyl1JNKgXV6sEhLBd0PqKBhM7bD2cTtJTwIy3apa9wuMouGlrGEXv4OW5lUy1MtOU7HbihH3LeoVAq83LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781182075; c=relaxed/simple;
-	bh=/42qKKr2jsg+n3Ejba/l71EEiZTkZjitwTIwqPZJYgQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j6cpOaqW65egJIL9/6F4HOwRhMMQW3E66mj/A5iH9pCG9jElwuso7JKxiCjlJeTqOy3y8iD8rCGkR3RLqeFkFhqD2xAWb/kzfsN7hK6AiNoVScfXrJGxijokL6/egyWzXcQl9li+pcIRxtQE9+eSSPWL+8lnZbHoMu4a3z3qdyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ndRiOSv4; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ndRiOSv4"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36bba9b849dso7376864a91.1
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 05:47:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781182074; x=1781786874; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fLqFAC1FpZpyQ/rqAQDV2LVjvRpkOTsPyzevdqyhqkc=;
-        b=ndRiOSv4w7jY/pQrm01tQIa8sqBnDlqpMqTSHLD6WYUdaEF91AVr1MhgbDIB/j1ebt
-         Olb8aXN76yWamEam7SJ3yQ5zcsRFPoaCOksLh1RIfLZyx+u3/RB3yWILLbFndLAh0gTp
-         VLi6uk0UbMLClHjQAl4pcfj4tjo9ihkn/qvgghHPB/ed++stq2LA/Q/LNvA7H5Rg+3p6
-         tfgXMCU9SIxllcPVy1jZfzcoAdJSiy2lURIVuDop0lKR6g6UGYrw8jCqhRhargWNNJHd
-         m+/UxnvV2PYf9ah/JiyU3XuS1wb0k1+jc5AUmUtbeXXE9jSeB15mMh/hOdQHZBrBCLNY
-         k0YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781182074; x=1781786874;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fLqFAC1FpZpyQ/rqAQDV2LVjvRpkOTsPyzevdqyhqkc=;
-        b=j1cURK5YBZ6Kr3DhOdzenajrhuG0K7rfmnHJCg1PhmLG8tfluTBgt1hWvHRyNR3TYI
-         1qQmTqscJm4NeOQoe1APpM7ktEyCJH+E3wh6v96ML7giXVkcPJoFMv+4qdTTuUDl5s7Z
-         HJxxAmZFJYx1ky0dgYtm+BPYKZ4jtTodUT3Jkr2J0/AeyINxqgoH5jRRwLBR6hxyrzRt
-         gOdGVfSxUjgCk98SnG8fnAOq6TK6TZmol8GYZhSN5AhT4eLRN3TRMqEaNDHYfURAMXVP
-         nmYoq1Gt+2aOHXczPk/v+kwI7SynpzzuC7KeDjhs2ivrcCPJRs46qpe2qW8NMHttuMGX
-         FJmA==
-X-Forwarded-Encrypted: i=1; AFNElJ9bnRxeCEPX1D5HLPzXMdElEsciHtlMCbc4zn3gGgSgS53OU8Mw4t5E8HcWihxZxXcfX4c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxElG3F+oO6QktFzzOIURyOY82oq/ivd/cQpePSPfWvnwyUF2d
-	qPj75nCWU8ozRBdgj9ygRoigr1LYgFnmC7t696f+w9D2T8RSdYL8chAyKk4frkxJh40rlsyBFLX
-	BQlp3hg==
-X-Received: from pfbgi6.prod.google.com ([2002:a05:6a00:63c6:b0:842:5a9f:1cd0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:42:b0:36b:b9c7:35fb
- with SMTP id 98e67ed59e1d1-377a3e4503amr2937052a91.14.1781182073619; Thu, 11
- Jun 2026 05:47:53 -0700 (PDT)
-Date: Thu, 11 Jun 2026 05:47:52 -0700
-In-Reply-To: <aiqNPBQzoU9f8RwI@v4bel>
+	s=arc-20240116; t=1781182516; c=relaxed/simple;
+	bh=ZKi6ha5TuwUYlr7Pm+HTi0FHmtxK+pCSSMucOZXLmyA=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=T0x5BaICeYWqYlqlFiusI+9rTEGJsdyHc/i9zED54Fo9Lt2eTFdIlNbkm8nGhb2L0Hiz0W0rWVf8eVHkLEXo0lYtZMjqEKrd6/UsftVMwAFGI7fd38eo7YEkBaR0m9IDgRyfC9JxfZgnmiZR1U6LyC1llVcibwv3bMWi6SC8XJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Cx3sAssCpqUBMTAA--.26869S3;
+	Thu, 11 Jun 2026 20:55:09 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJCxvsIrsCpqQ+6iAA--.46630S3;
+	Thu, 11 Jun 2026 20:55:08 +0800 (CST)
+Subject: Re: [PATCH v6 5/6] LoongArch: KVM: Add valid bit check when set ESTAT
+ CSR register
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260611065815.1439154-1-maobibo@loongson.cn>
+ <20260611065815.1439154-6-maobibo@loongson.cn>
+ <CAAhV-H7vMq+-nm8f8aL2CvmNYivaHgWj1cTuyv0BTfPQRKpSJA@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <00f28be5-3805-90d1-d2a5-69734b3d0a03@loongson.cn>
+Date: Thu, 11 Jun 2026 20:52:00 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <aimMWzAf5b3luM0b@v4bel> <wxamg6zqn2qmsci2fwfepbqou5vtgydqmonr67mu7b73nkakbe@zedss5vzeci3>
- <aiqNPBQzoU9f8RwI@v4bel>
-Message-ID: <aiqueNUndQsbMNud@google.com>
-Subject: Re: [PATCH] KVM: SEV: Don't return a still-assigned gmem page to the host
-From: Sean Christopherson <seanjc@google.com>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: Michael Roth <michael.roth@amd.com>, pbonzini@redhat.com, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+In-Reply-To: <CAAhV-H7vMq+-nm8f8aL2CvmNYivaHgWj1cTuyv0BTfPQRKpSJA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxvsIrsCpqQ+6iAA--.46630S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxAF17GF4kJFyDGry8tr4rCrX_yoWrJF4rpr
+	yUKa4UurW8KFyqk3Wrtrs0vr4YvrWfKw4xZrZrKFWayryqvry3GFWxXr98Ary5u34fXF1I
+	vas5JrZ3uF4DJacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jepB-UUUUU=
 
-On Thu, Jun 11, 2026, Hyunwoo Kim wrote:
-> On Wed, Jun 10, 2026 at 05:16:57PM -0500, Michael Roth wrote:
-> > On Thu, Jun 11, 2026 at 01:10:03AM +0900, Hyunwoo Kim wrote:
-> > > ---
-> > >  arch/x86/kvm/svm/sev.c | 6 +++++-
-> > >  1 file changed, 5 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > > index 6c6a6d663e29..8fee6ec529f9 100644
-> > > --- a/arch/x86/kvm/svm/sev.c
-> > > +++ b/arch/x86/kvm/svm/sev.c
-> > > @@ -5178,8 +5178,12 @@ void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
-> > > 
-> > >                 rc = rmp_make_shared(pfn, use_2m_update ? PG_LEVEL_2M : PG_LEVEL_4K);
-> > >                 if (WARN_ONCE(rc, "SEV: Failed to update RMP entry for PFN 0x%llx error %d\n",
-> > > -                             pfn, rc))
-> > > +                             pfn, rc)) {
-> > > +                       /* Still assigned to the guest; pin and leak rather than freeing. */
-> > > +                       folio_get(page_folio(pfn_to_page(pfn)));
-> > > +                       snp_leak_pages(pfn, use_2m_update ? PTRS_PER_PMD : 1);
-> > >                         goto next_pfn;
-> > > +               }
-> > 
-> > This roughly aligns with what would happen if snp_page_reclaim() fails
-> > in sev_gmem_post_populate(), while the guest is being initialized via
-> > KVM_SEV_SNP_LAUNCH_UPDATE ioctl, which calls into kvm_gmem_populate().
-> > 
-> > However, in kvm_gmem_populate(), we still free the page. Maybe, to
-> > address both cases, we should just add a parameter to snp_leak_pages()
-> > to tell it to take an extra ref and use that in both of these paths.
-> > 
-> > Or we can just do the direct folio_get() in both cases, the above
-> > formalizes the handling convention a little better though IMO.
-> 
-> If I understand correctly, an extra ref alone still seems to leave the
-> LRU corruption that sashiko flagged:
-> 
-> https://lore.kernel.org/all/20260610162623.061BA1F00898@smtp.kernel.org/
-> 
-> A gmem folio is on the unevictable LRU, and taking a ref keeps the folio
-> on the LRU. page->buddy_list, which snp_leak_pages() uses, shares the
-> same union as folio->lru, so leaking the page overwrites the folio's LRU
-> pointers. Both paths deal with a gmem folio, so the same applies.
-> 
-> To handle this properly, the folio would need to be taken off the LRU
-> before leaking, with something like folio_isolate_lru(), but that is
-> mm-internal and does not look usable from KVM. How should we proceed?
-> Please let me know if I am missing something.
 
-I'm inclined to do nothing.  rmp_make_shared() should only fail in this case if
-there's a fatal bug somewhere, no?  Either that or do BUG_ON(), because at some
-point these types of errors are simply unrecoverable.
+
+On 2026/6/11 下午6:10, Huacai Chen wrote:
+> Hi, Bibo,
+> 
+> On Thu, Jun 11, 2026 at 2:58 PM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>> When set ESTAT CSR register in function _kvm_setcsr(), valid bit check
+>> is added here. Also interrupt CPU_AVEC is checked by msgint feature.
+>>
+>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>> ---
+>>   arch/loongarch/kvm/vcpu.c | 25 ++++++++++++++++---------
+>>   1 file changed, 16 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+>> index e986146d2272..4f67eefbd4f1 100644
+>> --- a/arch/loongarch/kvm/vcpu.c
+>> +++ b/arch/loongarch/kvm/vcpu.c
+>> @@ -602,7 +602,7 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm *kvm, int cpuid)
+>>
+>>   static int _kvm_getcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 *val)
+>>   {
+>> -       unsigned long gintc;
+>> +       unsigned long gintc, estat;
+>>          struct loongarch_csrs *csr = vcpu->arch.csr;
+>>
+>>          if (get_gcsr_flag(id) & INVALID_GCSR)
+>> @@ -621,8 +621,9 @@ static int _kvm_getcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 *val)
+>>                  preempt_enable();
+>>
+>>                  /* ESTAT IP0~IP7 get from GINTC */
+>> -               gintc = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC) & 0xff;
+>> -               *val = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_ESTAT) | (gintc << 2);
+>> +               gintc = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC) & KVM_GINTC_IRQ_MASK;
+>> +               estat = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_ESTAT) & ~KVM_ESTAT_EXTI_MASK;
+>> +               *val = estat | (gintc << VIP_DELTA);
+>>                  return 0;
+>>          }
+>>
+>> @@ -637,7 +638,8 @@ static int _kvm_getcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 *val)
+>>
+>>   static int _kvm_setcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 val)
+>>   {
+>> -       int ret = 0, gintc;
+>> +       int ret = 0;
+>> +       unsigned long gintc, estat;
+>>          struct loongarch_csrs *csr = vcpu->arch.csr;
+>>
+>>          if (get_gcsr_flag(id) & INVALID_GCSR)
+>> @@ -648,11 +650,16 @@ static int _kvm_setcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 val)
+>>
+>>          if (id == LOONGARCH_CSR_ESTAT) {
+>>                  /* ESTAT IP0~IP7 inject through GINTC */
+>> -               gintc = (val >> 2) & 0xff;
+>> -               kvm_set_sw_gcsr(csr, LOONGARCH_CSR_GINTC, gintc);
+>> -
+>> -               gintc = val & ~(0xffUL << 2);
+>> -               kvm_set_sw_gcsr(csr, LOONGARCH_CSR_ESTAT, gintc);
+>> +               gintc = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC) & ~KVM_GINTC_IRQ_MASK;
+>> +               gintc |= (val >> VIP_DELTA) & KVM_GINTC_IRQ_MASK;
+>> +               kvm_write_sw_gcsr(csr, LOONGARCH_CSR_GINTC, gintc);
+> I think read & write can be combined, which means it can be simplified as:
+>                  gintc = (val >> VIP_DELTA) & KVM_GINTC_IRQ_MASK;
+>                  kvm_set_sw_gcsr(csr, LOONGARCH_CSR_GINTC, gintc);
+> 
+>> +
+>> +               /* only set valid ESTAT bits */
+>> +               estat = val & ~KVM_ESTAT_EXTI_MASK;
+>> +               estat &= CSR_ESTAT_IS | CSR_ESTAT_EXC | CSR_ESTAT_ESUBCODE;
+>> +               if (!kvm_guest_has_msgint(&vcpu->arch))
+>> +                       estat &= ~CPU_AVEC;
+>> +               kvm_write_sw_gcsr(csr, LOONGARCH_CSR_ESTAT, estat);
+> I think write csr may lose bits from the original value, so
+>                  kvm_write_sw_gcsr(csr, LOONGARCH_CSR_ESTAT, estat)
+> should be
+>                  kvm_set_sw_gcsr(csr, LOONGARCH_CSR_ESTAT, estat)
+> 
+> If you agree, I will change it when I apply because all others look good to me.
+At the beginning, it is kvm_set_sw_gcsr() with CSR_GINTC/CSR_ESTAT, 
+later I change it with kvm_write_sw_gcsr(). With kvm_set_sw_gcsr() API, 
+it is only set new interrupt, however does not clear the interrupt. So I 
+change it with kvm_write_sw_gcsr() which will overwrite the interrupt bits.
+
+At the same time, bit field CSR_ESTAT_EXC | CSR_ESTAT_ESUBCODE is not 
+suitable for bit set, overwrite its value is more suitable.
+
+Regards
+Bibo Mao
+
+> 
+> Huacai
+> 
+>>
+>>                  return ret;
+>>          }
+>> --
+>> 2.39.3
+>>
+
