@@ -1,116 +1,138 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19F9233922
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 14:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D3E3FBA7;
+	Thu, 11 Jun 2026 15:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781189027; cv=none; b=JbtooWtZE+XomKpTNL8RMgzbFLmO4dIueH4bGzwIuNnQVy32NZa0dZqzhe6mMJrMZ4XYNuxNmFWOejfrrAjiXUHi2EfmmY4TnFou/ImFGzNlhfBDnLaz6yAJb1XKFd1+6gcFtERgIUhujws/iGi1p1mSbKT/RyLeMtstrKdyfn4=
+	t=1781190086; cv=none; b=hwhdBLU3PqCkPUccTEGwVrGmiNSOp75I0Vs37QywyHGm2Og1VDmgIoWeH18sxnp4SIXKVcN1UclxsDJ4bo7MGBx3DdA4PdYcBbWXtlhS968RvSrXrVcxKtYLoKEVIbRVjFf+NiDZJV+WsD/oPXM62fB7XJhPMXFofCjuB6KlfuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781189027; c=relaxed/simple;
-	bh=4K38vLXL5pZRZWOn0eeyFNBO1MRJdl577n+tvzdGp2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bXx1ZqtBcw3yjP2AFR7ee9kSH4Tj5L6kG9Xv8bdmbAPaWRRMfql4sZY36tnNrywtryx68oX1EXOAetPlrBkyzKw01c0lVUJ4V1nvcoKiu2kiJRoflMzjzLRf1JtgsPX6Kq9B2urBBEGgxgtoAAMIFychH9xx/EwXiEA9C/j3vGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wVsXoakb; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1781190086; c=relaxed/simple;
+	bh=VA5KVvwur9iWnMNNWccE9qYh6ULqQoRyTKFgLMCx0oI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BF1gNSQOb7MjYGEl93G4NBFuXmF8IN+k5TpHkJvvrlxTY7ZmPQAgYE/nOjZkEgiblEu0bYdeneWxrJR93S4XkymDzEI6U2J9xAAUlT+rfuVbhBMV1+GEMcphItN8w4G7uhdoctlZ0Hhzj7w3jXZpoMng5MjpkBrMVIJcEZ9Qxis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Vp5xuhIr; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wVsXoakb"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2bf22c18ad3so118845ad.0
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 07:43:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781189025; x=1781793825; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0oU1AMkEBXQ5YpUDfzthi5AIaf2cxjNsEqaUvYJpzuY=;
-        b=wVsXoakbHvw2RwntNUa8A3P/XOVs68lTzIsUKYv6Qwk3H+ltMu0GOLtTxzlhPoSbfd
-         9Fn0aRuwF2fO2DCzBoKcjpSAWOE+XfuOv786olIv2tjKzWpdQ3JGM9M5wt8iJCdMba3L
-         H0KzqAzaiWKWj/B2H02idIXHr16f1wuEqKS+QcwCVUPKMxBZ2CpkIpWfYOsR5r5EBoZu
-         X/C5hUv0RwaMhvL20NBEZqm+53XM4CcBfu2LwH4/IrXxP9Dnf5JAnHeSl8zez8oQdWWh
-         TAbkQDpf7OQsCtyZ2wEBH0exrTgN9cBfkU13MBe8yLtDbAPEvawbsknFS3TP0nYROCdd
-         nuiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781189025; x=1781793825;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0oU1AMkEBXQ5YpUDfzthi5AIaf2cxjNsEqaUvYJpzuY=;
-        b=WqsfsccvjndQf001yc/vsBr+j5/6NJoBN2psCjqNBCSLTV6I7ulMTb1pyQEuthI7hm
-         eNxuxFoNnCi31CXJN+UtU5SX1yS7zo66Uu5exoOGh0KBJyJqnFqdcel2k7sKybGcZA5/
-         yJUjKsvsZClDqM3Xycy4OqHMwH2CnFSbborO19M2MIETp5Uh/ztChRM0MOsKbhXkKwNM
-         NalQ7brC1bK8+chd+W7ABc/aEtEYxCgJMbg1ZEmw+51O6DhAx/37mvLaxKvZe8wW05QU
-         Aj2R2v42CCFjnM5KLeLnRcJoY3vthpg29gIB3pJDC8VJnjUj+l8mUTLthexZ7WmuyCbV
-         BgoA==
-X-Forwarded-Encrypted: i=1; AFNElJ+D9rjmgbcvf58yqJHa4wgKWFtD9EQslVksfZp/rZs49/7zSwwLOdWWQDKg1UhjoAlS5wc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQG/w0OaWmHPzVdEVvnRKJUzHMW8Plg+y6rhvLcCithkFEDrpD
-	4RlSuyNoU9+9NNJVFkaLu08QbmtxbJ9UX5bzHq2+p2Jg5VtKmGG9z5tP9Af4I0py0A==
-X-Gm-Gg: Acq92OE3WjPBbbWeYgRwBdu8Z/5ndUFA9oT2O1X/W8e9SzyhbZic80tMOSR8a8LF5TF
-	iwIAcEK1Eez629PGgwZ0W5R+iCDUlfsjbmPk7zVGjE+lwlydaA7sZdpcw8+53Z1tslaOf1lZ3z6
-	P/naYtw0+Z41/Ew90VjLZ3PzQr+haq+fgBx+Dmm3Sf3soQ2ggdOJGHvuI2icLUtlRLYjLe6uCBr
-	4aH7YyoAZek4nFMbJNGkNEWU9zWQL52UJwhIYKX+eJAOQ6RIKR8Qm0YBH6pDhLAS/UdXwZowKW/
-	9i1LIx2delYVBdS6SGx7c2UvRk+bKSTIjN437slEHjKM3lblufZ95kMbL7s7rcTOaX53Yiez63t
-	M55AirX19o44jpSbpQCch0MTLQsGRTnT4vObQZKARc1rLPh+kY+HP3FUvQf79PBk1lKPMoQXOyY
-	l+kspBwjblbXEjlmcdmc7X6rhJy+vQXrxCu89buh1Q53UdY3fCPz5C2/x33EhjlqLWWJ0+1SQ=
-X-Received: by 2002:a17:902:fb07:b0:2c1:ee6e:4e4f with SMTP id d9443c01a7336-2c2dff6a622mr1185485ad.32.1781189024806;
-        Thu, 11 Jun 2026 07:43:44 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84337bbbfacsm2163232b3a.20.2026.06.11.07.43.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 07:43:44 -0700 (PDT)
-Date: Thu, 11 Jun 2026 14:43:38 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>, Matt Evans <mattev@meta.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Shivaji Kant <shivajikant@google.com>,
-	Samiullah Khawaja <skhawaja@google.com>
-Subject: Re: [RFC PATCH 0/5] vfio/pci: Support ZONE_DEVICE-backed P2P
- Registration
-Message-ID: <airJmkSQoAXao89K@google.com>
-References: <20260610151853.3608948-1-praan@google.com>
- <20260610162848.GO2764304@ziepe.ca>
- <airI0VIb563jHTcy@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Vp5xuhIr"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BBtUrs677336;
+	Thu, 11 Jun 2026 15:01:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=ctq1i4SApRSGZCzF1
+	VjufqyCL6LaGmr0M2fU2G1W9M0=; b=Vp5xuhIrZqfr4KAffUusqdn8kKVUynd+d
+	55sEDQslXjfBF3v3vQKsi/rcxsvpmWhUYeAZCc0kfG1QgWYaExVqtkpgpNXDsLxx
+	TYlLtfUieE7miT6wOJG6xhawWDihtZ6NUpCJuvUv45H2JEpvPYbmxQhkntBKgBEA
+	gIaWgVDPjv3plnY2uSs7CLAioZiPvWZnaztdqeXt96BxBIgytGtM+ydQr2ZBraep
+	v8TZT3aQFx1sfY2hgICu55iyiGcUKs8h1Ubk2+aG7pYiYuMHl9pThvgz+iPoleH/
+	zr2WQ55RCS9igVCmnTNt/wiJFOfecLaa8HIGFOtuBZ+8tiT7JIqog==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8am91t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jun 2026 15:01:23 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65BEnetp019811;
+	Thu, 11 Jun 2026 15:01:22 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4eqe09knah-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jun 2026 15:01:22 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65BF1GIp48628028
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Jun 2026 15:01:17 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DAF0B20040;
+	Thu, 11 Jun 2026 15:01:16 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C25692004B;
+	Thu, 11 Jun 2026 15:01:16 +0000 (GMT)
+Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.224.75.30])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 11 Jun 2026 15:01:16 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
+        borntraeger@de.ibm.com
+Subject: [GIT PULL v1 1/5] KVM: s390: Silence potential warnings in _gmap_crstep_xchg_atomic()
+Date: Thu, 11 Jun 2026 17:01:12 +0200
+Message-ID: <20260611150116.218162-2-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260611150116.218162-1-imbrenda@linux.ibm.com>
+References: <20260611150116.218162-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <airI0VIb563jHTcy@google.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: rLnPVC6Iz4pKM23HUKkaCBrIwN9F9JpR
+X-Authority-Analysis: v=2.4 cv=TdKmcxQh c=1 sm=1 tr=0 ts=6a2acdc3 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=4xVTsJvn8g-7h_O1kUwA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDE0NyBTYWx0ZWRfX0Ko994dFfoN1
+ YGE/L1m/Pa0XkqI03YzfRNOkOssJxrduSyXppGzp+czQ92MfoQUcGBrBpCJZCTZmwqCPpa8OFo9
+ /ul8tebN6WaxhdfyPjlim6ao5cyt3zV5sDmrimTAEPEl04oRTER8hVaC5M72JYlKBAFF6Gm37Tq
+ KpfKHcCvohuZDTNTJEF10jCWtUapygSoKuWIOXIH7Zm+IIHtm2JJPrehn1UgCNILxgEBmMLx5Uy
+ qVSNEE+Wf+16K4SkZCm+L+ndUW0jH0D31xIJm07PEGeRpW0etGftY1wqD7Md5vZQWOn8cX+502h
+ qpxDwTCmqu5ipUrnAlhI4DwJQsvtyZZudc38T/uC/NsPTtFfDgO5LBI+E8Su8FyWKzhOwvcL/9J
+ YD1FrOhH9XaTwMbE4S2S2MSpCDrF0KDseYv1Tn+wXujCPthWACjLQvi4CtnkcoWQsqnWCiwRM0y
+ gglRyaj2E2d829iebEQ==
+X-Proofpoint-GUID: rLnPVC6Iz4pKM23HUKkaCBrIwN9F9JpR
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDE0NyBTYWx0ZWRfX+CHPaMpPGG+x
+ eoxlwj+5b3xhdVx1SOv+0+D2YYrOvWvat62OXkuUlkfotX3HIHKiDHCkdcq1T/4/cswbmLhFwgi
+ Uqd/cgC+jngougaSazP2atrfBg2evnU=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-11_02,2026-06-11_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 clxscore=1015 impostorscore=0 adultscore=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606110147
 
-On Thu, Jun 11, 2026 at 02:40:17PM +0000, Pranjal Shrivastava wrote:
-> On Wed, Jun 10, 2026 at 01:28:48PM -0300, Jason Gunthorpe wrote:
-> > On Wed, Jun 10, 2026 at 03:18:48PM +0000, Pranjal Shrivastava wrote:
-> > 
+While dat_crstep_xchg_atomic() is marked as __must_check, in this
+particular case the return value should be ignored.
 
-[...]
- 
-> > > An alternative implementation has been explored which integrates with the
-> > > ongoing VFIO DMABUF-mmap refactor [1]. In that approach, rather than
-> > > registering a BAR as a system-wide P2P provider, VFIO optionally
-> > > allocates ZONE_DEVICE pages only for specifically exported DMABUFs via a
-> > > new VFIO_DMA_BUF_FLAG_ALLOC_STRUCT_PAGES flag.
-> > 
-> > That's probably more sensible but you can't have a DMABUF mmap
-> > actually install non-special memory. The native vfio mmap still can,
-> > but not mmap on the dmabuf fd. That's still workable, just keep in
-> > mind.
-> 
-> Ack. I guess, we could have a separate mmap path in case of BARs that are
-> struct page backed which doesn't go through the dmabuf exporter.
-> 
-> That said, we don't mind moving away from the old API if VFIO mmap can
-> support this, we don't mind open-coding with devmem_remap_pages.
+Silence potential compiler warnings with a pointless check, and add a
+comment to explain the situation.
 
-Minor correction, I meant: devm_memremap_pages 
+Fixes: d1adc098ce08 ("KVM: s390: Fix _gmap_crstep_xchg_atomic()")
+CC: stable@vger.kernel.org # 7.1
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Message-ID: <20260611104850.110313-2-imbrenda@linux.ibm.com>
+---
+ arch/s390/kvm/gmap.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-Thanks,
-Praan
+diff --git a/arch/s390/kvm/gmap.h b/arch/s390/kvm/gmap.h
+index 5374f21aaf8d..20881e3ce9d8 100644
+--- a/arch/s390/kvm/gmap.h
++++ b/arch/s390/kvm/gmap.h
+@@ -279,7 +279,16 @@ static inline bool __must_check _gmap_crstep_xchg_atomic(struct gmap *gmap, unio
+ 			gmap_handle_vsie_unshadow_event(gmap, gfn);
+ 		else
+ 			_gmap_handle_vsie_unshadow_event(gmap, gfn);
+-		dat_crstep_xchg_atomic(crstep, oldcrste, newcrste, gfn, gmap->asce);
++		if (!dat_crstep_xchg_atomic(crstep, oldcrste, newcrste, gfn, gmap->asce))
++			return false;
++		/*
++		 * Return false even if the swap was successful, as it only
++		 * indicates that the best effort clearing of the vsie_notif
++		 * bit was successful. The caller will have to try again
++		 * regardless, since the desired value has not been set.
++		 * This pointless check is needed to silence a potential
++		 * __must_check warning.
++		 */
+ 		return false;
+ 	}
+ 	if (!oldcrste.s.fc1.d && newcrste.s.fc1.d && !newcrste.s.fc1.s)
+-- 
+2.54.0
+
