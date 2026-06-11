@@ -1,163 +1,220 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08523F44F6
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 12:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD94E3F88BB
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 12:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781182695; cv=none; b=G/q5B/esMC5sIISH9SI8+L8pm+O2pWydd5p1XdGJ8DNUeBWUEpb4JDUABRF/MQtzKZrleAdYCJwvtVhOOpcxuaAigfjBdNIQG9OJZyFv388m3WPtT8jb5yv0g65LP5Mq3Wy2UZxAPOK3Bt4+QV4vfqzlE7qzhhDYcOEVJczzx/Y=
+	t=1781182731; cv=none; b=rvYg7Z3vsBzQeT2s5bpZ58so/wU9Nax5g1d/ZQeuedauMeNsrByD6ftR0qZ9xCWrkc+wLvPf6kZqtmuIXWdY/Ypf0p7lzk3AVyR6ue8fvaWETX9/9hAzYbZ18uLUxk6qYzojmlOnfq8PUUYNvlW86Zj9Z15z3spQjnrBVHp7+mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781182695; c=relaxed/simple;
-	bh=sQyWb1dqYl4h2Q30LdxttLhVMy3fw+XDB6f1Zg6+cu8=;
+	s=arc-20240116; t=1781182731; c=relaxed/simple;
+	bh=JgTdTIgEKDu7c4xh60cOrp6tvph15X5Z2fyTzt5M3hk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qaGY8bSVXuQnAnu0Be0bRqdXcgKs+0EK4fj+CXS+TfHK+Y8UP1aksuPnJUCRMWz4wvUgtiAhQiXwjfzj/GeI4SreXt2r/M9aNLMTe9gvG90xEGDzUQjNKYGX2iXaHwaeuX0lYyPubR/THNY6l8vs9dvg9MHVIr0djZ1zknfJleI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FO1E7nO8; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=bLq/YNNwnI+WFfwHcWRcpLLRius1IVU21/tFZ7tkZWmqYTMaK0ebYaUSM92hD98minj2U5o6I70LgFZYsMqeNxjomeTWJz5hJayjPxeGRdwxk0Lgw1O3SgJkYuUdPsuhG4NXCoKj9dR/bZPzLalmssB2OVwjNeYqzbGezh9IIdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AwgGuLPG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FO1E7nO8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DBD1F00898;
-	Thu, 11 Jun 2026 12:58:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AwgGuLPG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED631F00893;
+	Thu, 11 Jun 2026 12:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781182693;
-	bh=qUIyZ+RxwkeJxBHM3lS70DRZLrXPDp+w5H0vw7Ji4X0=;
+	s=k20260515; t=1781182729;
+	bh=Kp1AyRHQnM2AA9WTGDVQb4qt84arujeigHrNax8uwCE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FO1E7nO8Vp+tJQmt/FSA44DjnYwR3+xRILP/oZ7JrPs2gKWvvbwGHCAeC5IsJLYP3
-	 zQfrqriocmUeFJEA3e46BAliUHePaTHIJ8joDSbNBHlQIu0LoQDhbp+7nFVGfVh+9p
-	 nqlhW8l+pEC8IY2d31sXXTtQDzWaNYf4TnpSZ2V9sgmHfC+cyt8Oo2ydAcT7c1iOzL
-	 Pk3OMNGA8ZtCAtG4EOyI0IUIbGKT1qaKRppxqNqPhtL6V/fOxxk/pJWurYd2mwH2mO
-	 SAT3+kEz4C3YyCkwz62bvcpzwWeh3dtgrek/lviV6H2Hi6SCYfa1lUsXqr5m526ial
-	 ktadcdDtfeMhQ==
+	b=AwgGuLPGy4ltYMruKNpsPlL6h0iE+RHmXYQTREpGrmU67B5OJ7lSZEIZ+6yLOx9Uk
+	 gcYkMxFRY4b49hf4PceL8hx7bGF49bo8XHvbCbslOXYq11Wqcg3VP0gxWB/inEh/gd
+	 KylUPTnFwtWbNkbxL1oQQGNvufjf4ZKjKIcIQjkaV8U77+zem00m/H0pGvF8GLGq5N
+	 HWAJPje4Gai5m0uZ9ZXgZ8X5jeZTHcm4gcXB5YHK3z1BJUvVHtMiuJqoj/CYmsKJ1D
+	 J76quryPV3zp2QdT2ZTDl2YD/UX5mN4Z7Jenx1Pj46M+1H+sIlorkjwfxITVWI3NIy
+	 F6yTlgzcrDJWA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/4] kvm: svm: Defer VMSA allocation to LAUNCH_FINISH
- stage
+Subject: Re: [PATCH 4/4] kvm: svm: Support KVM_SEV_SNP_PAGE_TYPE_VMSA at
+ SNP_LAUNCH_UPDATE
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260611123528.572255-3-joro@8bytes.org>
-References: <20260611123528.572255-3-joro@8bytes.org>
+In-Reply-To: <20260611123528.572255-5-joro@8bytes.org>
+References: <20260611123528.572255-5-joro@8bytes.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Jun 2026 12:58:13 +0000
-Message-Id: <20260611125813.A9DBD1F00898@smtp.kernel.org>
+Date: Thu, 11 Jun 2026 12:58:49 +0000
+Message-Id: <20260611125849.9ED631F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
-- [Medium] Missing VMSA cleanup on the error path in `snp_init_kvm_vmsa()` =
-causes a guest-reachable `WARN_ON_ONCE` upon retry.
-- [Medium] Late vCPU creation results in KVM's INVALID_PAGE sentinel being =
-passed directly to the hardware PSP firmware when dumping VMCB.
+
+New issues:
+- [High] Missing `srcu_read_lock()` when calling `gfn_to_memslot()` in `sev=
+_es_vmsa_pa()`, leading to a potential Use-After-Free of KVM memslots.
+- [Low] The local variable `sev_features` in `sev_gmem_post_populate()` is =
+assigned but never used.
+
+Pre-existing issues:
+- [Critical] KVM writes firmware data to a potentially read-only userspace =
+page during CPUID error recovery, which could corrupt the global zero page.
+- [High] Out-of-order `kunmap_local()` calls violate the highmem API's stri=
+ct LIFO unmapping requirement.
+- [High] A malicious host userspace process can trigger a kernel warning (`=
+WARN_ON_ONCE`) by passing a NULL user address (`uaddr =3D 0`) when issuing =
+`KVM_SEV_SNP_LAUNCH_UPDATE` for any non-ZERO page type.
 --
 
-commit 31275eaac0590092737efa334c2a33922a5b5fd9
+commit f2475c503a445642b6525297ce3c8dd1d2a1067f
 Author: Joerg Roedel <joerg.roedel@amd.com>
 
-kvm: svm: Defer VMSA allocation to LAUNCH_FINISH stage
-   =20
-Do not allocate a KVM-managed VMSA for all VCPUs on VCPU creation,
-defer it to the LAUNCH_FINISH stage of SEV-ES and SEV-SNP. At this
-stage the VMSAs get used for the first time.
+kvm: svm: Support KVM_SEV_SNP_PAGE_TYPE_VMSA at SNP_LAUNCH_UPDATE
+
+This commit adds support for setting a VMSA in guest physical memory
+during the SEV-SNP launch process. It introduces a new page type,
+KVM_SEV_SNP_PAGE_TYPE_VMSA, which is used for the BSP.
 
 > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 9e00aa7bdca8c..0aa62cb802fe5 100644
+> index 0c42af2e62016..52d0fa5ebdab1 100644
 > --- a/arch/x86/kvm/svm/sev.c
 > +++ b/arch/x86/kvm/svm/sev.c
 
 [ ... ]
 
-> @@ -2689,12 +2700,14 @@ static int snp_launch_update_vmsa(struct kvm *kvm=
-, struct kvm_sev_cmd *argp)
-> =20
->  	kvm_for_each_vcpu(i, vcpu, kvm) {
->  		struct vcpu_svm *svm =3D to_svm(vcpu);
-> -		void *vmsa =3D sev_es_vmsa_ref(vcpu);
-> +		void *vmsa;
-> =20
->  		ret =3D sev_es_sync_vmsa(svm);
->  		if (ret)
->  			goto out;
-> =20
-> +		vmsa =3D sev_es_vmsa_ref(vcpu);
-> +
->  		ret =3D sev_es_vcpu_vmsa_make_private(vcpu);
->  		if (ret)
->  			goto out;
+> @@ -2532,7 +2546,9 @@ static int sev_gmem_post_populate(struct kvm *kvm, =
+gfn_t gfn, kvm_pfn_t pfn,
+>  	struct sev_gmem_populate_args *sev_populate_args =3D opaque;
+>  	struct sev_data_snp_launch_update fw_args =3D {0};
+>  	struct kvm_sev_info *sev =3D to_kvm_sev_info(kvm);
+> +	gpa_t gpa =3D gfn << PAGE_SHIFT;
+>  	bool assigned =3D false;
+> +	u64 sev_features =3D 0;
+>  	int level;
+>  	int ret;
 
-[Severity: Medium]
-Does this error path leak the newly allocated VMSA?
-
-Since sev_es_sync_vmsa() now allocates the VMSA, if
-sev_es_vcpu_vmsa_make_private() fails, the code returns via the "out" label
-without freeing the VMSA or resetting its state.
-
-If userspace retries the KVM_SEV_SNP_LAUNCH_FINISH ioctl, sev_es_sync_vmsa()
-is called again and will trigger the WARN_ON_ONCE() in
-sev_es_vcpu_alloc_vmsa() because the state is still VMSA_SHARED:
-
-    if (WARN_ON_ONCE(svm->sev_es.vmsa.vmsa_state !=3D VMSA_NONE))
-        return -EINVAL;
-
-Can we add a call to sev_es_vcpu_free_vmsa() on this error path?
+[Severity: Low]
+Is the sev_features variable necessary? It gets assigned below when
+processing a KVM_SEV_SNP_PAGE_TYPE_VMSA page but doesn't appear to be
+used anywhere else in this function.
 
 [ ... ]
 
-> @@ -4889,22 +4906,11 @@ void sev_init_vmcb(struct vcpu_svm *svm, bool ini=
-t_event)
->  int sev_vcpu_create(struct kvm_vcpu *vcpu)
->  {
->  	struct vcpu_svm *svm =3D to_svm(vcpu);
-> -	int ret;
+> @@ -2550,14 +2566,27 @@ static int sev_gmem_post_populate(struct kvm *kvm=
+, gfn_t gfn, kvm_pfn_t pfn,
+>  	if (src_page) {
+>  		void *src_vaddr =3D kmap_local_page(src_page);
+>  		void *dst_vaddr =3D kmap_local_pfn(pfn);
+> +		struct sev_es_save_area *vmsa =3D dst_vaddr;
+> +		bool accept_page =3D true;
 > =20
->  	mutex_init(&svm->sev_es.snp_vmsa_mutex);
+>  		memcpy(dst_vaddr, src_vaddr, PAGE_SIZE);
 > =20
-> -	if (!is_sev_es_guest(vcpu))
-> -		return 0;
-> -
-> -	/*
-> -	 * SEV-ES guests require a separate (from the VMCB) VMSA page used to
-> -	 * contain the encrypted register state of the guest.
-> -	 */
-> -	ret =3D sev_es_vcpu_alloc_vmsa(vcpu);
-> -	if (ret)
-> -		return ret;
-> -
-> -	vcpu->arch.guest_tsc_protected =3D snp_is_secure_tsc_enabled(vcpu->kvm);
-> +	if (is_sev_es_guest(vcpu))
-> +		vcpu->arch.guest_tsc_protected =3D snp_is_secure_tsc_enabled(vcpu->kvm=
-);
+> +		if (sev_populate_args->type =3D=3D KVM_SEV_SNP_PAGE_TYPE_VMSA) {
+> +			accept_page =3D snp_check_launch_vmsa(sev, vmsa);
+> +			if (accept_page)
+> +				sev_features =3D vmsa->sev_features;
+> +		}
 > =20
->  	return 0;
->  }
+>  		kunmap_local(src_vaddr);
+>  		kunmap_local(dst_vaddr);
 
-[Severity: Medium]
-Does removing this allocation lead to KVM's INVALID_PAGE sentinel being pas=
-sed
-to the PSP firmware?
+[Severity: High]
+This is a pre-existing issue, but does this violate the LIFO unmapping
+requirement of the highmem API?
 
-If userspace creates a vCPU after the SEV-ES or SEV-SNP launch sequence has
-completed, the new vCPU's VMSA is never allocated.
+The kmap_local_page() documentation requires mappings to be unmapped in the
+exact reverse order. Here src_vaddr is mapped first, then dst_vaddr, but
+they are unmapped in the same order instead of reverse. Could this corrupt
+the internal stack on the next kmap/kunmap operations?
 
-When this vCPU is run, sev_es_vmsa_pa() returns KVM's INVALID_PAGE sentinel
-(~0ull), which is loaded into the VMCB, triggering an immediate #VMEXIT
-(SVM_EXIT_ERR).
+[ ... ]
 
-If the dump_invalid_vmcb parameter is enabled, KVM handles this by calling
-dump_vmcb(), which then calls sev_decrypt_vmsa(). Since sev_es_vmsa_ref()
-returns NULL for VMSA_NONE, sev_decrypt_vmsa() erroneously assumes the VMSA
-is encrypted and passes the INVALID_PAGE sentinel directly to the PSP
-firmware as the source physical address for SEV_CMD_DBG_DECRYPT:
+> @@ -2593,6 +2622,9 @@ static int sev_gmem_post_populate(struct kvm *kvm, =
+gfn_t gfn, kvm_pfn_t pfn,
+>  		kunmap_local(dst_vaddr);
+>  	}
+> =20
+> +	if (ret =3D=3D 0 && sev_populate_args->type =3D=3D KVM_SEV_SNP_PAGE_TYP=
+E_VMSA)
+> +		sev->initial_vmsa_gpa =3D gpa;
+> +
 
-    data.src_addr =3D svm->vmcb->control.vmsa_pa;
-    data.len =3D PAGE_SIZE;
+[Severity: High]
+Will this new VMSA initialization path expose a use-after-free of KVM
+memslots during launch finish?
 
-    ret =3D sev_issue_cmd(vcpu->kvm, SEV_CMD_DBG_DECRYPT, &data, &argp_err);
+By setting sev->initial_vmsa_gpa to a valid page here, the ioctl path
+KVM_SEV_SNP_LAUNCH_FINISH can now call sev_es_vmsa_pa(), which looks up the
+slot:
 
-Could this direct hardware exposure to an invalid page address risk firmware
-hangs or IOMMU faults?
+arch/x86/kvm/svm/sev.c:sev_es_vmsa_pa() {
+    ...
+    slot =3D gfn_to_memslot(vcpu->kvm, gfn);
+    ...
+}
+
+Since the launch finish ioctl takes kvm->lock and vcpu->mutex, but not
+srcu_read_lock(), could a concurrent memslot update swap and free the
+memslot before it is accessed in kvm_gmem_get_pfn()?
+
+>  out:
+>  	if (ret)
+>  		pr_debug("%s: error updating GFN %llx, return code %d (fw_error %d)\n",
+> @@ -2620,12 +2652,22 @@ static int snp_launch_update(struct kvm *kvm, str=
+uct kvm_sev_cmd *argp)
+> =20
+>  	if (!params.len || !PAGE_ALIGNED(params.len) || params.flags ||
+>  	    (params.type !=3D KVM_SEV_SNP_PAGE_TYPE_NORMAL &&
+> +	     params.type !=3D KVM_SEV_SNP_PAGE_TYPE_VMSA &&
+>  	     params.type !=3D KVM_SEV_SNP_PAGE_TYPE_ZERO &&
+>  	     params.type !=3D KVM_SEV_SNP_PAGE_TYPE_UNMEASURED &&
+>  	     params.type !=3D KVM_SEV_SNP_PAGE_TYPE_SECRETS &&
+>  	     params.type !=3D KVM_SEV_SNP_PAGE_TYPE_CPUID))
+>  		return -EINVAL;
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but does the error recovery path
+for KVM_SEV_SNP_PAGE_TYPE_CPUID write to a potentially read-only page?
+
+When handling the CPUID type, kvm_gmem_populate() calls get_user_pages_fast=
+()
+with gup_flags =3D 0, requesting read-only access. If userspace mapped a
+read-only page like the global zero page, GUP will succeed.
+
+If the firmware returns SEV_RET_INVALID_PARAM, sev_gmem_post_populate() maps
+the page with kmap_local_page() and copies the expected values into it:
+
+memcpy(src_vaddr, dst_vaddr, PAGE_SIZE);
+
+Could this illegally overwrite read-only memory and corrupt the global zero
+page?
+
+> +	if (params.type =3D=3D KVM_SEV_SNP_PAGE_TYPE_VMSA) {
+> +		/* VMSA page are allowed only once */
+> +		if (sev->initial_vmsa_gpa !=3D INVALID_PAGE)
+> +			return -EBUSY;
+> +		/* Can only deploy a single page as VMSA */
+> +		if (params.len !=3D PAGE_SIZE)
+> +			return -EINVAL;
+> +	}
+> =20
+>  	src =3D params.type =3D=3D KVM_SEV_SNP_PAGE_TYPE_ZERO ? NULL : u64_to_u=
+ser_ptr(params.uaddr);
+
+[Severity: High]
+This is a pre-existing issue, but can a host userspace process trigger a
+kernel warning by passing a NULL user address (uaddr =3D 0) here?
+
+If params.uaddr is 0, src becomes NULL and passes the PAGE_ALIGNED(src)
+check. kvm_gmem_populate() skips fetching the user page and passes
+src_page =3D NULL to sev_gmem_post_populate().
+
+That function then unconditionally evaluates:
+
+WARN_ON_ONCE(sev_populate_args->type !=3D KVM_SEV_SNP_PAGE_TYPE_ZERO &&
+             !src_page)
+
+Since the type isn't ZERO, won't this allow an unprivileged user to spam
+the kernel log?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611123528.5722=
-55-1-joro@8bytes.org?part=3D2
+55-1-joro@8bytes.org?part=3D4
