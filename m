@@ -1,122 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085FE40C5CC
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 13:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B46E401A1F;
+	Thu, 11 Jun 2026 13:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781183901; cv=none; b=pdfkywRD5sNXbnFPjAtvLxnDJU8aCKBNoVOagS/Ux24Vlijk0f5jFrefIyaT3TJsR0sdqsr2L1Hzyu4CL97FM2iQysHRxWKHb0vtqbmQdOMLWVP79d8Gxu6M0csIrX5LUGj1WKJK0wUwXJGeLzyCknoKHNZiNNBf5w8e7ZxJJjE=
+	t=1781184191; cv=none; b=sppUqGdYDXBfxq0BJoIdDMDXB00yXJISIBNT0BDzQ70DeaT7bOukNVJZZ3SI2LfFWUmyZbo2hClJtq9A/Qi//EaljoFd8emwETnKxIL0DK4XyzTrqu/2Gw2BMbunoKgROKP6CG7lU8QseNCg/58nCOrOYihm9V80NtznSPHm70w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781183901; c=relaxed/simple;
-	bh=2Bvhx6JOvRAoyFMb3yhqEB0vnLlGpl/tLai9cPJtahE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=feI6xks2HR+C0NrxLDK8itAVWee9OvDE9XzHpCfL7hAUhrGerCyxTmzqj8PQmv26k2Ube033pSoBzIaFHrwGXD4tBCX6Oq1GHmUM7ogUhPh/E339xWzOAtejaDWXZRtHqmmEfToPV0cqvdiX5XZ6fDMEjlnzTDhBl1rVrvhp63w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4dgjAVU; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4dgjAVU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4B21F00893;
-	Thu, 11 Jun 2026 13:18:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781183896;
-	bh=gXV4u/CQkDuedEf6vwPb3VpHTmtOeyTKZIyA5+OjDXM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=D4dgjAVUXTyjrV71j/kcb9aFoXSQvFNtaDhHIqGRx1waaeqj9C24AtTrwTj28O3iL
-	 OtNsSBmPvjZOOy+kpQbdk/P0kuqV6j7MOEFeVxGVQisY5BIhMd/et09LnbsIC3qT3a
-	 6p1PTkICStouT48DswtU5sqQdrJsbtnG4CsSiZgHriIQnUB91K+KAwtBvVht3yqyrE
-	 j7bKF7KWIQlfBYv0Jmi/tBMoMBLmnJGBWM+TZhjXLi52MJMogWWicCKG5IUz2i1Uvs
-	 pSfNjScpvOPmqs+311zvwBwsK90g1+y9x49ACieXGsPR0jx2ZMt9kAJnp8cNKVwRZX
-	 nQzVQUPXs8nOQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 3/3] KVM: selftests: exercise guest_memfd folio
- migration
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shivank Garg" <shivankg@amd.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260611-shivank-gmem-migrate-v1-3-2d266bfc6f95@amd.com>
-References: <20260611-shivank-gmem-migrate-v1-3-2d266bfc6f95@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Jun 2026 13:18:15 +0000
-Message-Id: <20260611131816.1F4B21F00893@smtp.kernel.org>
+	s=arc-20240116; t=1781184191; c=relaxed/simple;
+	bh=hixCuOP+ySBCzckKfNibOuF23IbnYUBHKudx2i0G3Ng=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KCVTR0z6ZU9KvB6xaYs3OYSIN9WBjv5qN8RWnhfFzArLxj8SCb5Ivzehk71YryBjr2hBk8IEBiV7RckJ+phW5XzgAQqY36ZGyvrCyRWVh9saNiX2d1E1PUJ5v7o+bk8Q+3sJA0cX/w211i+wbe4CRoYt38wf7R3vNEvGSpTBAQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from 8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 3E6181C0ED1;
+	Thu, 11 Jun 2026 15:23:07 +0200 (CEST)
+Date: Thu, 11 Jun 2026 15:23:06 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, coconut-svsm@lists.linux.dev, 
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: Re: [PATCH 4/4] kvm: svm: Support KVM_SEV_SNP_PAGE_TYPE_VMSA at
+ SNP_LAUNCH_UPDATE
+Message-ID: <aiqwjn2DVOumfr3T@8bytes.org>
+References: <20260611123528.572255-1-joro@8bytes.org>
+ <20260611123528.572255-5-joro@8bytes.org>
+ <aiqtWVMqTK6vDoZ8@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aiqtWVMqTK6vDoZ8@google.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The test `test_migrate_folio` hardcodes NUMA nodes 0 and 1, lead=
-ing to false-positive test failures on systems with sparse NUMA topologies =
-or restricted cgroups.
---
+Hi Sean,
 
-commit 857b251fdce0e2a9ddc74b27904d9c410d3010ca
-Author: Shivank Garg <shivankg@amd.com>
+On Thu, Jun 11, 2026 at 05:43:05AM -0700, Sean Christopherson wrote:
+> On Thu, Jun 11, 2026, Jörg Rödel wrote:
+> > From: Joerg Roedel <joerg.roedel@amd.com>
+> > 
+> > Support setting a VMSA in guest physical memory during the SEV-SNP
+> > launch process. Only one VMSA can be provided which will then be used
+> > for the BSP. All of the APs will not have a VMSA allocated or assigned
+> > when this feature is used.
+> >
+> > This ensures stable launch measurements on SEV-SNP which are
+> > independent of the number of VCPUs the VM is launched with.
+> 
+> This needs a *much* longer explanation and more justification for exactly why
+> this needs to be handled in KVM.  I understand most of the words and acronyms,
+> but that's about where my understanding stops.
 
-KVM: selftests: exercise guest_memfd folio migration
+Sure, how about:
 
-This commit adds a migration test to guest_memfd_test for the
-MMAP | INIT_SHARED configuration on multi-NUMA systems. It migrates folios
-between node 0 and node 1 using move_pages(2) and verifies data integrity.
+For SEV-SNP VMs KVM currently allocates and measures one VMSA per VCPU into the
+initial memory image.  Historically this behavior comes from the SEV-ES
+implementation, which has no concept of a guest-provided or guest-owned VMSA.
+So on SEV-ES there is no other choice than allocating the VMSAs in KVM.
 
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testi=
-ng/selftests/kvm/guest_memfd_test.c
-> index 832ef4dfb99fa..04931d3add46c 100644
-> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-[ ... ]
-> @@ -76,6 +76,82 @@ static void test_mmap_supported(int fd, size_t total_s=
-ize)
->  	kvm_munmap(mem, total_size);
->  }
-> =20
-> +/*
-> + * Each page is filled with a distinct byte (its index). Check every byt=
-e that
-> + * data is intact after migration.
-> + */
-> +static void verify_page(const char *page, int page_idx, size_t size,
-> +			const char *when)
-> +{
-[ ... ]
-> +static void test_migrate_folio(int fd, size_t total_size)
-> +{
-> +	const unsigned long nodemask_0 =3D 1; /* nid: 0 */
-> +	unsigned long maxnode =3D BITS_PER_TYPE(nodemask_0);
-> +	int page_count =3D total_size / page_size;
-> +	void **addr;
-> +	int *status, *nodes;
-> +	char *mem;
-> +	int i;
-> +
-> +	if (!is_multi_numa_node_system())
-> +		return;
-[ ... ]
-> +	kvm_move_pages(0, page_count, addr, NULL, status, 0);
-> +	for (i =3D 0; i < page_count; i++)
-> +		TEST_ASSERT(status[i] =3D=3D 0, "Page %d should be on node 0", i);
-> +
-> +	/* Migrate node 0 -> 1, then check both the location and the data. */
-> +	for (i =3D 0; i < page_count; i++)
-> +		nodes[i] =3D 1;
-> +	kvm_move_pages(0, page_count, addr, nodes, status, MPOL_MF_MOVE);
+In contrast, on SEV-SNP each VMSA has a GPA assigned and is (in theory)
+guest-owned, so that the old SEV-ES behavior of letting KVM manage the
+VMSAs causes several problems (especially together with IGVM-loading)
+and inefficiencies:
 
-[Severity: Medium]
-Can this hardcoded target node cause false-positive test failures on
-systems with sparse NUMA topologies or restricted cpusets?
+	1. With the current KVM behavior the initial launch measurement depends
+	   on the number of VCPUs the VM has assigned.
 
-is_multi_numa_node_system() verifies that get_max_numa_node() >=3D 1, but
-it does not guarantee that nodes 0 and 1 specifically are online, have
-memory, or are accessible within the current cpuset (for example, a system
-might only have nodes 0 and 8).
+	2. Current SEV-SNP guest code will not use the KVM-allocated VMSAs for
+	   APs. Both EDK2 and the Linux kernel will allocate and provide their
+	   own VMSA pages for every AP. So the current allocation dance KVM is
+	   doing is useless for the APs.
 
-If node 1 is unavailable, kvm_move_pages() or kvm_mbind() will fail with
--ENODEV or -EINVAL, triggering a test assertion failure.
+	3. The current behavior makes it impossible to implement the
+	   IGVM-promise of a predictable launch measurement derived from only
+	   the IGVM file and the target platform.
 
-Should this test dynamically discover available NUMA nodes instead of
-hardcoding nodes 0 and 1?
+To solve these problems this patch adds support to measure an IGVM-provided
+VMSA page into the initial SEV-SNP memory image. Only one VMSA page is
+supported for now, which aligns with the IGVM requirement that each file can
+only provide one VP-context. The VMSA will be checked by KVM for supported SEV
+features and VMPL0 before being accepted.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611-shivank-gm=
-em-migrate-v1-0-2d266bfc6f95@amd.com?part=3D3
+When a VMSA page is measured in this way it will be used as the launch VMSA of
+the BSP for the VM. For all other VCPUs KVM will not allocate or measure VMSA
+pages, keeping the launch measurement in sync with the IGVM image. The guest
+has to provide VMSAs for all APs it intends to use, which common guest
+components already do anyway.
+
+When the feature is not used the current behavior is preserved. The changes
+have been tested together with the KVM planes patches and COCONUT-SVSM and
+showed that using this feature leads to a launch measurement matching the
+IGVM-prediction. 
+
+?
+
+-Joerg
