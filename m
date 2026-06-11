@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC92306742
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 12:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08523F44F6
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 12:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781182590; cv=none; b=ukC/zp1ftDBmWx8NSqUAUAHEnkNaRnArFpM8kycVNeIufOBD1NcrsB83UvR9Qt+Ei9rDdzpuMGVM8LycI1L5QjfzAsR0etpDJreuDoP9mQsLio+nhU9BSfQ/bHfkwh5Ip8Rytr8uTrFZfLCkaJkVoeA0Vmi6CXEdlzw8EtrtzwA=
+	t=1781182695; cv=none; b=G/q5B/esMC5sIISH9SI8+L8pm+O2pWydd5p1XdGJ8DNUeBWUEpb4JDUABRF/MQtzKZrleAdYCJwvtVhOOpcxuaAigfjBdNIQG9OJZyFv388m3WPtT8jb5yv0g65LP5Mq3Wy2UZxAPOK3Bt4+QV4vfqzlE7qzhhDYcOEVJczzx/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781182590; c=relaxed/simple;
-	bh=fA86R+SwqcFNarysZFksfOIzd04AJbSgvtUW+PYSYSk=;
+	s=arc-20240116; t=1781182695; c=relaxed/simple;
+	bh=sQyWb1dqYl4h2Q30LdxttLhVMy3fw+XDB6f1Zg6+cu8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=AwqQzmnLJQXxMTCCXnbuqO97qOekjjQX89KcgxJpIOOt6XnI9MFKoVlzsNCpUjmQI1xbCh5//Dl4qw/5vuw4B80kbDor/NgKUVRxfwVGYitaJcmUjYQ0CxTVCiPLdtnJGXk4PwImzO5NJkOh05XUJ6rjgQ9oAABplCByRIYVrVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXBnIQ3o; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=qaGY8bSVXuQnAnu0Be0bRqdXcgKs+0EK4fj+CXS+TfHK+Y8UP1aksuPnJUCRMWz4wvUgtiAhQiXwjfzj/GeI4SreXt2r/M9aNLMTe9gvG90xEGDzUQjNKYGX2iXaHwaeuX0lYyPubR/THNY6l8vs9dvg9MHVIr0djZ1zknfJleI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FO1E7nO8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXBnIQ3o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61421F00893;
-	Thu, 11 Jun 2026 12:56:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FO1E7nO8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DBD1F00898;
+	Thu, 11 Jun 2026 12:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781182588;
-	bh=zWUKIfGm5R8Ai9yXMKInzMPXa60jtrXCaZ1n7nypxzY=;
+	s=k20260515; t=1781182693;
+	bh=qUIyZ+RxwkeJxBHM3lS70DRZLrXPDp+w5H0vw7Ji4X0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GXBnIQ3orZa01ZpNy90VC08llYxboc3rFyYJmOOuWlONOv1ruQoO/OhofphGOedla
-	 VJ0QEEZaXHGwQWSYOirjbhZlB88Og71Ox+NFflm4O8snV/FPXW0fQXNKsZEb8WL+Yb
-	 UhGWILEM9LV0O4UZCsCpsVi8e8Kdb9uuKh045MDiuWvMtZztRzzLp1gwOIIj2CzLTI
-	 EzE2XvonfJfCwulwdVz7oyTNxwoXrFIW4eWqtmxdR1FIN3OzWEQ5vtoJVcGg0jjbRX
-	 SHNUNDEk1v0ZTRYhLTh7ZWfUnaOmixpYv32PF4hr3mqUp3g3cWD1CjxGLSNd7/Ty28
-	 vts70VGblj2/A==
+	b=FO1E7nO8Vp+tJQmt/FSA44DjnYwR3+xRILP/oZ7JrPs2gKWvvbwGHCAeC5IsJLYP3
+	 zQfrqriocmUeFJEA3e46BAliUHePaTHIJ8joDSbNBHlQIu0LoQDhbp+7nFVGfVh+9p
+	 nqlhW8l+pEC8IY2d31sXXTtQDzWaNYf4TnpSZ2V9sgmHfC+cyt8Oo2ydAcT7c1iOzL
+	 Pk3OMNGA8ZtCAtG4EOyI0IUIbGKT1qaKRppxqNqPhtL6V/fOxxk/pJWurYd2mwH2mO
+	 SAT3+kEz4C3YyCkwz62bvcpzwWeh3dtgrek/lviV6H2Hi6SCYfa1lUsXqr5m526ial
+	 ktadcdDtfeMhQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/4] kvm: svm: Streamline VMSA setting for VCPUs
+Subject: Re: [PATCH 2/4] kvm: svm: Defer VMSA allocation to LAUNCH_FINISH
+ stage
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260611123528.572255-2-joro@8bytes.org>
-References: <20260611123528.572255-2-joro@8bytes.org>
+In-Reply-To: <20260611123528.572255-3-joro@8bytes.org>
+References: <20260611123528.572255-3-joro@8bytes.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Jun 2026 12:56:28 +0000
-Message-Id: <20260611125628.C61421F00893@smtp.kernel.org>
+Date: Thu, 11 Jun 2026 12:58:13 +0000
+Message-Id: <20260611125813.A9DBD1F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,142 +46,118 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-
-New issues:
-- [High] Dynamically freeing an active initial VMSA page during SNP AP crea=
-tion without using SNP_PAGE_RECLAIM triggers an RMP violation, which bug-ha=
-lts the VM and leaks memory.
-
-Pre-existing issues:
-- [Critical] A malicious SEV-SNP guest can crash the host kernel by punchin=
-g a hole in a guest_memfd page that is actively assigned as an AP VMSA.
+- [Medium] Missing VMSA cleanup on the error path in `snp_init_kvm_vmsa()` =
+causes a guest-reachable `WARN_ON_ONCE` upon retry.
+- [Medium] Late vCPU creation results in KVM's INVALID_PAGE sentinel being =
+passed directly to the hardware PSP firmware when dumping VMCB.
 --
 
-commit dfce748c773ed97c4a6e2b3a1ea5718862d5c1bf
+commit 31275eaac0590092737efa334c2a33922a5b5fd9
 Author: Joerg Roedel <joerg.roedel@amd.com>
 
-kvm: svm: Streamline VMSA setting for VCPUs
-
-This commit streamlines the VMSA setting state of vcpus, allowing a VMSA
-to be either KVM-allocated or guest-provided. It consolidates the various
-tracking states around VMSAs.
+kvm: svm: Defer VMSA allocation to LAUNCH_FINISH stage
+   =20
+Do not allocate a KVM-managed VMSA for all VCPUs on VCPU creation,
+defer it to the LAUNCH_FINISH stage of SEV-ES and SEV-SNP. At this
+stage the VMSAs get used for the first time.
 
 > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 0c3962647116e..9e00aa7bdca8c 100644
+> index 9e00aa7bdca8c..0aa62cb802fe5 100644
 > --- a/arch/x86/kvm/svm/sev.c
 > +++ b/arch/x86/kvm/svm/sev.c
 
 [ ... ]
 
-> @@ -156,6 +159,173 @@ struct enc_region {
+> @@ -2689,12 +2700,14 @@ static int snp_launch_update_vmsa(struct kvm *kvm=
+, struct kvm_sev_cmd *argp)
+> =20
+>  	kvm_for_each_vcpu(i, vcpu, kvm) {
+>  		struct vcpu_svm *svm =3D to_svm(vcpu);
+> -		void *vmsa =3D sev_es_vmsa_ref(vcpu);
+> +		void *vmsa;
+> =20
+>  		ret =3D sev_es_sync_vmsa(svm);
+>  		if (ret)
+>  			goto out;
+> =20
+> +		vmsa =3D sev_es_vmsa_ref(vcpu);
+> +
+>  		ret =3D sev_es_vcpu_vmsa_make_private(vcpu);
+>  		if (ret)
+>  			goto out;
+
+[Severity: Medium]
+Does this error path leak the newly allocated VMSA?
+
+Since sev_es_sync_vmsa() now allocates the VMSA, if
+sev_es_vcpu_vmsa_make_private() fails, the code returns via the "out" label
+without freeing the VMSA or resetting its state.
+
+If userspace retries the KVM_SEV_SNP_LAUNCH_FINISH ioctl, sev_es_sync_vmsa()
+is called again and will trigger the WARN_ON_ONCE() in
+sev_es_vcpu_alloc_vmsa() because the state is still VMSA_SHARED:
+
+    if (WARN_ON_ONCE(svm->sev_es.vmsa.vmsa_state !=3D VMSA_NONE))
+        return -EINVAL;
+
+Can we add a call to sev_es_vcpu_free_vmsa() on this error path?
 
 [ ... ]
 
-> +static void sev_es_vcpu_free_vmsa(struct kvm_vcpu *vcpu)
-> +{
-> +	struct vcpu_svm *svm =3D to_svm(vcpu);
-> +	void *vmsa_ptr;
-> +
-> +	switch (svm->sev_es.vmsa.vmsa_state) {
-> +	case VMSA_NONE:
-> +	case VMSA_GUEST:
-> +		break;
-> +	case VMSA_PRIVATE:
-> +		vmsa_ptr =3D page_address(svm->sev_es.vmsa.vmsa_page);
-> +
-> +		if (is_sev_snp_guest(vcpu)) {
-> +			u64 pfn =3D __pa(vmsa_ptr) >> PAGE_SHIFT;
-> +
-> +			if (kvm_rmp_make_shared(vcpu->kvm, pfn, PG_LEVEL_4K)) {
+> @@ -4889,22 +4906,11 @@ void sev_init_vmcb(struct vcpu_svm *svm, bool ini=
+t_event)
+>  int sev_vcpu_create(struct kvm_vcpu *vcpu)
+>  {
+>  	struct vcpu_svm *svm =3D to_svm(vcpu);
+> -	int ret;
+> =20
+>  	mutex_init(&svm->sev_es.snp_vmsa_mutex);
+> =20
+> -	if (!is_sev_es_guest(vcpu))
+> -		return 0;
+> -
+> -	/*
+> -	 * SEV-ES guests require a separate (from the VMCB) VMSA page used to
+> -	 * contain the encrypted register state of the guest.
+> -	 */
+> -	ret =3D sev_es_vcpu_alloc_vmsa(vcpu);
+> -	if (ret)
+> -		return ret;
+> -
+> -	vcpu->arch.guest_tsc_protected =3D snp_is_secure_tsc_enabled(vcpu->kvm);
+> +	if (is_sev_es_guest(vcpu))
+> +		vcpu->arch.guest_tsc_protected =3D snp_is_secure_tsc_enabled(vcpu->kvm=
+);
+> =20
+>  	return 0;
+>  }
 
-[Severity: High]
-Does this sequence trigger an RMP violation?=20
-   =20
-When an SEV-SNP guest provisions an AP and triggers svm_vmgexit_ap_creation=
-(),
-KVM replaces the initial KVM-managed VMSA with the guest-provided one using
-sev_es_set_guest_vmsa(), which eagerly frees the old VMSA via
-sev_es_vcpu_free_vmsa().
+[Severity: Medium]
+Does removing this allocation lead to KVM's INVALID_PAGE sentinel being pas=
+sed
+to the PSP firmware?
 
-For SNP guests, the old VMSA page is in the VMSA_PRIVATE state and has been
-transitioned to the hardware VMSA state. To transition it back to shared
-memory, AMD architecture requires reclaiming the page via snp_page_reclaim()
-before issuing an RMPUPDATE.
-   =20
-Since sev_es_vcpu_free_vmsa() bypasses snp_page_reclaim() and directly calls
-kvm_rmp_make_shared(), could this fail with an RMP violation, causing the VM
-to bug-halt and leak the physical page?
+If userspace creates a vCPU after the SEV-ES or SEV-SNP launch sequence has
+completed, the new vCPU's VMSA is never allocated.
 
-> +				pr_err("Failed to make VMSA page shared - leaking it to avoid re-use=
-\n");
-> +				goto out;
-> +			}
-> +		}
-> +
-> +		if (vcpu->arch.guest_state_protected)
-> +			sev_flush_encrypted_page(vcpu, vmsa_ptr);
-> +
-> +		fallthrough;
+When this vCPU is run, sev_es_vmsa_pa() returns KVM's INVALID_PAGE sentinel
+(~0ull), which is loaded into the VMCB, triggering an immediate #VMEXIT
+(SVM_EXIT_ERR).
 
-[ ... ]
+If the dump_invalid_vmcb parameter is enabled, KVM handles this by calling
+dump_vmcb(), which then calls sev_decrypt_vmsa(). Since sev_es_vmsa_ref()
+returns NULL for VMSA_NONE, sev_decrypt_vmsa() erroneously assumes the VMSA
+is encrypted and passes the INVALID_PAGE sentinel directly to the PSP
+firmware as the source physical address for SEV_CMD_DBG_DECRYPT:
 
-> +static u64 sev_es_vmsa_pa(struct kvm_vcpu *vcpu)
-> +{
-> +	struct vcpu_svm *svm =3D to_svm(vcpu);
-> +	enum vmsa_state vmsa_state =3D svm->sev_es.vmsa.vmsa_state;
-> +	u64 vmsa_pa =3D INVALID_PAGE;
-> +
-> +	if (vmsa_state =3D=3D VMSA_GUEST) {
+    data.src_addr =3D svm->vmcb->control.vmsa_pa;
+    data.len =3D PAGE_SIZE;
 
-[ ... ]
+    ret =3D sev_issue_cmd(vcpu->kvm, SEV_CMD_DBG_DECRYPT, &data, &argp_err);
 
-> +		/*
-> +		 * The new VMSA will be private memory guest memory, so retrieve the
-> +		 * PFN from the gmem backend.
-> +		 */
-> +		if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, &page, NULL))
-> +			goto out;
-> +
-> +		vmsa_pa =3D pfn_to_hpa(pfn);
-> +
-> +		/*
-> +		 * gmem pages aren't currently migratable, but if this ever changes
-> +		 * then care should be taken to ensure the guest vmsa is pinned
-> +		 * through some other means.
-> +		 */
-> +		kvm_release_page_clean(page);
-
-[Severity: Critical]
-This is a pre-existing issue, but does dropping the page reference here all=
-ow
-a malicious guest to crash the host kernel?
-
-When a guest-provided VMSA is used for an AP, KVM resolves the GPA to a PFN
-and immediately drops its page reference here. The physical address is then
-programmed into the hardware VMCB.
-
-If a malicious guest issues a Page State Change request to transition this =
-VMSA
-page back to shared memory, host userspace can handle this by calling
-fallocate(PUNCH_HOLE) on the guest_memfd. This would trigger
-sev_gmem_invalidate(), which attempts rmp_make_shared().
-
-Because the page is still in the VMSA state, rmp_make_shared() would fail.
-sev_gmem_invalidate() only prints a warning and proceeds, freeing the page
-back to the buddy allocator while its RMP entry is still guest-restricted.
-
-When the host buddy allocator reallocates and accesses this page, would it
-trigger an RMP violation and a host kernel panic?
-
-> +	} else if (vmsa_state =3D=3D VMSA_PRIVATE || vmsa_state =3D=3D VMSA_SHA=
-RED) {
-> +		vmsa_pa =3D __pa(page_address(svm->sev_es.vmsa.vmsa_page));
-> +	}
-> +
-> +out:
-> +	return vmsa_pa;
-> +}
+Could this direct hardware exposure to an invalid page address risk firmware
+hangs or IOMMU faults?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611123528.5722=
-55-1-joro@8bytes.org?part=3D1
+55-1-joro@8bytes.org?part=3D2
