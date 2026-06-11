@@ -1,52 +1,56 @@
 Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A834B3D5C26
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 16:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8053FFAC1
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 16:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781196379; cv=none; b=ncCmACcHw/ZbUkS3v9eiDhPhuIjKX6rYL5moW3baSxDb/3AWSqfy+OnNro451h5LM9v+pqDTBZoxCKdHNAk5LVt5kdXThvm32aTinaaZ3fAzdWjbHsdw/Ow+dPSdfX/QLd3t9FicSRcDPk435vGaLx/PSvfmpZxBhzmCb7GM1s0=
+	t=1781196379; cv=none; b=dqBhjbZtG38u6XlSF8GdrI8i0Gha5jL+WKb2Jo2dEiMl0LqOor3KJ+6duLuU+eGPn6VrJjzHu0v3j07xYewLWC5X0Vk0yOycoSo2iGL4Kub9DaEahB1/vFPCZKfg1mTvx6iFOovNBtfRR6DAqjDxSfsINNqzP1ErPO7iRLknrME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781196379; c=relaxed/simple;
-	bh=W0bcCCQsy34mnxRQfbXu1iScIi3TgOH8BVTD6n5tqvc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JpuwjataCZNfBwf7d6gXgPu16Sc2JpJ0HcBtFQYWaUWyQh7LfpGcGdhq8/7Kvx/gIhalslisHTjYPXR2v0MKQzTPZxL0zDGYcJm29mKewGmGVoPdX2cz9sf6PtGn6gOVX2I3omPFITX2LuVenmDXp4crwNHpiyk70faeq3umcX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=riQJveyM; arc=none smtp.client-ip=67.231.153.30
+	bh=EEJdlU9SdhHdb36BhqrkJanPZEeTi59NSuyZZFm2VrM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rvGABGNo7hbEWVpl2lSzCPpJPNzOIRcRdHQJJLna09Qw6ZQbFh4+b0NbOtonoHniiENq1J4VhYu8IEQ7ukRCO0W/r/7PCZhyPjo9yX4SO9tnn/7zPyIsBHIKU7XtOYe1A06NMaXVp4zEg3armwb/kIMykNulP5XTsH2cQvdwxd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=OoHKPxa/; arc=none smtp.client-ip=67.231.153.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="riQJveyM"
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="OoHKPxa/"
 Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BDxGLj2263096
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 09:46:16 -0700
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BDxGLk2263096
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 09:46:17 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=s2048-2025-q2; bh=vNdm3ZHO/a6vYyABeK
-	VuuCxgS035lQzO2EwO81+XdLA=; b=riQJveyMKWcP+qsczYKBmb10+7f0oOrWCz
-	v3YILDS5BfcRLZ1OPBxV6gKKXLxQkMJIqPFX0VR0p+39ogaQnlG38mnBAqCQXSjD
-	oAPloYcVFHlPmt/gxyE4aZ+CgaQTYn74UVQ7q8yqDShB/hrJXCBuZ4m/CkevB2iW
-	/oq1zwWDNg0tl94j42uQFU38MInZsJNP8ItqnNqt9nEI4dpjuK4x5NXRYoeLW0nA
-	wlhJhkJL4WJbFPydC68+3G+tM0IchYkOHeSuAgPOD05D/bwmav9U4kmKPd3VHGbI
-	tzDSM1ujRG013mpuK/i3+ASkJj+iTmmKuXps2bT/zshJo5XTe8Cw==
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=042rDf1bYsfHgsRjwT/IB+2TVDBYS7DHhXWbJC6IyLg=; b=OoHKPxa/O6HZ
+	xFD7XEF3eKFgswXMF+l90lAbUF9oUqooDQAD9HEf6Sc10ASDFiQNixKq4ZCt+04C
+	lRQLwT9L3YtqA2kEtj0lJ1k0lm5ouI87jvV+M7OnaI9zCy/CgR+U7SCVggUQp4VT
+	sm5YVRlMbEXrHYYl5F50hXK/dWekIlZy7tMsoyX8I39wEgiiHVselm9UeOOT51bY
+	RVzcG/0LHbUMvZUsb1hBUPRqBGx0MQXz6NiA1s0vdjrCDfosZng3wPz5C/tr3ipz
+	5kSUpQQ4MLIgszTN/CNzpjYNszU7sJd/syLXWkwMS9JBhCdWJ06wKKQ3SwAAxyr6
+	BEDglh01UA==
 Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4eqe7b6r0k-9
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4eqe7b6r0k-10
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 09:46:16 -0700 (PDT)
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 09:46:17 -0700 (PDT)
 Received: from twshared22650.04.snb2.facebook.com (2620:10d:c085:108::4) by
  mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.2.2562.41; Thu, 11 Jun 2026 16:46:12 +0000
 Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
-	id C18293DD35ECE; Thu, 11 Jun 2026 09:23:23 -0700 (PDT)
+	id F12833DD363E2; Thu, 11 Jun 2026 09:23:43 -0700 (PDT)
 From: Zhiping Zhang <zhipingz@meta.com>
 To: <netdev@vger.kernel.org>
 CC: <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
         <linux-pci@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
         Zhiping Zhang
 	<zhipingz@meta.com>
-Subject: [PATCH v7 0/5] vfio/dma-buf: add TPH support for peer-to-peer access
-Date: Thu, 11 Jun 2026 09:11:15 -0700
-Message-ID: <20260611161546.4075580-1-zhipingz@meta.com>
+Subject: [PATCH v7 3/5] dma-buf: add optional get_tph() callback
+Date: Thu, 11 Jun 2026 09:11:18 -0700
+Message-ID: <20260611161546.4075580-4-zhipingz@meta.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260611161546.4075580-1-zhipingz@meta.com>
+References: <20260611161546.4075580-1-zhipingz@meta.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -56,122 +60,128 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-FB-Internal: Safe
 Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDE2OCBTYWx0ZWRfX/DOciQgwho5v
- H3s7yMMTIunJh4/+1X4M1hA9VcSeysub3sW5333489ITqrcUWSzvYoD7+9Uae4PIuCXQUixXbLV
- kaOFZQVer9VPRGNxP4Zm0f7E0rOyA04=
-X-Proofpoint-GUID: gJwlO07C3_fj-u87OSMHlnZ006hz9Ayg
-X-Proofpoint-ORIG-GUID: gJwlO07C3_fj-u87OSMHlnZ006hz9Ayg
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDE2OCBTYWx0ZWRfXzJCVxdURrbvs
- bOvgGWdPrwBGg9qWMiovqM1lkOpfnCpSMirCuvzYrXmlnuQHrw9TiQUgNkG3sIomD6KaIv2LiCG
- P8qVFLn1aFYf/Wup2oPqj0qjckbXcM7N5eWrI3hQuzcJBM80HpqPOlkYdodQhACXeG2X+YgYptS
- LoM6koOnCemJJIhzHT1yZN7cB+g8ICIj4lE1HU7FN2L13lHsYIMmnxwFsizQ59cDNngLYDtzMgx
- pbgOEL28tmbaVN/Za0i7F/kLg3ju5iccBxl2V0Wx9cvfXmwosIE29tBpxPetB4gAV6ZvE2gLdL8
- t0IArNIMNBAsBfJ6QLeGg3laLtSio/nv8Faz5rFG/fs2TjVvsuVCdVC1Sl8KZGVpZArWop8Ete1
- M2jMSh5JSpjDD92X6GPZ9bD6yqb5gR1UpMEM8mB2QES9pyMIFJayPMCnN7dlY8bpaIV7iWcrmXY
- 059Sd28OaWiqsMep3PA==
-X-Authority-Analysis: v=2.4 cv=C8nZDwP+ c=1 sm=1 tr=0 ts=6a2ae658 cx=c_pps
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDE2OCBTYWx0ZWRfXxnxCXnoKlAyA
+ ght/snqHD+bRcCZu+lnfhabuQknI0vrR/6yjKAFI+m//T440ESTz38lcj6zNtGrwJP3MkN2KAkH
+ TFn2MLc06CB7rGPSXvsuwmZTB7M11d8=
+X-Proofpoint-GUID: hEkK_y5CtoJ-4zKJaHNO30nltThc_MT_
+X-Proofpoint-ORIG-GUID: hEkK_y5CtoJ-4zKJaHNO30nltThc_MT_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDE2OCBTYWx0ZWRfX7D+q55NM+t68
+ +PLLGpi+QZJDsHSUftV5CaQ0CmPGm8IUrc94j/Dtu0TVY4BhcSnZoe0hkbCT1HJrF7M2iOW8WWz
+ RTOCxhHIqhkmmryzjJAebEHb/e7W1eZowkTgQdN4Tnm8g3ELqqmnxN00Djuuh5hJpoTR3cObYqx
+ GIQXg8EMkm0T83SwIWy2FyJNjlYVYUhU5UCg84873dASRaUtMQkWVQ7bqXjs1TvocLMEvud8xBu
+ jIKNqOloMuq/ybt/JMcsG0BlHYZSsh0/HkyQb0omSagFgsLg1iZpKiQ6+CJYGiGCI7EZxmlmlzw
+ G0jaGBpsRYu5dj8HR2s2yVDmRPsl8m/LVfyTC0egFKUaRlhVME7RjddfgZ9dPXXYkYFlNLv60n1
+ uWp2sSIF8UXEjdN3zHghOQom0OqKYv25je9FJzta+T3k/4skO1mdEj10qzfp82b1tC834nyssY1
+ CivY701dgXzkAYjKjAg==
+X-Authority-Analysis: v=2.4 cv=C8nZDwP+ c=1 sm=1 tr=0 ts=6a2ae659 cx=c_pps
  a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=xtH7KyWI9dI7BmFOsl-x:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
- a=IrN9ioZU3SVRGu70jE0A:9 a=gKebqoRLp9LExxC7YDUY:22
+ a=xtH7KyWI9dI7BmFOsl-x:22 a=VabnemYjAAAA:8 a=DhvycHomHhz2uGJtbakA:9
+ a=gKebqoRLp9LExxC7YDUY:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-11_03,2026-06-11_01,2025-10-01_01
 
-This series adds TLP Processing Hints (TPH) support to the VFIO dma-buf
-export path, allowing importing drivers (e.g. mlx5) to use the
-exporter's steering tag when performing peer-to-peer DMA into a
-VFIO-owned device.
+Add an optional dma_buf_ops.get_tph callback and a dma_buf_get_tph()
+wrapper for importers.
 
-There is no separate in-tree vendor kernel driver for the target device:
-vfio-pci is the in-tree driver and the targeted device is managed
-from userspace via VFIO passthrough. That is why the ST has to flow
-through a uAPI: userspace owns the device and its ST table, so it is the
-entity that can publish a meaningful value for a given dma-buf. The
-kernel-visible participants are still in-tree: vfio-pci exports the
-dma-buf and mlx5 imports it.
+8-bit ST and 16-bit Extended ST are distinct PCIe TPH namespaces, so
+the importer requests the namespace it can emit and the exporter
+returns the matching ST/PH tuple or -EOPNOTSUPP.
 
-On the effect: the endpoint's PCIe ingress block uses the 8-bit ST as
-an in-band instruction for the incoming P2P TLP -- selecting a target
-cache partition and, on writes, an in-flight operation on the data
-before it lands. The dma-buf callback keeps this opaque to the
-framework -- only the producer (userspace owner of the VFIO device)
-and the consumer (endpoint block) need to interpret the value. The
-dma-buf get_tph callback itself is optional for workloads that depend
-on the endpoint's in-flight operation that fallback does not produce
-the same result.
+dma_buf_get_tph() is the importer entry point. It returns -EOPNOTSUPP
+when the exporter lacks the callback and requires dmabuf->resv to be
+held while the callback runs.
 
-The dma-buf hook is intentionally generic and discoverable rather than
-a private side channel. The exporter owns the completing address
-space for the dma-buf and decides whether it can provide a meaningful
-ST/PH tuple for that completer; the dma-buf core keeps the tuple opaque,
-and importers merely request the namespace they support and place the
-returned value on generated TLPs. Exporters that cannot derive a
-meaningful tuple simply return -EOPNOTSUPP.
+The first user is VFIO_DEVICE_FEATURE_DMA_BUF_TPH in vfio-pci, with
+mlx5 as the first importer.
 
-Patch 1 is a pre-existing fix split out from the series:
-mlx5_st_dealloc_index() removed the xarray entry but never freed the
-backing struct, so repeated alloc/dealloc cycles leaked memory.
-Patch 2 adds small PCI/TPH type helpers so drivers can query the enabled
-TPH requester mode and the device's TPH Completer Supported field
-without reaching into pci_dev internals (and so callers in
-CONFIG_PCIE_TPH=3Dn builds get a clean fallback).
-Patch 3 adds the optional dma_buf_ops::get_tph callback plus the
-dma_buf_get_tph() importer wrapper so importers can fetch TPH metadata
-from an exporter under dmabuf->resv.
-Patch 4 implements get_tph in vfio-pci and adds the new uAPI
-(VFIO_DEVICE_FEATURE_DMA_BUF_TPH) for userspace to attach the metadata.
-Patch 5 wires up the mlx5 RDMA driver as a consumer.
+Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+---
+ drivers/dma-buf/dma-buf.c | 25 +++++++++++++++++++++++++
+ include/linux/dma-buf.h   | 21 +++++++++++++++++++++
+ 2 files changed, 46 insertions(+)
 
-Build-tested with both CONFIG_PCIE_TPH=3Dy and CONFIG_PCIE_TPH=3Dn.
-Functional validation on the target topology: PCIe analyzer captures
-on the P2P TLPs confirm the ST emitted by mlx5 matches the value
-published through VFIO_DEVICE_FEATURE_DMA_BUF_TPH, and the end-to-end
-P2P workload only produces results consistent with the endpoint's
-ST-selected in-flight operation. For example, with userspace
-publishing 8-bit ST=3D0xf0 and PH=3D2, an analyzer capture of a peer-to-
-peer MWr64 shows "STP MWr64 TC=3D0 OHC=3D2 ..." followed by "OHC-B
-ST=3DF0h PH=3D2 HV=3D1":
-(TLP Captures)
-08000260 -> STP MWr64 TC=3D0 OHC=3D2 TS=3D0 Attr=3D0 L=3D8
-F0000004 -> RID=3D4h:0h.0h EP- Tag=3DF0h
-E0200000 -> AddrH=3D000020E0h
-00080006 -> AddrL=3D06000800h
-90F00000 -> OHC-B ST=3DF0h PH=3D2 HV=3D1 AMA=3D0 AV-
-
-Previous link:
-v6: https://lore.kernel.org/dri-devel/20260608185646.4085127-1-zhipingz@m=
-eta.com/
-v5: https://lore.kernel.org/dri-devel/20260526144401.1485788-1-zhipingz@m=
-eta.com/
-v4: https://lore.kernel.org/linux-pci/20260519201401.1558410-1-zhipingz@m=
-eta.com/
-v3: https://lore.kernel.org/linux-pci/20260512184755.4137227-1-zhipingz@m=
-eta.com/
-v2: https://lore.kernel.org/linux-pci/20260430200704.352228-1-zhipingz@me=
-ta.com/
-
-Zhiping Zhang (5):
-  net/mlx5: free mlx5_st_idx_data on final dealloc
-  PCI/TPH: Add requester/completer type helpers
-  dma-buf: add optional get_tph() callback
-  vfio/pci: implement get_tph and DMA_BUF_TPH feature
-  RDMA/mlx5: get tph for p2p access when registering dma-buf mr
-
- drivers/dma-buf/dma-buf.c                     |  25 ++++
- drivers/infiniband/core/frmr_pools.c          |  20 +++-
- drivers/infiniband/hw/mlx5/mr.c               | 111 +++++++++++++++++-
- .../net/ethernet/mellanox/mlx5/core/lib/st.c  |  50 ++++++--
- drivers/pci/tph.c                             |  43 +++++++
- drivers/vfio/pci/vfio_pci_core.c              |   3 +
- drivers/vfio/pci/vfio_pci_dmabuf.c            |  94 ++++++++++++++-
- drivers/vfio/pci/vfio_pci_priv.h              |  12 ++
- include/linux/dma-buf.h                       |  21 ++++
- include/linux/mlx5/driver.h                   |  12 ++
- include/linux/pci-tph.h                       |   8 ++
- include/rdma/frmr_pools.h                     |   5 +-
- include/uapi/linux/vfio.h                     |  37 ++++++
- 13 files changed, 421 insertions(+), 20 deletions(-)
-
+diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+index d504c636dc29..aff79ea12e43 100644
+--- a/drivers/dma-buf/dma-buf.c
++++ b/drivers/dma-buf/dma-buf.c
+@@ -1144,6 +1144,31 @@ void dma_buf_unpin(struct dma_buf_attachment *atta=
+ch)
+ }
+ EXPORT_SYMBOL_NS_GPL(dma_buf_unpin, "DMA_BUF");
+=20
++/**
++ * dma_buf_get_tph - Retrieve TPH metadata from an exporter
++ * @dmabuf: DMA buffer to query
++ * @extended: false for 8-bit ST, true for 16-bit Extended ST
++ * @steering_tag: returns the raw steering tag for the requested namespa=
+ce
++ * @ph: returns the TPH processing hint
++ *
++ * Wrapper for the optional &dma_buf_ops.get_tph callback.
++ *
++ * Must be called with &dma_buf.resv held. Returns -EOPNOTSUPP if the
++ * exporter does not implement the callback or has no metadata for the
++ * requested namespace.
++ */
++int dma_buf_get_tph(struct dma_buf *dmabuf, bool extended,
++		    u16 *steering_tag, u8 *ph)
++{
++	dma_resv_assert_held(dmabuf->resv);
++
++	if (!dmabuf->ops->get_tph)
++		return -EOPNOTSUPP;
++
++	return dmabuf->ops->get_tph(dmabuf, extended, steering_tag, ph);
++}
++EXPORT_SYMBOL_NS_GPL(dma_buf_get_tph, "DMA_BUF");
++
+ /**
+  * dma_buf_map_attachment - Returns the scatterlist table of the attachm=
+ent;
+  * mapped into _device_ address space. Is a wrapper for map_dma_buf() of=
+ the
+diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+index d1203da56fc5..6a54e0f251a2 100644
+--- a/include/linux/dma-buf.h
++++ b/include/linux/dma-buf.h
+@@ -113,6 +113,25 @@ struct dma_buf_ops {
+ 	 */
+ 	void (*unpin)(struct dma_buf_attachment *attach);
+=20
++	/**
++	 * @get_tph:
++	 * @dmabuf: DMA buffer for which to retrieve TPH metadata
++	 * @extended: false for 8-bit ST, true for 16-bit Extended ST
++	 * @steering_tag: Returns the raw TPH steering tag for the requested
++	 *                namespace
++	 * @ph: Returns the TPH processing hint (2-bit value)
++	 *
++	 * Return TPH metadata for the namespace selected by @extended. Return
++	 * 0 on success, or -EOPNOTSUPP if no metadata is available.
++	 *
++	 * This callback is optional. Importers must not call it directly;
++	 * the dma_buf_get_tph() wrapper is the only entry point and handles
++	 * the NULL-callback case. The callback is invoked with
++	 * &dma_buf.resv held.
++	 */
++	int (*get_tph)(struct dma_buf *dmabuf, bool extended,
++		       u16 *steering_tag, u8 *ph);
++
+ 	/**
+ 	 * @map_dma_buf:
+ 	 *
+@@ -563,6 +582,8 @@ void dma_buf_detach(struct dma_buf *dmabuf,
+ 		    struct dma_buf_attachment *attach);
+ int dma_buf_pin(struct dma_buf_attachment *attach);
+ void dma_buf_unpin(struct dma_buf_attachment *attach);
++int dma_buf_get_tph(struct dma_buf *dmabuf, bool extended,
++		    u16 *steering_tag, u8 *ph);
+=20
+ struct dma_buf *dma_buf_export(const struct dma_buf_export_info *exp_inf=
+o);
+=20
 --=20
 2.53.0-Meta
+
