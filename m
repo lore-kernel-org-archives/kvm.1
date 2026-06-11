@@ -1,165 +1,210 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010026.outbound.protection.outlook.com [52.101.46.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF0338330B
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 23:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5FE384CEA
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 23:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.26
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781219379; cv=fail; b=JjGkAxdtSgmme5vR35Mv7IJwRVv7r3SzdGAMSb7XRkBtB6mNcFVTzZ8/NrMXZaq+a69i3lESEF1D2MuqfNokt9cBQ2dZdNdOimuQlHizTOQKqCx0E0FPqK+DngPuopnRJAPXzXqKh0J9jcIsl9wjUF6vLmvZMnhOHvo/sILMt4Q=
+	t=1781219978; cv=fail; b=OyYvKVWXkBR2qbXb10ylNn/uBx6ND22PCsGcr/1Sk0W/l2l5/ZGNRldmyF7Nr78bSNnBIoR5Ke8C75WBk379vC/OmVCgkyGgLS66ALBxv/3VvyDPVjJXb4w5i+uXRa8QErijxISq8BSrzRw4n9lf30WCLPEvrrBLTsoMx+XiduM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781219379; c=relaxed/simple;
-	bh=cBWMYoXs/GgliNDLcM7BNjaQh0ZcTgZ/O0lwWDyHBjk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DDIa1zl8pVts2jKbOz/847V3RODuOaCn4SmOzCfPRDPABNH646way2rx+a5HFy/XdOBTV4Z57zVVYJJoTWuWwR5OH3W9nXes80fghXB6JHsnS0sB4QXu/O5QfU5nFwJbBQGBNvaXaMQSMIlIV079fhGcUFCX0+uveBc848P6cls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=USTVjs2G; arc=fail smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1781219978; c=relaxed/simple;
+	bh=8DRAJtZhWqj/fNqy1j29OZ4/BkoqsiRbRF9JvxxG6mc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rjrl5LDXyVazvDQ+jpMVEra59YcRBNL32+JBwvXsb8pjsJ7CpeSzgNXCScaeuvaSlvoKo/OD9ejgrutJ9bePHsQPs8VpgotWPoHD1eIFDVCJq6cvwf16CzntmGg++qWgXYGolwwFHFK2yBtfqkOBN5LnlX8pDELX3eqRmMmWDR4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ch9vin5y; arc=fail smtp.client-ip=52.101.46.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="USTVjs2G"
-Received: from pps.filterd (m0528004.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BLb39S185410
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 16:09:37 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=cBWMYoXs/GgliNDLcM7BNjaQh0ZcTgZ/O0lwWDyHBjk=; b=USTVjs2GSY6c
-	zWNomSf5E8qjahkAqgjmiQDPFbjEPZsjQeJ/b94zb0GF9NeM8mlmXX9Gk+kwYdrj
-	cTftYVPuOSFB/1Nr+8gqaK6p3IfQ3KYjnHVtCfJwHBjSmm33QENUybqoFyJiQ/fu
-	n4EJcipp1CqI7B0zNUDMYv+OiLaw5YrOS8y/AuI2CPHIovD+hq3X3/vXm3tTqiTy
-	HHxPhprLBQNWDBST0hkTSIsZqY1y3fvMFa5eDd8O3gaW+GcwgHrjI92X6wE8vhNV
-	AHzq3kcWmOiBGIroHAC2qW3JwOJCgC75sMNCqZsKh1VQyolLrORLN0mB76o4eHEv
-	+bQz7LwmGQ==
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4eqe78snn0-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 16:09:37 -0700 (PDT)
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7e6b550a521so464542a34.0
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 16:09:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781219376; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ALUqyOO3spGf+1YxYkP4lMXbUJOTa8IFMkO591kfhrtzPIVgrIs+o/o8rCqy/QcEvm
-         J062gg2fzXRhlpwhNpiwsc97y3MeFa0jhb6GJlbSd2yu45iNw8pKje/nbbFMHZfcRsta
-         xpyfoxfTjYRIp9MFVJXKThy1mUmDqXmkpvVhE3ZnV4ZBZuNMa+7CKbnDEC4RWQ+MCRZA
-         1VzR18qq6aKrpaTx9cjYXQVgWBVM8mYOvhGZMmmZQE6fyR+z9M6P5QnhSJmV4ePz2287
-         SBcW9IBZvJRMi7MmES0iJlJYzLQb2Mrsi9sAbdqOqIF9dSjfkYvEFcNxyx3RtZ/6QiVG
-         aP5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=a/OR5+y+259I5l0RIDoEhbbMuNcwkwEsP+caYwaJh3c=;
-        fh=IEyNMPPNISpXn+Ji4CEeMg1YIRPgO2SpPnvz5bEqyMc=;
-        b=G1fnyeZRHhMxhHt7T4MpZ5yItYjqjut79eR0HRTvuBXDbO3dzSuMaIk7/Rgcv7YNbF
-         m2cCTyjN5wlVdL9lGzv2N50X3xdQFbVj/o7F/GIp8G8RHQD+j8LRGgy8/fO42RFK9WUq
-         84HPA12IHpcrthTKyB+vBWTiuMBG0AitKbDpMNbXUGnYdReb3AX2/LZ/CROsblr7JgC9
-         sx0kYIbbFyHxzfd6W1AKHTeIdyX173m1VKVJalWAexh8XipOq9Y19Rt1pPAHZpJg8AWJ
-         DEbbeH1IlEPtueP4QwbKz2p+Ev+tfh+CnzDUxkgpWjrjiSjLmi8WTeAmS8nh74f5ffqi
-         kRow==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781219376; x=1781824176;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=a/OR5+y+259I5l0RIDoEhbbMuNcwkwEsP+caYwaJh3c=;
-        b=SUahAV7vmVDpb+t2esyrPUglc47/dL4nJ1ESEGEQRGkaKgl5GF4UHQCu8LlO1OrZMM
-         Bu8vEBzrSvOp/qK6fk58jK1XNhycbNbrpHydGgzhcjYGIw/MBbw+G7oaHLiPHpymYEpX
-         eOJEGzkbIUnfN8qcZP1b6a6jf//TDqFjBq104AeoYBs8gRcd55LYOBib6rEdYzjqSm00
-         vAHo2SHyI7Q5RGx5nqXSXFBxMrnn9LtFroslCZyoY0kbxTtc9TofGeZic6vEIBgdrSlP
-         I6n3rCOzA/gZovk9+QuSg1XQ2yJxSgrCMB+1UjdAeEwC/6zsPaeSUvE9Xi9UYDMyJtsr
-         BfJA==
-X-Forwarded-Encrypted: i=1; AFNElJ/dP4Bkh4K/LM8OlIiwETVqy4DBJ+hasEjS4VCyJJoDcEiPF0dXwRq39sMMLmNZ1X2asN0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWXnp12w3ZvOTwe7U/yXgRm569VlWzD8gAMBY/DEBxKMZTQWzc
-	1lMwjHDxHwVPDYRsBP0ozv2Eua/ukdJKWVEoUok05edK255TMUIIMmZ3AQp1qBCq5+1lg1LILyM
-	UrcmIL2IkictfmbbmCoOkRm7B8ssMWmBq9I32quWEg9/5tCaO/oixGC5x1LRI3nvG7/3IZoX8lN
-	hoytR/ATn7qvvfjl/auGXSXOa3o0I=
-X-Gm-Gg: Acq92OGHTYnXgqQoWODeVlZa1byfFzQiY36X3gjqiocoLmfY7hz6PkEcKat/9oALGxH
-	y/40o6wJUvHZn5p9CCeKY3kal3MzuxFG0nVdWXdqhQs1+9RLrPMjt9/SiOjP2Qy9nvrBkgZZ1wr
-	cfwONZwlGP+Ib9K33EecUAY6KeGrR4q3KCM/ram6iXtfkmYJHHk7+Hu4NDKzzvvU8BeCYwgkHGo
-	ezCWAnGdyyXvcFkjldSCw==
-X-Received: by 2002:a05:6830:83b1:b0:7e6:7dc7:4542 with SMTP id 46e09a7af769-7e78473ec89mr120376a34.16.1781219376583;
-        Thu, 11 Jun 2026 16:09:36 -0700 (PDT)
-X-Received: by 2002:a05:6830:83b1:b0:7e6:7dc7:4542 with SMTP id
- 46e09a7af769-7e78473ec89mr120344a34.16.1781219376083; Thu, 11 Jun 2026
- 16:09:36 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ch9vin5y"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jnWwIcQyCACqwumnzgFPv5T+anN1gm9cNU93etJfcFtmUWMXU36VtjPoBlWow7ICnlxkC/m97ChIVrjVVEPOKzk3QQY/RezByZnl3QEhsxESUVMlGZtUiMuFq2SyF1G35KKq2L1awz44w2rTxIBk0f1y5yfOZAxt1mR/++ZUivJQQXPw7sBjXTRhOCioOuW15Rw/Rq4Xj7QLch06LkMvXwPcN4GVWqZA0fATcU9/O7Ri2f6dCuvbwAvWlgqn/lfx3jyhIwmgYkMqMdbS4ery6OL9ownDGGz1GL5BJ3m6WaYXJnuNUyNBkNRgkdBi+4YrPGaGmpK6TmNY5daFS2wx4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LDYLIBYdY6q9Bv8NDJRK9GnIXdI7QrD+r7xBTb9yev0=;
+ b=X9c9VxwQDadx7oqVIIauYnGSNmytqYjAsYvxL2MrZewZNaF03pEoKbkL8FmVLr4pp33klhOkVtHM3J7hGIqMYz4KsMVMGZB2GueKTbh/TjU/nlIwJH6I+XLblRwBaWjc3VhPG3Ep1bA0+1k8Qzsw3sgijV4I2qQPCmRDQD8oxaMMuaLhYqvpzefeKYYqcC6dsESIBIJvOb93F+4LnmHjB3tzFFOC94kdDh8TdR+YWx/tnhDhV27NgspBRp1zfJLf1BNBr9FqRn0EVfNDOrHA3gOnC4xAt83aPTHlEVQh/aFhB3vIsJbn+KVukqERpJnw3pmML+FFtLB/R7I4rw6nVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LDYLIBYdY6q9Bv8NDJRK9GnIXdI7QrD+r7xBTb9yev0=;
+ b=ch9vin5yuffLm77dSF2oC1EgoXAAwVD6lnf3anH1ihk6PN7oXgEtlW3n+bRG4Ot1OLCD6fDEzMY9DBs/BS+dZ3GbAngXlJ26aWk8gTYaZIym73b9h52lgAlQQ9bp+zWx5w7CaX4vLdYCxhwPJSBYU2nHv1ma+InTydbIzRLwSm0=
+Received: from SA0PR11CA0113.namprd11.prod.outlook.com (2603:10b6:806:d1::28)
+ by CY5PR12MB6552.namprd12.prod.outlook.com (2603:10b6:930:40::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Thu, 11 Jun
+ 2026 23:19:29 +0000
+Received: from SN1PEPF0002636A.namprd02.prod.outlook.com
+ (2603:10b6:806:d1:cafe::8e) by SA0PR11CA0113.outlook.office365.com
+ (2603:10b6:806:d1::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.13 via Frontend Transport; Thu,
+ 11 Jun 2026 23:19:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SN1PEPF0002636A.mail.protection.outlook.com (10.167.241.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.7 via Frontend Transport; Thu, 11 Jun 2026 23:19:29 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 11 Jun
+ 2026 18:19:28 -0500
+Date: Thu, 11 Jun 2026 11:47:37 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <hpa@zytor.com>, <kvm@vger.kernel.org>
+Subject: Re: [PATCH] KVM: SEV: Don't return a still-assigned gmem page to the
+ host
+Message-ID: <i6x7yq3f23mzxnfgzdy2yivir2wolkt6rufxgyv64pc25c4nzd@xp7sx7b74bye>
+References: <aimMWzAf5b3luM0b@v4bel>
+ <wxamg6zqn2qmsci2fwfepbqou5vtgydqmonr67mu7b73nkakbe@zedss5vzeci3>
+ <aiqNPBQzoU9f8RwI@v4bel>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260610193158.2614209-1-zhipingz@meta.com> <20260610193158.2614209-6-zhipingz@meta.com>
- <4dc9ad01-97ce-4c97-9c8d-189822da53b2@nvidia.com>
-In-Reply-To: <4dc9ad01-97ce-4c97-9c8d-189822da53b2@nvidia.com>
-From: Zhiping Zhang <zhipingz@meta.com>
-Date: Thu, 11 Jun 2026 16:09:25 -0700
-X-Gm-Features: AVVi8CeB8nmACAn2v-1nCwadZsgAxPl-ide5TeaDE88hJZn8TEKcdfaG5LmdPSE
-Message-ID: <CAH3zFs3ngOXvA5DRzur-_gQ2e0N+-3Az2KmwxZTYczqw34n_Xw@mail.gmail.com>
-Subject: Re: [PATCH v7 5/5] RDMA/mlx5: get tph for p2p access when registering
- dma-buf mr
-To: Michael Gur <michaelgur@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian Konig <christian.koenig@amd.com>,
-        Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-        Yishai Hadas <yishaih@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDIzMiBTYWx0ZWRfX4TKpFT54aRYz
- 3YyKMDR6sGqPOhsG6NS+tJ/sId0rK877M/SAalwTsT9fujp2k7NldcFGFKZh+iLqkH+ZID3poj4
- UOPAbmQKmPsu7x5xJFiuExjM8d+Mfsmh0pkeTfoSWjb5BfB36ffiqVES1o1J/nYN2vxzvm/uVSq
- hYPZZ8mpRr+l74rnGMDgeG9qcG07cGbbUIAjMX07ciX5g6Jfn8ceaOv+JOF0kqaLFMvVrYACIMk
- b5DlOiXQee5UThPAoeNiyUzO0N3HThGTWLVV9gBAiaTYVwWlibuwD1ytgYDmxYM6EUciD9Teob6
- wK+8j7zygblIO0oOf63sZeQl3vAze2mM8CxFXriTs51aQuOqlxeZk6v9Qh5fH4PNBydI1pC7KYt
- g9C93j5jHX4689Dhzq9uDZDHvNItIPNen0pAFnk5tK7QM5lq4U7+4qxb4ubC3Mn4PPY6SNDp1ow
- AYpxybBZu1RC0DbjrEQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDIzMiBTYWx0ZWRfX9a+K0hzgWptK
- vcSbHnyXHPnhc0AtQlfDIx+glJBqsv2UFyhN3HmCF2HTZRL4oD6pPayfgtAg+1h5qV4FI82Xstv
- l8YNoRG8+HtS27sFURlBXJJOOg5J58I=
-X-Proofpoint-ORIG-GUID: hmDqbkAGeuEyQcwoxIhjXnM3lrdIRLcg
-X-Proofpoint-GUID: hmDqbkAGeuEyQcwoxIhjXnM3lrdIRLcg
-X-Authority-Analysis: v=2.4 cv=ZaAt8MVA c=1 sm=1 tr=0 ts=6a2b4031 cx=c_pps
- a=7uPEO8VhqeOX8vTJ3z8K6Q==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=GbPsI2Ihf5RTnMjR_gZv:22
- a=Ikd4Dj_1AAAA:8 a=G2Tmg7Ww-o-apaxFWtcA:9 a=QEXdDO2ut3YA:10
- a=EXS-LbY8YePsIyqnH6vw:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-11_05,2026-06-11_01,2025-10-01_01
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <aiqNPBQzoU9f8RwI@v4bel>
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002636A:EE_|CY5PR12MB6552:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad2ea0ca-daec-4cb0-337e-08dec80fe309
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|36860700016|23010399003|82310400026|1800799024|4143699003|6133799003|11063799006|56012099006|18002099003|13003099007|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	HwA/qlN/RXJOg8cyWymg5GnKIVHGTAS2uw7JMoz9rN9TCZnMNDyIxhZFJw0L2sdSOTGHTjYkwcCHqsoPJZViTIB9pKSX7d4/WUDkS9RmoFaUPKF4w/uSqPRjMn++U5b0RSELkxnrzWwwmP3L37cvfHHhqRD2xYGOBfja8E+20MCEcFQ2DSUevGO74WrdCfjaEOLDduM5Oj4s+C/a4oLBRvG76jmskWnhiISfnPzlCLNZVY/kEL+W0m63p1skx1IXHQ/V3Isny2A8QbeY3SPM9B20jk5g96O0qA6c9y9Jl/dCEMWN6NDruui0QeXN506NlgN3/sOebSyyTiCheeu/oKkLheiAKaFT+q32C/u/WRgUUOfmxDNsRpQe8wIqQLha3KIiR0iTQgTz3AZ8piJZcWlBOSYTaoPTJQueJlVKVu0m5AJdea3t8MFOzK+Th2+23OykfC4fznTqTDpLHFhS6TptQg+ASNJFEKnVMjoxj70AyQ0basp4jRk0eNDXqAerZ4hEk5WO2cwOHxn/YaUuAtCNfM1OP3S9KPwjTEWEvK9PQ8xaxq0+SFvXN8+vHpTqCviFFdnI9RdxUIvJHbq6KsyJ+yxMjHpEMnPSZu1aQw18tAVKL73E/WwDhJkglIRAwzZlIAt3uGlsYpnVQYqJgWbDox5hn0vskn4vLHm91Ok8hIoYkcnIGXHKYMA1faXGC7o2h9fpeAU6FRwFfJYjBHiIDY5JPqCup2zlqVRK6HA=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700016)(23010399003)(82310400026)(1800799024)(4143699003)(6133799003)(11063799006)(56012099006)(18002099003)(13003099007)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	dK2X/tR5oyH8sb9wTGIZFhlKPvPK+zQczmKwBu5QEU48IdxxC6zjKvg8eeaC1zp8nHOT6sKWqMDxfTTjEqYHL6f+SRqZHyHQZv03Ra29K+e6nQRCUxJZSffXe8AULn6PAWuxj6LiMuVfTREjHya+9uF9T9YiAX9vW9cSrHfBB7EX7PmYpdJ1Os+zal3fR1OMqp3JZ4XgUOYrUsPiuOr7SvdVd0P4t4ILGsPR+teXzqWasN9N0qPh4KhSAjbjppDSxb4gIM4qUcUq7rvl1S/8BU/sRlcOgvKuT5o1URRgLcidNmtBbOMdxwjWkmtb6aB3YcMkGXxaaxPDrXw09oczEQz+Iv8+ETC5WDuMZffKkP31gvOFl2SGExF/cOInixhC/fVFBDQO3e/iYF/uOOn1vTqpPXj5+1Ujdq9g+1TXyYI2D2V93WS/d//4BD800UDy
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 23:19:29.1675
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad2ea0ca-daec-4cb0-337e-08dec80fe309
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF0002636A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6552
 
-On Thu, Jun 11, 2026 at 5:44=E2=80=AFAM Michael Gur <michaelgur@nvidia.com>=
- wrote:
->
-> >
->
-> On 6/10/2026 10:31 PM, Zhiping Zhang wrote:
-> > Query dma-buf TPH metadata when registering a dma-buf MR for peer-to-
-> > peer access to a PCIe endpoint and use it to program requester-side TPH
-> > on the outbound mkey. If the exporter has no metadata, fall back to the
-> > existing no-TPH path.
-> >
-> > For TPH-backed FRMRs, make the extra ST-table reference belong to the
-> > hardware mkey handle rather than the transient MR object. Extend the
-> > FRMR pool API so reuse and final destroy can transfer and drop that ref
-> > at the handle lifetime boundaries, and add mlx5_st_get_index() to take
-> > a ref on an already-known ST index.
-> I'd keep the ST reference tied to MRs, where the ST is actually in use.
-> There's no functional need to couple ST refcounting to mkey lifetime.
-> Once an MR is destroyed and its mkey revoked, the mkey can no longer
-> generate traffic, it's just an idle entry in the FRMR pool waiting to be
-> aged out or reused.
-> This lets us drop all FRMR pool changes from this patch and keep a
-> simple flow of 'acquire on MR create, release on MR destroy'.
-> > Also decode PH from kernel_vendor_key when recreating pooled mkeys so
-> > the requester hint matches the pool key.
-> I've fixed that in a series I've sent earlier this week, please rebase
-> next version on top of it.
->
-> Thanks,
-> Michael
+On Thu, Jun 11, 2026 at 07:26:04PM +0900, Hyunwoo Kim wrote:
+> On Wed, Jun 10, 2026 at 05:16:57PM -0500, Michael Roth wrote:
+> > On Thu, Jun 11, 2026 at 01:10:03AM +0900, Hyunwoo Kim wrote:
+> > > [You don't often get email from imv4bel@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> > > 
+> > > sev_gmem_invalidate() is called when guest_memfd frees a gmem page.
+> > > For each PFN that is still assigned to the guest in the RMP table, it
+> > > transitions the page back to hypervisor-owned via rmp_make_shared()
+> > > before the page is returned to the host.
+> > > 
+> > > A guest-assigned page can reach this path while still private,
+> > > because the free path does not transition it beforehand and
+> > > sev_gmem_invalidate() is the only place that does. A gmem page used
+> > > as a vCPU's VMSA after SEV-SNP AP creation is one such case. When
+> > > rmp_make_shared() fails, the RMP entry remains guest-owned and the
+> > > host cannot use the page because of RMP protection, so it must not be
+> > > returned to the host. The existing code only issues WARN_ONCE() and
+> > > continues to the next PFN, returning the page to the host allocator.
+> > > 
+> > > Leak the page instead of freeing it, as kvm_rmp_make_shared(),
+> > > snp_page_reclaim() and sev_free_vcpu() already do when a transition
+> > > back to shared fails. snp_leak_pages() does not take a reference of
+> > > its own, and on this path the page is freed right after the hook
+> > > returns, so take a reference with folio_get() first to keep the page
+> > > from being freed.
+> > > 
+> > > Fixes: 8eb01900b018 ("KVM: SEV: Implement gmem hook for invalidating private pages")
+> > > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> > > ---
+> > >  arch/x86/kvm/svm/sev.c | 6 +++++-
+> > >  1 file changed, 5 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > > index 6c6a6d663e29..8fee6ec529f9 100644
+> > > --- a/arch/x86/kvm/svm/sev.c
+> > > +++ b/arch/x86/kvm/svm/sev.c
+> > > @@ -5178,8 +5178,12 @@ void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
+> > > 
+> > >                 rc = rmp_make_shared(pfn, use_2m_update ? PG_LEVEL_2M : PG_LEVEL_4K);
+> > >                 if (WARN_ONCE(rc, "SEV: Failed to update RMP entry for PFN 0x%llx error %d\n",
+> > > -                             pfn, rc))
+> > > +                             pfn, rc)) {
+> > > +                       /* Still assigned to the guest; pin and leak rather than freeing. */
+> > > +                       folio_get(page_folio(pfn_to_page(pfn)));
+> > > +                       snp_leak_pages(pfn, use_2m_update ? PTRS_PER_PMD : 1);
+> > >                         goto next_pfn;
+> > > +               }
+> > 
+> > This roughly aligns with what would happen if snp_page_reclaim() fails
+> > in sev_gmem_post_populate(), while the guest is being initialized via
+> > KVM_SEV_SNP_LAUNCH_UPDATE ioctl, which calls into kvm_gmem_populate().
+> > 
+> > However, in kvm_gmem_populate(), we still free the page. Maybe, to
+> > address both cases, we should just add a parameter to snp_leak_pages()
+> > to tell it to take an extra ref and use that in both of these paths.
+> > 
+> > Or we can just do the direct folio_get() in both cases, the above
+> > formalizes the handling convention a little better though IMO.
+> 
+> If I understand correctly, an extra ref alone still seems to leave the
+> LRU corruption that sashiko flagged:
+> 
+> https://lore.kernel.org/all/20260610162623.061BA1F00898@smtp.kernel.org/
+> 
+> A gmem folio is on the unevictable LRU, and taking a ref keeps the folio
+> on the LRU. page->buddy_list, which snp_leak_pages() uses, shares the
+> same union as folio->lru, so leaking the page overwrites the folio's LRU
+> pointers. Both paths deal with a gmem folio, so the same applies.
 
-ack, thanks!
+I wasn't really suggesting you do anything different with your approach
+to the case covered by this patch, I was just pointing out that the extra
+ref you are taking here is missing for the case where kvm_gmem_populate()
+triggers a similar failure in the sev_gmem_post_populate() callback while
+doing snp_reclaim_page() on the gmem page it gets handed: it still does a
+folio_put() so eventually the page will get freed back to the host once
+the VMM closes out the gmem FD. That path is just as likely to trigger
+for cases where this might occur.
+
+But FWIW (as Sean pointed out), we do not expect RMPUPDATE to fail on a
+normally functioning system, at least, not outside of cases that can't
+be fully contained/handled/resolved within the corresponding rmpupdate()
+helper. The only thing we're doing here is trying to keep the system
+functional enough to capture situations like "why did I get this trace in
+dmesg after the recent BIOS/firmware update?" and being able to collect
+somewhat useful debug data rather than letting the issue be surfaced as
+a random RMP fault at some future point in time that can hang the system
+in a way where we don't get any meaningful indication of what happened,
+so it's sort of a best-effort thing. If we can keep the system permanently
+usable for non-SEV, that's nice too, but that's also a best effort.
+
+Thanks,
+
+Mike
+
+> 
+> To handle this properly, the folio would need to be taken off the LRU
+> before leaking, with something like folio_isolate_lru(), but that is
+> mm-internal and does not look usable from KVM. How should we proceed?
+> Please let me know if I am missing something.
+> 
+> 
+> Best regards,
+> Hyunwoo Kim
