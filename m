@@ -1,646 +1,153 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBAE35C190
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 06:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781159124; cv=pass; b=fDFSjNApKYQqhEc8LBqmA5FWCDTLQ+ZIs61YH8rqnXi9g1eTRRy8FsG/1CMy8pcVs9JzAadTqgqnnchq858qwsAfElFsl4ZSphppI285k9RAQoY2A7NW6NvHo25eeqi+Uh1uKi86RXSLW/agtOrljVLXJcfHIgmFIMRSUjFVSBg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781159124; c=relaxed/simple;
-	bh=Yrlr0yot/oaJDdCF7EKIDtviaaLhkA/1Pi8KSApFPvQ=;
-	h=Mime-Version:In-Reply-To:From:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aeY0ScdB7VbDwvsA6Tw5L13mo/cVOB5ZZYE0lTTUioclMkjPKvODbGrFQjYo5L741yx6o7M1Fx989DalIGwKTiZSb3MOl4XSa+YWy0pFASNAk0IMjct6MWwhIhHosSI51zvllfK9cYg8fzE9q5gtN0Wjzjid0rUQggjYKs1XI2Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=JjYwU7Qz; arc=pass smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD70349CFD
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 06:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781160113; cv=none; b=kk96klPcWo2D52aGxokPk7CBZqbV1C01TLrxNU/TZ7nfvd1XjLwAhzDmSOTEREVXj43I3kExB+O2CjQoFPI3znzHfznrjZMB5CCwnreNThiHRq5PxNTVDBEvqfrQBTE2mCxYCEkL9e+fSfZ9jrtr6b7Bab1njYADXqYJU1dPIUc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781160113; c=relaxed/simple;
+	bh=USKsWudXAdHHwfy9ibLewzmWRZ4lmSYh9uddoQsyTPk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CCxi0ZmUIUQn+Nz4b9facZEtvfjpIj2tdENOKL/BP86+hvZkQJ2JF7ogEq6wRo7+mpOW9U0Uy/f9yRsdz6eugdcFZ2X5pbadFN05HHq0/LGdW/QVN6YeuDcIGzUuWPb57EwiVxIKwQC/zuUwBk9XvbZggaT8KlNKWk30LFJddnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Xyr9xpaC; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GE5kTb6v; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="JjYwU7Qz"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-39677c434efso77418141fa.3
-        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 23:25:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781159120; cv=none;
-        d=google.com; s=arc-20240605;
-        b=k7nrsgTFDMV0LZr5X7B9hKqPKosUdRrCC0zEYwonRkHy/+SEmOq3F/k5WQkzqNSkyf
-         CN1A9j7XsxRZXQ7sEUfszZkAUNlY06uAKG776Uh44DleTwPu6GAbuYVJ4B/GdP51ve0u
-         x7we6msRx7luWzQnsPYW6Vh8GxT5mTTidZg/mQjRiBCW3OWOk2f8OueR4462rATz0j3W
-         Yru/V+Nr6KCEypyAqZPiqgYJjB9Sas5usAbFU8y9PqNBvBcz5PJk7O9FW/iB3RuDaNSg
-         m/zcjIfIO5J03y9l7ylxUR8Nra41mQsUE+QFJU5/NudJUVf7XttbSf2GCWeIQEPn4Qih
-         oLvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:references
-         :from:in-reply-to:mime-version:dkim-signature;
-        bh=Yrlr0yot/oaJDdCF7EKIDtviaaLhkA/1Pi8KSApFPvQ=;
-        fh=kO4saq7sroQ4k79cUcDxXvZ1g2nTsAp2pTeQqDRBHF0=;
-        b=bmNrr6AYAd++bO8Te53bFmzdHs/Q9yhjvuIfKdHB5bJ9EEK3drFrEe7TdjB9t/cM8x
-         hPFfB98W5zoieY5JqKaRGaf4ZAk58JXWyUYs1STC67W4oQ+OhEOvx4YOUcAGki2J8Q7l
-         jlyXBYiFrRW57oDEo0s1sFZFyWdi3oQnmPv6L2cShnW0p/ePFqlfR74urE+86opJc8DN
-         n88WHQ/oUOw9Y9Nfv2vq236WP9yMHIyn9bKl+3+BVzFIOsm6DyDnhRzv2fXttaK/9vb7
-         p7fKRhCCxLL/kV55Z4Z3jyJPTkU81YljHcSy/nqO/1uABtRtWCWlqSaVvQtut2jIW6wG
-         hCiQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Xyr9xpaC";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GE5kTb6v"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65B5GYj53812648
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 06:41:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	j6xoN9s2k2z6WBjErH2B5a4ve+qKzH72nuHagBkgw7o=; b=Xyr9xpaCmjKMKv1g
+	XbgKl34KARoqGMIHM5Xl+Q8rYjdzHgw1ypsA/ZQ1H61HajOcIWUNUgw5zDtrSQT7
+	twIuqElAbNwe3EI11j7MOZyEfQhZij5TZWb2YYFdYWUbVxwrEiXIPAc+nr0esuSd
+	kKz8CYEkoOrVmQl9pPhA5YUUp73RkeZAgrlSvjk75zfX1hyHqWdcZFitBibtJwDy
+	ernWVnug0jWLN0k0oWLtcShC18uNXcBTHPeCIfHMihEbrC63M8xIRpOWFL6ZC7Yg
+	MfN5rlcwCaXYa0LoF02tXCU8e2FXXgh7l8ao5WgDbT0MaygpWlLXrWH3pVsR2cqt
+	KNfIQQ==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eqe71j4d5-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 06:41:51 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-5175aa1a54bso168034441cf.1
+        for <kvm@vger.kernel.org>; Wed, 10 Jun 2026 23:41:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1781159120; x=1781763920; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:references
-         :from:in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Yrlr0yot/oaJDdCF7EKIDtviaaLhkA/1Pi8KSApFPvQ=;
-        b=JjYwU7QzHFmNNguIW1x/s9Nam8zfFbGT+yUuXIQMqn0XxEDifCPgxgC0hF79eF2bST
-         iUJUk5t+McU5UmbFBToUVtv5idJZM4TOHeDPuX72eX1tsD2hkky89wG1x1qw5ADCGYut
-         ND+tC3gRW7IhrUVhyf+zBhGT8NJ4JVFDligwhx93y0tifoXRqhOSUZQ91oUQvB3bkETY
-         IbP7Ae7T+L9BUsanHJLwijC2nRXUV0SMpPmG6VCbDee+XvS1vwoWz3hjWEWrEVmtF9dK
-         qww4sohed/aEOYdJlgFLozZ+0dDrKcFb3j253ea45MoLZNXWEjd8CxNfn60S8MesQ7Mb
-         bSCw==
+        d=oss.qualcomm.com; s=google; t=1781160110; x=1781764910; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=j6xoN9s2k2z6WBjErH2B5a4ve+qKzH72nuHagBkgw7o=;
+        b=GE5kTb6vcz7oSP76NsHMfVgB5bWxrK8GfQ7HjnJNH+Pa8Nx9o8DBXuFUVppQsV4kyQ
+         35FDnKO9dvtJItpUiNC7d600ItNVz/zMUzz+v7uJzcxz1JpfblE3JzD274pXGyWPmktc
+         MP5dduyK5mxwPJ1fLrgwM7wJRFTihqusm9r+K5MRWthJ3wjjjk86zbR9EUnf1TT7KG+6
+         18nvUHU61tp9FxTOshaQs+R1oWOIRfaWLNWx6JkLUgl+VaEuFIweZfQyEHgBEikFOKyH
+         4e2Z2J6a8aLNoJnIokadTZr3dvsBU++1wAct/netxLmRkq07UyQVKAsByWryh0VcSSgz
+         BxZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781159120; x=1781763920;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:references
-         :from:in-reply-to:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yrlr0yot/oaJDdCF7EKIDtviaaLhkA/1Pi8KSApFPvQ=;
-        b=YJXsT194nV8oiQF0Yyn04qUMSIojemqYB8OIYBOL5LkCQlgy0eefhEIbhICj/ULT98
-         84R/2UmYflEDcTtLIqZAdXZFG6CzFfYm0Gz0cYPLU3W2uC0RtZchkObWisEelYooOTrq
-         BQHNHdjvVshyHPrw9Z0Zh+m4UQHkEdh+ximmPTluFT8p3IkO/yT3i9O6Ahzk9UHK8Lqg
-         QbRBHp8cKkHgFHH3xpXaDBB2crO2L1QVeJsxttpnexym8QuH6OmaO3bOh4DJ1fnjxHos
-         yFQ5K8oavAqwFVfFAMzKu1bUulTHCorkcYh/l/RHThEeC+dWhKsEeF2MfHrT757ybcfC
-         aq/g==
-X-Forwarded-Encrypted: i=1; AFNElJ+sfJEdLCLKNp1hfliGG4B+DMKIvoH/jl8vAihP+k86PfKRHhg/0E+akWTfK0EO/0ubcgE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFYzrskrJ0q58roeZEzEYdxUPOkh8EQVEYTZvpkkHst6zGbKAo
-	fPWxUIHrZrJhuKyXQNsXZmECbQ8uQIFYFxVKd17pO3KA3+VZGJZKFw9BL5INqcDp8xqSNYXYVq8
-	pflDYKVjZQblE7aX0d+1SqQ9bf59EOG347H/2azdZMg==
-X-Gm-Gg: Acq92OHyuWML1t6kHg5NXTklWkSogmDjXY0OjEgoyIZ+y4KC97A8EG5snE3wlydP/AG
-	XlhBWH0vaGsdBUvc/nl7ve0TfCPyMoOAmzDuAL1fdQDPbnOurfUytU57qjx1cIC2VFGo7iQVYav
-	dx9aYS/MO4vGJ78TdVmgsfUFAbzOludbZGQkos+PaYeSQiwdO8wRCW9JqvsE8+/lzc+BgQDbAwj
-	5W3estLbcNMGquU7cBrKHAG0CrKjmNwAozTZThRsfhSJT0y7/5IVx2xC2IvgSMdGMsQra5kaxUk
-	mhVeJkIDE5w8IWzFxRE=
-X-Received: by 2002:a05:6512:3d04:b0:5aa:6cfc:771e with SMTP id
- 2adb3069b0e04-5ad27aaf3f0mr446123e87.2.1781159119646; Wed, 10 Jun 2026
- 23:25:19 -0700 (PDT)
-Received: from 44278815321 named unknown by gmailapi.google.com with HTTPREST;
- Wed, 10 Jun 2026 23:25:19 -0700
-Received: from 44278815321 named unknown by gmailapi.google.com with HTTPREST;
- Wed, 10 Jun 2026 23:25:18 -0700
+        d=1e100.net; s=20251104; t=1781160110; x=1781764910;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j6xoN9s2k2z6WBjErH2B5a4ve+qKzH72nuHagBkgw7o=;
+        b=Vj5t9v6r77DekWtuqsmn3YL9hN84B1kCflvajm0v54MCW/nSxgREyadcFvYOIs6T71
+         ZPBKifxdC36pp+c1ybZVlBCNodUuVccmoXMIZ6MYvk/tyxghhn6a6GWTDVJtOK9s/4K2
+         q7Dy/EKUqRB9DUNbMDMrBcwnj+wEn7KP/c9uCaoV7ShWdBqjCIHtXBdSPeg4528BFG2i
+         bI6b6Z8KbFP+JZRgXo0vseqYpgnFIer6xCT7CioL5OqxoUr5nd1cSa9bYPm9IQVPK11N
+         peuSjCEKJ1kIJIpslNlvijkmYTy8dSJmXH/m0wQ3dmpvhIAlfamwwMac2LbHkoqEk5hm
+         dmMA==
+X-Forwarded-Encrypted: i=1; AFNElJ8AmDJ87aOhXiQULz/OFKagQ6T/G3L5vs7cZOKlQMS7iVppGkcZNwGz7KKPHm6R/a6MN7I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyITDgFUlJ9abQue537T9T5co0h5EYt+WYMU7JTu14aP+E6GEMS
+	BVG1/kSYgXRWC10zKYSuD7vrdyro/gMLBttrSpBsIUGSeansKFWhqMCJjpzF72VYVyph3QS/p1T
+	+N2qlTQ9Lmd4gJpkNtpx6xDwxvLUE9xa4ChkqB5wt0do7TSBJUpZbdJs=
+X-Gm-Gg: Acq92OFXA8vHFLzijPf/Y0N6pKrUo3Tf1KHFs+IIEqAkz58yPo7/Qn9ETG9e+WizjTe
+	mCqDQy4VRjiJn4cDKwC9FlLGPUrb2EvXo5M9Jkns9DdeHsA862byNAghvtGKwgJDjOo6O94w1sF
+	tGB8qr1TBR+wd6XyYx2ACSISpxpVHEcL70v4yGMrWaZp3utKuhWQmvlYEs00y+GknzVphkaISfw
+	TzeO+ytTCoj/elQ7v3wHyGEUDeJmtqPtGFZRIlKGdqPiROk3TSlX7PVjU4xRvKuOo12I1PfftED
+	YPWpuDKtVbYlJMfWVyjg3SG0Xc5C52UD+AZ05iEPG/5m/rlOOUVSzNZg6vir3xSL3HQCQjws973
+	OohX/dCaHbU+SbdUc+RPO7DWUFxl3m3rC1jVskc4GsrOI/nNeu8eCkPi1HwqibJrbM5szCtnK4A
+	XSbAeZNw==
+X-Received: by 2002:ac8:5915:0:b0:517:6d75:a2cf with SMTP id d75a77b69052e-517ee204de9mr24562361cf.43.1781160110539;
+        Wed, 10 Jun 2026 23:41:50 -0700 (PDT)
+X-Received: by 2002:ac8:5915:0:b0:517:6d75:a2cf with SMTP id d75a77b69052e-517ee204de9mr24562131cf.43.1781160110164;
+        Wed, 10 Jun 2026 23:41:50 -0700 (PDT)
+Received: from [10.156.84.244] (218.170.88.92.rev.sfr.net. [92.88.170.218])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bfcb0f14edbsm17924666b.3.2026.06.10.23.41.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jun 2026 23:41:49 -0700 (PDT)
+Message-ID: <6c41aedd-9862-4b42-832c-cd0f706bb855@oss.qualcomm.com>
+Date: Thu, 11 Jun 2026 08:41:44 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-In-Reply-To: <202606101206.65AC69UA050105@mse-fl1.zte.com.cn>
-From: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
-References: <202606101206.65AC69UA050105@mse-fl1.zte.com.cn>
-Date: Wed, 10 Jun 2026 23:25:18 -0700
-X-Gm-Features: AVVi8Cccw1045papxZ-dB2dGVyzu0pCYO5mq1CV43NzkHw82hIME6-yb2UQ_lKU
-Message-ID: <CACnXVnfRsOt7NY58+Hc1Ez2NahdRwu7J0idi4YGFoZJNRMhspA@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v9 4/5] perf: RISC-V: add support for SSE event
-To: yang.susheng@zte.com.cn
-Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, pjw@kernel.org, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, alex@ghiti.fr, conor@kernel.org, cleger@rivosinc.com, 
-	himanshu@thechauhan.dev, will@kernel.org, mark.rutland@arm.com, 
-	atish.patra@linux.dev, anup@brainfault.org, shuah@kernel.org, 
-	cuiyunhui@bytedance.com, yuanzhu@bytedance.com, liu.xuemei1@zte.com.cn, 
-	zhang.anmeng@zte.com.cn, gao.rui@zte.com.cn, tan.hu@zte.com.cn, 
-	jin.qi@zte.com.cn, li.zhichao@zte.com.cn, jia.yunxiang@zte.com.cn, 
-	dai.hualiang@zte.com.cn, liu.qingtao2@zte.com.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] ppc/pnv: Remove Power8E and Power8NVL pnv chips
+Content-Language: en-US
+To: Aditya Gupta <adityag@linux.ibm.com>, qemu-devel@nongnu.org,
+        qemu-ppc@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>
+Cc: Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+        Laurent Vivier <lvivier@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+        kvm@vger.kernel.org, Misbah Anjum N <misanjum@linux.ibm.com>,
+        Shivang Upadhyay <shivangu@linux.ibm.com>
+References: <20260610090800.3672832-1-adityag@linux.ibm.com>
+ <20260610090800.3672832-3-adityag@linux.ibm.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
+In-Reply-To: <20260610090800.3672832-3-adityag@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: 6ZsutLibNY0wZqzxxlB6GIHiLMGo1aje
+X-Proofpoint-GUID: 6ZsutLibNY0wZqzxxlB6GIHiLMGo1aje
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDA2MyBTYWx0ZWRfX9jaTvhs1mOAZ
+ mvROPZvuIXGSiRhckc5jEDLNuiujy3BXhDHCdtU84kn2z96Sqp9FYbyfalTeLo75tLJ0rtNPntH
+ NOSCs2huzSGDPJ/jp4ek+NUZffePbwpcdWPBzbP73p9EvHgdrBeKxEA0WI5HJt1sWMF9tU5pPHX
+ pTBJshWq4eRfC2P+zWvQIAL7u0IK2lb6LYhrSUcF4Bi1D03cVw8EheHr7P4H0VZf2H9g9VtFJYL
+ MTvpYaXGZMN/JY/398t1juIxyDGgIU9FyRbrGB2sfOb8kbS8IEMY5ZjA9A0C7KiWlrfJBXtFX/t
+ mMEjAbPubjH3y1gDn7bUuWA4U6FW1q5yqgJGldqI2HJc/gubIz8N1VlVfFqaOALsD7jiCqN/tYZ
+ PegRoSczmthi+2d8G7IVAESNIExi5EBdAc45f/ZxxHfgL/3i1ieTBR0ozx41CJKqViyBs1rPAdy
+ z85vjvi0QseSyjfjx/w==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDA2MyBTYWx0ZWRfX1WcDl2uw0ZPN
+ hHGQKXOL0Fyu4VK5E3FlI/7otLqpkmPSqBvXkYqDVzyLDGtT7q8i0Ih39/AtP/8v9sisRNE8vq0
+ EhqqCoj9h+eIpwxXL05kPyQPDzTuV7g=
+X-Authority-Analysis: v=2.4 cv=Lf0MLDfi c=1 sm=1 tr=0 ts=6a2a58af cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=/nYmEve+L4YsDi96RCWAbw==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=VnNF1IyMAAAA:8 a=EUspDBNiAAAA:8 a=1tSEMpTH9XP_W59IOagA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-11_01,2026-06-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 clxscore=1011 bulkscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606110063
 
-Hi Susheng,
+On 10/6/26 11:07, Aditya Gupta wrote:
+> Power8E and Power8NVL were deprecated since QEMU 10.1, with
+> commit 264a604e7163 ("target/ppc: Deprecate Power8E and Power8NVL")
+> 
+> Accordingly, remove usage of 8E and 8NVL chips from powernv, as it's old
+> and unmaintained now.
+> 
+> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+> ---
+>   docs/system/ppc/powernv.rst |  2 +-
+>   hw/ppc/pnv.c                | 62 -------------------------------------
+>   hw/ppc/pnv_core.c           |  2 --
+>   include/hw/ppc/pnv.h        |  8 -----
+>   tests/qtest/pnv-xscom.h     |  9 ------
+>   5 files changed, 1 insertion(+), 82 deletions(-)
 
-Thanks a lot for the bug report and the detailed logs.
-
-> From: yang.susheng@zte.com.cn
-> Date:=C2=A0 Wed, Jun 10, 2026, 20:06
-> Subject:=C2=A0 [External] Re: [PATCH v9 4/5] perf: RISC-V: add support fo=
-r SSE event
-> To: <zhangzhanpeng.jasper@bytedance.com>
-> Cc: <linux-kernel@vger.kernel.org>, <linux-perf-users@vger.kernel.org>, <=
-linux-kselftest@vger.kernel.org>, <kvm@vger.kernel.org>, <kvm-riscv@lists.i=
-nfradead.org>, <pjw@kernel.org>, <palmer@dabbelt.com>, <aou@eecs.berkeley.e=
-du>, <alex@ghiti.fr>, <conor@kernel.org>, <cleger@rivosinc.com>, <himanshu@=
-thechauhan.dev>, <will@kernel.org>, <mark.rutland@arm.com>, <atish.patra@li=
-nux.dev>, <anup@brainfault.org>, <shuah@kernel.org>, <cuiyunhui@bytedance.c=
-om>, <yuanzhu@bytedance.com>, <zhangzhanpeng.jasper@bytedance.com>, <liu.xu=
-emei1@zte.com.cn>, <zhang.anmeng@zte.com.cn>, <gao.rui@zte.com.cn>, <tan.hu=
-@zte.com.cn>, <jin.qi@zte.com.cn>, <li.zhichao@zte.com.cn>, <jia.yunxiang@z=
-te.com.cn>, <dai.hualiang@zte.com.cn>, <liu.qingtao2@zte.com.cn>
-> Hi Zhanpeng,
->
-> >
-> > In order to use SSE within PMU drivers, register an SSE handler for the
-> > local PMU event. Reuse the existing overflow IRQ handler and pass
-> > appropriate pt_regs. Add a config option RISCV_PMU_SBI_SSE to select ev=
-ent
-> > delivery via SSE events.
-> >
-> > When the SSE path is used, also honor the return value from
-> > perf_event_overflow(). If perf core throttles or disables an event, do =
-not
-> > immediately restart the overflowed counters from the SSE handler.
-> >
-> > Signed-off-by: Cl=C3=A9ment L=C3=A9ger <cleger@rivosinc.com>
-> > Co-developed-by: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
-> > Signed-off-by: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
-> > ---
-> > =C2=A0drivers/perf/Kconfig =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 10 ++++=
-+
-> > =C2=A0drivers/perf/riscv_pmu.c =C2=A0 =C2=A0 =C2=A0 | 23 +++++++++++
-> > =C2=A0drivers/perf/riscv_pmu_sbi.c =C2=A0 | 78 ++++++++++++++++++++++++=
-++++++++-----
-> > =C2=A0include/linux/perf/riscv_pmu.h | =C2=A05 +++
-> > =C2=A04 files changed, 104 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/drivers/perf/Kconfig b/drivers/perf/Kconfig
-> > index ab90932fc2d0..b6c58475091c 100644
-> > --- a/drivers/perf/Kconfig
-> > +++ b/drivers/perf/Kconfig
-> > @@ -105,6 +105,16 @@ config RISCV_PMU_SBI
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0full perf feature support i.e.=
- counter overflow, privilege mode
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0filtering, counter configurati=
-on.
-> >
-> > +config RISCV_PMU_SBI_SSE
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0depends on RISCV_PMU && RISCV_SBI_SSE
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0bool "RISC-V PMU SSE events"
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0default n
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0help
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Say y if you want to use SSE events=
- to deliver PMU interrupts. This
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0provides a way to profile the kerne=
-l at any level by using NMI-like
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0SSE events. Since SSE events can be=
- intrusive, this option allows
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0selecting them only when needed.
-> > +
-> > =C2=A0config STARFIVE_STARLINK_PMU
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0depends on ARCH_STARFIVE || COMPILE_T=
-EST
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0depends on 64BIT
-> > diff --git a/drivers/perf/riscv_pmu.c b/drivers/perf/riscv_pmu.c
-> > index 8e3cd0f35336..a48e286d9394 100644
-> > --- a/drivers/perf/riscv_pmu.c
-> > +++ b/drivers/perf/riscv_pmu.c
-> > @@ -13,6 +13,7 @@
-> > =C2=A0#include <linux/irqdesc.h>
-> > =C2=A0#include <linux/perf/riscv_pmu.h>
-> > =C2=A0#include <linux/printk.h>
-> > +#include <linux/riscv_sbi_sse.h>
-> > =C2=A0#include <linux/smp.h>
-> > =C2=A0#include <linux/sched_clock.h>
-> >
-> > @@ -254,6 +255,24 @@ void riscv_pmu_start(struct perf_event *event, int=
- flags)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0perf_event_update_userpage(event);
-> > =C2=A0}
-> >
-> > +#ifdef CONFIG_RISCV_PMU_SBI_SSE
-> > +static void riscv_pmu_disable(struct pmu *pmu)
-> > +{
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct riscv_pmu *rvpmu =3D to_riscv_pmu(p=
-mu);
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (rvpmu->sse_evt)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sse_event_disa=
-ble_local(rvpmu->sse_evt);
-> > +}
-> > +
-> > +static void riscv_pmu_enable(struct pmu *pmu)
-> > +{
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct riscv_pmu *rvpmu =3D to_riscv_pmu(p=
-mu);
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (rvpmu->sse_evt)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sse_event_enab=
-le_local(rvpmu->sse_evt);
-> > +}
-> > +#endif
-> > +
-> > =C2=A0static int riscv_pmu_add(struct perf_event *event, int flags)
-> > =C2=A0{
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct riscv_pmu *rvpmu =3D to_riscv_=
-pmu(event->pmu);
-> > @@ -411,6 +430,10 @@ struct riscv_pmu *riscv_pmu_alloc(void)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.event_ma=
-pped =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_event_mapped,
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.event_un=
-mapped =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_event_unmapped,
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.event_id=
-x =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_event_idx,
-> > +#ifdef CONFIG_RISCV_PMU_SBI_SSE
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.pmu_enable =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_enable,
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.pmu_disable =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_disable,
-> > +#endif
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.add =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_add,
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.del =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_del,
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.start =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_start,
-> > diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.=
-c
-> > index 385af5e6e6d0..ac10ebd73c7c 100644
-> > --- a/drivers/perf/riscv_pmu_sbi.c
-> > +++ b/drivers/perf/riscv_pmu_sbi.c
-> > @@ -17,6 +17,7 @@
-> > =C2=A0#include <linux/irqdomain.h>
-> > =C2=A0#include <linux/of_irq.h>
-> > =C2=A0#include <linux/of.h>
-> > +#include <linux/riscv_sbi_sse.h>
-> > =C2=A0#include <linux/cpu_pm.h>
-> > =C2=A0#include <linux/sched/clock.h>
-> > =C2=A0#include <linux/soc/andes/irq.h>
-> > @@ -1038,10 +1039,10 @@ static void pmu_sbi_start_overflow_mask(struct =
-riscv_pmu *pmu,
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pmu_sbi_s=
-tart_ovf_ctrs_sbi(cpu_hw_evt, ctr_ovf_mask);
-> > =C2=A0}
-> >
-> > -static irqreturn_t pmu_sbi_ovf_handler(int irq, void *dev)
-> > +static irqreturn_t pmu_sbi_ovf_handler(struct cpu_hw_events *cpu_hw_ev=
-t,
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct pt_r=
-egs *regs, bool from_sse)
-> > =C2=A0{
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct perf_sample_data data;
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pt_regs *regs;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct hw_perf_event *hw_evt;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0union sbi_pmu_ctr_info *info;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0int lidx, hidx, fidx;
-> > @@ -1049,7 +1050,7 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq, v=
-oid *dev)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct perf_event *event;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0int ev_overflow =3D 0;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0u64 overflow;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0u64 overflowed_ctrs =3D 0;
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0struct cpu_hw_events *cpu_hw_evt =3D dev;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0u64 start_clock =3D sched_clock();
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct riscv_pmu_snapshot_data *sdata=
- =3D cpu_hw_evt->snapshot_addr;
-> >
-> > @@ -1059,13 +1059,15 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq,=
- void *dev)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Firmware counter don't support ove=
-rflow yet */
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0fidx =3D find_first_bit(cpu_hw_evt->u=
-sed_hw_ctrs, RISCV_MAX_COUNTERS);
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (fidx =3D=3D RISCV_MAX_COUNTERS) {
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0csr_clear(CSR_=
-SIP, BIT(riscv_pmu_irq_num));
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!from_sse)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return IR=
-Q_NONE;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> >
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0event =3D cpu_hw_evt->events[fidx];
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!event) {
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ALT_SBI_PMU_OV=
-F_CLEAR_PENDING(riscv_pmu_irq_mask);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!from_sse)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0ALT_SBI_PMU_OVF_CLEAR_PENDING(riscv_pmu_irq_mask);
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return IR=
-Q_NONE;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> >
-> > @@ -1080,16 +1082,16 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq,=
- void *dev)
-> >
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/*
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * Overflow interrupt pending bit sho=
-uld only be cleared after stopping
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0 * all the counters to avoid any race cond=
-ition.
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 * all the counters to avoid any race cond=
-ition. When using SSE,
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 * interrupt is cleared when stopping coun=
-ters.
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 */
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0ALT_SBI_PMU_OVF_CLEAR_PENDING(riscv_pmu_ir=
-q_mask);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!from_sse)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ALT_SBI_PMU_OV=
-F_CLEAR_PENDING(riscv_pmu_irq_mask);
-> >
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* No overflow bit is set */
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!overflow)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return IR=
-Q_NONE;
-> >
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0regs =3D get_irq_regs();
-> > -
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0for_each_set_bit(lidx, cpu_hw_evt->us=
-ed_hw_ctrs, RISCV_MAX_COUNTERS) {
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pe=
-rf_event *event =3D cpu_hw_evt->events[lidx];
-> >
-> > @@ -1133,18 +1136,65 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq,=
- void *dev)
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 * TODO: We will need to stop the guest counters once
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 * virtualization support is added.
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 */
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0perf_event_overflow(event, &data, regs);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0ev_overflow |=3D perf_event_overflow(event, &data, regs);
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Reset =
-the state as we are going to start the counter after the loop */
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0hw_evt->s=
-tate =3D 0;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> >
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0pmu_sbi_start_overflow_mask(pmu, overflowe=
-d_ctrs);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!ev_overflow || !from_sse)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pmu_sbi_start_=
-overflow_mask(pmu, overflowed_ctrs);
-> > +
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0perf_sample_event_took(sched_clock() =
-- start_clock);
-> >
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return IRQ_HANDLED;
-> > =C2=A0}
-> >
-> > +static irqreturn_t pmu_sbi_ovf_irq_handler(int irq, void *dev)
-> > +{
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0return pmu_sbi_ovf_handler(dev, get_irq_re=
-gs(), false);
-> > +}
-> > +
-> > +#ifdef CONFIG_RISCV_PMU_SBI_SSE
-> > +static int pmu_sbi_ovf_sse_handler(u32 evt, void *arg, struct pt_regs =
-*regs)
-> > +{
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct cpu_hw_events __percpu *hw_events =
-=3D arg;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct cpu_hw_events *hw_event =3D raw_cpu=
-_ptr(hw_events);
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0pmu_sbi_ovf_handler(hw_event, regs, true);
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0return 0;
-> > +}
-> > +
-> > +static int pmu_sbi_setup_sse(struct riscv_pmu *pmu)
-> > +{
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0int ret;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct sse_event *evt;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct cpu_hw_events __percpu *hw_events =
-=3D pmu->hw_events;
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0evt =3D sse_event_register(SBI_SSE_EVENT_L=
-OCAL_PMU_OVERFLOW, 0,
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pmu_sbi_ovf_sse_handler, hw_even=
-ts);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (IS_ERR(evt))
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return PTR_ERR=
-(evt);
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D sse_event_enable(evt);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (ret) {
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sse_event_unre=
-gister(evt);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return ret;
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0pr_info("using SSE for PMU event delivery\=
-n");
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0pmu->sse_evt =3D evt;
-> > +
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0return ret;
-> > +}
-> > +#else
-> > +static int pmu_sbi_setup_sse(struct riscv_pmu *pmu)
-> > +{
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0return -EOPNOTSUPP;
-> > +}
-> > +#endif
-> > +
-> > =C2=A0static int pmu_sbi_starting_cpu(unsigned int cpu, struct hlist_no=
-de *node)
-> > =C2=A0{
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct riscv_pmu *pmu =3D hlist_entry=
-_safe(node, struct riscv_pmu, node);
-> > @@ -1195,6 +1242,10 @@ static int pmu_sbi_setup_irqs(struct riscv_pmu *=
-pmu, struct platform_device *pde
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct cpu_hw_events __percpu *hw_eve=
-nts =3D pmu->hw_events;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct irq_domain *domain =3D NULL;
-> >
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D pmu_sbi_setup_sse(pmu);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!ret)
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return 0;
-> > +
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (riscv_isa_extension_available(NUL=
-L, SSCOFPMF)) {
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0riscv_pmu=
-_irq_num =3D RV_IRQ_PMU;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0riscv_pmu=
-_use_irq =3D true;
-> > @@ -1229,7 +1280,7 @@ static int pmu_sbi_setup_irqs(struct riscv_pmu *p=
-mu, struct platform_device *pde
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -E=
-NODEV;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> >
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D request_percpu_irq(riscv_pmu_irq, =
-pmu_sbi_ovf_handler, "riscv-pmu", hw_events);
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D request_percpu_irq(riscv_pmu_irq, =
-pmu_sbi_ovf_irq_handler, "riscv-pmu", hw_events);
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (ret) {
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pr_err("r=
-egistering percpu irq failed [%d]\n", ret);
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return re=
-t;
-> > diff --git a/include/linux/perf/riscv_pmu.h b/include/linux/perf/riscv_=
-pmu.h
-> > index f82a28040594..08fdcf6baf4e 100644
-> > --- a/include/linux/perf/riscv_pmu.h
-> > +++ b/include/linux/perf/riscv_pmu.h
-> > @@ -28,6 +28,8 @@
-> >
-> > =C2=A0#define RISCV_PMU_CONFIG1_GUEST_EVENTS 0x1
-> >
-> > +struct sse_event;
-> > +
-> > =C2=A0struct cpu_hw_events {
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* currently enabled events */
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0n_events;
-> > @@ -54,6 +56,9 @@ struct riscv_pmu {
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0char =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0*name;
-> >
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0irqreturn_t =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0(*handle_irq)(int irq_num, void *dev);
-> > +#ifdef CONFIG_RISCV_PMU_SBI_SSE
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct sse_event *sse_evt;
-> > +#endif
-> >
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0unsigned long =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0cmask;
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0u64 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0(*ctr_read)(struct perf_event *event);
-> > --
-> > 2.50.1 (Apple Git-155)
->
-> We found that if RISCV_PMU_SBI_SSE is enabled, executing 'perf record -g
-> -F 999 ls' may occasionally fail. If the program is more complex, the
-> error occurs 100% of the time. After disabling RISCV_PMU_SBI_SSE, the
-> program runs normally. Therefore, we suspect there may be an issue with
-> the PMU_SBI_SSE functionality. Have you encountered this phenomenon? Do
-> you have any troubleshooting suggestions?
-
-I can reproduce the issue locally with PMU-SSE enabled, using
-`perf record -g -F 999`. This does look like a PMU-SSE issue. I am
-investigating the root cause now, and will follow up once I have a clear
-answer and a proper fix.
-
-> Below are some fault information=EF=BC=9A
-> [root@localhost ~]# perf record -g -F 999 ls
-> [ 9478.867438] BUG: spinlock bad magic on CPU#2, ls/1046
-> [ 9478.871534] Unable to handle kernel paging request at virtual address =
-ffffffc6004940d0
-> [ 9478.872804] Oops [#1]
-> [ 9478.873359] Modules linked in: xt_MASQUERADE xfrm_user xfrm_algo iptab=
-le_nat xt_addrtype
-> iptable_filter ip_tables xt_conntrack x_tables nf_nat nf_conntrack nf_def=
-rag_ipv6 nf_defrag_ipv4
-> libcrc32c br_netfilter bridge stp llc overlay virtio_gpu virtio_dma_buf d=
-rm_shmem_helper
-> drm_client_lib drm_kms_helper nls_iso8859_1 drm drm_panel_orientation_qui=
-rks backlight configfs efivarfs
-> [ 9478.877513] CPU: 2 UID: 0 PID: 1046 Comm: ls Not tainted 6.13.0-00006-=
-ge94d0b11d044-dirty #7
-> [ 9478.878544] Hardware name: QEMU QEMU Virtual Machine, BIOS 2.7 2/2/202=
-2
-> [ 9478.879324] epc : string+0x48/0xe6
-> [ 9478.880100] =C2=A0ra : vsnprintf+0xea/0x3b4
-> [ 9478.880697] epc : ffffffff809e39ae ra : ffffffff809e656e sp : ffffffc6=
-00493360
-> [ 9478.881331] =C2=A0gp : ffffffff81516480 tp : ffffffd68d280000 t0 : fff=
-fffc600493312
-> [ 9478.881952] =C2=A0t1 : ffffffffffffffff t2 : 6e697073203a4755 s0 : fff=
-fffc6004933a0
-> [ 9478.882557] =C2=A0s1 : ffffffffffffffff a0 : ffffffc6004934d7 a1 : 000=
-0000000000000
-> [ 9478.883355] =C2=A0a2 : ffffffc6004934a8 a3 : ffffffc6004930d0 a4 : fff=
-fffc6004940d0
-> [ 9478.883988] =C2=A0a5 : ffffffc7004934d6 a6 : ffffffffffffe000 a7 : 000=
-0000000000004
-> [ 9478.884600] =C2=A0s2 : ffffffc6004934d7 s3 : ffffffc6004934a8 s4 : fff=
-fffff80f24ea4
-> [ 9478.885420] =C2=A0s5 : ffffffff000000ff s6 : ffffffff8100153e s7 : 000=
-0000000ffffff
-> [ 9478.886056] =C2=A0s8 : ffffffff8100153c s9 : 0000000000000007 s10: 000=
-0000000000002
-> [ 9478.886859] =C2=A0s11: ffffffc6004935f0 t3 : 0000000000000004 t4 : fff=
-fffff80e592d8
-> [ 9478.887493] =C2=A0t5 : ffffffff8152cb20 t6 : ffffffc60049307a
-> [ 9478.887946] status: 0000000200000100 badaddr: ffffffc6004940d0 cause: =
-000000000000000d
-> [ 9478.888886] [<ffffffff809e39ae>] string+0x48/0xe6
-> [ 9478.889342] [<ffffffff809e656e>] vsnprintf+0xea/0x3b4
-> [ 9478.889795] [<ffffffff8007c2ce>] vprintk_store+0x108/0x3d2
-> [ 9478.890459] [<ffffffff8007d0ce>] vprintk_emit+0x82/0x218
-> [ 9478.890932] [<ffffffff8007d27a>] vprintk_default+0x16/0x1e
-> [ 9478.891416] [<ffffffff8007e270>] vprintk+0x1e/0x3c
-> [ 9478.892011] [<ffffffff8000332a>] _printk+0x32/0x50
-> [ 9478.892441] [<ffffffff80002f84>] spin_dump+0x5e/0x6e
-> [ 9478.892865] [<ffffffff80077bf4>] do_raw_spin_unlock+0x130/0x132
-> [ 9478.893542] [<ffffffff809f50e0>] _raw_spin_unlock+0x10/0x22
-> [ 9478.894031] [<ffffffff80166118>] filemap_map_pages+0x314/0x434
-> [ 9478.894541] [<ffffffff8019f6ea>] __handle_mm_fault+0x9ac/0xd50
-> [ 9478.895556] Code: 97aa a809 7463 00c5 0023 00d5 0505 2585 0663 00f5 (4=
-683) 0007
-> [ 9478.896729] ---[ end trace 0000000000000000 ]---
-> [ 9478.897637] note: ls[1046] exited with irqs disabled
-> [ 9478.898653] note: ls[1046] exited with preempt_count 4
->
-> [root@localhost x264]# perf record -g -F 999 ./x264 -o output_static.mkv =
-./Kimono_1920x1080_24.yuv
-> --input-res 1920x1080 --fps 24 --preset faster --vbv-maxrate 2400 --vbv-b=
-ufsize 4800 --ref 1
-> --aq-mode 2 --aq-strength 1.2 --qcomp 0.8 --lookahead-threads 12 --iprati=
-o 1.0 --bframes 3
-> --rc-lookahead 6 --crf 28 --keyint 60 --scenecut 0 --frames 200
-> [ =C2=A0 63.382672] Unable to handle kernel paging request at virtual add=
-ress 0000003feb0ff5d8
-> [ =C2=A0 63.383325] Oops [#1]
-> [ =C2=A0 63.383395] Modules linked in: xt_MASQUERADE xfrm_user xfrm_algo =
-iptable_nat xt_addrtype
-> iptable_filter ip_tables xt_conntrack x_tables nf_nat nf_conntrack nf_def=
-rag_ipv6 nf_defrag_ipv4
-> libcrc32c br_netfilter bridge stp llc overlay virtio_gpu virtio_dma_buf d=
-rm_shmem_helper
-> drm_client_lib drm_kms_helper nls_iso8859_1 drm configfs drm_panel_orient=
-ation_quirks
-> backlight efivarfs
-> [ =C2=A0 63.385401] CPU: 3 UID: 0 PID: 580 Comm: x264 Not tainted 6.13.0-=
-00006-ge94d0b11d044-dirty #7
-> [ =C2=A0 63.385521] Hardware name: QEMU QEMU Virtual Machine, BIOS 2.7 2/=
-2/2022
-> [ =C2=A0 63.385732] epc : walk_stackframe+0x5c/0x11a
-> [ =C2=A0 63.386470] =C2=A0ra : walk_stackframe+0xda/0x11a
-> [ =C2=A0 63.386537] epc : ffffffff80013b5c ra : ffffffff80013bda sp : fff=
-fffc600493a40
-> [ =C2=A0 63.386579] =C2=A0gp : ffffffff81516480 tp : ffffffd684b33300 t0 =
-: ffffffd7febf9c20
-> [ =C2=A0 63.386617] =C2=A0t1 : 000000003b9aca00 t2 : ffffffd7febe8080 s0 =
-: ffffffc600493a90
-> [ =C2=A0 63.386654] =C2=A0s1 : ffffffc600493ee0 a0 : 0000000000000001 a1 =
-: ffffffff809f5a48
-> [ =C2=A0 63.386692] =C2=A0a2 : 0000000000000002 a3 : 0000003feb0ff5d0 a4 =
-: ffffffffffffc000
-> [ =C2=A0 63.386729] =C2=A0a5 : 0000000000003fff a6 : ffffffff81552558 a7 =
-: ffffffd698fb8000
-> [ =C2=A0 63.386769] =C2=A0s2 : 0000003feb100000 s3 : 0000003feb0ff5e0 s4 =
-: ffffffff8001886a
-> [ =C2=A0 63.386806] =C2=A0s5 : ffffffc600493ac0 s6 : ffffffff809f5a48 s7 =
-: 0000000000000000
-> [ =C2=A0 63.386844] =C2=A0s8 : ffffffc600493ac0 s9 : 0000000000000000 s10=
-: 000000000007fff8
-> [ =C2=A0 63.386886] =C2=A0s11: ffffffd698fb8000 t3 : 0000000000000015 t4 =
-: 00000000000003e7
-> [ =C2=A0 63.386932] =C2=A0t5 : 0000000000452bf5 t6 : ffffffc600493f70
-> [ =C2=A0 63.386965] status: 0000000200000100 badaddr: 0000003feb0ff5d8 ca=
-use: 000000000000000d
-> [ =C2=A0 63.387069] [<ffffffff80013b5c>] walk_stackframe+0x5c/0x11a
-> [ =C2=A0 63.387122] [<ffffffff80018902>] perf_callchain_kernel+0x28/0x34
-> [ =C2=A0 63.387154] [<ffffffff80160294>] get_perf_callchain+0x88/0x18e
-> [ =C2=A0 63.387189] [<ffffffff8015bcf2>] perf_callchain+0x52/0x6e
-> [ =C2=A0 63.387219] [<ffffffff8015c0f4>] perf_prepare_sample+0x3e6/0x730
-> [ =C2=A0 63.387249] [<ffffffff8015c8d6>] perf_event_output_forward+0x56/0=
-xb8
-> [ =C2=A0 63.387280] [<ffffffff8015c51a>] __perf_event_overflow+0xdc/0x2e2
-> [ =C2=A0 63.387310] [<ffffffff8015d954>] perf_event_overflow+0x12/0x1a
-> [ =C2=A0 63.387341] [<ffffffff807e15e0>] pmu_sbi_ovf_handler+0x684/0x736
-> [ =C2=A0 63.387383] [<ffffffff807e16ee>] pmu_sbi_ovf_sse_handler+0x26/0x3=
-0
-> [ =C2=A0 63.387417] [<ffffffff807b73a0>] sse_handle_event+0x16/0x48
-> [ =C2=A0 63.387449] [<ffffffff8001933a>] do_sse+0x76/0xa8
-> [ =C2=A0 63.387478] [<ffffffff800195ac>] handle_sse+0xc0/0x162
-> [ =C2=A0 63.387748] Code: 7933 00e9 6463 0539 f693 0079 e2a1 e062 8693 ff=
-09 (bc03) 0086
-> [ =C2=A0 63.388072] ---[ end trace 0000000000000000 ]---
-> [ =C2=A0 63.388547] Kernel panic - not syncing: Fatal exception in interr=
-upt
-> [ =C2=A0 63.388870] SMP: stopping secondary CPUs
->
-> Regards
-> Yangsusheng
->
-
-Thanks,
-Zhanpeng
+Reviewed-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
