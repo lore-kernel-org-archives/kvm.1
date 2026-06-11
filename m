@@ -1,302 +1,128 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B2344CAC9
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 20:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9391B366570;
+	Thu, 11 Jun 2026 20:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781209843; cv=none; b=miIy3uHJelyohgw36v2l9R9wIL/Y7bthIVeM6j0TQBBom0eev8AtBvePz/8GxJE6PneFgy/qecs2gx3nwQHOATq6T+psSgGnw0kc/vI89cxiWP2FalhXxBhkUxLFvmbCV+SMrxvuisF1HdQktz5aOLvVX50shomHrob7RTR2yqg=
+	t=1781209964; cv=none; b=BlsQlCB1R/F752hSmWu3aM/6fl82m55Vz31xtBX4TZ3yYBcY7g4wPdewx9BVHU3Gfxks/KSzUk5d/3yf+FAwPdg4mPBY4Rsk+604lJMbZCJdZEXl1U8s0PK/1YR+Dj1vPiOYD6cZd1EHxlj2SKrPZ6H8ppmdj5Q5Awzhg+F1JQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781209843; c=relaxed/simple;
-	bh=lV0APC2Q40R0+8rJBHhGtOzbEJq9+wSP+YtjJIHFsGw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OjKCqqIPY2dGtL3niSwbcmYC+JzCRtblOhqcOtt3ZrrrxzPW2339SASnSHUbE1HbXhU26A4cCjAFCl9lpZWj/7fBr416F8Go9tzRqN43+3/OPDAI1q/ZnLt2TfXb9U5rbFkCLyAtMqGjI+7jEJqkzpWpAaYSvSwVNaANP7oFcBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nWfOpwZx; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1781209964; c=relaxed/simple;
+	bh=J9vpJVNBoEDM8hq1yQvknsbkO8Gt5ANO+GRGOUxjVoA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=keqf46Rmx8RJuwopmIXhaY13wI09tSW7bFigew6qMCOMzA7vUGxFdUCBDMBoKKTpUT0jbOXciYRtpwleDZXEkzs4Zy9mZTWhcWBGypukxHj17NOt0X4uEQuONt2HErfeyaAEjvwD/L8JkTUkmwJ0EDXWUhHdR9/9fV78gxL+FT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0jkA0L9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nWfOpwZx"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2bf2911f93cso6135ad.1
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 13:30:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781209841; x=1781814641; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O89fLhwmUexwr334yt/hIAtfe9wNMTELN1E0wgrm87U=;
-        b=nWfOpwZxIUP99J4xNrGGATsknuIG+E02zwK+w+bq+MJtsqMF2UGogyB34tOsmJD8/i
-         OAv2hs5WzCrtLXTMZK4RGFDcCJgfkrftDF5AJwVvPiJ6hCYCRuFajsvfFRNafi3pzSdH
-         xfyDAFk7PUQ/mEgrnZwq+Ql754Bk+WDP7SUoC445MThEGzXqkTxwahGxSZopnIerGBK3
-         Fe9InJSk/jWL+5t9QVO/lSyzpdszcBLgXgYWHnuPceXhNym1eOJoyxbBa6bqBLiCK9+9
-         NiaA3D19TwVDN3Ty61inltkca+ojcSI+YacqYf85wX0E7sL022UIxEwlcD4NzirwFoIA
-         uH9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781209841; x=1781814641;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O89fLhwmUexwr334yt/hIAtfe9wNMTELN1E0wgrm87U=;
-        b=jkSf07YOG1LICvQLexRhwQAPGMtMfqUJ1N//Wt24DHEABLvygR52wCvWAfep7QAmLb
-         zZiLGTp2/tctZnb8utRw1lqttgkf52twl/VBjKFXvEklCvKl+wHnQbT/6lA5BLI6eWOk
-         JSjqGukWnYTADDLrNuQ3NP/8LGjT8DQnqZ5uEGjnFI/qvMXSdfBLgfL4agvSOavQ9pSJ
-         KPWdSMWjpf3Tj+/urJoJ9nWssG+z/Gcf0rA3Z2nCQSqYVc8ikSs96VRaYX5t3+qpvGwy
-         nbKwSuEoKE3TA7ApD2+PvVbF0tuwCel1nGE8dyXh1KnUAK0pRxs0fGWTTp/gmhnRihrj
-         McOw==
-X-Forwarded-Encrypted: i=1; AFNElJ/rwNzG+LH6vAxpXyOHRiPdqvPMyDMl3/ryu7jT722fMYzLnEetD2Vx+lCLkDMj5RZTN+o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhlapdgoqEM58Y5xOaD/IjdZnK8wY1zpewPVAHbPzpR4d9Vo4T
-	0IoLjUFTbR2DfqUcQiecMYdEEUGbcS99XHvqGrZfugf3FtjiBIUet8beCbM9SKTu0g==
-X-Gm-Gg: Acq92OEFP04ds9pSgWoIpSCf/O1I2K/HEIHBXaFWL+1jicBZJWAL/M2/tDhuaQiK7q2
-	Lc3mvm+7GSZ3mmx6Bj4lRzUDZ/nj4aoO0sL9Au6Ft7pPGKFF/qLPWEBcPbKULu8YJp8Jl8L5yKl
-	FL77LHMoU3qnPgTrpjuWn9cn56kxvs0PdlERMC3+mB64qHPTsByNevq54PjXS1RprQuuT3GNb2K
-	0X99+eFQPoAIECF55PHlO+94+AUx+iIzdA6/BOg45THNAxhW8gyrnOR4lctgK2cnN0KySu9x67M
-	1T1rIvkgldpMkIhjE3dH0WwWRI6LGTH4c6mHKqr5mQs8vqieFQDGyV97T+z2Zy4W41RmN5zpRMA
-	qahwOt959OGCBhRUgwwwMHCF8P1YrsNzGSnIcNiWbsMfKkAn9qzNFRg5h2QY6/G3XE198ZkZYwX
-	rMKhn9H6P9e+fhv30WB9/hsJLsKCIlY4IhhF9aZmAlgIf9bS50wUDa/jH74LTt
-X-Received: by 2002:a17:902:ef47:b0:2b4:641a:6b7c with SMTP id d9443c01a7336-2c405c8b1bcmr130535ad.13.1781209840425;
-        Thu, 11 Jun 2026 13:30:40 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16609df6esm311256825ad.48.2026.06.11.13.30.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 13:30:39 -0700 (PDT)
-Date: Thu, 11 Jun 2026 20:30:32 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 2/9] vfio/pci: Add a helper to look up PFNs for DMABUFs
-Message-ID: <aisa6H-a-176MXhC@google.com>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-3-matt@ozlabs.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0jkA0L9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AF41F000E9;
+	Thu, 11 Jun 2026 20:32:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781209963;
+	bh=nnFCs/LAZMeVmfUe/41iQ53dc7VDUqMg3oAcehTfwxg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=m0jkA0L9loDkfSC4KPkmP0YYCmogg5E1c9lBcV6u3kiwcqtGCLKloPlIBb8xkf5pL
+	 N0jRerjGZqz8T3R9U/ORGptF+bOZIj++t97NQNmoj0wNOnCgWxxS5aYZ0iixoeY9Nl
+	 L3JyFrHE6WKjHhN0SRyiCQObqjUCaz1eiNoN/1sJGVVcKnsbfAoXGFAGvS5DB8RQ8U
+	 fz2WPWDh6ILBW9N7hA6Yvc6uk/w7LuWyZ8gHBRSpyYCSx87PV+z6jBstEfWC5GIH/G
+	 RbPLbblSpb0dSvS89l/YzTlIVu3Fp9C/BvAZL/2xzJOrow7AI7PHgqx5pbMvo7jlUV
+	 kEgmL4OMAlp7Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 14/16] riscv: cpufeature: Introduce ISA bases bitmap
+ and rva23u64 detection
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guodong Xu" <docular.xu@gmail.com>
+Cc: conor+dt@kernel.org, kvm@vger.kernel.org, robh@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260611-rva23u64-hwprobe-v2-v4-14-3f01a2449488@gmail.com>
+References: <20260611-rva23u64-hwprobe-v2-v4-14-3f01a2449488@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 11 Jun 2026 20:32:42 +0000
+Message-Id: <20260611203242.D1AF41F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610154327.37758-3-matt@ozlabs.org>
 
-On Wed, Jun 10, 2026 at 04:43:16PM +0100, Matt Evans wrote:
-> Add vfio_pci_dma_buf_find_pfn(), which a VMA fault handler can use to
-> find a PFN.
-> 
-> This supports multi-range DMABUFs, which typically would be used to
-> represent scattered spans but might even represent overlapping or
-> aliasing spans of PFNs.
-> 
-> Because this is intended to be used in vfio_pci_core.c, we also need
-> to expose the struct vfio_pci_dma_buf in the vfio_pci_priv.h header.
-> 
-> Signed-off-by: Matt Evans <matt@ozlabs.org>
-> ---
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 137 ++++++++++++++++++++++++++---
->  drivers/vfio/pci/vfio_pci_priv.h   |  20 +++++
->  2 files changed, 144 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> index c16f460c01d6..9e5e865f6fb6 100644
-> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> @@ -9,19 +9,6 @@
->  
->  MODULE_IMPORT_NS("DMA_BUF");
->  
-> -struct vfio_pci_dma_buf {
-> -	struct dma_buf *dmabuf;
-> -	struct vfio_pci_core_device *vdev;
-> -	struct list_head dmabufs_elm;
-> -	size_t size;
-> -	struct phys_vec *phys_vec;
-> -	struct p2pdma_provider *provider;
-> -	u32 nr_ranges;
-> -	struct kref kref;
-> -	struct completion comp;
-> -	u8 revoked : 1;
-> -};
-> -
->  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
->  				   struct dma_buf_attachment *attachment)
->  {
-> @@ -106,6 +93,130 @@ static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
->  	.release = vfio_pci_dma_buf_release,
->  };
->  
-> +int vfio_pci_dma_buf_find_pfn(struct vfio_pci_dma_buf *priv,
-> +			      struct vm_area_struct *vma,
-> +			      unsigned long address,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Profile detection incorrectly relies on monolithic superset bits (=
+A, C, B) instead of granular component extensions, bypassing RVA23U64 on co=
+mpliant hardware.
+--
 
-Nit: s/address/fault_addr ?
+commit 1bae4d63d125b54f3683da372331e97613bffe86
+Author: Guodong Xu <docular.xu@gmail.com>
 
-> +			      unsigned int order,
-> +			      unsigned long *out_pfn)
+riscv: cpufeature: Introduce ISA bases bitmap and rva23u64 detection
+
+This commit introduces a per-hart and host-wide bitmap for conformant ISA
+profile bases, such as IMA and RVA23U64. It computes this at initialization
+time by evaluating the resolved ISA bitmap against required extension sets.
+This provides a cached profile state for subsequent consumers like hwprobe.
+
+> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeatur=
+e.c
+> --- a/arch/riscv/kernel/cpufeature.c
+> +++ b/arch/riscv/kernel/cpufeature.c
+
+[ ... ]
+
+> @@ -1322,3 +1325,90 @@ void __init_or_module riscv_cpufeature_patch_func(=
+struct alt_entry *begin,
+> +/*
+> + * Compute the set of profile bases (IMA, RVA23U64, ...) a hart
+> + * conforms to, given its resolved ISA bitmap.
+> + *
+> + * If @isa_bitmap is NULL, the host ISA bitmap (the AND across all harts=
+) is
+> + * used.
+> + */
+> +static void riscv_set_isa_bases(unsigned long *bases, const unsigned lon=
+g *isa_bitmap)
 > +{
-> +	/*
-> +	 * Given a VMA (start, end, pgoffs) and a fault address,
-> +	 * search the corresponding DMABUF's phys_vec[] to find the
-> +	 * range representing the address's offset into the VMA, and
-> +	 * its PFN.
-> +	 *
-> +	 * The phys_vec[] ranges represent contiguous spans of VAs
-> +	 * upwards from the buffer offset 0; the actual PFNs might be
-> +	 * in any order, overlap/alias, etc.  Calculate an offset of
-> +	 * the desired page given VMA start/pgoff and address, then
-> +	 * search upwards from 0 to find which span contains it.
-> +	 *
-> +	 * On success, a valid PFN for a page sized by 'order' is
-> +	 * returned into out_pfn.
-> +	 *
-> +	 * Failure occurs if:
-> +	 * - The page would cross the edge of the VMA
-> +	 * - The page isn't entirely contained within a range
-> +	 * - We find a range, but the final PFN isn't aligned to the
-> +	 *   requested order.
-> +	 *
-> +	 * (Upon failure, the caller is expected to try again with a
-> +	 * smaller order; the tests above will always succeed for
-> +	 * order=0 as the limit case.)
-> +	 *
-> +	 * It's suboptimal if DMABUFs are created with neigbouring
-> +	 * ranges that are physically contiguous, since hugepages
-> +	 * can't straddle range boundaries.  (The construction of the
-> +	 * ranges vector should merge such ranges.)
-> +	 *
-> +	 * Finally, vma_pgoff_adjust is used for a DMABUF representing
-> +	 * a VFIO BAR mmap, which is created from the start of the
-> +	 * offset region.
-> +	 */
+> +	const unsigned long *isa =3D isa_bitmap ? isa_bitmap : riscv_isa;
+> +	DECLARE_BITMAP(ext_mask, RISCV_ISA_EXT_MAX) =3D { 0 };
 > +
-> +	const unsigned long pagesize = PAGE_SIZE << order;
-> +	unsigned long vma_off = ((vma->vm_pgoff - priv->vma_pgoff_adjust) <<
-> +				 PAGE_SHIFT) & VFIO_PCI_OFFSET_MASK;
-> +	unsigned long rounded_page_addr = ALIGN_DOWN(address, pagesize);
-> +	unsigned long rounded_page_end = rounded_page_addr + pagesize;
-> +	unsigned long page_buf_offset;
-> +	unsigned long page_buf_offset_end;
-> +	unsigned long range_buf_offset = 0;
-> +	unsigned int i;
+> +	/* IMA */
+> +	__set_bit(RISCV_ISA_EXT_I, ext_mask);
+> +	__set_bit(RISCV_ISA_EXT_M, ext_mask);
+> +	__set_bit(RISCV_ISA_EXT_A, ext_mask);
 > +
-> +	if (rounded_page_addr < vma->vm_start || rounded_page_end > vma->vm_end) {
-> +		if (order > 0)
-> +			return -EAGAIN;
+> +	if (!bitmap_subset(ext_mask, isa, RISCV_ISA_EXT_MAX))
+> +		return;
 > +
-> +		/* A fault address outside of the VMA is absurd. */
-> +		WARN(1, "Fault addr 0x%lx outside VMA 0x%lx-0x%lx\n",
-> +		     address, vma->vm_start, vma->vm_end);
-
-This could flood dmesg if triggered repeatedly by userspace :( 
-Since a fault outside the VMA is an invalid access that already results
-in a SIGBUS, we could probably avoid the WARN here?
-Perhaps pr_warn_ratelimited() should suffice?
-
-> +		return -EFAULT;
-> +	}
+> +	set_bit(RISCV_ISA_BASE_IMA, bases);
 > +
-> +	/*
-> +	 * page_buff_offset[_end] is the span of DMABUF offsets
-> +	 * corresponding to the faulting page:
-> +	 */
-> +	if (unlikely(check_add_overflow(rounded_page_addr - vma->vm_start,
-> +					vma_off, &page_buf_offset) ||
-> +		     check_add_overflow(page_buf_offset, pagesize,
-> +					&page_buf_offset_end)))
-> +		return -EFAULT;
+> +	/* RVA23U64 */
 > +
-> +	for (i = 0; i < priv->nr_ranges; i++) {
-> +		size_t range_len = priv->phys_vec[i].len;
-> +		phys_addr_t range_start = priv->phys_vec[i].paddr;
+> +	/* Supm with PMLEN=3D7 */
+> +	if (!riscv_have_user_pmlen(7))
+> +		return;
 > +
-> +		/*
-> +		 * If the current range starts after the page's span,
-> +		 * this and any future range won't match.  Bail early.
-> +		 */
-> +		if (page_buf_offset_end <= range_buf_offset)
-> +			break;
-> +
-> +		if (page_buf_offset >= range_buf_offset &&
-> +		    page_buf_offset_end <= range_buf_offset + range_len) {
-> +			/*
-> +			 * The faulting page is wholly contained
-> +			 * within the span represented by the range.
-> +			 * Validate PFN alignment for the order:
-> +			 */
-> +			unsigned long pfn = (range_start + page_buf_offset -
-> +					     range_buf_offset) / PAGE_SIZE;
+> +	__set_bit(RISCV_ISA_EXT_F, ext_mask);
+> +	__set_bit(RISCV_ISA_EXT_D, ext_mask);
+> +	__set_bit(RISCV_ISA_EXT_C, ext_mask);
+> +	__set_bit(RISCV_ISA_EXT_B, ext_mask);
 
-Minor nit: I'm aware that decent compilers convert pow(2) divides to >> 
-However, we seem to be using `>> PAGE_SHIFT` across vfio-pci. E.g.:
+[Severity: High]
+Does this logic correctly handle device trees that specify granular
+extensions instead of monolithic supersets?
 
-return (pci_resource_start(vdev->pdev, index) >> PAGE_SHIFT) + pgoff;
-unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
+The kernel's riscv_resolve_isa() expands monolithic extensions into their
+sub-extensions, but it does not synthesize monolithic extensions backwards
+from their components.
 
-Let's consider using the same pattern?
+If a compliant RVA23U64 platform specifies granular extensions like
+zba, zbb, and zbs in its device tree rather than the legacy 'b' extension,
+will this bitmap_subset() check fail because RISCV_ISA_EXT_B is not set?
 
-> +
-> +			if (IS_ALIGNED(pfn, 1 << order)) {
-> +				*out_pfn = pfn;
-> +				return 0;
-> +			}
-> +			/* Retry with smaller order */
-> +			return -EAGAIN;
-> +		}
-> +		range_buf_offset += range_len;
-> +	}
-> +
-> +	/*
-> +	 * A hugepage straddling a range boundary will fail to match a
-> +	 * range, but the address will (eventually) match when retried
-> +	 * with a smaller page.
-> +	 */
-> +	if (order > 0)
-> +		return -EAGAIN;
-> +
-> +	/*
-> +	 * If we get here, the address fell outside of the span
-> +	 * represented by the (concatenated) ranges.  Setup of a
+This same pattern appears to affect the checks for A and C above as well.
 
-Nit: double space before "Setup" and "But" below.
+> +	__set_bit(RISCV_ISA_EXT_ZICSR, ext_mask);
 
-> +	 * mapping must ensure that the VMA is <= the total size of
-> +	 * the ranges, so this should never happen.  But, if it does,
-> +	 * force SIGBUS for the access and warn.
-> +	 */
-> +	WARN_ONCE(1, "No range for addr 0x%lx, order %d: VMA 0x%lx-0x%lx pgoff 0x%lx, %u ranges, size 0x%zx\n",
-> +		  address, order, vma->vm_start, vma->vm_end, vma->vm_pgoff,
-> +		  priv->nr_ranges, priv->size);
-> +
-> +	return -EFAULT;
+[ ... ]
 
-The fall-through logic at the end feels a bit redundant.
-
-If we've exhausted the phys_vec list without finding a match, returning
--EAGAIN for order > 0 seems like the correct fallback behavior.
-
-However, the subsequent WARN_ONCE for the order == 0 seems unnecessary?
-An out-of-bounds access is an error that should simply return -EFAULT 
-(converting to SIGBUS) without polluting the kernel log with stackdumps?
-Can we instead convert this to a pr_warn or something? Something like:
-
-	ret = order ? -EAGAIN : -EFAULT;
-
-	if (ret == -EFAULT)
-		pr_warn_ratelimited("No range for addr 0x%lx...\n", address);
-
-	return ret;
-
-(with appropriate comments)
-
-Thanks,
-Praan
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611-rva23u64-h=
+wprobe-v2-v4-0-3f01a2449488@gmail.com?part=3D14
