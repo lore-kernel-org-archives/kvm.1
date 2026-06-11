@@ -1,32 +1,81 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943FA2DCBE3
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 14:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781188189; cv=none; b=uBVzNfOGyDKnTPm6alQEhV/pSWg+7pezhIlFvZooa/B4NC4Pu82mmZhbm6d9uiGCbJrBi+rocRWq9GDE25M6D3ENXTd5MYf26hqAyRyDQfXD830umI0n+lXf1hT+BUm6x4Dvq1yXSbdp3bBjzjausiF2BhvXGXwVmEwjVU4V1cM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781188189; c=relaxed/simple;
-	bh=yZkY1TvvDeOjoeT7w5jFP2vy029EC9BtS3xUAUt1pdM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gfI/TuxfvaNkbU7fvbWdhvhAuiggND0VajrQnJO0lEYOW54rFCVF4mNFHWtm01U17KeOweBXPKVtHsuCWgliJa8U4jDSc3oQHlZRbS5pnsZXx7Opc0OMNLVg305SSsp46Kt0qUh/gFu0DhWlldOyRHc6f/3s9MusLWrz+DSh0EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id A25251C1C36;
-	Thu, 11 Jun 2026 16:29:46 +0200 (CEST)
-Date: Thu, 11 Jun 2026 16:29:45 +0200
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Subject: Re: [PATCH 2/4] kvm: svm: Defer VMSA allocation to LAUNCH_FINISH
- stage
-Message-ID: <airE9DZRDk0jg1sj@8bytes.org>
-References: <20260611123528.572255-3-joro@8bytes.org>
- <20260611125813.A9DBD1F00898@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF14368D5F
+	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 14:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781188829; cv=none; b=jPrao+KlkjG3fSXrWkPsCZASRyL2EyN778jPhJSQiY0ktXMbbuZu3zHxgliF3hEBQn8isJ9ZoywVO15VJQmh6NkJ/R86dxhufJbl31VJ2tLezHEG2twts5NBTM7fgQwKe5mU7HfRIG3GMVHduvpCixLhfbWEf1GhfgDR827oG2o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781188829; c=relaxed/simple;
+	bh=YEvXA7hxzCZPI3z9TCMIdWjx2UA7u7fi73iaafd2xIA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pUP3C8aAOc2rCFewMsrc9qBxHkiz+rC3ityziwRcUmfTm+01dXH2fRRv1iHXHQkwFDvYjMyzX0/AJjnDS+5iMsDGpHL+aZ39c4seHRqDtfESq4LNzyI8+NEb9tSLbTJ7qY55fCSZtNVxmrs2euIgmsJ0Jka2Xjlx12953tkP/9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rp6TueOS; arc=none smtp.client-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rp6TueOS"
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1380104f31eso9986c88.0
+        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 07:40:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781188826; x=1781793626; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jc1obbf7us2qhujC6W8Kt/1pNv4AnXWLRx9wD4plXQM=;
+        b=Rp6TueOSrB8gba3wp+LlGVP3CuxtZyLhD4+Kd+q09587qsrHBl3yH2ulZNBdvHAi6C
+         zx1lSqBi8XznqVKar9GCTQ8WnmBW6OIvpK7q4IlhEkLCHFRoXA3/ytY6/AYtBi+fs23R
+         IMuSKfYgR131OZ+f/FhHWteMk9u3517MY8rsGecA9qxdnOa4a+3YabDEjQWtxnjgkNUL
+         Nabt8BqCQg/se1aY4NPNO/VWyh4xhtmc0f+e9HjlzQROyN6B+mPniHKxK2rj9L8/jXpb
+         tx3TTMKwB6Z5PuBjPSG+xiezyjPStEwBY58kwHBKM8eivB6/WTMLXEkV4p9ntMI5SJUk
+         bawg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781188826; x=1781793626;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jc1obbf7us2qhujC6W8Kt/1pNv4AnXWLRx9wD4plXQM=;
+        b=fXAbvSYTL9o1mwl+MHaui/8M/2sFDBG9FFOUlL6LIE8lFmIqzDDW6C3Kn1RbsG4MI2
+         BHsHpWAYn89+kkJag9CM89Highx5O7ceuVJLXdduEcRDS4r+Jw/Y/6GpXe3tx7NaCiXr
+         hcXAxlsnZUqCnmyQmsiSWsYU1SXcVCOcl8VRPuV4fmixHmJmG9YUYX7OoZAuAWcmlF8Y
+         QBgIBCP1TpsaWrABfXTOAhVTtLSUiUWmPhLxJHncUzIFWUdllgUxWQAP+sX5fbTSS3ie
+         KlWzM557ykDt8aQVT0YEMSxKaumfuHeX6u+LV6GxaTLMaMdTPNmhuX+bxPqgmGRX4K1l
+         RZLQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/43+4rPON4CUzYXsGAGyUyhvqwcIVTHKZKzEWorFieojhWxGgSIRcmaxkJT4O4ic1BsM4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9OOYf2rhaBoEFFQ/hSu3ogTQvn9u0yCXQkkjmwYiH4jlGa1Ag
+	1JdF0ggQaUl9uXioIz558x3te+sMPox9kSVWAChyrbQq/c+/deC9Mrb/4N/llSAGyA==
+X-Gm-Gg: Acq92OGBXK71R8ieGeirp9OP8qwYEEV0363lXFxBbNGCqNyR2F7fyG3B7Dla19bdpzq
+	vxwkYRqqIaBr5ltgJIoCXeDG9nKkkMHqTPVwhU8bXpSy50oCKbzHYtxCqdsgTxTmiqcFAQDaDhQ
+	MTMovzAdLNsSOmamvoTW3HATwPwXYz3a7e9P66IGZ3byianpxAqXkJF31OwgPEwHmw0wTFI0atQ
+	mURN9QFS7kazEVorKNwm4bFmnysUd6qpJSYCOfzUH76GDLvoo7pVQDs+URsZdiuguME29j/LMRi
+	SejBmUL0VzD1hyuc/jDF7qI0ycDW0zFDMPpxcyRTWT+ZTdID2r9iFa24ylbnch0awsjlAGNuj2t
+	VfEJw+ISZHnPBG52RtinWBfhQ8Fz5/nMqGPkfzLIWTFoypW//l1RlY65v1/1QMAC9q+26JayvOw
+	CnRTZjru0jjwu0GzwlNbkISBBucTAO9wCLUWJxbgwbH8VIcHv757EBtmTa8CtzKvc6EOewkyOF9
+	D79yDqrTw==
+X-Received: by 2002:a05:7022:513:b0:138:888:32e0 with SMTP id a92af1059eb24-13841ec18e4mr169957c88.32.1781188824336;
+        Thu, 11 Jun 2026 07:40:24 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30806c45dcasm2284632eec.7.2026.06.11.07.40.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 07:40:23 -0700 (PDT)
+Date: Thu, 11 Jun 2026 14:40:17 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>, Matt Evans <mattev@meta.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Shivaji Kant <shivajikant@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>
+Subject: Re: [RFC PATCH 0/5] vfio/pci: Support ZONE_DEVICE-backed P2P
+ Registration
+Message-ID: <airI0VIb563jHTcy@google.com>
+References: <20260610151853.3608948-1-praan@google.com>
+ <20260610162848.GO2764304@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,57 +84,61 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260611125813.A9DBD1F00898@smtp.kernel.org>
+In-Reply-To: <20260610162848.GO2764304@ziepe.ca>
 
-On Thu, Jun 11, 2026 at 12:58:13PM +0000, sashiko-bot@kernel.org wrote:
-> [Severity: Medium]
-> Does this error path leak the newly allocated VMSA?
+On Wed, Jun 10, 2026 at 01:28:48PM -0300, Jason Gunthorpe wrote:
+> On Wed, Jun 10, 2026 at 03:18:48PM +0000, Pranjal Shrivastava wrote:
 > 
-> Since sev_es_sync_vmsa() now allocates the VMSA, if
-> sev_es_vcpu_vmsa_make_private() fails, the code returns via the "out" label
-> without freeing the VMSA or resetting its state.
+> > Users utilize the standard sysfs p2pmem/allocate interface for managing
+> > memory slices once a BAR is registered.
 > 
-> If userspace retries the KVM_SEV_SNP_LAUNCH_FINISH ioctl, sev_es_sync_vmsa()
-> is called again and will trigger the WARN_ON_ONCE() in
-> sev_es_vcpu_alloc_vmsa() because the state is still VMSA_SHARED:
-> 
->     if (WARN_ON_ONCE(svm->sev_es.vmsa.vmsa_state != VMSA_NONE))
->         return -EINVAL;
-> 
-> Can we add a call to sev_es_vcpu_free_vmsa() on this error path?
+> I'm shocked someone wants to use API, what are you expecting to do
+> with it??
 
-Yes, this is a user-space triggerable WARN_ON_ONCE. Usually user-space does not
-re-issue a LAUNCH_FINISHED command after it failed and doing so is not
-supported to lead to anything productive anyway. The right fix is to remove the
-WARN_ON_ONCE().
+Our primary use-case is PCIe BAR (DDR / HBM) -> NFS via P2PDMA while the
+PCIe device is managed by a user-space driver based on vfio-pci. While
+kernel drivers (e.g.drm) can register BARs with ZONE_DEVICE natively to
+enable this, VFIO currently lacks an equivalent mechanism.
 
-> [Severity: Medium]
-> Does removing this allocation lead to KVM's INVALID_PAGE sentinel being passed
-> to the PSP firmware?
 > 
-> If userspace creates a vCPU after the SEV-ES or SEV-SNP launch sequence has
-> completed, the new vCPU's VMSA is never allocated.
+> > An alternative implementation has been explored which integrates with the
+> > ongoing VFIO DMABUF-mmap refactor [1]. In that approach, rather than
+> > registering a BAR as a system-wide P2P provider, VFIO optionally
+> > allocates ZONE_DEVICE pages only for specifically exported DMABUFs via a
+> > new VFIO_DMA_BUF_FLAG_ALLOC_STRUCT_PAGES flag.
 > 
-> When this vCPU is run, sev_es_vmsa_pa() returns KVM's INVALID_PAGE sentinel
-> (~0ull), which is loaded into the VMCB, triggering an immediate #VMEXIT
-> (SVM_EXIT_ERR).
-> 
-> If the dump_invalid_vmcb parameter is enabled, KVM handles this by calling
-> dump_vmcb(), which then calls sev_decrypt_vmsa(). Since sev_es_vmsa_ref()
-> returns NULL for VMSA_NONE, sev_decrypt_vmsa() erroneously assumes the VMSA
-> is encrypted and passes the INVALID_PAGE sentinel directly to the PSP
-> firmware as the source physical address for SEV_CMD_DBG_DECRYPT:
-> 
->     data.src_addr = svm->vmcb->control.vmsa_pa;
->     data.len = PAGE_SIZE;
-> 
->     ret = sev_issue_cmd(vcpu->kvm, SEV_CMD_DBG_DECRYPT, &data, &argp_err);
-> 
-> Could this direct hardware exposure to an invalid page address risk firmware
-> hangs or IOMMU faults?
+> That's probably more sensible but you can't have a DMABUF mmap
+> actually install non-special memory. The native vfio mmap still can,
+> but not mmap on the dmabuf fd. That's still workable, just keep in
+> mind.
 
-This is not true. The VMSAs are allocated in sev_es_sync_vmsa() for both SEV-ES
-and SEV-SNP guests. Both code path also propagate the VMSA into the VMCB before
-LAUNCH_FINISH is complete and the VM can be invoked.
+Ack. I guess, we could have a separate mmap path in case of BARs that are
+struct page backed which doesn't go through the dmabuf exporter.
 
--Joerg
+That said, we don't mind moving away from the old API if VFIO mmap can
+support this, we don't mind open-coding with devmem_remap_pages.
+
+Effectively, we just need a struct page-backed BAR exporter, preferably,
+via VFIO.
+
+> 
+> What do you even intend to do with this? With the new work to tie
+> dmabuf directly into io_uring I really wonder if this is worth doing
+> for VFIO?
+
+I agree that Pavel's io_uring series is great for the Block Layer [1],
+However, it doesn't help with NFS + O_DIRECT which still relies on 
+struct page for DMA mapping. We have a series to modernize NFS to support
+P2PDMA [2][3] and while I understand native dmabuf read/writes are coming 
+into play, their integration into NFS is a distant future (which probably
+we'll have a stab at once Pavel's series settles).
+
+Thus, we'd like to provide a standard, VFS-compatible P2P path via VFIO
+we're willing to help maintain this if needed.
+
+Thanks,
+Praan
+
+[1] https://lore.kernel.org/all/cover.1777475843.git.asml.silence@gmail.com/
+[2] https://lore.kernel.org/all/20260603053033.3300318-1-praan@google.com/
+[3] [RFC] https://lore.kernel.org/all/20260401194501.2269200-1-praan@google.com/
