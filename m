@@ -1,326 +1,214 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE1147A0BE
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 17:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781197931; cv=none; b=cUELJXIMPe3MJjTbkDv6UQ/XXvfqazEWP5uFAnN6G2xEW3eyc/KOeHqlxElxD5ujob861h4LaeOFCZQTi4ZBsOVBjodSyzXJ9nPn34hFootZxeghAay4v7Zk9KngvxOLT1ohS7f8oefx06fUmXb2cxX6CJ9GSQpixprZcs+yLp8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781197931; c=relaxed/simple;
-	bh=zCp/n6m+JRShvAS1UOjVo4sd9xkDrLGks43l0QNZjbk=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=MjP40R03JRCz3rSb0NX8Vk+Rj7G2tirTz7pjHli8Z4gdHtlJEgT7qgdreIPWjWaTLpv6aaEtXxf6auwiVRjWH8T3XNNTtrGxsEoolL6yySlKM570C30aR79rcwyZcxRfoezcal0udCv2tFd9C+bzP3/8W/VdhYiBvE3sd9N9Zt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XUVkAsee; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8B648B399;
+	Thu, 11 Jun 2026 17:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781198164; cv=fail; b=omOtQtDNjdx09SUcy5n8AoQibjpELm6e8Blf5+n2OFQEuZInhD2geEfCDAh9Rz0FFTcwSdg29w4s3SqpA2bXPfmc+i75ti1UZsXjTXR4qoBqsGHloO7BD1nz8oKszGm5cyro6f0TQSyeU8mTncLyG3XGlfRDk8XfpKWUoL4IWWI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781198164; c=relaxed/simple;
+	bh=BLFoPxl2cS3zNa1a8qxRL6jYkGC08OJX8k/rnMRAstc=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Buyow5lqiDGyiDPyisFwt6tDiI6rxxM/Wl+vLHJK0OPZVsBdKsPrpp6YpnvfmVyl7Kkpt3nhIoz8PgRwJCcGCmYrUS1f/WI7v+Wy4K8E29AwOmYWVdbjOJ/NhMh6a6mSxk02CSEP3Bmtdr7TQwM9NpKvAm5NKxT2VZGGlA812i0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m5SsPJyS; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XUVkAsee"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-36bb3551f6eso171527a91.1
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 10:12:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781197929; x=1781802729; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QUhb0LXL29TRj1XmX4fg/eZOCymWXris1Gg/NE+c6fU=;
-        b=XUVkAseeyeMJ9Xn1LKfd8JcSMVSILzgV9heRoa05prHkLpAFnAYYoZev9e63RwxxWf
-         lTzaMiDkpXtbuJrnVdi/m5JcXLFXQZsyHsP9O8uYzt14Se/vYwWHPoBFOCxNLFABI7Rd
-         SQ9pBlLJEAbqk09n5YaM5i/UX2GeRbM82vvIvpnl4zQkPPWiB1lXd7qQqLXQiCuF8XVa
-         iEUA87gi0yHBhKyDIXyKG2YkAV6lHzpBqiMEbbovKlzmCFmctZHW1vKDswIAnSGU27Fc
-         4geJK1zPiw4NEMdZQlRE7GPjLU6b5V29bCCRlKugFV4FHhIVtONy3agvRgLKnRUlx7SB
-         yQ4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781197929; x=1781802729;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QUhb0LXL29TRj1XmX4fg/eZOCymWXris1Gg/NE+c6fU=;
-        b=SPjrmRIOhwO8Luf5pBU/Fy4a9GQZ6bBv6dM4QIkdSd5OC3+i5+VliwDEvbE8dOyZkt
-         EbPb59CRW0jU0oWCIUlwcV2Zoo8smUxUiNr4k7iulOJu/tCsmyVDFkDE3kUPf4MJxkgX
-         AO9v/Uc+9nvzcgdOIktvPg2APEMqgzhKFDubPjRzgYlDaMBiGN9lAOgiBzgk49bgg4I3
-         ObS0LiqxWSS/jM53SKeZCv3p47w0pCjlNXcHCZEcnDpSN02lFyJBikaH8BMAweJSvTr1
-         oXqnPf6N/os4fnmHtH86vLzh0DV4Cc1dfq+484EV/ROe+IbTret3396Ev55AQsA3rW3B
-         iHiA==
-X-Gm-Message-State: AOJu0YxKHtqf9/smICPZ9hxlgt1LCfQG7OJKP2mpAPLHpjE3IPmDQ2yH
-	Qy0Gb2AwyV6mGa00Ucuhn4YuqXrjoLPdv3Q2Rj1yMBBTCfsvDEArUHvU
-X-Gm-Gg: Acq92OEPC+UVW56Cz/p1ZimveiMzHixhVxZBHqYiW4/yd2wHOcLoJLrSSsSMTApMSdQ
-	fxblrm8/1BgyZ9CRdDsjirNeqZFeYY6lhZVYhVqO/6G7BxsW9wY3bVT6DIUVUAoWHp8OF3W/5yh
-	NPYbpuaBSVG3uCXs0XcmIAqrvA0JHT5nB0Wtek0KwlnYbyrQFO7Xd537cOUECWbZG7usZyj8n/P
-	fv5FqNhvOhkZObIkilPHKtdfu7q916EC8v9hbUSPTEkmSruGn2zHQoIzJXe0LGwUA2Lm0GDqAWf
-	3GwQZzkCyaHfNPnHs1pQ6mckhNLF4kP/8VYAl+WkbpWjxmLoR73PFTg/ym2IBIwShrVjqwAc3qU
-	CpxYE3PjMpmPuqKuHIeS/iQQiTql1jynIcpRNddYJ74YtYNquyM2w2xggaWgo1Md6H+QGw7ImN0
-	1CY+fTpeaPBy0OPrDjiW8Sxxlax6r50BUIwSIL
-X-Received: by 2002:a17:90a:e185:b0:36a:f612:e6a3 with SMTP id 98e67ed59e1d1-377a8bd3113mr4246286a91.17.1781197928626;
-        Thu, 11 Jun 2026 10:12:08 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3775549af60sm3035656a91.12.2026.06.11.10.12.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 10:12:07 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <chleroy@kernel.org>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Ackerley Tng <ackerleytng@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 RESEND 02/10] KVM: selftests: Add aligned guest physical page allocator
-In-Reply-To: <aimOVomL2RzYt2J4@google.com>
-Date: Thu, 11 Jun 2026 22:00:19 +0530
-Message-ID: <ldcldopw.ritesh.list@gmail.com>
-References: <cover.1781093720.git.ritesh.list@gmail.com> <df86b5ccdbdafc3509d9538bd5e6796737bab2db.1781093720.git.ritesh.list@gmail.com> <aimOVomL2RzYt2J4@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m5SsPJyS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781198161; x=1812734161;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=BLFoPxl2cS3zNa1a8qxRL6jYkGC08OJX8k/rnMRAstc=;
+  b=m5SsPJySnyDhkVCi0ONgQFmtJSo6f48fmdh/cCUG8Q73/ixLBl0Clk83
+   dDxsrtBxOOYudk53oKOkpCjw4zkb3cauGh4FUVbpxE4CTQKGbcDJCqbWd
+   0SSFeAJS5w9FGYVVRxvEbiYS7FSe3GkoNboN25HGNvtX/g1IXYVURAmX3
+   ckUINKIe/qHvqblIXTFVQ5tqxDZ0CuKhanwCA7CoXeebpHGAmRUGWhxe0
+   Paq5b4Q3qPoDg2bKj8vcOFbFudj6eA03LvoVjJdDGEHSUzd4E/dZ4Glv6
+   TAqg7i0VOCwN1IQIh1uuMRFOKa33oB7WJa3GfHfR6zjtebi6fLLOf/dL0
+   A==;
+X-CSE-ConnectionGUID: KyxFv9DQR02ETYwvW48LtQ==
+X-CSE-MsgGUID: CFsMD1FlTl2ZcMUQHa3PUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81759900"
+X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
+   d="scan'208";a="81759900"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 10:16:00 -0700
+X-CSE-ConnectionGUID: tQ5tTvjASielOIYl4GOpAA==
+X-CSE-MsgGUID: NAzXdaYKTbCcZNYkDzwmnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
+   d="scan'208";a="245456024"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 10:16:00 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 11 Jun 2026 10:15:59 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 11 Jun 2026 10:15:59 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.38)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 11 Jun 2026 10:15:59 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZHd0yAU414gYLhqim8jFoupDQKEMzw/IGLDQcgmoU654z8r3+0odfEqZEBWuysucF+moJG7t5YhEpemn9wVpyV4pS0bww2ZoOLIgPmJB7OmuPyu+6a7WtGF26ajrQSkeMbLXBJfMZCtAeIsFemhWcF34C3yI8CRBoQ70hthRhKUZEGg+fru4w28XQefwKn5FdBIKIkHC82+xdF7vDiB8UqdCaRj84eemB2vMCndQjATXcEWsB5dUJV2yy0S2TFZYLrAgyx8G07FWCjdX/PQN9BLS7bql8dxbGxVkhURJR3KU4nNFeKSZU9R3I+SH9K4IRfX4hwJChsoGL8sXMCJ11Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kGmzmXa4cKtw3pknRMQSui/ot9F9kEr0pCX4yrlHPvI=;
+ b=HeqegXchzu9/DZgignf3tj9A5gfJcU3NM8AJCIIRrawylPfUpVMejJJNULuvj1KhxuB1ZCSWaJ+fMTnOzy+fEpVV2IuvuFP6ofEfX3ZgPO5bl851oX/98bjQjOLZ0DkneAVcgzeoxBjC5sDD/7ecKAPu31W+b2oCv33SekHyfkI8bct+8qwkPywJCgD4N/DR4vHTW+13+W4bwtkQwX9+rGZEd47cmUUAobFbxPjDkyLWNBWNpECaYcdx2l3OyTDnEWjbUV5Et6jLkVTE+gSI6Gnx5Z72y8ovMYA7moqZ2R98/7SawAVgkkIUVcvVpcP6wkMVbxOxxS3FZ8VFzobD7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
+ by SJ2PR11MB7648.namprd11.prod.outlook.com (2603:10b6:a03:4d3::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.11; Thu, 11 Jun
+ 2026 17:15:56 +0000
+Received: from IA1PR11MB7198.namprd11.prod.outlook.com
+ ([fe80::2c4e:e92a:4fa:a456]) by IA1PR11MB7198.namprd11.prod.outlook.com
+ ([fe80::2c4e:e92a:4fa:a456%3]) with mapi id 15.21.0113.013; Thu, 11 Jun 2026
+ 17:15:56 +0000
+Message-ID: <7c7d21c6-1f8a-42c6-a950-8fd61d702679@intel.com>
+Date: Thu, 11 Jun 2026 20:15:50 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 09/15] x86/virt/tdx: Add interface to generate a Quote
+To: Xu Yilun <yilun.xu@linux.intel.com>, <kas@kernel.org>, <djbw@kernel.org>,
+	<rick.p.edgecombe@intel.com>, <x86@kernel.org>, <peter.fang@intel.com>
+CC: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <sohil.mehta@intel.com>, <yilun.xu@intel.com>,
+	<baolu.lu@linux.intel.com>, <zhenzhong.duan@intel.com>,
+	<xiaoyao.li@intel.com>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-10-yilun.xu@linux.intel.com>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
+ 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
+ 4, Domiciled in Helsinki
+In-Reply-To: <20260522034128.3144354-10-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DU2P250CA0024.EURP250.PROD.OUTLOOK.COM
+ (2603:10a6:10:231::29) To IA1PR11MB7198.namprd11.prod.outlook.com
+ (2603:10b6:208:419::15)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|SJ2PR11MB7648:EE_
+X-MS-Office365-Filtering-Correlation-Id: a3d669a7-409b-4130-0f48-08dec7dd1941
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|4143699003|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: e5b9giK62g//2wwYAJ9B3Y9XJ9Fq665RND1y5AJbcAe7us+BUnp3dGaBDsUKY/qkmAtVUidTnT/3X6IVcLzRMQXaMZ5xjc9NpxNNn/cicHmjXxa5X0aQdmeTXnHTVYPGzExqy3L+U106kkcB9c4tzpKTquetZ9tN6hkIjNaAIuynv/hXEcxVNg9ZisvzbmR+emD4e5grJQ6s01VXefL8tTYyHttDzxEwXmFnRODzcv2X0uWazjx00AkJJ3Oa9PR/8Xc6wPUok2w/FamCz/3TZVIi4tJYrppwZt0tVp4cfKzuoxddU4Oom/bRGQJ/rF02xegNjCli5gN76FT2E+3Xy0sLBnSApFafmY0JoQGNcf/CzbjzFvMVdWHLQ/Sm2KBUcyo3hF8tv35fPK0htwTvi+JBrT9NU7Nl7jS6ZbzGj+LjakE2TA7jxBAaWYjSw18gOQnJGPpq/JB+B+tK8JNfX5oaSFezxgqfYQZoDiffiIHL0DqBPn8oTrjKAWlPR4dx93c8ujpHcAgFzljEbdIGZviopa49k/yBre/DNy28ri9E+gOKAU83kZsWVNk1RACow9B2lLILrV+W7rnlvj8vwins7OzHgCpWkg7d6w83CTPc8cSlT/octaqwhdmJ9qnDeY9ey6quU8wFkOJO8ZTTAsBFJ3N8NF1skKmsrDOivGRC9KB4JIy2LQax2q1+xRa4
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d2dMZlVZVERKNEVpbDlOa1pzUWVYZDFQSTRaMWFjaWdxamlRRmFTWHZvUzFQ?=
+ =?utf-8?B?Rk9td0REcEh4VjFuZXdOZkZLd3g1UGwwbDNBaWlTVDk2RkJaS0R3VXdwcm1h?=
+ =?utf-8?B?bVdjVktlQjIwcmU3UEV3dGZyZ2hIa0NwOWlYYTNYRTVxNHlGeGtJckxVU04y?=
+ =?utf-8?B?MEdsb01qQUYxUENpWkVwVmtGaVdLSXF5Z0pQbDFhQjdsb0hWNWtNbHdKeEVu?=
+ =?utf-8?B?RmF3ZU84Ui9MemZ6SURGYzZ3Q2w4WDlnUWZYOGtXOVJET25SWWR4TDFnYmhr?=
+ =?utf-8?B?T1ViTjlGaXBFMFNhVHBIVmRLQXdXN3RaQnJ6U1Rud0doZitWOC9lUDVHZzhX?=
+ =?utf-8?B?bkY4MHo3elZpRThoYjNvRTlweTJIZU8vUy9DeUE5RzEwZm44ZVlGSjR0L3ZV?=
+ =?utf-8?B?R3NWZ0o2WEZPa1FNZFAyemxvcW5UczkxWERja0JEaVN3QlVWa1RNZHFDb3By?=
+ =?utf-8?B?VHhleGdMaXlRbEg3VnUyY21BUjZIV2pGalgySTF5dUZ2VVJ1S1lDWWpWaWcx?=
+ =?utf-8?B?MlNXVWlTRlpZL0o0b2VibDdKK1k1bnB3cVU5WGJ4a2s1TVdISUVKU3hXZWU2?=
+ =?utf-8?B?ei82a1BzWThEaWFFTFN5SXZkcFN0OGo2Z3JxeGpGYzYrWHprL2ptRXB2Vkt1?=
+ =?utf-8?B?RzdiSW00ZExkMnhOQ0JZZjVTVWNidURzOEt6NFg5ekN3MStNcmJCQ2FPelR0?=
+ =?utf-8?B?Y3Zyc2R1QzQwSjB2a0hqK3BWMWFXaEZqNnFSZFJUcGZob2d1L1VUQ1g2MVNh?=
+ =?utf-8?B?cEo0OUp1UktJZDhHMUJ3czZzaGtiRmdVTmdMY2NWZm40RXhJM3FmRTJzZ2xM?=
+ =?utf-8?B?T2RZWlhWWUlpSGtuWE9aV3RFTU1QTlRYT2JYVU1FN3V6T1Rwa2RBWnhrSHNN?=
+ =?utf-8?B?NERnK0RyQlNOYTNqYitYY1Z2NEg3YnE2dU1vemYwMElydzdyVkQzVHZpaU1G?=
+ =?utf-8?B?M2lZOVNHNVNYelFGc21wb3NXcXJlSVBJUktvdk9JYTBIdFFDZ1FIODRLNnRn?=
+ =?utf-8?B?NHhwaFJIVGxkUVBrUFlNbnNVRGFjZWtLZnZaU1FvY0xWYkV3NlhheS95MS8x?=
+ =?utf-8?B?RDlORGQyRWxsejAxUnJxTVFMOWF1WlhpS29tdGJUMW01QjVGV3Y4WXBDaGN3?=
+ =?utf-8?B?a2VTdVRsKzVNZUQxNVZybmlaVW50cVRmaWxyOVU1bVZDLzhDNVZBRG0yb3lJ?=
+ =?utf-8?B?a3RJYTJBYm9YSGFwSUNKT1hqeCtTRW5wenJDTHRNOEVvMUdGeGJLV091R3Iz?=
+ =?utf-8?B?QUtmRWZ1aFREVnEzN3JzNVZPT1ZpYjhXMkRUU1JqU2ZrV0c1ZytzdGpMUWNl?=
+ =?utf-8?B?dzJ0c2hBTnNnTlBtUUp1cnVSUEtubEhaQ3kzUkpVUXlMaWlUb0gyKzZFLzc0?=
+ =?utf-8?B?QlhVRlFpOHRkaGhKRkE1Q1MrQVVFaTc0NDdPN3BUQ1VYOWsyWmtPTUUvdmRh?=
+ =?utf-8?B?SWJBaEtZdm93RktxNkJ5WGt0eWNmT2F3MzYrQS93Qy9iQTBqUVB3cG1lNi9F?=
+ =?utf-8?B?WVRmRXdKVzFHdGkvZFR4T3YxYmo3Z1pqaFFwRTNkQ3p6M0h0OC9KUFpyOG5M?=
+ =?utf-8?B?YUJpR2wrVnBIOXFtanpsSmpiamNaVE5MUzRVa2lWZXl0SzRsQ296KzZMK3Av?=
+ =?utf-8?B?emt2cXJzRVE3dDJ0REgyRmxmVHk2bEJOdkxDYXBPSnU3MWs2MXFVK1kwTkds?=
+ =?utf-8?B?TVlHUFVEalFvS2xYTmdueGxPWGxPRDc5QUpMQVF2ZGtOTHl6QzROTkNzcnMy?=
+ =?utf-8?B?RzVtenFmSnVURkpTcXVuVStwOGEzbGc1d1pxRkExRTJ0cXZ2eTdlUks2cFla?=
+ =?utf-8?B?SXFMckFTaXc2VW85Y2xHNEZZTlFEYjA1R2diOU9Ba0VMOWYvelhUZ0dMMXp5?=
+ =?utf-8?B?bXFxV3djZzJNSEVGVVlVRHRxcGZXVVpBMk1rWGVoTFMyb0F6T0EyN21nejAz?=
+ =?utf-8?B?S25Lb0Q4U1ZNT2VXNUgxNFRGQlY2YmFyNFpYMHR0dHd3ektzVzBEbnBXU2Vo?=
+ =?utf-8?B?Wngzc3hLekdaV3JXZG1XZHFDZEhnYzZSdWxXMTVGck41Q0RUb3NhZ2k2eFF2?=
+ =?utf-8?B?b0EyZ2RCdW04cTI1Q1FYVnNQSFdrSHZaOFkzUUNvbkhvMjhtUkYxSDNIQm5k?=
+ =?utf-8?B?ekNFK0JWUDNITUZReVNOV2VtamNMZ3pNeEZ0TTRxcUlmdm9nY3N2K0xHazZj?=
+ =?utf-8?B?OXRTRjFzK09BQndEZGpiSUw5bUVtNHVscHhQeGZld0dZSGhVc05uTE1TQTE1?=
+ =?utf-8?B?eVRlQjBORU8zN1dLcXFkT0VZTXlndTJKcnV1TXJsYVF2eXlqSWh2VEZkczE5?=
+ =?utf-8?B?dGlzWFRaVkZEQWk3c2tNdUFtY1R5L1FoNHNyQTh2dTkyNm9UMlFTdTk2aEtk?=
+ =?utf-8?Q?LUJvOeqwL9gfpqtU=3D?=
+X-Exchange-RoutingPolicyChecked: opNHT0DixQY4rHjuNqyXn/ira20AlpVcM0D/R9bQCPa0g/emyBVvJsu6mrgMAlZ0c7ULN2sOLo3geae+Dp4d2WCjvGZM8Rz7Qn4utdcUKpmWKZBo4J6/S5PPT0M43mRWrJUZERh7XIzjSXrUkRMUdWGqyfBf+yrAM42dTu8HrAjb6fA5mZ0g9iHYcYR7o3sliyC+DbReufIi/revhLrwGfUueIeF8QAhly8qLQ57pQZVMN/7il+XV1Hr+OKXrRLsLPrXP7hOrJCLbecsFyDYrFLTSu8D1FwkskhYwcE911tXuKEJK/DNHob+5Wr8ftkyqmhIvi7vSUbXxKPQdGVyTA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3d669a7-409b-4130-0f48-08dec7dd1941
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 17:15:56.2423
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: u7uvtkhMjr2d9JvVRfkeC7GJKSRRTGlu9TKX7HksCN+AsGPs4CHhuqcDm8u+OGrG69+qY2JZY93QPUGvI2vq9w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7648
+X-OriginatorOrg: intel.com
 
-Sean Christopherson <seanjc@google.com> writes:
+On 22/05/2026 06:41, Xu Yilun wrote:
+> From: Peter Fang <peter.fang@intel.com>
+> 
+> Use the TDX Quoting extension's TDH.QUOTE.GET SEAMCALL to generate a
+> Quote. Since the interface is shared across all KVM instances,
+> serialize access to the SEAMCALL buffer with a mutex.
 
-> On Wed, Jun 10, 2026, Ritesh Harjani (IBM) wrote:
->> From: Nicholas Piggin <npiggin@gmail.com>
->> 
->> powerpc will require this to allocate MMU tables in guest memory that
->> are larger than guest base page size.
->> 
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> [Rebased to latest mainline tree]
->> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->> ---
->>  .../testing/selftests/kvm/include/kvm_util.h  | 20 +++++++++--
->>  tools/testing/selftests/kvm/lib/kvm_util.c    | 33 +++++++++----------
->>  2 files changed, 33 insertions(+), 20 deletions(-)
->> 
->> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
->> index 3666a8530f31..c515c918c2c9 100644
->> --- a/tools/testing/selftests/kvm/include/kvm_util.h
->> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
->> @@ -991,8 +991,8 @@ void kvm_gsi_routing_write(struct kvm_vm *vm, struct kvm_irq_routing *routing);
->>  const char *exit_reason_str(unsigned int exit_reason);
->>  
->>  gpa_t vm_phy_page_alloc(struct kvm_vm *vm, gpa_t min_gpa, u32 memslot);
->> -gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num, gpa_t min_gpa,
->> -			   u32 memslot, bool protected);
->> +gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num, size_t align,
->> +			   gpa_t min_gpa, u32 memslot, bool protected);
->>  gpa_t vm_alloc_page_table(struct kvm_vm *vm);
->>  
->>  static inline gpa_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
->> @@ -1003,10 +1003,24 @@ static inline gpa_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
->>  	 * protected memory, as the majority of memory for such VMs is
->>  	 * protected, i.e. using shared memory is effectively opt-in.
->>  	 */
->> -	return __vm_phy_pages_alloc(vm, num, min_gpa, memslot,
->> +	return __vm_phy_pages_alloc(vm, num, 1, min_gpa, memslot,
->>  				    vm_arch_has_protected_memory(vm));
->>  }
->>  
->> +static inline gpa_t vm_phy_pages_alloc_align(struct kvm_vm *vm, size_t num,
->> +					     size_t align, gpa_t min_gpa,
->> +					     u32 memslot)
->
-> Given that the PPC usage is all for naturally aligned allocations, I think it
-> makes sense for that to be the API, i.e. have "bool naturally_aligned" instead
-> of an arbitrary alignment.
->
+Isn't the concurrency configurable, so supporting only 1 instance
+is a decision of the software implementation, not a TDX limitation?
 
-I would still prefer passing an explicit align value to the allocator,
-because IMHO that's a useful allocator interface to have.
+> +static u64 tdx_quote_get(struct tdx_td *td, u64 in_data_pa, u64 in_data_len,
+> +			 u64 hpa_list_pa, u64 total_len, u64 *quote_len)
+> +{
+> +	struct tdx_module_args args = {
+> +		.rcx = tdx_tdr_pa(td),
+> +		/* Don't bother specifying the quote id */
 
-However, if we do want to go down this road than I don't have any strong
-objection either, since as you mentioned powerpc mostly just needs
-natual alignment for it's page table region. So alignment can be
-extracted from the region type as you described below, so no need to
-pass it all the time.
+Need to explain why
 
->> +{
->> +	/*
->> +	 * By default, allocate memory as protected for VMs that support
->> +	 * protected memory, as the majority of memory for such VMs is
->> +	 * protected, i.e. using shared memory is effectively opt-in.
->> +	 */
->
-> Duplicating this big comment is very ugly.
+> +		.rdx = QUOTE_ID_MASK & (u64)-1,
+> +		.r8 = in_data_pa,
+> +		.r9 = in_data_len,
+> +		.r10 = hpa_list_pa,
+> +		.r11 = total_len,
+> +	};
+> +	u64 r;
+> +
+> +	do {
+> +		r = seamcall_ret(TDH_QUOTE_GET, &args);
+> +	} while (r == TDX_INTERRUPTED_RESUMABLE);
+> +
+> +	*quote_len = args.rcx;
+> +
+> +	return r;
+> +}
 
-yes, my bad. I should have removed one copy of the comment.
+...
 
-> In general, these APIs could use
-> some love.  E.g. taking in @memslot is essentially a historical wart that isn't
-> necessary except for literally just memslot_perf_test.c, which allocates memory
-> in a huge number of memslots.
->
-> If we rework the APIs to take the memory region type instead of the memslot, then
-> we can kill many birds with one stone.  It takes quite a bit of cleanup to throw
-> that one stone, but I think the end result can be quite nice.
->
-> Compile tested only at this point, but I now have a series of ~17 patches to yield:
->
->   __weak bool kvm_arch_needs_naturally_aligned_page_tables(void)
->   {
-> 	return false;
->   }
->
->   gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages,
-> 			   enum kvm_mem_region_type type, bool protected)
->   {
-> 	struct userspace_mem_region *region = vm_get_mem_region(vm, type);
-> 	bool naturally_aligned = false;
-> 	gpa_t min_gpa;
->
-> 	TEST_ASSERT(region, "No region for type '%u', memslot '%u'",
-> 		    type, vm->memslots[type]);
->
-> 	switch (type) {
-> 	case MEM_REGION_CODE:
-> 	case MEM_REGION_DATA:
-> 	case MEM_REGION_TEST_DATA:
-> 		/*
-> 		 * If the region is backed by the default memslot (id=0), use
-> 		 * selftests' hardcoded minimum PFN, otherwise use the base of
-> 		 * the custom memory slot that backs the region.
-> 		 */
-> 		if (!vm->memslots[type])
-> 			min_gpa = KVM_UTIL_MIN_PFN * vm->page_size;
-> 		else
-> 			min_gpa = region->region.guest_phys_addr;
-> 		break;
-> 	case MEM_REGION_PT:
-> 		min_gpa = KVM_GUEST_PAGE_TABLE_MIN_PADDR;
-> 		naturally_aligned = kvm_arch_needs_naturally_aligned_page_tables();
-> 		break;
-> 	case MEM_REGION_TEST_EXTRA:
-> 		min_gpa = region->region.guest_phys_addr;
-> 		break;
-> 	default:
-> 		TEST_FAIL("Invalid memory region type '%u'", type);
-> 		break;
-> 	}
->
-> 	return ____vm_phy_pages_alloc(vm, nr_pages, min_gpa, vm->memslots[type],
-> 				      protected, naturally_aligned);
->   }
->
-> with convenience wrappers:
->
->   static inline gpa_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages,
-> 				       enum kvm_mem_region_type type)
->   {
-> 	/*
-> 	 * By default, allocate memory as protected for VMs that support
-> 	 * protected memory, as the majority of memory for such VMs is
-> 	 * protected, i.e. using shared memory is effectively opt-in.
-> 	 */
-> 	return __vm_phy_pages_alloc(vm, nr_pages, type,
-> 				    vm_arch_has_protected_memory(vm));
->   }
->
->   static inline gpa_t vm_phy_page_alloc(struct kvm_vm *vm,
-> 				      enum kvm_mem_region_type type)
->   {
-> 	return vm_phy_pages_alloc(vm, 1, type);
->   }
->
->   static inline gpa_t vm_alloc_page_table_pages(struct kvm_vm *vm, size_t nr_pages)
->   {
-> 	return vm_phy_page_alloc(vm, MEM_REGION_PT);
->   }
->
->   static inline gpa_t vm_alloc_page_table(struct kvm_vm *vm)
->   {
-> 	return vm_alloc_page_table_pages(vm, 1);
->   }
->
-> That way we don't need to add yet another rarely used param to the APIs, and
-> PPC just needs to define
-> kvm_arch_needs_naturally_aligned_page_tables().
+> +	r = tdx_quote_get(td, quote_data.hpa_list[0], (u64)in_data_len,
+> +			  quote_data.hpa_list_pa, quote_data.buf_len, &out_len);
+> +	if (r || !out_len || out_len > quote_data.buf_len)
 
-yup, looks good.
+Is r != TDX_SUCCESS more consistent
 
-> The bonus is that @min_gpa goes away too.
-
-powerpc needs min_gpa for it's exception handling pages. see.
-
-	excp_paddr = vm_phy_pages_alloc(vm, excp_pages, 0,
-					vm->memslots[MEM_REGION_DATA]);
-
-	TEST_ASSERT(excp_paddr == 0,
-		    "Interrupt vectors not allocated at gPA address 0: (0x%lx)",
-		    excp_paddr);
-
-So, will arch still have an access to the API for passing min_gpa = 0
-for cases like above?
-
->
-> It'll probably take me a few days/weeks, but I'll try get a series posted before
-> the 7.2 merge window closes, so that you can build on top to get the PPC selftests
-> support landed in 7.3.
->
-
-Thanks Sean for your help! Yes, landing kvm selftests for powerpc will
-be definitely helpful to verify against any kvm regressions.
-
-BTW, I was thinking whether landing powerpc first will be easier for you
-to consider all the API requirements from all users / usecases?  But
-either way is fine please. I can work on top of your changes too and if
-something is missing for powerpc, we can add / modify on top, once your
-series is finished.
-
-
->> @@ -2039,23 +2039,22 @@ gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
->>  	TEST_ASSERT(!protected || region->protected_phy_pages,
->>  		    "Region doesn't support protected memory");
->>  
->> -	base = pg = min_gpa >> vm->page_shift;
->> -	do {
->> -		for (; pg < base + num; ++pg) {
->> -			if (!sparsebit_is_set(region->unused_phy_pages, pg)) {
->> -				base = pg = sparsebit_next_set(region->unused_phy_pages, pg);
->> -				break;
->> +	base = min_gpa >> vm->page_shift;
->> +again:
->> +	base = (base + align - 1) & ~(align - 1);
->> +	for (pg = base; pg < base + num; ++pg) {
->> +		if (!sparsebit_is_set(region->unused_phy_pages, pg)) {
->> +			base = sparsebit_next_set(region->unused_phy_pages, pg);
->> +			if (!base) {
->> +				fprintf(stderr, "No guest physical page available, "
->> +					"min_gpa: 0x%lx page_size: 0x%x memslot: %u\n",
->> +					min_gpa, vm->page_size, memslot);
->> +				fputs("---- vm dump ----\n", stderr);
->> +				vm_dump(stderr, vm, 2);
->> +				abort();
->>  			}
->> +			goto again;
->>  		}
->> -	} while (pg && pg != base + num);
->> -
->> -	if (pg == 0) {
->> -		fprintf(stderr, "No guest physical page available, "
->> -			"min_gpa: 0x%lx page_size: 0x%x memslot: %u\n",
->> -			min_gpa, vm->page_size, memslot);
->> -		fputs("---- vm dump ----\n", stderr);
->> -		vm_dump(stderr, vm, 2);
->> -		abort();
->>  	}
->
-> This is unnecessary churn.  I'm not saying the current code is pretty or anything,
-> but unless I'm missing something, this can simply be:
->
-
-Not really, we need the base to be aligned everytime, that's why the
-goto again loop aligns the base in the new code. Plus I feel the above
-refactoring also simplifies the special handling of pg == 0 case, which
-earlier was being handled separately after the loop ends.
-
-> @@ -2025,7 +2027,7 @@ gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages, gpa_t min_gpa,
->         TEST_ASSERT(!protected || region->protected_phy_pages,
->                     "Region doesn't support protected memory");
->  
-> -       base = pg = min_gpa >> vm->page_shift;
-> +       base = pg = ALIGN(min_gpa >> vm->page_shift, alignment);
->         do {
->                 for (; pg < base + nr_pages; ++pg) {
->                         if (!sparsebit_is_set(region->unused_phy_pages, pg)) {
->
->>  
->>  	for (pg = base; pg < base + num; ++pg) {
->> -- 
->> 2.50.1 (Apple Git-155)
->> 
-
-Thanks once again for your help with this!
-
--ritesh
+> +		goto out;
