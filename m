@@ -1,98 +1,223 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f202.google.com (mail-oi1-f202.google.com [209.85.167.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC49370D69;
-	Fri, 12 Jun 2026 19:08:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA67A3A872C
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 19:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781291292; cv=none; b=HvCiKRjgKxKaAh49a7zdpLWtofod86nGIeAx1+xEwaUIrVrkRfp73xyo5ZlP1yIIXMqrZfmMpvg8hnl9/hAF6RpMBx0c64Dcz4wmDzmLXk9SeeBbDyNw1dBAnYeBEJm+gTUy2+TlLJvRWCEnWbpYP4IuVZ9KTF1qV3fm1LYrPoQ=
+	t=1781292553; cv=none; b=Lf2HwjvV+ac/IHZXmZ6XFZjRgvE436/pWBOqMCh/mum84OZdoEXFqtRsyOz4ryl6mawYiqCMbjh3EsiLZcKauGUd96ed/RToGZ4kawdvDlMmo1U28Bxk9dGr8MYTV7MCCanJfjx2+GKgcb9281Vfjyw03OMLCKtsEsbb5S3977E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781291292; c=relaxed/simple;
-	bh=XSyJbc77u2uz/L8IDt8RwOLyCxA6BMkvlHDTvyOQnoY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sz6Lk/RYvBtvuRHxVH0hWyPKQxBNKAiOXWxYjEsyz/oWjV/BdRAT16U7XIbsMkN5Gocb6iQLeAIdJvp8vfVETsfZD4T4TfUzxP1Sc10gTESi2SEKGK7Vo2007mzLKJRr5oDKNT6TxkfQM7axZrp/zIR5NyA7tD4iGL73msqY8qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y4kElD/8; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1781292553; c=relaxed/simple;
+	bh=DlsneMygrkTUWs+1mVdQCE+qz199JpVjNUFhJE+VTWc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JmD/NC49f7sBKXNALu9HEZXVF5QDNAHrBgwp+vS97CLfY0MN72GRIf7n1pyianCjfqmDA72NpEz2nOeQHqkCcGyBlDqZSqxIhw6iQNQy2bHX5/E6bin3ePdkE4EGrG5A7cDCxwWrR2lKkuJrt9lVPYIPfujCMFtdKqR1fsDv4GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XK6AyxgY; arc=none smtp.client-ip=209.85.167.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y4kElD/8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781291290; x=1812827290;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=XSyJbc77u2uz/L8IDt8RwOLyCxA6BMkvlHDTvyOQnoY=;
-  b=Y4kElD/8So6QkBr/d3TlLZhMpjpkMgq137GJ5DMys54LTku+Sd2x4KPj
-   xU/0mhRtE09cOFL3Pgj8uDtr9JEs28G+//i81IuWOtVS6PxmoJe61/skV
-   Q0w5TDFtEMQiplYCukH0xKE7gj90XQI7RJrNOR37SSPSNC7+k97afIAZF
-   5LqHPnXNOxoPP10F9I0dGpd8CuXojw2kS0yvPui6Il4CjDsFXbd8i9iFW
-   eaO+n0GS3JsiXDHags48eSWCZSNWKShsj/chX8vRdUr4wLlmNiU8r7VgZ
-   1ma38VpNKpZ0BB/YO+QwCtdK5ASZx8XwseQ662HLtNWHgZvbryVyN2oF2
-   w==;
-X-CSE-ConnectionGUID: fkvHZkDuTl6CQl0G8xNp9w==
-X-CSE-MsgGUID: SnGWKgNrQcKRa04jg1nHPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11815"; a="82171483"
-X-IronPort-AV: E=Sophos;i="6.24,201,1774335600"; 
-   d="scan'208";a="82171483"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 12:08:09 -0700
-X-CSE-ConnectionGUID: LEagXSZ0SSCCPSUcNTG3MQ==
-X-CSE-MsgGUID: nr+SFvaAS0yPxYw69Q0uLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,201,1774335600"; 
-   d="scan'208";a="277091048"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 12:08:08 -0700
-Message-ID: <caa29b0f-3c44-4c37-baf7-64873123a8dd@intel.com>
-Date: Fri, 12 Jun 2026 14:08:07 -0500
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XK6AyxgY"
+Received: by mail-oi1-f202.google.com with SMTP id 5614622812f47-485ffc7113bso1367686b6e.0
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 12:29:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781292551; x=1781897351; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=u60qdRNOCqKqcuRdaXAx140Po6M1Yopy4F2KxEGMp20=;
+        b=XK6AyxgYQDT7PpNkyo5+ediW+X34wsvfIl69Dg9wvAKW0kSWpaMTWO+zTCzCA7B5Nz
+         Yp90X1wEnz0uNbxz8K1ZGja+XA386GFvjrbae3f45gwbDXy29eacSeuhNQPTRAoNjste
+         I7ujZm5fTA15yi7JQtLvDVuL1TXE2rNgJXDV7C+UcddBdcTFUFjNw3yZgPGUjqKz2Vos
+         2x/siGDvHS5FWLZlUtSUpyLCdCOFhNifNlk38Yj9zzrlFCMsyT47q8cowoVQbkDYcHJd
+         biYT0YZ8zdRe3+wPEutpXgJuZqQE+jP7+1p8Ouyd3k/aPV33Eb7zb0h+Y/8IVUma5ySy
+         x7Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781292551; x=1781897351;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u60qdRNOCqKqcuRdaXAx140Po6M1Yopy4F2KxEGMp20=;
+        b=qDOnGuSyDxs0rlhp3J7DFEVrxjcM5/rfm9G5oDGe/kaMR83GAUAB11EJBjTClqG5rJ
+         aDWebOk1YlZqZ3vYTGS14CuEJw3E+D1iRv3O6KBpEGEbzM4yJTdwX5ghb4zthLKP5+VO
+         ZbWj48fjig41L6+NVBwn9H8NLoCs4VfJ7dUug1MddBOLggmCx1a7Pn3iE17Bzpq38MRn
+         DcNxsEyper1lt9lPHQw03V0BU/YJzRz/NQiQBi0/7Jj9c8Ink7ZLmWmGoP7ebfw1DCQU
+         vieQQ3kDBTo3Ew6Jv8XDvQPTYhxTyQroQYVmBKFM7CUX1H1fas+GHj+mF6MWAS82+LIQ
+         eCPg==
+X-Gm-Message-State: AOJu0YzTcMNjHt7Bmw4+w2g3JL0WjUEXRBHn4Qv6lCE4uajzw4H9cEx4
+	fFleDoZNPJ22brjCn+rxLNFj17ENhsS52aWwJslK4IB9ZVb877RUW6HWSZ3mR9rzUQf4YQaom1C
+	MMte/AdK01m/oVArzJFJXKx5CvH7gfRU1guWMqwCbUOpX4EEVQMbBRLXy3Xn2EjB1ywjhEBoTR7
+	zS0+WuSV+SoOvYAeH3HJ1AEQ0OJSpQKaPjvvD93Oy4IFBOQ9c0TvOJ3wNhvf4=
+X-Received: from ilqh1.prod.google.com ([2002:a92:d841:0:b0:501:ee09:eb2e])
+ (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6808:1913:b0:479:d25e:9065 with SMTP id 5614622812f47-4874193626fmr670168b6e.2.1781292550242;
+ Fri, 12 Jun 2026 12:29:10 -0700 (PDT)
+Date: Fri, 12 Jun 2026 19:28:48 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 0/4] KVM: x86/pmu: Add hardware Topdown metrics support
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
- Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
- <dapeng1.mi@linux.intel.com>, Falcon Thomas <thomas.falcon@intel.com>,
- Xudong Hao <xudong.hao@intel.com>
-References: <20260423174639.56149-1-zide.chen@intel.com>
- <ainfKdOgKp9i2qDP@google.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <ainfKdOgKp9i2qDP@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
+Message-ID: <20260612192909.1153907-1-coltonlewis@google.com>
+Subject: [PATCH v8 00/21] ARM64 PMU Partitioning
+From: Colton Lewis <coltonlewis@google.com>
+To: kvm@vger.kernel.org
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Mingwei Zhang <mizhang@google.com>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Shuah Khan <shuah@kernel.org>, Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, 
+	James Clark <james.clark@linaro.org>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Colton Lewis <coltonlewis@google.com>
+Content-Type: text/plain; charset="UTF-8"
+
+This series creates a new PMU scheme on ARM, a partitioned PMU that
+allows reserving a subset of counters for more direct guest access,
+significantly reducing overhead. More details, including performance
+benchmarks, can be read in the v1 cover letter linked below.
+
+An overview of what this series accomplishes was presented at KVM
+Forum 2025. Slides [1] and video [2] are linked below.
+
+The kernel command line parameter for the driver still exists, but now
+only defines an upper limit of counters the guest might use rather
+than taking those counters from the host permanently.
+
+I would appreciate any discussion on whether that parameter should
+still exist as it's an inconvenient enabling gate on the feature that
+is no longer required. The question comes down to what, if any, guards
+we want against a guest monopolizing all counters on a system.
+
+v8:
+
+* Rebase on top of v7.1-rc7.
+
+* Implement Oliver Upton's accessor proposal to centralize PMU
+  register access and simplify trap handlers. Instead of one singular
+  accessor, implement as two because the read and write paths are
+  always different anyway.
+
+* Introduce the partitioning flag along with the
+  kvm_pmu_is_partitioned predicate
+
+* Don't use ifdef for partitioning predicates as that can be handled
+  by has_vhe
+
+* Clean up MDCR_EL2 handling by open-coding use_fgt and hpmn and
+  unconditionally setting RES0 bits.
+
+* Use {read,write}_pmcrcntrn in context swaps
+
+* Put operators on preceeding lines
+
+* Rename hw_cntr_mask to hw_cntr_impl to clarify it tracks the number
+  of counters implemented by hardware
+
+* Use GENMASK_ULL in mask functions returning u64
+
+* warn_once when host events are squeezed out by guest counter
+  allocations.
+
+* Address Sashiko AI Review findings:
+
+  - Critical fixes for lazy PMU context swaps (ensuring guest state is
+    loaded on transition to GUEST_OWNED), PMSELR_EL0 trapping to
+    prevent stale selector index, and masking guest PMCR_EL0 writes to
+    prevent host reset.
+
+  - High priority fixes for lock safety (disabling IRQs when acquiring
+    perf context lock), disabling guest counters on vCPU put,
+    preserving VHE host profiling in MDCR_EL2, waking halted vCPUs on
+    guest PMU interrupts, masking host configuration leaks, preemption
+    safety in per-CPU accesses, emulating PMCR.N reads, and preventing
+    data races in PMOVSSET_EL0 accesses.
+
+  - Medium/Low fixes for user-access fallback safety, VM-wide state
+    modification restrictions, selftests type safety, and cleanup of
+    unused fields and typos.
+
+v7:
+https://lore.kernel.org/kvmarm/20260504211813.1804997-1-coltonlewis@google.com/
+
+v6:
+https://lore.kernel.org/kvmarm/20260209221414.2169465-1-coltonlewis@google.com/
+
+v5:
+https://lore.kernel.org/kvmarm/20251209205121.1871534-1-coltonlewis@google.com/
+
+v4:
+https://lore.kernel.org/kvmarm/20250714225917.1396543-1-coltonlewis@google.com/
+
+v3:
+https://lore.kernel.org/kvm/20250626200459.1153955-1-coltonlewis@google.com/
+
+v2:
+https://lore.kernel.org/kvm/20250620221326.1261128-1-coltonlewis@google.com/
+
+v1:
+https://lore.kernel.org/kvm/20250602192702.2125115-1-coltonlewis@google.com/
+
+[1] https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2025/Optimizing__itvHkhc.pdf
+[2] https://www.youtube.com/watch?v=YRzZ8jMIA6M&list=PLW3ep1uCIRfxwmllXTOA2txfDWN6vUOHp&index=9
+
+Colton Lewis (20):
+  arm64: cpufeature: Add cpucap for HPMN0
+  KVM: arm64: Reorganize PMU functions
+  perf: arm_pmuv3: Generalize counter bitmasks
+  perf: arm_pmuv3: Check cntr_mask before using pmccntr
+  perf: arm_pmuv3: Allocate counter indices from high to low
+  perf: arm_pmuv3: Add method to partition the PMU
+  KVM: arm64: Set up FGT for Partitioned PMU
+  KVM: arm64: Add Partitioned PMU register trap handlers
+  KVM: arm64: Set up MDCR_EL2 to handle a Partitioned PMU
+  KVM: arm64: Context swap Partitioned PMU guest registers
+  KVM: arm64: Enforce PMU event filter at vcpu_load()
+  perf: Add perf_pmu_resched_update()
+  KVM: arm64: Apply dynamic guest counter reservations
+  KVM: arm64: Implement lazy PMU context swaps
+  perf: arm_pmuv3: Handle IRQs for Partitioned PMU guest counters
+  KVM: arm64: Detect overflows for the Partitioned PMU
+  KVM: arm64: Add vCPU device attr to partition the PMU
+  KVM: selftests: Add find_bit to KVM library
+  KVM: arm64: selftests: Add test case for Partitioned PMU
+  KVM: arm64: selftests: Relax testing for exceptions when partitioned
+
+Marc Zyngier (1):
+  KVM: arm64: Reorganize PMU includes
+
+ arch/arm/include/asm/arm_pmuv3.h              |  18 +
+ arch/arm64/include/asm/arm_pmuv3.h            |  12 +-
+ arch/arm64/include/asm/kvm_host.h             |  17 +-
+ arch/arm64/include/asm/kvm_types.h            |   6 +-
+ arch/arm64/include/uapi/asm/kvm.h             |   2 +
+ arch/arm64/kernel/cpufeature.c                |  10 +-
+ arch/arm64/kvm/Makefile                       |   2 +-
+ arch/arm64/kvm/arm.c                          |   2 +
+ arch/arm64/kvm/config.c                       |  41 +-
+ arch/arm64/kvm/debug.c                        |  30 +-
+ arch/arm64/kvm/pmu-direct.c                   | 507 ++++++++++++
+ arch/arm64/kvm/pmu-emul.c                     | 684 +----------------
+ arch/arm64/kvm/pmu.c                          | 720 ++++++++++++++++++
+ arch/arm64/kvm/sys_regs.c                     | 271 +++++--
+ arch/arm64/tools/cpucaps                      |   1 +
+ arch/arm64/tools/sysreg                       |   6 +-
+ drivers/perf/arm_pmuv3.c                      | 136 +++-
+ include/kvm/arm_pmu.h                         |  93 ++-
+ include/linux/perf/arm_pmu.h                  |   8 +
+ include/linux/perf/arm_pmuv3.h                |  14 +-
+ include/linux/perf_event.h                    |   3 +
+ kernel/events/core.c                          |  31 +-
+ tools/include/perf/arm_pmuv3.h                |  12 +-
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/arm64/vpmu_counter_access.c | 112 ++-
+ tools/testing/selftests/kvm/lib/find_bit.c    |   2 +
+ 26 files changed, 1918 insertions(+), 823 deletions(-)
+ create mode 100644 arch/arm64/kvm/pmu-direct.c
+ create mode 100644 tools/testing/selftests/kvm/lib/find_bit.c
 
 
-
-On 6/10/2026 5:03 PM, Sean Christopherson wrote:
-> On Thu, Apr 23, 2026, Zide Chen wrote:
->> The Top-Down Microarchitecture Analysis (TMA) method is a structured
->> approach for identifying performance bottlenecks in out-of-order
->> processors.
->>
->> Currently, guests support the TMA method by collecting Topdown events
->> using GP counters, which may trigger multiplexing.  To free up scarce
->> GP counters, eliminate multiplexing-induced skew, and obtain coherent
->> Topdown metric ratios, it is desirable to expose fixed counter 3 and
->> the IA32_PERF_METRICS MSR to guests.
->>
->> Several attempts have been made to virtualize this under the legacy
->> vPMU model [1][2][3], but they were unsuccessful.  With the new mediated
->> vPMU, enabling TMA support in guests becomes much simpler.  It avoids
->> invasive changes to the perf core, eliminates CPU pinning and
->> fixed-counter affinity issues, and reduces the latge overhead of
->> trapping and emulating MSR accesses.
-> 
-> Please submit a new version of this to address Dapeng's feedback, rebase on the
-> latest kvm-x86/next, and perhaps most importantly, to let Sashiko take a crack
-> at it.
-
-Yes, will submit V3 in coming days.
-> Thanks!
+base-commit: 4549871118cf616eecdd2d939f78e3b9e1dddc48
+-- 
+2.54.0.1136.gdb2ca164c4-goog
 
