@@ -1,121 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABB03AE1AD
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 11:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF0A39A058;
+	Fri, 12 Jun 2026 12:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781263327; cv=none; b=Ts78PTjBihuXH4V73HnqA65SGvnwCv3Mx64dkBUvbe5O5iCl/J3uC407gGKPgbifdHwK0qe6GxcdxKPVhlumDdi8dL9oaMrY7jenOpO5g1KoqX+5SPuFUFVScChXJiqXwqNgDmhEjR90rcMZw9MGMchJG3+2a72lrb4qOWZN1gc=
+	t=1781266999; cv=none; b=u/LKstecWa9fx4BKn8vzhmi9sBGPmPEDjL9wZ/KyFKj0PBGBoqJrtLQuncVMEXMorFlAEZZNcDcfzvQAb77HIWuB1a1ox/O4+I2O1ntap7iQiQb/Tp3JYkK6npM1LQ1vvbpfM0ZJPLOeXEJxZUdLgO+JzbvPHaHI4UKx9uAwFN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781263327; c=relaxed/simple;
-	bh=BHr/RcOc4A2zmWFr7wcJ0bJFFMgkE48BymLlutE9218=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=pT5tM5aRxzhbFrNGoUFHHlZzwboTS2P2vFfbiIxButgfqg811bFCFe/BLaLYOWFtmUwrpOOI7ss88FBdP+sKyfwQ4NJxYZKgsgPvIl/fObGrQrT4Ko6DBcXeAdXo5g792hdaDy1LUplftOX42eeTVRIeIZI7NDyFedZ5xxImq0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQr666Yf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781266999; c=relaxed/simple;
+	bh=ilPETxSb3BlhT79obZf2kVHmCMoVVquWE1k7i6obO8o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PO6mCdYIPqi8gwN8NMlNSwweHh2DQTOH5VVwxPGlIbPK5w8NvPzaRWNFj5cFzXXJQJcmF6qF/flbGRme/6kJmjWxUo9uroLv4BNSHMci2E/zl7a87MrHEAiDpB0VEHYhZmhmgyCbvBZViA4Q9kgbZk4YvoUD68Ja88QPEObequ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qa4h+wMM; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQr666Yf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E011F000E9;
-	Fri, 12 Jun 2026 11:22:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781263322;
-	bh=K+IJO987KygZoe/avA2ASyZqyuphBXWgxOo/hQ2PSfA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nQr666YfvncSNCEe7xd2t41NpFLq73loKeAEtZWldbKodtGjTQX1tTMEk9G9HHJNB
-	 DQQNbekwOAYnWKuEqjd9HKzYJjKQYif8PtdFKddzhfPVCq6dTX1ZC6Uy2Rve8+oUVQ
-	 H1gzcWrRDlXNTcyu7AjSBpveXrX+ZMMd4kS1z56dI+t7breroiKKFlnBuJc6e9BZMp
-	 ODV3DcOvRQD/+99nC6EFriv2aEXBRtyibse0aP8Z8HT9t8YpZkJfzuKtiAgVEHPUGF
-	 QiRBEzRaDAc0/g+leBODnNiURJNtOFF1FumNcdLwVp7yeR0vhgrOrLYwtfThKGbg64
-	 /z+bqjoK4ywZg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Peter Fang" <peter.fang@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260612110853.3188196-3-peter.fang@intel.com>
-References: <20260612110853.3188196-3-peter.fang@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 12 Jun 2026 11:22:02 +0000
-Message-Id: <20260612112202.82E011F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qa4h+wMM"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BNAQQF677840;
+	Fri, 12 Jun 2026 12:23:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=EijzVCgmuJilvCLqz/eTgZIkakLi
+	DWTvP8/G1zwhMSM=; b=qa4h+wMM/0Gg3ceJGH+Gdv9+nEMWQ47lpqJ7zHDh6KaG
+	CgCZqfkUs0yf5AzL5bdZgvYYn3vdxst9CNVjxbyAiMBN4EnXuQKBo3GiCuD5vLrq
+	4b/iTp3W2a1CELl8/jcF/dsH1L2RDfZ5svJ++JtpJ9YyDDMULGcnvvdEaNqKxO4d
+	jUF6mKUkUFEoD931OaU+dh5vdY8HdssvxUxRVrD1W4heIv0xCRhkQdJjPVCH5Jxo
+	8r+qLAOypXGIB9/qP8+90Tx2pI/vmNgesE70BfFAVqEfLoegPRa1fzYyZKjTONK1
+	DaejoWf8qKlzq6++IIZA/jyFfGUqWwDuqTSEAkRUyA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8arhre-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jun 2026 12:23:16 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65CCJsr6032363;
+	Fri, 12 Jun 2026 12:23:15 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4eqe09qscx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jun 2026 12:23:15 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65CCNCbE16777502
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Jun 2026 12:23:12 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5F87420049;
+	Fri, 12 Jun 2026 12:23:12 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A05D220040;
+	Fri, 12 Jun 2026 12:23:11 +0000 (GMT)
+Received: from [192.168.88.52] (unknown [9.111.8.71])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 12 Jun 2026 12:23:11 +0000 (GMT)
+From: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Subject: [PATCH v4 0/4] KVM: s390: vsie: Implement ASTFLEIE facility 2
+Date: Fri, 12 Jun 2026 14:23:00 +0200
+Message-Id: <20260612-vsie-alter-stfle-fac-v4-0-74f0e1559929@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XQzW7DIAwH8FeJOM9RcFgoPe09ph34cFZL+eiAo
+ k5V3320OWzS2uPfwM82F5EoMiWxby4iUuHE61KDemmEP9jlk4BDzQI7HDqJBkpiAjtlipDyOBG
+ M1oPrA+6cUTupBlGfHiONfL6z7x81HzjlNX7fuxR5q24gSnwMFgkdBK3RkVZWBfs28XI6t+zm1
+ q+zuKEF/0A4PIGwQkYqo5V3BtE/gvpfaJDyCdRXyEnbv9JIwbp/E123vSN9neov5m154WwiqOc
+ z531TdNtB9Lpevv4AuZ/yoHoBAAA=
+X-Change-ID: 20260129-vsie-alter-stfle-fac-b3d28b948146
+To: linux-s390@vger.kernel.org
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Nina Schoetterl-Glausch <nsg@linux.ibm.com>, kvm@vger.kernel.org,
+        Christoph Schlameuss <schlameuss@linux.ibm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1750;
+ i=schlameuss@linux.ibm.com; h=from:subject:message-id;
+ bh=ilPETxSb3BlhT79obZf2kVHmCMoVVquWE1k7i6obO8o=;
+ b=owGbwMvMwCUmoqVx+bqN+mXG02pJDFnav/R+72hTj1Rf+ltv+dFc8Tm/TQq3+J91yJ4i9e473
+ 6HQ2c8+dJSyMIhxMciKKbJUi1vnVfW1Lp1z0PIazBxWJpAhDFycAjARiQOMDIuLDQ60HdlReVXz
+ /N7/F4rMmf8/3vEj4d1h7Y4dkUfsvu5nZOgQMFdKnHzy12Ilx1Vl8/5VPnb6vT9pw7sZj+wrBAJ
+ Wt/IAAA==
+X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
+ fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 0gmjzlV_kGAtWER3t16VHy1AF7fUd3R8
+X-Authority-Analysis: v=2.4 cv=TdKmcxQh c=1 sm=1 tr=0 ts=6a2bfa34 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=JTEGq0UErLZmNMgf6yQA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDExMSBTYWx0ZWRfX/1b8WW/+ZLJg
+ Ei/BdAHiv/gNWnMG8u1thRE7m4sPutVge5ir7Thv+8aEC0OjIVzq2BwqdgNfTqNpSmOzO1Rjh/v
+ vaP2FkVUkb2Q76q5t1uTpMO55w3f0mJG33N7hGWMTJ6/KVMfStU8099JA3/PuN0WdH5YktY0rkI
+ xqz+2UE9KCCqS9gO3bZ4nALprqYjK1CyjxUCIqPJawMevkvlOdkX8Lj4suQOyO4+MBpFkhDAn5N
+ LS1BAse2FGD80r2lmg9jf+H1RgUD+066bxKCAJxyYisixm/HT5wqVWuV3fT4RySxOzKMkkBWpLM
+ 1edSuJ2YnBcbGmWHHcj6kQwn5P46SEZM52r8R6Z4G/QDugZecECk1Smh6DUdnRL8RJoAuaaiRwu
+ ctC2yg0mHVZUdwQFi3EVpcpB5INN/yTJqW9QHi1bpHFU7LvPWmSSjd7ht9PB6zyUVFXB4PMIhzJ
+ 3oq5euall5rob6Oe/HA==
+X-Proofpoint-GUID: 0gmjzlV_kGAtWER3t16VHy1AF7fUd3R8
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDExMSBTYWx0ZWRfX+fKEXc/RFAg4
+ Pb+gge+Gc9CQ99VAPkylfZjt5vIycmXRPP1IO7q44yVxngNtqHqV7tt36393f4XrM3GSZ13JgzM
+ kC/fVLAe3vcMG2ycb6yLJGNvi0/vjC8=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-12_01,2026-06-12_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 clxscore=1015 impostorscore=0 adultscore=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606120111
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Unbounded host-provided quote size causes guest kernel warning (an=
-d potential panic) during allocation.
---
+Add support for STFLE format 2 in VSIE guests.
 
-commit 918e9fdc48e5a03b41dab3a999be1a3f631327c1
-Author: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.=
-com>
+The change requires qemu support to set the ASTFLEIE2 feature bit.
+ASTFLEIE2 is available since IBM z16.
+To function G1 has to run this KVM code and G1 and G2 have to run QEMU
 
-virt: tdx-guest: Allocate Quote buffer dynamically
+Tests are implemented in kvm-unit-tests and sent as a series to that
+list.
 
-This commit modifies the TDX attestation driver to allocate the Quote
-buffer dynamically based on the size reported by the TDX module. It falls
-back to a default 128 KB buffer if the reported size is unavailable,
-supporting larger quotes needed for newer schemes.
+Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+---
+The series was originally developed by Nina and only rebased and
+slightly adjusted by me. It was not sent earlier since the accompanying
+kvm-unit-tests and qemu changes were not ready.
 
-> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/=
-tdx-guest/tdx-guest.c
-> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-[ ... ]
-> @@ -223,19 +223,43 @@ static void free_quote_buf(void *buf)
->  	free_pages_exact(buf, len);
->  }
-> =20
-> -static void *alloc_quote_buf(void)
-> +static size_t get_quote_buf_size(void)
->  {
-> -	size_t len =3D PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
-> -	unsigned int count =3D len >> PAGE_SHIFT;
-> +	size_t buf_sz =3D GET_QUOTE_DEFAULT_BUF_SIZE;
-> +	u32 quote_sz;
-> +
-> +	quote_sz =3D tdx_get_max_quote_size();
-> +
-> +	if (quote_sz)
-> +		/* Reported size does not include GetQuote header */
-> +		buf_sz =3D TDX_QUOTE_BUF_LEN(quote_sz);
-> +
-> +	return PAGE_ALIGN(buf_sz);
-> +}
-> +
-> +static void *alloc_quote_buf(size_t *buflen)
-> +{
-> +	unsigned int count;
-> +	size_t len;
->  	void *addr;
-> =20
-> +	len =3D get_quote_buf_size();
-> +
-> +	/*
-> +	 * This fails if the requested size exceeds the buddy allocator's
-> +	 * maximum order (order-10, 4MB).
-> +	 */
->  	addr =3D alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
+---
+Changes in v4:
+- adjusted struct kvm_s390_flcb2 to make sure reserved0 is always 0
 
-[Severity: High]
-If the host provides an excessively large quote_sz, could this allocation
-trigger a kernel warning?
+Changes in v3:
+- renamed struct kvm_s390_f2_flcb to kvm_s390_flcb2 as requested by
+  Janosch
+- rebased
 
-The comments indicate the buddy allocator will fail requests exceeding
-its maximum order. However, passing an unbounded, host-controlled size
-directly to alloc_pages_exact() without __GFP_NOWARN will trigger a
-WARN_ON_ONCE_GFP in the page allocator's slow path before failing.
+Changes in v2:
+- adjusted variable naming in handle_stfle()
+- add some constants for readability
+- add struct for format-2 facility list control block
+- rebased to v7.0-rc1
 
-If a host is malicious or misconfigured, could this be used to spam the
-guest's kernel log or cause a denial-of-service crash if the guest runs
-with panic_on_warn=3D1?
+---
+Nina Schoetterl-Glausch (4):
+      KVM: s390: Minor refactor of base/ext facility lists
+      s390/sclp: Detect ASTFLEIE 2 facility
+      KVM: s390: vsie: Refactor handle_stfle
+      KVM: s390: vsie: Implement ASTFLEIE facility 2
 
-Would it be better to explicitly check the size against a reasonable upper
-bound or include the __GFP_NOWARN flag here?
+ arch/s390/include/asm/kvm_host.h | 12 ++++++
+ arch/s390/include/asm/sclp.h     |  1 +
+ arch/s390/include/uapi/asm/kvm.h |  1 +
+ arch/s390/kvm/kvm-s390.c         | 46 ++++++++++------------
+ arch/s390/kvm/vsie.c             | 85 +++++++++++++++++++++++++++++++---------
+ drivers/s390/char/sclp_early.c   |  4 +-
+ 6 files changed, 104 insertions(+), 45 deletions(-)
+---
+base-commit: 0e5d0a0b5ca6ea4e391d6786266405c5871e0151
+change-id: 20260129-vsie-alter-stfle-fac-b3d28b948146
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260612110853.3188=
-196-1-peter.fang@intel.com?part=3D2
+Best regards,
+-- 
+Christoph Schlameuss <schlameuss@linux.ibm.com>
+
