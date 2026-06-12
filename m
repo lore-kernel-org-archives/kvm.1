@@ -1,63 +1,63 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E004138E113
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274FA38CFE1
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781228067; cv=none; b=qgE849iEZ9xP6jls8iILNZaKNIC8RCauIpQNj+W3QZ5202iSWz5+Yl4Rc+mYqRtNLw+rKEwoc9SIUUfIq7uHpulz25wJ5FC+VP1UuTiLtaOkMtoZ+AKgacH9pxeBZnufBREG5GambeSQc6aTsh2uc4Qc/sMgPAeQEDDhFrjdETE=
+	t=1781228071; cv=none; b=Vu/gLN2YjvPxfm0mkaC5JAcMccakUImNd2Tkwa6BQDClg0U8y1NWHxnFFfGbPfSpR43ne6DJdLD4JTsE7ebwiwESSvCXa3IZmFaeN+59VAIR4Xit8sYNik1mDYaWZ0hniY91ldGMuUftyFJXipJy/NHRac0JJ5readfEHFmYJ4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781228067; c=relaxed/simple;
-	bh=C/WbnAffwS7/9J21ydWg4AkVjqtvD648aiREZdGselA=;
+	s=arc-20240116; t=1781228071; c=relaxed/simple;
+	bh=1PT54fy1QW/5P2/PvMSEN+faQD8tlylOgJgA5QUQ1MM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5Ih2aY3NrfiJ1dvCreM7httRINgeFE/yECkEZlVnBL6n3DrK4TIpcOCcbb9HoctmzfQRapCP1gVQFrKuIx9GTbFAjVr4VokBAqIGANRkPj7xPZVPad/0sxikPplcutDdxRZEX0u0xuYToltdHYbKBi54pxMab9v7IYPkueDwpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OCkC2BHh; arc=none smtp.client-ip=209.85.216.47
+	 MIME-Version; b=r6UTMedqrp7Ha2kFu7l3kbHYh3UsOmWbZF4YDADqcQ26+He/Cctx6TgkGY96BK2ixlZv2kBGDDbm1w0rUZ5eTwJdLvhOkxndT/ZeG6VW9gu/W9WrtVs1iXw9Qt9BoLot0LmadqgxuPTAGWJJvKdnP90jTM/rkd3WggdqqQ44u44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bNHtlcjP; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OCkC2BHh"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-36babe2c4bdso320083a91.1
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 18:34:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bNHtlcjP"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-372b4330deeso363635a91.0
+        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 18:34:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781228065; x=1781832865; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781228069; x=1781832869; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DDsEGV9rsARv7ZkT3LV2/BQ6R3I89m5gb8J5FbHrnAk=;
-        b=OCkC2BHhNghwH+bBfX/US01Mux0ftH89NFTwgNfB+97NQ0nT+uHWZG6yi9itkmY+Cb
-         ESrBZFho2uFVl7I8ZXiEYzy1FeRRvS7KTfAGWazok+WU92jdsh6ZW0X0+OEW+/P24N21
-         HHoFquI4XtYhX1BYBViQZMMraebK6D1jfcbm9BSqH3R413YL9Lin+XwrDYFzFqy8mQCv
-         WzEuSfan6BKDSRSuXWtFBI4OK40GROSDuKG7NYhEGA3w4MUL0qzJTFpYkUl2ht0N18mR
-         SR8HS5XSf29GsdA8DKAsXIUn58g6zHPyj7eZ/JuPxh3+YAeR3Q+UkmU025n6eEVpPLVm
-         MzSA==
+        bh=tIKr0bqSdRIU+G2lKHT1QjsMF60rlF0pZBINnn+xYR4=;
+        b=bNHtlcjPQgSJQYRfGvxhdcfXqY3Ttjppb9zVtLmdMCojqwUAo9hOGzsZmTqFMiy4Yy
+         HR9pEhj+n4QuYfrRwL99Xn0IVxez3eMGpQWU9nnji1sRKGgoW6Koywty8gJPj54g9hrP
+         cFwVWRfXA6uSdromIONO/nsztSiu54UjoOYFklYjZVtaFP252JBQTB5GuajpYS6mwadv
+         kvVgAbnDFhxFYqsmmREXmMSWnVb37JptK7wn03GgNylcQuIq7KB+esr6wxI4VWkGU9vV
+         CfLobd8AjHHFL6T4UuT7+LM9SN0E6isSQxogqr7tWeVeME5q9ZXxevZW0C9gXHO5P18c
+         4LyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781228065; x=1781832865;
+        d=1e100.net; s=20251104; t=1781228069; x=1781832869;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=DDsEGV9rsARv7ZkT3LV2/BQ6R3I89m5gb8J5FbHrnAk=;
-        b=qKML6FV1HrBDD0FskbQzAjVAH1hZcl98RhtDGXpPpxnGPYBntuj4saYwFpIfQUTkd/
-         h8EhOZVJJ/p5Z6LlI5xECOghgyqebFw2b1bl2t0jZol7/CozCXOEZ9xSqR2B4M/XMToZ
-         oHK9+TlX0ajA5PLrMyuBAHtIKLjsfK+n7eWIWYEicwlvSLccoKxyDGo20/bDe7OKlJte
-         VR6KJGVYD/ZlsXOE5Tk61FFm9hWQEAk7nO/bZSXZ9wIRhNQ8Qs9OrvQXnrRjC8uvBID2
-         aOSTPAoPO9B2lOaO7S1xKq8MQ1Epblnw18A53Lu0gcXxf0sqL8nDIIgF3iKJQYbEBmY1
-         R6hQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8ROpGZFAopSIR3Ws4C0Yf9YpdmEOoQdF1F/KVXazWx5pbcZyw6S6lgmlPp9MmhPNV2498=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDsPuuEi40I7IrXtUgMHX2lAjzfPHiLJOmeUoovC2p8LtxM9pb
-	OH8g2JfUlWiyhjTtr9X9TtqHAb37KxhQa6kbDyTuqofKzIwtNXSexYzF
-X-Gm-Gg: Acq92OGmZ1GA5k8jWX69I+PMED/s/HqvyDK8i9n0JGJSEpEF1p/EZRzGI+yTfMLFlwk
-	pWpQbI+HR2VKdJ6rq3sBKrtX6tTyGkkqmWDzleLzGjGlEHebXAMkn1JmTkah5bbaYPVs28fyQ5n
-	wzWUJsTPoq6HpeB+L8TDfAe2twuDNdrbdPA67wpuCNSwhzKEU9FrMa51aQ43TNDlPydsT52tOzV
-	nUZ7jZiR/gVrgZxikRl5eTb9LTm+C16hrz4yzJwUAEGDdLEHdxw6+Vh9urIQzcfYv/FTz0BqN1m
-	Nicv0tB0b89tK/+SsDOAY3fnc9doh0aUrK5hrQBwl8eusnWxEGuwO1oiFzTTs3kOD/91LE3LfgK
-	dKTxjdGmAQ61r47g2ypb6WAuS8nT7spSs4I3vJFkXWxnGr/JaU2xBPowyzssiJODafhr79QAGAZ
-	DOZ+2F5xfZScBqJqxObQTdiIS+kw==
-X-Received: by 2002:a17:90b:57eb:b0:36b:ba9b:7efb with SMTP id 98e67ed59e1d1-37a01a3bfa9mr893397a91.5.1781228065090;
-        Thu, 11 Jun 2026 18:34:25 -0700 (PDT)
+        bh=tIKr0bqSdRIU+G2lKHT1QjsMF60rlF0pZBINnn+xYR4=;
+        b=PBppbPtqTWeXi3lTuqGwrBLq0MjtbmEv1h3TiE7h3XsMLcTvCB7rPyE+/WfGMbSWrd
+         pr5heQF1QFXC/dR+wD5CYjhClAYEYGFMP49IeB+tAPADasFaflVdcfZt9v7YU+osjlwJ
+         hIiAp1ss9bgpMktj0GxE1LlxzBcjfB98y6sDfWOTuUZEYigOQyeHUxlg+P99ZrZFJrh+
+         XIUHgISbJYINU7bb5bRPnFcNyqCVgAbU9OC9QitxZw63/7aydFz2GS7j3SB4XFFJM0E/
+         MuqUTEDDGVzWhogze65aMxmtTxMnsm+zDdehOEdm0Z1eTLiJKI6PXikn/SqjNkfNC1Bx
+         C8Lg==
+X-Forwarded-Encrypted: i=1; AFNElJ/amtg358McQ+NZrytGbJlhSTBDcAvq1NLEw2Lem68fWfkacTvhKdVJ8482unnRmolOVC4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7vemOVWSKRnJLCmPeVycOom7t+CPM24KBCSdfF2sEn+20pSxV
+	DznT6qmrwMf9TvIloYacGxoMeZqVDMAcSs/8U1VT4mKSaTqMCADlPE3h
+X-Gm-Gg: Acq92OGYU8eH+G00Si+5RK2wHfzUqS8aG3MqprtgMfM4tMBXOX95zpwDuOaQAtCwNOj
+	FuxeHooaoEUcHN6C2hvgR3HCIX461hHWuaarMX+lsAuoFPCzXW2mcKFk+oJ7v9RO1dDTIOSso4T
+	fcGv1d8XxC2EUzaHPFEra4cyuiIasR1bDK3fUnhXOUvyix8Inj6T4O6pteNE/4uGMOzLrmiFTwH
+	HdCYjM/ORbdfLHDN9GZTvQzzt1aKpVUat2YIxQS0TEQseSBpOOStJN5q1AvRiPoGClqw7Htki48
+	QUQvaQBHNQNPLVFalLgOFuLnpGMjo/l/Xt2lLJT5Nj1EEHPJwaLbUcS2OXwikwkGJ+p6UFnidCv
+	SDg4bYCKLeFFp13a4ibV5HgjVJyRbw2Z32haqeH+30pQAVUnRvxCpNH9QeMlAhxJzbbUA29+o4n
+	Zole6VtnR4M4aPVNoSl4Eq+Gn2yw==
+X-Received: by 2002:a17:90b:3a83:b0:36b:9c70:3367 with SMTP id 98e67ed59e1d1-37a03dc314emr890148a91.17.1781228069398;
+        Thu, 11 Jun 2026 18:34:29 -0700 (PDT)
 Received: from wanpengli.. ([2408:822f:1aba:84a0:651:104c:ba0c:1f4a])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-37a1f07bbfdsm250713a91.5.2026.06.11.18.34.21
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-37a1f07bbfdsm250713a91.5.2026.06.11.18.34.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 18:34:24 -0700 (PDT)
+        Thu, 11 Jun 2026 18:34:29 -0700 (PDT)
 From: Wanpeng Li <kernellwp@gmail.com>
 To: Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -73,9 +73,9 @@ Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
 	kvm@vger.kernel.org,
 	Wanpeng Li <wanpengli@tencent.com>,
 	Richie Buturla <richie@linux.ibm.com>
-Subject: [PATCH v3 05/10] sched/fair: Force a local resched on yield_to() so the buddy is picked
-Date: Fri, 12 Jun 2026 09:33:50 +0800
-Message-ID: <20260612013355.59231-6-kernellwp@gmail.com>
+Subject: [PATCH v3 06/10] KVM: x86: Add IPI tracking infrastructure for directed yield
+Date: Fri, 12 Jun 2026 09:33:51 +0800
+Message-ID: <20260612013355.59231-7-kernellwp@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260612013355.59231-1-kernellwp@gmail.com>
 References: <20260612013355.59231-1-kernellwp@gmail.com>
@@ -89,196 +89,269 @@ Content-Transfer-Encoding: 8bit
 
 From: Wanpeng Li <wanpengli@tencent.com>
 
-Lag credit makes the target eligible for PICK_BUDDY, but yield_to() does
-not by itself force the caller off the CPU. An active RUN_TO_PARITY
-protect_slice() on the local yielder can therefore keep pick_eevdf()
-returning the yielder instead of the credited buddy.
+On overcommitted hosts, a vCPU spinning on an IPI response is difficult
+to distinguish from a vCPU spinning on a lock. kvm_vcpu_on_spin() can
+therefore yield to an unrelated vCPU based only on coarse preemption
+state.
 
-Add yield_to_local_force_resched() for the lag-credit path. It applies
-the existing leaf forfeit, cancels slice protection along the yielder's
-sched_entity hierarchy, and calls resched_curr() on the local rq.
-cancel_protect_slice() is already used by PREEMPT_WAKEUP_SHORT and does
-not modify vruntime.
+Add per-vCPU IPI tracking for directed yield. struct kvm_vcpu_arch now
+records the last sender and receiver vCPU indexes, the vector, a pending
+flag, and a monotonic timestamp. Add helpers to record a send, query
+whether a vCPU is the recent IPI receiver of another vCPU, and clear or
+reset the context. Accesses use READ_ONCE() and WRITE_ONCE() because the
+state is only a best-effort scheduling hint.
 
-Rate-limit only the forced preemption (cancel_protect_slice() plus
-resched_curr()) to once per 6ms per rq. The lag credit itself remains
-unthrottled so each directed yield refreshes the scheduling hint, while
-compute-bound guests avoid excessive forced preemption on PLE-heavy spin
-loops.
+Add module parameters to enable tracking and to control the recency
+window. Provide a weak generic kvm_vcpu_is_ipi_receiver() stub so
+non-x86 builds keep the existing behavior. The state is reset on vCPU
+create and destroy, and cleared on INIT.
 
-Dbench (filesystem metadata operations) on 16-vCPU guests under host CPU
-overcommit, throughput improvement from the scheduler side alone:
-
-  2 VMs:  +6.65%
-  3 VMs:  +4.80%
-  4 VMs:  +7.59%
+This adds only state and helpers; directed-yield candidate selection is
+unchanged.
 
 Signed-off-by: Wanpeng Li <wanpengli@tencent.com>
 ---
- kernel/sched/fair.c  | 113 +++++++++++++++++++++++++++++++++++++------
- kernel/sched/sched.h |  10 ++++
- 2 files changed, 108 insertions(+), 15 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  19 ++++++
+ arch/x86/kvm/lapic.c            | 102 ++++++++++++++++++++++++++++++++
+ arch/x86/kvm/x86.c              |   3 +
+ arch/x86/kvm/x86.h              |   8 +++
+ include/linux/kvm_host.h        |   8 +++
+ virt/kvm/kvm_main.c             |   6 ++
+ 6 files changed, 146 insertions(+)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 48f65a4f1923..e9c5265cf0fa 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9485,6 +9485,83 @@ static void yield_task_fair(struct rq *rq)
- 	}
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index f14009f25a3b..a26623716a53 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1065,6 +1065,25 @@ struct kvm_vcpu_arch {
+ 	int pending_external_vector;
+ 	int highest_stale_pending_ioapic_eoi;
+ 
++	/*
++	 * IPI tracking for directed-yield optimization.
++	 *
++	 * Populated by kvm_track_ipi_communication() when a unicast fixed
++	 * IPI is delivered, and queried by kvm_vcpu_is_ipi_receiver() from
++	 * kvm_vcpu_on_spin() to prefer the confirmed IPI target before
++	 * generic preempted-lock-holder heuristics.
++	 *
++	 * All accesses are lockless READ_ONCE/WRITE_ONCE; best-effort by
++	 * design (see comment on kvm_vcpu_is_good_yield_candidate()).
++	 */
++	struct {
++		int	last_ipi_sender;	/* vCPU idx of last IPI sender  */
++		int	last_ipi_receiver;	/* vCPU idx of last IPI target  */
++		u8	vector;			/* vector of the pending IPI    */
++		bool	pending_ipi;		/* awaiting IPI response        */
++		u64	ipi_time_ns;		/* mono timestamp of IPI send   */
++	} ipi_context;
++
+ 	/* be preempted when it's in kernel-mode(cpl=0) */
+ 	bool preempted_in_kernel;
+ 
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 4078e624ca66..515409e0e22c 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -78,6 +78,29 @@ module_param(lapic_timer_advance, bool, 0444);
+ static bool __read_mostly vector_hashing_enabled = true;
+ module_param_named(vector_hashing, vector_hashing_enabled, bool, 0444);
+ 
++/*
++ * IPI tracking for directed-yield optimization.
++ *
++ * ipi_tracking_enabled  - master switch (default on). When off, the
++ *                         tracking hooks become no-ops and
++ *                         kvm_vcpu_is_ipi_receiver() always returns
++ *                         false, falling back to the legacy
++ *                         preempted-in-kernel heuristic.
++ *
++ * ipi_window_ns         - recency window. An IPI older than this is
++ *                         treated as stale and does not influence
++ *                         directed-yield selection. Long enough to
++ *                         cover typical spin-on-IPI-response periods,
++ *                         short enough to avoid stale state inflating
++ *                         boost priority on throughput-sensitive
++ *                         workloads.
++ */
++static bool ipi_tracking_enabled = true;
++module_param(ipi_tracking_enabled, bool, 0644);
++
++static unsigned long ipi_window_ns = 50 * NSEC_PER_MSEC;
++module_param(ipi_window_ns, ulong, 0644);
++
+ static int kvm_lapic_msr_read(struct kvm_lapic *apic, u32 reg, u64 *data);
+ static int kvm_lapic_msr_write(struct kvm_lapic *apic, u32 reg, u64 data);
+ 
+@@ -1144,6 +1167,85 @@ static int kvm_apic_compare_prio(struct kvm_vcpu *vcpu1, struct kvm_vcpu *vcpu2)
+ 	return vcpu1->arch.apic_arb_prio - vcpu2->arch.apic_arb_prio;
  }
  
 +/*
-+ * Rate-limit the forced local reschedule on the yield_to() lag-credit path
-+ * to at most once per 6ms per rq.
++ * Record a sender -> receiver IPI relationship for directed-yield use.
 + *
-+ * Lag credit is intentionally not rate-limited: a contended lock holder
-+ * should be credited on every directed yield to keep the scheduling hint
-+ * effective. Only the forced preemption needs bounding, as cancelling
-+ * RUN_TO_PARITY protection and calling resched_curr() on every PLE-driven
-+ * yield_to() can cause excessive preemption on compute-bound guests.
++ * Accessed lockless (READ_ONCE/WRITE_ONCE); this is best-effort, racy
++ * information consumed only as a scheduling hint by
++ * kvm_vcpu_on_spin(), so occasional torn or stale reads are harmless.
 + *
-+ * Returns true if the caller should skip forcing a reschedule because a
-+ * recent one already happened on this rq; the credit just applied still
-+ * persists, so the buddy can be selected at the next scheduling point.
-+ *
-+ * Called under rq->lock with rq_clock up to date. yield_to_task_fair()
-+ * updates the clock before walking the hierarchy because yield_to() takes
-+ * the rq locks without updating them.
++ * Callers should already have filtered out self-IPIs and non-unicast
++ * or non-fixed-mode deliveries; this function only records the state.
 + */
-+static bool yield_to_force_resched_rate_limit(struct rq *rq)
++void kvm_track_ipi_communication(struct kvm_vcpu *sender,
++				 struct kvm_vcpu *receiver, u8 vector)
 +{
-+	u64 now = rq_clock(rq);
-+	u64 last = rq->yield_to_force_resched_last_ns;
++	if (!sender || !receiver || sender == receiver)
++		return;
++	if (unlikely(!READ_ONCE(ipi_tracking_enabled)))
++		return;
 +
-+	if (last && (now - last) <= 6 * NSEC_PER_MSEC)
-+		return true;
++	WRITE_ONCE(sender->arch.ipi_context.last_ipi_receiver,
++		   receiver->vcpu_idx);
++	WRITE_ONCE(sender->arch.ipi_context.vector, vector);
++	WRITE_ONCE(sender->arch.ipi_context.pending_ipi, true);
++	WRITE_ONCE(sender->arch.ipi_context.ipi_time_ns,
++		   ktime_get_mono_fast_ns());
 +
-+	rq->yield_to_force_resched_last_ns = now;
++	WRITE_ONCE(receiver->arch.ipi_context.last_ipi_sender,
++		   sender->vcpu_idx);
++	WRITE_ONCE(receiver->arch.ipi_context.vector, vector);
++}
++
++/*
++ * Return true if @receiver is the confirmed recent IPI target of
++ * @sender, within the configured recency window. Directed yield uses
++ * this as a high-confidence signal that selecting @receiver may
++ * unblock @sender's spin loop.
++ */
++bool kvm_vcpu_is_ipi_receiver(struct kvm_vcpu *sender,
++			      struct kvm_vcpu *receiver)
++{
++	u64 then, now;
++
++	if (unlikely(!READ_ONCE(ipi_tracking_enabled)))
++		return false;
++
++	if (!READ_ONCE(sender->arch.ipi_context.pending_ipi))
++		return false;
++
++	if (READ_ONCE(sender->arch.ipi_context.last_ipi_receiver) !=
++	    receiver->vcpu_idx)
++		return false;
++
++	then = READ_ONCE(sender->arch.ipi_context.ipi_time_ns);
++	now = ktime_get_mono_fast_ns();
++	return now - then <= READ_ONCE(ipi_window_ns);
++}
++
++/*
++ * Clear the IPI tracking state of a single vCPU, typically when the
++ * associated interrupt has been acknowledged (EOI) or the vCPU has
++ * been reset/destroyed.
++ *
++ * Leaves the monotonic timestamp untouched to keep staleness checks
++ * on other vCPUs that may reference this one well-defined; use
++ * kvm_vcpu_reset_ipi_context() for a hard reset.
++ */
++void kvm_vcpu_clear_ipi_context(struct kvm_vcpu *vcpu)
++{
++	WRITE_ONCE(vcpu->arch.ipi_context.pending_ipi, false);
++	WRITE_ONCE(vcpu->arch.ipi_context.last_ipi_sender, -1);
++	WRITE_ONCE(vcpu->arch.ipi_context.last_ipi_receiver, -1);
++	WRITE_ONCE(vcpu->arch.ipi_context.vector, 0);
++}
++
++void kvm_vcpu_reset_ipi_context(struct kvm_vcpu *vcpu)
++{
++	kvm_vcpu_clear_ipi_context(vcpu);
++	WRITE_ONCE(vcpu->arch.ipi_context.ipi_time_ns, 0);
++}
++
+ /* Return true if the interrupt can be handled by using *bitmap as index mask
+  * for valid destinations in *dst array.
+  * Return false if kvm_apic_map_get_dest_lapic did nothing useful.
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0550359ed798..dcedd09bac10 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12907,6 +12907,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ 		goto free_guest_fpu;
+ 
+ 	kvm_xen_init_vcpu(vcpu);
++	kvm_vcpu_reset_ipi_context(vcpu);
+ 	vcpu_load(vcpu);
+ 	kvm_vcpu_after_set_cpuid(vcpu);
+ 	kvm_set_tsc_khz(vcpu, vcpu->kvm->arch.default_tsc_khz);
+@@ -12974,6 +12975,7 @@ void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
+ 	kvm_mmu_destroy(vcpu);
+ 	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 	free_page((unsigned long)vcpu->arch.pio_data);
++	kvm_vcpu_reset_ipi_context(vcpu);
+ 	kvfree(vcpu->arch.cpuid_entries);
+ }
+ 
+@@ -13050,6 +13052,7 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
+ 		kvm_leave_nested(vcpu);
+ 
+ 	kvm_lapic_reset(vcpu, init_event);
++	kvm_vcpu_clear_ipi_context(vcpu);
+ 
+ 	WARN_ON_ONCE(is_guest_mode(vcpu) || is_smm(vcpu));
+ 	vcpu->arch.hflags = 0;
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 38a905fa86de..eb7f50018f78 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -475,6 +475,14 @@ int handle_ud(struct kvm_vcpu *vcpu);
+ void kvm_deliver_exception_payload(struct kvm_vcpu *vcpu,
+ 				   struct kvm_queued_exception *ex);
+ 
++/* IPI tracking helpers for directed-yield optimization (see lapic.c). */
++void kvm_track_ipi_communication(struct kvm_vcpu *sender,
++				 struct kvm_vcpu *receiver, u8 vector);
++bool kvm_vcpu_is_ipi_receiver(struct kvm_vcpu *sender,
++			      struct kvm_vcpu *receiver);
++void kvm_vcpu_clear_ipi_context(struct kvm_vcpu *vcpu);
++void kvm_vcpu_reset_ipi_context(struct kvm_vcpu *vcpu);
++
+ int kvm_mtrr_set_msr(struct kvm_vcpu *vcpu, u32 msr, u64 data);
+ int kvm_mtrr_get_msr(struct kvm_vcpu *vcpu, u32 msr, u64 *pdata);
+ void kvm_fixup_and_inject_pf_error(struct kvm_vcpu *vcpu, gva_t gva, u16 error_code);
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 4c14aee1fb06..e54e72ae5ebb 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1549,6 +1549,14 @@ static inline void kvm_vcpu_kick(struct kvm_vcpu *vcpu)
+ int kvm_vcpu_yield_to(struct kvm_vcpu *target);
+ void kvm_vcpu_on_spin(struct kvm_vcpu *vcpu, bool yield_to_kernel_mode);
+ 
++/*
++ * IPI-aware directed-yield hook. Architectures that support IPI
++ * tracking (currently x86 via arch/x86/kvm/lapic.c) override this;
++ * the generic __weak stub in virt/kvm/kvm_main.c returns false.
++ */
++bool kvm_vcpu_is_ipi_receiver(struct kvm_vcpu *sender,
++			      struct kvm_vcpu *receiver);
++
+ void kvm_flush_remote_tlbs(struct kvm *kvm);
+ void kvm_flush_remote_tlbs_range(struct kvm *kvm, gfn_t gfn, u64 nr_pages);
+ void kvm_flush_remote_tlbs_memslot(struct kvm *kvm,
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 881f92d7a469..2e11c6cfc167 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3957,6 +3957,12 @@ bool __weak kvm_arch_dy_has_pending_interrupt(struct kvm_vcpu *vcpu)
+ 	return false;
+ }
+ 
++bool __weak kvm_vcpu_is_ipi_receiver(struct kvm_vcpu *sender,
++				     struct kvm_vcpu *receiver)
++{
 +	return false;
 +}
 +
-+/*
-+ * Forfeit the local yielder, cancel its RUN_TO_PARITY slice protection
-+ * along the whole sched_entity chain, and force a reschedule.
-+ *
-+ * yield_to() does not reschedule the caller, and an active protect_slice()
-+ * at any level can keep pick_eevdf() returning the yielder instead of the
-+ * credited buddy. cancel_protect_slice() is EEVDF-native (also used by
-+ * PREEMPT_WAKEUP_SHORT) and does not touch vruntime. Caller holds the
-+ * local rq lock via yield_to()'s double_rq_lock().
-+ *
-+ * Only the forced preemption here is rate-limited (to once per 6ms per rq);
-+ * the lag credit applied by the caller runs on every yield_to(). When
-+ * throttled, the credited buddy can still be selected at the next natural
-+ * scheduling point without tearing down slice protection and forcing an
-+ * immediate switch.
-+ */
-+static void yield_to_local_force_resched(struct rq *rq)
-+{
-+	struct sched_entity *yse = &rq->donor->se;
-+
-+	yield_task_fair(rq);
-+
-+	/*
-+	 * If the yielder is the only runnable task on this rq there is nothing
-+	 * for resched_curr() to switch to: any credited buddy is on a remote rq
-+	 * in this cross-rq case, where yield_to() already issued resched_curr()
-+	 * on the target's rq. Skip the forced reschedule: it would be a no-op
-+	 * and an unnecessary preemption of an unrelated local task.
-+	 * yield_task_fair() also returns early here without updating rq_clock.
-+	 */
-+	if (rq->nr_running <= 1)
-+		return;
-+
-+	/*
-+	 * Rate-limit the forced preemption (cancel_protect_slice + resched_curr)
-+	 * to once per 6ms per rq. rq's clock was refreshed by the caller before
-+	 * the credit walk, so rq_clock(rq) read here is current.
-+	 */
-+	if (yield_to_force_resched_rate_limit(rq))
-+		return;
-+
-+	for_each_sched_entity(yse)
-+		cancel_protect_slice(yse);
-+
-+	resched_curr(rq);
-+}
-+
- static bool yield_to_task_fair(struct rq *rq, struct task_struct *p)
+ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
  {
- 	struct sched_entity *se = &p->se;
-@@ -9504,21 +9581,22 @@ static bool yield_to_task_fair(struct rq *rq, struct task_struct *p)
- 	}
- 
- 	/*
--	 * Walk the ancestor chain set_next_buddy() just nominated and credit
--	 * bounded lag to each not-yet-eligible level so pick_eevdf() returns
--	 * it. yield_to() holds both rq locks via double_rq_lock(), so touching
--	 * p's cfs_rqs (possibly on another CPU) is safe; the primitive is
--	 * idempotent, so no rate limiting is needed.
-+	 * Walk the ancestor chain nominated by set_next_buddy() and credit
-+	 * bounded lag to each not-yet-eligible level, so pick_eevdf() can
-+	 * honor the buddy hint. Lag credit runs on every directed yield; only
-+	 * the forced preemption in yield_to_local_force_resched() is
-+	 * rate-limited. yield_to() holds both rq locks via double_rq_lock(),
-+	 * so touching p's cfs_rqs (possibly on another CPU) is safe.
- 	 *
--	 * Only refresh p_rq's clock when it differs from the local rq. A
--	 * remote p_rq must be refreshed so the per-level update_curr() is
--	 * accurate. In the same-rq case we skip it: the credit is a
--	 * best-effort hint and the rq clock is recent enough, while the
--	 * trailing yield_task_fair() would otherwise make this a second
--	 * update_rq_clock() on the same rq and trip
--	 * SCHED_WARN_ON(WARN_DOUBLE_CLOCK).
--	 */
--	if (rq != p_rq)
-+	 * Refresh the local rq clock first: yield_to() took the locks without
-+	 * updating any clock and the per-level update_curr() below reads
-+	 * rq_clock; assert_clock_updated() (default-on, no sched_feat gate)
-+	 * fires otherwise. For a remote p_rq refresh it too; in the same-rq
-+	 * case the refresh above already covers it (a redundant update is only
-+	 * warned about under the default-off WARN_DOUBLE_CLOCK).
-+	 */
-+	update_rq_clock(rq);
-+	if (p_rq != rq)
- 		update_rq_clock(p_rq);
- 
- 	for_each_sched_entity(se) {
-@@ -9534,7 +9612,12 @@ static bool yield_to_task_fair(struct rq *rq, struct task_struct *p)
- 		eevdf_credit_entity_vlag(cfs_rq, se);
- 	}
- 
--	yield_task_fair(rq);
-+	/*
-+	 * Force the local CPU to reschedule so the credited buddy can be
-+	 * selected instead of the protected yielder;
-+	 * yield_to_local_force_resched() also does the leaf forfeit.
-+	 */
-+	yield_to_local_force_resched(rq);
- 
- 	return true;
- }
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 9f63b15d309d..690a2ab99beb 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1316,6 +1316,16 @@ struct rq {
- 	unsigned int		ttwu_local;
- #endif
- 
-+	/*
-+	 * Last rq_clock at which the yield_to() lag-credit path forced a local
-+	 * reschedule on this rq. Used to rate-limit only the forced preemption
-+	 * (cancel_protect_slice + resched_curr) to at most once per 6ms per rq,
-+	 * preventing excessive forced preemption on PLE-heavy guests. The lag
-+	 * credit itself is not rate-limited. Functional state, not a statistic,
-+	 * so kept outside CONFIG_SCHEDSTATS.
-+	 */
-+	u64			yield_to_force_resched_last_ns;
-+
- #ifdef CONFIG_CPU_IDLE
- 	/* Must be inspected within a RCU lock section */
- 	struct cpuidle_state	*idle_state;
+ 	int nr_vcpus, start, i, idx, yielded;
 -- 
 2.43.0
 
