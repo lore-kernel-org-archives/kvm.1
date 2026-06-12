@@ -1,108 +1,108 @@
 Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855B6219FC
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 00:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E002F24E4B5
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 00:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781223002; cv=none; b=hV+VdSQrA7m3DXM7eE6ZEm/N+dYfhBmPMUR1Lr9o55XUY3fQyFcRNg/XP1wUv2kF42Ek4NwjBIKHzAB6oU1lenBsg6tOyFXrbjFIQd5+M9eDaTu+ubBj/wbWcxEG+efY81oFkKcdXzIViOzykHRtu56ZQo6Ah/VKt1K8097HR6Q=
+	t=1781225279; cv=none; b=Qf3KkUn2n9SVqBFzYCUcDCIqeDORpu1oHquAqiSF2amjVrd8iKsE0Gft44aAUSMTsYmha2GsQnDZjUlGQbxPmnPhKCxKPr8mBpkwhw0WhWrpL4+2q239BJyk84gabhVL6P+vYRw15VPXmFvXJZFBe5a73LZ8HkIVXUmQZxjOU2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781223002; c=relaxed/simple;
-	bh=7hjevxTS/pE67scrUmPnMNrAdATdqbszmG8o5umjaYI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=umH2spTgqMu3AI33/dW9XfOU6+MdXgP7s2bmZVh872+kiEzCNqQyX3/20eVssAE4+bympSzgeILewVVVFy6ZTeBsv02sutfho2gl9Zy4vh9tYL8zRg+hHDvdZEPRw18/n3eXN0+JbhNcxno5Myvfp8x8kjpJwSn9wuAsa7WH+q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uL5T/qgK; arc=none smtp.client-ip=209.85.214.201
+	s=arc-20240116; t=1781225279; c=relaxed/simple;
+	bh=fNExGHKRAwNDwQlGvZ+K4PtZPYA6o4Hcsorch6x4W2U=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=m0GqIvoPwhpMtCHtRlauvSlXf/IDBBbBRc9gZ/+bRMvXtAPLzUINEFykbh5rFtLap0zFcJpNGAXavoAt8MlUYp8QEdY0SNls9pQ2FIJz/estnSyVyij6sDkDKhNeKTS/fIyPpNBC3fed+sArG7a8FAYZeLxghPOUjyEBAk4XPdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VAaglxJs; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uL5T/qgK"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bd04e4fe3dso8829165ad.3
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 17:10:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VAaglxJs"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0532a6588so3960535ad.0
+        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 17:47:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781223001; x=1781827801; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/eWL2vseWpXMlWKa6sGV7Bo7yoiqWdiiVjHrV5kk1ZU=;
-        b=uL5T/qgKCRot8Dt6ZXGteBUHVeI2rfFZmqXqdNFgXX5XUSUVOCRmsbLW4g+KyDKVuS
-         gikeBJ2s4o8nc9+9Itmt6Vlc378fJuipmTxqYLodgKG0l7inTGXIW0s9KI0Zuixtoq6L
-         RSYFQ1aTH+QynzyTd/axr5Hf7fYs/Rz7YOOmmOGl7tFI9ZUZDK1ekfLNczmEXH99XlTG
-         ofBf3VadUUJPw1H1CmYWHuT9xDWib1nMCEtgrv1yx2IUMpLkbKE0PXz2VCyXFATyeSuF
-         pESBIQIas/K0sEGd6znEo9Wkq2jLraj049pqygVHL6IaJrsubcEVj2JTfulxkhXE3N+w
-         z+qg==
+        d=google.com; s=20251104; t=1781225277; x=1781830077; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wKVLVWa1wCgaJK8vzzm5ZBtQNyVkPteH1/bU0HT2Wa4=;
+        b=VAaglxJsa9UyjooVKj/lwjYkOJRmiIqTeVFp3JNgSAomDHDPNMRFvvWeufHzXfvGLE
+         s/LiLpwcjh6YeGZkQ23CXtU/bP3mOmRXRwQODhwOY5akjEM8p9juJ4pEexIRe6mqJBPv
+         sF8S4gIwsaXMKR8fRmRbGNvhfOJ0KtOFI6p3fucujh5UTV/B9hWmp0F8Ud9+N4HSmA3b
+         8G/c7brfLjpmgJ4YBRtcTokpJJOn/iOZDQdNZSPASfIbeVFpIji3y4rQM/Pkmh7PyoPG
+         EwNV1pQxZUTmTnARWkO2zeTitO1cF7EcpHCfP3RvSXPbAywRZfsa6P4K8hgxINlbh4B6
+         jXBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781223001; x=1781827801;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/eWL2vseWpXMlWKa6sGV7Bo7yoiqWdiiVjHrV5kk1ZU=;
-        b=jut1j369mZ5KIlMGiSxx8kIe1FZW7t69lG1vM1W/2yAjvCmor5e4kwC2H0WsTz0djR
-         YAafu5cg8usTkkv5R+oVpw7MqO3RAs38XlGDxV0X1W/Oogs22UsKw9O3H2NGa+Uu76ip
-         J0PkZ7LDKCTMhK3EkxRjAOdq4V9jG+Vzosg+/93rS+sMG33gHx1JrBnZ41JCI84Qn91D
-         6IVxIuuvJXX8n70w0/i38zqtkp/EZVO53b8HHljLqxpRa6HHxv6mx77pSYUxv6E/XJug
-         sB5J8O0KlZNPmT/dAnd7BFCZ4hPiHCHWtLl2ajugt1FW4ciiH0yMGvgEa/lcrWr5FoJP
-         qUsw==
-X-Forwarded-Encrypted: i=1; AFNElJ8do8XLc33JoqY8b22MjHEj3VJOrgNs6IPuaHc3+SEKpyTQeTqEbl/ofr+tPf21Ltdm/18=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yywwex/uZmwhGZPh+IUCjNsZbnKmZf/r9jgmaWPeS11Omh8uSKm
-	XUsYKdHYN7NLFDZMKU5VQ7dk9p3DN8+wsmmZT9We4YPsLz4YvAd2J0WbKlU5WfoeZiR2+F3fzhJ
-	pisjBCw==
-X-Received: from pltg6.prod.google.com ([2002:a17:902:6b46:b0:2c2:da80:b99])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:b0e:b0:2c3:5683:9acb
- with SMTP id d9443c01a7336-2c412e2203emr6539415ad.32.1781223000763; Thu, 11
- Jun 2026 17:10:00 -0700 (PDT)
-Date: Thu, 11 Jun 2026 17:10:00 -0700
-In-Reply-To: <sbub77galgn2zcecmeiznzi7nvgykby5lyqbebimfpd3wmsxgc@gxfth3taum3p>
+        d=1e100.net; s=20251104; t=1781225277; x=1781830077;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wKVLVWa1wCgaJK8vzzm5ZBtQNyVkPteH1/bU0HT2Wa4=;
+        b=UKnIK41+21p6cBJrlhzdyY4cXfQ+5Dc6l1dvlfBfMVaEgMe3Jb1WALFkfFu5/uBtGO
+         HLDyKTswZzqGao8W9DSLlPQPblhetImPvOy6JH/0d4IcT/1tNP/woxQn6yhZfyokU35k
+         c7Vjkf4jXmnZ75a82GXWcHayf5UfK0mnTObvLLYtxzQ/Hv1AeAJT3oOymNsccpyZlUtv
+         Ih+qqzVUIaThJ94uusc3PB8h0S2H53VCHXKL5uqJcIdMFuPrDH3B/uhG06EI+fFkt5a8
+         AZB5zR8MkrV1+u3wVXID2t84FKRUP005j5fuhsDU42pjKrX+FIQ2z3VYH69hbqN1dljC
+         X+jA==
+X-Gm-Message-State: AOJu0Yz6XDX3MYDBbmY57pArkEFTFIMQfkxJQnX46UejGmGs+UsYB3na
+	Olka4T2EGDBwNR4yL9K6duFndTXT8PsYmhxeOOw8yWu532jqdque62Kdi0PuUAK/Soaynii4wne
+	q0rUT2A==
+X-Received: from plxj17.prod.google.com ([2002:a17:902:da91:b0:2ba:f5a6:38db])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c401:b0:2c1:6020:7398
+ with SMTP id d9443c01a7336-2c410fbec97mr7649995ad.12.1781225276988; Thu, 11
+ Jun 2026 17:47:56 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 11 Jun 2026 17:47:45 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <aimMWzAf5b3luM0b@v4bel> <wxamg6zqn2qmsci2fwfepbqou5vtgydqmonr67mu7b73nkakbe@zedss5vzeci3>
- <aiqNPBQzoU9f8RwI@v4bel> <aiqueNUndQsbMNud@google.com> <airAthcKDZeDfzXS@v4bel>
- <airS1G23atiuWdTl@google.com> <sbub77galgn2zcecmeiznzi7nvgykby5lyqbebimfpd3wmsxgc@gxfth3taum3p>
-Message-ID: <aitOWNQk8KfUdp5x@google.com>
-Subject: Re: [PATCH] KVM: SEV: Don't return a still-assigned gmem page to the host
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
+Message-ID: <20260612004755.349925-1-seanjc@google.com>
+Subject: [GIT PULL] KVM: x86 pull requests for 7.2
 From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Hyunwoo Kim <imv4bel@gmail.com>, pbonzini@redhat.com, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jun 11, 2026, Michael Roth wrote:
-> On Thu, Jun 11, 2026 at 08:23:00AM -0700, Sean Christopherson wrote:
-> > On Thu, Jun 11, 2026, Hyunwoo Kim wrote:
-> > > and if that gfn is then hole-punched, a page that is still assigned to the
-> > > guest is returned to the host in sev_gmem_invalidate(), which looked like it
-> > > could lead to a host RMP PF, so I sent the patch.
-> > 
-> > Yeah, I suspect you're right.  But leaking the page doesn't fix the underlying
-> > problem, which is that it's possible to free a page that's being used as a VMSA.
-> > 
-> > We can't simply pin the page, because IIUC ->free_folio() is called when the page
-> > is removed from the filemap, not when the folio/page is free back to the allocator.
-> 
-> If free_folio() triggers, it would call into the
-> kvm_gmem_invalidate()/rmp_make_shared() path and clear VMSA bit, which I
-> think would cause a subsequent vcpu_run() to error cleanly. So that part
-> maybe isn't the issue, so much as the stale VMSA reference we have once
-> the hole-punched finished at folio actually gets freed to allocator..
+Sorry for not getting these to you yesterday.  I was all prepared to work on
+them before meetings hit, and then SQUIRREL!
 
-What if the vCPU that's associated with the VMSA is actively running?  I assume
-trying to reclaim a VMSA page will fail with FAIL_INUSE or FAIL_PERMISSION;
-that's the scenario I'm worried about.
 
-> But KVM would never be accessing it directly while it's allocated for a
-> vCPU (it would be garbage on the host-side anyway), and I think the CPU
-> should only be able to write to it as part of VMRUN/exit, but those
-> should immediately fail since it's not a VMSA page any more at that
-> point.
-> 
-> It's sort of a precarious state, but I think we might hold up okay
-> there.. so I'm not sure we actually need the changes below, unless I'm
-> missing something.
-> 
-> ..but on the VM cleanup side, we'd end up doing a double-free in that
-> case, so we would need still need the elevated reference to handle that.
+Outside of these pull requests, there's a set of five selftests patches[1] that
+I have sitting in "selftests_l2_stacks" and fed into linux-next.  I'm not
+including a pull request for that branch, as it's deliberately built on top of
+all the other local merges to avoid a pile of annoying conflicts (the changes
+allocate a proper stack for all L2 vCPUs, and so touches every test that does
+anything nested related).  If you can apply the patches directly after merging
+the other pull requests, that would make me quite happy.  Alternatively, I'll
+send a separate pull request once this batch is merged.
 
-I don't think so?  KVM doesn't free vmcb->control.vmsa_pa when tearing down the
-vCPU, KVM only explicitly frees svm->sev_es.vmsa.
+[1] https://lore.kernel.org/all/20260610003030.2957261-1-seanjc@google.com
+
+
+There are two conflicts I am aware of; thankfully both are fairly trivial.
+
+Internal to these pull requests, "misc" and "svm" conflict on header includes
+in svm.h: take the incoming headers and the kvm_cache_regs.h => regs.h rename.
+
+diff --cc arch/x86/kvm/svm/svm.h
+index d013a5ceb62e,87c6b105deef..000000000000
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@@ -23,7 -23,9 +23,9 @@@
+  #include <asm/sev-common.h>
+  
+  #include "cpuid.h"
+ -#include "kvm_cache_regs.h"
+ +#include "regs.h"
++ #include "x86.h"
++ #include "pmu.h"
+  
+  /*
+   * Helpers to convert to/from physical addresses for pages whose address is
+
+Externally, the "mmu" branch will conflict with the tip tree on
+arch/x86/include/asm/tdx.h.  Mark's fixup in -next[2] is what I've been using
+in my local resolutions.  Basically take the KVM changes, but keep the
+void tdx_sys_disable(void); declaration.
+
+[2] https://lore.kernel.org/all/ahb-PZwR5mEd8A9W@sirena.org.uk
