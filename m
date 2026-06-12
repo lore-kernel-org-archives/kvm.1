@@ -1,102 +1,109 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DB3403AEF
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 23:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC1D39656D
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 23:06:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781305289; cv=none; b=eoqoJ+mpQwEJlbc2nQ89phmLC9NiZDFWG1Op3VwmLMsoQY/Hpyv54Cq4Sfj2816X8qbZ0JT4okTI0xePlTHJYX8sYAfgwqUqMbar+A0U9gjZ/T2bx/GJmuWMWQ5c7NWUG1Bi2vJl3D3TD8Gjxr19KnV+EDv7058duDoh0CFeB1w=
+	t=1781305587; cv=none; b=oCi9V4asR8OtgfXjpNHoxmCmeTpOC2FyNybam54Hczejj/nyDwCE0A7ZIY3yYl5r/t+jWAGGWC2Og9Vqd1mkOGEMEu5PniAzes4XQteDyx92a6CCdBbv8Tp15eWYqyqU1j6RjHEzHJvqTrbu5zJHk0zf0Kaevk3KhkQ2RN5Cuqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781305289; c=relaxed/simple;
-	bh=qgWe5MTcj8EpJQ7tU7xrdk/B+H4byiEhpkhWU39nxGc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dwP2mPQbBNKFn+pkMj2xXyoq7wkkFPlKq3f4wka8NAqHKAJ9at52YUfqE7zNsW1ZNu/d/XipuxFHN+2vUGq8qZevOG+7R6wCKhcr3fDp+R5RE/ZeAgGnjM0zwvMitTRWvQH1HCjj5cuTR6UQx3lCUyFTyMtWxzQVxMwhLttfPRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Tt+HY21P; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1781305587; c=relaxed/simple;
+	bh=uFCxRDAU9GwUX6wzciKQ/GF318M3oH+qcGm4MSBbzio=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KOas4y5xVw37iYDs3LIFQk6kYgWi8Knw+EZaAuOScS3Io2kc3FlZiVtLQfT71Lt0Sz2r5BUWF7P8v6NGn22tEded7Qo1BPN7pT9LazqIlyhPOit5R1u2Ozc5xhUXoR6w+S10fdc4Xxxvx7eDhCbkhWnrhYC6jfljxw79PLrWGWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B98rbjyP; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Tt+HY21P"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bfdd99f6b7so24388225ad.0
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 16:01:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B98rbjyP"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0a99db8dfso14625925ad.3
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 16:06:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781305287; x=1781910087; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=iJ2P+hwsLw1ZXvxG3VNhmnyf2n1FVoiL6DO6eJPUS/U=;
-        b=Tt+HY21PWbHm2kpTrFd8D4eGGT8EUnwefiAtqxXX4HzJmq9Dv6dpdOCboSZ711Ti1i
-         VVdmnoPfBG45c52pRuqDp+PdWOpnmDnSwWFyiUJyEUizAWRpURD7SNWNLL1HVlWy87PJ
-         kvC51NyccwkOM/N4+DuDdWeBq8jzydkFq6dtRkwmbyjEnqjmxIcE14GqESrTCNydCxc3
-         vdR6RljG04xb1zz736YoTrRMFOBUqZxkreqNLZB4XQzquWZwroZc90+dIiDO3hE9l+vO
-         yGaDCxi9wmmlJt4xWsjqbt8EG3w+ZdUcR85PAlCPWY0+MPXkYcY/tZHc1rz/II0zyS2c
-         yIpA==
+        d=google.com; s=20251104; t=1781305585; x=1781910385; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eCKL+Fp2i3Z3+mzvPK7vseC1644928z96Ms+24R1vAI=;
+        b=B98rbjyPQsUwmVdcT5OZGHnGBtfOl6LU5LBDcg9+wLHd2Zb+Zop9QXV1r67eqTQJhV
+         QDMC48AsXIkR1tz5zm5bKeVC5CGTC6nEyQ/KSoPT6Vp8ZeS5aZ7btkvdPxXjzRJXHTu9
+         CPfLWVDPsorZoJJ646pYqQuEA2eSlaGspjUHhTflUrRSkuV8TGVMwQ4Lru96fut0guOL
+         WVe3h5vzxZFhLX++7jCybW6dJpjeChquAyZcZLJ62bjzjPKlQ64zMKcj1iq4HZEIaCnH
+         vp/R0ZxQRklsL7ZeGhEf40/Cd1h2z34RrHVDQs6JkM5DakMWIlaZzbZ//kmFONlsHTWt
+         k5LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781305287; x=1781910087;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iJ2P+hwsLw1ZXvxG3VNhmnyf2n1FVoiL6DO6eJPUS/U=;
-        b=UKPV6vSr2LfoWZPD5RtvV1ImMFMqNTYUM3tZXwPKV2yLe+Gov0qETwWVCk+ODLVg5M
-         INrNCFIqFAcDqyE1QQBpuKDlE2DMDxuB9weChxGhK4GWS5r0xiu0jtON4VS119Vh3Cmm
-         UyyH+fMpvKH7OSTX6G/sr+8H2eUzdn6kx0ABMmsqGgGA4BcmmA/kKerBhcixW5dol4rU
-         zlypAZNMHtvVo/sySLqQ7FxK1ErBcKD761/N2N7OFzjKEOs9gfZRx6zMVoeQWQiOJmRz
-         dgkx89dFNkLOaXNsw5mMjtP3vzMUY75JY47P0XNK5dh1b5bwS3c207knCbV1U8vl9rcx
-         l/4w==
-X-Gm-Message-State: AOJu0YwPgaY2AMeFpykdufe5g7cCkHGEvmQLqEs6mRLsxPqC/Jnpx1oW
-	I9STK/5vinYmfqpSFdm+rq2gJgQN84MoXIWL08jSVaWOCTI+l0OCYQATWU5S8/ZLikABDggcySW
-	i1oKskA==
-X-Received: from plko4.prod.google.com ([2002:a17:902:6b04:b0:2bf:1a98:5111])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:b0e:b0:2c3:5683:9acb
- with SMTP id d9443c01a7336-2c412e2203emr55294655ad.32.1781305287229; Fri, 12
- Jun 2026 16:01:27 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781305585; x=1781910385;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eCKL+Fp2i3Z3+mzvPK7vseC1644928z96Ms+24R1vAI=;
+        b=IsV82uFAsw1/ZawGhZUEYwMyhoBSD/mpqgrAPRjwQCwhFJVXvC+imN+ANpB1JWNty8
+         kyd1as8HBzvf/6Y1wycO2xwPzei6uhbQ0B0qyuS26jsSATObBrnuPLQMajpwbIo1wz01
+         o6rR8Nk+bdU36lvshSzDCytUpM+ompC15cavbT8LG7l8YVpF3iu+Jox5t4LDj4M0lW0v
+         CwBI3EMrp6aKUOqT66/Xyh3m0X3FHV8WInz6CKvgSqi3mBmKuga5WgrqvmzLK4ENuUhC
+         wls/vKNSOZJ/s1eNHsnWqeYMd4MXqNIQmExMZu3glOoj2XqBEDh8nxB6wnhcH9vNOVwv
+         347A==
+X-Gm-Message-State: AOJu0Yy5LHWEKaWsTKB4HPSyVXE75geEkvLXJA3AtU4WGD97ZGLv1FAo
+	DAX+5ehGchWmqERmAgGHLh2xG2588oNnfz/xmK5lFkwvVtclhfwaY3Jl/P5SYT2pMUMwu0Ro6sc
+	xiJ8LxQ==
+X-Received: from plbjx11.prod.google.com ([2002:a17:903:138b:b0:2bf:243c:fd7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f86:b0:2c0:cb0e:ac3a
+ with SMTP id d9443c01a7336-2c4134ec5d1mr51947015ad.23.1781305585257; Fri, 12
+ Jun 2026 16:06:25 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 16:01:13 -0700
-In-Reply-To: <20260612230113.684301-1-seanjc@google.com>
+Date: Fri, 12 Jun 2026 16:06:14 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260612230113.684301-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260612230113.684301-9-seanjc@google.com>
-Subject: [PATCH v3 8/8] KVM: x86: Read CR4.DE in emulator if and only if
- accessing DR4 or DR5
+Message-ID: <20260612230622.687665-1-seanjc@google.com>
+Subject: [PATCH v2 0/8] KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+To: Vitaly Kuznetsov <vkuznets@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"=?UTF-8?q?Carlos=20L=C3=B3pez?=" <clopez@suse.de>, "Maciej W . Rozycki" <macro@orcam.me.uk>
+	syzbot+5b32c49cd8f005e65654@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 
-Micro-optimize emulation of MOV DR instructions by checking CR4.DE if and
-only if DR4 or DR5 is being accessed.
+Fix a bug found by syzkaller (on a Google-internal kernel) where KVM consumes
+a vCPU's HyperV structure before it's fully initialized, by concurrently
+triggering PV TLB flushes (queues flushes into a vCPU's FIFO without holding
+the vCPU's mutex) on a vCPU that is in the process of activating HyperV.
 
-No functional change intended.
+Harden against similar bugs by asserting the vcpu->mutex is held when using
+the "normal" to_hv_vcpu(), same as we did for get_vmcs12() and
+get_shadow_vmcs12() (also in response to cross-task races).  To avoid false
+positives when creating a vCPU, initialize vcpu_idx to -1, and treat the vCPU
+as unreachable (other than the caller, obviously) if its index is -1.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/emulate.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+v2:
+ - Init vcpu->vcpu_idx to -1, use that as a canary to detect the vCPU is
+   unreachable, and allow accessing Hyper-V state if the vCPU is otherwise
+   unreachable. [syzbot]
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index e030ef9b9744..8071b372d233 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -3840,13 +3840,11 @@ static int check_dr_read(struct x86_emulate_ctxt *ctxt)
- {
- 	bool is_intel = ctxt->ops->guest_cpuid_is_intel_compatible(ctxt);
- 	int dr = ctxt->modrm_reg;
--	u64 cr4;
- 
- 	if (dr > 7)
- 		return emulate_ud(ctxt);
- 
--	cr4 = ctxt->ops->get_cr(ctxt, 4);
--	if ((cr4 & X86_CR4_DE) && (dr == 4 || dr == 5))
-+	if ((dr == 4 || dr == 5) && (ctxt->ops->get_cr(ctxt, 4) & X86_CR4_DE))
- 		return emulate_ud(ctxt);
- 
- 	/* Intel CPUs prioritize the DR7.GD=1 #DB over the CPL>0 #GP. */
+v1: https://lore.kernel.org/all/20260423140833.439512-1-seanjc@google.com
+
+Sean Christopherson (8):
+  KVM: x86/hyperv: Get target FIFO in hv_tlb_flush_enqueue(), not caller
+  KVM: x86/hyperv: Check for NULL vCPU Hyper-V object in
+    kvm_hv_get_tlb_flush_fifo()
+  KVM: x86/hyperv: Ensure vCPU's Hyper-V object is initialized on
+    cross-vCPU accesses
+  KVM: Initialize a vCPU's index to '-1' while it's being created
+  KVM: Move nVMX's lockdep logic for vcpu->mutex to a common helper
+  KVM: x86: Treat a vCPU as unreachable if its index is invalid
+  KVM: x86/hyperv: Assert vCPU's mutex is held in to_hv_vcpu()
+  KVM: x86/hyperv: Use {READ,WRITE}_ONCE for cross-task synic->active
+    accesses
+
+ arch/x86/kvm/hyperv.c     | 64 +++++++++++++++++++++------------------
+ arch/x86/kvm/hyperv.h     | 25 +++++++++++++--
+ arch/x86/kvm/vmx/nested.h |  6 ++--
+ include/linux/kvm_host.h  |  7 +++++
+ virt/kvm/kvm_main.c       |  2 ++
+ 5 files changed, 67 insertions(+), 37 deletions(-)
+
+
+base-commit: c1f7303302927f9cbf4efedf70f0512cde168c65
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
