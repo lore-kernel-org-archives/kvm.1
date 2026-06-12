@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FB72673B0
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3EC2673B0
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781229060; cv=none; b=MkbvnnWxbKMcMyYquC97DsTpg/ti9JDQXQyH2xDuZERSNP7/WXLZFPxN3wrBzlZ+KPo+yI+Nvqdy1t00VAqJjPgWZbsThNOZ0P3+mUjg4aQUconV0B1RVVrBD3wfXeeBUCBzlPip0JvL0EojryC9kHyGPsct4I0b9Z8x97Jo/JA=
+	t=1781229229; cv=none; b=iCAQqgmtqWdXjs1r0XSQ+AK6Lyth9+v8YoC16nNY7B8dpDW8Kh23GqjRVus5qTH953ayFzxsNfWyjga5vuyX4C+ySKVXYF7IPbmFELvNIURdUoueFtpnZn3YwKHHvrhEQZ4lMRdebnQJd4T9LvuI9vvS0R8mGWyFn+aEQmfbMU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781229060; c=relaxed/simple;
-	bh=ljQ1YWoZyNqG2Eu8ldXR7iO1+PbAfyknyyUamVEGQ1E=;
+	s=arc-20240116; t=1781229229; c=relaxed/simple;
+	bh=gtggslKuDNfQnlQGIezbZJlRXLChlt6KicvlEeSocN8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lrASIYUaraJCYAJajoQWM9qu/c6nVgsXnoWNpLJSSsRUxTr3B8e1quBqI7JJOIxVa46Mc133Y17BQCciQoD3e4vbFgeQZsewLl9b3gd3NYeV5qf4bC6xrk2bgmSZRq3vvcPjs/Oaz1YS7zBpgOJ1OU4Z//qfrVItqxZlyFZrjYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eZW6fKjX; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Dd5LQAeTRGaWoZ5wwtHCkeoDXRUv5mHBplF9Qz0ed680Z+IXUNr71OQP7G+ELNtuuHIQZVjZqb7drfSkV1ke27v9/1WezLJQZUSAwK3cD8gP9p0/Ns6W7DVyzyrUfOZYflVH7kobafgJfuOmBsbn8qGoGz0dSgnjlfGGJTbd2Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2Na0nZ4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eZW6fKjX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAC11F000E9;
-	Fri, 12 Jun 2026 01:50:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2Na0nZ4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13311F000E9;
+	Fri, 12 Jun 2026 01:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781229059;
-	bh=t5aOQD7LQX7+cQ10GkWatYHMdzaxYWoXZ72XeGXrPFE=;
+	s=k20260515; t=1781229227;
+	bh=eE2ujfI971in9D0Zii1AQa7exK+zhfZKLRJ/QPFQk18=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eZW6fKjXOtkCtmy2Fjnc2i/iP0k3S2slPdfUuL3wIHWDatQTANT7vMSh71pCdeTsJ
-	 Lqm+knIiRZoU2BxLPnCa2B/iSrOz22in20XSRKmwJxCSIC1oxNhKQvj1+pX3J8VWaa
-	 Cx0TFF/Q9hryNMDz72o1zszN6+H99/fg0OLar1eELlK7uxt5eJ/gZxYGUY0njMNjyv
-	 J4yTSZLPu/SV+hEke9qHW9LoHQ9LZZcvpdN8SlVxXRnOaKcdgo5ZKBMSQMdOLHo6dN
-	 Rfsw2kIoaDFvgp3lgfE7B/cmdRW0gs1a1Av2e7D44TEhXB7XNnxQyttbm++q+mjg7z
-	 fEIKkNEW5WH2g==
+	b=W2Na0nZ4lnUOH0ZTE9Bexe18NZozAIZ3NWWFNIMH1teMfmKJ7XohoKHAsGV74s0bK
+	 yGZk1qNnU4gr26t5asoVfGTfenoUp8khOakzI9CqFCj7QQBxK5b9xBjpk1JazCiJoK
+	 XspQjD6ZSXrJhN8uxBLkJli5gEOffOQk5j9k6ousaOkak98Ot9n9nGPNRhx9CGNBXe
+	 rt485qTY1V+AmwvnYbGyuRvH0pySx1Q7vVQuyhQLZHC4DKNHigxj1XMhggEPwWHn7y
+	 aKutLgAYTmvA8SZ9RFxm12V6KL0hzI95RwXjJBPSAIzKyUoLAheFJUCYS5IpHE2rWT
+	 6KK4E07F6p1rQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 05/10] sched/fair: Force a local resched on
- yield_to() so the buddy is picked
+Subject: Re: [PATCH v3 02/10] sched/fair: Credit a persistent,
+ queue-depth-scaled vlag margin
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Wanpeng Li" <kernellwp@gmail.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260612013355.59231-6-kernellwp@gmail.com>
-References: <20260612013355.59231-6-kernellwp@gmail.com>
+In-Reply-To: <20260612013355.59231-3-kernellwp@gmail.com>
+References: <20260612013355.59231-3-kernellwp@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 12 Jun 2026 01:50:58 +0000
-Message-Id: <20260612015058.DEAC11F000E9@smtp.kernel.org>
+Date: Fri, 12 Jun 2026 01:53:47 +0000
+Message-Id: <20260612015347.B13311F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,68 +46,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Double clock update triggers WARN_DOUBLE_CLOCK on the local runq=
-ueue in yield_to_task_fair().
+
+Pre-existing issues:
+- [High] __enqueue_entity() fails to initialize se->max_slice before adding=
+ the entity to the augmented RB-tree, poisoning the tree's max_slice.
 --
 
-commit fb0067f31069bbf43450f383db09dc5489957b42
+commit c9a9a8b18145d7a6a58148e991409677da519193
 Author: Wanpeng Li <wanpengli@tencent.com>
 
-sched/fair: Force a local resched on yield_to() so the buddy is picked
+sched/fair: Credit a persistent, queue-depth-scaled vlag margin
 
-This commit modifies yield_to_task_fair() to force a local reschedule when
-applying lag credit, cancelling slice protection and calling resched_curr()
-on the local runqueue. The forced preemption is rate-limited to at most
-once per 6ms per rq.
+This commit replaces the credit-to-zero buddy system with a bounded
+positive-vlag margin. The margin scales with runqueue depth to preserve
+the buddy's eligibility across multiple scheduling decisions without
+exceeding EEVDF fairness bounds.
 
 > diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 48f65a4f19230..e9c5265cf0fa9 100644
+> index e7f5ea25fdae3..c6502db62cd3e 100644
 > --- a/kernel/sched/fair.c
 > +++ b/kernel/sched/fair.c
 [ ... ]
-> @@ -9485,6 +9485,83 @@ static void yield_task_fair(struct rq *rq)
-[ ... ]
-> +static void yield_to_local_force_resched(struct rq *rq)
-> +{
-> +	struct sched_entity *yse =3D &rq->donor->se;
-> +
-> +	yield_task_fair(rq);
-[ ... ]
-> @@ -9504,21 +9581,22 @@ static bool yield_to_task_fair(struct rq *rq, str=
-uct task_struct *p)
-[ ... ]
-> -	if (rq !=3D p_rq)
-> +	update_rq_clock(rq);
-> +	if (p_rq !=3D rq)
->  		update_rq_clock(p_rq);
+> @@ -9371,11 +9395,23 @@ eevdf_credit_entity_vlag(struct cfs_rq *cfs_rq, s=
+truct sched_entity *se)
+>  	avruntime =3D avg_vruntime(cfs_rq);
+>  	vlag =3D entity_lag(cfs_rq, se, avruntime);
 > =20
->  	for_each_sched_entity(se) {
+> -	/* Already eligible: nothing to do. */
+> -	if (vlag >=3D 0)
+> -		return;
+> +	/* Clamp the margin to entity_lag()'s bound so place_entity() keeps it.=
+ */
+> +	max_slice =3D cfs_rq_max_slice(cfs_rq) + TICK_NSEC;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the tree's max_slice
+contain poisoned data here?
+
+When an entity is dequeued, rb_erase_augmented_cached() removes the node
+but does not clear se->max_slice. When enqueued again, __enqueue_entity()
+initializes se->min_vruntime and se->min_slice, but misses se->max_slice:
+
+kernel/sched/fair.c:__enqueue_entity() {
+	sum_w_vruntime_add(cfs_rq, se);
+	se->min_vruntime =3D se->vruntime;
+	se->min_slice =3D se->slice;
+	// Missing se->max_slice =3D se->slice; here?
+	rb_add_augmented_cached(&se->run_node, &cfs_rq->tasks_timeline,
+				__entity_less, &min_vruntime_cb);
+}
+
+Won't the new leaf node propagate a potentially large, stale max_slice from=
+ its
+previous subtree up to the root? This would artificially inflate
+cfs_rq_max_slice() and corrupt the lag_limit calculated here, potentially
+allowing tasks to accumulate massive lag while sleeping and breaking EEVDF
+fairness bounds.
+
+> +	lag_limit =3D calc_delta_fair(max_slice, se);
+> +	margin =3D eevdf_persistent_margin(cfs_rq, se);
+> +	if (lag_limit && margin > lag_limit)
+> +		margin =3D lag_limit;
 [ ... ]
-> -	yield_task_fair(rq);
-> +	/*
-> +	 * Force the local CPU to reschedule so the credited buddy can be
-> +	 * selected instead of the protected yielder;
-> +	 * yield_to_local_force_resched() also does the leaf forfeit.
-> +	 */
-> +	yield_to_local_force_resched(rq);
-
-[Severity: Medium]
-Will this sequence trigger WARN_DOUBLE_CLOCK on the local runqueue?
-
-The patch comments note this redundant update is only warned about under
-the default-off WARN_DOUBLE_CLOCK.
-
-However, update_rq_clock(rq) is called in yield_to_task_fair() setting
-RQCF_UPDATED. Then yield_to_local_force_resched(rq) calls yield_task_fair()
-which calls update_rq_clock(rq) a second time.
-
-Since the flag isn't cleared between these calls, this will trigger:
-WARN_ON_ONCE(rq->clock_update_flags & RQCF_UPDATED)
-
-Is it okay to knowingly leave this double clock update, or could it cause
-spurious stack traces for developers actively debugging scheduler clock
-issues?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260612013355.5923=
-1-1-kernellwp@gmail.com?part=3D5
+1-1-kernellwp@gmail.com?part=3D2
