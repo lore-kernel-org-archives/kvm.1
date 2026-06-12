@@ -1,174 +1,125 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91263E2763
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B30383305;
+	Fri, 12 Jun 2026 17:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781284736; cv=none; b=kwA9ke3ys4UlVRXmMo2acenHzyzMZco8ogWTTkepzHwO44zcTRTILwNnOHrlda0C73ame5ztaGlAKO+DAqle8EaPZmKiqPJEXsCyYI9jHOtC5XQ040MOPNLU2kaYB2yd7gqfg+w4mQcXVQ+OFF6cBo/piasu3QIzhwVGcFGo1ZA=
+	t=1781285863; cv=none; b=lJWCz9A9/HtFbK3XvBcv6Oark/t/TluxD+4M2dK5S2XQrS5TKmp/0lpB34KMth8gJ3B4oHHIVppDC0sTw88VYnfyGEdOnqQJjtOMS0iB8EEWf0KmtP8ErF3hOiyUHQCEkAGn7gnNKwgauaAx17cd2Tcv9l6qw2iOnyxx8FgxZjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781284736; c=relaxed/simple;
-	bh=6Ig7j++nRpygjJXWN4caeOVkxAiNZBYjIFhiRbJ2pwg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=H+CILnW0hQBEQUE6RtHwYxMo/FUCBOAusPpv8O3nd7t62q2eB3zYZVeWFNCAyNFWPtkjY3tyXiHYuk5jiRH/BmT6V5zqW+HSsVIUQxXXQc5UfbB/jfOQRUc/OOwmItRAqbIkhioNVRPTW7hKdV4Y04GEGzrYNWLg4znWog2xmQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LHIJ9FdI; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1781285863; c=relaxed/simple;
+	bh=g7SAaPqSaMVyfZ70ZryVMHXs9EiUdrrjA9QzhZGOu0s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jXiXwtVYBsM2XHS1vtEIBSjMeCjzQ0UVXZOHpmjX9rc6KeCqmfUFB7fYYH469W0KnelHApn9a4I6035FhoKh4H3esWoI1GQenXjG9LYsACet9YlNtz307gMfvJXnE1RrhchA9jju/PlYxEa3YH/v3ZZ4uhhvLiAz0rIqTgV6+MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=iCyxNzMl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FFr3U79T; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LHIJ9FdI"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490be29c1c5so13055655e9.2
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 10:18:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1781284733; x=1781889533; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DuOtHeBbJw1YDeqbXCJ3sEezGFxNJJSYyUp7OFWdCrE=;
-        b=LHIJ9FdInVnhtoUNrOz8G9s1+LSgSmzoIUSc2if5ySdAm7HlsLiXBsB3nrWAo9CMlG
-         dvzOeY5I3D5hnvFTnIQidtQtDbCpy4VpNT2lfrVgkAxiURs/OQbQEchr7rXDYumCFPx0
-         ZaZAyDrH8VMF5p0ARyHdALioOaONYY07Iwkyo0BXWARuDShVOKA5pJ8Rk/flWJh+kiPh
-         CrSWJ3tyqZ2wAD/Cy7HaZTvqosgTFatDueX6uBPAvdKSkxK+GViZF+kObPmWSnDWw0gu
-         TcAT/1FQkdNx08dpL0Di429N9EcND/PHA3S9G3CCcmsSwom5LBvzpUIEk9RUGVvBfA3G
-         1QRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781284733; x=1781889533;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DuOtHeBbJw1YDeqbXCJ3sEezGFxNJJSYyUp7OFWdCrE=;
-        b=sO6meYdMHbsrhLTJ0PwFoIe9ZWzlpnJJ/yAWzrfO+7KjUW9fNLAwYn8+ejMVEjC3vU
-         1p7Pbiv8TKehwWiUw9ZHnVMGadbMXxbG2gm9OAjLI2dMqOVzMHAjcWfFiRoonabDS6+g
-         L2/56p6gZp8AWrcV2AJrQgys2j48Ja5ku3UHe6pLm8UwzksCkL4TxAu/VKOClCGakIIn
-         nBgBeGFKHhxYpHG64uTB65Rzz04r3ejwS4LDbLKaG8xWKoX82epOu2hSdofvQ6NuWTaq
-         QDp4iIZNqJlDMX1eqhXqGlcRyw648fwCbng2bG4b52DNBQHHPy7qR+QWA2R3TNuDRqh7
-         9vjA==
-X-Forwarded-Encrypted: i=1; AFNElJ/zNAT1sCGGPlMHyNXoJfstdsHfQv4b2LhWe/MIWRfAq7yRvyO34JF++R75Id9UlpwsbBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUSKgzN4RR010W44irLr166jmkssCuOdc7H7CwsPJ9yjrJ7cvy
-	BS/O+Dl5MpZUEiENg4iqrCEbt2vyYoV59/rN46Tda0SFrwvlrFoTr5c4/ZD1ElpeIgg=
-X-Gm-Gg: Acq92OFKq3xdODAG+IG0tU5SrI92P2YxOliKr9RVRQHdRJ69M5uLvmN3/rLMmBK7OiY
-	E1EnrYcxNKseL0CFpiFfpEKCywYVTJKnMT4SadPcSnhqRJz55XiqLhRepmXZyxYEHzvx+kgmAHB
-	D2d1SzByWG782vQv82UfKQGV9OaGMuoTWhVBBC8pTwH4nzEsUhhp+LxhhbrG6XFx1chyEWcYtva
-	A9gAY4DN0jK9MCXrvBGb+hzxJcokw+ol5ECrCg91DNfz50yC71syGkoqnXN/p/+hZq8NoflY/Vv
-	U6hDjV2M9P3Ge7gJ+8UPcFvZzBMLoHjXHpkyEQzMpvWAmmbxC4NzWC3b578RLchx4sm2yieiA6Z
-	fsxLHAEgz+xX+hyke4XaLVmQme55GXKMlyJDKAXO2tMCW1aFj9eW4xTYrHRG46qXabOTCIW9ZW+
-	c23cScE4njkKdACu8nZOWKd1E=
-X-Received: by 2002:a05:600c:83c8:b0:492:1e36:d16e with SMTP id 5b1f17b1804b1-4921e36d1a9mr17505975e9.36.1781284733060;
-        Fri, 12 Jun 2026 10:18:53 -0700 (PDT)
-Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4922035b4absm3694975e9.11.2026.06.12.10.18.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 10:18:52 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 65D125F814;
-	Fri, 12 Jun 2026 18:18:51 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Alexander
- Graf <agraf@csgraf.de>,  Mohamed Mediouni <mohamed@unpredictable.fr>,
-  Pedro Barbuda <pbarbuda@microsoft.com>,  qemu-arm@nongnu.org,
-  kvm@vger.kernel.org
-Subject: Re: [PATCH v7 0/8] target/arm: fully model WFxT instructions for
- A-profile
-In-Reply-To: <CAFEAcA94+mh_pigFDi+tEPRJ416fSWfxsQ1Lj8Byemug9kBp6w@mail.gmail.com>
-	(Peter Maydell's message of "Mon, 8 Jun 2026 14:51:24 +0100")
-References: <20260529082948.363931-1-alex.bennee@linaro.org>
-	<CAFEAcA94+mh_pigFDi+tEPRJ416fSWfxsQ1Lj8Byemug9kBp6w@mail.gmail.com>
-User-Agent: mu4e 1.14.1; emacs 30.1
-Date: Fri, 12 Jun 2026 18:18:51 +0100
-Message-ID: <87h5n7ekxw.fsf@draig.linaro.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="iCyxNzMl";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FFr3U79T"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id B0C91EC0212;
+	Fri, 12 Jun 2026 13:37:40 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Fri, 12 Jun 2026 13:37:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1781285860;
+	 x=1781372260; bh=3VYWrfjs01T0HYMxtoCq7P5BfvZQ30t2M5ITr0uVGYs=; b=
+	iCyxNzMlJVT7dc+aJ1HyGHM6PQHg3v3snzeXlHF6DihxEQybJLHUk+DcOs3oEmzA
+	iWZ8ggN22oRiiK2A6NaVlOQB3yk3oi9WrK8Ub8bH68jcaIJziQdFouqpLxsNwhu6
+	fkeeDvWrT0s6AvZOKfEMIEBQ/utO4s8JUPkfg4Hrt7YWWNiM0tbFWtUBFTgabPyj
+	g2h+hIL6nHIRGsdlbpnlF60TH+NJqihIChHoi6N53QKgtM7kCjmeDl0HbbdtjoI+
+	u01WfikGuhhmBfw61wz073okYTtLqEEQFLbz+8jl/ik6cgKbt6vjCCC2y6vgGGcm
+	y5b1RVG/BmfYrIcVWTWRSQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781285860; x=
+	1781372260; bh=3VYWrfjs01T0HYMxtoCq7P5BfvZQ30t2M5ITr0uVGYs=; b=F
+	Fr3U79TvLQjj1ipEwQCF8lDE5xaXT9dDBiP9WBHsQGIQWlMw5ZbbmJwHHteCSUyR
+	f9I79GT9JBK9VdUUsbZHKtbdGFs7ZV+zgs4xKLndVHAhjtnbOphPBaEPWx48yw26
+	eDcrNDbSawn+G/8HIhkTpJdPkIHVMrlz5wP+0ZUK3HsoBCnvgCdpuvYHNP6ubEGC
+	nZivXR25GiUUeigfNGT0gqGHAJr6tBt5pVjWNvAy8qusryNmJpZlP0JnjY+0IuzT
+	QcdazJoplpmMGU69evHdr9/c8FkZoSAHePfqMSstYRDZnVPJd2jJHmJGqdm4ICqO
+	IW9PMzRlIn+GHpG49iTIQ==
+X-ME-Sender: <xms:40Msak5HBHkg-zeSR5GI6ns-o6YRj-cZze1oByOxGS7XVfltnvLrHQ>
+    <xme:40MsahlAbctWIczDo5ihoVcT0fbdTv79lN_0RNwpaFHm8dOszfVZVxZ2vyYIU4aMZ
+    2syho6S5wikcZrJDPW1dZAqSUO1YTvgXKeWRf6mLxZQzlYvdDG6Rg>
+X-ME-Received: <xmr:40MsauIZbyZ1Pvt7KEwJ9Moo3QyqybuGKte5PGCSSXxl3vh096f7BNONPbw>
+X-ME-Proxy-Cause: dmFkZTGoJQ8Lj+EDNN4hBQbznq/Yu29egQv6IxwZgvmjRMEYwcoQM2PY8Gx9pC5GfESZpI
+    kbAq4sPedK8oiBdm7HZocnVtAYCQnz/MIZjclfarg7A/gqRUc5qAOpmh6thy7PcxH4zm/r
+    jgYWYhufPeSHOdD9y9ltUC87YJFH5U48fWALEtJHQibyi1YGDYd6sm8Y4jPFV5QGG7G96E
+    PF41HLNUvzODtqjMcyVp57mEIuUnDsUzNp+JeerUU5ussJDLmHU8mWqM89nDnGuzd7zU08
+    zdrK2gvAbUslZQHHb+UNIsLUlwwnd3cSUlJsMhLkLL0S+aUrCW81QKL8FMougNkiuwLsmr
+    xGa6mNUvgG64EHYj+IoV9fT67Q1WVobxX1X41d8ETPstbKjm+HkyfyBvM2TzLphFTcC4yj
+    ZPSAJMYOmBLWXpvCEywX4eCylhb0Yuzy5ywLqnusbm0vhthrofM30d5lPS8m7hpIs+OK4E
+    F74MsFXblySS+1WRtk14nAZBk+lf3kyUDL4M3LDewjjtUJpoD00k034eb/ehIlbBK62+4E
+    4BpDdD3GHGcG4Guxkd0bqX9KP3atd2HiDcAcDaEZwh9P2pb+yDT9WLp98Ov0CNHvJ15+q1
+    jNWAQtzbUBN7bdxWEcDA6JmSEqRAyIhB3/nNT1klgtjkpiCAJM79rKYwGBMg
+X-ME-Proxy: <xmx:40MsaqFYEdXblsSoFvOxothyefVugzEAo_GVjiEOIaUuN7ANMwxyTQ>
+    <xmx:40MsanOiLOn3zrSV4_FlMtmwwIFJrnqMOkP5rn8nxgYL2QID-eWLLA>
+    <xmx:40Msas-N1E9snrI29D--02dXmRvv7rcr2U2GygY8380oxUe6lAOPzA>
+    <xmx:40Msas6thAB3Nc67B_yTiFomVZYej913J2hUdjx827h0aarRAnE7sw>
+    <xmx:5EMsaoNte4z6cXBVhix--ioay-2X1Qeuq3SMwr7OxY7wLFHpKX1WOo6v>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 12 Jun 2026 13:37:37 -0400 (EDT)
+Date: Fri, 12 Jun 2026 11:37:35 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Matt Evans <matt@ozlabs.org>, Leon Romanovsky <leon@kernel.org>, Jason
+ Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>, Christian
+ =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>, Mahmoud Adam
+ <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>, =?UTF-8?B?Qmo=?=
+ =?UTF-8?B?w7ZybiBUw7ZwZWw=?= <bjorn@kernel.org>, Sumit Semwal
+ <sumit.semwal@linaro.org>, Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal
+ <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Vivek Kasireddy
+ <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH v3 2/9] vfio/pci: Add a helper to look up PFNs for
+ DMABUFs
+Message-ID: <20260612113735.79518b15@shazbot.org>
+In-Reply-To: <aisa6H-a-176MXhC@google.com>
+References: <20260610154327.37758-1-matt@ozlabs.org>
+	<20260610154327.37758-3-matt@ozlabs.org>
+	<aisa6H-a-176MXhC@google.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+On Thu, 11 Jun 2026 20:30:32 +0000
+Pranjal Shrivastava <praan@google.com> wrote:
 
-> On Fri, 29 May 2026 at 09:29, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
-rote:
->>
->> This series fully models the behaviour of WFxT instructions. We
->> already had support for WFE for M-profile but we left off A-profile as
->> it has more potential sources of wake-ups. The main one is the event
->> stream which includes events from significant bits of the timer
->> ticking over.
->>
->> The refactoring from the previous iterations of the patch have now
->> been merged.
->>
->> I've dropped trying to fully model the global monitor in favour of
->> taking advantage of the architectural flexibility to have an IMPDEF
->> event wake up for any reason. We treat the setting of exclusive_addr
->> as such a reason because it indicates the current vCPU is in a ldstx
->> exclusive region and we don't want the guest to deadlock. This does mean
->> the system won't sleep on WFE enabled locks but people shouldn't be
->> relying on QEMU to model real world sleep patterns anyway given the
->> efficiency of emulation compared to real HW.
->>
->> I've written a test case using kvm-unit-tests:
->>
->>   Message-ID: <20260527111822.1563679-1-alex.bennee@linaro.org>
->>   Date: Wed, 27 May 2026 12:18:21 +0100
->>   Subject: [kvm-unit-tests PATCH v2] arm: add wfx test case
->>   From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.org>
->>
->> All patches are now reviewed.
->
->
->
-> Applied to target-arm.next, thanks.
+> On Wed, Jun 10, 2026 at 04:43:16PM +0100, Matt Evans wrote:
+> > +	/*
+> > +	 * If we get here, the address fell outside of the span
+> > +	 * represented by the (concatenated) ranges.  Setup of a  
+> 
+> Nit: double space before "Setup" and "But" below.
 
-Is it too late to drop them? I've a fix for 2/8:
+Some of us old school'ers consider this proper writing style ;)
 
---8<---------------cut here---------------start------------->8---
-modified   =EF=83=BD include/hw/core/sysemu-cpu-ops.h
-@@ -18,6 +18,9 @@
- typedef struct SysemuCPUOps {
-     /**
-      * @has_work: Callback for checking if there is work to do.
-+     *
-+     * This function should be idempotent (i.e. not change state) as
-+     * it will likely be queried multiple times before a CPU resumes.
-      */
-     bool (*has_work)(CPUState *cpu); /* MANDATORY NON-NULL */
-     /**
-modified   =EE=98=9E target/arm/cpu.c
-@@ -158,7 +158,6 @@ static bool arm_cpu_has_work(CPUState *cs)
-      * A wake-up event should only wake us if we are halted on a WFE
-      */
-     if (cpu->env.halt_reason =3D=3D HALT_WFE && cpu->env.event_register) {
--        cpu->env.halt_reason =3D NOT_HALTED;
-         return true;
-     }
-=20
-@@ -170,7 +169,6 @@ static bool arm_cpu_has_work(CPUState *cs)
-                            | CPU_INTERRUPT_NMI | CPU_INTERRUPT_VINMI | CPU=
-_INTERRUPT_VFNMI
-                            | CPU_INTERRUPT_VFIQ | CPU_INTERRUPT_VIRQ | CPU=
-_INTERRUPT_VSERR
-                            | CPU_INTERRUPT_EXITTB)) {
--        cpu->env.halt_reason =3D NOT_HALTED;
-         return true;
-     }
-=20
-@@ -874,6 +872,8 @@ bool arm_cpu_exec_halt(CPUState *cs)
-         if (cpu->wfxt_timer) {
-             timer_del(cpu->wfxt_timer);
-         }
-+        /* clear the halt reason */
-+        cpu->env.halt_reason =3D NOT_HALTED;
-     }
-     return leave_halt;
- }
---8<---------------cut here---------------end--------------->8---
+Alex
 
-
->
-> -- PMM
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> > +	 * mapping must ensure that the VMA is <= the total size of
+> > +	 * the ranges, so this should never happen.  But, if it does,
+> > +	 * force SIGBUS for the access and warn.
+> > +	 */
+> > +	WARN_ONCE(1, "No range for addr 0x%lx, order %d: VMA 0x%lx-0x%lx pgoff 0x%lx, %u ranges, size 0x%zx\n",
+> > +		  address, order, vma->vm_start, vma->vm_end, vma->vm_pgoff,
+> > +		  priv->nr_ranges, priv->size);
+> > +
+> > +	return -EFAULT;  
