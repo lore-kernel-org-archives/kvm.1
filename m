@@ -1,317 +1,112 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE2D33D4F8
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 19:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A8237269C;
+	Fri, 12 Jun 2026 19:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781293168; cv=none; b=q8HkvvxUYUQlXDekMcQ+y+O+PhwlRh5okESGNcJslNejq5RM08GaU+NyF0aKccnSA5vZiRwmBKu5RdgZaYVPNkmQMwNR8ZO3nsN44Q0biHGDHOQXS33ccfnYEqyUlzbZwnV3cRXZhKXu6XsPL37CFUedO6GAYGmHQdG4e+eIScM=
+	t=1781293356; cv=none; b=iJTdGd1HEskEm7+drnW1qmQolqCzTeAkqoFOItW9DRRg84JWosC/tuibm634l2uBo3UydxGI4iB6neKWYncX52CKvfEjIUrStQ5TABToc4DO+vyE04QuiZLuYc8jfQXq2pxZx0vnj9OClGA0seRkqh6M3QxjY1nywLrVzdxi/Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781293168; c=relaxed/simple;
-	bh=rSgh5DEmzOlsxgEt+jpYxiGLFfp04B5K+fyf1Dp3QZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R2g32xFcQFOJ4Kspub1zZ+XFRtfvDXHFKwDn4by418PshVd8QLEF34viYAgv+pv4kGnS5glbm6K8ZvMoHNLmWPN5EMReUkWVyCRiUhNB8xl75vLon9lb7TqOVTm+uITkTd331q4tz7sXBqEvodcXGNbpctLFwQ0eL3PXtRF15cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JWDzio3i; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1781293356; c=relaxed/simple;
+	bh=nRbLSM47Oz/MZuTyZSC8Udu+L32ai2E4NJpu2LRqt+E=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Z85HvyLsEKG6JWbco0O33FTwaMkvnf3V1e70ZhT9XVG+8rrKvkfhOyOYDnZos5+BkCB0rJN9TvhbhTYkz5KFzjTzg5rYuY9LXhi37udAUYuWFNkrUhDjXNnLBbU9i0cho2Pfs1+S/lN17XZqki0kd93d411OvMMqCff3xj67JlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVy87tUC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JWDzio3i"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c0b1a48855so17795ad.0
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 12:39:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781293166; x=1781897966; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=a7hmvmA/ZOPAMkxJPFMHlsykhA7hRG+rHWgxmIiSF5c=;
-        b=JWDzio3iEhujEIlwxW3FOjAZbnAi+cJyvoynRaZHvR2+4pTd8/4mjW88FyOn9l7rBw
-         IEjE+ok8nCBmokUeNGnj3ue/LGDbVl29/ySU/ru3BCZMBL29bhhorqjHyAkJQaUFlONJ
-         pufxkCYUHEUAfaL0ojzr8Fj3JmC9rjcPClR0djP6YJh0qRpMt7s7UmmU/pbM2wWz5fP+
-         u611Acmrl05N0i9RhdldTBoFMss0ovkIunXnazvjzDwnULuhjsTpQ9mJPXBJdOVolsxn
-         MlVQc/OgqnUYYQltqdtOH14RlC0HHKEjd8GaPpt7DmKQTsSccPrl8pCt1by4kGn6oZ6t
-         4OHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781293166; x=1781897966;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a7hmvmA/ZOPAMkxJPFMHlsykhA7hRG+rHWgxmIiSF5c=;
-        b=WBfjcHt//MG49pB43nR3zqh1cUj/c3klvLM1fvombCpWaygxhphoqYH2l01fSJ6pSp
-         LKOllQMXW0cT2/PhU8N5/CPMboxgXdyf37N053V91OijcPIoPWu4endX9RznSPmzb6dH
-         HWSPzI5AG6yjo3YJXmePnen4JN49DiNgCBbWhHCHfVWcjw7CLxQo8BjQKIq9RX+GYo/0
-         ANLXN4DxAbzVzPUXxUtUHqP1MvpDogFjHfUhpsFKJS8D1nOHnX2zLH/e8e3JaIfEUIPH
-         1ll1ianHhlTBfHjOreRNgq3Y1VB5YBt8nhfpLsTW2GvLAML8CDzS+fpLLrIPcr4FvGbo
-         5KKg==
-X-Forwarded-Encrypted: i=1; AFNElJ+EXbgZndpAfxNqohl0QLlVgt+vtq7/01xEyrKHu5IWm8kKgEQ5Qu8m0+OmPCwqJUHtPmE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSSnVVAuBHyOZOUM2c90je8AZnjh7ciZKLUCB9DFNMVDARFMot
-	DcWx4kjnZZW9/RM8m/TT7vY+H3miyMWP08TrjdSfn1K5azurDx7j6iO4I5EuzTDZ3L0BI4sJ4Mc
-	Eo4GEIA==
-X-Gm-Gg: Acq92OH1oyCQqT6+DSsG18OpHti38HzFHxGYFm3RpBIqyLdpNZbkgg4zCfQ677vtl5o
-	HZTXIOtTAnGs1GLHPeSyU57Dym7wy/Lcktgy957lS8S4pGRg400T4MwwUwb+A6DsKFyeuYpX3jO
-	avvtUANC36UdwEi3kCuzzgD9NCPX+75BIllSLViMyExytO/VpBywTCjw+NsHZLlJGm1QyLIk3vL
-	U9ZjyUviOBxuqbYEcHTAQQ5QFC765FmLMkJ9xTVnXhf3o3OyQJI+bMLNkNQ08usYmbmWiE75T1U
-	2S38tSe0F1M/6xiIGfjLjr2dvOZ1hJBVcPEyP4vG5V9aWUkzXe2BGRNju6VYoE1vn9PK5BintM4
-	QUCfy/D5JFUDtkxyAkkWE7QklrmPK/O3X0txXrmYXyq8tVkX3lYzC/BIQHs3aoSRSsvx1l8abfE
-	pRkxjqYPO6sZothArIXJEpfh0kZZ23/mELddldQF+TyhVJeH/Zej9soGJTmXFV
-X-Received: by 2002:a17:903:2d0:b0:2c1:ee6e:be1d with SMTP id d9443c01a7336-2c665ec6cc3mr4015ad.27.1781293165632;
-        Fri, 12 Jun 2026 12:39:25 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37a25ecd66fsm3628185a91.12.2026.06.12.12.39.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 12:39:24 -0700 (PDT)
-Date: Fri, 12 Jun 2026 19:39:17 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 6/9] vfio/pci: Clean up BAR zap and revocation
-Message-ID: <aixgZQiBQKgS7yIM@google.com>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-7-matt@ozlabs.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVy87tUC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5081F000E9;
+	Fri, 12 Jun 2026 19:42:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781293355;
+	bh=uD2A+PHodxqymkqefL8vL+Iwx4XbNYOdObAbfGszjDs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YVy87tUCe4EeHpc0E0EHcLtSYkURXCsFItJa52JAgD6jo8BGFxXSjeTDuaXafcE1C
+	 hmcrUUEyeHyUqSRqGWvw3jQ+DRM/W/O3BEjrz3jnTeltFfVhk7YBELGCDwJVRa+1AO
+	 XI7kX34PAoBkJqHJ9sO9tUzjQwyYjGnM2Wdq4gWo3pPTENY2SqBV7a1S6ugD3DrPfG
+	 Ps6cB5kJxm6mbVRePx81wNa/4rcpXx5Oc8BWSvr9z+f8Y2OEyoquH4t4XiZtpc94RP
+	 RYXscghxwxGNBZfcIlSbdJZbNC/KihksjEWVl5S9SYa/IkIRl2B7+9YFKRs4QY12Ch
+	 pW06Ac+KQU5kw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 05/21] perf: arm_pmuv3: Check cntr_mask before using
+ pmccntr
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Colton Lewis" <coltonlewis@google.com>
+Cc: kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org, kvm@vger.kernel.org, "Oliver
+ Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>
+In-Reply-To: <20260612192909.1153907-6-coltonlewis@google.com>
+References: <20260612192909.1153907-6-coltonlewis@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 12 Jun 2026 19:42:34 +0000
+Message-Id: <20260612194235.1E5081F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610154327.37758-7-matt@ozlabs.org>
 
-On Wed, Jun 10, 2026 at 04:43:20PM +0100, Matt Evans wrote:
-> Previously, vfio_pci_zap_bars() (and the wrapper
-> vfio_pci_zap_and_down_write_memory_lock()) calls were paired with
-> calls to vfio_pci_dma_buf_move().
-> 
-> This commit replaces them with a unified new function,
-> vfio_pci_zap_revoke_bars() containing both the vfio_pci_dma_buf_move()
-> and the unmap_mapping_range(), making it harder for callers to omit
-> one.  It adds a wrapper, vfio_pci_lock_zap_revoke_bars(), which takes
-> the write memory_lock before zapping, and adds a new
-> vfio_pci_unrevoke_bars() for the re-enable path.
-> 
-> As of "vfio/pci: Convert BAR mmap() to use a DMABUF", the
-> unmap_mapping_range() to zap is no longer performed for vfio-pci since
-> the DMABUFs used for BAR mappings already zap PTEs when the
-> vfio_pci_dma_buf_move() occurs.
-> 
-> However, it must be assumed that VFIO drivers which override the .mmap
-> op could create mappings _not_ backed by DMABUFs.  So, the zap is
-> still performed on revoke if .mmap is overridden, using a new
-> zap_bars_on_revoke flag.  A driver can explicitly opt out; the flag is
-> cleared by the hisi_acc_vfio_pci driver, since its .mmap just wraps
-> vfio_pci_core_mmap() and so still uses DMABUFs.
-> 
-> Signed-off-by: Matt Evans <matt@ozlabs.org>
-> ---
->  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    |  8 +++
->  drivers/vfio/pci/vfio_pci_config.c            | 30 ++++----
->  drivers/vfio/pci/vfio_pci_core.c              | 70 +++++++++++++------
->  drivers/vfio/pci/vfio_pci_priv.h              |  3 +-
->  include/linux/vfio_pci_core.h                 |  1 +
->  5 files changed, 73 insertions(+), 39 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> index 86362ec424a5..51990f6d66d5 100644
-> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> @@ -1692,6 +1692,14 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
->  	if (ret)
->  		goto out_put_vdev;
->  
-> +	/*
-> +	 * hisi_acc_vfio_pci_mmap() calls down to
-> +	 * vfio_pci_core_mmap(), so BAR mappings are still
-> +	 * DMABUF-backed.  They don't require a zap on revoke, so opt
-> +	 * out:
-> +	 */
-> +	hisi_acc_vdev->core_device.zap_bars_on_revoke = false;
-> +
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-This seems to be happening after we vfio_pci_core_register_device, which
-could be slightly problematic if another device in the same group races 
-to trigger a hot reset before we can set this to false. Could we 
-initialize this flag before registration instead?
+Pre-existing issues:
+- [High] A 64-bit user-access CPU_CYCLES event can bypass hardware width va=
+lidation and be incorrectly mapped to a 32-bit general-purpose counter if a=
+rmv8pmu_can_use_pmccntr() returns false.
+--
 
->  	hisi_acc_vfio_debug_init(hisi_acc_vdev);
->  	return 0;
->  
-> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-> index a10ed733f0e3..8bfab0da481c 100644
-> --- a/drivers/vfio/pci/vfio_pci_config.c
-> +++ b/drivers/vfio/pci/vfio_pci_config.c
-> @@ -590,12 +590,10 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
->  		virt_mem = !!(le16_to_cpu(*virt_cmd) & PCI_COMMAND_MEMORY);
->  		new_mem = !!(new_cmd & PCI_COMMAND_MEMORY);
->  
-> -		if (!new_mem) {
-> -			vfio_pci_zap_and_down_write_memory_lock(vdev);
-> -			vfio_pci_dma_buf_move(vdev, true);
-> -		} else {
-> +		if (!new_mem)
-> +			vfio_pci_lock_zap_revoke_bars(vdev);
-> +		else
->  			down_write(&vdev->memory_lock);
-> -		}
->  
->  		/*
->  		 * If the user is writing mem/io enable (new_mem/io) and we
-> @@ -631,7 +629,7 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
->  		*virt_cmd |= cpu_to_le16(new_cmd & mask);
->  
->  		if (__vfio_pci_memory_enabled(vdev))
-> -			vfio_pci_dma_buf_move(vdev, false);
-> +			vfio_pci_unrevoke_bars(vdev);
->  		up_write(&vdev->memory_lock);
->  	}
->  
-> @@ -712,16 +710,14 @@ static int __init init_pci_cap_basic_perm(struct perm_bits *perm)
->  static void vfio_lock_and_set_power_state(struct vfio_pci_core_device *vdev,
->  					  pci_power_t state)
->  {
-> -	if (state >= PCI_D3hot) {
-> -		vfio_pci_zap_and_down_write_memory_lock(vdev);
-> -		vfio_pci_dma_buf_move(vdev, true);
-> -	} else {
-> +	if (state >= PCI_D3hot)
-> +		vfio_pci_lock_zap_revoke_bars(vdev);
-> +	else
->  		down_write(&vdev->memory_lock);
-> -	}
->  
->  	vfio_pci_set_power_state(vdev, state);
->  	if (__vfio_pci_memory_enabled(vdev))
-> -		vfio_pci_dma_buf_move(vdev, false);
-> +		vfio_pci_unrevoke_bars(vdev);
->  	up_write(&vdev->memory_lock);
->  }
->  
-> @@ -908,11 +904,10 @@ static int vfio_exp_config_write(struct vfio_pci_core_device *vdev, int pos,
->  						 &cap);
->  
->  		if (!ret && (cap & PCI_EXP_DEVCAP_FLR)) {
-> -			vfio_pci_zap_and_down_write_memory_lock(vdev);
-> -			vfio_pci_dma_buf_move(vdev, true);
-> +			vfio_pci_lock_zap_revoke_bars(vdev);
->  			pci_try_reset_function(vdev->pdev);
->  			if (__vfio_pci_memory_enabled(vdev))
-> -				vfio_pci_dma_buf_move(vdev, false);
-> +				vfio_pci_unrevoke_bars(vdev);
->  			up_write(&vdev->memory_lock);
->  		}
->  	}
-> @@ -993,11 +988,10 @@ static int vfio_af_config_write(struct vfio_pci_core_device *vdev, int pos,
->  						&cap);
->  
->  		if (!ret && (cap & PCI_AF_CAP_FLR) && (cap & PCI_AF_CAP_TP)) {
-> -			vfio_pci_zap_and_down_write_memory_lock(vdev);
-> -			vfio_pci_dma_buf_move(vdev, true);
-> +			vfio_pci_lock_zap_revoke_bars(vdev);
->  			pci_try_reset_function(vdev->pdev);
->  			if (__vfio_pci_memory_enabled(vdev))
-> -				vfio_pci_dma_buf_move(vdev, false);
-> +				vfio_pci_unrevoke_bars(vdev);
->  			up_write(&vdev->memory_lock);
->  		}
->  	}
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index f9636d8f9e2a..5ea0bd4e7876 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -319,8 +319,7 @@ static int vfio_pci_runtime_pm_entry(struct vfio_pci_core_device *vdev,
->  	 * The vdev power related flags are protected with 'memory_lock'
->  	 * semaphore.
->  	 */
-> -	vfio_pci_zap_and_down_write_memory_lock(vdev);
-> -	vfio_pci_dma_buf_move(vdev, true);
-> +	vfio_pci_lock_zap_revoke_bars(vdev);
->  
->  	if (vdev->pm_runtime_engaged) {
->  		up_write(&vdev->memory_lock);
-> @@ -406,7 +405,7 @@ static void vfio_pci_runtime_pm_exit(struct vfio_pci_core_device *vdev)
->  	down_write(&vdev->memory_lock);
->  	__vfio_pci_runtime_pm_exit(vdev);
->  	if (__vfio_pci_memory_enabled(vdev))
-> -		vfio_pci_dma_buf_move(vdev, false);
-> +		vfio_pci_unrevoke_bars(vdev);
->  	up_write(&vdev->memory_lock);
->  }
->  
-> @@ -1256,6 +1255,8 @@ static int vfio_pci_ioctl_set_irqs(struct vfio_pci_core_device *vdev,
->  	return ret;
->  }
->  
-> +static void vfio_pci_zap_revoke_bars(struct vfio_pci_core_device *vdev);
-> +
->  static int vfio_pci_ioctl_reset(struct vfio_pci_core_device *vdev,
->  				void __user *arg)
->  {
-> @@ -1264,7 +1265,7 @@ static int vfio_pci_ioctl_reset(struct vfio_pci_core_device *vdev,
->  	if (!vdev->reset_works)
->  		return -EINVAL;
->  
-> -	vfio_pci_zap_and_down_write_memory_lock(vdev);
-> +	down_write(&vdev->memory_lock);
->  
->  	/*
->  	 * This function can be invoked while the power state is non-D0. If
-> @@ -1277,10 +1278,11 @@ static int vfio_pci_ioctl_reset(struct vfio_pci_core_device *vdev,
->  	 */
->  	vfio_pci_set_power_state(vdev, PCI_D0);
->  
-> -	vfio_pci_dma_buf_move(vdev, true);
-> +	vfio_pci_zap_revoke_bars(vdev);
+commit d0aacbccd4b0e735717836a5d526ad70a89f9f39
+Author: Colton Lewis <coltonlewis@google.com>
 
-I'm wondering if this change in behavior is correct?
-BEFORE this patch the sequence was:
+perf: arm_pmuv3: Check cntr_mask before using pmccntr
 
-1. zap vma mappings
-2. Enter D0
+Check cntr_mask before using pmccntr to ensure it's available. With a
+partitioned PMU, there may be instances where pmccntr is being used by
+the guest and will be absent from cntr_mask.
 
-After this patch the sequence becomes
+> diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
+> index 1cceb1f614515..17bb1cfdc271c 100644
+> --- a/drivers/perf/arm_pmuv3.c
+> +++ b/drivers/perf/arm_pmuv3.c
+> @@ -1028,7 +1028,8 @@ static int armv8pmu_get_event_idx(struct pmu_hw_eve=
+nts *cpuc,
+> =20
+>  	/* Always prefer to place a cycle counter into the cycle counter. */
+>  	if (armv8pmu_can_use_pmccntr(cpuc, event)) {
+> -		if (!test_and_set_bit(ARMV8_PMU_CYCLE_IDX, cpuc->used_mask))
+> +		if (test_bit(ARMV8_PMU_CYCLE_IDX, cpu_pmu->cntr_mask) &&
+> +		    !test_and_set_bit(ARMV8_PMU_CYCLE_IDX, cpuc->used_mask))
+>  			return ARMV8_PMU_CYCLE_IDX;
+>  		else if (armv8pmu_event_is_64bit(event) &&
+>  			   armv8pmu_event_want_user_access(event) &&
 
-1. Take the lock
-2. Enter D0
-3. zap vma mappings
+[Severity: High]
+This isn't a bug introduced by this patch, but is it possible for a 64-bit
+user-access CPU_CYCLES event to bypass hardware width validation here?
 
-My worry is if user-space accesses a BAR *during* the transition to D0,
-it could crash since the mappings still exist during the transition?
+Because the -EAGAIN rejection logic is nested inside the=20
+armv8pmu_can_use_pmccntr() check, if that function returns false (for examp=
+le,
+if threshold counting is enabled or the system has SMT), this validation is
+entirely skipped.
 
-The old code is immune to it because it removed user-mappings first.
+It looks like the event would then fall through to armv8pmu_get_single_idx()
+and potentially be allocated a 32-bit general-purpose counter. Userspace pe=
+rf
+tools reading the userpage pmc_width as 64 would then treat a 32-bit counter
+as 64-bit, leading to unhandled wraparounds.
 
-Following the discussion from v1 regarding the ordering of 
-vfio_pci_dma_buf_move() and the D0 transition.. while it makes sense to
-perform the DMABUF revocation/move after the hardware is in D0.. I'm not
-too confident about moving zap after D0 :/ 
+Looking at __armv8_pmuv3_map_event(), CPU_CYCLES events are explicitly
+exempted from the 64-bit unsupported check:
 
-I mean, sure, the user would just see all Fs on a read and writes will
-be dropped silently until we are in D0.. but the behaviour before this
-change was that the user access will fault and hang on the memory_lock 
-instead which ensures that the user observes a consistent dev state..
+__armv8_pmuv3_map_event()
+        if (armv8pmu_event_is_64bit(event) &&
+            (hw_event_id !=3D ARMV8_PMUV3_PERFCTR_CPU_CYCLES) &&
+            !armv8pmu_has_long_event(armpmu))
+                return -EOPNOTSUPP;
 
-> +
->  	ret = pci_try_reset_function(vdev->pdev);
->  	if (__vfio_pci_memory_enabled(vdev))
-> -		vfio_pci_dma_buf_move(vdev, false);
-> +		vfio_pci_unrevoke_bars(vdev);
->  	up_write(&vdev->memory_lock);
->  
->  	return ret;
-> @@ -1648,20 +1650,37 @@ ssize_t vfio_pci_core_write(struct vfio_device *core_vdev, const char __user *bu
->  }
+Does this code incorrectly map 64-bit CPU_CYCLES events to 32-bit counters
+when the dedicated 64-bit PMCCNTR is unavailable?
 
-Thanks,
-Praan
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260612192909.1153=
+907-1-coltonlewis@google.com?part=3D5
