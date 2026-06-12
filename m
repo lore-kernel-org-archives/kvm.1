@@ -1,125 +1,145 @@
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B30383305;
-	Fri, 12 Jun 2026 17:37:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781285863; cv=none; b=lJWCz9A9/HtFbK3XvBcv6Oark/t/TluxD+4M2dK5S2XQrS5TKmp/0lpB34KMth8gJ3B4oHHIVppDC0sTw88VYnfyGEdOnqQJjtOMS0iB8EEWf0KmtP8ErF3hOiyUHQCEkAGn7gnNKwgauaAx17cd2Tcv9l6qw2iOnyxx8FgxZjU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781285863; c=relaxed/simple;
-	bh=g7SAaPqSaMVyfZ70ZryVMHXs9EiUdrrjA9QzhZGOu0s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jXiXwtVYBsM2XHS1vtEIBSjMeCjzQ0UVXZOHpmjX9rc6KeCqmfUFB7fYYH469W0KnelHApn9a4I6035FhoKh4H3esWoI1GQenXjG9LYsACet9YlNtz307gMfvJXnE1RrhchA9jju/PlYxEa3YH/v3ZZ4uhhvLiAz0rIqTgV6+MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=iCyxNzMl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FFr3U79T; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444174A23
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781286421; cv=pass; b=L2lnWaz9h0dnLBfgyX4pKAZaZIr9PLrplrhkJ2LqKY+q8aZ7B7rY6/0S86or45qavwzn7NTCuxkhluf840fbdMxKD27wx0XW5PKeF4M2vD7PrDQdGPlxe923m1t0mWLelHA1agt313WjpBiC/CyqLRe0IcqOFY62QfjAVnchO8Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781286421; c=relaxed/simple;
+	bh=fsHGbwjALiuvCbWQUmZberXehkB0Q3yDl/1Grws8cbQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LbAP0FYeVL1FTfQCbyylrzAtxp4VbiS62+LUM9wbSgz6DW5jjHsRey+Jhmfy0WAkG6pbYCB11AV4R4zB4QfWuPkAfFW79WL4V6jR1bB8RXYI1IQUIJwN3bkFarQ9Tj0EA3J7mUma/P0Ov5rYTMTIfn7QUOybfn/55KwEt4whM0k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=G1nACceN; arc=pass smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="iCyxNzMl";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FFr3U79T"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id B0C91EC0212;
-	Fri, 12 Jun 2026 13:37:40 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 12 Jun 2026 13:37:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1781285860;
-	 x=1781372260; bh=3VYWrfjs01T0HYMxtoCq7P5BfvZQ30t2M5ITr0uVGYs=; b=
-	iCyxNzMlJVT7dc+aJ1HyGHM6PQHg3v3snzeXlHF6DihxEQybJLHUk+DcOs3oEmzA
-	iWZ8ggN22oRiiK2A6NaVlOQB3yk3oi9WrK8Ub8bH68jcaIJziQdFouqpLxsNwhu6
-	fkeeDvWrT0s6AvZOKfEMIEBQ/utO4s8JUPkfg4Hrt7YWWNiM0tbFWtUBFTgabPyj
-	g2h+hIL6nHIRGsdlbpnlF60TH+NJqihIChHoi6N53QKgtM7kCjmeDl0HbbdtjoI+
-	u01WfikGuhhmBfw61wz073okYTtLqEEQFLbz+8jl/ik6cgKbt6vjCCC2y6vgGGcm
-	y5b1RVG/BmfYrIcVWTWRSQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781285860; x=
-	1781372260; bh=3VYWrfjs01T0HYMxtoCq7P5BfvZQ30t2M5ITr0uVGYs=; b=F
-	Fr3U79TvLQjj1ipEwQCF8lDE5xaXT9dDBiP9WBHsQGIQWlMw5ZbbmJwHHteCSUyR
-	f9I79GT9JBK9VdUUsbZHKtbdGFs7ZV+zgs4xKLndVHAhjtnbOphPBaEPWx48yw26
-	eDcrNDbSawn+G/8HIhkTpJdPkIHVMrlz5wP+0ZUK3HsoBCnvgCdpuvYHNP6ubEGC
-	nZivXR25GiUUeigfNGT0gqGHAJr6tBt5pVjWNvAy8qusryNmJpZlP0JnjY+0IuzT
-	QcdazJoplpmMGU69evHdr9/c8FkZoSAHePfqMSstYRDZnVPJd2jJHmJGqdm4ICqO
-	IW9PMzRlIn+GHpG49iTIQ==
-X-ME-Sender: <xms:40Msak5HBHkg-zeSR5GI6ns-o6YRj-cZze1oByOxGS7XVfltnvLrHQ>
-    <xme:40MsahlAbctWIczDo5ihoVcT0fbdTv79lN_0RNwpaFHm8dOszfVZVxZ2vyYIU4aMZ
-    2syho6S5wikcZrJDPW1dZAqSUO1YTvgXKeWRf6mLxZQzlYvdDG6Rg>
-X-ME-Received: <xmr:40MsauIZbyZ1Pvt7KEwJ9Moo3QyqybuGKte5PGCSSXxl3vh096f7BNONPbw>
-X-ME-Proxy-Cause: dmFkZTGoJQ8Lj+EDNN4hBQbznq/Yu29egQv6IxwZgvmjRMEYwcoQM2PY8Gx9pC5GfESZpI
-    kbAq4sPedK8oiBdm7HZocnVtAYCQnz/MIZjclfarg7A/gqRUc5qAOpmh6thy7PcxH4zm/r
-    jgYWYhufPeSHOdD9y9ltUC87YJFH5U48fWALEtJHQibyi1YGDYd6sm8Y4jPFV5QGG7G96E
-    PF41HLNUvzODtqjMcyVp57mEIuUnDsUzNp+JeerUU5ussJDLmHU8mWqM89nDnGuzd7zU08
-    zdrK2gvAbUslZQHHb+UNIsLUlwwnd3cSUlJsMhLkLL0S+aUrCW81QKL8FMougNkiuwLsmr
-    xGa6mNUvgG64EHYj+IoV9fT67Q1WVobxX1X41d8ETPstbKjm+HkyfyBvM2TzLphFTcC4yj
-    ZPSAJMYOmBLWXpvCEywX4eCylhb0Yuzy5ywLqnusbm0vhthrofM30d5lPS8m7hpIs+OK4E
-    F74MsFXblySS+1WRtk14nAZBk+lf3kyUDL4M3LDewjjtUJpoD00k034eb/ehIlbBK62+4E
-    4BpDdD3GHGcG4Guxkd0bqX9KP3atd2HiDcAcDaEZwh9P2pb+yDT9WLp98Ov0CNHvJ15+q1
-    jNWAQtzbUBN7bdxWEcDA6JmSEqRAyIhB3/nNT1klgtjkpiCAJM79rKYwGBMg
-X-ME-Proxy: <xmx:40MsaqFYEdXblsSoFvOxothyefVugzEAo_GVjiEOIaUuN7ANMwxyTQ>
-    <xmx:40MsanOiLOn3zrSV4_FlMtmwwIFJrnqMOkP5rn8nxgYL2QID-eWLLA>
-    <xmx:40Msas-N1E9snrI29D--02dXmRvv7rcr2U2GygY8380oxUe6lAOPzA>
-    <xmx:40Msas6thAB3Nc67B_yTiFomVZYej913J2hUdjx827h0aarRAnE7sw>
-    <xmx:5EMsaoNte4z6cXBVhix--ioay-2X1Qeuq3SMwr7OxY7wLFHpKX1WOo6v>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 12 Jun 2026 13:37:37 -0400 (EDT)
-Date: Fri, 12 Jun 2026 11:37:35 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Matt Evans <matt@ozlabs.org>, Leon Romanovsky <leon@kernel.org>, Jason
- Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>, Christian
- =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Bjorn Helgaas
- <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>, Mahmoud Adam
- <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>, =?UTF-8?B?Qmo=?=
- =?UTF-8?B?w7ZybiBUw7ZwZWw=?= <bjorn@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>, Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal
- <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Vivek Kasireddy
- <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v3 2/9] vfio/pci: Add a helper to look up PFNs for
- DMABUFs
-Message-ID: <20260612113735.79518b15@shazbot.org>
-In-Reply-To: <aisa6H-a-176MXhC@google.com>
-References: <20260610154327.37758-1-matt@ozlabs.org>
-	<20260610154327.37758-3-matt@ozlabs.org>
-	<aisa6H-a-176MXhC@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="G1nACceN"
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6604176b575so1167599d50.1
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 10:47:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781286419; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SN+128ObhO4Y3fCSN8AZRobadx1Ndi1qagtyh4UDAhiRXZNx7iP4T8RjZBTn2s3Z/a
+         y2LD58jUrH2zDRD9bU5IG7/eaIFj6qgwkrPdbdiFc50MdVfU0GX+RmvM9aoikc7c+CmU
+         HbGV1kVPp41bLu/InSTgxhEq+zr8Om11+ZpdU7zIE+rPZ3/A/5HLoH+loRk0pVQXMkZq
+         CmwjF4JdCjVMkpvsYiGmgaFs/jkop/q0bW80xyZlP7y1MR7gMaxfKp45NoeDOsgzCwu+
+         bDigGfh8qqpOGkwDC1DX7oSkSuix2ISW5AGlMPiB1NuLQDp1fBQW3xsjhKEduyWPBD4b
+         brlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6NYLGsou+SrQn1Uo3K1b+FXzLLeRzUniiiOLWmx22qQ=;
+        fh=PmbotF4VRaq16kp6atVKBUJIZWa3PO0SnWn4IKaRnac=;
+        b=e8QjuhafSnZS7sWDffyiD7o/syYLniCS6kGbED93amvUsnuNFch9c0saAb/Bbqskgs
+         9zWWryuk6sEVGhSxfG9eRb5VvV6uFDdtJtUVpY4rgJ4X7N3G+VW5eBt3a98PxsEc705B
+         WaswrG8FkZvtgs9B+0gBY+p3P24Xx/I3miHiI6Gk3MQ0Vl5UGm5thEozsHtvRqGH39dm
+         Jibc2mkWaKRBx1OgHGuv6QDRTcrQtuMmJqDKjJrlMEUIFsDmW0PZhyCCKNoJn9nUAexi
+         oCtXPZDSz4ND97bOPFUGLf036R4WxAf7CNJJ6Y9/xWWBOqHOHqVq45nT19t1FARtD2Zx
+         76Ig==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1781286419; x=1781891219; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6NYLGsou+SrQn1Uo3K1b+FXzLLeRzUniiiOLWmx22qQ=;
+        b=G1nACceNobztcdZTOeb/RRhAzI6ZNJfL7WAcbkKe7v5X3Gm0aEGNhNhNu2ro7AxUjY
+         dgsAAd7byguDJJshV2fMpBx+EvGetqOHNpO95zvHJNh4cVH6Mx12WGHKbyMe9034qQcO
+         oasv9o0bXedJEFXtyVe8vGd1volo53g+eOOK05F6qOTaP5p6INpQXE2yeq7bhyzMTqC5
+         il8vfCyR5FW8tC3XTwFdPrCJYgMFKpLTNfGqjYm0x5n4Fb5d4NwakbFvjsRMW8iiZJp8
+         DwcXU2q8uA8K7JRpFLsNSq+IHII+aXbfwM7f9Baxm7G3hOwdNkM6I4ZyScyFFPyfDcHZ
+         f7Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781286419; x=1781891219;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6NYLGsou+SrQn1Uo3K1b+FXzLLeRzUniiiOLWmx22qQ=;
+        b=qzwlFG67NsYnBnINkRHcg0/Ui6kzEFzMjZxG3RnXMwbQowns97X2Fa06MxzVpsxBjw
+         NBCSxiHrEqnEQeNOdAkJA7fow3BXVuoV3/RtpQFlinuc2GVLzfwBcUPBLZ807qDUQHsP
+         r+wnxhSidjchfsXG0quemuBU2T2ys56Zzas02iFftmeNxjPIiQTKbcPEfKaA22ktBEUM
+         5UU2fse1piSIFK51WZ5cl7hNwjEsUkGn40HmxKU33Pfylc0xkVRsPd9JxmCUh9xtliXi
+         zTHxlEe6Zd550WtUuRDw+U7tQHbTVpvFjalshR/T8p3Okc3j6tnpR3HoioZq84iXdAby
+         bJAw==
+X-Forwarded-Encrypted: i=1; AFNElJ+Cq26sMHBizveVNqD8hF1MkUNyTbwPRx+YA1Shn8cHa4tnOPPUafn+CLX+8xgA6avi6jQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZKKRAItPZpjx02Zc/m9tnrZcTV1kbYRj+/MOzGpEtEdvORil3
+	6XA4UDXyJPlKOqAurxphsVlVfKgz4DgA1TUKU0JT6G9ZPcHHOJw+klytA0NIfhbwWAZqWS0mW/I
+	aUfZ9zsqA0C8ZCvvFsWJVzbyXb3uXcmgQsz+shX9HcpTSRqqoZFhp
+X-Gm-Gg: Acq92OECTNRsGEM6SvqrMQSDjlOyofL/wKSoA2qLMp+/lmsIDfhmNmPWdKRECVCsT1d
+	vfFEmdzE/eJAhfz8VHwN17asKomuNzMSqknELfjU1TZgsf/BYukyTZS7eLtM9goCa5Zwx1S0fAY
+	Yx6HqQLzO/LRbA59KXjDNgB78nhk6cLeUpQe+dIWU/8A8qKZTH4VTTPH3myfjclOZfOlomjTcZD
+	UKtk5DopTC97N2oyr3g5xNQymLNxyAjSkROSOoLGNLe3XyMPbfhDKjEO5/ffb2tm8ourx2oIp7D
+	vVNflNW/wZiKdsPHSq4EOcaw1eMGPxXVxx5AFFI3jKXCO/RUhss+UKmOHepurUi0ZWE=
+X-Received: by 2002:a05:690e:b82:b0:660:1a82:223b with SMTP id
+ 956f58d0204a3-662780081f5mr3382004d50.29.1781286419274; Fri, 12 Jun 2026
+ 10:46:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260529082948.363931-1-alex.bennee@linaro.org>
+ <CAFEAcA94+mh_pigFDi+tEPRJ416fSWfxsQ1Lj8Byemug9kBp6w@mail.gmail.com> <87h5n7ekxw.fsf@draig.linaro.org>
+In-Reply-To: <87h5n7ekxw.fsf@draig.linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 12 Jun 2026 18:46:48 +0100
+X-Gm-Features: AVVi8Cfx4_sZkUhwcX_oNU5Emb8YeLHTOGRvGVAOZ3vEMDeOVNiiOkvDqj4FcZg
+Message-ID: <CAFEAcA8yNGiKeMpN_wgWtc5EnfjsnxSvG6an4-UjBf6XG+4Yvw@mail.gmail.com>
+Subject: Re: [PATCH v7 0/8] target/arm: fully model WFxT instructions for A-profile
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Alexander Graf <agraf@csgraf.de>, Mohamed Mediouni <mohamed@unpredictable.fr>, 
+	Pedro Barbuda <pbarbuda@microsoft.com>, qemu-arm@nongnu.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 11 Jun 2026 20:30:32 +0000
-Pranjal Shrivastava <praan@google.com> wrote:
+On Fri, 12 Jun 2026 at 18:18, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+> Peter Maydell <peter.maydell@linaro.org> writes:
+>
+> > On Fri, 29 May 2026 at 09:29, Alex Benn=C3=A9e <alex.bennee@linaro.org>=
+ wrote:
+> >>
+> >> This series fully models the behaviour of WFxT instructions. We
+> >> already had support for WFE for M-profile but we left off A-profile as
+> >> it has more potential sources of wake-ups. The main one is the event
+> >> stream which includes events from significant bits of the timer
+> >> ticking over.
+> >>
+> >> The refactoring from the previous iterations of the patch have now
+> >> been merged.
+> >>
+> >> I've dropped trying to fully model the global monitor in favour of
+> >> taking advantage of the architectural flexibility to have an IMPDEF
+> >> event wake up for any reason. We treat the setting of exclusive_addr
+> >> as such a reason because it indicates the current vCPU is in a ldstx
+> >> exclusive region and we don't want the guest to deadlock. This does me=
+an
+> >> the system won't sleep on WFE enabled locks but people shouldn't be
+> >> relying on QEMU to model real world sleep patterns anyway given the
+> >> efficiency of emulation compared to real HW.
+> >>
+> >> I've written a test case using kvm-unit-tests:
+> >>
+> >>   Message-ID: <20260527111822.1563679-1-alex.bennee@linaro.org>
+> >>   Date: Wed, 27 May 2026 12:18:21 +0100
+> >>   Subject: [kvm-unit-tests PATCH v2] arm: add wfx test case
+> >>   From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.o=
+rg>
+> >>
+> >> All patches are now reviewed.
+> >
+> >
+> >
+> > Applied to target-arm.next, thanks.
+>
+> Is it too late to drop them? I've a fix for 2/8:
 
-> On Wed, Jun 10, 2026 at 04:43:16PM +0100, Matt Evans wrote:
-> > +	/*
-> > +	 * If we get here, the address fell outside of the span
-> > +	 * represented by the (concatenated) ranges.  Setup of a  
-> 
-> Nit: double space before "Setup" and "But" below.
+That change is already in upstream git, so you'll need to
+send the fix as a standalone patch, I'm afraid.
 
-Some of us old school'ers consider this proper writing style ;)
-
-Alex
-
-> > +	 * mapping must ensure that the VMA is <= the total size of
-> > +	 * the ranges, so this should never happen.  But, if it does,
-> > +	 * force SIGBUS for the access and warn.
-> > +	 */
-> > +	WARN_ONCE(1, "No range for addr 0x%lx, order %d: VMA 0x%lx-0x%lx pgoff 0x%lx, %u ranges, size 0x%zx\n",
-> > +		  address, order, vma->vm_start, vma->vm_end, vma->vm_pgoff,
-> > +		  priv->nr_ranges, priv->size);
-> > +
-> > +	return -EFAULT;  
+-- PMM
