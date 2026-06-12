@@ -1,108 +1,105 @@
 Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E002F24E4B5
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 00:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF06D24EA90
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 00:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781225279; cv=none; b=Qf3KkUn2n9SVqBFzYCUcDCIqeDORpu1oHquAqiSF2amjVrd8iKsE0Gft44aAUSMTsYmha2GsQnDZjUlGQbxPmnPhKCxKPr8mBpkwhw0WhWrpL4+2q239BJyk84gabhVL6P+vYRw15VPXmFvXJZFBe5a73LZ8HkIVXUmQZxjOU2U=
+	t=1781225281; cv=none; b=Or7jCiv3JVZDiurNGUOxav6YB/13DuaQQ9SIWFB3T/vE70TrrDqY/p70C6yJtm2QLwnSh+CnxQzpCn875DAWGqgAf0hY/F2shTx1/idT3jQynDBRQip/aUBt4CpsoANS2UILVhjzffU8diueMXLqwmyLnb/fvkQ/PYk1JoSqJ2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781225279; c=relaxed/simple;
-	bh=fNExGHKRAwNDwQlGvZ+K4PtZPYA6o4Hcsorch6x4W2U=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=m0GqIvoPwhpMtCHtRlauvSlXf/IDBBbBRc9gZ/+bRMvXtAPLzUINEFykbh5rFtLap0zFcJpNGAXavoAt8MlUYp8QEdY0SNls9pQ2FIJz/estnSyVyij6sDkDKhNeKTS/fIyPpNBC3fed+sArG7a8FAYZeLxghPOUjyEBAk4XPdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VAaglxJs; arc=none smtp.client-ip=209.85.214.201
+	s=arc-20240116; t=1781225281; c=relaxed/simple;
+	bh=WXkiY6bv/kuwbwQK4fId+U4IQVGaomSoo4Ib7CXR/to=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=QmpuTyUuzfbzPj72Bcyx2d4bOcY0HRjJGiYfstZxeIO1J0/Ia864GoQ4+e1KvvdEWn58Zalmn73JelUAE058t61GSiOcNvq5cn5/t5DqA6WLIx/2wOTX6qA1adiuB1HzNPqgqjc3XdtZ6SsehcAXtHcJPrcKJIllyoT85w3XVU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Tl4L+TqS; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VAaglxJs"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0532a6588so3960535ad.0
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 17:47:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Tl4L+TqS"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0d0516ad7so3965735ad.0
+        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 17:47:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781225277; x=1781830077; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wKVLVWa1wCgaJK8vzzm5ZBtQNyVkPteH1/bU0HT2Wa4=;
-        b=VAaglxJsa9UyjooVKj/lwjYkOJRmiIqTeVFp3JNgSAomDHDPNMRFvvWeufHzXfvGLE
-         s/LiLpwcjh6YeGZkQ23CXtU/bP3mOmRXRwQODhwOY5akjEM8p9juJ4pEexIRe6mqJBPv
-         sF8S4gIwsaXMKR8fRmRbGNvhfOJ0KtOFI6p3fucujh5UTV/B9hWmp0F8Ud9+N4HSmA3b
-         8G/c7brfLjpmgJ4YBRtcTokpJJOn/iOZDQdNZSPASfIbeVFpIji3y4rQM/Pkmh7PyoPG
-         EwNV1pQxZUTmTnARWkO2zeTitO1cF7EcpHCfP3RvSXPbAywRZfsa6P4K8hgxINlbh4B6
-         jXBw==
+        d=google.com; s=20251104; t=1781225279; x=1781830079; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=jI6NBpmA1o8AmWG6/9rG46dI7xMzLmXiZzWLZAYxfsA=;
+        b=Tl4L+TqSkArAJCFTScr5LGWa/2QSllYhsJGZgFVmK1+0yzvprvspmGDUUxDhMQu7A8
+         msjCBxvg9FyDNKYmAgv4yntvYWnaHanTCkIha6DQP7xkFqNXOKbKKjusyeJ/NQbzt1no
+         pPZIgFRkhWKSJ/cZ0NK8jDXYIB43re8my0zuGB+Mfk9GDqMbGkaANp++qiMfVgRNGF4Z
+         dm1Ahi4bfaMY3zdPBrP5at7hH3Ng0+aVKK1zuFqutz6G8PD5o/efFGtV+mo2SYf9MoDS
+         QGZ1LVZUcSpbH9nDDFRVX0RsFD/EBBrh3m+dR61Q7cXDuu6AnJ4uhnWb0Jqrxx3XkXHH
+         epUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781225277; x=1781830077;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wKVLVWa1wCgaJK8vzzm5ZBtQNyVkPteH1/bU0HT2Wa4=;
-        b=UKnIK41+21p6cBJrlhzdyY4cXfQ+5Dc6l1dvlfBfMVaEgMe3Jb1WALFkfFu5/uBtGO
-         HLDyKTswZzqGao8W9DSLlPQPblhetImPvOy6JH/0d4IcT/1tNP/woxQn6yhZfyokU35k
-         c7Vjkf4jXmnZ75a82GXWcHayf5UfK0mnTObvLLYtxzQ/Hv1AeAJT3oOymNsccpyZlUtv
-         Ih+qqzVUIaThJ94uusc3PB8h0S2H53VCHXKL5uqJcIdMFuPrDH3B/uhG06EI+fFkt5a8
-         AZB5zR8MkrV1+u3wVXID2t84FKRUP005j5fuhsDU42pjKrX+FIQ2z3VYH69hbqN1dljC
-         X+jA==
-X-Gm-Message-State: AOJu0Yz6XDX3MYDBbmY57pArkEFTFIMQfkxJQnX46UejGmGs+UsYB3na
-	Olka4T2EGDBwNR4yL9K6duFndTXT8PsYmhxeOOw8yWu532jqdque62Kdi0PuUAK/Soaynii4wne
-	q0rUT2A==
-X-Received: from plxj17.prod.google.com ([2002:a17:902:da91:b0:2ba:f5a6:38db])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c401:b0:2c1:6020:7398
- with SMTP id d9443c01a7336-2c410fbec97mr7649995ad.12.1781225276988; Thu, 11
- Jun 2026 17:47:56 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781225279; x=1781830079;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jI6NBpmA1o8AmWG6/9rG46dI7xMzLmXiZzWLZAYxfsA=;
+        b=OMcKVPcPuVFTTRsHchzb7g9IhfcdteWU4tPMHOxMRaH9nyZii95JWKUwZmKOuP6oPA
+         NI58HTfXflh+P3woj/VXM6zAD/wYGdfpdmTb2JP8SI562SDmVgqM7q8iKOr899xHxswf
+         NK3439RgJ7wMtRXs7ErFdLWlIvIq5PkX2MuqLfTh6pbXgbTXbAqJGR5MdpamtXJ/Eivu
+         7K5PAwTHr8i/XxCooZKGqf0KWLg53DnjNjMa6D1WTxGuV4EgZ4hukN1T8Sv9QSNaN6a6
+         0Q7OcDkwylsMMA7DY+O+NkDMlSt/wum51ZBTspzGiHwiGFH/svq8Jbu/0/tMqMy218fa
+         TiaA==
+X-Gm-Message-State: AOJu0YwutI1tvwbdgQZwENPk0Jcq1qfDah1fNMPmjY10MNKaj0ku26PW
+	X5hbYfJayHwssq2jcOM7fqgNvCmNRrqU25U546RTRsLcbYzGskvvdo/Ac2XI1EZ7DGZSmM/P1XN
+	dAAoJLA==
+X-Received: from plrc9.prod.google.com ([2002:a17:902:aa49:b0:2b9:d494:f713])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:350c:b0:2c0:d99a:2fc
+ with SMTP id d9443c01a7336-2c4106fdbf4mr7682505ad.2.1781225279003; Thu, 11
+ Jun 2026 17:47:59 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 11 Jun 2026 17:47:45 -0700
+Date: Thu, 11 Jun 2026 17:47:46 -0700
+In-Reply-To: <20260612004755.349925-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260612004755.349925-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260612004755.349925-1-seanjc@google.com>
-Subject: [GIT PULL] KVM: x86 pull requests for 7.2
+Message-ID: <20260612004755.349925-2-seanjc@google.com>
+Subject: [GIT PULL] KVM: x86: Generic changes for 7.2
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Sorry for not getting these to you yesterday.  I was all prepared to work on
-them before meetings hit, and then SQUIRREL!
+The following changes since commit b7fbe9a1bf9ee6c967ef77d366ca58c35fcf1887:
 
+  Merge branch 'kvm-apx-prepare' into HEAD (2026-05-13 12:38:31 -0400)
 
-Outside of these pull requests, there's a set of five selftests patches[1] that
-I have sitting in "selftests_l2_stacks" and fed into linux-next.  I'm not
-including a pull request for that branch, as it's deliberately built on top of
-all the other local merges to avoid a pile of annoying conflicts (the changes
-allocate a proper stack for all L2 vCPUs, and so touches every test that does
-anything nested related).  If you can apply the patches directly after merging
-the other pull requests, that would make me quite happy.  Alternatively, I'll
-send a separate pull request once this batch is merged.
+are available in the Git repository at:
 
-[1] https://lore.kernel.org/all/20260610003030.2957261-1-seanjc@google.com
+  https://github.com/kvm-x86/linux.git tags/kvm-x86-generic-7.2
 
+for you to fetch changes up to 5804f58901af77ab507e199d31dfa263404e177c:
 
-There are two conflicts I am aware of; thankfully both are fairly trivial.
+  call_once:: Fix typo in comment for call_once() (2026-05-26 12:28:32 -0700)
 
-Internal to these pull requests, "misc" and "svm" conflict on header includes
-in svm.h: take the incoming headers and the kvm_cache_regs.h => regs.h rename.
+----------------------------------------------------------------
+KVM generic changes for 7.2
 
-diff --cc arch/x86/kvm/svm/svm.h
-index d013a5ceb62e,87c6b105deef..000000000000
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@@ -23,7 -23,9 +23,9 @@@
-  #include <asm/sev-common.h>
-  
-  #include "cpuid.h"
- -#include "kvm_cache_regs.h"
- +#include "regs.h"
-+ #include "x86.h"
-+ #include "pmu.h"
-  
-  /*
-   * Helpers to convert to/from physical addresses for pages whose address is
+ - Rename invalidate_begin() to invalidate_start() throughout KVM to follow
+   the kernel's nomenclature, e.g. for mmu_notifiers.
 
-Externally, the "mmu" branch will conflict with the tip tree on
-arch/x86/include/asm/tdx.h.  Mark's fixup in -next[2] is what I've been using
-in my local resolutions.  Basically take the KVM changes, but keep the
-void tdx_sys_disable(void); declaration.
+ - Minor cleanups.
 
-[2] https://lore.kernel.org/all/ahb-PZwR5mEd8A9W@sirena.org.uk
+----------------------------------------------------------------
+Jiun Jeong (1):
+      call_once:: Fix typo in comment for call_once()
+
+Peter Fang (1):
+      KVM: Fix kvm_vcpu_map[_readonly]() function prototypes
+
+Takahiro Itazuri (1):
+      KVM: Rename invalidate_begin to invalidate_start for consistency
+
+ arch/x86/kvm/mmu/mmu.c    |  2 +-
+ include/linux/call_once.h |  2 +-
+ include/linux/kvm_host.h  | 12 ++++++------
+ virt/kvm/guest_memfd.c    | 14 +++++++-------
+ virt/kvm/kvm_main.c       |  6 +++---
+ 5 files changed, 18 insertions(+), 18 deletions(-)
