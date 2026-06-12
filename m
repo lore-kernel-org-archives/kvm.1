@@ -1,55 +1,55 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632D03A5E9E
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 23:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBD23D669F
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 23:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781305588; cv=none; b=jufSFLcOIqKIehSmCab7WQUpv0LjLmmqpA9N7ZZjZf27KevrEUH0LrGLQaq8CCHcQr3iPk6uS0etk5fm7akclF5WScPZCslrdwME5hkPW1zqkpoAvChj2cbLnqf7ltuMrFt86/RaKvoHVLlVlj3D3VaMyZYtohg9EECQST/uFj8=
+	t=1781305591; cv=none; b=bWzMdEvHct8IMLB+dNev8WyrkwhrfftpPtQsIAXrWmFIZdKhLLOWGbRbMIqbZ7kuzeH4bD1sik5O9+HnFKt0MXlnTjSrQRjVEN047P38S9GOnt5VIJ4i0oMRrOpm13DAVn/Pi2/pkjqTfgznVwWGho1ExMj4QOG6Odhi9EZgAHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781305588; c=relaxed/simple;
-	bh=Me0Bhs5/EQQZjcTAZ/V1yRJ2/LW8GnZyPuXt9LJK+oQ=;
+	s=arc-20240116; t=1781305591; c=relaxed/simple;
+	bh=cLoeO8KfiClGgJNI08IgErFX/9v34pzll+2dbsgolRw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sGwZx/J8WvzMHXy0NmbTzG1qHC95S9bZpZQVStklI6P/945I48R7QVDoY05JLC6GELLOPIKyCmvirMqlIM6JujIgGGQbU2cDS/gd/woI5xpIJ8gjFPaDVQ+brB+eK38TEuW2e477bEackppZx+2uZt+5PSmgRqk9yMM6QRQe+kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lpubkjuN; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=m8GelArh5ZYnSuqDcU1UAXJBfYhdyUTF4c5pYJc772TnmuY/c3EyQ8NjSMQ/x/8cuOxAyaKsXYhahRAIXVfy8NHYIoTEl+mRdsDtzms6NlGYEYYu5y4puvrkODzANvOjMOe/DaD8UViUmbzKBPxz3U8xC5NAVKL1ducb7+5CF6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UDLVx86w; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lpubkjuN"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c85a2c305d0so722082a12.1
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 16:06:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UDLVx86w"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b934a336eso1165958a91.2
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 16:06:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781305587; x=1781910387; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781305588; x=1781910388; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Hg8GhN12QlOv0K4ONCzUqIsw11l/FiOwKl0Rw2yUVA=;
-        b=lpubkjuNsILIbU8jPPILJcr3UxUo+jOfksrzD6QNIe7wtue0twuS8RaRelVwwxCIzD
-         G4ZcpDmt04x4ukEuEeadwIcr8+6Z62megymXlj8SdW4weQPpYHANxHksRVfwbN7LYWa0
-         IBiu2njHQ/iLQckwYJI1ISvGxtOaHr4Js+xy0upv5KE0aAnU8WxrI8yb4qaMOUqH4S4U
-         CKsfhAfuP8BJxnlG8NTNF5gwgxcqW6VbZ7+2Zp9GxXmRu7pTy5Cmj6Nz5WBeVeIjEB+N
-         BQKKToz/+zbA2k3+NFcsbFYzIq5mrXIxbYdmCpzInxMXP0SwjOCZ73GDsBsPn8K6XgIH
-         CfeA==
+        bh=m5kR/3woI3rfb1R3e3eUF/PdaX7A3Ic+8QINcyng7RQ=;
+        b=UDLVx86wl8Oc3D3RsC4mkmbsy+FJtRh/+UiiGx1DP9lrZYeE2/QyLU6CXHA7oNMD1y
+         KLfCJltihfJsKXbuvDVuPpi4yDE6o2Ctof4HYwV+/iyw7sac3HQbXh0H6bD7IKFWmnj+
+         kaEZ9YxSQF/lbE3dsZET44NFRcwfhVRGQ56tXXsbkdyHp8uOFdMhHTNIVJGXlOYN99JU
+         RWPPnOsqIpcqGkhYoEeoV4yfZ872fWWO6rtEfeUONj3s7YJaZbYCMzoXI4XViJxzQjJs
+         dLPZwtkjF2XYWLcu3PVc5TtfQshmS6knHktgHr6Hkb5VuNKt6k22felzCGJP6QRPe/Rq
+         eGgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781305587; x=1781910387;
+        d=1e100.net; s=20251104; t=1781305588; x=1781910388;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/Hg8GhN12QlOv0K4ONCzUqIsw11l/FiOwKl0Rw2yUVA=;
-        b=Gg+k8LZ8D4IvbgIK8XipZ/Fk80FIx5tMTabVIpsESP2s9fPWtHdED41qGkhg1LBauU
-         5CN5y3JRquQS8Y/ZEZhaedBLqzPNgHaMGxAGq6DDHV+8crAlmhGJc+aONrYpFgGlCm1A
-         RqRitoRNUAabLxPLVb8Z9KUzVWH1C6YULRz4MZCrbA8YeNEHqno5ihpujlUVpNbMpi7v
-         SCNCUhSqCWixDUgigvPP2OtR/HkEqf/poDULX73+RcD4HeWaz50yV/w9P1SXJyvTBq5D
-         rmSoxlu2Lx/C4BiT+9z6ivY+NisSbBX0w7/2Pw9IKQtI89FNAAHOzDcd8Fc/vhpavGaE
-         iC8A==
-X-Gm-Message-State: AOJu0YyJR8TgCyIQIn9NIkIsfEDjCtCSShcJ1X+pzIOBjYhJ7/zmYQlY
-	uzZQa0YXOmUqbYPbuF6CWG6M0y2uvni9vLyLsgMYgnHXO2Fd3LZzFaEitbPP642yj3K7efVAIIg
-	CPosrXQ==
-X-Received: from pllh1.prod.google.com ([2002:a17:902:7481:b0:2b0:b22a:e6ef])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:234b:b0:2bf:bd17:90d4
- with SMTP id d9443c01a7336-2c411d79937mr55905765ad.28.1781305586571; Fri, 12
- Jun 2026 16:06:26 -0700 (PDT)
+        bh=m5kR/3woI3rfb1R3e3eUF/PdaX7A3Ic+8QINcyng7RQ=;
+        b=K/xJE3EO8iC6K/8wO3KRufj08Mvjas2tJWwah8L/9y56Rvq7KuijEgKJL4AFc2bX23
+         4T1UiDzFKgbBHPK5G/B5Ql/bYh7xiZ0zAmZMUaq40W/GpW6EonS53s9kG46gMNtsVmou
+         hDKlK3sSLg3aHX3m5ISARGoZJsiyfOIj0nIM3y8xgJrVcNTMEc4qety6d0jrDPNYUsri
+         rs+o3umWcWg3sCw2AeZUJp8mjSmkfDKbU5WQugEcQCkKlSpxy5K/PNpi8xpc9Sk/V48u
+         DPnR8pRNmgI3TmskF4qbITB6i4eC1Wj5XxD/T64pcq9rgZqbDwQnTYTGlTII4MZMrViG
+         2/bA==
+X-Gm-Message-State: AOJu0YyTSVGNt1fRKCiCIf4KG7JJ/vGrdWWOb8gjT/MVm2YTkf/6nzBY
+	iFwLaGyCKglwbrOQlg8itukyKWbcL3QF8aZmJaUgmrh6gEq7WKBKfGCBrSwejSjzo5/ZUCKVKTp
+	YLnbKrw==
+X-Received: from pjyf13.prod.google.com ([2002:a17:90a:ec8d:b0:369:3e28:9233])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4ac4:b0:367:bf0c:54e9
+ with SMTP id 98e67ed59e1d1-37c2bd1244dmr1139509a91.21.1781305587712; Fri, 12
+ Jun 2026 16:06:27 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 16:06:15 -0700
+Date: Fri, 12 Jun 2026 16:06:16 -0700
 In-Reply-To: <20260612230622.687665-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260612230622.687665-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260612230622.687665-2-seanjc@google.com>
-Subject: [PATCH v2 1/8] KVM: x86/hyperv: Get target FIFO in
- hv_tlb_flush_enqueue(), not caller
+Message-ID: <20260612230622.687665-3-seanjc@google.com>
+Subject: [PATCH v2 2/8] KVM: x86/hyperv: Check for NULL vCPU Hyper-V object in kvm_hv_get_tlb_flush_fifo()
 From: Sean Christopherson <seanjc@google.com>
 To: Vitaly Kuznetsov <vkuznets@redhat.com>, Sean Christopherson <seanjc@google.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -69,88 +68,88 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	syzbot+5b32c49cd8f005e65654@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 
-When handling Hyper-V PV TLB flushes, retrieve the to-be-used FIFO in
-hv_tlb_flush_enqueue() instead of having the caller pass in the FIFO.  This
-will make it easier to fix a cross-vCPU race where KVM can access a vCPU's
-FIFO before it's fully initialized.
+Check for a NULL Hyper-V object in kvm_hv_get_tlb_flush_fifo() instead of
+relying on the caller to do so.  This will allow fixing a cross-vCPU race
+where KVM can access a vCPU's FIFO before it's fully initialized, without
+having to jump through too many cognitive hoops to reason about the
+correctness of the logic.
 
-No functional change intended.
+Ignoring changes in ordering that only affect the aforementioned race, no
+functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/hyperv.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ arch/x86/kvm/hyperv.c | 11 +++++------
+ arch/x86/kvm/hyperv.h |  7 ++++++-
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index fd4eb1e561f7..a894e3d2e594 100644
+index a894e3d2e594..ecd344b91739 100644
 --- a/arch/x86/kvm/hyperv.c
 +++ b/arch/x86/kvm/hyperv.c
-@@ -1935,16 +1935,18 @@ static int kvm_hv_get_tlb_flush_entries(struct kvm *kvm, struct kvm_hv_hcall *hc
- 	return kvm_hv_get_hc_data(kvm, hc, hc->rep_cnt, hc->rep_cnt, entries);
- }
- 
--static void hv_tlb_flush_enqueue(struct kvm_vcpu *vcpu,
--				 struct kvm_vcpu_hv_tlb_flush_fifo *tlb_flush_fifo,
--				 u64 *entries, int count)
-+static void hv_tlb_flush_enqueue(struct kvm_vcpu *vcpu, u64 *entries, int count,
-+				 bool is_guest_mode)
+@@ -1939,13 +1939,11 @@ static void hv_tlb_flush_enqueue(struct kvm_vcpu *vcpu, u64 *entries, int count,
+ 				 bool is_guest_mode)
  {
-+	struct kvm_vcpu_hv_tlb_flush_fifo *tlb_flush_fifo;
- 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
+ 	struct kvm_vcpu_hv_tlb_flush_fifo *tlb_flush_fifo;
+-	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
  	u64 flush_all_entry = KVM_HV_TLB_FLUSHALL_ENTRY;
  
- 	if (!hv_vcpu)
- 		return;
+-	if (!hv_vcpu)
+-		return;
+-
+ 	tlb_flush_fifo = kvm_hv_get_tlb_flush_fifo(vcpu, is_guest_mode);
++	if (!tlb_flush_fifo)
++		return;
  
-+	tlb_flush_fifo = kvm_hv_get_tlb_flush_fifo(vcpu, is_guest_mode);
-+
  	spin_lock(&tlb_flush_fifo->write_lock);
  
- 	/*
-@@ -2017,7 +2019,6 @@ static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 	struct kvm *kvm = vcpu->kvm;
- 	struct hv_tlb_flush_ex flush_ex;
- 	struct hv_tlb_flush flush;
--	struct kvm_vcpu_hv_tlb_flush_fifo *tlb_flush_fifo;
- 	/*
- 	 * Normally, there can be no more than 'KVM_HV_TLB_FLUSH_FIFO_SIZE'
- 	 * entries on the TLB flush fifo. The last entry, however, needs to be
-@@ -2145,11 +2146,8 @@ static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 	 * analyze it here, flush TLB regardless of the specified address space.
- 	 */
- 	if (all_cpus && !is_guest_mode(vcpu)) {
--		kvm_for_each_vcpu(i, v, kvm) {
--			tlb_flush_fifo = kvm_hv_get_tlb_flush_fifo(v, false);
--			hv_tlb_flush_enqueue(v, tlb_flush_fifo,
--					     tlb_flush_entries, hc->rep_cnt);
--		}
-+		kvm_for_each_vcpu(i, v, kvm)
-+			hv_tlb_flush_enqueue(v, tlb_flush_entries, hc->rep_cnt, false);
+@@ -1972,15 +1970,16 @@ static void hv_tlb_flush_enqueue(struct kvm_vcpu *vcpu, u64 *entries, int count,
+ int kvm_hv_vcpu_flush_tlb(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_vcpu_hv_tlb_flush_fifo *tlb_flush_fifo;
+-	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
+ 	u64 entries[KVM_HV_TLB_FLUSH_FIFO_SIZE];
+ 	int i, j, count;
+ 	gva_t gva;
  
- 		kvm_make_all_cpus_request(kvm, KVM_REQ_HV_TLB_FLUSH);
- 	} else if (!is_guest_mode(vcpu)) {
-@@ -2159,9 +2157,7 @@ static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 			v = kvm_get_vcpu(kvm, i);
- 			if (!v)
- 				continue;
--			tlb_flush_fifo = kvm_hv_get_tlb_flush_fifo(v, false);
--			hv_tlb_flush_enqueue(v, tlb_flush_fifo,
--					     tlb_flush_entries, hc->rep_cnt);
-+			hv_tlb_flush_enqueue(v, tlb_flush_entries, hc->rep_cnt, false);
- 		}
+-	if (!tdp_enabled || !hv_vcpu)
++	if (!tdp_enabled)
+ 		return -EINVAL;
  
- 		kvm_make_vcpus_request_mask(kvm, KVM_REQ_HV_TLB_FLUSH, vcpu_mask);
-@@ -2192,9 +2188,7 @@ static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 				continue;
+ 	tlb_flush_fifo = kvm_hv_get_tlb_flush_fifo(vcpu, is_guest_mode(vcpu));
++	if (!tlb_flush_fifo)
++		return -EINVAL;
  
- 			__set_bit(i, vcpu_mask);
--			tlb_flush_fifo = kvm_hv_get_tlb_flush_fifo(v, true);
--			hv_tlb_flush_enqueue(v, tlb_flush_fifo,
--					     tlb_flush_entries, hc->rep_cnt);
-+			hv_tlb_flush_enqueue(v, tlb_flush_entries, hc->rep_cnt, true);
- 		}
+ 	count = kfifo_out(&tlb_flush_fifo->entries, entries, KVM_HV_TLB_FLUSH_FIFO_SIZE);
  
- 		kvm_make_vcpus_request_mask(kvm, KVM_REQ_HV_TLB_FLUSH, vcpu_mask);
+diff --git a/arch/x86/kvm/hyperv.h b/arch/x86/kvm/hyperv.h
+index 65e89ed65349..e6c74cfbb1cb 100644
+--- a/arch/x86/kvm/hyperv.h
++++ b/arch/x86/kvm/hyperv.h
+@@ -201,6 +201,9 @@ static inline struct kvm_vcpu_hv_tlb_flush_fifo *kvm_hv_get_tlb_flush_fifo(struc
+ 	int i = is_guest_mode ? HV_L2_TLB_FLUSH_FIFO :
+ 				HV_L1_TLB_FLUSH_FIFO;
+ 
++	if (!hv_vcpu)
++		return NULL;
++
+ 	return &hv_vcpu->tlb_flush_fifo[i];
+ }
+ 
+@@ -208,10 +211,12 @@ static inline void kvm_hv_vcpu_purge_flush_tlb(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_vcpu_hv_tlb_flush_fifo *tlb_flush_fifo;
+ 
+-	if (!to_hv_vcpu(vcpu) || !kvm_check_request(KVM_REQ_HV_TLB_FLUSH, vcpu))
++	if (!kvm_check_request(KVM_REQ_HV_TLB_FLUSH, vcpu))
+ 		return;
+ 
+ 	tlb_flush_fifo = kvm_hv_get_tlb_flush_fifo(vcpu, is_guest_mode(vcpu));
++	if (!tlb_flush_fifo)
++		return;
+ 
+ 	kfifo_reset_out(&tlb_flush_fifo->entries);
+ }
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
