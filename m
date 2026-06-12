@@ -1,159 +1,225 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350423630A5
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 08:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781252156; cv=pass; b=Yh++Ri0PhI/FnuVMMaEemhZXPDu6YTtkhsZJ8xW68V+/Nc9zZEgeiPMk2fniBXS7u7ZhKhNI97gIh1PSao52JJjlWBFKJgQKUjw5/zz4FfmLPj3WjQ0Wwh48Yp/2TU1a8Il7QToUU/syuY2327vNwLrXdnnHbpeiGcPOSvE+ojs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781252156; c=relaxed/simple;
-	bh=gKkkV19wlmTr3/xCsbfGBsR54oN4UlO4vCnWRgWlt20=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tN/9vQIOI7MNldoqGkCbQo23hBUwmr0vDloPDNxT3K5ptWYmtJWECjFDenEjxH4EkOnwEaRYGZktVqyZ77AIhiTe9IZNIxyfNjtolzhNKu9LVORr/yD6kDfNOppUOcAn6YyXmUrn1geGPATBBsRJ6YMsJHWnY0eLBKMqbK6KGgE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bhs2VZq5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=czFZ55pK; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFC337DAD6;
+	Fri, 12 Jun 2026 08:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781252648; cv=none; b=FEJyUj+1MBhvMjHsTjtAFuzOi/y3AjPKynsVa+a8bTC0VPdWkLeAYQT9rRyvRz5gwJHGFxIYU4GJ2c1fwsRXxr6ZlQql7IkMjcQb8NodrZi7q0GrmCkoASdo2CCRsdhzl1WxAnaIyWroVR4bEOhf7rLl6Q1dmAKM3n9h3bSxT5I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781252648; c=relaxed/simple;
+	bh=aik1yZWSrKo57yjYoAjGg1WiRNqIySZleRfYd2RGgiY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WgYkNEW6QEzoOkfYQN5FmJnIVcCr/7GZGdIb+4zNO4g8gk1nZ3B9Pcm0pHT52zGBaEMSCr6Zn/c733DAt0wa3BpAMLqlyDCxH1IQqytKvPFYtAgKNqQMSXUBiNYdx1OFY0PgkkjD1G0mB5Ac7qXVMAvD44ZXBP3gaH2NaSwO/1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=M/qYnh2+; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bhs2VZq5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="czFZ55pK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781252154;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fkzgmag6RiSVdTujOEa/DO5ShgseE/EIKALr5M/fiUM=;
-	b=Bhs2VZq5f/jVbVE+Mq9EHRzvqs3OOddRUiVFte5SPW/ouwK8FulMRDqBDXixM7X8ju/mFp
-	edDWDNj3+Jt7fLLJUpYswX02AAPhOpm2OajW68c9ySV3pfghbtp+niPs89op/QUELWRrlt
-	jJV1S0e1qiva/rWitrpBx4Mf/Lo7img=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-263-IpBk-jiJNhiASUueY_yw5w-1; Fri, 12 Jun 2026 04:15:53 -0400
-X-MC-Unique: IpBk-jiJNhiASUueY_yw5w-1
-X-Mimecast-MFC-AGG-ID: IpBk-jiJNhiASUueY_yw5w_1781252152
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2c0532a6588so7526345ad.0
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:15:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781252152; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YojvihX+WHp7LeOPZ2OF7eMnIcTnNSfczta1VaZS0Ax5uy+E8sJ1V4jXJ8FzjnMaKQ
-         cMjJbsPzyxZE7GNu7tI3S/JdPeMvcfhVggbmGRpFa7Vcl7Y4n0I6fyZ6FbVJ6puOXBNX
-         /wG6Svnpl5OfXjqEplr4HjmXoDLSDE+wOtaH7Wuk50nbBijSuGFbUumG1NkYkBFvZsf5
-         ICf8yve+S7Io2zcRXSm9nBvMtaMHeJ7C0LfGnJjYgxcjlEhgG1W0mCuBCePWD5yHyRZ8
-         t0bJy8THm15zAeqUK8KErnWNqcdPincvINVvb4UuwcnEafxbbvLEEmRIArDJvYYdGc4B
-         OleA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fkzgmag6RiSVdTujOEa/DO5ShgseE/EIKALr5M/fiUM=;
-        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=Jbqe1K/7yezpBfjLz5qpwCec/o2jP86XhaayVd+8H7ZwoEYq8zH7Xq2REnLQqqmVNE
-         OCSqvo7fy+tuJXWbzvMHUWUEUfCWvB8ODl5HrYWvAUvyGX1SocjEhifi+U2SO6pTyzKt
-         f17/3Xut+3+zaBvURiiLh8VLnm6Dp9WEDstJtnEmUQiT5xlCTq9GS5jfEt2NwSfsw2fp
-         +Dd8fpSAQe+Ns7e8ilmiwkiBnw70IFSRC3P3YCvaTt6Uki4E2icV57ZJqpfM3Py+64tA
-         0l4SeczP+Pz6H74f72IVO0U9WvX+Knd6hIVA+gZbxIAh55OnjifbeNIKSwAVJn/TFmNW
-         ibYg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781252152; x=1781856952; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fkzgmag6RiSVdTujOEa/DO5ShgseE/EIKALr5M/fiUM=;
-        b=czFZ55pKFbd0DiYJ+PbSopdfnyfxv4k4fXWrcv5Ih2Xi5tgF/FR+z3NMnQx0uUBWVD
-         NlW02yb6GJNNLJ7BC990cNzeIMuHJLUCZrV5L9XXc0mGYd9F8q/Gvf0kinmv467cMru4
-         tsVinWBo6059JMkSvM/8TG0MEBXkMq1pA+pTbwvbVCGIiV+BXl78FtxNxPk9Bfu8pji5
-         InjLEF6wa9waxTF3xMmp30YY7Y/Gvk2Pj5c5fOoviwKh2+hIvm3pBj+P0uAus7YBIcZ3
-         aGqjSAe7z6WMh5l7etDvTv93dzsXL2dTcuctRCjcJfwNmOfVcxVcZz9urx2JEo3JL1jf
-         KbpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781252152; x=1781856952;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fkzgmag6RiSVdTujOEa/DO5ShgseE/EIKALr5M/fiUM=;
-        b=Iu18r5S+kBVj8sCQHdzFngotJILF8ba1qwhJf+DtWIf8BTBz/4KtkwNMnqEakQj5xs
-         1/Vq88v8tgPwQGiNRGvhLpXxy6ZVXRH65ULrYefPbXWnwRhITqhEOmgRheYdej91wJSq
-         7eAJCyCjctIJJQuRePWRdCqGIO4Hq1W0p03yjd8MunYiP0/E2oJQfG7x3gwtyX8ex+3r
-         Z+60AOceQXh7L8UT1iC0Bb2Muurp1MAo9W2DY7aAo4eQy/6fNJKrMpzME7t7SJe2Liyl
-         I/f3r3THTsYo5PFxTGcldzyhoxiPnyZNfC8Ue3WhiHIvn1GjuxuzhXf/1ecqGPrztmCc
-         3Lzg==
-X-Gm-Message-State: AOJu0YwPsdM5wRqQFMaLWpaqYgWLdI1sVrpbVW17k4LhXnUBZHiTXUgM
-	j9WjAGhP/jzud3qWwqOLugWMCmzRMZIscmOJNtTUPQsHN4NmH65e+tPtiOi1/c/ucUsgrrSJZJQ
-	GxF62EU3h45PboNaMsMGgMTK5Vlc0ZpxtN1FEY4vexnpybqza45bZ1grRVNQwJvCsdpwTPmgM+Q
-	1HFIIAS2TJRKpHVNeb453nfIHc5oQazJgfaT2M
-X-Gm-Gg: Acq92OGcurdtnJYjT3CKcpg4t2WhWo594JAZZ0/FWom9p1xA+D6YS4bRNiPqvsFuZLl
-	Qyq9VK3NnR64kray+9518IwGn9bVvxputvRXb934k4S3VtXYlbTNiMLhmSauQ5YP1YPEaWqApJM
-	RmabJ5AFOmW6LOR75x12dfUYwZTi0s/KIySxNedK5LAaqwoBE8OjQwQM66y+RyOJNMJe5bu6mXe
-	yUUDOSJphsCcLT5bUMhJqoFELIGFQ0ZgpfQHnTSSloBeWn4rwdok4ysB5XcHNYI+5ILaes/963g
-	79AEQQ==
-X-Received: by 2002:a17:902:c401:b0:2c1:6020:7398 with SMTP id d9443c01a7336-2c410fbec97mr21514495ad.12.1781252151819;
-        Fri, 12 Jun 2026 01:15:51 -0700 (PDT)
-X-Received: by 2002:a17:902:c401:b0:2c1:6020:7398 with SMTP id
- d9443c01a7336-2c410fbec97mr21514115ad.12.1781252151290; Fri, 12 Jun 2026
- 01:15:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="M/qYnh2+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1781252646; x=1812788646;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aik1yZWSrKo57yjYoAjGg1WiRNqIySZleRfYd2RGgiY=;
+  b=M/qYnh2+vzN1VsNIX0tPDvOnW85ecMAt3gC38tmwrBiJoD+dgPWvOaBa
+   PMZNaTjI1RR6qFedYC0gVKFcQYc2+01pomTsCjt6VpoN9UNa5AqJTZ+fc
+   CkytOOD5UZSqCCEYTgFR90iyJftYn+k0aOYtWJ7kYAyneB8IsOnqY220z
+   gzrsu3b+7ry76uClLhzUYaya0ZZH8EXBIUq2czovOec2ov42UubNLijTb
+   tiwhh13GCY0Z42cw11+tDd3z9RpThKbpCzWvIKw0R7E/0B2cidbpu9xU9
+   eB5CIw2nai+X9JLd3P2kYOGF4doxx8PPRgEfDSBoYSacW9x6Ac1RErXxf
+   A==;
+X-CSE-ConnectionGUID: 5MrWdWtvTtS4GM0us5yIIA==
+X-CSE-MsgGUID: szhd3KRbRoylTsr8ICyu6g==
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; 
+   d="asc'?scan'208";a="59016839"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 12 Jun 2026 01:24:04 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Fri, 12 Jun 2026 01:24:02 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex01.mchp-main.com (10.10.85.143)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.58 via Frontend
+ Transport; Fri, 12 Jun 2026 01:23:58 -0700
+Date: Fri, 12 Jun 2026 09:23:12 +0100
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Guodong Xu <docular.xu@gmail.com>
+CC: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert
+ Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Zong Li
+	<zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>, Anup Patel
+	<anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>, Chen Wang
+	<unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>,
+	<linux-doc@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<kvm-riscv@lists.infradead.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+	Conor Dooley <conor@kernel.org>, <devicetree@vger.kernel.org>,
+	<spacemit@lists.linux.dev>, <sophgo@lists.linux.dev>,
+	<linux-kselftest@vger.kernel.org>, Palmer Dabbelt <palmer@sifive.com>
+Subject: Re: [PATCH v4 08/16] dt-bindings: riscv: Add Zic64b extension
+ description
+Message-ID: <20260612-scarcity-willow-c073342b5ac2@wendy>
+References: <20260611-rva23u64-hwprobe-v2-v4-0-3f01a2449488@gmail.com>
+ <20260611-rva23u64-hwprobe-v2-v4-8-3f01a2449488@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260612004755.349925-1-seanjc@google.com> <20260612004755.349925-10-seanjc@google.com>
-In-Reply-To: <20260612004755.349925-10-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 12 Jun 2026 10:15:34 +0200
-X-Gm-Features: AVVi8CezT2kGO_h2SlI2bLyo8MLWTQxnuSNm4rO4Vxcimuv4RGs6TRUX_-YzzDU
-Message-ID: <CABgObfbOXx468LKpQNTRbjzHk_yc_BtcNT=R3uvnoUWicH3mHQ@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: x86: VMX changes for 7.2
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Dm2P8/tZRoFsL+eF"
+Content-Disposition: inline
+In-Reply-To: <20260611-rva23u64-hwprobe-v2-v4-8-3f01a2449488@gmail.com>
+
+--Dm2P8/tZRoFsL+eF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 12, 2026 at 2:48=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> The following changes since commit b7fbe9a1bf9ee6c967ef77d366ca58c35fcf18=
-87:
->
->   Merge branch 'kvm-apx-prepare' into HEAD (2026-05-13 12:38:31 -0400)
->
-> are available in the Git repository at:
->
->   https://github.com/kvm-x86/linux.git tags/kvm-x86-vmx-7.2
->
-> for you to fetch changes up to ca674df13b195eb6d124ab059799d4e03fa40624:
->
->   KVM: VMX: Handle bad values on proxied writes to LBR MSRs (2026-05-27 1=
-6:41:51 -0700)
->
-> ----------------------------------------------------------------
-> KVM VMX changes for 7.2
->
->  - Fix a largely benign bug where KVM TDX would incorrectly state it coul=
-d
->    emulate several x2APIC MSRs.
->
->  - Use the "safe" WRMSR API when proxying LBR MSR writes as the to-be-wri=
-tten
->    value is guest controlled and completely unvalidated.
+On Thu, Jun 11, 2026 at 04:12:45PM -0400, Guodong Xu wrote:
+> Zic64b mandates that cache blocks are 64 bytes in size and naturally
+> aligned in the address space.  It is a mandatory extension of both the
+> RVA22 (U64/S64) and RVA23 (U64/S64) profiles, ratified with RISC-V
+> Profiles Version 1.0.
+>=20
+> Document it so it can be described in the riscv,isa-extensions property,
+> alongside the related Zicbom/Zicbop/Zicboz cache-block extensions. Since
+> Zic64b fixes the cache block size at 64 bytes, also add a  schema check
+                                                           ^^
+Not that it matters, but there's an extra space here.
 
-Pulled, thanks.
+> requiring any present cbom/cbop/cboz block size to be 64.
+>=20
+> Signed-off-by: Guodong Xu <docular.xu@gmail.com>
+> ---
+> v4: Insert zic64b at its sorted position (before zicbom).
+>     Update the commit message.
+> v3: New patch.
+> ---
+>  .../devicetree/bindings/riscv/extensions.yaml        | 20 ++++++++++++++=
+++++++
+>  1 file changed, 20 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/riscv/extensions.yaml b/Do=
+cumentation/devicetree/bindings/riscv/extensions.yaml
+> index 5ffc40d599c02..1c24999beb59e 100644
+> --- a/Documentation/devicetree/bindings/riscv/extensions.yaml
+> +++ b/Documentation/devicetree/bindings/riscv/extensions.yaml
+> @@ -494,6 +494,12 @@ properties:
+>              in commit 64074bc ("Update version numbers for Zfh/Zfinx") of
+>              riscv-isa-manual.
+> =20
+> +        - const: zic64b
+> +          description:
+> +            The standard Zic64b extension for 64-byte naturally aligned =
+cache
+> +            blocks, as ratified in RISC-V Profiles Version 1.0, with com=
+mit
+> +            b1d806605f87 ("Updated to ratified state.")
+> +
+>          - const: zicbom
+>            description:
+>              The standard Zicbom extension for base cache management oper=
+ations as
+> @@ -1142,6 +1148,20 @@ allOf:
+>            not:
+>              contains:
+>                const: zilsd
+> +  # Zic64b mandates 64-byte naturally aligned cache blocks
+> +  - if:
+> +      properties:
+> +        riscv,isa-extensions:
+> +          contains:
+> +            const: zic64b
+> +    then:
+> +      properties:
+> +        riscv,cbom-block-size:
+> +          const: 64
+> +        riscv,cbop-block-size:
+> +          const: 64
+> +        riscv,cboz-block-size:
+> +          const: 64
 
-Paolo
+I think we also need to have
+diff --git a/Documentation/devicetree/bindings/riscv/extensions.yaml b/Docu=
+mentation/devicetree/bindings/riscv/extensions.yaml
+index 1c24999beb59e..bbd442cfbd904 100644
+--- a/Documentation/devicetree/bindings/riscv/extensions.yaml
++++ b/Documentation/devicetree/bindings/riscv/extensions.yaml
+@@ -1162,6 +1162,32 @@ allOf:
+           const: 64
+         riscv,cboz-block-size:
+           const: 64
++  # All three Zicbo* extensions require their block size property as there=
+'s no
++  # default.
++  - if:
++      properties:
++        riscv,isa-extensions:
++          contains:
++            const: zicbom
++    then:
++      required:
++        - riscv,cbom-block-size
++  - if:
++      properties:
++        riscv,isa-extensions:
++          contains:
++            const: zicbop
++    then:
++      required:
++        - riscv,cbop-block-size
++  - if:
++      properties:
++        riscv,isa-extensions:
++          contains:
++            const: zicboz
++    then:
++      required:
++        - riscv,cboz-block-size
+=20
+ additionalProperties: true
+ ...
 
->
-> ----------------------------------------------------------------
-> Rick Edgecombe (1):
->       KVM: TDX: Fix x2APIC MSR handling in tdx_has_emulated_msr()
->
-> Xuanqing Shi (1):
->       KVM: VMX: Handle bad values on proxied writes to LBR MSRs
->
->  arch/x86/kvm/vmx/pmu_intel.c |  6 ++++--
->  arch/x86/kvm/vmx/tdx.c       | 38 ++++++++++++++++++++++----------------
->  2 files changed, 26 insertions(+), 18 deletions(-)
->
+because I don't think there's a warning generated at present* if someone
+does "zicbom" + "zic64b" and doesn't have a riscv,cbom-block-size property,
+only if they have one and it isn't 64. I think the former is a bigger
+problem than the latter.
 
+Probably needs to be an additional patch, because it has value whether
+or not we permit zic64b.
+
+pwbot: cr
+
+Cheers,
+Conor.
+
+*: the kernel will warn at runtime, but nothing in dtbs_check etc.
+
+> =20
+>  additionalProperties: true
+>  ...
+>=20
+> --=20
+> 2.43.0
+>=20
+
+--Dm2P8/tZRoFsL+eF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaivB7wAKCRB4tDGHoIJi
+0r+LAP95Lkh6JmlVNGkOMGiFZ+ds+OC4z1NCcvaGyDDMznHyEQEAk5bm8w0ICEyr
+TwHrpZxora0ISSspUjdDg1Xmy+dJDQM=
+=9gRX
+-----END PGP SIGNATURE-----
+
+--Dm2P8/tZRoFsL+eF--
