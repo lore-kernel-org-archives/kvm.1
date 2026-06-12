@@ -1,360 +1,174 @@
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5073B403E9C;
-	Fri, 12 Jun 2026 17:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91263E2763
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781284210; cv=none; b=V+zbgf/dEkdQW0TkIyCqs+EtR8qQLF3npYoUxwzSviuCtN3vSzhEWqxcp52h5BmwSuiHv+Cikefvbse/DlGq9GEOj331yTDy3kUDvan3vHg3rorz1kKgq6hHGI1h7BwCaNPyh/u+7ui86O5/9bGIOb1rTw2ZLKVdmCejsQ0SeXg=
+	t=1781284736; cv=none; b=kwA9ke3ys4UlVRXmMo2acenHzyzMZco8ogWTTkepzHwO44zcTRTILwNnOHrlda0C73ame5ztaGlAKO+DAqle8EaPZmKiqPJEXsCyYI9jHOtC5XQ040MOPNLU2kaYB2yd7gqfg+w4mQcXVQ+OFF6cBo/piasu3QIzhwVGcFGo1ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781284210; c=relaxed/simple;
-	bh=fG+XmCzE45XW0FY4ebe02cN/lSzEKhscc7vqLY4vsbw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q0IN0mUguxL339F6dpxgzeEaTyurLy3ZbdwQa/MlVToWXx3mImzG9/YBprTUKtQbicSHBxr5YaA923oTpRI5NxFMLePn66Gov12ETrcbmm+yOVLHHeu9tQwWeVg7+DdiOU6GpbbcJ5l7e2NY/eU7tMY7QBZKnQZllmuKuKNmH+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=MNb6Ua7Y; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jbCkp2gL; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1781284736; c=relaxed/simple;
+	bh=6Ig7j++nRpygjJXWN4caeOVkxAiNZBYjIFhiRbJ2pwg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=H+CILnW0hQBEQUE6RtHwYxMo/FUCBOAusPpv8O3nd7t62q2eB3zYZVeWFNCAyNFWPtkjY3tyXiHYuk5jiRH/BmT6V5zqW+HSsVIUQxXXQc5UfbB/jfOQRUc/OOwmItRAqbIkhioNVRPTW7hKdV4Y04GEGzrYNWLg4znWog2xmQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LHIJ9FdI; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="MNb6Ua7Y";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jbCkp2gL"
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 8B83D1400093;
-	Fri, 12 Jun 2026 13:10:07 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Fri, 12 Jun 2026 13:10:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1781284207;
-	 x=1781370607; bh=uXPu8m1b4LfsdazZMZSxqNEOeTjV++CgcADUhsyfUeM=; b=
-	MNb6Ua7YSu32IApBA5mRd7kQOUSLa5/s3TA3r7AL09THGdZ4eUyQuHYJyfeizhNY
-	WHLd/AeTmGmkLS5jU9UMuVe0DtfmKybvzS/wt/BDVhLqCirqtOqfGmasbirgubnK
-	sKjsUlFgc+W25QTOeO8L60bxX5NqXA4yAKS/4cF/OIS1b+9CIjJCaA/AwRr0zobC
-	g7nULtbDR35uZFm1Dx9HlAtEa7XdYzw5kGRaCc/RLVPskCpHsNSADP5w58ONIXjF
-	Sh5tyRM8InYSFZ5GtpYDx0ZEhwCgEzKpwEnbiz2mvn13t0ktxdtkv24JYiWDPVHx
-	WtdgVyXnJWaLeVQFGndDXQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781284207; x=
-	1781370607; bh=uXPu8m1b4LfsdazZMZSxqNEOeTjV++CgcADUhsyfUeM=; b=j
-	bCkp2gLg6Hj0/adO0GXnpecpBWhL2Yp4hm9hpDZPMN0aoTfX7zS6n5QllELA1VSd
-	X42f9X7vcjOuiKi/jbZY71p6QpoJM5ZR/OpMBJfdka9seTyqyNJFQ8Tg+NLDI/6Q
-	qpIr4dnm5V8Rz85jkUoPhV2WisSuahFlnD1XHfayVIQe5/a3HHFPFofAEuZWiqP3
-	KgBzPl3+wUW3kl/0p/bd2/WZEksLY4sfBJCWVQY/9V1Bb2WEoX3wN1sDySKPmOi9
-	NhGY/Xf3ay+94cwPPR1tqoCTUXuq6LeUfMO7xsCGxQXDiDy7HmfUTPL0FjbFratk
-	FziaYsnePaQRPbyxSW8MQ==
-X-ME-Sender: <xms:bj0sajOjKj_TAl1L9--J7mGO49zQgCFQSykkn1A0KM4KyyBVo0T01g>
-    <xme:bj0san9stFVx11t1qgq2L5flwXSXDgchRBqVlbOKu2D25fWO56JfTjp-s7gqwAao8
-    YyIWeQ3ExX_eYz60Qjk31adNqxk5CFAAw1gwAT_bsaH448GXdwwGA>
-X-ME-Received: <xmr:bj0sao7anuaFR8uSNLIywxQ6tO8L2YxbQSZMHQn8-sFVJ4lAqx-JLAbA740>
-X-ME-Proxy-Cause: dmFkZTFq8oIRNnYTRa5VsIWKAotKciRe7g5kPPez2qGfRxO7xJ2ESUxldZb++Gn240UZJG
-    cN9mBkn5NoSA+Cl+XRikFU9KyryI5lA5oLityp4dVYPDM282yKokcsWwNrnETMgeummea3
-    tsE43v7JVYidxlFiWvgxVCrT8em5Fj+uvkqhLE7qKQUPlASOf9+wd3+h5CvfGiYCR8x6fE
-    k0MBl0k3btXl+aepFawep9OOkzzfBK8iEcXwvwW+yZ0INKrpUrGT3/ki9bvxvUe2pc9OM5
-    3BVue8yJ4jd/tFQSApCl9nS4QOGrvZxdbeAK6kBOKS7qHOEtLTGQG2LIeZxCeTOkhCN+I+
-    8ozEiY1pKdMidmH/GP7/DQfPKt9jPG7+yivnAtxqbHlQGbfItHpUuw6hnUiKsOjP+dfCDR
-    tvt0wviDwWGXTnOuRDqVsPQ1PXD6TDsYfFfH9FsaKypsvlt+wRZDjxz/non5FqgUCbv9ev
-    Kv2bYThO7HwikI4T6dWFlaM4+9cD99pIJGO06ZfBtI+0Tb/WNOpI96uinZ8zgdln/W7oFf
-    FKxs10RLKq0xe7nXfRmwMfthJOtxlWURiTZwSFY6HPAo+8UNRp27RprLLj09CpspHa2vuU
-    UV9aUaVO4s5e4htTv6x6QkRLanXDa8L8i4+OwCI0FOFypQeK7YdlYRLCaAFA
-X-ME-Proxy: <xmx:bj0sal6gnmkK_RtnXhqBMdsT3UiwI-d8aHF_C-wdQYPfyWqYNsqylQ>
-    <xmx:bj0sapoMCloFMcnly2OyJDDg5XH4nvaEi6JmValIKjBgNtt1fGQ_wg>
-    <xmx:bj0sauOZRbrLkITgz7UJeBeSc4_SvHSQkibge7BUvgA-oHe3fCWK5g>
-    <xmx:bj0sap1MRha2KEF3R9tOy3k4bVhFCCCzUurzeP8yVsqpKtXnDHl2vw>
-    <xmx:bz0sanHXQSl09-4_NdiCZ1zJ2yyhNsoyFiOAaA5KIKwABvqWpB-xTUNl>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 12 Jun 2026 13:10:05 -0400 (EDT)
-Date: Fri, 12 Jun 2026 11:10:01 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: <netdev@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-rdma@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, alex@shazbot.org
-Subject: Re: [PATCH v7 4/5] vfio/pci: implement get_tph and DMA_BUF_TPH
- feature
-Message-ID: <20260612111001.5b7206eb@shazbot.org>
-In-Reply-To: <20260611161546.4075580-5-zhipingz@meta.com>
-References: <20260611161546.4075580-1-zhipingz@meta.com>
-	<20260611161546.4075580-5-zhipingz@meta.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LHIJ9FdI"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490be29c1c5so13055655e9.2
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 10:18:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1781284733; x=1781889533; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DuOtHeBbJw1YDeqbXCJ3sEezGFxNJJSYyUp7OFWdCrE=;
+        b=LHIJ9FdInVnhtoUNrOz8G9s1+LSgSmzoIUSc2if5ySdAm7HlsLiXBsB3nrWAo9CMlG
+         dvzOeY5I3D5hnvFTnIQidtQtDbCpy4VpNT2lfrVgkAxiURs/OQbQEchr7rXDYumCFPx0
+         ZaZAyDrH8VMF5p0ARyHdALioOaONYY07Iwkyo0BXWARuDShVOKA5pJ8Rk/flWJh+kiPh
+         CrSWJ3tyqZ2wAD/Cy7HaZTvqosgTFatDueX6uBPAvdKSkxK+GViZF+kObPmWSnDWw0gu
+         TcAT/1FQkdNx08dpL0Di429N9EcND/PHA3S9G3CCcmsSwom5LBvzpUIEk9RUGVvBfA3G
+         1QRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781284733; x=1781889533;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DuOtHeBbJw1YDeqbXCJ3sEezGFxNJJSYyUp7OFWdCrE=;
+        b=sO6meYdMHbsrhLTJ0PwFoIe9ZWzlpnJJ/yAWzrfO+7KjUW9fNLAwYn8+ejMVEjC3vU
+         1p7Pbiv8TKehwWiUw9ZHnVMGadbMXxbG2gm9OAjLI2dMqOVzMHAjcWfFiRoonabDS6+g
+         L2/56p6gZp8AWrcV2AJrQgys2j48Ja5ku3UHe6pLm8UwzksCkL4TxAu/VKOClCGakIIn
+         nBgBeGFKHhxYpHG64uTB65Rzz04r3ejwS4LDbLKaG8xWKoX82epOu2hSdofvQ6NuWTaq
+         QDp4iIZNqJlDMX1eqhXqGlcRyw648fwCbng2bG4b52DNBQHHPy7qR+QWA2R3TNuDRqh7
+         9vjA==
+X-Forwarded-Encrypted: i=1; AFNElJ/zNAT1sCGGPlMHyNXoJfstdsHfQv4b2LhWe/MIWRfAq7yRvyO34JF++R75Id9UlpwsbBA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUSKgzN4RR010W44irLr166jmkssCuOdc7H7CwsPJ9yjrJ7cvy
+	BS/O+Dl5MpZUEiENg4iqrCEbt2vyYoV59/rN46Tda0SFrwvlrFoTr5c4/ZD1ElpeIgg=
+X-Gm-Gg: Acq92OFKq3xdODAG+IG0tU5SrI92P2YxOliKr9RVRQHdRJ69M5uLvmN3/rLMmBK7OiY
+	E1EnrYcxNKseL0CFpiFfpEKCywYVTJKnMT4SadPcSnhqRJz55XiqLhRepmXZyxYEHzvx+kgmAHB
+	D2d1SzByWG782vQv82UfKQGV9OaGMuoTWhVBBC8pTwH4nzEsUhhp+LxhhbrG6XFx1chyEWcYtva
+	A9gAY4DN0jK9MCXrvBGb+hzxJcokw+ol5ECrCg91DNfz50yC71syGkoqnXN/p/+hZq8NoflY/Vv
+	U6hDjV2M9P3Ge7gJ+8UPcFvZzBMLoHjXHpkyEQzMpvWAmmbxC4NzWC3b578RLchx4sm2yieiA6Z
+	fsxLHAEgz+xX+hyke4XaLVmQme55GXKMlyJDKAXO2tMCW1aFj9eW4xTYrHRG46qXabOTCIW9ZW+
+	c23cScE4njkKdACu8nZOWKd1E=
+X-Received: by 2002:a05:600c:83c8:b0:492:1e36:d16e with SMTP id 5b1f17b1804b1-4921e36d1a9mr17505975e9.36.1781284733060;
+        Fri, 12 Jun 2026 10:18:53 -0700 (PDT)
+Received: from draig.lan ([185.124.0.195])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4922035b4absm3694975e9.11.2026.06.12.10.18.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 10:18:52 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id 65D125F814;
+	Fri, 12 Jun 2026 18:18:51 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Alexander
+ Graf <agraf@csgraf.de>,  Mohamed Mediouni <mohamed@unpredictable.fr>,
+  Pedro Barbuda <pbarbuda@microsoft.com>,  qemu-arm@nongnu.org,
+  kvm@vger.kernel.org
+Subject: Re: [PATCH v7 0/8] target/arm: fully model WFxT instructions for
+ A-profile
+In-Reply-To: <CAFEAcA94+mh_pigFDi+tEPRJ416fSWfxsQ1Lj8Byemug9kBp6w@mail.gmail.com>
+	(Peter Maydell's message of "Mon, 8 Jun 2026 14:51:24 +0100")
+References: <20260529082948.363931-1-alex.bennee@linaro.org>
+	<CAFEAcA94+mh_pigFDi+tEPRJ416fSWfxsQ1Lj8Byemug9kBp6w@mail.gmail.com>
+User-Agent: mu4e 1.14.1; emacs 30.1
+Date: Fri, 12 Jun 2026 18:18:51 +0100
+Message-ID: <87h5n7ekxw.fsf@draig.linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 11 Jun 2026 09:11:19 -0700
-Zhiping Zhang <zhipingz@meta.com> wrote:
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-> Implement dma-buf get_tph for vfio-pci exported dma-bufs and add
-> VFIO_DEVICE_FEATURE_DMA_BUF_TPH so userspace can publish TPH metadata
-> for a VFIO-owned device.
-> 
-> 8-bit ST and 16-bit Extended ST are distinct PCIe TPH namespaces; the
-> uAPI carries both with explicit validity flags, and get_tph() returns
-> the value matching the importer's requested namespace or -EOPNOTSUPP.
-> 
-> Publish and read the TPH descriptor under dmabuf->resv, matching the
-> locking used for other importer-visible dma-buf state. The SET ioctl
-> takes dma_resv_lock_interruptible(), while the callback runs under
-> DMA-buf's asserted resv lock.
-> 
-> Reject requests the device cannot consume as a completer:
-> pcie_tph_completer_type() must report at least
-> PCI_EXP_DEVCAP2_TPH_COMP_TPH_ONLY, and Extended ST requires
-> PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH. Validate fields before the completer
-> check so userspace gets the narrowest errno.
-> 
-> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c   |  3 +
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 94 +++++++++++++++++++++++++++++-
->  drivers/vfio/pci/vfio_pci_priv.h   | 12 ++++
->  include/uapi/linux/vfio.h          | 37 ++++++++++++
->  4 files changed, 145 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 050e7542952e..4fa36f2f7555 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -1569,6 +1569,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
->  		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
->  	case VFIO_DEVICE_FEATURE_DMA_BUF:
->  		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
-> +	case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
-> +		return vfio_pci_core_feature_dma_buf_tph(vdev, flags, arg,
-> +							 argsz);
->  	default:
->  		return -ENOTTY;
->  	}
-> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> index 1a177ce7de54..0a0705c8dbea 100644
-> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> @@ -3,6 +3,7 @@
->   */
->  #include <linux/dma-buf-mapping.h>
->  #include <linux/pci-p2pdma.h>
-> +#include <linux/pci-tph.h>
->  #include <linux/dma-resv.h>
->  
->  #include "vfio_pci_priv.h"
-> @@ -19,7 +20,12 @@ struct vfio_pci_dma_buf {
->  	u32 nr_ranges;
->  	struct kref kref;
->  	struct completion comp;
-> -	u8 revoked : 1;
-> +	u8 tph_st_valid:1;
-> +	u8 tph_st_ext_valid:1;
-> +	u8 tph_ph:2;
-> +	u8 tph_st;
-> +	u16 tph_st_ext;
-> +	u8 revoked:1;
+> On Fri, 29 May 2026 at 09:29, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+>>
+>> This series fully models the behaviour of WFxT instructions. We
+>> already had support for WFE for M-profile but we left off A-profile as
+>> it has more potential sources of wake-ups. The main one is the event
+>> stream which includes events from significant bits of the timer
+>> ticking over.
+>>
+>> The refactoring from the previous iterations of the patch have now
+>> been merged.
+>>
+>> I've dropped trying to fully model the global monitor in favour of
+>> taking advantage of the architectural flexibility to have an IMPDEF
+>> event wake up for any reason. We treat the setting of exclusive_addr
+>> as such a reason because it indicates the current vCPU is in a ldstx
+>> exclusive region and we don't want the guest to deadlock. This does mean
+>> the system won't sleep on WFE enabled locks but people shouldn't be
+>> relying on QEMU to model real world sleep patterns anyway given the
+>> efficiency of emulation compared to real HW.
+>>
+>> I've written a test case using kvm-unit-tests:
+>>
+>>   Message-ID: <20260527111822.1563679-1-alex.bennee@linaro.org>
+>>   Date: Wed, 27 May 2026 12:18:21 +0100
+>>   Subject: [kvm-unit-tests PATCH v2] arm: add wfx test case
+>>   From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.org>
+>>
+>> All patches are now reviewed.
+>
+>
+>
+> Applied to target-arm.next, thanks.
 
-If these bitfields are now all protected under dma_resv_lock they
-should be grouped together with a comment to that effect, no need for
-revoked to get kicked out to its own storage unit.  In [1] I'm
-proposing runtime modified flags each get their own storage unit, but
-for more isolated cases, so long as we keep track and enforce serialized
-updates, I'm ok with runtime bitfields.  Thanks,
+Is it too late to drop them? I've a fix for 2/8:
 
-Alex
+--8<---------------cut here---------------start------------->8---
+modified   =EF=83=BD include/hw/core/sysemu-cpu-ops.h
+@@ -18,6 +18,9 @@
+ typedef struct SysemuCPUOps {
+     /**
+      * @has_work: Callback for checking if there is work to do.
++     *
++     * This function should be idempotent (i.e. not change state) as
++     * it will likely be queried multiple times before a CPU resumes.
+      */
+     bool (*has_work)(CPUState *cpu); /* MANDATORY NON-NULL */
+     /**
+modified   =EE=98=9E target/arm/cpu.c
+@@ -158,7 +158,6 @@ static bool arm_cpu_has_work(CPUState *cs)
+      * A wake-up event should only wake us if we are halted on a WFE
+      */
+     if (cpu->env.halt_reason =3D=3D HALT_WFE && cpu->env.event_register) {
+-        cpu->env.halt_reason =3D NOT_HALTED;
+         return true;
+     }
+=20
+@@ -170,7 +169,6 @@ static bool arm_cpu_has_work(CPUState *cs)
+                            | CPU_INTERRUPT_NMI | CPU_INTERRUPT_VINMI | CPU=
+_INTERRUPT_VFNMI
+                            | CPU_INTERRUPT_VFIQ | CPU_INTERRUPT_VIRQ | CPU=
+_INTERRUPT_VSERR
+                            | CPU_INTERRUPT_EXITTB)) {
+-        cpu->env.halt_reason =3D NOT_HALTED;
+         return true;
+     }
+=20
+@@ -874,6 +872,8 @@ bool arm_cpu_exec_halt(CPUState *cs)
+         if (cpu->wfxt_timer) {
+             timer_del(cpu->wfxt_timer);
+         }
++        /* clear the halt reason */
++        cpu->env.halt_reason =3D NOT_HALTED;
+     }
+     return leave_halt;
+ }
+--8<---------------cut here---------------end--------------->8---
 
-[1]https://lore.kernel.org/all/20260611213539.4100590-1-alex.williamson@nvidia.com/
 
->  };
->  
->  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-> @@ -69,6 +75,26 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
->  	return ret;
->  }
->  
-> +static int vfio_pci_dma_buf_get_tph(struct dma_buf *dmabuf, bool extended,
-> +				    u16 *steering_tag, u8 *ph)
-> +{
-> +	struct vfio_pci_dma_buf *priv = dmabuf->priv;
-> +
-> +	dma_resv_assert_held(dmabuf->resv);
-> +
-> +	if (extended) {
-> +		if (!priv->tph_st_ext_valid)
-> +			return -EOPNOTSUPP;
-> +		*steering_tag = priv->tph_st_ext;
-> +	} else {
-> +		if (!priv->tph_st_valid)
-> +			return -EOPNOTSUPP;
-> +		*steering_tag = priv->tph_st;
-> +	}
-> +	*ph = priv->tph_ph;
-> +	return 0;
-> +}
-> +
->  static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachment,
->  				   struct sg_table *sgt,
->  				   enum dma_data_direction dir)
-> @@ -101,6 +127,7 @@ static void vfio_pci_dma_buf_release(struct dma_buf *dmabuf)
->  
->  static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
->  	.attach = vfio_pci_dma_buf_attach,
-> +	.get_tph = vfio_pci_dma_buf_get_tph,
->  	.map_dma_buf = vfio_pci_dma_buf_map,
->  	.unmap_dma_buf = vfio_pci_dma_buf_unmap,
->  	.release = vfio_pci_dma_buf_release,
-> @@ -333,6 +360,71 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  	return ret;
->  }
->  
-> +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-> +				      u32 flags,
-> +				      struct vfio_device_feature_dma_buf_tph __user *arg,
-> +				      size_t argsz)
-> +{
-> +	struct vfio_device_feature_dma_buf_tph set_tph;
-> +	struct vfio_pci_dma_buf *priv;
-> +	struct dma_buf *dmabuf;
-> +	u8 comp;
-> +	int ret;
-> +
-> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET,
-> +				 sizeof(set_tph));
-> +	if (ret != 1)
-> +		return ret;
-> +
-> +	if (copy_from_user(&set_tph, arg, sizeof(set_tph)))
-> +		return -EFAULT;
-> +
-> +	if (set_tph.flags & ~(VFIO_DMA_BUF_TPH_ST | VFIO_DMA_BUF_TPH_ST_EXT))
-> +		return -EINVAL;
-> +
-> +	if (set_tph.ph & ~0x3)
-> +		return -EINVAL;
-> +
-> +	comp = pcie_tph_completer_type(vdev->pdev);
-> +	if (comp == PCI_EXP_DEVCAP2_TPH_COMP_NONE)
-> +		return -EOPNOTSUPP;
-> +	if ((set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT) &&
-> +	    comp != PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH)
-> +		return -EOPNOTSUPP;
-> +
-> +	dmabuf = dma_buf_get(set_tph.dmabuf_fd);
-> +	if (IS_ERR(dmabuf))
-> +		return PTR_ERR(dmabuf);
-> +
-> +	if (dmabuf->ops != &vfio_pci_dmabuf_ops) {
-> +		ret = -EINVAL;
-> +		goto out_put;
-> +	}
-> +
-> +	priv = dmabuf->priv;
-> +	if (priv->vdev != vdev) {
-> +		ret = -EINVAL;
-> +		goto out_put;
-> +	}
-> +
-> +	ret = dma_resv_lock_interruptible(dmabuf->resv, NULL);
-> +	if (ret)
-> +		goto out_put;
-> +
-> +	priv->tph_st         = set_tph.steering_tag;
-> +	priv->tph_st_ext     = set_tph.steering_tag_ext;
-> +	priv->tph_ph         = set_tph.ph;
-> +	priv->tph_st_valid   = !!(set_tph.flags & VFIO_DMA_BUF_TPH_ST);
-> +	priv->tph_st_ext_valid =
-> +		!!(set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT);
-> +	dma_resv_unlock(dmabuf->resv);
-> +	ret = 0;
-> +
-> +out_put:
-> +	dma_buf_put(dmabuf);
-> +	return ret;
-> +}
-> +
->  void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
->  {
->  	struct vfio_pci_dma_buf *priv;
-> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-> index fca9d0dfac90..c58f369be4b3 100644
-> --- a/drivers/vfio/pci/vfio_pci_priv.h
-> +++ b/drivers/vfio/pci/vfio_pci_priv.h
-> @@ -118,6 +118,10 @@ static inline bool vfio_pci_is_vga(struct pci_dev *pdev)
->  int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  				  struct vfio_device_feature_dma_buf __user *arg,
->  				  size_t argsz);
-> +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-> +				      u32 flags,
-> +				      struct vfio_device_feature_dma_buf_tph __user *arg,
-> +				      size_t argsz);
->  void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev);
->  void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked);
->  #else
-> @@ -128,6 +132,14 @@ vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  {
->  	return -ENOTTY;
->  }
-> +
-> +static inline int
-> +vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev, u32 flags,
-> +				  struct vfio_device_feature_dma_buf_tph __user *arg,
-> +				  size_t argsz)
-> +{
-> +	return -ENOTTY;
-> +}
->  static inline void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
->  {
->  }
-> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> index 5de618a3a5ee..5dd693220a0d 100644
-> --- a/include/uapi/linux/vfio.h
-> +++ b/include/uapi/linux/vfio.h
-> @@ -1534,6 +1534,43 @@ struct vfio_device_feature_dma_buf {
->   */
->  #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
->  
-> +/**
-> + * Upon VFIO_DEVICE_FEATURE_SET associate TPH (TLP Processing Hints) metadata
-> + * with a vfio-exported dma-buf. The dma-buf must have been created by
-> + * VFIO_DEVICE_FEATURE_DMA_BUF on this device, and the device must report
-> + * TPH Completer support in Device Capabilities 2 (bits 13:12); requests
-> + * carrying VFIO_DMA_BUF_TPH_ST_EXT additionally require the device to
-> + * report the Extended TPH Completer encoding. Otherwise the ioctl
-> + * returns -EOPNOTSUPP.
-> + *
-> + * dmabuf_fd is the file descriptor returned by VFIO_DEVICE_FEATURE_DMA_BUF.
-> + *
-> + * 8-bit ST (steering_tag) and 16-bit Extended ST (steering_tag_ext) are
-> + * distinct namespaces. Userspace supplies whichever values are valid and sets
-> + * the matching VFIO_DMA_BUF_TPH_ST / VFIO_DMA_BUF_TPH_ST_EXT bits in @flags;
-> + * an importer requests one namespace and receives the matching value.
-> + *
-> + * @flags == 0 marks any previously published ST / Extended-ST as invalid
-> + * for future get_tph() requests on this dma-buf.
-> + *
-> + * ph is the 2-bit TLP Processing Hint and must be in the range [0, 3].
-> + *
-> + * Userspace must publish TPH before handing the dma-buf fd to an importer.
-> + * Calling SET again replaces the published values.
-> + */
-> +#define VFIO_DEVICE_FEATURE_DMA_BUF_TPH 13
-> +
-> +#define VFIO_DMA_BUF_TPH_ST		(1 << 0)
-> +#define VFIO_DMA_BUF_TPH_ST_EXT		(1 << 1)
-> +
-> +struct vfio_device_feature_dma_buf_tph {
-> +	__s32	dmabuf_fd;
-> +	__u32	flags;
-> +	__u16	steering_tag_ext;
-> +	__u8	steering_tag;
-> +	__u8	ph;
-> +};
-> +
->  /* -------- API for Type1 VFIO IOMMU -------- */
->  
->  /**
+>
+> -- PMM
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
