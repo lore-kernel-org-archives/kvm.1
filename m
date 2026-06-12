@@ -1,242 +1,232 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA623B9D81;
-	Fri, 12 Jun 2026 12:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513F638A700
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 12:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781267002; cv=none; b=dZE7tHpKsswDYB0FDiztlE2ovtIsaBAss9kEvsMZV6xkYu359RiTdosoKu0wXDLvKBUWSV+muir+Qm4eTPoPtwDCLIwyTmAAUdhTV+GPup7CecI1sjcWVMQELawCMtz9dlg8frJkEjELrCUmAAD43FrgsHy964s29xnNIlzKTv8=
+	t=1781267389; cv=none; b=bk0CcskuDl8/SU8+Hjnojfb4rVuX9IJYEFYWTp53DF3NpypvW1WXEG9WI+B0d3G+Vb8eJ8fYS1bM51maVm9+mLxpYdxq3pSmP6WLi8S3eR8Q/98IQzk+blRrGtmVwpE64IPS9ffQT9ZGi7e3LIsws1LtU6NfsKcaVrEM0NhT4p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781267002; c=relaxed/simple;
-	bh=5knGSLdcy1yN1LdHvUSOPsaHUgYlh7c1cnGwmlJ2vJ4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hTMb9fr4CtzeeFCrEClnQd/OpsEC96x5YKXNk++cnQaXFNilzGuAU4QO/klNT6Jtv9yiCunwvdXiPxbkRooKOOygEA5L8PR/IH6wCiEfLuoji+MAn0SvRE7ik8FpxHy1gghmRAPEkLaQkiPNcI36zT6IH91PQwAVV8p9YRaoTsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=aUwhwfOl; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1781267389; c=relaxed/simple;
+	bh=2+HlNH2kZ9IXso03Qi+bHT3bZpGRqD5fmq6JyzT/uGI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QyVKHpZbiT3puLcLFew+h2q2hfEhi7BhFZuYQfcuMo14Aeft4ujjEhtoaiU5mt0i5Revly61ovwnSsMZPlDffR4lRVv/BlFkj8SUqF6VxU44BPqcNRGwGxC6nJjGVn72UYKn/GTqisYjMZGLm+YzmyLyrIaClW4rMbkuNRUJvDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ttdk10g3; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="aUwhwfOl"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65C0TmUx4148991;
-	Fri, 12 Jun 2026 12:23:20 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ttdk10g3"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BMD9A21742344;
+	Fri, 12 Jun 2026 12:29:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=wB8L9V
-	Z2HgQ2lsYNv35i/uq3Fjo0FfwiabUHvVtQrfI=; b=aUwhwfOlaD32BBLugbLSxa
-	U8p8kPLIdhW0wrbu9K8kBXdaEaE+TbEriI3ZUgxIDbU3/3YVHstMIfIT4EDJXTr1
-	s0ZdojOcIIAs63Lyka7TlhVC3gBn7vMVu+H7XN4sA3djclRDOKPRIra7WdFY8Prf
-	cDDcoO1N7hlofbmcYYio/6ZHOcUmyoq1fV1Yuhjn3qQFx51mGaWQyip/1zR3Uqrk
-	EVc8H552oEoZ68zmlLAAgxsr30uNJ6ihgQuBT75Gt+s655sW6jfB9r+l25CrK+Gp
-	23/+LAwkiRaqG08wGQGvJrvSBkPpplsa4gjjtLGlyGqCjOz+1PdHZTIVyQcMeboA
+	:message-id:mime-version:references:subject:to; s=pp1; bh=uezUXr
+	7Pra2D8IjxaGOXxuRQsR05hLjVHXRyfmm3HUk=; b=ttdk10g3s+XPy8nEkY96OO
+	GxGIxM2WMiyik5aIMfzkux/9Yw7TiONFRKbu36+dnCHt+0AqQayg9VI6aMyF3iXX
+	mdEJgxNAmqmC0SDPSWbpfykNHKqWSJSj17CitUzdjenOg36HE4RFFqURFkG/eXTK
+	y90JU0+hTdv4YekQOEOAixBwhq3PQy30ye9XDNIXxGP8TKl0k3msOasVvBipM0BO
+	MKUleM/Zj1KllHRH70jI4VChJ+TIoyxHublCyikUg2G7U3/AyNZiz6vxCRkUzmI9
+	gEzZwlsgARg3O4qAbT0OJeyIqqJRnGVfQvev/pbhcTz+c0SzFvlz+HMCPlu+RHdA
 	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8c8w0h-1
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8brj1n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jun 2026 12:23:20 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65CCJrBn006699;
-	Fri, 12 Jun 2026 12:23:19 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eqe08qs58-1
+	Fri, 12 Jun 2026 12:29:18 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65CCJhIT014827;
+	Fri, 12 Jun 2026 12:29:18 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eqe08ytbm-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jun 2026 12:23:19 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65CCNFoD50332092
+	Fri, 12 Jun 2026 12:29:18 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65CCTGcA30999236
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Jun 2026 12:23:15 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 64EAB20049;
-	Fri, 12 Jun 2026 12:23:15 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C89D320040;
-	Fri, 12 Jun 2026 12:23:14 +0000 (GMT)
-Received: from [192.168.88.52] (unknown [9.111.8.71])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 12 Jun 2026 12:23:14 +0000 (GMT)
-From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Fri, 12 Jun 2026 14:23:04 +0200
-Subject: [PATCH v4 4/4] KVM: s390: vsie: Implement ASTFLEIE facility 2
+	Fri, 12 Jun 2026 12:29:16 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 928A15804B;
+	Fri, 12 Jun 2026 12:29:16 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1551858055;
+	Fri, 12 Jun 2026 12:29:13 +0000 (GMT)
+Received: from [9.39.30.128] (unknown [9.39.30.128])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 12 Jun 2026 12:29:12 +0000 (GMT)
+Message-ID: <ac8931ff-5264-45cc-9842-bd240439cefa@linux.ibm.com>
+Date: Fri, 12 Jun 2026 17:57:48 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260612-vsie-alter-stfle-fac-v4-4-74f0e1559929@linux.ibm.com>
-References: <20260612-vsie-alter-stfle-fac-v4-0-74f0e1559929@linux.ibm.com>
-In-Reply-To: <20260612-vsie-alter-stfle-fac-v4-0-74f0e1559929@linux.ibm.com>
-To: linux-s390@vger.kernel.org
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Nina Schoetterl-Glausch <nsg@linux.ibm.com>, kvm@vger.kernel.org,
-        Christoph Schlameuss <schlameuss@linux.ibm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4360;
- i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=lNtgdSRZ2Bbvm4k3JfKEXTrh2ambbf+mtvDu0rG1aPw=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDFnav/QZlT8/nTNzUtI98Wvp/w9+VaxPMLgx5Zh+obrFH
- psX2z60d5SyMIhxMciKKbJUi1vnVfW1Lp1z0PIazBxWJpAhDFycAjCRuDxGhqPFV6OUZ2bE7u5i
- fGNeJ3ZxR1CS7MWTT1T3yl/2lKkO7WNkOH2e9X6coPC/X1NZ12Qf3ZhvcHP1s/+Z6TrtSYnPFvb
- zsAMA
-X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
- fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests RFC PATCH 1/6] powerpc: add pmu tests
+To: Thomas Huth <thuth@redhat.com>
+Cc: npiggin@gmail.com, harshpb@linux.ibm.com, lvivier@redhat.com,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        andrew.jones@linux.dev, sbhat@linux.ibm.com
+References: <20260602064806.3101025-1-rathc@linux.ibm.com>
+ <20260602064806.3101025-2-rathc@linux.ibm.com>
+ <b7aa2c73-be32-47e2-8452-e626845f4d3e@redhat.com>
+ <0c95c25f-1400-4912-befc-c5b32968d9ab@redhat.com>
+ <a406db02-3aeb-4922-b6b1-8a030ca45a7b@linux.ibm.com>
+ <ab4d83d8-1ffa-4738-b4b5-12d9a4f2d9c0@redhat.com>
+Content-Language: en-US
+From: Chinmay Rath <rathc@linux.ibm.com>
+In-Reply-To: <ab4d83d8-1ffa-4738-b4b5-12d9a4f2d9c0@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDExMSBTYWx0ZWRfX2K9ObS3/uj+E
- BRjMZyo5PsUPQU6mTvQvgM/rgzdUXanLITox41J4t3ytKRbo5di93Yov5HRmZi+Ew3ypBCjDYeG
- 07SvNfv8bzylUG4WDy7cDMoKdc8qJo0=
-X-Authority-Analysis: v=2.4 cv=AYCB2XXG c=1 sm=1 tr=0 ts=6a2bfa38 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=Xfa5Co55 c=1 sm=1 tr=0 ts=6a2bfb9f cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=F8FVqei25e47uhyEDlAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: oCcITnp3sdYY3cQSDY6ovTCK2Kn8oLUI
-X-Proofpoint-ORIG-GUID: oCcITnp3sdYY3cQSDY6ovTCK2Kn8oLUI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDExMSBTYWx0ZWRfX6LpH4/R9PXx5
- qPu2KG8zyZdifpsuzogi/rfTNd21RZ6qHB2BfSnvObC1eLH90pFQ14NgyO7uTEW7Ojkp0+1I2Wj
- 8QYfF7IOjC51IZfLtvuJj8UkCy6ggeKulo9bgkkywycDbBLcY7smwMr70jjSEWc8/o7sm+xfcLN
- rZp0rdpdGVIBycEynrDBybT8GB2D7tgISPsKf8PR/tWEtPLcYFST+BHeHzFBe3GIPJEBZSknP41
- 3Y3Gi8A5/fovP1GnyDXJ3umZHGRH02jWumG/1yYbGvLAViDnl1OOC9MsNhw7PXuP3sTZc2Mki47
- ba7hhhdtxUraB1qqDjyPoPWi16yfeGPxTXnoIm1S4d/OxxJ8nQWYXZbuY2tHzKPPYYl7mOscrY8
- T1UPYtWDYhCCsHDOETG+iwMLoXFjaPV4YllQBT9CplZgPtUY5g3uN2EbIb1cREjcDlX+ebi5880
- dJFC72bMiTT3Ebk3HmA==
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=FPh58N5xAAAA:8
+ a=OLL_FvSJAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=t1-onl6Wi8JrmCUjQxEA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=Q4WRRM2E_uQYcjguQaFu:22
+ a=oIrB72frpwYPwTMnlWqB:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDExMSBTYWx0ZWRfXy8Vz/vI2SSAz
+ xJ9zVBYHhorjIS2PUnGwN1NFanK3aQi27THPxojvNNk711lcrlLksNbiO4PAdbvIHIRMk/L6xa3
+ 0hI2nHHIopPAZBoWmzxqBLNEBstPeJAul/j7oqtFNlv2J6HeOoyaM97JXNC/jwfuL1/kOxt0rOP
+ 3KK9vvBswAKAEpkOLP+Otym4PQl2nR0Z596CTsTUhruoetGhKqJP030ULxq79MQeLaTlO2cKGhJ
+ psvH+uUMocQC+8F5F3noEh2wwQ2mVcXH9vtM8eejHAH2VMl2Z3vh1vLhKla7hx5Uz/pNH01Te7t
+ N2UBgS3atO6zpDAeDyiH5vEnDV4brGekiiiGEh2O0q0gFT0Hs6dDcL+BzueOYiTYU5JKzCcC4Bf
+ YJQsAGyF8E+kh0Q/o9Mtw6DW5TfCJcEHlQQtitZ8YQch5shc2F26e0CegcMYOEzDTUyuZRGvRcr
+ uZPAy5RoO8K5m5iixug==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDExMSBTYWx0ZWRfXzroopslJdfyh
+ 0h/p9Wsda62jfdrcVFQ6RATRRuEbNujuNlG/Z600e0l7H82pU/sLN2xwu5eqHmMS4eTSlMA9+UB
+ uLsKQAdqTAPBbKp2WGCmJTHlofJq08c=
+X-Proofpoint-ORIG-GUID: k0GyQlO6VH4FWCvjZxpwRsJ4WuAFk3Dc
+X-Proofpoint-GUID: lxA_dqrPhy2bayeBrgt-11C9CO7nPqO1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-12_01,2026-06-12_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 malwarescore=0 spamscore=0 phishscore=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1015
+ malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 suspectscore=0 clxscore=1015 phishscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606120111
 
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 
-Implement shadowing of format-2 facility list when running in VSIE.
+On 6/10/26 17:03, Thomas Huth wrote:
+> On 10/06/2026 11.27, Chinmay Rath wrote:
+>>
+>> On 6/8/26 19:27, Thomas Huth wrote:
+>>> On 08/06/2026 14.45, Thomas Huth wrote:
+>>>> On 02/06/2026 08.48, Chinmay Rath wrote:
+>>>>> From: Nicholas Piggin <npiggin@gmail.com>
+>>>>>
+>>>>> Add some initial PMU testing.
+>>>>>
+>>>>> - PMC5/6 tests
+>>>>> - PMAE / PMI test
+>>>>> - BHRB basic tests
+>>>>>
+>>>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>>>> Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
+>>>>> ---
+>>>>>   lib/powerpc/asm/processor.h |   2 +
+>>>>>   lib/powerpc/asm/reg.h       |   9 +
+>>>>>   lib/powerpc/asm/setup.h     |   1 +
+>>>>>   lib/powerpc/setup.c         |  20 ++
+>>>>>   powerpc/Makefile.common     |   3 +-
+>>>>>   powerpc/pmu.c               | 567 
+>>>>> ++++++++++++++++++++++++++++++++++++
+>>>>>   powerpc/unittests.cfg       |   3 +
+>>>>>   7 files changed, 604 insertions(+), 1 deletion(-)
+>>>>>   create mode 100644 powerpc/pmu.c
+>>>>
+>>>>   Hi Chinmay,
+>>>>
+>>>> the problem with Clang on Travis [*] still seems to persist:
+>>>>
+>>>>   https://app.travis-ci.com/github/huth/kvm-unit-tests/jobs/639614142
+>>>>
+>>>> Could you please have a look?
+>>>>
+>>>>   Thanks,
+>>>>    Thomas
+>>>>
+>>>>
+>>>> [*] This already happened with Nicolas' last version:
+>>>>
+>>>>   https://www.spinics.net/lists/kvm/msg351218.html
+>>>
+>>> I managed to get access to a ppc64 machine. The error is:
+>>>
+>>> /tmp/pmu-eab466.s: Assembler messages:
+>>> /tmp/pmu-eab466.s:1649: Error: unrecognized opcode: `ldat'
+>>> clang: error: assembler command failed with exit code 1 (use -v to 
+>>> see invocation)
+>>> make: *** [<builtin>: powerpc/pmu.o] Error 1
+>>>
+>>>  HTH,
+>>>   Thomas
+>> Hi Thomas,
+>>
+>> Thanks for looking into this and providing the exact error message.
+>>
+>> I was looking into this Travis CI job that you pointed to and noticed 
+>> that the clang version being used was 14.
+>> I was wondering, would it be possible to use a newer version of clang 
+>> for the job since LDAT is a legit PPC insn,
+>> that was introduced with Power 9, ISA version 3.0, way back a decade 
+>> in 2016 !
+>> So I was wondering if using a newer version of clang that recognizes 
+>> the instruction would be a better approach.
+>
+> I can reproduce the very same issue on a ppc64le box with Clang 22:
+>
+> # clang --version
+> clang version 22.1.6 (Fedora 22.1.6-1.fc44)
+> Target: ppc64le-redhat-linux-gnu
+> Thread model: posix
+> InstalledDir: /usr/bin
+> Configuration file: /etc/clang/ppc64le-redhat-linux-gnu-clang.cfg
+> # make
+> clang -no-integrated-as -std=gnu99 -ffreestanding -O2 -msoft-float 
+> -mno-altivec  -I /root/kvm-unit-tests/lib -I 
+> /root/kvm-unit-tests/lib/libfdt -I lib -Wa,-mregnames -g -MMD -MP -MF 
+> powerpc/.pmu.d -fno-strict-aliasing -fno-common -Wall -Wwrite-strings 
+> -Wempty-body -Wuninitialized -Wignored-qualifiers -Wno-missing-braces 
+> -Werror  -fomit-frame-pointer -fno-stack-protector    
+> -Wno-frame-address   -fno-pic -Wunused-but-set-parameter  
+> -Wno-override-init -Wmissing-prototypes -Wstrict-prototypes  
+> -mlittle-endian   -c -o powerpc/pmu.o powerpc/pmu.c
+> /tmp/pmu-f0c247.s: Assembler messages:
+> /tmp/pmu-f0c247.s:1656: Error: unrecognized opcode: `ldat'
+> clang: error: assembler command failed with exit code 1 (use -v to see 
+> invocation)
+> make: *** [<builtin>: powerpc/pmu.o] Error 1
+>
+> Does compiling with Clang work for you? If so, which version?
+>
+>  Thomas
+>
+>
+Thanks for sharing this observation Thomas. I did some digging on a 
+ppc64 machine and found the following :
 
-ASTFLEIE2 is available since IBM z16.
-To function G1 has to run this KVM code and G1 and G2 have to run QEMU
-with ASTFLEIE2 support.
+The problem isn't with clang. Clang is able to perfectly identify LDAT 
+insn. This can be verified by writing a small C program using LDAT 
+within a similar asm volatile block and compiling with Clang. Sails smooth.
+The problem is, the GNU assembler does not identify LDAT, unless 
+"-mpower10" flag is passed to it. Can be verified by writing a small .S 
+program making use of LDAT and passing to 'as', the GNU assembler binary.
+In your Travis CI log, as I can check, the following config is used :
+$ export CONFIG="--arch=ppc64 --endian=little --cc=clang 
+--cflags=-no-integrated-as"
+"no-integrated-as" defers the assembling job to GNU assembler, and since 
+no "-mpower10" flag is passed, the compilation fails.
+Using the following flag in the config instead, passes -mpower10 to GNU 
+assembler and gets the compilation job done : 
+  --cflags="-no-integrated-as -Wa,-mpower10"
 
-Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Co-developed-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
----
- arch/s390/include/asm/kvm_host.h | 12 ++++++++++++
- arch/s390/kvm/kvm-s390.c         |  2 ++
- arch/s390/kvm/vsie.c             | 34 ++++++++++++++++++++++++++++++----
- 3 files changed, 44 insertions(+), 4 deletions(-)
+Thanks,
+Chinmay
 
-diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
-index 8a4f4a39f7a2..aa4c4685f95c 100644
---- a/arch/s390/include/asm/kvm_host.h
-+++ b/arch/s390/include/asm/kvm_host.h
-@@ -504,6 +504,18 @@ struct kvm_s390_cpu_model {
- 	struct kvm_s390_vm_cpu_uv_feat uv_feat_guest;
- };
- 
-+#define S390_ARCH_FAC_FORMAT_2 2
-+struct kvm_s390_flcb2 {
-+	union {
-+		struct {
-+			u8 reserved0[7];
-+			u8 length;
-+		};
-+		u64 header_val;
-+	};
-+	u64 facilities[S390_ARCH_FAC_LIST_SIZE_U64];
-+};
-+
- typedef int (*crypto_hook)(struct kvm_vcpu *vcpu);
- 
- struct kvm_s390_crypto {
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 2a57ea095b48..cb623fc41127 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -460,6 +460,8 @@ static void __init kvm_s390_cpu_feat_init(void)
- 		allow_cpu_feat(KVM_S390_VM_CPU_FEAT_IBS);
- 	if (sclp.has_kss)
- 		allow_cpu_feat(KVM_S390_VM_CPU_FEAT_KSS);
-+	if (sclp.has_astfleie2)
-+		allow_cpu_feat(KVM_S390_VM_CPU_FEAT_ASTFLEIE2);
- 	/*
- 	 * KVM_S390_VM_CPU_FEAT_SKEY: Wrong shadow of PTE.I bits will make
- 	 * all skey handling functions read/set the skey from the PGSTE
-diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
-index c7dcdd460dd1..9abc2c657d69 100644
---- a/arch/s390/kvm/vsie.c
-+++ b/arch/s390/kvm/vsie.c
-@@ -65,9 +65,9 @@ struct vsie_page {
- 	gpa_t scb_gpa;				/* 0x0258 */
- 	/* the shadow gmap in use by the vsie_page */
- 	struct gmap_cache gmap_cache;		/* 0x0260 */
--	__u8 reserved[0x0700 - 0x0278];		/* 0x0278 */
--	struct kvm_s390_crypto_cb crycb;	/* 0x0700 */
--	__u8 fac[S390_ARCH_FAC_LIST_SIZE_BYTE];	/* 0x0800 */
-+	__u8 reserved[0x06f8 - 0x0278];		/* 0x0278 */
-+	struct kvm_s390_crypto_cb crycb;	/* 0x06f8 */
-+	__u8 fac[8 + S390_ARCH_FAC_LIST_SIZE_BYTE];/* 0x0800 */
- };
- 
- static_assert(sizeof(struct vsie_page) == PAGE_SIZE);
-@@ -1020,6 +1020,28 @@ static int handle_stfle_0(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page,
- 	return 0;
- }
- 
-+static int handle_stfle_2(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page, u32 fac_list_origin)
-+{
-+	struct kvm_s390_flcb2 *flcb_s = (struct kvm_s390_flcb2 *)vsie_page->fac;
-+	struct kvm_s390_sie_block *scb_s = &vsie_page->scb_s;
-+	u64 len;
-+
-+	if (read_guest_real(vcpu, fac_list_origin, &len, sizeof(len)))
-+		return set_validity_icpt(scb_s, 0x1090U);
-+
-+	/* discard reserved bits */
-+	len = (len & U8_MAX);
-+	flcb_s->header_val = len;
-+	len += 1;
-+
-+	if (read_guest_real(vcpu, fac_list_origin + offsetof(struct kvm_s390_flcb2, facilities),
-+			    &flcb_s->facilities, len * sizeof(u64)))
-+		return set_validity_icpt(scb_s, 0x1090U);
-+
-+	scb_s->fac = (u32)virt_to_phys(&vsie_page->fac) | S390_ARCH_FAC_FORMAT_2;
-+	return 0;
-+}
-+
- /*
-  * Try to shadow + enable the guest 2 provided facility list.
-  * Retry instruction execution if enabled for and provided by guest 2.
-@@ -1034,6 +1056,8 @@ static int handle_stfle(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- 	int format_mask, format;
- 	u32 origin;
- 
-+	/* assert no overflow with maximum len */
-+	BUILD_BUG_ON(sizeof(vsie_page->fac) < ((S390_ARCH_FAC_LIST_SIZE_U64 + 1) * sizeof(u64)));
- 	BUILD_BUG_ON(!IS_ALIGNED(offsetof(struct vsie_page, fac), 8));
- 
- 	if (fac && test_kvm_facility(vcpu->kvm, 7)) {
-@@ -1049,9 +1073,11 @@ static int handle_stfle(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
- 		case 0:
- 			return handle_stfle_0(vcpu, vsie_page, origin);
- 		case 1:
-+			return set_validity_icpt(&vsie_page->scb_s, 0x1330U);
- 		case 2:
-+			return handle_stfle_2(vcpu, vsie_page, origin);
- 		case 3:
--			unreachable();
-+			return set_validity_icpt(&vsie_page->scb_s, 0x1330U);
- 		}
- 	}
- 	return 0;
-
--- 
-2.54.0
+PS: I will be away traveling for a while, will get back to this as soon 
+as I am back. Thanks for understanding   :)
 
