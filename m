@@ -1,56 +1,55 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625403D4101
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 23:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC1D3D6682
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 23:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781305281; cv=none; b=nQxrFlefPm94aj3akK529ODqHtq45BkYYyqN1ITSFB6+6Rw+h8mjacSetFutCt3FF6/niDmh4tSfLtW2bJofwDN9EdzhGXxHe2f0k5Cv3n161caHwnE8ZuELujQ/Ucg8i4WijNj5QxAqdwqk1p368x4zXaIcmygg/XtoiRDD+6U=
+	t=1781305281; cv=none; b=FUhY9JC3c0fBV4U5vhjos8U+rZjl+bVb0Rz8vLguQo+x6swIu9KN7C2OCqoVRp+cSys1/j5A7C4+O8ORCi70LfFEP+ii11cTIqCpD7B5O3XZu5vNaI61W1jvHA1zBfbqcsonDV7QNpKtquSH0VM8TnZqolQhoP5UD6g2ZFdQoTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781305281; c=relaxed/simple;
-	bh=cybvwvgY+Yi8QNGD3X/tR04j2hTF1orrUAg6FqXA/uA=;
+	bh=DKAqswpPaExUn02wUL+NOxMfuWixP3sOTmVCG3euVIk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MTpqa2qu1RXkUSZh97eso4v1vKFW0R8b3wk9ReO3Xj9DUCJtg9sUJIN8AKvMpvpGw24woXN8mLSoz9lJ+DtrSBUGIf/5IqygG8kSzNyjKLcOttZZMmvMVUB5hYGzr1EGtGyksBEznBJX+MNEvXNEmjXMTBj0207WuTu9Bl62z9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G1irmx94; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=OZ+qZf7kO9/KVmHj6qb0x3Qzw3jh17f1vYsthN6DxqGbREHjzhc7yInd+X//JpRi62eaDQndsvBjhwJn6iF0b415zPq5GcPWUAZfcL4hTNHgPr5PyjNBDzjuLGyTo0H5muF2Yozi6iVYjN71uwEFoHbpn5zGTX7lnNGHzPd8qF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nh32vvNR; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G1irmx94"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf243973c2so10112905ad.1
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 16:01:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nh32vvNR"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8426ed9f24dso1580723b3a.1
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 16:01:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781305279; x=1781910079; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sCzD9DkTttsLEENWkse0eT0ucq+Hmp31Avye2/c+A8M=;
-        b=G1irmx94XnRIRb4xdfOhakT1BDTYnpiuMsv6rIsycRW2uSNsPgDnbDXgS39oEvw7Xx
-         58FGLe5hE8M6U62Ji17IfR0qGrxb7QjYECLlGb/T2xzWBX465F58TBR+5OfHpj8YiveL
-         jAG6WqCnsvFcS3INhNYilsRaGacbQWza5sv0YeHK9CIL4QcYShI7QP+HjCtxIbROExb3
-         trZ0eO0Xu1FyT73numD+zogtg1cf5GZTp+kg8WBTwSCZfEAfQnbvQKQIb4rxTmCDX8dZ
-         1A9AmiooilbXE92nr2rj4WSiuecaPcOr4W2a2Nl95X5paWvioMkV1GMzTg1WK+2Muzhw
-         rIgw==
+        d=google.com; s=20251104; t=1781305280; x=1781910080; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=J359yHegu9UkwwiKsAhLDZGnRJ5TMvYWdSC1Vkojkx4=;
+        b=nh32vvNRDnkBXvEU67+vZlEDQVNqMEaVq23Zuns5gefbqbi3o+EuXBitCkkYs05ZpI
+         ziDip4am++2OTjw6+r6bqKa/iYvpbmzHXxN4jUrnm9nhzPboSPEJWbWyIUn3hFo9P2JW
+         Ue+Lc1Pl7y9k5W37U8V+SCOPmw7LP1K8UdHNo8rTFIlRB5BPq5yk/UfPreyXtJjDiK2Z
+         1b3+3A3MobNo+hw2Z3MCInZ8C6Bh0E2+7EiLdrjnc7rR4qpZO78Ba1J9MULLPs3fLq86
+         i1xODl9bXrUSRTty1mDRZ0d4kitANTts2fuW6OMvKBX82S5rEDiAqz840rVU6SpqtLYT
+         KDbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781305279; x=1781910079;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sCzD9DkTttsLEENWkse0eT0ucq+Hmp31Avye2/c+A8M=;
-        b=stcNzQFcQmYLhWEWdG+eHXvRzu0Q0taxHHSa6H+GFNDgGAyhIyDa8/xrFv9AABU+ZP
-         8V67FndBFPrB48Viz91kz2ABGz2UtK2+YfyvWLxHMQht0MO1UBkWhULDYLQUvbKlicLN
-         pQiUo2fgO7OZI8l2V8d5vds2phRmTHQ8n4C6aJ+Xirtb+M761RmAYFvfjSusrIuMiETz
-         jTaqQ2LKulytDu57zkK/KnZeh35n2ij5tfQxEaRaODixOE5jZJaw/elWby446Fl62xmv
-         outgQmRy7zGJYJunRiXDHav1tOG2zxXe1wcaMd33U8eKfajYg3y4jkM0POO8cnSncDNA
-         oNbg==
-X-Gm-Message-State: AOJu0YzTOftuJpxMXhSWblxUo1kycsdCbbWEClHP921YX0lJ+8RbZq8U
-	doIqg6sGRHYtjs56lXl6N44fVAz/7KxZK8nfrKO/Iwsp0wFRepOW7Bs2dFeo1NWfBQpBA025Ygt
-	dWjFBDA==
-X-Received: from plkb11.prod.google.com ([2002:a17:903:fab:b0:2bf:190f:f93e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ccc8:b0:2c6:6424:c79f
- with SMTP id d9443c01a7336-2c66424cc24mr17748175ad.8.1781305278421; Fri, 12
- Jun 2026 16:01:18 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781305280; x=1781910080;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J359yHegu9UkwwiKsAhLDZGnRJ5TMvYWdSC1Vkojkx4=;
+        b=oXXN/4Hp7lvflrt+GcP/Ej4WQ9dGuxlXIAbPSzgM0SkTAaSLqY4H9j1ZkMFustmdRP
+         yKHmpPBM0rByx2fSwxk0J38Vb7X+M2n8641HP7poHfJvKpQ1IOSx/kIDqYnNJhEUFCjw
+         He7S4ndvRAxnrEoP/qCQxhxTCJryoegx5t1tHSfe0q8KnPbERFCN0tTeG0lGR+XROjrq
+         yk6n8AyTSTAtdd/e4qW61BtZhWOHpGGn3BGjTakJ3VLSJof0BW4ufPpF2UAxEMEAsdhp
+         onzW0JlLfg9X5dXOEW/LenVX4MV+IZCFrZP+pCOmrdkW9k2M9pXGoUFN/uHX+QU0EtCF
+         fHZA==
+X-Gm-Message-State: AOJu0Yzky2j/qnQjQ1WIy36d7KqaOvPWRZiZFhjHLzykohDvz0ui7kks
+	f2v5C01PwkL+q15gcTGi/j4Y9ApV/OsUMzz5pAWXi7X+1iuyJQyGr7vw633m8r77Mr7uEaqfVDt
+	LpFxsCA==
+X-Received: from pfbfb1.prod.google.com ([2002:a05:6a00:2d81:b0:83f:420:c568])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2395:b0:842:499d:450e
+ with SMTP id d2e1a72fcca58-843497500b4mr4466895b3a.20.1781305279654; Fri, 12
+ Jun 2026 16:01:19 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 16:01:06 -0700
+Date: Fri, 12 Jun 2026 16:01:07 -0700
 In-Reply-To: <20260612230113.684301-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,71 +59,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260612230113.684301-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260612230113.684301-2-seanjc@google.com>
-Subject: [PATCH v3 1/8] KVM: x86: Treat any non-zero return from set_dr() as a
- faulting condition
+Message-ID: <20260612230113.684301-3-seanjc@google.com>
+Subject: [PATCH v3 2/8] KVM: x86: Prioritize DR7.GD #DB over #GP due to
+ illegal DR6/7 value
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	"=?UTF-8?q?Carlos=20L=C3=B3pez?=" <clopez@suse.de>, "Maciej W . Rozycki" <macro@orcam.me.uk>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-From: Carlos L=C3=B3pez <clopez@suse.de>
+When emulating a MOV DR, specifically a write to DR6 or DR7, treat a #DB
+due to DR7.GD (General Detect) as higher priority than a #GP due to an
+illegal value.  While neither Intel's SDM nor AMD's APM says anything
+about the relative priority, empirical testing on Intel and AMD shows that
+the #DB has higher priority.  And for VMX, where the instruction intercept
+has priority over *all* exceptions, KVM already treats the #DB as having
+higher priority.
 
-When emulating a MOV to a debug register, em_dr_write() calls
-@ctxt->ops->set_dr(), which is forwarded to emulator_set_dr() and
-then kvm_set_dr(). The latter checks that the written value is valid,
-otherwise returning an error, in which case the emulator is supposed to
-inject a #GP fault into the guest.
-
-Commit 996ff5429e98 ("KVM: x86: move kvm_inject_gp up from kvm_set_dr
-to callers") changed the contract of kvm_set_dr() (and thus
-emulator_set_dr()), returning 1 as an error instead of -1, but the
-caller in em_dr_write() was never updated, checking only if the returned
-value is negative. The end result is that em_dr_write() does not detect
-the error, so an invalid write does not generate a #GP, but at the same
-time the register value is not updated.
-
-The practical impact is limited, as check_dr_write() already checks DR6
-and DR7 manually. However, it misses DR4/DR5, which alias DR6/DR7 when
-CR4.DE=3D0.
-
-Fix the bug by treating any non-zero return from set_dr() as a reason to
-inject #GP.
-
-Note, the manual checks on DR6 and DR7 are flawed, as they incorrectly
-prioritize the #GP over a DR7.GD=3D1 #DB (the General Detect #DB has
-priority on both Intel and AMD).
-
-Note #2, relying on ->set_dr() to detect #GP is also flawed as all
-exceptions have higher priority than the instruction intercept on SVM,
-i.e. the manual checks need to be extended to DR4 and DR5 (after the
-priority bug is fixed).
-
-Fixes: 996ff5429e98 ("KVM: x86: move kvm_inject_gp up from kvm_set_dr to ca=
-llers")
-Signed-off-by: Carlos L=C3=B3pez <clopez@suse.de>
-Link: https://patch.msgid.link/20260601133320.91479-2-clopez@suse.de
-[sean: drop explicit "!=3D 0", massage changelog]
+Cc: Maciej W. Rozycki <macro@orcam.me.uk>
+Fixes: 3b88e41a4134 ("KVM: SVM: Add intercept check for accessing dr registers")
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/emulate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/emulate.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index b566ab5c7515..75cd8b6136aa 100644
+index 75cd8b6136aa..4484c5fa19e3 100644
 --- a/arch/x86/kvm/emulate.c
 +++ b/arch/x86/kvm/emulate.c
-@@ -3299,7 +3299,7 @@ static int em_dr_write(struct x86_emulate_ctxt *ctxt)
- 		val =3D ctxt->src.val & ~0U;
-=20
- 	/* #UD condition is already handled. */
--	if (ctxt->ops->set_dr(ctxt, ctxt->modrm_reg, val) < 0)
-+	if (ctxt->ops->set_dr(ctxt, ctxt->modrm_reg, val))
+@@ -3854,11 +3854,16 @@ static int check_dr_write(struct x86_emulate_ctxt *ctxt)
+ {
+ 	u64 new_val = ctxt->src.val64;
+ 	int dr = ctxt->modrm_reg;
++	int rc;
++
++	rc = check_dr_read(ctxt);
++	if (rc != X86EMUL_CONTINUE)
++		return rc;
+ 
+ 	if ((dr == 6 || dr == 7) && (new_val & 0xffffffff00000000ULL))
  		return emulate_gp(ctxt, 0);
-=20
- 	/* Disable writeback. */
---=20
+ 
+-	return check_dr_read(ctxt);
++	return X86EMUL_CONTINUE;
+ }
+ 
+ static int check_svme(struct x86_emulate_ctxt *ctxt)
+-- 
 2.54.0.1136.gdb2ca164c4-goog
 
