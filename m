@@ -1,255 +1,128 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71490331EBF
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 14:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEE53596F8;
+	Fri, 12 Jun 2026 14:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781275467; cv=none; b=dbzs5q7BjlWWmtcqdP25MUHCukm3wPKLDhzh3waVAWz6gRQ7ECwAIjle3NklWY5aiV+2x7sjx299Lr8Scl4Dcus0Y3XXFv1jcBMP18bpzlAUqU429CvR5yHlYY/nXJ35aTsoKx90gcX8l6ESqxGEBRIdB3m00iJB36Q7xHV6eeo=
+	t=1781275823; cv=none; b=BC9d2rP42TU1XBNZUiL8WaREkzfUPVMheyMoUZEwty1EQf5xST6tTyD/N0092Y/FSScn9jLB7cneTCltwh4pIBfrgsplV1k47u64R9ux0QXCJfxCDjrKuLE1BH8JqmQ5T61KtIYzxG4/zPskG6FtMMpn5QRtd2tEv9JkcyZiaiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781275467; c=relaxed/simple;
-	bh=8xQFOW87PPfIKh9pXDO1PhGcSGszaXpRVhY1KZyzeS8=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=ocoEy73uLyY7vEDu5p3AlISn16r5N+DRT5DkWQNFm9LDKuuJOgWGgRUMqdXNrkCP2QEwaREF/fhSLZMOnx9hLDzOW83ch9zPm5ayUml2pf2eS5nUU9N/opS23kO54dnB+yvqg2C5vKQ9YbuASIm4cpsw/rqqRtMeow2osQiEd5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oKXVqFSD; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781275823; c=relaxed/simple;
+	bh=4GNULYf7soNlcGRLtPUwODeu5MO6effIyaAJAufYvZw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o0gOUBztS3D7/9m9PuikTqD6ZSq/7X7z62/VWP7FWdbEVlWfoUe2ulAt9UwbtM1VUOxvrMWwLaDV5Tzk8xxCRwE6GIuw70lVwKArQuFD1OaBgTNctJTgWqLporjP5Crf9VmsJyR8h5Yd8o/ejj6gqQZUdOzHwdrZmzojyrurIME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EjtZj422; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oKXVqFSD"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c0c1e0b0faso6940105ad.0
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 07:44:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781275465; x=1781880265; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=JTJ6LQiVaizRbhp8ioa0/mpPc2OvfEQezfKHZpIfGYU=;
-        b=oKXVqFSDLX4FLiNugW3NGVFIFgJEBmfO21e0SZ9ZCBhe2TQ36KhTOcOymi45zBBU5i
-         lrIW5GKlkbH2WM1EdsGvDT2HPNwL7AI1k1cRGppmUAhk7O7g22W0ylAWYDpIjY9oyfKu
-         /pOYCiFX0BEwas/PLlTESqtSmO9V5CR+8Um+mrEh9qXmokQyUl0uP8EhCUX6dDQLkDex
-         7AQWNEoQnKJ1YnQ5XvDEnKfaPvhaDHgaWjE4ZokuzYhc76i6bPhv/2ihM3mbTsiygxbK
-         2aZ3juhe9u2GQigfMvh4PlyENRcMjohugqW+y5WjustIUx/lkFdy6+r8er4PYBh7zakY
-         awgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781275465; x=1781880265;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JTJ6LQiVaizRbhp8ioa0/mpPc2OvfEQezfKHZpIfGYU=;
-        b=aXZkyP2VtiLSQrs66BJi64pRRicbbGNi/LpSgwsHr2XlfTKV2jBfZToOZTgwUc7Qow
-         7yLBlx+Tom0yQ3diIZDhrBuTpJTgCeMH1bT9pnpIJYX9BucjoY6NtAOfSzfFpNBez6Gx
-         F9fI/RZKZdgdzeRLNPjHNlrlm/PT1oBeI9Saa8d0OFj8Liwl9NAAn/pXgy6UuTtpfq68
-         VrC66qXsjFyMDRPbETCnds5IIDPL3el054az5nRG5AAnEvDDE1lUOwml/UYc0Mm1rUjI
-         rKakN3+xAXle9YP0lY2qafWtk/h+vYudAS5ZqR87Iw7VgrRM4E0GIvfh+61bVGw2bMOS
-         Rl2g==
-X-Gm-Message-State: AOJu0Yx9/J/noobMaR5BU5NuEkcuBDnPvbEVm3N33sSaTKErvDVtT2Sw
-	sbEXesDNUB0BiwRjkBoM/u1R/GofQ/gSd0vAgZkGmsugiFcbw/mtJtZz
-X-Gm-Gg: Acq92OGDH3NvxE2JhoaPTVQEh6tQyNsLYm59rJSEeTW3u5T8TU/48+m/Ty2qnorFBbW
-	5nc5wUOfPQWwsN8RM9BT1d0YIAKhU6MbYuEG86mw7in1ODvWPfnjpyRmfPEpi9Io1np0Z6ebRb4
-	n0uM0oaJhI45B5Gcs/8oR/tpFEdm1Q0E+U2uLe/VvUj0kUw6JqpadaKh2iqjIdBlguYhH7pPeW/
-	5oSWKUAfn/ojLSlKRhobTAGweW8cETD7zwD/ooF9dUsOZ17u0yAavMY6gQ2IfhmJY2PKiubqCo8
-	SpDxYkcByGCYCniW/eBdHuNy3yHbK8lg38oqsKil7PxPwrO5A0ecFiTg7edcjzMik/Ql2LbWS7b
-	+u6/KqEwk2LT8Dv2F1ram+MsZ5MPZGdZ423ShJ37Xj7EvRdlpjOpOt8GErCgMxkHXFy7orDoGs7
-	06TIRHbQm+hlRal2KnmER+lgrmwQ==
-X-Received: by 2002:a17:903:2352:b0:2c2:27be:39a3 with SMTP id d9443c01a7336-2c41300f817mr36848625ad.29.1781275464660;
-        Fri, 12 Jun 2026 07:44:24 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c432c8becesm23773525ad.56.2026.06.12.07.44.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 07:44:23 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <chleroy@kernel.org>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Ackerley Tng <ackerleytng@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 RESEND 02/10] KVM: selftests: Add aligned guest physical page allocator
-In-Reply-To: <air2QB-HUzxpCm_M@google.com>
-Date: Fri, 12 Jun 2026 20:06:23 +0530
-Message-ID: <h5n7esgo.ritesh.list@gmail.com>
-References: <cover.1781093720.git.ritesh.list@gmail.com> <df86b5ccdbdafc3509d9538bd5e6796737bab2db.1781093720.git.ritesh.list@gmail.com> <aimOVomL2RzYt2J4@google.com> <ldcldopw.ritesh.list@gmail.com> <air2QB-HUzxpCm_M@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EjtZj422"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BNeN3C1742452;
+	Fri, 12 Jun 2026 14:50:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=OMRe7iXTc2UBI4hEL2hLgPP0iCU9HsNxLvO9Vxb4D
+	8o=; b=EjtZj4227bqvdH8M1nnEFLNSilolcx7Jc7JwOAATBnkWwW4lrsreXLqHm
+	nTSLoa4pbJsU+lMGyviXqGTyO/MhcAgj668LpWjnFopVlfEIxYivic0oW0DlprQV
+	nHdSoGwn20Toty3wsKtovOgDI0ozJ97ueH4qxdiRlCDgrOrxQNSct1jWzm3X9X6z
+	8I5PYyigASfFi2v1sUQPfPjPtDgf0UPCHAaSu4Sqe4S79snSFkfhq5ckmBPz8X9R
+	8Lsw3SqXpsqWFxE6lblVpZJnOIjjoNUd46NjIjONrK+vpTHtNQ7/2753B7Fe7HdO
+	hGIKu0No/o/m3uu7z7JSU9xaOfOIQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8bs42h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jun 2026 14:50:18 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65CEnh0c027214;
+	Fri, 12 Jun 2026 14:50:18 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eqe0a8a1g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jun 2026 14:50:18 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65CEoEkR10748230
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Jun 2026 14:50:14 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7159F20049;
+	Fri, 12 Jun 2026 14:50:14 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 36DD220040;
+	Fri, 12 Jun 2026 14:50:14 +0000 (GMT)
+Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.224.75.30])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 12 Jun 2026 14:50:14 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com,
+        hca@linux.ibm.com, gerald.schaefer@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, svens@linux.ibm.com
+Subject: [PATCH v1 1/1] s390/pgtable: Unconditionally clear _PAGE_UNUSED
+Date: Fri, 12 Jun 2026 16:50:14 +0200
+Message-ID: <20260612145014.217102-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Xfa5Co55 c=1 sm=1 tr=0 ts=6a2c1cab cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=mOJq8Y0DGHbhJsF8cz8A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDEzNCBTYWx0ZWRfXyAaEpsgXyTmh
+ rDBHEZ5wwn2lppdBNAhxsdcoLgk+gAMpyUFmFFKU0SC8eEqXq1ONuWIj5UKhaSoGmrM3CieRZRE
+ QvFz2jU4uFG3/Iv9ZIivV19JoZ3yUn7gl4yGrErnIWAGkhGtRTVQ1w9tHKYv/nwWWTHth+w7egq
+ 6F9laM+E5V7tXXDUC2h36SvVrylb2sHSK0lZo65p73RDd0MDb3oqcij/ls62asmj12rfZnmasL6
+ zng3L2MLwskuKWEmL8PaJXtGADgkWP8n0LxDvOMTLVLjQzTq2XLeEoUrOu1t42J8FJIL6HJNZXC
+ lx/4ygF9R4shF01nT34DcpKCM91J9Rumjg6GdIjcGXMTR2UJt8ma/0xDMVWgEMs8sk8Bi8X/Htc
+ lo48ITi2iigtrXYiomQtz+2gZ6sNkXBVkbF7V/pmxIIP0ZFME2i71Ndv4UdJAIVuqvNDWqd/h3W
+ b+mRNZpj5R2uG4luj1A==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDEzNCBTYWx0ZWRfX3J0SZN8/Qtda
+ oZDsItUf1D+G+kfLmWO0wSNbwqGE2R+qWpmD3EEWEjUqfeefRZfoeBsCGTYeKtrdjANRxMiJKnh
+ t1MwfA4nIz91YMgakCJk23LW8m/xQ4w=
+X-Proofpoint-ORIG-GUID: USSBqugVIMzo3YqHtHIvtRg9HLh9wnbE
+X-Proofpoint-GUID: USSBqugVIMzo3YqHtHIvtRg9HLh9wnbE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-12_01,2026-06-12_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 suspectscore=0 clxscore=1015 phishscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606120134
 
-Sean Christopherson <seanjc@google.com> writes:
+When setting ptes with set_ptes(), unconditionally clear the
+_PAGE_UNUSED flag.
 
-> On Thu, Jun 11, 2026, Ritesh Harjani wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->> 
->> > On Wed, Jun 10, 2026, Ritesh Harjani (IBM) wrote:
->> >> From: Nicholas Piggin <npiggin@gmail.com>
->> >> 
->> >> powerpc will require this to allocate MMU tables in guest memory that
->> >> are larger than guest base page size.
->> >> 
->> >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> >> [Rebased to latest mainline tree]
->> >> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->> >> ---
->> >>  .../testing/selftests/kvm/include/kvm_util.h  | 20 +++++++++--
->> >>  tools/testing/selftests/kvm/lib/kvm_util.c    | 33 +++++++++----------
->> >>  2 files changed, 33 insertions(+), 20 deletions(-)
->> >> 
->> >> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
->> >> index 3666a8530f31..c515c918c2c9 100644
->> >> --- a/tools/testing/selftests/kvm/include/kvm_util.h
->> >> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
->> >> @@ -991,8 +991,8 @@ void kvm_gsi_routing_write(struct kvm_vm *vm, struct kvm_irq_routing *routing);
->> >>  const char *exit_reason_str(unsigned int exit_reason);
->> >>  
->> >>  gpa_t vm_phy_page_alloc(struct kvm_vm *vm, gpa_t min_gpa, u32 memslot);
->> >> -gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num, gpa_t min_gpa,
->> >> -			   u32 memslot, bool protected);
->> >> +gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num, size_t align,
->> >> +			   gpa_t min_gpa, u32 memslot, bool protected);
->> >>  gpa_t vm_alloc_page_table(struct kvm_vm *vm);
->> >>  
->> >>  static inline gpa_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
->> >> @@ -1003,10 +1003,24 @@ static inline gpa_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
->> >>  	 * protected memory, as the majority of memory for such VMs is
->> >>  	 * protected, i.e. using shared memory is effectively opt-in.
->> >>  	 */
->> >> -	return __vm_phy_pages_alloc(vm, num, min_gpa, memslot,
->> >> +	return __vm_phy_pages_alloc(vm, num, 1, min_gpa, memslot,
->> >>  				    vm_arch_has_protected_memory(vm));
->> >>  }
->> >>  
->> >> +static inline gpa_t vm_phy_pages_alloc_align(struct kvm_vm *vm, size_t num,
->> >> +					     size_t align, gpa_t min_gpa,
->> >> +					     u32 memslot)
->> >
->> > Given that the PPC usage is all for naturally aligned allocations, I think it
->> > makes sense for that to be the API, i.e. have "bool naturally_aligned" instead
->> > of an arbitrary alignment.
->> >
->> 
->> I would still prefer passing an explicit align value to the allocator,
->> because IMHO that's a useful allocator interface to have.
->
-> Why?  What are the use cases?  I can't think of anything that requires multi-page
-> allocations to have specific alignment, all of the cases I can think of require
-> natural alignment.
->
+The flag has only sense when the pte is being unmapped to be swapped,
+it will be set by KVM when unmapping unused pages.  Setting it in any
+other way does not make sense and can lead to guest corruption.
 
-I agree, that's what I mentioned too, so far all cases we care about,
-they require natual alignment. So it should be fine.
+Fixes: c98175b7917f ("KVM: s390: Add gmap_helper_set_unused()")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+---
+ arch/s390/include/asm/pgtable.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> For sub-page allocations, supporting semi-arbitrary alignments makes sense, but
-> I'm not convinced we should try and support that for page-granularity allocations.
->
->> However, if we do want to go down this road than I don't have any strong
->> objection either, since as you mentioned powerpc mostly just needs
->> natual alignment for it's page table region. So alignment can be
->> extracted from the region type as you described below, so no need to
->> pass it all the time.
->
-> ..
->
->> > The bonus is that @min_gpa goes away too.
->> 
->> powerpc needs min_gpa for it's exception handling pages. see.
->> 
->> 	excp_paddr = vm_phy_pages_alloc(vm, excp_pages, 0,
->> 					vm->memslots[MEM_REGION_DATA]);
->> 
->> 	TEST_ASSERT(excp_paddr == 0,
->> 		    "Interrupt vectors not allocated at gPA address 0: (0x%lx)",
->> 		    excp_paddr);
->> 
->> So, will arch still have an access to the API for passing min_gpa = 0
->> for cases like above?
->
-> Yep, ____vm_phy_pages_alloc() will be globally visible, and I think is quite
-> appropriate in this case since it's more than just specifying a minimum GPA,
-> it's really specifying an _exact_ GPA for the allocation.
->
-> gpa_t ____vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages, gpa_t min_gpa,
-> 			     u32 memslot, bool protected, bool naturally_aligned)
->
-
-Right, Thanks!
-
->> > It'll probably take me a few days/weeks, but I'll try get a series posted before
->> > the 7.2 merge window closes, so that you can build on top to get the PPC selftests
->> > support landed in 7.3.
->> >
->> 
->> Thanks Sean for your help! Yes, landing kvm selftests for powerpc will
->> be definitely helpful to verify against any kvm regressions.
->> 
->> BTW, I was thinking whether landing powerpc first will be easier for you
->> to consider all the API requirements from all users / usecases?  But
->> either way is fine please. I can work on top of your changes too and if
->> something is missing for powerpc, we can add / modify on top, once your
->> series is finished.
->
-> One idea would be for me to include the PPC support in the series; it's "just"
-> a patch or two on top, albeit one pretty big patch.
->
-
-
-That should be ok Sean. I can rebase my changes on top of yours once
-your series is ready then. I will be on travel next week (OSS Mumbai)
-and I don't want to stop your patch series due to my late replies for
-any of the powerpc part.
-
-So once your series is ready - I can rebase this series on top of it and
-it can go as we discussed it earlier - so that we can try and land these
-for 7.3, if possible.
-
-Thanks again for your help :)
-
->> >> @@ -2039,23 +2039,22 @@ gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
->> >>  	TEST_ASSERT(!protected || region->protected_phy_pages,
->> >>  		    "Region doesn't support protected memory");
->> >>  
->> >> -	base = pg = min_gpa >> vm->page_shift;
->> >> -	do {
->> >> -		for (; pg < base + num; ++pg) {
->> >> -			if (!sparsebit_is_set(region->unused_phy_pages, pg)) {
->> >> -				base = pg = sparsebit_next_set(region->unused_phy_pages, pg);
->> >> -				break;
->> >> +	base = min_gpa >> vm->page_shift;
->> >> +again:
->> >> +	base = (base + align - 1) & ~(align - 1);
->> >> +	for (pg = base; pg < base + num; ++pg) {
->> >> +		if (!sparsebit_is_set(region->unused_phy_pages, pg)) {
->> >> +			base = sparsebit_next_set(region->unused_phy_pages, pg);
->> >> +			if (!base) {
->> >> +				fprintf(stderr, "No guest physical page available, "
->> >> +					"min_gpa: 0x%lx page_size: 0x%x memslot: %u\n",
->> >> +					min_gpa, vm->page_size, memslot);
->> >> +				fputs("---- vm dump ----\n", stderr);
->> >> +				vm_dump(stderr, vm, 2);
->> >> +				abort();
->> >>  			}
->> >> +			goto again;
->> >>  		}
->> >> -	} while (pg && pg != base + num);
->> >> -
->> >> -	if (pg == 0) {
->> >> -		fprintf(stderr, "No guest physical page available, "
->> >> -			"min_gpa: 0x%lx page_size: 0x%x memslot: %u\n",
->> >> -			min_gpa, vm->page_size, memslot);
->> >> -		fputs("---- vm dump ----\n", stderr);
->> >> -		vm_dump(stderr, vm, 2);
->> >> -		abort();
->> >>  	}
->> >
->> > This is unnecessary churn.  I'm not saying the current code is pretty or anything,
->> > but unless I'm missing something, this can simply be:
->> 
->> Not really, we need the base to be aligned everytime, that's why the
->> goto again loop aligns the base in the new code.
->
-> Ooh, right, pg needs to be advanced by the aligned number of pages.  Ugh, the
-> whole do-while part is bizarre, and AFAICT only "works" by dumb luck. 
->
->> Plus I feel the above refactoring also simplifies the special handling of pg
->> == 0 case, which earlier was being handled separately after the loop ends.
->
-> Yeah, I fiddled with a few other options, but I think I like your approach the
-> most.
-
-Sure then, Thanks!
-
-
--ritesh
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index 2c6cee8241e0..9174aa02b699 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -1332,8 +1332,7 @@ pgprot_t pgprot_writecombine(pgprot_t prot);
+ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+ 			      pte_t *ptep, pte_t entry, unsigned int nr)
+ {
+-	if (pte_present(entry))
+-		entry = clear_pte_bit(entry, __pgprot(_PAGE_UNUSED));
++	entry = clear_pte_bit(entry, __pgprot(_PAGE_UNUSED));
+ 	page_table_check_ptes_set(mm, addr, ptep, entry, nr);
+ 	for (;;) {
+ 		set_pte(ptep, entry);
+-- 
+2.54.0
 
