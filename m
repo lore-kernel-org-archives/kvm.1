@@ -1,157 +1,159 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559712DEA61
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 15:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF71B2F28FC
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 15:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781277453; cv=none; b=g5SLnLUnZ1D4UT+1mifSwYGrr4+s9uMT7sXfb2Min93fl1NZNYNHu+jl6Q1/Su6HnkzkjVpKhr/RzcrCovImdFb6yNg3xgvrokYaxiV3n3TXuHBGjpzJeHIuHw38pTNJDcI/TlE1iTtGRwt92glPCcfgXJsLzFGcIkqMExTzMwA=
+	t=1781277453; cv=none; b=tdGw/37eXJSw4JUCUw1ATL1Gg/aINyqktsBJlbSEKIZlGZIFhJXML7JLHhna3bWRVqzSK8JSVIGwrdVp6/tHUExTjJ9aBaD1fcag0XJCjlQS9/9tgc8OqVWtQ6468EYjhoyRyiJ2j2t8s8PTAungAUxq+sBeX9cxqySgYju+Lzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781277453; c=relaxed/simple;
-	bh=DqXswA747+6bYY1uTzSstZbbvVg2LEzGaCUeKcgc+fU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P7SYK04WcNN6QIoIay7ThUQ990pzbJK02WMi7bee9oAvlrqM6zfEwqOdgWngRKp++R/3vxwCavbByUyK+Jnop+h9yQIHXDHaDDTkzuf3cJwHAfzh108btP7XzYyYXC2HwNMt8QMv9KStbi41LWfjB+IdIS7U99ymC9B9hbmmX4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DG9h1qWt; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	bh=YGzz9U5ptAN+fJtxvPnrBajIVB0+7ihNMtCDsAQmleU=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=GtwiSG43uHMiiqwFYwqMSHIpzf0LxvZfT8iectJ+cfH+97cwhI7pb9knen9IJBUh8/0yLmojFzcjAetlOeWS69GOmEhbQux7OqegxTwiK+ypgnFCXd5YymWsrudeokfY8EWOSveb5tjX2E/z+InEzVae5o8yh7IA8u9HkkEdoAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V3TC/XdO; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DG9h1qWt"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2bf22c18ad3so130725ad.0
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 08:17:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V3TC/XdO"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2c0c3315c5dso11400245ad.3
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 08:17:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781277451; x=1781882251; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TlOQuFqEcpnxb6HFkKMVShmOdVTUgHEmVlFieGLUVKw=;
-        b=DG9h1qWtDqUFvH2jnGQe74cqO+Mcin3e9wQwaDNY/xVaRLarO/RzGty8crffvjcuX3
-         fjjAujlbyBfomVuH3aTvXe4PyIGGLTEf5Xd1BYWNSkl45i8himGPka1QAQRW0q4DnD/r
-         hySU40dZSNSKcT6AGED7fRPZmITyuanDN8vPi3kf+hb6KT1GeuV05mWAinSwOYpedFZ3
-         kiKP+CAcnfRmjgnKc55xY+Z2azQOKILhjU8dvCrWPtR5FlrKBWoT8PvoueBCKOHeugFF
-         TGKD6aH9kH+6pvkQPi+IE9xhG6gkXqD+kv2KRb/AZWjs/KeYbcgCH4rFOxqTD2ZP1TKq
-         8CGg==
+        d=gmail.com; s=20251104; t=1781277452; x=1781882252; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hKi6voXMiSHRHdUtGCaL73/GFSuif8U6u8yo1gqGgaw=;
+        b=V3TC/XdONPkSMS+lgesKaCdZkj6lBs/eBCXYEBXiWEpGOKVv4jFS/MB+xgO6zijWAS
+         HpTtOy8Pu4Qf+/Msrh9P0XKA6kfAb0T0vqylWrUqdwyIqw+XbOJWhER9i8NJs6p1m3hH
+         umARVSukOTRhFM1vQUQXgPAIrCDif4d8ETnZoCzozCd6LQPFL3tIUDCyaIEDQhAVXyDj
+         4mQDQVDCXHYc4vI4iafdv9H2SW4jY53/4YIv4yJb4HQmBtmwsMfrEEVEAoAQ0y8Nidf0
+         uKHEty5QWE6R6MADwGz+gqhF2beOWvpFCzhk7YHg8BvgOmyj+IBOymB3+imN6W2+XYkJ
+         fGgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781277451; x=1781882251;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TlOQuFqEcpnxb6HFkKMVShmOdVTUgHEmVlFieGLUVKw=;
-        b=qiokeqiD546YJCl4O6zjWref/csrcnJ4MEnbHdQHxrbMHGWm1Jl9UvRrwh0ePK29hF
-         Qb/+qolrV6wtXPac0qRjV2X+ckRAAUeaDgujNhpRbKCASy6K5fVpkoy9tfUsj3OVqoLd
-         fKgUL4hRtfQubr3Ah6SsobSFk9Ea2boezRXNw6yKKcAdGZKsLsFsCN3Ii9EAGuTsLs2n
-         9RjYJfl1FfAaTt7FjQx5YUSrEot8bvyFwKq0dloGY8YzFtg3tix1zcsdZAJ0d+vwdiZ/
-         Cu1QHIsFMJ2Pi6wG2k/bU2ftEDxRHoh/WXd7zw/HyWVMy1PaetV4fSt8aZ678gTCZWQM
-         ynSw==
-X-Forwarded-Encrypted: i=1; AFNElJ+rPjzUGB3pC1UMX8UFsTa/YhWfm9PXSt8uUaPePQfOnmyGHLCtomrwpzcxfFrt0Qwg0xA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKPLjRJMMAnpkU0tfY0pRMEdtdE7mHZZsFWqHEJiz8vUIGymEQ
-	YFuADJx90cKkj8AJ/nn4r9lK9kRJ/DFFpT4+C5GzO/ojetjHeXwTBHomsVufuC8Lag==
-X-Gm-Gg: Acq92OGgoemZPwrCQ/zyjMa3x4eOeBGSdSnU+Q1527QamGus1cJo9Z0rAZqAqEN2kx4
-	N0lkwNSKasyZcTB9rwJ7Qg2vd6CDkjNlE89BivKS2pZk/2NWqO5iltzf1h3r7d8k3AwvHD873GB
-	GYl5gEZ/1+fn9l75c4485TQOvuaVjEK3a4S5NgIUbTMpAy9/DwIm6VSmMVWYp6pPsXdKCJVCc29
-	Q+6KLyFK8A0/XD6XgJwgZRTcfT5T73l5Oofj84RK+iGCxdLNtpmfguV/X9g2ykwVVjQiukcUhE/
-	2CYV18WJJ7mfxH5E0AYkMMowHLfVostSStP9wHxKfn9pO1If8iuMPOu3ZE+VKS4h3iQ2Zw0Va7M
-	aOO6wLCuNT8zHFhIMYMRqS256NXCigdXWYKGc66e4aVVO/C+viR2py/ISstJFpvu6AUhb9ApF0I
-	ROt5iBJ028OP/aDgT7ROyeOvbT6UHv/orU2d/Giy6bwnknk76CyWGZ9uk7VI/utGZp44Bkl2o=
-X-Received: by 2002:a17:902:e805:b0:2b2:70ba:305c with SMTP id d9443c01a7336-2c3e1160718mr2635095ad.8.1781277450033;
-        Fri, 12 Jun 2026 08:17:30 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c4328a4c14sm22623545ad.43.2026.06.12.08.17.24
+        d=1e100.net; s=20251104; t=1781277452; x=1781882252;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hKi6voXMiSHRHdUtGCaL73/GFSuif8U6u8yo1gqGgaw=;
+        b=cXbNk9r9hy5gKZ0vNVXaX4u/ac6DCL1tnPrL4tpBGkfm2XZYoAnczP3HRFsRa8dBvF
+         bAmOmuBYCYsmE+qk/a076jRFiusnQn/J4RaUrwnQYFJw4uJPPxaFA4KD0l6MfGFZi5pL
+         ZvUHJVDDzOwTESs9RuK+Jw7yyZlmwWYX2gGTSOwXpU9kYJUrxzRt0ma8B7jyDbvB3hSY
+         OzEISmOQd53c7367mxKAZQCCzM1BK4guf6Ng6WbNc7hBUGrsN2EZRoc2V6fFFy5EX4Ej
+         ps5ruSh6zN1YsNHiRMIsRaPJVOHXhyUh7GukBJ/vNqARGo5KM4Ye2RRWRJdOaYz13UqO
+         tx+g==
+X-Gm-Message-State: AOJu0YyRe4z9mWFgJNNnUn/r75Z0F7w+/M8g3k9epAjp+z6SIg0PtQXm
+	hOMrygjDSvWg6zvTJrAJ47Ao20t37mumjRa3kZPtf/IMt4s140RKXU5h
+X-Gm-Gg: Acq92OH8ImdUTDIid0jscfFPhI3m/T3nnFgVQylwYS1D+6acDX6iPCNJtl2QTgUm0NS
+	z+sMxsHvMA5ySGG8ALg8LpxLQQgujdILb0Yvaz3v6QMt+vt70MshlAYt+5nYDsP6EXwWcAysE/q
+	hBmjzrRRi0yS+a61xFwOHC7DWS8syvijVfBvxHGd+xEjBDbwQnTqTYbvr3/JUZEjZS+30J5Aov0
+	4iyKmPAbNj8woJHAZS3r7n/8rkmKCtZpjkaulO5ta+fjthkVSFm6UqgtU/0yoYk8j+NUbe4WMoB
+	rWFDfvGphC+6/nAybrJbB/1Gyk4wn4U9xv/KCxDq+FjAc360R2MYZPOFJ8/2PPnQm/5qZhZUAhA
+	bJgYRBEpO4gZGJ0TZNipt0TnDbKxcIHDLe1t6UDxeYDN2MWCIE+cGZKd8LVAanNjPr/WpYxHLOU
+	TdBXsyzX3zOuQwmXUs0JJObTvtzA==
+X-Received: by 2002:a17:903:2285:b0:2c0:db23:4a4 with SMTP id d9443c01a7336-2c412d25493mr38857585ad.36.1781277452015;
+        Fri, 12 Jun 2026 08:17:32 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c4327ac72asm26390065ad.38.2026.06.12.08.17.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 08:17:29 -0700 (PDT)
-Date: Fri, 12 Jun 2026 15:17:21 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Matt Evans <matt@ozlabs.org>
-Cc: "Tian, Kevin" <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	"Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v3 0/9] vfio/pci: Add mmap() for DMABUFs
-Message-ID: <aiwjAbFVhPkkj-6U@google.com>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <DM6PR11MB3690A65EA9D8A9B77AF93E198C182@DM6PR11MB3690.namprd11.prod.outlook.com>
- <9812ae0f-8f22-4d62-a706-4c7232a5656b@ozlabs.org>
+        Fri, 12 Jun 2026 08:17:31 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <chleroy@kernel.org>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Ackerley Tng <ackerleytng@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 RESEND 04/10] KVM: PPC: selftests: powerpc enable kvm_create_max_vcpus test
+In-Reply-To: <aiwd_8Jj34IH-pFH@google.com>
+Date: Fri, 12 Jun 2026 20:44:17 +0530
+Message-ID: <fr2reqpi.ritesh.list@gmail.com>
+References: <cover.1781093720.git.ritesh.list@gmail.com> <ed1d75f27a3b02897a8f54721d9f7f21bb163d9c.1781093720.git.ritesh.list@gmail.com> <aiml9iB_vUASRRQV@google.com> <ik7nexem.ritesh.list@gmail.com> <aiwd_8Jj34IH-pFH@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9812ae0f-8f22-4d62-a706-4c7232a5656b@ozlabs.org>
 
-On Fri, Jun 12, 2026 at 04:11:50PM +0100, Matt Evans wrote:
-> Hi Kevin,
-> 
-> On 12/06/2026 09:27, Tian, Kevin wrote:
-> >> From: Matt Evans <matt@ozlabs.org>
-> >> Sent: Wednesday, June 10, 2026 11:43 PM
-> >>
-> > [...]
-> >>
-> >>  vfio/pci: Support mmap() of a VFIO DMABUF
-> >>
-> >>    Adds mmap() for a DMABUF fd exported from vfio-pci.
-> >>
-> >>    It was a goal to keep the VFIO device fd lifetime behaviour
-> >>    unchanged with respect to the DMABUFs.  An application can close
-> >>    all device fds, and this will revoke/clean up all DMABUFs; no
-> >>    mappings or other access can be performed now.  When enabling
-> >>    mmap() of the DMABUFs, this means access through the VMA is also
-> >>    revoked.  This complicates the fault handler because whilst the
-> >>    DMABUF exists, it has no guarantee that the corresponding VFIO
-> >>    device is still alive.  Adds synchronisation ensuring the vdev is
-> >>    available before vdev->memory_lock is touched; this holds the
-> >>    device registration so that even if the buffer has been cleaned up,
-> >>    vdev hasn't been freed and so the lock can be safely taken.
-> >>
-> >>    This commit makes VFIO_PCI_CORE depend on PCI_P2PDMA_CORE
-> >> (commit
-> >>    1) to bring in (only) the P2PDMA provider code.
-> > 
-> > the last sentence is stale as the dependency is now added in patch4.
-> 
-> Right, will fix.
-> 
-> >>
-> >> End
-> >> ===
-> >>
-> >> This is based on VFIO next (e.g. at b9285405c5f6).
-> >>
-> > 
-> > Sashiko failed to apply this series. Is there dependent work in vfio-next?
-> > 
-> > otherwise getting a Sashiko review is helpful here.
-> 
-> It _did_ depend on (at least the context of) some fixes in vfio-next.
-> Looks like it'll rebase on master now those are merged.  I should've
-> re-checked this for v3, oops. :|
-> 
-> (FWIW, I had Robot Claude Opus 4.8 to review several times up to v3.
-> But I agree, Sashiko would be interesting too.  Can it be manually
-> triggered with branch guidance?)
+Sean Christopherson <seanjc@google.com> writes:
 
-I guess relevant steps to run locally are here:
-https://github.com/sashiko-dev/sashiko/blob/main/README.md
+> On Fri, Jun 12, 2026, Ritesh Harjani wrote:
+>> Sean Christopherson <seanjc@google.com> writes:
+>> 
+>> > On Wed, Jun 10, 2026, Ritesh Harjani (IBM) wrote:
+>> >> From: Nicholas Piggin <npiggin@gmail.com>
+>> >> 
+>> >> powerpc's maximum permitted vCPU ID depends on the VM's SMT mode, and
+>> >> the maximum reported by KVM_CAP_MAX_VCPU_ID exceeds a simple non-SMT
+>> >> VM's limit.
+>> >> 
+>> >> The powerpc KVM selftest port uses non-SMT VMs, so add a workaround
+>> >> to the kvm_create_max_vcpus test case to limit vCPU IDs to
+>> >> KVM_CAP_MAX_VCPUS on powerpc.
+>> >
+>> > How is this not a KVM bug?  Literally the reason this test exists is to validate
+>> > KVM's advertised KVM_CAP_MAX_VCPU_ID and KVM_CAP_MAX_VCPUS.
+>> 
+>> It's not a KVM bug, it's expected on PowerPC. On PowerPC, vCPU ID encodes SMT topology, e.g. on P9,
+>> vcpu id = core * stride + thread,
+>>   .. where the stride is same as kvm->arch.emul_smt_mode (VM's emulated SMT mode)
+>> 
+>> So the vcpu ID space can be sparse, however KVM_CAP_MAX_VCPU_ID is the
+>> absolute ceil value (MAX_SMT_THREADS * KVM_MAX_VCORES) i.e. the value
+>> with the maximum stride / SMT value.
+>> 
+>> Since default selftest VM uses stride 1, so it rejects IDS >= max_vcpus.
+>> 
+>> e.g.
+>> static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
+>> ...
+>> 		if (id >= (KVM_MAX_VCPUS * kvm->arch.emul_smt_mode)) {
+>> 			pr_devel("KVM: VCPU ID too high\n");
+>> 			core = KVM_MAX_VCORES;              /* rejected case */
+>> 		} else {
+>> 
+>> So, it's expected on PowerPC. vcpus with higher IDs can be created but
+>> for that we need to set KVM_CAP_PPC_SMT and use strided (sparse) IDs.
+>> But since the test as of now is not doing that - that's the reason why
+>> the patch only allows to test max vcpu IDs upto max vcpus.
+>> 
+>> But I guess you must be hating the #ifdef __powerpc__ there. I agree I
+>> don't like it either.. maybe we can do it this way?
+>
+> I don't love the #ifdef, but it's more that I didn't want to effectively skip a
+> test because KVM was reporting bad information.  But after peeking at KVM_CAP_PPC_SMT,
+> I 100% agree we don't want to deal with that here.
+>
+>> -#ifdef __powerpc64__
+>>         /*
+>> -        * powerpc has a particular format for the vcpu ID that depends on
+>> -        * the guest SMT mode, and the max ID cap is too large for non-SMT
+>> -        * modes, where the maximum ID is the same as the maximum vCPUs.
+>> +        * Some architectures (e.g. powerpc) encode topology into the vCPU ID,
+>> +        * so a default VM can't necessarily use the full advertised ID range.
+>> +        * Let the arch limit the highest ID this test will create.
+>>          */
+>> -       kvm_max_vcpu_id = kvm_max_vcpus;
+>> -#endif
+>> +       kvm_max_vcpu_id = kvm_arch_vcpu_id_limit(kvm_max_vcpus, kvm_max_vcpu_id);
+>> 
+>> 
+>> And then in kvm_util.c -
+>> +
+>> +__weak int kvm_arch_vcpu_id_limit(int nr_vcpus, int vcpu_id_max)
+>> +{
+>> +       return vcpu_id_max;
+>> +}
+>
+> What if we do this?  We're going to be bleeding PPC details into the test no
+> matter what, adding an arch hooks just seems like extra cruft and an unnecessary
+> layer of indirection.
+>
+> 	/*
+> 	 * Skip the vCPU ID test when running on PowerPC with SMT support, in
+> 	 * which case system topology is encoded into the vCPU ID, and so a VM
+> 	 * can't use the full advertised vCPU ID range without crafting a valid
+> 	 * platform specific topology.
+> 	 */
+> 	if (kvm_max_vcpu_id > kvm_max_vcpus && !kvm_check_cap(KVM_CAP_PPC_SMT))
+> 		test_vcpu_creation(
+> 			kvm_max_vcpu_id - kvm_max_vcpus, kvm_max_vcpus);
 
-Additionally, we can try providing a base-commit (which points to a
-public commit). 
+Thanks! That should do and I think that's the most cleaner version.
 
-Thanks,
-Praan
+I will change patch-4 with your suggested changes then.
+
+-ritesh
