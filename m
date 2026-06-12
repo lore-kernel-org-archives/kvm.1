@@ -1,176 +1,175 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021127.outbound.protection.outlook.com [52.101.65.127])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B85840759D;
-	Fri, 12 Jun 2026 16:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.127
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781283462; cv=fail; b=IndvR6s/RTi49G15AjkT6v10heav3ijPlvXXA8YUD2SHGOxotq/rBJyLWmy69AEr6PApzH4wnsSH/glKp7J+ek4n3GtnEjkQ0qkfk9KeoJuUCOPG6Y2ij/L++LUtjQNk6QgO97A60BjaHLwYhtSWIvGH4dmQippe3h+3Al2JEFo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781283462; c=relaxed/simple;
-	bh=bL5mYbExXRNDHRTG86ovjmCPFbXFzbiWxQMTdlLwoqk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SvVsgLDNGrMXGPzlLAVESzr3g/23nSBGSgww9XRgLaw2Bjz+k+Z5mCN1HnsG7Q+Hp1Xf9x3Zw5K8CZj2MYH9rE7Q5MoF7xBevIVMzGzZAsD+FItWqHV7Na8LmUaMwp4ZpYjfOWp3ZHlHE+MJMaGJKiw4g3UrptqbQwipQGntpVE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=cajAPhZO; arc=fail smtp.client-ip=52.101.65.127
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB30F400DF4;
+	Fri, 12 Jun 2026 16:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781283573; cv=none; b=E/uFCpRdAb7JH943HYwR/U3AOAiGGgyawfxcFM15XnxV/MQWEBDxHf+OyMYcb2ZFKUYHx4/llVboHw4j2hS5RxxK45zIJDZgoPMVJpAkhq65SQEWVeI3ixXkli9/YD8l9WdvXJ2ftw0GzqSF5GGFKkIiYsRpkzQ4WUleIKCr4FI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781283573; c=relaxed/simple;
+	bh=Y4Y7uGK4Ethazvpwfg5HrN+Hpwc9t9Bc+KqwmSLcWFw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U0vz3DomG2jQx5/v4AwWHETYGNc8ghCduCkEy3qLg/aWEC/QYCnjPHabvGo3EdOeQBa04FRU8svwwnOegox5FfiTqYDhHJNg5x6HSAFxd0nu75JEE3v+XJ4O8wCNjCACIX5khhN1tBtarZWsgBuYK2hbl1Qi0gIi0s5Vz+Fz1J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=NLBMOfLN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MDNDcZwo; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="cajAPhZO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SDogvP2phrBzpqm0DQ+ikGUs8UpZ5klhkTCo01qJzEhkrLecn0jcrpNzwWIXs/gPCi9IfAPb0rdrFTIKWz8U1tVlkcMmfvwuT3pcIjJtJmYm2x5hLpQdqg1fORxqDascLfMexqHuAlJHOvajeRNyICC9nWVNBVhX8f67Y5AjgzGStUqRsKMc7W9nVqrjx+p91mAbUQdxxpc9CmrE/nAnT6EH+nNnSQN5jpiRpaZ2LBa+KDXC/eR5L/LTzT2FvKB5QyejvCaPhKL0MYLyAxI9Kt527TcPeR8S4w+v85R8hu4Qe9DDCGqZJj2YOwXyzXM+voxHqH838oKBTOvP3C1/6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hzDgox9s3tlMcpKOhmDze7DLr27Tz3ofYkQwPvXqKgo=;
- b=gYMlHCdFRLHRYeO4xNefl/5t2Lben6ldeLgG0OPbf3yyo4lMQFwOtVPfA7S5bk8KY+G3Uhr4hX5x26aNVaVdRJGWp+Q+ydge4lbJ4NowZD86VOW5Qnr48AQ5QLN0dvixraUqZmHnALk7jKSSEF665U1ycCId02Y1CHrTR5dCzwKs1t6cyqRyIuLsJ6xhymg5Uv6TucV4HrqtADiDmYsl0iOAYoyCYLw0Lmki8ciKnKQzQt4DQZj7SohPyfY0i8lwHO1/B8bfMG6t5wA1X0RlOocOcZ8OY+JUEbUVe2SMkAo5A1M8MTXYWdGDe7ihCS8cCTwcgeudGHchZp+qH7dLUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hzDgox9s3tlMcpKOhmDze7DLr27Tz3ofYkQwPvXqKgo=;
- b=cajAPhZOTzhHRUdTofTKBORJLlxMqBhTw6/o5G/Y24nteeYLmlluGibHiMGfaVbTTebOh/NNzKGwS1fTP17Y+PkbRa3hkQ8svwzGGuC031H1lq62fO424oa5ie5QJWpfyg7etfmyoLIrHMwcYTe7uLEn4SDFd7vHQ17YQjW/6HsxfkQMOq9BzY6FDjhE2/YzvDoc/npElOMJKWq+GF0cKeJS59HfBsjy6ijoIzO4dhpuZXiH2oc1RCGWP7Dj4umjZon2v+IcCZeS/FuIrxAL3oRRhp5cccMPA2+QfYhTBKbav6+w7Nfl5WseoJoVNwQvM4oxdgik9E8YoLvGeeHVug==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by AS2PR08MB9416.eurprd08.prod.outlook.com
- (2603:10a6:20b:594::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Fri, 12 Jun
- 2026 16:57:30 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%5]) with mapi id 15.21.0113.013; Fri, 12 Jun 2026
- 16:57:30 +0000
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	sgarzare@redhat.com,
-	mst@redhat.com,
-	stefanha@redhat.com,
-	maciej.szmigiero@oracle.com,
-	bchaney@akamai.com,
-	mark.kanda@oracle.com,
-	ptikhomirov@virtuozzo.com,
-	den@openvz.org,
-	andrey.drobyshev@virtuozzo.com
-Subject: [PATCH 4/4] vhost/vsock: re-scan TX virtqueue on device start
-Date: Fri, 12 Jun 2026 19:57:18 +0300
-Message-ID: <20260612165718.433546-5-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260612165718.433546-1-andrey.drobyshev@virtuozzo.com>
-References: <20260612165718.433546-1-andrey.drobyshev@virtuozzo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VI1P189CA0021.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:802:2a::34) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="NLBMOfLN";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MDNDcZwo"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 2579CEC0183;
+	Fri, 12 Jun 2026 12:59:31 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Fri, 12 Jun 2026 12:59:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1781283571;
+	 x=1781369971; bh=JA1Rl6a/vTeZ5IR6A573kEspO/Oh48ACbWZzEGhjKYc=; b=
+	NLBMOfLNDWpdi0Vvge5UxNOVvf8DPbKjEWFL2hwGqOmMicqs2joTm07bhYuLNzGz
+	0SXIw0hlPPtAtYFouuhHrcRXxGvtHyQHO+w48jMDqzdK8XboAFXP8b4IA1TCh2Xc
+	hC/13b2GfiZVgwn4sfLPgxNxiw0MhrEKTG0Q2Ia3JEMHWQavOgeUd8ntaut/Lp81
+	vxATdMbOS+525pQnJr/QsFhg5dx/9EviIDInmyfoVlbIPgY6pyfk7mGTF598+cyT
+	9T5jrD1OAGYc0o0o2D91m10uCubWYuB5axSKYNZN45dBTydeWLBP0ES6SwtwU3Bx
+	i18RWHOjCWMXULd3HF7bkw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781283571; x=
+	1781369971; bh=JA1Rl6a/vTeZ5IR6A573kEspO/Oh48ACbWZzEGhjKYc=; b=M
+	DNDcZwo/L6xYyGJxFCF6pyBupDWXBOJk+KRBMREjRp7JpLREQvZ1wxnVmhw9srA0
+	7Z94iCE2RPAZ87LL9GtEYMvSPB6TwfGZgWQlSefNClA1MMyGxf/NSTWKA9a6vCjg
+	2PS3t2Eyk8ukpeEDJy4Gt9lvplCRU/jzn/SFGRhXJGf5ADPJXKstQRO6YNhLDCn3
+	s8mO7eVf3SZsXLGbeseKlY9ebxuRAYZYqGl4DoC5qE21BOfv8tRKqb+DXTC92VQJ
+	OWH65Ab2dCBA+B8MaqcfZyla8edeiPDAuQfB5zaT9RcknmwBRAcQPkIjrsiMk+EP
+	mRKcbs1B44RkPFYc/j03w==
+X-ME-Sender: <xms:8zosar6F5gbc--qU4lnqGAB8juW7oAwCMFdu8Vh7_UMYSArHmLBybQ>
+    <xme:8zosajKqRRred1fBo61zbHzpYkR97aHHhgMvwj1CikwzV7jltaSGOcFqG42vty_E8
+    9fe1sCTChTxiNVNxhnbqBUnDbO3bJGgfP3gTq9DnVpzPVSzDjDTag>
+X-ME-Received: <xmr:8zosaks_7vOydPJVTRqHVFuhi92EJvtx3Z1WLnLpr_jAqUXTjDxfqonolrU>
+X-ME-Proxy-Cause: dmFkZTFK4BbIWe0NOhjcdMO6xfngXvxjqtqEanh4IEr51RKD//T1XvD8FBwDZTTz09hMDI
+    G2UjD2RzCDFOFbXpXMdiydmD2vEEmpRrdEDzJGAZeCJL99C5B1ClcaSO0WCV8J7gkln1Uf
+    b056NtK6X2GzkH2n4uC4dHto4d0LSDeW+4t6l6tpTwG9Lb50Mt58bRACHKPpE68T8b0SWG
+    j1SRW6GpkFceHFoJeZRRFyQH2I8YeqN8hmPOL9AqFKyJ1lmmvsb/SFaIBm8uw21305JoRg
+    3jqGCNtnOUiDXi11lrH82K8Pq1/tDynd19x2jjfTinaJfDcOSTeNoQfVYMZeO6PKcKP1Zc
+    eEoF5jWeKik+VS15W/wIQ0pk92aaWZKh7sPzk0TMwP9lpptu/LpwJqQbJ+I+yDjrf+Eeal
+    LLvBkCddtQtHIJE/fced4290aHk+KyeAilRG28tYjS4lYK7azMVrv1F0QFN3mebF5vifw+
+    NWC34+wyKjwPHP7zgJ6lnSQ8FBaHl9j9S2J9afDbdNwYH31MQ+5+FfkRhJROoNwXCZeyah
+    V+d41URJqyHxFNT3n67qluGSKWlZqU/l1L2CN17bNSk9AianiE5tficxTgX15F6Y9S9fLK
+    7osyEzDgaLOpQ8H8QGc6xQ0az9oNhVILLIuOdun6BWWkg1LTqP+TqajcDnrQ
+X-ME-Proxy: <xmx:8zosaiLDIdvCu0iA17DKPUuAtoHtGpAFlrWV45g5zm1PGi6_KEa2mw>
+    <xmx:8zosat91vUmE8zZvnIiLE28mpP9PgATMnG1nGwxHwsDuwWq-nxTK2w>
+    <xmx:8zosarzpcvuk2a3b5raV4I5YOXjn1SQU5KSQI2kVapcWOdkKpn3u8A>
+    <xmx:8zosaq7IFkOCOxkCz3nb1L1CgQEsnyoRp-yfpnBlaTbgUgjNghH18w>
+    <xmx:8zosamfvzh2UcyxTWsCtpSynCSyClYEeUvo2H2fCNXIGDaPJaWLzyq3z>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 12 Jun 2026 12:59:30 -0400 (EDT)
+Date: Fri, 12 Jun 2026 10:59:28 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Zhiping Zhang <zhipingz@meta.com>
+Cc: sashiko-reviews@lists.linux.dev, linux-pci@vger.kernel.org,
+ kvm@vger.kernel.org, dri-devel@lists.freedesktop.org, alex@shazbot.org
+Subject: Re: [PATCH v7 4/5] vfio/pci: implement get_tph and DMA_BUF_TPH
+ feature
+Message-ID: <20260612105928.200220b8@shazbot.org>
+In-Reply-To: <CAH3zFs3FjiCfOceVRin0ytKNdZ7Pgyv4ds=Dd_GhrRC_XcbNOg@mail.gmail.com>
+References: <20260610193158.2614209-5-zhipingz@meta.com>
+	<20260611202555.B0FE31F000E9@smtp.kernel.org>
+	<CAH3zFs3FjiCfOceVRin0ytKNdZ7Pgyv4ds=Dd_GhrRC_XcbNOg@mail.gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AS2PR08MB9416:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1310816b-6b23-4f17-831b-08dec8a3af5f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|366016|376014|1800799024|23010399003|56012099006|22082099003|18002099003|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	3pN2pZhgzKtjvBQ1kUkkogj1l+mBmZ2ov6XbV4yHdc657TZtQam36H1aSBwo1V77prgv7QFGqAFE2d0Ak+QEqkY+as0UF6ud71Y3bnKX8umkvnH8Xoh0OpoJjJZ181moLjwynrucPh45HE2HOJ4tGgiG0kTEu5a40nziXW4Kw4CSXgr5NgEjpFQMZTPg/nMGp+hpm4OXmT1QZJ+eSbhD2/pGuY7Gh56EBoOMcnGyu523MkFd+4335I0vlfg/aXG+g4glGS7juKcMpHMVae4dGC3Ihl91XG+iBTwEJCvxz+tIgdqy2IRYB2nHWZ4EBrWtRKN2CubWaIa5MCCfXmpd49xaczHFhsVSrceM958IgaICtgxvSvomb89d+bmQla6pbUnqNj/QfiQ43TsXSw1OFThVuJfbADOqshz3udJpfR6yZCBakLihVFDdqFDjBwQOMSB0mm9oxfpEbBhPZHtcGy7hGkhzA2BMvXGe114vs4jjUAW2fCpmdcG4o4bmY3LyLcM4st9XAIQWh3RzGk2abR3l2FlcEGvT4KM9RxhifUj0rU04Y9LYb4/EMsgMAypgxBQUrcpHXkY1TInDcg1A5i5wnNU14Ct11oPNvwI/vqd74bDtsTEJs4IqYZzbzp9Ld4aK0OwWCGEqyRQ6UISqPxh2OmRjr4XRupQOY5DyeKgIPbRyNNXgRU/w+IJq9z7M+2KdDow+BBuZMel22bsch8Ngdp4jBy0Rdnu2R4vOAu1scp0ateJowcP9W6ePmAlf
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(366016)(376014)(1800799024)(23010399003)(56012099006)(22082099003)(18002099003)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cZWF6xxI+qEb04PLLkKMI13PmOzYrlACwyaQ8f7iips7oEgv0Y7jYiB5rlW0?=
- =?us-ascii?Q?+gQZWSrO7+07Zl9R9ZNq0C0j+Udt2krkyKYdoU96Yw6z/XEA7tXa1qyvPBue?=
- =?us-ascii?Q?eIDfjZ6go85QsSC4SHPgwlOeaG2e90hEPI4/zoZGC7mf5s0sh3KwsbIFLyhH?=
- =?us-ascii?Q?nrP9AXMMpNr93HxRvtGfK6/+Hsk2y9vdD5HiYrluTVwTkavTbugmfAP0b2QA?=
- =?us-ascii?Q?28EW+raITds20mb930VIfnFkTXLshSkHHIpgw6P53XttMYWNuO0krvr6PbXT?=
- =?us-ascii?Q?H3qRTffEu9I54ED3+PWrRLX8k8TvhguFp5Jany+gXuLzWeyvIwMjrJ2oQ08r?=
- =?us-ascii?Q?XwRU+I58BMMb+USPGkRmhcUfLqiVWM1b1x5RSPui5ZrQL634D6PlaRJJfIA2?=
- =?us-ascii?Q?ViTIQ7uA6WgbhpiAYT4V5d4tVL9mdB5PC9GatHu1wDx1Hi0AJeuZCL0myeG0?=
- =?us-ascii?Q?1L/HuAegF1v5dsFgL5GbhZJcVpOWazMhAEx1S94+16oyX0gu7Ld4hzyfSTuE?=
- =?us-ascii?Q?+jE47g47kWdFp9o6jWvap2gyslJD3HXIHBKxKYJyAvoGGGDa6d3PXfN2BuyX?=
- =?us-ascii?Q?V5SLCvQdss9aMXUHDlIySs9BbfMIXenZVxTpEB0fqDGk0rrJNsLqI6KQgYTC?=
- =?us-ascii?Q?Tdig6WxLcvQdqmrDB+dFK0BP37PAjNWevLqymaBLo1d1RIuVdnY5CKJGm7Ud?=
- =?us-ascii?Q?O5KPHQXp064oU2Q9hzC7tqIZ3iI93KEhLb+Ysbtd32Yc3ZZbtx84juoWIvGE?=
- =?us-ascii?Q?qk4FvL4Bu0KGTgrBRqQxSrPDB8HpLYPtCWV0tiQUxeV3GR5RTA2hPlZBiE/q?=
- =?us-ascii?Q?rgfuX211fSEKM6x1ByZ2fMt0Mn/S9uRde9g0lyKUyo521K1YZ1YV5f0ukCTu?=
- =?us-ascii?Q?6DjoObyn10IrScVdfizSawnLMKXDrXt8815O48+xE5+3KeNM0VM5lRzxKdpp?=
- =?us-ascii?Q?sR+xE5aaKw5dD3c/+nN2YhotoYKuKiJqZ1mESy2hERRffO45tokuQksPRu4U?=
- =?us-ascii?Q?bJVst0NaVaSYE0bzyEqJosricwAmmGlCx1S/ePyomesOWwE/1e4uJrVSQYB0?=
- =?us-ascii?Q?Eern7zB1IKZX0TtJOSwhETUWfidI3+vMwePcs8oPNmJD0zrwDxu4E+tqzruK?=
- =?us-ascii?Q?IqU+bqZHdnkkOCQMoiAaN7u7qwGjuF93UpizjwzvvfpAiJy0bLLtigc3g9AV?=
- =?us-ascii?Q?3YmJGz3VhdFl862uvxNW1Kkv9URoLPemeqZ6HTQckPDSoEOPQjfAOkjh3Efw?=
- =?us-ascii?Q?PAAcKsplxqCNHESIgfV+kXroBlCG+CV74syL0m36JSA+8Ti/oVP6gbLzVsEf?=
- =?us-ascii?Q?+izT0hVxZnmh2Nf0pBoyr9ysjkd0XClrcSUzm9g3no/zPbQaIR/4wXNsvRdY?=
- =?us-ascii?Q?kZgYE8k4fbSwAraHGmzio3GTwaLuR2SULHIJpSj4jPZYuiF6cAPiDJXQtGIo?=
- =?us-ascii?Q?Vb3DOu6ooAsWDQz6jZu++qJ12zlUDwtsyoRG4+iprH7CRR/EJwo8jn1Dbj1u?=
- =?us-ascii?Q?9V1RdTTE6FzPbnIcJDCKjBpi3k2svtqzmX17c1Rg+qnS/ZaMyfdZBIG1Daaj?=
- =?us-ascii?Q?0MNEtRWBHbKiT9q9dN0moLyPNzayH5zhuIuvybYsKCM13Qf0E5Rn7qZdW62z?=
- =?us-ascii?Q?gDPJLxbq+Pqlsx0b2oRe6UpAWx73h4YBmEzOTR53z4P4OyjDHe3IfcuH1smY?=
- =?us-ascii?Q?7RhNufSC6wbljWlF4vADpwqYyNLqQicqG/7jLPhxDmSXX2GoirLEGlvCaY2M?=
- =?us-ascii?Q?ApmGitec9za25E+E5M6ckUVh3L8Hy7U=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1310816b-6b23-4f17-831b-08dec8a3af5f
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2026 16:57:28.1577
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p8SMAB8pKx5y4nUlEiqKyyQaZbfFm/MIlwVgRkg7vE5a/6XCn7/WYMyEh8IbkAIUEXwYwCWF7sn/V+KjAZhcjDDzw6cDRNyE73WCFXr9pGI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB9416
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-During QEMU CPR live-update (and VHOST_RESET_OWNER in general) the guest
-keeps running while the host drops and later re-attaches vhost backends.
-If the guest adds a buffer to the TX virtqueue (guest->host) and kicks
-while the backend is temporarily NULL (between vhost_vsock_drop_backends()
-and the next vhost_vsock_start()), then the kick is delivered to the
-vhost worker, handle_tx_kick() sees a NULL backend and returns, and the
-kick signal is consumed.  The buffer is then left in the ring.
+On Thu, 11 Jun 2026 16:02:25 -0700
+Zhiping Zhang <zhipingz@meta.com> wrote:
 
-Then upon device start vhost_vsock_start() only re-kicks the RX send
-worker, never the TX VQ, so the buffer is processed only if the guest
-happens to kick again.  But if the guest itself is now waiting for data
-from the host, it will never kick TX VQ again, and we end up in a
-deadlock.
+> On Thu, Jun 11, 2026 at 1:25=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+> > =20
+> > > =20
+> > Thank you for your contribution! Sashiko AI review found 2 potential is=
+sue(s) to consider:
+> > - [Medium] Unconditional validation of the flag-gated 'ph' parameter ca=
+n lead to spurious -EINVAL errors, breaking the syscall trust boundary.
+> > - [Medium] VFIO_DEVICE_FEATURE_PROBE falsely reports that VFIO_DEVICE_F=
+EATURE_DMA_BUF_TPH is supported even if the hardware lacks TPH support.
+> > --
+> >
+> > commit d57637d667ca6dc95def77a0a5bd339d62d4f506
+> > Author: Zhiping Zhang <zhipingz@meta.com>
+> >
+> > vfio/pci: implement get_tph and DMA_BUF_TPH feature
+> >
+> > This commit implements dma-buf get_tph for vfio-pci exported dma-bufs a=
+nd
+> > adds the VFIO_DEVICE_FEATURE_DMA_BUF_TPH feature. This allows userspace=
+ to
+> > publish TPH metadata for a VFIO-owned device. It checks completer suppo=
+rt
+> > and protects the metadata under dmabuf->resv.
+> > =20
+> > > diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vf=
+io_pci_dmabuf.c
+> > > index 1a177ce7de546..0a0705c8dbea6 100644
+> > > --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > > +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c =20
+> >
+> > [ ... ]
+> > =20
+> > > @@ -333,6 +360,71 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pc=
+i_core_device *vdev, u32 flags,
+> > >       return ret;
+> > >  }
+> > >
+> > > +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *v=
+dev,
+> > > +                                   u32 flags,
+> > > +                                   struct vfio_device_feature_dma_bu=
+f_tph __user *arg,
+> > > +                                   size_t argsz)
+> > > +{
+> > > +     struct vfio_device_feature_dma_buf_tph set_tph;
+> > > +     struct vfio_pci_dma_buf *priv;
+> > > +     struct dma_buf *dmabuf;
+> > > +     u8 comp;
+> > > +     int ret;
+> > > +
+> > > +     ret =3D vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SE=
+T,
+> > > +                              sizeof(set_tph));
+> > > +     if (ret !=3D 1)
+> > > +             return ret; =20
+> >
+> > [Severity: Medium]
+> > vfio_check_feature() returns 0 for VFIO_DEVICE_FEATURE_PROBE, causing an
+> > early return of success.
+> >
+> > Should the hardware capability check (pcie_tph_completer_type) occur be=
+fore
+> > checking the feature flags, to avoid falsely reporting that the feature=
+ is
+> > supported on devices that lack TPH?
+> > =20
+>=20
+> Will fix it with a change like below:
+>  -     if (ret !=3D 1)
+> +     if (ret !=3D 1) {
+> +             if (ret =3D=3D 0 &&
+> +                 pcie_tph_completer_type(vdev->pdev) =3D=3D
+> +                     PCI_EXP_DEVCAP2_TPH_COMP_NONE)
+> +                     return -EOPNOTSUPP;
+>                 return ret;
+> +     }
 
-The deadlock is reproduced during active host->guest socat data transfer
-under multiple consecutive CPR live-update's.
+Typically this is done before the check feature call.  Thanks,
 
-To fix this, in vhost_vsock_start(), after kicking the RX send worker, also
-queue the TX vq poll so any buffers the guest enqueued while we were paused
-get scanned.
-
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
----
- drivers/vhost/vsock.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index bcaba36becd7..1fcfe71d18be 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -655,6 +655,12 @@ static int vhost_vsock_start(struct vhost_vsock *vsock)
- 	 */
- 	vhost_vq_work_queue(&vsock->vqs[VSOCK_VQ_RX], &vsock->send_pkt_work);
- 
-+	/*
-+	 * Some packets might've also been queued in TX VQ.  Re-scan it here,
-+	 * mirroring the RX send-worker kick above.
-+	 */
-+	vhost_poll_queue(&vsock->vqs[VSOCK_VQ_TX].poll);
-+
- 	mutex_unlock(&vsock->dev.mutex);
- 	return 0;
- 
--- 
-2.47.1
-
+Alex
