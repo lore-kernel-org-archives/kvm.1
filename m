@@ -1,69 +1,32 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012030.outbound.protection.outlook.com [52.101.43.30])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AD73BE164;
-	Fri, 12 Jun 2026 06:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781244479; cv=fail; b=BxHhed6zh5I9a0km7QRKzPyTp8FNPJEgaVpRDmlLxffRz1rAXoNKYAeOJpB08t1HqDWmSlPLyJkzLShRjNzjL0PiIpAxNignd0r1ItYKEM1ak+5pH8vhiU0JGVS14tQvqqqHMr1Nvr7UUv14/bisLvOhBrT0HohHjS233voV2GA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781244479; c=relaxed/simple;
-	bh=4FpEDOWLuxFkBA7M1BZLE7pJxvB4FclBmaXvS/3XY1E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=f+D05kAMJO8nRUpWVZu9Dc6m88y8qHncXXwbvdh5e2hcYtDpWMGRrEFHDUAs+p6z688DtxflfuJbLlO1ZtHjajxoY4P3an5NFLI+G+dE8K07Y/SC1uGQScQ0NwwSZhPMBaPoobFUWN3E7Wm6ZxunBbuFeLwgV0wlKs0Tcgu7as4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jmk0qSm9; arc=fail smtp.client-ip=52.101.43.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025F23CFF51;
+	Fri, 12 Jun 2026 06:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781245531; cv=none; b=eS8JzB9v7mDmd026u4TWu/vQZBZgaTskNZYdWTXifcIHqBXyUHiRE/I6IzYJ3shqnMGPXWoKWrTIYKf27Jyb1Haf626hkEbGnyzSkzDwAy4T24+F4OwRUpymDvw22NCNHb9IkctK/lUCn/ePyx4fLAj5FJZKv1nDSuP2Uz6B8Nw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781245531; c=relaxed/simple;
+	bh=KJrpe5variJauzUvAiSp1Xl7CRP8fQ4ZNdPjejc7H0o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QHHuJF5q4VYcOFHdgPjysINP1qxEQV7Taafax17LKuE1iyTPdb7zZdvctqQlUB9ws40bf47Zi3FtuWek+Rwgh+CCTgDXuVDCqN4Ye+WHIlVxndR/OflgF2ZhoGuTqUPjsdPMN8Q44+cg3sjt8myjX9csEuFxYaT/5CEFiImegY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=JflxzjpX; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jmk0qSm9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N54/NFwIxZhvKDgj7ETLPBE+NK5xrse6jVeMJ6DkkrXH/5A/6jhl/yN0WCiPRD46Ta4dh+LtUkD9AvGGOHIjUDPLUn4EFrAA9SpNNf+8F6YueRq7PXlF7Zyl53ZvucHMl4en2iu7rSSfkIFff/wCR9bRqFrJK0UgllxLGbdtIhgDhUfYbfXgZ1zpOWzVSlhXx6CUoMnvBsvXg863GcDx5LiT9YYjjPq9dDhlcO1zwrMPp7kMUcwmuESIxQ1GsvJHnrAFSpKhaAUIwthzceqjQRXPN4dCYcCL2BuO64U4t9MwCMCCfyF2q4vMCqAMUjMKKK+qK4al6GPpM1x1oufgjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8hbxkVQSKMAmR8qX02acy8z8V7y+lWavSQDLI12jZQ4=;
- b=PzQIRU8ATZz+un85NpdZrxOUG45NlFTdOh5W1Raqcv9x2Fww4XtCpGvN1ZISBm+AUx3oszbSagfl4dnSRFyqSMUZ72Lm422VOLbHA1yi/wUP6DycM5Teg20zfMb2LI6+wqMsnSj1ecMN0hD+KAIQGAyfMQMeNynNa7COqjMJJnChJFSF+BxkVElN4dab0jcdjlSTq59S265Jum+kTDyhDX+mWJdWeJ1eTL1VkQ8fmUNhOPY13U5v0+lOeMA88mxSjiW5HXJu2xWrsbEhWwtyrGBIHCP0g4bHqa/aIsu0mo9+BkhhpuT38KJAaNHwb760TfJSQXdneiDBVJbxuLzI2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8hbxkVQSKMAmR8qX02acy8z8V7y+lWavSQDLI12jZQ4=;
- b=jmk0qSm9RxigDZWqsq+lt7YE+ocS721X3RF1rBPpK9Jecc1xNhA0v87JFr3HLlsfK7jz1cLroJlvGlomOahaC9fB5LloS02Pq7szteTtNLocYKmQbQJNmksE1EviKII8WdFp7BNa549Z2E+KCGZppw2eGm0v53sX4eckFyHw23M=
-Received: from CH5P223CA0017.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:1f3::13)
- by SA3PR12MB7975.namprd12.prod.outlook.com (2603:10b6:806:320::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.11; Fri, 12 Jun
- 2026 06:07:52 +0000
-Received: from CH2PEPF00000147.namprd02.prod.outlook.com
- (2603:10b6:610:1f3:cafe::8) by CH5P223CA0017.outlook.office365.com
- (2603:10b6:610:1f3::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.14 via Frontend Transport; Fri,
- 12 Jun 2026 06:07:52 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CH2PEPF00000147.mail.protection.outlook.com (10.167.244.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Fri, 12 Jun 2026 06:07:52 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 12 Jun
- 2026 01:07:51 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 11 Jun
- 2026 23:07:51 -0700
-Received: from [10.136.37.196] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Fri, 12 Jun 2026 01:07:47 -0500
-Message-ID: <380d53e2-3671-4327-a613-cf35c58b55d9@amd.com>
-Date: Fri, 12 Jun 2026 11:37:46 +0530
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="JflxzjpX"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1781245518; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=7hM7ZOjBdBygnqZJzPlimjtCHOES1wSzElDhatvFoOc=;
+	b=JflxzjpXNCc9nQTuE6pFd+a9vAVsqxA51yScS7XBt0kz8zBE7dFRz3hkwo7GmrFxli1dZUKzE50zrT5c9rc/FL+BcQu2BSlR0jCD1+dj9SM4FsrHEooCgTFcAswk1RRWgJM9hp36iGYMZAeN8TI3NIjNodIK0i4uPsQ7VNNT9dQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=kanie@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0X4gk6dp_1781245517;
+Received: from 30.178.80.217(mailfrom:kanie@linux.alibaba.com fp:SMTPD_---0X4gk6dp_1781245517 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 12 Jun 2026 14:25:18 +0800
+Message-ID: <6d737961-1276-42e2-bb74-510d0f041040@linux.alibaba.com>
+Date: Fri, 12 Jun 2026 14:25:16 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,78 +34,216 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/10] sched/fair: Credit a persistent,
- queue-depth-scaled vlag margin
-To: Wanpeng Li <kernellwp@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
-CC: Christian Borntraeger <borntraeger@linux.ibm.com>, Steven Rostedt
-	<rostedt@goodmis.org>, Vincent Guittot <vincent.guittot@linaro.org>, "Juri
- Lelli" <juri.lelli@redhat.com>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, Wanpeng Li <wanpengli@tencent.com>, Richie Buturla
-	<richie@linux.ibm.com>
-References: <20260612013355.59231-1-kernellwp@gmail.com>
- <20260612013355.59231-3-kernellwp@gmail.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <20260612013355.59231-3-kernellwp@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF00000147:EE_|SA3PR12MB7975:EE_
-X-MS-Office365-Filtering-Correlation-Id: 83ba4123-422f-4c56-806b-08dec848efe1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|23010399003|82310400026|1800799024|7416014|376014|11063799006|6133799003|22082099003|18002099003|5023799004|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	p1ekMYUSsFDWYXNAN8xTT6FPJndT3r827QAteqvSgU3rJuUu2V5fUk19qbAxRLHowIKY938PE/w9PogZce2MqIrDusDW6U7dZaVekvSRhOw6ENWO7beBZV+J61BfjNhp+Emzq11JOG4yiRylZKva1NDwCkhTXQNVO+0yvLVJEaFq10s6adH5sitUH93m2TmHqPe3lFmmL22eTy3962cfFccPr2ptl1dxIqO80CYnDirGEukxvgCyZgCRPFmKoKmszdRmK0q2s6WTPqgYzBTFei6OjfH+jxS9XvFTO5AvB1Z4ZONNvLBIR3oRhXEY5b/W2qZHo3XVFrDiXFuuKrdPpVuFDhZDZDWBjisCkJYNEiNHM1pAQwJf9+BL5SQ00ildRfKD2BjhwopgSktc/z+QN82jVQ5CnCYNfIT1dVGpO1P9KFNl6IcPxwlV3we46p5R9GBSQ2KlMaxlb0F/iOwt6wZCncMkyAa8T2qi3O8uOTkQPvJmEYcXViJbM07lYwqVUKqGvRi/slBsFgK3uKWylNG1FDzEDyave2kP1FELQPGdOnoE0J+7EX3H4dnYTStlScuB4AXIVkVjT0X1dodGsqb26QAhlBYqLoN+pFkXN15DPr+iPip6PrYiDE/xK93UJ2jfX10nYvqussLsuoQ9vgRE89cDxYzvjBks5iy+hnFHPYlJp0J8GW6TQUaeIr5vRSLs/DbYxrkswmKc4xyF/28NyFC61/xME1lu1+Bu3jE=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(82310400026)(1800799024)(7416014)(376014)(11063799006)(6133799003)(22082099003)(18002099003)(5023799004)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Ht8ZfMTdQVuzqEsbeo9Og2LQ4Shtc2tOFAJD44qpQZoipj5B84vY21G2KOjzLpSJtW+oCu/YqJM+gqTKOWc8ELQ65O2uofWMqHG4YYPthIOrSmVlMiR1OnSPE/0rU4lE5/sI8cTlOOR+UiblubeBOWI7IRzVUUNl+oY326T1jSOsMD8iIJ9TW4Bg5MSi3pI6RQFtwetFII6XvIhVonI+m6UJuMFANVdci17utqlEXv25OWDLoYj3RiMNnFt0p6lEFf5mcldt+bO3aohNCFkVpqsXKxiqzUdT4yUdwQcbRnKg/leuMo+KoArCW5I9gnauITvXuUtg1dpofBcHrHHUoOkqmdqctAxPIWcyu/9r/5avE+i3DDPVzAV8JSaHNwkCkhDQO7PxuykP+DbixgsO1L+KJSGb0BzId7Bd8C8rRRQKZUO87J5mr2Z79eP99U0Z
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2026 06:07:52.0374
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 83ba4123-422f-4c56-806b-08dec848efe1
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF00000147.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7975
+Subject: Re: [PATCH v2 5/5] vfio/pci: Latch all module parameters per device
+To: Alex Williamson <alex.williamson@nvidia.com>, kvm <kvm@vger.kernel.org>,
+ Alex Williamson <alex@shazbot.org>
+Cc: linux-kernel <linux-kernel@vger.kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>
+References: <20260611213539.4100590-1-alex.williamson@nvidia.com>
+ <20260611213539.4100590-6-alex.williamson@nvidia.com>
+From: Guixin Liu <kanie@linux.alibaba.com>
+In-Reply-To: <20260611213539.4100590-6-alex.williamson@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hello Wanpeng,
+Hi Alex,
 
-On 6/12/2026 7:03 AM, Wanpeng Li wrote:
-> -	/* Already eligible: nothing to do. */
-> -	if (vlag >= 0)
-> -		return;
-> +	/* Clamp the margin to entity_lag()'s bound so place_entity() keeps it. */
-> +	max_slice = cfs_rq_max_slice(cfs_rq) + TICK_NSEC;
-> +	lag_limit = calc_delta_fair(max_slice, se);
-> +	margin = eevdf_persistent_margin(cfs_rq, se);
-> +	if (lag_limit && margin > lag_limit)
-> +		margin = lag_limit;
-> +	if (vlag >= 0) {
-> +		if ((u64)vlag >= margin)
-> +			return;
-> +		want = margin - (u64)vlag;
+In many cases, when users modify a module parameter, they expect
+the change to take effect immediately, but that's not at all what
+happens here. So I think on the one hand, we should make the module
+parameter read-only; on the other hand, we could also expose this
+information in the PCI core device's sysfs directory — read-only as well 
+for now,
+or perhaps there's an even better approach?
 
-And we are making an eligible task more eligible but *where* is this
-credit coming from? Someone should be paying the price right?
+Best Regards,
+Guixin Liu
 
-Just adding an arbitrary credit and then moving the task doing the
-yield_to() 0-lag point is simply not fair IMO.
 
-> +	} else {
-> +		want = margin + (u64)(-vlag);
-> +	}
 
--- 
-Thanks and Regards,
-Prateek
+在 2026/6/12 05:35, Alex Williamson 写道:
+> The vfio-pci module parameters of disable_idle_d3, nointxmask, and
+> disable_vga latch vfio-pci policy into vfio-pci-core globals each time
+> the vfio-pci module is initialized.  The disable_idle_d3 parameter has
+> already migrated to a per-device flag in order to provide consistency
+> for refcounted PM operations for the lifetime of the device
+> registration.
+>
+> Pull the remaining vfio-pci module-parameter policy out of vfio-pci-core
+> into per-device flags set at device initialization.
+>
+> This also restores the mutable aspect of the disable_idle_d3 and
+> nointxmask module parameters for vfio-pci, with the caveat that the
+> parameters are latched into the device at probe.
+>
+> A notable change for variant drivers is that their devices are no longer
+> affected by vfio-pci module parameters and those drivers may need to
+> adopt similar module parameters if any devices have a hidden dependency
+> on vfio-pci setting non-default policy.
+>
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+> ---
+>   drivers/vfio/pci/vfio_pci.c      | 30 ++++++++++++++++++++++--------
+>   drivers/vfio/pci/vfio_pci_core.c | 26 ++++++--------------------
+>   include/linux/vfio_pci_core.h    |  4 ++--
+>   3 files changed, 30 insertions(+), 30 deletions(-)
+>
+> diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+> index 0c771064c0b8..830369ff878d 100644
+> --- a/drivers/vfio/pci/vfio_pci.c
+> +++ b/drivers/vfio/pci/vfio_pci.c
+> @@ -125,9 +125,30 @@ static int vfio_pci_open_device(struct vfio_device *core_vdev)
+>   	return 0;
+>   }
+>   
+> +static int vfio_pci_init_dev(struct vfio_device *core_vdev)
+> +{
+> +	struct vfio_pci_core_device *vdev =
+> +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+> +
+> +	/*
+> +	 * These behaviors originated in vfio-pci and moved into
+> +	 * vfio-pci-core when the driver was split; vfio-pci remains the
+> +	 * only driver that toggles them.  Latch our module parameters per
+> +	 * device at init time so that later parameter changes do not
+> +	 * affect already-initialized devices.
+> +	 */
+> +	vdev->nointxmask = nointxmask;
+> +	vdev->disable_idle_d3 = disable_idle_d3;
+> +#ifdef CONFIG_VFIO_PCI_VGA
+> +	vdev->disable_vga = disable_vga;
+> +#endif
+> +
+> +	return vfio_pci_core_init_dev(core_vdev);
+> +}
+> +
+>   static const struct vfio_device_ops vfio_pci_ops = {
+>   	.name		= "vfio-pci",
+> -	.init		= vfio_pci_core_init_dev,
+> +	.init		= vfio_pci_init_dev,
+>   	.release	= vfio_pci_core_release_dev,
+>   	.open_device	= vfio_pci_open_device,
+>   	.close_device	= vfio_pci_core_close_device,
+> @@ -256,13 +277,6 @@ static void __init vfio_pci_fill_ids(void)
+>   static int __init vfio_pci_init(void)
+>   {
+>   	int ret;
+> -	bool is_disable_vga = true;
+> -
+> -#ifdef CONFIG_VFIO_PCI_VGA
+> -	is_disable_vga = disable_vga;
+> -#endif
+> -
+> -	vfio_pci_core_set_params(nointxmask, is_disable_vga, disable_idle_d3);
+>   
+>   	/* Register and scan for devices */
+>   	ret = pci_register_driver(&vfio_pci_driver);
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index d2d3fddec610..76725c0e7dda 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -38,10 +38,6 @@
+>   #define DRIVER_AUTHOR   "Alex Williamson <alex.williamson@redhat.com>"
+>   #define DRIVER_DESC "core driver for VFIO based PCI devices"
+>   
+> -static bool nointxmask;
+> -static bool disable_vga;
+> -static bool disable_idle_d3;
+> -
+>   static void vfio_pci_eventfd_rcu_free(struct rcu_head *rcu)
+>   {
+>   	struct vfio_pci_eventfd *eventfd =
+> @@ -92,10 +88,10 @@ struct vfio_pci_vf_token {
+>   	int			users;
+>   };
+>   
+> -static inline bool vfio_vga_disabled(void)
+> +static inline bool vfio_vga_disabled(struct vfio_pci_core_device *vdev)
+>   {
+>   #ifdef CONFIG_VFIO_PCI_VGA
+> -	return disable_vga;
+> +	return vdev->disable_vga;
+>   #else
+>   	return true;
+>   #endif
+> @@ -111,11 +107,12 @@ static inline bool vfio_vga_disabled(void)
+>    */
+>   static unsigned int vfio_pci_set_decode(struct pci_dev *pdev, bool single_vga)
+>   {
+> +	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
+>   	struct pci_dev *tmp = NULL;
+>   	unsigned char max_busnr;
+>   	unsigned int decodes;
+>   
+> -	if (single_vga || !vfio_vga_disabled() || pci_is_root_bus(pdev->bus))
+> +	if (single_vga || !vfio_vga_disabled(vdev) || pci_is_root_bus(pdev->bus))
+>   		return VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM |
+>   		       VGA_RSRC_LEGACY_IO | VGA_RSRC_LEGACY_MEM;
+>   
+> @@ -562,7 +559,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>   	if (!vdev->pci_saved_state)
+>   		pci_dbg(pdev, "%s: Couldn't store saved state\n", __func__);
+>   
+> -	if (likely(!nointxmask)) {
+> +	if (likely(!vdev->nointxmask)) {
+>   		if (vfio_pci_nointx(pdev)) {
+>   			pci_info(pdev, "Masking broken INTx support\n");
+>   			vdev->nointx = true;
+> @@ -602,7 +599,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>   		vdev->has_dyn_msix = false;
+>   	}
+>   
+> -	if (!vfio_vga_disabled() && vfio_pci_is_vga(pdev))
+> +	if (!vfio_vga_disabled(vdev) && vfio_pci_is_vga(pdev))
+>   		vdev->has_vga = true;
+>   
+>   	vfio_pci_core_map_bars(vdev);
+> @@ -2144,8 +2141,6 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+>   	init_rwsem(&vdev->memory_lock);
+>   	xa_init(&vdev->ctx);
+>   
+> -	vdev->disable_idle_d3 = disable_idle_d3;
+> -
+>   	return 0;
+>   }
+>   EXPORT_SYMBOL_GPL(vfio_pci_core_init_dev);
+> @@ -2625,15 +2620,6 @@ static void vfio_pci_dev_set_try_reset(struct vfio_device_set *dev_set)
+>   	}
+>   }
+>   
+> -void vfio_pci_core_set_params(bool is_nointxmask, bool is_disable_vga,
+> -			      bool is_disable_idle_d3)
+> -{
+> -	nointxmask = is_nointxmask;
+> -	disable_vga = is_disable_vga;
+> -	disable_idle_d3 = is_disable_idle_d3;
+> -}
+> -EXPORT_SYMBOL_GPL(vfio_pci_core_set_params);
+> -
+>   static void vfio_pci_core_cleanup(void)
+>   {
+>   	vfio_pci_uninit_perm_bits();
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 985b8af5a04b..9a1674c152aa 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -127,6 +127,8 @@ struct vfio_pci_core_device {
+>   	bool			nointx:1;
+>   	bool			needs_pm_restore:1;
+>   	bool			disable_idle_d3:1;
+> +	bool			nointxmask:1;
+> +	bool			disable_vga:1;
+>   	/* Flags modified at runtime - dedicated storage unit */
+>   	bool			needs_reset;
+>   	bool			pm_intx_masked;
+> @@ -161,8 +163,6 @@ int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
+>   				      unsigned int type, unsigned int subtype,
+>   				      const struct vfio_pci_regops *ops,
+>   				      size_t size, u32 flags, void *data);
+> -void vfio_pci_core_set_params(bool nointxmask, bool is_disable_vga,
+> -			      bool is_disable_idle_d3);
+>   void vfio_pci_core_close_device(struct vfio_device *core_vdev);
+>   int vfio_pci_core_init_dev(struct vfio_device *core_vdev);
+>   void vfio_pci_core_release_dev(struct vfio_device *core_vdev);
 
