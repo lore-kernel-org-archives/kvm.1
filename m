@@ -1,145 +1,157 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA3C39D6E9
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 18:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAAD2773F9
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 18:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781290256; cv=none; b=ZN77ysudsAkwyQ3uVPQ2kPx79Srk+gzATmJD6dbgURf50khIm1VyabFYtBYMk0vrRQxbN4XpTg9VSyBG2Q9O59cm0UNHVwhUUeLXYI0pt/ANqvh2DcmNxcOlrExmdwDJ+4zPH5EkwufNnIbiiSxWgkNWu7UF0W5AQmS0rOwjF6U=
+	t=1781290504; cv=none; b=MWerJ65HBZ7n85pyeYjchKPRkQp8BfU1+YEnApgO2E4L/Dg6jY5uraPfVIPGqFeCy2NqG2hXnVJbvasFt3hce72aDqq51oEjEkJMsqYhI+lMJMJR+PJ7/hhgn3RD1ZgDowlmhW2DCYxALzs2YrS2v+ZfLVID65t/Gk4KaaQB84g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781290256; c=relaxed/simple;
-	bh=rOmxvRgPilijmh3Mmys5rUiYjkSPk65d+CBLecrHftg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=VMwrm6koQ1MhjJ31VvT+9NwVn8gGuqLNqD8zpO3Xw5SfgUSkiD/cXHS8FI0xh1ywQ6DiU7P/DYoRhQUb2R0/kUbGA40aflSnniWw3ZzP+ApU3LrIeCtLyfTF4JuJfoUB5hwRebxeYlcr6jhPjjwJ+ZmPluZ8G1W3FtYaoYfhOR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NBn9vMXB; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1781290504; c=relaxed/simple;
+	bh=FLSzrcbZC0Rq37JiVsN00hJeJOk6aysg8AxMXnvBqr0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=j9gVAV+aryWCKdpNn4p8R0Ybl2H+hxTOJdMLW4EkDOeyE9GQuy8xMSX9rixOcsR8oluFHyP9YZzzqetE4BeRs/vKaoqJyrs6V3Bjg2BtcLrfOXt2q3MBOZLimfmYQUQPCFl5bVpY7Zd/qhLlrWS/ZFKIkghWzMJhBziGIL5WtYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B3ROeSVH; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NBn9vMXB"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4905529b933so13321145e9.0
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 11:50:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B3ROeSVH"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c354050c34so12267035ad.3
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 11:55:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1781290253; x=1781895053; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9d5XdG4nK+gC6Q3Lj8SelKF0sJUz9ob8Vfp1Hz7sKDY=;
-        b=NBn9vMXBg0gHWR/PaicqUa6R2STRywzCjX8ZU/dNyof3df5zUJzzEDkOOOhx4+lW8r
-         mrNwYNy1/D6nAg2vLv/0vUBjvjtDOlNXUFyWRXIwfGKnahb6zaOQzVcj6K523D7aadx6
-         Wr2l7uzYdUap44RNOhQVucoi2Ck/eWBaINEUDknCg9Oo+ozHAHPBG6PWlxN/BXS/8WB7
-         WyHIHQfXuXCncApUQv/+FjGeBipBDiN60gQ1YGTBY20I/tGsKr14HeFW91PCuuKaeCU7
-         MekhT/Mdx9TQMAt6FfzUnElIyeOZrgKVu3JdDCJoV6flgfnO4t9stA9Mg+2cBAd/t0d7
-         EZkA==
+        d=google.com; s=20251104; t=1781290503; x=1781895303; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RJ95UxHgyKJcdVZWK9EtRNno+4oyBie0o34zJZDCnLI=;
+        b=B3ROeSVHe2XUKM+llkZ4CXSF/zsiEK2/3eBcLWk5d+FXFOt3JasPi1+r9pMuLir2Ov
+         40aoFArr00Nn7K1+a/QEMesqngdYiqPDnjrczPeUBIIVgsGwJZkLfgxaTStd/tf8FZYV
+         f87uHsRJ1zlB7d20hnQeyDMZhh2tPy6lUjPToBcE1GM8UIoRwPikI2cf+Uvp1Y8J5j8T
+         EIY7Ffcm/99BmliFg+9aLmn+TP+8KjfNGAXDZ6GqPJ50NUK3tILRDFgebQTO1oF4Tk1Z
+         mbpHUVrsAHox6fD0/R10Vcqn/Sx1HbMI2f+qMHXn1WmfUr9HytWFUu/+YvaBKaZexaV2
+         h9bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781290253; x=1781895053;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1781290503; x=1781895303;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9d5XdG4nK+gC6Q3Lj8SelKF0sJUz9ob8Vfp1Hz7sKDY=;
-        b=FFZu/YSljTmD6uge2vrm8ElWXc1tgq1ookO9p2Ne2gdYDAJ2AQcUEeXikaDX5FSCVL
-         vFdcjkuIPtO43u911rJ9TRPVyH1entc+pGsh+45u6cqb0zdB/LMAlETMNRGY88PWwu7v
-         qPwW84hEOUCn+sIoO9k5J+p2zmHxmIIShBHJHg6mSf2x13czhaC8cTuOrUUcdJS0W3aK
-         RaEQgxjKOMCoDg0s6OAdVKc0qQeAub+EH/+pNPIdvOcP9qi07tCYBuLS5Ii4InIWIRKu
-         UgbJadqUjZCRcI2mus/D7fdTuzMrS5KEBaWtTI9nQpEcwObKXd0Rm8WJsYluuovJkYB0
-         iwUw==
-X-Forwarded-Encrypted: i=1; AFNElJ90fsnEQfl83sTLg4b8wdOvJJcMrru3ksrplVXYj7tVnjbzCi+b72I4XwIwVIjSRJ3BKdg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQwVwLbrn8fDD4WVXjwSy4NdrZ3JNk1Fze1jJCfm16kJ62NFEp
-	opysXp5zKcumQ9/n/j62t4TYque9Gg1QbF7ycyExDRYB7DuCtzjuSQmFg/wlG7/hb9s=
-X-Gm-Gg: Acq92OE4bXsUeC1WxdQ/p0xYn5Jmk1ziq1yM80CRNCrNqfPBunTLftOworOOZMD4Py4
-	p4Aoz1LDqRAmQCir/u8fXRNV7OqimBVyg7ZykWTa0n+FFE4HZsBwSeh9/gUonmgHC1FR87hVq7D
-	yqJwriJqBJHO6zHOz1PSRQ++2mSE1PItnPaoWdEY4o5/sPiKfZ06G0EH5plvODM9oLk9Iz3JzSg
-	/Z8dDAVpgwvBX7YFKa9b3fgGbuBhHcoAITomx/pykQ49UxZDlBsoU+EBBRUBOO2SfkN6DLDXidw
-	z/v8p+w1aFj9s9qrQiatvnufxKUvBQjP9aj/gtw4cpSZyKtG9KsAEkahWRT6u5MwR0hNJtuog4r
-	rqcwhVxemSSiXGP4b7LJTa4v6EGHc6WoZzaVbgq3BbBCdISB1RtqErV3AmaoH7kD07gDcds5gQh
-	52dx1xlXgO/R55r4fUGpHSiDs=
-X-Received: by 2002:a05:600c:638d:b0:492:1e36:d16f with SMTP id 5b1f17b1804b1-4921e36d1b4mr21725105e9.37.1781290252735;
-        Fri, 12 Jun 2026 11:50:52 -0700 (PDT)
-Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49220345528sm9705825e9.8.2026.06.12.11.50.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 11:50:52 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id DA3A85F814;
-	Fri, 12 Jun 2026 19:50:50 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Alexander
- Graf <agraf@csgraf.de>,  Mohamed Mediouni <mohamed@unpredictable.fr>,
-  Pedro Barbuda <pbarbuda@microsoft.com>,  qemu-arm@nongnu.org,
-  kvm@vger.kernel.org
-Subject: Re: [PATCH v7 0/8] target/arm: fully model WFxT instructions for
- A-profile
-In-Reply-To: <CAFEAcA8yNGiKeMpN_wgWtc5EnfjsnxSvG6an4-UjBf6XG+4Yvw@mail.gmail.com>
-	(Peter Maydell's message of "Fri, 12 Jun 2026 18:46:48 +0100")
-References: <20260529082948.363931-1-alex.bennee@linaro.org>
-	<CAFEAcA94+mh_pigFDi+tEPRJ416fSWfxsQ1Lj8Byemug9kBp6w@mail.gmail.com>
-	<87h5n7ekxw.fsf@draig.linaro.org>
-	<CAFEAcA8yNGiKeMpN_wgWtc5EnfjsnxSvG6an4-UjBf6XG+4Yvw@mail.gmail.com>
-User-Agent: mu4e 1.14.1; emacs 30.1
-Date: Fri, 12 Jun 2026 19:50:50 +0100
-Message-ID: <87bjdfegol.fsf@draig.linaro.org>
+        bh=RJ95UxHgyKJcdVZWK9EtRNno+4oyBie0o34zJZDCnLI=;
+        b=A6xviPqOP3h+5txXH9zPjI7/YJfdDifR0TEwCCpNFXkHk+RczMYcF77OIBcQB2pjNf
+         JeNOF3HTA+FZjZ08Lh4ew+EzfGdEDrs6+QWT+soZUlnfq+2oQKsMeNDQ2iykC1aV5hto
+         X10vtnSgbZCioaytapbWn5BULwd0NxEvTMSJQbRnNd4uXzlYzloJrO3jnDMA4YyRlYCp
+         YXf59cJjHjatUaySse7wwXyViNGu/7rj4ualTNHcxRDUefQpHCsZQGhS00NU2nF262Nj
+         XMeNGuScV9uW/QUiK04dbq6KMoYqpUPeHhZinxpSEhbaeIBtRd0FJp1HP7Gey9wNf54Q
+         wCLQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+C5+FQczQuYRkARpQLCFQLveyyk0Sm3WnQFURrniZs41F+DOo4btCjAvxR7q2SZvHu2V0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyR14HqKl1+Z2tTFNW3yiJkffCniWoIx5pl6i2Qs5NA2L12G1zy
+	peCrM/KeYGgvCoYzEXzMINr2FhrXOUi3CcBmn8UzLt6FpIRTD6T1UBvI5xQbDvhRgU201rDpX5I
+	1nBJHdg==
+X-Received: from plhn15.prod.google.com ([2002:a17:903:110f:b0:2bd:7dc:3354])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cec7:b0:2c1:f29a:b554
+ with SMTP id d9443c01a7336-2c664271df6mr8414615ad.21.1781290502338; Fri, 12
+ Jun 2026 11:55:02 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 12 Jun 2026 11:54:59 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
+Message-ID: <20260612185459.591892-1-seanjc@google.com>
+Subject: [PATCH] x86/apic: KVM: Use cpu_physical_id() to get APIC ID of
+ running vCPU for AVIC
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Kai Huang <kai.huang@intel.com>, Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+Use cpu_physical_id() instead of default_cpu_present_to_apicid() when
+getting the APIC ID of the pCPU on which a vCPU is running/loaded, as the
+kernel has gone way off the rails if a vCPU is loaded on a pCPU that has
+been physically removed from the system.  Even if the impossible were to
+happen, the absolutely worst case scenario is that hardware will ring the
+AIVC doorbell on the wrong pCPU, i.e. a severely broken system will
+experience mild performance issues.
 
-> On Fri, 12 Jun 2026 at 18:18, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
-rote:
->>
->> Peter Maydell <peter.maydell@linaro.org> writes:
->>
->> > On Fri, 29 May 2026 at 09:29, Alex Benn=C3=A9e <alex.bennee@linaro.org=
-> wrote:
->> >>
->> >> This series fully models the behaviour of WFxT instructions. We
->> >> already had support for WFE for M-profile but we left off A-profile as
->> >> it has more potential sources of wake-ups. The main one is the event
->> >> stream which includes events from significant bits of the timer
->> >> ticking over.
->> >>
->> >> The refactoring from the previous iterations of the patch have now
->> >> been merged.
->> >>
->> >> I've dropped trying to fully model the global monitor in favour of
->> >> taking advantage of the architectural flexibility to have an IMPDEF
->> >> event wake up for any reason. We treat the setting of exclusive_addr
->> >> as such a reason because it indicates the current vCPU is in a ldstx
->> >> exclusive region and we don't want the guest to deadlock. This does m=
-ean
->> >> the system won't sleep on WFE enabled locks but people shouldn't be
->> >> relying on QEMU to model real world sleep patterns anyway given the
->> >> efficiency of emulation compared to real HW.
->> >>
->> >> I've written a test case using kvm-unit-tests:
->> >>
->> >>   Message-ID: <20260527111822.1563679-1-alex.bennee@linaro.org>
->> >>   Date: Wed, 27 May 2026 12:18:21 +0100
->> >>   Subject: [kvm-unit-tests PATCH v2] arm: add wfx test case
->> >>   From: =3D?UTF-8?q?Alex=3D20Benn=3DC3=3DA9e?=3D <alex.bennee@linaro.=
-org>
->> >>
->> >> All patches are now reviewed.
->> >
->> >
->> >
->> > Applied to target-arm.next, thanks.
->>
->> Is it too late to drop them? I've a fix for 2/8:
->
-> That change is already in upstream git, so you'll need to
-> send the fix as a standalone patch, I'm afraid.
+Kill off KVM's superfluous kvm_cpu_get_apicid() wrapper along with the
+for-KVM export of default_cpu_present_to_apicid(), as they existed purely
+for the wonky AVIC usage.
 
-No worries, I'll fix it up in the re-base.
+Cc: Kai Huang <kai.huang@intel.com>
+Cc: Yosry Ahmed <yosry@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
 
->
-> -- PMM
+Tip tree folks, I'd like to take this through the kvm-x86 tree (in 7.3) for
+obvious reasons.  I assume the odds of a conflict on the removal of
+EXPORT_SYMBOL_FOR_KVM() are tiny.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+ arch/x86/include/asm/kvm_host.h    | 10 ----------
+ arch/x86/kernel/apic/apic_common.c |  1 -
+ arch/x86/kvm/svm/avic.c            |  6 +++---
+ 3 files changed, 3 insertions(+), 14 deletions(-)
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 3886b536c8a5..2389e43e2f82 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2526,16 +2526,6 @@ static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu)
+ 	kvm_x86_call(vcpu_unblocking)(vcpu);
+ }
+ 
+-static inline int kvm_cpu_get_apicid(int mps_cpu)
+-{
+-#ifdef CONFIG_X86_LOCAL_APIC
+-	return default_cpu_present_to_apicid(mps_cpu);
+-#else
+-	WARN_ON_ONCE(1);
+-	return BAD_APICID;
+-#endif
+-}
+-
+ int memslot_rmap_alloc(struct kvm_memory_slot *slot, unsigned long npages);
+ 
+ #define KVM_CLOCK_VALID_FLAGS						\
+diff --git a/arch/x86/kernel/apic/apic_common.c b/arch/x86/kernel/apic/apic_common.c
+index 2ed3b5c88c7f..45e6b816353e 100644
+--- a/arch/x86/kernel/apic/apic_common.c
++++ b/arch/x86/kernel/apic/apic_common.c
+@@ -26,7 +26,6 @@ u32 default_cpu_present_to_apicid(int mps_cpu)
+ 	else
+ 		return BAD_APICID;
+ }
+-EXPORT_SYMBOL_FOR_KVM(default_cpu_present_to_apicid);
+ 
+ /*
+  * Set up the logical destination ID when the APIC operates in logical
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index 0726f88e679a..58e493a80cb0 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -460,8 +460,8 @@ void avic_ring_doorbell(struct kvm_vcpu *vcpu)
+ 	int cpu = READ_ONCE(vcpu->cpu);
+ 
+ 	if (cpu != get_cpu()) {
+-		wrmsrq(MSR_AMD64_SVM_AVIC_DOORBELL, kvm_cpu_get_apicid(cpu));
+-		trace_kvm_avic_doorbell(vcpu->vcpu_id, kvm_cpu_get_apicid(cpu));
++		wrmsrq(MSR_AMD64_SVM_AVIC_DOORBELL, cpu_physical_id(cpu));
++		trace_kvm_avic_doorbell(vcpu->vcpu_id, cpu_physical_id(cpu));
+ 	}
+ 	put_cpu();
+ }
+@@ -1013,7 +1013,7 @@ static void __avic_vcpu_load(struct kvm_vcpu *vcpu, int cpu,
+ 			     enum avic_vcpu_action action)
+ {
+ 	struct kvm_svm *kvm_svm = to_kvm_svm(vcpu->kvm);
+-	int h_physical_id = kvm_cpu_get_apicid(cpu);
++	int h_physical_id = cpu_physical_id(cpu);
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	unsigned long flags;
+ 	u64 entry;
+
+base-commit: c1f7303302927f9cbf4efedf70f0512cde168c65
+-- 
+2.54.0.1136.gdb2ca164c4-goog
+
