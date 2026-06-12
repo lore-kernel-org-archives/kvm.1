@@ -1,144 +1,180 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E45815B971;
-	Fri, 12 Jun 2026 09:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903923ABD90
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 10:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781257471; cv=none; b=skOLyxPiHmCJ1Xr0ziGqjRsvN3IlVCkNisLVdneBscl46J1pWgZ0/hIfgeM/xKsSuwavX9tVi4+cm5Tr3ntHi1YPrmmBmPLAR9XjUz3YxiOM5ijTWfp44D9QsBX9/qzJBTJGxq5E5/qjsvXT3FqxZl7hrezQcX2fkanCXyFfAsY=
+	t=1781260910; cv=none; b=FqzIyxXJ3PLP5QhB5wUMsNWsPdt/3l2DrURHfTZJvMS93ktNEtLXynq1uzIph6T+/X3bCCwbTXwcxqswpDDBBUlGMxpLZshM96i3eIHTi3IcQoDWTA0dOTHAtKAeYrYX5dPyOXnQS84ABtdZ1h2vFsNHlbuBwEWJaK4uHyqVvuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781257471; c=relaxed/simple;
-	bh=qE+TvY+tNy5J+9hDTjgArkie2Tc4WbesIG3aCda+3Bk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SGmOw4h6lRk+cilYFfATdtWtJWPiT1PlF1W4YwobJYprch/zkUhJgA7ekpQvmbQL/L7n48uvcLsRBkp6+TCf2YFaluPNQE8uvj1oZozVzKbqaNDZjIUF/EJxieWQsydghXBWG7P0zgPfyMIfnrU7cfxfrgSFDzsayhcj/LvS+Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ikFwlNSc; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1781260910; c=relaxed/simple;
+	bh=sny6gtCPTebe7+aMFk6HVm73mJrTLWc+vwahxxW30yw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X0rfKxRyJxJ4AAQg0aabrlAS4t9wer7q/cA1ct/H6PqLIO/pnYG+UTPO47xK1FapNsjJq5BCN5+PbhAee8+88LfmDLWiaOjyobpennPERJIsRN7s/1hbabeakWO1cS9nZtTGoDayqhFyipj2JUkel9KXNacTT9hQ9nDjB505vEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e85phcXk; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ikFwlNSc"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BNYoNe677491;
-	Fri, 12 Jun 2026 09:43:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=XYUv4E
-	zF1jJEj0Bq6xIG3d7viUyK+GP/6tISNu9N7HI=; b=ikFwlNScrcyCFa5dYkjaMh
-	KBFtT6PGNaky0azWPEUN+BOU61I5ITaiGdH+MdQJCtd/J6WVAK24Rn9XLGnAzIaA
-	nzAXpiE95rsqCJrCVmrYi++bOHlJgSJaWMdS31zUa6R8F1//2N9A0TSVNy62bWPn
-	LVO7cAi/X1rp1G2jlw29fO+DDuwhYrfdJEEpg/FtQvxCcycbfLjryN0r9lmh2MvZ
-	vJPKqNRWZx55aFlBux2HefTb6yxZnvtjw1BBoNQAb9UdTXVeVj4K6IANsc9gDN+g
-	hpqOZGywLGitJv30UJ4fW7jZxoBHfhp2tA6EtyALnp+SsLLKRoR2xp8vBP65WxkA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8aqxa5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jun 2026 09:43:46 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65C9Yalg000567;
-	Fri, 12 Jun 2026 09:43:45 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eqe08y7m8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jun 2026 09:43:45 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65C9hfAN49611166
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Jun 2026 09:43:41 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 980092004B;
-	Fri, 12 Jun 2026 09:43:41 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5383420040;
-	Fri, 12 Jun 2026 09:43:37 +0000 (GMT)
-Received: from [9.39.29.202] (unknown [9.39.29.202])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 12 Jun 2026 09:43:37 +0000 (GMT)
-Message-ID: <feba3338-1b1d-40ea-83f7-54328712a71d@linux.ibm.com>
-Date: Fri, 12 Jun 2026 15:13:36 +0530
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e85phcXk"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2bf2911f93cso64205ad.1
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 03:41:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781260906; x=1781865706; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kyKpUSmzhXA86dwYd5qyCKe1OI2XqC/1Gh0xGOzaDhE=;
+        b=e85phcXk1K9leNPFo1wZEsC5nr3lko7DIgyyvSZRSPFdoEegnsrwaYm1Nw+U6cyIAv
+         xw1/3Ze+EUm2P/h9YI7KH46n1g7Gyh9+ZOm7gBt1TzB7PtPb/RBKhstuxPYEtIKEEIiE
+         edEIuXGHtPWbMLR6zhJAsNaH9himgVH+BZcPZ6BQTTUm774+PPYz3r+GQqBkmCrv0cWN
+         gQHuKntSVzYprCBnRaIMVoeLpQ/DUOQn/e3C2zsGjPN/wfOLkLrQveb8FMmhAzq2j/ql
+         HVk8RR/sdA8krZiSmLGValM51ij7dNKSaPevsG3pF7Mr82x/0un7HHJ1EeXXfC1REn8n
+         zgIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781260906; x=1781865706;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kyKpUSmzhXA86dwYd5qyCKe1OI2XqC/1Gh0xGOzaDhE=;
+        b=CvXWrnrnQKiVvdIVestQbQ0usCffiiGuc8njFeDoUzen+MZkBPCjQIxNCDMCP7VZXc
+         oUSLADJbrVEcpihXlv+pVSsFKCg39prQ5c0rot5i07MSNieAlLNWFbXXtJ/ekJjmOd6f
+         s8mo8Vm0o9R/J2MXoseG+H6n4xgqFUZDKKrba1v9s2w5ndFLFRxeHqIt1FRmSXyd90NN
+         ciGJUfGlTuS+IbMa1Nnr3kknqWbq+nbtKaOXTnbeV0B7U/JCDaaIj79kgaXoLLonhx4i
+         BBz7slENF+fp82EHQRvUSIDv1sEXQOhiUDvYP7sGo/Wc54R86JfA5a/0OYboNJkHbKDo
+         G3UA==
+X-Forwarded-Encrypted: i=1; AFNElJ8475Gz2P36mqWL3NheIRTXKtIb8dJ06KWrkcn3hkiW8mnXM2r59NJCDGYnPVyuutxEbE4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGfabxKPp5crp/tJRAZT2rOf31al/T9A+rtIh6EAhk/gUvj2R9
+	k3yxNgDvioaEtZMjx/qzCTZXsMIk9H6K4c1/GpjrO+7ShquqALmEGczFl2SCu2wBOQ==
+X-Gm-Gg: Acq92OGUqFrQe8+2crwYv7xckhD/GIPw2yz6MDfboxxmvYXzSIpgPii4ZchWyW1S+fS
+	5oUKeIjO7/3OXl7ypLWoZcVMe7UIKk4/R9J0t1QUIwpPTcXO66XVSYsh/Z/2MaRoz6P43ScNzZe
+	7fUKtrqGFazSchOpisKIhXFg2zPlNqIivyX3iI6COl+pYTop66Av1toXuCIvS1tP4GkXtVuFD+9
+	vzAMk/un4nzf4soy/P2ZSWyoU2HDW9224GtRLAfDy8yOIE5kB7+ftyzwuwdXjwn7Bzt/2Rjg6O8
+	JjHqcueVn4BP/XIZSqcBRelaI0fzsVO6vj2jOI60vcPnutmmhd1bBmQn2BgoYWF+VHvwReOD7No
+	+I/f+9DTJJqQZtLva4Bwatr/uIEeQAAh6KFFhN+otdDbOqGRQ7KCl+dwfHAuTl/u3nio76aHfDu
+	1VztXMI8Zd2kEbz4vOe/wzXxLKJZlZZWvGs3khiPFuzgWBZzDhCe52CUj6zRp9
+X-Received: by 2002:a17:902:da81:b0:2c0:c14c:bf37 with SMTP id d9443c01a7336-2c3e1919896mr2258415ad.16.1781260905357;
+        Fri, 12 Jun 2026 03:41:45 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c4327acae2sm15759755ad.52.2026.06.12.03.41.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 03:41:44 -0700 (PDT)
+Date: Fri, 12 Jun 2026 10:41:36 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Matt Evans <matt@ozlabs.org>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 4/9] vfio/pci: Convert BAR mmap() to use a DMABUF
+Message-ID: <aiviYEi17tewEQg0@google.com>
+References: <20260610154327.37758-1-matt@ozlabs.org>
+ <20260610154327.37758-5-matt@ozlabs.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/10] sched/fair, KVM: Semantics-aware directed yield
- for oversubscribed KVM
-To: Wanpeng Li <kernellwp@gmail.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Juri Lelli <juri.lelli@redhat.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, Wanpeng Li <wanpengli@tencent.com>,
-        Richie Buturla <richie@linux.ibm.com>,
-        Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>
-References: <20260612013355.59231-1-kernellwp@gmail.com>
-Content-Language: en-US
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-In-Reply-To: <20260612013355.59231-1-kernellwp@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: 38aQu0V4A06bmCcDx61RmKTvajf7pr3y
-X-Authority-Analysis: v=2.4 cv=TdKmcxQh c=1 sm=1 tr=0 ts=6a2bd4d2 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=GvQkQWPkAAAA:8 a=dLX7AjkPyFth-2rxqAkA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDA4NiBTYWx0ZWRfX6dLnxyHAH1+g
- sjYQQQ8daYCx0G1DIICHpMfI6s5IgalLRwZYLw+cpZj34vQQy/051JE6fW0PK6mxKGpWlh5rPET
- A+5pkmujPnntKUhqY43ciXVLS402D5MHcjj7zx+q+tRDXBd5ivrEEiAd7Zf1OldUmbjwyz87lB/
- dbpdlMU2OG0kOlczWssVB9lZi0ZTwTqTPdfFIWDv9XFt04WNZjaAjNL4Xbv4bnnRkASkRkWsJQi
- msiMSFzrjG3biFKnvIfC747N0tQ/2aLXBhhWbVxcuogOZk79JcjiA3BmyTYzhTH3/u0yV+uk9JN
- tg0Qtzyw0ThcKYK4jGkVhbj3tj2DrPWvOMsTnfu1bEZKzBj55CfPrDOPQiLZ1090ETkU5wLrtRg
- Ce32hAzJLwRtX4k5qrCvl5sB4mawV3TJYio3NwMiwJ+dNPa2pjhcpTJS40Ze/OAYrNungz4y/9e
- gx26Bv9Xuo+umas+WOw==
-X-Proofpoint-GUID: Z7qOhL-NPrbkCeJDj-DaeabpLNQledXg
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDA4NiBTYWx0ZWRfX7Po8+yadh8Cn
- F8hkvY+PRNIJXDuwfR6XKWeeQsMhQPjL+5kk276FtesGWJZ5fl2Rkry8aBD74kILBpJaS9QdJvs
- v6akaT+jO0SI0XgjCxWvxsTWAro32ww=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-12_01,2026-06-11_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 clxscore=1011 impostorscore=0 adultscore=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606120086
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260610154327.37758-5-matt@ozlabs.org>
 
-Hi Wanpeng.
-
-On 6/12/26 7:03 AM, Wanpeng Li wrote:
-> From: Wanpeng Li <wanpengli@tencent.com>
+On Wed, Jun 10, 2026 at 04:43:18PM +0100, Matt Evans wrote:
+> Convert the VFIO device fd fops->mmap to create a DMABUF representing
+> the BAR mapping, and make the VMA fault handler look up PFNs from the
+> corresponding DMABUF.  This supports future code mmap()ing BAR
+> DMABUFs, and iommufd work to support Type1 P2P.
 > 
-> On overcommitted hosts, a spinning vCPU often calls yield_to() to let a
-> lock holder or IPI receiver run.  The hint can be ineffective for two
-> independent reasons: the scheduler may fail to select the nominated task,
-> and KVM may nominate a task that is not the one the spinning vCPU is
-> waiting for.
+> First, vfio_pci_core_mmap() uses the new
+> vfio_pci_core_mmap_prep_dmabuf() helper to export a DMABUF
+> representing a single BAR range.  Then, the vfio_pci_mmap_huge_fault()
+> callback is updated to understand revoked buffers, and uses the new
+> vfio_pci_dma_buf_find_pfn() helper to determine the PFN for a given
+> fault address.
 > 
+> Now that the VFIO DMABUFs can be mmap()ed, vfio_pci_dma_buf_move()
+> zaps PTEs (used on the revocation and cleanup paths).
+> 
+> CONFIG_VFIO_PCI_CORE now unconditionally depends on
+> CONFIG_DMA_SHARED_BUFFER and CONFIG_PCI_P2PDMA_CORE.  The
+> CONFIG_VFIO_PCI_DMABUF feature conditionally includes support for
+> VFIO_DEVICE_FEATURE_DMA_BUF, depending on the availability of
+> CONFIG_PCI_P2PDMA.
+> 
+> Signed-off-by: Matt Evans <matt@ozlabs.org>
+> ---
+>  drivers/vfio/pci/Kconfig           |  5 +-
+>  drivers/vfio/pci/Makefile          |  3 +-
+>  drivers/vfio/pci/vfio_pci_core.c   | 75 +++++++++++++++++++-----------
+>  drivers/vfio/pci/vfio_pci_dmabuf.c | 12 +++++
+>  drivers/vfio/pci/vfio_pci_priv.h   | 11 +----
+>  5 files changed, 67 insertions(+), 39 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+> index 296bf01e185e..67a2ae1fbc04 100644
+> --- a/drivers/vfio/pci/Kconfig
+> +++ b/drivers/vfio/pci/Kconfig
+> @@ -6,6 +6,8 @@ config VFIO_PCI_CORE
+>  	tristate
+>  	select VFIO_VIRQFD
+>  	select IRQ_BYPASS_MANAGER
+> +	select PCI_P2PDMA_CORE
+> +	select DMA_SHARED_BUFFER
+>  
+>  config VFIO_PCI_INTX
+>  	def_bool y if !S390
+> @@ -56,7 +58,8 @@ config VFIO_PCI_ZDEV_KVM
+>  	  To enable s390x KVM vfio-pci extensions, say Y.
+>  
+>  config VFIO_PCI_DMABUF
+> -	def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
+> +	def_bool y if PCI_P2PDMA
+> +	depends on VFIO_PCI_CORE
+>  
+>  source "drivers/vfio/pci/mlx5/Kconfig"
+>  
+[...]  
+>  int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
+>  				   struct vm_area_struct *vma,
+> @@ -532,6 +538,10 @@ void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
+>  	struct vfio_pci_dma_buf *tmp;
+>  
+>  	lockdep_assert_held_write(&vdev->memory_lock);
+> +	/*
+> +	 * Holding memory_lock ensures a racing VMA fault observes
+> +	 * priv->revoked properly.
+> +	 */
 
-I was curious to try this as we have been working on paravirt scheduling
-which aims at reducing the vCPU preemption based on the steal time.
-https://lore.kernel.org/all/20260514152204.481115-1-sshegde@linux.ibm.com/
+Nit: This comment should appear before the lockdep_assert_held_write()
+Also, it is slightly verbose.. (not against it though).
 
-I gave the patch series a try. With both real life workload(daytrader) and
-micro-benchmarks (hackbench) I don't see any benefit. Note that it is running
-the same workloads in all VM's at the same time.
+>  
+>  	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm) {
+>  		if (!get_file_active(&priv->dmabuf->file))
+> @@ -549,6 +559,8 @@ void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
+>  			if (revoked) {
+>  				kref_put(&priv->kref, vfio_pci_dma_buf_done);
+>  				wait_for_completion(&priv->comp);
+> +				unmap_mapping_range(priv->dmabuf->file->f_mapping,
+> +						    0, priv->size, 1);
 
+Have we run this series with lockdep enabled?
+I guess it'd be nice to check with lockdep once..
 
-I had thought about this series:
-- Do you observe steal time when you run your workload? If yes, if you reduce the
-   vCPU, IPI will natually move to reduced set and due to reduction in vCPU preemption
-   yeild also may not be necessary.
+Apart from these, 
 
-- is there vCPU pinning? workload is pinned separately to explicit vCPUs.
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
-- Is only a few vCPUs doing the locks in the workload you have mentioned in the
-   cover-letter?
+Thanks,
+Praan
