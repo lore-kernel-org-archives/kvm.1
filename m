@@ -1,161 +1,198 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D25E30569F
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 13:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5053C31ED7C
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 14:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781272384; cv=none; b=ARGsJAH22AqjEx6q5Am/TFfZSZ+9Jyb+Go3pDj+xykO1pKOI/viYKKYV7HD0+Mj2omax0Dj/s0aXjJVPmfPIOUtZM8Hg3dbNxX6IUV+liGW8F2rnbYka9OGhKxMM55RHtVHPu9qiGGuZpM8nkcAZDFLdpjpCKtsbWFVnwYFaL7s=
+	t=1781273185; cv=none; b=XimiPCLG3G3MVuJuXkTyVfzt5TK0+3qEKx4aiEBSX6yseep0CTiYEsSSOUwpw6C4jMRFw/vtbpme4KCNxIrRe9LxuaBNSYuMN8xtHBBteWVeWXe4sQEycN9B1uHrjfwec/4FgRp+7jOSHDXMHCr92FX1hh0WpKKf5fgOHley8AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781272384; c=relaxed/simple;
-	bh=NvPRagMoAGcllsF3+R+yX9QMlZcU+f9paSqsxYW8mnE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F8rEWzjVtuYQNERJ6yq+67HtVKgWcU06YBJwm9Q+40S/u0ieir1dYi2SSIt5p8VF8eYE6ujcf5asUWb7RFQMT0sXqZtUwW2KlW3qA4swfDkzvtSh9WdxAy8MJNJtqJKBgZBrvcmMyXjISowAh+WGQ2MerLb6GfUQrt5r8U9YFJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FLHgDTcp; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=MhSVX6eU; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1781273185; c=relaxed/simple;
+	bh=8nGRcelhCMsBP5e+Ti6pgha8vZKPOQWb1Xzagxo6dR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OlHbsFt1BebYKUQuC0gG0fQUTBDEn+m31udl9vIy6C4gh86lvbvRzVz5MsLCoCogdiTqMBiVPk54OIuV7sLU3QdT6g4nen85sNGKR+tkTRMDa115M6tjxGpwpcvxp2qKMDscI1X4YEcfhWDeyqmQecLaRSDzPe1G6Yqp8mHf7UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m7MvQXrP; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FLHgDTcp";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="MhSVX6eU"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65CCiwAM3617519
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 13:53:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	GUJirjl2yOuqerpocLDFPhTSBc9PfeNhyb5jWRHalv4=; b=FLHgDTcpt2TthnL2
-	emeB9tkPhqYDjVnpLoCAewlnGUHvhg5rHgDTlQG/CV3zrNbI8ucmPw7/X/NjQWvk
-	rHsQ3nYKhC99twMLALdxCuTI8O6MBpGQCioik9YlAmhXCmPUCR0rwQ7aHO1tD6hb
-	gxOEfqqlzwvOmsuI/WSbGnrGc7LGUMw5zXl/j5pEJcD9ikevcEU3DqoO5P9oMLD2
-	pefuRGOInO6tQrmXmKzLOD1VzvZ5AIBXA2bNlqAiXq4bRlVt9ApTFR0dwLPxbU8m
-	RzntX8556NNuGO413MEQn6dnHYpdeAiccwIHFamtdtPXjj+JkxrtPM1BvDkWzZuF
-	DV4IuA==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4er30gb109-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 13:53:02 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-91574ad681eso152486085a.0
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 06:53:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m7MvQXrP"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2bf2911f93cso80395ad.1
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 07:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781272381; x=1781877181; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GUJirjl2yOuqerpocLDFPhTSBc9PfeNhyb5jWRHalv4=;
-        b=MhSVX6eUjul5TNNXQgdN/mTgqri87IRJ0WMUBw9cTezAEMQfPZ72/YxAmJ/UB1CLwE
-         haSeYIe9osW706s1Qr0fGCKFbkWDNkktdmnr7PZ3rVqg18qsxQ8gsMVJYrTU+uX8eaTG
-         XKrp3QBAC6hOT/hnOL7WplGfJ0lzHvR+q+ds/IoJTbALc2tUsn4Xn9fnqkudQYQsaodu
-         GWvaIxLdxdwYj0UJ9k3EvHuBD3zyAFcBG4r4b7YXuvKLuTZMUw+D3j9bOgbihZKe02yo
-         nFeB+yBk0uT4hvcxqncCeWPQXTRTy4i80bAozy5I1r9eoPhz5Wu0X9kfrJQzPlyIui8P
-         0V6w==
+        d=google.com; s=20251104; t=1781273184; x=1781877984; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7gWNes2hHFmdqgzisSBTrBhiO7t0Lprwi8AqbjigE24=;
+        b=m7MvQXrP5FFeGc1nXMIYk+a4X8itmrWVegIOWowNV9rAshzHeltu3Bed8cXCOPVc+q
+         8qidSDuQhAIJOHwCIx4jRnzrDHORHEhizuJ+UgUNx8XV0FkP5yKsvRAlsSQ5TIO1E8lC
+         KpQsX1DPsDhJvf/sy5nTzM/OMZ83w8OvRyaFXda5P7Ra0RGL2aHqaBU7LFG8k4snI1bQ
+         eiiJZ7yrEHbsXb5yvCHQGz994pSiRo/Pdhh4J2Sse1gcY0D8AXEKesTggOZ3H2jSyXSO
+         PpEH7xWuVwh1HzA3tob7KDuuQvXSZnPDRHa1Ooh3Q7zb5DoXaR9K/gSaBEe+HcEshp8/
+         cyNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781272381; x=1781877181;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GUJirjl2yOuqerpocLDFPhTSBc9PfeNhyb5jWRHalv4=;
-        b=dzl9ffm1vZwoark5QLdILU3GFSSeBqx92c92KGpauhqh3+GFcnuSFgjsWuju7nZrmS
-         iV821zUWWP1xUDWNa3wdKB5sxxI7oPkPxI4EysYxIU5q35MrDmClxCy3WVnJzwiEHkjZ
-         jFhJLLe9IJZlB+vDbHxbMuZmD9Vaw4oE7YRPM1OSvATD6itIJoytoSfSh/ey68cw6A1e
-         yOQfAazooR34Acey7gpiK9+JlWHrC6sfzZnufgVjyoXHRZKdNY3LScqg7C4SiiCLp0jf
-         HEWMv34amEQwDzkMpjG3HenAKO6fPIwnL8EQsaZLq76hsQywPdDMo4hj/Hbz5qWKGNuR
-         wImw==
-X-Forwarded-Encrypted: i=1; AFNElJ8zsKWLLenttGYqw1ygptEFoU9Retn7Pa852K1RFcRdPqk2vFXfFZQygOfySydTf73UO5Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0OHlgf5eo+BmWPU99BxbouydNDdBlEWUSb3WUBXYrXaAVDrCD
-	z5DcR6qpaailzpJGO+8hdXEbaAonnfWhkrjd8pm12Rzvo4oPqOzvmgQa1m1ZPhQAHwFHC9gQkhj
-	WRPqQ5F09vDyCqXOObyoxhRhJ0qfKrl48nGnflq4wYWXRNA2WvaIlZXo=
-X-Gm-Gg: Acq92OGcMLYDCrsFz+KYfRzgN56rOKNNvhRqSrpJamNYQ721zyVktBGRNI4KfSSadcS
-	wmFrwIe0GTq7hO2avmnkfu9qBxDZd6eQ5GMwpygtlrWr3r+3EON8QlRvrJ0/HkTW9hS/xNO64EF
-	v8+6pXr3wlqLkaE4Zv9DK8PFWPYmjOvTkMOJLAxhlhesdfr99H3O1Iwk9S0DF/8K7PNReFPUY+N
-	D7YuG9fAZr2SQv559SBdof7BhF2ZCnSACxBrcJBy2TGPJtQ8zIaAtcHogpY87+as3V/h7Cr7DS8
-	iu9QSELbHgV5L6Vpl9m1t/0p5eQ2pm5JnsFymF0D08v7v5HD3VsrO9X0tPSJmNolgo5yzGKL0L4
-	v6iPehfCdp7GFCSta9Kb+ijsn8FeNCHX+1TGGqQiHWI/vo0l8/JfOlPT+jgGb9lvxdvcQNVm5
-X-Received: by 2002:a05:620a:4515:b0:915:a811:1707 with SMTP id af79cd13be357-9161bac4a5cmr404930485a.5.1781272381544;
-        Fri, 12 Jun 2026 06:53:01 -0700 (PDT)
-X-Received: by 2002:a05:620a:4515:b0:915:a811:1707 with SMTP id af79cd13be357-9161bac4a5cmr404924685a.5.1781272381098;
-        Fri, 12 Jun 2026 06:53:01 -0700 (PDT)
-Received: from [192.168.69.232] (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f263945sm6259245f8f.8.2026.06.12.06.52.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jun 2026 06:52:59 -0700 (PDT)
-Message-ID: <3e68d61a-6ced-49b0-a122-a184ab83c6df@oss.qualcomm.com>
-Date: Fri, 12 Jun 2026 15:52:57 +0200
+        d=1e100.net; s=20251104; t=1781273184; x=1781877984;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7gWNes2hHFmdqgzisSBTrBhiO7t0Lprwi8AqbjigE24=;
+        b=inI2UyYpoEXerlKMJvsKfJ75EjTqQWmoHuDhcEqy/0V/7dis1CX8CVLCdexXH5X4Qf
+         8bNBO4Gbkz5l2fr7POMAM/9Y1Vb8SUiC7JO855VaqNls2IYpQDwafUxGUd/wLZdAAWeE
+         qq1tMV8jl3JfLNtYV1D76EzmJaIh5Hjm3NHQVGEgzD+nI+qk8y/Pse++K6CspIXwilHN
+         1S7jeGOYyIylRcTWaBkc0MkeZRi7gAcLUdCkoeaWcGPQoNraiPYHN9ED4ULd0s1PgK6i
+         NTSPZs16ZvMcQnksKYE98XXzqBNlgUthjV/tRAgV3F1EBqB5mFA2GwoAxLjME2Bwu8gQ
+         DJcA==
+X-Forwarded-Encrypted: i=1; AFNElJ9TcKJ6hxCfUwxL/XTgiTXgtuYzuBi+Dfh4MGMfhagUM3GC6eo9gUzE71S2QG8k9+wpXrY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yylgq5L1mrQooG5l4RYjRjvWK9cHsFAHMVPUiHV1+C29CaLh74L
+	Z2c+c5w0c9Zn2Pitb8rZnttbVIm2iARg8Tfz3wj0TWEpL2YuDLaVug3oafQ2o7TYCw==
+X-Gm-Gg: Acq92OFEUoge2+m+lQCb/bpDHwIVS0tJE/5ooA1LAPh+FMAulYe3/qOctOnut2EkAU4
+	nCnqGAFh+ZZUegG7yvPQ4zy7z9dFnwSSb+OIsZNUY153R8TAfMnXXK5CdcHdK2W7cu0pyH+93v7
+	tQA3P68wX1DKswy87hvFZbnckuugqXVMmiAZAL7/2Ze5UUSa8IMZQtCNm4hGxy2pk6A/bw5nFxc
+	yRr8SnaDYZgSfthIAtWLyc+ABfEIr41FaDKnu+X6edHis3J5448FrP7kqq4pfjEWa01c6x9vz33
+	4Tv/10TbdyZ0MrLl2UAjbhtezy0kyRqYwj/ttl1uafYnJKcnmqeAi4kn74BLzl5zGzLKCyZ+hqI
+	lGguxG1DZBxNYFa5Ec7V+Db8LD4pWJGg5JBrA3WgoDpaZhY+2BBbfYfVO8yDIDH2/MoWROwg57r
+	DbnL+kNJtcFlJvtyfGdtBbC0w0YEYmU7CeA/w1mgXdzpl50lPpZY0xuAe9i8JJ5m3OLIO+3p8=
+X-Received: by 2002:a17:903:46c6:b0:2bd:6dad:3df9 with SMTP id d9443c01a7336-2c405f85829mr1700165ad.23.1781273183096;
+        Fri, 12 Jun 2026 07:06:23 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37a25ecd5dcsm2325236a91.9.2026.06.12.07.06.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 07:06:22 -0700 (PDT)
+Date: Fri, 12 Jun 2026 14:06:14 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Matt Evans <matt@ozlabs.org>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 5/9] vfio/pci: Provide a user-facing name for BAR
+ mappings
+Message-ID: <aiwSVk4n9mCQEln2@google.com>
+References: <20260610154327.37758-1-matt@ozlabs.org>
+ <20260610154327.37758-6-matt@ozlabs.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] ppc/pnv: Remove Power8E and Power8NVL spapr cores
-To: Aditya Gupta <adityag@linux.ibm.com>, qemu-devel@nongnu.org,
-        qemu-ppc@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>
-Cc: Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
-        kvm@vger.kernel.org, Misbah Anjum N <misanjum@linux.ibm.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>
-References: <20260610090800.3672832-1-adityag@linux.ibm.com>
- <20260610090800.3672832-4-adityag@linux.ibm.com>
- <2610e4bd-7ddc-4880-808d-3f55bb166938@oss.qualcomm.com>
- <e87e7d6f-2ee2-423e-9111-19b7f14f376e@linux.ibm.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <e87e7d6f-2ee2-423e-9111-19b7f14f376e@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDEyNyBTYWx0ZWRfX5DYRriX9hIiA
- i22zUYL48g86LOfSZ7pZ3fsq4fiLt+BSSTmqhHFrak26gZEO6piDMaSivipWaN1IjWJdpGKphXf
- 5dtCeTe96TB/tZZvGVPDLvmM4ty9gz0=
-X-Proofpoint-GUID: 4IjSKHa30PDZmcj0vK6accKZeFFuKh9L
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDEyNyBTYWx0ZWRfX26hAq2hOZUEo
- KIFATExRaj2BtGHOFpE9jNXpNxMKvv77TZkr9v6ou8HXIdZPeUTDtndWMoNI0vXZuUoefh3RHCG
- cWN1ZP9JnWGHvqqew+/MzSvrIuwjpz8QpoaqCRdCkE/MUauNTpumuk7bxO56jiOD4bB9muBAVAD
- aaoEgGpGjonlyOq0tG4ZFrUK2rdLkFkXMBLSng1HVGhQuPLGznsptGrmr+1XPRoXwlq39wCfcQs
- YuSuAlWZmRdk8A46p5HHO3xHKgphrnmbiGj/xa968jYx3NM4SQEeoiGXj6G9WKYweD1kGyR7Mw4
- r1uoTku728oTBMTs/rafqUdkDxYxRuUIQNyvmjb1BdJqvCY8xUeAvladkWwe4QLFmIBlq/duRMq
- E4g0HKJK+Ead6Pfpv5VQ/H5gbEzmpmqTyakTi7PUbGoKDAIb8/a9fLpAdGFV9mkdtRwJqZG0xP/
- VPxertOXGJj0KprXQ2Q==
-X-Authority-Analysis: v=2.4 cv=evnvCIpX c=1 sm=1 tr=0 ts=6a2c0f3e cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=4s3hRJSeHn4rkQlkrse1kQ==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=VnNF1IyMAAAA:8 a=dC97xGjGZpUxjfkWrzUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-ORIG-GUID: 4IjSKHa30PDZmcj0vK6accKZeFFuKh9L
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-12_01,2026-06-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 bulkscore=0 priorityscore=1501 phishscore=0
- spamscore=0 impostorscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606120127
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260610154327.37758-6-matt@ozlabs.org>
 
-On 12/6/26 08:36, Aditya Gupta wrote:
-> On 11/06/26 12:12, Philippe Mathieu-Daudé wrote:
+On Wed, Jun 10, 2026 at 04:43:19PM +0100, Matt Evans wrote:
+> Since converting BAR mmap()s to using DMABUFs, we lose the original
+> device path in /proc/<pid>/maps, lsof, etc.  Generate a debug-oriented
+> synthetic 'filename' based on the cdev, plus BDF, plus resource index.
 > 
->> On 10/6/26 11:07, Aditya Gupta wrote:
->>> Power8E and Power8NVL were deprecated since QEMU 10.1, with
->>> commit 264a604e7163 ("target/ppc: Deprecate Power8E and Power8NVL")
->>>
->>> Remove the corresponding 8E and 8NVL CPU cores from spapr/pseries
->>>
->>> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
->>> ---
->>>   docs/system/ppc/pseries.rst | 2 +-
->>>   hw/ppc/spapr_cpu_core.c     | 2 --
->>>   2 files changed, 1 insertion(+), 3 deletions(-)
->>
->> Squash with following?
->>
-> Sure, you mean squash into patch #4, the target/ppc change ?
+> This applies only to BAR mappings via the VFIO device fd, as
+> explicitly-exported DMABUFs are named by userspace via the
+> DMA_BUF_SET_NAME ioctl.
+> 
+> Signed-off-by: Matt Evans <matt@ozlabs.org>
+> ---
+>  drivers/vfio/pci/vfio_pci_dmabuf.c | 27 +++++++++++++++++++++++++--
+>  1 file changed, 25 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> index 2fd3629789bf..8f7f1b909b94 100644
+> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> @@ -4,6 +4,7 @@
+>  #include <linux/dma-buf-mapping.h>
+>  #include <linux/pci-p2pdma.h>
+>  #include <linux/dma-resv.h>
+> +#include <uapi/linux/dma-buf.h>
+>  
+>  #include "vfio_pci_priv.h"
+>  
+> @@ -470,6 +471,7 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
+>  {
+>  	struct vfio_pci_dma_buf *priv;
+>  	unsigned long vma_pgoff = vma->vm_pgoff & (VFIO_PCI_OFFSET_MASK >> PAGE_SHIFT);
+> +	char *bufname;
+>  	int ret;
+>  
+>  	priv = kzalloc_obj(*priv);
+> @@ -482,6 +484,20 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
+>  		goto err_free_priv;
+>  	}
+>  
+> +	bufname = kzalloc(DMA_BUF_NAME_LEN, GFP_KERNEL);
+> +	if (!bufname) {
+> +		ret = -ENOMEM;
+> +		goto err_free_phys;
+> +	}
+> +
+> +	/*
+> +	 * Maximum size of the friendly debug name is
+> +	 * vfio1234567890:ffff:ff:3f.7/5 = 30, which fits within
+> +	 * DMA_BUF_NAME_LEN.
+> +	 */
+> +	snprintf(bufname, DMA_BUF_NAME_LEN, "%s:%s/%x",
+> +		 dev_name(&vdev->vdev.device), pci_name(vdev->pdev), res_index);
+> +
 
-Yes.
+Nit: Could we instead use:
 
-> Thanks for reviewing !
+	bufname = kasprintf(GFP_KERNEL, "%s:%s/%x",
+	                    dev_name(&vdev->vdev.device), pci_name(vdev->pdev), res_index);
+	if (!bufname)
+	    ret = -ENOMEM;
+	    [...]
 
-;)
+>  	/*
+>  	 * The DMABUF begins from the mmap()'s BAR offset, i.e. the
+>  	 * start of the VMA corresponds to byte 0 of the DMABUF and
+> @@ -500,7 +516,7 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
+>  	priv->provider = pcim_p2pdma_provider(vdev->pdev, res_index);
+>  	if (!priv->provider) {
+>  		ret = -EINVAL;
+> -		goto err_free_phys;
+> +		goto err_free_name;
+>  	}
+>  
+>  	priv->phys_vec[0].paddr = phys_start + ((u64)vma_pgoff << PAGE_SHIFT);
+> @@ -508,7 +524,7 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
+>  
+>  	ret = vfio_pci_dmabuf_export(vdev, priv, O_CLOEXEC | O_RDWR);
+>  	if (ret)
+> -		goto err_free_phys;
+> +		goto err_free_name;
+>  
+>  	/*
+>  	 * Ownership of the DMABUF file transfers to the VMA so that
+> @@ -523,8 +539,15 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
+>  	vma->vm_file = priv->dmabuf->file;
+>  	vma->vm_private_data = priv;
+>  
+> +	spin_lock(&priv->dmabuf->name_lock);
+> +	kfree(priv->dmabuf->name);
+> +	priv->dmabuf->name = bufname;
+> +	spin_unlock(&priv->dmabuf->name_lock);
+> +
+>  	return 0;
+>  
+> +err_free_name:
+> +	kfree(bufname);
+>  err_free_phys:
+>  	kfree(priv->phys_vec);
+>  err_free_priv:
+
+Apart from that,
+
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+
+Thanks,
+Praan
