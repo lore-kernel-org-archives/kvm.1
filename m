@@ -1,232 +1,144 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513F638A700
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 12:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D92397321;
+	Fri, 12 Jun 2026 12:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781267389; cv=none; b=bk0CcskuDl8/SU8+Hjnojfb4rVuX9IJYEFYWTp53DF3NpypvW1WXEG9WI+B0d3G+Vb8eJ8fYS1bM51maVm9+mLxpYdxq3pSmP6WLi8S3eR8Q/98IQzk+blRrGtmVwpE64IPS9ffQT9ZGi7e3LIsws1LtU6NfsKcaVrEM0NhT4p8=
+	t=1781267787; cv=none; b=l/KhE8irHHGiHaxQQabW+ES+vDJK9ZtKSMrUABZPdnQ6sxdxVklRA6rR9rcWTCsaNnYOSiPBX6kE02v58h1a6VxtUBYXQ/iKuM7OUNL02hapBVs/D2ePhACrXfohmhaM27x9L6hJtwWHziV7hxHwDnsUwtpMylGYOq3nK9tiiEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781267389; c=relaxed/simple;
-	bh=2+HlNH2kZ9IXso03Qi+bHT3bZpGRqD5fmq6JyzT/uGI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QyVKHpZbiT3puLcLFew+h2q2hfEhi7BhFZuYQfcuMo14Aeft4ujjEhtoaiU5mt0i5Revly61ovwnSsMZPlDffR4lRVv/BlFkj8SUqF6VxU44BPqcNRGwGxC6nJjGVn72UYKn/GTqisYjMZGLm+YzmyLyrIaClW4rMbkuNRUJvDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ttdk10g3; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1781267787; c=relaxed/simple;
+	bh=O7oad/u5GatqAWAQwQzS/JjpW110RCugntm6tR+J+FQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MFm3v51EsVVLo6piV1X6lmUYNBArwGBZSADE89XN43NoO28mCMZRkBL28lslDu5HFSixmm29FHs+k64FacBcS/of7/yKwsQ+a1eAbQcn+qgDcv2jk4egIL0fgE27ge8g/ZlO4kwtaZXnWwXHmJuMMJD7N6u8diqIJ9+bNY97qfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MMiULBb5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ttdk10g3"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BMD9A21742344;
-	Fri, 12 Jun 2026 12:29:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=uezUXr
-	7Pra2D8IjxaGOXxuRQsR05hLjVHXRyfmm3HUk=; b=ttdk10g3s+XPy8nEkY96OO
-	GxGIxM2WMiyik5aIMfzkux/9Yw7TiONFRKbu36+dnCHt+0AqQayg9VI6aMyF3iXX
-	mdEJgxNAmqmC0SDPSWbpfykNHKqWSJSj17CitUzdjenOg36HE4RFFqURFkG/eXTK
-	y90JU0+hTdv4YekQOEOAixBwhq3PQy30ye9XDNIXxGP8TKl0k3msOasVvBipM0BO
-	MKUleM/Zj1KllHRH70jI4VChJ+TIoyxHublCyikUg2G7U3/AyNZiz6vxCRkUzmI9
-	gEzZwlsgARg3O4qAbT0OJeyIqqJRnGVfQvev/pbhcTz+c0SzFvlz+HMCPlu+RHdA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8brj1n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jun 2026 12:29:18 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65CCJhIT014827;
-	Fri, 12 Jun 2026 12:29:18 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eqe08ytbm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jun 2026 12:29:18 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65CCTGcA30999236
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Jun 2026 12:29:16 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 928A15804B;
-	Fri, 12 Jun 2026 12:29:16 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1551858055;
-	Fri, 12 Jun 2026 12:29:13 +0000 (GMT)
-Received: from [9.39.30.128] (unknown [9.39.30.128])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 12 Jun 2026 12:29:12 +0000 (GMT)
-Message-ID: <ac8931ff-5264-45cc-9842-bd240439cefa@linux.ibm.com>
-Date: Fri, 12 Jun 2026 17:57:48 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MMiULBb5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B0A1F00A3A;
+	Fri, 12 Jun 2026 12:36:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781267785;
+	bh=PeMJ7kOGOmDhkLOw6oVuBD2kC6vBg00Wi30UqdpyNLU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MMiULBb5iHLxMHeAuM4uug/gAJnK6pBF/USt7suniClt08L89ZFEmynbnBrxfD8iP
+	 KAGfJZ6Ju28L7ye9A4MgevNO0nUDBR/TADRNKljhr0D53HJTBmqqu6dJv7q5xfSA3x
+	 9XcLPax1BaQlluf2B+SlhUHtpitpBlIwDmEjIJo061NoEOxwUe+kLIXd+9lgQRViD8
+	 t4jXYfvHLA5QJ2A88lyVSUWOHjTzcWv11M7/6tUCw78AgTQ307F4QxReRTcMxYM+Yh
+	 URT1FZb9dXn+uPQHxQs9liwNKoA2z/asdH3TBGLNw0wfHYISmfOuCmoRciguWWMXgs
+	 PzWwK7g1oACuQ==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 97121F40076;
+	Fri, 12 Jun 2026 08:36:24 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Fri, 12 Jun 2026 08:36:24 -0400
+X-ME-Sender: <xms:SP0raittobGxFQA0XvbIKYOAEoFJPFXgIwmfKenEvADEmUCPTs8kOQ>
+    <xme:SP0ranWcVrg-AyL43ZBEOHpbm0FNX0cxiVj1HCK3duayZGCFYy_773BqEnA3ROkQB
+    iddeZBnwkLek3HZIvp_zdsnefus6TL2DEaJVOTO3iACyhrrFeXvp00>
+X-ME-Received: <xmr:SP0rarHCJVZGqCth62UF3UpH6UwL2frW8PKXz_vOGvn0qdVCIvg8NP53F4w9mw>
+X-ME-Proxy-Cause: dmFkZTEVkdYtJYpvmp1AQ9XYBojiMfF+RYFtFg+bz7wlMap9CUDF5A5tc28fkgJdjMQSnr
+    fGPoUXTbRskCKPn3DwelUlVLxT4oAf6sJMLj/f7rY9Elx7SnIKhsSweJSWjIyafWdQynxs
+    PfVKpgDIfCVHDpvoVDz0eedw80Mlhoaw5oGh3TAckkdqsPm9qQG5SjKeRg9VFCsUTtAFFv
+    894vIFp7GikLjZ/M3b0n4d1vnStCsAwPE5hUeB3cw5/16ZPyIxNZb5g7/EgHL7oL52TKac
+    6QC0G0ZAzVnkxHOW2IS1qE8JC5w4onOZyV4xswL0I58rJvXzQ29ZpmlHRaWGWZzw8doyID
+    1HbF1TN0CLZM3LBwHH7EXq/Mthj025dGBy21nM4RP5go3s9mgY7kgNoPQDw/aSmczuicJH
+    /h5+3TfFgA8MZgzejGlEJwO0UD7gHbyoFBII7eCpbkMrEquRMAXJjKTYuuODNUwLEzWKjl
+    NAUiluZPyMWm1VoBX6ZkUwza5tGtDN2cn9nce3VNlroQsobtyNrYCqjp/GvK/Rr6j+/L5O
+    wwziqg3bZnjksYgi7A1jEuXXcMiYF/G89FfPEhklOffFGv1b5kAjF8Dk6RsTBL2QB/UoCQ
+    qGrxmf70i3wICHMmtL529RALuyhQecoOXLmUODJi+i3ZnE9beUG4r7oh5C0g
+X-ME-Proxy: <xmx:SP0rapai23sSmOEnMUZUPYVu1YQa-WOcstL5FqT5ko9Df3PywSrm3g>
+    <xmx:SP0ragHTZj1b93Wrlg6a47BaHZbJB44rpJhtm74hHALw_6DmhH8SLA>
+    <xmx:SP0ramwDITx8pwLNwH8SmK0QPoQYPlqnOEYYf4XccZ_Er00U2QQCQg>
+    <xmx:SP0raqE4AjHDHrzWIPF7D47hYyufSsL9H3VjvmeAxn57skvxojLRPQ>
+    <xmx:SP0rajtbgxlFcSYkmDG2mN2escwC0dn1eTxXam3B4q1xDE6zoYRZp1tw>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 12 Jun 2026 08:36:22 -0400 (EDT)
+Date: Fri, 12 Jun 2026 13:36:16 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Peter Fang <peter.fang@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org
+Subject: Re: [PATCH 1/2] x86/tdx: Add helper to query maximum TD Quote size
+Message-ID: <aiv8mrJDgs_e8eLq@thinkstation>
+References: <20260612110853.3188196-1-peter.fang@intel.com>
+ <20260612110853.3188196-2-peter.fang@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests RFC PATCH 1/6] powerpc: add pmu tests
-To: Thomas Huth <thuth@redhat.com>
-Cc: npiggin@gmail.com, harshpb@linux.ibm.com, lvivier@redhat.com,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        andrew.jones@linux.dev, sbhat@linux.ibm.com
-References: <20260602064806.3101025-1-rathc@linux.ibm.com>
- <20260602064806.3101025-2-rathc@linux.ibm.com>
- <b7aa2c73-be32-47e2-8452-e626845f4d3e@redhat.com>
- <0c95c25f-1400-4912-befc-c5b32968d9ab@redhat.com>
- <a406db02-3aeb-4922-b6b1-8a030ca45a7b@linux.ibm.com>
- <ab4d83d8-1ffa-4738-b4b5-12d9a4f2d9c0@redhat.com>
-Content-Language: en-US
-From: Chinmay Rath <rathc@linux.ibm.com>
-In-Reply-To: <ab4d83d8-1ffa-4738-b4b5-12d9a4f2d9c0@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Xfa5Co55 c=1 sm=1 tr=0 ts=6a2bfb9f cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=FPh58N5xAAAA:8
- a=OLL_FvSJAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=t1-onl6Wi8JrmCUjQxEA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=Q4WRRM2E_uQYcjguQaFu:22
- a=oIrB72frpwYPwTMnlWqB:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDExMSBTYWx0ZWRfXy8Vz/vI2SSAz
- xJ9zVBYHhorjIS2PUnGwN1NFanK3aQi27THPxojvNNk711lcrlLksNbiO4PAdbvIHIRMk/L6xa3
- 0hI2nHHIopPAZBoWmzxqBLNEBstPeJAul/j7oqtFNlv2J6HeOoyaM97JXNC/jwfuL1/kOxt0rOP
- 3KK9vvBswAKAEpkOLP+Otym4PQl2nR0Z596CTsTUhruoetGhKqJP030ULxq79MQeLaTlO2cKGhJ
- psvH+uUMocQC+8F5F3noEh2wwQ2mVcXH9vtM8eejHAH2VMl2Z3vh1vLhKla7hx5Uz/pNH01Te7t
- N2UBgS3atO6zpDAeDyiH5vEnDV4brGekiiiGEh2O0q0gFT0Hs6dDcL+BzueOYiTYU5JKzCcC4Bf
- YJQsAGyF8E+kh0Q/o9Mtw6DW5TfCJcEHlQQtitZ8YQch5shc2F26e0CegcMYOEzDTUyuZRGvRcr
- uZPAy5RoO8K5m5iixug==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDExMSBTYWx0ZWRfXzroopslJdfyh
- 0h/p9Wsda62jfdrcVFQ6RATRRuEbNujuNlG/Z600e0l7H82pU/sLN2xwu5eqHmMS4eTSlMA9+UB
- uLsKQAdqTAPBbKp2WGCmJTHlofJq08c=
-X-Proofpoint-ORIG-GUID: k0GyQlO6VH4FWCvjZxpwRsJ4WuAFk3Dc
-X-Proofpoint-GUID: lxA_dqrPhy2bayeBrgt-11C9CO7nPqO1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-12_01,2026-06-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
- impostorscore=0 suspectscore=0 clxscore=1015 phishscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606120111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260612110853.3188196-2-peter.fang@intel.com>
 
+On Fri, Jun 12, 2026 at 04:08:48AM -0700, Peter Fang wrote:
+> TDX attestation blob ("TD Quote") sizes can grow with newer
+> cryptographic schemes, so guests can no longer rely on a fixed-size
+> buffer for the Quote.
+> 
+> Newer TDX modules report the maximum TD Quote size via a TD-scope
+> metadata field. Add a helper to query it instead of exposing tdg_vm_rd()
+> directly, as it can read arbitrary metadata fields.
+> 
+> Thanks to Xu Yilun for suggesting this.
+> 
+> Assisted-by: Claude:claude-opus-4-7
+> Assisted-by: GitHub Copilot:gpt-5.4
 
-On 6/10/26 17:03, Thomas Huth wrote:
-> On 10/06/2026 11.27, Chinmay Rath wrote:
->>
->> On 6/8/26 19:27, Thomas Huth wrote:
->>> On 08/06/2026 14.45, Thomas Huth wrote:
->>>> On 02/06/2026 08.48, Chinmay Rath wrote:
->>>>> From: Nicholas Piggin <npiggin@gmail.com>
->>>>>
->>>>> Add some initial PMU testing.
->>>>>
->>>>> - PMC5/6 tests
->>>>> - PMAE / PMI test
->>>>> - BHRB basic tests
->>>>>
->>>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>>>> Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
->>>>> ---
->>>>>   lib/powerpc/asm/processor.h |   2 +
->>>>>   lib/powerpc/asm/reg.h       |   9 +
->>>>>   lib/powerpc/asm/setup.h     |   1 +
->>>>>   lib/powerpc/setup.c         |  20 ++
->>>>>   powerpc/Makefile.common     |   3 +-
->>>>>   powerpc/pmu.c               | 567 
->>>>> ++++++++++++++++++++++++++++++++++++
->>>>>   powerpc/unittests.cfg       |   3 +
->>>>>   7 files changed, 604 insertions(+), 1 deletion(-)
->>>>>   create mode 100644 powerpc/pmu.c
->>>>
->>>>   Hi Chinmay,
->>>>
->>>> the problem with Clang on Travis [*] still seems to persist:
->>>>
->>>>   https://app.travis-ci.com/github/huth/kvm-unit-tests/jobs/639614142
->>>>
->>>> Could you please have a look?
->>>>
->>>>   Thanks,
->>>>    Thomas
->>>>
->>>>
->>>> [*] This already happened with Nicolas' last version:
->>>>
->>>>   https://www.spinics.net/lists/kvm/msg351218.html
->>>
->>> I managed to get access to a ppc64 machine. The error is:
->>>
->>> /tmp/pmu-eab466.s: Assembler messages:
->>> /tmp/pmu-eab466.s:1649: Error: unrecognized opcode: `ldat'
->>> clang: error: assembler command failed with exit code 1 (use -v to 
->>> see invocation)
->>> make: *** [<builtin>: powerpc/pmu.o] Error 1
->>>
->>>  HTH,
->>>   Thomas
->> Hi Thomas,
->>
->> Thanks for looking into this and providing the exact error message.
->>
->> I was looking into this Travis CI job that you pointed to and noticed 
->> that the clang version being used was 14.
->> I was wondering, would it be possible to use a newer version of clang 
->> for the job since LDAT is a legit PPC insn,
->> that was introduced with Power 9, ISA version 3.0, way back a decade 
->> in 2016 !
->> So I was wondering if using a newer version of clang that recognizes 
->> the instruction would be a better approach.
->
-> I can reproduce the very same issue on a ppc64le box with Clang 22:
->
-> # clang --version
-> clang version 22.1.6 (Fedora 22.1.6-1.fc44)
-> Target: ppc64le-redhat-linux-gnu
-> Thread model: posix
-> InstalledDir: /usr/bin
-> Configuration file: /etc/clang/ppc64le-redhat-linux-gnu-clang.cfg
-> # make
-> clang -no-integrated-as -std=gnu99 -ffreestanding -O2 -msoft-float 
-> -mno-altivec  -I /root/kvm-unit-tests/lib -I 
-> /root/kvm-unit-tests/lib/libfdt -I lib -Wa,-mregnames -g -MMD -MP -MF 
-> powerpc/.pmu.d -fno-strict-aliasing -fno-common -Wall -Wwrite-strings 
-> -Wempty-body -Wuninitialized -Wignored-qualifiers -Wno-missing-braces 
-> -Werror  -fomit-frame-pointer -fno-stack-protector    
-> -Wno-frame-address   -fno-pic -Wunused-but-set-parameter  
-> -Wno-override-init -Wmissing-prototypes -Wstrict-prototypes  
-> -mlittle-endian   -c -o powerpc/pmu.o powerpc/pmu.c
-> /tmp/pmu-f0c247.s: Assembler messages:
-> /tmp/pmu-f0c247.s:1656: Error: unrecognized opcode: `ldat'
-> clang: error: assembler command failed with exit code 1 (use -v to see 
-> invocation)
-> make: *** [<builtin>: powerpc/pmu.o] Error 1
->
-> Does compiling with Clang work for you? If so, which version?
->
->  Thomas
->
->
-Thanks for sharing this observation Thomas. I did some digging on a 
-ppc64 machine and found the following :
+These supposes to be on the same line, no?
 
-The problem isn't with clang. Clang is able to perfectly identify LDAT 
-insn. This can be verified by writing a small C program using LDAT 
-within a similar asm volatile block and compiling with Clang. Sails smooth.
-The problem is, the GNU assembler does not identify LDAT, unless 
-"-mpower10" flag is passed to it. Can be verified by writing a small .S 
-program making use of LDAT and passing to 'as', the GNU assembler binary.
-In your Travis CI log, as I can check, the following config is used :
-$ export CONFIG="--arch=ppc64 --endian=little --cc=clang 
---cflags=-no-integrated-as"
-"no-integrated-as" defers the assembling job to GNU assembler, and since 
-no "-mpower10" flag is passed, the compilation fails.
-Using the following flag in the config instead, passes -mpower10 to GNU 
-assembler and gets the compilation job done : 
-  --cflags="-no-integrated-as -Wa,-mpower10"
+Documentation/process/coding-assistants.rst:  Assisted-by: AGENT_NAME:MODEL_VERSION [TOOL1] [TOOL2]
 
-Thanks,
-Chinmay
+> Signed-off-by: Peter Fang <peter.fang@intel.com>
 
-PS: I will be away traveling for a while, will get back to this as soon 
-as I am back. Thanks for understanding   :)
+One nit below, otherwise:
 
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+
+> ---
+>  arch/x86/coco/tdx/tdx.c           | 19 +++++++++++++++++++
+>  arch/x86/include/asm/shared/tdx.h |  1 +
+>  arch/x86/include/asm/tdx.h        |  2 ++
+>  3 files changed, 22 insertions(+)
+> 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 186915a17c50..88c66c46e70a 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -197,6 +197,25 @@ u64 tdx_hcall_get_quote(u8 *buf, size_t size)
+>  }
+>  EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
+>  
+> +/**
+> + * tdx_get_max_quote_size() - Get the maximum TD Quote size
+> + *
+> + * Read the maximum size of a TD Quote from a 4-byte TD metadata field. The TDX
+> + * guest driver uses it to size the buffer for Quote retrieval. Older TDX
+> + * modules do not support this field and return an error.
+> + *
+> + * Return: Maximum Quote size in bytes on success, or 0 on failure.
+> + */
+> +u32 tdx_get_max_quote_size(void)
+> +{
+> +	u64 val, ret;
+> +
+> +	ret = tdg_vm_rd(TDCS_QUOTE_MAX_SIZE, &val);
+> +
+> +	return ret ? 0 : (u32)val;
+
+Cast is redundant.
+
+> +}
+> +EXPORT_SYMBOL_GPL(tdx_get_max_quote_size);
+> +
+>  static void __noreturn tdx_panic(const char *msg)
+>  {
+>  	struct tdx_module_args args = {
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
