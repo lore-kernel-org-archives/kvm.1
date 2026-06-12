@@ -1,165 +1,157 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE892F83A2;
-	Fri, 12 Jun 2026 15:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1279390239;
+	Fri, 12 Jun 2026 15:54:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781277746; cv=none; b=TKOO80ux4rrSLNplknUnPX/Sy74DyDyFlF1tnWApISuh3+436wWova4rdq7nIZ4q5SGiUcRQMK18RRQMOUs4xvEaaXKwPRxqSjLkrpjal10Z7NLORutlH1UnBTZGsKLcm3H9BGvL6nDigITxqwkxbjPUpK3565PpTRHu6xLaYVw=
+	t=1781279655; cv=none; b=ZjiUwaBHcmlFKZb9JK7LyQ/xm7zp3ixaYgJLSA3vLO8Owgf1oN5zvsqrcUDLPlfqo7lr1oV2VJyVAdeGIqaJRyUBQd6AUMDO2wSiH1o2tVE68x9op7iqYJGmQLDw77UqtbMGb2mhRCJXl16qecSvLW2qSHhDymjlT5wphQuzPtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781277746; c=relaxed/simple;
-	bh=OLGGW/mO4NyqpOFwo5FddLlmOWWrbusRslyiE80EXi0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e9Vn1P77AW/trqaV1cXGbvOTRyM+xaj64oMJ7WCZ+9A2CNRdqqe5WEVNLS6fZuJt009hwWqOBQCNaRPWEIGXZzAXVhQJraPTA4iQtmxQ+wU1cb4tdjknN9HhDX7Mt09qdgDstvyGaSigqitXJiahc90w0gT1/oLs6LqLywGLWmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=S9vZR5sU; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	s=arc-20240116; t=1781279655; c=relaxed/simple;
+	bh=TYPADI2wSzNZ5rQcatAjxaP2wfMLbqWd4tER1VUC9l8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CIEzOsgJ9q0Bc9yUG6UbqBnr8weF2oEs9y47g1LRD2zoqhFzg5enAXqozTbcdyoqIjjgqiNe16vlbZ6xWDbAJSUzkMCE0gLeVLsYXu3wy9Z6lVafQKWMgtBe8BIdpVzfu4BXh8Ax+tIUA4UBa6PnmBCrXdKDy3eJAior5VL+f6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=V3/xZqDg; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="S9vZR5sU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1781277742;
-	bh=Od++dpGQk45pUkopK+ZR30rQE6eOhAjb1TsY2NEMy5g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=S9vZR5sUkuLB9FEC8KRRIoqeN59IfE/XLJ4wsiGT0ob84ltCuLVL/5VCR4GkxjsA9
-	 AZ7Qm3ed8W07n6LTQnUawPb2WBDh9qruLj1R9yvNjUnyHicBso/Eg6sOgX8jLjcDoF
-	 WaJ/2LSRwLtX9QEr7TCt/MWGNql4/2d9kzUZ4gjqxnN4SeV7O5sxCjYEXosWCSzM/J
-	 YvAXTaQxZwv7nGq9F+aHO9KeJDtNG+jAGdVUpkSWkW0bZFa7REtQaWrKTUyOEukesu
-	 UesARyHOzLEiT7mbIYtKp4Cga+XLMzOPNpBmprhVOqR4SPs/DGci1Qup6z3iA9i6Qs
-	 Su+eg8UsvZAPA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gcNY35cPWz4xGp;
-	Sat, 13 Jun 2026 01:22:14 +1000 (AEST)
-Message-ID: <42cf4ad9-f094-4f94-88e6-6d2cb6eb6437@ozlabs.org>
-Date: Fri, 12 Jun 2026 16:22:12 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="V3/xZqDg"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65CF4euA4146525;
+	Fri, 12 Jun 2026 15:54:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=8cfcrF0M4Zks/sCASUrqWn7SLeFQo6Rv8BTTz6ixj
+	GU=; b=V3/xZqDg/m4qulbXQqfYo0JNKsTVurvWSIbk1svZ6etggTbBBSa91girh
+	FJYmNfbZd33MGxZIp+ZgfSvLUBNUqdGwCwTrBXLRFCBvT2bMfxZ4w7U3HS9qtnAV
+	Wj768DP2UWIRJJUGtCRKq/EDIvzOHykYswlWXLpC9QjLllc2BAeHzR95iexEsNUq
+	93US9DGOYHD5ymXgHNXfFWwxHdBaYt0mWeUVZLpvm+/r6V6ZPVBnH2v/ngffi1VF
+	P2lJsTcm33PHzyTOfy2Cl+xQJDHO0LUowQ3tFbWebmeTDHbZ88SVLPTEIUGmrCG6
+	rVHBuseCIvAQRt0FHUgXDJgABvJHw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8c9t9e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jun 2026 15:54:10 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65CFYjxI010140;
+	Fri, 12 Jun 2026 15:54:09 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eqe0a8h50-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jun 2026 15:54:09 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65CFs83P22807168
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Jun 2026 15:54:08 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4AF7A5805A;
+	Fri, 12 Jun 2026 15:54:08 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7D08E5803F;
+	Fri, 12 Jun 2026 15:54:07 +0000 (GMT)
+Received: from 9.60.13.85 (unknown [9.60.13.85])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 12 Jun 2026 15:54:07 +0000 (GMT)
+From: William Bezenah <wbezenah@linux.ibm.com>
+To: linux-s390@vger.kernel.org
+Cc: cohuck@redhat.com, pasic@linux.ibm.com, farman@linux.ibm.com,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com, mjrosato@linux.ibm.com,
+        vneethv@linux.ibm.com, oberpar@linux.ibm.com,
+        virtualization@lists.linux.dev, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v1] s390/virtio_ccw: Also suppress -EINVAL on device detach
+Date: Fri, 12 Jun 2026 17:54:07 +0200
+Message-ID: <20260612155407.199218-1-wbezenah@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/9] vfio/pci: Convert BAR mmap() to use a DMABUF
-Content-Language: en-GB
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian <kevin.tian@intel.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-5-matt@ozlabs.org> <aiviYEi17tewEQg0@google.com>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <aiviYEi17tewEQg0@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDE0NCBTYWx0ZWRfXylMrBsZ7zizQ
+ 2u+V8hWLap3Z82z8Xaf9qwIkCf+WktsxMgBTXAzm1Aow8FiCvntHPJO5o/4xSFouYmmWx5wyVJt
+ nPsDybAs4qayPjLCELCso0+h99kM0cw=
+X-Authority-Analysis: v=2.4 cv=AYCB2XXG c=1 sm=1 tr=0 ts=6a2c2ba2 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=uYiYJ5MKk1sDHHHSvssA:9
+X-Proofpoint-GUID: RQsPodU4gnULLxzS7kl5j-qxwXuvt2Xm
+X-Proofpoint-ORIG-GUID: RQsPodU4gnULLxzS7kl5j-qxwXuvt2Xm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDE0NCBTYWx0ZWRfXxot5xToY7tMI
+ +pNPctVX6+rT+5r0ewT+t4NMmUT467owfyB3JvzLGcwcYtsxNMIjF5Y9UyQAsV7G3Ta+iLnwLrF
+ PbjrUGJ6JKHnMx8f7fof8qFBqZuq9H538lMPa3hMdJ1wZx7rFLMcnXj9ealVfJd2GcB/LDGq8pM
+ WB+NBaGZZ76Acs3tqrz6j5aTeAqeManOJGIdv45o8c7rDZ1t+tRAi2CAFe7XS6XyTU+3ZQn9oB4
+ BWVG78zeU1fFTj9bsEIHBmAShxyb5yc1Itj8Zzu8wwuawcoVWBXjz/9WFtWy+YOHnl7/jA/9JN4
+ B8kLIV+exLCcJjWJM3ndarPEoathUKems5bJ3wK9ZUiSg7uBNq7iwlnjQ1WfOknawxSvGLrtWCT
+ v3/B4uaSGtDw9RXwfrTA4GwVI/HW4j3qZrsedSkIlD/KvwxVAazjuss3YO48NxuCJfLXmh/9n/b
+ qr0mnXwFiee3Zwxcwug==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-12_01,2026-06-12_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 malwarescore=0 spamscore=0 phishscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606120144
 
-Hi Pranjal,
+When detaching virtio devices with multiple queues, spurious and
+non-fatal error messages appear in the guest kernel log. While
+virtio-net devices have multiple queues by default, this issue can
+also be reproduced with other virtio device types (e.g., virtio-blk)
+when configured with multiple queues:
 
-On 12/06/2026 11:41, Pranjal Shrivastava wrote:
-> On Wed, Jun 10, 2026 at 04:43:18PM +0100, Matt Evans wrote:
->> Convert the VFIO device fd fops->mmap to create a DMABUF representing
->> the BAR mapping, and make the VMA fault handler look up PFNs from the
->> corresponding DMABUF.  This supports future code mmap()ing BAR
->> DMABUFs, and iommufd work to support Type1 P2P.
->>
->> First, vfio_pci_core_mmap() uses the new
->> vfio_pci_core_mmap_prep_dmabuf() helper to export a DMABUF
->> representing a single BAR range.  Then, the vfio_pci_mmap_huge_fault()
->> callback is updated to understand revoked buffers, and uses the new
->> vfio_pci_dma_buf_find_pfn() helper to determine the PFN for a given
->> fault address.
->>
->> Now that the VFIO DMABUFs can be mmap()ed, vfio_pci_dma_buf_move()
->> zaps PTEs (used on the revocation and cleanup paths).
->>
->> CONFIG_VFIO_PCI_CORE now unconditionally depends on
->> CONFIG_DMA_SHARED_BUFFER and CONFIG_PCI_P2PDMA_CORE.  The
->> CONFIG_VFIO_PCI_DMABUF feature conditionally includes support for
->> VFIO_DEVICE_FEATURE_DMA_BUF, depending on the availability of
->> CONFIG_PCI_P2PDMA.
->>
->> Signed-off-by: Matt Evans <matt@ozlabs.org>
->> ---
->>  drivers/vfio/pci/Kconfig           |  5 +-
->>  drivers/vfio/pci/Makefile          |  3 +-
->>  drivers/vfio/pci/vfio_pci_core.c   | 75 +++++++++++++++++++-----------
->>  drivers/vfio/pci/vfio_pci_dmabuf.c | 12 +++++
->>  drivers/vfio/pci/vfio_pci_priv.h   | 11 +----
->>  5 files changed, 67 insertions(+), 39 deletions(-)
->>
->> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
->> index 296bf01e185e..67a2ae1fbc04 100644
->> --- a/drivers/vfio/pci/Kconfig
->> +++ b/drivers/vfio/pci/Kconfig
->> @@ -6,6 +6,8 @@ config VFIO_PCI_CORE
->>  	tristate
->>  	select VFIO_VIRQFD
->>  	select IRQ_BYPASS_MANAGER
->> +	select PCI_P2PDMA_CORE
->> +	select DMA_SHARED_BUFFER
->>  
->>  config VFIO_PCI_INTX
->>  	def_bool y if !S390
->> @@ -56,7 +58,8 @@ config VFIO_PCI_ZDEV_KVM
->>  	  To enable s390x KVM vfio-pci extensions, say Y.
->>  
->>  config VFIO_PCI_DMABUF
->> -	def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
->> +	def_bool y if PCI_P2PDMA
->> +	depends on VFIO_PCI_CORE
->>  
->>  source "drivers/vfio/pci/mlx5/Kconfig"
->>  
-> [...]  
->>  int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
->>  				   struct vm_area_struct *vma,
->> @@ -532,6 +538,10 @@ void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
->>  	struct vfio_pci_dma_buf *tmp;
->>  
->>  	lockdep_assert_held_write(&vdev->memory_lock);
->> +	/*
->> +	 * Holding memory_lock ensures a racing VMA fault observes
->> +	 * priv->revoked properly.
->> +	 */
-> 
-> Nit: This comment should appear before the lockdep_assert_held_write()
-> Also, it is slightly verbose.. (not against it though).
+[   33.820621] virtio_ccw 0.0.0001: Failed to deregister indicators (-22)
+[   33.820628] virtio_net virtio2: Error -22 while deleting queue 0
+[   33.820632] virtio_net virtio2: Error -22 while deleting queue 1
+[   33.820634] virtio_net virtio2: Error -22 while deleting queue 2
 
-Right, I'll move it.  Agree it's wordy but if anyone changes that I want
-them to "think faulthandler".
+Since commit 8c58a229688c ("s390/cio: Do not unregister the
+subchannel based on DNV"), subchannel behavior following a device
+detach has been updated and results in -EINVAL being propagated
+rather than -ENODEV, originating from ccw_device_start_timeout_key()
+in cio/device_ops. In the end, the virtio driver has no ability to
+react to the difference between device and subchannel states here,
+and during detach, both -ENODEV and -EINVAL indicate the device
+cannot be used and should not be treated as errors requiring
+attention. Update error handling in virtio_ccw_del_vq() and
+virtio_ccw_drop_indicator() to suppress -EINVAL in addition to
+-ENODEV.
 
->>  	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm) {
->>  		if (!get_file_active(&priv->dmabuf->file))
->> @@ -549,6 +559,8 @@ void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
->>  			if (revoked) {
->>  				kref_put(&priv->kref, vfio_pci_dma_buf_done);
->>  				wait_for_completion(&priv->comp);
->> +				unmap_mapping_range(priv->dmabuf->file->f_mapping,
->> +						    0, priv->size, 1);
-> 
-> Have we run this series with lockdep enabled?
-> I guess it'd be nice to check with lockdep once..
+Fixes: 8c58a229688c ("s390/cio: Do not unregister the subchannel based on DNV")
+Signed-off-by: William Bezenah <wbezenah@linux.ibm.com>
+---
+ drivers/s390/virtio/virtio_ccw.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-I've (generally) always run testing of this series with lockdep.  (No
-issues (anymore).)
-
-> Apart from these, 
-> 
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-
-
-Thanks!
-
-
-Matt
+diff --git a/drivers/s390/virtio/virtio_ccw.c b/drivers/s390/virtio/virtio_ccw.c
+index bab6cad3fd5c..02fd8bf7e469 100644
+--- a/drivers/s390/virtio/virtio_ccw.c
++++ b/drivers/s390/virtio/virtio_ccw.c
+@@ -429,7 +429,7 @@ static void virtio_ccw_drop_indicator(struct virtio_ccw_device *vcdev,
+ 			    vcdev->is_thinint ?
+ 			    VIRTIO_CCW_DOING_SET_IND_ADAPTER :
+ 			    VIRTIO_CCW_DOING_SET_IND);
+-	if (ret && (ret != -ENODEV))
++	if (ret && (ret != -ENODEV) && (ret != -EINVAL))
+ 		dev_info(&vcdev->cdev->dev,
+ 			 "Failed to deregister indicators (%d)\n", ret);
+ 	else if (vcdev->is_thinint)
+@@ -515,10 +515,10 @@ static void virtio_ccw_del_vq(struct virtqueue *vq, struct ccw1 *ccw)
+ 	ret = ccw_io_helper(vcdev, ccw,
+ 			    VIRTIO_CCW_DOING_SET_VQ | index);
+ 	/*
+-	 * -ENODEV isn't considered an error: The device is gone anyway.
++	 * -ENODEV and -EINVAL aren't considered errors: The device is gone anyway.
+ 	 * This may happen on device detach.
+ 	 */
+-	if (ret && (ret != -ENODEV))
++	if (ret && (ret != -ENODEV) && (ret != -EINVAL))
+ 		dev_warn(&vq->vdev->dev, "Error %d while deleting queue %d\n",
+ 			 ret, index);
+ 
+-- 
+2.54.0
 
