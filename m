@@ -1,104 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E043955C9;
-	Fri, 12 Jun 2026 16:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D93F403AF4;
+	Fri, 12 Jun 2026 16:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781282153; cv=none; b=KKQc9uK0r4bi6tXKX6ZRjmznJ30ZKFt2acU/5BG/8UxB2QqwK+3OewhqOQD70Igv8P9nN8cJEkA6lKZrrzJsEJGDeafYIlpSU/xX/PSHyzZ9MmHb5PntcJ8X/C/LqeO/mHt3B+QF7U0x+rPdX5A1/RciUENFUoeUfbGvCfxscLo=
+	t=1781282791; cv=none; b=bQeU7Q8PiQiEI5pHWExZv3nCHE6MAI3PUThCflWPCDHD9XZzuiMbVeW/ZkeHo2jDlTuQyzHX+Cjag3O6cwN8PPguDxBu+OjtkAhbCTKkCagNvK/OF0HlH/fWfscXDLYAcVGoQZvmbSPGZsvsLvjjU75DhkPy2w5N1O3J7qJzFUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781282153; c=relaxed/simple;
-	bh=kwLDEZjb/hiFZYLZfCDu2P7zGVNRaWQjPMpzFrWco5g=;
+	s=arc-20240116; t=1781282791; c=relaxed/simple;
+	bh=z3cN2YNTSqj1GppNhVITMb01UlRSfK533h86PTstYe8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FxctcVchPfo4euez1eBdzse/pOct6uzHZuGIq3TTSnbY1B01lJx0j2Q3o53vaIaFk9g8YRCJzDnrrQyNLUTIdYEOzmQQ9nqTWGDyeK76o7X5ggh+EQna+8WPWXNwlK3eB3gnrB2CmavyPwi0f3kNh1/tqtOSRygwLEd4+nQM2qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHP7F+UF; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=B9GHlCayq4ByMu+nHy/OFvrmmROZmmi3jleq/gHqnxiECVZHv1fqsxSHTSal7QkniYDtkltPi3T9csgnq7abPlErH6JUSrkoB3zgro2CZkKNqhaTJt224sQADQuaBLExNd034v5z8xjufg+ueXratA5oLNoBe3RVQKwOutVawOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IuTbxKr4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHP7F+UF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AB91F00A3A;
-	Fri, 12 Jun 2026 16:35:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IuTbxKr4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2EA51F00A3E;
+	Fri, 12 Jun 2026 16:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781282150;
-	bh=FTrOSNGS/YIYhjkDg1aa8r2Esa00blqrB5ZCllbCUDU=;
+	s=k20260515; t=1781282788;
+	bh=z3cN2YNTSqj1GppNhVITMb01UlRSfK533h86PTstYe8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gHP7F+UFvA+3HJHYH4oUr83M+UkVaANHUICTJC2DqTRpkSFYQMsuwfdFryt68Rlsr
-	 dHb9B12IHss2cnrJ8yIHqe/Py9wdyx3rQSYSVvls0PBUKFY3Dt+ylAxWJAI9nPYKRs
-	 isX2plYshttjB+cH4SXXZBQgjXVIroZWSDuxa6FbHgXdtmIPBTThCryxsx9pyByl+D
-	 t1ILtt4xEgdaGlKcP3g1l4Ixp+G18MZHz2ljcOu82Yf1IN/B96Wz0b01La2R7cm/Wi
-	 NlaqPVEayCirK7WRHygkBFAw0b/Atbtb33owRZiuSaNUl2z9vh/HzB92YwCBu2GC9g
-	 bGebzYiI7a6bQ==
+	b=IuTbxKr44MkWBs54JcmT2WddU10iS17yV0rdIfw3Y4Ql8jZC1NXfYBLdQMTEdaPkD
+	 v8tJKzfSbEsZ25prYg5v9daA9Cr1gaCY1KOY1S32INra1cNSz27BUCY8ADsnXFYUR9
+	 21pvTMvci/EqXeJTfSIe671z1vzaS/+736SrtxDHk5yAek1heuZEfg0Yov1YPsXz8Y
+	 iKjG5o2AWPCOq9DORioT7zsc7eJuB18/j66Cvcho1Cal5oOW3He9OaGIKl0joU7x1u
+	 EeNWBxOgPqBAWHOwpU68VB3UwVOdhUZe0QnKUUKg1v0A47H8JF8pItDSkIPsAxqb9I
+	 HjEPlF3+qtB8A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 5/5] KVM: selftests: Add nested pre-fault test for
- arm64
+Subject: Re: [PATCH v7 1/5] net/mlx5: free mlx5_st_idx_data on final dealloc
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jack Thomson" <jackabt.amazon@gmail.com>
-Cc: kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev
-In-Reply-To: <20260612162354.73378-6-jackabt.amazon@gmail.com>
-References: <20260612162354.73378-6-jackabt.amazon@gmail.com>
+To: "Zhiping Zhang" <zhipingz@meta.com>
+Cc: linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, kvm@vger.kernel.org
+In-Reply-To: <20260611161546.4075580-2-zhipingz@meta.com>
+References: <20260611161546.4075580-2-zhipingz@meta.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 12 Jun 2026 16:35:49 +0000
-Message-Id: <20260612163550.28AB91F00A3A@smtp.kernel.org>
+Date: Fri, 12 Jun 2026 16:46:27 +0000
+Message-Id: <20260612164627.F2EA51F00A3E@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The `KVM_PRE_FAULT_MEMORY` ioctl loop in `pre_fault()` fails to =
-handle partial success, causing spurious test failures if the ioctl yields =
-or is interrupted.
---
+> When the last reference to an ST table entry is dropped,
+> mlx5_st_dealloc_index() removed the entry from idx_xa but leaked the
+> backing mlx5_st_idx_data allocation. Repeated alloc/dealloc cycles
+> therefore accumulate one struct mlx5_st_idx_data per cycle.
+>=20
+> Free idx_data after the xa_erase() so the lifetime of the bookkeeping
+> struct matches the lifetime of the ST entry it tracks.
+>=20
+> Fixes: 888a7776f4fb ("net/mlx5: Add support for device steering tag")
+> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
 
-commit ee1e827d8efbd103bf9ab1322ee50ba8c3895869
-Author: Jack Thomson <jackabt@amazon.com>
-
-KVM: selftests: Add nested pre-fault test for arm64
-
-This commit adds an arm64 nested-virt selftest for KVM_PRE_FAULT_MEMORY to
-verify that prefaulting correctly targets the canonical stage-2 when the
-guest's last-run context has a nested/shadow stage-2 MMU.
-
-> diff --git a/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c=
- b/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c
-> new file mode 100644
-> index 0000000000000..2bbd5540599c0
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c
-
-[ ... ]
-
-> +static void pre_fault(struct kvm_vcpu *vcpu, u64 gpa, u64 size)
-> +{
-> +	struct kvm_pre_fault_memory range =3D {
-> +		.gpa =3D gpa,
-> +		.size =3D size,
-> +	};
-> +	int ret;
-> +
-> +	do {
-> +		ret =3D __vcpu_ioctl(vcpu, KVM_PRE_FAULT_MEMORY, &range);
-> +	} while (ret < 0 && errno =3D=3D EINTR);
-
-[Severity: Medium]
-Does this loop handle partial successes correctly? If the ioctl is interrup=
-ted
-by a signal or yields after successfully mapping at least one page, it retu=
-rns
-0 and updates range.size with the remaining bytes to process.
-
-If that happens, this loop will exit immediately and the test will spurious=
-ly
-fail the TEST_ASSERT_EQ(range.size, 0) assertion below. Should this loop
-continue as long as ret =3D=3D 0 and range.size > 0?
-
-> +
-> +	TEST_ASSERT(!ret, "KVM_PRE_FAULT_MEMORY failed, ret: %d errno: %d",
-> +		    ret, errno);
-> +	TEST_ASSERT_EQ(range.size, 0);
-> +}
+Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260612162354.7337=
-8-1-jackabt.amazon@gmail.com?part=3D5
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260611161546.4075=
+580-1-zhipingz@meta.com?part=3D1
+
