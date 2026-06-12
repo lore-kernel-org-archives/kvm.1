@@ -1,242 +1,85 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5173242D9
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 20:35:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E72538D3EC
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 21:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781296514; cv=none; b=QGwE6mpc5ztxPIowyLTuqjQmTfLbahtsOPYjHqX5DRKdJpjmggGZLa3Ut6mKb4wNz0laBYt3O5T+QcNRm6S3N80YoMMsNWeaO/wHxnkz535B50FOpHSktKuyArU/tO62nWwrAeCLJ+qmQVo4W74VndHYSJzwJCAJkycvCWeGPLo=
+	t=1781299616; cv=none; b=ZsF/0vxkWIjwLrYWBf86PUmc5GMyEI2yVCaznvXCz0XcPgEFUI8s/iPkbgM1uw0Mo1Z/IgLFBfUVQnCioUQcKLfUOmURJwzJ/Iidy+KJrKLW+tlQKIwPSEAXcl+UWsm2xeIvkjN3ul3h8jIbnqjTOYUzitG94oSyD58Bu2UdQWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781296514; c=relaxed/simple;
-	bh=d/H3YUSb7Xb1BXZue09+f2TQu7Z0YTKfeZLnWE2Bm04=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EIy+RYlFZ/G8BGBxIgvlVskMDCca1Qn9s2/br67n7sSqznVILmRwTmL4xNh3dCyz/e34ghFHdfAx27tXukmEc0l6IaNdzywHrYVh88ouALVIBQQKV/QUE7o5iyxRuGQZPButcY7FrVTNlw9EGnGjSicPnmVqAOZNmMk7NY2WlZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bf1IRcem; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1781299616; c=relaxed/simple;
+	bh=9+xEN1tkIIGm2RXMoQgvBBkgp/sLH10Ki/bUiUu+M6Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZA6G1cYbdA45MvRZzGPyLDautsTHG4bHcIlrW8v90zvXBOEGhPO+WqKqstDqQF1y4yDO+CVLrE3sldsYR/kCxV0Dmgk9LIGNmg3QmIlwmZbQQu+EeT1i32R7RXVI26exVjEokHvNxlr1ENLqNUv5a4c7au6aP/VJUqNjDBk5Tbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9PMCZdW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bf1IRcem"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2bf22c18ad3so25295ad.0
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 13:35:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781296512; x=1781901312; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ddJRP/HCOdDtAL2h34nFkdEDW/TddVVb74Su299sjvc=;
-        b=Bf1IRcemp1hYaNxcUVtYW68sDRnZYEcsCQDryryZ9/e4OLKXXuQd0C4AFEJVIBhnnC
-         YYz3n5YyE2cwCL673BHHZdAmMMCV2rJh30K5/ELnWMXMW5p4mw+EEVuHihPso8cX4zO+
-         owPDJZj7quli1+SufjuW5pqt7p2UxLtCPO53fZ0fHtJFiGvUyU2h3h3zg++rMFIxkk+l
-         A53pyBpKBlitemTBsxliPHlzIjlt6Dyvv0Ho1NyUOclPmz6FOt1aRzssDoXjXzVixe2b
-         ppz9ecpt+S6foWA1jF8kjqVh90KfzFEanra1VssYH3CHb1Upc5xYIPKnz7B1kSOr64AJ
-         1rLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781296512; x=1781901312;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ddJRP/HCOdDtAL2h34nFkdEDW/TddVVb74Su299sjvc=;
-        b=BHEGLTyVHvt+cdorz3mgPFMFn4ZSJaXphalbIjPcBv31MtHfRJptfBdrklldByntDM
-         RDpJ1F2KfmA7trCnboo7C0aRqyeGkF1wj/gpxETPZ7L4Sz7mFNNdUOEY11I8l8Xp1IZ6
-         hBbGltA7igxl34WMv409Zlulm0wz8IR1Tw49BnUyjiwWkuTRfgPdiYZr9WIa5uEh0uR0
-         lGDciH96AVH9Bja9tJnU5DJ83gScFk1N8tgcm3I7dA5iCJ6elDBlwHAMjLVWw4MGo2EL
-         OSkxtqZwPIc2CbbPR2VBoJPKmW64FmmEMxpPyIfSRrqfVR/SLskKapYQNJUuf1w6HTl6
-         NVUA==
-X-Forwarded-Encrypted: i=1; AFNElJ++V7hAPGM+EREMkrnOhsB9gxvfk91h5Opzhk1GkMgrJtjU1oxKK4kAE95NWVR/os7qx5Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4s1UBfRZa5cn9WtYa5ss8NysVOG0hzMUJ3pRuaikny5YHF2n4
-	tYIu3FcttTBs7T9ZzQNAbLESzjrTd7amEIIQW2rYRgP1AD4WZFoncm2Q0tej7WWYeA==
-X-Gm-Gg: Acq92OHDT/8pIm6eAcJJFRa04A/GRu8LY0NL4iOKJGX2JI0D4Gi3/ZKAkQifh6lm8tb
-	rj4undka++LHZ5YomVKPOTofB2mXvp/4niq9TuDoJJbUDclP7iPH5I6XMlZipO2WoVI3cR0bw6i
-	58DLC+Hdl7/s2sEP3yJ5NU2yF0aanKZdAE55uo7R7RYeiznTpvUfbzYokHkz7eWvJhjnRGOrCx9
-	WlyRNQq7ZuJj8Wd43CNArZEKK6mzbVQx+antBrmwi/woaXuOZgb+aNpbt72CgtV0XNl+kk7oHCE
-	BEVA20HnoFHl9i9MLxJMeqYVBO3/yRMXy5/XI+M/HuZ2Thin0YJjyNDhQUPOTcahfwhVrGmrRKI
-	JWvxWFjouzDGxdiXj93megHMSTNhg6lIgTd+1hirqn8z+nEsyUGCKVEdKY4uyzK+hNg0tJVuUhR
-	00fxdP3xLyUzOIAsi2XIsxogSg+ka2irCMFdblvuN2k0+mdg9QBs/jO7L2VUGQ
-X-Received: by 2002:a17:902:e743:b0:2c1:ee6e:4e4d with SMTP id d9443c01a7336-2c665142269mr504685ad.30.1781296511981;
-        Fri, 12 Jun 2026 13:35:11 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f1f0f19sm28160925ad.10.2026.06.12.13.35.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 13:35:11 -0700 (PDT)
-Date: Fri, 12 Jun 2026 20:35:03 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 7/9] vfio/pci: Support mmap() of a VFIO DMABUF
-Message-ID: <aixtd_7gDhf2kisJ@google.com>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-8-matt@ozlabs.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9PMCZdW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEBC1F000E9
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 21:26:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781299614;
+	bh=ioqGnK50uujx2lPpJanGqgidUKK04Gwcux3S6H17ENU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=J9PMCZdWYnIWC4waf4KiXCNHAiqh0dWXewPEHb86hqlTi5DxaYl2ZdZfGEaeyH/oX
+	 bBqBXMstUwYXRgAQk//qIFVEJbSzd23kbij8B1OmnlDvSlLlOqZbVc+Ha1qSO2Spmx
+	 ULgkrpzimITX2/CFO5WqDvoNicl20WRvexT1bqA+0QzyZtYeH/oA1KyVZeY0nsJlPB
+	 3gL7pQj9cPqA0XM5KSgaQ0Yrb81vUy74C66nCoR51cf42BoRSluAkyneJzsetxCKrD
+	 AsEaysav39YxiXUXMohIIZvuvzKzVP8kTBUuaAIyttI3IBrWAdWBT4P9lEinajjTDS
+	 oNVWDz4uF58pg==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bebbc325000so204970266b.0
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 14:26:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9nwgOi/thE0gUSodsM4jUGv0KeKKmX75+ASVU1jjRwXxJ8J8LhRpTtisKUknYHLZfxj5E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4a/3cyacs5Gstvfi9HqP7L9UZRhrtOTVOAMYxgfNlDrRf48f9
+	6iVDIlekqOkPHe6+fZ6djJ5T5NXfMBDlBWFmmx8KcENVdCeRJoZ+XQASYjTii9+hIwReqoJF4bl
+	ycI/2h3Jp5LD1NcRCPRK1WQgkLw1O9j8=
+X-Received: by 2002:a17:906:c150:b0:bef:36f3:7277 with SMTP id
+ a640c23a62f3a-bff4a30f4efmr61297466b.23.1781299613910; Fri, 12 Jun 2026
+ 14:26:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610154327.37758-8-matt@ozlabs.org>
+References: <20260612185459.591892-1-seanjc@google.com>
+In-Reply-To: <20260612185459.591892-1-seanjc@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 12 Jun 2026 14:26:41 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPqN7x727_AWmbcYc_++t3+0JJyDLgzudPRXbm_rOx5yA@mail.gmail.com>
+X-Gm-Features: AVVi8Cf5VguZOqv7yJj9CSDxOYiBFdco50-jfHVXlFqVvIndTT2DC7KxkVAp8Ho
+Message-ID: <CAO9r8zPqN7x727_AWmbcYc_++t3+0JJyDLgzudPRXbm_rOx5yA@mail.gmail.com>
+Subject: Re: [PATCH] x86/apic: KVM: Use cpu_physical_id() to get APIC ID of
+ running vCPU for AVIC
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Kai Huang <kai.huang@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 10, 2026 at 04:43:21PM +0100, Matt Evans wrote:
+On Fri, Jun 12, 2026 at 11:55=E2=80=AFAM Sean Christopherson <seanjc@google=
+.com> wrote:
+>
+> Use cpu_physical_id() instead of default_cpu_present_to_apicid() when
+> getting the APIC ID of the pCPU on which a vCPU is running/loaded, as the
+> kernel has gone way off the rails if a vCPU is loaded on a pCPU that has
+> been physically removed from the system.  Even if the impossible were to
+> happen, the absolutely worst case scenario is that hardware will ring the
+> AIVC doorbell on the wrong pCPU, i.e. a severely broken system will
+> experience mild performance issues.
+>
+> Kill off KVM's superfluous kvm_cpu_get_apicid() wrapper along with the
+> for-KVM export of default_cpu_present_to_apicid(), as they existed purely
+> for the wonky AVIC usage.
+>
+> Cc: Kai Huang <kai.huang@intel.com>
+> Cc: Yosry Ahmed <yosry@kernel.org>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Hi Matt,
+Took me a bit to realize cpu_physical_id() is the APIC ID, but yeah
+this looks to be equivalent as long as the CPU is present, which as
+you described should be true as long as we didn't screw up.
+cpu_physical_id() seems to also be used by VMX anyway.
 
-[...]
-
-> +	 *
-> +	 * With the goal of taking vdev->memory_lock in a world where
-> +	 * vdev might not still exist:
-> +	 *
-> +	 * 1. Take the resv lock on the DMABUF:
-> +	 *  - If racing cleanup got in first, the buffer is revoked;
-> +	 *    stop/exit if so.
-> +	 *  - If we got in first, the buffer is not revoked so vdev is
-> +	 *    non-NULL, accessible, and cleanup _has not yet put the
-> +	 *    VFIO device registration_.  So, the device refcount must
-> +	 *    be >0.
-> +	 *
-> +	 * 2. Take vfio_device registration (refcount guaranteed >0
-> +	 *    hereafter).
-> +	 *
-> +	 * 3. Unlock the DMABUF's resv lock:
-> +	 *  - A racing cleanup can now complete.
-> +	 *  - But, the device refcount >0, meaning the vfio_device
-> +	 *    (and vfio_pcie_core device vdev) have not yet been
-> +	 *    freed.  vdev is accessible, even if the DMABUF has been
-> +	 *    revoked or cleanup has happened, because
-> +	 *    vfio_unregister_group_dev() can't complete.
-> +	 *
-> +	 * 4. Take the vdev->memory_lock
-> +	 *  - Either the DMABUF is usable, or has been cleaned up.
-> +	 *    Whichever, it can no longer change under us.
-> +	 *  - Test the DMABUF revocation status again: if it was
-> +	 *    revoked between 1 and 4 return a SIGBUS. Otherwise,
-> +	 *    return a PFN.
-> +	 *  - It's not necessary to also take the resv lock, because
-> +	 *    the status/vdev can't change while memory_lock is held.
-> +	 *
-> +	 * 5. Unlock, done.
->  	 */
-> +
-> +	dma_resv_lock(priv->dmabuf->resv, NULL);
-> +
-> +	if (priv->revoked) {
-> +		pr_debug_ratelimited("%s VA 0x%lx, pgoff 0x%lx: DMABUF revoked/cleaned up\n",
-> +				     __func__, vmf->address, vma->vm_pgoff);
-> +		dma_resv_unlock(priv->dmabuf->resv);
-> +		return VM_FAULT_SIGBUS;
-> +	}
-> +
-> +	/* If the buffer isn't revoked, vdev is valid */
->  	vdev = priv->vdev;
->  
-> +	if (!vfio_device_try_get_registration(&vdev->vdev)) {
-> +		/*
-> +		 * If vdev != NULL (above), the registration should
-> +		 * already be >0 and so this try_get should never
-> +		 * fail.
-> +		 */
-> +		dev_warn(&vdev->pdev->dev, "%s: Unexpected registration failure\n",
-> +			 __func__);
-> +		dma_resv_unlock(priv->dmabuf->resv);
-> +		return VM_FAULT_SIGBUS;
-> +	}
-> +	dma_resv_unlock(priv->dmabuf->resv);
-> +
-
-
->  	scoped_guard(rwsem_read, &vdev->memory_lock) {
-> +		/* Revocation status must be re-read, under memory_lock */
->  		if (!priv->revoked) {
->  			int pres = vfio_pci_dma_buf_find_pfn(priv, vma,
->  							     vmf->address,
-
-Wait, I noticed that the is_aligned_for_order() check from mainline was 
-removed here. Was that intentional? 
-
-For hugepage faults (order > 0), we must ensure the PFN and address are
-properly aligned before calling vfio_pci_vmf_insert_pfn().
-
-In the current upstream code, we have:
-  if (is_aligned_for_order(vma, addr, pfn, order))
-
-Should we restore that check here?
-
-> @@ -1766,6 +1827,7 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
->  			    __func__, order, pfn, vmf->address,
->  			    vma->vm_pgoff, (unsigned int)ret);
->  
-> +	vfio_device_put_registration(&vdev->vdev);
->  	return ret;
->  }
->  
-> @@ -1774,7 +1836,7 @@ static vm_fault_t vfio_pci_mmap_page_fault(struct vm_fault *vmf)
->  	return vfio_pci_mmap_huge_fault(vmf, 0);
->  }
->  
-> -static const struct vm_operations_struct vfio_pci_mmap_ops = {
-> +const struct vm_operations_struct vfio_pci_mmap_ops = {
->  	.fault = vfio_pci_mmap_page_fault,
-
-Nit: Instead of making this global, should we add a helper? E.g.:
-
-void vfio_pci_set_vma_ops(struct vm_area_struct *vma)
-{
-     vma->vm_ops = &vfio_pci_mmap_ops;
-}
-
-[...]
-
-> +
-> +static int vfio_pci_dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
-> +{
-> +	struct vfio_pci_dma_buf *priv = dmabuf->priv;
-> +
-> +	/*
-> +	 * If we observe that the buffer is revoked now then refuse
-> +	 * the mmap().  This is a belt-and-braces early failure to
-> +	 * ease debugging a revoked buffer being used.  Userspace
-> +	 * might also race an mmap() against an explicit revocation,
-> +	 * or an action doing a temporary revoke; race scenarios are
-> +	 * still safe because the fault handler ultimately prevents
-> +	 * access to a revoked buffer if it isn't caught here.
-> +	 */
-> +	if (READ_ONCE(priv->revoked))
-> +		return -ENODEV;
-> +	if ((vma->vm_flags & VM_SHARED) == 0)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * dma_buf_mmap_internal() has asserted that the VMA is
-> +	 * contained within the DMABUF size before calling this.
-> +	 */
-> +
-> +	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-> +	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
-> +
-> +	/* See comments in vfio_pci_core_mmap() re VM_ALLOW_ANY_UNCACHED. */
-> +	vm_flags_set(vma, VM_ALLOW_ANY_UNCACHED | VM_IO | VM_PFNMAP |
-> +		     VM_DONTEXPAND | VM_DONTDUMP);
-> +	vma->vm_private_data = priv;
-> +	vma->vm_ops = &vfio_pci_mmap_ops;
-> +
-> +	return 0;
-> +}
->  #endif /* CONFIG_VFIO_PCI_DMABUF */
->  
-
-Thanks,
-Praan
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
