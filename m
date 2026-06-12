@@ -1,63 +1,63 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9637E30C164
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DD338D3F6
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:34:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781228049; cv=none; b=iZ6e3pbqSXccqOONLn8Q8YjjRcgWXG7cJZUMUvcyV0P6jhAih1naTDw3aPllaRdmJCNkCJCesowFLCkMOaczD3RFmMbXj3pXvrfpwziYfRL3N1iteMfx/2/INqZpc0/gJctokLkT4jMvPEj8fYiNTCudGsUoFi58t0C0xlmD+us=
+	t=1781228054; cv=none; b=OisMJl8FmaaTRVhhpK4YP1L9JZYs+CQp1fJ7vuCH6tr0+r/EjSKi3Ahx0iOVRl229KkxHvqI/cAbVnD+F5IMxhUWdLwQ9vWsk9sxIbjJQHg9dLOyGFyuA5YpP8hXr8podEsvSPsZUjzi2J4YWw5ZURuVatw+JzCOJdhUaDd1VYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781228049; c=relaxed/simple;
-	bh=Emd0iAge1yJWElgbu72y/eRXkT0AFDOYInOspeDoNXE=;
+	s=arc-20240116; t=1781228054; c=relaxed/simple;
+	bh=u+ntkArrFPY61UaKKmaLqX9myUBfPqs7MyECLJZ8ses=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1xnctsCbrKpc4dEVsjiCtj42A0dEGAVlo2L5xLsJCBcxKyLuOdfmkyDu3Pd4PoQIEYVS39d3a8LLHRT3fl3rO0oM65BfCIwQnJebVNrzaSZlKT1n80nieXn5x11+jOLYYTBjt/Affl+Dh+QIVHInf0P0mbNAkPWlnLBXGiX+/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mx7SEPvT; arc=none smtp.client-ip=209.85.216.50
+	 MIME-Version; b=OA0GkJwOXzrPnVyEpbShQUpLN8uYIkcgtp5nj5BmUYMdOA2w3DxwPX71fz69ufW2bLDvDaM3qKpA9N0JElvCOvT9v0hRaW/seVEB4dAsnn4KfvpupxGvqgm6KclT9jP7FE1EO9R7UPV20gpfaVnGLObjxiPgsmQaRIZ2MlEN/F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bS4fdKWH; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mx7SEPvT"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-372b4330deeso363476a91.0
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 18:34:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bS4fdKWH"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-36ba285e98bso525272a91.2
+        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 18:34:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781228048; x=1781832848; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781228052; x=1781832852; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GBO/Qu5vraFOfUtlMrr746hyyKYTO/nlkxX0iKEt41I=;
-        b=Mx7SEPvT6ftiZJwmGE0vNr1bnUeB1WCAAuRI1TrS8AkC196vyzqfD75RR2LhK3noQY
-         rEAyxvxr7mFEFlhOuxUNMSA+Rc17SREMsjVIs65o1OSBcZqB5kFDNktv6XsCBe1nhPu+
-         6o8yDHROIbNYWVUWet7pt2SNf452P7csfpH1JJ3Ao18carrxF9uQSwR1PSLgV4QXf0Ri
-         wKg4zuZbr0Xof+ppwy91U5FcVEe0tvFUyf3kc0jvAWY6e2G0FP6RzO0U1AaAZNWp7Mit
-         6eTpFQr6lIDJOY4P6T8zCoBlDfj2e2yYnMXx7yrndyiaaPW3J61kU75+W/reTWh/O397
-         IMWg==
+        bh=BBY9ydpXqFUhVTa9PkiLmheHxm3JF7bF85lezg9IMD8=;
+        b=bS4fdKWH78NAhcPZb+yW/PxZo+2/h2vRkuy6iLgi4EhLsQqYCp8i9VwE7Z1nHNNCTp
+         SwyXijuEJiBkhMdpwZTVIZdXamS2vt6M+fwcO4epKKA+/K9ppDfFhGFEtdBxXGVbsvtC
+         /pfrkH0RIb0PUSe67kyqpy70PXlP98eVIB1z8LnkiQzqZAml9wPFU8hk/3AzZfdeSnlX
+         19pgySDFkDO4L0I+h/jbPArBWCO7XGgztVj8rzq4Z9Dw2BcARwzwATVrGJ1K6r5/Fkl3
+         y5UNq8NG33R3xxn5HNkut6/BzSpaxgcpSGF3ZD46nsX8dOb4YEMkBA7MkKFAi7pkekYA
+         5oeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781228048; x=1781832848;
+        d=1e100.net; s=20251104; t=1781228052; x=1781832852;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=GBO/Qu5vraFOfUtlMrr746hyyKYTO/nlkxX0iKEt41I=;
-        b=KVlFLgTHNh/pofWRyzNZHQVs53JwX+U7Mi6P/5RjslgAx9dxd7HjLgEfs5U4HHXJNA
-         Yoa2sYg0OeNFBbiG/Tmh1R571R+DkV5fduziy33c0vx1xMYPYNsxd4RYrVdeA+5zT0VE
-         3N55a9/Nlg3ALbdjxB3fKgOH7vbFa2go5m0y9WQutyCjLlKpKGKRVmZS192FVzCdzOuj
-         dlTdjl1tOM48dtcisb6bniqubghdyXfgjvQCqEx9vqROmH5ybOOynhiD/A6kz4aVv9Mh
-         dSkZeQuXnhtHkyGzOO1shqmqcKwv954zfq5JSXKh07Wi1nOdaroO7thXj4nTWjKqo0hO
-         Wu1g==
-X-Forwarded-Encrypted: i=1; AFNElJ+QmDZALU5ZR4jQVv/TQogwk974Jao8FZWwKBT1uZEx9D1gklZOytbZtudobs1swbfxiK8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwICT8b8OthrR3peItKdIYloanBUzGISVJ65JQysp0YuMnZtBwC
-	GTkOGoEwURaui/XRG7u3Z46q9utED5MJbImgqxRxy0qI8IGSsbtz1WLN
-X-Gm-Gg: Acq92OHH3CuS2uZTrfYvKMuREBQDfwuTlkVbQXpsJGu7gHcM83+efINhVcDBqEvOSYc
-	szZMUuYiSJHTACXJ6uioP4+V1lO/gVFi4hNR4DmBI1IVcRpGH+XBY7JCfS7G3HFzTU783NwjXEN
-	6nAopcHeaqiwHC6VGr0e7SSFxO0iiEnlW7UXrFGrul7U9xAD42jwM3s4OwxQ28yfGA99fGc7q4O
-	cuZiBT6w39pUo6EF+MF4wDmlxGfsxPf75SIhufe3uFQaAXaTtlsb/cOKqiCv4SmKBz6Q5hqPS71
-	CbrtN3vvntWiKoaIuxAo2ea8NVwG3ikGZAAGyXMNZ6f10zH7OGu2Ehc2CFwzrSolTCBugMlHl03
-	Oew/COphYPCsfPHJTnexlmxx1fTsFq3P+5msAegRjpgABb+JwICXHxY3lMyARsV9zX5Q21JwdfC
-	7sL4Ywm8i2GtNiAEW+aXubcTL5Pq2pP60lKWLo
-X-Received: by 2002:a17:90b:4d0d:b0:36a:7da3:266b with SMTP id 98e67ed59e1d1-37a041af2b9mr898338a91.21.1781228047848;
-        Thu, 11 Jun 2026 18:34:07 -0700 (PDT)
+        bh=BBY9ydpXqFUhVTa9PkiLmheHxm3JF7bF85lezg9IMD8=;
+        b=er53DsMjst7RpBfHQLwuVNJ9U3kFPqhnm8HZytSnq3hlhomV10i+TzISscIcbRUT9M
+         hhqs3vxFezp27NbMZRUz/cmUgv/WttUDpXNntTZlHfqZQfZbX1/8lUuRmVZgtDmRZaE9
+         6wGrjnG4rRDXTSXQD2B6dle+HT7M/J8lG/khHDKu3bi/dgU7yzQr2Ruh7rEb1LkwQKzs
+         3wc9YMnEP+jemL/IVeWFxE9jhOmji6xL9MDyqrZ3RfEap89Ocb1lvmqCzy67oYR8eOF9
+         dMBrD828c/xIJjwIBIVf5tm7xnCmSZ2YO3UPrRnlT8y7dv1v88HZlu8KUerbPez6PZcU
+         V94w==
+X-Forwarded-Encrypted: i=1; AFNElJ9LO6jurnBglePbDM8YHaA+g82bnjUH0Y5wl4wOXlfMLkvb2UvA6HUiPAaxoDQGqOmNmEA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywxLk/h+nZ4i41y2tcyLA8U52QJ1Y1s+CFk4LY9qU/iiNUAtnJ
+	Y9FhMSM/liRmL1IdCr1mPjUmZmhZZkOIb5vIfFvRg/xSqQiHvBxK5Pak
+X-Gm-Gg: Acq92OG+Yld7+H5XgCsFcRqH3FJGXXytQX+7Nma+eWKfZtlvKjQaQidTfR6Swt5d6OQ
+	rDpgXWQkY/bH8UBzE8bdOl2FGNDd7nfIixpt41AeWF+Z0jWC25Rf27/RwpEMAZnacw1i8IJOvRC
+	D0oAvO+qPURN5BhWefGoIHea8RyyNF70nRF9zlmDDsmfXRpCN5SQ029/x03jiMGY19wYf9whKj9
+	86w3/Mef5sE7ADtJ57wss74aB2l4JK7DSsdIuLQsgGnwRTw/+jtwkixhUImUfaruneHE+3CsVJx
+	bqIomefE7oj/9bURRnRV/oiRGeQpxs52/InrQDjn4QuBhxvL9a3Av3WHFL4BY0UHV5W8F55VZgz
+	vRE9+gHxVCjLW79dpUwJsqPppAF4IKYbH47XmpkipbIKoAyo9k7RCDp2C2DCpTMiHR7Pkjtc3DF
+	oIPXQ4gtVMG3I/OmOxOCvAuSOtlQ==
+X-Received: by 2002:a17:90b:380e:b0:36b:8873:d96d with SMTP id 98e67ed59e1d1-37a02225ca7mr960258a91.11.1781228052113;
+        Thu, 11 Jun 2026 18:34:12 -0700 (PDT)
 Received: from wanpengli.. ([2408:822f:1aba:84a0:651:104c:ba0c:1f4a])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-37a1f07bbfdsm250713a91.5.2026.06.11.18.34.03
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-37a1f07bbfdsm250713a91.5.2026.06.11.18.34.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 18:34:07 -0700 (PDT)
+        Thu, 11 Jun 2026 18:34:11 -0700 (PDT)
 From: Wanpeng Li <kernellwp@gmail.com>
 To: Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -73,9 +73,9 @@ Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
 	kvm@vger.kernel.org,
 	Wanpeng Li <wanpengli@tencent.com>,
 	Richie Buturla <richie@linux.ibm.com>
-Subject: [PATCH v3 01/10] sched/fair: Add EEVDF lag credit primitive for nominated next-buddy
-Date: Fri, 12 Jun 2026 09:33:46 +0800
-Message-ID: <20260612013355.59231-2-kernellwp@gmail.com>
+Subject: [PATCH v3 02/10] sched/fair: Credit a persistent, queue-depth-scaled vlag margin
+Date: Fri, 12 Jun 2026 09:33:47 +0800
+Message-ID: <20260612013355.59231-3-kernellwp@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260612013355.59231-1-kernellwp@gmail.com>
 References: <20260612013355.59231-1-kernellwp@gmail.com>
@@ -89,105 +89,108 @@ Content-Transfer-Encoding: 8bit
 
 From: Wanpeng Li <wanpengli@tencent.com>
 
-pick_eevdf()'s PICK_BUDDY path only returns cfs_rq->next when the
-entity is eligible. A yield_to() target that is behind avg_vruntime at
-any level of its sched_entity hierarchy is skipped, and the
-set_next_buddy() hint is lost.
+Crediting only up to vlag = 0 makes the buddy eligible for a single
+pick_eevdf() pass. The next update_curr() can push it below zero again
+before PICK_BUDDY consumes the hint.
 
-Add eevdf_credit_entity_vlag(), which can credit a nominated entity up to
-the eligibility boundary so that pick_eevdf() can honor the buddy hint.
-The helper handles cfs_rq->curr, which is off-tree and can be shifted in
-place while carrying any active vprot window.
+Credit to a bounded positive-vlag margin instead, so the buddy stays
+eligible across several scheduling decisions. Scale the margin with
+runqueue depth, because deeper runqueues dilute eligibility faster, and
+clamp it to entity_lag()'s legal positive-lag bound to preserve EEVDF
+fairness.
 
-Gate the helper behind SCHED_FEAT(YIELD_TO_LAG_CREDIT). The helper has no
-caller in this change, so mark it __maybe_unused; there is no functional
-change.
+The helper is not called in this change; there is no functional change.
 
 Signed-off-by: Wanpeng Li <wanpengli@tencent.com>
 ---
- kernel/sched/fair.c     | 48 +++++++++++++++++++++++++++++++++++++++++
- kernel/sched/features.h |  9 ++++++++
- 2 files changed, 57 insertions(+)
+ kernel/sched/fair.c | 58 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 47 insertions(+), 11 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 3ebec186f982..e7f5ea25fdae 100644
+index e7f5ea25fdae..c6502db62cd3 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -9341,6 +9341,54 @@ static void put_prev_task_fair(struct rq *rq, struct task_struct *prev, struct t
- 	}
+@@ -9342,21 +9342,45 @@ static void put_prev_task_fair(struct rq *rq, struct task_struct *prev, struct t
  }
  
-+/*
-+ * eevdf_credit_entity_vlag - credit a nominated next-buddy to eligibility
-+ *
-+ * Advance @se (already nominated by set_next_buddy(), so cfs_rq->next == se)
-+ * just enough negative vlag to reach the eligibility boundary (vlag = 0) so
-+ * pick_eevdf()'s PICK_BUDDY branch returns it. cfs_rq->curr is shifted in
-+ * place (off-tree, carrying any vprot window). Queued entities are left
-+ * unchanged.
-+ *
-+ * Idempotent: a no-op once @se is already eligible. Caller must hold
-+ * rq_of(cfs_rq)->lock with rq_clock up to date.
+ /*
+- * eevdf_credit_entity_vlag - credit a nominated next-buddy to eligibility
++ * Positive-vlag target margin for a credited buddy, scaled by runqueue
++ * depth so it stays eligible across several picks. The caller clamps it to
++ * entity_lag()'s legal bound, so EEVDF fairness is preserved.
 + */
-+static void __maybe_unused
-+eevdf_credit_entity_vlag(struct cfs_rq *cfs_rq, struct sched_entity *se)
++static u64 __maybe_unused
++eevdf_persistent_margin(struct cfs_rq *cfs_rq, struct sched_entity *se)
 +{
-+	u64 avruntime, credit;
-+	s64 vlag;
++	u64 base = sysctl_sched_base_slice;
++	unsigned int n = cfs_rq->h_nr_queued;
++	u64 raw;
 +
-+	/* Callers gate this helper with YIELD_TO_LAG_CREDIT. */
-+	if (cfs_rq->nr_queued < 2)
-+		return;
-+	if (throttled_hierarchy(cfs_rq))
-+		return;
-+	if (WARN_ON_ONCE(!se->on_rq) || se->sched_delayed)
-+		return;
++	if (n <= 4)
++		raw = base * 4;
++	else if (n <= 8)
++		raw = base * 6;
++	else if (n <= 16)
++		raw = base * 8;
++	else
++		raw = base * 12;
 +
-+	update_curr(cfs_rq);
-+	avruntime = avg_vruntime(cfs_rq);
-+	vlag = entity_lag(cfs_rq, se, avruntime);
-+
-+	/* Already eligible: nothing to do. */
-+	if (vlag >= 0)
-+		return;
-+
-+	credit = (u64)(-vlag);
-+
-+	if (cfs_rq->curr == se) {
-+		/* curr is off-tree: in-place shift, carrying any vprot window. */
-+		if (protect_slice(se))
-+			se->vprot -= credit;
-+		se->vruntime -= credit;
-+		se->deadline -= credit;
-+		return;
-+	}
-+
-+	/* Queued entities are left unchanged by this helper path. */
++	return calc_delta_fair(raw, se);
 +}
 +
- /*
-  * sched_yield() is very simple
-  */
-diff --git a/kernel/sched/features.h b/kernel/sched/features.h
-index 84c4fe3abd74..65c511c9ca28 100644
---- a/kernel/sched/features.h
-+++ b/kernel/sched/features.h
-@@ -40,6 +40,15 @@ SCHED_FEAT(NEXT_BUDDY, false)
-  */
- SCHED_FEAT(PICK_BUDDY, true)
- 
 +/*
-+ * Let yield_to_task_fair() credit bounded EEVDF lag to the nominated
-+ * next-buddy so pick_eevdf() honors the hint even when the target has
-+ * negative vlag at some level of its ancestor chain. The credit is bounded
-+ * by a queue-depth-scaled margin within entity_lag()'s legal range, so
-+ * fairness is preserved.
-+ */
-+SCHED_FEAT(YIELD_TO_LAG_CREDIT, true)
-+
- /*
-  * Consider buddies to be cache hot, decreases the likeliness of a
-  * cache buddy being migrated away, increases cache locality.
++ * eevdf_credit_entity_vlag - credit bounded vlag to a nominated next-buddy
+  *
+  * Advance @se (already nominated by set_next_buddy(), so cfs_rq->next == se)
+- * just enough negative vlag to reach the eligibility boundary (vlag = 0) so
+- * pick_eevdf()'s PICK_BUDDY branch returns it. cfs_rq->curr is shifted in
+- * place (off-tree, carrying any vprot window). Queued entities are left
+- * unchanged.
++ * to a bounded positive-vlag margin so pick_eevdf()'s PICK_BUDDY branch
++ * keeps returning it across several picks, without exceeding entity_lag()'s
++ * legal bound. cfs_rq->curr is shifted in place (off-tree, carrying any
++ * vprot window). Queued entities are left unchanged.
+  *
+- * Idempotent: a no-op once @se is already eligible. Caller must hold
++ * Idempotent once @se holds the margin. Caller must hold
+  * rq_of(cfs_rq)->lock with rq_clock up to date.
+  */
+ static void __maybe_unused
+ eevdf_credit_entity_vlag(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ {
+-	u64 avruntime, credit;
++	u64 avruntime, credit, want, margin, max_slice, lag_limit;
+ 	s64 vlag;
+ 
+ 	/* Callers gate this helper with YIELD_TO_LAG_CREDIT. */
+@@ -9371,11 +9395,23 @@ eevdf_credit_entity_vlag(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ 	avruntime = avg_vruntime(cfs_rq);
+ 	vlag = entity_lag(cfs_rq, se, avruntime);
+ 
+-	/* Already eligible: nothing to do. */
+-	if (vlag >= 0)
+-		return;
++	/* Clamp the margin to entity_lag()'s bound so place_entity() keeps it. */
++	max_slice = cfs_rq_max_slice(cfs_rq) + TICK_NSEC;
++	lag_limit = calc_delta_fair(max_slice, se);
++	margin = eevdf_persistent_margin(cfs_rq, se);
++	if (lag_limit && margin > lag_limit)
++		margin = lag_limit;
++	if (vlag >= 0) {
++		if ((u64)vlag >= margin)
++			return;
++		want = margin - (u64)vlag;
++	} else {
++		want = margin + (u64)(-vlag);
++	}
+ 
+-	credit = (u64)(-vlag);
++	credit = want;
++	if (!credit)
++		return;
+ 
+ 	if (cfs_rq->curr == se) {
+ 		/* curr is off-tree: in-place shift, carrying any vprot window. */
 -- 
 2.43.0
 
