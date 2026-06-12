@@ -1,112 +1,98 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93ECE3803E8
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 18:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5435936A37D;
+	Fri, 12 Jun 2026 18:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781288497; cv=none; b=sPISSc7jdOWp7+XIp3BbfEjt+vDaK8R6CJEB3T+0/rlGLWqZzRpV4HsLSa9Uz1imzsmzSZGXpQNsX+sVnWSlEA5jqP1w2rxUlUkh9OEAKBixwnHLcoR7Y3EIeLCIwcaoChv70R7wRjhyxlhrrUT2RN1pSIdPOtiieBARWGwgUjc=
+	t=1781288574; cv=none; b=GC+cauVTOVk/npGZVGquAVhCf23u8mV75yOIFXRIZrXbnXACxTx0CDvAnuK3WZyw5/sb6EZZ+RUZlUrqSYF1bRs/aqNeCtbuWRtFU8+/uXLetr+KdZ/sPXe4pXW5Xr3ncMXVSFTs40EOoz4s+3876jBlBA1+VhXlpgARdMGghso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781288497; c=relaxed/simple;
-	bh=GXDov58oeN3/+KOSLd5d2wQs5OFIS/2CmV/MKcaSW3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JmTNH9g7WBxzpfZ5uNAiHk3s1VVDWYqTMKkf6/5r9mC/tGMysJgb/lt/4P0jLXgCfq7jCO5Q6S4WpsKe2snAPe1jjjq8v4Sd8DNq8eogBMep72mnybqG63AkzoyLYT3sDJQwXxdtAO/d1fn2vjCTxd/I+oRDqg0488ns19Q18Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nbEASQ2b; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1781288574; c=relaxed/simple;
+	bh=i1HUHeL5qeXFSPb75C3k7VkSTDipWQvB2OlovsqsJos=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=qAchUbncE/DVH3mpyHTKXcIqCfMGM9105gNaRw0Ou4U3rRsYWy9YCJTJne2fpr/Xyfjrz9w0lzpjztZdtFKQTtBzadEwTpw4+Wn+JGdtedwdCfnRpDuc4Y4Xdugy6ifjSR7jrw73XJ7CUGpre9wO0hvkz3ZsoHOQ6Qu7TuUf/ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gzAlrIS5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nbEASQ2b"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2bf2911f93cso7545ad.1
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 11:21:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781288495; x=1781893295; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e+Upf3vkFcOgQTn7qEBZF1fjinQnmqMOEEdN6sxgH4g=;
-        b=nbEASQ2bz0xs+J/lkvTKkvuEgXiCDZj1lyyVwCdoI1s9xFVDp6/sHl4csodIFjqeIx
-         OBJNUqXCIj3W6nUHfF8HeexB8FOOMVSj89ACUUNOAI+dCltTg9Mze5WT16ZSmSy4qjx5
-         kshPwVI7wvkswbq5++yOUJQ6zW7euHLcAF4gUk5q1+ctGWIwH7k9Hay7wXYEALn5wVkG
-         2gXCbPvEB//2T1TPa/gi7HUEeNu+epFV5zSJXkqaIHqY17PJNIyhWLOJRIEzGW3Ff5QM
-         Y1E6wgZ3xhFcOBYr9AqqzPhGtas8paxSSsINdsmatcPavAhYxvwsS4Hubw+DJuNU0EPH
-         OzXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781288495; x=1781893295;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e+Upf3vkFcOgQTn7qEBZF1fjinQnmqMOEEdN6sxgH4g=;
-        b=MEO03yMEf3pg060h0oWpwjdQk/gni3aAfZwOOqBygGgpefSr4+C+zlwzJ6LsivvVWh
-         9PhgcE5D08lkSKUrcCSDua8J7LkmtxXL+tY8+xRC1pPvElZN5o1HXD5Hzv5AGdjNCXN6
-         X/VLXrq5vXIMawpIcO/CeguybvcQdTTx6LRvsE+gPNR5w5CSiBy18iTQPGntywOvE29E
-         nZxE6oNCMhVajC7B6FJRVbAvbWCvJ/q8qG3RByQSWLswKrUcRcnQiB0iKPviA2dN7RZZ
-         wN33CLCs4KMy3HtZf5q7jRttVJp1MT4CeGQdMmKJziqgjjpmqemuRpyw8C4p0t2npoE5
-         TXpg==
-X-Forwarded-Encrypted: i=1; AFNElJ9vf3G5EcMyWPzOIkb9N3b4yUgjESszn33g+8wmCuNZdv1/JpPnpquINKZyC02dAcCrJPM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuZRdKUrRNRUTAK+g8sxZYrAEqIOS5iTEmZxGBhiIsG4xnxi9k
-	VYy/5Bei2tWWZLhaEEpeVsgjAhT2cJqsfGEWNE2tT/VFimPnjKJvEuYsZEqynJqBIQ==
-X-Gm-Gg: Acq92OHQoMz733L8L5CGhHXylzw4iFlQJnI8mbL7PrX4+UzaOfb+0NEA7Zq4hRC34B2
-	H8yhzUYIqiz9vgtTGl+13IMMaZircV1jCrgil7PaV9yywqmUBuw/ObE/jo5HGaF8R/f/ScWg22o
-	P5fnI+jfj0M+2EXHf52Tioj0bYqT2e6Pc4lR8Q++o6LYsWFd/DUjJvD6Yt6Zfk8mhdC3aM1thja
-	sRncmujTKR3xiDnz1f/V7mmKnTCMlu6Aup78NhUXNZN7hMgTXqDVkQWZ59eRbT65t0aotjlP3/7
-	dZYGyFI96ijQegmsK6+m19tMtVXVpHDKKTXKnxRkZcx+mw5c4fo3TZ2pp7YBYY+paP9o8D3zi3J
-	FRs/AI2bZR2BRnjS11Dn0BpBNLnMiYj4zw3JAmlItU2YL0mC0p8tMmZmwjCUn66u6HIzPpDboPx
-	aLeueEPHMRwJntryIfTgXZrwr1BQhi/UmtnwC1thESL4VboPLrXUssgQ7U6e8w
-X-Received: by 2002:a17:902:e743:b0:2c1:ee6e:4e4d with SMTP id d9443c01a7336-2c665142269mr202305ad.30.1781288494306;
-        Fri, 12 Jun 2026 11:21:34 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8663352fd4sm2677095a12.12.2026.06.12.11.21.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 11:21:33 -0700 (PDT)
-Date: Fri, 12 Jun 2026 18:21:26 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Matt Evans <matt@ozlabs.org>, Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 2/9] vfio/pci: Add a helper to look up PFNs for DMABUFs
-Message-ID: <aixOJs4_HHFLgGLA@google.com>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-3-matt@ozlabs.org>
- <aisa6H-a-176MXhC@google.com>
- <20260612113735.79518b15@shazbot.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gzAlrIS5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE141F000E9;
+	Fri, 12 Jun 2026 18:22:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781288573;
+	bh=TjVhZg1rC6h+i/yo4zWI+EfLAZQWngNdlBNlbh1To3g=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=gzAlrIS5b/RW/SNy4cWm9c4NWAJKLUoQE0M2rJpCHLWRbugOtuCrlj61kr8gjwyJ2
+	 a2e9oFhptBXkJydo4w432iBrF31kL69Llu+0x23+xspfOU/zltP3CMjX0yXQcgorIR
+	 oj8XdPCV1M3pLjiOEu0zWJCEsgC7EBjFMMTVlLfAo8A432kNf95UrWPxf9qGEzBhuW
+	 eoPQkfOaBrwLu1SV5WcfIm/svHgUQRiQwnTYuqGedqVZsYBuqb/v9LTsQeeg+DZcPW
+	 F7M+eSSBC5StBOA6B1OE6pFMucMo9YsmhhSafaI95h2Ey0Rbj8l3/6wxYoq2csI6EK
+	 d12yB/SX88thw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 4/4] s390/pci: Fence FMB enable/disable via sysfs for
+ passthrough devices
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Omar Elghoul" <oelghoul@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260612181048.91548-5-oelghoul@linux.ibm.com>
+References: <20260612181048.91548-5-oelghoul@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 12 Jun 2026 18:22:52 +0000
+Message-Id: <20260612182252.AAE141F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260612113735.79518b15@shazbot.org>
 
-On Fri, Jun 12, 2026 at 11:37:35AM -0600, Alex Williamson wrote:
-> On Thu, 11 Jun 2026 20:30:32 +0000
-> Pranjal Shrivastava <praan@google.com> wrote:
-> 
-> > On Wed, Jun 10, 2026 at 04:43:16PM +0100, Matt Evans wrote:
-> > > +	/*
-> > > +	 * If we get here, the address fell outside of the span
-> > > +	 * represented by the (concatenated) ranges.  Setup of a  
-> > 
-> > Nit: double space before "Setup" and "But" below.
-> 
-> Some of us old school'ers consider this proper writing style ;)
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The patch explicitly wraps a sleepable user-space memory copy (`=
+kstrtoul_from_user()`) inside `mutex_lock(&zdev->kzdev_lock)`, introducing =
+a lock-holding anti-pattern that can block system paths.
+--
 
-Ohh okay, I wasn't aware, I withdraw that nit then :)
-and come on, I don't think you're old school! :)
+commit 0ba1ddb8db696b6bb98d1631644717f3b52b557c
+Author: Omar Elghoul <oelghoul@linux.ibm.com>
 
-Thanks,
-Praan
+s390/pci: Fence FMB enable/disable via sysfs for passthrough devices
+
+This commit introduces a fence over enabling or disabling FMB via sysfs when
+the zPCI device is associated with a KVM guest. This prevents the host from
+disabling FMB while the guest is using it, securing the VM state.
+
+> diff --git a/arch/s390/pci/pci_debug.c b/arch/s390/pci/pci_debug.c
+> --- a/arch/s390/pci/pci_debug.c
+> +++ b/arch/s390/pci/pci_debug.c
+> @@ -149,9 +149,15 @@ static ssize_t pci_perf_seq_write(struct file *file,=
+ const char __user *ubuf,
+>  	if (!zdev)
+>  		return 0;
+> =20
+> +	mutex_lock(&zdev->kzdev_lock);
+> +	if (zdev->kzdev) {
+> +		rc =3D -EPERM;
+> +		goto out_unlock_kzdev;
+> +	}
+> +
+>  	rc =3D kstrtoul_from_user(ubuf, count, 10, &val);
+
+[Severity: Medium]
+Is it necessary to hold kzdev_lock while copying from user-space?
+
+Calling kstrtoul_from_user() here means we are holding the kzdev_lock mutex
+during a potentially blocking memory copy. If the user-space read blocks, it
+will indefinitely hold kzdev_lock, stalling any other operations
+synchronizing on this device's lock.
+
+Since kstrtoul_from_user() only parses data into a local stack variable and
+does not depend on the device state, does it make sense to move this call
+before acquiring kzdev_lock?
+
+>  	if (rc)
+> -		return rc;
+> +		goto out_unlock_kzdev;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260612181048.9154=
+8-1-oelghoul@linux.ibm.com?part=3D4
