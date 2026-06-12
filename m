@@ -1,134 +1,144 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B27E390618
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 09:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E45815B971;
+	Fri, 12 Jun 2026 09:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781256014; cv=none; b=K0+CozUeGjJ1DCHLwnIERuX0QcvD4Z0Rbebuu/Clvw0KmIf7lENlnFt5B/LcTaZF6lKjB8IeUDGlbs2tpbeINlfagVbGs8rD6/i/c3oErzTv7jZWrKHpmDkM9hvQycjshwEVWYlWrnn37+iruAiPauttZxbKopfuZMd7xmR4i1E=
+	t=1781257471; cv=none; b=skOLyxPiHmCJ1Xr0ziGqjRsvN3IlVCkNisLVdneBscl46J1pWgZ0/hIfgeM/xKsSuwavX9tVi4+cm5Tr3ntHi1YPrmmBmPLAR9XjUz3YxiOM5ijTWfp44D9QsBX9/qzJBTJGxq5E5/qjsvXT3FqxZl7hrezQcX2fkanCXyFfAsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781256014; c=relaxed/simple;
-	bh=nK8oSt5EIh86hjy16VZ5ws+ZIcIDCfDkVWMJvoB+yNI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=No524UtH/+bx6VflfkY25+KQ+lSqhcWyDxuLTn10hqj0k5pbkAX7d3r/oaYJt1GG5/Bs09IGpLMrRmJpzWHK/dq5Lta3ptrU+C5sgPdyfJiYRofoRi3Jz65AmNHVJgf04HiYA24Pb7HvlJ3SQNTDskQea3Hmlwn8vhjaEw6t8cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fRzzMYYL; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1781257471; c=relaxed/simple;
+	bh=qE+TvY+tNy5J+9hDTjgArkie2Tc4WbesIG3aCda+3Bk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SGmOw4h6lRk+cilYFfATdtWtJWPiT1PlF1W4YwobJYprch/zkUhJgA7ekpQvmbQL/L7n48uvcLsRBkp6+TCf2YFaluPNQE8uvj1oZozVzKbqaNDZjIUF/EJxieWQsydghXBWG7P0zgPfyMIfnrU7cfxfrgSFDzsayhcj/LvS+Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ikFwlNSc; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fRzzMYYL"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2bf2d865383so61525ad.1
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 02:20:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781256010; x=1781860810; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zvPmlCR2+M8z2It1PyWjRPyBRhJXBH/RxmRhWYVyMeM=;
-        b=fRzzMYYLXoLbwa6O4DDeOA1Dd721HBWwlMWYDllZUFJ/PTywZdsB5Nwlzv5k7x2d0R
-         WvHhTKPMyLGoqFR3dXk4MZlKcgQ+ayEvfB5xvC5obxLWlwNHu2z7b0SjDke0/huZR6Dy
-         rACpzpT2wiXVJNFA67ImFhSZr9+neZziK6J2yoh4qRgMtwPT/ZfW3hNtyxHfc/fsRD3g
-         GFcOs2i1hCawvKj3RLmbnBeGgbQr7dOlEft+MKhsSkeo4F880mzkcKN8W80Ip0Lby3e9
-         4s7LNmv9oz+vhxUaKaLOH7e/ZpmkbxeE0XuEbJaU1jhwkOtaSukQ+7t//wS7/4pyvAFv
-         1Y6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781256010; x=1781860810;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zvPmlCR2+M8z2It1PyWjRPyBRhJXBH/RxmRhWYVyMeM=;
-        b=kvlM1Dyg2+SWPoVI3Opp/FF6BjOZgv5oMd5uM9TpVV6xSESDI3ntxFJQ7nXRGSunfI
-         r2dGoiVnXQeZ0ykw+IsLppDEQi3RiVci3Fvy4CekEevdvo7xx6hARK0BV7yMnvUYrySu
-         haowd+p7iZls00vdveTcFuls/l+Ext27bgmbKVRDRk7+CBTc8yUoHFlJ8EyeHdCP/Oq7
-         y/Cq+o5PKTaKfgpGCVFM/ZLoRhYNDYww9Eoi8VFtmL2J1Qf6B0dNVUFeOEbVV1Vk3Njg
-         v9StsfWCyvNcxORgVEkGwbIIUmJ1AaLIosC+H/7qXvJCdjzrYgysV/ufa13OXCflCvKi
-         OxbA==
-X-Forwarded-Encrypted: i=1; AFNElJ+YTaVF7Phq3+EUyVsvLd4Z6KwO+4FgUs6VDMfW4imCGIaVOy1QRwfDsZzCW0F5KcNHajU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnWffMrmAYHDixvAbwu0xsTkDQjlVkimLQDkhBP8AqwQRVYz8P
-	ygi8VHiawpvnPE4Z+ohVGvlqFoscho0C6PpKmn9uIbKIkVSFTLMVk/Acnyvnv4o/Zw==
-X-Gm-Gg: Acq92OEd3E9sN/KSv4zLKA8K7K+Lx8AyyyLe17VZub5AJyVvZid4tcneg9JqYTAtRfS
-	rXgDAvDrMlFj6P5onaZ1LDDkFbc9tUbHrvHQtqfJ8DiXOkkJJSsc2SUrGRJTA49cQ7KpFqBV0Yl
-	lnO0wjanNVfJLU/jkS5+944EserqEMbhJiP1f7Vik1nfHzXHyIuX1eYbIuihq1g0d9gXHcKX3hz
-	lzezNoBZd3gryAFvx2HphX6329IFxsW1o2pZngixfISSDfYPMdYT1QL8oJnNjg7dIUou/DRvom0
-	xKbwsdO7LzISJNw5xRkPyihTTQC6jd410F3GZahLknaYQS8M/Sx7Pa8EpYVEZrgLbMm4eTxEcBj
-	9XvIiKhvIYXcR6XiVQ34rurt8YZ6HiLvvzxCVv4ONRekhvuUWr0LMCaFxEQva8Lp7cLIrIHTz0D
-	QPQJKHXSdZeGCwDQvVDBUzIj1Uytvk//xPyAHL34tK9LQmucsQ4gE6d37zLlntjgsbbonA8u0=
-X-Received: by 2002:a17:902:e811:b0:2bf:139c:dcf3 with SMTP id d9443c01a7336-2c405c8817fmr1345405ad.19.1781256009183;
-        Fri, 12 Jun 2026 02:20:09 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434afd17f5sm1476657b3a.39.2026.06.12.02.20.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 02:20:08 -0700 (PDT)
-Date: Fri, 12 Jun 2026 09:20:01 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 3/9] vfio/pci: Add a helper to create a DMABUF for a
- BAR-map VMA
-Message-ID: <aivPQcSlolwptnB6@google.com>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-4-matt@ozlabs.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ikFwlNSc"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BNYoNe677491;
+	Fri, 12 Jun 2026 09:43:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=XYUv4E
+	zF1jJEj0Bq6xIG3d7viUyK+GP/6tISNu9N7HI=; b=ikFwlNScrcyCFa5dYkjaMh
+	KBFtT6PGNaky0azWPEUN+BOU61I5ITaiGdH+MdQJCtd/J6WVAK24Rn9XLGnAzIaA
+	nzAXpiE95rsqCJrCVmrYi++bOHlJgSJaWMdS31zUa6R8F1//2N9A0TSVNy62bWPn
+	LVO7cAi/X1rp1G2jlw29fO+DDuwhYrfdJEEpg/FtQvxCcycbfLjryN0r9lmh2MvZ
+	vJPKqNRWZx55aFlBux2HefTb6yxZnvtjw1BBoNQAb9UdTXVeVj4K6IANsc9gDN+g
+	hpqOZGywLGitJv30UJ4fW7jZxoBHfhp2tA6EtyALnp+SsLLKRoR2xp8vBP65WxkA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8aqxa5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jun 2026 09:43:46 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65C9Yalg000567;
+	Fri, 12 Jun 2026 09:43:45 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eqe08y7m8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jun 2026 09:43:45 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65C9hfAN49611166
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Jun 2026 09:43:41 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 980092004B;
+	Fri, 12 Jun 2026 09:43:41 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5383420040;
+	Fri, 12 Jun 2026 09:43:37 +0000 (GMT)
+Received: from [9.39.29.202] (unknown [9.39.29.202])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 12 Jun 2026 09:43:37 +0000 (GMT)
+Message-ID: <feba3338-1b1d-40ea-83f7-54328712a71d@linux.ibm.com>
+Date: Fri, 12 Jun 2026 15:13:36 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610154327.37758-4-matt@ozlabs.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/10] sched/fair, KVM: Semantics-aware directed yield
+ for oversubscribed KVM
+To: Wanpeng Li <kernellwp@gmail.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Juri Lelli <juri.lelli@redhat.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, Wanpeng Li <wanpengli@tencent.com>,
+        Richie Buturla <richie@linux.ibm.com>,
+        Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>
+References: <20260612013355.59231-1-kernellwp@gmail.com>
+Content-Language: en-US
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+In-Reply-To: <20260612013355.59231-1-kernellwp@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 38aQu0V4A06bmCcDx61RmKTvajf7pr3y
+X-Authority-Analysis: v=2.4 cv=TdKmcxQh c=1 sm=1 tr=0 ts=6a2bd4d2 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=GvQkQWPkAAAA:8 a=dLX7AjkPyFth-2rxqAkA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDA4NiBTYWx0ZWRfX6dLnxyHAH1+g
+ sjYQQQ8daYCx0G1DIICHpMfI6s5IgalLRwZYLw+cpZj34vQQy/051JE6fW0PK6mxKGpWlh5rPET
+ A+5pkmujPnntKUhqY43ciXVLS402D5MHcjj7zx+q+tRDXBd5ivrEEiAd7Zf1OldUmbjwyz87lB/
+ dbpdlMU2OG0kOlczWssVB9lZi0ZTwTqTPdfFIWDv9XFt04WNZjaAjNL4Xbv4bnnRkASkRkWsJQi
+ msiMSFzrjG3biFKnvIfC747N0tQ/2aLXBhhWbVxcuogOZk79JcjiA3BmyTYzhTH3/u0yV+uk9JN
+ tg0Qtzyw0ThcKYK4jGkVhbj3tj2DrPWvOMsTnfu1bEZKzBj55CfPrDOPQiLZ1090ETkU5wLrtRg
+ Ce32hAzJLwRtX4k5qrCvl5sB4mawV3TJYio3NwMiwJ+dNPa2pjhcpTJS40Ze/OAYrNungz4y/9e
+ gx26Bv9Xuo+umas+WOw==
+X-Proofpoint-GUID: Z7qOhL-NPrbkCeJDj-DaeabpLNQledXg
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDA4NiBTYWx0ZWRfX7Po8+yadh8Cn
+ F8hkvY+PRNIJXDuwfR6XKWeeQsMhQPjL+5kk276FtesGWJZ5fl2Rkry8aBD74kILBpJaS9QdJvs
+ v6akaT+jO0SI0XgjCxWvxsTWAro32ww=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-12_01,2026-06-11_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 clxscore=1011 impostorscore=0 adultscore=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606120086
 
-On Wed, Jun 10, 2026 at 04:43:17PM +0100, Matt Evans wrote:
-> This helper, vfio_pci_core_mmap_prep_dmabuf(), creates a single-range
-> DMABUF for the purpose of mapping a PCI BAR.  This is used in a future
-> commit by VFIO's ordinary mmap() path.
+Hi Wanpeng.
+
+On 6/12/26 7:03 AM, Wanpeng Li wrote:
+> From: Wanpeng Li <wanpengli@tencent.com>
 > 
-> This function transfers ownership of the VFIO device fd to the
-> DMABUF, which fput()s when it's released.
+> On overcommitted hosts, a spinning vCPU often calls yield_to() to let a
+> lock holder or IPI receiver run.  The hint can be ineffective for two
+> independent reasons: the scheduler may fail to select the nominated task,
+> and KVM may nominate a task that is not the one the spinning vCPU is
+> waiting for.
 > 
-> Refactor the existing vfio_pci_core_feature_dma_buf() to split out
-> export code common to the two paths, VFIO_DEVICE_FEATURE_DMA_BUF and
-> this new VFIO_BAR mmap().
-> 
-> Signed-off-by: Matt Evans <matt@ozlabs.org>
-> ---
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 142 +++++++++++++++++++++++------
->  drivers/vfio/pci/vfio_pci_priv.h   |   5 +
->  2 files changed, 117 insertions(+), 30 deletions(-)
->
 
-[...]
+I was curious to try this as we have been working on paravirt scheduling
+which aims at reducing the vCPU preemption based on the steal time.
+https://lore.kernel.org/all/20260514152204.481115-1-sshegde@linux.ibm.com/
 
-> +
-> +	/*
-> +	 * Ownership of the DMABUF file transfers to the VMA so that
-> +	 * other users can locate the DMABUF via a VA.  Ownership of
-> +	 * the original VFIO device file being mmap()ed transfers to
-> +	 * priv, and is put when the DMABUF is released.  This
-> +	 * intentionally does not use get_file()/vma_set_file()
-> +	 * because the references are already held, and ownership
-> +	 * moves.
-> +	 */
-> +	priv->vfile = vma->vm_file;
-> +	vma->vm_file = priv->dmabuf->file;
-> +	vma->vm_private_data = priv;
+I gave the patch series a try. With both real life workload(daytrader) and
+micro-benchmarks (hackbench) I don't see any benefit. Note that it is running
+the same workloads in all VM's at the same time.
 
-I appreciate this comment. Thanks for being clear!
 
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
+I had thought about this series:
+- Do you observe steal time when you run your workload? If yes, if you reduce the
+   vCPU, IPI will natually move to reduced set and due to reduction in vCPU preemption
+   yeild also may not be necessary.
 
-Thanks,
-Praan
+- is there vCPU pinning? workload is pinned separately to explicit vCPUs.
+
+- Is only a few vCPUs doing the locks in the workload you have mentioned in the
+   cover-letter?
