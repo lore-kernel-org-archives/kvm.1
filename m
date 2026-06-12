@@ -1,153 +1,99 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66E2331EAB
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 14:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FB1384CD5
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 14:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781276161; cv=none; b=dXU69/uktkAjpmHtDXaM/bIgBIaDppar4V4HEaHW2YD41GYHlPyGRgkU72uo+iNtQQuOBsfh2c9ERfOeGURJ7Pdb19lvrkMvZKhFfNi7QkKxD88djbajm3rhWXI6Tc2HP3lkNNZo3HqIHsqmWXVCnJzZqd3CiDR4dADk2R2Kei4=
+	t=1781276205; cv=none; b=U5YkREN0mcxLbQUcHGYmd69VPnF4XxXJ1Gm8QgkS1h/xe9xrWU/CoW/tU2L3Q/tIGBzkEWAmmjd3kUCBt1QRfit8WUIUIgNJIVorn0qJJYH274W2NSuP9WCpOqSXCwQgG74br4uR8iAu1rSGYeA7fed0h10G2evuMjPn5verhSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781276161; c=relaxed/simple;
-	bh=v1lHfOwRkHhOZ74JM+AK6rXRxpvgdAXu8zRNFh1u12w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Z4ctz9t7XwY26J0KjXMQqp0v9YTJSToAT3b/8qemgQL5J+RSmAj8LJ/G4bOWeE3nYLUet8lS+Bb2piDAodta/s2TCTrNwz6hd2LEdkS5R/IRHwgLfAwMf7RdE4f+xR/BpFwD6yowscsZiT99+Pvqg3CVQoj8TxzI/ZWclDo/wYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eSPpMIn7; arc=none smtp.client-ip=209.85.216.74
+	s=arc-20240116; t=1781276205; c=relaxed/simple;
+	bh=vVJthlNf1xsGUNnOilQjy7yBliqp97Qw1g3n9IGmtXc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KYhngc8lrVXWebvFlyI+bHLPwSXdTIqvILAlczPa9/LD37XJqLNoYcG15EX3lZ+v0QJtVOqp2Fh9cRFjAV90XabhgVUVJYKz4S9NVu72qziqWJfiEFHhoV2tN59D2q1jEOK1A9nFPXTi2hMJ2JK+lC1uRbkZobowb/q6WaAuW9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=em4LueXb; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eSPpMIn7"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3772b6b31b4so796444a91.3
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 07:56:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="em4LueXb"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0c20f7581so11636555ad.0
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 07:56:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781276160; x=1781880960; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WNcpHwpm6/26X/fcZOebiiBTkHhzzv3iZNMUq4LAPaI=;
-        b=eSPpMIn7fB1flf2KJCxbLgsTD5YV5Wo4ZyiUFsDSmZj5p0QlPgUgQ5gx7WHwxxuLsf
-         waZXqBqtBVI9T0tlAHsL/v8nwWPfL7YyUCfaQJ/hb2UA6TIz8xtO9cgO+uLBLRvjBXQc
-         CP+wLEjMfxlFu0YDV27Xk84edKwcko5Fz6aGsVRVNYV4dV0JdVhHZ2BX2+5n3PHbxPkM
-         6hud5bFuqJ2KByudZijB10JABFguUzE97c9uZzoil0cP7IZxm1IEiKK0y4VM37T3I21G
-         VCySb02QNbbG8RPuPSZeKq1R/pzluFBUWl1zjbMpQZo8ybvEZKEHVclq3okiS39nE/Gh
-         YL2w==
+        d=google.com; s=20251104; t=1781276203; x=1781881003; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=x01veqm415wq7cLHwV2kqWsZcPnDuVx2qWbO7T/80Xc=;
+        b=em4LueXbVFHeFQ60HIP76snaSTiPNNJfvi98gh5u54d9mT5K7eVJiu4mUIexKrDBSM
+         2avwGErUh0IFrwON4YTmTvRuvZnMba8c07gIqFkmso/DaxmIMrdc9mA8IAh7IG52YJCn
+         hyWNS5NVW+Aa4TBQGoKq65ajsZhXzEeptIBeWBV4Zs8XZH/QzfzNfkGdEFqjI0G7Zd7X
+         B+u2QH+2yLsNAaNmnTgjgD/n04V0g2ReIEG5xHw02iVbBNXC/5XAZWx2xvQ6QFXcQGdo
+         O/Ro8SWVoPUA8gpLT4iEWrWoGLmXxSPQVgTWi5F56gJvfDJHeSWja/NktnBsst+D+NaZ
+         6poA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781276160; x=1781880960;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WNcpHwpm6/26X/fcZOebiiBTkHhzzv3iZNMUq4LAPaI=;
-        b=CTjVesxAjP+YaQCtX82nNulWofLUUW9VIIanGgE0vqxyAH22276zY0XwuYrb2PhCjo
-         l/nEjk+6M8aO+dnK6Mg1sdBFZdgNg2XbvNH0Jcxigudes/ADm3k6rD4lJlSO1kw23uRv
-         LMPWdt8pa4UC1jLd1kEWWOa3JlOgCP8e+YrKIkSqL4w5TuG0Td+S13Ev0glFeyUE5Ded
-         QYpBo/xk/Da6dhIN9zvbI+lOwQ4+U6g0zJ+ZBvUzSifWuzTCcwpSCeEC+Spe5Ap6AxSX
-         UpnjgLo8QxX6kBsAbe9MSHWZy7mPSIfVgTs1agBrfm+J/OinaYD5o710MPhn7ZNPPFbu
-         1Pow==
-X-Gm-Message-State: AOJu0Yyp2xOKzJvgS9g0DioE7mYscUdH8fpljaNsar3mUL6Oy8WGJxm8
-	TrW0aVGjQK/Gs3ZO0aeM7efbpe20dWg6WvLmcWLQCyqkC8MG4qfFzDMj92L7KBNmG3EJNrKYwZK
-	4/Yybfg==
-X-Received: from pjbaz15.prod.google.com ([2002:a17:90b:28f:b0:36a:9fc9:2f25])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b87:b0:369:c5f4:9681
- with SMTP id 98e67ed59e1d1-37a041b0151mr3710931a91.22.1781276159772; Fri, 12
- Jun 2026 07:55:59 -0700 (PDT)
-Date: Fri, 12 Jun 2026 07:55:59 -0700
-In-Reply-To: <ik7nexem.ritesh.list@gmail.com>
+        d=1e100.net; s=20251104; t=1781276203; x=1781881003;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x01veqm415wq7cLHwV2kqWsZcPnDuVx2qWbO7T/80Xc=;
+        b=HPT9QDqFZdMbcY4G6x1cQf/webomuDhB2FGo3WEnSRhXGBg6YGi0y+Hwur+neOVtO1
+         MFd4HcB10ZZaTeYqh1hYDs1QgSskdULnkAHv2SCTq7zsAW8WNElmqrTV8TuMczRAtvlA
+         ONfu4D0lOFpTYXMkwjQDDaVCqykli94W1VuX+FoI6skfKgSFnOsSMpuFOD6ek4aja4l+
+         4kFD0n5j+HRtmsB5IObmurXlLouVsepoMGo4sjnCU0VAXje5e1/QEzRlwuEuedx1voIz
+         lh1xslu1S4rQIsfbbkE5myJgbifnRYBDjdNgvbL3+uIHMHq5TCwMvynBJRVpodSmz3AM
+         CWyQ==
+X-Gm-Message-State: AOJu0YzPSaVwq7+cSxiHJmLomSqaHn5pUjV1zCvmw8gyOXULpOLJooJt
+	3LRx3bLcvxTsDWtfNOaRVwuV7qOZzYfOifEQmpMQGZ4VPVE+5CKiCzSDAbTyu1DNqJsE+fTNLUW
+	QWSl1YA==
+X-Received: from pldp20.prod.google.com ([2002:a17:902:ead4:b0:2bd:52b9:305e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2310:b0:2b4:59bf:5728
+ with SMTP id d9443c01a7336-2c411d79afemr33408815ad.25.1781276203151; Fri, 12
+ Jun 2026 07:56:43 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 12 Jun 2026 07:56:40 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1781093720.git.ritesh.list@gmail.com> <ed1d75f27a3b02897a8f54721d9f7f21bb163d9c.1781093720.git.ritesh.list@gmail.com>
- <aiml9iB_vUASRRQV@google.com> <ik7nexem.ritesh.list@gmail.com>
-Message-ID: <aiwd_8Jj34IH-pFH@google.com>
-Subject: Re: [PATCH v3 RESEND 04/10] KVM: PPC: selftests: powerpc enable
- kvm_create_max_vcpus test
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
+Message-ID: <20260612145642.452392-1-seanjc@google.com>
+Subject: [PATCH v2 0/2] KVM: nVMX: Fix ept=n bugs where KVM runs L2 with guest CR3
 From: Sean Christopherson <seanjc@google.com>
-To: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
-	Christophe Leroy <chleroy@kernel.org>, Anushree Mathur <anushree.mathur@linux.ibm.com>, 
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jun 12, 2026, Ritesh Harjani wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> 
-> > On Wed, Jun 10, 2026, Ritesh Harjani (IBM) wrote:
-> >> From: Nicholas Piggin <npiggin@gmail.com>
-> >> 
-> >> powerpc's maximum permitted vCPU ID depends on the VM's SMT mode, and
-> >> the maximum reported by KVM_CAP_MAX_VCPU_ID exceeds a simple non-SMT
-> >> VM's limit.
-> >> 
-> >> The powerpc KVM selftest port uses non-SMT VMs, so add a workaround
-> >> to the kvm_create_max_vcpus test case to limit vCPU IDs to
-> >> KVM_CAP_MAX_VCPUS on powerpc.
-> >
-> > How is this not a KVM bug?  Literally the reason this test exists is to validate
-> > KVM's advertised KVM_CAP_MAX_VCPU_ID and KVM_CAP_MAX_VCPUS.
-> 
-> It's not a KVM bug, it's expected on PowerPC. On PowerPC, vCPU ID encodes SMT topology, e.g. on P9,
-> vcpu id = core * stride + thread,
->   .. where the stride is same as kvm->arch.emul_smt_mode (VM's emulated SMT mode)
-> 
-> So the vcpu ID space can be sparse, however KVM_CAP_MAX_VCPU_ID is the
-> absolute ceil value (MAX_SMT_THREADS * KVM_MAX_VCORES) i.e. the value
-> with the maximum stride / SMT value.
-> 
-> Since default selftest VM uses stride 1, so it rejects IDS >= max_vcpus.
-> 
-> e.g.
-> static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
-> ...
-> 		if (id >= (KVM_MAX_VCPUS * kvm->arch.emul_smt_mode)) {
-> 			pr_devel("KVM: VCPU ID too high\n");
-> 			core = KVM_MAX_VCORES;              /* rejected case */
-> 		} else {
-> 
-> So, it's expected on PowerPC. vcpus with higher IDs can be created but
-> for that we need to set KVM_CAP_PPC_SMT and use strided (sparse) IDs.
-> But since the test as of now is not doing that - that's the reason why
-> the patch only allows to test max vcpu IDs upto max vcpus.
-> 
-> But I guess you must be hating the #ifdef __powerpc__ there. I agree I
-> don't like it either.. maybe we can do it this way?
+Fix two bugs where KVM can run L2 with a guest-controlled CR3.  The underlying
+flaw dates back to commit f087a02941fe ("KVM: nVMX: Stash L1's CR3 in
+vmcs01.GUEST_CR3 on nested entry w/o EPT").  Past me claimed:
 
-I don't love the #ifdef, but it's more that I didn't want to effectively skip a
-test because KVM was reporting bad information.  But after peeking at KVM_CAP_PPC_SMT,
-I 100% agree we don't want to deal with that here.
+  Smashing vmcs01.GUEST_CR3 is safe because nested VM-Exits, and the unwind,
+  reset KVM's MMU, i.e. vmcs01.GUEST_CR3 is guaranteed to be overwritten with
+  a shadow CR3 prior to re-entering L1.
 
-> -#ifdef __powerpc64__
->         /*
-> -        * powerpc has a particular format for the vcpu ID that depends on
-> -        * the guest SMT mode, and the max ID cap is too large for non-SMT
-> -        * modes, where the maximum ID is the same as the maximum vCPUs.
-> +        * Some architectures (e.g. powerpc) encode topology into the vCPU ID,
-> +        * so a default VM can't necessarily use the full advertised ID range.
-> +        * Let the arch limit the highest ID this test will create.
->          */
-> -       kvm_max_vcpu_id = kvm_max_vcpus;
-> -#endif
-> +       kvm_max_vcpu_id = kvm_arch_vcpu_id_limit(kvm_max_vcpus, kvm_max_vcpu_id);
-> 
-> 
-> And then in kvm_util.c -
-> +
-> +__weak int kvm_arch_vcpu_id_limit(int nr_vcpus, int vcpu_id_max)
-> +{
-> +       return vcpu_id_max;
-> +}
+which was and is true, _if_ a nested VM-Exit or the unwind is reached.  If KVM
+fails directly, vmcs01.GUEST_CR3 will be left pointing at L1's actual CR3, i.e.
+KVM will run with legacy shadow paging a guest-controlled CR3, which is... not
+good.
 
-What if we do this?  We're going to be bleeding PPC details into the test no
-matter what, adding an arch hooks just seems like extra cruft and an unnecessary
-layer of indirection.
+v2:
+ - Use kvm_read_cr3() to read vcpu->arch.cr3. [Sashiko]
+ - Skip consistency check if reading vTPR fails. [Jim]
 
-	/*
-	 * Skip the vCPU ID test when running on PowerPC with SMT support, in
-	 * which case system topology is encoded into the vCPU ID, and so a VM
-	 * can't use the full advertised vCPU ID range without crafting a valid
-	 * platform specific topology.
-	 */
-	if (kvm_max_vcpu_id > kvm_max_vcpus && !kvm_check_cap(KVM_CAP_PPC_SMT))
-		test_vcpu_creation(
-			kvm_max_vcpu_id - kvm_max_vcpus, kvm_max_vcpus);
+v1: https://lore.kernel.org/all/20260603223418.1720035-1-seanjc@google.com
+
+Sean Christopherson (2):
+  KVM: nVMX: Move vTPR vs. TPR Threshold consistency check into "normal"
+    checks
+  KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot L1's CR3 when EPT is
+    disabled
+
+ arch/x86/kvm/vmx/nested.c | 87 +++++++++++++++++----------------------
+ arch/x86/kvm/vmx/vmx.h    |  7 ++++
+ 2 files changed, 44 insertions(+), 50 deletions(-)
+
+
+base-commit: de3a35be92d2391ece4bf3143ef2887192625fd0
+-- 
+2.54.0.1136.gdb2ca164c4-goog
+
