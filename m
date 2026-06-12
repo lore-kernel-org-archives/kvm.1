@@ -1,128 +1,174 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEE53596F8;
-	Fri, 12 Jun 2026 14:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F35732A3C8
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 14:50:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781275823; cv=none; b=BC9d2rP42TU1XBNZUiL8WaREkzfUPVMheyMoUZEwty1EQf5xST6tTyD/N0092Y/FSScn9jLB7cneTCltwh4pIBfrgsplV1k47u64R9ux0QXCJfxCDjrKuLE1BH8JqmQ5T61KtIYzxG4/zPskG6FtMMpn5QRtd2tEv9JkcyZiaiY=
+	t=1781275828; cv=none; b=CHefd7Bx1spUXVh2H1QKoIuwUnuiSl2LBAr6vUC+5pWSRYWBDwZYMWuEW5HzYZdb4qz25IuHNZVOAihAbe8VYOBNst/8e78LwDzT7Pp9WoRjI1MrPIPqOH+vRms59pLjjOtK/ST9AMaVPye/YEtZDFspIXdSypdlguOIbParVZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781275823; c=relaxed/simple;
-	bh=4GNULYf7soNlcGRLtPUwODeu5MO6effIyaAJAufYvZw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o0gOUBztS3D7/9m9PuikTqD6ZSq/7X7z62/VWP7FWdbEVlWfoUe2ulAt9UwbtM1VUOxvrMWwLaDV5Tzk8xxCRwE6GIuw70lVwKArQuFD1OaBgTNctJTgWqLporjP5Crf9VmsJyR8h5Yd8o/ejj6gqQZUdOzHwdrZmzojyrurIME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EjtZj422; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1781275828; c=relaxed/simple;
+	bh=ktJEoejF4IYc2x2sx5hNzOusqn1PFWfmraLH5p9R6zY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lC4hd4ZJYFL7kHUOsk5IrSkUJmPhkaSd4PkZcnrabUdd39y5EPPJ5C6XL6TBbp4hGhTIZwGEu7nBrp6+NFAex/sKZYJCz+d3vh51Pe+F5S8BRo6UTC3FYMIuSw2zqt9kEjQc4sDmzBgYi7gqr1xYGTTCzsSLtzYamIWkD9UPkj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZcErODWZ; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EjtZj422"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BNeN3C1742452;
-	Fri, 12 Jun 2026 14:50:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=OMRe7iXTc2UBI4hEL2hLgPP0iCU9HsNxLvO9Vxb4D
-	8o=; b=EjtZj4227bqvdH8M1nnEFLNSilolcx7Jc7JwOAATBnkWwW4lrsreXLqHm
-	nTSLoa4pbJsU+lMGyviXqGTyO/MhcAgj668LpWjnFopVlfEIxYivic0oW0DlprQV
-	nHdSoGwn20Toty3wsKtovOgDI0ozJ97ueH4qxdiRlCDgrOrxQNSct1jWzm3X9X6z
-	8I5PYyigASfFi2v1sUQPfPjPtDgf0UPCHAaSu4Sqe4S79snSFkfhq5ckmBPz8X9R
-	8Lsw3SqXpsqWFxE6lblVpZJnOIjjoNUd46NjIjONrK+vpTHtNQ7/2753B7Fe7HdO
-	hGIKu0No/o/m3uu7z7JSU9xaOfOIQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8bs42h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jun 2026 14:50:18 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65CEnh0c027214;
-	Fri, 12 Jun 2026 14:50:18 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eqe0a8a1g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jun 2026 14:50:18 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65CEoEkR10748230
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Jun 2026 14:50:14 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7159F20049;
-	Fri, 12 Jun 2026 14:50:14 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 36DD220040;
-	Fri, 12 Jun 2026 14:50:14 +0000 (GMT)
-Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.224.75.30])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 12 Jun 2026 14:50:14 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com,
-        hca@linux.ibm.com, gerald.schaefer@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, svens@linux.ibm.com
-Subject: [PATCH v1 1/1] s390/pgtable: Unconditionally clear _PAGE_UNUSED
-Date: Fri, 12 Jun 2026 16:50:14 +0200
-Message-ID: <20260612145014.217102-1-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZcErODWZ"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2bf2d865383so92555ad.1
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 07:50:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781275826; x=1781880626; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TKPEKDhY7MEkgse5vNpBg59/8pjz1cpSSV/zhg7oF9E=;
+        b=ZcErODWZ/U+nUPxMmEv908bsS0S53JqNsdPVrwuiUXQR6xzrpMlzDbRfWs4pDrRNBs
+         XdFvi6Vfcgexc7xuhQ+AiCox+kc2p/4jATO1IZ5jzQ/OCsNMacY1Ru2+wjPS6/908v2a
+         wu352v6ehffF9GmvaIpBuaUHhCADthkerJYsfoyRTPjT3fPBPUY8asxPuAllC895AvkM
+         xnYS7MdHnCoFKPMlNN7M7T2cyIgMFlj+4IRISsh/7OPXKKAUF8iyMsE4gU2vq+MDKb7R
+         yPNYS+4AwDVCaPrucN/dzPIBYUJz1xw4lb8BNJrE2Y/9Jl2dM63nz/l5fJVxwU2+nlsf
+         B57g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781275826; x=1781880626;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TKPEKDhY7MEkgse5vNpBg59/8pjz1cpSSV/zhg7oF9E=;
+        b=TeINpu7QOg/mPY2KqXkw0a+ktiL4Kgi0qPksG4E/u7QY0LJVvdaHr3Pv59Eabxxnop
+         fdbKJowUgHzkCIPQBD+ucGRLllnCvfRgYgjVohQaqXBUeUvIXrRKyfqZjTYyfnSSZjXS
+         ic/bV1aliSgPfN1EmvoaJ//i/ZIAxQ/frn2BU97GBFBEKE987Mcz5c5rKXHYsjv6nIvH
+         EGmNNma5JYZ36XK0I99ztIBLLJUXGq8It22wevv2HYNsc0ywAtAeJJzfbVBlvQ7b9Bjx
+         qeuodLtvH/Y6m26L9v7f6gZKdh6TUG3tPHgKlNUsgwtRZUjdh/adR3tNRg7ewotoQuZ5
+         uhGg==
+X-Forwarded-Encrypted: i=1; AFNElJ/ulCE1rhnhXnez5Eahg26jVEfdgue/uCnCweBpZKoSoljQp3abUpquL73DCbTP/23X914=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXF1309armoBO1nem8IGBN/e9241+AcHYk6tMWhF2AqpmWzJXy
+	ecdSgmPZQpgCNu0sNsvVLVUnNOS+0T+5Em+vFFablMBMqyVaks8RBZDRQz+a9tS+YZDTxfd0BOZ
+	4991ycg==
+X-Gm-Gg: Acq92OGXYPVKb5QftTA+A4OKZ0RJJLwz0lFCEAclyQ8gfJNhFAIKZMclY27gWqqjeQ0
+	se9zGl2CcrMSNuxhpJEokzlj5N0rBF/vtU2BDjloap/mVsHLRcMPKDQfkQRnInsPBwXV+fUZD4O
+	UoNfDh3fQb5WL9sKObSd9+pb8SNY4HbnxxYjIi/+JwVNu6lsLX9Y2QWNGLS09YYBF4y6suJDYVW
+	NSfc9aD87GyORfY/4ypMO65CxX+ZiRgVBkN8QhBrT/f+2XZASTNZKfyKjav3BspE0O+fxnomcrL
+	OzWhDI8iMFX6xIl+fjyJGJQU9GoFTwfLgPdDNHqw5QUgqKwMRzsysjSoTYJqC4VVTYmZZeZGJ7x
+	i7vKfYNvA/OeeGHN6DwTFm73hL+wHxb4yytOinYY57Hdu6ycqfVq2JejA5tK1L8jHTZjEseWJ7W
+	5o3cSvVjRQzq2U2iPTs0TYgWLjzIaAi6cX2xKYgkbPomC144vcr68w29BOgv0m
+X-Received: by 2002:a17:902:f78d:b0:2a7:87c2:fcde with SMTP id d9443c01a7336-2c405c8818bmr2171605ad.15.1781275825932;
+        Fri, 12 Jun 2026 07:50:25 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c432d8a039sm23848235ad.62.2026.06.12.07.50.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 07:50:25 -0700 (PDT)
+Date: Fri, 12 Jun 2026 14:50:18 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>, Matt Evans <mattev@meta.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Shivaji Kant <shivajikant@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>
+Subject: Re: [RFC PATCH 0/5] vfio/pci: Support ZONE_DEVICE-backed P2P
+ Registration
+Message-ID: <aiwcquSgAonkh_6L@google.com>
+References: <20260610151853.3608948-1-praan@google.com>
+ <20260610162848.GO2764304@ziepe.ca>
+ <airI0VIb563jHTcy@google.com>
+ <20260611221447.GH1066031@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Xfa5Co55 c=1 sm=1 tr=0 ts=6a2c1cab cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=mOJq8Y0DGHbhJsF8cz8A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDEzNCBTYWx0ZWRfXyAaEpsgXyTmh
- rDBHEZ5wwn2lppdBNAhxsdcoLgk+gAMpyUFmFFKU0SC8eEqXq1ONuWIj5UKhaSoGmrM3CieRZRE
- QvFz2jU4uFG3/Iv9ZIivV19JoZ3yUn7gl4yGrErnIWAGkhGtRTVQ1w9tHKYv/nwWWTHth+w7egq
- 6F9laM+E5V7tXXDUC2h36SvVrylb2sHSK0lZo65p73RDd0MDb3oqcij/ls62asmj12rfZnmasL6
- zng3L2MLwskuKWEmL8PaJXtGADgkWP8n0LxDvOMTLVLjQzTq2XLeEoUrOu1t42J8FJIL6HJNZXC
- lx/4ygF9R4shF01nT34DcpKCM91J9Rumjg6GdIjcGXMTR2UJt8ma/0xDMVWgEMs8sk8Bi8X/Htc
- lo48ITi2iigtrXYiomQtz+2gZ6sNkXBVkbF7V/pmxIIP0ZFME2i71Ndv4UdJAIVuqvNDWqd/h3W
- b+mRNZpj5R2uG4luj1A==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDEzNCBTYWx0ZWRfX3J0SZN8/Qtda
- oZDsItUf1D+G+kfLmWO0wSNbwqGE2R+qWpmD3EEWEjUqfeefRZfoeBsCGTYeKtrdjANRxMiJKnh
- t1MwfA4nIz91YMgakCJk23LW8m/xQ4w=
-X-Proofpoint-ORIG-GUID: USSBqugVIMzo3YqHtHIvtRg9HLh9wnbE
-X-Proofpoint-GUID: USSBqugVIMzo3YqHtHIvtRg9HLh9wnbE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-12_01,2026-06-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
- impostorscore=0 suspectscore=0 clxscore=1015 phishscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606120134
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260611221447.GH1066031@ziepe.ca>
 
-When setting ptes with set_ptes(), unconditionally clear the
-_PAGE_UNUSED flag.
+On Thu, Jun 11, 2026 at 07:14:47PM -0300, Jason Gunthorpe wrote:
+> On Thu, Jun 11, 2026 at 02:40:17PM +0000, Pranjal Shrivastava wrote:
+> > On Wed, Jun 10, 2026 at 01:28:48PM -0300, Jason Gunthorpe wrote:
+> > > On Wed, Jun 10, 2026 at 03:18:48PM +0000, Pranjal Shrivastava wrote:
+> > > 
+> > > > Users utilize the standard sysfs p2pmem/allocate interface for managing
+> > > > memory slices once a BAR is registered.
+> > > 
+> > > I'm shocked someone wants to use API, what are you expecting to do
+> > > with it??
+> > 
+> > Our primary use-case is PCIe BAR (DDR / HBM) -> NFS via P2PDMA while the
+> > PCIe device is managed by a user-space driver based on vfio-pci. While
+> > kernel drivers (e.g.drm) can register BARs with ZONE_DEVICE natively to
+> > enable this, VFIO currently lacks an equivalent mechanism.
+> 
+> I mean the weird sysfs mmap API. It is only useful if the device is
+> basically pure memory with no functionality. You can't even learn what
+> MMIO offset the returned allocation gives so it is almost completely
+> useless.
+> 
+> nvme could use it because CMB is pure memory and you reference it by
+> its MMIO address, but that doesn't apply to VFIO..
+> 
 
-The flag has only sense when the pte is being unmapped to be swapped,
-it will be set by KVM when unmapping unused pages.  Setting it in any
-other way does not make sense and can lead to guest corruption.
+Ack, I agree, sysfs allocation doesn't provide the offset-level control.
+I'll pivot entirely to the DMABUF approach.
 
-Fixes: c98175b7917f ("KVM: s390: Add gmap_helper_set_unused()")
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
----
- arch/s390/include/asm/pgtable.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> > > > An alternative implementation has been explored which integrates with the
+> > > > ongoing VFIO DMABUF-mmap refactor [1]. In that approach, rather than
+> > > > registering a BAR as a system-wide P2P provider, VFIO optionally
+> > > > allocates ZONE_DEVICE pages only for specifically exported DMABUFs via a
+> > > > new VFIO_DMA_BUF_FLAG_ALLOC_STRUCT_PAGES flag.
+> > > 
+> > > That's probably more sensible but you can't have a DMABUF mmap
+> > > actually install non-special memory. The native vfio mmap still can,
+> > > but not mmap on the dmabuf fd. That's still workable, just keep in
+> > > mind.
+> > 
+> > Ack. I guess, we could have a separate mmap path in case of BARs that are
+> > struct page backed which doesn't go through the dmabuf exporter.
+> 
+> The dmabuf export is perfectly fine, you just have to think very
+> carefully about the mmap path.
+> 
+> I suppose if you build the proper revocation fence for zone device
+> pages as part of the vfio implementation it would be OK for dmabuf
+> mmap to expose them as well since it would have the right lifecycle
+> model.
+> 
 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index 2c6cee8241e0..9174aa02b699 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1332,8 +1332,7 @@ pgprot_t pgprot_writecombine(pgprot_t prot);
- static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- 			      pte_t *ptep, pte_t entry, unsigned int nr)
- {
--	if (pte_present(entry))
--		entry = clear_pte_bit(entry, __pgprot(_PAGE_UNUSED));
-+	entry = clear_pte_bit(entry, __pgprot(_PAGE_UNUSED));
- 	page_table_check_ptes_set(mm, addr, ptep, entry, nr);
- 	for (;;) {
- 		set_pte(ptep, entry);
--- 
-2.54.0
+Ack, I'll move forward with adding a flag to request a ZONE_DEVICE-backed  
+DMABUF export (the 'Alternative Approach' mentioned in the cover letter).
 
+And yes, I agree we need to ensure the mmap path is handled carefully
+with the correct lifecycle in mind.
+
+> That's the tricky thing with zone_device, you have to be careful to
+> wait for all the page references to be put back at all the right
+> times.
+
+Yea, that's going to be tricky.. I'm thinking if we can have a zap model
+there somehow? If the device is gone / going through a reset, we can
+handle the refcounts accordingly?
+
+> 
+> Come to think of it, since the sysfs API cannot do that in the way
+> VFIO wants I actually think you can't use it..
+
+Ack. Baking this into the VFIO DMABUF allows us to enforce the right
+lifecycle.
+
+My plan for RFC v2 is to add a flag like VFIO_DMA_BUF_FLAG_ZONE_DEVICE
+to struct vfio_device_feature_dma_buf which allows the caller to opt-in
+to ZONE_DEVICE backing specifically for that export.
+
+Does this opt-in flag sound like a reasonable uAPI or do you see any
+concerns with this direction?
+
+Otherwise, as you noted, the lifecycle and the mmap path remain the main
+problems to solve.
+
+Thanks,
+Praan
