@@ -1,153 +1,91 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E473890E8
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 14:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5EF35E949
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 15:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781276221; cv=none; b=gtLCcyq19+FfFWOkkcz8+XW3X0o+TwH0hXkeHfc4ZB2XUKeoC2Hz7qUXzhmr12992UvATWUhHpzhH2ixBssbUccLhgJyoEPqrFrDgY8U6BrH4I0AEbvSZqoJTwIymCOnATerzUnpvSBrTJgH4W9aE+Fulaas3iEsKFrlGeKhx2w=
+	t=1781276447; cv=none; b=j6FLefBrw5nW+CpXz/FcRenKY1F+q1a3LZI6lxmx9EjTq0hHUNBT8a8NFt8GxIoZQXA6xLl2m1/5yHQUSc+MMz37yNQ8GvQGgH7+js3+pD04BBUwMu42zI3tGPH/EECkEcOsmF/HbjqPooA2IU9EYCyAaUkJ1SoDENdudftH/Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781276221; c=relaxed/simple;
-	bh=203X/VlYA8xGp7MXFq8vIcezkh0KgyndUoATdW/PFuI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QiEovBAz53u5gb5V96sxM6Codqi2Os6F1V5hnKNFrCQ7KNreiv5ZxerPbLH23SKvOucNbHEk3I3PJjgBz670abmuBxAJpiivHMnx8SGlMNylnRjPoIiVeAlE7DbfB8vq/eh96t4iiOZ5UegBuUUBfF4+mCxdIBp4ov/fjUvVDvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rLhT18yO; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781276447; c=relaxed/simple;
+	bh=hYSRYjMPMxI1GzWpT7bxOFdiqcUGpvzifQdkodIai14=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SzmFcg2Ogl+SULU17NmWKpTszHcgBK10wo3/EytSXVC6BFCsI0fNt7YBX43lptNu9McI1mQxvrXvzlN4e/p1tN4jzy459EFVBJ1sZejNb4PqsH27hlU0Dz9XYlSO37EpVxcEA4kTV9nqBP7b3cEAcjkCxhtq1hv+3unibrFUdRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FQaB69UP; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rLhT18yO"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d97415004so1902517a91.2
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 07:56:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781276209; x=1781881009; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZLV51C4RXNpxy1DRD8Tmh+6Z3/ST7Qn1kg/8EOZ6FU8=;
-        b=rLhT18yOxGCQYbJ/1DvlMuyxg2UiMEzPTBZU070vaKut36AeZqmOauG+XJVvohyjkP
-         TaQlPHsZJWd9Cuz/hUmlRGuRBb1Ry01CF/Ki8MYRZeyzbNn97YaNnCpFpgqZf9mo9w+X
-         3M7CdpeYJJwTjPMzX0+IrRHtxp7+6RBgwlzNjHJnLX+KzU5k3789A2bqLS/osH8IQrYr
-         CzRS/CTmLf2qWqC44Vr/3m0wYs4pEGKr7GUfiemNm+BUikKl8/P15eEn6VNFmJWvEhtZ
-         RNETxF9c/d6VG/ZSl4ea75zd12HJA8PkkjiaS+lfedDjLpf7PjuwmYT/gbXezDOOTtXY
-         n0zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781276209; x=1781881009;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZLV51C4RXNpxy1DRD8Tmh+6Z3/ST7Qn1kg/8EOZ6FU8=;
-        b=iS6VQbXdV4kTTc39bEeGd0fZQpbqNVACV83OG0KBuXvx8jcW9tLcZKz9M+uG+QLalO
-         IzqLTYv3ah9GCxJQOH2xyCxJJ2BJLSVij16E7eH3XN5n/hTOqgU055hFR+bkYRvgiDjD
-         DV9wJLOq6mXNAII0O97A2a/3rasWF0kmIF6j7dawOBB3gckxOd0XG+Csm4KjrkT7HpxC
-         bdKO0SohIbE/p8OxBj/Z00M+yNrdmLat/qEusXtyORm09P+2L8n0SM8RTlaxOnfx7dnc
-         Je0czJQcNE3okvY6NiCSi3UL0CQKfhNqlH+p3eBH9gsGKtrGo/e1AuKvZ4ntRVixxdzI
-         CuSw==
-X-Gm-Message-State: AOJu0YwB+6plhputXBB3th1PUDCB2lYcEqhBPevhg3JfkdPe7jRgL/CF
-	g0r1TZNroZio/owahb3ZyYrGZa8vNaPFnjs3ogG9miaHDwd3rpXgBJ3XOXPrvfnthIsvYcr40+w
-	x7sswOg==
-X-Received: from pjbmj16.prod.google.com ([2002:a17:90b:3690:b0:373:40c6:a8c9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:7309:b0:37c:18e0:90ed
- with SMTP id 98e67ed59e1d1-37c18e09300mr870508a91.4.1781276208528; Fri, 12
- Jun 2026 07:56:48 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 07:56:42 -0700
-In-Reply-To: <20260612145642.452392-1-seanjc@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FQaB69UP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781276444;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vnbWX1Uf9fJ5n9pZHlTP11jwn1zRPMTrBKBQXMgAwWk=;
+	b=FQaB69UPSIlxjlX6E6u+mcgjzeenemFJl19oGhwlOP86hsNWcHW2X+fM6gIQApMfeIAOB9
+	+fjsX+RrnpuYW1yJ+g06nTWgIp8e6FwBd02JNF9yG5+guFVWOThIN8YVbFn+Zk1dIrzD+/
+	M3ffzMclR26IOcreudlrapZKIKolK2Q=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-U72KixcsNn-blwR5AsKDsg-1; Fri,
+ 12 Jun 2026 11:00:43 -0400
+X-MC-Unique: U72KixcsNn-blwR5AsKDsg-1
+X-Mimecast-MFC-AGG-ID: U72KixcsNn-blwR5AsKDsg_1781276442
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1885A195609E;
+	Fri, 12 Jun 2026 15:00:42 +0000 (UTC)
+Received: from intellaptop.lan (unknown [10.22.65.135])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 15C3A1955BD4;
+	Fri, 12 Jun 2026 15:00:40 +0000 (UTC)
+From: Maxim Levitsky <mlevitsk@redhat.com>
+To: kvm@vger.kernel.org
+Cc: Shuah Khan <shuah@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Maxim Levitsky <mlevitsk@redhat.com>
+Subject: [PATCH] KVM: selftests: access_tracking_perf_test: bump number of NUMA nodes to 32
+Date: Fri, 12 Jun 2026 11:00:38 -0400
+Message-ID: <20260612150038.1277394-1-mlevitsk@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260612145642.452392-1-seanjc@google.com>
-X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260612145642.452392-3-seanjc@google.com>
-Subject: [PATCH v2 2/2] KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot L1's
- CR3 when EPT is disabled
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Add a dedicated field in "struct nested_vmx" to track L1's pre-VM-Enter CR3
-instead of using vmcs01.GUEST_CR3, which isn't anywhere near as safe as the
-comment purports it to be.  E.g. in addition to the warn_on_missed_cc bug
-(that was fixed by relocating the consistency check), if getting vmcs12
-pages (during actual nested VM-Entry) fails and EPT is disabled (in KVM),
-KVM will return control to userspace with vmcs01.GUEST_CR3 holding a guest-
-controlled value.
+It's rare to find a system that has more than 4 sockets,
+but a system can have more than 4 NUMA nodes if each socket
+exposes its chiplets as separate NUMA nodes.
 
-Alternatively, KVM could force a reload of vmcs01.GUEST_CR3 by resetting
-the MMU context in the error path, but as above, the safety of the vmcs01
-approach is extremely questionable, e.g. it took all of ~4 months for the
-code to break.
+In particular, our CI caught a failure in this test on a system with
+two sockets, each containing an 'AMD EPYC 7601 32-Core Processor'.
 
-Fixes: 671ddc700fd0 ("KVM: nVMX: Don't leak L1 MMIO regions to L2")
-Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Bump the limit to 32, just in case.
+
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
 ---
- arch/x86/kvm/vmx/nested.c | 21 ++++++++-------------
- arch/x86/kvm/vmx/vmx.h    |  7 +++++++
- 2 files changed, 15 insertions(+), 13 deletions(-)
+ tools/testing/selftests/kvm/include/lru_gen_util.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 199b866072c0..7a2251061bfa 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3669,19 +3669,14 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
- 				    &vmx->nested.pre_vmenter_ssp_tbl);
+diff --git a/tools/testing/selftests/kvm/include/lru_gen_util.h b/tools/testing/selftests/kvm/include/lru_gen_util.h
+index d32ff5d8ffd0..49c8139d398c 100644
+--- a/tools/testing/selftests/kvm/include/lru_gen_util.h
++++ b/tools/testing/selftests/kvm/include/lru_gen_util.h
+@@ -14,7 +14,7 @@
+ #include "test_util.h"
  
- 	/*
--	 * Overwrite vmcs01.GUEST_CR3 with L1's CR3 if EPT is disabled.  In the
--	 * event of a "late" VM-Fail, i.e. a VM-Fail detected by hardware but
--	 * not KVM, KVM must unwind its software model to the pre-VM-Entry host
--	 * state.  When EPT is disabled, GUEST_CR3 holds KVM's shadow CR3, not
--	 * L1's "real" CR3, which causes nested_vmx_restore_host_state() to
--	 * corrupt vcpu->arch.cr3.  Stuffing vmcs01.GUEST_CR3 results in the
--	 * unwind naturally setting arch.cr3 to the correct value.  Smashing
--	 * vmcs01.GUEST_CR3 is safe because nested VM-Exits, and the unwind,
--	 * reset KVM's MMU, i.e. vmcs01.GUEST_CR3 is guaranteed to be
--	 * overwritten with a shadow CR3 prior to re-entering L1.
-+	 * Stash L1's CR3, so that in the event of a "late" VM-Fail, i.e. a
-+	 * VM-Fail detected by hardware but not KVM, KVM can unwind its
-+	 * software model to the pre-VM-Entry host state.  When EPT is
-+	 * disabled, GUEST_CR3 holds KVM's shadow CR3, not L1's "real" CR3,
-+	 * and so simply restoring from vmcs01.GUEST_CR3 would corrupt
-+	 * vcpu->arch.cr3.
- 	 */
--	if (!enable_ept)
--		vmcs_writel(GUEST_CR3, vcpu->arch.cr3);
-+	vmx->nested.pre_vmenter_cr3 = kvm_read_cr3(vcpu);
+ #define MAX_NR_GENS 16 /* MAX_NR_GENS in include/linux/mmzone.h */
+-#define MAX_NR_NODES 4 /* Maximum number of nodes supported by the test */
++#define MAX_NR_NODES 32 /* Maximum number of nodes supported by the test */
  
- 	vmx_switch_vmcs(vcpu, &vmx->nested.vmcs02);
- 
-@@ -4993,7 +4988,7 @@ static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
- 	vmx_set_cr4(vcpu, vmcs_readl(CR4_READ_SHADOW));
- 
- 	nested_ept_uninit_mmu_context(vcpu);
--	vcpu->arch.cr3 = vmcs_readl(GUEST_CR3);
-+	vcpu->arch.cr3 = vmx->nested.pre_vmenter_cr3;
- 	kvm_register_mark_available(vcpu, VCPU_REG_CR3);
- 
- 	/*
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index de9de0d2016c..dc8517f15bc4 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -159,6 +159,13 @@ struct nested_vmx {
- 	bool has_preemption_timer_deadline;
- 	bool preemption_timer_expired;
- 
-+	/*
-+	 * Used to restore L1's CR3 if hardware detects a VM-Fail Consistency
-+	 * Check that KVM does not, in which case KVM needs to unwind CR3 back
-+	 * to its pre-VM-Enter state, NOT to vmcs01.HOST_CR3.
-+	 */
-+	unsigned long pre_vmenter_cr3;
-+
- 	/*
- 	 * Used to snapshot MSRs that are conditionally loaded on VM-Enter in
- 	 * order to propagate the guest's pre-VM-Enter value into vmcs02.  For
+ #define LRU_GEN_DEBUGFS "/sys/kernel/debug/lru_gen"
+ #define LRU_GEN_ENABLED_PATH "/sys/kernel/mm/lru_gen/enabled"
 -- 
-2.54.0.1136.gdb2ca164c4-goog
+2.49.0
 
