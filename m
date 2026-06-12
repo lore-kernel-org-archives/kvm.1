@@ -1,165 +1,108 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713223DDDB2
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 23:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781221562; cv=fail; b=lw4nwQ67ZWbxXOD2D8nKCgMPtfs73mT7kFnib4zTShcqt/ondAhKX6npyv0XDhN5dWXvjFjhf0gMW8sDAMjVF92UG9jnOUcGQypjH8JpRR0nYLn1xWHDlMALPypPDDQ5Elz5NdZRsdOIE8LDU+K7QmsEeYM3SOrlu5OFVZmBcqA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781221562; c=relaxed/simple;
-	bh=wM82CBZM/T/B4tXhf63AjAwD1f2VxLY1SoQyRorBE9I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CVkTZgoIESYK1EERC93b1KBUVaHOSGarTBMxPLlpxNR2LgLiVbTIrBXO8ceNvENHGyiKBosZtaQihbUlm5O3g/JExsRTNjHtwAWVGESOkyu3LyK6QqDcVeP7X5Io2TzESL+O5+MWZZPr76Y6wgN5XUIW2Sm+LAX9wDkFfC5tj+w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=C/D5WLO0; arc=fail smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855B6219FC
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 00:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781223002; cv=none; b=hV+VdSQrA7m3DXM7eE6ZEm/N+dYfhBmPMUR1Lr9o55XUY3fQyFcRNg/XP1wUv2kF42Ek4NwjBIKHzAB6oU1lenBsg6tOyFXrbjFIQd5+M9eDaTu+ubBj/wbWcxEG+efY81oFkKcdXzIViOzykHRtu56ZQo6Ah/VKt1K8097HR6Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781223002; c=relaxed/simple;
+	bh=7hjevxTS/pE67scrUmPnMNrAdATdqbszmG8o5umjaYI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=umH2spTgqMu3AI33/dW9XfOU6+MdXgP7s2bmZVh872+kiEzCNqQyX3/20eVssAE4+bympSzgeILewVVVFy6ZTeBsv02sutfho2gl9Zy4vh9tYL8zRg+hHDvdZEPRw18/n3eXN0+JbhNcxno5Myvfp8x8kjpJwSn9wuAsa7WH+q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uL5T/qgK; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="C/D5WLO0"
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BMALLd3301531
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 16:45:54 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=wM82CBZM/T/B4tXhf63AjAwD1f2VxLY1SoQyRorBE9I=; b=C/D5WLO0mmbA
-	Ud0JqF5B+NiRYogOXFY27nmYpBJEirm9IRllvwozXjgx8OIFD5ZV8faeqTA3bkPS
-	QQWZkebPb05AEUyMH8P16H5UX/fEBtNpeSpSliXT4oXjzyno6ILLCxFInu9/96z5
-	1EJj/KLr2YVNpfd/nUoJ5mhagh5nM7sa5TvPfzFUJ71l8C1p7W0tPydae6CxTcqV
-	tYwT6puC45+P6mMcS1ezBsA7Os1dhZQGhyxQyH3i47tvMD+VBY2zLGJ1L2IC/Muy
-	9fS62yBoiRy7/k9VAoZ+zz+a3YlY8q3mXa4pSOy8Nssbs4fwqZWQUMQUW7GP/2Hm
-	q3IRLexocQ==
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4eqe78hqge-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 16:45:54 -0700 (PDT)
-Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7e6fa8bba1dso944278a34.2
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 16:45:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781221553; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cvtonEYo/ctHpiO/wKGbc7KaZbA6ylA/0JG0ErbRy45uZEKGvwrjzkhoCy2S7HrgrN
-         7qsHwUFueMJVgyu/cPXNP2l97EB6HddfdVE2dxBXINTXWVLQ+qqejNW0ZESVLGJClYVf
-         sPlzPgq6adx4GgjaVOVqYYOMzGhU6lJB36MGY0K2v8Acs6+GR0jg2tLm1tjSe4JQuS1m
-         ywiFaUwllJy2IHUYas/V8GIv39YUTrhgBRw9Yy2+5HZjr926CQoRcoxvtWWsDppdlxWf
-         omT3beTX5ddIDwAlAW5KmpTf2JbkuiGjVealr1PRibQ3zBaa9M2aQeT9SEO8rtXuGYKg
-         Tzsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=1UnBtkB8A80kDFmam85CYV9Oy02dqYtmeBOXBtV1LT0=;
-        fh=ceOQv0OKn4VCvirBk1bskm1rxmCcbJvAbR7SVGx/2LQ=;
-        b=RLOtAYRrpe364lWSGEfCTyT4Ly1SywPEJ/g/by6IZw9c+QNHOPMcpS/Bq4XYYZ9rnv
-         DRIkSg1THzCWCtW7lOUXkP6hkY81cyF+fTJo4/DkP5eNqo2NIrV6g7DQcQIg0h/SCnfm
-         68X+8dSyZ308aA135QoIfPXrnRMw3Dmdb0E7ntZtGP1fcwdMWw9jiyQuITCuLDdLQRIe
-         e8ZZEFNP1MrsDu7JNMezKvgA93fQ1jF6F46+qO4oDYju+uFlaXHRjE7dlkldTbYbzeIq
-         ltaYJcVvZ30sl9LgreYxKDn1kuFvNfhUtwDrMRQl4JP6qKx3cTCFhPZjAsfZK/wjFphc
-         fXUw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uL5T/qgK"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bd04e4fe3dso8829165ad.3
+        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 17:10:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781223001; x=1781827801; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/eWL2vseWpXMlWKa6sGV7Bo7yoiqWdiiVjHrV5kk1ZU=;
+        b=uL5T/qgKCRot8Dt6ZXGteBUHVeI2rfFZmqXqdNFgXX5XUSUVOCRmsbLW4g+KyDKVuS
+         gikeBJ2s4o8nc9+9Itmt6Vlc378fJuipmTxqYLodgKG0l7inTGXIW0s9KI0Zuixtoq6L
+         RSYFQ1aTH+QynzyTd/axr5Hf7fYs/Rz7YOOmmOGl7tFI9ZUZDK1ekfLNczmEXH99XlTG
+         ofBf3VadUUJPw1H1CmYWHuT9xDWib1nMCEtgrv1yx2IUMpLkbKE0PXz2VCyXFATyeSuF
+         pESBIQIas/K0sEGd6znEo9Wkq2jLraj049pqygVHL6IaJrsubcEVj2JTfulxkhXE3N+w
+         z+qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781221553; x=1781826353;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1UnBtkB8A80kDFmam85CYV9Oy02dqYtmeBOXBtV1LT0=;
-        b=Q8X9cxcdGSju8j3AmszJhOpG1dmMT64SEsxkSBpIqETSw19iFNm7OWBln2aTTJndDL
-         i/Mmw8iowXTKRMUX25b4aCfwvc+/xJh6MQAo1HgOOfA1GhgMDA3B9QUD8b+aQ7BZjhHU
-         MvBJFXOG/9fJtWgfB/3YIMrGsuM46xqdyY0ml5wssj/trTiQRnM9ig1WRfdVuGkElIeA
-         /nUQ/N2abH0EwtfUyv/+Hz0v7r+kP0BQyeT/ofF2o79d3RLlpV//4mu13sT/nWjzCLdC
-         lp3kWqm9XEtlZDq4JOvFT5PkX/pAiH3HrEWLnyn4nwvDgYVyYzd+84gdvS9pL8hkLgDn
-         m0dw==
-X-Forwarded-Encrypted: i=1; AFNElJ8xtiGEv6ivKzbi7OT6VagVHEzGn7NbzFPtFJTA3voICHEiCdCG3NCPKeRYF+DuzQVjFWo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAP1tvb1mPY4pZ6yx47tfM662a3dVprSZbkztDvkyrg9uivp++
-	CsCMFz6wYqf8rau6JFR75WjnSs3kagF2Op2MBlwbcs/OaBVAVvc3uFPhlTW2dTjAvZAUKOWtcng
-	edjik6+21Y3A9wzABQSg7MBWsOnHsNAumrGoKLHqafuRs+c0C/WHx/6ENeELKx4p+irgugBDXRX
-	FP8KhXVJKcFLrJA0+hQBjkIKr0lsk=
-X-Gm-Gg: Acq92OGV+ICHdydUqysx4yj35cF02qFPXJzEkOjDAPwC+qYbeO8MOPzZyqUogGoitvI
-	qqJxrZbgbijCY49Kfou73OF6xcG9BZ+6AgbY9OAUkaSI2qBIx8Yiak+oSTddvHq72llzzlLmreC
-	/c0Y4XK7uFPUZFnzS521He2biXE3138Oju64+E3cwx1Dre7YlRwq5EBkcLz7zIzyK4/UGtu+OFe
-	ocDMzkPXqBu/SHIRWfWZg==
-X-Received: by 2002:a05:6830:6734:b0:7e7:571:114e with SMTP id 46e09a7af769-7e784871fe1mr152182a34.20.1781221553614;
-        Thu, 11 Jun 2026 16:45:53 -0700 (PDT)
-X-Received: by 2002:a05:6830:6734:b0:7e7:571:114e with SMTP id
- 46e09a7af769-7e784871fe1mr152160a34.20.1781221553208; Thu, 11 Jun 2026
- 16:45:53 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781223001; x=1781827801;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/eWL2vseWpXMlWKa6sGV7Bo7yoiqWdiiVjHrV5kk1ZU=;
+        b=jut1j369mZ5KIlMGiSxx8kIe1FZW7t69lG1vM1W/2yAjvCmor5e4kwC2H0WsTz0djR
+         YAafu5cg8usTkkv5R+oVpw7MqO3RAs38XlGDxV0X1W/Oogs22UsKw9O3H2NGa+Uu76ip
+         J0PkZ7LDKCTMhK3EkxRjAOdq4V9jG+Vzosg+/93rS+sMG33gHx1JrBnZ41JCI84Qn91D
+         6IVxIuuvJXX8n70w0/i38zqtkp/EZVO53b8HHljLqxpRa6HHxv6mx77pSYUxv6E/XJug
+         sB5J8O0KlZNPmT/dAnd7BFCZ4hPiHCHWtLl2ajugt1FW4ciiH0yMGvgEa/lcrWr5FoJP
+         qUsw==
+X-Forwarded-Encrypted: i=1; AFNElJ8do8XLc33JoqY8b22MjHEj3VJOrgNs6IPuaHc3+SEKpyTQeTqEbl/ofr+tPf21Ltdm/18=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yywwex/uZmwhGZPh+IUCjNsZbnKmZf/r9jgmaWPeS11Omh8uSKm
+	XUsYKdHYN7NLFDZMKU5VQ7dk9p3DN8+wsmmZT9We4YPsLz4YvAd2J0WbKlU5WfoeZiR2+F3fzhJ
+	pisjBCw==
+X-Received: from pltg6.prod.google.com ([2002:a17:902:6b46:b0:2c2:da80:b99])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:b0e:b0:2c3:5683:9acb
+ with SMTP id d9443c01a7336-2c412e2203emr6539415ad.32.1781223000763; Thu, 11
+ Jun 2026 17:10:00 -0700 (PDT)
+Date: Thu, 11 Jun 2026 17:10:00 -0700
+In-Reply-To: <sbub77galgn2zcecmeiznzi7nvgykby5lyqbebimfpd3wmsxgc@gxfth3taum3p>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260610193158.2614209-1-zhipingz@meta.com> <20260610193158.2614209-2-zhipingz@meta.com>
- <555912e9-818f-4906-a883-6f14e0790672@amd.com> <CAH3zFs2UeZfqm2M5tX5bBA6VRw2DjcyT45oGJJag5oT2WvKPJw@mail.gmail.com>
-In-Reply-To: <CAH3zFs2UeZfqm2M5tX5bBA6VRw2DjcyT45oGJJag5oT2WvKPJw@mail.gmail.com>
-From: Zhiping Zhang <zhipingz@meta.com>
-Date: Thu, 11 Jun 2026 16:45:41 -0700
-X-Gm-Features: AVVi8Cfn8yu04sl-GzuR397tWS6RCJ76opDbk_4XDQqGmuG536f9nq5T-lNoRa0
-Message-ID: <CAH3zFs21OjkJtYKSqV5rjnEqOU=221LQLY2qXo9pMb79kRSQgQ@mail.gmail.com>
-Subject: Re: [PATCH v7 1/5] net/mlx5: free mlx5_st_idx_data on final dealloc
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-        Yishai Hadas <yishaih@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: cOJ1Nv0SdmHxo2xpj1ZcAK00eitYeHw-
-X-Proofpoint-GUID: cOJ1Nv0SdmHxo2xpj1ZcAK00eitYeHw-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDIzOCBTYWx0ZWRfX0IckoyAMqG5Q
- ETpOUrtQJ/uweWS9V0PWIYT1/WAM7OgIjYka33dgG3ffko+hXiJnfGcpmDAp2z8W7GHoxxKJ9fE
- +RQzRzH2HVl3QpdYKHDVurBE6bAsv3Imf0nqNlpIgbyDmP950+s4c8dJpoF71jMu5saveOy4+Nb
- 2xBbl3xiy/LnqG5nAIta0cdxolruDoRSKDvlAC6dFZ6XDveWsPHOxugF+tqhkSm/2lGJcyb3if8
- XSD0+jjivYk3z2rZctFzML695b5GwJtkoVBCyGGm/llxIMGaFEsczOXilz1WvtWg7+sJ6ApS9BL
- rdUIuQiGamK1vD8pDZUucbqKVxzG1pcZqIM8BxIArDIFuQprwOMTck5DAgVg7jXX01MKqatxH03
- z+p8OzpqOVcPDSUirHfTOJkb/N8pdi+M3AO51I+p67YF01zNwzDRfLcRDHG4QHUjzHI0PhDuPed
- 5tmU5XvpfbkRtTAZxHw==
-X-Authority-Analysis: v=2.4 cv=L98theT8 c=1 sm=1 tr=0 ts=6a2b48b2 cx=c_pps
- a=z9lCQkyTxNhZyzAvolXo/A==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=JnKecZnUtZousrUlYMGU:22
- a=VabnemYjAAAA:8 a=zd2uoN0lAAAA:8 a=iziE14hG8lcdKKJlCxoA:9 a=QEXdDO2ut3YA:10
- a=EyFUmsFV_t8cxB2kMr4A:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDIzOCBTYWx0ZWRfX0w2aEam5Z1nC
- Y77T2JO30fmiSJd99S/J9xTV9UOsGD1xgS467GuRWL2Ef1tvyGpA4CI5ZDg0T0NCQwrGzHX8Ya/
- XdwdrTHGHbUn95sPh6QBxC2SjpEAk0g=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-11_05,2026-06-11_01,2025-10-01_01
+Mime-Version: 1.0
+References: <aimMWzAf5b3luM0b@v4bel> <wxamg6zqn2qmsci2fwfepbqou5vtgydqmonr67mu7b73nkakbe@zedss5vzeci3>
+ <aiqNPBQzoU9f8RwI@v4bel> <aiqueNUndQsbMNud@google.com> <airAthcKDZeDfzXS@v4bel>
+ <airS1G23atiuWdTl@google.com> <sbub77galgn2zcecmeiznzi7nvgykby5lyqbebimfpd3wmsxgc@gxfth3taum3p>
+Message-ID: <aitOWNQk8KfUdp5x@google.com>
+Subject: Re: [PATCH] KVM: SEV: Don't return a still-assigned gmem page to the host
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Hyunwoo Kim <imv4bel@gmail.com>, pbonzini@redhat.com, tglx@kernel.org, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jun 11, 2026 at 3:53=E2=80=AFPM Zhiping Zhang <zhipingz@meta.com> w=
-rote:
->
-> On Thu, Jun 11, 2026 at 12:47=E2=80=AFAM Christian K=C3=B6nig
-> <christian.koenig@amd.com> wrote:
-> >
-> > > >
-> > On 6/10/26 21:31, Zhiping Zhang wrote:
-> > > When the last reference to an ST table entry is dropped,
-> > > mlx5_st_dealloc_index() removed the entry from idx_xa but leaked the
-> > > backing mlx5_st_idx_data allocation. Repeated alloc/dealloc cycles
-> > > therefore accumulate one struct mlx5_st_idx_data per cycle.
-> > >
-> > > Free idx_data after the xa_erase() so the lifetime of the bookkeeping
-> > > struct matches the lifetime of the ST entry it tracks.
-> > >
-> > > Fixes: 888a7776f4fb ("net/mlx5: Add support for device steering tag")
-> > > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> >
-> > Since this is an obvious bug fix I think it shouldn't be part of this p=
-atch set and go upstream completely independent.
-> >
-> > Regards,
-> > Christian.
-> >
->
-> Sure, Michael replied that he has made a patch to fix it, i will rebase o=
-n top.
+On Thu, Jun 11, 2026, Michael Roth wrote:
+> On Thu, Jun 11, 2026 at 08:23:00AM -0700, Sean Christopherson wrote:
+> > On Thu, Jun 11, 2026, Hyunwoo Kim wrote:
+> > > and if that gfn is then hole-punched, a page that is still assigned to the
+> > > guest is returned to the host in sev_gmem_invalidate(), which looked like it
+> > > could lead to a host RMP PF, so I sent the patch.
+> > 
+> > Yeah, I suspect you're right.  But leaking the page doesn't fix the underlying
+> > problem, which is that it's possible to free a page that's being used as a VMSA.
+> > 
+> > We can't simply pin the page, because IIUC ->free_folio() is called when the page
+> > is removed from the filemap, not when the folio/page is free back to the allocator.
+> 
+> If free_folio() triggers, it would call into the
+> kvm_gmem_invalidate()/rmp_make_shared() path and clear VMSA bit, which I
+> think would cause a subsequent vcpu_run() to error cleanly. So that part
+> maybe isn't the issue, so much as the stale VMSA reference we have once
+> the hole-punched finished at folio actually gets freed to allocator..
 
-Never mind, it seems Michael's patch did not contain the fix, let me
-submit a separate set.
+What if the vCPU that's associated with the VMSA is actively running?  I assume
+trying to reclaim a VMSA page will fail with FAIL_INUSE or FAIL_PERMISSION;
+that's the scenario I'm worried about.
 
-Thanks,
-Zhiping
+> But KVM would never be accessing it directly while it's allocated for a
+> vCPU (it would be garbage on the host-side anyway), and I think the CPU
+> should only be able to write to it as part of VMRUN/exit, but those
+> should immediately fail since it's not a VMSA page any more at that
+> point.
+> 
+> It's sort of a precarious state, but I think we might hold up okay
+> there.. so I'm not sure we actually need the changes below, unless I'm
+> missing something.
+> 
+> ..but on the VM cleanup side, we'd end up doing a double-free in that
+> case, so we would need still need the elevated reference to handle that.
+
+I don't think so?  KVM doesn't free vmcb->control.vmsa_pa when tearing down the
+vCPU, KVM only explicitly frees svm->sev_es.vmsa.
