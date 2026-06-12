@@ -1,85 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E72538D3EC
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 21:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7656376A14;
+	Fri, 12 Jun 2026 21:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781299616; cv=none; b=ZsF/0vxkWIjwLrYWBf86PUmc5GMyEI2yVCaznvXCz0XcPgEFUI8s/iPkbgM1uw0Mo1Z/IgLFBfUVQnCioUQcKLfUOmURJwzJ/Iidy+KJrKLW+tlQKIwPSEAXcl+UWsm2xeIvkjN3ul3h8jIbnqjTOYUzitG94oSyD58Bu2UdQWM=
+	t=1781301520; cv=none; b=HJq8O9AvYMZjTdP8qSqXF9IXrtHXIhpMONblXzIR9U4P/2opgA7flwNxYWxX9e1HCP+CG+VR3FIfItwQtM4ndryL5MKGTumzHQYlrtF2TXon/n8bsXKXs7TDYljxK8yx2h/1yaIpDOMTORup0H6ghdeUrIpNNxU3VEgg4UpLYVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781299616; c=relaxed/simple;
-	bh=9+xEN1tkIIGm2RXMoQgvBBkgp/sLH10Ki/bUiUu+M6Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZA6G1cYbdA45MvRZzGPyLDautsTHG4bHcIlrW8v90zvXBOEGhPO+WqKqstDqQF1y4yDO+CVLrE3sldsYR/kCxV0Dmgk9LIGNmg3QmIlwmZbQQu+EeT1i32R7RXVI26exVjEokHvNxlr1ENLqNUv5a4c7au6aP/VJUqNjDBk5Tbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9PMCZdW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781301520; c=relaxed/simple;
+	bh=6CB+EACVj9i7vfpAtYZtfBKjpnd9/NJ72oOTAx0fK9o=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=QDtSk/07/6AgAQhMOLHCD7EUbqZ2kmfR1hrRFsOILRfhtETuRH/BEX5Dyali4WKzFG+IsS5H7Yrs15DjDpmenVU3/afl1Dt1wyGAY7Z+8BU6ICmbCqgF6wZDC7y9cUY7EYwi+cIlBUGllVg9T+aOSOeE1fdnlbo00Z4XBEErTmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=L/ITEdP3; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9PMCZdW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEBC1F000E9
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 21:26:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781299614;
-	bh=ioqGnK50uujx2lPpJanGqgidUKK04Gwcux3S6H17ENU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=J9PMCZdWYnIWC4waf4KiXCNHAiqh0dWXewPEHb86hqlTi5DxaYl2ZdZfGEaeyH/oX
-	 bBqBXMstUwYXRgAQk//qIFVEJbSzd23kbij8B1OmnlDvSlLlOqZbVc+Ha1qSO2Spmx
-	 ULgkrpzimITX2/CFO5WqDvoNicl20WRvexT1bqA+0QzyZtYeH/oA1KyVZeY0nsJlPB
-	 3gL7pQj9cPqA0XM5KSgaQ0Yrb81vUy74C66nCoR51cf42BoRSluAkyneJzsetxCKrD
-	 AsEaysav39YxiXUXMohIIZvuvzKzVP8kTBUuaAIyttI3IBrWAdWBT4P9lEinajjTDS
-	 oNVWDz4uF58pg==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bebbc325000so204970266b.0
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 14:26:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9nwgOi/thE0gUSodsM4jUGv0KeKKmX75+ASVU1jjRwXxJ8J8LhRpTtisKUknYHLZfxj5E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4a/3cyacs5Gstvfi9HqP7L9UZRhrtOTVOAMYxgfNlDrRf48f9
-	6iVDIlekqOkPHe6+fZ6djJ5T5NXfMBDlBWFmmx8KcENVdCeRJoZ+XQASYjTii9+hIwReqoJF4bl
-	ycI/2h3Jp5LD1NcRCPRK1WQgkLw1O9j8=
-X-Received: by 2002:a17:906:c150:b0:bef:36f3:7277 with SMTP id
- a640c23a62f3a-bff4a30f4efmr61297466b.23.1781299613910; Fri, 12 Jun 2026
- 14:26:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="L/ITEdP3"
+Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65CLeBWf081430;
+	Fri, 12 Jun 2026 14:58:32 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=s2048-2025-q2; bh=6O1wfCKi/6SypHiOen
+	6EorUS0jEKsCdWVuFiK5jSYzQ=; b=L/ITEdP3RqgpzMAFaMIqcNJ8J9VIttkxSg
+	hUE5n+M4jDRpYmybYQwBiLKo4bjTzdWkqtdjRCDMEkO8sedUp9jvhOJcWP8uVLz8
+	gxcjLtcBu2DKM8x+2uUtDDEBmSSwy1dqRW+sSBcYU7L8KTiDsXCy9XvUJWhXYeMZ
+	T7L1H2b/iGIkGBcnBh0rXV6stTTJCYbMsNUo2aYwvbxIkNRQooptrNOA5x5YD7F1
+	jbgkO/wjpWUqh6+l6drGEiv0Z0XFajrjdsyBl7F50AAD0XKcVz5QchNcUFZTgBCQ
+	pnoI70jIqklISxD6Ns3cvL4Xw3+h75xJ+G3Dhz1KSfbCfWmTexEw==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4erfxrm51a-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 12 Jun 2026 14:58:31 -0700 (PDT)
+Received: from devgpu015.cco6.facebook.com (2620:10d:c085:108::150d) by
+ mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.41; Fri, 12 Jun 2026 21:58:29 +0000
+From: Alex Mastro <amastro@fb.com>
+Date: Fri, 12 Jun 2026 14:58:18 -0700
+Subject: [PATCH] selftests/vfio: avoid VLAs
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260612185459.591892-1-seanjc@google.com>
-In-Reply-To: <20260612185459.591892-1-seanjc@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 12 Jun 2026 14:26:41 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPqN7x727_AWmbcYc_++t3+0JJyDLgzudPRXbm_rOx5yA@mail.gmail.com>
-X-Gm-Features: AVVi8Cf5VguZOqv7yJj9CSDxOYiBFdco50-jfHVXlFqVvIndTT2DC7KxkVAp8Ho
-Message-ID: <CAO9r8zPqN7x727_AWmbcYc_++t3+0JJyDLgzudPRXbm_rOx5yA@mail.gmail.com>
-Subject: Re: [PATCH] x86/apic: KVM: Use cpu_physical_id() to get APIC ID of
- running vCPU for AVIC
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Kai Huang <kai.huang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20260612-scratch-amastro-vfio-selftests-avoid-vlas-v1-1-ba3acb635f0a@fb.com>
+X-B4-Tracking: v=1; b=H4sIAPmALGoC/yXNwQrCMAwA0F8pOS+wtTiwvyIe0jZ1kblKU4sw9
+ u+iHt/p7aBchRW82aFyF5WygTfTYCAutN0YJYE3YEc7j/NkUWOlFhekB2mrBXuWgsprbqxNkXq
+ RhH0lRXc+cXApBkcBBgPPylnev+ty/Vtf4c6xfQM4jg/I04QtjQAAAA==
+X-Change-ID: 20260612-scratch-amastro-vfio-selftests-avoid-vlas-395eb3dcb3ab
+To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
+        Shuah Khan <shuah@kernel.org>,
+        Raghavendra Rao Ananta <rananta@google.com>,
+        Vipin Sharma <vipinsh@google.com>
+CC: <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+        "Alex
+ Mastro" <amastro@fb.com>
+X-Mailer: b4 0.15.2
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDIwOCBTYWx0ZWRfX9Yju4hek7PKn
+ aDaj8P6BA/cDrAZXu8FQZtpukNQLL4Uu0uZ2bHnqu9RvhFa6iq4MTlmLZ1pZC32d1mELTQRfBWs
+ NtvAKM4IKXahMD9LlalRvTdwQyCi0GE=
+X-Authority-Analysis: v=2.4 cv=euTvCIpX c=1 sm=1 tr=0 ts=6a2c8107 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=JnKecZnUtZousrUlYMGU:22 a=FOH2dFAWAAAA:8
+ a=tIFWguhhewu6Um0Ueq0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 9oxPIB0vE2wkaog8CyG_osSkYsHeJeDp
+X-Proofpoint-GUID: 9oxPIB0vE2wkaog8CyG_osSkYsHeJeDp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDIwOCBTYWx0ZWRfX+M+w+aD2SYhm
+ IK4KA5LoAJbyRM9T68DrmxEZ+4bPOuTgfqI3NUKq0e9hD+G6r4yEnWV6+ek7VfUf4cAYBxs5EO+
+ nNjOgyuDOFLBxP9yi7UWZ04xx66nQL1HOc904ISvOVoV8hqyU5L/QwNrROIcCkkWK7VN3EI4cuI
+ iA7tKpBMGAj9r1jVjNRazpjc3oYhlN6wv8Rj4eIrY0Fl02aNtjDnznBfUbq7huk576QgDVRPaq1
+ BzUuPq1iKatDGzlt1sWmPe+2zbS2TrSjDVyi3OGk0kmUtt1RAU7Q2XDCrxobW063SOdydw1gkKe
+ 7AsJEbZTUhnWlJaRO3aEuHz7YrILW5PWJYHpzA4L+55a5YIjR0hecG6uhml1EdFiBG93KKfuX7I
+ 7BRaiBQMB5iaKkD8MJ6jq/wWDoGljEGVwPQVmiFO/pKIgdpyX4xJAuhMkcBx8S7d9ihBZTpnfTm
+ kUnX4vHu9JB1ycROx9Q==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-12_03,2026-06-12_03,2025-10-01_01
 
-On Fri, Jun 12, 2026 at 11:55=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> Use cpu_physical_id() instead of default_cpu_present_to_apicid() when
-> getting the APIC ID of the pCPU on which a vCPU is running/loaded, as the
-> kernel has gone way off the rails if a vCPU is loaded on a pCPU that has
-> been physically removed from the system.  Even if the impossible were to
-> happen, the absolutely worst case scenario is that hardware will ring the
-> AIVC doorbell on the wrong pCPU, i.e. a severely broken system will
-> experience mild performance issues.
->
-> Kill off KVM's superfluous kvm_cpu_get_apicid() wrapper along with the
-> for-KVM export of default_cpu_present_to_apicid(), as they existed purely
-> for the wonky AVIC usage.
->
-> Cc: Kai Huang <kai.huang@intel.com>
-> Cc: Yosry Ahmed <yosry@kernel.org>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Allocate VFIO ioctl requests dynamically instead of using VLAs. GCC 11.5.0
+rejects initialized VLAs with:
 
-Took me a bit to realize cpu_physical_id() is the APIC ID, but yeah
-this looks to be equivalent as long as the CPU is present, which as
-you described should be true as long as we didn't screw up.
-cpu_physical_id() seems to also be used by VMX anyway.
+  error: variable-sized object may not be initialized
 
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+The replaced stack u8 arrays also do not guarantee native struct alignment
+for the aliased pointers.
+
+Fixes: 19faf6fd969c ("vfio: selftests: Add a helper library for VFIO selftests")
+Fixes: 20face8c75ff ("vfio: selftests: Add helper to set/override a vf_token")
+Signed-off-by: Alex Mastro <amastro@fb.com>
+Assisted-by: Codex:gpt-5.5-high
+---
+ tools/testing/selftests/vfio/lib/vfio_pci_device.c | 28 +++++++++++++---------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
+
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+index 94dc5fcecbeb..0b437435cce1 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+@@ -30,13 +30,12 @@
+ static void vfio_pci_irq_set(struct vfio_pci_device *device,
+ 			     u32 index, u32 vector, u32 count, int *fds)
+ {
+-	u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count];
+-	struct vfio_irq_set *irq = (void *)&buf;
+-	int *irq_fds = (void *)&irq->data;
++	struct vfio_irq_set *irq;
++	size_t irq_size = sizeof(*irq) + sizeof(int) * count;
+ 
+-	memset(buf, 0, sizeof(buf));
+-
+-	irq->argsz = sizeof(buf);
++	irq = calloc(1, irq_size);
++	VFIO_ASSERT_NOT_NULL(irq);
++	irq->argsz = irq_size;
+ 	irq->flags = VFIO_IRQ_SET_ACTION_TRIGGER;
+ 	irq->index = index;
+ 	irq->start = vector;
+@@ -44,12 +43,13 @@ static void vfio_pci_irq_set(struct vfio_pci_device *device,
+ 
+ 	if (count) {
+ 		irq->flags |= VFIO_IRQ_SET_DATA_EVENTFD;
+-		memcpy(irq_fds, fds, sizeof(int) * count);
++		memcpy(irq->data, fds, sizeof(int) * count);
+ 	} else {
+ 		irq->flags |= VFIO_IRQ_SET_DATA_NONE;
+ 	}
+ 
+ 	ioctl_assert(device->fd, VFIO_DEVICE_SET_IRQS, irq);
++	free(irq);
+ }
+ 
+ void vfio_pci_irq_trigger(struct vfio_pci_device *device, u32 index, u32 vector)
+@@ -118,15 +118,21 @@ static void vfio_pci_irq_get(struct vfio_pci_device *device, u32 index,
+ static int vfio_device_feature_ioctl(int fd, u32 flags, void *data,
+ 				     size_t data_size)
+ {
+-	u8 buffer[sizeof(struct vfio_device_feature) + data_size] = {};
+-	struct vfio_device_feature *feature = (void *)buffer;
++	struct vfio_device_feature *feature;
++	size_t feature_size = sizeof(*feature) + data_size;
++	int ret;
+ 
++	feature = calloc(1, feature_size);
++	VFIO_ASSERT_NOT_NULL(feature);
+ 	memcpy(feature->data, data, data_size);
+ 
+-	feature->argsz = sizeof(buffer);
++	feature->argsz = feature_size;
+ 	feature->flags = flags;
+ 
+-	return ioctl(fd, VFIO_DEVICE_FEATURE, feature);
++	ret = ioctl(fd, VFIO_DEVICE_FEATURE, feature);
++	free(feature);
++
++	return ret;
+ }
+ 
+ static void vfio_device_feature_set(int fd, u16 feature, void *data, size_t data_size)
+
+---
+base-commit: a26b499b757cfc8bbff1088bb1b844639e250893
+change-id: 20260612-scratch-amastro-vfio-selftests-avoid-vlas-395eb3dcb3ab
+
+Best regards,
+--  
+Alex Mastro <amastro@fb.com>
+
