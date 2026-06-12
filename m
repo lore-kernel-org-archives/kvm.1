@@ -1,259 +1,185 @@
-Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F712010EE
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 07:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607002DC76A
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 07:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781248937; cv=none; b=b/MMtFP0pYVGiI4CKeYaLbwktjsLwxLEPol/b7Zq8hD0BKXMDmbbKA8g/R6iqAwGPVmpSacF0sSIZuAwq1HHCYC92th2sTxi2mUyQTpQLEuwCuHJDVFskci/SrU6CNbFUR4CU05pQ/Z9Y1Fh+/VTHz97Bxn+fDD5NAEf0JIzkR4=
+	t=1781249297; cv=none; b=WtPUC5A6omOfTHw9gJWOBH+K1yJHMWQJGugVBFCO1he4+mF7KtczR8NQ7oBog2ndcD2yU4WkH0/rrwaKXH1iwb206aUr1VrLso+aaK5wW99ZiOdhoE0pTuL6YQqWR+4vnbUOqkWHyGIrxTefW3hhXVRlzGi2tel4+h5omLJvaA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781248937; c=relaxed/simple;
-	bh=n3EU1azuIOaK4Vr2f8khEVFcyxt+8T9+xoTt4ZOzPUc=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gQI09COy1jkJCgspSmWciSUuLKLbuS7PnAt16JBeHNPMdPPB48nXVrEGSKZPz3FXZv2HmXY586Ku26ONPQKMZMvGdNmduBPr1AeNtqZE7C5iOeWTpjR3nquw/DhSSF7r/nwdgQ+fLIPGRnozsDDhFiNvDXH09/A+oOmZrrFPe3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=buqMDYJG; arc=none smtp.client-ip=162.62.57.252
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1781249297; c=relaxed/simple;
+	bh=7LtrBUufN12HOdgfUihxOvi1IPdydKftCfUhExQLXvI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:Cc:To:
+	 References:In-Reply-To; b=sAKnKLCdtG3+DEguJAD28oUKouP1POdbBJk5lViKdj4MWldQhqkZqXlnQlhREjzPgQenzDl5tIoNCU1KxQZNEFg8CtNZkCuw/CeKwaxWgp84Q1d9a8PdY4h2en63M+XQAH73pIvtV9DaHUkW91xY1VeJdhZH+2AOhStDYw6cspo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GGaBCx3B; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="buqMDYJG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1781248929; bh=eBBQdcpwmqW7JhNyZeKOCKeL/XZl3ad5N/e3MLhuhMk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=buqMDYJGEoPDFr5M7L8EDqtNkOp8rukgbB5zMRWP43IKuVkPlDSx2BUaqz2yYnjbE
-	 CowY+B+SPsZ6GMbqCLC8rnnuo3NotST6GmNKcg+HTRWIgSUYg73eplRj7kFoA5PThS
-	 maHf1do5mgmIOkMvjWQLJ2pHWDlcvUqV2as0xGkE=
-Received: from zh-pc ([116.128.244.169])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id 586994F7; Fri, 12 Jun 2026 15:22:06 +0800
-X-QQ-mid: xmsmtpt1781248926t7z7h17wc
-Message-ID: <tencent_2FF346E60B5BC42CCE680DF06BE113A13D05@qq.com>
-X-QQ-XMAILINFO: MZtEYADUG4AgzMvv90yjS4L9vF1ljMkmfkCQEZzZcI6Vetd4OZO818p22PmOho
-	 IgzMcJPf2kJTEovmakMFH8byWLRPlaIl1Kk8jRt3ejbUOZH2crsCu2Aqn5F4uDUpqc/jQN7UwOPi
-	 +SkFEx1UUtR/Odvu3PwtXefuYwrM7t6YrxwOZSeJUgMCFv1Fiw+lWaZwheHpa3cuv4mT4rmfdbyJ
-	 U9XJ0kPXt39HIbQRX8Le1aK9RqOFJyLrpncLnke34DB/YyzF2BvFxo5GbC04uAg7zH/6XpDyZN+9
-	 V3BP7wwPn5I7ekvtZhRT1d6BvadDiy2hv0MOkbX7h/TxpIkL3mIN7icJOylL9E/6/mlBYkxYZr2g
-	 c6D38qcIyfIUpjodoB2Mdyd9ZQG+KIAm1zL4DwteHv2hk/l/KTDcMPPIQYMKagIhsc/Rt6ARdc7w
-	 Dp/ZfG4QuYYj7aBtOjiL37gOVqmxtS7Wzlds0cfmnI6TuPsskcJQ3PND9RYxahg1LdBf5Kq86Q8G
-	 5K4yCUJUpjyyI/Kk+6YClyffTtqjC0uTtgu2WnbrCgPzaQARCNpoSJjSF0o8ZMx+8hlcF56y7AEw
-	 Nwvtau65FT4+ebXNQ9IspUM36pSf1MbixZ8UrXEm8IW5dtwoJIUILBr2kIvqkSY5RQP0YT8nhQnQ
-	 lNveMAg8DYvTuf60pIP5+mEJiIBESs9+tjvLh6zcGv+Pe+X6xEdcoGe1neHTnReW6v5ATPNscs7Z
-	 oIZ1BEiJ3kbh5SNBBCHJFynvbiRh3XyrdA3HRzEhkMoh1z4BKH44yTHtpmgOVMPXpAFUPt1GaYnX
-	 2qh4EaAKwEG0hpOppWXBBf0PPinN06XYFzHBQzCANEds+IpTEyFNhn2CzqSqaHaOooI5Bk2HFhCq
-	 YeIxxzFPn0uFun1xjm21EdIK0onIKLK04emd8UXLLoi5uJ3WhJFyTB3lW93Xsw6O4BYrdqffQwc/
-	 +lb9ex2AEespYGY6vvNFvjpNYtVie/g5F2+X6oF3rhVw2UKhprq2MKrhXc4ihlPnx4nAt/PMjkVa
-	 zWbnBZP43Gyrz5eVR+P/XzIlpVN1a3GW7i5jT93w==
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-Date: Fri, 12 Jun 2026 15:22:06 +0800
-From: zhanghao <76824143@qq.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	Ackerley Tng <ackerleytng@google.com>,
-	Lisa Wang <wyihan@google.com>, David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH] KVM: guest_memfd: Fix ABBA deadlock in error_remove_folio
-X-OQ-MSGID: <20260612072206.GA104600@zh-pc>
-References: <tencent_4B051B84CDCC0D1964EC00337AA32E40DC07@qq.com>
- <airDo5qNxn-gCsKY@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GGaBCx3B"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65C36auI722204;
+	Fri, 12 Jun 2026 07:28:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=5PNplx
+	zw5Wg95uprdyIqSedFmRJXKOl5v13DzIoJJ1E=; b=GGaBCx3B9gKX13kflhT6DS
+	Myo0uf26mUR+u/IrrHqlDNbgld9rh0KmUSL6i12H23XVNoQ5WMXGqwsZwU5ncpVa
+	hzzsnR4AVMLPG5nrMDc5upmKwzDLzSVFjO1LPWPfauZrjMXU3pgFkSTCnY/s1T9W
+	Qel5ZO6uoKqoKZvnemsKcA9z/t3GdZMYiYOjFbprW9ApUIekW8b3AUMendtuoihC
+	qB9LUma6V80L2eo6P9vfeCDiGUg+CyRdPTLUeL9JQJJTp78Yo99feA4xZSWZsPpm
+	ebtx/YBjQprCgiSDde8wjQvwcPX7Z/v6mMwdUKZBrYeW972vTe9mTJLUXto7xabg
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8dfsdh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jun 2026 07:28:07 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65C7JaDO023414;
+	Fri, 12 Jun 2026 07:28:06 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eqe08xsxe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jun 2026 07:28:05 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65C7S2Om44368346
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Jun 2026 07:28:02 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1AF5B20043;
+	Fri, 12 Jun 2026 07:28:02 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DDD4A20040;
+	Fri, 12 Jun 2026 07:28:01 +0000 (GMT)
+Received: from darkmoore (unknown [9.111.35.149])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 12 Jun 2026 07:28:01 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <airDo5qNxn-gCsKY@google.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 12 Jun 2026 09:22:00 +0200
+Message-Id: <DJ6W1L5VXQSI.29PF1MVLB88XE@linux.ibm.com>
+Subject: Re: [PATCH v2 0/2] s390x/kvm: Add ASTFLE facility 2 for nested
+ virtualization
+From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: <qemu-devel@nongnu.org>, "Halil Pasic" <pasic@linux.ibm.com>,
+        "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>,
+        "Eric Farman"
+ <farman@linux.ibm.com>,
+        "Matthew Rosato" <mjrosato@linux.ibm.com>,
+        "Richard
+ Henderson" <richard.henderson@linaro.org>,
+        "Ilya Leoshkevich"
+ <iii@linux.ibm.com>,
+        "Thomas Huth" <thuth@redhat.com>,
+        "Michael S. Tsirkin"
+ <mst@redhat.com>,
+        "Paolo Bonzini" <pbonzini@redhat.com>,
+        "Hendrik
+ Brueckner" <brueckner@linux.ibm.com>, <kvm@vger.kernel.org>,
+        "Nina
+ Schoetterl-Glausch" <nsg@linux.ibm.com>
+To: "Cornelia Huck" <cohuck@redhat.com>,
+        "Christoph Schlameuss"
+ <schlameuss@linux.ibm.com>,
+        <qemu-s390x@nongnu.org>
+X-Mailer: aerc 0.21.0
+References: <20260324-astfleie2-v2-0-13008712da00@linux.ibm.com>
+ <8733zdniy1.fsf@redhat.com>
+In-Reply-To: <8733zdniy1.fsf@redhat.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEyMDA2MiBTYWx0ZWRfX06VeWoenzzTY
+ Gym3qTAiHsI8MU8ToFUMHNVXVzfABpQCqHc0cb0r1cgyBFQ70nk2XrMomVFdc09pVLM1fYpZELP
+ bfgR9YYrJKZGe6pmAY9TVEvfMuzgM8M=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDA2MiBTYWx0ZWRfX0mg6t1NFgaaj
+ iadDo3ecOs44o2VjuvTLOFs8EQ8XgTlFUDRi1N+4qmSYdcRT8mVf1glLZFeUG85IUdJXDsnA6eW
+ kBaByT9om7grzBl5VER7sBBUodiriBDmNPfawT0V6zyo/qpisuDmAj9yL6KqXIqXDZl1IvhiEAr
+ zkPcDIIkiXE8LI9F1aku4f7b37H/tVAS/C6iUWam1VNOtGBurn2G3yRTcNbKVYFyVOKU8locSKt
+ TNabJANOP4w7NE0DPmxKDU6/gDhpBSADUW1KsSqdnZqXyYwL1fASaihgfekmAr1TUfc+3PR8cfD
+ TBI4PwJ+fvTopn/MYVcdLzwKhFePtx/PhJUg8q432I0ooFjCk8ycSBWgWgYNw8v2iywaO93AV/Z
+ GVyELotLWvdhtHsjB4XCaEzZ8b+D5B4tKQvWTslcryxLgoPwulnvpJocB250FBSijB+/awmv9TY
+ XKR0ViI42SLvV1+AkLQ==
+X-Proofpoint-ORIG-GUID: KJ6vgai-w2ziG9LCAVeOImRPLz8FBnTe
+X-Authority-Analysis: v=2.4 cv=GIM41ONK c=1 sm=1 tr=0 ts=6a2bb507 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=69wJf7TsAAAA:8 a=KKAkSRfTAAAA:8 a=20KFwNOVAAAA:8 a=VwQbUJbxAAAA:8
+ a=GtqPb0kPmu2bT9b1aAkA:9 a=QEXdDO2ut3YA:10 a=Fg1AiH1G6rFz08G2ETeA:22
+ a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: KJ6vgai-w2ziG9LCAVeOImRPLz8FBnTe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-12_01,2026-06-11_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 suspectscore=0 impostorscore=0 spamscore=0 phishscore=0
+ adultscore=0 lowpriorityscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606120062
 
-On Thu, Jun 11, 2026, Sean Christopherson wrote:
-> +Lisa, David, and Ackerley
-> 
-> On Thu, Jun 11, 2026, zhanghao wrote:
-> > >From b164e59d4068226dfb33babe49292c7a685cacd9 Mon Sep 17 00:00:00 2001
-> > From: Hao Zhang <zhanghao1@kylinos.cn>
-> > Date: Thu, 11 Jun 2026 15:27:27 +0800
-> > 
-> > memory_failure() calls ->error_remove_folio() while holding the global
-> > mf_mutex and the poisoned folio lock. guest_memfd's implementation takes
-> > mapping.invalidate_lock for read before zapping KVM mappings.
-> > 
-> > That lock ordering can deadlock against guest_memfd punch-hole, which
-> > holds mapping.invalidate_lock for write and can then wait on the same
-> > folio lock in truncate_inode_pages_range().
-> 
-> I assume this was found by lockdep?  If so, please provide a lockdep splat so that
-> it's easier to understand exactly what all is problematic.
-> 
-It was reported by syzkaller as a hung-task report, not as a lockdep
-"possible circular locking dependency" splat.  The relevant part is:
-
-  Soft offlining pfn 0x29435 at process virtual address 0x200000841000
-  Injecting memory failure for pfn 0x678c7 at process virtual address 0x200000ffe000
-
-  INFO: task syz.5.14516:73007 blocked for more than 122 seconds.
-  task:syz.5.14516 state:D pid:73007
-  Call Trace:
-    folio_wait_bit_common+0x339/0x890 mm/filemap.c:1323
-    __folio_lock+0x23/0x40 mm/filemap.c:1704
-    folio_lock include/linux/pagemap.h:1170 [inline]
-    truncate_inode_pages_range+0xae7/0xc40 mm/truncate.c:458
-    kvm_gmem_punch_hole virt/kvm/guest_memfd.c:243 [inline]
-    kvm_gmem_fallocate+0x4f0/0x8c0 virt/kvm/guest_memfd.c:314
-    vfs_fallocate+0x4a1/0xfc0 fs/open.c:340
-    madvise_remove mm/madvise.c:1044 [inline]
-    madvise_vma_behavior+0x2b2b/0x2d50 mm/madvise.c:1358
-    do_madvise+0x162/0x230 mm/madvise.c:2028
-
-  INFO: task syz.5.14516:73023 blocked for more than 123 seconds.
-  task:syz.5.14516 state:D pid:73023
-  Call Trace:
-    rwsem_down_read_slowpath+0x661/0xd30 kernel/locking/rwsem.c:1086
-    down_read+0xed/0x4a0 kernel/locking/rwsem.c:1539
-    filemap_invalidate_lock_shared include/linux/fs.h:1093 [inline]
-    kvm_gmem_error_folio+0x93/0x530 virt/kvm/guest_memfd.c:502
-    truncate_error_folio+0x80/0x130 mm/memory-failure.c:941
-    me_pagecache_clean+0xf2/0x1f0 mm/memory-failure.c:1063
-    me_pagecache_dirty+0x113/0x1e0 mm/memory-failure.c:1094
-    identify_page_state+0x167/0x230 mm/memory-failure.c:1661
-    memory_failure+0x1612/0x26e0 mm/memory-failure.c:2551
-    madvise_inject_error mm/madvise.c:1487 [inline]
-    madvise_do_behavior+0x4ae/0x8a0 mm/madvise.c:1925
-    do_madvise+0x162/0x230 mm/madvise.c:2028
-
-  INFO: task syz.5.14516:73023 <reader> blocked on an rw-semaphore
-  likely owned by task syz.5.14516:73007 <writer>
-
-So the observed dependency is:
-
-  memory_failure()/kvm_gmem_error_folio()
-    holds the poisoned folio lock
-    waits for mapping->invalidate_lock for read
-
-  MADV_REMOVE/kvm_gmem_punch_hole()
-    holds mapping->invalidate_lock for write
-    waits for the same folio lock in truncate_inode_pages_range()
-
-> > Use a trylock in kvm_gmem_error_folio(). If mapping.invalidate_lock is
-> > contended, fail recovery instead of blocking in the memory-failure path,
-> > and instead of reporting MF_DELAYED without actually zapping KVM mappings.
-> > 
-> > Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
-> > Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
-> > ---
-> >  virt/kvm/guest_memfd.c | 11 ++++++++++-
-> >  1 file changed, 10 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index 69c9d6d546b2..9417be3049cf 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -499,7 +499,16 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
-> >  {
-> >  	pgoff_t start, end;
-> >  
-> > -	filemap_invalidate_lock_shared(mapping);
-> > +	/*
-> > +	 * memory_failure() holds mf_mutex globally.  
-> 
-> Why does mf_mutex matter? 
+On Wed May 27, 2026 at 2:19 PM CEST, Cornelia Huck wrote:
+> On Tue, Mar 24 2026, Christoph Schlameuss <schlameuss@linux.ibm.com> wrot=
+e:
 >
-It doesn't matter for the actual deadlock.  The relevant dependency is between
-the poisoned folio lock and mapping->invalidate_lock.  I mentioned mf_mutex only
-because memory_failure() serializes recovery globally, but it is not needed to
-explain the ABBA deadlock.
-
-> > We must not block
-> > +	 * on filemap_invalidate_lock here, as it can be held exclusive
-> > +	 * by kvm_gmem_fallocate() (MADV_REMOVE/FALLOC_FL_PUNCH_HOLE
-> > +	 * path), creating an ABBA deadlock with the poisoned folio lock.
-> 
-> It's not just kvm_gmem_fallocate() that's problematic.  Due to the fairness of
-> r/w semaphores, waiting writers block future readers, and so any path that takes
-> a folio lock inside of mapping->invalidate_lock will effectively create the same
-> scenario.
+>> Update the kernel headers to get access to
+>> KVM_S390_VM_CPU_FEAT_ASTFLEIE2 and allow passing the feature through to
+>> guest on IBM z16 onwards.
+>>
+>> Cc: qemu-devel@nongnu.org
+>> Cc: Halil Pasic <pasic@linux.ibm.com>
+>> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+>> Cc: Eric Farman <farman@linux.ibm.com>
+>> Cc: Matthew Rosato <mjrosato@linux.ibm.com>
+>> Cc: Richard Henderson <richard.henderson@linaro.org>
+>> Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+>> Cc: Thomas Huth <thuth@redhat.com>
+>> Cc: Michael S. Tsirkin <mst@redhat.com>
+>> Cc: Cornelia Huck <cohuck@redhat.com>
+>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>> Cc: Hendrik Brueckner <brueckner@linux.ibm.com>
+>> To: qemu-s390x@nongnu.org
+>> Cc: kvm@vger.kernel.org
+>>
+>> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+>> ---
+>> Changes in v2:
+>> - Isolate the linux-header update into its own commit (thanks Thomas)
+>> - Correct naming of the feature (thanks Hendrik)
+>> - Add S390_FEAT_SIE_ASTFLEIE2 to full_GEN16_GA1 only as it depends on
+>>   SIEF2 (thanks Christian)
+>>
+>> ---
+>> Christoph Schlameuss (2):
+>>       linux-headers: Update to Linux v7.x with KVM_S390_VM_CPU_FEAT_ASTF=
+LEIE2
+>>       s390x/kvm: Add ASTFLE facility 2 for nested virtualization
+>>
+>>  hw/s390x/sclp.c                     | 2 ++
+>>  include/hw/s390x/sclp.h             | 4 +++-
+>>  linux-headers/asm-s390/kvm.h        | 1 +
+>>  target/s390x/cpu_features.c         | 3 +++
+>>  target/s390x/cpu_features.h         | 1 +
+>>  target/s390x/cpu_features_def.h.inc | 3 +++
+>>  target/s390x/cpu_models.c           | 2 ++
+>>  target/s390x/gen-features.c         | 1 +
+>>  target/s390x/kvm/kvm.c              | 1 +
+>>  9 files changed, 17 insertions(+), 1 deletion(-)
+>> ---
+>> base-commit: fa4b2e31e649ba6fdb3eb2dd43952aad4a3bd675
+>> change-id: 20260209-astfleie2-85eec9fd9213
+>>
+>> Best regards,
+>> --=20
+>> Christoph Schlameuss <schlameuss@linux.ibm.com>
 >
-Agreed.  The issue is not specific to kvm_gmem_fallocate(), it is any path that
-holds mapping->invalidate_lock for write and then waits on the poisoned folio
-lock.
+> Looking through old emails: Can we respin with a proper headers update by
+> now, or is the kernel change still pending? (Or did I miss an update? :)
 
-> I really don't like doing a trylock here, it feels like we're hacking around a
-> poor locking scheme in guest_memfd.  Can't we also fix this by using a dedicated
-> lock for bindings (and for link_at() in the future)?
->
-Yes, that looks better.  ->error_remove_folio() doesn't need to synchronize
-against page-cache invalidation itself, it only needs stable guest_memfd
-bindings while walking them to zap KVM mappings.
-
-I will send a v2 that adds a guest_memfd-private rwsem to protect the
-gmem_file_list and each gmem_file's bindings, and switches
-kvm_gmem_error_folio() to take that lock instead of mapping->invalidate_lock.
-
-For paths that need both locks, I plan to keep the order as:
-
-  mapping->invalidate_lock
-  bindings_lock
-
-so that a writer on the bindings lock cannot queue ahead of
-kvm_gmem_error_folio() while a punch-hole/truncate path is blocked on the
-poisoned folio lock.
-
-> E.g. untested, but something like this?
-> 
-> diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
-> index 86690683b2fe..6ff005978ae1 100644
-> --- virt/kvm/guest_memfd.c
-> +++ virt/kvm/guest_memfd.c
-> @@ -32,6 +32,8 @@ struct gmem_inode {
->         struct inode vfs_inode;
->         struct list_head gmem_file_list;
->  
-> +       struct rw_semaphore bindings_lock;
-> +
->         u64 flags;
->  };
->  
-> @@ -500,7 +502,7 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
->  {
->         pgoff_t start, end;
->  
-> -       filemap_invalidate_lock_shared(mapping);
-> +       down_read(&GMEM_I(mapping->host)->bindings_lock);
->  
->         start = folio->index;
->         end = start + folio_nr_pages(folio);
-> @@ -518,7 +520,7 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
->  
->         kvm_gmem_invalidate_end(mapping->host, start, end);
->  
-> -       filemap_invalidate_unlock_shared(mapping);
-> +       up_read(&GMEM_I(mapping->host)->bindings_lock);
->  
->         return MF_DELAYED;
->  }
-> @@ -597,6 +599,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
->         WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
->  
->         GMEM_I(inode)->flags = flags;
-> +       init_rwsem(&GMEM_I(inode)->bindings_lock);
->  
->         file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
->         if (IS_ERR(file)) {
-> @@ -691,7 +694,10 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
->         if (kvm_gmem_supports_mmap(inode))
->                 slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
->  
-> +       down_write(&GMEM_I(inode)->bindings_lock);
->         xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
-> +       up_write(&GMEM_I(inode)->bindings_lock);
-> +
->         filemap_invalidate_unlock(inode->i_mapping);
->  
->         /*
-> @@ -746,7 +752,9 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
->         }
->  
->         filemap_invalidate_lock(file->f_mapping);
-> +       down_write(&GMEM_I(file_inode(file))->bindings_lock);
->         __kvm_gmem_unbind(slot, file->private_data);
-> +       up_write(&GMEM_I(file_inode(file))->bindings_lock);
->         filemap_invalidate_unlock(file->f_mapping);
->  }
-
+The kernel change is still pending. I will respin this as soon as the kerne=
+l
+part is out.
