@@ -1,107 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22729391E5B;
-	Fri, 12 Jun 2026 16:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397DE38F65D;
+	Fri, 12 Jun 2026 16:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781280313; cv=none; b=Yqzb/aoUuRzBtS1jJb2osOLVg885S+5bXsn1XZdiUSOcj7rGKkcbGhNZzZy/xS6ZlcDlDxD+VFu6iM0i1ubZayCDG7i+EfxL59MM1h9FfvIoHqNIKOcnoIstvaw9UPTRo1hAdlZouEBhvg91byd/oDGSxw8qgejJkWnLbQoeJnY=
+	t=1781280937; cv=none; b=P1+ErurwD4uNkk6wE71Lf/xptDcR48cVzdRmqGn/57kFkj7aZS8WR7+lr+ILORaWwTtzItOnJrYFQRaRa5/CS4yZZozvOOBn+IlRgbSklmy/xY8L/FdH2I/X8J94sMcTLNE2xZMQCWudWIU7z+zqLayscI3yjmn3jJrWQc3G0TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781280313; c=relaxed/simple;
-	bh=jRcSZhdjW2n9VI50I1w0Kcv7cQL5bzw3mW5nIe5TGtU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KbaHIcavrfJPOjz6gt350+GGns8tXxW6wuKxiVN4JjEWfDhhYfuS706yjD7mABC2N2Ev4+FW3se2yAyaIaXdOFV8yVc+cm+lVvtRgIAWnhbZm5Dt7uo6bo+4Jylku1Ujd7zuxLlcZAPVtlkj3HvAGJVZCXblzSOEYnQRaHXZz70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BqMZBotc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781280937; c=relaxed/simple;
+	bh=ATSFQEY1CwJTUmDSVrHb5jYDsiewUQH5akD/gAFtuaI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PPNKsB3rCwiPsrkzsT8Vkj56rRzinu5CFoQpGWsFKF8GS6w5tUb11lXJXQpXtKOZ6Bd2BB9or7FoO6vRbB4zX34REJcSnGYvvq/oBNhCz28X/B8PQ2xN8l1KarbJHYSosdSCeEJsNShHZ+97OGEAlAQsG1fm2HA30kIU13tZMdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=KDvBjBXd; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gEJjyj/y; arc=none smtp.client-ip=103.168.172.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BqMZBotc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5101F00A3D;
-	Fri, 12 Jun 2026 16:05:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781280311;
-	bh=l07fS9VgDLgMMxEiLe+PmpxkCgntnaR6UyN1wkidaPA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BqMZBotcDkmtYcrau4b04KAe7t0dTUecAPpYkmOQZU4q7XPff2zJKK1mWHNt/aK4Z
-	 PWM7iv6YGG08QY8Ba/Eq1lTOOcNj67yHrw94bUlMs1VRi2Cj2GQaiG3u7otFv4cwQg
-	 iKS1Ew4BycfPA9N/q8V59s6Jd/KPzfy5NGJ8m7U9Ly5pP0m9Dr70Pt82WFRoFx3Xml
-	 hMSZxZXQbGKz/9FFz0nPXZsA5yY63CO6t3qkYVFqtM781zn4wg/64F4i8OyxWMUNi9
-	 +gwCuOKsMTEvKEW9fJsY+z2PF/GnY7um+X8c8lypK7unStmwjBKI8DYPFqdamoVY2p
-	 N/niSILW+An4A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1] s390/virtio_ccw: Also suppress -EINVAL on device
- detach
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "William Bezenah" <wbezenah@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, kvm@vger.kernel.org
-In-Reply-To: <20260612155407.199218-1-wbezenah@linux.ibm.com>
-References: <20260612155407.199218-1-wbezenah@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 12 Jun 2026 16:05:10 +0000
-Message-Id: <20260612160511.1B5101F00A3D@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="KDvBjBXd";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gEJjyj/y"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 4EEB4EC00D2;
+	Fri, 12 Jun 2026 12:15:33 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 12 Jun 2026 12:15:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1781280933;
+	 x=1781367333; bh=xeTSG/mCGy+BW58099UUh/T056uih+shAh7IocLtPVU=; b=
+	KDvBjBXd4xOSmtd9u1aXf01jRAka3wwPZ/1HqD92nJi1daVljb1uLnLNFDtiWrH+
+	4ptQBBElnYEOHMlctvLETOIo0/8zujlXbYzbvDxHeHCKxc7UaMxPxQmGsTWm7pAM
+	8TbyFgPMuYj8mXR3uNcANMoJM5g58S8kXyIlMpHxaivL9p5amwd5WzwKwQtfB9wp
+	LS+QYVdXd6gk46dhJMs983P/l/KxoiDqflPMe0nkZXwKYvAmtaLtOFUZOD4deS9v
+	mvgkXwIwM5PaACFbnrBbz5j7oUkymtIC0zadV/bXjsLLvm2Sck/hGl9imgtu+oUV
+	JNWLh9/BIPFOjHBah2zcXQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781280933; x=
+	1781367333; bh=xeTSG/mCGy+BW58099UUh/T056uih+shAh7IocLtPVU=; b=g
+	EJjyj/y8q+w5kaQT30q2gDMTOLmrCzEXK1cRcWz/kMWnasClp9qZveO3Rjxk1AEk
+	zX1fApoVPSyg6NJ8lBxIvjgD+niCheTLSl0kVVqrIWyarLFI6G5zGU7y/t8YkvOA
+	HTEUv64dQeICBL7LyW7u8mCm9sKm5kcdWn+BP/mHJP7uuozGW+Gl7UDHI245W5tc
+	gUdppL8hNguNZo5Io3ERodeFldCJ1giFPjbnLHAArK+OZfq7IjvfZ8dQ8yG6cpqw
+	8va7mDIj1lQMMLgFvkeDmKFKceYd5+yV4qnewsxerzCe4Zrm8UQ4tEkNvrREEjgY
+	GWICq8s+aOUOEcMDhTYzg==
+X-ME-Sender: <xms:pDAsavO93LspFkOsImwaJa4qPV72ZXQWyAlR4GXeIdZ7E1NRHaWqbw>
+    <xme:pDAsaqqgWLTISBULgP1Jp8n6KEuZOV6cbzCpz4oit40MlUku3sg0FkeabOCxj-ypA
+    CBeYOuJ9PAbZm5ENqjc6aCTWv3TPNAeFrHW5Mf6SDBWQWrHHvzP4A>
+X-ME-Received: <xmr:pDAsasf4gToBrouIS6O6ZaIEBFkpi1Wjoumvz0qT0e1W058jsjq6n-cNDiE>
+X-ME-Proxy-Cause: dmFkZTEJDJBgoZkVbm/VrMJvAc/nMv88yLNbS1SkaMsmSV33O6AliIoQ2M4udPNcgML2/D
+    nrFvHCmWvHvGH+UxzbCp6giBKqc2a41aH8biqOlA2BLHE4aW69mw2aSnqctkR8p6OBfisV
+    UkQLM6dJ0g9rH5AR2vc7642JSKaShH57gPrxaZ24SOzrAh70H2+gWt9aUGfqOstS0RbVLf
+    ar0qftDsC9fyYdUYdc4EvMKZ1b7B9kKgb4LvBnw432KyOYllftaT7YMrMhS9PR3x9yK9GF
+    HUg6NvkNaqHgRmUwvwx5BJd8h//ZFJhk5kAadh+ep353P/OXE136RD7yV+fcIMrnGOzxVU
+    e+9X99leCtQW+1chG1xQ3rl+6Bip41cl1tYcYlHX6e2whp/Z7a11gVSI1nFWCGYMsZ0kmS
+    rQ3dJW08N38eZx9QwPnu2jHokGxGdkUhXIr2ObEwariFTcNK7egr6BXANwyXruLIdFHPCD
+    Qtx2c7uWQuNS/Oxd5UIWJ1JD4Bgw0GKU7meW16YhYcR0pZnFeYU0BphzIVrR2vaw7wRzXu
+    OwSEIbiKd66wIFHAQYnWvu2DYqhDkqEMGeZ9d7dEAbZ1TzJuR9pacn/5UfK0dJs+fRNbkX
+    DJs5F6DW8Pfw06gOwxulHqBrzuoqB6jxJqZ/AOUsC81CJO7Yu/TpYV3yrqmw
+X-ME-Proxy: <xmx:pDAsaoQWm-oef8kWBkT4uTUxzFke0OorlS1Fo93GB8eeJkkPtLGzjA>
+    <xmx:pTAsataJzefBkmYsei_g_ibnHJG5UdGmySKhrdXacVQiLJ7XcyYP0Q>
+    <xmx:pTAsajfvCpARYKztMJpv0dGqOjOSRpl2J99Fz4rU0eTe86II-aN3Xg>
+    <xmx:pTAsamIC1POHcx6hb38LCVivVnzxdABnjkIZ0tFfnrSKtqduJSt0dg>
+    <xmx:pTAsao55JYqA0u8KhBkamx5kPOaGtWqRttKVHsBNJJ_7JYqZd8M1TGzb>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 12 Jun 2026 12:15:31 -0400 (EDT)
+Date: Fri, 12 Jun 2026 10:15:30 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Yash Suthar <yashsuthar983@gmail.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ skhan@linuxfoundation.org, me@brighamcampbell.com, alex@shazbot.org
+Subject: Re: [PATCH] kvm: vfio: Convert kvm_vfio_file_add() to use CLASS(fd)
+ and guard(mutex)
+Message-ID: <20260612101530.7b8b8edf@shazbot.org>
+In-Reply-To: <20260523050242.41472-1-yashsuthar983@gmail.com>
+References: <20260523050242.41472-1-yashsuthar983@gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Sat, 23 May 2026 10:32:42 +0530
+Yash Suthar <yashsuthar983@gmail.com> wrote:
 
-Pre-existing issues:
-- [Critical] If deregistering indicators from the host fails with an error =
-other than -ENODEV or -EINVAL (e.g., -EIO), virtio_ccw_drop_indicator() ski=
-ps the cleanup of local adapter interrupt pointers, leading to a subsequent=
- use-after-free when virtqueues are deleted.
---
+> Convert manual fget/fput call to CLASS(fd, f) and
+> mutex_lock/unlock to guard(mutex).
+> 
+> This remove the goto based paths both out_unlock and
+> out_fput.
+> 
+> Signed-off-by: Yash Suthar <yashsuthar983@gmail.com>
+> ---
+>  virt/kvm/vfio.c | 37 ++++++++++++++-----------------------
+>  1 file changed, 14 insertions(+), 23 deletions(-)
 
-commit 6f54104d3533aa779587af76d171dec3ef8e1b8f
-Author: William Bezenah <wbezenah@linux.ibm.com>
+Sean already took Carlos' series[1] that mostly 
 
-s390/virtio_ccw: Also suppress -EINVAL on device detach
-   =20
-This patch updates the error handling in virtio_ccw_del_vq() and
-virtio_ccw_drop_indicator() to suppress -EINVAL along with -ENODEV
-during device detach. This avoids spurious warning messages in the
-kernel log when detaching virtio devices with multiple queues.
 
-> diff --git a/drivers/s390/virtio/virtio_ccw.c b/drivers/s390/virtio/virti=
-o_ccw.c
-> --- a/drivers/s390/virtio/virtio_ccw.c
-> +++ b/drivers/s390/virtio/virtio_ccw.c
-> @@ -429,7 +429,7 @@ static void virtio_ccw_drop_indicator(struct virtio_c=
-cw_device *vcdev,
->  			    vcdev->is_thinint ?
->  			    VIRTIO_CCW_DOING_SET_IND_ADAPTER :
->  			    VIRTIO_CCW_DOING_SET_IND);
-> -	if (ret && (ret !=3D -ENODEV))
-> +	if (ret && (ret !=3D -ENODEV) && (ret !=3D -EINVAL))
->  		dev_info(&vcdev->cdev->dev,
->  			 "Failed to deregister indicators (%d)\n", ret);
->  	else if (vcdev->is_thinint)
->  		virtio_ccw_drop_indicators(vcdev);
+> diff --git a/virt/kvm/vfio.c b/virt/kvm/vfio.c
+> index 9f9acb66cc1e..bb3694d9c0c4 100644
+> --- a/virt/kvm/vfio.c
+> +++ b/virt/kvm/vfio.c
+> @@ -144,45 +144,36 @@ static int kvm_vfio_file_add(struct kvm_device *dev, unsigned int fd)
+>  {
+>  	struct kvm_vfio *kv = dev->private;
+>  	struct kvm_vfio_file *kvf;
+> -	struct file *filp;
+> -	int ret = 0;
+> +	struct file *file;
+> +	CLASS(fd, f)(fd);
+>  
+> -	filp = fget(fd);
+> -	if (!filp)
+> +	if (fd_empty(f))
+>  		return -EBADF;
+>  
+> +	file = fd_file(f);
+> +
+>  	/* Ensure the FD is a vfio FD. */
+> -	if (!kvm_vfio_file_is_valid(filp)) {
+> -		ret = -EINVAL;
+> -		goto out_fput;
+> -	}
+> +	if (!kvm_vfio_file_is_valid(file))
+> +		return -EINVAL;
+>  
+> -	mutex_lock(&kv->lock);
+> +	guard(mutex)(&kv->lock);
+>  
+>  	list_for_each_entry(kvf, &kv->file_list, node) {
+> -		if (kvf->file == filp) {
+> -			ret = -EEXIST;
+> -			goto out_unlock;
+> -		}
+> +		if (kvf->file == file)
+> +			return -EEXIST;
+>  	}
+>  
+>  	kvf = kzalloc_obj(*kvf, GFP_KERNEL_ACCOUNT);
+> -	if (!kvf) {
+> -		ret = -ENOMEM;
+> -		goto out_unlock;
+> -	}
+> +	if (!kvf)
+> +		return -ENOMEM;
+>  
+> -	kvf->file = get_file(filp);
+> +	kvf->file = get_file(file);
+>  	list_add_tail(&kvf->node, &kv->file_list);
+>  
+>  	kvm_vfio_file_set_kvm(kvf->file, dev->kvm);
+>  	kvm_vfio_update_coherency(dev);
+>  
+> -out_unlock:
+> -	mutex_unlock(&kv->lock);
+> -out_fput:
+> -	fput(filp);
+> -	return ret;
+> +	return 0;
+>  }
+>  
+>  static int kvm_vfio_file_del(struct kvm_device *dev, unsigned int fd)
 
-[Severity: Critical]
-This is a pre-existing issue, but does this if/else structure create a
-use-after-free risk during virtqueue deletion?
-
-If ccw_io_helper() fails with an error other than -ENODEV or -EINVAL
-(for example, -EIO), the first branch executes and logs the warning, but
-the 'else if' branch is entirely skipped.
-
-This means virtio_ccw_drop_indicators() is never called, failing to clear
-the virtqueue pointers in the shared airq_info->aiv array.
-
-Because virtio_ccw_del_vqs() subsequently proceeds to free these virtqueues
-via vring_del_virtqueue(), the uncleared pointers in the shared airq_info
-will point to freed memory.
-
-If an adapter interrupt arrives later for this leaked bit, could
-virtio_airq_handler() retrieve the dangling pointer and trigger a
-use-after-free by calling vring_interrupt() on the freed queue?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260612155407.1992=
-18-1-wbezenah@linux.ibm.com?part=3D1
