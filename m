@@ -1,113 +1,141 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B183FAE0A
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 23:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAB72FD68B
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 23:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781305602; cv=none; b=uZ1YmTXPpx+otmhud9QpaS4jxNP4e0l0XhAdezyEg+VrnxEKkHvoyqewa+uGa5liPCw4sviwGau7JafQKVHN0nneO2D8hLGaGcafaGfIUUeEQCVM/c+owyZ7GMb6cXovbn/dNbSXeHAx/CY8ThMON+23musBBp1GNjjfu+qpjok=
+	t=1781305662; cv=none; b=uGMNAAt71JdqW9X5cms3Q6nT93GSuZzLbpBIsTMQk1/Fp8G+2DUooEugwPPEkKGLq05ukw2AbTWLOga8a9BzwWr35X7GYp61evlTRShBS74UYXQBsQlG+2bISvoPSerlyQYQanCnxT8nljzlHCuQKxTihkq9IO40e8YFWqkGCcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781305602; c=relaxed/simple;
-	bh=aR8aSM3blKEoYPh5VlsmJ3gSg4L4aDUcPmqNAKdGzYA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UTSBu0kNfg2hJub1RlGLM6r/V+cu9N2j4YvFYabRZE00JWJr8pTdZiFXjCTco0Mq1gpVw4Bb4Dz7RYFb6aEX109TcpMwhqm0tVk09hrCvzRUuEjzft3Fr3O8ohxOz5ujD7Z2wVDz8TYsS5p691rlx5sCXitl/XoFCTGqR6fRcVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S7TujKIO; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781305662; c=relaxed/simple;
+	bh=YBrqrwHyEinMJud+wSOxqD1Dzh0Zrmog//tJakBkST8=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=moKr4QzsLGAnG2MU7dxomm7QFqdqzgFaa6XoDtIRkRxSyC5274LLE2Lu+NVSBtlpY6KoXgnw1+Emy3Ulg5v4Z52818HK8m5YaJdKnXxoc9MszqUGOoQ7U+UQ19e+iqeEDHCUfQHHZkMo9BTuRjuUFrJTIfGcF2Hlhc4+wxkK59E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P59EVxRP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S7TujKIO"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84240b58211so1070855b3a.1
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 16:06:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781305600; x=1781910400; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=DVS1qeM4e/fq+IMjcgwSKvsqG9BdLxQ2xhFJGu2W9Ks=;
-        b=S7TujKIOSFWuOLQxsF/w8Bc27csrRJyRSFeaTHgu0pOpZ55DVKj/Vj7crXClWPC3J8
-         9xiRYLLR73Goo23UcL5QItzutCrqqLfTUOa6A98ZQOQrlaaFmH9SMzBXj7r+rUW5fZhi
-         4x9tqFe272maAmclqdIrhkDf+kqdbbM0VxRt+slO2cAwpQIk7ojBndIk47gm1pmd3glO
-         mCNPI9zz68LfPnu0KH3DU4GoDxOOSrvhG3gW7g8rGAtNtXr4vNwipTPGlu2BVrdCfZ6H
-         vXYHNwVkuE/07gMJAvuGp5C7JSNJCI2900e8I/tYLlZ3zlHalcXkU1wE3D55yRhGNrD2
-         6aOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781305600; x=1781910400;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DVS1qeM4e/fq+IMjcgwSKvsqG9BdLxQ2xhFJGu2W9Ks=;
-        b=HgKPn5CaGk3LdtQzs8iODGKOuxBguy8zBQ+0UIAzLcFpqDUz6m0WvRCBybbM8SIULT
-         PwgmQud375iYylthaxjzdHlS91cLk6Y46RVatiMmLgfUmlH8z9BtdyDQya61i7eCL7hj
-         WXi4Z01zA6PAy1/FgLIwAgIZXta8gF+MBvO6XBe2TMMKp0xYLPtr3lG1KHW3z2PXeO4T
-         WJP9tqEyZumqiEgqczTdFsQBnXgIQBsd5a7aJJ4WGoUNYEUjO5Db/FVoRH1Xpm62JEhV
-         4p50Z8v6hnS/yEeJ9bwbAXUuCBn2Mb2UJ2kq/OqmghmMKsrGvNCSn2R4mvQVttoW7Wzz
-         FCEQ==
-X-Gm-Message-State: AOJu0YwlNe7P7mB1xWoVwheO2BulIAlyP4CV4Bf5PNHXWMYJWMI4BOXA
-	Hes1fwA4lJUL7s6qTSUZ5Y3uS2ZgXwSgzhYIV8eCOl00WY71SKjrBQtJKFQetZQSPEMT7cY7j9v
-	GSmbijw==
-X-Received: from pgkb1.prod.google.com ([2002:a63:eb41:0:b0:c82:2d14:39c8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:35c9:b0:3b4:b24e:27b4
- with SMTP id adf61e73a8af0-3b783b23756mr4266456637.1.1781305600106; Fri, 12
- Jun 2026 16:06:40 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 16:06:22 -0700
-In-Reply-To: <20260612230622.687665-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P59EVxRP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2062E1F000E9;
+	Fri, 12 Jun 2026 23:07:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781305660;
+	bh=l4Z6iPCoEVif5czqX7mpOnEGf86eCdSIsJaNrDC+CNs=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=P59EVxRPXaqSh1gsxSJZOl4h4HUMAMliJTXhJNvmxyRBMEmmHIR54xiHms+N0/WOq
+	 Wc7k7bkAlNeHYrplgG+/CIOkKu7NJfViXhhrpR+7o5X8JQagPhzGisx0RhjUOvYc+d
+	 h2M/Po7cCcycl0HvgmWnJeiGJNzTILw/cgOzmmfWBOOnVKXWgi/e68TpcqVEkOZqMB
+	 mq2DaT4ndw0Hx1xhUezPfQHCYAY83w/IJ0f+ax2xFaxfwFkkHKqv4pZOMWDgz2+6ip
+	 iI4HRtkiRovbzuV9+S75qS3blsWaUxfBgXp6AvvzdG6kKuvQHKd6JH3C2vKC2IYrTA
+	 +40cCeCmP5gAg==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5C9B0F4006A;
+	Fri, 12 Jun 2026 19:07:39 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Fri, 12 Jun 2026 19:07:39 -0400
+X-ME-Sender: <xms:O5EsasWXLEW7BfEs00q2LOU9UGNxJD8cSyX8hmuNQw6AjmRdF9fjqg>
+    <xme:O5EsauDizZYmqNrKG1kG7XvyhWVjSF-XTC2CAzI1HcX2RJkVGSdX2p8IWW5WD4VsJ
+    SdkkiTQB44YrKdpeLAmbtCMthxV8ac7Uw-ZwfiZYvjLEcY3EyvLuyQ>
+X-ME-Received: <xmr:O5EsagWVT7RSGKTAb2dRsQ753FoYwqJVH5pl_ky2k-XpQPdMjviWPxKxCJQheRyhGJb0wiAI1S-0GXFJUT2sz-213Xqnx7xQvsg>
+X-ME-Proxy-Cause: dmFkZTEJDXZbVWi1dWDhXfR3V8OFIFiukzmdYSaS1v+Di3g5XrlCcZQ2QlKQoSOmWsLUgI
+    fFYKOPBvXSD2ZDBY5QNO9ZOLn4eJl4GE23lbKDOq9+RQnuQznFY+fZe2+MOTgIWBnUIR5c
+    ngPc3VFH7ztEHkppv8h4DL/BcASSCwg+98kWriWtVY2EdphbtpA4jwK+n/gNLhr985JXpV
+    +wCZ4KiAal7aBY0rnSZmnNYNkmEmzhTnfb56Ezfu6V39YKqbO1wtNlmYEzB20t5yaXEQDr
+    VvT7qPO88nnScuZGDmAjNdUC4T2R3ssLj+NJikJAwvx/9Jvnz0VW9GvTyn8bW1OyQ5DNsb
+    aL1Io+iSKFP9VyhFtluoCMXLJ1J99LlVqAbTC69H04hf4ASy496Hfl9japnmqVgoUHhXhL
+    5G6bFTlaIqCLCnTvM/KaqRqVntbjZtTtrhdynyW5KPUtVanarfQRLdydRQ1Q3uaCMX6CXX
+    Xl6E86OWrLbEUcHk+0JUrOM8o3CaMfdulStNuOtYNdihXP1YjItSJGiTLUq817GD0JNEm9
+    lo4QflSOqWvm9DspG1du14Vhh5Ec0T0gB/+Pxt09JU+vhhQPpJ6qamChF5Ry85Y+9SGcq3
+    vs0yMtOD8M8QXLdjNJ3bYO+TUItd3ggWkvxH3zvl8lCB17ryr3QvFTpU/onw
+X-ME-Proxy: <xmx:O5Esas-JpWaqtyuBUxQT17fhEmc3A2gP3VDEOKrFGwXRkHyq0BMdcQ>
+    <xmx:O5Esamn_4yVPWbvirZegfSCN5xEHFNBrHWG6QTUL705GNOar8dJ0Vg>
+    <xmx:O5EsanJHtm2vJS5foGBWbQl6rGnD6xB-Avd9YnSlmzhuzZfeVr1aSg>
+    <xmx:O5EsaspAtn0tZxi8290aSDSph_1CT0x4Te6T-uEEdVr03kyGmBSGiQ>
+    <xmx:O5EsakRxFm_NX6lZNtxUMm8ycxZvTjj1Vziuk8xPU7epbDt4FN8vifXD>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 12 Jun 2026 19:07:38 -0400 (EDT)
+Date: Fri, 12 Jun 2026 16:07:37 -0700
+From: "Dan Williams (nvidia)" <djbw@kernel.org>
+To: Steven Price <steven.price@arm.com>, 
+ Gavin Shan <gshan@redhat.com>, 
+ kvm@vger.kernel.org, 
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+ Marc Zyngier <maz@kernel.org>, 
+ Will Deacon <will@kernel.org>, 
+ James Morse <james.morse@arm.com>, 
+ Oliver Upton <oliver.upton@linux.dev>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Zenghui Yu <yuzenghui@huawei.com>, 
+ linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, 
+ Joey Gouly <joey.gouly@arm.com>, 
+ Alexandru Elisei <alexandru.elisei@arm.com>, 
+ Christoffer Dall <christoffer.dall@arm.com>, 
+ Fuad Tabba <tabba@google.com>, 
+ linux-coco@lists.linux.dev, 
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, 
+ Shanker Donthineni <sdonthineni@nvidia.com>, 
+ Alper Gun <alpergun@google.com>, 
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, 
+ Emi Kisanuki <fj0570is@fujitsu.com>, 
+ Vishal Annapurve <vannapurve@google.com>, 
+ WeiLin.Chang@arm.com, 
+ Lorenzo.Pieralisi2@arm.com
+Message-ID: <6a2c91398fad5_a003b10027@djbw-dev.notmuch>
+In-Reply-To: <50d70588-2ebc-4c9b-98ec-68f3d04a9d21@arm.com>
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-11-steven.price@arm.com>
+ <872ce762-0a83-42a4-bbe8-b21ea6f4e1cf@redhat.com>
+ <50d70588-2ebc-4c9b-98ec-68f3d04a9d21@arm.com>
+Subject: Re: [PATCH v14 10/44] arm64: RMI: Add support for SRO
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260612230622.687665-1-seanjc@google.com>
-X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260612230622.687665-9-seanjc@google.com>
-Subject: [PATCH v2 8/8] KVM: x86/hyperv: Use {READ,WRITE}_ONCE for cross-task
- synic->active accesses
-From: Sean Christopherson <seanjc@google.com>
-To: Vitaly Kuznetsov <vkuznets@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+5b32c49cd8f005e65654@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-When activating Hyper-V's Synthetic Interrupt Controller (SynIC), mark it
-active with WRITE_ONCE() and query it using READ_ONCE() in synic_get(),
-the only known cross-task reader, to document that the flag is accessed
-without holding the vCPU's mutex.
+Steven Price wrote:
+[..]
+> > alloc_pages_exact() will fail if the requested size exceeds the maximal
+> > allowed
+> > size (1 << MAX_PAGE_ORDER). The maximal size is usually smaller than
+> > PUD_SIZE
+> > but PUD_SIZE is allowed by the RMM.
+> 
+> This is an area where to be honest I'm really not sure what to do.
+> Technically the RMM is allowed to ask for a contiguous range of 512GB
+> pages (on a 4K system - larger with larger page sizes) - but clearly no
+> real OS is going to be able to provide anything like that.
+> 
+> In practise we don't expect the RMM to do anything so crazy. It's not
+> really clear to be whether even 2MB (PMD_SIZE) is needed. But the spec
+> is written to be generic.
+> 
+> So my current approach is to calculate the required size and pass it
+> into alloc_pages_exact(). For "stupidly large" values this will fail and
+> Linux just doesn't support an RMM which attempts this. If there is ever
+> a usecase which needs this then we'd need to find a different method of
+> providing the memory (most likely some form of carveout to avoid
+> fragmentation). But my view is we should wait for that usecase to be
+> identified first.
 
-Note, there are no data dependencies on the SynIC being marked active,
-e.g. the vector read by synic_set_irq() is set (usually in response to
-guest activity) long after the SynIC is initially activated, and a false
-negative on the SynIC being active would be benign (ignoring that such a
-race is likely to be problematic for the guest irrespective of what KVM
-does).
+Just some comparison comments as I am also going through the TDX patches
+which enable "Extension SEAMCALLs". These new SEAMCALLs are similar to
+the SRO mechanism [1].
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/hyperv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+TDX asks for an upfront delegation of memory at init time using
+alloc_contig_pages() that is never returned until entire module is
+shutdown. alloc_contig_pages() is not subject to the MAX_ORDER limit,
+but not sure that alloc_contig_pages() is suitable for small+dynamic
+runtime memory add / release that SRO potentially wants to do?
 
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 7efe2907148f..63754a62dc87 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -219,7 +219,7 @@ static struct kvm_vcpu_hv_synic *synic_get(struct kvm *kvm, u32 vpidx)
- 		return NULL;
- 
- 	synic = &hv_vcpu->synic;
--	return (synic->active) ? synic : NULL;
-+	return READ_ONCE(synic->active) ? synic : NULL;
- }
- 
- static void kvm_hv_notify_acked_sint(struct kvm_vcpu *vcpu, u32 sint)
-@@ -1013,7 +1013,7 @@ int kvm_hv_activate_synic(struct kvm_vcpu *vcpu, bool dont_zero_synic_pages)
- 
- 	synic = to_hv_synic(vcpu);
- 
--	synic->active = true;
-+	WRITE_ONCE(synic->active, true);
- 	synic->dont_zero_synic_pages = dont_zero_synic_pages;
- 	synic->control = HV_SYNIC_CONTROL_ENABLE;
- 	return 0;
--- 
-2.54.0.1136.gdb2ca164c4-goog
+Does SRO always balance the size of RMI_OP_MEM_REQ_DONATE with
+RMI_OP_MEM_REQ_RECLAIM, or might some donate requests be a one way
+donation like TDX? Just poking to see if there is a path to preallocate
+a pool vs the fine grained per-operation alloc/free.
 
+[1]: http://lore.kernel.org/20260522034128.3144354-3-yilun.xu@linux.intel.com
