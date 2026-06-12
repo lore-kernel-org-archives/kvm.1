@@ -1,173 +1,153 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6274038C402
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A19228E0
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781228088; cv=none; b=OYZaS5Tr6wcvLHBQlATx5u9A6yJXNZ4oM+xdXV+eZH9T0p1H0uox8ZysHIrcAK/dnjWHo4/i/tiumel1XyhJH2akgGH4euymDTml4U5y46gBnPTIY32eU//JFgi/DXPc1UJD5DxmiS4x+nouN88AEipygHk7O5+VTcc2ZFCRAsw=
+	t=1781228916; cv=none; b=IraolXcWiz7YVqVPmJKKQ4UaIwMlFOkINcAZFuQ8L+E4WXbbJt3N3auxugpyH7yqKRJhcXlN85SVg1+oJkLcm491Ino11pUEXBVwUCr4hoqqvW0aiPlWx66eAYDANe6Vs7ljJTcxYycH7Wne+j3dI174rjTLlZU+OJdv1R6AzsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781228088; c=relaxed/simple;
-	bh=Pt0kJwgUwlLNl23Jnnw6Rx+m3BWoC0ybefPFydsyusg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D22+/VhthnaIimxcgX+ekOgqr4T0w8S8eB1yY0GjvYR1BiMydjoo+/BdpiqFJOgKEPtQjTJpEYsLX5kD7XZnRJx7ZLsKHmPfXgY04Sbnd2KHnf3e/blwl5MLfHyvQkNbWZtEnAr9nyj53xHc7MHlvqiuPHTA5pnp75DdOANcHeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X/tzZCiC; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781228916; c=relaxed/simple;
+	bh=LrE/TtccPqGdOvkE2fh4kdUQya5FjGTMR/WWEPp6YG0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=izkPwA7kdpQJTqQMr0SW4i0WtQO6qGmtkAHbLwdYm0X0qkF7xrS4UOLcVEbrEFtutiqG6mrVvLkR3L3iBu9Jn2a8WNm06qCKSTNWlA2fYaO2jxwj0WaMecb1scOMLa5w9l9b5ixuuc2JWaoIYTA346oQLfuXTIK9ULXXXoYrHLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCrF0Mm0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X/tzZCiC"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-36da151a152so394495a91.1
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 18:34:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781228087; x=1781832887; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cJDxKofU7sziA4xb8cmnLTJQqmBI/O7ABljJar8QvjU=;
-        b=X/tzZCiCPAPcZPi2WqX1tperdeioNz3ZWUvQqUAiVeGIuj4pNCD1fZM+bsH2ndbFcM
-         wwIawSPdEGbWWZYYfyDjmvNXJBFYuNhSP/k9h+NUUp+qw69WESJlU0ei30wEkRpF+0ar
-         dpYuzSbVi6mSfv5TmUH1c3YmrnQ2ZzXWTJZICzwO5nFFwJqotH+ZIfIyaxe2IUZdCW0i
-         5CWvwJbRq5BdEjkmmEIiBpceqbumjGKurQGQD3WSD/MoQkh6ydqoIhdZeX3T4tNUUzhI
-         gEZ8BASvqNqzTd4bT1M8dD7UgzqID0feH0n2qRwU/iVi/4aBbkgSSLmG9Zys7uQ0QdEn
-         hpMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781228087; x=1781832887;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cJDxKofU7sziA4xb8cmnLTJQqmBI/O7ABljJar8QvjU=;
-        b=APbuHfmJh6KdtZx8CeiHL53Jq9xwREJ2Apmn42xAuOdx//mGQ3dxyd3BIlbWNzyOUt
-         D/86a1FDO6ta1y3Szoje6Z7juNPbV5JczNfB0jN/ASHku+KJjM1k2tMpGOjIqtZ6wPta
-         lDv+eh931LgQkCk2P9iH/SXnJ/oinCXmCiei3JRPMvCmJmjrrkgolL6XZmcR5n2yh+ZM
-         aezyhjEr7GEI4j2Axykkv2VTRyPPaR1b4QwtJ1kN20imT/5zxn23aLxEU1L5TpK8nPG1
-         sDCP1hOu1P4sEBTeAcpfCbJjJbJcv5x4tNkN6WSo9aJkL7g/sE4uI4aranPWJBJEfs0C
-         JWbw==
-X-Forwarded-Encrypted: i=1; AFNElJ9S+y78ntK4NuFy0VYwsv+XpWEjLJXmDDPacQ3u5p+0OyBalkDh4IBQIBFyUWi/62LVBiA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzleQcj8gs99V79u0x+dTJhIBxMxYKBMttXIagewufU4d+d3tjj
-	xiLb4lfgl/0lya574VgonTergaGyQz0I88E8W3coPirAl20GJQpDYjl3
-X-Gm-Gg: Acq92OFlIgKB7hi3wGe1lUAV3LEb8FcE5UK0tk5g0GrdPMVbkrRUFnnFVs3Qc+zY5Su
-	Or5y4ChMuwSESw4WiJ0Tvyz3UkTIs17melVTDCMwn4HF0GuDj2E8k2qyccBTOjUbyaj0hftGUmv
-	mfNQ8o2KkyIEd47Z5P3J+JQx9/rm8RU5hA41TX9u+l5m3wSqJnxAx77KW11WBOpNtxTjIv+J6kw
-	kGbv4U31qcuD5xyR69v8Hvrc6yLzU4bFsg1NNuvRcof2KnhXGxQZweUOTy3APHHbvkrETdQ/b+1
-	UzWtbQmoCe2xRY5p5xVOa8oxVJIJKBdkFdj8zufyg++btj4KauCXarTozVP7rfN7ApbmZFMkOjO
-	eNUAXrXTQE5ODJUbhJLMxLnrnn5ZyEpoWng1B5BY8mPTCBVL/9asWaElhti4UCtC5yTCl4PVGev
-	iAIDWJBG8ZMbeV6a6VeyhzAjYKIQ==
-X-Received: by 2002:a17:90b:2249:b0:36d:70c8:3a1 with SMTP id 98e67ed59e1d1-37a037e2860mr875406a91.13.1781228086534;
-        Thu, 11 Jun 2026 18:34:46 -0700 (PDT)
-Received: from wanpengli.. ([2408:822f:1aba:84a0:651:104c:ba0c:1f4a])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-37a1f07bbfdsm250713a91.5.2026.06.11.18.34.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 18:34:46 -0700 (PDT)
-From: Wanpeng Li <kernellwp@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Richie Buturla <richie@linux.ibm.com>
-Subject: [PATCH v3 10/10] KVM: Add relaxed preempted-only fallback for directed yield
-Date: Fri, 12 Jun 2026 09:33:55 +0800
-Message-ID: <20260612013355.59231-11-kernellwp@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260612013355.59231-1-kernellwp@gmail.com>
-References: <20260612013355.59231-1-kernellwp@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCrF0Mm0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F5D1F000E9;
+	Fri, 12 Jun 2026 01:48:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781228915;
+	bh=jx2GDw+srPxlhHRiST+FzTVlyhjh+iHqVc/hNskpg2o=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=aCrF0Mm0yWbnp+Okl30e9uZGONehMg22gYyFs+cLFqmVqz9p8Kt+477QragHjNBpv
+	 9m4goYZzIHtLFkKMuz5oQLRiC2fqJkdhBUJ+ADAwkPDFgPsG1FW2ycLz471XtZUP/W
+	 ruK8jZ6R8kNnOckiW0ycHC3gVDyzVlJ73Ae19TH7u9ZIRKIdDYMhM0M8S/+VDmTj8N
+	 Ozbb8AjNRotlNvIVECtGkx2865iGhD44J7iCiJOZabYPXpwisMdxNJC0VO9X5KSbdB
+	 rUBCobZCS4FJDsCBz7Eo/IGHQm9VhxqWJhh1XFpDKVknPtuqa6Ldpds8FubqtspV0l
+	 rwHzYNrj0hH1g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 09/10] KVM: Add IPI-aware directed-yield candidate
+ selection
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Wanpeng Li" <kernellwp@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260612013355.59231-10-kernellwp@gmail.com>
+References: <20260612013355.59231-10-kernellwp@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 12 Jun 2026 01:48:34 +0000
+Message-Id: <20260612014835.07F5D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Wanpeng Li <wanpengli@tencent.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] The new candidate filter incorrectly excludes woken-up, runnable v=
+CPUs from being yield targets by strictly requiring the `preempted` flag.
+--
 
-The strict IPI-aware candidate filter can find no target if IPI tracking
-misses the relationship, for example for APICv-delivered IPIs, or if the
-runnable set changes during the scan.
+commit f2a5464aa09eda51a02ed6e5f04bf8ea0072c9ba
+Author: Wanpeng Li <wanpengli@tencent.com>
 
-If the strict pass yields nothing, run a second relaxed pass gated only by
-vcpu->preempted. Control the fallback with the enable_relaxed_boost module
-parameter (default on), so it can be disabled at runtime if it causes
-over-boosting.
+KVM: Add IPI-aware directed-yield candidate selection
 
-With the full series, PARSEC simlarge on 16-vCPU guests under host CPU
-overcommit, latency reduction:
+This commit introduces a priority-based candidate filter for directed yields
+in kvm_vcpu_on_spin(). It prefers recent IPI receivers or vCPUs with pending
+interrupts before falling back to the legacy preempted heuristic.
 
-  Dedup (IPI-heavy synchronization):
-    2 VMs:  +8.87%
-    3 VMs: +10.29%
-    4 VMs: +15.60%
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
 
-  VIPS (balanced sync and compute):
-    2 VMs: +10.23%
-    3 VMs:  +6.63%
-    4 VMs:  +4.50%
+[ ... ]
 
-The IPI-heavy Dedup workload benefits most, as the confirmed IPI receiver
-is preferred over the generic preempted lock-holder heuristic.
+> +static bool kvm_vcpu_is_good_yield_candidate(struct kvm_vcpu *me,
+> +					     struct kvm_vcpu *vcpu,
+> +					     bool yield_to_kernel_mode)
+> +{
+> +	/* Priority 1: confirmed recent IPI receiver. */
+> +	if (kvm_vcpu_is_ipi_receiver(me, vcpu))
+> +		return true;
+> +
+> +	/* Priority 2: arch-specific pending-interrupt hint. */
+> +	if (kvm_arch_dy_has_pending_interrupt(vcpu))
+> +		return true;
+> +
+> +	/* Priority 3: preempted, with optional in-kernel requirement. */
+> +	if (!READ_ONCE(vcpu->preempted))
+> +		return false;
 
-Signed-off-by: Wanpeng Li <wanpengli@tencent.com>
----
- virt/kvm/kvm_main.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+[Severity: High]
+Does this code inadvertently exclude runnable but non-preempted vCPUs
+from being yield targets?
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 84cbd7a6183f..a327acb198de 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -101,6 +101,19 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
- static bool __ro_after_init allow_unsafe_mappings;
- module_param(allow_unsafe_mappings, bool, 0444);
- 
-+/*
-+ * enable_relaxed_boost - second-round safety net for kvm_vcpu_on_spin().
-+ *
-+ * When on (default), if the strict scan finds no eligible yield target,
-+ * fall back to a relaxed scan gated only by vcpu->preempted. This
-+ * preserves forward progress if IPI tracking is missed (e.g.
-+ * APICv-delivered IPIs) or the runnable set changes mid-scan.
-+ *
-+ * Disable this at runtime if the relaxed pass causes over-boosting.
-+ */
-+static bool enable_relaxed_boost = true;
-+module_param(enable_relaxed_boost, bool, 0644);
-+
- /*
-  * Ordering of locks:
-  *
-@@ -4037,6 +4050,8 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
- 	 * they may all try to yield to the same vCPU(s).  But as above, this
- 	 * is all best effort due to KVM's lack of visibility into the guest.
- 	 */
-+retry:
-+	yielded = 0;
- 	start = READ_ONCE(kvm->last_boosted_vcpu) + 1;
- 	for (i = 0; i < nr_vcpus; i++) {
- 		idx = (start + i) % nr_vcpus;
-@@ -4077,6 +4092,15 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
- 		}
- 	}
- 
-+	/*
-+	 * Second, relaxed pass if enabled, the strict pass yielded nothing,
-+	 * and we still have retry budget for -ESRCH paths.
-+	 */
-+	if (enable_relaxed_boost && first_round && yielded <= 0 && try > 0) {
-+		first_round = false;
-+		goto retry;
-+	}
-+
- 	kvm_vcpu_set_in_spin_loop(me, false);
- 
- 	/* Ensure vcpu is not eligible during next spinloop */
--- 
-2.43.0
+In the previous implementation, the preempted check was part of a compound
+skip condition:
 
+	if (READ_ONCE(vcpu->preempted) && yield_to_kernel_mode &&
+	    !kvm_arch_dy_has_pending_interrupt(vcpu) &&
+	    !kvm_arch_vcpu_preempted_in_kernel(vcpu))
+		continue;
+
+This meant that if a vCPU was not preempted (for instance, it was recently
+woken up from a blocking state and is ready to run), it bypassed the skip
+condition and was considered a valid target.
+
+By explicitly returning false here when vcpu->preempted is false, this
+new filter seems to drop those valid targets.
+
+> +
+> +	if (yield_to_kernel_mode && !kvm_arch_vcpu_preempted_in_kernel(vcpu))
+> +		return false;
+> +
+> +	return true;
+> +}
+
+[ ... ]
+
+>  		if (kvm_vcpu_is_blocking(vcpu) && !vcpu_dy_runnable(vcpu))
+>  			continue;
+> =20
+> -		/*
+> -		 * Treat the target vCPU as being in-kernel if it has a pending
+> -		 * interrupt, as the vCPU trying to yield may be spinning
+> -		 * waiting on IPI delivery, i.e. the target vCPU is in-kernel
+> -		 * for the purposes of directed yield.
+> -		 */
+> -		if (READ_ONCE(vcpu->preempted) && yield_to_kernel_mode &&
+> -		    !kvm_arch_dy_has_pending_interrupt(vcpu) &&
+> -		    !kvm_arch_vcpu_preempted_in_kernel(vcpu))
+> -			continue;
+> +		if (first_round) {
+> +			/* Strict round: IPI-aware and legacy preempted filters. */
+> +			if (!kvm_vcpu_is_good_yield_candidate(me, vcpu,
+> +							      yield_to_kernel_mode))
+> +				continue;
+> +		} else {
+> +			/*
+> +			 * Relaxed round: only require preempted. This is the
+> +			 * safety net for missed IPI tracking (e.g. APICv) or
+> +			 * transient runnable-set changes since the strict
+> +			 * scan.
+> +			 */
+> +			if (!READ_ONCE(vcpu->preempted))
+> +				continue;
+
+[Severity: High]
+Similarly, does this relaxed round unconditionally skip non-preempted
+vCPUs?
+
+If the vCPU is simply runnable but not marked as preempted, this safety net
+will completely bypass it.
+
+>  		}
+> =20
+>  		if (!kvm_vcpu_eligible_for_directed_yield(vcpu))
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260612013355.5923=
+1-1-kernellwp@gmail.com?part=3D9
