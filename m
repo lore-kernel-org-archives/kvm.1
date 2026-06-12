@@ -1,63 +1,63 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A3038C2B0
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:34:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77A238D3EC
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781228079; cv=none; b=U/1oqe02TSll2jzggeiWpRA+4b+VEgs18enfoVSqIxGqAGooiRyHAQHUmCyExjmUdUWjvFsfOo1GAXbJi0ksZe9uYgGixaLDIdNqFLw8m6RVVJShlk+Mbj3jE3JFj9X8QQUf4lSOW3zgnfZm/BIduhjDcElVxgVHj0kyrVUeOn0=
+	t=1781228084; cv=none; b=Y4DDx2vRIF9rLr0flP1bPU8PVgdr7XRWFR15x7l2+LqAtls9iH2EzsWkHVIdcwliQGzeOqqxUnCtAK9ZnQM8DZCyvjxeoQKymnkKk5BZQkS1VV+w3rYiRsU3X5sn/+4Z0ai4uh2DGKsQ/V0ShNlJVEruQKEFlIMd9b8rDKbwQnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781228079; c=relaxed/simple;
-	bh=AJpCk4J32WNyLFxxfpnYHB/kVMhE8euK4GNuaoR7vtA=;
+	s=arc-20240116; t=1781228084; c=relaxed/simple;
+	bh=oUqyS4YMguLg/y3GYzm8PmUs/ARE2no+ciMJQW4t+bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjQ6VSxOYVSA/ClFWjjSbxhNpN7TPWqaaETLTuEPzW1nsLF9Da1S5U+zSKGQP7uuam0JYu5C72dgHQFSwc/kgCe0ogUg6QtmGU+eGP5NHCB6WL0Nhxin8iCdkH+SlTPesolYmg0vHRHIexcksdwxxqz0O50Z9EL5MVq18HeohMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S1wxNE+T; arc=none smtp.client-ip=209.85.216.53
+	 MIME-Version; b=SxT3EXADPChMpsKcF7mHh0D6s4dH/UIv1+Yv52tz5felHtyfdKe1qJjrdemV0jy516Htl8O665oBkpcbffxfswJUfMr7b1cLpONHe1HtR6xZHPM8UuJcm6ZhePqN+oCNjuZSOa9JhDeD1xlXRNuIt53xG11POAwrEpe51yYlwDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nlyf61QQ; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S1wxNE+T"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-36da8439078so429788a91.2
-        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 18:34:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nlyf61QQ"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-36b8d414666so337620a91.3
+        for <kvm@vger.kernel.org>; Thu, 11 Jun 2026 18:34:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781228078; x=1781832878; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781228082; x=1781832882; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=54g1mIxlnWdVC1XTdANPpLR1bjjl4JSbtVvv4qaUW8k=;
-        b=S1wxNE+To6CKZTUh5geCmZg9ybnXfcCYWar0tebgJjcXfrUPkTYuH+0w8U8V5OieX8
-         /jbUP+N/oDyjtfvX7eafv13ednZlPgs1NUxsVvlBFtCuPJwFJNJaFNTGSQTDhDoljkRc
-         O/KKx7+G1Cr//bFc5avAERKapmdkm0MnJvVdbURSJaMaVpfCCBHXdR5A83zqvNOIDkqN
-         O2yN6lSH0N3dwXBZpysmMOjygKHYmjjVOZy+/GuZuTNsQSFzaEQhsmDMv6TCSgUp51Nf
-         ommhHNmcP6A5A7vYNzBlNrwe88rXYDIZxfxw7UckeEQU7WhDLSm+4COO77PYarR5Qq/4
-         VYag==
+        bh=oIB83M9OUPc1oc/Q0slx6pHU1K2bFQQF2y5JLcs4bZM=;
+        b=Nlyf61QQFNkbZ3LeYYdcdxNeuB8a8YLA4+OQvFGUei7yYc1LOSX+oII/cMEWzBWmIc
+         f9RpvHvy7RDNXtHXVAY2E8hkCm3SEJKscgS/lLPgA4yFnHd5OgUwEGoUSWpLWiHLk2WW
+         ALvRsH4rLTVgmbB60nXz5LUvX4ACc0YWSKhs9FfR0TpEByynl1YuVYW02J5EnreuJ9uF
+         JzwdWdGI4aFAXg2+GcZu61M2/UXAPJFWRLg7Gk6hhZINOp4CMMC8aNbCGW+xbMnHZxBb
+         /mrPvHx1ER/fSe46vzOvab0sy9eX7E7o+/kqF53Z1G2slnJjPvkeSkFqfAhZtpeRaaLt
+         /gtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781228078; x=1781832878;
+        d=1e100.net; s=20251104; t=1781228082; x=1781832882;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=54g1mIxlnWdVC1XTdANPpLR1bjjl4JSbtVvv4qaUW8k=;
-        b=aMHY86ukbpChThridSaqD+V7POvvNoyktHdtJIjeFXE595mVGyz1ju9MQgf/JbSwxl
-         6qm+4wRHsA8wyFysospVSs/MSqWyyuC3/RSABP0U/Fxa8C7nZw5dOQrIyFsxXo5+Qu2U
-         mcR6h0/zf9N0lOljQ/BtSjA3hJhgpBrUtMoTuxDqZpIEfrlJQJWaSgB7iImMUdVaY+6T
-         D6Jqljv8WSe9zbGVj48LeFaDQHkK58ORBQuAYCRcRWF8vdN7giUmn2f7XIke4fRouvpv
-         xy1eNZmaLM9yO+VAi1lOFrupB8iDkv0CAZGVeHoxVh+iZJ0lBgOSqvxS+rxt9OYOZvPA
-         y6Ew==
-X-Forwarded-Encrypted: i=1; AFNElJ8FnZMp5ShEIWwTtZRf2OpCwWIxg4S1cN6BFLlng067bf0VYOdE7Qf81wVQlzsRxPgXQKU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLKnpk11cQfTr1uIjjzfV1k96rveVljazVEQe+WiD1i8d76Hqd
-	22eL56KJ7eAq2JwMX3Obhul/6pIO9m/C4jfr+T0NWPz+VrDtKLWTpttoJ2+2JS2hqAnSFQ==
-X-Gm-Gg: Acq92OEsHGUEvszOBnjJls9i6KLxLFyBpX0IHG5AzIYCEqtzkOxSW3tkynoNSbx3FJp
-	axZGJFkc2/SoaY1AK/nsUSU0nxEr8d9RpgUSGwKB9NG+N0S4yqr9a8sNU6ABDytZAocWU9FdF9U
-	l+D+7V964bV+0+aF8J6zOy2JTP0A/OoZkkHiygW2CtCaSDDYAAHzBQ033oshj4XsCP+TE/a3rRy
-	98S3Fqm0URo3QDL68OaoJNKppY0hhP6TCM91Jj8VeFg732/ZVfwLyfLuKDN8Eb0ZhBqyKeu+2tJ
-	Eo/JHotHFvoqcU5ZglzD2LhjThC3w4/uGA78ycZEOZmbJ3Ni0I87xSWr/EZDJuWioxRDSSwJTCn
-	h2cT+uTcT++8D44CYOYwWMuHfhbi8YUcFlosYX3lkRfG9hpAP9OWsxU7AIYiLt6FoPDweN+uv9x
-	pPcd2ejknGV88qaGEP6fsOmVIRug==
-X-Received: by 2002:a17:90a:e7ce:b0:36d:ae6a:22ed with SMTP id 98e67ed59e1d1-37a041afaa2mr939962a91.22.1781228077904;
-        Thu, 11 Jun 2026 18:34:37 -0700 (PDT)
+        bh=oIB83M9OUPc1oc/Q0slx6pHU1K2bFQQF2y5JLcs4bZM=;
+        b=ZDrpSyRm5TOjkyNSRZ0CHk3PYUagSkG7mpXjhW3D5kwGGsAKFg9TNq30JnXchcOeQV
+         KrchE/JrwxAHDevtuFInkXznIfiQTk4lnGkFALtDusYS88Eh0nfUYtK07QaMMLxomdO1
+         Szk8OTtpE+szp/wHVb+P6ynUlvxvqqeLrf41a4jRcM94SjNygWRaU1wik2xHC7BhICA2
+         w6/azxurbqN1/7ptY7TwgMJNqT/t9bD+SCxv4jxqp+rwgd36/E6/lEhWNY9J5fl4Shep
+         dNaJ1bA35ZVxtCJ4dyH5eH8mqOFMFKVxmMXG7vvYG9nqfC0jhZOE53/8DVll4vGhIaq0
+         3CYA==
+X-Forwarded-Encrypted: i=1; AFNElJ+7ItqLaPR0S2j4pEBPqeYag5HWEmtCOblYFnG70IGhukU27EMP0SZfsv18FLWaqkqEWQU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypAVSQYNZlAAk3u3UjWQCNbxvlFyJ6ruTJlPWGX5uvWwiCHTMv
+	+RvtJEWsv1dzSqxp+X/oL5GvOKCNVAzHCeI+xaLb50KgliSOXHBmhn1b
+X-Gm-Gg: Acq92OGgvLFeWBeUN4Uk0dbgrMUgDdO/oVh81nnLSVGd1PtUe4XVua65S5jC6rpVRdP
+	8uZSa32gAKtNofep9llRI5UZXulIN2afAbqpRI8Y+Xg4g2M8qqzE4BUGC4AlpCuVBEpEUQZUIqk
+	+F6BuR9ILxCQYeajcmpk5nh7js6gMUcA41et12H9rThJtmVL3grzRACYMqXz2ymZ25m6VU6sJHP
+	POvTHSxSDhOWiJ+kya6rrP+wW++mEYAR68RWFVCCT0piXoeCuXGdCdAd34T2c4eOWPVknVMOBua
+	Pnr1wdCnSfksptmhz90Wj1LgquTdc13gJ6gJtTQmQUC38kExxI17k1aMJ59OQ9OfrulWVWvsmzE
+	amfu7qgbW5/dZEGRXC07JIV6v789TAqL4U32fXvgZOn1Udd9nmHvkikkTr7jaUztUDCcgZrKGjz
+	lpBZZmQhN9fPAt7JUs71POYG+JL+60IrPhlzyz
+X-Received: by 2002:a17:90b:4b87:b0:369:c5f4:9681 with SMTP id 98e67ed59e1d1-37a041b0151mr899333a91.22.1781228082253;
+        Thu, 11 Jun 2026 18:34:42 -0700 (PDT)
 Received: from wanpengli.. ([2408:822f:1aba:84a0:651:104c:ba0c:1f4a])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-37a1f07bbfdsm250713a91.5.2026.06.11.18.34.33
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-37a1f07bbfdsm250713a91.5.2026.06.11.18.34.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 18:34:37 -0700 (PDT)
+        Thu, 11 Jun 2026 18:34:41 -0700 (PDT)
 From: Wanpeng Li <kernellwp@gmail.com>
 To: Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -73,9 +73,9 @@ Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
 	kvm@vger.kernel.org,
 	Wanpeng Li <wanpengli@tencent.com>,
 	Richie Buturla <richie@linux.ibm.com>
-Subject: [PATCH v3 08/10] KVM: x86/lapic: Clear IPI tracking on matching-vector EOI
-Date: Fri, 12 Jun 2026 09:33:53 +0800
-Message-ID: <20260612013355.59231-9-kernellwp@gmail.com>
+Subject: [PATCH v3 09/10] KVM: Add IPI-aware directed-yield candidate selection
+Date: Fri, 12 Jun 2026 09:33:54 +0800
+Message-ID: <20260612013355.59231-10-kernellwp@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260612013355.59231-1-kernellwp@gmail.com>
 References: <20260612013355.59231-1-kernellwp@gmail.com>
@@ -89,109 +89,120 @@ Content-Transfer-Encoding: 8bit
 
 From: Wanpeng Li <wanpengli@tencent.com>
 
-Clear IPI tracking from both EOI sites, apic_set_eoi() and
-kvm_apic_set_eoi_accelerated(), matched on the EOI'd vector. A receiver
-may handle unrelated interrupts between an IPI's arrival and its EOI; a
-vector-blind clear could evict the still-pending context and make directed
-yield miss the receiver.
+kvm_vcpu_on_spin() selects a directed-yield target from coarse preempted
+and preempted-in-kernel state. It cannot distinguish a vCPU spinning on an
+IPI response from a vCPU spinning on a lock, and can therefore yield to an
+unrelated vCPU.
 
-When the vector matches, clear the receiver's context unconditionally, and
-clear the sender's pending flag only if it still points at this receiver
-with the same vector and within the recency window. The existing
-trace_kvm_eoi() tracepoint already records the vector, so no new tracepoint
-is added.
+Add kvm_vcpu_is_good_yield_candidate(), a priority-ordered filter. Prefer
+a confirmed recent IPI receiver of the spinning vCPU, then an
+arch-provided pending-interrupt hint, and finally the existing preempted
+heuristic with the optional in-kernel filter.
+
+Use the helper in the strict scan before falling back to the existing
+directed-yield eligibility checks.
 
 Signed-off-by: Wanpeng Li <wanpengli@tencent.com>
 ---
- arch/x86/kvm/lapic.c | 61 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ virt/kvm/kvm_main.c | 65 ++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 55 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 3a5f197eb2c6..0925d359384e 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -1746,6 +1746,65 @@ static void kvm_ioapic_send_eoi(struct kvm_lapic *apic, int vector)
- #endif
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 2e11c6cfc167..84cbd7a6183f 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3963,12 +3963,51 @@ bool __weak kvm_vcpu_is_ipi_receiver(struct kvm_vcpu *sender,
+ 	return false;
  }
  
 +/*
-+ * Clear IPI tracking state associated with a just-acknowledged vector.
++ * Priority-based candidate filter for directed yield.
 + *
-+ * Called from both the emulated APIC_EOI write path (apic_set_eoi)
-+ * and the accelerated exit path (kvm_apic_set_eoi_accelerated).
++ *   1) Confirmed IPI receiver of @me within the recency window.
++ *      This is the highest-confidence signal that selecting @vcpu
++ *      may help @me complete its spin-on-IPI-response.
++ *   2) Arch-provided fast pending-interrupt hint (APICv / AVIC /
++ *      arch_dy_has_pending_interrupt()). Covers cases where IPI
++ *      tracking was bypassed by hardware acceleration.
++ *   3) Legacy preempted fallback, with the existing optional
++ *      in-kernel filter when @yield_to_kernel_mode is set.
 + *
-+ * Vector matching is deliberate: the receiver may handle an unrelated
-+ * interrupt (timer, device IRQ) between an IPI's arrival and its EOI.
-+ * If we cleared unconditionally, such an intermediate EOI would evict
-+ * the still-pending IPI context and cause directed yield to miss the
-+ * real receiver. We therefore only touch state when the EOI'd vector
-+ * matches the one we recorded at send time.
-+ *
-+ * Two-stage cleanup:
-+ *  1. Clear the receiver's context unconditionally when the vector
-+ *     matches: it has processed exactly this IPI.
-+ *  2. Clear the sender's pending_ipi flag only if the sender still
-+ *     points at this receiver, with the same vector, and within the
-+ *     configured recency window. This avoids evicting a newer IPI
-+ *     that happens to share the vector with a stale one.
++ * Returning false asks kvm_vcpu_on_spin() to skip @vcpu in the
++ * strict (first) round; the relaxed (second) round applies only a
++ * vcpu->preempted check.
 + */
-+static void kvm_clear_ipi_on_eoi(struct kvm_lapic *apic, int vector)
++static bool kvm_vcpu_is_good_yield_candidate(struct kvm_vcpu *me,
++					     struct kvm_vcpu *vcpu,
++					     bool yield_to_kernel_mode)
 +{
-+	struct kvm_vcpu *receiver = apic->vcpu;
-+	struct kvm_vcpu *sender;
-+	int sender_idx;
-+	u64 then, now;
++	/* Priority 1: confirmed recent IPI receiver. */
++	if (kvm_vcpu_is_ipi_receiver(me, vcpu))
++		return true;
 +
-+	if (unlikely(!READ_ONCE(ipi_tracking_enabled)))
-+		return;
++	/* Priority 2: arch-specific pending-interrupt hint. */
++	if (kvm_arch_dy_has_pending_interrupt(vcpu))
++		return true;
 +
-+	if (vector < 0 || vector > 0xff)
-+		return;
++	/* Priority 3: preempted, with optional in-kernel requirement. */
++	if (!READ_ONCE(vcpu->preempted))
++		return false;
 +
-+	if (READ_ONCE(receiver->arch.ipi_context.vector) != (u8)vector)
-+		return;
++	if (yield_to_kernel_mode && !kvm_arch_vcpu_preempted_in_kernel(vcpu))
++		return false;
 +
-+	sender_idx = READ_ONCE(receiver->arch.ipi_context.last_ipi_sender);
-+	kvm_vcpu_clear_ipi_context(receiver);
-+
-+	if (sender_idx < 0)
-+		return;
-+
-+	sender = kvm_get_vcpu(receiver->kvm, sender_idx);
-+	if (!sender)
-+		return;
-+
-+	if (READ_ONCE(sender->arch.ipi_context.last_ipi_receiver) !=
-+	    receiver->vcpu_idx)
-+		return;
-+	if (READ_ONCE(sender->arch.ipi_context.vector) != (u8)vector)
-+		return;
-+
-+	then = READ_ONCE(sender->arch.ipi_context.ipi_time_ns);
-+	now = ktime_get_mono_fast_ns();
-+	if (now - then <= READ_ONCE(ipi_window_ns))
-+		WRITE_ONCE(sender->arch.ipi_context.pending_ipi, false);
++	return true;
 +}
 +
- static int apic_set_eoi(struct kvm_lapic *apic)
+ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
  {
- 	int vector = apic_find_highest_isr(apic);
-@@ -1766,6 +1825,7 @@ static int apic_set_eoi(struct kvm_lapic *apic)
- 		kvm_hv_synic_send_eoi(apic->vcpu, vector);
+ 	int nr_vcpus, start, i, idx, yielded;
+ 	struct kvm *kvm = me->kvm;
+ 	struct kvm_vcpu *vcpu;
+ 	int try = 3;
++	bool first_round = true;
  
- 	kvm_ioapic_send_eoi(apic, vector);
-+	kvm_clear_ipi_on_eoi(apic, vector);
- 	kvm_make_request(KVM_REQ_EVENT, apic->vcpu);
- 	return vector;
- }
-@@ -1781,6 +1841,7 @@ void kvm_apic_set_eoi_accelerated(struct kvm_vcpu *vcpu, int vector)
- 	trace_kvm_eoi(apic, vector);
+ 	nr_vcpus = atomic_read(&kvm->online_vcpus);
+ 	if (nr_vcpus < 2)
+@@ -4010,16 +4049,21 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
+ 		if (kvm_vcpu_is_blocking(vcpu) && !vcpu_dy_runnable(vcpu))
+ 			continue;
  
- 	kvm_ioapic_send_eoi(apic, vector);
-+	kvm_clear_ipi_on_eoi(apic, vector);
- 	kvm_make_request(KVM_REQ_EVENT, apic->vcpu);
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_apic_set_eoi_accelerated);
+-		/*
+-		 * Treat the target vCPU as being in-kernel if it has a pending
+-		 * interrupt, as the vCPU trying to yield may be spinning
+-		 * waiting on IPI delivery, i.e. the target vCPU is in-kernel
+-		 * for the purposes of directed yield.
+-		 */
+-		if (READ_ONCE(vcpu->preempted) && yield_to_kernel_mode &&
+-		    !kvm_arch_dy_has_pending_interrupt(vcpu) &&
+-		    !kvm_arch_vcpu_preempted_in_kernel(vcpu))
+-			continue;
++		if (first_round) {
++			/* Strict round: IPI-aware and legacy preempted filters. */
++			if (!kvm_vcpu_is_good_yield_candidate(me, vcpu,
++							      yield_to_kernel_mode))
++				continue;
++		} else {
++			/*
++			 * Relaxed round: only require preempted. This is the
++			 * safety net for missed IPI tracking (e.g. APICv) or
++			 * transient runnable-set changes since the strict
++			 * scan.
++			 */
++			if (!READ_ONCE(vcpu->preempted))
++				continue;
++		}
+ 
+ 		if (!kvm_vcpu_eligible_for_directed_yield(vcpu))
+ 			continue;
+@@ -4032,6 +4076,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
+ 			break;
+ 		}
+ 	}
++
+ 	kvm_vcpu_set_in_spin_loop(me, false);
+ 
+ 	/* Ensure vcpu is not eligible during next spinloop */
 -- 
 2.43.0
 
