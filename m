@@ -1,112 +1,112 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178E035F60E
-	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 08:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350423630A5
+	for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 08:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781252115; cv=pass; b=M+QIoQ1ypDkW8jX2nJe2VyucHpUImDwQBUH+56/SC79NETKwnwQMDnVdfECe4D0mud8m+5klBrnvxmi7z/+U2sgXwFgnnF/Tl5ymwjfveB8KO7O21thNCaWiEzvIgJjFUGMCOmcyk1uWIL/rAcAr4mzvmoRVfzb5eKlWebMZFos=
+	t=1781252156; cv=pass; b=Yh++Ri0PhI/FnuVMMaEemhZXPDu6YTtkhsZJ8xW68V+/Nc9zZEgeiPMk2fniBXS7u7ZhKhNI97gIh1PSao52JJjlWBFKJgQKUjw5/zz4FfmLPj3WjQ0Wwh48Yp/2TU1a8Il7QToUU/syuY2327vNwLrXdnnHbpeiGcPOSvE+ojs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781252115; c=relaxed/simple;
-	bh=OOef+hJfsAI2prviVKOQaIrv1Id/AQar3Vw9KfXV3XE=;
+	s=arc-20240116; t=1781252156; c=relaxed/simple;
+	bh=gKkkV19wlmTr3/xCsbfGBsR54oN4UlO4vCnWRgWlt20=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TMebyiWrX5iRyi6JM5c36cjNmfpo121z7uy8WGSvQ25a5Hd1zpBgjZoPJXI8sVgPo/mfdMtglFVofS0jsOpi3jD5u4YNAyChQBtRBjgLM4qBG4WXNUPgCV84a3zQXguk9xRKThxY2O0LvaSFmc6fvmdou0+eKzly7caGqfj07qA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WQN9bjvi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qrNtPk9h; arc=pass smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=tN/9vQIOI7MNldoqGkCbQo23hBUwmr0vDloPDNxT3K5ptWYmtJWECjFDenEjxH4EkOnwEaRYGZktVqyZ77AIhiTe9IZNIxyfNjtolzhNKu9LVORr/yD6kDfNOppUOcAn6YyXmUrn1geGPATBBsRJ6YMsJHWnY0eLBKMqbK6KGgE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bhs2VZq5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=czFZ55pK; arc=pass smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WQN9bjvi";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qrNtPk9h"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bhs2VZq5";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="czFZ55pK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781252113;
+	s=mimecast20190719; t=1781252154;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=T2jugKakI8bOmr8a7byaUAqvbiTNisbiZDO8vsAs0e4=;
-	b=WQN9bjvi3f0sYQ1xed9vLrdiHqtOs3nWaLujLKyESVfFkCqcQoQ7eynVsqDogWAalGZLTA
-	IAARlYBPcLErXsgjcrr+h880Gpiqjhj0eNI1khQD6n7usO1t8j0is0NBM4NNBk2P9si/Oi
-	wcfdYOxZ0XXKwHsxQfhmyEpnFV9tchU=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=fkzgmag6RiSVdTujOEa/DO5ShgseE/EIKALr5M/fiUM=;
+	b=Bhs2VZq5f/jVbVE+Mq9EHRzvqs3OOddRUiVFte5SPW/ouwK8FulMRDqBDXixM7X8ju/mFp
+	edDWDNj3+Jt7fLLJUpYswX02AAPhOpm2OajW68c9ySV3pfghbtp+niPs89op/QUELWRrlt
+	jJV1S0e1qiva/rWitrpBx4Mf/Lo7img=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-CmNV2qsoMXqdyj47DPa-BA-1; Fri, 12 Jun 2026 04:15:11 -0400
-X-MC-Unique: CmNV2qsoMXqdyj47DPa-BA-1
-X-Mimecast-MFC-AGG-ID: CmNV2qsoMXqdyj47DPa-BA_1781252110
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2bf32259e0eso10016215ad.0
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:15:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781252110; cv=none;
+ us-mta-263-IpBk-jiJNhiASUueY_yw5w-1; Fri, 12 Jun 2026 04:15:53 -0400
+X-MC-Unique: IpBk-jiJNhiASUueY_yw5w-1
+X-Mimecast-MFC-AGG-ID: IpBk-jiJNhiASUueY_yw5w_1781252152
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2c0532a6588so7526345ad.0
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 01:15:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781252152; cv=none;
         d=google.com; s=arc-20240605;
-        b=H3rmQHasTId8rbir+sxLUTIFROhXcZ0Hhm8vlKTA96BoMZvJ4IoOGF+4WYdRYTm/VO
-         9IOvEiTEquKQivJps7BBRh5Q32GhNXx1HaQBo7VYk2EQOnmW03mj5AJCwyCsjbNLBpDg
-         xKuQ0R40zfR29D5fCL9J5ge23wDEv5QUy0g0eqoGtQtdDCAZrvdmc3wr5TSMDBOI5Eu3
-         5K4PL9L/viS9wH/wnjpmHoaKXQDUzmht37eNkydkP+IBcFbyRBH+pRKdEAzdzn/haVVI
-         7hrGHCB8x3VJ3/hXVphn65z2XQScV2KJdoU9Y2jcrJt2GrB9uraA/NwCIE+ARlggpyyf
-         ROiA==
+        b=YojvihX+WHp7LeOPZ2OF7eMnIcTnNSfczta1VaZS0Ax5uy+E8sJ1V4jXJ8FzjnMaKQ
+         cMjJbsPzyxZE7GNu7tI3S/JdPeMvcfhVggbmGRpFa7Vcl7Y4n0I6fyZ6FbVJ6puOXBNX
+         /wG6Svnpl5OfXjqEplr4HjmXoDLSDE+wOtaH7Wuk50nbBijSuGFbUumG1NkYkBFvZsf5
+         ICf8yve+S7Io2zcRXSm9nBvMtaMHeJ7C0LfGnJjYgxcjlEhgG1W0mCuBCePWD5yHyRZ8
+         t0bJy8THm15zAeqUK8KErnWNqcdPincvINVvb4UuwcnEafxbbvLEEmRIArDJvYYdGc4B
+         OleA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=T2jugKakI8bOmr8a7byaUAqvbiTNisbiZDO8vsAs0e4=;
+        bh=fkzgmag6RiSVdTujOEa/DO5ShgseE/EIKALr5M/fiUM=;
         fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=EBWxqctr0x7o8LZre8wost1LT5Q2SOp6bW/TlBFJdk7o/zHHiISkGGSG57dTs7R9Rv
-         64e1o7fAk3NMO4WqcX/fxRRvI9b28g1eJi4SmPYYET580uRRVaiNEbAgk9ZLnh7Z4yfx
-         EoEgfNsxHCGYFd69KoepYpOwwa1VUNn/UNDpDfoKppLfAIaxp9ZD4SS2T/xfaks7k9+R
-         QnjeeZqg1UN7RakiO5tWcl6ZtwrQ0ubJG9/y346w7mFkueGZ41VgUyn/b8ehCKDAVnur
-         Jjm4PBGyQrLBeTvCz+aflbklqI7LwQGdeBVJSO0cibqQl4Sa/nl1cCEQ/XErJ4PnJxdz
-         lMIQ==;
+        b=Jbqe1K/7yezpBfjLz5qpwCec/o2jP86XhaayVd+8H7ZwoEYq8zH7Xq2REnLQqqmVNE
+         OCSqvo7fy+tuJXWbzvMHUWUEUfCWvB8ODl5HrYWvAUvyGX1SocjEhifi+U2SO6pTyzKt
+         f17/3Xut+3+zaBvURiiLh8VLnm6Dp9WEDstJtnEmUQiT5xlCTq9GS5jfEt2NwSfsw2fp
+         +Dd8fpSAQe+Ns7e8ilmiwkiBnw70IFSRC3P3YCvaTt6Uki4E2icV57ZJqpfM3Py+64tA
+         0l4SeczP+Pz6H74f72IVO0U9WvX+Knd6hIVA+gZbxIAh55OnjifbeNIKSwAVJn/TFmNW
+         ibYg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781252110; x=1781856910; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1781252152; x=1781856952; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=T2jugKakI8bOmr8a7byaUAqvbiTNisbiZDO8vsAs0e4=;
-        b=qrNtPk9hKYeiSdV+JLwfGXZ+s12e5fVGXTJYPb7eEOE7AUQ91/jWG3OdRSwc1RtXtI
-         lMTdsTceAxDQskt335a0I3Ub5FEOAeekkdmGSRJ21zQ22ukK6YlZGFyFfH6h04qIO81m
-         89m0AM8Ts4cC/obIovcK7PBzUE+cJgWYZrWiiPgapN/GcGiPx+1vc6E+ycrNyhY+cC8Y
-         jGuxhpBK544iTJks/b3s6TH9/amutiC3n2KiCVIvPQ6yLZ/yrURrxRsA+BHvU7zY4dWM
-         Y1va6C1krdLFhVjSfTSeDLAzkIvC6zCPS482uos0o1NS3KnXzcY6eYMVGPzDI918nUkD
-         r5mg==
+        bh=fkzgmag6RiSVdTujOEa/DO5ShgseE/EIKALr5M/fiUM=;
+        b=czFZ55pKFbd0DiYJ+PbSopdfnyfxv4k4fXWrcv5Ih2Xi5tgF/FR+z3NMnQx0uUBWVD
+         NlW02yb6GJNNLJ7BC990cNzeIMuHJLUCZrV5L9XXc0mGYd9F8q/Gvf0kinmv467cMru4
+         tsVinWBo6059JMkSvM/8TG0MEBXkMq1pA+pTbwvbVCGIiV+BXl78FtxNxPk9Bfu8pji5
+         InjLEF6wa9waxTF3xMmp30YY7Y/Gvk2Pj5c5fOoviwKh2+hIvm3pBj+P0uAus7YBIcZ3
+         aGqjSAe7z6WMh5l7etDvTv93dzsXL2dTcuctRCjcJfwNmOfVcxVcZz9urx2JEo3JL1jf
+         KbpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781252110; x=1781856910;
+        d=1e100.net; s=20251104; t=1781252152; x=1781856952;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=T2jugKakI8bOmr8a7byaUAqvbiTNisbiZDO8vsAs0e4=;
-        b=AJtU7Xp97DwV8JEVGi4ONBWdH6+mG/K90JsQ7mKqrDyFwdZg+eLfHSZ9YYoVflGvn5
-         efjEy5kM2GaxnauJLNf4IhN569YCtttTLe9DrYZoj1DQFMU9XHEXNWux2t84hP6/m1eV
-         7GqSs7RRETqTCqeFqy4OlzOgo1K08ELOacAhG8iJtoMz8OoccwQXaNJAdT9P4qYWY3aV
-         DsoyKTfZrzHP0geD3OeDXjPbnBse8G1/5Ne88VXCDBKhLWtWWzdCZUzs9B3nQy0Iyu5e
-         e/eFGt+tDk86CJ3c8hQWgllI8hfZN5krQggA9TjsjP6inq/4hoPxs/lIIcPvn5kFVQ0n
-         aPdA==
-X-Gm-Message-State: AOJu0YyxUpy7voKwjAY3Ceu7pBhAcN/0QEhCNp6lzIWHdR7AJHKXbcpN
-	3or0eBPk2xeN389nwo2CkVG+lZcbMGjYy7cDlda1VjX16MwV4lwX0J1/6SHwEtX1DXSth5YJCBQ
-	g2ZrTZLQnnKloMfbrTrLynpctLUmq0hN21NEjdle1e5WKeV03ip+DA89eR6eybR1UJzBWPhB687
-	dF3AopbyArSvKsi9mWsWM+yRZoLfgv
-X-Gm-Gg: Acq92OH4/Jv5RBvAszHhTgzWGM6vcMzbpJC90dviO+hc16ufg+ThVCCvpB4kFkP/E7T
-	jb9+FHvk/hCRsDnX5n3IgRCYYeVvW9LKZCWZ8KiGiYZuQLMYE7RiWW80eIGp8T74hCyDBSaEmr7
-	+uNx6xix+Ms9MGsl/BQSdTw2ew7aByhbIwbYBYIsNK79cDXshOxCe17A5HkrT9cwWjmeTBVevHV
-	NziDRNe8uycOHNcO4GYQwITs0iC2ZKx5yolVtZs3Z2H4vP95kSPqYAXa0p1E4OvhY48PLugfeNk
-	Kc5vuA==
-X-Received: by 2002:a17:903:40ca:b0:2c2:27be:39a9 with SMTP id d9443c01a7336-2c4109ecce4mr22599805ad.9.1781252110291;
-        Fri, 12 Jun 2026 01:15:10 -0700 (PDT)
-X-Received: by 2002:a17:903:40ca:b0:2c2:27be:39a9 with SMTP id
- d9443c01a7336-2c4109ecce4mr22599405ad.9.1781252109828; Fri, 12 Jun 2026
- 01:15:09 -0700 (PDT)
+        bh=fkzgmag6RiSVdTujOEa/DO5ShgseE/EIKALr5M/fiUM=;
+        b=Iu18r5S+kBVj8sCQHdzFngotJILF8ba1qwhJf+DtWIf8BTBz/4KtkwNMnqEakQj5xs
+         1/Vq88v8tgPwQGiNRGvhLpXxy6ZVXRH65ULrYefPbXWnwRhITqhEOmgRheYdej91wJSq
+         7eAJCyCjctIJJQuRePWRdCqGIO4Hq1W0p03yjd8MunYiP0/E2oJQfG7x3gwtyX8ex+3r
+         Z+60AOceQXh7L8UT1iC0Bb2Muurp1MAo9W2DY7aAo4eQy/6fNJKrMpzME7t7SJe2Liyl
+         I/f3r3THTsYo5PFxTGcldzyhoxiPnyZNfC8Ue3WhiHIvn1GjuxuzhXf/1ecqGPrztmCc
+         3Lzg==
+X-Gm-Message-State: AOJu0YwPsdM5wRqQFMaLWpaqYgWLdI1sVrpbVW17k4LhXnUBZHiTXUgM
+	j9WjAGhP/jzud3qWwqOLugWMCmzRMZIscmOJNtTUPQsHN4NmH65e+tPtiOi1/c/ucUsgrrSJZJQ
+	GxF62EU3h45PboNaMsMGgMTK5Vlc0ZpxtN1FEY4vexnpybqza45bZ1grRVNQwJvCsdpwTPmgM+Q
+	1HFIIAS2TJRKpHVNeb453nfIHc5oQazJgfaT2M
+X-Gm-Gg: Acq92OGcurdtnJYjT3CKcpg4t2WhWo594JAZZ0/FWom9p1xA+D6YS4bRNiPqvsFuZLl
+	Qyq9VK3NnR64kray+9518IwGn9bVvxputvRXb934k4S3VtXYlbTNiMLhmSauQ5YP1YPEaWqApJM
+	RmabJ5AFOmW6LOR75x12dfUYwZTi0s/KIySxNedK5LAaqwoBE8OjQwQM66y+RyOJNMJe5bu6mXe
+	yUUDOSJphsCcLT5bUMhJqoFELIGFQ0ZgpfQHnTSSloBeWn4rwdok4ysB5XcHNYI+5ILaes/963g
+	79AEQQ==
+X-Received: by 2002:a17:902:c401:b0:2c1:6020:7398 with SMTP id d9443c01a7336-2c410fbec97mr21514495ad.12.1781252151819;
+        Fri, 12 Jun 2026 01:15:51 -0700 (PDT)
+X-Received: by 2002:a17:902:c401:b0:2c1:6020:7398 with SMTP id
+ d9443c01a7336-2c410fbec97mr21514115ad.12.1781252151290; Fri, 12 Jun 2026
+ 01:15:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260612004755.349925-1-seanjc@google.com> <20260612004755.349925-9-seanjc@google.com>
-In-Reply-To: <20260612004755.349925-9-seanjc@google.com>
+References: <20260612004755.349925-1-seanjc@google.com> <20260612004755.349925-10-seanjc@google.com>
+In-Reply-To: <20260612004755.349925-10-seanjc@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 12 Jun 2026 10:14:50 +0200
-X-Gm-Features: AVVi8Ce6k1l0qaT0tIDwOxqD0VxxXFLzDPNfYzBv5-4OxPdpqffmcLo31Zoti70
-Message-ID: <CABgObfZBsY7A1a1bWO25ZtoB1tEr8mGE56Yaucm7CBUMQBKmzQ@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: VFIO changes for 7.2
+Date: Fri, 12 Jun 2026 10:15:34 +0200
+X-Gm-Features: AVVi8CezT2kGO_h2SlI2bLyo8MLWTQxnuSNm4rO4Vxcimuv4RGs6TRUX_-YzzDU
+Message-ID: <CABgObfbOXx468LKpQNTRbjzHk_yc_BtcNT=R3uvnoUWicH3mHQ@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM: x86: VMX changes for 7.2
 To: Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
@@ -122,31 +122,38 @@ com> wrote:
 >
 > are available in the Git repository at:
 >
->   https://github.com/kvm-x86/linux.git tags/kvm-x86-vfio-7.2
+>   https://github.com/kvm-x86/linux.git tags/kvm-x86-vmx-7.2
 >
-> for you to fetch changes up to 156615264fd3430e7f90b36f46076b2f6ec4a24a:
+> for you to fetch changes up to ca674df13b195eb6d124ab059799d4e03fa40624:
 >
->   KVM: VFIO: update coherency only if file was deleted (2026-05-13 11:12:=
-40 -0700)
->
-> ----------------------------------------------------------------
-> KVM VFIO changes for 7.2
->
-> Use guard() to cleanup up various KVM+VFIO flows.
+>   KVM: VMX: Handle bad values on proxied writes to LBR MSRs (2026-05-27 1=
+6:41:51 -0700)
 >
 > ----------------------------------------------------------------
-> Carlos L=C3=B3pez (4):
->       KVM: VFIO: clean up control flow in kvm_vfio_file_add()
->       KVM: VFIO: use mutex guard in kvm_vfio_file_set_spapr_tce()
->       KVM: VFIO: deduplicate file release logic
->       KVM: VFIO: update coherency only if file was deleted
+> KVM VMX changes for 7.2
+>
+>  - Fix a largely benign bug where KVM TDX would incorrectly state it coul=
+d
+>    emulate several x2APIC MSRs.
+>
+>  - Use the "safe" WRMSR API when proxying LBR MSR writes as the to-be-wri=
+tten
+>    value is guest controlled and completely unvalidated.
 
 Pulled, thanks.
 
 Paolo
 
->  virt/kvm/vfio.c | 98 +++++++++++++++++++++------------------------------=
-------
->  1 file changed, 35 insertions(+), 63 deletions(-)
+>
+> ----------------------------------------------------------------
+> Rick Edgecombe (1):
+>       KVM: TDX: Fix x2APIC MSR handling in tdx_has_emulated_msr()
+>
+> Xuanqing Shi (1):
+>       KVM: VMX: Handle bad values on proxied writes to LBR MSRs
+>
+>  arch/x86/kvm/vmx/pmu_intel.c |  6 ++++--
+>  arch/x86/kvm/vmx/tdx.c       | 38 ++++++++++++++++++++++----------------
+>  2 files changed, 26 insertions(+), 18 deletions(-)
 >
 
