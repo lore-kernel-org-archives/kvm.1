@@ -1,55 +1,55 @@
 Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675AC2F8E84
-	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E56F30C17E
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781309050; cv=none; b=GYXMX1+Oh0ovSkqb+uQP42h4msZyXWonDAZJDZkTxLWAvm3M3ASzSghfj4HwCkIoMRUYlVVwnR2cQtLuP4ybbos1qzK2OAS0orFKrryB5K6sBlWGM8sFsb20NOthwf5Dre59uLGUt600tFcuJacn1fbdx6/f2Dp8+IiccIVPVyc=
+	t=1781309053; cv=none; b=hmyPkUUTwH0yA0bV1WL8yRFwO4C4DvEulYLjZUzTisCqke9ecK3LNPjuFuoF0ul/qHpNsExNv7FBvsjIEwsJQEKeWVUQxDL1xJ78sqWFcCm7NEO3VtWIW6RsvpFR98m0gVzJMiN/TGL1VL88cAKI9RMczQC1OZgFQ5ANzgtu5Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781309050; c=relaxed/simple;
-	bh=Xwuyuov94cuKeDGWYJTFTGHsvp5U8VxJsT9zOCIxWG8=;
+	s=arc-20240116; t=1781309053; c=relaxed/simple;
+	bh=VLPFE3d5+MWFE73Aeh4k+ZcXMnNj4fLH24O6wwXd6/M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Z4WawJDefm4ND+351MkY0nPpgWAKwJZ2bJ0kY54PXZMtt7cKknZJaoW00QCucqDgDBb/BIeeoJeYBT7x3UzsTZxYLbcHIqwaFx9/tp8/ZpxojfRW1k0i0D60rUfYxoV4E1xQ7iJi2CC1c2V48YgWqGzE3B49Ne2Vw2QcAeXXEzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cSB4F/fD; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=Z94EpSGl9l168PMuGXnLESHz87cdED6rrMNNHCBCYatW+z3W40UWEEgnAHnLITBJZr35i0/Zv9SPihIDWsWGyL2OVREJuQl0uH4vXY+t3k1/ggvlDxF3FKMeeBIqcLk65w1ixfgh9t5AWzAWCAKc/AfTCfRjslAT7K1qC4VIABY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rKKhUk9r; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cSB4F/fD"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d98b76d12so1003707a91.2
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:04:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rKKhUk9r"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b808bedfaso2064133a91.1
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:04:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781309049; x=1781913849; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781309051; x=1781913851; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=kEmXu0hBgiuGtr0DA+mnEYPgxWaLBxZioaKD7/+kq6M=;
-        b=cSB4F/fDa/IT4DYFVQcJ0UgSXHSRpsJgXUoA5p9bDmWelmhEH+jA2F/+OPqdyX8th0
-         Msd/dIWVu/fxpO9ghQgzEJzARBTGHQQzDIf+C6jx9UesAIJf6t0Ehoja8pJxqNKAn9Uc
-         lO6IUlfRQMizEM2i5VoxkAf1OtOA1Yv6z5Du6x71xPAcYeEatdvO7kYt3EB3/ImydMTW
-         9KuhKAObeevoeQ5w61iJSApnwMDfvXLF9FMT3ilclP5/Gz9VD345yJLX14A0LNRAz5og
-         F1J4aNr1opdjmjIm19YDNIl0OL/RMZqDG4atEC5lpJYUR85J2U62Jl+5rEDoeXCOUwlK
-         ViRw==
+        bh=0yrUwTTXFBw8wHMHMdaAEujEtvp+5TOf8REV1jotnC4=;
+        b=rKKhUk9rKSSs++eVOfrJ/tYFwXur0cPJ+s8DLy6/T5/2y693VIUtoezhzFp3bkFksX
+         gwHw2geXhJIs/gvj3kIJ/361s2IunG7sYvpm6G1DTN7AcItsWu5m4HMHY8mLsXxAt0jB
+         0INmAAv+PHgX1G8iHqbn3s5WkeTnRneax1y3fqr3aJUShLThc0ZxS6Q/SSUuxlreD7He
+         uBGQC3x7PRkvpc4cZiMDFMsbB3sa3Zh0epQcNT2YZuKbNydZNiHjuLpZDthjOM+Zzkgm
+         UhKG9lKq3zrWhXTCzi54dCLv9BzKI0cNYHncaJrmvfPgLe+2cDDYHiVY0+rayek1G3Vx
+         0GwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781309049; x=1781913849;
+        d=1e100.net; s=20251104; t=1781309051; x=1781913851;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=kEmXu0hBgiuGtr0DA+mnEYPgxWaLBxZioaKD7/+kq6M=;
-        b=VyUVd7yzV5raJKq3h+1GSQ2dLjC/S78J2XOr1E8EQpUKeeKAT+1CQUE3XkhC2WpVEZ
-         UGppc30Dc1HNooKuJ0Crknu+x8HH4ugmefh2J27oYo4fX6CDvr+DXKr/R7/ouq/TPv4v
-         mJziHspTy+Vsnct1AZkfzMYksHVeacCovCNYydAzrViTLXWTY66dGPxx4fwPf94EeALL
-         VMKq55iJjf+mz+Rm7kFYn/EtGWMi/6fMScYPLTIh1nzA7Q6T5zg9xcsDAu6tFl4/nWfz
-         eCA5CwoeGnP5Gd+JBC5TLF+A+0GAA3m8rQPu36EjiUlztTdWRwMx3CbNxSpDgVixbrMN
-         PZpQ==
-X-Gm-Message-State: AOJu0YxjMyZKCDvwNz+zf9xn7ztM4dw9CCvR+vcECsX8+UgBv8kJlVr6
-	eK5ZaKOo2IVeKNWjY1i19KpFMqwI7zLIs7AoAWsS5GvzdKRWzjs+fChdcHbcIjbcpWPwBwa6ocO
-	H6sUgsg==
-X-Received: from pgbo20.prod.google.com ([2002:a63:5a14:0:b0:c0e:3543:bdb0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:58c4:b0:35b:9894:f6f9
- with SMTP id 98e67ed59e1d1-37a040adfbbmr5006619a91.18.1781309048574; Fri, 12
- Jun 2026 17:04:08 -0700 (PDT)
+        bh=0yrUwTTXFBw8wHMHMdaAEujEtvp+5TOf8REV1jotnC4=;
+        b=LaZSIMCD0Uk6w/bRTGzsEOhnJ50ooqPmWrx6ujnRbzgp4WpsrC0HNTRIXIs+U7GdCI
+         Ec5FzbMR5O34gJ19tdNHFbi+wAgOBUgQJ07djaOgIyhvVm55h6tU35XckfU4Bi51FDCe
+         GYfYQh/LE0hSGX2jMraU/3fNwytIqLOQe81MjmkvCsGXjYQJhwk/vi0AZvG0D81NNoLY
+         AEw4D+RYKtOUR5hn7UTGd1m4+hI8ZSVniCN/6By6dmdp9A1/Qs3rGG5xc1FgthTY2x6p
+         HFiFWYca2yhl3axzen9+RJlzGy8Q7v2iVQQyFR+hDaoen9yroBauy4ZccbWSchXpno8G
+         8jTg==
+X-Gm-Message-State: AOJu0YzoSOV/Vc310RmUGteVnDIFXb1L77cfCRmA9CoVtFPbuK3WI0lO
+	WTPEKPENmp5UbIwfbexJBlCBeAiMYPQf9YJTj/LXFY6vmIhWGctpXmUAwMhfiA0+ZLZwk88uXEY
+	g7vz+qw==
+X-Received: from pgnr12.prod.google.com ([2002:a63:8f4c:0:b0:c85:b75b:a85d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7353:b0:3b4:640e:f6b1
+ with SMTP id adf61e73a8af0-3b79624b553mr1704981637.10.1781309051281; Fri, 12
+ Jun 2026 17:04:11 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 17:03:23 -0700
+Date: Fri, 12 Jun 2026 17:03:25 -0700
 In-Reply-To: <20260613000329.732085-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260613000329.732085-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260613000329.732085-25-seanjc@google.com>
-Subject: [PATCH v4 24/30] KVM: x86: Move IRQ-related helper declarations from
- kvm_host.h => irq.h
+Message-ID: <20260613000329.732085-27-seanjc@google.com>
+Subject: [PATCH v4 26/30] KVM: x86: Don't treat interrupts as allowed just
+ because a nested run is pending
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>
@@ -69,78 +69,84 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Move the function declaration for APIs to get/query pending IRQs from
-kvm_host.h to irq.h, as the APIs are only used by KVM x86 code.
+When querying whether or not interrupts (IRQs) are allowed, check for a
+pending nested run _after_ checking whether or not interrupts are blocked.
+If L1 is running L2 _without_ nested_exit_on_intr(), i.e. if L1 IRQs can
+be blocked while running L2, and interrupts will indeed be blocked once the
+nested VM-Enter to L2 is completed, then KVM should treat interrupts as not
+being allowed.
 
-No functional change intended.
+For injection, this avoids an unnecessary (forced) VM-Exit, as KVM can
+immediately request an IRQ window, instead of forcing an exit and _then_
+requesting an IRQ window (because after the forced exit, KVM will see that
+interrupts are blocked).
 
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+For non-injection usage, only kvm_vcpu_ready_for_interrupt_injection() is
+affected in practice.  kvm_vcpu_has_events() is unreachable when a nested
+run is pending, as KVM clears nested_run_pending prior to calling
+kvm_emulate_halt_noskip() when putting L2 into HLT via GUEST_ACTIVITY_HLT,
+and SVM has no equivalent to GUEST_ACTIVITY_STATE.  I.e. the vCPU will
+always be runnable if a nested run is pending, and thus
+kvm_arch_vcpu_runnable() => kvm_vcpu_has_events() is effectively dead code,
+as is __kvm_emulate_halt() => kvm_vcpu_has_events().  Oh, and TDX doesn't
+support nested VMX.  Similarly, kvm_can_do_async_pf() is unreachable as
+KVM shouldn't be faulting in memory with a pending nested VM-Enter.
+
+As for kvm_vcpu_ready_for_interrupt_injection(), incorrectly treating
+interrupts as being allowed could result in KVM prematurely exiting to
+userspace to accept an ExtINT.  But, KVM will still hold/block the ExtINT
+and request its own IRQ window.  I.e. the net effect is more or less the
+same as the for-injection case.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h | 5 -----
- arch/x86/kvm/irq.h              | 6 ++++++
- arch/x86/kvm/svm/nested.c       | 1 +
- arch/x86/kvm/vmx/nested.c       | 1 +
- 4 files changed, 8 insertions(+), 5 deletions(-)
+ arch/x86/kvm/svm/svm.c | 6 +++---
+ arch/x86/kvm/vmx/vmx.c | 5 ++++-
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 2b96ab0f46f9..811687b7a76a 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2338,12 +2338,7 @@ enum {
- # define kvm_memslots_for_spte_role(kvm, role) __kvm_memslots(kvm, 0)
- #endif
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 526e0fdcd16b..883d5f703391 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4055,12 +4055,12 @@ static int svm_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
  
--int kvm_cpu_has_injectable_intr(struct kvm_vcpu *v);
--int kvm_cpu_has_interrupt(struct kvm_vcpu *vcpu);
--int kvm_cpu_has_extint(struct kvm_vcpu *v);
- int kvm_arch_interrupt_allowed(struct kvm_vcpu *vcpu);
--int kvm_cpu_get_extint(struct kvm_vcpu *v);
--int kvm_cpu_get_interrupt(struct kvm_vcpu *v);
- void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event);
+-	if (vcpu->arch.nested_run_pending)
+-		return -EBUSY;
+-
+ 	if (svm_interrupt_blocked(vcpu))
+ 		return 0;
  
- int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
-diff --git a/arch/x86/kvm/irq.h b/arch/x86/kvm/irq.h
-index 34f4a78a7a01..1a84ea31e7fd 100644
---- a/arch/x86/kvm/irq.h
-+++ b/arch/x86/kvm/irq.h
-@@ -112,6 +112,12 @@ static inline int irqchip_in_kernel(struct kvm *kvm)
- 	return mode != KVM_IRQCHIP_NONE;
++	if (vcpu->arch.nested_run_pending)
++		return -EBUSY;
++
+ 	/*
+ 	 * An IRQ must not be injected into L2 if it's supposed to VM-Exit,
+ 	 * e.g. if the IRQ arrived asynchronously after checking nested events.
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 2c120ff47790..9b277e36a521 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5254,6 +5254,9 @@ bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
+ 
+ int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
+ {
++	if (vmx_interrupt_blocked(vcpu))
++		return 0;
++
+ 	if (vcpu->arch.nested_run_pending)
+ 		return -EBUSY;
+ 
+@@ -5264,7 +5267,7 @@ int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
+ 	if (for_injection && is_guest_mode(vcpu) && nested_exit_on_intr(vcpu))
+ 		return -EBUSY;
+ 
+-	return !vmx_interrupt_blocked(vcpu);
++	return 1;
  }
  
-+int kvm_cpu_has_injectable_intr(struct kvm_vcpu *v);
-+int kvm_cpu_has_interrupt(struct kvm_vcpu *vcpu);
-+int kvm_cpu_has_extint(struct kvm_vcpu *v);
-+int kvm_cpu_get_extint(struct kvm_vcpu *v);
-+int kvm_cpu_get_interrupt(struct kvm_vcpu *v);
-+
- void kvm_inject_pending_timer_irqs(struct kvm_vcpu *vcpu);
- void kvm_inject_apic_timer_irqs(struct kvm_vcpu *vcpu);
- void kvm_apic_nmi_wd_deliver(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 1ab8b95975a4..ef10298cb320 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -23,6 +23,7 @@
- 
- #include "kvm_emulate.h"
- #include "trace.h"
-+#include "irq.h"
- #include "mmu.h"
- #include "x86.h"
- #include "smm.h"
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index b2c851cc7d5c..adbb8358ade7 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -11,6 +11,7 @@
- #include "x86.h"
- #include "cpuid.h"
- #include "hyperv.h"
-+#include "irq.h"
- #include "mmu.h"
- #include "nested.h"
- #include "pmu.h"
+ int vmx_set_tss_addr(struct kvm *kvm, unsigned int addr)
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
