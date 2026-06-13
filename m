@@ -1,55 +1,55 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E56F30C17E
-	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA026304976
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781309053; cv=none; b=hmyPkUUTwH0yA0bV1WL8yRFwO4C4DvEulYLjZUzTisCqke9ecK3LNPjuFuoF0ul/qHpNsExNv7FBvsjIEwsJQEKeWVUQxDL1xJ78sqWFcCm7NEO3VtWIW6RsvpFR98m0gVzJMiN/TGL1VL88cAKI9RMczQC1OZgFQ5ANzgtu5Ik=
+	t=1781309053; cv=none; b=CF5CwLmWUo4lc5ki+vpRzr3Sj7megRszq9FzyGWwpvOfUe4Bnedb/ADZ6BU8bxRu73GKhbVRkBEsIJ1XdG55rg0wfIE8J83M3o8ip/joI4QFhLI5QyiVwWW+eErGtY/IMMhBCRl1rhQXYkmr/Pxw4g0ai5JiQzVcw0D1sijCJcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781309053; c=relaxed/simple;
-	bh=VLPFE3d5+MWFE73Aeh4k+ZcXMnNj4fLH24O6wwXd6/M=;
+	bh=TUs8+D3WQzak/3ZK7/ZuXM9Z8eiT94gH6iLznJppYyA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Z94EpSGl9l168PMuGXnLESHz87cdED6rrMNNHCBCYatW+z3W40UWEEgnAHnLITBJZr35i0/Zv9SPihIDWsWGyL2OVREJuQl0uH4vXY+t3k1/ggvlDxF3FKMeeBIqcLk65w1ixfgh9t5AWzAWCAKc/AfTCfRjslAT7K1qC4VIABY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rKKhUk9r; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=jtybz0rNlYm9fDxnNT5omLPTTF7MmN44Ro7KLAqk2AtQmr11CkdShqsqflNqx5xAgjk+lxq8YXyzn53M0z9vH/9ReSN57MBFJf7RyVTzj6GgPItUQhCA15oX+CGDgT6LymBbT0faSz0VjFVANQzcHbbBBQhEcCWPFliysvu+zBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=veVDZu49; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rKKhUk9r"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b808bedfaso2064133a91.1
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:04:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="veVDZu49"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c85a2c305d0so739053a12.1
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:04:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781309051; x=1781913851; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781309050; x=1781913850; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=0yrUwTTXFBw8wHMHMdaAEujEtvp+5TOf8REV1jotnC4=;
-        b=rKKhUk9rKSSs++eVOfrJ/tYFwXur0cPJ+s8DLy6/T5/2y693VIUtoezhzFp3bkFksX
-         gwHw2geXhJIs/gvj3kIJ/361s2IunG7sYvpm6G1DTN7AcItsWu5m4HMHY8mLsXxAt0jB
-         0INmAAv+PHgX1G8iHqbn3s5WkeTnRneax1y3fqr3aJUShLThc0ZxS6Q/SSUuxlreD7He
-         uBGQC3x7PRkvpc4cZiMDFMsbB3sa3Zh0epQcNT2YZuKbNydZNiHjuLpZDthjOM+Zzkgm
-         UhKG9lKq3zrWhXTCzi54dCLv9BzKI0cNYHncaJrmvfPgLe+2cDDYHiVY0+rayek1G3Vx
-         0GwQ==
+        bh=r9wPaZtQHX5Bx6eh7lTncgy5Eq4/yAkBzcyfxii5Ebk=;
+        b=veVDZu49y9YMr06hQeCM0u3RqmNsCR9LRxF1FEeJhK0Nx1gDBzwAI48/fv7hyZVevE
+         i55JdqJOTd+AGE1sbAnnEpd1TsblhBY2wmlfvFUmrgsEowG6X7lyiDoG1/EwZ+PrXoNU
+         /R4dhtt5P6dxngaAC0OvkkfgmYw/ISWU2/bUB0/zrLHlAVCzGMsAq4CVE4IYemEFNWGl
+         Plmz0veM4brwkdvULQMCDYbM5hv9akHIVvEbFIkmFw7IoQbOlOqZ4i29DYVJByguGy1p
+         37sUK7VnTtkxP18VSX52LtP/b4S8T3V2yzVDHWuuTFu5aQ0+FvCj120OuEkm6xjxrLjw
+         uBhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781309051; x=1781913851;
+        d=1e100.net; s=20251104; t=1781309050; x=1781913850;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0yrUwTTXFBw8wHMHMdaAEujEtvp+5TOf8REV1jotnC4=;
-        b=LaZSIMCD0Uk6w/bRTGzsEOhnJ50ooqPmWrx6ujnRbzgp4WpsrC0HNTRIXIs+U7GdCI
-         Ec5FzbMR5O34gJ19tdNHFbi+wAgOBUgQJ07djaOgIyhvVm55h6tU35XckfU4Bi51FDCe
-         GYfYQh/LE0hSGX2jMraU/3fNwytIqLOQe81MjmkvCsGXjYQJhwk/vi0AZvG0D81NNoLY
-         AEw4D+RYKtOUR5hn7UTGd1m4+hI8ZSVniCN/6By6dmdp9A1/Qs3rGG5xc1FgthTY2x6p
-         HFiFWYca2yhl3axzen9+RJlzGy8Q7v2iVQQyFR+hDaoen9yroBauy4ZccbWSchXpno8G
-         8jTg==
-X-Gm-Message-State: AOJu0YzoSOV/Vc310RmUGteVnDIFXb1L77cfCRmA9CoVtFPbuK3WI0lO
-	WTPEKPENmp5UbIwfbexJBlCBeAiMYPQf9YJTj/LXFY6vmIhWGctpXmUAwMhfiA0+ZLZwk88uXEY
-	g7vz+qw==
-X-Received: from pgnr12.prod.google.com ([2002:a63:8f4c:0:b0:c85:b75b:a85d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7353:b0:3b4:640e:f6b1
- with SMTP id adf61e73a8af0-3b79624b553mr1704981637.10.1781309051281; Fri, 12
- Jun 2026 17:04:11 -0700 (PDT)
+        bh=r9wPaZtQHX5Bx6eh7lTncgy5Eq4/yAkBzcyfxii5Ebk=;
+        b=p2tYFug7OXibOhIemQ5MBwYxtjdMNGYUW/jVw7O823RoGlf80U/Lw/iBXCbk5HOo5Q
+         +eU7Ft7bhBDLHJJTVGiQ9OEnZW3rp1rAC8HORT1OnpFNBKjhaacKX7F0TVVS70XhB7rL
+         REjeiYQW9f9yXHWCb4Qqk9fo7/EKVKAUylyNjcau9YgcANVPbBbqxCcgg/rD2AP+X8CV
+         7N45jsCjYtU6XrnE+5EyLbK63s7wsU9dVVMUb5ZLRcs2Grhw1ztWOXFsdUvqR4X0QNP6
+         l1drk6KvFzZRiqjEcW2fw4mwiT9hedq4o/BLM6uQlNnmrs/VIcj+TzOoIi4FXb0JTDT4
+         Iqog==
+X-Gm-Message-State: AOJu0Yx/uUWzPIwEmOTkuHZHHOdCTNRQKU9srueftuqnbMmqYCT3LRFX
+	1glRlrwYTE/hOg4KPs95iokEace9VgXhc9ec3oMPIUAlbo8njfO8/8Xj1jBdNjIFQxVMRalerxN
+	fA5DOGw==
+X-Received: from pgbl26.prod.google.com ([2002:a63:571a:0:b0:c85:a528:228f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7d02:b0:3b3:216b:274c
+ with SMTP id adf61e73a8af0-3b783f1bd60mr6127156637.22.1781309050199; Fri, 12
+ Jun 2026 17:04:10 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 17:03:25 -0700
+Date: Fri, 12 Jun 2026 17:03:24 -0700
 In-Reply-To: <20260613000329.732085-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260613000329.732085-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260613000329.732085-27-seanjc@google.com>
-Subject: [PATCH v4 26/30] KVM: x86: Don't treat interrupts as allowed just
- because a nested run is pending
+Message-ID: <20260613000329.732085-26-seanjc@google.com>
+Subject: [PATCH v4 25/30] KVM: x86: Move kvm_pv_send_ipi() declaration from
+ kvm_host.h => lapic.h
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>
@@ -69,84 +69,50 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When querying whether or not interrupts (IRQs) are allowed, check for a
-pending nested run _after_ checking whether or not interrupts are blocked.
-If L1 is running L2 _without_ nested_exit_on_intr(), i.e. if L1 IRQs can
-be blocked while running L2, and interrupts will indeed be blocked once the
-nested VM-Enter to L2 is completed, then KVM should treat interrupts as not
-being allowed.
+Move the declaration of kvm_pv_send_ipi() into lapic.h, as its
+implementation is provided by lapic.c (sending PV IPIs relies on the
+optimized APIC map provided by the in-kernel local APIC), and it's only
+used by KVM x86 code.
 
-For injection, this avoids an unnecessary (forced) VM-Exit, as KVM can
-immediately request an IRQ window, instead of forcing an exit and _then_
-requesting an IRQ window (because after the forced exit, KVM will see that
-interrupts are blocked).
+No functional change intended.
 
-For non-injection usage, only kvm_vcpu_ready_for_interrupt_injection() is
-affected in practice.  kvm_vcpu_has_events() is unreachable when a nested
-run is pending, as KVM clears nested_run_pending prior to calling
-kvm_emulate_halt_noskip() when putting L2 into HLT via GUEST_ACTIVITY_HLT,
-and SVM has no equivalent to GUEST_ACTIVITY_STATE.  I.e. the vCPU will
-always be runnable if a nested run is pending, and thus
-kvm_arch_vcpu_runnable() => kvm_vcpu_has_events() is effectively dead code,
-as is __kvm_emulate_halt() => kvm_vcpu_has_events().  Oh, and TDX doesn't
-support nested VMX.  Similarly, kvm_can_do_async_pf() is unreachable as
-KVM shouldn't be faulting in memory with a pending nested VM-Enter.
-
-As for kvm_vcpu_ready_for_interrupt_injection(), incorrectly treating
-interrupts as being allowed could result in KVM prematurely exiting to
-userspace to accept an ExtINT.  But, KVM will still hold/block the ExtINT
-and request its own IRQ window.  I.e. the net effect is more or less the
-same as the for-injection case.
-
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/svm.c | 6 +++---
- arch/x86/kvm/vmx/vmx.c | 5 ++++-
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 4 ----
+ arch/x86/kvm/lapic.h            | 3 +++
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 526e0fdcd16b..883d5f703391 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4055,12 +4055,12 @@ static int svm_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 811687b7a76a..0f6f71642e1d 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2341,10 +2341,6 @@ enum {
+ int kvm_arch_interrupt_allowed(struct kvm_vcpu *vcpu);
+ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event);
  
--	if (vcpu->arch.nested_run_pending)
--		return -EBUSY;
+-int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
+-		    unsigned long ipi_bitmap_high, u32 min,
+-		    unsigned long icr, int op_64_bit);
 -
- 	if (svm_interrupt_blocked(vcpu))
- 		return 0;
- 
-+	if (vcpu->arch.nested_run_pending)
-+		return -EBUSY;
-+
- 	/*
- 	 * An IRQ must not be injected into L2 if it's supposed to VM-Exit,
- 	 * e.g. if the IRQ arrived asynchronously after checking nested events.
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 2c120ff47790..9b277e36a521 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5254,6 +5254,9 @@ bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
- 
- int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
- {
-+	if (vmx_interrupt_blocked(vcpu))
-+		return 0;
-+
- 	if (vcpu->arch.nested_run_pending)
- 		return -EBUSY;
- 
-@@ -5264,7 +5267,7 @@ int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
- 	if (for_injection && is_guest_mode(vcpu) && nested_exit_on_intr(vcpu))
- 		return -EBUSY;
- 
--	return !vmx_interrupt_blocked(vcpu);
-+	return 1;
+ u64 kvm_scale_tsc(u64 tsc, u64 ratio);
+ u64 kvm_read_l1_tsc(struct kvm_vcpu *vcpu, u64 host_tsc);
+ u64 kvm_calc_nested_tsc_offset(u64 l1_offset, u64 l2_offset, u64 l2_multiplier);
+diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+index 32f09b25884a..58dbb94f980d 100644
+--- a/arch/x86/kvm/lapic.h
++++ b/arch/x86/kvm/lapic.h
+@@ -131,6 +131,9 @@ static inline int kvm_irq_delivery_to_apic(struct kvm *kvm,
  }
  
- int vmx_set_tss_addr(struct kvm *kvm, unsigned int addr)
+ void kvm_apic_send_ipi(struct kvm_lapic *apic, u32 icr_low, u32 icr_high);
++int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
++		    unsigned long ipi_bitmap_high, u32 min,
++		    unsigned long icr, int op_64_bit);
+ 
+ int kvm_apic_set_base(struct kvm_vcpu *vcpu, u64 value, bool host_initiated);
+ int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
