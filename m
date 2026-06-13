@@ -1,188 +1,232 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718973F44FF
-	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 16:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628813812C2
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 17:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781369866; cv=none; b=RhoyO1P6ZMOjW3HJHiMn9HQryFslZA3mSvkDxD0k5jnxV3T51JiW+Yo92zS0LHBw15LLbOQygCELw9RrguO676dQ2HWcnvLY/HD5GSEsZ8Y4HsoCkp18EhMyv2nrIaPtOplRyb1WWl3KHrVk8yNDi00P6xTJN+azCxOb9gkyNqA=
+	t=1781372630; cv=none; b=AxoS+1t4QRgem+90/BuxA3N+NWqE2VDbkARYMPi5boonIwRjrb+AnnG0KRdzU9Z/1ZHMm7aTyIe4SkMuo0qyRUhoY8OUCaRJQmMivs/NXk+fwuQLdVoc4yNo2bsWfpJUFvrIwQIxzZxLlNIlNBlLY0ILnszfQOCDigKn4r09j0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781369866; c=relaxed/simple;
-	bh=uVx+O1zJyx9kU/RD794J/wVuxnmd6WtrXdey8iXy5Ko=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=eY2KkLSMU/V9xpL9DgDxCRmHqGi1RFeriav6qnqEN440hPWLa1bk/6nVv0OOy3hv2jsULSiacQiqITccFBTt1QKRqs9cXJUrLR1FZlIlxrM/oSZcFTlN6volmL5lvHxgdPpP+0Ow0lsHUcGoLbSHdO/cFimlqzet2yhSwTDlCvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xuy707Uu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781372630; c=relaxed/simple;
+	bh=qfSZdPmwBhywiRrKL1QrGMIdCfETYR+AOs72sM7RPN0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UK0HzeB0jahhd61QE7duMLi7mAAtGY5CaqFNKpNN8qdfIjHAvGxjEvbewBqF4f3cMT9H1omANcDQxyLrb1j3uSzsjkpO5wxIbKJCcIfBL2RCCytIk4XQGvSS39F/jGwqgc4X4bDC24Bv/sdFBm1WDc/TSg+DXAeBNVQ0ZVAlT4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=OKXZsLuZ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=i4tu7jAj; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xuy707Uu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212911F00A3D;
-	Sat, 13 Jun 2026 16:57:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781369865;
-	bh=QpKHuO1UHHoVJUpMm3Z6UQZUF2fTt/uko3GCpvBn2eI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Xuy707UuXIb1WmoD0FrZb0CN9GJriiTmJkvZ/Jw4dHvkSjkwj8s8G1LTHKya8o6we
-	 u9G4hRJtOWAIP9EltlmnkWIUoWjiAB9aAhBmna46S+kWkk2vUy1wD2kba1afeD5FIE
-	 vhr+W5ufmY7eWIfGIbuxLsFqevz4WwwXkFM1wFpTrloRCnxChX6GAhpOXtKhQTuIzw
-	 zOowhGIh6Ll5Ae0iDZLwXbiagLd65JP+o/zqvIrZXD/d8yy33slyi7jy9wqCLJneri
-	 jmXSZwq1gZFcvP96w/fVjm9cSCBRbiUvu3xzqHsvAQjNLsB3I8Rgv1uLUSZX/MPGaf
-	 GAQj4y45HA5ow==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/4] vhost/vsock: add VHOST_RESET_OWNER ioctl
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Andrey Drobyshev" <andrey.drobyshev@virtuozzo.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260612165718.433546-3-andrey.drobyshev@virtuozzo.com>
-References: <20260612165718.433546-3-andrey.drobyshev@virtuozzo.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 13 Jun 2026 16:57:44 +0000
-Message-Id: <20260613165745.212911F00A3D@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="OKXZsLuZ";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="i4tu7jAj"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65DF9L8b2769404
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 17:43:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=plRqMq3yK9Gvk+pbVnt+KD
+	Y+x/K8ovZzlsQsgimrdOE=; b=OKXZsLuZw1uLwCy9wlEQKLoLrCSLPORTIs4pYg
+	ackQWrlEebJQn4hX8E4P4xoEIfr2zv3GKNmunXBMoj4QUurG0AUkJoT75/iRBdPw
+	r8uizcWTxANrBucYJ/lyE2iFrf6AI0MeiPZZDNv80ytCI5DBkmXoqbHqRQ5Jc1kY
+	eUU9fNhCpabRgloPKhvJcGxdfb8Aqu74ncD1dZtWyDA/mDGqXbSQ4pxBzb+6hpos
+	vllClEcjzwZ64ibosP5+O4k44cMldNlN3oaldjEt3el6P6RIY1ZtkmRA+WmZDn/R
+	NCMdIpa95WZK+zXC+g5oYYqvcKYdH0GEYUWwSI8jgLKDxikA==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4erye11nhj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 17:43:48 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-842b0dd8107so1211956b3a.0
+        for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 10:43:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1781372628; x=1781977428; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=plRqMq3yK9Gvk+pbVnt+KDY+x/K8ovZzlsQsgimrdOE=;
+        b=i4tu7jAjg75I3psvQVP3j9KipjErxzq4RMEOe7AZjbtC4NwvSUS6H10m24hPuaYDL8
+         nDpAN5eg4CFZKVaIPPrurS5tILbW5O7aK+fGed75vr8xR7BebEmPXFWokIsFeWoc/EMQ
+         rH9L0b3/Fka3QiU4WndYe6ojPeAPGF3P/7yTryUWRZkvl8IW9RcirnTuCNSKGrFN82oz
+         MGPP6pJVaR29K/mg2JM8DV0FKfGGxLqxgcucLxbwGVKOpACTjkUk3YPos3X8UJdPPthM
+         U4yhHxfmEg312vLLJQR5i5Glv3S61qLP68NEbU7CelZNL0sJMGrJCGP8bPyNN5Zo3arI
+         qxpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781372628; x=1781977428;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=plRqMq3yK9Gvk+pbVnt+KDY+x/K8ovZzlsQsgimrdOE=;
+        b=hVddu8Qhi506Uq1kFtbsC7yze5uMhB8xspCdAmHchUTOWSJTeHN1Pe7BfUSluAgzEK
+         q/V5qDH7EjfwqSlS2DSu2mCxd3fPtZwbo9mFQ8aYDINaZyduJIj1NgHPLx3aE6guVcrs
+         l9ozVlyl2gi/XxxZajEPWjGwC+R1tZoD10z8RSQCSLtmles+YbAROS/4B/aQJnu7L2n3
+         rVRden3KfLjFxDmgwLIuq8NYPzjJaqfOpxTMS9OmZli+h92S73A465ntowvxEnSD3X8l
+         CFE04MRlL8sJxoF4r4fnWaBhUZQY3Uom6jS7ttgb8FqIAJA+yECfvSJZP+f8VPO9ctX8
+         DBSQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+6NODOLh9DlrHLgF0MA9h4mBokYf8gq6AwMPWcj6Q+pFNa6DVeTS65pQlkAlbzAdYnsh0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5GXqk+JDQhy3vPsQ2DXsleqTyae7gRTFart83L3/vpOeHSHto
+	Qsd4qLaR44bhOJpX9kGkLpxoSFMI24Q+2bFTK4g2cC/bwr5QdOhYQBiwy2ewozzb/yMulrPjUzR
+	lM4SVDwZmQcN0fNXmazOQiDnwWqpPfXfwVwR8+uFNabaWtbkVr1yHpvM=
+X-Gm-Gg: Acq92OFIBeO0XMwVoyv15f8FL3rzYBJjO0BUa4PVtoNOGfp4u0OqOoBygMNoeYkjaxG
+	gmkm81sbV/1YhSm2/qq2Zz9sEZvCAeztpSx9XyKOR3mnfLG6iBnqWfnbI4l3Q9js9s97zL4ndF0
+	QVlnDREY9WloDaavuh16r8gTgDHIRR2xBl+DtWq3+sQmWcFs1gm/vpXJIQkVfTFjjqVlqj9jki7
+	nu+Dchcuw4TNzl53/KfuQCiBjaZJ+yAFpdRA7u4Zg6wi8+FzhevD2gaVbpG1rXq/4UzLW27HpY8
+	MFC2Iqz3bH3rcoP7X+mJV4f6J7O6temJmbhA0rT7Ip+Lfx0iS4E+eh/DsmMQjchoUeCzcPQf6Oe
+	oJOUMznfmOfSaDg2l9MKayocxsd2vAyMbv+jZtoM0eLwHTgx4/vR1JA==
+X-Received: by 2002:a05:6a00:238c:b0:835:41f3:f440 with SMTP id d2e1a72fcca58-8434cdfe0ffmr8593316b3a.14.1781372627790;
+        Sat, 13 Jun 2026 10:43:47 -0700 (PDT)
+X-Received: by 2002:a05:6a00:238c:b0:835:41f3:f440 with SMTP id d2e1a72fcca58-8434cdfe0ffmr8593287b3a.14.1781372627138;
+        Sat, 13 Jun 2026 10:43:47 -0700 (PDT)
+Received: from hu-pranarya-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b055095sm6594096b3a.57.2026.06.13.10.43.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Jun 2026 10:43:46 -0700 (PDT)
+From: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
+Subject: [PATCH RFC 0/3] vfio/pci: Hide and optionally override the PCIe
+ Device Serial Number
+Date: Sat, 13 Jun 2026 23:13:35 +0530
+Message-Id: <20260613-pcie_vfio-v1-0-09168188f3f2@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMiWLWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDM0Nj3YLkzNT4srTMfF0TC1MDMzMDo9Rks0QloPqCotS0zAqwWdFKQW7
+ OSrEQweLSpKzU5BKQKUq1tQAPURXkcgAAAA==
+X-Change-ID: 20260613-pcie_vfio-48506602ec6a
+To: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
+        David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Pranjal Shrivastava <praan@google.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Pranjal Arya <pranjal.arya@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781372623; l=4732;
+ i=pranjal.arya@oss.qualcomm.com; s=20260516; h=from:subject:message-id;
+ bh=qfSZdPmwBhywiRrKL1QrGMIdCfETYR+AOs72sM7RPN0=;
+ b=rLXoafxrZr8d972ebckbTQWraOKdDA+HhooMDSSLb5qy8ZwtwT764phTddP7x0mDhD6/QsFBC
+ y1y4QqjZbnWCxmX/Kg16h6VqIo2TdZWayWFEBY5tWsCYFlR7mtWfb3z
+X-Developer-Key: i=pranjal.arya@oss.qualcomm.com; a=ed25519;
+ pk=ymtcTlccEIDsi3ErhpjIoZZHKdPBYWGWW0Lchs5MsbE=
+X-Proofpoint-GUID: ZjIuJU9BKDRMlVG4_qimpGF11eR978kM
+X-Authority-Analysis: v=2.4 cv=MNlQXsZl c=1 sm=1 tr=0 ts=6a2d96d4 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=EUspDBNiAAAA:8 a=vxAM7KqD62Chtjj2FOQA:9 a=QEXdDO2ut3YA:10
+ a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEzMDE4NSBTYWx0ZWRfXxv6P8Sjoypof
+ e/OulnKthTCW5GclZNwJQQZkKvXoL7EvKFITR80djFMzVny72s0qASM9NAicM0xN+FV/JOGPCXM
+ CJaewYndQwA1ttyJf4RBPg95vpPA+Ts=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEzMDE4NSBTYWx0ZWRfX6cuy6+0UUY/W
+ fOhGPedOmgr4SPY9PBwY2Qu31qFwvmN+Z2UPXhvnaKBpk6XQq87svX3CJfWZonOEDL64/Abj+Ja
+ Z3ie3cB6igwh4O/uSw6LIDX3Oxq+yCjbpj5y/Cz48TkKv6bbpoRGYeHhiUTcetYAgUl4sf1CbwW
+ 4iiawlYTL9PLpbUuiYinl8J917jIxYl/X8yY/67dOybRBv/7VMmNijtSm6OlmbDrAe/7E9WEMiX
+ jlekGXSg4s0VjwAh6WvQQKvXEGhodqdlStl6pT3WFNQ9WbqvQdpX/Mp1jx0ds8oyJQu9Osb1AVQ
+ 1VXnSTYIsCgzpdE2FZ5orHbO3qr7ZKQdlfo4QLNEe6UDoZcLzzHtGtxp5U2rOHiol3r7vxy+kI/
+ ikkFmbpykLgBx/gCH92+Wy2WrAboFBGa0+dZz/PFw1UjhXLgHxXkBDofght2hz+fZ+HxkXSIYxd
+ 4uf1VUAd2nDDp4+nLPw==
+X-Proofpoint-ORIG-GUID: ZjIuJU9BKDRMlVG4_qimpGF11eR978kM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-13_03,2026-06-12_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 impostorscore=0 spamscore=0 priorityscore=1501 phishscore=0
+ adultscore=0 suspectscore=0 clxscore=1011 lowpriorityscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606130185
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Critical] Concurrent host network traffic can trigger a Use-After-Free o=
-f `vhost_worker` during VHOST_RESET_OWNER.
-- [High] Pending network work becomes permanently disabled if queued to a d=
-estroyed worker during VHOST_RESET_OWNER.
-- [Medium] Useless O(N) system-wide socket iteration in `vhost_vsock_reset_=
-owner` causing dead code and lock contention.
---
+vfio-pci has no perm_bits entry for the PCIe Device Serial Number (DSN)
+Extended Capability, so guest reads of the serial
+number currently fall through to the physical device.  The DSN is a
+unique, persistent hardware serial number that identifies the physical
+component (the functions of a Multi-Function Device report the same
+value; Root Complex integrated Endpoints may implement it independently),
+so exposing it lets a guest fingerprint the host hardware and correlate
+it across VMs.  For multi-tenant passthrough this is an unnecessary
+host-identifier leak.
 
-commit fe82b486d339416d80c28b16f13b7f0d1014a742
-Author: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Series:
 
-vhost/vsock: add VHOST_RESET_OWNER ioctl
+  Patch 1 fully virtualizes the DSN capability (header + both serial
+  dwords) and scrubs the serial in the virtualized config space, so guests
+  read a zeroed serial while the capability stays visible.
 
-This ioctl is needed for QEMU's CPR (checkpoint-restore) migration of
-the guest with vhost-vsock device.  For this to work, we need to reset
-the device ownership on the source side by calling RESET_OWNER, and then
-claim it on the dest side by calling SET_OWNER.  We expect not to lose any
-AF_VSOCK connection while this happens.
+  Patch 2 adds a VFIO_DEVICE_FEATURE_PCI_DSN device feature so a trusted
+  userspace VMM can GET/SET the serial presented to the guest, for use
+  cases that need a stable but non-host-identifying serial (e.g. across
+  live migration between different physical devices).
 
-> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> index b12221ce6faf2..e629886e5cf84 100644
-> --- a/drivers/vhost/vsock.c
-> +++ b/drivers/vhost/vsock.c
+  Patch 3 adds a selftest: scrub-by-default, guest-write rejection,
+  PROBE/SET/GET, set-twice, persistence-across-reset, and bad-argsz.
 
-[ ... ]
+Position on default-on (the main RFC question):
+  I propose scrubbing by default rather than opt-in.  Rationale:
+  - A passed-through DSN is not meaningful to a guest today: the value
+    identifies the specific physical device, so any guest that keyed off
+    it would already break on migration or reassignment.
+  - vfio-pci already virtualizes/zeroes other identifying or host-specific
+    config state. The DSN is an outlier passed through unfiltered.
+  - Patch 2 provides an explicit escape hatch (VMM-set serial) for the
+    rare consumer that wants a stable identity.
+  If maintainers prefer opt-in, the scrub can be gated behind a module
+  param or a per-device feature flag.
 
-> @@ -894,6 +894,32 @@ static int vhost_vsock_set_features(struct vhost_vso=
-ck *vsock, u64 features)
->  	return -EFAULT;
->  }
-> =20
-> +static int vhost_vsock_reset_owner(struct vhost_vsock *vsock)
-> +{
-> +	struct vhost_iotlb *umem;
-> +	long err;
-> +
-> +	mutex_lock(&vsock->dev.mutex);
-> +	err =3D vhost_dev_check_owner(&vsock->dev);
-> +	if (err)
-> +		goto done;
-> +	umem =3D vhost_dev_reset_owner_prepare();
-> +	if (!umem) {
-> +		err =3D -ENOMEM;
-> +		goto done;
-> +	}
-> +	/* Follows vhost_vsock_dev_release closely except for guest_cid drop */
-> +	vsock_for_each_connected_socket(&vhost_transport.transport,
-> +					vhost_vsock_reset_orphans);
+Concurrency:
+  The guest config-space read path is unlocked and reads the DSN as two
+  independent 32-bit accesses, so the kernel cannot make a 64-bit guest
+  read atomic.  Patch 2 uses WRITE_ONCE/READ_ONCE for per-dword
+  consistency and documents that a guest reading across a SET may see an
+  old/new mix, exactly as HW may tear a 64-bit read of a register pair.
+  Serializing concurrent SET callers is the VMM's responsibility.
 
-[Severity: Medium]
-Is this iteration necessary?
+Lifetime:
+  The presented serial lives only in vconfig: it persists across runtime
+  FLR/SBR and is cleared on device fd close (per-open).
 
-Unlike the release path, this ioctl deliberately keeps vsock->guest_cid
-in vhost_vsock_hash to preserve connections across QEMU CPR.
+SR-IOV:
+  Per the SR-IOV spec a PF's DSN applies to all its VFs, and a VF that
+  implements DSN must report the same value as its PF.  vfio-pci exposes
+  only the assigned device's own config space and applies no VF-specific
+  transform to the DSN bytes, so a VF that implements DSN (whose value is
+  the PF's host serial) is scrubbed like a PF, and a VF that omits the
+  capability (the spec-recommended case) exposes no serial.  The selftest
+  covers VFs when run against a VF BDF that exposes DSN.
 
-Because the CID remains valid, when vhost_vsock_reset_orphans() iterates ov=
-er
-each system socket and calls:
+Testing (under QEMU with full VFIO device assignment via IOMMUFD); in
+every configuration all of the selftest's cases passed with none skipped
+or failing:
+  - x86_64 (intel-iommu), e1000e PF with DSN: all cases passed.
+  - arm64 (smmuv3), e1000e PF with DSN: all cases passed.
+  - x86_64 SR-IOV: an igb PF was given 1 VF that implements a DSN cap in a
+    realistic extended-capability chain (AER -> ARI -> DSN); the VF was
+    bound to vfio-pci and the selftest run against it: all cases passed.
+    This exercises the spec case where a VF's DSN mirrors the PF host
+    serial.
+  - The SR-IOV run used a kernel built with KASAN + PROVE_LOCKING; no KASAN
+    reports, lockdep splats, or warnings were produced.
 
-  vhost_vsock_get(vsk->remote_addr.svm_cid, sock_net(sk))
+Signed-off-by: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
+---
+Pranjal Arya (3):
+      vfio/pci: Virtualize and scrub Device Serial Number from guests
+      vfio/pci: Allow userspace to set a virtual Device Serial Number
+      selftests/vfio: Add PCIe Device Serial Number test
 
-it will successfully find the vsock and immediately return without performi=
-ng
-any cleanup.
+ MAINTAINERS                                      |   6 +
+ drivers/vfio/pci/vfio_pci_config.c               |  98 +++++++++++
+ drivers/vfio/pci/vfio_pci_core.c                 |   2 +
+ drivers/vfio/pci/vfio_pci_priv.h                 |   2 +
+ include/uapi/linux/pci_regs.h                    |   5 +
+ include/uapi/linux/vfio.h                        |  18 ++
+ tools/testing/selftests/vfio/Makefile            |   1 +
+ tools/testing/selftests/vfio/vfio_pci_dsn_test.c | 206 +++++++++++++++++++++++
+ 8 files changed, 338 insertions(+)
+---
+base-commit: c425609d6ac4012c8bbf01ec2e10e801b1923a7b
+change-id: 20260613-pcie_vfio-48506602ec6a
 
-Does this perform a useless system-wide traversal over all vsock connections
-under the vsock_table_lock spinlock, unnecessarily wasting CPU cycles and
-causing lock contention?
+Best regards,
+--  
+Pranjal Arya <pranjal.arya@oss.qualcomm.com>
 
-> +	vhost_vsock_drop_backends(vsock);
-> +	vhost_vsock_flush(vsock);
-> +	vhost_dev_stop(&vsock->dev);
-> +	vhost_dev_reset_owner(&vsock->dev, umem);
-
-[Severity: Critical]
-Can concurrent host network traffic trigger a use-after-free of the
-vhost_worker here?
-
-Since vsock intentionally remains in vhost_vsock_hash to preserve connectio=
-ns
-across CPR, a concurrent thread sending a packet can still resolve the vsock
-object.
-
-If the network thread reads vq->worker under the RCU read lock in
-vhost_vq_work_queue() just before vhost_dev_reset_owner() calls
-vhost_workers_free(), could we see a sequence like this:
-
-Thread 1 (network):
-vhost_transport_send_pkt()
-  vhost_vq_work_queue()
-    worker =3D rcu_dereference(vq->worker);
-
-Thread 2 (ioctl):
-vhost_vsock_reset_owner()
-  vhost_dev_reset_owner()
-    vhost_dev_cleanup()
-      vhost_workers_free()
-        kfree(worker);
-
-Thread 1:
-    vhost_worker_queue(worker, work); // use-after-free
-
-Since vhost_workers_free() frees the worker without waiting for an RCU grace
-period via synchronize_rcu(), does this leave a window for the network
-thread to dereference the freed worker?
-
-[Severity: High]
-Does this sequence permanently disable pending network work if queued to a
-destroyed worker?
-
-If vhost_transport_send_pkt() races with vhost_vsock_reset_owner(), it calls
-vhost_vq_work_queue() which sets the VHOST_WORK_QUEUED flag:
-
-  if (!test_and_set_bit(VHOST_WORK_QUEUED, &work->flags)) {
-      ...
-  }
-
-If this happens right after vhost_vsock_flush() finishes, but before
-vhost_workers_free() destroys the worker, the old worker thread is stopped
-before it can process the list and clear the VHOST_WORK_QUEUED flag.
-
-When the VM is resumed and a new worker is created, vhost_vsock_start() kic=
-ks
-the worker by calling:
-
-  vhost_vq_work_queue(&vsock->vqs[VSOCK_VQ_RX], &vsock->send_pkt_work);
-
-Because the VHOST_WORK_QUEUED flag is still set to 1 from the destroyed wor=
-ker,
-test_and_set_bit() returns true. Will the work be skipped instead of being
-added to the new worker's list, causing packets in send_pkt_queue to
-permanently stall?
-
-> +done:
-> +	mutex_unlock(&vsock->dev.mutex);
-> +	return err;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260612165718.4335=
-46-1-andrey.drobyshev@virtuozzo.com?part=3D2
