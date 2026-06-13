@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A88F3FCC;
-	Sat, 13 Jun 2026 03:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597CA3AE6F5;
+	Sat, 13 Jun 2026 09:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781319805; cv=none; b=PUqS0sw7IYgF76WK0LFnrcsIfl2EVOYdOhMx21w5iqTcg47aZEb0mZfAwcSWCkkQO/6G6oaR1+hzVthuXcou7DW/MZRmRG0yMOkVv7a9abYOcsu6HlxIl8S5wYwcY3CjlbfM5YVnfJIMrwim4lk7iweR0uSkREWGRJn2E2mwhhU=
+	t=1781341305; cv=none; b=bmoy55Kybk3gNj+9oBuGJomoZNfNl8RF7+4UCGDHSPNIpkxfDtFkEY7+RANzDyxscu08rbrVF48V34xEXNQcSKwwRrib4onVRvNl/Pg48X2a8R1zgaCEjTe5K8eRHUdgcy9EvxjsCt/IEC6bFQ07tb4P/zYfRMYAmL6iMKxBUrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781319805; c=relaxed/simple;
-	bh=4xt+4xk0Hc3YMw1aNHlRBQaT0gBOUbECiVq0tCcnseI=;
+	s=arc-20240116; t=1781341305; c=relaxed/simple;
+	bh=+hwRwDGNZxIM8yDsnEpkK1qNjRmGtaJabsWZqCZKTwo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ls86r+aG7AahJVms5Vyj6MjBQLmH0kB6BQj7L/BzSrlPaOwLJEjaCiInNrgh4EgpnvF3RMacyFjaPL/MXpY7TX97COCDe1QGfQXNjoYWzu/BFCl4tYCwVQ+yr82HSgbRruTdo/3CA+EfKZIGlfXpq4LxH2GewlMykYre61stFY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kVJkxMm8; arc=none smtp.client-ip=192.198.163.15
+	 In-Reply-To:Content-Type; b=ha2aK6jGFqrT95APpT9/DDZB//oo7G7c23iaoU0+0FXGT/l/PqrS93/2YQJOROKChB1CYE7OJeOEoolll4kYzqpiW0hFZX+qtEbZjdXIUIIOat9qflmzBAGtDDiHD/efZSkga/vlY3HZlf2726W3fUrnXpo1YgBkEj+2ZqB/2Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HvlL5h7k; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kVJkxMm8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HvlL5h7k"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781319803; x=1812855803;
+  t=1781341300; x=1812877300;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=4xt+4xk0Hc3YMw1aNHlRBQaT0gBOUbECiVq0tCcnseI=;
-  b=kVJkxMm83OKP4W6cpMoXdp8kJV2lI4IggB6GKb7mMoW2r4jGkejbVDRZ
-   Kfhu+ZtbRjl5YvqutmreC/BqLa8nOicOg3608t/Tnbz8Uk6E+Xk6Ve7qz
-   AtGXM3QqX696HbBox0OJsty2XVLE40a2B5VB4VsZbVnA83lGDhzYN3zYN
-   1De3Qc81R+4fXe/R9AAo/OMgAFpFid4yE0ZaBv9PzKTprbOR5swE+8srT
-   oxGxgdGZCLiCLJMNd2vjM0n7xFhHuIebsjLgwYWf7OysdBlm1QhdRIm9A
-   rgHxvedalvR+0K8i/OL3GReeVKZGVWk4KradMyGnwxqQUJQntiHOpJGNJ
+  bh=+hwRwDGNZxIM8yDsnEpkK1qNjRmGtaJabsWZqCZKTwo=;
+  b=HvlL5h7kixtFnl55/PxOP2ilxog7ZUpInE1dudz8i1I2RjiSR6V6xkdt
+   Q8yEZy5Cr2/ksdWbVj0724DkYnrsdR6fcRMqmYr0GvS2ceA/qEGT5/URp
+   SFqD4Br9Kq4gpVZboEDnzhl0ZiORjwUl9i7oeHvLkJSv5ULjGNzXcOFiF
+   htmhwASK3VQrHAuu1O+2f06GkYAkZUGiMvL3F89zLaiUtIYqiQccrhgXa
+   fxM3uaV5/6q+0FhIG/16DrVnu2bkXm1Cxri9H7qw+FzQv/HzAHaj7DARX
+   KZhdQoMZuniuILnMG3eTtupFe06I9VBtHqelMwjlYZuEOokCEEdqN7nG0
    A==;
-X-CSE-ConnectionGUID: PUw2tFT1QB6cBj+lIP431w==
-X-CSE-MsgGUID: fwlYRGhKR22RWB8haoptXg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11815"; a="82261892"
-X-IronPort-AV: E=Sophos;i="6.24,201,1774335600"; 
-   d="scan'208";a="82261892"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 20:03:23 -0700
-X-CSE-ConnectionGUID: vxHDOxuNQyOXrSIrb6P1Zw==
-X-CSE-MsgGUID: l8eRTb/IQP+iDLA2PysOHw==
+X-CSE-ConnectionGUID: 3JyDFJVKTnGMoZ6ygbA6ew==
+X-CSE-MsgGUID: 2dSmpvCLQJqKUpPNRuIxEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11815"; a="82167070"
+X-IronPort-AV: E=Sophos;i="6.24,202,1774335600"; 
+   d="scan'208";a="82167070"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2026 02:01:39 -0700
+X-CSE-ConnectionGUID: RL9Aa6JURSqe1uPcygEfkA==
+X-CSE-MsgGUID: 72wEBZl9Qu2Hmqrbi4XCpg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,201,1774335600"; 
-   d="scan'208";a="247044250"
+X-IronPort-AV: E=Sophos;i="6.24,202,1774335600"; 
+   d="scan'208";a="252124397"
 Received: from unknown (HELO [10.238.0.202]) ([10.238.0.202])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 20:03:19 -0700
-Message-ID: <141a4dff-adb8-4af0-b25c-f87b2189cbae@intel.com>
-Date: Sat, 13 Jun 2026 11:03:16 +0800
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2026 02:01:36 -0700
+Message-ID: <ea5bb362-f6ff-48e1-94f0-0b413969a186@intel.com>
+Date: Sat, 13 Jun 2026 17:01:34 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,45 +52,52 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: VMX Preemption Timer appears to be buggy on SKX, CLX, and ICX
-To: Jim Mattson <jmattson@google.com>, Chao Gao <chao.gao@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>,
- Reinette Chatre <reinette.chatre@intel.com>, isaku.yamahata@intel.com,
- pbonzini@redhat.com, erdemaktas@google.com, vkuznets@redhat.com,
- vannapurve@google.com, mlevitsk@redhat.com, rick.p.edgecombe@intel.com,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, chenyi.qiang@intel.com,
- Yosry Ahmed <yosry@kernel.org>
-References: <2fccf35715b5ba8aec5e5708d86ad7015b8d74e6.1718214999.git.reinette.chatre@intel.com>
- <Zn9X0yFxZi_Mrlnt@google.com> <agPUfzbMzTU1ebii@intel.com>
- <agY6JuEJRhwpwlRL@google.com> <aga+jCVUW0d4GufQ@intel.com>
- <CALMp9eSqqsEzd5MSeO46EdC8aOwhyhU7e2bOW2LSdnDQGXEVpw@mail.gmail.com>
- <aiHY8cWZYZNb-DED@google.com>
- <CALMp9eQ17UaAje1DQ7v24U7iKujvnOknY4itQjSqOaKSn_FqBw@mail.gmail.com>
- <aiI6xge3Ev3PCpUV@intel.com>
- <CALMp9eTXLcDNAjjcsuo_nqjowk33yA58fjYZbz_Lqytn07RM-g@mail.gmail.com>
- <aiJlAhqnU0lwOAcG@intel.com>
- <CALMp9eQYc0AGjuVqCHL-GGe2cLOCnYZhTso=50HihdxTmNShWw@mail.gmail.com>
+Subject: Re: [PATCH v4 06/30] KVM: x86: Move kvm_caps and kvm_host_values to
+ asm/kvm_host.h
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
+References: <20260613000329.732085-1-seanjc@google.com>
+ <20260613000329.732085-7-seanjc@google.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <CALMp9eQYc0AGjuVqCHL-GGe2cLOCnYZhTso=50HihdxTmNShWw@mail.gmail.com>
+In-Reply-To: <20260613000329.732085-7-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 6/13/2026 6:51 AM, Jim Mattson wrote:
-> On Thu, Jun 4, 2026 at 10:56 PM Chao Gao <chao.gao@intel.com> wrote:
->>
->> On Thu, Jun 04, 2026 at 10:34:40PM -0700, Jim Mattson wrote:
-> ...
->>> With respect to EMR, you wrote previously, "A mitigation for this
->>> erratum is for software to program the VMX preemption timer for values
->>> below 2^25 * CPUID.15H:EBX[31:0] / CPUID.15H:EAX[31:0]."
->>>
->>> My question is whether the exponent, 25, is a fixed value for all
->>> CPUs, regardless of their IA32_VMX_MISC[4:0]. It sounds like you are
->>> saying that the exponent may depend on IA32_VMX_MISC[4:0].
->>
->> Let me double-check this with the internal team and get back to you.
+On 6/13/2026 8:03 AM, Sean Christopherson wrote:
+> Relocate the kvm_caps and kvm_host_values struct definitions and their
+> associated global variable declarations to asm/kvm_host.h to allow for a
+> variety of cleanups in x86.h and mmu.h, and to establish a (hopefully)
+> maintainable rule that asm/kvm_host.h's role is to define common
+> structures (and declare any associated globals), and anything needed by
+> arch-neutral KVM.
 > 
-> Have you discovered anything?
+> While it would be lovely to trim kvm_host.h down to the point where it
+> *only* holds things needed by arch-neutral and/or non-KVM code, multiple
+> attempts to do just that have failed miserably.  Trying to "hide" code
+> from arch-neutral KVM is too restrictive (and ultimately pointless), and
+> KVM x86 itself also needs a place to define common structures and their
+> globals, e.g. to avoid inconsistent header include chains and/or misplaced
+> helpers.
+> 
+> E.g. as pointed out by Kai, it's weird that x86.h, which is a kitchen sink
+> of sorts, includes regs.h, but not mmu.h.  Literally the only reason that
+> x86.h doesn't include mmu.h is that mmu.h references kvm_host, which is
+> currently defined in x86.h.  As a result of odd include ordering, the
+> very clearly MMU-specific helper mmu_is_nested() lives in x86.h, not mmu.h
+> 
+> "Fix" the kvm_host dependency so that x86.h can be the "central" include
+> everyone expects it to be, and set KVM x86 on the path to having somewhat
+> sensible "rules" for what goes where:
+> 
+>    - asm/kvm_host.h holds "common" structure definitions and associated key
+>      global variables, and things that are referenced by arch-neutral KVM.
 
-Chao is on vacation, let's wait one more week.
+I'm confused by the term "arch-neutral" all over the changelog. I 
+suppose include/linux/kvm_host.h is arch-neutral while asm/kvm_host.h is 
+arch-specific but not KVM internal only.
+
+>    - <thing>.{c,h} holds relevant declarations and definitions.
+>    - x86.{c,h} is the kitchen sink for everything else.
