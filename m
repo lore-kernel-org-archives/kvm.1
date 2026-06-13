@@ -1,142 +1,157 @@
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4751B1A38F9
-	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 20:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781383118; cv=none; b=F+tNjx4/1mjnI9S69ZBwmbK63pnh9xjdJbeGRIfnCbTvVZEpJZWjqfMVJTC8Ua9s/pi/MsjOW9oF7eF5PX6nJOcvDN4bmilCv1CJQvzEOoOoVTX0zvV90KGaHmyaBe72QhGiqrka2GE9rjdu00ms2TpNwORw3BHZ3DNIydbnwI4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781383118; c=relaxed/simple;
-	bh=odxXas8zDQAee+ApLV1HzJ7syEiMdmu0OKbAvskhzNA=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=ddm2r7ij+LAhQj70ZweKBLlZU9j/og5XNq2Yh02lkOa22Pu2tdNG8gDcVHRzdMr0Fx48UOijE8bbAJYUQoLiKqVozActk7CQ9PWuFMDJrUgF3GTDoVURSY6XIIA5Zp6uztl4udB0Q8l3GakF8f8iqwCrQ1rTpFq3Q4Xy26Wvsjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-48651d7d505so3021954b6e.0
-        for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 13:38:37 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AF2257845
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 22:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781389386; cv=fail; b=Cz4PXjexAfP71buHHWoA4Q+G5fEmz3v6sHrpy5n/FOzQZ1XunR0aIxbG5GzT4UQcvbaJkxW8Lg1p5vsoj2MpF2GgJXprLhBxQD6OjZwb5X+4oLKApf+OqnznxEQNKjHIRwJAIS4RQgNGNXRjGq9spGbhCbtlt2duEY4TUYjIVqI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781389386; c=relaxed/simple;
+	bh=7+UCwdV1ne49cq4fcMibRTQe+zHj7j8TUy7YJPYz0Rk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MQXzmB2+VlTSh8V3y78nj0vFQjk7S+jQO71we89WSf2bf+KtCZAb9BoRkFeLgNXF0dYt4PGGFUK1AC7OZhzmU2bm93NAADM2gPpMcbALa1hmUSnLxmmjGCC1ehQfLmuuV6ReJpHeoXMcv8bHBrAc20FSEfpHo6uCF+/pVRRjnQs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=RXC4frVr; arc=fail smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="RXC4frVr"
+Received: from pps.filterd (m0528004.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65DKu3x21636630
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 15:23:02 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=Jwd8bTapbEIKBMHRp+HoohnDcRxDUqI6nQwnmy5apkc=; b=RXC4frVrigul
+	2+TPl69gny41YkeXpqOqbJD8TTbXSg8TLF3Mqa8gIyDAaPL1Ca9do2i2HlOHn+65
+	CoxCrdgf9qWE8+7MbwigjUdDtdmp1AfYUyFCWoWend8LDbrYFB8tNlx+eS0wmY0e
+	XBwyjB+KqTqOCrpMWoYa0NoDEtLtARehii4jUKwa9uklgqAWQAFaJ6LVMcE8YQM7
+	alz+Qg7XmM00FAWye9ws7HX8pcHw0/UMPEsTvpByxH2Ie212YLkrrayKib69EdsZ
+	UWVGo6QknIJteioPFD+o+4G2J5duEz4k2lDmocBu7Ml/04FaNl4K9dVPzKfy55Vh
+	8w9vDSJ9BA==
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4es26c2gvw-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 15:23:02 -0700 (PDT)
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7e6b59d85dcso3707896a34.3
+        for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 15:23:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781389381; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GQbZCt5tMmXHy7VFx16mfel/2oMd2JEW4r/ATR0Nm2/hVKHUjJnUFl0h+Xk84WgPDF
+         joj4LEE4xLJYa47esLEgaObljxM6Noxs7UQlj86iRmb6eRjV4FmOJXB6A3tAOnSnNskJ
+         3PWl6pXptsUNW778BfGK8Uxe4I/MS/3ADqPaXTwO57c4+38OxxTTtHerO4aaydtU6usx
+         EJolqlh1pXoe3spDBqmS0TEuk1Jj5DnjuacbgfVMMMUgeBgrMc//BzFsSaWFl2SXpiUZ
+         3/Z2uJ72htkf8KD1vCD84fJvcXzQCIIzW+zN2fIInDn5DVHhbvkLfFSOcXUSKj1jM6ye
+         QvVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=h6kN9+j+P+sc+s3Q1KrZzNdCmFSiMsMf2TTL/GK/Pms=;
+        fh=jXwe3sZhOhlWYPyE24qYChbk1ht55JPkGmqHaLe6AJ8=;
+        b=j0V4cT4gt7iTZIhaCvXka4SX7I4ILWgNdBp6f8qIRenjPybEXDGHdq35TPegbzn/Ch
+         IBADewB3Sx4A7o24rmUlYwpWnqELCdghdKgS+Jh6CCbZ7JGBqSLHoCSutg09h3EFkZcJ
+         MmGTXQavUpY2QFeEZwQ5FQRcigRfwFAlL3wlipJFX7kHwGbrjo/KUUaKxh5+oEorOdol
+         J1tUDbznFSORIICK3Q2q/O1Oi6pIVVwoRBUrA7/uISLeJs0+hmeV7SDSvx8GNrFSYAz0
+         SHAH7IgRirwYoy1NPJucH+o5wUbz96lLmlLyeMtRP270BbumZSwQrlSFzV17U46iFriD
+         F/ng==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781383116; x=1781987916;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xch0ZkRn1IIoKlc+fcK7TLbvOvLiu92QBoOAPBVmoZQ=;
-        b=fjaPNtyJcoumkn7zz8K/k6AM+fyOlwIsMy0vzx8VGdlp3Z5eVdwHrqjhdC8uHrHdK8
-         lBvSpzJwIuCLtsEUpWa/IkOpRuorZpeCAI0wNl7NkHgiaoqLWdz8tgmfqV9BgkzhTaBt
-         TrvBFd1gCd04YDZW8TD3wVqz6QimGVnf2bsCdGVLXZMtTomNAgY02+GA18TqbeIrS/EY
-         SQV6iCzWGAPk4ITvoE+cx/ufcsP8CX+hGJizm5tE0HhbRXMQwXsgngMtBNErprTs3n4k
-         i9a223qp8U4etDtSR9inOOJ8bnDtLUrghkJXHfNm6eNv2YyPWvR1SKRnjExmMcdmq1Ou
-         atHQ==
-X-Gm-Message-State: AOJu0Yzu35ro7zava4sgJUgy9QlMhwgJHScHKpLb+Rh3ej06AgQqwcoh
-	gAz/SKgRR8F0VWUU18uDD49rTBoZHjpLljFj2V6aDL43W++ZcRnzQ87aFvvwlGzT31X7b4wyubH
-	SNec87aXanfTZSZSHQG/+izmbZnyJVp7DjwcRRX/S4hYHPMeD+eg54v07UD4=
+        d=1e100.net; s=20251104; t=1781389381; x=1781994181;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=h6kN9+j+P+sc+s3Q1KrZzNdCmFSiMsMf2TTL/GK/Pms=;
+        b=B7cVtFv3UDDoZJDN1dtTrYA29/dfEzA4qXhvN8nYWEw50oiYdbn9W8sALaj4YC7K94
+         bizoGAwheP6LsxX+WoR05tJs7pYAezuYlTwppmQQryMrJSpJXeb7hzJQ0d4vAEiv5byY
+         n0sndjv1gtIhuzBc+H613MnDWHQvuiadoiMiaP3+iOz78QWkYG9YEZUOdtSBvSNLEdvH
+         lKrm9gxlmzKmNBXqMDyUb7zPREeNpa/2Y2zWBEdL5ZcNq+CdRWCHRIdA7U+waaSwtdmM
+         Y88UT48NurTKBxxbHReHndAOa9GxVaNB7VcqZfIWoxsL+SXPpOQW8X0nYWieHyet062K
+         clpA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Zk7I+2w54z9bDUQMhzPXzsVKYcCT5ebujBG0D8VOytsjf+oHgudQbeZ66f4BxG56D/nY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzco83kiy56hIPFZ1gpm4OxvXgaY4ycjmTuGdbWoFWecPM5vvUm
+	ht2S8OhnLn0g/0EuIzvbWjaOrvvvN73rV9u3DuhNKh/JcdcoX2e/ui7I7YJlN7lsOTKxd110CFS
+	VVS1KRS81NlFPOcasdgcfQr9FH6YWXi/JckeZz15PxAZ0dgBzlhIRkxIsVMsgwW4MSN8A1GuiPN
+	Dwsi9eD+Mq7EXRZqnTnU4VWyFHbok=
+X-Gm-Gg: Acq92OGa/fjrQn+DzBhmXBlJu6kwUVFT59R3AJTU3SdeZiWVq490HLB4+l+zWMC1aVL
+	zNlHxyk/5gj4IutBMNFByZNwfkfd+0r48xLhDv7JyGgmisZ3wh4cqnEbL/qKEG59GpKUeoV/BvZ
+	VFmL2c5wBIg8wci8RNuS6AuE0opGsR8XKzsbo68kD79GVW+uEbn8eP4k2tU23RJI7eXnmhM7b81
+	mt3VOqq/BnHOpPkC/3zaA==
+X-Received: by 2002:a05:6830:6b03:b0:7e7:16b9:e274 with SMTP id 46e09a7af769-7e7846b44b2mr6299911a34.8.1781389381583;
+        Sat, 13 Jun 2026 15:23:01 -0700 (PDT)
+X-Received: by 2002:a05:6830:6b03:b0:7e7:16b9:e274 with SMTP id
+ 46e09a7af769-7e7846b44b2mr6299886a34.8.1781389381161; Sat, 13 Jun 2026
+ 15:23:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:5146:b0:485:48da:132e with SMTP id
- 5614622812f47-48741b29997mr3259712b6e.27.1781383116373; Sat, 13 Jun 2026
- 13:38:36 -0700 (PDT)
-Date: Sat, 13 Jun 2026 13:38:36 -0700
-In-Reply-To: <20260612230622.687665-1-seanjc@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a2dbfcc.8812e0fc.3c3fa4.000a.GAE@google.com>
-Subject: [syzbot ci] Re: KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
-From: syzbot ci <syzbot+ciaa819f991480b300@syzkaller.appspotmail.com>
-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, syzbot@syzkaller.appspotmail.com, vkuznets@redhat.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <20260611161546.4075580-1-zhipingz@meta.com> <20260611161546.4075580-3-zhipingz@meta.com>
+ <20260612105248.7d8431f2@shazbot.org>
+In-Reply-To: <20260612105248.7d8431f2@shazbot.org>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Sat, 13 Jun 2026 15:22:49 -0700
+X-Gm-Features: AVVi8CfDNU1g_5HOJkneMc79yczUqiaSKei6CEAn7F8ZvFdakbFhyfrfCnrLCmw
+Message-ID: <CAH3zFs0+zF2JQMpVZMM9ndh+07KE1ULQNOkKrLozWq+_kRdMyg@mail.gmail.com>
+Subject: Re: [PATCH v7 2/5] PCI/TPH: Add requester/completer type helpers
+To: Alex Williamson <alex@shazbot.org>
+Cc: netdev@vger.kernel.org, kvm@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Bjorn Helgaas <bhelgaas@google.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: -xFjH2fJkY30PaC6YaHTAGoGYU344Jx9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEzMDIzNCBTYWx0ZWRfXyUHM0go3mKUN
+ Tua/L3gEpYM0/m71zsG42yzo8jhkP8ZrDLrsMBOJP12FA6N93IMYzzfXIAARwmQd5SrvFzaWOL3
+ QgO8lfEPUzjG30jSzoArBJ8UfF3aPcuDDEHhycRVtB8u8CbLmq9csp+Jv+aLIoTa+Z/qxFoLEpK
+ N1Zx4+qnt1LFxCi1ZAzvKG9ReMOI/XHdAgAVHzFkk94pY99AcIq/CPXyjrddUi8uAf7DY6sHVPc
+ wOaCqRlcj3FChK1HlAJr5/XTgTUooFE5cbjQIEQgjtKcYQfloiD6NLc8hm7SEfxvogX0DA6bcGA
+ 5u/0wXHcW0vvFtaKaabg9+MIPkzX1L+oUvGwMPo+6OFujA6BYkcHiPddKCNqcoC372ZAJXMn/hz
+ qKmDYyOHZVI5GrFCG//kLm8Ak/5CaCJztgfef2dAx8oT41qa5wbq+rZbTI9vJJG8ZTBvd0qTI0J
+ i3MNkEXr8sPfnDqR+OA==
+X-Proofpoint-ORIG-GUID: -xFjH2fJkY30PaC6YaHTAGoGYU344Jx9
+X-Authority-Analysis: v=2.4 cv=QpVuG1yd c=1 sm=1 tr=0 ts=6a2dd846 cx=c_pps
+ a=+3WqYijBVYhDct2f5Fivkw==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=GbPsI2Ihf5RTnMjR_gZv:22
+ a=r1p2_3pzAAAA:8 a=VabnemYjAAAA:8 a=1XWaLZrsAAAA:8 a=JzgkHKIk_dV2mhMsj_sA:9
+ a=QEXdDO2ut3YA:10 a=eYe2g0i6gJ5uXG_o6N4q:22 a=r_pkcD-q9-ctt7trBg_g:22
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEzMDIzNCBTYWx0ZWRfX04tSTfQI4RwJ
+ ciVw0GP3Le/i+RGs0RYUrDjTsTobe4iyXjC/MBZRY9NNp+OlmC7me3XEZ0FPxORG9q4TcjnaASC
+ elNDPjSqlRiKnW/GL3FA29A36QqzUb0=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-13_04,2026-06-12_03,2025-10-01_01
 
-syzbot ci has tested the following series
-
-[v2] KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
-https://lore.kernel.org/all/20260612230622.687665-1-seanjc@google.com
-* [PATCH v2 1/8] KVM: x86/hyperv: Get target FIFO in hv_tlb_flush_enqueue(), not caller
-* [PATCH v2 2/8] KVM: x86/hyperv: Check for NULL vCPU Hyper-V object in kvm_hv_get_tlb_flush_fifo()
-* [PATCH v2 3/8] KVM: x86/hyperv: Ensure vCPU's Hyper-V object is initialized on cross-vCPU accesses
-* [PATCH v2 4/8] KVM: Initialize a vCPU's index to '-1' while it's being created
-* [PATCH v2 5/8] KVM: Move nVMX's lockdep logic for vcpu->mutex to a common helper
-* [PATCH v2 6/8] KVM: x86: Treat a vCPU as unreachable if its index is invalid
-* [PATCH v2 7/8] KVM: x86/hyperv: Assert vCPU's mutex is held in to_hv_vcpu()
-* [PATCH v2 8/8] KVM: x86/hyperv: Use {READ,WRITE}_ONCE for cross-task synic->active accesses
-
-and found the following issue:
-WARNING in kvm_hv_vcpu_uninit
-
-Full report is available here:
-https://ci.syzbot.org/series/674ef35a-9335-4710-8a6d-b18d01510cbb
-
-***
-
-WARNING in kvm_hv_vcpu_uninit
-
-tree:      linux-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
-base:      c1f7303302927f9cbf4efedf70f0512cde168c65
-arch:      amd64
-compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-config:    https://ci.syzbot.org/builds/20dd789e-0a89-4465-844c-9d91b5ce4a45/config
-syz repro: https://ci.syzbot.org/findings/eeefcfe6-b8e9-4c5b-900e-855d814f5d97/syz_repro
-
-------------[ cut here ]------------
-debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || vcpu->vcpu_idx < 0 || !refcount_read(&vcpu->kvm->users_count))
-WARNING: ./include/linux/kvm_host.h:996 at kvm_lockdep_assert_vcpu_is_locked_or_unreachable include/linux/kvm_host.h:994 [inline], CPU#1: syz.1.25/5883
-WARNING: ./include/linux/kvm_host.h:996 at to_hv_vcpu arch/x86/kvm/hyperv.h:78 [inline], CPU#1: syz.1.25/5883
-WARNING: ./include/linux/kvm_host.h:996 at kvm_hv_vcpu_uninit+0x198/0x210 arch/x86/kvm/hyperv.c:906, CPU#1: syz.1.25/5883
-Modules linked in:
-CPU: 1 UID: 0 PID: 5883 Comm: syz.1.25 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:kvm_lockdep_assert_vcpu_is_locked_or_unreachable include/linux/kvm_host.h:994 [inline]
-RIP: 0010:to_hv_vcpu arch/x86/kvm/hyperv.h:78 [inline]
-RIP: 0010:kvm_hv_vcpu_uninit+0x198/0x210 arch/x86/kvm/hyperv.c:906
-Code: 48 89 df e8 0a ba d8 00 48 c7 03 00 00 00 00 eb 05 e8 1c 63 6d 00 5b 41 5c 41 5e 41 5f 5d e9 8f f6 51 0a cc e8 09 63 6d 00 90 <0f> 0b 90 e9 65 ff ff ff 48 c7 c1 e0 5c 30 90 80 e1 07 80 c1 03 38
-RSP: 0018:ffffc900035ef940 EFLAGS: 00010293
-RAX: ffffffff8158f397 RBX: ffff88816987d400 RCX: ffff888110b20000
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 0000000000000001 R08: ffff88810c5b9703 R09: 1ffff110218b72e0
-R10: dffffc0000000000 R11: ffffed10218b72e1 R12: 0000000000000000
-R13: 00000000fffffff8 R14: ffff88810c5b9700 R15: dffffc0000000000
-FS:  00007fbc073dc6c0(0000) GS:ffff8882a929a000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f451a40fff8 CR3: 000000010f703000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- kvm_arch_vcpu_destroy+0x1a9/0x380 arch/x86/kvm/x86.c:12905
- kvm_vm_ioctl_create_vcpu+0x68b/0x940 virt/kvm/kvm_main.c:4262
- kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5161
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbc0659ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fbc073dc028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fbc06815fa0 RCX: 00007fbc0659ce59
-RDX: 0000000000000001 RSI: 000000000000ae41 RDI: 00000000000000f7
-RBP: 00007fbc06632d6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fbc06816038 R14: 00007fbc06815fa0 R15: 00007fffc5de9fc8
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
-
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
-
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
+On Fri, Jun 12, 2026 at 9:53=E2=80=AFAM Alex Williamson <alex@shazbot.org> =
+wrote:
+>
+> >
+> On Thu, 11 Jun 2026 09:11:17 -0700
+> Zhiping Zhang <zhipingz@meta.com> wrote:
+>
+> > Add pcie_tph_enabled_req_type() so drivers can query the enabled TPH
+> > requester mode without reaching into pci_dev internals.
+> >
+> > Add pcie_tph_completer_type() so drivers that publish TPH metadata for
+> > a device acting as a completer can gate on the "TPH Completer
+> > Supported" field of Device Capabilities 2 (bits 13:12,
+> > PCI_EXP_DEVCAP2_TPH_COMP_MASK) rather than reusing requester-side
+> > state. Fold the reserved 0b10 encoding into NONE so callers only see
+> > the defined values.
+> >
+> > This keeps pci_dev::tph_req_type and the completer-capability decode
+> > inside the PCI/TPH code and provides !CONFIG_PCIE_TPH stubs for
+> > callers.
+> >
+> > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+>
+> This is carrying forward an ack for v6, where half the interface here
+> was dropped and changed shape.  Thanks,
+>
+> Alex
+>
+Good catch, will drop in v8 and request from Bjorn on the new shape.
