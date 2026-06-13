@@ -1,107 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095B7274FD1
-	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAB9171AF
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781308815; cv=none; b=rzQzCxKaD7rHI2+JKr8u1ZRepMVfv2/caRWjYtkuHMf4ZVzrhWgLt3Sl2JnQnJG9UIP6TGwTDKyvjtQzEN+FzUZAvgsaeCkKlVyWbATWcQrb+p68WhYFpINegMLBlGnCHGauB6mLUnOW4dQN7r4+Z36JcnVjcifOFD1tDeljht8=
+	t=1781309014; cv=none; b=EfBIkzi6wghw39Bjatk7jUvWOHYUPN1DnuOLW2WOjhINswbbvgGIY8tyDTckFOzzYISCLB1PGgkPVZtOdUd8rnE6p2gGB1HJWZ1HqVkG3uT2s7xxe1GGc+rRz0D3glKxwMLRj1B6KF/Akb1L192tSJcqeNcYH0Isuh8AuLuTikg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781308815; c=relaxed/simple;
-	bh=vQiPto57O9dkdl+XRVwjetNC4JB2ICzm6c+0r7erA18=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=CC9v4DbVtBgGlDycLngq6bujPmljmYdAscTSc8nFP54qj4pIKr+xLhZBAvxmRlqE0PwlHIcfcpPL1LQxPZ8OKvBT4Wy8luqWdORngaCTnfYBY+CZCfKTSt+KBewpaldsLaziKPL/X1BDSgG+wRwjkV5fHtj3pgm5AJKwgKgcn00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bC7kT+Tt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781309014; c=relaxed/simple;
+	bh=krEZGAI4sVUtp8XlVPkpVni9/Zjp1O171b+4WJ7bHWU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nOVNBg8TRkfUP/wdOO9S+oouCm4uGxZzmlP03ry1/E4WaOjgSmHd/tZyknIFUo9Q2HbZlxv3MwaldVw3/wOCuNTgk003wO0Af1C9W6ghitZlXXMyLIMPkSTE47coJoPYNF7QvVfMOBbXllW7pdGM+JKrzeMxQwKIX/8peSZjt6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EUhaEdv9; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bC7kT+Tt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E031F00A3A;
-	Sat, 13 Jun 2026 00:00:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781308814;
-	bh=9l+mNRqboOtRgfhPe+mmuhZHWZensQmKvoxFdS8+hD4=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=bC7kT+TtwePUo48FvNvwFV5jsmHvHGUG52IThC6EmMGiX0vA0LlPJXjJN1+BRg8HO
-	 36q0+xYa+j2DWtlaG7bMH9RMfV+bWjuFL4PE0Y0zZ1eBJZ/5VPGm7auGCVu5BGc1I/
-	 eSfIWyxUudjZjJKXRpSWlBuF9e1M/bdWB8+5uK953hlwlvO6/X8bc1Y+2d0IBGk9kk
-	 9KeeLq/HduXUyjab9sQokQwukZk6Q2baGaMq4jx3NzpyMxzx6fdo07gyUKaUxNjT8b
-	 jbysyyZwQpIN8DrUfOogKXNNYsubV78ScYkYxAC3PWEQUhkA7KP+l9c4/z2LcH6L9A
-	 rfgh5fQHTylBg==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 912A4F40078;
-	Fri, 12 Jun 2026 20:00:13 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 12 Jun 2026 20:00:13 -0400
-X-ME-Sender: <xms:jZ0sahvkVH-grpqOoU5ciQCOC5gWepJIkVWv0TR2L8CLNVTClBXEcw>
-    <xme:jZ0sagDBrOIlR4wTreYByvufalQ9PE-bn92qU54NLM3PL207Z9OV2zbD6c0ggTHXT
-    lRn8bjWGz8ZvkWpaz-nNH3JfNHsUzpUzm7oDnQpaDWEawiEEgpV5io>
-X-ME-Received: <xmr:jZ0sauW0RbmeC7CGt4tiGo6o1TClaSkRe7LZjfEu_M4txsCc8X1qIZ1sey1YxkZMeVz8rakHCsF3zTC29O-tbNI2TFIbE7MWZQI>
-X-ME-Proxy-Cause: dmFkZTEyH7ZgW8x8zWOOs3YLqCsd8vM/giRH54jmDva/ATX/E8RWtKsfgjPbMCIM5ljXtE
-    /iQxleIhbhZgZI660CPAoOPVI1CY9xqXvrqeJQsTuzRNWphptjXfP08d874134vN0oO9H+
-    eoJrTtGiYw3ZVvJN0m2L/3s9JWb1KZCPBVcaFL3V4W5hxqDs35AxCtKlQ/dReZ+C6szqBn
-    tMDPPjEzKiCt0H+oGMQyryfTjB5oOhWeKSHlUHRlhCp9q2QZKebtbijnFa+SsLqvLLUEiz
-    zFqkALL7i1mz4H7fGnxaJY/uQyY9Bf1S0g9FxCGgmuyPm7ELY7SzVs2eYFRtXv7MwSctf8
-    wbj2wEYAC9SNw9hpN9ReCJjUeZhv6/Tp3AHXoZzZKMyXAg0IAxdPp3jM+TfUXRkQd+kGgc
-    ZxM/JRmCmjGOo5ZtYVDRpSJemNBufmiqZLOjNdcUb/XIt+caqoY3x7siqzwHu03mctbxJW
-    uEcQoaL7G0Z7LThrDQi9ueGAG0IQzCu/UvrwlIYpe6RWXIPUNph7d+HekX2uRC38tDjkNu
-    4Cp9Y4tQrLXwD9ph3ml/YeG1BpUBdHjCbiIM9XsPsMkYFjScFuIZT1v7XA4RsxZ3AOpj50
-    qXpOXv0Y3ui9Xh0Jk6rEOdJ/mdP+3Tyb35C6xPYmeRY7T9dwODLFO2HShlpg
-X-ME-Proxy: <xmx:jZ0sapEB1rtGYjmuSCZCvtv-frYy0oBVPaRQJAHutPsP8FT3uwl_kg>
-    <xmx:jZ0sapMML-XUkOeMAlZ7lxAVdvJJQL3Peqvyv1Wn7jOp4dXDuUxs1w>
-    <xmx:jZ0salW4Pr15u6vO0ACfJ-FxsNTkOLwAiGDS6Ex_UhoWA1Cgw-qwTg>
-    <xmx:jZ0sagwYrGGgXKTOwmWl4bwT0xw-CS-w373Zsv-2BZ6EnORIl8PNnA>
-    <xmx:jZ0salODKQOgHwgz85pf_oOrrSt50zktJx2H0wAwg1RhgcpNVsSMp3i->
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 12 Jun 2026 20:00:12 -0400 (EDT)
-Date: Fri, 12 Jun 2026 17:00:11 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>, 
- kas@kernel.org, 
- djbw@kernel.org, 
- rick.p.edgecombe@intel.com, 
- x86@kernel.org, 
- peter.fang@intel.com
-Cc: linux-coco@lists.linux.dev, 
- linux-kernel@vger.kernel.org, 
- kvm@vger.kernel.org, 
- sohil.mehta@intel.com, 
- yilun.xu@intel.com, 
- yilun.xu@linux.intel.com, 
- baolu.lu@linux.intel.com, 
- zhenzhong.duan@intel.com, 
- xiaoyao.li@intel.com
-Message-ID: <6a2c9d8b8bfe9_9b85510018@djbw-dev.notmuch>
-In-Reply-To: <20260522034128.3144354-7-yilun.xu@linux.intel.com>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-7-yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH 06/15] x86/virt/tdx: Initialize Quoting extension
- during bringup
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EUhaEdv9"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8423970cb30so1063771b3a.2
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:03:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781309012; x=1781913812; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CuNl+V1MCPk3zpY3m1G0KMJzplIIs/9wcDgpczY7Qv8=;
+        b=EUhaEdv9xIzzOu8SoA7UpWAmu958USqrHBH3O4ntkRqzF/mVYf1PxO82vXl+GphMnV
+         3YCy0SJQN5VCLbBhMavH/hYe4d/WKSs1U+7iPxxVZe96CFNkUpWWW0ghEdEHR1tBY//7
+         GEGjvlT21oYxf3VNQH4lOopZf8b48ps7FmR2bG0et60ZPxTkIslFd50UcDCEVSEHNiID
+         Xtdm05GZgQkMe+qJi5lLQYUOwvop4cz34d0jScLLawdSXA9ZDOENBnt+WC3/Hw0KLU/W
+         zkexSQ8gwdSMC8ZzmGwLwRWAwA8eSA7bPfSbGRTDmpdwrCEK6sJf99H1c5XjDAxExqfe
+         WNNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781309012; x=1781913812;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CuNl+V1MCPk3zpY3m1G0KMJzplIIs/9wcDgpczY7Qv8=;
+        b=hDqdpskAtO3Rw5ZJwHKKSGVj7v6tecDmrVzopAPl1dUyvDRtz70qEVyjLJAyKgl3uc
+         zDdMmL74B//bTWQOc38RxjACbbq3dHE3EbfdjgVBym67M2CdcqukqSh68B1ipDb1ASd2
+         cSZSa3Re/XgG6qnOY1hdDDpZIFxJI1N9icqXg6uY9kGED7DgchclH6P12xqqP91IFxfl
+         BVXn8S54/SLU1bb1MoSeLNIUdcFLf/3vD6LALu2RY9YF7qy0lJytZWm6yVELnEeofRxr
+         VbcgImOKiVCiehaYlCye0IgpUaNYX3qShK3UiX++lrr4UBpaCsO8o58kBKo1OlHrK/Iy
+         bMCw==
+X-Gm-Message-State: AOJu0YxNCF1bPSB6d/4Z2XAoxr2s5LmbcmB3KuwCNOotgwwHfLL6Jtys
+	yFFpqPSRiGEInB9m5SL63k+EaYMXb+c004hr/F8UC+0Xyc4ZiBRu1WRHCV/aM/xZSOQfP+AqZwO
+	BR8ETVA==
+X-Received: from pfbbk25.prod.google.com ([2002:aa7:8319:0:b0:842:4878:6a38])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3498:b0:842:3ea1:5dd1
+ with SMTP id d2e1a72fcca58-844e19663fdmr1569570b3a.14.1781309011905; Fri, 12
+ Jun 2026 17:03:31 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 12 Jun 2026 17:02:59 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
+Message-ID: <20260613000329.732085-1-seanjc@google.com>
+Subject: [PATCH v4 00/30] KVM: x86: x86.{c,h} spring cleaning
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Xu Yilun wrote:
-> From: Peter Fang <peter.fang@intel.com>
-> 
-> Initialize the Quoting extension and fetch its metadata during TDX
-> bringup.
-> 
-> Because Quoting is an optional TDX feature, do not let its
-> initialization failures cause TDX bringup to fail.
+It's still technically spring!
 
-Is this micro-optimization worth it? What are the classes of quote-init
-failures vs just make the policy be anything in the module must init.
+Perform spring cleaning on x86.{c,h} and asm/kvm_host.h, by adding regs.c
+(the kvm_cache_regs.h => regs.h is already applied) and msrs.{c,h}, and moving
+relevant code out of x86.c.
 
-> This patch does not include the opt-in portion of the initialization.
-> It mainly lays the groundwork for TDX Quoting support. Opt-in will be
-> added in a follow-up patch once the feature can be properly used by the
-> system.
+v4:
+ - Drop the GPR API cleanups (already applied).
+ - Collect more tags. [Yosry, Kai
+ - Chunked the x86.c => regs.c code movement into several patches, so that the
+   bulk move is as close to a pure move as is reasonably possible. [Yosry]
+ - Drop a redundant BUILD_BUG_ON() from store_regs().
+ - Fix various changelog goofs. [Kai]
+ - Fix alignment goofs in kvm_get_{,feature_}msr_index_list(). [Kai]
+ - Drop the defunct x86.h include from mtrr.c. [Kai]
+ - Fix whitespace goofs. [Kai]
+ - Rewrite the changelog for the bulk regs.c move to better explain why only a
+   tiny amount of EFER code is moved. [Yosry]
+ - Move "struct kvm_x86_msr_filter" and "struct kvm_x86_pmu_event_filter" to
+   msrs.c and pmu.c respectively. [Kai]
+ - Rename LDT helpers to vmx_{load,store}_ldt(), and call out that they will
+   hopefully be replaced by kernel helpers in the near future. [Kai]
+ - Drop the kvm_cpu_get_apicid() code movement (sent a separate patch to kill
+   it off entirely). [Kai]
+ - Add more detail to explain why using VALID_MASK defines outside of x86.c is
+   dangerous. [Yosry, Kai]
+ - Bury kvm_arch_interrupt_allowed() in x86.c as kvm_is_interrupt_allowed(). [Kai]
+ - Move kvm_find_async_pf_gfn() prototype to x86.h. [Sashiko]
 
-It is unconditionally calling quote init even if the feature is not
-present. Is that not a problem?
+v3:
+ - Collect more tags. [David, Binbin, Yosry]
+ - Use kvm_run_sync_regs_{from,to}_user() instead of kvm_run_{g,s}et_regs().
+   [Kai]
+ - Fix a variety of typos. [Binbin]
+ - Everything beyond patch 15...
+
+v2:
+ - https://lore.kernel.org/all/20260514215355.1648463-2-seanjc@google.com
+ - Collect tags. [Yosry, Kai]
+ - Fix some truly egregious goofs. [Binbin]
+ - Rename kvm_cache_regs.h => regs.h, add regs.c. [Yosry, because he
+   complained, not because he actually suggested this :-D ]
+ - Drop superfluous casting/masking of e*x() usage. [Kai]
+
+v1: https://lore.kernel.org/all/20260409235622.2052730-1-seanjc@google.com
+
+Sean Christopherson (30):
+  KVM: x86: Extract REGS and SREGS runtime sync code to helpers
+  KVM: x86: Move get_segment_base() to regs.h, as kvm_get_segment_base()
+  KVM: x86: Rename __{g,s}et_sregs2() =>
+    kvm_x86_vcpu_ioctl_{g,s}et_sregs2()
+  KVM: x86: Move the bulk of register specific code from x86.c to regs.c
+  KVM: x86: Move local APIC specific helpers out of asm/kvm_host.h
+  KVM: x86: Move kvm_caps and kvm_host_values to asm/kvm_host.h
+  KVM: x86: Swap the include order between x86.h and mmu.h
+  KVM: x86: Move tdp_enabled from kvm_host.h to mmu.h
+  KVM: x86: Move eager_page_split to mmu.{c,h}
+  KVM: x86/hyperv: Eliminate an unnecessary include of x86.h in hyperv.h
+  KVM: x86: Move kvm_{load,put}_guest_fpu() to fpu.h
+  KVM: x86: Extract get/set MSR (list) ioctl logic to helpers
+  KVM: x86: Expose several TSC helpers via x86.h for use by MSR code
+  KVM: x86: Move the bulk of MSR specific code from x86.c to msrs.{c,h}
+  KVM: x86: Move register helper declarations from kvm_host.h => regs.h
+  KVM: x86: Move kvm_{g,s}et_segment() to inline helpers in regs.h
+  KVM: x86: Move MSR helper declarations from kvm_host.h => msrs.h
+  KVM: x86: Move "struct kvm_x86_msr_filter" definition to msrs.c
+  KVM: x86/pmu: Move "struct kvm_x86_pmu_event_filter" definition to
+    pmu.c
+  KVM: x86: Move MMU helper declarations from kvm_host.h => mmu.h
+  KVM: x86: Move LLDT assembly wrappers into VMX
+  KVM: x86: Move misc "VALID MASK" defines from kvm_host.h => x86.c
+  KVM: x86: Move __kvm_irq_line_state() from kvm_host.h => ioapic.h
+  KVM: x86: Move IRQ-related helper declarations from kvm_host.h =>
+    irq.h
+  KVM: x86: Move kvm_pv_send_ipi() declaration from kvm_host.h =>
+    lapic.h
+  KVM: x86: Don't treat interrupts as allowed just because a nested run
+    is pending
+  KVM: x86: Rework kvm_arch_interrupt_allowed() into
+    kvm_is_interrupt_allowed()
+  KVM: x86/mmu: Move kvm_arch_async_page_ready() below
+    kvm_tdp_page_fault()
+  KVM: x86/mmu: Move kvm_mmu_do_page_fault() from mmu_internal.h =>
+    mmu.c
+  KVM: x86: Move a pile of stuff from kvm_host.h => x86.h
+
+ arch/x86/include/asm/kvm_host.h |  470 +---
+ arch/x86/kvm/Makefile           |    4 +-
+ arch/x86/kvm/cpuid.c            |    1 +
+ arch/x86/kvm/fpu.h              |   26 +
+ arch/x86/kvm/hyperv.h           |    3 +-
+ arch/x86/kvm/ioapic.c           |    1 +
+ arch/x86/kvm/ioapic.h           |   12 +
+ arch/x86/kvm/irq.c              |    7 +
+ arch/x86/kvm/irq.h              |    6 +
+ arch/x86/kvm/lapic.h            |    8 +
+ arch/x86/kvm/mmu.h              |   90 +-
+ arch/x86/kvm/mmu/mmu.c          |  132 +-
+ arch/x86/kvm/mmu/mmu_internal.h |   66 -
+ arch/x86/kvm/msrs.c             | 2745 +++++++++++++++++++++++
+ arch/x86/kvm/msrs.h             |  156 ++
+ arch/x86/kvm/mtrr.c             |    2 +-
+ arch/x86/kvm/pmu.c              |   12 +
+ arch/x86/kvm/regs.c             |  875 ++++++++
+ arch/x86/kvm/regs.h             |   60 +
+ arch/x86/kvm/svm/nested.c       |    1 +
+ arch/x86/kvm/svm/svm.c          |    6 +-
+ arch/x86/kvm/vmx/nested.c       |    1 +
+ arch/x86/kvm/vmx/vmx.c          |   23 +-
+ arch/x86/kvm/x86.c              | 3709 +------------------------------
+ arch/x86/kvm/x86.h              |  354 +--
+ 25 files changed, 4457 insertions(+), 4313 deletions(-)
+ create mode 100644 arch/x86/kvm/msrs.c
+ create mode 100644 arch/x86/kvm/msrs.h
+ create mode 100644 arch/x86/kvm/regs.c
+
+
+base-commit: c1f7303302927f9cbf4efedf70f0512cde168c65
+-- 
+2.54.0.1136.gdb2ca164c4-goog
+
