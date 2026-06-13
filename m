@@ -1,55 +1,55 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86743274670
-	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AC327FD4F
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781309041; cv=none; b=ObiVnzn/XC9m9gFH+TUhx3wtgcdqrwxvSPpSP45kQc/jpTdJ7T4akrrYJKtcyksvUoOodjik8CuT9u/fgW2X9hcyKA8fzQijJYsbaEVK14ht5kpOuCIPnKEHiEqWA1c3rNNJ4WG/PnBICv2zpNEbM/taLON6xLtoxtPWpQ+Y/XI=
+	t=1781309042; cv=none; b=ZzcE0g6sUwpBDqtQuydvQbyMdEbZJDXZzvj7jsvlE1k0eNsd6g6Kz7ZZafhDgr9+bKasbU1kNcqL798QzFkMdLuqJ5+Kswke70M2t4qAadC85CLhJwmA09DPJ5CVHDLqzflX/iq7K0BaTbOMGIqMGXjyakEs10sHr6QPexm9SMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781309041; c=relaxed/simple;
-	bh=xDIexEzWsokGY1ot/TXgPz0XxmAeawbDTidNIFnBVx4=;
+	s=arc-20240116; t=1781309042; c=relaxed/simple;
+	bh=+k8eAc2ynqCJOXA7Hou1UHoPM2wmYgGl88l+uTv4zhA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=e2Lh4HXUEsf8jvNK1Z5qnmaG+9zAoR+0nRXp1Yd2/TY6UHxM4tFDH0B76/l7ICOEmUcGOhllxEfay07zeTKVSqcyC+EogMjkbHiKQE1ozG45OINqAOflPaojgAxh8fr0DIHGf7OyckX58ulQqrZTjuahkqHCjjxMEKWErLVxIag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BAhC4BHk; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=j0Ie+D/PlfuUgYnkyH4uFBIAUzIbZh7jfTpjjhVbIO47Jzy7+YClNodrFQ9JXx0j9KhKS3V316Y0j24Yx9//eZXs3bJ9hRLdNk0FsJrkSCNgGUCYbsgv27iWpUs6DF0oC92xwXy4/dwusWLjT0l9+h3expUTVT5UUP6aY7nAtjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qPKwh3TI; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BAhC4BHk"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-842692bf60aso2006589b3a.1
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:03:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qPKwh3TI"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36bc380fbf9so1472454a91.3
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:04:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781309039; x=1781913839; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781309040; x=1781913840; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=tVEBpi8LrMz8eof+SsM1JvjGvZdFBSYQWxrXkLMLT1E=;
-        b=BAhC4BHkA8zWu+BMt21ofEisp3R+WL2lkY9+TBKe+PJnjltQeSaqVfFCoyPbh5Unqe
-         OGrwWC9QCUaajg1Ow4CCtIud16mDuEsN9WUI/eIYLNPQKA/d7KTvLv+ZgwZcnpusy6Z0
-         CSlVxKQYLLYndPSrCodpOOxjx2QhlDeIwJw0FMeMB0Xh51IBvWrPD1oHOmzjiMSz1imu
-         mvxMxAc4F0rlN4JR+DS/10xI4MK2m2Jjsz9v/cIVopgwkRgtrA7rqy42LUCYsP8sG+XZ
-         bcd4XrE2LgwJCKXIg4W7CiqDUFG+2WLDanEcQrlFujxIoNlDWnU1t1ooZC/ojLOFHJ6r
-         fHPA==
+        bh=SYyJm6MD81P2mCuA1sw9aPrFrsPNQ7H8qIthy1i4Jvk=;
+        b=qPKwh3TItllce3XN0yTt/QREydVGC/hMg9vttihSz+Su/OGVLf6E8zdRcBntpgdGo8
+         1cbxrVQUW2N49DXp6RQ/DroliZtIl1q17U3uzUBzX/jWQdKr4+DZdSwSoNf8urufqCqs
+         ZYyrrVBag/UPaMTNkoQo00CUTKyxyDrkDvqajsmhuKxt2/1Pr8CcbRlU9nmd+WtFWJSk
+         1ihVHn8i5mZ+OZWbSN4vin+FH4J7UbiJ9bospIOda90bKL3HYa2vKXo4wS0EmBK7Ullw
+         j+/zEbE1vzy3U2P8UqaOXg+falUkxGiXHBsjIMkcl50jFL62plrHz81rdEB6+IEfx390
+         RylQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781309039; x=1781913839;
+        d=1e100.net; s=20251104; t=1781309040; x=1781913840;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tVEBpi8LrMz8eof+SsM1JvjGvZdFBSYQWxrXkLMLT1E=;
-        b=BUxOWbbdJvZGry0nhX1u5Z/uvdSLHbEbXa42CcrJAX2E/d8788j3jLK4BcVzYOE3EX
-         UQomr1uc8xAFDdUDB/+N9KKvC35pko5y4EQERrvx8WDy4W6FTQ2/g7U06kq3t4A9+2it
-         qxcpBhMUWLllEuDEBVGv5Ffcvs6rVfyD3wJj4AhYkxJFyAuNiFp77F4/u1klBbyHAhZF
-         M3iciW22D7sqOj0mqfodac8N5lD5RCgrns5cuyMbSPE5xjvpNV37GOzjqqOka3d0J/YA
-         G2T13ajii3Gt3ExQzqT1LrXPJe6sy1BrApAMBx+HmM9sOLyIn2+/G5DxUkWiVDQlSpq8
-         /bBw==
-X-Gm-Message-State: AOJu0YzByz03ih4mbXbcLjkelBMT2+PTIowzT6zl9U/Ib9Lc8/FPp3aQ
-	iKCFKkqX2T1gvgTRGdGciLLsZ3LlQyfDZroL+FhL/BSLeLZUh28j1zoheRfSag3XH4oJhOEr0TZ
-	DFIXhxg==
-X-Received: from pfbkm55.prod.google.com ([2002:a05:6a00:3c77:b0:842:3c77:598c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1d9d:b0:842:54e8:bdd
- with SMTP id d2e1a72fcca58-844e1aa64dbmr1898401b3a.40.1781309038799; Fri, 12
- Jun 2026 17:03:58 -0700 (PDT)
+        bh=SYyJm6MD81P2mCuA1sw9aPrFrsPNQ7H8qIthy1i4Jvk=;
+        b=L+bfT/wjmT8Y+j+Sp7ZiKej7QmAGM/ppwo1aGbZwrvOi6gqL4fRTGhPTsIZzKIuwLZ
+         qz4QBwRxaderyQQ+INRr8iojvIbU9lF0mlnCxXMVTEKyb6qwABubC2iFoG1/05j4gb/m
+         3uox6vlti4KetxCK6AAhgXG7sxswBwN/fqJoBlPqua2roZA8H4FkY42X8DzVV7uNd0pF
+         /BQWxvrXiEV7/ET9EMjSNL/JAblu42Xk/zpQORnqjGVewZ54+TfSx8mrx9tAUGQDn7fM
+         5zmIro6jZ4RgOA3hh8sPv9coxcz0cdJZ6O9U2ppPfnLZGxDQebeiVCyq4L3GQtE1qE/T
+         Dw3Q==
+X-Gm-Message-State: AOJu0YxdqbLzpsQddQHfJYBQ+rN7TR8rwrfX50Tbv3Oe8SmkifC7Aiq6
+	Y7a8cz13AyFNKb5gFw9H52uRWjDybAiXX4DT+xglzjmcDNT/O/InUJ7htoQaBxwmWN/TTgbvXrg
+	HPDm68Q==
+X-Received: from pjbmi16.prod.google.com ([2002:a17:90b:4b50:b0:374:e2b3:6e25])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2749:b0:369:932a:2b8a
+ with SMTP id 98e67ed59e1d1-37a01e2e4d2mr4979035a91.1.1781309039973; Fri, 12
+ Jun 2026 17:03:59 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 17:03:17 -0700
+Date: Fri, 12 Jun 2026 17:03:18 -0700
 In-Reply-To: <20260613000329.732085-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260613000329.732085-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260613000329.732085-19-seanjc@google.com>
-Subject: [PATCH v4 18/30] KVM: x86: Move "struct kvm_x86_msr_filter"
- definition to msrs.c
+Message-ID: <20260613000329.732085-20-seanjc@google.com>
+Subject: [PATCH v4 19/30] KVM: x86/pmu: Move "struct kvm_x86_pmu_event_filter"
+ definition to pmu.c
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>
@@ -69,91 +69,76 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Move the definition of "struct kvm_x86_msr_filter" and its associate,
-"struct msr_bitmap_range", to msrs.c, as the details of the filters are
-very much implementation details that can and should be buried in msrs.c.
-While the _existence_ of filters is public knowledge, almost by definition,
-the contents don't need to be exposed outside of the MSR code as the filter
-data is provided by userspace, i.e. it pretty much has to be dynamically
-allocated, and thus never should be fully embedded in a globally visible
-structure.
+Move the definition of "struct kvm_x86_pmu_event_filter" to pmu.c, as the
+as the details of the filters are very much implementation details that can
+and should be buried in pmu.c.  While the _existence_ of filters is public
+knowledge, almost by definition, the contents don't need to be exposed
+outside of the PMU code as the filter data is provided by userspace, i.e.
+it pretty much has to be dynamically allocated, and thus never should be
+fully embedded in a globally visible structure.
 
-Note, this creates a discrepancy with the PMU event filter structure; that
-will be remedied shortly.
+No functional change intended
 
-No functional change intended.
-
-Suggested-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h | 15 ++-------------
- arch/x86/kvm/msrs.c             | 13 +++++++++++++
- 2 files changed, 15 insertions(+), 13 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 13 +------------
+ arch/x86/kvm/pmu.c              | 12 ++++++++++++
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 09e437c947a9..4ff6304c02d0 100644
+index 4ff6304c02d0..211958914cc3 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -315,6 +315,8 @@ enum x86_intercept_stage;
- struct kvm_kernel_irqfd;
+@@ -316,6 +316,7 @@ struct kvm_kernel_irqfd;
  struct kvm_kernel_irq_routing_entry;
  
-+struct kvm_x86_msr_filter;
-+
+ struct kvm_x86_msr_filter;
++struct kvm_x86_pmu_event_filter;
+ 
  struct kvm_caps {
  	/* control of guest tsc rate supported? */
- 	bool has_tsc_control;
-@@ -1291,13 +1293,6 @@ struct kvm_hv {
- };
- #endif
- 
--struct msr_bitmap_range {
--	u32 flags;
--	u32 nmsrs;
--	u32 base;
--	unsigned long *bitmap;
--};
--
- #ifdef CONFIG_KVM_XEN
- /* Xen emulation context */
- struct kvm_xen {
-@@ -1328,12 +1323,6 @@ enum kvm_suppress_eoi_broadcast_mode {
+@@ -1323,18 +1324,6 @@ enum kvm_suppress_eoi_broadcast_mode {
  	KVM_SUPPRESS_EOI_BROADCAST_DISABLED /* Disable Suppress EOI broadcast */
  };
  
--struct kvm_x86_msr_filter {
--	u8 count;
--	bool default_allow:1;
--	struct msr_bitmap_range ranges[16];
+-struct kvm_x86_pmu_event_filter {
+-	__u32 action;
+-	__u32 nevents;
+-	__u32 fixed_counter_bitmap;
+-	__u32 flags;
+-	__u32 nr_includes;
+-	__u32 nr_excludes;
+-	__u64 *includes;
+-	__u64 *excludes;
+-	__u64 events[] __counted_by(nevents);
 -};
 -
- struct kvm_x86_pmu_event_filter {
- 	__u32 action;
- 	__u32 nevents;
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index 07f2a22d2607..c230b18d87e3 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -32,6 +32,19 @@ static u64 __read_mostly efer_reserved_bits = ~((u64)EFER_SCE);
+ enum kvm_apicv_inhibit {
  
- #define MAX_IO_MSRS 256
+ 	/********************************************************************/
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index b92dd2e58335..62d0ed99ebe9 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -43,6 +43,18 @@ module_param(enable_pmu, bool, 0444);
+ bool __read_mostly enable_mediated_pmu;
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_mediated_pmu);
  
-+struct msr_bitmap_range {
-+	u32 flags;
-+	u32 nmsrs;
-+	u32 base;
-+	unsigned long *bitmap;
++struct kvm_x86_pmu_event_filter {
++	__u32 action;
++	__u32 nevents;
++	__u32 fixed_counter_bitmap;
++	__u32 flags;
++	__u32 nr_includes;
++	__u32 nr_excludes;
++	__u64 *includes;
++	__u64 *excludes;
++	__u64 events[] __counted_by(nevents);
 +};
 +
-+struct kvm_x86_msr_filter {
-+	u8 count;
-+	bool default_allow:1;
-+	struct msr_bitmap_range ranges[16];
-+};
-+
- /*
-  * Restoring the host value for MSRs that are only consumed when running in
-  * usermode, e.g. SYSCALL MSRs and TSC_AUX, can be deferred until the CPU
+ struct kvm_pmu_emulated_event_selectors {
+ 	u64 INSTRUCTIONS_RETIRED;
+ 	u64 BRANCH_INSTRUCTIONS_RETIRED;
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
