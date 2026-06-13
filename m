@@ -1,56 +1,56 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7037F283C9D
-	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102D42C11CF
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781310049; cv=none; b=sN47ZCgu3fALfHOJwy96+uH3xtOfndhZy7YmkVkc21DfynPgtRccb3GM/ozbg6iai8A0QuttKfitr/DaVjzKJ6xZ5yZ9ECPMtmnGp2s9dEq3rWTYMfSUK6zLW5N6uXVKW+BZDRETywW+Ujo7mG3ha32yyMbRqM28bWdQ0hcJt+A=
+	t=1781310053; cv=none; b=uw+9GaABs4bP9pCuLRKYgOCMeA3xWIYW9GOYfNUU11DWhkchEXCWwLcSKnNcykj7ogft1r46cVGYxiy+TlQgRdqQ5KfNlPC2g7l0DHA+mvN4QY5afGxJw8N+9ckqMu/+GrbLzvElXk1SRGmxN2x1oxyyiqDeb9u62ByhNZXGiXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781310049; c=relaxed/simple;
-	bh=/fkbGKcR+7Oi0MNRIDMSgWen89S/kkyrbYx8GFItGdg=;
+	s=arc-20240116; t=1781310053; c=relaxed/simple;
+	bh=pRjDYVgvzAMSMcyC4gsaWq6nGi+ggwtK6qIS2vByNj4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EPf2E5E2VYcmAgk84WUfnIjM5j0tZ1ztiPhybdLYihuOyEQdD6HjdRFs7IsnCe1JP6/qucmaXeHcUDbSWRy4ovD9/lmubNn3EHekIUCdqC0CpmEbhYNTk8vedk8K8z+ywhySw4KbK2Ks3b3Z8sY4FSCEVc7pg1od/0OKIa1Ygw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AIlcviuS; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=Y+vOr2SgIPMgrPtu6V6ddf2I8BT1he7QifIXP9Jyz82enz0rhcZWesgoWuzuQwiDjtEIskD6Z/a/gLp8yVuoKqdnOfIwshLb34kWlZAA68a9NJZrVNvfdJ//OfbH6DAFQG2FUnw8UeZeTjYtc53TQRUMdgmDQHN6Eg5pBIZY+zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Af4WTYVA; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AIlcviuS"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8599ebec31so1478427a12.1
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:20:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Af4WTYVA"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36ba24fcd46so1100141a91.3
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:20:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781310048; x=1781914848; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781310049; x=1781914849; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=TrhMXXAaZNAJ6oA/gSoBLS4pvmJFJO85iDVA23KYXYk=;
-        b=AIlcviuS5u9SYu4Mb3+LYQBV1ulzzMq6iFiGprDt9Se4U6DPN1hUH1+egb97EY5qWG
-         wD3dXn8yqOdXU6+mre6MFaLApnA4wLRxCktTJIvOEuNBBImwab0G9qwv3LymW9r4OKC0
-         REFbdGNrzM6jp+DEiD7su/VwnCeIOF/S+lU/Yr1NiSej1zJE+vK4PeC2taN3gY07PqTF
-         6DiO9pfGokrDZ88unAmUFkqR3jtsZLkTBv3Kl70XOAWWEY+ntBMjH/lpXRJQdXvEUIz3
-         i2Vypk8kdt2nfkM7mjlV/RxNL4Y8vuDoAv4cvvOSCDkAhqeRqnLr0tV7g7AoE4X8GdUy
-         poHQ==
+        bh=xZ0eZe4fkiDCH3zVpYK4NQsEFBnaL8FaPs5jLK/npco=;
+        b=Af4WTYVAnhsjKm7SCzSou45hi7KbnWcGfR2q6JXNublGC3Q3Kp9GaKdQPhuBQT2PZ1
+         CQMSVUEQgvwlIONt9SPoQxyE9jzSMB9AkPCULM4yHA3cHbzkz8WLeTL+HFMX4962lqBE
+         Ye7Yk9AqJT3vZuCR0F5BGz7cv/0g/YXvk59qwF1/LC+gTanrHDVUGhbcHg6C3qHsyapl
+         5r6Am0hi0s9LgvRNNsEqlN/X11UL5D/zu5r8hmc60cdrT1lgNumbXUPGFWvO+iW1aDvN
+         utCr0gDUTxJKdWqr/7pThfqioU2bxJoq/Mj7GCbxeb9ai17NmOfi4CO3VayvocJYNZzL
+         MnlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781310048; x=1781914848;
+        d=1e100.net; s=20251104; t=1781310049; x=1781914849;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TrhMXXAaZNAJ6oA/gSoBLS4pvmJFJO85iDVA23KYXYk=;
-        b=l4W3xxrS2Jk5WQcaKyKp+7EcKTWg/fiblJXiMXviPtOneey2alREvva2mskr6rAJ6i
-         Kr4W9X8n5ULbpbI1Wktq55TwhWeyYecnmKlj/ML+2h7xAUS1Azny/KnU1dWDGMJuRPOz
-         ZPIEdu93o3s7uBPUCFzbtcPmomjV7UUmlY0H5YlOHkDU5BIiVYEWbwgxNsouNDgptWPb
-         N+utJZJMbbv0TqG5GYBqFFJ4S8/DfG2UsaVO19mTBns3/X195T+G9i4tFdVaz5d/BoAP
-         bSaai3/oJx9WMcC5KSstjnOUyQW9UwkuiRlAKd0+GIXjqhGoMLbuDFfu8jTCV86CLbNr
-         Ubrg==
-X-Forwarded-Encrypted: i=1; AFNElJ8FcjcKVSuuAQrVeIQyvrbgHI+DyyIXN20IjovluTpS62lif/osVScyWyHQKLExbyyRta0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywxj1aiPoVc+lJZ2a5/QmOE+42y2F23pO8FdzKzuMo7n0NL0KZy
-	SzRALEbpxFUn5Kv6IEllHXhSbQRZMXzYSqYq05rGXP6crGmsuwqy0S1MprJISdIQqg4rQPWmMPi
-	jnA4GvQ==
-X-Received: from pgbda9.prod.google.com ([2002:a05:6a02:2389:b0:c85:6307:e80c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a11c:b0:398:77ae:8d8b
- with SMTP id adf61e73a8af0-3b783b7e9bbmr6211375637.10.1781310047646; Fri, 12
- Jun 2026 17:20:47 -0700 (PDT)
+        bh=xZ0eZe4fkiDCH3zVpYK4NQsEFBnaL8FaPs5jLK/npco=;
+        b=gwPyFNIWDmYgmfDN7FkFTFMuYQ5FOYHortIusgEdiZyY9i1G77NN8oCT+Ml+KbAT29
+         1XW1PdkH/T/wyLPQJKO3xYvnhzcCefTQrmUdlB1GoENpEljtk21EVLc8Jf47RaBHISbJ
+         1+UOs0LcCoGUsEQr5QB6kl6bJvMfoE4wSS5/sK0f8LcvZeEmRACVGaxAaXVCAFT9sgEv
+         TOdZDKjHecUY+EDYy9wEHACX/goCyW9CvcJFqnfUifHoOQmXFY9mZ54hDfBJv1bxTAjV
+         XICygjvnkRp9OzFSuNKi9eE4tDLsovVS+jqHgdTSHAVpUYb6HUf/keGDMHNi88xAEIvU
+         p3Bg==
+X-Forwarded-Encrypted: i=1; AFNElJ90fXw00yhjDVTEUvwwiDfowvVwbdpKQSeq0nePorT5q/tpcwDOmhmQJdp7YFvFEcvQQ2g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHzvLD+4dX1pYDDQgXz7iCwb9Mc6G3vV7JNE4v+gs6XrYMAVER
+	JBQciust54bpF0vPxxBc63CDPbIejEmnYzb94zXm4GjRfYp/+VGkGWmM7guN9ouAZdVOLLQTaW+
+	MQuG6ww==
+X-Received: from pjty19.prod.google.com ([2002:a17:90a:ca93:b0:369:bec6:fd63])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1c8e:b0:368:ac5f:d31b
+ with SMTP id 98e67ed59e1d1-37a040b3ec6mr5340250a91.24.1781310049202; Fri, 12
+ Jun 2026 17:20:49 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 17:20:21 -0700
+Date: Fri, 12 Jun 2026 17:20:22 -0700
 In-Reply-To: <20260613002031.745413-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260613002031.745413-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260613002031.745413-11-seanjc@google.com>
-Subject: [PATCH v7 10/20] KVM: selftests: Add a helper to set proc IRQ
- affinity for IRQ test
+Message-ID: <20260613002031.745413-12-seanjc@google.com>
+Subject: [PATCH v7 11/20] KVM: selftests: Verify interrupts are received when
+ IRQ affinity changes in IRQ test
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Sean Christopherson <seanjc@google.com>
@@ -73,56 +73,111 @@ Cc: Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>,
 	Josh Hilke <jrhilke@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Josh Hilke <jrhilke@google.com>
+From: David Matlack <dmatlack@google.com>
 
-Add a utility, proc_irq_set_smp_affinity(), to set the CPU affinity of a
-Linux host IRQ via the proc filesystem.  Use smp_affinity_list instead of
-smp_affinity to avoid having to convert the single CPU to a bitmask.
+Extent the eventfd IRQ test with a '-a' flag to randomly affinitize the
+device's host IRQ to different physical CPUs throughout the test.  This
+stresses the kernel's ability to maintain correct interrupt routing and
+delivery even as the underlying hardware IRQ affinity is changed
+dynamically via /proc/<irq>/smp_affinity{,_list}.
 
-The helper will be used by the eventfd IRQ test to verify delivery of IRQs
-when the affinity is randomized/modified.
-
+Signed-off-by: David Matlack <dmatlack@google.com>
+Co-developed-by: Josh Hilke <jrhilke@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
-[sean: make the utility self-contained, drop "list", massage changelog]
+[sean: massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/include/proc_util.h |  2 ++
- tools/testing/selftests/kvm/lib/proc_util.c     | 14 ++++++++++++++
- 2 files changed, 16 insertions(+)
+ tools/testing/selftests/kvm/irq_test.c | 27 +++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/proc_util.h b/tools/testing/selftests/kvm/include/proc_util.h
-index 704839b6d7af..d1ddc967d11d 100644
---- a/tools/testing/selftests/kvm/include/proc_util.h
-+++ b/tools/testing/selftests/kvm/include/proc_util.h
-@@ -6,4 +6,6 @@
+diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
+index 6888be54ee4a..c01aa313f719 100644
+--- a/tools/testing/selftests/kvm/irq_test.c
++++ b/tools/testing/selftests/kvm/irq_test.c
+@@ -12,10 +12,12 @@
+ #include <unistd.h>
+ #include <pthread.h>
+ #include <sys/eventfd.h>
++#include <sys/sysinfo.h>
  
- unsigned int vfio_msix_to_host_irq(const char *vfio_device_bdf, int msix);
+ static u64 timeout_ns = 2ULL * 1000 * 1000 * 1000;
+ static bool guest_ready_for_irqs[KVM_MAX_VCPUS];
+ static bool guest_received_irq[KVM_MAX_VCPUS];
++static bool irq_affinity;
+ static bool done;
  
-+void proc_irq_set_smp_affinity(unsigned int irq, int cpu);
-+
- #endif /* SELFTEST_KVM_PROC_UTIL_H */
-diff --git a/tools/testing/selftests/kvm/lib/proc_util.c b/tools/testing/selftests/kvm/lib/proc_util.c
-index 84d30f055a0a..3960b3841d63 100644
---- a/tools/testing/selftests/kvm/lib/proc_util.c
-+++ b/tools/testing/selftests/kvm/lib/proc_util.c
-@@ -38,3 +38,17 @@ unsigned int vfio_msix_to_host_irq(const char *device_bdf, int msix)
- 	return (unsigned int)irq;
- }
+ #define GUEST_RECEIVED_IRQ(__vcpu)	\
+@@ -125,9 +127,10 @@ static const char *probe_iommu_type(void)
  
-+void proc_irq_set_smp_affinity(unsigned int irq, int cpu)
-+{
-+	char path[PATH_MAX];
-+	int r, fd;
+ static void help(const char *name)
+ {
+-	printf("Usage: %s [-d <segment:bus:device.function>] [-h] [-t iommu_type]\n", name);
++	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-h] [-t iommu_type]\n", name);
+ 	printf("\n");
+ 	printf("Tests KVM interrupt routing and delivery via irqfd.\n");
++	printf("-a	Affine the device's host IRQ to a random physical CPU\n");
+ 	printf("-d	Use a VFIO device to send MSI-X interrupts instead of manually signaling the eventfd\n");
+ 	printf("-t	Override the IOMMU type to use (vfio_type1_iommu or iommufd)\n");
+ 	printf("\n");
+@@ -160,10 +163,13 @@ int main(int argc, char **argv)
+ 	int i, j, c, msix, eventfd;
+ 	struct iommu *iommu;
+ 	struct kvm_vm *vm;
+-	int irq;
++	int irq, irq_cpu;
+ 
+-	while ((c = getopt(argc, argv, "d:ht:")) != -1) {
++	while ((c = getopt(argc, argv, "ad:ht:")) != -1) {
+ 		switch (c) {
++		case 'a':
++			irq_affinity = true;
++			break;
+ 		case 'd':
+ 			device_bdf = optarg;
+ 			break;
+@@ -192,7 +198,11 @@ int main(int argc, char **argv)
+ 		printf("Using device %s MSI-X[%d] (IRQ-%u)\n", device_bdf, msix,
+ 		       irq);
+ 	} else {
++		TEST_ASSERT(!irq_affinity,
++			    "Setting IRQ affinity (-a) requires a backing device (-d)");
 +
-+	snprintf(path, sizeof(path), "/proc/irq/%u/smp_affinity_list", irq);
-+	fd = open(path, O_RDWR);
-+	TEST_ASSERT(fd >= 0, "Failed to open %s", path);
+ 		eventfd = kvm_new_eventfd();
++		irq = -1;
+ 	}
+ 
+ 	pr_info("Injecting interrupts for GSI %d (guest vector 0x%x) %d times\n",
+@@ -210,12 +220,19 @@ int main(int argc, char **argv)
+ 			continue;
+ 	}
+ 
++	irq_cpu = -1;
 +
-+	r = dprintf(fd, "%d\n", cpu);
-+	TEST_ASSERT(r > 0, "Failed to affinitize IRQ-%u to CPU %d", irq, cpu);
+ 	for (i = 0; i < nr_irqs; i++) {
+ 		struct kvm_vcpu *vcpu = vcpus[i % nr_vcpus];
+ 		struct timespec start;
+ 
+ 		kvm_route_msi(vm, gsi, vcpu, vector);
+ 
++		if (irq_affinity) {
++			irq_cpu = kvm_random_u64(&kvm_rng) % get_nprocs();
++			proc_irq_set_smp_affinity(irq, irq_cpu);
++		}
 +
-+	kvm_close(fd);
-+}
+ 		for (j = 0; j < nr_vcpus; j++)
+ 			TEST_ASSERT(!GUEST_RECEIVED_IRQ(vcpus[j]),
+ 				    "IRQ flag for vCPU %d not clear prior to test",
+@@ -229,8 +246,8 @@ int main(int argc, char **argv)
+ 			cpu_relax();
+ 
+ 		TEST_ASSERT(GUEST_RECEIVED_IRQ(vcpu),
+-			    "vCPU %d timed out waiting for IRQ (vector 0x%x) from GSI %d\n",
+-			    vcpu->id, vector, gsi);
++			    "vCPU %d timed out waiting for IRQ (vector 0x%x) from GSI %d (via CPU %d)\n",
++			    vcpu->id, vector, gsi, irq_cpu);
+ 
+ 		WRITE_AND_SYNC_TO_GUEST(vm, guest_received_irq[vcpu->id], false);
+ 	}
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
