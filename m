@@ -1,108 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85B68BE9;
-	Sat, 13 Jun 2026 00:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5232B1C01
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781309332; cv=none; b=olGVDzs6ueESKdRB1hYZapLWcNFXxlCHTElPuW6gOxeGp5+VfkJOjNwVsI5Ygmhwaq3VlGJCAafX7j7cW9rlv8HNn+jehQdR5o1dDV2o6w8KETYhPcgOc6EF210GwYWh0dyTyQip89Ycd5CI0V9We+TrOmQT5OUg6sVHSQWvMSc=
+	t=1781309417; cv=none; b=Ij3VufCIZU8ECqpNRfS+JhWOy1H+hjqwytVZrsSMWwtbtW0Yg7oMBi3JwXaSqzzLH9tTe0iM1oJuSIiOvwsbbpTDj6LCoHN1yVhHSN/Vv7n5HefNWMG4ucfkv9svukZo0r5WzdwUCqIjXIuDXh8ftiny+ierwaWPIZHVxcJRLiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781309332; c=relaxed/simple;
-	bh=FGfDSYUzR4CCGquDoYUGvbdgqtpxGy59aE+t6VmydzQ=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=hWsNnlcItLcWqtj3DImgYP9QLXRT/XIEZyFoPOCekjbbeXLSA+UZxaIsIBnJVXcjK5bOLGFB2htVbaHeILxu4Yeem/pcQy1PG4+OTdr+++1C+chsVjpFsXd6A9TTF44L9FVNx29yPhvRJ/YxW06DXw/gmXJCGjePBmePm+D9P8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bxYyOi6H; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781309417; c=relaxed/simple;
+	bh=2xA7UwrmgSAiT4AAGXdHKe3DLcEVpuJqqL8PXChttXs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QIbzUvYnWlZiys111/wdjWvBx8kXQvUD/OW4jsfW3gtaVXBAuuL/0vdTSo0HQwF6kXjo+Q3z6YCXM8VlGYT739IrGv+N+iHqPm5oIoWJqvhmobRkF/b5wYrHj2lBNvRG7EF4C2QiulWdX6Y5yVPCb4YGjU+uz6sKJ2HD76I1bR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K2QTy7U0; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxYyOi6H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DDD1F00A3D;
-	Sat, 13 Jun 2026 00:08:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781309331;
-	bh=nGxa9IMcv53z2azwObO2YlW/PW02VJ6MFszDO1jlzVg=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=bxYyOi6H/XWA/Y2J/44vOjtGAF7mr9yIQGqqhNEydZvUE9u4kKAF/sbt/+q8JTMzE
-	 7x/8hSbfi7oni499ospkve5C/3kWuSaA0VnzJk+YJcbBEkXfHuc6Uqdg7tI97rITth
-	 pZUyTGYVU3iwDUDDl3o9qkJMdwjEgblsGFmLwbb+LsOcAVnQzfHMQ9jV+52/jZX2x8
-	 IPkG8jAcxB+EIdw5/c/woX8sGZDyBR99nMeTl3zRXvXBIAbcsEvYzT+/TfgmzkwkUW
-	 jbK12QWLjlVIu5PXBEenmtnBpeex5l179TyqMHAE30VJ/h+t4QIjq+cBpDKVUo3cML
-	 bTBgxd3K1J73g==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6F12CF40068;
-	Fri, 12 Jun 2026 20:08:50 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 12 Jun 2026 20:08:50 -0400
-X-ME-Sender: <xms:kp8sas-m1MadYzNzE3GKeoiMZdV_iMnwY7WN2W807kSfARnzcno5Aw>
-    <xme:kp8saqRf8LKFJTelwbeuoV4cGT4wXHldUaUH0pSOI6GmBc6qWISfQuLqlxp_3n4K8
-    99rs6EuyH2_1pdH3CKLSG9o93pMOvrB8kKC6nVh0iQMvp9VqxvHQJgO>
-X-ME-Received: <xmr:kp8sarmYx51mvAAm0oNLuyy2le9TzUBmK1zgPNpfaNUknmgMGr1D0iijO2oWT9JTIkGMpub54h4qWDBJj_L1wmnLVp4wqpIBncM>
-X-ME-Proxy-Cause: dmFkZTECaqWc+bBCQTP33LZCVcgpDog5woX4Pk0w+tN7k5C+anpxEi+11sOcToFp2YNhFQ
-    XXkOLiPpOtcuAt4BLAJvhlb7O8nxZgdFWzhdtvXjhffwAwacbY3zEbPPvwbumpAUPAXWEp
-    Bgx4CamE/ooy9Rmp4n+szWTIeEluvgAHuE6mZuG6nDvB/dq+sGK1+KOb0YPrrcX4etzoM+
-    +yT1xXSfn4eeQcVYqtsfFhqJYvzY3citFLQahF05zyv5SAjzoM5MjNRKy10Mg5qTaHSyhY
-    8r7x73EwCEReh81vhTNa8Fa+wkxrHfA2h/jnBVT4BIn0M6gOMHeKu7A4dH+8HtfbI3FRsb
-    0gC/ywipQLbX4MDqxESNJlQK+K9po3Od5p68lT4Ij01H2wvcaei9NEiImuGkhU5Tal/XLP
-    ikUsRTZyY5FVFhEAkc/8dziVLZdtOKQjOK0axXbWT2ETRtzHpPWQYNGhk2lUedQeb0NFvS
-    x9CNornK2PKwLHbeSiyN3nbNb3tUqt+RdAka3rapqv90vtVcuRLInHWKoClF9WglfjN02R
-    KYkVur8cw2Q5QVgKjU/oygOXvy36wu13mNk/aYeXCFrjsI4zumNphrYvgUFLxpWUqPBZMU
-    IMzvcZpVm8LRKBt+mhI5y4UQVyg2Do3bgpCREoh9JEcdkpk2wav3kt8TLUKw
-X-ME-Proxy: <xmx:kp8satV6RJn4UUYUx3wYePDlQV8snuogAWSta9882ttLqcOQcO2Jsg>
-    <xmx:kp8saofG2zDXntFvensLmhV9Bt29j2buk9lnb9ENt-4q-xciuZAO5g>
-    <xmx:kp8sajkdyylhXrju-6QIgs8f5Dnzyw2AE14HafsmDQoMjWiWqGqCMQ>
-    <xmx:kp8saiDlR3aE0buPQbXmapb9-xLOZrHwiy4y3RWwu7QcpGLjx4iWyA>
-    <xmx:kp8satfMLyqNZj6_XFOMNauI5LKtT3OX2EdTzSY-TmDo60JQ-MDdtOgK>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 12 Jun 2026 20:08:49 -0400 (EDT)
-Date: Fri, 12 Jun 2026 17:08:48 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>, 
- kas@kernel.org, 
- djbw@kernel.org, 
- rick.p.edgecombe@intel.com, 
- x86@kernel.org, 
- peter.fang@intel.com
-Cc: linux-coco@lists.linux.dev, 
- linux-kernel@vger.kernel.org, 
- kvm@vger.kernel.org, 
- sohil.mehta@intel.com, 
- yilun.xu@intel.com, 
- yilun.xu@linux.intel.com, 
- baolu.lu@linux.intel.com, 
- zhenzhong.duan@intel.com, 
- xiaoyao.li@intel.com
-Message-ID: <6a2c9f90d348_9b8551003e@djbw-dev.notmuch>
-In-Reply-To: <20260522034128.3144354-5-yilun.xu@linux.intel.com>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-5-yilun.xu@linux.intel.com>
-Subject: Re: [PATCH 04/15] x86/virt/tdx: Enable the Extensions right after
- basic TDX Module init
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K2QTy7U0"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36bc54005a7so1792336a91.0
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:10:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781309415; x=1781914215; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZDW2+QBWaKIKD14o7O9QPMJy941RQm/F5fPpz4Pl5f4=;
+        b=K2QTy7U0UNtGpShyhPW/DSl2Jnr2jPUsBYNE3lDTQRn4/cBKqmOYEzQ64jETguc81n
+         LpgQPveIxPH1fPc5dLI3Hdur5dMoh94qmh0yff23cPFuBFCatjuIo+tNRYUjLVVCliih
+         Gy6gphYzUYL+cGrhX25sNJ7O9ieJxsgJVjb97w8mSgzy2dNhsFwoc+cFdy97Z0SeajJK
+         cxarM4btSww0TenEoJBh64ikccRefL1c/xj8lZSqiDvXqaqexCyfBqaiO+Wxk5pYypDv
+         JKPpbC4ckNoRO5VBnsHYjiQNkVN/jNPFK4S01mjDQuCSCBWa+U/Q6CHuXcSWuCt0W55G
+         nWww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781309415; x=1781914215;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZDW2+QBWaKIKD14o7O9QPMJy941RQm/F5fPpz4Pl5f4=;
+        b=BAtP6i23hoNcNxNGC3tyapILJ1Gsfx+mg36jsmd/B6VsOJHU/B6x9mnN1KCeXgu32f
+         vaWzITSwygwDpxMWFSjZevbNuU4VCrNOjuyW9HugRslMG4qBkUEfMsGeg2gKotiCd2yz
+         s1jMlfMq+5DnQokmm7drgdfqBYrkZ8ea6dentuaUcaKvG/BS7zyO/lUidpCiofreWU/Y
+         sBWDV217hvcFe0En+dULTOEmrm5VFHr3j7mnR05OTPOJlB0NwX03CEvRMBAVL33mwkAB
+         v/d8fcSz0B/GooAWng4cTblTg5rXgwf6HLufo5hMiGtSwhsGBF17tauUEpRBcTXgEI2g
+         ClMg==
+X-Forwarded-Encrypted: i=1; AFNElJ+0ZNNq3tdrpOu9q24UEvWJ7HGcJBkJKxYph9+qcS6p0twKFGHCaio5VNhM9Yr+YxuBAnQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt9qw+OPTZy7CrION+AyetStHe6ZvRS1oAf4ofsp4Y3viV1CCS
+	FJln3Qih8NklwF++W6rfD9Yetaw05hJ96Pw4NJUahArfWwUbzs2rqg/c2/NIP4FfJq37FYzyieL
+	Wjw==
+X-Received: from pjbco19.prod.google.com ([2002:a17:90a:fe93:b0:36b:7407:9b73])
+ (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:580c:b0:35b:8d89:719b
+ with SMTP id 98e67ed59e1d1-37c2bc6f158mr1545724a91.1.1781309414535; Fri, 12
+ Jun 2026 17:10:14 -0700 (PDT)
+Date: Sat, 13 Jun 2026 00:09:51 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
+Message-ID: <20260613000953.467473-1-tavip@google.com>
+Subject: [PATCH net v2 0/2] vsock/virtio: fix msg_iter desync on transmission failure
+From: Octavian Purdila <tavip@google.com>
+To: netdev@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, 
+	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Jason Wang <jasowang@redhat.com>, 
+	kvm@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	virtualization@lists.linux.dev, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Octavian Purdila <tavip@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Xu Yilun wrote:
-> The detailed initialization flow for TDX Module Extensions has been
-> fully implemented. Enable the flow after basic TDX Module
-> initialization.
-> 
-> Theoretically, the Extensions doesn't need to be enabled right after
-> basic TDX initialization. It could be enabled right before the first
-> Extension SEAMCALL is issued. That would save or postpone memory usage.
-> But it isn't worth the complexity, the needs for the Extensions are vast
-> but the savings are little for a typical TDX capable system (about
-> 0.001% of memory). So the Linux decision is to just enable it along with
-> the basic TDX.
+This series fixes a msg_iter desync issue in the virtio vsock transport
+that can lead to warnings and eventual -ENOMEM under specific failure
+scenarios (e.g. partial GUP failure during MSG_ZEROCOPY transmission).
 
-No real point in rehashing the rationale for the "any available, all the
-time" policy yet again especially when this directly conflicts with the
-"relatively large amount" comment in the original cover letter.
+To fix this, we need to restore the msg_iter state on transmission failure.
+However, since virtio vsock transport can be built as a module, we first
+need to export iov_iter_restore.
 
-Otherwise I agree with the proposed reordering of this initial series.
+Patch 1 exports iov_iter_restore.
+Patch 2 implements the msg_iter restoration in virtio vsock.
 
-In general though, no big showstoppers for me in this first 4.
+Changes in v2:
+- Use iov_iter_savestate()/iov_iter_restore() (Stefano)
+- Use a single restore point (Stefano)
+- Reverse xmas tree (Stefano)
+- Added comments in the code (Stefano)
+
+v1: https://lore.kernel.org/all/20260609004809.1285028-1-tavip@google.com/
+
+Octavian Purdila (2):
+  iov_iter: export iov_iter_restore
+  vsock/virtio: restore msg_iter on transmission failure
+
+ lib/iov_iter.c                          |  1 +
+ net/vmw_vsock/virtio_transport_common.c | 13 +++++++++++++
+ 2 files changed, 14 insertions(+)
+
+-- 
+2.54.0.1136.gdb2ca164c4-goog
+
