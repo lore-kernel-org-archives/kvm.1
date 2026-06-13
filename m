@@ -1,129 +1,142 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30E62FD1A5
-	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 20:35:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4751B1A38F9
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 20:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781382921; cv=none; b=Q0LCi8JOrGDodyqUO7snc72LNUV/Ktf+4vp4SQ0JrQZkLRtnxUrtJGZfK2Wt9E/8F7k6tva6ZnoDWWB3fNkvSzji/VMqfMX1Z+2AEq5b1J3M0mIRZMmWuyOIZUlhIrfmRfomI7C8dabVoPO16dKv4tNdmh50M0Wj4V8aZIex+3k=
+	t=1781383118; cv=none; b=F+tNjx4/1mjnI9S69ZBwmbK63pnh9xjdJbeGRIfnCbTvVZEpJZWjqfMVJTC8Ua9s/pi/MsjOW9oF7eF5PX6nJOcvDN4bmilCv1CJQvzEOoOoVTX0zvV90KGaHmyaBe72QhGiqrka2GE9rjdu00ms2TpNwORw3BHZ3DNIydbnwI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781382921; c=relaxed/simple;
-	bh=jY+5h6BEqTigLHC2QbDztdBxYdYvY/v+aeeg3os3Dn0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sGUWRCdVXjmJRPQYpGGT8Js6yE2mw7VdJ8LdaxDSesw32HCSzaF5THVt4AqKQ3pNATCchR9vzfc9eruepmtpO1Wk8xy8Z5TUf+jb0ojDOy3DkNa5oQD7tVFBvwKXHHFvLGunJcNfRyTzmZWj6QmFkJWPFx3DB4yJ2zRf1cOKH7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=apg+IHY5; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="apg+IHY5"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2bf2911f93cso50145ad.1
-        for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 13:35:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781382918; x=1781987718; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lFug7r9V2IZ6ttYLRSwXSuZdIzMUMmjx+agrhP1KloM=;
-        b=apg+IHY5EFWnXL9g1EiX77U0u3H94ggPa3gh7pfv66zbsk/wGcEXkLBDF1x+tuOJbT
-         OG9kWhMBf4pRXF9uda/m+Wf/TarWhsEIjVQaZ9T9KArd3A3JpI0/Iv4qfU/VCZjvJPa9
-         EnCUPtX9aDVaFD2qbKeVOIjiQ+DEJ0IUoKptnGg4DfwtIoMF7zoAql3n+ABfVZ8kGtux
-         MnhSSd2tVIHs2ejfZ0Yq+NWkdKoEbi6hAOJhH17k0OPEhbx6KAoOCfJX3kLPIhGwPpK+
-         5YWwyZMdvpvVfGz4wBgst87wGUSpoyNPgWGVc2nDOs4Oi6GI7DG6/Xj3V8U88AwStaeP
-         yepg==
+	s=arc-20240116; t=1781383118; c=relaxed/simple;
+	bh=odxXas8zDQAee+ApLV1HzJ7syEiMdmu0OKbAvskhzNA=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=ddm2r7ij+LAhQj70ZweKBLlZU9j/og5XNq2Yh02lkOa22Pu2tdNG8gDcVHRzdMr0Fx48UOijE8bbAJYUQoLiKqVozActk7CQ9PWuFMDJrUgF3GTDoVURSY6XIIA5Zp6uztl4udB0Q8l3GakF8f8iqwCrQ1rTpFq3Q4Xy26Wvsjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-48651d7d505so3021954b6e.0
+        for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 13:38:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781382918; x=1781987718;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lFug7r9V2IZ6ttYLRSwXSuZdIzMUMmjx+agrhP1KloM=;
-        b=PvpkzZ15+7OTQVWgH3vts4omQR+ktpc0BD2GFkL2gMmAQGpCd/Ft5nlHdVxRg1/Kwf
-         xLGEMzFSpwBKwC7br+vCWyJGjQDs+eKhV/r+R5J5mVeHdzNrR4RmpTGIWILvl+9w/ThC
-         Z3zlTa9RJynCHrp+a+g68w1kBtSEm+wWxaC0vAnZGL07fedM7bjIO3WzA4nRm3h2MrAr
-         obG17keM5ktz1VYxN97pWXCxnGauJXpW0N0AaU3twdR5basDUkV+7fSy67B82H/iQPgE
-         wZN7HaIIATt0Heq1Zl4Oirpotcy0enHP6hSXKfvfdv9t7cAO09yaLWVlhXDcoshBcgP1
-         l4VQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9kDsrYnIjaADOr5JUJtVEENXX2T0onTTKs1aKdfz9ntwyBS4d8ov9MwyP8G0AXRta+130=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxseIS2jVdbKlqbW2Aw+ZlnWycQFxO1ntInnhBPdQjKgqcoVAZ3
-	sDUnqcxF2Nu0nl1szSCyNkd/QzqzMQ1xdDfypJ4LRN9HmcrXWwM6Ba1B+0ytqAkG+w==
-X-Gm-Gg: Acq92OFp3cz7cdWg3TFq3pQ7l08E0jRr7DfTbowO4rzePT7BCz/dtqj9mYi1oreQU8r
-	a0EOFzNbor91f6ufORPzS/ubf7Mek1OATomvvJO9s2Hhv3h0kIeBtX5biVIJ0y2VfiPWHYQ8/jX
-	fbGeGcPAdGGtIVvvw3v+jQQ8g6QP3HVBUnCJ/U6+9u7yLB/trxkHiynBACcorwRCUcKfTQIvfdQ
-	9EQNp7DPsCNNpK4xXjYkeeXNN7xmW4v6ntaqhBpNdPOKP1UUzhe/b85RO07U5WneBJVXYRxSnml
-	tWYNCzzOtgxhC2XcZ54bp8xEUsEmoiNhnT+0HQ3Y6G7qcNPQHsn5MAiCm/jfZSOSu0bx7kK43q2
-	7la7aok/AHXe4lXWqNYKk/9d0QBj4EVHfkyEC7ZPGFbhZYajtDLrdEoDIB+BPtMs1Q9cdyOIeZ1
-	gvmSk9t2WG0buoqF2sy28sJ2o1Io3rcQompXXMuNLyTqZmtcPOlSJaoy6IocdN
-X-Received: by 2002:a17:903:24f:b0:2bf:3741:5b76 with SMTP id d9443c01a7336-2c665e34838mr1217385ad.3.1781382917803;
-        Sat, 13 Jun 2026 13:35:17 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c4327ac7fbsm59623015ad.42.2026.06.13.13.35.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jun 2026 13:35:16 -0700 (PDT)
-Date: Sat, 13 Jun 2026 20:35:10 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
-Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>,
-	linux-arm-msm@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Manivannan Sadhasivam <mani@kernel.org>
-Subject: Re: [PATCH RFC 0/3] vfio/pci: Hide and optionally override the PCIe
- Device Serial Number
-Message-ID: <ai2-_nWEXPyHmmLJ@google.com>
-References: <20260613-pcie_vfio-v1-0-09168188f3f2@oss.qualcomm.com>
+        d=1e100.net; s=20251104; t=1781383116; x=1781987916;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xch0ZkRn1IIoKlc+fcK7TLbvOvLiu92QBoOAPBVmoZQ=;
+        b=fjaPNtyJcoumkn7zz8K/k6AM+fyOlwIsMy0vzx8VGdlp3Z5eVdwHrqjhdC8uHrHdK8
+         lBvSpzJwIuCLtsEUpWa/IkOpRuorZpeCAI0wNl7NkHgiaoqLWdz8tgmfqV9BgkzhTaBt
+         TrvBFd1gCd04YDZW8TD3wVqz6QimGVnf2bsCdGVLXZMtTomNAgY02+GA18TqbeIrS/EY
+         SQV6iCzWGAPk4ITvoE+cx/ufcsP8CX+hGJizm5tE0HhbRXMQwXsgngMtBNErprTs3n4k
+         i9a223qp8U4etDtSR9inOOJ8bnDtLUrghkJXHfNm6eNv2YyPWvR1SKRnjExmMcdmq1Ou
+         atHQ==
+X-Gm-Message-State: AOJu0Yzu35ro7zava4sgJUgy9QlMhwgJHScHKpLb+Rh3ej06AgQqwcoh
+	gAz/SKgRR8F0VWUU18uDD49rTBoZHjpLljFj2V6aDL43W++ZcRnzQ87aFvvwlGzT31X7b4wyubH
+	SNec87aXanfTZSZSHQG/+izmbZnyJVp7DjwcRRX/S4hYHPMeD+eg54v07UD4=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260613-pcie_vfio-v1-0-09168188f3f2@oss.qualcomm.com>
+X-Received: by 2002:a05:6808:5146:b0:485:48da:132e with SMTP id
+ 5614622812f47-48741b29997mr3259712b6e.27.1781383116373; Sat, 13 Jun 2026
+ 13:38:36 -0700 (PDT)
+Date: Sat, 13 Jun 2026 13:38:36 -0700
+In-Reply-To: <20260612230622.687665-1-seanjc@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a2dbfcc.8812e0fc.3c3fa4.000a.GAE@google.com>
+Subject: [syzbot ci] Re: KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
+From: syzbot ci <syzbot+ciaa819f991480b300@syzkaller.appspotmail.com>
+To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, syzbot@syzkaller.appspotmail.com, vkuznets@redhat.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Jun 13, 2026 at 11:13:35PM +0530, Pranjal Arya wrote:
+syzbot ci has tested the following series
 
-Hi Pranjal,
+[v2] KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
+https://lore.kernel.org/all/20260612230622.687665-1-seanjc@google.com
+* [PATCH v2 1/8] KVM: x86/hyperv: Get target FIFO in hv_tlb_flush_enqueue(), not caller
+* [PATCH v2 2/8] KVM: x86/hyperv: Check for NULL vCPU Hyper-V object in kvm_hv_get_tlb_flush_fifo()
+* [PATCH v2 3/8] KVM: x86/hyperv: Ensure vCPU's Hyper-V object is initialized on cross-vCPU accesses
+* [PATCH v2 4/8] KVM: Initialize a vCPU's index to '-1' while it's being created
+* [PATCH v2 5/8] KVM: Move nVMX's lockdep logic for vcpu->mutex to a common helper
+* [PATCH v2 6/8] KVM: x86: Treat a vCPU as unreachable if its index is invalid
+* [PATCH v2 7/8] KVM: x86/hyperv: Assert vCPU's mutex is held in to_hv_vcpu()
+* [PATCH v2 8/8] KVM: x86/hyperv: Use {READ,WRITE}_ONCE for cross-task synic->active accesses
 
-> vfio-pci has no perm_bits entry for the PCIe Device Serial Number (DSN)
-> Extended Capability, so guest reads of the serial
-> number currently fall through to the physical device.  The DSN is a
-> unique, persistent hardware serial number that identifies the physical
-> component (the functions of a Multi-Function Device report the same
-> value; Root Complex integrated Endpoints may implement it independently),
-> so exposing it lets a guest fingerprint the host hardware and correlate
-> it across VMs.  For multi-tenant passthrough this is an unnecessary
-> host-identifier leak.
->
+and found the following issue:
+WARNING in kvm_hv_vcpu_uninit
 
-+ 1 to what Alex said here, QEMU / VMM should be able to trap and present
-the desired values here, we shouldn't need this in the vconfig. Thus, I
-believe this is better suited to QEMU (maybe this should be a patch to
-QEMU?)
+Full report is available here:
+https://ci.syzbot.org/series/674ef35a-9335-4710-8a6d-b18d01510cbb
 
-> 
-> Signed-off-by: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
-> ---
-> Pranjal Arya (3):
->       vfio/pci: Virtualize and scrub Device Serial Number from guests
->       vfio/pci: Allow userspace to set a virtual Device Serial Number
->       selftests/vfio: Add PCIe Device Serial Number test
-> 
->  MAINTAINERS                                      |   6 +
->  drivers/vfio/pci/vfio_pci_config.c               |  98 +++++++++++
->  drivers/vfio/pci/vfio_pci_core.c                 |   2 +
->  drivers/vfio/pci/vfio_pci_priv.h                 |   2 +
->  include/uapi/linux/pci_regs.h                    |   5 +
->  include/uapi/linux/vfio.h                        |  18 ++
->  tools/testing/selftests/vfio/Makefile            |   1 +
->  tools/testing/selftests/vfio/vfio_pci_dsn_test.c | 206 +++++++++++++++++++++++
->  8 files changed, 338 insertions(+)
-> ---
-> base-commit: c425609d6ac4012c8bbf01ec2e10e801b1923a7b
-> change-id: 20260613-pcie_vfio-48506602ec6a
+***
 
-A few minor things, we don't use change-id upstream and no need to add a
-MAINTAINERS entry per test, we already have an entry to maintain
-tools/testing/selftests/vfio.
+WARNING in kvm_hv_vcpu_uninit
 
-Thanks,
-Praan
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      c1f7303302927f9cbf4efedf70f0512cde168c65
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/20dd789e-0a89-4465-844c-9d91b5ce4a45/config
+syz repro: https://ci.syzbot.org/findings/eeefcfe6-b8e9-4c5b-900e-855d814f5d97/syz_repro
+
+------------[ cut here ]------------
+debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || vcpu->vcpu_idx < 0 || !refcount_read(&vcpu->kvm->users_count))
+WARNING: ./include/linux/kvm_host.h:996 at kvm_lockdep_assert_vcpu_is_locked_or_unreachable include/linux/kvm_host.h:994 [inline], CPU#1: syz.1.25/5883
+WARNING: ./include/linux/kvm_host.h:996 at to_hv_vcpu arch/x86/kvm/hyperv.h:78 [inline], CPU#1: syz.1.25/5883
+WARNING: ./include/linux/kvm_host.h:996 at kvm_hv_vcpu_uninit+0x198/0x210 arch/x86/kvm/hyperv.c:906, CPU#1: syz.1.25/5883
+Modules linked in:
+CPU: 1 UID: 0 PID: 5883 Comm: syz.1.25 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:kvm_lockdep_assert_vcpu_is_locked_or_unreachable include/linux/kvm_host.h:994 [inline]
+RIP: 0010:to_hv_vcpu arch/x86/kvm/hyperv.h:78 [inline]
+RIP: 0010:kvm_hv_vcpu_uninit+0x198/0x210 arch/x86/kvm/hyperv.c:906
+Code: 48 89 df e8 0a ba d8 00 48 c7 03 00 00 00 00 eb 05 e8 1c 63 6d 00 5b 41 5c 41 5e 41 5f 5d e9 8f f6 51 0a cc e8 09 63 6d 00 90 <0f> 0b 90 e9 65 ff ff ff 48 c7 c1 e0 5c 30 90 80 e1 07 80 c1 03 38
+RSP: 0018:ffffc900035ef940 EFLAGS: 00010293
+RAX: ffffffff8158f397 RBX: ffff88816987d400 RCX: ffff888110b20000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: 0000000000000001 R08: ffff88810c5b9703 R09: 1ffff110218b72e0
+R10: dffffc0000000000 R11: ffffed10218b72e1 R12: 0000000000000000
+R13: 00000000fffffff8 R14: ffff88810c5b9700 R15: dffffc0000000000
+FS:  00007fbc073dc6c0(0000) GS:ffff8882a929a000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f451a40fff8 CR3: 000000010f703000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ kvm_arch_vcpu_destroy+0x1a9/0x380 arch/x86/kvm/x86.c:12905
+ kvm_vm_ioctl_create_vcpu+0x68b/0x940 virt/kvm/kvm_main.c:4262
+ kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5161
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbc0659ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fbc073dc028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fbc06815fa0 RCX: 00007fbc0659ce59
+RDX: 0000000000000001 RSI: 000000000000ae41 RDI: 00000000000000f7
+RBP: 00007fbc06632d6f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fbc06816038 R14: 00007fbc06815fa0 R15: 00007fffc5de9fc8
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
+
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
