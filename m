@@ -1,135 +1,142 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CD431D381
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B414C37419D
 	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 16:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781369865; cv=none; b=atXsc5QIgf8YhHolteNBCba6M4cYsniX12cX74vTnWWY381RopFCvb2tvmyQC0LA+BTJ+x3vG5YVLyfrrONR6RtWhSRUQqouiP77utaXnLsH/XCSvUVrL2Trxi/300EUqBIrbSGB727ZU/5bbCjMaBFjl/TF0KeOPFX7IaExEIw=
+	t=1781369865; cv=none; b=DqPQsNqV2X41z50bu92w/e7y/dYQUdt1PS6BKKvMzui/CngVDUt/b5gSH06i5KTd1umEcnL8BmAjiRc9elH1gIpb8ucibNJkUvhy1SJLWx6nbNg95a5kunOjKrdrl3mdxUp7dTk8OOd4b2TTZgUkko+Jp7eNk47L14607hagjHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781369865; c=relaxed/simple;
-	bh=kis/d3RgbyqkMs6TJ1RL/RvQahdzbryg1tzc8jJXIXM=;
+	bh=px25azgNld7E17MCp8I2WlC/1wFwjIi1aWC8na/MqUc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZaH34abJ6pZG3xjOmTvJiKcbGz4vvhxH4l4wIR41ZhPYVh0mcsp/gTK7ziFZO7WsG9EDyZfSwtxtbTRtA14atv6fC+1ttRe2hlj/qIPo/KkDwNt4Tw4DShnfwal3WI9QRN/RebH41CLvbE7Mq38hJy2c1bpkLfKjXjgG+0jKhhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGS62Y4r; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=toHClwM6IBpxQ13aBQVTGdc0yJwIhInZK6Y6zZBe6OIDH/u+nkeZuZivWWUe8ENcSjtgjlLg5jZqN6r82X21QR1JzqGm63SAtwXD4FUbYo5hHJA75noRYQoZa6hDlWytwWRssZflr1tWEPwLomK2ADMeqC3TPEd0KdPRgdqBCGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QL/ibwIO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mGS62Y4r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D901F00A3A;
-	Sat, 13 Jun 2026 16:57:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QL/ibwIO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7359A1F000E9;
+	Sat, 13 Jun 2026 16:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1781369864;
-	bh=PDN+TzQCuTKj0TAFECm60kO6zDkx0bg5a/ucIVaKcJs=;
+	bh=QATNaGWSRwKP+aEIIwKXbWIFWf59joWoGuRfZxnQUn0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mGS62Y4rqsUxTZoY1aTrHyMoLnHckAwfTfu/rs+SKBVwlst2AhgdIpqLqMbolZ7NB
-	 7ST4fWbTmEqleUy6z0Tmb/aq47JMms8i4Ltdb8YlWNeG7g/HEWL5Ov1I/WHwHMv8wb
-	 I2uhKnTUVHKDfS19I6ekcU+RSOvkFH76RiYjOH9wtG3/SfqY6noW5O/CFjolYkkPb6
-	 eJEfDivlI6PQSM0zlpvMMN1sCK7YIaqsTQVWHkO7l1t2i/fLIZRKAMLWdoZgIYCXj0
-	 GMzfXHhZHOHY99bCC8GqMlqYkN5rtG1oI5xCIPKHRknMwqn7VzRMvdyCb3Ph/7RK7i
-	 iWNlfIzqemmyA==
+	b=QL/ibwIOjfYBP0u72Cq/rmVKAcaiDRN7cgh8SNqjuLI6gMjRa9FwhKiXZ+HaTmxN2
+	 Etv22ujDfsh+Ju1KEatFEl5G+Kve4pjjlMv5+d0GFfFoUMhkdYv4N18BKl9qGwcXEU
+	 lAfQY9zProTFGFoy4HQImv2OL5Z3FmGnZtK5SFYKTZ8PDoWLW7guPqqj9nO0yQSj80
+	 lyT5SKhLR84lwNAur02z95MM9oZTjscpqXGqS2PHHiYcbTKnkG3kvX04OxpeznwQZW
+	 YHHZHtuQ9GDsHMSQ55wJ8yUvIiHxPZOoE02FJe2bchiOMoRYDWdtHe2KeaT5T0rX/d
+	 OGIHBpl0K5Otg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/4] vhost/vsock: suppress EHOSTUNREACH fast-fail during
- CPR pause
+Subject: Re: [PATCH 4/4] vhost/vsock: re-scan TX virtqueue on device start
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Andrey Drobyshev" <andrey.drobyshev@virtuozzo.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260612165718.433546-4-andrey.drobyshev@virtuozzo.com>
-References: <20260612165718.433546-4-andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20260612165718.433546-5-andrey.drobyshev@virtuozzo.com>
+References: <20260612165718.433546-5-andrey.drobyshev@virtuozzo.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 13 Jun 2026 16:57:43 +0000
-Message-Id: <20260613165743.C9D901F00A3A@smtp.kernel.org>
+Date: Sat, 13 Jun 2026 16:57:44 +0000
+Message-Id: <20260613165744.7359A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Memory ordering TOCTOU race allows incorrect fast-fail of packets =
-during CPR resume.
+
+Pre-existing issues:
+- [High] Host memory allocation failure incorrectly triggers a fatal virtqu=
+eue error and leaks descriptors, causing a guest vsock DoS.
+- [High] TOCTOU race in `vhost_transport_send_pkt()` can erroneously drop p=
+ackets during QEMU CPR live migration.
 --
 
-commit ee9060520c490bf817a7d5354ea841c3834e4978
-Author: Denis V. Lunev <den@openvz.org>
+commit 917560a155f52870e04784955e886f79d44169bb
+Author: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
-vhost/vsock: suppress EHOSTUNREACH fast-fail during CPR pause
+vhost/vsock: re-scan TX virtqueue on device start
 
-This commit suppresses the fast-fail in vhost_transport_send_pkt() during C=
-PR
-pause by adding a cpr_paused flag. The flag is set when backends are dropped
-and cleared when started, allowing packets to be queued instead of dropped
-with -EHOSTUNREACH while the connection is paused.
+This commit addresses a deadlock during QEMU CPR live-update where a TX kick
+is lost because the backend is temporarily NULL. It updates vhost_vsock_sta=
+rt()
+to queue a TX poll and rescan buffers enqueued while paused.
 
 > diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> index e629886e5cf84..bcaba36becd79 100644
+> index bcaba36becd79..1fcfe71d18bec 100644
 > --- a/drivers/vhost/vsock.c
 > +++ b/drivers/vhost/vsock.c
-[ ... ]
-> @@ -311,11 +312,17 @@ vhost_transport_send_pkt(struct sk_buff *skb, struc=
-t net *net)
->  	 * the mutex would be too expensive in this hot path, and we already ha=
-ve
->  	 * all the outcomes covered: if the backend becomes NULL right after th=
-e check,
->  	 * vhost_transport_do_send_pkt() will check it under the mutex anyway.
-> +	 *
-> +	 * Don't fast-fail if cpr_paused is set, keep queueing skbs instead.
-> +	 * The kick in vhost_vsock_start() will drain them on resume.
+> @@ -655,6 +655,12 @@ static int vhost_vsock_start(struct vhost_vsock *vso=
+ck)
 >  	 */
->  	if (unlikely(!data_race(vhost_vq_get_backend(&vsock->vqs[VSOCK_VQ_RX]))=
-)) {
-> -		rcu_read_unlock();
-> -		kfree_skb(skb);
-> -		return -EHOSTUNREACH;
-> +		smp_rmb();	/* pairs with smp_wmb() in start/drop_backends */
-> +		if (!READ_ONCE(vsock->cpr_paused)) {
-> +			rcu_read_unlock();
-> +			kfree_skb(skb);
-> +			return -EHOSTUNREACH;
-> +		}
->  	}
+>  	vhost_vq_work_queue(&vsock->vqs[VSOCK_VQ_RX], &vsock->send_pkt_work);
 > =20
->  	if (virtio_vsock_skb_reply(skb))
-[ ... ]
-> @@ -640,6 +647,9 @@ static int vhost_vsock_start(struct vhost_vsock *vsoc=
-k)
->  		mutex_unlock(&vq->mutex);
->  	}
-> =20
-> +	smp_wmb();	/* pairs with smp_rmb() in send_pkt */
-> +	WRITE_ONCE(vsock->cpr_paused, false);
+> +	/*
+> +	 * Some packets might've also been queued in TX VQ.  Re-scan it here,
+> +	 * mirroring the RX send-worker kick above.
+> +	 */
+> +	vhost_poll_queue(&vsock->vqs[VSOCK_VQ_TX].poll);
+> +
+>  	mutex_unlock(&vsock->dev.mutex);
+>  	return 0;
 
 [Severity: High]
-Does this memory ordering still allow a TOCTOU race where packets are
-incorrectly fast-failed?
+This is a pre-existing issue, but does this allocation failure handling
+correctly manage the descriptor?
 
-In vhost_vsock_drop_backends(), the writer updates variables in the order:
-cpr_paused =3D true -> smp_wmb() -> backend =3D NULL.
+In vhost_vsock_handle_tx_kick(), if vhost_vsock_alloc_skb() fails due to
+transient host memory pressure:
 
-The lockless reader in vhost_transport_send_pkt() reads in reverse order:
-backend -> smp_rmb() -> cpr_paused. This correctly guarantees it won't see
-backend =3D=3D NULL without cpr_paused =3D=3D true.
+drivers/vhost/vsock.c:vhost_vsock_handle_tx_kick() {
+        ...
+		skb =3D vhost_vsock_alloc_skb(vq, out, in);
+		if (!skb) {
+			vq_err(vq, "Faulted on pkt\n");
+			continue;
+		}
+        ...
+}
 
-However, here in vhost_vsock_start(), the writer updates them in the same
-order as the reader:
-backend =3D vsock -> smp_wmb() -> cpr_paused =3D false.
+It looks like this skips the vhost_add_used() call, triggering a device err=
+or
+via vq_err() and permanently leaking the descriptor.
 
-Because both the reader and this writer process the backend pointer first a=
-nd
-cpr_paused second, the memory barriers do not prevent interleaving. Can a
-concurrent reader execute its first read (backend) before the writer's
-update, seeing NULL, and its second read (cpr_paused) after the writer's
-update, seeing false?
+Should a transient host memory allocation failure drop the packet and clean=
+ly
+return or discard the descriptor instead of breaking the virtqueue?
 
-This would cause the reader to erroneously drop the packet with
--EHOSTUNREACH on an active connection.
 
-> +
->  	/* Some packets may have been queued before the device was started,
->  	 * let's kick the send worker to send them.
->  	 */
+[Severity: High]
+This isn't a bug introduced by this patch, but is there a race condition
+during live migration in vhost_transport_send_pkt() that could drop packets?
+
+Looking at vhost_transport_send_pkt():
+
+drivers/vhost/vsock.c:vhost_transport_send_pkt() {
+        ...
+	if (unlikely(!data_race(vhost_vq_get_backend(&vsock->vqs[VSOCK_VQ_RX])))) {
+		smp_rmb();	/* pairs with smp_wmb() in start/drop_backends */
+		if (!READ_ONCE(vsock->cpr_paused)) {
+			rcu_read_unlock();
+			kfree_skb(skb);
+			return -EHOSTUNREACH;
+		}
+	}
+        ...
+}
+
+If a reader observes the backend is NULL, gets preempted, and then the writ=
+er
+in vhost_vsock_start() sets the backend to non-NULL and cpr_paused to false,
+could the reader wake up and incorrectly conclude the device is permanently
+uninitialized?
+
+If this sequence occurs, it returns -EHOSTUNREACH and drops the packet. Wou=
+ld
+it be safer to re-verify the backend is still NULL after observing
+cpr_paused =3D=3D false?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260612165718.4335=
-46-1-andrey.drobyshev@virtuozzo.com?part=3D3
+46-1-andrey.drobyshev@virtuozzo.com?part=3D4
