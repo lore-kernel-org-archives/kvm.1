@@ -1,62 +1,67 @@
 Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAB9171AF
-	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9771C01
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781309014; cv=none; b=EfBIkzi6wghw39Bjatk7jUvWOHYUPN1DnuOLW2WOjhINswbbvgGIY8tyDTckFOzzYISCLB1PGgkPVZtOdUd8rnE6p2gGB1HJWZ1HqVkG3uT2s7xxe1GGc+rRz0D3glKxwMLRj1B6KF/Akb1L192tSJcqeNcYH0Isuh8AuLuTikg=
+	t=1781309014; cv=none; b=G/q5i+4NnPMz/89aksEbPEaNgTSDVpqCb8mgT4xCWG8jwGhhIjZB/zWeX3UDkrbebe7FXBBSgrr08m2plXCyk7HcXKl52jDJOv3XUoSdZtlDQs/Kh4GLIk8ea9bpf7AJR6+gqpl7fcGvwZJodZibhwYbUT3xXK6+8Qy9Wnsvbg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781309014; c=relaxed/simple;
-	bh=krEZGAI4sVUtp8XlVPkpVni9/Zjp1O171b+4WJ7bHWU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nOVNBg8TRkfUP/wdOO9S+oouCm4uGxZzmlP03ry1/E4WaOjgSmHd/tZyknIFUo9Q2HbZlxv3MwaldVw3/wOCuNTgk003wO0Af1C9W6ghitZlXXMyLIMPkSTE47coJoPYNF7QvVfMOBbXllW7pdGM+JKrzeMxQwKIX/8peSZjt6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EUhaEdv9; arc=none smtp.client-ip=209.85.210.202
+	bh=cNPlB7pwwxiLgJgB4oaW+H9DnFOrhBUWWzE+mi91ql4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=DqaQX9F/RxTkTtJVL1flxLXaCJjGDLatYnKU7e/gszolkyQCDkYodlK1H6LK2btVIx6PXq+1agCNK/POtWTacTKzafsXle3sbRR0OcoeSSwDtMGT4NWXM7ccyhMGF79ZaWDbmybMSZZsLEZsi6+vTFJcFjJKCASjgcbLkvyVYO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L981S5lT; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EUhaEdv9"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8423970cb30so1063771b3a.2
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:03:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L981S5lT"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8423f3e4728so1058477b3a.2
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:03:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781309012; x=1781913812; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CuNl+V1MCPk3zpY3m1G0KMJzplIIs/9wcDgpczY7Qv8=;
-        b=EUhaEdv9xIzzOu8SoA7UpWAmu958USqrHBH3O4ntkRqzF/mVYf1PxO82vXl+GphMnV
-         3YCy0SJQN5VCLbBhMavH/hYe4d/WKSs1U+7iPxxVZe96CFNkUpWWW0ghEdEHR1tBY//7
-         GEGjvlT21oYxf3VNQH4lOopZf8b48ps7FmR2bG0et60ZPxTkIslFd50UcDCEVSEHNiID
-         Xtdm05GZgQkMe+qJi5lLQYUOwvop4cz34d0jScLLawdSXA9ZDOENBnt+WC3/Hw0KLU/W
-         zkexSQ8gwdSMC8ZzmGwLwRWAwA8eSA7bPfSbGRTDmpdwrCEK6sJf99H1c5XjDAxExqfe
-         WNNw==
+        d=google.com; s=20251104; t=1781309013; x=1781913813; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=UuZsimMOlbBIbQGikRbVUz8v6Nz7u3z1RSfZkr5Y1z0=;
+        b=L981S5lTEjuenHwkQgV8ybORCoqvPmHPiCN/eDwCo7pkzQvW8b3oGsVGQlXtS8zY0k
+         GDh9018493fe9XB46102QG0RfBeiGWacwVStQk2b21ntlHTDiz4Jb47X6xTvGEkVeuC+
+         jCWCgB9q9giOpgEsSnIoxrXNBmmN31ouWINOEmihA8r5xVXH618F/jqamPPhmHey1LX3
+         UApNATOnq0SolpGKMOkZnLSPfsVcRhUG8SIJ2JPj/WOIP5v4zf7JlX94dvO3asRVp2Yc
+         ydepMXqSXbzvewFyOljSH2NkQn0Yr69QsMbCnd2YXNc/2PV73eWCEAudCq/jA4S+FrUo
+         zc/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781309012; x=1781913812;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CuNl+V1MCPk3zpY3m1G0KMJzplIIs/9wcDgpczY7Qv8=;
-        b=hDqdpskAtO3Rw5ZJwHKKSGVj7v6tecDmrVzopAPl1dUyvDRtz70qEVyjLJAyKgl3uc
-         zDdMmL74B//bTWQOc38RxjACbbq3dHE3EbfdjgVBym67M2CdcqukqSh68B1ipDb1ASd2
-         cSZSa3Re/XgG6qnOY1hdDDpZIFxJI1N9icqXg6uY9kGED7DgchclH6P12xqqP91IFxfl
-         BVXn8S54/SLU1bb1MoSeLNIUdcFLf/3vD6LALu2RY9YF7qy0lJytZWm6yVELnEeofRxr
-         VbcgImOKiVCiehaYlCye0IgpUaNYX3qShK3UiX++lrr4UBpaCsO8o58kBKo1OlHrK/Iy
-         bMCw==
-X-Gm-Message-State: AOJu0YxNCF1bPSB6d/4Z2XAoxr2s5LmbcmB3KuwCNOotgwwHfLL6Jtys
-	yFFpqPSRiGEInB9m5SL63k+EaYMXb+c004hr/F8UC+0Xyc4ZiBRu1WRHCV/aM/xZSOQfP+AqZwO
-	BR8ETVA==
-X-Received: from pfbbk25.prod.google.com ([2002:aa7:8319:0:b0:842:4878:6a38])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3498:b0:842:3ea1:5dd1
- with SMTP id d2e1a72fcca58-844e19663fdmr1569570b3a.14.1781309011905; Fri, 12
- Jun 2026 17:03:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781309013; x=1781913813;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UuZsimMOlbBIbQGikRbVUz8v6Nz7u3z1RSfZkr5Y1z0=;
+        b=c318URj4UIHPI1iiwDlUkC8nzsT8VIzyt4rbfmzOmGaheVuWNwzjpkT2qXcQEUmoga
+         ZDHibuhRKywgMPK4UCkCEII9uL/oEjE/7oXmKuTwvdJ1Ys8C7VSucoR5AhU+34nRZKMX
+         XrotjbYhT+88Zfim34I+HzuzGSgTcxwog531KDw19tmwQPwCDRrpy8ZdA1nG7k3N/GLM
+         FgtibM+B0IxymvXXLm5aLa7tDjsR3928MkwsNYfB9AjBqMJRljHJkQzZ1dWk9h9qufoR
+         lPxG7kscBN/08e0K7UG6qLPXK30sMOkpelPCl9TiytXRBzbKTtFx8v6k4G15HGjYM7rT
+         M8Gg==
+X-Gm-Message-State: AOJu0Yx2B/xiNOvB+AMhYTJBf/QdPcvfQwKkvGN8q6kwBlQJAk+I86xs
+	1mlirsgdE4GoeLSeyqV8w1m6Dk/Zt2q7k27fuySPdcseZdl9Ig1q78BFq1BM7tdel4HoiQDcXwK
+	dkUFiTg==
+X-Received: from pfbho5.prod.google.com ([2002:a05:6a00:8805:b0:842:7548:51e8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3a16:b0:842:33f3:da68
+ with SMTP id d2e1a72fcca58-8434cd0b4d2mr5393414b3a.8.1781309013046; Fri, 12
+ Jun 2026 17:03:33 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 17:02:59 -0700
+Date: Fri, 12 Jun 2026 17:03:00 -0700
+In-Reply-To: <20260613000329.732085-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260613000329.732085-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260613000329.732085-1-seanjc@google.com>
-Subject: [PATCH v4 00/30] KVM: x86: x86.{c,h} spring cleaning
+Message-ID: <20260613000329.732085-2-seanjc@google.com>
+Subject: [PATCH v4 01/30] KVM: x86: Extract REGS and SREGS runtime sync code
+ to helpers
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>
@@ -64,124 +69,66 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-It's still technically spring!
+Extract the REGS and SREGS portions of {store,sync}_regs() into separate
+helpers in anticipation of moving the register specific code out of x86.c
+and into regs.c.
 
-Perform spring cleaning on x86.{c,h} and asm/kvm_host.h, by adding regs.c
-(the kvm_cache_regs.h => regs.h is already applied) and msrs.{c,h}, and moving
-relevant code out of x86.c.
+No functional change intended.
 
-v4:
- - Drop the GPR API cleanups (already applied).
- - Collect more tags. [Yosry, Kai
- - Chunked the x86.c => regs.c code movement into several patches, so that the
-   bulk move is as close to a pure move as is reasonably possible. [Yosry]
- - Drop a redundant BUILD_BUG_ON() from store_regs().
- - Fix various changelog goofs. [Kai]
- - Fix alignment goofs in kvm_get_{,feature_}msr_index_list(). [Kai]
- - Drop the defunct x86.h include from mtrr.c. [Kai]
- - Fix whitespace goofs. [Kai]
- - Rewrite the changelog for the bulk regs.c move to better explain why only a
-   tiny amount of EFER code is moved. [Yosry]
- - Move "struct kvm_x86_msr_filter" and "struct kvm_x86_pmu_event_filter" to
-   msrs.c and pmu.c respectively. [Kai]
- - Rename LDT helpers to vmx_{load,store}_ldt(), and call out that they will
-   hopefully be replaced by kernel helpers in the near future. [Kai]
- - Drop the kvm_cpu_get_apicid() code movement (sent a separate patch to kill
-   it off entirely). [Kai]
- - Add more detail to explain why using VALID_MASK defines outside of x86.c is
-   dangerous. [Yosry, Kai]
- - Bury kvm_arch_interrupt_allowed() in x86.c as kvm_is_interrupt_allowed(). [Kai]
- - Move kvm_find_async_pf_gfn() prototype to x86.h. [Sashiko]
+Cc: Yosry Ahmed <yosry@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/x86.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-v3:
- - Collect more tags. [David, Binbin, Yosry]
- - Use kvm_run_sync_regs_{from,to}_user() instead of kvm_run_{g,s}et_regs().
-   [Kai]
- - Fix a variety of typos. [Binbin]
- - Everything beyond patch 15...
-
-v2:
- - https://lore.kernel.org/all/20260514215355.1648463-2-seanjc@google.com
- - Collect tags. [Yosry, Kai]
- - Fix some truly egregious goofs. [Binbin]
- - Rename kvm_cache_regs.h => regs.h, add regs.c. [Yosry, because he
-   complained, not because he actually suggested this :-D ]
- - Drop superfluous casting/masking of e*x() usage. [Kai]
-
-v1: https://lore.kernel.org/all/20260409235622.2052730-1-seanjc@google.com
-
-Sean Christopherson (30):
-  KVM: x86: Extract REGS and SREGS runtime sync code to helpers
-  KVM: x86: Move get_segment_base() to regs.h, as kvm_get_segment_base()
-  KVM: x86: Rename __{g,s}et_sregs2() =>
-    kvm_x86_vcpu_ioctl_{g,s}et_sregs2()
-  KVM: x86: Move the bulk of register specific code from x86.c to regs.c
-  KVM: x86: Move local APIC specific helpers out of asm/kvm_host.h
-  KVM: x86: Move kvm_caps and kvm_host_values to asm/kvm_host.h
-  KVM: x86: Swap the include order between x86.h and mmu.h
-  KVM: x86: Move tdp_enabled from kvm_host.h to mmu.h
-  KVM: x86: Move eager_page_split to mmu.{c,h}
-  KVM: x86/hyperv: Eliminate an unnecessary include of x86.h in hyperv.h
-  KVM: x86: Move kvm_{load,put}_guest_fpu() to fpu.h
-  KVM: x86: Extract get/set MSR (list) ioctl logic to helpers
-  KVM: x86: Expose several TSC helpers via x86.h for use by MSR code
-  KVM: x86: Move the bulk of MSR specific code from x86.c to msrs.{c,h}
-  KVM: x86: Move register helper declarations from kvm_host.h => regs.h
-  KVM: x86: Move kvm_{g,s}et_segment() to inline helpers in regs.h
-  KVM: x86: Move MSR helper declarations from kvm_host.h => msrs.h
-  KVM: x86: Move "struct kvm_x86_msr_filter" definition to msrs.c
-  KVM: x86/pmu: Move "struct kvm_x86_pmu_event_filter" definition to
-    pmu.c
-  KVM: x86: Move MMU helper declarations from kvm_host.h => mmu.h
-  KVM: x86: Move LLDT assembly wrappers into VMX
-  KVM: x86: Move misc "VALID MASK" defines from kvm_host.h => x86.c
-  KVM: x86: Move __kvm_irq_line_state() from kvm_host.h => ioapic.h
-  KVM: x86: Move IRQ-related helper declarations from kvm_host.h =>
-    irq.h
-  KVM: x86: Move kvm_pv_send_ipi() declaration from kvm_host.h =>
-    lapic.h
-  KVM: x86: Don't treat interrupts as allowed just because a nested run
-    is pending
-  KVM: x86: Rework kvm_arch_interrupt_allowed() into
-    kvm_is_interrupt_allowed()
-  KVM: x86/mmu: Move kvm_arch_async_page_ready() below
-    kvm_tdp_page_fault()
-  KVM: x86/mmu: Move kvm_mmu_do_page_fault() from mmu_internal.h =>
-    mmu.c
-  KVM: x86: Move a pile of stuff from kvm_host.h => x86.h
-
- arch/x86/include/asm/kvm_host.h |  470 +---
- arch/x86/kvm/Makefile           |    4 +-
- arch/x86/kvm/cpuid.c            |    1 +
- arch/x86/kvm/fpu.h              |   26 +
- arch/x86/kvm/hyperv.h           |    3 +-
- arch/x86/kvm/ioapic.c           |    1 +
- arch/x86/kvm/ioapic.h           |   12 +
- arch/x86/kvm/irq.c              |    7 +
- arch/x86/kvm/irq.h              |    6 +
- arch/x86/kvm/lapic.h            |    8 +
- arch/x86/kvm/mmu.h              |   90 +-
- arch/x86/kvm/mmu/mmu.c          |  132 +-
- arch/x86/kvm/mmu/mmu_internal.h |   66 -
- arch/x86/kvm/msrs.c             | 2745 +++++++++++++++++++++++
- arch/x86/kvm/msrs.h             |  156 ++
- arch/x86/kvm/mtrr.c             |    2 +-
- arch/x86/kvm/pmu.c              |   12 +
- arch/x86/kvm/regs.c             |  875 ++++++++
- arch/x86/kvm/regs.h             |   60 +
- arch/x86/kvm/svm/nested.c       |    1 +
- arch/x86/kvm/svm/svm.c          |    6 +-
- arch/x86/kvm/vmx/nested.c       |    1 +
- arch/x86/kvm/vmx/vmx.c          |   23 +-
- arch/x86/kvm/x86.c              | 3709 +------------------------------
- arch/x86/kvm/x86.h              |  354 +--
- 25 files changed, 4457 insertions(+), 4313 deletions(-)
- create mode 100644 arch/x86/kvm/msrs.c
- create mode 100644 arch/x86/kvm/msrs.h
- create mode 100644 arch/x86/kvm/regs.c
-
-
-base-commit: c1f7303302927f9cbf4efedf70f0512cde168c65
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index cf122b8c3210..74b8f98dcb24 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12687,7 +12687,7 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+ 	return 0;
+ }
+ 
+-static void store_regs(struct kvm_vcpu *vcpu)
++static void kvm_run_sync_regs_to_user(struct kvm_vcpu *vcpu)
+ {
+ 	BUILD_BUG_ON(sizeof(struct kvm_sync_regs) > SYNC_REGS_SIZE_BYTES);
+ 
+@@ -12696,13 +12696,18 @@ static void store_regs(struct kvm_vcpu *vcpu)
+ 
+ 	if (vcpu->run->kvm_valid_regs & KVM_SYNC_X86_SREGS)
+ 		__get_sregs(vcpu, &vcpu->run->s.regs.sregs);
++}
++
++static void store_regs(struct kvm_vcpu *vcpu)
++{
++	kvm_run_sync_regs_to_user(vcpu);
+ 
+ 	if (vcpu->run->kvm_valid_regs & KVM_SYNC_X86_EVENTS)
+ 		kvm_vcpu_ioctl_x86_get_vcpu_events(
+ 				vcpu, &vcpu->run->s.regs.events);
+ }
+ 
+-static int sync_regs(struct kvm_vcpu *vcpu)
++static int kvm_run_sync_regs_from_user(struct kvm_vcpu *vcpu)
+ {
+ 	if (vcpu->run->kvm_dirty_regs & KVM_SYNC_X86_REGS) {
+ 		__set_regs(vcpu, &vcpu->run->s.regs.regs);
+@@ -12718,6 +12723,14 @@ static int sync_regs(struct kvm_vcpu *vcpu)
+ 		vcpu->run->kvm_dirty_regs &= ~KVM_SYNC_X86_SREGS;
+ 	}
+ 
++	return 0;
++}
++
++static int sync_regs(struct kvm_vcpu *vcpu)
++{
++	if (kvm_run_sync_regs_from_user(vcpu))
++		return -EINVAL;
++
+ 	if (vcpu->run->kvm_dirty_regs & KVM_SYNC_X86_EVENTS) {
+ 		struct kvm_vcpu_events events = vcpu->run->s.regs.events;
+ 
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
