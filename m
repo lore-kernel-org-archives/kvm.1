@@ -1,55 +1,55 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AC327FD4F
-	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:04:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81371290DBB
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781309042; cv=none; b=ZzcE0g6sUwpBDqtQuydvQbyMdEbZJDXZzvj7jsvlE1k0eNsd6g6Kz7ZZafhDgr9+bKasbU1kNcqL798QzFkMdLuqJ5+Kswke70M2t4qAadC85CLhJwmA09DPJ5CVHDLqzflX/iq7K0BaTbOMGIqMGXjyakEs10sHr6QPexm9SMw=
+	t=1781309044; cv=none; b=pGyDiShFhHmgwh9EDdUBq7RJXE71KwZRUINL5Rd9JZtbB6c0YJwDpwU2ACj9HOUBIO5cu77U9J2BEPixau3zvzQnudjQVOCMO0J+hQALDYaI9KqFC18+ZGo49Ze4OoNhsjP0SznMEfBvBZERxsnqpY89+EhCdQr2tY7cDM7zMUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781309042; c=relaxed/simple;
-	bh=+k8eAc2ynqCJOXA7Hou1UHoPM2wmYgGl88l+uTv4zhA=;
+	s=arc-20240116; t=1781309044; c=relaxed/simple;
+	bh=/DPbkwHdRu4UFMAnIzwE4UeioJQrGOFTLzgtYMQ4al0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j0Ie+D/PlfuUgYnkyH4uFBIAUzIbZh7jfTpjjhVbIO47Jzy7+YClNodrFQ9JXx0j9KhKS3V316Y0j24Yx9//eZXs3bJ9hRLdNk0FsJrkSCNgGUCYbsgv27iWpUs6DF0oC92xwXy4/dwusWLjT0l9+h3expUTVT5UUP6aY7nAtjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qPKwh3TI; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=UP81vx6d/i3M4gjK5A3rNorS899BkxsqOno4v+0EQi3T7Nrw+0reeRkmDkO4jukdHCEng1wfDjbE6L/g6D4Jxa6oLoOjBArznly7WMAxpMS87UVa82Rj9vvTFM/PervSpnAgVXOMHIOTWfdu19y5lLxVX2PfIlUDK+v9sA5MaXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rKd/rQco; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qPKwh3TI"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36bc380fbf9so1472454a91.3
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:04:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rKd/rQco"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-842692bf60aso2006620b3a.1
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:04:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781309040; x=1781913840; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781309042; x=1781913842; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=SYyJm6MD81P2mCuA1sw9aPrFrsPNQ7H8qIthy1i4Jvk=;
-        b=qPKwh3TItllce3XN0yTt/QREydVGC/hMg9vttihSz+Su/OGVLf6E8zdRcBntpgdGo8
-         1cbxrVQUW2N49DXp6RQ/DroliZtIl1q17U3uzUBzX/jWQdKr4+DZdSwSoNf8urufqCqs
-         ZYyrrVBag/UPaMTNkoQo00CUTKyxyDrkDvqajsmhuKxt2/1Pr8CcbRlU9nmd+WtFWJSk
-         1ihVHn8i5mZ+OZWbSN4vin+FH4J7UbiJ9bospIOda90bKL3HYa2vKXo4wS0EmBK7Ullw
-         j+/zEbE1vzy3U2P8UqaOXg+falUkxGiXHBsjIMkcl50jFL62plrHz81rdEB6+IEfx390
-         RylQ==
+        bh=e0SsqsuFFWq18eEVynSfZe2MJ0zR+Vbcr5FP3GYRopQ=;
+        b=rKd/rQcovyAc+y+38G1yQ/jlPyzGfZiN+s8Dz0W833s4Hl9Pz3cYwHPirOjulrORS1
+         g9VG2YgcEFdsVLqfbQ2bO9062wKG9DwHQ5i4AMBFAAHIn6gXuIre9L98LG6q/2M2W9nD
+         yIouKUbJSP7NjantNKFyYxMEfpyKHEdZojLYl7Av3VAR/ml4ciU5pn0w+FNFSMLYDDDe
+         Q8cepnDHfw7h9uSX3qiu/nLzWTDkw4cOHDED/q7aSxWoL/ir31EIcZ9lnsZx+pyUanxe
+         anOJW16i6Zj/b7KkTDNdmCQsc0oN0UR0GwX6qEbzRvfeXxUP4nNbXJyJowbonESd8+MK
+         7IWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781309040; x=1781913840;
+        d=1e100.net; s=20251104; t=1781309042; x=1781913842;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SYyJm6MD81P2mCuA1sw9aPrFrsPNQ7H8qIthy1i4Jvk=;
-        b=L+bfT/wjmT8Y+j+Sp7ZiKej7QmAGM/ppwo1aGbZwrvOi6gqL4fRTGhPTsIZzKIuwLZ
-         qz4QBwRxaderyQQ+INRr8iojvIbU9lF0mlnCxXMVTEKyb6qwABubC2iFoG1/05j4gb/m
-         3uox6vlti4KetxCK6AAhgXG7sxswBwN/fqJoBlPqua2roZA8H4FkY42X8DzVV7uNd0pF
-         /BQWxvrXiEV7/ET9EMjSNL/JAblu42Xk/zpQORnqjGVewZ54+TfSx8mrx9tAUGQDn7fM
-         5zmIro6jZ4RgOA3hh8sPv9coxcz0cdJZ6O9U2ppPfnLZGxDQebeiVCyq4L3GQtE1qE/T
-         Dw3Q==
-X-Gm-Message-State: AOJu0YxdqbLzpsQddQHfJYBQ+rN7TR8rwrfX50Tbv3Oe8SmkifC7Aiq6
-	Y7a8cz13AyFNKb5gFw9H52uRWjDybAiXX4DT+xglzjmcDNT/O/InUJ7htoQaBxwmWN/TTgbvXrg
-	HPDm68Q==
-X-Received: from pjbmi16.prod.google.com ([2002:a17:90b:4b50:b0:374:e2b3:6e25])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2749:b0:369:932a:2b8a
- with SMTP id 98e67ed59e1d1-37a01e2e4d2mr4979035a91.1.1781309039973; Fri, 12
- Jun 2026 17:03:59 -0700 (PDT)
+        bh=e0SsqsuFFWq18eEVynSfZe2MJ0zR+Vbcr5FP3GYRopQ=;
+        b=aajXM7qRDWZCytb/1E0rJV1zKHfp07azxpWxh5zGz3v+IPrmTIWyxCRek21Cj04egP
+         Ybm1/Z+vzn+bHE9Ief4g/fz46TLDq1V7o2pxelAEJi7/z+ARyDNszIuezWeH6TW8Xezh
+         O0hC7VfU0sR9imcTURmxkBS+jsuIhlNK2V2Vxcy7CsGpHKnJIS8FKiRoZDrvXlD7TvX2
+         +qGNBLx30HsN68vwHkkZyoUDsi5nVQ2FEJ8FAEeAakDpjIFWderXsTiCxEHrjQuDPHnP
+         dvr8b/0c6pVRcInAHrbBNw3rL8OoAk2CM4oNPRlTMTRciKWCNHaWnijpej1IML4jXjli
+         PwAg==
+X-Gm-Message-State: AOJu0YxeCl7cIpIc2EPlQ0vkmrqeMPp7CUw6pBDclDVR8Eivxce4Z/KR
+	Er7yhdLadTgogPE7G7A1W+EVwupFz9c/fvZlqYvuc450J6MJgBuXMLm7xMwRIy4NF1JNQNJQYGB
+	U++nP/A==
+X-Received: from pfmb16.prod.google.com ([2002:a05:6a00:1150:b0:842:7045:f89b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3489:b0:82c:9897:70e6
+ with SMTP id d2e1a72fcca58-844e1a639b1mr1898855b3a.34.1781309041653; Fri, 12
+ Jun 2026 17:04:01 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 17:03:18 -0700
+Date: Fri, 12 Jun 2026 17:03:19 -0700
 In-Reply-To: <20260613000329.732085-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260613000329.732085-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260613000329.732085-20-seanjc@google.com>
-Subject: [PATCH v4 19/30] KVM: x86/pmu: Move "struct kvm_x86_pmu_event_filter"
- definition to pmu.c
+Message-ID: <20260613000329.732085-21-seanjc@google.com>
+Subject: [PATCH v4 20/30] KVM: x86: Move MMU helper declarations from
+ kvm_host.h => mmu.h
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>
@@ -69,76 +69,225 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Move the definition of "struct kvm_x86_pmu_event_filter" to pmu.c, as the
-as the details of the filters are very much implementation details that can
-and should be buried in pmu.c.  While the _existence_ of filters is public
-knowledge, almost by definition, the contents don't need to be exposed
-outside of the PMU code as the filter data is provided by userspace, i.e.
-it pretty much has to be dynamically allocated, and thus never should be
-fully embedded in a globally visible structure.
+Move a pile of MMU helper declarations and macros into mmu.h, as they are
+very much KVM x86 internal APIs and details, and not intended to be exposed
+to arch-neutral KVM, and certainly not to the broader kernel.
 
-No functional change intended
+No functional change intended.
 
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h | 13 +------------
- arch/x86/kvm/pmu.c              | 12 ++++++++++++
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 70 --------------------------------
+ arch/x86/kvm/mmu.h              | 71 +++++++++++++++++++++++++++++++++
+ 2 files changed, 71 insertions(+), 70 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 4ff6304c02d0..211958914cc3 100644
+index 211958914cc3..1dd231ecf4b2 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -316,6 +316,7 @@ struct kvm_kernel_irqfd;
- struct kvm_kernel_irq_routing_entry;
+@@ -161,12 +161,6 @@
+ #define KVM_HPAGE_MASK(x)	(~(KVM_HPAGE_SIZE(x) - 1))
+ #define KVM_PAGES_PER_HPAGE(x)	(KVM_HPAGE_SIZE(x) / PAGE_SIZE)
  
- struct kvm_x86_msr_filter;
-+struct kvm_x86_pmu_event_filter;
+-#define KVM_MEMSLOT_PAGES_TO_MMU_PAGES_RATIO 50
+-#define KVM_MIN_ALLOC_MMU_PAGES 64UL
+-#define KVM_MMU_HASH_SHIFT 12
+-#define KVM_NUM_MMU_PAGES (1 << KVM_MMU_HASH_SHIFT)
+-#define KVM_MIN_FREE_MMU_PAGES 5
+-#define KVM_REFILL_PAGES 25
+ #define KVM_MAX_CPUID_ENTRIES 256
+ #define KVM_NR_VAR_MTRR 8
  
- struct kvm_caps {
- 	/* control of guest tsc rate supported? */
-@@ -1323,18 +1324,6 @@ enum kvm_suppress_eoi_broadcast_mode {
- 	KVM_SUPPRESS_EOI_BROADCAST_DISABLED /* Disable Suppress EOI broadcast */
- };
+@@ -2131,38 +2125,6 @@ enum kvm_intr_type {
+ 	((vcpu) && (vcpu)->arch.handling_intr_from_guest && \
+ 	 (!!in_nmi() == ((vcpu)->arch.handling_intr_from_guest == KVM_HANDLING_NMI)))
  
--struct kvm_x86_pmu_event_filter {
--	__u32 action;
--	__u32 nevents;
--	__u32 fixed_counter_bitmap;
--	__u32 flags;
--	__u32 nr_includes;
--	__u32 nr_excludes;
--	__u64 *includes;
--	__u64 *excludes;
--	__u64 events[] __counted_by(nevents);
--};
+-void __init kvm_mmu_x86_module_init(void);
+-int kvm_mmu_vendor_module_init(void);
+-void kvm_mmu_vendor_module_exit(void);
 -
- enum kvm_apicv_inhibit {
+-void kvm_mmu_destroy(struct kvm_vcpu *vcpu);
+-int kvm_mmu_create(struct kvm_vcpu *vcpu);
+-int kvm_mmu_init_vm(struct kvm *kvm);
+-void kvm_mmu_uninit_vm(struct kvm *kvm);
+-
+-void kvm_mmu_init_memslot_memory_attributes(struct kvm *kvm,
+-					    struct kvm_memory_slot *slot);
+-
+-void kvm_mmu_after_set_cpuid(struct kvm_vcpu *vcpu);
+-void kvm_mmu_reset_context(struct kvm_vcpu *vcpu);
+-void kvm_mmu_slot_remove_write_access(struct kvm *kvm,
+-				      const struct kvm_memory_slot *memslot,
+-				      int start_level);
+-void kvm_mmu_slot_try_split_huge_pages(struct kvm *kvm,
+-				       const struct kvm_memory_slot *memslot,
+-				       int target_level);
+-void kvm_mmu_try_split_huge_pages(struct kvm *kvm,
+-				  const struct kvm_memory_slot *memslot,
+-				  u64 start, u64 end,
+-				  int target_level);
+-void kvm_mmu_recover_huge_pages(struct kvm *kvm,
+-				const struct kvm_memory_slot *memslot);
+-void kvm_mmu_slot_leaf_clear_dirty(struct kvm *kvm,
+-				   const struct kvm_memory_slot *memslot);
+-void kvm_mmu_invalidate_mmio_sptes(struct kvm *kvm, u64 gen);
+-void kvm_mmu_change_mmu_pages(struct kvm *kvm, unsigned long kvm_nr_mmu_pages);
+-void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end);
+-
+ /*
+  * EMULTYPE_NO_DECODE - Set when re-emulating an instruction (after completing
+  *			userspace I/O) to indicate that the emulation context
+@@ -2312,25 +2274,6 @@ static inline int __kvm_irq_line_state(unsigned long *irq_state,
+ void kvm_inject_nmi(struct kvm_vcpu *vcpu);
+ int kvm_get_nr_pending_nmis(struct kvm_vcpu *vcpu);
  
- 	/********************************************************************/
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index b92dd2e58335..62d0ed99ebe9 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -43,6 +43,18 @@ module_param(enable_pmu, bool, 0444);
- bool __read_mostly enable_mediated_pmu;
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_mediated_pmu);
+-bool __kvm_mmu_unprotect_gfn_and_retry(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+-				       bool always_retry);
+-
+-static inline bool kvm_mmu_unprotect_gfn_and_retry(struct kvm_vcpu *vcpu,
+-						   gpa_t cr2_or_gpa)
+-{
+-	return __kvm_mmu_unprotect_gfn_and_retry(vcpu, cr2_or_gpa, false);
+-}
+-
+-void kvm_mmu_free_roots(struct kvm *kvm, struct kvm_mmu *mmu,
+-			ulong roots_to_free);
+-void kvm_mmu_free_guest_mode_roots(struct kvm *kvm, struct kvm_mmu *mmu);
+-gpa_t kvm_mmu_gva_to_gpa_read(struct kvm_vcpu *vcpu, gva_t gva,
+-			      struct x86_exception *exception);
+-gpa_t kvm_mmu_gva_to_gpa_write(struct kvm_vcpu *vcpu, gva_t gva,
+-			       struct x86_exception *exception);
+-gpa_t kvm_mmu_gva_to_gpa_system(struct kvm_vcpu *vcpu, gva_t gva,
+-				struct x86_exception *exception);
+-
+ bool kvm_apicv_activated(struct kvm *kvm);
+ bool kvm_vcpu_apicv_activated(struct kvm_vcpu *vcpu);
+ void __kvm_vcpu_update_apicv(struct kvm_vcpu *vcpu);
+@@ -2363,19 +2306,6 @@ static inline void kvm_dec_apicv_irq_window_req(struct kvm *kvm)
+ 	kvm_inc_or_dec_irq_window_inhibit(kvm, false);
+ }
  
-+struct kvm_x86_pmu_event_filter {
-+	__u32 action;
-+	__u32 nevents;
-+	__u32 fixed_counter_bitmap;
-+	__u32 flags;
-+	__u32 nr_includes;
-+	__u32 nr_excludes;
-+	__u64 *includes;
-+	__u64 *excludes;
-+	__u64 events[] __counted_by(nevents);
-+};
+-int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
+-		       void *insn, int insn_len);
+-void kvm_mmu_print_sptes(struct kvm_vcpu *vcpu, gpa_t gpa, const char *msg);
+-void kvm_mmu_invlpg(struct kvm_vcpu *vcpu, gva_t gva);
+-void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+-			     u64 addr, unsigned long roots);
+-void kvm_mmu_invpcid_gva(struct kvm_vcpu *vcpu, gva_t gva, unsigned long pcid);
+-void kvm_mmu_new_pgd(struct kvm_vcpu *vcpu, gpa_t new_pgd);
+-
+-void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
+-		       int tdp_max_root_level, int tdp_huge_page_level);
+-
+-
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+ #endif
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index d30676935fff..a6b871253bd7 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -15,6 +15,13 @@ extern bool tdp_mmu_enabled;
+ extern bool __read_mostly enable_mmio_caching;
+ extern bool eager_page_split;
+ 
++#define KVM_MEMSLOT_PAGES_TO_MMU_PAGES_RATIO 50
++#define KVM_MIN_ALLOC_MMU_PAGES 64UL
++#define KVM_MMU_HASH_SHIFT 12
++#define KVM_NUM_MMU_PAGES (1 << KVM_MMU_HASH_SHIFT)
++#define KVM_MIN_FREE_MMU_PAGES 5
++#define KVM_REFILL_PAGES 25
 +
- struct kvm_pmu_emulated_event_selectors {
- 	u64 INSTRUCTIONS_RETIRED;
- 	u64 BRANCH_INSTRUCTIONS_RETIRED;
+ #define PT_WRITABLE_SHIFT 1
+ #define PT_USER_SHIFT 2
+ 
+@@ -96,6 +103,38 @@ static inline bool mmu_has_mbec(struct kvm_mmu *mmu)
+ 
+ u8 kvm_mmu_get_max_tdp_level(void);
+ 
++void __init kvm_mmu_x86_module_init(void);
++int kvm_mmu_vendor_module_init(void);
++void kvm_mmu_vendor_module_exit(void);
++
++void kvm_mmu_destroy(struct kvm_vcpu *vcpu);
++int kvm_mmu_create(struct kvm_vcpu *vcpu);
++int kvm_mmu_init_vm(struct kvm *kvm);
++void kvm_mmu_uninit_vm(struct kvm *kvm);
++
++void kvm_mmu_init_memslot_memory_attributes(struct kvm *kvm,
++					    struct kvm_memory_slot *slot);
++
++void kvm_mmu_after_set_cpuid(struct kvm_vcpu *vcpu);
++void kvm_mmu_reset_context(struct kvm_vcpu *vcpu);
++void kvm_mmu_slot_remove_write_access(struct kvm *kvm,
++				      const struct kvm_memory_slot *memslot,
++				      int start_level);
++void kvm_mmu_slot_try_split_huge_pages(struct kvm *kvm,
++				       const struct kvm_memory_slot *memslot,
++				       int target_level);
++void kvm_mmu_try_split_huge_pages(struct kvm *kvm,
++				  const struct kvm_memory_slot *memslot,
++				  u64 start, u64 end,
++				  int target_level);
++void kvm_mmu_recover_huge_pages(struct kvm *kvm,
++				const struct kvm_memory_slot *memslot);
++void kvm_mmu_slot_leaf_clear_dirty(struct kvm *kvm,
++				   const struct kvm_memory_slot *memslot);
++void kvm_mmu_invalidate_mmio_sptes(struct kvm *kvm, u64 gen);
++void kvm_mmu_change_mmu_pages(struct kvm *kvm, unsigned long kvm_nr_mmu_pages);
++void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end);
++
+ void kvm_mmu_set_mmio_spte_mask(u64 mmio_value, u64 mmio_mask, u64 access_mask);
+ void kvm_mmu_set_mmio_spte_value(struct kvm *kvm, u64 mmio_value);
+ void kvm_mmu_set_me_spte_mask(u64 me_value, u64 me_mask);
+@@ -107,6 +146,19 @@ void kvm_init_shadow_npt_mmu(struct kvm_vcpu *vcpu, unsigned long cr4,
+ void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
+ 			     int huge_page_level, bool accessed_dirty,
+ 			     bool mbec, gpa_t new_eptp);
++
++int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
++		       void *insn, int insn_len);
++void kvm_mmu_print_sptes(struct kvm_vcpu *vcpu, gpa_t gpa, const char *msg);
++void kvm_mmu_invlpg(struct kvm_vcpu *vcpu, gva_t gva);
++void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
++			     u64 addr, unsigned long roots);
++void kvm_mmu_invpcid_gva(struct kvm_vcpu *vcpu, gva_t gva, unsigned long pcid);
++void kvm_mmu_new_pgd(struct kvm_vcpu *vcpu, gpa_t new_pgd);
++
++void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
++		       int tdp_max_root_level, int tdp_huge_page_level);
++
+ bool kvm_can_do_async_pf(struct kvm_vcpu *vcpu);
+ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
+ 				u64 fault_address, char *insn, int insn_len);
+@@ -121,6 +173,25 @@ void kvm_mmu_sync_prev_roots(struct kvm_vcpu *vcpu);
+ void kvm_mmu_track_write(struct kvm_vcpu *vcpu, gpa_t gpa, const u8 *new,
+ 			 int bytes);
+ 
++bool __kvm_mmu_unprotect_gfn_and_retry(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
++				       bool always_retry);
++
++static inline bool kvm_mmu_unprotect_gfn_and_retry(struct kvm_vcpu *vcpu,
++						   gpa_t cr2_or_gpa)
++{
++	return __kvm_mmu_unprotect_gfn_and_retry(vcpu, cr2_or_gpa, false);
++}
++
++void kvm_mmu_free_roots(struct kvm *kvm, struct kvm_mmu *mmu,
++			ulong roots_to_free);
++void kvm_mmu_free_guest_mode_roots(struct kvm *kvm, struct kvm_mmu *mmu);
++gpa_t kvm_mmu_gva_to_gpa_read(struct kvm_vcpu *vcpu, gva_t gva,
++			      struct x86_exception *exception);
++gpa_t kvm_mmu_gva_to_gpa_write(struct kvm_vcpu *vcpu, gva_t gva,
++			       struct x86_exception *exception);
++gpa_t kvm_mmu_gva_to_gpa_system(struct kvm_vcpu *vcpu, gva_t gva,
++				struct x86_exception *exception);
++
+ static inline int kvm_mmu_reload(struct kvm_vcpu *vcpu)
+ {
+ 	if (kvm_check_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu))
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
