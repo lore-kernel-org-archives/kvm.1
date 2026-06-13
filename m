@@ -1,55 +1,55 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9771C01
-	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:03:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A80D8BE9
+	for <kvm@vger.kernel.org>; Sat, 13 Jun 2026 00:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781309014; cv=none; b=G/q5i+4NnPMz/89aksEbPEaNgTSDVpqCb8mgT4xCWG8jwGhhIjZB/zWeX3UDkrbebe7FXBBSgrr08m2plXCyk7HcXKl52jDJOv3XUoSdZtlDQs/Kh4GLIk8ea9bpf7AJR6+gqpl7fcGvwZJodZibhwYbUT3xXK6+8Qy9Wnsvbg8=
+	t=1781309017; cv=none; b=Z9UEEUXLjFr6ixuLZdfX86zCRnDspmvyMcpVKvBvvfiOxQ2yG7+LsttFN9dTHKSlDEzfZwPN/HRS/Yb5EGLc5agch+Wj6KdUjQ4gJHqQJE2iiPjCrlN9L1qJ+C43/E93qBN8XE9C1lorAumxL44MP0Db0UzJepW1x/OhJ+uvAa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781309014; c=relaxed/simple;
-	bh=cNPlB7pwwxiLgJgB4oaW+H9DnFOrhBUWWzE+mi91ql4=;
+	s=arc-20240116; t=1781309017; c=relaxed/simple;
+	bh=zJvmetUuYDrNCvV6vj0E6+778oJbH10JC7P+TMt4iLc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DqaQX9F/RxTkTtJVL1flxLXaCJjGDLatYnKU7e/gszolkyQCDkYodlK1H6LK2btVIx6PXq+1agCNK/POtWTacTKzafsXle3sbRR0OcoeSSwDtMGT4NWXM7ccyhMGF79ZaWDbmybMSZZsLEZsi6+vTFJcFjJKCASjgcbLkvyVYO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L981S5lT; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=hizA5hBV3ihq9fq7DTAOmdc6FpFjvXmFifaFhIXjhKHuE43qe8pEElVO2UwxHROhzCbxDqcyBxz5NdRivreL0G+IC/EsKY3kihmOQzSSPb0M6ZGLFfT+aO0oFa+9xqfAXavRy4I68pf/3Es30biFqKHd85wtuq6cPpIQtUt5SAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hm6mwg3y; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L981S5lT"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8423f3e4728so1058477b3a.2
-        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:03:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hm6mwg3y"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c2b64850easo28391035ad.1
+        for <kvm@vger.kernel.org>; Fri, 12 Jun 2026 17:03:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781309013; x=1781913813; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781309015; x=1781913815; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=UuZsimMOlbBIbQGikRbVUz8v6Nz7u3z1RSfZkr5Y1z0=;
-        b=L981S5lTEjuenHwkQgV8ybORCoqvPmHPiCN/eDwCo7pkzQvW8b3oGsVGQlXtS8zY0k
-         GDh9018493fe9XB46102QG0RfBeiGWacwVStQk2b21ntlHTDiz4Jb47X6xTvGEkVeuC+
-         jCWCgB9q9giOpgEsSnIoxrXNBmmN31ouWINOEmihA8r5xVXH618F/jqamPPhmHey1LX3
-         UApNATOnq0SolpGKMOkZnLSPfsVcRhUG8SIJ2JPj/WOIP5v4zf7JlX94dvO3asRVp2Yc
-         ydepMXqSXbzvewFyOljSH2NkQn0Yr69QsMbCnd2YXNc/2PV73eWCEAudCq/jA4S+FrUo
-         zc/Q==
+        bh=HRpeuX3hg7q8wIj3QzNIG0ThyDzZrZHJ1KdjFxz8oy8=;
+        b=hm6mwg3yLd9C/ykbjJ6U89iknZ9O/Er5B+mmWDgumnsMTdBjJgAilzgvqrZIVXjHhL
+         wupWoqL9/W4c8LZ8WHuY+tm7xghboFBieXrxZ8hX9UXB+2LIECQ/9YEy1zWHOq5DoVhG
+         9cZ9kv/q5km2tWYcrmPESxgntLu4ymR3AWDMf2STLsQtjsB1Q00YjykX4MbkYCq8HvKd
+         rA/l+tmB+PQMZymtfi00masRr34qorqSrexrUS9Smrt6fJui3Smy/J3rK57TVUCtJlXf
+         hl4mRLKkqUAe6D1/uM2yMZ4OkXLeP9LyVHBiJiw9KL/8x+y7WXdGuBbfr+9+aH3hojzW
+         LmSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781309013; x=1781913813;
+        d=1e100.net; s=20251104; t=1781309015; x=1781913815;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UuZsimMOlbBIbQGikRbVUz8v6Nz7u3z1RSfZkr5Y1z0=;
-        b=c318URj4UIHPI1iiwDlUkC8nzsT8VIzyt4rbfmzOmGaheVuWNwzjpkT2qXcQEUmoga
-         ZDHibuhRKywgMPK4UCkCEII9uL/oEjE/7oXmKuTwvdJ1Ys8C7VSucoR5AhU+34nRZKMX
-         XrotjbYhT+88Zfim34I+HzuzGSgTcxwog531KDw19tmwQPwCDRrpy8ZdA1nG7k3N/GLM
-         FgtibM+B0IxymvXXLm5aLa7tDjsR3928MkwsNYfB9AjBqMJRljHJkQzZ1dWk9h9qufoR
-         lPxG7kscBN/08e0K7UG6qLPXK30sMOkpelPCl9TiytXRBzbKTtFx8v6k4G15HGjYM7rT
-         M8Gg==
-X-Gm-Message-State: AOJu0Yx2B/xiNOvB+AMhYTJBf/QdPcvfQwKkvGN8q6kwBlQJAk+I86xs
-	1mlirsgdE4GoeLSeyqV8w1m6Dk/Zt2q7k27fuySPdcseZdl9Ig1q78BFq1BM7tdel4HoiQDcXwK
-	dkUFiTg==
-X-Received: from pfbho5.prod.google.com ([2002:a05:6a00:8805:b0:842:7548:51e8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3a16:b0:842:33f3:da68
- with SMTP id d2e1a72fcca58-8434cd0b4d2mr5393414b3a.8.1781309013046; Fri, 12
- Jun 2026 17:03:33 -0700 (PDT)
+        bh=HRpeuX3hg7q8wIj3QzNIG0ThyDzZrZHJ1KdjFxz8oy8=;
+        b=TChmcZmV40rmq/tFxJyGbbRP2dKfm35pHa2Fxqvknm4oNGG7tp6yLSLf+Z5XHEi4a9
+         zKYn7BtKF6wFyt/1Cf901Qvu8jO71PPg4yCKqLMhmxMuaGZT67a/tMkCLdjV0UO58uAw
+         5yeDqeIGnC0ImlWKKVbFReayidUiUPpIoIJE4b6te6COlEqh+GnyyVdGHzV8ps0z6Snx
+         uOtCMQOOx3sWOBkgCRXKravnZW88fzRQeyviXZh2LCf9WRjHtluP52itGhiaQUOUKQLK
+         hly64iLLr1D8n9IHmo6iDshQkxxNPRxV4147pcf7CG/s6FKUF6ckos7qAoCJ4Z4kzW7w
+         o2TA==
+X-Gm-Message-State: AOJu0YzWNQxXaQZIeBlyPj8h/aMT6BMMzB/aVgUkHcJfGRCIG6WOgInT
+	pfPgbK3xjzMxvHRI3nqCwku7mvsQLZ+jC5bb5lSV+h707KyJr4/85nOxZYlyqxJG5Bspfaglh9w
+	DNphuCA==
+X-Received: from plbkc11.prod.google.com ([2002:a17:903:33cb:b0:2bf:693:47b0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f45:b0:2b4:656b:aeb0
+ with SMTP id d9443c01a7336-2c66429b0c5mr18216605ad.35.1781309014692; Fri, 12
+ Jun 2026 17:03:34 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 12 Jun 2026 17:03:00 -0700
+Date: Fri, 12 Jun 2026 17:03:01 -0700
 In-Reply-To: <20260613000329.732085-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260613000329.732085-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260613000329.732085-2-seanjc@google.com>
-Subject: [PATCH v4 01/30] KVM: x86: Extract REGS and SREGS runtime sync code
- to helpers
+Message-ID: <20260613000329.732085-3-seanjc@google.com>
+Subject: [PATCH v4 02/30] KVM: x86: Move get_segment_base() to regs.h, as kvm_get_segment_base()
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>
@@ -69,66 +68,68 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Extract the REGS and SREGS portions of {store,sync}_regs() into separate
-helpers in anticipation of moving the register specific code out of x86.c
-and into regs.c.
+Move get_segment_base() to regs.h, as kvm_get_segment_base(), so that the
+bulk of the register code can be moved from x86.c to a new regs.c, without
+simultaneously needing to rename "public" helpers to explicitly scope them
+to KVM.
 
 No functional change intended.
 
 Cc: Yosry Ahmed <yosry@kernel.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ arch/x86/kvm/regs.h | 5 +++++
+ arch/x86/kvm/x86.c  | 9 ++-------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
+diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+index a57ba26279ed..e5b16a0826d9 100644
+--- a/arch/x86/kvm/regs.h
++++ b/arch/x86/kvm/regs.h
+@@ -412,4 +412,9 @@ static inline bool is_guest_mode(struct kvm_vcpu *vcpu)
+ 	return vcpu->arch.hflags & HF_GUEST_MASK;
+ }
+ 
++static inline unsigned long kvm_get_segment_base(struct kvm_vcpu *vcpu, int seg)
++{
++	return kvm_x86_call(get_segment_base)(vcpu, seg);
++}
++
+ #endif
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index cf122b8c3210..74b8f98dcb24 100644
+index 74b8f98dcb24..0f48cd630c32 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -12687,7 +12687,7 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
- 	return 0;
+@@ -8492,11 +8492,6 @@ static int emulator_pio_out_emulated(struct x86_emulate_ctxt *ctxt,
+ 	return emulator_pio_out(emul_to_vcpu(ctxt), size, port, val, count);
  }
  
--static void store_regs(struct kvm_vcpu *vcpu)
-+static void kvm_run_sync_regs_to_user(struct kvm_vcpu *vcpu)
+-static unsigned long get_segment_base(struct kvm_vcpu *vcpu, int seg)
+-{
+-	return kvm_x86_call(get_segment_base)(vcpu, seg);
+-}
+-
+ static void emulator_invlpg(struct x86_emulate_ctxt *ctxt, ulong address)
  {
- 	BUILD_BUG_ON(sizeof(struct kvm_sync_regs) > SYNC_REGS_SIZE_BYTES);
- 
-@@ -12696,13 +12696,18 @@ static void store_regs(struct kvm_vcpu *vcpu)
- 
- 	if (vcpu->run->kvm_valid_regs & KVM_SYNC_X86_SREGS)
- 		__get_sregs(vcpu, &vcpu->run->s.regs.sregs);
-+}
-+
-+static void store_regs(struct kvm_vcpu *vcpu)
-+{
-+	kvm_run_sync_regs_to_user(vcpu);
- 
- 	if (vcpu->run->kvm_valid_regs & KVM_SYNC_X86_EVENTS)
- 		kvm_vcpu_ioctl_x86_get_vcpu_events(
- 				vcpu, &vcpu->run->s.regs.events);
+ 	kvm_mmu_invlpg(emul_to_vcpu(ctxt), address);
+@@ -8641,7 +8636,7 @@ static void emulator_set_idt(struct x86_emulate_ctxt *ctxt, struct desc_ptr *dt)
+ static unsigned long emulator_get_cached_segment_base(
+ 	struct x86_emulate_ctxt *ctxt, int seg)
+ {
+-	return get_segment_base(emul_to_vcpu(ctxt), seg);
++	return kvm_get_segment_base(emul_to_vcpu(ctxt), seg);
  }
  
--static int sync_regs(struct kvm_vcpu *vcpu)
-+static int kvm_run_sync_regs_from_user(struct kvm_vcpu *vcpu)
- {
- 	if (vcpu->run->kvm_dirty_regs & KVM_SYNC_X86_REGS) {
- 		__set_regs(vcpu, &vcpu->run->s.regs.regs);
-@@ -12718,6 +12723,14 @@ static int sync_regs(struct kvm_vcpu *vcpu)
- 		vcpu->run->kvm_dirty_regs &= ~KVM_SYNC_X86_SREGS;
- 	}
+ static bool emulator_get_segment(struct x86_emulate_ctxt *ctxt, u16 *selector,
+@@ -13839,7 +13834,7 @@ unsigned long kvm_get_linear_rip(struct kvm_vcpu *vcpu)
  
-+	return 0;
-+}
-+
-+static int sync_regs(struct kvm_vcpu *vcpu)
-+{
-+	if (kvm_run_sync_regs_from_user(vcpu))
-+		return -EINVAL;
-+
- 	if (vcpu->run->kvm_dirty_regs & KVM_SYNC_X86_EVENTS) {
- 		struct kvm_vcpu_events events = vcpu->run->s.regs.events;
- 
+ 	if (is_64_bit_mode(vcpu))
+ 		return kvm_rip_read(vcpu);
+-	return (u32)(get_segment_base(vcpu, VCPU_SREG_CS) +
++	return (u32)(kvm_get_segment_base(vcpu, VCPU_SREG_CS) +
+ 		     kvm_rip_read(vcpu));
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_get_linear_rip);
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
