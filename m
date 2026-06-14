@@ -1,140 +1,458 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF8D33CEA5;
-	Sun, 14 Jun 2026 22:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2576D1E1C11
+	for <kvm@vger.kernel.org>; Sun, 14 Jun 2026 23:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781475801; cv=none; b=BDCJzQgngN7Nfp9JVw3m12L3o9C/wrg0c7yhcDuErm7ZvGwH5WtqBesbs/F/Ff9LUj40p+7d7dYn6UzA6keHnRWZzhUvuY6yoMnYm2A7sdw9gDsYbGIglzgioaQ83MNee52fssg5fcKRhIq8V/iovKjDtrlKh2f0zmtJoD8Ppc8=
+	t=1781480252; cv=none; b=AFE9oGkush90oOYOIDKP/C/9ui5A3hehzt5bk3p4qF3bmVST8U7sZng5yW7WfPKDmOQa0K/tRSIyTax91iSvC9lhINvnNowUxX+4N3cTtdHF2Em7RlW3k2mR+SXuYWJAgEKbYKixixu6uWiw4stIxGMrqtkgzvdghKoYBIF1t0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781475801; c=relaxed/simple;
-	bh=1aBWUx4L/o7ljcU7j2WP15Mknm20m9APEp3SipKIOrg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i4S4ra/XeBPM1ykiaipctWSGWAJ9HaVU+cN3OslvK8PZilwLyUZ0Mfmi32NL9gXqfvMvl5BTi127oi24BITNyAKR4G6EyPCSAn05zjUo2gfgaTwfUJL74NQcQSh7xz42F65qcl191N3swAK//K5lrGKAB6z1to8ioZe3H7QuQ/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qEsQcGlR; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1781480252; c=relaxed/simple;
+	bh=b7ocHCK+jne58373AmijxFLMh5YUdnNICQVRouv0igI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gpjZTJS8tW9Be/0J3x5cO1izBp8jwq34CvaqVVxNZM5kpWAx+gW5ooz4PM8Efd2qyVLuETnYgjUtyvflKzMVfz2amKSKWRw2D4TgZSEEdHWw/swsARIe+wBm+z+fksc7L8GdcQw3J+Pr/+pnsFg/VpR2ZfQplZRZWmHM5zzbM6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qp3aiRuC; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qEsQcGlR"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65ELISpw449574;
-	Sun, 14 Jun 2026 22:23:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ATaeA6
-	DaGzSwKN1SckKkty4l46yl3n1YxiAWRAmMwtk=; b=qEsQcGlR+yFAcRimuvc0nf
-	gJd7dwCL08kPVzcqWUIKhkMOw0V8+phh4Qanh97oM75v5cuVplLF7opc0+1k1iTG
-	nADoJFpl6BqTH3ODFKQp1s4YhOkYuqIHm165S20dL9qGFHRLRgvVakpllOS92Bh/
-	LpELET1C8hGTrd59fP7nxYyOQ4GZYLz7KBF7pemU74eB0BX0HFcoYiv8yMXoWGkb
-	GczIjHanSIeWed1vJXlgX1+lVdANctABOv+TTUncp1su4JZcdDQmEMs0oOhiaUvR
-	JRLoysg76HP27H8M8CE9+VrDxD3WSzAaBHgCxgQAr7Q1/xmUSxilM+1JjOTvnjrw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1h7x0f3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 14 Jun 2026 22:23:16 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65EMJZEn017794;
-	Sun, 14 Jun 2026 22:23:15 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4eskrg3ruc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 14 Jun 2026 22:23:15 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65EMNCXM61210880
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 14 Jun 2026 22:23:12 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 13F3D20043;
-	Sun, 14 Jun 2026 22:23:12 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0FD4D20040;
-	Sun, 14 Jun 2026 22:23:11 +0000 (GMT)
-Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.111.26.108])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Sun, 14 Jun 2026 22:23:10 +0000 (GMT)
-Date: Mon, 15 Jun 2026 00:23:09 +0200
-From: Halil Pasic <pasic@linux.ibm.com>
-To: William Bezenah <wbezenah@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, cohuck@redhat.com, farman@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, mjrosato@linux.ibm.com,
-        vneethv@linux.ibm.com, oberpar@linux.ibm.com,
-        virtualization@lists.linux.dev, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [PATCH v1] s390/virtio_ccw: Also suppress -EINVAL on device
- detach
-Message-ID: <20260615002309.052e0614.pasic@linux.ibm.com>
-In-Reply-To: <20260612155407.199218-1-wbezenah@linux.ibm.com>
-References: <20260612155407.199218-1-wbezenah@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qp3aiRuC"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d985df4cfso3100490a91.1
+        for <kvm@vger.kernel.org>; Sun, 14 Jun 2026 16:37:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781480249; x=1782085049; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7z44j163TOraPbdhgThh5Ilhc6zZau79a63GTpFqG5A=;
+        b=Qp3aiRuCKG2s5JKUCs+b4LpsFka3XGbpsRxZnApCshkfcoXFVSamA4rYvg/8O8qkTv
+         betjC68KohbHMpDorNq1jPXzesYDUrQ0YhkjVxMDEKr7YNc7FDqx+MMMjze/jIO8yDdS
+         6l0jQX2TfsNJrk1k1KQFsvVsgMvA8c6pw6Y6Kx9VjNYeuURZmTv8SzR7uWKu8GJmLc8E
+         8lpLnKrYsZf9+y+Gn2rAJrietJ4io9mZur+uQZ2X2BOmvijTLajtWesPMemlHEU/1nGE
+         DgSXbYP5djZo8jKrvSC50k91f60CjoP4SbrYEv+mBhVTx7aF9MoqU1efOm/VVcTbQ7DZ
+         30Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781480249; x=1782085049;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7z44j163TOraPbdhgThh5Ilhc6zZau79a63GTpFqG5A=;
+        b=s41ypEEWki6G09J6y5+cveLsLRSKkjtcC/8nKZ0E7eVETHs5JpPndl+2H6ExBmitjm
+         i0gAG9t/bovTiaOe5kbxJWt0GQ7EgO86B2hY0ROuRT62ZNTIZdQQdrOKOPuOqllx3dh8
+         e5mvtkGZ3hwwB7YU2PQBKgy7ZKfcil/FuTBx/tNFvHS55uB1erpNcVpMX9NToKI7UFim
+         Ee8OVN3nrQOlolq4+XUuDoHD/J2gAezIKeoicMNv+a56Cr8aJXBhML6xzhAVu6fG7JPW
+         e4ybG/JkMfO9EFJtZgfnB6svUYyLzLPmLygL59GZRbaeZboKpWeXTtxx8yM3WwYmooDO
+         iipw==
+X-Forwarded-Encrypted: i=1; AFNElJ8IYkeHXq4YGjP58mnmc6FAaKfoLtCaW5qjD/rmu5SLLqibwvJ9UV/XQnwkTHoQubumtLo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7WQ1Ib4BQ7u8lBwmCjnummw/rhXc9/jWlSacp0NSA4LcNLdOx
+	CkJ+KXW7wKrJmUCEqNaphUflAvH9CZyBHNHtNlkbNDDVInJPcvU7p7UH9/q3xz852pt08crhZXI
+	LC5gpEL5T+c3s3w==
+X-Received: from pjbdy16.prod.google.com ([2002:a17:90b:6d0:b0:36b:bcab:cc02])
+ (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:3805:b0:369:1dcf:4a46 with SMTP id 98e67ed59e1d1-37a04493e4fmr11823529a91.25.1781480249132;
+ Sun, 14 Jun 2026 16:37:29 -0700 (PDT)
+Date: Sun, 14 Jun 2026 23:37:10 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE0MDIzNyBTYWx0ZWRfX6TVi57UkFMQc
- KBOKm60tR0i6hxs+YW6vcdv5XAiJmWPf1jyjZ4snhmUPNxhd14L2jK34v6FAXMSGwF1EI53x/j9
- z61GUXwKfmOJ+A92f3YIzvJoQbGRXks=
-X-Proofpoint-ORIG-GUID: xLc9ZGdJBNDdQsnwXVC9u7ExuU0fd0ub
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE0MDIzNyBTYWx0ZWRfX6gOVlN+jbc3h
- tyJElbOZMed3VFZ2yOX8hogFn9WoxLEFw4nxcXCAeqzK+7CWXAE983A9memtYPM5Qux5l10h7ul
- hMHK3Ap7SvgvBvHf6AOi/Ez4JIlyVryfZd4ekNCm6tzJpEo0msaq6apc8y5kKH0sQsBRqlhx8BX
- E16QER05I6TwiDofixmfT0XdBWi6HPk9tlfKw40l728HxvJGlRR7iSeNDDdPEs707mhEG9cc8Z5
- oElQ0+uwahuCfm8bwkPYAOYai6gm5tNkFDUBmuNhG3ZsDSLjKUHz5c8k7R4JHHCF5JwKJ/9rvZD
- AfCnreG56yPE9WNHa8NEPWK1mWHEx86ppN8FVnW4DTrZwI1IQF7vINSA1IbOkXsAnhEA5IpcLwh
- qrDBs1eKKKf9DsDQZ8nat84bDOU4v4zgia9cHCbT7apmPrv5JRx2ZynTlcw3a5s9T0tb/ceb730
- jm/apoluBGcJX85zHlQ==
-X-Authority-Analysis: v=2.4 cv=U9uiy+ru c=1 sm=1 tr=0 ts=6a2f29d4 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=XgNADJiZk9AC71OXotwA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: xLc9ZGdJBNDdQsnwXVC9u7ExuU0fd0ub
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-14_05,2026-06-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
- priorityscore=1501 clxscore=1011 adultscore=0 malwarescore=0 suspectscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
- definitions=main-2606140237
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
+Message-ID: <20260614233728.2212104-1-skhawaja@google.com>
+Subject: [PATCH v3 00/18] iommu: Add live update state preservation
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Samiullah Khawaja <skhawaja@google.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, 
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 12 Jun 2026 17:54:07 +0200
-William Bezenah <wbezenah@linux.ibm.com> wrote:
+Hi,
 
-> Since commit 8c58a229688c ("s390/cio: Do not unregister the
-> subchannel based on DNV"), subchannel behavior following a device
-> detach has been updated and results in -EINVAL being propagated
-> rather than -ENODEV, originating from ccw_device_start_timeout_key()
-> in cio/device_ops. In the end, the virtio driver has no ability to
-> react to the difference between device and subchannel states here,
-> and during detach, both -ENODEV and -EINVAL indicate the device
-> cannot be used and should not be treated as errors requiring
-> attention. Update error handling in virtio_ccw_del_vq() and
-> virtio_ccw_drop_indicator() to suppress -EINVAL in addition to
-> -ENODEV.
+This patch series introduces a mechanism for IOMMU state preservation
+across live update, including the Intel VT-d driver support
+implementation.
 
-Hi William!
+Please take a look at the following LWN article to learn about KHO and
+Live Update Orchestrator:
 
-Are you saying that ccw_device_start() started returning -EINVAL
-since 8c58a229688c ("s390/cio: Do not unregister the subchannel based on
-DNV")? Or did I somehow read the paragraph wrong?
+https://lwn.net/Articles/1033364/
 
-The funcition ccw_device_start is documented to return:
- * Returns:                                                                     
- *  %0, if the operation was successful;                                        
- *  -%EBUSY, if the device is busy, or status pending;                          
- *  -%EACCES, if no path specified in @lpm is operational;                      
- *  -%ENODEV, if the device is not operational. 
-and the commit message does not say a thing about introducing -EINVAL to
-the mix.
+This work depends on,
 
-Regards,
-Halil 
+- VFIO CDEV preservation series (v4):
+  https://lore.kernel.org/kvm/20260511234802.2280368-1-vipinsh@google.com/
+- PCI device preservation series (v6):
+  https://lore.kernel.org/all/20260522202410.3104264-1-dmatlack@google.com/
+- LUO file dependency preservation series:
+  https://lore.kernel.org/all/20260613012521.835490-1-skhawaja@google.com/
+
+The kernel tree with all dependencies is uploaded to the following
+Github location:
+
+https://github.com/samikhawaja/linux/tree/iommu/phase1-v3
+
+Overall Goals:
+
+The goal of this effort is to preserve the IOMMU domains, managed by
+iommufd, attached to devices preserved through VFIO cdev. This allows
+DMA mappings and IOMMU context of a device assigned to a VM to be
+maintained across a kexec live update.
+
+This is achieved by preserving IOMMU page tables using Generic Page
+Table support, IOMMU root table and the relevant context entries across
+live update.
+
+The functionality in the previously sent RFC is split into two phases
+and this series implements the Phase 1. Phase 1 implements the following
+functionality:
+
+  - Foundational work in IOMMU core and VT-d driver to preserve and
+    restore IOMMU translation units, IOMMU domains and devices across
+    liveupdate kexec.
+  - The preservation is triggered by preserving vfio cdev FD and bound
+    iommufd FD into a live update session.
+  - An HWPT (and backing IOMMU domain) is only preserved if it contains
+    only file type DMA mappings. Also the memfd being used for such
+    mapping should be SEAL SEAL'd during mapping.
+  - During live update boot, the state of preserved Intel VT-d, IOMMU
+    domain and devices is restored.
+  - The restored IOMMU domains are reattached to the preserved devices
+    during early boot.
+  - The DMA ownership of restored devices is also claimed during
+    live update boot. This means that any attempt to bind a non-vfio
+    drivers with them or binding a new iommufd with them will fail.
+
+Architectural Overview:
+
+The target architecture for IOMMU state preservation across a live
+update involves coordination between the Live Update Orchestrator,
+iommufd, and the IOMMU drivers.
+
+The core design uses the Live Update Orchestrator's file descriptor
+preservation mechanism to preserve iommufd file descriptors. The user
+marks the iommufd HWPTs for preservation using a new ioctl added in this
+series. Once done, the preservation of iommufd inside an LUO session is
+triggered using LUO ioctls. During preservation, the LUO preserve
+callback for an iommufd walks through the HWPTs it manages to identify
+the ones that need to be preserved. Once identified, a new IOMMU core
+API is used to preserve the iommu domain. The IOMMU core uses Generic
+Page Table to preserve the page tables of these domains. The domains are
+then marked as preserved.
+
+When the user triggers the preservation of a VFIO cdev that is attached
+to an iommufd that is preserved, the device attachment state of that
+VFIO cdev is also preserved using an API exported by iommufd. IOMMUFD
+fetches all the information that needs to be preserved and calls the
+IOMMU core API to preserve the device state. The IOMMU core also
+preserves state of IOMMU that is associated with this device.
+
+The IOMMU core has LUO FLB registered with the iommufd LUO file handler
+so the preserved iommu domain and iommu hardware unit state is available
+during boot for early restore in the next kernel.
+
+During boot the driver fetches the preserved state from the IOMMU core
+and restores the state of preserved IOMMUs. Later when IOMMU core goes
+through the devices and probes them, the iommu domains of preserved
+devices are restored and the preserved devices are attached to them.
+During attachment, the DMA ownership of these devices is also claimed.
+
+Tested:
+
+The new iommufd_liveupdate_kexec_test selftest was used to verify the
+preservation logic. It was tested using QEMU with virtual IOMMU (VT-d)
+support with virtio pcie device bound to the vfio-pci driver.
+
+Also Tested on an Intel machine with DSA device bound to vfio-pci
+driver.
+
+Following steps were followed for verification,
+
+- Bind the test device with vfio-pci driver
+- Run test on the machine by running
+
+  ./iommufd_liveupdate_kexec_test <vfio-cdev-path>
+
+- Trigger Kexec.
+- After reboot, try binding the device to a non-vfio pci driver,
+
+  echo <device bdf> > /sys/class/bus/drivers/pci-pf-stub/bind
+
+- This should fail with "Device or resource busy".
+- Bind the device with vfio-pci driver and run the test again.
+
+  ./iommufd_liveupdate_kexec_test <vfio-cdev-path> --stage 2
+
+- Test verifies that the device cannot be bound with a new iommufd and
+  the session cannot be finished.
+
+Future Work:
+
+- Phase 2 with IOMMUFD restore to reclaim the preserved vfio cdev and
+  restore the preserved HWPTs.
+- Full support for PASID preservation.
+- Nested IOMMU preservation.
+- Extend support to other IOMMU architectures (e.g., AMD-Vi, Arm SMMUv3).
+- DMA Alloc preservation support buddy allocator only.
+  https://github.com/samikhawaja/linux/tree/dma-alloc-preserve
+
+Roadmap:
+
+  The doc below gives a break down of the overall work into Patch series
+  needed to complete Liveupdate feature from IOMMU perspective:
+  https://docs.google.com/document/d/1enDn-uPE9U77U-xHEnzn6HHGKiePSAtMIP8EDU3NO0M
+
+High-Level Sequence Flow:
+
+The following diagrams illustrate the high-level interactions during the
+preservation phase. Note that function names in the diagram are kept
+abbreviated to save horizontal space.
+
+Preserve:
+
+Before live update the PREPARE event of Liveupdate Orchestrator invokes
+callbacks of the registered file and subsystem handlers.
+
+ Userspace (VMM) | LUO Core |    iommufd    |  IOMMU Core   | IOMMU Driver
+-----------------|----------|---------------|---------------|-------------
+                 |          |               |               |
+MARK_HWPT        |          |               |               |
+--------------------------->                |               |
+                 |          | Mark HWPT for |               |
+                 |          | preservation  |               |
+                 |          |               |               |
+PRESERVE         |          |               |               |
+ iommufd_fd      |          |               |               |
+----------------->          |               |               |
+                 | preserve |               |               |
+                 |---------->               |               |
+                 |          | For each HWPT |               |
+                 |          |-------------->                |
+                 |          |               | domain_presrv |
+                 |          |               |-------------->
+                 |          |               |               | gpt(preserve)
+                 |          |               |<--------------|
+                 |          |<--------------|               |
+                 |<---------|               |               |
+                 |          |               |               |
+...              |          |               |               |
+                 |          |               |               |
+PRESERVE,        |          |               |               |
+ vfio_cdev_fd    |          |               |               |
+----------------->          |               |               |
+                 | preserve |               |               |
+                 |---------->               |               |
+                 |          |               |               |
+                 |          | iommu_preserv |               |
+                 |          | _device()     |               |
+                 |          |-------------->                |
+                 |          |               | preserve      |
+                 |          |               | (iommu_hw)    |
+                 |          |               |-------------->
+                 |          |               |               | preserve(root)
+                 |          |               |               | preserve(pasid)
+                 |          |               |<--------------|
+                 |          |               |               |
+                 |          |               | preserve      |
+                 |          |               | _device(dev)  |
+                 |          |               |-------------->
+                 |          |               |               |
+                 |          |               |<--------------|
+                 |          |<--------------|               |
+                 |<---------|               |               |
+
+Restore:
+
+After a live update, the preserved state is restored during boot.
+
+ Userspace (VMM) | LUO Core |    iommufd    |  IOMMU Core   | IOMMU Driver
+-----------------|----------|---------------|---------------|-------------
+                 |          |               |               |
+                 |          |               |               | Restore
+                 |          |               |               | Root, DIDs
+                 |          |               |               |
+                 |          |               |               | Register
+                 |          |               | probe devices |
+                 |          |               |               |
+                 |          |               | restore       |
+                 |          |               | domain        |
+                 |          |               |-------------->
+                 |          |               |               | restore
+                 |          |               | reattach      |
+                 |          |               | domain        |
+                 |          |               |-------------->
+                 |          |               |               |
+
+
+Looking forward to your feedback on this.
+
+Changelog:
+
+v3:
+  - Add Reviewed-by tags.
+  - Export memfd_get_seals for iommufd module usage.
+  - Move iommu_flb_obj to liveupdate.c.
+  - Replace bitfields with u32 flags.
+  - Move callbacks from iommu_domain_ops to pt_iommu_ops.
+  - Fix DYNAMIC_TOP support by saving range.max_vasz_lg2.
+  - Replace BUG_ON with iommu_restore_pages helper.
+  - Update to use IOMMU_SER_FLAG_INCOMING and IOMMU_SER_FLAG_DELETED.
+  - Split out shutdown context-entry clearing logic into separate patch.
+  - Add context_tables_bitmap to track and preserve only active tables.
+  - Skip iommu_set_root_entry if restored.
+  - Fix array iteration bug by splitting macros.
+  - Move restore logic into caller instead of iommu_alloc_root_entry.
+  - Add robust IS_ERR checks for iommu_ser.
+  - Add safety checks for array traversal and domain physical address.
+  - Remove pasid_cleanup_preserved_table.
+  - Update handle_pd to dynamically iterate over valid PDE entries.
+  - Link liveupdate.o into iommufd.o to resolve modpost errors.
+  - Refactor liveupdate_immutable into nr_preserved_domains counter.
+  - Save actual number of preserved HWPTs to TOCTOU.
+
+v2:
+  - Move IOMMU_LIVEUPDATE under IOMMU_SUPPORT dependencies.
+  - Update copyright year to 2026.
+  - Add Kernel-doc for FLB struct.
+  - Add an ASCII diagram for FLB memory layout.
+  - Change compatibility to iommu-liveupdate-v1.
+  - Rename structs to more reasonable names.
+  - Add comment explaining the rationale for BUG_ON during restoration.
+  - Rename 'did' to 'attachment_id'.
+  - Use phys_to_virt() and virt_to_phys() consistently.
+  - Create separate functions for FLB unpreserve and folio_put.
+  - Return the virtual address from the restore_array function.
+  - Free serialized state on finish without checking for NULL.
+  - Rename 'iommu-lu.h' to 'iommu-liveupdate.h'.
+  - Suffix max with _per_page (iommu_max_objs_per_page).
+  - Move unused helpers to the patches that actually need them.
+  - Rename reserve_obj_ser to alloc_object_ser.
+  - Only allow vfio drivers to use preserve_device APIs.
+  - Move ops declarations under CONFIG_IOMMU_LIVEUPDATE guards.
+  - Add lockdep_assert_held() validations in locked functions.
+  - Rename device_ser_match to match_device_ser.
+  - Create iommu_folio_update_stats(folio, nr_pages) helper.
+  - Explicitly set incoherent flag to false for restored pages.
+  - Do not use unpreserve_pages() function for error handling.
+  - Preserve vasz and sign_extend of a domain.
+  - Make the restored domain free-only.
+  - Ignore error of pt_descend() during restore as it should never fail (dead code).
+  - On domain restore, clear all features except the preserved.
+  - Add a KUnit test to verify that a restored domain can be freed with zeroed features.
+  - Bypass paging_domain_compatible() checks for restored domains.
+  - Use an explicit if-check for preserved state to clear the context entries.
+  - Rename clean_context to clear_unpreserved_context_entries.
+  - Use "DMAR:" in pr_fmt instead of "iommu:".
+  - Pass ROOT_ENTRY_NR directly into unpreserve functions.
+  - Remove IOMMU lock during preserve as not needed.
+  - Iterate all devices when clearing context entries instead of just PCIe devices.
+  - Do not populate empty unpreserve_device callbacks if not needed.
+  - Rename unpreserve_iommu_context to unpreserve_iommu_context_table.
+  - Check the associated IOMMU in _restore_used_domain_id.
+  - Add a comment that MMIO base is used as token for identifying IOMMU.
+  - Add a comment in _restore_used_domain_ids that IDA allocation can safely fail.
+  - Mark IOMMU state restored after restoring to prevent double restoration and UAF.
+  - Fix domain leak in iommu_restore_domain error path.
+  - Check DID start range before allocation.
+  - Add lockdep_assert_held in group domain restoration path.
+  - Add WARN_ON to catch unexpected group ownership during device probe.
+  - Add comment explaining group ownership setup and reclaim during device probe.
+  - Cleanup the full PASID directory instead of only 4K.
+  - Rename ioctl to IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE.
+  - Use XArray to save the HWPT liveupdate marks.
+  - Add the ioctl struct to ucmd_buffer.
+  - Make the ioctl 64-bit aligned (struct padding).
+  - Add UAPI documentation stating that HWPTs cannot be unmarked.
+  - Add UAPI documentation stating that only file-based mappings are allowed.
+  - Rename structs to use "liveupdate" instead of "lu".
+  - Rework HWPT preservation to prevent TOCTOU and mutex lock inside XA spin lock.
+  - Check preserved pages at the IOPT level, not the HWPT level.
+  - Return -EOPNOTSUPP if there are PASID attachments.
+  - Do not allow detach (or attach) once the device is preserved.
+  - Add MODULE_IMPORT_NS("IOMMUFD") in vfio_pci_liveupdate.c.
+  - Make token u64.
+  - Modify selftest to use live update kexec_test pattern.
+  - Use helper macros in test instead of repeating ksft_assert
+  - Rename setup_cdev to open_cdev.
+  - Define constants (tokens) as u64 to avoid ABI warnings.
+
+v2: https://lore.kernel.org/all/20260427175633.1978233-1-skhawaja@google.com/
+
+v1: https://lore.kernel.org/all/20260203220948.2176157-1-skhawaja@google.com/
+
+rfcv2: https://lore.kernel.org/all/20251202230303.1017519-1-skhawaja@google.com/
+
+rfcv1: https://lore.kernel.org/all/20250928190624.3735830-1-skhawaja@google.com/
+
+Samiullah Khawaja (16):
+  memfd: export memfd_get_seals()
+  iommu: Implement IOMMU Live update FLB callbacks
+  iommu/pages: Add APIs to preserve/unpreserve/restore iommu pages
+  iommupt: Implement preserve/unpreserve/restore callbacks
+  iommu: Implement IOMMU domain preservation
+  iommu: Implement device and IOMMU HW preservation
+  iommu/vt-d: Implement device and iommu preserve/unpreserve ops
+  iommu/vt-d: clear unpreserved context entries during shutdown
+  iommu: Add APIs to get iommu and device preserved state
+  iommu/vt-d: Restore IOMMU state and reclaimed domain ids
+  iommu: Restore and reattach preserved domains to devices
+  iommu/vt-d: Handle reattach of the restored domain
+  iommu/vt-d: preserve PASID table of preserved device
+  iommufd: Add APIs to preserve/unpreserve a vfio cdev
+  vfio/pci: Preserve the iommufd state of the vfio cdev
+  iommufd/selftest: Add test to verify iommufd preservation
+
+YiFei Zhu (2):
+  iommufd: Implement ioctl to mark HWPT for preservation
+  iommufd: Persist iommu hardware pagetables for live update
+
+ MAINTAINERS                                   |  19 +
+ drivers/iommu/Kconfig                         |  12 +
+ drivers/iommu/Makefile                        |   1 +
+ drivers/iommu/generic_pt/iommu_pt.h           | 122 ++++
+ drivers/iommu/generic_pt/kunit_iommu_pt.h     |  28 +
+ drivers/iommu/intel/Makefile                  |   1 +
+ drivers/iommu/intel/iommu.c                   | 150 ++--
+ drivers/iommu/intel/iommu.h                   |  58 ++
+ drivers/iommu/intel/liveupdate.c              | 477 +++++++++++++
+ drivers/iommu/intel/pasid.c                   |   7 +-
+ drivers/iommu/intel/pasid.h                   |   9 +
+ drivers/iommu/iommu-pages.c                   | 108 ++-
+ drivers/iommu/iommu-pages.h                   |  30 +
+ drivers/iommu/iommu.c                         |  83 ++-
+ drivers/iommu/iommufd/Makefile                |   2 +
+ drivers/iommu/iommufd/device.c                | 102 +++
+ drivers/iommu/iommufd/io_pagetable.c          |  11 +
+ drivers/iommu/iommufd/io_pagetable.h          |   1 +
+ drivers/iommu/iommufd/iommufd_private.h       |  46 ++
+ drivers/iommu/iommufd/liveupdate.c            | 354 ++++++++++
+ drivers/iommu/iommufd/main.c                  |  19 +-
+ drivers/iommu/iommufd/pages.c                 |  11 +
+ drivers/iommu/liveupdate.c                    | 660 ++++++++++++++++++
+ drivers/vfio/device_cdev.c                    |  10 +
+ drivers/vfio/pci/vfio_pci_liveupdate.c        |  37 +-
+ include/linux/generic_pt/iommu.h              |  30 +
+ include/linux/iommu-liveupdate.h              | 156 +++++
+ include/linux/iommu.h                         |  39 ++
+ include/linux/iommufd.h                       |  29 +
+ include/linux/kho/abi/iommu.h                 | 241 +++++++
+ include/linux/kho/abi/iommufd.h               |  51 ++
+ include/uapi/linux/iommufd.h                  |  26 +
+ mm/memfd.c                                    |   1 +
+ tools/testing/selftests/iommu/Makefile        |  12 +
+ .../iommu/iommufd_liveupdate_kexec_test.c     | 241 +++++++
+ 35 files changed, 3134 insertions(+), 50 deletions(-)
+ create mode 100644 drivers/iommu/intel/liveupdate.c
+ create mode 100644 drivers/iommu/iommufd/liveupdate.c
+ create mode 100644 drivers/iommu/liveupdate.c
+ create mode 100644 include/linux/iommu-liveupdate.h
+ create mode 100644 include/linux/kho/abi/iommu.h
+ create mode 100644 include/linux/kho/abi/iommufd.h
+ create mode 100644 tools/testing/selftests/iommu/iommufd_liveupdate_kexec_test.c
+
+
+base-commit: 34e8f02817e31826e76bb2ded48bf28fe921f20b
+-- 
+2.54.0.1136.gdb2ca164c4-goog
+
