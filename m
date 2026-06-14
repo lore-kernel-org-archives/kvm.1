@@ -1,54 +1,54 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8033839B3
-	for <kvm@vger.kernel.org>; Sun, 14 Jun 2026 23:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E0D3845AC
+	for <kvm@vger.kernel.org>; Sun, 14 Jun 2026 23:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781480259; cv=none; b=NfnUFp8hbOpKrcDfNPQsA/UMf64X47jexSBAbeKT0O3/Y5+eSO3IJ7sGqqTjerHjocOm4VkLjRZEVuyPf4AsxoLJaBFceNFhVr43fdas32utIxpvyp7qMyfc7ySYmD1WkMxZStdiCTuiT7dbzVeP3b8jaETYlhj7nLtZXT9ckJQ=
+	t=1781480259; cv=none; b=Ku/JXtwXhJp2OupuV6NyXNv+/jGPgTbzTjJ46+Uf64rNTRC4bSf9KFySvaHTAj4AzcAdXeJWybTM68YFCT55gAAlZ05Kn92kvyVOE/tqQKSnfLu13SI84voA2w/UtlxGTlFSorjAptbhH84p2T+NLpdV/5kV74nQRMtfWk7PIFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781480259; c=relaxed/simple;
-	bh=/jzn4vHPGiGXDmiCgKEnxoGezE2gNeA4w0++aRG5NbI=;
+	bh=Ia0KLRmyxKl2KmfjkhuvtXJUvVuNT3w4WDM8ljsL404=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HC84U6+7ZqBxfZ8qT4bw/p/U1KVfGaixznIUxHuy1ltxshyU8sajNC2lsA/cWn7S7eKYGSXcU7xd6L4L9mLdge27Of7e4SAEDwejnLsTwVg9+K/dl8MIw8gnCXK1o1UDbaW2qUke28ShedcL597XpI/SGEzKOTl6EFQsHYoWPcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AFMl675m; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=XYhYEqNOUwFOYLhEc+W9AdTbW9BHcXSgScmDub2HsDn+qYjYdcxIFzXrW75krJ3WvPyn6BrGDR7LMRL1oOnK9Tb3NzOabZlR9LnxuiemdlAOYvMlFBqW6YdIUaZK8Igi1mfURusiS+FsDwxlFIQEBEwfVt8fghXPp7iri7x4nqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HUV+6VMr; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AFMl675m"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c85a2c129b3so1235239a12.1
-        for <kvm@vger.kernel.org>; Sun, 14 Jun 2026 16:37:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HUV+6VMr"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8581f7723aso1172500a12.0
+        for <kvm@vger.kernel.org>; Sun, 14 Jun 2026 16:37:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781480256; x=1782085056; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781480257; x=1782085057; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hCWOgCuUam+6oDxi4jEg6+WaDeW7p6QlTv2GvwnY92c=;
-        b=AFMl675mf1JG3CtxwPFcZnRNlhpuy6jTuR/WWhgblZsEaySxCpLaSVJwzfGJxZHaiC
-         YZ70O9+k7ypTLRKa16W7PnepXCcafpWwbq59UNA8SXRYPu06vAR2BJ086Feo0apvMNLO
-         Du1MxdmoQJ9V9V95I6YSs5mUpw2DgQzsYFa0zx0wvxvtAaFQ07+Vc57zHQ3NKzLzT3/z
-         CNczjn8NfDMU3O+aVGjb9fxP/U11knwjXo9BSsdAZMvDAFTBVQcDFtebssFqHko2XsLf
-         nzdwqa0lC7bX2T9ULxzi+tdDV57mIWoOJx+952pQwF43u3uUjl6xKSLkD2S5HNU0aQon
-         1mGg==
+        bh=aBaYCYKhJ727LgRzXY3UB5YUUjLtMLxXULsmkNca834=;
+        b=HUV+6VMrpQDHrKDs4SLTBIZjb9FcbWj+QRKHPVfRulI/iJMciUQb9S/270aFuBDgaE
+         Y04/b9FdzUYVRFhqK0WzjO1B5RQK7L+Pw+YUUVZUhXHX0NqbymSaQvm6zZs+yywlLhKY
+         Iz1kzoHD1CD3/8OscD+NjS/aGnFd31hawlURtfkupGjUnPWapiUDDXfxmc6/nj3xsCMK
+         XfiJrAIi7MJsi/mD2+CBShHQNG46160cDYLQIjKE9dSPe0K97Iq/vzcvNxrfRO/u8gWw
+         3/NZjyjVsJLihL/oWy9w1BfB8ddTmD6fIwFghO47gzVn5chi0+oR1x5sXx5lci3wFwkh
+         SMBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781480256; x=1782085056;
+        d=1e100.net; s=20251104; t=1781480257; x=1782085057;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hCWOgCuUam+6oDxi4jEg6+WaDeW7p6QlTv2GvwnY92c=;
-        b=Y7gxdVIJpP7Zl5kDSR4RqbyVhRqysaVHFYKY29hmIbnZY4KlkXqxLCcG5gbXL1X0DK
-         FoXuERlHWc+2hZco3hUh9wDsr6bo0Jb8LjKtUM/58slx8Z1dbOef/YZ7NkP4kuq8/VkQ
-         ZGkN1bw8/D85Sxf9V/F5gA8wgHD7Ff/ggvPqB0xvYj5RyBEyyj04see8K/iiVEx1vtLE
-         A8an8jQfblzo11FGZ9r1nwcc3ZRLHdGMuy+SSqxQ9wxrr5b3G7/ZNJcanBDoZAjd6S4F
-         a3qRd6dLI41rRbJ0lPKbT4gUlLmgRbJK5OIPsyghTisUxXYfB8TBNDduW5N/Lhf5//BT
-         Z5IQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+yXki2mhJQCGv8cDhcsd6y9ct78NzXWddVE9n8a3rHCTLGsj0FiI3/6DY3N2P5OIkODnU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl7/Td4boz5LjXSmqFrEBeqKzsaScSUy3wblyCt8epoX2LHWAf
-	4VAfExen309wQn/JTDG0XlHQMfhjSzMPTfKWJYKGyvZgfmfN15bjjWl7yQ3SmR3fIV0V42MYEfv
-	L6QjjUMzbexkddg==
-X-Received: from pga27.prod.google.com ([2002:a05:6a02:4f9b:b0:c79:81bb:79ef])
+        bh=aBaYCYKhJ727LgRzXY3UB5YUUjLtMLxXULsmkNca834=;
+        b=ZEDllcUq8B5RYuP8jf+1nWJLeOe8efsmQQMoTRX9ymK0WfpgOnjhmtDSisTVtdWMxN
+         3/DrjGWPFcdEG6xAZJyf9pBmYq9kPmPkXGAmc/aFTkyEZMtIz6HWfecyNERgLfIZnBba
+         GLHl+fhF6Wbi0jdayeFBA0WxCxeDvwqKe5WvSlkgcdAYXlc3mou/u7HiI8mudVNRJxQ6
+         KASaIvkBcLHI63AiSjsp/ukbMYnK+DN4oUhaYdXEYuh3Zg8xETbLxThtIjj9ZBYwB1Y3
+         2D73mSNYfkJY17uRHnjRbXneu9U3VrsdZf1cnl52qPliWVliR5Xg7YxTh1oALqPKECBN
+         FNsQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/HZExVScYF0Q0Blr9C0ZLak2SYcA3/L5JgqiC/39TX2Hva2OzzJc2B+6jagZCHJ2Tfd/w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyx88Lxlz4Al6ekbSnQo1OsBdgqCKUNDuVD9+CG5qjxFQjU6wtR
+	hxK99aMbFb5dYh9haJTUiNC4JUmHqQYfe2OWGedZLRlJjzlVasBbKxRb+ZzoGC09Ial4UcBHz5r
+	I6JoN4E1q3rHndQ==
+X-Received: from plgt14.prod.google.com ([2002:a17:902:e84e:b0:2bc:bdcd:c51f])
  (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:431d:b0:3b4:669c:ee32 with SMTP id adf61e73a8af0-3b784026fbemr12891091637.37.1781480256053;
+ 2002:a17:903:94c:b0:2c0:b5c1:8e21 with SMTP id d9443c01a7336-2c410509486mr140737925ad.16.1781480256874;
  Sun, 14 Jun 2026 16:37:36 -0700 (PDT)
-Date: Sun, 14 Jun 2026 23:37:18 +0000
+Date: Sun, 14 Jun 2026 23:37:19 +0000
 In-Reply-To: <20260614233728.2212104-1-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260614233728.2212104-1-skhawaja@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260614233728.2212104-9-skhawaja@google.com>
-Subject: [PATCH v3 08/18] iommu/vt-d: clear unpreserved context entries during shutdown
+Message-ID: <20260614233728.2212104-10-skhawaja@google.com>
+Subject: [PATCH v3 09/18] iommu: Add APIs to get iommu and device preserved state
 From: Samiullah Khawaja <skhawaja@google.com>
 To: David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
 	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
@@ -71,161 +71,167 @@ Cc: Samiullah Khawaja <skhawaja@google.com>, Robin Murphy <robin.murphy@arm.com>
 	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-During normal shutdown the iommu translation is disabled. Since the root
-table is preserved during live update, it needs to be cleaned up and the
-context entries of the unpreserved devices and root entries for the
-unpreserved context tables need to be cleared.
+The preserved state of the device and IOMMU needs to be fetched during
+shutdown and boot in the next kernel. Add APIs that can be used to fetch
+the preserved state of a device and IOMMU. The APIs will only be used
+during shutdown and after liveupdate so no locking needed.
 
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 ---
- drivers/iommu/intel/iommu.c      |  9 ++--
- drivers/iommu/intel/iommu.h      |  6 +++
- drivers/iommu/intel/liveupdate.c | 74 ++++++++++++++++++++++++++++++++
- 3 files changed, 86 insertions(+), 3 deletions(-)
+ drivers/iommu/liveupdate.c       | 75 ++++++++++++++++++++++++++++++++
+ include/linux/iommu-liveupdate.h | 31 +++++++++++++
+ 2 files changed, 106 insertions(+)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 715b538e7efe..26258861e3bf 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -2374,8 +2374,11 @@ void intel_iommu_shutdown(void)
- 		/* Disable PMRs explicitly here. */
- 		iommu_disable_protect_mem_regions(iommu);
+diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+index 2d782023407d..90750e78cd2a 100644
+--- a/drivers/iommu/liveupdate.c
++++ b/drivers/iommu/liveupdate.c
+@@ -18,6 +18,17 @@
+ #define iommu_max_objs_per_page(_array) \
+ 	((PAGE_SIZE - sizeof(struct iommu_array_hdr_ser)) / sizeof((_array)->objects[0]))
  
--		/* Make sure the IOMMUs are switched off */
--		iommu_disable_translation(iommu);
-+		/* Make sure the IOMMUs are switched off if not preserved. */
-+		if (iommu_preserved_state(&iommu->iommu))
-+			clear_unpreserved_context_entries(iommu);
++#define iommu_liveupdate_for_each_obj(_arr, _obj, _idx)			\
++	for ((_idx) = 0, (_obj) = (_arr)->objects;			\
++	     (_idx) < (_arr)->hdr.nr_objects; (_idx)++, (_obj)++)	\
++		if (((_obj)->hdr.flags & IOMMU_SER_FLAG_DELETED))	\
++			continue;					\
 +		else
-+			iommu_disable_translation(iommu);
- 	}
- }
- 
-@@ -2699,7 +2702,7 @@ static int domain_context_clear_one_cb(struct pci_dev *pdev, u16 alias, void *op
-  * devices, unbinding the driver from any one of them will possibly leave
-  * the others unable to operate.
-  */
--static void domain_context_clear(struct device_domain_info *info)
-+void domain_context_clear(struct device_domain_info *info)
- {
- 	if (!dev_is_pci(info->dev)) {
- 		domain_context_clear_one(info, info->bus, info->devfn);
-diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-index 5e0bc17e76bf..561cc4d14912 100644
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -1241,6 +1241,7 @@ void cache_tag_flush_all(struct dmar_domain *domain);
- void cache_tag_flush_range_np(struct dmar_domain *domain, unsigned long start,
- 			      unsigned long end);
- 
-+void domain_context_clear(struct device_domain_info *info);
- void intel_context_flush_no_pasid(struct device_domain_info *info,
- 				  struct context_entry *context, u16 did);
- 
-@@ -1293,6 +1294,7 @@ int intel_iommu_preserve(struct iommu_device *iommu,
- 			 struct iommu_hw_ser *iommu_ser);
- void intel_iommu_unpreserve(struct iommu_device *iommu,
- 			    struct iommu_hw_ser *iommu_ser);
-+void clear_unpreserved_context_entries(struct intel_iommu *iommu);
- #else
- static inline int intel_iommu_preserve_device(struct device *dev,
- 					      struct iommu_device_ser *device_ser)
-@@ -1310,6 +1312,10 @@ static inline void intel_iommu_unpreserve(struct iommu_device *iommu,
- 					  struct iommu_hw_ser *iommu_ser)
- {
- }
 +
-+static inline void clear_unpreserved_context_entries(struct intel_iommu *iommu)
++#define iommu_liveupdate_for_each_arr(_arr)				\
++	for (; (_arr); (_arr) = (_arr)->hdr.next_array_phys ?		\
++	     phys_to_virt((_arr)->hdr.next_array_phys) : NULL)
++
+ struct iommu_flb_obj {
+ 	struct mutex lock;
+ 	struct iommu_flb_ser *ser;
+@@ -216,6 +227,70 @@ void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
+ }
+ EXPORT_SYMBOL(iommu_liveupdate_unregister_flb);
+ 
++int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
++				    void *arg)
 +{
-+}
- #endif
- 
- #ifdef CONFIG_INTEL_IOMMU_SVM
-diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
-index b5613e4ad43a..aac7aa89a182 100644
---- a/drivers/iommu/intel/liveupdate.c
-+++ b/drivers/iommu/intel/liveupdate.c
-@@ -64,6 +64,80 @@ static int preserve_context_table(struct intel_iommu *iommu,
- 	return 0;
- }
- 
-+static void clear_unpreserved_context_root_entries(struct intel_iommu *iommu,
-+						   struct iommu_hw_ser *ser)
-+{
-+	struct root_entry *root;
-+	int i;
++	struct iommu_flb_obj *flb_obj;
++	struct iommu_device_array_ser *array;
++	struct iommu_device_ser *device_ser;
++	int ret, idx;
 +
-+	for (i = 0; i < ROOT_ENTRY_NR; i++) {
-+		root = &iommu->root_entry[i];
++	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&flb_obj);
++	if (ret)
++		return -ENOENT;
 +
-+		if (!is_context_table_preserved(iommu, ser, i, 0) && (root->lo & 1)) {
-+			root->lo = 0;
-+			__iommu_flush_cache(iommu,
-+					    &root->lo,
-+					    sizeof(root->lo));
-+		}
++	if (!flb_obj->ser->device_array_phys)
++		return -ENOENT;
 +
-+		if (!sm_supported(iommu))
-+			continue;
-+
-+		if (!is_context_table_preserved(iommu, ser, i, 0x80) && (root->hi & 1)) {
-+			root->hi = 0;
-+			__iommu_flush_cache(iommu,
-+					    &root->hi,
-+					    sizeof(root->hi));
++	array = phys_to_virt(flb_obj->ser->device_array_phys);
++	iommu_liveupdate_for_each_arr(array) {
++		iommu_liveupdate_for_each_obj(array, device_ser, idx) {
++			ret = fn(device_ser, arg);
++			if (ret)
++				goto out;
 +		}
 +	}
-+}
 +
-+static int clear_unpreserve_context_entry_fn(struct device *dev,
-+					     struct iommu_device *iommu,
-+					     void *arg)
++out:
++	liveupdate_flb_put_incoming(&iommu_flb);
++	return ret;
++}
++EXPORT_SYMBOL(iommu_for_each_preserved_device);
++
++struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
 +{
-+	struct device_domain_info *info;
++	struct iommu_hw_ser *iommu_ser = NULL;
++	struct iommu_hw_array_ser *array;
++	struct iommu_flb_obj *flb_obj;
++	int ret, idx;
 +
-+	info = dev_iommu_priv_get(dev);
-+	if (!info)
-+		return 0;
++	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&flb_obj);
++	if (ret == -ENODATA || ret == -ENOENT)
++		return NULL;
 +
-+	if (dev_is_pci(dev) && dev_iommu_preserved_state(dev))
-+		return 0;
++	if (ret)
++		return ERR_PTR(ret);
 +
-+	domain_context_clear(info);
-+	return 0;
++	if (!flb_obj->ser->iommu_array_phys) {
++		iommu_ser = ERR_PTR(-EINVAL);
++		goto out;
++	}
++
++	array = phys_to_virt(flb_obj->ser->iommu_array_phys);
++	iommu_liveupdate_for_each_arr(array) {
++		iommu_liveupdate_for_each_obj(array, iommu_ser, idx) {
++			if (iommu_ser->token == token && iommu_ser->type == type)
++				goto out;
++		}
++	}
++
++	iommu_ser = NULL;
++out:
++	liveupdate_flb_put_incoming(&iommu_flb);
++	return iommu_ser;
 +}
++EXPORT_SYMBOL(iommu_get_preserved_data);
 +
-+void clear_unpreserved_context_entries(struct intel_iommu *iommu)
-+{
-+	struct iommu_dev_iter iter = {
-+		.fn = clear_unpreserve_context_entry_fn,
-+		.iommu = &iommu->iommu,
-+		.arg = NULL,
-+
-+	};
-+
-+	/* Clear context entries for unpreserved devices */
-+	iommu_for_each_dev(&iter);
-+
-+	/* Clear reference to unpreserved context tables */
-+	clear_unpreserved_context_root_entries(iommu,
-+					       iommu_preserved_state(&iommu->iommu));
-+
-+	/*
-+	 * Some devices might not have teardown/detached properly depending on
-+	 * whether a proper device remove is done before kexec is triggered.
-+	 * Also unpreserved context tables are removed during shutdown. So issue
-+	 * global invalidations to remove references to unpreserved tables and
-+	 * entries.
-+	 */
-+	iommu->flush.flush_context(iommu, 0, 0, 0, DMA_CCMD_GLOBAL_INVL);
-+	if (sm_supported(iommu))
-+		qi_flush_pasid_cache(iommu, 0, QI_PC_GLOBAL, 0);
-+	iommu->flush.flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
-+}
-+
- static void unpreserve_iommu_context_tables(struct intel_iommu *iommu,
- 					    struct iommu_hw_ser *ser)
+ static int alloc_object_ser(void **curr_array_ptr, u64 max_objs)
  {
+ 	struct iommu_array_hdr_ser *curr_array = *curr_array_ptr;
+diff --git a/include/linux/iommu-liveupdate.h b/include/linux/iommu-liveupdate.h
+index f9528c94979d..5ad006892cbd 100644
+--- a/include/linux/iommu-liveupdate.h
++++ b/include/linux/iommu-liveupdate.h
+@@ -13,6 +13,8 @@
+ #include <linux/liveupdate.h>
+ #include <linux/kho/abi/iommu.h>
+ 
++typedef int (*iommu_preserved_device_iter_fn)(struct iommu_device_ser *ser,
++					      void *arg);
+ #ifdef CONFIG_IOMMU_LIVEUPDATE
+ static inline void *dev_iommu_preserved_state(struct device *dev)
+ {
+@@ -28,6 +30,20 @@ static inline void *dev_iommu_preserved_state(struct device *dev)
+ 	return NULL;
+ }
+ 
++static inline void *iommu_domain_restored_state(struct iommu_domain *domain)
++{
++	struct iommu_domain_ser *ser;
++
++	ser = domain->preserved_state;
++	if (ser && (ser->hdr.flags & IOMMU_SER_FLAG_INCOMING))
++		return ser;
++
++	return NULL;
++}
++
++int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
++				    void *arg);
++struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type);
+ int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser);
+ void iommu_unpreserve_domain(struct iommu_domain *domain);
+ int iommu_preserve_device(struct iommu_domain *domain,
+@@ -44,6 +60,21 @@ static inline void *dev_iommu_preserved_state(struct device *dev)
+ 	return NULL;
+ }
+ 
++static inline void *iommu_domain_restored_state(struct iommu_domain *domain)
++{
++	return NULL;
++}
++
++static inline int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn, void *arg)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
++{
++	return NULL;
++}
++
+ static inline int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser)
+ {
+ 	return -EOPNOTSUPP;
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
