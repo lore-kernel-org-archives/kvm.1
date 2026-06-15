@@ -1,127 +1,107 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EAF3F7A9A
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 14:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC303EF0CD;
+	Mon, 15 Jun 2026 14:24:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781533418; cv=none; b=ok1M8BwB4ckWzSHt4nHTxYysGugukbpLWzHTcGfdPTWjHSTb4cwHFQ627iQ64FtYmhObWE0IoHJ2EWx6yDjWwmEYxRBjhR/bXWYV0wetT+gF7lY9UAozh5c74XEm8emnNrZzgR/WwZyxhXW3957bwuQxJQLTTKzkc4EtHrV/89c=
+	t=1781533460; cv=none; b=twwrODX8v5J9guhqAHuxFZfI+1L/J9Nj9oe4nvUZdvyU8QnC014hQrRbi7LVtGocrfyHGVWdbiZ9YRn2hOmeVH75NO9E0owM7TF/0UxJYidd8kB6BEJ7gG1F1DjmFVnyFAnJko80zrkGy4nEkjiL0IkE87xeNqtTkhdaiddXeEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781533418; c=relaxed/simple;
-	bh=SuA5k84F8CzYepc5vVcea7PB7aL1vv5XuJ+9UGt3UqY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GhgFNzVNkk18FmXfNY88olp8yCrHRkPOJUd4LlXcfiI+oFvyX9i/4dYGwIrtJ1DtCFsovTmD/WMjfHKK11WeyZ3MBuCIEY12OlDCKytPWv2JkMvKljsnD9C4arP5LZzvnRxzFlidf5Ef1Wu9zEOqJCbWO7L829WEPRNiPT7zUcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jarWPLTa; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781533460; c=relaxed/simple;
+	bh=kiIsMDo+qCR+gsHM8Iu+H9cpLnLwOVAQRINXxJNClUY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sr1rpyoatFwkAoamUApySHKN38voLD93ggjjX03mxYjZBYcNPlVLfbBT7jFlcqx5NngqdjG8vhMouXPbX6shz0d/H7E260eh4/kehH1Peyi71+UspLtS9vjaW873ltNXdRf7QZgJqUPefE3VSzzYyeQ862LVkEsXMQSYcrKi7IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GN4eQdbK; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jarWPLTa"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d99181eaaso4353362a91.3
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 07:23:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781533416; x=1782138216; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BHXtQahPuqoo0NJyk6bARw0tNhBOnPrj2MIbG+a6220=;
-        b=jarWPLTaeFhjUzvFCUM/zc77KIymb7SlIXLB8dd3LSrYUEyiFVJYDTAUW9fWjCa4l5
-         s61TppxQNPHVjGIEzgQ/DQrxygayEBdtsCq1pJrEnzn8xwntWzZSL1JGaf+2TzWlkKU7
-         PHDC+lnnTYPYo1rDJ57yw8azu8AIpAGkqKKfnjjm40RH9Exvrd4ODbXBmALBNpxXfhfs
-         VdcbUO9uvMLt7wAKlWYkf4SQpSKYQfdiizULubZxjjZ08q6UQpUU+IkE7Krf8jTnfqw0
-         UP570By/HE5ufVg2jDuqB+KnFhcRnbhLaX77sN/zeGfFLZWha9Nxztb65XsFGHQ0l4Zn
-         aL3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781533416; x=1782138216;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BHXtQahPuqoo0NJyk6bARw0tNhBOnPrj2MIbG+a6220=;
-        b=JO5FFyYDd9Kux61zkMJIP7BcBQbGsBVr4/r8OCvaWGVbyDb4i+ggQtt864kXOFb00Y
-         zOl7t/qrY9aWs7g9XuBPmKrpMCXlXPcDXRSUuvp5tTtDzrvNzPFmqRXl+w+6vk7o+wK+
-         o1gaWszYAdM5w2BjTNMp9tY72vvw7K8N3C8wIayoHiB1XOIgJLP4hV33sVT5ZNZj/6UW
-         XvfqGBm1ObOPj5K4gc4KrDnglahlPPpIvbVcU/zeLZ48cV4aZR8y2/8CD47/ICVw882B
-         Eo65HPo7QpAiNjWNLxEoN6B8oKBQJbXwvvncljEEd2hX12e3J/FPFRMYcpHHbmgOdBug
-         Nexg==
-X-Forwarded-Encrypted: i=1; AFNElJ8YLTuZsHI3Zl4d7/C1ccYhH3KeUk2qQkJgrrQgvzDYcg/lmsu+05akc9IJh/5Cqt09O+E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwanHLDMadU06+/Xb0dgC2ST7B8RINMBi2OqN+tBAnMnTTyD+8a
-	vW1ytKZ+1sunzQIeEI2ehTUoOHI0+DsL0630tpAw7qZt6AEQBVil8ezg9kUxZzI0ID5zWEfIiOc
-	+aOCxDg==
-X-Received: from pjbmj16.prod.google.com ([2002:a17:90b:3690:b0:373:40c6:a8c9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:57ee:b0:36a:d51d:42ef
- with SMTP id 98e67ed59e1d1-37c2bd033b4mr11299785a91.13.1781533415878; Mon, 15
- Jun 2026 07:23:35 -0700 (PDT)
-Date: Mon, 15 Jun 2026 07:23:35 -0700
-In-Reply-To: <477ed5cf76f73379886c01bdf1a0f47c984f2de9.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GN4eQdbK"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FCmR1c2516332;
+	Mon, 15 Jun 2026 14:24:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=kiIsMDo+qCR+gsHM8
+	Iu+H9cpLnLwOVAQRINXxJNClUY=; b=GN4eQdbKdswwSls6TmhN7tpRUObzW/956
+	FamR+im5/GrFejoOBThGVMmsMUCTKKCpk12PteeH6Sj+r5kdpRIr2UeYoI5LZz07
+	4lwZj0Uk1GkmtZu1VrOvbOCs8R9KfKuvRxEX6tC2HAsMjqLaTMnA3j1FP8OblpGi
+	L1JWXiPgTS51lP+jx/4oujUNzbrvC7nSiB2W22a9V9CXFf1w98Hgfvq5/oj90lWv
+	dUYlx5AXCCl8/aKSBPVnPXfJd6LMwgVbvXiz67SCX04uAd90NYQfG8UHSagshnI/
+	o1UFrrFeresp91jJVazVGMhX0SBUMrVIBikkZwHjPOYF7O2Rogfsg==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1eg0kae-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jun 2026 14:24:13 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65FEJgaq014403;
+	Mon, 15 Jun 2026 14:24:13 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4esk1gxwnb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jun 2026 14:24:13 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65FEOCmO26280516
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Jun 2026 14:24:12 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ACBFB58067;
+	Mon, 15 Jun 2026 14:24:12 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A88A55804B;
+	Mon, 15 Jun 2026 14:24:10 +0000 (GMT)
+Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 15 Jun 2026 14:24:10 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+To: mst@redhat.com
+Cc: eperezma@redhat.com, jasowang@redhat.com, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        sgarzare@redhat.com, shuangyu@yunyoo.cc, stefanha@redhat.com,
+        virtualization@lists.linux.dev,
+        Christian Borntraeger <borntraeger@linux.ibm.com>
+Subject: Re: vhost: fix vhost_get_avail_idx for a non empty ring
+Date: Mon, 15 Jun 2026 16:24:08 +0200
+Message-ID: <20260615142408.64169-1-borntraeger@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <559b04ae6ce52973c535dc47e461638b7f4c3d63.1772441455.git.mst@redhat.com>
+References: <559b04ae6ce52973c535dc47e461638b7f4c3d63.1772441455.git.mst@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-31-seanjc@google.com>
- <477ed5cf76f73379886c01bdf1a0f47c984f2de9.camel@intel.com>
-Message-ID: <ajAK57S0tyPCO0yB@google.com>
-Subject: Re: [PATCH v4 30/30] KVM: x86: Move a pile of stuff from kvm_host.h
- => x86.h
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "yosry@kernel.org" <yosry@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDE1MCBTYWx0ZWRfX4kOKOUsdn62Q
+ /00GYZASuleTVtIXkuDbgwDV+7nlTSxdLhmfjXnEDOwZphkeDsc5yNcqeYOjo0AQY4CUKdPRaNk
+ v59IksHTAY5najYc84fr6Zys+ciMo94=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDE1MCBTYWx0ZWRfXxGYz/ntpzeEW
+ VQ0IpQMPtCIG0fa+inikduA5QDgfsJQ5qhKQ4Kmik6MQWgbSBWWV5hoY+zPWdOwYeWfO7xg6yYh
+ rkASTGzuEePJ1NF48p+ZRcx9GBXw0tVPFwHnirO8CfmTlo4JRwzbB8Wu7PNQdp42r8YdPtIud0j
+ MVt29Aty2bQDOFZ7PgmyzrJVd6zankDgEtEImfRryU1Y96gCs2HODtDhdqkX8DK+AyPS+jJ/8ko
+ VUMgUTD7d9ng/rUY0HXLoV0/ofAtMuKpoasRTW5Tm+j8OrL7cKz+Q16k7HFKQEe4aYu2uIfwJhT
+ TnS5RNi6WL9G68VKw/jgs68qV4ETCurGbaUXMg9bBUZ/wGSAemiQ/A9oZz2kJ230FKyj5SULK14
+ 3Zl7YYWOezdl13PO0b1+aZXaOQCg1WFTXCVbPX+X49a3quUsqi+1yJS1jcfxN/g+0B4LTns9XdR
+ 2+4FI9fsa5Z9Wov215A==
+X-Proofpoint-GUID: JCecQl8GbpHgCG0Czo7MCieaqFs7ZQJ_
+X-Authority-Analysis: v=2.4 cv=NuDhtcdJ c=1 sm=1 tr=0 ts=6a300b0d cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=q_tXsGYBvXEQEe6gApwA:9
+X-Proofpoint-ORIG-GUID: JCecQl8GbpHgCG0Czo7MCieaqFs7ZQJ_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-15_03,2026-06-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 suspectscore=0 impostorscore=0 clxscore=1011
+ phishscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606150150
 
-On Mon, Jun 15, 2026, Kai Huang wrote:
-> On Fri, 2026-06-12 at 17:03 -0700, Sean Christopherson wrote:
-> > Move the majority of remaining KVM-internal declarations and defines in
-> > kvm_host.h to x86.h, so that kvm_host.h only holds structure and function
-> > definitions that need to be visible to arch-neutral KVM.
-> > 
-> > Land the emulator interfaces in x86.h, even though kvm_emulate.h *seems*
-> > like a good home, as the interfaces and defines being moved are provided by
-> > x86.c.  I.e. keep kvm_emulate.h as an interface to the emulator proper.
-> > 
-> > Note, any "misses" are likely unintentional.
-> > 
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> 
-> [...]
-> 
-> > -
-> >  #define TSS_IOPB_BASE_OFFSET 0x66
-> >  #define TSS_BASE_SIZE 0x68
-> >  #define TSS_IOPB_SIZE (65536 / 8)
-> 
-> Nit:  Seems sashiko was right about TSS_IOPB_BASE and the related macros can be
-> moved out of asm/kvm_host.h (ditto for the enum of TASK_SWITCH_*)?
+Late feedback, but this patch massively improves our uperf latency/bandwidth
+and cpu consumption significantly for s390. Improvements are all over
+the place, streaming, transactional (100 byte/2000 byte). Nice fix.
 
-Hmm, agreed.  arch/x86/kvm/tss.h seems like the perfect fit.  It would be easy
-to slot in a patch to move these ahead of the bulk move to x86.h.
 
-> https://lore.kernel.org/kvm/20260530075928.888B61F00893@smtp.kernel.org/
-> 
-> But you said "majority" in the changelog, so we can always do more cleanup
-> later. :-)
-> 
-> [...]
-> 
-> > +void __kvm_set_or_clear_apicv_inhibit(struct kvm *kvm,
-> > +				      enum kvm_apicv_inhibit reason, bool set);
-> > +void kvm_set_or_clear_apicv_inhibit(struct kvm *kvm,
-> > +				    enum kvm_apicv_inhibit reason, bool set);
-> > +
-> > +static inline void kvm_set_apicv_inhibit(struct kvm *kvm,
-> > +					 enum kvm_apicv_inhibit reason)
-> > +{
-> > +	kvm_set_or_clear_apicv_inhibit(kvm, reason, true);
-> > +}
-> > +
-> > +static inline void kvm_clear_apicv_inhibit(struct kvm *kvm,
-> > +					   enum kvm_apicv_inhibit reason)
-> > +{
-> > +	kvm_set_or_clear_apicv_inhibit(kvm, reason, false);
-> > +}
-> > +
-> 
-> The definition of 'enum kvm_apicv_inhibit' remains in asm/kvm_host.h.  Is it
-> because "trace.h" still uses APICV_INHIBIT_REASONS?
-
-No, pretty sure I just overlooked the enum.  I'll do another pass of kvm_host.h
-to see what #defines and enums can be moved.
+Christian
