@@ -1,239 +1,127 @@
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700FE3ECBF9;
-	Mon, 15 Jun 2026 14:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EAF3F7A9A
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 14:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781533203; cv=none; b=cx8jg+xszPNc5IuG2HEEAlw/2O7UyXvFDMeGvAzG5gcYWtq/QO3PXY3Od2bNIq3uWY2bpR6AwyX1xDovDS1S1j7Pbb6kreibc8YEKfaO3B7UeziLxLFbuJ1GYA/Oh2xtIsOyZoazf5XoRkPlfporkXj/mZ+dHNliUAT8b5oUECs=
+	t=1781533418; cv=none; b=ok1M8BwB4ckWzSHt4nHTxYysGugukbpLWzHTcGfdPTWjHSTb4cwHFQ627iQ64FtYmhObWE0IoHJ2EWx6yDjWwmEYxRBjhR/bXWYV0wetT+gF7lY9UAozh5c74XEm8emnNrZzgR/WwZyxhXW3957bwuQxJQLTTKzkc4EtHrV/89c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781533203; c=relaxed/simple;
-	bh=kC58bQczZSxKSY1n2wfuypNClBD8q9vY+uo09eUTYUg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qbqzHHwdY3weR7haM/La3xhU3qg1jzO6hhLNnCQT+wuJHchwHqdWWr2DpOONY05XZJHVoccaKaCg2+YUka9TQMHu1JyF2qXKw4pPyid0KgS79I4s+rD63AC7/sPu4kkSmGKQj/wrLwNdKeTvo9mKiCioxLi7meTbbHTU8aWdwN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=MXxkQEHp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EzhovM4s; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1781533418; c=relaxed/simple;
+	bh=SuA5k84F8CzYepc5vVcea7PB7aL1vv5XuJ+9UGt3UqY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=GhgFNzVNkk18FmXfNY88olp8yCrHRkPOJUd4LlXcfiI+oFvyX9i/4dYGwIrtJ1DtCFsovTmD/WMjfHKK11WeyZ3MBuCIEY12OlDCKytPWv2JkMvKljsnD9C4arP5LZzvnRxzFlidf5Ef1Wu9zEOqJCbWO7L829WEPRNiPT7zUcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jarWPLTa; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="MXxkQEHp";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EzhovM4s"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 84E96EC02B4;
-	Mon, 15 Jun 2026 10:19:59 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 15 Jun 2026 10:19:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1781533199;
-	 x=1781619599; bh=eBi5x3yp6NXIiW9zm4xkxSXgENE1TP88dW43wUc4d6E=; b=
-	MXxkQEHpzcpHIesiorjJ8vwhu2zWFNIa532Lb8rwL0++Ker4gCHSZCSVCag83tAt
-	7uI4Nl5TNeJPWkfy78rk+UcqcfQbuV8NTeT6XS57ohfH522DEubAlpQdOeKC/F6t
-	u/2y2HDYFwDVLQZFKBjRLZaghya4ey6ZoYLdHCLdh2huj7xsPiYplMY8052RQtwJ
-	j/Fp/J1yhuL36Cy7Pb0bRYSDxVIE/SUMs8TeH8lIFTbhlo+C5bxIi/rLodVaTgs6
-	B+L2BtAlqCRAEv7PzanSaxNd0Czr7Mf8sMGIgeHLHoXFTJtzCOfStN5SrXdO6x3D
-	SJVQ9Rea6eLseicJ8dV6uw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781533199; x=
-	1781619599; bh=eBi5x3yp6NXIiW9zm4xkxSXgENE1TP88dW43wUc4d6E=; b=E
-	zhovM4sjX1xBLkSFhlKZnueoNSOGoZS8/9MKvYrDU8/6QG6a42U/7yeJqgMjAzD3
-	f5EhyUU5+wrTZiuMNHTwNOfIyPYMTrOUKv6LnZ6jLvncwKLZl25MYDlX5WTSUoXk
-	KKErTYTiSR7vLkAFSxeFcQwqariMdkiR7FDzfy2WQSr4TKjr4x63V0tEmWUb32DF
-	lhVn3zJ2o180jhcbRBIVjLGoOnELSGaoNVpCYeFIVlhT77GO4YeXZaTOyoUGZ04k
-	AdHrYWE/4sV9iXyQTNLHlTt8uGRyDZNBFOpfFTTv6Ma9Nz1URkWCRqvjtq0uT4WV
-	qUb6RHOrNw2/x5asIA2MA==
-X-ME-Sender: <xms:DgowaloeuuJnEPvlMOuqz24iG21k2BPOmAABANRTM8xSZSJhym0RoA>
-    <xme:DgowapMFKvrmSVs3jG-sh6V-qQT2M5BR_HvnpzpqQ_S5Svf6R7r60i211PSFZaUsz
-    KSgixw_NK_FmN7GXRBE82U3bNbgp5WKPpVEKE-w8_p0_GGsqHK3aQ>
-X-ME-Received: <xmr:DgowahcI9ShM00LMIaQnI4mVZqTAdfzRPldwy-lQweaOS97oZ2zOeA34G34>
-X-ME-Proxy-Cause: dmFkZTGG6d1H2qgKgAU6/yR56nOIglLnUezfMHiYr5IwwuwQh70hkiS3A8up96wVtyDol/
-    E8O3XpBX3J354WcRb3FEiTsKY3ivphbYmul8omAtX+0Limhfv3U9WJhdhO0TD64SSd9OxV
-    AUJoZdmDJ4r9hQfYD8F6bLQy1datvCNAhJCTUeEFGgVuD9H6A1JkxLcPtEnNlOeXapAvg4
-    HjWWFANY9O4vJyoCaKziP0NmbyaJKBc51zOH1JShh2TEyELEKHUDQJfKHym8yhhzsHYu6F
-    9jFtmet7cQtD442W6rr+ErL546RJoIdi76UKycuvfQkfeIevQPPgIXEYZyXiCITGCwaGS7
-    rarPHcYy+WHQr731uSvHqmC89mGC+cT36f5Zp9MAKYzfQW2rrb/PWNlhQEMXW6fJV3QDbG
-    CUdV+yTnnk019NA2Si5JCfHaQ1FhcHMAZWxw5BTVZo21NZC4Gtk9/3rpQV7A8IJPI3fM+N
-    MJC4BDC/7fxudo1ftCpzoi4voMXa4mftjBI5LTQtMFq4fuRNYDPRbLvol2OseWanxm9OMk
-    vVc9QQxh9PR+k7DV2Jnix6xn5WBWtIMMK+r36e1oaD5XFD7wo/1Nw2N4nwS7xc5bTVyhWp
-    j6vKGedjJ1RwWTqlxI1SMwMTZ3iZ9oghZG/7nqZs9Whv+6PJgfnHL6VBC/HQ
-X-ME-Proxy: <xmx:DgowanXtyyeVjkExlx-yuHClcGHHlmgidrTqv0bsxTqeF6pAnfk0DA>
-    <xmx:DgowaqBGoFDBzykdy9oH25Hn8WxDAHhRnNt80wI9pwHdWTSKGWaUEw>
-    <xmx:Dgowaq5QnIHT7vHhvx_ayRJSu6wA3QjiiCSlDE_dAi0azjZUsZpx2g>
-    <xmx:Dgowap3PYmHwWLsKsP7Yc6gwcN31WryJsrn1fl9tCxhTcXA-8TIu1A>
-    <xmx:Dwowao_jrBZzRHC5Wk3hMLDtf_1OXWMeZ97hLjbY3LDQ6drR_ovvxa9n>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 15 Jun 2026 10:19:57 -0400 (EDT)
-Date: Mon, 15 Jun 2026 08:19:54 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
- <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
- <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH v16 00/12] vfio/pci: Add PCIe TPH support
-Message-ID: <20260615081954.35026fed@shazbot.org>
-In-Reply-To: <812b6875-5c46-4e03-af81-161b7e2d0e12@huawei.com>
-References: <20260604132804.28678-1-fengchengwen@huawei.com>
-	<812b6875-5c46-4e03-af81-161b7e2d0e12@huawei.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jarWPLTa"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36d99181eaaso4353362a91.3
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 07:23:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781533416; x=1782138216; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BHXtQahPuqoo0NJyk6bARw0tNhBOnPrj2MIbG+a6220=;
+        b=jarWPLTaeFhjUzvFCUM/zc77KIymb7SlIXLB8dd3LSrYUEyiFVJYDTAUW9fWjCa4l5
+         s61TppxQNPHVjGIEzgQ/DQrxygayEBdtsCq1pJrEnzn8xwntWzZSL1JGaf+2TzWlkKU7
+         PHDC+lnnTYPYo1rDJ57yw8azu8AIpAGkqKKfnjjm40RH9Exvrd4ODbXBmALBNpxXfhfs
+         VdcbUO9uvMLt7wAKlWYkf4SQpSKYQfdiizULubZxjjZ08q6UQpUU+IkE7Krf8jTnfqw0
+         UP570By/HE5ufVg2jDuqB+KnFhcRnbhLaX77sN/zeGfFLZWha9Nxztb65XsFGHQ0l4Zn
+         aL3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781533416; x=1782138216;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BHXtQahPuqoo0NJyk6bARw0tNhBOnPrj2MIbG+a6220=;
+        b=JO5FFyYDd9Kux61zkMJIP7BcBQbGsBVr4/r8OCvaWGVbyDb4i+ggQtt864kXOFb00Y
+         zOl7t/qrY9aWs7g9XuBPmKrpMCXlXPcDXRSUuvp5tTtDzrvNzPFmqRXl+w+6vk7o+wK+
+         o1gaWszYAdM5w2BjTNMp9tY72vvw7K8N3C8wIayoHiB1XOIgJLP4hV33sVT5ZNZj/6UW
+         XvfqGBm1ObOPj5K4gc4KrDnglahlPPpIvbVcU/zeLZ48cV4aZR8y2/8CD47/ICVw882B
+         Eo65HPo7QpAiNjWNLxEoN6B8oKBQJbXwvvncljEEd2hX12e3J/FPFRMYcpHHbmgOdBug
+         Nexg==
+X-Forwarded-Encrypted: i=1; AFNElJ8YLTuZsHI3Zl4d7/C1ccYhH3KeUk2qQkJgrrQgvzDYcg/lmsu+05akc9IJh/5Cqt09O+E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwanHLDMadU06+/Xb0dgC2ST7B8RINMBi2OqN+tBAnMnTTyD+8a
+	vW1ytKZ+1sunzQIeEI2ehTUoOHI0+DsL0630tpAw7qZt6AEQBVil8ezg9kUxZzI0ID5zWEfIiOc
+	+aOCxDg==
+X-Received: from pjbmj16.prod.google.com ([2002:a17:90b:3690:b0:373:40c6:a8c9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:57ee:b0:36a:d51d:42ef
+ with SMTP id 98e67ed59e1d1-37c2bd033b4mr11299785a91.13.1781533415878; Mon, 15
+ Jun 2026 07:23:35 -0700 (PDT)
+Date: Mon, 15 Jun 2026 07:23:35 -0700
+In-Reply-To: <477ed5cf76f73379886c01bdf1a0f47c984f2de9.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-31-seanjc@google.com>
+ <477ed5cf76f73379886c01bdf1a0f47c984f2de9.camel@intel.com>
+Message-ID: <ajAK57S0tyPCO0yB@google.com>
+Subject: Re: [PATCH v4 30/30] KVM: x86: Move a pile of stuff from kvm_host.h
+ => x86.h
+From: Sean Christopherson <seanjc@google.com>
+To: Kai Huang <kai.huang@intel.com>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "yosry@kernel.org" <yosry@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 15 Jun 2026 20:19:48 +0800
-fengchengwen <fengchengwen@huawei.com> wrote:
-
-> Gentle ping for v16 TPH series.
+On Mon, Jun 15, 2026, Kai Huang wrote:
+> On Fri, 2026-06-12 at 17:03 -0700, Sean Christopherson wrote:
+> > Move the majority of remaining KVM-internal declarations and defines in
+> > kvm_host.h to x86.h, so that kvm_host.h only holds structure and function
+> > definitions that need to be visible to arch-neutral KVM.
+> > 
+> > Land the emulator interfaces in x86.h, even though kvm_emulate.h *seems*
+> > like a good home, as the interfaces and defines being moved are provided by
+> > x86.c.  I.e. keep kvm_emulate.h as an interface to the emulator proper.
+> > 
+> > Note, any "misses" are likely unintentional.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > 
-> Would appreciate reviews from Alex and Jason. Let me know if major
-> changes are needed.
-
-The same changes that were still being discussed while v15 and v16 were
-posted, I don't think vfio-pci is the right place to host a CPU to ST
-translation interface.  Thanks,
-
-Alex
-
-
-> On 6/4/2026 9:27 PM, Chengwen Feng wrote:
-> > This patchset enables full userspace configurable PCIe TPH support
-> > for VFIO, which brings performance benefits for userspace workloads
-> > such as DPDK and SPDK.
-> > 
-> > Currently VFIO only exposes read-only TPH capability registers to 
-> > userspace, while all write operations are silently discarded. This 
-> > prevents userspace from enabling and configuring TPH, limiting
-> > performance optimization opportunities.
-> > 
-> > Per PCIe spec 7.5.3.15: TPH Completer support is applicable to Root
-> > Ports and Endpoints, allowing Steering Tags to target host CPUs or
-> > peer devices for P2P transactions.
-> > 
-> > TPH usage model can be divided into three fundamental parts:
-> > 1. Retrieve Steering Tag:
-> >    - Tags targeting host CPUs are obtained via platform methods
-> > (ACPI _DSM) wrapped in pcie_tph_get_cpu_st(). Userspace requires a
-> > generic interface to query these CPU-associated ST values.
-> >    - Tags targeting peer devices are managed by userspace drivers.
-> > 2. Program Steering Tag table:
-> >    - For devices with standard ST table structures (in capability
-> > space or MSI-X table), userspace needs a unified interface to
-> > configure ST entries.
-> >    - Devices without standard ST tables are handled by userspace
-> > itself. 3. Toggle device TPH Requester enable/disable state.
-> > 
-> > To support the above scenarios, this series extends VFIO with
-> > complete TPH virtualization features:
-> > - New device feature TPH_CPU_ST: Batch query interface to resolve 
-> >   CPU-specific ST tags.
-> > - New device feature TPH_ST_CONFIG: Batch configure interface for
-> > device ST table entries, with shadow cache and atomic rollback
-> > support.
-> > - Full TPH capability register virtualization: allow userspace to
-> > toggle TPH Requester state via TPH_CTRL register writes.
-> > 
-> > To guarantee isolation and security, this patchset adopts a
-> > two-level safety gate design with careful ABI considerations:
-> > 1. Global unsafe gate:
-> >    TPH caching behavior may cross isolation domains and impact
-> > shared platform resources. A new module parameter
-> > `enable_unsafe_tph` is introduced (default off) to globally gate
-> > all TPH functionalities. 2. Per-device opt-in gate:
-> >    To preserve strict ABI compatibility and avoid unexpected
-> > hardware state changes for existing users, a new VFIO device
-> > feature TPH_ENABLE is added. TPH capabilities are only available
-> > after userspace explicitly enables it per-device.
-> > 
-> > Because Kernel PCI TPH implementation requires TPH Requester to be
-> > enabled before programming ST entries. To support userspace
-> > configuring ST table in arbitrary order, a shadow ST table is
-> > introduced to buffer ST writes before TPH is enabled. All cached
-> > entries are flushed to hardware when TPH Requester turns on. This
-> > also provides atomic batch rollback capability for reliable
-> > configuration.
-> > 
-> > The patchset is split into two logical parts: the first seven
-> > patches fix and refactor core PCI/TPH kernel code to export
-> > required helper interfaces, and the remaining five patches
-> > implement corresponding VFIO TPH virtualization layer step by step.
-> > 
-> > Patch breakdown:
-> >  1/12 PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
-> >  2/12 PCI/TPH: Fix tph_enabled concurrent update race by bitfield
-> > packing 3/12 PCI/TPH: Cache TPH requester capability at probe time
-> >  4/12 PCI/TPH: Refactor pcie_enable_tph & add explicit requester
-> > variant 5/12 PCI/TPH: Refactor pcie_tph_get_cpu_st & add explicit
-> > variant 6/12 PCI/TPH: expose the enabled TPH requester type
-> >  7/12 PCI/TPH: Add pcie_tph_supported() helper to check TPH
-> > capability attrs 8/12 vfio/pci: Hide TPH capability when TPH is
-> > unsupported 9/12 vfio/pci: Add TPH_ENABLE feature skeleton and
-> > unsafe module parameter 10/12 vfio/pci: Add TPH_CPU_ST to query
-> > CPU's TPH steering tag 11/12 vfio/pci: Add TPH_ST_CONFIG for PCIe
-> > TPH ST configuration 12/12 vfio/pci: Virtualize PCIe TPH capability
-> > registers
-> > 
-> > Based on earlier RFC work by Wathsala Vithanage
-> > 
-> > ---
-> > v16: 
-> > - Supports opt-in at the device level which address Alex's comment.
-> > - Split sub-commit: add hide TPH capability when TPH is unsupported.
-> > - Optimize the tph fields layout of the pci_dev structure.
-> > - Optimize virtualize PCIe TPH capability commit: support rollback
-> >   when set fail.
-> > - Reorder PCI/TPH commits: make fix commit ahead.
-> > - Reorganized the cover letter to serve as the starting point for
-> >   discussion.
-> > v15: Address Alex's comments:
-> > - Drop TPH capability when tph_cap=0
-> > - Use _explicit postfix other than add policy parameter for enable
-> >   TPH and get tph st.
-> > - Make sure set st entry under D0
-> > - Reimpl virtualize TPH capability register
-> > - Other fix
-> > v14:
-> > - Return PCI_TPH_LOC_NONE when !CONFIG_PCIE_TPH accord Alex's
-> > comment
-> > - Fix Sashiko comments:
-> >   - Clear ST shadow state across user session
-> >   - Fix out-of-bounds byte masking in vfio_pci_tph_config_read
-> > 
-> > Chengwen Feng (11):
-> >   PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
-> >   PCI/TPH: Fix tph_enabled concurrent update race by bitfield
-> > packing PCI/TPH: Cache TPH requester capability at probe time
-> >   PCI/TPH: Refactor pcie_enable_tph & add explicit requester variant
-> >   PCI/TPH: Refactor pcie_tph_get_cpu_st & add explicit variant
-> >   PCI/TPH: Add pcie_tph_supported() helper to check TPH capability
-> >     attributes
-> >   vfio/pci: Hide TPH capability when TPH is unsupported
-> >   vfio/pci: Add TPH_ENABLE feature skeleton and unsafe module
-> > parameter vfio/pci: Add TPH_CPU_ST to query CPU's TPH steering tag
-> >   vfio/pci: Add TPH_ST_CONFIG for PCIe TPH ST configuration
-> >   vfio/pci: Virtualize PCIe TPH capability registers
-> > 
-> > Zhiping Zhang (1):
-> >   PCI/TPH: expose the enabled TPH requester type
-> > 
-> >  drivers/pci/tph.c                  | 220
-> > ++++++++++++++++++++-------- drivers/vfio/pci/vfio_pci.c        |
-> > 13 +- drivers/vfio/pci/vfio_pci_config.c | 111 ++++++++++++++
-> >  drivers/vfio/pci/vfio_pci_core.c   | 228
-> > ++++++++++++++++++++++++++++- include/linux/pci-tph.h            |
-> > 22 +++ include/linux/pci.h                |   6 +-
-> >  include/linux/vfio_pci_core.h      |   7 +-
-> >  include/uapi/linux/vfio.h          |  60 ++++++++
-> >  8 files changed, 600 insertions(+), 67 deletions(-)
-> >   
+> [...]
 > 
+> > -
+> >  #define TSS_IOPB_BASE_OFFSET 0x66
+> >  #define TSS_BASE_SIZE 0x68
+> >  #define TSS_IOPB_SIZE (65536 / 8)
+> 
+> Nit:  Seems sashiko was right about TSS_IOPB_BASE and the related macros can be
+> moved out of asm/kvm_host.h (ditto for the enum of TASK_SWITCH_*)?
 
+Hmm, agreed.  arch/x86/kvm/tss.h seems like the perfect fit.  It would be easy
+to slot in a patch to move these ahead of the bulk move to x86.h.
+
+> https://lore.kernel.org/kvm/20260530075928.888B61F00893@smtp.kernel.org/
+> 
+> But you said "majority" in the changelog, so we can always do more cleanup
+> later. :-)
+> 
+> [...]
+> 
+> > +void __kvm_set_or_clear_apicv_inhibit(struct kvm *kvm,
+> > +				      enum kvm_apicv_inhibit reason, bool set);
+> > +void kvm_set_or_clear_apicv_inhibit(struct kvm *kvm,
+> > +				    enum kvm_apicv_inhibit reason, bool set);
+> > +
+> > +static inline void kvm_set_apicv_inhibit(struct kvm *kvm,
+> > +					 enum kvm_apicv_inhibit reason)
+> > +{
+> > +	kvm_set_or_clear_apicv_inhibit(kvm, reason, true);
+> > +}
+> > +
+> > +static inline void kvm_clear_apicv_inhibit(struct kvm *kvm,
+> > +					   enum kvm_apicv_inhibit reason)
+> > +{
+> > +	kvm_set_or_clear_apicv_inhibit(kvm, reason, false);
+> > +}
+> > +
+> 
+> The definition of 'enum kvm_apicv_inhibit' remains in asm/kvm_host.h.  Is it
+> because "trace.h" still uses APICV_INHIBIT_REASONS?
+
+No, pretty sure I just overlooked the enum.  I'll do another pass of kvm_host.h
+to see what #defines and enums can be moved.
