@@ -1,194 +1,135 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AD6393DEB
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 10:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFEE32848A1;
+	Mon, 15 Jun 2026 10:31:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781518798; cv=none; b=b33o6iDGs8y/T1HHRjoQ/pBadwUFeCq0f7sy3LOAXY6eNnGSYaUOjzkqx+8ZWWbeNkhlmTAJIG2nYWNUoYiU7fzn2FtlujcmBG5kn7KhXqv/usRQud375suhbhHZM44Iqndsb29P94r2jfMsCW6H0eHK690NkYngtfv7HfqTcxQ=
+	t=1781519477; cv=none; b=Qb7q+MPO2ITaah58ZDiRcULGSIDRXX0FXAlhFDCCxz6vTikEnB2UgTQCxfydpbdAh/WJDj7K1tfW/JNfzQH2e25SWLV97MW8ODa5/o/wnlQ6oBpmnbr+/wdLyOE/QCsZna1D1XhcqCSk/kU/PQz6h2T0t1ASmz+7iBcyw6s4FGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781518798; c=relaxed/simple;
-	bh=u3C61S5DxXPzziWGCqZwUPeZaV8SqqYZUqxNkKGhQKo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nkhzROLdKPNQ//5ClUb/Z4FsgWH2G2BYCiAPfqChiwE4pveWkk9ZLGII5wOWsjcWvto3Jm2ltL0o6q9/nYv24GHLNGePED5i7b0VxgHJVcgyZr0KgTd0RaZHMeXNbNXQZXir8YsZxpUTqIK7PsW0tnSuibgpQ+HFLh8Tg3JTdto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aIKtjh/M; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jQOioZkf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aIKtjh/M; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jQOioZkf; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1781519477; c=relaxed/simple;
+	bh=qpkPZrddTktA09G7g0zahjanO831RtkJTYtOiWYXRjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RSiNV9HTwi8cM+L0B6qSvZhlxMcBWF+LvbpOV+c5QErIB0Fy/qc0yNs6QdQbrWg2MoIzfJ5KlPvzyP/c3C6RayucMPVCv/W/Wn3aBNL53/8/6m3kO5Xtd6dR/dv/h+3Xm1TIOsmzUDNFesCtc6V4DfJKGnQizoNv4QltWvYUb1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ABd9Y7+1; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="aIKtjh/M";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jQOioZkf";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="aIKtjh/M";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jQOioZkf"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B77876ACFC;
-	Mon, 15 Jun 2026 10:19:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781518795; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EiI1S/AKACD4xKPsymAzQLLVEJL7P3F6rlzjBEp4e6g=;
-	b=aIKtjh/M6bTaPOtIeRfhv4L7o0rZiYRqnAyBDV0KBY6NA+K1aSdKLYgOGhneTnIFCqxexZ
-	wmxwO2N9xD4d0N/GNwl2jpy7EZiJ3ys0n/QHy9Q+62fvDLVhuCfFxNXwjN2E0dc8H6VhK6
-	4yIB5rjCE6lenmF34/L8kjKPudpxoJY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781518795;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EiI1S/AKACD4xKPsymAzQLLVEJL7P3F6rlzjBEp4e6g=;
-	b=jQOioZkf6oOt3nbtcAzSr4ccj6sWk+P3+gz03WcZlsr45knYs5QkKlWMVDycqGSHK4BagX
-	P860h73a05CZM2DA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781518795; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EiI1S/AKACD4xKPsymAzQLLVEJL7P3F6rlzjBEp4e6g=;
-	b=aIKtjh/M6bTaPOtIeRfhv4L7o0rZiYRqnAyBDV0KBY6NA+K1aSdKLYgOGhneTnIFCqxexZ
-	wmxwO2N9xD4d0N/GNwl2jpy7EZiJ3ys0n/QHy9Q+62fvDLVhuCfFxNXwjN2E0dc8H6VhK6
-	4yIB5rjCE6lenmF34/L8kjKPudpxoJY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781518795;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EiI1S/AKACD4xKPsymAzQLLVEJL7P3F6rlzjBEp4e6g=;
-	b=jQOioZkf6oOt3nbtcAzSr4ccj6sWk+P3+gz03WcZlsr45knYs5QkKlWMVDycqGSHK4BagX
-	P860h73a05CZM2DA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CEC78779A7;
-	Mon, 15 Jun 2026 10:19:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id lTaML8rRL2rjcgAAD6G6ig
-	(envelope-from <clopez@suse.de>); Mon, 15 Jun 2026 10:19:54 +0000
-Message-ID: <79c59d84-80bc-41f6-950f-41ff2e6b2b5b@suse.de>
-Date: Mon, 15 Jun 2026 12:19:50 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ABd9Y7+1"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FALnbF2170900;
+	Mon, 15 Jun 2026 10:31:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=QN3Vcg
+	DDG2JDeFuKfB1LC6ism++xsGkFNC09mqe7VoQ=; b=ABd9Y7+15RqdxpjhLVMW7i
+	oG6GcrJ+7yAraIsDbP6r3EYuozDnvrZ5JlNvIhMoD2sUrnIBn5BhBSe5rUkvnS//
+	2xyV1YfGIrti9PIpZ6tl3UjIA5Htkvg3cUlsHIs06VSI7quYEA0DGjFeSFphvEwp
+	9XqHiC46s56kc40TE0mvYl3j3j86oD+bzuu5otSdcw904I2b3KDv7SZZ54BNNqAn
+	JOLHJQ0O0rvuu2D31klZJqumExN9ZLNAEvSE6ruNNbbfx0ArzxCvoRLAJXQxmMzw
+	KsF5nFFepysJtIZokvfhs+xbUJ/vQ6jLq07bwDVzUhVu5yssK4U6uN3B6yv8tGCg
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1v27jr5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jun 2026 10:31:12 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65FAJt0l017206;
+	Mon, 15 Jun 2026 10:31:11 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4esjhjx3vm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jun 2026 10:31:11 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65FAV7TD31261342
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Jun 2026 10:31:07 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AEA2D2004B;
+	Mon, 15 Jun 2026 10:31:07 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B028920043;
+	Mon, 15 Jun 2026 10:31:06 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.111.31.49])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 15 Jun 2026 10:31:06 +0000 (GMT)
+Date: Mon, 15 Jun 2026 12:31:03 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com,
+        gerald.schaefer@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, svens@linux.ibm.com
+Subject: Re: [PATCH v2 1/1] s390/mm: Fix handling of _PAGE_UNUSED pte bit
+Message-ID: <20260615123103.118af04a@p-imbrenda>
+In-Reply-To: <20260615094300.31370D7a-hca@linux.ibm.com>
+References: <20260615091741.76724-1-imbrenda@linux.ibm.com>
+	<20260615091741.76724-2-imbrenda@linux.ibm.com>
+	<20260615094300.31370D7a-hca@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot ci] Re: KVM: x86: Unconditionally recompute CR8 intercept
- on PPR update
-To: Sean Christopherson <seanjc@google.com>,
- syzbot ci <syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com>
-Cc: bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
- osteffen@redhat.com, pbonzini@redhat.com, sgarzare@redhat.com,
- stable@vger.kernel.org, tglx@kernel.org, x86@kernel.org,
- syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-References: <20260610214523.2905255-2-clopez@suse.de>
- <6a2adf3b.3b0a2d4e.8c8d1.0012.GAE@google.com> <airudX6N4oL5X_wE@google.com>
-From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
-Content-Language: en-US
-In-Reply-To: <airudX6N4oL5X_wE@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_RCPT(0.00)[ci493c6d734b63e050];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDEwOCBTYWx0ZWRfX5hHOk1ZuxNGY
+ nNfZ2XQHul7aCXeipCKss880xTDpAHqa3KrUr8BFOKiZ8ygZwhN+bEaitPVo9bWZpCoQOzu6xRC
+ h+s49sClOHqVi9sUpezKbh1z3NuSv9I=
+X-Proofpoint-GUID: kIgLwMuMqBmwAp0b3TeX_gHAroRycqoF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDEwOCBTYWx0ZWRfXxh5qOsiH4UtL
+ d0TKQnPjcTrjs6y8aeCTRA4p8FENnFQLqV3cEtXrY4tujxMWWg+oMzm0BZBQbOthPQ357YATrwq
+ VTz14RD30NVG9rVpk/UVeoqiJp183947bSKO0h/TFD9Lm10bW6A8IIRPRvC0bpaGz+K753hjeDH
+ QvT+jkn4sCK99VSByB2CK3z4c0MnGYzETWmqGZnyVImCMcMz4ujiWS+eFk/Lo9CkqpQfPrYEbYo
+ sqy3BnImvMkW51lQNnk4BVos68Ut+wWB9py89yNFPhylCgpB872qYakRYv5xPteDimMGLK14ca/
+ VoR1UpJVZnr8ziwx8K9iunRbnD+y5RtAS2m4+uI/JJeUParlYzMR1Ia7XZfHdptfmQs5IYR3a3V
+ HIRcTkql4x44wdzCtbcHBz83vFYPWrKH36D5EmYaak1uhotWamxRS6h5SO8/oonn7tswhixJyBh
+ 5FXhtw2SmWIWWJl/ueA==
+X-Proofpoint-ORIG-GUID: kIgLwMuMqBmwAp0b3TeX_gHAroRycqoF
+X-Authority-Analysis: v=2.4 cv=Dd0nbPtW c=1 sm=1 tr=0 ts=6a2fd470 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=4puLx-HAH6mwxuCUj30A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-15_02,2026-06-15_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 adultscore=0 suspectscore=0 phishscore=0 spamscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
+ definitions=main-2606150108
 
-On 6/11/26 7:20 PM, Sean Christopherson wrote:
-> On Thu, Jun 11, 2026, syzbot ci wrote:
->> syzbot ci has tested the following series
->>
->> [v2] KVM: x86: Unconditionally recompute CR8 intercept on PPR update
->> https://lore.kernel.org/all/20260610214523.2905255-2-clopez@suse.de
->> * [PATCH v2] KVM: x86: Unconditionally recompute CR8 intercept on PPR update
->>
->> and found the following issue:
->> WARNING in vmx_update_cr8_intercept
-> 
-> ...
-> 
->> ------------[ cut here ]------------
->> debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || !refcount_read(&vcpu->kvm->users_count))
->> WARNING: arch/x86/kvm/vmx/nested.h:61 at get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline], CPU#0: syz.2.19/5879
->> WARNING: arch/x86/kvm/vmx/nested.h:61 at vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879, CPU#0: syz.2.19/5879
->> Modules linked in:
->> CPU: 0 UID: 0 PID: 5879 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
->> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
->> RIP: 0010:get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline]
->> RIP: 0010:vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879
->>  apic_update_ppr arch/x86/kvm/lapic.c:984 [inline]
->>  kvm_lapic_reset+0x1c24/0x2980 arch/x86/kvm/lapic.c:3023
->>  kvm_vcpu_reset+0x44c/0x1bf0 arch/x86/kvm/x86.c:12986
->>  kvm_arch_vcpu_create+0x746/0x8b0 arch/x86/kvm/x86.c:12847
->>  kvm_vm_ioctl_create_vcpu+0x428/0x930 virt/kvm/kvm_main.c:4201
->>  kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5159
->>  vfs_ioctl fs/ioctl.c:51 [inline]
->>  __do_sys_ioctl fs/ioctl.c:597 [inline]
->>  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
->>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->>  do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
->>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> This is "fine", the assertion just wants to make sure KVM isn't access vmcs12
-> without holding vcpu->mutex, otherwise any queries are inherently unstable.
-> It's just that vCPU creation runs without taking vcpu->mutex, because the vCPU
-> is otherwise unreachable.
-> 
-> I'm pretty sure we can squash the WARN by grabbing vmcs12 if and only if the vCPU
-> is actually in guest mode.
+On Mon, 15 Jun 2026 11:43:00 +0200
+Heiko Carstens <hca@linux.ibm.com> wrote:
 
-Will you add this on top or should I send a v3?
+[...]
 
-> diff --git arch/x86/kvm/vmx/vmx.c arch/x86/kvm/vmx/vmx.c
-> index c548f22375ad..332fbcd924f2 100644
-> --- arch/x86/kvm/vmx/vmx.c
-> +++ arch/x86/kvm/vmx/vmx.c
-> @@ -6876,11 +6876,10 @@ int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
->  
->  void vmx_update_cr8_intercept(struct kvm_vcpu *vcpu, int tpr, int irr)
->  {
-> -       struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
->         int tpr_threshold;
->  
->         if (is_guest_mode(vcpu) &&
-> -               nested_cpu_has(vmcs12, CPU_BASED_TPR_SHADOW))
-> +           nested_cpu_has(get_vmcs12(vcpu), CPU_BASED_TPR_SHADOW))
->                 return;
->  
->         guard(vmx_vmcs01)(vcpu);
+> > @@ -175,6 +179,8 @@ pte_t ptep_modify_prot_start(struct
+vm_area_struct *vma, unsigned long addr,
+> >  void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
+> >  			     pte_t *ptep, pte_t old_pte, pte_t pte)
+> >  {
+> > +	if (pte_present(pte))
+> > +		pte = clear_pte_bit(pte, __pgprot(_PAGE_UNUSED));
+> >  	set_pte(ptep, pte);  
 > 
+> Can't we move the logic from set_ptes() to set_pte() instead? The above
+
+set_pte() is also used for things that are not ptes, and in those cases
+we probably don't want to touch that bit, although technically it is
+currently unused for present large pmds and puds.
+
+> approach remembers me of the open-coded removal of the no-exec bit at many
+> places we had, which became a maintenance mess until it was rewritten.
 > 
-> Longer term, I'll work on figuring out how to handle this in get_vmcs12(), because
-> to_hv_vcpu() has the solve the same fundamental problem:
-> 
-> https://lore.kernel.org/all/aeqRzanSaa9P_EPg@google.com
+> The compiler _might_ even be clever enough to move the removal of the bit
+> outside the loop within set_ptes().
 
