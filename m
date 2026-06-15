@@ -1,136 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EE73C5526
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 08:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DB331F98D;
+	Mon, 15 Jun 2026 08:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781512167; cv=none; b=c0y3QVNQ07WVQIXrpHlahG8k4mbOe3bVQUwaB7sWvdS0ZtaFfEV752XxB2T3LHl4mFl+YIkoKEbOSaQdp68ktOXU0LkCczQhYMJGGALv97xCFB6pK2upPUjUr6sRM2gTy97dbZ2uNTHFfCU00z7uayQbDf+8zHn6hHbBEomWjhs=
+	t=1781512229; cv=none; b=PyMNv6n4/9mgv6LZU1I4GjVS26OTI+QqmwMLRsUwoaTk3baNuTpwMKeK+BF5KhsnItQiHxJB2d+ZWWRfMpapfp2QpsIFtF/As1wnOwLm56bHW2fier1tx4gnxvy8KZwCCd6J5wi9v/80760QO+vUMD3GrdysTIfcm8g2tJNsrEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781512167; c=relaxed/simple;
-	bh=NIxgb9FP9mTIXb2z3wkuDUD65wNg4QT0c+b69QbcvM4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=dOIFfWTiDgD0uIH3DZN52r1BX8j/7nlw3lOpQPbAgAOiUM96hTjHz6gBlwY6s+Jh3/LBB3UtZlDnIHU+scuUfUBUyKLwgOANF5k5FeDLOG58xcNO7auQPdVNtS42tdsTecTPGcDxmLgHiavSE9qc4Ij7z5GGDjI3Rmdnsc8r4q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+ANMfn4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781512229; c=relaxed/simple;
+	bh=jECFebR35CUlRZf1BR5ezb1DB1rT/+O7bI9UDZJ5bVQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nw8AlD78yAy+nkZcRFAz5NdFysCaCbfpqQ8EfF6edokE5CErZb6T/s2s58fyqhD73gYxzd8jx4Yhcoyk5aVXTU8tTQIXioLKIeXGbjSGetaRRiYcn9dG7RMULxBwfS3HwgMzcXB0Lx3jkYHpvP9pq6yHCBnyDEtsLD3oAALSREU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hgPne4cO; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+ANMfn4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6941F000E9;
-	Mon, 15 Jun 2026 08:29:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781512164;
-	bh=KmSgAnebXfkfsofG+Dj4OrfQN56OTz92g6qyB7YrP0c=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Z+ANMfn4yAZvIZc9tukvuFFlwGBmYey7u1aQGsC0ZXN6W6lbzI8CIgplrJV/pW7jN
-	 uEF5I2Qn+uFJXJI4GXLKfW6FGMNgOXY/sPmmyH9nRUjfv7vGqcLY2pfJe3OrdLQ+yr
-	 C8M9EHj07XMs7QeI9XSevc+QRoE/DgTEXFJWNlSfosHi1smQp0YlRXetT4bE63RjZv
-	 z0jGvdTOyhjauSy5JVElS6gHqvqERyfv8E+0uuwxcf5dgZvoTguzuYRLPipg8rWwgX
-	 LetswTzRda3pNap90+p5rVF6In+JTYEIq3fkkMJKX1aiL1MUNOxKE7F4EVFUxDbhNS
-	 hqICQV2Alm0Tw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 3/3] KVM: selftests: loongarch: Add PV TLB flush
- performance test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tao Cui" <cui.tao@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260615082154.42144-4-cui.tao@linux.dev>
-References: <20260615082154.42144-4-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 15 Jun 2026 08:29:23 +0000
-Message-Id: <20260615082923.EC6941F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hgPne4cO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781512228; x=1813048228;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=jECFebR35CUlRZf1BR5ezb1DB1rT/+O7bI9UDZJ5bVQ=;
+  b=hgPne4cOJyVTeX1yJMwV+eFtoIgoeFKFHFAE7pA/YQyB5kp5fIhjNKV+
+   0NOfxTW7wsIqjKgc9BeDRoa3qCRe08uyZDS9/zsaip9cqXftnmYaJdZ+4
+   2Qq++We/AWoljnIBdOAEp7KAFUZFzWr/6eDYDI47gqUDB8OLCsRBhg9XJ
+   Khmh4G8KMY5nIwzMIjXesvq1VtZNoO+3oZ3vOPv6FYgmZddfNIVoeXUK8
+   7bdAYlbElgPJAthcXli4kEtH8NWhKDlL9nd2AckAqBQLpnAnK9TxZtlzh
+   DmLKSpQDFHr0zpGerEjIenykkINdu4idir+T8M+JSjsPv/UefqJRAaKZe
+   Q==;
+X-CSE-ConnectionGUID: cp2FMIB2TMel7lDgmVtLMA==
+X-CSE-MsgGUID: GDNeqDdhQg2/sCqnjLID2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82353558"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
+   d="scan'208";a="82353558"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 01:30:27 -0700
+X-CSE-ConnectionGUID: byz0vffgTxSLh0ZRbYtlaA==
+X-CSE-MsgGUID: ehag4vkwQFanTPPX1Cu3eg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
+   d="scan'208";a="252497828"
+Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 01:30:21 -0700
+Message-ID: <3c9276f8-06c7-4db5-8d1b-bfd823b02b5f@linux.intel.com>
+Date: Mon, 15 Jun 2026 16:30:18 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 12/30] KVM: x86: Extract get/set MSR (list) ioctl logic
+ to helpers
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
+ Kai Huang <kai.huang@intel.com>
+References: <20260613000329.732085-1-seanjc@google.com>
+ <20260613000329.732085-13-seanjc@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260613000329.732085-13-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] Missing Makefile integration for the new test file `pv_tlb_flush=
-_test.c`.
-- [Medium] Signed integer overflow in thread bounds check leads to stack bu=
-ffer overflow.
---
 
-commit 56616f9df639ca6715014c26c5864780ced6ff41
-Author: Tao Cui <cuitao@kylinos.cn>
 
-KVM: selftests: loongarch: Add PV TLB flush performance test
-
-Add a multi-threaded benchmark to measure PV TLB flush performance
-inside LoongArch KVM guests.
-
-> diff --git a/tools/testing/selftests/kvm/loongarch/pv_tlb_flush_test.c b/=
-tools/testing/selftests/kvm/loongarch/pv_tlb_flush_test.c
-> new file mode 100644
-> index 0000000000000..63efaf9ef1cd0
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/loongarch/pv_tlb_flush_test.c
-> @@ -0,0 +1,194 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * LoongArch PV TLB Flush Performance Test
-> + *
-> + * Measure the overhead of remote TLB flushes in a KVM guest by spawning
-> + * flusher threads that repeatedly mmap/munmap (triggering TLB shootdown
-> + * IPIs) alongside idle threads that either sleep or busy-spin.
-> + *
-> + * With PV TLB flush enabled, IPIs to preempted vCPUs are replaced by
-> + * deferred flags in the steal-time shared page, reducing flush latency.
-> + *
-> + * Usage:
-> + *   Compile on LoongArch guest:
-> + *     gcc -O2 -static -pthread -o pv_tlb_flush_test pv_tlb_flush_test.c
-> + *   Run (inside KVM guest):
-> + *     ./pv_tlb_flush_test <flushers> <idle> <iterations> <busy_idle>
-
-[Severity: Medium]
-Since this test is provided as a standalone script and not added to the
-selftests Makefile (e.g., TEST_PROGS or TEST_GEN_PROGS), will it be
-missed during make install and automated test execution?
-
-Also, is it intentional that this test bypasses the standard KVM selftests
-framework (kvm_util) which typically provisions VMs and runs guest payloads
-programmatically?
-
-[ ... ]
-
-> +int main(int argc, char **argv) {
-> +    int nr_flush =3D 1, nr_idle =3D 3, i, run;
-> +    int ncpus =3D sysconf(_SC_NPROCESSORS_ONLN);
-> +    if (argc > 1) nr_flush =3D atoi(argv[1]);
-> +    if (argc > 2) nr_idle =3D atoi(argv[2]);
-> +    if (argc > 3) nr_iters =3D atoi(argv[3]);
-> +    if (argc > 4) busy_idle =3D atoi(argv[4]);
-> +
-> +    if (nr_flush < 1 || nr_idle < 0 || nr_flush + nr_idle > MAX_THREADS)=
- {
-
-[Severity: Medium]
-Could this bounds check be bypassed if a user provides values that sum to a
-value exceeding the 32-bit signed integer limit (e.g., nr_flush=3D1 and
-nr_idle=3D2147483647)? The signed addition would overflow to a negative num=
-ber.
-
-If bypassed, would the program then loop nr_idle times and write out of
-bounds to the stack-allocated arrays like threads and args in the loop belo=
-w?
-
-[ ... ]
-
-> +        pthread_t threads[MAX_THREADS];
-> +        unsigned long results[MAX_THREADS];
-> +        int completed[MAX_THREADS];
-> +        struct thread_args args[MAX_THREADS];
-> +        start_barrier =3D 0; stop_flag =3D 0;
-> +
-> +        for (i =3D 0; i < nr_idle; i++) {
-> +            args[i].cpu =3D do_pin ? nr_flush + i : -1;
-> +            args[i].result =3D NULL;
-> +            args[i].completed =3D NULL;
-> +            if (pthread_create(&threads[i], NULL, idle_thread, &args[i])=
-) {
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260615082154.4214=
-4-1-cui.tao@linux.dev?part=3D3
+On 6/13/2026 8:03 AM, Sean Christopherson wrote:
+> Extract the code for getting/setting MSRs and MSR lists to dedicated
+> helpers in anticipation of moving the MSR code to a new msrs.c.
+> 
+> No functional change intended.
+> 
+> Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+> Reviewed-by: Kai Huang <kai.huang@intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
