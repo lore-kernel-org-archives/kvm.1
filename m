@@ -1,137 +1,118 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374A32E7631
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 09:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781515006; cv=pass; b=u/USjUw5xq3f1rfDptm62BQQguukuiha92b2YVRvuJxiwKOv96V9HzzUzS0ZHeW80y+QZyB9RS5+BTRO5NTpNSL2HVURR94I9mdYpoevW2eqSaVIuvWAgUPE2lNZalmS00pPUSAe2EejPx7jyrmNGlKGNLpL8dHM8nqztbZvE0E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781515006; c=relaxed/simple;
-	bh=Y04jxsPlJgdbEAbgGH2RCtL768VHrZGI0Tt3a/Slr/g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HwrIMu1vmTz9QlmI9yW5gdYw5GsX5wTkY6QgVpwGcegcPPBJCOa70j0TDQ4ys1FHuJJFzNfrqS50w3uzt5n+O7f4CBGE1rLdbiFDcjDynmcUmZdU2JiLkNHIL2zymo6eY4V9qW/6gYmKZ6AHxubXM91I+oGR/oNKfjK5nhYeeLU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rrrMkl6A; arc=pass smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FC0353EEB;
+	Mon, 15 Jun 2026 09:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781515071; cv=none; b=JI4eD1iCQEJbClP1p6Go+m7qhqvEosREOFY/I8tyex/SmI7e9mOLAHsDMa+6CFkgJYAcgdCcYfHRAMexCiGaZJEUjcQrFWnd4xRtLuQDorEvmSEbQhUmVeummprdHwUwrW47UDfWKNUk3QbvxA0kIM03xwivesNEFc6z69W66aw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781515071; c=relaxed/simple;
+	bh=FxM0d9Wm7XLPqHFpfixygnKBugI4AfNq3ZA98i3gmCQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bd+RGtup4kCE3gBr4PPlCVrh0DmKN5K/JBU6q6Q17LPRTdVuu+XauqHynvB/rKLYf/FHXfdB2G+q/2Q2u/qEmS9CVXs2js5dZP1W/k1id+URXlmGCn/acpRiS6rrr1FfpO0SS9wMe8HwY4zr8yF8eh9svU415u/0PC5ddY9XcIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EvYjR+HR; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rrrMkl6A"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-bef47b1ac01so410785266b.2
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 02:16:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781515003; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gLX8QPIKqQXWG8uYPVMqchynphxMeX9QyuMJiw3UF89Xl1d4oM7IptneolUCt+YFKX
-         NiAa/fG2LRW5DW7GARKtqAWTQBcvSo4aSqa2bMEy+CJT96wxiNlkUHwzyYWR7uXDz3cz
-         PCosXxkLJC+6PutslbA4jwJFWVFd+HJIMjDXiuOuD53dauucTmwPNKeyphvckrjD0BJ1
-         51MkAYym/v+8yv5lRRzq4XL8soEOA64DDVGRwIiskmHfVNgGMSZ39JJpjqcdFvuEkXwg
-         UO9Xw0KBQ4MnV53b7c8v+nHkTK64ymmbgldT5efKXQzjrDmOUVwOuuPHvMVNitVR2fzp
-         nbXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=O63CCaOLzOAWUgmqnULKdbQ9UA+U+M0wOlZFtezF3dY=;
-        fh=kQTC9Ts86+ah5xGh69dhrUH9NfuUQyVIm1xXQUdZE/k=;
-        b=RMq4qJ3sdhsKnMW278yj7ULPw6T8ZD+ieSe1YzZRbBPXRUHijYWOqa99jPRUpaCf4P
-         dgekq0Op7aD0r/dnDABqYNOgh3sxFKuM+txdYirbpvDLxK2Cwy/wJEqxINE1AXdaL1Cv
-         +bzqe8hXG7qnEX7TkPLgVYFF1PiY0gdH7BeV9PvXxt4BwVMY/MdA0T2lsje1/MNEzxAY
-         8RSkOohs8p36xeS6et7UThD0Blgd0SZIb5fl+sqBTuocU+fu6LRiUR8h/S/voR2lLykZ
-         jOj7PNLP7JiBGERbcvHX0kG/i1H19Jyv7Rd7hQiVBBD/Ivggi5COIUAX35KxXy7Vzk42
-         Uydw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1781515003; x=1782119803; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=O63CCaOLzOAWUgmqnULKdbQ9UA+U+M0wOlZFtezF3dY=;
-        b=rrrMkl6AH7doG9+lrFMQsdRJu/B4i1yx+oQf2ti8Xz6LAmW+96lDIqOWlFWwKANr5T
-         sSE0O+sG64eIxO6d49DQ9HiYyW96kqV6Yrxh36QNu1pqb03chzqmkRfkkIT7MHkV1z0j
-         dRyo10Ba1z7cCUSJoHQNOJh6uwhc0SRUb8mgEkw9T0IdfQWvYejs7nwnCuCLSEFGIwFp
-         5duiUViHLp5Wj3d1ljvQF38ABVKECKNY6dulOV0cAazRSKudB7TUPB5ZpFBw0k1RpiEx
-         0YU1GiRm9VDYZJgoea1jsxlYCKZ4c7OKGBjzZ6v6tv4713jjTKoVUItfTrAG+akVumHN
-         P7yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781515003; x=1782119803;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O63CCaOLzOAWUgmqnULKdbQ9UA+U+M0wOlZFtezF3dY=;
-        b=blaMFydZ21SLbSaLsy8WEq48kMBEThQFPdG6NpIfr9CxA4PMVPGHnF7V33VzHAiXUu
-         zps7tDaVWpFUL5yQDNsjLsKISBDqPyxQaj60VgGGqBw1OQrHoVQzoLXg/GLTBUUw/RqW
-         OrPeoRT2u4ErEMZLKZo/8tpcXV04caGTeyrnvPQJTuLV/ya8vSf3eU8Rx0ZMxo93tWCx
-         eu8jFzYU8cAHP5ZLqboDreQYFuJUOw/PvTSDU8r3/lRf2z9QBjhczuYE57DPZVFIGa1i
-         unLl0cbOw2X/QKek1zJzEJG0jWktanYg7Tvc/0y5huQTCHMvoaSQ7s6kzmrG5ie/SltU
-         ch8Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/mf1sWts/ONR1tpYoGAR4ogETjzghA/W/smRh2+uR8K8QYLKLPaT0XE1MXlRGLEU9hqv4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqiQ+xeXmzq8kmDW9sbhG/eaospgzsLqnplZxz2VV242hdILc+
-	T1BXjdq5vU07msTnHtxYqrrSG72RmxA/Ol+HrTw6kurpZzPOKO89FncDclQqL+kweIMSM6iYGZs
-	H3ztE2ztjunGNjFGTydjmV3t5FZMwJdZrz2i/Psm5JQ==
-X-Gm-Gg: Acq92OEW7o7rALVUMMODg7WzweHwiA9eeJ6i6nTrihg36jBYQ/Yci0QQjoqF6VwU9N1
-	4tqdanxS5gfp6Y/Be/3yv+BN7hK7W1C4eTuR7cEwCVF7mLPswcgOu2OI3FC2lifAfhPfo5p8ukt
-	s7VQjJV8T+EZve7BuxJ8UuNF+xJX3HwNXRzNj01KY9pflgVWztRfXtpNiW8atp4BBlJu+vnZu8R
-	RM7NTTzZwJerS+cFrYoPC5T6nKNqpkuwya04bMolZiccLlRfKzrLrpsGuw7PFzxwPlzqGGRdx0T
-	CgUdqMH3ZFvta7B9IDrGnFg2u5eXw3RI+3Q=
-X-Received: by 2002:a17:907:c510:b0:beb:f459:718d with SMTP id
- a640c23a62f3a-bfe2a71b5e5mr562367966b.34.1781515003490; Mon, 15 Jun 2026
- 02:16:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EvYjR+HR"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65F6ImEY1614127;
+	Mon, 15 Jun 2026 09:17:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=VGhIZ2/8lY3WC3l3jR7MIK1rj1y5B87i9DI2pwFpY
+	/4=; b=EvYjR+HRWvzYbYhmdbqb9FONAnkGA4QxmrGNrjQmkA9uMALjrBuO7gi3V
+	Wc4K2MMADfmhC7pqS92E1M19eZ7wmXMdvxMxvfZkMzEbavK2KsHNhiT7eHNvtTvP
+	oSj5E0YHPoJcixrjQMnumjTm9u5yhvlJZbY2CR0jvfJ/RIooSZnRreSBG972N9rB
+	kuZTx+iTzfxco6YHT23acgHdYhoknh6GhMkDPm/RtDC7OCx/m6Wu/pygk7X3+A1e
+	QcSkn89md4CNzujR8AE4+pABQyV1hOgVmA+/+zTZMx3Y3BI3d3b9dZDO/a0s48aF
+	L8Dj8woE2/A9A29vB3lYjO48VeY8Q==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1h7yv78-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jun 2026 09:17:47 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65F94aRb001110;
+	Mon, 15 Jun 2026 09:17:46 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4esk1gwtgp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jun 2026 09:17:46 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65F9Hgi929294966
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Jun 2026 09:17:43 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D81E920043;
+	Mon, 15 Jun 2026 09:17:42 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D5C252004B;
+	Mon, 15 Jun 2026 09:17:41 +0000 (GMT)
+Received: from p-imbrenda.ibmuc.com (unknown [9.111.31.49])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 15 Jun 2026 09:17:41 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com,
+        hca@linux.ibm.com, gerald.schaefer@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, svens@linux.ibm.com
+Subject: [PATCH v2 0/1] s390/mm: Fix handling of _PAGE_UNUSED pte bit
+Date: Mon, 15 Jun 2026 11:17:40 +0200
+Message-ID: <20260615091741.76724-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260612013355.59231-1-kernellwp@gmail.com> <20260612013355.59231-3-kernellwp@gmail.com>
- <380d53e2-3671-4327-a613-cf35c58b55d9@amd.com>
-In-Reply-To: <380d53e2-3671-4327-a613-cf35c58b55d9@amd.com>
-From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Mon, 15 Jun 2026 11:16:32 +0200
-X-Gm-Features: AVVi8CcI8pHP1D8lYtN0LBzU4m9tBcY9Bwt4wQor-4CNTETO1JiSsCN7hfNR8SM
-Message-ID: <CAKfTPtCQjYecO4z7VmUJKBTJ_2ZnJqL9Yh-+RsP1i2w0MkeKBw@mail.gmail.com>
-Subject: Re: [PATCH v3 02/10] sched/fair: Credit a persistent,
- queue-depth-scaled vlag margin
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Wanpeng Li <kernellwp@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Wanpeng Li <wanpengli@tencent.com>, Richie Buturla <richie@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDA5MiBTYWx0ZWRfX0yxCaUnWVpOV
+ X4qNR6agmH8bRnW1vdexUvIefXoMUTld8mCbnNQseLlOkT+f/UiJACZDpdAbqCF5Jn0V+i9bCoM
+ tMQevCNC8hp7ojPu5uvU6oCCt+kmlVI=
+X-Proofpoint-ORIG-GUID: eJ_QV3R5bomO08t8VBy-kerJl-1DGEaP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDA5MiBTYWx0ZWRfXz06eqbQ00dMx
+ 4GKoNZiZOVEKl5XKOm10PVLWrxigLj4VdAJdWlyPWDr6YokXnutadN/Wk1oCrwx+JVKnnLAwM9L
+ nG4gSc54qCj0LIc5U8f3Dyt2pynqRPU3tjGc+tQrsrmfCCYx3WDLiMsIWJzVGKyNwP/E9nAY1Fc
+ NwVr3GLiwNLo8n33wK9D835aCUA1x+24tZcTnq0Ck/oYGMsP+1x6616wZ/T7vryWNrOH4VppJGX
+ CteQqNTv3K3BrdEjXzNCvpun5XNTBVtZ2a+nqSZXtsvBTShhVzEqDbS4PAtUXMzKvVNIlI5gwXq
+ HwCWX18auAtqmNlyL6lIJURTeJOapQcOyfL8mpcdgIQr1bPfdJtV/D0MqXuwmZpuDdDLennGO+g
+ rJXaITpo6bg7xs2V7nJP7ymQx8EtjzVhyV0K8Pub0xKDAVhwrVGkD9YysvABgTlRR5qjve1UAZm
+ FWIZtHfJRWyJE6CokGg==
+X-Authority-Analysis: v=2.4 cv=U9uiy+ru c=1 sm=1 tr=0 ts=6a2fc33c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=6evSrKiG03KN4j3D8AUA:9
+X-Proofpoint-GUID: eJ_QV3R5bomO08t8VBy-kerJl-1DGEaP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-15_02,2026-06-12_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ priorityscore=1501 clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
+ definitions=main-2606150092
 
-On Fri, 12 Jun 2026 at 08:07, K Prateek Nayak <kprateek.nayak@amd.com> wrote:
->
-> Hello Wanpeng,
->
-> On 6/12/2026 7:03 AM, Wanpeng Li wrote:
-> > -     /* Already eligible: nothing to do. */
-> > -     if (vlag >= 0)
-> > -             return;
-> > +     /* Clamp the margin to entity_lag()'s bound so place_entity() keeps it. */
-> > +     max_slice = cfs_rq_max_slice(cfs_rq) + TICK_NSEC;
-> > +     lag_limit = calc_delta_fair(max_slice, se);
-> > +     margin = eevdf_persistent_margin(cfs_rq, se);
-> > +     if (lag_limit && margin > lag_limit)
-> > +             margin = lag_limit;
-> > +     if (vlag >= 0) {
-> > +             if ((u64)vlag >= margin)
-> > +                     return;
-> > +             want = margin - (u64)vlag;
->
-> And we are making an eligible task more eligible but *where* is this
-> credit coming from? Someone should be paying the price right?
->
-> Just adding an arbitrary credit and then moving the task doing the
-> yield_to() 0-lag point is simply not fair IMO.
+Fix handling of _PAGE_UNUSED pte bit. The bit was lingering around
+longer than it should have, causing issues.
 
-I agree, you can't arbitrarily add some lag to an entity just because
-you want it to run.
+This patch replaces "s390/pgtable: Unconditionally clear _PAGE_UNUSED"
+which also solved the issue in practice, but in the wrong way.
 
->
-> > +     } else {
-> > +             want = margin + (u64)(-vlag);
-> > +     }
->
-> --
-> Thanks and Regards,
-> Prateek
->
+v1->v2:
+* Completely different approach, entirely new patch
+
+Claudio Imbrenda (1):
+  s390/mm: Fix handling of _PAGE_UNUSED pte bit
+
+ arch/s390/mm/gmap_helpers.c | 4 ++--
+ arch/s390/mm/pgtable.c      | 6 ++++++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+-- 
+2.54.0
+
