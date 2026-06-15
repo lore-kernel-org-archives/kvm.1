@@ -1,196 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BB718DB26;
-	Mon, 15 Jun 2026 01:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FC91EB19B;
+	Mon, 15 Jun 2026 01:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781486433; cv=none; b=l1enXqk5jR86Aelbhz0pJAtoId8LgJ171KPnT/6S6NbodHB4OEkqDlRDCebv+fqetwq81pvKVKbIDag3gFDrSs6EyyYCrOAFOTBsBjECqV9dhlE8WAR3YQj9RZi69fkOoa2krbeM+kKBuLZ+1M5IwYnEldzntAanJQLCH5JEQHA=
+	t=1781486801; cv=none; b=Yng8QecCjwKDhApq2JsFfKtweL/75dh0/zli1pHvCcx1eYrFxVjUaMkdGXr/rkg6WSm2UDBLkUL1koJmARqS0mJ9XyBIZ4OxeV2FmZY7nIkL8BIJk9+rvcHmRNETaoLFpQko+f5s0Zj6wGmghuuBMA4PsFdeZdrZce09rXRtbmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781486433; c=relaxed/simple;
-	bh=EvaH+h58GYm4IQiMvlgenwEoK1ZGDPeyN3jeqXhLUw8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NCTwy2S/iR0lc3CkgzyfO1k/I9JSLFtBIE0f1ar7/K9Ff8Jo/cyUygoYYhJ7j8VX7yQlmu/PUo6JrhO0YnWlQKsWH8Zq4uT7BvzhAfMSFNFZTfQizGbmj/E7M8oIvqyeZeYCYdESxf8g8p5QwrT5G4DYlswMHgPSDsjrUsPP//g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MXsx03Wd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781486801; c=relaxed/simple;
+	bh=MynTN/j/Elu7Isl5o1OmE54sQkEEZuFIOdk5QNWTtok=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=jU6HIaAxkLAgbnryi8xmB65IwrDrf7uMG/+0BNgF/wMzrQzrlG4S4cTh4lPdEsK3TTnq206egKkqg/gFEUEsE7kVepQ/eLOLAX/a4x0lFOQ1xr1GMpQIip8+VE2P/E4GDQt4qUn3agXb4UUKhOw/e7TjGOEDyctUo68W3NVH99Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=HZJYxjak; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=HZJYxjak; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MXsx03Wd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2281F000E9;
-	Mon, 15 Jun 2026 01:20:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781486431;
-	bh=rYwZ2eVwOLWaAkHwno3LEyxTco9cvFVt3Q1mmJlReC8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MXsx03WdITf3HmhydUJ5OgLaBLMaOPcBcBuaaknFTU+pFovh4q4XfVpGTDNjnrTZ0
-	 YS1kq51da+JmogOuO3uZeyw7zVfkNE41FmDX9Di8SMow0AgMua7o1ZP7NgiDNxjuqX
-	 l1xsT1vZc/uJA7BM24vbEkFL2TKwirUmPw9+iZKPvWAufBxgprFX6HxBiRFbSBc7b4
-	 uuYrzzjcNsltJAeQCx4M0UBzMN4YcgTbR1sTm0fEQl1iBreBf+pV+8vaNAPzLsAF6M
-	 8ac26hwL+1RIkpxZTXfcWXAjDxkTMuJDmtvfHcPpZeKd89e7nJQNrTe4aRcxGc6LAG
-	 p413kxgkTuC+Q==
-Date: Mon, 15 Jun 2026 01:20:29 +0000
-From: Yixun Lan <dlan@kernel.org>
-To: Guodong Xu <docular.xu@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Inochi Amaoto <inochiama@gmail.com>, linux-doc@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Conor Dooley <conor@kernel.org>, devicetree@vger.kernel.org,
-	spacemit@lists.linux.dev, sophgo@lists.linux.dev,
-	linux-kselftest@vger.kernel.org, Palmer Dabbelt <palmer@sifive.com>
-Subject: Re: [PATCH v4 10/16] riscv: dts: spacemit: k3: Add Zic64b ISA
- extension
-Message-ID: <20260615012029-GKA1003249@kernel.org>
-References: <20260611-rva23u64-hwprobe-v2-v4-0-3f01a2449488@gmail.com>
- <20260611-rva23u64-hwprobe-v2-v4-10-3f01a2449488@gmail.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="HZJYxjak";
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="HZJYxjak"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=wHjq3Q9Ijh0RF30tM2eiUI7AhlsnKbUAGXPI8uhsb68=;
+	b=HZJYxjak66cgxCAyEZGIAYq5HxeMdU6qUQcx0AR13MujXq0WoLBWlO5XcBA7MfD1/euzD3C5o
+	I2olO/+0Ss3JAkEFjeVIstbu16EjIZnzR117SmFVFvvfOyKxZ9TsJHO2dp+wwEjDWlHpvBJ0nj6
+	hiefLD1MmoOpebZKNl0tW78=
+Received: from canpmsgout03.his.huawei.com (unknown [172.19.92.159])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTPS id 4gdsrz36BFz1BFMY;
+	Mon, 15 Jun 2026 09:26:11 +0800 (CST)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=wHjq3Q9Ijh0RF30tM2eiUI7AhlsnKbUAGXPI8uhsb68=;
+	b=HZJYxjak66cgxCAyEZGIAYq5HxeMdU6qUQcx0AR13MujXq0WoLBWlO5XcBA7MfD1/euzD3C5o
+	I2olO/+0Ss3JAkEFjeVIstbu16EjIZnzR117SmFVFvvfOyKxZ9TsJHO2dp+wwEjDWlHpvBJ0nj6
+	hiefLD1MmoOpebZKNl0tW78=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gdsh30nWXzpTKG;
+	Mon, 15 Jun 2026 09:18:27 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1551540672;
+	Mon, 15 Jun 2026 09:26:26 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 15 Jun 2026 09:26:25 +0800
+Message-ID: <42b0a9ac-f384-4129-b718-636fd392a703@huawei.com>
+Date: Mon, 15 Jun 2026 09:26:25 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260611-rva23u64-hwprobe-v2-v4-10-3f01a2449488@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 09/12] vfio/pci: Add TPH_ENABLE feature skeleton and
+ unsafe module parameter
+To: <sashiko-reviews@lists.linux.dev>
+CC: <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+References: <20260604132804.28678-10-fengchengwen@huawei.com>
+ <20260604135424.750F21F0089A@smtp.kernel.org>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <20260604135424.750F21F0089A@smtp.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-Hi Guodong,
+On 6/4/2026 9:54 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] Lockless modification of the `tph_permit` bitfield causes a C11 data race with adjacent bitfields, potentially corrupting device state.
+> - [Medium] The `tph_permit` flag is not cleared when the device is closed, leaking the enabled state to subsequent users of the device.
 
-On 16:12 Thu 11 Jun     , Guodong Xu wrote:
-> The K3 X100 cores have 64-byte cache blocks, already described by their
-> cbom/cbop/cboz-block-size of 64, so they implement Zic64b, a mandatory
-> RVA23 extension.  Declare it in each core's riscv,isa-extensions.
+Thanks for the feedback.
+
+I'll address these two points in v17:
+- Change tph_permit to a standalone bool to fix the bitfield data race, no lock needed.
+- Reset tph_permit on device close to prevent state leakage across sessions.
+
+Thanks
+
+> --
 > 
-> Signed-off-by: Guodong Xu <docular.xu@gmail.com>
-
-Reviewed-by: Yixun Lan <dlan@kernel.org>
-
-> ---
-> v4: No change.
-> v3: New patch.
-> ---
->  arch/riscv/boot/dts/spacemit/k3.dtsi | 48 ++++++++++++++++++------------------
->  1 file changed, 24 insertions(+), 24 deletions(-)
+> commit d0a7c28453cdbf1699133633ce00cd13507a2648
+> Author: Chengwen Feng <fengchengwen@huawei.com>
 > 
-> diff --git a/arch/riscv/boot/dts/spacemit/k3.dtsi b/arch/riscv/boot/dts/spacemit/k3.dtsi
-> index 4ac457399b583..b5aa983f0bfa1 100644
-> --- a/arch/riscv/boot/dts/spacemit/k3.dtsi
-> +++ b/arch/riscv/boot/dts/spacemit/k3.dtsi
-> @@ -35,9 +35,9 @@ cpu_0: cpu@0 {
->  					       "svinval", "svnapot", "svpbmt", "za64rs",
->  					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
->  					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
-> -					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
-> -					       "ziccamoa", "ziccif", "zicclsm", "ziccrse", "zicntr",
-> -					       "zicond", "zicsr", "zifencei", "zihintntl",
-> +					       "zfh", "zfhmin", "zic64b", "zicbom", "zicbop",
-> +					       "zicboz", "ziccamoa", "ziccif", "zicclsm", "ziccrse",
-> +					       "zicntr", "zicond", "zicsr", "zifencei", "zihintntl",
->  					       "zihintpause", "zihpm", "zimop", "zkt", "zvbb",
->  					       "zvbc", "zvfbfmin", "zvfbfwma", "zvfh",
->  					       "zvfhmin", "zvkb", "zvkg", "zvkn", "zvknc",
-> @@ -76,9 +76,9 @@ cpu_1: cpu@1 {
->  					       "svinval", "svnapot", "svpbmt", "za64rs",
->  					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
->  					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
-> -					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
-> -					       "ziccamoa", "ziccif", "zicclsm", "ziccrse", "zicntr",
-> -					       "zicond", "zicsr", "zifencei", "zihintntl",
-> +					       "zfh", "zfhmin", "zic64b", "zicbom", "zicbop",
-> +					       "zicboz", "ziccamoa", "ziccif", "zicclsm", "ziccrse",
-> +					       "zicntr", "zicond", "zicsr", "zifencei", "zihintntl",
->  					       "zihintpause", "zihpm", "zimop", "zkt", "zvbb",
->  					       "zvbc", "zvfbfmin", "zvfbfwma", "zvfh",
->  					       "zvfhmin", "zvkb", "zvkg", "zvkn", "zvknc",
-> @@ -117,9 +117,9 @@ cpu_2: cpu@2 {
->  					       "svinval", "svnapot", "svpbmt", "za64rs",
->  					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
->  					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
-> -					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
-> -					       "ziccamoa", "ziccif", "zicclsm", "ziccrse", "zicntr",
-> -					       "zicond", "zicsr", "zifencei", "zihintntl",
-> +					       "zfh", "zfhmin", "zic64b", "zicbom", "zicbop",
-> +					       "zicboz", "ziccamoa", "ziccif", "zicclsm", "ziccrse",
-> +					       "zicntr", "zicond", "zicsr", "zifencei", "zihintntl",
->  					       "zihintpause", "zihpm", "zimop", "zkt", "zvbb",
->  					       "zvbc", "zvfbfmin", "zvfbfwma", "zvfh",
->  					       "zvfhmin", "zvkb", "zvkg", "zvkn", "zvknc",
-> @@ -158,9 +158,9 @@ cpu_3: cpu@3 {
->  					       "svinval", "svnapot", "svpbmt", "za64rs",
->  					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
->  					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
-> -					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
-> -					       "ziccamoa", "ziccif", "zicclsm", "ziccrse", "zicntr",
-> -					       "zicond", "zicsr", "zifencei", "zihintntl",
-> +					       "zfh", "zfhmin", "zic64b", "zicbom", "zicbop",
-> +					       "zicboz", "ziccamoa", "ziccif", "zicclsm", "ziccrse",
-> +					       "zicntr", "zicond", "zicsr", "zifencei", "zihintntl",
->  					       "zihintpause", "zihpm", "zimop", "zkt", "zvbb",
->  					       "zvbc", "zvfbfmin", "zvfbfwma", "zvfh",
->  					       "zvfhmin", "zvkb", "zvkg", "zvkn", "zvknc",
-> @@ -199,9 +199,9 @@ cpu_4: cpu@4 {
->  					       "svinval", "svnapot", "svpbmt", "za64rs",
->  					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
->  					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
-> -					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
-> -					       "ziccamoa", "ziccif", "zicclsm", "ziccrse", "zicntr",
-> -					       "zicond", "zicsr", "zifencei", "zihintntl",
-> +					       "zfh", "zfhmin", "zic64b", "zicbom", "zicbop",
-> +					       "zicboz", "ziccamoa", "ziccif", "zicclsm", "ziccrse",
-> +					       "zicntr", "zicond", "zicsr", "zifencei", "zihintntl",
->  					       "zihintpause", "zihpm", "zimop", "zkt", "zvbb",
->  					       "zvbc", "zvfbfmin", "zvfbfwma", "zvfh",
->  					       "zvfhmin", "zvkb", "zvkg", "zvkn", "zvknc",
-> @@ -240,9 +240,9 @@ cpu_5: cpu@5 {
->  					       "svinval", "svnapot", "svpbmt", "za64rs",
->  					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
->  					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
-> -					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
-> -					       "ziccamoa", "ziccif", "zicclsm", "ziccrse", "zicntr",
-> -					       "zicond", "zicsr", "zifencei", "zihintntl",
-> +					       "zfh", "zfhmin", "zic64b", "zicbom", "zicbop",
-> +					       "zicboz", "ziccamoa", "ziccif", "zicclsm", "ziccrse",
-> +					       "zicntr", "zicond", "zicsr", "zifencei", "zihintntl",
->  					       "zihintpause", "zihpm", "zimop", "zkt", "zvbb",
->  					       "zvbc", "zvfbfmin", "zvfbfwma", "zvfh",
->  					       "zvfhmin", "zvkb", "zvkg", "zvkn", "zvknc",
-> @@ -281,9 +281,9 @@ cpu_6: cpu@6 {
->  					       "svinval", "svnapot", "svpbmt", "za64rs",
->  					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
->  					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
-> -					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
-> -					       "ziccamoa", "ziccif", "zicclsm", "ziccrse", "zicntr",
-> -					       "zicond", "zicsr", "zifencei", "zihintntl",
-> +					       "zfh", "zfhmin", "zic64b", "zicbom", "zicbop",
-> +					       "zicboz", "ziccamoa", "ziccif", "zicclsm", "ziccrse",
-> +					       "zicntr", "zicond", "zicsr", "zifencei", "zihintntl",
->  					       "zihintpause", "zihpm", "zimop", "zkt", "zvbb",
->  					       "zvbc", "zvfbfmin", "zvfbfwma", "zvfh",
->  					       "zvfhmin", "zvkb", "zvkg", "zvkn", "zvknc",
-> @@ -322,9 +322,9 @@ cpu_7: cpu@7 {
->  					       "svinval", "svnapot", "svpbmt", "za64rs",
->  					       "zawrs", "zba", "zbb", "zbc", "zbs", "zca",
->  					       "zcb", "zcd", "zcmop", "zfa", "zfbfmin",
-> -					       "zfh", "zfhmin", "zicbom", "zicbop", "zicboz",
-> -					       "ziccamoa", "ziccif", "zicclsm", "ziccrse", "zicntr",
-> -					       "zicond", "zicsr", "zifencei", "zihintntl",
-> +					       "zfh", "zfhmin", "zic64b", "zicbom", "zicbop",
-> +					       "zicboz", "ziccamoa", "ziccif", "zicclsm", "ziccrse",
-> +					       "zicntr", "zicond", "zicsr", "zifencei", "zihintntl",
->  					       "zihintpause", "zihpm", "zimop", "zkt", "zvbb",
->  					       "zvbc", "zvfbfmin", "zvfbfwma", "zvfh",
->  					       "zvfhmin", "zvkb", "zvkg", "zvkn", "zvknc",
+> vfio/pci: Add TPH_ENABLE feature skeleton and unsafe module parameter
 > 
-> -- 
-> 2.43.0
+> This commit introduces the framework for PCIe TPH (Transaction Processing
+> Hints) support in VFIO. It adds a global enable_unsafe_tph module parameter
+> and a new VFIO_DEVICE_FEATURE_TPH_ENABLE uapi to allow userspace to set a
+> per-device tph_permit flag.
+> 
+>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>> index 3f8d093aacf8a..ae05343701f76 100644
+>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> 
+> [ ... ]
+> 
+>> @@ -1516,6 +1517,24 @@ static int vfio_pci_core_feature_token(struct vfio_pci_core_device *vdev,
+>>  	return 0;
+>>  }
+>>  
+>> +static int vfio_pci_core_feature_tph_enable(struct vfio_pci_core_device *vdev,
+>> +					    u32 flags, size_t argsz)
+>> +{
+>> +	int ret;
+>> +
+>> +	if (!enable_unsafe_tph)
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, 0);
+>> +	if (ret <= 0)
+>> +		return ret;
+>> +
+>> +	if (!vdev->tph_permit)
+>> +		vdev->tph_permit = 1;
+> 
+> [Severity: High]
+> Does setting this bitfield without a lock cause a read-modify-write data
+> race with adjacent bitfields?
+> 
+> Looking at struct vfio_pci_core_device, tph_permit shares the same memory
+> word as pm_intx_masked and pm_runtime_engaged. Since C compilers implement
+> bitfield assignments via read-modify-write operations, could a concurrent
+> lockless update here overwrite a state change made elsewhere?
+> 
+> For example, vfio_pci_core_runtime_suspend() updates vdev->pm_intx_masked
+> without holding any locks. If the ioctl and runtime PM suspend execute
+> concurrently, it seems one could overwrite the other's state change, which
+> could cause the kernel to fail to unmask INTx interrupts during resume.
+> 
+> [Severity: Medium]
+> Is there a mechanism to clear this flag when the device is closed?
+> 
+> Because struct vfio_pci_core_device is tied to the PCI device lifetime and
+> is not reallocated between sessions, it appears a subsequent user opening
+> the device will inherit tph_permit = 1.
+> 
+> While hardware state might be cleaned up on close in functions like
+> vfio_pci_core_disable() or vfio_pci_tph_deinit(), could failing to clear
+> vdev->tph_permit bypass the userspace opt-in requirement for future sessions,
+> allowing a VMM that never called VFIO_DEVICE_FEATURE_TPH_ENABLE to configure
+> ST tables?
+> 
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>  int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
+>>  				void __user *arg, size_t argsz)
+>>  {
+> 
+> [ ... ]
+> 
+>> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+>> index 2ebba746c18f7..5f32830766a0f 100644
+>> --- a/include/linux/vfio_pci_core.h
+>> +++ b/include/linux/vfio_pci_core.h
+> 
+> [ ... ]
+> 
+>> @@ -127,6 +127,7 @@ struct vfio_pci_core_device {
+>>  	bool			needs_pm_restore:1;
+>>  	bool			pm_intx_masked:1;
+>>  	bool			pm_runtime_engaged:1;
+>> +	bool			tph_permit:1;
+>>  	struct pci_saved_state	*pci_saved_state;
+>>  	struct pci_saved_state	*pm_save;
+>>  	int			ioeventfds_nr;
 > 
 
--- 
-Yixun Lan (dlan)
