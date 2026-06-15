@@ -1,193 +1,131 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E903E2750;
-	Mon, 15 Jun 2026 12:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6752B3E8355
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 12:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781525997; cv=none; b=JGGYlB2NDiejs1ZcWpWFXxY40ThVAbhHZU9sARw7MrzajjTnjCD5FX5EyWLKgseKwrlHkaOpFN+up21OUK/t2mYimTR+ANlMDcQqj7Hcze5U5u9wEXqJP+xm1JBHriSuBeyUTBH/JLvwqXweiud9CizaCO+JS34bcCgfCJVPpdE=
+	t=1781526248; cv=none; b=BlpPSeUULJMJQj9LqLHJqXiaPCXH45mwBjuiqRUQDmrdKAr+0ATrRECs7xn6wR65QTExc9Kq/GFH4/nCnyw25q90vYUbvkdc4VFUVhiqo/xqXyeGgQnzTUFv1Z3W0+9qx11G4zYqEY9ELQ7epr4kOOR2P0C2hYhDdOdFfMqDDgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781525997; c=relaxed/simple;
-	bh=GfaaWiOxap24zw6CqDR7NSUh+gK0t+b7tM/KMQpacMw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=L9qoqetxZbnohTc26ShfRyH63LNBbTd6FFcaunu3+sPnRAWcZaCVkMLalIQ3cVIWNyK+8qIXhuoGoVF0ocZXrFrvC4O7VveTJrv/Z/opWhdm40jdCsKq14u4k+JCBhqxLis0Kc+wUXWZFw9sYTpK3PlEMHIvXmsO4sk7Tt61Ywc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=sglWnXkW; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1781526248; c=relaxed/simple;
+	bh=dki4JKzOiiuY5vu3J6a2tqZsAaeVpvMA/2zinXKN5uo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=JWcdFFWTKTNghEBnnuHrXtjBYG3KXGuaTZZwzlWKiPYP/vd8a4EbhOKe6u8S0XaW703uy4gICrvisZgDzFKUOh12SIjowstntmvGHz5dqAGAQTyce/zYj8MOKhA4H6+cm+xC7J9BcGQepxfQ75EisJt1Syawb6pjsz34jaSwONE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=quMEJrns; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="sglWnXkW"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=uRMg5s1SHDa5cuTwAih0echSXs6DoScr+7o1o8hxPOE=;
-	b=sglWnXkWHHZ9WFYw9QXL63CF/sQLKzuiIxWqMmiTwQl0Rc3BLJhs5l1keOeKQsbpt4tmEx96B
-	Qv1d8v1n7PBeqEK4Y1OCFOFQI8iHHCWq0uUR1EBZjEYF4eua5pcMLj2dSd0ZcBGr1kDrU6fY0KJ
-	Hdf1+dqphQyG0hLKN6/y49Q=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gf89y53MrzmV6m;
-	Mon, 15 Jun 2026 20:11:50 +0800 (CST)
-Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4F204402AB;
-	Mon, 15 Jun 2026 20:19:49 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 15 Jun 2026 20:19:48 +0800
-Message-ID: <812b6875-5c46-4e03-af81-161b7e2d0e12@huawei.com>
-Date: Mon, 15 Jun 2026 20:19:48 +0800
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="quMEJrns"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4908b92904fso39913715e9.0
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 05:24:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1781526246; x=1782131046; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dki4JKzOiiuY5vu3J6a2tqZsAaeVpvMA/2zinXKN5uo=;
+        b=quMEJrnsMt0wNxBMhspzvnSBGSIjdcZqDpUULy+3Z8i9QkLAZZzQPBYruU2iq9GHD0
+         s/fsIuVPK7kX22uIgfAY+p7tPlI4WAzjGCIFmMd3JYA9T90rtx8quowLi+gA8Hexnvud
+         rchc3mEehCO4RplyjBGSAUgoGocWd6ELmZPpKeOlSwg+wiBaAzZSW9xj9ssgJW+8ofSl
+         ccK+H43K9fGk4ib+CfKRsbYYa4qGT/1tCsc2N6fvrzlseEj7i1aN6jRG5WRZfGj2HMdk
+         M60nA/qajHaKYrwrh20sGNlrl5PW31NezC+NxzUw0LisCyzTrkVUTNQTnOiF2fa4knQW
+         DwwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781526246; x=1782131046;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dki4JKzOiiuY5vu3J6a2tqZsAaeVpvMA/2zinXKN5uo=;
+        b=b1j88nAwF3/KpJ94xfbCCsJIqU+XQu/J0eU5ReCZciBPqOkA/leznol1rxvQ/sz/Th
+         rgOKaI2ckFNLTkyfaP4rl+kQrhOBRMroPxdT16FAM6rTZImxqx6Rj/3Vau35YERY/Z/6
+         fGg7GMEp782l0RgUV7UcAuz3gFL+7zpISgJL5SaBUVh2BIKghGhMM/ntM3ufhekX/cwR
+         VL38sh+MpiMnGKQADeNX+NlQmwP+xalgeU8uA1WO6+o2IkFZTxGwFsz3a3Rx7anFQjB7
+         uP67Ja+DEkcKoQWp/NbZ4nLqQjJrpFGljXx5L3auistRaQuHANxzMvuvVbwOs28Tbk/v
+         dI/A==
+X-Forwarded-Encrypted: i=1; AFNElJ/34niUi3kqou6uAXdWmZRcTe+5AqAXIDIP5JHcguCfCTKEf7srfuQC6EyocZ5uuo9D0mU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzs4zgiU5eD5hq1tKRscYttl48/2eLtHpNgrEZ45CDojjPuKLjY
+	4KYTSo8K1/e6ZQ2J1f34XqbaCmSntyYi+ykS4UcCjYvb26NTNMQT0Otb0FUYSSVsRl0=
+X-Gm-Gg: Acq92OH5GkfyaWAMGrdMIwshF/TTuxR1Q8sLc/Ohritx3NUpVxLW52+x7SDx+XLWt4t
+	5Fl5dw8p32ke+TK6EBC4dsXnqXCw+81OOqHAMH7CExYyWzPv9+TDyMXguP0xK3u8a/OxRxzOAfN
+	KuQDIZ6a5igsZSCuZA6OLgh5WCno/waJY+2Odz9zOKV2zE7uAQrRwEYJtzlEadB2l8kksPzOQID
+	Ug+ZtloQ7EuRpgmAoVFn9lLhdT27aXFPDmnixagxHFdAXzspjsgg77ifzpjtFSBXO3hQWJfi5ai
+	XRzKAGzlB/9ril6RhKfiwHuO3QgmU3ZsZUBTCQtIizdJteRUQ8OfR8Obt7JUahbEPWngPfJvnQE
+	R2SInK1aAoirs7bW86yS5h21umfCrchOVPUGGoYQDsxO55ZfnMMb8jWozodZPed4d60ob7TP0oN
+	ft+bWhQ+pbcq6hUrXUIIjiGoY=
+X-Received: by 2002:a05:600c:4215:b0:490:bb3e:30b0 with SMTP id 5b1f17b1804b1-490ec4c0ce3mr110943725e9.4.1781526245655;
+        Mon, 15 Jun 2026 05:24:05 -0700 (PDT)
+Received: from draig.lan ([185.124.0.195])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-492203d2449sm234758625e9.14.2026.06.15.05.24.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 05:24:04 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id E6C8C5F857;
+	Mon, 15 Jun 2026 13:24:03 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Alexander
+ Graf <agraf@csgraf.de>,  Mohamed Mediouni <mohamed@unpredictable.fr>,
+  Pedro Barbuda <pbarbuda@microsoft.com>,  qemu-arm@nongnu.org,
+  kvm@vger.kernel.org,  Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v7 7/8] target/arm: handle the WFE trap case
+In-Reply-To: <CAFEAcA86_a3GfXCDOo2G-R6v3ALwUwNFRkspyTCR0umGiAB2Hw@mail.gmail.com>
+	(Peter Maydell's message of "Mon, 15 Jun 2026 12:01:56 +0100")
+References: <20260529082948.363931-1-alex.bennee@linaro.org>
+	<20260529082948.363931-8-alex.bennee@linaro.org>
+	<CAFEAcA8719Q=VCwOm790V6FPA8FyaFZEux=N-7PmOGaaq=O_sw@mail.gmail.com>
+	<878q8gjcms.fsf@draig.linaro.org>
+	<CAFEAcA86_a3GfXCDOo2G-R6v3ALwUwNFRkspyTCR0umGiAB2Hw@mail.gmail.com>
+User-Agent: mu4e 1.14.2-pre1; emacs 30.1
+Date: Mon, 15 Jun 2026 13:24:03 +0100
+Message-ID: <87wlw0htzw.fsf@draig.linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 00/12] vfio/pci: Add PCIe TPH support
-From: fengchengwen <fengchengwen@huawei.com>
-To: <alex@shazbot.org>, <jgg@ziepe.ca>
-CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>, <wei.huang2@amd.com>,
-	<zhipingz@meta.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
-	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
-References: <20260604132804.28678-1-fengchengwen@huawei.com>
-Content-Language: en-US
-In-Reply-To: <20260604132804.28678-1-fengchengwen@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemk500009.china.huawei.com (7.202.194.94)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Gentle ping for v16 TPH series.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Would appreciate reviews from Alex and Jason. Let me know if major changes are needed.
+> On Mon, 15 Jun 2026 at 11:56, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+>>
+>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>
+>> > On Fri, 29 May 2026 at 09:29, Alex Benn=C3=A9e <alex.bennee@linaro.org=
+> wrote:
+>> >>
+>> >> Now WFE can actually suspend on A-profile we also need to handle when
+>> >> its trapped. To do this we need to pass the instruction size so we can
+>> >> deal with the is_16bit syndrome encoding.
+>> >>
+>> >> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>> >> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> >
+>> > Doesn't this need to go earlier in the patchset? Otherwise there's
+>> > a point where WFE can go to sleep but doesn't honour the trap bit.
+>>
+>> Hmm - the way I read the description was we would only trap if we were
+>> going to sleep. Pre 6/8 we never sleep so we can't trap.
+>
+> Yes, that's the point. The guarantee we have to uphold with
+> the trap bits is "if the WFE would actually go to sleep, then
+> we need to take the trap".
+>
+> - before this patchset: we never sleep, so never need to trap
+> - after patch 6: we can sleep, but we incorrectly won't trap
+> - after this patch: we can sleep and will trap
+>
+> So there's a window in this patchseries (after 6 but before 7)
+> where we don't do the right thing.
 
-Thanks,
-Chengwen Feng
+OK I'll squash the two patches together.
 
+>
+> -- PMM
 
-On 6/4/2026 9:27 PM, Chengwen Feng wrote:
-> This patchset enables full userspace configurable PCIe TPH support for
-> VFIO, which brings performance benefits for userspace workloads such as
-> DPDK and SPDK.
-> 
-> Currently VFIO only exposes read-only TPH capability registers to 
-> userspace, while all write operations are silently discarded. This 
-> prevents userspace from enabling and configuring TPH, limiting performance
-> optimization opportunities.
-> 
-> Per PCIe spec 7.5.3.15: TPH Completer support is applicable to Root Ports
-> and Endpoints, allowing Steering Tags to target host CPUs or peer devices
-> for P2P transactions.
-> 
-> TPH usage model can be divided into three fundamental parts:
-> 1. Retrieve Steering Tag:
->    - Tags targeting host CPUs are obtained via platform methods (ACPI _DSM)
->      wrapped in pcie_tph_get_cpu_st(). Userspace requires a generic 
->      interface to query these CPU-associated ST values.
->    - Tags targeting peer devices are managed by userspace drivers.
-> 2. Program Steering Tag table:
->    - For devices with standard ST table structures (in capability space or
->      MSI-X table), userspace needs a unified interface to configure ST 
->      entries.
->    - Devices without standard ST tables are handled by userspace itself.
-> 3. Toggle device TPH Requester enable/disable state.
-> 
-> To support the above scenarios, this series extends VFIO with complete TPH
-> virtualization features:
-> - New device feature TPH_CPU_ST: Batch query interface to resolve 
->   CPU-specific ST tags.
-> - New device feature TPH_ST_CONFIG: Batch configure interface for device ST
->   table entries, with shadow cache and atomic rollback support.
-> - Full TPH capability register virtualization: allow userspace to toggle
->   TPH Requester state via TPH_CTRL register writes.
-> 
-> To guarantee isolation and security, this patchset adopts a two-level
-> safety gate design with careful ABI considerations:
-> 1. Global unsafe gate:
->    TPH caching behavior may cross isolation domains and impact shared
->    platform resources. A new module parameter `enable_unsafe_tph` is
->    introduced (default off) to globally gate all TPH functionalities.
-> 2. Per-device opt-in gate:
->    To preserve strict ABI compatibility and avoid unexpected hardware
->    state changes for existing users, a new VFIO device feature TPH_ENABLE
->    is added. TPH capabilities are only available after userspace explicitly
->    enables it per-device.
-> 
-> Because Kernel PCI TPH implementation requires TPH Requester to be enabled
-> before programming ST entries. To support userspace configuring ST table
-> in arbitrary order, a shadow ST table is introduced to buffer ST writes
-> before TPH is enabled. All cached entries are flushed to hardware when
-> TPH Requester turns on. This also provides atomic batch rollback capability
-> for reliable configuration.
-> 
-> The patchset is split into two logical parts: the first seven patches fix
-> and refactor core PCI/TPH kernel code to export required helper interfaces,
-> and the remaining five patches implement corresponding VFIO TPH
-> virtualization layer step by step.
-> 
-> Patch breakdown:
->  1/12 PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
->  2/12 PCI/TPH: Fix tph_enabled concurrent update race by bitfield packing
->  3/12 PCI/TPH: Cache TPH requester capability at probe time
->  4/12 PCI/TPH: Refactor pcie_enable_tph & add explicit requester variant
->  5/12 PCI/TPH: Refactor pcie_tph_get_cpu_st & add explicit variant
->  6/12 PCI/TPH: expose the enabled TPH requester type
->  7/12 PCI/TPH: Add pcie_tph_supported() helper to check TPH capability attrs
->  8/12 vfio/pci: Hide TPH capability when TPH is unsupported
->  9/12 vfio/pci: Add TPH_ENABLE feature skeleton and unsafe module parameter
-> 10/12 vfio/pci: Add TPH_CPU_ST to query CPU's TPH steering tag
-> 11/12 vfio/pci: Add TPH_ST_CONFIG for PCIe TPH ST configuration
-> 12/12 vfio/pci: Virtualize PCIe TPH capability registers
-> 
-> Based on earlier RFC work by Wathsala Vithanage
-> 
-> ---
-> v16: 
-> - Supports opt-in at the device level which address Alex's comment.
-> - Split sub-commit: add hide TPH capability when TPH is unsupported.
-> - Optimize the tph fields layout of the pci_dev structure.
-> - Optimize virtualize PCIe TPH capability commit: support rollback
->   when set fail.
-> - Reorder PCI/TPH commits: make fix commit ahead.
-> - Reorganized the cover letter to serve as the starting point for
->   discussion.
-> v15: Address Alex's comments:
-> - Drop TPH capability when tph_cap=0
-> - Use _explicit postfix other than add policy parameter for enable
->   TPH and get tph st.
-> - Make sure set st entry under D0
-> - Reimpl virtualize TPH capability register
-> - Other fix
-> v14:
-> - Return PCI_TPH_LOC_NONE when !CONFIG_PCIE_TPH accord Alex's comment
-> - Fix Sashiko comments:
->   - Clear ST shadow state across user session
->   - Fix out-of-bounds byte masking in vfio_pci_tph_config_read
-> 
-> Chengwen Feng (11):
->   PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
->   PCI/TPH: Fix tph_enabled concurrent update race by bitfield packing
->   PCI/TPH: Cache TPH requester capability at probe time
->   PCI/TPH: Refactor pcie_enable_tph & add explicit requester variant
->   PCI/TPH: Refactor pcie_tph_get_cpu_st & add explicit variant
->   PCI/TPH: Add pcie_tph_supported() helper to check TPH capability
->     attributes
->   vfio/pci: Hide TPH capability when TPH is unsupported
->   vfio/pci: Add TPH_ENABLE feature skeleton and unsafe module parameter
->   vfio/pci: Add TPH_CPU_ST to query CPU's TPH steering tag
->   vfio/pci: Add TPH_ST_CONFIG for PCIe TPH ST configuration
->   vfio/pci: Virtualize PCIe TPH capability registers
-> 
-> Zhiping Zhang (1):
->   PCI/TPH: expose the enabled TPH requester type
-> 
->  drivers/pci/tph.c                  | 220 ++++++++++++++++++++--------
->  drivers/vfio/pci/vfio_pci.c        |  13 +-
->  drivers/vfio/pci/vfio_pci_config.c | 111 ++++++++++++++
->  drivers/vfio/pci/vfio_pci_core.c   | 228 ++++++++++++++++++++++++++++-
->  include/linux/pci-tph.h            |  22 +++
->  include/linux/pci.h                |   6 +-
->  include/linux/vfio_pci_core.h      |   7 +-
->  include/uapi/linux/vfio.h          |  60 ++++++++
->  8 files changed, 600 insertions(+), 67 deletions(-)
-> 
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
