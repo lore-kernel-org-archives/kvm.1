@@ -1,225 +1,114 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558F919F11B;
-	Mon, 15 Jun 2026 18:04:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781546664; cv=none; b=Tn6fQHxDh89JAvApB0PdfpIH1LgVv3wNGPh/teyNwwdg7lFVx2gskefTM8aYFbIFEa4fjpCTrKcIUPi92SqCaT8eeA/zoje1uA85ZhjcYHr3QtGagh/49re1eja4Tz6Q1q426XxCwcWyxcuFtTh4kI+oSrBkZQHoplUbNgbwpE0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781546664; c=relaxed/simple;
-	bh=1dpE/3mwZSx4soKYT+PKYqX9IQJOVGASuUS80uYLXPQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FlzOO1j3Pc1dPy4bUNzHsz46P1D/mSh0khAyOsQ6LVSPnuC5qh6d0I+bOQPKcNrRWYgJq5i13C1YryU/k7m3GJzS/iw23/GrGa9HsDVgJjJ+Hz9AROB3VCgN7TKrZwhIsHEr1tYlkxbOSd1WAsTyhKUlWrED4y6n0uOQxRw0/rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=jKn5+DbH; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B8119F11B
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 18:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781546688; cv=pass; b=Q+xWeQq/Ixivj3xEiy7AsFno6egt+0lQGeHPD/mgA7XW/Il/Vx5/yf/T1JaHpiUa6sHlY6gnkgCE/ZBvPcUZTCvsJUwAUrDQW0d890ORexczJeVFDMYxeQeDlGtWjrSZXeWx+Pp4RDLWyF7tOLmm4nOl0P2URixsVDq5DYiotH4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781546688; c=relaxed/simple;
+	bh=yWO46Jnak0UoHcKw8uhxtPIa9iMt4zx9wKhXJMnPQuY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GOkgHsuNlwh2DPSImhkWWaRO+G5k2YPLKBUbEu8+0mwYvqRpDfy4Sk1J/Szy3+fVy0E6W81MIsM0/c9QX7+55xinym8swXTDoYrHcWaFti8Yr16/xz6te+xmtYy6AH1MXJqJbXcCLqVMNXRewHdRVGsi72p/rut3M6yAd/mdnxQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CacZFY7W; arc=pass smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="jKn5+DbH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1781546658;
-	bh=Hx6SLPH67QubJLa+CbT7LpoPHHXCYP1TXeCS4akReO8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jKn5+DbH/xnIIUSSNh6WNwpqwAI/JFz0xqpbCQXeQiEGy4171QNF+wi3cDt3U2g5o
-	 x3DaXDM1hnoQBBQwB3vR88daGGQMgOmQp4yE/1q+Y+uBaJgdoiqOFD3IVlCntlCvhB
-	 nHWUaQPDmys6J8RTfGJ83ZE013T2w9douJB0OIJbtLIpwmkQlrjCTMEP+DeF+ovkj5
-	 Cib22QI5fpBQ5j+fkFdcCZZw3bzvOVTBIf2tdQaoOtxpB74iq6tBi0QqjTEXz2KiHP
-	 w40N5qBImD2bizUSdF/9YgVd4hHdJR4RvytxwgZNx9FZmKiBQDj3OAxEMqOYjSZGwV
-	 L++hZZHftCU4A==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gfJ0V0ggTz4wM3;
-	Tue, 16 Jun 2026 04:04:09 +1000 (AEST)
-Message-ID: <4d75b948-3b74-4970-97f2-72e54f9c9694@ozlabs.org>
-Date: Mon, 15 Jun 2026 19:04:06 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CacZFY7W"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-5177d1ff061so32641cf.1
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 11:04:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781546686; cv=none;
+        d=google.com; s=arc-20240605;
+        b=A2nicAqmOTt2CpfKbjKfOp9fM+cWAlWntJUCaDe/Br2qQ9d9kpnte8jjLpbB6Hl48d
+         kGvxPJiX5YGrWNnZGuoPL+jRKJFeC1V/ObEljCUGuJGR+nGDRxHFxcPOxYnjOkcGO1XO
+         6Jixzi2XVy2A3+Fz99oPcoXQI+1g4MGjWAbqesE5506JiNFKlofOO3QJHCp4GM5nvZp2
+         7I/dYhLdFnQ3aOb7HVo1UPSwicc9j6ElP2He04zPrEvMAFDeAutqvcQbSzzR5E3IWT83
+         1H4ECNfwIW8uyxvovBgepJaavXo861pL3VR9n39i4AarEjqdYzefH+4MqE6uuKWlOkqs
+         hdUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yWO46Jnak0UoHcKw8uhxtPIa9iMt4zx9wKhXJMnPQuY=;
+        fh=PaNWQSyDqfETqxFI6zR4VgoQMSr9sJ3OYTaZGWegZhI=;
+        b=HE57b8JCJ1gsAi4Nq0FwUf5npOvjlXvDCpuPhrsRXlSZT6b44qe+WteawDWMyGvDky
+         eNYrf2Yygve6paD5l6f2Tnt8BFrTRzAcWs8KN2G1+LNdAOIdRsDSdbTwUnNyxxuCNJtx
+         AcQ6FTTzznOKrDGOSX6+mC3R5AK3z0t6AVXEA2ZABcV0hudc0/KQAhVbKzmginS2EWSw
+         SrQ8oDmemw15/wl3AoX34sGMCL1I5qVvk41iiVueTRGI1HRKzt1MfnwEuHOIWdr3fKVa
+         tw0SQ4v9GcCK9ul/83ML7bEmUKom1U85UbRnl/jPGfoWHdUK927f3beTIMW0YDP1Oz47
+         7Q0Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781546686; x=1782151486; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yWO46Jnak0UoHcKw8uhxtPIa9iMt4zx9wKhXJMnPQuY=;
+        b=CacZFY7WmvAS8/5O/5NF2ZS+GPg7bA8cgws2x4wzFx5uEY2qqiw1N6+7OJg8cLf6X6
+         sTWfZNHYMpNwxbCdd1podPoA0t1SYslsgQPv9lQRDHsNLXkyZ+2FburegjrTn4gGEi8j
+         MvJMr9ocsJMRU41dZp3jTXiFmWpTBZQLgNXbMdtw6b+Yzaf0EkQGfTSDLARXDF9SFNv8
+         9CZpUzwHZlcYUcLfPYPSk/akfQPJ2e40E3c5JEasW52YMxzVFSg9HPsfi0mYsOKMNYB8
+         S/6US8Oe+0XAZmy6T5clFT6lm7FDCI0KKgw0Md6tFC/ntwZiqUe0Izp/0SzrhbpKpShK
+         lWlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781546686; x=1782151486;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yWO46Jnak0UoHcKw8uhxtPIa9iMt4zx9wKhXJMnPQuY=;
+        b=JB/CmjGadkTP2OVaObPCtDjzjQRDPkRrPo7D2lDaT1g0PrnvVM5R5p5WlxJTjV0Xc1
+         3/8hg3p1wNm6bhlZFVqF3SPoPEsDMy5G7bojToo2RODLf31W141IC/uAX4ezdt/e8KKl
+         bkp+0KSB3iw4cdi5SvAlm9N7o0yNr1e2jfEfwyuuTDoAtDW9Oeia0yFLmxhJ/y+ozj46
+         leNUkXY2h0bQNbVQqHTGu3apKBEyp6Fo/TC25S5nuNAmEJ/LdASHuVi6uSoAVuIylKR7
+         KVnUhmhXtA2KI6tzPFfz+71QQDLKj1lahCDOgpWGRpcSKboq91vRb3ietYlmNUHEtP2h
+         uxxg==
+X-Forwarded-Encrypted: i=1; AFNElJ+Rb5kl84U3L5McR+C/PrjcHGkiHZecvfQ2jin4WNHwRboNDWBwjjiRC27eRhnAyVTb7dY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6WC1CDqpyx9MfwzeOrxvUl8SG6yHsBltSXVo5ubuYePczV6tG
+	FQGbJAoi0Pyfx81pHR2FW/olzJNBWtHXLTnI4dZzPCe43ZJH80CJM3p/pqSa7MMzQzNmiCIV48Y
+	PoqCHQtyZ9G10zSwPaDwPNH7tcIBcKj7iu6kQ39wq
+X-Gm-Gg: Acq92OGCe0gtcbv2nHfyFbP1crWm/ykU623KpnujvGFWoVv1JGOnCXVuWgmkZH2Mn6n
+	AB0wgL8y6+GCufb86uUi2tx3lKc+bA3NezuoMJNK1ZH6pJbD1lgEVOBkZi2SBKkZbeQ6P2zyEuZ
+	27cB3W69g77NLtApVEMyCPE2qc8GL6LISu5g8kkhwdBGgpucEnnGNS5WwkYJUGxxLetK3+tF4NK
+	fzgof4sbuHWPXpi2a/xu1R5cn6NXXDQhybayyyB4Fn7A+5aNYqiYDt0oU2qMZc5UdGu0D8gg3Un
+	XEfFGvg=
+X-Received: by 2002:a05:622a:248f:b0:4ff:cb75:2a22 with SMTP id
+ d75a77b69052e-51990508158mr456321cf.3.1781546685387; Mon, 15 Jun 2026
+ 11:04:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/9] vfio/pci: Add a helper to look up PFNs for DMABUFs
-Content-Language: en-GB
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
- Pranjal Shrivastava <praan@google.com>, Alistair Popple
- <apopple@nvidia.com>, "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-3-matt@ozlabs.org>
- <DM6PR11MB369091A6F1E32054A95AB6788C182@DM6PR11MB3690.namprd11.prod.outlook.com>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <DM6PR11MB369091A6F1E32054A95AB6788C182@DM6PR11MB3690.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260612230113.684301-1-seanjc@google.com> <20260612230113.684301-4-seanjc@google.com>
+In-Reply-To: <20260612230113.684301-4-seanjc@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Mon, 15 Jun 2026 11:04:27 -0700
+X-Gm-Features: AVVi8CfrBwBTb1esmNKgov5luvxpT8CP9_uIUecYHNcKu1mYxhW5-0-P5yNb3v4
+Message-ID: <CALMp9eSnB1n5pfUCrRs5Ye5GqT+T+X8mhR7qs0Uhc0Jq0+Pu-Q@mail.gmail.com>
+Subject: Re: [PATCH v3 3/8] KVM: x86: Manually check DR4/5 write values to fix
+ SVM intercept priority
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	=?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, 
+	"Maciej W . Rozycki" <macro@orcam.me.uk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Kevin,
-
-On 12/06/2026 09:42, Tian, Kevin wrote:
->> From: Matt Evans <matt@ozlabs.org>
->> Sent: Wednesday, June 10, 2026 11:43 PM
->>
->> +int vfio_pci_dma_buf_find_pfn(struct vfio_pci_dma_buf *priv,
->> +			      struct vm_area_struct *vma,
->> +			      unsigned long address,
->> +			      unsigned int order,
->> +			      unsigned long *out_pfn)
->> +{
->> +	/*
->> +	 * Given a VMA (start, end, pgoffs) and a fault address,
->> +	 * search the corresponding DMABUF's phys_vec[] to find the
->> +	 * range representing the address's offset into the VMA, and
->> +	 * its PFN.
->> +	 *
->> +	 * The phys_vec[] ranges represent contiguous spans of VAs
->> +	 * upwards from the buffer offset 0; the actual PFNs might be
->> +	 * in any order, overlap/alias, etc.  Calculate an offset of
->> +	 * the desired page given VMA start/pgoff and address, then
->> +	 * search upwards from 0 to find which span contains it.
->> +	 *
->> +	 * On success, a valid PFN for a page sized by 'order' is
->> +	 * returned into out_pfn.
->> +	 *
->> +	 * Failure occurs if:
->> +	 * - The page would cross the edge of the VMA
->> +	 * - The page isn't entirely contained within a range
->> +	 * - We find a range, but the final PFN isn't aligned to the
->> +	 *   requested order.
->> +	 *
->> +	 * (Upon failure, the caller is expected to try again with a
->> +	 * smaller order; the tests above will always succeed for
->> +	 * order=0 as the limit case.)
->> +	 *
->> +	 * It's suboptimal if DMABUFs are created with neigbouring
-> 
-> s/neigbouring/neighboring/
-
-Ah, not a typo. :)  That is en_GB and AFAIK is permitted.
-
->> +	 * ranges that are physically contiguous, since hugepages
->> +	 * can't straddle range boundaries.  (The construction of the
->> +	 * ranges vector should merge such ranges.)
-> 
-> though the field is called 'phys_vec', removing 'vector' in description
-> is clearer here.
-
-Fair, reworded.
-
->> +	 *
->> +	 * Finally, vma_pgoff_adjust is used for a DMABUF representing
->> +	 * a VFIO BAR mmap, which is created from the start of the
->> +	 * offset region.
-> 
-> Elaborate it a little bit that the vm_pgoff is already counted in paddr
-> of phys_vec so it should be skipped when finding the pfn.
-
-OK!  Expanded this paragraph slightly to explain that vma_pgoff_adjust
-avoids double-accounting, and that a BAR mmap() DMABUF is created such
-that the start of the VMA (even with an offset) equals the start of the
-DMABUF and equals the start of the physical range.
-
->> +	 */
->> +
->> +	const unsigned long pagesize = PAGE_SIZE << order;
->> +	unsigned long vma_off = ((vma->vm_pgoff - priv->vma_pgoff_adjust)
->> <<
->> +				 PAGE_SHIFT) & VFIO_PCI_OFFSET_MASK;
->> +	unsigned long rounded_page_addr = ALIGN_DOWN(address,
->> pagesize);
->> +	unsigned long rounded_page_end = rounded_page_addr + pagesize;
->> +	unsigned long page_buf_offset;
->> +	unsigned long page_buf_offset_end;
-> 
-> what about "fault_offset[_end]"? page_buf is a bit confusing.
-
-I went round several times with these names, thanks for the input.  Just
-tried it out and your suggestion is clearer.
-
->> +	unsigned long range_buf_offset = 0;
-> 
-> could this be called 'range_start' then the 'range_start' in latter loop
-> is renamed to 'phys_start'?
-> 
-> Not strong... just feel such naming helps me understand the logic easier
-
-Anything that helps helps, thanks.  I ended up renaming this to
-range_start_offset (as offset is IMHO important).
-
-I'm a fan of diagrams but this is too large to include in a comment.
-But for posterity on the list, and using the new names, an illustration
-of a DMABUF with 3 ranges in phys_vec, where a mapping's
-faulting page offset lies in range [1]:
-
-                               fault_addr--+
-                                           v                   VMA
-                    +-----------------+----------+-----------------+
-                    |                 | Faulting |                 |
-                    |                 | (hg)page |                 |
-                    |                 |          |                 |
- |---- vma_off ---->+-----------------+----------+-----------------+
- |                                    .          .
- |                                    .          .
- |--------- fault_offset ------------>.          .             DMABUF
- +-------------------------+---------------------------+--------------+
- | phys_vec[0]             | phys_vec[1]         .     | phys_vec[2]  |
- |    .paddr               |          .          .     |              |
- |    .len                 |          .          .     |              |
- +-------------------------+---------------------------+--------------+
- 0                         :          .          .     :              L
- |-- range_start_offset -->:          .          .  -->: range_len
-                           :          .          .     :
-                           V          .          .     :
-                           +----------+----------+-----+
-                           |.paddr    | PFN      |     |
-                           |          |          |     |
-                           |          |          |     |
-                           +----------+----------+-----+
-                                      P
-
- P = paddr + (fault_offset - range_start_offset)
- L = sum(phys_vec[0...2].len)
-
->> +	unsigned int i;
->> +
->> +	if (rounded_page_addr < vma->vm_start || rounded_page_end >
->> vma->vm_end) {
->> +		if (order > 0)
->> +			return -EAGAIN;
->> +
->> +		/* A fault address outside of the VMA is absurd. */
->> +		WARN(1, "Fault addr 0x%lx outside VMA 0x%lx-0x%lx\n",
->> +		     address, vma->vm_start, vma->vm_end);
->> +		return -EFAULT;
->> +	}
->> +
->> +	/*
->> +	 * page_buff_offset[_end] is the span of DMABUF offsets
->> +	 * corresponding to the faulting page:
->> +	 */
-> 
-> if the naming is kept then s/page_buff_offset/page_buf_offset/
-> 
-> otherwise,
-> 
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-
-Thank you,
-
-
-Matt
-
-
+On Fri, Jun 12, 2026 at 4:02=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> Manually (pre)check the values being written to DR4/5, i.e. the DR6/DR7
+> aliases, instead of relying on ->set_dr() =3D> kvm_set_dr() to signal a #=
+GP.
+> SVM unfortunately prioritizes all exceptions over an instruction intercep=
+t,
+> i.e. nSVM is relying on the emulator to perform *all* exception checks
+> prior to attempting to execute the instruction.
+>
+> Fixes: 3b88e41a4134 ("KVM: SVM: Add intercept check for accessing dr regi=
+sters")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+Reviewed-by: Jim Mattson <jmattson@google.com>
