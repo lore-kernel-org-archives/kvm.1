@@ -1,108 +1,299 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D633FE667
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 14:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFC0400DF0
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 15:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781535505; cv=none; b=lxmlPPGqqybN642vrA3HY/B+9YT+ngfp/EamALrQ2Jel42g2XMxnI+nZ4ZbC76HcLi7ET/5qFwXAhEjcVSnnIrpxfrEOFjlcoEBGMr1XoT/7qohofCbo/fA97Pr5XBHhY5F+LcNigiOnVuzpQ8ZMv/A1QoirBWAdW0PoFvPP9kw=
+	t=1781536087; cv=none; b=NqXVCU60e2kLtjmbM+DhYgKs3zuumcry7PGnK8vW85gTRH2WGsbwgvObXfKQ9mfZ4Ux1rxc0IHC4BlBL6ahPFCs2zmL667kNfwD8LX+79r8SDANkZpSTVrIF7ftwCVdzWuQhUBqjNWzPIkk2UkA82sYJQhjnApuUIsQOESuGhg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781535505; c=relaxed/simple;
-	bh=WeiO/kvXd28sVryXwcleJRKLGxigXtK192g6LDV52ik=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=fQ2iV7holBxusQ8qZtRQOBaQCTmt1kpL7P8zJ0BCPP+P8O+799Up7DqNEZk52hGIbo5ljINs9NF1o7xR3DgbOAwAim3lmKmboTEOX/iRdU46qclumVg5qapEmv1v6Ao48UHuJJuYdlzHGI1QYiJgP32nYMIUBwm4P5QCINeuxbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dzxZPueG; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781536087; c=relaxed/simple;
+	bh=iR2hSSDkL1kRTIBYK/+5XFgbHaciT/TvyEr2mqoFFwc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qt7zTxdFksyfhNH+z4uEGsA2ZwRcCTTDvuDqHoKSsOVQ/DWhVq1TCLoKs4ZkMJXHz5Ulkr4M7KTEr8ngbrxHtITcxHpxyc7moF7EIGM6SdYc57ZpGxazOVcFRr8NMwSFGXKvsEb2RVJEM0KWO28AyD6BY5wEgXXLPKsqlXveubw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lpIHM/Uo; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dzxZPueG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781535503;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AxLpH9j4tyUwflqQc435PknR0znSRfDU7Gw9S0v0YMQ=;
-	b=dzxZPueGnQam7VVZYV0O3q/qEvLEU3b4spYj+9Sj0124WgQdBTDlIQAyKY+YUP2GyVuMjo
-	cV9qw+RSuY+L9M9fpuUUUTZzoYL2stZyvpXKCYx2QaRw52Tykw9fn/Sr38HGMKUVLD3a/0
-	06vU09q2Gnl7nWbpV0iJCLXCYLrpV24=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-314-_BAas8q1MpeI8JVeulqbkg-1; Mon,
- 15 Jun 2026 10:58:18 -0400
-X-MC-Unique: _BAas8q1MpeI8JVeulqbkg-1
-X-Mimecast-MFC-AGG-ID: _BAas8q1MpeI8JVeulqbkg_1781535495
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 63F8E19560A5;
-	Mon, 15 Jun 2026 14:58:15 +0000 (UTC)
-Received: from localhost (unknown [10.44.34.1])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AB60D19541B2;
-	Mon, 15 Jun 2026 14:58:14 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Halil Pasic <pasic@linux.ibm.com>, William Bezenah <wbezenah@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, farman@linux.ibm.com, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
- svens@linux.ibm.com, mjrosato@linux.ibm.com, vneethv@linux.ibm.com,
- oberpar@linux.ibm.com, virtualization@lists.linux.dev,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Halil Pasic
- <pasic@linux.ibm.com>
-Subject: Re: [PATCH v1] s390/virtio_ccw: Also suppress -EINVAL on device detach
-In-Reply-To: <20260615002309.052e0614.pasic@linux.ibm.com>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Avril Crosse O'Flaherty"
-References: <20260612155407.199218-1-wbezenah@linux.ibm.com>
- <20260615002309.052e0614.pasic@linux.ibm.com>
-User-Agent: Notmuch/0.40 (https://notmuchmail.org)
-Date: Mon, 15 Jun 2026 16:58:12 +0200
-Message-ID: <875x3jn94r.fsf@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lpIHM/Uo"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c0b1a48855so177705ad.0
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 08:08:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781536085; x=1782140885; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EeLNOUGcyQ4NWkfW/DAB6S96aMOzAOJTH9w4j6T6BeY=;
+        b=lpIHM/UoPWhGGre6xBoqJOnXuAYe2NumKKsbVHJo9tbHk/Qkxc66vU82Z86UzTGpSQ
+         0TA21fb26QKQkmxva7RTFoJOq7oMP0hwcPXMnIMxWCRTq1kt7PUE9CCyIinikPkgddQ9
+         z5od++B4s6DkRsrWGKsyoAf0j1veM0C0yy2AvNBhJf2c3Jlr6Pl/tv58Z2KRkr5BNwHE
+         5T9EddCE+8Eb00f0L6uykk7hGjS14McCnvUSDwqDBfuLmgdEN1YSKY4ugCH3EZL5dhq1
+         9o7tIAN/j+FuX7UHYXZ1wscdJffSL10qumawN6xmRM89tBIFMCTFzij4xXBmsK3Rdkg/
+         dx+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781536085; x=1782140885;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EeLNOUGcyQ4NWkfW/DAB6S96aMOzAOJTH9w4j6T6BeY=;
+        b=BPZ8FxS4eh10kKPnsYMcdAoKeCox1HcarD0U8dDVoSKljjtBZbSntjsBBHb193y5AH
+         NOCSg7H8vRKCBACKOUiwMntlj51sGqTbypn2GXULADK8mfUMnuUX0qIVQQh1idE8Q4Ig
+         ZI7OoJlhOIwN5QynDz25WgQ7iQXbBnMmITagl6dT7s9lA5bvkiutJgtzwL178IV/t3iN
+         kUX3QfQbfWG+lAMxlEcUWSmh95LAakoBvqotSGQjpfEP1gE/Vcb1pSVSx2xDM8RX3n+3
+         nWB2AfVmZyJ2pTvrNeMpLXUI0KTiyCpR8D5kOn9wswq36xXSVPV8PqNK27mf3g2HNXrz
+         RAtw==
+X-Forwarded-Encrypted: i=1; AFNElJ+oIiOjS8/c1/Eg67wwEoKLcTgOJdqLkq0Qk132ovpdWwUdlwfCTOWMHrOpssTW/Kg2/P4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbfjatZmpk6I31xWL+I/r9I//iJTofCAlKkICYqDGYfj54BjJs
+	lkJ/o7IZWO7TAlhadc7HI/05F7KxZ0N9yDlPAlS+k1K1bmA+sZPaHp+tMDO88BX5Hw==
+X-Gm-Gg: Acq92OGtv3h2HTGr8vZRZR+gZxwOkbsio442pHhvA6Xk2syQ/ow65aLWAA7hLSrX4xv
+	jOZNOUHZi770GjHcWFUDrBz0c1S5cyKC9Gc3hBhILpXmoak+I71R4aphHsOQWiQr3xq41l85Hx+
+	LLDCtsbBCdgHIgqmnXU88DzzD4Bd0vogjAiJu37GzzSqJGWip7wvrjQyAj05OEcj9HX6eZ6L+Vc
+	6PCp/JQGZF/of6Ho8ox3QnXhY2lJkvEpv3fspMrZUdPuVDkvdkHLnwxOo3G6bC5G0IgLME9bc6b
+	fa5KgKXm+UiUgYwempmcQ263HyD3Q0AyQUa4wl4MNGnNkAhvJcv+BwaMjUy5ly/391COhUyox2f
+	QaFlsov+OBHy+dmkveI9bOLhKQssUDLIQtKRfI8j+7XkEklstCaaHOK9b5hBRLAOs1O1D22rWFB
+	Rfdhn4pWznq2wuntgRkElJfzABgxRQdCZRD5Ebvb80Af5ZneX6SDZhR64rQxEx
+X-Received: by 2002:a17:903:320b:b0:2c0:c3ac:fdf9 with SMTP id d9443c01a7336-2c69689a4aamr525115ad.14.1781536084472;
+        Mon, 15 Jun 2026 08:08:04 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f7c6c5dsm102831385ad.21.2026.06.15.08.07.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 08:08:03 -0700 (PDT)
+Date: Mon, 15 Jun 2026 15:07:55 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Matt Evans <matt@ozlabs.org>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 2/9] vfio/pci: Add a helper to look up PFNs for DMABUFs
+Message-ID: <ajAVSx9gPz1KkIbF@google.com>
+References: <20260610154327.37758-1-matt@ozlabs.org>
+ <20260610154327.37758-3-matt@ozlabs.org>
+ <aisa6H-a-176MXhC@google.com>
+ <effb66ee-764b-4823-b6e4-c932a1f60f8d@ozlabs.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <effb66ee-764b-4823-b6e4-c932a1f60f8d@ozlabs.org>
 
-On Mon, Jun 15 2026, Halil Pasic <pasic@linux.ibm.com> wrote:
+On Mon, Jun 15, 2026 at 03:27:01PM +0100, Matt Evans wrote:
 
-> On Fri, 12 Jun 2026 17:54:07 +0200
-> William Bezenah <wbezenah@linux.ibm.com> wrote:
->
->> Since commit 8c58a229688c ("s390/cio: Do not unregister the
->> subchannel based on DNV"), subchannel behavior following a device
->> detach has been updated and results in -EINVAL being propagated
->> rather than -ENODEV, originating from ccw_device_start_timeout_key()
->> in cio/device_ops. In the end, the virtio driver has no ability to
->> react to the difference between device and subchannel states here,
->> and during detach, both -ENODEV and -EINVAL indicate the device
->> cannot be used and should not be treated as errors requiring
->> attention. Update error handling in virtio_ccw_del_vq() and
->> virtio_ccw_drop_indicator() to suppress -EINVAL in addition to
->> -ENODEV.
->
-> Hi William!
->
-> Are you saying that ccw_device_start() started returning -EINVAL
-> since 8c58a229688c ("s390/cio: Do not unregister the subchannel based on
-> DNV")? Or did I somehow read the paragraph wrong?
->
-> The funcition ccw_device_start is documented to return:
->  * Returns:                                                                     
->  *  %0, if the operation was successful;                                        
->  *  -%EBUSY, if the device is busy, or status pending;                          
->  *  -%EACCES, if no path specified in @lpm is operational;                      
->  *  -%ENODEV, if the device is not operational. 
-> and the commit message does not say a thing about introducing -EINVAL to
-> the mix.
+Hi Matt,
+> 
+> On 11/06/2026 21:30, Pranjal Shrivastava wrote:
+> > On Wed, Jun 10, 2026 at 04:43:16PM +0100, Matt Evans wrote:
+> >> Add vfio_pci_dma_buf_find_pfn(), which a VMA fault handler can use to
+> >> find a PFN.
+> >>
+> >> This supports multi-range DMABUFs, which typically would be used to
+> >> represent scattered spans but might even represent overlapping or
+> >> aliasing spans of PFNs.
+> >>
+> >> Because this is intended to be used in vfio_pci_core.c, we also need
+> >> to expose the struct vfio_pci_dma_buf in the vfio_pci_priv.h header.
+> >>
+> >> Signed-off-by: Matt Evans <matt@ozlabs.org>
 
-The function may return -EINVAL for non-enabled subchannels
-(i.e. pmcw.ena == 0), maybe we get an all-zeroes schib with dnv == 0?
-I'd expect it not to be enabled in that case anyway.
+[...]
 
+> >> +
+> >> +	const unsigned long pagesize = PAGE_SIZE << order;
+> >> +	unsigned long vma_off = ((vma->vm_pgoff - priv->vma_pgoff_adjust) <<
+> >> +				 PAGE_SHIFT) & VFIO_PCI_OFFSET_MASK;
+> >> +	unsigned long rounded_page_addr = ALIGN_DOWN(address, pagesize);
+> >> +	unsigned long rounded_page_end = rounded_page_addr + pagesize;
+> >> +	unsigned long page_buf_offset;
+> >> +	unsigned long page_buf_offset_end;
+> >> +	unsigned long range_buf_offset = 0;
+> >> +	unsigned int i;
+> >> +
+> >> +	if (rounded_page_addr < vma->vm_start || rounded_page_end > vma->vm_end) {
+> >> +		if (order > 0)
+> >> +			return -EAGAIN;
+> >> +
+> >> +		/* A fault address outside of the VMA is absurd. */
+> >> +		WARN(1, "Fault addr 0x%lx outside VMA 0x%lx-0x%lx\n",
+> >> +		     address, vma->vm_start, vma->vm_end);
+> > 
+> > This could flood dmesg if triggered repeatedly by userspace :( 
+> > Since a fault outside the VMA is an invalid access that already results
+> > in a SIGBUS, we could probably avoid the WARN here?
+> > Perhaps pr_warn_ratelimited() should suffice?
+> 
+> I'm OK moving to a pr_warn_ratelimited().  Note though that this case is
+> "genuinely impossible" currently and the check exists in case something
+> changes elsewhere.  (Re your flood comment, am I missing a way for
+> userspace to trigger this?  The scenario is a faulthandler for a VMA
+> getting a VA outside the bounds of that VMA; such a fault address
+> wouldn't match that VMA.)
+
+I should've been explicit, I guess I worded it wrong, my bad.
+I didn't mean that a user-space could hit this on it's own. However,
+I meant to say if there's a bug in core mm during some future work,
+dmesg being flooded by stackdumps gets messy (especially during dev) as
+the underlying reason might get missed in the flood. Hence, I prefer
+moving to pr_warn_ratelimited.
+
+> 
+> >> +		return -EFAULT;
+> >> +	}
+> >> +
+> >> +	/*
+> >> +	 * page_buff_offset[_end] is the span of DMABUF offsets
+> >> +	 * corresponding to the faulting page:
+> >> +	 */
+> >> +	if (unlikely(check_add_overflow(rounded_page_addr - vma->vm_start,
+> >> +					vma_off, &page_buf_offset) ||
+> >> +		     check_add_overflow(page_buf_offset, pagesize,
+> >> +					&page_buf_offset_end)))
+> >> +		return -EFAULT;
+> >> +
+> >> +	for (i = 0; i < priv->nr_ranges; i++) {
+> >> +		size_t range_len = priv->phys_vec[i].len;
+> >> +		phys_addr_t range_start = priv->phys_vec[i].paddr;
+> >> +
+> >> +		/*
+> >> +		 * If the current range starts after the page's span,
+> >> +		 * this and any future range won't match.  Bail early.
+> >> +		 */
+> >> +		if (page_buf_offset_end <= range_buf_offset)
+> >> +			break;
+> >> +
+> >> +		if (page_buf_offset >= range_buf_offset &&
+> >> +		    page_buf_offset_end <= range_buf_offset + range_len) {
+> >> +			/*
+> >> +			 * The faulting page is wholly contained
+> >> +			 * within the span represented by the range.
+> >> +			 * Validate PFN alignment for the order:
+> >> +			 */
+> >> +			unsigned long pfn = (range_start + page_buf_offset -
+> >> +					     range_buf_offset) / PAGE_SIZE;
+> > 
+> > Minor nit: I'm aware that decent compilers convert pow(2) divides to >> 
+> > However, we seem to be using `>> PAGE_SHIFT` across vfio-pci. E.g.:
+> > 
+> > return (pci_resource_start(vdev->pdev, index) >> PAGE_SHIFT) + pgoff;
+> > unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
+> > 
+> > Let's consider using the same pattern?
+> 
+> (Do you know of a compiler that both builds the kernel and does NOT
+> perform this transformation?  I am confident that resulting object code
+> will be OK here.)
+> 
+
+I guess most of the modern compiler do, I was just referring to the
+style across the file. I don't have any strong opinion.
+
+> In an earlier revision I was using shifts but they were fairly messy
+> compared to this expression, which arises from a request by Jason.
+> 
+
+Yea, looking back at Jason's comment [1], I think he was mainly pointing out
+that the common factor (PAGE_SIZE) could be grouped together. But again,
+no strong feeling about this, just picked up a pattern across the file. 
+If it breaks on some compiler we can fix it later..
+
+> >> +
+> >> +			if (IS_ALIGNED(pfn, 1 << order)) {
+> >> +				*out_pfn = pfn;
+> >> +				return 0;
+> >> +			}
+> >> +			/* Retry with smaller order */
+> >> +			return -EAGAIN;
+> >> +		}
+> >> +		range_buf_offset += range_len;
+> >> +	}
+> >> +
+> >> +	/*
+> >> +	 * A hugepage straddling a range boundary will fail to match a
+> >> +	 * range, but the address will (eventually) match when retried
+> >> +	 * with a smaller page.
+> >> +	 */
+> >> +	if (order > 0)
+> >> +		return -EAGAIN;
+> >> +
+> >> +	/*
+> >> +	 * If we get here, the address fell outside of the span
+> >> +	 * represented by the (concatenated) ranges.  Setup of a
+> > 
+> > Nit: double space before "Setup" and "But" below.
+> 
+> I liked Alex's response :-)  This is common practice for monospaced text
+> since increasing inter-sentence spacing helps readability in paragraph
+> blocks (see Documentation/ for many examples ...).
+> 
+
+Ack. :)
+
+> >> +	 * mapping must ensure that the VMA is <= the total size of
+> >> +	 * the ranges, so this should never happen.  But, if it does,
+> >> +	 * force SIGBUS for the access and warn.
+> >> +	 */
+> >> +	WARN_ONCE(1, "No range for addr 0x%lx, order %d: VMA 0x%lx-0x%lx pgoff 0x%lx, %u ranges, size 0x%zx\n",
+> >> +		  address, order, vma->vm_start, vma->vm_end, vma->vm_pgoff,
+> >> +		  priv->nr_ranges, priv->size);
+> >> +
+> >> +	return -EFAULT;
+> > 
+> > The fall-through logic at the end feels a bit redundant.
+> > 
+> > If we've exhausted the phys_vec list without finding a match, returning
+> > -EAGAIN for order > 0 seems like the correct fallback behavior.
+> 
+> This path can happen (for order > 0) e.g. mis-alignment of VA versus the
+> PFN, i.e. is likely...
+> 
+> > However, the subsequent WARN_ONCE for the order == 0 seems unnecessary?
+> > An out-of-bounds access is an error that should simply return -EFAULT 
+> > (converting to SIGBUS) without polluting the kernel log with stackdumps?
+> 
+> ...but the only way this can happen, for order == 0, is if the VMA
+> extends beyond the underlying resource.  For example, if the VMA is
+> larger than the DMABUF size (the total length of phys ranges set up
+> inside the DMABUF).  Both VFIO BAR mmap() and a DMABUF mmap() disallow
+> mapping off the end of the underlying resource.  That is, this also
+> "cannot happen" but if logic changes elsewhere then we will really want
+> to know about hitting this case -- the check is not redundant.
+
+I didn't mean to imply that the path itself is impossible or won't 
+happen.. I just meant that the logic / structure felt a bit redundant at
+the end of the function..
+
+Instead of having the separate `if (order > 0)` block falling through to
+the base case, I suggest it could be cleaner as:
+
+	ret = order ? -EAGAIN : -EFAULT;
+
+	if (ret == -EFAULT)
+		pr_warn_ratelimited(...);
+
+	return ret;
+
+But again, that's a preference. I'd leave that to your judgement.
+
+> 
+> Still, it doesn't need a regdump/backtrace (at least while this is only
+> called from one spot), so a pr_warn_* is better.
+> 
+
+Ack.
+
+Thanks,
+Praan
