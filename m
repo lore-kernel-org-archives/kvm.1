@@ -1,160 +1,190 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40B438B12E;
-	Mon, 15 Jun 2026 20:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781553726; cv=none; b=DIbz+VvZkYDFmzwvIXEa69h+DPa2KU0rDBBVLHALZGfjrsVkoRaZ7fKn7sF4gEHG8LYOXE8XIvtKnfKHUvJyyjNwjQre5Y2GUBOkBo1vlgpkOwk6f1+nyeBD5Ij6GOkSnPQXZEbEybNBRKUUPENaFAagNOUOlYI+TvP0jKSQ+Es=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781553726; c=relaxed/simple;
-	bh=hFawhCsNPty7fevrSntR9guSB7PDRflv6YAjEEf87N8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=um71xYu0g2OL0ffZ3LkebqAsLJMyTMYBjYWzGZNxLo/US/uv70c6B1xiLsIIA89xHkZ8QeCf4azkcS1ISy9YH0lsRIFY3P9VZ9Xh0wBtwE8rz3N7X2dVpXNUGJ6uBpj54sgihTcOJJxIDM/tDl9PBS2G7GMBWnxjTrvOHH+jp2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DpvhXJu2; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B0B3AB272
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 20:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781553883; cv=pass; b=K7Za8xOFiQs7S5mfrq+Ddx6XDO28/+iGlO2aWq1NaJxcTiQqwtQyVWJ+MNz+/xP/lOeWGyTFoQYV3AW63E9wXErVKJWCpIbZE7h9dYrtWdjI3Jx1mBsGkNrGWm7gJ+eXVYUspH1tP8Cdzay1xAirPfkPS58BmG+C7DIIAiwGWuU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781553883; c=relaxed/simple;
+	bh=owPIg6ubh/DQddddT9GGtMkMgKnfwbpYGJjt+//AIJ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JH5RSIE2hs4qVqsArckKYuwpECGNwPBF+9g3aKmUh2lB/XvEub5y7XRJuyIMsAGfJYEluHZnj0pQ5+6SnoUaDFcLZ6PzRjy6jnVBX5sr9khEJTk1rPJp41hSzSgu+JIkJHVvrP6Gxa/53Hrb18VmCCb1v/zZ7CmTQv1VCIG3FI4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FQ9th0dP; arc=pass smtp.client-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DpvhXJu2"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FJILEg3289731;
-	Mon, 15 Jun 2026 20:02:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=QuQb2L
-	VUENz2tci2/j7hR8YtaJnI7ON1FlkxUDqXzZM=; b=DpvhXJu20nQPyvIz7nwx2D
-	sPE/gKsaYJj6pKb0lsjk12P+Pto5UbKmAxTgYaCB8oow/RxjVzZV691vpr09fbbG
-	fBuBwLu8tsIm+jonVoTy5kUXaYnG3niuTWJqUL1bgCv6svgGI358/UqeOFIv4urk
-	CWRRdPg42EaVZ1O3LtLqx3+8A6dmYE3xH67hduffbrY9Q4Jc4t05oF/Ak8vwW74z
-	jgR+uIEx6oFs6CZoNdrMqdAt3tCQw8JY+WgO1HNigEKO+gqvJPzXe4Ndputnx8Nu
-	GYVCRh+LA85kGPHp1g/wiQI8IuUVfr+rZ2ncziSR+UCFyL/wlvduYk/IhiyyZP9A
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es23njcpu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jun 2026 20:02:00 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65FJnfI3008314;
-	Mon, 15 Jun 2026 20:01:59 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4esk1h0402-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jun 2026 20:01:59 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65FK1wJd30409052
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Jun 2026 20:01:58 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8D67558053;
-	Mon, 15 Jun 2026 20:01:58 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2076958043;
-	Mon, 15 Jun 2026 20:01:57 +0000 (GMT)
-Received: from [9.61.248.38] (unknown [9.61.248.38])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 15 Jun 2026 20:01:57 +0000 (GMT)
-Message-ID: <4d7fc371-4357-496f-9774-1f7a7c1a3091@linux.ibm.com>
-Date: Mon, 15 Jun 2026 16:01:55 -0400
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FQ9th0dP"
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1384eb94d20so6478954c88.1
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 13:04:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781553881; cv=none;
+        d=google.com; s=arc-20240605;
+        b=g8iT9NiAEqZvMPMPqh1vSMAyEKtBmim2+T4FpKJfuN4BDKbE8bB6sWWawPg5dIHG1j
+         FmynaWymTQ4nIJ6J/dwn+2CXuefL4YGcOjuYz30xroI+P5trjxXP7kSvbbah+MMkyC5T
+         y9Rwh9y01XScB9/fDG+tkIBFCqoQd9fylEOX1z0MFRh3d9FkAiptV8IXg8pT4pGuuTFV
+         CK4tGY+bFXumhfGdTpofPwS3Il5iJ7+MGWQxximmUA7S4xSb5Sdnk62MFQdy5qPZda7k
+         PYfXCWP6aCkGc+s7EppCeH6Zx9R5YmNxUaIdPW+7kDdIxIweDDaZErPVclXTWmNTQYtt
+         D4oA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=r3cAuZhgye1IsU1gMrp56etonTXBcaPhEeVfCnENr6Q=;
+        fh=SYYHd0rDUGyyxTR990/K4YUjsyWIV+D4F2LUP+ELZUo=;
+        b=VHYqnzJ7leaISbH02xsh3/f4XXjThRySPbFyZ+l35Lr05NScw+sXUeOoZpGGRPgW6C
+         D7Z+ELns6MFbQ+ZIA/zDjKx7Nj0bpV08SpUUG2HB681mC4amGkEqoR9HpnKNTgUNPUMJ
+         Ld8UzRdfRPByEcxc7Lcc2N4gZyqg6GFsW27lck8rSyh2A5ie2LZPZkzSfaPx5K3/raRy
+         Qv3VU6jwtoueALTeWWooAGAYuwcZ7daCopI9/lwb0K2kaOJkuU/MyrG7fnUsguL5rthQ
+         28BfnEwRR2nIcvUvpy6610Zyt/GZ9l1WPslTTTX51qzsP63ABz+OsJ+RS2QP84W8Ty4i
+         LkFg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781553881; x=1782158681; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r3cAuZhgye1IsU1gMrp56etonTXBcaPhEeVfCnENr6Q=;
+        b=FQ9th0dPCZ1euvtZjSKSOsud2d4asOiV/KvJ8cU69+0c8Px4UpH56FI93211d8MG0U
+         fi95l6k6odeL17dq/a7YjVnQhcJQ1O2dl6ZvUYwTwVpEAIJdaBcbfFjBpJt7FZTetKtk
+         5qTAsXb5lFcl7bJxlgcpILpWPVPgnVkW63OlGwjCKx8RMrynEkUVoC1ib+7Z5OiBxPgt
+         fr4CV6YpNfTs+l/0ArdM2JEaWS7omf6kIESm/t9rALgQn4YI/9vkI0jydANw0tzzkZQl
+         4b9iBgekjb7Oy7kDlBukmqKEc88w5mZXtoRk63ucc4aL++P6xcpxiMTzaPCVRzXJw5Cf
+         cU+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781553881; x=1782158681;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=r3cAuZhgye1IsU1gMrp56etonTXBcaPhEeVfCnENr6Q=;
+        b=rn3U+mQ1quXjhvXvurcPYlrqLhnD/teeeaiyGwY2Sa9e72VQt8mroGy3H8d9KQT1qw
+         tex5VNIqxeMOkgJFGYHiOE4eCwDLtqFhRp/ERxbovW0UMv9e7XynclrCzSv710WWvYBd
+         EfXR5BkEa58WqLfwrqvYqU3bCrpuUAxGRFyj64zrtnMALbGFcITWDIDfhH3nKQmGDwD4
+         hLqBDVrlmdbKSDo/QsfDd/4Bkmd8HaAGTQPiOiFCrcLcow3T8QnUxBtt5v1/r+RhVczx
+         Sj+8JUQvJFTTN9WtleKLYGdstZXpmVRI0gpldIl3nz0FTjoqabu3Qu48uk6YrN20W+yT
+         fxbg==
+X-Forwarded-Encrypted: i=1; AFNElJ9wjDoHEZFxlbW0TBXakoc5PkCfQ3nACYVT7tdCxagzL0OMgH7NbAyPZQsNLjbkW2Xdn88=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzcf2yYpWVTS/JGdRs4/u23PVn5EfIlYCgQG8HyjDt97osFVmRo
+	o5US60eT6C7vtI8o1ZPGswYpvHAg890738saCTMp71S92hMbcrDnUGzoZfC8+iJOpSSFp6b1qUd
+	u8h/46INZQqrHwA4icr0Szu0RCs/h5Q2EfJShSXaS
+X-Gm-Gg: Acq92OFT6LegjX7gxAvrtSK4hkj0oNIxJM5SZiND0F7gb3Ltf6B/MqGx7H1+e6uI+Co
+	hLd9igaJQAbJEpHkcStsrpvuMQeKCikBluz5s9c6cKajFLlXjhiRn2DQuUu1+eg0mxQ992I6+4r
+	DoTdxGkm/8/NcY8SOFaVOSyw/2FVjFt8S296kahoONH65hRDx6WpAx/bHY3Z3Gl08bWwiLA18Sf
+	r6e5b4w2dbvNQnG7G25Emufhldr3ZikO/o7cJyJuEm3oKpXXHw6LZh1C5lmWAJaa7LUsWVkcvnp
+	+uPIoHRyryViOSnw/A==
+X-Received: by 2002:a05:7022:30d:b0:136:d421:9efa with SMTP id
+ a92af1059eb24-1386f38f398mr6171219c88.32.1781553879982; Mon, 15 Jun 2026
+ 13:04:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] s390/virtio_ccw: Also suppress -EINVAL on device
- detach
-To: Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, farman@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, mjrosato@linux.ibm.com, vneethv@linux.ibm.com,
-        oberpar@linux.ibm.com, virtualization@lists.linux.dev,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260612155407.199218-1-wbezenah@linux.ibm.com>
- <20260615002309.052e0614.pasic@linux.ibm.com> <875x3jn94r.fsf@redhat.com>
-Content-Language: en-US
-From: William Bezenah <wbezenah@linux.ibm.com>
-In-Reply-To: <875x3jn94r.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=XtnK/1F9 c=1 sm=1 tr=0 ts=6a305a39 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=PMLYZQeYH2tpQPL_-REA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDIwOSBTYWx0ZWRfX4PZbuGXSKZf5
- l/1pR7lsN0bgLCOWkCTdC69/5HkvfrFDOL0PLQtAPYJN195Qhwm/KGT/p7FWM2gs9d6gUgo3rVt
- Gj/Q5Sbnr7gWqEdTe3vj+EI0JNv3EtX4Qm6bjjVNfMiJiti7/cCRirh7bEXA9yGLyGcT64JBqJy
- wYNbmj6xyVKN5ByyuB4xs8MR+ca2OkUXxdCcg4Va4Pa4XEd8Ql3qtTqXw4GyZwgdsNDVhXxBInq
- bFyn3239NL3laq3Pg56cekAvWq4Ho0t96aDm+eKCxkl+mOjuFLRxKk81b1Yj89hUJMfRVTZux9O
- YUdGC97yxo9KFT/5/d2ej3IvJLQS7nT4XDZrlxddFXX8LJW4kr1XrOcFpgxFgm2DqwLpW3c61+6
- IkRzZgFt6rUaDbyOQAscU8nYganYyrRINHwQCYmPwThpu1OFypkkyYuBNtqcA3ysCP8p65mmtJ7
- RcoZK1FKORsd6GzFUbA==
-X-Proofpoint-GUID: 6s_Jph1OiLimsgDJtGiL8lZFruvvkctt
-X-Proofpoint-ORIG-GUID: 6s_Jph1OiLimsgDJtGiL8lZFruvvkctt
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDIwOSBTYWx0ZWRfX7vW91poRXSnr
- 99MSBYK7MoH5tMA0Y8BIApus79JCsAeDf0BxPMy9+6DA4BLYXlXmJFf6l/7x723kuNwOb9P9pW3
- XWX+UvtFfKLy3NRiGULTfLSMGJ/HoeI=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-15_05,2026-06-15_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 clxscore=1015 malwarescore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606150209
+References: <20260613002031.745413-10-seanjc@google.com> <20260613003501.DD5951F000E9@smtp.kernel.org>
+ <CALzav=fsuDxGViwyFmhR1RmQKugR_tcj70gmq-492thdxJTDPg@mail.gmail.com>
+ <ajA-5IQ3R5ZO1rSi@google.com> <CALzav=fQ5FENWgGNEqQrmb-i_9fWTRhLXj2-jZKC_zjM3Kg6PA@mail.gmail.com>
+ <ajBQ3YEAMyKnJWYb@google.com>
+In-Reply-To: <ajBQ3YEAMyKnJWYb@google.com>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 15 Jun 2026 13:04:13 -0700
+X-Gm-Features: AVVi8Cd_8D6rihsAKEHaL9-XhAcm___nO2rBi-Wv8z6QEvOUnZocWEMFIMLJIV4
+Message-ID: <CALzav=efwGdF+q1-_kMREvshbYTqWT4P_+U6Vs_brktvWub09g@mail.gmail.com>
+Subject: Re: [PATCH v7 09/20] KVM: selftests: Add VFIO device support to
+ eventfd IRQ test
+To: Sean Christopherson <seanjc@google.com>
+Cc: sashiko-reviews@lists.linux.dev, Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 6/15/2026 10:58 AM, Cornelia Huck wrote:
-> On Mon, Jun 15 2026, Halil Pasic <pasic@linux.ibm.com> wrote:
+On Mon, Jun 15, 2026 at 12:22=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
 >
->> On Fri, 12 Jun 2026 17:54:07 +0200
->> William Bezenah <wbezenah@linux.ibm.com> wrote:
->>
->>> Since commit 8c58a229688c ("s390/cio: Do not unregister the
->>> subchannel based on DNV"), subchannel behavior following a device
->>> detach has been updated and results in -EINVAL being propagated
->>> rather than -ENODEV, originating from ccw_device_start_timeout_key()
->>> in cio/device_ops. In the end, the virtio driver has no ability to
->>> react to the difference between device and subchannel states here,
->>> and during detach, both -ENODEV and -EINVAL indicate the device
->>> cannot be used and should not be treated as errors requiring
->>> attention. Update error handling in virtio_ccw_del_vq() and
->>> virtio_ccw_drop_indicator() to suppress -EINVAL in addition to
->>> -ENODEV.
->> Hi William!
->>
->> Are you saying that ccw_device_start() started returning -EINVAL
->> since 8c58a229688c ("s390/cio: Do not unregister the subchannel based on
->> DNV")? Or did I somehow read the paragraph wrong?
->>
->> The funcition ccw_device_start is documented to return:
->>  * Returns:                                                                     
->>  *  %0, if the operation was successful;                                        
->>  *  -%EBUSY, if the device is busy, or status pending;                          
->>  *  -%EACCES, if no path specified in @lpm is operational;                      
->>  *  -%ENODEV, if the device is not operational. 
->> and the commit message does not say a thing about introducing -EINVAL to
->> the mix.
-> The function may return -EINVAL for non-enabled subchannels
-> (i.e. pmcw.ena == 0), maybe we get an all-zeroes schib with dnv == 0?
-> I'd expect it not to be enabled in that case anyway.
+> On Mon, Jun 15, 2026, David Matlack wrote:
+> > On Mon, Jun 15, 2026 at 11:05=E2=80=AFAM Sean Christopherson <seanjc@go=
+ogle.com> wrote:
+> > >
+> > > On Mon, Jun 15, 2026, David Matlack wrote:
+> > > > On Fri, Jun 12, 2026 at 5:35=E2=80=AFPM <sashiko-bot@kernel.org> wr=
+ote:
+> > > > > > diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/tes=
+ting/selftests/kvm/irq_test.c
+> > > > > > index 9f8895b898214..6888be54ee4a9 100644
+> > > > > > --- a/tools/testing/selftests/kvm/irq_test.c
+> > > > > > +++ b/tools/testing/selftests/kvm/irq_test.c
+> > > > > [ ... ]
+> > > > > > @@ -55,6 +58,36 @@ static void *vcpu_thread_main(void *arg)
+> > > > > >       return NULL;
+> > > > > >  }
+> > > > > >
+> > > > > > +static int vfio_setup_msi(struct vfio_pci_device *device)
+> > > > > > +{
+> > > > > > +     const int flags =3D MAP_SHARED | MAP_ANONYMOUS;
+> > > > > > +     const int prot =3D PROT_READ | PROT_WRITE;
+> > > > > > +     struct dma_region *region;
+> > > > > > +
+> > > > > > +     /* A driver is required to generate an MSI. */
+> > > > > > +     TEST_REQUIRE(device->driver.ops);
+> > > > > > +
+> > > > > > +     /* Set up a DMA-able region for the driver to use. */
+> > > > > > +     region =3D &device->driver.region;
+> > > > > > +     region->iova =3D 0;
+> > > > >
+> > > > > [Severity: Medium]
+> > > > > Does hardcoding the DMA region's IOVA to 0 cause IOMMU mapping fa=
+ilures on
+> > > > > platforms that reserve or restrict IOVA 0?
+> > > > >
+> > > > > If IOVA 0 is unsupported, it seems like iommu_map() will fail and=
+ trigger a
+> > > > > test assertion crash instead of running.
+> > > >
+> > > > This is probably fine for now given the test is only for x86_64. Bu=
+t
+> > > > if you are going to send a v8 you can use the VFIO selftests
+> > > > iova_allocator to fix this, instead of hard-coding.
+> > >
+> > > I'm confused, why is this test setting up a DMA-able region in the fi=
+rst place?
+> >
+> > There might be some devices with which you can trigger an MSI with
+> > pure MMIO. But most devices you need to at least set up some
+> > descriptors in memory that describe what action you want the device to
+> > take and then use MMIO to poke the device to read the desriptor and
+> > perform the action. Reading those descriptors is DMA.
+> >
+> > For Intel DSA specifically, send_msi() works by telling the device to
+> > perform an 8-byte memcpy and send an interrupt when it's done. The
+> > driver region contains the descriptor for that memcpy, as well as the
+> > 8-byte source/destination buffers the device should use.
+>
+> Ah, gotcha.  For a comment, how's this look?
 
-Yep, that's at least how I've come to understand what changed. The
-function ccw_device_start_timeout_key() has always returned -EINVAL
-for non-enabled subchannels (pmcw.ena == 0), though it's not
-documented in the header.
+That looks great!
 
-What changed with commit 8c58a229688c is that cio_update_schib() now
-updates the schib even when DNV=0, rather than returning early as it
-did previously. Somehow this update results in pmcw.ena == 0 in
-ccw_device_start_timeout_key(). Previously, it saw pmcw.ena == 1 and
-moved to the condition (cdev->private->state == DEV_STATE_NOT_OPER)
-where it returned -ENODEV.
-
-So the commit didn't introduce -EINVAL as a new return value, rather,
-it changed the subchannel lifecycle such that existing paths now
-propagate -EINVAL rather than -ENODEV during the device detach
-scenario.
-
+>
+> diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selft=
+ests/kvm/irq_test.c
+> index 6888be54ee4a..9a495fdb52f5 100644
+> --- a/tools/testing/selftests/kvm/irq_test.c
+> +++ b/tools/testing/selftests/kvm/irq_test.c
+> @@ -67,7 +67,12 @@ static int vfio_setup_msi(struct vfio_pci_device *devi=
+ce)
+>         /* A driver is required to generate an MSI. */
+>         TEST_REQUIRE(device->driver.ops);
+>
+> -       /* Set up a DMA-able region for the driver to use. */
+> +       /*
+> +        * Set up a DMA-able region for the driver to use.   Very few dev=
+ices
+> +        * provide a way to arbitrarily send interrupts (MSIs), e.g. by w=
+riting
+> +        * an MMIO register.  Instead, most devices send MSIs when an act=
+ion is
+> +        * completed, and practically all actions involve DMA of some for=
+m.
+> +        */
+>         region =3D &device->driver.region;
+>         region->iova =3D 0;
+>         region->size =3D SZ_2M;
