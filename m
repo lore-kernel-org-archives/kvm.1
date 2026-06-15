@@ -1,160 +1,200 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012049.outbound.protection.outlook.com [52.101.43.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C4E38F934
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 20:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAE2383C65;
+	Mon, 15 Jun 2026 20:47:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781555755; cv=pass; b=Szz6ioiDry6nJyw+q1+HQq/qIsv2cumBAeYVA5yf6XHbLXWp0Vyqn9fMJq8jUiTH1cn6etdQcqgPJ3DmVqQu1FyNSwvAajZd33ewHG/ZeQGbzZuYJF8RYzaeR+1n0pXA2hOPvmcPZbrTfojsG5kJJ16YX18r6UYy8Hs7+KAZ5bw=
+	t=1781556464; cv=fail; b=QpRkpFl1e9rM9GLD2luZSQ5iagN6Xz8uZfHVSEP6bIJ5edbaWwqd6Py/EvGRrXv3gmMois4E3rzbkWyuzVAIFWBmrn02w1yTLYwIVhp8raC7kN6nKSfAhQHZFbwJpW0i0gR0VPv6Zq0jwpFfuQ1fPo0pQudEXPV6PH0n4YhJiDs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781555755; c=relaxed/simple;
-	bh=G4lSX2RGOs04PiMPaq7YPMfkUB46XsBORCSI627WDGw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rIXNjyzbo9YmwIIzySnbzWdB4+/fo8r7a/sl5ZMg3pkEBkQCYRnPtMKl1QfQ9IB+78i+/3gJoA+hNdxh5EG7/0nXTjrj26CBvhG3SbOrxPtbOXNUnQy5/sPza5V/NZPQbRS6SR23u9SkxMopRAk49oAsAX6eXZlXavI0BHYc7ak=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=No5SJ3Fc; arc=pass smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1781556464; c=relaxed/simple;
+	bh=fiWLQUGZcRcsQ7WTN2fPZmVt9PUvt3R5qw7n109hFxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VrtMsRrxF4eF+x939tPUTEtGQKwo05nOP1Bvy7fLL+N4WGGOa4B/p/7anWSoII3gzPKoO2e8lO6pQLMIoeAcyotdn6aTQMpTm1ljk82kD1YILyNwgFLEYEt7tgPogEQF1un67YYmAMK5jpTfuywX5yA6xZ5WUFOvtQHPS4nEvWw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kmwI/mF3; arc=fail smtp.client-ip=52.101.43.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="No5SJ3Fc"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-68d22476e88so3230a12.0
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 13:35:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781555752; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YQsm1mevCMGavnz/WsjcxyN03UWB9oGxObVkS/hldFDYyQU3Z24JKyw6tnjMimK7Th
-         HaAT5HpAioHmOs3o99Cu6PeBJ63rQXLd4YZXlZB9Qxmnogx9TBRicj1bDHaqiQ3SUsK2
-         Ony+zdhIpHDvaglOuSgZ7x33tDa2M0baLP6q8LBs8SfcBlBbEwej6ZrIbgkHe57qElSX
-         5UjZMggs4GMK+q5dIeaP1pe6QxbDI6YfuIpIAmEcStCBUKkxWVFX6R3ClzoBeCf2yzaK
-         YN5V1SOVEtw2ULBFApwR3IZ7tCMYPNstjPQsAFZt3uMvIpqjVOvcdpIFX5SJ9jaHajG8
-         hEbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cdM8zKDetkcls/vdqGYb8yUYZ48F53j3/nNEOttt5z4=;
-        fh=3Lf2bRXhip4xUcelDW3I+ZgNQ8b1E3Z1+WCyiSaHxgg=;
-        b=aYY4M3T72osChDDg98ceQhGNGuxF7rH29LblWm2J4T0rg/U9iBhAaCAfsYmPSfV+9b
-         66vOgWujoHOe66nJt1vjgnU9U05Dm3N8A0vAhOZcHBCeF1hZYjI9MokWhgyplDQ4Aiij
-         2RlFnHS0QYD6ihS8N4SA2uwB2jlHe5foXcZ60mi6lVAcsj/PPX6gfM8L6lmxsJJxUqWV
-         Kqc8y5KLoDeJaH7IXDMAQjc2npUVoqtKaIKjWQNDdBA4oF/mh3R+0oUKD/YYsbeVSd63
-         Tj1a/qcOy5Ci3YAOW9CrEtgzwpH64+5/AendCVWdgFrHvv+2FLE3sy+SuWy4b0i530Gf
-         1ksw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781555752; x=1782160552; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cdM8zKDetkcls/vdqGYb8yUYZ48F53j3/nNEOttt5z4=;
-        b=No5SJ3Fcp21s395I27V+imtqveWvPE/38QABnxQCfUd/4/ZN/bHElfbOxzZ7sq81B6
-         d06HTpiwMEyaooHm+ZvgkBYigWF46sDN9+/75/x1OJDuYURL6uWfQc5NV6ufVK4bolWm
-         GXJ1Qtd1UtlCfbmH3zhD+vm4JDGM43OnwPRR8p0+RbKJ+YrrLAM/YP7MgpHMhVwM3WWb
-         u0246Ynr1hVBX30lfAG0waORKKLk424OMNeSMvBv6Y2v+1Vo1sTmYb33VEoGqp4iyZpe
-         2ZI/0zi8P3+SWAyPWyBmdK/iID3mP4vESs44rycpUyou8SkqIYmT+TaToWMYehRNQcBE
-         f8nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781555752; x=1782160552;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cdM8zKDetkcls/vdqGYb8yUYZ48F53j3/nNEOttt5z4=;
-        b=cI7zbDDMf7utH8oNFOy8e+waIybMkttgGjyZjucEkLaRUnEY0OLsk92TjK604mdnGx
-         YdW80XExEw+Y+HuIhp8N/3+u17tSW6Ql6bYIg8uFLnYISK5kj16GDUvtSDC/Xtq9U24u
-         nPHqd2FP3sjrQq1UZgOlG6TYWZUUj+0iuZRpOP4qjzOL135KtfrQC9NWwXmdZcDxEpGQ
-         iilRftoTtL4Zdb/Z9q3DD8IYn4JLB6rvx9N9WVEqaaj9/S968TRH8ij42NecqMKIul8s
-         sJPX82UCwSIljJ7GT+G/iKEWjqWbfFxsoNLq+9uwapqJgBxr8s8DWHpwEazI8zTxX+1d
-         hshw==
-X-Forwarded-Encrypted: i=1; AFNElJ8duwx+jRmk9OziPBbgdpHw/zxe5I34J87gs/qn2f/nJsSuClmf+XUd6c6ASNRno5s7ghw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyd9gGPvVa1DagHYSH3mytpe5O8ajF7VCYMnsjT2als/Pttzd8r
-	o+4hloZ+ZvKB0okLadqPgjIu5FWU2czd/ZfVSejoCAGfeRDlzsdzi6BlcGsNBjtoAQnPT7NHWZg
-	ztV9DED9RUiDcpXDb0fOtH1UeglINsJEV0Tp5+Kd3
-X-Gm-Gg: Acq92OHDvrgL6hLxHytLVb6YEixGk3vFdgJIDj1ySqbk7P0Zs6dMvaWzOmP6EJ9xxiC
-	daEEuqbXzT7iamGGt010Gv8Z4+SMn9j83l+oAiBKK6N6d9YD9eww889ic8GS/+mhun1pTDjh0aA
-	CL6nj1CMlYWPkDfYIovimaORNvJWLv5DtFebxVIP0vnte+e2SQw2yYJuq03bMfmOSVhO4OD944K
-	oQ0AyFWQ2uF1XtZZXva0BFQtjJNYS5wAVDSu18gFhkDVIgxC+Lgpia6cLsxkkZmOj5Ih+82DvWb
-	5hq6S0M=
-X-Received: by 2002:a05:6402:208d:10b0:693:17e4:c6b0 with SMTP id
- 4fb4d7f45d1cf-6950f6e5086mr1463a12.9.1781555751795; Mon, 15 Jun 2026 13:35:51
- -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kmwI/mF3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fiIyRh0T9CBJIDXN9H8Sq/GZWwh2diVFWRPfsBuR9gXTIba1Z0z50HyO2E/3+TkwFzpZWxJXOXyaL/8nOzqg2A17M6jzgpDkXZxQ9MMMUrWsIbDqq7xfC+wzu/dFXryJaEGevg19w8y7HwC3v6C1h5XjjmdB7nRUpCfzqPt87mHSaVVoe0Zbd6IlQmQmdlRe+o14+xIYhifGnC1od0+I7bYLXjujvAX1EOLrqp5Bdhz5ibaiQvZybpLOxd85wWS5nKTTNg9XSSriD8I2IVhZhmKQdCJCbgb0GmreRUTsOUSpXuITSRIz9hR8BQSmBw43zB0sYqHYEhe49nhUzZGhjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0oZ0jDcs15ObbelhPc5hCjlwyQGcNlsYnVAqkimHPhQ=;
+ b=j1Ue8h3dkb7hIVlouGtHTI4XlvSZ78JSYw5ViTTNGkZvQjaN0D0ON0IbMedZO4ORwnjkKKY8qAr2WXjmWXWl76P8SyePAEqDEqw23g+ipv5ghaICDKguTNlyatU91jmgURGOCsIpsNxBYzAgSyrlSKBnrBCjGul5rujTmMyLlHCRY6EEmmfJqdwFezhL8jrRkoYKYW2vqsgdYjhlJrmYq0PLbBXFbz5EG8mLlbpE38jio4NUAW1aG+r4qz1L4QGHbY8vrzLl902vfi0+BsmDW51OOlbRyaVYOTDNb4EvEFOqT48gQqPo7G/jV55tmPzPIVs3SjmTUX7H5TAZNA6rEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0oZ0jDcs15ObbelhPc5hCjlwyQGcNlsYnVAqkimHPhQ=;
+ b=kmwI/mF3UBlLmgLn1bi7B+HdC2tpXzG/ufYy2PKUrBjEG5dpuCap2lmWxvVBXbjj4pm4VdQ1c5jap24tERHUm1prs4m+vRnV5cZm5iWcneDBQxcGum29oC+HvEQ6m18PYeTlEIO2w2afW7pLjM/7BCX2WI7BEsjI4Z6xMh944JR0l7ota5X+55fZ8S4N5taNU4Hpja1kvOdWBCvL2dH3L9YTVfqznkZnAH+5M8BpwYymYjZDM4QBBoRaf5giLJyPCy5V9YZCVo6BaudpN9rZSzDk8Nmd7Ed4djB6fZz+akzQ3nbzFped5nY1Gb+5ec4R7tcnvq9WiWGRB9oBOQN2/g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
+ by IA0PR12MB9009.namprd12.prod.outlook.com (2603:10b6:208:48f::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
+ 2026 20:47:35 +0000
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15%6]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
+ 20:47:35 +0000
+From: Alex Williamson <alex.williamson@nvidia.com>
+To: kvm <kvm@vger.kernel.org>,
+	Alex Williamson <alex@shazbot.org>
+Cc: Alex Williamson <alex.williamson@nvidia.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	kanie@linux.alibaba.com,
+	Sashiko AI Review <sashiko-bot@kernel.org>,
+	stable@vger.kernel.org,
+	Longfang Liu <liulongfang@huawei.com>
+Subject: [PATCH v3 7/6] vfio: Remove device debugfs before releasing devres
+Date: Mon, 15 Jun 2026 14:47:00 -0600
+Message-ID: <20260615204717.735302-1-alex.williamson@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260615191241.688297-1-alex.williamson@nvidia.com>
+References: <20260615191241.688297-1-alex.williamson@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CY8PR22CA0021.namprd22.prod.outlook.com
+ (2603:10b6:930:45::22) To LV3PR12MB9411.namprd12.prod.outlook.com
+ (2603:10b6:408:215::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260612230113.684301-1-seanjc@google.com> <20260612230113.684301-8-seanjc@google.com>
- <CALMp9eTDfP908gH7OH8HAJKAsaixNfA5dHnPXBKFquQRFVCxFA@mail.gmail.com> <ajBNuya3czCahy4K@google.com>
-In-Reply-To: <ajBNuya3czCahy4K@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Mon, 15 Jun 2026 13:35:38 -0700
-X-Gm-Features: AVVi8Ccqn6ZYKROUGOtGuCntGjr6lOSfW5iZxoJLuc_mDOXYz-21cYIItTEsD5A
-Message-ID: <CALMp9eRSHdyMv2TRUbgBer6WHBQ7hwNEzTmqji0yFrRwKPdrZQ@mail.gmail.com>
-Subject: Re: [PATCH v3 7/8] KVM: x86: WARN if MOV DR emulation hits a "too
- late" #GP
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	=?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, 
-	"Maciej W . Rozycki" <macro@orcam.me.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|IA0PR12MB9009:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44f52675-ea65-478b-95a2-08decb1f5408
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|22082099003|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	tbScsTMjDvAPCPuCxL3rJFnE39I24r3G97ts8J/3BlgkV5CEiHWNMQGSH05mJ+aw/X6RiG9bQyLtE7gvPF0bGrZUXZzGsSSM3lKtRO0UlZkkfsjGTax5AMryuH0Wca/LgczXMp2YAjNpI8lzKmiRkYfYtSyjlnLuiY8rVmNQxtLwLKvPcb75IaLluw0JCDP1JCIPMPySV/ccta378/DNv0aLbLSCQ1Dg7WfpnUHek1wzWJ7RS4AMvk1V5gOgCbQC84jigUa+i4eGAqC9OUORtMbk6xU82uqP2hcValA2BO4INR7NhyAFw3FOZuYBRiqL/fuyziBtEfWrdBmIRfRqDZ25Rosz/1G4F3/gpu4hRlpG9Ev4bqvtH+oPB2uC7ndY2wHYLpjOdFTazzySsdos5X6X4QZs4nhMg+1NZPPKSLH9CWS4ppmGMl3Mjzj8gEFULIgjuB0I6kkyeitzLgP/vJIkmrHXn9J1MZFUq2uubS9K3B3lSquxWusUGdizdnoRxgeLa4xb1I42CCx8r5NkqpWccPaVNKqQSeGTG7bsMPstv3B9Nq9NKD5v1Rjyaok29kDoOpZElT1p1D6ByEm5+T7RzrNR042xLTts70nYeBpj9qPsE63Wp0nETWJlr1Evqcfrf1vZmTHZZca1MQ0wM6mkt2QJn4XIILkts7A30h1gWD098uVmX5M7gixg7OChSEIyjOFbmROfNPmUhhM3FA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Y51bW2ODk3lMgK2Ucg3g5fAJgWVD+y0RUEa8Vk7BOsyzKCHqCOtRsN6iIIXa?=
+ =?us-ascii?Q?j619gfCMbZsKO758Mr+lq0ZSt0iexoCexvYkjBDinDwkYiM64307N6DWpRvo?=
+ =?us-ascii?Q?w1+bYu4uwue7BooZfpMyGZHBsPEzEuIiIme/BbEYUXx3k8UFlLAtJfBMs5zq?=
+ =?us-ascii?Q?ORWb1Q9Qk2wudXWdD3/EshLyGG2WggtfiyEsr69reQWEYA4oqcBPsS8LXl3n?=
+ =?us-ascii?Q?I4LIo4CjvSovdFzptiGn6O/i05YBzIEX801YAUl4bV/cxWBmEwjEwPc7MbMT?=
+ =?us-ascii?Q?QUUCEV9UT+rvDtxhhYRf7vtBTEnI2Nra90jacnv3wjE24TIpUsL0of5PrP4Q?=
+ =?us-ascii?Q?zCrYNJkRpdtBSq1HMZdaZWH2CFBWK5jCp80f2r323ZSjjb7WddEhqm/7BPt9?=
+ =?us-ascii?Q?U/ujdrBs0rYrZLpEblJ1SKewYbwGOHnDEQQ4oBRv354QtNJZqrivMGPWKOyY?=
+ =?us-ascii?Q?cHrpRccW4K9z768ic16sfV+Wb2ebcp5/fR/OAkx2yWkWxgk5Lr9c+R4apA1w?=
+ =?us-ascii?Q?WQZXUh27adkjjGgGMNbXuAk/MqitYekGToZKNrokO61Jl6NP2xnZg1Wo8pM7?=
+ =?us-ascii?Q?lhMzE5ukbR4+XRqjh/pnIraU0Lcpq9kfsjqxz1xhaF9vhXBOxcWiuoSYLOEJ?=
+ =?us-ascii?Q?wn7qkRZyAhD+APi6eHsioY+Rn69jwgO4NRL+YHZ0OLtPAC1/8SETK6iFVTMs?=
+ =?us-ascii?Q?4AVvnP/GLUyp4gNxGFHALQC98Eh7y8f8qr/9nBX36mEEAV2xieBLtBNl+OYe?=
+ =?us-ascii?Q?y53PFdOZJ3mGSOlHFtRUJ0Jny5843VpMbuukDoKEFSt3FO0cT1kw9eE0zAs4?=
+ =?us-ascii?Q?4WEOkWp6ReJu2rsPai6y50OQB84bbEx/Sr+m4XvL9IeKgsGW/OyJXaTlm/GT?=
+ =?us-ascii?Q?0ga2EZMZWfaP3NOipsWphYuqwENFfo9PYi5xTW1JiOtVSIOl1SjRkDxC4rt6?=
+ =?us-ascii?Q?tHjUo9CGeAUUHcELGaQ008I76kV1ldhfncFVQwC9soGNf9WHj1i0EYO496Ww?=
+ =?us-ascii?Q?0gw6MH2zMJZ6aqGfwhaGfGMkv+/b3h5XN0SG7xCI/3dPjq+BYTR0KQXT4OuP?=
+ =?us-ascii?Q?K5flq8zDF2iiQ/CzNC3JaUA4/R7f8O8ABtpYthWgvjq3fRI0RN/q2yUGXWC+?=
+ =?us-ascii?Q?Phq3ZZY6mT0WWUqUHKb6rNahG59bulBRrnQEQkPCkli6MiyfRaYYfw6gjSkp?=
+ =?us-ascii?Q?WRbd9y0oTwECuu8OlvAeUliNlrg4HIu8HzpUwuy6nAN7jF2GXX52OiFUII4T?=
+ =?us-ascii?Q?WUxH4pjEDXTm2jslkO4muZgXf3neXP3C1RssxDtnILP/h/RADIraRLcWMvtY?=
+ =?us-ascii?Q?YATQJzYHlRqvIMzCho5Wrgaf8wgICM05dAeLkiUG0rYMYOPyiZDnMIibM13I?=
+ =?us-ascii?Q?LmdaZN1qzAAlSNn2L68GcABx1A4CgUfKAwn+AveI2Y38C7DY62+GC/99YSd1?=
+ =?us-ascii?Q?/w9e60igCYWGqjcXe6mUkykPNh6Ocph8sSEfreVZg+F40g4ajsBLRPtjbwK8?=
+ =?us-ascii?Q?WdFiQOZUoaOjeS3uzvDiUYoDmvRXEVKSaXG1jERx6wr7SQILxpvFXP8IZAL8?=
+ =?us-ascii?Q?RlkEC7aOoyk/pcslGdUytpaxFsardp9bnIslmLOIJvaHkpeuej5oaGPe9PR/?=
+ =?us-ascii?Q?ajQG7XkKXlDSifzmmzmPivlAs1Z5QThaMmVwV8UB52jbVENGZh2dj5S+DOP+?=
+ =?us-ascii?Q?M5hbjZwcrUn9fFw0yNrVMovnmv3ndJKjzC/GXuA1hsHhUS39yzyipg9aSa1S?=
+ =?us-ascii?Q?Yyhtnx3I9Q=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44f52675-ea65-478b-95a2-08decb1f5408
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 20:47:35.0255
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JnHJ9qz08mKOB6QkupROAGjMf4SXLZmTSIv0hw7u3NI5yMTVUckk81CpD2xE7SNL2HnGPp3TwU5D3voDlGzAnQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB9009
 
-On Mon, Jun 15, 2026 at 12:08=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> On Mon, Jun 15, 2026, Jim Mattson wrote:
-> > On Fri, Jun 12, 2026 at 4:02=E2=80=AFPM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > >
-> > > WARN if ->set_dr() =3D> kvm_set_dr() fails when emulating a MOV DR wr=
-ite,
-> > > as the emulator _must_ pre-check for #GPs in order to get the event
-> > > priority right when emulating MOV DR for L2 on SVM (all exceptions ha=
-ve
-> > > higher priority than the instruction intercept).
-> > >
-> > > Opportunistically update the comment as the blurb about "#UD" being
-> > > checked is incomplete and misleading.
-> > >
-> > > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > > ---
-> > >  arch/x86/kvm/emulate.c | 8 ++++++--
-> > >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> > > index b1799ed01939..e030ef9b9744 100644
-> > > --- a/arch/x86/kvm/emulate.c
-> > > +++ b/arch/x86/kvm/emulate.c
-> > > @@ -3298,8 +3298,12 @@ static int em_dr_write(struct x86_emulate_ctxt=
- *ctxt)
-> > >         else
-> > >                 val =3D ctxt->src.val & ~0U;
-> > >
-> > > -       /* #UD condition is already handled. */
-> > > -       if (ctxt->ops->set_dr(ctxt, ctxt->modrm_reg, val))
-> > > +       /*
-> > > +        * A #GP due to an illegal value should be impossible at this=
- point, as
-> > > +        * such #GPs have priority over MOV DR intercepts on SVM, i.e=
-. KVM must
-> > > +        * manually check the value *before* emulating the write.
-> > > +        */
-> >
-> > This comment seems confusing to me. Isn't an illegal value impossible
-> > simply because we already called check_dr_write()?
->
-> Yeah.  I'm trying to explain why KVM WARNs, and also to guard against dro=
-pping
-> the value checks in check_dr_write() as future "cleanups".
->
-> Is this better?
->
->         /*
->          * Yell if the DR write is rejected, as all inputs have been vali=
-dated.
->          * KVM must manually check for exceptions *before* emulating the =
-write,
->          * as all exceptions have priority over MOV DR intercepts on SVM.
->          */
->
-Better, thanks. With that change,
+VFIO device debugfs files created with debugfs_create_devm_seqfile()
+store a devres allocated debugfs_devm_entry as inode private data.
+vfio_unregister_group_dev() currently calls vfio_device_del() before
+vfio_device_debugfs_exit(), but device_del() releases devres.  This can
+leave debugfs entries visible with stale inode private data while
+unregister waits for userspace references to drain.
 
-Reviewed-by: Jim Mattson <jmattson@google.com>
+Remove the per-device debugfs tree before vfio_device_del().  The debugfs
+view is diagnostic only, so losing it at the start of unregister is
+preferable to preserving entries whose backing storage may already have
+been released.
+
+Complete the teardown by clearing the per-device debugfs root after
+removal.  This matches the global debugfs root cleanup and prevents
+future users from mistaking a removed dentry for a live debugfs tree
+during the remainder of unregister.
+
+Fixes: 2202844e4468 ("vfio/migration: Add debugfs to live migration driver")
+Reported-by: Sashiko AI Review <sashiko-bot@kernel.org>
+Link: https://lore.kernel.org/r/20260615192725.6A2221F000E9@smtp.kernel.org
+Cc: stable@vger.kernel.org
+Cc: Longfang Liu <liulongfang@huawei.com>
+Assisted-by: OpenAI Codex:gpt-5
+Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+---
+
+Avoiding a full respin, this is inteded to precede patch 6/ on commit.
+
+ drivers/vfio/debugfs.c   | 1 +
+ drivers/vfio/vfio_main.c | 8 +++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/vfio/debugfs.c b/drivers/vfio/debugfs.c
+index 8b0ca7a09064..8a2f1b0cce3f 100644
+--- a/drivers/vfio/debugfs.c
++++ b/drivers/vfio/debugfs.c
+@@ -97,6 +97,7 @@ void vfio_device_debugfs_init(struct vfio_device *vdev)
+ void vfio_device_debugfs_exit(struct vfio_device *vdev)
+ {
+ 	debugfs_remove_recursive(vdev->debug_root);
++	vdev->debug_root = NULL;
+ }
+ 
+ void vfio_debugfs_create_root(void)
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 5e0422014523..ed538aebb0b8 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -406,6 +406,13 @@ void vfio_unregister_group_dev(struct vfio_device *device)
+ 	 */
+ 	vfio_device_group_unregister(device);
+ 
++	/*
++	 * Remove debugfs before device_del(), which releases devres.  Some
++	 * debugfs entries are created with debugfs_create_devm_seqfile() and
++	 * therefore rely on devres-managed inode private data.
++	 */
++	vfio_device_debugfs_exit(device);
++
+ 	/*
+ 	 * Balances vfio_device_add() in register path, also prevents
+ 	 * new device opened by userspace in the cdev path.
+@@ -435,7 +442,6 @@ void vfio_unregister_group_dev(struct vfio_device *device)
+ 		}
+ 	}
+ 
+-	vfio_device_debugfs_exit(device);
+ 	/* Balances vfio_device_set_group in register path */
+ 	vfio_device_remove_group(device);
+ }
+-- 
+2.53.0
+
