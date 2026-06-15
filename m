@@ -1,182 +1,94 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38243D410C;
-	Mon, 15 Jun 2026 09:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98793D9689
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 09:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781515073; cv=none; b=lmuvwQlLjKeAnLnhnruBSEgOCkv/0TBtXIdyRUIDfFLPOhNU9qYf9Y0aTqmaKKkbqipg3sJF0TNUFCN7BSQZbj7EvGPHlZBNCTjG/FRZ9NCRHgFFpM9hCqNZ87w+RtvJIi0fWD1S3qPD3r9X8xcLFyitbJpdhVqpERzxjxp/4A0=
+	t=1781515150; cv=none; b=gqcmaO76agqYfxIlsGXDYRvHIDXxMSpfS4ibGs3GGWrXYLUqN3STT7Lh/E9ovSJQt653i/YjAU488bCDaoMxv4fiD9N6lkEcuByUiGa6raTbpHQ6mUanOLfyxVR9u5l93bXgqLMMUvRJUGS1ab9lLR7AUH1m7YVYfUZkTmg133M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781515073; c=relaxed/simple;
-	bh=6ycaXCdvFnQX2N+3t1IOpO9wQr0dlkc8UpEJTedQkfw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iuNdAiwXNkcrYnXi7GExR4M0BdnM241DQZCLDpD0PSxtPS3qVTcRBxDjPVnt7nyzKjXyptCjKJ8wwGUNSecbg8o8Qmid0mt/W6Jp395Q+tL8pSFTLU5Ku8Y9h6OmcRyk+PClbc3L9QhaQWQ2Qm1TmkeV/I2SwYfs7XMB4/pAjWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FMDn1eEi; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FMDn1eEi"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65F6LdX31590404;
-	Mon, 15 Jun 2026 09:17:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=to8EXYD+gtAALUwKT
-	MLyVL0YgbpV19kZCrg1sEfWMdI=; b=FMDn1eEioOCoCTzVFUOi76bXrFK4s2NGN
-	FPeTjffm9c1rXJ7atkR0AgB20qtt8tits3rEL6MXDiHcUq3Z2+Rw9D0MD0Myj8QM
-	8CTSPKlWpUyFlkk6s1NCyKBpZ2P6lZsiCJQNM8Rb7OcaI/Ds4Z/OKt26nni3unzJ
-	Ex9GTbXaMPiPXmOqpnxQTMXdBmdw11pUnm+h+4eGlIHoTFdwY72/I4T7WGl4U8P7
-	dK6eMBrFMhcnWmBztB7VCQWxikGngX+/E+KtBdXoAWejCZ0liNJ6271nCJMWdtlM
-	T6VU6uWkkznffwRKqJkym9YAkfHZPj4UjjJkh7wZV0JeGfbaqsyIw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1v27a7m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jun 2026 09:17:48 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65F94dAR012658;
-	Mon, 15 Jun 2026 09:17:47 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eshwvwyma-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jun 2026 09:17:47 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65F9HiG815925682
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Jun 2026 09:17:44 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EB70A20043;
-	Mon, 15 Jun 2026 09:17:43 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F34D82004B;
-	Mon, 15 Jun 2026 09:17:42 +0000 (GMT)
-Received: from p-imbrenda.ibmuc.com (unknown [9.111.31.49])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 15 Jun 2026 09:17:42 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com,
-        hca@linux.ibm.com, gerald.schaefer@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, svens@linux.ibm.com
-Subject: [PATCH v2 1/1] s390/mm: Fix handling of _PAGE_UNUSED pte bit
-Date: Mon, 15 Jun 2026 11:17:41 +0200
-Message-ID: <20260615091741.76724-2-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260615091741.76724-1-imbrenda@linux.ibm.com>
-References: <20260615091741.76724-1-imbrenda@linux.ibm.com>
+	s=arc-20240116; t=1781515150; c=relaxed/simple;
+	bh=h2P8X9WQjmvg4Ib1tLmvEjiv+0EZjlvFPrzeyo3Sy9g=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=BAQNsrFWUDi91UAixaVGaPlZ4Vdl3+iRP0A3sZjjEC9Ol0vANqhbDxOyntc7i2XxPvTTvTnoHuqjtt2jDxp4Zl4j1wXfj88z8XQ2X4hHbgvMrTer+0zcwcXAufQR5N/fIar28xA6O/Z91EMQM9OVAwJpdFzElYZprhglKmOrXVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.239])
+	by gateway (Coremail) with SMTP id _____8Bxt3iFwy9q50gUAA--.28515S3;
+	Mon, 15 Jun 2026 17:19:01 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+	by front1 (Coremail) with SMTP id qMiowJAx28GBwy9qLPumAA--.53901S3;
+	Mon, 15 Jun 2026 17:18:59 +0800 (CST)
+Subject: Re: [PATCH 0/2] target/loongarch: PV TLB flush advertisement
+To: Tao Cui <cui.tao@linux.dev>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>, kvm@vger.kernel.org,
+ Tao Cui <cuitao@kylinos.cn>, bibo mao <maobibo@loongson.cn>
+References: <20260615085214.44526-1-cui.tao@linux.dev>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <636afc5b-968a-3027-8683-21df1c14838a@loongson.cn>
+Date: Mon, 15 Jun 2026 17:20:53 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20260615085214.44526-1-cui.tao@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDA5MiBTYWx0ZWRfX5/3AzwAob6uE
- FHdgDB1Gsz9yvkeuGH0GL8+9cCwlmkO4V6zPUs8JLXGs26ZRHd2dN1Ia4tXG/uDF2EMZM2QasY6
- ubZxE9OsmrRMlb7DbgCBY/iEgL2HDjU=
-X-Proofpoint-GUID: OwCrguQzOaPwwwuUBAj-pC2qtzkdgssg
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDA5MiBTYWx0ZWRfX3NHLBWLPiasR
- OZO1BL9wIgiduPSgXzLkkiQk/k7A/8wRW8kHhnjePc8maX71gzRQFmezRr722DM4DW93PgJfVz9
- jizL797orVqiII0F4ln0GWtHlSpCvzAMkt2zJoj4hsUczzyR26/FuGjjajt0ya2Bmu9iFW5oPv1
- 5AiYdNvhrWWhlWal6hzp8NlaJChAx6GoTqjQ0bD1yCK+amGRscOzqzXKLLQWjx0SyUBMMRvtot5
- 9LE3lyhGIsl1PbVhzJ8wwpU//KfYpBAz73a546uL6T9UEDr7AF+shhvgxoZYOCnm3zOYUwjaJrR
- QhFOL/vkveWUg+iYjCkU3Qa0eij0dJm/kX5iU6hCRi0QrsyEJnPDiClQ6OfvD73f747ozbHl6cy
- p8DEgQfqAaCXN60S4jCrejm5QroXVP+g1hCQr069bCapAzMFvHCLEJc+dnCLq9mHZPfBV36veVY
- XYIBlLY/oZHpYZw/keg==
-X-Proofpoint-ORIG-GUID: OwCrguQzOaPwwwuUBAj-pC2qtzkdgssg
-X-Authority-Analysis: v=2.4 cv=Dd0nbPtW c=1 sm=1 tr=0 ts=6a2fc33c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=O7K46QZ9Yr9AnS1rMFcA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-15_02,2026-06-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 adultscore=0 suspectscore=0 phishscore=0 spamscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
- definitions=main-2606150092
+Content-Language: en-US
+X-CM-TRANSID:qMiowJAx28GBwy9qLPumAA--.53901S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWrZF4kAFy3WFyDXFykZF1DArc_yoW8Jry3p3
+	y7ZF15Ka4rtr97C3Z3ta17WrZ8ZrWxGFsFva4Sk348ArsrWr1I9ryxKrn7XF1DA34rWryI
+	gF1rAryY9F9rZ3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jOa93UUU
+	UU=
 
-The _PAGE_UNUSED softbit should not really be lying around. Its sole
-purpose is to signal to try_to_unmap_one() and try_to_migrate_one()
-that the page can be discarded instead of being moved / swapped.
 
-KVM has no way to know why a page is being unmapped, so it sets the bit
-on userspace ptes corresponding to unused guest pages every time they
-get unmapped. KVM has no reasonable way to clear the bit once the page
-is in use again.
+在 2026/6/15 下午4:52, Tao Cui 写道:
+> From: Tao Cui <cuitao@kylinos.cn>
+>
+> Advertise the LoongArch paravirtual TLB flush feature (KVM_FEATURE_PV_TLB_FLUSH)
+> to the guest when the host KVM supports it.  This pairs with the corresponding
+> KVM/guest-kernel PV TLB flush series posted to the kernel.
+>
+> Patch 1 syncs the UAPI definitions into linux-headers.
+Hi, you should use scripts/update-linux-headers.sh  to update the 
+linux-headers.
 
-Without appropriate cleanup, the _PAGE_UNUSED bit will linger around
-and cause guest corruption when a used page is instead thrown out.
-
-While set_ptes() checks and clears the bit, ptep_xchg_direct(),
-ptep_xchg_lazy(), and ptep_modify_prot_commit() did not. This led to
-used pages being thrown out as if they were unused, causing guest
-corruption.
-
-This patch fixes the issue by introducing the missing checks in the
-above functions.
-
-Also fix gmap_helper_try_set_pte_unused() to only set the bit if the
-pte is present; the _PAGE_UNUSED bit is only defined for present ptes
-and thus should not be set for non-present ptes.
-
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Fixes: c98175b7917f ("KVM: s390: Add gmap_helper_set_unused()")
----
- arch/s390/mm/gmap_helpers.c | 4 ++--
- arch/s390/mm/pgtable.c      | 6 ++++++
- 2 files changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
-index 1cfe4724fbe2..5a7d6b9790e2 100644
---- a/arch/s390/mm/gmap_helpers.c
-+++ b/arch/s390/mm/gmap_helpers.c
-@@ -180,8 +180,8 @@ void gmap_helper_try_set_pte_unused(struct mm_struct *mm, unsigned long vmaddr)
- 	ptep = try_get_locked_pte(mm, vmaddr, &ptl);
- 	if (IS_ERR_OR_NULL(ptep))
- 		return;
--
--	__atomic64_or(_PAGE_UNUSED, (long *)ptep);
-+	if (pte_present(*ptep))
-+		__atomic64_or(_PAGE_UNUSED, (long *)ptep);
- 	pte_unmap_unlock(ptep, ptl);
- }
- EXPORT_SYMBOL_GPL(gmap_helper_try_set_pte_unused);
-diff --git a/arch/s390/mm/pgtable.c b/arch/s390/mm/pgtable.c
-index 4acd8b140c4b..2acc79383e7d 100644
---- a/arch/s390/mm/pgtable.c
-+++ b/arch/s390/mm/pgtable.c
-@@ -122,6 +122,8 @@ pte_t ptep_xchg_direct(struct mm_struct *mm, unsigned long addr,
- 
- 	preempt_disable();
- 	old = ptep_flush_direct(mm, addr, ptep, 1);
-+	if (pte_present(new))
-+		new = clear_pte_bit(new, __pgprot(_PAGE_UNUSED));
- 	set_pte(ptep, new);
- 	preempt_enable();
- 	return old;
-@@ -160,6 +162,8 @@ pte_t ptep_xchg_lazy(struct mm_struct *mm, unsigned long addr,
- 
- 	preempt_disable();
- 	old = ptep_flush_lazy(mm, addr, ptep, 1);
-+	if (pte_present(new))
-+		new = clear_pte_bit(new, __pgprot(_PAGE_UNUSED));
- 	set_pte(ptep, new);
- 	preempt_enable();
- 	return old;
-@@ -175,6 +179,8 @@ pte_t ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long addr,
- void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
- 			     pte_t *ptep, pte_t old_pte, pte_t pte)
- {
-+	if (pte_present(pte))
-+		pte = clear_pte_bit(pte, __pgprot(_PAGE_UNUSED));
- 	set_pte(ptep, pte);
- }
- 
--- 
-2.54.0
+Thanks.
+Song Gao
+> Patch 2 adds the probe, the CPUCFG feature advertisement, and a
+> kvm-pv-tlb-flush CPU property (on/off/auto, default auto).
+>
+> The feature is only advertised when the host actually supports it, so a
+> guest never observes KVM_FEATURE_PV_TLB_FLUSH on a host that cannot
+> service PV TLB flush requests.
+> Tao Cui (2):
+>    linux-headers: Add LoongArch PV TLB flush definitions
+>    target/loongarch: Enable PV TLB flush advertisement to the guest
+>
+>   linux-headers/asm-loongarch/kvm.h      |  1 +
+>   linux-headers/asm-loongarch/kvm_para.h |  1 +
+>   target/loongarch/cpu.h                 |  2 ++
+>   target/loongarch/kvm/kvm.c             | 38 ++++++++++++++++++++++++++
+>   target/loongarch/loongarch-qmp-cmds.c  |  4 +--
+>   5 files changed, 44 insertions(+), 2 deletions(-)
+>
 
