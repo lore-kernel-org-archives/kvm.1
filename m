@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F5E3BED76;
-	Mon, 15 Jun 2026 23:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C7F3BFE3A;
+	Mon, 15 Jun 2026 23:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781565010; cv=none; b=RhECkF9+RtVhCud8er8Dx8mpoGz8ypcsH3+uJrpOG60bIr7azn0l7mpIdbHFiotOMcmqc0NhgfxPqRljhdVKCQEqN9VZ2AjM78HbDCsyIwObNwDbUW0rzvlLjbNT5fgCrncdNMw5k1uVOsN08E/DAKq9SFwXEkyKqQmDeAnGeWM=
+	t=1781565016; cv=none; b=LDn8WCbKvrkpA8yaF7KrdZ9FmMaG9oReuEqHyikBw2GMthbJZelqPd5MOwDf1W9NIzWuxSiCM1K68u7uj3rHwtxj21npPlV16WhZyBnHfCDMV+DyanHHm8syMaAcCa/x1sI9Zu31x2nzKNzSkpEmKa06c1ENKLjlkblVfLytrXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781565010; c=relaxed/simple;
-	bh=COn39kceliMYCVE/03BkF72XNxYwxmGmyphaT/SIUuI=;
+	s=arc-20240116; t=1781565016; c=relaxed/simple;
+	bh=Hx7BNwD2GIEFBYxeKQ5msWLCZhL6lQHoZdWJ0g1xYmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8RcOWlmlew/mnhO5oBMg8IdYz1HpsJKhUKxFRk/FJ5nSMynffxCRjLMSRIWNNBY1taJIFGGn1NcjFBki1/MQK0qEVSp2UNj4jqPDLXuN2ojb77TnbVgfqBms2h1+9N5GcOUAYqNplAFCCvzZvLoUARPU+gkRpUHwz55yUDXV38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZXdXaf9r; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=fwPnyV3Fjzvgpx5QxZKWXfia+Bie5UJFJL1MN0FOLYc5rOXjU5YLCw6lwS6FRRGzfBpdpdxZnDPj22OTpodm5IjKAOkMraTGuPKz2xsMhihU237JvkH+fAFN4vNueYfSMV2UuLnK/IvI0WDiO/YSIWdZ6NsmhMhbHIPEXg4zn/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IvYNcJNz; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZXdXaf9r"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IvYNcJNz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781565010; x=1813101010;
+  t=1781565012; x=1813101012;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=COn39kceliMYCVE/03BkF72XNxYwxmGmyphaT/SIUuI=;
-  b=ZXdXaf9rSNgYGUjFQ00JYaE+PdSFJRsxs+Nv0hUu5HPaOozrJhQDfO2e
-   vQVnqmqmYh6I1u5rPlrSc/VX1ueAJeXDZVI0MaoLYPF/62GTZHwC79Z3r
-   6BHii9MpOeybYCFjRq0cAq0XBjmTye7AIolpioHyrYCxRIfK9h/bGcFqa
-   wij6wulXYbVFHGVmohjw/MVIuRK1nXQnpiyKBhBSwP7KhEcgO4YiCrOw7
-   QNaut5mE7l1CMPkEWequREPdxCMV6PfxtSXEII1Bz4gAtjz76ZpbV3DgY
-   DhyAaEmWc6BMcc9KnJ2NQFPZ7zM9cT8vbuWJrqfZBci8cyISaRo35NV2W
-   Q==;
-X-CSE-ConnectionGUID: gUdWFiMpQN2TdHimGV+zRQ==
-X-CSE-MsgGUID: 8JcFDZa6R2aP3Y4/7tTkQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="99738599"
+  bh=Hx7BNwD2GIEFBYxeKQ5msWLCZhL6lQHoZdWJ0g1xYmM=;
+  b=IvYNcJNzlxgQAk1fRbdnKuXjcB5AO7gTwlV+/6z6413umaMa7VmbI+3D
+   JYfML4VsV8MmTjYWIOP3n6wdRFOmaA24kjJU/51+tb/ah/2Hj4zE0dlvC
+   oZrv1zO+Mce9eCCOb9h4Qg8XizTwGh3mqBZR6MvC8sbnSpQjb8aLkkP/r
+   xyrHA24COvX+GFdVsP9cwtIWIO2ePb9xi0C282bAIa1lSxybtufWjRVnC
+   K17iZKJPRtPGyh8jEKu76oIqB+zVDewmleyKNOn958z3gNV+ZSxq7wHmh
+   0nqEW/TqsowSSEYFtDry2gjviuRqx5JvpCr837PZmOFpmDZvQKi2jMf2O
+   g==;
+X-CSE-ConnectionGUID: CpeLAbwTQ8y4PVwr6jmtWA==
+X-CSE-MsgGUID: r/naJvBFSOyU4V1YXehemg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="99738608"
 X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
-   d="scan'208";a="99738599"
+   d="scan'208";a="99738608"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
   by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 16:10:08 -0700
-X-CSE-ConnectionGUID: Ya6c8gf5TR2286HHK1dNcQ==
-X-CSE-MsgGUID: wlQR33UITV+MQI92+lx63w==
+X-CSE-ConnectionGUID: 7KbJBpeVTuC3RQAqCPi0Sw==
+X-CSE-MsgGUID: 2lFOpIyyRoCtBW7uR+7rQw==
 X-ExtLoop1: 1
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 16:10:06 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 16:10:07 -0700
 From: Zide Chen <zide.chen@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -54,9 +54,9 @@ Cc: kvm@vger.kernel.org,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Falcon Thomas <thomas.falcon@intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH V3 2/4] KVM: x86/pmu: Support Intel fixed counter 3 on mediated vPMU
-Date: Mon, 15 Jun 2026 16:01:16 -0700
-Message-ID: <20260615230118.50718-3-zide.chen@intel.com>
+Subject: [PATCH V3 4/4] KVM: selftests: Add perf_metrics and fixed counter 3 tests
+Date: Mon, 15 Jun 2026 16:01:18 -0700
+Message-ID: <20260615230118.50718-5-zide.chen@intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260615230118.50718-1-zide.chen@intel.com>
 References: <20260615230118.50718-1-zide.chen@intel.com>
@@ -68,109 +68,198 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Add a selftest to exercise IA32_PERF_METRICS, i.e. architectural
+support for Topdown (TMA) Level 1 metrics, enumerated by
+IA32_PERF_CAPABILITIES[15].
 
-Starting with Ice Lake, Intel introduced fixed counter 3, which counts
-TOPDOWN.SLOTS - the number of available slots for an unhalted logical
-processor.  It serves as the denominator for top-level metrics in the
-Top-down Microarchitecture Analysis method.
+Only check for non-zero metrics, as they are derived and depend on
+the workload, CPU model, and host scheduling, making precise
+expectations fragile.
 
-Emulating this counter on legacy vPMU would require introducing a new
-generic perf encoding for the Intel-specific TOPDOWN.SLOTS event in
-order to call perf_get_hw_event_config().  This is undesirable as it
-would pollute the generic perf event encoding.
+Extend the PMU selftest to cover Intel fixed counter 3 by bumping
+MAX_NR_FIXED_COUNTERS to 4 and validating basic functionality.
 
-Moreover, KVM does not intend to emulate IA32_PERF_METRICS in the
-legacy vPMU model, and without IA32_PERF_METRICS, emulating this
-counter has little practical value.  Therefore, expose fixed counter
-3 to guests only when mediated vPMU is enabled.
-
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Co-developed-by: Zide Chen <zide.chen@intel.com>
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 ---
 v3:
-- Move the non-contiguous counter filter code to pmu.c
+- Slightly reword comment to explain the sum of topdown metrics
+  is close to 100%.
+- Change abs() with explicit bounds (sum >= 0xfd && sum <= 0x102)
+  for better readability.
 v2:
-- Don't advertise fixed counter 3 to userspace if the host doesn't
-  support it.
+- New patch.
 ---
- arch/x86/include/asm/kvm_host.h |  2 +-
- arch/x86/kvm/pmu.c              | 18 ++++++++++++++++++
- arch/x86/kvm/x86.c              |  4 ++--
- 3 files changed, 21 insertions(+), 3 deletions(-)
+---
+ tools/arch/x86/include/asm/msr-index.h        |  1 +
+ tools/testing/selftests/kvm/include/x86/pmu.h |  3 +
+ .../selftests/kvm/x86/pmu_counters_test.c     | 72 +++++++++++++++++--
+ 3 files changed, 71 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 3886b536c8a5..754103e7ab4d 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -577,7 +577,7 @@ struct kvm_pmc {
- #define KVM_MAX_NR_GP_COUNTERS		KVM_MAX(KVM_MAX_NR_INTEL_GP_COUNTERS, \
- 						KVM_MAX_NR_AMD_GP_COUNTERS)
+diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
+index eff29645719b..e7745e2cd543 100644
+--- a/tools/arch/x86/include/asm/msr-index.h
++++ b/tools/arch/x86/include/asm/msr-index.h
+@@ -331,6 +331,7 @@
+ #define PERF_CAP_PEBS_FORMAT		0xf00
+ #define PERF_CAP_FW_WRITES		BIT_ULL(13)
+ #define PERF_CAP_PEBS_BASELINE		BIT_ULL(14)
++#define PERF_CAP_PERF_METRICS		BIT_ULL(15)
+ #define PERF_CAP_PEBS_TIMING_INFO	BIT_ULL(17)
+ #define PERF_CAP_PEBS_MASK		(PERF_CAP_PEBS_TRAP | PERF_CAP_ARCH_REG | \
+ 					 PERF_CAP_PEBS_FORMAT | PERF_CAP_PEBS_BASELINE | \
+diff --git a/tools/testing/selftests/kvm/include/x86/pmu.h b/tools/testing/selftests/kvm/include/x86/pmu.h
+index 608ed83d7c6a..6c19503e0bb7 100644
+--- a/tools/testing/selftests/kvm/include/x86/pmu.h
++++ b/tools/testing/selftests/kvm/include/x86/pmu.h
+@@ -52,6 +52,9 @@
+ /* Fixed PMC controls, Intel only. */
+ #define FIXED_PMC_GLOBAL_CTRL_ENABLE(_idx)	BIT_ULL((32 + (_idx)))
  
--#define KVM_MAX_NR_INTEL_FIXED_COUNTERS	3
-+#define KVM_MAX_NR_INTEL_FIXED_COUNTERS	4
- #define KVM_MAX_NR_AMD_FIXED_COUNTERS	0
- #define KVM_MAX_NR_FIXED_COUNTERS	KVM_MAX(KVM_MAX_NR_INTEL_FIXED_COUNTERS, \
- 						KVM_MAX_NR_AMD_FIXED_COUNTERS)
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index b92dd2e58335..0faf580782d5 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -122,6 +122,8 @@ void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu_ops)
++/* PERF_METRICS enable, Intel only. */
++#define PERF_METRICS_GLOBAL_CTRL_ENABLE		BIT_ULL(48)
++
+ #define FIXED_PMC_KERNEL			BIT_ULL(0)
+ #define FIXED_PMC_USER				BIT_ULL(1)
+ #define FIXED_PMC_ANYTHREAD			BIT_ULL(2)
+diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+index dc6afac3aa91..d4688a7d1e55 100644
+--- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
++++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+@@ -6,6 +6,7 @@
+ 
+ #include "pmu.h"
+ #include "processor.h"
++#include <linux/bitfield.h>
+ 
+ /* Number of iterations of the loop for the guest measurement payload. */
+ #define NUM_LOOPS			10
+@@ -241,17 +242,20 @@ do {										\
+ 	);									\
+ } while (0)
+ 
+-#define GUEST_TEST_EVENT(_idx, _pmc, _pmc_msr, _ctrl_msr, _value, FEP)		\
++#define GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP)				\
+ do {										\
+-	wrmsr(_pmc_msr, 0);							\
+-										\
+ 	if (this_cpu_has(X86_FEATURE_CLFLUSHOPT))				\
+ 		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "clflushopt %[m]", FEP);	\
+ 	else if (this_cpu_has(X86_FEATURE_CLFLUSH))				\
+ 		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "clflush  %[m]", FEP);	\
+ 	else									\
+ 		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "nop", FEP);		\
+-										\
++} while (0)
++
++#define GUEST_TEST_EVENT(_idx, _pmc, _pmc_msr, _ctrl_msr, _value, FEP)		\
++do {										\
++	wrmsr(_pmc_msr, 0);							\
++	GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP);				\
+ 	guest_assert_event_count(_idx, _pmc, _pmc_msr);				\
+ } while (0)
+ 
+@@ -318,6 +322,56 @@ static void guest_test_arch_event(u8 idx)
+ 				FIXED_PMC_GLOBAL_CTRL_ENABLE(i));
+ }
+ 
++static void guest_test_perf_metrics(void)
++{
++	int retiring, bad_spec, fe_bound, be_bound, sum;
++	u64 global_ctrl, metrics;
++
++	if ((guest_get_pmu_version() < 2) ||	/* Does guest have GLOBAL_CTRL? */
++	    !this_cpu_has(X86_FEATURE_PDCM) ||
++	    !(rdmsr(MSR_IA32_PERF_CAPABILITIES) & PERF_CAP_PERF_METRICS))
++		return;
++
++	wrmsr(MSR_CORE_PERF_GLOBAL_CTRL, 0);
++	wrmsr(MSR_CORE_PERF_FIXED_CTR3, 0);
++	wrmsr(MSR_PERF_METRICS, 0);
++
++	/* Enable fixed ctr3 (TOPDOWN.SLOTS) and PERF_METRICS. */
++	wrmsr(MSR_CORE_PERF_FIXED_CTR_CTRL, FIXED_PMC_CTRL(3, FIXED_PMC_KERNEL));
++	global_ctrl = FIXED_PMC_GLOBAL_CTRL_ENABLE(3) |
++		      PERF_METRICS_GLOBAL_CTRL_ENABLE;
++
++	GUEST_RUN_PAYLOAD(MSR_CORE_PERF_GLOBAL_CTRL, global_ctrl, "");
++
++	/* Check test results. */
++	metrics = rdmsr(MSR_PERF_METRICS);
++	retiring = FIELD_GET(GENMASK_ULL(7, 0), metrics);
++	bad_spec = FIELD_GET(GENMASK_ULL(15, 8), metrics);
++	fe_bound = FIELD_GET(GENMASK_ULL(23, 16), metrics);
++	be_bound = FIELD_GET(GENMASK_ULL(31, 24), metrics);
++
++	/*
++	 * Be conservative: the measured payload definitely retires work, so
++	 * Retiring should be non-zero.
++	 */
++	GUEST_ASSERT_NE(metrics, 0ULL);
++	GUEST_ASSERT_NE(retiring, 0ULL);
++
++	/*
++	 * The sum of the 4 level-1 topdown metrics should be close to 100%.
++	 * 3 is chosen as a loose sanity check.
++	 */
++	sum = retiring + bad_spec + fe_bound + be_bound;
++	GUEST_ASSERT(sum >= 0xfd && sum <= 0x102);
++
++	/* Sanity check after PERF_METRICS disabled. */
++	__asm__ __volatile__("loop ." : "+c"((int){NUM_LOOPS}));
++	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), metrics);
++	wrmsr(MSR_PERF_METRICS, 0xdeaddead);
++
++	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), 0xdeaddead);
++}
++
+ static void guest_test_arch_events(void)
  {
- 	bool is_intel = boot_cpu_data.x86_vendor == X86_VENDOR_INTEL;
- 	int min_nr_gp_ctrs = pmu_ops->MIN_NR_GP_COUNTERS;
-+	union cpuid10_edx edx;
-+	u32 eax, ebx, ecx;
+ 	u8 i;
+@@ -325,6 +379,8 @@ static void guest_test_arch_events(void)
+ 	for (i = 0; i < NR_INTEL_ARCH_EVENTS; i++)
+ 		guest_test_arch_event(i);
+ 
++	guest_test_perf_metrics();
++
+ 	GUEST_DONE();
+ }
+ 
+@@ -361,7 +417,7 @@ static void test_arch_events(u8 pmu_version, u64 perf_capabilities,
+  * other than PMCs in the future.
+  */
+ #define MAX_NR_GP_COUNTERS	8
+-#define MAX_NR_FIXED_COUNTERS	3
++#define MAX_NR_FIXED_COUNTERS	4
+ 
+ #define GUEST_ASSERT_PMC_MSR_ACCESS(insn, msr, expect_gp, vector)		\
+ __GUEST_ASSERT(expect_gp ? vector == GP_VECTOR : !vector,			\
+@@ -585,6 +641,7 @@ static void test_intel_counters(void)
+ 	u8 nr_fixed_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_FIXED_COUNTERS);
+ 	u8 nr_gp_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_GP_COUNTERS);
+ 	u8 pmu_version = kvm_cpu_property(X86_PROPERTY_PMU_VERSION);
++	u64 advertised_perf_caps = kvm_get_feature_msr(MSR_IA32_PERF_CAPABILITIES);
+ 	unsigned int i;
+ 	u8 v, j;
+ 	u32 k;
+@@ -592,6 +649,7 @@ static void test_intel_counters(void)
+ 	const u64 perf_caps[] = {
+ 		0,
+ 		PMU_CAP_FW_WRITES,
++		PERF_CAP_PERF_METRICS,
+ 	};
  
  	/*
- 	 * Hybrid PMUs don't play nice with virtualization without careful
-@@ -169,6 +171,22 @@ void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu_ops)
- 	kvm_pmu_cap.num_counters_fixed = min(kvm_pmu_cap.num_counters_fixed,
- 					     KVM_MAX_NR_FIXED_COUNTERS);
+@@ -649,6 +707,10 @@ static void test_intel_counters(void)
+ 			if (!kvm_has_perf_caps && perf_caps[i])
+ 				continue;
  
-+	/*
-+	 * Intel platforms may support non-contiguous fixed counters, e.g., some
-+	 * E-core based server processors don't implement fixed counter 3.
-+	 *
-+	 * Before KVM supports non-contiguous fixed counters, make sure only
-+	 * contiguous ones are retained in kvm_pmu_cap.
-+	 */
-+	if (kvm_host_pmu.version >= 5) {
-+		cpuid(10, &eax, &ebx, &ecx, &edx.full);
-+		if (kvm_pmu_cap.num_counters_fixed > edx.split.num_counters_fixed)
-+			kvm_pmu_cap.num_counters_fixed = edx.split.num_counters_fixed;
-+	}
++			/* Ignore unsupported features. */
++			if (perf_caps[i] & ~advertised_perf_caps)
++				continue;
 +
-+	if (!enable_mediated_pmu && kvm_pmu_cap.num_counters_fixed > 3)
-+		kvm_pmu_cap.num_counters_fixed = 3;
-+
- 	kvm_pmu_eventsel.INSTRUCTIONS_RETIRED =
- 		perf_get_hw_event_config(PERF_COUNT_HW_INSTRUCTIONS);
- 	kvm_pmu_eventsel.BRANCH_INSTRUCTIONS_RETIRED =
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index cf122b8c3210..b9cca855bc10 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -350,7 +350,7 @@ static const u32 msrs_to_save_base[] = {
+ 			pr_info("Testing arch events, PMU version %u, perf_caps = %lx\n",
+ 				v, perf_caps[i]);
  
- static const u32 msrs_to_save_pmu[] = {
- 	MSR_ARCH_PERFMON_FIXED_CTR0, MSR_ARCH_PERFMON_FIXED_CTR1,
--	MSR_ARCH_PERFMON_FIXED_CTR0 + 2,
-+	MSR_ARCH_PERFMON_FIXED_CTR2, MSR_ARCH_PERFMON_FIXED_CTR3,
- 	MSR_CORE_PERF_FIXED_CTR_CTRL, MSR_CORE_PERF_GLOBAL_STATUS,
- 	MSR_CORE_PERF_GLOBAL_CTRL,
- 	MSR_IA32_PEBS_ENABLE, MSR_IA32_DS_AREA, MSR_PEBS_DATA_CFG,
-@@ -7742,7 +7742,7 @@ static void kvm_init_msr_lists(void)
- {
- 	unsigned i;
- 
--	BUILD_BUG_ON_MSG(KVM_MAX_NR_FIXED_COUNTERS != 3,
-+	BUILD_BUG_ON_MSG(KVM_MAX_NR_FIXED_COUNTERS != 4,
- 			 "Please update the fixed PMCs in msrs_to_save_pmu[]");
- 
- 	num_msrs_to_save = 0;
 -- 
 2.54.0
 
