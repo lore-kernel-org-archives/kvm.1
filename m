@@ -1,177 +1,86 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09A23F485C;
-	Mon, 15 Jun 2026 15:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B64403129;
+	Mon, 15 Jun 2026 15:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781536404; cv=none; b=N9wf9ZOpvvaXlwG2fBthgt7gT5rYWYvs9ofOILiXll2ltmGSaISPMrBfcVkoT6eA8bxUIHd8FR8swSRgPkjtGlTbEXn0MXqclqJpqNnKYzTB0K4LNx/pVsQIKCahvlurEfk1oE4S42KLU9ibJOeJRELhIJxdKbfWO34Vazq867E=
+	t=1781536812; cv=none; b=lW1K5ohoubdieckNXuMw0R3FkBHc1aOvreKuj4EVcObtTAsQ94n8WIjW6ygQkSW+kWC7+vIBo4VHQzwmi8N4mSV3fiLUiqGhmfvh9fvNldWkkaHSH1bhC4xbEIusSUiBjNEEERmeSU2mhi+uBCh+gOW1zdYGAWoqvUWMkPbzbTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781536404; c=relaxed/simple;
-	bh=IVDA14JID5GrsuPIRkb4UA19ZqrIEPlqSvGSkW3WVn0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IJXR55ZhnXLSmJ4nT4+lNfnuGQqnDJi0OB1x7JrrjUvBlONFQGy/mTBUM094O1nkBYXYGFaS7dfPiFBvkXcDjQcdcnnJ06ukT8fGCCVUjN53h9ttcBqHL+s6o/+0XaMGIXMDi9eJwbBrLqEupfmZBTEvMoFC3VS28POllh96Fgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=iU1Q3Hi0; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	s=arc-20240116; t=1781536812; c=relaxed/simple;
+	bh=gMW76pVV2WRg1aePs+89QWyYb0X4X6cm5c6OIRnMJT8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WZyvmjI7XxB9VyRqufynsuR4d80Yi69GVA11zyOW5V20lVep3MahA3LRXGYevmw4QlQ1Ojmv9hHQrJO7tSRHUUy73I/yENzY0APda1ollbB37p1zAuRN2z9ihn+jSzyYPJvRPTrR6FGJta7ASRM+8sQtPq8n7IZQ1UTzwgZCvQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=jXKCVtnt; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="iU1Q3Hi0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1781536399;
-	bh=sB+OirG5KrhR2vR3t+VdFJVo3h/KuAa/PUjv1+O/LKM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iU1Q3Hi0D8Yqvdgog9QLLV8iEJIoAkKxZncuYUgr/CTC+BQe0cJt74hwThg1i0E5z
-	 6eSbBJjX14mo4EP9301/4Tt6UHOjMwQK05CQca4E1cm946RnMD7YQyT2Zb50KFUk0a
-	 3bEjmXEQjxBYICBhTYl38x9i0Fh4+lOiKMKGMwIE9PlygWeKhBJX5JdJ+ItHR9Q2jN
-	 Zqi61Fo/pEI439x4KpyZsKj5EMucXCG55bt9o10F1l4LJLS6OK+89AUNOdndNPQe/X
-	 ZJclrEjF36TPcPNWCeHSbB3YJ7KmXoHYuhXghoUvMxwuFBRakfKxYSP5YAJI4/aBZH
-	 z6eGeR1/TELcg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gfDCD1Z8Vz4wTb;
-	Tue, 16 Jun 2026 01:13:11 +1000 (AEST)
-Message-ID: <de0557aa-d38c-4666-b810-0d555fded8e7@ozlabs.org>
-Date: Mon, 15 Jun 2026 16:13:09 +0100
+	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="jXKCVtnt"
+Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FEZk552334449;
+	Mon, 15 Jun 2026 08:20:02 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=s2048-2025-q2; bh=gMW76pVV2WRg1aePs+89
+	QWyYb0X4X6cm5c6OIRnMJT8=; b=jXKCVtntn9ReKj2R7V+QLiHyszgRzZHn7tWe
+	qc7z77YtQoI7QtoU/r9A9n2sgfB+No64LwnXFLSoALU6il1a8QA7G/4oYoxzmpj9
+	fgKpNzY+DCNnZQSmNmkc2WaB2bR/qyysSawA46oFqLgJN/k4cxLtB0VcLUtPPLdS
+	8lpsEAVr9GBgmJWNrEr72xC0jcVK73+MveQlmjFDd0aBT19NaOFw1uKdOd2GVLmB
+	PmX17JMDtZNA1TBR40GBfhC32U7DVckKsxSN7qP4qlfe2yrZE3mgX/kxIaFMer2/
+	tsmb8QmAXpIib9AE1daEdHAPGEvmMNpB9q+cjB60VkJOC6R/Ww==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4esuthnf0r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 15 Jun 2026 08:20:02 -0700 (PDT)
+Received: from devgpu015.cco6.facebook.com (2620:10d:c0a8:1b::30) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.41; Mon, 15 Jun 2026 15:19:59 +0000
+Date: Mon, 15 Jun 2026 08:19:54 -0700
+From: Alex Mastro <amastro@fb.com>
+To: Vipin Sharma <vipinsh@google.com>
+CC: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
+        Shuah Khan <shuah@kernel.org>,
+        Raghavendra Rao Ananta <rananta@google.com>, <kvm@vger.kernel.org>,
+        <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH] selftests/vfio: avoid VLAs
+Message-ID: <ajAYGj43yceamSxf@devgpu015.cco6.facebook.com>
+References: <20260612-scratch-amastro-vfio-selftests-avoid-vlas-v1-1-ba3acb635f0a@fb.com>
+ <20260612234154.GA667942.vipinsh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/9] vfio/pci: Provide a user-facing name for BAR
- mappings
-Content-Language: en-GB
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian <kevin.tian@intel.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-6-matt@ozlabs.org> <aiwSVk4n9mCQEln2@google.com>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <aiwSVk4n9mCQEln2@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260612234154.GA667942.vipinsh@google.com>
+X-Proofpoint-GUID: nInslF4jnKH25IhWSPvsFzauXCNLx0CM
+X-Proofpoint-ORIG-GUID: nInslF4jnKH25IhWSPvsFzauXCNLx0CM
+X-Authority-Analysis: v=2.4 cv=SY3HsPRu c=1 sm=1 tr=0 ts=6a301822 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22 a=OJ4mlx5pWCXamJuR_qYA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDE2MSBTYWx0ZWRfX/8XTyEhpgjzV
+ LbaS+u+tBB92JPrkgjwF03tI0nGwqVXjFSV0suyDhyJkF7Lt8fHg1L9IUpBg29gpVtxNOxlCf13
+ A74MGwCFMklBLdRgGXLeK//sZhTkLtSzGH97edwEtlGmkt91IpXXds+pW5KhFdIczi83TMcKY7i
+ sJhxg1GZdxiq5NY4vH3K0cl9tXErwHfHVOTtI+gPvxYhXpBGsYY4l5VPAGjFUwBN33jR8gD+evd
+ krhBq/ewzIi0sozPbPckEtlN8ZGHnzdRpMadJ5BZodfsoB3iwCxLIRXmJJb3RPjCinO+WhYaxDX
+ gOVTLaGIVP1n86bLieeUlWIYa5flhkn8ikJXxg1nuRFIcypSPGVutfa1vBGw0zFRMaecYglHrae
+ whtp4CkGsEJSDu19oO7CVzSFxrytvQZ3iUvo05dnAd/WxTacHwFhusueQRN3+xIL2LcVqveCNXo
+ UsOxHP3P8UED25o5Krw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDE2MSBTYWx0ZWRfX0B63Hczh6rHV
+ LokJZ3RjMemMRxzGsu/yh6IKPrRSSAGwKOxN5KV41q73/o7F3sVLegocZy5ME9MvVJQSeQISUcb
+ AkSaOtzcRUMNCGrPqsxH/3i4p7eqPLo=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-15_03,2026-06-15_03,2025-10-01_01
 
-Hi Praan,
+On Fri, Jun 12, 2026 at 04:45:43PM -0700, Vipin Sharma wrote:
+> Nit: Can you change it to Reverse Fir Tree style? Same for the other
+> change.
 
-On 12/06/2026 15:06, Pranjal Shrivastava wrote:
-> On Wed, Jun 10, 2026 at 04:43:19PM +0100, Matt Evans wrote:
->> Since converting BAR mmap()s to using DMABUFs, we lose the original
->> device path in /proc/<pid>/maps, lsof, etc.  Generate a debug-oriented
->> synthetic 'filename' based on the cdev, plus BDF, plus resource index.
->>
->> This applies only to BAR mappings via the VFIO device fd, as
->> explicitly-exported DMABUFs are named by userspace via the
->> DMA_BUF_SET_NAME ioctl.
->>
->> Signed-off-by: Matt Evans <matt@ozlabs.org>
->> ---
->>  drivers/vfio/pci/vfio_pci_dmabuf.c | 27 +++++++++++++++++++++++++--
->>  1 file changed, 25 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> index 2fd3629789bf..8f7f1b909b94 100644
->> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
->> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> @@ -4,6 +4,7 @@
->>  #include <linux/dma-buf-mapping.h>
->>  #include <linux/pci-p2pdma.h>
->>  #include <linux/dma-resv.h>
->> +#include <uapi/linux/dma-buf.h>
->>  
->>  #include "vfio_pci_priv.h"
->>  
->> @@ -470,6 +471,7 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
->>  {
->>  	struct vfio_pci_dma_buf *priv;
->>  	unsigned long vma_pgoff = vma->vm_pgoff & (VFIO_PCI_OFFSET_MASK >> PAGE_SHIFT);
->> +	char *bufname;
->>  	int ret;
->>  
->>  	priv = kzalloc_obj(*priv);
->> @@ -482,6 +484,20 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
->>  		goto err_free_priv;
->>  	}
->>  
->> +	bufname = kzalloc(DMA_BUF_NAME_LEN, GFP_KERNEL);
->> +	if (!bufname) {
->> +		ret = -ENOMEM;
->> +		goto err_free_phys;
->> +	}
->> +
->> +	/*
->> +	 * Maximum size of the friendly debug name is
->> +	 * vfio1234567890:ffff:ff:3f.7/5 = 30, which fits within
->> +	 * DMA_BUF_NAME_LEN.
->> +	 */
->> +	snprintf(bufname, DMA_BUF_NAME_LEN, "%s:%s/%x",
->> +		 dev_name(&vdev->vdev.device), pci_name(vdev->pdev), res_index);
->> +
-> 
-> Nit: Could we instead use:
-> 
-> 	bufname = kasprintf(GFP_KERNEL, "%s:%s/%x",
-> 	                    dev_name(&vdev->vdev.device), pci_name(vdev->pdev), res_index);
-> 	if (!bufname)
-> 	    ret = -ENOMEM;
-> 	    [...]
-
-That's a great suggestion, thank you.  Done.
-
->>  	/*
->>  	 * The DMABUF begins from the mmap()'s BAR offset, i.e. the
->>  	 * start of the VMA corresponds to byte 0 of the DMABUF and
->> @@ -500,7 +516,7 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
->>  	priv->provider = pcim_p2pdma_provider(vdev->pdev, res_index);
->>  	if (!priv->provider) {
->>  		ret = -EINVAL;
->> -		goto err_free_phys;
->> +		goto err_free_name;
->>  	}
->>  
->>  	priv->phys_vec[0].paddr = phys_start + ((u64)vma_pgoff << PAGE_SHIFT);
->> @@ -508,7 +524,7 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
->>  
->>  	ret = vfio_pci_dmabuf_export(vdev, priv, O_CLOEXEC | O_RDWR);
->>  	if (ret)
->> -		goto err_free_phys;
->> +		goto err_free_name;
->>  
->>  	/*
->>  	 * Ownership of the DMABUF file transfers to the VMA so that
->> @@ -523,8 +539,15 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
->>  	vma->vm_file = priv->dmabuf->file;
->>  	vma->vm_private_data = priv;
->>  
->> +	spin_lock(&priv->dmabuf->name_lock);
->> +	kfree(priv->dmabuf->name);
->> +	priv->dmabuf->name = bufname;
->> +	spin_unlock(&priv->dmabuf->name_lock);
->> +
->>  	return 0;
->>  
->> +err_free_name:
->> +	kfree(bufname);
->>  err_free_phys:
->>  	kfree(priv->phys_vec);
->>  err_free_priv:
-> 
-> Apart from that,
-> 
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-
-Thanks!
-
-Matt
+Yep, no problem, thanks for reviewing!
