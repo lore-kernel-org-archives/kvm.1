@@ -1,135 +1,147 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFEE32848A1;
-	Mon, 15 Jun 2026 10:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA7F331EDE;
+	Mon, 15 Jun 2026 10:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781519477; cv=none; b=Qb7q+MPO2ITaah58ZDiRcULGSIDRXX0FXAlhFDCCxz6vTikEnB2UgTQCxfydpbdAh/WJDj7K1tfW/JNfzQH2e25SWLV97MW8ODa5/o/wnlQ6oBpmnbr+/wdLyOE/QCsZna1D1XhcqCSk/kU/PQz6h2T0t1ASmz+7iBcyw6s4FGk=
+	t=1781520213; cv=none; b=m1olRsk23Z9YWu85KQW8u6MMkmjwL6S/r2FkHZY8dMWEwvtmSHIeedqZ00RV1DW7dZYb0FnGa6RZH8UGogOYmnUNpGJczI4OrVhOyltJu8FSZ2VbGgHFrO8avMiyFp/t9h1R9zu0Gdhe02S+Z092hPNjjcN72O5SsogN52/5fJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781519477; c=relaxed/simple;
-	bh=qpkPZrddTktA09G7g0zahjanO831RtkJTYtOiWYXRjE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RSiNV9HTwi8cM+L0B6qSvZhlxMcBWF+LvbpOV+c5QErIB0Fy/qc0yNs6QdQbrWg2MoIzfJ5KlPvzyP/c3C6RayucMPVCv/W/Wn3aBNL53/8/6m3kO5Xtd6dR/dv/h+3Xm1TIOsmzUDNFesCtc6V4DfJKGnQizoNv4QltWvYUb1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ABd9Y7+1; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1781520213; c=relaxed/simple;
+	bh=3yAHPoiKaxpCvGRtA07MNdia4xyAMd/XClNlGDs+yTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y1kasskeBL+85Js8865CIvwzAGZz6LP1IlTvhKq3QHvA4iyU9QNhxsvdqgM7gSVqRX7KZy45598gexbkNLHaupYsXPjFBjVallpNo2vwS6jxK+sOU7rz+SMRlfh8k3ozW741jlPSMlk5WXwqRnGLAVEsh3v0LsyREddw2T+xSKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YilFCdw7; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ABd9Y7+1"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FALnbF2170900;
-	Mon, 15 Jun 2026 10:31:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=QN3Vcg
-	DDG2JDeFuKfB1LC6ism++xsGkFNC09mqe7VoQ=; b=ABd9Y7+15RqdxpjhLVMW7i
-	oG6GcrJ+7yAraIsDbP6r3EYuozDnvrZ5JlNvIhMoD2sUrnIBn5BhBSe5rUkvnS//
-	2xyV1YfGIrti9PIpZ6tl3UjIA5Htkvg3cUlsHIs06VSI7quYEA0DGjFeSFphvEwp
-	9XqHiC46s56kc40TE0mvYl3j3j86oD+bzuu5otSdcw904I2b3KDv7SZZ54BNNqAn
-	JOLHJQ0O0rvuu2D31klZJqumExN9ZLNAEvSE6ruNNbbfx0ArzxCvoRLAJXQxmMzw
-	KsF5nFFepysJtIZokvfhs+xbUJ/vQ6jLq07bwDVzUhVu5yssK4U6uN3B6yv8tGCg
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1v27jr5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jun 2026 10:31:12 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65FAJt0l017206;
-	Mon, 15 Jun 2026 10:31:11 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4esjhjx3vm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jun 2026 10:31:11 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65FAV7TD31261342
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Jun 2026 10:31:07 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AEA2D2004B;
-	Mon, 15 Jun 2026 10:31:07 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B028920043;
-	Mon, 15 Jun 2026 10:31:06 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.111.31.49])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 15 Jun 2026 10:31:06 +0000 (GMT)
-Date: Mon, 15 Jun 2026 12:31:03 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com,
-        gerald.schaefer@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, svens@linux.ibm.com
-Subject: Re: [PATCH v2 1/1] s390/mm: Fix handling of _PAGE_UNUSED pte bit
-Message-ID: <20260615123103.118af04a@p-imbrenda>
-In-Reply-To: <20260615094300.31370D7a-hca@linux.ibm.com>
-References: <20260615091741.76724-1-imbrenda@linux.ibm.com>
-	<20260615091741.76724-2-imbrenda@linux.ibm.com>
-	<20260615094300.31370D7a-hca@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YilFCdw7"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CAEB1328D;
+	Mon, 15 Jun 2026 03:43:24 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 75FD73F905;
+	Mon, 15 Jun 2026 03:43:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781520209; bh=3yAHPoiKaxpCvGRtA07MNdia4xyAMd/XClNlGDs+yTQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YilFCdw7wnbi02p8Ri37XQ9LOpP+gWIbj1xLxh6VFzlKpkicKF+zKdXigOj42eUFe
+	 ECB8oiTRkLs1UEvL96SQTRLUaBxPXfMXbysW2WvyNOHsHoIAo9UCdTxpZcD/tf4F/m
+	 bGpKZ3AP3paUcX/S/ZEhVk3Sy2CPal6yF/LtIlWA=
+Date: Mon, 15 Jun 2026 11:43:14 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Chao Peng <chao.p.peng@linux.intel.com>,
+	Nikunj A Dadhania <nikunj@amd.com>, Ira Weiny <ira.weiny@intel.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Fuad Tabba <tabba@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Nikita Kalyazin <nikita.kalyazin@linux.dev>,
+	Patrick Roy <patrick.roy@linux.dev>,
+	Pratik Sampat <prsampat@amd.com>,
+	Ashish Kalra <Ashish.Kalra@amd.com>, linux-fsdevel@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
+ non-confidential VMs
+Message-ID: <ai_XK__RTXMCEcCG@raptor>
+References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDEwOCBTYWx0ZWRfX5hHOk1ZuxNGY
- nNfZ2XQHul7aCXeipCKss880xTDpAHqa3KrUr8BFOKiZ8ygZwhN+bEaitPVo9bWZpCoQOzu6xRC
- h+s49sClOHqVi9sUpezKbh1z3NuSv9I=
-X-Proofpoint-GUID: kIgLwMuMqBmwAp0b3TeX_gHAroRycqoF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDEwOCBTYWx0ZWRfXxh5qOsiH4UtL
- d0TKQnPjcTrjs6y8aeCTRA4p8FENnFQLqV3cEtXrY4tujxMWWg+oMzm0BZBQbOthPQ357YATrwq
- VTz14RD30NVG9rVpk/UVeoqiJp183947bSKO0h/TFD9Lm10bW6A8IIRPRvC0bpaGz+K753hjeDH
- QvT+jkn4sCK99VSByB2CK3z4c0MnGYzETWmqGZnyVImCMcMz4ujiWS+eFk/Lo9CkqpQfPrYEbYo
- sqy3BnImvMkW51lQNnk4BVos68Ut+wWB9py89yNFPhylCgpB872qYakRYv5xPteDimMGLK14ca/
- VoR1UpJVZnr8ziwx8K9iunRbnD+y5RtAS2m4+uI/JJeUParlYzMR1Ia7XZfHdptfmQs5IYR3a3V
- HIRcTkql4x44wdzCtbcHBz83vFYPWrKH36D5EmYaak1uhotWamxRS6h5SO8/oonn7tswhixJyBh
- 5FXhtw2SmWIWWJl/ueA==
-X-Proofpoint-ORIG-GUID: kIgLwMuMqBmwAp0b3TeX_gHAroRycqoF
-X-Authority-Analysis: v=2.4 cv=Dd0nbPtW c=1 sm=1 tr=0 ts=6a2fd470 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=4puLx-HAH6mwxuCUj30A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-15_02,2026-06-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 adultscore=0 suspectscore=0 phishscore=0 spamscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
- definitions=main-2606150108
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
 
-On Mon, 15 Jun 2026 11:43:00 +0200
-Heiko Carstens <hca@linux.ibm.com> wrote:
+Hi,
 
-[...]
-
-> > @@ -175,6 +179,8 @@ pte_t ptep_modify_prot_start(struct
-vm_area_struct *vma, unsigned long addr,
-> >  void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
-> >  			     pte_t *ptep, pte_t old_pte, pte_t pte)
-> >  {
-> > +	if (pte_present(pte))
-> > +		pte = clear_pte_bit(pte, __pgprot(_PAGE_UNUSED));
-> >  	set_pte(ptep, pte);  
+On Thu, Jun 11, 2026 at 01:05:07PM +0000, Shivank Garg wrote:
+> guest_memfd folios are currently marked unmovable, so the kernel cannot
+> perform NUMA-balancing, memory compaction, etc. This is unavoidable for
+> confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
+> needs firmware assistance. However, for non-confidential VMs (like
+> Firecracker), we can migrate the folios.
 > 
-> Can't we move the logic from set_ptes() to set_pte() instead? The above
+> This series enables folio migration for non-confidential guest_memfd and
+> also lays the groundwork for migrating confidential guest_memfd later.
+> Once firmware-assisted copying support is available, those VMs can be
+> made movable, the confidential folio content can be copied separately,
+> and the destination folio marked with FOLIO_CONTENT_COPIED so
+> __migrate_folio() skips the host-side folio_mc_copy().
 
-set_pte() is also used for things that are not ptes, and in those cases
-we probably don't want to touch that bit, although technically it is
-currently unused for present large pmds and puds.
+I always thought that one of the nice things about using guest_memfd as a
+memory backend, as opposed to host userspace mappings, is that the host
+cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
+collapse, compaction, etc, acting on the host userspace mapping of the
+VM memory, and outside of the VMM's or KVM's control.
 
-> approach remembers me of the open-coded removal of the no-exec bit at many
-> places we had, which became a maintenance mess until it was rewritten.
+I think it would be useful to preserve this behaviour, even in the absence
+of confidential VMs (i.e, guest_memfd file descriptor created with
+GUEST_MEMFD_FLAG_MMAP).
+
+Thanks,
+Alex
+
 > 
-> The compiler _might_ even be clever enough to move the removal of the bit
-> outside the loop within set_ptes().
-
+> Testing
+> -------
+> Host: 7.1-rc7 + this, 2 NUMA nodes
+> 
+> - KVM selftest: allocate folios on node 0, migrate them to node 1 and
+>   back and verify resulting NUMA node and the folio contents at each
+>   step.
+> 
+> - Firecracker [1]: booted a microVM backed by guest_memfd. While the
+>   guest was running, forced host-side migration of its folios via
+>   migratepages(8) and explicit move_pages(2) of guest_memfd
+>   pages. Verify with /proc/firecracker_pid/numa_maps.
+> 
+> [1] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
+>     and change builder.rs to remove GUEST_MEMFD_FLAG_NO_DIRECT_MAP from
+>     vm.create_guest_memfd()
+> 
+> Best regards,
+> Shivank
+> 
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+> Shivank Garg (3):
+>       mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
+>       KVM: guest_memfd: support folio migration for non-confidential VMs
+>       KVM: selftests: exercise guest_memfd folio migration
+> 
+>  include/linux/pagemap.h                        | 24 ++++++--
+>  mm/compaction.c                                | 12 ++--
+>  mm/migrate.c                                   |  2 +-
+>  tools/testing/selftests/kvm/guest_memfd_test.c | 77 ++++++++++++++++++++++++++
+>  virt/kvm/guest_memfd.c                         | 49 ++++++++++++++--
+>  5 files changed, 149 insertions(+), 15 deletions(-)
+> ---
+> base-commit: 4549871118cf616eecdd2d939f78e3b9e1dddc48
+> change-id: 20260611-shivank-gmem-migrate-8c1c519b30a6
+> 
+> Best regards,
+> -- 
+> Shivank Garg <shivankg@amd.com>
+> 
+> 
