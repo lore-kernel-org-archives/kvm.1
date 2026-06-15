@@ -1,40 +1,51 @@
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD2D7080D;
-	Mon, 15 Jun 2026 00:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420891D416C;
+	Mon, 15 Jun 2026 01:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781485179; cv=none; b=L/XBIADJTn50SVQ3LxMflHXt6zoFJyVCL4MfUjyRfQOzHpyRglURKtVsuyRMBV0pBKr5Mb25Qsvs73BRUyD9CHraeEDm44FBjUMPCPU5H87jWtuOk7ms1Octlklytm+OsSrNjoa/EtpJwo0GklSUdPJZR6u3IZDM+cREsPwp+yw=
+	t=1781485884; cv=none; b=uIp55Sg4xFd6wMO2X5mu3P7fZzDZsaembmUEdMgYDNZVU7fbgRRZiNLizP5sJccOsozy7xB2+XFRjQgNqwKkPPTX9+b23bsYNYmQzugyeQSY6oLwK659y4mcT+ojKiNrJzR/Pz1+WLsAqbg8W840wjpaVELW0GjNhs86+6r7Kas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781485179; c=relaxed/simple;
-	bh=yC/BFsu7rOTj60DsdBxnueOEKAkiy69Q+7JMAXjOQnQ=;
+	s=arc-20240116; t=1781485884; c=relaxed/simple;
+	bh=fvkw8AnTeqFfJPet5zd38ViFUQFIdOE3Ewp5RPtxVCY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VkjHSRBKGPXQYe+o3H15KKcVgPN8/pxUMrK5hRYXm9b+vpAdeXjigtXdKtxlx9PG/R3+h73kLrTM1IaFMawGZcj+/MmiVXqt0mrEA7Uh2nK83jxD00kbzg8MbznTRXqiayLLNYSIYNHSaPxWteIEfrt8zEW3FaP19Grntb3QDWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=AzLtbr/L; arc=none smtp.client-ip=113.46.200.227
+	 In-Reply-To:Content-Type; b=K7hwrtA974Ou1/DnTg4RUwv7kLw81FthMzowjyDzWS7/qr1qAmRUCa/e+zsZviQBxYtx9jlu0Cid7eVka9dt8TOWRfv6EmLQ6OULkpKKs9n/oyr7hdgyODIIfgks2t+Yshn081yyhKX/jJ4TgcuOvBvwOSsL9i1nDlUKB3abr/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=iJ0Yuazp; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=iJ0Yuazp; arc=none smtp.client-ip=45.249.212.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="AzLtbr/L"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="iJ0Yuazp";
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="iJ0Yuazp"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=Cfdw/mn+aegjQt779+hXZRE7+aiUd93avhGXNwuYSWM=;
-	b=AzLtbr/LAc6GgglPpfKQUUdJyMF+Eig5aA07GxEb19kz3sbv/v3cGj2X+hw90589uoq40IQSk
-	WIKPredsHFXdp1j4to/EdKTHTESZ0zG8aQjhAlnfR1tzl/AKaibLVAZsf0SWMLGW2Cm/vCR9a86
-	kTqVFhcyeHVHkCv4OGqOYL4=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4gds3s5CpjznTbY;
-	Mon, 15 Jun 2026 08:50:33 +0800 (CST)
+	bh=E7ZvbE7BwtLHMzXQlT1GQ43SMkNk7cDPFW0RcMil7y8=;
+	b=iJ0YuazpIvf7mPsTmABXDLDD3MERRs48OsH+rxdQ8qjKsgFqrSX1m9zauAyqDXhAA7lPoDWpn
+	uwDejTXHrQM/ZHgzmtaqtGrHG4GhP2EvqyMXVZcQJ1TtilVK+RyMkonZaRKx/22pa2zmVoTQMaU
+	GB7ttfdvR9V64VEwnfTUq/E=
+Received: from canpmsgout08.his.huawei.com (unknown [172.19.92.156])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTPS id 4gdsWB2gN8z1BGdb;
+	Mon, 15 Jun 2026 09:10:46 +0800 (CST)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=E7ZvbE7BwtLHMzXQlT1GQ43SMkNk7cDPFW0RcMil7y8=;
+	b=iJ0YuazpIvf7mPsTmABXDLDD3MERRs48OsH+rxdQ8qjKsgFqrSX1m9zauAyqDXhAA7lPoDWpn
+	uwDejTXHrQM/ZHgzmtaqtGrHG4GhP2EvqyMXVZcQJ1TtilVK+RyMkonZaRKx/22pa2zmVoTQMaU
+	GB7ttfdvR9V64VEwnfTUq/E=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gdsLG3DmkzmV70;
+	Mon, 15 Jun 2026 09:03:02 +0800 (CST)
 Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id E153640565;
-	Mon, 15 Jun 2026 08:59:22 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id C17044048B;
+	Mon, 15 Jun 2026 09:11:00 +0800 (CST)
 Received: from [10.67.121.161] (10.67.121.161) by
  kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 15 Jun 2026 08:59:22 +0800
-Message-ID: <28ce60f0-41d4-4f69-9069-8388bb4a8659@huawei.com>
-Date: Mon, 15 Jun 2026 08:59:21 +0800
+ 15.2.1544.11; Mon, 15 Jun 2026 09:11:00 +0800
+Message-ID: <b7a1e71c-c2d1-49d1-993c-c50873b92fbd@huawei.com>
+Date: Mon, 15 Jun 2026 09:10:59 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,44 +54,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 5/5] vfio/pci: Latch all module parameters per device
-To: Alex Williamson <alex.williamson@nvidia.com>
-CC: kvm <kvm@vger.kernel.org>, Alex Williamson <alex@shazbot.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>, <kanie@linux.alibaba.com>
+To: Alex Williamson <alex.williamson@nvidia.com>, kvm <kvm@vger.kernel.org>,
+	Alex Williamson <alex@shazbot.org>
+CC: linux-kernel <linux-kernel@vger.kernel.org>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, <kanie@linux.alibaba.com>
 References: <20260611213539.4100590-1-alex.williamson@nvidia.com>
  <20260611213539.4100590-6-alex.williamson@nvidia.com>
- <06ade652-fc43-451e-a3ef-a8b6051e5c9a@huawei.com>
- <20260612081124.6228fdb8@nvidia.com>
 Content-Language: en-US
 From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <20260612081124.6228fdb8@nvidia.com>
+In-Reply-To: <20260611213539.4100590-6-alex.williamson@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  kwepemk500009.china.huawei.com (7.202.194.94)
 
-On 6/12/2026 10:11 PM, Alex Williamson wrote:
-> On Fri, 12 Jun 2026 16:40:37 +0800
-> fengchengwen <fengchengwen@huawei.com> wrote:
->>
->> Since nointxmask and disable_idle_d3 already have S_IWUSR and share the same
->> "latch per device at init" behavior, it would be better to also add S_IWUSR
->> to disable_vga for permission and behavior consistency.
->>
->> Runtime writes will only affect future devices, existing devices keep their
->> latched value, so no extra risk.
+On 6/12/2026 5:35 AM, Alex Williamson wrote:
+> The vfio-pci module parameters of disable_idle_d3, nointxmask, and
+> disable_vga latch vfio-pci policy into vfio-pci-core globals each time
+> the vfio-pci module is initialized.  The disable_idle_d3 parameter has
+> already migrated to a per-device flag in order to provide consistency
+> for refcounted PM operations for the lifetime of the device
+> registration.
 > 
-> The difference is that notintxmask and disable_idle_d3 are typically
-> diagnostic measures while disable_vga is a feature mask.  disable_vga
-> has never supported runtime modification.  So, while I agree it's
-> possible, this would expand the scope of this series from bug fixes and
-> behavior restoration into feature enablement, which should have some
-> actual use case in mind.  Therefore I don't intend to pursue it in this
-> series.  Thanks,
+> Pull the remaining vfio-pci module-parameter policy out of vfio-pci-core
+> into per-device flags set at device initialization.
+> 
+> This also restores the mutable aspect of the disable_idle_d3 and
+> nointxmask module parameters for vfio-pci, with the caveat that the
+> parameters are latched into the device at probe.
+> 
+> A notable change for variant drivers is that their devices are no longer
+> affected by vfio-pci module parameters and those drivers may need to
+> adopt similar module parameters if any devices have a hidden dependency
+> on vfio-pci setting non-default policy.
+> 
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
 
-Understood and agreed. Thanks for clarifying the scope.
+Acked-by: Chengwen Feng <fengchengwen@huawei.com>
 
-> 
-> Alex
-> 
+Since this change will affect our TPH feature, it would be great to get
+this merged promptly. We plan to send the updated TPH patchset based on
+this work.
 
