@@ -1,94 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7857F396B7F
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 19:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B973A783D;
+	Mon, 15 Jun 2026 19:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781552289; cv=none; b=uD0qzK1AQXJkTmxHIRl2jX5Zg46dcDqcVWDseHqZiTXapwPnuDjoBap01iq3HLxVYnEOVs8/Jo3SD3ZVJJc6eBY1CsLzpYgk4HJgfNWfpmdDb/nH73ReaiYaDb1cae6YaM7qHK7252+Ux8ZnLInuJpUcrgawCBN3d9QvupTAjPE=
+	t=1781552735; cv=none; b=n6lUQRXN7MVPgVUwKR3Le62lUWAm9gwdVSiRhvSczzN2g5h/o177k48ZyizFPrqtZZQcsrZ8a4inSxR5hDgW8p0DFOuLZqTx1r9Oi6zIbzFTI+5T9kIisJZVbtz33IcN59uVTGNI0b2fxze6UMcyPIF/RQ+SdgQEm1TvJ7RNTXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781552289; c=relaxed/simple;
-	bh=lrgqIF/mjECQo6WT3ktE1TEVzQwCweh6IAPMwloAr5s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N3pur3nz9haEQOPBF9ic2PXgOXIWHMAV/s+xCiJnNMQH/nWGYAB/b51mUWlYKiTJzr5OWMIs48RoPX2w3N7g0VJC5S41vnvSC6Im6kwd+X19gefaXtCoRqchWmIpS4nYiHDxUT/nWthgkWRQ7xYBM1Bs1uCjHc3WE5RIwZsPJlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1m/cpo0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781552735; c=relaxed/simple;
+	bh=FDHf7U4X55reFqVUhfhhoBmGKF3N0D8S+rd2ezxiNKg=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=jj86pveIFH8IpWHz3d7+ZDyyoR2hZtMkiE7uxdOF59ijfmKLM/Zdpnmihu15WbSMIMLdpPzks1+N7U83VfJJJtdQJEuoBNkkMVeM/etjUbiOFJ6XozjzVpQ5Omr3468ZErqeFOCyktzHk9YhfmmtTWUhHsXGE0Y3+MoZyY8fPmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=S0HuVtXD; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1m/cpo0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31FE71F00A3A
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 19:38:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781552288;
-	bh=3RSQeke4udSklKG4LzWW0CPeGYZoTqU0etBOUbfF9U0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=n1m/cpo0g2wzcP9EPQfp3+Bi6OTf8udMiaSbr7Dw903QIS91mhkARunvFV7GpmNaD
-	 vh9Qs9HvwogTPPv3YINXyQHYBRmCSKlgH2TwW471nlsBHwCHKGNMo4pp77f74DgYST
-	 X81Uqy7sGRz91cRdDQ+eEPywtStU82JKmN7PmOGDKJtVobJgWgSWDahMc3r4jWno5p
-	 QbsP5wBkVO18kthas81SNvk5DKp1KI4dXeS/9fOtaNyV1XlbpF6dpKSoy4D/DvG8UC
-	 ax7JsSPu+tAQ0XBuzqOgNrEE1caN3crW31aw1pRDauEQR/EYviGvw4n+CS66/M6FMl
-	 uuv8NAwarWuQg==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-beb8a08a6c8so523991966b.2
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 12:38:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/ZvxGWIhNvUHQKI1tFYThBXjv/gSQjg6CciYBWNMsHTChrlekoH80BEV8Gk9MKmE/b4p4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLIsU5ki9ocT8EXoIEJn9OzzzP64hD44qOLx6SqIhCX14hLFC3
-	Z3xdKH19vRW5eaXR2j2iXfCavDpA8Ni8Ur9H9hPwZyPA1cncJFRiI2owNBfWcyl+WeTwrfbNhtn
-	w6PRUBnn1A2qamgLf8Yv5MHttH6zoMtw=
-X-Received: by 2002:a17:907:1c13:b0:bec:5ebd:e169 with SMTP id
- a640c23a62f3a-bff4a30f33emr637491566b.22.1781552287188; Mon, 15 Jun 2026
- 12:38:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="S0HuVtXD"
+Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FIwEJ32969350;
+	Mon, 15 Jun 2026 12:45:26 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=s2048-2025-q2; bh=5OK8nAMoINAkcKNytQ
+	hxl9ERv7t4F+5ekKo/R203pZc=; b=S0HuVtXDox86Bj4nvVXFxPYjdvekHaoIyR
+	lOyiTB1edn0wksYvEMuyScyXsbx9vNPEaVM8ILqrrSCpH2qsbRT52nTjmS/kdN+z
+	Hs1zE0+z3T40Y8cSoeVVDlhTi6b8ofykfzAsvPZlmlo3ANhMZgEmCYZfkCaNZfVO
+	Epo7Rm3pTRYC9GUiwgIYsLBqHK9eOJ5n0NiUJN4BB9llbYi85PNJrzTTDaGp5ntW
+	B28dJuyYk5eW9SLjN7Kxi8v4wc31qO3XQcqIMFuDew9ky8a/Kf2UyWgLvCcHJIFg
+	QdPuWor3w7Ynph5Jk/EdJXtGO92ghi3oTPp+7QtbKHllumMsGK5A==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4es4a6ketk-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 15 Jun 2026 12:45:25 -0700 (PDT)
+Received: from devgpu015.cco6.facebook.com (2620:10d:c0a8:fe::f072) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.41; Mon, 15 Jun 2026 19:45:22 +0000
+From: Alex Mastro <amastro@fb.com>
+Subject: [PATCH v3 0/2] vfio: selftests: Add calloc_assert() and avoid VLAs
+Date: Mon, 15 Jun 2026 12:44:50 -0700
+Message-ID: <20260615-scratch-amastro-vfio-selftests-avoid-vlas-v3-0-b3798415c72a@fb.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-27-seanjc@google.com>
- <CAO9r8zP4aYJ8SuL+eWXOch=BByfWmmCGVRwkHo=1cVx8Y5JAPg@mail.gmail.com>
- <CAO9r8zMX3_JgrJNQGuvFaANXKsA4hMEgO7=OS=q=-AA4mMhhaw@mail.gmail.com> <ajAwSMLG9OJfnVQT@google.com>
-In-Reply-To: <ajAwSMLG9OJfnVQT@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 15 Jun 2026 12:37:55 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOfhY_tT3JvtOx-3rkrsRYB67whp2ZDwR9pkarEpAtSCQ@mail.gmail.com>
-X-Gm-Features: AVVi8CcrZnpYMC3q8rcx31MKWdaBG9VMLAd76DRFvbUdC2n29PZpUki48tXo7_k
-Message-ID: <CAO9r8zOfhY_tT3JvtOx-3rkrsRYB67whp2ZDwR9pkarEpAtSCQ@mail.gmail.com>
-Subject: Re: [PATCH v4 26/30] KVM: x86: Don't treat interrupts as allowed just
- because a nested run is pending
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Kai Huang <kai.huang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADJWMGoC/52OQW7CMBBFr2LNmqliO4marLgHYjF2xo2rgJHHW
+ CCUu1ehi7Klyy89vfcfIJwjC4zqAZlrlJjOMCq7U+BnOn8xxglGBaYxfdNrg+IzFT8jnUhKTlh
+ DTCi8hMJSBKmmOGFdSNAOHTs7eWfJwU7BJXOIt2frcPzdcnXf7MsW2Ig5Skn5/jxT9cb9p1s1a
+ nRkybvedqGhfXAfPp1gi1bzqu3e0RrU2HI7hbY3Q/P5p13X9Qc0niYCSAEAAA==
+X-Change-ID: 20260612-scratch-amastro-vfio-selftests-avoid-vlas-395eb3dcb3ab
+To: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Raghavendra Rao Ananta <rananta@google.com>,
+        Vipin Sharma <vipinsh@google.com>
+CC: <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+        "Alex
+ Mastro" <amastro@fb.com>
+X-Mailer: b4 0.15.2
+X-Authority-Analysis: v=2.4 cv=V5dNF+ni c=1 sm=1 tr=0 ts=6a305655 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=03ozwUkBphtHgyqjj1sw:22 a=bC-a23v3AAAA:8
+ a=FOH2dFAWAAAA:8 a=-R2Yz_5xwDJVClEb3P0A:9 a=QEXdDO2ut3YA:10
+ a=FO4_E8m0qiDe52t0p3_H:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDIwNyBTYWx0ZWRfX82tHIkm6SdNU
+ KITes8P7pcliO5X+zOnKbSHP31T1EvTM5zRb72gTbDndkiHVB2coHlcqehYU3ft0bMg5gj1pXxK
+ SdkQKpfcK2vtxydjQymrsAuSOzkg5VMiu6ucC6RntQ4XaagT5ISzqQfWLMzLnUMVEKBBOM3/UPW
+ R52kgbFQYrbqRSdMuZ5zCu9FMLBp+pYPpdrKNR2DYXvrWtIhFVEvE7dZe6P+kLc+O69C6r/1a8n
+ 0utnzPOiU87a04lMdoqVTwA081Ypq6FKNMYtqqJCyMYLqPYMumgvZ5Jt8wvn2OALT4IQPQ2eioD
+ gOuQvnw7PTWgfgEXofKqalpyhUsisllikSFh53XruB1JUbSApI2A8+OBjju+koLgt5TRb0939Qo
+ x1hntEQfpLzcMjpXBgRLK7xTJmx/Z9k9UQ9cLRWQDT9JJlvRlSnHkoEZs0xgs3Jp+o6Ww0f6w8I
+ XqxD/ZlBfbkKqUPXJEw==
+X-Proofpoint-ORIG-GUID: FHcJVT5AfOZN2xUXyXjUsrJ6Fcuck-1d
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDIwNyBTYWx0ZWRfX7DiqU0pBhypx
+ 11p+Y1HdGD99Dv5B5ph8zOlK7sE/4vao+NkUCRu8CHA7MEBR6i7/TkBTSXNWfPnL8YkFME+F7Y+
+ q8JwHPAZ4jplMKmUqAFMfbVVl9KoV2Y=
+X-Proofpoint-GUID: FHcJVT5AfOZN2xUXyXjUsrJ6Fcuck-1d
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-15_05,2026-06-15_04,2025-10-01_01
 
-> > > 2. Aside from TDX, seems like {vmx/svm}_interrupt_allowed() are doing
-> > > the same thing? So maybe move all that logic into
-> > > kvm_arch_interrupt_allowed(), rename it (because it's only used by
-> > > x86), and make interrupt_blocked() the actual per-vendor callback?
->
-> Doesn't work, at least not with more changes/hooks, because nested_exit_on_intr()
-> is subtly vendor specifc.  The concept is identical, but the implementation needs
-> to query vmc{b,s}12. :-/
+Add a VFIO selftest calloc_assert() helper, then use it in places that
+open-code calloc() or malloc() followed by VFIO_ASSERT_NOT_NULL().
 
-Duh, obvious in hindsight :)
+Use that helper to replace initialized variable-length stack buffers in
+vfio_pci_device.c with heap allocations. This avoids GCC rejecting
+initialized VLAs and avoids treating a u8 buffer as a possibly
+under-aligned VFIO request struct.
 
->
-> I'm not opposed to figuring out a way to move the logic to common x86, because
-> I agree that's where it would ideally live, but I don't want to tack that in this
-> series.
->
-> > > I assume this is the case because nested_run_pending used to be per-vendor,
-> > > but now we can clean this up. For TDX, I assume the per-vendor hook can
-> > > just be tdx_interrupt_allowed() reversed?
-> >
-> > It also does the renaming (nice!), so we're halfway there. I think for
-> > this series, we should at least convert all direct calls to the vendor
-> > .interrupt_allowed through the new kvm_is_interrupt_allowed() helper.
->
-> Sadly not in this series, because handling the for_injection=true case requires
-> moving the nested_run_pending logic to common x86, and without that, we end up
-> with two very silly wrappers.
+Changes in v3:
+- Add the calloc_assert() helper as a precursor patch.
+- Convert existing VFIO selftest calloc() assertion sites.
+- Update the VLA fix to use calloc_assert().
+- Link to v2: https://patch.msgid.link/20260615-scratch-amastro-vfio-selftests-avoid-vlas-v2-1-4e4df462908a@fb.com
 
-Yes. I think probably the way to get there is to replace the
-.interrupt_allowed hook with .interrupt_blocked and a nested hook to
-replace nested_exit_on_intr(), but I am not sure if performance will
-matter here if we do two calls instead of one. With that, we can end
-up with most of the logic in kvm_is_interrupt_allowed().
+Changes in v2:
+- Reverse xmas tree variable ordering
+- Link to v1: https://patch.msgid.link/20260612-scratch-amastro-vfio-selftests-avoid-vlas-v1-1-ba3acb635f0a@fb.com
 
-But yeah, at this point this is definitely not something to do in this series.
+Signed-off-by: Alex Mastro <amastro@fb.com>
+---
+Alex Mastro (2):
+      vfio: selftests: Add calloc_assert() helper
+      vfio: selftests: Avoid VLAs
+
+ .../selftests/vfio/lib/include/libvfio/assert.h    | 10 +++++++
+ tools/testing/selftests/vfio/lib/iommu.c           | 12 +++-----
+ tools/testing/selftests/vfio/lib/iova_allocator.c  |  4 +--
+ tools/testing/selftests/vfio/lib/sysfs.c           |  3 +-
+ tools/testing/selftests/vfio/lib/vfio_pci_device.c | 32 ++++++++++++----------
+ .../vfio/vfio_pci_device_init_perf_test.c          |  4 +--
+ 6 files changed, 35 insertions(+), 30 deletions(-)
+---
+base-commit: a26b499b757cfc8bbff1088bb1b844639e250893
+change-id: 20260612-scratch-amastro-vfio-selftests-avoid-vlas-395eb3dcb3ab
+
+Best regards,
+--  
+Alex Mastro <amastro@fb.com>
+
