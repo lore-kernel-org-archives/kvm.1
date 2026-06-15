@@ -1,133 +1,122 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745B62E1F02
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 17:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9314C8635D
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 17:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781545637; cv=none; b=qwaJuntxfR+prBQLq5PaNz+AZbvR+6e74jxRdtIijGVS6875pZGelghkQa+7BTyI+WG+mBTVHbY8BYy3KiTj/nn3vdQtDmG9KchBHj1jiOsdk0xz7qsSxGGW7/D03rJFseQSMKIsud0h8r/nuFvJ1k6EkTFmMynh+GE+l1R+HTE=
+	t=1781545714; cv=none; b=nO4Gi55jtyBRDtSbXDvygY1M5z3CT9OfJM6lks5J1AZ0kOyrSYtk9vcfn/Fuw1J+zSfv3uIXP+f/4kwDYEL573phiglQgvJhnS0jpkjB9+jOLHJpkO7N3CKjXKUNfC6H6P1pYJt4ytiqbwG8b1a/S0o3eZjD1cAf7qSdif7X3Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781545637; c=relaxed/simple;
-	bh=2wv4DrmR9rVmtjiewqbUMk/LFbbWJqr8zKExRv8iTCc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Arh0s1m2qZCo8J5Ut6qc2p1RdA1TCyk1eyFt2U40fy8ZjtaEQzJDJGRnFojRszqKGWtBTamPUV4FD5uwFhexTGEa6Hpc+naAOOIeES6MflCJebx0kZ2rEinYl5EwrMN4ubKvHkJlCByGg06Od7yEGx/nkF1Jo1mMbI3/058jN4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jglhkM/7; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781545714; c=relaxed/simple;
+	bh=/gnzHc+oF76xE4aXroL6vc7daqNTNOlLFEMzfWkiIuY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=rIuvpqj0ldcK4ScWyJ34Kn8gydSv2WIP35qS0xHhlQoPtD9s0dVJFsc4uTISBJ+fOFlCOVi7c7KZFDtyjmYwngtm4eFrFx6SFZNFcgG5EsQkJ86AkdWnJXFSzuG9D6Xw9A/SmNpfdvc71Am0BVon5v/OJWSGTwah7tnQQjeaOQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K3/+HNWO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jglhkM/7"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8581f7723aso1726809a12.0
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 10:47:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781545636; x=1782150436; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+VDX/a34KwI6qjOxB+SOsUTAEqmtLSVOgiOVOtsI+2Y=;
-        b=jglhkM/7pOYEEHiiVjUzmrzRLf2JbJjsK/E2VAxp0fueOkATEK3vbGFkKOcb4BnONt
-         kgVcBAYyfNYysIVPFqWpNEQ338m1IjBxfZxjww1bUG2ymBe2aBkx0CW8aoJm8KhlzYja
-         2SkSEZbYmg9MVeyp90pnhijT+BrG3e9a+lZeshszQjE2Eo/vman22trpyAzT3PfJ03cU
-         iWSjk67gZP9MxfBtFZyGuIOA5MjPr97OjwqTpM7WAGjE+5xRNIZ4ybZ3KR8urZpW7rkZ
-         zmSwhglj7+UaA72GKlen+I3+H7d2NuE4cf1UjMyIpxb1DjSxF7cuQ8tUHiAVFkGy9Hmv
-         e7nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781545636; x=1782150436;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+VDX/a34KwI6qjOxB+SOsUTAEqmtLSVOgiOVOtsI+2Y=;
-        b=jlfgokgyQf7kLVUqk3i1/xWCnjlorlhjcBHmdZ9xhjnsEsRbBIicN10Y+b8HicsHp2
-         mbgzU6kRIVkNB+tmcF7cBO7xqRhOuNKI1m4TzNpfjkiE6eBng3HBNKP2qiBPZMol54FF
-         WwW8vMaCoX/ED98+xHXS5/g+tCAs81GaChVQlCWJjdmfjEbwmozh1RkpFcVaFljLjhap
-         epZsJmHrz6tAG//6AG6zJJ5agwn4HTKIbnvpZ5dRJ/MoLAgA7OMYHjIqmqc6J7g75Fwk
-         eVpXGzd2woytxf+ID9PgCqv7weof4/F7Mu85IpNYE6Dn9QLJ/Id71sOYldjDjstIrq/y
-         U5yA==
-X-Forwarded-Encrypted: i=1; AFNElJ8s1zbkb9YkOI34riMesOhdn/udksJRldlNnAl6SVO4AlUiVp5pD5f5+RP6ORijWON8rvQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHTxrqkVQnHstMJaK3xFjb986AReSaYF1ZLU3NgvS1xSHRsrlA
-	4sCsh8298LVvlTHKmYc6k2zWOCRf1kcznxPdRTkjSYW6yXd3sb8stwfVR6xCHJny/N1p7Esw1T8
-	Nczc1xw==
-X-Received: from pgaf19.prod.google.com ([2002:a63:3813:0:b0:c80:2656:4e70])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3c89:b0:3b3:241f:66c6
- with SMTP id adf61e73a8af0-3b7e4cf86b3mr95295637.26.1781545635135; Mon, 15
- Jun 2026 10:47:15 -0700 (PDT)
-Date: Mon, 15 Jun 2026 10:47:14 -0700
-In-Reply-To: <20260615160901.9A1A61F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K3/+HNWO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE741F000E9;
+	Mon, 15 Jun 2026 17:48:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781545713;
+	bh=dv0fFKasvEKYfvytW7Ect6TsBd5Wxl3YDiBaA2r/B4I=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=K3/+HNWOd+2k1jzL90+IfyKomKsBDUzs7Lb5TRqr1JaQQL0pWVXalGxr/AQK1rP7a
+	 qFUh19VH2YWIA5aO8r8LAdMJsabC9zoIwlH4M12htO8hdGmRPGIHcPDHDB3SBvENPz
+	 Rwo+q4FFvJpVP0OAJNI2ZUlvwmmKaVZge3gwWsNfKF/0R3M+WFUZlKaFwIGR3nr3Xk
+	 FAk2DCPtuKU3/586JiFAGPAyGSkU4S/lw4WFoBWYfhIbo90NCP2Mv+m556c4e1qA+w
+	 uh0iW53iGDZ7s873W5js3VLWRQnzBtaZc4oQ4kPznICRlm/sGdJFODt2gk8NNhlg3g
+	 aVuX4FYRwG/BQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] vsock/virtio: rework MSG_ZEROCOPY flag handling
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Arseniy Krasnov" <avkrasnov@rulkc.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260614174756.170631-1-avkrasnov@rulkc.org>
+References: <20260614174756.170631-1-avkrasnov@rulkc.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 15 Jun 2026 17:48:32 +0000
+Message-Id: <20260615174833.4BE741F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260615155244.183044-1-alexandru.elisei@arm.com> <20260615160901.9A1A61F000E9@smtp.kernel.org>
-Message-ID: <ajA6ogaNiI3KDv5i@google.com>
-Subject: Re: [RFC PATCH] KVM: Ignore MMU notifiers for guest_memfd-only memslots
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>, Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 15, 2026, sashiko-bot@kernel.org wrote:
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > --- a/virt/kvm/kvm_main.c
-> > +++ b/virt/kvm/kvm_main.c
-> [ ... ]
-> > @@ -592,6 +592,10 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva=
-_range(struct kvm *kvm,
-> >  			unsigned long hva_start, hva_end;
-> > =20
-> >  			slot =3D container_of(node, struct kvm_memory_slot, hva_node[slots-=
->node_idx]);
-> > +
-> > +			if (kvm_slot_has_gmem(slot) && kvm_memslot_is_gmem_only(slot))
-> > +				continue;
-> > +
->=20
-> [Severity: Critical]
-> Does this change inadvertently introduce a regression in the pfncache ret=
-ry
-> protocol?
->=20
-> Looking at the pfncache framework, it maps guest memory into kernel space=
- and
-> explicitly drops the page reference after mapping it:
->=20
-> virt/kvm/pfncache.c:hva_to_pfn_retry() {
->     ...
->     kvm_release_page_clean(page);
->     ...
-> }
->=20
-> It appears to rely entirely on KVM's MMU notifiers (kvm->mmu_invalidate_s=
-eq)
-> to invalidate the cache when the page is unmapped by the host.
->=20
-> If a VMM defines a guest_memfd-backed memslot with KVM_MEMSLOT_GMEM_ONLY
-> but still provides a valid anonymous user mapping as its userspace_addr,
-> could this regression lead to a use-after-free?
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Sadly, yes.  To land this, we would need to first teach the gfn_to_pfn_cach=
-e code
-to be able to pull directly from guest_memfd.  I forget if anyone is workin=
-g on
-that.
+Pre-existing issues:
+- [High] MSG_ZEROCOPY consumes multiple completion IDs per sendmsg() call i=
+f the message is split.
+- [High] Valid but unaligned MSG_ZEROCOPY sendmsg() payloads can randomly f=
+ail with -ENOMEM due to the MAX_SKB_FRAGS limit.
+--
 
-> By unmapping the anonymous memory, the host would trigger MMU notifiers, =
-but
-> this new check skips the memslot. As a result, kvm->mmu_invalidate_seq
-> wouldn't increment, and KVM might retain a kernel mapping to a freed phys=
-ical
-> page.
->=20
-> Could this allow the guest to read or write arbitrary host physical memor=
-y?
->=20
-> >  			hva_start =3D max_t(unsigned long, range->start, slot->userspace_ad=
-dr);
-> >  			hva_end =3D min_t(unsigned long, range->end,
-> >  					slot->userspace_addr + (slot->npages << PAGE_SHIFT));
->=20
-> --=20
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260615155244.18=
-3044-1-alexandru.elisei@arm.com?part=3D1
+commit dc53c3cec37e35ad80f978cae7292ef9c7bfe500
+Author: Arseniy Krasnov <avkrasnov@rulkc.org>
+
+vsock/virtio: rework MSG_ZEROCOPY flag handling
+
+This commit refactors MSG_ZEROCOPY flag handling in the vsock virtio
+transport to align more closely with the TCP implementation.
+
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virt=
+io_transport_common.c
+> index b10666937c490..f549d67d36d18 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -328,38 +328,36 @@ static int virtio_transport_send_pkt_info(struct vs=
+ock_sock *vsk,
+[ ... ]
+> +		if (info->msg->msg_ubuf) {
+> +			uarg =3D info->msg->msg_ubuf;
+> +			can_zcopy =3D virtio_transport_can_zcopy(t_ops, info, pkt_len);
+> +		} else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
+> +			uarg =3D msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
+> +						    NULL, false);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does passing NULL
+unconditionally here violate the MSG_ZEROCOPY API contract?
+
+When a MSG_ZEROCOPY payload is split across multiple enqueue loops in
+vsock_connectible_sendmsg() (for example, due to socket credit limits),
+passing NULL to msg_zerocopy_realloc() allocates a new ubuf_info_msgzc
+and increments sk_zckey for every chunk.
+
+TCP avoids this by passing skb_zcopy(skb) from the write queue tail
+to reuse the uarg. Without reusing the uarg, vsock consumes multiple
+completion IDs per sendmsg() call, which breaks userspace completion
+tracking.
+
+> +			if (!uarg) {
+> +				virtio_transport_put_credit(vvs, pkt_len);
+> +				return -ENOMEM;
+> +			}
+[ ... ]
+> +		/* 'can_zcopy' means that this transmission will be
+> +		 * in zerocopy way (e.g. using 'frags' array).
+> +		 */
+>  		if (can_zcopy)
+>  			max_skb_len =3D min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+>  					    (MAX_SKB_FRAGS * PAGE_SIZE));
+
+[Severity: High]
+This is also a pre-existing issue, but can this max_skb_len calculation
+lead to unexpected ENOMEM failures for unaligned MSG_ZEROCOPY payloads?
+
+If a user passes an unaligned buffer for MSG_ZEROCOPY, restricting the SKB
+length to exactly (MAX_SKB_FRAGS * PAGE_SIZE) bytes means an unaligned
+buffer of this size will span MAX_SKB_FRAGS + 1 pages.
+
+When __zerocopy_sg_from_iter() processes this, it reaches the MAX_SKB_FRAGS
+limit before satisfying the requested byte length and returns -EMSGSIZE.
+Unlike TCP, which falls back to sending a smaller segment, vsock's
+virtio_transport_alloc_skb() propagates this error as a NULL return, which
+is then converted into an -ENOMEM failure here. This causes valid sendmsg
+calls to fail sporadically based on memory alignment.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260614174756.1706=
+31-1-avkrasnov@rulkc.org?part=3D1
