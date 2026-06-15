@@ -1,147 +1,227 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA7F331EDE;
-	Mon, 15 Jun 2026 10:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781520213; cv=none; b=m1olRsk23Z9YWu85KQW8u6MMkmjwL6S/r2FkHZY8dMWEwvtmSHIeedqZ00RV1DW7dZYb0FnGa6RZH8UGogOYmnUNpGJczI4OrVhOyltJu8FSZ2VbGgHFrO8avMiyFp/t9h1R9zu0Gdhe02S+Z092hPNjjcN72O5SsogN52/5fJg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781520213; c=relaxed/simple;
-	bh=3yAHPoiKaxpCvGRtA07MNdia4xyAMd/XClNlGDs+yTQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y1kasskeBL+85Js8865CIvwzAGZz6LP1IlTvhKq3QHvA4iyU9QNhxsvdqgM7gSVqRX7KZy45598gexbkNLHaupYsXPjFBjVallpNo2vwS6jxK+sOU7rz+SMRlfh8k3ozW741jlPSMlk5WXwqRnGLAVEsh3v0LsyREddw2T+xSKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YilFCdw7; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975D136DA10;
+	Mon, 15 Jun 2026 10:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781520903; cv=fail; b=W5X892GZFLgxOZUgoZQNh+MU4NiNBvxHqg7jDPg08N3Gj9plUv4OqfSu6t66977UQCEt+AabJVxE4m2oIoKtYVVSDzEIqDu/Dh8/DPuAXWY5ykZxQuz25k2TD2lavMa3UT7ShsdXwDurUHt/uIJFRBNdMRucyYVG2C4gMrFK9Zs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781520903; c=relaxed/simple;
+	bh=OSbXTAL/M36PEOmN4NYzK/1ziaEyKK57/ucElwvD97g=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=q/RKcY1L913lSer0CX4tBLn0A0M1t+dpbqnVgHfRqkUsCw+ULL13UhyWxt3NMg++oM7LYiY3Uok3ys9xksz7GCq/bueZpiDVvQG3OePk9YTidcLae7atRPwhx9gn8jOYpOyuJaABI0ksTq+5N9VnBFl2tp/pk+oRCGlhZJ4ajJo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TTTKRGVs; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YilFCdw7"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CAEB1328D;
-	Mon, 15 Jun 2026 03:43:24 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 75FD73F905;
-	Mon, 15 Jun 2026 03:43:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781520209; bh=3yAHPoiKaxpCvGRtA07MNdia4xyAMd/XClNlGDs+yTQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YilFCdw7wnbi02p8Ri37XQ9LOpP+gWIbj1xLxh6VFzlKpkicKF+zKdXigOj42eUFe
-	 ECB8oiTRkLs1UEvL96SQTRLUaBxPXfMXbysW2WvyNOHsHoIAo9UCdTxpZcD/tf4F/m
-	 bGpKZ3AP3paUcX/S/ZEhVk3Sy2CPal6yF/LtIlWA=
-Date: Mon, 15 Jun 2026 11:43:14 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Shivank Garg <shivankg@amd.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Nikunj A Dadhania <nikunj@amd.com>, Ira Weiny <ira.weiny@intel.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Nikita Kalyazin <nikita.kalyazin@linux.dev>,
-	Patrick Roy <patrick.roy@linux.dev>,
-	Pratik Sampat <prsampat@amd.com>,
-	Ashish Kalra <Ashish.Kalra@amd.com>, linux-fsdevel@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
- non-confidential VMs
-Message-ID: <ai_XK__RTXMCEcCG@raptor>
-References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TTTKRGVs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781520901; x=1813056901;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=OSbXTAL/M36PEOmN4NYzK/1ziaEyKK57/ucElwvD97g=;
+  b=TTTKRGVs3uYVN9BPjT5WViMYBezEprzMSR342z3GNtgc2LC9HLxdMz5f
+   6MaIENiuh1hS+ayZxHhgmZePiiJL0wzLkWe8QflQ+RsoSA9Wilw08/u+C
+   EY6fCl0EKgqg4JixBXXSedVYLG7p4imDL8RsT4k0iO/JT4SMK6MkJZisu
+   Ks4VX0kYyD2tu0IJTwQzM4Vem/gvj14a51tWEJMtkwMUagSqNrdwfjr3y
+   7jx1/cfzSlvCzeadQDWsX4+w/xi+kVhRodjQ7qiNDWSvFYEbMwQqAmNgy
+   qbXZ8HPVgWjCsV2Uxg0+YBWwGNniGm0v6c2pMzTSOvhyh8hVYCdCqc2Fv
+   Q==;
+X-CSE-ConnectionGUID: 41CiCsXgSd2lRPW8bRyHIw==
+X-CSE-MsgGUID: Vtvake5bR9mt8dSXrH4K5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="86156687"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
+   d="scan'208";a="86156687"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 03:55:01 -0700
+X-CSE-ConnectionGUID: lloi7v56Sy+VBmJuBBuJfw==
+X-CSE-MsgGUID: vabFPLXpR9qJBHLgNQisjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
+   d="scan'208";a="246331533"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 03:55:00 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 15 Jun 2026 03:54:59 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 15 Jun 2026 03:54:59 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.71) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 15 Jun 2026 03:54:59 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=B7kxMveCQp/sLLTRPfgK8Q5/fGtT0aJvjVmEaCd4xl7lV6NCyt2zfXkDgfE0kq0ZZ+F0ygNnavW7Pr08XDg+Tm8ow3ux0CDVH5Vaob1Xs5tw0f5e3U25xcqKw0zMcdERsbKOInyNQLHEW2Snlf/ljacfYVDQHR6m2NXPkxyh/VQfHQYJbX+MJWsJNiUsNMkEtbbVs4pMFuOlB3Brd2SffdRf3i+S7/suWp9kqzi8TRmIAaXXNIEAj0cF4qChyCQYGMJh8O9loua8A5odVzosG14tv2sF8WpaNj0qNOr+aMdtqGQnkba9WWTsiYys8TwQ8TViry1xLJdIiOO4cOHh6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r+ZjmvH1H8PP3sw3DXvEpqBXO3K6RaGtuT1nrhNcqfw=;
+ b=yxz1tYYgEGNhBMO+a6z0bq6RYj37/91p0ACCS18g9KXdq5p/TKaQAQpwh5wbs/UDekOfHfwKomoWmG/1eIkVpRztyGJqarg0qwuj1xtmjNdbor3U9j/scHYPzSlSpz4p+2jPWDRIrrENrk7m1Lo6ZrAiXbznQrdLs13p817vVPJiT+aiZcKP1own/v6V9YrgPgjPYFLGhkqXfzpEXjCjUHxIlU306GO6R3cX3txRH7BCFjmcahAKz6d0/D1AI6i2onIe1ESbfjYqTHE+q9r3f6/Pc0f3d3ypnGbOxpWysz6JojAd2NuPIvRib7Ga7Ps8/Jr1GKM4CFpdiuXYDoduvQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM3PR11MB8735.namprd11.prod.outlook.com (2603:10b6:0:4b::20) by
+ DM4PR11MB6020.namprd11.prod.outlook.com (2603:10b6:8:61::19) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.18; Mon, 15 Jun 2026 10:54:55 +0000
+Received: from DM3PR11MB8735.namprd11.prod.outlook.com
+ ([fe80::8f1e:49f4:122c:c675]) by DM3PR11MB8735.namprd11.prod.outlook.com
+ ([fe80::8f1e:49f4:122c:c675%7]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
+ 10:54:55 +0000
+Message-ID: <67f132c3-efd4-477d-9d10-83bf7366ce10@intel.com>
+Date: Mon, 15 Jun 2026 18:54:43 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 09/22] KVM: selftests: Expose functions to get default
+ sregs values
+To: Binbin Wu <binbin.wu@linux.intel.com>, Lisa Wang <wyihan@google.com>
+CC: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng
+	<ackerleytng@google.com>, Chao Gao <chao.gao@intel.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, Ira Weiny
+	<ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, "Kiryl
+ Shutsemau" <kas@kernel.org>, <linux-kselftest@vger.kernel.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe
+	<rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, Ryan Afranji
+	<afranji@google.com>, Sagi Shahar <sagis@google.com>, Sean Christopherson
+	<seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton
+	<oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>,
+	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-9-6983ae4c3a4d@google.com>
+ <434e7f9a-5f64-4488-bf9d-5be8c3f9eefe@linux.intel.com>
+From: Chenyi Qiang <chenyi.qiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <434e7f9a-5f64-4488-bf9d-5be8c3f9eefe@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI3PR02CA0014.apcprd02.prod.outlook.com
+ (2603:1096:4:295::6) To DM3PR11MB8735.namprd11.prod.outlook.com
+ (2603:10b6:0:4b::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR11MB8735:EE_|DM4PR11MB6020:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8d5d019d-6e42-4b61-7d5d-08decacc8919
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|56012099006|11063799006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: kw+gGIT+LSQgqAD06vNLQVg99SSI87OTHPa5N1DIle75YwayTSncrxFBTgpF79PO1h4BznAzuFi9XtoZU3wOBN4XNpCB9Wgewg/VpkziqqABGHYzro12Le7FLlZUmzBgydAK7ea8SCzcthwvzJl7Fg61K6F6uE1v1bSlOPYdAvNUWo9FsT3ckFfcXA7R9+Fi0jJewn+bzmM72lrATnGx+OkfLxdnI+H4a6BmdrnkEsOvRGxhYsrhl36gkV3WnP+dOYrNvfK5WCUIFCsnklazpRwAJUBnVObDAU3keJIF/yKyqHy7ASnF6HYrWCvbD8Ggp6tuDCNe8oIfQmtLlY0hSv+StitHvV6DeddNJNRK9jkjKkxqld5kFVMPlyDCQS9FcH2a3F71dqYguUDXqtJscFldUIDGPSdLQboRuWeYK6Hv2QtpMZOkI1DtTNS/TPAX6dDe/M3NPq0wVbsYDkHifEvJ8F8UZeai1YMDzuBnIyxB142v3Y2TUZXyx5rLl/fBZe1MrphD/5mzj82HiDNDtTXAjMDJUsj5FH1o/6zZYaXPPZ19wVBU8eKipPnQ1b4BriXpou/XbS4Xtn0TcdHyRK4XvMcxToI5zxajFTUI1MRQlZgTZe/JU+iRfWHEUkDdDKPy7DwoIeA1TfmHGJwbULaEAAkFnZQZ0NTGlYhTeawV0uY7eEJa5ICbHUWlhwo7
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR11MB8735.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QjFiZjMwY0Q3UTJLbmNKMjZIWlJCVW1hdHpZc2hhOWxCNHJpSVlGNm5QWDR2?=
+ =?utf-8?B?OWNkZ21mUytQejNhbkRtd3ZkNTFPYXZ2K2JCLzhycUhJS2gwd2pTNjVUU3dy?=
+ =?utf-8?B?L0c2MjdleEhlWW1iOFpaTlJubHg0YTR3aDZJdjlyVG55VlVQMUgxaC83QWIv?=
+ =?utf-8?B?bzJ5UkVZNS9rTG5tUHpqZzRmelJyUUdZLzhUUG1sekhBTUpPMm00Yko5Vmho?=
+ =?utf-8?B?bGs3Ui96cVcrVXZMdDF1cEVjK1lpbXllN2JWWDlxMlU5cmR5SytpaTFDbXVU?=
+ =?utf-8?B?dklyZVJ0akJHTnJzUDc1TWxkZ3NIa1JtOUlmYWs5M3lHOCtoWU45MXZqMjlE?=
+ =?utf-8?B?SzJtWGx3cXF1WFQ3dytSODV1Q2lpakU3amRZVUd2TEtLQ25Tb2JFY0JEeHlZ?=
+ =?utf-8?B?c2Z5UDRGVXZKQlIxczhleGJxMUlDc0N6cVN3WWkzTmxHTWVIam5rVEwyc0lx?=
+ =?utf-8?B?MEEzUStEZFZyWlF0ZHlnUllZV21oVlcwbDlkQlQ1MVkvOEhyNGFGYkJoWUg4?=
+ =?utf-8?B?ZnFRM3ZSVG1MUlQrUURPaUZKL1laeGRZQWtkd2k5M083dnFYT1BVUDRVaHFL?=
+ =?utf-8?B?cTkxOHgrVTFMZHpqYm91SDhJTkorQkRlc0NWYnVCQ3lLb1crUGZFbkpteEpp?=
+ =?utf-8?B?cVBqZEUvM3RtdjhPQVJpNXRLUmlCZEVHdEZZVDlNQjFuZHlBdHYxSnlra1oz?=
+ =?utf-8?B?ZkVESzRrL2Nib1BkejVVaTd6M3NhNDdlVlAxMTVIdnJKVVhSZ3pJcGJZWTE1?=
+ =?utf-8?B?Q3o3N2JLc0I2Unl6ZERXQXFvWXdCNmdFaDdoZHdud3hVLzFMK2JySW1hcW5F?=
+ =?utf-8?B?SGJJYUExcW1uN0haMnIyK1R5M0hpTG9aNmcwZ3F1Nmo2MWlQMGxiQkVJdmwz?=
+ =?utf-8?B?R1JmMUpreGkvR3FXbkVpQUFjTWRsYVhycmZubzBtY3BlbHF2Ty94d1Fpa3VB?=
+ =?utf-8?B?cDBKTmU3SlZFN3ZTUklkQlM1RFZwK1dnNGUvR2VzVEdrNVJaL1Q2SFp6a0Iw?=
+ =?utf-8?B?eGR5NjlYYldVRTlybC9CRUt5YXhsTVdBQkd1QlFhbVhIUTR3ek1ERnZTTnY3?=
+ =?utf-8?B?ZDY4N1FYMHZBbWM3VGRFcFZTa1pDNlJFejA2R2lLaENGZVRPR1NOVndDeDFT?=
+ =?utf-8?B?TDJIYmtrb1BRc0Zpdjg0VldFdzl6YmQ4MThCdm9Ed24xdVJFNit4ekNhZUZ1?=
+ =?utf-8?B?V0FKYkVPdGlKWk0wMjN5dlloUm4zMXQxWHdqdzJ3KzZQSmh5MkxEdFhSYXYw?=
+ =?utf-8?B?Y3ZZN0Ird3I2cENPTDlnTklEdTdSVkVFRnFDZUorWjB0VUpvdk5MNmxLcjE5?=
+ =?utf-8?B?UURZZ01mc3Z6eE5EclJzc1ROblo3STRqKzdwV0RPUlZjU2dYUjd6UEhOSEEw?=
+ =?utf-8?B?b2UrTzdXdlFNT1lFeTd6WkkyQ2dZTVFZejd3R1FkMklQRnB3dVB0R1BQY0Iy?=
+ =?utf-8?B?MXpxRkd0TVAyTjZ0Q3BqWUI2WStSR2FhUGpzUEoyd3oyTWpKUFZPdWZHaHpL?=
+ =?utf-8?B?bURzOXgyR2lGMnp2ZG9sZGlTZmQ3aTF1clFNaHdnanZiR3pXRGVoTWhCVFVZ?=
+ =?utf-8?B?RkdkWU5lMDY4UnVXd1dRYVRaRk92RytzczVlZnd2eW1GMFU2dnliRUpqbkFC?=
+ =?utf-8?B?UG44aUNWNzhhREFpanF1SS9wSGJBV2JCYmpsUjdDQmRZQmxvNWJTTGVSQjBU?=
+ =?utf-8?B?RkpHM0U2UUpJWFUvYXc3cUltN2tZbng3WVd3TUViUUJZdEp1dE5EVEJwYUxn?=
+ =?utf-8?B?RmErc1hvZWR0cThEbE5MRWRXczdwRUpvT3k4b0dBNkRtaWJJbUtRSVk2amor?=
+ =?utf-8?B?b3ZtYWNMdzYzY3oxNk1XU2IvUitlaWVJdHVTakVOY0FmNVJza0RlLzYrQUxY?=
+ =?utf-8?B?U3BjUVBGNUJUYm9iTkZjVVcwM1VUaERBdGk3WExzVi9HVHo5NmxmTnpybXI5?=
+ =?utf-8?B?MDRqTy9YeHAzWkdjY3dhWEtSeWRCMjl6WXMvSXBTakVDcUJJSG83V081WFgz?=
+ =?utf-8?B?ditSSjFVbVFXTG9UajJ6TkVxYUdwS053SzJmSE04VWVHTm5YZ2x6cHB2WkF5?=
+ =?utf-8?B?d0VDZWNlb2NVVGR6NGdsWnlMejlZR3RVaWFuOXBMT25vcUFYczg1aGhtWE91?=
+ =?utf-8?B?NmlqL0ltMFdrT1hXQW5VbWVWM1BrRVlrSUQybzBoRDFEUFBYL1VVMnFmT1Rh?=
+ =?utf-8?B?b2J5T2FodEExSm5ydk82MHBzZmZ0MmZ5bVVBK2lUcjBIYmNCM1VYcDJ0WUw2?=
+ =?utf-8?B?SUdYVTRmZlMwQi84Y1FLd1dBdXpZQXk0TUZBckdGOUdScHlzcktJdmhtZHFk?=
+ =?utf-8?B?NU50MGZlQUZhZEc0NGhJK2dHek0wM1JnZHBudkFENlRuUExMc282dz09?=
+X-Exchange-RoutingPolicyChecked: ZUhPnbnlY7eOBlZffzrG/oLmnhfcWbQs4h30jX2Z7mzi/g7ho4hqJdNwUA1gLs6n7ymRWrEbWIu439dywpA/JTXtNkaX0m5f1idGt70O8oUe1SXFn2ETQhr9FrVi0CHniYPigGiprUHIiNMhFYLaJtig6bPYAvOGAmvwpe0gmfn0I7BimWYquUc9/egybVndP4B4ppbCjgt6kpMXSczBL/wgtSrgeivYevmgYy1sls6jl0h+zKEmm86mOGBlghRdFaYyzggtEXnlDNpMh5kuM4+La3wurM4ALg+jEnlkkWlAzbT74B2S2SRWVEvwMz8viSvgA+SrMOAIRsA68GsvkA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d5d019d-6e42-4b61-7d5d-08decacc8919
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR11MB8735.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 10:54:55.6632
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rGJutrGf9DmlABpJnzk7bfspGsBcwlYeO9VqULVM3Jo3G3j/ZE24l7uBIkJPE9mE8uhAUbbzVrZD9kWm70phLg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6020
+X-OriginatorOrg: intel.com
 
-Hi,
 
-On Thu, Jun 11, 2026 at 01:05:07PM +0000, Shivank Garg wrote:
-> guest_memfd folios are currently marked unmovable, so the kernel cannot
-> perform NUMA-balancing, memory compaction, etc. This is unavoidable for
-> confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
-> needs firmware assistance. However, for non-confidential VMs (like
-> Firecracker), we can migrate the folios.
-> 
-> This series enables folio migration for non-confidential guest_memfd and
-> also lays the groundwork for migrating confidential guest_memfd later.
-> Once firmware-assisted copying support is available, those VMs can be
-> made movable, the confidential folio content can be copied separately,
-> and the destination folio marked with FOLIO_CONTENT_COPIED so
-> __migrate_folio() skips the host-side folio_mc_copy().
 
-I always thought that one of the nice things about using guest_memfd as a
-memory backend, as opposed to host userspace mappings, is that the host
-cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
-collapse, compaction, etc, acting on the host userspace mapping of the
-VM memory, and outside of the VMM's or KVM's control.
+On 6/8/2026 2:39 PM, Binbin Wu wrote:
+> On 5/22/2026 7:16 AM, Lisa Wang wrote:
+> 
+> [...]
+> 
+>> +
+>> +static inline u64 kvm_get_default_cr4(void)
+>> +{
+>> +	u64 cr4 = X86_CR4_PAE | X86_CR4_OSFXSR;
+>> +
+>> +	if (kvm_cpu_has(X86_FEATURE_XSAVE))
+>> +		cr4 |= X86_CR4_OSXSAVE;
+>> +	return cr4;
+>> +}
+>> +
+> 
+> [...]
+> 
+>> @@ -647,16 +643,12 @@ static void vcpu_init_sregs(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+>>  	vcpu_sregs_get(vcpu, &sregs);
+>>  
+>>  	sregs.idt.base = vm->arch.idt;
+>> -	sregs.idt.limit = NUM_INTERRUPTS * sizeof(struct idt_entry) - 1;
+>> +	sregs.idt.limit = kvm_get_default_idt_limit();
+>>  	sregs.gdt.base = vm->arch.gdt;
+>> -	sregs.gdt.limit = getpagesize() - 1;
+>> -
+>> -	sregs.cr0 = X86_CR0_PE | X86_CR0_NE | X86_CR0_PG;
+>> -	sregs.cr4 |= X86_CR4_PAE | X86_CR4_OSFXSR;
+>> -	if (kvm_cpu_has(X86_FEATURE_XSAVE))
+>> -		sregs.cr4 |= X86_CR4_OSXSAVE;
+>> -	if (vm->mmu.pgtable_levels == 5)
+>> -		sregs.cr4 |= X86_CR4_LA57;
+> 
+> I guess the 5-level paging thing is dropped unexpectedly during rebase?
+> 
+> 
+>> +	sregs.gdt.limit = kvm_get_default_gdt_limit();
+>>
+>> +	sregs.cr0 = kvm_get_default_cr0();
+>> +	sregs.cr4 |= kvm_get_default_cr4();
+>>  	sregs.efer |= (EFER_LME | EFER_LMA | EFER_NX);
 
-I think it would be useful to preserve this behaviour, even in the absence
-of confidential VMs (i.e, guest_memfd file descriptor created with
-GUEST_MEMFD_FLAG_MMAP).
+Also, sregs.efer |= kvm_get_default_efer() is dropped unexpectedly during rebase.
 
-Thanks,
-Alex
+>>  
+>>  	kvm_seg_set_unusable(&sregs.ldt);
+>>
+> 
 
-> 
-> Testing
-> -------
-> Host: 7.1-rc7 + this, 2 NUMA nodes
-> 
-> - KVM selftest: allocate folios on node 0, migrate them to node 1 and
->   back and verify resulting NUMA node and the folio contents at each
->   step.
-> 
-> - Firecracker [1]: booted a microVM backed by guest_memfd. While the
->   guest was running, forced host-side migration of its folios via
->   migratepages(8) and explicit move_pages(2) of guest_memfd
->   pages. Verify with /proc/firecracker_pid/numa_maps.
-> 
-> [1] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
->     and change builder.rs to remove GUEST_MEMFD_FLAG_NO_DIRECT_MAP from
->     vm.create_guest_memfd()
-> 
-> Best regards,
-> Shivank
-> 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
-> Shivank Garg (3):
->       mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
->       KVM: guest_memfd: support folio migration for non-confidential VMs
->       KVM: selftests: exercise guest_memfd folio migration
-> 
->  include/linux/pagemap.h                        | 24 ++++++--
->  mm/compaction.c                                | 12 ++--
->  mm/migrate.c                                   |  2 +-
->  tools/testing/selftests/kvm/guest_memfd_test.c | 77 ++++++++++++++++++++++++++
->  virt/kvm/guest_memfd.c                         | 49 ++++++++++++++--
->  5 files changed, 149 insertions(+), 15 deletions(-)
-> ---
-> base-commit: 4549871118cf616eecdd2d939f78e3b9e1dddc48
-> change-id: 20260611-shivank-gmem-migrate-8c1c519b30a6
-> 
-> Best regards,
-> -- 
-> Shivank Garg <shivankg@amd.com>
-> 
-> 
