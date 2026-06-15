@@ -1,144 +1,108 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AC23EEAEA
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 14:28:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D633FE667
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 14:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781533702; cv=none; b=VyrjxJ3OPbCwUm183ZmYJ/PvCmtgS/6fo/XaERUL6k1PuOxgYYsVI/5QqteyqhiLufZ4c+WimvAA10aoQwI7wJe8hmdRkgkR8WUdX1BKVQx41fysAy7uXgbVfIGJ7Ux3pXtW6EiRXzB3JWco9pj9NeCc3uslthgv2TCrRDASp8w=
+	t=1781535505; cv=none; b=lxmlPPGqqybN642vrA3HY/B+9YT+ngfp/EamALrQ2Jel42g2XMxnI+nZ4ZbC76HcLi7ET/5qFwXAhEjcVSnnIrpxfrEOFjlcoEBGMr1XoT/7qohofCbo/fA97Pr5XBHhY5F+LcNigiOnVuzpQ8ZMv/A1QoirBWAdW0PoFvPP9kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781533702; c=relaxed/simple;
-	bh=YCvn3MuvcZqxFkBqbGxbtqUHvt+AHBWc7vD8uqkOoT8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Nf1PuOwZH+LwN9t+MZowyqg7fY+SWrpA+AmwyLXz0EMqjGZQ7SFCmGANh1VdhbdqDLitfuuI3ntZk3grUdJ2y2vlQM7ykdEIpem+m6Q6XtehsdSnrgu0zqa0z4XG2AVHren2aBjb59y1w6Hm8Jt81lBsRgUOyj5lFWkJBykHw6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eEykmC3o; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781535505; c=relaxed/simple;
+	bh=WeiO/kvXd28sVryXwcleJRKLGxigXtK192g6LDV52ik=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fQ2iV7holBxusQ8qZtRQOBaQCTmt1kpL7P8zJ0BCPP+P8O+799Up7DqNEZk52hGIbo5ljINs9NF1o7xR3DgbOAwAim3lmKmboTEOX/iRdU46qclumVg5qapEmv1v6Ao48UHuJJuYdlzHGI1QYiJgP32nYMIUBwm4P5QCINeuxbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dzxZPueG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eEykmC3o"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c85a2ed88c8so3368427a12.3
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 07:28:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781533700; x=1782138500; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZrpWKke6dqJc8K8vGlvhm4qwRCykfjr0R61az/1r5wc=;
-        b=eEykmC3oy7aAbQo+up/CTwZgTs5hj7KM3AS27ZVzPsF6zjBTmnUg2Ebj4kydLGzOJD
-         FcvYPY+mprQG6AA7MS3B3HCGkIeIlDWuZ+3OAO32vj33wT7HRZQvOYwe//137e2HFooA
-         lDjqfSMXe0dT/flRMwhuIti0TBQAWHpvYouPnyiasqHiJEU3rrETRLlP2MgTFfdGEFih
-         CrwKi/vaMPnCpoo2lv6JmRF2D2U3THbr6jDGFceULtW/dF/77QKcmLS/KXwPUhUx9fuK
-         ZH9ugm1BkC/+Osdr406ipjL/9LOvpavFCZwSHTBlzlxk967wqbFgzDZcWLXAl3B2G059
-         c7gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781533700; x=1782138500;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZrpWKke6dqJc8K8vGlvhm4qwRCykfjr0R61az/1r5wc=;
-        b=f4DpNjKKIxQvj8WOOqIZX010qcBfyWhfK9OfRwgia+TD3VQiZjXy549C8aXFSMMvOV
-         akTal2XhdO0emBGydsPyDIzhD7x3xQ+fcAB7WFykkym3vyfiH/25c3xa9A76pTM5aLvL
-         UUado8s53Rx/tvtCYN3a+1oNklqsPxxkJoudJ5a+/OyiNVdSZPXhb29zWEH4xBLTkL7c
-         594Y5irqpT1Z3h40nkFk22ArI94CuGrCiVRJm1OZ214xvs/P8BuxK0Oyaqvr+0LBeKIO
-         S+75PesaMsbbwrRGdJdNeUsSiQIDQlUZiNfzu5IHmwiFh4amW83KoKmlbZYUs30VMU5r
-         X5Gg==
-X-Gm-Message-State: AOJu0YyY1g5gsKt0UeH8cgtesVWKJ/aOp4J4crqZABClhbczTJSzRTd7
-	7jj/AjsYW7PCsPjSQupW8nI4PQpf1DP5V3WVh7IkNG7jKBbA6+24aQabo+QgGh9yevhy643DlYU
-	fSwzklg==
-X-Received: from pglv29.prod.google.com ([2002:a63:151d:0:b0:c79:8d3a:7901])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:2285:b0:3b3:f46:1eea
- with SMTP id adf61e73a8af0-3b783c755d9mr16660238637.7.1781533700178; Mon, 15
- Jun 2026 07:28:20 -0700 (PDT)
-Date: Mon, 15 Jun 2026 07:28:19 -0700
-In-Reply-To: <6a2dbfcc.8812e0fc.3c3fa4.000a.GAE@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dzxZPueG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781535503;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AxLpH9j4tyUwflqQc435PknR0znSRfDU7Gw9S0v0YMQ=;
+	b=dzxZPueGnQam7VVZYV0O3q/qEvLEU3b4spYj+9Sj0124WgQdBTDlIQAyKY+YUP2GyVuMjo
+	cV9qw+RSuY+L9M9fpuUUUTZzoYL2stZyvpXKCYx2QaRw52Tykw9fn/Sr38HGMKUVLD3a/0
+	06vU09q2Gnl7nWbpV0iJCLXCYLrpV24=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-314-_BAas8q1MpeI8JVeulqbkg-1; Mon,
+ 15 Jun 2026 10:58:18 -0400
+X-MC-Unique: _BAas8q1MpeI8JVeulqbkg-1
+X-Mimecast-MFC-AGG-ID: _BAas8q1MpeI8JVeulqbkg_1781535495
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 63F8E19560A5;
+	Mon, 15 Jun 2026 14:58:15 +0000 (UTC)
+Received: from localhost (unknown [10.44.34.1])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AB60D19541B2;
+	Mon, 15 Jun 2026 14:58:14 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Halil Pasic <pasic@linux.ibm.com>, William Bezenah <wbezenah@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, farman@linux.ibm.com, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+ svens@linux.ibm.com, mjrosato@linux.ibm.com, vneethv@linux.ibm.com,
+ oberpar@linux.ibm.com, virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Halil Pasic
+ <pasic@linux.ibm.com>
+Subject: Re: [PATCH v1] s390/virtio_ccw: Also suppress -EINVAL on device detach
+In-Reply-To: <20260615002309.052e0614.pasic@linux.ibm.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Avril Crosse O'Flaherty"
+References: <20260612155407.199218-1-wbezenah@linux.ibm.com>
+ <20260615002309.052e0614.pasic@linux.ibm.com>
+User-Agent: Notmuch/0.40 (https://notmuchmail.org)
+Date: Mon, 15 Jun 2026 16:58:12 +0200
+Message-ID: <875x3jn94r.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260612230622.687665-1-seanjc@google.com> <6a2dbfcc.8812e0fc.3c3fa4.000a.GAE@google.com>
-Message-ID: <ajAMA_cWeZon3SYs@google.com>
-Subject: Re: [syzbot ci] Re: KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
-From: Sean Christopherson <seanjc@google.com>
-To: syzbot ci <syzbot+ciaa819f991480b300@syzkaller.appspotmail.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	syzbot@syzkaller.appspotmail.com, vkuznets@redhat.com, syzbot@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Sat, Jun 13, 2026, syzbot ci wrote:
-> Full report is available here:
-> https://ci.syzbot.org/series/674ef35a-9335-4710-8a6d-b18d01510cbb
-> 
-> ***
-> 
-> WARNING in kvm_hv_vcpu_uninit
-> 
-> tree:      linux-next
-> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
-> base:      c1f7303302927f9cbf4efedf70f0512cde168c65
-> arch:      amd64
-> compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> config:    https://ci.syzbot.org/builds/20dd789e-0a89-4465-844c-9d91b5ce4a45/config
-> syz repro: https://ci.syzbot.org/findings/eeefcfe6-b8e9-4c5b-900e-855d814f5d97/syz_repro
-> 
-> ------------[ cut here ]------------
-> debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || vcpu->vcpu_idx < 0 || !refcount_read(&vcpu->kvm->users_count))
-> WARNING: ./include/linux/kvm_host.h:996 at kvm_lockdep_assert_vcpu_is_locked_or_unreachable include/linux/kvm_host.h:994 [inline], CPU#1: syz.1.25/5883
-> WARNING: ./include/linux/kvm_host.h:996 at to_hv_vcpu arch/x86/kvm/hyperv.h:78 [inline], CPU#1: syz.1.25/5883
-> WARNING: ./include/linux/kvm_host.h:996 at kvm_hv_vcpu_uninit+0x198/0x210 arch/x86/kvm/hyperv.c:906, CPU#1: syz.1.25/5883
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 5883 Comm: syz.1.25 Not tainted syzkaller #0 PREEMPT(full) 
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-> RIP: 0010:kvm_lockdep_assert_vcpu_is_locked_or_unreachable include/linux/kvm_host.h:994 [inline]
-> RIP: 0010:to_hv_vcpu arch/x86/kvm/hyperv.h:78 [inline]
-> RIP: 0010:kvm_hv_vcpu_uninit+0x198/0x210 arch/x86/kvm/hyperv.c:906
-> Call Trace:
->  <TASK>
->  kvm_arch_vcpu_destroy+0x1a9/0x380 arch/x86/kvm/x86.c:12905
->  kvm_vm_ioctl_create_vcpu+0x68b/0x940 virt/kvm/kvm_main.c:4262
+On Mon, Jun 15 2026, Halil Pasic <pasic@linux.ibm.com> wrote:
 
-Darn error injection.  xa_insert() can fail with -ENOMEM.  It's kinda ugly, but
-unwinding vcpu_idx on failure is a logically sound fix.  And a good excuse to
-document that the index needs to be set before adding it to the array, e.g.
+> On Fri, 12 Jun 2026 17:54:07 +0200
+> William Bezenah <wbezenah@linux.ibm.com> wrote:
+>
+>> Since commit 8c58a229688c ("s390/cio: Do not unregister the
+>> subchannel based on DNV"), subchannel behavior following a device
+>> detach has been updated and results in -EINVAL being propagated
+>> rather than -ENODEV, originating from ccw_device_start_timeout_key()
+>> in cio/device_ops. In the end, the virtio driver has no ability to
+>> react to the difference between device and subchannel states here,
+>> and during detach, both -ENODEV and -EINVAL indicate the device
+>> cannot be used and should not be treated as errors requiring
+>> attention. Update error handling in virtio_ccw_del_vq() and
+>> virtio_ccw_drop_indicator() to suppress -EINVAL in addition to
+>> -ENODEV.
+>
+> Hi William!
+>
+> Are you saying that ccw_device_start() started returning -EINVAL
+> since 8c58a229688c ("s390/cio: Do not unregister the subchannel based on
+> DNV")? Or did I somehow read the paragraph wrong?
+>
+> The funcition ccw_device_start is documented to return:
+>  * Returns:                                                                     
+>  *  %0, if the operation was successful;                                        
+>  *  -%EBUSY, if the device is busy, or status pending;                          
+>  *  -%EACCES, if no path specified in @lpm is operational;                      
+>  *  -%ENODEV, if the device is not operational. 
+> and the commit message does not say a thing about introducing -EINVAL to
+> the mix.
 
-diff --git virt/kvm/kvm_main.c virt/kvm/kvm_main.c
-index b3d2a678210c..98da4c889ffc 100644
---- virt/kvm/kvm_main.c
-+++ virt/kvm/kvm_main.c
-@@ -4218,11 +4218,18 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
-                goto unlock_vcpu_destroy;
-        }
- 
-+       /*
-+        * Set the vCPU's index *before* the vCPU is reachable by other tasks.
-+        * Unwind the index back to -1 on failure so that KVM can use the index
-+        * to detect that the vCPU is unreachable, e.g. for lockdep asserts.
-+        */
-        vcpu->vcpu_idx = atomic_read(&kvm->online_vcpus);
-        r = xa_insert(&kvm->vcpu_array, vcpu->vcpu_idx, vcpu, GFP_KERNEL_ACCOUNT);
-        WARN_ON_ONCE(r == -EBUSY);
--       if (r)
-+       if (r) {
-+               vcpu->vcpu_idx = -1;
-                goto unlock_vcpu_destroy;
-+       }
- 
-        /*
-         * Now it's all set up, let userspace reach it.  Grab the vCPU's mutex
+The function may return -EINVAL for non-enabled subchannels
+(i.e. pmcw.ena == 0), maybe we get an all-zeroes schib with dnv == 0?
+I'd expect it not to be enabled in that case anyway.
 
->  kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5161
->  vfs_ioctl fs/ioctl.c:51 [inline]
->  __do_sys_ioctl fs/ioctl.c:597 [inline]
->  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7fbc0659ce59
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007fbc073dc028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-> RAX: ffffffffffffffda RBX: 00007fbc06815fa0 RCX: 00007fbc0659ce59
-> RDX: 0000000000000001 RSI: 000000000000ae41 RDI: 00000000000000f7
-> RBP: 00007fbc06632d6f R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007fbc06816038 R14: 00007fbc06815fa0 R15: 00007fffc5de9fc8
->  </TASK>
