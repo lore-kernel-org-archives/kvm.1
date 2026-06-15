@@ -1,155 +1,116 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED53F38B7AA
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 19:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2793366548
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 19:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781551328; cv=none; b=JKwQvn9SdSP+/rPy1/ChiufHTM+VA4phVOcpotQf9gst4KR9dcZCyjK8WvqecGRUGBrRhpha3nGFj3lfM7L1Gz3OLryBf10JTMQJfRNn5noL8jcVo4Z1V+IHLcqQT/uNK32V1sdE02XKduQfss9E5+FsKJ+COz47cKGogjuCxsY=
+	t=1781551646; cv=none; b=aMGnophZVqV+U8qvxGyjzm/3XQ4D2rok+Wu6OJkil6RPfpGps/0KlNlKXuUNKCpyVx9w2RxBkHjx5EfZKs9LMAZeKBNFxcEgoeQBHGW4v9xxD2qVfq/UKOSKbpZDeG8Az1NR5tOnegmWrrageDXV7IpBRXmbTpztnxJgwzomgzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781551328; c=relaxed/simple;
-	bh=5i4d8xUU0LEBZ0Fk0Xp0weKyNN/NHRZWQOsmriTvg+E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oekbfK/dXR1uKPSr7mIbV9ZB97kfl6qCxQl4sCODaS9K9mH1bJZ9AbKh2S2xkLunRF2FPfQG/8bjlZrUQUSsYEzBe/3bn1c/N38U8D2mVhIMQ7yLd8ov3kXzhonPrXsJm8/eJbL9i9N01zTeFTQcgUKLYv4LPICyJt3HE1yO2Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S/w4DHxk; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781551646; c=relaxed/simple;
+	bh=EMX7eP1+y08Y2A0pmpuFxZFElkLzlYO/Klb/lKDfEts=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=XINxwlO+EPwrfSHGpXPwHg/dehI6s2R6CYGObUZDkOsgqxC+g4H+7e0pI2rno90PBPgeTlMWoXNuDvkLXubZjFpKqBFIGvcMpV9sKcvY1aAZIt17cOPNNh9XPHM/jh2btX8A2Ix6r9Uoy3YotQN4ybI0Q8FhmirLBRh+mkbY/Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HNj8V4As; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S/w4DHxk"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bd04e4fe3dso94954755ad.3
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 12:22:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781551326; x=1782156126; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y7k10tUfFaZEAStRGxgcvcSPRJkvCTKPLLnET1wYWZI=;
-        b=S/w4DHxkHh8XdlmIryF1q+ybGVUU/VO+KdCnhuzUKZmuYGqEt9Js+mX0SelcDl2606
-         XVanCuNU/OyN+L3H6Pq2KmBqKAZs6F1Xxxd0IC5fwlqqKGUIAEw8waVoPzA8vJyEg4GV
-         x6ZNNmN5rtIZLwrN0ryY3BsHMrn08xEyMktxp5fSl9JFvwj18Xv3LAG5i8elCbPZYlWy
-         2Vdt7lpl7gI8jXzSDuFGvKR7cQ/txFEyFKJz1w64NKqLuW2hWOnobp13iXtN7cOVMIg9
-         hMA6HC7o2Nr+/gQluLiaATbZ3m+fVwMacDIXCmhMa1PwLvm/FYd+/6ZPrJaM0NqtDp88
-         YonQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781551326; x=1782156126;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=y7k10tUfFaZEAStRGxgcvcSPRJkvCTKPLLnET1wYWZI=;
-        b=S9FHD76EhkGwA7njnkWEPiw/SnqZB6FCSl4OUBcu1Xn6XymeKIF8H2m/KYOOx98nSa
-         qZzsm97pcSCxqUMXHKK6mAGog43jKlJoLjyMMqNphnLtOJGEyh9Hm1YYgOtpHK+rrwAQ
-         GIhUWhm0qKB0me1ufMx8ApJAHEettR/MmL1l23IBK3anBtBuC068Pc4POa4GqQstaBhV
-         udO8SJPrD/NzO/trfNXXU0CtpjnzIc6YHe0MW/x0+a5jOLTEvQm8gDF6qX94GGJ9ULkg
-         FujC7Z5aP26J3he+xU0PV5quDVQ+VoEj3EguHUoEIEI3R9lUCrnqC2eJAeVLish0/w+J
-         AliA==
-X-Forwarded-Encrypted: i=1; AFNElJ9fEqDCaGHveoZgyJBKkmLATBO5X74G+ykohkO3iRuG0KOd/3mipHlvegWtRLpN7A1PtF0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVS6OUnPS53geqoF6FROdrUUd5bhzyXW87E15txco4n3YZTajv
-	57Qlc3X+Ujtdc8Va1PKBduys54PCXjteC7+qEuXLpXbM1saTH2xiStuo8VMwlVQOGZ+fVKqMx6V
-	N4rGQgg==
-X-Received: from pllj1.prod.google.com ([2002:a17:902:7581:b0:2c2:daa2:d34f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1252:b0:2c1:42d2:40a
- with SMTP id d9443c01a7336-2c69a0f5275mr5247775ad.9.1781551326051; Mon, 15
- Jun 2026 12:22:06 -0700 (PDT)
-Date: Mon, 15 Jun 2026 12:22:05 -0700
-In-Reply-To: <CALzav=fQ5FENWgGNEqQrmb-i_9fWTRhLXj2-jZKC_zjM3Kg6PA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HNj8V4As"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2221F000E9;
+	Mon, 15 Jun 2026 19:27:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781551645;
+	bh=bMMANG+rQmMt6BXHpq2597Zpwp9xulf+zGdEObukHI8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=HNj8V4AsYwne5ywBv8CToxKIiCE10+nKbcL4dOSmlHHfRLOv6DEiF0OJcy80NsME1
+	 6zB80FMWeaJQ6iSeGEw7a1iLsFwL6wUgm38UOyrcGnhJiXTeV6onDfc434KViqJO89
+	 YFMD0wUcsOod7GoKfMKmKc9AKN2AaTOEac+atZ56BJAnAx0oHdhoO5h0CcTHNUr4e/
+	 dWmlg9Nz8lZPY4QbJ9wtLqJZNqFz55eCafyBxDdxCNl+gXdrpn1Ecp901AUAJEEMG9
+	 GcUTIs+9x9EBvinYQOAxTca0XKEFkUOIbB831VNvrZ2ZSeEqRotygtKX9xIABjlEgv
+	 O73lQstQhnnsQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 6/6] vfio/pci: Expose latched module parameter policy
+ in debugfs
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Alex Williamson" <alex.williamson@nvidia.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260615191241.688297-7-alex.williamson@nvidia.com>
+References: <20260615191241.688297-7-alex.williamson@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 15 Jun 2026 19:27:25 +0000
+Message-Id: <20260615192725.6A2221F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260613002031.745413-10-seanjc@google.com> <20260613003501.DD5951F000E9@smtp.kernel.org>
- <CALzav=fsuDxGViwyFmhR1RmQKugR_tcj70gmq-492thdxJTDPg@mail.gmail.com>
- <ajA-5IQ3R5ZO1rSi@google.com> <CALzav=fQ5FENWgGNEqQrmb-i_9fWTRhLXj2-jZKC_zjM3Kg6PA@mail.gmail.com>
-Message-ID: <ajBQ3YEAMyKnJWYb@google.com>
-Subject: Re: [PATCH v7 09/20] KVM: selftests: Add VFIO device support to
- eventfd IRQ test
-From: Sean Christopherson <seanjc@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: sashiko-reviews@lists.linux.dev, Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 15, 2026, David Matlack wrote:
-> On Mon, Jun 15, 2026 at 11:05=E2=80=AFAM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> >
-> > On Mon, Jun 15, 2026, David Matlack wrote:
-> > > On Fri, Jun 12, 2026 at 5:35=E2=80=AFPM <sashiko-bot@kernel.org> wrot=
-e:
-> > > > > diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testi=
-ng/selftests/kvm/irq_test.c
-> > > > > index 9f8895b898214..6888be54ee4a9 100644
-> > > > > --- a/tools/testing/selftests/kvm/irq_test.c
-> > > > > +++ b/tools/testing/selftests/kvm/irq_test.c
-> > > > [ ... ]
-> > > > > @@ -55,6 +58,36 @@ static void *vcpu_thread_main(void *arg)
-> > > > >       return NULL;
-> > > > >  }
-> > > > >
-> > > > > +static int vfio_setup_msi(struct vfio_pci_device *device)
-> > > > > +{
-> > > > > +     const int flags =3D MAP_SHARED | MAP_ANONYMOUS;
-> > > > > +     const int prot =3D PROT_READ | PROT_WRITE;
-> > > > > +     struct dma_region *region;
-> > > > > +
-> > > > > +     /* A driver is required to generate an MSI. */
-> > > > > +     TEST_REQUIRE(device->driver.ops);
-> > > > > +
-> > > > > +     /* Set up a DMA-able region for the driver to use. */
-> > > > > +     region =3D &device->driver.region;
-> > > > > +     region->iova =3D 0;
-> > > >
-> > > > [Severity: Medium]
-> > > > Does hardcoding the DMA region's IOVA to 0 cause IOMMU mapping fail=
-ures on
-> > > > platforms that reserve or restrict IOVA 0?
-> > > >
-> > > > If IOVA 0 is unsupported, it seems like iommu_map() will fail and t=
-rigger a
-> > > > test assertion crash instead of running.
-> > >
-> > > This is probably fine for now given the test is only for x86_64. But
-> > > if you are going to send a v8 you can use the VFIO selftests
-> > > iova_allocator to fix this, instead of hard-coding.
-> >
-> > I'm confused, why is this test setting up a DMA-able region in the firs=
-t place?
->=20
-> There might be some devices with which you can trigger an MSI with
-> pure MMIO. But most devices you need to at least set up some
-> descriptors in memory that describe what action you want the device to
-> take and then use MMIO to poke the device to read the desriptor and
-> perform the action. Reading those descriptors is DMA.
->=20
-> For Intel DSA specifically, send_msi() works by telling the device to
-> perform an 8-byte memcpy and send an interrupt when it's done. The
-> driver region contains the descriptor for that memcpy, as well as the
-> 8-byte source/destination buffers the device should use.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Use-After-Free in debugfs via devm-managed seqfile private data du=
+ring device unbinding.
+--
 
-Ah, gotcha.  For a comment, how's this look?
+commit 253a847be13fd59f8c265fb641107fa380c66e0c
+Author: Alex Williamson <alex.williamson@nvidia.com>
 
-diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftes=
-ts/kvm/irq_test.c
-index 6888be54ee4a..9a495fdb52f5 100644
---- a/tools/testing/selftests/kvm/irq_test.c
-+++ b/tools/testing/selftests/kvm/irq_test.c
-@@ -67,7 +67,12 @@ static int vfio_setup_msi(struct vfio_pci_device *device=
-)
-        /* A driver is required to generate an MSI. */
-        TEST_REQUIRE(device->driver.ops);
-=20
--       /* Set up a DMA-able region for the driver to use. */
-+       /*
-+        * Set up a DMA-able region for the driver to use.   Very few devic=
-es
-+        * provide a way to arbitrarily send interrupts (MSIs), e.g. by wri=
-ting
-+        * an MMIO register.  Instead, most devices send MSIs when an actio=
-n is
-+        * completed, and practically all actions involve DMA of some form.
-+        */
-        region =3D &device->driver.region;
-        region->iova =3D 0;
-        region->size =3D SZ_2M;
+vfio/pci: Expose latched module parameter policy in debugfs
+
+This commit exposes the per-device latched values of the nointxmask and
+disable_idle_d3 module parameters via debugfs.
+
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index db36d903dcd40..3f11a9624b9c0 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+[ ... ]
+> @@ -97,6 +99,60 @@ static inline bool vfio_vga_disabled(struct vfio_pci_c=
+ore_device *vdev)
+[ ... ]
+> +static void vfio_pci_core_debugfs_init(struct vfio_pci_core_device *vdev)
+> +{
+> +	struct device *dev =3D &vdev->vdev.device;
+> +	struct dentry *pci_dir;
+> +
+> +	if (IS_ERR_OR_NULL(vdev->vdev.debug_root))
+> +		return;
+> +
+> +	pci_dir =3D debugfs_create_dir("pci", vdev->vdev.debug_root);
+> +	debugfs_create_devm_seqfile(dev, "nointxmask", pci_dir,
+> +				    vfio_pci_core_debugfs_nointxmask);
+
+[Severity: High]
+Does this introduce a use-after-free during device unbinding?
+
+When a device is unregistered, vfio_unregister_group_dev() invokes
+vfio_device_del() before tearing down the debugfs entries.
+
+Because vfio_device_del() eventually calls device_del(), it will trigger
+devres_release_all() which frees the debugfs_devm_entry allocated by
+debugfs_create_devm_seqfile() here.
+
+Following this, vfio_unregister_group_dev() can block waiting for userspace
+to close any open file descriptors for the device:
+
+drivers/vfio/vfio_main.c:vfio_unregister_group_dev() {
+    ...
+	vfio_device_del(device);
+
+	vfio_device_put_registration(device);
+	rc =3D try_wait_for_completion(&device->comp);
+    ...
+}
+
+Since the debugfs directory is not removed until vfio_device_debugfs_exit()
+is called after this wait completes, the debugfs files remain visible.
+
+If these files are read during this wait window, will it dereference the
+freed devm-managed private data pointer?
+
+> +	debugfs_create_devm_seqfile(dev, "disable_idle_d3", pci_dir,
+> +				    vfio_pci_core_debugfs_disable_idle_d3);
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260615191241.6882=
+97-1-alex.williamson@nvidia.com?part=3D6
