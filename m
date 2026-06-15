@@ -1,330 +1,160 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010049.outbound.protection.outlook.com [52.101.46.49])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5233B583B;
-	Mon, 15 Jun 2026 19:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781553078; cv=fail; b=riLgKk8U6VMrvEf03foW1iGAks+dykB1Iokt6ZjVy3dFst+eB45l4/DnU1Nds9zddPkBHQkZ0BlZcfkn4t3xD3fBgT1BcHBXzgQXkTzGI8iAh2LqLIEkDukC8cIOvBDfumyWtN+a36gvIYIYuzCjAF6zPZ/fHRnGIg89S6DaTbg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781553078; c=relaxed/simple;
-	bh=KX4F+U/VbIyYjkexPQ0BcpgqKxX21sfp79z5Lhvz+M0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uSiaWvKclQ5O/UP6r/0d7IUjXLMcwn4UWm+EmvJ31ZTkfwZX1pGUt+PJO9p8/c8CfYVx8/Y5gGaUWtRYCr5cPPVsZysJsMI71rfH61jBWzV4Agi+QCUQ1WKtX0A4hiGW5Ys+hRSo36BPofFHUq1NmxcNLCfOxDu39Lz4wloFtks=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=yEAk3N2H; arc=fail smtp.client-ip=52.101.46.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40B438B12E;
+	Mon, 15 Jun 2026 20:02:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781553726; cv=none; b=DIbz+VvZkYDFmzwvIXEa69h+DPa2KU0rDBBVLHALZGfjrsVkoRaZ7fKn7sF4gEHG8LYOXE8XIvtKnfKHUvJyyjNwjQre5Y2GUBOkBo1vlgpkOwk6f1+nyeBD5Ij6GOkSnPQXZEbEybNBRKUUPENaFAagNOUOlYI+TvP0jKSQ+Es=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781553726; c=relaxed/simple;
+	bh=hFawhCsNPty7fevrSntR9guSB7PDRflv6YAjEEf87N8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=um71xYu0g2OL0ffZ3LkebqAsLJMyTMYBjYWzGZNxLo/US/uv70c6B1xiLsIIA89xHkZ8QeCf4azkcS1ISy9YH0lsRIFY3P9VZ9Xh0wBtwE8rz3N7X2dVpXNUGJ6uBpj54sgihTcOJJxIDM/tDl9PBS2G7GMBWnxjTrvOHH+jp2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DpvhXJu2; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="yEAk3N2H"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y+rhnaOBugX1UijyMUNKiKY6oHNaFyTEGyKtuVuok7Zyh81FLflvq/yLuMrDdSJo8tHroxKCK7uO/TkXgS19mFqSmAyenLS3gNa29q/dOEoWkM9n/F+/Q8PXPdXnhQNhtftPUq1fh+fORBEuOukjK6EqEyAPzVrKlrAHnz9oMY/bC+IEa5dHX4VjgbkSy+MTEYgilHMdxEr7Gh4hR0vm7Hetgzh0GSez+/ItsKwezNpWg7f1Xt0a5hV8ceEv2SrJI/027pocy97ArJvzAppS/nfTsqbPeI5Ei0//Q2SDr/U1AsTm6KyxlrjiOKRny72naFA/Vyb+8h+v7GLUhroVAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4AW0i1BVnsV6k6FvCGDuLnbVfd1jr4U7CDh+ralgEq8=;
- b=Ve7W8BAt1+cLlM2xiqtUVUwLbK3m5LhWuNPWBXtrfGqvMOXXjiyYTz8ESKH4pGX65zNpIocEIvsxu5CNS7H5itGlsVYGTzhEcbtPjW3puyT3kA/TpB6qMxs3mp35m9lZg+lSoe3SKvYeNW/nPVVykF8xJVovGahA4KoGyxzu9YQg2iYQMhcPqLHzLZ74KbDksMhcb0N3SlVy7RiGPGMUA+IkPajO+V+pYs1ckYe1uvzwUOsBpc7z/nyOUN0X5vBtkv4Klb29gbbHhXRwRhjCDZ8GlTVn5qzExTwfyX09ZOQyea9sa3HuEU7rjz93bx8kfNBzClN59ea+KotUK6ALyw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4AW0i1BVnsV6k6FvCGDuLnbVfd1jr4U7CDh+ralgEq8=;
- b=yEAk3N2H08qyBcDlp1OBjpJHzHfjJPc/iX6qVmyAHuRJBNY1lWno7y9fy87Ab18uk60b0Sq39rFq0NlqFTW0cNVFLWLh5LNj5VZx/ltepyiWPJsaNfy9LbA44EvT3DOAKfFbfKLnUWy0r3a8mIFBS6HvaHigKZTsRWcOJtxGRYo=
-Received: from BL0PR05CA0020.namprd05.prod.outlook.com (2603:10b6:208:91::30)
- by IA1PR12MB9064.namprd12.prod.outlook.com (2603:10b6:208:3a8::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
- 2026 19:51:07 +0000
-Received: from BL6PEPF00020E60.namprd04.prod.outlook.com
- (2603:10b6:208:91:cafe::a0) by BL0PR05CA0020.outlook.office365.com
- (2603:10b6:208:91::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.11 via Frontend Transport; Mon,
- 15 Jun 2026 19:51:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF00020E60.mail.protection.outlook.com (10.167.249.21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.139.8 via Frontend Transport; Mon, 15 Jun 2026 19:51:07 +0000
-Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 15 Jun
- 2026 14:51:05 -0500
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
-	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
-CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
-	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
-	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
-	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-Subject: [PATCH v8 7/7] x86/sev: Add debugfs support for RMPOPT
-Date: Mon, 15 Jun 2026 19:50:56 +0000
-Message-ID: <cc9aa9b6cfa2ce826f2ad53f8a13d3b7bf0790b6.1781419998.git.ashish.kalra@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1781419998.git.ashish.kalra@amd.com>
-References: <cover.1781419998.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DpvhXJu2"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FJILEg3289731;
+	Mon, 15 Jun 2026 20:02:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=QuQb2L
+	VUENz2tci2/j7hR8YtaJnI7ON1FlkxUDqXzZM=; b=DpvhXJu20nQPyvIz7nwx2D
+	sPE/gKsaYJj6pKb0lsjk12P+Pto5UbKmAxTgYaCB8oow/RxjVzZV691vpr09fbbG
+	fBuBwLu8tsIm+jonVoTy5kUXaYnG3niuTWJqUL1bgCv6svgGI358/UqeOFIv4urk
+	CWRRdPg42EaVZ1O3LtLqx3+8A6dmYE3xH67hduffbrY9Q4Jc4t05oF/Ak8vwW74z
+	jgR+uIEx6oFs6CZoNdrMqdAt3tCQw8JY+WgO1HNigEKO+gqvJPzXe4Ndputnx8Nu
+	GYVCRh+LA85kGPHp1g/wiQI8IuUVfr+rZ2ncziSR+UCFyL/wlvduYk/IhiyyZP9A
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es23njcpu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jun 2026 20:02:00 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65FJnfI3008314;
+	Mon, 15 Jun 2026 20:01:59 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4esk1h0402-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jun 2026 20:01:59 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65FK1wJd30409052
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Jun 2026 20:01:58 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D67558053;
+	Mon, 15 Jun 2026 20:01:58 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2076958043;
+	Mon, 15 Jun 2026 20:01:57 +0000 (GMT)
+Received: from [9.61.248.38] (unknown [9.61.248.38])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 15 Jun 2026 20:01:57 +0000 (GMT)
+Message-ID: <4d7fc371-4357-496f-9774-1f7a7c1a3091@linux.ibm.com>
+Date: Mon, 15 Jun 2026 16:01:55 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E60:EE_|IA1PR12MB9064:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51e6a910-0578-4fa3-f6b0-08decb177108
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|23010399003|376014|7416014|36860700016|18002099003|22082099003|921020|6133799003|11063799006|3023799007|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	lvIN8MudfZXQ03CHIqVhLP5MHD27kDRx6xMnuA9YCgbPRcdinu4ysUQIl3OU/DyZQAkp4+kqHclVAsPN4Jd+8mEgDUrx/dOSw2DdUaS5Q7kASgDMLaRz7dFN/a0dCkLIYFIE/LEpySSQxKi4/FH1nFU+yAzPBJZ8VfCbEXw2TOTM3xCru4A5EVM7Zxr5wDuLC1R3kJjiTz2zKrSOQXODTSdS7xuI9cbgCU62bAb5ZR8OY/3Hx2ppCjTyi1bMoBNTjtbNmZ/Kl6r7oueBxFRMRkCWZMTtu3IZgydHG41QDObbDsD71unovzTSAj5qTAwDXs2uNZrFcFN1S6mOWYtkPxuDUxWVyOjTIyPK4vHv3sjkY14voDSOPksDPAXWYrkYbOXXu9uiyMfNqOq/UAnqKN/5MnqJP0q3JnnPzW5oG0lK8hrTcQwe/PbRmq3ui8uIicADrPcldO/50ghLckjupUHJfx5NKGgKcrPn8sKjxfslOWh6TM5nqplmyvJDx3rJSOajYuJxyRjQ16ScNkPrzN2TYUMcG9MnMykU24fOatQJ1LpR2gNeDnRT1adFoy6nWoPSvXH80E5zCj5F8135NlUkFH0cZ+2n5ZejiGR88pIrpytBPG/cJkSooRADihJvCHTOPtv53TXm3aXqqvBk/i7nZUyzFpHtnQ2pNXEFTMmDW95FzdLMNeRvBZqvan9ZGwoTJvht5p0gJVaQpRpTeNUl1rpvzOlUXvXBRG93lzehpZu20H8hd/IIzbidq69wn82FdcAM4AjAuncBoGIY7Q==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(23010399003)(376014)(7416014)(36860700016)(18002099003)(22082099003)(921020)(6133799003)(11063799006)(3023799007)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	O3yaRFGPaRwrs2iPo7jrckMK31DU2ZicOsVLgYSAWe5fd7VPnwUibKR5CxWvu2h2/Xj6HjyDpxwmb7j76UY+mJEWg/eZXVCzGutq1/ZrRbZv8zMPckM5epCIYXV18jjKJ2Y0/2gzQ+jiEVgWExsblNvvFj9Ax46arXU7+9p98wBu74x+fMRoOHTjapwt/AcQGghtsjd9ERTs9M2y/N0qQL3Ga1gWGDjXhtwC+PyeqXPCRidrPwujE6wV4TesbtjdzyC0DlCoMxlU1mDqATrZMvyiF6GxkR9obRHZEDuUuu6vnrFub27JsPjtuM137BLVeTtkT6Ot4kGDAg8ya8q79RgaMqrlKgOqddL7lQR89X+LcczJ2wBaFlIZYDWoaHEf4VKkyKa3X9fmPl06SqotixOUEvQRdQ4mhB9VNXI7J/xGlGedHatAjz4Segc94g52
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 19:51:07.3842
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51e6a910-0578-4fa3-f6b0-08decb177108
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00020E60.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9064
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] s390/virtio_ccw: Also suppress -EINVAL on device
+ detach
+To: Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, farman@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, mjrosato@linux.ibm.com, vneethv@linux.ibm.com,
+        oberpar@linux.ibm.com, virtualization@lists.linux.dev,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260612155407.199218-1-wbezenah@linux.ibm.com>
+ <20260615002309.052e0614.pasic@linux.ibm.com> <875x3jn94r.fsf@redhat.com>
+Content-Language: en-US
+From: William Bezenah <wbezenah@linux.ibm.com>
+In-Reply-To: <875x3jn94r.fsf@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=XtnK/1F9 c=1 sm=1 tr=0 ts=6a305a39 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=PMLYZQeYH2tpQPL_-REA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDIwOSBTYWx0ZWRfX4PZbuGXSKZf5
+ l/1pR7lsN0bgLCOWkCTdC69/5HkvfrFDOL0PLQtAPYJN195Qhwm/KGT/p7FWM2gs9d6gUgo3rVt
+ Gj/Q5Sbnr7gWqEdTe3vj+EI0JNv3EtX4Qm6bjjVNfMiJiti7/cCRirh7bEXA9yGLyGcT64JBqJy
+ wYNbmj6xyVKN5ByyuB4xs8MR+ca2OkUXxdCcg4Va4Pa4XEd8Ql3qtTqXw4GyZwgdsNDVhXxBInq
+ bFyn3239NL3laq3Pg56cekAvWq4Ho0t96aDm+eKCxkl+mOjuFLRxKk81b1Yj89hUJMfRVTZux9O
+ YUdGC97yxo9KFT/5/d2ej3IvJLQS7nT4XDZrlxddFXX8LJW4kr1XrOcFpgxFgm2DqwLpW3c61+6
+ IkRzZgFt6rUaDbyOQAscU8nYganYyrRINHwQCYmPwThpu1OFypkkyYuBNtqcA3ysCP8p65mmtJ7
+ RcoZK1FKORsd6GzFUbA==
+X-Proofpoint-GUID: 6s_Jph1OiLimsgDJtGiL8lZFruvvkctt
+X-Proofpoint-ORIG-GUID: 6s_Jph1OiLimsgDJtGiL8lZFruvvkctt
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDIwOSBTYWx0ZWRfX7vW91poRXSnr
+ 99MSBYK7MoH5tMA0Y8BIApus79JCsAeDf0BxPMy9+6DA4BLYXlXmJFf6l/7x723kuNwOb9P9pW3
+ XWX+UvtFfKLy3NRiGULTfLSMGJ/HoeI=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-15_05,2026-06-15_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 clxscore=1015 malwarescore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606150209
 
-From: Ashish Kalra <ashish.kalra@amd.com>
 
-Add a debugfs interface to report per-CPU RMPOPT status across all
-system RAM.
+On 6/15/2026 10:58 AM, Cornelia Huck wrote:
+> On Mon, Jun 15 2026, Halil Pasic <pasic@linux.ibm.com> wrote:
+>
+>> On Fri, 12 Jun 2026 17:54:07 +0200
+>> William Bezenah <wbezenah@linux.ibm.com> wrote:
+>>
+>>> Since commit 8c58a229688c ("s390/cio: Do not unregister the
+>>> subchannel based on DNV"), subchannel behavior following a device
+>>> detach has been updated and results in -EINVAL being propagated
+>>> rather than -ENODEV, originating from ccw_device_start_timeout_key()
+>>> in cio/device_ops. In the end, the virtio driver has no ability to
+>>> react to the difference between device and subchannel states here,
+>>> and during detach, both -ENODEV and -EINVAL indicate the device
+>>> cannot be used and should not be treated as errors requiring
+>>> attention. Update error handling in virtio_ccw_del_vq() and
+>>> virtio_ccw_drop_indicator() to suppress -EINVAL in addition to
+>>> -ENODEV.
+>> Hi William!
+>>
+>> Are you saying that ccw_device_start() started returning -EINVAL
+>> since 8c58a229688c ("s390/cio: Do not unregister the subchannel based on
+>> DNV")? Or did I somehow read the paragraph wrong?
+>>
+>> The funcition ccw_device_start is documented to return:
+>>  * Returns:                                                                     
+>>  *  %0, if the operation was successful;                                        
+>>  *  -%EBUSY, if the device is busy, or status pending;                          
+>>  *  -%EACCES, if no path specified in @lpm is operational;                      
+>>  *  -%ENODEV, if the device is not operational. 
+>> and the commit message does not say a thing about introducing -EINVAL to
+>> the mix.
+> The function may return -EINVAL for non-enabled subchannels
+> (i.e. pmcw.ena == 0), maybe we get an all-zeroes schib with dnv == 0?
+> I'd expect it not to be enabled in that case anyway.
 
-To dump the per-CPU RMPOPT status for all system RAM:
+Yep, that's at least how I've come to understand what changed. The
+function ccw_device_start_timeout_key() has always returned -EINVAL
+for non-enabled subchannels (pmcw.ena == 0), though it's not
+documented in the header.
 
-/sys/kernel/debug/rmpopt# cat rmpopt-table
+What changed with commit 8c58a229688c is that cio_update_schib() now
+updates the schib even when DNV=0, rather than returning early as it
+did previously. Somehow this update results in pmcw.ena == 0 in
+ccw_device_start_timeout_key(). Previously, it saw pmcw.ena == 1 and
+moved to the condition (cdev->private->state == DEV_STATE_NOT_OPER)
+where it returned -ENODEV.
 
-Memory @  0GB: CPU(s): none
-Memory @  1GB: CPU(s): none
-Memory @  2GB: CPU(s): 0-1023
-Memory @  3GB: CPU(s): 0-1023
-Memory @  4GB: CPU(s): none
-Memory @  5GB: CPU(s): 0-1023
-Memory @  6GB: CPU(s): 0-1023
-Memory @  7GB: CPU(s): 0-1023
-...
-Memory @1025GB: CPU(s): 0-1023
-Memory @1026GB: CPU(s): 0-1023
-Memory @1027GB: CPU(s): 0-1023
-Memory @1028GB: CPU(s): 0-1023
-Memory @1029GB: CPU(s): 0-1023
-Memory @1030GB: CPU(s): 0-1023
-Memory @1031GB: CPU(s): 0-1023
-Memory @1032GB: CPU(s): 0-1023
-Memory @1033GB: CPU(s): 0-1023
-Memory @1034GB: CPU(s): 0-1023
-Memory @1035GB: CPU(s): 0-1023
-Memory @1036GB: CPU(s): 0-1023
-Memory @1037GB: CPU(s): 0-1023
-Memory @1038GB: CPU(s): none
-
-Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
----
- arch/x86/virt/svm/sev.c | 128 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 128 insertions(+)
-
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index 253a534b9a0d..b8b00c50ce41 100644
---- a/arch/x86/virt/svm/sev.c
-+++ b/arch/x86/virt/svm/sev.c
-@@ -20,6 +20,8 @@
- #include <linux/amd-iommu.h>
- #include <linux/nospec.h>
- #include <linux/workqueue.h>
-+#include <linux/debugfs.h>
-+#include <linux/seq_file.h>
- 
- #include <asm/sev.h>
- #include <asm/processor.h>
-@@ -145,6 +147,15 @@ static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
- 
- static unsigned long snp_nr_leaked_pages;
- 
-+/* All users of rmpopt_report_cpumask must hold rmpopt_show_mutex. */
-+static cpumask_t rmpopt_report_cpumask;
-+static struct dentry *rmpopt_debugfs;
-+static DEFINE_MUTEX(rmpopt_show_mutex);
-+
-+struct seq_paddr {
-+	phys_addr_t next_seq_paddr;
-+};
-+
- #undef pr_fmt
- #define pr_fmt(fmt)	"SEV-SNP: " fmt
- 
-@@ -587,6 +598,8 @@ static void rmpopt_cleanup(void)
- 
- 	cancel_delayed_work_sync(&rmpopt_delayed_work);
- 	destroy_workqueue(rmpopt_wq);
-+	debugfs_remove_recursive(rmpopt_debugfs);
-+	rmpopt_debugfs = NULL;
- 
- 	cpus_read_lock();
- 
-@@ -635,6 +648,10 @@ static inline bool __rmpopt(u64 pa_start, u64 op_type)
- 		     : "a" (pa_start), "c" (op_type)
- 		     : "memory", "cc");
- 
-+	if (op_type == RMPOPT_FUNC_REPORT_STATUS)
-+		assign_cpu(smp_processor_id(), &rmpopt_report_cpumask,
-+			   optimized);
-+
- 	return optimized;
- }
- 
-@@ -669,6 +686,115 @@ static long rmpopt_leader_fn(void *arg)
- 	return 0;
- }
- 
-+/*
-+ * 'val' is a system physical address.
-+ */
-+static void rmpopt_report_status(void *val)
-+{
-+	u64 pa_start = ALIGN_DOWN((u64)val, SZ_1G);
-+	u64 op_type = RMPOPT_FUNC_REPORT_STATUS;
-+
-+	__rmpopt(pa_start, op_type);
-+}
-+
-+/*
-+ * start() can be called multiple times if allocated buffer has overflowed
-+ * and bigger buffer is allocated.
-+ */
-+static void *rmpopt_table_seq_start(struct seq_file *seq, loff_t *pos)
-+{
-+	phys_addr_t end_paddr = rmpopt_pa_end;
-+	struct seq_paddr *p = seq->private;
-+
-+	if (*pos == 0) {
-+		p->next_seq_paddr = rmpopt_pa_start;
-+		if (p->next_seq_paddr >= end_paddr)
-+			return NULL;
-+		return &p->next_seq_paddr;
-+	}
-+
-+	if (p->next_seq_paddr >= end_paddr)
-+		return NULL;
-+
-+	return &p->next_seq_paddr;
-+}
-+
-+static void *rmpopt_table_seq_next(struct seq_file *seq, void *v, loff_t *pos)
-+{
-+	phys_addr_t end_paddr = rmpopt_pa_end;
-+	phys_addr_t *curr_paddr = v;
-+
-+	(*pos)++;
-+	*curr_paddr += SZ_1G;
-+	if (*curr_paddr >= end_paddr)
-+		return NULL;
-+
-+	return curr_paddr;
-+}
-+
-+static void rmpopt_table_seq_stop(struct seq_file *seq, void *v)
-+{
-+}
-+
-+static int rmpopt_table_seq_show(struct seq_file *seq, void *v)
-+{
-+	phys_addr_t *curr_paddr = v;
-+
-+	guard(mutex)(&rmpopt_show_mutex);
-+
-+	seq_printf(seq, "Memory @%3lluGB: ",
-+		   *curr_paddr >> (get_order(SZ_1G) + PAGE_SHIFT));
-+
-+	/*
-+	 * Query all online CPUs rather than just rmpopt_cpumask (primary
-+	 * threads only). The RMPOPT instruction only needs to run on one
-+	 * thread per core for the optimization to take effect, but debugfs
-+	 * reporting requires the RMPOPT status across all CPUs.
-+	 * Performance is not a concern for this diagnostic interface.
-+	 *
-+	 * This is safe because RMPOPT_BASE MSR is per-core and
-+	 * snp_prepare() ensures all CPUs are online when the MSR is
-+	 * programmed during snp_setup_rmpopt().
-+	 */
-+	cpumask_clear(&rmpopt_report_cpumask);
-+	on_each_cpu_mask(cpu_online_mask, rmpopt_report_status,
-+			 (void *)*curr_paddr, true);
-+
-+	if (cpumask_empty(&rmpopt_report_cpumask))
-+		seq_puts(seq, "CPU(s): none\n");
-+	else
-+		seq_printf(seq, "CPU(s): %*pbl\n", cpumask_pr_args(&rmpopt_report_cpumask));
-+
-+	return 0;
-+}
-+
-+static const struct seq_operations rmpopt_table_seq_ops = {
-+	.start = rmpopt_table_seq_start,
-+	.next = rmpopt_table_seq_next,
-+	.stop = rmpopt_table_seq_stop,
-+	.show = rmpopt_table_seq_show
-+};
-+
-+static int rmpopt_table_open(struct inode *inode, struct file *file)
-+{
-+	return seq_open_private(file, &rmpopt_table_seq_ops, sizeof(struct seq_paddr));
-+}
-+
-+static const struct file_operations rmpopt_table_fops = {
-+	.open = rmpopt_table_open,
-+	.read = seq_read,
-+	.llseek = seq_lseek,
-+	.release = seq_release_private,
-+};
-+
-+static void rmpopt_debugfs_setup(void)
-+{
-+	rmpopt_debugfs = debugfs_create_dir("rmpopt", arch_debugfs_dir);
-+
-+	debugfs_create_file("rmpopt-table", 0400, rmpopt_debugfs,
-+			    NULL, &rmpopt_table_fops);
-+}
-+
- /*
-  * RMPOPT optimizations skip RMP checks at 1GB granularity if this
-  * range of memory does not contain any SNP guest memory.
-@@ -874,6 +1000,8 @@ void snp_setup_rmpopt(void)
- 	 * optimizations on all physical memory.
- 	 */
- 	queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
-+
-+	rmpopt_debugfs_setup();
- }
- EXPORT_SYMBOL_FOR_MODULES(snp_setup_rmpopt, "ccp");
- 
--- 
-2.43.0
+So the commit didn't introduce -EINVAL as a new return value, rather,
+it changed the subchannel lifecycle such that existing paths now
+propagate -EINVAL rather than -ENODEV during the device detach
+scenario.
 
