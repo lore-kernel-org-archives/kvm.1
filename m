@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854352356C6;
-	Mon, 15 Jun 2026 05:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11CF2F7F00;
+	Mon, 15 Jun 2026 05:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781499803; cv=none; b=tQBhYXvku8VS5YKrrIymy8RwVru5jdGQmLhpfvDRNEae5Q02rIbBH49CSrKSqEfDlCwzWAWGEO3ZIBxTt+rxHytPKO2ciGQozxQMx+1gfJkmxNJENJstI/wCI5etHvXvtdOu/3+BPN95S+JJTMelOXuBYTZgde9C49LKutzoBcU=
+	t=1781500410; cv=none; b=cyU9wbRWMDuEuSkSUnpfQGsZk3yUE8T3fcBobKIvCaWLsfPLouulF9u/X5YtX2o9JppHYLkhcjGAaJXtLwlI+MHnMwlDAsDxWekrdl+0vTX952vd3AgXvS22jXCk1gfYIVyAovrts5epxHlHr3WpZOKFbD+BWpYaAm3AWuxDoLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781499803; c=relaxed/simple;
-	bh=5e5svv7+J2WqqpHKo95064tq+J8tq6Zrv987HcefWnI=;
+	s=arc-20240116; t=1781500410; c=relaxed/simple;
+	bh=8ptWM84yVkNPkPv/TK5u8Fpcbw3idFe3zmrK5Yd5FxY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dCvkOVHSYQDMQt7iaJkvp4vmvgYh5kGqiFU0vBltGD4wzRjVKY6o5jjG1OBQmY5k6yJGBL7IJP+IoMigSQBDYZP6hRZEQTh+60xUAZCTsI2Ou7NwrQBEPIdzI69K/cSNjsgPNp8TD+F1HZLUzyiBHyYz9PzcsQGZZ2OX4ePhntI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BylerFLd; arc=none smtp.client-ip=198.175.65.17
+	 In-Reply-To:Content-Type; b=Kolhvau2l9KiPmQX8n4DartVUrVkbMejKuIXQvPfNFXGd5NWATeNVfAvJuz2ewDW21AMkx8Pa4ql1Zc7S9MrbbvShyihZiUCfH1mjJEu9veCUmCc/8wXvUhpvfYtAtt1GI01Qi0ex+Y9fqx6xBXDb+tHEwM19hvOK03m+5FCwlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SS208MCj; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BylerFLd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SS208MCj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781499803; x=1813035803;
+  t=1781500409; x=1813036409;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=5e5svv7+J2WqqpHKo95064tq+J8tq6Zrv987HcefWnI=;
-  b=BylerFLdnKuTNlyAlZ1mJFgUoPmvuqFp0pXW2RHUURy69u5MYUnwruAI
-   rs04xmgpYTLpOGlaDF76US0yyuILCdHKkI57y+vzk9b9nlhIO3QXvwqiy
-   r/GhNKIyIP/xJLjRktjTdRcgfWJ+2bCrvaQnLrSdJRqegUZHQacnGaexR
-   tLMHMCkuE4Zi6PhI6dnwRqnCrYtRGAGs1Q+MVrjOHFUZDxVrfwxt2bPnR
-   /QFyAaBr7snBGVaoBCALmBoRm0iaWbgH3RuliBTV6cOQ1FqIX5VuRqJzu
-   LKNxlyzvw/sAPtjdD4aD+zQcmgy9BDlpcW+2GwQH+y3DCus081APi44Bz
-   w==;
-X-CSE-ConnectionGUID: V2eo/30+QoqIkODGFEVZUQ==
-X-CSE-MsgGUID: CEgYrbY5Rg2lAnKGrL6TjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82244253"
+  bh=8ptWM84yVkNPkPv/TK5u8Fpcbw3idFe3zmrK5Yd5FxY=;
+  b=SS208MCj9cppDLioIGf0drmv2nUvZQfK2J3t4a2BbrFMazmkepwGbRK0
+   av7Mu4MA2spXfKntQX0cfggx1V3g8E6h4suMXS9LXk/SHBvoIJ+4fnuFt
+   BvPmoQvcJfHpGkdhurE66Zc/bPCSPEAhg3mEd5z5+GFINYIM+Wuu8Ya7f
+   p6CZeJrJOMlAd6XY2M+RhRwxN3rbI3pZ2FqLt6uR6PK8l7luHOQTjSdsx
+   CBpfDtdE5cnL1A7rhZrliOpUtym1o2COc2OZSvFfbNyNjhCehJFM9PwvA
+   miufHzjIOVu8aDKI8r5oi72uRVbcQR9yoXnjLJ0nG/ndGg82AaPG+ReHe
+   A==;
+X-CSE-ConnectionGUID: I/C1rGh1QR+hVmqbtQMKag==
+X-CSE-MsgGUID: 110T0xKUQIuWRAo8fI7ZBw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="107662827"
 X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; 
-   d="scan'208";a="82244253"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 22:03:23 -0700
-X-CSE-ConnectionGUID: aKPvEoxtQbyZRaeuXnH4mA==
-X-CSE-MsgGUID: cXgXhop3Se6UF2g8LlMp+Q==
+   d="scan'208";a="107662827"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 22:13:28 -0700
+X-CSE-ConnectionGUID: UqFznRSzQK+awcTU87+UTA==
+X-CSE-MsgGUID: KAdC6pKnRFadvZ3CoxJ4nw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; 
-   d="scan'208";a="271049833"
+   d="scan'208";a="247459531"
 Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 22:03:20 -0700
-Message-ID: <c77aaa1e-b571-466c-a162-53a4ddc9b932@linux.intel.com>
-Date: Mon, 15 Jun 2026 13:03:18 +0800
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 22:13:26 -0700
+Message-ID: <01e58880-844c-4e5c-825c-ed7c3ab65454@linux.intel.com>
+Date: Mon, 15 Jun 2026 13:13:23 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,87 +52,95 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/30] KVM: x86: Move get_segment_base() to regs.h, as
- kvm_get_segment_base()
+Subject: Re: [PATCH v4 03/30] KVM: x86: Rename __{g,s}et_sregs2() =>
+ kvm_x86_vcpu_ioctl_{g,s}et_sregs2()
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org,
  linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
  Kai Huang <kai.huang@intel.com>
 References: <20260613000329.732085-1-seanjc@google.com>
- <20260613000329.732085-3-seanjc@google.com>
+ <20260613000329.732085-4-seanjc@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260613000329.732085-3-seanjc@google.com>
+In-Reply-To: <20260613000329.732085-4-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-
-
 On 6/13/2026 8:03 AM, Sean Christopherson wrote:
-> Move get_segment_base() to regs.h, as kvm_get_segment_base(), so that the
-> bulk of the register code can be moved from x86.c to a new regs.c, without
-> simultaneously needing to rename "public" helpers to explicitly scope them
-> to KVM.
+> Rename the KVM_{G,S}ET_SREGS2 helpers in anticipation of moving them out of
+> x86.c (while leaving the ioctl dispatch behind).  Having globally visible
+> APIs named __{g,s}et_sregs2() would be "fine", but ugly, given that
+> __{g,s}et_sregs() will NOT be globally visible.  As a bonus, this makes it
+> a bit more obvious that the helpers implement newer versions of
+> kvm_arch_vcpu_ioctl_set_sregs().
 > 
 > No functional change intended.
 > 
 > Cc: Yosry Ahmed <yosry@kernel.org>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-
 > ---
->  arch/x86/kvm/regs.h | 5 +++++
->  arch/x86/kvm/x86.c  | 9 ++-------
->  2 files changed, 7 insertions(+), 7 deletions(-)
+>  arch/x86/kvm/x86.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
 > 
-> diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
-> index a57ba26279ed..e5b16a0826d9 100644
-> --- a/arch/x86/kvm/regs.h
-> +++ b/arch/x86/kvm/regs.h
-> @@ -412,4 +412,9 @@ static inline bool is_guest_mode(struct kvm_vcpu *vcpu)
->  	return vcpu->arch.hflags & HF_GUEST_MASK;
->  }
->  
-> +static inline unsigned long kvm_get_segment_base(struct kvm_vcpu *vcpu, int seg)
-> +{
-> +	return kvm_x86_call(get_segment_base)(vcpu, seg);
-> +}
-> +
->  #endif
 > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 74b8f98dcb24..0f48cd630c32 100644
+> index 0f48cd630c32..0fa8a9e3b8b2 100644
 > --- a/arch/x86/kvm/x86.c
 > +++ b/arch/x86/kvm/x86.c
-> @@ -8492,11 +8492,6 @@ static int emulator_pio_out_emulated(struct x86_emulate_ctxt *ctxt,
->  	return emulator_pio_out(emul_to_vcpu(ctxt), size, port, val, count);
+> @@ -133,8 +133,10 @@ static void __kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags);
+>  static void store_regs(struct kvm_vcpu *vcpu);
+>  static int sync_regs(struct kvm_vcpu *vcpu);
+>  
+> -static int __set_sregs2(struct kvm_vcpu *vcpu, struct kvm_sregs2 *sregs2);
+> -static void __get_sregs2(struct kvm_vcpu *vcpu, struct kvm_sregs2 *sregs2);
+> +static int kvm_x86_vcpu_ioctl_set_sregs2(struct kvm_vcpu *vcpu,
+> +					 struct kvm_sregs2 *sregs2);
+> +static void kvm_x86_vcpu_ioctl_get_sregs2(struct kvm_vcpu *vcpu,
+> +					  struct kvm_sregs2 *sregs2);
+>  
+
+Existing code uses the pattern kvm_vcpu_ioctl_x86_xxx, is it better to
+align the pattern?
+
+
+>  static DEFINE_MUTEX(vendor_module_lock);
+>  static void kvm_load_guest_fpu(struct kvm_vcpu *vcpu);
+> @@ -6623,7 +6625,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>  		r = -ENOMEM;
+>  		if (!u.sregs2)
+>  			goto out;
+> -		__get_sregs2(vcpu, u.sregs2);
+> +		kvm_x86_vcpu_ioctl_get_sregs2(vcpu, u.sregs2);
+>  		r = -EFAULT;
+>  		if (copy_to_user(argp, u.sregs2, sizeof(struct kvm_sregs2)))
+>  			goto out;
+> @@ -6642,7 +6644,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>  			u.sregs2 = NULL;
+>  			goto out;
+>  		}
+> -		r = __set_sregs2(vcpu, u.sregs2);
+> +		r = kvm_x86_vcpu_ioctl_set_sregs2(vcpu, u.sregs2);
+>  		break;
+>  	}
+>  	case KVM_HAS_DEVICE_ATTR:
+> @@ -12210,7 +12212,8 @@ static void __get_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+>  			(unsigned long *)sregs->interrupt_bitmap);
 >  }
 >  
-> -static unsigned long get_segment_base(struct kvm_vcpu *vcpu, int seg)
-> -{
-> -	return kvm_x86_call(get_segment_base)(vcpu, seg);
-> -}
-> -
->  static void emulator_invlpg(struct x86_emulate_ctxt *ctxt, ulong address)
+> -static void __get_sregs2(struct kvm_vcpu *vcpu, struct kvm_sregs2 *sregs2)
+> +static void kvm_x86_vcpu_ioctl_get_sregs2(struct kvm_vcpu *vcpu,
+> +					  struct kvm_sregs2 *sregs2)
 >  {
->  	kvm_mmu_invlpg(emul_to_vcpu(ctxt), address);
-> @@ -8641,7 +8636,7 @@ static void emulator_set_idt(struct x86_emulate_ctxt *ctxt, struct desc_ptr *dt)
->  static unsigned long emulator_get_cached_segment_base(
->  	struct x86_emulate_ctxt *ctxt, int seg)
+>  	int i;
+>  
+> @@ -12480,7 +12483,8 @@ static int __set_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+>  	return 0;
+>  }
+>  
+> -static int __set_sregs2(struct kvm_vcpu *vcpu, struct kvm_sregs2 *sregs2)
+> +static int kvm_x86_vcpu_ioctl_set_sregs2(struct kvm_vcpu *vcpu,
+> +					 struct kvm_sregs2 *sregs2)
 >  {
-> -	return get_segment_base(emul_to_vcpu(ctxt), seg);
-> +	return kvm_get_segment_base(emul_to_vcpu(ctxt), seg);
->  }
->  
->  static bool emulator_get_segment(struct x86_emulate_ctxt *ctxt, u16 *selector,
-> @@ -13839,7 +13834,7 @@ unsigned long kvm_get_linear_rip(struct kvm_vcpu *vcpu)
->  
->  	if (is_64_bit_mode(vcpu))
->  		return kvm_rip_read(vcpu);
-> -	return (u32)(get_segment_base(vcpu, VCPU_SREG_CS) +
-> +	return (u32)(kvm_get_segment_base(vcpu, VCPU_SREG_CS) +
->  		     kvm_rip_read(vcpu));
->  }
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_get_linear_rip);
+>  	int mmu_reset_needed = 0;
+>  	bool valid_pdptrs = sregs2->flags & KVM_SREGS2_FLAGS_PDPTRS_VALID;
 
