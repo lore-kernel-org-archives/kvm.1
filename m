@@ -1,80 +1,112 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9A4408639
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 16:06:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053C43C5DBF;
+	Mon, 15 Jun 2026 16:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781539610; cv=none; b=hNAvBSMEYLOyiRwzF6s7jyRDaLGEAQCY84zN/pnk8OeX3C9a36Gw+51F+zYXh66CrmlVLQQErJl9Ic8+bOtsvo26OiYIrSAOglW+XJbTnXcxPqo1hAqz/uIKaZvs5dT4ZRfnuVM8ekuMrd9H1cS9MLcoBHOKwWRZ66U9w/MMLHI=
+	t=1781539743; cv=none; b=EFGZvnMF37c5ZpaYrgTIfm/0i4cCqtkiinpnotPr9Ea7Xf60fSdF5K1BS/j9ZnkbQbm3SEYK3NkvzTP2K10VmVjlK+4MS7JVoLQpnT6Rt3tYGhSa0Qp2cR5+odw/ZSpBhiNtQoJI3vJ5G+bOmlMZiT1zwY0922R2BdkmkjOqg+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781539610; c=relaxed/simple;
-	bh=p/XZWxijB9NCmJznx7LpYLfqDRKyZhEaBCW8G18vOyc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Yut6rHYyBRL5Ls3j5VbLUjLwEETQSUXBxLt9IRLu8WS2JuBXAF7qSIjl28dO8lYPmPZcFfpuwmHiZON1DpdJSDNwsR3XieXHmLZ/y7BZjw1QJFXoDLIjkQQiL8CQs3HnjB2mACPIAapwtIa4Q9XllCaj+X+vaOPQ8aAqNfhnnAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z5Lth6wM; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781539743; c=relaxed/simple;
+	bh=WHn10bh0M8W5dvO+SvrKHEfFBYqMMDKX8azQKMhpKW0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=p/iZltP6BfyUgelbRHlVnwhGHnojMsMkKLNvuCXaAZQWTnyxEULG6J4iGb2s6bklzdbnJpebCEUHWjECObyFvTD0Ed/F194hxId10j23dXzNf1Lybb2Kd7GS9sqecd3XRwFmCYgLNpGEKi/lezgXedqcpKCyN2jpHQxn5+JQ2gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QRanFp6j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z5Lth6wM"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36db995d083so2581866a91.0
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 09:06:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781539609; x=1782144409; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5zXuyEODVob2lw0QmrgaikfQkgS6MKvHcsm46Nk5Ubs=;
-        b=Z5Lth6wMlSmSmNpR8Ag+0pbk/HmEBtoydFdtcdBPyYGkAzN5RzNA6wrpZWDWJGSwe0
-         kQLX1L3gsrXfRTvRfiFFEt5gtr2nP8W1drCKkkTcxNufL+EfsSLCjOkAQiAxr3TGA5eQ
-         mp11kzT24zsSweu3i1yQzSItT1zCdixhSlaas96m4wTDUsgSYpdr7orfrz51mOTMGEAA
-         hu5ifPcD2vL97CBjGB3pBrtB6DmUnL9xmVRXtK+ADt7G60MZJ3qDKdH9HO6jde23PzTb
-         xMfzKFDrw4PliyR4OuYyGWEI53sFVU2sbL4rhXOLOh9ZnYhtMOotg1X8tplk2W2/4UVo
-         CUFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781539609; x=1782144409;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5zXuyEODVob2lw0QmrgaikfQkgS6MKvHcsm46Nk5Ubs=;
-        b=KTtEYjYrJTtLPfRLLJBSFzlBfy7kJa+D8Mz7g4bubyTDP4ucPhAx1LyVPd7dYyOoAE
-         WPvL764chOoIXipHI8TMd6xYtBGNunAhX9entdysj+FH4IwFwtH5s/hkDjAm6oSnREd8
-         3KluR+cL58PSV3+PkuzJ+jvzUI0hQc+5KW78ZFpGQRi733/ifAFiYf1F4bX1fkjPf0IS
-         zRMXTWDR5F1B7otCZTrHLSSYbmzJQHX26ZdWQOPPPYmVyox5Q94dHagwj/vHrXg4K6vW
-         oaacB8/3VswZfgugXqC+FYftGx2MMFYukw80UTvIwXOfMkKal2NxSf77tIPPBvYxQZaq
-         ihJA==
-X-Forwarded-Encrypted: i=1; AFNElJ+75oC5aW1UE3QWuhPOhqtFcU7KXZqR08jH1zCT+x8B8YlspS8lAlMiM2L1OOlw+ae1jhY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx60MrV+NtKamGIVvyrIvkRvXgFmnEzw2rU2vwQp29qgzhSZfwj
-	KtRPol0ICiFSct2Bshf75o5ckbkkg4BJXZ12HZS9eP3OoM/yDmrZvEc3bkrkrhYGI3+4z/T7xIi
-	siTEqEg==
-X-Received: from pjes23.prod.google.com ([2002:a17:90a:757:b0:36b:9f59:6c78])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2b46:b0:36b:218c:719e
- with SMTP id 98e67ed59e1d1-37a044944b9mr14827517a91.21.1781539608466; Mon, 15
- Jun 2026 09:06:48 -0700 (PDT)
-Date: Mon, 15 Jun 2026 09:06:47 -0700
-In-Reply-To: <5bcd4834-7b4d-4543-828a-1e6a6c523a41@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QRanFp6j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1A61F000E9;
+	Mon, 15 Jun 2026 16:09:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781539741;
+	bh=Da12Do+in3iMzyoYY7rMMqw1/ZGqAn7ElggiEDpGLdk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=QRanFp6jZzPqmsWSsGET8xXPj2zdeQhCk63YSZxYwBda1qjvovECtIsZhuiQKqCkt
+	 rpk29IP414/kd9g84qUC1Y1o1Mn64kC3/hGfKaBFvHjhdKfLr0gBgLHTRsaVSesw6p
+	 Bzs5FuGZndfN5MRAiIyuwLG3LrogaOOallHQdUqhWg0yE3gX6mfWTdiuZWdgileIAc
+	 NvbmPGwIiR3v2JzOJL/q06/sgfq83IQf322EvajDTyLM1LmZEnFc36wEo9x8nMukXU
+	 5e+LeNlvJ3WD+2SXMhQ40vk2DnR+O+4sw3E2WrQKh7Yt1YRo2HEdSo8LfZxnlD2/I8
+	 cQJ2P4EymDuUg==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH] KVM: Ignore MMU notifiers for guest_memfd-only
+ memslots
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Alexandru Elisei" <alexandru.elisei@arm.com>
+Cc: "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Oliver
+ Upton" <oupton@kernel.org>
+In-Reply-To: <20260615155244.183044-1-alexandru.elisei@arm.com>
+References: <20260615155244.183044-1-alexandru.elisei@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 15 Jun 2026 16:09:01 +0000
+Message-Id: <20260615160901.9A1A61F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-6-seanjc@google.com>
- <5bcd4834-7b4d-4543-828a-1e6a6c523a41@linux.intel.com>
-Message-ID: <ajAjFz56jdcXhBZR@google.com>
-Subject: Re: [PATCH v4 05/30] KVM: x86: Move local APIC specific helpers out
- of asm/kvm_host.h
-From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>, 
-	Kai Huang <kai.huang@intel.com>
-Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Jun 15, 2026, Binbin Wu wrote:
-> On 6/13/2026 8:03 AM, Sean Christopherson wrote:
-> > Move single-use local APIC IRQ helpers out of asm/kvm_host.h so that they
-> 
-> Nit:
-> Not sure if it's accurate to say kvm_lapic_irq_dest_mode() is a single-use
-> helper.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Critical] Skipping MMU notifiers for guest_memfd-only memslots breaks th=
+e pfncache retry protocol, leading to a host-level Use-After-Free.
+--
 
-Yeah, I'll rephrase the changelog.  No idea what happened, maybe I wrote the
-changelog without looking ioapic.c code?
+commit 8278d4b7bdd8bdfe7a6bc39dd2a0418838234428
+Author: Alexandru Elisei <alexandru.elisei@arm.com>
+
+KVM: Ignore MMU notifiers for guest_memfd-only memslots
+
+This commit modifies KVM's MMU notifier handling to ignore guest_memfd-only
+memslots. The rationale is that guest_memfd memory is not evictable or mova=
+ble,
+making traditional userspace MMU notifier tracking unnecessary.
+
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+[ ... ]
+> @@ -592,6 +592,10 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_r=
+ange(struct kvm *kvm,
+>  			unsigned long hva_start, hva_end;
+> =20
+>  			slot =3D container_of(node, struct kvm_memory_slot, hva_node[slots->n=
+ode_idx]);
+> +
+> +			if (kvm_slot_has_gmem(slot) && kvm_memslot_is_gmem_only(slot))
+> +				continue;
+> +
+
+[Severity: Critical]
+Does this change inadvertently introduce a regression in the pfncache retry
+protocol?
+
+Looking at the pfncache framework, it maps guest memory into kernel space a=
+nd
+explicitly drops the page reference after mapping it:
+
+virt/kvm/pfncache.c:hva_to_pfn_retry() {
+    ...
+    kvm_release_page_clean(page);
+    ...
+}
+
+It appears to rely entirely on KVM's MMU notifiers (kvm->mmu_invalidate_seq)
+to invalidate the cache when the page is unmapped by the host.
+
+If a VMM defines a guest_memfd-backed memslot with KVM_MEMSLOT_GMEM_ONLY
+but still provides a valid anonymous user mapping as its userspace_addr,
+could this regression lead to a use-after-free? By unmapping the anonymous
+memory, the host would trigger MMU notifiers, but this new check skips
+the memslot. As a result, kvm->mmu_invalidate_seq wouldn't increment, and
+KVM might retain a kernel mapping to a freed physical page.
+
+Could this allow the guest to read or write arbitrary host physical memory?
+
+>  			hva_start =3D max_t(unsigned long, range->start, slot->userspace_addr=
+);
+>  			hva_end =3D min_t(unsigned long, range->end,
+>  					slot->userspace_addr + (slot->npages << PAGE_SHIFT));
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260615155244.1830=
+44-1-alexandru.elisei@arm.com?part=3D1
