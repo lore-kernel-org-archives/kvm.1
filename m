@@ -1,112 +1,246 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6975017A31C
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 03:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817ED2AD2C;
+	Mon, 15 Jun 2026 03:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781494430; cv=none; b=rC0Jq2nsreRymgM+VHybstUkI56vYmjgMVh5Ph9k4zTBD/zg3V925Ac3q7I6/wPSxxZTdmIXQ0QL9TOGnyRkTSZ51Cpt7Vh+PQ0N/aFeOoEeFNW5i/vqllQWpuzlMt8pFL6734ZFeSvHaabckAxfoAPR2T+W3oMWGWAqN0OywCw=
+	t=1781495841; cv=none; b=he7i4ZHuKO7haoFVgVZj5MOebDkunYmARiT5pHI1fps/H9dJX6evYHkh5ctYqFbpnld7i2iCfYJPz5G2z5Vni9oXmkkZlB1qtR/EOXnLWfzomsOgnv4DTMA+B2QF8KlzHsZIX3RrBMGJEmgKom/Tpy9Op9t8u+vRcuKJmG8y5Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781494430; c=relaxed/simple;
-	bh=nMSJFVr0TrhdE4ljKUSOx4cwJTAooDnzufTwcTH3Whs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ndxaMcoZC2GVjsudaCs1waduA5vpPzkaLQrLxalXJwEgQBUmIdjrMJsTi8CrFVsnLOqZZ0tKSj49l+LVtZbQa/iILyPFpygPsfz45cKsKqjC332hoL/XVAFEC3frSshDeE/weiHG34KX8hcRVXGN5uMQ/q71BOxx52XjumKTmxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b9sl+b+f; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781495841; c=relaxed/simple;
+	bh=hmEZLOUCNMYZvTrP3sV9QfQ2DDagvRzxb6xxkcW6onU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=X3/XVaAud1kg0fqHqRxiAJzQvj8ww5tU9I0FGrZ1cw4Ehp+KCKfuXo35W3T40rQ1hQ0s/NnegAQqwU66CF172CUJg6iDIL1d0mxeuxhpUZfU59jHMwDuUc3c0N8/hx4tBD49TxgpTFuyY4kmPxV8DB64ldX3CIwTu+a9zBce4v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=4WE2juLL; arc=none smtp.client-ip=113.46.200.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b9sl+b+f"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-36d98c9b596so1733127a91.3
-        for <kvm@vger.kernel.org>; Sun, 14 Jun 2026 20:33:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781494429; x=1782099229; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=r2rvojVLS1d55N6BPyuEoOHN6DHrIDzWcczFK27664Q=;
-        b=b9sl+b+f/s3f4dblg/e8FJC2jVSSM1YN5tkHvVbT8E/gA3jybegMCLJbG2+EMAQt6V
-         xsMEbBr2R+oYLsiCXdUxSpHhwX39mCXkpmuvppC6vS5NNGGXQq4tIM5050nNq9K8YmCq
-         wJqaBDhPjVMkunQV1IiVNGp8rFs173Gi/DswxzKPkzVTKcx05jYVjQO049T5Cr/N3n3k
-         6QDJJpAptYnSyWFDmCebjFQg67R+3wSx6AfFQSpu3dx1R7VdMn8T67+8eou6awVGrG3E
-         xtSpvis/hFNp0SeL3d4paeE94Vcggp2ZaZLv+D+wjctXi2y2OitCIp1Gbg/S9DvDLDEo
-         1QyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781494429; x=1782099229;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r2rvojVLS1d55N6BPyuEoOHN6DHrIDzWcczFK27664Q=;
-        b=dUXXmSrNNtNqYXz9EOtjxvSNTZUGRUb1HAY2BFg4WKhNCUFN7V+Sqf0JKpVvbv/DgL
-         AtMqVfR20VBIOHXbYcTU0swrD/vlDC1GyY+PJ4/J1Fb1CNethPK6T4h9bkabJTqhqwN6
-         f4PhvQUJK9rzeo4cGRBtcSJ6DDI2G22MjLyNezbjMq4sFAiVFFzkIlLttHxOygLzvNgj
-         W4DSnyo9M+Es8M1X9dlsqcLQ+Xvfk9u7/ksyg4iFzTjNRHmvoxgyX73C6cV5859+vaAf
-         vSI26kzabr2oOSMuGnwBjqLqwiSaDnGIFGyY9+eWRJJZTjsJvgR81+ZpMRljumA2A6yT
-         +fEw==
-X-Forwarded-Encrypted: i=1; AFNElJ9seLAuZ9dW66SInzYpMATDdXVBwbmKRCRveXHApvc3JxpSzzRuVpPGRqWrAOsS4Ks/SuQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFf8UGBi6/VvZyOvwDvqAWLmY1dRi9ZHr7jAnEDt1Yw3cDsTPs
-	QScGSFewbN4QN6pSPFVQt7iNH9reHH/KBA+tUC8mEBjS6ILslxKSp531
-X-Gm-Gg: Acq92OE0z3VEI+xIQHfFoJ7VzvGjzz6Y8SCokU95Gg29xRdmwN+vLNXQ8A3AaRKaYsW
-	Rbv+kVj6zLF0MvXV9LtihVcgAHLm/7c8k1qJmlBu0hYxurN5rIZ+JChtH1g5VMFe48mhTm6fES4
-	phwHJnOzjeWGDe8A4SybbarMSjfrBcY9ChjT5nAztRqcGlIsheXzivkzCsXQWCUOksaw/57fgxW
-	5Tn4YdsQTr/qKns3OlNrBh300nR961y7W+u4LefVqIz6dYh4qLJO4ywvvy+Xr3oUCBr0YYRbxvb
-	qe822EoU/K8je1jJWVLPaiqz2b/oEGBgi32FgM5wqrJVMAQpUJjOGr6pmLmCUts+cDx3JWD7azF
-	ZXf/DPqSNECHKPsMabGy4wpHoldcxcOBtOL7FsnOF/IuYTBKAhA9nTQr3nWj2TRraKMxekOqmYk
-	yKvHg/L+k8aMm0y+ZlYVJaHvO2KIvI5IdEk4XLT4qa0DvrrQ==
-X-Received: by 2002:a17:903:19eb:b0:2c1:ee75:56bb with SMTP id d9443c01a7336-2c41188b334mr130331905ad.20.1781494428646;
-        Sun, 14 Jun 2026 20:33:48 -0700 (PDT)
-Received: from localhost.localdomain ([120.244.221.74])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c4328a43c9sm85094975ad.41.2026.06.14.20.33.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jun 2026 20:33:48 -0700 (PDT)
-From: Saul Freedman <fre3dm4n@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Saul Freedman <fre3dm4n@gmail.com>,
-	pbonzini@redhat.com,
-	mtosatti@redhat.com,
-	kvm@vger.kernel.org,
-	qemu-stable@nongnu.org
-Subject: [PATCH] target/i386/kvm: Fix CET SSP MSR read feature check
-Date: Sun, 14 Jun 2026 23:33:38 -0400
-Message-Id: <20260615033338.1563854-1-fre3dm4n@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="4WE2juLL"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=vdO5ZFCSlMTmcU3+Wbk1cMucfrDRbTdHei1R6ymJZfM=;
+	b=4WE2juLLeD6kC+JhbUf/QoUPtaCYi2YUkpnvI98mn4zGJhffsD0CHkjhxXbxxy7QE8CGd4FFD
+	8HQRqnDC2M9bByK42wJVGPPsmUPGLNFGpmhWasIdDlOY0WLQh98EBfaTyZKO0Z0cTj8yu7LyLRA
+	EFT6pjx70+SP4sSy8C2tzuY=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4gdx163zsnznTbY;
+	Mon, 15 Jun 2026 11:48:26 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id A6CE34056E;
+	Mon, 15 Jun 2026 11:57:15 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 15 Jun 2026 11:57:15 +0800
+Message-ID: <077d70d2-8b25-43f9-95ce-aa9d5e6831db@huawei.com>
+Date: Mon, 15 Jun 2026 11:57:14 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 12/12] vfio/pci: Virtualize PCIe TPH capability
+ registers
+To: <sashiko-reviews@lists.linux.dev>
+CC: <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+References: <20260604132804.28678-13-fengchengwen@huawei.com>
+ <20260604140509.BF1A41F00893@smtp.kernel.org>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <20260604140509.BF1A41F00893@smtp.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-kvm_get_msrs() adds U_CET and S_CET when CET shadow stacks or IBT are
-enabled, but it checks FEAT_7_0_EDX with the ECX-defined
-CPUID_7_0_ECX_CET_SHSTK bit before adding the PL0-PL3 SSP MSRs.
+On 6/4/2026 10:05 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
+> 
+> New issues:
+> - [Critical] Concurrent config writes cause Double-Free/Use-After-Free in power management saved state.
 
-CPUID_7_0_ECX_CET_SHSTK belongs to FEAT_7_0_ECX. The current check
-therefore skips MSR_IA32_PL0_SSP through MSR_IA32_PL3_SSP even when
-guest shadow stacks are enabled.
+will use memory_lock to protect the power management
 
-kvm_put_msrs() already uses FEAT_7_0_ECX for the same shadow-stack
-condition. Use the same feature word in kvm_get_msrs() so QEMU does
-not restore CET enablement with stale or zero SSP values.
+> - [High] Missing virtual configuration rollback on power state transition failure.
 
-Fixes: b6f85c5e4527 ("i386/kvm: Add save/restore support for CET MSRs")
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Saul Freedman <fre3dm4n@gmail.com>
----
- target/i386/kvm/kvm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+will do rollback in v17
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 9e35288..3f4a241 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -5021,7 +5021,7 @@ static int kvm_get_msrs(X86CPU *cpu)
-         kvm_msr_entry_add(cpu, MSR_IA32_U_CET, 0);
-         kvm_msr_entry_add(cpu, MSR_IA32_S_CET, 0);
- 
--        if (env->features[FEAT_7_0_EDX] & CPUID_7_0_ECX_CET_SHSTK) {
-+        if (env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_CET_SHSTK) {
-             kvm_msr_entry_add(cpu, MSR_IA32_PL0_SSP, 0);
-             kvm_msr_entry_add(cpu, MSR_IA32_PL1_SSP, 0);
-             kvm_msr_entry_add(cpu, MSR_IA32_PL2_SSP, 0);
--- 
-2.39.5
+> - [High] Missing virtualization of TPH Capability Header leaks the physical Next Capability Pointer to the guest.
+
+will done in v17
+
+> - [High] Race condition (TOCTOU) allows concurrent config writes to corrupt virtual state and silently lose write requests.
+
+Will use tph_lock to protect the concurrent config write.
+
+> - [Medium] Silent failure when programming TPH shadow ST table entries into hardware.
+
+I don't think we need this, the device's state is ok for write I think
+
+Thanks
+
+> 
+> Pre-existing issues:
+> - [High] Out-of-bounds write in extended capability parsing loop due to missing boundary checks.
+> --
+> 
+> commit 32f3411184cca80f87b3f32db73925b8e64d5792
+> Author: Chengwen Feng <fengchengwen@huawei.com>
+> 
+> vfio/pci: Virtualize PCIe TPH capability registers
+> 
+> This commit virtualizes TPH extended capability registers, splitting
+> permissions so the header is read-only and the control register is writable.
+> It restricts ST-table programming to a specific feature and syncs the
+> cached shadow table to hardware upon enablement.
+> 
+>> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+>> index 5c6ab172df6c0..23c32aa5842fa 100644
+>> --- a/drivers/vfio/pci/vfio_pci_config.c
+>> +++ b/drivers/vfio/pci/vfio_pci_config.c
+>> @@ -1086,6 +1086,109 @@ static int __init init_pci_ext_cap_pwr_perm(struct perm_bits *perm)
+>>  	return 0;
+>>  }
+>>  
+>> +/* Permissions for TPH extended capability */
+>> +static int __init init_pci_ext_cap_tph_perm(struct perm_bits *perm)
+>> +{
+>> +	int i;
+>> +
+>> +	if (alloc_perm_bits(perm, pci_ext_cap_length[PCI_EXT_CAP_ID_TPH]))
+>> +		return -ENOMEM;
+>> +
+>> +	p_setd(perm, PCI_TPH_CAP, ALL_VIRT, NO_WRITE);
+> 
+> [Severity: High]
+> Does this miss virtualizing the TPH Capability Header at offset 0?
+> 
+> Other capabilities use p_setd(perm, 0, ALL_VIRT, NO_WRITE) to ensure the
+> guest reads the virtualized header instead of the physical one. Without this,
+> could guest reads to the TPH capability header fall through to physical
+> hardware, leaking the physical Next Capability Pointer and breaking VFIO's
+> ability to hide capabilities?
+> 
+> [ ... ]
+> 
+>> +static int vfio_tph_config_write(struct vfio_pci_core_device *vdev, int pos,
+>> +				 int count, struct perm_bits *perm,
+>> +				 int offset, __le32 val)
+>> +{
+>> +	int req_en_byte = PCI_TPH_CTRL + 1;
+>> +	struct pci_dev *pdev = vdev->pdev;
+>> +	__le32 org_val = 0;
+>> +	bool extended;
+>> +	u8 mode, req;
+>> +	int i, ret;
+>> +	u16 start;
+>> +	u32 data;
+>> +
+>> +	if (!vdev->tph_permit)
+>> +		return count;
+>> +
+>> +	/* Back up the original values in order rollback when fail */
+>> +	if (offset <= req_en_byte && offset + count > req_en_byte)
+>> +		vfio_default_config_read(vdev, pos, count, perm, offset,
+>> +					 &org_val);
+>> +
+>> +	ret = vfio_default_config_write(vdev, pos, count, perm, offset, val);
+>> +	if (ret != count)
+>> +		return ret;
+> 
+> [Severity: High]
+> Can this create a race condition where concurrent writes corrupt the virtual
+> state?
+> 
+> Modifying vconfig via vfio_default_config_write() happens before acquiring
+> vdev->tph_lock. If two threads concurrently write to the control register,
+> both modify vconfig unprotected. If the first thread acquires the lock but
+> fails to program hardware, its rollback would blindly overwrite the second
+> thread's new state in vconfig.
+> 
+> When the second thread subsequently acquires the lock, wouldn't it read the
+> reverted vconfig value (the first thread's old state) and write it to
+> hardware, effectively discarding the second thread's write while returning
+> success?
+> 
+>> +
+>> +	/* Skip if write range does not cover Requester Enable byte */
+>> +	if (offset > req_en_byte || offset + count <= req_en_byte)
+>> +		return count;
+>> +
+>> +	ret = vfio_pci_set_power_state(vdev, PCI_D0);
+> 
+> [Severity: Critical]
+> Does calling vfio_pci_set_power_state() without a serializing lock expose a
+> double-free vulnerability?
+> 
+> If a guest VM concurrently writes to the TPH control register while the
+> physical device is in D3hot, both threads can evaluate needs_restore = true.
+> After the first thread transitions the device to D0, both threads will
+> concurrently execute pci_load_and_free_saved_state(pdev, &vdev->pm_save).
+> 
+> Since pci_load_and_free_saved_state() has no internal locking and directly
+> frees the shared pointer, could this concurrent execution cause a double-free
+> in the host kernel?
+> 
+>> +	if (ret)
+>> +		return count;
+> 
+> [Severity: High]
+> Is a rollback of the virtual configuration missing in this error path?
+> 
+> If the power state transition fails, the function returns count (indicating
+> success to userspace) but fails to roll back vconfig using the org_val backed
+> up earlier. Doesn't this leave vconfig falsely indicating that the TPH
+> Requester is configured while the physical hardware remains unprogrammed?
+> 
+>> +
+>> +	mutex_lock(&vdev->tph_lock);
+>> +
+>> +	start = vfio_find_cap_start(vdev, pos);
+>> +	data = le32_to_cpu(*(__le32 *)&vdev->vconfig[start + PCI_TPH_CTRL]);
+>> +	mode = FIELD_GET(PCI_TPH_CTRL_MODE_SEL_MASK, data);
+>> +	req = FIELD_GET(PCI_TPH_CTRL_REQ_EN_MASK, data);
+>> +
+>> +	if (req == PCI_TPH_REQ_TPH_ONLY || req == PCI_TPH_REQ_EXT_TPH) {
+>> +		extended = !!(req == PCI_TPH_REQ_EXT_TPH);
+>> +		ret = pcie_enable_tph_explicit(pdev, mode, extended);
+>> +		if (!ret && vdev->tph_st_shadow) {
+>> +			for (i = 0; i < vdev->tph_st_entries; i++)
+>> +				pcie_tph_set_st_entry(pdev, i,
+>> +						      vdev->tph_st_shadow[i]);
+> 
+> [Severity: Medium]
+> Should the return value of pcie_tph_set_st_entry() be checked here?
+> 
+> If programming any ST entry fails, such as from hardware rejection or
+> inaccessible registers, the failure appears to be silently ignored. Could
+> this leave the hardware partially programmed while userspace is told the
+> operation succeeded?
+> 
+>> +		}
+> 
+> [ ... ]
+> 
+>> @@ -1704,6 +1810,8 @@ static int vfio_ecap_init(struct vfio_pci_core_device *vdev)
+>>  		ret = vfio_fill_vconfig_bytes(vdev, epos, len);
+> 
+> [Severity: High]
+> This is a pre-existing issue, but could this capability parsing loop allow
+> out-of-bounds heap corruption?
+> 
+> If a malicious hardware device or hotplugged peripheral provides a malformed
+> capability list with a large length near the end of the PCIe config space,
+> epos + len can exceed pdev->cfg_size. This would cause a buffer overflow in
+> memset() and vfio_fill_vconfig_bytes(), corrupting the heap-allocated
+> vdev->pci_config_map and vdev->vconfig buffers.
+> 
+>>  		if (ret)
+>>  			return ret;
+>> +		if (ecap == PCI_EXT_CAP_ID_TPH && !hidden)
+>> +			vfio_tph_mask_ext_tph_bit(vdev, epos);
+> 
 
