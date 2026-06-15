@@ -1,145 +1,199 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EDA19D89E
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 23:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781567183; cv=none; b=mdXH8DGtdBNyi1ZtO4V4Ge7Gf115tKLGRjX91IUxYTL0fcA2GCKgQjOkVxHNOBLy5oulLpQLzBjzh7kfJi7eHSnw8aVJdBn4du8jH0H1gNYsH3Wd+4PIn35/zLNpdnzZNQtiANUOAwE+/ySXlBszx+zWtIGCDhFplqMP5nBcsaw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781567183; c=relaxed/simple;
-	bh=MZvk3XawI1zyNZtjsA0KB3dVTCMPEwIxxwz9Rq3Z0V0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lEMCo7/wiIl7ugQlL0vwn9y2EjHG4Pd6XkDg9SlJJOHzHp5piwfldSxmqGP/9cPnzBjs4XWgh4sOHYHza8UdH3TV5wJtZtUHMSWHMXwQliskvjKotGdvQ5ypAB4yzOmy4hxFIgOVtqqfLZx0L9+BNktrjNns6NrjpmEYqva+eV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qUgZzP2z; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8421C2F8EB0
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 23:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781567198; cv=pass; b=M1wuFCZMKTtmUsBWoJW8GA+8M0TFEuEo+5/jAlS4YE7nDMyRcb/u+GAkmZDJLz5j19LK7bGlQsWTKbEtZpOLnT45Bwm+7DNBJe0x1Oco/bNVD4dvhumb7Ehwy0NZIFuQExAH41RvaAC3RZ8zd25WNLYYQyhQS/peeyFo6G/OsrU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781567198; c=relaxed/simple;
+	bh=I+nWA545jB467TF+kyDxBRzn7JtAPzZzw87eodkUA64=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TNRPblhoBMlP5QF9QLgEQP0gkSYOfRscuhEKYUei4AVs5fXweOzpHhxfVDNODSdyeXjGkVk1qEq3nKpC/YyZNta0tYH28QGvx9BVh2jbAQhO7Co09dlKongFake/YNHn9Q5UtZW2QkN3s70+5PFXwUuhmUxe1Aac2VtCCKBHxVU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rly6qVG+; arc=pass smtp.client-ip=74.125.82.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qUgZzP2z"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c85a2f1d1e5so1989280a12.3
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 16:46:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rly6qVG+"
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-137dd4cc208so2075578c88.1
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 16:46:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781567197; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KGNBziu8MKWYYMo/STsD24330JAUZvA5I1C542VG28eACRP9E7owGtAx015XDuqE0T
+         6/4qyS0hPhPZkZyUh1sRRyL3ZfCGKTUBz8+wh0EJpDJs/uKnt6y+VwdYo15BuEMHIBzh
+         PxNAcf6mdx2+UlSgdaypzQKPwbXoQaVHMc+jro4xk8EZynxQWwQd6+KEC+/C8qQWkeSp
+         ZcFnXgQFQHFZpyMbXgK7cgdcjY6lLd5zm6t4JR9utZUBKG07DdNEIIm4y2XHzINtuz3W
+         0/whokKv1Pnv0qMk9E9l2+d1VwgAmqNhxpaIs0DaYBTtTYVFNIwOIU04KAsQqxvc0b5Y
+         nIPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=ObEUf0E9nYIpFpN+Yp639n4XU8L7FHa7f/UlfLhBApI=;
+        fh=U/CpoaEEaBNJ+8R1EOwGjl9LqWi8QcI/jZpk+X4HgdQ=;
+        b=Ob3YEzOqW6T3F74iDrgEszlggNVLWcp2VTaKp7qFmQss/9gFzfyN+HSfH6S39CKFx0
+         hKZlVqH3iTtcYPNu4WwIgRBL0+hmI2wW6HkMUjJrgaMa92FXR8kv2dQFT8ssFW0qZE8V
+         l2VbFYMXzozgJxrnuQ4Ous2b2iLswYCt54Ab2VJw9jgr4102DmN/GytkInW3eWYKzkIR
+         O4D9NLIJf0ISo8VWUb1ovEJGg7i96VhfYhs62Vmq/OUDbjziob5PqZeW8l8qCWQ/IYL8
+         8DH3d1dwCeGl5xioWgPelYTrunidmR490O5R0ehzNVQzWx/ZCyKzJF+SnAgdBwIGGzLE
+         n44A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781567181; x=1782171981; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1v0z5O2hMK9AN1iypwUpu0g1rCwfm8MEubwWooIlZAg=;
-        b=qUgZzP2z2OP3zS+DJ9mlLl8Cn+jDy9CmDIZ+Nwn+swOUHcnUk+vDLdi6iotTmw5FNt
-         4cEvPjOhzMW14ztZNuD4G01p1fg0qGJvEXr1Ay7vO8jEnCoQR2zxsi55l3zFVG8Pk72r
-         rbD3hZq3s+i/q/B1z0fZRDzgiz3b2T8ZNiNgRji0QA6gEX12Xb59qCDPRpzWycRLHyAb
-         cxNrWw/ZFe6jiy3E60Yyq+DZYEAu7n5m5VWlN0asfc97p5zyzcFwKd6VvqOE/3xbYIvl
-         kXcVeYwZ5kBK1XBi/P4OsQidk2pfhiHz99MRjnUhbB0PsbVrcVll1b0CLx75U0AacjVK
-         r72A==
+        d=google.com; s=20251104; t=1781567197; x=1782171997; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ObEUf0E9nYIpFpN+Yp639n4XU8L7FHa7f/UlfLhBApI=;
+        b=rly6qVG+rEc97y7p1jhaWZFn3d8zaElfwB+oOC2zY40JMwUH7U1ePj0nHbZNRJ3WKC
+         mog1SDUxpLbPFTw4PQbwesnVQtKSQXlMAAycbY77cThnqtTGQMGyALt7rgQCnwjjNAXC
+         m4BVuJDeatlGDTByUCvlfi4aS7dCh0n7+iBrk9nP3BxfYcEpeei19l+ZuZ3LLgEpL7ek
+         wgm2x1dVEgtgrXa+gMw4KQXTMvo1F9Aw9Iq4uVT7xovP/hccDSsfTJBiugI8KD58p9ee
+         RkbyishiJ5jazgJcwjDVJjfwlMsSKxpFuokxveEeNpJXMfTHe+YT+ZMOXIZ8LcPx0Hbm
+         N0kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781567181; x=1782171981;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1v0z5O2hMK9AN1iypwUpu0g1rCwfm8MEubwWooIlZAg=;
-        b=oVDH0L9OKwXUTbDGLosCvRkfckGBBhIloS+cvpB2XuZzKOWvKDa/TuzgsvZZ8vaRn0
-         sBiMG/YMvmHyI1Z4Xze9DZFCed4rCjDcgCekkCGryQdpJuAAO/auDgmhIqYyQomVw5pt
-         pVe8mc2ekRy1VqfVZY8srg4B/Zaw5g1io6N5AfiR9AT3uaTcqnO4PbTQ2LEp2IYF4SYr
-         stBHF7J5ApCpm/I1qvvvgxNjDXKQRD++AcN5dnJVipaFye2DUM6Us4phk2+bxzKqns74
-         r0vkYRDQuBeAwRSA+0MNAb89r9LimrVLC5czuhAHRZ7kFpkOA1RRB8WPO0k2HUdGj1sT
-         Luqg==
-X-Forwarded-Encrypted: i=1; AFNElJ9B26/MT6c08AUH1XoaIlFE1V70/oj1HCrvtlEnUigubqRc+lNiX7MK8HSuuSu9o2KysOc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6NdnYhpFaqM4ByofXq3aQ2ThaatFiQkOBLHR73XBdKdp3/j0p
-	KfFo2tK30t1lrKjkMCLUaNymwLdq7urIu1mnjTRpQ+pqavLNTqio/+FcMC9/1TA1W1D2i7bMXhT
-	MtprI1g==
-X-Received: from pgch24.prod.google.com ([2002:a05:6a02:5098:b0:c86:4cc6:2ef8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a341:b0:398:6ea8:21d2
- with SMTP id adf61e73a8af0-3b7e474f09dmr1309513637.19.1781567181409; Mon, 15
- Jun 2026 16:46:21 -0700 (PDT)
-Date: Mon, 15 Jun 2026 16:46:20 -0700
-In-Reply-To: <CAO9r8zNa+ueRh0hf-CJ8sdyOFrcF+nEc7S06ZkMmV=GAvum6hA@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1781567197; x=1782171997;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ObEUf0E9nYIpFpN+Yp639n4XU8L7FHa7f/UlfLhBApI=;
+        b=UtKJyT5BIyJRIhuGN0HyfidOW8icBRnvapc7HpxfAqc9ZY3eVF5RPIK7BqHXJ83fOi
+         Kj0IhaP/fZ9QJt1rcedCVhWw39jSHFaJ2o8sjsn22YizrDqc/NICiXu/AiiSTkdDpe16
+         Oi6kStBQhDL6/oMUz2bsf9aN/yQlCLEuyF1C2shoSSY/35VM5UqOJk6BADnJdQHfrYzX
+         5vVMbol2krMrBBfSHn1ooiPwFNTzeU1u+V1bhdUl2D8/XWeJSV3w0sHG/voLDTHBOFHj
+         VEy5mJeU1NHu/ZKlgmfMXaj1+/3O5IDgoaYVaU1I9HSJw02J9X6ZHxhPzPQ/RurgJ06s
+         KRsA==
+X-Forwarded-Encrypted: i=1; AFNElJ/gZcNGSlAlc7t/ZpwxkfdOgtzV8FKSL7eAcBGJXIgHuR4hJmzSSXpslaHoclx0hwNw3QM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywgpwjyi77S3saAF4Sqp65ynUdSPtDKF7FjF5Flyzye8AkPoWsA
+	BnzCaKg1uGbMMwr47HlAg88agECCdBChibfJEfkNa6u03LtHIja+bAkAxYV9ioimQfRTgW4DVoO
+	GCwBc05jNjM5SoglnhdM/fX0ZNhH/UdZXcQrHKsOt
+X-Gm-Gg: Acq92OG5N5PsKYNDW5H68SU2j3MXhth2KhvGLu4e/nr8CeDOvDP2D9FVJlyebIX86Di
+	qFVmr7gbmBqLf9sspplVi3FwIoS12cBAk1jv1zfqx3aHItrbmhZhhMx4qvMZXp3sAnSP1hYXyPc
+	fJGpFZV0ogsnF1/ItctwsW7nRgri+tWD7dxNlizYVF+V0BFN7lakUgOT9jSINB0mj3pNsSHSrau
+	E4smL5+T1Q8TsqyMXfyLfYVp3tdID5z68CZ2Pzb/w3s00fvNzmeIb1CJ52hj/vjeAHdIfEaGehc
+	1kYR08PUbfvZf1YilDkohpBWJEI/KRHU5bQZ51+RPdZrYYHwFFnqmoMd46MIL/BvVT8s
+X-Received: by 2002:a05:7022:689a:b0:138:40b4:6cf9 with SMTP id
+ a92af1059eb24-139858102f4mr725236c88.19.1781567195936; Mon, 15 Jun 2026
+ 16:46:35 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 15 Jun 2026 16:46:35 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 15 Jun 2026 16:46:35 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260521-tdx-selftests-v13-v13-13-6983ae4c3a4d@google.com>
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com> <20260521-tdx-selftests-v13-v13-13-6983ae4c3a4d@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260612133727.411902-1-seanjc@google.com> <CAO9r8zNa+ueRh0hf-CJ8sdyOFrcF+nEc7S06ZkMmV=GAvum6hA@mail.gmail.com>
-Message-ID: <ajCOzEV6zIVegeWV@google.com>
-Subject: Re: [PATCH v2] KVM: x86/mmu: Expose number of shadow MMU shadow pages
- as a stat
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Date: Mon, 15 Jun 2026 16:46:35 -0700
+X-Gm-Features: AVVi8CfMUcsxFfG3l14C_ZxMq1_qiC853xZ-90KAH7coZFexwbjDcBX_tp12FV4
+Message-ID: <CAEvNRgEBiivp9tOHZnFmWvF6ek-Ar-m2B+hb=-H0dgAcM2=z8Q@mail.gmail.com>
+Subject: Re: [PATCH v13 13/22] KVM: selftests: Set first memory region as
+ shared if guest_memfd
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jun 15, 2026, Yosry Ahmed wrote:
-> On Fri, Jun 12, 2026 at 6:37=E2=80=AFAM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > Turn arch.n_used_mmu_pages into a stat, mmu_shadow_pages, as the number=
- of
-> > live shadow pages is arguably _the_ most critical datapoint when it com=
-es
-> > to analyzing the shadow MMU.  Before the TDP MMU came along, i.e. when =
-the
-> > shadow MMU was the only MMU, explicitly tracking the number of shadow p=
-ages
-> > wasn't as interesting, because the same information could more or less =
-be
-> > gleaned from the pages_{1g,2m,4k} stats.  But with the TDP MMU, where t=
-he
-> > shadow MMU is only used for nested TDP, it becomes extremely difficult,=
- if
-> > not impossible, to determine which SPTEs are coming from the TDP MMU, a=
-nd
-> > which are coming from the shadow MMU.
-> >
-> > E.g. when triaging/debugging shadow MMU performance issues due to "too =
-many
-> > shadow pages", being able to observe that 99%+ of all shadow pages are
-> > unsync is critical to being able to deduce that KVM is effectively leak=
-ing
-> > shadow pages.
->=20
-> Why not expose indirect_shadow_pages? IIRC that was also one of the
-> stats we (mostly you) used while debugging?
+Lisa Wang <wyihan@google.com> writes:
 
-Because it's a subset of mmu_shadow_pages, and I suspect mmu_shadow_pages w=
-ill
-be more helpful if we're only providing one of the two?  E.g. if the proble=
-m is
-that KVM is leaking indirect shadow pages, then either number will suffice.=
-  But
-if KVM is zapping old SPTEs due to the KVM_SET_NR_MMU_PAGES limit, then we =
-really
-want to see mmu_shadow_pages, otherwise there will be a blind spot with res=
-pect
-to direct shadow pages.  And if there's bug that's specific to direct shado=
-w pages,
-then we're probably hosed either way, because it will be difficult to obser=
-ve just
-the direct shadow pages (unless they happen to be the _only_ pages, which i=
-s very
-unlikely, but then we'd still want mmu_shadow_pages,).
+> Set the initial state of the first memory region as shared if it is
+> backed by guest_memfd, so that the KVM selftest framework functions can
+> populate mmap()-ed guest_memfd memory the same way memory from other
+> memory providers are populated.
+>
+> For CoCo VMs, pages that need to be private are explicitly set to
+> private before executing the VM.
+>
+>
+> [...snip...]
+>
+> @@ -495,14 +497,16 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+>  	vm = ____vm_create(shape);
+>
+>  	/*
+> -	 * Force GUEST_MEMFD for the primary memory region if necessary, e.g.
+> -	 * for CoCo VMs that require GUEST_MEMFD backed private memory.
+> +	 * Force GUEST_MEMFD for the primary memory region if necessary, and
+> +	 * initialize it as shared so the selftest framework can populate it
+> +	 * exactly like other memory providers.
+>  	 */
+> -	flags = 0;
+> -	if (is_guest_memfd_required(shape))
+> +	if (is_guest_memfd_required(shape)) {
+>  		flags |= KVM_MEM_GUEST_MEMFD;
+> +		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
+> +	}
+>
 
-In practice, thanks to the TDP MMU deliberately _not_ accounting its pages =
-as
-shadow pages, the delta between the two values will be tiny on setups with =
-TDP
-enabled, i.e. on practically every modern deployment.  Because hypervisor p=
-age
-tables are typically tree-like, and hugepages are, well, huge, the number o=
-f
-direct shadow pages in indirect MMUs will be counted in tens or hundreds, o=
-ut
-thousands or tens of thousands of total shadow pages.
+Just noticed this while hacking some SNP tests.
 
-> I guess for most cases, mmu_shadow_pages will represent either the MMU
-> pages used to shadow the VM's x86 page tables (with TDP off) or nested
-> TDP MMU pages (with TDP on and nested used) -- but I do remember some
-> interesting case about direct mappings in the shadow MMU or sth?
+> -	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
+> +	vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags, -1, 0, gmem_flags);
+>  	for (i = 0; i < NR_MEM_REGIONS; i++)
+>  		vm->memslots[i] = 0;
+>
+>
+> --
+> 2.54.0.746.g67dd491aae-goog
 
-Yes, there can direct shadow pages in an indirect mmu (guest is using a pag=
-e size
-that is larger than the host, in which case there are no gPTEs to shadow an=
-d thus
-the gva=3D>gpa / l2_gpa=3D>l1_gpa translations in KVM's shadow pages are "d=
-irect").
+I think this patch should fully buy into in-place conversions, so we
+need to also set GUEST_MEMFD_FLAG_MMAP:
 
+@@ -483,6 +483,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape,
+u32 nr_runnable_vcpus,
+ {
+ 	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+ 						 nr_extra_pages);
++	enum vm_mem_backing_src_type src_type = VM_MEM_SRC_ANONYMOUS;
+ 	struct userspace_mem_region *slot0;
+ 	u64 gmem_flags = 0;
+ 	struct kvm_vm *vm;
+@@ -503,10 +504,16 @@ struct kvm_vm *__vm_create(struct vm_shape
+shape, u32 nr_runnable_vcpus,
+ 	 */
+ 	if (is_guest_memfd_required(shape)) {
+ 		flags |= KVM_MEM_GUEST_MEMFD;
+-		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
++		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED | GUEST_MEMFD_FLAG_MMAP;
++		/*
++		 * TODO: Clean this up together with vm_mem_add(). Use
++		 * VM_MEM_SRC_SHMEM to tell vm_mem_add() to mmap
++		 * guest_memfd with MAP_SHARED.
++		 */
++		src_type = VM_MEM_SRC_SHMEM;
+ 	}
 
+-	vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags, -1, 0,
+gmem_flags);
++	vm_mem_add(vm, src_type, 0, 0, nr_pages, flags, -1, 0, gmem_flags);
+ 	for (i = 0; i < NR_MEM_REGIONS; i++)
+ 		vm->memslots[i] = 0;
+
+The VM_MEM_SRC_SHMEM is a bit of a hack but imo that refactor should go
+with another series to clean up vm_mem_add().
+
+The above code was working for TDX because vm_mem_add() without the
+guest_memfd MMAP flag would leave region->fd as -1. Without
+setting src_type to VM_MEM_SRC_ANONYMOUS, the assertion in vm_mem_add()
+
+  region->fd == -1 || backing_src_is_shared(src_type)
+
+would pass.
+
+tdx_init_mem_region() was called with the anonymously mmap()-ed address,
+which turns out fine.
+
+With the above change, we would also need to call tdx_init_mem_region()
+with NULL for source_address.
