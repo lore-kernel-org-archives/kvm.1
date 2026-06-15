@@ -1,157 +1,193 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692613E5A35;
-	Mon, 15 Jun 2026 12:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E903E2750;
+	Mon, 15 Jun 2026 12:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781525391; cv=none; b=X1bfiRKGilAN3sROI2uAizEPVz7Bw+N0XuYHP5rhBr7TLqjQrdQfRB+nhsi0MhZRZvmy+GO2SRgBkBNwi+UfIouzhtxPzlmiRH8/oB7gmJrCMJp+XqE/Z/BZadaj1bN0nZLMwXzyqaiN4hkt+5O5xK/T4VNwnf+KLNjXenzecEo=
+	t=1781525997; cv=none; b=JGGYlB2NDiejs1ZcWpWFXxY40ThVAbhHZU9sARw7MrzajjTnjCD5FX5EyWLKgseKwrlHkaOpFN+up21OUK/t2mYimTR+ANlMDcQqj7Hcze5U5u9wEXqJP+xm1JBHriSuBeyUTBH/JLvwqXweiud9CizaCO+JS34bcCgfCJVPpdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781525391; c=relaxed/simple;
-	bh=I+7zMw/VQBRB5Ny0GaAiRVMkJrtar/Iq0dTJJ5p4Two=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qugyb7di2DlJ9MRWtRrISiirOHhGrKFx7RYBriaHg5c5LdSumITl9RZoxvquJbpXRCk2tc+NDpxH1A54mwMD0v8w/Hd0aF5PiqL/gxopzIt+zDHkt+mg9AcHL6l8WhN3fqZDIwLWWyCPChCFHhcO2bmlX5C/gYTbFHoT1mufukg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hH2SQpQh; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1781525997; c=relaxed/simple;
+	bh=GfaaWiOxap24zw6CqDR7NSUh+gK0t+b7tM/KMQpacMw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=L9qoqetxZbnohTc26ShfRyH63LNBbTd6FFcaunu3+sPnRAWcZaCVkMLalIQ3cVIWNyK+8qIXhuoGoVF0ocZXrFrvC4O7VveTJrv/Z/opWhdm40jdCsKq14u4k+JCBhqxLis0Kc+wUXWZFw9sYTpK3PlEMHIvXmsO4sk7Tt61Ywc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=sglWnXkW; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hH2SQpQh"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FAoO1a2256088;
-	Mon, 15 Jun 2026 12:09:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=jDVz+2
-	0ctJhiAnjmyFpAJFmtExYdla1ebcMSf08pfoQ=; b=hH2SQpQhMS0xGIiBUTXV7i
-	m7ojZ8GtKxjJhTH8Y/wTalA/UJCgh1+zlIqHMFYMN6irKDcBBrI0wIxC2BIChxnS
-	4+0TzfYVfZdZ9rDMj7bGruUFbRZuswCJ9cl9cD5BL7AJBQL4L2DjcEXPQdEDyrbE
-	EbnCv6gmgBZbIGhzkdxjMXW2BRpFFgnOK68OHcT8m9akYoLvyvUXQvLYVVsI5Bfm
-	p64TfY8MQisjwJHiL5DGg3o2RxhspOlBfpl6K5VVqV/cHXt3KiHT2uC9sL1DJC9Q
-	Ls0QVLrbHFITQCetvftQPy6+mXQ4qOKdS/gqpbOFLDhbVFxqUoESYyna97foFP4w
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1h80f5y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jun 2026 12:09:48 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65FC4cQm005551;
-	Mon, 15 Jun 2026 12:09:47 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eshwvxhyc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jun 2026 12:09:47 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65FC9hQV27984156
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Jun 2026 12:09:43 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 44BE72004D;
-	Mon, 15 Jun 2026 12:09:43 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5419920040;
-	Mon, 15 Jun 2026 12:09:42 +0000 (GMT)
-Received: from thinkpad-T15 (unknown [9.111.70.232])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 15 Jun 2026 12:09:42 +0000 (GMT)
-Date: Mon, 15 Jun 2026 14:09:39 +0200
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        borntraeger@de.ibm.com, frankja@linux.ibm.com, david@kernel.org,
-        seiden@linux.ibm.com, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
-        gra@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com
-Subject: Re: [PATCH v2 1/1] s390/mm: Fix handling of _PAGE_UNUSED pte bit
-Message-ID: <20260615140939.417dcb53@thinkpad-T15>
-In-Reply-To: <20260615115000.31370Ef1-hca@linux.ibm.com>
-References: <20260615091741.76724-1-imbrenda@linux.ibm.com>
-	<20260615091741.76724-2-imbrenda@linux.ibm.com>
-	<20260615094300.31370D7a-hca@linux.ibm.com>
-	<20260615123103.118af04a@p-imbrenda>
-	<20260615115000.31370Ef1-hca@linux.ibm.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="sglWnXkW"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=uRMg5s1SHDa5cuTwAih0echSXs6DoScr+7o1o8hxPOE=;
+	b=sglWnXkWHHZ9WFYw9QXL63CF/sQLKzuiIxWqMmiTwQl0Rc3BLJhs5l1keOeKQsbpt4tmEx96B
+	Qv1d8v1n7PBeqEK4Y1OCFOFQI8iHHCWq0uUR1EBZjEYF4eua5pcMLj2dSd0ZcBGr1kDrU6fY0KJ
+	Hdf1+dqphQyG0hLKN6/y49Q=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gf89y53MrzmV6m;
+	Mon, 15 Jun 2026 20:11:50 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4F204402AB;
+	Mon, 15 Jun 2026 20:19:49 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 15 Jun 2026 20:19:48 +0800
+Message-ID: <812b6875-5c46-4e03-af81-161b7e2d0e12@huawei.com>
+Date: Mon, 15 Jun 2026 20:19:48 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 00/12] vfio/pci: Add PCIe TPH support
+From: fengchengwen <fengchengwen@huawei.com>
+To: <alex@shazbot.org>, <jgg@ziepe.ca>
+CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>, <wei.huang2@amd.com>,
+	<zhipingz@meta.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+References: <20260604132804.28678-1-fengchengwen@huawei.com>
+Content-Language: en-US
+In-Reply-To: <20260604132804.28678-1-fengchengwen@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDEyNSBTYWx0ZWRfXyeWpgJZISb0J
- xjwvzVJeiojb7kW97wHJ9nd/xLGiG3gqLaxg8iLuWTuwxEAtEyy8VitvXGu74RIzwP95Pbubwlj
- /mQFVgxTewTtYaLCSmym+JS1nD45HME=
-X-Proofpoint-ORIG-GUID: JGhFEVBocsT56kfI0JBcWN-EUMx3vjj9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDEyNSBTYWx0ZWRfX22ngjSzVketu
- hjuW4GniyMnS5YP+aqblp57vgJ5ZdgngcWKT2egG6Yni4aPvf4eDsIIrpODa9gRC1FSrE0Qc5QH
- ICEC6WPG9f7Qg7PHAGXVVD9dZeUrxASnoXTM0HlVNtE3e/1C0+u4RAKcyLbf2DUikkZvdWWy7c7
- vsVRiuCLhwBpS6YxFq4UsNtOMKRuEwXTgq6mAVBfCsSPgE8ckPJ4YMS8gcVFNDvfPh9k2PBBlEX
- 6vezBONr7ekcvBZFcZTxdC0k056xY9ytHoi8tzx18Cf7ox5wzGoituK/D9yWhfWXqQTM7/K5VVL
- 5QvC7LVYIKaBrNHSpo7Wh5EXds5nvRPb8WAIpuSvt3NDsO+Z350Qfo8gK3Yv+mQabnPJRj1yZt+
- zZVfiWeOA4/d97TBKWrb4TRjPdZwpFdrvLGiFl4fQXj4qDGm46zQgULHl/MKFABLGdqrVVZ0xAW
- SQyCdndCnGMQ9IW94AQ==
-X-Authority-Analysis: v=2.4 cv=U9uiy+ru c=1 sm=1 tr=0 ts=6a2feb8c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=cMrbAMyVcAHaeXL1GCgA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: JGhFEVBocsT56kfI0JBcWN-EUMx3vjj9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-15_03,2026-06-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
- priorityscore=1501 clxscore=1011 adultscore=0 malwarescore=0 suspectscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
- definitions=main-2606150125
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-On Mon, 15 Jun 2026 13:50:00 +0200
-Heiko Carstens <hca@linux.ibm.com> wrote:
+Gentle ping for v16 TPH series.
 
-> On Mon, Jun 15, 2026 at 12:31:03PM +0200, Claudio Imbrenda wrote:
-> > On Mon, 15 Jun 2026 11:43:00 +0200
-> > Heiko Carstens <hca@linux.ibm.com> wrote:
-> > 
-> > [...]
-> > 
-> > > > @@ -175,6 +179,8 @@ pte_t ptep_modify_prot_start(struct
-> > vm_area_struct *vma, unsigned long addr,
-> > > >  void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
-> > > >  			     pte_t *ptep, pte_t old_pte, pte_t pte)
-> > > >  {
-> > > > +	if (pte_present(pte))
-> > > > +		pte = clear_pte_bit(pte, __pgprot(_PAGE_UNUSED));
-> > > >  	set_pte(ptep, pte);  
-> > > 
-> > > Can't we move the logic from set_ptes() to set_pte() instead? The above
-> > 
-> > set_pte() is also used for things that are not ptes, and in those cases
-> > we probably don't want to touch that bit, although technically it is
-> > currently unused for present large pmds and puds.
+Would appreciate reviews from Alex and Jason. Let me know if major changes are needed.
+
+Thanks,
+Chengwen Feng
+
+
+On 6/4/2026 9:27 PM, Chengwen Feng wrote:
+> This patchset enables full userspace configurable PCIe TPH support for
+> VFIO, which brings performance benefits for userspace workloads such as
+> DPDK and SPDK.
 > 
-> I can only see huge_pte_clear() for this.
+> Currently VFIO only exposes read-only TPH capability registers to 
+> userspace, while all write operations are silently discarded. This 
+> prevents userspace from enabling and configuring TPH, limiting performance
+> optimization opportunities.
 > 
-> If that's the only user I'd rather add a BUG_ON() there instead of starting to
-> sprinkle the logic around. This _will_ break sooner or later.
+> Per PCIe spec 7.5.3.15: TPH Completer support is applicable to Root Ports
+> and Endpoints, allowing Steering Tags to target host CPUs or peer devices
+> for P2P transactions.
+> 
+> TPH usage model can be divided into three fundamental parts:
+> 1. Retrieve Steering Tag:
+>    - Tags targeting host CPUs are obtained via platform methods (ACPI _DSM)
+>      wrapped in pcie_tph_get_cpu_st(). Userspace requires a generic 
+>      interface to query these CPU-associated ST values.
+>    - Tags targeting peer devices are managed by userspace drivers.
+> 2. Program Steering Tag table:
+>    - For devices with standard ST table structures (in capability space or
+>      MSI-X table), userspace needs a unified interface to configure ST 
+>      entries.
+>    - Devices without standard ST tables are handled by userspace itself.
+> 3. Toggle device TPH Requester enable/disable state.
+> 
+> To support the above scenarios, this series extends VFIO with complete TPH
+> virtualization features:
+> - New device feature TPH_CPU_ST: Batch query interface to resolve 
+>   CPU-specific ST tags.
+> - New device feature TPH_ST_CONFIG: Batch configure interface for device ST
+>   table entries, with shadow cache and atomic rollback support.
+> - Full TPH capability register virtualization: allow userspace to toggle
+>   TPH Requester state via TPH_CTRL register writes.
+> 
+> To guarantee isolation and security, this patchset adopts a two-level
+> safety gate design with careful ABI considerations:
+> 1. Global unsafe gate:
+>    TPH caching behavior may cross isolation domains and impact shared
+>    platform resources. A new module parameter `enable_unsafe_tph` is
+>    introduced (default off) to globally gate all TPH functionalities.
+> 2. Per-device opt-in gate:
+>    To preserve strict ABI compatibility and avoid unexpected hardware
+>    state changes for existing users, a new VFIO device feature TPH_ENABLE
+>    is added. TPH capabilities are only available after userspace explicitly
+>    enables it per-device.
+> 
+> Because Kernel PCI TPH implementation requires TPH Requester to be enabled
+> before programming ST entries. To support userspace configuring ST table
+> in arbitrary order, a shadow ST table is introduced to buffer ST writes
+> before TPH is enabled. All cached entries are flushed to hardware when
+> TPH Requester turns on. This also provides atomic batch rollback capability
+> for reliable configuration.
+> 
+> The patchset is split into two logical parts: the first seven patches fix
+> and refactor core PCI/TPH kernel code to export required helper interfaces,
+> and the remaining five patches implement corresponding VFIO TPH
+> virtualization layer step by step.
+> 
+> Patch breakdown:
+>  1/12 PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
+>  2/12 PCI/TPH: Fix tph_enabled concurrent update race by bitfield packing
+>  3/12 PCI/TPH: Cache TPH requester capability at probe time
+>  4/12 PCI/TPH: Refactor pcie_enable_tph & add explicit requester variant
+>  5/12 PCI/TPH: Refactor pcie_tph_get_cpu_st & add explicit variant
+>  6/12 PCI/TPH: expose the enabled TPH requester type
+>  7/12 PCI/TPH: Add pcie_tph_supported() helper to check TPH capability attrs
+>  8/12 vfio/pci: Hide TPH capability when TPH is unsupported
+>  9/12 vfio/pci: Add TPH_ENABLE feature skeleton and unsafe module parameter
+> 10/12 vfio/pci: Add TPH_CPU_ST to query CPU's TPH steering tag
+> 11/12 vfio/pci: Add TPH_ST_CONFIG for PCIe TPH ST configuration
+> 12/12 vfio/pci: Virtualize PCIe TPH capability registers
+> 
+> Based on earlier RFC work by Wathsala Vithanage
+> 
+> ---
+> v16: 
+> - Supports opt-in at the device level which address Alex's comment.
+> - Split sub-commit: add hide TPH capability when TPH is unsupported.
+> - Optimize the tph fields layout of the pci_dev structure.
+> - Optimize virtualize PCIe TPH capability commit: support rollback
+>   when set fail.
+> - Reorder PCI/TPH commits: make fix commit ahead.
+> - Reorganized the cover letter to serve as the starting point for
+>   discussion.
+> v15: Address Alex's comments:
+> - Drop TPH capability when tph_cap=0
+> - Use _explicit postfix other than add policy parameter for enable
+>   TPH and get tph st.
+> - Make sure set st entry under D0
+> - Reimpl virtualize TPH capability register
+> - Other fix
+> v14:
+> - Return PCI_TPH_LOC_NONE when !CONFIG_PCIE_TPH accord Alex's comment
+> - Fix Sashiko comments:
+>   - Clear ST shadow state across user session
+>   - Fix out-of-bounds byte masking in vfio_pci_tph_config_read
+> 
+> Chengwen Feng (11):
+>   PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
+>   PCI/TPH: Fix tph_enabled concurrent update race by bitfield packing
+>   PCI/TPH: Cache TPH requester capability at probe time
+>   PCI/TPH: Refactor pcie_enable_tph & add explicit requester variant
+>   PCI/TPH: Refactor pcie_tph_get_cpu_st & add explicit variant
+>   PCI/TPH: Add pcie_tph_supported() helper to check TPH capability
+>     attributes
+>   vfio/pci: Hide TPH capability when TPH is unsupported
+>   vfio/pci: Add TPH_ENABLE feature skeleton and unsafe module parameter
+>   vfio/pci: Add TPH_CPU_ST to query CPU's TPH steering tag
+>   vfio/pci: Add TPH_ST_CONFIG for PCIe TPH ST configuration
+>   vfio/pci: Virtualize PCIe TPH capability registers
+> 
+> Zhiping Zhang (1):
+>   PCI/TPH: expose the enabled TPH requester type
+> 
+>  drivers/pci/tph.c                  | 220 ++++++++++++++++++++--------
+>  drivers/vfio/pci/vfio_pci.c        |  13 +-
+>  drivers/vfio/pci/vfio_pci_config.c | 111 ++++++++++++++
+>  drivers/vfio/pci/vfio_pci_core.c   | 228 ++++++++++++++++++++++++++++-
+>  include/linux/pci-tph.h            |  22 +++
+>  include/linux/pci.h                |   6 +-
+>  include/linux/vfio_pci_core.h      |   7 +-
+>  include/uapi/linux/vfio.h          |  60 ++++++++
+>  8 files changed, 600 insertions(+), 67 deletions(-)
+> 
 
-There is also __set_huge_pte_at(), and there it could also be called for
-swap PMDs/PUDs, where bit 56 is used. But they would not be present, and
-ATM we use the same present bit for PTEs and PMDs/PUDs, so it should work.
-
-Still feels a bit shaky, but in general I agree that it would be better
-to have this logic in a single place, like set_pte().
-
-Also wonder now why we use set_pte() an not set_pmd() / set_pud() for the
-hugetlbfs "fake" PTEs. I think at least in s390 code we could switch to
-the pmd/pud variants, and then be safe against modifications from set_pte().
-
-BTW, wrt Sashiko report that just dropped in, I also wondered first about
-ptep_reset_dat_prot() using set_pte(). Not 100% sure about the exact scenario
-where/how the _PAGE_UNUSED bit gets mixed in, where it shouldn't. Maybe
-the answer to that question might even show another fix option. But when
-changing set_pte(), it should also be fine for ptep_reset_dat_prot(),
-which requires that the PROTECT bit is the only HW bit getting changed,
-and _PAGE_UNUSED is a SW bit.
