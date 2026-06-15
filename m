@@ -1,99 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CA93822A5
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 08:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E8F3D6693
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 08:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781512505; cv=none; b=hgPez7HArs5EHY6kRVo5kgvUmNlMTtCMjB1kLxbOB9R/eWZ5OHMcxCabyy4IwKQJtF+/1X9ixKPBRWq8iNEviYxtNKFYEf5Cklfi+ICUeZeag9tip3GvX1qtoByksYFmmnEIq7u938baltUxOX7VPPLVV0f/PgtwjUQ6yXvcpAg=
+	t=1781513558; cv=none; b=Ot9oBxxrfHngl2aQPbGEfjHnFBS+Qgi8Pzq9plQ8obgIBSef4AZ9JwniPp4HxCE2KW8JXbzd3w8f11EeRvrUbW+4n9vPc4gD5kI5+dl71YYE3Mxv7ulcxW0bLJFQgA/e1ymIEXhyH7tdsZHR+Ewl893vCNdtOBMk0jRjyMs5ALs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781512505; c=relaxed/simple;
-	bh=vGIorc/Za//p0L/MiyhAB/953yyDU+8DN4i7hvLmp1g=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=k6eCbN0GrgWM76bp9nMtI+eI+yQOtbgThjFuchMmnRCC1t35v8RRO9ZZ6ew6IQY8bQpzUfBnQTNQJZsTlGglrew2gbifFj8KaPLVV+CzAWsXsdgZPprwmzP+uTZeRI41s0oeKITccs35RGJ+QimIQw9esVsIa74K+070Wvqkvmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k+bxIgty; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781513558; c=relaxed/simple;
+	bh=9THnuppqeYZPWn7EKtGJq9SzCdGC7ovGP3B2/CHfR08=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eKCdCtL3bYA0ML+m8B6CcsSXlQzH/OnS54Krx/BNtZSLn/Uocm6g7hkzpYHudq2bXQIhbVxuG0mefTE/HaGx06zzpjQfXbKCjEh1N+1bOhsQCesOmb91p87iIMLrZJ447+sG3zZNjpo6xSsGGYiZwBbyfefmLMmNi5X5QC+r5gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=t+3wz49X; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k+bxIgty"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DD11F000E9;
-	Mon, 15 Jun 2026 08:35:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781512501;
-	bh=L8SoVjmAyL45KZZ4WnNxBHq3/RHGNiPBBtA7lz1JNik=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=k+bxIgtyFGSxyT5k+h/f3zRhxVqNkr16w+fVcHnS01JY8qxRvgdAVQrpX7ToWeorv
-	 q40Ti0/Y7VAUu/+CFHNSJamKw74fEdF6BvzOnvL3DBif9aWkQtho9BQbxSQqyEGdw8
-	 VnJ6j6YlGeZgyUAkyLRM3ubWlrJcNTdncpDXVr6Z/XWfCcZu4X+INN9oxntbv+9O1T
-	 tgADoAmBUpTeovbB3dVrw0J/6nVJ76vQjmeit/6xjZ1fgwtSGVkdf9NSu6hFh8/xjA
-	 WDfd+YmiwPAyJIBCangY5F9+Er6zkpk5i79VNaiTkqm/3p+2dJ5YxhQAL0TddESB6d
-	 G/rqilbAD5KuQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/3] LoongArch: KVM: Add PV TLB flush support via
- steal-time shared memory
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tao Cui" <cui.tao@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260615082154.42144-2-cui.tao@linux.dev>
-References: <20260615082154.42144-2-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 15 Jun 2026 08:35:00 +0000
-Message-Id: <20260615083501.44DD11F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="t+3wz49X"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781513554;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7JXHIDoJ4Z4EUEsj0Lp6DsW3Mflz5YG/zBTv4Z1pkrc=;
+	b=t+3wz49XD5XXWvzxZgYVLwb2p6tXE+0CXsMekVY9iRzAYr9vRoQ8d8kMtUEnDVU5mqJTCp
+	Y3tbu/gqtbfa2fRqylMQl7ZmiMdFWH73elKld8bR628RFBoz6JmwIEd72szuNRgmlcWkf4
+	N3kjE5F/C2hdTu2hBAZprSIAE2cQTpg=
+From: Tao Cui <cui.tao@linux.dev>
+To: qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	kvm@vger.kernel.org,
+	Tao Cui <cuitao@kylinos.cn>
+Subject: [PATCH 0/2] target/loongarch: PV TLB flush advertisement
+Date: Mon, 15 Jun 2026 16:52:12 +0800
+Message-ID: <20260615085214.44526-1-cui.tao@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] KVM_FEATURE_PV_TLB_FLUSH is unconditionally enabled by default, br=
-eaking capability negotiation and live migration.
---
+From: Tao Cui <cuitao@kylinos.cn>
 
-commit f9022e883153b129074818c0b5b2ff53a144e2f5
-Author: Tao Cui <cuitao@kylinos.cn>
+Advertise the LoongArch paravirtual TLB flush feature (KVM_FEATURE_PV_TLB_FLUSH)
+to the guest when the host KVM supports it.  This pairs with the corresponding
+KVM/guest-kernel PV TLB flush series posted to the kernel.
 
-LoongArch: KVM: Add PV TLB flush support via steal-time shared memory
+Patch 1 syncs the UAPI definitions into linux-headers.
+Patch 2 adds the probe, the CPUCFG feature advertisement, and a
+kvm-pv-tlb-flush CPU property (on/off/auto, default auto).
 
-This commit implements paravirtualized TLB flushes for LoongArch guests usi=
-ng
-the preempted byte in the steal-time shared memory page. It introduces the
-KVM_VCPU_FLUSH_TLB flag to avoid sending IPIs when the target vCPU is
-currently preempted.
+The feature is only advertised when the host actually supports it, so a
+guest never observes KVM_FEATURE_PV_TLB_FLUSH on a host that cannot
+service PV TLB flush requests.
 
-[ ... ]
+Tao Cui (2):
+  linux-headers: Add LoongArch PV TLB flush definitions
+  target/loongarch: Enable PV TLB flush advertisement to the guest
 
-> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-> index 1317c718f896a..cfba45a7343c5 100644
-> --- a/arch/loongarch/kvm/vm.c
-> +++ b/arch/loongarch/kvm/vm.c
-> @@ -54,8 +54,10 @@ static void kvm_vm_init_features(struct kvm *kvm)
->  	if (kvm_pvtime_supported()) {
->  		kvm->arch.pv_features |=3D BIT(KVM_FEATURE_PREEMPT);
->  		kvm->arch.pv_features |=3D BIT(KVM_FEATURE_STEAL_TIME);
-> +		kvm->arch.pv_features |=3D BIT(KVM_FEATURE_PV_TLB_FLUSH);
->  		kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_FEAT_PV_PREEMPT);
->  		kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_FEAT_PV_STEALTIME);
-> +		kvm->arch.kvm_features |=3D BIT(KVM_LOONGARCH_VM_FEAT_PV_TLB_FLUSH);
+ linux-headers/asm-loongarch/kvm.h      |  1 +
+ linux-headers/asm-loongarch/kvm_para.h |  1 +
+ target/loongarch/cpu.h                 |  2 ++
+ target/loongarch/kvm/kvm.c             | 38 ++++++++++++++++++++++++++
+ target/loongarch/loongarch-qmp-cmds.c  |  4 +--
+ 5 files changed, 44 insertions(+), 2 deletions(-)
 
-[Severity: High]
-Should this new guest-visible feature be disabled by default?
+-- 
+2.43.0
 
-If a VM starts on a kernel with this feature enabled by default, the guest
-will detect and use PV TLB flushes. If that VM is later live-migrated to an
-older kernel that lacks PV TLB flush support, the destination host will
-silently ignore the KVM_VCPU_FLUSH_TLB flag in the steal-time structure.
-
-Could this lead to the guest assuming its TLB was flushed when it wasn't,
-resulting in stale translations or memory corruption? Would it be safer to
-require an explicit userspace capability enablement before exposing this
-to the guest?
-
->  	}
->  }
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260615082154.4214=
-4-1-cui.tao@linux.dev?part=3D1
