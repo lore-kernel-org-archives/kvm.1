@@ -1,114 +1,157 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE103E3179
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 12:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692613E5A35;
+	Mon, 15 Jun 2026 12:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781524804; cv=none; b=FNLzP6HLDU5AUNwUbVZgrNfPRtlLgasUBJO39QjsBsnM8T722QwYBXqEHO+Ns8+2MQo50xL4lliqysLsjxHJXPnxlA4li61bYSivOYlxz+uVYySS/T9JvZTXmwaWBCYLXEHvo1QVoiorm/apvvuw27tmqw441dRkgrseIoOaURw=
+	t=1781525391; cv=none; b=X1bfiRKGilAN3sROI2uAizEPVz7Bw+N0XuYHP5rhBr7TLqjQrdQfRB+nhsi0MhZRZvmy+GO2SRgBkBNwi+UfIouzhtxPzlmiRH8/oB7gmJrCMJp+XqE/Z/BZadaj1bN0nZLMwXzyqaiN4hkt+5O5xK/T4VNwnf+KLNjXenzecEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781524804; c=relaxed/simple;
-	bh=QC4L+iwl87iwjGr5goVdiAwoc99vCbYUdjiVuPiut4o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKxvqDmdIllprJTFz78F1SZF6kqRHuTQu5Nvy+1l9AA/gdVg1UR70P4JC0KDTMf5qq/RPVHbU16kpVQpnFTo/RDgBDbVEpawamWwQDijawh1UPTXYyD1gji0wh7DmqomWa3/h0sAt/Z4u++n6gh6FIDCKjrtHG4ZIPKuOD/vtIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YqHF5diG; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781525391; c=relaxed/simple;
+	bh=I+7zMw/VQBRB5Ny0GaAiRVMkJrtar/Iq0dTJJ5p4Two=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Qugyb7di2DlJ9MRWtRrISiirOHhGrKFx7RYBriaHg5c5LdSumITl9RZoxvquJbpXRCk2tc+NDpxH1A54mwMD0v8w/Hd0aF5PiqL/gxopzIt+zDHkt+mg9AcHL6l8WhN3fqZDIwLWWyCPChCFHhcO2bmlX5C/gYTbFHoT1mufukg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hH2SQpQh; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YqHF5diG"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8422f148dfcso1826072b3a.3
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 05:00:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781524803; x=1782129603; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=47hfi8LfGsgVp+b4yhOvnydmuFnxVuF/IyJ4r+pT0Qk=;
-        b=YqHF5diGug/JpdGQjr7nBhYTs/9e18SMl/eKjl+KSaBTs3tpSICiokB0LxjKS1+QcV
-         +6YqPPDLAqnwWWdd2H+ZPd1IHsviV5qOREyYr9YltF81noXIGjqUxPkrp7AjgjOon7vZ
-         kcNruO+rIx3QGh24CZJfFcfDIzonAp6dvLP5vwxHeo8Fr1evkVI9H1ZXocfVNIgK/LYZ
-         MnZ8tTLQk+wfceFJP8vWPdNku//UPodHDvC6dbIRm8aoktcQUSI2sLnYeUDeJ6EYbxWd
-         5L+kWH8sEaw08S/zgSpH6r2o8zjjISdNgltAFnItyxEIc3qB5vEGLzoJTrrWjOhqQr/Y
-         fRzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781524803; x=1782129603;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=47hfi8LfGsgVp+b4yhOvnydmuFnxVuF/IyJ4r+pT0Qk=;
-        b=ioTf3GN8wN+X2EbazQmPykWJhgSD1WABOPkMpoSlyVRuZT6WeSiyQCkl/6xvqDiTxg
-         m2Jsge+khDBl5WZJcBIOnqPyRyPaz0GuEKXQdHZsKhmLmPG0kotpZwyKL3Y5rghG/uF7
-         5Dx+KHsTHAgGhjca6SgCSmt51HnqChPzZ4+DHPIZrPR8qVl4z1B3Hsf9MuwRF3qVB3fJ
-         Z8SeEa8NReYZtEshkZTsMyBd2D9vfO4g0JdF29Gm9dB+Wrs0j4AvVV9+3jxkUYyD8oBM
-         XQH8eOt0k3MWU3FrXxshreOYaFyhTWNZuh3X3jWvmkFcCQ7VSMlg1BL8EOfdjU99oC0p
-         hFrg==
-X-Forwarded-Encrypted: i=1; AFNElJ9Km3E9PeSZcpSgS2YRHORAcW+9C0mC70If3QdEgZFaM2qdA2wjuWZOCsFdVMPaG/yUJwA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAZht0yMhSAUgYs2L4zj17k64wg4wNrYk1sVIc/KTfmWzWjRo9
-	MMqiNaZ2InmQ7qNw+QrVofYq5PU2DxA7h6Dg/HfY6sRt/sFg85uMbU4z
-X-Gm-Gg: Acq92OFpXkHtBknU8Aw2I9eWh0Rgwg1mGG7DreGJgQ9gGRER0dkyWWA591FfuX3l7Cz
-	LSr7YNOPzeHSIdj0mva2uLqBamVoVA2t7OjS2YQmXNgnwpSOxwyncnMH1Gj2Gpqy5GiXMqTXkBx
-	L6AUS4fobiD0Fvq2siSs9TzKSUuoD295o1d1xGUa0jyu3RA5YyQfb3c1aidMh64mD1vqotN8lbo
-	kTy1srOyZNxsq2Dax74lJ3AO8gOFt7krrcOLgC8laVl+Fd1UFsqQAvhNO6ZqAafsgq4BUaOOyDm
-	Xb1VsodeM9y7lZqNrhmKkCmlhITVeUUUO1Nxdw9Byec6QEBwANMiPvrbHfDQKXbG4VIM/YHvMkA
-	3QhzFVqKA3WRP5HSsxok4yZsXel1vXXPCnY9DE+fVY+l4RzFsDe3l9qm9OGy9FUZM76YXGkiywR
-	Unu8CN9G5qE7ZcuRwSpZeGB1N22JryRpXaIRbV7cCjeisTkx9M5SWPzEw=
-X-Received: by 2002:a05:6a00:4b04:b0:842:432e:b7ff with SMTP id d2e1a72fcca58-8434ce2e7d9mr15015612b3a.17.1781524802827;
-        Mon, 15 Jun 2026 05:00:02 -0700 (PDT)
-Received: from yash-Bravo-15-B5DD.local ([14.99.167.142])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b048496sm10630026b3a.54.2026.06.15.05.00.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 05:00:02 -0700 (PDT)
-From: Yash Suthar <yashsuthar983@gmail.com>
-To: pbonzini@redhat.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: skhan@linuxfoundation.org,
-	me@brighamcampbell.com,
-	yashsuthar983@gmail.com
-Subject: [PATCH v2] KVM: vfio: Convert fget() to CLASS(fd) in kvm_vfio_file_add()
-Date: Mon, 15 Jun 2026 22:59:50 +0530
-Message-ID: <20260615172950.107275-1-yashsuthar983@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260523050242.41472-1-yashsuthar983@gmail.com>
-References: <20260523050242.41472-1-yashsuthar983@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hH2SQpQh"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FAoO1a2256088;
+	Mon, 15 Jun 2026 12:09:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=jDVz+2
+	0ctJhiAnjmyFpAJFmtExYdla1ebcMSf08pfoQ=; b=hH2SQpQhMS0xGIiBUTXV7i
+	m7ojZ8GtKxjJhTH8Y/wTalA/UJCgh1+zlIqHMFYMN6irKDcBBrI0wIxC2BIChxnS
+	4+0TzfYVfZdZ9rDMj7bGruUFbRZuswCJ9cl9cD5BL7AJBQL4L2DjcEXPQdEDyrbE
+	EbnCv6gmgBZbIGhzkdxjMXW2BRpFFgnOK68OHcT8m9akYoLvyvUXQvLYVVsI5Bfm
+	p64TfY8MQisjwJHiL5DGg3o2RxhspOlBfpl6K5VVqV/cHXt3KiHT2uC9sL1DJC9Q
+	Ls0QVLrbHFITQCetvftQPy6+mXQ4qOKdS/gqpbOFLDhbVFxqUoESYyna97foFP4w
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1h80f5y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jun 2026 12:09:48 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65FC4cQm005551;
+	Mon, 15 Jun 2026 12:09:47 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eshwvxhyc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Jun 2026 12:09:47 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65FC9hQV27984156
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Jun 2026 12:09:43 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 44BE72004D;
+	Mon, 15 Jun 2026 12:09:43 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5419920040;
+	Mon, 15 Jun 2026 12:09:42 +0000 (GMT)
+Received: from thinkpad-T15 (unknown [9.111.70.232])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 15 Jun 2026 12:09:42 +0000 (GMT)
+Date: Mon, 15 Jun 2026 14:09:39 +0200
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        borntraeger@de.ibm.com, frankja@linux.ibm.com, david@kernel.org,
+        seiden@linux.ibm.com, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
+        gra@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        svens@linux.ibm.com
+Subject: Re: [PATCH v2 1/1] s390/mm: Fix handling of _PAGE_UNUSED pte bit
+Message-ID: <20260615140939.417dcb53@thinkpad-T15>
+In-Reply-To: <20260615115000.31370Ef1-hca@linux.ibm.com>
+References: <20260615091741.76724-1-imbrenda@linux.ibm.com>
+	<20260615091741.76724-2-imbrenda@linux.ibm.com>
+	<20260615094300.31370D7a-hca@linux.ibm.com>
+	<20260615123103.118af04a@p-imbrenda>
+	<20260615115000.31370Ef1-hca@linux.ibm.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDEyNSBTYWx0ZWRfXyeWpgJZISb0J
+ xjwvzVJeiojb7kW97wHJ9nd/xLGiG3gqLaxg8iLuWTuwxEAtEyy8VitvXGu74RIzwP95Pbubwlj
+ /mQFVgxTewTtYaLCSmym+JS1nD45HME=
+X-Proofpoint-ORIG-GUID: JGhFEVBocsT56kfI0JBcWN-EUMx3vjj9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDEyNSBTYWx0ZWRfX22ngjSzVketu
+ hjuW4GniyMnS5YP+aqblp57vgJ5ZdgngcWKT2egG6Yni4aPvf4eDsIIrpODa9gRC1FSrE0Qc5QH
+ ICEC6WPG9f7Qg7PHAGXVVD9dZeUrxASnoXTM0HlVNtE3e/1C0+u4RAKcyLbf2DUikkZvdWWy7c7
+ vsVRiuCLhwBpS6YxFq4UsNtOMKRuEwXTgq6mAVBfCsSPgE8ckPJ4YMS8gcVFNDvfPh9k2PBBlEX
+ 6vezBONr7ekcvBZFcZTxdC0k056xY9ytHoi8tzx18Cf7ox5wzGoituK/D9yWhfWXqQTM7/K5VVL
+ 5QvC7LVYIKaBrNHSpo7Wh5EXds5nvRPb8WAIpuSvt3NDsO+Z350Qfo8gK3Yv+mQabnPJRj1yZt+
+ zZVfiWeOA4/d97TBKWrb4TRjPdZwpFdrvLGiFl4fQXj4qDGm46zQgULHl/MKFABLGdqrVVZ0xAW
+ SQyCdndCnGMQ9IW94AQ==
+X-Authority-Analysis: v=2.4 cv=U9uiy+ru c=1 sm=1 tr=0 ts=6a2feb8c cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=cMrbAMyVcAHaeXL1GCgA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: JGhFEVBocsT56kfI0JBcWN-EUMx3vjj9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-15_03,2026-06-15_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ priorityscore=1501 clxscore=1011 adultscore=0 malwarescore=0 suspectscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
+ definitions=main-2606150125
 
-Convert fget() with __free(fput) cleanup to CLASS(fd, f),
-using fd_empty() and fd_file().
+On Mon, 15 Jun 2026 13:50:00 +0200
+Heiko Carstens <hca@linux.ibm.com> wrote:
 
-Signed-off-by: Yash Suthar <yashsuthar983@gmail.com>
----
- virt/kvm/vfio.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+> On Mon, Jun 15, 2026 at 12:31:03PM +0200, Claudio Imbrenda wrote:
+> > On Mon, 15 Jun 2026 11:43:00 +0200
+> > Heiko Carstens <hca@linux.ibm.com> wrote:
+> > 
+> > [...]
+> > 
+> > > > @@ -175,6 +179,8 @@ pte_t ptep_modify_prot_start(struct
+> > vm_area_struct *vma, unsigned long addr,
+> > > >  void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
+> > > >  			     pte_t *ptep, pte_t old_pte, pte_t pte)
+> > > >  {
+> > > > +	if (pte_present(pte))
+> > > > +		pte = clear_pte_bit(pte, __pgprot(_PAGE_UNUSED));
+> > > >  	set_pte(ptep, pte);  
+> > > 
+> > > Can't we move the logic from set_ptes() to set_pte() instead? The above
+> > 
+> > set_pte() is also used for things that are not ptes, and in those cases
+> > we probably don't want to touch that bit, although technically it is
+> > currently unused for present large pmds and puds.
+> 
+> I can only see huge_pte_clear() for this.
+> 
+> If that's the only user I'd rather add a BUG_ON() there instead of starting to
+> sprinkle the logic around. This _will_ break sooner or later.
 
-diff --git a/virt/kvm/vfio.c b/virt/kvm/vfio.c
-index 6cdc4e9a333a..bbd7a5dfb76e 100644
---- a/virt/kvm/vfio.c
-+++ b/virt/kvm/vfio.c
-@@ -144,12 +144,14 @@ static int kvm_vfio_file_add(struct kvm_device *dev, unsigned int fd)
- {
- 	struct kvm_vfio *kv = dev->private;
- 	struct kvm_vfio_file *kvf;
--	struct file *filp __free(fput) = NULL;
-+	CLASS(fd, f)(fd);
-+	struct file *filp = NULL;
- 
--	filp = fget(fd);
--	if (!filp)
-+	if (fd_empty(f))
- 		return -EBADF;
- 
-+	filp = fd_file(f);
-+
- 	/* Ensure the FD is a vfio FD. */
- 	if (!kvm_vfio_file_is_valid(filp))
- 		return -EINVAL;
--- 
-2.43.0
+There is also __set_huge_pte_at(), and there it could also be called for
+swap PMDs/PUDs, where bit 56 is used. But they would not be present, and
+ATM we use the same present bit for PTEs and PMDs/PUDs, so it should work.
 
+Still feels a bit shaky, but in general I agree that it would be better
+to have this logic in a single place, like set_pte().
+
+Also wonder now why we use set_pte() an not set_pmd() / set_pud() for the
+hugetlbfs "fake" PTEs. I think at least in s390 code we could switch to
+the pmd/pud variants, and then be safe against modifications from set_pte().
+
+BTW, wrt Sashiko report that just dropped in, I also wondered first about
+ptep_reset_dat_prot() using set_pte(). Not 100% sure about the exact scenario
+where/how the _PAGE_UNUSED bit gets mixed in, where it shouldn't. Maybe
+the answer to that question might even show another fix option. But when
+changing set_pte(), it should also be fine for ptep_reset_dat_prot(),
+which requires that the PROTECT bit is the only HW bit getting changed,
+and _PAGE_UNUSED is a SW bit.
