@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8247D313272;
-	Mon, 15 Jun 2026 18:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99ED30D406;
+	Mon, 15 Jun 2026 18:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781547896; cv=none; b=tRDl25SKRbLWt3DXQcdZWb/E2Kyb9xts1F757lr+3s4/ldmA+L76dIsybYNxuD6SfO+rDYuuIpGmTvfRKAvKmeNcS0jhrsX4xAuSDwIt2N4peHklfsq+qUWpMRdLk1JjGPkCot8k+bqvdA8CccHcyDleOH3FM5LF1hNZChFAs5Q=
+	t=1781548248; cv=none; b=LMSJxgsn5vYjcQZLlqJMp2dCt3MHexo0zE5WkwbTwFPeXBRk61IEypclYfeMENH+aIBGXcnWjcwZ9+t8rIDp1FCnRZG4/q5MLM3QKST0kfEEptURaGMm1CKxb4B0qhPUxYIdPjxf3FmnW23AkfoNA+pmvzYMxBl1CCvb4paAzRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781547896; c=relaxed/simple;
-	bh=ueNYBkutiotF74POMTtciy1V50284ZCJj6e0EPF4ke0=;
+	s=arc-20240116; t=1781548248; c=relaxed/simple;
+	bh=pxQwzcJlcWnEDPGhp6rYbip82v234/yHkMHOg47dTWU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cVyarTed5BL3xd//u3jE+IrEATrUME6u+vKrQTYcN3x02VD9vAqBggxwLHW4Gt+qLxpU+BxEiQSE1DxujZXAFDLpa9fCcXGBdcZejLT9QS6DSVDOe8Ke/0RIFsvwLA5hAGq0eL6KwJMivl9jQlYi9bjll/xfjgSDr0bMJEwKx6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eVaG8kfL; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=kUfOor/pxI0FzoZZY5KyuuVPpizDYqJkVgQnrNlg/nVjuqrYKOTKCnrTgcTV13R+Weozkm5FaOPkNVg5q2048HIqfibSEvQygsYaVWkuo6Aeo8AaOwPZ9NBtYDrOEJPGEmHm8GpIZKHQG/uK9fbahgy/DOLWUz5CuYuBBE4muaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4SHta/B; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eVaG8kfL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DF61F000E9;
-	Mon, 15 Jun 2026 18:24:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4SHta/B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB051F000E9;
+	Mon, 15 Jun 2026 18:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781547895;
-	bh=mu5V74iBeLUiBZiHPfWTe+e5iOSZcOAhU8BVXT1sRXw=;
+	s=k20260515; t=1781548247;
+	bh=5MEuihEHUG8jPWIs1KOkwtZJwTHjAJf8Y63agBr60OI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eVaG8kfLV9DtJAz7uhfREk2guLdhwh8/uI9hktLJDiQ/z0TzJpQomwX3WesihLE3Q
-	 GdFirdffE7riVT4qQDma9hTkaF+nJoM8ObXbcLnHse22JKGbUWDU6PMq2kL4nCL3fO
-	 LR0EWSN6SQajXLDntOEgr3pQP9TVCF5jBrLTOG1PwXnIQmT9hKsxd4MHtYVAiGPrS5
-	 xVMkW75kkveRYxHzPrsweixu/7MqJWdb7VCpSeS0u4+xiM1mmtdpksH5QC2qa7N6Vc
-	 qw2MFtx96J6hDf9mGNCeMtG/DXaz7pcoHUpIX7jn211ZnkkNQqx5DAsTdFMxBIt2nx
-	 SoVkS/7VVzQow==
-Message-ID: <1e77f24d-315a-4f68-a109-2f4520343c0c@kernel.org>
-Date: Mon, 15 Jun 2026 20:24:44 +0200
+	b=k4SHta/BN4P+7V74eW0MmMMzlqtqnrXT0Gsbh6Nhp0VOwYxab9pF04tz4ZQL/MBsn
+	 SMhgGhwip2LeFofAMIBs66wlPK478uWLih57GiC+qFoLG48NNWmtsiea4Mb47lEdjL
+	 krT/GtMiQIQMoPHjzxuyVFbAYHv8sf2nX1BUIx576cvKnEPYx7w8u1KqhhFiveuLAK
+	 CY9THeOSQLTtFSTB1sadZJWy7xhcXn2Ag3RA+LC2HBEhpPM5XassxK2kNZP7aELp3F
+	 PV1byUCpL7cUDATNi4jvlqY8igfyj55/eydhfP4Mk5Qz2jIN9euH0B+Piu6e0Dngzq
+	 Loz7d/qD2J04A==
+Message-ID: <dba6a4a4-09e4-42b3-a7fc-1886a05d1299@kernel.org>
+Date: Mon, 15 Jun 2026 20:30:36 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -37,10 +37,9 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
  non-confidential VMs
-To: Sean Christopherson <seanjc@google.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: Shivank Garg <shivankg@amd.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+To: Alexandru Elisei <alexandru.elisei@arm.com>,
+ Shivank Garg <shivankg@amd.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Andrew Morton <akpm@linux-foundation.org>,
  Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
@@ -54,6 +53,7 @@ Cc: Shivank Garg <shivankg@amd.com>,
  Nikunj A Dadhania <nikunj@amd.com>, Ira Weiny <ira.weiny@intel.com>,
  Michael Roth <michael.roth@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
  Ackerley Tng <ackerleytng@google.com>, Fuad Tabba <tabba@google.com>,
+ Sean Christopherson <seanjc@google.com>,
  Vishal Annapurve <vannapurve@google.com>,
  Nikita Kalyazin <nikita.kalyazin@linux.dev>,
  Patrick Roy <patrick.roy@linux.dev>, Pratik Sampat <prsampat@amd.com>,
@@ -62,8 +62,7 @@ Cc: Shivank Garg <shivankg@amd.com>,
  linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  linux-kselftest@vger.kernel.org
 References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
- <ai_XK__RTXMCEcCG@raptor> <ai_aczmeH2IA6JaB@raptor>
- <ajA4z_Wkb93cTW4m@google.com>
+ <ai_XK__RTXMCEcCG@raptor>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -110,56 +109,43 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ajA4z_Wkb93cTW4m@google.com>
+In-Reply-To: <ai_XK__RTXMCEcCG@raptor>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 6/15/26 19:39, Sean Christopherson wrote:
-> On Mon, Jun 15, 2026, Alexandru Elisei wrote:
->> Hi,
+On 6/15/26 12:43, Alexandru Elisei wrote:
+> Hi,
+> 
+> On Thu, Jun 11, 2026 at 01:05:07PM +0000, Shivank Garg wrote:
+>> guest_memfd folios are currently marked unmovable, so the kernel cannot
+>> perform NUMA-balancing, memory compaction, etc. This is unavoidable for
+>> confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
+>> needs firmware assistance. However, for non-confidential VMs (like
+>> Firecracker), we can migrate the folios.
 >>
->> On Mon, Jun 15, 2026 at 11:43:14AM +0100, Alexandru Elisei wrote:
->>> Hi,
->>>
->>>
->>> I always thought that one of the nice things about using guest_memfd as a
->>> memory backend, as opposed to host userspace mappings, is that the host
->>> cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
->>> collapse, compaction, etc, acting on the host userspace mapping of the
->>> VM memory, and outside of the VMM's or KVM's control.
+>> This series enables folio migration for non-confidential guest_memfd and
+>> also lays the groundwork for migrating confidential guest_memfd later.
+>> Once firmware-assisted copying support is available, those VMs can be
+>> made movable, the confidential folio content can be copied separately,
+>> and the destination folio marked with FOLIO_CONTENT_COPIED so
+>> __migrate_folio() skips the host-side folio_mc_copy().
 > 
-> +1000.  It's not just "nice to have", it's a core design principle of guest_memfd.
+> I always thought that one of the nice things about using guest_memfd as a
+> memory backend, as opposed to host userspace mappings, is that the host
+> cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
+> collapse, compaction, etc, acting on the host userspace mapping of the
+> VM memory, and outside of the VMM's or KVM's control.
 
-Right, and I raised in the guest_memfd call also the rough idea of Alexandru's
-use case of having non-movable guest_memfd pages such that we can support use
-cases where we can hopefully guarantee that a stage-2 mapping will not just
-randomly go away.
+Yeah, but it doesn't play nice with THPs / large folios. So if you want to run
+something else on a hypervisor than just confidential VMs, you definitely want
+guest_memfd to be as nice to the system.
 
-> 
->>> I think it would be useful to preserve this behaviour, even in the absence
->>> of confidential VMs (i.e, guest_memfd file descriptor created with
->>> GUEST_MEMFD_FLAG_MMAP).
->>
->> Just to be clear, I was thinking that it might be useful for both
->> behaviours to exist (migratable and non-migratable) for non-confidential
->> VMs, and allow KVM or userspace to decide which they prefer for a
->> guest_memfd.
-> 
-> For the purposes of this discussion, we should separate the physical act of
-> migrating pages from the features that trigger migration.  As I said in last week's
-> guest-memfd call, I am a-ok with supporting page migration as a mechanism, but I
-> am dead set against supporting NUMA balancing, KSM, LRU-based swap/reclaim, and
-> anything else that goes against the goal of guest-first memory.
+That is, support page migration if nothing speaks against it.
 
-Right. Page migration for supporting ZONE_MOVABLE/CMA, compaction, memory
-offlining, virtio-mem and possibly some collapse mechanism if we were to support
-THP of some sorts in guest_memfd would are all reasonable.
+Now, if something speaks against it, for sure we can just leave the pages be
+unmovable.
 
-As soon as we mix in access/lru semantics, we're going into the wrong direction.
-
-Fortunately KSM is anon-only and not even worth a rant here :)
-
-
+Fortunately, the patch is rather trivial.
 
 -- 
 Cheers,
