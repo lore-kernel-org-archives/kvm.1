@@ -1,36 +1,36 @@
 Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012056.outbound.protection.outlook.com [52.101.53.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEA63CCFA9;
-	Mon, 15 Jun 2026 19:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5986B3CFF49;
+	Mon, 15 Jun 2026 19:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781550794; cv=fail; b=dU5pB6SI1TlDfnqH4gRx6AtEB0JSpihd17dCTWVeGabQjxf0aWBR9WSon5YXOvPwgmoc/u7pKA9ouVIZisYGN70Da7GXG4h12GfaXNwSa1p/XIuvchVxW37lkkAiBoQZDR4kEXD90oeFUXPeeqxfOgnue8TCR5FwnYnltztSr0k=
+	t=1781550796; cv=fail; b=XQ6oXxYmXWH4jy58Jpu1zSibuv8ZZiPydSZwwUpi6uM9zqgCulUPzvgSGmWh7FDafPK3Es5PP54fvLM4QfMmeXKzCpeuTPtQKgeUfBUgplPs61RmyYtfZaPX4SDH0OXpZf9oNNelXQ4oWL9QKo3QXgUyrBXq9/1zn091XlpD0FM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781550794; c=relaxed/simple;
-	bh=4eK4xSrDjBPnZYprpQvn5hIpdadzi4Ye7YNiCUV86B0=;
+	s=arc-20240116; t=1781550796; c=relaxed/simple;
+	bh=ATACjohhjeFBdyoT8XW0iWpoFtjrIMrhzalAH6C14u4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mKMHGI/gEcBU6AR/piRl5oAiNb277/MvxhrTBMZnA/KYgioQkYS169yMtIuEAtnnQqDttL1uvAPtSftoThjQM9v7D9ayJ6Wq0DoSDG8XWNw27KKQ8P3rIS4WkgUARTAY/AvD8eS5AN/vkWd9oFWDvdxK1jUkTX7OUxmNTWZGIHc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tXp4Jzix; arc=fail smtp.client-ip=52.101.53.56
+	 Content-Type:MIME-Version; b=RlmYJM6eGKRdGhej3nvcykDPyZ/A0qCcOULeMsNhStUTV5p5N3nGmvDps3kfaZ3BVMAcBy+/z4lX7FubLGe80JmW/af/yvA2YhDavVYPWdZMu2JlXiRRtMGtoZ/qHqyA3SW3CyXVXGXsMSKfBAX7nEvH/aQko4LL060juxWdOq8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fYOudhbs; arc=fail smtp.client-ip=52.101.53.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tXp4Jzix"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fYOudhbs"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D4UhGzoZaRC9A2WIBYiHf+GLpXL19EZ0zzBprxdlTcEIMhzwRPkxLrdxwLTmYnd5vH4fMaz9oCXQKu34V6jrRNLoHJnaslNv90IRkKHKrFoC1NN9PY8ih9I5mga6wPnBEUJfX9dTvE34WQG4nymWCV34ru9DQJDcX81u7cuaY+dkcHv23YvSgLd4voF883oLjsyGvhQbiUTcsYCenJ/7/iu9x+VgtPRpMtyKXCBuWlNdjqv3Ixj4gDLsGror8rjKoY53KtSTPMonDsN7qT4yjTkGp5Oe4Qi8xckOb0l0iyvmA8YdqIEUyGjY7g8hgLQjAPC+Kz6DjvKnWysZfJVDVA==
+ b=sUQnJ+xvoWQWCheN3tpr+8Ka+iZgwoZbbO/9VLLyaWJRmTTo96GfjuEkpGV8d35qforJJo4HtSn1rOxAvZDt+HkfBjRVWgJTOWWsKh5cWoeeiFVHcHttEhuRcSS0PUK7SBIz5GDYGwtIrWRvwv7oszO40cV2SWEFyBpaZW9E3ib6iPdJuee1nHZf3oG2qyXybChHkeCQTLXQ9KKmBNTKUVnCzVjBis/BKWWwA6FVJLin0Sa9pslv/0/2iCnRbt+PSs9ZiQv+1aHTK44vNUT7rJwb1sM3Z91eoxdSQHaszhF2KJ1OHruWswQMPfZSreoe1ZURzFEJZgzk9WDyTfUamQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y9UuWs8LlWZvw6OWi/xNSLQJgXEPJvvSSstFXvMVeo4=;
- b=gT80eF4wFP7nfYTf1CKn2wm5a6LR/2qUE1wuhn6RkLfkxhr6L+z3sl25F7mr4Z7Gq7WQK5y/hgZ5u84aBJtHQ8t8yv5JDS2I26rnW8sIZNyYFzM4jngf51PhqQS8Rtxn/XkdZLvQdA5BKukNXuxsVKoTSQmWsbqs4WZKj9zrgHxwnMEf6D9pMPOJy2NYlKaF9ekcwTV5fJH6EOX2/vUdBTXCuEDXCxnclwbg/S67E4N/nkLLAU6Y5wzAO9ZbMeoRI6eILzbkeEVs7YrdZXIV1baLRRTJxcrv5/xjRFfOwz9xVbEkqLlyIYVVIQQDnCRX0vGXMoEAovoZReqwzCpuhw==
+ bh=lzBK35lTG3oao6gIz4aiooVTOYJVhbuDx7DbrVb/+xI=;
+ b=b1Qw/EkX8gZr4UaPKAg1Nid9tGIN57iY4EyV9WhgJn53iBK8dOVGDlukOSlICVvHv2VF8i1ndrXPtBBmeV3gRIjwkKol1vDY+nwqoGPJSqDhGvNBUMGhJVg/ICbVmiub8TMfxRtsg30iWn89xolQ8y+adNNk0E7BYAH2X154YY6fH5ccQQqtGYyzXR1TIuqBbtK/LOx32EQnutv/ikyaqsbJfAzHbBW0xBGGQVvvdVrnU3NA1aOtcIRF7ndovT5JwshIVWZvtL+YRPzyohHxSVNh31FOU7Qqpr5bd4Bju4CAGai8qMtGjpZcrJCQOqHLsf39cqcZQK26Jg//GHsAAg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y9UuWs8LlWZvw6OWi/xNSLQJgXEPJvvSSstFXvMVeo4=;
- b=tXp4JzixnMqv3xBksCJP4tKfsbcbOMcq4qUPMAiB14gxe5w+NDzGkdOl7T9G8wwkF5AJb3JmZdnDTFbmscOJx36ghElCRBBf/IQr5hUtY7b4UT0ciFk1drzlo0qiMi9Eir8zHfGpxmRI4WjgyeJUaOShdEsFJAU2jHaUQWAhqzsya7s249iBVgutku/072CbGkA4bHS4sTaBB6jPL/vwKsvcYQTe+9hCL8EEtJiHikrni5zp/WFGRwpexcFjNcfLCiOI813fWsQtnNKG/U2BrgpMSKk02nfNktX5vV5x7pu8ono5dGy/W94KqP3+1kxX97P7iBZEJSbyHIHgDeVVEg==
+ bh=lzBK35lTG3oao6gIz4aiooVTOYJVhbuDx7DbrVb/+xI=;
+ b=fYOudhbsHXnxNOasDwfyxxVD+3pRBSnz6sCr0Sp39nvLiEcOiLFC7siV4eSRYGclIOSmE65v3R8BvtQW7HluNVjcfvdpA0U6OlY7DpwwM5H7v9BjLp4+31sGhlfSVV58OGzttr0CEd5OqXJ4EKzcj2T3jFTCmhf/Pn1dMs3JHkNEFHTu3ri3H1b3oVVHlxZ6yk3x+piVNay95Qr/1N2NIuVnKFBugnbDUVTU8Lkwf5q4tDqR/tUONFY7L+FnnjPC+IY0KjEF2KNTqw8OFvPfUe19ywtTFnY+f8CoGfShep9oGZxvNpGbGMzk3ZW/ZsfXP8nLoYJ/xwmfzRMM5zDuRw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
@@ -41,7 +41,7 @@ Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
 Received: from LV3PR12MB9411.namprd12.prod.outlook.com
  ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
  ([fe80::98b7:86de:b69:2a15%6]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
- 19:13:00 +0000
+ 19:13:02 +0000
 From: Alex Williamson <alex.williamson@nvidia.com>
 To: kvm <kvm@vger.kernel.org>,
 	Alex Williamson <alex@shazbot.org>
@@ -49,16 +49,15 @@ Cc: Alex Williamson <alex.williamson@nvidia.com>,
 	linux-kernel <linux-kernel@vger.kernel.org>,
 	Jason Gunthorpe <jgg@ziepe.ca>,
 	Kevin Tian <kevin.tian@intel.com>,
-	kanie@linux.alibaba.com,
-	Chengwen Feng <fengchengwen@huawei.com>
-Subject: [PATCH v3 5/6] vfio/pci: Latch all module parameters per device
-Date: Mon, 15 Jun 2026 13:12:33 -0600
-Message-ID: <20260615191241.688297-6-alex.williamson@nvidia.com>
+	Guixin Liu <kanie@linux.alibaba.com>
+Subject: [PATCH v3 6/6] vfio/pci: Expose latched module parameter policy in debugfs
+Date: Mon, 15 Jun 2026 13:12:34 -0600
+Message-ID: <20260615191241.688297-7-alex.williamson@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260615191241.688297-1-alex.williamson@nvidia.com>
 References: <20260615191241.688297-1-alex.williamson@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-ClientProxiedBy: SA1P222CA0046.NAMP222.PROD.OUTLOOK.COM
  (2603:10b6:806:2d0::14) To LV3PR12MB9411.namprd12.prod.outlook.com
  (2603:10b6:408:215::20)
@@ -70,244 +69,220 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|IA0PR12MB7775:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9766958-9b87-4209-9a3b-08decb121dcf
+X-MS-Office365-Filtering-Correlation-Id: 27c09fd1-5d1e-4aca-c636-08decb121e58
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|6133799003|22082099003|18002099003|5023799004|3023799007|11063799006|56012099006;
+	BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|6133799003|22082099003|18002099003|3023799007|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	l3rJ7/OdVRFfqbpRPASxvfRRVCg7xEzVMMfHGZlG6Kx07bHRJXEgHc7FE7pJzivdvA5T0i0PYx4P27ljPG2dD1UvS0GDupPrxK9iWOsFsfJhgkGp3FgZE1i1Nf83JYbrxlUAKpUVFCcQz7ZCN1ozwIsrJdTan4sSNrTKhkVDZgpy9EJl0HprvF6VcbHf649WmRukjhrXu6JvKlzqYWq1tPG0RZaC/viMWzK3fSZ7OOl91q3ed0/KswLJz4VEyVoVvM67Ua8ad44MxjFFux34ZVW1v2yVNYFfo8MN+OyMOCMs7ErC0TexKucw9Ro0X2KcZaBkmJ163d+/k0l8bflhnM8o4BFaGxydrdUezO2KXASG1SyafDBXR52igY0Db/y8PhZknnvK10Pm7bIJ7wbk8s+ykklmAkvQ8/QJlQ4F5ZMvVj09v29Dq9mj2yBPZ0yAQxVvGPFElitcMGeb0v4qMrLaKvxdcN0o8uKIo4vmZj56wYA6cp+w/GKNSlKi1TdOO16pMtZQTT5+NmkygNn4vAiSfDq31Kh4ecR3xBl0Y06VfSN7RVyeqgNsTcEonHKA9DJutH5ra5t6nXalyD4/eaIWP3L1Oj6Ozkw6hNjO054a3W7LkZNS0JGoIQAe20xoDA+x3EztSJglRFMBzEn+Zc1U4An8/z7hjIbiPRV78P4vRETy72UMjBdyLLoJf32p
+	31Oe7gj6RhI9PdkmAP+JCl1nTclVNrgD/osQel2Lfid6uNPD9mPul0T8N07GAlUI+ODtySkdL5kqFCBEDuEfUj87onaunqHK6oakrk6EsDneKma8ujwA62/RTKE9/lU+4Wj8R6WqodG7vAnEmXH/7yNqR0+8GZisGXuWbBwfG2EJOI2DjPTEdX8cM/bpiv2GLf6exLWRbMaoYspFk/bLDgBtnSPpK0cBelDTxpFs2b92AL9O06MrTDOJOBdOEsGciwJGrcZgVfsNv0hFZyHhsMYv3sPCV+vkPb4V/FOKf26do3tdAR/U1y6JEfyxT2LkGRbtdaQonArn42oBqYWVd9BOIDbuEkQxVkyr3FfhzSTCOMVad9Wq4mAhIZFExUorSErSusxfLYOKMPnbw/FD4CP4EAmsLTR8+kS8JwcR+g1F/Rw14cjO1YrH5lE1zzebZnLuANRn3IWGxnU4UMiPqZrQQcfGWaQ8n4KEaghcOhNOBadKLWN2iuSOUCpirkNc8Ai6oLhZyoQFAyrImMtIqDEonFPYwGgZ8rqKIjeJDzco+Hnd9fgYOQz3uJiLAjN40I+0EqumT9pi3MkMQp1B1kRyH/KwyO6ZGMgW0sOFFBRz/c4kNm0m2NdHlIih1+Fv6G8gRIwcufO/Toil0VVhuHfCwGi0x6vEqxwIDWGXxeGF5PQIM31pz0O7oxi1dhHx
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(6133799003)(22082099003)(18002099003)(5023799004)(3023799007)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(6133799003)(22082099003)(18002099003)(3023799007)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zWc3COv/3uSD5+iy+RgZmiCFk68sJLtXNY42dweFyJnU01mqCEY+QmIDky+F?=
- =?us-ascii?Q?2MFryt9ZZQZQV6bmkiFN3eeG4NrSeR+n63u2052nt9TJfx7fugwLFA911VM9?=
- =?us-ascii?Q?lQh1myjR2NrvImyyqx3rwp2GBJqxkBxdt3ZB+izBMHAJ4VUPJ63F7UJuhIcK?=
- =?us-ascii?Q?H3ssWQwhbvKzzqqM7/b7F5oZUyV0KIqJVuylrUC2ItD1wOFzjOF38y8yOC9Z?=
- =?us-ascii?Q?nFqHGFlDFB6k0SJWblMn5zpt3atRbN/KO6eI7Gv0jxdUDWdB2A10a5UUxT1G?=
- =?us-ascii?Q?B8Fzea5eCweZOOHp35BeZc+7lcg/wMdCRF0DnFxdVs5NcORlGOxJVsyryCca?=
- =?us-ascii?Q?ApJnlXbSsa6DQuLPViFgCNh9fiNEFRtKvw7OItTDefYxanyJmCp1WU8kFcYR?=
- =?us-ascii?Q?XK74Ib55Q9NmDS99gKDEhRkrv09Cc4iCMnxdULgy6EiV/RnYFCYfbEeKsbfY?=
- =?us-ascii?Q?936MbBB6g5vtsSVTf68wHc3q2+hqA0iqsY6jmWbOrZIe6d/pK1wU+3+Eo4O1?=
- =?us-ascii?Q?gRmijN7dIUMf/4KW2ld6LPjCti9Jert6SJ5MlyFSnZCne8qejYY7KDRem7yw?=
- =?us-ascii?Q?5WBuxQtUfAR42MQaEeodiKhHPuLGc6SXCgfT1EBNH/tXuhOs41UBYAc3Ayy9?=
- =?us-ascii?Q?c4MdUIeuMcvw9FabxDyrzzJjZG5kuikeYu5UFUhA39LidEzCpjQC0irS0lX1?=
- =?us-ascii?Q?sXYgMdM2gs/gsaj/gozts0V5/mLGvEcXKbt425ihn3B3axiVNlNSaCGkgzJ5?=
- =?us-ascii?Q?8QxPGSVhT455YjBvwaP4Vr4z9tpzXOopJybarWNHUh5By4yML6q0eZuMAcel?=
- =?us-ascii?Q?Oxznb4bhEtWHUJuAYDhM/vAyw3Pa2cZ/onEKkd9obmjR225uUzXB1yO0Kku7?=
- =?us-ascii?Q?1lBvH/1aTjn2qXEwEtMYooI/N3Y0hajVQGtqLtcPlWo1rAYd3iVx4pdClG2N?=
- =?us-ascii?Q?diVNoY0Hwjr2cHh3X8uZHHnWZsiDml6mtHYcFR0t30JFG/WEJ0cS9bv6MHVc?=
- =?us-ascii?Q?iO1o0oodBNSOtepN0J4Qwot79+PdRN61taXiSAo6CLVGXzk+V5eTG5AvcR73?=
- =?us-ascii?Q?cpQ98/QawHdXx2tilRZMipVjdqIomDqG7TJ58pIoHn0tD8c8Cf0nhTBwK5oA?=
- =?us-ascii?Q?cLjgA41c00ex12f+NhW7+jgpxRe5LGuh0suYQbzW0lzovS9K9vv91rvXDAlb?=
- =?us-ascii?Q?c1O/7itEysOPx+5+cAuNGj8/AEcReQSTTmnZKJ68ADq7WHU0O6QbIqbGbhrz?=
- =?us-ascii?Q?Y6ICe8fCSlLdymCFazMwt8DvchQDZj3KnCWp7mEtkyTkKs9I2w2JFMrgLl0T?=
- =?us-ascii?Q?LzVBkmgQta2ddVk2uGDE0SW39CaIylAPQjnh4kCLbrshS2ZJ5tx3iBQy2/UD?=
- =?us-ascii?Q?7jCyAMenSpGLLWh2ZzE91yusQPMilLUryhNCL/kL59xnX2uwZhvdltZlTweQ?=
- =?us-ascii?Q?z5B3mZwvpgZCqzUWPZi2hcg8X6R2rdsY3RpHQjNlPENzBqNDGzdBxaG5P0tq?=
- =?us-ascii?Q?k1c4bj2Jz6Qa7IQLrE34O9gmRhmURs47+hKVRSbbDGukp8d/IDpceYxPNHz/?=
- =?us-ascii?Q?2XMdVcaPRXcoLzP2sp96kPeXfczyNLBptn9SwBUQsdbKMu7koTqKiS3VdhX2?=
- =?us-ascii?Q?JnBt67CBwxqqEbZJuNN5yo8JaHH7OlQkcLRm2Yn9elvDly4nEv5F0F/ObPQH?=
- =?us-ascii?Q?uktSj29bQvi+Q5OKedLC4fjhvmMaweOkgidPxPx1bikI/hL4XaviJsVIHVeh?=
- =?us-ascii?Q?J9bk6Q++uw=3D=3D?=
+	=?utf-8?B?MXhLazZ2V1hHd0FMMC9lZXhCbWIwTmpLYlZISkZpakx2T0RtVVpWR3VDU0tY?=
+ =?utf-8?B?VlJUZEhVZ0M2SGlKeDZLak1yY3BpRXBHeHNNbmpneHB0ZjE3Mm9OYzRCUUk4?=
+ =?utf-8?B?WUpvaWUvcnN0aFd1RWxBbHZHT2FEZitXNXlLUUFHVlhyOHFONENNSGJqUnU4?=
+ =?utf-8?B?R29JYlljS3hTS01JK1Urd0poenFTWHBvaWExQ2N3N0RnWlZTRVZPT0JyTWp5?=
+ =?utf-8?B?UTRXSk5hM1lGTkNMZFZ5VTViNEVpRU03U2NGaHovaldxVzJSMGtoUERHNmVP?=
+ =?utf-8?B?MWgxNml3cGNPR2VycFF4bGRCWFV5V2FOUndqRmRhTjlidkNSaFhlV2JEaG1Q?=
+ =?utf-8?B?Mm56eWI0Y292R0dqNGVaSUpsNmh4cWM1SzF5K05pLy9jTm1PTGV2RitCSnJH?=
+ =?utf-8?B?SFdQYTZVRXJyRVdiT0hERi9xdlhkTi96K3BKSWRmN0dnQ1ZiT1p2dW9xNit1?=
+ =?utf-8?B?WjE4TXprNUY0bnVCR0xNVWdoU2czc2FrSDMwc1R0bmhpNFptNkMwRnFSZEhE?=
+ =?utf-8?B?dGJwWlhGc1hJVWorZXIyU2Y0Q2tVMjR0SUF2YU9nUWlhZi9lbEIrRTFHWWhk?=
+ =?utf-8?B?R3g2akZEWDNhMXFXbUdzN0dIOTh1TkowUWFRU3BsYTNvajc4blJoVDRWRVk0?=
+ =?utf-8?B?SHpTaEVwZFZmNGxWaW95WkdlSmx5TmRSL1FuRW5FTFhnN2VXQ2VUV2ZtTEMv?=
+ =?utf-8?B?WC9mV0EyblVobDNJYmxKZm9ZMUFEQ1dXb0ROYUR1ZG14WGVxTGFCREFHMndO?=
+ =?utf-8?B?RVRza1E3VWFNZ1hvc3J2NWhJZHR3eUhWdGZzTGU5Z2pSczFhOURaSzFoWWU0?=
+ =?utf-8?B?bE5kS3FZcmRwRTZRTFN4NVI1bUxicWJERXZyS3IweWdGNnhxaHpQTi95TUZD?=
+ =?utf-8?B?SXN4VTFBdTNuZER0QUlNMWRFVFdPVStkUWxrV2dySE1BM3pRTGhHcnlXei80?=
+ =?utf-8?B?aEJQeVM2bmh5WTdvTW1aYXJrMWpNemVPVXRwdDZ1K3hpRnpjQVdJNjBUQWV4?=
+ =?utf-8?B?M25DR2IwL1NsWDNBNlFMaFdiN0lHVmdTVTdTQ3ZMWEw5TDYvaER0UDdUajNu?=
+ =?utf-8?B?cDRRNkhzdEVOVFFucjE0MkRreW1iSDhRcVdoRnNmQ2VYVndDaHVmWkRUVmRE?=
+ =?utf-8?B?czBzTGVFbWtPVVZDbVl5OFBaRXhKY3F4MmZKMkJrRkxRL090NFpBMGh4V1Jx?=
+ =?utf-8?B?OCthTlRpRVNyUjFxSVhkR00xV2cyd3JOcGp0UlA1aStjdE01b0VGV1JvQVM0?=
+ =?utf-8?B?VXJ4ZCtBZkg3eWpBaHQvWVhlYjFWQXlRRGNQd3JudGJGUWk4NlNydWJJWURp?=
+ =?utf-8?B?bWdaNEc4c0s3WStxem9haUVpUDMvTnVaRXRiMk1ZUlNrUkJjbGNaTmEwZzh6?=
+ =?utf-8?B?Mm00Wlp2OG8xbW94V0lYSmtXV2R0U09QU3lxUFJ3RmlacHh5TXdJRnZwdWk4?=
+ =?utf-8?B?d3RpZ01oU2g1aUVqeU82MU9sRlFlMXlUUTlPMkNZU2VQWXVRTVNYZGtPTDlQ?=
+ =?utf-8?B?Y2t4YVF1QVFxSDJIdnA5SlU2WGdsZGRMR2RHcnlOR09seE1sWGJ5MXR0M0Z4?=
+ =?utf-8?B?b2xLSjBOeGVVU01hcktIWTZCNy9jcWV5OXJJckRwejhRMURGbGNGeVAxMkRG?=
+ =?utf-8?B?TWRVSit1LzZLWEcwblZoaHE1ejVhZFlmLzdzQ0kvUUtmMHVRVzNrMEJudmNo?=
+ =?utf-8?B?TzY5NUJKam0rSk5DbDV1cWR0NmFkSFRxVE5jRGpiWlMrRmw2WmtsNGZxZE43?=
+ =?utf-8?B?QVZraFJ1dmVDZ3h2cXR1SUpNTDJ6YjZiWUV0VjJFRmlINktQd1JoRThmT3lL?=
+ =?utf-8?B?cEdiTjcvdUM5d0F6SDd1TEx3aHAxTDZreXdSOG1kYnQ4WUhZSEhrQnpMbE95?=
+ =?utf-8?B?YnVzODQ1Y0lHQ2VsMkNIendEWm03K0NTa01jSmkrYmtDai9tU25YNmNTOXVq?=
+ =?utf-8?B?cnhIRkJiQU9HT0Ivemc2aklvTWNUSDVXeFZyT25GbjA3OUh6Vjh2K2VFblRI?=
+ =?utf-8?B?QmZ3SUFMemxwa0Y2QmpMZG4rQXVQMWM0V2Y3WHF6VTEyYU9DbXZDSHU0Nkkz?=
+ =?utf-8?B?SmpySmZKQ1JIOTZJRVA0dUxEdmtYajRKMVdYUmdzSVZwYk1WdnlKdmdCZjBk?=
+ =?utf-8?B?K011SlIyRW1FL3ZBYm5yaGhLRkxFdlJSSTFQYzJheldvVHdnUHQzQUpVV1Vz?=
+ =?utf-8?B?dXYzTnV2VHpCc0xLbGN0ME1PbWt0NU1aMHk3S01ZTDk4NjJRRWlZWEd0c3NK?=
+ =?utf-8?B?L0p2L0RiOFgrTXlWQzVsR0o3djBqU0I5cGJVb1hZaUZZSVQ5ZmRQU2ZlKzJ5?=
+ =?utf-8?B?aUFENlQ3cm84ZzF6MDJCUDNBRllwYzUwWjBhTHJjN3dGeEV2MmN4UT09?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9766958-9b87-4209-9a3b-08decb121dcf
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27c09fd1-5d1e-4aca-c636-08decb121e58
 X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 19:13:00.4406
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 19:13:01.4853
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YJ7KzdHhzONr332rWjmNIJxUHGdVTEUS8iRynVAA/jJTVu6isLtJO6VfdGvSR7Z6Ro9IJ8w5MJPNWbZa+VnP7A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: s/6nK5Z9rayIdKe/z+Bw6IIOTVWEiWSEXVkhsinXjixo+bohEdeGG+1FfR+jP1RRsCqGBlyAMVx4XN6o1/rltw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7775
 
-The vfio-pci module parameters of disable_idle_d3, nointxmask, and
-disable_vga latch vfio-pci policy into vfio-pci-core globals each time
-the vfio-pci module is initialized.  The disable_idle_d3 parameter has
-already migrated to a per-device flag in order to provide consistency
-for refcounted PM operations for the lifetime of the device
-registration.
+The nointxmask and disable_idle_d3 module parameters remain writable,
+but vfio-pci now latches their values into each device at init.  Once a
+device is registered, changing the module parameter only affects future
+devices, leaving no direct way to confirm the effective policy for an
+existing device.
 
-Pull the remaining vfio-pci module-parameter policy out of vfio-pci-core
-into per-device flags set at device initialization.
+Add a pci debugfs directory under the VFIO device debugfs root and
+report the per-device nointxmask and disable_idle_d3 values.  These are
+read-only debugfs views and use the same Y/N bool output convention as
+the module parameters.
 
-This also restores the mutable aspect of the disable_idle_d3 and
-nointxmask module parameters for vfio-pci, with the caveat that the
-parameters are latched into the device at probe.
+Read-only vfio-pci parameters, such as disable_vga, are not exposed here
+because they cannot drift from the latched device value, therefore the
+existing module parameter exposure via sysfs is sufficient.
 
-A notable change for variant drivers is that their devices are no longer
-affected by vfio-pci module parameters and those drivers may need to
-adopt similar module parameters if any devices have a hidden dependency
-on vfio-pci setting non-default policy.
+Note that while only vfio-pci currently provides these options, the
+implementation is in vfio-pci-core and therefore properly reflects the
+device policy in the core, regardless of driver.
 
-Assisted-by: Claude:claude-opus-4-8
-Acked-by: Chengwen Feng <fengchengwen@huawei.com>
+Assisted-by: OpenAI Codex:gpt-5
+Cc: Guixin Liu <kanie@linux.alibaba.com>
 Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
 ---
- drivers/vfio/pci/vfio_pci.c      | 30 ++++++++++++++++++++++--------
- drivers/vfio/pci/vfio_pci_core.c | 26 ++++++--------------------
- include/linux/vfio_pci_core.h    |  4 ++--
- 3 files changed, 30 insertions(+), 30 deletions(-)
+ Documentation/ABI/testing/debugfs-vfio | 26 ++++++++++++
+ drivers/vfio/pci/vfio_pci_core.c       | 59 ++++++++++++++++++++++++++
+ 2 files changed, 85 insertions(+)
 
-diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-index 0c771064c0b8..830369ff878d 100644
---- a/drivers/vfio/pci/vfio_pci.c
-+++ b/drivers/vfio/pci/vfio_pci.c
-@@ -125,9 +125,30 @@ static int vfio_pci_open_device(struct vfio_device *core_vdev)
- 	return 0;
- }
- 
-+static int vfio_pci_init_dev(struct vfio_device *core_vdev)
-+{
-+	struct vfio_pci_core_device *vdev =
-+		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+diff --git a/Documentation/ABI/testing/debugfs-vfio b/Documentation/ABI/testing/debugfs-vfio
+index 70ec2d454686..ed2f29c3a9b4 100644
+--- a/Documentation/ABI/testing/debugfs-vfio
++++ b/Documentation/ABI/testing/debugfs-vfio
+@@ -29,3 +29,29 @@ Date:		Oct 2025
+ KernelVersion:	6.18
+ Contact:	Cédric Le Goater <clg@redhat.com>
+ Description:	Read the migration features of the vfio device.
 +
-+	/*
-+	 * These behaviors originated in vfio-pci and moved into
-+	 * vfio-pci-core when the driver was split; vfio-pci remains the
-+	 * only driver that toggles them.  Latch our module parameters per
-+	 * device at init time so that later parameter changes do not
-+	 * affect already-initialized devices.
-+	 */
-+	vdev->nointxmask = nointxmask;
-+	vdev->disable_idle_d3 = disable_idle_d3;
-+#ifdef CONFIG_VFIO_PCI_VGA
-+	vdev->disable_vga = disable_vga;
-+#endif
++What:		/sys/kernel/debug/vfio/<device>/pci
++Date:		June 2026
++KernelVersion:	7.2
++Contact:	Alex Williamson <alex.williamson@nvidia.com>
++Description:	This debugfs file directory is used for debugging
++		VFIO PCI devices.
 +
-+	return vfio_pci_core_init_dev(core_vdev);
-+}
++What:		/sys/kernel/debug/vfio/<device>/pci/nointxmask
++Date:		June 2026
++KernelVersion:	7.2
++Contact:	Alex Williamson <alex.williamson@nvidia.com>
++Description:	Read the nointxmask policy latched for this device.  This
++		policy governs whether the device may use PCI 2.3 style
++		INTx masking when supported, reporting a value of "N", or
++		requires APIC level INTx masking, reporting a value of "Y".
 +
- static const struct vfio_device_ops vfio_pci_ops = {
- 	.name		= "vfio-pci",
--	.init		= vfio_pci_core_init_dev,
-+	.init		= vfio_pci_init_dev,
- 	.release	= vfio_pci_core_release_dev,
- 	.open_device	= vfio_pci_open_device,
- 	.close_device	= vfio_pci_core_close_device,
-@@ -256,13 +277,6 @@ static void __init vfio_pci_fill_ids(void)
- static int __init vfio_pci_init(void)
- {
- 	int ret;
--	bool is_disable_vga = true;
--
--#ifdef CONFIG_VFIO_PCI_VGA
--	is_disable_vga = disable_vga;
--#endif
--
--	vfio_pci_core_set_params(nointxmask, is_disable_vga, disable_idle_d3);
- 
- 	/* Register and scan for devices */
- 	ret = pci_register_driver(&vfio_pci_driver);
++What:		/sys/kernel/debug/vfio/<device>/pci/disable_idle_d3
++Date:		June 2026
++KernelVersion:	7.2
++Contact:	Alex Williamson <alex.williamson@nvidia.com>
++Description:	Read the disable_idle_d3 policy latched for this device.  This
++		policy governs whether the device PM runtime usage count is
++		kept elevated while the device is bound to the driver and
++		unused, reporting a value of "Y", or decremented to allow the
++		device to enter a low power state, reporting a value of "N".
 diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index dab82c078580..db36d903dcd4 100644
+index db36d903dcd4..3f11a9624b9c 100644
 --- a/drivers/vfio/pci/vfio_pci_core.c
 +++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -38,10 +38,6 @@
- #define DRIVER_AUTHOR   "Alex Williamson <alex.williamson@redhat.com>"
- #define DRIVER_DESC "core driver for VFIO based PCI devices"
+@@ -11,6 +11,7 @@
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
--static bool nointxmask;
--static bool disable_vga;
--static bool disable_idle_d3;
--
- static void vfio_pci_eventfd_rcu_free(struct rcu_head *rcu)
- {
- 	struct vfio_pci_eventfd *eventfd =
-@@ -92,10 +88,10 @@ struct vfio_pci_vf_token {
- 	int			users;
- };
- 
--static inline bool vfio_vga_disabled(void)
-+static inline bool vfio_vga_disabled(struct vfio_pci_core_device *vdev)
- {
- #ifdef CONFIG_VFIO_PCI_VGA
--	return disable_vga;
-+	return vdev->disable_vga;
- #else
- 	return true;
+ #include <linux/aperture.h>
++#include <linux/debugfs.h>
+ #include <linux/device.h>
+ #include <linux/eventfd.h>
+ #include <linux/file.h>
+@@ -29,6 +30,7 @@
+ #include <linux/sched/mm.h>
+ #include <linux/iommufd.h>
+ #include <linux/pci-p2pdma.h>
++#include <linux/seq_file.h>
+ #if IS_ENABLED(CONFIG_EEH)
+ #include <asm/eeh.h>
  #endif
-@@ -111,11 +107,12 @@ static inline bool vfio_vga_disabled(void)
-  */
- static unsigned int vfio_pci_set_decode(struct pci_dev *pdev, bool single_vga)
- {
-+	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
- 	struct pci_dev *tmp = NULL;
- 	unsigned char max_busnr;
- 	unsigned int decodes;
+@@ -97,6 +99,60 @@ static inline bool vfio_vga_disabled(struct vfio_pci_core_device *vdev)
+ #endif
+ }
  
--	if (single_vga || !vfio_vga_disabled() || pci_is_root_bus(pdev->bus))
-+	if (single_vga || !vfio_vga_disabled(vdev) || pci_is_root_bus(pdev->bus))
- 		return VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM |
- 		       VGA_RSRC_LEGACY_IO | VGA_RSRC_LEGACY_MEM;
- 
-@@ -562,7 +559,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
- 	if (!vdev->pci_saved_state)
- 		pci_dbg(pdev, "%s: Couldn't store saved state\n", __func__);
- 
--	if (likely(!nointxmask)) {
-+	if (likely(!vdev->nointxmask)) {
- 		if (vfio_pci_nointx(pdev)) {
- 			pci_info(pdev, "Masking broken INTx support\n");
- 			vdev->nointx = true;
-@@ -602,7 +599,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
- 		vdev->has_dyn_msix = false;
- 	}
- 
--	if (!vfio_vga_disabled() && vfio_pci_is_vga(pdev))
-+	if (!vfio_vga_disabled(vdev) && vfio_pci_is_vga(pdev))
- 		vdev->has_vga = true;
- 
- 	vfio_pci_core_map_bars(vdev);
-@@ -2144,8 +2141,6 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
- 	init_rwsem(&vdev->memory_lock);
- 	xa_init(&vdev->ctx);
- 
--	vdev->disable_idle_d3 = disable_idle_d3;
--
++#ifdef CONFIG_VFIO_DEBUGFS
++static struct vfio_pci_core_device *
++vfio_pci_core_debugfs_private(struct seq_file *seq)
++{
++	struct device *dev = seq->private;
++	struct vfio_device *core_vdev = container_of(dev, struct vfio_device,
++						     device);
++
++	return container_of(core_vdev, struct vfio_pci_core_device, vdev);
++}
++
++static int vfio_pci_core_debugfs_nointxmask(struct seq_file *seq, void *data)
++{
++	struct vfio_pci_core_device *vdev = vfio_pci_core_debugfs_private(seq);
++
++	seq_puts(seq, vdev->nointxmask ? "Y\n" : "N\n");
++	return 0;
++}
++
++static int vfio_pci_core_debugfs_disable_idle_d3(struct seq_file *seq,
++						 void *data)
++{
++	struct vfio_pci_core_device *vdev = vfio_pci_core_debugfs_private(seq);
++
++	seq_puts(seq, vdev->disable_idle_d3 ? "Y\n" : "N\n");
++	return 0;
++}
++
++/*
++ * disable_idle_d3 and nointxmask are writable module parameters latched
++ * per device at init, so a device's effective value can differ from the
++ * current parameter setting.  Expose the per-device (read-only) values
++ * here for visibility; read-only parameters can't drift and are omitted.
++ */
++static void vfio_pci_core_debugfs_init(struct vfio_pci_core_device *vdev)
++{
++	struct device *dev = &vdev->vdev.device;
++	struct dentry *pci_dir;
++
++	if (IS_ERR_OR_NULL(vdev->vdev.debug_root))
++		return;
++
++	pci_dir = debugfs_create_dir("pci", vdev->vdev.debug_root);
++	debugfs_create_devm_seqfile(dev, "nointxmask", pci_dir,
++				    vfio_pci_core_debugfs_nointxmask);
++	debugfs_create_devm_seqfile(dev, "disable_idle_d3", pci_dir,
++				    vfio_pci_core_debugfs_disable_idle_d3);
++}
++#else
++static inline void vfio_pci_core_debugfs_init(struct vfio_pci_core_device *vdev)
++{
++}
++#endif /* CONFIG_VFIO_DEBUGFS */
++
+ /*
+  * Our VGA arbiter participation is limited since we don't know anything
+  * about the device itself.  However, if the device is the only VGA device
+@@ -2242,6 +2298,9 @@ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev)
+ 	ret = vfio_register_group_dev(&vdev->vdev);
+ 	if (ret)
+ 		goto out_power;
++
++	vfio_pci_core_debugfs_init(vdev);
++
  	return 0;
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_init_dev);
-@@ -2616,15 +2611,6 @@ static void vfio_pci_dev_set_try_reset(struct vfio_device_set *dev_set)
- 	}
- }
  
--void vfio_pci_core_set_params(bool is_nointxmask, bool is_disable_vga,
--			      bool is_disable_idle_d3)
--{
--	nointxmask = is_nointxmask;
--	disable_vga = is_disable_vga;
--	disable_idle_d3 = is_disable_idle_d3;
--}
--EXPORT_SYMBOL_GPL(vfio_pci_core_set_params);
--
- static void vfio_pci_core_cleanup(void)
- {
- 	vfio_pci_uninit_perm_bits();
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 985b8af5a04b..9a1674c152aa 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -127,6 +127,8 @@ struct vfio_pci_core_device {
- 	bool			nointx:1;
- 	bool			needs_pm_restore:1;
- 	bool			disable_idle_d3:1;
-+	bool			nointxmask:1;
-+	bool			disable_vga:1;
- 	/* Flags modified at runtime - dedicated storage unit */
- 	bool			needs_reset;
- 	bool			pm_intx_masked;
-@@ -161,8 +163,6 @@ int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
- 				      unsigned int type, unsigned int subtype,
- 				      const struct vfio_pci_regops *ops,
- 				      size_t size, u32 flags, void *data);
--void vfio_pci_core_set_params(bool nointxmask, bool is_disable_vga,
--			      bool is_disable_idle_d3);
- void vfio_pci_core_close_device(struct vfio_device *core_vdev);
- int vfio_pci_core_init_dev(struct vfio_device *core_vdev);
- void vfio_pci_core_release_dev(struct vfio_device *core_vdev);
+ out_power:
 -- 
 2.53.0
 
