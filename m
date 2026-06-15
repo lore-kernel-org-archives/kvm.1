@@ -1,200 +1,182 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6014840FDA0
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 16:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF636411685
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 17:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781541931; cv=none; b=L7dgHgYkxOmIGmRrOiS37Ns3qe2v55tpZPPO2rTGxm0K0AyAcIMkFrK1VJ0PMbS/ItCuJEMO4ZnGxsuVH/GgyfPzD75aNZefMT8nuDIsJAG/s26X2ITbIwLk2itc5jiOU72+VIsZseCsqhEsClO1iydx3wdj01SbgwDnmunGiaE=
+	t=1781542987; cv=none; b=D5EW2GlVmLvE/d1H472mCoUHLK0k4M9jFI1b3PtNTgVxpl0P4NWMOU0yY/vpOwmQUxqCn5J+eM/CO/Awr32ySoOO9ejf/6bG5EnU1KN0YmDEIhAMS+oJlpquw+5WkLQZSJuswQTeIhETJ2s8nH7fErTIvXdaezN6jtaLIsaHjQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781541931; c=relaxed/simple;
-	bh=Am9Jq8ZPWVvsetHtt0SyO5DKTSf2oVvFUTTjrA5taFk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uAKndg7RYxwUc8+EbZ2RqY29C/yuwSE/6epEqArrb8HGggqD4ubiFa7snFLfB2EYupZYQOpp3qCWkZKgZ1KYmZ+8PkZm/a4Ln62Re7xQfZE8g1szYI/1o/ChAAc6NRoGWdGHXesMgmwAwAw0LSxlng0O5boxnLfGR5DMjIoP+Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IzCPkZzF; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1781542987; c=relaxed/simple;
+	bh=Y6iEWtME68TB8Ifyh8CZmBsdibnHv2cqxvXDhEYwSeU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=YmcyRYlXGC4tD58Dbg4kDJ+vO6qdraleRTvePVLEhnRJ1J4XCqXJ2o/IVCGrvgV+wGr/b2OY9iKDm4FYvcKQ967RF4aE8orK4jFUh4UjejNP0YxTaY3h0SDwSc+qmrEv3xtCI0vUokWAS9TlHxAZXWTrPmTc4fAO4ybm5GJNRiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Vh1uosx5; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IzCPkZzF"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2bf237e1433so43866745ad.1
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 09:45:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Vh1uosx5"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c0c20f7581so36893045ad.0
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 10:03:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781541930; x=1782146730; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=I5AymUI1dDecjLNnO9PnzUKcv1HNQ3H3YwtBEkoZtTw=;
-        b=IzCPkZzF+4aBzIOKuRT6HgeEYcT06jZWUb9aibx6KubStCPYkufajKTPBT9bnqh84f
-         qnHHc7IVhtDQT7jgTjJIz/UseEDiC8nnJ76Kodm0r0jYqpK8oB06kqdSQwkKLcYmFdYm
-         iwN4nSeM6BH1FxVkgd3uqlRZIqVgy90puKP9TVoq57R6F23mPbzEcwFdSHXM83iGf6LN
-         LCBFn9yfVz0TwEWw8xQXF+ZMmUJVAgD4SGhGaAdllmj1OdJte/I8PfYDEz4nVsRIVsXQ
-         eU3E6jPnl+SvQE05FTE+1fe7BE1Ejg0yNDSMUuRUSs52Jz9A+/7rorpQj4rebrz44RrS
-         LdFg==
+        d=google.com; s=20251104; t=1781542985; x=1782147785; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lYpzGCPyYHUzAOr3s/xUZ/kiM/zvrLWU+ahmw9F4/q4=;
+        b=Vh1uosx5kiLonH83dvDFjvR9N84Nn1Da62agZC9vR4SZqy7gRtXVVMa/YZdZ5xdtjo
+         WsXBfW8OtbquIMmisyj2qYZYYoqcOeNB02YLkyEjfaoWzHVLBsUKqvFAbE61cyi1GTvZ
+         RlCABsZhsCJltzozaI6ZPv3CAcsp/YV6kUpe3RaOXEQSyFCGVn5jJtmStZDEcm37cjw/
+         9KBhB3kpOPZS3r8rqdbdImKxuQ4C9yW4470Upltfp0pgQ09MpH9HIvB5zVoMWZ+85pes
+         MxAeK3vfisNzTt2uoCiZ/77Ec3kwqzDza+S/Ad7fdLJvrIdSUf6btnS2eCF4cCdh878X
+         /HlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781541930; x=1782146730;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I5AymUI1dDecjLNnO9PnzUKcv1HNQ3H3YwtBEkoZtTw=;
-        b=jQ5Z/T121IAR/xhkg+Jd/lHN28aoww5raNNUEx1cUvU7MwEaWe0CuuTdAHbzLDHkvD
-         6W7yKGZlS8eHgvvET2bcaFXZ4QKIh7i48GK++u+F2Bzn+myaMAXO0RGwRldcb0NDXf2g
-         BgLnNKdS6M+jtEJz76FscazBRtsFjdrwxRwWCEbW05/Z7HqYpen3d3Rl7QHxMB0SROxb
-         Ydt/TPUnKaIBSnIhaxtTMSDCwbKd+MjgLfppDnhyT4Rp9gHlxZsgyyjMs6EdGrhC5PDs
-         MQU0VBGecEEllsukVaiL8AoiijkwG471wVUXKGRvoUJm9Pnty7/xIfrXK7oK+aOIEPnA
-         1YRQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8iADt2hcpFYByLxChcFZl4I/t31Kj5t9HYWvSA3nFV7GI4C5Ed5Zxdu9XYgRdzVCqSM00=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBhllOoi6FsyOmPR98B78nMp62ZcLn1KqUOFpbitZEzSZJPDFO
-	fifActk+SNO2OolftmwbGbYuJYzvz8XIMZiAOcLqcmuurf7Jmrvi0fCCM6Fq6rmsQQ==
-X-Gm-Gg: Acq92OE9REbm+gMDhsWRzCOCTVDjJnsHEFJUgo8Qm38wrrXFDe+Fxy6C2g3vHfTHiim
-	vYFlnrGtjBgu3TYqEbtmKKKr5qJYxFoOMJYqJFBPEU31DD+xuaUQQ8TCBnY7PCbgOhPrsxl3Pwj
-	LCsj51EsbGoLjFUIqaeLl8rTpJI8zKXM+JzM2dI+uU+rvnkdCUzijIqjLpSm11vGSZhgCq3wGg2
-	gIcolho+hUNz6oIMhJCcbfxr2ufuEokYArr3yML2DFY0aQI2jI/PUqM7zCiTHV/oUI8OG0kUBYu
-	UVtV5SKciaLs+QUHb8uBE0U2SioMnKVRrVAK4FQ+dHz334el+g7ft+BnTSUqa6RI/B0y8QrLNtw
-	+kzYK0Ol1evO9jtbew8+hm+EciTMs1mv5H420N6tcjcfvilIu1ZGCdG/yj3tzoZPTf4Oe281Tqg
-	TigD/kGxxy56xg6ERaD50Ikt3otlYeyfVVRCr+wzo1Ne9cUpiYHcAORaXwSO6MgQ==
-X-Received: by 2002:a17:902:e78f:b0:2c0:b7e1:7f08 with SMTP id d9443c01a7336-2c41235c53emr158816355ad.28.1781541929234;
-        Mon, 15 Jun 2026 09:45:29 -0700 (PDT)
-Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f7c6c5dsm104582015ad.21.2026.06.15.09.45.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 09:45:28 -0700 (PDT)
-Date: Mon, 15 Jun 2026 16:45:25 +0000
-From: David Matlack <dmatlack@google.com>
-To: Alex Mastro <amastro@fb.com>
-Cc: Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v2] selftests/vfio: avoid VLAs
-Message-ID: <ajAsJXWxRQtkIaCf@google.com>
-References: <20260615-scratch-amastro-vfio-selftests-avoid-vlas-v2-1-4e4df462908a@fb.com>
+        d=1e100.net; s=20251104; t=1781542985; x=1782147785;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lYpzGCPyYHUzAOr3s/xUZ/kiM/zvrLWU+ahmw9F4/q4=;
+        b=oM4njmxfCkAPI3fV+BwveWS3h/R7HvPLl4892DtltUyw6GeGuFbO9ZfFQ/PJeSsQKy
+         DuzxgY9ZX5tepFpM6ziof3miYvJAqHeAyJncbN6nTGoibdrR5711seFV0StEFv3HY1D3
+         bUqqwRdbdbZmEqPzCKFG43xXnACLQy8MpgS51sKUxfj3xZ0MOx2ldw0kqBjeAk78+2GW
+         m8nDModhEzO1apYK54uj2oyHtcUbwznwkMOWQ5uFLJYeOvKe0o2GHq1YvzlfiUZJbWQF
+         Kn3V945Yt9cFqhhpWhphxyTMVJsKdMyIVjn+Gb2j864/QI0bEPqX8x0THHbLogrYh+Ax
+         hp8A==
+X-Forwarded-Encrypted: i=1; AFNElJ+rS0hvKC9t/aVT4vEsplJoj0+YZ9IILEF+n6n/R/WtPs7v1XxK5nPSmFFXVRxqRZR8jUE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1YmsEDhFRx+Q7hF9FEii1Ydn9OOm6QFfn+jyWk3YHs9isxgUj
+	1bINb60DCAXRyKN1If510iZaqEC1AIhVPeRMkwMjLV+NJLgmPEE7T7XS8JTFv2LZs2iftq4IsFv
+	RLVP+IQ==
+X-Received: from plgu6.prod.google.com ([2002:a17:902:e806:b0:2c6:8264:8add])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ced0:b0:2c6:6424:c79f
+ with SMTP id d9443c01a7336-2c69a0dc52amr1151935ad.8.1781542984887; Mon, 15
+ Jun 2026 10:03:04 -0700 (PDT)
+Date: Mon, 15 Jun 2026 10:03:04 -0700
+In-Reply-To: <CAO9r8zMX3_JgrJNQGuvFaANXKsA4hMEgO7=OS=q=-AA4mMhhaw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260615-scratch-amastro-vfio-selftests-avoid-vlas-v2-1-4e4df462908a@fb.com>
+Mime-Version: 1.0
+References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-27-seanjc@google.com>
+ <CAO9r8zP4aYJ8SuL+eWXOch=BByfWmmCGVRwkHo=1cVx8Y5JAPg@mail.gmail.com> <CAO9r8zMX3_JgrJNQGuvFaANXKsA4hMEgO7=OS=q=-AA4mMhhaw@mail.gmail.com>
+Message-ID: <ajAwSMLG9OJfnVQT@google.com>
+Subject: Re: [PATCH v4 26/30] KVM: x86: Don't treat interrupts as allowed just
+ because a nested run is pending
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kai Huang <kai.huang@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-06-15 08:47 AM, Alex Mastro wrote:
+On Mon, Jun 15, 2026, Yosry Ahmed wrote:
+> On Mon, Jun 15, 2026 at 9:40=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > On Fri, Jun 12, 2026 at 5:04=E2=80=AFPM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> > >
+> > > When querying whether or not interrupts (IRQs) are allowed, check for=
+ a
+> > > pending nested run _after_ checking whether or not interrupts are blo=
+cked.
+> > > If L1 is running L2 _without_ nested_exit_on_intr(), i.e. if L1 IRQs =
+can
+> > > be blocked while running L2, and interrupts will indeed be blocked on=
+ce the
+> > > nested VM-Enter to L2 is completed, then KVM should treat interrupts =
+as not
+> > > being allowed.
+> > >
+> > > For injection, this avoids an unnecessary (forced) VM-Exit, as KVM ca=
+n
+> > > immediately request an IRQ window, instead of forcing an exit and _th=
+en_
+> > > requesting an IRQ window (because after the forced exit, KVM will see=
+ that
+> > > interrupts are blocked).
+> > >
+> > > For non-injection usage, only kvm_vcpu_ready_for_interrupt_injection(=
+) is
+> > > affected in practice.  kvm_vcpu_has_events() is unreachable when a ne=
+sted
+> > > run is pending, as KVM clears nested_run_pending prior to calling
+> > > kvm_emulate_halt_noskip() when putting L2 into HLT via GUEST_ACTIVITY=
+_HLT,
+> > > and SVM has no equivalent to GUEST_ACTIVITY_STATE.  I.e. the vCPU wil=
+l
+> > > always be runnable if a nested run is pending, and thus
+> > > kvm_arch_vcpu_runnable() =3D> kvm_vcpu_has_events() is effectively de=
+ad code,
+> > > as is __kvm_emulate_halt() =3D> kvm_vcpu_has_events().  Oh, and TDX d=
+oesn't
+> > > support nested VMX.  Similarly, kvm_can_do_async_pf() is unreachable =
+as
+> > > KVM shouldn't be faulting in memory with a pending nested VM-Enter.
+> > >
+> > > As for kvm_vcpu_ready_for_interrupt_injection(), incorrectly treating
+> > > interrupts as being allowed could result in KVM prematurely exiting t=
+o
+> > > userspace to accept an ExtINT.
+> >
+> > "incorrectly treating interrupts as being allowed" is the status quo,
+> > that this patch fixes, not sth this patch introduces -- right?
+> >
+> > The changelog reads like for the non-injection case this change might
+> > not be the right thing to do, but I don't think this is the case? I
+> > assume returning false from
+> > kvm_vcpu_ready_for_interrupt_injection() and kvm_vcpu_has_events() if
+> > L1's interrupts are blocked while L2 is running is the right thing to
+> > do?
+> >
+> > The code makes sense to me but I am trying to make sense of the changel=
+og.
+> >
+> > Aside from that, I have two comments about existing issues (Sashiko-sty=
+le):
+> >
+> > 1. The return values of {vmx/svm}_interrupt_allowed() are annoying.
+> > IIUC, 0 is not allowed, 1 is allowed, and -EBUSY is generally allowed
+> > but not right now, request immediate exit and try again? That should
+> > be documented somewhere (maybe I just missed it?).
+>=20
+> The next patch is adding the documentation, I spoke too soon :)
+>=20
+> >
+> > 2. Aside from TDX, seems like {vmx/svm}_interrupt_allowed() are doing
+> > the same thing? So maybe move all that logic into
+> > kvm_arch_interrupt_allowed(), rename it (because it's only used by
+> > x86), and make interrupt_blocked() the actual per-vendor callback?
 
-Please follow the local convention for shortlogs:
+Doesn't work, at least not with more changes/hooks, because nested_exit_on_=
+intr()
+is subtly vendor specifc.  The concept is identical, but the implementation=
+ needs
+to query vmc{b,s}12. :-/
 
-  vfio: selftests: Description of the commit
+I'm not opposed to figuring out a way to move the logic to common x86, beca=
+use
+I agree that's where it would ideally live, but I don't want to tack that i=
+n this
+series.
 
-> Allocate VFIO ioctl requests dynamically instead of using VLAs. GCC 11.5.0
-> rejects initialized VLAs with:
-> 
->   error: variable-sized object may not be initialized
-> 
-> The replaced stack u8 arrays also do not guarantee native struct alignment
-> for the aliased pointers.
-> 
-> Fixes: 19faf6fd969c ("vfio: selftests: Add a helper library for VFIO selftests")
-> Fixes: 20face8c75ff ("vfio: selftests: Add helper to set/override a vf_token")
-> Assisted-by: Codex:gpt-5.5-high
-> Tested-by: Vipin Sharma <vipinsh@google.com>
-> Reviewed-by: Vipin Sharma <vipinsh@google.com>
-> Signed-off-by: Alex Mastro <amastro@fb.com>
-> ---
-> Changes in v2:
-> - Reverse xmas tree variable ordering
-> - Link to v1: https://patch.msgid.link/20260612-scratch-amastro-vfio-selftests-avoid-vlas-v1-1-ba3acb635f0a@fb.com
-> 
-> To: David Matlack <dmatlack@google.com>
-> To: Alex Williamson <alex@shazbot.org>
-> To: Shuah Khan <shuah@kernel.org>
-> To: Raghavendra Rao Ananta <rananta@google.com>
-> To: Vipin Sharma <vipinsh@google.com>
-> Cc: Shuah Khan <skhan@linuxfoundation.org>
-> Cc: kvm@vger.kernel.org
-> Cc: linux-kselftest@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  tools/testing/selftests/vfio/lib/vfio_pci_device.c | 28 +++++++++++++---------
->  1 file changed, 17 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> index 94dc5fcecbeb..c65d5ed33e51 100644
-> --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> @@ -30,13 +30,12 @@
->  static void vfio_pci_irq_set(struct vfio_pci_device *device,
->  			     u32 index, u32 vector, u32 count, int *fds)
->  {
-> -	u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count];
-> -	struct vfio_irq_set *irq = (void *)&buf;
-> -	int *irq_fds = (void *)&irq->data;
-> +	size_t irq_size = sizeof(struct vfio_irq_set) + sizeof(int) * count;
+> > I assume this is the case because nested_run_pending used to be per-ven=
+dor,
+> > but now we can clean this up. For TDX, I assume the per-vendor hook can
+> > just be tdx_interrupt_allowed() reversed?
+>=20
+> It also does the renaming (nice!), so we're halfway there. I think for
+> this series, we should at least convert all direct calls to the vendor
+> .interrupt_allowed through the new kvm_is_interrupt_allowed() helper.
 
-optional nit: s/irq_size/argsz/ (same for vfio_device_feature_ioctl())
+Sadly not in this series, because handling the for_injection=3Dtrue case re=
+quires
+moving the nested_run_pending logic to common x86, and without that, we end=
+ up
+with two very silly wrappers.
 
-> +	struct vfio_irq_set *irq;
->  
-> -	memset(buf, 0, sizeof(buf));
-> -
-> -	irq->argsz = sizeof(buf);
-> +	irq = calloc(1, irq_size);
-> +	VFIO_ASSERT_NOT_NULL(irq);
+> Unless you wanna go all the way and rework .interrupt_allowed to
+> .interrupt_blocked while at it as well.
 
-Could you add a precursor patch to add a calloc_assert() helper to
-assert.h next to ioctl_assert() and snprintf_assert()? It looks like
-there's quite a bit of code that repeats the
-calloc()/VFIO_ASSERT_NOT_NULL() pattern.
 
-> +	irq->argsz = irq_size;
->  	irq->flags = VFIO_IRQ_SET_ACTION_TRIGGER;
->  	irq->index = index;
->  	irq->start = vector;
-> @@ -44,12 +43,13 @@ static void vfio_pci_irq_set(struct vfio_pci_device *device,
->  
->  	if (count) {
->  		irq->flags |= VFIO_IRQ_SET_DATA_EVENTFD;
-> -		memcpy(irq_fds, fds, sizeof(int) * count);
-> +		memcpy(irq->data, fds, sizeof(int) * count);
->  	} else {
->  		irq->flags |= VFIO_IRQ_SET_DATA_NONE;
->  	}
->  
->  	ioctl_assert(device->fd, VFIO_DEVICE_SET_IRQS, irq);
-> +	free(irq);
->  }
->  
->  void vfio_pci_irq_trigger(struct vfio_pci_device *device, u32 index, u32 vector)
-> @@ -118,15 +118,21 @@ static void vfio_pci_irq_get(struct vfio_pci_device *device, u32 index,
->  static int vfio_device_feature_ioctl(int fd, u32 flags, void *data,
->  				     size_t data_size)
->  {
-> -	u8 buffer[sizeof(struct vfio_device_feature) + data_size] = {};
-> -	struct vfio_device_feature *feature = (void *)buffer;
-> +	size_t feature_size = sizeof(struct vfio_device_feature) + data_size;
-> +	struct vfio_device_feature *feature;
-> +	int ret;
->  
-> +	feature = calloc(1, feature_size);
-> +	VFIO_ASSERT_NOT_NULL(feature);
->  	memcpy(feature->data, data, data_size);
->  
-> -	feature->argsz = sizeof(buffer);
-> +	feature->argsz = feature_size;
->  	feature->flags = flags;
->  
-> -	return ioctl(fd, VFIO_DEVICE_FEATURE, feature);
-> +	ret = ioctl(fd, VFIO_DEVICE_FEATURE, feature);
-> +	free(feature);
-> +
-> +	return ret;
->  }
->  
->  static void vfio_device_feature_set(int fd, u16 feature, void *data, size_t data_size)
-> 
-> ---
-> base-commit: a26b499b757cfc8bbff1088bb1b844639e250893
-> change-id: 20260612-scratch-amastro-vfio-selftests-avoid-vlas-395eb3dcb3ab
-> 
-> Best regards,
-> --  
-> Alex Mastro <amastro@fb.com>
-> 
