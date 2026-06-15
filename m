@@ -1,133 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABC437E314;
-	Mon, 15 Jun 2026 13:23:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5B33F6C3B
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 14:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781529782; cv=none; b=t9TZ3tue9yQiZmTyX/wwMeBalMrh+V+1JgmoO35sUpQh997e81hEoYzzbqkOTzXx6cJtheYX7AOd9E0O8XB5QgtdSp2/V36/imRyS9qni9mnI/XoGiULy1mybo92T5t08wat4HYq4IR7TqKtqWH8o2hKW2mjf6wUC4RpTuaIUXY=
+	t=1781532732; cv=none; b=JfWxb26AD0p02HtiFYFs1CAPvEx80pCeKlZAvgKw08OyMZBQ93JMGxLZYCpTRoW2RKqmKbQU7ZFYZr5Mr+bOlHb+C2yDsVSDiUIJh2dkJaETm5WZLLISGHZOeDoTmbyI/lmAktgJHRSizpI/VvD7eynSrti/vDyA8QkRxGq9nuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781529782; c=relaxed/simple;
-	bh=Mrsyf2pWQiTMy185MnWe6LkM9Lbf9D057xx4pfW7LPk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jpEa3+yFG9mIlGkYibHMlyV4TljQw0tB20oQpamo0Dwtt6BZgnuQvabps8aEJ/MzXpY+vVI4tkwvqB1YvnUodOnN1yYKrPbf7oQb0dNN1SXLW+tR625c1SY+EJFYjeTm6C4gcNkU4MdppM/iAe3HVPET+DVvX+qSJsIk8buO2qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=caqo+Pqp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781532732; c=relaxed/simple;
+	bh=bVKKlqMoMZT7ZIqI/tShpktD7NbvFFwWIAcipGBu0As=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hiqscf9PcqXLlJ1e8up2DWfvjQQLCp8Lu1WEJ6GAJPi3IXAw2WI/2xQpzSFSTvX1Bo+qxHmscP1Q9h4XrTDkKGa9wpevbd6xN+TdBbAlPwwUdEw5ugXpa3dBmf8rrexGxyE83PFkPGeyX9ZkYv+R6buw4BVBsS6j55tvda0muUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z0f9WJma; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="caqo+Pqp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583DE1F000E9;
-	Mon, 15 Jun 2026 13:23:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781529781;
-	bh=Z19ibZVkMSu/453YekQIQm3hgNHpanv4Kta00IuUMqs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=caqo+PqpafcjVnVzsv/tySf4s2K6AMO+mvNiZg1+WKY2C3wq74RKZ9+jrgA8Wxh1O
-	 W4yA8gt8AO76mZ4enZX40yrgJJerL0xVMZ/5+8wwB4sVkDa8m9QhQNEOZwxg58kLO8
-	 mvPLI3KEJ0aLX4hgUSNqN5Arvn+9YQQ9s5zgWg9iOjryA9LoNQ+raxkNBj2NfUF1Z7
-	 j5jxI1mBQkNFRk0nbVwuvHd1ZMEL+D37JOMNaxRTPQnatKlDTqrPfqTC51ZTHCaG7K
-	 jqwlqaev1wck0ptnHZH7B46lxuakrOHGS2TpWzEnIevHSSSm5Q87LUl+hqWGAjpXwS
-	 rAq62zPThrOMg==
-From: sashiko-bot@kernel.org
-Subject: Re: [GIT PULL v1 17/17] KVM: s390: Introducing
- kvm_arch_set_irq_inatomic fast inject
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, kvm@vger.kernel.org, "Vasily
- Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260615124243.187614-18-imbrenda@linux.ibm.com>
-References: <20260615124243.187614-18-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 15 Jun 2026 13:23:00 +0000
-Message-Id: <20260615132301.583DE1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z0f9WJma"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c2d65d9792so21819925ad.0
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 07:12:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781532731; x=1782137531; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Sf6ZRxRXE3E/hdonYM+tz1sS9z/iGh2J0kw14Af6L3c=;
+        b=Z0f9WJmaBiL9jhwT+OxZD1WC4TE0X8AvP5geaFlve3J9qmVpE0a9aW5DrBHqOqmoxk
+         ScekhUXmwQjwHSGlj9dfoKKjZeXotjnD8k0osnfgsq0g7fOyyTzXYubZawSx5jfgE2V3
+         DeKkvucg9CxVE80j1cwcVH6vKBn1wzhjthG+YaDkBsPZ4PZo6QGxGlioegZgaiqCKifR
+         a1SVQ7o1UIonaVgRlfJ4DkrcVMlYoH60CgD25FIDlT9h/2lsKFPPJXOj56SubhWWZDcH
+         xBCrVf7nWAPNqvVVREc5aJ1hEEqUZT6QzAB7vMzyfzKKIBoj9O7Jw1poU3oOE+O1L294
+         tAgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781532731; x=1782137531;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Sf6ZRxRXE3E/hdonYM+tz1sS9z/iGh2J0kw14Af6L3c=;
+        b=UgeflsF6OOx2YzAizsuFLA5ud586IhnB72xfE3AUg9pEiOYbpEqx5Nv0iJGV/mZnHg
+         0eSLBiRgtp2uU7W17NSELW2TPSMVhcHxb7QhUTBJ+hnp5mg181NyWqTsIN/VgU+Ti5Qt
+         6JLrL+82iJHI0wW+5oRXGeDGVhh9ont1I/qpxxmRYONDbARsgp20bQEio1Vk9Z1HBpQ6
+         TondJcX0jueT5m2jyQRPwifHO8UnW/MEjfRQKiroCm2PQZfViN+XjtJEsgTOYNMh0a6T
+         IOW1abwRPXCLkSdX2DpSU97pjAKTHj1Ulqge634aKRuv9knKOR0+lGeUgBd8Bhxd4vhz
+         JUhA==
+X-Forwarded-Encrypted: i=1; AFNElJ/KxEk/RYYUowv2RQWmvf7Lmdy4TJjp4LbKZdavmU6Ht/UJpDmXYf+345t2HNJ2iFQfCio=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0bk1IQUJNUeaEyWE8rj9+Gcy4GM/HBarbgDQeZwhZEg72V1nP
+	VUJ/1GEWNGOJkNdy3tFpMQeZVLiFN8ywov7neMhloihS/mDHjyuPDekjJtykTI2CI036hnP9Hj8
+	QAVBaFQ==
+X-Received: from plbli14.prod.google.com ([2002:a17:903:294e:b0:2c0:a7f8:c132])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4587:b0:2c2:8659:da3a
+ with SMTP id d9443c01a7336-2c4132039cbmr162587015ad.31.1781532730565; Mon, 15
+ Jun 2026 07:12:10 -0700 (PDT)
+Date: Mon, 15 Jun 2026 07:12:09 -0700
+In-Reply-To: <a8eefe40b2b0a0a3d4afd675ed4fea6762934fdc.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260612230622.687665-5-seanjc@google.com> <20260612233017.1F9771F000E9@smtp.kernel.org>
+ <aiyY8twOOlRKgQre@google.com> <a8eefe40b2b0a0a3d4afd675ed4fea6762934fdc.camel@infradead.org>
+Message-ID: <ajAIOVLzf6AriO5r@google.com>
+Subject: Re: [PATCH v2 4/8] KVM: Initialize a vCPU's index to '-1' while it's
+ being created
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, 
+	Paul Durrant <paul@xen.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Sat, Jun 13, 2026, David Woodhouse wrote:
+> On Fri, 2026-06-12 at 16:40 -0700, Sean Christopherson wrote:
+> > >=20
+> > > arch/x86/kvm/xen.c:kvm_xen_init_vcpu() {
+> > > =C2=A0=C2=A0=C2=A0 ...
+> > > =C2=A0=C2=A0=C2=A0 vcpu->arch.xen.vcpu_id =3D vcpu->vcpu_idx;
+> >=20
+> > I don't see how the existing code can be correct.=C2=A0 David/Paul, is =
+this supposed
+> > to be vcpu->vcpu_id?
+>=20
+> No, vcpu->vcpu_id is the APIC ID.=20
+>=20
+> But xen.vcpu_id is the Xen/ACPI ID. The kernel needs to know it in
+> order to accelerate timer hypercalls. The vcpu->vcpu_idx is a
+> reasonable default for that.
 
-Pre-existing issues:
-- [High] Guest-reachable WARN_ON_ONCE during memory allocation failure in `=
-__kvm_inject_pfault_token`
-- [High] Preexisting guest-triggerable WARN_ON_ONCE on interrupt queue full
---
+Right, but isn't vcpu_id also a reasonable default?  Ugh, never mind.  Even=
+ if
+it's conceptually a reasonable default, in practice using vcpu_id would lea=
+d to
+creating an illegal xen.vcpu_id since KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID restri=
+cts
+the ID to KVM_MAX_VCPUS, not KVM_MAX_VCPU_IDS (which is KVM_MAX_VCPUS * 4).
 
-commit 4b098d22649d526ad54d46d65ab883c23baf1ae2
-Author: Douglas Freimuth <freimuth@linux.ibm.com>
+	case KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID:
+		if (data->u.vcpu_id >=3D KVM_MAX_VCPUS)
+			r =3D -EINVAL;
+		else {
+			vcpu->arch.xen.vcpu_id =3D data->u.vcpu_id;
+			r =3D 0;
+		}
+		break;
 
-KVM: s390: Introducing kvm_arch_set_irq_inatomic fast inject
+> (As if this wasn't confusing enough, note ACPI !=3D APIC and neither of
+> those are typos)
+>=20
+> > > =C2=A0=C2=A0=C2=A0 ...
+> > > }
+> > >=20
+> > > Since the actual vcpu_idx isn't assigned until later in
+> > > kvm_vm_ioctl_create_vcpu(), this leaves vcpu->arch.xen.vcpu_id as -1 =
+instead
+> > > of its previous default of 0.
+> > >=20
+> > > Could this cause guest hypercalls, such as VCPUOP_set_singleshot_time=
+r,
+> > > to fail with -EINVAL if a VMM relies on the previous default of 0 for=
+ vCPU 0
+> > > and doesn't explicitly invoke KVM_XEN_VCPU_SET_ATTR?
+>=20
+> Yeah, but it would be tolerable to just return !handled for the -1 case
+> instead of "I handled that and it got -EINVAL". Then the hypercall gets
+> punted to userspace.
 
-This commit introduces a fast path for irq injection to prevent blocking on
-the global work queue. It also converts shared resources between the fast a=
-nd
-slow paths to spinlocks and adds statistical counters for analysis.
+Are you thinking this?
 
-Message-ID: <20260604192755.203143-4-freimuth@linux.ibm.com>
+diff --git arch/x86/kvm/xen.c arch/x86/kvm/xen.c
+index 694b31c1fcc9..7a94b84f6492 100644
+--- arch/x86/kvm/xen.c
++++ arch/x86/kvm/xen.c
+@@ -1607,7 +1607,7 @@ static bool kvm_xen_hcall_vcpu_op(struct kvm_vcpu *vc=
+pu, bool longmode, int cmd,
+        struct vcpu_set_singleshot_timer oneshot;
+        struct x86_exception e;
+=20
+-       if (!kvm_xen_timer_enabled(vcpu))
++       if (!kvm_xen_timer_enabled(vcpu) || vcpu->arch.xen.vcpu_id < 0)
+                return false;
+=20
+        switch (cmd) {
 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 9265bc73cd938..dc9c7451fe979 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
+> I'd slightly prefer a deferred initialization, but I believe all known
+> userspace explicitly *sets* the ID via KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID
 
-[ ... ]
+Yeah, userspace pretty much has to, otherwise only vCPU0 could do
+VCPUOP_set_singleshot_timer.  If we were implementing this for the first ti=
+me,
+I would be 100% in favor of deferred initialization, but since this will be=
+ an
+ABI change, explicitly initializing xen.vcpu_id to -1 feels "safer", becaus=
+e at
+least then there will be a fairly noisy failure (exit to userspace), versus=
+ the
+guest silently getting different behavior.
 
-> @@ -4429,19 +4439,28 @@ int kvm_s390_try_set_tod_clock(struct kvm *kvm, c=
-onst struct kvm_s390_vm_tod_clo
->  }
-> =20
->  static void __kvm_inject_pfault_token(struct kvm_vcpu *vcpu, bool start_=
-token,
-> -				      unsigned long token)
-> +				     unsigned long token)
->  {
->  	struct kvm_s390_interrupt inti;
->  	struct kvm_s390_irq irq;
-> +	struct kvm_s390_interrupt_info *inti_mem =3D NULL;
-> +	int ret =3D 0;
-> =20
->  	if (start_token) {
->  		irq.u.ext.ext_params2 =3D token;
->  		irq.type =3D KVM_S390_INT_PFAULT_INIT;
->  		WARN_ON_ONCE(kvm_s390_inject_vcpu(vcpu, &irq));
->  	} else {
-> +		inti_mem =3D kzalloc_obj(*inti_mem, GFP_KERNEL_ACCOUNT);
-> +		if (WARN_ON_ONCE(!inti_mem))
-> +			return;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this guest-reachable
-assertion pose a denial of service risk? Under host memory pressure, this
-allocation can fail. Since a guest can trigger async page faults (and thus
-host memory allocations) by accessing swapped-out memory, an unprivileged
-guest could exhaust memory limits to force this allocation to fail. This
-would intentionally hit the WARN_ON_ONCE, potentially crashing the host if
-panic_on_warn is enabled.
-
-> +
->  		inti.type =3D KVM_S390_INT_PFAULT_DONE;
->  		inti.parm64 =3D token;
-> -		WARN_ON_ONCE(kvm_s390_inject_vm(vcpu->kvm, &inti));
-> +		ret =3D kvm_s390_inject_vm(vcpu->kvm, &inti, inti_mem);
-> +		if (ret)
-> +			kfree(inti_mem);
-> +		WARN_ON_ONCE(ret);
-
-[Severity: High]
-This is a pre-existing issue, but could this assertion also be driven by a
-malicious guest? A guest can trigger up to ASYNC_PF_PER_VCPU * KVM_MAX_VCPUS
-async page faults by continuously accessing unmapped pages and intentionally
-masking floating interrupts.
-
-This would cause the host's floating interrupt list to hit its maximum
-capacity limit, causing kvm_s390_inject_vm() to return -EBUSY and triggering
-this WARN_ON_ONCE. Could this be converted to a pr_warn_once() or similar
-to avoid host denial of service?
-
->  	}
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260615124243.1876=
-14-1-imbrenda@linux.ibm.com?part=3D17
