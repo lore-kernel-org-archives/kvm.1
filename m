@@ -1,79 +1,114 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565314071D3;
-	Mon, 15 Jun 2026 15:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53A2403E96;
+	Mon, 15 Jun 2026 15:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781538552; cv=none; b=PUlKp3nmLsEHVO4O8rAkXUAMCFQVcP12jYuyCHCgZ2/IblAXW/76k145M0+hPThydmCZ/q5CxjyTpK/R95zI5DCsuWriTBqXsKlyN+P0YDO8bKe+dt+YNodT4aR13uvRtps0CtjX4sUKsBbVmSfp4ecbH/xdcL6vwk6xah7qQ1g=
+	t=1781538819; cv=none; b=tBOGoZecUEB8cDssRVlM7To6Un61bfD29cifsnlUqkOdVeqRJCPaHhU8wl7xaxZhmTk3vhKya9gArvqmGgcFZONYyRlzsisQUsnDw9wXiN8nxjLl1Sf2EnmEYkbr/CNsq7EuOkjMpmJ6/+oU7ttcbLvuVAB9qsdZWb+PS4e4OXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781538552; c=relaxed/simple;
-	bh=fyl0yUaPClU2NroLplGRQmx8vws/UzQ/L1fCrdFgHNI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g6fS0hBl+NwBVzceE3dPQuF/raArXVGWPG+btR3rDZV1OKFi7P2WNhezFOlwG53jx7AIN/6nztrPUqBz5KHwZ56u6C0Ob2mz02Dn/mgdOi3Nx1tCIlPg0IXBgxs78SIZ5RD96xnVb87FPiG1wa5W0rOLKkA5/VtPBBIws6A3cpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D9DHI8pD; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1781538819; c=relaxed/simple;
+	bh=cc2Jw+bSMrXT1kH7gubW713jYpPmyCTcIGhtT+kL3L8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=AcLuHER9zgTWyoZxfi2BO+NjsgW2j8CZB+l61/+e9h/EGw56GhYjM//RjBw1zEAT4Qi+i7klE+lNIg3GWVviafz+ZID8bhr06tuAnUQOjpchr0b9gD7Bu2BCBoSzSze274LU7L7QH5JA8PWPfSP9hhKIc/9jcxo9N5/0wsSy6Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=AF4BUiUI; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D9DHI8pD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781538552; x=1813074552;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fyl0yUaPClU2NroLplGRQmx8vws/UzQ/L1fCrdFgHNI=;
-  b=D9DHI8pDXUiBeiCQ3ierR5sh8EggLMOkG0dWfmEGDyG0d22dOkBvDNOI
-   HIYYgtUueaPGvt61b36wlRGNsqUaUv35mnScnR4uXmimDctaYN0cQN42o
-   NVVQoHCqwEc3DgAhKxOUOPC5FuLh59AJeCORaTKaXk+tgbL+ccczXOevR
-   erJ8TXxyzoZDBp8Vt5pieICa15Gl/gwcjko/OYf3RBRA7dRyRfXzgOK9P
-   9+0I+mSvdcPMDXuRxxKAeh7a64yGeN7fUVhSc+YptXOlC15UOp46CNB09
-   JAJeuRLJYuxsz8ei8XEzmqH2aLbLemgAyTZoKvHtbbxKtuq03D68DwCwT
-   A==;
-X-CSE-ConnectionGUID: KG9U1OYnQ7mdC/B23IQAQw==
-X-CSE-MsgGUID: 0SHVJ6TlTTaojrbsZTdEsg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="99858353"
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="99858353"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 08:49:11 -0700
-X-CSE-ConnectionGUID: 9b+mtrtkSSK5BG0LA5fjbQ==
-X-CSE-MsgGUID: Ro29/Ul1SkGIttGVy9cQYg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="247593571"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa007.jf.intel.com with ESMTP; 15 Jun 2026 08:49:07 -0700
-Date: Mon, 15 Jun 2026 23:24:15 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Dan Williams (nvidia)" <djbw@kernel.org>
-Cc: kas@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
-	peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
- Extensions
-Message-ID: <ajAZHwyMdSlhiNYx@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-2-yilun.xu@linux.intel.com>
- <6a2c863a681d6_9b85510064@djbw-dev.notmuch>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="AF4BUiUI"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 47D0124E9;
+	Mon, 15 Jun 2026 08:53:32 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1AFB03FA1F;
+	Mon, 15 Jun 2026 08:53:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781538817; bh=cc2Jw+bSMrXT1kH7gubW713jYpPmyCTcIGhtT+kL3L8=;
+	h=From:To:Subject:Date:From;
+	b=AF4BUiUImutl/tiXAlq1UadNlcJhq3hXaUKmgrMOdQYwkSUE6OlZdfO4ZHqAs2T4h
+	 irDufS+TEbgfJGLLle+mrUWlKdFcefHZt/jCl1ixcpdkgWhizHyeMYEBqhITnS1mEI
+	 fbsL5/Q2eH1fyrM7zWu6Yc/LKBTGulWvQ4JvWfe0=
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: pbonzini@redhat.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	maz@kernel.org,
+	oupton@kernel.org,
+	suzuki.poulose@arm.com,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	seanjc@google.com,
+	david.hildenbrand@arm.com,
+	mark.rutland@arm.com
+Subject: [RFC PATCH] KVM: Ignore MMU notifiers for guest_memfd-only memslots
+Date: Mon, 15 Jun 2026 16:52:44 +0100
+Message-ID: <20260615155244.183044-1-alexandru.elisei@arm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a2c863a681d6_9b85510064@djbw-dev.notmuch>
+Content-Transfer-Encoding: 8bit
 
-> > Check TDX_FEATURES0 before reading these metadata. If a feature is
-> > advertised, a failure in reading associated metadata causes the entire
-> > TDX initialization to fail, otherwise skip.
-> 
-> Others already commented on the patch ordering, so I will just comment
-> on the changelog to recommend referring back to the "any available
-> extension, all the time" implementation policy rather than saying "Linux
-> requires" which is ambiguous.
+For guest_memfd-only memslots (kvm_memslot_is_gmem_only() is true), the
+memory provider for the virtual machine is the guest_memfd file, not the
+userspace mapping. Faults are resolved using the guest_memfd page cache,
+and the permissions for the secondary MMU mapping depends exclusively on
+the memslot (i.e, if the memslot is read-only). How userspace happens to
+have the memory mmaped at fault time, or even if the memory is mapped at
+all into userspace, is not taken into consideration.
 
-Agree.
+guest_memfd memory is not evictable, is not movable and there's no backing
+storage. Once memory is allocated for an offset in guest_memfd file, the
+offset will not change, and that memory is not freed unless userspace
+explicitly punches a hole in the file. As a result, memory reclaim, page
+migration, page aging and dirty page tracking for the userspace mapping
+serve little purpose.
+
+Despite this, KVM's MMU notifiers still modify the secondary MMU page
+tables, similar to ordinary memslots, only for the same memory to be
+remapped next time a guest accesses it. Make the disconnect between the
+user mapping and the secondary MMU page tables explicit by ignoring the MMU
+notifiers for guest_memfd-only memslots.
+
+Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+---
+The only theoretical instance where the MMU notifiers are invoked for the
+userspace mapping of a guest_memfd-only memslot that I was able to find was
+automatic NUMA balancing with a non-NULL NUMA policy for the guest_memfd
+file. I wasn't able to test it in practice. Also my knowledge of MM is very
+limited, so there might be other cases where it happens, or I might be
+wrong and today the MMU notifiers are never invoked.
+
+Either way, when and if it happens, having memory unmapped from the
+seconday MMU in the case of guest_memfd-only memslot is at most a
+performance issue (it causes unnecessary guest faults), but I wanted to
+start a conversation about this because having memory that stays mapped at
+stage 2 (unless userspace explicitly unmaps it from the VM) is needed for a
+Arm feature (called SPE, Statistical Profiling Extension) that I'm working
+to upstream. This patch aims to provide the guarantee that memory won't be
+unmapped from the secondary MMU behind the VMMs back, which is what happens
+for non guest_memfd memslots.
+
+ virt/kvm/kvm_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 881f92d7a469..8c4158996928 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -592,6 +592,10 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
+ 			unsigned long hva_start, hva_end;
+ 
+ 			slot = container_of(node, struct kvm_memory_slot, hva_node[slots->node_idx]);
++
++			if (kvm_slot_has_gmem(slot) && kvm_memslot_is_gmem_only(slot))
++				continue;
++
+ 			hva_start = max_t(unsigned long, range->start, slot->userspace_addr);
+ 			hva_end = min_t(unsigned long, range->end,
+ 					slot->userspace_addr + (slot->npages << PAGE_SHIFT));
+
+base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
+-- 
+2.54.0
+
