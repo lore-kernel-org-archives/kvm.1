@@ -1,177 +1,136 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010041.outbound.protection.outlook.com [52.101.46.41])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A71F2D6E44;
-	Mon, 15 Jun 2026 19:48:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781552921; cv=fail; b=j8u843z0Pygwtul3g82qnNUgT5SjN1SdoSAzd4jo0BwqoRR/sUI/ycNfIOtiExjce583emtBde2TkAQLhYzlp1K/maVqffyTwOoXXO5R4o3iTaEZV9YybCnppeAmoKACKXDCIyDj6CJqmB5M/XBZptVOJmfVuowKAYqNYxL4i/I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781552921; c=relaxed/simple;
-	bh=cfE+5BkroTlDquQX9s43a4CDQP/ryxiN4Maswqs8IJ0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IOyjSdG+FLjFba4eAcdqWe7iFmBDaYuSJsIHg+jllfbz5fpB4CwtseWZNazkjdhGib8E3C5uaJjuc+PHyDtbyvKRspBwuKcTO9E+4KkmAP6WUJ5HFv9HYX3zuvLHdELc9pFoAxjtvORA7Mt4e5zVVyosxxmb+87zy9nHtGW5bHA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jZTpcivw; arc=fail smtp.client-ip=52.101.46.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580593B5E15
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 19:48:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781552926; cv=none; b=AzUfP4+N35q1XeGvjrG+WZGpQinev5NKnPYH5zb8uDWjmrDZ33i+4OKIotCWnexAIiJPz+ar5m7DBnyedFpuCGzpU2dwh175X+Pcz/vuGKJTINZe4DzFrU8v8NJncv+UPihc29khqGVJq+axBQW3IovVGqJAw8ak7af6MxcV6lY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781552926; c=relaxed/simple;
+	bh=HywRkiOpkQuCnAiRcy1+1nGB0pyzOVqxgczZaqgqCr4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nJoWoj1xKykPD7WiGHcj7v67yjcYlB6GMKFNSDHevjSYJVACG4IkdIURJ5SNQgqEELPpq0+SIdEWYjtqVjIV4mo75WpWTkoiz8DG8kIzUj/jtlJC3XyzOYy5U0WSGTpBQfcxgiW46KaLZxWWVHHQllvFFDCHNSSO1IETTfD8rlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gbJcuINd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mAIyE5Je; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jZTpcivw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yrDSK0bqw+AaQUclOhZKQ7Fv2p0RGnCWu+HmSXmRMDqjrgGkmBdWGILqS+nXVyAtQbEzTF2TUJFEoUL8bQrfapSv7H9W8ao0n/VxKj1q08AhMR8cENN8AbI2df3v6z4fIuw60bLozV80+cjxtZFyLu+hxJP588+Nzu3WdNi0zVFYeq/xZobuPTHOG2SJa0AWlTxEvHf83GlG0MizfftWKD89viluyLHtoIl6MOvCsDlRNyL1cYGb0XvYSm+OF/9LIN62MmA5o9W0aOtDgKxKPXSQtdcFPnPtUlq1fYUjwCN4vh5pBpN9o0QfKRmE6zLcnZYuOiGnrn1UTaeiMRfo9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3xAQ2hA7W3Xj3xmfiLBDjKhOXSiQ91BB7DkXwb4X9yc=;
- b=m5K0rSevL8mGZkQF8mBUxxUwH+sknRtwgAXRzZIraZT6BOuhl0p9WaJcLXnwml6y53/J/scpSLxEAWFWO8WDSB2oLf4XK/1LUHBcTJaY890j7HCc7uHCDgQ6l3qCyCO1rIHNFiPKzhNsAxlhjc/ERfHWTPxUA+09heYPLKub+XbPjSLnE2Spmp4adEvikX3gYDFkS6CaCKIRDCXbwlkS9lM5fCryxVicCLFQtocMk0rHFDRkHX399Eb6pCOoo/AZQggLjifm9ECLM6mdrvDAu3NlCO//pmZuKw/Jw/2hluIlglAWtvQiQXSvuLTv6B6qnU/6do1/T6nuO4fE/e13wQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3xAQ2hA7W3Xj3xmfiLBDjKhOXSiQ91BB7DkXwb4X9yc=;
- b=jZTpcivwSNZwzrtHuF1WOYKtJlhm3SgDTwfd4KjFdZMnmJdJth9J/pPtBBiqkMcSkJfX+/ESwjBaBtzOTsIuk4QFHqdJyjXk9PCgr7rD1aScd684r7eefaHzuaM0nbQAU30apsgTo143lzh903FN7rQenqgcZA0hRoi8PaX291E=
-Received: from MN0PR02CA0020.namprd02.prod.outlook.com (2603:10b6:208:530::31)
- by CYXPR12MB9428.namprd12.prod.outlook.com (2603:10b6:930:d5::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
- 2026 19:48:35 +0000
-Received: from BL02EPF00021F6D.namprd02.prod.outlook.com
- (2603:10b6:208:530:cafe::81) by MN0PR02CA0020.outlook.office365.com
- (2603:10b6:208:530::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.18 via Frontend Transport; Mon,
- 15 Jun 2026 19:48:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF00021F6D.mail.protection.outlook.com (10.167.249.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.139.8 via Frontend Transport; Mon, 15 Jun 2026 19:48:34 +0000
-Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 15 Jun
- 2026 14:48:32 -0500
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
-	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
-CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
-	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
-	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
-	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-Subject: [PATCH v8 1/7] x86/cpufeatures: Add X86_FEATURE_RMPOPT feature flag
-Date: Mon, 15 Jun 2026 19:48:22 +0000
-Message-ID: <47ef32931e5dc8783d2cb88eb4ebe8fdd92fdfa8.1781419998.git.ashish.kalra@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1781419998.git.ashish.kalra@amd.com>
-References: <cover.1781419998.git.ashish.kalra@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gbJcuINd";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mAIyE5Je"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781552923;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nhU6+tUSSRwqgOUkAhL3IQec07W//7LlZKU9ysLcGq0=;
+	b=gbJcuINdCEDyQFAi3wvcsqAclZg2zxw3WaqYtLoHGjIJAswaJyFZL9jwF0noNAKq00Su/j
+	XL1eIOv3nPZ6w+tuS0KPkL0lOqXUuJB/HpZRhmmxDGXnVYQeLY2jhKaCMgEH4Ey2aGRq/C
+	a1O+XN2VWaSnl9+K8Y5TXJ+sojW/ZTY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-557-9IYfPrnLMzOZkSy367rSqA-1; Mon, 15 Jun 2026 15:48:42 -0400
+X-MC-Unique: 9IYfPrnLMzOZkSy367rSqA-1
+X-Mimecast-MFC-AGG-ID: 9IYfPrnLMzOZkSy367rSqA_1781552921
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4600c8cb13aso2710339f8f.1
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 12:48:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781552921; x=1782157721; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nhU6+tUSSRwqgOUkAhL3IQec07W//7LlZKU9ysLcGq0=;
+        b=mAIyE5JeEujnTY2QcHz2rk53WzH5gW8ATzl1nJSJsw86LoGhm6w3K/MUmHALSrcVFi
+         i9knH0/bgeldvuraP+R3sg+gnXhs4uemTtIRECaaoK8PnK9cMc9ENbjWo+gr92Y3S6w0
+         lXCVvMRr6eHiK7ur8VSCkaGAOHj0TSkSrhutYR0p+D96qez+pVP1fPAJkq97UitUmkGK
+         cO6J2dearHn4wZyM58VGfwTFlNtWRUALcgtC1NLpV+jIKBwn/KJZBl5JG9+RHl3o3ZhZ
+         8cAzRhCtkqXX+674/03VmAADakZB0H+Hm8YU9RhAbdivnsL9dTVXhkx0qSX6m/Ve6u/j
+         /+EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781552921; x=1782157721;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nhU6+tUSSRwqgOUkAhL3IQec07W//7LlZKU9ysLcGq0=;
+        b=lq9ZX7vgIwfrld2J/cUxd9w6A2yzBt1KgqB5XkGNIgQTw7hBzplL38IZrGHcLWMRTw
+         xzC4rr5KSs8/83y7yHl29V806pWIqgCR3Rc7akT0vcwF1uHpGAKYr2AmIWbm3QtOZJp6
+         1UCgzUn4/isRcJH7zRxXF+D2KSkwWYboEgezIGLZFEhHVjeF+hOPUCIcDwj1JU8QQtcN
+         HJh/eFcImH6m29f/dw3uNcQLgzI8qnmeCa03TffEqMAjIbsuOPZxnefaBpdZ575dcybd
+         z06PgqAO2rsJx72mmkqi32DHvMW8YWJ3nyGmswrxUBzt9xLZiyS/qnlMwuo9izhIgfoH
+         d/KQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9uvUHynTcC5GAmu55X1Z/Vbj8SPCIUGQmqXT+vsn+NOSHyzOn2Ob8WNjScpGETHaQrd0c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKA42YZ10FqEsRQgfTdht2JYkN/u3bv0oDHT72EX8cGhxyyg/+
+	kn4GVEuKYvzJmhGSGB38We8aQvULYTDN11YDaggoZyntz7B06Hpzl7Zgj3Ow+VF9VcBspGzBOGj
+	w8NmlEz4ipfEoiYG63UUVEeaZqLlMi+6jXmElfmsBcM/nI3xPTCb89g==
+X-Gm-Gg: Acq92OEvPV9tFC8vwkDLETUqBW9g0L36O0y4OC9NDb81yFteVuv7xkdzSyVcCaRsqqH
+	sUC5CTdout78qtkfUyYOSYvUJp7VNg/ALD8vPPIxUrY1F9yzZij6/PVG+si6jwkfyyYO5iN7Fii
+	vyql51i+jM9vfkWPv4bCnCQ39ZZJXDPohnXi1PTnwwK7ZZyv2E9Jbd45Vxs4X8LSxe6cKJHQmer
+	ARs/jOWp9sv0Ie5O8Eh9kWyCLTNP0YF/zmhR3UFU8iJ91CO1rWfukL20xHFNd6r/4yBQJinm5G0
+	9QZ+kchy+79q3/HSinffgU6iKOSjb6zKyPTjkxiki2rg7ovOlbAY/qgOUjDNjP7Zht1omYYEXTK
+	iDMInHngFqqaQ6EnD8JkrZm+cgCBWoyadHmzfFkiRYqc=
+X-Received: by 2002:a05:600c:820c:b0:490:4b89:5361 with SMTP id 5b1f17b1804b1-490ec4c5984mr208652935e9.7.1781552920900;
+        Mon, 15 Jun 2026 12:48:40 -0700 (PDT)
+X-Received: by 2002:a05:600c:820c:b0:490:4b89:5361 with SMTP id 5b1f17b1804b1-490ec4c5984mr208652615e9.7.1781552920426;
+        Mon, 15 Jun 2026 12:48:40 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2d933esm35788998f8f.33.2026.06.15.12.48.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 12:48:39 -0700 (PDT)
+Date: Mon, 15 Jun 2026 15:48:35 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Luigi Leonardi <leonardi@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 0/2] vsock/virtio: fix MSG_PEEK calculation on bytes
+ to copy
+Message-ID: <20260615154828-mutt-send-email-mst@kernel.org>
+References: <20260402-fix_peek-v1-0-ad274fcef77b@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00021F6D:EE_|CYXPR12MB9428:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b2c72cc-9252-4890-e683-08decb17160c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|23010399003|376014|7416014|36860700016|22082099003|18002099003|921020|11063799006|3023799007|6133799003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	CfleLT6SJ+dBm3TmlJKTmfg1mwUes6HbR8vkJqkOHcTazUyEIS4wUgfcXfBdLyHsTPmQ7gvUN4sROQLGTiCPpAVgYeZp99BhslTSlsKogn73li/oK2iKO8mutPZvrVq1o6/yOiijW9c7aT3FrqZpSS16WNXqWpgUl5MYZPBRICVqyQIAtVkI28VGRGA6zKt8rQXOaxrNQ/vnRO2XKtEY/nHenELK/BIiDf0+4+DsZG4AbDuIjXxIT+/OkV7a9jFDr8cQgbbc15tty8Sxr7iOCHj7c5n7ymn3hV9Arx4NUBgKCgskV5pVGK+34dH/3bSX/hYTJ2nwfEC8PkpEAv7PcCnMvDX2IBNqXD8CtMwEm2WNm8cF0UZhYPc3QadwqXSx4LIaeU4Kxw181SCHXzT2xUP0SOM0//Y4CusIAohJAVe7WS/GC25Czk6ZXlstj5hcxa8k62dnjCk4mdiue31pF6pLD8z9DNc6N3bTovq9O4SZTCBwBcOo17Y6E1pzXdEvzHDiDuzS4lY7A70vvWyTUNodzmNP6IA3Dnnc6MZPIovAynokNBuIzO6Ip/9dUz7OLK/r7EGjExo09LHnF73gcpbtUP5R4Aj+KMc1BBL5MJAGqQwr5f5ujplDv6Q/9MSGId+lEPlGR+20v8hHRBpIKDr0DfpINKcdB6F4xVqMO0vuLdtI5cwiNjSFaJEjmtiaeIQPx7jH/8Um9p1JHgrWmwZe7H4kDywy+HwLSa1BeTYkZo4upzZYDudmpkomnqcMqTXnxlsoQTkn1nSLrgd8nw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(23010399003)(376014)(7416014)(36860700016)(22082099003)(18002099003)(921020)(11063799006)(3023799007)(6133799003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	CmulqFgO3c3PJ0RaRhMNbHgnUuEIoZXK6+6SfYGla2FjzQ0XrSKx6nbkvGIU45CC4juPZI3nLni9FUWroRb3N0dGvaG0artRy5BINojZkfTUO19hNc0DOZ0Z1NfyxrwNq671JaBM04LhV+rk/YNyg/EvWsNUNG/FnUS8oQlP8zvzIhmpwHWWUT0h9nCazPF3N0RjHW5ldwa8axfXRSZPkNsVGEqZru66OGTw4gwMLLPhpdqVDtlPOz4QsIm6fkIJKqH5A2EOEv36umzfGxMGVPES3yKbOH1p0pNOwQXOTGKuflcaTf1+lhQdHb28v8yIQ0P0LEwx53IpE58c4Rq3xUmVH7ejE7f7wT1Sik7hgAmxSIhmR9ChIUe/dmIJX26zxN3aRAYloQhQhv210E8u/4haKmf5veCzWkvznYlrKUy6j77x8xBU0+gPVsoJZRxd
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 19:48:34.7363
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b2c72cc-9252-4890-e683-08decb17160c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF00021F6D.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9428
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260402-fix_peek-v1-0-ad274fcef77b@redhat.com>
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+On Thu, Apr 02, 2026 at 10:18:00AM +0200, Luigi Leonardi wrote:
+> `virtio_transport_stream_do_peek`, when calculating the number of bytes to copy,
+> didn't consider the `offset`, caused by partial reads that happend before.
+> This might cause out-of-bounds read that lead to an EFAULT.
+> More details in the commit.
+> 
+> Commit 1 introduces the fix
+> Commit 2 introduces a test that checks for this bug to avoid future
+> regressions.
+> 
+> Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
 
-Add a flag indicating whether RMPOPT instruction is supported.
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-RMPOPT is a new instruction that reduces the performance overhead of
-RMP checks for the hypervisor and non-SNP guests by allowing those
-checks to be skipped when 1-GB memory regions are known to contain no
-SEV-SNP guest memory.
-
-For more information on the RMPOPT instruction, see the AMD64 RMPOPT
-technical documentation.
-
-Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
----
- arch/x86/include/asm/cpufeatures.h       | 2 +-
- arch/x86/kernel/cpu/scattered.c          | 1 +
- tools/arch/x86/include/asm/cpufeatures.h | 2 +-
- 3 files changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 1d506e5d6f46..794cc96b8493 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -76,7 +76,7 @@
- #define X86_FEATURE_K8			( 3*32+ 4) /* Opteron, Athlon64 */
- #define X86_FEATURE_ZEN5		( 3*32+ 5) /* CPU based on Zen5 microarchitecture */
- #define X86_FEATURE_ZEN6		( 3*32+ 6) /* CPU based on Zen6 microarchitecture */
--/* Free                                 ( 3*32+ 7) */
-+#define X86_FEATURE_RMPOPT		( 3*32+ 7) /* Support for AMD RMPOPT instruction */
- #define X86_FEATURE_CONSTANT_TSC	( 3*32+ 8) /* "constant_tsc" TSC ticks at a constant rate */
- #define X86_FEATURE_UP			( 3*32+ 9) /* "up" SMP kernel running on UP */
- #define X86_FEATURE_ART			( 3*32+10) /* "art" Always running timer (ART) */
-diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
-index 937129ce6a96..021c0bf22de2 100644
---- a/arch/x86/kernel/cpu/scattered.c
-+++ b/arch/x86/kernel/cpu/scattered.c
-@@ -67,6 +67,7 @@ static const struct cpuid_bit cpuid_bits[] = {
- 	{ X86_FEATURE_PERFMON_V2,		CPUID_EAX,  0, 0x80000022, 0 },
- 	{ X86_FEATURE_AMD_LBR_V2,		CPUID_EAX,  1, 0x80000022, 0 },
- 	{ X86_FEATURE_AMD_LBR_PMC_FREEZE,	CPUID_EAX,  2, 0x80000022, 0 },
-+	{ X86_FEATURE_RMPOPT,			CPUID_EDX,  0, 0x80000025, 0 },
- 	{ X86_FEATURE_AMD_HTR_CORES,		CPUID_EAX, 30, 0x80000026, 0 },
- 	{ 0, 0, 0, 0, 0 }
- };
-diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
-index 86d17b195e79..7ce681af1dd7 100644
---- a/tools/arch/x86/include/asm/cpufeatures.h
-+++ b/tools/arch/x86/include/asm/cpufeatures.h
-@@ -76,7 +76,7 @@
- #define X86_FEATURE_K8			( 3*32+ 4) /* Opteron, Athlon64 */
- #define X86_FEATURE_ZEN5		( 3*32+ 5) /* CPU based on Zen5 microarchitecture */
- #define X86_FEATURE_ZEN6		( 3*32+ 6) /* CPU based on Zen6 microarchitecture */
--/* Free                                 ( 3*32+ 7) */
-+#define X86_FEATURE_RMPOPT		( 3*32+ 7) /* Support for AMD RMPOPT instruction */
- #define X86_FEATURE_CONSTANT_TSC	( 3*32+ 8) /* "constant_tsc" TSC ticks at a constant rate */
- #define X86_FEATURE_UP			( 3*32+ 9) /* "up" SMP kernel running on UP */
- #define X86_FEATURE_ART			( 3*32+10) /* "art" Always running timer (ART) */
--- 
-2.43.0
+> ---
+> Luigi Leonardi (2):
+>       vsock/virtio: fix MSG_PEEK ignoring skb offset when calculating bytes to copy
+>       vsock/test: add MSG_PEEK after partial recv test
+> 
+>  net/vmw_vsock/virtio_transport_common.c |  5 ++-
+>  tools/testing/vsock/vsock_test.c        | 64 +++++++++++++++++++++++++++++++++
+>  2 files changed, 66 insertions(+), 3 deletions(-)
+> ---
+> base-commit: 9147566d801602c9e7fc7f85e989735735bf38ba
+> change-id: 20260401-fix_peek-6837b83469e3
+> 
+> Best regards,
+> -- 
+> Luigi Leonardi <leonardi@redhat.com>
 
