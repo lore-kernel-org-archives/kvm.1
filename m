@@ -1,123 +1,130 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5613CDBAB;
-	Mon, 15 Jun 2026 15:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F53405C21;
+	Mon, 15 Jun 2026 15:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781537633; cv=none; b=F/WsE1p5AlzupGkUV9WM0MXUk2nLGz7F3XCyHNBtPeLD6FhEPwGEA4D0XZMtLDt0/l1jrpqOqdXQeA0HU9EHgGCjcPlBeij8yuUzvvr8V+HX/KWY0hYuLM9GppM3nus2aLPBFreX4otjoEISk23bLlxlCtZzWGPvCn2xhmF+wS4=
+	t=1781538463; cv=none; b=iLFB/8dD8OGamhQbfgZVImqYqMy4ODpqFlMfSo5SYGa8mn/2x7BVxuojeV/drc0cwOyulK/gPRWt1J0TYiCucFL44PEoTF6Q+4YM1X/3HrvaUHpT9j0PemmBMeph7pW2bcmn6/mu4Puw5iP4JN1BytMidk/l+xxkSOwcxqe3e+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781537633; c=relaxed/simple;
-	bh=FwxUmCchTPPVy+MqSPLw6SfDb92khsiQLvMLplEv0E0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OaGIDB28KCRkavXZh/PdnlkRGJ8UImSfjuwTrGkzeqUI7JHzv4A1FoHo4x4dF8AoOFoWx7oSuNKmYQb83nZm61wYV4WZAWBtlRz01Jb0JQ0/nypEqRCKkCJhbCWt4WZaxD0qZGA0jE9SrX+psw6cMJSe/rA558kNg7/BfM8jErs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=S1wL0MJo; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	s=arc-20240116; t=1781538463; c=relaxed/simple;
+	bh=s5SNeakhFf5GRw3iiYXSIN3p/gjwim3Vefo2sUWBCKk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ALopwsNmgCTd0uApyHzT4sc1wSB2IgMcZLbnZxeUDuT5mc5sCR+GFmB0Zv6sz3Y9zdZPa/EyFePHaXRhGrKMDGsPpSmfUsGwojNp9Bef4BO/LaP1ATlKBvJMja38kmRwy0sr/vNOufBM+lthcHhq128ZMW+EGodDTRW0ho5igIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fOZfzMG4; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="S1wL0MJo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1781537627;
-	bh=1mJsClNx/G2flqy/GWs9bnUaqG6Fe9NMYeb2HFZgaHI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=S1wL0MJo4k35FFb3jGunM7ez67P3C13pBFUQhx1CVwaMa+OOas/gpBx2h/mGl7bun
-	 wLSGEUIxqaJ70kXp2tQc06/50OxM8WBbx0J2voXpFPI7/yHSK0tMaf1p7l/Shp2d4A
-	 F6XsWHRZiWAYgdifWpXvUOZlIHHqks3cuQEzAlAFVn9gwKh22hIMBo5ljbzwr1ee7H
-	 qvUXavgqIh+Kf2+A9Ky13oPg1PT9zf/jsQ5wWudAE9X2k4y6o57ky+Hccum1Vn7S6m
-	 +wM3Fuf0TgZM5onsu+l/KYyQ5RoIvoqqW47xsHPMaUEg/3eUf5Rt7z8lL7XS4LG+e7
-	 3WQJKk2t+De9Q==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gfDfr2149z4wT4;
-	Tue, 16 Jun 2026 01:33:39 +1000 (AEST)
-Message-ID: <cfbf7eb8-8fa2-4c21-af1b-7fd3765f6eca@ozlabs.org>
-Date: Mon, 15 Jun 2026 16:33:35 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fOZfzMG4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781538463; x=1813074463;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=s5SNeakhFf5GRw3iiYXSIN3p/gjwim3Vefo2sUWBCKk=;
+  b=fOZfzMG4v1aGhvRj+3o7PMU3oZATy7DfvLw8nGGQzVbqSQ52amDz7Z/8
+   ATeEz0MqBGipCobkmW2QH3S5rcdJ3YFREyqO79Ao6p+XUeGIPpxJ9W1V5
+   kEHzyLUYMdXdlMQ3lkQ6u2+v5FAoL0Q9hcQZo49ouTixRVHK3Pdc9W86j
+   AQM5II51U9qSdEGU5akKRvE+P0T8Vf4Ss3OEPcC9kiaFm6/1tCe5R3H/K
+   oJWzXBp4OJ1WDeVl0cVeyHhqd5n1DkM8q6I0Qz/+94BlLwOjYmOMC1o/w
+   l46HfptCrXbGZ/q7Kh2ikzzB6Lq3Aei8YBBjePxUK7C9RAHglw8KK51u0
+   g==;
+X-CSE-ConnectionGUID: OO5TjjUaQfylDWWmmzoPfQ==
+X-CSE-MsgGUID: +aVZP6wYT02o3hh5J2B3yg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="86183230"
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
+   d="scan'208";a="86183230"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 08:47:42 -0700
+X-CSE-ConnectionGUID: dxTWT7UBSQmtiabpz15mOg==
+X-CSE-MsgGUID: GP1+6tDTTcaajYtUILXXYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
+   d="scan'208";a="271206560"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa002.fm.intel.com with ESMTP; 15 Jun 2026 08:47:38 -0700
+Date: Mon, 15 Jun 2026 23:22:46 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Dan Williams (nvidia)" <djbw@kernel.org>
+Cc: kas@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
+	peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
+ Quoting
+Message-ID: <ajAYxo83xVV1Sb+Y@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <6a2c821a99e3_9b8551002a@djbw-dev.notmuch>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/9] vfio/pci: Convert BAR mmap() to use a DMABUF
-Content-Language: en-GB
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
- Pranjal Shrivastava <praan@google.com>, Alistair Popple
- <apopple@nvidia.com>, "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-5-matt@ozlabs.org>
- <DM6PR11MB369015C590F462592D3E508D8C182@DM6PR11MB3690.namprd11.prod.outlook.com>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <DM6PR11MB369015C590F462592D3E508D8C182@DM6PR11MB3690.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6a2c821a99e3_9b8551002a@djbw-dev.notmuch>
 
-Hi Kevin,
-
-On 12/06/2026 09:46, Tian, Kevin wrote:
->> From: Matt Evans <matt@ozlabs.org>
->> Sent: Wednesday, June 10, 2026 11:43 PM
->>
->> Convert the VFIO device fd fops->mmap to create a DMABUF representing
->> the BAR mapping, and make the VMA fault handler look up PFNs from the
->> corresponding DMABUF.  This supports future code mmap()ing BAR
->> DMABUFs, and iommufd work to support Type1 P2P.
->>
->> First, vfio_pci_core_mmap() uses the new
->> vfio_pci_core_mmap_prep_dmabuf() helper to export a DMABUF
->> representing a single BAR range.  Then, the vfio_pci_mmap_huge_fault()
->> callback is updated to understand revoked buffers, and uses the new
->> vfio_pci_dma_buf_find_pfn() helper to determine the PFN for a given
->> fault address.
->>
->> Now that the VFIO DMABUFs can be mmap()ed, vfio_pci_dma_buf_move()
->> zaps PTEs (used on the revocation and cleanup paths).
->>
->> CONFIG_VFIO_PCI_CORE now unconditionally depends on
->> CONFIG_DMA_SHARED_BUFFER and CONFIG_PCI_P2PDMA_CORE.  The
->> CONFIG_VFIO_PCI_DMABUF feature conditionally includes support for
->> VFIO_DEVICE_FEATURE_DMA_BUF, depending on the availability of
->> CONFIG_PCI_P2PDMA.
->>
->> Signed-off-by: Matt Evans <matt@ozlabs.org>
+> The internal implementation details of extension seamcalls buries the
+> lead on why this mechanism is important, why Linux should care, and why
+> this brings TDX in line with the other major CC architectures. Something
+> like:
 > 
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+> ===
+> To date, SEAMCALLs have been short lived routines that monopolize the
+> CPU for their duration. This limits their utility for implementing
+> higher order security protocols or pushes complexity into Linux. The
+> Linux appetite for ingesting complexity is low, so TDX now adds a new
+> class of SEAMCALLs that are preemptible and resumable. This capability
+> enables higher order service APIs to carry out a security protocol like
+> "establish an SPDM session".
 > 
-> with a nit:
+> The TDX "Extension SEAMCALL" capability is akin to ARM CCA's "Stateful
+> RMI Operations (SRO)", and achieves similar externalized complexity
+> relief as a dedicated hardware coprocessor like AMD SEV-SNP. The
+
+I may not include the ARM/AMD examples, not sure I can explain them
+well.
+
+> mechanism is "give the service environment some memory", "invoke the
+> service API", and "continue invoking until complete". All protocol state
+> is internal the service API.
 > 
->> -	vma->vm_private_data = vdev;
->> +	/*
->> +	 * Create a DMABUF with a single range corresponding to this
->> +	 * mapping, and wire it into vma->vm_private_data.  The VMA's
->> +	 * vm_file becomes that of the DMABUF, and the DMABUF takes
->> +	 * ownership of the VFIO device file (put upon DMABUF
->> +	 * release).  This maintains the behaviour of a live VMA
->> +	 * mapping holding the VFIO device file open.
->> +	 */
->> +	ret = vfio_pci_core_mmap_prep_dmabuf(vdev, vma,
->> +					     pci_resource_start(pdev, index),
->> +					     req_len, index);
+> The simplest class of extension SEAMCALLs to support are in support of
+> "DICE-based TDX Quoting", a service to turn guest launch attestation
+> reports into a document that can be externally verified.
+> ===
+
+[...]
+
+> > The Extensions consumes relatively large amount of memory (~50MB). So it
+> > is designed to be off by default.
 > 
-> the comment is redundant as it's about internal logic of the callee
-> and is well covered by the comment there.
+> This confuses the TDX design with the Linux design, and sets up "50MB" as
+> something to be quibbled with. The Linux design is turn on all the
+> features that Linux knows about all the time. Unless and until the "any
+> available, all the time" becomes untenable it just simplifies the init
+> flow to not play piecemeal games. Await evidence to change the simple
+> policy. Suffice to say the cost of this policy will burn 10s of
+> megabytes.
 
-Thanks on both points!  I see what you mean, removed.
+[...]
 
+> 
+> > == Some history ==
+> > 
+> > The TDX Module Extensions part was first posted along with TDX
+> > Connect [2]. Now this part is remarkably smaller because we've removed
+> > the generic tdx_page_array abstraction for HPA_LIST_INFO. TDX Module
+> > Extensions is the first user of HPA_LIST_INFO, and doesn't use it in a
+> > typical way (HPA_LIST_INFO can only hold at most 2MB memory). There
+> > isn't enough justification to make the abstraction in this series. A
+> > possible plan is to rebuild tdx_page_array iteratively when more use
+> > cases arise.
+> 
+> No need to talk about details not in this series. I would maybe just
+> note that quoting is the simplest first consumer and was chosen as the
+> lead vehicle over TDX Connect previously posted in case anyone asks.
 
-Matt
-
+Good to me, will include most of them, thanks.
