@@ -1,154 +1,127 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A447315793
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 18:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781547318; cv=pass; b=KgFUisQ0tu5m3L2eGTA+YiIq2YSHSnK+f9gjFrtF9bdRmQUXaRbOZ9kUcHBEk9na7xZiZWQuoouWs0y4Xnzj+G0/3XZYFppmV4UbHTC3dVDkH3tnGsDyPsghvKz/1OZYKQJgAg7+lMkD3m2saH5j0SLpG4UIX1m2ZmwmgVChJ3Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781547318; c=relaxed/simple;
-	bh=PMWFd7lH3PyxlugrfH9VJU9edac4GTP1Fzq/6+S8F0w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lgc3zzOVFg1vDgKKsnYT2Zv/SUig8tEA/d09D0YTx4e+2xkWe4IqfApaE4FQ49SJc0BSvTK539tmWeLT17RFG0dhVJP+2QockBboILG5YmI5is4CQ/YpT4XrPIqBkBbYXz125DX2BBeIlmsRhQBq0hIeAxmVQfwyUPR/vajmIUE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qHqTTYLH; arc=pass smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C4A30D3F5;
+	Mon, 15 Jun 2026 18:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781547402; cv=none; b=n7EIYIfgFZV1fgQNYOAY5FzScm10w8ptr4u+rFVIm3vjl01fOaP8ZAuYy8J0/iSJg6yVEcZDz7UQotVFFr7ifPpwi1GHRTvaInoHke6Mm0sXlLa9XNYbUq+Lo64MK79UmmGjwyCooiBYjqaOWOOeODj1YNcZUNQw/6ZcrYVVcxQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781547402; c=relaxed/simple;
+	bh=uWwIAy6pbKPxk96H+YT+8V2yQBj3yOvAXCuDZgzcMg0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EK25YpOjgSst58ZSOhhZpyvXjeLVlraxbNPX79qI4i1CKwo0linFTKpywi7vOuLmrWoayp/9IWtzxoTisWwB33nXq0poDRpwwV2HL0GIECwQ0z+RDeV+ZuAutYsmyrv5I/Dca250UgZYCw0BDJDGvM25yVU5SD5RYqBs0/L5Nhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UvnOPzvN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qHqTTYLH"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51765331535so39831cf.1
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 11:15:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781547314; cv=none;
-        d=google.com; s=arc-20240605;
-        b=aaNl2TDVaq9WZok0KEzjyArqZgiWaA32NeKkqWniA8iF67+ydaa7/Xu/Ah0ZXnFFIM
-         POu44aIcoKBrbcQGRXeC2MMtsnsQ4lYUtG/FUbwBfKjKmz3gf+OsxKlnjQ/LrhBxckQw
-         RL/FRyID1sSvEKGFW4md6Hi8G7mwHlBO2cf8vz1EzpgGO/BpZvlPF9rGVROJzWJH6SkX
-         VqY8UU5Sg5ulhQcjlwzmmP7b1GPFoqNJSpVHDivbK+h15YgP4Z/CjIfmh5hrvMR4++Dw
-         z9RzgRc4P6F5RFkoocxMSzSCHxSyH5Z1ECu+i/n6LH11nHFbc0SkD4/s7scrzD5fgm5K
-         U1KA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=K+AkmFmQVzlBcJC4LBJnW3G/SH8HLfjoJm32rEZ4r84=;
-        fh=Lm4hcXrHrMzN8PXMXkmVoBmAe0n8mx5wkIzGtMgC61A=;
-        b=bp/BJRjYb5qn9F98qUeXW3zuI+Ble3qHTCmBP7dBGC5VbGBY5xeeSnc2qCY5JtKMfV
-         gt30tTZm+x37QP7YSE90vmZF1hN0y+3IrlECamVtCj0DMyw3rmtOkx2+68Ha1YNzNMND
-         xsThlRpP4REW9jH4C7hMAg1qZmH9uFsO8uUHx5Qfz2PHwzEuDNB10MhNtHRHSzvCaF7c
-         BYvN9gPxJlwQZIpZqpkPDJWhvjTcRaIjdfLKSMmkOOHDR5evGnOHMd6ectAdsN/HxV8w
-         jX5MgAfUOjiSkcHXu1Zb0vXkAB2VNjlwAs71Og9zOtpINU7fRg/T5aUUwPsoLDf2gM/v
-         XsGw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781547314; x=1782152114; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K+AkmFmQVzlBcJC4LBJnW3G/SH8HLfjoJm32rEZ4r84=;
-        b=qHqTTYLHJuzwS0XcmPvTaJ5M5q11Z3sxOoQpQwf0Mx/u2uLQtLefcDjPO5uMFEuhQ0
-         X3RmQrmUPqaj11IsVLuUlhoDhY/rHu0wsTpDIp/1Px7L9N91n/uRO96wULmwwo9HWzr5
-         uhzUGx1w/agt2sEFgSAsS+EsFA7QHjo65DqiJrGoQAwS3OrUOZtRFVSsAjmAJXHVjwc8
-         S0BEEkEn3BBfzbpJkZ1oWtE+X8UtFzYlBHuOsNOZX/E5pUvAQBA6/E7RzHoWg/C/ELCZ
-         Wjti6h7wn3i8YxbIVS0ejzkC2VEiFyf4tIclnS2wxEjvCQLmMibNoNp5zPlivfhfTmyV
-         RsQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781547314; x=1782152114;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=K+AkmFmQVzlBcJC4LBJnW3G/SH8HLfjoJm32rEZ4r84=;
-        b=UhH9wYQ0e6ExdkpVXEh0xpI72Guz8NxYKErlP+Fu9ioMvH3CdtzA6hmKUVDFYknrg2
-         LtpL9AIXmR4olZlIATsrR64FsEacTGJ1feDVgypNb0XbPR6erML3nHWJe1T4E9hMhI0+
-         DLkmRLZEol/yDOLF6FOYkEJw6d4k7P8cvHDe7jOx/+z8JdKyAEj2qrn+jqDeKFCceq8z
-         Hv9T2NAKxocZsLshJc0uz8r4NmYoy/DT3WcfmxKvH5966e597Taxlw6I3FvL1B+87gcZ
-         9kLBxTfDxc2e2riEtmdohm04MRZJu6cSaH9d5tEOTgKw/Io9p6NY78NwyKsBiw2PWQzR
-         jAUQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9q4m/nEQBjwFrNnAb/U3XPAk1kW1fB41u6udu336aYG2xqzuE5jHj4E/qvY1UYJ42nj3g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEjDya8sKIIw7ujsCJCBw+mY/I2zFqqJRn1OQ5V/zgal+c+1cc
-	IcWKBZCcoeKzp4MD+qwXrxsTDW4clMLtTuVbIbpUQjWVvU5w/kCHsCkVt3wmz4jSOxc0k3KrKKc
-	1SoZVfejXGuHPlk8ecR9svIe3nwVAJ0YiSgt3t1kH
-X-Gm-Gg: Acq92OHzvjpA7fBmYL2g/k3QvTYfYqr2B33dLY+TCZn/tlEtkumGo2yB63Vq8gjc3BI
-	kaEeKJSnhAWu6sXLCMxRA+mu4TjCXoofG5Fwjzkat9LrSRcofMPi6LTUzZOEJUrNIF8eM0NWl7P
-	qOISG1SFThDMxg+p1T7zxsS4u2SI5qJWzgf6VLCy71UBkasQWYs7/AWIuCN4yaj59hYtcEINvo2
-	P9AfULKkdI6LM0t5LP8MjjPLuwuHvnSiZbFzCSAE4FqW1GZnkZe/DKr2srQRPUcwyzV/ANJfpBO
-	DNXtDas=
-X-Received: by 2002:a05:622a:4d46:b0:517:99ea:ab80 with SMTP id
- d75a77b69052e-5199045ff2dmr773251cf.26.1781547313430; Mon, 15 Jun 2026
- 11:15:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UvnOPzvN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423E81F000E9;
+	Mon, 15 Jun 2026 18:16:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781547401;
+	bh=n1eaaaLhHfOFbxAJagGnDrxVIWvFH1LsKNYnm8c+v3M=;
+	h=From:To:Cc:Subject:Date;
+	b=UvnOPzvN76/moeBApU72HK7x5mIN+qxqSJRw6nO6E20ymNPinnLpqicky+C69tMmr
+	 a0l2Vd3YpJRp4NR3W2O0m/cpiWK8pgt7OrVksP6uR6LF7Bbk4cZRWN9i0JX5xQE6ik
+	 WIjAHYK2Hbmv8WPl9xBbehG8xKP7gPXwV2X/WM/KVW92UY/eD75gv4oIs/t0pA7SUc
+	 fXZs06tsBvbOdAvOz9GnU5+zr4n1LBKghy7j3xPcx5bEcVc/7xv4hhh74BuTz2/M1x
+	 TPZtqN6QBhJcNlWXqN/25Ep69tfLS3NlkX6OVPxGaS0AVjtQlQLu3RtqRB15U9cr8n
+	 wi9epXyovYl8Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wZBrS-0000000D2dy-33YN;
+	Mon, 15 Jun 2026 18:16:38 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>
+Subject: [PATCH] KVM: arm64: Handle race between interrupt affinity change and LPI disabling
+Date: Mon, 15 Jun 2026 19:16:25 +0100
+Message-ID: <20260615181625.3029352-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260612230113.684301-1-seanjc@google.com> <20260612230113.684301-6-seanjc@google.com>
-In-Reply-To: <20260612230113.684301-6-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Mon, 15 Jun 2026 11:14:59 -0700
-X-Gm-Features: AVVi8CfOazGQpt_anh0Pwk_z8Pg77bwu8D9NbVYWTID_KZksSfGksftZNvh8PV0
-Message-ID: <CALMp9eTc=mUWb15J_px59=LcTEC6Q8ec2UbnkpwBoWhunaeKFw@mail.gmail.com>
-Subject: Re: [PATCH v3 5/8] KVM: VMX: Prioritize DR7.GD=1 #DB over CPL>0 #GP
- on Intel
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	=?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, 
-	"Maciej W . Rozycki" <macro@orcam.me.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, imv4bel@gmail.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, Jun 12, 2026 at 4:03=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> When emulating a MOV DR on Intel with DR7.GD=3D1 at CPL>0, prioritize the=
- #DB
-> due to DR7.GD over the #GP due to CPL>0, as empirical testing shows that
-> Intel CPUs (Skylake, Icelake and Emerald Rapids) prioritize the DR7.GD #D=
-B
-> over all #GPs, whereas AMD CPUs prioritize the CPL>0 #GP (but not illegal
-> value #GPs) over the #DB.
+Hyunwoo Kim reports some really bad races should the following
+situation occur:
 
-Gnarly!
+- LPI-I is pending in vcpu-B's AP list
+- vcpu-A writes to vcpu-B's RD to disable its LPIs
+- vcpu-C moves I from B to C
 
-> Outside of the emulator, don't bother trying to provide the "correct"
-> priority based on the virtual CPU model, as it's simply impossible to do
-> so without intercepting *all* MOV DR accesses, which would result in a
-> massive, unacceptable performance hit.  Note, getting the priority right
-> when advertising Intel on AMD would also require intercepting #GP, as SVM
-> prioritizes all exceptions over the instruction intercept.
+If the last two race nicely enough, vgic_prune_ap_list() can drop
+the irq and AP list locks, reacquire them, and in the interval
+the irq has been freed. UAF follows.
 
-No sane person would attempt cross-vendor virtualization! :)
+The fix is two-fold:
 
-> Note, neither Intel's SDM nor AMD's APM says anything about the relative
-> priority, hence the empirical testing.  Arguably Intel's description of
-> DR7.GD:
->
->   causes a debug exception to be generated prior to any MOV instruction
->   that accesses a debug register.
->
-> implies that DR7.GD has higher priority.  But that's a fairly weak argume=
-nt
-> as the statement would still hold true if the #GP due to CPL>0 had higher
-> priority, as the #GP would prevent any access to a DR.
->
-> Fixes: 3b88e41a4134 ("KVM: SVM: Add intercept check for accessing dr regi=
-sters")
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kvm/emulate.c | 7 ++++++-
->  arch/x86/kvm/vmx/vmx.c | 6 +++---
->  2 files changed, 9 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index 127a21eeef66..b4dc57fe0bc9 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
-> @@ -3834,6 +3834,7 @@ static int check_cr_access(struct x86_emulate_ctxt =
-*ctxt)
->
->  static int check_dr_read(struct x86_emulate_ctxt *ctxt)
->  {
-> +       bool is_intel =3D ctxt->ops->guest_cpuid_is_intel_compatible(ctxt=
-);
+- Before dropping the irq and ap_list locks, take a reference on
+  the irq
 
-Hmmm...Have you tested VIA? Or even Hygon? How compatible is
-"<vendor>_compatible"?
+- Do not try to handle migration of the pending bit: there is no
+  expectation that this state is retained, as per the architecture
+
+With that, we're sure that the interrupt is still around, and we
+safely remove it from the AP list as it has no target at this
+stage (unless another interrupt fires, but that's another story).
+
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Tested-by: Hyunwoo Kim <imv4bel@gmail.com>
+Link: https://lore.kernel.org/r/ailsCnyoS82r_QRz@v4bel
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/kvm/vgic/vgic.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/kvm/vgic/vgic.c b/arch/arm64/kvm/vgic/vgic.c
+index 5a4768d8cd4f3..70a161383e5a6 100644
+--- a/arch/arm64/kvm/vgic/vgic.c
++++ b/arch/arm64/kvm/vgic/vgic.c
+@@ -203,6 +203,7 @@ void vgic_flush_pending_lpis(struct kvm_vcpu *vcpu)
+ 	list_for_each_entry_safe(irq, tmp, &vgic_cpu->ap_list_head, ap_list) {
+ 		if (irq_is_lpi(vcpu->kvm, irq->intid)) {
+ 			raw_spin_lock(&irq->irq_lock);
++			irq->pending_latch = false;
+ 			list_del(&irq->ap_list);
+ 			irq->vcpu = NULL;
+ 			raw_spin_unlock(&irq->irq_lock);
+@@ -792,7 +793,11 @@ static void vgic_prune_ap_list(struct kvm_vcpu *vcpu)
+ 			continue;
+ 		}
+ 
+-		/* This interrupt looks like it has to be migrated. */
++		/*
++		 * This interrupt looks like it has to be migrated,
++		 * make sure it is kept alive while locks are dropped.
++		 */
++		vgic_get_irq_ref(irq);
+ 
+ 		raw_spin_unlock(&irq->irq_lock);
+ 		raw_spin_unlock(&vgic_cpu->ap_list_lock);
+@@ -836,6 +841,8 @@ static void vgic_prune_ap_list(struct kvm_vcpu *vcpu)
+ 		raw_spin_unlock(&vcpuB->arch.vgic_cpu.ap_list_lock);
+ 		raw_spin_unlock(&vcpuA->arch.vgic_cpu.ap_list_lock);
+ 
++		deleted_lpis |= vgic_put_irq_norelease(vcpu->kvm, irq);
++
+ 		if (target_vcpu_needs_kick) {
+ 			kvm_make_request(KVM_REQ_IRQ_PENDING, target_vcpu);
+ 			kvm_vcpu_kick(target_vcpu);
+-- 
+2.47.3
+
