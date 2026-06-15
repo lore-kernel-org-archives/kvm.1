@@ -1,126 +1,145 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221F527FD43
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 23:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EDA19D89E
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 23:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781566438; cv=none; b=TZX9geqlWf3c8qDl94hq67H10S7eEHjjv3SWqACCOpv865+WMjl1BbPkMmb8ztsyuw8aH7k/QARPj5FlJ6P0KWEwSERc0nWR2/LVuJy1ZHoyAHwT5X3PgDFbYMaY+qXrVZWbEn1+6wmR7F7BT1mLzwleW7aY523UioMQDC/Vhjc=
+	t=1781567183; cv=none; b=mdXH8DGtdBNyi1ZtO4V4Ge7Gf115tKLGRjX91IUxYTL0fcA2GCKgQjOkVxHNOBLy5oulLpQLzBjzh7kfJi7eHSnw8aVJdBn4du8jH0H1gNYsH3Wd+4PIn35/zLNpdnzZNQtiANUOAwE+/ySXlBszx+zWtIGCDhFplqMP5nBcsaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781566438; c=relaxed/simple;
-	bh=wkWq1YyQe9HfMn5h5fwETvev7LwtmAAMc8+W6YYydmw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AyJNh5KvKmZbmjunjpJ5JjUb1IZogppHVnZUjXKt+Hc5gDPQQ9IfhRBfDyJxJFCiaXGuv/t6+n+B/QlJfNmpLb1omiWF2Ru2l+0S4WBnvBldw/wL6eEJfdljf1c1KFVrokjEbKO3FOxq1qz7VK9fsT31pqDgbjq3olIExl9L1v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XAp0NZoD; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1781567183; c=relaxed/simple;
+	bh=MZvk3XawI1zyNZtjsA0KB3dVTCMPEwIxxwz9Rq3Z0V0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=lEMCo7/wiIl7ugQlL0vwn9y2EjHG4Pd6XkDg9SlJJOHzHp5piwfldSxmqGP/9cPnzBjs4XWgh4sOHYHza8UdH3TV5wJtZtUHMSWHMXwQliskvjKotGdvQ5ypAB4yzOmy4hxFIgOVtqqfLZx0L9+BNktrjNns6NrjpmEYqva+eV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qUgZzP2z; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XAp0NZoD"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2c0b1a48855so25065ad.0
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 16:33:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qUgZzP2z"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c85a2f1d1e5so1989280a12.3
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 16:46:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781566436; x=1782171236; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7RZpXrhOisaz0Hy21Y75kOiIkZX6dkWHiipcMDxVBGY=;
-        b=XAp0NZoD5l1PgFxMpubiNVcwO9ElOcTTqhX+narwtcVZO+DUd82mBQYyQwKMxjuwO9
-         TKdw/T/3+ASzaVaG/NJi+Ghs3b9vnJYLBFoUf3VNfaZR2fT/pJ95QOOr/u/hwkFkjbgG
-         H65+9hof3ziKy2GkymwmN64YsZsYQo60737v6UWaARPxI2eJHs7uvSbRFmBB34Zf1DHU
-         BCofUzJ/NlGcIJppxAAYgXdRjSX3ZYu94tqD5lVMSjcqLe/shcdOD81Q06nc0wNvVcX9
-         u+bO7+qaFPP31xLcum84kTqfey5p3bleLBBA2HQwrmdQsd28fBNxNU18LbjDmkSG27km
-         WFlw==
+        d=google.com; s=20251104; t=1781567181; x=1782171981; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1v0z5O2hMK9AN1iypwUpu0g1rCwfm8MEubwWooIlZAg=;
+        b=qUgZzP2z2OP3zS+DJ9mlLl8Cn+jDy9CmDIZ+Nwn+swOUHcnUk+vDLdi6iotTmw5FNt
+         4cEvPjOhzMW14ztZNuD4G01p1fg0qGJvEXr1Ay7vO8jEnCoQR2zxsi55l3zFVG8Pk72r
+         rbD3hZq3s+i/q/B1z0fZRDzgiz3b2T8ZNiNgRji0QA6gEX12Xb59qCDPRpzWycRLHyAb
+         cxNrWw/ZFe6jiy3E60Yyq+DZYEAu7n5m5VWlN0asfc97p5zyzcFwKd6VvqOE/3xbYIvl
+         kXcVeYwZ5kBK1XBi/P4OsQidk2pfhiHz99MRjnUhbB0PsbVrcVll1b0CLx75U0AacjVK
+         r72A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781566436; x=1782171236;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7RZpXrhOisaz0Hy21Y75kOiIkZX6dkWHiipcMDxVBGY=;
-        b=nw9vqplkZNNNMX4IDWRZ/UPiIYKmRN1qtXmXp4ByApmcF7/msWEsC5fpIM1TwcQxtQ
-         WNfJ3vTF3rHl14RIUqPgAE3nD63RzJLBlzTtcvvFgwn0XMfKmhQKcXN+uhIW56DDRgHz
-         CxoElMUrsD0db66efMNpXOYtAX10xvgQtTef8aiyPw+zt1ocwhrG24beVlPSDlva8NZX
-         ng2W7gLf3oGNS/CpxFW9s56bek1Utl8DkcFw+7cNwjqhBUW7eydR+ykDl09hV8QJCPBN
-         Jfk2vsfY/GHFTW/USKD0uKmznjdh6yYOdeymfe6x2uSA0JxCOdK0zmYHDCT+JFqopYrn
-         ZIBw==
-X-Forwarded-Encrypted: i=1; AFNElJ9WKe/MubZouKkoz48xb/4RbBotwwpSa0TzWNaubzsXK29cA4c6i44R6rDOez4vmzzRV9o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKVWjYz2+19ezKLlP5bnfh+Qzin8F68BLQVpV/cWVmKG3Z5S+Z
-	b2joPnmKQwhBfyoUXEpShdy5pTDEXyNCAKWSJU09pVBEpqN42M/3KdBtPN19SGUYtA==
-X-Gm-Gg: Acq92OFpRnvbsUQzci5bfMCYhtifg1eILA2v4f7nsjmezCHAPHKCmlPDoNaxM8ukn12
-	eYYWl78HLpZaeZUySslp/QUN7/GuypXASiDKxzWSPlsHn/1C4PDtIvUUPvk42DTXdftHUP2NtFi
-	+H0qfUG6css2OOLHcb6GJuwN2eq7bYF+LnPNPDl/U//KJc8syVVMpJTTRIfFEj1NXSJKYOWiDVP
-	Ghv1FJk1UIryyIVGUduXmdAM0SqqCzHkyKpTGoi2h5m8ulynhAq3v5fcQdF73YLf+UFZ5zjrl+b
-	rxxQ0TEis18QHP4VX8buxZKi6yrRE+V/1UoykqFyPfb347QRuxXI4HvR4F6EcwJpj6d4RLnxqIN
-	VNaEPN8QWGtYInfh9Ui5pNLl3N8z0uDjeGWE0VGpxLcjTeUIoMJ8GHECqumN8EZJFiRu6ueq0r6
-	qEhzreoeb20g+cNhbBb/ezWfR1Kv6sBiOI/keW3V2cZfT3MQFNUGhSZebR
-X-Received: by 2002:a17:902:f541:b0:2c1:4228:3321 with SMTP id d9443c01a7336-2c69a2c4cd4mr979115ad.12.1781566435833;
-        Mon, 15 Jun 2026 16:33:55 -0700 (PDT)
-Received: from google.com (230.0.127.34.bc.googleusercontent.com. [34.127.0.230])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c4327ac631sm112076765ad.44.2026.06.15.16.33.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 16:33:55 -0700 (PDT)
-Date: Mon, 15 Jun 2026 23:33:51 +0000
-From: Lisa Wang <wyihan@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Chenyi Qiang <chenyi.qiang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Roger Wang <runanwang@google.com>,
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [PATCH v13 03/22] KVM: selftests: Initialize the TDX VM
-Message-ID: <ajCL34gnp2nDVM0K@google.com>
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-3-6983ae4c3a4d@google.com>
- <a58e2941-77f9-43cf-a54d-023506dd7eb0@linux.intel.com>
+        d=1e100.net; s=20251104; t=1781567181; x=1782171981;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1v0z5O2hMK9AN1iypwUpu0g1rCwfm8MEubwWooIlZAg=;
+        b=oVDH0L9OKwXUTbDGLosCvRkfckGBBhIloS+cvpB2XuZzKOWvKDa/TuzgsvZZ8vaRn0
+         sBiMG/YMvmHyI1Z4Xze9DZFCed4rCjDcgCekkCGryQdpJuAAO/auDgmhIqYyQomVw5pt
+         pVe8mc2ekRy1VqfVZY8srg4B/Zaw5g1io6N5AfiR9AT3uaTcqnO4PbTQ2LEp2IYF4SYr
+         stBHF7J5ApCpm/I1qvvvgxNjDXKQRD++AcN5dnJVipaFye2DUM6Us4phk2+bxzKqns74
+         r0vkYRDQuBeAwRSA+0MNAb89r9LimrVLC5czuhAHRZ7kFpkOA1RRB8WPO0k2HUdGj1sT
+         Luqg==
+X-Forwarded-Encrypted: i=1; AFNElJ9B26/MT6c08AUH1XoaIlFE1V70/oj1HCrvtlEnUigubqRc+lNiX7MK8HSuuSu9o2KysOc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6NdnYhpFaqM4ByofXq3aQ2ThaatFiQkOBLHR73XBdKdp3/j0p
+	KfFo2tK30t1lrKjkMCLUaNymwLdq7urIu1mnjTRpQ+pqavLNTqio/+FcMC9/1TA1W1D2i7bMXhT
+	MtprI1g==
+X-Received: from pgch24.prod.google.com ([2002:a05:6a02:5098:b0:c86:4cc6:2ef8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a341:b0:398:6ea8:21d2
+ with SMTP id adf61e73a8af0-3b7e474f09dmr1309513637.19.1781567181409; Mon, 15
+ Jun 2026 16:46:21 -0700 (PDT)
+Date: Mon, 15 Jun 2026 16:46:20 -0700
+In-Reply-To: <CAO9r8zNa+ueRh0hf-CJ8sdyOFrcF+nEc7S06ZkMmV=GAvum6hA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a58e2941-77f9-43cf-a54d-023506dd7eb0@linux.intel.com>
+Mime-Version: 1.0
+References: <20260612133727.411902-1-seanjc@google.com> <CAO9r8zNa+ueRh0hf-CJ8sdyOFrcF+nEc7S06ZkMmV=GAvum6hA@mail.gmail.com>
+Message-ID: <ajCOzEV6zIVegeWV@google.com>
+Subject: Re: [PATCH v2] KVM: x86/mmu: Expose number of shadow MMU shadow pages
+ as a stat
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 08, 2026 at 01:57:24PM +0800, Binbin Wu wrote:
-[...snip...]
-> +	} tdx_cmd = { .c = {						\
-> +		.id = (cmd),						\
-> +		.flags = (u32)(_flags),				\
-> > +		.data = (u64)(arg),				\
-> 
-> Nit:
-> The two lines' backslashes are misaligned.
-> 
-> > +
-> > +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
-> > +({									\
-> > +	int ret = __tdx_vm_ioctl(vm, cmd, flags, arg);			\
-> 
-> tdx_cmd.c.hw_error is u64 and it could be assigned to ret, which is a int,
-> the upper bits could be truncated if the upper 32-bit is set.
+On Mon, Jun 15, 2026, Yosry Ahmed wrote:
+> On Fri, Jun 12, 2026 at 6:37=E2=80=AFAM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > Turn arch.n_used_mmu_pages into a stat, mmu_shadow_pages, as the number=
+ of
+> > live shadow pages is arguably _the_ most critical datapoint when it com=
+es
+> > to analyzing the shadow MMU.  Before the TDP MMU came along, i.e. when =
+the
+> > shadow MMU was the only MMU, explicitly tracking the number of shadow p=
+ages
+> > wasn't as interesting, because the same information could more or less =
+be
+> > gleaned from the pages_{1g,2m,4k} stats.  But with the TDP MMU, where t=
+he
+> > shadow MMU is only used for nested TDP, it becomes extremely difficult,=
+ if
+> > not impossible, to determine which SPTEs are coming from the TDP MMU, a=
+nd
+> > which are coming from the shadow MMU.
+> >
+> > E.g. when triaging/debugging shadow MMU performance issues due to "too =
+many
+> > shadow pages", being able to observe that 99%+ of all shadow pages are
+> > unsync is critical to being able to deduce that KVM is effectively leak=
+ing
+> > shadow pages.
+>=20
+> Why not expose indirect_shadow_pages? IIRC that was also one of the
+> stats we (mostly you) used while debugging?
 
-Thanks. Will fix these in the next version.
+Because it's a subset of mmu_shadow_pages, and I suspect mmu_shadow_pages w=
+ill
+be more helpful if we're only providing one of the two?  E.g. if the proble=
+m is
+that KVM is leaking indirect shadow pages, then either number will suffice.=
+  But
+if KVM is zapping old SPTEs due to the KVM_SET_NR_MMU_PAGES limit, then we =
+really
+want to see mmu_shadow_pages, otherwise there will be a blind spot with res=
+pect
+to direct shadow pages.  And if there's bug that's specific to direct shado=
+w pages,
+then we're probably hosed either way, because it will be difficult to obser=
+ve just
+the direct shadow pages (unless they happen to be the _only_ pages, which i=
+s very
+unlikely, but then we'd still want mmu_shadow_pages,).
 
-Lisa
+In practice, thanks to the TDP MMU deliberately _not_ accounting its pages =
+as
+shadow pages, the delta between the two values will be tiny on setups with =
+TDP
+enabled, i.e. on practically every modern deployment.  Because hypervisor p=
+age
+tables are typically tree-like, and hugepages are, well, huge, the number o=
+f
+direct shadow pages in indirect MMUs will be counted in tens or hundreds, o=
+ut
+thousands or tens of thousands of total shadow pages.
 
-> > +									\
-> > +	__TEST_ASSERT_VM_VCPU_IOCTL(!ret, #cmd,	ret, vm);		\
-> > +})
-> > +
-> > +void tdx_init_vm(struct kvm_vm *vm, u64 attributes);
-> > +
-> >  #endif /* SELFTESTS_TDX_TDX_UTIL_H */[...]
+> I guess for most cases, mmu_shadow_pages will represent either the MMU
+> pages used to shadow the VM's x86 page tables (with TDP off) or nested
+> TDP MMU pages (with TDP on and nested used) -- but I do remember some
+> interesting case about direct mappings in the shadow MMU or sth?
+
+Yes, there can direct shadow pages in an indirect mmu (guest is using a pag=
+e size
+that is larger than the host, in which case there are no gPTEs to shadow an=
+d thus
+the gva=3D>gpa / l2_gpa=3D>l1_gpa translations in KVM's shadow pages are "d=
+irect").
+
+
