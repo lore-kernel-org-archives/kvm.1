@@ -1,111 +1,159 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A50326A1AC
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 18:08:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781546881; cv=pass; b=rvVwU9/l1wXNy+O2/Z5ozNhbxybgl5vWEPCEZi94QYV3IsCuiEOfSxvuOoq7A0RHS69ngZ4iINx2SKDrX+eaagSe3Ptg80mUsFpXufm+O/fcOwJ7Il16qby4SRmNpqN89oHcRuFiOch+CAEpbscpWlby6h5QLVVbL1xFSPpGBlQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781546881; c=relaxed/simple;
-	bh=DlnCk256T3pqD6JOxuV7yZ6rNjvVbspDC988eQBiaRQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fMsO9TMKODjxxSodtiTrPzQQZ9/zNvfn/jYP2ppdPEoc5gAL8XTrw8aaBoaiW0Jp+2VKiYj4ZZfqHsrpb6gFO2RysezPr7kJ1hdxnC5NAVEFKc71e+12akwrGKYtz8p+ULwSn1bxj9wMEID28xOxSelzl7xZYlDeAC3VT+wmjFo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SWMaXsuS; arc=pass smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D66C3016FB
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 18:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781546965; cv=none; b=nr46iD3MFubTjCxus7ketV4uSL1bA9IwUrPkSEVyXaBXTpVucZZpv6z+RKvWsiTdnjDGcBzE9f/S0NrDSGDO329eYZ75UMiCTykKYwpg5MP026EGhG8e3110bWxmZO33lqlkt1avds1gNcPXqbcsZwa9Bia9RqyXeFiV2hXACiM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781546965; c=relaxed/simple;
+	bh=cIcn2xttQ5klb0NyKZZ5C7CekwHC9plrngiBWprQ1W8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=CBOfvyAzYOglEfiOCY0bzy1Q98DeJ6h4xK+++YKRL0YluzhpiOowTN/8sUXhaAdS5Akp1a0tdL0bauCr67H4+XriNkpuGBQ6Cv0xjkz1qBBGHAyHFkuRw67fD5xW0nyR/ZPlGq9CsjDNEvHYTOaXkZg2IowMQGzXBj7br8QHflQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tjhgZwih; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SWMaXsuS"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51765331535so37551cf.1
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 11:08:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781546879; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GI9qTT49/BX2XWG6OHPCSBTLuYOafwXWA59QDeKJhNEzQmwqpWI9klUyhrzE4/NCGA
-         XN3i3VeeVJRh7ASqKQXCzyJdbaROeVj4/WA0jOcLcSYOasJXQFLszQn2DxMDEFBPGJpE
-         24a/1K1CnA6jsf/yVs/2SSQ/m2Nv9zgZx4ydAc3cu2fSA1hlzqdsc5Nfdldm+vCkiR2r
-         Gqzxjvcnm4cJ0WD3p8Wci3qCxqD2Y01+Xulh8KwPXE/3gkRL91BAINORHanG9qHE7ioG
-         yr8lb6lNBT4Z1K3gjUx/dBJSNu1lkFFJWZoPjVLR4PBBifS2488N924CSDdVpgkfHB0s
-         edSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DlnCk256T3pqD6JOxuV7yZ6rNjvVbspDC988eQBiaRQ=;
-        fh=oktYpAQxcYgQRWBopYAPtYbZxh3p0hIhQ/vJqtLBQHU=;
-        b=dDN8FMC/lzQLxm8imkzKfvztP//ZwI+DxKbua+8+oX3f+2nwurNdjEKQZ0wmsnl0j5
-         SFoZ/7TpQyVxtJT9fQ7N3k12fNNRxApnY7qLkcje71su3cfQImkPdup23ZPAqV105BGC
-         UBtAKlj16DW5O5pHC2hW59tuuXrJpghB8ubmQHG/1u9bDIhvsrV/mF7Vpzk5wVO9mZY0
-         wqj7t5eGCUgvRnaHKE0aHJGZhuBhPGcc0kR4q3df+dz2DtjoDoGg8S9EwuSqI2uQ8lk8
-         sk87tSYudsG1xgvxZy1nNhhlpqbd6DhM+9VEnxYDQUk8I3VRmxjBplNSHa6w3OFo36eb
-         VlVQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tjhgZwih"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c858e0cbca3so1945417a12.2
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 11:09:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781546879; x=1782151679; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DlnCk256T3pqD6JOxuV7yZ6rNjvVbspDC988eQBiaRQ=;
-        b=SWMaXsuS/Uxd5xZF93U3culAd8SYBC56yCRWspc2K/0T7wS0MA50uxKSV3Nj1Vh/Ha
-         JUI1OfNJEkGnSPyuEZfbh6Jh0f5HHrZfJlNrX/C8UyQj2nP0I5q3lmtTsmKlpPsVZGA+
-         gWiyWQvypThX7zhnkLciuEI9sbthocezXejNUMvb5plAZVkNW3pJPl3/0DfRhHoN0uTf
-         oPRTuqE0jlaEYaVnWRNbqv5bdnHlW0GFCpJrxHYQFrzqFOndHE3r/47syTlzBIMjWakV
-         qykY0qPaDUaggkkmjNDEUYvWBwRCHuAOEaaKxjQT1v1jLWmlmhgZO0kVXYaV6los4Ccw
-         0f7Q==
+        d=google.com; s=20251104; t=1781546962; x=1782151762; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nnv7BB4g0plBk06nDCaqvSeCAkEy9nM4C7RFf19+vk4=;
+        b=tjhgZwihPAKGzlbnkXmHfnwn2uEG6cAXMaN20KIgBqJplJZgnWi9BSIO43BG9e/T4j
+         bGV6HI6QNHXsHnV8NOUhI3awLEdrmRUcXOdLLgQd4WwZJ2oFdtBXoKB8hzTthPzNLNgN
+         ypg866AP3HmKniPeu8el4mhmM3omKKViWw0BjMTap4Ax0MfgfIqj14VquggsAndM2pK5
+         5Qs7Rvt1dFuNKWb5nqN/rXcj5x0zxx+bTEdLCWz8z+CjTWwApxQhysUkJcjfp9ZMA8Tg
+         msOlg1QJ86O7Cz6spLtdoE+j8JW+a/XLQmRbrsDYAsgXe7Ny3ueIpHQz5sQ0/Rx90bH5
+         IGeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781546879; x=1782151679;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DlnCk256T3pqD6JOxuV7yZ6rNjvVbspDC988eQBiaRQ=;
-        b=dFxoSztZlFKNqlReLWIKm/88jwKzqxAt4DZLrJPaHSEvHYJTxqkK/NWhO4xNUCxy1R
-         UQj/MZwBHUVXDd2swi1Yd2gee/v6N9LroJIS8uFHM8G3/ojcEKbBGCERHr+6jcgS391K
-         +GkXVspGqgyE1q3Z5GoQGfMFevL++jXsrKqv/8jLdtH0PXBIAlpFRORUVmv5mnfeRFEC
-         PLanBK5n6A0lmGWB0RYeO0sIYDKvjlVoAD9evB7zRii6yATTa/uuAkq6Doud+bgW25Yy
-         BCJCg1zYeAOiQN4A00kO5ziybl97WcTSokC9sJicb8GpxnRXKSEtcikEj8qS4dqljJRe
-         sVFg==
-X-Forwarded-Encrypted: i=1; AFNElJ+ZPuPm+BRPk1okrkY0bC4TcBYkZ6Xhrf1J32KxJ1Sl2lVRulP6XWUgxRByuTDG1HxzwNo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSQ7qw4GyENvNLn3bVV3dwqIZ9/NLKO+5UfT6eRdR+d8CFt8dv
-	b3r7QNJKa21+lO/CcBIDZ3BbUJ/W2M15dvZtoX5qIOvtnTpNQfd4NnYKg46bROlOuYyR0BZ6efQ
-	bVlIIwvT9RIo2VfrAaTJcSCpkKikwVGpd1wb1D4Yk
-X-Gm-Gg: Acq92OEpjiMfbKFTEOqirURvo50zdex5HAipseyM9PbrDLXXwrlN9puM80Bmomyfq1g
-	mZv281QnBvsFo21TIKUnZEJU+5X0jN2BolczUoHsZuuonlFMIhsKW+51zxFN5frG3Nh3JAMC9Wc
-	fkDJsxJ59Uhq3PSWZyEmCLvuTXcvp9ZYLAiGTI5UYShws7bnbUEPEsY7Qj3Q+1Lp/304ekC4Yp/
-	kSnVw5sT5Zg5HUZgDSkegVl1sHPzoGxjE7nLM3hmm0+u2jilTxBREcECBIuvwuRjEy2hH+mto+x
-	jTA1fXk=
-X-Received: by 2002:a05:622a:2589:b0:517:6010:7c71 with SMTP id
- d75a77b69052e-5198fe8ce06mr767891cf.4.1781546878798; Mon, 15 Jun 2026
- 11:07:58 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781546962; x=1782151762;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nnv7BB4g0plBk06nDCaqvSeCAkEy9nM4C7RFf19+vk4=;
+        b=WwbMIzXFakFkmsLG7NoZWak1zIJv/WERren7SGBfLVghlS3fWZXUcsRe47t29peUlH
+         D52wWITmhIW/0E4SMxlrw/jED/9OQTWBVPyX83tbYJ+/5HhgNmTDBFFBLEB9csjeN+8X
+         BaVQ5lgPvpOf/3Ml5HFOu13sMl7gddCmgNYJEZojStW49fEjpiS+TbDLNRayFVNhkaK3
+         g35c5hS9T9rkR4VdxCB8dNzSx+12C6wVGUjO67txWCRrjD3DQ/1obaxWzw0r4NcutqqB
+         e/q5ZiFBYeTm9LbC+UcJ9B9uG4oHLn8zRvISydgfC0TqdArGDEOZEVzUnKCYyjVXawTa
+         qKIQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+iOtf9aq4/JP3ruoHZCTOf2hvpGBAoSZ146719Pt/0E7djxWaEmTX9T+ifvfAmj1Jn2lU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0GKN8CABN0WWBqKa1ZIxoaBPz9OOjPquSxlQ/MToSIDmlhGim
+	WloGjy/q2D5f8/ViVSbZVN1QRrAPRWbKcHkgBU/c16e5dH14Q+YQGbuGSzxCAmXAY3ZUalXqsnj
+	mS1Dr4g==
+X-Received: from pgy34.prod.google.com ([2002:a63:1862:0:b0:c85:88eb:3619])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:2986:b0:3b4:b276:c5dc
+ with SMTP id adf61e73a8af0-3b79624ea92mr13440922637.3.1781546962414; Mon, 15
+ Jun 2026 11:09:22 -0700 (PDT)
+Date: Mon, 15 Jun 2026 11:09:21 -0700
+In-Reply-To: <ajA6ogaNiI3KDv5i@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260612230113.684301-1-seanjc@google.com> <20260612230113.684301-5-seanjc@google.com>
-In-Reply-To: <20260612230113.684301-5-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Mon, 15 Jun 2026 11:07:44 -0700
-X-Gm-Features: AVVi8CfdOCYOC_E6aY3TINSWnyqZVxgHqoD6nImLX4zHKhNhcYzD09Li17bwpcM
-Message-ID: <CALMp9eR4EnZW1TYDDhMgkLVD+kdaPyM6HY3wy4az5YQedddnaQ@mail.gmail.com>
-Subject: Re: [PATCH v3 4/8] KVM: x86: Prioritize #UD on MOV DR over #GP due to
- non-zero CPL
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	=?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, 
-	"Maciej W . Rozycki" <macro@orcam.me.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260615155244.183044-1-alexandru.elisei@arm.com>
+ <20260615160901.9A1A61F000E9@smtp.kernel.org> <ajA6ogaNiI3KDv5i@google.com>
+Message-ID: <ajA_0TQCQLSz7qcU@google.com>
+Subject: Re: [RFC PATCH] KVM: Ignore MMU notifiers for guest_memfd-only memslots
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>, Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jun 12, 2026 at 4:02=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> Manually handle the CPL check for MOV DR instructions instead of using th=
-e
-> Priv flag, *after* checking for #UD scenarios, as #GP due to CPL>0 has
-> lower priority than all #UDs.
->
-> Fixes: 1e470be5a108 ("KVM: x86 emulator: fix mov dr to inject #UD when ne=
-eded.")
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
-Reviewed-by: Jim Mattson <jmattson@google.com>
+On Mon, Jun 15, 2026, Sean Christopherson wrote:
+> On Mon, Jun 15, 2026, sashiko-bot@kernel.org wrote:
+> > > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > > --- a/virt/kvm/kvm_main.c
+> > > +++ b/virt/kvm/kvm_main.c
+> > [ ... ]
+> > > @@ -592,6 +592,10 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
+> > >  			unsigned long hva_start, hva_end;
+> > >  
+> > >  			slot = container_of(node, struct kvm_memory_slot, hva_node[slots->node_idx]);
+> > > +
+> > > +			if (kvm_slot_has_gmem(slot) && kvm_memslot_is_gmem_only(slot))
+> > > +				continue;
+> > > +
+> > 
+> > [Severity: Critical]
+> > Does this change inadvertently introduce a regression in the pfncache retry
+> > protocol?
+> > 
+> > Looking at the pfncache framework, it maps guest memory into kernel space and
+> > explicitly drops the page reference after mapping it:
+> > 
+> > virt/kvm/pfncache.c:hva_to_pfn_retry() {
+> >     ...
+> >     kvm_release_page_clean(page);
+> >     ...
+> > }
+> > 
+> > It appears to rely entirely on KVM's MMU notifiers (kvm->mmu_invalidate_seq)
+> > to invalidate the cache when the page is unmapped by the host.
+> > 
+> > If a VMM defines a guest_memfd-backed memslot with KVM_MEMSLOT_GMEM_ONLY
+> > but still provides a valid anonymous user mapping as its userspace_addr,
+> > could this regression lead to a use-after-free?
+> 
+> Sadly, yes.  To land this, we would need to first teach the gfn_to_pfn_cache code
+> to be able to pull directly from guest_memfd.  I forget if anyone is working on
+> that.
+
+Actually, we just need to ensure the invalidation tracking is updated, the MMU
+itself can be left as-is.
+
+Compile tested only, but this?
+
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 27498e990dff..690ab707816b 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -260,6 +260,7 @@ union kvm_mmu_notifier_arg {
+ enum kvm_gfn_range_filter {
+        KVM_FILTER_SHARED               = BIT(0),
+        KVM_FILTER_PRIVATE              = BIT(1),
++       KVM_FILTER_USERSPACE_MAPPINGS   = BIT(2),
+ };
+ 
+ struct kvm_gfn_range {
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index e44c20c04961..84b693de7e35 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -608,7 +608,8 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
+                         * HVA-based notifications aren't relevant to private
+                         * mappings as they don't have a userspace mapping.
+                         */
+-                       gfn_range.attr_filter = KVM_FILTER_SHARED;
++                       gfn_range.attr_filter = KVM_FILTER_SHARED |
++                                               KVM_FILTER_USERSPACE_MAPPINGS;
+ 
+                        /*
+                         * {gfn(page) | page intersects with [hva_start, hva_end)} =
+@@ -715,6 +716,21 @@ void kvm_mmu_invalidate_range_add(struct kvm *kvm, gfn_t start, gfn_t end)
+ bool kvm_mmu_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+ {
+        kvm_mmu_invalidate_range_add(kvm, range->start, range->end);
++
++       /*
++        * When reacting to changes in userspace mappings, don't unmap memslots
++        * that are guest_memfd-only, in which case KVM's MMU mappings are
++        * pulled directly from guest_memfd, i.e. don't depend on the userspace
++        * mappings.
++        *
++        * TODO: Skip gmem-only memslots on mmu_notifier events entirely, once
++        * gfn_to_pfn_cache is also wired up to directly pull from guest_memfd.
++        */
++       if (range->attr_filter & KVM_FILTER_USERSPACE_MAPPINGS &&
++           kvm_slot_has_gmem(range->slot) &&
++           kvm_memslot_is_gmem_only(range->slot))
++               return false;
++
+        return kvm_unmap_gfn_range(kvm, range);
+ }
