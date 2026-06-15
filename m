@@ -1,141 +1,133 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB9221D596
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 17:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781545592; cv=pass; b=KXI/bKEHLKt7/oH2cKhFRqClJDGRbHoEVbA3p0nE4vLQ/V05e3gmc3ParBEsEJtONLAh8+KWL5kQGGY7/Mr8d+tzmKXivrEzXrx2Dgq/wVQVnkjlr1VxhfXf4OE1Rk0MHjfiKNOyRNmyPcgjrR3vC4bw2VFnUQTQa1yiwsHz0+8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781545592; c=relaxed/simple;
-	bh=isVfnTmC98sYuVeEgRoddardlsLWHehHpzCcEH2xTcM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E/JRij1S+iyl3vChd7GkK3XEHBO2ycvurnGAQJCXwB2Ck41pDx/P3Yi9B6icTaF32UQ21bsSJsLu7a06KsVXzC6ZDBjz3yiczL8RwVxzkRP+3jufGTXgHYKo4IWkHVkjzv4FgROv8gD/ZmKPGpIsM6wSNJAuwwjjpHzEwYorUGQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ua5zSZDM; arc=pass smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745B62E1F02
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 17:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781545637; cv=none; b=qwaJuntxfR+prBQLq5PaNz+AZbvR+6e74jxRdtIijGVS6875pZGelghkQa+7BTyI+WG+mBTVHbY8BYy3KiTj/nn3vdQtDmG9KchBHj1jiOsdk0xz7qsSxGGW7/D03rJFseQSMKIsud0h8r/nuFvJ1k6EkTFmMynh+GE+l1R+HTE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781545637; c=relaxed/simple;
+	bh=2wv4DrmR9rVmtjiewqbUMk/LFbbWJqr8zKExRv8iTCc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Arh0s1m2qZCo8J5Ut6qc2p1RdA1TCyk1eyFt2U40fy8ZjtaEQzJDJGRnFojRszqKGWtBTamPUV4FD5uwFhexTGEa6Hpc+naAOOIeES6MflCJebx0kZ2rEinYl5EwrMN4ubKvHkJlCByGg06Od7yEGx/nkF1Jo1mMbI3/058jN4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jglhkM/7; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ua5zSZDM"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51765531803so33631cf.0
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 10:46:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781545590; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EYlOxgla7COUHYFnHy1UUVexdg395TfTVHoGsvVsN4IbsJdJ83GkzHA0NFr3kIQbEK
-         4jBpQQFAACHdTe7AjEAjKF7yCDAI+Sxn6+4P/evf7daD1v1Ti8UUIBzfkrgSfw7eNRdr
-         ch+j56Lbk5rClx5er9iKuhXVLIfb8Je9iEJRsr1u69fN7TuqLlllCr5Fptn3Ej1L/oSX
-         SyhycIdla7EEj0JjDg8s6X8fk/3V4haqJ5pTXg3DOdevrwWZWkBnSG+oTmr8cWEg0YDG
-         w+KCUrbTOGIeonXPNYwOCApVQ9uM8ClncPVNWzl/V6yUDsb5pvqjSR3jfrvWeg13ODah
-         2V/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=isVfnTmC98sYuVeEgRoddardlsLWHehHpzCcEH2xTcM=;
-        fh=o5aZZT1BDiZPXGs3J1Qf7e8zSSpNs2bBh4CSu0cYRCs=;
-        b=KZSpbye+RsAX6jgOmD7NP0UMlV1WObeDZvkGViSgQDMQHZOnVpZ3+zFwSWqQiJCAXx
-         fUQR0JwcpIQSMMNk4xKtZvty0Z1FUwT0epLYLyGx12lVntx8lgcdCR22gcXffeu9Np0g
-         1jtvhTx9z7HHN1pQfq4XuWckIvcTry1eRueN6x9Lb3f5cctTb8R+ZrmWqY5lTXWxCHng
-         P8ix28gN1eCW4CRRUmctkXmCTisLA1VPX9+4UCQO8lnMThOyHzAwlvSgLKQvzTstPiV3
-         DL86XPrjRnr4l1sTvCjnEQHEr8hZrLb0h5iV2l4bshd2idi5U0q83wYFsTxryedpiyNz
-         ZWWQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jglhkM/7"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8581f7723aso1726809a12.0
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 10:47:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781545590; x=1782150390; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=isVfnTmC98sYuVeEgRoddardlsLWHehHpzCcEH2xTcM=;
-        b=Ua5zSZDMidO7gAeVOAtwZlb5+cM/wnYa8tUDHOfLRPEfDda2YIUQudurms7/dDT1HN
-         +BBcFucvxjaE1W0e4x1WvAONRHFOR3FaQ/GAOUkN7idZjJi82SJpnySxTlZupAY6ngZa
-         HIrUGBYzAahTHyQsiZEXVjtqB3eJhXS0pUcrs16cLu50CQpr4RNW3GHHjsHe5KuqdQT2
-         qB8RljHHToZpwcewib1XGBTPVvt15A2WLbFWnBu/fNeI8glzikJq+oLqm3i9aQQW5PYZ
-         npXSbgTbU2vxOfYvkQJILdH4Xvl+86ulS/jetEvwEhbgy04gdvmGEXANbhBGwXQJ/Wyz
-         rpSw==
+        d=google.com; s=20251104; t=1781545636; x=1782150436; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+VDX/a34KwI6qjOxB+SOsUTAEqmtLSVOgiOVOtsI+2Y=;
+        b=jglhkM/7pOYEEHiiVjUzmrzRLf2JbJjsK/E2VAxp0fueOkATEK3vbGFkKOcb4BnONt
+         kgVcBAYyfNYysIVPFqWpNEQ338m1IjBxfZxjww1bUG2ymBe2aBkx0CW8aoJm8KhlzYja
+         2SkSEZbYmg9MVeyp90pnhijT+BrG3e9a+lZeshszQjE2Eo/vman22trpyAzT3PfJ03cU
+         iWSjk67gZP9MxfBtFZyGuIOA5MjPr97OjwqTpM7WAGjE+5xRNIZ4ybZ3KR8urZpW7rkZ
+         zmSwhglj7+UaA72GKlen+I3+H7d2NuE4cf1UjMyIpxb1DjSxF7cuQ8tUHiAVFkGy9Hmv
+         e7nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781545590; x=1782150390;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=isVfnTmC98sYuVeEgRoddardlsLWHehHpzCcEH2xTcM=;
-        b=dXQOfkxYGQowcLCS5Ovc3ydDkqql1MTUZFy54pyA1Nrmid3lJHkBlJsR1umuMr5VVH
-         k5nVOZDa80XJaVnbeRsV/RCkSo81BmDLywVoJT+UtEDaHG8OTFLfbTlXrxS8bGwZDJ5Y
-         JOBNnFsIAtet2qehZna6qyhUSJC8cpaF5DoMymllbG1iEzMEQwymAc9cW4NpABKsB6Fc
-         b18u7B6/nzkjWUBxbpm5A7BLsO+p50PmQIsQgcA3LyHwYlpQFcCLxCpYDS5Tq8tKEoQ4
-         OUKUQg7RBEB6zCsak6LSGCGsNQ6NdMFYOr6qcfxnLCe998+VQ+TUDGmS2pIZVjdeJebo
-         9Pxg==
-X-Forwarded-Encrypted: i=1; AFNElJ8/tJieYF+NU+nOccbiz4WioES7izoXtj4lg4PPP8D0RW5cl6wf38/Xsz6F1oOZo4mWHgE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3TOw/3AoRNflZvUce49y/H1D9+By/X4KMpBCRSOUPVTldQZR5
-	JqHkDvu23IA74DaHcioUYQ8T0kdBQAs0U26IFRLN8i4w4c8zWRoWITg47+1zOTvt0S+KJJ4xMxf
-	efmQbfLExuJnqbJjMwj2+pTVCgJfPVE6gCHDej3Bt
-X-Gm-Gg: Acq92OH5mfnAg1FxK7xTT5PolnJq8aRowYoagTH0ZNvr88l8K6rPLcZzVx0J6m4saBw
-	a0csuAxwCOau4q7KH0f2589V3mOutXYrN5XKO2+onUNqaYo+mkrTI7SN8AqaHpq3Kk/DE3MvKG6
-	fZGdKV6L6sOMdLK5qefwPPVpGYDmPacavwpbWw6o0NWQuDnN3kzHo7ER5EHwNYD7Rs9QaCwP++Y
-	U9dIg95q++q9/OJ3tZdOaZOO/PNe4DuRCHvGIkJnu9sulrkzZ77EqRZV2VrGneKOIB9bKq2tT6K
-	wUioFgs=
-X-Received: by 2002:a05:622a:1e89:b0:519:56a8:2693 with SMTP id
- d75a77b69052e-5199046f149mr501441cf.24.1781545589199; Mon, 15 Jun 2026
- 10:46:29 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781545636; x=1782150436;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+VDX/a34KwI6qjOxB+SOsUTAEqmtLSVOgiOVOtsI+2Y=;
+        b=jlfgokgyQf7kLVUqk3i1/xWCnjlorlhjcBHmdZ9xhjnsEsRbBIicN10Y+b8HicsHp2
+         mbgzU6kRIVkNB+tmcF7cBO7xqRhOuNKI1m4TzNpfjkiE6eBng3HBNKP2qiBPZMol54FF
+         WwW8vMaCoX/ED98+xHXS5/g+tCAs81GaChVQlCWJjdmfjEbwmozh1RkpFcVaFljLjhap
+         epZsJmHrz6tAG//6AG6zJJ5agwn4HTKIbnvpZ5dRJ/MoLAgA7OMYHjIqmqc6J7g75Fwk
+         eVpXGzd2woytxf+ID9PgCqv7weof4/F7Mu85IpNYE6Dn9QLJ/Id71sOYldjDjstIrq/y
+         U5yA==
+X-Forwarded-Encrypted: i=1; AFNElJ8s1zbkb9YkOI34riMesOhdn/udksJRldlNnAl6SVO4AlUiVp5pD5f5+RP6ORijWON8rvQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHTxrqkVQnHstMJaK3xFjb986AReSaYF1ZLU3NgvS1xSHRsrlA
+	4sCsh8298LVvlTHKmYc6k2zWOCRf1kcznxPdRTkjSYW6yXd3sb8stwfVR6xCHJny/N1p7Esw1T8
+	Nczc1xw==
+X-Received: from pgaf19.prod.google.com ([2002:a63:3813:0:b0:c80:2656:4e70])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3c89:b0:3b3:241f:66c6
+ with SMTP id adf61e73a8af0-3b7e4cf86b3mr95295637.26.1781545635135; Mon, 15
+ Jun 2026 10:47:15 -0700 (PDT)
+Date: Mon, 15 Jun 2026 10:47:14 -0700
+In-Reply-To: <20260615160901.9A1A61F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260612230113.684301-1-seanjc@google.com> <20260612230113.684301-2-seanjc@google.com>
-In-Reply-To: <20260612230113.684301-2-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Mon, 15 Jun 2026 10:46:14 -0700
-X-Gm-Features: AVVi8CcpmU9YFasFyUBmo4OwTGFHZGO0qCKCyvTbRj5r9L4e0Qj16mXOZbxmxOQ
-Message-ID: <CALMp9eTHNSn2t3pPr1qwEtJxL9mTE3pqoDCXec2_uNytpSyr+Q@mail.gmail.com>
-Subject: Re: [PATCH v3 1/8] KVM: x86: Treat any non-zero return from set_dr()
- as a faulting condition
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	=?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, 
-	"Maciej W . Rozycki" <macro@orcam.me.uk>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260615155244.183044-1-alexandru.elisei@arm.com> <20260615160901.9A1A61F000E9@smtp.kernel.org>
+Message-ID: <ajA6ogaNiI3KDv5i@google.com>
+Subject: Re: [RFC PATCH] KVM: Ignore MMU notifiers for guest_memfd-only memslots
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>, Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 12, 2026 at 4:01=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> From: Carlos L=C3=B3pez <clopez@suse.de>
->
-> When emulating a MOV to a debug register, em_dr_write() calls
-> @ctxt->ops->set_dr(), which is forwarded to emulator_set_dr() and
-> then kvm_set_dr(). The latter checks that the written value is valid,
-> otherwise returning an error, in which case the emulator is supposed to
-> inject a #GP fault into the guest.
->
-> Commit 996ff5429e98 ("KVM: x86: move kvm_inject_gp up from kvm_set_dr
-> to callers") changed the contract of kvm_set_dr() (and thus
-> emulator_set_dr()), returning 1 as an error instead of -1, but the
-> caller in em_dr_write() was never updated, checking only if the returned
-> value is negative. The end result is that em_dr_write() does not detect
-> the error, so an invalid write does not generate a #GP, but at the same
-> time the register value is not updated.
->
-> The practical impact is limited, as check_dr_write() already checks DR6
-> and DR7 manually. However, it misses DR4/DR5, which alias DR6/DR7 when
-> CR4.DE=3D0.
->
-> Fix the bug by treating any non-zero return from set_dr() as a reason to
-> inject #GP.
->
-> Note, the manual checks on DR6 and DR7 are flawed, as they incorrectly
-> prioritize the #GP over a DR7.GD=3D1 #DB (the General Detect #DB has
-> priority on both Intel and AMD).
->
-> Note #2, relying on ->set_dr() to detect #GP is also flawed as all
-> exceptions have higher priority than the instruction intercept on SVM,
-> i.e. the manual checks need to be extended to DR4 and DR5 (after the
-> priority bug is fixed).
->
-> Fixes: 996ff5429e98 ("KVM: x86: move kvm_inject_gp up from kvm_set_dr to =
-callers")
-> Signed-off-by: Carlos L=C3=B3pez <clopez@suse.de>
-> Link: https://patch.msgid.link/20260601133320.91479-2-clopez@suse.de
-> [sean: drop explicit "!=3D 0", massage changelog]
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
-Reviewed-by: Jim Mattson <jmattson@google.com>
+On Mon, Jun 15, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
+> [ ... ]
+> > @@ -592,6 +592,10 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva=
+_range(struct kvm *kvm,
+> >  			unsigned long hva_start, hva_end;
+> > =20
+> >  			slot =3D container_of(node, struct kvm_memory_slot, hva_node[slots-=
+>node_idx]);
+> > +
+> > +			if (kvm_slot_has_gmem(slot) && kvm_memslot_is_gmem_only(slot))
+> > +				continue;
+> > +
+>=20
+> [Severity: Critical]
+> Does this change inadvertently introduce a regression in the pfncache ret=
+ry
+> protocol?
+>=20
+> Looking at the pfncache framework, it maps guest memory into kernel space=
+ and
+> explicitly drops the page reference after mapping it:
+>=20
+> virt/kvm/pfncache.c:hva_to_pfn_retry() {
+>     ...
+>     kvm_release_page_clean(page);
+>     ...
+> }
+>=20
+> It appears to rely entirely on KVM's MMU notifiers (kvm->mmu_invalidate_s=
+eq)
+> to invalidate the cache when the page is unmapped by the host.
+>=20
+> If a VMM defines a guest_memfd-backed memslot with KVM_MEMSLOT_GMEM_ONLY
+> but still provides a valid anonymous user mapping as its userspace_addr,
+> could this regression lead to a use-after-free?
+
+Sadly, yes.  To land this, we would need to first teach the gfn_to_pfn_cach=
+e code
+to be able to pull directly from guest_memfd.  I forget if anyone is workin=
+g on
+that.
+
+> By unmapping the anonymous memory, the host would trigger MMU notifiers, =
+but
+> this new check skips the memslot. As a result, kvm->mmu_invalidate_seq
+> wouldn't increment, and KVM might retain a kernel mapping to a freed phys=
+ical
+> page.
+>=20
+> Could this allow the guest to read or write arbitrary host physical memor=
+y?
+>=20
+> >  			hva_start =3D max_t(unsigned long, range->start, slot->userspace_ad=
+dr);
+> >  			hva_end =3D min_t(unsigned long, range->end,
+> >  					slot->userspace_addr + (slot->npages << PAGE_SHIFT));
+>=20
+> --=20
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260615155244.18=
+3044-1-alexandru.elisei@arm.com?part=3D1
