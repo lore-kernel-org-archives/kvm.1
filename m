@@ -1,114 +1,136 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EA2413221
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 17:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781544281; cv=pass; b=O46EIBK5bjVEZa187uvs/VdABwNVJPSeQsnxmPDDw9pV4fBdLms1gW+reR6ynjLW5K3MhcR4UytSfdb61+FwtnIToDrv9C4/dYPreTXwtWaq13fA5lcDVgVv8p156EGiSlNJDsDzmNTfGgS3ZLAq10vnVzljUp4YZDvMWMm9cvw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781544281; c=relaxed/simple;
-	bh=glq/fqqO6f4hat1gGm0hVpCWMExv9mbKFuwcUscTT48=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HTTSOqCk45OMP/sT1ZR96Ff9eR4CzPxtIyuSP2QfmQyMwfnaN28pXjvcWNCUk3F01uTxLHSfY+04MrfcVez8xnTPJQ8sZH6pvLt6EZxmZoT37YQ3/yEzwx+pbk+/C7MM0n2fo7i7vdLqa99Kw4pv7hwcEpgpbUI0I+Eq2+u58zQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f+BPdGv/; arc=pass smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4411A406837
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 17:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781544392; cv=none; b=SHyzwlC5JiRVTZO0mAQsiJsuAcNderPVrlCoRnJbIZUY+g0TdATVhCc9S+Nam5Zf1PNiZB2FTYn8sJvkLPoHRQGcCUxXUKhPXxiLZlx6WJrNgywpnREB6pXYz5vP2E20Ww/42SC7IsUrvo1g/aNdSTCJhg5EVgucDTWfqy6YYPo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781544392; c=relaxed/simple;
+	bh=n7j2xuSEoLWXT4WWaLtAQaJv1XDcEbEbTdrNUD+gpXY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=L8aV9mtuHZ0Gps/ehlWg3025rK+X00RcNScwYCw+Y0DJ3JI8vCMHv2hbC5IZ4OdmAWBGYEeY/6FcYCWW14ToHvHZ/1WOshBFwQ8R08hfQcl3mc+QAw3BrDfcmbFPTLnbhKkvDH7KdTXPqufXWz678usRBH6GhO/pSnYSxnjb66M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fAgpimPv; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f+BPdGv/"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-68cb445dd5cso645a12.1
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 10:24:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781544278; cv=none;
-        d=google.com; s=arc-20240605;
-        b=eY8AYCB2isRBzQiY6Y3YZoPJtm8+mcMyC7y4qfjyqjnTbsNWHPrt354mxoipMGlWtT
-         4fMQNBbHXIao0MRl+OQt56R3wDf3ki/UylAC3PWtRVH3uPgjdvwLRPxjQKJb/uZ94TIV
-         AKkXaXe5+e949PbCFZFCO8FZWEN7OFfSfX7gSkerV40T5+tuFLMxXVKi3CFGh/AOS0fr
-         G1//U2kdXEkzF8BCcACFAyVNMEEdSZrWIF5Y57zga1BZTg2MGWjaUP/hx6kfj2pSoTJs
-         T44KBbNykM1UXrLwkP/hC7t8qHDN1AzcTSpiBfumuSjQpq7EOa2QF4zvy+7kUjc54R6s
-         zaJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4dmDgMbPiDzakGMErmzERE54PFK/ueHUWU5hgu2XElo=;
-        fh=a+SYs5DKaW2FJOQfZ3VlqBo9vl75XZlv4PyHlC411zc=;
-        b=D3XnTUcA5a6QdUgcBdMFLeCjMw8BY9K/WRvZTDjkIAFVCehpY8Ikv5hTlD3tVZ6ZTy
-         Ni5McDB0mVuIPIh4DujOyGtuMzxRluq88XkaAiYSizGiKetoubUgDHXnPcsQRL8FYUw/
-         NFhHzHAYd0X7KB2qypRUvmEiWV1gDSTFUyKoEy0PtqE3xc6mkNbfPdKZT9F91K3bA/8B
-         VRAKgt0qo7/xnRGvCfHP0QdHyDsqy1gkCy7VRCua4q4uAVEOl1NPTSHLCNGzk2jLQ1kA
-         63iN2nXZBxCHKUCgPQ8e6GlZolylf5YkwFhbcwH84yk3nooyOcooIPHlNhHjXccNzPIx
-         Ukfg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fAgpimPv"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2befec3fd8fso24968125ad.3
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 10:26:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781544278; x=1782149078; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4dmDgMbPiDzakGMErmzERE54PFK/ueHUWU5hgu2XElo=;
-        b=f+BPdGv/nqmla8LK2ZcdfL5UowggQftUFSKT9Qyvb8lNv321yfa7C3Ab0bjaBjyI8D
-         JLyPcBkI2Z25FbRQ9u2siKOkK+WYWB6qEJj+ooCb8976Ht0aR0dS3EfsKpCMXSbSlXWr
-         hJCwP4X+L3/C2zuBaXaCsIIb9O8y5aMNO1gLTGshfhg4ilucaV6ZzNsmVcD5yti5TE3t
-         NWQSlq+japr16JFE0uSv0fMgT8VNObv3i3M9Ujdt82myjwBouXEgQFMZh3mIJtjZoH1i
-         wymN/hteskTZMa00kA5hkXqB/XKSmGWP/6xm9kkK7LRTgKi5m67h/sHNyB2xUkr4oRI9
-         GMjA==
+        d=google.com; s=20251104; t=1781544390; x=1782149190; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G1YFLp6Nv/x/zFzqR11/t+OBKepAibObBP++vs6jo78=;
+        b=fAgpimPvKW5ZSsE741mxtnDJeRj6HVhF44Z8641O1lmWpHCcTyZbOQpPhRlc0rwjJy
+         4tgcNDueXd0+ZhD69oyh32LIlgkwPVxaClUMS42/k1AYfqPi4/UA6xBMyT3iJzKHLt/F
+         ed8iJf0K7LfESMqSK4mtELaWC6AnV1gtjUWKmdzniIpU4uDDugb/d3sxtpIk/eMO/U2R
+         oGvUjeBHnvn+DFzWcv69saDXLNxffy3oxn/pKVl01wjGrAfm+272CSxdTMd4KdQLpggk
+         1YKqDiPqNW5EQg15r13oX67XNf1rctW/XVP1F9i5eKbfKNGZ+XFGotGyXdoidi887XmT
+         Nc3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781544278; x=1782149078;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4dmDgMbPiDzakGMErmzERE54PFK/ueHUWU5hgu2XElo=;
-        b=mKazukTbll46aoc41vFNGz+uru1czjyNGUEJ/UXQ7lXmEgTNY/4bKAx5g7uMe5J4da
-         0smzYcYeIuyETIcXoRmrU9ANNNrWgHXVVCDLm9Mn+yKXdILcjd9cOkuXM5qJoxrD2T9D
-         9xM3Mb8fvN1GJJvX3u/SJroGOyxIvw/cBZY2gLQdRkol8TOIUj/C5C4AseRQjIzeIkMK
-         bwqxgoZq2x9pte1TKADoRxVpBPolW/EPGOEq1KIU+9ZaXCkBdJXI//rle41vPxgJNwc8
-         P9g+sNfeSPOVhJ9CKaTxBDwu49DZowMPyF5dF8aevg5kYo0vm1Xpwsx8FyGQdmMLgQfF
-         +pVA==
-X-Forwarded-Encrypted: i=1; AFNElJ/zlCmdbsBuHbDL2UZsTUi16Usy3X1GDPqq+XT3c1PUZavxSsNcIl15lF8D2UrLayOHjDU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrsHiCy/2gKNXYyrzWXMmpllUTVliHqdOtNgt+66naW3Kuwppc
-	8J/K9l38w05z1Tee2CKe4mnBrVwC8WIRkpXWXwcF4Aww88V/fEbpE14A6U6g6x4SV4uo7goVFQa
-	K/WVGwv3NxpP4ScnkLrXp27lm3NnxYxFKFAB+KvPH
-X-Gm-Gg: Acq92OHixirZTRV3J1EuFFSdROwT/MYHr0fPAbiLp03QPFfp+aDyqftwHKnncDHiqGo
-	c+bNW6lj7ghaSK6sEGUrCSfkW/KxHf0w7jWO+HegZxT/xEPIkyfyLJemmg2hGhK3bup4lrbnToS
-	UpOTARbwQE7Pj3f2/wgx1d16WeJHKMDEpcm01LhiBNgaL+Kas2p/ptwppZQogYoTS0lT/VhOQDt
-	OtAtU06p8oTrSF39sssCnzMNByPztW2wXspTVpk7eBfXWLHpcphxZ5yYHnFtAYnLl8lQlXc/SZH
-	kB79V8g=
-X-Received: by 2002:aa7:c88f:0:b0:68a:83c2:9c75 with SMTP id
- 4fb4d7f45d1cf-69508510539mr2982a12.0.1781544277830; Mon, 15 Jun 2026 10:24:37
- -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781544390; x=1782149190;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=G1YFLp6Nv/x/zFzqR11/t+OBKepAibObBP++vs6jo78=;
+        b=hgCVlP0fSTSOVw9ieP+fzP1A/cFDcA1I+oONrX56Ek3tDk43CLEpv4Ah+h2s6Eo/qi
+         yKLRq5Lml6a8zf7YL6mWD2BDF0MvQVRtnOQyNGDK5OzQd3C9xF625PTMrxpmt3cuwKxj
+         GCu+PAXBYwUpegZBBfn/dShob98jtv7M6NBfhNhvtxq9aJUc/rvXZhAm626XJOVSDyY0
+         cAsxltacOltbLaFZN7FgEHxVkCaOKO3t+O8tTy6ItjGRvwdCgBDqPHgIQMXrNlXHZrpp
+         aQq7dz6rIEkOWu5AdbJSK7haSOJWZLW2rNph3/EfivLUQZEoh6WTZscrsqIahGlStO25
+         CArw==
+X-Forwarded-Encrypted: i=1; AFNElJ+ZczJSdeau0LiYwDPjYNlCfPDADfSMID3NzOWRAk+5elZqtjInOf26cv9+1pl2HcTqF3A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsdbLw6tckR7BtLYXfdIwU7+Yhhd/Btb5FVvGZXsTK6HsyQxzn
+	c5NcQaDb+1Uyi1mS+d3VwE9RLxTm5PFSwtyNjVKJnE/Zcgxqns8kLUzc/NPljk5Jvh+EnZAhpmU
+	KdCC6og==
+X-Received: from plbv4.prod.google.com ([2002:a17:903:44c4:b0:2bd:9574:2958])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cf08:b0:2c2:cf20:213
+ with SMTP id d9443c01a7336-2c69a1b55d7mr1652265ad.29.1781544390381; Mon, 15
+ Jun 2026 10:26:30 -0700 (PDT)
+Date: Mon, 15 Jun 2026 10:26:29 -0700
+In-Reply-To: <CAO9r8zP4aYJ8SuL+eWXOch=BByfWmmCGVRwkHo=1cVx8Y5JAPg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260612230113.684301-1-seanjc@google.com> <20260612230113.684301-7-seanjc@google.com>
-In-Reply-To: <20260612230113.684301-7-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Mon, 15 Jun 2026 10:24:25 -0700
-X-Gm-Features: AVVi8CfJF4AiC3bufnnzoUavmSCtwwDHcX-qUL-RERqKPo7IWSzXuZDEcvXdtIY
-Message-ID: <CALMp9eQuoKtDioQe9FAFwJRew0sj6Sdg3K0ig_aArB9kUC1NXw@mail.gmail.com>
-Subject: Re: [PATCH v3 6/8] KVM: x86: Use kvm_dr{6,7}_valid() to check
- DR{4,5,6,7} write values in emulator
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	=?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, 
-	"Maciej W . Rozycki" <macro@orcam.me.uk>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-27-seanjc@google.com>
+ <CAO9r8zP4aYJ8SuL+eWXOch=BByfWmmCGVRwkHo=1cVx8Y5JAPg@mail.gmail.com>
+Message-ID: <ajA1xaafH-IkuugD@google.com>
+Subject: Re: [PATCH v4 26/30] KVM: x86: Don't treat interrupts as allowed just
+ because a nested run is pending
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kai Huang <kai.huang@intel.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 12, 2026 at 4:03=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> Use kvm_dr{6,7}_valid() to validate the incoming DR{4,5,6,7} value in the
-> emulator instead of open coding an equivalent check.  In the unlikely eve=
-nt
-> that the behavior of DR6/7 (and their aliases) changes in the future, usi=
-ng
-> common helpers will hopefully make it less likely the emulator logic will
-> be overlooked.
->
-> No functional change intended.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
-Reviewed-by: Jim Mattson <jmattson@google.com>
+On Mon, Jun 15, 2026, Yosry Ahmed wrote:
+> On Fri, Jun 12, 2026 at 5:04=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > When querying whether or not interrupts (IRQs) are allowed, check for a
+> > pending nested run _after_ checking whether or not interrupts are block=
+ed.
+> > If L1 is running L2 _without_ nested_exit_on_intr(), i.e. if L1 IRQs ca=
+n
+> > be blocked while running L2, and interrupts will indeed be blocked once=
+ the
+> > nested VM-Enter to L2 is completed, then KVM should treat interrupts as=
+ not
+> > being allowed.
+> >
+> > For injection, this avoids an unnecessary (forced) VM-Exit, as KVM can
+> > immediately request an IRQ window, instead of forcing an exit and _then=
+_
+> > requesting an IRQ window (because after the forced exit, KVM will see t=
+hat
+> > interrupts are blocked).
+> >
+> > For non-injection usage, only kvm_vcpu_ready_for_interrupt_injection() =
+is
+> > affected in practice.  kvm_vcpu_has_events() is unreachable when a nest=
+ed
+> > run is pending, as KVM clears nested_run_pending prior to calling
+> > kvm_emulate_halt_noskip() when putting L2 into HLT via GUEST_ACTIVITY_H=
+LT,
+> > and SVM has no equivalent to GUEST_ACTIVITY_STATE.  I.e. the vCPU will
+> > always be runnable if a nested run is pending, and thus
+> > kvm_arch_vcpu_runnable() =3D> kvm_vcpu_has_events() is effectively dead=
+ code,
+> > as is __kvm_emulate_halt() =3D> kvm_vcpu_has_events().  Oh, and TDX doe=
+sn't
+> > support nested VMX.  Similarly, kvm_can_do_async_pf() is unreachable as
+> > KVM shouldn't be faulting in memory with a pending nested VM-Enter.
+> >
+> > As for kvm_vcpu_ready_for_interrupt_injection(), incorrectly treating
+> > interrupts as being allowed could result in KVM prematurely exiting to
+> > userspace to accept an ExtINT.
+>=20
+> "incorrectly treating interrupts as being allowed" is the status quo,
+> that this patch fixes, not sth this patch introduces -- right?
+
+Right.
+
+> The changelog reads like for the non-injection case this change might
+> not be the right thing to do, but I don't think this is the case? I
+> assume returning false from
+> kvm_vcpu_ready_for_interrupt_injection() and kvm_vcpu_has_events() if
+> L1's interrupts are blocked while L2 is running is the right thing to
+> do?
+
+Yes.
+
+> The code makes sense to me but I am trying to make sense of the changelog=
+.
+
+What part (parts?) is confusing?  Honest question.  I'm trying to reword th=
+e
+changelog to make it "better", but I'm failing miserable because I don't kn=
+ow
+what's wrong :-)
