@@ -1,42 +1,43 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579A63B71C0;
-	Mon, 15 Jun 2026 23:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1DA3BED44;
+	Mon, 15 Jun 2026 23:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781565008; cv=none; b=gMOcAu966wYxWKXdfJTDdOCW99i+za1SPBHUHpBkhmdvtzFqqdZGa6Qqh7xyWJt2pKepyJPJ+1fZf9rD9wStkAwwGOaFNZJ7KQMBix8k7GyGICEfxHFcbRlQ65HiLiTfeTU4QxDj2YWO4j75kF1LU/QCH00Q/v9GUYCMyWIhu9Q=
+	t=1781565010; cv=none; b=XjsQ0r6cHiHUWfwojpNVSdZoqx/7CMxY4TmIgcuFTJBHBF7r44luM+YLxtPlxCFVYqT/BM9xfCAuyyLWC69fYbMLknTArHTPnTbR/mfe9n+1OdzIk+b6ugiiensyOzTrcVl75IcMZHmQJo9LXmL5W/5Cay4aiMn8Er4ONpJwrK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781565008; c=relaxed/simple;
-	bh=mve+UDm/uAGJU6mpWCQ7sGp6QYzaUUSrPpRUQA4PoNw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BZ8WceCxkG3zTuN4q03aqVAAbKMhfJvM7Po6NGm2e0B1sdG3+l1CqnP0AryTYv8Qhgs+WAcTBfI7uBJNNe88zBU85seImguV8IRquGt36vMJsCN87iMHwzMgkNlgv3bql6x+mcF3DVwpHEqA3kbdZ4KCllSs5dFUxPwj1JWQ3xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W6w0/BH4; arc=none smtp.client-ip=198.175.65.10
+	s=arc-20240116; t=1781565010; c=relaxed/simple;
+	bh=uu0OcTgn3CPKXcF0xjMO0RfY0krvnzHgkkThexzDjvs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=M8bbAkRkyGxyha6atCtwXUa0QpDaO1OJVCiVpako/x3SD/v/9WmLA2s+DibjVsscL7XG1AmGhHfxvEgj4qqvfezglhs8FoPuvjNZfKYepy8tSQoHw73f7bmaakYKWHAh7mBtzxxQPzZpJmNVug7jzOCEiCLu7fC2VhZYrEGgTiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FZT+uCZD; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W6w0/BH4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FZT+uCZD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781565008; x=1813101008;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=mve+UDm/uAGJU6mpWCQ7sGp6QYzaUUSrPpRUQA4PoNw=;
-  b=W6w0/BH4KFQyd4H1OMQsF/RhPa7byVUStZvqYEO4RjWrBf68i1uWcnk/
-   CxgmAuXRx7h3X/jyPn7kc37pOOwzg6IT9o+FEVb3rCMDZCeGIIOJn7LDx
-   xpLvXoACjmt07aAr7YW0xHHnF8tEjIvYvhoVVQ9Ro9S6sXBmKaeolxO/z
-   uEbrt2fgMWO2nWTQDQPI0vcbDlXgsNnydZRJJJ+5t4j24zEK+ICnXvW73
-   R4fmb9DcXcNiv3iQbatuaG3GYhYy03vUX8VyTPzbXtRaArFa8+BZrAznK
-   SOzsRZ+q80mVg6yFmNC/IadnAId6fWHgrhTlXxWulyM3vFH6YksvNQ8QD
-   Q==;
-X-CSE-ConnectionGUID: aGR660uETPu7yiBV5Tsmtw==
-X-CSE-MsgGUID: DCd7v0FMTQyug1nmqjmD2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="99738590"
+  t=1781565010; x=1813101010;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=uu0OcTgn3CPKXcF0xjMO0RfY0krvnzHgkkThexzDjvs=;
+  b=FZT+uCZD5Vo8wwowbepknD4PvecqZWlrtNS7Tonvw5YCRx25Hxi2GaDc
+   eGWxkD0O6eUOjTYjbw88JaC7OwOjErwnWCRsKVCjdiGmiqoOkAzcn/F+c
+   1sDnFaOCypCIxszXU+spNxHgb2ewFb66aoUuz93B/MEXajrGXZFY9U/lo
+   8frQ4/T0fkqWix0ro4ydczIF7+MXsvXY3pYT2dWZvh9aUz/9FSY4xCj9g
+   Fwfny3WglfoWZs3IN8zLdYMxreIQHvbsesgCB4r2G+9TI6ldoH3Yj7gn0
+   Q/g2nYyibC32AyTqlwaOG5uv45NwpytO4QOlSCYR66ACsWlwRqdQ5Xi+Y
+   A==;
+X-CSE-ConnectionGUID: u6PiyQhTRKyW5cKM+6Vsgg==
+X-CSE-MsgGUID: C/Ilpt4DQgimyO3ZNf7v1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="99738593"
 X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
-   d="scan'208";a="99738590"
+   d="scan'208";a="99738593"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 16:10:07 -0700
-X-CSE-ConnectionGUID: oLzplcC5R7Ozrd7+DcG0Yg==
-X-CSE-MsgGUID: 8SCbXtllQfeCf9R3UjH3Sw==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 16:10:08 -0700
+X-CSE-ConnectionGUID: MRZGq3RCQKSK0Awlr3KY7g==
+X-CSE-MsgGUID: pINr62ocR7eYnN8FGdsidA==
 X-ExtLoop1: 1
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
   by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 16:10:06 -0700
@@ -53,10 +54,12 @@ Cc: kvm@vger.kernel.org,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Falcon Thomas <thomas.falcon@intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH V3 0/4] KVM: x86/pmu: Add hardware Topdown metrics support
-Date: Mon, 15 Jun 2026 16:01:14 -0700
-Message-ID: <20260615230118.50718-1-zide.chen@intel.com>
+Subject: [PATCH V3 1/4] KVM: x86/pmu: Do not map fixed counters >= 3 to generic perf events
+Date: Mon, 15 Jun 2026 16:01:15 -0700
+Message-ID: <20260615230118.50718-2-zide.chen@intel.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260615230118.50718-1-zide.chen@intel.com>
+References: <20260615230118.50718-1-zide.chen@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -65,98 +68,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Top-Down Microarchitecture Analysis (TMA) method is a structured
-approach for identifying performance bottlenecks in out-of-order
-processors.
+Only fixed counters 0..2 have matching generic cross-platform
+hardware perf events (INSTRUCTIONS, CPU_CYCLES, REF_CPU_CYCLES).
+Therefore, perf_get_hw_event_config() is only applicable to these
+counters.
 
-Currently, guests support the TMA method by collecting Topdown events
-using GP counters, which may trigger multiplexing.  To free up scarce
-GP counters, eliminate multiplexing-induced skew, and obtain coherent
-Topdown metric ratios, it is desirable to expose fixed counter 3 and
-the IA32_PERF_METRICS MSR to guests.
+KVM does not intend to emulate fixed counters >= 3 on legacy
+(non-mediated) vPMU, while for mediated vPMU, KVM does not care what
+the fixed counter event mappings are.  Therefore, return 0 for their
+eventsel.
 
-Several attempts have been made to virtualize this under the legacy
-vPMU model [1][2][3], but they were unsuccessful.  With the new mediated
-vPMU, enabling TMA support in guests becomes much simpler.  It avoids
-invasive changes to the perf core, eliminates CPU pinning and
-fixed-counter affinity issues, and reduces the latge overhead of
-trapping and emulating MSR accesses.
+Also remove __always_inline as BUILD_BUG_ON() is no longer needed.
 
-[1] https://lore.kernel.org/kvm/20231031090613.2872700-1-dapeng1.mi@linux.intel.com/
-[2] https://lore.kernel.org/all/20230927033124.1226509-1-dapeng1.mi@linux.intel.com/T/
-[3] https://lwn.net/ml/linux-kernel/20221212125844.41157-1-likexu@tencent.com/
-
-Tested on an SPR.  Without this series, only raw topdown.*_slots events
-work in the guest, and metric events (e.g. cpu/topdown-bad-spec/) are
-not available.
-
-With this series, metric events are visible in the guest.  Run this
-command on both host and guest:
-
-$ perf stat --topdown --no-metric-only -- taskset -c 2 perf bench sched messaging
-
-Host results:
-
-# Running 'sched/messaging' benchmark:
-# 20 sender and receiver processes per group
-# 10 groups == 400 processes run
-
-     Total time: 1.500 [sec]
-
- Performance counter stats for 'taskset -c 2 perf bench sched messaging':
-
-     4,266,060,558      TOPDOWN.SLOTS:u              #     32.0 %  tma_frontend_bound
-                                                     #      5.2 %  tma_bad_speculation
-       588,397,905      topdown-retiring:u           #     13.8 %  tma_retiring
-                                                     #     49.0 %  tma_backend_bound
-     1,376,283,990      topdown-fe-bound:u
-     2,096,827,304      topdown-be-bound:u
-       217,425,841      topdown-bad-spec:u
-         5,050,520      INT_MISC.UOP_DROPPING:u
-
-Only minor changes in v3.
-
-Rebased to kvm-x86/next: c1f730330292
-
-v3 changes:
-- patch 2/4: Move the non-contiguous counter filter code to pmu.c (Dapeng)
-- patch 3/4: Replace WARN_ON() with WARN_ON_ONCE(). (Dapeng)
-- patch 4/4: Change abs() with explicit bounds (sum >= 0xfd && sum <= 0x102).
-- Minor comment cleanups.
-
-v2 changes:
-- As suggested by Dapeng, implement a new selftest patch.
-- Don't advertise fixed counter 3 if the host doesn't support it.
-- Minor change in patch 1 to remove a magic number.
-
+Signed-off-by: Zide Chen <zide.chen@intel.com>
+---
 v2:
-https://lore.kernel.org/kvm/20260423174639.56149-1-zide.chen@intel.com/T/#u
-v1:
-https://lore.kernel.org/kvm/20260226230606.146532-1-zide.chen@intel.com/T/#t
-QEMU:
-https://lore.kernel.org/qemu-devel/20260604025546.19378-7-zide.chen@intel.com/
+- Replace 3 in "if (index < 3)" with ARRAY_SIZE(fixed_pmc_perf_ids).
+---
+ arch/x86/kvm/vmx/pmu_intel.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-Dapeng Mi (2):
-  KVM: x86/pmu: Support Intel fixed counter 3 on mediated vPMU
-  KVM: x86/pmu: Support PERF_METRICS MSR in mediated vPMU
-
-Zide Chen (2):
-  KVM: x86/pmu: Do not map fixed counters >= 3 to generic perf events
-  KVM: selftests: Add perf_metrics and fixed counter 3 tests
-
- arch/x86/include/asm/kvm_host.h               |  3 +-
- arch/x86/include/asm/msr-index.h              |  1 +
- arch/x86/include/asm/perf_event.h             |  1 +
- arch/x86/kvm/pmu.c                            | 18 +++++
- arch/x86/kvm/vmx/pmu_intel.c                  | 62 ++++++++++++----
- arch/x86/kvm/vmx/pmu_intel.h                  |  5 ++
- arch/x86/kvm/vmx/vmx.c                        |  6 ++
- arch/x86/kvm/x86.c                            | 10 ++-
- tools/arch/x86/include/asm/msr-index.h        |  1 +
- tools/testing/selftests/kvm/include/x86/pmu.h |  3 +
- .../selftests/kvm/x86/pmu_counters_test.c     | 72 +++++++++++++++++--
- 11 files changed, 161 insertions(+), 21 deletions(-)
-
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index a73a9515d96c..59b7a90c79e1 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -464,28 +464,30 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+  * different perf_event is already utilizing the requested counter, but the end
+  * result is the same (ignoring the fact that using a general purpose counter
+  * will likely exacerbate counter contention).
+- *
+- * Forcibly inlined to allow asserting on @index at build time, and there should
+- * never be more than one user.
+  */
+-static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
++static u64 intel_get_fixed_pmc_eventsel(unsigned int index)
+ {
+ 	const enum perf_hw_id fixed_pmc_perf_ids[] = {
+ 		[0] = PERF_COUNT_HW_INSTRUCTIONS,
+ 		[1] = PERF_COUNT_HW_CPU_CYCLES,
+ 		[2] = PERF_COUNT_HW_REF_CPU_CYCLES,
+ 	};
+-	u64 eventsel;
+-
+-	BUILD_BUG_ON(ARRAY_SIZE(fixed_pmc_perf_ids) != KVM_MAX_NR_INTEL_FIXED_COUNTERS);
+-	BUILD_BUG_ON(index >= KVM_MAX_NR_INTEL_FIXED_COUNTERS);
++	u64 eventsel = 0;
+ 
+ 	/*
+-	 * Yell if perf reports support for a fixed counter but perf doesn't
+-	 * have a known encoding for the associated general purpose event.
++	 * Fixed counters 3 and above don't have corresponding generic hardware
++	 * perf event, and KVM does not intend to emulate them on non-mediated
++	 * vPMU.
+ 	 */
+-	eventsel = perf_get_hw_event_config(fixed_pmc_perf_ids[index]);
+-	WARN_ON_ONCE(!eventsel && index < kvm_pmu_cap.num_counters_fixed);
++	if (index < ARRAY_SIZE(fixed_pmc_perf_ids)) {
++		/*
++		 * Yell if perf reports support for a fixed counter but perf
++		 * doesn't have a known encoding for the associated general
++		 * purpose event.
++		 */
++		eventsel = perf_get_hw_event_config(fixed_pmc_perf_ids[index]);
++		WARN_ON_ONCE(!eventsel && index < kvm_pmu_cap.num_counters_fixed);
++	}
+ 	return eventsel;
+ }
+ 
 -- 
 2.54.0
 
