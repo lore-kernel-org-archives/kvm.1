@@ -1,95 +1,139 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6E140961E;
-	Mon, 15 Jun 2026 16:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE8B40B377
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 16:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781540598; cv=none; b=MPiNc8nRHD5sjV1L3VUGDBwZZes5Ax+rIvQi97WlfkW53GL9deKlwi5OiHecwwwzMjxMkREWEKLG6BbQBUpCBGKDfY69yvidfrEVaFcCEZh0O57wx1h2skR+zC8XFZvh0500C0bncOjDAApIiN77d8BjnBaY9G0WNXqOjUx9lxY=
+	t=1781540653; cv=none; b=RE0RuvzIQt9vi5qdkK+zydBOIFY6Hs2uAXWB3qLyUpakC5k8/eVOxZxjM8F4b/8psMM49Fg8Fnvof+AJVpE27CuzbJC3uAPznkf2i8zPSHlZYYYyerhAjgiegq6lo6gEuJsUl4MGFNOoJCzniq06LUTPUGsxVIPFv3wTa+xY4MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781540598; c=relaxed/simple;
-	bh=hadKou4uoljaU+4LI3Rv8abKPkMOjSaFglihRi7xjFU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MD85LFiX75apMjo4OmOwuD8/6OnhAYGNI1nI4Djbr0byvuF04SrsuzbT3Gero4h8TYnSTWdE+xEeoUjNe50rF7jYnRAbTESmuI+XUqNOkZmZ6qopREKAlAD2gRTGIBR3TmE6GBf+L1aiePqy0eWA/HsX+7B4wLtoJw2edTEoZmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G9j9uSkW; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1781540653; c=relaxed/simple;
+	bh=EVt56oAjTD6wNFwS9tRM+Jo2ox+dBTYN6dvu6U4tLsw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=usqvYNedXb/7RDn7woAEKWAs43mry4DawaS2PDV8ryNGeE0DsX8ntVWuc/BKvkF0auR+snwyIWnefyjUPTeULfAGDHda1f/mQRQUdonUlsfm99G+Ls0Q2ZtPFSZm1ZKByfktHKd0HhnKNkWOykM+kU5QeZ4Gyc9qTZG3Bm/8+Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GSPvKnPe; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G9j9uSkW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781540597; x=1813076597;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hadKou4uoljaU+4LI3Rv8abKPkMOjSaFglihRi7xjFU=;
-  b=G9j9uSkWwtY5xH77oG1sPMhOL3xAIxm4moiU2KkoqD0VQ99D1WYYO62X
-   Kt3plEttB26G0w1/Iqtbm2S0OiipSGslhSP/JUNeP7aSsfboXiOqQ0Qo1
-   qbeoYw/YcnbsByzbcUC6ETCWX+4AlOt2wrxFKJAb6gIc0mBR3KC4WhiCf
-   xF6W6HbI6aGDKR+chWeuEgkTbSjNgAGO7YJapVJiXJ4iIqT3giDW2cFWT
-   +8iGwcf81GhJAAFWxFbWo9GDQ/YcWZGjv1exT/LMjWydZc6bCTJMqfP0F
-   EZcpEEMCoagtUmtB3eBBU6Ix1EnaumDXz10KjWMsFuNTi5mj2j923x4N8
-   w==;
-X-CSE-ConnectionGUID: vNZ2voRcSUKvnlz5lxBSdQ==
-X-CSE-MsgGUID: KO6jGC2eS9WXJ+WOR9IYtw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82394280"
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="82394280"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 09:23:16 -0700
-X-CSE-ConnectionGUID: n/IvD/qPRly03AV42TiJ7A==
-X-CSE-MsgGUID: erddFOBIQRujdY0BKpx1Og==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="249407173"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa004.fm.intel.com with ESMTP; 15 Jun 2026 09:23:11 -0700
-Date: Mon, 15 Jun 2026 23:58:18 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Dan Williams (nvidia)" <djbw@kernel.org>
-Cc: kas@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
-	peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 04/15] x86/virt/tdx: Enable the Extensions right after
- basic TDX Module init
-Message-ID: <ajAhGj391ysXQS5g@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-5-yilun.xu@linux.intel.com>
- <6a2c9f90d348_9b8551003e@djbw-dev.notmuch>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GSPvKnPe"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d99629fd6so5599045a91.1
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 09:24:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781540651; x=1782145451; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EVt56oAjTD6wNFwS9tRM+Jo2ox+dBTYN6dvu6U4tLsw=;
+        b=GSPvKnPeRUXzyJYLwHaB0jP2RdsU2T7CGqeKKo/n7gPo7FHFAo+Q1lDwcJU4TEgUvq
+         sQzE4ATM5MI4T9DxtyPosiLIhKJxQyBKP8xQh/NoVESYWsWwbISAP3aSCw+XykDTitwz
+         cqP4bqSkmX7U5/eRwWESWqmQcWoD30/WIPSBta71qU6GuwC/6yiANPldMM1ddvk3Ukjs
+         RJbDVECk6uxEjLNNosGhUTwzAqHqbPSb4iGcOl0RCRnKpYPwcqUmZjVmricCTQykmT37
+         2ucoKZeB9/dvNd0u9FVOOm67DxK74Oe7NJ4MRWijAcv4QvzveKlMVTygx6+ynVXkMDxd
+         Z5kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781540651; x=1782145451;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EVt56oAjTD6wNFwS9tRM+Jo2ox+dBTYN6dvu6U4tLsw=;
+        b=Vt3eG1YxNDiYpocmK6I/xNZoLDFMN8BZ9R5yP97NugMAqzN/hIdCsbXKCOpwBFxCPW
+         bZWRF/x17tsz3HG2xKnhLtb0uChn0beUWDEAMuRpq2IH8Yaxs6fk/fdRqKXSeqXU5QQ0
+         1KkgwSEqgt7PdzEq6M2y4bzWkHWsUv59i3/qWjnTjxbMH5rfsASpvwPCcXwnsrGo8XPX
+         pLCz8UAXRlpSNTpaBEth2Jc2Bgd/H8i5vfZ5ZlACrWyox6JvxslRHS7J4crgpN6zar2M
+         ZZq8yCNU5d16RA9JHPxZMXsING8abVIOu2ekuRQyrnP9f0UD82+obsL9be1VHa3i4l86
+         KGLw==
+X-Forwarded-Encrypted: i=1; AFNElJ+cGTsRrBb3ZfQIBMX1HG9W7m9i8hHG6yr5HScN/n9j2g0m9Zs3+Pi6yqEz1hQYwQrC/Mg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXfBrPF8j2SvTWGhx/27/yRSDk0BOFP07hHO4DtzQWm3l0vKwS
+	5F+8svsOoYHO+IbhOdY2bEmtmYour1WEMRoyRe5UY1zkLKkh+aproubO5lqJFeKvdEQshzYaSX8
+	JGkP/Yw==
+X-Received: from pjbrr7.prod.google.com ([2002:a17:90b:2b47:b0:36a:7bd1:2d9c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d006:b0:36a:8ce7:b879
+ with SMTP id 98e67ed59e1d1-37a018486cdmr14629534a91.5.1781540651113; Mon, 15
+ Jun 2026 09:24:11 -0700 (PDT)
+Date: Mon, 15 Jun 2026 09:24:10 -0700
+In-Reply-To: <69019093-fed6-4cb1-b3b5-a62a3a46578c@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a2c9f90d348_9b8551003e@djbw-dev.notmuch>
+Mime-Version: 1.0
+References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-7-seanjc@google.com>
+ <ea5bb362-f6ff-48e1-94f0-0b413969a186@intel.com> <69019093-fed6-4cb1-b3b5-a62a3a46578c@linux.intel.com>
+Message-ID: <ajAnKleLBD411Uka@google.com>
+Subject: Re: [PATCH v4 06/30] KVM: x86: Move kvm_caps and kvm_host_values to asm/kvm_host.h
+From: Sean Christopherson <seanjc@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 12, 2026 at 05:08:48PM -0700, Dan Williams (nvidia) wrote:
-> Xu Yilun wrote:
-> > The detailed initialization flow for TDX Module Extensions has been
-> > fully implemented. Enable the flow after basic TDX Module
-> > initialization.
-> > 
-> > Theoretically, the Extensions doesn't need to be enabled right after
-> > basic TDX initialization. It could be enabled right before the first
-> > Extension SEAMCALL is issued. That would save or postpone memory usage.
-> > But it isn't worth the complexity, the needs for the Extensions are vast
-> > but the savings are little for a typical TDX capable system (about
-> > 0.001% of memory). So the Linux decision is to just enable it along with
-> > the basic TDX.
-> 
-> No real point in rehashing the rationale for the "any available, all the
-> time" policy yet again especially when this directly conflicts with the
-> "relatively large amount" comment in the original cover letter.
+On Mon, Jun 15, 2026, Binbin Wu wrote:
+> On 6/13/2026 5:01 PM, Xiaoyao Li wrote:
+> > On 6/13/2026 8:03 AM, Sean Christopherson wrote:
+> >> Relocate the kvm_caps and kvm_host_values struct definitions and their
+> >> associated global variable declarations to asm/kvm_host.h to allow for=
+ a
+> >> variety of cleanups in x86.h and mmu.h, and to establish a (hopefully)
+> >> maintainable rule that asm/kvm_host.h's role is to define common
+> >> structures (and declare any associated globals), and anything needed b=
+y
+> >> arch-neutral KVM.
+> >>
+> >> While it would be lovely to trim kvm_host.h down to the point where it
+> >> *only* holds things needed by arch-neutral and/or non-KVM code, multip=
+le
+> >> attempts to do just that have failed miserably.=C2=A0 Trying to "hide"=
+ code
+> >> from arch-neutral KVM is too restrictive (and ultimately pointless), a=
+nd
+> >> KVM x86 itself also needs a place to define common structures and thei=
+r
+> >> globals, e.g. to avoid inconsistent header include chains and/or mispl=
+aced
+> >> helpers.
+> >>
+> >> E.g. as pointed out by Kai, it's weird that x86.h, which is a kitchen =
+sink
+> >> of sorts, includes regs.h, but not mmu.h.=C2=A0 Literally the only rea=
+son that
+> >> x86.h doesn't include mmu.h is that mmu.h references kvm_host, which i=
+s
+> >> currently defined in x86.h.=C2=A0 As a result of odd include ordering,=
+ the
+> >> very clearly MMU-specific helper mmu_is_nested() lives in x86.h, not m=
+mu.h
+> >>
+> >> "Fix" the kvm_host dependency so that x86.h can be the "central" inclu=
+de
+> >> everyone expects it to be, and set KVM x86 on the path to having somew=
+hat
+> >> sensible "rules" for what goes where:
+> >>
+> >> =C2=A0=C2=A0 - asm/kvm_host.h holds "common" structure definitions and=
+ associated key
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 global variables, and things that are referen=
+ced by arch-neutral KVM.
+> >=20
+> > I'm confused by the term "arch-neutral" all over the changelog. I suppo=
+se
 
-Agree. Will remove the section which is copied from cover letter.
+"arch-neutral" refers to virt/kvm code and other code that isn't arch speci=
+fic.
+I used arch-neutral here, e.g. instead of "common code", to differentiate b=
+etween
+arch-neutral (virt/kvm) code and common x86 (arch/x86/kvm) code.
 
-> 
-> Otherwise I agree with the proposed reordering of this initial series.
-> 
-> In general though, no big showstoppers for me in this first 4.
+> > include/linux/kvm_host.h is arch-neutral while asm/kvm_host.h is
+> > arch-specific but not KVM internal only.
+>=20
+> IIUC, it's the situation where asm/kvm_host.h for x86 provides the
+> x86-specific pieces that the generic/arch-neutral KVM depends on.
+> E.g. struct kvm_arch is defined in asm/kvm_host.h, which is x86-specific,=
+ but
+> the generic KVM embeds it in struct kvm as 'struct kvm_arch arch' in
+> include/linux/kvm_host.h, i.e. "referenced by arch-neutral KVM".
 
-Thanks for the review!
+Yep, exactly.
