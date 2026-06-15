@@ -1,139 +1,84 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE8B40B377
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 16:24:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED25240DFC4
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 16:31:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781540653; cv=none; b=RE0RuvzIQt9vi5qdkK+zydBOIFY6Hs2uAXWB3qLyUpakC5k8/eVOxZxjM8F4b/8psMM49Fg8Fnvof+AJVpE27CuzbJC3uAPznkf2i8zPSHlZYYYyerhAjgiegq6lo6gEuJsUl4MGFNOoJCzniq06LUTPUGsxVIPFv3wTa+xY4MQ=
+	t=1781541077; cv=none; b=F2PRBYvN+y+6FOMMAVXmaZgLFMC0vD2EmWqns8vTNZ57vaHN/GbQp6Q4Qm2Z+Q8rBdNXUBsruLVGmsPJP6wiokPcBfw39y0fh1INuyHoF+1Ca29O6UYnr+QfXRLqXWWLvssB6JCLihCLLrxBdAosvuKKF0rQWNWSJEt1puKAR6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781540653; c=relaxed/simple;
-	bh=EVt56oAjTD6wNFwS9tRM+Jo2ox+dBTYN6dvu6U4tLsw=;
+	s=arc-20240116; t=1781541077; c=relaxed/simple;
+	bh=bqpHpy3q7aSGVukZ5Yxvyrpqx0Tziizql2pNoSPcBi4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=usqvYNedXb/7RDn7woAEKWAs43mry4DawaS2PDV8ryNGeE0DsX8ntVWuc/BKvkF0auR+snwyIWnefyjUPTeULfAGDHda1f/mQRQUdonUlsfm99G+Ls0Q2ZtPFSZm1ZKByfktHKd0HhnKNkWOykM+kU5QeZ4Gyc9qTZG3Bm/8+Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GSPvKnPe; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=sM3b3xgB4XQPvFCylOv+lv+NVNy7N13zlBMU17L1EThmmyky1nadtdveaC4uSid05/hvJf+4EqXKElChqBUYvCCmYhr4UVnaSS09aTG5qGMixeiC8xWEpF8/8P3uRE+7DaTB6nHpGWBU3u2VH9kCYolPQt1CLlgWhO448gpNvl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BxI2yqLW; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GSPvKnPe"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d99629fd6so5599045a91.1
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 09:24:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BxI2yqLW"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0532a6588so33085105ad.0
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 09:31:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781540651; x=1782145451; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EVt56oAjTD6wNFwS9tRM+Jo2ox+dBTYN6dvu6U4tLsw=;
-        b=GSPvKnPeRUXzyJYLwHaB0jP2RdsU2T7CGqeKKo/n7gPo7FHFAo+Q1lDwcJU4TEgUvq
-         sQzE4ATM5MI4T9DxtyPosiLIhKJxQyBKP8xQh/NoVESYWsWwbISAP3aSCw+XykDTitwz
-         cqP4bqSkmX7U5/eRwWESWqmQcWoD30/WIPSBta71qU6GuwC/6yiANPldMM1ddvk3Ukjs
-         RJbDVECk6uxEjLNNosGhUTwzAqHqbPSb4iGcOl0RCRnKpYPwcqUmZjVmricCTQykmT37
-         2ucoKZeB9/dvNd0u9FVOOm67DxK74Oe7NJ4MRWijAcv4QvzveKlMVTygx6+ynVXkMDxd
-         Z5kg==
+        d=google.com; s=20251104; t=1781541075; x=1782145875; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kUkeRQ5xIJYqSZwyNIq6ysdGtV+0SA4evYZT4zsGKoM=;
+        b=BxI2yqLWaWpw31Yi/nIv/2m+adsfRDeqgTFxFMXRdeWCwzhS8ls3Qscs154ovyS8ta
+         LDWpuOzxoDojqiIeBrCgoCxzGu1MImxrcHcYdaHoBf7noMnxgtc5S5PRMrp/C79+aX0o
+         BhjWI1Q3/fpQZxtf67NXuof7jirNIx8sZavgoGFk6eRqq6WWdcA9NjhoU7FR50rc/Nuv
+         Hf5/02YK1LeB6LAlEulgXwc5I2C8epHpwRCiX2/CtgOFXidq785mCyZBb5oUT7R/Ildh
+         5Bnoja2t/6xMu9sqI5yXQQsobPi7xp+ZeTjdEqU+qtrY0CUuG+RSwwXgKUM4ZeYGZsGA
+         UcHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781540651; x=1782145451;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EVt56oAjTD6wNFwS9tRM+Jo2ox+dBTYN6dvu6U4tLsw=;
-        b=Vt3eG1YxNDiYpocmK6I/xNZoLDFMN8BZ9R5yP97NugMAqzN/hIdCsbXKCOpwBFxCPW
-         bZWRF/x17tsz3HG2xKnhLtb0uChn0beUWDEAMuRpq2IH8Yaxs6fk/fdRqKXSeqXU5QQ0
-         1KkgwSEqgt7PdzEq6M2y4bzWkHWsUv59i3/qWjnTjxbMH5rfsASpvwPCcXwnsrGo8XPX
-         pLCz8UAXRlpSNTpaBEth2Jc2Bgd/H8i5vfZ5ZlACrWyox6JvxslRHS7J4crgpN6zar2M
-         ZZq8yCNU5d16RA9JHPxZMXsING8abVIOu2ekuRQyrnP9f0UD82+obsL9be1VHa3i4l86
-         KGLw==
-X-Forwarded-Encrypted: i=1; AFNElJ+cGTsRrBb3ZfQIBMX1HG9W7m9i8hHG6yr5HScN/n9j2g0m9Zs3+Pi6yqEz1hQYwQrC/Mg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXfBrPF8j2SvTWGhx/27/yRSDk0BOFP07hHO4DtzQWm3l0vKwS
-	5F+8svsOoYHO+IbhOdY2bEmtmYour1WEMRoyRe5UY1zkLKkh+aproubO5lqJFeKvdEQshzYaSX8
-	JGkP/Yw==
-X-Received: from pjbrr7.prod.google.com ([2002:a17:90b:2b47:b0:36a:7bd1:2d9c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d006:b0:36a:8ce7:b879
- with SMTP id 98e67ed59e1d1-37a018486cdmr14629534a91.5.1781540651113; Mon, 15
- Jun 2026 09:24:11 -0700 (PDT)
-Date: Mon, 15 Jun 2026 09:24:10 -0700
-In-Reply-To: <69019093-fed6-4cb1-b3b5-a62a3a46578c@linux.intel.com>
+        d=1e100.net; s=20251104; t=1781541075; x=1782145875;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kUkeRQ5xIJYqSZwyNIq6ysdGtV+0SA4evYZT4zsGKoM=;
+        b=lQJA5ZVXhwdmpJV5UO4F+IlW1RUymhCHALKlyaEiLt3Cwrbr4K6JkV/0pav/d9KJ+n
+         UlBbDMncS7Wtn5sUKIj+J9/iIpZV1kME0wdnsuVcuvcg5PtKcq+9y8zAqP2wCQe0qfG6
+         NImpKSXtJSQcrO/biJD6XilIXZhaanmhhsiJIitTNGykK0xua6h9wBlSB/uZmjEv6fin
+         cIFTuySvWhQ2jq2IntkjmfSrIHrC7BV6QYlQ0DlYeRZeWd/n3q3obUDT7IgrA02TUqqT
+         b0Qso9kU+gQT9LHP8BxREsYoQil7V9d7kAYR+H7arNhedO3Z/CJVYHGEsOwZCugcqowK
+         IIiw==
+X-Forwarded-Encrypted: i=1; AFNElJ+rU9rD/6XMsZqkhDHcMQQY8PfbCMGWZTzPBEoYezdTZ2+m0vOHAWk0RbT7RRSJ4l+aiXQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQF5OE+WNz76gZFwK4iNlROK7FEmvix+9ikgG7S2EQb5CtxHu5
+	7qYRspKf307TTG1NTrDutgGMVx0my4JN1wE/GCfy9wGY1huQTfEBNOuvbiatvR7rWq/HKmonrqX
+	cMi4gig==
+X-Received: from plv2.prod.google.com ([2002:a17:903:bc2:b0:2b2:4611:5de2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f792:b0:2bd:606d:b342
+ with SMTP id d9443c01a7336-2c664290a31mr139852995ad.26.1781541075181; Mon, 15
+ Jun 2026 09:31:15 -0700 (PDT)
+Date: Mon, 15 Jun 2026 09:31:14 -0700
+In-Reply-To: <5c7f27d4-9561-4ad8-9cd8-de8af5ebba5b@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-7-seanjc@google.com>
- <ea5bb362-f6ff-48e1-94f0-0b413969a186@intel.com> <69019093-fed6-4cb1-b3b5-a62a3a46578c@linux.intel.com>
-Message-ID: <ajAnKleLBD411Uka@google.com>
-Subject: Re: [PATCH v4 06/30] KVM: x86: Move kvm_caps and kvm_host_values to asm/kvm_host.h
+References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-12-seanjc@google.com>
+ <5c7f27d4-9561-4ad8-9cd8-de8af5ebba5b@linux.intel.com>
+Message-ID: <ajAo0k2kAOFai4xg@google.com>
+Subject: Re: [PATCH v4 11/30] KVM: x86: Move kvm_{load,put}_guest_fpu() to fpu.h
 From: Sean Christopherson <seanjc@google.com>
 To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>, 
+	Kai Huang <kai.huang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
 On Mon, Jun 15, 2026, Binbin Wu wrote:
-> On 6/13/2026 5:01 PM, Xiaoyao Li wrote:
-> > On 6/13/2026 8:03 AM, Sean Christopherson wrote:
-> >> Relocate the kvm_caps and kvm_host_values struct definitions and their
-> >> associated global variable declarations to asm/kvm_host.h to allow for=
- a
-> >> variety of cleanups in x86.h and mmu.h, and to establish a (hopefully)
-> >> maintainable rule that asm/kvm_host.h's role is to define common
-> >> structures (and declare any associated globals), and anything needed b=
-y
-> >> arch-neutral KVM.
-> >>
-> >> While it would be lovely to trim kvm_host.h down to the point where it
-> >> *only* holds things needed by arch-neutral and/or non-KVM code, multip=
-le
-> >> attempts to do just that have failed miserably.=C2=A0 Trying to "hide"=
- code
-> >> from arch-neutral KVM is too restrictive (and ultimately pointless), a=
-nd
-> >> KVM x86 itself also needs a place to define common structures and thei=
-r
-> >> globals, e.g. to avoid inconsistent header include chains and/or mispl=
-aced
-> >> helpers.
-> >>
-> >> E.g. as pointed out by Kai, it's weird that x86.h, which is a kitchen =
-sink
-> >> of sorts, includes regs.h, but not mmu.h.=C2=A0 Literally the only rea=
-son that
-> >> x86.h doesn't include mmu.h is that mmu.h references kvm_host, which i=
-s
-> >> currently defined in x86.h.=C2=A0 As a result of odd include ordering,=
- the
-> >> very clearly MMU-specific helper mmu_is_nested() lives in x86.h, not m=
-mu.h
-> >>
-> >> "Fix" the kvm_host dependency so that x86.h can be the "central" inclu=
-de
-> >> everyone expects it to be, and set KVM x86 on the path to having somew=
-hat
-> >> sensible "rules" for what goes where:
-> >>
-> >> =C2=A0=C2=A0 - asm/kvm_host.h holds "common" structure definitions and=
- associated key
-> >> =C2=A0=C2=A0=C2=A0=C2=A0 global variables, and things that are referen=
-ced by arch-neutral KVM.
-> >=20
-> > I'm confused by the term "arch-neutral" all over the changelog. I suppo=
-se
+> On 6/13/2026 8:03 AM, Sean Christopherson wrote:
+> > Move the kvm_{load,put}_guest_fpu() helpers to fpu.h in anticipation of
+> > moving the bulk of KVM's register specific code out of x86.c.
+> 
+> Nit:
+> I think patch 4 did the moving, so it's not "in anticipation of" anymore?
 
-"arch-neutral" refers to virt/kvm code and other code that isn't arch speci=
-fic.
-I used arch-neutral here, e.g. instead of "common code", to differentiate b=
-etween
-arch-neutral (virt/kvm) code and common x86 (arch/x86/kvm) code.
+Oh, nice catch.  It's a typo, it should be MSR, not register.  I'll change to
+this:
 
-> > include/linux/kvm_host.h is arch-neutral while asm/kvm_host.h is
-> > arch-specific but not KVM internal only.
->=20
-> IIUC, it's the situation where asm/kvm_host.h for x86 provides the
-> x86-specific pieces that the generic/arch-neutral KVM depends on.
-> E.g. struct kvm_arch is defined in asm/kvm_host.h, which is x86-specific,=
- but
-> the generic KVM embeds it in struct kvm as 'struct kvm_arch arch' in
-> include/linux/kvm_host.h, i.e. "referenced by arch-neutral KVM".
-
-Yep, exactly.
+  Move the kvm_{load,put}_guest_fpu() helpers to fpu.h in anticipation of
+  moving the bulk of KVM's MSR specific code out of x86.c (KVM needs to load
+  and put the FPU when accessing MSRs that are managed via XSTATE, a.k.a. the
+  so called "FPU").
