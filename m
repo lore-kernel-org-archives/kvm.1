@@ -1,134 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5AE2DF152
-	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 23:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221F527FD43
+	for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 23:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781566013; cv=none; b=SQPp7VULvrO52PxzjprI9fvZYW36RpQNkRC8LdwhcBbO8/F3toHRyO0bah0oHcLgaSVtK+CzcQ28KpdJSJYxShV4g/PYs3N1Hdn0MJZrNq69dqdz8I6gVKfHQsAdVJroXBIOZse/a5uYWBW4PqzrXdU1LxvVz4CvO1+w8nYm4ec=
+	t=1781566438; cv=none; b=TZX9geqlWf3c8qDl94hq67H10S7eEHjjv3SWqACCOpv865+WMjl1BbPkMmb8ztsyuw8aH7k/QARPj5FlJ6P0KWEwSERc0nWR2/LVuJy1ZHoyAHwT5X3PgDFbYMaY+qXrVZWbEn1+6wmR7F7BT1mLzwleW7aY523UioMQDC/Vhjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781566013; c=relaxed/simple;
-	bh=RqXgjuHVevvncdKluDagNLSfOrgbx856UfHs9mT6xHk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=C6jRVho9jHJdnPxmzra7nv7REsCDfHnTn7P1+PBnLa0cLsbrTWs1XDRRct80lgnXLaytDREEK9YHjU849iDZDU6FDqPcr6SCgrlszj7AZdOGprn7LjArHuwX8CUkNnWhsVKSEJztZ8VWo2Xl4mqB6/vyUGBsntxcbpmRjUBB3Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZSrcUaoz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781566438; c=relaxed/simple;
+	bh=wkWq1YyQe9HfMn5h5fwETvev7LwtmAAMc8+W6YYydmw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AyJNh5KvKmZbmjunjpJ5JjUb1IZogppHVnZUjXKt+Hc5gDPQQ9IfhRBfDyJxJFCiaXGuv/t6+n+B/QlJfNmpLb1omiWF2Ru2l+0S4WBnvBldw/wL6eEJfdljf1c1KFVrokjEbKO3FOxq1qz7VK9fsT31pqDgbjq3olIExl9L1v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XAp0NZoD; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZSrcUaoz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768D71F000E9;
-	Mon, 15 Jun 2026 23:26:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781566012;
-	bh=/tQs+HWdJ3GDrlOvttNbO0wEBhxIVUfm7CMlkB21zK0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZSrcUaoznL7sikH4t29sbYhTjDnFNbZSAMV92sH07COsiXvZbSZouIxkO+K2fbGXy
-	 l7VF5hryZQ9fZ8GaLtOFTcpMucSAE800UWLrXlbZCHXLMkPNO/ZwWrh5Ad/cKI+GqP
-	 LVeeLDezsY4GT/HnbxUX/D015WXOSZsejv+RfFtnllOTwu47J0fUau354+RBxgcOMk
-	 ezBlppiZSmWKdr0K3h3ju/w68k+ZQoTUtaMBWbw+kP+T90X4yo77HF7gAEgF+a8PJn
-	 8ZtRrd+YbgSLVb7WDzKek5S8DIAZAb3HFdxuI/dxagd79JQBxbXJGPXlzMP1AWJKgQ
-	 FjLJ/+vfmMlzw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH V3 4/4] KVM: selftests: Add perf_metrics and fixed
- counter 3 tests
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zide Chen" <zide.chen@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260615230118.50718-5-zide.chen@intel.com>
-References: <20260615230118.50718-5-zide.chen@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 15 Jun 2026 23:26:52 +0000
-Message-Id: <20260615232652.768D71F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XAp0NZoD"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2c0b1a48855so25065ad.0
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 16:33:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781566436; x=1782171236; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7RZpXrhOisaz0Hy21Y75kOiIkZX6dkWHiipcMDxVBGY=;
+        b=XAp0NZoD5l1PgFxMpubiNVcwO9ElOcTTqhX+narwtcVZO+DUd82mBQYyQwKMxjuwO9
+         TKdw/T/3+ASzaVaG/NJi+Ghs3b9vnJYLBFoUf3VNfaZR2fT/pJ95QOOr/u/hwkFkjbgG
+         H65+9hof3ziKy2GkymwmN64YsZsYQo60737v6UWaARPxI2eJHs7uvSbRFmBB34Zf1DHU
+         BCofUzJ/NlGcIJppxAAYgXdRjSX3ZYu94tqD5lVMSjcqLe/shcdOD81Q06nc0wNvVcX9
+         u+bO7+qaFPP31xLcum84kTqfey5p3bleLBBA2HQwrmdQsd28fBNxNU18LbjDmkSG27km
+         WFlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781566436; x=1782171236;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7RZpXrhOisaz0Hy21Y75kOiIkZX6dkWHiipcMDxVBGY=;
+        b=nw9vqplkZNNNMX4IDWRZ/UPiIYKmRN1qtXmXp4ByApmcF7/msWEsC5fpIM1TwcQxtQ
+         WNfJ3vTF3rHl14RIUqPgAE3nD63RzJLBlzTtcvvFgwn0XMfKmhQKcXN+uhIW56DDRgHz
+         CxoElMUrsD0db66efMNpXOYtAX10xvgQtTef8aiyPw+zt1ocwhrG24beVlPSDlva8NZX
+         ng2W7gLf3oGNS/CpxFW9s56bek1Utl8DkcFw+7cNwjqhBUW7eydR+ykDl09hV8QJCPBN
+         Jfk2vsfY/GHFTW/USKD0uKmznjdh6yYOdeymfe6x2uSA0JxCOdK0zmYHDCT+JFqopYrn
+         ZIBw==
+X-Forwarded-Encrypted: i=1; AFNElJ9WKe/MubZouKkoz48xb/4RbBotwwpSa0TzWNaubzsXK29cA4c6i44R6rDOez4vmzzRV9o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKVWjYz2+19ezKLlP5bnfh+Qzin8F68BLQVpV/cWVmKG3Z5S+Z
+	b2joPnmKQwhBfyoUXEpShdy5pTDEXyNCAKWSJU09pVBEpqN42M/3KdBtPN19SGUYtA==
+X-Gm-Gg: Acq92OFpRnvbsUQzci5bfMCYhtifg1eILA2v4f7nsjmezCHAPHKCmlPDoNaxM8ukn12
+	eYYWl78HLpZaeZUySslp/QUN7/GuypXASiDKxzWSPlsHn/1C4PDtIvUUPvk42DTXdftHUP2NtFi
+	+H0qfUG6css2OOLHcb6GJuwN2eq7bYF+LnPNPDl/U//KJc8syVVMpJTTRIfFEj1NXSJKYOWiDVP
+	Ghv1FJk1UIryyIVGUduXmdAM0SqqCzHkyKpTGoi2h5m8ulynhAq3v5fcQdF73YLf+UFZ5zjrl+b
+	rxxQ0TEis18QHP4VX8buxZKi6yrRE+V/1UoykqFyPfb347QRuxXI4HvR4F6EcwJpj6d4RLnxqIN
+	VNaEPN8QWGtYInfh9Ui5pNLl3N8z0uDjeGWE0VGpxLcjTeUIoMJ8GHECqumN8EZJFiRu6ueq0r6
+	qEhzreoeb20g+cNhbBb/ezWfR1Kv6sBiOI/keW3V2cZfT3MQFNUGhSZebR
+X-Received: by 2002:a17:902:f541:b0:2c1:4228:3321 with SMTP id d9443c01a7336-2c69a2c4cd4mr979115ad.12.1781566435833;
+        Mon, 15 Jun 2026 16:33:55 -0700 (PDT)
+Received: from google.com (230.0.127.34.bc.googleusercontent.com. [34.127.0.230])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c4327ac631sm112076765ad.44.2026.06.15.16.33.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 16:33:55 -0700 (PDT)
+Date: Mon, 15 Jun 2026 23:33:51 +0000
+From: Lisa Wang <wyihan@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Chenyi Qiang <chenyi.qiang@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Roger Wang <runanwang@google.com>,
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	x86@kernel.org
+Subject: Re: [PATCH v13 03/22] KVM: selftests: Initialize the TDX VM
+Message-ID: <ajCL34gnp2nDVM0K@google.com>
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-3-6983ae4c3a4d@google.com>
+ <a58e2941-77f9-43cf-a54d-023506dd7eb0@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a58e2941-77f9-43cf-a54d-023506dd7eb0@linux.intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Mon, Jun 08, 2026 at 01:57:24PM +0800, Binbin Wu wrote:
+[...snip...]
+> +	} tdx_cmd = { .c = {						\
+> +		.id = (cmd),						\
+> +		.flags = (u32)(_flags),				\
+> > +		.data = (u64)(arg),				\
+> 
+> Nit:
+> The two lines' backslashes are misaligned.
+> 
+> > +
+> > +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
+> > +({									\
+> > +	int ret = __tdx_vm_ioctl(vm, cmd, flags, arg);			\
+> 
+> tdx_cmd.c.hw_error is u64 and it could be assigned to ret, which is a int,
+> the upper bits could be truncated if the upper 32-bit is set.
 
-Pre-existing issues:
-- [High] A malicious or misconfigured guest can trigger a host-side WARN_ON=
-_ONCE by forcing KVM to emulate an RDMSR or WRMSR to MSR_PERF_METRICS, lead=
-ing to log spam or a host kernel panic.
---
+Thanks. Will fix these in the next version.
 
-commit 2e12d71150f3902b3e1f245bbcb48d6fe2235b4a
-Author: Zide Chen <zide.chen@intel.com>
+Lisa
 
-KVM: selftests: Add perf_metrics and fixed counter 3 tests
-
-This commit adds a selftest to exercise IA32_PERF_METRICS support for Topdo=
-wn
-(TMA) Level 1 metrics. It checks for non-zero metrics derived from the
-workload and extends the PMU selftest to cover Intel fixed counter 3 by
-bumping MAX_NR_FIXED_COUNTERS to 4.
-
-> diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/=
-testing/selftests/kvm/x86/pmu_counters_test.c
-> index dc6afac3aa919..d4688a7d1e556 100644
-> --- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-> +++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-[ ... ]
-> @@ -318,6 +322,56 @@ static void guest_test_arch_event(u8 idx)
->  				FIXED_PMC_GLOBAL_CTRL_ENABLE(i));
->  }
-> =20
-> +static void guest_test_perf_metrics(void)
-> +{
-> +	int retiring, bad_spec, fe_bound, be_bound, sum;
-> +	u64 global_ctrl, metrics;
-> +
-> +	if ((guest_get_pmu_version() < 2) ||	/* Does guest have GLOBAL_CTRL? */
-> +	    !this_cpu_has(X86_FEATURE_PDCM) ||
-> +	    !(rdmsr(MSR_IA32_PERF_CAPABILITIES) & PERF_CAP_PERF_METRICS))
-> +		return;
-> +
-> +	wrmsr(MSR_CORE_PERF_GLOBAL_CTRL, 0);
-> +	wrmsr(MSR_CORE_PERF_FIXED_CTR3, 0);
-> +	wrmsr(MSR_PERF_METRICS, 0);
-
-[Severity: High]
-This is a pre-existing issue, but since this test now exercises
-MSR_PERF_METRICS, is it possible for a guest to trigger a host-side
-WARN_ON_ONCE by forcing KVM to emulate RDMSR or WRMSR to MSR_PERF_METRICS?
-
-Looking at KVM's emulation path in arch/x86/kvm/vmx/pmu_intel.c,
-intel_pmu_get_msr() and intel_pmu_set_msr() both contain a WARN_ON_ONCE:
-
-intel_pmu_get_msr() {
-    ...
-    case MSR_PERF_METRICS:
-        WARN_ON_ONCE(!msr_info->host_initiated);
-        msr_info->data =3D pmu->perf_metrics;
-        break;
-}
-
-If a malicious guest forces instruction emulation for RDMSR or WRMSR target=
-ing
-this MSR (for example, by using the KVM_FEP forced emulation prefix, or by
-executing the instruction from a page that triggers an EPT violation on
-fetch), the instruction is processed by KVM's software emulator.
-
-The emulator calls kvm_emulate_msr_read() or kvm_emulate_msr_write(), which
-explicitly set msr_info.host_initiated =3D false.
-
-Could this trigger the WARN_ON_ONCE in intel_pmu_get_msr() or
-intel_pmu_set_msr() and allow an unprivileged guest to spam the host kernel
-log or panic the host if panic_on_warn is enabled?
-
-> +
-> +	/* Enable fixed ctr3 (TOPDOWN.SLOTS) and PERF_METRICS. */
-> +	wrmsr(MSR_CORE_PERF_FIXED_CTR_CTRL, FIXED_PMC_CTRL(3, FIXED_PMC_KERNEL)=
-);
-> +	global_ctrl =3D FIXED_PMC_GLOBAL_CTRL_ENABLE(3) |
-> +		      PERF_METRICS_GLOBAL_CTRL_ENABLE;
-> +
-> +	GUEST_RUN_PAYLOAD(MSR_CORE_PERF_GLOBAL_CTRL, global_ctrl, "");
-> +
-> +	/* Check test results. */
-> +	metrics =3D rdmsr(MSR_PERF_METRICS);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260615230118.5071=
-8-1-zide.chen@intel.com?part=3D4
+> > +									\
+> > +	__TEST_ASSERT_VM_VCPU_IOCTL(!ret, #cmd,	ret, vm);		\
+> > +})
+> > +
+> > +void tdx_init_vm(struct kvm_vm *vm, u64 attributes);
+> > +
+> >  #endif /* SELFTESTS_TDX_TDX_UTIL_H */[...]
