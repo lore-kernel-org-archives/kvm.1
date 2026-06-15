@@ -1,157 +1,147 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33B0CA52;
-	Mon, 15 Jun 2026 05:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71AC2F7EEF;
+	Mon, 15 Jun 2026 06:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781502472; cv=none; b=KDI/njZ4UaSbJLa5JH/8COAECXBncV9K8tkDYHjYp14H6QfJWKGQZMo1V3V1Kl0GOJ74rZ2fZqB0FnZJNvKNlXQMZnKeoPTywIhMQGGcJjeZHa5sXSEwMwCrWS3SmLv9DEqHqVrdgBdhTS5ZVl7eQkxJ+IqtgskFcMGyQsaIpFk=
+	t=1781505997; cv=none; b=i9+t1WrgSONIk3Omq1LQcHvxFxu2OUkINP2YheXGPqeF7KLcn/x04wj/GBmYokeJynnBC9QGhKmt4PqtULonVTuZITBCOBD1eP/TJxOmJoGWhN73oPYoCskaLoAR7wOU0OLQaS5LwK3YPbIrLdZqJacJP1onBKkxNXlnLWNmIMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781502472; c=relaxed/simple;
-	bh=EoKRMpNR1HD1fTaS9gHUJwEQYMgmkmfWK7gOf14CKmU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u9r4UZuSNveUGGnxGkCldSCRH1FlXvQ/6AyjWegFKB4+zq627C3vw3RMo9DLHpX5qmkpJ60cHNGywodko2CB4xT6AfsW9zETQ0CPvO71aNaF0AR8mT8MXSk6Ne0dYmNrbOPtcKA0b9L6YWmTrtzJMQO9v2My4oQfyyOt9AOS8rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MNqwmO8x; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1781505997; c=relaxed/simple;
+	bh=V0lJACwgXhHJPicXPFvDru50IffzdKNMnTaHADa8x+M=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=l8hYmSFIKPNRyfiuo6ygRqSGOumV+J4gSQ2bB9GFlMW6CE+w48v/fAmehRO+9fbmLo15Q2CjIPSIPrEL5/XU6S/V4JhydkjPu+gqX66ToF+m1N4gYwy4BHiR1cHyJo7BGdwHXhXNU04mUOrH6bYpQ8S8mdyR0cHv02WsP90OLI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YRcccamq; arc=none smtp.client-ip=91.218.175.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MNqwmO8x"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781502471; x=1813038471;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=EoKRMpNR1HD1fTaS9gHUJwEQYMgmkmfWK7gOf14CKmU=;
-  b=MNqwmO8xzukJWuyQlrh0yL/91VeehVyuN1We8+HckNY+S/bhYgjg4Bcw
-   vpDgM0QI3I/yUf0MwA0uZ9k6EBEiCfyMYSyT+8Xd8DBluVZLX1172FP3H
-   SBoem5MHhhfW/YMF55xMTjs6Fjr+FqrKmzUp2s4lwum3HVAvGTtnKbHVt
-   N9/0uTG+5G01A2ZqmtqH6ro3yAICTiAtGtjIGWdE6t+0eMUfNeKeEmQIb
-   XdhKZg2Xj8TidYh9+//ao03J6GChH6iW6/cmS0SXe+0JG37+AfXs9q+fC
-   YcM2Ns58+e/JBfndou2z9RoM6HOF3IW5PYepjpTu6DIQMpxFNE5AkOj+W
-   w==;
-X-CSE-ConnectionGUID: /pLjh1FmSkKTHiAyicE37g==
-X-CSE-MsgGUID: i19pT+k+THi2TAToy/c5cA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="81371853"
-X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; 
-   d="scan'208";a="81371853"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 22:47:50 -0700
-X-CSE-ConnectionGUID: O/uWe0jvTvaLtc44lhyT+g==
-X-CSE-MsgGUID: xHgNt4qVR362HFyuizz/zQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; 
-   d="scan'208";a="247465599"
-Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 22:47:48 -0700
-Message-ID: <5bcd4834-7b4d-4543-828a-1e6a6c523a41@linux.intel.com>
-Date: Mon, 15 Jun 2026 13:47:45 +0800
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YRcccamq"
+Message-ID: <a1960092-f444-47fb-9358-aab0d4f43ce2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781505983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kiNn3K9N6RX2fnyMI3v5LyzAfNqLkHIr+etJKHcVcyA=;
+	b=YRcccamqVeyplgLY6g72+XwGxO+KOB0ikzq1UXRC7/p4lfOmQX0k3VjQCMLC0GlIOpHmOJ
+	rTedpNt1ol98SksZxhCW/2LPFOdxJEuNfYs5Eoy04o1tH6u5LPsdD1Kuke0NCUTgrNQBGE
+	oz7flLfHA9VwpuU/4BfEr4brsMrHGdw=
+Date: Sun, 14 Jun 2026 23:46:16 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/30] KVM: x86: Move local APIC specific helpers out
- of asm/kvm_host.h
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
- Kai Huang <kai.huang@intel.com>
-References: <20260613000329.732085-1-seanjc@google.com>
- <20260613000329.732085-6-seanjc@google.com>
+Subject: Re: [PATCH v3 2/4] KVM: selftests: Verify SNP VMs are rejected from
+ migration and mirroring
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Atish Patra <atish.patra@linux.dev>
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Peter Gonda <pgonda@google.com>, Brijesh Singh <brijesh.singh@amd.com>,
+ Youngjae Lee <youngjaelee@meta.com>, Ashish Kalra <ashish.kalra@amd.com>,
+ Michael Roth <michael.roth@amd.com>, John Allen <john.allen@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>
+Cc: clm@meta.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, stable@vger.kernel.org,
+ Atish Patra <atishp@meta.com>
+References: <20260602-sev_snp_fixes-v3-0-585e4783a42f@meta.com>
+ <20260602-sev_snp_fixes-v3-2-585e4783a42f@meta.com>
 Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260613000329.732085-6-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20260602-sev_snp_fixes-v3-2-585e4783a42f@meta.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On 6/13/2026 8:03 AM, Sean Christopherson wrote:
-> Move single-use local APIC IRQ helpers out of asm/kvm_host.h so that they
 
-Nit:
-Not sure if it's accurate to say kvm_lapic_irq_dest_mode() is a single-use
-helper.
-
-> are co-located with their user, and not exposed to the broader world.
-> 
-> No functional change intended.
-> 
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Reviewed-by: Yosry Ahmed <yosry@kernel.org>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-
+On 6/2/26 3:11 PM, Atish Patra wrote:
+> From: Atish Patra <atishp@meta.com>
+>
+> Migration and mirroring of SEV-SNP VMs are not supported yet.
+>
+> Add two selftests that verify KVM rejects intra-host migration and
+> mirroring when the source VM is an SNP VM, so the restriction stays enforced
+> until proper SNP state transfer is implemented.
+>
+> Signed-off-by: Atish Patra <atishp@meta.com>
 > ---
->  arch/x86/include/asm/kvm_host.h | 12 ------------
->  arch/x86/kvm/irq.c              |  7 +++++++
->  arch/x86/kvm/lapic.h            |  5 +++++
->  3 files changed, 12 insertions(+), 12 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 3886b536c8a5..71e575d011e7 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1772,11 +1772,6 @@ struct kvm_lapic_irq {
->  	bool msi_redir_hint;
->  };
->  
-> -static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
-> -{
-> -	return dest_mode_logical ? APIC_DEST_LOGICAL : APIC_DEST_PHYSICAL;
-> -}
-> -
->  enum kvm_x86_run_flags {
->  	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
->  	KVM_RUN_LOAD_GUEST_DR6		= BIT(1),
-> @@ -2509,13 +2504,6 @@ void __user *__x86_set_memory_region(struct kvm *kvm, int id, gpa_t gpa,
->  bool kvm_vcpu_is_reset_bsp(struct kvm_vcpu *vcpu);
->  bool kvm_vcpu_is_bsp(struct kvm_vcpu *vcpu);
->  
-> -static inline bool kvm_irq_is_postable(struct kvm_lapic_irq *irq)
-> -{
-> -	/* We can only post Fixed and LowPrio IRQs */
-> -	return (irq->delivery_mode == APIC_DM_FIXED ||
-> -		irq->delivery_mode == APIC_DM_LOWEST);
-> -}
-> -
->  static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu)
->  {
->  	kvm_x86_call(vcpu_blocking)(vcpu);
-> diff --git a/arch/x86/kvm/irq.c b/arch/x86/kvm/irq.c
-> index 8c62c6d4d5c1..727245a6ab34 100644
-> --- a/arch/x86/kvm/irq.c
-> +++ b/arch/x86/kvm/irq.c
-> @@ -423,6 +423,13 @@ void kvm_arch_irq_routing_update(struct kvm *kvm)
->  		kvm_make_scan_ioapic_request(kvm);
->  }
->  
-> +static bool kvm_irq_is_postable(struct kvm_lapic_irq *irq)
+>   .../testing/selftests/kvm/x86/sev_migrate_tests.c  | 47 ++++++++++++++++++++++
+>   1 file changed, 47 insertions(+)
+>
+> diff --git a/tools/testing/selftests/kvm/x86/sev_migrate_tests.c b/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
+> index 6b0928e69051..acef6ab26d3d 100644
+> --- a/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
+> +++ b/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
+> @@ -313,6 +313,49 @@ static void test_sev_mirror_parameters(void)
+>   	kvm_vm_free(vm_no_vcpu);
+>   }
+>   
+> +static void test_sev_snp_migrate_reject(void)
 > +{
-> +	/* We can only post Fixed and LowPrio IRQs */
-> +	return (irq->delivery_mode == APIC_DM_FIXED ||
-> +		irq->delivery_mode == APIC_DM_LOWEST);
+> +	struct kvm_vm *src_vm, *dst_vm;
+> +	int ret;
+> +
+> +	src_vm = vm_create_barebones_type(KVM_X86_SNP_VM);
+> +	snp_vm_init(src_vm);
+> +	__vm_vcpu_add(src_vm, 0);
+> +	vm_sev_launch(src_vm, snp_default_policy(), NULL);
+> +
+> +	dst_vm = vm_create_barebones_type(KVM_X86_SNP_VM);
+> +	__vm_vcpu_add(dst_vm, 0);
+> +
+> +	ret = __sev_migrate_from(dst_vm, src_vm);
+> +	TEST_ASSERT(ret == -1 && errno == EINVAL,
+> +		    "SNP VM migration should be rejected. ret: %d, errno: %d",
+> +		    ret, errno);
+> +
+> +	kvm_vm_free(src_vm);
+> +	kvm_vm_free(dst_vm);
 > +}
 > +
->  static int kvm_pi_update_irte(struct kvm_kernel_irqfd *irqfd,
->  			      struct kvm_kernel_irq_routing_entry *entry)
->  {
-> diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
-> index 71970213dc1f..32f09b25884a 100644
-> --- a/arch/x86/kvm/lapic.h
-> +++ b/arch/x86/kvm/lapic.h
-> @@ -237,6 +237,11 @@ static inline int kvm_lapic_latched_init(struct kvm_vcpu *vcpu)
->  	return lapic_in_kernel(vcpu) && test_bit(KVM_APIC_INIT, &vcpu->arch.apic->pending_events);
->  }
->  
-> +static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
+> +static void test_sev_snp_mirror_reject(void)
 > +{
-> +	return dest_mode_logical ? APIC_DEST_LOGICAL : APIC_DEST_PHYSICAL;
+> +	struct kvm_vm *src_vm, *dst_vm;
+> +	int ret;
+> +
+> +	src_vm = vm_create_barebones_type(KVM_X86_SNP_VM);
+> +	snp_vm_init(src_vm);
+> +	__vm_vcpu_add(src_vm, 0);
+> +	vm_sev_launch(src_vm, snp_default_policy(), NULL);
+> +
+> +	dst_vm = aux_vm_create(false);
+> +
+> +	ret = __sev_mirror_create(dst_vm, src_vm);
+> +	TEST_ASSERT(ret == -1 && errno == EINVAL,
+> +		    "SNP VM mirroring should be rejected. ret: %d, errno: %d",
+> +		    ret, errno);
+> +
+> +	kvm_vm_free(src_vm);
+> +	kvm_vm_free(dst_vm);
 > +}
 > +
->  bool kvm_apic_pending_eoi(struct kvm_vcpu *vcpu, int vector);
->  
->  bool kvm_lapic_suppress_eoi_broadcast(struct kvm_lapic *apic);
-
+>   static void test_sev_move_copy(void)
+>   {
+>   	struct kvm_vm *dst_vm, *dst2_vm, *dst3_vm, *sev_vm, *mirror_vm,
+> @@ -384,12 +427,16 @@ int main(int argc, char *argv[])
+>   		test_sev_migrate_parameters();
+>   		if (kvm_has_cap(KVM_CAP_VM_COPY_ENC_CONTEXT_FROM))
+>   			test_sev_move_copy();
+> +		if (kvm_cpu_has(X86_FEATURE_SEV_SNP))
+> +			test_sev_snp_migrate_reject();
+>   	}
+>   	if (kvm_has_cap(KVM_CAP_VM_COPY_ENC_CONTEXT_FROM)) {
+>   		test_sev_mirror(/* es= */ false);
+>   		if (have_sev_es)
+>   			test_sev_mirror(/* es= */ true);
+>   		test_sev_mirror_parameters();
+> +		if (kvm_cpu_has(X86_FEATURE_SEV_SNP))
+> +			test_sev_snp_mirror_reject();
+>   	}
+>   	return 0;
+>   }
+>
+gentle ping for any feedback on this patch ?
