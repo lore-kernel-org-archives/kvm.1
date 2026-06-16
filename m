@@ -1,135 +1,242 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C973624D4;
-	Tue, 16 Jun 2026 11:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C64309F00;
+	Tue, 16 Jun 2026 11:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781608012; cv=none; b=pQU8P6Tn6/SQ+iC30cqpJAfIVCZai2np/ZzpT7lN+roZ9tjxjnVi3n3CG5fS1SNWdi5NBzoOCKni8Ee3RapmW1pzlI58xqmqcpvAmsqm3tjrrEo6mVOEtrPwSGVUwB1KCBWRzTbEI7TdEdu0AtcYjqrJ3XWsBNIQOAt7iaEL8DA=
+	t=1781608422; cv=none; b=RNHUQlKTirAEBlFs9s0DdcEe8peVvEAF0SNhsUPMqHgWTsFyq1VLIehmSkRC4RPOyc9NW7Qd/m+DZlSC6XEXqNRcpCijFoAknla/LaINgbM1cAhrEpCDXBEvb7srRl1LMbCQ5ROahwazPPaKaIHR/3PMnfdpFE4uJIso6yW01pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781608012; c=relaxed/simple;
-	bh=6UVOu5e9C3oQ8jl11IlPgRgXFfBewjCTq88laiGf0NE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OC/Pi6HVLHtr8eYWzq0/+LRFG76ov5uhOhn+RE9/cDbwvNr7LMErp8gPDHBzIFvz+xBtnD5CiasOrLxh9/zxEynrxB4E0k/9z6Iy/3Uxr7ZMSgOC+KH/uZmGsWSnXksNrRsp2QbbjkjjZNV76QEVvPiuoV4rV8CHRzzvENLOTAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jiIfjCWE; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1781608422; c=relaxed/simple;
+	bh=0kkV5eTmHO2Wv3uC6lJwILGDtspJUOhMlj3zb9vu+lI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Nmy/CNcAjMRHAt1NyQmWKY/2dBb2yHTFlVEj5w5z0mVu3CHq/yMwgLPuRnijWLIPTpL7IPh/YxDi6l7AErR4fEyS+rn3ZAWPxdcbspi5q/F310L+ZWN0hj7mejg9NK6upzD+O1JgQflTMz2zPr3g4Ty9m8AOg0rw+Ry8rNSbB4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cIG2iAaf; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jiIfjCWE"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GAIC0t1245114;
-	Tue, 16 Jun 2026 11:06:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=6BSdilM6r2d/L2aMX47ZtgTz3VP9BW
-	XOz1FnW+lwlAE=; b=jiIfjCWEokia3aw9Zm9Q+NLIvkirgVjPCq0MepfhuuBaNa
-	t7YQ1BsALMuFbZS3IcFbpTdcGHL3njH5ZNsVYRnPCeDp1x6RtHdavgTeBUumfHX8
-	65nstFCTQs8i3YSCg5cg15cSHzhN4ShEiutou83yv4dW6OABkmTBjdkoWnsmlqyG
-	6ghrhreXzrqYQKxY6DEPakQ4UmnhLcTPlX7Qyh5WmDUY5ABzZFgAr1fY6IjJCYK1
-	Q8QEU1yQ+n2u6cVfBodjSGNQ7373Zbww9yRKDZzGJob9PP/rtn06oE+I83KwAe0r
-	7x7gh3/fS2N+I4x2/0B+748t7eWjjv3NHiQjIeCA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es23nn6h9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jun 2026 11:06:49 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65GB4htP025160;
-	Tue, 16 Jun 2026 11:06:48 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4esm7y2rg1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jun 2026 11:06:48 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65GB6ip238732162
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Jun 2026 11:06:45 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DCFEA20043;
-	Tue, 16 Jun 2026 11:06:44 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1BFF320040;
-	Tue, 16 Jun 2026 11:06:44 +0000 (GMT)
-Received: from osiris (unknown [9.87.157.31])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 16 Jun 2026 11:06:44 +0000 (GMT)
-Date: Tue, 16 Jun 2026 13:06:42 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        borntraeger@de.ibm.com, frankja@linux.ibm.com, david@kernel.org,
-        seiden@linux.ibm.com, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
-        gra@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com
-Subject: Re: [PATCH v2 1/1] s390/mm: Fix handling of _PAGE_UNUSED pte bit
-Message-ID: <20260616110642.19835G94-hca@linux.ibm.com>
-References: <20260615091741.76724-1-imbrenda@linux.ibm.com>
- <20260615091741.76724-2-imbrenda@linux.ibm.com>
- <20260615094300.31370D7a-hca@linux.ibm.com>
- <20260615123103.118af04a@p-imbrenda>
- <20260615115000.31370Ef1-hca@linux.ibm.com>
- <20260615140939.417dcb53@thinkpad-T15>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cIG2iAaf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0kkV5eTmHO2Wv3uC6lJwILGDtspJUOhMlj3zb9vu+lI=; b=cIG2iAafBHwUcYqzPajEALtQ/Y
+	U+zfrpntB1GSIwLxDvCqY4yXUMqv/4r1RMg3oHPu3gcZQ4J0/kfQzjkXG7AdFcSN5rDsjBRPe2xTA
+	phMJwgZRJeBd5WZ6sNvwpCyEFm269CfQsYXKnHG0AEyyIH8Sh4NHaWCqHACEecMUNrgMp6cX+EaB8
+	3BgE+FTZ2rSi9o523IkI1XvYMNtkBDIHPtpnsPFZ2SMzlY7KHJ3s6sbslQkHa89k33Hu5M52c6lcj
+	t8IdJo8Dos4DFGX04te/l8rCIED46hgAoFZgW6IIqjJfrBCi4VO2rHNexRP6uiaVaitCjreeNXzpF
+	y+91Fb7A==;
+Received: from [2001:8b0:10b:5:7e25:c5e1:47b2:baf1] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wZRjY-0000000AcxR-1BsU;
+	Tue, 16 Jun 2026 11:13:32 +0000
+Message-ID: <913f6048e1193e65278cb3f4b4dbf04a151e85f5.camel@infradead.org>
+Subject: Re: [PATCH v5 04/34] KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for
+ accurate KVM clock migration
+From: David Woodhouse <dwmw2@infradead.org>
+To: Dongli Zhang <dongli.zhang@oracle.com>, x86@kernel.org,
+ kvm@vger.kernel.org, 	linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	xen-devel@lists.xenproject.org,
+ linux-kselftest@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner	 <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,  Dave Hansen
+ <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Vitaly
+ Kuznetsov	 <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, Boris
+ Ostrovsky	 <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>,
+ Jonathan Cameron	 <jic23@kernel.org>, Marc Zyngier <maz@kernel.org>, Sascha
+ Bischoff	 <Sascha.Bischoff@arm.com>, Jack Allister <jalliste@amazon.com>, 
+	joe.jin@oracle.com, Joey Gouly <joey.gouly@arm.com>
+Date: Tue, 16 Jun 2026 12:13:31 +0100
+In-Reply-To: <77f541f7-b346-4c86-8e66-3d2439e29cbb@oracle.com>
+References: <20260608145455.89187-1-dwmw2@infradead.org>
+	 <20260608145455.89187-5-dwmw2@infradead.org>
+	 <77f541f7-b346-4c86-8e66-3d2439e29cbb@oracle.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-z8fsZ4KdYGvpldBfCjRo"
+User-Agent: Evolution 3.60.3 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260615140939.417dcb53@thinkpad-T15>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=XtnK/1F9 c=1 sm=1 tr=0 ts=6a312e49 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=CQ8FOgcp9ve-HgYGo4YA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDEwOSBTYWx0ZWRfX7B0s3E15y9D2
- XzQX1fhIO0agM2OFPswrwG6gMV24evi0p5x1untCR0LlqpFxQu2PxZ2JyhsRNh8PPD6V1cKfWu7
- qMJvW4nPDs9gpARKcZDBtajOv2gJp9rn7VFKTTGuCCdHj1msZvRDAWRzP3FMJJTmf8g7Yq0Na3n
- l/F6T7SXUQhdh9Xre4C/qZf/QayEWy1G7U0xjrq9vkKT+KxcsIWzrel9mB1wjLPh7odAHqdjcZ6
- XT1Px+wFi/broFk8WSUtFMlvAin14du8tn4Z02Gi1Epo2ecr1XP8f1Ljpxo7Yc6/iway+UvuD6a
- Dn7Ui3/FKvHihpJbhlSw3Lj43WEZOHX8ub+LDtnO1FAfhmSqIR3fefU3eb7BUSnC1sdm0r5zGSQ
- AylSeQOAoFHQBxZrn5IT+U2Qq719VuvynMNx1VHh78BuLjZrBNO7A4AnGMGxVmTNkAs8jpN+POK
- REjNNKcZGu9SOTQOAHw==
-X-Proofpoint-GUID: Yq7gcidqltZheSU_LmaukKEZmfGMyFdi
-X-Proofpoint-ORIG-GUID: Yq7gcidqltZheSU_LmaukKEZmfGMyFdi
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDEwOSBTYWx0ZWRfX4nynyZXCVFBQ
- 7j7+vZdRv7xqbswXP6ihsyHLBEiUlSWjIMcPR1i6zZkafTp41MiCoUMegUSxgFUD/M3ssSGiHMz
- gfaV4HC8QGrcoPvnk9f80suN7NFPXz4=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-16_03,2026-06-15_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 clxscore=1015 malwarescore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160109
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Mon, Jun 15, 2026 at 02:09:39PM +0200, Gerald Schaefer wrote:
-> On Mon, 15 Jun 2026 13:50:00 +0200
-> Heiko Carstens <hca@linux.ibm.com> wrote:
-> > > set_pte() is also used for things that are not ptes, and in those cases
-> > > we probably don't want to touch that bit, although technically it is
-> > > currently unused for present large pmds and puds.
-> > 
-> > I can only see huge_pte_clear() for this.
-> > 
-> > If that's the only user I'd rather add a BUG_ON() there instead of starting to
-> > sprinkle the logic around. This _will_ break sooner or later.
-> 
-> There is also __set_huge_pte_at(), and there it could also be called for
-> swap PMDs/PUDs, where bit 56 is used. But they would not be present, and
-> ATM we use the same present bit for PTEs and PMDs/PUDs, so it should work.
-> 
-> Still feels a bit shaky, but in general I agree that it would be better
-> to have this logic in a single place, like set_pte().
 
-Yes, let's do that please.
+--=-z8fsZ4KdYGvpldBfCjRo
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Also wonder now why we use set_pte() an not set_pmd() / set_pud() for the
-> hugetlbfs "fake" PTEs. I think at least in s390 code we could switch to
-> the pmd/pud variants, and then be safe against modifications from set_pte().
+On Mon, 2026-06-15 at 23:47 -0700, Dongli Zhang wrote:
+> I tested patches 02, 03, 04, and 26 by customizing QEMU to support kexec =
+live
+> updates (LUO and KHO), preserving the memfd across kexec.
 
-I guess that would be nice cleanup. Could you provide a patch for
-that, please?
+Thank you.
+
+> For my use case, I used KVM_[GS]ET_CLOCK_GUEST instead of the existing
+> KVM_[GS]ET_CLOCK. I didn't account the downtime in my QEMU code, although=
+ host
+> TSC never resets across kexec.
+>=20
+> Clock drift was zero, and I did not observe any unnecessary master clock =
+updates
+> after KVM_SET_CLOCK_GUEST completed.
+
+The kvmclock drift won't have been *zero*; it will have been a
+nanosecond or two. Which most people won't notice, but is annoying me.
+
+It believe it comes from both pvclock_update_vm_gtod_copy() and
+kvm_vcpu_ioctl_set_clock_guest() rounding *down*. I think we should
+tweak the latter to round *up* so they're at least not biasing in the
+same direction.
+
+We could also do better at picking a snapshot cycle count which
+*doesn't* lose in the rounding. But those are definitely improvements
+for another day; this series is long and complex enough and has already
+gained a dependency on fixes in core timekeeping snapshots.
+
+> Another interesting observation from my experiments is that tsc_khz chang=
+es
+> across kexec. Since the TSC value itself does not reset across kexec, I'm
+> wondering whether there is any reason to switch to the new tsc_khz value =
+after
+> the kexec.
+
+This is the host timekeeping, yes?
+
+We really ought to pass over *all* the NTP synchronization data across
+KHO =E2=80=94 not just the frequency. There's no excuse for the new kernel =
+not
+reporting *precisely* the same time that the old kernel would, for a
+given TSC reading.
+
+The work I've been doing at=20
+https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Drefs/=
+heads/ffclock
+lays the groundwork for exporting and importing the full reference
+data, and maybe I should use KHO as the example use case while we
+continue to bikeshed the userspace and vmclock parts.
+
+> While live migration involves two different machines, kexec is performed =
+on the
+> same machine. Given that the TSC value itself is preserved across kexec, =
+would
+> it make sense to reuse the pre-kexec tsc_khz value instead of using the n=
+ew
+> tsc_khz after kexec?
+>=20
+> I tested this by using LUO to preserve tsc_khz across kexec, and the resu=
+lts
+> looked good.
+
+Of course, what we should really be doing is exporting the timekeeping
+reference to see what frequency the source host TSC is *actually*
+running at, at the time of migration. That gives us a function of guest
+TSC to TAI. Then we can restore the TSC on the destination host as if
+it has been running at precisely that frequency during the migration.
+
+The TSC might be at a slightly different frequency on the new host, but
+we provide vmclock and the guest can clamp its timekeeping to that
+fairly much immediately (see qemu patch I've been posting with the
+ffclock/timekeeping series).
+
+--=-z8fsZ4KdYGvpldBfCjRo
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYxNjExMTMz
+MVowLwYJKoZIhvcNAQkEMSIEIJ5VAk35+dGCrCRUWFXxqcuWDPC83HDVQTsGwz+Tl6bIMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIASkw7sYl3kwHW
+VqDqOKkb8TmubpwZH0kYFfy1eJORlgVtltDfEnu/TBYuwuNbj1+qyocm4LdVcecQuaCarSqZqAQb
+VO+uK/uScxLsebmWRLslgX6hqlyOUzDvt3N3bCWSHWB8kEpGI0OMMCyomrqjIPE2nfiV8wyr2+KG
+pyGCvnR2YUM9mOfSb0OfUQnD7M8kyfctMcl9V2ppqbCVY9JW5F0NZ8QgCagLImoxIMDwN4X8YYNT
+v2A1dgSlCBkSejw3/b3o5gHs5Unotlvt6zflgDgZ8YF0o66/gmv0dv3fhEUVrIREQJdjPjcEXugH
+HY2B8LLfGQESrESfojA+saX11myjZ+CkQ+Lbktjptf9aFWuU+alI0IXqkT1e+Axq7UnVhqXnd9X1
+XJS0+jUerOFGhCjczqHHv52eeieFp89tx1brtKo0jFnSShrd9Ro6FrCD8nyN0z6zWwd9o2f35TRE
+umIxXfT15cltcVHq9oOzIsO99TGDxGE2vNPbc+s5oNbQqzy1xCe+tauDMgX/zZYWF6fSx7luLdNR
+L3ExRdRKdGrY3mMXFwPLXPPq+9ne2K23TcFRTMfwT0s2B8wAIftQhFqV1AbgrlOyu49BjdzRvfHD
+XL3o31Q1IWnNGcqdtFFKT5rM371ap05RpDDgaowri0/grGlCIXj4vssW3iXgG7oAAAAAAAA=
+
+
+--=-z8fsZ4KdYGvpldBfCjRo--
