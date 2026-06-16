@@ -1,151 +1,154 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8133CFF55
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 18:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D416A43D4E8
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 18:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635636; cv=none; b=ULhjTMp9ciP+vXlVph0/KlsUKB60klOrASppTYPcLpiFOwifNwvO0rq5LBZ6sVpl5MHrXTuNvWMTygp1Q57MuPHldAYfYRBJwwDwH5t5T//XzuhmouFaFdJcGrzeYHF9e43uwJJs+SskXg67bbBTSCKuqzDKmyjsUGMbXtTTyEU=
+	t=1781635690; cv=none; b=c+Qi04y78sOF0ShM1U5IOqKFQWcn/YwrXCqycD36DYsdse1Gf40HnBWPpbVJoQO7ku4gdS1TUTHtsL1RP/XSLQKTXPr0XdFQVkr450h3RJvwNi887GF+p7eW6wTY4iG6DYmlf6C+W3d4Fj8KAcsSm7V8noZ+AuGemDdLwmLbCwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635636; c=relaxed/simple;
-	bh=buTnY0ETqHFz9mHm8vPYqufrzuCw85DNR5Yn8mLP9Ew=;
+	s=arc-20240116; t=1781635690; c=relaxed/simple;
+	bh=Xx05wp4cyHtf9W47TC/Dwjp1vIDUaS1Eegfg4Ib+/tk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YV7Wsh7td8XNvce6aLKb9ztevD6yc9Pmas+Go3D5fzv/g5nSRb/s20zyVN/CznwbxKsdGh4CfehNC383ZWBNV3enzSx62aJnuBE+f1sHIxoDnMGVkOndjAnjftmRmSQjZ+Nrq5JKHfJfjDgwVeG5fWu/cloUJTFppUK0RAmooyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mj65D5d2; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=uX9YmveHQlCipJMjBAXRjPnd3cP3X2HJrZn5H3TG+sA4TETA8LbitsDl7Q1cREQJWEgFS8e0Ha2RXuhrzsslnFjm11V57RSSyk9+D3R7Ojx5CxG0jSgqWupisyMZclwBRm+/WihCm1gw8Ku/L4b35Dj86oTYKpKgnNytV4Fu/04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Esf9WQYt; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mj65D5d2"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8423f6247c6so5530109b3a.3
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 11:47:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Esf9WQYt"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-842208d5b0eso3886081b3a.3
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 11:48:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781635635; x=1782240435; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781635688; x=1782240488; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vkLeRGdGFIEMQT4xMcSv70D3LKPlWrgZN2ISeIkos5o=;
-        b=Mj65D5d2zuNtvfOZkKaL/p6IjohfsAHm2FzVwXxoeRBz55U8una98YLIEjdIHxHqSq
-         5jjyFW3fPUk38uRTk8oyLudDnOtaOAw14w139RnKDApyKr2llTFf5UVXUtLMfDeN7TB3
-         bMYgmuT2o70QM8uv++6vY//LuFQClcS2MpdCbAnbRwGgWqbIToMaMddLYmUS55EiyIRg
-         wqe4lOpV4111vL6J3GhGBBBHYA5gvV7ZpDhPjsM162t5ruqg/hvMVCv8nq/S8VDCNoQt
-         2f/sjvnK/z42HyYJ8eVPtC88hrLPGLi/XaWqHY1sqrcfxNztaSRhE+6KmntrfxTMOpzY
-         +t4Q==
+        bh=P3dgH42zNflWYjVlKpWQxlbi6GFJLYhVFZGxy7D/Xxg=;
+        b=Esf9WQYt7SS9xIbABVXiDRjexvP32v+fGndsyuIjrBhBtvevnfJKio+eWQCj2PlVDb
+         kFTmm+T2bQiPYwHPyOpEygFHXSphr+IjkZYmpMQbLTe0A7okl7fnFFtb1ZapiPpeApr4
+         j/j1PXOxn/aCSxuYnbverME4dAIzioOfaRyHslykQPDqpmLYBeySsAmRHfTO4fJN/pQq
+         mbMZXYZgQODQctWmPBd8JcurGeUbehH80X0yL4KUyf1aGHAoQRQjxA+EKAhca3f9JhkP
+         4qYVGK1jHRTVQApPRUKoF7J0wpf1b+GQ70psXzQ6rzs8RiI/rAOOwF8IMSLCilkGDKQw
+         WlxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781635635; x=1782240435;
+        d=1e100.net; s=20251104; t=1781635688; x=1782240488;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vkLeRGdGFIEMQT4xMcSv70D3LKPlWrgZN2ISeIkos5o=;
-        b=jPvPHXPu1BmgTVlh6FlB4Q/eDZkAunZnfNNg2r3WQf6gkJ9H4rLNcqKduoBMVKV1m9
-         e7as8la3ScM9HwM12jLaHR9BMNrdHffv7eYIO6aEjDUcUMqGlzLNDl8YOA6uly3wdpF8
-         g7x03+w3Lu7tS0dEjfmBtJ8zgJy49cGltN6cKuCIqVU36KCkft+Mo5QXfzCu9txc0eAg
-         VFYEPGxoFpZObLW6LtLtZNgwEvA0p2SZ/lZ5P7sZKVNOO9ve1EPyylcfq58U1Qua4/Qq
-         ofAvYTrizJS+uNy9o8MpYt+5k7+nPTWjMCgHJsI11S3eEbF/dDMwrPhqUzY1yuH/zuE2
-         q6cQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+j1zkqMYoQ3JdbH16AcPZ0yq68ouUTJg1GFfnmnzrR1nJocq7fQ8NyfZ5WN9lk7S8NbpY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHjIwf7EXwJv/4Jc+74u4StC6lwZGej8LV9DST4SSiVv2KlJpy
-	pVWk+NwXezkSVE5B29lIvZtYEaw3wmCEhxrNRhAM2XrYCvdKW2sMyDZhY5lThzRTGqgLfBr7SLH
-	Sr2ZedA==
-X-Received: from pfjc12.prod.google.com ([2002:a05:6a00:8c:b0:82f:6a26:5f78])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3cd2:b0:842:6849:2192
- with SMTP id d2e1a72fcca58-8452459cb0fmr338659b3a.42.1781635634170; Tue, 16
- Jun 2026 11:47:14 -0700 (PDT)
-Date: Tue, 16 Jun 2026 11:47:13 -0700
-In-Reply-To: <20260521-tdx-selftests-v13-v13-21-6983ae4c3a4d@google.com>
+        bh=P3dgH42zNflWYjVlKpWQxlbi6GFJLYhVFZGxy7D/Xxg=;
+        b=S6lTwNEiacbxrfJWTlZ92KhOKGbZGw3+C3f0jJEUKanJ5twj0PaxOGJSpsQrjqiH9O
+         OQAIC7lr/HIMrVkqrjvvEC64HSCmEmTEKdJq08ESNb9uNPwWfEfK1MFpm4R+PU9YlnEb
+         FoEpvymQviwSSlEl9oAfA5zDCZAbsoNe3p+xyWS8qC+V/GWWOX4TvZJUr4+qfpWBi5Cn
+         M3cI5ObJ53S0LRIL+OLQoLdmdk+QC8QD5WAvXV7qDOAdfDiNcE8AP2T73qJTrcXbb/+o
+         0C5wtUtfwUsmCu2CrtnXOQTNNbrpxG8e4ncOeL80nUtL7ELxX8a1GbPVvVoZviymdEUQ
+         YSpw==
+X-Forwarded-Encrypted: i=1; AFNElJ8jXx6mfBvc5k/BIB8TctwYeLF+GY/ihX7zqqoXrPo4pjmn1FzNMWwnuOPrQXM6AQDlHGg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyb0mnCZspD4F1g5z6GE34NW7r5m0ZEPWs6qKhaHFJw6JJegQZe
+	DKTfwBI9XLN6DHN7lIfg3TfEfVYAAqt2vU+uKe3oEo4+wKpI1yd1s+iLncOZFgVt2sRfr5YeGt6
+	K+IpCpQ==
+X-Received: from pfbih9.prod.google.com ([2002:a05:6a00:8c09:b0:835:3fa4:894a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d25:b0:842:6f13:1461
+ with SMTP id d2e1a72fcca58-84524476bcdmr384546b3a.11.1781635687806; Tue, 16
+ Jun 2026 11:48:07 -0700 (PDT)
+Date: Tue, 16 Jun 2026 11:48:07 -0700
+In-Reply-To: <CAEvNRgH7Lk=z9NqcY4OZXv=y5SeCZHnDNcB0=kHfarjCA4ZPTw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com> <20260521-tdx-selftests-v13-v13-21-6983ae4c3a4d@google.com>
-Message-ID: <ajGaMb6Lrk3OS8B4@google.com>
-Subject: Re: [PATCH  v13 21/22] KVM: selftests: Add ucall support for TDX
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com> <CAEvNRgH7Lk=z9NqcY4OZXv=y5SeCZHnDNcB0=kHfarjCA4ZPTw@mail.gmail.com>
+Message-ID: <ajGaZyAcDv5j3nFc@google.com>
+Subject: Re: [PATCH v13 00/22] TDX KVM selftests
 From: Sean Christopherson <seanjc@google.com>
-To: Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
 	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+	Erdem Aktas <erdemaktas@google.com>, Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
+	Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Adrian Hunter <adrian.hunter@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, May 21, 2026, Lisa Wang wrote:
-> diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
-> index e7dd5791959b..c8e3418d53af 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/ucall.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
-> @@ -5,11 +5,34 @@
->   * Copyright (C) 2018, Red Hat, Inc.
->   */
->  #include "kvm_util.h"
-> +#include "tdx/tdx.h"
-> +#include "tdx/tdx_util.h"
->  
->  #define UCALL_PIO_PORT ((u16)0x1000)
->  
-> +static u8 vm_type;
-> +static gpa_t host_ucall_mmio_gpa;
-> +static gpa_t ucall_mmio_gpa;
-> +
-> +void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
+On Tue, Jun 16, 2026, Ackerley Tng wrote:
+> Lisa Wang <wyihan@google.com> writes:
+> 
+> > This patch series focuses on setting up a TDX VM and adding all code
+> > necessary to run a basic lifecycle test.
+> >
+> > Unlike standard KVM selftests can set up the VM through guest registers,
+> > TDX module protects TDs' register state from the host. This feature of
+> > TDX causes problems on VM boot state initialization and the ucall
+> > implementation.
+> >
+> > In standard KVM selftests, the host directly initializes the guest state
+> > by manipulating Special Registers (SREGs) and General Purpose Registers
+> > (GPRs) via IOCTLs (KVM_SET_SREGS, etc.) before the first KVM_RUN.
+> >
+> > To bypass direct register initialization by the host, we utilize the
+> > standard x86 reset vector as the default entry point.
+> >
+> > The mechanism works as follows:
+> > 1. The host places register values into a specific memory region and
+> >    inserts boot code at the VM's default starting point.
+> > 2. When the VM starts, it executes this boot code to "pull" values from
+> >    memory and manually set up its own SREGs and GPRs.
+> > 3. Once the environment is ready, the boot code jumps to the guest code.
+> >
+> > The standard x86 ucall() implementation uses PIO, but it does not
+> > actually transmit data through the 4-byte PIO data. Instead, it relies
+> > on the host reading the ucall address directly from the guest's RDI
+> > register.
+> >
+> > TDX selftests cannot utilize the standard x86 ucall implementation,
+> > because the host is unable to access the guest's RDI register. Based on
+> > this restriction, we considered these potential solutions for the TDX
+> > ucall implementation.
+> >
+> > 1. TDCALL PIO with RCX-bits Passthrough
+> > We first considered passing the RDI value through RCX bits to bypass the
+> > hardware's register protection, which could be the closest approach to
+> > the non-TDX implementation as per Sean's suggestion[1]. However, this
+> > approach is blocked by the software-side implementation: KVM_GET_REGS
+> > currently does not support TDX VMs and returns -EINVAL. To make this
+> > work, the KVM ioctl would need a test-only hack.
+> >
+> > 2. TDCALL PIO with buffer indexing
+> > To keep a PIO-based approach and unify the get_ucall implementation for
+> > both TDX and non-TDX VMs, we considered TDCALL PIO with buffer indexing.
+> > Since the ucall buffer is initialized prior to execution, the VM could
+> > just pass a buffer index rather than an 8-byte ucall address to fit
+> > within the 4-byte PIO data limit. The host, already knowing the ucall
+> > buffer's base address, could then resolve the ucall content via this
+> > index. We abandoned this solution because it would require changes to
+> > the common ucall structure and impact other non-x86 architectures.
+> >
+> > 3. TDCALL MMIO (Selected solution)
+> > We ultimately selected TDCALL with an 8-byte MMIO data. This method only
+> > requires initializing an MMIO GPA and adding TDCALL MMIO implementation
+> > for TDX under the original x86 ucall path. While this diverges from the
+> > non-TDX PIO, it provides the cleanest implementation with minimal
+> > disruption to the overall ucall architecture.
+> >
+> 
+> Sean, Lisa evaluated your suggestion [1] (summarized as 1. above) but we
+> think TDCALL MMIO is better, what do you think?
 
-I think we should use an x86-specific GPA, not the first address past memslot0.
-Unlike other architectures, x86 has a nice swath of addresses that are pretty
-much guaranteed to be unused, thanks to selftests creating a local APIC by default.
-On the other hand, the chances of a collision with a memslot just after memslot0
-are decidedly non-zero.
+I think y'all should have responded to that thread with "that doesn't work
+because host userspace can't access the registers".  Reviews are multi-way
+discussions, not one-way streams of "do this".  And the expectation is that
+either review feedback is addressed in the next version, or the dicussion is
+closed/resolved *before* posting the next version.
 
-Note, because CoCo VMS don't support read-only memslots, the TODO in __vm_create()
-can't be resolved for TDX using the suggested shenanigans.
+Remaining silent and then writing a thesis in the cover letter of a future version
+of the series is very inefficient for everyone involved.  I obviously don't read
+cover letters all that closely at v13 and I gotta imagine a *lot* of effort went
+into the above (which I greatly appreciate!).  The paper trail also becomes
+impossible to follow, because anyone reading my response would probably make the
+same assumption as me: it was a viable idea and that's what we implemented.
 
-I vote for either the I/O APIC (0xfec00000) or HPET(0xfed00000).  We *know* TDX
-doesn't support an in-kernel I/O APIC, and the odds of KVM selftests ever
-implementing an I/O APIC are basically nil.  Ditto for the HPET.
-
-> +{
-> +	vm_type = vm->type;
-> +	sync_global_to_guest(vm, vm_type);
-> +
-> +	if (is_tdx_vm(vm)) {
-> +		host_ucall_mmio_gpa = ucall_mmio_gpa = mmio_gpa;
-
-Drop host_ucall_mmio_gpa entirely.  "host GPA" is rather nonsensical, and KVM is
-responsible for stripping the shared bit.  You can actually drop ucall_mmio_gpa
-as well if we go with a hardcoded magic address.
-
-> +		ucall_mmio_gpa |= vm->arch.s_bit;
-> +		sync_global_to_guest(vm, ucall_mmio_gpa);
-> +	}
-> +}
-> +
->  void ucall_arch_do_ucall(gva_t uc)
->  {
-> +	if (vm_type == KVM_X86_TDX_VM) {
-> +		tdx_mmio_write(ucall_mmio_gpa, MMIO_SIZE_8B, uc);
-
-s/MMIO_SIZE_8B/sizeof(hva_t), because what you're writing is the address of a
-pointer in the host virtual address space.
-
-> +		return;
-> +	}
-> +
->  	/*
->  	 * FIXME: Revert this hack (the entire commit that added it) once nVMX
->  	 * preserves L2 GPRs across a nested VM-Exit.  If a ucall from L2, e.g.
-> @@ -46,6 +69,13 @@ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
->  {
->  	struct kvm_run *run = vcpu->run;
->  
-> +	if (vm_type == KVM_X86_TDX_VM) {
-> +		if (run->exit_reason == KVM_EXIT_MMIO &&
-> +		    run->mmio.phys_addr == host_ucall_mmio_gpa &&
-> +		    run->mmio.len == MMIO_SIZE_8B && run->mmio.is_write)
-> +			return (void *)(*((u64 *)run->mmio.data));
-
-This needs to return NULL.  Either that or make this an if-elif.  Falling
-through to the normal KVM_EXIT_IO check is not what we want.
+I'm a-ok with using MMIO, because yeah, there doesn't seem to be a better option.
