@@ -1,181 +1,149 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559A53C819A;
-	Tue, 16 Jun 2026 06:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A1A3EEAE9
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 06:38:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781591389; cv=none; b=Xo0ilagpMGJ8edGGnKk2RKTYmQdC39QIqiZDDCXBb0D/kG4AlGW2XJYucfwnyQOKQufBwkZhXRuqEN0w3M42MVlCjydY47fh2PA4BArh2mXuAZRqzm5kEhU000ArgxK3lsLNkzztFZ70gfWAlHquh3paRxfx6KPEtQ5tFf8ZB04=
+	t=1781591907; cv=none; b=SWmlPPJB+LFCTTVnX2yexmAPHeOZMwIRghuZISkgIxHCahAwmZa0jgdlujOSvZAiu+YUkE4ewAhFhZ7SZvqrWqlO7k6jETfNk46zNdEPDh+ndSsVIVLLza+45BEHGALq50/9AUt29wKQbDN5Z7uF3g08Ux/KQiRUGETT3uX+fEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781591389; c=relaxed/simple;
-	bh=yeXTWBMDfVYyDMcTh6RemfuGVrnkEW4Q4H4mS5haS2Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z/fTaRx86/tyEKJRy8m5hkCRFQW19TTKB2og+YFetaaN8CQnsXPHS8VWlPFB3247+BveWmvN38m0wi/0srbuddHghapq2U9km3/f7ihFA2XcIhxFvHUSArfYKAjknnK62XijBO9MPKYMz8tJi1kO6ynxzFYRDqw+UihpTBNuz7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X6aRbH6K; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1781591907; c=relaxed/simple;
+	bh=EnxOCa15sZX3oEek17FpEAqKawL7WEZTyWucBlcjikg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JPz8GBnB9XnBV+KCd0xXATmvIHOFOXiKw+lOAcDZuUtQNLyS2O8KiBO2RLRr9B2EaZLmeA7bgtjJBV47N8ADNauqYWQ+L0zv8SJXnseYkSVFrQ0Ylsf8CGF4p0XBptB0p/g1BxrYFWBy7JajhNVGbQA9OXGdt5VLG7dA13Vmfz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q9YNOphC; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X6aRbH6K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781591387; x=1813127387;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=yeXTWBMDfVYyDMcTh6RemfuGVrnkEW4Q4H4mS5haS2Q=;
-  b=X6aRbH6KpBbuZnP6aoUkpqmW/4z0BeTT/iDX6doAObdoWotM7dtFgHfa
-   TpEdjnRNsOhRLHX8w6zWg5vj+xqcSqEfmu70wYy8OZrdjlqE8GRNjYs8Y
-   vYYdy3fEo0CJ794VVPKxBvgoYw8Gu5hn9Rr8Ofss2NZRQExxmiX58fjOJ
-   fBVxZmvS2ZgrvuU2d2T6rivINxuRfQZfkr3KmMRd34eSWQxuBNdbrqyVs
-   t5VzB0PYzoVYOxoyh976secY8R112lPN3YuwHbdRIDeMmCPL68cBJOUm2
-   tGPrgKifbV5oJPcRbKD8YUWGX2qcxaH4U9QQgS+RZBqfXOMuvGqCPI0TC
-   g==;
-X-CSE-ConnectionGUID: Hi9YFVJrRAKW7+0ce/TlMA==
-X-CSE-MsgGUID: PwBwOP6JRfKv0E2+VnzyTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="92905969"
-X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
-   d="scan'208";a="92905969"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 23:29:40 -0700
-X-CSE-ConnectionGUID: PZxr5B/FRWyb4fnMGTGY4A==
-X-CSE-MsgGUID: BcIPS7RtTqCDJleynatLEA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
-   d="scan'208";a="252659559"
-Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 23:29:36 -0700
-Message-ID: <906e9797-08d4-4ebe-aed3-34002aa1f917@linux.intel.com>
-Date: Tue, 16 Jun 2026 14:29:34 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q9YNOphC"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2bf22c18ad3so35725ad.0
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 23:38:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781591903; x=1782196703; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EFz9lxRroKDDcTb/8ZfQJSCQqH8dCC3UQeivoDCOLsY=;
+        b=Q9YNOphCFZZzWi37RFXsyfJkuN6xPhsL2EHamixCuR8nYfQxSirjTFq6YCytklhyAM
+         eMyu3s0iw2LpUrrjXGvSArTOBoUrx+vjnEuy8PIGIHDzchmBIcEQn96X9tEXgCrJNUVR
+         Vw1pbkn2smntXzDV9l7hzJniIyANjNt9b/548gyVPnYnHcfvo5bYoiQcoMELAUQAxgvw
+         /O88/RAwb5CZ/EuVj6HRoM3PiOHKo4oYhviUHfhAnW/Lfk3qP3nVB5ibdJEZwdM1zt2c
+         Bhl/4Rhxp6DM5zFPnQBNnB+BiiHDjiCAu5dFhuttkkkblwm+fM8XYmB4kVv8GJ4dVNHr
+         c7kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781591903; x=1782196703;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EFz9lxRroKDDcTb/8ZfQJSCQqH8dCC3UQeivoDCOLsY=;
+        b=tO5j+0HDgJASYELvk6V13v/2x61W+gWJD+cdKwzyyWCUh7zE/5DsFwbDJHqzeFVeHJ
+         G5ILxuo8zKjKGOJJMrv4AmWDKC7VESk9+VDvqhX34Wc+hqM+Dep/OlWWial5iYoFpo60
+         83FB5NNdgHaEJPqma5JSHeeBccoXzpIiLz2wN2sjlI9LY2QUTHr+b9wGwho/SYCsA3YD
+         OGrQuHGNJDVPTDLwwnT5+QjM3PLglpQ3pky55O9LvOJGMI16ML+ULnI1d5YHjYaScQhz
+         jAYMzSttIrcH+ZH/jwsfPlA/LJPjZi7QSJtQ04yoYpayf8iJnxuVrs/Szooa8zR9k+J/
+         afRQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9xPLiayapV3+n+KSCcR7V9YcGoHVb1iYVZoKzf7LztsSNKxByb/UAxHKgwYOiLK/sWwnI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXJx1rNupnNM30Z9Afb1iy6J6rS0ADxikqdsK23U1lTocg/8YM
+	0rs5j0MZb3scQMFxbzNHk48TZy6+noy8L2LJZ4F57Rny9rXMQ4Urcyd+M+bbDufkiQ==
+X-Gm-Gg: Acq92OFbpKvHi4Y2nT+kCQOCSOd5/DqoHFvg5YIIF8AYiGnT7lLOMmVnO0H4PIjHwRS
+	SVx7KkFjflw+2Tz49G/CQc7aPgnyM0QiIixy3myHpMZQk00njuU4tCpilW+oUajjZZ+bNAWQ56N
+	BaRpY5wOGt3yuDK1TmESHeT1GXKdbyhyoLv3iLiyLp7FopVabKeMCbpbOYa4Vzez3C5lK5Vc+Hg
+	KRb35N3ptx1JNlYZnV/z4UyAf5CTYxdP46g7s1wUz10Mipwm5fR9KRBHKPL3gzsQtv/TzosEf+G
+	cRJ8AoVNGh9j3e3gsi9rQYY2qls7zFfiN/rKaNwKZ6B2QzZzdaQginFmjih2zLfQYR67jcakYLC
+	6mzJA4kJh+auInjs9QJrKXVgX0ajqK/mliH7qcJWE58aysFA2g8XIZBPTZLOpEKPgPafZeH3sTj
+	CKhdJA0Vh3kRIrlcySKIHnyT3HUphlv7tWe91AcVBy8oxHrQVXwtsZI2pVo84UXLpWlTlPCdY=
+X-Received: by 2002:a17:903:2a84:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2c69a26dea7mr49405ad.2.1781591903036;
+        Mon, 15 Jun 2026 23:38:23 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c866519f0a6sm10345718a12.22.2026.06.15.23.38.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 23:38:22 -0700 (PDT)
+Date: Tue, 16 Jun 2026 06:38:15 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>, Matt Evans <mattev@meta.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Shivaji Kant <shivajikant@google.com>
+Subject: Re: [RFC PATCH 0/5] vfio/pci: Support ZONE_DEVICE-backed P2P
+ Registration
+Message-ID: <ajDvV4mOkaL9NMII@google.com>
+References: <20260610151853.3608948-1-praan@google.com>
+ <20260610162848.GO2764304@ziepe.ca>
+ <airI0VIb563jHTcy@google.com>
+ <20260611221447.GH1066031@ziepe.ca>
+ <aiwcquSgAonkh_6L@google.com>
+ <ajCaTmrYQvKDoP_I@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 18/30] KVM: x86: Move "struct kvm_x86_msr_filter"
- definition to msrs.c
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
- Kai Huang <kai.huang@intel.com>
-References: <20260613000329.732085-1-seanjc@google.com>
- <20260613000329.732085-19-seanjc@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260613000329.732085-19-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajCaTmrYQvKDoP_I@google.com>
 
-On 6/13/2026 8:03 AM, Sean Christopherson wrote:
-> Move the definition of "struct kvm_x86_msr_filter" and its associate,
-> "struct msr_bitmap_range", to msrs.c, as the details of the filters are
-> very much implementation details that can and should be buried in msrs.c.
-> While the _existence_ of filters is public knowledge, almost by definition,
-> the contents don't need to be exposed outside of the MSR code as the filter
-> data is provided by userspace, i.e. it pretty much has to be dynamically
-> allocated, and thus never should be fully embedded in a globally visible
-> structure.
+On Tue, Jun 16, 2026 at 12:42:19AM +0000, Samiullah Khawaja wrote:
+> On Fri, Jun 12, 2026 at 02:50:18PM +0000, Pranjal Shrivastava wrote:
+> > On Thu, Jun 11, 2026 at 07:14:47PM -0300, Jason Gunthorpe wrote:
+> > > On Thu, Jun 11, 2026 at 02:40:17PM +0000, Pranjal Shrivastava wrote:
+> > > > On Wed, Jun 10, 2026 at 01:28:48PM -0300, Jason Gunthorpe wrote:
+> > > > > On Wed, Jun 10, 2026 at 03:18:48PM +0000, Pranjal Shrivastava wrote:
+> > > > >
 > 
-> Note, this creates a discrepancy with the PMU event filter structure; that
-> will be remedied shortly.
+> [snip]
+> > 
+> > Yea, that's going to be tricky.. I'm thinking if we can have a zap model
+> > there somehow? If the device is gone / going through a reset, we can
+> > handle the refcounts accordingly?
 > 
-> No functional change intended.
-> 
-> Suggested-by: Kai Huang <kai.huang@intel.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/include/asm/kvm_host.h | 15 ++-------------
->  arch/x86/kvm/msrs.c             | 13 +++++++++++++
->  2 files changed, 15 insertions(+), 13 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 09e437c947a9..4ff6304c02d0 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -315,6 +315,8 @@ enum x86_intercept_stage;
->  struct kvm_kernel_irqfd;
->  struct kvm_kernel_irq_routing_entry;
->  
-> +struct kvm_x86_msr_filter;
+> IIUC zapping will only work if userspace is using these, but if you feed
+> this memory into another device through NFS and the pages are pinned by
+> gup (or that device) then the dmabuf move_notify/revoke logic on device
+> reset will be tricky as now the pages for that device BAR are pinned.
 
+Yes, it would be tricky. However the zap is still needed since userspace
+is the entity creating the file I/O leading to those pins. The user would
+mmap the BAR and pass the buff into a POSIX read() / write() where the 
+filesystem (like NFS) would extract the iovs and call GUP to pin them.
 
-Just FYI, the code failed to build on my desktop with an old gcc version v9.4.
-Due to dereferencing pointer to incomplete type ‘struct kvm_x86_msr_filter' via
-typeof().
+By zapping the userspace mappings first, we prevent the any new 
+read/write() calls and halts the creation of additional GUP pins.
+(Note that if GUP doesn't see a PTE for the page, it manually invokes
+the page fault handler and waits for the page fault to be serviced, where
+it would then block on the vdev->memory_lock held by the reset thread).
 
-It's not the fault of the patch, the issue was fixed for GCC 10+ according to
-the link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=44257
+I agree it will be tricky but we just need a multi-stage sequence. The 
+standard workflow is: userspace mmaps the BAR and passes the buffer to
+filesystem via the POSIX file API. Filesystem then pins the pages via GUP
+for the duration of the synchronous DMA.
 
-But the minimal tool version got for gcc is still v8.1.0, not sure if it needs
-to bump the version in scripts/min-tool-version.sh?
+My plan for RFC v2 is as follows:
 
+a) Zap the userspace mappings first to prevent new requests
+b) Wait for In-flight DMA: Just as we currently use dma_resv_wait_timeout
+   to wait for HW fences, we'll first wait for the page refcounts to drop.
 
---- Build error information below ---
+   An important thing to note is that filesystems can't pin these pages
+   for long term, i.e. FOLL_PCI_P2PDMA and FOLL_LONGTERM can't be
+   requested together for a single pin as mandated by gup [1]. Thus,
+   filesystems using ZONE_DEVICE memory (via ITER_ALLOW_P2PDMA) simply
+   hold the pins for the DMA duration.
 
-In file included from ./include/linux/rculist.h:11,
-                 from ./include/linux/cgroup.h:15,
-                 from ./include/linux/memcontrol.h:13,
-                 from ./include/linux/resume_user_mode.h:8,
-                 from ./include/linux/entry-virt.h:6,
-                 from ./include/linux/kvm_host.h:5,
-                 from arch/x86/kvm/x86.c:20:
-arch/x86/kvm/x86.c: In function ‘kvm_arch_destroy_vm’:
-./include/linux/rcupdate.h:502:9: error: dereferencing pointer to incomplete type ‘struct kvm_x86_msr_filter’
-  502 |  typeof(*p) *local = (typeof(*p) *__force)READ_ONCE(p); \
-./include/linux/srcu.h:240:20: note: in expansion of macro ‘__rcu_dereference_check’
-  240 |  __auto_type __v = __rcu_dereference_check((p), __UNIQUE_ID(rcu), \
-      |                    ^~~~~~~~~~~~~~~~~~~~~~~
-arch/x86/kvm/x86.c:9969:22: note: in expansion of macro ‘srcu_dereference_check’
- 9969 |  kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
-      |                      ^~~~~~~~~~~~~~~~~~~~~~
-In file included from ./include/linux/notifier.h:16,
-                 from ./arch/x86/include/asm/uprobes.h:13,
-                 from ./include/linux/uprobes.h:66,
-                 from ./include/linux/mm_types.h:16,
-                 from ./include/linux/mmzone.h:22,
-                 from ./include/linux/gfp.h:7,
-                 from ./include/linux/xarray.h:16,
-                 from ./include/linux/list_lru.h:14,
-                 from ./include/linux/fs/super_types.h:7,
-                 from ./include/linux/fs/super.h:5,
-                 from ./include/linux/fs.h:5,
-                 from ./include/linux/cgroup.h:17,
-                 from ./include/linux/memcontrol.h:13,
-                 from ./include/linux/resume_user_mode.h:8,
-                 from ./include/linux/entry-virt.h:6,
-                 from ./include/linux/kvm_host.h:5,
-                 from arch/x86/kvm/x86.c:20:
-./include/linux/srcu.h:243:2: error: ‘__v’ undeclared (first use in this function)
-  243 |  __v;         \
-      |  ^~~
-arch/x86/kvm/x86.c:9969:22: note: in expansion of macro ‘srcu_dereference_check’
- 9969 |  kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
-      |                      ^~~~~~~~~~~~~~~~~~~~~~
-./include/linux/srcu.h:243:2: note: each undeclared identifier is reported only once for each function it appears in
-  243 |  __v;         \
-      |  ^~~
-arch/x86/kvm/x86.c:9969:22: note: in expansion of macro ‘srcu_dereference_check’
- 9969 |  kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
-      |                      ^~~~~~~~~~~~~~~~~~~~~~
-In file included from ./include/linux/rculist.h:11,
-                 from ./include/linux/cgroup.h:15,
-                 from ./include/linux/memcontrol.h:13,
-                 from ./include/linux/resume_user_mode.h:8,
-                 from ./include/linux/entry-virt.h:6,
-                 from ./include/linux/kvm_host.h:5,
-                 from arch/x86/kvm/x86.c:20:
-./include/linux/rcupdate.h:502:9: error: dereferencing pointer to incomplete type ‘struct kvm_x86_pmu_event_filter’
-  502 |  typeof(*p) *local = (typeof(*p) *__force)READ_ONCE(p); \
-./include/linux/srcu.h:240:20: note: in expansion of macro ‘__rcu_dereference_check’
-  240 |  __auto_type __v = __rcu_dereference_check((p), __UNIQUE_ID(rcu), \
-      |                    ^~~~~~~~~~~~~~~~~~~~~~~
-arch/x86/kvm/x86.c:9975:8: note: in expansion of macro ‘srcu_dereference_check’
- 9975 |  kfree(srcu_dereference_check(kvm->arch.pmu_event_filter, &kvm->srcu, 1));
-      |        ^~~~~~~~~~~~~~~~~~~~~~
-make[4]: *** [scripts/Makefile.build:289: arch/x86/kvm/x86.o] Error 1
-make[3]: *** [scripts/Makefile.build:548: arch/x86/kvm] Error 2
-make[2]: *** [scripts/Makefile.build:548: arch/x86] Error 2
-make[1]: *** [/home/litbin/workspace/kvm-x86/Makefile:2143: .] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
+c) Once the refcounts hit zero do we proceed with move_notify and the
+   hardware reset.
 
+This is going to be the first stab, I guess it'll definitely evolve
+further. I'll try to implement this in RFC v2 and attempt to address 
+these concerns 
+
+Thanks,
+Praan
+
+[1] https://elixir.bootlin.com/linux/v7.1-rc6/source/mm/gup.c#L2538
