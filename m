@@ -1,89 +1,153 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAEA344D88
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 19:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781637655; cv=none; b=hyRXUlLja9VOc9GHtE5dUbe35SGRAhYcWoz1WZD+Vd+2bTxwXW6X0m/VKYLdRY2KfGW4VBuruRzCpk+xbnCa9RuUC1DHLUueDtjka/+pLVGHACRObZYK4z8lglxLDiPaZ1LrheFvO9CjqCV5J55AnrhI5/yKWwe7ZVq6QlWYHaY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781637655; c=relaxed/simple;
-	bh=UogYtRqBiVjHWJC7z8/Zh+EB+hJzxz738BDN0Q4YOLI=;
-	h=Content-Type:From:To:Subject:Message-ID:Date:MIME-Version; b=j4D8Td/zMD20wndEP/BCuZQ9fvnhKLq+3Wqh8ST8hmb2A7v9fBqcKPPBhkgJ+RCr2UTtaZff4Tyy4M2qnM2jfffw6qGPaEnT7rzJW1VIGlX5Ndei2Fnddpn5Nv9Ya0O5TqjcV//3HzJ2fNRbUZxShZA3QP/bJBW+u6L6nT/9XSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a/D1xLSs; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126312356C6
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 19:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781639691; cv=pass; b=TF5opPmgEYkhapB+KwaOcpSVhJd5aODewUKJE61hbN9N0zlgkLydJeIWP9sNRvQkVSqFggrW9rw+YkI90oPekQpxfn4wTp+DeKQyt6LIawYRSwD4KkpksMx0Lgs4aCyf0JHFYOEqP3Kb5ykxU4e8XHYTuGhVweOtaqVP1sBhTJ8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781639691; c=relaxed/simple;
+	bh=rOreL9cMPNKjQLcaTXTeQFF75y3HOUoqRBuOPg2jGxo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LTgywdD2GgmWuZphkss4CxrBEVUT34LpVMPDktwtx9FlSHcyGWycjMDBjPGjBI3RDqjaeNPjQKF6h5Ii2VO4LmBAJ81BZJ6dbzS30wKs1QId3X7c7N/vZ3yKueSqJ3cRzEzGkVritCQlJwYIxKNNSnhJbRyy1g8IJIGsdLLudrM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wJugmJJK; arc=pass smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a/D1xLSs"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so34691795e9.1
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 12:20:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wJugmJJK"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-68d22476e88so3069a12.0
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 12:54:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781639688; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dRdfL4nWxJqXMjaOer58VdWBe+45FmxOyaY8zhB0qCORYQdzuMVh3Bcff6aKZnyYPq
+         VJWdzVRo5HwnNnNkSJKrsmyCWioOtJ0MUy3qkMK3Br5iW7L+KLVpMJhu3ZhEIAzOvq3J
+         ONMdYIOeuJC/XcqlYG4scHQxPGWdEh3TPmLtGtrECKxQ4XHcQZsktPuwbsaVw6aowC9h
+         Tcl7lacFLuPqXbXehroH2bMKtEcMnSSY5cT+vUrW4wN42m3V/LMs1jz37qVfeCyraNna
+         nsPKC8ynWg3JLJjmxp0NSkvAfYM3W+Q812CuWYVbgoFxpjVjRxhzFdIljt53yj+DdL+K
+         2wMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=l/CgDRXCVmcvg8qX3Y+6ACmme2uqTw2HX6Xact+DTl4=;
+        fh=IGuiwqyWdWNnWUbkIrlSdKxOhMaU3Ej2LI+KyM9nhac=;
+        b=KWpiQAJkX3L3HIMgdWzwbnqv0S0b99iyHeapIHD/LyyMsWbTaNbRI1uKoJT668mLZ3
+         7sdP6ekotm7hnKxPWlXdGCPdedXhHRjce6UbFWfNQzRde38Wljj+AEgrZuRIp4HazcR/
+         pFB3N3+73xnOuqYA7foOiTgFKS9J85uCy0yZIWJGJ+kSLQW+glyHq9cHoyrOUFuznewj
+         OUh94tTEAuNeDdarz33fnqajznbMQFN0W/B88vg3h0/nyc1vBVm9jFA1w+zV3sqiejge
+         HpRDr+HmD5Ty0MNegv/KLwtJ+sNWdqr8r4kxupQnWu99xexYE+VAIkefGkD90zXPuJaV
+         86iw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781637652; x=1782242452; darn=vger.kernel.org;
-        h=mime-version:date:content-transfer-encoding:message-id:subject
-         :reply-to:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UogYtRqBiVjHWJC7z8/Zh+EB+hJzxz738BDN0Q4YOLI=;
-        b=a/D1xLSskEHJ6vDjpmEy2sbPeLwt/K2JLH1mz//JDmLUvYSJgW3KnEIO+8gFUMgXFa
-         I8C/AhSmq3TSMbgc6tG/IPkG2AAri6+OYwwcS7qhW9LhyVwTZshET9eQafTINNvJG7ol
-         /K5RzK/DXmEBfEUkozKWu2UIBB//zcbFTJVnTwg7u2E9KIiCUtV1B44S/+UGLZ4aXlFI
-         9BZE+IFtnUcHjd8p52gXbR8a0thhJHT4/Nuf415pbSlOCegl9DbLueg/ZW5N+/JG6Z2n
-         65hLJ6dIT1siweVwQTk8Nw1dauxtaN4TcJXKwSr9AKLbJjgO4iqjSqt6GeB7pw+crPRE
-         k4qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781637652; x=1782242452;
-        h=mime-version:date:content-transfer-encoding:message-id:subject
-         :reply-to:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20251104; t=1781639688; x=1782244488; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UogYtRqBiVjHWJC7z8/Zh+EB+hJzxz738BDN0Q4YOLI=;
-        b=ZhN5mjZcl8cKigE+RGrvzO8qVR+WnRyUGyKc0rpH4MDjrpB78P6gnTuJH0m2mV6Q6g
-         ldXKf/LhpUc1HjCCz8cr2AGauNHqbieY0HEf83kz6UCkAw4WEAxLFkQcUd7cCcpG2LI7
-         kdAGrJt8yv5/GOEEuPMTnul6sfjkI6pdsnV5PWYDZbBQjChcLz30asbj0Ul8r0uaofCv
-         6Y0YB+ScSOviXZLsOJWsWlN/g1DIQMLBR2ogAsfclHhFsAJn7aTj/GzPUJqnEAcIzq/B
-         mOdA3dgbBnR4I+T52jjKuMpcTaWO2RGxry815RI0O5wMVOFKsINuKF6enfUt829UNBgh
-         BlfQ==
-X-Gm-Message-State: AOJu0Ywca1auiY7u7dUycHGSnw0FAOwXJf0YlmSWQDZ8m8EeZzFZ+uZv
-	/gxxSC28X5+TMb9t7FBEeswo/HNb9TPQneugZPxkjbeHPaspRHAwxwDAVcGtel9WMXM=
-X-Gm-Gg: Acq92OFG1mb1c147xHiNaswB7UyK3WmRDNm594a+OjkcAfF8CWt+RtD/Wnn72F1bGkf
-	1ieMMhpdU80BxUut1Ji2x3APK+AspcUSt1dvUhPHPd6WMTtzew0rcBLWDt1ZcCMMW6CwdwYYBJR
-	PnvGqappCVQMmdp3MzJ7Wd9nknZ9GSTbcMA3dvSErM5MTz36pSts5eUGSlukThxL2QYiAOVhcuv
-	LQIs+HYzpvD9QZwoB0QZEQbAJj95jI2hLlvXAE8ar6XEppZKe29qcFPuaOZGDAhpTJF2UX0SGC6
-	R+Bl4IHbDhJeunVyZsRcog691LhXzsUmnFByptNW2zdk+gw8yCdqcIpH4NOoIYXF+Uw0pDG0Jao
-	7HsBYO9Jvkksu80KjOgj6dFwSeMeKhGj07+BJNuO/FgZKOuFKxbVZ5z3rDmMlAf/JcJOpyOtlLN
-	f4v+mJwaEAAb/5G9dsFKx1+9/p0QB7dA==
-X-Received: by 2002:a05:600c:e557:20b0:492:1e36:85dc with SMTP id 5b1f17b1804b1-492333e2b9dmr9754405e9.36.1781637652268;
-        Tue, 16 Jun 2026 12:20:52 -0700 (PDT)
-Received: from [127.0.0.1] ([154.80.21.188])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a8ebe3sm69297095e9.11.2026.06.16.12.20.47
-        for <kvm@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jun 2026 12:20:51 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-From: Donald Marvin <gbchhgbc@gmail.com>
-To: kvm@vger.kernel.org
-Reply-To: donaldmarvin.pe@gmail.com
-Subject: Project Takeoffs
-Message-ID: <bbf356ac-7d04-a656-f5f0-037d020088f4@gmail.com>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 16 Jun 2026 19:20:48 +0000
+        bh=l/CgDRXCVmcvg8qX3Y+6ACmme2uqTw2HX6Xact+DTl4=;
+        b=wJugmJJKu9wb9tAOzjTtZkv5y8j08It+IAjUWRVd5xQlBNRrNcVDVl5sem5K0GcWn6
+         0SIsf9cXoW96/3SXcJA2Zp/9v0ZR93x+rrc8wgzn3S8OR2ugj56e/MK6kfcESKhhdp4i
+         xnwHaNJZsg1AFNaMBwPqtjxeMvI4IKIoQf/GZy+NBMrZhrJTwsmpKS8DEPaEkSIem+WJ
+         F9WY6eRhXisG0k0E9FT7kgY0hdz9w4k0ef8ZiSXlwB0J4MYf0cvDAxOgFLlcOD1SyI07
+         cGlRXNbOO3E0eJ3vezId5OVi6y8rKVYHGnpSSS/DsaV8iz8VCAlZKovk9IhKT7TjL+5t
+         pwxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781639688; x=1782244488;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=l/CgDRXCVmcvg8qX3Y+6ACmme2uqTw2HX6Xact+DTl4=;
+        b=PAn2D7zXjCUV5wtzzWCriI0EQHRyumcg/d8MrkiXJThLqgd7cirmuWGhkjHZI1bgar
+         XIghpnDTsJxbnIj6dmVPOtMwPlGRUzM2WTZCwTUOITWCB8yZli51JsnMpqBI94caqHdp
+         lwpTpakRf8C0vc34n6to2NXKaIPaSoAwBTCYNp1+g2bQ+77n4ns+eJQtnq6/UCduS14D
+         ujRXWO3iQ3cjUCsIP31Vf5kRdVx6Jz6BmFyEiURmuKNZcyr4YCnGzYvJNhjOrxJRJ1JZ
+         CxcKhSlpyV85PJWxuVXlnOsGaIttB6eGhpvqYS8tgxLa0UQVSsPQOpdwqrWl5WkDRa1K
+         m8kg==
+X-Forwarded-Encrypted: i=1; AFNElJ/ENdyd6rK7d0O1urOOL9IKYlGVzsIR1HPNmMNsdxOHfL6HPM4o3Ccq6OcHSaay3dqa3w8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQeVY7SKbS1Fs3Xh8GwDEuuzQoGKeRTRyVf6xPv5mw2a6nvWAF
+	dw735AlulyDNpRtVLuGyWX69AY2SnYbtJHPxpR+NFyWVuiWLjSJ3dfnRhraVFn2gjMyf3EnoRja
+	axE6eWsYZgwNq5J6cav38t33cROfWR5UmuTwjx4msZGduxdx5wc5YGMvBXFw=
+X-Gm-Gg: Acq92OFwnNp+TVk8jR0F9xKxvigEIPlcTzvwLj1eXS5NK5T0p5Xg/DmoAbMPKseXxXe
+	NNplaNI32Hm5v69dHIEh3Tfh9Pn9YuIKPYqIilhglZrx7vwwbvCI1kdXYD0PZ4ftY3xsuWjuuGJ
+	RgNOrYnuu5pqu8AUJ/a2RCpQqS2lzwmUOcBGRBBXzuheCX9x8NZ1k7UxZ89iWkhCAkkPfXA4Zrg
+	LXgGKfvI6sKhaxzK5N38M49PiaNw4UZR81rBB57j0wCEkZS3oHG4qzXqxpuk6wALB/cLW31R4OD
+	bWz7cjVTvEJg33kTAw==
+X-Received: by 2002:aa7:c919:0:b0:693:3e06:8f4d with SMTP id
+ 4fb4d7f45d1cf-695476eb895mr8776a12.2.1781639687910; Tue, 16 Jun 2026 12:54:47
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260616004155.1435766-25-yosry@kernel.org> <20260616013031.53DAC1F000E9@smtp.kernel.org>
+ <CAO9r8zPA6B72RDWeBMHqv1xz6o9dDHEEjwnMjwAwVwA=5qxaKg@mail.gmail.com> <CAO9r8zM1aKR6VzOhVq1_xTH5ZhSUBzYh-tr+ZzO_L4o28iy9OA@mail.gmail.com>
+In-Reply-To: <CAO9r8zM1aKR6VzOhVq1_xTH5ZhSUBzYh-tr+ZzO_L4o28iy9OA@mail.gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 16 Jun 2026 12:54:35 -0700
+X-Gm-Features: AVVi8Ccl5w4C_y5y0xOjMjz0BTS525Kww8pR3RSPvd9mlFGLN-xlUMmMlMC5JwA
+Message-ID: <CALMp9eRS0EyqPqWZNkS0U=iH4mSt0snD44ufgXw7wvs9+o=a4A@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 24/25] KVM: nSVM: Use different ASIDs for L1 and L2
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Jun 16, 2026 at 11:28=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wro=
+te:
+>
+> On Tue, Jun 16, 2026 at 11:14=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> w=
+rote:
+> >
+> > [Omitting the previously reported issue]
+> >
+> > > > @@ -1557,6 +1550,8 @@ void svm_free_nested(struct vcpu_svm *svm)
+> > > >       if (WARN_ON_ONCE(svm->vmcb !=3D svm->vmcb01.ptr))
+> > > >               svm_switch_vmcb(svm, &svm->vmcb01);
+> > > >
+> > > > +     free_asid(svm->nested.asid02);
+> > > > +
+> > >
+> > > [Severity: Critical]
+> > > When the hardware ASID is freed here during nested SVM teardown, does
+> > > svm->nested.last_asid also need to be reset to 0?
+> > >
+> > > If L1 disables SVM, svm_free_nested() is called, freeing asid02. This=
+ ASID tag
+> > > can then be reallocated. If L1 later re-enables SVM and uses the same=
+ L1-managed
+> > > ASID, nested_svm_entry_tlb_flush() will see:
+> >
+> > Hmm if L1 reuses the same ASID, it's up to L1 to explicitly flush it if=
+ needed.
+> >
+> > That being said, KVM needs to flush ASIDs when first allocated anyway,
+> > otherwise we risk reusing TLB entries from a completely different vCPU
+> > or VM. This series correctly does so for L1 (calls
+> > vmcb_set_flush_asid() when initializing vmcb01's ASID), but not for
+> > L2.
+> >
+> > So yes, we need to make sure asid02 is always initialized (and reset)
+> > to 0, but not for the reason Sashiko mentioned. It's so that the first
+> > nested VMRUN using an L2 ASID always does a flush (as L1 is not
+> > allowed to use ASID 0).
+>
+> I think VMX might have the same problem.
 
-It comes from City Estimating, LLC
+This code *should* take care of it, since vmcs12->virtual_processor_id
+can't be 0 if it's being used, and vmx->nested_last_vpid is
+initialized to 0:
 
-We specialize in full cost =
-estimates and all related bidding services for all construction projects in=
- all 50 states. We provide our services to both general and subcontractors,=
- as well as owners/developers, architects and engineers.
+> if (is_vmenter && vmcs12->virtual_processor_id !=3D vmx->nested.last_vpid=
+) {
+>         vmx->nested.last_vpid =3D vmcs12->virtual_processor_id;
+>         kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
+>         return;
+> }
 
-Feel free to contact me if you have any question or want to see our sample =
-work.
+However, Gemini points out that last_vpid is not cleared when L1 does
+a VMXOFF, even though vmx->nested.vpid02 is freed.
 
-Regards,
-Donald Marvin
-Marketing Executive
-City Estimating, LLC
+Per the exhortation in security-bugs.rst, I am treating this issue as publi=
+c.
