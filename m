@@ -1,106 +1,148 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D7247AF75
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 17:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E71A3C65F2
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 17:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630853; cv=none; b=SE/zkeNk8ObSCVeCk+u0r1JeDdtWa6MKazLI1r8P3RctNlkXolccNRGvDNtAXlmvQ4PS7+GUB5joq16BqQQ8Aov1B4QN1zlal0unWsOSmBr9s2PSBWVO2AiJXgwU/dQxC4FEudlAt7n73WocLqcbP3hMXOGhcsq6B0NNRCMsgdg=
+	t=1781631994; cv=none; b=ap5gUc4nwUs7OVxAdc2W10NMyExfCSoMQfAsEt6aUox8wUqG2ksOsQ4CWqAuQnzo3oiZ9CwvANij1CAFNAn8HOxebfqsUy+n1b+LnOkjibG4nUnrosVYGbJec9VFZ55vERulU9xRBGE4bda71hpFQ7xO/XIAVNkXn8TFaBKAjPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630853; c=relaxed/simple;
-	bh=VtjaadP+F0YUxb65uRur5r6Bmp3C/5715zYvrg4FlHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DRSQUCrekX49mO+jrCp0R2OpDWTB1j7PsWHvNkOne59rtrX0X5RqqQgQ20rMgNvUML8nkKKqwwBXqI4fZxF0bkm3VB9kct0jYhyB3NiMx0F20TCXbpSIilUQsDO/C1+c1kmWIymlsNQGJjLuJ72uo856avxveOCuBefuK6BooyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=jIsKFfN1; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1781631994; c=relaxed/simple;
+	bh=lLdwQpDTcPOWBVReltKAfchd1iqm/kq2ztbfmzrjYVs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=cN4h2UT6BkF1nUty91AJRkudLy2DPm6LQjJApmDNt/YQaN/kJyJ/Rwv403/BmweMlgTa2V7Q9mFkXOvVInZ5E6eg4VDuyVt/n7fqG/y5fj9mLJeSZ/wvvrGoujLBTbf7cnDkEDXt2I9Yc/8lszoQUofX8HHH+rjU2ylc+WZ9ypo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OfMpsCm0; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="jIsKFfN1"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5176d4c14f5so37479531cf.0
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 10:27:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OfMpsCm0"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c6b7c75550so2483095ad.2
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 10:46:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1781630849; x=1782235649; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gbojEdCp9OpH0p8tfFcuNMVV5jC/64+CSjIGMdMdWB8=;
-        b=jIsKFfN1K7t40T3Z1eYuR97Qnfs+SCeTuq9lnwCs1kzqD+2fNfVQJVjLC88sJ1Oidn
-         RelY8h4rWxu3ipVELAkLDuTsF/hG3+ErzMLv9Je83yjVLgaiMrCfJ4OrqOsXSF97Y9d2
-         lIDOSvroeYilx9POcj3elQqm6EIKWxAe7JpQWiHc8SKBZfQanyiUqw21vBrq2urXmG+Q
-         uomDd0M1HSIjiA1yZgf+NbmZFb15Cz+wDHdm+y/YuML4iIWKpI/ZTMMJ7VacS2gw+7io
-         5REGh0zAn75XqJybPBka6ZcUdZ9jzaQLNIx+Eu2Z1q7LYMK+aXjP7QmVwp1CT7seIOEY
-         EvXQ==
+        d=google.com; s=20251104; t=1781631993; x=1782236793; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Nmo0xgaFEu9Qka/xs6PV8EIWbCG7nAbJ7f7XgGDPyM=;
+        b=OfMpsCm0mN+prlDM62M9kNdyoJyHhCprz0BfxVnNwe8mFHCCSkkQjxEp5YKiJ2gwvt
+         kAXWyhcJ10HZJNeViI0lNZuzahFrb1sUKwlJaij7ulKvneI45lxbxWoIWgEOMFn7vJM8
+         wTb8QzKU+AcwdEdzrGQjxh+unfo/D6tFsg59hQKcQaJIiDQReoami6gIPJ2qWMmQ72O3
+         qyUiX5ZKqDIs1lnIklNKXw7l3mOOfd1+W2Zx4lSmqVZcL2pzPYz/XCHqvMUz9vjEt7Kw
+         1k+B8RiuuLWhAn/WfmrLyKMS960hhpAa5MAxsx+LAvFuz+al7FJVCj8VqaDd4urad5vf
+         yLsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781630849; x=1782235649;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gbojEdCp9OpH0p8tfFcuNMVV5jC/64+CSjIGMdMdWB8=;
-        b=qWo6q93IIFWG02Z36fVb2TZnG/e2Pm/tdmrFu24v3epejN47flIKx/XuK+0wNMJ1yG
-         AjvCoh5HN/3aRwHHWvGnHOzP+iy1iDi7B/D93TCbx7JTWYjz4edy4dKMW5MdY4A5VeSS
-         vL+7MLWKwZYxS/V+WnSPTrWBnQDm6LEYtztJAZ5HGOFMS6OKadw+HXTO0PS0ibeqyJLt
-         rwNHUPoTnGjpH6oYgCYdHuKI6h4IrLzsT+ju8+YHeERm4uzI5hKK5YranLSmzs5ByoMg
-         tfmoZwSxc/qJwFlM7o51eMYcVVR/ZRcUzSM1iZ+zEKOu3B4542+TnLU3GutFUxKlxYh/
-         jxvw==
-X-Forwarded-Encrypted: i=1; AFNElJ/mtnxSIqKuogFwPleDlT8zdBaf4OqKuJbflIRKYAIzp87pggH79YCHF3qlHEI14A8BTBE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxikImnbfgo/PnQLlpuc0ynED+5vgBgmV4UbBp1/jTdManYY1Hl
-	D17unuzO0ufYyr6wbZU/BBW2/iMqk5JTvCii4IWRhCtpuKU3QsQOW13XeccnitCmCG4=
-X-Gm-Gg: Acq92OFWEPUeBDky7ks7BC+EL5CB5/AA+bYu0fqunUZ4NbbJNjIi9r00pPuTx9ETRYZ
-	5GeXCFBvnC+srKu9oFLTZpMp9Z5QBwcQevjJjoONgKe2Fdk5Yhwr5vCxkBAJM0fwpMHyJR0CrjI
-	2MLfVUZnK1irkkcv4mUQ7Kd7wsB4cQihymFxqJ9VQc3QviViYUhGGhXr7s/rlDQ/eKoj200YBiW
-	gcZHOQr3HMBRTO+RCuEWNnzY+oj1mjKyoXcLiA5ACjacQwczjN5iOPjPrSaTOg0ZrmEIQmPrW14
-	1Io4VHaZHD2LVPh/riHrrUe7OtllCMVEZheTKjjG6yEvrAJgI4IAxlA7QieLgTkTNnhKnmD6roo
-	hVEb59fdAjW6lD2tDhqLcHKru3P/kh6cMUXdocllNlRzMKXkdSy/i2rFBYDFE+VDa6SLtrL9bMH
-	ip2+s2CvfIvJBbfUDTc4IPXcS6VuHpLwif9euL6TlEEGlp+hx+NVx1AnnH1fgMDnE2o1dEJqVFB
-	NJpKA==
-X-Received: by 2002:a05:622a:4897:b0:517:7d99:f32c with SMTP id d75a77b69052e-519a8e5e259mr6448551cf.32.1781630849518;
-        Tue, 16 Jun 2026 10:27:29 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-517fb83e8e6sm156638201cf.28.2026.06.16.10.27.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 10:27:29 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wZXZQ-0000000GYyO-259c;
-	Tue, 16 Jun 2026 14:27:28 -0300
-Date: Tue, 16 Jun 2026 14:27:28 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Chengwen Feng <fengchengwen@huawei.com>, helgaas@kernel.org,
-	wathsala.vithanage@arm.com, wei.huang2@amd.com, zhipingz@meta.com,
-	wangzhou1@hisilicon.com, wangyushan12@huawei.com,
-	liuyonglong@huawei.com, kvm@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v17 08/12] PCI/TPH: Add sysfs binary file to export CPU
- to steering-tag mapping
-Message-ID: <20260616172728.GC3577091@ziepe.ca>
-References: <20260616104621.41915-1-fengchengwen@huawei.com>
- <20260616104621.41915-9-fengchengwen@huawei.com>
- <20260616144224.GB3577091@ziepe.ca>
- <20260616105754.784be22d@shazbot.org>
+        d=1e100.net; s=20251104; t=1781631993; x=1782236793;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Nmo0xgaFEu9Qka/xs6PV8EIWbCG7nAbJ7f7XgGDPyM=;
+        b=bfG7IT94BDpfgi61u2jHCSxnJP7vTs7GqKNn4wOhoiOBHghtkIea78LXzxwQYqRtdR
+         Nnwov0XWVjJ8lZRYcKmMoalIMAGgKtgMhXAsdMbTqRhYZrKP8+Gs1GRIkuvKSwAh1N51
+         Mt2xTBqsyiMbR8+cJl+D2EQ3OAajCThYFUbdkqeLou6xtLBOBWFy47oyM7Ffpn7f4lMn
+         iqZSu+pMMVSXJgAVmg8kPJfaNADdCB/K5xbdhJI9dmRkEX1f8GaTD9mIx1Oou4lRC8/5
+         ZTLIDklif3l9MoECoUvpmnHjUft6idhKrDnHgIZOZX08zbPVDW+luYY7GH4Kgrx252oY
+         zvMg==
+X-Forwarded-Encrypted: i=1; AFNElJ+1v44hAfGnHFNUSu7uC59QfkDeKo6ig2C4hqkj58KctxkeescK0BVszXVA0PqLS9wABhE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIf73zl+b5DWoDM8bLb5s6mQJwcpuGYY+19XqaB6p6O0DPe5Cd
+	WpMZbxtF8OG/cmnCglg+Xrat6MGDvxUAoeCDzjfkRNGKem+YRfbfz4+Q6x/5VNNPgA+EKcB3KPI
+	Wr6oIXg==
+X-Received: from plbli14.prod.google.com ([2002:a17:903:294e:b0:2c0:a7f8:c132])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f610:b0:2b2:67ca:5ff9
+ with SMTP id d9443c01a7336-2c6bbcae428mr1042675ad.0.1781631992468; Tue, 16
+ Jun 2026 10:46:32 -0700 (PDT)
+Date: Tue, 16 Jun 2026 10:46:31 -0700
+In-Reply-To: <CAO9r8zNFk287zeB+0nrUvcCqpn-wi3CZo6t-9COQGkdd3POzMg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260616105754.784be22d@shazbot.org>
+Mime-Version: 1.0
+References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-27-seanjc@google.com>
+ <CAO9r8zP4aYJ8SuL+eWXOch=BByfWmmCGVRwkHo=1cVx8Y5JAPg@mail.gmail.com>
+ <ajA1xaafH-IkuugD@google.com> <CAO9r8zNFk287zeB+0nrUvcCqpn-wi3CZo6t-9COQGkdd3POzMg@mail.gmail.com>
+Message-ID: <ajGL95j_Z3ynCUAy@google.com>
+Subject: Re: [PATCH v4 26/30] KVM: x86: Don't treat interrupts as allowed just
+ because a nested run is pending
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kai Huang <kai.huang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jun 16, 2026 at 10:57:54AM -0600, Alex Williamson wrote:
+On Mon, Jun 15, 2026, Yosry Ahmed wrote:
+> > > The code makes sense to me but I am trying to make sense of the changelog.
+> >
+> > What part (parts?) is confusing?  Honest question.  I'm trying to reword the
+> > changelog to make it "better", but I'm failing miserable because I don't know
+> > what's wrong :-)
+> 
+> 1. For kvm_vcpu_has_events() being unaffected, the explanation in
+> paragraph #3 is focused on the code path from nested_vmx_run() ->
+> kvm_emulate_halt_noskip(). I don't immediately see how
+> kvm_arch_vcpu_runnable() is unaffected.
 
-> IMO, this implementation in sysfs more so proves that vfio is the wrong
-> place for the interface.  vfio has a use case to consume STs, but it
-> doesn't produce them or own any of the mechanism by which they're
-> generated.  
+To reach kvm_vcpu_has_events(), kvm_vcpu_running() needs to return false.  For
+that to happen, vcpu->arch.mp_state needs to be something other than RUNNABLE.
 
-I would argue only a VFIO user can consume this information so putting
-it in general sysfs is overkill.
+If nested_run_pending is true, then mp_state *must* be RUNNABLE (barring bugs or
+stupid userspace), because KVM shouldn't emulate VMRUN/VMLAUNCH/VMRESUME while
+the vCPU is !RUNNABLE.  
 
-> The weak point is whether this bin attribute, exposing an array of
-> structures, fits within the socially acceptable norms of sysfs.  
+I didn't include that in the changelog because I thought it was obvious, but
+obviously (LOL) not :-D
 
-I'm pretty sure this style of sysfs is not accepted and
-counter-examples are things that are ancient or slipped through.
+I called out the GUEST_ACTIVITY_HLT case because (to me) that is less obvious.
 
-Jason
+> 2. More importantly, paragraphs #3 and #4 read like this patch would
+> regress kvm_vcpu_ready_for_interrupt_injection() and
+> kvm_vcpu_has_events() if it affected them. Maybe clearly state that
+> this patch is the right thing to do for these 2 functions as well, but
+> they are more-or-less unaffected by the bug anyway? For
+> kvm_vcpu_ready_for_interrupt_injection(), maybe just make it more
+> clear in paragraph #4 that it currently incorrectly treats interrupts
+> as allowed in the problematic scenario, but it is not a problem
+> because ..., and it only results in a spurious exit to userspace (or
+> not even that?).
+
+Is this better?
+
+  When querying whether or not interrupts (IRQs) are allowed, check for a
+  pending nested run _after_ checking whether or not interrupts are blocked.
+  If L1 is running L2 _without_ nested_exit_on_intr(), i.e. if L1 IRQs can
+  be blocked while running L2, and interrupts will indeed be blocked once the
+  nested VM-Enter to L2 is completed, then KVM should treat interrupts as not
+  being allowed.
+  
+  For injection, this avoids an unnecessary (forced) VM-Exit, as KVM can
+  immediately request an IRQ window, instead of forcing an exit and _then_
+  requesting an IRQ window (because after the forced exit, KVM will see that
+  interrupts are blocked).
+  
+  For non-injection usage, only kvm_vcpu_ready_for_interrupt_injection() is
+  affected in practice.  Barring KVM bugs or misbehaving userspace (at which
+  point all architectural guarantees are off), kvm_vcpu_has_events() is
+  unreachable when a nested run is pending.  To reach kvm_vcpu_has_events(),
+  kvm_vcpu_running() needs to return false, i.e. vcpu->arch.mp_state needs
+  to be something other than RUNNABLE.  If nested_run_pending is true, then
+  mp_state *must* be RUNNABLE (again barring bugs or stupid userspace),
+  because KVM shouldn't emulate VMRUN/VMLAUNCH/VMRESUME while the vCPU is
+  !RUNNABLE.
+  
+  The one "near miss" is VMX's GUEST_ACTIVITY_STATE field, which allows L1 to
+  put the vCPU into HLT or WFS as part of nested VMLAUNCH/VMRESUME.  However,
+  KVM clears nested_run_pending prior to calling kvm_emulate_halt_noskip()
+  when putting L2 into HLT via GUEST_ACTIVITY_HLT, and also clears the flag
+  before setting mp_state to INIT_RECEIVED.  SVM has no equivalent to
+  GUEST_ACTIVITY_STATE.
+  
+  I.e. the vCPU will always be runnable if a nested run is pending, and thus
+  kvm_arch_vcpu_runnable() => kvm_vcpu_has_events() is effectively dead code,
+  as is __kvm_emulate_halt() => kvm_vcpu_has_events().  Oh, and TDX doesn't
+  support nested VMX.  Similarly, kvm_can_do_async_pf() is unreachable as
+  KVM shouldn't be faulting in memory with a pending nested VM-Enter.
+  
+  As for kvm_vcpu_ready_for_interrupt_injection(), KVM's current behavior of
+  incorrectly treating interrupts as being allowed could result in KVM
+  prematurely exiting to userspace to accept an ExtINT.  But, KVM will still
+  hold/block the ExtINT and request its own IRQ window.  I.e. the net effect
+  is more or less the same as the for-injection case, the unnecessary exit
+  just happens at a different boundary.
