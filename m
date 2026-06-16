@@ -1,141 +1,113 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0C43D88E3
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 18:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD20D3CC324
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 18:14:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633577; cv=none; b=gANYZgLVvnL4FF6ee234x+MdkON1p+yNZv4l9hIueAL2Nq55KLFKyCdJVs0ih3r4Ko4kbdax2wjXRwJ8hbpn8zrC84lCEvllvLk0dtujabdynLiwsxd0fBA38HgYDgRZnfQDORjW/0A6LBomcydFXbDORveHqPBi/0oejO0rdTY=
+	t=1781633700; cv=none; b=YKs1HVxEo875sHb47kiuefFh8UzaIwGcJoSROlsfU2el3PbvQ0f1OYQ38XSiqjWN4PetcF7Ixph2JntKa24BQjhQI5VBduYIyn00I1jpBUE5l+dhRZtEPzG5exGEk2JGxRwMpfsY7nfrSk4aQ8ImrDZE5KxSCbbrO03g68bvlKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633577; c=relaxed/simple;
-	bh=p3rzxF0uYdPZbVvU5s/vULcaTm/bIqRnUxzNNp5+2go=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=q0iy7WD8GraeTESqMSj30NbA7IWST5YmfEMh3Wd5L2Czzz5H4f66OVgQTxdRiUoYX4tlRybdQrHW5HuRCQ0czIIOVLP5yQNeXXwciIsxMzsB28FhBUKwFX4pk3kugd/HOyvbkO3ZjTuFbccF8m+QtMccSoY7kHsTAY+GGJyCRwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oWvIo0Hc; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781633700; c=relaxed/simple;
+	bh=n/Gt2XuOXaJx81x5N32Kh30SJJCzAFygkCGE2nCgIS8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sEB/ldU+IhDX0ugqJKbyf2rlNKTuEB12KgRRkMaeyxO/PHu8jXW4kOlKugGgBCrRmSaz92nMKofcTK7+e2rdDvf3dOT+X48sTKwI4ctR4HjUKhZqBW/qsZ0Zl1ils9Oxx9sqXKRXSbLrcRN2BGbfXbMNgaQZHPl3dMdBCAT9jks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIQrOclH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oWvIo0Hc"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-36babe2c4bdso3029892a91.1
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 11:12:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781633575; x=1782238375; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HfqVrP82kq5rv5P4+q1AH7lRylWPBjjSEnRhd+rTAto=;
-        b=oWvIo0HczpqhcQaIJUeyQ5YKFBZ0ntaT/nGq75FMDOEPHanmcZabzMj75zw5KVioSV
-         gp/PQruedkWSVm1/XIfQZiau0IkBYNh+BepiRVpFymMJI8vPXqyjtVCYVu/r6aylIu3R
-         hK9cFnC0lpkXkXd/UOrRw4HYDPTX7mZtyHJQvAdvm53fXCdwV5GoMmetlb1vFzaET8BS
-         zQ0BXhk7OTxTqdaEDvgzxysRyLF4Z0ByXVcD7PtQC/mYwCj21591NOV85GdNB2YzVA3f
-         VAyYquHh0pMCUfKPWPOYCs4Fd8rFncy+zbjMaKH+kvHPaVFZZzG5MvZ5UJOh2ltWUf2w
-         svEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781633575; x=1782238375;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HfqVrP82kq5rv5P4+q1AH7lRylWPBjjSEnRhd+rTAto=;
-        b=ZOh4++zo32Qk+3sUOQOLJZGw8CnKwJ5ixAKPLzIpvGxF26lQ31DFSRH89+lwoH2CDY
-         wPJxKVRk11jDw45l497lWKZE7640hZJKlxoK/haCaAHhWnMzdNXVNpiu3N5o/eW6UAy5
-         PMTiqTjM7Gz76Ty9vx5lxWGlxCxALf08zUwLZEGScpH2LvpJN1p+jGf6t5jX8RKcEjDm
-         xXQqISAE+jhwFQwPUavwCTMwyVt9dhNvjkWwQecZEdD8uwaGul2ENUJ1/SeoE8qoJKqC
-         ehuDWHZG9OnNH+ePJnOLaHiX4/gJbX+59T8evzCTlrfiXCzYZ5LbPaleSL+R8Q/epZL2
-         NI0w==
-X-Forwarded-Encrypted: i=1; AFNElJ9+3QM6k/64jJGvbHSjAPmXdU8g1m2Z5ctmtpF/BpNug/MlwxXsz7BDIggthvRnRzOfqVI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYnVMQgscLjHMqwVWevlIYCctGce3RnGiAmWn547M2l2qF3Vae
-	fvsOd2BCmhmEm/su+3gE3aNcWczauiUhOkCFsHXl+OmVCTp1o4jroVo4
-X-Gm-Gg: Acq92OF/ey9GXqQWVkiDQ9Ep9GD5rIZbRiUslasrIGim01EsOL7RBsI0g5j0ccLsBqu
-	XH1rAM2xStBf6BFjywekg/Yidhl1ZgPfsEBjHNUsc7/3x+jssKKEAsJ0jfIR4AJL6KNGNvEl+7H
-	2Hz4c88NH9FWhgImMyGRc9hSZuhxhUJWACeh0l9IJkHVaDl/YoegNwrYEj3VnxAQSgsX3ngAYcn
-	RXorXCsc06JDgAjkq5AgyZk1UadFSAbMB0mJJHn+pDT2RHhUz27tI2ZZ4nCjneui6/LyMS6ES60
-	L1bNHnuZR5XEmOMhBh0DjK3Mv9C9kJW3cmHJE7jcO/dPlbuiU9QVrWBPjdyMeUec0sIFAWVQ+5T
-	EWHo40JXcF3tbhs08+1AGYpmowRA5jit8zhE/nneKtg10kIabOCFf8dYfqUHL612vCBYe5MmuOJ
-	t5RhedTFZ8GQ3y/2gY300uhSD3ZQ==
-X-Received: by 2002:a17:90b:390f:b0:375:2a38:1d40 with SMTP id 98e67ed59e1d1-37c9369f042mr546951a91.20.1781633575059;
-        Tue, 16 Jun 2026 11:12:55 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c5228eb5bsm3519929a91.12.2026.06.16.11.12.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 11:12:54 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>, Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
-In-Reply-To: <20260616163405.96962-1-amachhiw@linux.ibm.com>
-Date: Tue, 16 Jun 2026 23:37:53 +0530
-Message-ID: <7bnye4ue.ritesh.list@gmail.com>
-References: <20260616163405.96962-1-amachhiw@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RIQrOclH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC501F00A3A
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 18:14:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781633699;
+	bh=8jPR+F2Ip/6UCCswQiyT4Uen1VcliE/f+lFy7tJr3Xc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=RIQrOclHuSJv9XtLARn/b+WHceDefj//EweyFMTQqzmdRCVhlj8grUOb3Dy59fUp/
+	 kJ/TpXKD5EonUOWyislKZe6C/7PFEv5t7xMM6CXHAwL4b9j+fdtsZPuz8Rylqqeand
+	 aiW10e2JyW7M5OiH0UO6sYvHGCiYnnX7l6i8hD4fpAIyKaa5Ya/qzLFxtOXMu5fZN4
+	 mhoJTBs/w/w3uR0Hw80+/JwCrmQsMoE2aaiBzq6zoDg5tGvk2H7uUnYrrEAYD+snDI
+	 n1Gh7Pn9RqId6yfEhVq3OIPDTCbJnKESEtedtwo58ZqYJPehUMbq+mYiNahl4t5R9t
+	 C1JEFkxIX86LA==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-beb2a97cc9aso924322466b.2
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 11:14:59 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yz9f8VzfqvOFknX0wcNTm3k/AXCXPu19DcXv/6LqLsHWwabBzdd
+	3ofJ9JZmTf4EGTYB8/kS1OCBLUuBZNLsNDDXNwfKLeQD1Vmzwzlw7zI6Xyj5DEl4oHhlMYM13Fa
+	mVI2b8pKROLhqu3uI/7+4MbX2fP2T4sI=
+X-Received: by 2002:a17:907:75e8:b0:bed:fc51:cbbd with SMTP id
+ a640c23a62f3a-c05a75aa3fcmr39100366b.30.1781633698459; Tue, 16 Jun 2026
+ 11:14:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260616004155.1435766-25-yosry@kernel.org> <20260616013031.53DAC1F000E9@smtp.kernel.org>
+In-Reply-To: <20260616013031.53DAC1F000E9@smtp.kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 16 Jun 2026 11:14:46 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPA6B72RDWeBMHqv1xz6o9dDHEEjwnMjwAwVwA=5qxaKg@mail.gmail.com>
+X-Gm-Features: AVVi8CdG6D_XBhyqL1hBVvuUH2LsKhy_eesT-Lo_K2hwaNXKiQRhyVMrzrqStBM
+Message-ID: <CAO9r8zPA6B72RDWeBMHqv1xz6o9dDHEEjwnMjwAwVwA=5qxaKg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 24/25] KVM: nSVM: Use different ASIDs for L1 and L2
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+[Omitting the previously reported issue]
 
-> On IBM POWER systems, newer processor generations can operate in
-> compatibility modes corresponding to earlier generations. This becomes
-> relevant for nested virtualization, where nested KVM guests may need to
-> run with a specific processor compatibility level.
+> > @@ -1557,6 +1550,8 @@ void svm_free_nested(struct vcpu_svm *svm)
+> >       if (WARN_ON_ONCE(svm->vmcb !=3D svm->vmcb01.ptr))
+> >               svm_switch_vmcb(svm, &svm->vmcb01);
+> >
+> > +     free_asid(svm->nested.asid02);
+> > +
 >
-> Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
-> logical partition (L1) booted in Power10 compatibility mode, the guest
-> fails to boot while setting 'arch_compat'. This happens because the CPU
-> class is derived from the hardware PVR (via mfspr()), which reflects the
-> physical processor generation (Power11), rather than the effective
-> compatibility mode (Power10).
+> [Severity: Critical]
+> When the hardware ASID is freed here during nested SVM teardown, does
+> svm->nested.last_asid also need to be reset to 0?
 >
-> As a result, userspace may request a Power11 arch_compat for the L2
-> guest. However, the L1 partition, running in Power10 compatibility, has
-> only negotiated support up to Power10 with the Power Hypervisor (L0).
-> When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
-> hypervisor rejects the request, leading to a late guest boot failure:
->
->   KVM-NESTEDv2: couldn't set guest wide elements
->   [..KVM reg dump..]
->
-> This situation should be detected earlier and rejected by KVM. Without
-> proper validation, if userspace ignores the error, the guest may continue
-> to boot in Power11 raw mode on a Power10 compatibility host, which should
-> not be allowed.
->
-> Introduce a validation mechanism that detects unsupported arch_compat
-> values early in the guest initialization path. When an unsupported
-> arch_compat is requested (e.g., Power11 on a Power10 compatibility mode
-> host), kvmppc_set_arch_compat() uses cpu_has_feature(CPU_FTR_P11_PVR) to
-> detect the mismatch and sets arch_compat to PVR_ARCH_INVALID (0xffffffff).
-> This sentinel value is architecturally safe: PAPR specifies that valid
-> logical PVR values must have 0x0f as the first byte, ensuring 0xffffffff
-> lies permanently outside the specification-defined range. Setting this
-> value triggers kvmppc_sanity_check() to mark the vCPU as invalid by
-> setting vcpu->arch.sane to false. On the next vCPU run, kvmppc_vcpu_run_hv()
-> checks this flag and returns -EINVAL, preventing the guest from running
-> with an invalid processor compatibility configuration.
->
-> With this, when a Power11 arch_compat is requested on a Power10
-> compatibility mode host, the guest fails early during boot with:
->
->   error: kvm run failed Invalid argument
->
-> This provides a much clearer failure mode compared to the previous
-> behavior where the guest could boot in Power11 raw mode (if userspace
-> ignored the error) or fail late during H_GUEST_SET_STATE.
->
-> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
-> Acked-by: Gautam Menghani <gautam@linux.ibm.com>
-> Cc: stable@vger.kernel.org # v6.13+
-> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> ---
-> Testing: Both Anushree and I have tested the below scenarios:
-> 1. P11 guest on P11 host - Works
-> 2. P10 compat guest on P11 host - Works
-> 3. P11 guest on compat-P10 host - Correctly fails with "Invalid argument"
-> 4. P10 guest on compat-P10 host - Works
->
+> If L1 disables SVM, svm_free_nested() is called, freeing asid02. This ASI=
+D tag
+> can then be reallocated. If L1 later re-enables SVM and uses the same L1-=
+managed
+> ASID, nested_svm_entry_tlb_flush() will see:
 
-Thanks for incorporating all the changes and adding the test result
-matrix in the changelog.
+Hmm if L1 reuses the same ASID, it's up to L1 to explicitly flush it if nee=
+ded.
 
-The changes looks good, feel free to add:
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+That being said, KVM needs to flush ASIDs when first allocated anyway,
+otherwise we risk reusing TLB entries from a completely different vCPU
+or VM. This series correctly does so for L1 (calls
+vmcb_set_flush_asid() when initializing vmcb01's ASID), but not for
+L2.
 
+So yes, we need to make sure asid02 is always initialized (and reset)
+to 0, but not for the reason Sashiko mentioned. It's so that the first
+nested VMRUN using an L2 ASID always does a flush (as L1 is not
+allowed to use ASID 0).
+
+>
+> nested_svm_entry_tlb_flush() {
+>     ...
+>     if (svm->nested.ctl.asid !=3D svm->nested.last_asid) {
+>         svm->nested.last_asid =3D svm->nested.ctl.asid;
+>         new_asid =3D true;
+>     }
+>     ...
+> }
+>
+> This check would fail to set new_asid =3D true. Since this patch removes =
+the
+> unconditional TLB flush on nested entry, would this regression allow the =
+L2
+> guest to run with stale TLB entries from the previous owner of the reallo=
+cated
+> hardware ASID?
+>
+> >       svm_vcpu_free_msrpm(svm->nested.msrpm);
+> >       svm->nested.msrpm =3D NULL;
+> >
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260616004155.14=
+35766-1-yosry@kernel.org?part=3D24
