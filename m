@@ -1,181 +1,83 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE4C30AD0A
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 08:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E796335E940;
+	Tue, 16 Jun 2026 08:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781599635; cv=none; b=i6LULQdZo0/fGWaJU9DBgh7IUIWR678m7bvANG7q0ovm4rQxyFYo67ZNPKHbTMq6v8wBMs1xchMmWIY9lcudFL/er8k2eWzOaewGSO+ttsGUvpGX4DrzMJUuC5MSn8samjSDLUNQVj2UcdQjMyZsOiD+fsn4wD4bIBROqG1U2Zw=
+	t=1781599710; cv=none; b=lQoVxKUHdKvW75nYY9mW06p2yWhG33Xhx7G4HcAaeaJhli76MqHkB5lPNmqP5D6aKvOOXSb07K2Uq/Xviyh3M0Tjk1B8dYNsSml6Seb7YC4Qc8u4HMF1IvL+AfjUE3KNiPl9qTjkdZpf2983L8NATbBLzcUWOelSjjt9XeqTq74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781599635; c=relaxed/simple;
-	bh=BnJwSd7RECcx3D1OGlALN3XdkO1Bexr15k/yfmWPTjE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lj8uUrft7tBl3cEabdEnWqzKJ6APBGeQ/ejwyVlIfrPLSRb6IhT3JGroP94Wn94XY0+cIZEMFjUOvQ37wojjM82iZ9NXS3RNqijkcgL5avsMobGlkgAEnEoTapfvLz74UIXUBSvbDbqAIIMi4NChUPokWRe3o144s+gmIiqn8F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JREkhH/G; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1781599710; c=relaxed/simple;
+	bh=fD4hD7zruXAOUH/DALUQnF9v4k8jJbm7lk14qtZUJks=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A9E6SFqqh4/O/b6mypZfUgKPOhdqhew17jJs6Z1ftpjvqYyfSQhsZa+mG2WNwwmOtNGmxLpgHkqR1y8+QBXNL5MXbzvtpYRxNYIBIP+0uMNL8iZALW7S9D7MH6jfyOP24NvPsMVX8UbNmyiTQIPKA0h+WJo73/GVn2mRFD0D0I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FFaSoVl9; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JREkhH/G"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2bf22c18ad3so41245ad.0
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 01:47:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781599633; x=1782204433; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aaTfOOhj7DmWaDCSdXoWZe8eYeEqWjLH4eK4JZJxdgM=;
-        b=JREkhH/GYaGp3SK3puEdr3YP5mZ4fsUcGqySUj8lOOWD2mfyxtlvTXlcjCQDDQnF1Q
-         zP6s2+X3kfTLWeaoS8//Bp4PArYjRB8wnFtFUTdDHiNjMQ6n7GQ5kjc6XJ1mOutarmkd
-         VBRQx11LKSpjnKl3f3jqYdgfCo30L0J8c9qLn60uujswgAh1u0Y0o0q1yAi/hJyF93jh
-         7FWoN5kvrkFokzQ0FlK32TEKfEMOZ5pm59t6kLj7j4Kp/HOvFL5S5wZbOLrdoGRJIRTP
-         dvJodgeFx1B78D98oudTQC9VfT4ai970NVigsaI+Q+n/5ghN8jHmIyP5bvzRY+hS7Scr
-         Io7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781599633; x=1782204433;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aaTfOOhj7DmWaDCSdXoWZe8eYeEqWjLH4eK4JZJxdgM=;
-        b=KgjYuGjzgW49OWDA6IVlaqKq9IDIyUjWtyYLBiLP9io89RQ5AK/0WNRjK5eFrUrsIk
-         f9uGby+1XbCe9V83y8NWra+uhQ+gkEpcpa+IkppYykLOi8nEzReaNym92L1LjRWB91qt
-         t7VHjTHqYbkUWovhqzUt6VFCXobUvDgDgMms2L4hOYX2ZHGQn2HTYGXs8F9FGhJDfXpr
-         TuKGExh2G7O8N1wG5hwGauSaw7YqhDMjwNClZk0H4L3K00d5UpAGJ1CDNr8Tzejoe/PQ
-         OxbPz6JF51O59QeaFOXltEx9a8ss9pN3jP+D0/joAIUaEFMp0kPZ6/k9UvAOJIG1mF0V
-         92pA==
-X-Forwarded-Encrypted: i=1; AFNElJ9+UbjLjtOMjJNSO02z73YTUoWe6fdyOTc+br/DeinXnVAYIQx+mvVdd/yiKvnhNY4e8Ro=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3QobJ/RUegYUBnjqU7FDPuKh7O/sSScsHJexvW1HmMyRQnKV5
-	rXasHK+s+h2KWZ27CmTcte/Gvyg2he47pwtmJJoLpE9gzkLkC0yqri5Y2MYPcZ9cuw==
-X-Gm-Gg: Acq92OHx/m22QK44ulQt/Fhljk7foCNFMWxrA5IXqJFyQ2S/YND5OxhhW2d6E2PV3aa
-	3Og6zN1W6neYdoOTK1W1pplCaz145aQl0rv13jD4ljNHebw8WZryLK3XFck2tjeVEQvG8WKasSh
-	AdWtEl57OWGIEMCeKm9DCj9Heu9kRO7qHF8ROe3xRiRstlGSeBoqMM7VUQ9qx7hNBH2dTcPxfW6
-	/uZtwB8bFkjMcq6XEA6TLmznuPw9EX5sWXrBYVrI3y9Fn4H1y2sQgXYH9PZiQctFudX9T6PLBTQ
-	KW/QvVdVnuUmdSqQB2NHTSVbgiy1DDs2AxCsOTwooNSW4c0geqpxz/52mTbMsKS8L1EiB0YKzqn
-	OsOrrAOJPBVUGLHBKsayTImBq/3BSlYt0v/YliE/3yN/pHkJ338dqYO3XTDn+irxr/ZjxI15W4O
-	xjSzMPFOAQYTrwmF7nuYL8Hn9akNcgMl2AFX4WuGPpNEOpZSYn1McMijzIiIcm
-X-Received: by 2002:a17:903:3c4d:b0:2c1:ee6e:4e4c with SMTP id d9443c01a7336-2c69c30f5a8mr1709625ad.29.1781599632758;
-        Tue, 16 Jun 2026 01:47:12 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42fbb50bfsm125397885ad.33.2026.06.16.01.47.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 01:47:12 -0700 (PDT)
-Date: Tue, 16 Jun 2026 08:47:04 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 9/9] vfio/pci: Add mmap() attributes to DMABUF feature
-Message-ID: <ajENiAQkzXjbxgRX@google.com>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-10-matt@ozlabs.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FFaSoVl9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781599709; x=1813135709;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=fD4hD7zruXAOUH/DALUQnF9v4k8jJbm7lk14qtZUJks=;
+  b=FFaSoVl9rLi4rcArML/6fdKQ93gHjUgfX3s36SyIgY7CVXrinfQGUhyP
+   4gHLV7c+0D7DIFjA4nOjrRCGb6U9FZJ3MODA6terYxActYuH9JGm6W0Jx
+   ZZorHieVsxda1E6JslavdoqW5sgtW4L3MSh/k0oUs4pas/mtpjQAPkIMn
+   uSZgIBQ584CFpk2RFHPVSbQ8VEA9FwnrWBISj17wgfa/C+BexlayKgqai
+   FSrBuow8GMsE2cTUaGaof3PPZRstv6OIX1/mUoKnZYnuhxT/fT6AMhxQh
+   PWWzkuzVUhU3Fda9KWGjuoUMEuxtoFZzZYz36pEJm2GB/mmGxQ7PO4Xov
+   w==;
+X-CSE-ConnectionGUID: c+oI4p38Q9CjEZrEZSgi7A==
+X-CSE-MsgGUID: RA+jIUzGQPmLl4r2vP0IKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="92919620"
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="92919620"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 01:48:28 -0700
+X-CSE-ConnectionGUID: c+ooL/BtQme2C9NJuSoxvw==
+X-CSE-MsgGUID: xj9EU0ZsQb2NcvJ6aAgMqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="243339874"
+Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 01:48:26 -0700
+Message-ID: <a81c873d-4522-4b4c-99d7-674cbea78ca3@linux.intel.com>
+Date: Tue, 16 Jun 2026 16:48:24 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610154327.37758-10-matt@ozlabs.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 29/30] KVM: x86/mmu: Move kvm_mmu_do_page_fault() from
+ mmu_internal.h => mmu.c
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
+ Kai Huang <kai.huang@intel.com>
+References: <20260613000329.732085-1-seanjc@google.com>
+ <20260613000329.732085-30-seanjc@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260613000329.732085-30-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 10, 2026 at 04:43:23PM +0100, Matt Evans wrote:
-> A new VFIO feature, VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR, is added to
-> set CPU-facing memory type attributes for a DMABUF exported from
-> vfio-pci.  These are used for subsequent mmap()s of the buffer.
+On 6/13/2026 8:03 AM, Sean Christopherson wrote:
+> Move kvm_mmu_do_page_fault() into mmu.c, as there are no users outside of
+> mmu.c, and the function typically isn't inlined by the compiler anyways.
+> This will allow moving the EMULTYPE_xxx definitions into x86.h without
+> having to include x86.h in mmu_internal.h, i.e. will help preserve the
+> goal of making x86.h KVM x86's "top-level" include.
 > 
-> There are two attributes supported:
->  - The default, VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC
->  - VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC, which results in WC
->    PTEs for the DMABUF's BAR region.
+> No functional change intended.
 > 
-> Signed-off-by: Matt Evans <matt@ozlabs.org>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c   |  2 ++
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 57 +++++++++++++++++++++++++++++-
->  drivers/vfio/pci/vfio_pci_priv.h   | 14 ++++++++
->  include/uapi/linux/vfio.h          | 27 ++++++++++++++
->  4 files changed, 99 insertions(+), 1 deletion(-)
-> 
+> Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+> Reviewed-by: Kai Huang <kai.huang@intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-> +int vfio_pci_core_feature_dma_buf_memattr(
-> +	struct vfio_pci_core_device *vdev, u32 flags,
-> +	struct vfio_device_feature_dma_buf_memattr __user *arg,
-> +	size_t argsz)
-> +{
-> +	struct vfio_device_feature_dma_buf_memattr db_attr;
-> +	struct vfio_pci_dma_buf *priv;
-> +	struct dma_buf *dmabuf;
-> +	int ret;
-> +
-> +	if (!vdev->pci_ops || !vdev->pci_ops->get_dmabuf_phys)
-> +		return -EOPNOTSUPP;
-> +
-> +	ret = vfio_check_feature(flags, argsz,
-> +				 VFIO_DEVICE_FEATURE_SET,
-> +				 sizeof(db_attr));
-> +	if (ret != 1)
-> +		return ret;
-> +
-> +	if (copy_from_user(&db_attr, arg, sizeof(db_attr)))
-> +		return -EFAULT;
-> +
-> +	dmabuf = dma_buf_get(db_attr.dmabuf_fd);
-> +	if (IS_ERR(dmabuf))
-> +		return PTR_ERR(dmabuf);
-> +
-> +	/* Verify DMABUF: see comments in vfio_pci_dma_buf_revoke() */
-> +	priv = dmabuf->priv;
-> +	if (dmabuf->ops != &vfio_pci_dmabuf_ops ||
-> +	    READ_ONCE(priv->vdev) != vdev) {
-> +		ret = -ENODEV;
-> +		goto out_put_buf;
-> +	}
-> +
-> +	switch (db_attr.memattr) {
-> +	case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC:
-> +	case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC:
-> +		WRITE_ONCE(priv->memattr, db_attr.memattr);
-> +		ret = 0;
-> +		break;
-> +
-> +	default:
-> +		ret = -ENOENT;
-
-Nit: Looks like the agreement [1] was on -EOPNOTSUPP / -EINVAL but we 
-took -ENOENT here and in the doc string? Was that intentional?
-
-I tend to agree with Alex's suggestion here, we'd prefer one of those 
-two (-EINVAL / -EOPNOTSUPP) since it clearly communicates to the user
-that "You sent a wrong arg" or "We don't support this"
-
--ENOENT means no such file or directory [2] to the user. Users may not
-be kernel engineers who'd wanna peek into the code and they may simply
-look at the uAPI files which doesn't give them an answer as to what went
-wrong.
-
-> +	}
-> +
->  out_put_buf:
->  	dma_buf_put(dmabuf);
->  
-
-Apart from that, 
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-
-Thanks,
-Praan
-
-[1] https://lore.kernel.org/all/20260602131417.41366391@shazbot.org/
-[2] https://elixir.bootlin.com/linux/v7.1-rc6/source/include/uapi/asm-generic/errno-base.h#L6
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
