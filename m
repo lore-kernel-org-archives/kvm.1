@@ -1,163 +1,212 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE98E376A19
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 14:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5989B39282C
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 14:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781620101; cv=none; b=FRq097hhtsp8TpyFUvaJXpwSE7QCazE3UgLyva/HR+HmlLJ0guKd0aG3xxC+U6okpLs96rl2ZCcXEGWJotwXyriymuf03ucn4zXYLzMuRzg/BicHTwjne8CxRgOsWUiuo+LZAQ7H/cO3OJSgRqy3g/AfTInSrw7Z2/XfFlVND0U=
+	t=1781620594; cv=none; b=EpjOwRFDjWoKv9VVGDB1ypAWEp0XVufvgm4/NoqwA+ba/BKeKdoB74k0aLMKnKcbpQdpCQACm/avjFBEFpxHYfq87DsIxvd+kYkG/SFGmf+Gcw0AS+iX/tRP4uknNndqH2KJNFjBerYTvYDIDFhP2WmHUj9C83GqWLYKuFcSdCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781620101; c=relaxed/simple;
-	bh=Mgo9D7i4SAm1ix+EblDUBSQHvAGRBPGGbt8S1ocsF40=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N0w+O3sDo9y/Wc3UI7ubUXigmsdOSzbxbH2y7glvoRAPb3iaSIqqfKDO+gN7J/+XOGorGf4uyB2W80LAofJLWGdMkRP3Ck+kGuaQ/o0tGoyhVnyPjlvszXUQUpa26EANg2IIBZgKP9l1zKf+FN14gHZZ7iH7Gkh6pVFnJrFqjBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HVgGzkTm; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SbsULuEq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781620594; c=relaxed/simple;
+	bh=AbpNe24xlhwm/PgmZ5FVGnfkuQ7wHlOr/56VCgER2Wg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=eCPaAhAAIKL9DDbpAy7+LNpDKDhfcURQyxZecH/Bn6bJSTtl1DO5We4KEQ6nebxte1A7t7ir+C+bS2iFFa+6nKdGyIj1opl2GNsA0eTNZK5SdPGkIjKgYLi4dKXZPxe4rKfZOKUGlsJWfrXANCVVF9Ej164J6GxeQdEFb3EICtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DAHr/Tfd; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HVgGzkTm";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SbsULuEq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781620099;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e3l0uGCFBLNdzhr5oLMo3wkv8DBSjThMgB4WocmXwXI=;
-	b=HVgGzkTmhHURXUO4qCbAe0LcvmHKJomiuv43Ciu6fm9LsUErRLq9fZ/BqTJcDVktvZZqQ1
-	tcCDzvWlPeNImH0NtsuvHWwoELZK8AVF0B4KrpjbVUkfWvjznoY7cr5PKmpX+1xIjexTj+
-	kLJqre1K3kiMCHWkIqZEMgch0j+pyCE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-4ZspwGaNOxaQmz1U-9fxKw-1; Tue, 16 Jun 2026 10:28:18 -0400
-X-MC-Unique: 4ZspwGaNOxaQmz1U-9fxKw-1
-X-Mimecast-MFC-AGG-ID: 4ZspwGaNOxaQmz1U-9fxKw_1781620097
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45eebc943bfso3246887f8f.0
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 07:28:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DAHr/Tfd"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c6a20348ceso5331525ad.1
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 07:36:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781620097; x=1782224897; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e3l0uGCFBLNdzhr5oLMo3wkv8DBSjThMgB4WocmXwXI=;
-        b=SbsULuEqWN/6QjyLMBRNIyT/b1Yn2Rb411BIM88ubifCTnrvDpuNkHKvtSaLrhKkLc
-         8pnIhQ37T16HVrkKy5STEF0mtaRVR+ue75kFjUCFpEIpW/Q64ahCkNdZP+KBsPU58mZ9
-         bDQ/6+pTgj3LTdXnpTIIP5L6UNJd2jdHGictQ/T+s106SwhaJ640IMsyH81T/SRy1BGS
-         zet1jmyKhy1TNv22OueLtmMTff3h1gJk+FmJ4O++X9AHmLZHJP+AD9AIjRi9Hajw8IaA
-         J8+QyGyXRIAuvBoWwcU7JykYp/7Ycwt5YoB1u2y5gR3sAfBCAxm46g/E4CT9hPR1cURv
-         Sphw==
+        d=google.com; s=20251104; t=1781620593; x=1782225393; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gyflg7buPy8xj/laUw+X3H9z80FdaQb7zGq2p9sCm08=;
+        b=DAHr/TfdSROSIq0FEJ9RBEdIil+2lmlExRzPHAssaIIZTUzmf2QLoC4+3FdqCEKFAc
+         NLtgxT6+QgDj+gg+owC2G7K+KfRaiNKynGA2Giu1B2RRiX8dbsexuomd1JWpaPeet17S
+         0pPuoXePMHgbVhM6ehzyZUTk3uXzIhf//3HAvCuIdF4hu0XS+63w7tkhKCfylKlNKvCK
+         57x+uoPqm3a+xQZ4VsDv5nTJXOIxJ/7JeFiAGLH7RoDX6KWacUEdIo3K0X1tOU6OvF3+
+         q1MUtTmbjbqUekG9Aw01V4zraM/0+n00D434Q55n9Apo7QpJVRyvEUn8qz0r+Ugc9zy2
+         TiEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781620097; x=1782224897;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e3l0uGCFBLNdzhr5oLMo3wkv8DBSjThMgB4WocmXwXI=;
-        b=aKx5utzfrGzlER3ShKFmrUtbDIFvmCe5sjdqm4TzivPWYTLJ2ZsYWy4TmEEVsaxjOI
-         EdJBe+F1kw8bKcq7ZeYqp7edBeqzaicVIaO9s4MNkSKJdyM0hHaLj+Dv+U2TFbvTY16b
-         8WbFxY6OtmwwvGcPDi3kpPeBuu90loHZAaKUGQRmCxHVCB7am++igzeVfdZjKrMZtqbZ
-         p2+ONVWTlJRk93OpNrnG+eTPIv9M+O7dvv/6DA4XKCO+9nhTQwA6Ag375xrWrTS1Rkt0
-         TkRw3Qci4hkLaipmtGPzHUR+aIjAkdfxlz2DDS/MZPDhddnLsvRZbNNWdSZft6qKs3Y4
-         P4tQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+4+xgHF/IGxG32eUlpj6DwHQAUIaCfILGDDlLb3dUBf5ASwjzPhUNBhUvq3S5cQqq/+z4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUbRFDhV4KW9A9hMTCa/bij3K+jfh8x2TbzZob1jy4khLEShqC
-	kDUc2TqTZYClHkU61NS4jTRasg6EB2OnZyAbtaBgYwSi6ywM6K60Q4xsX4zVJ1UPUs0EI65FGfF
-	OZmPIpAcq/Xrgv/v+or2juD3MieJqiq0SedJCIola145vwdaepP3+JQ==
-X-Gm-Gg: Acq92OEG19Je9YoT7MTfZYO7frWmxmOV0EM7FYNfI/VILijMQE8r/1MBJvdKDJA0eK5
-	TbWr/CY2yxDeYEESUPNM887G4Uq08T0ZB/TimDN9QlS4B6+NksbPGyP3muzymHX79fDNmEtJtuz
-	6m7WHWDfO/TQWSfQIBYwOL1qR0U0xT/El5OGF2LhMG8cV/2cyW72co9+HrDRxdtPFfcCVYsRgl9
-	QxHNGlKCsc/LisYdUjGdBFm3+NO+d0crMsEtKl0x07wGy9zGUB9k9SDgCKkQ5SdwRPKpOMTjGze
-	cMWKfYbRLz77XQIamNHCtGGjjqGqnBRJUfGEu/31+H3E7umQZl00ixW9Ii7+xDkRkrSWOv2Nndw
-	CIw+LgZOZNKMSZJAlI9dJXL3tRxiyvPjL+TJF6WneNh49U+w/SfCNoQ92qdsmXhim2Ra6uqA=
-X-Received: by 2002:a05:600c:a413:b0:490:bbc1:c9be with SMTP id 5b1f17b1804b1-4922fa492b5mr47691435e9.0.1781620096495;
-        Tue, 16 Jun 2026 07:28:16 -0700 (PDT)
-X-Received: by 2002:a05:600c:a413:b0:490:bbc1:c9be with SMTP id 5b1f17b1804b1-4922fa492b5mr47690935e9.0.1781620095878;
-        Tue, 16 Jun 2026 07:28:15 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a9a399sm60380495e9.14.2026.06.16.07.28.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 07:28:14 -0700 (PDT)
-Date: Tue, 16 Jun 2026 16:28:03 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
-	maciej.szmigiero@oracle.com, bchaney@akamai.com, mark.kanda@oracle.com, 
-	ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH 0/4] vhost/vsock: add support for VHOST_RESET_OWNER and
- CPR migration
-Message-ID: <ajFdI921uj-nftA7@sgarzare-redhat>
-References: <20260612165718.433546-1-andrey.drobyshev@virtuozzo.com>
- <ajFLvKcT-A0wvLYW@sgarzare-redhat>
- <4fa88fa6-a188-4c63-876c-ed748809bf0b@virtuozzo.com>
+        d=1e100.net; s=20251104; t=1781620593; x=1782225393;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gyflg7buPy8xj/laUw+X3H9z80FdaQb7zGq2p9sCm08=;
+        b=VntIn+YVJvyoykac0c5E1G40Fzw7iXd9NO4T3g1mdNugtsKw+FG6bzdfYK3dS5+QTR
+         bkUNolaIae0MkjSHsMYMsYZN3h6ES3m005aQHzt4meK7rjNGMDcTFsrCPNBVnjmsi/7y
+         B80HxSWHZELAJaiITV3FuNgEfafIouN0azyxn4JNhRC8ApvlkI5ElWTEqdWgO0/uk5gP
+         NuRoH6R38PGacpchl8Nc2LQ0YCg9p4ewhHp9wuhDsnlgshMIRYqEleAkoPWowvqPzk1F
+         E/41uoi2Wxp6Y37m+IZYdfP3keOQ42iuix2fCF6W5N7kb/TEoWPtHJ/pKE+23HPblQ9M
+         i3eA==
+X-Forwarded-Encrypted: i=1; AFNElJ8yXKXh7aidZ9yDX21+9n9x26l6xa/haDENWXDY9x57Le12SncgI+T0lPxC0J0TlopqCCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjLCy7WYn9aflnpclzUXGiIctH/2TSG/NKF4jfLEhhq8C129vB
+	MFYMvRdlvaJaKJDjIyxJi+l46aluNTmp4p345r4vrflXyQlWtywDOgE+3EF8p4imtd8IMsLmrc/
+	GrbJ7Mg==
+X-Received: from plsk16.prod.google.com ([2002:a17:902:ba90:b0:2c6:779e:5007])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f70b:b0:2be:e3bc:e8e4
+ with SMTP id d9443c01a7336-2c69a186b29mr41194995ad.18.1781620592472; Tue, 16
+ Jun 2026 07:36:32 -0700 (PDT)
+Date: Tue, 16 Jun 2026 07:36:31 -0700
+In-Reply-To: <CAEvNRgHjno=XDnMpTvZcNCR6D5RAi1rbynrL4CnnEa7Y-M3VLg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <4fa88fa6-a188-4c63-876c-ed748809bf0b@virtuozzo.com>
+Mime-Version: 1.0
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-19-6983ae4c3a4d@google.com>
+ <CAEvNRgHEq-hHcTivUw8TYBeMu-RpS=Ho4DXaNXKQKLPL_biTgg@mail.gmail.com>
+ <aiMOWkiVBqoQDAPd@google.com> <CAEvNRgF09SfDm=OgbrS8-wpfxbNecQkqAQwf1ELq1jWu7NjbUA@mail.gmail.com>
+ <aiM2Nm9Eh68mIVX3@google.com> <CAEvNRgHjno=XDnMpTvZcNCR6D5RAi1rbynrL4CnnEa7Y-M3VLg@mail.gmail.com>
+Message-ID: <ajFfb9u6dU47Nj3v@google.com>
+Subject: Re: [PATCH v13 19/22] KVM: selftests: Finalize TD memory as part of kvm_arch_vm_finalize_vcpus
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jun 16, 2026 at 05:01:34PM +0300, Andrey Drobyshev wrote:
->Hello Stefano,
->
->On 6/16/26 4:35 PM, Stefano Garzarella wrote:
->> Hi Andrey,
->> thanks for the series!
->>
->> On Fri, Jun 12, 2026 at 07:57:14PM +0300, Andrey Drobyshev wrote:
->>> Host<-->guest connections via AF_VSOCK sockets aren't supposed to
->>> outlive VM migration, since VM is moving to another host.  However
->>> there's a special case, which is QEMU live-update, or CPR
->>> (checkpoint-restore) migration.  In this case, VM remains on the same
->>> host, and we'd like such connections to persist.
->>
->> In the spec we have VIRTIO_VSOCK_EVENT_TRANSPORT_RESET which is usually
->> sent by the device after a migration.
->>
->> IIUC the specs don't say this has to be done all the time, so we don't
->> need to change anything in the specs, right?
->>
->> We just need to avoid sending it (which I think is what we're doing
->> here... I still need to look at the patches).
->>
->
->Sending this exact ioctl is guarded by one of my patches in the QEMU
->counterpart series:
->
->https://lore.kernel.org/qemu-devel/20260612165110.431376-6-andrey.drobyshev@virtuozzo.com/
->
->So we indeed avoid sending it on migration target in case of CPR migration.
+On Mon, Jun 15, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> > On Fri, Jun 05, 2026, Ackerley Tng wrote:
+> >> Sean Christopherson <seanjc@google.com> writes:
+> >> Many tests use vm_userspace_mem_region_add(), CoCo tests that require
+> >> finalizing shouldn't be disallowed that option.
+> >
+> > What does that have to do with finalizing the VM?
+> 
+> I could add more memslots after finalizing the VM, but then I'd have to
+> make the guest accept more memory. Hence, I'd rather set up all the
+> memslots and then finalize the VM.
 
-Great, so we are aligned :-)
+Why?  It's not like the performance of this code matters terribly.
 
->
->>>
->>> For this to work, we need to be able to transfer device ownership from
->>> source QEMU to dest QEMU.  Namely, source needs to reset ownership by
->>> issuing VHOST_RESET_OWNER ioctl, and then target has to claim it by
->>> calling VHOST_SET_OWNER.
->>>
->>> Since VHOST_RESET_OWNER isn't yet implemented for vhost-vsock, let's add
->>> such implementation (patches 1-2).  Also fix regression introduced by
->>> the earlier commit [1] (patch 3), and fix the deadlock bug (commit 4).
->>
->> If it's a regression, should we fix it separately?
->>
->> Or is it related to this series?
->>
->
->Probably my wording wasn't quite correct.  I posted this patch here
->because we found the problem during testing this particular
->functionality, i.e. vsock data transfer + CPR migration.  And the
->problem was introduced by a recent commit, which is fine on its own, but
->breaks the CPR case.
+Regardless, nothing *requires* a test to go down that route.  As I said before,
+my goal with the selftests infrastructure is to effectively optimize the entire
+experience, i.e. to provide default behavior that works well for the majority of
+tests.  Attempting to provide default behavior that perfectly fits *every* test
+is simply impossible.
 
-Yeah, I figured out while reviewing the patch.
-I'd avoid "regression" here and use just "issue", because at the end is 
-just affecting this work that is not yet merged, so it can be a 
-regression.
+> sev_smoke_test currently has a separate vm_sev_launch(), which is the
+> equivalent of tdx_init_mem_region(), and that's called in the tests
+> themselves.
+> 
+> sev_smoke_test also uses vcpu_args_set() after creating the VM with
+> vm_create_shape_with_one_vcpu(). Would that work if vm_sev_launch() got
+> moved into kvm_arch_vm_finalize_vcpus()?
 
-Thanks,
-Stefano
+No, because vCPU state would be encrypted at that point.  Moving vm_sev_launch()
+would also break test_sev_dbg(), which sets a global buffer to all 0xaa prior to
+encrypting that data.
 
+> >> >> It's also possible to have some kvm_vm_finalize() call that can be
+> >> >> explicitly and manually invoked from selftests just for CoCo selftests.
+> >> >
+> >> > Why bother?  It's obviously possible to all kvm_arch_vm_finalize_vcpus() directly.
+> >>
+> >> Works for me to call directly. Do you mean kvm_arch_vm_finalize_vcpus()
+> >> is the right function where the TD is finalized?
+> >>
+> >> For tests that need to do more setup after creating a vm, is the only
+> >> way out to call __vm_create() then vm_vcpu_add() to avoid premature
+> >> finalization in __vm_create_with_vcpus() when
+> >> kvm_arch_vm_finalize_vcpus() is called?
+> >
+> > Depends on what you're doing.  Sometimes, the answer will be yes.  That's why
+> > there are "low level" APIs, so that some tests can do fancy things, while most
+> > tests can leave the details to the infrastructure.
+> >
+> > If there's a recurring problem, or we anticipate one, then we can and should
+> > figure out how to minimize the pain so that tests don't have to deal with the
+> > same boilerplate issues over and over.  Hence the __shared idea.
+> 
+> I still think kvm_arch_vm_finalize_vcpus() is an odd place to be
+> finalizing the VM.
+
+That's literally why the function exists though.  The one and only existing
+implementation (on arm64) uses it to initialize the vGIC.
+
+  void kvm_arch_vm_finalize_vcpus(struct kvm_vm *vm)
+  {
+	if (vm->arch.has_gic)
+		__vgic_v3_init(vm->arch.gic_fd);
+  }
+
+That's *very* similar to the proposed TDX usage, where some per-VM asset(s) can
+be initialized/frozen only after all vCPUs have been added.  In other words, the
+name is describing where in the VM creation/setup flow the hook is called, and
+perhaps more importantly, the impact of the call: vCPUs are finalized (obviously
+with a different definition of "finalized" based on the VM properties).
+
+> I would prefer to not have to explicitly call some function like
+> kvm_arch_vm_finalize() (no vcpu in the name), but a common arch function
+> calling vm_sev_launch() and tdx_vm_finalize() is what I can think of
+> for test setup flexibility, without too much magic.
+
+We can't have our cake and eat it too.  Either we launch/finalize SEV/TDX VMs as
+part of the common VM creation flows (as proposed for TDX), or we force tests to
+manually launch/finalize the VM after additional setup.  The only way to have it
+both ways is to utilize crazy macro shenanigans to execute arbitrary code between
+creating the VM and launching/finalizing the VM, and even I would balk at that.
+
+I honestly don't see any reason to try to figure out which of the two approaches
+is optimal at this time.  Whatever decision we make isn't set in stone, and in
+fact should be relative easy to change.  And without being able to see all the
+TDX/SEV tests that are waiting in the wings, it's more or less impossible to make
+an informed decision.
+
+I definitely want to have SEV and TDX use the same core approach in the end, but
+I don't think we should force the issue right now, because the cost of reworking
+the SEV and/or TDX infrastructure when there are only a bare handful of tests is
+so low.  It will cost more to try to predict the future of a 50/50 outcome than
+it will to make a completely wild guess between the two options and rework things
+if we guess wrong.
+
+> For now, I can't think of many uses of __shared. ucall shared memory is
+> allocated dynamically, and we can also make it shared cleanly within
+> ucall code.
+
+Uh, every selftest that uses global variables to communicate between guest and
+host?
+
+> The global variables (sync_global_to_guest()) will appear in the guest
+> as long as sync_global_to_guest() is called before
+> kvm_arch_vm_finalize(), which I think makes sense to people writing
+> tests for CoCo.
+
+Yes, but that's completely orthogonal to all of this.
+
+> So 2 questions to push this along:
+> 
+> 1. What do you think of a kvm_arch_vm_finalize() that calls
+>    vm_sev_launch() and tdx_vm_finalize()? My key issue is that
+>    kvm_arch_vm_finalize_*vcpus*() seems to be for finalizing vCPUs
+>    rather than the whole VM.
+
+Key word "seems".  I'm pretty sure Oliver picked kvm_arch_vm_finalize_vcpus() as
+the name in commit 8911c7dbc607 ("KVM: arm64: selftests: Create a VGICv3 for
+'default' VMs") for the same reasons I think it's a good fit for coco VMs: like
+finalizing TDX VMs, initializing the vGIC effectively finalizes vCPUs.
+
+We could rename it to kvm_arch_vm_finalize(), but that won't change the fact that
+we'll need to decide between automagic vs. manual finalization, and it definitely
+should be a separate discussion.
+
+> 3. Would you like __shared implemented together with this series, as a
+>    prerequisite, or later?
+
+Only if __shared is a hard requirement for base TDX support, which I assume is
+not the case.
