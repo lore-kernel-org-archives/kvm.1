@@ -1,141 +1,295 @@
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C3D3AB5B8;
-	Tue, 16 Jun 2026 22:30:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781649062; cv=none; b=QKlBaYSFtOubu1PdiQbYRgvHe+3DqR0MmqGw3S2kIKiAsCv2qh61jC1SkJAA83CggIcyVOhTin8BqAcYq8sJEk4sJGURw1MdmgSA2OKk6JdwOziM4SLJKLJ0YG9qes9f3S1V2/nNDNGKPOrZcL03DQh5Swupv7suUJqEZ7Mm5rU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781649062; c=relaxed/simple;
-	bh=u+EjfXEtMOWobmqbeSfAKWQoHPaxuk50sDJrW1KXnIg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AE7oc0vC+CQNYKCoFqx4WYuUsN3MhzFbvzk/otcfHwdbbIIgaLGP5d9bHQOd9QOcHT0I+C+8egRRZtArEwO82lqJ01/bTWtNMDe3emPfaHw/rwyePPA9sSMApaYd/jO1/zJ3kKGP7bK+LLN8poyLjtGT0q66INxiOfOWQgiQ3Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=cOjqQwdU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ao7hB8oP; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6F7480DF1
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 23:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781651082; cv=pass; b=N2WZgX/lOi3rIWk32srHDwWUolxEcSZ2E8jVQlzFm1scx8msl9IYspdh5iig3n9k+G2Yagp3aZpc1Ni3I9WGYH/71robM3XCAcGbuXtRIh59L8arGzmk4opracfurksiqvLK5WKny/XuSCOg35k6txqaEVYri4f/mQyoLgiHCjc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781651082; c=relaxed/simple;
+	bh=Bo53uHY0s3ADC/1KSIqS/4nXPxSM3WGq0VNZ9bGjaas=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rd55+gTFWuuyKibR3oTy+wcj6W58HhKOPhLXHGzOFlNOMJStj7KK2Qgfh+CpjxMnrXMenRQuFtOfcF/1ABzLqg4D9TX8f+uJp+y+RR83XsMEXpLOce5Igy4YMIZ7j0vORdJVPbJZHj8t25CO0AK971CPvRa0A3e4fS22Y4LrN7I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fEWOO4Z8; arc=pass smtp.client-ip=74.125.82.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="cOjqQwdU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ao7hB8oP"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id C03BFEC02B0;
-	Tue, 16 Jun 2026 18:30:58 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 16 Jun 2026 18:30:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1781649058;
-	 x=1781735458; bh=+rHioyxYKaAJ4voYMnnaD3/bRBJeekx7zwdVkQIQUaU=; b=
-	cOjqQwdUNOXO8ALbDbO5Z0Ln8eTHl5wyQqsu6jgkiIl7qzfprtLp7llSYBgg0Wvx
-	wvIlv7kOo5MjD9cimT+e5Vu7AUQX+CXcajBbiNvmkNGdDrW9E1lTE6c/ItJw81xD
-	ucJdRc8LxDBOKkxc+FAAZmn9Ld27t2Y3OyDj4btQs+U5xyYe9Sw0YZxdndm9ZeV4
-	vZlG7NbxRV3ejpqjYK5wxOEra8ZbLBinXXhOa8BnLogXG5UX7QFXGYD1GbcFdkR7
-	u3jHHhSLiHCSzZmaGSWABHIgXhwDOxDFc5F4/VKHgwFKuXL5ThYwvZRBE226j4Ku
-	EB3VAUA1773mkEkC8eTVrw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781649058; x=
-	1781735458; bh=+rHioyxYKaAJ4voYMnnaD3/bRBJeekx7zwdVkQIQUaU=; b=A
-	o7hB8oPpV6BUt0hX9ngV85lw8YaKLaTf3jVFxOJ6cJIVl1xHpHg84X/Zfeo8EWCB
-	GrbZtkpXdHpHFqsIgp6XhS3Nx9Mg4akEo8tMkm2wJ0/ZI93HuUI64U31JJVtSGUB
-	IGDdmZ9vR7yDocDwlXnOGX3oAA1hFInebb6NrGpJa8Ycd8brxggat1/HRH6iri8h
-	F4e3jsu2Mdm90J9uR9Uj4dLR9aFkM4QQrke4xrbAesv3dYnAQ7NvZX7lyEKKJwh5
-	fpqUYRzjJbfcFKqmt1g9H8FfpMbibnAzEv3uhUNM/MGoFS767LNQ48CR3vJxH7Tl
-	LDGwX0btEFAeSXQkG3BbQ==
-X-ME-Sender: <xms:oc4xasSCgAyl4jtUB7Xl5wUysUgATze-_wqVO4njVfw32fccAcur4g>
-    <xme:oc4xalqYyEO8ZAxdLI6whZg8q3F7oari7gni07ii4g94dikVbntIvV9DgPMPqqlmM
-    XogChvxAXRNkO-Ddi0XjV1L8Pmrcc8TLfNlTWRAVTu7CDDFvAGm>
-X-ME-Received: <xmr:oc4xam3VDGQtUREFgIvJBX9B7fMqFMAfT2a1iamlQQMfRqb-si-AoYwGGKU>
-X-ME-Proxy-Cause: dmFkZTEQIFPA4DQ+IouZXdl4nSL5KRmpBGJ3LtjyzM/GA31zC1k73CGibn8xX7GbuoPEQH
-    oUVqqCdVPKY60sTREchsl+HrmfPRF2QiEsb2Wji/gNsSR2FgRPcUYKPCFbtTQ64kL5iQuM
-    7Ave/+wa27MixGbGt2a6e9N5roePRyYb14CpYGgQX8pg5f5enPj/CARpjhzVd5ghDW/Y33
-    3o7CsWsim4sddyGENQ5mlsl1S7NNxDm7JLGRXjh3kBc6FJokPdNxC/B7r/8iy4kJKkPTR/
-    zh2ysrQ4usOcEpOAMY+tXkbR5FDKAJdoMG/JTDW8LwPYdG77yApNnK8Khs4RgGZvJqxWCU
-    Sx60sepY32PnQgNSPKEOqxkworrp2jrMr9hjGttSQMiRnsDoyOjFq6jU3KP+vaZTWiHrda
-    09u4ZplXGHZ1PjuucjmtF8GuiW9GdYa7ZPRYzJyp6PbiLjm3DMywDCLSJW3eaWfR5Q3UmQ
-    JcZLCgNjlh1sO1TkV9HqUStnWjsc3rIXLrNwdNWHQEsG9v/VTToRCHbKfBuDhshpb7W+0j
-    eia862X0khMn38HSTycGBw8o5+tuJPiNhFbYAWmQaRYtjBWeHsZwC4Auyghag1gHek0BUv
-    dAs6qZJ5uB6kYs5SNUW2vqTdWBxYZASA25IIQKNQK++QbEV4hGsd556i+HwA
-X-ME-Proxy: <xmx:oc4xak445CRRPh97mIcTJKdDCKjLqE9LN3rAAvxcXJdEcO6LNNhJrA>
-    <xmx:oc4xaqRG-xMhniFjEg-nkFA_6wRqzeMp1PDFZXk-7KD7hP6rbIvLlg>
-    <xmx:oc4xahWpUs3ZYUjBUz6J8aIjBa4_hykahb73R278jz20t4xmqvNQEA>
-    <xmx:oc4xanFyAQydMqPW_Z5omgpFRXnZQkZ_bNL0wtvk3HgWvdMexKbD1A>
-    <xmx:os4xanbm7eaPWslPJ7D7bqGPJWEYDzdDbkT72KcoWnZ0W00l1MJEh7zS>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 16 Jun 2026 18:30:56 -0400 (EDT)
-Date: Tue, 16 Jun 2026 16:30:54 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Anthony Pighin <anthony.pighin@nokia.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, Kefeng Wang
- <wangkefeng.wang@huawei.com>, Vlastimil Babka <vbabka@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, kvm@vger.kernel.org, alex@shazbot.org,
- Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Peter
- Xu <peterx@redhat.com>
-Subject: Re: [PATCH] vfio: Request THP-aligned mmap for device fds
-Message-ID: <20260616163054.77fdb61a@shazbot.org>
-In-Reply-To: <20260616180129.160016-1-anthony.pighin@nokia.com>
-References: <20260616180129.160016-1-anthony.pighin@nokia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fEWOO4Z8"
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-13981833e13so2496235c88.1
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 16:04:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781651074; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IpoyxoTEgrVPYwiJvMlLLsp0R4kNNC9Hndc1Zvgxuqv0OKGlWxqBtDv1X7sTnfNxAR
+         Qf7bXctd6Tmi6cgDowvdb1FMWDQUl8iiwn/MKlWlcZuHyRpCpFJepVkYDGfsGlEFNHs4
+         GxphbUv9RWYV7ZrwlXHWBtolB3qAwK5k0/2RK4MiYuEsEjMoXMCtw/VNARBoKGbpEwD0
+         tyn+wVEWLFh8R880VSqRTR9PLNbGwCvvZ0LNZVNIOnR3bXchDyfyuMKKZR/XRIWoqDMX
+         Q0+nrTL0hyBh/nBxt7HTVI2b2vtY+p09SZw8DzsGDqfIyVxAAcz6gFZB+9omOUB9FKLt
+         /phQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=IDtlYzSJ10HUdDDSmXfhgs31EXUJLXgmuoKNNIFB6PM=;
+        fh=Q17BnkwbDKgoliX6hLK0KViKEMJ8H+F/HoqN0D9gGN4=;
+        b=We8yZjh5sLss0Z8sm5w8VqylLvim5WhenPRMNN0onFvLrlLC3JPGpFJ44IKu4On2aA
+         ugKuPbSTTbUXiDd9Gk0XQwm75A6g1THRTsBDbqv7jxUBr+iG77TgsSo6KTDTrURZrf2X
+         0D1OA4OkBwkicNXy7NliXW8t8mLt0En/Skwu1ttWQP83c9O3sc/w/tWBvzMkgiGH+g8A
+         Kazjbr8Hi8lXTKGIEHJs3X+eIse10tr9FUAUa6tXchfDsLPQ8m6bR5wH6J06HLOl5si4
+         FH7q/FZVYaeqnM8BFm/eUly5ychavBRZgW/CAFKCqYjfZ0i5gSnzsKpHEKuARMbBCtY8
+         G7Rg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781651074; x=1782255874; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IDtlYzSJ10HUdDDSmXfhgs31EXUJLXgmuoKNNIFB6PM=;
+        b=fEWOO4Z8CxDlHnprlJXcjMWCJ4DgGdTpwKKwi1cruLTfdh/54n/8epf20PnTn8YLGO
+         yCUC1NRICRpBobE7iTgbweBObvtVqYesMFUddtefA+Yqbrls3Sr9X2TsaYyR9XC/8tQo
+         sym8WnQevA1Kbe4dS5xMhS1CytRW/FgQbGchg4NzDs1eedk4Ys+h45e/OLFtet/07KY8
+         Fvxyhc9qUC4pCAgV5M+yKL1AgWaV7ign4B70qVKgRYEcJgYg1m/jSSQ8W5Gl7XXYSFoR
+         wjuIi5qK6+ztLt/Vzs57lCU8qqa5ceeVGkI/32RAu4zecWLlycKcMpGSu3kBkvObxXLe
+         2iUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781651074; x=1782255874;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IDtlYzSJ10HUdDDSmXfhgs31EXUJLXgmuoKNNIFB6PM=;
+        b=P7bQGyP2Ryl9ic+Ws8uwMMn29BSAoWjDthQZddryjBf0iM9NEBREYCIXt5H/Q2Wrmx
+         O4Tc2px51Y+q+7brN4x/SwwIjP3pwC/3ZZMVNhgxDRtgOcvKhCBhIwGIMF0I0Ld0+y8X
+         EDHh+iHlY39swtUwJSVdxdhj+MNJbFq7haFa2mj4ebbXWvS/Sne/A/5994NykU4Eyjfb
+         TUrwNHGgJ1maj507uWALVvVwwZNsIBcLpoQkpTugnhKLBIVuOGFxMJ1uCBzxktrCz2m5
+         06c3dJm5pon6GatT9Va93XnvajoFov5n89/6HC/gsGy5ib7PDcHGj3UWFhjVc3O0y6D6
+         UKTw==
+X-Gm-Message-State: AOJu0Yxo5/kqFHr/CpGEbwkNc9hREhs8iD+GGxMn9poq3QktPCpYJkLL
+	CIVCKJGFMBNm0JoSP6y/izmmome44LGiotEcp46iRsmk88sNCGzGMbyXsvgY0gfcSd9WNQQEUxV
+	H3YmXoQXHw0e2sUjnHWlMXz28SAPaSNOPfLQuNj38
+X-Gm-Gg: Acq92OHn1CLgamIvxmsjgz8CFicVAeOVBAexhGs89XInlg70PQhLto8RALy5U6kQiAR
+	s7Vnm5lkIoRdPniJfw4Yff8tmaJ+I8xfIsl897+o9GbPlek1HV/T3FSCbN2sV6nHbLOnnQvYydQ
+	Mldueo0tl6lDyAB6u8wqB6Yin5f9Uj1M7QLGRreTXyP/aEbmOFfo321E6Ks29qBQnWTk0TSf3Dx
+	JeHMt9VNmt0iUR8Z5qBQb1u/vR5yp3gdZwTXk7qndRjQMoZrGrxtNlFc/tPNB3dtxbvq9zOj17/
+	Vg7YNLXuKHZMqIlf1rMEIXdWdmdyn9gToYnXFC55DZZZbsXza7bqLHLNwfCki/WL3t5iSQ==
+X-Received: by 2002:a05:7022:fd08:b0:137:1ae1:bc2f with SMTP id
+ a92af1059eb24-1398f6547damr476392c88.13.1781651072971; Tue, 16 Jun 2026
+ 16:04:32 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 16 Jun 2026 16:04:32 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 16 Jun 2026 16:04:32 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260616194000.GC1675268.vipinsh@google.com>
+References: <20260331194202.1722082-1-vipinsh@google.com> <20260331194202.1722082-2-vipinsh@google.com>
+ <CAEvNRgGrPKBXh=VA3QBLJOczKRpMOB4nDmZL0XRwV6B3PT_7+Q@mail.gmail.com> <20260616194000.GC1675268.vipinsh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Date: Tue, 16 Jun 2026 16:04:32 -0700
+X-Gm-Features: AVVi8CcXGzWmHVP01yNQ9cwcnpEans6MeetfVkGQMij7VBGAo0JuOj3VXMX_DH4
+Message-ID: <CAEvNRgF3a7BPBzqDOc0pXe4V1qxXfSHx49VyBHVRzJa0Mch+Bg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/9] KVM: selftest: Create KVM selftest runner
+To: Vipin Sharma <vipinsh@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, kvm-riscv@lists.infradead.org, 
+	seanjc@google.com, pbonzini@redhat.com, borntraeger@linux.ibm.com, 
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, anup@brainfault.org, 
+	atish.patra@linux.dev, zhaotianrui@loongson.cn, maobibo@loongson.cn, 
+	chenhuacai@kernel.org, maz@kernel.org, oliver.upton@linux.dev, 
+	ajones@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 16 Jun 2026 14:01:29 -0400
-Anthony Pighin <anthony.pighin@nokia.com> wrote:
+Vipin Sharma <vipinsh@google.com> writes:
 
-> VFIO PCI devices support PMD-sized page table entries for BAR mappings
-> via their huge_fault handler (vfio_pci_mmap_huge_fault).  However, the
-> VFIO device file_operations never provided a get_unmapped_area callback
-> to request PMD-aligned virtual address placement from the mmap address
-> allocator.
-> 
-> Before commit 34d7cf637c43 ("mm: don't try THP alignment for FS without
-> get_unmapped_area"), this was masked by a bug introduced in commit
-> ed48e87c7df3 ("thp: add thp_get_unmapped_area_vmflags()") which
-> inadvertently applied THP alignment to all file-backed mappings,
-> regardless of whether they provided a get_unmapped_area callback.
-> 
-> When commit 34d7cf637c43 ("mm: don't try THP alignment for FS without
-> get_unmapped_area") correctly restricted THP alignment to anonymous
-> mappings and files that explicitly opt in via get_unmapped_area, VFIO BAR
-> mappings lost their PMD-aligned placement.  Since the huge_fault handler
-> requires both the VMA start address and the physical PFN to be
-> PMD-aligned, unaligned VMAs force a fallback to 4KB page faults.
-> 
-> For example, a 2GiB BAR results in 524,288 individual page faults
-> instead of 1,024 PMD-sized faults, increasing the VFIO_IOMMU_MAP_DMA
-> pinning time by orders of magnitude -- a regression directly visible to
-> KVM guests during PCI device initialization.
-> 
-> Fix this by providing a get_unmapped_area callback in vfio_device_fops,
-> following the same pattern used by ext4, xfs, btrfs, fuse, and other
-> subsystems that benefit from THP-aligned placement.
+>
+> [...snip...]
+>
+>>
+>> I was expecting something like if the output is piped to some file or
+>> like "not TTY" then don't print colors.
+>>
+>> Would you consider not printing in color at all? Or adding some kind of
+>> "turn off all display magic" flag?
+>
+> Good point about color on/off. I can make following
+> changes in following priority, starting with the highest:
+>
+> 1. If NO_COLOR enivornment variable is set then don't print color at
+>    all.
+> 2. If FORCE_COLOR environment variable is set then print color
+>    (default).
+> 3. If output is not TTY then don't print color.
+> 4. Print color.
+>
 
-The trouble is that PMD alignment isn't right either, your 1024 PMD
-faults on a 2GiB BAR would be 2 faults on x86_64 with PUD mappings.
-QEMU has forced the alignment to make it optimal for some time[1], so
-there are userspace VMM options.  Seems like you were previously
-getting lucky.
+I think we can take reference from what grep does.
 
-Peter Xu was working on a more comprehensive solution[2] late last
-year, but it seems there was an objection to the
-file_operations.get_mapping_order() proposal before Plumbers and the
-thread hasn't rekindled.
++ --color=auto (default), if output is piped or redirected, no color.
++ --color=always
++ --color=never
 
-Gentle bump to Peter and Willy that maybe we could resurrect that
-effort.  Thanks,
+>>
+>> I also saw code for a sticky footer in another patch in this series,
+>> that's probably not nice for other stuff wrapping this runner.
+>>
+> For sticky update, I can hide it if there is no TTY.
+>
+>> > +if __name__ == "__main__":
+>> > +    PYTHON_VERSION = (3, 6)
+>> > +    if sys.version_info < PYTHON_VERSION:
+>> > +        print(f"Minimum required python version {PYTHON_VERSION}, found {sys.version}")
+>> > +        sys.exit(1)
+>> > +
+>> > +    sys.exit(main())
+>>
+>> This shouldn't block merge: why not align with the kernel's official
+>> required python version?
+>>
+>
+> When I first proposed official version was 3.5, it got upgraded to 3.9
+> in commit 5e25b972a22b ("docs: changes: update Python minimal version")
+>
+> I was using some APIs which were not present in 3.5 and 3.6 was the
+> minimum version I was able to run all the features I needed.
+>
+> It just stayed that version and I never checked to keep it in sync with
+> the latest python version.
+>
 
-Alex
+I see, no worries, not a huge issue.
 
-[1]https://gitlab.com/qemu-project/qemu/-/commit/00b519c0bca0
-[2]https://lore.kernel.org/all/20251204151003.171039-1-peterx@redhat.com/
+>> > +
+>> > +        run_args = {
+>> > +            "universal_newlines": True,
+>> > +            "shell": True,
+>> > +            "stdout": subprocess.PIPE,
+>> > +            "stderr": subprocess.PIPE
+>> > +        }
+>> > +        proc = subprocess.run(self.command, **run_args)
+>> > +
+>> > +        out, err = proc.stdout, proc.stderr
+>> > +        self.stdout = out.decode("utf-8", "replace") if isinstance(out, bytes) else (out or "")
+>> > +        self.stderr = err.decode("utf-8", "replace") if isinstance(err, bytes) else (err or "")
+>>
+>> I think it would be useful to capture stdout and stderr in order that it
+>> was output, so that the output being saved shows everything
+>> interleaved. I think the order could be useful in debugging.
+>>
+>> I can see benefits in knowing which was on stdout and which was on
+>> stderr too, so is there some way of having both?
+>>
+>
+> Both approaches are useful, I am not sure how to achieve what you are
+> asking reliably.
+>
+> However, I think separate stdout and stderr is more useful in automation/CI
+> tools. Considering, runner is for the human use I am more inclined on
+> having combined output of stdout and stderr as you are suggsting.
+>
+> I will change it to combined output in next version, new filename will
+> be "out" consisting of both stdout and stderr. If there is ever
+> need for separate dumps we can revisit it.
+>
+> One thing we will lose is in current approach, non-zero stderr is signal
+> of finding errored out runs. Not a big loss as same information can be
+> grepped using master log file.
+>
+
+Here's an idea to have both:
+
+        import selectors
+
+        process = subprocess.Popen(
+            command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            bufsize=1,
+        )
+
+        sel = selectors.DefaultSelector()
+        sel.register(process.stdout, selectors.EVENT_READ)
+        sel.register(process.stderr, selectors.EVENT_READ)
+
+        output_lines = []
+        stdout_lines = []
+        stderr_lines = []
+
+        while True:
+            events = sel.select()
+            for key, mask in events:
+                line = key.fileobj.readline()
+                if not line:
+                    sel.unregister(key.fileobj)
+                    continue
+
+                if key.fileobj is process.stdout:
+                    # append to stdout_lines... Might need to deal
+with newlines?
+                    # perhaps even print it from the runner's stdout, so
+                    #   the runner gives faster feedback for a human
+                elif key.fileobj is process.stderr:
+                    # do something equivalent for stderr_lines
+
+                output_lines.append(line)
+
+            if not sel.get_map():
+                break
+
+        process.wait()
+
+I'm also okay if it's first combined, and this can be an extension if
+it's really needed.
+
+>> > +
+>> > +        if proc.returncode == 0:
+>> > +            self.status = SelftestStatus.PASSED
+>> > +        elif proc.returncode == 4:
+>> > +            self.status = SelftestStatus.SKIPPED
+>> > +        else:
+>> > +            self.status = SelftestStatus.FAILED
+>>
+>> Using this class-based pattern requires us to do
+>> Selftest(test_path).run(). Would you consider using a function-based
+>> pattern, like run_selftest(test_path) instead?
+>>
+>
+> I find current class model provides an easy way to group data in
+> hierarchy. For example, test_runner has list of selftests which it needs to
+> execute. Selftests have their own test command, output data, result
+> status, etc.
+>
+> Both are suitable to implement runner. But I am little hesitant to
+> change it now considering it is already written. If you can provide
+> benefits of using functions approach here then I am open to
+> rewrite.
+>
+
+I think the classes approach introduces more boilerplate which isn't
+necessary. I don't think there's any state stored in the classes and so
+this is a good fit for using functions. After removing the boilerplate,
+we might actually be able to put everything nicely into 1 file! That's
+not to say classes can't be in 1 file, I think we're more used to
+classes being in separate files.
+
+__main__.py is already mostly in a non-class style, which makes the rest
+being in the class style more jarring.
+
+Most of the kernel is C which is mostly procedural where you need to
+implement your own OOP, so I wish the accompanying python would follow a
+more procedural/function-based style rather than directly reach for OO.
+
+I'm also heavily influenced by Jack Diederich's talk [1], which is a fun
+talk but may be too long to watch, so [2] is a text overview.
+
+[1] https://youtu.be/o9pEzgHorH0
+[2] https://szuckerman.github.io/stop_writing_classes.html
+
+I guess this might be more of a philosophy/preference thing, feel free
+to go ahead if others express preference for the class style.
+
+>> >
+>> > [...snip...]
+>> >
