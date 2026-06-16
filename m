@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C07A32B130;
-	Tue, 16 Jun 2026 00:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F123314BF;
+	Tue, 16 Jun 2026 00:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781570553; cv=none; b=cvx26c/5JqTwZIHkXmXeTSyR0bRJaGHlZy2m2pXi6DiCq+zhwbSQQKlEaz0bJJirz/JmoDWtLQsKzpmkolQ7GB61/hHvgn9WtnDMBGa2q+Mhql8OCUCH0Qaei3PNxz2y/PXeVmoD6aiZQS0QaFajSYk6cd5UPgK/GJdDyEpG7Kc=
+	t=1781570553; cv=none; b=CW9LcRGn5UwZt27fmPZw304SxLoI+7akAYa0fQtienK+Bgr6jvNrj8nBH3YdeD38WVeac6BUegF+FEaXqFdzPTrcx1tq/NK+7x/Cp2Km05ozQVj+v094n1YmJ+A75behlxwyxos/wWki0sAUxRl9wBLX7V6lFRNoryTJWvHxL4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781570553; c=relaxed/simple;
-	bh=be/i1k4y/PlQ+lWXqPkZOHE95nazfIidNXtMiF8Z+oU=;
+	bh=tXRjipMD11C6lBd759IrOSVZFgsQ7ecidlg37COnq1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHNuGeYvgSm6z6EtYhtyDYLcD3F0XBVGQKBKSC2z5uvHn4XwByaZPv3MU4eTe0j/JY2lYDMF3snXF2UD/G8oMv1o+enP+UiNJp1LTfp1CvaST1em6oJrnVQ19SoNiPUDc6Uw76NhzKYZcZ3biSKpQ0AXa87WgbfgpViI9Aydyss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j9HmOXgp; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=ce/K1lKtZrNcZ1vs6z9AXFny1RZ3JDzpxqu6ozMcrSP5So2AztzziSM6/JLhCf5L0NEXkNZz/yxyTLI5tI/Y9HOrYqkE45Y3V2KBtQ6l3a04U4pqiv4zGcZab8ujmYOZ0I2yhMViHvQUWU4ABKJwuPwV2wPg/jAi9dKEihSVEGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ohVQM6g+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j9HmOXgp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EA51F00A3F;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ohVQM6g+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4331F00A3D;
 	Tue, 16 Jun 2026 00:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781570551;
-	bh=nsZ3gkwmujzISH0RoBFsE/5KYiuBrdwVW09/X/kWErc=;
+	s=k20260515; t=1781570552;
+	bh=GG7VZaT8SASv/ia+LEE656V3I3yteoCYcd4u8m1m56U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j9HmOXgpHfaUgI9YJz0dfcEO8HjBAur+v6Ffr1isx+gSLdtAfSo2T9DRp3lx26fYH
-	 61Pk7i4ZdEeBKeFt41nRt+dSZKTkVrf2WwcWOGG604GO8m8mIew9GBhl6oh2RMcngr
-	 nWPZxN7EKV09bs+/4k+XZP7MPAMbmT8i6oq4PU+3RHaha9hrUFZ3xVXuSEh0K1LPtL
-	 t8L/T/XWZmADIH4qp7xF7KuMCyV527exMz7uBulMyqdlFejoDpznhZg4yfURFwlJ3P
-	 igLxFSY5AuEC45EyEyJXqtNAYOy/tU4SwsU8fLPAlNZNX+S0oldnRx9TKKNgp2hh2+
-	 sXXNbf1tyMWAQ==
+	b=ohVQM6g+gPuftNT0K4lT5yjjB1WR0rsXPiIEsR4vFuXKQMnq1NaNuBBxjkRlbJcpj
+	 rqevPrL+8H0/QU6TcyuqvudP1rdmwdFDjI74zlq3xuSCNAXSZuMyFRvtUtIG+V+MT6
+	 TPmV8dZDwuKrFToj/2TFU6iynmQxr8Un9lNLes2LH7PgkCaCVuxaYufeIPatzJoGyY
+	 sPcqsc9ezG4Xgw+UnhMt4Ov7e+ZH65tPISkgVYwI4krmqjIcJCgxzcSBjzFsSGT7z2
+	 uXOqbZO64GwfS229+JceiXEdTZaKnMzw39eaBfAT8iQQXNHZls6ezFHFg61aMOFULR
+	 sIdxJOH2b34yQ==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -36,9 +36,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [RFC PATCH v2 20/25] KVM: nSVM: Do not reset TLB_CONTROL in vmcb02 on nested VM-Enter
-Date: Tue, 16 Jun 2026 00:41:49 +0000
-Message-ID: <20260616004155.1435766-21-yosry@kernel.org>
+Subject: [RFC PATCH v2 21/25] KVM: x86/mmu: rename __kvm_mmu_invalidate_addr()
+Date: Tue, 16 Jun 2026 00:41:50 +0000
+Message-ID: <20260616004155.1435766-22-yosry@kernel.org>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
 In-Reply-To: <20260616004155.1435766-1-yosry@kernel.org>
 References: <20260616004155.1435766-1-yosry@kernel.org>
@@ -50,57 +50,47 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Stop clearing TLB_CONTROL when preparing the control area of vmcb02, as
-this potentially undos pending TLB flushes for L2 (e.g. through
-KVM_REQ_TLB_FLUSH while L1 is running), and remove the associated TODO
-comment.
+In preparation for creating another helper for
+kvm_mmu_invalidate_addr(), rename __kvm_mmu_invalidate_addr() to
+kvm_mmu_invalidate_addr_in_root().
 
-This is currently harmless, because nested_svm_entry_tlb_flush() always
-requests KVM_REQ_TLB_FLUSH_CURRENT on nested VM-Enter, which sets
-TLB_CONTROL again before L2 is actually run. However, always flushing
-will soon go away with proper TLB handling for L2, at which point always
-clearing TLB_CONTROL would be a bug.
-
-Clearing TLB_CONTROL on nested VM-Enter was probably done because
-TLB_CONTROL is not cleared by the CPU on VM-Exit. However, KVM always
-clears TLB_CONTROL in the active VMCB after VMRUN. Hence, at nested
-VM-Enter, TLB_CONTROL in vmcb02 can only be non-zero if a TLB flush is
-queued for L2 while L1 is running (i.e. KVM_REQ_TLB_FLUSH), and that
-should never be ignored.
+No functional change intended.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index f91c22e72151e..a226aca8f9108 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -719,12 +719,7 @@ static void nested_svm_entry_tlb_flush(struct kvm_vcpu *vcpu)
- 		kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
- 	}
- 
--	/*
--	 * TODO: optimize unconditional TLB flush/MMU sync.  A partial list of
--	 * things to fix before this can be conditional:
--	 *
--	 *  - Don't crush a pending TLB flush in vmcb02 on nested VMRUN
--	 */
-+	/* TODO: optimize unconditional TLB flush/MMU sync */
- 	kvm_make_request(KVM_REQ_MMU_SYNC, vcpu);
- 	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, vcpu);
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index bf2e0c2205631..65c35ed8f4a01 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -6577,8 +6577,9 @@ void kvm_mmu_print_sptes(struct kvm_vcpu *vcpu, gpa_t gpa, const char *msg)
  }
-@@ -981,9 +976,6 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_mmu_print_sptes);
  
- 	vmcb02->control.asid = svm->nested.asid02;
+-static void __kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+-				      u64 addr, hpa_t root_hpa)
++static void kvm_mmu_invalidate_addr_in_root(struct kvm_vcpu *vcpu,
++					    struct kvm_mmu *mmu,
++					    u64 addr, hpa_t root_hpa)
+ {
+ 	struct kvm_shadow_walk_iterator iterator;
  
--	/* Overwritten later if necessary.  */
--	vmcb_clr_flush_asid(vmcb02);
--
- 	/* Use vmcb01 MMU and format if guest does not use nNPT */
- 	if (nested_npt_enabled(svm)) {
- 		vmcb02->control.misc_ctl &= ~SVM_MISC_ENABLE_GMET;
+@@ -6634,11 +6635,11 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+ 		return;
+ 
+ 	if (roots & KVM_MMU_ROOT_CURRENT)
+-		__kvm_mmu_invalidate_addr(vcpu, mmu, addr, mmu->root.hpa);
++		kvm_mmu_invalidate_addr_in_root(vcpu, mmu, addr, mmu->root.hpa);
+ 
+ 	for (i = 0; i < KVM_MMU_NUM_PREV_ROOTS; i++) {
+ 		if (roots & KVM_MMU_ROOT_PREVIOUS(i))
+-			__kvm_mmu_invalidate_addr(vcpu, mmu, addr, mmu->prev_roots[i].hpa);
++			kvm_mmu_invalidate_addr_in_root(vcpu, mmu, addr, mmu->prev_roots[i].hpa);
+ 	}
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_mmu_invalidate_addr);
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
