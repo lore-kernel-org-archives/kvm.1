@@ -1,179 +1,116 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C16746AED1
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 16:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626528; cv=pass; b=uNDu4zEmaRGhIzXs/ibiLN4fKr0HHHRZtk8rsGrY5rjWtoFvN6V2XFFPKko8rwD2/JV2vlSEJiADQVPRHrfZGpTVzhL6jMJGKkeANXxJRMsvVSaGhr0YGILglmpKbAxVq+zEC3mh7Se4YMioW8UyK25Xjq6AH2P4EKcFJHXcwtQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626528; c=relaxed/simple;
-	bh=DDdeKaR8U8RPFe1zDZcNqCeadhs62T3BN0SHD5eW/GU=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dgVCJvFF5zbT+UY35DgxFbyJ29a5u+bkReAQ4b63azT2EMOmc2x4QinBXS8MorKk8bBb+cKtf3BKP6IyIGlVOhMWBa/jYbtB0jnY0DvIb6heQfsBxM/TFp9CclVOA7v/zQ/GZlckvcSrXygwh5FPNn5fVqT94ZSnZs+aZfJmCE4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A7LdVUh+; arc=pass smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF0B43E4BA
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 16:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781626765; cv=none; b=hMAkKOFv7NQ53g4eKWQt/nNNq1ORL12pQj+juYu4Yi5XxKSW6wg2JMbVdH52JSiLKWqJ4z6ak+hM+zyLW8sFl7ABNeFJtpU+RlJRwVXQXHPZWozXF2imVYhiQpMZGKG3yNB/mXuGJwW8k+aYYwEI2Jwt8PT1l8F/GnR4bH6YkEA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781626765; c=relaxed/simple;
+	bh=tPH+WRsy5SwraqWnhh28dvKm+INysH0yq5/S01S6nZE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KKaFkFa4aFUBgVy2WoxO9PxkOQqJs/pgNqWVPV7VrvqB+bbhLxHQo6uGUBPc4uYM7lGPNm4aOV3mfGsK+NN8WPJQasYUVjny2UUPB5+ywYTzFY9T4pi/wDLnFNqJ0NT6XARyJNGW6hyE1tBU67EXAB8KQT8gL/paofjC+5yNrEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sAJjUqdl; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A7LdVUh+"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-138501f8c04so2443179c88.1
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:15:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781626526; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KbVBCij4GiDnDV7bH2mB1s9Ut/JOIPsNI0QLFINmS4p5D1j6E4EymNIXnl+Up2c/2q
-         XhofQb8/5C2wZQet9TUWb2sgtmnG+mY2avsS1ZUVNuovqz9lbi5A8k1THmsQ129a0Axl
-         WrAmPJBJi2iftIK6M/kJkaigBVRzjbuAxaaSGI8oDlycf0g6F0O3CP8bpAcmfxBoqm2f
-         sDISkyXrV6ITGjhwuq7WF8trBLWlzprKQzs69I3qfa+I4DXlAHBKUlRFzBHXQJVeWI93
-         WTDcgjJOmGa6enGqPaSOo3AJYTL4eSZyT8LF+niXU1beL/+BhvUWfuHklaO2QiVYptng
-         pSGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=KxrAh3gZox9w5915Zp8CYh2ybM8dKM0MmMGgcGgqfcQ=;
-        fh=TN04SSToW+iobU173LbhYJ9mtwUwgIa/wFz/jzOv2aY=;
-        b=Jl/Xvk/kpF8Mpm0LiK7aQ1M33q6f+Bdt6ER5Wx63SnC66CepT7+ImoHhzbHeaeIyfU
-         T8neEbS5u+/czLbBtSzPP8vqct2pRnNXVBFlyP4eRxijyw/r9avFx4ObEE3EnALWNvY6
-         C6UT6JpkQ+1g62BtdtiJS9Li6TihI5bLIT0S5yfkUjYt1KO6TubsM19AAXpfUXbu35sT
-         uS1OKkmQoaHgiKBkwygbP5T67Tkz3VrJdXDE3jzvTpL2hDGD2317Skj4nH6qDt9xPmP0
-         ptyCWYHPvIzPjaDbMQSThli7u56BRRSkNTLIvKp9J6vJdWdVTFCl8tAEh5FYdEDOPbvy
-         AeuA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sAJjUqdl"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d98b5a68fso8473524a91.2
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:19:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781626526; x=1782231326; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KxrAh3gZox9w5915Zp8CYh2ybM8dKM0MmMGgcGgqfcQ=;
-        b=A7LdVUh+UXJ+lCSBYtPGe9JYneQHnT4C26GHLQ6K/nZSJoyz3I0gyvA7+Fpfj7U/k9
-         wKmXwLQysrovCup5Oq5ZXTlPvJ3q2DvsRgWaJ7MPAXhoJR/YfkK65ugP1kzgVzKIU09x
-         CHPplxMYPHMbax0c32tTnN6wUE0s/+1wiGhQ0C+ce7eNYmJd/9KBXek+FILD26Lj+Vs7
-         go+yUer+q5q0Oq1s3owqpXgZfhbJWVwhtaN5CnePqXFKfa/mFuONrR/NaWcyC/Ylt1gU
-         4MiiYHNxBPE5G94S0oHIiWbuqZLPPgzXHGJr5avxR7kxsdG2mh/hhhUT63m2D4lUJYiQ
-         W99g==
+        d=google.com; s=20251104; t=1781626764; x=1782231564; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TXAbDgyEZMHiNWK9p2PL3xdiINhXLiA968E1ozdg5N4=;
+        b=sAJjUqdlltaHMLgahjISS55U5GQq1abANxbXbPIeDNy/0P/uG+u9onQ3njyb1p7Eqn
+         WH9qWbTIxyqxn0S7q4CrF8NYD/w93o+qrYz+Ea5DGc1XQ2g1iM0HpTPxDj5lPc4wubQd
+         SRKifuwWKsH5hCVykFew+9+g9SCX+kgGwDikAvjc1Mna1wFMvmv3brfzoEPF4wwBYTEK
+         ZDiFjszzZ8UhODZnRmBM0eRASv17ycbTnnTPeVOAtAVa5rwIE7o+njLkWfim+6DMvhjO
+         iTbZq3sooVy97I0WXOGoPFQX88+p4cOtmTM63LMYw+4js9QnhwdTxjT6wn5fLp7+EyY2
+         /aMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781626526; x=1782231326;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KxrAh3gZox9w5915Zp8CYh2ybM8dKM0MmMGgcGgqfcQ=;
-        b=On5GNpuUr+4B/vHIlmYErxCFYwdbOKdyOfgMzOi0Yqs5kznplZp9naoUmQfEVwPQWa
-         XHyDqjNDoF34NtIR0/Hq/d3XqMu/aos0uUI/RVFV5HJf0/bWdyO5K2s3D/hLfw1Exw9o
-         9iOTVsLsGCQ+MAQ4wnWXRsZe7MGv6SjCHxpwGgC3sGrVvL0j3/QE2Ha6yhRoWPBwXrTw
-         FEvk2UGLJj7kieqIOd4JNFH5I6ud0911Bk4ErbGMTLFdQd3rnsY15vSwmygwbdZdzcs/
-         HgWVLzQIk2bjBNYWtlpSzy5EudX+Qv2tnZtMuk2Wl/KE5w/s8PTJ/+UhmeWEDeyhjz2i
-         RcxQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/DqnSpgdDBrhmzU8ZhQPwHvcrfM0GWuaprfLe57ot3TZEfYSKKiYu5XvFK5x3EO//dawo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLy/HVuDt5fxKNcQx+YCVo0Uu24HRifZLkeER7GeQNAnmhyPaD
-	jMyCzd0ynHCqU/vvqaHXYz2iYBLOvSoYufcga251pnDaSyzKuWELf+DjqcpxMEaYJElaiNLyGhv
-	HuJXYhLaqc6B4AlWSoteyrucB7ZPUvBarQAEjPlCa+1v29oNrpqw0F78b
-X-Gm-Gg: Acq92OGwcc2Q8GMmAG/40F3abaGm1ncnHMEMphdS3rFY+JhS6BQZapBlalD4iZ0ypfi
-	m2eb/bp9Uf+LH7aSierLk2s6EuPS3QR2bppZFdtdAXYOcc4lMwXyiS+iBqmzcRQehcM/U/UWxs7
-	QRhY9F2OlEVW9XNVpRlhuhA5FBGq6q3vkq8dsaoGc4G485gk+HsJlVj5k1WRAR66u7Xn3xZ96NL
-	2IVDxf8opdsNekmRdm6Fr52y4ak48UOj67Qb1MUw5s4HLMIQnkYAdxR3rENskAk1Qbyze4RlLh9
-	9mILkw6KVCk9uo8h+LHJEGsV/BZ2T1QSwRQ0ZZ4pQ9p0xiSofBmOOneKnz1qhdZziu3EHQ==
-X-Received: by 2002:a05:7022:418:b0:137:fe07:8a2d with SMTP id
- a92af1059eb24-1386f24121cmr7479488c88.6.1781626525576; Tue, 16 Jun 2026
- 09:15:25 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 09:15:24 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 09:15:24 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <aiycmwMbhWuYghJh@google.com>
-References: <20260331194202.1722082-1-vipinsh@google.com> <20260331194202.1722082-2-vipinsh@google.com>
- <CAEvNRgGrPKBXh=VA3QBLJOczKRpMOB4nDmZL0XRwV6B3PT_7+Q@mail.gmail.com>
- <aisHySKe0PwM5DSg@google.com> <CAEvNRgE-qt8DAjOeE5ANpXzrgEKs+2_wh4YSmY=pe6krngBXqQ@mail.gmail.com>
- <aitbveI2Sdx4s4BP@google.com> <CAEvNRgFLnGkqvvks3joAwPjqLz=ATmqiS0UWk71g+YEsxNsfsg@mail.gmail.com>
- <aiycmwMbhWuYghJh@google.com>
+        d=1e100.net; s=20251104; t=1781626764; x=1782231564;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TXAbDgyEZMHiNWK9p2PL3xdiINhXLiA968E1ozdg5N4=;
+        b=S9N/uKbxS8V20yeyJ9swNvrFJvVm9mHxJNYgGmGZhILlht2NSssuVW3N7p2JZEM5MO
+         7NO435c5bJ2dadLCD6vvzxlXeVrWPsUeQrT0XRTLZwZdd1nCmQfi7NC+PxGJmzym++GB
+         SpRDdimBNU9/HdRks36rG7OyBJ3tHsvDkvmeg2Akv471uU38y+dFV6fIvwv0YSgDx6lF
+         Xguxvtc4yARPZ0wE7Pr79MyXyBmvOTRCuA++rcFNb52SZWoHaB+E2Z5Q9S2ZkMVBKGSW
+         d8q9wh7Hwj7iizUQ7ljH5lPxGvp8payZHqRzhNkTaeMLEbwWvfCBPde+QLvBQjvQhVqk
+         3L2A==
+X-Forwarded-Encrypted: i=1; AFNElJ/2KF2WXDJ9pY55nIzU2G1hO/rzfWUAJTVPJbhGUtZhvBhRx8tIvo+HNLLFrtmBjQ3tF18=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWmjW+dH7vwbA+gn+ioL7YWJgVrCDcRcY8t09l9tktA9kPyWM9
+	7opDp+uUR/dY4RVeXzZQ62f1vXhrnL0cWq9hspih8u3yHnDW80KOQfhmMN/631WaS4ElpVuP67x
+	cWBFv+g==
+X-Received: from pjuw5.prod.google.com ([2002:a17:90a:d605:b0:36b:ba98:4e9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d81:b0:36b:7f69:c152
+ with SMTP id 98e67ed59e1d1-37c9391c8d4mr137487a91.18.1781626763569; Tue, 16
+ Jun 2026 09:19:23 -0700 (PDT)
+Date: Tue, 16 Jun 2026 09:19:22 -0700
+In-Reply-To: <b6721d022187966290f8ea04766ffb1268407ca1.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Tue, 16 Jun 2026 09:15:24 -0700
-X-Gm-Features: AVVi8CcVnuVCx19L_GWSZ2nltEautD7sT8OALv94LzUOkIdPu2pxUDWRobjVJhw
-Message-ID: <CAEvNRgGkjcVN80W7cNd1-tEUXAfnFXEekokh_VbMDb9XdecVVQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/9] KVM: selftest: Create KVM selftest runner
-To: Sean Christopherson <seanjc@google.com>
-Cc: Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	kvm-riscv@lists.infradead.org, pbonzini@redhat.com, borntraeger@linux.ibm.com, 
-	frankja@linux.ibm.com, imbrenda@linux.ibm.com, anup@brainfault.org, 
-	atish.patra@linux.dev, zhaotianrui@loongson.cn, maobibo@loongson.cn, 
-	chenhuacai@kernel.org, maz@kernel.org, oliver.upton@linux.dev, 
-	ajones@ventanamicro.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-19-seanjc@google.com>
+ <906e9797-08d4-4ebe-aed3-34002aa1f917@linux.intel.com> <3be528f30351ae8744276107fe1060cb222077ca.camel@intel.com>
+ <144cfc22-10fb-46db-a42e-f4ea8986d353@linux.intel.com> <b6721d022187966290f8ea04766ffb1268407ca1.camel@intel.com>
+Message-ID: <ajF3il4nLemXBOle@google.com>
+Subject: Re: [PATCH v4 18/30] KVM: x86: Move "struct kvm_x86_msr_filter"
+ definition to msrs.c
+From: Sean Christopherson <seanjc@google.com>
+To: Kai Huang <kai.huang@intel.com>
+Cc: "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
+	"yosry@kernel.org" <yosry@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Sean Christopherson <seanjc@google.com> writes:
+On Tue, Jun 16, 2026, Kai Huang wrote:
+> On Tue, 2026-06-16 at 15:43 +0800, Binbin Wu wrote:
+> > > However, does moving the structure definition to "msrs.h" fix the problem?
+> > 
+> > Yes, it does.
+> > 
+> > Similar issue for struct kvm_x86_pmu_event_filter also could be resolved
+> > by moving the structure definition to "pmu.h"
+> 
+> Thanks for confirming.  I think we should do this.
 
-> On Fri, Jun 12, 2026, Ackerley Tng wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->>
->> > On Thu, Jun 11, 2026, Ackerley Tng wrote:
->> >> Sean Christopherson <seanjc@google.com> writes:
->> >>
->> >> > On Wed, Jun 10, 2026, Ackerley Tng wrote:
->> >> >> Vipin Sharma <vipinsh@google.com> writes:
->> >> >> My (future) use case is that with hugepages, I want to run something
->> >> >> like
->> >> >>
->> >> >>   ./guest_memfd_test --order=0
->> >> >>   ./guest_memfd_test --order=9
->> >> >>   ./guest_memfd_test --order=18
->> >> >>
->> >> >> And 0, 9 and 18 are the supported HugeTLB orders on the machine being
->> >> >> tested. I'd like to iterate over supported HugeTLB orders at runner
->> >> >> runtime instead of at build time.
->> >> >
->> >> > No.  The right way to handle this is to define testcases for the "interesting"
->> >> > sizes, and then rely on the test itself to SKIP if the size is unsupported.  This
->> >> > is no different than a test that requires EPT, or nested VMX, or nested SVM, etc.
->> >>
->> >> That should work too. So at build time I'd make it define all the
->> >> possible HugeTLB sizes on every arch, and then skip as necessary.
->> >
->> > Not necessarily at "build time", the testcases can also come from your local
->> > environment.
->> >
->> >> Why though, why not find the supported sizes at runtime?
->> >
->> > You can find the supported sizes at runtime, just not in the test runner.  I want
->> > the runner itself to be largely oblivious to what's its running.  Disallowing
->> > more or less _any_ test specific configuration/setup in the runner is the only
->> > way I see of keeping the runner strictly focused on running tests/testcases.
->>
->> The runner should 100% focus on running tests, I think it's hard for the
->> runner to avoid the process of test discovery though.
->>
->> The current test discovery process is to go down the tree of directories
->> and find files, 1 file == 1 testcase. Each file should (statically)
->> contain a single command.
->>
->> Since you're not opposed to runtime discovery of test cases, how about
->> something like:
->>
->>     if the test case file has executable permissions
->>         execute it and get back a list of test cases to be run.
->
-> I don't hate it, but I still dislike the idea.  I am all in favor of runtime
-> *discovery* of testcases, but I am staunchly opposed to runtime *definition* of
-> testcases.
->
-> If I define guest_memfd testcases for 4KiB, 2MiB, and 1GiB pages, but the
-> underlying system only support 4KiB and 2MiB, then I want to see a SKIP for the
-> 1GiB testcase.  If the definition is dynamic, then the 1GiB testcase simply won't
-> exist.
->
+I really don't want to go that route, especially since there's absolutely no
+reason to use srcu_dereference_check() during destruction.  KVM isn't actually
+checking anything, and the (S)RCU pointers _must_ be protected during destruction,
+otherwise use-after-free is all but guaranteed.
 
-Seeing the SKIP is a huge advantage over dynamic definition. Thanks for
-explaining. Makes a lot of sense now to have everything defined statically.
+Unfortunately, every RCU macro I can find does typeof(*p) somewhere in its flow.
+But I would still strongly prefer to open code a __force to strip the __rcu than
+expose the structures outside of msrs.c and pmu.c.
 
->>     else
->>         read it as a single test case.
->>
->> I'd then use the executable version, check HugeTLB setup on the machine
->> under test and return bunch of separate commands to be run (each with a
->> different HugeTLB size).
->>
->> The runner still doesn't need to deal test-specific config, that's part
->> of the executable that tells the runner what to run.
+This makes gcc8 and gcc9 happy on my end.  I'll squash the changes into their
+respective patches, and update the changelogs.
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 95b3bc7b449e..b3c180e16e29 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -9975,13 +9975,13 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+        if (kvm->arch.created_mediated_pmu)
+                perf_release_mediated_pmu();
+        kvm_destroy_vcpus(kvm);
+-       kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
++       kvm_free_msr_filter((void * __force)kvm->arch.msr_filter);
+ #ifdef CONFIG_KVM_IOAPIC
+        kvm_pic_destroy(kvm);
+        kvm_ioapic_destroy(kvm);
+ #endif
+        kvfree(rcu_dereference_check(kvm->arch.apic_map, 1));
+-       kfree(srcu_dereference_check(kvm->arch.pmu_event_filter, &kvm->srcu, 1));
++       kfree((void * __force)kvm->arch.pmu_event_filter);
+        kvm_mmu_uninit_vm(kvm);
+        kvm_page_track_cleanup(kvm);
+        kvm_xen_destroy_vm(kvm);
+
