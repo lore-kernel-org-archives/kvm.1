@@ -1,151 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF7937B00E
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 01:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D71519E819;
+	Tue, 16 Jun 2026 02:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781573432; cv=none; b=jvdzZAEya/Bsut567OTZpOwCTEU0aU7Otximd/JgGJq88dIXewPCF1jwYOlpgDz8JtEqpeOhiAoR0D22Kkl88PsmBNaP7NrSYH0dNz4Z0r0nHj8B7T/KvcBcH2sjyRrMpSyh8P6LtmQN9ZDqUIdGvj/tH4LdIbZnjO/Hxt/PzDQ=
+	t=1781576143; cv=none; b=uAm7wmkgUuOzAWVRAts9lDbOpFVLB0V77u0cntpMoz9xT+ZqMlCe1JNlDQhmzZM47ZAPjG3qMCvq+2NFL2HfSPgPqpsXFz4OU5kOCKls/wAjnBBKbVnT0ebyITt8maE4kPYu87aVZCTxeQCs7Y1dBfJKQD0IHONDQGG/hIRQKpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781573432; c=relaxed/simple;
-	bh=42ms3LyzSBtOQcDtFJD9SCoXHgxddCaTmPrWTv07qkc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NQelaHRlDtAKc1vRU1UTultIAA1Uxa1jwV+2a8FlGYaM8TINcfZWo2EBaLbi/M2YLzFCJyoVoLc4CxI6TYBQ+5Vkxv49YjjXCOE7ow7oSlNHL6vaJTk5Rj3rJ+sqhzTxOgJw00C1jEuzARGMqrTFpTn6p38VVcidOmKjjMlRsPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gl54k0ya; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781576143; c=relaxed/simple;
+	bh=Z2xwgJoIzgzJiwLVACamRHzG95+mc0vlUvTPzGaYKqo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H99TafcH878KKJIRch7BfFa1jUB9OBPJjbDmQeSRmHWucNWN39wTQd3KTQEfVMck72XeZfG8N6zdo0ZkjxfePLpzkoKi6v8mg/fv/Jg/jacAyWI3op8ccTSyALfrKT5D91BCyVNB4TOZVMYEOv8VXbpfyZubyddIMqZ1nGuV/WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AcOUZ+Yc; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gl54k0ya"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DAC1F000E9;
-	Tue, 16 Jun 2026 01:30:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781573431;
-	bh=Ux1tUcYrQAwB+oa3bjt6cl0qI7/BP5RR2zAlmyhk6bA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gl54k0yaMcDOasMXLIqNz43JJxyhWL6+2x9gLyRe9Dyb/QDOfreox9YsRtr+mseuq
-	 kdw15dzSkhmIiNLW1WHNWetRLH9oyl/YZ4hKDi9Qg9WLOCJyTF2uCKzez2I6JE9ZdO
-	 bAg1sAr/Q+xFS03se5kGS4y6wM8Y1vfB+XnsD/sRP/l8XWBcuSww5CjtI2wxstXokc
-	 k0qacqfcoXQYkL3Jlaf5rTAm/9kw0EGnNRkd8pveyLehojf7v0cZz5zhoNxxLW/+1Y
-	 avTDbXs0i7VAYV8vxHG9NM9/X+5EpHYX8UpY+E+dNecZCOSWG7/s7owzIoNG1LxR+t
-	 ltycYaBnclfCQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 24/25] KVM: nSVM: Use different ASIDs for L1 and
- L2
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yosry Ahmed" <yosry@kernel.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260616004155.1435766-25-yosry@kernel.org>
-References: <20260616004155.1435766-25-yosry@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 16 Jun 2026 01:30:30 +0000
-Message-Id: <20260616013031.53DAC1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AcOUZ+Yc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781576142; x=1813112142;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Z2xwgJoIzgzJiwLVACamRHzG95+mc0vlUvTPzGaYKqo=;
+  b=AcOUZ+YciLnebMK1FLKhEC1jpHPiLhRABTdx2h4ZBtA0jhz4AGPgm02D
+   myZ+1YxJpNJhGdGuZ0lugdytDSEohWglN2YV2c+DcLkJahZrriDWRHdIo
+   e5KyjaxKD5SJXXoXPnwDp3dODQFYSg3zchwEAnErNppuJQvOP14exsJMo
+   dp+IsX6fJ9qTWTarW89DysA2Ccsb4LL+gSSuzHwDQafBW6+azJ3KcDwkc
+   feBgeigzOOzQFfKiGriE6bFW6h/zUa/vSXLZfvLmFHDeh7S7HbgZqJ7W5
+   MVjh3MUyTaDgKLMeXIFeNG4Nn8cc4DGhohoUwFqSnFVIToq4XdftFSJmo
+   w==;
+X-CSE-ConnectionGUID: lNt6V214QFS6TX4QDwLGew==
+X-CSE-MsgGUID: MfMs9kXmTkK/IoxNxBD5Rg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="93821369"
+X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
+   d="scan'208";a="93821369"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 19:15:41 -0700
+X-CSE-ConnectionGUID: KE1GcortSU6kkb3Bbgl8Qg==
+X-CSE-MsgGUID: crzmSml2Sy6v7/4g4D7D7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
+   d="scan'208";a="252754210"
+Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 19:15:39 -0700
+Message-ID: <2fc24874-cc67-43c8-a973-420d73e0185c@linux.intel.com>
+Date: Tue, 16 Jun 2026 10:15:37 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 15/30] KVM: x86: Move register helper declarations from
+ kvm_host.h => regs.h
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
+ Kai Huang <kai.huang@intel.com>
+References: <20260613000329.732085-1-seanjc@google.com>
+ <20260613000329.732085-16-seanjc@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260613000329.732085-16-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On 6/13/2026 8:03 AM, Sean Christopherson wrote:
+> Relocate declarations of Control/Debug Register, EFLAGS and RIP helpers
+> from x86's kvm_host.h to regs.h, to continue trimming down kvm_host.h.
+> 
+> No functional change intended.
+> 
+> Reviewed-by: Kai Huang <kai.huang@intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-New issues:
-- [Critical] Failure to reset `svm->nested.last_asid` during nested SVM tea=
-rdown allows L2 guests to run with stale TLB entries from recycled ASIDs.
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-Pre-existing issues:
-- [Critical] Dangling pointer `svm->nested.vmcb02.ptr` leaked on the `svm_a=
-llocate_nested()` error path leads to a Use-After-Free write during TLB flu=
-shes.
---
-
-commit 0fdb61625f72b8737a6f7fe184ab78e2c15d5576
-Author: Yosry Ahmed <yosry@kernel.org>
-KVM: nSVM: Use different ASIDs for L1 and L2
-
-This patch modifies nested SVM to allocate a separate hardware ASID for L2
-for each vCPU. It drops the unconditional TLB flushes and MMU syncs on nest=
-ed
-transitions, replacing them with proper tracking for L1 vs L2 ASIDs.
-
-Link: https://lore.kernel.org/kvm/20231109180646.2963718-1-khorenko@virtuoz=
-zo.com/
-
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index a226aca8f9108..56b769b603ca9 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-
-[ ... ]
-
-> @@ -1539,7 +1532,7 @@ int svm_allocate_nested(struct vcpu_svm *svm)
->  	if (!svm->nested.msrpm)
->  		goto err_free_vmcb02;
-> =20
-> -	svm->nested.asid02 =3D svm->asid;
-> +	svm->nested.asid02 =3D allocate_asid();
-> =20
->  	svm->nested.initialized =3D true;
->  	return 0;
-> =20
->  err_free_vmcb02:
->  	__free_page(vmcb02_page);
->  	return -ENOMEM;
->  }
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but does the error path here lea=
-ve
-a dangling pointer in svm->nested.vmcb02.ptr?
-
-When msrpm allocation fails, the vmcb02_page is freed, but
-svm->nested.vmcb02.ptr is not explicitly cleared. If a subsequent TLB flush
-occurs on this vCPU, for example via MMU notifiers:
-
-svm_flush_tlb_all() {
-    ...
-    if (svm->nested.vmcb02.ptr)
-        vmcb_set_flush_asid(svm->nested.vmcb02.ptr);
-}
-
-Could this result in a use-after-free write that corrupts the freed memory?
-
-[ ... ]
-
-> @@ -1557,6 +1550,8 @@ void svm_free_nested(struct vcpu_svm *svm)
->  	if (WARN_ON_ONCE(svm->vmcb !=3D svm->vmcb01.ptr))
->  		svm_switch_vmcb(svm, &svm->vmcb01);
-> =20
-> +	free_asid(svm->nested.asid02);
-> +
-
-[Severity: Critical]
-When the hardware ASID is freed here during nested SVM teardown, does
-svm->nested.last_asid also need to be reset to 0?
-
-If L1 disables SVM, svm_free_nested() is called, freeing asid02. This ASID =
-tag
-can then be reallocated. If L1 later re-enables SVM and uses the same L1-ma=
-naged
-ASID, nested_svm_entry_tlb_flush() will see:
-
-nested_svm_entry_tlb_flush() {
-    ...
-    if (svm->nested.ctl.asid !=3D svm->nested.last_asid) {
-        svm->nested.last_asid =3D svm->nested.ctl.asid;
-        new_asid =3D true;
-    }
-    ...
-}
-
-This check would fail to set new_asid =3D true. Since this patch removes the
-unconditional TLB flush on nested entry, would this regression allow the L2
-guest to run with stale TLB entries from the previous owner of the realloca=
-ted
-hardware ASID?
-
->  	svm_vcpu_free_msrpm(svm->nested.msrpm);
->  	svm->nested.msrpm =3D NULL;
->
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260616004155.1435=
-766-1-yosry@kernel.org?part=3D24
