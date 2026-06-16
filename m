@@ -1,249 +1,219 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A33744CAF5
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 16:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626418; cv=none; b=ZhqtfAgNm7fIBvuPU+xo/0KJVsvenLqUCGfiTpJ9w4ciRP4sJU7hy9/9yRcBx5SfNeTc/XVbjQVwo4iEJu7wlMeBqEcaxoqLdqFyScoKSJayJiTFPRpJV3/GFhL59QoS8eXqc8C+KFdWasVb36Nl8d+C9SxERYReJlO6bfZAuqM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626418; c=relaxed/simple;
-	bh=I6hDshcql7hu2jZUKkXZROC4LwQYUnvoGKyBIzxyt6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z6GkTWxEq3JGfD9JCbSNF3g4C/LweABwQ4PTkUVSK0jLZntUCmZdYWcVLeBmliSDP+VoAnnxIvx4Qy1SW2SPtCdggml9fddCzI3stB+IHUC7O7Vph+Fjbleu7Prq4UWLDUyIHT/3Z4b8rOwSvVEzVaR9n+ovzbE4W1klzv9QTcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AbQvVnK5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JOMP4+Xq; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D75746AEE8
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 16:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781626421; cv=pass; b=MA8GxkHOb/QVbMjZQjV4mdHbi1Vl/E+x8VheGBhwahVCgK7KMjpZriHlsZseOeJnCHZ1oe4ueQom6UqWfvAlTogvthc/JZVPMN97kYux2dSSAnB8skXyOpIrk6rQ76DMiUhD/8kBI2RvuBtZ+vU+9NFITn9MZFZ07lYz75SLUaQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781626421; c=relaxed/simple;
+	bh=ndEqcE0ljpH5Ond7AgGtEjExOUt6CFJ5ogOAOFvSQNU=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GGQkxdjmLEINdwDKJMaTd64K82Nuz0km8qPcjWxkkzmaa357FfWiPD0T7+hmtsjSjb2KQnRJDfPtJOsN/Ja9wpC93oslYGBI3n9Gh5z1uIK13nIFjSEeV6xMauU6ZEHpKuaNetje3SDVkK4+N0iMuzCu+neAlbtIeRGH4l9o68E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uVR3gCxm; arc=pass smtp.client-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AbQvVnK5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JOMP4+Xq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781626416;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rcm9nGjfceIF2EHrZZqsS5ZGgLaEGuCuXjnHMYeIjik=;
-	b=AbQvVnK5cY2LTlymMYQeFgYoMgDAkKyiwR4aqbjmZaOpioJBcwqy8AcPTho4ijC0kA5mYO
-	mmd6oFdmMhe5od/qYkhAaQtqsGC1hjbkiMGgifmuT+xs3uyCk4F069MQWedlrtXue3y988
-	LbRsAG9JpSCl6wzOzheh4ctawxzcSI4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-522-etQ9yKjSOYGE6IvhqBJQVg-1; Tue, 16 Jun 2026 12:13:34 -0400
-X-MC-Unique: etQ9yKjSOYGE6IvhqBJQVg-1
-X-Mimecast-MFC-AGG-ID: etQ9yKjSOYGE6IvhqBJQVg_1781626414
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-45ef4931de5so7296f8f.1
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:13:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uVR3gCxm"
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-13810b63a1aso10623015c88.1
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:13:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781626419; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DpH6i7GkhTSvkeoKAaoYKl1P3lP6Q+lKqAIpIsWwYo3WZQUm/S3a050JLMEKPxFFgC
+         7Q+jb/T8sgeGQR7daoa39RtaU0WmbxzEvhhI4ikaZ47jbUX6R+zv7TOHkgcx48KhkBKt
+         Xgh5KuWDOTfhnGxaPXp0XjqpMuCSvfxPOF/C+IgRKj/MxbkehVeNPk2bI7W2R0qh3+Rw
+         P9uU/cACqtdo02+GWzIkMOU9xuBybKW0cVxRUrgL69KzD4KpPzF5wRtCMk3FXhvx9aRV
+         g0AEtk8QnP8/dSsBwk/Zsk9oLNg1JwDWHV3tGoFJJcpOGKUvycXsg7VrVHxUiSa2Hbl8
+         e9Jw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=MNHAi9O6B/tlryNPdWu47BymnIT2qXwJrSOCHJFBXD8=;
+        fh=WxHtd4yae/S9aJzGX3NTuOvmHnkUK8M0qmzgSbYmDT4=;
+        b=JlV2ovgt/fN/r+r8wQnLpVNUqxRDjJSX4VYIh8kt3j+w4TWfFXTt034IklrC06Na8m
+         jQX7H67ReE/TD15zgB3ncQR6xznW2UYDub8z8J3qkPqe47u738EDY2alZva6XkiwKqtf
+         Z8j2a+vaad5gozIB0avLA9oPacG6VL0BnAtB+e35pz37zwlUaWyHDyWvd2BXEFz+aOY/
+         i+7o0WE2SY2O3uufasGFRcMy5nM7HxggM7TRpidNE+VrXdG/aTMkkAvi0nnVPIm+kKI+
+         pKdOekvg4P3pyY4PGrdherjUGiHx63dsadxudjkrDLU3XUfRjAEgJvMYNRxrfTtWE7LQ
+         XFoA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781626413; x=1782231213; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Rcm9nGjfceIF2EHrZZqsS5ZGgLaEGuCuXjnHMYeIjik=;
-        b=JOMP4+Xqppz7SBR63V9fZVBS6J3VxD32DpcR2+8areH2Z1zYuTS4w2hbgxE5V3ebxc
-         AvrWAtrF0hN6Xt6uoy+AyBxriFJwSNYP8arO56Bg71tJfotuVCLLVdIHa7Hp9tKO0R2C
-         ra/xYA0PFXZrN069fi0+r/mrhIf0hZpf7mx4pdrP9o3njN1jGCjDsR/AFLBwrcdTRpFG
-         SomjjSIfsEAg8PMcPqEu5qzS/Az7v5vz5DZBN4nuu3mXjRtNbfuubjhhdMu0qrTTAd1S
-         9aK0LuuYm5eKIZzDBNDGUlQRZoTu6okTIi9LNRPlACVdhqlDgJvHyoHVnOBtfEVRP8/q
-         dklQ==
+        d=google.com; s=20251104; t=1781626419; x=1782231219; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MNHAi9O6B/tlryNPdWu47BymnIT2qXwJrSOCHJFBXD8=;
+        b=uVR3gCxmtJX0k/bQA4nojeCursjgCgHTEQduGiZvwLlc0XGjmwsPK7ZtAzEIAIY0F0
+         Mtyl5lRoV0Iqi7J8F+sFoqWFKawH/y4LitR12vQ1EBv4o8UXyHB6/ZX11ChaHE5Italv
+         PUW0iukQLeuYJhRknAygV+HJ0NHLKz9K1JDqpE11nLlXTre5FBSeJXP0KGEg+3JRxmpK
+         x/f+A3bNT8pPy+4dKkXHE41Hz9NINQjsMHDPLzlWU3K0yD/7ZAnP6jeh8cGlch40hAQc
+         0VYBnaRbSrxkfTTPKKpppj8FFPg2ZVRO9acZGq5w1whFt+dPv0Gh3l1QL1LiWpVd6XN2
+         HOSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781626413; x=1782231213;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rcm9nGjfceIF2EHrZZqsS5ZGgLaEGuCuXjnHMYeIjik=;
-        b=OtcxyuyTAbxmcq/ZbViofC1UzIYSHMr5cH4i+LnIr+S2O6MiZsUFpNmyoIFXWY7u9P
-         Vwhvejsz3MvTQUSDFukHEJ4ZHeu/PQy5Pfs7zm+Ye3apsTq9wbQkXd6kZKPHsh8tCEK0
-         MJr76pOyRsYvMbatE+eoVHdD5rA4BKqYMfg7NDeNPG2seS5Med93/bvDGDK6/UUN/xNL
-         /hfUTxOtUnZflYnwcU8yu/sSRTXK7eAMXQKLkdsZpAgh94bqcS65xdiChcXzBplERgwS
-         6n3wEblJkwrD/XBYB7RLPHeTx7l7kwYs/0bgtq41nFUmO6ErEZhgp5371Fp4lJJ45ls7
-         4HTQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8s0wBo1oZ71FggqYR8rLaMRHaZWmHRygMdd+iJ+JpiG/kDF8KD2vfGUt8pUzhu+s+iJ+Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2lHJ2FzgsbLWsJ5/wWeJbg3eGaQBVACSkiPJ3c0sc787ng1H/
-	7y9mUdz3MByIR258zRTJczEfoxSkDf/6293hdwykN3CiyhdlgSdLhtTUafENX9Ky8naIdhNwJk+
-	0ZjF1NX6ExGtFTO2kb1Qyt8MBQvACaDmr3BethDgg1vKMGX2PHnRoow==
-X-Gm-Gg: Acq92OEH7QCMCvXCrfuAgIsluiSZiphj5sTxHUrKm4PpgpS75DBCZ4rxructGKXtsQk
-	D0IXr4r8ZW9RTrkZ1VWzr6DOCFc+pvH8qFJEe627wmeCD0aKZHNgNhHEd8GVUV+pq309tjPQyZU
-	Q/RNI1ir0M89s66Vx/dOqNg+AYAkQ/YWBfJJVVrU2ug8lwAhNxjc+16YaEnAKo8y9mGI5Y+JJH3
-	g/rQkUYF+Jku8EkkB9Hlb6pxv9mxnVCX2Av5nv4zAmk06RWt2Jm+fLseFv4MB5KBUKc6ofRDvw+
-	t/vGehSntm8phQ7M0gjiDXE+59JZQ+RwwGN8pjwS3RO28VDsfD5AXNh9zGl0mERzCbrFHEd6Xz/
-	TO5zHl4zq3mgFCPA+7GCrCrpMnVwQz+GbtJvU4SMFHv4GNzScSPB29M11J6FO0tP7LHbKUnQ=
-X-Received: by 2002:a05:600c:19cc:b0:490:9dc3:3483 with SMTP id 5b1f17b1804b1-492332c11dfmr4760585e9.2.1781626413344;
-        Tue, 16 Jun 2026 09:13:33 -0700 (PDT)
-X-Received: by 2002:a05:600c:19cc:b0:490:9dc3:3483 with SMTP id 5b1f17b1804b1-492332c11dfmr4759895e9.2.1781626412794;
-        Tue, 16 Jun 2026 09:13:32 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2c4240sm41852524f8f.27.2026.06.16.09.13.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 09:13:31 -0700 (PDT)
-Date: Tue, 16 Jun 2026 18:13:19 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
-	maciej.szmigiero@oracle.com, bchaney@akamai.com, mark.kanda@oracle.com, 
-	ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH 3/4] vhost/vsock: suppress EHOSTUNREACH fast-fail during
- CPR pause
-Message-ID: <ajF0To9N3yc2NlIr@sgarzare-redhat>
-References: <20260612165718.433546-1-andrey.drobyshev@virtuozzo.com>
- <20260612165718.433546-4-andrey.drobyshev@virtuozzo.com>
- <ajFUk7quPhbI7Te-@sgarzare-redhat>
- <021a6604-289c-4dd8-a0be-33c7812c0105@virtuozzo.com>
+        d=1e100.net; s=20251104; t=1781626419; x=1782231219;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MNHAi9O6B/tlryNPdWu47BymnIT2qXwJrSOCHJFBXD8=;
+        b=lXww5WYigg8joRnGNSZnmasbFW+0HwSwUDg2ZYsvhgy1f5eWFHVLtn+tDeoUIT1JHV
+         VhGe2qymNAOfe49nzrREmWqVg76ZQP8kzRz+g/DOYMrL+iXOgCpRZGfR2hjoSdk2mbfX
+         6m+p46FO9vIYyr56mqxB/xJMyB73vGWkuucgvLrByOnypKUbKSCV2rAsEiIfdoOfo2im
+         wqoLPxKndh2pmZES4flXAgQ0Ld7OLTYc6JBzfEnM45H2ZSY8oGvdhHEVcKkt7Tj6J7Hj
+         VGcQlwEH7jEU6h2Kfc1nYIPIzZQKn81wugH3icFr9CGxDuAlJkP53l6kO9De9vQYjpVX
+         mB9g==
+X-Forwarded-Encrypted: i=1; AFNElJ+dxo1tpAw3/qXi68I4vY/QwhkwJV6y2HvR9FGHLE3lUgzjdlcKIldbsbf6bvp/uqShPT8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHrxLSF5t0i+jl3cCW+3OazvIEN/C8jav5gyK9/mteWD2YNari
+	Kx0wqeBnd0M+myCBeu7/mIti8qA1xBEdKXwm+C3y6BnZxN8PgXBpGl24nFtEyWS8G0BDTD5eRDP
+	9hA7v1NAcYP3dOI47i0QK5mjj0wJ3RgGgMiWiL7md
+X-Gm-Gg: Acq92OFFBgH6+b9rj0O6mUGg6mTQ5rDRJsq20uKRf8QyX4lIxm6a7kKrmVM8Q9+rQID
+	o9pOOfZ8/9YSUNbZH6wZgcnFcj4y8k9kLQ5BC2IAX3OlGScQGP6F3l4yFJhM4Uj7IarK4eHUnw6
+	p6KVnjDz0osTakCClvSeOX3BIIRcUx1Bojeo4D2+MhaVqhKoggQTW0iRZiXlgu1q7DDck2KJh8e
+	Orx45nENeUrX22+32sbfQmAljsw+lGkCym1YJ4ARpNCLJwtjjMzsABBv4Im4uT6mPorUCoHA5LI
+	7rQyrNsdjV9Yb2un+dCWoMIwlmQ0XxGjuRa2yf2D+ewCC9hdfbRrGFLfNg5sV6HqAv/hfA==
+X-Received: by 2002:a05:7022:6981:b0:137:fccb:8105 with SMTP id
+ a92af1059eb24-13985e954aemr2127181c88.4.1781626418754; Tue, 16 Jun 2026
+ 09:13:38 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 16 Jun 2026 09:13:37 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 16 Jun 2026 09:13:37 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ajFfb9u6dU47Nj3v@google.com>
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-19-6983ae4c3a4d@google.com>
+ <CAEvNRgHEq-hHcTivUw8TYBeMu-RpS=Ho4DXaNXKQKLPL_biTgg@mail.gmail.com>
+ <aiMOWkiVBqoQDAPd@google.com> <CAEvNRgF09SfDm=OgbrS8-wpfxbNecQkqAQwf1ELq1jWu7NjbUA@mail.gmail.com>
+ <aiM2Nm9Eh68mIVX3@google.com> <CAEvNRgHjno=XDnMpTvZcNCR6D5RAi1rbynrL4CnnEa7Y-M3VLg@mail.gmail.com>
+ <ajFfb9u6dU47Nj3v@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <021a6604-289c-4dd8-a0be-33c7812c0105@virtuozzo.com>
-
-On Tue, Jun 16, 2026 at 06:58:40PM +0300, Andrey Drobyshev wrote:
->On 6/16/26 5:18 PM, Stefano Garzarella wrote:
->> On Fri, Jun 12, 2026 at 07:57:17PM +0300, Andrey Drobyshev wrote:
-
-[...]
-
->>> static u32 vhost_transport_get_local_cid(void)
->>> @@ -311,11 +312,17 @@ vhost_transport_send_pkt(struct sk_buff *skb, struct net *net)
->>> 	 * the mutex would be too expensive in this hot path, and we already have
->>> 	 * all the outcomes covered: if the backend becomes NULL right after the check,
->>> 	 * vhost_transport_do_send_pkt() will check it under the mutex anyway.
->>> +	 *
->>> +	 * Don't fast-fail if cpr_paused is set, keep queueing skbs instead.
->>> +	 * The kick in vhost_vsock_start() will drain them on resume.
->>> 	 */
->>> 	if (unlikely(!data_race(vhost_vq_get_backend(&vsock->vqs[VSOCK_VQ_RX])))) {
->>> -		rcu_read_unlock();
->>> -		kfree_skb(skb);
->>> ]		return -EHOSTUNREACH;
->>> +		smp_rmb();	/* pairs with smp_wmb() in start/drop_backends */
->>> +		if (!READ_ONCE(vsock->cpr_paused)) {
->>
->> Can we avoid this which is not really readable and maybe add a single
->> variable to control the fast-fail at all?
->>
->> I mean replacing both cpr_paused + backend-pointer with a single
->> `started` flag: set it to false at open, true on start via
->> smp_store_release(), back to false on normal stop, and leave it true
->> during CPR pause.
->>
->> The reader in send_pkt can do just:
->>
->>      if (!smp_load_acquire(&vsock->started))
->>          return -EHOSTUNREACH;
->>
->> WDYT?
->>
->
->I don't think it's gonna work as suggested.  As I understand, the order
->during CPR migration is:
->
->1) SET_RUNNING(0)
->       -> vhost_vsock_stop()
->           -> vhost_vsock_drop_backends()
->2) RESET_OWNER
->       -> vhost_vsock_drop_backends()
->3) SET_OWNER
->4) SET_RUNNING(1)
->       -> vhost_vsock_start
->           -> for (...) vhost_vq_set_backend()
->
->(Btw I just noticed backends are already NULL at step 2), but that's
->just our CPR case, for any potential RESET_OWNER users it might not be
->the case).
->
->So the race windows starts from 1) (not from 2)).  We have no way of
->differentiating whether device is actually being stopped for good, or
->we're in the middle of CPR.  If we set the flag to false on stop as you
->suggested, we'll still hit the -EHOSTUNREACH case eventually, and
->avoiding it is the whole purpose of this patch.
->
->The fast-fail with -EHOSTUNREACH relies on the presence of backends.
->IIUC the backend will only become set after initial SET_RUNNING(1),
->which will only happen once the guest driver writes smth to virtio
->config register, QEMU catches it and calls SET_RUNNING(1).  So we have
->ordering with the guest's actions here, which is logical.  But for our
->issue that means that the only true marker of paused/not paused is the
->presence of backends - and that's why the flag is set in
->vhost_vsock_drop_backends().
-
-Okay, so what about avoiding to set `started` to false in 
-SET_RUNNING(0)? I mean use it just to track the first SET_RUNNING(1).
-(And maybe changing the name to that variable).
-
-Apart from CPR, when can SET_RUNNING(0) occur?
-
-At the end that was just an optimization, if we queue the packet is not 
-a big issue IMO.
+Date: Tue, 16 Jun 2026 09:13:37 -0700
+X-Gm-Features: AVVi8Cd0kI17gcaTu_9-akkDCf_yt6j4MWsybVMXC_T33O0ww1RiPjrA74_vwTc
+Message-ID: <CAEvNRgFPKC2uOMaams7SS9B7LxvfU4h8DrPM5vXFb=pmXsgPbA@mail.gmail.com>
+Subject: Re: [PATCH v13 19/22] KVM: selftests: Finalize TD memory as part of kvm_arch_vm_finalize_vcpus
+To: Sean Christopherson <seanjc@google.com>
+Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
+	Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
 >
->>> +			rcu_read_unlock();
->>> +			kfree_skb(skb);
->>> +			return -EHOSTUNREACH;
->>> +		}
->>
->>
->> That said claude here is reporting a potential issue that I think we
->> should consider:
->>      After VHOST_RESET_OWNER, the guest CID stays in the hash, so
->>      vhost_transport_send_pkt() can still find the vsock, skip the
->>      fast-fail (cpr_paused=true), and call vhost_vq_work_queue() while
->>      vhost_workers_free() is freeing workers without a synchronize_rcu()
->>      — risking a use-after-free. Also, any send_pkt_work queued between
->>      the last flush and worker teardown gets its VHOST_WORK_QUEUED 
->>      bit
->>      stuck (the vhost task exits without draining), deadlocking
->>      host→guest traffic after restart.
->>
->>      A synchronize_rcu() in vhost_workers_free() between the
->>      rcu_assign_pointer(NULL) loop and the destroy loop would close the
->>      use-after-free, and reinitializing send_pkt_work via
->>      vhost_work_init() after vhost_dev_reset_owner() returns would clear
->>      the stuck QUEUED bit.
->>
->>
+> [...snip...]
 >
->Yes, this looks real indeed.  Though I couldn't hit the UAF issue while
->testing host->guest transfer under KASAN.
+>>
+>> I still think kvm_arch_vm_finalize_vcpus() is an odd place to be
+>> finalizing the VM.
 >
->>> 	}
->>>
->>> 	if (virtio_vsock_skb_reply(skb))
->>> @@ -640,6 +647,9 @@ static int vhost_vsock_start(struct vhost_vsock *vsock)
->>> 		mutex_unlock(&vq->mutex);
->>> 	}
->>>
->>> +	smp_wmb();	/* pairs with smp_rmb() in send_pkt */
->>> +	WRITE_ONCE(vsock->cpr_paused, false);
->>> +
->>> 	/* Some packets may have been queued before the device was started,
->>> 	 * let's kick the send worker to send them.
->>> 	 */
->>> @@ -671,6 +681,11 @@ static void vhost_vsock_drop_backends(struct vhost_vsock *vsock)
->>>
->>> 	lockdep_assert_held(&vsock->dev.mutex);
->>>
->>> +	if (vhost_vq_get_backend(&vsock->vqs[VSOCK_VQ_RX])) {
->>> +		WRITE_ONCE(vsock->cpr_paused, true);
->>> +		smp_wmb();	/* pairs with smp_rmb() in send_pkt */
->>> +	}
->>
->> Why here and not in vhost_vsock_reset_owner()?
->>
->> Also having this here will set it to true also with
->> VHOST_VSOCK_SET_RUNNING(0), is that right?
->>
+> That's literally why the function exists though.  The one and only existing
+> implementation (on arm64) uses it to initialize the vGIC.
 >
->That was added here precisely to cover the vhost_vsock_stop() case (see
->above).
+>   void kvm_arch_vm_finalize_vcpus(struct kvm_vm *vm)
+>   {
+> 	if (vm->arch.has_gic)
+> 		__vgic_v3_init(vm->arch.gic_fd);
+>   }
+>
+> That's *very* similar to the proposed TDX usage, where some per-VM asset(s) can
+> be initialized/frozen only after all vCPUs have been added.  In other words, the
+> name is describing where in the VM creation/setup flow the hook is called, and
+> perhaps more importantly, the impact of the call: vCPUs are finalized (obviously
+> with a different definition of "finalized" based on the VM properties).
+>
+>> I would prefer to not have to explicitly call some function like
+>> kvm_arch_vm_finalize() (no vcpu in the name), but a common arch function
+>> calling vm_sev_launch() and tdx_vm_finalize() is what I can think of
+>> for test setup flexibility, without too much magic.
+>
+> We can't have our cake and eat it too.  Either we launch/finalize SEV/TDX VMs as
+> part of the common VM creation flows (as proposed for TDX), or we force tests to
+> manually launch/finalize the VM after additional setup.  The only way to have it
+> both ways is to utilize crazy macro shenanigans to execute arbitrary code between
+> creating the VM and launching/finalizing the VM, and even I would balk at that.
+>
+> I honestly don't see any reason to try to figure out which of the two approaches
+> is optimal at this time.  Whatever decision we make isn't set in stone, and in
+> fact should be relative easy to change.  And without being able to see all the
+> TDX/SEV tests that are waiting in the wings, it's more or less impossible to make
+> an informed decision.
+>
+> I definitely want to have SEV and TDX use the same core approach in the end, but
+> I don't think we should force the issue right now, because the cost of reworking
+> the SEV and/or TDX infrastructure when there are only a bare handful of tests is
+> so low.  It will cost more to try to predict the future of a 50/50 outcome than
+> it will to make a completely wild guess between the two options and rework things
+> if we guess wrong.
+>
 
-I see now, a comment or something in the commit would have helped.
+Makes sense. I'm good with merging this as it is done in this
+patch. Thanks :)
 
-Thanks,
-Stefano
+>> For now, I can't think of many uses of __shared. ucall shared memory is
+>> allocated dynamically, and we can also make it shared cleanly within
+>> ucall code.
+>
+> Uh, every selftest that uses global variables to communicate between guest and
+> host?
+>
+>> The global variables (sync_global_to_guest()) will appear in the guest
+>> as long as sync_global_to_guest() is called before
+>> kvm_arch_vm_finalize(), which I think makes sense to people writing
+>> tests for CoCo.
+>
+> Yes, but that's completely orthogonal to all of this.
+>
+>> So 2 questions to push this along:
+>>
+>> 1. What do you think of a kvm_arch_vm_finalize() that calls
+>>    vm_sev_launch() and tdx_vm_finalize()? My key issue is that
+>>    kvm_arch_vm_finalize_*vcpus*() seems to be for finalizing vCPUs
+>>    rather than the whole VM.
+>
+> Key word "seems".  I'm pretty sure Oliver picked kvm_arch_vm_finalize_vcpus() as
+> the name in commit 8911c7dbc607 ("KVM: arm64: selftests: Create a VGICv3 for
+> 'default' VMs") for the same reasons I think it's a good fit for coco VMs: like
+> finalizing TDX VMs, initializing the vGIC effectively finalizes vCPUs.
+>
+> We could rename it to kvm_arch_vm_finalize(), but that won't change the fact that
+> we'll need to decide between automagic vs. manual finalization, and it definitely
+> should be a separate discussion.
+>
 
+This definitely should not block this series.
+
+It's coming together for me now with your explanation:
+kvm_arch_vm_finalize_vcpus() actually means finalizing vCPUs! vGIC ==
+Virtual Generic Interrupt Controller, which has to be done after all the
+vCPUs are set up. Since the name is describing where in the VM
+creation/setup flow the hook is called (after creating VM and after
+creating vCPUs), maybe something like kvm_arch_vm_post_vcpu_create()?
+
+Renaming this to kvm_arch_vm_finalize() makes it sound like it is
+finalizing the VM, but this function shouldn't finalize the VM since for
+CoCo finalizing the VM also loads the guest image into the guest - deals
+with memory, not just vCPUs.
+
+8911c7dbc607 ("KVM: arm64: selftests: Create a VGICv3 for 'default'
+VMs") also includes a test_disable_default_vgic() function, we could
+also use something like that to skip CoCo VM finalization for some
+tests? Maybe that's a good middle ground.
+
+>> 3. Would you like __shared implemented together with this series, as a
+>>    prerequisite, or later?
+>
+> Only if __shared is a hard requirement for base TDX support, which I assume is
+> not the case.
+
+Yup!
