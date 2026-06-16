@@ -1,108 +1,115 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F9C3C0A01;
-	Tue, 16 Jun 2026 02:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1FD1FC7FB
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 02:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781576803; cv=none; b=BtEPt5yOWWfFGkDne7DhSpvpF7s5sVjJp/uZIllmDpTFhDOd2j6aBGTxA0R8PsjZG48IHeFCsmcmzHtJFyiDMr3KJjAFKrvzXr8lFdmUIxuklSbpp5XJ+YG1yktZK3ZtIUG1GsCz4t+Q9naS2MTyfBZOkGK6fjahm8OMntfkYhw=
+	t=1781577296; cv=none; b=j4Ogx+DYYFCMVjNa2NL5uMSUGnfMsGzTMi5dlJQgmSuvGk0lMlgr6xAH6WAV/YbBeHnfK5iw1dYxZDZzfPPBaxu6emfydcVa0Zo1hsCkqiJ4UOZgonw+iOqq5OCH587DitK203IDARSxU+AGK9nQZNgdSz4GyQE1pDJ/sSCftPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781576803; c=relaxed/simple;
-	bh=4VNbeuAEBxmJSqCtxGL09pPzAi93oBcZmmlW/auoegw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RW5waaO1GrIurj+gK39zIGAXUnnmaUgrxTDZkiXcSHGM5azmrzHMF3e6svrEfe89da6HMsgfzqNpbFIKafKdaVweeO3+m84HRloOfcDv8e6TdvbFnUX2Mei55uXjqbYLx6XY9HF19t6XUwkwL2xpDigHZbzGCCSfs8fbxihYaLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8CxHupOtDBqdZsUAA--.53100S3;
-	Tue, 16 Jun 2026 10:26:22 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJAxXcJItDBqz7WnAA--.54020S3;
-	Tue, 16 Jun 2026 10:26:21 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH v3 1/2] KVM: LoongArch: selftests: Enable LASX feature by auto detect method
-Date: Tue, 16 Jun 2026 10:26:14 +0800
-Message-Id: <20260616022615.2141072-2-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260616022615.2141072-1-maobibo@loongson.cn>
-References: <20260616022615.2141072-1-maobibo@loongson.cn>
+	s=arc-20240116; t=1781577296; c=relaxed/simple;
+	bh=J0F29HKmEJmn1uKOYpKDuzJlCgShKvnCPkwc1kLHgLc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Ao0PX3T+VfEDHNpDdSpo6Ee7DqGarM+LmozEjH7KGEMCYarqT1jKWEgI3RVJmEB5D9jyiuaPNwGBz2rBuCDcWUCxAGrb0VdBw9iAp1CnCDpL0ml7ptm0olATlspD3RJslREohFVQJgb7F2mCjr3JhyRub63v2kRrbUge8lSYnGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hUwEmn1T; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hUwEmn1T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EA61F000E9;
+	Tue, 16 Jun 2026 02:34:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781577295;
+	bh=Bcvtk2vMH7CUuUYnKghdPUyZygVwhOSimVBy52oAPQg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hUwEmn1TG6SOv/OWISvU/2Z5i26ko6vDjxn4N2RYJfwZQ6VxBlfqKDxAjMt2mfxJP
+	 nK4WM666UuQgDUKtqKWrjL9OWeHdhU+hx5hGS/5U7p3MWFioam0PvRFrJGNJS0Tbbd
+	 wenHnbzQo5ertC3TKzbwB2+Da589ug1Ctj0kCUuT/x8ouYpQgvNU7w7DWtJjwpeGO+
+	 ZBlGhXbhOCjf8Ulf5DwwITy/C5HokFOtRsnm71Hu85izgWdCKOpUbOxGwVyTRHYI1i
+	 E4uCitlNBhobNQSz4qCSfrsjUEWwUudOFrnEpl0vWIyIocx2rxmHNe23cOs/L4ofaw
+	 Jyc4GUwDC9P2A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 2/2] KVM: LoongArch: selftests: Add FPU test case
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Bibo Mao" <maobibo@loongson.cn>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260616022615.2141072-3-maobibo@loongson.cn>
+References: <20260616022615.2141072-3-maobibo@loongson.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 16 Jun 2026 02:34:55 +0000
+Message-Id: <20260616023455.67EA61F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxXcJItDBqz7WnAA--.54020S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Add LSX and LASX features when VM is created. These features are detected
-firstly, enable it if it is available on host machine.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] FPU selftest fails to verify that `vcpu_fpu_set` actually modifi=
+es the vCPU FPU state.
+--
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- .../selftests/kvm/include/loongarch/processor.h      | 10 ++++++++++
- .../testing/selftests/kvm/lib/loongarch/processor.c  | 12 +++++++++++-
- 2 files changed, 21 insertions(+), 1 deletion(-)
+commit 2bf4caa3158a9fa987285bf7aea2092fe7c8a3f7
+Author: Bibo Mao <maobibo@loongson.cn>
 
-diff --git a/tools/testing/selftests/kvm/include/loongarch/processor.h b/tools/testing/selftests/kvm/include/loongarch/processor.h
-index 93dc1fbd2e79..2324e311180f 100644
---- a/tools/testing/selftests/kvm/include/loongarch/processor.h
-+++ b/tools/testing/selftests/kvm/include/loongarch/processor.h
-@@ -131,6 +131,16 @@
- #define  CSR_TLBREHI_PS_SHIFT		0
- #define  CSR_TLBREHI_PS			(0x3fUL << CSR_TLBREHI_PS_SHIFT)
- 
-+#define LOONGARCH_CPUCFG2		0x2
-+#define  CPUCFG2_FP			BIT(0)
-+#define  CPUCFG2_FPSP			BIT(1)
-+#define  CPUCFG2_FPDP			BIT(2)
-+#define  CPUCFG2_FPVERS			GENMASK(5, 3)
-+#define  CPUCFG2_LSX			BIT(6)
-+#define  CPUCFG2_LASX			BIT(7)
-+#define  CPUCFG2_LLFTP			BIT(14)
-+#define  CPUCFG2_LLFTPREV		GENMASK(17, 15)
-+
- #define read_cpucfg(reg)			\
- ({						\
- 	register unsigned long __v;		\
-diff --git a/tools/testing/selftests/kvm/lib/loongarch/processor.c b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-index 64d91fb76522..e7fb54d746f4 100644
---- a/tools/testing/selftests/kvm/lib/loongarch/processor.c
-+++ b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-@@ -278,7 +278,7 @@ static void loongarch_set_csr(struct kvm_vcpu *vcpu, u64 id, u64 val)
- 
- void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
- {
--	int width;
-+	int width, ret;
- 	unsigned int cfg;
- 	unsigned long val;
- 	struct kvm_vm *vm = vcpu->vm;
-@@ -292,6 +292,16 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
- 		TEST_FAIL("Unknown guest mode, mode: 0x%x", vm->mode);
- 	}
- 
-+	/* Enable LSX/LASX feature by detecting host capability */
-+	cfg = CPUCFG2_FP | CPUCFG2_FPSP | CPUCFG2_FPDP | CPUCFG2_LLFTP;
-+	ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, KVM_LOONGARCH_VM_FEAT_LSX);
-+	if (!ret)
-+		cfg |= CPUCFG2_LSX;
-+
-+	ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, KVM_LOONGARCH_VM_FEAT_LASX);
-+	if (!ret)
-+		cfg |= CPUCFG2_LASX;
-+	loongarch_set_cpucfg(vcpu, LOONGARCH_CPUCFG2, cfg);
- 	cfg = read_cpucfg(LOONGARCH_CPUCFG6);
- 	loongarch_set_cpucfg(vcpu, LOONGARCH_CPUCFG6, cfg);
- 
--- 
-2.39.3
+KVM: LoongArch: selftests: Add FPU test case
 
+This commit adds an FPU test case to verify FPU register get and set APIs
+for LoongArch. It supports testing 64, 128, and 256-bit FPU widths.
+
+> diff --git a/tools/testing/selftests/kvm/loongarch/fpu_test.c b/tools/tes=
+ting/selftests/kvm/loongarch/fpu_test.c
+> new file mode 100644
+> index 0000000000000..fe58ed4f93c0b
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/loongarch/fpu_test.c
+
+[ ... ]
+
+> +int main(void)
+> +{
+
+[ ... ]
+
+> +	fpu.fpr[0].val64[0] +=3D random();
+> +	vcpu_fpu_set(vcpu, &fpu);
+> +	run_vcpu(vcpu);
+> +	vcpu_fpu_get(vcpu, &fpu);
+> +	sync_global_from_guest(vm, *fp);
+> +	TEST_ASSERT(!memcmp(fpu.fpr, fp, 8), "Wanted 0x%llx from f0, got 0x%llx=
+",
+> +			fp->val64[0], fpu.fpr[0].val64[0]);
+
+[Severity: Medium]
+Does this sequence actually verify the set operation?=20
+
+The test adds random() to the fpu structure and calls vcpu_fpu_set(). Howev=
+er,
+it then updates both the fpu structure via vcpu_fpu_get() and the fp struct=
+ure
+via sync_global_from_guest() before comparing them against each other.
+
+If vcpu_fpu_set() silently fails or does nothing, won't both structures just
+read back the previous, unmodified state and cause the memcmp() to pass any=
+way?
+It looks like this pattern repeats for the 128-bit and 256-bit checks below=
+ as
+well.
+
+> +
+> +	fpu.fpr[0].val64[0] +=3D random();
+> +	fpu.fpr[0].val64[1] +=3D random();
+> +	vcpu_fpu_set(vcpu, &fpu);
+> +	run_vcpu(vcpu);
+> +	vcpu_fpu_get(vcpu, &fpu);
+> +	sync_global_from_guest(vm, *fp);
+> +	TEST_ASSERT(!memcmp(fpu.fpr, fp, 16), "Wanted 0x%llx %llx from vr0, got=
+ 0x%llx %llx",
+> +			fp->val64[0], fp->val64[1],
+> +			fpu.fpr[0].val64[0], fpu.fpr[0].val64[1]);
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260616022615.2141=
+072-1-maobibo@loongson.cn?part=3D2
