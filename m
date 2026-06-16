@@ -1,104 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85FA22D7A1
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 02:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6C83769F6;
+	Tue, 16 Jun 2026 03:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781577566; cv=none; b=Pow9r8Xge8ZWAaWelNEmXcV7aBOSEFNvUTm1zALluFZzuqPFU77GGpjyMtO2lHv4vrKQlYZnyETzqaCtUiS+z6JRbSGRCkWUazkDN939nS+rmy0HBBfdz6T3P1h3WLM/l68cbyD9lvh1lDkoEiJ4wd15pxXB1Yy1uA8HzaDQMqo=
+	t=1781579574; cv=none; b=kH7K0DsECa8MMHDtS60h7lfXloe/l1oGdM9+OG/RATpnh3EI7elBkn0byWAKaxgWKCCzigs+20fC5sTddfwO9DjNi9bXjgeAQqkflPZj+35nZ2rfnR9TLYAvgwd4gEqRF8T5mwPjK2bTNQql9saCkU619vzxIQ+Ff/uw7s+aRKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781577566; c=relaxed/simple;
-	bh=McMAlHF2Qm6DKal5OBk9JO1IR07jXKBLQIeZSZuInjY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hutP8vbZU5eidvkW+Kai2LH2W+6TfcKidV9W2uPfg+I2OSdcplHlZHdNV38VwXy1FTNpx3X8H4ZPx5Qbzz/i4GEjgsHTfl8Uvk5PZIGExHf7rMJXnL93PlY+WAqzWi56yPzXU4nYBYSazccTyyTzxdntI9/8wZgQJh3G5thgc1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DGSBC31/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781579574; c=relaxed/simple;
+	bh=5Qb9E70od3L/wpfasL0KUhTUMNltxxUfSwxwXMX1d58=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=erZM0HtbDqaavTq2nXJmw8otGioscjfa6MgB0HJQl9f0ggrc3JoSQWyKbYXebJ1zjfBcdnIL3CF0mEAd7R7nI2sIUg1aAzvLR0kBUwwLWbBBENnYqaFrd019u7Y8z64zNKgGDwlTqSHWiz7n1LHjqe2Ae+Hrj1FL+WbikWWVnmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X46OfPgd; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DGSBC31/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785621F000E9;
-	Tue, 16 Jun 2026 02:39:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781577565;
-	bh=BPnciLmVyOi99MR4Z1fA+8GAZefJC+vqn/zXTl+lgFQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DGSBC31/lkQneNLqF+MdUmgoc5mWMVhN1JSuDKsQ50qV+MVijhvCxcEOtfGKVW126
-	 vYLn2ajrGqtYTV1GK0l+vsGmJgtEAfsoKO1j4BqjX3t2eu+D52oqa7T3CfV/kUKNpw
-	 h4tyVy6SUOQIINTPivjda79WZ9XTtQe9XDYl8gbbqvumUWC/Q5EbnsHzyN4b5HFtc+
-	 dmPD2QlHnZKk0c0bLNZgRqdnipVGTK8+RcdVu7NLqJoDk4m39wpFPlBLOjqU31pgzh
-	 FMQA3jfV8fNzFpW5g8d2dR+6JmpOueKPZO63Omknc0YdUtsQrHLoGhkYCOqcH1n++3
-	 LyEfiYwTpGwIg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/2] KVM: LoongArch: selftests: Enable LASX feature
- by auto detect method
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Bibo Mao" <maobibo@loongson.cn>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260616022615.2141072-2-maobibo@loongson.cn>
-References: <20260616022615.2141072-2-maobibo@loongson.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 16 Jun 2026 02:39:24 +0000
-Message-Id: <20260616023925.785621F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X46OfPgd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781579573; x=1813115573;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5Qb9E70od3L/wpfasL0KUhTUMNltxxUfSwxwXMX1d58=;
+  b=X46OfPgdG2n6l+7c8vlRpyMl2W/vKsL3Ct4bugY/NPvJEVqMwJbUiFDh
+   qlYfSID16c42t11p02M+hxS1EIa7mKJ/9Tjp7Z0JzBDmIf737IO4WrXTx
+   GuHdFM1jMF306KN17c7ZSLB4rmcXjIJNeww22f7OuWdgmgn2scvEeIpjy
+   I/s6vJNXuzucoty+QR2pl4EZVjNHIr/t3+kdLYLnIDys5w7nokvY0mzv5
+   d47w8FYr74NgTC0fXBdOjA/cjnfLP3rJTmrx3s+SXKw2ofTl950LD6DZf
+   GVlu+B3bvWGt8oiClG6A8dgFvlGyiQkdxzQX6Lb3zyYHDbiVDQgf6ykGk
+   g==;
+X-CSE-ConnectionGUID: i1qUggaAQeWpcXUSqEIYgg==
+X-CSE-MsgGUID: 7M3m7P8jRXampcTmYH3YMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="86173930"
+X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
+   d="scan'208";a="86173930"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 20:12:52 -0700
+X-CSE-ConnectionGUID: O1Z7pPUpScevwFUuAebIEQ==
+X-CSE-MsgGUID: dRhkqa5kT52tMhi4aKI5Ow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
+   d="scan'208";a="277838792"
+Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 20:12:50 -0700
+Message-ID: <da3e7bd7-eb9a-4a89-b426-899ae7dda35a@linux.intel.com>
+Date: Tue, 16 Jun 2026 11:12:46 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 18/30] KVM: x86: Move "struct kvm_x86_msr_filter"
+ definition to msrs.c
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
+ Kai Huang <kai.huang@intel.com>
+References: <20260613000329.732085-1-seanjc@google.com>
+ <20260613000329.732085-19-seanjc@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260613000329.732085-19-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Hardcoding the base CPUCFG2 value silently clears FPU version, L=
-LFTP revision, and other default KVM features.
---
+On 6/13/2026 8:03 AM, Sean Christopherson wrote:
+> Move the definition of "struct kvm_x86_msr_filter" and its associate,
+> "struct msr_bitmap_range", to msrs.c, as the details of the filters are
+> very much implementation details that can and should be buried in msrs.c.
+> While the _existence_ of filters is public knowledge, almost by definition,
+> the contents don't need to be exposed outside of the MSR code as the filter
+> data is provided by userspace, i.e. it pretty much has to be dynamically
+> allocated, and thus never should be fully embedded in a globally visible
+> structure.
+> 
+> Note, this creates a discrepancy with the PMU event filter structure; that
+> will be remedied shortly.
+> 
+> No functional change intended.
+> 
+> Suggested-by: Kai Huang <kai.huang@intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-commit 7ccc915fb84c033373faa2df43f4b5551f11c4d3
-Author: Bibo Mao <maobibo@loongson.cn>
-
-KVM: LoongArch: selftests: Enable LASX feature by auto detect method
-
-This commit enables LSX and LASX features for LoongArch KVM selftests when
-the host machine supports them.
-
-> diff --git a/tools/testing/selftests/kvm/lib/loongarch/processor.c b/tool=
-s/testing/selftests/kvm/lib/loongarch/processor.c
-> index 64d91fb76522d..e7fb54d746f45 100644
-> --- a/tools/testing/selftests/kvm/lib/loongarch/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-[ ... ]
-> @@ -292,6 +292,16 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
->  		TEST_FAIL("Unknown guest mode, mode: 0x%x", vm->mode);
->  	}
-> =20
-> +	/* Enable LSX/LASX feature by detecting host capability */
-> +	cfg =3D CPUCFG2_FP | CPUCFG2_FPSP | CPUCFG2_FPDP | CPUCFG2_LLFTP;
-> +	ret =3D __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, KVM_L=
-OONGARCH_VM_FEAT_LSX);
-> +	if (!ret)
-> +		cfg |=3D CPUCFG2_LSX;
-> +
-> +	ret =3D __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, KVM_L=
-OONGARCH_VM_FEAT_LASX);
-> +	if (!ret)
-> +		cfg |=3D CPUCFG2_LASX;
-> +	loongarch_set_cpucfg(vcpu, LOONGARCH_CPUCFG2, cfg);
-
-[Severity: Medium]
-Does hardcoding the base CPUCFG2 value here inadvertently clear other defau=
-lt
-KVM features?
-
-Since KVM populates CPUCFG2 with defaults like CPUCFG2_FPVERS (FPU version)
-and CPUCFG2_LLFTPREV (LLFTP revision) during vCPU creation, overwriting the
-entire register with this bitmask might cause issues for tests or guests
-relying on these standard properties.
-
-Would it be better to read the existing KVM-provided value via vcpu_get_reg=
-(),
-bitwise-OR the detected LSX and LASX bits, and then write it back?
-
->  	cfg =3D read_cpucfg(LOONGARCH_CPUCFG6);
->  	loongarch_set_cpucfg(vcpu, LOONGARCH_CPUCFG6, cfg);
->
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260616022615.2141=
-072-1-maobibo@loongson.cn?part=3D1
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
