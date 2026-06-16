@@ -1,129 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDD047A0B2
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 17:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632217; cv=none; b=mByhTZRSS4enx5sN28PVHwJ8rpAgz0EvnwGW7FBhFj1HIqxG5QsXpoheGW66WsGJeAD5ppDWGbXpXoxqmOGnffKv9grpDLw1L+fRtMJmSudrkjdZFu1CGke6OkwBlLSjwf1f8OKOenvWsocLHRdq7e6kK33gRXNpUnjfXDf390Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632217; c=relaxed/simple;
-	bh=2xJU3EUgB11TjApXEKDFkGt4OKhNVlgD4zewD6ww9+Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L5FdUVDFunW8mLBREV8mI7fRIA8T0F4nLESaoFQDzoymK95d1L3tsi7fRYU8rfwVpVE3ZNJvWGIDjsIWx6oxXQ1mD2vk5zkM87k96cUFGqpLVp4+R5sSKiWg/Mc4EWKMEsBlWJ1OZ1vJSFZwhyXeHdbBNdOCc9h00pexEQUWPkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FO/AHq1K; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE15B477982
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 17:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781632287; cv=pass; b=NadLvYc6JTBxC+3g0Il8FwarjPjVVnaLO7HAFNPAes9CtO+s2EnM25Pz0sy0dNPP0xJJjuJpNayzzOFC+gefyh6JJY36HpG5hAAP2V1tHbpm0d6NufCAFSSRxJ9vYrd9ScM1VWjsZIWYFXcInDouOzDxl1Jc4MjW7tx+qunWx6w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781632287; c=relaxed/simple;
+	bh=p2ANGxzNJ20KDUvX+I4Q+f5qJmFbZs4+5xfreNmKUKU=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b63swfTZpl4YKzJbHQE+HRCzYXGsRM7hWwBz79ewAJ+eYnUErrQJybL/9mngswKl63URkRRF//KkhDi39NXUn51RcmKtvDfChWth8f6X1VxLtuMeqIcHExMzmgjbQ+2wFt0TXApWaQWfGO5Xxi/VAaencMyHE0Vp9gqcziedYS0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tEqNkDh7; arc=pass smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FO/AHq1K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C3B1F00A3A
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 17:50:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781632216;
-	bh=FHLPq2A00I7+F2DKrTZbIwi3ct5dQL+1sBagexb2s6M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=FO/AHq1K/S4Daz2UzMJV1NzqG38zu2qm9anluL9YSYqNXIteUXKbK4ix9+GBRKspU
-	 yQQxgDrK6kTgr5qAIYkTjStRlIzVDw0tjFrxD109pMrOLqwwAiHioHRf0mIHDkz4Li
-	 m3TVYrh9hOklsTYn7JBQFynjfNui/tFeFWb/fv57QKwH7DSrMzMsrf3MOUMImuCOWy
-	 KEvayLmPXQh4Hsmz2D1a1RYeZotI4XHKLBj5g/jw57z8sGK1/4enc8cvtyTPtwqjC7
-	 qJq49jK35Vy7BC1TL7hwTKNIReX4D+4+1HXbzMHd/kc5F4oQegTL6oNT2GsWQay3y8
-	 sopG+V2huz7vA==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-bebac79fff8so606661266b.0
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 10:50:16 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyrPih3Up5BHGQd+GhS5k93D43r8/mO7SnFxSJqz2f2zVn040Eu
-	1KnD2u+Dnidp253xAASqFNeDbVQQlY+7fkYORhez2g2Mj1NUM0v7CXtzaKOyzRjxlN8dNWGag41
-	iWiKGo1muqRGy9hL76eef4NEkwPecWHE=
-X-Received: by 2002:a17:907:1dd5:b0:bed:9a7:5ed1 with SMTP id
- a640c23a62f3a-c05a4916759mr33745466b.5.1781632215257; Tue, 16 Jun 2026
- 10:50:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tEqNkDh7"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-13986d61b4eso2378353c88.0
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 10:51:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781632285; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dcxMCL+ouSRJLwbUsjhyu3hg3S+8m4xMBW3bxxTvImejIJ7DZVwWfs1mdDHgSag/vE
+         0E8n3rNWHY7h/hn9o628mdycoGRw4EETJGdevb5L4vcIaWHMFBFV5CqrWefiuq676IS5
+         aT74L9zOetYbNJMSGZ11AjHPELmw2Ox2rHLO82M/ZfJ2wzmFPWA5lZIc8hCwOZ2t8FE3
+         6w3XZcEoNl5fJJV55HQyGSN0oforEwihc97WZfT1cPX4PiC1nYCjU1QUnzLMYEPbLYPL
+         IXb61iVPzjg1WEXl3LWO4nJDvbaVjQvVWm3SPCkppAGibTP1iTt1rffvhVFOw2tQByCu
+         SrKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=vAJ+Zx927BzPJvAUqjNTscby/9Gt71bp8RVRdDOhQVA=;
+        fh=2gUTmJ60nfKPXJBgqbzhEM1xP42mFDyvA1kv2XbXrNc=;
+        b=Et/UoNHO+Im6nvqAE48SdkWkiY9h6nc5zotNHJgVspkd8X0PUfqUNN4j9QHxL3SLSb
+         CxZ0WDaDsTaiaDZxA8yb4m9XdRtaaiexNTaR7wU6dmmVJ34bHMwXjeg+5bF4bi4AYtqw
+         5LT0qIb6GhrzGhX+koN881yUTAWAoMxmpbK+0YUPdaXXexLrA16aPtRZ4rmAO9KxSI5h
+         7UQwrTifffqfHzKe5d91nKzMzVkA6ldIhkZ53RjbXd12rqRfvjO2RoHac2VTsQ5eSPk9
+         R9QIGfBwImasgh3NUQrNzCe8dD5zNLjZLmgkLHcu03pJ6XJLt40bTLVySNTIAcZJ0ehf
+         dkBw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781632285; x=1782237085; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vAJ+Zx927BzPJvAUqjNTscby/9Gt71bp8RVRdDOhQVA=;
+        b=tEqNkDh7OtzEQM5+tlxJ/beQBKLyfBhH5umGzBWse3QiQcvfJ3i4bt/PYPbmsBRyQj
+         qlRmNtgkJtfuemc1OaIMsxV2Y961+21h/N0eS/iuG4Y7avMs8Tr6fNATc14iq5De2dQz
+         /SZXKbwUeBervzs5CgbnqC3PWzhU0yiTKWnsMPDMy9LgNtm8XvvIQKKk5aGgN0ITe9dl
+         qcOgY3i3T2sh4H6ARzHVDGCUeDgfTcqF1PV6eQb/LyhTUCpDZwvuFCdWztpT88FGWQhb
+         atMfH10w0nLsTMfefjjMU4PD4wnQHM7RcZ9AmmM/QSuNMlCnwdSq6Yx6TLB22eWD2b5F
+         L/lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781632285; x=1782237085;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vAJ+Zx927BzPJvAUqjNTscby/9Gt71bp8RVRdDOhQVA=;
+        b=qS+alEG2aDXNvczReGt5X8grkGlpY6wCFKik4u3Mrpjal+3CD8DAG4KWo4IadGyMyd
+         136JoR9FTo7/AfQEc7K6XuCEu1wZjiSTgIfXK0bOtuRsZVNWQ3MvLi7OQ9w2sVyIkiZc
+         Bqku4pbyfk1DSX64u5pv1XYoqtpG0NGCxVD+0t1MBXt5FY7BJHU3F/VjLnDF15fovr77
+         IEY/XQHVYLFpmQx6fBI2jGeVkzPIzFb7wKsI3bb9cSsJ3ojHEn6vFu9aVpOIbmwNkGb8
+         inVaMg4P+PQDj5m85r2OCTcQi8TAXQ9bUgl+dgHPqK+8XbMgKJQxmznGaLsryOA54vXX
+         c5Dg==
+X-Forwarded-Encrypted: i=1; AFNElJ9/eBP+5bQyPeb9+SdiPyeoCoNJgYoEAzTgISC0+TSLb6+APNlOyiOoW/RfzRUJUEQKucw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmmRjkzffFrCe02+bE8kg3kF7Wy4//S1C18kQm4zLPV6x3mntS
+	bspf9rpewBtHPX97JSOoyvsWzV5KyQ1ueRNYyjZCeT1bt0XkWepgBvtsBpgfrqrajmyll4tTDCw
+	HIDjKF9OehHKgjUpwEKBA92sYOeQKePVz/0jlgWvD
+X-Gm-Gg: Acq92OEgoPnXC+eQL2AtuJxzBzKXzEMBW6DSXGnLHFgp9Oj4Av2GF5C7mpGb/J8FiYg
+	VKwrFrmXtiUa5p6v6WF3XepeZ1Xrjm/TdCHrk1fngTdJQ3o7K+RorAmj6I+uRRjR26Criiu6WXc
+	fGc/CQy3VFh4ZD/ORwO+g3A+eoU66rBjcwVvBgrdltkZU56x+ovm9t4v6SoGqqPAFMzTIRDPDMr
+	4+OtCchCvSr5FIQxtecVVVIRxcxlGi2eI6oXXoeenSyRtquiKpFmtfxW9vyPlHT978VVwfLWVUT
+	Kw/PBorTRrfT/Zy/M1SifttjlK9GfDq/k3JyhHXdiZye9nSTSakAWGF23PSQZs0Etf4INw==
+X-Received: by 2002:a05:7022:6890:b0:12d:c730:c7f with SMTP id
+ a92af1059eb24-13985f391b7mr2153523c88.33.1781632284036; Tue, 16 Jun 2026
+ 10:51:24 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 16 Jun 2026 10:51:23 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 16 Jun 2026 10:51:23 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260616004155.1435766-9-yosry@kernel.org> <20260616010604.ACC021F000E9@smtp.kernel.org>
-In-Reply-To: <20260616010604.ACC021F000E9@smtp.kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 16 Jun 2026 10:50:02 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNx4=dq=SBMcNwWzedVR4UGgarg=_pfmPT1DWb1MzC2CA@mail.gmail.com>
-X-Gm-Features: AVVi8CfyvLtwlh7WPXuubljN1gObNsZtFo58f4bG51EgOSaM750oePrajF28m4s
-Message-ID: <CAO9r8zNx4=dq=SBMcNwWzedVR4UGgarg=_pfmPT1DWb1MzC2CA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 08/25] KVM: SEV: Stop using per-vCPU ASID for SEV VMs
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
+Date: Tue, 16 Jun 2026 10:51:23 -0700
+X-Gm-Features: AVVi8CeVvqhvGF5MX5YfSPvn-N1x5SmL7ZQyivueF-K8QCQbzjfdjv9TTd4B_6A
+Message-ID: <CAEvNRgH7Lk=z9NqcY4OZXv=y5SeCZHnDNcB0=kHfarjCA4ZPTw@mail.gmail.com>
+Subject: Re: [PATCH v13 00/22] TDX KVM selftests
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
+	Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Adrian Hunter <adrian.hunter@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 15, 2026 at 6:06=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [High] A malicious SEV guest or an unprivileged host-userspace process =
-can trigger a host WARN_ON_ONCE by executing VMRUN (entering nested virtual=
-ization) or via KVM_SET_NESTED_STATE.
-> --
->
-> commit c3ac1dbd3331e2991b6bd808b207ce3395a73130
-> Author: Yosry Ahmed <yosry@kernel.org>
->
-> KVM: SEV: Stop using per-vCPU ASID for SEV VMs
->
-> This commit updates KVM to initialize the SEV VM ASID once in
-> sev_init_vmcb() instead of checking and setting it on every vCPU run. It
-> replaces the run-time assignment check in pre_sev_run() with a warning.
->
-> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > --- a/arch/x86/kvm/svm/sev.c
-> > +++ b/arch/x86/kvm/svm/sev.c
-> > @@ -3555,10 +3555,7 @@ int pre_sev_run(struct vcpu_svm *svm, int cpu)
-> >       if (!cpumask_test_cpu(cpu, to_kvm_sev_info(kvm)->have_run_cpus))
-> >               cpumask_set_cpu(cpu, to_kvm_sev_info(kvm)->have_run_cpus)=
-;
-> >
-> > -     /* Assign the asid allocated with this SEV guest */
-> > -     svm->asid =3D asid;
-> > -
-> > -     if (unlikely(svm->asid !=3D svm->vmcb->control.asid)) {
-> > +     if (WARN_ON_ONCE(asid !=3D svm->vmcb->control.asid)) {
->
-> [Severity: High]
-> Can a malicious SEV guest or an unprivileged host-userspace process trigg=
-er
-> this warning by entering nested virtualization or via KVM_SET_NESTED_STAT=
-E?
->
-> KVM does not strictly prohibit userspace from exposing CPUID.SVM to an SE=
-V
-> guest. If an SEV guest sets EFER.SVME and executes VMRUN, KVM intercepts =
-it
-> and handles the nested transition via nested_svm_vmrun(), which switches =
-the
-> active VMCB pointer to the nested vmcb02.
->
-> The nested vmcb02 does not inherit the SEV ASID assignment from
-> sev_init_vmcb(), and its control.asid is initialized separately. During t=
-he
-> subsequent svm_vcpu_run() -> pre_sev_run() call, the VM's valid SEV ASID =
-will
-> no longer match the nested vmcb02's ASID, causing this warning to trigger=
-.
+Lisa Wang <wyihan@google.com> writes:
 
-Hmm I looked around the code and I can't see what prevents SEV guests
-from setting EFER_SVME or using KVM_SET_NESTED_STATE. However, I think
-a VMRUN from an SEV VM will fail, at least due to not being able to
-read the vmcb12 from guest memory?
+> This patch series focuses on setting up a TDX VM and adding all code
+> necessary to run a basic lifecycle test.
+>
+> Unlike standard KVM selftests can set up the VM through guest registers,
+> TDX module protects TDs' register state from the host. This feature of
+> TDX causes problems on VM boot state initialization and the ucall
+> implementation.
+>
+> In standard KVM selftests, the host directly initializes the guest state
+> by manipulating Special Registers (SREGs) and General Purpose Registers
+> (GPRs) via IOCTLs (KVM_SET_SREGS, etc.) before the first KVM_RUN.
+>
+> To bypass direct register initialization by the host, we utilize the
+> standard x86 reset vector as the default entry point.
+>
+> The mechanism works as follows:
+> 1. The host places register values into a specific memory region and
+>    inserts boot code at the VM's default starting point.
+> 2. When the VM starts, it executes this boot code to "pull" values from
+>    memory and manually set up its own SREGs and GPRs.
+> 3. Once the environment is ready, the boot code jumps to the guest code.
+>
+> The standard x86 ucall() implementation uses PIO, but it does not
+> actually transmit data through the 4-byte PIO data. Instead, it relies
+> on the host reading the ucall address directly from the guest's RDI
+> register.
+>
+> TDX selftests cannot utilize the standard x86 ucall implementation,
+> because the host is unable to access the guest's RDI register. Based on
+> this restriction, we considered these potential solutions for the TDX
+> ucall implementation.
+>
+> 1. TDCALL PIO with RCX-bits Passthrough
+> We first considered passing the RDI value through RCX bits to bypass the
+> hardware's register protection, which could be the closest approach to
+> the non-TDX implementation as per Sean's suggestion[1]. However, this
+> approach is blocked by the software-side implementation: KVM_GET_REGS
+> currently does not support TDX VMs and returns -EINVAL. To make this
+> work, the KVM ioctl would need a test-only hack.
+>
+> 2. TDCALL PIO with buffer indexing
+> To keep a PIO-based approach and unify the get_ucall implementation for
+> both TDX and non-TDX VMs, we considered TDCALL PIO with buffer indexing.
+> Since the ucall buffer is initialized prior to execution, the VM could
+> just pass a buffer index rather than an 8-byte ucall address to fit
+> within the 4-byte PIO data limit. The host, already knowing the ucall
+> buffer's base address, could then resolve the ucall content via this
+> index. We abandoned this solution because it would require changes to
+> the common ucall structure and impact other non-x86 architectures.
+>
+> 3. TDCALL MMIO (Selected solution)
+> We ultimately selected TDCALL with an 8-byte MMIO data. This method only
+> requires initializing an MMIO GPA and adding TDCALL MMIO implementation
+> for TDX under the original x86 ucall path. While this diverges from the
+> non-TDX PIO, it provides the cleanest implementation with minimal
+> disruption to the overall ucall architecture.
+>
 
-That being said, I can drop this stopgap if preferred, I was going to
-drop it before sending but I left it in just to be cautious.
+Sean, Lisa evaluated your suggestion [1] (summarized as 1. above) but we
+think TDCALL MMIO is better, what do you think?
 
++ Jump directly to where the mmio is used: [2]
++ And here's [3] how tdx_mmio_write() is implemented, with no more
+  throwing everything in a structure. It's also not macroed/prototyped
+  like you suggested in [4], but I think those prototypes can evolve out
+  of future tdx functions?
+
+Let us know so Lisa can try another option (if necessary) while we
+collect more reviews :)
+
+[1] https://lore.kernel.org/all/aQTcDH9LRezI30dm@google.com/
+[2] https://lore.kernel.org/all/20260521-tdx-selftests-v13-v13-21-6983ae4c3a4d@google.com/
+[3] https://lore.kernel.org/all/20260521-tdx-selftests-v13-v13-20-6983ae4c3a4d@google.com/
+[4] https://lore.kernel.org/all/aQTdTkMIukzt-YlA@google.com/
+
+> 4. A note on #VE and x86 ucall simplification
+> It is worth noting that the use of a Virtualization Exception (#VE)
+> is orthogonal to the PIO vs. MMIO discussion; rather, it is a question
+> of how much we want to simplify the x86 ucall implementation. A #VE
+> handler is one option to allow VMs use PIO/MMIO identical to the
+> non-TDX case. Alternatively, having an MMIO_WRITE wrapper macro, as Sean
+> suggested[2], is another option. Either way, discussion for this is
+> likely a premature optimization right now, since the PIO/MMIO call is
+> only used under ucall_arch_do_ucall(), and standard and TDX VMs use
+> different ones now. We should optimize this in the future, but for now,
+> invoking TDCALL directly is more robust and concise.
 >
-> Since this condition is guest-reachable and controllable by userspace, do=
-es
-> this create a host denial of service vector when panic_on_warn is set?
 >
-> >               svm->vmcb->control.asid =3D asid;
-> >               vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
-> >       }
+> [...snip...]
 >
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260616004155.14=
-35766-1-yosry@kernel.org?part=3D8
