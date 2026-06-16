@@ -1,126 +1,314 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A434127F72C
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 00:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5382627603A;
+	Tue, 16 Jun 2026 00:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781570545; cv=none; b=F5UgtkQY2W3EmYyfk4yl3whq6dXIjiTC+7Mw/CMbcLfggvlM6oaeeHdFKTOyntfmy6NwK0VVdT/tE5oeMiVVBXAQPWvsrSpl1eBcWEvx/5Kjc4T5iEoy8lwZFPu/NyUJDObjbo6huzpNNjJsj/qBUciQs3SuRRZ5aZXbZVicbnc=
+	t=1781570545; cv=none; b=JRDRchFwbkEYLnugPypEZTFddz2rV8V1OP91weeM/jFiPQi/2LSvXg/Hi1rpADZSjCHR+euEZZnApRB8BKNvBJEFWZjmVQqLdez+IwBal7aDzH9fDHS0JYdSK3dsZe8LiXLjvqD4NtVwMRyV30yYUshad/H62wrwWlYuZtQ2dsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781570545; c=relaxed/simple;
-	bh=dLd2xq2uaf3rRXOHvRSNS0csxsbcSNNyU4+pJRavd9E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HYTgPLxl25RYv/2b9ZCNkPhLB3ABnIpYbNRxA7xq/wv6BigeiEuP6OIEI/PcPlSxxypSJ+Wwon/dLuM00jfE6YntgVv7d17SyDC8x6Cj/G0YcOa15VqHpfd7XqwugQxZ3lNcJBCcKRh/oAT6iEjuCxhttelLfvAciCSpTJ46fR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=syowSQf8; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	bh=hlaFTpgngX2CjfISCmtu4r59/sfS8G8WdpGAAkroD/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VcAbb75tDe483s2CQnxVCvoxsuZ+AQXKQMVr0TIYbV9kRv07Jm74+lhMQPDcBlXqT8xLMhBaf9QPi1alWDv1cjyeX6IYEIFoGMfbmp3yPJVRYh3VkrZkzvWibvFM1rjNBl06MN126PeoiFRKlsRUlbQDZ54DlNe8uJwlVqb39oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hRofNHRC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="syowSQf8"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2bf22c18ad3so25255ad.0
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 17:42:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781570543; x=1782175343; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dLd2xq2uaf3rRXOHvRSNS0csxsbcSNNyU4+pJRavd9E=;
-        b=syowSQf8wLSWGtS1PgGodgassz1O0d3yWQC/H8bw1NwhJXnr2zJeiuj2E9Ro7P8b6l
-         0sKRW0UZFDTu+eESKF29TzoeA+btPajRdmHAwn8Fq68xybv5XIGq84mQ5N/mCzA9iv90
-         tqL76uIuG5kg5s11jGw7XA/DJp7SuL2b7rLOnd+J61Tp2e9hVRkxujRfT3N8Z4G5V+iT
-         JRdBHxN17iGa6R1QsD9eJ30qxHswfPElKqYT+dbJCj9baxjbVpYy0TVxWpgBH9lXGUre
-         FFWVCLGYk9RnLU9bmUm53V0robpx5+adag8sZtrLrwcaCjFlJYvIEQjn9orrqr/AMG8f
-         TzPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781570543; x=1782175343;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dLd2xq2uaf3rRXOHvRSNS0csxsbcSNNyU4+pJRavd9E=;
-        b=WAFXpd4JX1tSUpPbV0ty2lI8ioDqm9SGHxgwtPoL+nePq/zdXLEmZi5ueuBti/gzf/
-         YQ2B/nidtFx1rf4ZKlt2whDen8zc95N5eiaRbRgRVyIaOkXmclrjmnfo+jF0g7wcgYs9
-         ckxXTxRtfjh8M0G9xaSNRkkSza1/VHVCO4D3Dd+D3QlkSyKrNbH75OKXAXkC9QgPu90n
-         moz5SGm35pdNhSrEZbTtEommAiKksYW8Xr4k6+MC4Y8lYG4O1Ki0G1WhYy+ePXuqK9wl
-         Ob9V+WzMJYCrZQurQce3Qst0V7IwhgD3qbN1m0LOGUiPkWIs/TGRYAcz/bWBekVD5ga9
-         eK0g==
-X-Forwarded-Encrypted: i=1; AFNElJ8PhPYebGDpRJBLKHxM/ptAE66ZpqMcvX5TsZ4sca/Hd3BDoVQh/FISVjGb0fMIQhAfEvc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqEj9hxMstqnnwLa82EKsoHelWiZTwczehJ0AWHXwjii4Yg4qy
-	/AnWkgAl8iH5jFtg1F2/vmlWTsvKxu5LXmwAQJNOeDCdNuarzSADe0/LKILIyfUO8w==
-X-Gm-Gg: Acq92OFlpi3gwIMB1lFjuYxUN8QYwGe7rFrfed//S1TQcRrnPO8jAA8c+wX9xrI9fsd
-	OzNvkVNgF14U+Lo6RdLlccSVpahvqEdDhfeIX6XmEI4ez2b750NuswRFrKIuVS1/4hbMx3308Es
-	QJCCVtwon2vlr6y6kjuTjnfXfDzxHoIa17shpltcvzwsgiQxaRrvUKOcSCst4v5rhF8nw0YfZlu
-	tYeny/Am7CLwl1HMpaUTEeU5c1Iv4oWyGjjT1HFdl4TGXB9l1HDk9FvHXSMIaa9JTWt+EUuC9e2
-	BU5qjRRVDIrkg2Dc9YFjbLXJJ01z1JcDxWwcwJDgeYRj/M5wRuLcpoFkfNiNPos4bg5G+jhv2S+
-	/NNY3OUGF2mUTXFK9U4SGAsGHnQirGSkWz1bJZQ+O6EwDQeFC4RbMBA7SrxpJkBAjCz3LDEJD0j
-	KYeTMEjCTLfIBHunQU4uRgQ45HzKP27vKpCrMxlXJ9tvY1ERiVddaUKh8XsMLitYJFJgv63b8wE
-	ROpItWLwvK2bC1qM3k=
-X-Received: by 2002:a17:902:ef02:b0:2b4:641a:6b7c with SMTP id d9443c01a7336-2c69c1d4b35mr692755ad.13.1781570542499;
-        Mon, 15 Jun 2026 17:42:22 -0700 (PDT)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8661b5e509sm10014682a12.3.2026.06.15.17.42.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 17:42:22 -0700 (PDT)
-Date: Tue, 16 Jun 2026 00:42:19 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
-	Logan Gunthorpe <logang@deltatee.com>, Alex Williamson <alex@shazbot.org>, 
-	Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Matt Evans <mattev@meta.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Shivaji Kant <shivajikant@google.com>
-Subject: Re: [RFC PATCH 0/5] vfio/pci: Support ZONE_DEVICE-backed P2P
- Registration
-Message-ID: <ajCaTmrYQvKDoP_I@google.com>
-References: <20260610151853.3608948-1-praan@google.com>
- <20260610162848.GO2764304@ziepe.ca>
- <airI0VIb563jHTcy@google.com>
- <20260611221447.GH1066031@ziepe.ca>
- <aiwcquSgAonkh_6L@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hRofNHRC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6851F00A3E;
+	Tue, 16 Jun 2026 00:42:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781570543;
+	bh=V9GCU8bK+pMxYj+smCaR1jtznQvVK7pnxC//PZI5UgA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=hRofNHRCIOkeIjvC9vEc5aLdRFHvz/nxLU5q0Ndwc9kPWVxiCJC+K+gytczhWUq+t
+	 gZyIBWvS/vQflklhGCgqMQ5ksJLXo3BtRZ7CsSqI8kInvyT3j6qMAV255GvmJaX1s4
+	 6Ba8tbN25aY8HHfIdGXn2ok3pLx2jKcl3tnpJ/sn8tsVyPmZB2YUt3xgDoL1FIloCY
+	 XN2qWWkKP3vV2PHHgVEV48IXP3/4Ex/lBOqNWkX26e1+Y5mfQ8AtzghsxA78V/Dm2L
+	 UkB+G/X6KMuS8hgOtZWz7Tn+mGUvDUSRMEVPVwmEajfzhx49w6SCvqefeAK7nPMcPo
+	 0xvcVAxSAtDyQ==
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [RFC PATCH v2 03/25] KVM: VMX: Generalize VPID allocation to be vendor-neutral
+Date: Tue, 16 Jun 2026 00:41:32 +0000
+Message-ID: <20260616004155.1435766-4-yosry@kernel.org>
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
+In-Reply-To: <20260616004155.1435766-1-yosry@kernel.org>
+References: <20260616004155.1435766-1-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aiwcquSgAonkh_6L@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 12, 2026 at 02:50:18PM +0000, Pranjal Shrivastava wrote:
->On Thu, Jun 11, 2026 at 07:14:47PM -0300, Jason Gunthorpe wrote:
->> On Thu, Jun 11, 2026 at 02:40:17PM +0000, Pranjal Shrivastava wrote:
->> > On Wed, Jun 10, 2026 at 01:28:48PM -0300, Jason Gunthorpe wrote:
->> > > On Wed, Jun 10, 2026 at 03:18:48PM +0000, Pranjal Shrivastava wrote:
->> > >
+In preparation for sharing with SVM, generalize the VMX VPID allocation
+code and move it to common code as a TLB tags allocator. Parameterize
+the TLB tags allocator by the number of tags, and allocate the bitmap
+dynamically. Opportunisitcally use guards to acquire the lock instead of
+spin_{lock/unlock}().
 
-[snip]
->
->Yea, that's going to be tricky.. I'm thinking if we can have a zap model
->there somehow? If the device is gone / going through a reset, we can
->handle the refcounts accordingly?
+The number of tags includes tag=0, which is not usable. The interface is
+a little confusing in that regard, but this will be changed with the
+introducing of a minimum tag later.
 
-IIUC zapping will only work if userspace is using these, but if you feed
-this memory into another device through NFS and the pages are pinned by
-gup (or that device) then the dmabuf move_notify/revoke logic on device
-reset will be tricky as now the pages for that device BAR are pinned.
->
->>
->> Come to think of it, since the sysfs API cannot do that in the way
->> VFIO wants I actually think you can't use it..
->
->Ack. Baking this into the VFIO DMABUF allows us to enforce the right
->lifecycle.
->
->My plan for RFC v2 is to add a flag like VFIO_DMA_BUF_FLAG_ZONE_DEVICE
->to struct vfio_device_feature_dma_buf which allows the caller to opt-in
->to ZONE_DEVICE backing specifically for that export.
->
->Does this opt-in flag sound like a reasonable uAPI or do you see any
->concerns with this direction?
->
->Otherwise, as you noted, the lifecycle and the mmap path remain the main
->problems to solve.
->
->Thanks,
->Praan
+Initialize the TLB tags allocator during hardware setup/unsetup, and
+reserve tag=0 during initialziation, similar to how VPID=0 is currently
+reserved in the VMX-specific bitmap during hardware setup.
 
-Sami
+Keep allocate_vpid() and free_vpid() as wrapper that check enable_vpid
+to avoid checking at all callsites, and add init_vpids() and
+destroy_vpids() to wrap init/destroy calls as well.
+
+No functional change intended.
+
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+---
+ arch/x86/kvm/mmu.h     |  8 ++++++
+ arch/x86/kvm/mmu/mmu.c | 64 ++++++++++++++++++++++++++++++++++++++++++
+ arch/x86/kvm/vmx/vmx.c | 40 ++++++--------------------
+ arch/x86/kvm/vmx/vmx.h | 28 +++++++++++++++---
+ 4 files changed, 105 insertions(+), 35 deletions(-)
+
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index e1bb663ebbd58..9a2916012cbff 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -334,4 +334,12 @@ static inline bool kvm_is_gfn_alias(struct kvm *kvm, gfn_t gfn)
+ {
+ 	return gfn & kvm_gfn_direct_bits(kvm);
+ }
++
++typedef unsigned int kvm_tlb_tag_t;
++
++int kvm_init_tlb_tags(unsigned int nr);
++void kvm_destroy_tlb_tags(void);
++kvm_tlb_tag_t kvm_alloc_tlb_tag(void);
++void kvm_free_tlb_tag(kvm_tlb_tag_t tag);
++
+ #endif
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 9368a71336fe4..e021ed562502f 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -8192,4 +8192,68 @@ void kvm_mmu_init_memslot_memory_attributes(struct kvm *kvm,
+ 		}
+ 	}
+ }
++
++static struct {
++	spinlock_t	lock;
++	unsigned long	*bitmap;
++	unsigned int	nr;
++} tlb_tags;
++
++int kvm_init_tlb_tags(unsigned int nr)
++{
++	if (WARN_ON_ONCE(!nr))
++		return -EINVAL;
++
++	tlb_tags.bitmap = bitmap_zalloc(nr, GFP_KERNEL);
++	if (!tlb_tags.bitmap)
++		return -ENOMEM;
++
++	/*
++	 * 0 is the host's TLB tag for both VMX's VPID and SVM's ASID, and is
++	 * returned on failed allocations (e.g. no more tags left).
++	 */
++	__set_bit(0, tlb_tags.bitmap);
++
++	tlb_tags.nr = nr;
++	spin_lock_init(&tlb_tags.lock);
++	return 0;
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_init_tlb_tags);
++
++void kvm_destroy_tlb_tags(void)
++{
++	bitmap_free(tlb_tags.bitmap);
++	tlb_tags.bitmap = NULL;
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_destroy_tlb_tags);
++
++kvm_tlb_tag_t kvm_alloc_tlb_tag(void)
++{
++	kvm_tlb_tag_t tag;
++
++	if (WARN_ON_ONCE(!tlb_tags.bitmap))
++		return 0;
++
++	guard(spinlock)(&tlb_tags.lock);
++
++	tag = find_first_zero_bit(tlb_tags.bitmap, tlb_tags.nr);
++	if (tag >= tlb_tags.nr)
++		return 0;
++
++	__set_bit(tag, tlb_tags.bitmap);
++	return tag;
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_alloc_tlb_tag);
++
++void kvm_free_tlb_tag(kvm_tlb_tag_t tag)
++{
++	if (!tag || WARN_ON_ONCE(tag >= tlb_tags.nr))
++		return;
++
++	guard(spinlock)(&tlb_tags.lock);
++
++	__clear_bit(tag, tlb_tags.bitmap);
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_free_tlb_tag);
++
+ #endif
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index c548f22375ad6..e1fd1c95ee8cc 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -594,9 +594,6 @@ DEFINE_PER_CPU(struct vmcs *, current_vmcs);
+  */
+ static DEFINE_PER_CPU(struct list_head, loaded_vmcss_on_cpu);
+ 
+-static DECLARE_BITMAP(vmx_vpid_bitmap, VMX_NR_VPIDS);
+-static DEFINE_SPINLOCK(vmx_vpid_lock);
+-
+ struct vmcs_config vmcs_config __ro_after_init;
+ struct vmx_capability vmx_capability __ro_after_init;
+ 
+@@ -4067,31 +4064,6 @@ static void seg_setup(int seg)
+ 	vmcs_write32(sf->ar_bytes, ar);
+ }
+ 
+-int allocate_vpid(void)
+-{
+-	int vpid;
+-
+-	if (!enable_vpid)
+-		return 0;
+-	spin_lock(&vmx_vpid_lock);
+-	vpid = find_first_zero_bit(vmx_vpid_bitmap, VMX_NR_VPIDS);
+-	if (vpid < VMX_NR_VPIDS)
+-		__set_bit(vpid, vmx_vpid_bitmap);
+-	else
+-		vpid = 0;
+-	spin_unlock(&vmx_vpid_lock);
+-	return vpid;
+-}
+-
+-void free_vpid(int vpid)
+-{
+-	if (!enable_vpid || vpid == 0)
+-		return;
+-	spin_lock(&vmx_vpid_lock);
+-	__clear_bit(vpid, vmx_vpid_bitmap);
+-	spin_unlock(&vmx_vpid_lock);
+-}
+-
+ static void vmx_msr_bitmap_l01_changed(struct vcpu_vmx *vmx)
+ {
+ 	/*
+@@ -8474,6 +8446,8 @@ void vmx_hardware_unsetup(void)
+ 
+ 	if (nested)
+ 		nested_vmx_hardware_unsetup();
++
++	destroy_vpids();
+ }
+ 
+ void vmx_vm_destroy(struct kvm *kvm)
+@@ -8699,8 +8673,6 @@ __init int vmx_hardware_setup(void)
+ 	kvm_caps.has_bus_lock_exit = cpu_has_vmx_bus_lock_detection();
+ 	kvm_caps.has_notify_vmexit = cpu_has_notify_vmexit();
+ 
+-	set_bit(0, vmx_vpid_bitmap); /* 0 is reserved for host */
+-
+ 	if (enable_ept)
+ 		kvm_mmu_set_ept_masks(enable_ept_ad_bits);
+ 	else
+@@ -8765,6 +8737,10 @@ __init int vmx_hardware_setup(void)
+ 
+ 	vmx_set_cpu_caps();
+ 
++	r = init_vpids();
++	if (r)
++		return r;
++
+ 	/*
+ 	 * Configure nested capabilities after core CPU capabilities so that
+ 	 * nested support can be conditional on base support, e.g. so that KVM
+@@ -8772,8 +8748,10 @@ __init int vmx_hardware_setup(void)
+ 	 */
+ 	if (nested) {
+ 		r = nested_vmx_hardware_setup(kvm_vmx_exit_handlers);
+-		if (r)
++		if (r) {
++			destroy_vpids();
+ 			return r;
++		}
+ 	}
+ 
+ 	kvm_set_posted_intr_wakeup_handler(pi_wakeup_handler);
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index de9de0d2016ca..d6d35637d94f8 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -175,7 +175,7 @@ struct nested_vmx {
+ 	u64 pre_vmenter_ssp;
+ 	u64 pre_vmenter_ssp_tbl;
+ 
+-	u16 vpid02;
++	kvm_tlb_tag_t vpid02;
+ 	u16 last_vpid;
+ 
+ 	int tsc_autostore_slot;
+@@ -249,7 +249,7 @@ struct vcpu_vmx {
+ 			u32 ar;
+ 		} seg[8];
+ 	} segment_cache;
+-	int vpid;
++	kvm_tlb_tag_t vpid;
+ 
+ 	/* Support for a guest hypervisor (nested VMX) */
+ 	struct nested_vmx nested;
+@@ -334,9 +334,29 @@ static __always_inline u32 vmx_get_intr_info(struct kvm_vcpu *vcpu)
+ 	return vt->exit_intr_info;
+ }
+ 
++static __always_inline int init_vpids(void)
++{
++	return enable_vpid ? kvm_init_tlb_tags(VMX_NR_VPIDS) : 0;
++}
++
++static __always_inline void destroy_vpids(void)
++{
++	if (enable_vpid)
++		kvm_destroy_tlb_tags();
++}
++
++static __always_inline kvm_tlb_tag_t allocate_vpid(void)
++{
++	return enable_vpid ? kvm_alloc_tlb_tag() : 0;
++}
++
++static __always_inline void free_vpid(kvm_tlb_tag_t vpid)
++{
++	if (enable_vpid)
++		kvm_free_tlb_tag(vpid);
++}
++
+ void vmx_vcpu_load_vmcs(struct kvm_vcpu *vcpu, int cpu);
+-int allocate_vpid(void);
+-void free_vpid(int vpid);
+ void vmx_set_constant_host_state(struct vcpu_vmx *vmx);
+ void vmx_prepare_switch_to_guest(struct kvm_vcpu *vcpu);
+ void vmx_set_host_fs_gs(struct vmcs_host_state *host, u16 fs_sel, u16 gs_sel,
+-- 
+2.54.0.1136.gdb2ca164c4-goog
+
