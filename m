@@ -1,178 +1,141 @@
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035F23D5656
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 18:10:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633402; cv=pass; b=VU0+In0joZXHQZqIKT7VV4/1C5eUKKoBV1uH1nDKT4YYFP8kB70qgS0MLVGvgU0U5lhrOzzcxIY4Y9iYWmra/JZMrJp1/bXWZqfXgLnfxd+SeAi44StY1S5ejQ8CIBOYv3ekJMQHZzPvLKssCWxJTRpAEcQcZs+I4Po0beXuhDE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633402; c=relaxed/simple;
-	bh=hbZ7AtqKeATB2r4kr93uGgpM+Y/zj6+leroFxw5uOv8=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mARvxXTcT0/GAooakcWVe8PfJvarksBQaFEjlToPED4AelVkwNmr7hqGU4GdsG4/dxRh2EJTpw/XB4MEIEVtOUT9ztp5qUSMCei4IzVieW4j92cSQOksk/xA6wXzdi0lRusKhuLOYNflpfSmRfWO/o3x4IAvjSMeDobwo4/3wFY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JXYp3gXJ; arc=pass smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0C43D88E3
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 18:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781633577; cv=none; b=gANYZgLVvnL4FF6ee234x+MdkON1p+yNZv4l9hIueAL2Nq55KLFKyCdJVs0ih3r4Ko4kbdax2wjXRwJ8hbpn8zrC84lCEvllvLk0dtujabdynLiwsxd0fBA38HgYDgRZnfQDORjW/0A6LBomcydFXbDORveHqPBi/0oejO0rdTY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781633577; c=relaxed/simple;
+	bh=p3rzxF0uYdPZbVvU5s/vULcaTm/bIqRnUxzNNp5+2go=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=q0iy7WD8GraeTESqMSj30NbA7IWST5YmfEMh3Wd5L2Czzz5H4f66OVgQTxdRiUoYX4tlRybdQrHW5HuRCQ0czIIOVLP5yQNeXXwciIsxMzsB28FhBUKwFX4pk3kugd/HOyvbkO3ZjTuFbccF8m+QtMccSoY7kHsTAY+GGJyCRwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oWvIo0Hc; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JXYp3gXJ"
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-137335bc3caso5951162c88.0
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 11:10:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781633400; cv=none;
-        d=google.com; s=arc-20240605;
-        b=L2ryKHNBk0BCHW7P4QVvwFBn5Dfb/EUjwRODxHnSXUHWKktBPQCLJKzn7BlyKME36z
-         UEzDytUVQe3pBYXKmfHkMpPqC6x11YLfHGqdk8GUFCdETzasH1FBtBJBVBXmyhLoiTUz
-         jFnHzAq7AOSiHMnVDbFob1jpUjnOR2+4LOY0vdDAtWSXHtvVwiBdk+O4SJk+6My0qMtp
-         6sxPNxT5Cfms4MhNPdyIFJRmDEtoZptttetA+9lub6QiAwfc7V6a+xr2q2/9JLdn71lR
-         lVOFEjsVHzh2j6/CbwWWqtyggQGYE4wF426EFOomh8Og9Q8dcfr6qFCmbqzQD4x9pA9S
-         w/EQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
-        fh=t2aLCiRtPljBblaoMfb7+1dBhyC6c/wQ0lgXjx57mB4=;
-        b=PxvG3GIbYB54NiudevhWniXdXdN5m6B9sZ3UzAaJ9hm0uMBD383jo1UcLjKK9+lQh3
-         5QECUjuuHXc5Pp1fVm06tf3kxJOlMYDMuIqMQkuHkXfZd+pBfVzuQFs/D1lX4gdZBi/8
-         ZNkh1tFfw3jZr6DIuriyT8SzYi6HWPrYKGbHuSIXWompOYcjdMzJMnooOYK1Fwrw1Ioy
-         qrqDyCm12QN/imMHwjMD9dtEmGqZer7SFCj89fTCjB1nCR8+gYfQQ92QsIqXk8t3cDwK
-         InVY0FmpFcd2eNznAPkf+dpFfan+LJqRXvPJqcNri60zCeDyahj+NfAAGWuBblOqXp7J
-         Q6mw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oWvIo0Hc"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-36babe2c4bdso3029892a91.1
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 11:12:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781633400; x=1782238200; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
-        b=JXYp3gXJ7pMeF9WaAOYYO6gSbS5mjDcaZxz/wPa+8kEWDLwRfwwM6/7YMe2P9Bahyn
-         QWCBOe0P47hudynegfdEKLzfJzJ50p5G9IZzB/TTy8x9k1JR1j7Z6u/j+ICZSpnlxamK
-         KwEMdQVsm6CrQVJ9s6SsKMxpPqN8ci892isftjagSgFrlTT+bZ3nzDqyC3alo0ibbE7N
-         5Jp5Rzf/kg2KLIWQnSE/R36/vK1J1yPYiSZXIno0NkMP96yH2uT6W0kq5HyLw1RAOs1+
-         qwKMzNSkS6pv0v8wqU5fidqR5I1KRaGca9PsyMp/PMygj2YDYxrvI6xwT9ugbtMif/+t
-         gbdw==
+        d=gmail.com; s=20251104; t=1781633575; x=1782238375; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HfqVrP82kq5rv5P4+q1AH7lRylWPBjjSEnRhd+rTAto=;
+        b=oWvIo0HczpqhcQaIJUeyQ5YKFBZ0ntaT/nGq75FMDOEPHanmcZabzMj75zw5KVioSV
+         gp/PQruedkWSVm1/XIfQZiau0IkBYNh+BepiRVpFymMJI8vPXqyjtVCYVu/r6aylIu3R
+         hK9cFnC0lpkXkXd/UOrRw4HYDPTX7mZtyHJQvAdvm53fXCdwV5GoMmetlb1vFzaET8BS
+         zQ0BXhk7OTxTqdaEDvgzxysRyLF4Z0ByXVcD7PtQC/mYwCj21591NOV85GdNB2YzVA3f
+         VAyYquHh0pMCUfKPWPOYCs4Fd8rFncy+zbjMaKH+kvHPaVFZZzG5MvZ5UJOh2ltWUf2w
+         svEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781633400; x=1782238200;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
-        b=BbNBmw69SzaqAGNBP3xijFOQutaTdqzRmBJtCBMauizz5Bdla1K4uiaec13ggg+Ibf
-         WHUFOYrs18aQLwVxt16FS9XSl73MBJzzOto0aNnTRv2fB+jscJGIU2o4ASQ8uEGgz1ze
-         Q6hHiyUXUTuPi2MiUNlqim3SQl74MxblaaUHwmqhPf7H1S3jIfaVNWQhqsNdWhybjrsf
-         d5K+3rnUn/7O73C42sSEpDi/mvBUYuHOnFYRqXUufOjBHkDNQn7M+jYlL2VA2MkgHBpK
-         y+jYLduOemhwoAD+U8u31qvgi8GTYTXcw7Z8mpzy1ge7d12EFAfSBz6aaeX2Mua68vdy
-         h4dA==
-X-Forwarded-Encrypted: i=1; AFNElJ9QYmcS3zOI8Rd46+WR4P1my3RA58yby7Y9mpCwplVXRSelqG95tQDFlZ8tAw5niVH+tbk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjF7DFrVZlUM9/DNQjdcrKop186ZbyWvP/UFAX43049Zui3OQI
-	dv3E0EG4N3gOHnaz58Jn7aFX2ef6evCw2uLKh0g4/q74hKE6UAk6xZvLbzjH7BUKTWBUOQ80bZ7
-	0oP/a0DeKyK5lpAmSQ6Dp2Njw9/9A2+3ERzMH1CVh
-X-Gm-Gg: Acq92OFZYK11duZKfhE6w3LXxr7110dB8l8lcMgc0mcnSBP9MZ+sqpSadel9Gu66pf9
-	gKsuMe1obpFuTWGNuvtEO3NW+yPHDFkExjcRPKYu9l+naG1fDq/wcKzjLRd9xB10XsHzpACkh0f
-	u+BF2DebsaYjGeJ3L1zC9NMVo7PBMF3fXPYsA+ZQiP8/aNgfzySljvsz/AK+uqsTOZj6VPuMnbH
-	AnrFPZV69oakBSRXpPY8VipGNVL3evCQVUNOsIZWwNQ7Qxr4RA4DhQiUolNrJBV6D1p2KGPqkCz
-	dG8/QVK6LKglmBrkYjPbRABBTAVt5ylK+MMaJNM/IWegQHoePcQIQw2BGUNwPR8TdUC0VkZrIOy
-	UmWj0
-X-Received: by 2002:a05:7022:622:b0:137:9399:fc59 with SMTP id
- a92af1059eb24-1398f69626amr23221c88.21.1781633399141; Tue, 16 Jun 2026
- 11:09:59 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 11:09:58 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 11:09:58 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <1e77f24d-315a-4f68-a109-2f4520343c0c@kernel.org>
-References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
- <ai_XK__RTXMCEcCG@raptor> <ai_aczmeH2IA6JaB@raptor> <ajA4z_Wkb93cTW4m@google.com>
- <1e77f24d-315a-4f68-a109-2f4520343c0c@kernel.org>
+        d=1e100.net; s=20251104; t=1781633575; x=1782238375;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HfqVrP82kq5rv5P4+q1AH7lRylWPBjjSEnRhd+rTAto=;
+        b=ZOh4++zo32Qk+3sUOQOLJZGw8CnKwJ5ixAKPLzIpvGxF26lQ31DFSRH89+lwoH2CDY
+         wPJxKVRk11jDw45l497lWKZE7640hZJKlxoK/haCaAHhWnMzdNXVNpiu3N5o/eW6UAy5
+         PMTiqTjM7Gz76Ty9vx5lxWGlxCxALf08zUwLZEGScpH2LvpJN1p+jGf6t5jX8RKcEjDm
+         xXQqISAE+jhwFQwPUavwCTMwyVt9dhNvjkWwQecZEdD8uwaGul2ENUJ1/SeoE8qoJKqC
+         ehuDWHZG9OnNH+ePJnOLaHiX4/gJbX+59T8evzCTlrfiXCzYZ5LbPaleSL+R8Q/epZL2
+         NI0w==
+X-Forwarded-Encrypted: i=1; AFNElJ9+3QM6k/64jJGvbHSjAPmXdU8g1m2Z5ctmtpF/BpNug/MlwxXsz7BDIggthvRnRzOfqVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYnVMQgscLjHMqwVWevlIYCctGce3RnGiAmWn547M2l2qF3Vae
+	fvsOd2BCmhmEm/su+3gE3aNcWczauiUhOkCFsHXl+OmVCTp1o4jroVo4
+X-Gm-Gg: Acq92OF/ey9GXqQWVkiDQ9Ep9GD5rIZbRiUslasrIGim01EsOL7RBsI0g5j0ccLsBqu
+	XH1rAM2xStBf6BFjywekg/Yidhl1ZgPfsEBjHNUsc7/3x+jssKKEAsJ0jfIR4AJL6KNGNvEl+7H
+	2Hz4c88NH9FWhgImMyGRc9hSZuhxhUJWACeh0l9IJkHVaDl/YoegNwrYEj3VnxAQSgsX3ngAYcn
+	RXorXCsc06JDgAjkq5AgyZk1UadFSAbMB0mJJHn+pDT2RHhUz27tI2ZZ4nCjneui6/LyMS6ES60
+	L1bNHnuZR5XEmOMhBh0DjK3Mv9C9kJW3cmHJE7jcO/dPlbuiU9QVrWBPjdyMeUec0sIFAWVQ+5T
+	EWHo40JXcF3tbhs08+1AGYpmowRA5jit8zhE/nneKtg10kIabOCFf8dYfqUHL612vCBYe5MmuOJ
+	t5RhedTFZ8GQ3y/2gY300uhSD3ZQ==
+X-Received: by 2002:a17:90b:390f:b0:375:2a38:1d40 with SMTP id 98e67ed59e1d1-37c9369f042mr546951a91.20.1781633575059;
+        Tue, 16 Jun 2026 11:12:55 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c5228eb5bsm3519929a91.12.2026.06.16.11.12.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 11:12:54 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>, Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+In-Reply-To: <20260616163405.96962-1-amachhiw@linux.ibm.com>
+Date: Tue, 16 Jun 2026 23:37:53 +0530
+Message-ID: <7bnye4ue.ritesh.list@gmail.com>
+References: <20260616163405.96962-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Tue, 16 Jun 2026 11:09:58 -0700
-X-Gm-Features: AVVi8Cfci2aZVOJMaXs8XbxR0646nJUtiwZFbcmm9wi2jMlpzFimiOSyoy_glyY
-Message-ID: <CAEvNRgFQLEsKanKrj=ePHoShiY2cgQgxtGs_2CJcZHP=JOjidg@mail.gmail.com>
-Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
- non-confidential VMs
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: Shivank Garg <shivankg@amd.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Chao Peng <chao.p.peng@linux.intel.com>, Nikunj A Dadhania <nikunj@amd.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, 
-	Pankaj Gupta <pankaj.gupta@amd.com>, Fuad Tabba <tabba@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, 
-	Patrick Roy <patrick.roy@linux.dev>, Pratik Sampat <prsampat@amd.com>, 
-	Ashish Kalra <Ashish.Kalra@amd.com>, linux-fsdevel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
+Amit Machhiwal <amachhiw@linux.ibm.com> writes:
 
-> On 6/15/26 19:39, Sean Christopherson wrote:
->> On Mon, Jun 15, 2026, Alexandru Elisei wrote:
->>> Hi,
->>>
->>> On Mon, Jun 15, 2026 at 11:43:14AM +0100, Alexandru Elisei wrote:
->>>> Hi,
->>>>
->>>>
->>>> I always thought that one of the nice things about using guest_memfd as a
->>>> memory backend, as opposed to host userspace mappings, is that the host
->>>> cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
->>>> collapse, compaction, etc, acting on the host userspace mapping of the
->>>> VM memory, and outside of the VMM's or KVM's control.
->>
->> +1000.  It's not just "nice to have", it's a core design principle of guest_memfd.
+> On IBM POWER systems, newer processor generations can operate in
+> compatibility modes corresponding to earlier generations. This becomes
+> relevant for nested virtualization, where nested KVM guests may need to
+> run with a specific processor compatibility level.
 >
-> Right, and I raised in the guest_memfd call also the rough idea of Alexandru's
-> use case of having non-movable guest_memfd pages such that we can support use
-> cases where we can hopefully guarantee that a stage-2 mapping will not just
-> randomly go away.
+> Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
+> logical partition (L1) booted in Power10 compatibility mode, the guest
+> fails to boot while setting 'arch_compat'. This happens because the CPU
+> class is derived from the hardware PVR (via mfspr()), which reflects the
+> physical processor generation (Power11), rather than the effective
+> compatibility mode (Power10).
 >
->>
->>>> I think it would be useful to preserve this behaviour, even in the absence
->>>> of confidential VMs (i.e, guest_memfd file descriptor created with
->>>> GUEST_MEMFD_FLAG_MMAP).
->>>
->>> Just to be clear, I was thinking that it might be useful for both
->>> behaviours to exist (migratable and non-migratable) for non-confidential
->>> VMs, and allow KVM or userspace to decide which they prefer for a
->>> guest_memfd.
-
-More concretely, are y'all pointing towards a
-GUEST_MEMFD_FLAG_MIGRATABLE, which will set .migrate =
-kvm_gmem_migrate_folio, and for now, error out for CoCo VMs?
-
->>
->> For the purposes of this discussion, we should separate the physical act of
->> migrating pages from the features that trigger migration.  As I said in last week's
->> guest-memfd call, I am a-ok with supporting page migration as a mechanism, but I
->> am dead set against supporting NUMA balancing, KSM, LRU-based swap/reclaim, and
->> anything else that goes against the goal of guest-first memory.
+> As a result, userspace may request a Power11 arch_compat for the L2
+> guest. However, the L1 partition, running in Power10 compatibility, has
+> only negotiated support up to Power10 with the Power Hypervisor (L0).
+> When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
+> hypervisor rejects the request, leading to a late guest boot failure:
 >
-> Right. Page migration for supporting ZONE_MOVABLE/CMA, compaction, memory
-> offlining, virtio-mem and possibly some collapse mechanism if we were to support
-> THP of some sorts in guest_memfd would are all reasonable.
+>   KVM-NESTEDv2: couldn't set guest wide elements
+>   [..KVM reg dump..]
+>
+> This situation should be detected earlier and rejected by KVM. Without
+> proper validation, if userspace ignores the error, the guest may continue
+> to boot in Power11 raw mode on a Power10 compatibility host, which should
+> not be allowed.
+>
+> Introduce a validation mechanism that detects unsupported arch_compat
+> values early in the guest initialization path. When an unsupported
+> arch_compat is requested (e.g., Power11 on a Power10 compatibility mode
+> host), kvmppc_set_arch_compat() uses cpu_has_feature(CPU_FTR_P11_PVR) to
+> detect the mismatch and sets arch_compat to PVR_ARCH_INVALID (0xffffffff).
+> This sentinel value is architecturally safe: PAPR specifies that valid
+> logical PVR values must have 0x0f as the first byte, ensuring 0xffffffff
+> lies permanently outside the specification-defined range. Setting this
+> value triggers kvmppc_sanity_check() to mark the vCPU as invalid by
+> setting vcpu->arch.sane to false. On the next vCPU run, kvmppc_vcpu_run_hv()
+> checks this flag and returns -EINVAL, preventing the guest from running
+> with an invalid processor compatibility configuration.
+>
+> With this, when a Power11 arch_compat is requested on a Power10
+> compatibility mode host, the guest fails early during boot with:
+>
+>   error: kvm run failed Invalid argument
+>
+> This provides a much clearer failure mode compared to the previous
+> behavior where the guest could boot in Power11 raw mode (if userspace
+> ignored the error) or fail late during H_GUEST_SET_STATE.
+>
+> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
+> Acked-by: Gautam Menghani <gautam@linux.ibm.com>
+> Cc: stable@vger.kernel.org # v6.13+
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+> Testing: Both Anushree and I have tested the below scenarios:
+> 1. P11 guest on P11 host - Works
+> 2. P10 compat guest on P11 host - Works
+> 3. P11 guest on compat-P10 host - Correctly fails with "Invalid argument"
+> 4. P10 guest on compat-P10 host - Works
 >
 
-Background question: how would virtio-mem use migration in the host/guest_memfd?
+Thanks for incorporating all the changes and adding the test result
+matrix in the changelog.
 
-> As soon as we mix in access/lru semantics, we're going into the wrong direction.
->
-> Fortunately KSM is anon-only and not even worth a rant here :)
->
->
->
-> --
-> Cheers,
->
-> David
+The changes looks good, feel free to add:
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
