@@ -1,173 +1,135 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371EF3749F4
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 13:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C964329C57
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 13:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781615419; cv=none; b=VsbWkuVy61CswpGfLGQ3J0VCQOlaNRYwlkOBrBVrl9EyYfcS6q16XHBP+CvFfAF3Is5i6DVGxleFke3xanXVgztqhK7zl55mUbzEMSDJE+TsRWVmTNb97ZenCEDssH5tUMGvIzxJudFgXC7naYy33R077WLlDBNmp9GJC6rPfeI=
+	t=1781616219; cv=none; b=rgUZFQyYZ1AcrPZ9Zav1PRm+CEkytnjcMjFGOzrea6M1EG2eOFGloQQK3LRAyEJ/rYJPzQiiW1Wh7VMU3ZGaQfkl9s1bleBXCkxeOnsbDdYlNbwv1R6SoGY3GYfus8Rqm8usJ9IfZmE2gmp6W7EQ3RcCxbOtAvDNV0impe/yr4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781615419; c=relaxed/simple;
-	bh=j8djdhTpE9KyreEqk3wMsIFtENli4AKg3GaItI1dKoQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RWgKLuUXbEQP1gxJF3adMCL+F9YWuwULctRMt4F+H2KxmCgz5EVgx/uuGTVSeH14LMDihNTmuMJLpT9nB5T4FPVmnw6z4o7BEofHHeJoQAiLTNK34JuSjD6M1UASaKXPyIqUrEJWV4X1wAJOxswWlP/TQEwMuIW19yge645Bvl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g6P2MBjx; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=H9KRzvnp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781616219; c=relaxed/simple;
+	bh=guMWy7wf98B65PfVClETVri2NzA1ofjmGgJWY8rzEb4=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=nuIx5qjSCCsdwdT7r3rQ61ULJOOsVIvDdgsCfg89yRhSWvRprL4DNO1Q/nQoG7ZJ7QaaswYJQKVsPEvbVxEwKxOmbx7is/e3pw5qsouZgpLhHqbDl1ifRI8W5kC0ZTbnNA02AvytNJa/Gucknh1Q/hRxSuisBAiZSURmwO8om9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JeS9FKln; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g6P2MBjx";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="H9KRzvnp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781615417;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=81JkjnjNjtM/PGFVX6BX0wxD8D777cX7VAjC2y6ng/8=;
-	b=g6P2MBjxJgiBerbF6ygNpPkSn9b74qHJC0plFVZPXoUklZiDV+nlQqK++X1tSWC75ysiXe
-	kuxLzX8idFePzNr+1Iptp7A9exlE/tD6XVajkzLWejyz6FkC8HgDwFQwgd/E8DaMC1CnPN
-	4TwBoygYj2y49uKFOoEh9Aiaat+ByGU=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-157-B2bhRui4N4SyopLuk3WD8w-1; Tue, 16 Jun 2026 09:10:16 -0400
-X-MC-Unique: B2bhRui4N4SyopLuk3WD8w-1
-X-Mimecast-MFC-AGG-ID: B2bhRui4N4SyopLuk3WD8w_1781615415
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45ef616db45so3550471f8f.2
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 06:10:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JeS9FKln"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-37c5b9d42efso229019a91.1
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 06:23:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781615415; x=1782220215; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+        d=gmail.com; s=20251104; t=1781616216; x=1782221016; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=81JkjnjNjtM/PGFVX6BX0wxD8D777cX7VAjC2y6ng/8=;
-        b=H9KRzvnpnp7Jim2ilOnW6p6T5AAN+lHJkcqMZFkO8X2eVdXlAgu/Xpf39TdyL7DaBl
-         Eso+/+mW70hdni8ebvmlvTYMvgGt8CIDbr2BCtUGAqN3K57qCcUfM9JYomueoqMutaiq
-         zxTIW2SX5hOpOuCOsd+fILhRAzC3kcpYnzHXpDRlq94ELGqn4KAW+UUqrbJKVFNp83qz
-         iCznd4EKC6JySlNTUbdjhtOcUV+q5Mm5XbcrC4a3pkLPIh8yxjsZDppCbAvT0doHqZHh
-         C17MRmtVqVgubjvnxecTIK7+jWDlB8wfUQvRb4a+HLSIIj7WytZnVfwPWjARXQKdgrPK
-         ZhlQ==
+        bh=i2eQVWR69DVBll8DZTLTpPBD8LsUE2YsnnLAZbM4NLE=;
+        b=JeS9FKlnZWX6vOmsRq815yzvCmadjACpNiIdJjmdx2tKQfvPw/Va6P4hYzAaHjj8R8
+         VvfZf6LHKKAc0b46wgdxM7yxHn8XijamyY323Jd2aAgZ6HWUsp32pafusdS0ccPqX194
+         LD0XcpAFnejk3WEmf7FJKlIku7l6WhDAbM/uYyQ1y+Xu+JNjwcVD6q4diY3xpOeiU9vw
+         o3tuCWW5DB7xEcCXejildWIb2Go0ouFB7f5NMF3pxs7cLKjJ7d0Q2U0rBvr/VMtIty1A
+         Pv6BAS9DPj5fmEdl3HXr0xWAruVm9wV1xn/Vn9YhEKguGTlzRvHanMJLTeyTuXJqC15E
+         I9nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781615415; x=1782220215;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1781616216; x=1782221016;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=81JkjnjNjtM/PGFVX6BX0wxD8D777cX7VAjC2y6ng/8=;
-        b=GBGp12lZPCGRyjNnfPSl5VUveBU91WoeUsU/igLcC9kkQ15EhvD8bSlW0hoCWcd2aI
-         zAoS9gzPCz1Qn3QiXodfV+avRTHEYpaAyrU1a+QCBM815OYCyTEMPLfYpbzvxu/ertJl
-         +v3fqFf71d2nKCJpwJoUU5ptCX2mBM5TRxCF4pedqQc2dXjgvPNIi6ER1CcvmJQ4KBDR
-         MMTeHZ91a7ijnOKsjHklUZ3ybD3uCeQnU2bWTXgfF1htPEzK93FkPGxnH/6BLPwPy9Um
-         YkA+HSeqPHz4oyOwH8utKjWgpgVSsGXVcwyrnNp7IrAVB624zsQEYdnc5l/V7xHd+Cop
-         zx2g==
-X-Forwarded-Encrypted: i=1; AFNElJ/2j/mPc5XXFuOAUc57ya3+V8GXhX4aXEVIlBGp6j/4OnPPkefEiQa7ho7dCnRRvA6V/po=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTv7nwGOVVzsm3Y9WiEgkzzv4lNh9e32lmKMm0izeiWENqMrcH
-	E4ghjBHBiSi8Rhi89DLACkwqfRZrMzUqiWjuFRRTHKDW2h/h0lRelE1eVMVVwEGAEhwaasCXxQl
-	+z9qszF7JFlPGChfzpIzB811hxi6EDHI51NLn0XjFRYwMikVwp6iSjA==
-X-Gm-Gg: Acq92OFZLuRe0mAVWe70YJj/33oe0N0zoO6PuehFXe80WH2sdQouvXGaqY9anplJpgO
-	bSEPkt+D69WSBGvV6Y8mLgRv98ejvyQlak0849X6k1LtW5est76IHjOx4rUveI/R72D1aCwwbFO
-	0xr+Vu6AjE+MPo9PCSK+siQECofkJdG2H/VJ3wWv5K33u7ZjpowdtaTrt3DX2SWjRRtoQEn5O/t
-	duipXL1Q66Jy9wzY9fQSV1dortxPI1Om0e5X8uU7Q6LJM6FtCpnWDaQ13S8nNwDfUrPJc5D+PTe
-	CSMAuSgvAVnK79gmmHhuZjEPpa67bo0U0crzCa98x7QF0WLPbJDuKeZzsxBROl/2L7eKghoY/4i
-	j24CUhUdFxxxGFgY0e4bxJn0K+q6oKGBC0Dj3dw/9AzXL/a4uIfNTDz/ShSmUQ21XI9yJU/w=
-X-Received: by 2002:a5d:5d87:0:b0:45e:da9b:97d6 with SMTP id ffacd0b85a97d-46074a8a2a8mr23974062f8f.27.1781615414625;
-        Tue, 16 Jun 2026 06:10:14 -0700 (PDT)
-X-Received: by 2002:a5d:5d87:0:b0:45e:da9b:97d6 with SMTP id ffacd0b85a97d-46074a8a2a8mr23973939f8f.27.1781615413909;
-        Tue, 16 Jun 2026 06:10:13 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2cf5d9sm39082850f8f.32.2026.06.16.06.10.12
+        bh=i2eQVWR69DVBll8DZTLTpPBD8LsUE2YsnnLAZbM4NLE=;
+        b=rq6A2LUTITX66NM4p82XEgsV+4zsZEUKGtcc0rUieqGOOOvZv07KMCuatq2zbz5pz1
+         B5UHxTGLlHi9U33l2ujLmEZeYsk4yvToYQoZBruYcnBrlTfSNlcQPovVaCl86RfNUUGB
+         n7rmynLMXGZg4++Cyz5o8xUXmXydtWi3HmJOMxHYdaP2nkf8u6vmcKjYCdV+Gm4IZVWh
+         9Wso75LBRJaN9YewZokdZxM4iZ/boA3L/VMWU7R+0JI3XD98A9UOmey0xct92QJJAR/u
+         6amaKhWiCgs3QGmIBxkTZKtgPSHsswM1ZTIufMu9XVqI7BIFeFmQOQ7GULBAnYill2D8
+         GiZg==
+X-Forwarded-Encrypted: i=1; AFNElJ9viW1rIoo21Oul++vNZRQzZfoWFkBxUfxzS/y/PylqxG0CMXbhM0f/6rUSx8/7ltxTPxs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3+21prgWQLGkjqn+WaW6gslcGCTuq68UJ1BHBKSl3EwjLPkPJ
+	cohWe5P7wfzeYfaPBp0Z6EbTrQD9VQfsM9kwnfDAq/TKhuk3D9Au44JU
+X-Gm-Gg: Acq92OGscP17EuLnj1hm6YdBHCzpBDb97mnroC9wwkSYPy8Lpt7irFfp2QqaeGx3TmY
+	8rkVuf6H1e5YtGRDLM/gOk4P7jdFZQpKCI5BVI5vTV7tVeF3g//YddAASH6xl6NzSNK4UreDH/H
+	va52FcKvH2w0rDRHnGbWhPl/Rg2uN7gMcqZToQqKJziVAErw6a3qMRAobhXXc2qhbRefwVW1+/i
+	UlkmPGy1syOwiCTIXBUiR581y+G4Y6Lu12xr5byknrgp23Uj8pt4DMRJrmNfinlDhk0CRmuSQcw
+	FbOZKa1i3i5+iMgHfVDNI67R6nXmGwtjsceY5dOCvcRqC0xqnqYlfG9iHuXXq09tFDZ8xP+3DWc
+	qMMTzwtQ1DJYDauMVvbuOCfPJCPtQwtodC1spiZavLtTpCO9EIxb3wwdkCtzq2f5mt+qtSBjqy2
+	uKJpCJeXwfC4luU9u6+4VAE65gUQ==
+X-Received: by 2002:a17:90b:1d51:b0:368:65d1:893 with SMTP id 98e67ed59e1d1-37c5235adeamr3228415a91.5.1781616215829;
+        Tue, 16 Jun 2026 06:23:35 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c866518677dsm11704475a12.19.2026.06.16.06.23.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 06:10:13 -0700 (PDT)
-Date: Tue, 16 Jun 2026 15:09:59 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Arseniy Krasnov <avkrasnov@rulkc.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Bobby Eshleman <bobby.eshleman@bytedance.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Simon Horman <horms@kernel.org>, kvm@vger.kernel.org, 
-	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	oxffffaa@gmail.com, rulkc@linuxtesting.org
-Subject: Re: [PATCH v2] vsock/virtio: rework MSG_ZEROCOPY flag handling
-Message-ID: <ajFFOJSdqpNWgohB@sgarzare-redhat>
-References: <20260614174756.170631-1-avkrasnov@rulkc.org>
+        Tue, 16 Jun 2026 06:23:35 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>, Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+In-Reply-To: <20260616182627.2ebf3cfc-3a-amachhiw@linux.ibm.com>
+Date: Tue, 16 Jun 2026 18:39:11 +0530
+Message-ID: <8q8eeio8.ritesh.list@gmail.com>
+References: <20260609053327.61563-1-amachhiw@linux.ibm.com> <cxxqerzk.ritesh.list@gmail.com> <20260616161011.835c90f0-38-amachhiw@linux.ibm.com> <a4suelh6.ritesh.list@gmail.com> <20260616182627.2ebf3cfc-3a-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260614174756.170631-1-avkrasnov@rulkc.org>
 
-On Sun, Jun 14, 2026 at 08:47:56PM +0300, Arseniy Krasnov wrote:
->Logically it was based on TCP implementation, so make further support
->easier, rewrite it in the TCP way.
+Amit Machhiwal <amachhiw@linux.ibm.com> writes:
 
-Hi Arseniy, and thank you so much for the patch!
-
-I’d like to ask you to expand on the message a bit, especially to 
-explain why we’re making this change.
-
-In particular, I’d like to better understand whether this is just a 
-cosmetic change or if we’re fixing any issues (and if so, which ones), 
-so we can determine whether this patch should be backported to the 
-stable branches.
-
+> On 2026/06/16 05:38 PM, Ritesh Harjani wrote:
+>> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+>> 
+>> >> > diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+>> >> > index 3449dd2b577d..7472b9522f71 100644
+>> >> > --- a/arch/powerpc/include/asm/reg.h
+>> >> > +++ b/arch/powerpc/include/asm/reg.h
+>> >> > @@ -1356,6 +1356,7 @@
+>> >> >  #define PVR_ARCH_300	0x0f000005
+>> >> >  #define PVR_ARCH_31	0x0f000006
+>> >> >  #define PVR_ARCH_31_P11	0x0f000007
+>> >> > +#define PVR_ARCH_INVALID	0xffffffff
+>> >> 
+>> >> Logical processor version is defined as part of the PAPR spec. We should
+>> >> ensure that this invalid PVR is also documented in the PAPR spec.
+>> >> 
+>> >> If you have already taken care of that, then please confirm and feel free to add:
+>> >
+>> > Regarding the PAPR specification documentation: The PAPR spec documents
+>> > the valid Processor Version Register (PVR) values for each processor
+>> > generation (POWER8, POWER9, POWER10, POWER11, etc.). However, the
+>> > PVR_ARCH_INVALID value (0xffffffff) introduced in this patch series is a
+>> > KVM implementation detail used internally to mark invalid compatibility
+>> > mode requests - it's not an architectural value that would be defined in
+>> > PAPR itself.
+>> >
+>> > The validation logic and the use of PVR_ARCH_INVALID as a sentinel value
+>> > are documented in the kernel code and commit message.
+>> >
+>> 
+>> But that still worries me on what if PAPR wants to re-use this value for
+>> some other purpose in future. 
 >
->Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
->---
-> Changelog v1->v2:
-> * Rebase on last 'net-next'. Don't need 'skb_zcopy_set()' now - it was
->   already added.
-
-Ah, okay is net-next material, please use the net-next tag (ie. [PATCH 
-net-next v2]).
-
+> This is a valid concern about potential future conflicts with PAPR.
+> However, I'd like to point out that PAPR explicitly specifies:
 >
-> net/vmw_vsock/virtio_transport_common.c | 48 ++++++++++++-------------
-> 1 file changed, 23 insertions(+), 25 deletions(-)
+>   "The first byte of the logical processor version value shall be 0x0F."
 >
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index 09475007165b..787524b8cb44 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -328,38 +328,36 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
-> 	if (pkt_len == 0 && info->op == VIRTIO_VSOCK_OP_RW)
-> 		return pkt_len;
->
->-	if (info->msg) {
->-		/* If zerocopy is not enabled by 'setsockopt()', we behave as
->-		 * there is no MSG_ZEROCOPY flag set.
->+	if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
->+		/* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
->+		 * 'MSG_ZEROCOPY' flag handling here is based on the same flag
->+		 * handling from 'tcp_sendmsg_locked()'.
-> 		 */
->-		if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
->-			info->msg->msg_flags &= ~MSG_ZEROCOPY;
->+		if (info->msg->msg_ubuf) {
->+			uarg = info->msg->msg_ubuf;
->+			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
->+		} else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
->+			uarg = msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
->+						    NULL, false);
->+			if (!uarg) {
->+				virtio_transport_put_credit(vvs, pkt_len);
->+				return -ENOMEM;
->+			}
->
->-		if (info->msg->msg_flags & MSG_ZEROCOPY)
-> 			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
+> Since PVR_ARCH_INVALID (0xffffffff) has a first byte of 0xFF, it's
+> explicitly outside the valid PAPR-defined range for logical PVR values.
+> This means there shouldn't be any risk of future conflict with PAPR
+> specifications.
 >
 
-nit: we can remove this extra blank line.
+aah ok.. That make sense. Thanks for confirming that.
+Can we please update a small comment in the code and log this info,
+maybe something like:
 
-For the rest I can't see anything wrong, but a bit more context in the 
-commit would help me in the review.
+/*
+ * PAPR specifies that the first byte of a valid logical PVR value is
+ * 0x0f. 0xffffffff therefore lies permanently outside the PAPR-defined
+ * range and is safe to repurpose as a kernel-internal sentinel. KVM
+ * stores it in vc->arch_compat when userspace requests an unsupported
+ * compatibility mode (e.g. Power11 on a Power10 compat host);
+ * kvmppc_sanity_check() detects this and prevents the vCPU from running
+ * until a valid arch_compat is set.
+ */
+#define PVR_ARCH_INVALID      0xffffffff
 
-Thanks,
-Stefano
+
+-ritesh
 
