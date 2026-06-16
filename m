@@ -1,147 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E040C47884C
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 16:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A91F44CF44;
+	Tue, 16 Jun 2026 16:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628703; cv=none; b=VZaHnrfzwqgKYYdB8khClw9B+xjaWrwmisNynxGsuKw1/+fYSnxVAIzU93FLdpO6R77Y/oFdtcL0MJOHLqT9er/dQax+iOqcyxip4u2bMCGiDUSEwcj2onlu9e886BqkOU2V1T2dvW58eU4yLIcJBZZRxj8FJdho7WUjrqET/ts=
+	t=1781629082; cv=none; b=RzWvOobNcoAm72mC810cVoLiKUkOJ0Zt3yUtDI7dHhL1qF8NX3zJadGXeDYoIXfIFUPawy++O6VEREvy838RwTQqyrBOBHbMcLh/yLoLSTqHWYFE4O7j7h0J15IsYV53omyEex7Vibhq2s7gTxYR8XUz+7gNdMnZHemAagpqsJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628703; c=relaxed/simple;
-	bh=Kxn5M/7aXFMW75dhYOOhkf7y79XCez+uaidewunoxjM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZTzQ2ZjPVuxSO9PZA7SMO2g/eSSk6/vpN9R3GXEcbiTqIyX9Ow5B6pPJ55IknC0oDz+UjaxGNnUVnANK6i6BSUteRR5YCgvPbNk/CM2ZCs/1ouxYP5/rU+f4kopL8hjHCvshUH2pZyYrWJPTkv9G5uIm4Zlv37CWamhS38qjUlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M2nzjLcJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781629082; c=relaxed/simple;
+	bh=wn/2ujfr/jHhsKwv0Zn2QkKuofl2dHHExwz6xwOfQNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ae1ho+0oVhSF6/67Y3ab8zBMritTeqPOAm2uAUwVmaRVIk8iQuGjDcIXedUSfEr+HZQaLmVBC6fimFV3WZuV0qvr9YVwCgjbEAOABfHe/7YFCL2S7AJWmIMmLr1Z7Yx3kvx/MnUNGJ8oJVMr2vpWj5UTyM0Z22poujRCaENri7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=YoL6cN9G; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=bUvD3iJ6; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M2nzjLcJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FBC1F000E9;
-	Tue, 16 Jun 2026 16:51:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781628702;
-	bh=oODNAQZZY6LjoQySJ4fPZYmno90Q0v/5if8IorZAKXM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=M2nzjLcJ0lSJ+o9gxvmZ+hblvSERrle9HeSLlSsCo9KvOcUi5wQ/Kg1XR3tZTeC/h
-	 JxMwPEPXbPBWZBYxV5sH4sJQAGhIZX6ATdDIox7XRQzzokE+oDjn6luUo63A+mf6S5
-	 kKeoKlGB+frXG9/WI4PPObB927XE+19ssmc2RrOU7SRQrD9iX89PJqzQ81BjjWwdJ7
-	 hruJI6QLaIhyBPSSnvvMmnG+uQ/PhFvSrUJVpq58EnP2RYu6waTLvUZz+96Gd6W2s2
-	 U8A5YXGBrFW/fs1qMaH7Bz5Zf5v5xJ0HUn4ILeI9JQgHT/5+BKeBM3eo67WjHCDxVS
-	 k5oaZLf7WkhFw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4] KVM: PPC: Book3S HV: Validate arch_compat against
- host compatibility mode
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260616163405.96962-1-amachhiw@linux.ibm.com>
-References: <20260616163405.96962-1-amachhiw@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 16 Jun 2026 16:51:42 +0000
-Message-Id: <20260616165142.71FBC1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="YoL6cN9G";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="bUvD3iJ6"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 22A9E7A011F;
+	Tue, 16 Jun 2026 12:57:58 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Tue, 16 Jun 2026 12:57:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1781629077;
+	 x=1781715477; bh=U6PhZCkWwop6tnsk1DvzU5EQWzCq9NODMsKgi/jW+VI=; b=
+	YoL6cN9GnJUIW3bYL8JxTPZf4xdYYWGjHWiBxWzoOqWOc14nSB+Y1KjNzRMbC08k
+	8PsU5FoDrG3aGvQN+d2bWb7SfL5dFUVE5YDyFYydrQ6/c7eP8s+dE/3RFliNBzrO
+	VLr/kI28E/UNsZR2kn2HotPPCfsTv+j0RJGyfcpovbMxkh9xCLxhq4UtejJ9DBHQ
+	tYwl67AXjMuWdEZU0gTOQPcrfMiIs05HgvQfRXZGa/e5bytDuyuUnmFmLiph479C
+	2ihIq/eJ1MI0GBtEE03npkPqBup/xXzwjt4xuXcoh+A6Cptzd70KFU6ovn0r9abj
+	61nH7WB57/vuyA7kLV00bw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781629077; x=
+	1781715477; bh=U6PhZCkWwop6tnsk1DvzU5EQWzCq9NODMsKgi/jW+VI=; b=b
+	UvD3iJ6wfehBnHPUsm0ND1we8erWfIT2Jj0m8moJXiQWdyyCrXrEZZjALCyE/p7P
+	enusRlpqVTxoDMkvw28u4+MmAZAD3DEzFEzXcs2JuQZof2oT7H9+AtqlM3XIC1S/
+	G4KsndSauxTbuMTQsMNHEN1c7EmevV3FrcH9F3GIdhbqoywFTOfEX02qOsdpLGkJ
+	Qyl6Mtbsg1w2cqQodmSjN9snJ0a5ce50sg8f8UdLcjHA5GqVkVdSl+zpiTFwn7on
+	YY9jlp1dRPfys86mdHFijMyl0fvdvybDwMNThXdUYUs+Kk9UDUKz01dXI8v3K2Pn
+	vlXfs1ecMmbkG8MuDfuzA==
+X-ME-Sender: <xms:lIAxag_ZbtTX0w6DJiXFCfa6MOPkTyYvQtd0LjdpZze0S8359wRiNQ>
+    <xme:lIAxaqQiuFivQFSOVTnrAaQaEue11KusjWImRzcdsQGn2LEabVZzHMRysXgA682Ty
+    e2xBtst69Wu1WJQO1PQmvcuLKQXqncP0D_WydW6XQ1HTXoQMyej>
+X-ME-Received: <xmr:lIAxalSuQKMqcR0MynHO8pBVT-HJIIsw-znxIdGtRDFnGqwd5mxVN8sC32s>
+X-ME-Proxy-Cause: dmFkZTEFopXYsy8xZaAH+8f0cwfeiX+DYQqcwKjRzMDKFvxad9vlYWpc2gdhgdzRHWQwC+
+    vZ0CDLq+Ewip7HyTAEctGFAGcanIWV5MXfQFFxp25502BgTrRtym6aSaDb9xKwFLJbi6xl
+    JSzPr3iXTa6G/vDH0jMxl4IENnP8SzpcYCQ9YtQRnA2gOgK7f3qO0h5grsxdwECwPKvmMk
+    zPMX/YSrXmQ57fd0Lt7kV+RWPERuA9GwQMNkAzmTGT3zXDSEXS7auvk+ESbFOJ9EfjtHkL
+    77U/0a207XysP0r8vI+YyiGDGykvwL3htZUNjez1u6RHBLhiHi6S7YM764tGaym01lTKhc
+    fKbI9SaPjRrnAoBv6rY7kL/mFyqDYbcUSNtlYuW6Adiv52BbLmn+XxAmOsmGduvEFyIgnH
+    P/xKlhsSKrCWiQZFDCRQSItoi8OP9c2WqJ8dsOqRcV/pUAXBAgoFb2fNuoR3XRLNP/j7pZ
+    xHC+gnwcxgM2sBok+N04INcdYYxd2IbC54PTdQxIpwPPGU4Y00uD8Q3Cu/aAIVDoVKxYRL
+    hBFM8vIFIa8+XhCIE/3nY4dtzwERPUE67dsbDwMeBK+eWnw8rtA7c8asWjZ8Qo+zoqUobI
+    efpxUPZKZvAgVlAHoFbLwtQUPGGrJ9QFsnW+XnvqWU9iSMqKzg1U914bXOeg
+X-ME-Proxy: <xmx:lIAxam6DmFc3QrSh5IEym7aSF--QLmo_tySIjgLoffbWpHa3uBlQGA>
+    <xmx:lIAxaqXXBalFYLw69QPtaqGUypu4gPuw0gfaP8E0fpvQuBQvLUpyEA>
+    <xmx:lIAxas-NwWur3YBNyL8nXZptHcB4X1GYT_kFkrBbravmW8raqg5jwQ>
+    <xmx:lIAxaqp8lYAU84nJf9aSgvTLKRL1165nz9BCqaBcV0nDX5nD-GQSmQ>
+    <xmx:lYAxarC7VrUjZy0xg5NvuQAF8fqqotagPCS9bw1rJcD4RxvGkp-h1hnX>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 16 Jun 2026 12:57:55 -0400 (EDT)
+Date: Tue, 16 Jun 2026 10:57:54 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Chengwen Feng <fengchengwen@huawei.com>, helgaas@kernel.org,
+ wathsala.vithanage@arm.com, wei.huang2@amd.com, zhipingz@meta.com,
+ wangzhou1@hisilicon.com, wangyushan12@huawei.com, liuyonglong@huawei.com,
+ kvm@vger.kernel.org, linux-pci@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH v17 08/12] PCI/TPH: Add sysfs binary file to export CPU
+ to steering-tag mapping
+Message-ID: <20260616105754.784be22d@shazbot.org>
+In-Reply-To: <20260616144224.GB3577091@ziepe.ca>
+References: <20260616104621.41915-1-fengchengwen@huawei.com>
+	<20260616104621.41915-9-fengchengwen@huawei.com>
+	<20260616144224.GB3577091@ziepe.ca>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Setting an invalid arch_compat bypasses capability checks and pois=
-ons the shared vcore state, but only marks the calling vCPU as insane, allo=
-wing sibling vCPUs to exploit the invalid state.
-- [High] The patch breaks the KVM kernel build for BookE and non-Book3S Pow=
-erPC configurations by dereferencing an incomplete type `struct kvmppc_vcor=
-e`.
---
+On Tue, 16 Jun 2026 11:42:24 -0300
+Jason Gunthorpe <jgg@ziepe.ca> wrote:
 
-commit c3e328e2b42077592c9f8abacefc77f063b6a36c
-Author: Amit Machhiwal <amachhiw@linux.ibm.com>
+> On Tue, Jun 16, 2026 at 06:46:17PM +0800, Chengwen Feng wrote:
+> > Add per-device sysfs binary attribute tph_cpu_st to expose ACPI DSM CPU
+> > to steering-tag data to userspace, resolving the concern that VFIO should
+> > not host CPU-to-ST translation interfaces.
+> > 
+> > Follow PCI standard binattr framework: dynamic visible group, fixed-size
+> > 8-byte packed uapi entry, aligned offset read, root-only 0400 permission.
+> > Refactor duplicate ACPI DSM logic into shared tph_get_cpu_st_info helper.
+> > 
+> > ABI: /sys/bus/pci/devices/<BDF>/tph_cpu_st  
+> 
+> I'm sorry, I really dislike this :(
+> 
+> Structured binary sysfs attributes are pretty much against the rules,
+> I think using sysfs at all for this interface is a bad idea.
+> 
+> IMHO the VFIO version was much better.
 
-KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+There are some deficiencies in this implementation:
 
-This commit introduces a validation mechanism to detect and reject
-unsupported arch_compat values during guest initialization on PowerPC
-Book3S HV. It uses a sentinel value to mark mismatched compatibility
-configurations and updates kvmppc_sanity_check() to prevent the vCPU
-from running.
+ - The ABI needs to be documented in
+   Documentation/ABI/testing/sysfs-bus-pci
 
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3b..f9380ef657500 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-[ ... ]
-> @@ -446,7 +446,19 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *v=
-cpu, u32 arch_compat)
-[ ... ]
->  		case PVR_ARCH_31_P11:
-> +			/*
-> +			 * Need to check this for ISA 3.1, as Power10 and
-> +			 * Power11 share the same PCR. For any subsequent ISA
-> +			 * versions, this will be taken care of by the guest vs
-> +			 * host PCR comparison below.
-> +			 */
-> +			if (!cpu_has_feature(CPU_FTR_P11_PVR)) {
-> +				arch_compat =3D PVR_ARCH_INVALID;
-> +				goto out;
-> +			}
->  			guest_pcr_bit =3D PCR_ARCH_31;
->  			break;
->  		default:
-> @@ -469,6 +481,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vc=
-pu, u32 arch_compat)
->  			return -EINVAL;
->  	}
-> =20
-> +out:
->  	spin_lock(&vc->lock);
->  	vc->arch_compat =3D arch_compat;
->  	kvmhv_nestedv2_mark_dirty(vcpu, KVMPPC_GSID_LOGICAL_PVR);
-> @@ -479,7 +492,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vc=
-pu, u32 arch_compat)
->  	vc->pcr =3D (host_pcr_bit - guest_pcr_bit) | PCR_MASK;
->  	spin_unlock(&vc->lock);
-> =20
-> -	return 0;
-> +	return kvmppc_sanity_check(vcpu);
+ - The attribute is at the wrong place, all endpoints would just
+   replicate the root port values.  Place it at the root port.
 
-[Severity: High]
-If we set arch_compat to PVR_ARCH_INVALID and take the goto out path, does
-this bypass the guest_pcr_bit > host_pcr_bit check and persist the sentinel
-value into the shared vc->arch_compat?
+ - Corollary, is_visible should key on whether we have CPU to ST
+   mappings (_DSM) and the root port is a TPH completer (DevCap2), not
+   the TPH capabilities of an endpoint - a userspace driver can already
+   discover the endpoint TPH requester support.
 
-Since kvmppc_sanity_check() is only called for the current vcpu, could
-sibling vCPUs sharing the same vcore bypass the sanity check and run with
-this corrupted vcore state?
+ - The 8-byte aligned read requirement should be removed, perform a
+   sub-8-byte read from the slot offset.  !cpu_possible() should be
+   filled with zeros.  This allows userspace to dump the entire bin
+   file or read only a set of fields.
 
->  }
-> =20
->  static void kvmppc_dump_regs(struct kvm_vcpu *vcpu)
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 00302399fc37b..98de68379b18d 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -258,6 +258,10 @@ int kvmppc_sanity_check(struct kvm_vcpu *vcpu)
->  	if (!vcpu->arch.pvr)
->  		goto out;
-> =20
-> +	if (vcpu->arch.vcore &&
-> +		vcpu->arch.vcore->arch_compat =3D=3D PVR_ARCH_INVALID)
-> +		goto out;
-> +
+ - Probably cleaner to zero-initialize the buffer rather than memset()
+   and (redundant) reserved = 0.
 
-[Severity: High]
-Does this break the build for BookE and non-Book3S configurations?=20
+IMO, this implementation in sysfs more so proves that vfio is the wrong
+place for the interface.  vfio has a use case to consume STs, but it
+doesn't produce them or own any of the mechanism by which they're
+generated.  This proposal, with the above improvements, provides
+effectively an ioctl-like interface when using a properly offset and
+sized pread().
 
-kvmppc_sanity_check() is common code located in arch/powerpc/kvm/powerpc.c,
-but struct kvmppc_vcore is only defined in asm/kvm_book3s.h.
+The weak point is whether this bin attribute, exposing an array of
+structures, fits within the socially acceptable norms of sysfs.  There
+is some precedent for this, for example cc_settings_bin in infiniband,
+but these might also be considered legacy.  So I don't know if this
+sort of usage is a grey area that fits social norms or if it's promoting
+legacy use cases that we don't want to repeat.  Thanks,
 
-If a BookE environment compiles this, won't dereferencing
-vcpu->arch.vcore->arch_compat result in an incomplete type error?
-
->  	/* PAPR only works with book3s_64 */
->  	if ((vcpu->arch.cpu_type !=3D KVM_CPU_3S_64) && vcpu->arch.papr_enabled)
->  		goto out;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260616163405.9696=
-2-1-amachhiw@linux.ibm.com?part=3D1
+Alex
