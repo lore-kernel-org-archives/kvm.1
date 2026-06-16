@@ -1,94 +1,122 @@
-Received: from outbound.baidu.com (mx24.baidu.com [111.206.215.185])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id ACCAE2F7EE5;
-	Tue, 16 Jun 2026 11:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.206.215.185
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDBE35AC28
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 11:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781608683; cv=none; b=jUUmep2BU1ZALTmmQBt3KhfX2vIjtNbB6AWOGvpLpMJy1cUavkF2HhcNr1negPL0Itwm7xI5zItsPfc5TQs8qlw3xFDgTiZo6S5Jwe9bVlXCcHGevr3ejN9JUduYQpnWDG3W3zXMGoI64xntBtVlJkJKSJwbZo3B59uCi/+5ebo=
+	t=1781609341; cv=none; b=CjDbEvv6045YgenhYxHtrpEAEIdQ5CtdKu5PYM+E2f3oigdGvMOFU4YueYnCpQsf32otcO3xWnmNPJLw6eDP/3QaOOvsYLAmyCfEFyfg7UwLG7+Pxg5TItVhZMw6EbYJVw+8Rvt+bA9+vyjxSMOvGGLJH6WGTp2/PNp6eb3jzyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781608683; c=relaxed/simple;
-	bh=w7aOSUDcsoW4+9Vh7sLeCVE9kUvbkE1i9kM/ZTO+Ze0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oB/dsGFUD5oyQqWazw/pWgaY4asAKlen4K2xkq6JXfdcH7UUProK6u0rsnmMr3Udn7L2WBF9JRfZProBetHA8qXcbroz9IIpJ+m6NEPLK/C//7h4sk5tiG1LBNHbgLiNXU+9jjil0aKHhLtsri0mEO6Uncbcx4DUrlZGO/OfLrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=dMEe1NfE; arc=none smtp.client-ip=111.206.215.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+	s=arc-20240116; t=1781609341; c=relaxed/simple;
+	bh=1EzbNr1ZXdN6z+5Hqm5DaY/gwHHDl9++uGjSSbOc/Z0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=C0c+rGM+SwQVcg4g5FqT3LXjsGZnlHVHlKkA5tGxN0yvq2vmb5pzObwSXbuM84EVWBP1zL26ZkoEf/1Mfw194vAMExKbndfzMU3//hyKePCLfElUEwBi8CH8ReuEyowF7WhnaRkOLlnal7rdcUH8uGG2tyto82k9nKmfE7szk4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vk5tJtC9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="dMEe1NfE"
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.47
-From: lirongqing <lirongqing@baidu.com>
-To: Alex Williamson <alex@shazbot.org>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Li RongQing <lirongqing@baidu.com>
-Subject: [PATCH] vfio: Validate that bitmap.pgsize is a power-of-2 in vfio_iommu_type1_unmap_dma
-Date: Tue, 16 Jun 2026 19:17:33 +0800
-Message-ID: <20260616111733.1810-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vk5tJtC9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E45A1F000E9;
+	Tue, 16 Jun 2026 11:28:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781609339;
+	bh=BVJ5UzA+Kq0Nc+eTjvyn1SPWvxKjpb9Rc4Rw8EYRZXc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Vk5tJtC9M450+eq0YZ1XM8QW66uZ1ZjCbK7vxpxXFiLX/CFYr19qWf+eZqvM9j5BS
+	 A7rN6rxuqIxrwPmNWwpVYgBVata4ZQY1Wr4+OhaTFCIRuVsl2rgl92bTUSvC2+K79y
+	 NZmoqntOBxKoyXaBUhze9a3C2/sTTzgnu0YVYOPhYZwcO0z5An3sx5uwHCrswCeX4V
+	 xuG+/BjQ0SkfPvh5b8qqjZ/K8PbJOIVzraJDhXvI93QjtFOJUn61pTLdvKRhUpZqxc
+	 rcvvZIT3H2HUcPTXr57+GP0+uordWu9sElXMH46lyzEi2AaYQCT1bSkYOn+2127g/C
+	 2RavjJIJFsFag==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] vfio: Validate that bitmap.pgsize is a power-of-2 in
+ vfio_iommu_type1_unmap_dma
+Reply-To: sashiko-reviews@lists.linux.dev
+To: lirongqing <lirongqing@baidu.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260616111733.1810-1-lirongqing@baidu.com>
+References: <20260616111733.1810-1-lirongqing@baidu.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 16 Jun 2026 11:28:57 +0000
+Message-Id: <20260616112859.8E45A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: bjkjy-exc3.internal.baidu.com (172.31.50.47) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1781608664;
-	bh=9ZfPokjQBoHGHktv2Rix6dxHDuLHHI6yRcTSd4rmg34=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=dMEe1NfEJPjmvBkEt27khLsUCjq6+kdiNRL2WG5HI4vGV5xVvLZulLkzo+FjKF6SO
-	 XE7FmsUxv7/mUv8+7iCori6nwA30Lxt0pl/Dr/niQSZQeUs1cnBL3unTqJxSfdnCi8
-	 RsHhqAldJeZD9hY0/TjUSmU3wZghlJvu1XAfT0QeOE9v6VZG8Yj2dvX78wnxwETD3Z
-	 RFlkJ916FlxNE4NP/q+y6e4Ggr9rdAbvrxVIgC7EjkwzBVkW3DySEMhf2j0utHmN/L
-	 +zvFDYaU+rZ9Z6OahaIcUUFMj2goVDVlxh9pJTUKEidkBNO1rx+iwMRHaDBKEaw1oB
-	 lmI7ZQHaDkJWg==
 
-From: Li RongQing <lirongqing@baidu.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+
+Pre-existing issues:
+- [High] The patch correctly addresses undefined behavior by validating tha=
+t user-provided bitmap.pgsize is a power-of-2 before passing it to __ffs() =
+in vfio_iommu_type1_unmap_dma(). However, it completely misses identical vu=
+lnerabilities in vfio_iommu_type1_dirty_pages() where unvalidated user inpu=
+ts are also passed to bit-scanning functions.
+--
+
+commit 6fe55d8211a4934baec28340932ad6ce53984ed4
+Author: Li RongQing <lirongqing@baidu.com>
+
+vfio: Validate that bitmap.pgsize is a power-of-2 in vfio_iommu_type1_unmap=
+_dma
 
 In vfio_iommu_type1_unmap_dma(), the user-supplied bitmap.pgsize is
 passed directly to __ffs() without sufficient validation.
 
-If userspace passes bitmap.pgsize == 0, it triggers undefined behavior
-in __ffs(), resulting in an undefined return value. Furthermore, passing
-a non-power-of-2 value (e.g., 3 or 5) results in an incorrect pgshift
-value. In either case, the invalid pgshift miscalculates the shifted
-unmap size (unmap.size >> pgshift), which distorts the subsequent
-verify_bitmap_size() validation logic and allows inconsistent user inputs
-to bypass proper sanitization.
+> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_ty=
+pe1.c
+> index c8151ba54de33..b05fde8d87c65 100644
+> --- a/drivers/vfio/vfio_iommu_type1.c
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+[ ... ]
+> @@ -2949,6 +2950,9 @@ static int vfio_iommu_type1_unmap_dma(struct vfio_i=
+ommu *iommu,
+>  		if (!access_ok((void __user *)bitmap.data, bitmap.size))
+>  			return -EINVAL;
+> =20
+> +		if (unlikely(!is_power_of_2(bitmap.pgsize)))
+> +			return -EINVAL;
+> +
 
-Fix this by introducing an explicit is_power_of_2() check on bitmap.pgsize
-before processing. This strictly ensures the page size conforms to valid
-IOMMU page size semantics while preventing any downstream arithmetic
-anomalies caused by zero or non-power-of-2 inputs.
+[Severity: High]
+This is a pre-existing issue, but while this check addresses the problem
+here, does the exact same problem exist in vfio_iommu_type1_dirty_pages()
+in the same file?
 
-Fixes: 331e33d2960c8 ("vfio iommu: Update UNMAP_DMA ioctl to get dirty bitmap before unmap")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
----
- drivers/vfio/vfio_iommu_type1.c | 4 ++++
- 1 file changed, 4 insertions(+)
+If userspace passes dirty.flags =3D=3D 0, the invalid flag check is bypasse=
+d,
+and both macros are invoked with 0, which triggers undefined behavior:
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index c8151ba..b05fde8 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -38,6 +38,7 @@
- #include <linux/workqueue.h>
- #include <linux/mm_inline.h>
- #include <linux/overflow.h>
-+#include <linux/log2.h>
- #include "vfio.h"
- 
- #define DRIVER_VERSION  "0.2"
-@@ -2949,6 +2950,9 @@ static int vfio_iommu_type1_unmap_dma(struct vfio_iommu *iommu,
- 		if (!access_ok((void __user *)bitmap.data, bitmap.size))
- 			return -EINVAL;
- 
-+		if (unlikely(!is_power_of_2(bitmap.pgsize)))
-+			return -EINVAL;
-+
- 		pgshift = __ffs(bitmap.pgsize);
- 		ret = verify_bitmap_size(unmap.size >> pgshift,
- 					 bitmap.size);
--- 
-2.9.4
+drivers/vfio/vfio_iommu_type1.c:vfio_iommu_type1_dirty_pages() {
+    ...
+	/* only one flag should be set at a time */
+	if (__ffs(dirty.flags) !=3D __fls(dirty.flags))
+		return -EINVAL;
+    ...
+}
 
+Similarly, when VFIO_IOMMU_DIRTY_PAGES_FLAG_GET_BITMAP is requested,
+range.bitmap.pgsize is passed to __ffs() without checking for 0 or
+non-power-of-2:
+
+drivers/vfio/vfio_iommu_type1.c:vfio_iommu_type1_dirty_pages() {
+    ...
+		pgshift =3D __ffs(range.bitmap.pgsize);
+		ret =3D verify_bitmap_size(size >> pgshift,
+					 range.bitmap.size);
+    ...
+}
+
+Since providing 0 triggers undefined behavior, and a non-power-of-2 value
+distorts the subsequent verify_bitmap_size() logic exactly as described in
+the commit message, would it be better to add the same validation to
+vfio_iommu_type1_dirty_pages() as well?
+
+>  		pgshift =3D __ffs(bitmap.pgsize);
+>  		ret =3D verify_bitmap_size(unmap.size >> pgshift,
+>  					 bitmap.size);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260616111733.1810=
+-1-lirongqing@baidu.com?part=3D1
