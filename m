@@ -1,104 +1,82 @@
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A429A3B42E0;
-	Tue, 16 Jun 2026 09:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AAC40FDB7
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781600881; cv=none; b=oNL25Acp1bBeLRZrOPzuvDTEO4hvDfQNYqUx247lhad4vleJuh+Af+5d1sNTYXNHWaQmOwuB9ZQJOqyKul4aSgVYw51uc7RQxgfigmPHCbPPmc1iqQgsdsR09GbUPSQlG9v2+tAfUBWAZAJbasY0Q1aYt4DJnWEm9C51mNp9oZs=
+	t=1781601077; cv=none; b=HJno/ODsUPg/h3HSpn9/rbf7888dYzLkiX+J2i7z+f0CNyIQ/JdD7/qpPwD0+bGXNQI4SCZwb+4kcJnqRbYv9R7EG9EVWLiBDbt4Hd1zXuTqNH0UKEO8mAejWCqa/U6J+AVlZuh23bpZTZWzWbc4vyO0tEBmloTT8Rd76AJmQqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781600881; c=relaxed/simple;
-	bh=s4SMwKlC/vOKKlZaGssZALB68bILzCaOblVSJpSShi4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=QoZ8rfxdRCagwyamhQvt+P3+XHRehoPc2pqC4wAXUgPVafkMGMJN2S5hGbaqWK9DkGM7ESRrQjrxNYuDyJmaK1Va14RQjg6kole5mRMb/57xOPNeObSpfn1+xzF0qK0zj8rdRlzdQFfnxGFbcRlOWt54d+s+SjRe2jwH76IMOEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=ptQ3lVuP; arc=none smtp.client-ip=113.46.200.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1781601077; c=relaxed/simple;
+	bh=l8LFczawyIL2hbgxZtzJHNxTG99jaXgG5UZqxPKgfGY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XTR1o4LEF6qfeIjZFjAah3FO02DbM+BjdLd1MY87inBYZeQOn9b8r8eUChsuz8Ab4VlkAlGHyPUpCopRVyJTydbe1pBmriD1xQYhZVKiTONX03YM6EA6EGcJbby9aX96rsnL0dQMCj7Sr48DhImINWNnbnxOdazVOxCxX6TUHEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/R4DtVn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="ptQ3lVuP"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=sU3QkWiFrN4SZorLI8GgUb3+KhkdTqA+waJhyvDUrRY=;
-	b=ptQ3lVuPq4HoFoxQoiDf81+5iqfP5Xi9RbH0Mjcou6X98sDc9Nc6dVXQKiJQlcbUwpkUzFi8+
-	vowuf4jlqCC/8z8m/3YdsDMiWEFdTSsI9S5uau1II6Obp9meNJfyS9gpltVfJ2rPdgG9HOzvZIq
-	VXJXF4bKX8ns5TqH2ovoIjY=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4gfgt10GB9z1K9D8;
-	Tue, 16 Jun 2026 16:59:53 +0800 (CST)
-Received: from kwepemo100012.china.huawei.com (unknown [7.202.195.139])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9B03A405D2;
-	Tue, 16 Jun 2026 17:07:49 +0800 (CST)
-Received: from [10.67.120.222] (10.67.120.222) by
- kwepemo100012.china.huawei.com (7.202.195.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 16 Jun 2026 17:07:48 +0800
-Message-ID: <df30b9e0-6938-47f5-bb5d-5b1e67c8879c@huawei.com>
-Date: Tue, 16 Jun 2026 17:07:48 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/R4DtVn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB12B1F000E9;
+	Tue, 16 Jun 2026 09:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781601076;
+	bh=jSp5eHZidh0sMbQP/hzUILYCljQpS0lv/q9x85VHmCI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Q/R4DtVncvZSGD8I7IQGl/EA5dbta+qfAhUx0vNsUvZxWa4QWG/v9I3++pR3k/AHG
+	 5bUyYZZbmk8A3wRVJetVx+yRG16+EiiVD6ToHhC0UVtkm6IrAxjJfu4EKcC6i1nlit
+	 zB0vy8a5PxwPbPUG50bPUuUpatcVPWPma3EidU0qnNz9pr7ayxBjJXWhurdSl1l5bz
+	 XJhEWxAeSo3y4XO8toPCZuyd89/Iji5trGvF4FeUBK/zYDGVv4QuEBDTYuecz/MnyJ
+	 IC8jIeuIprPcRwtKJkFfyXj9djwaVNvz3dQzhOYvBA2wWwneUKHrNV+bYZBR42ZBX9
+	 3mH6chX35bpPg==
+Date: Tue, 16 Jun 2026 10:11:11 +0100
+From: Will Deacon <will@kernel.org>
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: julien.thierry.kdev@gmail.com, maz@kernel.org, oupton@kernel.org,
+	jean-philippe@linaro.org, andre.przywara@arm.com,
+	suzuki.poulose@arm.com, kvm@vger.kernel.org
+Subject: Re: [PATCH kvmtool 0/6] x86 compilation fixes and arm64 PMU
+ improvements
+Message-ID: <ajETL4tbLa_3WT6I@willie-the-truck>
+References: <20260323150221.49256-1-alexandru.elisei@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 11/20] KVM: arm64: Enforce PMU event filter at
- vcpu_load()
-To: Colton Lewis <coltonlewis@google.com>, <kvm@vger.kernel.org>
-CC: Alexandru Elisei <alexandru.elisei@arm.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Russell King
-	<linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, Will
- Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton
-	<oliver.upton@linux.dev>, Mingwei Zhang <mizhang@google.com>, Joey Gouly
-	<joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
-	<yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>, Shuah Khan
-	<shuah@kernel.org>, Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	James Clark <james.clark@linaro.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<kvmarm@lists.linux.dev>, <linux-perf-users@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, wangyushan <wangyushan12@huawei.com>,
-	<fanghao11@huawei.com>, Zhou Wang <wangzhou1@hisilicon.com>,
-	<prime.zeng@hisilicon.com>, <xuwei5@huawei.com>
-References: <20260504211813.1804997-1-coltonlewis@google.com>
- <20260504211813.1804997-12-coltonlewis@google.com>
-From: wuyifan <wuyifan50@huawei.com>
-In-Reply-To: <20260504211813.1804997-12-coltonlewis@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemo100012.china.huawei.com (7.202.195.139)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260323150221.49256-1-alexandru.elisei@arm.com>
 
-Hi Colton,
+Hey Alexandru,
 
-On 5/5/2026 5:18 AM, Colton Lewis wrote:
-> +	for_each_set_bit(i, &guest_counters, ARMPMU_MAX_HWEVENTS) {
-> +		if (i == ARMV8_PMU_CYCLE_IDX) {
-> +			val = __vcpu_sys_reg(vcpu, PMCCFILTR_EL0);
-> +			evsel = ARMV8_PMUV3_PERFCTR_CPU_CYCLES;
-> +		} else {
-> +			val = __vcpu_sys_reg(vcpu, PMEVTYPER0_EL0 + i);
-> +			evsel = val & kvm_pmu_event_mask(vcpu->kvm);
-> +		}
-> +
-> +		guest_include_el2 = (val & ARMV8_PMU_INCLUDE_EL2);
-> +		val &= ~evtyper_clr;
-> +
-> +		if (unlikely(is_hyp_ctxt(vcpu)) && guest_include_el2)
-> +			val &= ~ARMV8_PMU_EXCLUDE_EL1;
-> +
-> +		if (vcpu->kvm->arch.pmu_filter &&
-> +		    !test_bit(evsel, vcpu->kvm->arch.pmu_filter))
-> +			val |= evtyper_set;
-> +
-> +		if (i == ARMV8_PMU_CYCLE_IDX) {
-> +			write_sysreg(val, pmccntr_el0);
-This should be pmccfiltr_el0.
-Writing the filter bits to pmccntr_el0 would corrupt the cycle count value.
-> +		} else {
-> +			write_sysreg(i, pmselr_el0);
-> +			write_sysreg(val, pmxevtyper_el0);
-> +		}
-> +	}
-> +}
-Thanks,
-Yifan
+On Mon, Mar 23, 2026 at 03:02:15PM +0000, Alexandru Elisei wrote:
+> The first two patches fix the following compilation errors on x86 when
+> using gcc 15.2.1:
+> 
+> disk/core.c: In function ‘disk_img_name_parser’:
+> disk/core.c:27:21: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
+>    27 |                 sep = strstr(arg, ":");
+>       |                     ^
+> disk/core.c:39:21: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
+>    39 |                 sep = strstr(cur, ",");
+>       |                     ^
+> virtio/9p.c: In function ‘virtio_9p_rootdir_parser’:
+> virtio/9p.c:1503:18: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
+>  1503 |         tag_name = strstr(arg, ",");
+>       |                  ^
+> 
+> I couldn't reproduce the errors on arm64 using aarch64-linux-gnu-gcc 15.1.0
+> and 14.2.0. I tried doing make with V=1 and it looked to me like kvmtool
+> uses the same flags on x86 as on arm64, so I assumed it's because of the
+> difference in compilers and I didn't dig further.
+> 
+> The remaining of the patches are there to improve PMU initialisation and
+> error reporting.
+
+Do you plan to post a v2 of these? I just ran into the 'const' issue
+myself, so I'd love to see this stuff land after addressing the handful
+of review comments I left on this version.
+
+Cheers,
+
+Will
