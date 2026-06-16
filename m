@@ -1,183 +1,151 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD8F47B420
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 18:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8133CFF55
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 18:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634604; cv=none; b=iJIJ/IvyXtMpenSfOMaBdw2kmWR2BAgT3LQgVtStlU9bmadz7eq5YE3EcUbeH3MRb7eYJgoOZVDW0KxewoYAT0O2IKHWqFsETb9bbE9BGNTDreLCoXWZSZmIchJSgmLloCQalrzpcAtRoKFZOHMCxwXUajzvt2LPor/0UuPeQBU=
+	t=1781635636; cv=none; b=ULhjTMp9ciP+vXlVph0/KlsUKB60klOrASppTYPcLpiFOwifNwvO0rq5LBZ6sVpl5MHrXTuNvWMTygp1Q57MuPHldAYfYRBJwwDwH5t5T//XzuhmouFaFdJcGrzeYHF9e43uwJJs+SskXg67bbBTSCKuqzDKmyjsUGMbXtTTyEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634604; c=relaxed/simple;
-	bh=WcM56KEMBI/eo4oA+VeNcao2vPW2ZNhU0wR6yYCjGxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tQlCpHZOrmfI49VxiRq3LCJedsQezHP0Gky+qUIWuEsdCUdSR5iVG+7gmv/rlhmedXzppW9meN1YzqYP1Iqny9JS2QQd0UA2l0OxNjo7umeM3TXaF1dn9rITdKy0j8q5/YCPHrGNCg96juw1SjDvFeKRw+naPOSIAsixylMrD2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S1d6Jqud; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1781635636; c=relaxed/simple;
+	bh=buTnY0ETqHFz9mHm8vPYqufrzuCw85DNR5Yn8mLP9Ew=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=YV7Wsh7td8XNvce6aLKb9ztevD6yc9Pmas+Go3D5fzv/g5nSRb/s20zyVN/CznwbxKsdGh4CfehNC383ZWBNV3enzSx62aJnuBE+f1sHIxoDnMGVkOndjAnjftmRmSQjZ+Nrq5JKHfJfjDgwVeG5fWu/cloUJTFppUK0RAmooyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mj65D5d2; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S1d6Jqud"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2bf2d865383so8365ad.1
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 11:30:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mj65D5d2"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8423f6247c6so5530109b3a.3
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 11:47:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781634602; x=1782239402; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cX4ssr4Y9/OOfcYZ2FcReQvMLH2Gq4SbTEa5005JITE=;
-        b=S1d6JqudcpXzC24uVzxdH/F6Vj9Zec3Ltpum5nyxSqTBtN6c1Haw8md7MKKAWoFkuD
-         Zv+4H0H96rgHIAyOj8PIaDxqPc58BN8bT4PfnHEVzoMOsRC4urleZYF/E/F4JUngmYj/
-         Az//LL6gznL7FGaiD7mSu6P5GDNzRrVvHQhpzISJb6REbdFpladGswGIboOb0ZkXlElj
-         0+lJy59O8QOCvfOuAUS6+20nrHc/vGymKI8OdSF1DOAQWAmrXuF5SB5DeoMpw+IU8hLl
-         ip0Ot8eBYSItNRcVG4HBaxrf0jOI0HfCynBnkAkyJtKX3z9byS6sp9GCf1JNDSTdJyOP
-         akow==
+        d=google.com; s=20251104; t=1781635635; x=1782240435; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vkLeRGdGFIEMQT4xMcSv70D3LKPlWrgZN2ISeIkos5o=;
+        b=Mj65D5d2zuNtvfOZkKaL/p6IjohfsAHm2FzVwXxoeRBz55U8una98YLIEjdIHxHqSq
+         5jjyFW3fPUk38uRTk8oyLudDnOtaOAw14w139RnKDApyKr2llTFf5UVXUtLMfDeN7TB3
+         bMYgmuT2o70QM8uv++6vY//LuFQClcS2MpdCbAnbRwGgWqbIToMaMddLYmUS55EiyIRg
+         wqe4lOpV4111vL6J3GhGBBBHYA5gvV7ZpDhPjsM162t5ruqg/hvMVCv8nq/S8VDCNoQt
+         2f/sjvnK/z42HyYJ8eVPtC88hrLPGLi/XaWqHY1sqrcfxNztaSRhE+6KmntrfxTMOpzY
+         +t4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781634602; x=1782239402;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cX4ssr4Y9/OOfcYZ2FcReQvMLH2Gq4SbTEa5005JITE=;
-        b=rBJFFAKQPd5jpyZgzMfLYrHa7Yg6U1UIJyXlf8awkMRnvGWiEoIQ3WlvTBfnSW52jB
-         s0pSJBYoeK4hkGUt+2BZ4bvbRsEgxq5lL7VChj3YDstL6SErHxXI1So0KL6nLv+yBbRc
-         c+GanhARf/ffzvwr9V6gQ+ZRaiuagMaCG54Xr6NbPnNPqsobwvCR06Aqx8nYwIEiugYC
-         Hd7Yeb7vWzzJadivbwnea5ZjivBZg88FQGBdRadGhADGWKMzwBYfvWS7zRSKpnR0HTCF
-         /rNoMKqCnYLDR5z88rVjZifuscY/+KkAQUuX04vTIgCszDDg9yVtwqN5o32gDsUAPXIG
-         QWiA==
-X-Forwarded-Encrypted: i=1; AFNElJ+WOo02c8sk3mjjiM68PsjOMJ/m+Rv2HcM98lj7JBobuUAlqAvam0d0qnAgeCH8Rtj0O/s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxT+UVfIqVa/I7CL7I0p8nnYjtCuJTr2jg8yXlLN5rCLRQ73dg6
-	mPzv+TheFLDxHm905Kgb852dAf+8X31SrKLW6eFT0GxNrpvw4qxMHGuflVfyWlZQIQ==
-X-Gm-Gg: AfdE7cnsOEZu8lM/i2uffH3s8lyJc1B0bSB3waeRZsZqKBjN5SMX+ETKTnwAfkKUvwM
-	5Y18ukl5yrn8Svuq/PM4HQpJ3+7i1gP+CDs3bfa2aZi7XfnJfyd6OJQM/ArCIJidh45U8QeYzPq
-	v0FsplYY1K3XScmEAo6DPi+QvZeM5M5GwityCSPqww6bwAzQplf355QnKInjLVYGXB7yCEnWK8a
-	1vsit1k/Vp6iVGvrQrrC4co+RQlA8eDJqI6hY62KeMlYZKWzF13e7MViC8KJuRkfCF+aTJjg3JI
-	sK/grLrdGZuxt1oKHSwvp271XtQqzisyfo0QxAznTzs2mFiIXKaik42pw+nKeNF/yOL0ER+Wsro
-	y7NEUQhQemgggk0YbDY2D/INluOH7B6/9WAjRXxSBzLMYj0bSAoz+TRaU1tG3wnWF89+I+Jl1m3
-	U0ax1au1L7egv2REOBer6FfY6Z2fmESLo4Pwepe1BbbIHnM4WX7uHWH/Ek4g==
-X-Received: by 2002:a17:902:ce91:b0:2bd:7bec:f0e6 with SMTP id d9443c01a7336-2c6bbc6030fmr270055ad.1.1781634602099;
-        Tue, 16 Jun 2026 11:30:02 -0700 (PDT)
-Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521aa047sm4617808a91.3.2026.06.16.11.30.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 11:30:01 -0700 (PDT)
-Date: Tue, 16 Jun 2026 11:29:56 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, kvm-riscv@lists.infradead.org, pbonzini@redhat.com, 
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
-	anup@brainfault.org, atish.patra@linux.dev, zhaotianrui@loongson.cn, 
-	maobibo@loongson.cn, chenhuacai@kernel.org, maz@kernel.org, oliver.upton@linux.dev, 
-	ajones@ventanamicro.com
-Subject: Re: [PATCH v4 1/9] KVM: selftest: Create KVM selftest runner
-Message-ID: <20260616175210.GA1675268.vipinsh@google.com>
-References: <20260331194202.1722082-1-vipinsh@google.com>
- <20260331194202.1722082-2-vipinsh@google.com>
- <CAEvNRgGrPKBXh=VA3QBLJOczKRpMOB4nDmZL0XRwV6B3PT_7+Q@mail.gmail.com>
- <aisHySKe0PwM5DSg@google.com>
- <CAEvNRgE-qt8DAjOeE5ANpXzrgEKs+2_wh4YSmY=pe6krngBXqQ@mail.gmail.com>
- <aitbveI2Sdx4s4BP@google.com>
- <CAEvNRgFLnGkqvvks3joAwPjqLz=ATmqiS0UWk71g+YEsxNsfsg@mail.gmail.com>
- <aiycmwMbhWuYghJh@google.com>
- <CAEvNRgGkjcVN80W7cNd1-tEUXAfnFXEekokh_VbMDb9XdecVVQ@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1781635635; x=1782240435;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vkLeRGdGFIEMQT4xMcSv70D3LKPlWrgZN2ISeIkos5o=;
+        b=jPvPHXPu1BmgTVlh6FlB4Q/eDZkAunZnfNNg2r3WQf6gkJ9H4rLNcqKduoBMVKV1m9
+         e7as8la3ScM9HwM12jLaHR9BMNrdHffv7eYIO6aEjDUcUMqGlzLNDl8YOA6uly3wdpF8
+         g7x03+w3Lu7tS0dEjfmBtJ8zgJy49cGltN6cKuCIqVU36KCkft+Mo5QXfzCu9txc0eAg
+         VFYEPGxoFpZObLW6LtLtZNgwEvA0p2SZ/lZ5P7sZKVNOO9ve1EPyylcfq58U1Qua4/Qq
+         ofAvYTrizJS+uNy9o8MpYt+5k7+nPTWjMCgHJsI11S3eEbF/dDMwrPhqUzY1yuH/zuE2
+         q6cQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+j1zkqMYoQ3JdbH16AcPZ0yq68ouUTJg1GFfnmnzrR1nJocq7fQ8NyfZ5WN9lk7S8NbpY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHjIwf7EXwJv/4Jc+74u4StC6lwZGej8LV9DST4SSiVv2KlJpy
+	pVWk+NwXezkSVE5B29lIvZtYEaw3wmCEhxrNRhAM2XrYCvdKW2sMyDZhY5lThzRTGqgLfBr7SLH
+	Sr2ZedA==
+X-Received: from pfjc12.prod.google.com ([2002:a05:6a00:8c:b0:82f:6a26:5f78])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3cd2:b0:842:6849:2192
+ with SMTP id d2e1a72fcca58-8452459cb0fmr338659b3a.42.1781635634170; Tue, 16
+ Jun 2026 11:47:14 -0700 (PDT)
+Date: Tue, 16 Jun 2026 11:47:13 -0700
+In-Reply-To: <20260521-tdx-selftests-v13-v13-21-6983ae4c3a4d@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEvNRgGkjcVN80W7cNd1-tEUXAfnFXEekokh_VbMDb9XdecVVQ@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com> <20260521-tdx-selftests-v13-v13-21-6983ae4c3a4d@google.com>
+Message-ID: <ajGaMb6Lrk3OS8B4@google.com>
+Subject: Re: [PATCH  v13 21/22] KVM: selftests: Add ucall support for TDX
+From: Sean Christopherson <seanjc@google.com>
+To: Lisa Wang <wyihan@google.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jun 16, 2026 at 09:15:24AM -0700, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> 
-> > On Fri, Jun 12, 2026, Ackerley Tng wrote:
-> >> Sean Christopherson <seanjc@google.com> writes:
-> >>
-> >> > On Thu, Jun 11, 2026, Ackerley Tng wrote:
-> >> >> Sean Christopherson <seanjc@google.com> writes:
-> >> >>
-> >> >> > On Wed, Jun 10, 2026, Ackerley Tng wrote:
-> >> >> >> Vipin Sharma <vipinsh@google.com> writes:
-> >> >> >> My (future) use case is that with hugepages, I want to run something
-> >> >> >> like
-> >> >> >>
-> >> >> >>   ./guest_memfd_test --order=0
-> >> >> >>   ./guest_memfd_test --order=9
-> >> >> >>   ./guest_memfd_test --order=18
-> >> >> >>
-> >> >> >> And 0, 9 and 18 are the supported HugeTLB orders on the machine being
-> >> >> >> tested. I'd like to iterate over supported HugeTLB orders at runner
-> >> >> >> runtime instead of at build time.
-> >> >> >
-> >> >> > No.  The right way to handle this is to define testcases for the "interesting"
-> >> >> > sizes, and then rely on the test itself to SKIP if the size is unsupported.  This
-> >> >> > is no different than a test that requires EPT, or nested VMX, or nested SVM, etc.
-> >> >>
-> >> >> That should work too. So at build time I'd make it define all the
-> >> >> possible HugeTLB sizes on every arch, and then skip as necessary.
-> >> >
-> >> > Not necessarily at "build time", the testcases can also come from your local
-> >> > environment.
-> >> >
-> >> >> Why though, why not find the supported sizes at runtime?
-> >> >
-> >> > You can find the supported sizes at runtime, just not in the test runner.  I want
-> >> > the runner itself to be largely oblivious to what's its running.  Disallowing
-> >> > more or less _any_ test specific configuration/setup in the runner is the only
-> >> > way I see of keeping the runner strictly focused on running tests/testcases.
-> >>
-> >> The runner should 100% focus on running tests, I think it's hard for the
-> >> runner to avoid the process of test discovery though.
-> >>
-> >> The current test discovery process is to go down the tree of directories
-> >> and find files, 1 file == 1 testcase. Each file should (statically)
-> >> contain a single command.
-> >>
-> >> Since you're not opposed to runtime discovery of test cases, how about
-> >> something like:
-> >>
-> >>     if the test case file has executable permissions
-> >>         execute it and get back a list of test cases to be run.
-> >
-> > I don't hate it, but I still dislike the idea.  I am all in favor of runtime
-> > *discovery* of testcases, but I am staunchly opposed to runtime *definition* of
-> > testcases.
+On Thu, May 21, 2026, Lisa Wang wrote:
+> diff --git a/tools/testing/selftests/kvm/lib/x86/ucall.c b/tools/testing/selftests/kvm/lib/x86/ucall.c
+> index e7dd5791959b..c8e3418d53af 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/ucall.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/ucall.c
+> @@ -5,11 +5,34 @@
+>   * Copyright (C) 2018, Red Hat, Inc.
+>   */
+>  #include "kvm_util.h"
+> +#include "tdx/tdx.h"
+> +#include "tdx/tdx_util.h"
+>  
+>  #define UCALL_PIO_PORT ((u16)0x1000)
+>  
+> +static u8 vm_type;
+> +static gpa_t host_ucall_mmio_gpa;
+> +static gpa_t ucall_mmio_gpa;
+> +
+> +void ucall_arch_init(struct kvm_vm *vm, gpa_t mmio_gpa)
 
-I don't think we should support this kind of usecase. Our goal is to
-keep test runner as simple as possible. This will add one extra parsing
-logic in the runner and also add more wrapper scripts in kvm selftests
-for tests to create their own dynamic variants.
+I think we should use an x86-specific GPA, not the first address past memslot0.
+Unlike other architectures, x86 has a nice swath of addresses that are pretty
+much guaranteed to be unused, thanks to selftests creating a local APIC by default.
+On the other hand, the chances of a collision with a memslot just after memslot0
+are decidedly non-zero.
 
-If dynamic variation is needed, then there is one option in this runner.
-As testcases are executed by runner in a shell environment. This
-basically means the test will run as a shell script and provide variable
-expansion or call other terminal commands if present. One can define
-interesting configuration which can be dynamic based on the host in a
-testcase file. For example if one writes a test command as:
+Note, because CoCo VMS don't support read-only memslots, the TODO in __vm_create()
+can't be resolved for TDX using the suggested shenanigans.
 
-  dirty_log_perf_test -x 1 -v $(nproc) -i $(( (RANDOM % 5) + 2 ))
+I vote for either the I/O APIC (0xfec00000) or HPET(0xfed00000).  We *know* TDX
+doesn't support an in-kernel I/O APIC, and the odds of KVM selftests ever
+implementing an I/O APIC are basically nil.  Ditto for the HPET.
 
-This will run above dirty_log_perf_test with the number of vCPUs equal
-to the host CPU count and some randomly selected iteration count between
-2 to 6.
+> +{
+> +	vm_type = vm->type;
+> +	sync_global_to_guest(vm, vm_type);
+> +
+> +	if (is_tdx_vm(vm)) {
+> +		host_ucall_mmio_gpa = ucall_mmio_gpa = mmio_gpa;
 
-This way one can provide interesting configurations which can test max
-of a system in a separate test directory which can be invoked when
-needed.
+Drop host_ucall_mmio_gpa entirely.  "host GPA" is rather nonsensical, and KVM is
+responsible for stripping the shared bit.  You can actually drop ucall_mmio_gpa
+as well if we go with a hardcoded magic address.
 
-For predefined input values of a test, either one can write multiple
-*.test files or use kselftest harness and add kselftest API based test
-cases. Both option will still require that test should SKIP if something
-needed is not present on the host as mentioned below.
+> +		ucall_mmio_gpa |= vm->arch.s_bit;
+> +		sync_global_to_guest(vm, ucall_mmio_gpa);
+> +	}
+> +}
+> +
+>  void ucall_arch_do_ucall(gva_t uc)
+>  {
+> +	if (vm_type == KVM_X86_TDX_VM) {
+> +		tdx_mmio_write(ucall_mmio_gpa, MMIO_SIZE_8B, uc);
 
-> >
-> > If I define guest_memfd testcases for 4KiB, 2MiB, and 1GiB pages, but the
-> > underlying system only support 4KiB and 2MiB, then I want to see a SKIP for the
-> > 1GiB testcase.  If the definition is dynamic, then the 1GiB testcase simply won't
-> > exist.
-> >
-> 
-> Seeing the SKIP is a huge advantage over dynamic definition. Thanks for
-> explaining. Makes a lot of sense now to have everything defined statically.
-> 
+s/MMIO_SIZE_8B/sizeof(hva_t), because what you're writing is the address of a
+pointer in the host virtual address space.
 
+> +		return;
+> +	}
+> +
+>  	/*
+>  	 * FIXME: Revert this hack (the entire commit that added it) once nVMX
+>  	 * preserves L2 GPRs across a nested VM-Exit.  If a ucall from L2, e.g.
+> @@ -46,6 +69,13 @@ void *ucall_arch_get_ucall(struct kvm_vcpu *vcpu)
+>  {
+>  	struct kvm_run *run = vcpu->run;
+>  
+> +	if (vm_type == KVM_X86_TDX_VM) {
+> +		if (run->exit_reason == KVM_EXIT_MMIO &&
+> +		    run->mmio.phys_addr == host_ucall_mmio_gpa &&
+> +		    run->mmio.len == MMIO_SIZE_8B && run->mmio.is_write)
+> +			return (void *)(*((u64 *)run->mmio.data));
+
+This needs to return NULL.  Either that or make this an if-elif.  Falling
+through to the normal KVM_EXIT_IO check is not what we want.
