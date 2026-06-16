@@ -1,63 +1,63 @@
 Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6512A3D6CC3
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 05:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126423DA5B1
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 06:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781589511; cv=none; b=Z5OQzYKIyoCsTQFZssL0deTmXrDJF6EpguRxpESvecUHFgLPpAU+sT2SKUL+w+d+PvrLyqdrssMftQtosdWHqj7EOu2DRiodf5fGv7/+dsnu7eQ7B4kHYp/B/gCpTf6mSf6BiGeKGHlnBEOwV2FPv5pjXjaTNAWueq9HyAHIcZM=
+	t=1781589736; cv=none; b=Y8yhq910tLCLtguODLNJS/S5xfhmNPZUbp6sHQcx43sDZm/ODe6MpwD9RuKM6I64htmhWHd3PDCqiAcKnHv3FFo/VrF8YG21OX7RXFqA9JNSrdFmyOHomKgJ0o+tGlJb3I+l1dbWezmlTHys3SfyrKKb5Zt0Tku/dXuUhlgsFhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781589511; c=relaxed/simple;
-	bh=pjMEfY3K+/Xw+PmVqjvzMCI+L/T2uYNTTllsMVPPgSo=;
+	s=arc-20240116; t=1781589736; c=relaxed/simple;
+	bh=70HVzoXgBf9xx4KP/aPDIabbIQagBnvWfiUYl/XUnfM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rJJHj4exxbqSDkQDMggIqsDA7IOFEjNdnUYNxDlVgq0kcmiVSQ+wIL6ES78X/KbekJseb4MnGZAAVkYX8ioUY3mVuAmPSMYfRk+aTbnm4Ev8eZB5ZWCmDY/ys4JeaPU24xbM3zZrVMrh+KfCgPFqSjW1ke/vR/zQeudDfIkKsnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hd1F8ffK; arc=none smtp.client-ip=74.125.82.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=af6iEKT0gxnyWhTHyh/BKdmneHKY49EWKpdXP88IPHICC7ImsMQX0uPhUG5NyJ0w2WoJuD3ndgL2k5/U8VC+r8Q9n9azuYSVn6oCNqZmjYeaIGJnCNVndo6Atb6pn6vXebXtk+9ugRdqImvlViDNWRbXdgJ8qywXwbN/8+YvjMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BFluq+23; arc=none smtp.client-ip=74.125.82.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hd1F8ffK"
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-30bb7d20ad9so70736eec.1
-        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 22:58:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BFluq+23"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-30807ba471bso11688974eec.1
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 23:02:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781589509; x=1782194309; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781589734; x=1782194534; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9PSlzuZQ4Daz0lqLHFL3WubdgzTXoK9WA+8u5CazoU0=;
-        b=Hd1F8ffK4luKmn10FBey4LNmAziM2x1JdWre5YrYI3qDbm0qTH0T2U2DTCDooEeC6K
-         kjfv1HLJFQLK/H11d/csXCEOO+nWvzSAjP4hzFNSvQhlbqEbKcwIGEaqCCJ0nX2YILs+
-         MzF+fOLkosX+N8nTUV7H/L55DfkX2ZVyWwhrvjg8A3cldnZR+UsU5rC31BmpL2zCwjlH
-         embfY1INszhyMb5imBI+bBrasYRUCOwW3qOP97l6Gz4B3yXB60d/TngHIMCKPh9OsPvG
-         ujTw0DuHQF57+grr6rYfchZKmlnXAjuqCrEPn3NSVnx3jmC2Ia/7Ek85oyaDrQSBT8pw
-         03xQ==
+        bh=1pI5rWxtEe50KjcsP0jF926SZexIl8kuuOKapFR5YRg=;
+        b=BFluq+23cj9Yym5RSM07lnEdhFpFhNcEgV54UGAgICjgSFNUeTGFIhlEhSkzd7hpuO
+         u5bTilgsZQ1wdLlYLm5HOD9xytna11XlnYt7DqHvzCFGmMXDbPGJLTwIvvCEcG814W7k
+         n7azhY1+iww3TzPMXz0TSTS3TmJbNNkzJJyewmzUH7iJUaxaAQQue6phkcEZXh+UQPHf
+         NaQ+JVieyFdoWD58mKWTDGb2VNTl2Y9PZmdHdjZdBV4J5bFQ1naC+oZDdwfZ8DjbsSTn
+         kejXlQryo2zK0EWYm2I6JEv/LvT3XKKblJDK0Dxpqa6WTmBZf6dyBQRQix6bJIoXua5p
+         vnnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781589509; x=1782194309;
+        d=1e100.net; s=20251104; t=1781589734; x=1782194534;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9PSlzuZQ4Daz0lqLHFL3WubdgzTXoK9WA+8u5CazoU0=;
-        b=qkx+HiaTDqW85tfmY/XjmpwBLon0/T0mjRe9XMhfzffn9MsleIHWUJxLlSJq76ffsv
-         Hwj0qdg/yJfGS63kp2NRaYcAxyCbve40hzz/n2vbdHRx+YrqBQlVcZx3pPv76xCwgeu5
-         y0lhJ8Ta+Xph9OMsEsegNDZrfopgUBLJs80mg05Vr7rysp5u2dkhh+TKUki4PQuRRCnd
-         W9UK5z/4ZrK5AudA6Jx7AEkBwCvZyT/h8EzMH+hnFuK55Uoe9ZJ9Hh7yM+hYtBhxSlq3
-         jdNBkII7nrMcCKoxqRdynRHuFX6Fy3fdoaNlZYbROGE7GpaB+pM6PtUI9W16FQsUuxjn
-         kDqA==
-X-Forwarded-Encrypted: i=1; AFNElJ+TYLhdJcoOna6J6Zwc3YK8uf2631cAfHHUfYT0GORAoD44U10Ds+5klvf9u3JjvZGpROc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfE2VmtJEMxz8St3MY2zKi2IT6PXCMgxGVVABl6rmf+G6rnEsT
-	piD43DyQXrKph1CmJINGYvitLDUKqDCZmVxP9z9oFbjcrJVThrhYFYK5
-X-Gm-Gg: Acq92OGzEs1t+s4VoXwCKtLQB4CGiBF0gr2QjoqJg2hNTQSPbVazdjfYNsgiQqz1Z9U
-	ZFjCnPK1M9dHsHE0CczQDShzWZd08j0a9W+53Kcz2U0bH+B7CyoBTJCoAlH2ZIpWpYE2/F8I/2E
-	MmXOsWpYqvYnQNrm2yHxt38nZagHj3sQtcEXaaPMV+tgxaehdqWs2W2RGnL3jC3+c1xnxScZxVE
-	4IVepJ7pwzStPvppRcA6oQYxetwsTt3Zmu8YS7a2JG8QrT3hwjlTPFkXpBRbmKcMz69+YcZr5KM
-	zrsPwZpIml0dPp0k0jd1HgGhtQ6bGzS4f6pYhgqdfzOlWbpdSQiu9MRl4FEIfu4A32373KOf8Yu
-	RcR50KAACJZtW8G1Wp8qntWWpgx0HOnaMFiw2/iEN6/Y8m+A7Wj2oCiBahbZHUqr9yQOFlLfRh4
-	Y6waTkXhUHcP8=
-X-Received: by 2002:a05:693c:63d4:b0:30b:6191:7f96 with SMTP id 5a478bee46e88-30b6191bf72mr3509252eec.30.1781589509451;
-        Mon, 15 Jun 2026 22:58:29 -0700 (PDT)
+        bh=1pI5rWxtEe50KjcsP0jF926SZexIl8kuuOKapFR5YRg=;
+        b=Fe+e/V2IVkkM9Teg7nvvxn0WjqPLOgZ/7Jk5xUS7wU0Pb1t8zmoStofMnjPIiJJlTq
+         vSTblSVpZU2edLwJoXqwiaHDlxXO5UkMDPgrQbQvLyz/xxCLG6OFHOcR35WgnSt5EJbh
+         5hau7xAS9aGvhyjBdSPSxbP8oxYkGCCcaJV+4YTrrolXtWmFoIBE0buWoT15nz83wQ6f
+         aQlQzIrThTmE7HIr7FCw1xsIP2SKQ35o3LrCf2NAH+44u0pe22Sc+TJmZbaOWk2Ua7cf
+         jmKHx6gyIKyPxG6Je3ZLlxVaKAnYDp5QGpNCoAGvUjogMPzx2NtU/xwUwiZn9YgxYHlO
+         G11g==
+X-Forwarded-Encrypted: i=1; AFNElJ/01gwlix+NalMTtLEi4LgIimCBOV5t42q8zM2nvPG9aTMWxTrIpmmbIgg9w66j0lLGkKU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxefWMQ+WCFtx7ibs7N9GP0c3mXts8TE4NOPRmUoT17X+ckMGgN
+	//yqqHXOCuLMFkOiwPWGLrvNyrXLCsl3MfKaPeG+UYOS94kBArizmmLU
+X-Gm-Gg: Acq92OHD+oXiC3JH/wrJKcvN9Cy7rBOLGGki9Fbq5w7u5BLlsxhsVzXd4f4YtjXW6pM
+	qBWBeximibTwSBc6ZvLyz8AQvJ0Uk+1o5HKL4yeHxU+KqVvYo1iAMcQd0qyJWi4a6F/YLCKcBBR
+	iVS1Hoqj/tvRSnScivLjAIwc/ukZ+eRqTBWyBKj7l0Qln7rF0Nzj+0SBjAt3UwMZbGgPbS1HEma
+	dSxi6V2JCXJ/GFAMboVu1uCB/10FJruB9hhPdrod+vJt1yNaCmWQ6XERse5uSjG9Tq1Ui4g5mG8
+	Ufehgd/4wqbG/r27NuzdocGXQwxDxEsQOjEmcVR3EQIQu4Kzxda37pzj9S4GtCahoIL2QexHjM1
+	HzSTFFWBx55mtWsRsUJ3yCmcsS9mXebJm1C24/3co9szA8jNigvQ0mNGsJNAbObBEXdngQV+P4x
+	24oPg+f1vh8RM=
+X-Received: by 2002:a05:7300:e882:b0:304:e2a5:689e with SMTP id 5a478bee46e88-30ba5989923mr1369233eec.2.1781589734142;
+        Mon, 15 Jun 2026 23:02:14 -0700 (PDT)
 Received: from blinky ([2601:647:6700:64d0::92d1])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e92096esm18135283eec.15.2026.06.15.22.58.28
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e5d0357sm16552304eec.11.2026.06.15.23.02.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 22:58:28 -0700 (PDT)
-Date: Mon, 15 Jun 2026 22:58:26 -0700
+        Mon, 15 Jun 2026 23:02:13 -0700 (PDT)
+Date: Mon, 15 Jun 2026 23:02:11 -0700
 From: Charlie Jenkins <thecharlesjenkins@gmail.com>
 To: Nam Cao <namcao@linutronix.de>
 Cc: Charlie Jenkins via B4 Relay <devnull+thecharlesjenkins.gmail.com@kernel.org>,
@@ -70,13 +70,11 @@ Cc: Charlie Jenkins via B4 Relay <devnull+thecharlesjenkins.gmail.com@kernel.org
 	Shuah Khan <shuah@kernel.org>, linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 01/16] riscv: Introduce instruction table generation
-Message-ID: <ajDmAmq4_hYCDEfp@blinky>
+Subject: Re: [PATCH 03/16] riscv: kgdb: Use generated instruction headers
+Message-ID: <ajDm49ucbj6mVRo9@blinky>
 References: <20260407-riscv_insn_table-v1-0-54b4736a1e77@gmail.com>
- <20260407-riscv_insn_table-v1-1-54b4736a1e77@gmail.com>
- <878q8m1j9y.fsf@yellow.woof>
- <aioJ_5SIXdGQg55R@blinky>
- <87se6tejoe.fsf@yellow.woof>
+ <20260407-riscv_insn_table-v1-3-54b4736a1e77@gmail.com>
+ <87pl1xehi4.fsf@yellow.woof>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -85,31 +83,32 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87se6tejoe.fsf@yellow.woof>
+In-Reply-To: <87pl1xehi4.fsf@yellow.woof>
 
-On Thu, Jun 11, 2026 at 07:21:37AM +0200, Nam Cao wrote:
-> Charlie Jenkins <thecharlesjenkins@gmail.com> writes:
-> > This is a weird one. The Ziclsd extension introduces it for RV32[1]. All
-> > of the data is generated from the riscv-unified-db and because it is in
-> > the Ziclsd extension, c.ld is included for 32-bit in the c.ld
-> > description [2]. 
+On Thu, Jun 11, 2026 at 08:08:35AM +0200, Nam Cao wrote:
+> Charlie Jenkins via B4 Relay
+> <devnull+thecharlesjenkins.gmail.com@kernel.org> writes:
+> > +#define riscv_insn_branch(_insn, regs_ptr, _opcode, _pc, _comparison, type)     \
+> > +	({                                                                      \
+> > +		unsigned long _ret;                                             \
+> > +		if ((type)riscv_insn_reg_get_val(                               \
+> > +			    regs_ptr,                                           \
+> > +			    riscv_insn_##_insn##_extract_xs1(_opcode))          \
+> > +			    _comparison(type) riscv_insn_reg_get_val(           \
+> > +				    regs_ptr,                                   \
+> > +				    riscv_insn_##_insn##_extract_xs2(_opcode))) \
+> > +			_ret = riscv_insn_##_insn##_extract_imm(_opcode);       \
 > 
-> Oh :( We probably should amend the base spec to mention that.
-> 
-> >> > +        compressed_name=${name##c.*}
-> >> 	   ^^^^^^^^^^^^^^^
-> >> 	   this name is misleading
-> >
-> > That's fair, I can rename it to be something like "compressed_inst"?
-> 
-> My issue is that "compressed_name" indicates that it holds the
-> compressed variant of the name. But it actually is empty if the
-> instruction is compressed, otherwise it is the original instruction name.
-> 
-> I am not sure what is a better name. Perhaps just inline this to the
-> usage below.
+> Should be
+> 		_ret = _pc + riscv_insn_##_insn##_extract_imm(_opcode);
 
-Oh I see, I'll come up with a name that is more clear on inline it.
+Hmm I am surprised my test cases didn't catch that. Thank you!
+
+- Charlie
 
 > 
-> Nam
+> > +		else                                                            \
+> > +			_ret = _pc + 4;                                         \
+> > +		_ret;                                                           \
+> > +	})
+> > +
