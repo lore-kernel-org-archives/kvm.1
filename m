@@ -1,116 +1,229 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF0B43E4BA
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 16:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0AE4534B9;
+	Tue, 16 Jun 2026 16:28:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626765; cv=none; b=hMAkKOFv7NQ53g4eKWQt/nNNq1ORL12pQj+juYu4Yi5XxKSW6wg2JMbVdH52JSiLKWqJ4z6ak+hM+zyLW8sFl7ABNeFJtpU+RlJRwVXQXHPZWozXF2imVYhiQpMZGKG3yNB/mXuGJwW8k+aYYwEI2Jwt8PT1l8F/GnR4bH6YkEA=
+	t=1781627281; cv=none; b=kTdLNOb1e8TH5as7+31qYYEwNfK/qF3qqPLRI8dwh+UeCYo5oZe0MeRRq2srLqhfFXePdodXOWkjTB1Js0zfmw452okN8yvi9tqUzxSWMSX8Iahx7tpR8wdKGvhyMeTiVI2bsh7XMqlL6YuzyHzvJP7vSeWBG4OKV9cdideDVQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626765; c=relaxed/simple;
-	bh=tPH+WRsy5SwraqWnhh28dvKm+INysH0yq5/S01S6nZE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KKaFkFa4aFUBgVy2WoxO9PxkOQqJs/pgNqWVPV7VrvqB+bbhLxHQo6uGUBPc4uYM7lGPNm4aOV3mfGsK+NN8WPJQasYUVjny2UUPB5+ywYTzFY9T4pi/wDLnFNqJ0NT6XARyJNGW6hyE1tBU67EXAB8KQT8gL/paofjC+5yNrEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sAJjUqdl; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781627281; c=relaxed/simple;
+	bh=Z842xy6HRRqB4Li/xdveIcOj5VPTonatiB28s4fN5Vg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gf/uWW3mE6qFUhqAyKCn+KtKeyRC/f2DUED54NqADG8ZIaUGSvaJTXF/zv++5HdrsSlSKa8j0OCja6VREjmHM2HezrovrkvIPZqoSj3Kxdn/q5+NrUCu6lEeI1QeOSYHS+BKUiRXXFYLmrWAbi0EYV8bMtmRgva9+GhzpmmoE0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qnSIssfS; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sAJjUqdl"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d98b5a68fso8473524a91.2
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:19:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781626764; x=1782231564; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TXAbDgyEZMHiNWK9p2PL3xdiINhXLiA968E1ozdg5N4=;
-        b=sAJjUqdlltaHMLgahjISS55U5GQq1abANxbXbPIeDNy/0P/uG+u9onQ3njyb1p7Eqn
-         WH9qWbTIxyqxn0S7q4CrF8NYD/w93o+qrYz+Ea5DGc1XQ2g1iM0HpTPxDj5lPc4wubQd
-         SRKifuwWKsH5hCVykFew+9+g9SCX+kgGwDikAvjc1Mna1wFMvmv3brfzoEPF4wwBYTEK
-         ZDiFjszzZ8UhODZnRmBM0eRASv17ycbTnnTPeVOAtAVa5rwIE7o+njLkWfim+6DMvhjO
-         iTbZq3sooVy97I0WXOGoPFQX88+p4cOtmTM63LMYw+4js9QnhwdTxjT6wn5fLp7+EyY2
-         /aMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781626764; x=1782231564;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TXAbDgyEZMHiNWK9p2PL3xdiINhXLiA968E1ozdg5N4=;
-        b=S9N/uKbxS8V20yeyJ9swNvrFJvVm9mHxJNYgGmGZhILlht2NSssuVW3N7p2JZEM5MO
-         7NO435c5bJ2dadLCD6vvzxlXeVrWPsUeQrT0XRTLZwZdd1nCmQfi7NC+PxGJmzym++GB
-         SpRDdimBNU9/HdRks36rG7OyBJ3tHsvDkvmeg2Akv471uU38y+dFV6fIvwv0YSgDx6lF
-         Xguxvtc4yARPZ0wE7Pr79MyXyBmvOTRCuA++rcFNb52SZWoHaB+E2Z5Q9S2ZkMVBKGSW
-         d8q9wh7Hwj7iizUQ7ljH5lPxGvp8payZHqRzhNkTaeMLEbwWvfCBPde+QLvBQjvQhVqk
-         3L2A==
-X-Forwarded-Encrypted: i=1; AFNElJ/2KF2WXDJ9pY55nIzU2G1hO/rzfWUAJTVPJbhGUtZhvBhRx8tIvo+HNLLFrtmBjQ3tF18=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWmjW+dH7vwbA+gn+ioL7YWJgVrCDcRcY8t09l9tktA9kPyWM9
-	7opDp+uUR/dY4RVeXzZQ62f1vXhrnL0cWq9hspih8u3yHnDW80KOQfhmMN/631WaS4ElpVuP67x
-	cWBFv+g==
-X-Received: from pjuw5.prod.google.com ([2002:a17:90a:d605:b0:36b:ba98:4e9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d81:b0:36b:7f69:c152
- with SMTP id 98e67ed59e1d1-37c9391c8d4mr137487a91.18.1781626763569; Tue, 16
- Jun 2026 09:19:23 -0700 (PDT)
-Date: Tue, 16 Jun 2026 09:19:22 -0700
-In-Reply-To: <b6721d022187966290f8ea04766ffb1268407ca1.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qnSIssfS"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GFmM2j2118489;
+	Tue, 16 Jun 2026 16:27:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=3bglgY
+	9HrvwXvl2OI8eYxb7OAlNo74Go+VcXaOKliuI=; b=qnSIssfS2+dgx0xFdo/djN
+	V0fFzYj7durgPK3AZ3E0Ved/ovRwxt+7qjC9S/9zesH8+TzF+KszMqj2sWT4T7+w
+	91DLR3Ae3FLgxGVAP2+0WT3e63pWyMnnTRJZ6hmMYEhxksSbztnUKT4EXQqzPXug
+	YUoxfFYRo/skxCRwv+HQ3R7NapvTnERUWiYiQpgo3TnvhicMHg9IedxA09m9fOxt
+	U99aTNWKn1vcYrBfX92itkj3R/ZDPvpPiIhX2nmEDDjP1nxYvS0LJHrTWBl8Fx0K
+	76JC7csMRAntwZ+uT3FWxtnGNxw/nhhdDdifAqqhWvXlavkD+XeCEBj4CaZuva2A
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1h86wku-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 16:27:51 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65GGJaTG017262;
+	Tue, 16 Jun 2026 16:27:50 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eshww4dny-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 16:27:50 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65GGRmdU63046138
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jun 2026 16:27:49 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B52795804E;
+	Tue, 16 Jun 2026 16:27:48 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7855058056;
+	Tue, 16 Jun 2026 16:27:47 +0000 (GMT)
+Received: from [9.12.65.99] (unknown [9.12.65.99])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 16 Jun 2026 16:27:47 +0000 (GMT)
+Message-ID: <39dc5534-d7f7-4bf3-9473-459789d75fe2@linux.ibm.com>
+Date: Tue, 16 Jun 2026 12:27:46 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260613000329.732085-1-seanjc@google.com> <20260613000329.732085-19-seanjc@google.com>
- <906e9797-08d4-4ebe-aed3-34002aa1f917@linux.intel.com> <3be528f30351ae8744276107fe1060cb222077ca.camel@intel.com>
- <144cfc22-10fb-46db-a42e-f4ea8986d353@linux.intel.com> <b6721d022187966290f8ea04766ffb1268407ca1.camel@intel.com>
-Message-ID: <ajF3il4nLemXBOle@google.com>
-Subject: Re: [PATCH v4 18/30] KVM: x86: Move "struct kvm_x86_msr_filter"
- definition to msrs.c
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
-	"yosry@kernel.org" <yosry@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] s390/virtio_ccw: Also suppress -EINVAL on device
+ detach
+To: Peter Oberparleiter <oberpar@linux.ibm.com>,
+        Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+        vneethv@linux.ibm.com
+Cc: linux-s390@vger.kernel.org, farman@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, mjrosato@linux.ibm.com,
+        virtualization@lists.linux.dev, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260612155407.199218-1-wbezenah@linux.ibm.com>
+ <20260615002309.052e0614.pasic@linux.ibm.com> <875x3jn94r.fsf@redhat.com>
+ <4d7fc371-4357-496f-9774-1f7a7c1a3091@linux.ibm.com>
+ <20260615234246.0ec5d947.pasic@linux.ibm.com>
+ <2e543ef5-1aa8-4ddc-a68a-103c7bdfe58d@linux.ibm.com>
+ <8733ymn8vd.fsf@redhat.com>
+ <6356a2be-a49b-4ac4-b52e-dd84bd4ff7b5@linux.ibm.com>
+Content-Language: en-US
+From: William Bezenah <wbezenah@linux.ibm.com>
+In-Reply-To: <6356a2be-a49b-4ac4-b52e-dd84bd4ff7b5@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDE2NyBTYWx0ZWRfX/nScWKdITqm0
+ jvMP+8+HNId0/RuuSr0rlUxKY6gqoCOcyMTQ+6CQ2TJMc/gmlOS+H7uoPmNkE0LnfGjrC6VPNUm
+ YKKjGxHrbfCUfFFHr58MYNofmXgSA1g=
+X-Proofpoint-ORIG-GUID: HRDun65IYLcmtUFB-5NspX9rImKAhEn3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDE2NyBTYWx0ZWRfX3PAcj86yPznX
+ isK1LHR0dPsFWAyirVp+zs6GCYXcL0q1N0lAYD7Aqc8ZE2Yl+gI7fkGI4OhgsOwSXDuhq8gkyez
+ smYabm29Pmh7Q86CbNPgmrO3F+K7PoLuDawFXXMLdavYCZwPbKRb3PNt5vPEzipcoc3wJO2rzQ8
+ lClh7v0MczfI/N04Bc4xTgqwyXCTmpTKhOPHd8MzbDFlNHJtgWoGsWecC4gxpT9d70WpqdqBquT
+ /64pTExx4TLMJY6O7+1crqv3jDjXRBsyAwCI6tWlcsn/FXfqmvDPh4P3s4IJhppXi5qsUo0Kuy0
+ +ZcGi31p5s7GExQNrkEsGJddGllk/mZdwjq5Ep/BCovz9rYNexyLz98t0XJcNZ+hwyhTSK5InwO
+ fcpihoZ/9i2b+Ky+HVsT8Lv17ksRHZ5RUcrKtlVbN+OuIqxeDV8T+o/wdrzz+0kogF3SC0LLtH9
+ jndwrle+ysBt3pWj1Hw==
+X-Authority-Analysis: v=2.4 cv=U9uiy+ru c=1 sm=1 tr=0 ts=6a317987 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=o2sATeYeeQMYJeoXCqkA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: HRDun65IYLcmtUFB-5NspX9rImKAhEn3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-16_05,2026-06-15_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ priorityscore=1501 clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
+ definitions=main-2606160167
 
-On Tue, Jun 16, 2026, Kai Huang wrote:
-> On Tue, 2026-06-16 at 15:43 +0800, Binbin Wu wrote:
-> > > However, does moving the structure definition to "msrs.h" fix the problem?
-> > 
-> > Yes, it does.
-> > 
-> > Similar issue for struct kvm_x86_pmu_event_filter also could be resolved
-> > by moving the structure definition to "pmu.h"
-> 
-> Thanks for confirming.  I think we should do this.
+On 6/16/2026 10:53 AM, Peter Oberparleiter wrote:
 
-I really don't want to go that route, especially since there's absolutely no
-reason to use srcu_dereference_check() during destruction.  KVM isn't actually
-checking anything, and the (S)RCU pointers _must_ be protected during destruction,
-otherwise use-after-free is all but guaranteed.
+> On 16.06.2026 11:16, Cornelia Huck wrote:
+>> On Tue, Jun 16 2026, Peter Oberparleiter <oberpar@linux.ibm.com> wrote:
+>>
+>>> On 15.06.2026 23:42, Halil Pasic wrote:
+>>>> On Mon, 15 Jun 2026 16:01:55 -0400
+>>>> William Bezenah <wbezenah@linux.ibm.com> wrote:
+>>>>
+>>>>> On 6/15/2026 10:58 AM, Cornelia Huck wrote:
+>>>>>> On Mon, Jun 15 2026, Halil Pasic <pasic@linux.ibm.com> wrote:
+>>>>>>  
+>>>>>>> On Fri, 12 Jun 2026 17:54:07 +0200
+>>>>>>> William Bezenah <wbezenah@linux.ibm.com> wrote:
+>>>>>>>  
+>>>>>>>> Since commit 8c58a229688c ("s390/cio: Do not unregister the
+>>>>>>>> subchannel based on DNV"), subchannel behavior following a device
+>>>>>>>> detach has been updated and results in -EINVAL being propagated
+>>>>>>>> rather than -ENODEV, originating from ccw_device_start_timeout_key()
+>>>>>>>> in cio/device_ops. In the end, the virtio driver has no ability to
+>>>>>>>> react to the difference between device and subchannel states here,
+>>>>>>>> and during detach, both -ENODEV and -EINVAL indicate the device
+>>>>>>>> cannot be used and should not be treated as errors requiring
+>>>>>>>> attention. Update error handling in virtio_ccw_del_vq() and
+>>>>>>>> virtio_ccw_drop_indicator() to suppress -EINVAL in addition to
+>>>>>>>> -ENODEV.  
+>>>>>>> Hi William!
+>>>>>>>
+>>>>>>> Are you saying that ccw_device_start() started returning -EINVAL
+>>>>>>> since 8c58a229688c ("s390/cio: Do not unregister the subchannel based on
+>>>>>>> DNV")? Or did I somehow read the paragraph wrong?
+>>>>>>>
+>>>>>>> The funcition ccw_device_start is documented to return:
+>>>>>>>  * Returns:                                                                     
+>>>>>>>  *  %0, if the operation was successful;                                        
+>>>>>>>  *  -%EBUSY, if the device is busy, or status pending;                          
+>>>>>>>  *  -%EACCES, if no path specified in @lpm is operational;                      
+>>>>>>>  *  -%ENODEV, if the device is not operational. 
+>>>>>>> and the commit message does not say a thing about introducing -EINVAL to
+>>>>>>> the mix.  
+>>>>>> The function may return -EINVAL for non-enabled subchannels
+>>>>>> (i.e. pmcw.ena == 0), maybe we get an all-zeroes schib with dnv == 0?
+>>>>>> I'd expect it not to be enabled in that case anyway.  
+>>>>> Yep, that's at least how I've come to understand what changed. The
+>>>>> function ccw_device_start_timeout_key() has always returned -EINVAL
+>>>>> for non-enabled subchannels (pmcw.ena == 0), though it's not
+>>>>> documented in the header.
+>>>> Wasn't his -EINVAL actually introduced by commit:
+>>>> 823d494ac111 ("[S390] pm: ccw bus power management callbacks")?
+>>> In the context of virtio-ccw added in 2012, an EINVAL return code
+>>> introduced in 2009 might be considered "always" :)
+>> :)
+>>
+>> I'm wondering whether we should still expect to hit the "ssch with
+>> ena==0" situation, given that pm support has been removed again in the
+>> meanwhile. (Well, other than in situations like this, where it is a
+>> follow-up to other problems.) IOW, can callers expect not to see
+>> -EINVAL, unless they are doing something really stupid?
+> As Halil also pointed out, this would be a programming error, either on
+> the side of the driver that starts I/O without setting the device
+> properly online, or in the common I/O layer (hopefully not, but you
+> never know). Having a dedicated return code to identify this situation
+> is definitely useful, and we'll also consider documenting it accordingly
+> in the function comment.
+>
+>>>>> What changed with commit 8c58a229688c is that cio_update_schib() now
+>>>>> updates the schib even when DNV=0, rather than returning early as it
+>>>>> did previously. Somehow this update results in pmcw.ena == 0 in
+>>>>> ccw_device_start_timeout_key(). Previously, it saw pmcw.ena == 1 and
+>>>>> moved to the condition (cdev->private->state == DEV_STATE_NOT_OPER)
+>>>>> where it returned -ENODEV.
+>>>> Sounds fishy to me. As far as I understand the DNV takes precedence over
+>>>> all other pieces of PMCW.
+>>> And you're right about that! The Principles of Operation states (p. 15-4
+>>> in SA22-7832-14 [1]) that the contents of all other fields in the PMCW
+>>> are unpredictable when DNV is 0, therefore 8c58a229688c is in error.
+>>>
+>>> I'll work with Vineeth to determine how to fix this issue, potentially
+>>> via manually clearing some relevant SCHIB fields instead of copying the
+>>> unpredictable results of the STSCH instruction.
+>> Can't you zero the whole SCHIB, or do you still need some of the
+>> measurement block things for cleanup?
+> I faintly remember that there WAS a reason to use the remainder of the
+> SCHIB contents because of some unwanted effect that occurred if we
+> didn't, but I don't recall the details. We'll need to dig up the
+> associated bug report to understand it and determine if we can simply
+> clear all of the SCHIB, or need to keep some of the information intact.
+>
+>>>>> So the commit didn't introduce -EINVAL as a new return value, rather,
+>>>>> it changed the subchannel lifecycle such that existing paths now
+>>>>> propagate -EINVAL rather than -ENODEV during the device detach
+>>>>> scenario.
+>>>> I'm not convinced returning -EINVAL in the given situation is the
+>>>> right thing to do. Peter, would you mind to chime in?
+>>> I tend to agree that an attempt to start I/O for a subchannel that has
+>>> DNV 0 should result in ENODEV rather than EINVAL, though the latter is
+>>> still valid when a driver tries to start I/O on a subchannel that is not
+>>> enabled for I/O.
+>>>
+>>> We'll make sure to design the fix for 8c58a229688c in away that ENODEV
+>>> will be returned when DNV is 0. Assuming that this is the only situation
+>>> where virtio-ccw's ccw_io_helper() receives -EINVAL from
+>>> ccw_device_start__timeout_key() during detach, the subject patch should
+>>> no longer be necessary.
+>> I agree, I'd not expect to get -EINVAL in ccw_io_helper().
+> Yeah, this was definitely an unexpected side effect of the DNV commit.
+>
+FWIW, during my testing, that was indeed the only situation in which
+I saw -EINVAL during the detach process. So assuming the right fix
+would correctly return ENODEV, I agree this patch is likely
+unnecessary.
 
-Unfortunately, every RCU macro I can find does typeof(*p) somewhere in its flow.
-But I would still strongly prefer to open code a __force to strip the __rcu than
-expose the structures outside of msrs.c and pmu.c.
-
-This makes gcc8 and gcc9 happy on my end.  I'll squash the changes into their
-respective patches, and update the changelogs.
-
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 95b3bc7b449e..b3c180e16e29 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9975,13 +9975,13 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
-        if (kvm->arch.created_mediated_pmu)
-                perf_release_mediated_pmu();
-        kvm_destroy_vcpus(kvm);
--       kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
-+       kvm_free_msr_filter((void * __force)kvm->arch.msr_filter);
- #ifdef CONFIG_KVM_IOAPIC
-        kvm_pic_destroy(kvm);
-        kvm_ioapic_destroy(kvm);
- #endif
-        kvfree(rcu_dereference_check(kvm->arch.apic_map, 1));
--       kfree(srcu_dereference_check(kvm->arch.pmu_event_filter, &kvm->srcu, 1));
-+       kfree((void * __force)kvm->arch.pmu_event_filter);
-        kvm_mmu_uninit_vm(kvm);
-        kvm_page_track_cleanup(kvm);
-        kvm_xen_destroy_vm(kvm);
+Thanks all.
 
