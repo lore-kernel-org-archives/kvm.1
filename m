@@ -1,82 +1,180 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AAC40FDB7
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C761D89F4
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:16:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781601077; cv=none; b=HJno/ODsUPg/h3HSpn9/rbf7888dYzLkiX+J2i7z+f0CNyIQ/JdD7/qpPwD0+bGXNQI4SCZwb+4kcJnqRbYv9R7EG9EVWLiBDbt4Hd1zXuTqNH0UKEO8mAejWCqa/U6J+AVlZuh23bpZTZWzWbc4vyO0tEBmloTT8Rd76AJmQqI=
+	t=1781601375; cv=none; b=LtQM8ZQuv6+hj26oohIVHJsu3+Cv0ZLy5NNjiP8+aIg8EkxU/vreg+0IzI2xvGuLWn/Hj35l7SH9TCts4g8NQQ1V3u2RcEA0SJ6l2bsJgJKT5Pu/Ib9jufpAMhSyvrGz0qsLTUnmCG+ozWpREesc1gbbz0NRR20JAER3eJdEjS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781601077; c=relaxed/simple;
-	bh=l8LFczawyIL2hbgxZtzJHNxTG99jaXgG5UZqxPKgfGY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XTR1o4LEF6qfeIjZFjAah3FO02DbM+BjdLd1MY87inBYZeQOn9b8r8eUChsuz8Ab4VlkAlGHyPUpCopRVyJTydbe1pBmriD1xQYhZVKiTONX03YM6EA6EGcJbby9aX96rsnL0dQMCj7Sr48DhImINWNnbnxOdazVOxCxX6TUHEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/R4DtVn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781601375; c=relaxed/simple;
+	bh=TznTWtEsTXwfynno4JjQTZakvprLhmN+qNqGOjoQhVQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XOhSs5ZIQNXvW5/Wbcc4a0/BIctzN3bmn/gHhMgBqvuW+Rsrr91jUzFCZ/xpPf5bpt76gRzd/Hme+kauxoPfK8p0oYBU4Tn+SsK+mGtf9k/OtWBQe1K0jxFdX1DQMw9Y0GKZXGJfIpbkVipUqc8yEGSL1x7KoUjfJN5+gS13HLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CSj1iVqX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/R4DtVn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB12B1F000E9;
-	Tue, 16 Jun 2026 09:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781601076;
-	bh=jSp5eHZidh0sMbQP/hzUILYCljQpS0lv/q9x85VHmCI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Q/R4DtVncvZSGD8I7IQGl/EA5dbta+qfAhUx0vNsUvZxWa4QWG/v9I3++pR3k/AHG
-	 5bUyYZZbmk8A3wRVJetVx+yRG16+EiiVD6ToHhC0UVtkm6IrAxjJfu4EKcC6i1nlit
-	 zB0vy8a5PxwPbPUG50bPUuUpatcVPWPma3EidU0qnNz9pr7ayxBjJXWhurdSl1l5bz
-	 XJhEWxAeSo3y4XO8toPCZuyd89/Iji5trGvF4FeUBK/zYDGVv4QuEBDTYuecz/MnyJ
-	 IC8jIeuIprPcRwtKJkFfyXj9djwaVNvz3dQzhOYvBA2wWwneUKHrNV+bYZBR42ZBX9
-	 3mH6chX35bpPg==
-Date: Tue, 16 Jun 2026 10:11:11 +0100
-From: Will Deacon <will@kernel.org>
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: julien.thierry.kdev@gmail.com, maz@kernel.org, oupton@kernel.org,
-	jean-philippe@linaro.org, andre.przywara@arm.com,
-	suzuki.poulose@arm.com, kvm@vger.kernel.org
-Subject: Re: [PATCH kvmtool 0/6] x86 compilation fixes and arm64 PMU
- improvements
-Message-ID: <ajETL4tbLa_3WT6I@willie-the-truck>
-References: <20260323150221.49256-1-alexandru.elisei@arm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CSj1iVqX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781601373;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KcaNbqZ+folpc8zogdsUetTn5R2c9+8hBEKj5VOQTrg=;
+	b=CSj1iVqXExB+zh+++PNrKTlfis4Kbq1rYGgiGPsN8ZLPbqzLQ8Adt7iwaR5LXkXqpvzOcT
+	91UOJbhwMnhtK5UC4mfH22xq6Fd719SgDRjBhkZrOxx69KSzMWG+6XSt8IqDWsBBnZrbtH
+	Vp6s5cMCEB5+uDm+W3ni+bXOzmpERNY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-m4e4fe0-OUW6PMPrmhMxJA-1; Tue,
+ 16 Jun 2026 05:16:11 -0400
+X-MC-Unique: m4e4fe0-OUW6PMPrmhMxJA-1
+X-Mimecast-MFC-AGG-ID: m4e4fe0-OUW6PMPrmhMxJA_1781601369
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7038E1955E75;
+	Tue, 16 Jun 2026 09:16:09 +0000 (UTC)
+Received: from localhost (unknown [10.44.49.40])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AFD75195410A;
+	Tue, 16 Jun 2026 09:16:08 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Peter Oberparleiter <oberpar@linux.ibm.com>, Halil Pasic
+ <pasic@linux.ibm.com>, William Bezenah <wbezenah@linux.ibm.com>,
+ vneethv@linux.ibm.com
+Cc: linux-s390@vger.kernel.org, farman@linux.ibm.com, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+ svens@linux.ibm.com, mjrosato@linux.ibm.com,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] s390/virtio_ccw: Also suppress -EINVAL on device detach
+In-Reply-To: <2e543ef5-1aa8-4ddc-a68a-103c7bdfe58d@linux.ibm.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Avril Crosse O'Flaherty"
+References: <20260612155407.199218-1-wbezenah@linux.ibm.com>
+ <20260615002309.052e0614.pasic@linux.ibm.com> <875x3jn94r.fsf@redhat.com>
+ <4d7fc371-4357-496f-9774-1f7a7c1a3091@linux.ibm.com>
+ <20260615234246.0ec5d947.pasic@linux.ibm.com>
+ <2e543ef5-1aa8-4ddc-a68a-103c7bdfe58d@linux.ibm.com>
+User-Agent: Notmuch/0.40 (https://notmuchmail.org)
+Date: Tue, 16 Jun 2026 11:16:06 +0200
+Message-ID: <8733ymn8vd.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260323150221.49256-1-alexandru.elisei@arm.com>
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Hey Alexandru,
+On Tue, Jun 16 2026, Peter Oberparleiter <oberpar@linux.ibm.com> wrote:
 
-On Mon, Mar 23, 2026 at 03:02:15PM +0000, Alexandru Elisei wrote:
-> The first two patches fix the following compilation errors on x86 when
-> using gcc 15.2.1:
-> 
-> disk/core.c: In function ‘disk_img_name_parser’:
-> disk/core.c:27:21: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
->    27 |                 sep = strstr(arg, ":");
->       |                     ^
-> disk/core.c:39:21: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
->    39 |                 sep = strstr(cur, ",");
->       |                     ^
-> virtio/9p.c: In function ‘virtio_9p_rootdir_parser’:
-> virtio/9p.c:1503:18: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
->  1503 |         tag_name = strstr(arg, ",");
->       |                  ^
-> 
-> I couldn't reproduce the errors on arm64 using aarch64-linux-gnu-gcc 15.1.0
-> and 14.2.0. I tried doing make with V=1 and it looked to me like kvmtool
-> uses the same flags on x86 as on arm64, so I assumed it's because of the
-> difference in compilers and I didn't dig further.
-> 
-> The remaining of the patches are there to improve PMU initialisation and
-> error reporting.
+> On 15.06.2026 23:42, Halil Pasic wrote:
+>> On Mon, 15 Jun 2026 16:01:55 -0400
+>> William Bezenah <wbezenah@linux.ibm.com> wrote:
+>> 
+>>> On 6/15/2026 10:58 AM, Cornelia Huck wrote:
+>>>> On Mon, Jun 15 2026, Halil Pasic <pasic@linux.ibm.com> wrote:
+>>>>  
+>>>>> On Fri, 12 Jun 2026 17:54:07 +0200
+>>>>> William Bezenah <wbezenah@linux.ibm.com> wrote:
+>>>>>  
+>>>>>> Since commit 8c58a229688c ("s390/cio: Do not unregister the
+>>>>>> subchannel based on DNV"), subchannel behavior following a device
+>>>>>> detach has been updated and results in -EINVAL being propagated
+>>>>>> rather than -ENODEV, originating from ccw_device_start_timeout_key()
+>>>>>> in cio/device_ops. In the end, the virtio driver has no ability to
+>>>>>> react to the difference between device and subchannel states here,
+>>>>>> and during detach, both -ENODEV and -EINVAL indicate the device
+>>>>>> cannot be used and should not be treated as errors requiring
+>>>>>> attention. Update error handling in virtio_ccw_del_vq() and
+>>>>>> virtio_ccw_drop_indicator() to suppress -EINVAL in addition to
+>>>>>> -ENODEV.  
+>>>>> Hi William!
+>>>>>
+>>>>> Are you saying that ccw_device_start() started returning -EINVAL
+>>>>> since 8c58a229688c ("s390/cio: Do not unregister the subchannel based on
+>>>>> DNV")? Or did I somehow read the paragraph wrong?
+>>>>>
+>>>>> The funcition ccw_device_start is documented to return:
+>>>>>  * Returns:                                                                     
+>>>>>  *  %0, if the operation was successful;                                        
+>>>>>  *  -%EBUSY, if the device is busy, or status pending;                          
+>>>>>  *  -%EACCES, if no path specified in @lpm is operational;                      
+>>>>>  *  -%ENODEV, if the device is not operational. 
+>>>>> and the commit message does not say a thing about introducing -EINVAL to
+>>>>> the mix.  
+>>>> The function may return -EINVAL for non-enabled subchannels
+>>>> (i.e. pmcw.ena == 0), maybe we get an all-zeroes schib with dnv == 0?
+>>>> I'd expect it not to be enabled in that case anyway.  
+>>>
+>>> Yep, that's at least how I've come to understand what changed. The
+>>> function ccw_device_start_timeout_key() has always returned -EINVAL
+>>> for non-enabled subchannels (pmcw.ena == 0), though it's not
+>>> documented in the header.
+>> 
+>> Wasn't his -EINVAL actually introduced by commit:
+>> 823d494ac111 ("[S390] pm: ccw bus power management callbacks")?
+>
+> In the context of virtio-ccw added in 2012, an EINVAL return code
+> introduced in 2009 might be considered "always" :)
 
-Do you plan to post a v2 of these? I just ran into the 'const' issue
-myself, so I'd love to see this stuff land after addressing the handful
-of review comments I left on this version.
+:)
 
-Cheers,
+I'm wondering whether we should still expect to hit the "ssch with
+ena==0" situation, given that pm support has been removed again in the
+meanwhile. (Well, other than in situations like this, where it is a
+follow-up to other problems.) IOW, can callers expect not to see
+-EINVAL, unless they are doing something really stupid?
 
-Will
+>
+>>> What changed with commit 8c58a229688c is that cio_update_schib() now
+>>> updates the schib even when DNV=0, rather than returning early as it
+>>> did previously. Somehow this update results in pmcw.ena == 0 in
+>>> ccw_device_start_timeout_key(). Previously, it saw pmcw.ena == 1 and
+>>> moved to the condition (cdev->private->state == DEV_STATE_NOT_OPER)
+>>> where it returned -ENODEV.
+>> 
+>> Sounds fishy to me. As far as I understand the DNV takes precedence over
+>> all other pieces of PMCW.
+>
+> And you're right about that! The Principles of Operation states (p. 15-4
+> in SA22-7832-14 [1]) that the contents of all other fields in the PMCW
+> are unpredictable when DNV is 0, therefore 8c58a229688c is in error.
+>
+> I'll work with Vineeth to determine how to fix this issue, potentially
+> via manually clearing some relevant SCHIB fields instead of copying the
+> unpredictable results of the STSCH instruction.
+
+Can't you zero the whole SCHIB, or do you still need some of the
+measurement block things for cleanup?
+
+>
+>>> So the commit didn't introduce -EINVAL as a new return value, rather,
+>>> it changed the subchannel lifecycle such that existing paths now
+>>> propagate -EINVAL rather than -ENODEV during the device detach
+>>> scenario.
+>> 
+>> I'm not convinced returning -EINVAL in the given situation is the
+>> right thing to do. Peter, would you mind to chime in?
+>
+> I tend to agree that an attempt to start I/O for a subchannel that has
+> DNV 0 should result in ENODEV rather than EINVAL, though the latter is
+> still valid when a driver tries to start I/O on a subchannel that is not
+> enabled for I/O.
+>
+> We'll make sure to design the fix for 8c58a229688c in away that ENODEV
+> will be returned when DNV is 0. Assuming that this is the only situation
+> where virtio-ccw's ccw_io_helper() receives -EINVAL from
+> ccw_device_start__timeout_key() during detach, the subject patch should
+> no longer be necessary.
+
+I agree, I'd not expect to get -EINVAL in ccw_io_helper().
+
