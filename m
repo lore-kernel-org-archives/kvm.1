@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AE326738C;
-	Tue, 16 Jun 2026 06:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093B1313E03;
+	Tue, 16 Jun 2026 06:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781592625; cv=none; b=XPqhvSjW7xsWEY1Tm82NZYK73udObz9ZKSxbMxPkGfKYEYFMBxmWTw0e5XGmWK/5yvN1ar1yxyhJQT90fhsIvULYXcrzdvu/UUDIgNw33tyd0Hv+LBfxgVn8SUAayY3X6x5w6LRsZ+O/9VDpEsldDRN1F9ZL/q1aM08OFmbxUFw=
+	t=1781592936; cv=none; b=i9Ptt1GAonhthOuOu6015LYdRDaXTP9/3u64gpLxTR8OtjVg9vY+9nDulu+fbwMvcY09PngjgOqYqA0L4XSwU13NUSlWIkm9JszBsokZ9RYX8IG/Jrj2e/OlXypNwdJred0b27THzIfBd00bJUVpIT/AsnWpSwxVFsApZkoqHVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781592625; c=relaxed/simple;
-	bh=8LzAl9/bUk1HogOilVA79aNZ0POYFNbdeAu35IKJDWA=;
+	s=arc-20240116; t=1781592936; c=relaxed/simple;
+	bh=EtEgiOlsB3YN8YySDVnhldO5BVT1kImrbNeKQHTE17A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b5Vne+WMTFYA5H1OBPm5VHRBMw5xrea6E9EVEYCYbbm3LNF1CHKP4u+0K9/FINC5GQ5HkMquW2NPCuG1D2C82v//mXLAYWhWcf7tPRCKe5bIrig524xY0WSz6DC9B/NxV3GgNbuzQtzIluE94ZYILUB2pfZGjZ+4yXJVTVpxShc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZPDx20eD; arc=none smtp.client-ip=192.198.163.12
+	 In-Reply-To:Content-Type; b=nDO02q7b5DTNQObBjzOtJNREneFZMrgxnn/oiX6GtOCfyMB5qHR0yh0NIYP/ZJHGud9/S1rQbYPdwBVrDUvaWFFemTNsYyJCSrxdiHyZsKMQVZgSMyIPJPO8Ri3KH58akDJb76E3BYv7wtWRnwFFJG7Llp4zoC8K1sHfec81xy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U+xuTTm9; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZPDx20eD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U+xuTTm9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781592624; x=1813128624;
+  t=1781592935; x=1813128935;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=8LzAl9/bUk1HogOilVA79aNZ0POYFNbdeAu35IKJDWA=;
-  b=ZPDx20eD5Jvmi+3aALWRQj91bw+VoQBTaA/tP72gVOTUdNxl70sQFVot
-   vl1w7TkMLrrNhtFnU1cR9q2p5/ibzqMFuxP+yDYF2xtkJ2nD35+u8y9iu
-   a55XMa7ygi5BUqTZoKL6B2AuRBC3gO8BQ19Wd+JCXEdwkq+aPMT9YfLc2
-   Zq+SiXiVllNZPepXeFS0M2ITpPUIXPiknAhi+/C4lEv46h+inlINsxlaT
-   6ew7ABzqFNg0yfQgHSIE1PyQ0e0vYJJTeu9y5lMIQ81mMiZlILwUnSeJk
-   20RrUQ5DIvF74JFdxzTXW+deiO08P9GMulzCNKr49E+I/M1mJxL2GL3mL
-   w==;
-X-CSE-ConnectionGUID: QkzBsbJtR5eejjxnvrCw4g==
-X-CSE-MsgGUID: dSdOeF4QQPuyzl6RR7j2pQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="86188414"
+  bh=EtEgiOlsB3YN8YySDVnhldO5BVT1kImrbNeKQHTE17A=;
+  b=U+xuTTm9/X151CS1lXEGB5w2N4KpLR/ACAIovACdzMB8vH3WDTDqzevj
+   lumnjyDivcefY1gaTYoWNAzU2pH1uevn0T7DoU32Wu557GuZnSlTBXwrR
+   4SkYKYuBBfsUVPA6Kq5Zj4FGIl3zvHjuKIkxFagItZS012H6WyROWZler
+   MD+Khc5SxcdYsyOyTu7pLHVJ7bkNJrApE7aRDbkkJb/SU1aqejsZRLn4M
+   mybp2DjadzV+re0YIg2j3urgSGLJpRf4pdEluNPb2k7ggj8iKTx7xrMWV
+   bxPa1NCcrb9d1v/1Q1b26qm9aICvQv90U2qeUqwKZh4+p68bYIrLufNMe
+   g==;
+X-CSE-ConnectionGUID: N7qTUyjFRfSkW4nU/htNqw==
+X-CSE-MsgGUID: /pcX4y6SRRGore1hEtEoMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82453133"
 X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
-   d="scan'208";a="86188414"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 23:50:23 -0700
-X-CSE-ConnectionGUID: d0Mxoy0cRPOBxTY/oNcG6Q==
-X-CSE-MsgGUID: kv1bljgYSX2SK0rwFbxWUw==
+   d="scan'208";a="82453133"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 23:55:34 -0700
+X-CSE-ConnectionGUID: TEtISxruTayiIWoPtq+C4A==
+X-CSE-MsgGUID: LKCwcDP5SBCZMYVbQqH6DA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
-   d="scan'208";a="271404385"
+   d="scan'208";a="246793554"
 Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 23:50:21 -0700
-Message-ID: <9f6380b5-2d65-4ba3-8d7e-5c0ba2b1ac1a@linux.intel.com>
-Date: Tue, 16 Jun 2026 14:50:19 +0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 23:55:32 -0700
+Message-ID: <c958ce06-99ab-4c62-998c-622ac0e49d58@linux.intel.com>
+Date: Tue, 16 Jun 2026 14:55:29 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,29 +52,28 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 23/30] KVM: x86: Move __kvm_irq_line_state() from
- kvm_host.h => ioapic.h
+Subject: Re: [PATCH v4 24/30] KVM: x86: Move IRQ-related helper declarations
+ from kvm_host.h => irq.h
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org,
  linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
  Kai Huang <kai.huang@intel.com>
 References: <20260613000329.732085-1-seanjc@google.com>
- <20260613000329.732085-24-seanjc@google.com>
+ <20260613000329.732085-25-seanjc@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260613000329.732085-24-seanjc@google.com>
+In-Reply-To: <20260613000329.732085-25-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 6/13/2026 8:03 AM, Sean Christopherson wrote:
-> Bury __kvm_irq_line_state() in CONFIG_KVM_IOAPIC=y code, as it's only used
-> by PIC and I/O APIC code.
+> Move the function declaration for APIs to get/query pending IRQs from
+> kvm_host.h to irq.h, as the APIs are only used by KVM x86 code.
 > 
 > No functional change intended.
 > 
 > Reviewed-by: Yosry Ahmed <yosry@kernel.org>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
