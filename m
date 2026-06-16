@@ -1,192 +1,151 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D553B995B;
-	Tue, 16 Jun 2026 11:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A393349B19;
+	Tue, 16 Jun 2026 11:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781609865; cv=none; b=NH+wlu2sRYXHCUhUlocxUzU0XtCKnC5Ix6Xyi3cnTVSWZ8aC/bvr7lqXgNOk4j6aTssSl4ferZrqnmWd0h2UCT0O5+NuHNai07NzzkEzYH2HTFDJTDuoG9pMzNCvq7wkQpRxZrrnpR4C1ecBBBhaEEYZwKGJRvYoW3Nrt80I1co=
+	t=1781609944; cv=none; b=ZSbwO0bDnlBYRKxoQf1JBIGY2rAiZnDkMr4qsGxB2pyKi6xzloj+KSlfgwc5+mqg8xLRD0KFNBDZYA4HzGKlYHJVPsvankKMqPn8LQP4gO3WEq9os9WMdOOC8TYs6XHg3WWWtO8dFrnnB7pABLFe10GboVSfg8DxPjAM8CFe6vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781609865; c=relaxed/simple;
-	bh=9nAaDjZ34aYh//rrurYLy/ykUuQhj8L+6kbwkCt4+i8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=spy/sFOccmIx5dvYkyp1IrUZc0wrTXh5YDEz929Nzj6q09ozLJ+MKPMHv/FH2k+gRwdyy28lSDYgBS+03gaOg/Oh7hVtSWQz3tQwZudT1R/DzXg+clZVGaOmRr7zlhu2pBf2KI4YMqYXgHY9QVK647c7CZbH1l80rjPCDsfszJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=Gwha8lQv; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	s=arc-20240116; t=1781609944; c=relaxed/simple;
+	bh=kibHn209etHEdQw+XiDdq6meRmKaK4KxA4ZmrW9+Eq4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MurhiW/dfMdNUq7mXz+fm7rg9X6eZyR7WLOLWyws6dTdVqHZMOauZoQsVoY2Qb9LgAwcPAm11tby8RBx3Rw0oeBxbgJs6VE5OyZWqUX+ibiekhPPIjWIIWImiD5qE5kwl5m5DCgr1cW7yk4EpV/Sd/0RG6U8c2Cdxoz+BvJHIaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rDUO3Psl; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="Gwha8lQv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1781609860;
-	bh=uAgprYITukIDXcpqINMJiY5I+9dV1eJU9keHmx8y09Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gwha8lQvPpehVbnVayavcRWqSRAMTH6T8yTt43S0hjAkCB/JTFST48vUr+g4CsHVy
-	 ZFi9jystoduorstbVb57npnIRroTBZX9uqXPgcnbBbeB0oLES6/SB0HGElsnPhOjXO
-	 Jn+yHRyFrIuSCHZqq8OkxUHRwTAsri/tIkPKm+1XrzWPO11/3f3sF/dvrgRXb8gToW
-	 5Lhgxo1L5Vx1HPwtQwZwSYJj8PZXHkxCLpzuAoipBPNYHmV22S1+BTtKMa0FpXdtPT
-	 cB7j00O/GhtTBBhhrmx8QT+QMGaedFoWWdWyzoAuUkSJgGQQZHT7hDcIPZnF6dPQ98
-	 5LVdzjdj+k+JQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gflMx00Vzz58nk;
-	Tue, 16 Jun 2026 21:37:32 +1000 (AEST)
-Message-ID: <c4a6e367-2f22-4cbf-afcb-674f82fdacd2@ozlabs.org>
-Date: Tue, 16 Jun 2026 12:37:29 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rDUO3Psl"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GAIV1u1156302;
+	Tue, 16 Jun 2026 11:38:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=C3im/s
+	5+IRxoAYnb6GsxB/vrjG1MT0WZJ5WG06cH3lc=; b=rDUO3Psl2I12ul1B655Ozu
+	WeDF1o/Q3iJ5N0F14/0KxDnTB6gwEJkLWheXXVr5FHdbrKy0TiHBE5BtqlUgW5c/
+	YiqrR0ZTboCquzQ1GPAY8j6sxQDLJAMt8gTYqX2MEC3YnXl9sPr8JGY30UGi24wH
+	CAP+bFdVZrKhqf2FHtyAOOgLEKBEgfcOsy0cDp+9Tpt5Key3VqIZ+61MybjjJfrn
+	vdD2XVklOR8eVdVVmjAZr17MHy4eeKdaU9xY8rel8/Ry4XoQOmAXB7EvGNiehw1H
+	puOohWq/N+29zq5Ld9cL8zGPkfjnnKDhB9iGLa7uw+KvrDSXnVcMOXYrRvzTyE3g
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1eg4u1k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 11:38:59 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65GBJcOC017579;
+	Tue, 16 Jun 2026 11:38:58 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4eskrgaw10-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 11:38:58 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65GBcskw32440758
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jun 2026 11:38:54 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A6CF42004B;
+	Tue, 16 Jun 2026 11:38:54 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6381A20040;
+	Tue, 16 Jun 2026 11:38:54 +0000 (GMT)
+Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.224.92.222])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 16 Jun 2026 11:38:54 +0000 (GMT)
+Date: Tue, 16 Jun 2026 13:38:51 +0200
+From: Halil Pasic <pasic@linux.ibm.com>
+To: Peter Oberparleiter <oberpar@linux.ibm.com>
+Cc: William Bezenah <wbezenah@linux.ibm.com>, vneethv@linux.ibm.com,
+        Cornelia Huck <cohuck@redhat.com>, linux-s390@vger.kernel.org,
+        farman@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        mjrosato@linux.ibm.com, virtualization@lists.linux.dev,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Halil Pasic
+ <pasic@linux.ibm.com>
+Subject: Re: [PATCH v1] s390/virtio_ccw: Also suppress -EINVAL on device
+ detach
+Message-ID: <20260616133851.30c8f309.pasic@linux.ibm.com>
+In-Reply-To: <2e543ef5-1aa8-4ddc-a68a-103c7bdfe58d@linux.ibm.com>
+References: <20260612155407.199218-1-wbezenah@linux.ibm.com>
+	<20260615002309.052e0614.pasic@linux.ibm.com>
+	<875x3jn94r.fsf@redhat.com>
+	<4d7fc371-4357-496f-9774-1f7a7c1a3091@linux.ibm.com>
+	<20260615234246.0ec5d947.pasic@linux.ibm.com>
+	<2e543ef5-1aa8-4ddc-a68a-103c7bdfe58d@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 9/9] vfio/pci: Add mmap() attributes to DMABUF feature
-Content-Language: en-GB
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian <kevin.tian@intel.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-10-matt@ozlabs.org> <ajENiAQkzXjbxgRX@google.com>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <ajENiAQkzXjbxgRX@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDExNSBTYWx0ZWRfXzmLPRw+8fm7b
+ PftOMOYN2lBjrYKVy2ewutttD9t/scZ/c3H8OlHsZqo8ALV9zS/KNhNwcihPnJwbPh5W5Wle41V
+ umxVYiYI78CxqnFnoRCiXIiJcZo3Qwk=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDExNSBTYWx0ZWRfXzBIHmCJXJgai
+ BIXRjyg/R3H9tHmC4UbSD2kri+LwvdqmQs70t8Ci2ToNSvOQkVnbMYzGoUolgX1RdU9TXyoXeOT
+ b0SQ4OxLNeW4605GCnPgjc3T8rirJNfT15y+aVEjJqDQ1w+LPSWMmDgzngKCLcA1ovX4ciSUbIk
+ qTWZ+3yK8cXK3weQ1o7mLReqmMCmhOFsVbnedaBM6tvzqUwkCgSBB9mJNq0PFOaryS910Pyq4uT
+ 3fFXUrIjXCMZ+fzh/++LqsOyK3I5xwUES9kJM8dPRwE3mBc9etAw9eVp1V7+AKIy2Sv5xz27trW
+ 2RBzaJE1i7+oAQnExWCeWmZCEZk9kP6qjHEfLNmlGg3yUCSZjkLWkwFThkJlTbiQgskckBUV1TW
+ wWasDZzzKzKVFGb/kfSliI64g2kJEqqpMaYE1k/mDLi9x7P1qAH8fZQJlBvuou7bCNuSewLwHJG
+ SawPDhECJbTRn08ba/g==
+X-Proofpoint-GUID: eOURV6RVULlFqMq8SZSrwepCj8xxt8fo
+X-Authority-Analysis: v=2.4 cv=NuDhtcdJ c=1 sm=1 tr=0 ts=6a3135d3 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=gLCP7kfCjpCqMkl7GTQA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: eOURV6RVULlFqMq8SZSrwepCj8xxt8fo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-16_03,2026-06-15_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 suspectscore=0 impostorscore=0 clxscore=1015
+ phishscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160115
 
-Hi Praan,
+On Tue, 16 Jun 2026 09:58:38 +0200
+Peter Oberparleiter <oberpar@linux.ibm.com> wrote:
 
-On 16/06/2026 09:47, Pranjal Shrivastava wrote:
-> On Wed, Jun 10, 2026 at 04:43:23PM +0100, Matt Evans wrote:
->> A new VFIO feature, VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR, is added to
->> set CPU-facing memory type attributes for a DMABUF exported from
->> vfio-pci.  These are used for subsequent mmap()s of the buffer.
->>
->> There are two attributes supported:
->>  - The default, VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC
->>  - VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC, which results in WC
->>    PTEs for the DMABUF's BAR region.
->>
->> Signed-off-by: Matt Evans <matt@ozlabs.org>
->> ---
->>  drivers/vfio/pci/vfio_pci_core.c   |  2 ++
->>  drivers/vfio/pci/vfio_pci_dmabuf.c | 57 +++++++++++++++++++++++++++++-
->>  drivers/vfio/pci/vfio_pci_priv.h   | 14 ++++++++
->>  include/uapi/linux/vfio.h          | 27 ++++++++++++++
->>  4 files changed, 99 insertions(+), 1 deletion(-)
->>
+> >> So the commit didn't introduce -EINVAL as a new return value, rather,
+> >> it changed the subchannel lifecycle such that existing paths now
+> >> propagate -EINVAL rather than -ENODEV during the device detach
+> >> scenario.  
+> > 
+> > I'm not convinced returning -EINVAL in the given situation is the
+> > right thing to do. Peter, would you mind to chime in?  
 > 
->> +int vfio_pci_core_feature_dma_buf_memattr(
->> +	struct vfio_pci_core_device *vdev, u32 flags,
->> +	struct vfio_device_feature_dma_buf_memattr __user *arg,
->> +	size_t argsz)
->> +{
->> +	struct vfio_device_feature_dma_buf_memattr db_attr;
->> +	struct vfio_pci_dma_buf *priv;
->> +	struct dma_buf *dmabuf;
->> +	int ret;
->> +
->> +	if (!vdev->pci_ops || !vdev->pci_ops->get_dmabuf_phys)
->> +		return -EOPNOTSUPP;
->> +
->> +	ret = vfio_check_feature(flags, argsz,
->> +				 VFIO_DEVICE_FEATURE_SET,
->> +				 sizeof(db_attr));
->> +	if (ret != 1)
->> +		return ret;
->> +
->> +	if (copy_from_user(&db_attr, arg, sizeof(db_attr)))
->> +		return -EFAULT;
->> +
->> +	dmabuf = dma_buf_get(db_attr.dmabuf_fd);
->> +	if (IS_ERR(dmabuf))
->> +		return PTR_ERR(dmabuf);
->> +
->> +	/* Verify DMABUF: see comments in vfio_pci_dma_buf_revoke() */
->> +	priv = dmabuf->priv;
->> +	if (dmabuf->ops != &vfio_pci_dmabuf_ops ||
->> +	    READ_ONCE(priv->vdev) != vdev) {
->> +		ret = -ENODEV;
->> +		goto out_put_buf;
->> +	}
->> +
->> +	switch (db_attr.memattr) {
->> +	case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC:
->> +	case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC:
->> +		WRITE_ONCE(priv->memattr, db_attr.memattr);
->> +		ret = 0;
->> +		break;
->> +
->> +	default:
->> +		ret = -ENOENT;
-> 
-> Nit: Looks like the agreement [1] was on -EOPNOTSUPP / -EINVAL but we 
-> took -ENOENT here and in the doc string? Was that intentional?
-> 
-> I tend to agree with Alex's suggestion here, we'd prefer one of those 
-> two (-EINVAL / -EOPNOTSUPP) since it clearly communicates to the user
-> that "You sent a wrong arg" or "We don't support this"
+> I tend to agree that an attempt to start I/O for a subchannel that has
+> DNV 0 should result in ENODEV rather than EINVAL, though the latter is
+> still valid when a driver tries to start I/O on a subchannel that is not
+> enabled for I/O.
 > 
 
-Yes, it was intentional.  This was noted in the v3 changelog entry in
-the cover letter:
-
- - Removed GET on vfio_pci_core_feature_dma_buf_memattr(), removed
-   unnecessary taking of memory_lock, fixed error return values.  In
-   particular, removes ENOTSUPP, and uses ENOENT to indicate an
-   unknown attribute enum value was passed to SET.  In the discussion
-   here,
-   https://lore.kernel.org/all/20260602131417.41366391@shazbot.org/
-   we'd agreed on EOPNOTSUPP before I realised that's already used
-   elsewhere.  ENOENT uniquely indicates an unknown attribute.
-
-EINVAL/EOPNOTSUPP would indeed be semantically perfect, but after
-posting my reply there I remembered they are already overloaded with a
-load of different meanings.
-
-I think uniqueness is important here so that memattr issues (for example
-any future arch-specific porting issues) show up as an
-immediately-understandable error value.
-
-> -ENOENT means no such file or directory [2] to the user. Users may not
-> be kernel engineers who'd wanna peek into the code and they may simply
-> look at the uAPI files which doesn't give them an answer as to what
-> went wrong.
-
-But surely when they look at the uAPI header they will then see
-"*  ENOENT: The given memattr is not supported." and understand what
-went wrong.
-
-> 
->> +	}
->> +
->>  out_put_buf:
->>  	dma_buf_put(dmabuf);
->>  
-> 
-> Apart from that, 
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-
-Thanks!
+That would be a "programming error". I think it would be nice to document
+that ccw_device_start() can return -EINVAL as well, and that the semantic
+of EINVAL is basically execution of the function was not attempted,
+because of a programming error. Or if we think that the list is not
+exhaustive even after adding -EINVAL, we should state that as well in
+some way one can program against.
 
 
-Matt
+> We'll make sure to design the fix for 8c58a229688c in away that ENODEV
+> will be returned when DNV is 0. Assuming that this is the only situation
+> where virtio-ccw's ccw_io_helper() receives -EINVAL from
+> ccw_device_start__timeout_key() during detach, the subject patch should
+> no longer be necessary.
 
+I fully agree! With the semantic of -EINVAL pinned down to programming
+error, logging the condition seems to be the right thing to do. So we
+should keep the old handing IMHO. 
 
-> 
-> Thanks,
-> Praan
-> 
-> [1] https://lore.kernel.org/all/20260602131417.41366391@shazbot.org/
-> [2] https://elixir.bootlin.com/linux/v7.1-rc6/source/include/uapi/asm-generic/errno-base.h#L6
-> 
-
+Regards,
+Halill
