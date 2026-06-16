@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8191A5B9E
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 01:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C5430F52B
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 01:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781571937; cv=none; b=u3dgdHeAveqWBYsfZvRdTi2xRSeAUgd7NpNRYCSXS92xQig79dRBTSAVbKnetC4RgXAZYFxKsnDXPouXu3tLcS5tIuqdWdYK1HKwQ5mkCgz4VqnIuoh2o2aMkckYnQhKbfeX/irg+NlqNxJmWofb8mSCC7HIleSY568Rqttr2IA=
+	t=1781571966; cv=none; b=Kt1ubhYeFj1n/+s33Hbn6C+LkaIh7exTjfJ34sXmWR3woMUeIB6rMm61oYhvInIaEcigUOUvZLk5/k4ju3sE2W6VAkkS0/XeYMhqKc+MvTv1PK7r2TL2iH0lavY5QefPAaiTZmq8mgeZtTBEiC+Lif0b/Sa892EZdtUy6W1WqAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781571937; c=relaxed/simple;
-	bh=uJdsYMwXFPuhbtN51qdRLn3iBblMZOnyLsVXX8AQC0M=;
+	s=arc-20240116; t=1781571966; c=relaxed/simple;
+	bh=bQ17ANv9RSt2xYHOXE74URuaXR+v68zfwkyYGmZEUBM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=E10ES4HLRuiUhNbdacjgHIguQllGAQ6g5O4VSW1Pi+gpWi0Dv4nvWZe+Wpmvo9gnKwRruDGy5rorTwcbMPmeYOY7opAT/ojetUTW+OCDlujAujX8gjWJB+dM45u8fQk0x2xAQycaBXgOWI85uSlx0/OItQ8kQSII852LEvgbwwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/bBvUL+; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=dezRxerBqVXTSWdaK558vKMnuMphDpPoeB0oS6nghdFbYlRn25jgL+Kf1E8H2jW9rinNflIQ2ktn/1T70FUBpeZPPzjgYefzHK7W1R3PmEdB3m5mk5WOj1vaf3tnOBeihPClQ6rhn2yB7kqThsLZ/CWo9pR/ShOuGmLpY+1y6yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kKgfJo+k; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/bBvUL+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8511F000E9;
-	Tue, 16 Jun 2026 01:05:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kKgfJo+k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC021F000E9;
+	Tue, 16 Jun 2026 01:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781571934;
-	bh=giEF0YGxu62745ft+5adUqz0MHj6+feURlVbyjIs+FA=;
+	s=k20260515; t=1781571964;
+	bh=1fBA1/8t+/Hwa6NBtb+c8OPlhyAxEGE+79NosgP9aiY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=n/bBvUL+hDj/yx9gg3IIfuUt33lL61jcXaazpPuR2SwcU/D4254RJBJv/5ihTu2bQ
-	 iTNZaWyaIBqxQP+RnVFbXIu6XIqPCsWnWVfRytOWZTETtd509Y+l7PTI9hl5J27DYe
-	 qo8Pov8QI2vDtMsmESaFbzTT2czZ7IwaQYJa8rokVkqrg0+Lx9eugyxLHH37PZobJL
-	 j7YwjFD0myX8SHkBtcm+8OK6PShcO8+QvVUzkyJYSb9itdzL+hzgAXTXOD+42l7mYW
-	 Bl9L5XdxyzDxV2sw5wbqIbO6TAsUZQ6QnUxFqhZCus+8+PQrLCeiwRw0CETjcXGmyA
-	 MxtEOuAU1pm/w==
+	b=kKgfJo+kruJjOGJWbyDhsA2TFmA8D7WMY1WOTJlmkfjl7yhdMxAe7rsow52NnJrlm
+	 GAEeC411dXj+FxM81KvKleJmwRYa5Lxro0Bh5q9c7agmBR15u47+dF90Vqx6fxWjz0
+	 uUGaNfmWMCin/PXxXwKB2upVoVrA4PK8+xn7XXsE21qyI2KGM8aaOy1yw3IOFdURrb
+	 x/C0juHRcxzsOPYCkfdpIJvomAilWAO5RjzCiOFwey4vQ+8YmEFXQQtbPcyuyc4OsX
+	 BpeLLRm3eU3uXtXaIYievVXImTZQtSDUghy3pUrYg5wmWt0PF2ZiJ81YQiulGQxv+8
+	 QRtfkkxFm4rXQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 13/25] KVM: nSVM: Flush both L1 and L2 ASIDs on
- KVM_REQ_TLB_FLUSH
+Subject: Re: [RFC PATCH v2 08/25] KVM: SEV: Stop using per-vCPU ASID for SEV
+ VMs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Yosry Ahmed" <yosry@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260616004155.1435766-14-yosry@kernel.org>
-References: <20260616004155.1435766-14-yosry@kernel.org>
+In-Reply-To: <20260616004155.1435766-9-yosry@kernel.org>
+References: <20260616004155.1435766-9-yosry@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 16 Jun 2026 01:05:33 +0000
-Message-Id: <20260616010534.2C8511F000E9@smtp.kernel.org>
+Date: Tue, 16 Jun 2026 01:06:03 +0000
+Message-Id: <20260616010604.ACC021F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,58 +46,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Dereferencing `svm->nested.vmcb02.ptr` without verifying `svm->nes=
-ted.initialized` causes a Use-After-Free write if `svm_allocate_nested()` p=
-reviously failed.
+- [High] A malicious SEV guest or an unprivileged host-userspace process ca=
+n trigger a host WARN_ON_ONCE by executing VMRUN (entering nested virtualiz=
+ation) or via KVM_SET_NESTED_STATE.
 --
 
-commit 88a69b7a032d088ddb452c91fba161d26dbed0ec
+commit c3ac1dbd3331e2991b6bd808b207ce3395a73130
 Author: Yosry Ahmed <yosry@kernel.org>
 
-KVM: nSVM: Flush both L1 and L2 ASIDs on KVM_REQ_TLB_FLUSH
+KVM: SEV: Stop using per-vCPU ASID for SEV VMs
 
-This commit modifies svm_flush_tlb_all() to flush both L1 and L2 ASIDs
-to properly handle KVM_REQ_TLB_FLUSH across all contexts. It also purges
-all Hyper-V TLB FIFOs for both L1 and L2.
+This commit updates KVM to initialize the SEV VM ASID once in
+sev_init_vmcb() instead of checking and setting it on every vCPU run. It
+replaces the run-time assignment check in pre_sev_run() with a warning.
 
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index dac3d0098bb77..4f13c3456a5d7 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-[ ... ]
-> @@ -4213,7 +4215,11 @@ static void svm_flush_tlb_all(struct kvm_vcpu *vcp=
-u)
->  	if (WARN_ON_ONCE(svm_hv_is_enlightened_tlb_enabled(vcpu)))
->  		hv_flush_remote_tlbs(vcpu->kvm);
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3555,10 +3555,7 @@ int pre_sev_run(struct vcpu_svm *svm, int cpu)
+>  	if (!cpumask_test_cpu(cpu, to_kvm_sev_info(kvm)->have_run_cpus))
+>  		cpumask_set_cpu(cpu, to_kvm_sev_info(kvm)->have_run_cpus);
 > =20
-> -	svm_flush_tlb_asid(vcpu);
-> +	kvm_hv_purge_all_tlb_flush_fifos(vcpu);
-> +
-> +	vmcb_set_flush_asid(svm->vmcb01.ptr);
-> +	if (svm->nested.vmcb02.ptr)
-> +		vmcb_set_flush_asid(svm->nested.vmcb02.ptr);
+> -	/* Assign the asid allocated with this SEV guest */
+> -	svm->asid =3D asid;
+> -
+> -	if (unlikely(svm->asid !=3D svm->vmcb->control.asid)) {
+> +	if (WARN_ON_ONCE(asid !=3D svm->vmcb->control.asid)) {
 
 [Severity: High]
-Could this dereference of svm->nested.vmcb02.ptr cause a use-after-free?
+Can a malicious SEV guest or an unprivileged host-userspace process trigger
+this warning by entering nested virtualization or via KVM_SET_NESTED_STATE?
 
-If svm_allocate_nested() successfully allocates vmcb02_page and assigns it
-to svm->nested.vmcb02.ptr, but a subsequent allocation (such as msrpm)
-fails, the error path frees the page but does not clear the pointer:
+KVM does not strictly prohibit userspace from exposing CPUID.SVM to an SEV
+guest. If an SEV guest sets EFER.SVME and executes VMRUN, KVM intercepts it
+and handles the nested transition via nested_svm_vmrun(), which switches the
+active VMCB pointer to the nested vmcb02.
 
-arch/x86/kvm/svm/nested.c:svm_allocate_nested() {
-    ...
-err_free_vmcb02:
-    __free_page(vmcb02_page);
-    return -ENOMEM;
-}
+The nested vmcb02 does not inherit the SEV ASID assignment from
+sev_init_vmcb(), and its control.asid is initialized separately. During the
+subsequent svm_vcpu_run() -> pre_sev_run() call, the VM's valid SEV ASID wi=
+ll
+no longer match the nested vmcb02's ASID, causing this warning to trigger.
 
-If a TLB flush is later triggered and calls svm_flush_tlb_all(), the check
-for if (svm->nested.vmcb02.ptr) would evaluate to true on the dangling
-pointer, and vmcb_set_flush_asid() would write to freed memory.
+Since this condition is guest-reachable and controllable by userspace, does
+this create a host denial of service vector when panic_on_warn is set?
 
-Would it be safer to check svm->nested.initialized here instead, to ensure
-the nested state is fully allocated and valid?
+>  		svm->vmcb->control.asid =3D asid;
+>  		vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
+>  	}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260616004155.1435=
-766-1-yosry@kernel.org?part=3D13
+766-1-yosry@kernel.org?part=3D8
