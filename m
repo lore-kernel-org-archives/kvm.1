@@ -1,129 +1,234 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DDD44CF4A;
-	Tue, 16 Jun 2026 15:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FFD450901;
+	Tue, 16 Jun 2026 15:46:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624694; cv=none; b=OrqPuVKnsJ4dgWEBb6X9Jzu6WAqEwL7ae5a9VUHVUG2n533jUejrR6vFdd4CPh5PE4NkVVkpgmVBa84CoyrAJy1nqGythMyVxPJkQ9Z5VN3YpqAza8XhL8kQRCiu2Craw1uSBu1fxSk3K5bIcMDgeNuddT1kRQJpaaVJ1kmTJM0=
+	t=1781624770; cv=none; b=pRlOvyJdw83oy0aCYNr1vX7X9Pm64d5fYY1d5m8E99gouExNM6NVl0trAQlskMTSbF42YwK4uLs2XZs0CB0BOba++aBORsz/bMWeeJizlHfCHAj3XMuohtxJ6QiOfrAwc85O97UqcrA7J+COBBBnLo7ibhgZ5HINBVfYCkmEIMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624694; c=relaxed/simple;
-	bh=vseCNT9gEmCrfGxlO0c8fqLzL35bJUh8ghI+JUtTqvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZX0nf6p7BocwskRnwhvmq95YjZlYA5tWD1XddmvQWZdvT9Cmd87lz5HWGk38bGAoi4Y+3VXWv/V13tr6ylV2unNSLjy4m9ZEe8jl+IOuflkfKHzEkIXfNyD9llpA/NGekRuK1HCP2y1wKByCfqQCiqDwpk4UKla83SmuBBtqmUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kKn7xLg3; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1781624770; c=relaxed/simple;
+	bh=fItsoDno4OXTl/roZip1JO0/Uy5m1LoydcJisLehhkI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ArzZRWimphsy7mkKHWJQoQErFOtPV8/HpBxlq3+i21LrXWYbLg/oorddvmMaZpXfhjPvH9n47c7pFo8gAdu7WbW+l5Msyuf5uWkStvFrrCFLTIMfQnLjnadb/RnU0KhTUWdrueBSuWsgfbKG1dJsAptJa790B4dojQfVUTE/GNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=THUOroZs; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kKn7xLg3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781624692; x=1813160692;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vseCNT9gEmCrfGxlO0c8fqLzL35bJUh8ghI+JUtTqvE=;
-  b=kKn7xLg3kWVJ2junC+SKfjKkDOvrOLhl8rHbzoLY+1eceEisk6aWmyqf
-   wpxGbHlNAh9ZFQdX4sEro/r+SXUrQXQFNwku9y+cijWoBi+lsJwWUChxj
-   Nkks2oLdg6BepDbilIRxTzB1IWGE66kvnR9mng1Y5i6XR4uKKiEtkrOsE
-   FPcSE2as5UBJyoD52CHM8KngXHONAdRD5GrA3gW2mPUqpdzypI9UfCATt
-   TrNwM35tqDpI1Ob+fHUlM0oHlSifYLYunZXWa7ab9hM6yGeZkMDlw9BZA
-   1FIRh0oVUAHoAH3Byk3OUZBwsJIeAjXTaQSMRTvWq2Ea9xTQfqP79pyQo
-   Q==;
-X-CSE-ConnectionGUID: 1g5kA25USb+FdGHc7EfIAw==
-X-CSE-MsgGUID: +obHCzYxQ5WF0cuSmKHzGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82406961"
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
-   d="scan'208";a="82406961"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 08:44:50 -0700
-X-CSE-ConnectionGUID: QQ85vL2iQ3OU7lJb2eKghw==
-X-CSE-MsgGUID: wfLtxUPWQtemeTqWg4IwDQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
-   d="scan'208";a="244921624"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa007.fm.intel.com with ESMTP; 16 Jun 2026 08:44:45 -0700
-Date: Tue, 16 Jun 2026 23:19:50 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Dan Williams (nvidia)" <djbw@kernel.org>, kas@kernel.org,
-	rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	xiaoyao.li@intel.com, aneesh.kumar@kernel.org, aik@amd.com
-Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
- Quoting
-Message-ID: <ajFplm9kLEyTe/zS@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <6a2c821a99e3_9b8551002a@djbw-dev.notmuch>
- <ajAYxo83xVV1Sb+Y@yilunxu-OptiPlex-7050>
- <1fc76b45-a25b-41a7-b7fa-06650c8052fb@intel.com>
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="THUOroZs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1781624757;
+	bh=j3l8PvO0raZl8FCiGfg/zxw+3QiENISLFXyCDIfAXL8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=THUOroZs0WczfHibO0A/qrPSHwa5YNdoYCeWJF2d/1CIECVXjkloXj7wLH3RAMrqd
+	 5fczYcVAY5/pQy+4+jgY4kuVXiUvzSAMPKLcKb1C5w9H+cAzmY47/8bx3acg6k87j4
+	 fWhZfAaafjgGWk3F2SAREOE3MsU3h3u2Wvysz2/iIQH1R8GKJhsXoFXbYm69HVXkRB
+	 VhWj40L7/ojitg33igOa1igkbg9cSGVkGEkTixJmeB6SmBl5O2ZB/E1wXD9LyDkEa8
+	 Kom/JzqnfzG5JdI7rGl9KPo/I/8vsIBaPI94iumvlLCPSeuLfYBHIH6aGkgJFoTfle
+	 LbV6upvypwVdw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gfrtN6g3Dz4w1b;
+	Wed, 17 Jun 2026 01:45:48 +1000 (AEST)
+Message-ID: <e94aa97f-1aba-408e-8d3a-19f60b057b34@ozlabs.org>
+Date: Tue, 16 Jun 2026 16:45:45 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1fc76b45-a25b-41a7-b7fa-06650c8052fb@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 7/9] vfio/pci: Support mmap() of a VFIO DMABUF
+Content-Language: en-GB
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian <kevin.tian@intel.com>,
+ Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20260610154327.37758-1-matt@ozlabs.org>
+ <20260610154327.37758-8-matt@ozlabs.org> <aixtd_7gDhf2kisJ@google.com>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <aixtd_7gDhf2kisJ@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 15, 2026 at 08:57:09AM -0700, Dave Hansen wrote:
-> On 6/15/26 08:22, Xu Yilun wrote:
-> >> The TDX "Extension SEAMCALL" capability is akin to ARM CCA's "Stateful
-> >> RMI Operations (SRO)", and achieves similar externalized complexity
-> >> relief as a dedicated hardware coprocessor like AMD SEV-SNP. The
-> > I may not include the ARM/AMD examples, not sure I can explain them
-> > well.
+Hi Praan,
+
+On 12/06/2026 21:35, Pranjal Shrivastava wrote:
+> On Wed, Jun 10, 2026 at 04:43:21PM +0100, Matt Evans wrote:
 > 
-> I actually think they're pretty important proof points. One of the big
-
-OK, I can include this section that Dan provides.
-
-> challenges as a maintainer evaluating these things is judging the
-> solution itself.
+> Hi Matt,
 > 
-> Is this architecture a good one? Is it overly complex? Are the avenues
-> for simplification?
+> [...]
 > 
-> If five vendors pop up all with similar problems and solutions, then
-> it's a pretty good bet that they're all on the right track. But, if
-> there are four going one direction and one going off by itself, it's a
-> sign that the errant one might need a course correction.
+>> +	 *
+>> +	 * With the goal of taking vdev->memory_lock in a world where
+>> +	 * vdev might not still exist:
+>> +	 *
+>> +	 * 1. Take the resv lock on the DMABUF:
+>> +	 *  - If racing cleanup got in first, the buffer is revoked;
+>> +	 *    stop/exit if so.
+>> +	 *  - If we got in first, the buffer is not revoked so vdev is
+>> +	 *    non-NULL, accessible, and cleanup _has not yet put the
+>> +	 *    VFIO device registration_.  So, the device refcount must
+>> +	 *    be >0.
+>> +	 *
+>> +	 * 2. Take vfio_device registration (refcount guaranteed >0
+>> +	 *    hereafter).
+>> +	 *
+>> +	 * 3. Unlock the DMABUF's resv lock:
+>> +	 *  - A racing cleanup can now complete.
+>> +	 *  - But, the device refcount >0, meaning the vfio_device
+>> +	 *    (and vfio_pcie_core device vdev) have not yet been
+>> +	 *    freed.  vdev is accessible, even if the DMABUF has been
+>> +	 *    revoked or cleanup has happened, because
+>> +	 *    vfio_unregister_group_dev() can't complete.
+>> +	 *
+>> +	 * 4. Take the vdev->memory_lock
+>> +	 *  - Either the DMABUF is usable, or has been cleaned up.
+>> +	 *    Whichever, it can no longer change under us.
+>> +	 *  - Test the DMABUF revocation status again: if it was
+>> +	 *    revoked between 1 and 4 return a SIGBUS. Otherwise,
+>> +	 *    return a PFN.
+>> +	 *  - It's not necessary to also take the resv lock, because
+>> +	 *    the status/vdev can't change while memory_lock is held.
+>> +	 *
+>> +	 * 5. Unlock, done.
+>>  	 */
+>> +
+>> +	dma_resv_lock(priv->dmabuf->resv, NULL);
+>> +
+>> +	if (priv->revoked) {
+>> +		pr_debug_ratelimited("%s VA 0x%lx, pgoff 0x%lx: DMABUF revoked/cleaned up\n",
+>> +				     __func__, vmf->address, vma->vm_pgoff);
+>> +		dma_resv_unlock(priv->dmabuf->resv);
+>> +		return VM_FAULT_SIGBUS;
+>> +	}
+>> +
+>> +	/* If the buffer isn't revoked, vdev is valid */
+>>  	vdev = priv->vdev;
+>>  
+>> +	if (!vfio_device_try_get_registration(&vdev->vdev)) {
+>> +		/*
+>> +		 * If vdev != NULL (above), the registration should
+>> +		 * already be >0 and so this try_get should never
+>> +		 * fail.
+>> +		 */
+>> +		dev_warn(&vdev->pdev->dev, "%s: Unexpected registration failure\n",
+>> +			 __func__);
+>> +		dma_resv_unlock(priv->dmabuf->resv);
+>> +		return VM_FAULT_SIGBUS;
+>> +	}
+>> +	dma_resv_unlock(priv->dmabuf->resv);
+>> +
 > 
-> It would honestly be worth your time to go *talk* to the AMD and ARM
-> folks and ensure that you are all on the same page. Last I checked, they
+> 
+>>  	scoped_guard(rwsem_read, &vdev->memory_lock) {
+>> +		/* Revocation status must be re-read, under memory_lock */
+>>  		if (!priv->revoked) {
+>>  			int pres = vfio_pci_dma_buf_find_pfn(priv, vma,
+>>  							     vmf->address,
+> 
+> Wait, I noticed that the is_aligned_for_order() check from mainline was 
+> removed here. Was that intentional? 
+> 
+> For hugepage faults (order > 0), we must ensure the PFN and address are
+> properly aligned before calling vfio_pci_vmf_insert_pfn().
+> 
+> In the current upstream code, we have:
+>   if (is_aligned_for_order(vma, addr, pfn, order))
+> 
+> Should we restore that check here?
 
-Yes, I queried ARM/AMD TDISP folks offline and CCed them in this thread.
-Correct me if anything wrong:
+The alignment check is done within the helper
+vfio_pci_dma_buf_find_pfn(), which returns -EAGAIN if order > 0 and a
+search result isn't usable due to alignment.  That leads to
+VM_FAULT_FALLBACK here, ensuring vfio_pci_vmf_insert_pfn() isn't called
+with anything weird.
 
-AFAIK, AMD firmware run on an external physical core (PSP), firmware call
-execution won't occupy host CPU, and the two partners communicate
-asynchronously, so no worry about interruptibility and preemptibility.
+>> @@ -1766,6 +1827,7 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
+>>  			    __func__, order, pfn, vmf->address,
+>>  			    vma->vm_pgoff, (unsigned int)ret);
+>>  
+>> +	vfio_device_put_registration(&vdev->vdev);
+>>  	return ret;
+>>  }
+>>  
+>> @@ -1774,7 +1836,7 @@ static vm_fault_t vfio_pci_mmap_page_fault(struct vm_fault *vmf)
+>>  	return vfio_pci_mmap_huge_fault(vmf, 0);
+>>  }
+>>  
+>> -static const struct vm_operations_struct vfio_pci_mmap_ops = {
+>> +const struct vm_operations_struct vfio_pci_mmap_ops = {
+>>  	.fault = vfio_pci_mmap_page_fault,
+> 
+> Nit: Instead of making this global, should we add a helper? E.g.:
+> 
+> void vfio_pci_set_vma_ops(struct vm_area_struct *vma)
+> {
+>      vma->vm_ops = &vfio_pci_mmap_ops;
+> }
 
-From Alexey:
+I'll give it a go, it would be nice to keep that encapsulated.
 
-  "The AMD CPU puts a request in a queue, writes to doorbell, and wait for
-   an interrupt. The PSP (a separate physical core) will see this, handle,
-   put the data in the CPU memory (if needed), trigger the interrupt. Done.
-   The host CPU can be rescheduled while waiting"
+Thanks,
 
 
-ARM SRO is something I don't familiar with. ARM has no co-processor for
-CC, host invokes RMI and trap into RMM for secure execution, stateless
-RMI blocks interrupt so should be short lived. This is very similar to
-Intel SEAMCALL.
+Matt
 
-Stateful RMI, however, from their RMM 2.0bet1 SPEC [1] B4.3.2 Stateful
-RMI operations, could be used "When an RMI operation cannot be completed
-within an IMPLEMENTATION DEFINED time limit". It is "guaranteed to yield
-within an IMPLEMENTATION DEFINED time limit from the point at which an
-interrupt becomes pending." I see it tries to solve the same problem as
-extension SEAMCALLs.
 
-I see SRO is WIP in [2], and is used for TDISP [3].
+> [...]
+> 
+>> +
+>> +static int vfio_pci_dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
+>> +{
+>> +	struct vfio_pci_dma_buf *priv = dmabuf->priv;
+>> +
+>> +	/*
+>> +	 * If we observe that the buffer is revoked now then refuse
+>> +	 * the mmap().  This is a belt-and-braces early failure to
+>> +	 * ease debugging a revoked buffer being used.  Userspace
+>> +	 * might also race an mmap() against an explicit revocation,
+>> +	 * or an action doing a temporary revoke; race scenarios are
+>> +	 * still safe because the fault handler ultimately prevents
+>> +	 * access to a revoked buffer if it isn't caught here.
+>> +	 */
+>> +	if (READ_ONCE(priv->revoked))
+>> +		return -ENODEV;
+>> +	if ((vma->vm_flags & VM_SHARED) == 0)
+>> +		return -EINVAL;
+>> +
+>> +	/*
+>> +	 * dma_buf_mmap_internal() has asserted that the VMA is
+>> +	 * contained within the DMABUF size before calling this.
+>> +	 */
+>> +
+>> +	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+>> +	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
+>> +
+>> +	/* See comments in vfio_pci_core_mmap() re VM_ALLOW_ANY_UNCACHED. */
+>> +	vm_flags_set(vma, VM_ALLOW_ANY_UNCACHED | VM_IO | VM_PFNMAP |
+>> +		     VM_DONTEXPAND | VM_DONTDUMP);
+>> +	vma->vm_private_data = priv;
+>> +	vma->vm_ops = &vfio_pci_mmap_ops;
+>> +
+>> +	return 0;
+>> +}
+>>  #endif /* CONFIG_VFIO_PCI_DMABUF */
+>>  
+> 
+> Thanks,
+> Praan
+> 
 
-[1] https://developer.arm.com/documentation/den0137/2-0bet1/
-[2] https://lore.kernel.org/all/20260318155413.793430-49-steven.price@arm.com/
-[3] https://lore.kernel.org/all/20260427065121.916615-3-aneesh.kumar@kernel.org/
