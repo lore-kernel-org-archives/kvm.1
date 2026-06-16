@@ -1,341 +1,181 @@
-Received: from ultrarisc.com (unknown [218.76.62.146])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22392231A41;
-	Tue, 16 Jun 2026 06:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559A53C819A;
+	Tue, 16 Jun 2026 06:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781590761; cv=none; b=TstcBJLh3cab2ktgPaZSYA51KO4pdCv7QD91OoPTDJg0JEQUGGZF/V8MZtN7lJnXSv0W/ta1CuGjJMkxYGBf22U4lbbfsfnLs/CJ4zzOuWuuHuG6yg1cdvu0VI6hsGFbvLMsSaNYEHxYN51VJ9X7zyxP+EbfFfcQXFI7yQxAnxs=
+	t=1781591389; cv=none; b=Xo0ilagpMGJ8edGGnKk2RKTYmQdC39QIqiZDDCXBb0D/kG4AlGW2XJYucfwnyQOKQufBwkZhXRuqEN0w3M42MVlCjydY47fh2PA4BArh2mXuAZRqzm5kEhU000ArgxK3lsLNkzztFZ70gfWAlHquh3paRxfx6KPEtQ5tFf8ZB04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781590761; c=relaxed/simple;
-	bh=doFZDcXnD1gmgwydQWlehUp/x2kH0dIblF+zo4/hG3w=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=TcPSCELAzw3H/ETRA7dLtyJ8WRgasmskzjJTsdOCxik/I7QrLOcdDzz0yAYIJYzLGxVI9dP4mFb0fDxLB6lL/bwRmwJKpC9ZwLPWYfEh00fDd0EaVJaAWmqlBlnKk8zL12JIZiNYz46sPQKX66/4o9IMszFf50KUQkANwgdnODY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=none smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=PIuetGEl; arc=none smtp.client-ip=218.76.62.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ultrarisc.com
+	s=arc-20240116; t=1781591389; c=relaxed/simple;
+	bh=yeXTWBMDfVYyDMcTh6RemfuGVrnkEW4Q4H4mS5haS2Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z/fTaRx86/tyEKJRy8m5hkCRFQW19TTKB2og+YFetaaN8CQnsXPHS8VWlPFB3247+BveWmvN38m0wi/0srbuddHghapq2U9km3/f7ihFA2XcIhxFvHUSArfYKAjknnK62XijBO9MPKYMz8tJi1kO6ynxzFYRDqw+UihpTBNuz7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X6aRbH6K; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="PIuetGEl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ultrarisc.com; s=dkim; h=Received:From:To:Cc:Subject:Date:
-	Message-ID:Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=3jZltsipL0X/qLFFiz2GS+s+hrpgA/ArrsB87YJnZa8=; b=PIuetGElS6Ens
-	OV38nVLDVyJtD8Bi4GIKP9MbHQKKc9Sq9vr1yNjLAp4WflTYAqwwJx7SUs/Lrm71
-	cme0hlgO0H/QzoUo99Q8JejYKg4SbpxV+LXaamnoZuB2tkRdjzQYHuCOwzNUUihU
-	qhjI4xY9YLf7MX+fZXmgFmjxiHjMsQ=
-Received: from [127.0.1.1] (unknown [192.168.100.1])
-	by localhost.localdomain (Coremail) with SMTP id AQAAfwA3cULh6jBqdZQKAA--.9582S2;
-	Tue, 16 Jun 2026 14:19:13 +0800 (CST)
-From: Xie Bo <xb@ultrarisc.com>
-To: Anup Patel <anup@brainfault.org>, kvm-riscv@lists.infradead.org
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Paolo Bonzini <pbonzini@redhat.com>,
- Alexander Graf <graf@amazon.com>, kvm@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Xie Bo <xb@ultrarisc.com>
-Subject: [PATCH] RISC-V: KVM: Fix lost virtual interrupts during IRQ sync
-Date: Tue, 16 Jun 2026 14:17:58 +0800
-Message-ID: <178159067899.108868.8176174463274678253@ultrarisc.com>
-X-Mailer: python-smtplib kernel patch sender
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X6aRbH6K"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781591387; x=1813127387;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=yeXTWBMDfVYyDMcTh6RemfuGVrnkEW4Q4H4mS5haS2Q=;
+  b=X6aRbH6KpBbuZnP6aoUkpqmW/4z0BeTT/iDX6doAObdoWotM7dtFgHfa
+   TpEdjnRNsOhRLHX8w6zWg5vj+xqcSqEfmu70wYy8OZrdjlqE8GRNjYs8Y
+   vYYdy3fEo0CJ794VVPKxBvgoYw8Gu5hn9Rr8Ofss2NZRQExxmiX58fjOJ
+   fBVxZmvS2ZgrvuU2d2T6rivINxuRfQZfkr3KmMRd34eSWQxuBNdbrqyVs
+   t5VzB0PYzoVYOxoyh976secY8R112lPN3YuwHbdRIDeMmCPL68cBJOUm2
+   tGPrgKifbV5oJPcRbKD8YUWGX2qcxaH4U9QQgS+RZBqfXOMuvGqCPI0TC
+   g==;
+X-CSE-ConnectionGUID: Hi9YFVJrRAKW7+0ce/TlMA==
+X-CSE-MsgGUID: PwBwOP6JRfKv0E2+VnzyTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="92905969"
+X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
+   d="scan'208";a="92905969"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 23:29:40 -0700
+X-CSE-ConnectionGUID: PZxr5B/FRWyb4fnMGTGY4A==
+X-CSE-MsgGUID: BcIPS7RtTqCDJleynatLEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,207,1774335600"; 
+   d="scan'208";a="252659559"
+Received: from unknown (HELO [10.238.2.24]) ([10.238.2.24])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 23:29:36 -0700
+Message-ID: <906e9797-08d4-4ebe-aed3-34002aa1f917@linux.intel.com>
+Date: Tue, 16 Jun 2026 14:29:34 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:AQAAfwA3cULh6jBqdZQKAA--.9582S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3CFW5CFyDCFy7Ar43Zw48Xrb_yoWDKw4kpF
-	WxCws09w48XrWxW34agrnYvr4Fqws5Kw4jkrZrWrW3Jr1Yqry5Zr1kGa45ZFyUCry8ZFnF
-	vryYkFy093WUZw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9l14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU5dgADUUUU
-X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQAAB2owyEoAAgAAsc
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 18/30] KVM: x86: Move "struct kvm_x86_msr_filter"
+ definition to msrs.c
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
+ Kai Huang <kai.huang@intel.com>
+References: <20260613000329.732085-1-seanjc@google.com>
+ <20260613000329.732085-19-seanjc@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260613000329.732085-19-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-RISC-V KVM tracks guest pending interrupts with irqs_pending and
-irqs_pending_mask. The existing code uses atomic bitops and models the
-state as a multiple-producer, single-consumer queue where the vCPU is
-the consumer.
+On 6/13/2026 8:03 AM, Sean Christopherson wrote:
+> Move the definition of "struct kvm_x86_msr_filter" and its associate,
+> "struct msr_bitmap_range", to msrs.c, as the details of the filters are
+> very much implementation details that can and should be buried in msrs.c.
+> While the _existence_ of filters is public knowledge, almost by definition,
+> the contents don't need to be exposed outside of the MSR code as the filter
+> data is provided by userspace, i.e. it pretty much has to be dynamically
+> allocated, and thus never should be fully embedded in a globally visible
+> structure.
+> 
+> Note, this creates a discrepancy with the PMU event filter structure; that
+> will be remedied shortly.
+> 
+> No functional change intended.
+> 
+> Suggested-by: Kai Huang <kai.huang@intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/include/asm/kvm_host.h | 15 ++-------------
+>  arch/x86/kvm/msrs.c             | 13 +++++++++++++
+>  2 files changed, 15 insertions(+), 13 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 09e437c947a9..4ff6304c02d0 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -315,6 +315,8 @@ enum x86_intercept_stage;
+>  struct kvm_kernel_irqfd;
+>  struct kvm_kernel_irq_routing_entry;
+>  
+> +struct kvm_x86_msr_filter;
 
-The atomic bitops make each individual bitmap operation atomic, but
-they do not make the pair of irqs_pending and irqs_pending_mask an
-atomic state transition. The vCPU interrupt sync path is also not a
-pure consumer: it writes both bitmaps when it reflects guest-visible
-HVIP changes back into KVM state.
 
-For example, kvm_riscv_vcpu_set_interrupt() can set IRQ_VS_SOFT in
-irqs_pending while the target vCPU is concurrently syncing a
-guest-cleared HVIP.VSSIP bit. If sync observes irqs_pending_mask before
-the producer sets it, sync can set the mask and clear irqs_pending. The
-producer then sets the mask and kicks the vCPU, but the pending bit has
-already been lost. A subsequent flush updates HVIP without VSSIP, and
-the guest can remain blocked in WFI even though it has work queued.
+Just FYI, the code failed to build on my desktop with an old gcc version v9.4.
+Due to dereferencing pointer to incomplete type ‘struct kvm_x86_msr_filter' via
+typeof().
 
-Serialize all updates to irqs_pending and irqs_pending_mask with a
-per-vCPU raw spinlock. This intentionally replaces the lockless
-pending/mask protocol with one small critical section per vCPU, so the
-pending bit and the dirty mask are updated as one state transition.
-Use the same lock for sync, flush, reset, and userspace CSR writes that
-clear the dirty mask, so a newly injected interrupt cannot be
-overwritten by a concurrent HVIP sync.
+It's not the fault of the patch, the issue was fixed for GCC 10+ according to
+the link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=44257
 
-Fixes: cce69aff689e ("RISC-V: KVM: Implement VCPU interrupts and requests handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xie Bo <xb@ultrarisc.com>
----
- arch/riscv/include/asm/kvm_host.h | 10 +++++-----
- arch/riscv/kvm/aia.c              | 28 +++++++++++++++++++++-------
- arch/riscv/kvm/vcpu.c             | 27 ++++++++++++++++++++++-----
- arch/riscv/kvm/vcpu_onereg.c      | 13 +++++++++----
- 4 files changed, 57 insertions(+), 21 deletions(-)
+But the minimal tool version got for gcc is still v8.1.0, not sure if it needs
+to bump the version in scripts/min-tool-version.sh?
 
-diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
-index 75b0a951c..97e42645c 100644
---- a/arch/riscv/include/asm/kvm_host.h
-+++ b/arch/riscv/include/asm/kvm_host.h
-@@ -207,13 +207,13 @@ struct kvm_vcpu_arch {
- 	/*
- 	 * VCPU interrupts
- 	 *
--	 * We have a lockless approach for tracking pending VCPU interrupts
--	 * implemented using atomic bitops. The irqs_pending bitmap represent
--	 * pending interrupts whereas irqs_pending_mask represent bits changed
--	 * in irqs_pending. Our approach is modeled around multiple producer
--	 * and single consumer problem where the consumer is the VCPU itself.
-+	 * The irqs_pending bitmap represents pending interrupts whereas
-+	 * irqs_pending_mask represents bits changed in irqs_pending. Updates
-+	 * to these bitmaps are serialized so vcpu interrupt sync/flush cannot
-+	 * drop a newly injected interrupt while syncing guest-visible HVIP.
- 	 */
- #define KVM_RISCV_VCPU_NR_IRQS	64
-+	raw_spinlock_t irqs_pending_lock;
- 	DECLARE_BITMAP(irqs_pending, KVM_RISCV_VCPU_NR_IRQS);
- 	DECLARE_BITMAP(irqs_pending_mask, KVM_RISCV_VCPU_NR_IRQS);
- 
-diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
-index 5ec503288..821d2cb6d 100644
---- a/arch/riscv/kvm/aia.c
-+++ b/arch/riscv/kvm/aia.c
-@@ -50,17 +50,21 @@ void kvm_riscv_vcpu_aia_flush_interrupts(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_vcpu_aia_csr *csr = &vcpu->arch.aia_context.guest_csr;
- 	unsigned long mask, val;
-+	unsigned long flags;
- 
- 	if (!kvm_riscv_aia_available())
- 		return;
- 
--	if (READ_ONCE(vcpu->arch.irqs_pending_mask[1])) {
--		mask = xchg_acquire(&vcpu->arch.irqs_pending_mask[1], 0);
--		val = READ_ONCE(vcpu->arch.irqs_pending[1]) & mask;
-+	raw_spin_lock_irqsave(&vcpu->arch.irqs_pending_lock, flags);
-+	mask = vcpu->arch.irqs_pending_mask[1];
-+	if (mask) {
-+		vcpu->arch.irqs_pending_mask[1] = 0;
-+		val = vcpu->arch.irqs_pending[1] & mask;
- 
- 		csr->hviph &= ~mask;
- 		csr->hviph |= val;
- 	}
-+	raw_spin_unlock_irqrestore(&vcpu->arch.irqs_pending_lock, flags);
- }
- 
- void kvm_riscv_vcpu_aia_sync_interrupts(struct kvm_vcpu *vcpu)
-@@ -205,6 +209,9 @@ int kvm_riscv_vcpu_aia_set_csr(struct kvm_vcpu *vcpu,
- {
- 	struct kvm_vcpu_aia_csr *csr = &vcpu->arch.aia_context.guest_csr;
- 	unsigned long regs_max = sizeof(struct kvm_riscv_aia_csr) / sizeof(unsigned long);
-+#ifdef CONFIG_32BIT
-+	unsigned long flags;
-+#endif
- 
- 	if (!riscv_isa_extension_available(vcpu->arch.isa, SSAIA))
- 		return -ENOENT;
-@@ -214,11 +221,18 @@ int kvm_riscv_vcpu_aia_set_csr(struct kvm_vcpu *vcpu,
- 	reg_num = array_index_nospec(reg_num, regs_max);
- 
- 	if (kvm_riscv_aia_available()) {
--		((unsigned long *)csr)[reg_num] = val;
--
- #ifdef CONFIG_32BIT
--		if (reg_num == KVM_REG_RISCV_CSR_AIA_REG(siph))
--			WRITE_ONCE(vcpu->arch.irqs_pending_mask[1], 0);
-+		if (reg_num == KVM_REG_RISCV_CSR_AIA_REG(siph)) {
-+			raw_spin_lock_irqsave(&vcpu->arch.irqs_pending_lock, flags);
-+			((unsigned long *)csr)[reg_num] = val;
-+			vcpu->arch.irqs_pending_mask[1] = 0;
-+			raw_spin_unlock_irqrestore(&vcpu->arch.irqs_pending_lock,
-+						   flags);
-+		} else {
-+			((unsigned long *)csr)[reg_num] = val;
-+		}
-+#else
-+		((unsigned long *)csr)[reg_num] = val;
- #endif
- 	}
- 
-diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-index a73690eda..b04730ccd 100644
---- a/arch/riscv/kvm/vcpu.c
-+++ b/arch/riscv/kvm/vcpu.c
-@@ -80,6 +80,7 @@ static void kvm_riscv_vcpu_context_reset(struct kvm_vcpu *vcpu,
- 
- static void kvm_riscv_reset_vcpu(struct kvm_vcpu *vcpu, bool kvm_sbi_reset)
- {
-+	unsigned long flags;
- 	bool loaded;
- 
- 	/**
-@@ -104,8 +105,10 @@ static void kvm_riscv_reset_vcpu(struct kvm_vcpu *vcpu, bool kvm_sbi_reset)
- 
- 	kvm_riscv_vcpu_aia_reset(vcpu);
- 
-+	raw_spin_lock_irqsave(&vcpu->arch.irqs_pending_lock, flags);
- 	bitmap_zero(vcpu->arch.irqs_pending, KVM_RISCV_VCPU_NR_IRQS);
- 	bitmap_zero(vcpu->arch.irqs_pending_mask, KVM_RISCV_VCPU_NR_IRQS);
-+	raw_spin_unlock_irqrestore(&vcpu->arch.irqs_pending_lock, flags);
- 
- 	kvm_riscv_vcpu_pmu_reset(vcpu);
- 
-@@ -151,6 +154,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
- 
- 	/* Setup VCPU hfence queue */
- 	spin_lock_init(&vcpu->arch.hfence_lock);
-+	raw_spin_lock_init(&vcpu->arch.irqs_pending_lock);
- 
- 	spin_lock_init(&vcpu->arch.reset_state.lock);
- 
-@@ -352,14 +356,18 @@ void kvm_riscv_vcpu_flush_interrupts(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_vcpu_csr *csr = &vcpu->arch.guest_csr;
- 	unsigned long mask, val;
-+	unsigned long flags;
- 
--	if (READ_ONCE(vcpu->arch.irqs_pending_mask[0])) {
--		mask = xchg_acquire(&vcpu->arch.irqs_pending_mask[0], 0);
--		val = READ_ONCE(vcpu->arch.irqs_pending[0]) & mask;
-+	raw_spin_lock_irqsave(&vcpu->arch.irqs_pending_lock, flags);
-+	mask = vcpu->arch.irqs_pending_mask[0];
-+	if (mask) {
-+		vcpu->arch.irqs_pending_mask[0] = 0;
-+		val = vcpu->arch.irqs_pending[0] & mask;
- 
- 		csr->hvip &= ~mask;
- 		csr->hvip |= val;
- 	}
-+	raw_spin_unlock_irqrestore(&vcpu->arch.irqs_pending_lock, flags);
- 
- 	/* Flush AIA high interrupts */
- 	kvm_riscv_vcpu_aia_flush_interrupts(vcpu);
-@@ -368,6 +376,7 @@ void kvm_riscv_vcpu_flush_interrupts(struct kvm_vcpu *vcpu)
- void kvm_riscv_vcpu_sync_interrupts(struct kvm_vcpu *vcpu)
- {
- 	unsigned long hvip;
-+	unsigned long flags;
- 	struct kvm_vcpu_arch *v = &vcpu->arch;
- 	struct kvm_vcpu_csr *csr = &vcpu->arch.guest_csr;
- 
-@@ -376,6 +385,7 @@ void kvm_riscv_vcpu_sync_interrupts(struct kvm_vcpu *vcpu)
- 
- 	/* Sync-up HVIP.VSSIP bit changes does by Guest */
- 	hvip = ncsr_read(CSR_HVIP);
-+	raw_spin_lock_irqsave(&v->irqs_pending_lock, flags);
- 	if ((csr->hvip ^ hvip) & (1UL << IRQ_VS_SOFT)) {
- 		if (hvip & (1UL << IRQ_VS_SOFT)) {
- 			if (!test_and_set_bit(IRQ_VS_SOFT,
-@@ -394,6 +404,7 @@ void kvm_riscv_vcpu_sync_interrupts(struct kvm_vcpu *vcpu)
- 		    !test_and_set_bit(IRQ_PMU_OVF, v->irqs_pending_mask))
- 			clear_bit(IRQ_PMU_OVF, v->irqs_pending);
- 	}
-+	raw_spin_unlock_irqrestore(&v->irqs_pending_lock, flags);
- 
- 	/* Sync-up AIA high interrupts */
- 	kvm_riscv_vcpu_aia_sync_interrupts(vcpu);
-@@ -404,6 +415,8 @@ void kvm_riscv_vcpu_sync_interrupts(struct kvm_vcpu *vcpu)
- 
- int kvm_riscv_vcpu_set_interrupt(struct kvm_vcpu *vcpu, unsigned int irq)
- {
-+	unsigned long flags;
-+
- 	/*
- 	 * We only allow VS-mode software, timer, and external
- 	 * interrupts when irq is one of the local interrupts
-@@ -416,9 +429,10 @@ int kvm_riscv_vcpu_set_interrupt(struct kvm_vcpu *vcpu, unsigned int irq)
- 	    irq != IRQ_PMU_OVF)
- 		return -EINVAL;
- 
-+	raw_spin_lock_irqsave(&vcpu->arch.irqs_pending_lock, flags);
- 	set_bit(irq, vcpu->arch.irqs_pending);
--	smp_mb__before_atomic();
- 	set_bit(irq, vcpu->arch.irqs_pending_mask);
-+	raw_spin_unlock_irqrestore(&vcpu->arch.irqs_pending_lock, flags);
- 
- 	kvm_vcpu_kick(vcpu);
- 
-@@ -427,6 +441,8 @@ int kvm_riscv_vcpu_set_interrupt(struct kvm_vcpu *vcpu, unsigned int irq)
- 
- int kvm_riscv_vcpu_unset_interrupt(struct kvm_vcpu *vcpu, unsigned int irq)
- {
-+	unsigned long flags;
-+
- 	/*
- 	 * We only allow VS-mode software, timer, counter overflow and external
- 	 * interrupts when irq is one of the local interrupts
-@@ -439,9 +455,10 @@ int kvm_riscv_vcpu_unset_interrupt(struct kvm_vcpu *vcpu, unsigned int irq)
- 	    irq != IRQ_PMU_OVF)
- 		return -EINVAL;
- 
-+	raw_spin_lock_irqsave(&vcpu->arch.irqs_pending_lock, flags);
- 	clear_bit(irq, vcpu->arch.irqs_pending);
--	smp_mb__before_atomic();
- 	set_bit(irq, vcpu->arch.irqs_pending_mask);
-+	raw_spin_unlock_irqrestore(&vcpu->arch.irqs_pending_lock, flags);
- 
- 	return 0;
- }
-diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
-index bb920e892..cba368294 100644
---- a/arch/riscv/kvm/vcpu_onereg.c
-+++ b/arch/riscv/kvm/vcpu_onereg.c
-@@ -298,6 +298,7 @@ static int kvm_riscv_vcpu_general_set_csr(struct kvm_vcpu *vcpu,
- {
- 	struct kvm_vcpu_csr *csr = &vcpu->arch.guest_csr;
- 	unsigned long regs_max = sizeof(struct kvm_riscv_csr) / sizeof(unsigned long);
-+	unsigned long flags;
- 
- 	if (reg_num >= regs_max)
- 		return -ENOENT;
-@@ -309,10 +310,14 @@ static int kvm_riscv_vcpu_general_set_csr(struct kvm_vcpu *vcpu,
- 		reg_val <<= VSIP_TO_HVIP_SHIFT;
- 	}
- 
--	((unsigned long *)csr)[reg_num] = reg_val;
--
--	if (reg_num == KVM_REG_RISCV_CSR_REG(sip))
--		WRITE_ONCE(vcpu->arch.irqs_pending_mask[0], 0);
-+	if (reg_num == KVM_REG_RISCV_CSR_REG(sip)) {
-+		raw_spin_lock_irqsave(&vcpu->arch.irqs_pending_lock, flags);
-+		((unsigned long *)csr)[reg_num] = reg_val;
-+		vcpu->arch.irqs_pending_mask[0] = 0;
-+		raw_spin_unlock_irqrestore(&vcpu->arch.irqs_pending_lock, flags);
-+	} else {
-+		((unsigned long *)csr)[reg_num] = reg_val;
-+	}
- 
- 	return 0;
- }
 
-base-commit: 481329ec5b31d2c48ac6b8b703c8008133884c7e
--- 
-2.54.0
+--- Build error information below ---
+
+In file included from ./include/linux/rculist.h:11,
+                 from ./include/linux/cgroup.h:15,
+                 from ./include/linux/memcontrol.h:13,
+                 from ./include/linux/resume_user_mode.h:8,
+                 from ./include/linux/entry-virt.h:6,
+                 from ./include/linux/kvm_host.h:5,
+                 from arch/x86/kvm/x86.c:20:
+arch/x86/kvm/x86.c: In function ‘kvm_arch_destroy_vm’:
+./include/linux/rcupdate.h:502:9: error: dereferencing pointer to incomplete type ‘struct kvm_x86_msr_filter’
+  502 |  typeof(*p) *local = (typeof(*p) *__force)READ_ONCE(p); \
+./include/linux/srcu.h:240:20: note: in expansion of macro ‘__rcu_dereference_check’
+  240 |  __auto_type __v = __rcu_dereference_check((p), __UNIQUE_ID(rcu), \
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~
+arch/x86/kvm/x86.c:9969:22: note: in expansion of macro ‘srcu_dereference_check’
+ 9969 |  kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
+      |                      ^~~~~~~~~~~~~~~~~~~~~~
+In file included from ./include/linux/notifier.h:16,
+                 from ./arch/x86/include/asm/uprobes.h:13,
+                 from ./include/linux/uprobes.h:66,
+                 from ./include/linux/mm_types.h:16,
+                 from ./include/linux/mmzone.h:22,
+                 from ./include/linux/gfp.h:7,
+                 from ./include/linux/xarray.h:16,
+                 from ./include/linux/list_lru.h:14,
+                 from ./include/linux/fs/super_types.h:7,
+                 from ./include/linux/fs/super.h:5,
+                 from ./include/linux/fs.h:5,
+                 from ./include/linux/cgroup.h:17,
+                 from ./include/linux/memcontrol.h:13,
+                 from ./include/linux/resume_user_mode.h:8,
+                 from ./include/linux/entry-virt.h:6,
+                 from ./include/linux/kvm_host.h:5,
+                 from arch/x86/kvm/x86.c:20:
+./include/linux/srcu.h:243:2: error: ‘__v’ undeclared (first use in this function)
+  243 |  __v;         \
+      |  ^~~
+arch/x86/kvm/x86.c:9969:22: note: in expansion of macro ‘srcu_dereference_check’
+ 9969 |  kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
+      |                      ^~~~~~~~~~~~~~~~~~~~~~
+./include/linux/srcu.h:243:2: note: each undeclared identifier is reported only once for each function it appears in
+  243 |  __v;         \
+      |  ^~~
+arch/x86/kvm/x86.c:9969:22: note: in expansion of macro ‘srcu_dereference_check’
+ 9969 |  kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
+      |                      ^~~~~~~~~~~~~~~~~~~~~~
+In file included from ./include/linux/rculist.h:11,
+                 from ./include/linux/cgroup.h:15,
+                 from ./include/linux/memcontrol.h:13,
+                 from ./include/linux/resume_user_mode.h:8,
+                 from ./include/linux/entry-virt.h:6,
+                 from ./include/linux/kvm_host.h:5,
+                 from arch/x86/kvm/x86.c:20:
+./include/linux/rcupdate.h:502:9: error: dereferencing pointer to incomplete type ‘struct kvm_x86_pmu_event_filter’
+  502 |  typeof(*p) *local = (typeof(*p) *__force)READ_ONCE(p); \
+./include/linux/srcu.h:240:20: note: in expansion of macro ‘__rcu_dereference_check’
+  240 |  __auto_type __v = __rcu_dereference_check((p), __UNIQUE_ID(rcu), \
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~
+arch/x86/kvm/x86.c:9975:8: note: in expansion of macro ‘srcu_dereference_check’
+ 9975 |  kfree(srcu_dereference_check(kvm->arch.pmu_event_filter, &kvm->srcu, 1));
+      |        ^~~~~~~~~~~~~~~~~~~~~~
+make[4]: *** [scripts/Makefile.build:289: arch/x86/kvm/x86.o] Error 1
+make[3]: *** [scripts/Makefile.build:548: arch/x86/kvm] Error 2
+make[2]: *** [scripts/Makefile.build:548: arch/x86] Error 2
+make[1]: *** [/home/litbin/workspace/kvm-x86/Makefile:2143: .] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
 
