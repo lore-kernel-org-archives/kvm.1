@@ -1,127 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C3737CD31
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 19:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437A837DE8D
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 20:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781639809; cv=none; b=AEBEC7YKqB/QMe3hQfu1Ix2yrvPEG36eWxj/u8TY3EfgO/xPi/etz1SXRxPmZTjXAYMbNGYJzfkSbWr6UykIrwaq6gshfqKJSo+LNSJ96F1HUxbcNws/EN1Vdj4tHRQs2/ZMdEBCTxrtxYjj7sYO2csvpTQnHACr/7Zw2+QlTKk=
+	t=1781642826; cv=none; b=ktjuQpWZw4PlaCybNVXrj/EqmdLA/DxV8g9dEUqFYvrnxzCZ55t17yGAtV9Bv0bs4w2I6QoGAtHAGN9Z5jzbaaZ+2u/JHWhOMIILY/GofU/dhYEh7Mo4T/NagzvFYko59e0cd20uZ72H9E5PVi/GPk5XY9F+tYrPX3EUODBA9vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781639809; c=relaxed/simple;
-	bh=fdECusmbQimqAO7FUbvxT4C+3cdeJ33l5jxcefbwdhA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T97Ls7XpNBiV8/eoomLBSXtL3RC3RjidML2gMAi9qDM5NzH88QBKfsLQg5MsDnZhDJOqIh38B6aVYz9/nZhwI2ShAnZkG/2gPHyFonJFB5HvyrDO/CR1jk6llOqOOKVxYqL1AcK0WxEcQmY5FzBzUIFuz0dB5genYak5HrCSSp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CYaBkXx4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781642826; c=relaxed/simple;
+	bh=55ubhwgPFP/ggX+sEQoWYZsZ9CMeijE8qXL6+9SVM4U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=se1NCn6oOGrZpRQzvMEXXuKwAu1Ew7T/17zbBLtScMefQOE0YwaGlUaNbSMhKVhKX8JqG9qwwrnYCUsNIKwUsG05pjuSQdrZZZgY1Le9AW68ny0CV2mYu9waMjkRgJw7GHS0hR7XSWal9a/WwoxwU8tPjmkgoOdVwyXlErdmw5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=Py9mUpUd; arc=none smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CYaBkXx4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA7A1F000E9
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 19:56:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781639807;
-	bh=oGUW0Qza0yi05eQYzGeFSOktaWzJbU8RtLbmdGU9AHY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=CYaBkXx4ka1Hv0Aw0MUsBLD9ZUxucLwIVXWfIdZwm3Zm8TiaSVetTmkXKuX9Jq6Xo
-	 sJ4/YL/rBKMPzVinLHuEmPlt/1kBmohJT8Q4EIAth+1kAn335UXPANrJqz+iNDlVMk
-	 sGh841SqemqbQTK75UKHDwLY2z6vyEgzRxqf7jPA5E0uh8CVrdF3k/F0iTE9LGzgg1
-	 G7+5IUWAyiGBuQibLj6vYzKFDfiD1IpKCAkUF/XNQ5xY/D3+Ov6i67+MlfR1045DL8
-	 jCobD6z05cf9TxqWRywpwasU+SxOsUn+Y7PMJHo360KaQMVCbPvoGrbV4BBa0Mn1d/
-	 jmucnFsSrLPnA==
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-beb2a97cc9aso940038166b.2
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 12:56:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9LEIvlXYcx8oJ2a/dzmcmxCj+BOmsdWl/sBcJq+6ScZmOdQJIOU0c1J+9UJ3at1os+eF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBI04hQuP561RIL2f39LatV16txm8tQ9Po1Mm+TWjJx/eVFM5m
-	ZC6RW3yICejTQ7r/hYexlyFitcO0SDqbCzp4yk7vkh8IxNAMAKHyzacthIKFQPEFK3gZg2+QEmO
-	pEjIrCvAvoT+CzaLA7LziXet37XfYP04=
-X-Received: by 2002:a17:907:9617:b0:bec:52f4:28f3 with SMTP id
- a640c23a62f3a-c05a7ea5fcemr67816066b.44.1781639806780; Tue, 16 Jun 2026
- 12:56:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="Py9mUpUd"
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-43bfe055ffbso3222041fac.1
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 13:47:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1781642823; x=1782247623; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N3bsbmxS4GadL4Z4bToRsBD+Gi0dvukUshOqKGVXCG8=;
+        b=Py9mUpUdWt5vXOQMHpSDFKNdc07dV8zSmKyrmmqNUKFTu/VSDcSGSFT/b2qqNsW69W
+         SNSwSPbiHJsW7x7URUBqDzziXp+n1NzryTK6BcpA4Rp1Nra3/rgmAqE1ch2zhzeu30wP
+         e1wZ/1W1k+2sVKyjipQ8CzHQw2tNo2TI0UXy5fhdoeYEJPL9fckaT7oF38Oax4pwssJK
+         0MUYJxjS5vtn2bFYV+tidJ0pp8MVx6j2bH6L5OgHnqOA5K9+Brdd+NsaYlPCCw2f4h8W
+         ODsQ5gbidbn8t2I5yA/Zgp1SMqBzcNCcFo72ar7wJ6jooOBG+XkY527bxxeVUQFJ9PNA
+         B29Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781642823; x=1782247623;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=N3bsbmxS4GadL4Z4bToRsBD+Gi0dvukUshOqKGVXCG8=;
+        b=BEnIVW1xyn+Jw9KgPb9OALqoQdvRQ4hsJLiuL3LjUdEAQ4+dudeGTBR4DpW/rtFVrl
+         FNp9qAtySZujHCbcBndKMHBQJADalJiYIy//3vZDiVivvs0p850jYjSAV2XfDC+UMgWA
+         yiQPpCR540ZnzZPH1L5cRWYVf7oc2QVGh9hLpAc2oNmizRwjnMmpsmRlvhAUcXsVvCa2
+         oS8n92XOLYmftvqI6+gogTRLAKA0V4xYf7E8qY5z9yvKiiGmAjKXoT8n8Q7TIJLBD+nq
+         goSe9mW07zkpz7Wmjo9lX+1JstZlX1LohmJ9u0aONlPIwkx7B7SHFi6lwagv76OdibW+
+         xlKQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+U+iYBOleji3+/ueZBCBG4MgQy71k/bVOJao1D3yWNSu9faKaZZir8ghsm2X7iklzrQUI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhSvc4X965lI+LTWEEOPyt2OxuEdHVL8mpFyWfMIqq6JhFlUPZ
+	Y+ZUNKsvFr5ICGzBRL/8sKax5E0aRJbX7/nH2jwjIQXDmuM/MPtdGM29INi18rCaGpw=
+X-Gm-Gg: Acq92OGR9fgkYFh0x2e0b8HFhw0wcagREX8PikT2mnMB7U93V9LjjOrbHAduck8VjBy
+	g+Ld5b6px8NUFpYVGd9Ghzb/9hexkcdnhFbaJNog8d+JzyA8qCNfmJV6q6rj22axdOV1lTCoQnu
+	+gAtHhONxB8CHQ9l/uwuqot+9/CNiFBG7t5dFZaIgd2nIOocOYCMp+sN3kwd7GwTv2pKejid21e
+	X30JxHirSf4C8vbPrdNifq62IHxgq0GdDzfrXAXmZ/vMcmvGHdLMyMi+ITqriC5UHkYx5VLN5nl
+	sQTBPCmVIUEMXquvFG9O6VxHVOpUTv3paes01LV+w7oK2RmEtQnhwhUVcqfDkwkCzg5efclqy/8
+	NMm+T0IVcJN+RU/0BY5ROuF4Wuvh7/72Z7QkpBsksT9zNF5pLFjnBXRaBuNs9IPVEblx1f6ZyLw
+	TiGUeS3T0gQoNcWz0TbpY16S65T2jVv1hP+mLZX28aBy0r+Anx2MVHF7uWGwWHFvTMGkYKnj1c6
+	X5uq/Xn0A==
+X-Received: by 2002:a05:6871:538a:b0:442:175:cea7 with SMTP id 586e51a60fabf-4469010a70amr626699fac.1.1781642823167;
+        Tue, 16 Jun 2026 13:47:03 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-443090386basm2851306fac.17.2026.06.16.13.47.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Jun 2026 13:47:02 -0700 (PDT)
+Message-ID: <910230d8-6a14-4d56-9520-169bd379f3d2@kernel.dk>
+Date: Tue, 16 Jun 2026 14:47:00 -0600
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260616004155.1435766-25-yosry@kernel.org> <20260616013031.53DAC1F000E9@smtp.kernel.org>
- <CAO9r8zPA6B72RDWeBMHqv1xz6o9dDHEEjwnMjwAwVwA=5qxaKg@mail.gmail.com>
- <CAO9r8zM1aKR6VzOhVq1_xTH5ZhSUBzYh-tr+ZzO_L4o28iy9OA@mail.gmail.com> <CALMp9eRS0EyqPqWZNkS0U=iH4mSt0snD44ufgXw7wvs9+o=a4A@mail.gmail.com>
-In-Reply-To: <CALMp9eRS0EyqPqWZNkS0U=iH4mSt0snD44ufgXw7wvs9+o=a4A@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 16 Jun 2026 12:56:34 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOMJdzFvjtpyCYZnZWG-ddVtBqLUvbHr0ggA-58KSC7yQ@mail.gmail.com>
-X-Gm-Features: AVVi8CfPC6Q5TfKId2ngb6QRnXcbE4Cx8JTEluFXYcPcyFsb3H6C-JSveRcPCT8
-Message-ID: <CAO9r8zOMJdzFvjtpyCYZnZWG-ddVtBqLUvbHr0ggA-58KSC7yQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 24/25] KVM: nSVM: Use different ASIDs for L1 and L2
-To: Jim Mattson <jmattson@google.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/2] iov_iter: export iov_iter_restore
+To: Octavian Purdila <tavip@google.com>, netdev@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Arseniy Krasnov <avkrasnov@salutedevices.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Jakub Kicinski <kuba@kernel.org>, Jason Wang <jasowang@redhat.com>,
+ kvm@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, virtualization@lists.linux.dev,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+References: <20260613000953.467473-1-tavip@google.com>
+ <20260613000953.467473-2-tavip@google.com>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20260613000953.467473-2-tavip@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 16, 2026 at 12:54=E2=80=AFPM Jim Mattson <jmattson@google.com> =
-wrote:
->
-> On Tue, Jun 16, 2026 at 11:28=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> w=
-rote:
-> >
-> > On Tue, Jun 16, 2026 at 11:14=E2=80=AFAM Yosry Ahmed <yosry@kernel.org>=
- wrote:
-> > >
-> > > [Omitting the previously reported issue]
-> > >
-> > > > > @@ -1557,6 +1550,8 @@ void svm_free_nested(struct vcpu_svm *svm)
-> > > > >       if (WARN_ON_ONCE(svm->vmcb !=3D svm->vmcb01.ptr))
-> > > > >               svm_switch_vmcb(svm, &svm->vmcb01);
-> > > > >
-> > > > > +     free_asid(svm->nested.asid02);
-> > > > > +
-> > > >
-> > > > [Severity: Critical]
-> > > > When the hardware ASID is freed here during nested SVM teardown, do=
-es
-> > > > svm->nested.last_asid also need to be reset to 0?
-> > > >
-> > > > If L1 disables SVM, svm_free_nested() is called, freeing asid02. Th=
-is ASID tag
-> > > > can then be reallocated. If L1 later re-enables SVM and uses the sa=
-me L1-managed
-> > > > ASID, nested_svm_entry_tlb_flush() will see:
-> > >
-> > > Hmm if L1 reuses the same ASID, it's up to L1 to explicitly flush it =
-if needed.
-> > >
-> > > That being said, KVM needs to flush ASIDs when first allocated anyway=
-,
-> > > otherwise we risk reusing TLB entries from a completely different vCP=
-U
-> > > or VM. This series correctly does so for L1 (calls
-> > > vmcb_set_flush_asid() when initializing vmcb01's ASID), but not for
-> > > L2.
-> > >
-> > > So yes, we need to make sure asid02 is always initialized (and reset)
-> > > to 0, but not for the reason Sashiko mentioned. It's so that the firs=
-t
-> > > nested VMRUN using an L2 ASID always does a flush (as L1 is not
-> > > allowed to use ASID 0).
-> >
-> > I think VMX might have the same problem.
->
-> This code *should* take care of it, since vmcs12->virtual_processor_id
-> can't be 0 if it's being used, and vmx->nested_last_vpid is
-> initialized to 0:
->
-> > if (is_vmenter && vmcs12->virtual_processor_id !=3D vmx->nested.last_vp=
-id) {
-> >         vmx->nested.last_vpid =3D vmcs12->virtual_processor_id;
-> >         kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
-> >         return;
-> > }
->
-> However, Gemini points out that last_vpid is not cleared when L1 does
-> a VMXOFF, even though vmx->nested.vpid02 is freed.
->
-> Per the exhortation in security-bugs.rst, I am treating this issue as pub=
-lic.
+On 6/12/26 6:09 PM, Octavian Purdila wrote:
+> Export iov_iter_restore so that it can be used by modules.
+> 
+> This is needed by the virtio vsock transport (which can be built as a
+> module) to restore the msg_iter state when transmission fails.
+> 
+> Signed-off-by: Octavian Purdila <tavip@google.com>
+> ---
+>  lib/iov_iter.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+> index 243662af1af73..067e745f9ef53 100644
+> --- a/lib/iov_iter.c
+> +++ b/lib/iov_iter.c
+> @@ -1491,6 +1491,7 @@ void iov_iter_restore(struct iov_iter *i, struct iov_iter_state *state)
+>  		i->__iov -= state->nr_segs - i->nr_segs;
+>  	i->nr_segs = state->nr_segs;
+>  }
+> +EXPORT_SYMBOL(iov_iter_restore);
 
-Yeah both last_vpid (and last_asid) should be reset to 0 when nested
-is turned off (VMXOFF or clearing EFER.SVME), we should probably also
-document that this is required to ensure a TLB flush on the first
-usage of the ASID/VPID.
+I don't have a problem exporting this to modules, but any new export
+should be _GPL. So please change it to that.
+
+-- 
+Jens Axboe
