@@ -1,102 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEEA23EAB7;
-	Tue, 16 Jun 2026 00:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A434127F72C
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 00:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781570543; cv=none; b=GpGNm/Kjsxs9jq0g4y1GuLUrDxKA4fRi/FNuZIfutRyh0btEqwAawTPIienq4WsNb2Lf0eDwd5c96235g4nRxg7fIp8cmLRCeB0r8qKa7bUeYncDceNdklKkMaGnrpOIcTuEz6i36aRh40R5Fbmb0Eieifs4PdqL2toVKvo6cpo=
+	t=1781570545; cv=none; b=F5UgtkQY2W3EmYyfk4yl3whq6dXIjiTC+7Mw/CMbcLfggvlM6oaeeHdFKTOyntfmy6NwK0VVdT/tE5oeMiVVBXAQPWvsrSpl1eBcWEvx/5Kjc4T5iEoy8lwZFPu/NyUJDObjbo6huzpNNjJsj/qBUciQs3SuRRZ5aZXbZVicbnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781570543; c=relaxed/simple;
-	bh=8zzFmaxSHvN5NJRgNimX1V8WkM1p2Mxj8xLY9G1WSYg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxxCGcBxENNczwzjNLs/2E0Z95zstve3GtO+GdSgRxfTfaqiOK0BH67vpOVNs9PGdv1Kcsf37TqeYVlSXfnu8qnfMfJDaXlokLUOR4j5Y2/mw+gt6UCNL0OTysTPYWLF9UBHQRgW42eI8pleZPF0fxadVG3xZUOIU5c/f3Iczgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h/g1I8mj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781570545; c=relaxed/simple;
+	bh=dLd2xq2uaf3rRXOHvRSNS0csxsbcSNNyU4+pJRavd9E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HYTgPLxl25RYv/2b9ZCNkPhLB3ABnIpYbNRxA7xq/wv6BigeiEuP6OIEI/PcPlSxxypSJ+Wwon/dLuM00jfE6YntgVv7d17SyDC8x6Cj/G0YcOa15VqHpfd7XqwugQxZ3lNcJBCcKRh/oAT6iEjuCxhttelLfvAciCSpTJ46fR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=syowSQf8; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h/g1I8mj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308BA1F00A3F;
-	Tue, 16 Jun 2026 00:42:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781570542;
-	bh=i7MNesXZHLfa7YBhbwQlOSaxF/wFQJ6m2TyqXAm/deU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h/g1I8mjf1Ydhj0VbWaFc+fYAlNeir+NY+ZMEJX2C5TcrrOuzUBXIak0YH+ufCi6c
-	 JDD6rVQ0jRXHjrEIhacgMjqtha+Oj/bAxRiP1T6o8sl2ADtxGUpaAHw/6y3H5FEEqD
-	 XRAWBoZLlMcJGqMgT6Wxg5r0tXS/OYUazTLDiOucLP4V9XlpZ3uIzMbcWQgBJ5luEY
-	 opXXk7hw18Ah3H9sGInUQ1Djs8A6BfiCnW/RcpK6rfkXsR3ts0H7PaOUu0P8B0otdv
-	 nEBFaHGzD3pksHcEYvLK2TV6cJtALTvQn9Su4Ha8wqLYwVvUa8PEvIBPCKhYJKN1PK
-	 EMz1zCaFXyjzQ==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>
-Subject: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of supported ASIDs
-Date: Tue, 16 Jun 2026 00:41:31 +0000
-Message-ID: <20260616004155.1435766-3-yosry@kernel.org>
-X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-In-Reply-To: <20260616004155.1435766-1-yosry@kernel.org>
-References: <20260616004155.1435766-1-yosry@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="syowSQf8"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2bf22c18ad3so25255ad.0
+        for <kvm@vger.kernel.org>; Mon, 15 Jun 2026 17:42:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781570543; x=1782175343; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dLd2xq2uaf3rRXOHvRSNS0csxsbcSNNyU4+pJRavd9E=;
+        b=syowSQf8wLSWGtS1PgGodgassz1O0d3yWQC/H8bw1NwhJXnr2zJeiuj2E9Ro7P8b6l
+         0sKRW0UZFDTu+eESKF29TzoeA+btPajRdmHAwn8Fq68xybv5XIGq84mQ5N/mCzA9iv90
+         tqL76uIuG5kg5s11jGw7XA/DJp7SuL2b7rLOnd+J61Tp2e9hVRkxujRfT3N8Z4G5V+iT
+         JRdBHxN17iGa6R1QsD9eJ30qxHswfPElKqYT+dbJCj9baxjbVpYy0TVxWpgBH9lXGUre
+         FFWVCLGYk9RnLU9bmUm53V0robpx5+adag8sZtrLrwcaCjFlJYvIEQjn9orrqr/AMG8f
+         TzPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781570543; x=1782175343;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dLd2xq2uaf3rRXOHvRSNS0csxsbcSNNyU4+pJRavd9E=;
+        b=WAFXpd4JX1tSUpPbV0ty2lI8ioDqm9SGHxgwtPoL+nePq/zdXLEmZi5ueuBti/gzf/
+         YQ2B/nidtFx1rf4ZKlt2whDen8zc95N5eiaRbRgRVyIaOkXmclrjmnfo+jF0g7wcgYs9
+         ckxXTxRtfjh8M0G9xaSNRkkSza1/VHVCO4D3Dd+D3QlkSyKrNbH75OKXAXkC9QgPu90n
+         moz5SGm35pdNhSrEZbTtEommAiKksYW8Xr4k6+MC4Y8lYG4O1Ki0G1WhYy+ePXuqK9wl
+         Ob9V+WzMJYCrZQurQce3Qst0V7IwhgD3qbN1m0LOGUiPkWIs/TGRYAcz/bWBekVD5ga9
+         eK0g==
+X-Forwarded-Encrypted: i=1; AFNElJ8PhPYebGDpRJBLKHxM/ptAE66ZpqMcvX5TsZ4sca/Hd3BDoVQh/FISVjGb0fMIQhAfEvc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqEj9hxMstqnnwLa82EKsoHelWiZTwczehJ0AWHXwjii4Yg4qy
+	/AnWkgAl8iH5jFtg1F2/vmlWTsvKxu5LXmwAQJNOeDCdNuarzSADe0/LKILIyfUO8w==
+X-Gm-Gg: Acq92OFlpi3gwIMB1lFjuYxUN8QYwGe7rFrfed//S1TQcRrnPO8jAA8c+wX9xrI9fsd
+	OzNvkVNgF14U+Lo6RdLlccSVpahvqEdDhfeIX6XmEI4ez2b750NuswRFrKIuVS1/4hbMx3308Es
+	QJCCVtwon2vlr6y6kjuTjnfXfDzxHoIa17shpltcvzwsgiQxaRrvUKOcSCst4v5rhF8nw0YfZlu
+	tYeny/Am7CLwl1HMpaUTEeU5c1Iv4oWyGjjT1HFdl4TGXB9l1HDk9FvHXSMIaa9JTWt+EUuC9e2
+	BU5qjRRVDIrkg2Dc9YFjbLXJJ01z1JcDxWwcwJDgeYRj/M5wRuLcpoFkfNiNPos4bg5G+jhv2S+
+	/NNY3OUGF2mUTXFK9U4SGAsGHnQirGSkWz1bJZQ+O6EwDQeFC4RbMBA7SrxpJkBAjCz3LDEJD0j
+	KYeTMEjCTLfIBHunQU4uRgQ45HzKP27vKpCrMxlXJ9tvY1ERiVddaUKh8XsMLitYJFJgv63b8wE
+	ROpItWLwvK2bC1qM3k=
+X-Received: by 2002:a17:902:ef02:b0:2b4:641a:6b7c with SMTP id d9443c01a7336-2c69c1d4b35mr692755ad.13.1781570542499;
+        Mon, 15 Jun 2026 17:42:22 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8661b5e509sm10014682a12.3.2026.06.15.17.42.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 17:42:22 -0700 (PDT)
+Date: Tue, 16 Jun 2026 00:42:19 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
+	Logan Gunthorpe <logang@deltatee.com>, Alex Williamson <alex@shazbot.org>, 
+	Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Matt Evans <mattev@meta.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+	Shivaji Kant <shivajikant@google.com>
+Subject: Re: [RFC PATCH 0/5] vfio/pci: Support ZONE_DEVICE-backed P2P
+ Registration
+Message-ID: <ajCaTmrYQvKDoP_I@google.com>
+References: <20260610151853.3608948-1-praan@google.com>
+ <20260610162848.GO2764304@ziepe.ca>
+ <airI0VIb563jHTcy@google.com>
+ <20260611221447.GH1066031@ziepe.ca>
+ <aiwcquSgAonkh_6L@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aiwcquSgAonkh_6L@google.com>
 
-KVM currently hardcodes the number of supported ASIDs in CPUID to 8. A
-KVM guest (L1) would then do a full TLB flush (i.e.
-TLB_CONTROL_FLUSH_ALL_ASID) every time it runs out of ASIDs on a vCPU
-and updates the generation (see new_asid()).
+On Fri, Jun 12, 2026 at 02:50:18PM +0000, Pranjal Shrivastava wrote:
+>On Thu, Jun 11, 2026 at 07:14:47PM -0300, Jason Gunthorpe wrote:
+>> On Thu, Jun 11, 2026 at 02:40:17PM +0000, Pranjal Shrivastava wrote:
+>> > On Wed, Jun 10, 2026 at 01:28:48PM -0300, Jason Gunthorpe wrote:
+>> > > On Wed, Jun 10, 2026 at 03:18:48PM +0000, Pranjal Shrivastava wrote:
+>> > >
 
-This is currently harmless, as KVM (L0) uses the same ASID for both L1
-and L2, and flushes that ASID on nested transitions. However, following
-changes will add proper ASID emulation and a separate ASID for L2,
-minimizing the TLB flushes on nested transitions. At that point, a full
-TLB flush from a KVM guest (L1) would flush both L1 and L2 ASIDs, so
-should be avoided as much as possible.
+[snip]
+>
+>Yea, that's going to be tricky.. I'm thinking if we can have a zap model
+>there somehow? If the device is gone / going through a reset, we can
+>handle the refcounts accordingly?
 
-Passthrough the number of ASIDs in hardware instead of hardcoding 8, to
-reduce the chances of an L1 guest flushing its own TLB entries
-unnecessarily on a nested VMRUN.
+IIUC zapping will only work if userspace is using these, but if you feed
+this memory into another device through NFS and the pages are pinned by
+gup (or that device) then the dmabuf move_notify/revoke logic on device
+reset will be tricky as now the pages for that device BAR are pinned.
+>
+>>
+>> Come to think of it, since the sysfs API cannot do that in the way
+>> VFIO wants I actually think you can't use it..
+>
+>Ack. Baking this into the VFIO DMABUF allows us to enforce the right
+>lifecycle.
+>
+>My plan for RFC v2 is to add a flag like VFIO_DMA_BUF_FLAG_ZONE_DEVICE
+>to struct vfio_device_feature_dma_buf which allows the caller to opt-in
+>to ZONE_DEVICE backing specifically for that export.
+>
+>Does this opt-in flag sound like a reasonable uAPI or do you see any
+>concerns with this direction?
+>
+>Otherwise, as you noted, the lifecycle and the mmap path remain the main
+>problems to solve.
+>
+>Thanks,
+>Praan
 
-In practice, there is no harm in exposing a large number of ASIDs to the
-guest, even larger than what hardware supports, as KVM never actually
-uses the value of ASID from vmcb12. Even with a separate L2 ASID, KVM
-would allocate a (supported) ASID for L2, and just flush that same ASID
-every time L1 changes the ASID in vmcb12.
-
-That being said, avoid the temptation of just advertising the maximum
-possible number of ASIDs (i.e. 0xFFFFFFFF), in case any peculiar guest
-OS does not handle that properly.
-
-Note: QEMU currently hardcodes the number of ASIDs to 16, so this change
-doesn't help QEMU VMs (without making a similar change in QEMU).
-
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
----
- arch/x86/kvm/cpuid.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 591d2294acd75..4486fc8d22b04 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1824,8 +1824,6 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
- 			break;
- 		}
- 		entry->eax = 1; /* SVM revision 1 */
--		entry->ebx = 8; /* Lets support 8 ASIDs in case we add proper
--				   ASID emulation to nested SVM */
- 		entry->ecx = 0; /* Reserved */
- 		cpuid_entry_override(entry, CPUID_8000_000A_EDX);
- 		break;
--- 
-2.54.0.1136.gdb2ca164c4-goog
-
+Sami
