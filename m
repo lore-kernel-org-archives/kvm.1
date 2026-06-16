@@ -1,134 +1,105 @@
-Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4065322A1C;
-	Tue, 16 Jun 2026 15:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED543A8FE6
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 15:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622199; cv=none; b=ii2ppOyep0P6tdPSm4GhtalqkPEOfrZPVYnCNDh7dTDU02APjysP2KQbiJEAPz/R1nUEkyyC/Z0iNz9FzyNatlxO372Iqhwud/biGwlCigHRp8COB8ep1kFMNZdSHE2HUA10H8A0jL7kjHUwDS+JZHf2le53DugxOpvH1Esv9YA=
+	t=1781622522; cv=none; b=ohnSVOqDjixvpcUdXreLic0RR6XuyQzyYqWviQUUbrxf21zQUjib/FERJT9L0FplJCChtOE/dwAezk3yDE1A0CQ9RHP0vADW/44uiZECNjfjYYG50raaJy1jI06KMRRWZqj9erSatNOUArj+fv1gICDdx2G6LE2YI93foSA0gW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622199; c=relaxed/simple;
-	bh=xC+beP4a6w3VIhynN6Bo100Xb4uAkVRIkb4MDIWhP9w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t5QVQlca4Lp+qRsICjesnwC14noIq94Syt/rmV9FQAhZggK8lvAVsmVbkSLPbvk0ZPSSZF1X6wypDgwsm6+7ZFrmzqgO3e8RRhJk7dT8FBGujXDJ2EssO4sjYhBw7PsYvPqn6sUUiDOhplQaOuE7zsk2yZDIOUVx3naeOhmH18U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=MnnYmzxT; arc=none smtp.client-ip=155.212.184.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
+	s=arc-20240116; t=1781622522; c=relaxed/simple;
+	bh=mir7lQ9ByqN2nifHSt6sAIYbYjvEKeEYA5Do7POwxZI=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=BW0+x2HfGOJ+tG8D0fbSoVlAZDk4SO35fBv77210n0FaRGVBun6QyPWQJlmaymJQ6LW9BT172OuZiDe2rcpkVbpjDJlOmy5Ntgr4XSnCCIb22vSJeHcYKNF5ZPkvxtJbuYQNjNbyI7sJBfykPlUmgv/bIC2NHL4WHx18Kb2Sqig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=g5fXVlyh; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="MnnYmzxT"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4B6DA1011EF;
-	Tue, 16 Jun 2026 18:02:48 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
-	t=1781622185; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=BOZdJldyA9xjQSPbHtynyt1B2+NL3cHwnFTKNzeJ14A=;
-	b=MnnYmzxTpoDkBkxeqEEUwVjjOGeJZtB9ee9alhl8qU/pmY6E0HLibQescqHzEwLHptkCuT
-	x7JqE62HoGa48mNCPwUffgUKTsUxmEMMkIBDj8Lf+VWT9G/nZmfgJ/S0aDLsSOgmshXa+m
-	NlLj02J9sp2ZQ5AMBZ5d7ezMkmEcOePpE9hBTbDz/j+IGmdjvEOuVjJphr8P4mtHwEwsT8
-	7jA5HnLLCcGXPCfuyw4jM4s/rlfhYv+LJufAssEDScXREQRB14fgbarezI9Qs3dyt2WWp6
-	YT5aHokJXJRbMvpARcWpejDMKRNRvIISb+9TDedlroKmuj5AJVpRKn4U6MXkWQ==
-Message-ID: <772885a4-c755-433c-b076-ae7ac73794aa@rulkc.org>
-Date: Tue, 16 Jun 2026 18:02:43 +0300
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="g5fXVlyh"
+Message-ID: <1bfa4941-b94b-410a-9b64-c13f2712edf9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781622509;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/qi5Ric3fS1uSNx65BlDQd+25gkfQEYc/OF/he0FlxQ=;
+	b=g5fXVlyhOXpYm9mHwBPDPubqtRsxZZehF4xFU8OM/g3EvLNujya/KCIDxRqdYnaMp0ZGXP
+	xnSY3iIL/ggkIaOzQWhxPHhMVixhyF2iPpNaQcej9IcDQnFTYlntzpyXFtm1wJK4GeOYmH
+	ngV9bflxpofTiQkrvTDdN492Tk3kReE=
+Date: Tue, 16 Jun 2026 23:08:14 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] vsock/virtio: rework MSG_ZEROCOPY flag handling
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Bobby Eshleman <bobby.eshleman@bytedance.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Simon Horman <horms@kernel.org>, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, oxffffaa@gmail.com, rulkc@linuxtesting.org
-References: <20260614174756.170631-1-avkrasnov@rulkc.org>
- <ajFFOJSdqpNWgohB@sgarzare-redhat>
-Content-Language: ru
-From: Arseniy Krasnov <avkrasnov@rulkc.org>
-In-Reply-To: <ajFFOJSdqpNWgohB@sgarzare-redhat>
+Cc: cui.tao@linux.dev, kernel@xen0n.name, kvm@vger.kernel.org,
+ Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [PATCH v4 2/3] LoongArch: KVM: Implement guest-side PV TLB flush
+To: Bibo Mao <maobibo@loongson.cn>, zhaotianrui@loongson.cn,
+ chenhuacai@kernel.org, loongarch@lists.linux.dev
+References: <20260615082154.42144-1-cui.tao@linux.dev>
+ <20260615082154.42144-3-cui.tao@linux.dev>
+ <0c47ce21-9a4d-4cdc-9bec-ce749e31512e@loongson.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <0c47ce21-9a4d-4cdc-9bec-ce749e31512e@loongson.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-Migadu-Flow: FLOW_OUT
 
 
-On 16/06/2026 16:09, Stefano Garzarella wrote:
-> On Sun, Jun 14, 2026 at 08:47:56PM +0300, Arseniy Krasnov wrote:
->> Logically it was based on TCP implementation, so make further support
->> easier, rewrite it in the TCP way.
->
-> Hi Arseniy, and thank you so much for the patch!
->
-> I’d like to ask you to expand on the message a bit, especially to explain why we’re making this change.
->
-> In particular, I’d like to better understand whether this is just a cosmetic change or if we’re fixing any issues (and if so, which ones), so we can determine whether this patch should be backported to the stable branches.
+Hi Bibo,
 
-This is cosmetic change. I'll update commit message in v3.
+That's really kind of you. I'd really value the chance to work with you.
 
->
->>
->> Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
->> ---
->> Changelog v1->v2:
->> * Rebase on last 'net-next'. Don't need 'skb_zcopy_set()' now - it was
->>   already added.
->
-> Ah, okay is net-next material, please use the net-next tag (ie. [PATCH net-next v2]). 
+在 2026/6/16 09:14, Bibo Mao 写道:
+> 
+>> +            __cpumask_clear_cpu(cpu, flushmask);
+> is it possible that vCPU is running however with KVM_VCPU_PREEMPTED set?
 
-Sure!
+It shouldn't happen with a correct host: the bit is set on vcpu_put
+(preempt) and cleared on entry through kvm_update_stolen_time(), so a
+running vCPU always has preempted == 0. The guest-side race is closed by
+try_cmpxchg(). If the host clears the byte between the guest's READ_ONCE
+and the cmpxchg, the cmpxchg fails and the CPU stays in the IPI mask, so
+no flush is missed. The only thing that can break the invariant is the
+error path from patch 1, which the conservative handling there closes.
+Point taken though: the design's correctness rests entirely on the host
+honoring this, so I agree the patch-1 fix is necessary rather than
+optional.
 
->
->>
->> net/vmw_vsock/virtio_transport_common.c | 48 ++++++++++++-------------
->> 1 file changed, 23 insertions(+), 25 deletions(-)
->>
->> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->> index 09475007165b..787524b8cb44 100644
->> --- a/net/vmw_vsock/virtio_transport_common.c
->> +++ b/net/vmw_vsock/virtio_transport_common.c
->> @@ -328,38 +328,36 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->>     if (pkt_len == 0 && info->op == VIRTIO_VSOCK_OP_RW)
->>         return pkt_len;
->>
->> -    if (info->msg) {
->> -        /* If zerocopy is not enabled by 'setsockopt()', we behave as
->> -         * there is no MSG_ZEROCOPY flag set.
->> +    if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
->> +        /* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
->> +         * 'MSG_ZEROCOPY' flag handling here is based on the same flag
->> +         * handling from 'tcp_sendmsg_locked()'.
->>          */
->> -        if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
->> -            info->msg->msg_flags &= ~MSG_ZEROCOPY;
->> +        if (info->msg->msg_ubuf) {
->> +            uarg = info->msg->msg_ubuf;
->> +            can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
->> +        } else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
->> +            uarg = msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
->> +                            NULL, false);
->> +            if (!uarg) {
->> +                virtio_transport_put_credit(vvs, pkt_len);
->> +                return -ENOMEM;
->> +            }
->>
->> -        if (info->msg->msg_flags & MSG_ZEROCOPY)
->>             can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
->>
->
-> nit: we can remove this extra blank line.
->
-> For the rest I can't see anything wrong, but a bit more context in the commit would help me in the review.
+>> +    }
+>> +
+>> +    on_each_cpu_mask(flushmask, func, info, 1);
+> LoongArch VM does not support post interrupt now, IPI with vCPU will trap to hypervisor.
+> 
+> There is another PV TLB flush method using hypercall like PV IPI, which will make a request with wait flag such as KVM_REQ_TLB_FLUSH and kick vCPU.
+> 
+> With this PV TLB flush method, there is not IPI interrupt in VM, and wait is handled in hypervisor, the negative effect is that it flushes all TLBs.
+> 
+This is the point I most want to get right, and you're correct. Since
+LoongArch has no posted interrupts, an IPI to a *running* vCPU still
+traps, so the steal-time path only genuinely helps for preempted/idle
+vCPUs; for running ones it's no better (a little heavier) than a plain
+IPI. The hypercall approach (analogous to our PV IPI) would avoid
+in-guest IPIs entirely, at the cost of a full TLB flush and
+hypervisor-side wait handling.
 
-Ack, I'll update commit message in v3. Also need to check some reports about pre-existing issues from sashiko, triggered by this patch.
+Rather than argue from intuition, I'd like to try the hypercall approach
+you suggested and measure the performance improvement against the current
+path. I'll share the results with you once the testing is done, so we
+can decide the direction based on the numbers.
 
-Thanks!
+> FYI, another PV TLB flush method in arch/x86/hyperv/mmu.c ...
 
->
-> Thanks,
-> Stefano
->
+Thanks for the pointer. The Hyper-V path is a pure hypercall: the guest
+hands the hypervisor the address space, an address-range list, and the
+target VP set, so the flush stays fine-grained instead of nuking the
+whole TLB. That's a good template if the numbers point us toward a
+hypercall-based design.
+
+Thanks,
+Tao
+
