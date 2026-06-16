@@ -1,180 +1,213 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C761D89F4
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781601375; cv=none; b=LtQM8ZQuv6+hj26oohIVHJsu3+Cv0ZLy5NNjiP8+aIg8EkxU/vreg+0IzI2xvGuLWn/Hj35l7SH9TCts4g8NQQ1V3u2RcEA0SJ6l2bsJgJKT5Pu/Ib9jufpAMhSyvrGz0qsLTUnmCG+ozWpREesc1gbbz0NRR20JAER3eJdEjS8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781601375; c=relaxed/simple;
-	bh=TznTWtEsTXwfynno4JjQTZakvprLhmN+qNqGOjoQhVQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=XOhSs5ZIQNXvW5/Wbcc4a0/BIctzN3bmn/gHhMgBqvuW+Rsrr91jUzFCZ/xpPf5bpt76gRzd/Hme+kauxoPfK8p0oYBU4Tn+SsK+mGtf9k/OtWBQe1K0jxFdX1DQMw9Y0GKZXGJfIpbkVipUqc8yEGSL1x7KoUjfJN5+gS13HLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CSj1iVqX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418D5397699;
+	Tue, 16 Jun 2026 09:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781601510; cv=fail; b=euPkCO9UD4mwadN/I7rFgPKAM9mtBj7CoApyuKb2IjIU9rVYkkFUlXaZZ4d7HCby/VRHrR/XGkGuVzoGUFnT9Q1DuriywgnoZsI2toiBOaj4gw1rQP7nkq7plyj+/z1ulBeHUIgtcFQFtDCW9eLf6CE4DVYeSXTYykYMOPnrAWs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781601510; c=relaxed/simple;
+	bh=/z4gfBjvaSCKwiZmEZfin2WxPQPTEM3/+W2Xi5y6O+c=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=iFE4TPeGoDCyKlL4bIfnpwms6njOm4PVxvNQbELM4vg3PPtYGLMs2OUR2Wl2MJ7kkKwK9rEMtmfa6aT62gTn9n7PPw1oGGSupCZUAm9pCaA9NsvxjnQEjMHdicf8CZvf1Kmjatpeu+aK82ty2yFFifD2Ay+k0Ia8l1qtOMaZJd0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kOKQ0jWS; arc=fail smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CSj1iVqX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781601373;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KcaNbqZ+folpc8zogdsUetTn5R2c9+8hBEKj5VOQTrg=;
-	b=CSj1iVqXExB+zh+++PNrKTlfis4Kbq1rYGgiGPsN8ZLPbqzLQ8Adt7iwaR5LXkXqpvzOcT
-	91UOJbhwMnhtK5UC4mfH22xq6Fd719SgDRjBhkZrOxx69KSzMWG+6XSt8IqDWsBBnZrbtH
-	Vp6s5cMCEB5+uDm+W3ni+bXOzmpERNY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-m4e4fe0-OUW6PMPrmhMxJA-1; Tue,
- 16 Jun 2026 05:16:11 -0400
-X-MC-Unique: m4e4fe0-OUW6PMPrmhMxJA-1
-X-Mimecast-MFC-AGG-ID: m4e4fe0-OUW6PMPrmhMxJA_1781601369
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7038E1955E75;
-	Tue, 16 Jun 2026 09:16:09 +0000 (UTC)
-Received: from localhost (unknown [10.44.49.40])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AFD75195410A;
-	Tue, 16 Jun 2026 09:16:08 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Peter Oberparleiter <oberpar@linux.ibm.com>, Halil Pasic
- <pasic@linux.ibm.com>, William Bezenah <wbezenah@linux.ibm.com>,
- vneethv@linux.ibm.com
-Cc: linux-s390@vger.kernel.org, farman@linux.ibm.com, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
- svens@linux.ibm.com, mjrosato@linux.ibm.com,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] s390/virtio_ccw: Also suppress -EINVAL on device detach
-In-Reply-To: <2e543ef5-1aa8-4ddc-a68a-103c7bdfe58d@linux.ibm.com>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Avril Crosse O'Flaherty"
-References: <20260612155407.199218-1-wbezenah@linux.ibm.com>
- <20260615002309.052e0614.pasic@linux.ibm.com> <875x3jn94r.fsf@redhat.com>
- <4d7fc371-4357-496f-9774-1f7a7c1a3091@linux.ibm.com>
- <20260615234246.0ec5d947.pasic@linux.ibm.com>
- <2e543ef5-1aa8-4ddc-a68a-103c7bdfe58d@linux.ibm.com>
-User-Agent: Notmuch/0.40 (https://notmuchmail.org)
-Date: Tue, 16 Jun 2026 11:16:06 +0200
-Message-ID: <8733ymn8vd.fsf@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kOKQ0jWS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781601508; x=1813137508;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=/z4gfBjvaSCKwiZmEZfin2WxPQPTEM3/+W2Xi5y6O+c=;
+  b=kOKQ0jWScPvKoyI9lvnHFbPrZGTRPiigVcbmz7KyulMjmTGLlDpTfoMv
+   Ycj7tFoJ7T7YG43VGqokYwlE3XR2+c13vnF8lioImZTeiK+B2rPTdfrYL
+   t3Utjdwm2KAhbdkMNdQsImk+1ltDzps9kDu0bqb444p4Oqexxp4ZxdVPx
+   EWTCRhXiAe4NukGLC4MbqBqHMts4uh32nXstNZhDEN4aHnosBGeiYXaQk
+   5xKOQSKYaoeADWuG64TCOJVow+RWkdWz0U60JthSsq/fA9dOEyMND7cG3
+   XJyODV2ONb7Yrv46m0qaIgeKpZCYLol9cMpzvFT56+GiX6t0kv9eF5MLd
+   A==;
+X-CSE-ConnectionGUID: 540jKd6QSZ6rQwuspp3vJA==
+X-CSE-MsgGUID: jqLmnGFDS1uGnTHHBQMLQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="82347134"
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="82347134"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 02:18:15 -0700
+X-CSE-ConnectionGUID: lZiJa12ZQ+S5E+tqjOGV2Q==
+X-CSE-MsgGUID: RT9vP4HuSDODf8TWEaQkDw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="249612518"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 02:18:15 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 16 Jun 2026 02:18:14 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 16 Jun 2026 02:18:14 -0700
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.43) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 16 Jun 2026 02:18:14 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YCawg1uP8WwUDkwQnSsayCo/r9YUv9ZfiBO1NBkih66Duz6YD93O0/d0wXPi3ty7QP+R6wWOvsbytKFpq+3mEqAN9fWmBhm/MguKSjPa81R5C3Ea2MyX9FtOCcfZKbvBjOP3JlEeX73d3+t84ghOMk3ILelIcEU+g87m0V5+2sVm1d4pvbUUIFIWHcdhM2WungYNizhyhPV8HMFesPx6nYBPDHbTQDdq/kYcQl91YHRbgtdNMP5Ossi5t1kOPPhnpsVJ3U1v1OQg7NJsCIBhxsqcpvT5dRLsrLcVVRyH8vOoru/OumcfMdvV3rcDclltm1QxPjfgfuL23jYPlsUvwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DTu4Wz1X/swhQ5Wot1kQ81exdlvxuEM5CnXCP7yLkKI=;
+ b=M7Z7421NCjKiUzSOEUNIUCvehGquBqwRaIGTQCZAQx9Ak0WNr5y6D+ybfhGWW5ud10jA5LrEXJgasucFpuYs5fyUIRR4vYJepX3QDDP0IPyr+WtCWg0qjLT5MMl210c8LABHCRoGiC4h51xCyDOOcAwmfEhwPpuSBxRuc1bZKnegITQHsSAsJsqPeJ0tmEpDFXF1K48iGo8S+nwYDQvNMMV1K+vYEkM9iHFGSwZQih3PZOt+5gK1R6PRqHTP9q3voX5LJweRRLvaj3r4U0oChS414fyPrbEccpqbamqMG2dKe6KumoE8qUE3F1CrQm/v3nfvqCMQmrvj8L1pXdmENw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM6PR11MB3690.namprd11.prod.outlook.com (2603:10b6:5:13d::32)
+ by CY8PR11MB7777.namprd11.prod.outlook.com (2603:10b6:930:71::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Tue, 16 Jun
+ 2026 09:18:12 +0000
+Received: from DM6PR11MB3690.namprd11.prod.outlook.com
+ ([fe80::7db8:f6b3:30f8:ee4b]) by DM6PR11MB3690.namprd11.prod.outlook.com
+ ([fe80::7db8:f6b3:30f8:ee4b%4]) with mapi id 15.21.0113.015; Tue, 16 Jun 2026
+ 09:18:12 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: Matt Evans <matt@ozlabs.org>, Alex Williamson <alex@shazbot.org>, "Leon
+ Romanovsky" <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro
+	<amastro@fb.com>, =?iso-8859-1?Q?Christian_K=F6nig?=
+	<christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, "Logan
+ Gunthorpe" <logang@deltatee.com>
+CC: Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>, Sumit Semwal
+	<sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>, "Pranjal
+ Shrivastava" <praan@google.com>, Alistair Popple <apopple@nvidia.com>,
+	"Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>
+Subject: RE: [PATCH v3 6/9] vfio/pci: Clean up BAR zap and revocation
+Thread-Topic: [PATCH v3 6/9] vfio/pci: Clean up BAR zap and revocation
+Thread-Index: AQHc+PAbYETvhcTyrUu/DN8Pu72QKLZA7eCw
+Date: Tue, 16 Jun 2026 09:18:12 +0000
+Message-ID: <DM6PR11MB3690CA709415069FFA5121838CE52@DM6PR11MB3690.namprd11.prod.outlook.com>
+References: <20260610154327.37758-1-matt@ozlabs.org>
+ <20260610154327.37758-7-matt@ozlabs.org>
+In-Reply-To: <20260610154327.37758-7-matt@ozlabs.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR11MB3690:EE_|CY8PR11MB7777:EE_
+x-ms-office365-filtering-correlation-id: 476c51f0-b4f8-49dc-147d-08decb883066
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|38070700021|22082099003|18002099003|4143699003|56012099006|3023799007|11063799006;
+x-microsoft-antispam-message-info: eRNi1u3C/BYF+ENG9WQg943nCU5pX35J6PFs5APrSH7lgnoiuSm7/KPN/OE+23PDBLeKCqYx4JvYk+y2OQQwWQqqx08AA9Gw2XsyMJVJgIt6Lb0uMuXG0lIeXGkbuy+K+egk4ccUhW3KmkpsBr6vskQJQTjlKoH1W4h9HMPBtzTLpEYwGw7GoyQ4f31KhlVYK9Iimc6+kzpfp0mDu53wkLf3YaJQ1f/kCgegRLuSMx6vfnxyiHeXW5NuESAix77WUvm3fDCWMyJKDtw/E+gK7SBNPgZ1Kbg/xV2IF/PJXHkrYr0qEhY86ajuqrNNLVA6WCxcbodsoWfa+cBZNVLcrNIBUn9S6uPfh70N4twkrhMXpxPqxKWcneNKZmcCJN0vIV0pMh5Q/CPboyPfgzDkk1AkukqySn8WjCcH4e7V8UH6ZuDfhbLHQe9pu5mQYkijCRj5875TikWJc4qPDx6sB5NnWqbzLbegtPsOlOgm4Uv/bKsI1Lg+yG4cmSRnv3pucGA5tTtj09uzJqDdE5wqFAQ9CoZ51Fg1AGn+erQEQg21TLDh4ezo44CvdqMS6cADWBI6wSb4zriYmTfcMdFghJxSbL4laD1vgGR/DUUpzCRcQ0N8juiWOU2SRFTQ02BM/6ARuZuSxev2q2R7bvJN0iNH21zgCvVDJKLGy4+Nikrtbgif5yfp6PhOzNUk6DRD0qY1PsmlxaGrIlW9t86Ygj7k1p3r7DoyykYoBJuoF4YxUD6dWaI4Ff4t9k4b6aOv
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3690.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(38070700021)(22082099003)(18002099003)(4143699003)(56012099006)(3023799007)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Q1UblXzsvVxn+5jtbJpcIus+SSNFqbORyDEJUcC3Ae/C6QCUdJNJjeMYVW?=
+ =?iso-8859-1?Q?1wuXMtSRfKCZueU8ha1O2mAxcpiB4N2nrl/4K77U2O05TV3qv5tvmZ+tpt?=
+ =?iso-8859-1?Q?/7xJXqNLLxakXCstDKGQlOxEdOa8wgOlUOb2OtAs/dQwvg5eiAQHxa0QsP?=
+ =?iso-8859-1?Q?HKDxCoB/nGrWaTG5S1Xp4nbKVIwMJ4SqPk6P+xomKc7Ef2tYYqLA0zjnLQ?=
+ =?iso-8859-1?Q?W2zfQSoUeOMyG7qM3Zt6jQwW0+Pz/oQt3X5tdfRo6oIHOd7VWc6RmjZlcQ?=
+ =?iso-8859-1?Q?bfivhySiC1MyyY3s0F2czCOXSvU/KVdt+xMzkeyN5jiRaBeOAMLq5ZhCCT?=
+ =?iso-8859-1?Q?WFNc3hbGe73GDY3cV3HK+fDAl/bhKLFwE7xab0yuAyLIp/FPwh9FjGK12v?=
+ =?iso-8859-1?Q?j8QALYt7FlZuQSBVIR0T00ep1tiAXKAaMgsfroC8RcRvy5KjvrqxjNadZB?=
+ =?iso-8859-1?Q?LkE3sTZoSF1sXyC3hcjH87WjqNuU6HOKyybwgKjUK+19WhDWZkK9Aly16J?=
+ =?iso-8859-1?Q?ttMSaqBqX0Qds3iO+i9eDiOjLiQD0s6pUpL9QvSt7UlIzo84Wd5U8JtutI?=
+ =?iso-8859-1?Q?UWpzYSOPNJ+iPTwhPOxcfdVjcaaY7aZtu+3gKmzsLx23gmozqxmTqk/E47?=
+ =?iso-8859-1?Q?7jAvD9eMrKet8FdI+X5eP0v/C0S6NftNhGp3pBNBXBm9pb7xyOboSEyT0p?=
+ =?iso-8859-1?Q?nHX5zS5a9FeCNboN2GxmCR1w0g+FH0kfYJvMlvcewA3NAL191IUJzJASIB?=
+ =?iso-8859-1?Q?p5VMbsxjlrAD7sUZWTDTvEjtgMobxS7jYFqQuAmmHjDemL/MD6Eh+9mrBP?=
+ =?iso-8859-1?Q?9wy4Dug7wsln04p7zyCp3CC0qYboIVES0eGdctXsY9geYzKpnLYQsFoCHr?=
+ =?iso-8859-1?Q?lQIGTywFWGOazLMlbrZcuUZPVLe67dlS4ceeJ+STWVhYqCkzuyHeeG9den?=
+ =?iso-8859-1?Q?Dqf9NYE0ZhBDzgrSZF6NkCz4GJlc5JgyjJFSsxBEcMqU0yLLz7ggUyS+uy?=
+ =?iso-8859-1?Q?PUDhyy46t48Ir6aUP/LYD5KuILcSi9YdkinWva9dr47xgpI9WGhZFDkCRd?=
+ =?iso-8859-1?Q?kfWLa+ama12B6UPWD/ESEviiHB04n2LS/9SIjw1nKHWVUQNfbsLkoWMS5v?=
+ =?iso-8859-1?Q?ETbtM1vpKwJiwoKdpEkbLd0TKnXwqg0C0YZuUXJ9+eqkzDR7NbNCbCVNGY?=
+ =?iso-8859-1?Q?ejRcJDpw5NhDUopFlYi5s51a/6gQ5A0inUMZCnuB52LMxfTUoPWP3OKWUY?=
+ =?iso-8859-1?Q?TRKeQTnnzP6go08YtanNqJySKJ+FG4Lwy0d9kt3y5EH8kAY7hAPdqU6Cgh?=
+ =?iso-8859-1?Q?W3+RNWRPu+Yd2Ru/ao7LSDWmA9PypmusUIsLVIAdfJiRJ/rd5nFMJLqYrJ?=
+ =?iso-8859-1?Q?H6/H2KinLYzlAd2H/Asn3TaZumKUeiTQKrVWLMVPJ1vhMBHw/2gdOOhzab?=
+ =?iso-8859-1?Q?uw7Hf2zmMSAOeODxbHR/MQ7xj1cC2GhINKhsHCEkwwfa8h4CbpH1Bu1JAb?=
+ =?iso-8859-1?Q?LATT+5IuG3dODkyC7u5fMeBJzKEeU1jINQtcykr9c1cMVudTtbeVlUuuKj?=
+ =?iso-8859-1?Q?mAcetttbF+RV82BHNK+baRPGFA9BZlczi07jxEhe/cnzgvrs13yWlvqvnS?=
+ =?iso-8859-1?Q?XT03Woi/3ljRLBZQvRvErm82UTnFxMlPOngz0WvVkIhvLzpkyU/CjMhc7C?=
+ =?iso-8859-1?Q?BrYqIjUG2nGG2pKWeaisjQ7HJireYlmpKwYY93SYty/AUY3oVnFzPSWsct?=
+ =?iso-8859-1?Q?Fo8/4ztnbHXlFIHUJBbVMEW+qbTFI/5VapCb32w5c0JKlorknSz3Wv1cAN?=
+ =?iso-8859-1?Q?ufYD0OOhCA=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Exchange-RoutingPolicyChecked: HoIdOWK34CoOozZENlb8GGrt/a3xR9IhmVONUDUb+uF0nJxti/5POpqqAcSB7Ou70BtgHWycdS0UEIqtB3SvHWuTxvbtFMYQeqLpGl6VBh4Q6VII2EGvdsPgO6a3vFJ5roukA4uBXfldFl4e6aYh0CvDqxciVw8mYYk6Zq/zzlf42Na8pYbSiP17I1RurZ5atp4CusU5aEA9KM9F5xDxgCH8T+xu6BNATjNiOvK8D9b6De3fGBhVFT573lNp+pNY/biyQD39FctiopFMBKLXIM3YoadYJ5HNONnQUpJHXjJCoMzxHua90CEiYk5neeksmeA+USRQ8gbR7QVX1WG+Mg==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3690.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 476c51f0-b4f8-49dc-147d-08decb883066
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jun 2026 09:18:12.0735
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: dUGHXJUQWP/vQtqRe966HKl0HbvIlJXLLBdwiyLhju2UtazPq1EBnWX9y3OGambjMTOEmhv32bhqfZ/DyS1C/w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7777
+X-OriginatorOrg: intel.com
 
-On Tue, Jun 16 2026, Peter Oberparleiter <oberpar@linux.ibm.com> wrote:
+> From: Matt Evans <matt@ozlabs.org>
+> Sent: Wednesday, June 10, 2026 11:43 PM
+>=20
+> Previously, vfio_pci_zap_bars() (and the wrapper
+> vfio_pci_zap_and_down_write_memory_lock()) calls were paired with
+> calls to vfio_pci_dma_buf_move().
+>=20
+> This commit replaces them with a unified new function,
+> vfio_pci_zap_revoke_bars() containing both the vfio_pci_dma_buf_move()
+> and the unmap_mapping_range(), making it harder for callers to omit
+> one.  It adds a wrapper, vfio_pci_lock_zap_revoke_bars(), which takes
+> the write memory_lock before zapping, and adds a new
+> vfio_pci_unrevoke_bars() for the re-enable path.
 
-> On 15.06.2026 23:42, Halil Pasic wrote:
->> On Mon, 15 Jun 2026 16:01:55 -0400
->> William Bezenah <wbezenah@linux.ibm.com> wrote:
->> 
->>> On 6/15/2026 10:58 AM, Cornelia Huck wrote:
->>>> On Mon, Jun 15 2026, Halil Pasic <pasic@linux.ibm.com> wrote:
->>>>  
->>>>> On Fri, 12 Jun 2026 17:54:07 +0200
->>>>> William Bezenah <wbezenah@linux.ibm.com> wrote:
->>>>>  
->>>>>> Since commit 8c58a229688c ("s390/cio: Do not unregister the
->>>>>> subchannel based on DNV"), subchannel behavior following a device
->>>>>> detach has been updated and results in -EINVAL being propagated
->>>>>> rather than -ENODEV, originating from ccw_device_start_timeout_key()
->>>>>> in cio/device_ops. In the end, the virtio driver has no ability to
->>>>>> react to the difference between device and subchannel states here,
->>>>>> and during detach, both -ENODEV and -EINVAL indicate the device
->>>>>> cannot be used and should not be treated as errors requiring
->>>>>> attention. Update error handling in virtio_ccw_del_vq() and
->>>>>> virtio_ccw_drop_indicator() to suppress -EINVAL in addition to
->>>>>> -ENODEV.  
->>>>> Hi William!
->>>>>
->>>>> Are you saying that ccw_device_start() started returning -EINVAL
->>>>> since 8c58a229688c ("s390/cio: Do not unregister the subchannel based on
->>>>> DNV")? Or did I somehow read the paragraph wrong?
->>>>>
->>>>> The funcition ccw_device_start is documented to return:
->>>>>  * Returns:                                                                     
->>>>>  *  %0, if the operation was successful;                                        
->>>>>  *  -%EBUSY, if the device is busy, or status pending;                          
->>>>>  *  -%EACCES, if no path specified in @lpm is operational;                      
->>>>>  *  -%ENODEV, if the device is not operational. 
->>>>> and the commit message does not say a thing about introducing -EINVAL to
->>>>> the mix.  
->>>> The function may return -EINVAL for non-enabled subchannels
->>>> (i.e. pmcw.ena == 0), maybe we get an all-zeroes schib with dnv == 0?
->>>> I'd expect it not to be enabled in that case anyway.  
->>>
->>> Yep, that's at least how I've come to understand what changed. The
->>> function ccw_device_start_timeout_key() has always returned -EINVAL
->>> for non-enabled subchannels (pmcw.ena == 0), though it's not
->>> documented in the header.
->> 
->> Wasn't his -EINVAL actually introduced by commit:
->> 823d494ac111 ("[S390] pm: ccw bus power management callbacks")?
->
-> In the context of virtio-ccw added in 2012, an EINVAL return code
-> introduced in 2009 might be considered "always" :)
+It's unusual to have three verbs (lock/zap/revoke) in one function name.
 
-:)
+I wonder whether it's simpler to have:
+	vfio_pci_zap_bars_locked() 	// caller already holds the lock
+	vfio_pci_zap_bars()
 
-I'm wondering whether we should still expect to hit the "ssch with
-ena==0" situation, given that pm support has been removed again in the
-meanwhile. (Well, other than in situations like this, where it is a
-follow-up to other problems.) IOW, can callers expect not to see
--EINVAL, unless they are doing something really stupid?
+'revoke' is just a side-effect of 'zap', not necessarily to highlight it in
+the name.
 
->
->>> What changed with commit 8c58a229688c is that cio_update_schib() now
->>> updates the schib even when DNV=0, rather than returning early as it
->>> did previously. Somehow this update results in pmcw.ena == 0 in
->>> ccw_device_start_timeout_key(). Previously, it saw pmcw.ena == 1 and
->>> moved to the condition (cdev->private->state == DEV_STATE_NOT_OPER)
->>> where it returned -ENODEV.
->> 
->> Sounds fishy to me. As far as I understand the DNV takes precedence over
->> all other pieces of PMCW.
->
-> And you're right about that! The Principles of Operation states (p. 15-4
-> in SA22-7832-14 [1]) that the contents of all other fields in the PMCW
-> are unpredictable when DNV is 0, therefore 8c58a229688c is in error.
->
-> I'll work with Vineeth to determine how to fix this issue, potentially
-> via manually clearing some relevant SCHIB fields instead of copying the
-> unpredictable results of the STSCH instruction.
+>=20
+> As of "vfio/pci: Convert BAR mmap() to use a DMABUF", the
+> unmap_mapping_range() to zap is no longer performed for vfio-pci since
+> the DMABUFs used for BAR mappings already zap PTEs when the
+> vfio_pci_dma_buf_move() occurs.
+>=20
+> However, it must be assumed that VFIO drivers which override the .mmap
+> op could create mappings _not_ backed by DMABUFs.  So, the zap is
+> still performed on revoke if .mmap is overridden, using a new
+> zap_bars_on_revoke flag.  A driver can explicitly opt out; the flag is
+> cleared by the hisi_acc_vfio_pci driver, since its .mmap just wraps
+> vfio_pci_core_mmap() and so still uses DMABUFs.
 
-Can't you zero the whole SCHIB, or do you still need some of the
-measurement block things for cleanup?
+the cost of unmap_mapping_range() is trivial when there is no mmap
+on the device fd.
 
->
->>> So the commit didn't introduce -EINVAL as a new return value, rather,
->>> it changed the subchannel lifecycle such that existing paths now
->>> propagate -EINVAL rather than -ENODEV during the device detach
->>> scenario.
->> 
->> I'm not convinced returning -EINVAL in the given situation is the
->> right thing to do. Peter, would you mind to chime in?
->
-> I tend to agree that an attempt to start I/O for a subchannel that has
-> DNV 0 should result in ENODEV rather than EINVAL, though the latter is
-> still valid when a driver tries to start I/O on a subchannel that is not
-> enabled for I/O.
->
-> We'll make sure to design the fix for 8c58a229688c in away that ENODEV
-> will be returned when DNV is 0. Assuming that this is the only situation
-> where virtio-ccw's ccw_io_helper() receives -EINVAL from
-> ccw_device_start__timeout_key() during detach, the subject patch should
-> no longer be necessary.
+so it could be simpler by always doing:
 
-I agree, I'd not expect to get -EINVAL in ccw_io_helper().
+	vfio_pci_dma_buf_move();
+	unmap_mapping_range();
 
+and remove the flag.
