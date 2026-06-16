@@ -1,219 +1,179 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D75746AEE8
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 16:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C16746AED1
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 16:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626421; cv=pass; b=MA8GxkHOb/QVbMjZQjV4mdHbi1Vl/E+x8VheGBhwahVCgK7KMjpZriHlsZseOeJnCHZ1oe4ueQom6UqWfvAlTogvthc/JZVPMN97kYux2dSSAnB8skXyOpIrk6rQ76DMiUhD/8kBI2RvuBtZ+vU+9NFITn9MZFZ07lYz75SLUaQ=
+	t=1781626528; cv=pass; b=uNDu4zEmaRGhIzXs/ibiLN4fKr0HHHRZtk8rsGrY5rjWtoFvN6V2XFFPKko8rwD2/JV2vlSEJiADQVPRHrfZGpTVzhL6jMJGKkeANXxJRMsvVSaGhr0YGILglmpKbAxVq+zEC3mh7Se4YMioW8UyK25Xjq6AH2P4EKcFJHXcwtQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626421; c=relaxed/simple;
-	bh=ndEqcE0ljpH5Ond7AgGtEjExOUt6CFJ5ogOAOFvSQNU=;
+	s=arc-20240116; t=1781626528; c=relaxed/simple;
+	bh=DDdeKaR8U8RPFe1zDZcNqCeadhs62T3BN0SHD5eW/GU=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GGQkxdjmLEINdwDKJMaTd64K82Nuz0km8qPcjWxkkzmaa357FfWiPD0T7+hmtsjSjb2KQnRJDfPtJOsN/Ja9wpC93oslYGBI3n9Gh5z1uIK13nIFjSEeV6xMauU6ZEHpKuaNetje3SDVkK4+N0iMuzCu+neAlbtIeRGH4l9o68E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uVR3gCxm; arc=pass smtp.client-ip=74.125.82.43
+	 To:Cc:Content-Type; b=dgVCJvFF5zbT+UY35DgxFbyJ29a5u+bkReAQ4b63azT2EMOmc2x4QinBXS8MorKk8bBb+cKtf3BKP6IyIGlVOhMWBa/jYbtB0jnY0DvIb6heQfsBxM/TFp9CclVOA7v/zQ/GZlckvcSrXygwh5FPNn5fVqT94ZSnZs+aZfJmCE4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A7LdVUh+; arc=pass smtp.client-ip=74.125.82.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uVR3gCxm"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-13810b63a1aso10623015c88.1
-        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:13:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781626419; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A7LdVUh+"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-138501f8c04so2443179c88.1
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:15:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781626526; cv=none;
         d=google.com; s=arc-20240605;
-        b=DpH6i7GkhTSvkeoKAaoYKl1P3lP6Q+lKqAIpIsWwYo3WZQUm/S3a050JLMEKPxFFgC
-         7Q+jb/T8sgeGQR7daoa39RtaU0WmbxzEvhhI4ikaZ47jbUX6R+zv7TOHkgcx48KhkBKt
-         Xgh5KuWDOTfhnGxaPXp0XjqpMuCSvfxPOF/C+IgRKj/MxbkehVeNPk2bI7W2R0qh3+Rw
-         P9uU/cACqtdo02+GWzIkMOU9xuBybKW0cVxRUrgL69KzD4KpPzF5wRtCMk3FXhvx9aRV
-         g0AEtk8QnP8/dSsBwk/Zsk9oLNg1JwDWHV3tGoFJJcpOGKUvycXsg7VrVHxUiSa2Hbl8
-         e9Jw==
+        b=KbVBCij4GiDnDV7bH2mB1s9Ut/JOIPsNI0QLFINmS4p5D1j6E4EymNIXnl+Up2c/2q
+         XhofQb8/5C2wZQet9TUWb2sgtmnG+mY2avsS1ZUVNuovqz9lbi5A8k1THmsQ129a0Axl
+         WrAmPJBJi2iftIK6M/kJkaigBVRzjbuAxaaSGI8oDlycf0g6F0O3CP8bpAcmfxBoqm2f
+         sDISkyXrV6ITGjhwuq7WF8trBLWlzprKQzs69I3qfa+I4DXlAHBKUlRFzBHXQJVeWI93
+         WTDcgjJOmGa6enGqPaSOo3AJYTL4eSZyT8LF+niXU1beL/+BhvUWfuHklaO2QiVYptng
+         pSGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=MNHAi9O6B/tlryNPdWu47BymnIT2qXwJrSOCHJFBXD8=;
-        fh=WxHtd4yae/S9aJzGX3NTuOvmHnkUK8M0qmzgSbYmDT4=;
-        b=JlV2ovgt/fN/r+r8wQnLpVNUqxRDjJSX4VYIh8kt3j+w4TWfFXTt034IklrC06Na8m
-         jQX7H67ReE/TD15zgB3ncQR6xznW2UYDub8z8J3qkPqe47u738EDY2alZva6XkiwKqtf
-         Z8j2a+vaad5gozIB0avLA9oPacG6VL0BnAtB+e35pz37zwlUaWyHDyWvd2BXEFz+aOY/
-         i+7o0WE2SY2O3uufasGFRcMy5nM7HxggM7TRpidNE+VrXdG/aTMkkAvi0nnVPIm+kKI+
-         pKdOekvg4P3pyY4PGrdherjUGiHx63dsadxudjkrDLU3XUfRjAEgJvMYNRxrfTtWE7LQ
-         XFoA==;
+        bh=KxrAh3gZox9w5915Zp8CYh2ybM8dKM0MmMGgcGgqfcQ=;
+        fh=TN04SSToW+iobU173LbhYJ9mtwUwgIa/wFz/jzOv2aY=;
+        b=Jl/Xvk/kpF8Mpm0LiK7aQ1M33q6f+Bdt6ER5Wx63SnC66CepT7+ImoHhzbHeaeIyfU
+         T8neEbS5u+/czLbBtSzPP8vqct2pRnNXVBFlyP4eRxijyw/r9avFx4ObEE3EnALWNvY6
+         C6UT6JpkQ+1g62BtdtiJS9Li6TihI5bLIT0S5yfkUjYt1KO6TubsM19AAXpfUXbu35sT
+         uS1OKkmQoaHgiKBkwygbP5T67Tkz3VrJdXDE3jzvTpL2hDGD2317Skj4nH6qDt9xPmP0
+         ptyCWYHPvIzPjaDbMQSThli7u56BRRSkNTLIvKp9J6vJdWdVTFCl8tAEh5FYdEDOPbvy
+         AeuA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781626419; x=1782231219; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781626526; x=1782231326; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MNHAi9O6B/tlryNPdWu47BymnIT2qXwJrSOCHJFBXD8=;
-        b=uVR3gCxmtJX0k/bQA4nojeCursjgCgHTEQduGiZvwLlc0XGjmwsPK7ZtAzEIAIY0F0
-         Mtyl5lRoV0Iqi7J8F+sFoqWFKawH/y4LitR12vQ1EBv4o8UXyHB6/ZX11ChaHE5Italv
-         PUW0iukQLeuYJhRknAygV+HJ0NHLKz9K1JDqpE11nLlXTre5FBSeJXP0KGEg+3JRxmpK
-         x/f+A3bNT8pPy+4dKkXHE41Hz9NINQjsMHDPLzlWU3K0yD/7ZAnP6jeh8cGlch40hAQc
-         0VYBnaRbSrxkfTTPKKpppj8FFPg2ZVRO9acZGq5w1whFt+dPv0Gh3l1QL1LiWpVd6XN2
-         HOSA==
+        bh=KxrAh3gZox9w5915Zp8CYh2ybM8dKM0MmMGgcGgqfcQ=;
+        b=A7LdVUh+UXJ+lCSBYtPGe9JYneQHnT4C26GHLQ6K/nZSJoyz3I0gyvA7+Fpfj7U/k9
+         wKmXwLQysrovCup5Oq5ZXTlPvJ3q2DvsRgWaJ7MPAXhoJR/YfkK65ugP1kzgVzKIU09x
+         CHPplxMYPHMbax0c32tTnN6wUE0s/+1wiGhQ0C+ce7eNYmJd/9KBXek+FILD26Lj+Vs7
+         go+yUer+q5q0Oq1s3owqpXgZfhbJWVwhtaN5CnePqXFKfa/mFuONrR/NaWcyC/Ylt1gU
+         4MiiYHNxBPE5G94S0oHIiWbuqZLPPgzXHGJr5avxR7kxsdG2mh/hhhUT63m2D4lUJYiQ
+         W99g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781626419; x=1782231219;
+        d=1e100.net; s=20251104; t=1781626526; x=1782231326;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=MNHAi9O6B/tlryNPdWu47BymnIT2qXwJrSOCHJFBXD8=;
-        b=lXww5WYigg8joRnGNSZnmasbFW+0HwSwUDg2ZYsvhgy1f5eWFHVLtn+tDeoUIT1JHV
-         VhGe2qymNAOfe49nzrREmWqVg76ZQP8kzRz+g/DOYMrL+iXOgCpRZGfR2hjoSdk2mbfX
-         6m+p46FO9vIYyr56mqxB/xJMyB73vGWkuucgvLrByOnypKUbKSCV2rAsEiIfdoOfo2im
-         wqoLPxKndh2pmZES4flXAgQ0Ld7OLTYc6JBzfEnM45H2ZSY8oGvdhHEVcKkt7Tj6J7Hj
-         VGcQlwEH7jEU6h2Kfc1nYIPIzZQKn81wugH3icFr9CGxDuAlJkP53l6kO9De9vQYjpVX
-         mB9g==
-X-Forwarded-Encrypted: i=1; AFNElJ+dxo1tpAw3/qXi68I4vY/QwhkwJV6y2HvR9FGHLE3lUgzjdlcKIldbsbf6bvp/uqShPT8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHrxLSF5t0i+jl3cCW+3OazvIEN/C8jav5gyK9/mteWD2YNari
-	Kx0wqeBnd0M+myCBeu7/mIti8qA1xBEdKXwm+C3y6BnZxN8PgXBpGl24nFtEyWS8G0BDTD5eRDP
-	9hA7v1NAcYP3dOI47i0QK5mjj0wJ3RgGgMiWiL7md
-X-Gm-Gg: Acq92OFFBgH6+b9rj0O6mUGg6mTQ5rDRJsq20uKRf8QyX4lIxm6a7kKrmVM8Q9+rQID
-	o9pOOfZ8/9YSUNbZH6wZgcnFcj4y8k9kLQ5BC2IAX3OlGScQGP6F3l4yFJhM4Uj7IarK4eHUnw6
-	p6KVnjDz0osTakCClvSeOX3BIIRcUx1Bojeo4D2+MhaVqhKoggQTW0iRZiXlgu1q7DDck2KJh8e
-	Orx45nENeUrX22+32sbfQmAljsw+lGkCym1YJ4ARpNCLJwtjjMzsABBv4Im4uT6mPorUCoHA5LI
-	7rQyrNsdjV9Yb2un+dCWoMIwlmQ0XxGjuRa2yf2D+ewCC9hdfbRrGFLfNg5sV6HqAv/hfA==
-X-Received: by 2002:a05:7022:6981:b0:137:fccb:8105 with SMTP id
- a92af1059eb24-13985e954aemr2127181c88.4.1781626418754; Tue, 16 Jun 2026
- 09:13:38 -0700 (PDT)
+        bh=KxrAh3gZox9w5915Zp8CYh2ybM8dKM0MmMGgcGgqfcQ=;
+        b=On5GNpuUr+4B/vHIlmYErxCFYwdbOKdyOfgMzOi0Yqs5kznplZp9naoUmQfEVwPQWa
+         XHyDqjNDoF34NtIR0/Hq/d3XqMu/aos0uUI/RVFV5HJf0/bWdyO5K2s3D/hLfw1Exw9o
+         9iOTVsLsGCQ+MAQ4wnWXRsZe7MGv6SjCHxpwGgC3sGrVvL0j3/QE2Ha6yhRoWPBwXrTw
+         FEvk2UGLJj7kieqIOd4JNFH5I6ud0911Bk4ErbGMTLFdQd3rnsY15vSwmygwbdZdzcs/
+         HgWVLzQIk2bjBNYWtlpSzy5EudX+Qv2tnZtMuk2Wl/KE5w/s8PTJ/+UhmeWEDeyhjz2i
+         RcxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/DqnSpgdDBrhmzU8ZhQPwHvcrfM0GWuaprfLe57ot3TZEfYSKKiYu5XvFK5x3EO//dawo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLy/HVuDt5fxKNcQx+YCVo0Uu24HRifZLkeER7GeQNAnmhyPaD
+	jMyCzd0ynHCqU/vvqaHXYz2iYBLOvSoYufcga251pnDaSyzKuWELf+DjqcpxMEaYJElaiNLyGhv
+	HuJXYhLaqc6B4AlWSoteyrucB7ZPUvBarQAEjPlCa+1v29oNrpqw0F78b
+X-Gm-Gg: Acq92OGwcc2Q8GMmAG/40F3abaGm1ncnHMEMphdS3rFY+JhS6BQZapBlalD4iZ0ypfi
+	m2eb/bp9Uf+LH7aSierLk2s6EuPS3QR2bppZFdtdAXYOcc4lMwXyiS+iBqmzcRQehcM/U/UWxs7
+	QRhY9F2OlEVW9XNVpRlhuhA5FBGq6q3vkq8dsaoGc4G485gk+HsJlVj5k1WRAR66u7Xn3xZ96NL
+	2IVDxf8opdsNekmRdm6Fr52y4ak48UOj67Qb1MUw5s4HLMIQnkYAdxR3rENskAk1Qbyze4RlLh9
+	9mILkw6KVCk9uo8h+LHJEGsV/BZ2T1QSwRQ0ZZ4pQ9p0xiSofBmOOneKnz1qhdZziu3EHQ==
+X-Received: by 2002:a05:7022:418:b0:137:fe07:8a2d with SMTP id
+ a92af1059eb24-1386f24121cmr7479488c88.6.1781626525576; Tue, 16 Jun 2026
+ 09:15:25 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 09:13:37 -0700
+ HTTPREST; Tue, 16 Jun 2026 09:15:24 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 09:13:37 -0700
+ HTTPREST; Tue, 16 Jun 2026 09:15:24 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ajFfb9u6dU47Nj3v@google.com>
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-19-6983ae4c3a4d@google.com>
- <CAEvNRgHEq-hHcTivUw8TYBeMu-RpS=Ho4DXaNXKQKLPL_biTgg@mail.gmail.com>
- <aiMOWkiVBqoQDAPd@google.com> <CAEvNRgF09SfDm=OgbrS8-wpfxbNecQkqAQwf1ELq1jWu7NjbUA@mail.gmail.com>
- <aiM2Nm9Eh68mIVX3@google.com> <CAEvNRgHjno=XDnMpTvZcNCR6D5RAi1rbynrL4CnnEa7Y-M3VLg@mail.gmail.com>
- <ajFfb9u6dU47Nj3v@google.com>
+In-Reply-To: <aiycmwMbhWuYghJh@google.com>
+References: <20260331194202.1722082-1-vipinsh@google.com> <20260331194202.1722082-2-vipinsh@google.com>
+ <CAEvNRgGrPKBXh=VA3QBLJOczKRpMOB4nDmZL0XRwV6B3PT_7+Q@mail.gmail.com>
+ <aisHySKe0PwM5DSg@google.com> <CAEvNRgE-qt8DAjOeE5ANpXzrgEKs+2_wh4YSmY=pe6krngBXqQ@mail.gmail.com>
+ <aitbveI2Sdx4s4BP@google.com> <CAEvNRgFLnGkqvvks3joAwPjqLz=ATmqiS0UWk71g+YEsxNsfsg@mail.gmail.com>
+ <aiycmwMbhWuYghJh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 16 Jun 2026 09:13:37 -0700
-X-Gm-Features: AVVi8Cd0kI17gcaTu_9-akkDCf_yt6j4MWsybVMXC_T33O0ww1RiPjrA74_vwTc
-Message-ID: <CAEvNRgFPKC2uOMaams7SS9B7LxvfU4h8DrPM5vXFb=pmXsgPbA@mail.gmail.com>
-Subject: Re: [PATCH v13 19/22] KVM: selftests: Finalize TD memory as part of kvm_arch_vm_finalize_vcpus
+Date: Tue, 16 Jun 2026 09:15:24 -0700
+X-Gm-Features: AVVi8CcVnuVCx19L_GWSZ2nltEautD7sT8OALv94LzUOkIdPu2pxUDWRobjVJhw
+Message-ID: <CAEvNRgGkjcVN80W7cNd1-tEUXAfnFXEekokh_VbMDb9XdecVVQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/9] KVM: selftest: Create KVM selftest runner
 To: Sean Christopherson <seanjc@google.com>
-Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Erdem Aktas <erdemaktas@google.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
-	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
-	Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	kvm-riscv@lists.infradead.org, pbonzini@redhat.com, borntraeger@linux.ibm.com, 
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, anup@brainfault.org, 
+	atish.patra@linux.dev, zhaotianrui@loongson.cn, maobibo@loongson.cn, 
+	chenhuacai@kernel.org, maz@kernel.org, oliver.upton@linux.dev, 
+	ajones@ventanamicro.com
 Content-Type: text/plain; charset="UTF-8"
 
->
-> [...snip...]
->
+Sean Christopherson <seanjc@google.com> writes:
+
+> On Fri, Jun 12, 2026, Ackerley Tng wrote:
+>> Sean Christopherson <seanjc@google.com> writes:
 >>
->> I still think kvm_arch_vm_finalize_vcpus() is an odd place to be
->> finalizing the VM.
->
-> That's literally why the function exists though.  The one and only existing
-> implementation (on arm64) uses it to initialize the vGIC.
->
->   void kvm_arch_vm_finalize_vcpus(struct kvm_vm *vm)
->   {
-> 	if (vm->arch.has_gic)
-> 		__vgic_v3_init(vm->arch.gic_fd);
->   }
->
-> That's *very* similar to the proposed TDX usage, where some per-VM asset(s) can
-> be initialized/frozen only after all vCPUs have been added.  In other words, the
-> name is describing where in the VM creation/setup flow the hook is called, and
-> perhaps more importantly, the impact of the call: vCPUs are finalized (obviously
-> with a different definition of "finalized" based on the VM properties).
->
->> I would prefer to not have to explicitly call some function like
->> kvm_arch_vm_finalize() (no vcpu in the name), but a common arch function
->> calling vm_sev_launch() and tdx_vm_finalize() is what I can think of
->> for test setup flexibility, without too much magic.
->
-> We can't have our cake and eat it too.  Either we launch/finalize SEV/TDX VMs as
-> part of the common VM creation flows (as proposed for TDX), or we force tests to
-> manually launch/finalize the VM after additional setup.  The only way to have it
-> both ways is to utilize crazy macro shenanigans to execute arbitrary code between
-> creating the VM and launching/finalizing the VM, and even I would balk at that.
->
-> I honestly don't see any reason to try to figure out which of the two approaches
-> is optimal at this time.  Whatever decision we make isn't set in stone, and in
-> fact should be relative easy to change.  And without being able to see all the
-> TDX/SEV tests that are waiting in the wings, it's more or less impossible to make
-> an informed decision.
->
-> I definitely want to have SEV and TDX use the same core approach in the end, but
-> I don't think we should force the issue right now, because the cost of reworking
-> the SEV and/or TDX infrastructure when there are only a bare handful of tests is
-> so low.  It will cost more to try to predict the future of a 50/50 outcome than
-> it will to make a completely wild guess between the two options and rework things
-> if we guess wrong.
->
-
-Makes sense. I'm good with merging this as it is done in this
-patch. Thanks :)
-
->> For now, I can't think of many uses of __shared. ucall shared memory is
->> allocated dynamically, and we can also make it shared cleanly within
->> ucall code.
->
-> Uh, every selftest that uses global variables to communicate between guest and
-> host?
->
->> The global variables (sync_global_to_guest()) will appear in the guest
->> as long as sync_global_to_guest() is called before
->> kvm_arch_vm_finalize(), which I think makes sense to people writing
->> tests for CoCo.
->
-> Yes, but that's completely orthogonal to all of this.
->
->> So 2 questions to push this along:
+>> > On Thu, Jun 11, 2026, Ackerley Tng wrote:
+>> >> Sean Christopherson <seanjc@google.com> writes:
+>> >>
+>> >> > On Wed, Jun 10, 2026, Ackerley Tng wrote:
+>> >> >> Vipin Sharma <vipinsh@google.com> writes:
+>> >> >> My (future) use case is that with hugepages, I want to run something
+>> >> >> like
+>> >> >>
+>> >> >>   ./guest_memfd_test --order=0
+>> >> >>   ./guest_memfd_test --order=9
+>> >> >>   ./guest_memfd_test --order=18
+>> >> >>
+>> >> >> And 0, 9 and 18 are the supported HugeTLB orders on the machine being
+>> >> >> tested. I'd like to iterate over supported HugeTLB orders at runner
+>> >> >> runtime instead of at build time.
+>> >> >
+>> >> > No.  The right way to handle this is to define testcases for the "interesting"
+>> >> > sizes, and then rely on the test itself to SKIP if the size is unsupported.  This
+>> >> > is no different than a test that requires EPT, or nested VMX, or nested SVM, etc.
+>> >>
+>> >> That should work too. So at build time I'd make it define all the
+>> >> possible HugeTLB sizes on every arch, and then skip as necessary.
+>> >
+>> > Not necessarily at "build time", the testcases can also come from your local
+>> > environment.
+>> >
+>> >> Why though, why not find the supported sizes at runtime?
+>> >
+>> > You can find the supported sizes at runtime, just not in the test runner.  I want
+>> > the runner itself to be largely oblivious to what's its running.  Disallowing
+>> > more or less _any_ test specific configuration/setup in the runner is the only
+>> > way I see of keeping the runner strictly focused on running tests/testcases.
 >>
->> 1. What do you think of a kvm_arch_vm_finalize() that calls
->>    vm_sev_launch() and tdx_vm_finalize()? My key issue is that
->>    kvm_arch_vm_finalize_*vcpus*() seems to be for finalizing vCPUs
->>    rather than the whole VM.
+>> The runner should 100% focus on running tests, I think it's hard for the
+>> runner to avoid the process of test discovery though.
+>>
+>> The current test discovery process is to go down the tree of directories
+>> and find files, 1 file == 1 testcase. Each file should (statically)
+>> contain a single command.
+>>
+>> Since you're not opposed to runtime discovery of test cases, how about
+>> something like:
+>>
+>>     if the test case file has executable permissions
+>>         execute it and get back a list of test cases to be run.
 >
-> Key word "seems".  I'm pretty sure Oliver picked kvm_arch_vm_finalize_vcpus() as
-> the name in commit 8911c7dbc607 ("KVM: arm64: selftests: Create a VGICv3 for
-> 'default' VMs") for the same reasons I think it's a good fit for coco VMs: like
-> finalizing TDX VMs, initializing the vGIC effectively finalizes vCPUs.
+> I don't hate it, but I still dislike the idea.  I am all in favor of runtime
+> *discovery* of testcases, but I am staunchly opposed to runtime *definition* of
+> testcases.
 >
-> We could rename it to kvm_arch_vm_finalize(), but that won't change the fact that
-> we'll need to decide between automagic vs. manual finalization, and it definitely
-> should be a separate discussion.
+> If I define guest_memfd testcases for 4KiB, 2MiB, and 1GiB pages, but the
+> underlying system only support 4KiB and 2MiB, then I want to see a SKIP for the
+> 1GiB testcase.  If the definition is dynamic, then the 1GiB testcase simply won't
+> exist.
 >
 
-This definitely should not block this series.
+Seeing the SKIP is a huge advantage over dynamic definition. Thanks for
+explaining. Makes a lot of sense now to have everything defined statically.
 
-It's coming together for me now with your explanation:
-kvm_arch_vm_finalize_vcpus() actually means finalizing vCPUs! vGIC ==
-Virtual Generic Interrupt Controller, which has to be done after all the
-vCPUs are set up. Since the name is describing where in the VM
-creation/setup flow the hook is called (after creating VM and after
-creating vCPUs), maybe something like kvm_arch_vm_post_vcpu_create()?
-
-Renaming this to kvm_arch_vm_finalize() makes it sound like it is
-finalizing the VM, but this function shouldn't finalize the VM since for
-CoCo finalizing the VM also loads the guest image into the guest - deals
-with memory, not just vCPUs.
-
-8911c7dbc607 ("KVM: arm64: selftests: Create a VGICv3 for 'default'
-VMs") also includes a test_disable_default_vgic() function, we could
-also use something like that to skip CoCo VM finalization for some
-tests? Maybe that's a good middle ground.
-
->> 3. Would you like __shared implemented together with this series, as a
->>    prerequisite, or later?
->
-> Only if __shared is a hard requirement for base TDX support, which I assume is
-> not the case.
-
-Yup!
+>>     else
+>>         read it as a single test case.
+>>
+>> I'd then use the executable version, check HugeTLB setup on the machine
+>> under test and return bunch of separate commands to be run (each with a
+>> different HugeTLB size).
+>>
+>> The runner still doesn't need to deal test-specific config, that's part
+>> of the executable that tells the runner what to run.
