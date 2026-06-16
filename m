@@ -1,292 +1,392 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF91C47798F;
-	Tue, 16 Jun 2026 16:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5CD4779BF
+	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 16:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627685; cv=none; b=bc4ZzXaMNgZzNdUSrVTObI40QgN+54IqQn770M9yxO1AJiuKH91fCejyeG9iLHBOf6OxZY99T0kgUERdgtwIKa6QWxZgm26DkvPnuhoanyiSKxi6AKoOSxHjCHGasNRlZDA8IiepbaUmYY217juNlphSwWvglxkmjmW3PgJbxO4=
+	t=1781628666; cv=none; b=USoeRGUMedXlYeKMyA8rwRIizO6Xke0MbE82iZycRzVT1ZRCjvFyQLEeZcRAw/Ql4AutywyT+Yjx9T3kRYiOZdpvroO1To2APnZnBhYqVWnJb7r0/YAlVpwgdObI86DGSpvMHlKXR68zgfaVSRc/QZdVAWMeUoIK6RhnqyXds4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627685; c=relaxed/simple;
-	bh=jQ0ih8TZ5EYAUWS//mGtk9LnX44uIvic6hLnFcSGVtQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DYqYfVXmc8tBUCpGE3DKeX4Y75mCOn3oyPAxsFt9mtZ2gtlddqw+6s4y9TskqHWrFZkkUOCZP+lSrYMyemowxYJVlG+oFoGF0VlR7e8lex2s3pJJqEvHcNoFTEGr8YLqlkOO3DQwqvn/s7y31j0G0GyYIL+xZcZNhyAbomeZBNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XFEn8GFm; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1781628666; c=relaxed/simple;
+	bh=jitglgJ45fsE0O8Dne3B8fAMDpX/24Xt7Rej/Bc7tXI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bNOhEcRRmbTUVAtfHIOCGlOYvLiQhAUOCiW+H+nJXXo02nQ6GQ5hxXjDK9N5nIXWOFDAa1YVPkodArijAl7DxCx6VCC/IOtOf8Yxn64HxheKjrtG7SMxOpqtxJZimxQFCRInNmgNpZuHo/Tg8+/LAl0qK9lkGllp1HufHHde9oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=amz58OLX; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XFEn8GFm"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GFmNra2118503;
-	Tue, 16 Jun 2026 16:34:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=3PiVWjmfkKsBIeMIls/WZUka3rjlPW0gyvadFQtvd
-	0I=; b=XFEn8GFmcpFnb+BLlKYkHg1g4SK+e+FjO22rxO2pBTUuH0iGo6Uz3lxg/
-	u6pKn4V/sanrCe7+5fxxg1SiqhngQRxO/hSte91VXiIy5VUIAzOXvGisz23hajNL
-	HGoU09Di2pU4XWNhUHDnPs7Z4K8h7oq3crnzpdV0QpOd5kr6/TPkMxCCYnATq33V
-	rcG1O7Lhc4kU0KzNx23NZWqZbRU7Rx97zdg/7Puyo0Vw2ySPYGmbaxEXQTQ0a55f
-	/DUjudJWlLRQhH720MVQ3k808OBxL+EpKDy/C0Gmtvc8D1rua84PHAlOcfEUJcZO
-	on2lEyKUCcGyZIESo1qpkMW4v++Hg==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1h86xmk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jun 2026 16:34:21 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65GGJfW1009103;
-	Tue, 16 Jun 2026 16:34:20 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4esk1h49kb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jun 2026 16:34:20 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65GGYGpa62914894
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Jun 2026 16:34:16 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C590620043;
-	Tue, 16 Jun 2026 16:34:16 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C760420040;
-	Tue, 16 Jun 2026 16:34:12 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.39.31.150])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 16 Jun 2026 16:34:12 +0000 (GMT)
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Gautam Menghani <gautam@linux.ibm.com>,
-        Mukesh Kumar Chaurasiya <mkchauras@gmail.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
-Date: Tue, 16 Jun 2026 22:04:05 +0530
-Message-ID: <20260616163405.96962-1-amachhiw@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="amz58OLX"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c2da7fa311so49373585ad.3
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 09:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781628664; x=1782233464; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=O4vWdS0gGh8Qnkd6KWcp4c6P4oeAatRbK+RzZ1mQj5U=;
+        b=amz58OLXwJRR2YQJYJUWjy4h042DoJHjcOq6cu1q4THcfYG9YlM8rbZw8+PvVvr45R
+         A55mpqsKkr6qvCW3Jl+BPlEEcMrTMj3a5+kItzhudk8ipsisWswU14KBgJNO7YIyX/+i
+         j03PYPo2RKYu/kEU/gij+DgIsZHMFsjPfIFhNfnwunvFKA5TGy6pfTa0LeirVvZDFVzm
+         6DcrO17RRghUN/KR+UIDjIPti+56e6AnXsYdyi2yqw8UqB+lLFk1G6UVxvV7Pk1WbDsb
+         RTd0W9UZO5gvyu2PCyY2A7HFZYiM2wUg9/+6jyz337uaP+LEltLdvAjJzCFkvjhLuoPq
+         spXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781628664; x=1782233464;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O4vWdS0gGh8Qnkd6KWcp4c6P4oeAatRbK+RzZ1mQj5U=;
+        b=MGccmiZXwt/uZh0kvfhMHgWfe+9z3udd1K1SFjFjzG7HFkeZwQCxBdrnBq9RtZ+0wk
+         y3kF8k/mSeZR+D6+FDIdRyk6tcy1XrRWPI7A1+RPEv0KOYqB/rsHVNzwrGz+8aFcIgY0
+         ZCLFHrS3NIsvxEUj51b0DZeeogFHjMZKHuEQl1tC239SU+yRPlwJKl8/ttKYlk5Tn/X0
+         phiNViktQG8xFTDjLSRkTQjde3ZQKNqt9pLyS8WTA+LVklDQIRik8goin+4T30cdEkaN
+         tGMJFVeJg2hJrTkdjzBIj0WKQpY8RYujaElcQocSejOlThR4vRqzBiDZj5w2XCIi10km
+         ya/w==
+X-Forwarded-Encrypted: i=1; AFNElJ8lFO4eLq+kN3g1FQ0rOCihu6JFCzUIkDSUY2pyI2rfvC+iPX63MTQIBXUYrwAVz99Hoks=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwmMhlkwn45yyhbPJuVMscGhnoT1kl7yHoIhZjSzEb53+73Lt+
+	KqkGavwQFgvvxb9N8NDe9v42qpIEtd7mgMTmAEj9eou8PFYbylyZOUNQ0xeHH0dswm5/PGJmTaM
+	Z04qmOw==
+X-Received: from plbmf16.prod.google.com ([2002:a17:902:fc90:b0:2b9:53bb:4a09])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:944:b0:2c4:608:167c
+ with SMTP id d9443c01a7336-2c410cd152emr203328415ad.6.1781628663233; Tue, 16
+ Jun 2026 09:51:03 -0700 (PDT)
+Date: Tue, 16 Jun 2026 09:51:02 -0700
+In-Reply-To: <e0b99e9a-c20f-4def-ac4b-0070996c10ef@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDE2NyBTYWx0ZWRfX9cNhnHOqh7as
- QhkJVNQTKDfW9r963Q1udV+w6U+JeLEtlm0CgoVBWdJxziD1DHh53UpMeqYkm5nveLdOFuLY1cx
- hnewYp3QC8ZXRDh9vALMgREKT81+Sg0=
-X-Proofpoint-ORIG-GUID: FIihs5FllMLPCxPalCaX9-QVcCx5oX0s
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDE2NyBTYWx0ZWRfXyGMQC+TSHqmi
- PfF8mJx78RvW8YYiPihhV2kW/5THFX/wCF4CYnMBEA+cOHErw3nQTr2vfF/6nZqzUig4gvA6lee
- mEMUmVzahWG8YDI+W6UdVe+wMd9+mlY/9aJrJqgA4vUV7454oI1cz0japiYecPBeawyc0q3bCDH
- mUuf0u2mMCRWgNMWxXYCVuJ8LcySa22JE4S9ButssO3nZd3N0rlTuhJo33F6CBmsPsD+KkEaNfh
- k6FUEOYTlPwbQDlKGtDAbwVxjMyK1ROOPnr/lDX2rHJ382WMY97DZ385Uw/G+Mj4WuPhSOEXEm6
- 3syEeUrJN27jYxblFCj3fv9GhRZ6yb4NpwQKhQ6M9o9YUXiywk6LL2daxmqK3sCpTBbgKun0l46
- 5t31QSf9AeAmaXGowbZgKpT4ddt7Qcfnr0JOSi6ya4W0eM2AG3Uuh7hMoqhJOXJ6QxJaq1fkHMX
- Exaa6uexu9mtDCB/E0w==
-X-Authority-Analysis: v=2.4 cv=U9uiy+ru c=1 sm=1 tr=0 ts=6a317b0e cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=dl9XnktawrrMqxjOnboA:9
-X-Proofpoint-GUID: 7dT-KaVCJgpJP0gU7MjyAq95-Ynhr3UV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-16_05,2026-06-15_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
- priorityscore=1501 clxscore=1015 adultscore=0 malwarescore=0 suspectscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
- definitions=main-2606160167
+Mime-Version: 1.0
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-1-6983ae4c3a4d@google.com> <e0b99e9a-c20f-4def-ac4b-0070996c10ef@intel.com>
+Message-ID: <ajF-9isiWxPyzxci@google.com>
+Subject: Re: [PATCH v13 01/22] KVM: selftests: Add macros to simplify creating
+ VM shapes for non-default types
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Ackerley Tng <ackerleytng@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
+	Sagi Shahar <sagis@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On IBM POWER systems, newer processor generations can operate in
-compatibility modes corresponding to earlier generations. This becomes
-relevant for nested virtualization, where nested KVM guests may need to
-run with a specific processor compatibility level.
+On Tue, Jun 16, 2026, Xiaoyao Li wrote:
+> On 5/22/2026 7:16 AM, Lisa Wang wrote:
+> > diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+> > index dc70c6da63fa..041bdbfb93f7 100644
+> > --- a/tools/testing/selftests/kvm/include/kvm_util.h
+> > +++ b/tools/testing/selftests/kvm/include/kvm_util.h
+> > @@ -233,6 +233,19 @@ kvm_static_assert(sizeof(struct vm_shape) == sizeof(u64));
+> >   	shape;					\
+> >   })
+> > +#define __VM_TYPE(__mode, __type)		\
+> 
+> It seems the name "__VM_SHAPE" fits better?
+> 
+> > +({						\
+> > +	struct vm_shape shape = {		\
+> > +		.mode = (__mode),		\
+> > +		.type = (__type)		\
+> > +	};					\
+> > +						\
+> > +	shape;					\
+> > +})
+> > +
+> > +#define VM_TYPE(__type)				\
+> > +	__VM_TYPE(VM_MODE_DEFAULT, __type)
+> 
+> and I think making it one line would be OK?
+> 
+> So something on top:
+> 
+> ---8<---
+> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h
+> b/tools/testing/selftests/kvm/include/kvm_util.h
+> index 041bdbfb93f7..a1b5d2029d05 100644
+> --- a/tools/testing/selftests/kvm/include/kvm_util.h
+> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
+> @@ -223,17 +223,7 @@ kvm_static_assert(sizeof(struct vm_shape) ==
+> sizeof(u64));
+> 
+>  #define VM_TYPE_DEFAULT                        0
+> 
+> -#define VM_SHAPE(__mode)                       \
+> -({                                             \
+> -       struct vm_shape shape = {               \
+> -               .mode = (__mode),               \
+> -               .type = VM_TYPE_DEFAULT         \
+> -       };                                      \
+> -                                               \
+> -       shape;                                  \
+> -})
+> -
+> -#define __VM_TYPE(__mode, __type)              \
+> +#define __VM_SHAPE(__mode, __type)             \
+>  ({                                             \
+>         struct vm_shape shape = {               \
+>                 .mode = (__mode),               \
+> @@ -243,8 +233,8 @@ kvm_static_assert(sizeof(struct vm_shape) ==
+> sizeof(u64));
+>         shape;                                  \
+>  })
+> 
+> -#define VM_TYPE(__type)                                \
+> -       __VM_TYPE(VM_MODE_DEFAULT, __type)
+> +#define VM_SHAPE(__mode)       __VM_SHAPE(__mode, VM_TYPE_DEFAULT)
+> +#define VM_TYPE(__type)                __VM_SHAPE(VM_MODE_DEFAULT, __type)
 
-Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
-logical partition (L1) booted in Power10 compatibility mode, the guest
-fails to boot while setting 'arch_compat'. This happens because the CPU
-class is derived from the hardware PVR (via mfspr()), which reflects the
-physical processor generation (Power11), rather than the effective
-compatibility mode (Power10).
+Oh, that's way better!  I say we go straight there:
 
-As a result, userspace may request a Power11 arch_compat for the L2
-guest. However, the L1 partition, running in Power10 compatibility, has
-only negotiated support up to Power10 with the Power Hypervisor (L0).
-When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
-hypervisor rejects the request, leading to a late guest boot failure:
+--
+From: Sean Christopherson <seanjc@google.com>
+Date: Tue, 28 Oct 2025 21:20:27 +0000
+Subject: [PATCH] KVM: selftests: Add macros to simplify creating VM shapes for
+ non-default types
 
-  KVM-NESTEDv2: couldn't set guest wide elements
-  [..KVM reg dump..]
+Add VM_TYPE() and __VM_SHAPE() macros to create a vm_shape structure given
+a type (and mode), and use the macros to define VM_SHAPE_{SEV,SEV_ES,SNP}
+shapes for x86's SEV family of VM shapes.  Providing common infrastructure
+will avoid having to copy+paste vm_sev_create_with_one_vcpu() for TDX.
 
-This situation should be detected earlier and rejected by KVM. Without
-proper validation, if userspace ignores the error, the guest may continue
-to boot in Power11 raw mode on a Power10 compatibility host, which should
-not be allowed.
+Use the new SEV+ shapes and drop vm_sev_create_with_one_vcpu().
 
-Introduce a validation mechanism that detects unsupported arch_compat
-values early in the guest initialization path. When an unsupported
-arch_compat is requested (e.g., Power11 on a Power10 compatibility mode
-host), kvmppc_set_arch_compat() uses cpu_has_feature(CPU_FTR_P11_PVR) to
-detect the mismatch and sets arch_compat to PVR_ARCH_INVALID (0xffffffff).
-This sentinel value is architecturally safe: PAPR specifies that valid
-logical PVR values must have 0x0f as the first byte, ensuring 0xffffffff
-lies permanently outside the specification-defined range. Setting this
-value triggers kvmppc_sanity_check() to mark the vCPU as invalid by
-setting vcpu->arch.sane to false. On the next vCPU run, kvmppc_vcpu_run_hv()
-checks this flag and returns -EINVAL, preventing the guest from running
-with an invalid processor compatibility configuration.
+Opportunistically move the existing VM_SHAPE() (now __VM_SHAPE()) macro
+below the definitions of VM_MODE_DEFAULT so that all of the SHAPE/TYPE
+macros are bundled together.
 
-With this, when a Power11 arch_compat is requested on a Power10
-compatibility mode host, the guest fails early during boot with:
+No functional change intended.
 
-  error: kvm run failed Invalid argument
-
-This provides a much clearer failure mode compared to the previous
-behavior where the guest could boot in Power11 raw mode (if userspace
-ignored the error) or fail late during H_GUEST_SET_STATE.
-
-Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
-Acked-by: Gautam Menghani <gautam@linux.ibm.com>
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
-Testing: Both Anushree and I have tested the below scenarios:
-1. P11 guest on P11 host - Works
-2. P10 compat guest on P11 host - Works
-3. P11 guest on compat-P10 host - Correctly fails with "Invalid argument"
-4. P10 guest on compat-P10 host - Works
+ .../testing/selftests/kvm/include/kvm_util.h  | 28 +++++++------
+ .../selftests/kvm/include/x86/processor.h     |  4 ++
+ tools/testing/selftests/kvm/include/x86/sev.h |  2 -
+ tools/testing/selftests/kvm/lib/x86/sev.c     | 16 --------
+ .../selftests/kvm/x86/sev_smoke_test.c        | 40 +++++++++----------
+ 5 files changed, 40 insertions(+), 50 deletions(-)
 
-Changes in v4:
-* Added documentation for PVR_ARCH_INVALID explaining why 0xffffffff is
-  architecturally safe to use as a sentinel value (PAPR constraint on
-  first byte being 0x0f) [Ritesh]
-* Updated commit message
-* v3: https://lore.kernel.org/all/20260609053327.61563-1-amachhiw@linux.ibm.com/
-
-Changes in v3:
-* Fixed null pointer dereference in kvmppc_sanity_check(): added check for
-  vcpu->arch.vcore before accessing arch_compat, as vcore is NULL for Book3S
-  PR and BookE guests (only Book3S HV uses vcore) [Reported by Sashiko AI]
-* Added Reviewed-by tag from Vaibhav
-* v2: https://lore.kernel.org/all/20260608201001.65760-1-amachhiw@linux.ibm.com/
-
-Changes in v2:
-* Fixed issue where v1 allowed guest to boot in Power11 raw mode when
-  userspace ignored the error, by adding validation in kvmppc_sanity_check()
-  to ensure early failure during vCPU run [Found the issue after posting v1,
-  also reported by Gautam.]
-* Introduced PVR_ARCH_INVALID constant for marking invalid arch_compat
-* Dropped all Reviewed-by and Tested-by tags due to code changes; requesting
-  fresh reviews
-* v1: https://lore.kernel.org/all/20260603141539.47620-1-amachhiw@linux.ibm.com/
-
-Changes in v1:
-* Moved this patch out of the v3 series [1] as discussed here [2]
-* Addressed below review comments from Ritesh:
-  - Based the PVR validation on cpu features
-  - Fixed hcall name typo
-  - Stable backport
-
-[1] https://lore.kernel.org/all/20260522152744.55251-1-amachhiw@linux.ibm.com/
-[2] https://lore.kernel.org/all/20260522152744.55251-2-amachhiw@linux.ibm.com/
----
- arch/powerpc/include/asm/reg.h | 12 ++++++++++++
- arch/powerpc/kvm/book3s_hv.c   | 15 ++++++++++++++-
- arch/powerpc/kvm/powerpc.c     |  4 ++++
- 3 files changed, 30 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 3449dd2b577d..b9ab9df1e2bc 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -1357,6 +1357,18 @@
- #define PVR_ARCH_31	0x0f000006
- #define PVR_ARCH_31_P11	0x0f000007
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index dc70c6da63fa..46bae183d7fc 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -221,18 +221,6 @@ struct vm_shape {
  
-+/*
-+ * Kernel-internal sentinel for invalid processor compatibility modes.
-+ * PAPR specifies that the first byte of a valid logical PVR value is
-+ * 0x0f. So 0xffffffff lies permanently outside the PAPR-defined range
-+ * and is safe to repurpose. KVM stores it in vcpu->arch.arch_compat
-+ * when userspace requests an unsupported compatibility mode (e.g.,
-+ * Power11 PVR on a Power11 host booted in Power10 compat).
-+ * kvmppc_sanity_check() detects this and prevents the vCPU from
-+ * running with an unsupported arch_compat.
-+ */
-+#define PVR_ARCH_INVALID	0xffffffff
+ kvm_static_assert(sizeof(struct vm_shape) == sizeof(u64));
+ 
+-#define VM_TYPE_DEFAULT			0
+-
+-#define VM_SHAPE(__mode)			\
+-({						\
+-	struct vm_shape shape = {		\
+-		.mode = (__mode),		\
+-		.type = VM_TYPE_DEFAULT		\
+-	};					\
+-						\
+-	shape;					\
+-})
+-
+ extern enum vm_guest_mode vm_mode_default;
+ 
+ #if defined(__aarch64__)
+@@ -270,8 +258,24 @@ extern enum vm_guest_mode vm_mode_default;
+ 
+ #endif
+ 
++#define VM_TYPE_DEFAULT			0
 +
- /* Macros for setting and retrieving special purpose registers */
- #ifndef __ASSEMBLER__
++#define __VM_SHAPE(__mode, __type)			\
++({						\
++	struct vm_shape shape = {		\
++		.mode = (__mode),		\
++		.type = (__type),		\
++	};					\
++						\
++	shape;					\
++})
++
++
++#define VM_SHAPE(__mode)	__VM_SHAPE(__mode, VM_TYPE_DEFAULT)
+ #define VM_SHAPE_DEFAULT	VM_SHAPE(VM_MODE_DEFAULT)
  
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 61dbeea317f3..f9380ef65750 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -446,7 +446,19 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
- 			guest_pcr_bit = PCR_ARCH_300;
- 			break;
- 		case PVR_ARCH_31:
-+			guest_pcr_bit = PCR_ARCH_31;
-+			break;
- 		case PVR_ARCH_31_P11:
-+			/*
-+			 * Need to check this for ISA 3.1, as Power10 and
-+			 * Power11 share the same PCR. For any subsequent ISA
-+			 * versions, this will be taken care of by the guest vs
-+			 * host PCR comparison below.
-+			 */
-+			if (!cpu_has_feature(CPU_FTR_P11_PVR)) {
-+				arch_compat = PVR_ARCH_INVALID;
-+				goto out;
-+			}
- 			guest_pcr_bit = PCR_ARCH_31;
- 			break;
- 		default:
-@@ -469,6 +481,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
- 			return -EINVAL;
- 	}
++#define VM_TYPE(__type)		__VM_SHAPE(VM_MODE_DEFAULT, __type)
++
+ #define MIN_PAGE_SIZE		(1U << MIN_PAGE_SHIFT)
+ #define PTES_PER_MIN_PAGE	ptes_per_page(MIN_PAGE_SIZE)
  
-+out:
- 	spin_lock(&vc->lock);
- 	vc->arch_compat = arch_compat;
- 	kvmhv_nestedv2_mark_dirty(vcpu, KVMPPC_GSID_LOGICAL_PVR);
-@@ -479,7 +492,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
- 	vc->pcr = (host_pcr_bit - guest_pcr_bit) | PCR_MASK;
- 	spin_unlock(&vc->lock);
- 
--	return 0;
-+	return kvmppc_sanity_check(vcpu);
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 77f576ee7789..0aa6eecfcbde 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -365,6 +365,10 @@ static inline unsigned int x86_model(unsigned int eax)
+ 	return ((eax >> 12) & 0xf0) | ((eax >> 4) & 0x0f);
  }
  
- static void kvmppc_dump_regs(struct kvm_vcpu *vcpu)
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index 00302399fc37..98de68379b18 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -258,6 +258,10 @@ int kvmppc_sanity_check(struct kvm_vcpu *vcpu)
- 	if (!vcpu->arch.pvr)
- 		goto out;
- 
-+	if (vcpu->arch.vcore &&
-+		vcpu->arch.vcore->arch_compat == PVR_ARCH_INVALID)
-+		goto out;
++#define VM_SHAPE_SEV		VM_TYPE(KVM_X86_SEV_VM)
++#define VM_SHAPE_SEV_ES		VM_TYPE(KVM_X86_SEV_ES_VM)
++#define VM_SHAPE_SNP		VM_TYPE(KVM_X86_SNP_VM)
 +
- 	/* PAPR only works with book3s_64 */
- 	if ((vcpu->arch.cpu_type != KVM_CPU_3S_64) && vcpu->arch.papr_enabled)
- 		goto out;
+ #define PHYSICAL_PAGE_MASK      GENMASK_ULL(51, 12)
+ 
+ #define PAGE_SHIFT		12
+diff --git a/tools/testing/selftests/kvm/include/x86/sev.h b/tools/testing/selftests/kvm/include/x86/sev.h
+index 1af44c151d60..944c59dbe510 100644
+--- a/tools/testing/selftests/kvm/include/x86/sev.h
++++ b/tools/testing/selftests/kvm/include/x86/sev.h
+@@ -53,8 +53,6 @@ void snp_vm_launch_start(struct kvm_vm *vm, u64 policy);
+ void snp_vm_launch_update(struct kvm_vm *vm);
+ void snp_vm_launch_finish(struct kvm_vm *vm);
+ 
+-struct kvm_vm *vm_sev_create_with_one_vcpu(u32 type, void *guest_code,
+-					   struct kvm_vcpu **cpu);
+ void vm_sev_launch(struct kvm_vm *vm, u64 policy, u8 *measurement);
+ 
+ kvm_static_assert(SEV_RET_SUCCESS == 0);
+diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/selftests/kvm/lib/x86/sev.c
+index 93f916903461..95d8520eea34 100644
+--- a/tools/testing/selftests/kvm/lib/x86/sev.c
++++ b/tools/testing/selftests/kvm/lib/x86/sev.c
+@@ -158,22 +158,6 @@ void snp_vm_launch_finish(struct kvm_vm *vm)
+ 	vm_sev_ioctl(vm, KVM_SEV_SNP_LAUNCH_FINISH, &launch_finish);
+ }
+ 
+-struct kvm_vm *vm_sev_create_with_one_vcpu(u32 type, void *guest_code,
+-					   struct kvm_vcpu **cpu)
+-{
+-	struct vm_shape shape = {
+-		.mode = VM_MODE_DEFAULT,
+-		.type = type,
+-	};
+-	struct kvm_vm *vm;
+-	struct kvm_vcpu *cpus[1];
+-
+-	vm = __vm_create_with_vcpus(shape, 1, 0, guest_code, cpus);
+-	*cpu = cpus[0];
+-
+-	return vm;
+-}
+-
+ void vm_sev_launch(struct kvm_vm *vm, u64 policy, u8 *measurement)
+ {
+ 	if (is_sev_snp_vm(vm)) {
+diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+index 1a49ee391586..fe2c438882ae 100644
+--- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
++++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+@@ -104,7 +104,7 @@ static void compare_xsave(u8 *from_host, u8 *from_guest)
+ 		abort();
+ }
+ 
+-static void test_sync_vmsa(u32 type, u64 policy)
++static void test_sync_vmsa(struct vm_shape shape, u64 policy)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+@@ -114,7 +114,7 @@ static void test_sync_vmsa(u32 type, u64 policy)
+ 	double x87val = M_PI;
+ 	struct kvm_xsave __attribute__((aligned(64))) xsave = { 0 };
+ 
+-	vm = vm_sev_create_with_one_vcpu(type, guest_code_xsave, &vcpu);
++	vm = vm_create_shape_with_one_vcpu(shape, &vcpu, guest_code_xsave);
+ 	gva = vm_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
+ 			      MEM_REGION_TEST_DATA);
+ 	hva = addr_gva2hva(vm, gva);
+@@ -150,13 +150,13 @@ static void test_sync_vmsa(u32 type, u64 policy)
+ 	kvm_vm_free(vm);
+ }
+ 
+-static void test_sev(void *guest_code, u32 type, u64 policy)
++static void test_sev(void *guest_code, struct vm_shape shape, u64 policy)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+ 	struct ucall uc;
+ 
+-	vm = vm_sev_create_with_one_vcpu(type, guest_code, &vcpu);
++	vm = vm_create_shape_with_one_vcpu(shape, &vcpu, guest_code);
+ 
+ 	/* TODO: Validate the measurement is as expected. */
+ 	vm_sev_launch(vm, policy, NULL);
+@@ -201,12 +201,12 @@ static void guest_shutdown_code(void)
+ 	__asm__ __volatile__("ud2");
+ }
+ 
+-static void test_sev_shutdown(u32 type, u64 policy)
++static void test_sev_shutdown(struct vm_shape shape, u64 policy)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+ 
+-	vm = vm_sev_create_with_one_vcpu(type, guest_shutdown_code, &vcpu);
++	vm = vm_create_shape_with_one_vcpu(shape, &vcpu, guest_shutdown_code);
+ 
+ 	vm_sev_launch(vm, policy, NULL);
+ 
+@@ -218,28 +218,28 @@ static void test_sev_shutdown(u32 type, u64 policy)
+ 	kvm_vm_free(vm);
+ }
+ 
+-static void test_sev_smoke(void *guest, u32 type, u64 policy)
++static void test_sev_smoke(void *guest, struct vm_shape shape, u64 policy)
+ {
+ 	const u64 xf_mask = XFEATURE_MASK_X87_AVX;
+ 
+-	if (type == KVM_X86_SNP_VM)
+-		test_sev(guest, type, policy | SNP_POLICY_DBG);
++	if (shape.type == KVM_X86_SNP_VM)
++		test_sev(guest, shape, policy | SNP_POLICY_DBG);
+ 	else
+-		test_sev(guest, type, policy | SEV_POLICY_NO_DBG);
+-	test_sev(guest, type, policy);
++		test_sev(guest, shape, policy | SEV_POLICY_NO_DBG);
++	test_sev(guest, shape, policy);
+ 
+-	if (type == KVM_X86_SEV_VM)
++	if (shape.type == KVM_X86_SEV_VM)
+ 		return;
+ 
+-	test_sev_shutdown(type, policy);
++	test_sev_shutdown(shape, policy);
+ 
+ 	if (kvm_has_cap(KVM_CAP_XCRS) &&
+ 	    (xgetbv(0) & kvm_cpu_supported_xcr0() & xf_mask) == xf_mask) {
+-		test_sync_vmsa(type, policy);
+-		if (type == KVM_X86_SNP_VM)
+-			test_sync_vmsa(type, policy | SNP_POLICY_DBG);
++		test_sync_vmsa(shape, policy);
++		if (shape.type == KVM_X86_SNP_VM)
++			test_sync_vmsa(shape, policy | SNP_POLICY_DBG);
+ 		else
+-			test_sync_vmsa(type, policy | SEV_POLICY_NO_DBG);
++			test_sync_vmsa(shape, policy | SEV_POLICY_NO_DBG);
+ 	}
+ }
+ 
+@@ -247,13 +247,13 @@ int main(int argc, char *argv[])
+ {
+ 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SEV));
+ 
+-	test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
++	test_sev_smoke(guest_sev_code, VM_SHAPE_SEV, 0);
+ 
+ 	if (kvm_cpu_has(X86_FEATURE_SEV_ES))
+-		test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
++		test_sev_smoke(guest_sev_es_code, VM_SHAPE_SEV_ES, SEV_POLICY_ES);
+ 
+ 	if (kvm_cpu_has(X86_FEATURE_SEV_SNP))
+-		test_sev_smoke(guest_snp_code, KVM_X86_SNP_VM, snp_default_policy());
++		test_sev_smoke(guest_snp_code, VM_SHAPE_SNP, snp_default_policy());
+ 
+ 	return 0;
+ }
 
-base-commit: 6b5a2b7d9bc156e505f09e698d85d6a1547c1206
--- 
-2.50.1 (Apple Git-155)
-
+base-commit: e49bb0b5e1e3a8d7783bc7222c02cc6ff90fa2aa
+--
