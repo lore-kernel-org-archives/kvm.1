@@ -1,122 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDBE35AC28
-	for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 11:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D553B995B;
+	Tue, 16 Jun 2026 11:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781609341; cv=none; b=CjDbEvv6045YgenhYxHtrpEAEIdQ5CtdKu5PYM+E2f3oigdGvMOFU4YueYnCpQsf32otcO3xWnmNPJLw6eDP/3QaOOvsYLAmyCfEFyfg7UwLG7+Pxg5TItVhZMw6EbYJVw+8Rvt+bA9+vyjxSMOvGGLJH6WGTp2/PNp6eb3jzyA=
+	t=1781609865; cv=none; b=NH+wlu2sRYXHCUhUlocxUzU0XtCKnC5Ix6Xyi3cnTVSWZ8aC/bvr7lqXgNOk4j6aTssSl4ferZrqnmWd0h2UCT0O5+NuHNai07NzzkEzYH2HTFDJTDuoG9pMzNCvq7wkQpRxZrrnpR4C1ecBBBhaEEYZwKGJRvYoW3Nrt80I1co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781609341; c=relaxed/simple;
-	bh=1EzbNr1ZXdN6z+5Hqm5DaY/gwHHDl9++uGjSSbOc/Z0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=C0c+rGM+SwQVcg4g5FqT3LXjsGZnlHVHlKkA5tGxN0yvq2vmb5pzObwSXbuM84EVWBP1zL26ZkoEf/1Mfw194vAMExKbndfzMU3//hyKePCLfElUEwBi8CH8ReuEyowF7WhnaRkOLlnal7rdcUH8uGG2tyto82k9nKmfE7szk4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vk5tJtC9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781609865; c=relaxed/simple;
+	bh=9nAaDjZ34aYh//rrurYLy/ykUuQhj8L+6kbwkCt4+i8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=spy/sFOccmIx5dvYkyp1IrUZc0wrTXh5YDEz929Nzj6q09ozLJ+MKPMHv/FH2k+gRwdyy28lSDYgBS+03gaOg/Oh7hVtSWQz3tQwZudT1R/DzXg+clZVGaOmRr7zlhu2pBf2KI4YMqYXgHY9QVK647c7CZbH1l80rjPCDsfszJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=Gwha8lQv; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vk5tJtC9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E45A1F000E9;
-	Tue, 16 Jun 2026 11:28:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781609339;
-	bh=BVJ5UzA+Kq0Nc+eTjvyn1SPWvxKjpb9Rc4Rw8EYRZXc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Vk5tJtC9M450+eq0YZ1XM8QW66uZ1ZjCbK7vxpxXFiLX/CFYr19qWf+eZqvM9j5BS
-	 A7rN6rxuqIxrwPmNWwpVYgBVata4ZQY1Wr4+OhaTFCIRuVsl2rgl92bTUSvC2+K79y
-	 NZmoqntOBxKoyXaBUhze9a3C2/sTTzgnu0YVYOPhYZwcO0z5An3sx5uwHCrswCeX4V
-	 xuG+/BjQ0SkfPvh5b8qqjZ/K8PbJOIVzraJDhXvI93QjtFOJUn61pTLdvKRhUpZqxc
-	 rcvvZIT3H2HUcPTXr57+GP0+uordWu9sElXMH46lyzEi2AaYQCT1bSkYOn+2127g/C
-	 2RavjJIJFsFag==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] vfio: Validate that bitmap.pgsize is a power-of-2 in
- vfio_iommu_type1_unmap_dma
-Reply-To: sashiko-reviews@lists.linux.dev
-To: lirongqing <lirongqing@baidu.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260616111733.1810-1-lirongqing@baidu.com>
-References: <20260616111733.1810-1-lirongqing@baidu.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 16 Jun 2026 11:28:57 +0000
-Message-Id: <20260616112859.8E45A1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="Gwha8lQv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1781609860;
+	bh=uAgprYITukIDXcpqINMJiY5I+9dV1eJU9keHmx8y09Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Gwha8lQvPpehVbnVayavcRWqSRAMTH6T8yTt43S0hjAkCB/JTFST48vUr+g4CsHVy
+	 ZFi9jystoduorstbVb57npnIRroTBZX9uqXPgcnbBbeB0oLES6/SB0HGElsnPhOjXO
+	 Jn+yHRyFrIuSCHZqq8OkxUHRwTAsri/tIkPKm+1XrzWPO11/3f3sF/dvrgRXb8gToW
+	 5Lhgxo1L5Vx1HPwtQwZwSYJj8PZXHkxCLpzuAoipBPNYHmV22S1+BTtKMa0FpXdtPT
+	 cB7j00O/GhtTBBhhrmx8QT+QMGaedFoWWdWyzoAuUkSJgGQQZHT7hDcIPZnF6dPQ98
+	 5LVdzjdj+k+JQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gflMx00Vzz58nk;
+	Tue, 16 Jun 2026 21:37:32 +1000 (AEST)
+Message-ID: <c4a6e367-2f22-4cbf-afcb-674f82fdacd2@ozlabs.org>
+Date: Tue, 16 Jun 2026 12:37:29 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 9/9] vfio/pci: Add mmap() attributes to DMABUF feature
+Content-Language: en-GB
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian <kevin.tian@intel.com>,
+ Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20260610154327.37758-1-matt@ozlabs.org>
+ <20260610154327.37758-10-matt@ozlabs.org> <ajENiAQkzXjbxgRX@google.com>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <ajENiAQkzXjbxgRX@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+Hi Praan,
 
-Pre-existing issues:
-- [High] The patch correctly addresses undefined behavior by validating tha=
-t user-provided bitmap.pgsize is a power-of-2 before passing it to __ffs() =
-in vfio_iommu_type1_unmap_dma(). However, it completely misses identical vu=
-lnerabilities in vfio_iommu_type1_dirty_pages() where unvalidated user inpu=
-ts are also passed to bit-scanning functions.
---
+On 16/06/2026 09:47, Pranjal Shrivastava wrote:
+> On Wed, Jun 10, 2026 at 04:43:23PM +0100, Matt Evans wrote:
+>> A new VFIO feature, VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR, is added to
+>> set CPU-facing memory type attributes for a DMABUF exported from
+>> vfio-pci.  These are used for subsequent mmap()s of the buffer.
+>>
+>> There are two attributes supported:
+>>  - The default, VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC
+>>  - VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC, which results in WC
+>>    PTEs for the DMABUF's BAR region.
+>>
+>> Signed-off-by: Matt Evans <matt@ozlabs.org>
+>> ---
+>>  drivers/vfio/pci/vfio_pci_core.c   |  2 ++
+>>  drivers/vfio/pci/vfio_pci_dmabuf.c | 57 +++++++++++++++++++++++++++++-
+>>  drivers/vfio/pci/vfio_pci_priv.h   | 14 ++++++++
+>>  include/uapi/linux/vfio.h          | 27 ++++++++++++++
+>>  4 files changed, 99 insertions(+), 1 deletion(-)
+>>
+> 
+>> +int vfio_pci_core_feature_dma_buf_memattr(
+>> +	struct vfio_pci_core_device *vdev, u32 flags,
+>> +	struct vfio_device_feature_dma_buf_memattr __user *arg,
+>> +	size_t argsz)
+>> +{
+>> +	struct vfio_device_feature_dma_buf_memattr db_attr;
+>> +	struct vfio_pci_dma_buf *priv;
+>> +	struct dma_buf *dmabuf;
+>> +	int ret;
+>> +
+>> +	if (!vdev->pci_ops || !vdev->pci_ops->get_dmabuf_phys)
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	ret = vfio_check_feature(flags, argsz,
+>> +				 VFIO_DEVICE_FEATURE_SET,
+>> +				 sizeof(db_attr));
+>> +	if (ret != 1)
+>> +		return ret;
+>> +
+>> +	if (copy_from_user(&db_attr, arg, sizeof(db_attr)))
+>> +		return -EFAULT;
+>> +
+>> +	dmabuf = dma_buf_get(db_attr.dmabuf_fd);
+>> +	if (IS_ERR(dmabuf))
+>> +		return PTR_ERR(dmabuf);
+>> +
+>> +	/* Verify DMABUF: see comments in vfio_pci_dma_buf_revoke() */
+>> +	priv = dmabuf->priv;
+>> +	if (dmabuf->ops != &vfio_pci_dmabuf_ops ||
+>> +	    READ_ONCE(priv->vdev) != vdev) {
+>> +		ret = -ENODEV;
+>> +		goto out_put_buf;
+>> +	}
+>> +
+>> +	switch (db_attr.memattr) {
+>> +	case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC:
+>> +	case VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC:
+>> +		WRITE_ONCE(priv->memattr, db_attr.memattr);
+>> +		ret = 0;
+>> +		break;
+>> +
+>> +	default:
+>> +		ret = -ENOENT;
+> 
+> Nit: Looks like the agreement [1] was on -EOPNOTSUPP / -EINVAL but we 
+> took -ENOENT here and in the doc string? Was that intentional?
+> 
+> I tend to agree with Alex's suggestion here, we'd prefer one of those 
+> two (-EINVAL / -EOPNOTSUPP) since it clearly communicates to the user
+> that "You sent a wrong arg" or "We don't support this"
+> 
 
-commit 6fe55d8211a4934baec28340932ad6ce53984ed4
-Author: Li RongQing <lirongqing@baidu.com>
+Yes, it was intentional.  This was noted in the v3 changelog entry in
+the cover letter:
 
-vfio: Validate that bitmap.pgsize is a power-of-2 in vfio_iommu_type1_unmap=
-_dma
+ - Removed GET on vfio_pci_core_feature_dma_buf_memattr(), removed
+   unnecessary taking of memory_lock, fixed error return values.  In
+   particular, removes ENOTSUPP, and uses ENOENT to indicate an
+   unknown attribute enum value was passed to SET.  In the discussion
+   here,
+   https://lore.kernel.org/all/20260602131417.41366391@shazbot.org/
+   we'd agreed on EOPNOTSUPP before I realised that's already used
+   elsewhere.  ENOENT uniquely indicates an unknown attribute.
 
-In vfio_iommu_type1_unmap_dma(), the user-supplied bitmap.pgsize is
-passed directly to __ffs() without sufficient validation.
+EINVAL/EOPNOTSUPP would indeed be semantically perfect, but after
+posting my reply there I remembered they are already overloaded with a
+load of different meanings.
 
-> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_ty=
-pe1.c
-> index c8151ba54de33..b05fde8d87c65 100644
-> --- a/drivers/vfio/vfio_iommu_type1.c
-> +++ b/drivers/vfio/vfio_iommu_type1.c
-[ ... ]
-> @@ -2949,6 +2950,9 @@ static int vfio_iommu_type1_unmap_dma(struct vfio_i=
-ommu *iommu,
->  		if (!access_ok((void __user *)bitmap.data, bitmap.size))
->  			return -EINVAL;
-> =20
-> +		if (unlikely(!is_power_of_2(bitmap.pgsize)))
-> +			return -EINVAL;
-> +
+I think uniqueness is important here so that memattr issues (for example
+any future arch-specific porting issues) show up as an
+immediately-understandable error value.
 
-[Severity: High]
-This is a pre-existing issue, but while this check addresses the problem
-here, does the exact same problem exist in vfio_iommu_type1_dirty_pages()
-in the same file?
+> -ENOENT means no such file or directory [2] to the user. Users may not
+> be kernel engineers who'd wanna peek into the code and they may simply
+> look at the uAPI files which doesn't give them an answer as to what
+> went wrong.
 
-If userspace passes dirty.flags =3D=3D 0, the invalid flag check is bypasse=
-d,
-and both macros are invoked with 0, which triggers undefined behavior:
+But surely when they look at the uAPI header they will then see
+"*  ENOENT: The given memattr is not supported." and understand what
+went wrong.
 
-drivers/vfio/vfio_iommu_type1.c:vfio_iommu_type1_dirty_pages() {
-    ...
-	/* only one flag should be set at a time */
-	if (__ffs(dirty.flags) !=3D __fls(dirty.flags))
-		return -EINVAL;
-    ...
-}
+> 
+>> +	}
+>> +
+>>  out_put_buf:
+>>  	dma_buf_put(dmabuf);
+>>  
+> 
+> Apart from that, 
+> Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
-Similarly, when VFIO_IOMMU_DIRTY_PAGES_FLAG_GET_BITMAP is requested,
-range.bitmap.pgsize is passed to __ffs() without checking for 0 or
-non-power-of-2:
+Thanks!
 
-drivers/vfio/vfio_iommu_type1.c:vfio_iommu_type1_dirty_pages() {
-    ...
-		pgshift =3D __ffs(range.bitmap.pgsize);
-		ret =3D verify_bitmap_size(size >> pgshift,
-					 range.bitmap.size);
-    ...
-}
 
-Since providing 0 triggers undefined behavior, and a non-power-of-2 value
-distorts the subsequent verify_bitmap_size() logic exactly as described in
-the commit message, would it be better to add the same validation to
-vfio_iommu_type1_dirty_pages() as well?
+Matt
 
->  		pgshift =3D __ffs(bitmap.pgsize);
->  		ret =3D verify_bitmap_size(unmap.size >> pgshift,
->  					 bitmap.size);
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260616111733.1810=
--1-lirongqing@baidu.com?part=3D1
+> 
+> Thanks,
+> Praan
+> 
+> [1] https://lore.kernel.org/all/20260602131417.41366391@shazbot.org/
+> [2] https://elixir.bootlin.com/linux/v7.1-rc6/source/include/uapi/asm-generic/errno-base.h#L6
+> 
+
