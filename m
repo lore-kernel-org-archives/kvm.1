@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239D02D780E;
-	Tue, 16 Jun 2026 00:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC9E27A462;
+	Tue, 16 Jun 2026 00:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781570548; cv=none; b=BI5fcSArDL6b5hP3m17SUFkKZc3i8fQIuFrAeycE5n9EjAh8SL4QP/Lhn6AG+JdgDpBP4w3Vym7UOeL0d52FZn8T8l+d3Nfnij6d5DtLm2KMEXrzpYR7cE4QvlkuaCsX/iH+1fiY/spSa5j7DICKHLm6EnNpnl5Z5RvuUWS+XS0=
+	t=1781570548; cv=none; b=YAZF8IKCeVCzLf/3kWQbpDlHhkI6qtg8nV290uUdJ8hv7WGr47eYEfkmYYGZtxrZIoDQZt+r3MHodlh6BH/Fwk5R8d6La6TeeTk5fKtzfewQgZeeBdUrjSI+MYzHjAgSiof13NJ4JSgx/8SrtHvH6rFcMRkKEtTSOesJem/edQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781570548; c=relaxed/simple;
-	bh=ll159o3ameauuhgIwIpUZoMFlZ23GbSv0qNxOeLTm5Y=;
+	bh=//giSpm4PF9eQXJ7jEEvomKFax+1x7DP/TyzpdolYDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RyIbN3RbP3xchI1fY9YBKWuQJEnRHVSu/tvrXetwhTpc21khUO6/krOlfKQQHnqrAoIQQjHfeImvOVtZ49VmWm3x7ylsQ1IM4wibMi65Xyj25d4LhF1wUzy7BNhZYdG8hbRqt0MEr3OF+4W3YftdKImznCaeQl/8Bx91dj5o160=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kmuPJdVh; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=j2Rlp31iZXAqgaSFAhIH7+2tCOLOGjFbRwWftqoS7jhmchOc33cnCOwSz4DRdjSKG4I9TIqehc/lWasKjd9pfhMKmmwSBi+WCfkXTCCGuMk4S5DZ6OWpIlhAFqbCAIh3GDFCYBb8scTR1BC4ZkrVZ9HIT0Wb+Wzm6NWFUtUlhTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YhW/byDB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kmuPJdVh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF331F00A3F;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YhW/byDB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B811F000E9;
 	Tue, 16 Jun 2026 00:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781570547;
-	bh=cYV2o1g2x8iVKAX+1mmKnGvtA3E+2J6VhWcpzNcgytw=;
+	s=k20260515; t=1781570546;
+	bh=Em6M7oMQBqemDXYmUZLyR7uDq9CWwWSb8sU3c4wzlxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kmuPJdVhwcQezeR57xzPBqzpzPliKCELA8AfPGe28tn+b4RvAIQrKmq4sHPmEO1I9
-	 jjh2EU/seFfq8hOrN/ZtryLELsoZtEBwVcYAeZgGOuiddTA1xl1e2bWaZZRoLiiOaK
-	 a6vOQ0lNC2x0wrw5FzlFp7urpBXwmBuPLEhBbMNwUUuqseOPcx4uY0CnhbSZUnVwCm
-	 7Q6rTWizI3d77yID2AhYaBQPrj8cKTgjD64bQKgK6cmYI0La9FLCg9+LZ2hvJ4gaxG
-	 h9vAUB4BZsG3gCj2+bAwS1Vd6HN8fvlevbdl3W+GBRfbpP7laswVoR5/JAVAPttn3T
-	 h0ME3Td1vR9Sw==
+	b=YhW/byDBQX4iW5/oAFZxj3KjPEVA7pORqFL9P+1a0x9VUrPThkKVZMMydCK0hxI7l
+	 r+zYrr8HTQQ+/aJETAylvWkSpv4WAnUeDnQV4lnHyolmvWfm816/mTrGva26bunIN7
+	 1SR57dyVkMw2DVPPpli1JSZ2FlCVIS3GyYKnt59ogHfEEXo4GpUqb7LBwkP8JPagu4
+	 poYWybZ3AK1ypsuL0RV83YHjrbEAvD3NKmctHHK55AI2Y9BYJRNKz7NBBAfRa5Fbtz
+	 I1f6cVZXD65Uh0/a9LcolUF8yz2VTrwyjpOgE5VYE6Pr+x/UK6NOjPdcistuhPruF+
+	 MAizUU8s+w1Tg==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -36,9 +36,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [RFC PATCH v2 11/25] KVM: x86: hyper-v: Rename kvm_hv_vcpu_purge_flush_tlb()
-Date: Tue, 16 Jun 2026 00:41:40 +0000
-Message-ID: <20260616004155.1435766-12-yosry@kernel.org>
+Subject: [RFC PATCH v2 10/25] KVM: nSVM: Add a placeholder ASID for L2
+Date: Tue, 16 Jun 2026 00:41:39 +0000
+Message-ID: <20260616004155.1435766-11-yosry@kernel.org>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
 In-Reply-To: <20260616004155.1435766-1-yosry@kernel.org>
 References: <20260616004155.1435766-1-yosry@kernel.org>
@@ -50,68 +50,62 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rename kvm_hv_vcpu_purge_flush_tlb() to kvm_hv_purge_tlb_flush_fifo() to
-clarify that it purges the TLB flush FIFO, not purge *and* flush the
-TLB.
+In preparation for introducing a separate ASID for L2, introduce a
+'placeholder' ASID that is still the same as L1's ASID. This will
+facilitate future changes that need to distinguish L1 and L2's ASIDs,
+before actually using a different ASID for L1 and L2.
 
 No functional change intended.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/hyperv.h  | 4 ++--
- arch/x86/kvm/svm/svm.c | 2 +-
- arch/x86/kvm/x86.c     | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/nested.c | 5 +++--
+ arch/x86/kvm/svm/svm.h    | 2 ++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/hyperv.h b/arch/x86/kvm/hyperv.h
-index 65e89ed653497..a5c52e4b24b2a 100644
---- a/arch/x86/kvm/hyperv.h
-+++ b/arch/x86/kvm/hyperv.h
-@@ -204,7 +204,7 @@ static inline struct kvm_vcpu_hv_tlb_flush_fifo *kvm_hv_get_tlb_flush_fifo(struc
- 	return &hv_vcpu->tlb_flush_fifo[i];
- }
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 66c5b5131cbb1..bc8c466a1f821 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -698,7 +698,6 @@ static void nested_svm_transition_tlb_flush(struct kvm_vcpu *vcpu)
+ 	 *  - Honor L1's request to flush an ASID on nested VMRUN
+ 	 *  - Sync nested NPT MMU on VMRUN that flushes L2's ASID[*]
+ 	 *  - Don't crush a pending TLB flush in vmcb02 on nested VMRUN
+-	 *  - Flush L1's ASID on KVM_REQ_TLB_FLUSH_GUEST
+ 	 *
+ 	 * [*] Unlike nested EPT, SVM's ASID management can invalidate nested
+ 	 *     NPT guest-physical mappings on VMRUN.
+@@ -925,7 +924,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+ 	else
+ 		vmcb02->control.bus_lock_counter = 0;
  
--static inline void kvm_hv_vcpu_purge_flush_tlb(struct kvm_vcpu *vcpu)
-+static inline void kvm_hv_purge_tlb_flush_fifo(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_vcpu_hv_tlb_flush_fifo *tlb_flush_fifo;
+-	vmcb02->control.asid = vmcb01->control.asid;
++	vmcb02->control.asid = svm->nested.asid02;
  
-@@ -286,7 +286,7 @@ static inline int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- {
- 	return HV_STATUS_ACCESS_DENIED;
- }
--static inline void kvm_hv_vcpu_purge_flush_tlb(struct kvm_vcpu *vcpu) {}
-+static inline void kvm_hv_purge_tlb_flush_fifo(struct kvm_vcpu *vcpu) {}
- static inline bool kvm_hv_synic_has_vector(struct kvm_vcpu *vcpu, int vector)
- {
- 	return false;
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index fae5cb7102010..dac3d0098bb77 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4173,7 +4173,7 @@ static void svm_flush_tlb_asid(struct kvm_vcpu *vcpu)
- 	 * A TLB flush for the current ASID flushes both "host" and "guest" TLB
- 	 * entries, and thus is a superset of Hyper-V's fine grained flushing.
+ 	/* Overwritten later if necessary.  */
+ 	vmcb_clr_flush_asid(vmcb02);
+@@ -1495,6 +1494,8 @@ int svm_allocate_nested(struct vcpu_svm *svm)
+ 	if (!svm->nested.msrpm)
+ 		goto err_free_vmcb02;
+ 
++	svm->nested.asid02 = svm->asid;
++
+ 	svm->nested.initialized = true;
+ 	return 0;
+ 
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 4442e9fd4f5d0..6e98e02f7b8d5 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -232,6 +232,8 @@ struct svm_nested_state {
  	 */
--	kvm_hv_vcpu_purge_flush_tlb(vcpu);
-+	kvm_hv_purge_tlb_flush_fifo(vcpu);
+ 	struct vmcb_save_area_cached save;
+ 
++	kvm_tlb_tag_t asid02;
++
+ 	bool initialized;
  
  	/*
- 	 * Flush only the current ASID even if the TLB flush was invoked via
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index cf122b8c32103..e67cdca8cc48f 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3690,7 +3690,7 @@ static void kvm_vcpu_flush_tlb_guest(struct kvm_vcpu *vcpu)
- 	 * Flushing all "guest" TLB is always a superset of Hyper-V's fine
- 	 * grained flushing.
- 	 */
--	kvm_hv_vcpu_purge_flush_tlb(vcpu);
-+	kvm_hv_purge_tlb_flush_fifo(vcpu);
- }
- 
- 
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
