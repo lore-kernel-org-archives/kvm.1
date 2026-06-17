@@ -1,124 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31A3380FDD;
-	Wed, 17 Jun 2026 10:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6791738A700
+	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 10:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781692547; cv=none; b=jw4SmgL6NWiCnL7t3Awuq+2Sx6H08CxxoPN+4rwWMHDYXLQwoVdtz4BOk0N7vsf1Zg6jjpJmV15MoiL2fwU0c4TaundR05PePpqKIYr5T76wGPDhGHihtPCAi3u+C1JMqEsJgqXaII0LqtvQC/34w3I0xWSwSaQXGWmvaEfwMxY=
+	t=1781693472; cv=none; b=Xf0av686v8qyUriAn49cDMMeLbQ/gT4SQxbtY2S3sbV6qcOcp+6zO9+IySVDimWtpUpnxN+ravmsrszxQTiAeIp1ZVE0J9jW49OV3bxV7HF2BYY6YGAaSy1x40J52pj7xJXS54BxUtdYGUlQ1KsX9P17IZFZ9Ih/na49dO1nB2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781692547; c=relaxed/simple;
-	bh=RrNJxgwTf/XIBO4xypsk04H4BkZDswlpF6TTo/qNS0o=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EjX7r1QE7jNpgW8kJEEODUm0fXTkOOzj4NaT8/ZSNWTB7QLHRmH0Ot7w0q7PK/hgl/CDQAB3zqrG/DM91kPl//9ckQtBGlEVFYhRNb/r7cPPp15l6qdWyS8SH2SxndCYU8G8qTf3oty05eTs4Rmc68Q7Ze937dOtaR2SPBJbLmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FMdFcSmG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781693472; c=relaxed/simple;
+	bh=7qzujJgvvJFOSb/Q4ZosXOpZymWjz6Bg0x9iMNs/xuE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=l0kmxrY4r35KxxPY4lGfMbYgrb6cUn5vfcZdEsco95D+F4LwMUB3SzVjiUw+2v5q1h0PrTzOLuwfIvCxTwbQBY7zMjLnHoi832OrbN7KPM2Tx8ncm2U1WwwaQ9GSES86ZvlTQE4xbR/4EspegcpYw3LSc17n8rvx6rbt2H6FiW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cs4Lp+EB; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FMdFcSmG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531CA1F000E9;
-	Wed, 17 Jun 2026 10:35:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781692544;
-	bh=O/jqFd+m3bTR3khFaiDVQE+f/oaTsTTweB/Z47ULnQM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=FMdFcSmGNYHdLWO/QKMsuCv5P53+Xwjqhimwx8v4wRXHO+TXiGERWnIi8zvjF7wBb
-	 7HHe/Bt5+AatwU3LQX/pAINupDUsFjio9eSUO0od3LdCACRFk5kUfCJNXkI0ejcifZ
-	 ciiQEV/ZA771bBnaMKrakvUUqUY3c/JSac5RZw9gKpEJhNKNglIGW8y51p8dBu2FPg
-	 XEXI2ucRxMHEhR0xEB9Lpy+8InkIqpYyiYyuEaxf9W4Jiuga6QL5UO/UfHpEY/jzIo
-	 4gR/uWlVkyYtQVK7qyWW/pWMPv9x6aAwzdvDxeTuVN692Ay9SWnstA9p07/yo/zzDN
-	 eHe+9Flt4iVxQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wZncU-0000000DdiT-2baY;
-	Wed, 17 Jun 2026 10:35:42 +0000
-Date: Wed, 17 Jun 2026 11:35:42 +0100
-Message-ID: <861pe5tpxd.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Oliver Upton <oupton@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cs4Lp+EB"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aa6792e7b8so5187406e87.1
+        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 03:51:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781693470; x=1782298270; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jXRivm292bJRGGQDbbNQRy7dH8nW4IqAFB7P7VgPQAM=;
+        b=Cs4Lp+EB3LPMSFm3vb5AhDomuiw+kLIGPYQdOWDdUvMTkZ8g84eMplsdY8fS5T8wPV
+         TM33H0Kxsbvp3ESBNODUZ4Xg2b49e0xyzqZLziE1YdMbBLBS/waWeBjLcy7XEBHSLc7Q
+         28+6aOhDvYlxZhOBMSECJrx5XLXGmfrkI0T8RZiRISJa8sLjlI6P2IfpIJNXywh/wBpw
+         Bz+fcQz2Ayowif1zWPwpGkX68DcO/7LbnB+YSiKZsGK4p5B6+FLuT5S+Y2SQBQZ4/l8w
+         jMueJBWA9l1RGxZyOQphiawPyeRhedbx4Z3jChMEJzb+ipRSs4mA8WvZAZTE+WPHazhy
+         FRDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781693470; x=1782298270;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jXRivm292bJRGGQDbbNQRy7dH8nW4IqAFB7P7VgPQAM=;
+        b=H+nqh8ANWe+knCaZDMdP4ODNaxGfLj2uXWjTsVoYpInICAriQ5o8KvfuHRo7P/03cA
+         1v+5dZhmstk1tl8yikcwWB+X2hOuObhB16y1WyGgLZjU7g9bK0/OGsFEvVC3z36UNQ2z
+         lX+FnCInjhjYJH/34mHgLtMkr0eX+H/T2Yu/OAxUSBh4Nh70u8bq5JSnyNMG2BnwJ63O
+         yhMQExFDHEnl+FZaYsZjssUoH5nAZs/VvDGTWUmAJzSn+T1y/cTmUZOieh7c0PM458vr
+         J4fgFxMPwgDO0Wr4gv/olsn1N6F4coZq78XmrRso7VS4KkeQvsHmw93EXsYqd+bwJOId
+         IE3g==
+X-Forwarded-Encrypted: i=1; AFNElJ9VV2gBp7Jtdcj4TAZyKzws++g+7e1PtXSSIJWZyCEye6lzgf+MZnC8WJaHKUPDDJ6uHRg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbrJwL5KF7weaNgXu27D2IPg5D4OFIhcaPRS0gmKGOMxKQ0hd0
+	nGfaSmC84/mQ22cWoEirkjgFOIOakALiPIH3RGD8aHf/G1ZmgUzMLnCh
+X-Gm-Gg: AfdE7ckolgOeUuTGKLi5G56dqXdpYPzh8krp1yvVrzxyqPO2s9JYlEdPwGWgcaeAQS4
+	19NJcyY9PU7gmyF14ScSrK5855rX61i9/f/GHswr9QOo+9DgSDqgD4BT7C/VvDEUpKJ6R9Xhf/R
+	doNL5S29L7kwY07JwQXY7llwPd9brpr8GyTLe1lnGI+T3G792X+NzfeVcgGIcClYc+VcFqMAQ+f
+	UFbMgZs0ANwIjrWhySRCfjoFym/QfxgMmrMBURuNtbN9s3iVmNq1FGi9awYjdaSVsPCh6JYuYXF
+	5bQoG0eoOUy6NDcnyIK6LzAxnLxDTKVHLCatQysE30t1WirQfL7UYz/qfKXyoiwZ74tEYLNNBFe
+	emrbbUs5DM6TSKVVcRQ4Xg/1J8aXkG+rtb62XVvLhouLDN2nMf1171Z8lmsWfvRNKGfg7cDx7lf
+	5G0tsLkKYv+1PcsWur/TxSc2mj7lppgCnSgfCCyvcn714BelqYnum/GYIRXFwHMT59PoiYO/Wfl
+	U/Mn8BhflE=
+X-Received: by 2002:a05:6512:68b:b0:5a3:cc81:eff3 with SMTP id 2adb3069b0e04-5ad4700cbb5mr959230e87.26.1781693469320;
+        Wed, 17 Jun 2026 03:51:09 -0700 (PDT)
+Received: from uuba.fritz.box (2001-14ba-6e-3100-ab3-3fa0-bafe-f56b.rev.dnainternet.fi. [2001:14ba:6e:3100:ab3:3fa0:bafe:f56b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e1adedesm4354678e87.57.2026.06.17.03.51.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 03:51:08 -0700 (PDT)
+From: =?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+To: stable@vger.kernel.org
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	linux-kernel@vger.kernel.org,
+	x86@kernel.org,
 	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Subject: Re: [PATCH] KVM: arm64: Handle race between interrupt affinity change and LPI disabling
-In-Reply-To: <ajGbLXf8Yc67cSI9@kernel.org>
-References: <20260615181625.3029352-1-maz@kernel.org>
-	<20260615183314.65A571F00A3A@smtp.kernel.org>
-	<ajGbLXf8Yc67cSI9@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	Uros Bizjak <ubizjak@gmail.com>,
+	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+Subject: [PATCH 6.1.y] KVM: VMX: Make vmread_error_trampoline() uncallable from C code
+Date: Wed, 17 Jun 2026 13:51:00 +0300
+Message-ID: <20260617105100.22094-1-hannelotta@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: oupton@kernel.org, sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 16 Jun 2026 19:51:25 +0100,
-Oliver Upton <oupton@kernel.org> wrote:
-> 
-> On Mon, Jun 15, 2026 at 06:33:14PM +0000, sashiko-bot@kernel.org wrote:
-> > > @@ -795,7 +796,11 @@ static void vgic_prune_ap_list(struct kvm_vcpu *vcpu)
-> > >  			continue;
-> > >  		}
-> > >  
-> > > -		/* This interrupt looks like it has to be migrated. */
-> > > +		/*
-> > > +		 * This interrupt looks like it has to be migrated,
-> > > +		 * make sure it is kept alive while locks are dropped.
-> > > +		 */
-> > > +		vgic_get_irq_ref(irq);
-> > 
-> > [Severity: Critical]
-> > This isn't a bug introduced by this patch, but could the lock-dropping window
-> > here lead to a double list_del() and a use-after-free under certain race
-> > conditions?
-> > 
-> > When vgic_prune_ap_list() drops the irq and ap_list locks shortly after this
-> > reference is taken, another thread could concurrently execute
-> > vgic_flush_pending_lpis() above and remove the irq from the list.
-> > 
-> > If a third thread then concurrently injects the same LPI before the locks are
-> > reacquired, the irq_lock is taken and pending_latch is set to true again.
-> > 
-> > When vgic_prune_ap_list() reacquires the locks further down in the function,
-> > the target_vcpu oracle check will pass because the interrupt is pending again:
-> > 
-> > arch/arm64/kvm/vgic/vgic.c:vgic_prune_ap_list() {
-> >     ...
-> >     if (target_vcpu == vgic_target_oracle(irq)) {
-> >         struct vgic_cpu *new_cpu = &target_vcpu->arch.vgic_cpu;
-> > 
-> >         list_del(&irq->ap_list);
-> >         irq->vcpu = target_vcpu;
-> >     ...
-> > }
-> > 
-> > Because there is no check verifying that irq->vcpu is still equal to the
-> > source vcpu, does this unconditionally execute list_del() on a list entry
-> > that has already been removed and poisoned?
-> > 
-> > Would this also bypass acquiring a new list reference, leaving the LPI on the
-> > new list with a deficient reference count if it avoids a crash?
-> 
-> Urgh... Marc, I think we need Hyunwoo's patch in addition to yours. Even
-> though this 3-way race seems improbable, it does appear possible :/
-> 
-> [*]: https://lore.kernel.org/kvmarm/aiHnI1mu6SGQrgnz@v4bel/
+From: Sean Christopherson <seanjc@google.com>
 
-Yeah. This thing is getting way too subtle. I'm starting to think that
-we may need to use something similar to the MMU notifier sequence
-number, and check if anything has happen to the AP list between the
-two locked sections.
+[ Upstream commit 0b5e7a16a0a79a3742f0df9e45bca46f01b40e6a ]
 
-Thanks,
+Declare vmread_error_trampoline() as an opaque symbol so that it cannot
+be called from C code, at least not without some serious fudging.  The
+trampoline always passes parameters on the stack so that the inline
+VMREAD sequence doesn't need to clobber registers.  regparm(0) was
+originally added to document the stack behavior, but it ended up being
+confusing because regparm(0) is a nop for 64-bit targets.
 
-	M.
+Opportunustically wrap the trampoline and its declaration in #ifdeffery
+to make it even harder to invoke incorrectly, to document why it exists,
+and so that it's not left behind if/when CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+is true for all supported toolchains.
 
+No functional change intended.
+
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20220928232015.745948-1-seanjc@google.com
+(cherry picked from commit 0b5e7a16a0a79a3742f0df9e45bca46f01b40e6a)
+Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
+---
+
+Notes:
+    Backporting to fix the following build warning:
+    
+    In file included from arch/x86/kvm/vmx/vmx.h:15,
+                     from arch/x86/kvm/vmx/nested.h:7,
+                     from arch/x86/kvm/vmx/vmx.c:63:
+    arch/x86/kvm/vmx/vmx_ops.h:15:58: error: ‘regparm’ attribute ignored [-Werror=attributes]
+       15 |                                                          bool fault);
+    
+    When building with gcc-16.
+    
+    Compile & boot tested.
+
+ arch/x86/kvm/vmx/vmenter.S |  2 ++
+ arch/x86/kvm/vmx/vmx_ops.h | 18 ++++++++++++++++--
+ 2 files changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
+index b4f8937226c2..ea7be3a74b6d 100644
+--- a/arch/x86/kvm/vmx/vmenter.S
++++ b/arch/x86/kvm/vmx/vmenter.S
+@@ -274,6 +274,7 @@ SYM_FUNC_END(__vmx_vcpu_run)
+ 
+ .section .text, "ax"
+ 
++#ifndef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+ /**
+  * vmread_error_trampoline - Trampoline from inline asm to vmread_error()
+  * @field:	VMCS field encoding that failed
+@@ -322,6 +323,7 @@ SYM_FUNC_START(vmread_error_trampoline)
+ 
+ 	RET
+ SYM_FUNC_END(vmread_error_trampoline)
++#endif
+ 
+ SYM_FUNC_START(vmx_do_interrupt_nmi_irqoff)
+ 	/*
+diff --git a/arch/x86/kvm/vmx/vmx_ops.h b/arch/x86/kvm/vmx/vmx_ops.h
+index 5edab28dfb2e..d23705df6a52 100644
+--- a/arch/x86/kvm/vmx/vmx_ops.h
++++ b/arch/x86/kvm/vmx/vmx_ops.h
+@@ -11,14 +11,28 @@
+ #include "../x86.h"
+ 
+ void vmread_error(unsigned long field, bool fault);
+-__attribute__((regparm(0))) void vmread_error_trampoline(unsigned long field,
+-							 bool fault);
+ void vmwrite_error(unsigned long field, unsigned long value);
+ void vmclear_error(struct vmcs *vmcs, u64 phys_addr);
+ void vmptrld_error(struct vmcs *vmcs, u64 phys_addr);
+ void invvpid_error(unsigned long ext, u16 vpid, gva_t gva);
+ void invept_error(unsigned long ext, u64 eptp, gpa_t gpa);
+ 
++#ifndef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
++/*
++ * The VMREAD error trampoline _always_ uses the stack to pass parameters, even
++ * for 64-bit targets.  Preserving all registers allows the VMREAD inline asm
++ * blob to avoid clobbering GPRs, which in turn allows the compiler to better
++ * optimize sequences of VMREADs.
++ *
++ * Declare the trampoline as an opaque label as it's not safe to call from C
++ * code; there is no way to tell the compiler to pass params on the stack for
++ * 64-bit targets.
++ *
++ * void vmread_error_trampoline(unsigned long field, bool fault);
++ */
++extern unsigned long vmread_error_trampoline;
++#endif
++
+ static __always_inline void vmcs_check16(unsigned long field)
+ {
+ 	BUILD_BUG_ON_MSG(__builtin_constant_p(field) && ((field) & 0x6001) == 0x2000,
 -- 
-Without deviation from the norm, progress is not possible.
+2.53.0
+
