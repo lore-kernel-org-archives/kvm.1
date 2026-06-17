@@ -1,229 +1,88 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E81428462
-	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 13:44:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA88B2DB7A3;
+	Wed, 17 Jun 2026 13:45:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781703876; cv=none; b=OYjugseV6a+fcXPhW0tPniuzkfnnQAyAGQw8Kxg1niuhtKmOzg/nU9S2vcXDcgJqspBXYtmxEMQZrQ60lyhC54Bp26jivLnzSkJMyHlj1pjQMKYMYkPFzDXR945Xpdi9jfN7mJdCyxLaLwhTzCcLOP2nPRvRp6AbpG4SMM3D5pY=
+	t=1781703952; cv=none; b=ad5C21rz+XDik/P3XlhmD4iLRP+VCVc+QgkJfKgDcaQPUlQgxZR23/4/pfi8D7PcrglNjqSrbpkH074jydhg7Gzz7Wpq1+CGabo2uY3wbwrhGtlf7IP2VSxEQB7Pf7xiRGnxD5Mqlke6Dc/Jpw+LJI2DqzUZkcQKpev8u9rZ/fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781703876; c=relaxed/simple;
-	bh=LsO7zA0G4uLWnVK+TL3P/peaWj8a+BRoQN9m2cBF1Y8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IUgWLBUzTwha3ofqL+8XpCSwrxUXKYP7peMSMur8ofHQB+BkxkdKsy4/arPbjQZUHmHlUiAOIwL5l8iqVTKrlvUEPDGQlwz+LGKIYXK4jK/2ePhPLBlTuBFXQt/q3AfS99QByXVmS83oXKY8uaaDw8B/A4orOj9Tzt3bggLE5Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dN9EnyMX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=J7WFI3pE; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781703952; c=relaxed/simple;
+	bh=GHbpxhI4ZgYxcZb8FC0vm3p/f6kLT6E2UkZVwM3g9Nk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=THY7R4rOJKn2JRuKDIETVQu9+lje2RFvOaeK9JDBeuevo5PRSX7AVMHghnniWX/7JmiluGiFeyepxgwFsUan2TVUAFR4K3yBTdLH8vnZ4ao0X1n81h7Ej4orNMk+oF9QA0gSKfsSOHlCXoawJUPl6escDreAv/Lbdkub1AWWNlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=f/UIGDWZ; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dN9EnyMX";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="J7WFI3pE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781703874;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=QJl+hDovUiXZ4Ag+ltyN8lVqypCjKaoOPuqMMQq8Ud0=;
-	b=dN9EnyMX+pMEQnae15evC6VHJg2Yh8HiYw8PnkfWwA9zDh4YFviukhVFf6Ru1OlY2DrfcK
-	YkO2694l7cbHbShwP2kX69M5sZnXEdzMdi3HcCePY2iWujNhhcw+eBj5km4+9xVtQBYb1C
-	IA5heFruWPyyymxRsf6MAJtcyJo5jQI=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-599-HlgjXzA3Od2V8I8ohclhuw-1; Wed, 17 Jun 2026 09:44:32 -0400
-X-MC-Unique: HlgjXzA3Od2V8I8ohclhuw-1
-X-Mimecast-MFC-AGG-ID: HlgjXzA3Od2V8I8ohclhuw_1781703871
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5aa68d67f20so3427352e87.1
-        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 06:44:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781703871; x=1782308671; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QJl+hDovUiXZ4Ag+ltyN8lVqypCjKaoOPuqMMQq8Ud0=;
-        b=J7WFI3pEWwsupeGaHBSAJ5ZBJsjpzDSHpRU5rboZwfu8TOtaX42a48Xo/bpIT5gryP
-         tpXXy82Gcf6FXCAUAkJe5MG8wHtEgFFENqKPh3Ty1SxFjYTMcXkMc1TNN7GMYY0EVdzw
-         uJf3y0FlvnLYZh4vWkMygAJ4nIocqQHh5FNkHWPFED7m/laoqE4d4j3pJ+Znl/1awm3z
-         Xl7v4pzRJ4B2hU9f09uvJqWGJ1qAYc4qeenqw/83f0f4TMBfM0lnR7GOcmXDIevzxGDc
-         Brs5s+g9lmTIyfp9nk2JpeXQZETCwwmgMzVpxxGS3GdErT1y/MM+9x7z/PgVapSpdTIZ
-         ho7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781703871; x=1782308671;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QJl+hDovUiXZ4Ag+ltyN8lVqypCjKaoOPuqMMQq8Ud0=;
-        b=rE8E82QnxPGGGlHJw+qgSazSVvaleaUZDf6sRAUrr7QONE83m3WWrcHcopbbN+mhoi
-         p/1Qo6ziart+aAjuCvezHQxHIX/1j9jusMth/bSFKqgcMPFBYy5gTPQmTmgjtK3AFoEf
-         qTnPZTyoHdvo5BjawRoghK1DwoSgk1yRv8BfTgL0bLhOnXR4oqST4kejJFsEYUbIOjU0
-         At9FSn+7n2DJNkMG8IxG806vm1Svrpd9FDfwjyJ71q5TS32Wjx+kpsJ6fY1TMGkhCGtc
-         0Ge8LTL501oGY0eTEIyGXDjj+NniguFB/7pPgt5m7LfEtnmpedQlfeFLzg6qLGARDt3p
-         toqg==
-X-Forwarded-Encrypted: i=1; AFNElJ8iUx4s6L9qn0KjKQj6I1y4rv1SE5z2aUj0Zv0BIqxNZ/djAzwUjmGyc8VJ0IXvd6D7QVQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRe/tqTmdCjEXeerURhvUWw/Lowp9nvwUhx3HmI7r5IOrv6vmm
-	JSWrZIai+qcY4ngfKXZJucqjOOa/dOa/YbfVBhBe4r/T25PVUhh9e5goJshTOYS2ipQzrlvHV+3
-	CIa+NNnK/euoouPTy13LPEbGyRatbjs5TfkqfsIaUjiayW3Gcly/d/g==
-X-Gm-Gg: AfdE7cmfa+/ngp+B6CR9qqFXi0Yd4UD0OXr6kFhZTaKYiRFSBzppuCG/T7Zf/BsGoac
-	yZIiVHzxhMHVVRKWEva8bz+kGq0Y6Rsbz5MuwcNIW1euo4oKnUCP6FOdh3Xia2ER9xq76iTBTZE
-	CE0KbNqnDUhFNxWoVDmtT3I10e0AANNJJ3/6PiqylL1DaKiIrSaffLx4vPI2MJ0YMZxHPqRIB8X
-	g09AJBB6rJXcIE3uiz3ZMJndhpxn61YUE0EqJMUWEBJQmPHYnJYcPTQLz93YAT1dYubszyUbYKT
-	tiHV2vpKNAc8u1IngBZqABidRZuFBkTNRKqT+HO9diiL+YQMLZauUQ6wcqIoPTrR9whca6nG09t
-	M7azSj6gZwDHX8s1mlLdIercEgAyr6d5legefcUTZ7bXvc4/iuNlcVQcZI9E0g7kuWUFMzwneqU
-	4+/e/mDtGyU23yAkjD
-X-Received: by 2002:a05:6512:a8a:b0:5aa:6c89:72d8 with SMTP id 2adb3069b0e04-5ad47ed0087mr1044647e87.19.1781703870536;
-        Wed, 17 Jun 2026 06:44:30 -0700 (PDT)
-X-Received: by 2002:a05:6512:a8a:b0:5aa:6c89:72d8 with SMTP id 2adb3069b0e04-5ad47ed0087mr1044625e87.19.1781703870076;
-        Wed, 17 Jun 2026 06:44:30 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.156.160])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e1baba7sm4418601e87.83.2026.06.17.06.44.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 06:44:29 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	stable@vger.kernel.org,
-	David Matlack <dmatlack@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Alexander Graf <graf@amazon.de>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Filippo Sironi <sironi@amazon.de>,
-	Ivan Orlov <iorlov@amazon.co.uk>
-Subject: [PATCH] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
-Date: Wed, 17 Jun 2026 15:44:27 +0200
-Message-ID: <20260617134427.440112-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="f/UIGDWZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1781703947;
+	bh=GHbpxhI4ZgYxcZb8FC0vm3p/f6kLT6E2UkZVwM3g9Nk=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=f/UIGDWZzfoVhtISo6NYM906z0Z4jkqBt2xb7bu82dXkBbfMemfnap+QZmSpYnZnM
+	 DpLJqEkLsHLe7RbADGflgzOXorZ8vd6Vj3SFV2o/atQ+36QngZv9H7Ldlg+srMu1DF
+	 POIqSmPcREL7d0R1+KajfxM6o2LALJjqsMSXz72U=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::8c71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 65BFA1C0050;
+	Wed, 17 Jun 2026 09:45:47 -0400 (EDT)
+Message-ID: <ce27a795148335f50cd7f11a0f24da8b63f751a9.camel@HansenPartnership.com>
+Subject: Re: [PATCH 4/4] kvm: svm: Support KVM_SEV_SNP_PAGE_TYPE_VMSA at
+ SNP_LAUNCH_UPDATE
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>,  x86@kernel.org, Tom Lendacky
+ <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ coconut-svsm@lists.linux.dev, Joerg Roedel <joerg.roedel@amd.com>, Jethro
+ Beekman <jethro@fortanix.com>
+Date: Wed, 17 Jun 2026 09:45:46 -0400
+In-Reply-To: <ajKgbpVpMMP2a5nG@8bytes.org>
+References: <20260611123528.572255-1-joro@8bytes.org>
+	 <20260611123528.572255-5-joro@8bytes.org> <aiqtWVMqTK6vDoZ8@google.com>
+	 <aiqwjn2DVOumfr3T@8bytes.org> <ajGOELiYwKByXbVP@google.com>
+	 <ajJAYZAPxNrrsiYp@8bytes.org>
+	 <64383a438eb79a30588f2737a6df84f9d4cd5b7d.camel@HansenPartnership.com>
+	 <ajKgbpVpMMP2a5nG@8bytes.org>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Sean Christopherson <seanjc@google.com>
+On Wed, 2026-06-17 at 15:28 +0200, J=C3=B6rg R=C3=B6del wrote:
+> Hi James,
+>=20
+> On Wed, Jun 17, 2026 at 09:18:14AM -0400, James Bottomley wrote:
+> > That's true for the launch measure, but you do have a vTPM inside
+> > the SVSM which you could use to measure an updated GHCB if we could
+> > decide on a PCR to use (and a logging specification).
+>=20
+> I guess you mean an updated VMSA? The guest-created VMSAs are trusted
+> because they are created by trusted code from within the TEE. There
+> is no need to runtime-measure their content, no?
 
-When recovering hugepages in the shadow MMU, verify that the base gfn of
-the shadow page is actually contained within the target memslot, *before*
-querying the max mapping level given the shadow page's gfn.  Failure to
-pre-check the validity of the gfn can lead to an out-of-bounds access to
-the slot's lpage_info (which typically manifests as a host #PF because the
-lpage_info is vmalloc'd) if the guest creates a hugepage mapping (in its
-PTEs) that extends "below" the bounds of a memslot.
+Well if the guest policy is I don't care how many CPUs you give me then
+certainly, yes.  However, if the guest does care, they may want an
+attestable record of it somewhere.  Since clouds do charge somewhat
+per-vCPU I can see this mattering to some tenants.
 
-When faulting in memory for a guest, and the size of the guest mapping is
-greater than KVM's (current) max mapping, then KVM will create a "direct"
-shadow page (direct in that there are no gPTEs to shadow, and so the target
-gfn is a direct calculation given the base gfn of the shadow page).  The
-hugepage recovery flow looks for such direct shadow pages, as forcing 4KiB
-mappings when dirty logging generates the guest > host mapping size case.
-When the 4KiB restriction is lifted, then KVM can replace the shadow page
-with a hugepage.
+Regards,
 
-But if KVM originally used a smaller mapping than the guest because the
-range of memory covered by the guest hugepage exceeds the bounds of a
-memslot, then KVM will link a direct shadow page with a gfn that is outside
-the bounds of the memslot being used to fault in memory.  The rmap entry
-added for the leaf mapping is correct and within bounds, but the gfn of the
-leaf SPTE's parent shadow page will be out of bounds.
-
-  BUG: unable to handle page fault for address: ffffc90000806ffc
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 100000067 P4D 100000067 PUD 1002a7067 PMD 10612f067 PTE 0
-  Oops: Oops: 0000 [#1] SMP
-  CPU: 13 UID: 1000 PID: 757 Comm: mmu_stress_test Not tainted 7.1.0-rc1-48ce1e26eace-x86_pir_to_irr_comments-vm #341 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:kvm_mmu_max_mapping_level+0x79/0x2b0 [kvm]
-  Call Trace:
-   <TASK>
-   kvm_mmu_recover_huge_pages+0x21b/0x320 [kvm]
-   kvm_set_memslot+0x1ee/0x590 [kvm]
-   kvm_set_memory_region.part.0+0x3a1/0x4d0 [kvm]
-   kvm_vm_ioctl+0x9bf/0x15d0 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb7/0xbb0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f21c0f1a9bf
-   </TASK>
-
-Don't bother pre-checking the bounds of the potential hugepage, i.e. don't
-check that e.g. sp->gfn + KVM_PAGES_PER_HPAGE(sp->role.level + 1) is also
-within the memslot, as the checks performed by kvm_mmu_max_mapping_level()
-are a superset of the basic bounds checks.  I.e. pre-checking the full
-range would be a dubious micro-optimization.
-
-Fixes: 9eba50f8d7fc ("KVM: x86/mmu: Consult max mapping level when zapping collapsible SPTEs")
-Cc: stable@vger.kernel.org
-Cc: David Matlack <dmatlack@google.com>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Alexander Bulekov <bkov@amazon.com>
-Cc: Fred Griffoul <fgriffo@amazon.co.uk>
-Cc: Alexander Graf <graf@amazon.de>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Filippo Sironi <sironi@amazon.de>
-Cc: Ivan Orlov <iorlov@amazon.co.uk>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/mmu/mmu.c   | 18 ++++++++++++------
- include/linux/kvm_host.h |  7 ++++++-
- 2 files changed, 18 insertions(+), 7 deletions(-)
-
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index c13b80fe3125..26ed97efda91 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7360,13 +7360,19 @@ static bool kvm_mmu_zap_collapsible_spte(struct kvm *kvm,
- 		sp = sptep_to_sp(sptep);
- 
- 		/*
--		 * We cannot do huge page mapping for indirect shadow pages,
--		 * which are found on the last rmap (level = 1) when not using
--		 * tdp; such shadow pages are synced with the page table in
--		 * the guest, and the guest page table is using 4K page size
--		 * mapping if the indirect sp has level = 1.
-+		 * Direct shadow page can be replaced by a hugepage if the host
-+		 * mapping level allows it and the memslot maps all of the host
-+		 * hugepage.  Note!  If the memslot maps only part of the
-+		 * hugepage, sp->gfn may be below slot->base_gfn, and querying
-+		 * the max mapping level would cause an out-of-bounds lpage_info
-+		 * access.  So the gfn bounds check *must* be done first.
-+		 *
-+		 * Indirect shadow pages are created when the guest page tables
-+		 * are using 4K pages.  Since the host mapping is always
-+		 * constrained by the page size in the guest, indirect shadow
-+		 * pages are never collapsible.
- 		 */
--		if (sp->role.direct &&
-+		if (sp->role.direct && is_gfn_in_memslot(slot, sp->gfn) &&
- 		    sp->role.level < kvm_mmu_max_mapping_level(kvm, NULL, slot, sp->gfn)) {
- 			kvm_zap_one_rmap_spte(kvm, rmap_head, sptep);
- 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 27498e990dff..ab8cfaec82d3 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1815,6 +1815,11 @@ void kvm_unregister_irq_ack_notifier(struct kvm *kvm,
- 				   struct kvm_irq_ack_notifier *kian);
- bool kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *args);
- 
-+static inline bool is_gfn_in_memslot(const struct kvm_memory_slot *slot, gfn_t gfn)
-+{
-+	return gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages;
-+}
-+
- /*
-  * Returns a pointer to the memslot if it contains gfn.
-  * Otherwise returns NULL.
-@@ -1825,7 +1830,7 @@ try_get_memslot(struct kvm_memory_slot *slot, gfn_t gfn)
- 	if (!slot)
- 		return NULL;
- 
--	if (gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages)
-+	if (is_gfn_in_memslot(slot, gfn))
- 		return slot;
- 	else
- 		return NULL;
--- 
-2.54.0
+James
 
