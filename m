@@ -1,113 +1,98 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2904839182C
-	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 22:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A690399369
+	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 23:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781736909; cv=none; b=mCXsEU5UHniQ5/UkHjg6A2p3F6FDBJPqQ92Ut2zozJFkCZrEHCQ7Ww/Gz3WQZHePX1FXu9imPRs6xl36xKeXWhzKKu6IlOo5FpvB8dGtvyUIcmIcTg3rFpE88SwBZqKd+Uq0Yu7WqkdqVgU4h9hJpE7cjKlxFw9TfSR86ubj/V8=
+	t=1781738984; cv=none; b=jESoBXraBSInC6bnxj2qnbzfv1g+jY4pkGKSqNwLPD1uJySsfjV4fdtT51bop+fBDUvI8Niz4ujAT6U/0SBlSdIx3KU8QVK+G+0mkjrdJIQttsv06+HSkPVI9Lc1xQh8kUtZomPzu4xMg5Z8xr5rVWYH8GaqEe2r6cJ9GGiWgj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781736909; c=relaxed/simple;
-	bh=XZNQCD0Wlzebe8+k82p0GQLAE+XVfMCy17xY+qRHYtY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=USb33THPPendhZSYuyWbkVo+3ta/0PPWA3Youd7Os/2hzgbjXJVDcuhdWm/DVDoPtx+n52lEGMiIVQa6IXWBittrhVkee997khjPn5nkKsB3K7AV5m+jP5uwDEV5QTfmE2MuFhhZ2hmN1l+TeWk1T5hC4rdSPcE6u9+a8umFxJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bOjR2tpW; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1781738984; c=relaxed/simple;
+	bh=KGe0fIgA6CrmevH7QXGfRivDLCr312l+T3VAyfrPlx8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=SxFeR5A2dBp4MT7Nz0TBSTGBMj99iqc4XPFy/yt4EtwME+s9i6DGpIeztkEtA3D/5whoW9yrjXc8HopLzOQISW7UDQmrHuUqeG7YA+bWryNmiNlPJGA/8asl8kJOaw0BEEzurpEblQU3iALF+K/8fXkgbV4elwYbyg57sfUnPls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nP1qkWFO; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bOjR2tpW"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2c6b3f71648so4129405ad.2
-        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 15:55:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nP1qkWFO"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0d0516ad7so3409485ad.0
+        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 16:29:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781736906; x=1782341706; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=31pm6bOQX9ZGFrg4v1e61iShzXMdpZDAT+S55BgXi9I=;
-        b=bOjR2tpWG0AYQDC8avd4GdHSX7j782z8Cgjq/6OJUzIYiYoazTRpi/Wzj+0f5Wy8UR
-         l0Mcc4gbrrYC3xdOTJD69DbsUZgHO0w8ztyx0258WwnlvT+N1hDQfhAyPH6RvmIivB85
-         y4Qefx5vxOm8M/ELtpfNye2NwSgnNdlX19bgoD6XLHDU2pgDAIyxU1IvwaRQPytgpHaj
-         tZxxO85cOCTy8ULqq8kY6wV+R+IYNn3dJB+dukJ7ftA9eryOMzmAoIMotkgoUklOYQJO
-         Y2BxsONgtQqYO/CFF6QERttj+j7vVyBUHhW9hv2F2IZHuircQVYqM+9z95fC9FEc6T38
-         UIqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781736906; x=1782341706;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+        d=google.com; s=20251104; t=1781738982; x=1782343782; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=31pm6bOQX9ZGFrg4v1e61iShzXMdpZDAT+S55BgXi9I=;
-        b=Bz/ZW0AwAMM6taJLhlQGXfOcHxhfKVxb6ldaMLGXawNF82Zlykqy2bNBV/gW2/g7CU
-         SGnVUceN5MDJYpZ2lTmybH67xKUHCAzlNH1Vyhqlh6PtaokjglBH1NbDlQBz4gVXyovr
-         /MATJC/PX4j/m+YON6lwbPuPNBfE0QYl6ZoIAuujrUj2Z8XbPIwvVvN3LvheQr/t0j6O
-         ti9zYiu1KWmpYqrSbp1wFSANfN23UW5EfzJ85cz+5+X+PUcqwKE8UxQKiCsn6QCwvodM
-         /T6L28K0a2b5U5LEvp8VCWtVVB+vHGbOUlaiJdcAw7LRNDzZsfO5RBEl+Ol7K6ggYNxv
-         3aBQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8lJEXMksns37pIKCx4X//kxYGqF0wBRnRDl79mSyNAc3bRMrofsFBDptHlSfOELL/JrPI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy050cYhna0bGgZhoclKOO5SVTX/tM+dNzJfLQyJ/EznmaQLCI2
-	Ys2W6G+9u4Yz/FyGLzfqGZ4la/jrLUqV4fDW3Y9AnTYJ8nv0GsmCYSuuSuTwr1VOqg==
-X-Gm-Gg: AfdE7cklPK0jJiQXtrOugPr3V+H7nzmHDYZPrXki7O5b9lQ6EEMEaZAjgOjSIA0xFSr
-	XIfNM6JE5Cgv24DtlPZhkU4oZRozg/TJtxjDpMvmsVOVQT/cW3NoiW+9R6T2F7nid47Ntiq/414
-	P6obmIS/ydVWzkx1sBTkvCfQQXWPI9kiIo3WhCugHQTCiKO9WKQOqg9luLCtMxeQtaZATRPSGqJ
-	fJWHNSltVhexsDctCF9Lg82DML0KUtM0ceTkLRYIueBvZf1mXi/qMaaY1aRFljtw8pw1ypHi8jM
-	Ge21Fy2NSBQsEcme9PKjRj5OqeJcGed/+poBKzGrrKeoPZZW0D72SAiZEAelY+UZLp86o0MUwr0
-	NGK/FfreGzaROWprQm0xERO7p2aFa4SolK32BnuyS461wc3doUjw/X4VzOGD0EdgOfaiViTBGLx
-	a/RRbPyEOx0PfsOZ2M0Rt45h/Ajmtwy57wPW+v5je3cSiJXBCV3OQ=
-X-Received: by 2002:a17:903:196b:b0:2c6:cbcd:a0d7 with SMTP id d9443c01a7336-2c6cbcda883mr35120735ad.25.1781736906001;
-        Wed, 17 Jun 2026 15:55:06 -0700 (PDT)
-Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42fbb5411sm172146015ad.32.2026.06.17.15.55.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 15:55:05 -0700 (PDT)
-Date: Wed, 17 Jun 2026 22:55:02 +0000
-From: David Matlack <dmatlack@google.com>
-To: Alex Mastro <amastro@fb.com>
-Cc: Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v4 0/2] vfio: selftests: Add allocation assert helpers
- and avoid VLAs
-Message-ID: <ajMlxuklmaDfg84X@google.com>
-References: <20260617-scratch-amastro-vfio-selftests-avoid-vlas-v4-0-b9f52f1e2c5a@fb.com>
+        bh=w8rCE0umJmUsRzaCo/yqnCV3dJpJvx3j3FQHgxRCskI=;
+        b=nP1qkWFOPmZh9bCq74bGnM0af+kJueXnvOJvc+z0EctfLMT3ltTGjVs+/Jcx9vMpxb
+         HGGr/TsSwItH3QedEUt53Q3O+9CNHUbeSansahValqcw8Nun3blRhGGN/vbxFHsR4lwY
+         ELigH9AAKub3zouw6D71gjl2T7hr5jUNTd/rut5QYtzpAH7en7St9YT24Mx+NWbcgWQF
+         m7muCPbefvQHA9DV74b1twdMaKgB2wNFaRYpViINeJ+F0Ke0UZ27bp86JAfUu1lJ5swB
+         iZz2YulDuZDVbkQ9yzmJNdr1zfsr17TAK2346r83hMQsMhZHXVFb9HO/9hc3oQHjbDn8
+         WLHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781738982; x=1782343782;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=w8rCE0umJmUsRzaCo/yqnCV3dJpJvx3j3FQHgxRCskI=;
+        b=ZwQ1xIGF7H9P2AWoT3V9twocojTN6sT+WJ8v31f3NpU06lqKlSJ3Oaxj88I34xqM3t
+         OqQCr+W3VDTrcde1sPnST2A0ipb7YViri0+DgpuDkUXC6SmgnE9E8TFJWjEjT8tOu5eD
+         x1EXOBfeZHBYsn4VdkU4NqXkcbyER/RSOhiQk5Dk9ljb3jcCfKzIrJzBBduDWJwihDwS
+         5vxctGskWELc2QSMLPmaHrDd3jKEDVbq7/pgcSCI6Op+vYSDWl4iWM5GqZwZE7YJ9imf
+         GbBWUAF1WwXH03fhbVe7A7VPlky4heNfR87Kw5vIpy5VhhrpGqHz9zPQn7CBicbG+fpX
+         87sw==
+X-Gm-Message-State: AOJu0YxJ7V40Sqy1tklETi5vOtpv4qSM7HKoCcYC1s9qyeq8AJpFOKRC
+	47k67IGikGLobIc/d0Tq8ffQ1B5iq7jxqEiP8Ku5UKnHsArPwkNrUOo238T67CWuUkWGEi/61ir
+	cMSuOOw==
+X-Received: from plbmj15.prod.google.com ([2002:a17:903:2b8f:b0:2bc:bdd2:af75])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f60c:b0:2c6:d70a:92af
+ with SMTP id d9443c01a7336-2c6e52ebf6amr10173245ad.37.1781738982244; Wed, 17
+ Jun 2026 16:29:42 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 17 Jun 2026 16:29:39 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617-scratch-amastro-vfio-selftests-avoid-vlas-v4-0-b9f52f1e2c5a@fb.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1189.g8c84645362-goog
+Message-ID: <20260617232939.1672228-1-seanjc@google.com>
+Subject: [ANNOUNCE / CFP] KVM Microconference at LPC 2026
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 2026-06-17 11:57 AM, Alex Mastro wrote:
-> Add VFIO selftest {malloc,calloc}_assert() helpers, then use
-> them in places that open-code malloc() or calloc() followed by
-> VFIO_ASSERT_NOT_NULL().
+LPC 2023: Game on!
+LPC 2024: Game on!
+LPC 2025: Car!
+LPC 2026: Game on!
+
+After a one year hiatus, KVM is back at Linux Plumbers Conference!
+
+Proposals/abstracts can be submitted (link below) under the "KVM MC" track.  As
+we've done before, we'll tailor the exact timing/format based on the accepted
+topics.  In practice, we'll probably end up with a large chunk of guest_memfd,
+and then short (~20 minutes) and long (~40) slots for other topics.  Feel free
+to note your preferred slot duration in the submission, though as before, we
+reserve the right to ignore your hint.  :-)
+
+Note #1, the KVM MC will focus on KVM itself, as well as KVM's touchpoints with
+other kernel subsystems.  The purpose of the KVM MC is to supplement KVM Forum
+by providing developers with a dedicated vehicle for discussing kernel
+internals.  Topics that are primarily aimed at something other than KVM are
+firmly out of scope and will be rejected.  Please consider the Confidential
+Computing MC, the VFIO/IOMMU/PCI MC, the Live Update MC, and/or KVM Forum 2026
+for virtualization topics that aren't directly related to KVM internals.
+
+Note #2!  There is an early pre-registraton period this year for anyone that
+submits a topic.  Pre-registration will tentatively open on July 10th.
+
+As with all MCs this year, the CFP window closes August 7th.
 
 Thanks!
 
-> Use the helpers to replace VLAs with heap allocations. This avoids GCC
-> rejecting initialized VLAs and avoids treating a u8 buffer as a possibly
-> under-aligned VFIO request struct.
-> 
-> Changes in v4:
-> - Add malloc_assert().
-> - Link to v3: https://patch.msgid.link/20260615-scratch-amastro-vfio-selftests-avoid-vlas-v3-0-b3798415c72a@fb.com
-> 
-> Changes in v3:
-> - Add the calloc_assert() helper as a precursor patch.
-> - Convert existing VFIO selftest calloc() assertion sites.
-> - Update the VLA fix to use calloc_assert().
-> - Link to v2: https://patch.msgid.link/20260615-scratch-amastro-vfio-selftests-avoid-vlas-v2-1-4e4df462908a@fb.com
-> 
-> Changes in v2:
-> - Reverse xmas tree variable ordering
-> - Link to v1: https://patch.msgid.link/20260612-scratch-amastro-vfio-selftests-avoid-vlas-v1-1-ba3acb635f0a@fb.com
-> 
-> Signed-off-by: Alex Mastro <amastro@fb.com>
-> ---
-> Alex Mastro (2):
->       vfio: selftests: Add allocation assert helpers
->       vfio: selftests: Avoid VLAs
-
-Reviewed-by: David Matlack <dmatlack@google.com>
+Logistics: https://lpc.events/event/20
+KVM MC:    https://lpc.events/event/20/contributions/2325/
+Abstracts: https://lpc.events/event/20/abstracts
+Pre-reg:   https://lpc.events/blog/current/index.php/2026/04/06/changes-to-registration-availability-for-2026
