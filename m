@@ -1,138 +1,306 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6E8317148
-	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 19:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B044F37B00E
+	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 19:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781724572; cv=none; b=JxX+nKRbrXGxSr+NtfGiFUDo6WK8l2nQ5/FG1Uf7EapVVI+Ukrlrprc5XxAN1DIN8XAOyuZXi+qB+ic7rZe72Q2i9uG5ETBohoxMheyvOKQPuBXgzXZX+rflvC8Aju6VOM+SVGwWf/VQ7txbOBZvD5tR4nE9/BsvYQy7DXCdSFU=
+	t=1781725111; cv=none; b=mN6oTEYpLz7cXoAADTC9h7UtUDpxj2hzAZbEP5b1GwrDVN6TiT2kPHb1YdhVBpn59lcvverxCHlloVYVGy9U12WkEznnI3KNah81I2UABqYYfm7RadjPx/YJp2NSuvRee85bNQRKwADARuStHcM8juuvfEFza9ZIkgbGFX96/U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781724572; c=relaxed/simple;
-	bh=h60NGC/ozGngTkscWdcApkWGD/LgFaoAy319VDmpEOw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kLcW5oOiLAeMqqXGugieNHHpRSaKmaC228zndOSAj6tlHmhWdMvQpfaTX8GCh8/XQP7aw3Yye7k89daiWxYCkIsh42fvy/7kMrsuCsnF8UjJyL+ul2WnIr1T+pSxGvkk7cv9SCe2NYWBIFi8ToYLnhU8ZoJXJXiY/NPEs/cuxAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=SbXkQYuS; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1781725111; c=relaxed/simple;
+	bh=l80OK3M4NqBia8Y4vK/TS/DhmAkEMgeBOsLvSv/fCDE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZfsJCutVwRHTfEAJrKlk2vLH9fUffzRwn5yTuDpGx7PrbUVmPZanEucBVlNH7olzWQKFuBGlAFuHcQffpZDRWH9ZBkzEnkpSug+z62n0OT8XsVDfy36IX4V1pHhAVe+x3lRgyoOZrR6m0HhWCk/lZyonYZeQcq9SKX4Yvu6sOig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A0RDgBq4; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="SbXkQYuS"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5176465a4a4so1373761cf.2
-        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 12:29:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A0RDgBq4"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d98b6f019so69725a91.2
+        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 12:38:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1781724570; x=1782329370; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HsWWktqv2G660ewz5kGZOgi567bNOYTEL7LINQXUsWA=;
-        b=SbXkQYuSzW6yDrD4dxuLh55rtIeFqG7f8naW+vOPvgVkKjDVuAUjGX3S1MnQMIt0Nk
-         RGqm10zSCHZRbo1w63lxqkbLRDTk6bUggfXA5bm+PBbxawTO3HSd2rsPvKv/gX1oNHXQ
-         G4nvqw8v/DGyq3bJDWwiCGpZGkWG8A/7wPC0xJpbcZ+29JJEbgOyTclWl8pM6CGGh68p
-         Xwrn/k6/4CejJTL+aSr14vWiiL4/eei5yhouq9sqn+itj7pLTcuU1GdNp+wzAMfYtT92
-         Lkk2eBsUsJPHOgeaNnUnRzGJL+CoaVKeITTewMY1qPUSRPCKyOXPWUeDNc+HLBPEAQI2
-         PwlQ==
+        d=google.com; s=20251104; t=1781725108; x=1782329908; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WoBeXfxl2EEXrQtGOe1J3VWk3iWfTTGdPupGKCUkKFQ=;
+        b=A0RDgBq4ymlsdQpI0aiEI/OlF5qS/CDOYKkoz0oXKODUEhZQUGJtkOwsfwKPRk5hNq
+         7DW0gjORY63uMQQY8efK+0ZC9Z3MdulzbqlzDAThECtLB5D8B6F++B3SzhuA8lySJXme
+         7cdyPoDG4Ys2pzv/eJmTdt99v+9MpCfJAgoCDFD5/4JkzBuIW+mRoHe2lPY3qjPs6InI
+         Y6OsR1/e7j2LVwrA0916/2qBF2hNTHnYT6B0Uj3Wbv6QIACNhWWCZkLq0H3WoevpDf2Q
+         V6Y/L88jpulGCoG93W17vn49EgVs0UY61kRuXvAUYUUub7o659DPo6bPizKTVB7F5d6k
+         Q25w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781724570; x=1782329370;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HsWWktqv2G660ewz5kGZOgi567bNOYTEL7LINQXUsWA=;
-        b=qQw2tb3nazkGJZPoG6OSpmOQsMeL/Bmm1xIt1Oqd0cylLsOByomXNyknPuZwvmpICR
-         w2wdJrPdJmOWD69qC4RFiKeDoW3LeiYKyxmyz60tBz+0tTnGjYS490VFCs3XQH9ne0Lu
-         tp5svPYOFnumjimBQeOh4JkRv5e2lp92w2SNy/smN67wEByQgyxONULVv6MXRQkKQA1x
-         hdQBC/amD+3qMK7Q8cEqjJjXvevWnt1i4fKPjLUReJDWX27G8YgTpwM+vJ+dhaF5M2bU
-         f4g5gOHLSxXY1KPY7/bYESRpkbfreT/9EhR/OxXLUNfIuS5ckJRuLLpvH1ZkvQkCX8e7
-         ZgAw==
-X-Forwarded-Encrypted: i=1; AFNElJ/yz1IdXB/3ls7Wj/lc5qIlXgGyf2TKHTuj8Vdpy6kIV3OGYoJxro2pNumnF3IpV77mGVU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7wej7YJ+o8fko0f4vRh79w9OdPIw8lcdYi0OVQSG9Yk6PyM1/
-	mz6dKDiMdECRqgMNwJ68cWSC1MrQKhWRXBQ7Tf3T+4uhr/t2IovlMvFv3WTAnHpfL9Q=
-X-Gm-Gg: Acq92OGBZ9TWZlS+NT4eSN5qI8ChIQsji1KRD5gizupfyTNjiYQASuVxOFBe6KUk5Pb
-	VSnZaav8iW+xsbc5Xu335TcSFwnoLiv3U+rNE1roIXJXcC6vdVdpPQa/JQOgoAX/xlmcyT8nilz
-	tx71OqZJ/diEKKzGSHVzoosqNP4TD7KAl7wH8MLHMwzYwDMfsi/3GJDp5Zywf9m5XKAwEGFSZ/+
-	3J4KM07yN9OFUBFtlmMkVz+6sizHAed1Lq3bkW2GDY9956vB0sPoEzYW+P2evg+kE8uiJsgYqza
-	5gIo8F7K7s8UrmM2+xNZLlDngZ7NTY5HUTKN70PU73MoQu00k9OF2ZQa7Ptn2kf0JsYFn0gtkfU
-	Kvsuhz/e23dREE9QxPaeOBSI17R7grhsyW0e7946ulz1aRYBZuu6p20oi7PGqZy0rcMy2oVLJzk
-	LAQzWVBGPCmAYjErb0WPq3pLvLjqWPE2cy7cbWkW9FsxPJ3v6KKRNDAW8rnMYvgzHvHc4=
-X-Received: by 2002:a05:622a:a54e:b0:517:5f04:f24c with SMTP id d75a77b69052e-519c6f3e9a9mr5534601cf.39.1781724569704;
-        Wed, 17 Jun 2026 12:29:29 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-517fb61e767sm175111801cf.2.2026.06.17.12.29.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 12:29:29 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wZvx2-00000001AOF-2emD;
-	Wed, 17 Jun 2026 16:29:28 -0300
-Date: Wed, 17 Jun 2026 16:29:28 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>,
-	Anthony Pighin <anthony.pighin@nokia.com>,
-	linux-kernel@vger.kernel.org,
-	Kefeng Wang <wangkefeng.wang@huawei.com>, kvm@vger.kernel.org,
-	linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH] vfio: Request THP-aligned mmap for device fds
-Message-ID: <20260617192928.GB231643@ziepe.ca>
-References: <20260616180129.160016-1-anthony.pighin@nokia.com>
- <20260616163054.77fdb61a@shazbot.org>
- <ajKtdCN0AlbmBnAj@x1.local>
- <ajLontmFa1oRXeoK@casper.infradead.org>
+        d=1e100.net; s=20251104; t=1781725108; x=1782329908;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WoBeXfxl2EEXrQtGOe1J3VWk3iWfTTGdPupGKCUkKFQ=;
+        b=RDxx6ykMUBKckhcOVdVqVoQS0ddALI5k/ewuuhVDgxXCTl1pd6W8MXNhfen60fC+HI
+         k5K0sRs/gaJqcnCuFxh4tEtbqhtBaSNTZTXMsUS/Tb8q2M5DdWOlpxrRFlFRjTNNZ0ts
+         E54H5KTJk7DvRtHUK36Ace2FQnJwk0VdeHDnuO17q2aBEoT14kVuPfhkW3RGFUcTKg8F
+         GxHnA5OGhDcydz37460PWT39Mvme/VviPGQCdczukHgGdUYk1XpNA02t43zFwEGl20Na
+         3fbuQjSoCmeOj6wzRAFI8EB1th5cjW3gj3btuN4zG+KfkE4EkXRSx8ndFydXVuMW4Tth
+         4XNw==
+X-Forwarded-Encrypted: i=1; AFNElJ94/+Q06kGPWyoD8I7duZwHhh+7ZeY+2tNpFA3KyVLb/aug32F9NjZ7L4l/Ii4d5yr+yyM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTbF5tQX8J+5ponzqHX9pWOPi+metHTRjgUUML44gMc7YsrxdR
+	7AalcyWbxAJ1sEpDsOezvitaIM27xWXrYSuRETahjPmRroOTld15meKJ+xTwUoSu7la6dAxTKF6
+	SCRKIxw==
+X-Received: from pjbnu8.prod.google.com ([2002:a17:90b:1b08:b0:37c:582b:2c0b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e710:b0:37c:6cd1:a157
+ with SMTP id 98e67ed59e1d1-37c9392a787mr4752547a91.13.1781725107663; Wed, 17
+ Jun 2026 12:38:27 -0700 (PDT)
+Date: Wed, 17 Jun 2026 12:38:27 -0700
+In-Reply-To: <20260617180507.GB2704872.vipinsh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajLontmFa1oRXeoK@casper.infradead.org>
+Mime-Version: 1.0
+References: <20260602222941.3133236-1-jrhilke@google.com> <aiHW_1vBrukpuaW2@google.com>
+ <CALzav=cb=SaTtkwdTpK32Nboq6Uj8WKiN_=wRfpO+zugdjLRCA@mail.gmail.com>
+ <CALzav=dCjGHMfDaW87jKOhquUvY6uEns1i+wGY1Kbq2A7Pfreg@mail.gmail.com>
+ <aiMTJa1KHHgpTbDq@google.com> <ajK_P2AEGLvKD5US@google.com>
+ <20260617161412.GA2704872.vipinsh@google.com> <CALzav=fcHk5SiVc=q0G3dWR_USw5OFNoqXucfiEvxbLBXrda3A@mail.gmail.com>
+ <20260617180507.GB2704872.vipinsh@google.com>
+Message-ID: <ajL3s6TybZPBC5vJ@google.com>
+Subject: Re: [PATCH v6] vfio: selftests: Find devices that have VFIO selftest drivers
+From: Sean Christopherson <seanjc@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: David Matlack <dmatlack@google.com>, Josh Hilke <jrhilke@google.com>, 
+	Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Raghavendra Rao Ananta <rananta@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 17, 2026 at 07:34:06PM +0100, Matthew Wilcox wrote:
+On Wed, Jun 17, 2026, Vipin Sharma wrote:
+> On Wed, Jun 17, 2026 at 09:34:18AM -0700, David Matlack wrote:
+> > On Wed, Jun 17, 2026 at 9:28=E2=80=AFAM Vipin Sharma <vipinsh@google.co=
+m> wrote:
+> > >
+> > > On Wed, Jun 17, 2026 at 03:37:35PM +0000, David Matlack wrote:
+> > > > On 2026-06-05 11:19 AM, Sean Christopherson wrote:
+> > > > > On Fri, Jun 05, 2026, David Matlack wrote:
+> > > > > > On Thu, Jun 4, 2026 at 1:30=E2=80=AFPM David Matlack <dmatlack@=
+google.com> wrote:
+> > > > > > >
+> > > > > > > On Thu, Jun 4, 2026 at 12:50=E2=80=AFPM Sean Christopherson <=
+seanjc@google.com> wrote:
+> > > > > > > >
+> > > > > > > > On Tue, Jun 02, 2026, Josh Hilke wrote:
+> > > > > > > > > Add a new script, list_supported_devices.sh, which prints=
+ out the
+> > > > > > > > > segment:bus:device.function (SBDF) numbers and names of d=
+evices on a
+> > > > > > > > > machine that have a VFIO selftest driver. This makes it e=
+asier to
+> > > > > > > > > determine if the system is capable of running VFIO selfte=
+sts.
+> > > > > > > > >
+> > > > > > > > > Includes a -q (quiet) argument which prints just the SBDF=
+s so that the
+> > > > > > > > > output can be passed to tools/testing/selftests/vfio/scri=
+pts/setup.sh
+> > > > > > > > > (e.g. via xargs) to bind the devices to VFIO to use in VF=
+IO selftests.
+> > > > > > > > >
+> > > > > > > > > Examples:
+> > > > > > > > >
+> > > > > > > > > $ ./list_supported_devices.sh
+> > > > > > > > > 0000:6a:01.0 - Intel DSA SPR [8086:0b25]
+> > > > > > > > > 0000:6f:01.0 - Intel DSA SPR [8086:0b25]
+> > > > > > > > > 0000:74:01.0 - Intel DSA SPR [8086:0b25]
+> > > > > > > > >
+> > > > > > > > > $ ./list_supported_devices.sh -q
+> > > > > > > > > 0000:6a:01.0
+> > > > > > > > > 0000:6f:01.0
+> > > > > > > > > 0000:74:01.0
+> > > > > > > > >
+> > > > > > > > > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > > > > > > > > Signed-off-by: Josh Hilke <jrhilke@google.com>
+> > > > > > > >
+> > > > > > > > NAK, until this stuff is fixed and properly documented.
+> > > > > > > >
+> > > > > > > > This script needs to (a) communicate that some of the devic=
+es may be on VFIO's
+> > > > > > > > denylist, (b) NOT report them by default, (c) let the user =
+report denylisted
+> > > > > > > > devices, (d) make it *very* clear in the output that a devi=
+ce, and (e) ideally
+> > > > > > > > provide the user with a hint of how that might be able to t=
+est a denied device,
+> > > > > > > > e.g. by reloading vfio-pci with disable_denylist=3D1.
+> > > > > > > >
+> > > > > > > > Nothing in here so much as mentions that these "supported" =
+devices may be
+> > > > > > > > disallowed by the kernel, including the devices that's USED=
+ AS THE EXAMPLE.
+> > > > > > > >
+> > > > > > > > The DSA SPR devices has been on the naughty list since comm=
+it 95feb3160eef ("VFIO:
+> > > > > > > > Add the SPR_DSA and SPR_IAX devices to the denylist") from =
+2024, so I have a
+> > > > > > > > very hard time believing y'all weren't aware of this.  And =
+if you really truly
+> > > > > > > > weren't aware of this quirk, than what exactly are you even=
+ testing!?!?
+> > > > > > > >
+> > > > > > > > C'mon.
+> > > > > > >
+> > > > > > > Yeah vfio_pci.disable_denylist=3DY is required to use the Int=
+el DSA SPR
+> > > > > > > device. This script is a great place to capture that previous=
+ly hidden
+> > > > > > > requirement.
+> > > > > > >
+> > > > > > > Your proposed (a)-(e) sound good to me.
+> > > > > >
+> > > > > > Another direction we could go in here would be to set disable_d=
+enylist
+> > > > > > to Y in setup.sh (if it is currently N) and set it back to N in
+> > > > > > cleanup.sh (after the last device is cleaned up and only if it =
+was
+> > > > > > previously N). I was already thinking about doing something sim=
+ilar
+> > > > > > for setting enable_srio to Y for Raghu's new SR-IOV uAPI test.
+> > > > > >
+> > > > > > The only issue is that disable_denylist is not currently writab=
+le. I
+> > > > > > don't see any functional reason why it can't be writable though=
+. It is
+> > > > > > just sampled during probe. And from a security perspective, pri=
+vileged
+> > > > > > users can already reload vfio-pci with different parameters if =
+it is
+> > > > > > built as a module. But for built-ins, this would enable the den=
+ylist
+> > > > > > to be disabled.
+> > > > >
+> > > > > IMO, any changes to setup.h are completely orthogonal.  list_supp=
+orted_devices.sh
+> > > > > can and will be run independently, e.g. by people like me, and so=
+ absolutely needs
+> > > > > to claim a device is supported when it's obviously not.
+> > > > >
+> > > > > Actually, that's a good amendment to (b) above.  Instead of *neve=
+r* reporting
+> > > > > denylisted devices by default, have the script check disable_deny=
+list and act
+> > > > > accordingly.  And then it's "just" a matter of communicating thes=
+e details to
+> > > > > the user, e.g. so that a user can find devices that are supported=
+ by selftests,
+> > > > > but not by their currently loaded kernel+modules.
+> > > >
+> > > > SGTM
+> > > >
+> > > > Josh can you do this in v7? We'll probably need a flag to control
+> > > > whether the script lists devices not currently supported due to
+> > > > denylist, and how to convey all that to the user. I lean towards
+> > > > list_supported_devices.sh printing as much information as possible =
+when
+> > > > run without arguments. So maybe a flag to hide denylisted devices.
+> > >
+> > > Do we need then flag to hide denylisted devices? Instead, I think it =
+should be
+> > > opposite (I think that what Sean is suggesting as amendment). If
+> > > the script finds vfio_pci.disable_denylist param value is:
+> > >  - Y, then just show those DSA devices if they are available on the
+> > >    host. Don't differenciate.
+> > >  - N, then don't show these denylist devices.
 
-> I don't see this as being something that drivers should be involved with
-> at all.  The MM should be able to get this right without any hints from
-> the file-provider.  Yes, that means I also want to get rid of the setting
-> of get_unmapped_area in ext4/xfs/other filesystems.
-> 
-> Looking at generic_get_unmapped_area_topdown(), I think we can do this by
-> making an additional call to vm_unmapped_area() before the existing two,
-> setting info.align_mask and info.align_offset appropriately.
-> 
-> Now, what's "appropriately"?  I think it's based on length (>= PMD_SIZE,
-> then >= PUD_SIZE), but we should also take CONTPTE architectures into
-> account. 
+That's going to be extremely frustrating for users like me, that aren't eve=
+n aware
+that there's a denylist (well, now I am, but I wasn't when I ran the script=
+).
 
-The info.align_mask and info.align_offset do need information from the
-driver based on what it intends to map into the VMA that is being
-created.
+> > > A flag can be added to show all of the VFIO selftests supported devic=
+es
+> > > present on the host with the warning next to denylisted devices or gr=
+oup
+> > > them in the output.
+> > >
+> > > Flag case is for human consumption only.
 
-Filesystems probably have quite different requirements than drivers
-using remap_pfn() or vmf_insert_pfn() that have locked down pfn's.
+I disagree, strongly, with this particular statement.  IMO, the sole requir=
+ement
+we should be considering with respect to flags is the default behavior for =
+humans.
+Everything beyond that should be an implementation detail.  Saying "flags a=
+re only
+for humans" is placing pointless constraints on the implementation.
 
-A pfn driver often has a single already known physical range that it
-will use for the VMA and that range should drive the alignment
-decision of the VMA.
+> > Can you explain why it should be that way?
+> >=20
+> > IMO running list_supported_devices.sh without any arguments should
+> > display as much information as possible. I think that will maximimize
+> > the probability that people running VFIO selftests for the first time
+> > will be able to figure things out for themselves.
+>=20
+> My view is that setup.sh should get supported device list by default
+> using the list_supported_devices.sh which should correctly tell what is
+> supported based on the kernel one has booted and wanted to test.
 
-vfio in particular has common use cases where you want to mmap from
-weird offsets, but we still want to achieve a VMA starting point that
-has pa % PUD_SIZE == va % PUD_SIZE. It is impossible to do this if the
-thing building info does not know pa.
+That's fine, but how setup.sh behaves is largely orthogonal.
 
-I do think it makes sense that no file provider should be computing
-the VA area itself, I think I made that case when Peter was last
-working on this. Now that we have Lorenzo's mmap changes maybe we
-should be talking about supporting VFIO by having a callback to obtain
-the starting pfn for the VMA. Usable only by drivers like VFIO that
-are working with the pfn functions.
+> We also have in-progress series for IGB and MLX devices selftest driver
+> support, these devices are not in the denylist.
 
-The starting pfn and VMA size is enough for the mm to setup info
-suitably.
+How is that relevant?
 
-Maybe other users would prefer a 'max order' callback and then the mm
-would assume the VMA will be popoulated with pgoff aligned folios up
-to that highest order?
+> People running VFIO selftests will be intentionally running them on
+> supported hardware.=20
 
-> And maybe there's a CONTPMD architecture we should also consider?
+Uh, no.  I'm proof that that's not the case.  I'm using the script to see i=
+f a
+system has a supported device.
 
-ARM HW supports "CONTPMD" but I suppose it is not implemented..
+> They will also first need to check/read scripts on how to use the setup.s=
+h,
+> run.sh, and cleanup.sh, or manually pass device BDF value (via args or
+> environment variable). These things are not default and one will not have=
+ a
+> successful run in the first try without knowing these internal details.
 
-Jason
+I disagree.  I have pre-existing scripts to configure VFIO devices, the *on=
+ly*
+thing I need from list_supported_devices.sh is what its name literally says=
+: a
+list of supported devices.
+
+> vfio-pci module default is to disable use of these denylist devices. To
+> use these devices one has to set Y to the vfio_pci.disable_denytlist
+> module param and reboot the kernel.
+
+No, most kernels build vfio-pci as an actual module.  A reboot isn't requir=
+ed,
+just a module reload.
+
+> So, a pre-requisite for running VFIO selftest is to be an advance user an=
+d
+
+I again disagree very strongly.  The goal should be to make it as easy as p=
+ossible
+for people to run tests.  Claiming that only advanced users will or should =
+run
+tests is only going to reduce the overall health of the kernel.
+
+> I don't think they will have any trouble in figuring out these things.
+
+I did.  In fact, I was so frustrated with the whole experience that I liter=
+ally
+stepped away for several hours.
+
+> If they see no run has happened or they want to explore more,
+> list_supported_devices.sh will be an easy read to discover flags.
+
+Why make the user jump through an extra hoop or two?
+
+> I think my suggested approach is advocating for keeping things in sync
+> with what kernel default is or booted with. It looks cleaner to me and
+> respect safeguards provided by the kernel.
+
+Printing out that "Hey, this device is supported, but it's denylisted by th=
+e
+kernel by fault" isn't disprecting kernel safeguards.
