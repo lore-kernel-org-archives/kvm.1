@@ -1,257 +1,154 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013053.outbound.protection.outlook.com [40.107.159.53])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B373FE357;
-	Wed, 17 Jun 2026 13:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.53
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781703771; cv=fail; b=ZIecMGV6D0i+5Pu3eb6BkB1vfNMiMx1R1Z8iQ1aj0PP7mEiKfc8ejcZ9ARCzmisOM3ja56khlwhja0FjRgJy5VsX85nl148d18w9vRQT3DQAox3UNG7/jy+NKI9u9A8PGR4z3vFI52RVUcIxB2b28xfnfE3bl82vCPP1Dq4ZXKg=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781703771; c=relaxed/simple;
-	bh=XxlY8fhBWbSYqPTIiWq0VC11KW6eRBWMK5UT0adIisY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=b7F6lB7LR+C1XlYRngAlzibuxBSPMIy59I0KJp+9hNDC7NaUOZKScllP7XjLJ3+JfQ6CMYXYWjnyc21kdiffc0ECytl/j6pMxudQYtYAXxSTI4F4ZlG/g26XzbVDSgOV5dECibU/I/WvXkz149xD/qRgAmSkb1WjpmNzXjCvIxM=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=LrSYWQ4O; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=LrSYWQ4O; arc=fail smtp.client-ip=40.107.159.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59EC3F0AB1
+	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 13:44:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781703872; cv=none; b=mEguPFpG88AXAcfJDXxwDJkHgaE3xaR4mw4T1UeDdu9X8c2L6KTXwwmyWtQCJ3ylX+w4yU1BNILEfeW2iGCYAkqzUhTspwPvYeSs1n0xyNKIaXIMADdfBxIYsL28djxj5KjjwNwwVq/PE3+ZZJT8daidNajEVz4vscm3f4MDGfU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781703872; c=relaxed/simple;
+	bh=trzGjat07CTfPxrPQU1zxoBvahM3fPjTAmut22APz2c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lffh2J6qsqAbyRjf+dyuG1mh1szt0q14cKZxPjLZx9gysGVDSs/nvfmoedQ5o0MgBsPPN0VSEvJqupQsDqQwuqJ9ss+9mf+p2PfhJSVUI5KOn6JdVZlifhQd+mnc/Po/rTSEmHNiZgnQiqQ9ktU41AGHwC1M+JjNlC1iSIFAlAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LtAfmqBd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AMszsz82; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="LrSYWQ4O";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="LrSYWQ4O"
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=OzLifMQyV/UnHZqkULefmyRtKcJcJvv9astLnVt2z+nozzPjuv/r7xW9zND6yzkPCFiwJbAka7SSyqgsouaEEQPIqQiuOjRiICLN/9qoKOVsV20QpdqULCcVghcunWxK4S08ll4ceYRY4h2dpKyLaNH6V2gVThEsQ3Zc8odSm+bw7fENRjJRpzRXwPy5Igt18iqCmHUh9Ujk4vn9bxAnPMOd4yCRXpiE3bQHQeEICJ6LsRMpgKrJT892aOhj5BQ/ghML4D9A/CIg3zxACJrEQP7eS7SeBWa2/rHupNIdfPTGUwAfCB31uWW+DWaRr0r99y5XYjhtXMSit0Y8EGH0MA==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HGvRHndryVMe4VFTxLb7/VKb7cg/87B8UD5EUBKOENc=;
- b=E/TA07IOOvjel+umeVoq21bWADEi9Nd2k3bUc1SEg2GDSQdGDVVttA0vl0CZPpfBXhXGi3gWJFpwtyXcmD5vbxjrQQarlQuzkpcni3uTuRkEvIloGWTL4zsDSVEXMoD+YTp7ThjwhNlEkgBkWnZF54OxXwM9lYKnYrm6Eq366por6gZtFicut0sVu8XZdTEW7lnkir7HEd24m8unDoBfkQYTzAvDtdLzHuGTqXAj40EgwFSd6eK8UQpD92Rr/4kiALzwIvHF0Bg6fcbFGe0LFvLbV6DO+Jb7mJb77W/BCJx2d41H7cCrAVAsAM7FzngqI58++BDq5aopZ4lO/I2lrQ==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=redhat.com smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HGvRHndryVMe4VFTxLb7/VKb7cg/87B8UD5EUBKOENc=;
- b=LrSYWQ4O4nDO6Wc7milcvaHUgfww7/kpi58Fh3EfrbNISjA0nhCJM4TTF8e4whRWANeRw1nju5DEI01IrjbtTX9Z2Kjx6RVvzHgmGwlG0pSwMYlNxao/Xke6z9oYVWTeAx6K2fsnUjE7nsJiJUCmRMJ/64ZbZbOK0Ed+m/VZnAI=
-Received: from DUZPR01CA0038.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:468::12) by PR3PR08MB5690.eurprd08.prod.outlook.com
- (2603:10a6:102:86::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Wed, 17 Jun
- 2026 13:42:45 +0000
-Received: from DB3PEPF0000885E.eurprd02.prod.outlook.com
- (2603:10a6:10:468:cafe::6c) by DUZPR01CA0038.outlook.office365.com
- (2603:10a6:10:468::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.11 via Frontend Transport; Wed,
- 17 Jun 2026 13:42:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB3PEPF0000885E.mail.protection.outlook.com (10.167.242.9) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.8
- via Frontend Transport; Wed, 17 Jun 2026 13:42:45 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FPcDZ6RjoK6t/IemQZKhYd9GZ+k1U06SfVi9zOtn0vGmq1yengbMIoPeMMDslfOIpX9sxTq5Vai9Y8NYnEDMkHFVXyI8T5EvZgkqYZwAZZpfWhMXWYGJ2F/54L0wC4B0x7ILXlBaNittKiPI3BQgHAOhgRSlxxS1eNYGTgqxwo5B0loKEAZ5olOK2THH5cOhd0cDpXtt/DcmVKpDf0gJQDhgIJWvAIbaXwCieo/Twpjr7qOzAxxmD0bGrqA9ctjC2Syfk8zjsGQGWlGqAbJ89KLhP4J4oV74qydEIa6dwLIGtK1PNA6C8AiE3cORxL4/Enbdq1UnryKN8bWKg/BkSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HGvRHndryVMe4VFTxLb7/VKb7cg/87B8UD5EUBKOENc=;
- b=FOPvitZm+kk/M7zs/Cl99K6jMWRNPof0krKz/QC/DtscBhH5jNQe0WfT82b4nbPKqg88Poi3n8isyHYzAHNfzBeZtCE/+7xjiQM8Gl3nDyryUWHlLh1Fgcrawy1AHD1m7KWD618qyr0bOON4eMDq+NwQjoXE072KdQDeJDWnZ53ZaEpzVKJzZRAAwxJIqXpXsLe+SS8HvvGh1ocTJVq1ekT1i1BVJ6M551l5DivoXHvM06Id+S+P/l4v6gHUZa5iwBOa0gr7myWej0ZdnsqEQhggiUp+EUYwIdzpPBPweAjdLzPYC+tVX9SubzfbLW/ZhvNW12FG8ONGgQBe92alXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HGvRHndryVMe4VFTxLb7/VKb7cg/87B8UD5EUBKOENc=;
- b=LrSYWQ4O4nDO6Wc7milcvaHUgfww7/kpi58Fh3EfrbNISjA0nhCJM4TTF8e4whRWANeRw1nju5DEI01IrjbtTX9Z2Kjx6RVvzHgmGwlG0pSwMYlNxao/Xke6z9oYVWTeAx6K2fsnUjE7nsJiJUCmRMJ/64ZbZbOK0Ed+m/VZnAI=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from AS8PR08MB9597.eurprd08.prod.outlook.com (2603:10a6:20b:61b::18)
- by PAXPR08MB6382.eurprd08.prod.outlook.com (2603:10a6:102:15b::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Wed, 17 Jun
- 2026 13:41:43 +0000
-Received: from AS8PR08MB9597.eurprd08.prod.outlook.com
- ([fe80::e11:42b9:2ed1:ef5f]) by AS8PR08MB9597.eurprd08.prod.outlook.com
- ([fe80::e11:42b9:2ed1:ef5f%3]) with mapi id 15.21.0113.015; Wed, 17 Jun 2026
- 13:41:43 +0000
-Message-ID: <3b1cda8e-96d2-4b66-9916-caef7762209e@arm.com>
-Date: Wed, 17 Jun 2026 15:41:41 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] KVM: Ignore MMU notifiers for guest_memfd-only
- memslots
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- maz@kernel.org, oupton@kernel.org, suzuki.poulose@arm.com,
- kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- seanjc@google.com, mark.rutland@arm.com
-References: <20260615155244.183044-1-alexandru.elisei@arm.com>
- <42323088-c06e-42e2-b095-136062a8d27c@arm.com> <ajKf41Fgy_jKBAMI@raptor>
-From: David Hildenbrand <david.hildenbrand@arm.com>
-Content-Language: en-US
-Autocrypt: addr=david.hildenbrand@arm.com; keydata=
- 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 fa0=
-In-Reply-To: <ajKf41Fgy_jKBAMI@raptor>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0680.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:351::9) To AS8PR08MB9597.eurprd08.prod.outlook.com
- (2603:10a6:20b:61b::18)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LtAfmqBd";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AMszsz82"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781703870;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NkGGkGXV+1YZVOqd6U7cg5LVTCuD/L4oMW+qufKkKlg=;
+	b=LtAfmqBdxtuam+JTrs1eo8FQezTvUUw3Pw7pBcOlvaFeT9QYC6AP3IW9bX4vud5Z4RcEW4
+	pocx+fwv14d8f42gmsSagHeIoO6P9ey5KlrxVVKIPlnASllYIFJZP58429Pu9yRNvekxuP
+	zz5EJxjno19Q75B8lIaGywnRc20yPaw=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-180-6Gtmy8FiN9SXjHH0BtGNsg-1; Wed, 17 Jun 2026 09:44:29 -0400
+X-MC-Unique: 6Gtmy8FiN9SXjHH0BtGNsg-1
+X-Mimecast-MFC-AGG-ID: 6Gtmy8FiN9SXjHH0BtGNsg_1781703868
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-5ad2acc5c9aso586143e87.1
+        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 06:44:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781703868; x=1782308668; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NkGGkGXV+1YZVOqd6U7cg5LVTCuD/L4oMW+qufKkKlg=;
+        b=AMszsz82VyjPmc1UWIu0ZR1uoYusjEJZYdNlRX2YS/k+O7gOYq0HtqXQC9BE+xuyVg
+         2RcCe3dwyqVH3sKHBh1CCEeIQdnjYN/BPpfk3lh4MOyfPD+hfIM2ZZnrtDHdD67g5Efy
+         paJSixlx+iRy0yoLupbsTGT/fjgyUbTJ3q1u0UO/Q5wNCGzA7UOINLN/dchY1CimkZlv
+         iGJHqSj6d37tB0QAw6VkRZgVVPqG8ZW5q7cscH8syko/vv3PdEangyGRBhBx9cyCMO8k
+         kW9SU8ILchXXc1Y67ufBUUKdoUuCR5tLQIELIXkSFDCokIdbZRD7TJpHk+9TnqcxDwgw
+         WKvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781703868; x=1782308668;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NkGGkGXV+1YZVOqd6U7cg5LVTCuD/L4oMW+qufKkKlg=;
+        b=CjyuwPdRsTSAwQp9bCLl4qMH2tK+QrKPtnsU4abnfTkswZRzCSt33YumkTCyZmX8tv
+         WCM7Gqmp3gVVwJ1gY5eiU3RQEuJUUAgrjZA4p/r1Oqu+lo8tAOy3xZVoxFfElgt8ykX4
+         h/DER3ZB0QeCBJv9PzWP2FP24zPGKS7hKJf0dmLFHJNl6OTgrex4KPSiFoA/8z/j58u3
+         +jWX6zJsg7Tv3tzErzfe8Jxty9cgFvpC13SXWZ56ZQDvJ4iRk0WK1ljWOe+haZ+zs3UM
+         Zn0EOdAswdoj6uxXh5XSRQQcGvIxwM5krFK5bC7NjQQprIqfaYVs+fSjMjg2Vh+b1tTJ
+         axDg==
+X-Forwarded-Encrypted: i=1; AFNElJ/sViqVjMLXXEEg7IjmIvtkCzXd1t/3JzLPfHSeaRLB1xHj58ZtzVOLLCFtsz9IoXKywwI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB+X0ElRZCIgvIVGKhiHtErLPO1oaGz3RkocL90YvCsP3dNOhm
+	Chp69w9iJz2LHM6VYBvxN3e6gUZ/zNtobRn54/qQwWTqdmDb4JMPcGdvPljumHRIBSziCpmjh+M
+	GEzeJRK4vteU1GuciQGZHUy4ZX+mNm6m5JkaqEF6TQv7Zpw5rbGRZSQ==
+X-Gm-Gg: AfdE7clnTc4+0ABCaMzKOMYZSDm8cMxL2JDDxaA0C6XP2yChvxk8HImwWMrzhWUe2UB
+	BN336BXUSKMd7yHhtBb70T+ytyaEAvvEMqFXbRXON2/g19dSgWU+z+6MgLxQVVwSKpKQ3zE40W2
+	60pq9AuzKFW+F4JFLCptlAFFfF38g02/pARLs706SuTM0MnGGnfbaQ8BbBLyB5zWhF9RfGKMjg6
+	3Yz7P5zCKS9vszBt88AD4pLVC8buxQ6GpNGiIfEtRUp9HvVDoJEdBlvSHXwrmJ+kxT3qFReYfPA
+	tjnrQRgQ1Lj2W4zVAIcxSWXwGP3csgFePEWfTJEaui/v10yQb2vmOKY8WLTglu3MyrUlJnw3TEB
+	/Im4Bb/z9hBjycjtw1q6xFME5W4w+GA3nYCsukylHgHyd0q+t3/rFj1wsKRrLjTNHn1cQFQjj6O
+	rkSvTOgeWcO/gMx6GD
+X-Received: by 2002:a05:6512:6716:b0:5ad:4bbf:3c03 with SMTP id 2adb3069b0e04-5ad4bbf3c8fmr427106e87.16.1781703867815;
+        Wed, 17 Jun 2026 06:44:27 -0700 (PDT)
+X-Received: by 2002:a05:6512:6716:b0:5ad:4bbf:3c03 with SMTP id 2adb3069b0e04-5ad4bbf3c8fmr427096e87.16.1781703867235;
+        Wed, 17 Jun 2026 06:44:27 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.156.160])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e1ae945sm4429397e87.62.2026.06.17.06.44.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 06:44:26 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: Hyunwoo Kim <imv4bel@gmail.com>
+Subject: [PATCH] KVM: x86: Fix shadow paging use-after-free due to unexpected role
+Date: Wed, 17 Jun 2026 15:44:24 +0200
+Message-ID: <20260617134425.440091-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	AS8PR08MB9597:EE_|PAXPR08MB6382:EE_|DB3PEPF0000885E:EE_|PR3PR08MB5690:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0051b8c9-4878-46fc-f41d-08decc765017
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|22082099003|18002099003|11063799006|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info-Original:
- Cy4ffPNm3isuaToPJNDazSN1hwIGOhf2gj6b8tgapnyEq4M/IQrymjLN+ibp0q8U6riZp0LKoHvJHqudEyzVIQCzpnYrHoWLudS2Jx8V+DLbVfqSdzBoppsZ9nYBnLNPw9VY8+zLogKPU4ofdJYjdUEMMksFlLJOVsysgfy0J7CxIpTglFeKmf+H5LaCHZWcMyyivJZR86i6lrzWuirudN8BQG7KIfFMIxBITGoqPmBPqpu4dbMamPt9c7sa6SWUWzKciMxnvP8k4p7vd2mc0d5FoPY4mPbQaS/wKT+eDLr+bLNy7xGzmnvB898JjGJ/NPVMLxH7yP7CthcgPoFOdM8rQBdp+Pci+WSQf2Rf7tChRstVLyrtGAWWczRfj15QI+eaePJmHSMbu/vV2fo0YG7W7Yiuv11gIP36pAHGYMKnvGq/Dn7ba8oyVEWiB71ajy0YwqjMkLaLgMIpI599Jqd4vwuMPpmzwA46NeENmue2XjU7inAVAaNfJv6q1D4AV7PpFIz7xfRS0dmoQkcn8ClMgsaCUqLQFRdh7+wge7AQFBgKL/plnf/0Y+4lBFA0DHNmFtieOfFLmnCwQjAi/Q98ocjV6gRZ7T8qGcrWF78SmpGcZnR16vQl+4E1zrTnS63UbFD/0jEYcg52wSsdbbw9DxLuJ6lxwb8TbPFfqGqKBDM8D/RLhrFvtcU0U2hO
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR08MB9597.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- VVFW9T8y0lj09hsPPgz2rXwqbGq+xWXbSWlL9C2kuPQKu11qkvMtdS5m2QnRCry951XlId6puhQQERtBnSkr19fXLlZyomVaYwCMoL0zUWu7gXGqvLxqDhqmOLe0uNh4Kr6wJtEV3v6sXWxtv3+XfZZWktjzygRX7IOoE1bsIQx/azSf7NG37YfnFiTGLr16Wn53Z9aFlgudCqDiF3ikORL4ZPxwbQxOzAv8ERlqvZ3KqBafHfiOwx6/vCKwha4rl7jXi47Z8skGwkg4LbIktHwdCXu+vuWsI8E076uNrAgrCAHwWxhd5u+MARDO9TNk/h+TgpcKsqO6tEudHyYqVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB6382
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB3PEPF0000885E.eurprd02.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	b4107c8e-47ba-4fac-e857-08decc762aa3
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|35042699022|14060799003|36860700016|23010399003|1800799024|82310400026|22082099003|18002099003|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	1gQxdrOPMa0+UPiL8b/zyyZoNGEQ0zhBTVaNt7IStwfocsInGZCsfEcJZDAben7Jj3UUw+juyJDESd0jj65GLpsnl3yp69J6eB2Lpg4rhP/jMLgJ19+YWn7HTxl9o+7a0wVZtASLVNP2N1tJnRJeFRGTB+hQrcnN9VQVC6DbG9H4MB0bfzrABvhavg2GTWFUKP8QAEKaQwHP+BUu6Gg0bdmwSXyjzSDI150ni0y/ffkKtB0RpuzA/vam/h4+YOju7Vlsb6sXTx9RlBBqhX3Ix6BGrR3/KORwktvk9X+l6D7qQt/84iMu8BqVeehqYezxDenabzu5jkoopprFfSxc9ZCyT9oLviXQ+4/SA5YIkXY9CAwhtJN7yYku56JXQ9lAwQUMJAX0YVor4OnLZOS7B3p2/V8a8xFmuJaQ1KrT7cxVXegY1P3/ZdXVqOxnWNAJ4H8h3nxpzzwVyLODGr11CrXcVf2Aobkpr8tqigp6h1sLpLUjeZ0Wk1bv0vcgxNpt25kuHq+V48IMVYMWEWH6RoKmOo6ZK47Hm18D7l1itrxPerPoAdhKN0QGjPhYqc/eVHCjKBJVgH9MfnJ5xLfpGS6GydXp3qL74lmgJmT9da2zF1aZfDoG1eYpPvQ88zYC92w94u/rXmcgkCTSWIqJxpb823R92dmw45Rv3cNSIZlIlm/0iTUg1De6SOZADwrc6W1m66d7EPoYKCIAUOV4oTX8rjasYuLzYHr/eiNAreE=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(35042699022)(14060799003)(36860700016)(23010399003)(1800799024)(82310400026)(22082099003)(18002099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	5IFhDEfTAQ92Q/G9Gll5lN/doAc6Y4NPVWgbEuvSN6YYYf4YuuJ2zYmYX8/XpfhIiwHHOvwlQoUUDQXZfcQWELXuXBFX/EoRs6tlJ7dEY8BWoqP1/xZshufEE29dVM1XUPE2BU1f4Eaxem68s1RU3PQjg/F+vNFo8bGRE3ALK6+Wr9LcdR25U7hniDzJqvguVom4u/f5P60c+Yz44USyZ+7GX0Hd7ZCMsx7GLx+1ZNurIfXE1kPVJFKMLaC5gkSUJMr/c5aXhphDe+7NngS1I0z9N82PK27q7wMbML8QeT0xLsnwRwAt6BwLEABVhqSnpJNW/koWfEHugDGEzWBp7/t7Pt9eejoKi69CGWPmlt0QsFt1rHOZq/T2Sbn+hj9axvICiyFldMPWHfZjg5VmzoeJbDJqVVrknAK0LzYvmbjJUdnCGXf/CI1y0zUFQ80h
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 13:42:45.4065
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0051b8c9-4878-46fc-f41d-08decc765017
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB3PEPF0000885E.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR08MB5690
+Content-Transfer-Encoding: 8bit
 
-On 6/17/26 15:23, Alexandru Elisei wrote:
-> Hi David,
-> 
-> On Mon, Jun 15, 2026 at 09:07:50PM +0200, David Hildenbrand wrote:
->> On 6/15/26 17:52, Alexandru Elisei wrote:
->>> For guest_memfd-only memslots (kvm_memslot_is_gmem_only() is true), the
->>> memory provider for the virtual machine is the guest_memfd file, not the
->>> userspace mapping. Faults are resolved using the guest_memfd page cache,
->>> and the permissions for the secondary MMU mapping depends exclusively on
->>> the memslot (i.e, if the memslot is read-only). How userspace happens to
->>> have the memory mmaped at fault time, or even if the memory is mapped at
->>> all into userspace, is not taken into consideration.
->>>
->>> guest_memfd memory is not evictable, is not movable and there's no backing
->>> storage. Once memory is allocated for an offset in guest_memfd file, the
->>> offset will not change, and that memory is not freed unless userspace
->>> explicitly punches a hole in the file. As a result, memory reclaim, page
->>> migration, page aging and dirty page tracking for the userspace mapping
->>> serve little purpose.
->>
->> I don't think any of that is relevant for the patch at hand?
->>
->> The thing is: invalidation (truncation, later migration, for any other reason)
->> is driven through guest_memfd notifications, not through unrelated page tables.
->>
->> If we don't lookup pages for the KVM MMU through the page table, then there is
->> also no need for MMU notifiers. It's all guest_memfd only.
->>
->> Or am I missing something?
-> 
-> My thinking was that, because guest_memfd is not evictable, there is no need to
-> do page ageing, which would require that secondary MMU mappings be made old.
+Commit 0cb2af2ea66ad ("KVM: x86: Fix shadow paging use-after-free due
+to unexpected GFN") fixed a shadow paging mismatch between stored and
+computed GFNs; the bug could be triggered by changing a PDE mapping from
+outside the guest, and then deleting a memslot.  The rmap_remove()
+call would miss entries created after the PDE change because the GFN
+of the leaf SPTE does not match the GFN of the struct kvm_mmu_page.
 
-Not really.
+A similar hole however remains if the modified PDE points to a non-leaf
+page.  In this case the gfn can be made to match, but the role does not
+match: the original large 2MB page creates a kvm_mmu_page with direct=1,
+while the new 4KB needs a kvm_mmu_page with direct=0.  However,
+kvm_mmu_get_child_sp() does not compare the role, and therefore reuses
+the page.
 
-The KVM MMU did not obtain the folios through the page tables, but directly
-through guest_memfd. Any aging would, therefore, have to be done through
-guest_memfd.
+The next step is installing a leaf (4KB) SPTE on the new path which
+records an rmap entry under the gfn resolved by the walk.  But when
+that child is zapped its parent kvm_mmu_page has direct=1 and
+kvm_mmu_page_get_gfn() computes the gfn for the 4KB page as
+sp->gfn + index instead of using sp->shadowed_translation[] (or sp->gfns[]
+in older kernels).  It therefore fails to remove the recorded entry.
 
-Which we don't support and don't want to support :)
+When the memslot is dropped the shadow page is freed but the rmap
+entry survives, as in the scenario that was already fixed.  Code that
+later walks that gfn (dirty logging, MMU notifier invalidation, and
+so on) dereferences an sptep that lies in the freed page, causing the
+use-after-free.
 
-That we happen to have a matching user space range that maps the guest_memfd is
-just coincidence from a KVM MMU point of view.
+Fixes: 2032a93d66fa ("KVM: MMU: Don't allocate gfns page for direct mmu pages")
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/mmu/mmu.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-> 
-> The invalidate callbacks are also used when userspace memory is marked read-only
-> for dirty state tracking. I was trying to explaing that, since there is no
-> backing for the guest_memfd file, host doesn't need to keep track of dirty state
-> for the memory, and ignoring the invalidate callbacks is correct for all cases.
-> 
-> I can drop the paragraph entirely, if you think that would make the commit
-> message clearer.
-
-I think the real motivation is:
-
-"Mappings in the secondary MMU were established by obtaining folios from
-guest_memfd directly, not by looking the folios up through the page tables
-through GUP. Consequently, there is no relationship between the page tables and
-the secondary MMU: MMU notifiers do not apply."
-
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 9368a71336fe..c13b80fe3125 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -2459,13 +2459,15 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
+ 						 u64 *sptep, gfn_t gfn,
+ 						 bool direct, unsigned int access)
+ {
+-	union kvm_mmu_page_role role;
++	union kvm_mmu_page_role role = kvm_mmu_child_role(sptep, direct, access);
+ 
+-	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep) &&
+-	    spte_to_child_sp(*sptep) && spte_to_child_sp(*sptep)->gfn == gfn)
++	if (is_shadow_present_pte(*sptep) &&
++	    !is_large_pte(*sptep) &&
++	    spte_to_child_sp(*sptep) &&
++	    spte_to_child_sp(*sptep)->gfn == gfn &&
++	    spte_to_child_sp(*sptep)->role.word == role.word)
+ 		return ERR_PTR(-EEXIST);
+ 
+-	role = kvm_mmu_child_role(sptep, direct, access);
+ 	return kvm_mmu_get_shadow_page(vcpu, gfn, role);
+ }
+ 
 -- 
-Cheers,
+2.54.0
 
-David
