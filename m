@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5232DEA75;
-	Wed, 17 Jun 2026 14:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44547347503;
+	Wed, 17 Jun 2026 14:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781707498; cv=none; b=rSvlxFMmcFVcVriomXtkiQps9u/L5W0w9VYPywvGzRB3/AYuN3opKKPBDKZnxYUXCSbN0PEyPCr69LZzgymQZhtdRWg+jMrEFF2VwlvpYppOhKh85OvKlZ1K4EmUQkZSdevzfVaW1H7P0aa0k187mvwub3huVWhXr9JyVzyIjn0=
+	t=1781708036; cv=none; b=SEWSuhcF7HMQbCFp5AXx0uoKMSjmlVKk5UhomCnzw38TRz5nux68ZtDzoiodoUL6SV8eDUu0W5rShQ6aBuWE71T9jR3DFBJsbllw6hnn0bqoWb0tcY5AOd4ulXjV+hzaRAQXI+xgj6gFEVvNYeDAXShNBoT2xHn4K9si7uCQgeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781707498; c=relaxed/simple;
-	bh=RLEgHEDXzHNW7FwmiSVWkAW/EZIVgxKRer19wh3NgRc=;
+	s=arc-20240116; t=1781708036; c=relaxed/simple;
+	bh=BbG0d5zBTQaWYPcv8idvXM7W0156PtqL5VivcflcHhE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VCMvlLlKdBB0I4kh75wxbHsw6ImNPF2tG8rptvhZBSGzm/r/ZHTDrWirU+anPaRqsq5TjsP5woAsWmlhFUVB70pJrVi5dM4Xcj5p2YuIFZqrxtGidxSrcbvoQi2UVtetXZDRkWjZl9tvyaF6FSVnMNTUPUJuoToOgkeNe7voR/4=
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZY6qJRNjOtDq9nc38jd+lmML7k/dEOnyHmsf6LHtqZxWwnmqzBAioLzx4EwzcnMcoik5TckVbCK1U/0jQDJApVYvAg77Pe1cLb8hr36xfYr2v0R9fdxuEQCfkkWtSNQBlMWO9snqSqKq6DqnPRgNeewflHKPKJ2BewMzsuxX+gY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,27 +16,28 @@ Received: from 8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id EEF362027AC;
-	Wed, 17 Jun 2026 16:44:55 +0200 (CEST)
-Date: Wed, 17 Jun 2026 16:44:54 +0200
+	by mail.8bytes.org (Postfix) with ESMTPSA id 3FE6E202816;
+	Wed, 17 Jun 2026 16:53:54 +0200 (CEST)
+Date: Wed, 17 Jun 2026 16:53:53 +0200
 From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, coconut-svsm@lists.linux.dev, 
-	Joerg Roedel <joerg.roedel@amd.com>, Jethro Beekman <jethro@fortanix.com>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	coconut-svsm@lists.linux.dev, Joerg Roedel <joerg.roedel@amd.com>, 
+	Jethro Beekman <jethro@fortanix.com>
 Subject: Re: [PATCH 4/4] kvm: svm: Support KVM_SEV_SNP_PAGE_TYPE_VMSA at
  SNP_LAUNCH_UPDATE
-Message-ID: <ajKnKeo1FV3zbjEt@8bytes.org>
+Message-ID: <ajKzxF_F7UQ55lGw@8bytes.org>
 References: <20260611123528.572255-1-joro@8bytes.org>
  <20260611123528.572255-5-joro@8bytes.org>
  <aiqtWVMqTK6vDoZ8@google.com>
  <aiqwjn2DVOumfr3T@8bytes.org>
  <ajGOELiYwKByXbVP@google.com>
  <ajJAYZAPxNrrsiYp@8bytes.org>
- <ajKadxZEMI253AoT@google.com>
- <ajKe-oboTRowcO_i@8bytes.org>
- <ajKjMIBb21qB46fh@google.com>
+ <64383a438eb79a30588f2737a6df84f9d4cd5b7d.camel@HansenPartnership.com>
+ <ajKgbpVpMMP2a5nG@8bytes.org>
+ <ce27a795148335f50cd7f11a0f24da8b63f751a9.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,17 +46,20 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ajKjMIBb21qB46fh@google.com>
+In-Reply-To: <ce27a795148335f50cd7f11a0f24da8b63f751a9.camel@HansenPartnership.com>
 
-On Wed, Jun 17, 2026 at 06:37:52AM -0700, Sean Christopherson wrote:
-> Ok, so it took us a few times to learn our lesson.  I still don't see that as a
-> strong argument for new uAPI, especially not for VMSA pages.  I am very firmly
-> of the opinion that letting anything but the host kernel configure the VMSA is
-> beyond stupid, but unfortunately we're stuck with AP_CREATION.  Expanding that
-> surface has a very, very, VERY high bar to get over.
+On Wed, Jun 17, 2026 at 09:45:46AM -0400, James Bottomley wrote:
+> Well if the guest policy is I don't care how many CPUs you give me then
+> certainly, yes.  However, if the guest does care, they may want an
+> attestable record of it somewhere.  Since clouds do charge somewhat
+> per-vCPU I can see this mattering to some tenants.
 
-The strongest argument in my view (and the main reason we are doing this) is
-actually the predictable launch measurement. On SEV-SNP this is a requirement
-to use platform VM-identity features like the ID Block.
+Yes, the number of VCPUs certainly matters to most tenants. But I doubt there
+is much value in including this information into any measurment, as the
+measurement does not guarantee the tenant that the host actually executes the
+VCPU. The best proof for the existence of any given VCPU is the fact that it
+executes code.
 
--Joerg
+Regards,
+
+	Joerg
