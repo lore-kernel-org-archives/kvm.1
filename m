@@ -1,186 +1,272 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6791738A700
-	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 10:51:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E373BBFCD
+	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 10:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781693472; cv=none; b=Xf0av686v8qyUriAn49cDMMeLbQ/gT4SQxbtY2S3sbV6qcOcp+6zO9+IySVDimWtpUpnxN+ravmsrszxQTiAeIp1ZVE0J9jW49OV3bxV7HF2BYY6YGAaSy1x40J52pj7xJXS54BxUtdYGUlQ1KsX9P17IZFZ9Ih/na49dO1nB2c=
+	t=1781693727; cv=none; b=ipZGisQxtbpktRJvs6zeZg6JWJt17K3SSSb9Ax3wGpGp34yfUSe+apBIzIfbd9fh9/t1DiUhc8hNWWZymCZCexdi4ngdAPhck2DQeMhIu+b180xCr729ix1913jx5xjDZ0oXRJeHMfhIXDwQDk/bNGGfTrQ549W+yHkpo45loGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781693472; c=relaxed/simple;
-	bh=7qzujJgvvJFOSb/Q4ZosXOpZymWjz6Bg0x9iMNs/xuE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=l0kmxrY4r35KxxPY4lGfMbYgrb6cUn5vfcZdEsco95D+F4LwMUB3SzVjiUw+2v5q1h0PrTzOLuwfIvCxTwbQBY7zMjLnHoi832OrbN7KPM2Tx8ncm2U1WwwaQ9GSES86ZvlTQE4xbR/4EspegcpYw3LSc17n8rvx6rbt2H6FiW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cs4Lp+EB; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781693727; c=relaxed/simple;
+	bh=o4IDyqsIkp4ke7FAFeoPSlssBcMB9tDWRD06iMFMg3A=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=EdPidKpN6Q6CKIRoWtWQmX29ff4pCpPYHSNhQ63mULv6xFDNl5/iABzviojQvP9VJz6L4eaDvMBlNexgwytPaidxCRxdn7M7tkccCNmQRwUN2pbzKnRAJbhpkwcWPQkgdNx0Zbd1iSHPfS0Ij1WmpYLhav7mdzUU+phGWPvfwGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YybreMs0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KpgQTlEw; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cs4Lp+EB"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aa6792e7b8so5187406e87.1
-        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 03:51:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YybreMs0";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KpgQTlEw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781693725;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type;
+	bh=IH7ay2N+E2zA4nRJyMLO1X7bzBBBVG5OqoVU7vY8dTI=;
+	b=YybreMs0B5M+Lnb1ubNalEACnaUaMKJ9qvkpPCQjeuaiQ7Ak4a25fscNv9mzZ3IWGGN3pg
+	dj70ZqMLzy3HAhKaDVSKKPlgnw3ApzL8XibZyEaMurJ32rtSGyenwHIfiEKoen81dJzsE9
+	4wLedP3gr3Yddt5NjmcR/N84PfMFtPM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-418-Q_yg0V27M3SFVKiiGoYwrA-1; Wed, 17 Jun 2026 06:55:24 -0400
+X-MC-Unique: Q_yg0V27M3SFVKiiGoYwrA-1
+X-Mimecast-MFC-AGG-ID: Q_yg0V27M3SFVKiiGoYwrA_1781693723
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490b4d3d3e6so37316915e9.0
+        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 03:55:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781693470; x=1782298270; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jXRivm292bJRGGQDbbNQRy7dH8nW4IqAFB7P7VgPQAM=;
-        b=Cs4Lp+EB3LPMSFm3vb5AhDomuiw+kLIGPYQdOWDdUvMTkZ8g84eMplsdY8fS5T8wPV
-         TM33H0Kxsbvp3ESBNODUZ4Xg2b49e0xyzqZLziE1YdMbBLBS/waWeBjLcy7XEBHSLc7Q
-         28+6aOhDvYlxZhOBMSECJrx5XLXGmfrkI0T8RZiRISJa8sLjlI6P2IfpIJNXywh/wBpw
-         Bz+fcQz2Ayowif1zWPwpGkX68DcO/7LbnB+YSiKZsGK4p5B6+FLuT5S+Y2SQBQZ4/l8w
-         jMueJBWA9l1RGxZyOQphiawPyeRhedbx4Z3jChMEJzb+ipRSs4mA8WvZAZTE+WPHazhy
-         FRDw==
+        d=redhat.com; s=google; t=1781693723; x=1782298523; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IH7ay2N+E2zA4nRJyMLO1X7bzBBBVG5OqoVU7vY8dTI=;
+        b=KpgQTlEwvilsU4cXH0CLRihJzQcl0CbM6RwpMYvn3MhLKjGb8i9/oQ8nvGWc5Md5wJ
+         5n3BTg9XzjaOTxdiNevMP2DaRXbO+aQBYdq2/x4if9bcx2hYY9+Z/jlZo+dLsTY8j30h
+         qwDlIFo+wJo0K0Xp0wFtqtv+PA28bQ0LTwR8PCBMSE4x9Rnd+jADme/N8yKWHzthgir3
+         cKj4Nf0/7U4+NuQJwvN9N8CNAhvjqJzScx9Gve1eGrdcDl1C1ybqe88MFVPaayNjykO0
+         fVObN3ZOyzsbwoNurRh3lJANbgCCliwCqfbLdw39QUHKUzsXXrrZc4EfCPKFQe/hyjbL
+         8K8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781693470; x=1782298270;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jXRivm292bJRGGQDbbNQRy7dH8nW4IqAFB7P7VgPQAM=;
-        b=H+nqh8ANWe+knCaZDMdP4ODNaxGfLj2uXWjTsVoYpInICAriQ5o8KvfuHRo7P/03cA
-         1v+5dZhmstk1tl8yikcwWB+X2hOuObhB16y1WyGgLZjU7g9bK0/OGsFEvVC3z36UNQ2z
-         lX+FnCInjhjYJH/34mHgLtMkr0eX+H/T2Yu/OAxUSBh4Nh70u8bq5JSnyNMG2BnwJ63O
-         yhMQExFDHEnl+FZaYsZjssUoH5nAZs/VvDGTWUmAJzSn+T1y/cTmUZOieh7c0PM458vr
-         J4fgFxMPwgDO0Wr4gv/olsn1N6F4coZq78XmrRso7VS4KkeQvsHmw93EXsYqd+bwJOId
-         IE3g==
-X-Forwarded-Encrypted: i=1; AFNElJ9VV2gBp7Jtdcj4TAZyKzws++g+7e1PtXSSIJWZyCEye6lzgf+MZnC8WJaHKUPDDJ6uHRg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbrJwL5KF7weaNgXu27D2IPg5D4OFIhcaPRS0gmKGOMxKQ0hd0
-	nGfaSmC84/mQ22cWoEirkjgFOIOakALiPIH3RGD8aHf/G1ZmgUzMLnCh
-X-Gm-Gg: AfdE7ckolgOeUuTGKLi5G56dqXdpYPzh8krp1yvVrzxyqPO2s9JYlEdPwGWgcaeAQS4
-	19NJcyY9PU7gmyF14ScSrK5855rX61i9/f/GHswr9QOo+9DgSDqgD4BT7C/VvDEUpKJ6R9Xhf/R
-	doNL5S29L7kwY07JwQXY7llwPd9brpr8GyTLe1lnGI+T3G792X+NzfeVcgGIcClYc+VcFqMAQ+f
-	UFbMgZs0ANwIjrWhySRCfjoFym/QfxgMmrMBURuNtbN9s3iVmNq1FGi9awYjdaSVsPCh6JYuYXF
-	5bQoG0eoOUy6NDcnyIK6LzAxnLxDTKVHLCatQysE30t1WirQfL7UYz/qfKXyoiwZ74tEYLNNBFe
-	emrbbUs5DM6TSKVVcRQ4Xg/1J8aXkG+rtb62XVvLhouLDN2nMf1171Z8lmsWfvRNKGfg7cDx7lf
-	5G0tsLkKYv+1PcsWur/TxSc2mj7lppgCnSgfCCyvcn714BelqYnum/GYIRXFwHMT59PoiYO/Wfl
-	U/Mn8BhflE=
-X-Received: by 2002:a05:6512:68b:b0:5a3:cc81:eff3 with SMTP id 2adb3069b0e04-5ad4700cbb5mr959230e87.26.1781693469320;
-        Wed, 17 Jun 2026 03:51:09 -0700 (PDT)
-Received: from uuba.fritz.box (2001-14ba-6e-3100-ab3-3fa0-bafe-f56b.rev.dnainternet.fi. [2001:14ba:6e:3100:ab3:3fa0:bafe:f56b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e1adedesm4354678e87.57.2026.06.17.03.51.08
+        d=1e100.net; s=20251104; t=1781693723; x=1782298523;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IH7ay2N+E2zA4nRJyMLO1X7bzBBBVG5OqoVU7vY8dTI=;
+        b=kw0ylcrbtg9fGaC1a0Zs1W9UE58U5VnMFYmDEyfZRublvn0GH3WFVQ1s36RxfusCgj
+         W7ypzhfC244R/vMniAb2rwB9Ty7nfv90hCNhTylFZZt6UZp9VmMYvlYw90fCI4teWuak
+         KLw2a5HOx8UdgG2r4USVnw48tEjBswMUVhdJbpPQp0gcKPcdYJ1Lju2JCTq9I6pPgKyP
+         s1CvCPH/T0cYMr3xYZLKzuAxiBJejzFgqsElsHKkMxkSS/yI94/jMys7WNGg+OqwmjpL
+         hqrSWEDl8e8DELnFCgeePg+IqNhgpIuzNbZoq9JzP8Xo2K2J+znOUzE40REJ2RIvITU9
+         +j4A==
+X-Forwarded-Encrypted: i=1; AFNElJ/v4gYc/gS1M8c6puweyUr9hfIK0K15nvIiLR1zx+DCk9tx35fb9l4bZ9wcTu5LJkHJ9mc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx32gARJQPNBSGdWHyAfTxCq+2JcDHcUZEy1khswL7XPMo4kN5w
+	Um6rVAW1naVu38kIbwWZh65blrWvNPlH6wyZ1AZn1qAMZk38mPPCKst1Ui7qgjLrzV8JUkvukIi
+	zs2WjvMiRMrxpUE689v4W3rW1XvQFvja5bB3/XgJUCEK2EdlAF5+VCg==
+X-Gm-Gg: Acq92OG2NqrFE/1nB6QE5MTAJ1LwGjTC7FWGRd8EDjxMb64F0YyKpSXCjxRmrVo3jzv
+	V11NtYZhep/knKwj2Fb9IjAkh42saJ7LPE/YfsihKqCZbu1CwQY6OciGOaER2OT8P/sufhfkaIl
+	DSX/pxVlKuQbMabeypDXcVMnSiuEX8Z84IWPTNOkBQYoYcu/q55xzLngjjBqLAAWugc0u0+HSjV
+	jL9sDaWTSyaN1EuXsHohEclw40cOqc3d7YtTCoeP6fGidXt2GwCrGRnr0xaxZF8zUSPXJOEyH99
+	puavndeu1HmQDu87EE+2zNmM+gTPTmB3y6C+vgKIJdIlEgy0OO02k8Z29wuM5hCLT9eTs5UAIRj
+	OdxVelq/JFTwkZTn88OHkvPbTZgrX0EOx
+X-Received: by 2002:a05:600c:37c3:b0:490:e18f:d108 with SMTP id 5b1f17b1804b1-492333cf91cmr52522025e9.19.1781693722771;
+        Wed, 17 Jun 2026 03:55:22 -0700 (PDT)
+X-Received: by 2002:a05:600c:37c3:b0:490:e18f:d108 with SMTP id 5b1f17b1804b1-492333cf91cmr52521245e9.19.1781693722197;
+        Wed, 17 Jun 2026 03:55:22 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a4f8d7sm146613065e9.5.2026.06.17.03.55.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 03:51:08 -0700 (PDT)
-From: =?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
-To: stable@vger.kernel.org
-Cc: seanjc@google.com,
-	pbonzini@redhat.com,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	kvm@vger.kernel.org,
-	Uros Bizjak <ubizjak@gmail.com>,
-	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
-Subject: [PATCH 6.1.y] KVM: VMX: Make vmread_error_trampoline() uncallable from C code
-Date: Wed, 17 Jun 2026 13:51:00 +0300
-Message-ID: <20260617105100.22094-1-hannelotta@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        Wed, 17 Jun 2026 03:55:21 -0700 (PDT)
+Date: Wed, 17 Jun 2026 06:55:16 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, a0yami@mailbox.org,
+	ammarfaizi2@openresty.com, arnd@arndb.de, chenhuacai@kernel.org,
+	chenhuacai@loongson.cn, christfontanez@gmail.com,
+	Damir.Shaikhutdinov@opensynergy.com, david@kernel.org,
+	den@openvz.org, enelsonmoore@gmail.com, eperezma@redhat.com,
+	ethan@ethancedwards.com, evg28bur@yandex.ru, filip.hejsek@gmail.com,
+	francesco@valla.it, graf@amazon.com, harald.mommer@oss.qualcomm.com,
+	jasowang@redhat.com, jiri@nvidia.com, johan@kernel.org,
+	johannes.thumshirn@wdc.com, lingshan.zhu@kernel.org,
+	luis.hernandez093@gmail.com, lulu@redhat.com, mhi@mailbox.org,
+	michael.bommarito@gmail.com,
+	mikhail.golubev-ciuchea@oss.qualcomm.com, mkl@pengutronix.de,
+	mst@redhat.com, mvaralar@redhat.com, nathan@kernel.org,
+	oleg@redhat.com, pawel.moll@arm.com, physicalmtea@gmail.com,
+	polina.vishneva@virtuozzo.com, q.h.hack.winter@gmail.com,
+	rosenp@gmail.com, schalla@marvell.com, shuangyu@yunyoo.cc,
+	stefanha@redhat.com, vattunuru@marvell.com, yanlonglong@kylinos.cn,
+	yichun@openresty.com, yui.washidu@gmail.com, yuka@umeyashiki.org,
+	zhangtianci.1997@bytedance.com
+Subject: [GIT PULL] virtio,vhost,vdpa: features, fixes
+Message-ID: <20260617065516-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mutt-Fcc: =sent
 
-From: Sean Christopherson <seanjc@google.com>
+The following changes since commit e43ffb69e0438cddd72aaa30898b4dc446f664f8:
 
-[ Upstream commit 0b5e7a16a0a79a3742f0df9e45bca46f01b40e6a ]
+  Linux 7.1-rc6 (2026-05-31 15:14:24 -0700)
 
-Declare vmread_error_trampoline() as an opaque symbol so that it cannot
-be called from C code, at least not without some serious fudging.  The
-trampoline always passes parameters on the stack so that the inline
-VMREAD sequence doesn't need to clobber registers.  regparm(0) was
-originally added to document the stack behavior, but it ended up being
-confusing because regparm(0) is a nop for 64-bit targets.
+are available in the Git repository at:
 
-Opportunustically wrap the trampoline and its declaration in #ifdeffery
-to make it even harder to invoke incorrectly, to document why it exists,
-and so that it's not left behind if/when CONFIG_CC_HAS_ASM_GOTO_OUTPUT
-is true for all supported toolchains.
+  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
 
-No functional change intended.
+for you to fetch changes up to 8cb2c9285e4ce9154f45fb15633ebd45dfd8d9cf:
 
-Cc: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20220928232015.745948-1-seanjc@google.com
-(cherry picked from commit 0b5e7a16a0a79a3742f0df9e45bca46f01b40e6a)
-Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
----
+  can: virtio: Fix comment in UAPI header (2026-06-10 02:17:00 -0400)
 
-Notes:
-    Backporting to fix the following build warning:
-    
-    In file included from arch/x86/kvm/vmx/vmx.h:15,
-                     from arch/x86/kvm/vmx/nested.h:7,
-                     from arch/x86/kvm/vmx/vmx.c:63:
-    arch/x86/kvm/vmx/vmx_ops.h:15:58: error: ‘regparm’ attribute ignored [-Werror=attributes]
-       15 |                                                          bool fault);
-    
-    When building with gcc-16.
-    
-    Compile & boot tested.
+----------------------------------------------------------------
+virtio,vhost,vdpa: features, fixes
 
- arch/x86/kvm/vmx/vmenter.S |  2 ++
- arch/x86/kvm/vmx/vmx_ops.h | 18 ++++++++++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+- new virtio CAN driver
+- support for LoongArch architecture in fw_cfg
+- support for firmware notifications in vdpa/octeon_ep
+- support for VFs in virtio core
 
-diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index b4f8937226c2..ea7be3a74b6d 100644
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -274,6 +274,7 @@ SYM_FUNC_END(__vmx_vcpu_run)
- 
- .section .text, "ax"
- 
-+#ifndef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
- /**
-  * vmread_error_trampoline - Trampoline from inline asm to vmread_error()
-  * @field:	VMCS field encoding that failed
-@@ -322,6 +323,7 @@ SYM_FUNC_START(vmread_error_trampoline)
- 
- 	RET
- SYM_FUNC_END(vmread_error_trampoline)
-+#endif
- 
- SYM_FUNC_START(vmx_do_interrupt_nmi_irqoff)
- 	/*
-diff --git a/arch/x86/kvm/vmx/vmx_ops.h b/arch/x86/kvm/vmx/vmx_ops.h
-index 5edab28dfb2e..d23705df6a52 100644
---- a/arch/x86/kvm/vmx/vmx_ops.h
-+++ b/arch/x86/kvm/vmx/vmx_ops.h
-@@ -11,14 +11,28 @@
- #include "../x86.h"
- 
- void vmread_error(unsigned long field, bool fault);
--__attribute__((regparm(0))) void vmread_error_trampoline(unsigned long field,
--							 bool fault);
- void vmwrite_error(unsigned long field, unsigned long value);
- void vmclear_error(struct vmcs *vmcs, u64 phys_addr);
- void vmptrld_error(struct vmcs *vmcs, u64 phys_addr);
- void invvpid_error(unsigned long ext, u16 vpid, gva_t gva);
- void invept_error(unsigned long ext, u64 eptp, gpa_t gpa);
- 
-+#ifndef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
-+/*
-+ * The VMREAD error trampoline _always_ uses the stack to pass parameters, even
-+ * for 64-bit targets.  Preserving all registers allows the VMREAD inline asm
-+ * blob to avoid clobbering GPRs, which in turn allows the compiler to better
-+ * optimize sequences of VMREADs.
-+ *
-+ * Declare the trampoline as an opaque label as it's not safe to call from C
-+ * code; there is no way to tell the compiler to pass params on the stack for
-+ * 64-bit targets.
-+ *
-+ * void vmread_error_trampoline(unsigned long field, bool fault);
-+ */
-+extern unsigned long vmread_error_trampoline;
-+#endif
-+
- static __always_inline void vmcs_check16(unsigned long field)
- {
- 	BUILD_BUG_ON_MSG(__builtin_constant_p(field) && ((field) & 0x6001) == 0x2000,
--- 
-2.53.0
+- fixes, cleanups all over the place, notably
+    - vhost: fix vhost_get_avail_idx for a non empty ring
+      fixing an significant old perf regression
+    - plus READ_ONCE annotations mean virtio ring is now
+      free of KCSAN warnings
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Alexander Graf (1):
+      virtio_ring: Add READ_ONCE annotations for device-writable fields
+
+Ammar Faizi (1):
+      virtio_pci: fix vq info pointer lookup via wrong index
+
+Arnd Bergmann (1):
+      vduse: fix compat handling for VDUSE_IOTLB_GET_FD/VDUSE_VQ_GET_INFO
+
+Christian Fontanez (1):
+      virtio: add missing kernel-doc for map and vmap members
+
+Cindy Lu (2):
+      vdpa/mlx5: update mlx_features with driver state check
+      vdpa/mlx5: update MAC address handling in mlx5_vdpa_set_attr()
+
+Denis V. Lunev (1):
+      vhost/vsock: Refuse the connection immediately when guest isn't ready
+
+Ethan Carter Edwards (1):
+      virtio_console: Fix spelling mistake "colums" -> "columns"
+
+Ethan Nelson-Moore (1):
+      vhost: remove unnecessary module_init/exit functions
+
+Evgenii Burenchev (1):
+      vdpa/ifcvf: handle dev_set_name() failure in ifcvf_vdpa_dev_add()
+
+Filip Hejsek (1):
+      virtio_console: read size from config space during device init
+
+Huacai Chen (1):
+      fw_cfg: Add support for LoongArch architecture
+
+Jason Wang (1):
+      VDUSE: avoid leaking information to userspace
+
+Jia Jia (1):
+      virtio: rtc: tear down old virtqueues before restore
+
+Johan Hovold (3):
+      virtio-mmio: fix device release warning on module unload
+      vdpa_sim_blk: switch to dynamic root device
+      vdpa_sim_net: switch to dynamic root device
+
+Matias Ezequiel Vara Larsen (1):
+      can: virtio: Add virtio CAN driver
+
+Maurice Hieronymus (2):
+      virtio-balloon: Destroy mutex before freeing virtio_balloon
+      virtio-mem: Destroy mutex before freeing virtio_mem
+
+Michael Bommarito (1):
+      hwrng: virtio: clamp device-reported used.len at copy_data()
+
+Michael S. Tsirkin (2):
+      vhost: fix vhost_get_avail_idx for a non empty ring
+      tools/virtio: fix build for kmalloc_obj API and missing stubs
+
+Nathan Chancellor (1):
+      can: virtio: Fix comment in UAPI header
+
+Oleg Nesterov (1):
+      vhost_task_create: kill unnecessary .exit_signal initialization
+
+Qihang Tang (2):
+      vduse: hold vduse_lock across IDR lookup in open path
+      vhost/vdpa: validate virtqueue index in mmap and fault paths
+
+Qing Ming (1):
+      vhost/net: complete zerocopy ubufs only once
+
+Rosen Penev (1):
+      vdpa/mlx5: Use kvzalloc_flex() for MTT command memory
+
+Srujana Challa (2):
+      vdpa/octeon_ep: Fix PF->VF mailbox data address calculation
+      vdpa/octeon_ep: fix IRQ-to-ring mapping in interrupt handler
+
+Vamsi Attunuru (2):
+      vdpa/octeon_ep: Use 4 bytes for mailbox signature
+      vdpa/octeon_ep: Add vDPA device event handling for firmware notifications
+
+Yui Washizu (1):
+      virtio: add num_vf callback to virtio_bus
+
+Zhang Tianci (2):
+      vduse: Requeue failed read to send_list head
+      vduse: Fix race in vduse_dev_msg_sync and vduse_dev_read_iter
+
+longlong yan (1):
+      tools/virtio: check mmap return value in vringh_test
+
+ MAINTAINERS                              |    9 +
+ drivers/char/hw_random/virtio-rng.c      |   23 +-
+ drivers/char/virtio_console.c            |   52 +-
+ drivers/firmware/Kconfig                 |    2 +-
+ drivers/firmware/qemu_fw_cfg.c           |    2 +-
+ drivers/net/can/Kconfig                  |   12 +
+ drivers/net/can/Makefile                 |    1 +
+ drivers/net/can/virtio_can.c             | 1022 ++++++++++++++++++++++++++++++
+ drivers/vdpa/ifcvf/ifcvf_main.c          |   11 +-
+ drivers/vdpa/mlx5/core/mr.c              |    7 +-
+ drivers/vdpa/octeon_ep/octep_vdpa.h      |   22 +-
+ drivers/vdpa/octeon_ep/octep_vdpa_main.c |  131 +++-
+ drivers/vdpa/vdpa_sim/vdpa_sim_blk.c     |   24 +-
+ drivers/vdpa/vdpa_sim/vdpa_sim_net.c     |   23 +-
+ drivers/vdpa/vdpa_user/iova_domain.c     |    2 +-
+ drivers/vdpa/vdpa_user/vduse_dev.c       |  197 +++++-
+ drivers/vhost/net.c                      |   15 +-
+ drivers/vhost/vdpa.c                     |   29 +-
+ drivers/vhost/vhost.c                    |   23 +-
+ drivers/vhost/vsock.c                    |   16 +
+ drivers/virtio/virtio.c                  |    9 +
+ drivers/virtio/virtio_balloon.c          |    2 +
+ drivers/virtio/virtio_mem.c              |    2 +
+ drivers/virtio/virtio_mmio.c             |   26 +-
+ drivers/virtio/virtio_pci_common.c       |   10 +-
+ drivers/virtio/virtio_ring.c             |   77 ++-
+ drivers/virtio/virtio_rtc_driver.c       |   28 +-
+ include/linux/virtio.h                   |    2 +
+ include/uapi/linux/virtio_can.h          |   78 +++
+ include/uapi/linux/virtio_console.h      |    2 +-
+ kernel/vhost_task.c                      |    1 -
+ tools/virtio/linux/dma-mapping.h         |    2 +
+ tools/virtio/linux/err.h                 |    1 +
+ tools/virtio/linux/kernel.h              |    6 +
+ tools/virtio/vringh_test.c               |    5 +
+ 35 files changed, 1690 insertions(+), 184 deletions(-)
+ create mode 100644 drivers/net/can/virtio_can.c
+ create mode 100644 include/uapi/linux/virtio_can.h
 
