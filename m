@@ -1,127 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2818023E320
-	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 12:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAE4399CED
+	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 13:00:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781700667; cv=none; b=D40Qa2XUTBeBXjp6SaCYsVQD9pa+uq3FXP9ecripGJHCl7iVLKs2RqVsbBOmaf4GZxWTq0+LUZydY/DvpfSS/XYj+iS7cCplOqv3WLwKJSKYYrCytz5gnu884rglpaUz/IfcDFmmKlurkA+OEu50QMC9asBgVcf9MclgoRm8jtU=
+	t=1781701242; cv=none; b=qU+PTr46i/kJB6jYxYI3tNWGrQO9/MmLwkoNe88ByX63OhsxPzrCLVzgqocE6pwTihNX/Z/om8qNRvlv1rabShHOqdk7vN3C2kxFXt9ban6V2cMEEwf+AbqOpHdTxowmZfoWzVg2cuOhw0EB3xtNRYGJjNnTZBqIMMuef8ZmLog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781700667; c=relaxed/simple;
-	bh=5mEpjbtHK5pt7m8hgy7PKrmwYtrktYkt1+JoeY0RroI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ReNDcWaQN13n4TxcdT0l9EGC4bMiNhmvO+BZe6nUJYZC0yGG2dWeTH+UQ5txu8oIgXDEMUrBcI1bsOt7RDAat9H1uVV2PNhMddxZpFFwKQ/L6Et336HJuuxQ5EOQzqAgcd2Df5lI8aLIFPpCBGh4j5asScVxpw+n7meZxR7dRzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8/FeVa8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781701242; c=relaxed/simple;
+	bh=v9AW9ttnyqMH8SLe1cvzY21GDBcPgzmm6bezz+XRKfg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jCpsA1zaKg5B3eRYyV1CCjWskS85w4dtG5GTxC3+eK1fMtGSl9VHPkFBhNuInuXkGMyGM1ED3hPNNZy+jdhdoq6JgjME4xrVllY0k0BKIKw7XCguFQ8hpFMLlX9WlCqow5zluxiwr4LtC4EONbC4vracypW0Ey0fHszXURULZds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Zpfe6Cwl; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8/FeVa8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C49D1F00A3A;
-	Wed, 17 Jun 2026 12:51:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781700665;
-	bh=ZmN/OWZ0KXA6bellAuuVAIo6/lVS+KqkV7cbW3I6KWA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=V8/FeVa8wNtoN6rhAlLmcZSM38DZLoRSbairpStxVwMoFrzx9PGVMCN3IteyvhndT
-	 +mk8mJxZ4KTMCtndk8Ix7y2+BeSJ4uGbqd2UYUkCicQeuQRXs60k5X4ck4XtLHxBaS
-	 fzeAvzyOOgdKSOcfxgaqu9DnpxZ2wDvNFR9AxQgSTRQjAVeaCsgZKpQWFlcCDPcCDx
-	 GgE59JcKxnD8Zdbe71qKjExD2r+lp098JjBEyF9wItZDP8oN4wLuznhQ94S/kUMxjv
-	 zqBxxUyhi03BI/YnRxUvj7rxMc6Fctf0oVxGZrVIef8YW3yZ5dONIj1zKDczL4kIew
-	 eok18WwIZUZDg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] kvm powerpc/book3s-apiv2: Add suite initialization
- to skip GSB tests without APIv2 support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Vaibhav Jain" <vaibhav@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260617123820.467601-1-vaibhav@linux.ibm.com>
-References: <20260617123820.467601-1-vaibhav@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 17 Jun 2026 12:51:04 +0000
-Message-Id: <20260617125105.8C49D1F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Zpfe6Cwl"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84238e83851so3749922b3a.1
+        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 06:00:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781701240; x=1782306040; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ot+PTpIfkC3BFgu+DoGlv5FhONUNAHAv7ldmmbQzbTA=;
+        b=Zpfe6CwlF7O5Bw8U6CMBwFHXiiP5rCSt2GV9umLQDED0XhlMGzNlW7xa5P8HiJqM1J
+         LqNsCZ5tk9ZN07+L4PWfYnrtSObmvbdu5tHXR0HhSXTWEuxHYP3e7opUGJ/sz8NaPYs5
+         h0MDwT7/F8JuKqVM5wY4qJ0BMQCzUD8synxVRsJjtnEHs7EWhAK4wm2fe5Lvz4MC7Uug
+         tkwTIGmJppVzEspYjsg+NohQZPhN8kRRysVWaFJlV0mpaK4UJtMD4OdqXY9xMa6Y4pkl
+         V43Yy80cIQuzT09qvEqbypz4ACBU6PHF6cvs2gYA0aGLoh3CVppoU4aim19Z8XT0j/ck
+         HqiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781701240; x=1782306040;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ot+PTpIfkC3BFgu+DoGlv5FhONUNAHAv7ldmmbQzbTA=;
+        b=NJoxkia1bjS42peljZ5N3vGq3TD6NA7KOCoQECUuY3Q8Y1xF70QX8GjREkhNaGqX1I
+         JwxANW1zSSv548aUYZGNmSXfLP1s9FJkS5bTzaDCq5rLIeeYwSJeTRoxg7G4BPyLKhvo
+         MA5uJOvohHKHSKnUnBtJV1jwiYREwTTfUuYt/ZhypYC/0gDA1qJGGaaqAYMCrKWurO/J
+         ZUzPmf2lA2mGiMGwh0dqFpPvC03Zf9jk0vBGNKTytsq9ISA14yf/gHeQuMlw0KTMI3WA
+         gHshlrkS2PhuRLr4X7tH49+2r/Astg2dv4BIhdtKNY6ClfFivMFgBwv4Tv+flpzuWvkn
+         Uy5A==
+X-Forwarded-Encrypted: i=1; AFNElJ/qoiVWayC2wuoO1ImaXsOMkcgqmnz8QQfHDnkVhJl32Ra7N0SnSWGv6+YvEYeFHuQDQpw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPoL935DSt8Q9ZcVkkldk8ciHUDAbGR4tfpSvaWk17l8rTvBlZ
+	OtGSANGk0Ej5jx6DxErtnlW4UlXd0uVDY6B1O83/iY/0UE9ly2eBmMcLrNSzPb3EbVovBUdEd7c
+	XzjMRRg==
+X-Received: from pfbmy11-n1.prod.google.com ([2002:a05:6a00:6d4b:10b0:842:4be5:5ed6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1ca7:b0:83e:b443:965e
+ with SMTP id d2e1a72fcca58-8452442926amr3817503b3a.3.1781701240120; Wed, 17
+ Jun 2026 06:00:40 -0700 (PDT)
+Date: Wed, 17 Jun 2026 06:00:39 -0700
+In-Reply-To: <ajJAYZAPxNrrsiYp@8bytes.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260611123528.572255-1-joro@8bytes.org> <20260611123528.572255-5-joro@8bytes.org>
+ <aiqtWVMqTK6vDoZ8@google.com> <aiqwjn2DVOumfr3T@8bytes.org>
+ <ajGOELiYwKByXbVP@google.com> <ajJAYZAPxNrrsiYp@8bytes.org>
+Message-ID: <ajKadxZEMI253AoT@google.com>
+Subject: Re: [PATCH 4/4] kvm: svm: Support KVM_SEV_SNP_PAGE_TYPE_VMSA at SNP_LAUNCH_UPDATE
+From: Sean Christopherson <seanjc@google.com>
+To: "=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, coconut-svsm@lists.linux.dev, 
+	Joerg Roedel <joerg.roedel@amd.com>, Jethro Beekman <jethro@fortanix.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The test suite is not actually skipped because `init_gs_test_sui=
-te` unconditionally returns 0.
-- [Low] Calling `kunit_mark_skipped()` on a `kunit_suite` pointer causes a =
-compilation error.
---
+On Wed, Jun 17, 2026, J=C3=B6rg R=C3=B6del wrote:
+> On Tue, Jun 16, 2026 at 10:55:28AM -0700, Sean Christopherson wrote:
+> > Isn't this essentially the same thing as hot-plugging vCPUs after launc=
+h?  I
+> > have yet to review it in depth (sorry Jethro), but it looks a *lot* sim=
+pler.
+>=20
+> Replacing the VMSA after launch (as supported with the AP_CREATE GHCB cal=
+l) is
+> different because this has no influence on the launch measurement.
+>=20
+> The point of providing an initial VMSA is to get a predictable launch
+> measurement which is independent of the number of VCPUs the guest has.
+>=20
+> With the current code KVM will create its own VMSA for each created VCPU =
+and
+> measure it into the guests initial image. This makes predicting the initi=
+al
+> launch measurement difficult (as it depends on KVM internals) and fragile=
+ because
+> KVM-internal changes always carry a risk to change the launch measurement
 
-commit f9ed140af60f93f156fdd320b1d30456dcf507f4
-Author: Vaibhav Jain <vaibhav@linux.ibm.com>
+The same holds true for userspace.
 
-kvm powerpc/book3s-apiv2: Add suite initialization to skip GSB tests withou=
-t APIv2 support
+> (which has happened a couple of times already).
 
-This commit adds a suite_init callback to check for APIv2 nested
-virtualization capabilities before running the guest state buffer tests.
-If the host lacks support, it attempts to skip the entire kunit_suite to
-prevent test failures on incapable systems.
-
-Closes: https://lore.kernel.org/all/20260603064225.GC18149@sol
-
-> diff --git a/arch/powerpc/kvm/test-guest-state-buffer.c b/arch/powerpc/kv=
-m/test-guest-state-buffer.c
-> index 5ccca306997a8..232c00493a25d 100644
-> --- a/arch/powerpc/kvm/test-guest-state-buffer.c
-> +++ b/arch/powerpc/kvm/test-guest-state-buffer.c
-
-[ ... ]
-
-> @@ -521,6 +521,21 @@ static void test_gs_hostwide_counters(struct kunit *=
-test)
->  	kvmppc_gsb_free(gsb);
->  }
-> =20
-> +static int init_gs_test_suite(struct kunit_suite *suite)
-> +{
-> +	long rc =3D H_NOT_AVAILABLE;
-> +	unsigned long host_capabilities =3D 0;
-> +
-> +	/* Enable test suite only if APIv2 is supported */
-> +	if (kvmhv_on_pseries())
-> +		rc =3D plpar_guest_get_capabilities(0, &host_capabilities);
-> +
-> +	if (rc)
-> +		kunit_mark_skipped(suite, "Unsupported hypervisor");
-
-[Severity: Low]
-Does this regression cause a compilation error?
-
-Looking at include/kunit/test.h, the kunit_mark_skipped() macro expects a
-struct kunit pointer as its first argument, but here we are passing a struct
-kunit_suite pointer.
-
-Because the macro expands to WRITE_ONCE((test)->status, KUNIT_SKIPPED) and
-struct kunit_suite lacks a status field, won't this break the build? I
-notice the commit message mentions this relies on a proposed patch, but
-could it be adapted to work with the existing API?
-
-> +
-> +	return 0;
-
-[Severity: Medium]
-Is this a regression where the test suite won't actually be skipped because
-the function unconditionally returns 0?
-
-In the KUnit framework, a suite_init callback must return a non-zero error
-code to abort initialization and prevent the test cases from executing.
-
-Because init_gs_test_suite() unconditionally returns 0, won't KUnit
-consider the initialization successful and proceed to run all test cases
-regardless of the APIv2 check?
-
-> +}
-> +
->  static struct kunit_case guest_state_buffer_testcases[] =3D {
->  	KUNIT_CASE(test_creating_buffer),
->  	KUNIT_CASE(test_adding_element),
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260617123820.4676=
-01-1-vaibhav@linux.ibm.com?part=3D1
+Examples?  The SEV features thing jumps to mind, but I don't recall any oth=
+ers
+off the top of my head.
