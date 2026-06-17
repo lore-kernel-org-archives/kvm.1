@@ -1,83 +1,167 @@
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B83D390CA9;
-	Wed, 17 Jun 2026 13:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0610740626F
+	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 13:18:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781702297; cv=none; b=b5jrI/Dd7EQ9EAahSCt92K3I9yQYqyl9sddbMlvB4wrHRTZ62rQ0xfP+iBB2BFaXujhL4wmszBgaRdtkkBP0hhIEXTjOUW6IHXuN4l9ClAbxKJcJkuHqsYStys0CLIZ6TEy6N31vd/HIvFSEWUvbZAyUYxE4bTs5CuUtOnOMEr0=
+	t=1781702300; cv=none; b=DloV02l2iXAwIOBtX7wtagfXRykgTMShQaLeloVUMaMieuYq78PF1twfmb4QPJA0rVez1ZTM2lJRvBolfckyCvqs07VKUJhyFQcIrWAmt4fWV+Ueyjey9MLxi97YiLXQKRHZBfLsYodGDHzAst/dJWFYnMJHQ/6hustHvQiIDqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781702297; c=relaxed/simple;
-	bh=U/rU7D/ikoOzDlOPp5TrwZtyG9qh6ASCOQ5bNp6zfSo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iT/3zmeY3q017o/px6D+ZFXcghzVcFp5igPf1jyzNjmqMrpmL28QLYAKaN4z70pNnwA6XEdA49DoWhwbKf8vWx/dRaWXo8LhbQLMkQ8J8Ti5ElA2o5i+nkPJWxGPUS5eY9KAFt6ly61Q8DIiCxdFlwizeUj4ur4KIx6ZDAjHU4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=hXm62Kp5; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1781702300; c=relaxed/simple;
+	bh=EP2t/z50uhExgHQOTzwEpCctfQuGNeWwRLj1P4IvBGA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JmaWJKGPaJyfVN9ZpqsaPfWeiwjDbOYdgJDmxNxGvTpFI4rrRvnL7Wy7XzBMUzQbacmBu2erysaZyCtdUgEBcvloaqH+AQozbqE6/MNN3ACfajGROULyt38diy4ZtUmxGq4Boum90dNGH3VTkN0PLZgNyIsn++3Y/hWKCspSEWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lYSwmsmO; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="hXm62Kp5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1781702295;
-	bh=U/rU7D/ikoOzDlOPp5TrwZtyG9qh6ASCOQ5bNp6zfSo=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=hXm62Kp5HhZE7AKAmCjQkMprAsgZ/AK2fnXdWFjWKpB1laINwoAin8ZcieiLQdBN3
-	 /1xHLyOyFs+EGPKeyy4j97pqALqTp0a5pivK4GX+DmBQgVnODr83CsTpSx1Ewl/7rI
-	 tx+ZxIUuqN7qFM0GinCmSzTrSsvdrKXgm6Akbedk=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::8c71])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id C292B1C028C;
-	Wed, 17 Jun 2026 09:18:14 -0400 (EDT)
-Message-ID: <64383a438eb79a30588f2737a6df84f9d4cd5b7d.camel@HansenPartnership.com>
-Subject: Re: [PATCH 4/4] kvm: svm: Support KVM_SEV_SNP_PAGE_TYPE_VMSA at
- SNP_LAUNCH_UPDATE
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>, Sean Christopherson
-	 <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org, Tom Lendacky
- <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, 
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- coconut-svsm@lists.linux.dev,  Joerg Roedel <joerg.roedel@amd.com>, Jethro
- Beekman <jethro@fortanix.com>
-Date: Wed, 17 Jun 2026 09:18:14 -0400
-In-Reply-To: <ajJAYZAPxNrrsiYp@8bytes.org>
-References: <20260611123528.572255-1-joro@8bytes.org>
-	 <20260611123528.572255-5-joro@8bytes.org> <aiqtWVMqTK6vDoZ8@google.com>
-	 <aiqwjn2DVOumfr3T@8bytes.org> <ajGOELiYwKByXbVP@google.com>
-	 <ajJAYZAPxNrrsiYp@8bytes.org>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lYSwmsmO"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-462342ac290so1105814f8f.2
+        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 06:18:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781702297; x=1782307097; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xpwQVnxc8WwBtYMRVthywpuSU/L6xp6cei6goRyt1MQ=;
+        b=lYSwmsmOxteWSVZLIZcYTWpry9JhRRpobSYQlna1WmZv6oaWltFQjfpTqZQKbXIbau
+         RobEFlndRmRvpWZLZahngHxY6b65XVIV3zhjbJp2Y7iqSezXp2LoEMR8A9paWA7to5jF
+         2S933DfffyYYFi8LkJ0iTNyUcm8Z8bcmdrGf0jOohesKTAw7uS1XkXcVtMChe1Ik+RMv
+         wQBeD4/t39PXMIlvGAvU3oJ6ZHGTiwPpq4vA+UK6zVUQE+iWmIlweop3C4sdi9s3+vcV
+         BMzyv9Wi+1BNv85AO2GYis62qlH7yTVExzYd4lEQKetATe3H1PIv2QeUMx16Spq4RQi2
+         M3oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781702297; x=1782307097;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xpwQVnxc8WwBtYMRVthywpuSU/L6xp6cei6goRyt1MQ=;
+        b=YOvRyLxHAutSiDnF9Cgqu7cDmo0XvVNN8pszqLDYLQqOBGSB737UvJYCcLWq4jRmR5
+         1qDiAmfcUdCxT29dcsN8Du2qk8UkQuFB42t7bunSHmrRdDE5wbsJLVuxmpiFnIfmMo66
+         ud81kEly/mh5xHyLZJVr5DmEqzVa3U50cOHZLVNV+YasQuBPfD1pE4RMXTEq1Jaj+GQe
+         /fBzSw9iMQnvU34aW8ORxlpiDQPjokgpc9kBW0prQWwPshZeA/aH0J0RBKk9hRVMPEIE
+         X8YTu92g8gbebJNBO6ZwsMK6qiS9zWvrCv3KZK3QhAgXLwNSBxf2O6kAUm5Cdfyq7O+u
+         Xv5w==
+X-Forwarded-Encrypted: i=1; AFNElJ9tUifxZJ7iLUdLZ6BRRFWFDONPhVbqd9hzrTv6VTTiy1aGjsJ/uPprdDP1AFeb3Mkf8rM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdS3GWKO2FtZZY8rrYg6l0tlajHt5e9gqgS5P72skSjqkkYxIl
+	AmxZbl/xujKHqs7CARMwx2Q1xBSSqaOj/NP2QjqdHMkVTNUYM/pZaRkS
+X-Gm-Gg: AfdE7cnyDmE13OEWHlHD8NX0JlQ3hVzVzvxqq0rk32K1xwi6sewae0RbXT2FggyHGzO
+	NLAKN8dGmXs6P07GAoJhndR+WZNcUavEdqyUFtmQWXv+K/bjgrHTh/ViGC/8zjnFgBwtN1QU+wI
+	NZVZQqx5TKZcYVwke2vBOz4hKEypFkl+7CrjJb3I+4ol7zNaZByrFSpgZziQ0SQDmciQ9M0Q/7+
+	QARUeSv394IPd4q5C6m39b5Ar+G7Dntf/N9su4GWCa8BG4sJgKZ03+Cd7gVZ46WThLTIcIWXm0C
+	vqstuOFpxjxYFmjVKOywH1f0gH4lcBi8WwAht2p/dquhrPq+n9XXmqWwCikZmAD+mxxcCf/CDCx
+	6Q1OeZPHVbKu5ZoD+aHcUfMbiWAXsHx/TY7+1Ex9MdQbe/jExr/gx03Nn7PvLg3j9audcN6nJVQ
+	rqzEf/Rucb5P+mizTpsiP0icb19xfJeZyfAdjUCQw9yn2eyH2z+du6AElCiUBV
+X-Received: by 2002:a05:6000:1787:b0:45e:739b:3e3c with SMTP id ffacd0b85a97d-4623bdcc225mr6161005f8f.0.1781702297182;
+        Wed, 17 Jun 2026 06:18:17 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26f3dcsm50818305f8f.13.2026.06.17.06.18.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 06:18:16 -0700 (PDT)
+Date: Wed, 17 Jun 2026 14:18:15 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: lirongqing <lirongqing@baidu.com>
+Cc: Alex Williamson <alex@shazbot.org>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][v2] vfio/type1: Sanitize user-supplied inputs to
+ prevent undefined __ffs() behavior
+Message-ID: <20260617141815.436e8103@pumpkin>
+In-Reply-To: <20260617113251.2535-1-lirongqing@baidu.com>
+References: <20260617113251.2535-1-lirongqing@baidu.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 2026-06-17 at 08:45 +0200, J=C3=B6rg R=C3=B6del wrote:
-> On Tue, Jun 16, 2026 at 10:55:28AM -0700, Sean Christopherson wrote:
-> > Isn't this essentially the same thing as hot-plugging vCPUs after
-> > launch?=C2=A0 I have yet to review it in depth (sorry Jethro), but it
-> > looks a *lot* simpler.
->=20
-> Replacing the VMSA after launch (as supported with the AP_CREATE GHCB
-> call) is different because this has no influence on the launch
-> measurement.
+On Wed, 17 Jun 2026 19:32:51 +0800
+lirongqing <lirongqing@baidu.com> wrote:
 
-That's true for the launch measure, but you do have a vTPM inside the
-SVSM which you could use to measure an updated GHCB if we could decide
-on a PCR to use (and a logging specification).
+> From: Li RongQing <lirongqing@baidu.com>
+> 
+> The __ffs() function expects a non-zero input. When passed 0, its return
+> value is undefined (garbage) but does not trigger a hardware fault.
+> Although downstream logic may eventually catch invalid derived values,
+> passing unchecked user inputs into __ffs() is a robust-ness and code
+> quality issue.
+> 
+> Fix this by validating user-supplied inputs early in the UNMAP_DMA and
+> DIRTY_PAGES ioctl paths before they reach any bit scan operations:
+> 
+> 1. Reject an empty dirty.flags in vfio_iommu_type1_dirty_pages() to
+>    ensure the subsequent __ffs() / __fls() single-bit check is safe.
+> 2. Ensure bitmap.pgsize and range.bitmap.pgsize are valid non-zero
+>    powers of two before calculating pgshift via __ffs().
+> 
+> This change improves the overall robustness of the VFIO type1 IOMMU
+> driver against erratic or malicious user-space inputs.
+> 
+> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> ---
+> Diff with v1: Add the two check in vfio_iommu_type1_dirty_pages
+>               and rewrite the commit message
+> 
+>  drivers/vfio/vfio_iommu_type1.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> index c8151ba..b74f56c 100644
+> --- a/drivers/vfio/vfio_iommu_type1.c
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -38,6 +38,7 @@
+>  #include <linux/workqueue.h>
+>  #include <linux/mm_inline.h>
+>  #include <linux/overflow.h>
+> +#include <linux/log2.h>
+>  #include "vfio.h"
+>  
+>  #define DRIVER_VERSION  "0.2"
+> @@ -2949,6 +2950,9 @@ static int vfio_iommu_type1_unmap_dma(struct vfio_iommu *iommu,
+>  		if (!access_ok((void __user *)bitmap.data, bitmap.size))
+>  			return -EINVAL;
 
-Regards,
+Unrelated to this change...
+There's not a lot of point calling access_ok() there.
+All it does is check that bitmap.data isn't a kernel address and then adds
+a synchronising instruction (lfence on x86) because of possible speculative
+accesses to the kernel address (in the unsave_get/put_user() that is
+expected to follow).
 
-James
+The actual copies do use copy_to/from_user() and include the check.
+
+	David
+
+
+
+>  
+> +		if (unlikely(!is_power_of_2(bitmap.pgsize)))
+> +			return -EINVAL;
+> +
+>  		pgshift = __ffs(bitmap.pgsize);
+>  		ret = verify_bitmap_size(unmap.size >> pgshift,
+>  					 bitmap.size);
+> @@ -2985,6 +2989,9 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+>  	if (dirty.argsz < minsz || dirty.flags & ~mask)
+>  		return -EINVAL;
+>  
+> +	if (!dirty.flags)
+> +		return -EINVAL;
+> +
+>  	/* only one flag should be set at a time */
+>  	if (__ffs(dirty.flags) != __fls(dirty.flags))
+>  		return -EINVAL;
+> @@ -3039,6 +3046,9 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+>  			       range.bitmap.size))
+>  			return -EINVAL;
+>  
+> +		if (unlikely(!is_power_of_2(range.bitmap.pgsize)))
+> +			return -EINVAL;
+> +
+>  		pgshift = __ffs(range.bitmap.pgsize);
+>  		ret = verify_bitmap_size(size >> pgshift,
+>  					 range.bitmap.size);
 
