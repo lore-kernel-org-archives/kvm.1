@@ -1,154 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5B7341ADD;
-	Wed, 17 Jun 2026 09:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1813A0EA5;
+	Wed, 17 Jun 2026 09:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781689278; cv=none; b=LSdR78ClQXqAJvIGlub0pRLSssuf71a8rd/J5d3Lgqpqqd2x0GnCE4q1F+ycouR2MEFTtmyrP4qo0S28ak+3f/DW+67rfA3uTs+v9qg5pYRrDEnrIhQ6w6tFWmPPkI7O801tgRmWitpWhQlWmdNfWzkuRQVPkOt8Y+kbxcdgzvE=
+	t=1781689832; cv=none; b=XpYNsXumJQ+hgxfCTa/vEdiu2f1Kcs31F0AcyIWfr91+cWSXSnVbkV7cTOiFm96/0l2Jsj0MDvWyB20KU66e6DOtu82Kcd5JXV2GMrBIrVcqRitowEqKSRUUF8IVZ6ndOGJfJqpfv0lxxPn6DvVtUfmjlb3viBARqploGK6jiUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781689278; c=relaxed/simple;
-	bh=mdpARkk5ZHpUYutdupMFuTRX/LVTrPMR7KpYge5m8nQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OXuwujs/zYovi3TN8HPx/mRoEA8F1tOIESK669+IHhr5CxL29KIGx6kcJ1riqmKLlH9TTHwEn99zOtkrwI68poOpm+KoqJ6EkmMevms40JAjHttppgYzAODIQBTIfDb4JDO1bfj4GgKYDdZvOBxY7p8Ezy7aMOJ/PgNkeSU47z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UlEN7Amy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781689832; c=relaxed/simple;
+	bh=W8RX0ViKBHrns3CDoofxIxoT4qhfugZi9z/OSeO9IcE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I9c0yRBDltxMAbDgwUkMJg4z5LSArGgK/3NGiy+bUX6+An/P6wh8IPeSeBrkzzzwZoFeIWwNJiPDMyF2jO+06RJ08GHBV0QCVbTXgWwnv3bFmCwTihHTd3byrj9zkOn+TZPkNVSoOeJR5f3bNPNcZskzxpEY9sOmn7pJNhNJfcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fQITthyc; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UlEN7Amy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825261F000E9;
-	Wed, 17 Jun 2026 09:41:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781689277;
-	bh=cyKgowJd1zhtu0qWQyFQH6H6T62iAG8kuM8i9z4Jxjk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UlEN7AmyCCwaO+J4i9oamPtHdmVZ6G0/gAGSRwLuRjaagQs3lDyxjk40lSgbur3hB
-	 ylJRSbuW1A1cPyPN9tYZJPoSQzq9LcbTWtTFGkbKSKME6t3BZYZZJlR9/lch7zX+YF
-	 4qfkae6Io7Ss1TUNmFMfh8nEB/bc5CFmE1WdLKGm1e9SpT/ofui5QQl5xl48ReHTZn
-	 oci5C/Nm9/58vLwrHWdwLln5QtUn5tSZ5sNYyoXLf2RGAIPj4eMefrg4HsQzVlw66F
-	 TDGCdcXWGqTNVrifsQBICrLvQQeV694Aew79tmUlE4mtNRRKtA9oIh3VYrDCVIba6b
-	 vAfUZLXMq+mmQ==
-Date: Wed, 17 Jun 2026 12:41:13 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian Konig <christian.koenig@amd.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v8 2/4] dma-buf: add optional get_pci_tph() callback
-Message-ID: <20260617094113.GU327369@unreal>
-References: <20260615065912.2177918-1-zhipingz@meta.com>
- <20260615065912.2177918-3-zhipingz@meta.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fQITthyc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781689832; x=1813225832;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=W8RX0ViKBHrns3CDoofxIxoT4qhfugZi9z/OSeO9IcE=;
+  b=fQITthyck+bTo0nD0P1+VU4f3Ml5PuWFT+A7J6jmM6jFm85b/ZCaIkuz
+   RTXpPUj33s37wZRKbFVtR+8N58LIGLkLkjK70+i+5giNY4E9TW2J2H41V
+   bwExmHcHjfg3H8moJYtCsgYt0fIQUVYbC6raz+VnaHVjk0/Pbj2VynsTZ
+   0nsb6+Ro7A5ho4Kz+YF/pddbnN3ia1Ja8/VmOARVaWIwySPPR3EjFETeD
+   GfW2JEfEgGc95lLYcZKNjVeBLjm8DcF50/CoCxbK27UG/KB+/SpE9B1cn
+   MhxZldIwGWyUOjVzlKZXJve0NPAjYNc9iEzvWe/Fav2TrrvND0UcpY4te
+   w==;
+X-CSE-ConnectionGUID: IVsWpB3ESYmD6yDs9P/aRg==
+X-CSE-MsgGUID: mdDjKDtBRd+m8aWvYr+4RA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="86316936"
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="86316936"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 02:50:31 -0700
+X-CSE-ConnectionGUID: +xMQWYpsRweHe5eYa4wAcQ==
+X-CSE-MsgGUID: OvrGfcnrRt2rbLiJkx/54w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="245643470"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 02:50:24 -0700
+Message-ID: <55be1f42-0197-443b-ab37-681f98a23d41@intel.com>
+Date: Wed, 17 Jun 2026 17:50:20 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260615065912.2177918-3-zhipingz@meta.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 03/22] KVM: selftests: Initialize the TDX VM
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Binbin Wu
+ <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-3-6983ae4c3a4d@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260521-tdx-selftests-v13-v13-3-6983ae4c3a4d@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Jun 14, 2026 at 11:58:59PM -0700, Zhiping Zhang wrote:
-> Add an optional dma_buf_ops.get_pci_tph callback and a
-> DMA-buf importer wrapper, dma_buf_get_pci_tph().
-> 
-> TPH is PCIe TLP Processing Hint. 8-bit ST and 16-bit Extended ST are
-> distinct PCIe TPH namespaces, so the importer requests the namespace it
-> can emit and the exporter returns the matching ST/PH tuple or
-> -EOPNOTSUPP.
-> 
-> dma_buf_get_pci_tph() is the importer entry point. It requires
-> &dmabuf->resv to be held while the callback runs and returns
-> -EOPNOTSUPP when the exporter does not provide PCI TPH metadata.
-> 
-> The first user is VFIO_DEVICE_FEATURE_DMA_BUF_TPH in vfio-pci, with
-> mlx5 as the first importer.
-> 
-> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> ---
->  drivers/dma-buf/dma-buf.c | 25 +++++++++++++++++++++++++
->  include/linux/dma-buf.h   | 16 ++++++++++++++++
->  2 files changed, 41 insertions(+)
-> 
-> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-> index d504c636dc29..7a4c9b0d5dab 100644
-> --- a/drivers/dma-buf/dma-buf.c
-> +++ b/drivers/dma-buf/dma-buf.c
-> @@ -1144,6 +1144,31 @@ void dma_buf_unpin(struct dma_buf_attachment *attach)
->  }
->  EXPORT_SYMBOL_NS_GPL(dma_buf_unpin, "DMA_BUF");
->  
-> +/**
-> + * dma_buf_get_pci_tph - Retrieve PCIe TLP Processing Hint (TPH) metadata
-> + * @dmabuf: DMA buffer to query
-> + * @extended: false for 8-bit ST, true for 16-bit Extended ST
-> + * @steering_tag: returns the raw steering tag for the requested namespace
-> + * @ph: returns the TPH processing hint
-> + *
-> + * Wrapper for the optional &dma_buf_ops.get_pci_tph callback.
-> + *
-> + * Must be called with &dma_buf.resv held. Returns -EOPNOTSUPP if the
-> + * exporter does not implement the callback or has no metadata for the
-> + * requested namespace.
-> + */
-> +int dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool extended,
-> +			u16 *steering_tag, u8 *ph)
-> +{
-> +	dma_resv_assert_held(dmabuf->resv);
+On 5/22/2026 7:16 AM, Lisa Wang wrote:
+> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+> index b68ad1dc7e02..8d06e7186df1 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+> @@ -802,6 +802,9 @@ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
+>   		vm_sev_ioctl(vm, KVM_SEV_INIT2, &init);
+>   	}
+>   
+> +	if (is_tdx_vm(vm))
+> +		tdx_init_vm(vm, 0);
 > +
-> +	if (!dmabuf->ops->get_pci_tph)
-> +		return -EOPNOTSUPP;
-> +
-> +	return dmabuf->ops->get_pci_tph(dmabuf, extended, steering_tag, ph);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(dma_buf_get_pci_tph, "DMA_BUF");
-> +
->  /**
->   * dma_buf_map_attachment - Returns the scatterlist table of the attachment;
->   * mapped into _device_ address space. Is a wrapper for map_dma_buf() of the
-> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-> index d1203da56fc5..5e7b69a40f3d 100644
-> --- a/include/linux/dma-buf.h
-> +++ b/include/linux/dma-buf.h
-> @@ -113,6 +113,20 @@ struct dma_buf_ops {
->  	 */
->  	void (*unpin)(struct dma_buf_attachment *attach);
->  
-> +	/**
-> +	 * @get_pci_tph:
 
-There should be a blank line after the line above, along with a clear and
-concise description of what this callback does.
+It fails compilation:
 
-Thanks
+kvm/tools/testing/selftests/kvm/lib/x86/processor.c:806:(.text+0x212c): 
+undefined reference to `tdx_init_vm'
 
-> +	 * @dmabuf: DMA buffer for which to retrieve TPH metadata
-> +	 * @extended: false for 8-bit ST, true for 16-bit Extended ST
-> +	 * @steering_tag: Returns the raw TPH steering tag for the requested
-> +	 *                namespace
-> +	 * @ph: Returns the TPH processing hint (2-bit value)
-> +	 *
-> +	 * Optional callback for dma_buf_get_pci_tph(). Called with
-> +	 * &dma_buf.resv held.
-> +	 */
-> +	int (*get_pci_tph)(struct dma_buf *dmabuf, bool extended,
-> +			   u16 *steering_tag, u8 *ph);
-> +
->  	/**
->  	 * @map_dma_buf:
->  	 *
-> @@ -563,6 +577,8 @@ void dma_buf_detach(struct dma_buf *dmabuf,
->  		    struct dma_buf_attachment *attach);
->  int dma_buf_pin(struct dma_buf_attachment *attach);
->  void dma_buf_unpin(struct dma_buf_attachment *attach);
-> +int dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool extended,
-> +			u16 *steering_tag, u8 *ph);
->  
->  struct dma_buf *dma_buf_export(const struct dma_buf_export_info *exp_info);
->  
-> -- 
-> 2.53.0-Meta
-> 
+We need grab the change on Makefile.kvm from Patch 10 to this patch.
+
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm 
+b/tools/testing/selftests/kvm/Makefile.kvm
+index e5769268936a..0107ba02b01c 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -29,6 +29,7 @@ LIBKVM_x86 += lib/x86/sev.c
+  LIBKVM_x86 += lib/x86/svm.c
+  LIBKVM_x86 += lib/x86/ucall.c
+  LIBKVM_x86 += lib/x86/vmx.c
++LIBKVM_x86 += lib/x86/tdx/tdx_util.c
+
+  LIBKVM_arm64 += lib/arm64/gic.c
+  LIBKVM_arm64 += lib/arm64/gic_v3.c
