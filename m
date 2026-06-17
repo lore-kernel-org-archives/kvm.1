@@ -1,40 +1,50 @@
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8823D12CDA5;
-	Wed, 17 Jun 2026 02:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CB22652A2;
+	Wed, 17 Jun 2026 02:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781663642; cv=none; b=qPRT0bXJMfqnU0CmQVEK4uVXzcTMJPxpQh/YncHJvlK2V2oYPdZeH92byrb3G1qTpM6FvlQYvKTJVXhwZO0iAulA4m9r5/zWV6COKYGH3UMWdxak3WSOmzhrDlUnZ26mPXShcDGdBxx2RHHN4t0QlYmSKPJj7i4WIyNZPnVk+o8=
+	t=1781663891; cv=none; b=ADFxJgXfZ9e/LVyZJuknENEitpcOvzKkLKUEePIPHwDliSW3k8pkoTinnh2zZoH6tLvPpexoj+FOseHOCPMHAbZbu+RSfwZUj/BNeM2WfSgWlwDHV717qVVM7x+mtGir6LuxWGHR4k3Fva3Uw83rKkoVVpbtibl5BtnGDX2JUbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781663642; c=relaxed/simple;
-	bh=Ak9X7zSEfU+j/q4AqpyIuwAwKvY+FIig8V8wuRVclj8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=OhE9EpG5fcsgpAmjq4S/bk1lIqpqJvLZBR+puT2fCRDL/l2509oPexvlYrahxlQ6b4sIAsrsUJhKiZN/hZsE9sKCF84hDmxMhdJewiQgs+knA00teQYgWhvAJmwwYps6SKtwLONgKvlh9KrXsX8WcYJSS4V+WRCcDv8JFNWRqAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=HOcwI0ew; arc=none smtp.client-ip=113.46.200.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1781663891; c=relaxed/simple;
+	bh=BCedZ8Rz/sbsae+H5+CU0ZsEreiRmGlqG1pWD3F6WcI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q2IXYsy9mb0+acDEZ4BgEaRrx5lhGyjE1EjSXubB71W79RvxUuyHuVv0poAXBGQM2oVX7P4r3aFA3J/0IlrDX0QtYXr9xuw27T3B6yuPScPkgBBb8VXp4rZ4iYJkr6yBTE092mG3wohHGmfIcuTnL7KpvSf7kSk25wCVnOtus5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OkDhKX55; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="HOcwI0ew"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=KA1mZuTqS2IqKIfdtfvtz1bVOfDlv3v1wkmz8B0CnqA=;
-	b=HOcwI0ewAjB7DB0HNINdCWnAYg8l1geH+1kLhZYzFL7esO0Vods4fQel2d6ic5B+cV/ctoips
-	HYhVSFkIlFu0dSWyo4iw+iwQ/8yPgJ8QqWndPEbO427m55jPDw6QPgsw74imWtdeHzV1t3DnAfX
-	A8LgnBf+HfceBlSffaKr9NM=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4gg7525Drxz1K9dS;
-	Wed, 17 Jun 2026 10:25:58 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id C0A6F40563;
-	Wed, 17 Jun 2026 10:33:55 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 17 Jun 2026 10:33:55 +0800
-Message-ID: <e2db72ab-6d51-4d19-8dba-0612207008a3@huawei.com>
-Date: Wed, 17 Jun 2026 10:33:54 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OkDhKX55"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781663889; x=1813199889;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=BCedZ8Rz/sbsae+H5+CU0ZsEreiRmGlqG1pWD3F6WcI=;
+  b=OkDhKX55bAYWryneruz1t9ZxfxMlU6lB6fjqH0TYmYcK/mqcIAbsgBDV
+   ai3VG/WYCNpN+DLPcwxBM5hzlH5U0/s2aFnM8djm2TccWx8bQCeOwPACN
+   3z62VB2SHV6kB32N/FTRNmu8blZ27g8VaLD1mdy4mZiUaZDWrqy2s6Vye
+   swBWFAHChflnGviwXX8Tk6A1X6A/B4CIppev1UnIamwjc5q9KyM000Wx7
+   sM6TUnuVzxXgB91cEyikgeiSzhJQZ+iqP/ab2fy/i1aBbd8AnFon6I6LJ
+   ZgVqPcrJiEGes53oo/yzRE9OWXeNQVb73OeM109r74fpwX5uqKHr+G3lC
+   Q==;
+X-CSE-ConnectionGUID: mmFqlQYiScyPHRCkp4+GcQ==
+X-CSE-MsgGUID: vPxoqpEDRKmiCq8BwGyy6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="82315494"
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="82315494"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 19:38:04 -0700
+X-CSE-ConnectionGUID: Eb653s8HSTyqv1EOEU4eoA==
+X-CSE-MsgGUID: bIk3G2dsRWWKXPPFJ45fuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="271657628"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 19:37:54 -0700
+Message-ID: <d8a9a574-1c15-4c94-b33d-fa72e1b5096d@intel.com>
+Date: Wed, 17 Jun 2026 10:37:50 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,98 +52,114 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 08/12] PCI/TPH: Add sysfs binary file to export CPU to
- steering-tag mapping
-To: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>
-CC: <helgaas@kernel.org>, <wathsala.vithanage@arm.com>, <wei.huang2@amd.com>,
-	<zhipingz@meta.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
-	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
-References: <20260616104621.41915-1-fengchengwen@huawei.com>
- <20260616104621.41915-9-fengchengwen@huawei.com>
- <20260616144224.GB3577091@ziepe.ca> <20260616105754.784be22d@shazbot.org>
- <20260616172728.GC3577091@ziepe.ca>
- <c913116a-35b4-4934-b78b-8fa0a08a00ae@huawei.com>
- <a81c3479-1749-4b9b-b913-cfb20c621690@app.fastmail.com>
+Subject: Re: [PATCH v13 02/22] KVM: selftests: Update
+ kvm_init_vm_address_properties() for TDX
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
+ Ackerley Tng <ackerleytng@google.com>, Binbin Wu
+ <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org,
+ Adrian Hunter <adrian.hunter@intel.com>
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-2-6983ae4c3a4d@google.com>
 Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <a81c3479-1749-4b9b-b913-cfb20c621690@app.fastmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemo500009.china.huawei.com (7.202.194.199)
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260521-tdx-selftests-v13-v13-2-6983ae4c3a4d@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 6/17/2026 9:30 AM, Alex Williamson wrote:
-> On Tue, Jun 16, 2026, at 7:18 PM, fengchengwen wrote:
->> Hi Jason, Alex,
->>
->> On 6/17/2026 1:27 AM, Jason Gunthorpe wrote:
->>> On Tue, Jun 16, 2026 at 10:57:54AM -0600, Alex Williamson wrote:
->>>
->>>> IMO, this implementation in sysfs more so proves that vfio is the wrong
->>>> place for the interface.  vfio has a use case to consume STs, but it
->>>> doesn't produce them or own any of the mechanism by which they're
->>>> generated.  
->>>
->>> I would argue only a VFIO user can consume this information so putting
->>> it in general sysfs is overkill.
->>>
->>>> The weak point is whether this bin attribute, exposing an array of
->>>> structures, fits within the socially acceptable norms of sysfs.  
->>>
->>> I'm pretty sure this style of sysfs is not accepted and
->>> counter-examples are things that are ancient or slipped through.
->>
->> After weighing all feedback, I'd like to propose a lightweight single 
->> text sysfs node
->> design to resolve both your concerns, without introducing binary 
->> binattr or masses
->> of per-CPU files:
->>
->> 1. Only create a single r/w text attribute “tph_cpu_st” on Root Ports, no
->>    hundreds of separate per-CPU sysfs files;
->> 2. Usage flow: echo target cpu_id into the file first, then cat it to fetch
->>    formatted human-readable ST/XST text line (cpu_id vm_st vm_xst pm_st pm_xst)
->>    for that CPU, e.g.
->>       echo 10 > /sys/bus/pci/devices/<BDF>/tph_cpu_st
->>       cat /sys/bus/pci/devices/<BDF>/tph_cpu_st
->>       and the output will like: 10 2 20 100 120
->>    In the case of concurrent access, users can determine whether the first value
->>    (cpu_id) is the one they expect by making a judgment.
+On 5/22/2026 7:16 AM, Lisa Wang wrote:
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
 > 
-> That's a terrible workaround for an inherently racy design.  Thanks,
-
-This is because the DSM method is slow to invoke and involves many cores. Therefore,
-this trade-off is made.
-
-I propose another lazy-cached read-only text file design:
-
-1. Only create one read-only sysfs attribute named tph_cpu_all on Root Port
-   devices, no write store hook, completely eliminate read-write race risks;
-2. Lazy initialization: All CPU steering tag entries are fetched via batch
-   ACPI _DSM calls only on the first userspace read operation, cached inside
-   afterwards to avoid duplicate slow firmware interactions;
-3. Cache invalidation only happens on Root Port PCI reset events, including
-   system cold boot, AER fatal error recovery, userspace manual reset via sysfs,
-   downstream hotplug and root port driver re-probe.
-   No CPU hotplug notification hooks are registered to avoid extra code complexity;
-4. On every sysfs read, iterate over the cached entry list and filter out
-   offline CPUs according to the current online CPU mask dynamically, so
-   only valid active CPU records are printed to userspace;
-5. A read-write semaphore protects cached table access to support concurrent
-   userspace readers safely;
-6. Plain human-readable text output complies with sysfs text-first norms
-   Jason prefers, no structured binary binattr is introduced;
-
-Usage example:
-   cat /sys/bus/pci/devices/<root-port-bdf>/tph_cpu_all
-   the output will be: cpu_id vm_st pm_st vm_xst pm_xst
-	0 0x00 0x00 0x0000 0x0000
-	1 0x02 0x00 0x0005 0x0000
-	2 0x01 0x00 0x0003 0x0000
-	...
-
-Thanks
-
+> Initialize the TDX S-bit and the GPA tag mask in
+> kvm_init_vm_address_properties() for TDX VMs, similar to how the C-bit
+> is initialized for SEV VMs.
 > 
-> Alex
+> The TDX S-bit is used to distinguish between shared and private guest
+> physical addresses. Its position is determined by the guest physical
+> address width, which is either 48 or 52 bits for current TDX
+> implementations.
+> 
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Co-developed-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> Co-developed-by: Sagi Shahar <sagis@google.com>
+> Signed-off-by: Sagi Shahar <sagis@google.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Lisa Wang <wyihan@google.com>
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+> ---
+>   tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h | 14 ++++++++++++++
+>   tools/testing/selftests/kvm/lib/x86/processor.c        | 12 ++++++++++--
+>   2 files changed, 24 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+> new file mode 100644
+> index 000000000000..f647e6ca6b34
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+> @@ -0,0 +1,14 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef SELFTESTS_TDX_TDX_UTIL_H
+> +#define SELFTESTS_TDX_TDX_UTIL_H
+> +
+> +#include <stdbool.h>
+> +
+> +#include "kvm_util.h"
+> +
+> +static inline bool is_tdx_vm(struct kvm_vm *vm)
+> +{
+> +	return vm->type == KVM_X86_TDX_VM;
+> +}
+> +
+> +#endif /* SELFTESTS_TDX_TDX_UTIL_H */
+> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+> index b51467d70f6e..b68ad1dc7e02 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+> @@ -11,6 +11,7 @@
+>   #include "smm.h"
+>   #include "svm_util.h"
+>   #include "sev.h"
+> +#include "tdx/tdx_util.h"
+>   #include "vmx.h"
+>   
+>   #ifndef NUM_INTERRUPTS
+> @@ -1311,12 +1312,19 @@ void kvm_get_cpu_address_width(unsigned int *pa_bits, unsigned int *va_bits)
+>   
+>   void kvm_init_vm_address_properties(struct kvm_vm *vm)
+>   {
+> +	u32 gpa_bits = kvm_cpu_property(X86_PROPERTY_GUEST_MAX_PHY_ADDR);
+> +
+> +	vm->arch.sev_fd = -1;
+> +
+>   	if (is_sev_vm(vm)) {
+>   		vm->arch.sev_fd = open_sev_dev_path_or_exit();
+>   		vm->arch.c_bit = BIT_ULL(this_cpu_property(X86_PROPERTY_SEV_C_BIT));
+>   		vm->gpa_tag_mask = vm->arch.c_bit;
+> -	} else {
+> -		vm->arch.sev_fd = -1;
+> +	} else if (is_tdx_vm(vm)) {
+> +		TEST_ASSERT(gpa_bits == 48 || gpa_bits == 52,
+> +			    "TDX: bad X86_PROPERTY_GUEST_MAX_PHY_ADDR value: %u", gpa_bits);
+> +		vm->arch.s_bit = BIT_ULL(gpa_bits - 1);
+> +		vm->gpa_tag_mask = vm->arch.s_bit;
+>   	}
+>   }
+>   
+> 
 
