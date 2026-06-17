@@ -1,196 +1,277 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAE73BBFC4;
-	Wed, 17 Jun 2026 07:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781682489; cv=fail; b=uJZmFKN9al37B1tukrh6XJ1aYHL3UMI31UJ13PudVwiuny0KlPV7g0Pm6EkgwChEGf2FSlSfdmjcsbh4J8gM6S8tFlOTv/XpZc6AKlCHJVXrm8WR4fwhJSX5m4SbJMl+twD1/9xY84QAgiKlyjpDrMoy5l0DSb+SPEA+/GtjhAo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781682489; c=relaxed/simple;
-	bh=y8jXTX9jnb0YtUckWw1c+J56W5yLKD/uwjoa5d2ouAM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=HtzuYlDg/VJ8juC3T29RCTAD8Q/odAs2sLtlOOY+EUsfyWDE8rlh+2SjWCPTTtEcVSbKGnEFeVeBGN/r5/oTw8nCeIpmJCVN1I3gDzefAUGGWKC94A/GHN2WXFVFFjsQHBFCAUR48T4DslG9+pu87Xmm3rzHHLmtteie3BLrIM8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jT69YLn0; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F6530F927
+	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 09:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781687606; cv=none; b=RscfkaazHzVM8WZQQnIG7vfs2kyIfwdc7btCw2eAu7+LFRT7RXaXVKtiphhyijVyxdy3QPnoTteDoitUe78MO54q+zCUouhgu3cJ88It02nRe9tqBK4DWIGD9LoZfpb4fU74b987rmXychIYBb/oFYJzgxCR/n/w8tMh0rLbkqI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781687606; c=relaxed/simple;
+	bh=WxmtJJK8URXkJdPMEw7Z+EN5xyzYreUG5g0gfUUXXQk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oOnr3r8tn2upB56CXPziQZZQW6KVMlM26aB94ljia0xEExuLUFiQoDcjhEecu8CpDe8wA0W/9fsHvxEs6iQjt6UJs/IHLUiBVTAMIYCmaJufSgTTV2PsFalYc/ZPRgKtSuNzD2tuDMfHdjx2P6uXIc9t7+SCNv/FYOlkCY4DHu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y3Y6eroc; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jT69YLn0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781682488; x=1813218488;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=y8jXTX9jnb0YtUckWw1c+J56W5yLKD/uwjoa5d2ouAM=;
-  b=jT69YLn014h/Ru+hqDSXB6EFlcUVyljVq6qzqWZ5ZRF/WgsmftxZVzC2
-   CDk7jZJX+tMq7CmmEYHwSraB66Cj3uLDJ2dnXLrXAhAqhv+4pwo+GeFuE
-   MkArWEIWg+QrPeG2urBuOSo6P77UPcJ/JUyzFAxXVcHdFqvYtLp/CSzwV
-   tzqZBWg2gMQaKQPo7Q6Lwvs9MCsNdgtcAv8QLyXftIJ2actFDPtgJ/sJ7
-   GUH6T3TAjmYHDrH8IR3YBtQRC7mDTEJpmy9Lj6yKcUooODAzEUu+lo8pP
-   V26nDQhFBD1b25mu29JHq0lts7XyOUkcmg9nkOt7bTlqb6t2ht8YN6Z+U
-   g==;
-X-CSE-ConnectionGUID: SRAa08q9SV2hA/oWoRzcsw==
-X-CSE-MsgGUID: ons7lXmXQpi9jLpoZxXK8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="82560406"
-X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="82560406"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 00:48:02 -0700
-X-CSE-ConnectionGUID: ABQMgZ15TVKVC5Le7k1ihw==
-X-CSE-MsgGUID: VlTcue6PReaU3iMe1ans1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="246859504"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 00:48:01 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 17 Jun 2026 00:48:00 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 17 Jun 2026 00:48:00 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.16) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 17 Jun 2026 00:48:00 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ovFkb9bNMLSb8KItVCGyyBFS9Dv5OSCGfSHqXOoMBCIYoTLpFNKoEBU9rb3/yJZCDvpfj+ea8X6FoV6BtZ85M6od6Ma/W92/ZbHWeDRUOBt5UEPfek48wApyP4QJtTbGAzk3tH1nCYZxCj6wovfFGpbE2i3RDH6Q3AG12PYX4cn+EWfycLfq0jDCQ+YGUnCXmu1fIBOyugF3pw7shHOfMeaQGIVKOG3ZYRPn1wyEO22gpfJAg3Ka5g910BZYuo0txe/MvDMWiqa1NuP/tdLuZW/ji0EscoB1knyOzm+mQFoOKyMojFARa3iApYr/kccuLKHKcNBcdPCkqwo9yjACIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CUd8t1eyQAoUvU/E3IxZGJPRRFchGaMAUuIRnP6vLks=;
- b=kSupIMxKKDqJdtaD+EofSoQEoM5NnmgGQJ3+y91Mk+EoORAanhZ/7wHLBRhYkIRm4HNHVhm4q8kGkpDfsh2+2MdSH5pl6HdovwmfvdJkRF26vxHSPXGpZgTm+wj9JjcZmCd3ZWgs+wJnzcCTx0lY2icJ7fxfIc/ptIU3Q6B3y4QXjDe9wtGgZhGy/rvB2pa3eyzHLokc047SajmUM+1qfHnVICRdxOFebWKIBOdFxifnnQUMkmS4tSt3JSm8c2rxZHvFO+zuC8gzrE4Om5cKbF8PB0w+noo0HHnfkNuhvkVH21oCe/HWzkyyANNadKAWaVKuSKYHLh6P+T1Qta48Ig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM6PR11MB3690.namprd11.prod.outlook.com (2603:10b6:5:13d::32)
- by CYXPR11MB8754.namprd11.prod.outlook.com (2603:10b6:930:dc::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Wed, 17 Jun
- 2026 07:47:57 +0000
-Received: from DM6PR11MB3690.namprd11.prod.outlook.com
- ([fe80::7db8:f6b3:30f8:ee4b]) by DM6PR11MB3690.namprd11.prod.outlook.com
- ([fe80::7db8:f6b3:30f8:ee4b%4]) with mapi id 15.21.0139.009; Wed, 17 Jun 2026
- 07:47:56 +0000
-From: "Tian, Kevin" <kevin.tian@intel.com>
-To: Matt Evans <matt@ozlabs.org>, Alex Williamson <alex@shazbot.org>, "Leon
- Romanovsky" <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro
-	<amastro@fb.com>, =?iso-8859-1?Q?Christian_K=F6nig?=
-	<christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, "Logan
- Gunthorpe" <logang@deltatee.com>
-CC: Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>, Sumit Semwal
-	<sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>, "Pranjal
- Shrivastava" <praan@google.com>, Alistair Popple <apopple@nvidia.com>,
-	"Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>
-Subject: RE: [PATCH v3 1/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
-Thread-Topic: [PATCH v3 1/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
-Thread-Index: AQHc+PAJt/yTpFL68kOaE02G6F2lPrZCaUBg
-Date: Wed, 17 Jun 2026 07:47:56 +0000
-Message-ID: <DM6PR11MB369079ED83A213AEFC0EFC458CE42@DM6PR11MB3690.namprd11.prod.outlook.com>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-2-matt@ozlabs.org>
-In-Reply-To: <20260610154327.37758-2-matt@ozlabs.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR11MB3690:EE_|CYXPR11MB8754:EE_
-x-ms-office365-filtering-correlation-id: ba9e9e7e-7d74-4c28-3c24-08decc44bf13
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|38070700021|18002099003|22082099003|11063799006|56012099006|4143699003;
-x-microsoft-antispam-message-info: aJDSBc6hJ+5FCa3fcPyQwXfPojyvzeJnxpo2y2dCbEBuB26/DYfOGH8LcBLtKVBLGg9HSnqavVoqjAnZxNJ9Mhsnb0aYwprW7sYxn8LCYZ20ixt/MXzD86PaQyRDS1X8Ji40kh+Pp/3N34WiF+1ZrLfiAByNxZPKUiPwck0Shx3EZJCSI4tT5h1nkj4iL4Dyru/mcAWCTpS4QaQhh4fwL8CHtg/90BgJJZUjEiSBPD7WFKUT9QdGu3GcLjXDsKYRVwDNNiZF5r+y7daWb7z1eOwvd39S8KTdcnegs9c2S0yJ665FApX+0SQQUT/q6Vvnc6pz5jMUjowLsIQhsZ0aQWg80RqPSYfickS1dRmBPXs1etvQ0FCEeIrrMIGKcneyfUPKSqxDtuZHDWXN9EGgjIX9N8JHGFF0kT6+EziOBspu7ICSEhVQZ6Md1ooJPFLvqAkysbR28i1SVzy/3eLoY+mXl91kiq6nx9WvCfd+JfO4BEO8K5QR9dSSWreod2kEa4nnVf0dgdsMpnJybeR1yfA00Mx9/ZQdL1urtoM+nyqCqJs8VKXQEL74BETplJ2jLA9A6BQdPBbqfEoamQlaa99DaQltUeopUciR6LkavNvfxjd1D1DSL+uJcg1R+9HAwO/bDF8AVWLct01Mz8EFEKWZlgn4oVS8QDWsKpdgbimQ0IiJQS4gw+ZukIf3WihAcNhD0d1VNT6ioNymEMX30cT8j+28IynjzBs1Q1yaevyL4rgSomNT6DBOhz5rwI9F
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3690.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(38070700021)(18002099003)(22082099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?qSC1m9kT9Ijzc3se+s/eBz8BSmI6mzZBTUxDYflhbemc7l99HKyiAbVS+3?=
- =?iso-8859-1?Q?KsXXCsTCNefjw/wfiMFsf1c43uJEbkS1SCWGPeBT0AcemdQCtsMpbh9Tdw?=
- =?iso-8859-1?Q?Cy6oMPqn2qSmimnWbtnOIUZhsDiESDFMv0ETdyfupR75FmP1m00iy7axt0?=
- =?iso-8859-1?Q?Y5IOo25TuCLgoiC5JbMWJU5VzyEEL5acq0yxMVqnEeIKOJDsYpg6hvZNre?=
- =?iso-8859-1?Q?YsBpK5AhNJDxeMwgfCz5SWmHJ5ULmy5dLPKRafCgc21NM1uPNaG7HlYoCe?=
- =?iso-8859-1?Q?MDsC0Yo4jZ0gXUgI/pRR7TONA2zjoOpGRUnv4fzxK9aqsLO27qrQ1sKaS+?=
- =?iso-8859-1?Q?ZNwFsY9B5AtITjePFp193nHSI/cpc5D6KfpmfG4ITmuobAO0RmGaJzRZ1A?=
- =?iso-8859-1?Q?26G4F8Uc2in5AtZo+SwKFslxp5zxiLlxpa0vRwQ/ClRd2feODSrps8R4+z?=
- =?iso-8859-1?Q?JG7WapIDfOZ9JaJRAzHrt92VP6W7SC+l57TKAJkafw2lUM0nUifCTb8Ck0?=
- =?iso-8859-1?Q?RmY2Ar9ghfjyB9b7VWzjDlzQFseLDCVs/YOF/kffJPPeKKrG4u4VWc8bi6?=
- =?iso-8859-1?Q?i7ktJpWj41A4uuYCWeYupgiDcFu8c6Rye2NI9sek5D7uLijx4f9WtRsa9b?=
- =?iso-8859-1?Q?8unihpjD+OAKiV1QX8AQJbKTO6I7ohWLaI4XUrgXm9luUApvVnZTuQUYZk?=
- =?iso-8859-1?Q?oNIAgjjJlENHOav6gvR6Lwlnft/wXfYk00QBhKaUFliU9hBjg11+bMAbIX?=
- =?iso-8859-1?Q?IKHejshUcPMxrajA2s3ecd7hfIRMj5ndDdHC9U+9oeS+mhWKUVpJEYjGWB?=
- =?iso-8859-1?Q?AvcSADJgRJYPF8R0WnZBb+BGeff8OLA2t+6oEcnaShbfTQOVAOwJkGDkTU?=
- =?iso-8859-1?Q?8+hworUQt0HVR3mEKRIDv4vklSCv+VOSQ6y8BxQGKb1LNcvk29PVe471rX?=
- =?iso-8859-1?Q?FffS06//2zIIkbJ5CSDhAiGqVIx7yYM6UBpVHAnJkosSPotQWZ6MM/jSra?=
- =?iso-8859-1?Q?gI88d2HT8UJHMYFaId/QCYGTLTqh+0A49LK3ZkJlQOyYNagBgSTREWbTGt?=
- =?iso-8859-1?Q?KEF7qxNB0Xb9+GkiH68a0HZjhj8lwrp/u1wj7taEH0hT+UjDZM0nFhs2k0?=
- =?iso-8859-1?Q?0qDEYITue0U4bFUY5S40/8aGew24nIREiLfJ2uqnf+JfVfvlhWO9FhkrPL?=
- =?iso-8859-1?Q?e5GYJc3S3GurFLA3Lts5RVmzV9egAKmwwFAAPO9dVa9DViIVn34SuKrRdH?=
- =?iso-8859-1?Q?gE+cBgSmS3iz/dWG9TI2DefzoXlTxlrES3fOXYq8MHiohiC3kqxIK1z67j?=
- =?iso-8859-1?Q?WzyP4vm7lPOLGtnV6/iwFsRxQ3jOye8pth+bvyczG5j9WKpWjhg3sjaV3z?=
- =?iso-8859-1?Q?GEBBSrSz8kAlfpIiZJDvO+pAA3SdPHj1OqX6U4D9InocAa0jQE+IbEjNA4?=
- =?iso-8859-1?Q?RzSrpaBl73cJvCSHtTN5YLR/IeDPWB5zGrlZdhJbeH1wqZSDa/8rTqla5W?=
- =?iso-8859-1?Q?2JhzUnJ7ovFfM1JtphO7UNE9xhA8G7ms09cnjsD2FG7Ru/EaoxP/Ct1Dtp?=
- =?iso-8859-1?Q?9b8u056WkoEKA9JIrB3I3Tj1n+s5TZDWko1VpBeuGF5ZEfZcH87RA+4MYW?=
- =?iso-8859-1?Q?Fa4G3QprTxNlJF0uYpEncLrtkT0SaZYiOA3UUWEqV7EI0t8r4iCkjT5h2c?=
- =?iso-8859-1?Q?eQTdnKbalQRL5B+dRGZjSoMia2W57sImq/skWB6B/XU4RkCjTJ7ZBBW2PK?=
- =?iso-8859-1?Q?YkY3z27q/gCK+wRGH7tfC4e0FmTtE/fFO4wc02gx7QREs2hUjn2pRIJVa3?=
- =?iso-8859-1?Q?xs/oRDGOhQ=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y3Y6eroc"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c85893bce34so2376122a12.1
+        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 02:13:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781687604; x=1782292404; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qx2oqOAa3taxwMjPVJWKAVBWtsdla0AgqsMsxeR0hXY=;
+        b=Y3Y6erocS1aMYhF42Rgz2LnfWdzgAplqebEACyAQYrFppHncidaq/Hwt1u8VhmbIFB
+         7smIvcOZRTvvksjEhA0j4rsd+vydzMGk7XoNpu9sUD8WF4D/sGJ43CLvbu0/6TZr0/EH
+         yKihuiLKs7UAPc7A3yTOo1m7/GjARltKG4RIhbLST6YNlKzuSC4u2srrYUjNA517P3x9
+         oerAIumtmG8KKMqQTKt5nQAgfXxNEr1gLcFE8ZNhmm8hAih7nsTfZiqxR7t5BuEGw4ct
+         eaF/a91XzTlkKPeiHgFB2xTofKN38ZBB12mIr8DrbGN7S31wt1Nc2+vjdlcYFGWdV5Ml
+         ns8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781687604; x=1782292404;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qx2oqOAa3taxwMjPVJWKAVBWtsdla0AgqsMsxeR0hXY=;
+        b=tDGAgUHKLYWYBOBxW6vAieaYb4exGEaUXT7shJYk41hgn2wlpF7iKSWe1ar5H/dHoE
+         bnj89P0jBUBvNYcDTmraDEzjs6/rVI58i454ossvMwZYGm8SQxxaIYjYWsmpkXxqL6mx
+         KYtK3giRC8vFiduSkGYyL02MCctI3wkQ4TbJRTkwaxXGTjhzM2sH5vWw9GJ6WJSOoM88
+         yPJC1/tmZZUKxuTYjJCVRVwZTqX5H+1X5JtIsqgfTWDgwNJPiSBQFtuu5zY17qErzjVc
+         KOjUw/gJD0B1ByprqXsdEpHljjhzajkNpI0Y3In7zebgk/IZ0cXzmRJn/uhcef+nDLeh
+         KOBA==
+X-Forwarded-Encrypted: i=1; AFNElJ8VpJmRCssjIvYJMWZWIDDBbVnY4CCL/SupOUyQZNM1ycqOzFk5/QXGAArR9xSpSwxi1l4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrZNj9ly7qreGYlF6XbJUNkykVH+EB6IshDafbrdgNBPTj0FJQ
+	kkkckTZj0yUeQUmbvJgmjO/V5sTZ2Cb2bOPewlXt+SvW7b/yHDbmz4/I
+X-Gm-Gg: Acq92OEB3PBH/2RIL6+20l+K3Jea/HhKxQOQeDUCH0RWBh+rkQWqO1F6+Q1BfHQHALq
+	cWOysKrm931heEQoDUULIL2aWvQFSNT4sKOFHo3cMuB0G++JDrryLpVYXtcatkBEpC/KlOoww4a
+	VRTTzLnax+wWowJtTrovASF/ZsJ8IMFUJfcT0UGcMT7pPpKqBHbJFlO6ig6WQRExRUXvEXZlcSn
+	bzTdsXgA7NPAHVssNmOHSd1Pcoc8f+HX+8QG9MdD+jPjUfJEreF5VTer6HVDFLlKqBIK3OLSfxK
+	QqquWBJlNLaYPJKQo/hA/+a6pMEdQWYf41fWhMfkK48q3q9prIi4RZaiTFT16n66xTUcKV76UIs
+	XsgkOWlwFW3QaTq0/RR74s/XpVFoarLvmQfdtGo7G57B/EeLPU5b7TwGX20+HmlozDzjzVoAUyH
+	GsUfDOPjGyEr/tgkF3in6okCDk2T7V74r0ZXF2Z1EQ5YW0ZxET15j/CVBw
+X-Received: by 2002:a05:6a20:9192:b0:3b3:1c7b:ff7 with SMTP id adf61e73a8af0-3b8b84f1d1cmr3646837637.46.1781687603540;
+        Wed, 17 Jun 2026 02:13:23 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8893894debsm447203a12.7.2026.06.17.02.13.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 02:13:22 -0700 (PDT)
+Date: Wed, 17 Jun 2026 14:43:15 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, 
+	Harsh Prateek Bora <harshpb@linux.ibm.com>, Ritesh Harjani <ritesh.list@gmail.com>, 
+	Anushree Mathur <anushree.mathur@linux.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, 
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] KVM: PPC: Book3S HV: Validate arch_compat against
+ host compatibility mode
+Message-ID: <ajJknRi0n7tJDOKQ@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260616163405.96962-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: RsHAoPlZ1RlG29pygxYLUrypSfiVm1FKIod+ASbHCxNyDQVPHQJd0D0QX2C/7z+IeIyk/Kf49rixzt/N7+OryFpdIuA4u8nifXlTYDDhAq5lmH8HUdR/TzMkzBACyxjmhlUUhURrmEQfob1y+Hl0ixJtPxLHydvDaf0RUfNx12mEJEMTcowTG4ZAzv2Zbpia/IqyEQD0K9fJNORg5l1Ksr+vBRz83g7oWBk5fUH03SfuQrdFy250Z0VnXkefZdv5ffnuerHD+S6NVp6b5RSbrFYhYDiuCd3IHej0O9EowcQ0V9raoXlioek2zd3FtO/FHvdJeY8IbZwj36NBrZWAeQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3690.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba9e9e7e-7d74-4c28-3c24-08decc44bf13
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jun 2026 07:47:56.8358
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7RR8LBzm/O5PCjqH2IaXFCiN5E4OPNHQjBGp6ZTnGMFv7UU+ws4Dz1Lq9KwVHM4NdkSaozbrLJxLGm7xsPd1yw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR11MB8754
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260616163405.96962-1-amachhiw@linux.ibm.com>
 
-> From: Matt Evans <matt@ozlabs.org>
-> Sent: Wednesday, June 10, 2026 11:43 PM
->=20
-> The P2PDMA code currently provides two features under the same
-> CONFIG_PCI_P2PDMA option:
->=20
->  1.  Locate providers via pcim_p2pdma_provider()
->  2.  Manage actual P2P DMA
->=20
-> Some drivers (such as vfio-pci) depend on 1, without having a hard
-> dependency on 2.
->=20
-> A future commit expands the use of DMABUF in vfio-pci for non-P2P
-> scenarios, relying on pcim_p2pdma_provider() always being present.  If
-> that depended on CONFIG_PCI_P2PDMA, it would make vfio-pci only
-> available if CONFIG_ZONE_DEVICE is present (e.g. 64-bit systems), even
-> when P2P is not needed.
->=20
-> To resolve this, introduce CONFIG_PCI_P2PDMA_CORE and refactor the
-> basic provider functionality into a new p2pdma_core.c file.  This is
-> available even if the CONFIG_PCI_P2PDMA feature is disabled (or
-> unavailable due to !CONFIG_ZONE_DEVICE).  Then, drivers can enable any
-> additional P2P features with the original CONFIG_PCI_P2PDMA (available
-> when CONFIG_ZONE_DEVICE is set).
->=20
-> Signed-off-by: Matt Evans <matt@ozlabs.org>
+On Tue, Jun 16, 2026 at 10:04:05PM +0530, Amit Machhiwal wrote:
+> On IBM POWER systems, newer processor generations can operate in
+> compatibility modes corresponding to earlier generations. This becomes
+> relevant for nested virtualization, where nested KVM guests may need to
+> run with a specific processor compatibility level.
+> 
+> Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
+> logical partition (L1) booted in Power10 compatibility mode, the guest
+> fails to boot while setting 'arch_compat'. This happens because the CPU
+> class is derived from the hardware PVR (via mfspr()), which reflects the
+> physical processor generation (Power11), rather than the effective
+> compatibility mode (Power10).
+> 
+> As a result, userspace may request a Power11 arch_compat for the L2
+> guest. However, the L1 partition, running in Power10 compatibility, has
+> only negotiated support up to Power10 with the Power Hypervisor (L0).
+> When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
+> hypervisor rejects the request, leading to a late guest boot failure:
+> 
+>   KVM-NESTEDv2: couldn't set guest wide elements
+>   [..KVM reg dump..]
+> 
+> This situation should be detected earlier and rejected by KVM. Without
+> proper validation, if userspace ignores the error, the guest may continue
+> to boot in Power11 raw mode on a Power10 compatibility host, which should
+> not be allowed.
+> 
+> Introduce a validation mechanism that detects unsupported arch_compat
+> values early in the guest initialization path. When an unsupported
+> arch_compat is requested (e.g., Power11 on a Power10 compatibility mode
+> host), kvmppc_set_arch_compat() uses cpu_has_feature(CPU_FTR_P11_PVR) to
+> detect the mismatch and sets arch_compat to PVR_ARCH_INVALID (0xffffffff).
+> This sentinel value is architecturally safe: PAPR specifies that valid
+> logical PVR values must have 0x0f as the first byte, ensuring 0xffffffff
+> lies permanently outside the specification-defined range. Setting this
+> value triggers kvmppc_sanity_check() to mark the vCPU as invalid by
+> setting vcpu->arch.sane to false. On the next vCPU run, kvmppc_vcpu_run_hv()
+> checks this flag and returns -EINVAL, preventing the guest from running
+> with an invalid processor compatibility configuration.
+> 
+> With this, when a Power11 arch_compat is requested on a Power10
+> compatibility mode host, the guest fails early during boot with:
+> 
+>   error: kvm run failed Invalid argument
+> 
+> This provides a much clearer failure mode compared to the previous
+> behavior where the guest could boot in Power11 raw mode (if userspace
+> ignored the error) or fail late during H_GUEST_SET_STATE.
+> 
+> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
+> Acked-by: Gautam Menghani <gautam@linux.ibm.com>
+> Cc: stable@vger.kernel.org # v6.13+
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+> Testing: Both Anushree and I have tested the below scenarios:
+> 1. P11 guest on P11 host - Works
+> 2. P10 compat guest on P11 host - Works
+> 3. P11 guest on compat-P10 host - Correctly fails with "Invalid argument"
+> 4. P10 guest on compat-P10 host - Works
+> 
+> Changes in v4:
+> * Added documentation for PVR_ARCH_INVALID explaining why 0xffffffff is
+>   architecturally safe to use as a sentinel value (PAPR constraint on
+>   first byte being 0x0f) [Ritesh]
+> * Updated commit message
+> * v3: https://lore.kernel.org/all/20260609053327.61563-1-amachhiw@linux.ibm.com/
+> 
+> Changes in v3:
+> * Fixed null pointer dereference in kvmppc_sanity_check(): added check for
+>   vcpu->arch.vcore before accessing arch_compat, as vcore is NULL for Book3S
+>   PR and BookE guests (only Book3S HV uses vcore) [Reported by Sashiko AI]
+> * Added Reviewed-by tag from Vaibhav
+> * v2: https://lore.kernel.org/all/20260608201001.65760-1-amachhiw@linux.ibm.com/
+> 
+> Changes in v2:
+> * Fixed issue where v1 allowed guest to boot in Power11 raw mode when
+>   userspace ignored the error, by adding validation in kvmppc_sanity_check()
+>   to ensure early failure during vCPU run [Found the issue after posting v1,
+>   also reported by Gautam.]
+> * Introduced PVR_ARCH_INVALID constant for marking invalid arch_compat
+> * Dropped all Reviewed-by and Tested-by tags due to code changes; requesting
+>   fresh reviews
+> * v1: https://lore.kernel.org/all/20260603141539.47620-1-amachhiw@linux.ibm.com/
+> 
+> Changes in v1:
+> * Moved this patch out of the v3 series [1] as discussed here [2]
+> * Addressed below review comments from Ritesh:
+>   - Based the PVR validation on cpu features
+>   - Fixed hcall name typo
+>   - Stable backport
+> 
+> [1] https://lore.kernel.org/all/20260522152744.55251-1-amachhiw@linux.ibm.com/
+> [2] https://lore.kernel.org/all/20260522152744.55251-2-amachhiw@linux.ibm.com/
+> ---
+>  arch/powerpc/include/asm/reg.h | 12 ++++++++++++
+>  arch/powerpc/kvm/book3s_hv.c   | 15 ++++++++++++++-
+>  arch/powerpc/kvm/powerpc.c     |  4 ++++
+>  3 files changed, 30 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+> index 3449dd2b577d..b9ab9df1e2bc 100644
+> --- a/arch/powerpc/include/asm/reg.h
+> +++ b/arch/powerpc/include/asm/reg.h
+> @@ -1357,6 +1357,18 @@
+>  #define PVR_ARCH_31	0x0f000006
+>  #define PVR_ARCH_31_P11	0x0f000007
+>  
+> +/*
+> + * Kernel-internal sentinel for invalid processor compatibility modes.
+> + * PAPR specifies that the first byte of a valid logical PVR value is
+> + * 0x0f. So 0xffffffff lies permanently outside the PAPR-defined range
+> + * and is safe to repurpose. KVM stores it in vcpu->arch.arch_compat
+> + * when userspace requests an unsupported compatibility mode (e.g.,
+> + * Power11 PVR on a Power11 host booted in Power10 compat).
+> + * kvmppc_sanity_check() detects this and prevents the vCPU from
+> + * running with an unsupported arch_compat.
+> + */
+> +#define PVR_ARCH_INVALID	0xffffffff
+> +
+nit:
+I think the description of the invalid value should go into the commit
+message rather then here. It creates an unnecessary clutter here. If
+anyone wants to know why it's added they can always get the blame and
+get the description.
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Apart from this.
+
+Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+>  /* Macros for setting and retrieving special purpose registers */
+>  #ifndef __ASSEMBLER__
+>  
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 61dbeea317f3..f9380ef65750 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -446,7 +446,19 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+>  			guest_pcr_bit = PCR_ARCH_300;
+>  			break;
+>  		case PVR_ARCH_31:
+> +			guest_pcr_bit = PCR_ARCH_31;
+> +			break;
+>  		case PVR_ARCH_31_P11:
+> +			/*
+> +			 * Need to check this for ISA 3.1, as Power10 and
+> +			 * Power11 share the same PCR. For any subsequent ISA
+> +			 * versions, this will be taken care of by the guest vs
+> +			 * host PCR comparison below.
+> +			 */
+> +			if (!cpu_has_feature(CPU_FTR_P11_PVR)) {
+> +				arch_compat = PVR_ARCH_INVALID;
+> +				goto out;
+> +			}
+>  			guest_pcr_bit = PCR_ARCH_31;
+>  			break;
+>  		default:
+> @@ -469,6 +481,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+>  			return -EINVAL;
+>  	}
+>  
+> +out:
+>  	spin_lock(&vc->lock);
+>  	vc->arch_compat = arch_compat;
+>  	kvmhv_nestedv2_mark_dirty(vcpu, KVMPPC_GSID_LOGICAL_PVR);
+> @@ -479,7 +492,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+>  	vc->pcr = (host_pcr_bit - guest_pcr_bit) | PCR_MASK;
+>  	spin_unlock(&vc->lock);
+>  
+> -	return 0;
+> +	return kvmppc_sanity_check(vcpu);
+>  }
+>  
+>  static void kvmppc_dump_regs(struct kvm_vcpu *vcpu)
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 00302399fc37..98de68379b18 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -258,6 +258,10 @@ int kvmppc_sanity_check(struct kvm_vcpu *vcpu)
+>  	if (!vcpu->arch.pvr)
+>  		goto out;
+>  
+> +	if (vcpu->arch.vcore &&
+> +		vcpu->arch.vcore->arch_compat == PVR_ARCH_INVALID)
+> +		goto out;
+> +
+>  	/* PAPR only works with book3s_64 */
+>  	if ((vcpu->arch.cpu_type != KVM_CPU_3S_64) && vcpu->arch.papr_enabled)
+>  		goto out;
+> 
+> base-commit: 6b5a2b7d9bc156e505f09e698d85d6a1547c1206
+> -- 
+> 2.50.1 (Apple Git-155)
+> 
