@@ -1,264 +1,158 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E65A3F7894
-	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 10:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB8B3E8C74;
+	Wed, 17 Jun 2026 10:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781692426; cv=none; b=XlwiBfORdnFJ/n53FNKP30eB2Hk61ZhULM9r/NwJlJRBPwLsMCL9oPBS9AWeiDSEmBkdhjihqcKVyv3hFFkOX2xz85fM/q8Xu9oopkHoy7CPdUIEf22+bidqSBQTRiOZ9WM8u0Xggi96qqZEPAaTQ0cC68Sv6xaMoIvdpSsJL8A=
+	t=1781692492; cv=none; b=oz+vahQfmDfWXppks+UB/jtgQbgHszqEUXrlhDjneavsg76WOefUakyNINoJqfINwNURHe3zMi4MyQHQz3xENZ2XH7L8Kedo14tcRE/gtnHo4jYyaeg0WWIhDvZQuMfjacPpM6ERyvlS9tOIuckXEEXgUA008tEX8ie5DW7X6wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781692426; c=relaxed/simple;
-	bh=DMe52R6JvxCU9C8ejt5UwolNnHN5rL7a7lzgbKARCgM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:content-type; b=VpkSrlprYKQZNsOz3pbflM3z/+wNyVOMW5OLwKMkX3dbwaguGqQDy4XKrt5Bqpj1w24KUNvyem17e6g1ReDrb8B/FwdTiZMPIT8KB0UCX1yR4L2msIiePN41MH3tn0g/a83hm9FtiR5r7o8tpWWW6wKur488kpvsnDY6NMW382A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fW61vlIo; dkim=permerror (0-bit key) header.d=gmail.com header.i=@gmail.com header.b=UtLLNMVS; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781692492; c=relaxed/simple;
+	bh=rOXBbFduSVEhk7vn/B/fnnV9GpMne8ukQbUrDuDuwb8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kW6MIlaC1KtIXWjuSwBixgP4pJj3ZMMpRygTJsQGHm5oze4Kb4wWR/TWzzRxwHyH+oD1x01l92Dgf4jq+Ga7gDXbOC82WUx8sHeUPZP3cqlE/JoHDUiHu5VESaxhN3cnI4XBhG56nNQHCmg8Gz7D2cuRGXtD4scmk2tKqwQEeKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wv97yqYT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fW61vlIo";
-	dkim=permerror (0-bit key) header.d=gmail.com header.i=@gmail.com header.b="UtLLNMVS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781692424;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:resent-to:
-	 resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references;
-	bh=faYuc/QeEl0YbC01pJpvOLkLT9wo1bZfE99WPNpN2O8=;
-	b=fW61vlIofiiQZh1Lj1eg58V9ZsFzeS9lSYE3hkwVusuyE7GXY1p5TVCRxaJuLrR3ab7bK+
-	FS7XT4SLaC4Ct812do8DX3n9k8wwo0QsORVxBB2zl1lyj/gAQMSMqfJg5Q8/awnIj6eIll
-	xIQsRYt/GinyIffv7apI/h2K9gZWP5U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-HyHb3tbzME-CZ2nNUFYf6g-1; Wed, 17 Jun 2026 06:33:42 -0400
-X-MC-Unique: HyHb3tbzME-CZ2nNUFYf6g-1
-X-Mimecast-MFC-AGG-ID: HyHb3tbzME-CZ2nNUFYf6g_1781692422
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490b2f22ea2so48528415e9.1
-        for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 03:33:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781692422; x=1782297222;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:dkim-signature:delivered-to
-         :delivered-to:resent-to:resent-message-id:resent-date:resent-from
-         :from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=faYuc/QeEl0YbC01pJpvOLkLT9wo1bZfE99WPNpN2O8=;
-        b=TsxH1hjCnQqt6067T0e8/LODLqP0roKdbaE+E4PCX0ipXU5hFiKoFexvtbaMqlYV8c
-         cb0MNqSJ07lX43RsZm5Gtug45RyPqqyXpfUf6w6b/OyGSp9kkpFSq9IJG6UjvOI8MkGJ
-         WdkXY8qSTzwFQenHmixdPb7y2xaWHtrSkWyR05d0RdkrqgtBsg/mQ0p2xCnNF7X/IMP0
-         yvimsrrRt1LkEzKa+K7xPmJw1+E+u0+aifvKr09krU1rxmXAnE4nJHCqBlXSxt8kbW0a
-         xOU8jZmVrez8m+9y0yvlGbpuBIJQ0FwGRUaGp8q4Z68tt5fc5ZveiGpvsy6xmlpjeJka
-         ykPQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8Jis9Vx9fXNCjoU45j6zf9IH3feLrOYqJqILCNYcLMIP45nekc5zAiwSa84sh+nIlIe8Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdUWFH5DnBNHHQSK9FaVqJWfOk76uE7+1x62KD64+NNP4S9oWD
-	5Z/8VDIJjkwI1fvSloZG1UWXq4KfELxIQhgRF92sk1cXGiBowigds043XnClCDs9Hi3wgcIANbP
-	YvHvmWGx2n5IEqerFattL+81Sv9AFTAnbt/46rQk0pLHsTjqW7Xs4OOJ5PfqDZuQR3QCGX42PBS
-	U0qsKTYZP5ybTSmKSZ8n08VF5e4V3BI+0=
-X-Gm-Gg: Acq92OGuHP42/uGgZnB67tGygE3t6z1I86s4oNhfSPvqRgFq1l5aOU7vTdAOQR00vNF
-	weiI0nfGvLivRFRF/vHaVu6gPli4dH+m+uBzRGsQ67HYB27oLyxxFvZ1kj2TCwbAvlu8uz5GiVX
-	nV2trGEEgOUHs+1imvSYMjBxjaOpUY3zT9dCF8bDHo4qgTL+bGvVfmyJOl4YNWfnOyL02j3lSSV
-	Db+RBe+Ul8kUchYx0tfrwRlwG2o+5tsDElnjghaEYR+Q0HDdpt9E1ZxpSKg4ddYIZyp4EfwPEJA
-	dyedHe2fEbRQuuN748ZR5FJJf/dRRWQ1ORpXzcVDQ4rCpslMsW+CPm+S2jsCEBPhFwPJdi15K0u
-	+ta5ySOxgLTPRpAKN6V3jTFDPwcrUDRBj
-X-Received: by 2002:a05:600c:3b91:b0:490:c2a3:abae with SMTP id 5b1f17b1804b1-492333df08emr65435745e9.34.1781692421488;
-        Wed, 17 Jun 2026 03:33:41 -0700 (PDT)
-X-Received: by 2002:a05:600c:3b91:b0:490:c2a3:abae with SMTP id 5b1f17b1804b1-492333df08emr65434995e9.34.1781692420827;
-        Wed, 17 Jun 2026 03:33:40 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4922fa47ce3sm170652595e9.6.2026.06.17.03.33.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 03:33:39 -0700 (PDT)
-Authentication-Results: relay.mimecast.com; dkim=pass header.d=gmail.com
- header.s=20251104 header.b=UtLLNMVS; dmarc=pass (policy=none)
- header.from=gmail.com; spf=pass (relay.mimecast.com: domain of
- q.h.hack.winter@gmail.com designates 209.85.216.53 as permitted sender)
- smtp.mailfrom=q.h.hack.winter@gmail.com
-Sender: Michael Tsirkin <mtsirkin@redhat.com>
-From: Qihang Tang <mst@redhat.com>
-X-Google-Original-From: Qihang Tang <q.h.hack.winter@gmail.com>
-Resent-From: "Michael S. Tsirkin" <mst@redhat.com>
-Resent-Date: Wed, 17 Jun 2026 06:33:36 -0400
-Resent-Message-ID: <ajJ4AKoBZb1hhWge@redhat.com>
-Resent-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, virtualization@lists.linux.dev
-Received: from imap.gmail.com [64.233.184.108]
-	by tuck.redhat.com with IMAP (fetchmail-6.5.7 polling redhat account mtsirkin@redhat.com folder INBOX)
-	for <mst@localhost> (single-drop); Fri, 08 May 2026 05:47:20 -0400 (EDT)
-Received: by 2002:a05:7108:3655:b0:569:1bde:8a97 with SMTP id e21csp103817gdd;
- Fri, 8 May 2026 02:47:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=3;
- AFNElJ8454LKWJetXLWElUvqNM3moRh9cWz5Mhsr7HgJev4bQUcdv3Atb2yLXcN2EFKxxeIxQePmUu2a2Q==@gapps.redhat.com
-X-Received: by 2002:a05:620a:7017:b0:8f8:cdd0:df80 with SMTP id
- af79cd13be357-904d70c2e1amr1667474285a.59.1778233636600; Fri, 08 May 2026
- 02:47:16 -0700 (PDT)
-Received: from us-smtp-inbound-delivery-1.mimecast.com
- (us-smtp-inbound-delivery-1.mimecast.com. [170.10.128.131]) by mx.google.com
- with ESMTPS id af79cd13be357-8fc2d3e0f80si2358232585a.357.2026.05.08.02.47.16
- for <mtsirkin@gapps.redhat.com> (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384
- bits=256/256); Fri, 08 May 2026 02:47:16 -0700 (PDT)
-Received-SPF: pass (google.com: domain of q.h.hack.winter@gmail.com designates
- 209.85.216.53 as permitted sender) client-ip=209.85.216.53;
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-j0IcothIP7-90A6AKWmLUg-1; Fri,
- 08 May 2026 05:47:15 -0400
-X-MC-Unique: j0IcothIP7-90A6AKWmLUg-1
-X-Mimecast-MFC-AGG-ID: j0IcothIP7-90A6AKWmLUg_1778233634
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4]) (using
- TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits) key-exchange X25519
- server-signature RSA-PSS (2048 bits) server-digest SHA256) (No client
- certificate requested) by
- mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id
- EE7BC195608A for <mtsirkin@gapps.redhat.com>; Fri,  8 May 2026 09:47:13 +0000
- (UTC)
-Received: by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix)
- id E8CA73002D2F; Fri,  8 May 2026 09:47:13 +0000 (UTC)
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.33]) by
- mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E56F0300019F for <mst@redhat.com>; Fri,  8 May 2026 09:47:13 +0000 (UTC)
-Received: from us-smtp-inbound-delivery-1.mimecast.com
- (us-smtp-inbound-delivery-1.mimecast.com [170.10.128.131]) (using TLSv1.3
- with cipher TLS_AES_256_GCM_SHA384 (256/256 bits) key-exchange X25519
- server-signature RSA-PSS (2048 bits) server-digest SHA256) (No client
- certificate requested) by
- mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id
- 74E1E195608E for <mst@redhat.com>; Fri,  8 May 2026 09:47:13 +0000 (UTC)
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com
- [209.85.216.53]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-277-bcurhbVkODi0E_yqm7g7Gw-1; Fri, 08 May 2026 05:47:10 -0400
-X-MC-Unique: bcurhbVkODi0E_yqm7g7Gw-1
-X-Mimecast-MFC-AGG-ID: bcurhbVkODi0E_yqm7g7Gw_1778233630
-Received: by mail-pj1-f53.google.com with SMTP id
- 98e67ed59e1d1-365f4329725so216652a91.2 for <mst@redhat.com>; Fri, 08 May 2026
- 02:47:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20251104;
- t=1778233629; x=1778838429; darn=redhat.com;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to; bh=faYuc/QeEl0YbC01pJpvOLkLT9wo1bZfE99WPNpN2O8=;
- b=UtLLNMVSc1cpXh7KkJL9s/kGcmD4aLSV8GnBPNbHJxwMsNJZ5cczC6kM+iy+GO6MGu
- 4XOsA+7impQ093fy8qzxNHaeveYdpWcfD4CcEgheA+r5COr5jfxbiODBAK/NTYqwUENR
- 6ofjvztFj12kQBIaqkva7gLjDje7p9NUzxqVAWqQ79v8cWXhBWt9RWo6HtbmE09iiSFX
- tPyemBj4uxlVk44c5TatG+gFTVYcBbkEB/u3UIDpe5zqWXYVB/TVnUVWrTMTVJGpr0oB
- IZvkntmhbeqotlJNlPpI8HBlI1m5vfeWcmpmRstYA88XbkvR4Hm3ESzyHFcdAZjwk4F2 fjPQ==
-X-Received: by 2002:a17:90b:2249:b0:35f:be11:b3ec with SMTP id
- 98e67ed59e1d1-365adbec13emr6632924a91.7.1778233629305; Fri, 08 May 2026
- 02:47:09 -0700 (PDT)
-Received: from localhost.localdomain
- ([240e:47c:d8c8:14dc:ad01:83b5:f2d1:22b3]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-36648f21994sm1044679a91.2.2026.05.08.02.47.05 (version=TLS1_3
- cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256); Fri, 08 May 2026 02:47:08
- -0700 (PDT)
-To: mst@redhat.com
-Cc: jasowang@redhat.com, w@1wt.eu, eperezma@redhat.com, Qihang Tang <q.h.hack.winter@gmail.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, virtualization@lists.linux.dev
-Subject: [PATCH v3] vduse: hold vduse_lock across IDR lookup in open path
-Date: Fri,  8 May 2026 17:46:59 +0800
-Message-Id: <20260508094659.94647-1-q.h.hack.winter@gmail.com>
-In-Reply-To: <20260418211354.3698-1-q.h.hack.winter@gmail.com>
-References: <20260418211354.3698-1-q.h.hack.winter@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wv97yqYT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FC81F000E9;
+	Wed, 17 Jun 2026 10:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781692487;
+	bh=mUzimGhtwXxeFlNbjp2T5cpsz2AsOPIbGLnMGM1e6Dk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Wv97yqYTUmHJUFnZj5sV6+KfbOH9WCS97aAe2ipipFgYFnAgIyBaKA0DCVPWhme8b
+	 jBXKmFR2LjzO+WhSOm9S4yVMbmlCGSH11yqqO0mq9Xr+BMQwf85wyzev4hqlx7sAUT
+	 TP75DRBIfR2q7apcjUstwzSBStuIhrXIKy0StOYafxpFp1VHhyvgwcppG1/+ui/4da
+	 DESJJGo+QdHVu+ZYi2jSI9lSUgtYxh3qp8sgvNI53EqqofZTgpeK2jKBhZFfFk8Wf3
+	 TqJyGELBLbKO32SIHiP5JHb5yBTFjIcK1lUfKpyDqSi0Ae97MquHzGkCTY7bgu/xsK
+	 W2A4DwTyVd02g==
+Message-ID: <9ebadac0-0ec2-4ebc-8193-1a289574c0a9@kernel.org>
+Date: Wed, 17 Jun 2026 12:34:38 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 1
-X-Mimecast-MFC-PROC-ID: qD_m35z3Mosc3SMn6rdj5ve91VDn0YKgHX5fEaounjY_1778233630
-X-Mimecast-Impersonation-Protect: Policy=DMARC Check - CHG0118091;Similar
- Internal Domain=false;Similar Monitored External Domain=false;Custom External
- Domain=false;Mimecast External Domain=false;Newly Observed
- Domain=false;Internal User Name=false;Custom Display Name List=false;Reply-to
- Address Mismatch=false;Targeted Threat Dictionary=false;Mimecast Threat
- Dictionary=false;Custom Threat Dictionary=false
-X-Mimecast-Impersonation-Protect: Policy=CLT - Impersonation Protection
- Definition;Similar Internal Domain=false;Similar Monitored External
- Domain=false;Custom External Domain=false;Mimecast External
- Domain=false;Newly Observed Domain=false;Internal User Name=false;Custom
- Display Name List=false;Reply-to Address Mismatch=false;Targeted Threat
- Dictionary=false;Mimecast Threat Dictionary=false;Custom Threat
- Dictionary=false
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Label: linux
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
+ non-confidential VMs
+To: Ackerley Tng <ackerleytng@google.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: Shivank Garg <shivankg@amd.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Shuah Khan <shuah@kernel.org>, Chao Peng <chao.p.peng@linux.intel.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, Ira Weiny <ira.weiny@intel.com>,
+ Michael Roth <michael.roth@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ Fuad Tabba <tabba@google.com>, Vishal Annapurve <vannapurve@google.com>,
+ Nikita Kalyazin <nikita.kalyazin@linux.dev>,
+ Patrick Roy <patrick.roy@linux.dev>, Pratik Sampat <prsampat@amd.com>,
+ Ashish Kalra <Ashish.Kalra@amd.com>, linux-fsdevel@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
+ <ai_XK__RTXMCEcCG@raptor> <ai_aczmeH2IA6JaB@raptor>
+ <ajA4z_Wkb93cTW4m@google.com>
+ <1e77f24d-315a-4f68-a109-2f4520343c0c@kernel.org>
+ <CAEvNRgFQLEsKanKrj=ePHoShiY2cgQgxtGs_2CJcZHP=JOjidg@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAEvNRgFQLEsKanKrj=ePHoShiY2cgQgxtGs_2CJcZHP=JOjidg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-vduse_dev_open() looks up struct vduse_dev through the IDR and then
-acquires dev->lock only after vduse_lock has been dropped.
+On 6/16/26 20:09, Ackerley Tng wrote:
+> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+> 
+>> On 6/15/26 19:39, Sean Christopherson wrote:
+>>>
+>>> +1000.  It's not just "nice to have", it's a core design principle of guest_memfd.
+>>
+>> Right, and I raised in the guest_memfd call also the rough idea of Alexandru's
+>> use case of having non-movable guest_memfd pages such that we can support use
+>> cases where we can hopefully guarantee that a stage-2 mapping will not just
+>> randomly go away.
+>>
+>>>
+> 
+> More concretely, are y'all pointing towards a
+> GUEST_MEMFD_FLAG_MIGRATABLE, which will set .migrate =
+> kvm_gmem_migrate_folio, and for now, error out for CoCo VMs?
+> 
+>>>
+>>> For the purposes of this discussion, we should separate the physical act of
+>>> migrating pages from the features that trigger migration.  As I said in last week's
+>>> guest-memfd call, I am a-ok with supporting page migration as a mechanism, but I
+>>> am dead set against supporting NUMA balancing, KSM, LRU-based swap/reclaim, and
+>>> anything else that goes against the goal of guest-first memory.
+>>
+>> Right. Page migration for supporting ZONE_MOVABLE/CMA, compaction, memory
+>> offlining, virtio-mem and possibly some collapse mechanism if we were to support
+>> THP of some sorts in guest_memfd would are all reasonable.
+>>
+> 
+> Background question: how would virtio-mem use migration in the host/guest_memfd?
 
-This leaves a window where a concurrent VDUSE_DESTROY_DEV can remove the
-same object from the IDR and free it before the open path locks the
-device, leading to a use-after-free.
+Good question! As long as there is no nested-virt support (and virtio-mem
+support for coco still being in the making) that wouldn't apply, only ordinary
+memory hot(un)plug (incl CXL).
 
-Close this race by keeping vduse_lock held until dev->lock has been
-acquired in the open path, matching the lock ordering already used by
-the destroy path.
-
-Fixes: c8a6153b6c59 ("vduse: Introduce VDUSE - vDPA Device in Userspace")
-Signed-off-by: Qihang Tang <q.h.hack.winter@gmail.com>
----
-v2 -> v3:
-- keep vduse_lock held until after dropping dev->lock
-in vduse_dev_open()
-- add changelog requested in review
-
-v1 -> v2:
-- add Fixes tag
-- remove helper and inline the locking in
-vduse_dev_open()
-
- drivers/vdpa/vdpa_user/vduse_dev.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
-index 6202f6902fcd..d5c34260ed68 100644
---- a/drivers/vdpa/vdpa_user/vduse_dev.c
-+++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-@@ -1637,26 +1637,18 @@ static int vduse_dev_release(struct inode *inode, struct file *file)
- 	return 0;
- }
- 
--static struct vduse_dev *vduse_dev_get_from_minor(int minor)
-+static int vduse_dev_open(struct inode *inode, struct file *file)
- {
-+	int ret = -EBUSY;
- 	struct vduse_dev *dev;
- 
- 	mutex_lock(&vduse_lock);
--	dev = idr_find(&vduse_idr, minor);
--	mutex_unlock(&vduse_lock);
--
--	return dev;
--}
--
--static int vduse_dev_open(struct inode *inode, struct file *file)
--{
--	int ret;
--	struct vduse_dev *dev = vduse_dev_get_from_minor(iminor(inode));
--
--	if (!dev)
-+	dev = idr_find(&vduse_idr, iminor(inode));
-+	if (!dev) {
-+		mutex_unlock(&vduse_lock);
- 		return -ENODEV;
-+	}
- 
--	ret = -EBUSY;
- 	mutex_lock(&dev->lock);
- 	if (dev->connected)
- 		goto unlock;
-@@ -1666,6 +1658,7 @@ static int vduse_dev_open(struct inode *inode, struct file *file)
- 	file->private_data = dev;
- unlock:
- 	mutex_unlock(&dev->lock);
-+	mutex_unlock(&vduse_lock);
- 
- 	return ret;
- }
 -- 
-2.39.5 (Apple Git-154)
+Cheers,
 
+David
