@@ -1,144 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD42E134CCF;
-	Wed, 17 Jun 2026 03:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09782E739E
+	for <kvm@vger.kernel.org>; Wed, 17 Jun 2026 03:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781668340; cv=none; b=V3qKMhhF1I+seHWrEU0AyrXR0CSsQHO0yTB3MocTNtRUg3YfjJlBsBA2P/6zHYYnXVp3hAMC4eRGHX83mfTtaCBZLjwYk4ul99gM9iNLyv2y1+3diU23RIumLMY8v2EEAnpGH5VNi9CjnS23MllEjCSiSsUHkVCH8sufB/Gyy8c=
+	t=1781668429; cv=none; b=GdTogXOCfE5C4RNHc4cQuuM0V6azvj6B6ekK6sAmif+errMbA0xNEIk3W2JVftUzyK9ZnHB9yZQoiylbRsPvqG0osrOiNdkFq/TqEaNxWU+FB3nR5Qgl8Gmjhb/ar/ZWlJ4AT+DwEsE68Kblxz6AZvYgCxVjiQghoLA7RsTKyLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781668340; c=relaxed/simple;
-	bh=tQIbKSGCggsDjsPRQYgkiN1yqMvDId6VFgfc4clu/AE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DAWBQMD91RXv+5E9d8/gScCfPg3XJpJjB4WrF0PIdcpSdIK6SCAE1o2sfxyAtMaFB7ygVMwXtXOuI9GsRBYA3jjsdvIYOeQxinhysbJet9zNiWz0pHMtqkRfBNJJLPlna0XR3ryoYDbCKWobdWY1Y6g3hf6o84aJw82gkiFqjFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dAM810Fk; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dAM810Fk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781668338; x=1813204338;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=tQIbKSGCggsDjsPRQYgkiN1yqMvDId6VFgfc4clu/AE=;
-  b=dAM810FkquGwRor8IRw48eA4egv+peULBUUJ/6tV9gWFF7YjtNTL6cpC
-   cBEZr0hNts9R6OlO2e0JgMf7TmswWjoo+8n9Ed9qcbkLp3ptF9xh//Fkk
-   IN+mW/xwc7oGV0n5WoiOJzZ0R2hnE2fYQUDftA1592kyeHQS9BVmIuPAm
-   oWFdHccfU4P9viSmAhd2ep/pI7SahQK1vtLXBz80UcQ/4kHOOH5SEDl+K
-   JRFo8UUVzshTtWSGVOvfADOF+wi2MJETGYJnbHXLTCHjMje12o8bvqFPB
-   Ls/O/NtSw+zAskzxBXoKqoOiunM4hQrao5U166z//l9fgdVUFYYqy4HN7
-   Q==;
-X-CSE-ConnectionGUID: XMLQlR9qT1a3CTU0rBSv6A==
-X-CSE-MsgGUID: 6L6Qh6KRT1qB6kJR03GHXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="81581037"
-X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="81581037"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 20:51:58 -0700
-X-CSE-ConnectionGUID: zSVH7aMSSmWNkKi6YvOJ8w==
-X-CSE-MsgGUID: UdMBFn0qRjeB2ZEEfriO6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="278153339"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 20:51:49 -0700
-Message-ID: <e0847903-e9ee-4b3c-b120-aaba46894ada@intel.com>
-Date: Wed, 17 Jun 2026 11:51:46 +0800
+	s=arc-20240116; t=1781668429; c=relaxed/simple;
+	bh=M+sJwbZjGprqJ5P6dzrfQG1U9gug3I7000Ogu/10Zeo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Geguc3qmEUd9hTVP2rtMLtskQvlVfmzQQCGz52mjPb/EPVOVA+zBNI7WMnShoqV0mppBeXAYmzB7vl6tSJ2vSYiGp3QL3ixXxL5FXUvdExzBqkRi/tFx0ifzeRLTHMIJPHQ1WPmtRMbI9DRx6GpB/FwreouLvgbeuHE5rqAL4Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-36d98b9aa9aso4429311a91.3
+        for <kvm@vger.kernel.org>; Tue, 16 Jun 2026 20:53:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781668428; x=1782273228;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F12h5agOgtTKhK7bZXDhJCivRbCg78HbH6b0jQZn4DI=;
+        b=YvZXK2f1eXuSq7xYT+GRQ1RWVS/s9aI8zkNz9Ynst2SugP7+elAUcln1SiHFuYn+9S
+         4aLV5I9Ib47/bj8l0UUWDJ983BplmxDJIuqlwPQqAFjVvOKaxsz/GaOsHXfL6MQNyoef
+         9yvWXX/MwHjF+Y1gnqqn7EVfST0wzvC/nTSSP0LUEYzrOQNA7U/KZsPf3rxzbQOX1A5P
+         NDb2sYV0S9xrgHCX4ksJAC/nJrI/qOEiOnnf5vnF9GF8IIDstt45YGqHXv+C0g/oyL/I
+         YgRCm8Is7upoQlG92sgQXQMfSmJITHupOuLfhBZOCja5CbDcbCkd2k6ieeo/C9sraQ3e
+         y2UA==
+X-Forwarded-Encrypted: i=1; AFNElJ8PYOUV5jr2fxeI0x7hH+ijSuCLaPO0hbI0trWKw+zuHKqVPeaKY6U42iJpRSst+upcUXA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxD8iyCSod24V9btYXVOvqF/dLgL1/Kv75rCUgJeAiCFxSM3dMK
+	ZHwvPwUi2iD6Ihar7OsjMdOFcqbYF1xP9la6DaW9jn84sPhBeoo3OkH+
+X-Gm-Gg: AfdE7cm/6SWE0os45phQFN4kcvVVzEprP4eSkZ0YPOrUrqqHWUMbr/BmaXeKOvnYWnT
+	kR3u0/JIkEjZSt1CC+yVckiNvAem1p0O8gfAlsDZNKQc9dKj1tP0LCjX1MieuZR3lRG1b2o+mz2
+	6c5P7HtwqUHOCx4TC7P6KKdHhU/bSFR2j/f/n5rBY5eXs6M7xi32xfjJMn4sQVj+gVusSkc76Ed
+	CMCtX0Ku8qnU7rN306FAxe+dUHI0YBcS9O9O3hwt4swQ8AK53mwcw/vEXxzIV3LH66l9wM1PcbP
+	0/AfN8WL9MykB1NnYm8bmIVgsCaOkZ0X+X9S+hmiXtYzFeForX+ivBG9PQBysCe3i/L95iBC0Tw
+	P0CjNnBjIDj/H5h1rJ1KP3Cm/Qe2IivVEVv4L299gb5wKEkvJgE5ioaqeQ0W6L79/pWaE8YpmJ6
+	3mfdN6HeKJKzCBvZsoDP5lbX2B0CX9XYzc3MMWEOZGF1imZTMsqeRpUZJDTbwaSEyi0ef11xte7
+	RslpRb6pyF5FdGrSPeJDVGlxLMGnIYZ5po2bLBQn02Y+bh8dN+8+2Eca28PG1AGSsfwx2eMgSN3
+	UAs2PR958vpFfM/S9vw7
+X-Received: by 2002:a17:90b:3d44:b0:36d:b12f:613c with SMTP id 98e67ed59e1d1-37c9ddbd514mr1772249a91.10.1781668427949;
+        Tue, 16 Jun 2026 20:53:47 -0700 (PDT)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521ae78csm4435118a91.4.2026.06.16.20.53.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 20:53:47 -0700 (PDT)
+Date: Wed, 17 Jun 2026 12:53:46 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: fengchengwen <fengchengwen@huawei.com>
+Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	helgaas@kernel.org, wathsala.vithanage@arm.com, wei.huang2@amd.com, 
+	zhipingz@meta.com, wangzhou1@hisilicon.com, wangyushan12@huawei.com, 
+	liuyonglong@huawei.com, kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v17 08/12] PCI/TPH: Add sysfs binary file to export CPU
+ to steering-tag mapping
+Message-ID: <20260617035003.GA1415869@rocinante>
+References: <20260616104621.41915-1-fengchengwen@huawei.com>
+ <20260616104621.41915-9-fengchengwen@huawei.com>
+ <20260616144224.GB3577091@ziepe.ca>
+ <20260616105754.784be22d@shazbot.org>
+ <20260616172728.GC3577091@ziepe.ca>
+ <c913116a-35b4-4934-b78b-8fa0a08a00ae@huawei.com>
+ <a81c3479-1749-4b9b-b913-cfb20c621690@app.fastmail.com>
+ <e2db72ab-6d51-4d19-8dba-0612207008a3@huawei.com>
+ <c3d7ce59-bf5e-40fc-8f0c-6232c58c7495@app.fastmail.com>
+ <c1ae7910-6028-4dae-a462-e7464a35028f@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 04/22] KVM: selftests: TDX: Use KVM_TDX_CAPABILITIES
- to validate TDs' attribute configuration
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-4-6983ae4c3a4d@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260521-tdx-selftests-v13-v13-4-6983ae4c3a4d@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c1ae7910-6028-4dae-a462-e7464a35028f@huawei.com>
 
-On 5/22/2026 7:16 AM, Lisa Wang wrote:
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
-> 
-> Make sure that all the attributes enabled by the test are reported as
-> supported by both the TDX module and KVM. KVM filters out the attributes
-> not supported by itself.
-> 
-> This also exercises the KVM_TDX_CAPABILITIES ioctl.
-> 
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Co-developed-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
+Hello,
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+[...]
+> If the community still prefers option 1 after this discussion, I will fully
+> rework the binattr implementation and send out v18 following all your review
+> feedback.
 
-> ---
->   tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> index 868ff62e22f2..e5c998874a0d 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> @@ -110,6 +110,18 @@ static void tdx_filter_cpuid(struct kvm_vm *vm,
->   	free(tdx_cap);
->   }
->   
-> +static void tdx_check_attributes(struct kvm_vm *vm, u64 attributes)
-> +{
-> +	struct kvm_tdx_capabilities *tdx_cap;
-> +
-> +	tdx_cap = tdx_read_capabilities(vm);
+Perhaps configfs or debugfs would be a viable alternative, if this is
+something that does not have to exposed all the time?
 
-well, this is another caller of tdx_read_capabilities().
+Just thinking out loud...
 
-As I commented in the previous patch, it's worth caching the result in 
-tdx_read_capabilities() like what kvm_get_supported_cpuid() does for 
-kvm_supported_cpuid.
+Thank you!
 
-And it can help only print the debug once.
-
-> +	/* Make sure all the attributes are reported as supported */
-> +	TEST_ASSERT_EQ(attributes & tdx_cap->supported_attrs, attributes);
-> +
-> +	free(tdx_cap);
-> +}
-> +
->   void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
->   {
->   	struct kvm_tdx_init_vm *init_vm;
-> @@ -129,6 +141,8 @@ void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
->   	memcpy(&init_vm->cpuid, cpuid, kvm_cpuid2_size(cpuid->nent));
->   	free(cpuid);
->   
-> +	tdx_check_attributes(vm, attributes);
-> +
->   	init_vm->attributes = attributes;
->   
->   	tdx_vm_ioctl(vm, KVM_TDX_INIT_VM, 0, init_vm);
-> 
-
+	Krzysztof
